@@ -8,12 +8,21 @@ export type Setter<T> = ((prev: T) => T) | T;
 
 /**
  * A function that sets up a watcher for reactive changes and returns a cleanup function.
- * The watcher is called immediately when set up and then again whenever relevant changes occur.
  *
  * @param fn - The callback function to execute when changes occur
+ * @param immediate - Whether to execute the callback immediately upon setup. Defaults to true
  * @returns A cleanup function that removes the watcher when called
+ *
+ * @example
+ * const cleanup = watch(() => {
+ *   console.log('State changed!');
+ * }); // Logs immediately and on future changes
+ *
+ * const cleanup = watch(() => {
+ *   console.log('State changed!');
+ * }, false); // Logs only on future changes
  */
-export type Watch = (fn: () => void) => () => void;
+export type Watch = (fn: () => void, immediate?: boolean) => () => void;
 
 /**
  * A basic reactive signal that can be read, written to, and watched for changes.

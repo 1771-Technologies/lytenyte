@@ -60,6 +60,18 @@ describe("signal", () => {
     vi.useRealTimers();
   });
 
+  test("watcher notifies only on change when immediate is false", () => {
+    const fn = vi.fn();
+    const { store } = cascada(() => {
+      const count = signal(0);
+
+      return { count };
+    });
+
+    store.count.watch(fn, false);
+    expect(fn).not.toHaveBeenCalled();
+  });
+
   test("should be able to call dispose multiple times", () => {
     const watchFn = vi.fn();
     const { store } = cascada(() => {

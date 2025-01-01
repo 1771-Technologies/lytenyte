@@ -120,6 +120,21 @@ export function createClientDataSource<D, E>(
   return {
     init: (a) => {
       state.api.set(a);
+
+      const sx = a.getState();
+
+      watchers.push(sx.columnBase.watch(() => state.cache.set({})));
+      watchers.push(sx.columnsVisible.watch(() => state.cache.set({})));
+
+      const reloadPivots = () => {
+        if (!sx.columnPivotModeIsOn.peek()) return;
+        a.columnPivotsReload();
+      };
+
+      watchers.push(sx.rowDataSource.watch(reloadPivots, false));
+      watchers.push(sx.columnPivotModel.watch(reloadPivots, false));
+      watchers.push(sx.measureModel.watch(reloadPivots, false));
+      watchers.push(sx.columnPivotModeIsOn.watch(reloadPivots, false));
     },
     clean: () => {
       watchers.forEach((c) => c());

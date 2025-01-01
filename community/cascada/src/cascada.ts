@@ -403,11 +403,11 @@ export function remote<T>(args: {
  * @internal
  */
 function makeWatch(symbol: symbol, watchersLookup: Map<symbol, Set<() => void>>) {
-  const watch = (fn: () => void) => {
+  const watch = (fn: () => void, immediate = true) => {
     if (!watchersLookup.has(symbol)) watchersLookup.set(symbol, new Set());
 
     // Call the function immediately on first watch
-    fn();
+    if (immediate) fn();
 
     const queue = () => addTask(fn);
     watchersLookup!.get(symbol)!.add(queue);

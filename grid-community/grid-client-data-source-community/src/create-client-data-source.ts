@@ -113,6 +113,11 @@ export function createClientDataSource<D, E>(
   return {
     init: (a) => {
       state.api.set(a);
+
+      const sx = a.getState();
+
+      watchers.push(sx.columnBase.watch(() => state.cache.set({})));
+      watchers.push(sx.columnsVisible.watch(() => state.cache.set({})));
     },
     clean: () => {
       watchers.forEach((c) => c());

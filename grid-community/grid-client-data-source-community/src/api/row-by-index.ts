@@ -1,4 +1,5 @@
 import type { ClientState } from "../create-client-data-source";
+import { calculateRowAgg } from "./calculate-row-agg";
 
 export function rowByIndex<D, E>(state: ClientState<D, E>, r: number) {
   const graph = state.graph.peek();
@@ -10,5 +11,9 @@ export function rowByIndex<D, E>(state: ClientState<D, E>, r: number) {
     return row;
   }
 
-  return row;
+  const cache = state.cache.peek();
+
+  if (cache[row.id]) return row;
+
+  return calculateRowAgg(state, row);
 }
