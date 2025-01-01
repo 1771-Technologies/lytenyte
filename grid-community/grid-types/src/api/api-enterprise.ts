@@ -1,0 +1,106 @@
+import type {
+  EventsEnterprise,
+  LngAddEventListenerEnterprise,
+  LngRemoveEventListenerEnterprise,
+} from "../events/events-enterprise";
+import type { ColumnInFilterItem } from "../row-data-source/rds-enterprise";
+import type { State } from "../store/state-enterprise";
+import type { RowNode, RowNodeGroup, SortModelItem } from "../types";
+import type {
+  CellSelectionRect,
+  ClipboardCopyOptions,
+  ColumnFilter,
+  Target,
+} from "../types-enterprise";
+import type { ApiCommunity } from "./api-community";
+
+export interface ApiEnterprise<D, C, E>
+  extends Omit<
+    ApiCommunity<D, C, E>,
+    "eventAddListener" | "eventRemoveListener" | "eventGetListeners" | "eventFire" | "getState"
+  > {
+  readonly getState: () => State<D, E>;
+
+  readonly cellSelectionIsSelected: (r: number, c: number) => boolean;
+  readonly cellSelectionExpandDown: (p?: {
+    ref: CellSelectionRect;
+    pivot: CellSelectionRect;
+  }) => void;
+  readonly cellSelectionExpandUp: (p?: {
+    ref: CellSelectionRect;
+    pivot: CellSelectionRect;
+  }) => void;
+  readonly cellSelectionExpandStart: (p?: {
+    ref: CellSelectionRect;
+    pivot: CellSelectionRect;
+  }) => void;
+  readonly cellSelectionExpandEnd: (p?: {
+    ref: CellSelectionRect;
+    pivot: CellSelectionRect;
+  }) => void;
+  readonly cellSelectionDeselectRect: (rect: CellSelectionRect) => void;
+  readonly cellSelectionSelectRect: (rect: CellSelectionRect, additive?: boolean) => void;
+
+  readonly columnPivotsLoading: () => boolean;
+  readonly columnPivotsReload: () => void;
+
+  readonly columnPivotFilterModel: () => ColumnFilter<this, D>[];
+  readonly columnPivotSortModel: () => SortModelItem[];
+  readonly columnPivotSetSortModel: (s: SortModelItem[]) => void;
+  readonly columnPivotSetFilterModel: (s: ColumnFilter<this, D>[]) => void;
+
+  readonly columnPivotField: (row: RowNode<D>, column: C) => unknown;
+  readonly columnPivotFieldFromData: (data: D, column: C) => unknown;
+  readonly columnPivotMeasureField: (data: D, measureColumn: C) => unknown;
+
+  readonly columnPivots: () => C[];
+  readonly columnIsPivot: (c: C) => boolean;
+
+  readonly columnInFilterItems: (column: C) => Promise<ColumnInFilterItem[]> | ColumnInFilterItem[];
+
+  readonly columnIsMeasurable: (c: C) => boolean;
+
+  readonly columnIsPivotable: (c: C) => boolean;
+
+  readonly columnFilterMenuIsOpen: () => boolean;
+  readonly columnMenuIsOpen: () => boolean;
+
+  readonly columnOpenFilterMenu: (c: C, bb: Target) => void;
+  readonly columnCloseFilterMenu: () => void;
+  readonly columnOpenMenu: (c: C, bb: Target) => void;
+  readonly columnCloseMenu: () => void;
+
+  readonly contextMenuClose: () => void;
+
+  readonly clipboardCopyCells: (
+    rect?: CellSelectionRect | null,
+    opts?: ClipboardCopyOptions,
+  ) => Promise<void>;
+  readonly clipboardCutCells: (
+    rect?: CellSelectionRect | null,
+    opts?: ClipboardCopyOptions,
+  ) => Promise<void>;
+  readonly clipboardPasteCells: (rect?: CellSelectionRect | null) => Promise<void>;
+
+  readonly floatingFrameIsOpen: () => boolean;
+  readonly floatingFrameOpen: (id: string) => void;
+  readonly floatingFrameClose: () => void;
+
+  readonly panelFrameIsOpen: () => boolean;
+  readonly panelFrameOpen: (id: string, side?: "start" | "end") => void;
+  readonly panelFrameClose: () => void;
+
+  readonly rowReload: () => void;
+  readonly rowRetryExpansion: (row: RowNodeGroup) => void;
+  readonly rowRetryFailed: () => void;
+
+  readonly eventAddListener: LngAddEventListenerEnterprise<this, D, C>;
+  readonly eventRemoveListener: LngRemoveEventListenerEnterprise<this, D, C>;
+  readonly eventGetListeners: <K extends keyof EventsEnterprise<this, D, C>>(
+    eventName: K,
+  ) => Set<EventsEnterprise<this, D, C>[K]> | null;
+  readonly eventFire: <K extends keyof EventsEnterprise<this, D, C>>(
+    name: K,
+    ...args: Parameters<EventsEnterprise<this, D, C>[K]>
+  ) => void;
+}

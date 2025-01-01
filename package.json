@@ -1,0 +1,22 @@
+{
+  "name": "root",
+  "module": "index.ts",
+  "type": "module",
+  "workspaces": [
+    "grid-community/*",
+    "grid-enterprise/*",
+    "community/*",
+    "enterprise/*",
+    "tools/*"
+  ],
+  "dependencies": {
+    "@1771technologies/aio": "workspace:^",
+    "@1771technologies/eslint-preset": "../eslint-preset",
+    "eslint": "^9.17.0",
+    "prettier": "^3.4.2"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.7.2"
+  }
+}

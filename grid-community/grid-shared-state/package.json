@@ -1,0 +1,20 @@
+{
+  "name": "@1771technologies/grid-shared-state",
+  "version": "0.0.1",
+  "license": "Apache-2.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./src/index.ts",
+      "require": "./src/index.ts",
+      "types": "./src/index.ts"
+    }
+  },
+  "dependencies": {
+    "@1771technologies/grid-types": "workspace:^",
+    "@1771technologies/grid-constants": "workspace:^",
+    "@1771technologies/grid-core": "workspace:^",
+    "@1771technologies/js-utils": "workspace:^",
+    "@1771technologies/cascada": "workspace:^"
+  }
+}

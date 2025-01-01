@@ -1,0 +1,23 @@
+:root {
+  --lng1771-typeface-headline: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --lng1771-typeface-body: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  --lng1771-h1: 3rem;
+  --lng1771-h2: 2rem;
+  --lng1771-h3: 1.5rem;
+  --lng1771-h4: 1.25rem;
+  --lng1771-h5: 1.125rem;
+  --lng1771-h6: 1rem;
+
+  --lng1771-body-l: 1rem;
+  --lng1771-body-m: 0.875rem;
+  --lng1771-body-s: 0.75rem;
+  --lng1771-body-xs: 0.688rem;
+}
+
+.lng1771-term256 {
+  --lng1771-typeface-body: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+}

@@ -1,0 +1,146 @@
+
+# Build
+/dist
+/lib
+/lib-types
+/server
+dist-mpa
+
+pnpm-lock.yaml
+
+
+scratch.txt
+
+auto-imports.d.ts
+
+certs/
+.vite-react-ssg-temp
+.env
+.temp
+.branches
+
+/.next/
+/out/
+
+.wrangler
+
+.dev.vars
+
+.turbo
+
+**/_vitest-coverage
+.vscode
+
+# Build
+docs/lib
+docs/lib-types
+docs/server
+
+# Production
+/build
+
+# Generated files
+.docusaurus
+.cache-loader
+
+# Node
+**/node_modules/
+
+# Mac OS
+.DS_Store
+
+# Vite Js
+.vite
+**/coverage/
+
+# Build output
+**/dist-types
+**/dist-pages
+
+local/
+
+# Dependencies
+/node_modules
+
+# Production
+build
+
+# Generated files
+.docusaurus
+.cache-loader
+.astro/
+
+# Misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+.pnp.*
+
+.swc
+
+# Changeset git workflow will use this.
+.pnpm-store
+
+node_modules/
+test-results/
+**/playwright-report/
+**/playwright/.cache/
+
+.next/
+.rollup.cache
+tsconfig.tsbuildinfo
+.cache
+.mf
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Editor
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Yarn
+.yarn/*
+!.yarn/releases
+
+
+# Project specific
+/packages/cli/renderer
+books/
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# next.js
+/.next/
+/out/
+
+*.pem
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts

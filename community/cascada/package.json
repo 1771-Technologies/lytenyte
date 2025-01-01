@@ -1,0 +1,14 @@
+{
+  "name": "@1771technologies/cascada",
+  "version": "0.0.1",
+  "license": "Apache-2.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./src/index.ts",
+      "require": "./src/index.ts",
+      "types": "./src/index.ts"
+    }
+  },
+  "dependencies": {}
+}

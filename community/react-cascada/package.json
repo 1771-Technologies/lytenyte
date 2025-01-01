@@ -1,0 +1,20 @@
+{
+  "name": "@1771technologies/react-cascada",
+  "version": "0.0.1",
+  "license": "Apache-2.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "require": "./src/index.ts"
+    }
+  },
+  "dependencies": {
+    "@1771technologies/cascada": "workspace:^"
+  },
+  "peerDependencies": {
+    "react": "^18 | 19^",
+    "react-dom": "^18 | 19^"
+  }
+}

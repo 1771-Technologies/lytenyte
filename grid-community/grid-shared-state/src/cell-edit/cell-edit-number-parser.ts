@@ -1,0 +1,12 @@
+import type { ApiCommunity, ColumnCommunity } from "@1771technologies/grid-types";
+import type { CellEditParserParams } from "@1771technologies/grid-types/community";
+
+export const numberParser = <D, E>(
+  p: CellEditParserParams<ApiCommunity<D, E>, D, ColumnCommunity<D, E>>,
+) => {
+  const value = p.value as number | string;
+  if (value == null) return value;
+  if (typeof value === "number") return value;
+
+  return Number.parseFloat(value);
+};

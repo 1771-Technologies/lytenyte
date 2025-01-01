@@ -1,0 +1,78 @@
+import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
+import type { AutosizeOptions } from "@1771technologies/grid-types/community";
+import { autosizeCellDefault } from "./autosize-cell-default";
+import { autosizeHeaderDefault } from "./autosize-header-default";
+
+export const autosizeColumns = <D, E>(
+  api: ApiCommunity<D, E> | ApiEnterprise<D, E>,
+  autosizeHeader = autosizeHeaderDefault,
+  c?: string[] | null,
+  opts?: AutosizeOptions,
+) => {
+  const s = api.getState();
+  const columns = c
+    ? c.map((id) => api.columnById(id)).filter((c) => !!c)
+    : s.columnsVisible.peek();
+
+  const isAll = !!c;
+  const columnsThatCanBeResized = columns
+    .filter((c) => api.columnIsResizable(c as any))
+    .filter((c) => !isAll || (isAll && !c.cellOptions?.skipOnAutosizeAll));
+
+  if (columnsThatCanBeResized.length === 0) return null;
+
+  const result: Record<string, number> = {};
+
+  const rowFirstVisible = s.internal.rowFirstVisible.peek();
+  const rowLastVisible = s.internal.rowLastVisible.peek();
+  const rowTopCount = s.internal.rowTopCount.peek();
+  const rowCount = s.internal.rowCount.peek();
+  const rowBottomCount = s.internal.rowBottomCount.peek();
+  const base = s.columnBase.peek();
+
+  const rowStart = Math.max(rowFirstVisible, 0);
+  const rowEnd = rowLastVisible === -1 ? Math.min(50, rowCount - rowBottomCount) : rowLastVisible;
+
+  calculateWidths(rowStart, rowEnd);
+  if (rowTopCount) calculateWidths(0, rowTopCount);
+  if (rowBottomCount) calculateWidths(rowCount - rowBottomCount, rowCount);
+
+  if (opts?.includeHeader) {
+    for (let columnIndex = 0; columnIndex < columnsThatCanBeResized.length; columnIndex++) {
+      const column = columnsThatCanBeResized[columnIndex];
+
+      const autoFn = column.headerAutosizeFunc ?? base.headerAutosizeFunc ?? autosizeHeader;
+
+      const width = autoFn({ api: api as any, column: column as any });
+
+      result[column.id] = Math.max(width, result[column.id]);
+    }
+  }
+
+  if (opts?.dryRun) return result;
+
+  const updates = Object.fromEntries(
+    Object.entries(result).map(([key, v]) => [key, { width: v }] as const),
+  );
+
+  api.columnUpdateMany(updates);
+
+  return result;
+
+  function calculateWidths(start: number, end: number) {
+    for (let rowIndex = start; rowIndex < end; rowIndex++) {
+      const row = api.rowByIndex(rowIndex);
+      if (!row) continue;
+
+      for (let i = 0; i < columnsThatCanBeResized.length; i++) {
+        const column = columnsThatCanBeResized[i];
+
+        const autoFn =
+          column.cellOptions?.autosizeFunc ?? base.cellOptions?.autosizeFunc ?? autosizeCellDefault;
+        const width = autoFn({ api: api as any, column: column as any, row });
+        result[column.id] ??= 0;
+        result[column.id] = Math.max(width, result[column.id]);
+      }
+    }
+  }
+};

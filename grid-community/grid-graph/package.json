@@ -1,0 +1,18 @@
+{
+  "name": "@1771technologies/grid-graph",
+  "version": "0.0.1",
+  "license": "Apache-2.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "require": "./src/index.ts"
+    }
+  },
+  "dependencies": {
+    "@1771technologies/grid-types": "workspace:^",
+    "@1771technologies/grid-core": "workspace:^",
+    "@1771technologies/grid-constants": "workspace:^"
+  }
+}

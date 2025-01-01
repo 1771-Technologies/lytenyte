@@ -1,0 +1,86 @@
+:root {
+  --lng1771-gradient-shadow: linear-gradient(90deg, var(--lng1771-gray-50), var(--lng1771-gray-50));
+
+  --lng1771-primary-05: rgba(18, 108, 255, 0.05);
+  --lng1771-primary-10: rgba(18, 108, 255, 0.1);
+  --lng1771-primary-30: rgba(18, 108, 255, 0.3);
+  --lng1771-primary-50: #126cff;
+  --lng1771-primary-70: #053f9e;
+  --lng1771-primary-90: #012259;
+
+  --lng1771-gray-00: #ffffff;
+  --lng1771-gray-02: #fafbfc;
+  --lng1771-gray-05: #f6f8fa;
+  --lng1771-gray-10: #f2f4f7;
+  --lng1771-gray-20: #e9edf1;
+  --lng1771-gray-30: #dadfe7;
+  --lng1771-gray-40: #c3c9d5;
+  --lng1771-gray-50: #949ba8;
+  --lng1771-gray-60: #787e8c;
+  --lng1771-gray-70: #5c6170;
+  --lng1771-gray-80: #2d2f39;
+  --lng1771-gray-90: #1e1e29;
+  --lng1771-gray-100: #15151e;
+
+  --lng1771-backgrounds-default: var(--lng1771-gray-10);
+  --lng1771-backgrounds-strong: var(--lng1771-gray-20);
+  --lng1771-backgrounds-light: var(--lng1771-gray-05);
+  --lng1771-backgrounds-button-light: var(--lng1771-gray-00);
+  --lng1771-backgrounds-context-menu: var(--lng1771-gray-00);
+  --lng1771-backgrounds-floating-panel: var(--lng1771-gray-00);
+  --lng1771-backgrounds-form-field: var(--lng1771-gray-00);
+  --lng1771-backgrounds-page: #f4f6f5;
+  --lng1771-backgrounds-row-alternate: var(--lng1771-gray-02);
+  --lng1771-backgrounds-row-hover: var(--lng1771-gray-10);
+  --lng1771-backgrounds-ui-panel: var(--lng1771-gray-00);
+  --lng1771-backgrounds-row-selected: #d6e4fe;
+
+  --lng1771-borders-row: var(--lng1771-gray-20);
+  --lng1771-borders-default: var(--lng1771-gray-20);
+  --lng1771-borders-strong: var(--lng1771-gray-30);
+  --lng1771-borders-button-light: var(--lng1771-gray-20);
+  --lng1771-borders-context-menu: var(--lng1771-borders-strong);
+  --lng1771-borders-field-and-button: var(--lng1771-gray-30);
+  --lng1771-borders-field-and-button-shadow: rgba(120, 126, 140, 0.15);
+  --lng1771-borders-icons-default: var(--lng1771-gray-70);
+  --lng1771-borders-ui-panel: var(--lng1771-gray-02);
+  --lng1771-borders-floating-panel: var(--lng1771-borders-ui-panel-border);
+  --lng1771-borders-separator: var(--lng1771-borders-default);
+
+  --lng1771-system-plain-pill-fill: var(--lng1771-backgrounds-default);
+  --lng1771-system-column-pill-fill: #ffffff;
+  --lng1771-system-column-pill-stroke: rgba(1, 34, 89, 0.14);
+  --lng1771-system-pivot-pill-fill: #ece6f8;
+  --lng1771-system-pivot-pill-stroke: #c6b5eb;
+  --lng1771-system-group-pill-fill: #e6f8f2;
+  --lng1771-system-group-pill-stroke: #a8d4c4;
+  --lng1771-system-pill-icon-color: var(--lng1771-gray-50);
+
+  --lng1771-system-green-10: #e6f8f2;
+  --lng1771-system-green-30: #c1eedd;
+  --lng1771-system-green-50: #30c58f;
+  --lng1771-system-green-70: #169e6e;
+  --lng1771-system-green-90: #0a7951;
+  --lng1771-system-info-10: var(--lng1771-gray-10);
+  --lng1771-system-info-30: var(--lng1771-gray-30);
+  --lng1771-system-info-50: var(--lng1771-gray-60);
+  --lng1771-system-info-70: var(--lng1771-gray-70);
+  --lng1771-system-info-90: var(--lng1771-gray-80);
+  --lng1771-system-red-10: #fbeff1;
+  --lng1771-system-red-30: #f7d4d8;
+  --lng1771-system-red-50: #d9263d;
+  --lng1771-system-red-70: #c3182e;
+  --lng1771-system-red-90: #ac1125;
+  --lng1771-system-yellow-10: #fdf9e8;
+  --lng1771-system-yellow-30: #f8ebca;
+  --lng1771-system-yellow-50: #e8bb4f;
+  --lng1771-system-yellow-70: #d6aa00;
+  --lng1771-system-yellow-90: #aa7c0f;
+
+  --lng1771-text-hyperlink: var(--lng1771-primary-50);
+  --lng1771-text-primary-button: #ffffff;
+  --lng1771-text-dark: var(--lng1771-gray-90);
+  --lng1771-text-light: var(--lng1771-gray-70);
+  --lng1771-text-medium: var(--lng1771-gray-80);
+  --lng1771-text-x-light: var(--lng1771-gray-60);
+}

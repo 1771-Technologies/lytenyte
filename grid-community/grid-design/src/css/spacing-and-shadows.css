@@ -1,0 +1,65 @@
+:root {
+  --lng1771-transition-fn: cubic-bezier(0.4, 0, 0.2, 1);
+  --lng1771-transition-slow: 200ms;
+  --lng1771-transition-normal: 150ms;
+  --lng1771-transition-fast: 100ms;
+  --lng1771-transition-vfast: 50ms;
+
+  --lng1771-shadow-100: 0px 1px 2.5px 0px rgba(30, 30, 41, 0.13),
+    0px 0px 0px 1px rgba(30, 30, 41, 0.02);
+  --lng1771-shadow-200: 0px 1px 1px 0px rgba(30, 30, 41, 0.06),
+    0px 1px 0px 1px rgba(51, 51, 51, 0.05), 0px 2px 3px 0.625px rgba(30, 30, 41, 0.1);
+  --lng1771-shadow-300: 0px 11px 10px -6px rgba(30, 30, 41, 0.06),
+    0px 1px 7px 0px rgba(30, 30, 41, 0.12);
+  --lng1771-shadow-400: 0px 14px 18px -6px rgba(30, 30, 41, 0.07),
+    0px 3px 13px 0px rgba(30, 30, 41, 0.1);
+  --lng1771-shadow-500: 0px 3px 20px 0px rgba(30, 30, 41, 0.1),
+    0px 19px 24.75px -9px rgba(30, 30, 41, 0.11);
+  --lng1771-shadow-600: 0px 6px 36px 0px rgba(30, 30, 41, 0.12),
+    0px 37px 35.75px -20px rgba(30, 30, 41, 0.07);
+  --lng1771-shadow-700: 0px 16px 22px -10px rgba(30, 30, 41, 0.06),
+    0px 22px 64px 0px rgba(30, 30, 41, 0.16);
+
+  --lng1771-shadow-100-dark: 0px 1px 2.5px 0px rgba(0, 0, 0, 0.53);
+  --lng1771-shadow-200-dark: 0px 1px 1px 0px rgba(0, 0, 0, 0.3),
+    0px 2px 3px 0.625px rgba(0, 0, 0, 0.27);
+  --lng1771-shadow-300-dark: 0px 11px 10px -6px rgba(0, 0, 0, 0.2),
+    0px 1px 7px 0px rgba(0, 0, 0, 0.6);
+  --lng1771-shadow-400-dark: 0px 14px 18px -6px rgba(0, 0, 0, 0.25),
+    0px 3px 13px 0px rgba(0, 0, 0, 0.35);
+  --lng1771-shadow-500-dark: 0px 3px 20px 0px rgba(0, 0, 0, 0.28),
+    0px 19px 24.75px -9px rgba(0, 0, 0, 0.35);
+  --lng1771-shadow-600-dark: 0px 6px 36px 0px rgba(0, 0, 0, 0.28),
+    0px 37px 35.75px -20px rgba(0, 0, 0, 0.35);
+  --lng1771-shadow-700-dark: 0px 16px 22px -10px rgba(0, 0, 0, 0.28),
+    0px 22px 64px 0px rgba(0, 0, 0, 0.35);
+
+  --lng1771-space-02: 2px;
+  --lng1771-space-05: 4px;
+  --lng1771-space-10: 6px;
+  --lng1771-space-20: 8px;
+  --lng1771-space-30: 12px;
+  --lng1771-space-40: 16px;
+  --lng1771-space-50: 20px;
+  --lng1771-space-60: 24px;
+  --lng1771-space-65: 28px;
+  --lng1771-space-70: 32px;
+  --lng1771-space-80: 48px;
+  --lng1771-space-90: 64px;
+  --lng1771-space-100: 128px;
+
+  --lng1771-box-radius-regular: 6px;
+  --lng1771-box-radius-medium: 8px;
+  --lng1771-box-radius-large: 12px;
+  --lng1771-field-radius-large: 10px;
+  --lng1771-field-radius-medium: 8px;
+  --lng1771-field-radius-small: 6px;
+
+  --lng1771-field-padding-small: 4px;
+  --lng1771-field-padding-medium: 6px;
+  --lng1771-field-padding-large: 8px;
+  --lng1771-field-padding-xlarge: 12px;
+  --lng1771-thead-vertical-padding: 4px;
+  --lng1771-cell-vertical-padding: 8px;
+  --lng1771-cell-horizontal-padding: 10px;
+}

@@ -1,0 +1,132 @@
+import { signal } from "@1771technologies/cascada";
+import {
+  COLUMN_GROUP_HEADER_HEIGHT,
+  COLUMN_GROUP_ID_DELIMITER,
+  COLUMN_HEADER_HEIGHT,
+  COLUMN_SCAN_DISTANCE,
+  PAGINATE_PAGE_SIZE,
+  ROW_DETAIL_HEIGHT,
+  ROW_HEIGHT,
+  ROW_UPDATE_STACK_SIZE,
+} from "@1771technologies/grid-constants";
+import {
+  columnsComputed,
+  filterModelComputed,
+  rowGroupModelComputed,
+  sortModelComputed,
+} from "@1771technologies/grid-shared-state";
+import type {
+  ApiCommunity,
+  InitialStateCommunity,
+  PropsCommunity,
+  StateCommunity,
+} from "@1771technologies/grid-types";
+import type { RowDataSourceClient } from "@1771technologies/grid-types/community";
+
+const rowDataSource: RowDataSourceClient<any> = {
+  kind: "client",
+  data: [],
+};
+
+export function initialize<D, E>(
+  props: PropsCommunity<D, E>,
+  state: StateCommunity<D, E>,
+  api: ApiCommunity<D, E>,
+) {
+  Object.assign(state, {
+    aggFuncs: signal(props.aggFuncs ?? {}),
+    autosizeDoubleClickHeader: signal(props.autosizeDoubleClickHeader ?? false),
+
+    cellEditFullRow: signal(props.cellEditFullRow ?? false),
+    cellEditPointerActivator: signal(props.cellEditPointerActivator ?? "none"),
+    cellEditProviders: signal(props.cellEditProviders ?? {}),
+
+    cellRenderers: signal(props.cellRenderers ?? {}),
+
+    columns: columnsComputed(props.columns ?? [], api),
+    columnBase: signal(props.columnBase ?? {}),
+    columnGroupDefaultExpansion: signal(props.columnGroupDefaultExpansion ?? (() => false)),
+    columnGroupExpansionState: signal(props.columnGroupExpansionState ?? {}),
+    columnGroupHeaderHeight: signal(props.columnGroupHeaderHeight ?? COLUMN_GROUP_HEADER_HEIGHT),
+    columnGroupIdDelimiter: signal(props.columnGroupIdDelimiter ?? COLUMN_GROUP_ID_DELIMITER),
+    columnGroupStickyHeaders: signal(props.columnGroupStickyHeaders ?? false),
+    columnHeaderHeight: signal(props.columnGroupHeaderHeight ?? COLUMN_HEADER_HEIGHT),
+    columnHeaderRenderers: signal(props.columnHeaderRenderers ?? {}),
+    columnSpanScanDistance: signal(props.columnSpanScanDistance ?? COLUMN_SCAN_DISTANCE),
+
+    filterFunctions: signal(props.filterFunctions ?? {}),
+    filterModel: filterModelComputed(props.filterModel ?? [], api) as any,
+
+    floatingCellRenderers: signal(props.floatingCellRenderers ?? {}),
+    floatingRowEnabled: signal(props.floatingRowEnabled ?? false),
+    floatingRowHeight: signal(props.floatingRowHeight ?? COLUMN_HEADER_HEIGHT),
+
+    gridId: signal(props.gridId ?? ""),
+
+    keyBindings: signal(props.keyBindings ?? {}),
+
+    overlays: signal(props.overlays ?? {}),
+    overlayToShow: signal(props.overlayToShow ?? null),
+
+    paginate: signal(props.paginate ?? false),
+    paginatePageSize: signal(props.paginatePageSize ?? PAGINATE_PAGE_SIZE),
+    paginateChildRows: signal(props.paginateChildRows ?? false),
+    paginateCurrentPage: signal(props.paginateCurrentPage ?? 0),
+
+    rowDataSource: signal(props.rowDataSource ?? rowDataSource),
+
+    rowDetailAutoHeightEstimate: signal(props.rowDetailAutoHeightEstimate ?? ROW_DETAIL_HEIGHT),
+    rowDetailPredicate: signal(props.rowDetailPredicate ?? false),
+    rowDetailExpansions: signal(props.rowDetailExpansions ?? new Set()),
+    rowDetailHeight: signal(props.rowDetailHeight ?? ROW_DETAIL_HEIGHT),
+    rowDetailMarker: signal(props.rowDetailMarker ?? true),
+    rowDetailRenderer: signal(props.rowDetailRenderer ?? null),
+
+    rowDragActivator: signal(props.rowDragActivator ?? "handle"),
+    rowDragEnabled: signal(props.rowDragEnabled ?? false),
+    rowDragExternalGrids: signal(props.rowDragExternalGrids ?? []),
+    rowDragMultiRow: signal(props.rowDragMultiRow ?? false),
+    rowDragPredicate: signal(props.rowDragPredicate ?? null),
+
+    rowFullWidthPredicate: signal(props.rowFullWidthPredicate ?? null),
+    rowFullWidthRenderer: signal(props.rowFullWidthRenderer ?? null),
+
+    rowGroupCloseChildrenAsWell: signal(props.rowGroupCloseChildrenAsWell ?? false),
+    rowGroupColumnTemplate: signal(props.rowGroupColumnTemplate ?? null),
+    rowGroupDefaultExpansion: signal(props.rowGroupDefaultExpansion ?? false),
+    rowGroupDisplayMode: signal(props.rowGroupDisplayMode ?? "single-column"),
+    rowGroupFullWidthRowRenderer: signal(props.rowGroupFullWidthRowRenderer ?? null),
+    rowGroupModel: rowGroupModelComputed(props.rowGroupModel ?? [], api),
+    rowGroupStickyParents: signal(props.rowGroupStickyParents ?? false),
+
+    rowHeight: signal(props.rowHeight ?? ROW_HEIGHT),
+    rowAutoHeightDefaultGuess: signal(props.rowAutoHeightDefaultGuess ?? ROW_HEIGHT),
+
+    rowTotalsPinned: signal(props.rowTotalsPinned ?? false),
+    rowTotalRow: signal(props.rowTotalRow ?? null),
+
+    rowSelectionPredicate: signal(props.rowSelectionPredicate ?? null),
+    rowSelectionAllowDeselect: signal(props.rowSelectionAllowDeselect ?? true),
+    rowSelectionCheckbox: signal(props.rowSelectionCheckbox ?? "normal"),
+    rowSelectionGroupRowsAllowed: signal(props.rowSelectionGroupRowsAllowed ?? false),
+    rowSelectionLeafRowsAllowed: signal(props.rowSelectionLeafRowsAllowed ?? false),
+    rowSelectionMode: signal(props.rowSelectionMode ?? "none"),
+    rowSelectionMultiSelectOnClick: signal(props.rowSelectionMultiSelectOnClick ?? false),
+    rowSelectionPointerActivator: signal(props.rowSelectionPointerActivator ?? "none"),
+    rowSelectionSelectChildren: signal(props.rowSelectionSelectChildren ?? true),
+    rowSelectionTotalsRowAllowed: signal(props.rowSelectionTotalsRowAllowed ?? false),
+
+    rowSpanScanDistance: signal(props.rowSpanScanDistance ?? COLUMN_SCAN_DISTANCE),
+
+    rowUpdateStackEnabled: signal(props.rowUpdateStackEnabled ?? false),
+    rowUpdateStackMaxSize: signal(props.rowUpdateStackMaxSize ?? ROW_UPDATE_STACK_SIZE),
+    rowUseAbsolutePositioning: signal(props.rowUseAbsolutePositioning ?? false),
+
+    rtl: signal(props.rtl ?? false),
+
+    sortComparatorFuncs: signal(props.sortComparatorFuncs ?? {}),
+    sortModel: sortModelComputed(props.sortModel ?? [], api),
+    sortMultiColumnEnabled: signal(props.sortMultiColumnEnabled ?? false),
+    sortPostFunc: signal(props.sortPostFunc ?? null),
+  } satisfies InitialStateCommunity<D, E>);
+}
