@@ -4,15 +4,16 @@ import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
 import type { RowNodeLeaf } from "@1771technologies/grid-types/community";
 
 export function filterNodesComputed<D, E>(
-  api$: Signal<ApiEnterprise<D, E>> | Signal<ApiCommunity<D, E>>,
+  api$: Signal<ApiEnterprise<D, E>>,
   nodes: Signal<RowNodeLeaf<D>[]>,
 ) {
   const filteredNodes = computed(() => {
     const api = api$.get();
     const sx = api.getState();
 
+    const mode = sx.columnPivotModeIsOn.get();
     const rowNodes = nodes.get();
-    const filterModel = sx.filterModel.get();
+    const filterModel = mode ? sx.internal.columnPivotFilterModel.get() : sx.filterModel.get();
 
     if (filterModel.length === 0) return rowNodes;
 
