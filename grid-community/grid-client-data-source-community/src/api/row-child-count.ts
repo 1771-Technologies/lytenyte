@@ -1,7 +1,8 @@
 import type { BlockGraph } from "@1771technologies/grid-graph";
-import type { ApiEnterprise, ApiCommunity } from "@1771technologies/grid-types";
-import { rowByIndex } from "./row-by-index";
+import type { ClientState } from "../create-client-data-source";
 
-export function rowChildCount<D>(r: number, graph: BlockGraph<D>) {
+export function rowChildCount<D, E>(state: ClientState<D, E>, r: number) {
+  const graph = state.graph.peek();
+
   return graph.rowChildCount(r);
 }

@@ -20,12 +20,15 @@ import { rowChildCount } from "./api/row-child-count";
 import { rowDepth } from "./api/row-depth";
 import { rowGroupToggle } from "./api/row-group-toggle";
 import { rowParentIndex } from "./api/row-parent-index";
+import { rowSetData } from "./api/row-set-data";
+import { rowSetDataMany } from "./api/row-set-data-many";
 
 export interface ClientState<D, E> {
-  original: Signal<RowDataSourceClient<D>>;
   api: Signal<ApiCommunity<D, E>>;
 
   graph: ReadonlySignal<BlockGraph<D>>;
+
+  cache: Signal<Record<string, any>>;
 
   rowTopNodes: Signal<RowNodeLeaf<D>[]>;
   rowCenterNodes: Signal<RowNodeLeaf<D>[]>;
@@ -37,11 +40,10 @@ export function createClientDataSource<D, E>(
 ): RowDataSourceBackingCommunity<D, E> {
   let watchers: (() => void)[] = [];
 
-  let cache: Record<string, any> = {};
-
   const { store: state, dispose } = cascada(() => {
     const api$ = signal<ApiCommunity<D, E>>(null as unknown as ApiCommunity<D, E>);
-    const original = signal(r);
+
+    const cache = signal<Record<string, any>>({});
 
     const initialTopNodes = dataToRowNodes(r.topData ?? [], "top", "top");
     const initialBottomNodes = dataToRowNodes(r.bottomData ?? [], "bottom", "bottom");
@@ -88,9 +90,9 @@ export function createClientDataSource<D, E>(
 
     return {
       api: api$,
-      original,
 
       graph,
+      cache,
 
       rowTopNodes,
       rowCenterNodes,
@@ -109,21 +111,21 @@ export function createClientDataSource<D, E>(
       dispose();
     },
 
-    rowByIndex: (r: number) => rowByIndex(state.api.peek(), r, state.graph.peek(), cache),
-    rowById: (id) => rowById(state.api.peek(), id, state.graph.peek(), cache),
-    rowGetMany: (start, end) => rowGetMany(state.api.peek(), start, end, state.graph.peek(), cache),
+    rowByIndex: (r: number) => rowByIndex(state, r),
+    rowById: (id) => rowById(state, id),
+    rowGetMany: (start, end) => rowGetMany(state, start, end),
 
-    rowChildCount: (r) => rowChildCount(r, state.graph.peek()),
-    rowDepth: (r) => rowDepth(r, state.graph.peek()),
-    rowParentIndex: (r) => rowParentIndex(r, state.graph.peek()),
+    rowChildCount: (r) => rowChildCount(state, r),
+    rowDepth: (r) => rowDepth(state, r),
+    rowParentIndex: (r) => rowParentIndex(state, r),
 
-    rowGroupToggle: (id, s) => rowGroupToggle(state.api.peek(), id, state.graph.peek(), s),
+    rowGroupToggle: (id, s) => rowGroupToggle(state, id, s),
 
-    rowSetData: () => {},
-    rowSetDataMany: () => {},
-    rowReplaceBottomData: () => {},
-    rowReplaceData: () => {},
-    rowReplaceTopData: () => {},
+    rowSetData: (id, d) => rowSetData(state, id, d),
+    rowSetDataMany: (updates) => rowSetDataMany(state, updates),
+    rowReplaceBottomData: (d) => state.rowBottomNodes.set(dataToRowNodes(d, "bottom", "bottom")),
+    rowReplaceData: (d) => state.rowCenterNodes.set(dataToRowNodes(d, null, "center")),
+    rowReplaceTopData: (d) => state.rowTopNodes.set(dataToRowNodes(d, "top", "top")),
 
     rowSelectionSelectAll: () => {},
     rowSelectionAllRowsSelected: () => false,
@@ -134,9 +136,9 @@ export function createClientDataSource<D, E>(
     rowSelectionIsIndeterminate: () => false,
     rowSelectionIsSelected: () => false,
 
-    rowBottomCount: () => 0,
-    rowTopCount: () => 0,
-    rowCount: () => 0,
+    rowBottomCount: () => state.graph.peek().rowBotCount(),
+    rowTopCount: () => state.graph.peek().rowTopCount(),
+    rowCount: () => state.graph.peek().rowCount(),
 
     paginateGetCount: () => 0,
     paginateRowStartAndEndForPage: () => [0, 0],
