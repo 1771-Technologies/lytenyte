@@ -15,6 +15,7 @@ export interface ClientState<D, E> {
   rowBottomNodes: Signal<RowNodeLeaf<D>[]>;
 }
 
+const BLOCK_SIZE = 2000;
 export function createClientDataSource<D, E>(
   r: RowDataSourceClient<D>,
 ): RowDataSourceBackingCommunity<D, E> {
@@ -70,37 +71,26 @@ export function createClientDataSource<D, E>(
       return sortedNodes;
     });
 
-    const graph = computed(() => {
-      const BLOCK_SIZE = 2000;
-      const graph = new BlockGraph(2000);
-
+    const blockPayload = computed(() => {
       const api = api$.get();
       const sx = api.getState();
 
       const rowModel = sx.rowGroupModel.get();
 
       const nodes = sortedNodes.get();
-
       if (rowModel.length === 0) {
-        const blocks = Math.ceil(nodes.length / BLOCK_SIZE);
-
+        const blockCount = Math.ceil(nodes.length / BLOCK_SIZE);
         const payloads: BlockPayload<D>[] = [];
-        for (let i = 0; i < blocks; i++) {
+        for (let i = 0; i < blockCount; i++) {
           payloads.push({
-            data: nodes.slice(i * BLOCK_SIZE, i * BLOCK_SIZE + BLOCK_SIZE),
             index: i,
             path: "",
+            data: nodes.slice(i * BLOCK_SIZE, i * BLOCK_SIZE + BLOCK_SIZE),
           });
         }
 
-        graph.blockSetSize("", nodes.length);
-        graph.blockAdd(payloads);
-        graph.blockFlatten();
-
-        return;
+        return { sizes: [{ path: "", size: nodes.length }], payloads };
       }
-
-      // nodes are groups.
     });
 
     return {
