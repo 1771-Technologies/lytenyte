@@ -32,7 +32,7 @@ import type { FlattenRowContext } from "./types.js";
  * - Respects block-based organization for optimal virtual scrolling
  */
 export function flattenCenterRows<D>(
-  { rowIdToRow, rowIndexToRow, ranges }: FlattenRowContext<D>,
+  { rowIdToRow, rowIndexToRow, rowIdToRowIndex, ranges }: FlattenRowContext<D>,
   blockSize: number,
   separator: string,
   lookup: BlockPaths<D>,
@@ -62,6 +62,7 @@ export function flattenCenterRows<D>(
 
         // Add row to both lookup maps
         rowIndexToRow.set(rowIndex, row);
+        rowIdToRowIndex.set(row.id, rowIndex);
         rowIdToRow.set(row.id, row);
 
         // If this row is an expanded group, recursively process its children

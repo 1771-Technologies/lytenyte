@@ -1,4 +1,8 @@
-import { ROW_DEFAULT_PATH_SEPARATOR, ROW_GROUP_KIND } from "@1771technologies/grid-constants";
+import {
+  ROW_DEFAULT_PATH_SEPARATOR,
+  ROW_GROUP_KIND,
+  ROW_LEAF_KIND,
+} from "@1771technologies/grid-constants";
 import { blockStoreDelete } from "./block-store/block-store-delete.js";
 import type { BlockPaths, BlockPayload } from "./types.js";
 import { blockStoreCreate } from "./block-store/block-store-create.js";
@@ -20,6 +24,7 @@ import { flattenCenterRows } from "./block-flatten/flatten-center-rows.js";
 import { flattenBottomRows } from "./block-flatten/flatten-bottom-rows.js";
 import { EMPTY_TOTAL } from "./constants.js";
 import { adjustRootRange } from "./block-flatten/adjust-root-range.js";
+import { blockStoreAllPaths } from "./block-store/block-store-all-paths.js";
 
 /**
  * Manages a hierarchical graph of row blocks with support for pinned rows, totals, and range-based operations.
@@ -169,24 +174,125 @@ export class BlockGraph<D> {
   readonly rowBotCount = () => this.#rowBottom.length;
 
   /**
-   * Gets the direct child count for a given path
-   * @returns Count of the number of children for the path
+   * Gets the number of immediate children for a given row index
+   *
+   * @param r - The row index to check for children
+   * @returns The number of direct children for the given row. Returns 0 if the row
+   *          is not a group row or doesn't exist
+   *
+   * @remarks
+   * This method only counts direct children, not descendants further down the hierarchy.
+   * For example, if row A has child B, and B has child C, calling this method on row A
+   * will return 1 (just B), not 2 (B and C).
    */
   readonly rowChildCount = (r: number) => {
-    const row = this.rowByIndex(r);
-    if (!row || row.kind !== ROW_GROUP_KIND) return 0;
-
-    const ranges = this.rowRangesForIndex(r);
-
-    const path =
-      ranges
-        .toReversed()
-        .map((r) => r.path)
-        .join(this.#blockPathSeparator) + row.pathKey;
+    const path = this.rowGroupPath(r);
+    if (path == null) return 0;
 
     const block = this.#blockPaths.get(path)!;
 
     return block.size;
+  };
+
+  /**
+   * Retrieves all leaf node descendants of a given row index
+   *
+   * @param r - The row index to get leaf children for
+   * @returns An array of leaf node descendants. Returns an empty array if the row
+   *          is not a group row or doesn't exist
+   *
+   * @remarks
+   * This method traverses the entire hierarchy below the given row, collecting only
+   * the leaf nodes (rows that cannot have children). It's commonly used for
+   * aggregation calculations where you need all the actual data rows within a group,
+   * ignoring intermediate group rows.
+   *
+   * A leaf node is defined as a row where `kind === ROW_LEAF_KIND`.
+   */
+  readonly rowAllLeafChildren = (r: number) => {
+    const path = this.rowGroupPath(r);
+    if (path == null) return [];
+
+    const allPaths = blockStoreAllPaths(path, this.#blockPaths, this.#blockPathSeparator);
+
+    const leafNodes: RowNodeLeaf<D>[] = [];
+    for (const path of allPaths) {
+      const blocks = this.#blockPaths.get(path)!;
+
+      for (const block of blocks.map.values()) {
+        for (const row of block.data) {
+          if (row.kind === ROW_LEAF_KIND) leafNodes.push(row);
+        }
+      }
+    }
+
+    return leafNodes;
+  };
+
+  /**
+   * Retrieves all descendants of a given row index, including both group and leaf nodes
+   *
+   * @param r - The row index to get all children for
+   * @returns An array of all descendant nodes (both groups and leaves), or undefined
+   *          if the row is not a group row or doesn't exist
+   *
+   * @remarks
+   * Unlike rowAllLeafChildren, this method returns all descendants regardless of their
+   * kind. This includes both intermediate group rows and leaf rows. It's useful when
+   * you need to process or modify the entire subtree under a group row.
+   *
+   * The returned array preserves the hierarchical structure through the order of elements,
+   * with parent rows appearing before their children.
+   */
+  readonly rowAllChildren = (r: number) => {
+    const path = this.rowGroupPath(r);
+
+    if (path == null) return [];
+
+    const allPaths = blockStoreAllPaths(path, this.#blockPaths, this.#blockPathSeparator);
+    const nodes: RowNode<D>[] = [];
+    for (const path of allPaths) {
+      const blocks = this.#blockPaths.get(path)!;
+
+      for (const block of blocks.map.values()) {
+        nodes.push(...block.data);
+      }
+    }
+
+    return nodes;
+  };
+
+  /**
+   * Constructs the full path identifier for a group row
+   *
+   * @param r - The row index to get the path for
+   * @returns A string representing the full path to the group row, or null if the
+   *          row is not a group row or doesn't exist
+   *
+   * @remarks
+   * The path is constructed by combining:
+   * 1. The paths of all parent ranges in reverse order
+   * 2. The row's own pathKey
+   *
+   * These components are joined using the blockPathSeparator. The resulting path
+   * uniquely identifies the location of the group row in the hierarchy and can be
+   * used to access its associated blocks of data.
+   *
+   * Example path format:
+   * `parentRange1/parentRange2/rowPathKey`
+   */
+  readonly rowGroupPath = (r: number) => {
+    const row = this.rowByIndex(r);
+    if (!row || row.kind !== ROW_GROUP_KIND) return null;
+
+    const ranges = this.rowRangesForIndex(r);
+
+    return (
+      ranges
+        .toReversed()
+        .map((r) => r.path)
+        .join(this.#blockPathSeparator) + row.pathKey
+    );
   };
 
   /**
@@ -311,8 +417,10 @@ export class BlockGraph<D> {
   readonly blockFlatten = () => {
     const rowIndexToRow = new Map<number, RowNode<D>>();
     const rowIdToRow = new Map<string, RowNode<D>>();
+    const rowIdToRowIndex = new Map<string, number>();
+
     const ranges: FlattenedRange[] = [];
-    const ctx = { rowIndexToRow, rowIdToRow, ranges };
+    const ctx = { rowIndexToRow, rowIdToRow, rowIdToRowIndex, ranges };
 
     const topOffset = flattenTopRows(
       ctx,

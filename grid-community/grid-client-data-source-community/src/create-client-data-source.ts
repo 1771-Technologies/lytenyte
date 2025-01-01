@@ -28,6 +28,7 @@ export interface ClientState<D, E> {
   api: Signal<ApiCommunity<D, E>>;
 
   graph: ReadonlySignal<BlockGraph<D>>;
+  selectedIds: Signal<Set<string>>;
 
   cache: Signal<Record<string, any>>;
 
@@ -45,6 +46,7 @@ export function createClientDataSource<D, E>(
     const api$ = signal<ApiCommunity<D, E>>(null as unknown as ApiCommunity<D, E>);
 
     const cache = signal<Record<string, any>>({});
+    const selectedIds = signal<Set<string>>(new Set());
 
     const initialTopNodes = dataToRowNodes(r.topData ?? [], "top", "top");
     const initialBottomNodes = dataToRowNodes(r.bottomData ?? [], "bottom", "bottom");
@@ -94,6 +96,7 @@ export function createClientDataSource<D, E>(
 
       graph,
       cache,
+      selectedIds,
 
       rowTopNodes,
       rowCenterNodes,
@@ -135,7 +138,7 @@ export function createClientDataSource<D, E>(
     rowSelectionSelect: () => {},
     rowSelectionGetSelected: () => [],
     rowSelectionIsIndeterminate: () => false,
-    rowSelectionIsSelected: () => false,
+    rowSelectionIsSelected: (id) => state.selectedIds.peek().has(id),
 
     rowBottomCount: () => state.graph.peek().rowBotCount(),
     rowTopCount: () => state.graph.peek().rowTopCount(),

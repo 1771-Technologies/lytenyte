@@ -31,7 +31,7 @@ import { ROW_TOTAL_ID } from "@1771technologies/grid-constants";
  * - The positioning of the totals row affects the final indices of all bottom-pinned rows
  */
 export function flattenBottomRows<D>(
-  { rowIdToRow, rowIndexToRow }: FlattenRowContext<D>,
+  { rowIdToRow, rowIndexToRow, rowIdToRowIndex }: FlattenRowContext<D>,
   rowBottom: RowNodeLeaf<D>[],
   rowTotalPosition: RowPin,
   rowTotalIsPinned: boolean,
@@ -50,6 +50,7 @@ export function flattenBottomRows<D>(
   if (isTotalBottom && !rowTotalIsPinned) {
     // Place the totals row at the start of the bottom section
     rowIndexToRow.set(centerOffset, rowTotal);
+    rowIdToRowIndex.set(ROW_TOTAL_ID, centerOffset);
     rowIdToRow.set(ROW_TOTAL_ID, rowTotal);
   }
 
@@ -60,6 +61,7 @@ export function flattenBottomRows<D>(
     const row = rowBottom[i];
     const rowIndex = i + botIndexOffset; // Calculate final position including all offsets
     rowIndexToRow.set(rowIndex, row);
+    rowIdToRowIndex.set(row.id, rowIndex);
     rowIdToRow.set(row.id, row);
   }
 
@@ -68,6 +70,7 @@ export function flattenBottomRows<D>(
   if (isTotalBottom && rowTotalIsPinned) {
     // Place the totals row after all bottom-pinned rows
     rowIndexToRow.set(centerOffset + rowBottom.length, rowTotal);
+    rowIdToRowIndex.set(ROW_TOTAL_ID, centerOffset + rowBottom.length);
     rowIdToRow.set(ROW_TOTAL_ID, rowTotal);
   }
 

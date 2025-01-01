@@ -8,6 +8,7 @@ test("should handle top rows", () => {
   const ctx: FlattenRowContext<any> = {
     ranges: [],
     rowIdToRow: new Map(),
+    rowIdToRowIndex: new Map(),
     rowIndexToRow: new Map(),
   };
 
@@ -32,6 +33,7 @@ test("should handle empty top rows", () => {
   const ctx: FlattenRowContext<any> = {
     ranges: [],
     rowIdToRow: new Map(),
+    rowIdToRowIndex: new Map(),
     rowIndexToRow: new Map(),
   };
 
@@ -54,6 +56,7 @@ test("should handle top rows with totals pinned top", () => {
   const ctx: FlattenRowContext<any> = {
     ranges: [],
     rowIdToRow: new Map(),
+    rowIdToRowIndex: new Map(),
     rowIndexToRow: new Map(),
   };
 
@@ -80,6 +83,7 @@ test("should handle top rows with totals positioned top", () => {
   const ctx: FlattenRowContext<any> = {
     ranges: [],
     rowIdToRow: new Map(),
+    rowIdToRowIndex: new Map(),
     rowIndexToRow: new Map(),
   };
 
@@ -106,6 +110,7 @@ test("should handle top rows with totals positioned bottom", () => {
   const ctx: FlattenRowContext<any> = {
     ranges: [],
     rowIdToRow: new Map(),
+    rowIdToRowIndex: new Map(),
     rowIndexToRow: new Map(),
   };
 
@@ -130,6 +135,7 @@ test("should handle top rows with totals pinned bottom", () => {
   const ctx: FlattenRowContext<any> = {
     ranges: [],
     rowIdToRow: new Map(),
+    rowIdToRowIndex: new Map(),
     rowIndexToRow: new Map(),
   };
 
@@ -154,6 +160,7 @@ test("should handle empty top rows with totals pinned top", () => {
   const ctx: FlattenRowContext<any> = {
     ranges: [],
     rowIdToRow: new Map(),
+    rowIdToRowIndex: new Map(),
     rowIndexToRow: new Map(),
   };
 
@@ -176,6 +183,7 @@ test("should handle empty top rows with totals positioned top", () => {
   const ctx: FlattenRowContext<any> = {
     ranges: [],
     rowIdToRow: new Map(),
+    rowIdToRowIndex: new Map(),
     rowIndexToRow: new Map(),
   };
 

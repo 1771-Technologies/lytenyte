@@ -207,6 +207,11 @@ test("should be able to delete a block outright", () => {
     "
   `);
 
+  expect(graph.rowAllLeafChildren(1).length).toEqual(4);
+  expect(graph.rowAllLeafChildren(-1).length).toEqual(0);
+  expect(graph.rowAllChildren(1)?.length).toEqual(4);
+  expect(graph.rowAllChildren(-1)?.length).toEqual(0);
+
   graph.blockDelete("alpha", []);
   graph.blockFlatten();
   expect(printGraph(graph)).toMatchInlineSnapshot(`

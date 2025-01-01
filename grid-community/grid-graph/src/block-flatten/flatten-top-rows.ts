@@ -30,7 +30,7 @@ import type { FlattenRowContext } from "./types.js";
  * - When the totals row is present at the top, it adds +1 to the offset regardless of pinning
  */
 export function flattenTopRows<D>(
-  { rowIndexToRow, rowIdToRow }: FlattenRowContext<D>,
+  { rowIndexToRow, rowIdToRow, rowIdToRowIndex }: FlattenRowContext<D>,
   rowsTop: RowNodeLeaf<D>[],
   rowTotalPosition: RowPin,
   rowTotalIsPinned: boolean,
@@ -48,6 +48,7 @@ export function flattenTopRows<D>(
   if (rowTotalPosition === "top" && rowTotalIsPinned) {
     topStart = 1;
     rowIndexToRow.set(0, rowTotal);
+    rowIdToRowIndex.set(ROW_TOTAL_ID, 0);
     rowIdToRow.set(ROW_TOTAL_ID, rowTotal);
   }
 
@@ -57,6 +58,7 @@ export function flattenTopRows<D>(
   for (let i = 0; i < rowsTop.length; i++) {
     const row = rowsTop[i];
     rowIndexToRow.set(i + topStart, row);
+    rowIdToRowIndex.set(row.id, i + topStart);
     rowIdToRow.set(row.id, row);
   }
 
@@ -64,6 +66,7 @@ export function flattenTopRows<D>(
   // In this case, it should appear after all pinned rows but still in the top section.
   if (rowTotalPosition === "top" && !rowTotalIsPinned) {
     rowIndexToRow.set(rowsTop.length, rowTotal);
+    rowIdToRowIndex.set(ROW_TOTAL_ID, rowsTop.length);
     rowIdToRow.set(ROW_TOTAL_ID, rowTotal);
   }
 

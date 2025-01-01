@@ -18,6 +18,7 @@ test("should handle flattening center rows", () => {
   const ctx: FlattenRowContext<any> = {
     ranges: [],
     rowIdToRow: new Map(),
+    rowIdToRowIndex: new Map(),
     rowIndexToRow: new Map(),
   };
 
@@ -84,6 +85,7 @@ test("should handle flattening center rows that are offset", () => {
   const ctx: FlattenRowContext<any> = {
     ranges: [],
     rowIdToRow: new Map(),
+    rowIdToRowIndex: new Map(),
     rowIndexToRow: new Map(),
   };
 
@@ -225,6 +227,7 @@ test("should handle flattening group rows that are expanded and skipping those t
   const ctx: FlattenRowContext<any> = {
     ranges: [],
     rowIdToRow: new Map(),
+    rowIdToRowIndex: new Map(),
     rowIndexToRow: new Map(),
   };
 
@@ -298,6 +301,7 @@ test("should handle an empty lookup", () => {
   const ctx: FlattenRowContext<any> = {
     ranges: [],
     rowIdToRow: new Map(),
+    rowIdToRowIndex: new Map(),
     rowIndexToRow: new Map(),
   };
 
@@ -321,6 +325,7 @@ test("should handle missing blocks", () => {
   const ctx: FlattenRowContext<any> = {
     ranges: [],
     rowIdToRow: new Map(),
+    rowIdToRowIndex: new Map(),
     rowIndexToRow: new Map(),
   };
 
@@ -380,6 +385,7 @@ test("should handle deeply nested groups with mixed expansion states", () => {
   const ctx: FlattenRowContext<any> = {
     ranges: [],
     rowIdToRow: new Map(),
+    rowIdToRowIndex: new Map(),
     rowIndexToRow: new Map(),
   };
 
@@ -416,6 +422,7 @@ test("should handle empty blocks within valid block store", () => {
   const ctx: FlattenRowContext<any> = {
     ranges: [],
     rowIdToRow: new Map(),
+    rowIdToRowIndex: new Map(),
     rowIndexToRow: new Map(),
   };
 
@@ -451,6 +458,7 @@ test("should handle invalid paths in lookup", () => {
   const ctx: FlattenRowContext<any> = {
     ranges: [],
     rowIdToRow: new Map(),
+    rowIdToRowIndex: new Map(),
     rowIndexToRow: new Map(),
   };
 
@@ -477,6 +485,7 @@ test("should handle large topOffset values", () => {
   const ctx: FlattenRowContext<any> = {
     ranges: [],
     rowIdToRow: new Map(),
+    rowIdToRowIndex: new Map(),
     rowIndexToRow: new Map(),
   };
 
