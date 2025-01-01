@@ -1,19 +1,10 @@
 import { evaluateClientFilter } from "@1771technologies/grid-client-filter";
-import type {
-  ApiCommunity,
-  RowDataSourceBackingCommunity,
-} from "@1771technologies/grid-types";
-import type {
-  RowDataSourceClient,
-  RowNodeLeaf,
-} from "@1771technologies/grid-types/community";
+import { BlockGraph, type BlockPayload } from "@1771technologies/grid-graph";
+import type { ApiCommunity, RowDataSourceBackingCommunity } from "@1771technologies/grid-types";
+import type { RowDataSourceClient, RowNodeLeaf } from "@1771technologies/grid-types/community";
 import { dataToRowNodes } from "./row-nodes";
-import {
-  cascada,
-  computed,
-  signal,
-  type Signal,
-} from "@1771technologies/cascada";
+import { cascada, computed, signal, type Signal } from "@1771technologies/cascada";
+import { getComparatorsForModel, makeCombinedComparator } from "@1771technologies/grid-client-sort";
 
 export interface ClientState<D, E> {
   original: Signal<RowDataSourceClient<D>>;
@@ -25,22 +16,16 @@ export interface ClientState<D, E> {
 }
 
 export function createClientDataSource<D, E>(
-  r: RowDataSourceClient<D>
+  r: RowDataSourceClient<D>,
 ): RowDataSourceBackingCommunity<D, E> {
   let watchers: (() => void)[] = [];
 
   const state = cascada(() => {
-    const api$ = signal<ApiCommunity<D, E>>(
-      null as unknown as ApiCommunity<D, E>
-    );
+    const api$ = signal<ApiCommunity<D, E>>(null as unknown as ApiCommunity<D, E>);
     const original = signal(r);
 
     const initialTopNodes = dataToRowNodes(r.topData ?? [], "top", "top");
-    const initialBottomNodes = dataToRowNodes(
-      r.bottomData ?? [],
-      "bottom",
-      "bottom"
-    );
+    const initialBottomNodes = dataToRowNodes(r.bottomData ?? [], "bottom", "bottom");
     const initialCenterNodes = dataToRowNodes(r.data, null, "center");
 
     const rowTopNodes = signal(initialTopNodes);
@@ -72,6 +57,50 @@ export function createClientDataSource<D, E>(
       const nodes = filteredNodes.get();
       const sortModel = sx.sortModel.get();
       if (sortModel.length === 0) return nodes;
+
+      const comparators = getComparatorsForModel(
+        api as any,
+        sortModel,
+        sx.internal.columnLookup.get() as any,
+      );
+      const combined = makeCombinedComparator(api as any, sortModel, comparators);
+
+      const sortedNodes = nodes.toSorted(combined);
+
+      return sortedNodes;
+    });
+
+    const graph = computed(() => {
+      const BLOCK_SIZE = 2000;
+      const graph = new BlockGraph(2000);
+
+      const api = api$.get();
+      const sx = api.getState();
+
+      const rowModel = sx.rowGroupModel.get();
+
+      const nodes = sortedNodes.get();
+
+      if (rowModel.length === 0) {
+        const blocks = Math.ceil(nodes.length / BLOCK_SIZE);
+
+        const payloads: BlockPayload<D>[] = [];
+        for (let i = 0; i < blocks; i++) {
+          payloads.push({
+            data: nodes.slice(i * BLOCK_SIZE, i * BLOCK_SIZE + BLOCK_SIZE),
+            index: i,
+            path: "",
+          });
+        }
+
+        graph.blockSetSize("", nodes.length);
+        graph.blockAdd(payloads);
+        graph.blockFlatten();
+
+        return;
+      }
+
+      // nodes are groups.
     });
 
     return {

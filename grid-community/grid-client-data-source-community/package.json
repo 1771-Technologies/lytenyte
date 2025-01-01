@@ -13,6 +13,7 @@
   "dependencies": {
     "@1771technologies/cascada": "workspace:^",
     "@1771technologies/grid-client-filter": "workspace:^",
+    "@1771technologies/grid-client-sort": "workspace:^",
     "@1771technologies/grid-graph": "workspace:^",
     "@1771technologies/grid-types": "workspace:^",
     "@1771technologies/grid-constants": "workspace:^",
