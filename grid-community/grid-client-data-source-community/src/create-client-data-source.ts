@@ -13,6 +13,11 @@ import {
 import { filterNodesComputed } from "./utils/filter-nodes-computed";
 import { sortedNodesComputed } from "./utils/sorted-nodes-computed";
 import { BLOCK_SIZE, flatBlockPayloadsComputed } from "./utils/flat-block-payloads-computed";
+import { rowByIndex } from "./api/row-by-index";
+import { rowById } from "./api/row-by-id";
+import { rowGetMany } from "./api/row-get-many";
+import { rowChildCount } from "./api/row-child-count";
+import { rowDepth } from "./api/row-depth";
 
 export interface ClientState<D, E> {
   original: Signal<RowDataSourceClient<D>>;
@@ -30,7 +35,9 @@ export function createClientDataSource<D, E>(
 ): RowDataSourceBackingCommunity<D, E> {
   let watchers: (() => void)[] = [];
 
-  const state = cascada(() => {
+  let cache: Record<string, any> = {};
+
+  const { store: state, dispose } = cascada(() => {
     const api$ = signal<ApiCommunity<D, E>>(null as unknown as ApiCommunity<D, E>);
     const original = signal(r);
 
@@ -91,33 +98,21 @@ export function createClientDataSource<D, E>(
 
   return {
     init: (a) => {
-      state.store.api.set(a);
+      state.api.set(a);
     },
     clean: () => {
       watchers.forEach((c) => c());
       watchers = [];
 
-      state.dispose();
+      dispose();
     },
 
-    rowByIndex: (r: number) => {
-      const graph = state.store.graph.peek();
-      const api = state.store.api.peek();
+    rowByIndex: (r: number) => rowByIndex(state.api.peek(), r, state.graph.peek(), cache),
+    rowById: (id) => rowById(state.api.peek(), id, state.graph.peek(), cache),
+    rowGetMany: (start, end) => rowGetMany(state.api.peek(), start, end, state.graph.peek(), cache),
 
-      const row = graph.rowByIndex(r);
-
-      if (!row) return row;
-
-      if (api.rowIsGroup(row)) {
-        // Compute aggregations here.
-        return row;
-      }
-    },
-    rowById: () => null,
-    rowGetMany: () => [],
-
-    rowChildCount: () => 0,
-    rowDepth: () => 0,
+    rowChildCount: (r) => rowChildCount(r, state.graph.peek()),
+    rowDepth: (r) => rowDepth(r, state.graph.peek()),
 
     rowGroupToggle: () => {},
     rowParentIndex: () => null,

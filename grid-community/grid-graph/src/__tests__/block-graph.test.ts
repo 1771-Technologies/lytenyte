@@ -362,6 +362,60 @@ test("should be able to update sizes", () => {
   expect(graph.rowCount()).toEqual(2000);
 });
 
+test("should be able to return the correct child counts", () => {
+  const graph = new BlockGraph(5, "/");
+  graph.blockSetSize("", 20);
+  graph.blockSetSize("alpha", 15);
+  graph.blockSetSize(`alpha/a`, 10);
+  graph.blockAdd([
+    {
+      data: [
+        makeGroupNode("alpha", "alpha", true),
+        makeGroupNode("beta", "beta", false),
+        makeGroupNode("sigma", "sigma", false),
+      ],
+      index: 0,
+      path: "",
+    },
+    {
+      data: [makeGroupNode(`alpha/a`, "a", true), makeGroupNode(`alpha/a`, "c", false)],
+      index: 0,
+      path: "alpha",
+    },
+    {
+      data: [
+        makeLeafNode("alpha/a/1"),
+        makeLeafNode("alpha/a/1"),
+        makeLeafNode("alpha/a/1"),
+        makeLeafNode("alpha/a/1"),
+      ],
+      index: 0,
+      path: `alpha/a`,
+    },
+    {
+      data: [
+        makeLeafNode("alpha/a/1"),
+        makeLeafNode("alpha/a/1"),
+        makeLeafNode("alpha/a/1"),
+        makeLeafNode("alpha/a/1"),
+      ],
+      index: 1,
+      path: `alpha/a`,
+    },
+  ]);
+
+  graph.blockFlatten();
+
+  let childCount = graph.rowChildCount(1);
+  expect(childCount).toEqual(10);
+  childCount = graph.rowChildCount(2);
+  expect(childCount).toEqual(0);
+  childCount = graph.rowChildCount(0);
+  expect(childCount).toEqual(15);
+
+  graph.blockReset();
+});
+
 test("range indices should return the correct result", () => {
   const graph = new BlockGraph(5, "/");
 

@@ -1,4 +1,4 @@
-import { ROW_DEFAULT_PATH_SEPARATOR } from "@1771technologies/grid-constants";
+import { ROW_DEFAULT_PATH_SEPARATOR, ROW_GROUP_KIND } from "@1771technologies/grid-constants";
 import { blockStoreDelete } from "./block-store/block-store-delete.js";
 import type { BlockPaths, BlockPayload } from "./types.js";
 import { blockStoreCreate } from "./block-store/block-store-create.js";
@@ -167,6 +167,27 @@ export class BlockGraph<D> {
    * @returns Count of pinned bottom rows
    */
   readonly rowBotCount = () => this.#rowBottom.length;
+
+  /**
+   * Gets the direct child count for a given path
+   * @returns Count of the number of children for the path
+   */
+  readonly rowChildCount = (r: number) => {
+    const row = this.rowByIndex(r);
+    if (!row || row.kind !== ROW_GROUP_KIND) return 0;
+
+    const ranges = this.rowRangesForIndex(r);
+
+    const path =
+      ranges
+        .toReversed()
+        .map((r) => r.path)
+        .join(this.#blockPathSeparator) + row.pathKey;
+
+    const block = this.#blockPaths.get(path)!;
+
+    return block.size;
+  };
 
   /**
    * Finds all ranges that contain the specified row index.
