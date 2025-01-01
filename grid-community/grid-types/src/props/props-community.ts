@@ -97,7 +97,6 @@ export interface PropsCommunity<A, D, C, E, Base, Group> {
   readonly rowGroupFullWidthRowRenderer?: null | RowGroupFullWidthRenderer<A, E>;
 
   readonly paginate?: boolean;
-  readonly paginateChildRows?: boolean;
   readonly paginatePageSize?: number;
   readonly paginateCurrentPage?: number;
 

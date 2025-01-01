@@ -5,6 +5,7 @@ import { printGraph } from "./print-graph.js";
 
 test("block graph for flat data", () => {
   const graph = new BlockGraph(5, "/");
+  expect(graph.blockRootSize()).toEqual(0);
 
   graph.blockSetSize("", 200);
   graph.blockAdd([
@@ -37,6 +38,8 @@ test("block graph for flat data", () => {
 
   graph.blockFlatten();
   expect(graph.rowCount()).toEqual(200);
+
+  expect(graph.blockRootSize()).toEqual(200);
 
   expect(graph.rowById("ax")).toMatchInlineSnapshot(`
     {

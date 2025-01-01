@@ -1,5 +1,4 @@
-import { evaluateClientFilter } from "@1771technologies/grid-client-filter";
-import { BlockGraph, type BlockPayload } from "@1771technologies/grid-graph";
+import { BlockGraph } from "@1771technologies/grid-graph";
 import type { ApiCommunity, RowDataSourceBackingCommunity } from "@1771technologies/grid-types";
 import type { RowDataSourceClient, RowNodeLeaf } from "@1771technologies/grid-types/community";
 import { dataToRowNodes } from "./row-nodes";
@@ -22,6 +21,8 @@ import { rowGroupToggle } from "./api/row-group-toggle";
 import { rowParentIndex } from "./api/row-parent-index";
 import { rowSetData } from "./api/row-set-data";
 import { rowSetDataMany } from "./api/row-set-data-many";
+import { paginateGetCount } from "./api/paginate-get-count";
+import { paginateRowStartAndEndForPage } from "./api/paginate-row-stand-and-end-for-page";
 
 export interface ClientState<D, E> {
   api: Signal<ApiCommunity<D, E>>;
@@ -140,7 +141,7 @@ export function createClientDataSource<D, E>(
     rowTopCount: () => state.graph.peek().rowTopCount(),
     rowCount: () => state.graph.peek().rowCount(),
 
-    paginateGetCount: () => 0,
-    paginateRowStartAndEndForPage: () => [0, 0],
+    paginateGetCount: () => paginateGetCount(state),
+    paginateRowStartAndEndForPage: (i) => paginateRowStartAndEndForPage(state, i),
   } satisfies RowDataSourceBackingCommunity<D, E>;
 }

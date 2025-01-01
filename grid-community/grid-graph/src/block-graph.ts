@@ -283,6 +283,15 @@ export class BlockGraph<D> {
   };
 
   /**
+   * Returns the root size of the graph. This is the size of the root block
+   *
+   * @returns size of the root block
+   */
+  readonly blockRootSize = () => {
+    return this.#blockPaths.get("")?.size ?? 0;
+  };
+
+  /**
    * Resets the block graph by clearing all blocks.
    */
   readonly blockReset = () => {

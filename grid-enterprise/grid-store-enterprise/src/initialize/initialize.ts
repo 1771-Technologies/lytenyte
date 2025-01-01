@@ -67,7 +67,6 @@ export function initialize<D, E>(
 
     paginate: signal(props.paginate ?? false),
     paginatePageSize: signal(props.paginatePageSize ?? PAGINATE_PAGE_SIZE),
-    paginateChildRows: signal(props.paginateChildRows ?? false),
     paginateCurrentPage: signal(props.paginateCurrentPage ?? 0),
 
     rowDataSource: signal(props.rowDataSource ?? emptyRowDataSource),
