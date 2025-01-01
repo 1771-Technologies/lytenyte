@@ -76,9 +76,9 @@ export class BlockGraph<D> {
   #rowTotalIsPinned: boolean = false;
 
   /** Map of row IDs to row nodes */
-  #rowById: Map<string, RowNode> = new Map();
+  #rowById: Map<string, RowNode<D>> = new Map();
   /** Map of row indices to row nodes */
-  #rowByIndex: Map<number, RowNode> = new Map();
+  #rowByIndex: Map<number, RowNode<D>> = new Map();
   /** Total count of rows */
   #rowCount: number = 0;
   /** Tree structure for range-based operations */
