@@ -1,4 +1,3 @@
-import type { BlockGraph } from "@1771technologies/grid-graph";
 import type { ClientState } from "../create-client-data-source";
 
 export function rowParentIndex<D, E>(state: ClientState<D, E>, r: number) {

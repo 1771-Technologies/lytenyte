@@ -1,5 +1,9 @@
 import { BlockGraph } from "@1771technologies/grid-graph";
-import type { ApiCommunity, RowDataSourceBackingCommunity } from "@1771technologies/grid-types";
+import type {
+  ApiCommunity,
+  ApiEnterprise,
+  RowDataSourceBackingCommunity,
+} from "@1771technologies/grid-types";
 import type { RowDataSourceClient, RowNodeLeaf } from "@1771technologies/grid-types/community";
 import { dataToRowNodes } from "./row-nodes";
 import {
@@ -26,7 +30,7 @@ import { paginateRowStartAndEndForPage } from "./api/paginate-row-stand-and-end-
 import { rowSelection } from "./api/row-selection";
 
 export interface ClientState<D, E> {
-  api: Signal<ApiCommunity<D, E>>;
+  api: Signal<ApiCommunity<D, E>> | Signal<ApiEnterprise<D, E>>;
 
   graph: ReadonlySignal<BlockGraph<D>>;
   selectedIds: Signal<Set<string>>;

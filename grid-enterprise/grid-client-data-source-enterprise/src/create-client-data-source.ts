@@ -14,6 +14,18 @@ import {
   BLOCK_SIZE,
   dataToRowNodes,
   flatBlockPayloadsComputed,
+  paginateGetCount,
+  paginateRowStartAndEndForPage,
+  rowById,
+  rowByIndex,
+  rowChildCount,
+  rowDepth,
+  rowGetMany,
+  rowGroupToggle,
+  rowParentIndex,
+  rowSelection,
+  rowSetData,
+  rowSetDataMany,
 } from "@1771technologies/grid-client-data-source-community";
 
 export interface ClientState<D, E> {
@@ -100,44 +112,54 @@ export function createClientDataSource<D, E>(
     } satisfies ClientState<D, E>;
   });
 
+  let watchers: (() => void)[] = [];
+
+  const selected = rowSelection(state);
   return {
-    init: () => {},
-    clean: () => {},
+    init: (a) => {
+      state.api.set(a);
+    },
+    clean: () => {
+      watchers.forEach((c) => c());
+      watchers = [];
 
-    rowByIndex: () => null,
-    rowById: () => null,
-    rowGetMany: () => [],
+      dispose();
+    },
 
-    rowChildCount: () => 0,
-    rowDepth: () => 0,
-    rowParentIndex: () => null,
+    rowByIndex: (r) => rowByIndex(state, r),
+    rowById: (id) => rowById(state, id),
+    rowGetMany: (start, end) => rowGetMany(state, start, end),
 
-    rowGroupToggle: () => {},
+    rowChildCount: (r) => rowChildCount(state, r),
+    rowDepth: (r) => rowDepth(state, r),
+    rowParentIndex: (r) => rowParentIndex(state, r),
 
-    rowSetData: () => {},
-    rowSetDataMany: () => {},
-    rowReplaceTopData: () => {},
-    rowReplaceData: () => {},
-    rowReplaceBottomData: () => {},
+    rowGroupToggle: (id, s) => rowGroupToggle(state, id, s),
 
-    rowSelectionAllRowsSelected: () => false,
-    rowSelectionClear: () => {},
-    rowSelectionDeselect: () => {},
-    rowSelectionGetSelected: () => [],
-    rowSelectionIsIndeterminate: () => false,
-    rowSelectionIsSelected: () => false,
-    rowSelectionSelect: () => {},
-    rowSelectionSelectAll: () => {},
+    rowSetData: (id, d) => rowSetData(state, id, d),
+    rowSetDataMany: (updates) => rowSetDataMany(state, updates),
+    rowReplaceBottomData: (d) => state.rowBottomNodes.set(dataToRowNodes(d, "bottom", "bottom")),
+    rowReplaceData: (d) => state.rowCenterNodes.set(dataToRowNodes(d, null, "center")),
+    rowReplaceTopData: (d) => state.rowTopNodes.set(dataToRowNodes(d, "top", "top")),
+
+    rowSelectionAllRowsSelected: selected.rowSelectionAllRowsSelected,
+    rowSelectionClear: selected.rowSelectionClear,
+    rowSelectionDeselect: selected.rowSelectionDeselect,
+    rowSelectionGetSelected: selected.rowSelectionGetSelected,
+    rowSelectionIsIndeterminate: selected.rowSelectionIsIndeterminate,
+    rowSelectionIsSelected: selected.rowSelectionIsSelected,
+    rowSelectionSelect: selected.rowSelectionSelect,
+    rowSelectionSelectAll: selected.rowSelectionSelectAll,
 
     columnInFilterItems: () => [],
     columnPivotGetDefinitions: () => [],
 
-    rowTopCount: () => 0,
-    rowCount: () => 0,
-    rowBottomCount: () => 0,
+    rowBottomCount: () => state.graph.peek().rowBotCount(),
+    rowTopCount: () => state.graph.peek().rowTopCount(),
+    rowCount: () => state.graph.peek().rowCount(),
 
-    paginateGetCount: () => 0,
-    paginateRowStartAndEndForPage: () => [0, 0],
+    paginateGetCount: () => paginateGetCount(state),
+    paginateRowStartAndEndForPage: (i) => paginateRowStartAndEndForPage(state, i),
 
     // Not relevant for client data source.
     rowReload: () => {},
