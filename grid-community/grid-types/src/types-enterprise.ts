@@ -27,6 +27,19 @@ export interface ColumnMenuItemLeaf<E> {
   readonly endElement?: () => E;
 }
 
+export type ColumnInFilterItemLeaf = {
+  readonly kind: "leaf";
+  readonly label: string;
+  readonly value: unknown;
+};
+
+export type ColumnInFilterItemParent = {
+  readonly kind: "parent";
+  readonly label: string;
+  readonly children: ColumnInFilterItem[];
+};
+export type ColumnInFilterItem = ColumnInFilterItemLeaf | ColumnInFilterItemParent;
+
 export interface ColumnMenuItemGroup<E> {
   readonly icon?: () => E;
   readonly label: string;

@@ -27,6 +27,8 @@ import {
   rowSetData,
   rowSetDataMany,
 } from "@1771technologies/grid-client-data-source-community";
+import { columnInFilterItems } from "./api/column-in-filter-items";
+import { createColumnPivots } from "./api/column-pivots/create-pivot-columns";
 
 export interface ClientState<D, E> {
   api: Signal<ApiEnterprise<D, E>>;
@@ -151,8 +153,11 @@ export function createClientDataSource<D, E>(
     rowSelectionSelect: selected.rowSelectionSelect,
     rowSelectionSelectAll: selected.rowSelectionSelectAll,
 
-    columnInFilterItems: () => [],
-    columnPivotGetDefinitions: () => [],
+    columnInFilterItems: (c) => columnInFilterItems(state, c),
+    columnPivotGetDefinitions: () => {
+      const columns = createColumnPivots(state.api.peek(), state.rowCenterNodes.peek());
+      return columns;
+    },
 
     rowBottomCount: () => state.graph.peek().rowBotCount(),
     rowTopCount: () => state.graph.peek().rowTopCount(),

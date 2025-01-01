@@ -85,6 +85,7 @@ export interface Column<A, D, E> {
 
   readonly pin?: ColumnPin;
 
+  readonly inFilterLabelFormatter?: (v: unknown) => string;
   readonly field?: Field<A, D, this>;
   readonly inFilterField?: Field<A, D, this>;
   readonly quickSearchField?: Field<A, D, this>;

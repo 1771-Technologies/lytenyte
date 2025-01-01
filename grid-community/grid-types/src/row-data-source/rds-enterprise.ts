@@ -1,19 +1,7 @@
 import type { RowNode, RowNodeGroup } from "../types";
+import type { ColumnInFilterItem } from "../types-enterprise";
 
 type MaybePromise<T> = T | Promise<T>;
-
-export type ColumnInFilterItemLeaf = {
-  readonly kind: "leaf";
-  readonly label: string;
-  readonly value: unknown;
-};
-
-export type ColumnInFilterItemParent = {
-  readonly kind: "parent";
-  readonly label: string;
-  readonly children: ColumnInFilterItem[];
-};
-export type ColumnInFilterItem = ColumnInFilterItemLeaf | ColumnInFilterItemParent;
 
 export interface RowDataSourceEnterprise<A, D, C> {
   init?: (api: A) => void;
@@ -45,7 +33,7 @@ export interface RowDataSourceEnterprise<A, D, C> {
   rowRetryFailed?: () => void;
   rowRetryExpansion?: (row: RowNodeGroup) => void;
 
-  columnInFilterItems?: (api: A, column: C) => Promise<ColumnInFilterItem[]> | ColumnInFilterItem[];
+  columnInFilterItems?: (column: C) => Promise<ColumnInFilterItem[]> | ColumnInFilterItem[];
 
   rowGroupToggle?: (id: string, state?: boolean) => void;
 
