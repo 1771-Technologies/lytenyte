@@ -4,8 +4,22 @@ import { rowById } from "./row-by-id";
 
 export function rowSelection<D, E>(state: ClientState<D, E>) {
   return {
-    rowSelectionSelectAll: () => {},
-    rowSelectionAllRowsSelected: () => false,
+    rowSelectionSelectAll: () => {
+      const graph = state.graph.peek();
+      const allRows = graph.rowGetAllRows();
+
+      const rowIds = allRows.map((c) => c.id);
+
+      state.selectedIds.set(new Set(rowIds));
+    },
+    rowSelectionAllRowsSelected: () => {
+      const graph = state.graph.peek();
+
+      const allRows = graph.rowGetAllRows();
+      const rowIds = new Set(allRows.map((c) => c.id));
+
+      return rowIds.isSubsetOf(state.selectedIds.peek());
+    },
     rowSelectionClear: () => {
       state.selectedIds.set(new Set());
       state.api.peek().rowRefresh();
@@ -32,7 +46,7 @@ export function rowSelection<D, E>(state: ClientState<D, E>) {
         nodes.push(row);
       }
 
-      return nodes;
+      return nodes.map((c) => c.id);
     },
     rowSelectionIsIndeterminate: (id: string) => {
       const graph = state.graph.peek();

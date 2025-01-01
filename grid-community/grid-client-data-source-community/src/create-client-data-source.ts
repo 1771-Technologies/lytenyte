@@ -23,6 +23,7 @@ import { rowSetData } from "./api/row-set-data";
 import { rowSetDataMany } from "./api/row-set-data-many";
 import { paginateGetCount } from "./api/paginate-get-count";
 import { paginateRowStartAndEndForPage } from "./api/paginate-row-stand-and-end-for-page";
+import { rowSelection } from "./api/row-selection";
 
 export interface ClientState<D, E> {
   api: Signal<ApiCommunity<D, E>>;
@@ -104,6 +105,7 @@ export function createClientDataSource<D, E>(
     } satisfies ClientState<D, E>;
   });
 
+  const selected = rowSelection(state);
   return {
     init: (a) => {
       state.api.set(a);
@@ -131,14 +133,14 @@ export function createClientDataSource<D, E>(
     rowReplaceData: (d) => state.rowCenterNodes.set(dataToRowNodes(d, null, "center")),
     rowReplaceTopData: (d) => state.rowTopNodes.set(dataToRowNodes(d, "top", "top")),
 
-    rowSelectionSelectAll: () => {},
-    rowSelectionAllRowsSelected: () => false,
-    rowSelectionClear: () => {},
-    rowSelectionDeselect: () => {},
-    rowSelectionSelect: () => {},
-    rowSelectionGetSelected: () => [],
-    rowSelectionIsIndeterminate: () => false,
-    rowSelectionIsSelected: (id) => state.selectedIds.peek().has(id),
+    rowSelectionSelectAll: selected.rowSelectionSelectAll,
+    rowSelectionAllRowsSelected: selected.rowSelectionAllRowsSelected,
+    rowSelectionClear: selected.rowSelectionClear,
+    rowSelectionDeselect: selected.rowSelectionDeselect,
+    rowSelectionSelect: selected.rowSelectionSelect,
+    rowSelectionGetSelected: selected.rowSelectionGetSelected,
+    rowSelectionIsIndeterminate: selected.rowSelectionIsIndeterminate,
+    rowSelectionIsSelected: selected.rowSelectionIsSelected,
 
     rowBottomCount: () => state.graph.peek().rowBotCount(),
     rowTopCount: () => state.graph.peek().rowTopCount(),
