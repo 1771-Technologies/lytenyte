@@ -66,6 +66,15 @@ test("block graph for flat data", () => {
     "
   `);
 
+  expect(graph.rowIdToRowIndex("ax")).toEqual(20);
+  expect(graph.rowIdToRowIndex("wx")).toEqual(undefined);
+
+  expect(graph.rowGetAllRows().length).toEqual(10);
+
+  graph.setTotalPosition("top");
+  expect(graph.rowGetAllRows().length).toEqual(11);
+  graph.setTotalPosition(null);
+
   graph.blockSetSize("", 20);
   graph.blockFlatten();
 

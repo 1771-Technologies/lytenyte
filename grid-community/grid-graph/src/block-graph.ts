@@ -84,6 +84,8 @@ export class BlockGraph<D> {
   #rowById: Map<string, RowNode<D>> = new Map();
   /** Map of row indices to row nodes */
   #rowByIndex: Map<number, RowNode<D>> = new Map();
+  /** Map of row ids to row indices  */
+  #rowIdToRowIndex: Map<string, number> = new Map();
   /** Total count of rows */
   #rowCount: number = 0;
   /** Tree structure for range-based operations */
@@ -254,6 +256,72 @@ export class BlockGraph<D> {
     for (const path of allPaths) {
       const blocks = this.#blockPaths.get(path)!;
 
+      for (const block of blocks.map.values()) {
+        nodes.push(...block.data);
+      }
+    }
+
+    return nodes;
+  };
+
+  /**
+   * Converts a row's string identifier to its current numeric index in the grid
+   *
+   * @param id - The unique string identifier of the row to look up
+   * @returns The current numeric index of the row, or undefined if the row ID doesn't exist
+   *
+   * @remarks
+   * This method provides a way to find a row's current position in the grid using its stable
+   * identifier. The mapping between IDs and indices can change during operations like sorting,
+   * filtering, or grouping, while the string IDs remain constant.
+   *
+   * The return value is undefined in these cases:
+   * - The provided ID doesn't correspond to any row in the grid
+   * - The row has been filtered out or is otherwise not currently visible
+   */
+  readonly rowIdToRowIndex = (id: string) => {
+    return this.#rowIdToRowIndex.get(id);
+  };
+
+  /**
+   * Retrieves all rows in the grid in their logical order
+   *
+   * @returns An array containing all row nodes in the grid, including:
+   *          - Top pinned rows
+   *          - Total row (if present)
+   *          - Data rows from all blocks
+   *          - Bottom pinned rows
+   *
+   * @remarks
+   * This method returns a complete snapshot of all rows currently in the grid,
+   * maintaining their structural organization. The returned array preserves the
+   * following order:
+   * 1. Top pinned rows first
+   * 2. Total row (if configured)
+   * 3. Main data rows from all block paths
+   * 4. Bottom pinned rows last
+   *
+   * The returned array includes both group rows and leaf rows, and the rows
+   * maintain their hierarchical relationships through their order in the array.
+   *
+   * Note that this operation can be expensive for large datasets as it creates
+   * a new array containing references to all rows in the grid.
+   *
+   * @example
+   * ```typescript
+   * const allRows = grid.rowGetAllRows();
+   * const rowCount = allRows.length;
+   * const pinnedRows = allRows.filter(row => row.pinned);
+   * ```
+   */
+  readonly rowGetAllRows = () => {
+    const nodes: RowNode<D>[] = [];
+
+    this.#rowTop.forEach((c) => nodes.push(c));
+    if (this.#rowTotalPosition !== null) nodes.push(this.#rowTotal);
+    this.#rowBottom.forEach((c) => nodes.push(c));
+
+    for (const blocks of this.#blockPaths.values()) {
       for (const block of blocks.map.values()) {
         nodes.push(...block.data);
       }
@@ -450,6 +518,7 @@ export class BlockGraph<D> {
     adjustRootRange(ranges, this.#rowTotalPosition, this.#rowTotalIsPinned);
 
     this.#rowByIndex = rowIndexToRow;
+    this.#rowIdToRowIndex = rowIdToRowIndex;
     this.#rowById = rowIdToRow;
     this.#rowCount = rowCount;
     this.#rangeTree = new RangeTree(ranges);
