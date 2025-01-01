@@ -1,9 +1,10 @@
-import type { API, SortModelItem, RowNode } from "@1771technologies/grid-types";
+import type { ApiEnterprise } from "@1771technologies/grid-types";
 import { nullComparator } from "./null-comparator";
 import { isValidDate } from "@1771technologies/js-utils";
+import type { RowNode, SortModelItem } from "@1771technologies/grid-types/community";
 
-export function dateComparator<D, E, I>(
-  api: API<D, E, I>,
+export function dateComparator<D, E>(
+  api: ApiEnterprise<D, E>,
   left: unknown,
   right: unknown,
   _: RowNode<D>,

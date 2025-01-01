@@ -11,5 +11,8 @@
       "types": "./src/index.ts"
     }
   },
-  "dependencies": {}
+  "dependencies": {
+    "@1771technologies/grid-types": "workspace:^",
+    "@1771technologies/js-utils": "workspace:^"
+  }
 }

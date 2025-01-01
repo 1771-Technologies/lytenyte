@@ -1,4 +1,3 @@
-import { expect, test } from "@1771technologies/aio/vitest";
 import { datatypeComparator } from "../datatype-comparator";
 
 test("datatypeComparator should return the correct result", () => {

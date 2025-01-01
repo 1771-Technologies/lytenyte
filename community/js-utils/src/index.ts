@@ -13,6 +13,7 @@ export { get } from "./get.js";
 export { handleCircularFocus } from "./handle-circular-focus.js";
 export { isHTMLElement } from "./is-html-element.js";
 export { isPromise } from "./is-promise.js";
+export { isValidDate } from "./is-valid-date.js";
 export { itemsWithIdToMap } from "./items-with-id-to-map.js";
 export { makeUint32PositionArray } from "./make-uint32-position-array.js";
 export { padStringLeft } from "./pad-string-left.js";

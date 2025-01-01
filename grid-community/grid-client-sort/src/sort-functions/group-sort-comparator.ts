@@ -1,10 +1,10 @@
-import { LEAF_KIND } from "@1771technologies/grid-row-utils";
-import type { API, SortModelItem, RowNode } from "@1771technologies/grid-types";
+import type { ApiEnterprise } from "@1771technologies/grid-types";
 import { nullComparator } from "./null-comparator";
-import { LYTENYTE_SINGLE_GROUP_COLUMN_ID } from "@1771technologies/grid-constants";
+import type { RowNode, SortModelItem } from "@1771technologies/grid-types/community";
+import { GROUP_COLUMN_SINGLE_ID } from "@1771technologies/grid-constants";
 
-export function groupSortComparator<D, E, I>(
-  api: API<D, E, I>,
+export function groupSortComparator<D, E>(
+  api: ApiEnterprise<D, E>,
   __: unknown,
   _: unknown,
   leftNode: RowNode<D>,
@@ -14,14 +14,15 @@ export function groupSortComparator<D, E, I>(
   const options = sort.options;
   const columnId = sort.columnId;
 
-  const rowModel = api.getProperty("rowGroupModel");
+  const sx = api.getState();
+  const rowModel = sx.rowGroupModel.peek();
+
   const columns = rowModel.map((c) => api.columnById(c)!);
 
-  if (columnId === LYTENYTE_SINGLE_GROUP_COLUMN_ID) {
+  if (columnId === GROUP_COLUMN_SINGLE_ID) {
     for (const c of columns) {
-      const left = leftNode.kind !== LEAF_KIND ? null : api.columnFieldGroup(leftNode, c) || null;
-      const right =
-        rightNode.kind !== LEAF_KIND ? null : api.columnFieldGroup(rightNode, c) || null;
+      const left = !api.rowIsLeaf(leftNode) ? null : api.columnFieldGroup(leftNode, c) || null;
+      const right = !api.rowIsLeaf(rightNode) ? null : api.columnFieldGroup(rightNode, c) || null;
 
       let result: number;
       if (left == null || right == null)
@@ -41,8 +42,8 @@ export function groupSortComparator<D, E, I>(
 
   const c = columns[depth];
 
-  const left = leftNode.kind !== LEAF_KIND ? null : api.columnFieldGroup(leftNode, c);
-  const right = rightNode.kind !== LEAF_KIND ? null : api.columnFieldGroup(rightNode, c);
+  const left = !api.rowIsLeaf(leftNode) ? null : api.columnFieldGroup(leftNode, c) || null;
+  const right = !api.rowIsLeaf(rightNode) ? null : api.columnFieldGroup(rightNode, c) || null;
 
   if (left == null || right == null)
     return nullComparator(left, right, !!options?.nullsAppearFirst);
