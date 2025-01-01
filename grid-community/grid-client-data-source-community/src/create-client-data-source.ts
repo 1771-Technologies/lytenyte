@@ -18,6 +18,8 @@ import { rowById } from "./api/row-by-id";
 import { rowGetMany } from "./api/row-get-many";
 import { rowChildCount } from "./api/row-child-count";
 import { rowDepth } from "./api/row-depth";
+import { rowGroupToggle } from "./api/row-group-toggle";
+import { rowParentIndex } from "./api/row-parent-index";
 
 export interface ClientState<D, E> {
   original: Signal<RowDataSourceClient<D>>;
@@ -113,9 +115,9 @@ export function createClientDataSource<D, E>(
 
     rowChildCount: (r) => rowChildCount(r, state.graph.peek()),
     rowDepth: (r) => rowDepth(r, state.graph.peek()),
+    rowParentIndex: (r) => rowParentIndex(r, state.graph.peek()),
 
-    rowGroupToggle: () => {},
-    rowParentIndex: () => null,
+    rowGroupToggle: (id, s) => rowGroupToggle(state.api.peek(), id, state.graph.peek(), s),
 
     rowSetData: () => {},
     rowSetDataMany: () => {},
