@@ -6,8 +6,9 @@ export function rowByIndex<D, E>(state: ClientState<D, E>, r: number) {
   const api = state.api.peek();
 
   const row = graph.rowByIndex(r);
+  (row as { rowIndex: number }).rowIndex = r;
+
   if (!row || api.rowIsLeaf(row)) {
-    (row as { rowIndex: number }).rowIndex = r;
     return row;
   }
 

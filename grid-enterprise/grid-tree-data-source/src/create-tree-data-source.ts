@@ -3,7 +3,15 @@ import {
   type PathTreeInputItem,
   type PathTreeNode,
 } from "@1771technologies/path-tree";
-import { BLOCK_SIZE, dataToRowNodes } from "@1771technologies/grid-client-data-source-community";
+import {
+  BLOCK_SIZE,
+  dataToRowNodes,
+  rowChildCount,
+  rowDepth,
+  rowGroupToggle,
+  rowParentIndex,
+  rowSelection,
+} from "@1771technologies/grid-client-data-source-community";
 import type { ApiEnterprise, RowDataSourceEnterprise } from "@1771technologies/grid-types";
 import {
   cascada,
@@ -19,6 +27,9 @@ import {
   ROW_LEAF_KIND,
 } from "@1771technologies/grid-constants";
 import { BlockGraph, type BlockPayload } from "@1771technologies/grid-graph";
+import { rowByIndex } from "./api/row-by-index";
+import { rowById } from "./api/row-by-id";
+import { rowGetMany } from "./api/row-get-many";
 
 export interface TreeDataSourceInitial<D extends Record<string, unknown>, E> {
   readonly data: PathTreeInputItem<D>[];
@@ -40,25 +51,28 @@ export interface ClientState<D extends Record<string, unknown>, E> {
 
   graph: ReadonlySignal<BlockGraph<D>>;
   selectedIds: Signal<Set<string>>;
+  cache: Signal<Record<string, any>>;
 
   rowTopNodes: Signal<RowNodeLeaf<D>[]>;
   rowCenterNodes: Signal<RowNodeLeaf<D>[]>;
   rowBottomNodes: Signal<RowNodeLeaf<D>[]>;
+
+  getRowDataForGroup: (row: RowNodeGroup) => Record<string, unknown>;
 }
 
 export function createTreeDataSource<D extends Record<string, unknown>, E>(
   r: TreeDataSourceInitial<D, E>,
 ): RowDataSourceEnterprise<D, E> {
-  const { store: state, dispose } = cascada(() => {
+  const { store: state, dispose } = cascada<ClientState<D, E>>(() => {
     const api$ = signal<ApiEnterprise<D, E>>(null as unknown as ApiEnterprise<D, E>);
 
     const selectedIds = signal(new Set<string>());
 
     const tree = signal(createPathTree(r.data));
 
-    const graph = computed(() => {
+    const graph = computed<BlockGraph<D>>(() => {
       const separator = r.pathSeparator ?? ROW_DEFAULT_PATH_SEPARATOR;
-      const g = new BlockGraph(2000, separator);
+      const g = new BlockGraph<D>(2000, separator);
       const api = api$.get();
       const sx = api.getState();
       const defaultExpansion = sx.rowGroupDefaultExpansion.peek();
@@ -121,9 +135,8 @@ export function createTreeDataSource<D extends Record<string, unknown>, E>(
 
         for (const z of pathPayloads.sizes) g.blockSetSize(z.path, z.size);
         g.blockAdd(pathPayloads.payloads);
-
-        return g;
       }
+      return g;
     });
 
     const initialTopNodes = dataToRowNodes(r.topData ?? [], "top", "top");
@@ -131,19 +144,26 @@ export function createTreeDataSource<D extends Record<string, unknown>, E>(
     const initialCenterNodes = dataToRowNodes([], null, "center");
 
     const rowTopNodes = signal(initialTopNodes);
-    const rowCenterNodes = signal(initialCenterNodes);
+    const rowCenterNodes = signal<RowNodeLeaf<D>[]>(initialCenterNodes);
     const rowBottomNodes = signal(initialBottomNodes);
+
+    const getRowDataForGroup = (row: RowNodeGroup) => r.getDataForGroup(row, api$.get());
 
     return {
       api: api$,
       graph,
       selectedIds,
 
+      getRowDataForGroup,
+      cache: signal({}),
+
       rowTopNodes,
       rowCenterNodes,
       rowBottomNodes,
-    };
+    } satisfies ClientState<D, E>;
   });
+
+  const selection = rowSelection(state);
 
   return {
     init: (a) => {
@@ -153,15 +173,15 @@ export function createTreeDataSource<D extends Record<string, unknown>, E>(
       dispose();
     },
 
-    rowByIndex: () => null,
-    rowById: () => null,
-    rowGetMany: () => [],
+    rowByIndex: (r) => rowByIndex(state, r),
+    rowById: (r) => rowById(state, r),
+    rowGetMany: (s, e) => rowGetMany(state, s, e),
 
-    rowChildCount: () => 0,
-    rowDepth: () => 0,
-    rowParentIndex: () => null,
+    rowChildCount: (r) => rowChildCount(state, r),
+    rowDepth: (r) => rowDepth(state, r),
+    rowParentIndex: (r) => rowParentIndex(state, r),
 
-    rowGroupToggle: () => {},
+    rowGroupToggle: (id, s) => rowGroupToggle(state, id, s),
 
     rowSetData: () => {},
     rowSetDataMany: () => {},
@@ -169,19 +189,19 @@ export function createTreeDataSource<D extends Record<string, unknown>, E>(
     rowReplaceData: () => {},
     rowReplaceTopData: () => {},
 
-    rowSelectionAllRowsSelected: () => false,
-    rowSelectionClear: () => false,
-    rowSelectionDeselect: () => false,
-    rowSelectionGetSelected: () => [],
-    rowSelectionIsIndeterminate: () => false,
-    rowSelectionIsSelected: () => false,
-    rowSelectionSelect: () => {},
-    rowSelectionSelectAll: () => {},
+    rowSelectionAllRowsSelected: selection.rowSelectionAllRowsSelected,
+    rowSelectionClear: selection.rowSelectionClear,
+    rowSelectionDeselect: selection.rowSelectionDeselect,
+    rowSelectionGetSelected: selection.rowSelectionGetSelected,
+    rowSelectionIsIndeterminate: selection.rowSelectionIsIndeterminate,
+    rowSelectionIsSelected: selection.rowSelectionIsSelected,
+    rowSelectionSelect: selection.rowSelectionSelect,
+    rowSelectionSelectAll: selection.rowSelectionSelectAll,
 
     columnInFilterItems: () => [],
-    rowBottomCount: () => 0,
-    rowTopCount: () => 0,
-    rowCount: () => 0,
+    rowBottomCount: () => state.graph.peek().rowBotCount(),
+    rowTopCount: () => state.graph.peek().rowTopCount(),
+    rowCount: () => state.graph.peek().rowCount(),
 
     // Not relevant for the tree data source
     columnPivotGetDefinitions: () => [],
