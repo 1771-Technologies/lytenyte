@@ -25,6 +25,21 @@ test("Should handle a basic tree", () => {
     "
   `);
 
+  expect(printTrees(createPathTree(input, { pathSeparator: "-->" }))).toMatchInlineSnapshot(`
+    "
+    └── folder1 [folder1#0]
+        ├── subA [folder1-->subA#0]
+        │   ├── deepA [folder1-->subA-->deepA#0]
+        │   │   ├── (X)
+        │   │   ├── (Y)
+        │   │   └── (V)
+        │   └── deepB [folder1-->subA-->deepB#0]
+        │       └── (Z)
+        └── subB [folder1-->subB#0]
+            └── (W)
+    "
+  `);
+
   expect(printTrees(createPathTree(input, { considerAdjacency: true }))).toMatchInlineSnapshot(`
     "
     └── folder1 [folder1#0]

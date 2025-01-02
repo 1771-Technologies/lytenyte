@@ -56,88 +56,54 @@ export interface PathTreeConfig {
    * When true, creates separate parent nodes for non-adjacent identical paths.
    * When false, merges all identical paths under the same parent.
    */
-  considerAdjacency: boolean;
+  considerAdjacency?: boolean;
+  /**
+   * Custom separator to use when generating occurrence keys and path references.
+   * Defaults to "/" if not specified.
+   */
+  pathSeparator?: string;
 }
 
 /**
- * Creates a hierarchical tree structure from an array of path-based items. The function supports two modes
- * of operation based on the `considerAdjacency` configuration:
- *
- * In adjacency mode (`considerAdjacency: true`):
- * - Creates separate parent nodes for identical paths that aren't adjacent in the input array
- * - Adjacent items with identical paths are grouped under the same parent
- * - Non-adjacent items with identical paths get new parent nodes with unique occurrence IDs
- *
- * In non-adjacency mode (`considerAdjacency: false`):
- * - Merges all items with identical paths under the same parent node
- * - Order of items in the input array doesn't affect the tree structure
- * - All identical paths share the same parent regardless of position
- *
- * Special cases:
- * - Empty paths (`[]`) create leaf nodes at the root level
- * - Each path segment creates a parent node except for the last item which becomes a leaf
- * - Parent nodes maintain references to their children and parent (null for root)
- * - Each parent node has a unique occurrence ID in the format "path/to/node#number"
- *
+ * Creates a hierarchical tree structure from an array of path-based items.
  * @template T The type of data stored in leaf nodes
  *
- * @param items Array of input items, each containing:
- *   - path: string[] - Array of path segments defining the item's location in the tree
- *   - data: T - Data to be stored in the leaf node
- *
- * @param config Configuration object with:
- *   - considerAdjacency: boolean - When true, creates separate parents for non-adjacent identical paths
- *                                 When false, merges all identical paths under the same parent
- *
- * @returns An array of root nodes. Each root can be either:
- *   - A leaf node (for empty paths)
- *   - A parent node with a tree structure underneath it
+ * @param items Array of input items with path and data
+ * @param config Configuration object with adjacency setting and optional path separator
+ * @returns An array of root nodes
  *
  * @example
  * ```typescript
- * // Input items
+ * // Using custom separator
  * const items = [
  *   { path: ["folder1", "subA"], data: "X" },
- *   { path: ["folder1", "subA"], data: "Y" },
- *   { path: ["folder1", "subB"], data: "Z" },
- *   { path: ["folder1", "subA"], data: "W" }
+ *   { path: ["folder1", "subB"], data: "Y" }
  * ];
  *
- * // With adjacency (true):
- * // Creates:
- * // folder1
- * // ├── subA (X, Y)
- * // ├── subB (Z)
- * // └── subA (W) <-- New parent due to non-adjacency
- * const adjacentTree = createPathTree(items, { considerAdjacency: true });
+ * // With default separator (/)
+ * // Creates: folder1/subA, folder1/subB
+ * const defaultTree = createPathTree(items);
  *
- * // Without adjacency (false):
- * // Creates:
- * // folder1
- * // ├── subA (X, Y, W) <-- All subA items merged
- * // └── subB (Z)
- * const mergedTree = createPathTree(items, { considerAdjacency: false });
- *
- * // Empty paths create root leaves
- * const mixedItems = [
- *   { path: [], data: "root1" },
- *   { path: ["folder1"], data: "A" },
- *   { path: [], data: "root2" }
- * ];
- * // Creates: root1 (leaf), folder1/A, root2 (leaf)
- * const mixedTree = createPathTree(mixedItems);
+ * // With custom separator (.)
+ * // Creates: folder1.subA, folder1.subB
+ * const customTree = createPathTree(items, {
+ *   considerAdjacency: false,
+ *   pathSeparator: '.'
+ * });
  * ```
  */
 export function createPathTree<T>(
   items: PathTreeInputItem<T>[],
-  config: PathTreeConfig = { considerAdjacency: false },
+  config: PathTreeConfig = {},
 ): PathTreeNode<T>[] {
   const roots: PathTreeNode<T>[] = [];
   const pathOccurrences = new Map<string, number>();
   const pathToParentMap = new Map<string, PathTreeParentNode>();
+  const separator = config.pathSeparator ?? "/";
+  const considerAdjacency = config.considerAdjacency ?? false;
 
   function getOccurrenceKey(path: string[]): string {
-    const pathKey = path.join("/");
+    const pathKey = path.join(separator);
     const count = pathOccurrences.get(pathKey) ?? 0;
     pathOccurrences.set(pathKey, count + 1);
     return `${pathKey}#${count}`;
@@ -161,8 +127,8 @@ export function createPathTree<T>(
   ): PathTreeParentNode {
     // If we're at the last parent level (one before the leaf)
     if (currentLevel === path.length - 1) {
-      if (!config.considerAdjacency) {
-        const pathKey = path.slice(0, currentLevel + 1).join("/");
+      if (!considerAdjacency) {
+        const pathKey = path.slice(0, currentLevel + 1).join(separator);
         const existingParent = pathToParentMap.get(pathKey);
         if (existingParent) {
           return existingParent;
@@ -170,7 +136,7 @@ export function createPathTree<T>(
       }
 
       // For adjacency mode and if we have a current parent
-      if (config.considerAdjacency && currentParent) {
+      if (considerAdjacency && currentParent) {
         const lastChild = currentParent.children[currentParent.children.length - 1] as
           | PathTreeParentNode
           | undefined;
@@ -196,20 +162,20 @@ export function createPathTree<T>(
         roots.push(newParent);
       }
 
-      if (!config.considerAdjacency) {
-        pathToParentMap.set(path.slice(0, currentLevel + 1).join("/"), newParent);
+      if (!considerAdjacency) {
+        pathToParentMap.set(path.slice(0, currentLevel + 1).join(separator), newParent);
       }
 
       return newParent;
     }
 
     // For root level in adjacency mode
-    if (config.considerAdjacency && !currentParent) {
+    if (considerAdjacency && !currentParent) {
       const lastRoot = roots[roots.length - 1] as PathTreeParentNode | undefined;
       if (lastRoot?.type === "parent" && lastRoot.path[currentLevel] === path[currentLevel]) {
         return findOrCreateParent(path, currentLevel + 1, lastRoot);
       }
-    } else if (config.considerAdjacency && currentParent) {
+    } else if (considerAdjacency && currentParent) {
       // Check for adjacent paths at current level
       if (isAdjacentPath(currentParent, path[currentLevel], currentLevel)) {
         const lastChild = currentParent.children[
@@ -217,9 +183,9 @@ export function createPathTree<T>(
         ] as PathTreeParentNode;
         return findOrCreateParent(path, currentLevel + 1, lastChild);
       }
-    } else if (!config.considerAdjacency) {
+    } else if (!considerAdjacency) {
       // In non-adjacency mode, use the path map
-      const pathKey = path.slice(0, currentLevel + 1).join("/");
+      const pathKey = path.slice(0, currentLevel + 1).join(separator);
       const existingParent = pathToParentMap.get(pathKey);
       if (existingParent) {
         return findOrCreateParent(path, currentLevel + 1, existingParent);
@@ -240,8 +206,8 @@ export function createPathTree<T>(
       roots.push(newParent);
     }
 
-    if (!config.considerAdjacency) {
-      pathToParentMap.set(path.slice(0, currentLevel + 1).join("/"), newParent);
+    if (!considerAdjacency) {
+      pathToParentMap.set(path.slice(0, currentLevel + 1).join(separator), newParent);
     }
 
     return findOrCreateParent(path, currentLevel + 1, newParent);
