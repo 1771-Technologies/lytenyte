@@ -57,9 +57,9 @@ export function createClientDataSource<D, E>(
     const initialBottomNodes = dataToRowNodes(r.bottomData ?? [], "bottom", "bottom");
     const initialCenterNodes = dataToRowNodes(r.data, null, "center");
 
-    const rowTopNodes = signal(initialTopNodes);
-    const rowCenterNodes = signal(initialCenterNodes);
-    const rowBottomNodes = signal(initialBottomNodes);
+    const rowTopNodes = signal(initialTopNodes, { postUpdate: () => cache.set({}) });
+    const rowCenterNodes = signal(initialCenterNodes, { postUpdate: () => cache.set({}) });
+    const rowBottomNodes = signal(initialBottomNodes, { postUpdate: () => cache.set({}) });
 
     const filteredNodes = filterNodesComputed(api$, rowCenterNodes);
     const sortedNodes = sortedNodesComputed(api$, filteredNodes);

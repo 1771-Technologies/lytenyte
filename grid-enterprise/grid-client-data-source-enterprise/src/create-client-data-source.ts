@@ -62,7 +62,9 @@ export function createClientDataSource<D, E>(
     const initialBottomNodes = dataToRowNodes(r.bottomData ?? [], "bottom", "bottom");
     const initialCenterNodes = dataToRowNodes(r.data, null, "center");
 
-    const reloadPivots = () => {
+    const postUpdate = () => {
+      cache.set({});
+
       const api = api$.peek();
       const mode = api.getState().columnPivotModeIsOn.peek();
       if (!mode) return;
@@ -70,9 +72,9 @@ export function createClientDataSource<D, E>(
       api.columnPivotsReload();
     };
 
-    const rowTopNodes = signal(initialTopNodes, { postUpdate: reloadPivots });
-    const rowCenterNodes = signal(initialCenterNodes, { postUpdate: reloadPivots });
-    const rowBottomNodes = signal(initialBottomNodes, { postUpdate: reloadPivots });
+    const rowTopNodes = signal(initialTopNodes, { postUpdate: postUpdate });
+    const rowCenterNodes = signal(initialCenterNodes, { postUpdate: postUpdate });
+    const rowBottomNodes = signal(initialBottomNodes, { postUpdate: postUpdate });
 
     const filteredNodes = filterNodesComputed(api$, rowCenterNodes);
     const sortedNodes = sortedNodesComputed(api$, filteredNodes);

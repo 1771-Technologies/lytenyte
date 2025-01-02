@@ -6,6 +6,8 @@ import {
   rowGroupToggle,
   rowParentIndex,
   rowSelection,
+  rowSetData,
+  rowSetDataMany,
 } from "@1771technologies/grid-client-data-source-community";
 import type { ApiEnterprise, RowDataSourceEnterprise } from "@1771technologies/grid-types";
 import {
@@ -66,7 +68,7 @@ export function createTreeDataSource<D, E>(
     const initialCenterNodes = dataToRowNodes(r.data, null, "center");
 
     const rowTopNodes = signal(initialTopNodes);
-    const rowCenterNodes = signal<RowNodeLeaf<D>[]>(initialCenterNodes);
+    const rowCenterNodes = signal(initialCenterNodes);
     const rowBottomNodes = signal(initialBottomNodes);
 
     const filteredNodes = filterNodesComputed(api$, rowCenterNodes);
@@ -136,11 +138,11 @@ export function createTreeDataSource<D, E>(
 
     rowGroupToggle: (id, s) => rowGroupToggle(state, id, s),
 
-    rowSetData: () => {},
-    rowSetDataMany: () => {},
-    rowReplaceBottomData: () => {},
-    rowReplaceData: () => {},
-    rowReplaceTopData: () => {},
+    rowSetData: (row, d) => rowSetData(state, row, d),
+    rowSetDataMany: (updates) => rowSetDataMany(state, updates),
+    rowReplaceBottomData: (d) => state.rowBottomNodes.set(dataToRowNodes(d, "bottom", "bottom")),
+    rowReplaceData: (d) => state.rowCenterNodes.set(dataToRowNodes(d, null, "center")),
+    rowReplaceTopData: (d) => state.rowTopNodes.set(dataToRowNodes(d, "top", "top")),
 
     rowSelectionAllRowsSelected: selection.rowSelectionAllRowsSelected,
     rowSelectionClear: selection.rowSelectionClear,
