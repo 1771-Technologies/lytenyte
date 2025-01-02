@@ -1,18 +1,18 @@
 /**
  * Base node interface for the path tree structure.
  */
-export interface PathTreeBaseNode {
+export interface PathTreeBaseNode<T> {
   /** Array of path segments representing the node's location in the tree */
   path: string[];
   /** Reference to the parent node, null for root nodes */
-  parent: PathTreeParentNode | null;
+  parent: PathTreeParentNode<T> | null;
 }
 
 /**
  * Represents a leaf node in the path tree that contains data.
  * @template T The type of data stored in the leaf node
  */
-export interface PathTreeLeafNode<T> extends PathTreeBaseNode {
+export interface PathTreeLeafNode<T> extends PathTreeBaseNode<T> {
   /** Discriminator to identify leaf nodes */
   type: "leaf";
   /** The data stored in the leaf node */
@@ -22,11 +22,11 @@ export interface PathTreeLeafNode<T> extends PathTreeBaseNode {
 /**
  * Represents a parent node in the path tree that can contain children.
  */
-export interface PathTreeParentNode extends PathTreeBaseNode {
+export interface PathTreeParentNode<T> extends PathTreeBaseNode<T> {
   /** Discriminator to identify parent nodes */
   type: "parent";
   /** Array of child nodes, which can be either leaves or other parent nodes */
-  children: (PathTreeLeafNode<any> | PathTreeParentNode)[];
+  children: (PathTreeLeafNode<T> | PathTreeParentNode<T>)[];
   /** Unique identifier for the node based on its path and occurrence count */
   occurrence: string;
 }
@@ -35,7 +35,7 @@ export interface PathTreeParentNode extends PathTreeBaseNode {
  * Union type representing either a leaf or parent node in the path tree.
  * @template T The type of data stored in leaf nodes
  */
-export type PathTreeNode<T> = PathTreeLeafNode<T> | PathTreeParentNode;
+export type PathTreeNode<T> = PathTreeLeafNode<T> | PathTreeParentNode<T>;
 
 /**
  * Input item format for creating nodes in the path tree.
@@ -98,7 +98,7 @@ export function createPathTree<T>(
 ): PathTreeNode<T>[] {
   const roots: PathTreeNode<T>[] = [];
   const pathOccurrences = new Map<string, number>();
-  const pathToParentMap = new Map<string, PathTreeParentNode>();
+  const pathToParentMap = new Map<string, PathTreeParentNode<T>>();
   const separator = config.pathSeparator ?? "/";
   const considerAdjacency = config.considerAdjacency ?? false;
 
@@ -110,7 +110,7 @@ export function createPathTree<T>(
   }
 
   function isAdjacentPath(
-    existingParent: PathTreeParentNode,
+    existingParent: PathTreeParentNode<T>,
     pathSegment: string,
     level: number,
   ): boolean {
@@ -123,8 +123,8 @@ export function createPathTree<T>(
   function findOrCreateParent(
     path: string[],
     currentLevel: number,
-    currentParent: PathTreeParentNode | null,
-  ): PathTreeParentNode {
+    currentParent: PathTreeParentNode<T> | null,
+  ): PathTreeParentNode<T> {
     // If we're at the last parent level (one before the leaf)
     if (currentLevel === path.length - 1) {
       if (!considerAdjacency) {
@@ -138,7 +138,7 @@ export function createPathTree<T>(
       // For adjacency mode and if we have a current parent
       if (considerAdjacency && currentParent) {
         const lastChild = currentParent.children[currentParent.children.length - 1] as
-          | PathTreeParentNode
+          | PathTreeParentNode<T>
           | undefined;
         if (
           lastChild?.type === "parent" &&
@@ -148,7 +148,7 @@ export function createPathTree<T>(
         }
       }
 
-      const newParent: PathTreeParentNode = {
+      const newParent: PathTreeParentNode<T> = {
         type: "parent",
         path: path.slice(0, currentLevel + 1),
         parent: currentParent,
@@ -171,7 +171,7 @@ export function createPathTree<T>(
 
     // For root level in adjacency mode
     if (considerAdjacency && !currentParent) {
-      const lastRoot = roots[roots.length - 1] as PathTreeParentNode | undefined;
+      const lastRoot = roots[roots.length - 1] as PathTreeParentNode<T> | undefined;
       if (lastRoot?.type === "parent" && lastRoot.path[currentLevel] === path[currentLevel]) {
         return findOrCreateParent(path, currentLevel + 1, lastRoot);
       }
@@ -180,7 +180,7 @@ export function createPathTree<T>(
       if (isAdjacentPath(currentParent, path[currentLevel], currentLevel)) {
         const lastChild = currentParent.children[
           currentParent.children.length - 1
-        ] as PathTreeParentNode;
+        ] as PathTreeParentNode<T>;
         return findOrCreateParent(path, currentLevel + 1, lastChild);
       }
     } else if (!considerAdjacency) {
@@ -192,7 +192,7 @@ export function createPathTree<T>(
       }
     }
 
-    const newParent: PathTreeParentNode = {
+    const newParent: PathTreeParentNode<T> = {
       type: "parent",
       path: path.slice(0, currentLevel + 1),
       parent: currentParent,
