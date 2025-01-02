@@ -179,7 +179,7 @@ export function createClientDataSource<D, E>(
     rowSelectionSelectAll: selected.rowSelectionSelectAll,
 
     columnInFilterItems: (c) => columnInFilterItems(state, c),
-    columnPivotGetDefinitions: () => {
+    columnPivots: () => {
       const columns = createColumnPivots(state.api.peek(), state.rowCenterNodes.peek());
       return columns;
     },

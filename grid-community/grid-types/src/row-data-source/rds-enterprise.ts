@@ -50,7 +50,7 @@ export interface RowDataSourceEnterprise<A, D, C> {
   rowSelectionClear: () => void;
 
   // column pivot support
-  columnPivotGetDefinitions?: (api: A) => MaybePromise<C[]>;
+  columnPivots?: (api: A) => MaybePromise<C[]>;
 
   rowGetMany: (
     start: number,
