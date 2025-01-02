@@ -13,24 +13,27 @@ interface ColumnHandleGroupColumnArgs<D, E> {
   readonly rowGroupModel: string[];
   readonly rowGroupDisplayMode: RowGroupDisplayMode;
   readonly rowGroupColumnTemplate: ColumnRowGroupCommunity<D, E>;
+  readonly treeData: boolean;
 }
+
+export const baseGroup: ColumnRowGroupCommunity<any, any> = {
+  headerName: "Group",
+  cellOptions: { autosizeFunc: autosizeGroupColumnDefault },
+};
 
 export function columnHandleGroupColumn<D, E>({
   columns,
   rowGroupModel,
   rowGroupDisplayMode,
   rowGroupColumnTemplate,
+  treeData,
 }: ColumnHandleGroupColumnArgs<D, E>) {
-  const baseGroup: ColumnRowGroupCommunity<D, E> = {
-    headerName: "Group",
-    cellOptions: { autosizeFunc: autosizeGroupColumnDefault },
-  };
-
   const lookup = itemsWithIdToMap(columns);
 
   const isSingleGroupDisplay = rowGroupDisplayMode === "single-column";
   const isMultiGroupDisplay = rowGroupDisplayMode === "multi-column";
-  const hasGroupColumn = rowGroupModel.length > 0 && (isSingleGroupDisplay || isMultiGroupDisplay);
+  const hasGroupColumn =
+    !treeData && rowGroupModel.length > 0 && (isSingleGroupDisplay || isMultiGroupDisplay);
 
   if (hasGroupColumn && isSingleGroupDisplay) {
     columns = columns.filter((c) => !c.id.startsWith(GROUP_COLUMN_MULTI_PREFIX));
