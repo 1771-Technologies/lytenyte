@@ -1,0 +1,30 @@
+import { computed, type Signal } from "@1771technologies/cascada";
+import { evaluateClientFilter } from "@1771technologies/grid-client-filter";
+import type { ApiEnterprise } from "@1771technologies/grid-types";
+import type { RowNodeLeaf } from "@1771technologies/grid-types/community";
+
+export function filterNodesComputed<D, E>(
+  api$: Signal<ApiEnterprise<D, E>>,
+  nodes: Signal<RowNodeLeaf<D>[]>,
+) {
+  const filteredNodes = computed(() => {
+    const api = api$.get();
+    const sx = api.getState();
+
+    const mode = sx.columnPivotModeIsOn.get();
+    const rowNodes = nodes.get();
+    const filterModel = mode ? sx.internal.columnPivotFilterModel.get() : sx.filterModel.get();
+
+    if (filterModel.length === 0) return rowNodes;
+
+    const filteredNodes: RowNodeLeaf<D>[] = [];
+    for (let i = 0; i < rowNodes.length; i++) {
+      if (!evaluateClientFilter(api, filterModel, rowNodes[i])) continue;
+      filteredNodes.push(rowNodes[i]);
+    }
+
+    return filteredNodes;
+  });
+
+  return filteredNodes;
+}
