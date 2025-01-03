@@ -1,5 +1,7 @@
-import type { RowDataSourceEnterprise } from "@1771technologies/grid-types";
+import type { ApiEnterprise, RowDataSourceEnterprise } from "@1771technologies/grid-types";
 import type { ColumnInFilterItemFetcher, ColumnPivotsFetcher, DataFetcher } from "./types";
+import { cascada, signal } from "@1771technologies/cascada";
+import { BlockGraph } from "../../../grid-community/grid-graph/src";
 
 export interface ServerDataSourceInitial<D, E> {
   readonly rowDataFetcher: DataFetcher<D, E>;
@@ -12,11 +14,51 @@ export interface ServerDataSourceInitial<D, E> {
 }
 
 export function createServerDataSource<D, E>(
-  _: ServerDataSourceInitial<D, E>,
+  init: ServerDataSourceInitial<D, E>,
 ): RowDataSourceEnterprise<D, E> {
+  const { store: state, dispose } = cascada(() => {
+    const api$ = signal(null as unknown as ApiEnterprise<D, E>);
+    const rowDataFetcher = init.rowDataFetcher;
+    const rowClearOutOfView = init.rowClearOutOfViewBlocks ?? false;
+    const rowClearOnCollapse = init.rowClearGroupChildrenOnCollapse ?? false;
+
+    const columnInFilterFetcher =
+      init.columnInFilterFetcher ??
+      (() => {
+        throw new Error(
+          "A `columnInFilterFetcher` function must be provided to support in filters when using the server data source.",
+        );
+      });
+
+    const columnPivotsFetcher =
+      init.columnPivotsFetcher ??
+      (() => {
+        throw new Error(
+          "A `columnPivotsFetcher` function must be provided to support column pivots when using the server data source.",
+        );
+      });
+
+    const graph = new BlockGraph(init.rowBlockSize ?? 100);
+
+    return {
+      api: api$,
+      rowDataFetcher,
+      graph,
+
+      rowClearOutOfView,
+      rowClearOnCollapse,
+
+      columnInFilterFetcher,
+      columnPivotsFetcher,
+    };
+  });
   return {
-    init: () => {},
-    clean: () => {},
+    init: (a) => {
+      state.api.set(a);
+    },
+    clean: () => {
+      dispose();
+    },
 
     rowById: () => null,
     rowByIndex: () => null,
