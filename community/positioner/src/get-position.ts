@@ -1,3 +1,4 @@
+import { getArrowPosition } from "./get-arrow-position";
 import { getCoordsFromPlacement } from "./get-coords-from-placement";
 import { getOffset } from "./get-offset";
 import type { Dimensions, OffsetValue, Placement, Rect, Side } from "./types";
@@ -8,7 +9,6 @@ export interface GetPositionArguments {
   floating: Dimensions;
   placement: Placement;
   arrow?: Dimensions;
-  arrowOffset?: number;
   offset?: OffsetValue;
   rtl?: boolean;
 }
@@ -18,6 +18,7 @@ export function getPosition({
   floating,
   placement,
   offset = 4,
+  arrow = { width: 0, height: 0 },
   rtl = false,
 }: GetPositionArguments) {
   const alignment = getAlignment(placement);
@@ -70,6 +71,7 @@ export function getPosition({
     y,
     width: floating.width,
     height: floating.height,
+    arrow: getArrowPosition(side, alignment, x, y, floating, arrow),
   };
 }
 

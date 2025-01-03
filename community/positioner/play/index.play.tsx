@@ -1,14 +1,17 @@
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getPosition } from "../src/get-position";
 import type { Placement } from "../src/types";
 
 export default function Play() {
   const [x, setX] = useState<HTMLElement | null>(null);
+  const [arrowEl, setArrowEl] = useState<HTMLElement | null>(null);
   const [ref, setRef] = useState<HTMLElement | null>(null);
   const [placement, setPlacement] = useState<Placement>("left");
 
-  useLayoutEffect(() => {
-    if (!x || !ref) return;
+  const [offset, setOffset] = useState(8);
+
+  useEffect(() => {
+    if (!x || !ref || !arrowEl) return;
 
     const reference = ref.getBoundingClientRect();
     const floating = x.getBoundingClientRect();
@@ -17,11 +20,16 @@ export default function Play() {
       floating,
       placement,
       reference,
+      offset,
+      arrow: { height: 12, width: 12 },
     });
 
     x.style.top = `${pos.y}px`;
     x.style.left = `${pos.x}px`;
-  }, [placement, ref, x]);
+
+    arrowEl.style.top = `${pos.arrow.y}px`;
+    arrowEl.style.left = `${pos.arrow.x}px`;
+  }, [arrowEl, offset, placement, ref, x]);
 
   return (
     <div>
@@ -46,6 +54,11 @@ export default function Play() {
       <button onClick={() => setPlacement("bottom")}>bottom</button>
       <button onClick={() => setPlacement("bottom-end")}>bottom-end</button>
 
+      <br />
+      <button onClick={() => setOffset((prev) => prev + 1)}>Inc</button>
+      <span>{offset}</span>
+      <button onClick={() => setOffset((prev) => prev - 1)}>Decr</button>
+
       <div
         className={css`
           width: 300px;
@@ -63,9 +76,19 @@ export default function Play() {
             height: 20px;
             background-color: red;
             position: fixed;
+            z-index: 2;
           `}
         >
-          X
+          <div
+            ref={setArrowEl}
+            className={css`
+              position: absolute;
+              width: 12px;
+              height: 12px;
+              background-color: blue;
+              z-index: -1;
+            `}
+          />
         </div>
         <div
           ref={setRef}
