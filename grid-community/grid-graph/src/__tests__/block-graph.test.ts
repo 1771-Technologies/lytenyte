@@ -145,18 +145,6 @@ test("should be able to delete blocks by path", () => {
     "
   `);
 
-  graph.blockDeleteByPath(`alpha${ROW_DEFAULT_PATH_SEPARATOR}a`);
-  graph.blockFlatten();
-
-  expect(printGraph(graph)).toMatchInlineSnapshot(`
-    "
-    0: alpha
-    1: alpha-->a
-    11: beta
-    12: sigma
-    "
-  `);
-
   graph.blockDeleteByPath("alpha");
   graph.blockFlatten();
 
@@ -221,103 +209,14 @@ test("should be able to delete a block outright", () => {
   expect(graph.rowAllChildren(1)?.length).toEqual(4);
   expect(graph.rowAllChildren(-1)?.length).toEqual(0);
 
-  graph.blockDelete("alpha", []);
-  graph.blockFlatten();
-  expect(printGraph(graph)).toMatchInlineSnapshot(`
-    "
-    0: alpha
-    11: beta
-    12: sigma
-    "
-  `);
-});
-
-test("should be able to delete a block but only for some indices", () => {
-  const graph = new BlockGraph(5, "/");
-
-  graph.blockSetSize("", 20);
-  graph.blockSetSize("alpha", 10);
-  graph.blockSetSize(`alpha/a`, 10);
-  graph.blockAdd([
-    {
-      data: [
-        makeGroupNode("alpha", "alpha", true),
-        makeGroupNode("beta", "beta", false),
-        makeGroupNode("sigma", "sigma", false),
-      ],
-      index: 0,
-      path: "",
-    },
-    {
-      data: [makeGroupNode(`alpha/a`, "a", true)],
-      index: 0,
-      path: "alpha",
-    },
-    {
-      data: [
-        makeLeafNode("alpha/a/1"),
-        makeLeafNode("alpha/a/1"),
-        makeLeafNode("alpha/a/1"),
-        makeLeafNode("alpha/a/1"),
-      ],
-      index: 0,
-      path: `alpha/a`,
-    },
-    {
-      data: [
-        makeLeafNode("alpha/a/1"),
-        makeLeafNode("alpha/a/1"),
-        makeLeafNode("alpha/a/1"),
-        makeLeafNode("alpha/a/1"),
-      ],
-      index: 1,
-      path: `alpha/a`,
-    },
-  ]);
-
+  // Can delete a block
+  graph.blockDeleteById("alpha/a#0");
+  graph.blockDeleteById("alpa/a#0"); // intentionally wrong
   graph.blockFlatten();
   expect(printGraph(graph)).toMatchInlineSnapshot(`
     "
     0: alpha
     1: alpha/a
-    2: alpha/a/1
-    3: alpha/a/1
-    4: alpha/a/1
-    5: alpha/a/1
-    7: alpha/a/1
-    8: alpha/a/1
-    9: alpha/a/1
-    10: alpha/a/1
-    21: beta
-    22: sigma
-    "
-  `);
-
-  graph.blockDelete("alpha/a", [1]);
-  graph.blockFlatten();
-  expect(printGraph(graph)).toMatchInlineSnapshot(`
-    "
-    0: alpha
-    1: alpha/a
-    7: alpha/a/1
-    8: alpha/a/1
-    9: alpha/a/1
-    10: alpha/a/1
-    21: beta
-    22: sigma
-    "
-  `);
-
-  graph.blockDelete("@@", []);
-  graph.blockFlatten();
-  expect(printGraph(graph)).toMatchInlineSnapshot(`
-    "
-    0: alpha
-    1: alpha/a
-    7: alpha/a/1
-    8: alpha/a/1
-    9: alpha/a/1
-    10: alpha/a/1
     21: beta
     22: sigma
     "

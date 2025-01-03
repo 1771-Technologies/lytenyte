@@ -11,7 +11,6 @@ import { blockStoreIsShrinking } from "./block-store/block-store-is-shrinking.js
 import { blockStoreResize } from "./block-store/block-store-resize.js";
 import { blockStoreTruncatePayloadIfNecessary } from "./block-store/block-store-truncate-payload-if-necessary.js";
 import { blockStoreUpdateNodes } from "./block-store/block-store-update-nodes.js";
-import { blockStoreDeleteByNodes } from "./block-store/block-store-delete-by-nodes.js";
 import type {
   RowNode,
   RowNodeLeaf,
@@ -439,21 +438,21 @@ export class BlockGraph<D> {
   };
 
   /**
-   * Deletes specific blocks at a path by their indices.
+   * Deletes a block by a given id. The id is the block's path plus a
+   * #n identifier. For example, x-->a#2 deletes the block key of x-->a
+   * of 2.
    *
-   * @param path - Path containing the blocks
-   * @param indices - Array of block indices to delete
+   * @param id - Id for the block to delete
    */
-  readonly blockDelete = (path: string, indices: number[]) => {
-    const blockStore = this.#blockPaths.get(path);
-    if (!blockStore) return;
+  readonly blockDeleteById = (id: string) => {
+    const parts = id.split("#");
+    const n = Number.parseInt(parts.at(-1)!);
+    const path = parts.slice(0, parts.length - 1).join("#");
 
-    for (const block of blockStore.map.values()) {
-      if (indices.includes(block.index)) continue;
+    const blockMap = this.#blockPaths.get(path);
+    if (!blockMap) return;
 
-      blockStoreDeleteByNodes(path, block.data, this.#blockPaths, this.#blockPathSeparator);
-      blockStore.map.delete(block.index);
-    }
+    blockMap.map.delete(n);
   };
 
   /**
