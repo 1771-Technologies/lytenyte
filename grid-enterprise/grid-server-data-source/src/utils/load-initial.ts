@@ -24,6 +24,11 @@ export function loadInitialData<D, E>(state: ServerState<D, E>) {
 
   loadBlockData(state, reqBlocks, {
     onFailure: () => sx.overlayToShow.set("lng1771-load-error-overlay"),
-    onSuccess: () => sx.overlayToShow.set(null),
+    onSuccess: () => {
+      sx.overlayToShow.set(null);
+
+      state.graph.blockFlatten();
+      api.rowRefresh();
+    },
   });
 }

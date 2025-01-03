@@ -31,6 +31,7 @@ export interface RowDataSourceEnterprise<A, D, C> {
 
   rowReload?: (rowIndex?: number) => void;
   rowReloadExpansion?: (row: RowNodeGroup) => void;
+  rowReset?: () => void;
 
   columnInFilterItems?: (column: C) => Promise<ColumnInFilterItem[]> | ColumnInFilterItem[];
 

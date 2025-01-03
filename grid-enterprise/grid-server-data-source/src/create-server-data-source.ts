@@ -117,7 +117,7 @@ export function createServerDataSource<D, E>(
 
   const watchers: (() => void)[] = [];
 
-  function reset() {
+  const reset = () => {
     state.graph.blockReset();
     state.blockLoadTimeLookup.set(new Map());
 
@@ -129,7 +129,11 @@ export function createServerDataSource<D, E>(
     state.requestedRows = new Set();
 
     loadInitialData(state);
-  }
+  };
+  const pivotReset = () => {
+    if (!state.api.peek().getState().columnPivotModeIsOn.peek()) return;
+    reset();
+  };
 
   const source: RowDataSourceEnterprise<D, E> = {
     init: (a) => {
@@ -142,6 +146,19 @@ export function createServerDataSource<D, E>(
           handleViewChange(state);
         }),
       );
+
+      const sx = a.getState();
+
+      watchers.push(sx.filterQuickSearch.watch(reset));
+      watchers.push(sx.rowGroupModel.watch(reset));
+      watchers.push(sx.columnPivotModeIsOn.watch(reset));
+      watchers.push(sx.sortModel.watch(reset));
+      watchers.push(sx.filterModel.watch(reset));
+
+      watchers.push(sx.internal.columnPivotSortModel.watch(pivotReset));
+      watchers.push(sx.internal.columnPivotFilterModel.watch(pivotReset));
+      watchers.push(sx.columnPivotModel.watch(pivotReset));
+      watchers.push(sx.measureModel.watch(pivotReset));
     },
     clean: () => {
       while (watchers.length) watchers.pop()!();
@@ -264,6 +281,12 @@ export function createServerDataSource<D, E>(
       const endIndex = Math.min(startIndex + pageOffset, rowCount - bottomCount);
 
       return [startIndex, endIndex];
+    },
+
+    rowReset: () => {
+      state.selectedIds.set(new Set());
+      state.rowGroupExpansions.clear();
+      reset();
     },
 
     rowReload: (r?: number) => {
