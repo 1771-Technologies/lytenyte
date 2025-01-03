@@ -7,6 +7,7 @@ export default function Play() {
   const [arrowEl, setArrowEl] = useState<HTMLElement | null>(null);
   const [ref, setRef] = useState<HTMLElement | null>(null);
   const [placement, setPlacement] = useState<Placement>("left");
+  const [rtl, setRtl] = useState(false);
 
   const [offset, setOffset] = useState(8);
 
@@ -22,17 +23,20 @@ export default function Play() {
       reference,
       offset,
       arrow: { height: 12, width: 12 },
+      rtl,
     });
 
     x.style.top = `${pos.y}px`;
-    x.style.left = `${pos.x}px`;
+    x.style.insetInlineStart = `${pos.x}px`;
 
     arrowEl.style.top = `${pos.arrow.y}px`;
-    arrowEl.style.left = `${pos.arrow.x}px`;
-  }, [arrowEl, offset, placement, ref, x]);
+    arrowEl.style.insetInlineStart = `${pos.arrow.x}px`;
+  }, [arrowEl, offset, placement, ref, rtl, x]);
 
   return (
     <div>
+      <button onClick={() => setRtl((prev) => !prev)}>Rtl: {rtl ? "on" : "off"}</button>
+      <br />
       <button onClick={() => setPlacement("left-start")}>left-start</button>
       <button onClick={() => setPlacement("left")}>left</button>
       <button onClick={() => setPlacement("left-end")}>left-end</button>
