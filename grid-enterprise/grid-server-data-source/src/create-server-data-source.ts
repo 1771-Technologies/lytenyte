@@ -1,8 +1,13 @@
 import type { ApiEnterprise, RowDataSourceEnterprise } from "@1771technologies/grid-types";
-import type { ColumnInFilterItemFetcher, ColumnPivotsFetcher, DataFetcher } from "./types";
-import { cascada, signal } from "@1771technologies/cascada";
-import { BlockGraph } from "../../../grid-community/grid-graph/src";
+import type {
+  AsyncDataErrorBlock,
+  ColumnInFilterItemFetcher,
+  ColumnPivotsFetcher,
+  DataFetcher,
+} from "./types";
+import { cascada, signal, type Signal } from "@1771technologies/cascada";
 import type { RowNode } from "@1771technologies/grid-types/community";
+import { BlockGraph } from "@1771technologies/grid-graph";
 
 export interface ServerDataSourceInitial<D, E> {
   readonly rowDataFetcher: DataFetcher<D, E>;
@@ -12,6 +17,20 @@ export interface ServerDataSourceInitial<D, E> {
   readonly rowClearOutOfViewBlocks?: boolean;
   readonly columnInFilterFetcher?: ColumnInFilterItemFetcher<D, E>;
   readonly columnPivotsFetcher?: ColumnPivotsFetcher<D, E>;
+}
+
+export interface ServerState<D, E> {
+  readonly rowDataFetcher: DataFetcher<D, E>;
+  readonly rowClearOutOfView: boolean;
+  readonly rowClearOnCollapse: boolean;
+  readonly columnInFilterFetcher: ColumnInFilterItemFetcher<D, E>;
+  readonly columnPivotsFetcher: ColumnPivotsFetcher<D, E>;
+
+  readonly selectedIds: Signal<Set<string>>;
+
+  readonly api: Signal<ApiEnterprise<D, E>>;
+  readonly graph: BlockGraph<D>;
+  readonly errorCache: Signal<AsyncDataErrorBlock[]>;
 }
 
 export function createServerDataSource<D, E>(
@@ -41,12 +60,16 @@ export function createServerDataSource<D, E>(
 
     const graph = new BlockGraph<D>(init.rowBlockSize ?? 100);
 
+    const errorCache = signal<AsyncDataErrorBlock[]>([]);
+
     const selectedIds = signal(new Set<string>());
 
     return {
       api: api$,
       rowDataFetcher,
       graph,
+
+      errorCache,
 
       selectedIds,
 
@@ -55,7 +78,7 @@ export function createServerDataSource<D, E>(
 
       columnInFilterFetcher,
       columnPivotsFetcher,
-    };
+    } satisfies ServerState<D, E>;
   });
   const source: RowDataSourceEnterprise<D, E> = {
     init: (a) => {

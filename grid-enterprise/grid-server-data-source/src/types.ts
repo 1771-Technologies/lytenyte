@@ -16,6 +16,12 @@ export type AsyncDataBlock = {
   readonly expansions?: Record<string, boolean>;
 };
 
+export type AsyncDataErrorBlock = {
+  readonly blockKey: number;
+  readonly reqTime?: number;
+  readonly path?: string[];
+};
+
 export type AsyncDataBlockPinned = {
   readonly reqTime: number;
   readonly frame: {
@@ -34,12 +40,12 @@ export type AsyncDataBlockTotal = {
 export type AsyncDataResponse = {
   readonly rootCount?: number;
   readonly reqTime: number;
-  readonly blocks: AsyncDataBlock;
+  readonly blocks: (AsyncDataBlock | AsyncDataErrorBlock)[];
   readonly topBlock?: AsyncDataBlockPinned;
   readonly bottomBlock?: AsyncDataBlockPinned;
 };
 
-export interface RequestBlock {
+export interface AsyncDataRequestBlock {
   readonly blockKey: number;
   readonly path: string[];
   readonly rowStart: number;
@@ -50,7 +56,7 @@ export interface RequestBlock {
 
 export interface DataFetcherParams<D, E> {
   readonly api: ApiEnterprise<D, E>;
-  readonly requestBlocks: RequestBlock[];
+  readonly requestBlocks: AsyncDataRequestBlock[];
   readonly reqTime: number;
 }
 
