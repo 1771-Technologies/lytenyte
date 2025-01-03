@@ -11,19 +11,16 @@ export type AsyncDataBlock = {
     readonly kinds: (RowGroupKind | RowLeafKind)[];
     readonly childCounts: number[];
   };
-  readonly reqTime?: number;
   readonly path?: string[];
   readonly expansions?: Record<string, boolean>;
 };
 
 export type AsyncDataErrorBlock = {
   readonly blockKey: number;
-  readonly reqTime?: number;
   readonly path?: string[];
 };
 
 export type AsyncDataBlockPinned = {
-  readonly reqTime: number;
   readonly frame: {
     readonly data: unknown[];
     readonly ids: string[];
@@ -31,7 +28,6 @@ export type AsyncDataBlockPinned = {
 };
 
 export type AsyncDataBlockTotal = {
-  readonly reqTime: number;
   readonly frame: {
     readonly data: unknown;
   };
@@ -43,6 +39,7 @@ export type AsyncDataResponse = {
   readonly blocks: (AsyncDataBlock | AsyncDataErrorBlock)[];
   readonly topBlock?: AsyncDataBlockPinned;
   readonly bottomBlock?: AsyncDataBlockPinned;
+  readonly totalBlock?: AsyncDataBlockTotal;
 };
 
 export interface AsyncDataRequestBlock {

@@ -25,6 +25,10 @@ export interface ServerState<D, E> {
   readonly rowClearOnCollapse: boolean;
   readonly columnInFilterFetcher: ColumnInFilterItemFetcher<D, E>;
   readonly columnPivotsFetcher: ColumnPivotsFetcher<D, E>;
+  readonly blockSize: number;
+  readonly controller: Signal<AbortController>;
+
+  readonly blockLoadTimeLookup: Signal<Map<string, number>>;
 
   readonly selectedIds: Signal<Set<string>>;
 
@@ -58,20 +62,27 @@ export function createServerDataSource<D, E>(
         );
       });
 
-    const graph = new BlockGraph<D>(init.rowBlockSize ?? 100);
+    const blockSize = init.rowBlockSize ?? 100;
+    const graph = new BlockGraph<D>(blockSize);
 
     const errorCache = signal<AsyncDataErrorBlock[]>([]);
 
     const selectedIds = signal(new Set<string>());
 
+    const controller = signal(new AbortController());
+    const blockLoadTimeLookup = signal(new Map<string, number>());
+
     return {
       api: api$,
       rowDataFetcher,
       graph,
+      blockSize,
+      controller,
 
       errorCache,
 
       selectedIds,
+      blockLoadTimeLookup,
 
       rowClearOutOfView,
       rowClearOnCollapse,
