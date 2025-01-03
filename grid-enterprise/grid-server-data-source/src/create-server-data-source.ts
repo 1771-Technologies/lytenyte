@@ -15,6 +15,7 @@ import { getRowGroupPath } from "./utils/get-row-group-path";
 import { loadRowExpansion } from "./utils/load-row-expansion";
 import { getAsyncDataRequestBlocks } from "./utils/get-async-data-request-blocks";
 import { loadBlockData } from "./utils/load-block-data";
+import { loadInitialData } from "./utils/load-initial";
 
 export interface ServerDataSourceInitial<D, E> {
   readonly rowDataFetcher: DataFetcher<D, E>;
@@ -45,7 +46,6 @@ export interface ServerState<D, E> {
 
   readonly api: Signal<ApiEnterprise<D, E>>;
   readonly graph: BlockGraph<D>;
-  readonly errorCache: Signal<string[]>;
 
   readonly currentView: ReadonlySignal<AsyncDataRequestBlock[]>;
   readonly previousView: Signal<AsyncDataRequestBlock[]>;
@@ -83,8 +83,6 @@ export function createServerDataSource<D, E>(
     const separator = init.rowPathSeparator ?? ROW_DEFAULT_PATH_SEPARATOR;
     const graph = new BlockGraph<D>(blockSize, separator);
 
-    const errorCache = signal<string[]>([]);
-
     const selectedIds = signal(new Set<string>());
 
     const controller = signal(new AbortController());
@@ -99,8 +97,6 @@ export function createServerDataSource<D, E>(
       graph,
       blockSize,
       controller,
-
-      errorCache,
 
       selectedIds,
       blockLoadTimeLookup,
@@ -121,9 +117,25 @@ export function createServerDataSource<D, E>(
 
   const watchers: (() => void)[] = [];
 
+  function reset() {
+    state.graph.blockReset();
+    state.blockLoadTimeLookup.set(new Map());
+
+    state.controller.peek().abort();
+    state.controller.set(new AbortController());
+
+    state.previousView.set([]);
+    state.requestedBlocks = new Set();
+    state.requestedRows = new Set();
+
+    loadInitialData(state);
+  }
+
   const source: RowDataSourceEnterprise<D, E> = {
     init: (a) => {
       state.api.set(a);
+
+      reset();
 
       watchers.push(
         state.currentView.watch(() => {
@@ -133,7 +145,6 @@ export function createServerDataSource<D, E>(
     },
     clean: () => {
       while (watchers.length) watchers.pop()!();
-
       dispose();
     },
 
@@ -169,6 +180,8 @@ export function createServerDataSource<D, E>(
       if (next === row.expanded) return;
 
       (row as { expanded: boolean }).expanded = next;
+
+      state.rowGroupExpansions.set(row.id, next);
 
       if (next == false && state.rowClearOnCollapse) {
         const path = getRowGroupPath(state, row);

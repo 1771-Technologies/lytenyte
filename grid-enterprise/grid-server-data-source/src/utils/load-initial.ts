@@ -16,8 +16,11 @@ export function loadInitialData<D, E>(state: ServerState<D, E>) {
       blockEnd: state.blockSize,
       rowStart: 0,
       rowEnd: state.blockSize,
+      id: "#0",
     },
   ];
+
+  state.requestedBlocks.add("#0");
 
   loadBlockData(state, reqBlocks, {
     onFailure: () => sx.overlayToShow.set("lng1771-load-error-overlay"),
