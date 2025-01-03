@@ -1,5 +1,5 @@
-import type { Alignment, OffsetValue, Side } from "./types";
-import { getAxis } from "./utils";
+import type { Alignment, OffsetValue, Side } from "./types.js";
+import { getAxis } from "./utils.js";
 
 /**
  * Calculates positioning offsets for a floating element based on its placement,

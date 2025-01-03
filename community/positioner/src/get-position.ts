@@ -1,8 +1,8 @@
-import { getArrowPosition } from "./get-arrow-position";
-import { getCoordsFromPlacement } from "./get-coords-from-placement";
-import { getOffset } from "./get-offset";
-import type { Dimensions, OffsetValue, Placement, Rect, Side } from "./types";
-import { getAlignment, getAxis, getOppositeAxis, getSide } from "./utils";
+import { getArrowPosition } from "./get-arrow-position.js";
+import { getCoordsFromPlacement } from "./get-coords-from-placement.js";
+import { getOffset } from "./get-offset.js";
+import type { Dimensions, OffsetValue, Placement, Rect, Side } from "./types.js";
+import { getAlignment, getAxis, getOppositeAxis, getSide } from "./utils.js";
 
 /**
  * Arguments for calculating the optimal position of a floating element relative to a reference element.

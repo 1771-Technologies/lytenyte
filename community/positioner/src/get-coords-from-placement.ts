@@ -22,8 +22,8 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import { getAlignmentAxis, getAxis, getAxisLength } from "./utils";
-import type { Alignment, Coords, Dimensions, Rect, Side } from "./types";
+import { getAlignmentAxis, getAxis, getAxisLength } from "./utils.js";
+import type { Alignment, Coords, Dimensions, Rect, Side } from "./types.js";
 
 /**
  * Calculates the coordinates for positioning a floating element relative to a reference element

@@ -1,5 +1,5 @@
-import type { Alignment, Dimensions, Side } from "./types";
-import { getAxis, getOppositePlacement } from "./utils";
+import type { Alignment, Dimensions, Side } from "./types.js";
+import { getAxis, getOppositePlacement } from "./utils.js";
 
 /**
  * Calculates the position of an arrow element relative to a floating element based on
