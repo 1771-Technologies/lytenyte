@@ -10,6 +10,9 @@ import type { RowNode } from "@1771technologies/grid-types/community";
 import { BlockGraph } from "@1771technologies/grid-graph";
 import { ROW_DEFAULT_PATH_SEPARATOR } from "@1771technologies/grid-constants";
 import { currentViewComputed } from "./utils/current-view-computed";
+import { handleViewChange } from "./utils/handle-view-change";
+import { getRowGroupPath } from "./utils/get-row-group-path";
+import { loadRowExpansion } from "./utils/load-row-expansion";
 
 export interface ServerDataSourceInitial<D, E> {
   readonly rowDataFetcher: DataFetcher<D, E>;
@@ -44,6 +47,9 @@ export interface ServerState<D, E> {
 
   readonly currentView: ReadonlySignal<AsyncDataRequestBlock[]>;
   readonly previousView: Signal<AsyncDataRequestBlock[]>;
+
+  requestedBlocks: Set<string>;
+  requestedRows: Set<number>;
 }
 
 export function createServerDataSource<D, E>(
@@ -98,6 +104,8 @@ export function createServerDataSource<D, E>(
       blockLoadTimeLookup,
       currentView,
       previousView,
+      requestedBlocks: new Set(),
+      requestedRows: new Set(),
 
       rowClearOutOfView,
       rowClearOnCollapse,
@@ -115,7 +123,11 @@ export function createServerDataSource<D, E>(
     init: (a) => {
       state.api.set(a);
 
-      watchers.push(state.currentView.watch(() => {}));
+      watchers.push(
+        state.currentView.watch(() => {
+          handleViewChange(state);
+        }),
+      );
     },
     clean: () => {
       while (watchers.length) watchers.pop()!();
@@ -156,8 +168,20 @@ export function createServerDataSource<D, E>(
 
       (row as { expanded: boolean }).expanded = next;
 
-      state.graph.blockFlatten();
-      api.rowRefresh();
+      if (next == false && state.rowClearOnCollapse) {
+        const path = getRowGroupPath(state, row);
+        if (path.length) {
+          state.graph.blockDeleteByPath(path.join(state.rowPathSeparator));
+        }
+
+        state.graph.blockFlatten();
+        api.rowRefresh();
+      } else if (next == false) {
+        state.graph.blockFlatten();
+        api.rowRefresh();
+      } else {
+        loadRowExpansion(state, row);
+      }
     },
 
     rowSelectionAllRowsSelected: () => false,
@@ -228,8 +252,7 @@ export function createServerDataSource<D, E>(
     },
 
     rowReload: () => {},
-    rowRetryExpansion: () => {},
-    rowRetryFailed: () => {},
+    rowReloadExpansion: () => {},
 
     // Server data source is read only
     rowSetData: () => {},

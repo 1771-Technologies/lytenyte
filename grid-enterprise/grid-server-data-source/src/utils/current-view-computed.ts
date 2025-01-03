@@ -13,13 +13,26 @@ export function currentViewComputed<D, E>(
   return computed(() => {
     const api = api$.get();
     const sx = api.getState();
-    const virtBounds = sx.internal.virtBounds.get();
 
-    if (virtBounds.rowStart === virtBounds.rowEnd) return [];
+    let rowStart: number;
+    let rowEnd: number;
+    if (sx.paginate.get()) {
+      const currentPage = sx.paginateCurrentPage.get();
+      const pageSize = sx.paginatePageSize.get();
+
+      rowStart = currentPage * pageSize;
+      rowEnd = rowStart + pageSize;
+    } else {
+      const virtBounds = sx.internal.virtBounds.get();
+      rowStart = virtBounds.rowStart;
+      rowEnd = virtBounds.rowEnd;
+    }
+
+    if (rowStart === rowEnd) return [];
 
     const seenBlocks = new Set();
     const requests: AsyncDataRequestBlock[] = [];
-    for (let i = virtBounds.rowStart; i < virtBounds.rowEnd; i++) {
+    for (let i = rowStart; i < rowEnd; i++) {
       const ranges = graph.rowRangesForIndex(i);
 
       for (let i = ranges.length - 2; i >= 0; i--) {

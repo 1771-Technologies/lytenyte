@@ -29,9 +29,8 @@ export interface RowDataSourceEnterprise<A, D, C> {
   rowReplaceTopData?: (d: D[]) => void;
   rowReplaceBottomData?: (d: D[]) => void;
 
-  rowReload?: () => void;
-  rowRetryFailed?: () => void;
-  rowRetryExpansion?: (row: RowNodeGroup) => void;
+  rowReload?: (rowIndex?: number) => void;
+  rowReloadExpansion?: (row: RowNodeGroup) => void;
 
   columnInFilterItems?: (column: C) => Promise<ColumnInFilterItem[]> | ColumnInFilterItem[];
 
