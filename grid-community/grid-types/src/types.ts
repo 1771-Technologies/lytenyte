@@ -443,7 +443,11 @@ export type Position =
   | PositionHeaderGroupCell;
 
 // Overlays
-export type OverlayId = "lng1771-loading-overlay" | "lng1771-no-data-overlay" | (string & {});
+export type OverlayId =
+  | "lng1771-loading-overlay"
+  | "lng1771-no-data-overlay"
+  | "lng1771-load-error-overlay"
+  | (string & {});
 
 export type OverlayRendererParams<A> = {
   readonly api: A;
