@@ -39,6 +39,7 @@ export type AsyncDataResponse = {
 };
 
 export interface AsyncDataRequestBlock {
+  readonly id: string;
   readonly blockKey: number;
   readonly path: string[];
   readonly rowStart: number;

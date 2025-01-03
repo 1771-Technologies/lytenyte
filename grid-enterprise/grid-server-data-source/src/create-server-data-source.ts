@@ -1,9 +1,15 @@
 import type { ApiEnterprise, RowDataSourceEnterprise } from "@1771technologies/grid-types";
-import type { ColumnInFilterItemFetcher, ColumnPivotsFetcher, DataFetcher } from "./types";
-import { cascada, signal, type Signal } from "@1771technologies/cascada";
+import type {
+  AsyncDataRequestBlock,
+  ColumnInFilterItemFetcher,
+  ColumnPivotsFetcher,
+  DataFetcher,
+} from "./types";
+import { cascada, signal, type ReadonlySignal, type Signal } from "@1771technologies/cascada";
 import type { RowNode } from "@1771technologies/grid-types/community";
 import { BlockGraph } from "@1771technologies/grid-graph";
 import { ROW_DEFAULT_PATH_SEPARATOR } from "@1771technologies/grid-constants";
+import { currentViewComputed } from "./utils/current-view-computed";
 
 export interface ServerDataSourceInitial<D, E> {
   readonly rowDataFetcher: DataFetcher<D, E>;
@@ -21,20 +27,22 @@ export interface ServerState<D, E> {
   readonly rowClearOutOfView: boolean;
   readonly rowClearOnCollapse: boolean;
   readonly rowPathSeparator: string;
-  readonly columnInFilterFetcher: ColumnInFilterItemFetcher<D, E>;
-  readonly columnPivotsFetcher: ColumnPivotsFetcher<D, E>;
-  readonly blockSize: number;
-  readonly controller: Signal<AbortController>;
-
   readonly rowGroupExpansions: Map<string, boolean>;
 
+  readonly columnInFilterFetcher: ColumnInFilterItemFetcher<D, E>;
+  readonly columnPivotsFetcher: ColumnPivotsFetcher<D, E>;
+
+  readonly blockSize: number;
   readonly blockLoadTimeLookup: Signal<Map<string, number>>;
 
+  readonly controller: Signal<AbortController>;
   readonly selectedIds: Signal<Set<string>>;
 
   readonly api: Signal<ApiEnterprise<D, E>>;
   readonly graph: BlockGraph<D>;
   readonly errorCache: Signal<string[]>;
+
+  readonly currentView: ReadonlySignal<AsyncDataRequestBlock[]>;
 }
 
 export function createServerDataSource<D, E>(
@@ -73,6 +81,8 @@ export function createServerDataSource<D, E>(
     const controller = signal(new AbortController());
     const blockLoadTimeLookup = signal(new Map<string, number>());
 
+    const currentView = currentViewComputed(api$, graph, blockSize, separator);
+
     return {
       api: api$,
       rowDataFetcher,
@@ -84,6 +94,7 @@ export function createServerDataSource<D, E>(
 
       selectedIds,
       blockLoadTimeLookup,
+      currentView,
 
       rowClearOutOfView,
       rowClearOnCollapse,
