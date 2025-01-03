@@ -1,7 +1,7 @@
 import { getCoordsFromPlacement } from "./get-coords-from-placement";
 import { getOffset } from "./get-offset";
 import type { Dimensions, OffsetValue, Placement, Rect, Side } from "./types";
-import { getAlignment, getAxis, getOppositeAxis, getOppositePlacement, getSide } from "./utils";
+import { getAlignment, getAxis, getOppositeAxis, getSide } from "./utils";
 
 export interface GetPositionArguments {
   reference: Rect;
@@ -18,8 +18,6 @@ export function getPosition({
   floating,
   placement,
   offset = 4,
-  arrowOffset = 0,
-  arrow = { width: 0, height: 0 },
   rtl = false,
 }: GetPositionArguments) {
   const alignment = getAlignment(placement);
@@ -67,42 +65,11 @@ export function getPosition({
     if (y + floating.height > window.innerHeight) y -= y + floating.height - window.innerHeight;
   }
 
-  // Calculate arrow position
-  const arrowPlacement = getOppositePlacement(side);
-  let arrowX = x;
-  let arrowY = y;
-
-  // Center the arrow on its axis
-  if (getAxis(arrowPlacement) === "y") {
-    // For left/right placement, center arrow vertically
-    arrowX = arrowPlacement === "left" ? x - arrow.width : x + floating.width;
-    arrowY = y + floating.height / 2 - arrow.height / 2;
-
-    // Constrain arrow to stay within floating element bounds
-    const minY = y + arrowOffset;
-    const maxY = y + floating.height - arrow.height - arrowOffset;
-    arrowY = Math.max(minY, Math.min(maxY, arrowY));
-  } else {
-    // For top/bottom placement, center arrow horizontally
-    arrowX = x + floating.width / 2 - arrow.width / 2;
-    arrowY = arrowPlacement === "top" ? y - arrow.height : y + floating.height;
-
-    // Constrain arrow to stay within floating element bounds
-    const minX = x + arrowOffset;
-    const maxX = x + floating.width - arrow.width - arrowOffset;
-    arrowX = Math.max(minX, Math.min(maxX, arrowX));
-  }
-
   return {
     x,
     y,
     width: floating.width,
     height: floating.height,
-    arrow: {
-      x: arrowX,
-      y: arrowY,
-      placement: arrowPlacement,
-    },
   };
 }
 
