@@ -429,6 +429,16 @@ export class BlockGraph<D> {
   };
 
   /**
+   * Checks if the block has been loaded into the graph
+   *
+   * @param path the path of the block to check
+   * @param n the block index to check
+   */
+  readonly blockContains = (path: string, n: number) => {
+    return !!this.#blockPaths.get(path)?.map.has(n);
+  };
+
+  /**
    * Deletes a block and its descendants at the specified path.
    *
    * @param path - Path of the block to delete

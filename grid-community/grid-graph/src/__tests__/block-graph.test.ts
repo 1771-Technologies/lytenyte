@@ -66,6 +66,10 @@ test("block graph for flat data", () => {
     "
   `);
 
+  expect(graph.blockContains("", 2)).toEqual(true);
+  expect(graph.blockContains("", 1)).toEqual(false);
+  expect(graph.blockContains("abc", 1)).toEqual(false);
+
   expect(graph.rowIdToRowIndex("ax")).toEqual(20);
   expect(graph.rowIdToRowIndex("wx")).toEqual(undefined);
 
