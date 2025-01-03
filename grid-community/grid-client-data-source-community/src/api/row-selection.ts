@@ -4,6 +4,7 @@ import { rowById } from "./row-by-id";
 
 export function rowSelection<D, E>(state: ClientState<D, E>) {
   return {
+    rowSelectionSelectAllSupported: () => true,
     rowSelectionSelectAll: () => {
       const graph = state.graph.peek();
       const allRows = graph.rowGetAllRows();

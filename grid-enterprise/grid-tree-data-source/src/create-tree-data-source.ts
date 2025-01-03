@@ -152,6 +152,7 @@ export function createTreeDataSource<D, E>(
     rowSelectionIsSelected: selection.rowSelectionIsSelected,
     rowSelectionSelect: selection.rowSelectionSelect,
     rowSelectionSelectAll: selection.rowSelectionSelectAll,
+    rowSelectionSelectAllSupported: selection.rowSelectionSelectAllSupported,
 
     columnInFilterItems: () => [],
     rowBottomCount: () => state.graph.peek().rowBotCount(),
@@ -159,7 +160,7 @@ export function createTreeDataSource<D, E>(
     rowCount: () => state.graph.peek().rowCount(),
 
     // Not relevant for the tree data source
-    columnPivotGetDefinitions: () => [],
+    columnPivots: () => [],
     paginateGetCount: () => 0,
     paginateRowStartAndEndForPage: () => [0, 0],
 

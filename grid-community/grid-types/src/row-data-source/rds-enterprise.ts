@@ -48,6 +48,7 @@ export interface RowDataSourceEnterprise<A, D, C> {
   rowSelectionAllRowsSelected: () => boolean;
   rowSelectionSelectAll: () => void;
   rowSelectionClear: () => void;
+  rowSelectionSelectAllSupported: () => boolean;
 
   // column pivot support
   columnPivots?: (api: A) => MaybePromise<C[]>;

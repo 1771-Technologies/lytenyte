@@ -2,6 +2,7 @@ import type { ApiEnterprise, RowDataSourceEnterprise } from "@1771technologies/g
 import type { ColumnInFilterItemFetcher, ColumnPivotsFetcher, DataFetcher } from "./types";
 import { cascada, signal } from "@1771technologies/cascada";
 import { BlockGraph } from "../../../grid-community/grid-graph/src";
+import type { RowNode } from "@1771technologies/grid-types/community";
 
 export interface ServerDataSourceInitial<D, E> {
   readonly rowDataFetcher: DataFetcher<D, E>;
@@ -38,12 +39,16 @@ export function createServerDataSource<D, E>(
         );
       });
 
-    const graph = new BlockGraph(init.rowBlockSize ?? 100);
+    const graph = new BlockGraph<D>(init.rowBlockSize ?? 100);
+
+    const selectedIds = signal(new Set<string>());
 
     return {
       api: api$,
       rowDataFetcher,
       graph,
+
+      selectedIds,
 
       rowClearOutOfView,
       rowClearOnCollapse,
@@ -52,7 +57,7 @@ export function createServerDataSource<D, E>(
       columnPivotsFetcher,
     };
   });
-  return {
+  const source: RowDataSourceEnterprise<D, E> = {
     init: (a) => {
       state.api.set(a);
     },
@@ -60,34 +65,109 @@ export function createServerDataSource<D, E>(
       dispose();
     },
 
-    rowById: () => null,
-    rowByIndex: () => null,
-    rowGetMany: () => [],
+    rowById: (id) => state.graph.rowById(id),
+    rowByIndex: (r) => state.graph.rowByIndex(r),
+    rowGetMany: (s, e) => {
+      const rows: RowNode<D>[] = [];
 
-    rowChildCount: () => 0,
-    rowDepth: () => 0,
-    rowParentIndex: () => null,
+      for (let i = s; i < e; i++) {
+        const row = state.graph.rowByIndex(i);
+        if (row) rows.push(row);
+      }
 
-    rowGroupToggle: () => {},
+      return rows;
+    },
+
+    rowChildCount: (r) => state.graph.rowChildCount(r),
+    rowDepth: (r) => Math.max(state.graph.rowRangesForIndex(r).length - 1, 0),
+    rowParentIndex: (r) => {
+      const range = state.graph.rowRangesForIndex(r).at(-1);
+      if (!range) return null;
+
+      const parentIndex = range.rowStart - 1;
+      return parentIndex === -1 ? null : parentIndex;
+    },
+
+    rowGroupToggle: (id, toggleState) => {
+      const api = state.api.peek();
+      const row = state.graph.rowById(id);
+      if (!row || !api.rowIsGroup(row)) return;
+
+      const next = toggleState != null ? toggleState : !row.expanded;
+      if (next === row.expanded) return;
+
+      (row as { expanded: boolean }).expanded = next;
+
+      state.graph.blockFlatten();
+      api.rowRefresh();
+    },
 
     rowSelectionAllRowsSelected: () => false,
-    rowSelectionClear: () => {},
-    rowSelectionDeselect: () => {},
-    rowSelectionGetSelected: () => [],
+    rowSelectionSelectAllSupported: () => false,
+    rowSelectionClear: () => {
+      state.selectedIds.set(new Set());
+      state.api.peek().rowRefresh();
+    },
+    rowSelectionDeselect: (ids) => {
+      const selectedIds = state.selectedIds.peek();
+      for (let i = 0; i < ids.length; i++) selectedIds.delete(ids[i]);
+
+      state.api.peek().rowRefresh();
+    },
+    rowSelectionGetSelected: () => {
+      const selected = state.selectedIds.peek();
+      return [...selected];
+    },
     rowSelectionIsIndeterminate: () => false,
-    rowSelectionIsSelected: () => false,
-    rowSelectionSelect: () => {},
+    rowSelectionIsSelected: (id) => {
+      return state.selectedIds.peek().has(id);
+    },
+    rowSelectionSelect: (ids: string[]) => {
+      const selectedIds = state.selectedIds.peek();
+      for (let i = 0; i < ids.length; i++) selectedIds.add(ids[i]);
+
+      state.api.peek().rowRefresh();
+    },
     rowSelectionSelectAll: () => {},
 
-    columnInFilterItems: () => [],
-    columnPivots: () => [],
+    columnInFilterItems: (column) => state.columnInFilterFetcher({ api: state.api.peek(), column }),
+    columnPivots: () => state.columnPivotsFetcher({ api: state.api.peek() }),
 
-    rowBottomCount: () => 0,
-    rowCount: () => 0,
-    rowTopCount: () => 0,
+    rowBottomCount: () => state.graph.rowBotCount(),
+    rowCount: () => state.graph.rowCount(),
+    rowTopCount: () => state.graph.rowTopCount(),
 
-    paginateGetCount: () => 0,
-    paginateRowStartAndEndForPage: () => [0, 0],
+    paginateGetCount: () => {
+      const pageSize = state.api.peek().getState().paginatePageSize.peek();
+      const graph = state.graph;
+
+      const flatCount = graph.rowCount() - graph.rowTopCount() - graph.rowBotCount();
+
+      const pageCount = Math.ceil(flatCount / pageSize);
+      return pageCount;
+    },
+    paginateRowStartAndEndForPage: (page) => {
+      const pageCount = source.paginateGetCount!();
+
+      if (page > pageCount) {
+        throw new Error(`There are only ${pageCount} pages, but page ${page} was requested`);
+      }
+
+      const graph = state.graph;
+      const topCount = graph.rowTopCount();
+      const bottomCount = graph.rowBotCount();
+      const rowCount = graph.rowCount();
+
+      const api = state.api.peek();
+      const sx = api.getState();
+
+      const pageOffset = sx.paginatePageSize.peek();
+
+      const startIndex = page * pageOffset + topCount;
+      const endIndex = Math.min(startIndex + pageOffset, rowCount - bottomCount);
+
+      return [startIndex, endIndex];
+    },
 
     rowReload: () => {},
     rowRetryExpansion: () => {},
@@ -100,4 +180,6 @@ export function createServerDataSource<D, E>(
     rowReplaceTopData: () => {},
     rowReplaceData: () => {},
   };
+
+  return source;
 }

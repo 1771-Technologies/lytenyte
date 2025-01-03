@@ -177,6 +177,7 @@ export function createClientDataSource<D, E>(
     rowSelectionIsSelected: selected.rowSelectionIsSelected,
     rowSelectionSelect: selected.rowSelectionSelect,
     rowSelectionSelectAll: selected.rowSelectionSelectAll,
+    rowSelectionSelectAllSupported: selected.rowSelectionSelectAllSupported,
 
     columnInFilterItems: (c) => columnInFilterItems(state, c),
     columnPivots: () => {

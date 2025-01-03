@@ -7,10 +7,6 @@ export function paginateGetCount<D, E>(state: ClientState<D, E>) {
 
   const pageSize = sx.paginatePageSize.peek();
 
-  if (pageSize <= 0) {
-    throw new Error("The pagination size should be greater than 0.");
-  }
-
   const flatCount = graph.rowCount() - graph.rowTopCount() - graph.rowBotCount();
 
   const pageCount = Math.ceil(flatCount / pageSize);

@@ -69,4 +69,4 @@ export interface ColumnPivotsFetcherParams<D, E> {
 }
 export type ColumnPivotsFetcher<D, E> = (
   p: ColumnPivotsFetcherParams<D, E>,
-) => Promise<ColumnEnterprise<D, E>>;
+) => Promise<ColumnEnterprise<D, E>[]>;
