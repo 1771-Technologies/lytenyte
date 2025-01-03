@@ -1,7 +1,7 @@
 import type { ServerState } from "../create-server-data-source";
 import { loadBlockData } from "./load-block-data";
 
-export function handleViewChange<D, E>(state: ServerState<D, E>) {
+export function handleViewChange<D, E>(state: ServerState<D, E>, force?: boolean) {
   const currentView = state.currentView.peek();
   const previousView = state.previousView.peek();
 
@@ -17,7 +17,9 @@ export function handleViewChange<D, E>(state: ServerState<D, E>) {
   }
 
   const requestedIds = state.requestedBlocks;
-  const blocksToRequest = currentView.filter((c) => newIds.has(c.id) && !requestedIds.has(c.id));
+  const blocksToRequest = force
+    ? currentView
+    : currentView.filter((c) => newIds.has(c.id) && !requestedIds.has(c.id));
 
   const rowsBeingRequest = new Set<number>();
 
@@ -31,10 +33,14 @@ export function handleViewChange<D, E>(state: ServerState<D, E>) {
   loadBlockData(state, blocksToRequest, {
     onFailure: () => {
       blocksToRequest.forEach((b) => requestedIds.delete(b.id));
+
+      state.api.peek().rowRefresh();
     },
     onSuccess: () => {
       // Remove the rows from our requested rows
       state.requestedRows = state.requestedRows.intersection(rowsBeingRequest);
+      state.graph.blockFlatten();
+      state.api.peek().rowRefresh();
     },
   });
 }

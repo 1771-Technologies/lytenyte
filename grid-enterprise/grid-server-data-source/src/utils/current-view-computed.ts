@@ -1,8 +1,8 @@
 import { computed, type Signal } from "@1771technologies/cascada";
 import type { AsyncDataRequestBlock } from "../types";
-import { getAsyncDataRequestBlock } from "./get-async-data-request-block";
 import type { ApiEnterprise } from "@1771technologies/grid-types";
 import type { BlockGraph } from "@1771technologies/grid-graph";
+import { getAsyncDataRequestBlocks } from "./get-async-data-request-blocks";
 
 export function currentViewComputed<D, E>(
   api$: Signal<ApiEnterprise<D, E>>,
@@ -33,26 +33,13 @@ export function currentViewComputed<D, E>(
     const seenBlocks = new Set();
     const requests: AsyncDataRequestBlock[] = [];
     for (let i = rowStart; i < rowEnd; i++) {
-      const ranges = graph.rowRangesForIndex(i);
+      const asyncBlocks = getAsyncDataRequestBlocks(graph, i, blockSize, separator);
 
-      for (let i = ranges.length - 2; i >= 0; i--) {
-        const parentFirstIndex = ranges[i + 1].rowStart - 1;
-        const reqBlock = getAsyncDataRequestBlock(
-          ranges[i],
-          parentFirstIndex,
-          blockSize,
-          separator,
-        );
-        if (seenBlocks.has(reqBlock.id)) continue;
-        seenBlocks.add(reqBlock.id);
-
-        requests.unshift(reqBlock);
-      }
-      const lastRequestBlock = getAsyncDataRequestBlock(ranges.at(-1)!, i, blockSize, separator);
-      if (!seenBlocks.has(lastRequestBlock.id)) {
-        requests.push(lastRequestBlock);
-        seenBlocks.add(lastRequestBlock.id);
-      }
+      asyncBlocks.forEach((c) => {
+        if (seenBlocks.has(c.id)) return;
+        requests.push(c);
+        seenBlocks.add(c.id);
+      });
     }
 
     return requests.sort((l, r) => l.rowStart - r.rowStart);

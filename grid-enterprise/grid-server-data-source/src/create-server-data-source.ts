@@ -13,6 +13,8 @@ import { currentViewComputed } from "./utils/current-view-computed";
 import { handleViewChange } from "./utils/handle-view-change";
 import { getRowGroupPath } from "./utils/get-row-group-path";
 import { loadRowExpansion } from "./utils/load-row-expansion";
+import { getAsyncDataRequestBlocks } from "./utils/get-async-data-request-blocks";
+import { loadBlockData } from "./utils/load-block-data";
 
 export interface ServerDataSourceInitial<D, E> {
   readonly rowDataFetcher: DataFetcher<D, E>;
@@ -251,7 +253,26 @@ export function createServerDataSource<D, E>(
       return [startIndex, endIndex];
     },
 
-    rowReload: () => {},
+    rowReload: (r?: number) => {
+      if (r === undefined) {
+        handleViewChange(state);
+        return;
+      }
+
+      const blocks = getAsyncDataRequestBlocks(
+        state.graph,
+        r,
+        state.blockSize,
+        state.rowPathSeparator,
+      );
+
+      loadBlockData(state, blocks, {
+        onSuccess: () => {
+          state.graph.blockFlatten();
+          state.api.peek().rowRefresh();
+        },
+      });
+    },
     rowReloadExpansion: () => {},
 
     // Server data source is read only
