@@ -10,13 +10,9 @@ export type AsyncDataBlock = {
     readonly pathKeys: (string | null)[];
     readonly kinds: (RowGroupKind | RowLeafKind)[];
     readonly childCounts: number[];
+    readonly expansions?: Record<string, boolean>;
   };
-  readonly path?: string[];
-  readonly expansions?: Record<string, boolean>;
-};
-
-export type AsyncDataErrorBlock = {
-  readonly blockKey: number;
+  readonly size: number;
   readonly path?: string[];
 };
 
@@ -36,7 +32,7 @@ export type AsyncDataBlockTotal = {
 export type AsyncDataResponse = {
   readonly rootCount?: number;
   readonly reqTime: number;
-  readonly blocks: (AsyncDataBlock | AsyncDataErrorBlock)[];
+  readonly blocks: AsyncDataBlock[];
   readonly topBlock?: AsyncDataBlockPinned;
   readonly bottomBlock?: AsyncDataBlockPinned;
   readonly totalBlock?: AsyncDataBlockTotal;

@@ -1,17 +1,14 @@
 import type { ApiEnterprise, RowDataSourceEnterprise } from "@1771technologies/grid-types";
-import type {
-  AsyncDataErrorBlock,
-  ColumnInFilterItemFetcher,
-  ColumnPivotsFetcher,
-  DataFetcher,
-} from "./types";
+import type { ColumnInFilterItemFetcher, ColumnPivotsFetcher, DataFetcher } from "./types";
 import { cascada, signal, type Signal } from "@1771technologies/cascada";
 import type { RowNode } from "@1771technologies/grid-types/community";
 import { BlockGraph } from "@1771technologies/grid-graph";
+import { ROW_DEFAULT_PATH_SEPARATOR } from "@1771technologies/grid-constants";
 
 export interface ServerDataSourceInitial<D, E> {
   readonly rowDataFetcher: DataFetcher<D, E>;
   readonly rowBlockSize?: number;
+  readonly rowPathSeparator?: string;
 
   readonly rowClearGroupChildrenOnCollapse?: boolean;
   readonly rowClearOutOfViewBlocks?: boolean;
@@ -23,10 +20,13 @@ export interface ServerState<D, E> {
   readonly rowDataFetcher: DataFetcher<D, E>;
   readonly rowClearOutOfView: boolean;
   readonly rowClearOnCollapse: boolean;
+  readonly rowPathSeparator: string;
   readonly columnInFilterFetcher: ColumnInFilterItemFetcher<D, E>;
   readonly columnPivotsFetcher: ColumnPivotsFetcher<D, E>;
   readonly blockSize: number;
   readonly controller: Signal<AbortController>;
+
+  readonly rowGroupExpansions: Map<string, boolean>;
 
   readonly blockLoadTimeLookup: Signal<Map<string, number>>;
 
@@ -34,7 +34,7 @@ export interface ServerState<D, E> {
 
   readonly api: Signal<ApiEnterprise<D, E>>;
   readonly graph: BlockGraph<D>;
-  readonly errorCache: Signal<AsyncDataErrorBlock[]>;
+  readonly errorCache: Signal<string[]>;
 }
 
 export function createServerDataSource<D, E>(
@@ -63,9 +63,10 @@ export function createServerDataSource<D, E>(
       });
 
     const blockSize = init.rowBlockSize ?? 100;
-    const graph = new BlockGraph<D>(blockSize);
+    const separator = init.rowPathSeparator ?? ROW_DEFAULT_PATH_SEPARATOR;
+    const graph = new BlockGraph<D>(blockSize, separator);
 
-    const errorCache = signal<AsyncDataErrorBlock[]>([]);
+    const errorCache = signal<string[]>([]);
 
     const selectedIds = signal(new Set<string>());
 
@@ -86,6 +87,8 @@ export function createServerDataSource<D, E>(
 
       rowClearOutOfView,
       rowClearOnCollapse,
+      rowPathSeparator: separator,
+      rowGroupExpansions: new Map(),
 
       columnInFilterFetcher,
       columnPivotsFetcher,

@@ -1,10 +1,12 @@
 import type { ServerState } from "../create-server-data-source";
 import type { AsyncDataRequestBlock } from "../types";
-import { handleBottomBlock, handleTopBlock } from "./handle-pin-blocks";
+import { handleDataBlocks } from "./handle-data-blocks";
+import { handleBottomBlock, handleTopBlock, handleTotalBlock } from "./handle-pin-blocks";
 
 export async function loadBlockData<D, E>(
   state: ServerState<D, E>,
   reqBlocks: AsyncDataRequestBlock[],
+  resultCallbacks?: { onFailure?: () => void; onSuccess?: () => void },
 ) {
   try {
     const controller = state.controller.peek();
@@ -21,7 +23,14 @@ export async function loadBlockData<D, E>(
 
     handleTopBlock(payload, state);
     handleBottomBlock(payload, state);
+    handleTotalBlock(payload, state);
+    handleDataBlocks(payload, state);
+
+    state.graph.blockFlatten();
+
+    resultCallbacks?.onSuccess?.();
   } catch (e) {
+    resultCallbacks?.onFailure?.();
     console.error(e);
   }
 }

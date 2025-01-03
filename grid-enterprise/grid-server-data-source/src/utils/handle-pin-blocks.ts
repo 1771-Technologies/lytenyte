@@ -27,7 +27,6 @@ export function handleTopBlock<D, E>(payload: AsyncDataResponse, state: ServerSt
   });
 
   state.graph.setTop(nodes);
-
   lookup.set(key, payload.reqTime);
 }
 
@@ -55,7 +54,6 @@ export function handleBottomBlock<D, E>(payload: AsyncDataResponse, state: Serve
   });
 
   state.graph.setBottom(nodes);
-
   lookup.set(key, payload.reqTime);
 }
 
@@ -78,4 +76,5 @@ export function handleTotalBlock<D, E>(payload: AsyncDataResponse, state: Server
   };
 
   state.graph.setTotal(node);
+  lookup.set(key, payload.reqTime);
 }
