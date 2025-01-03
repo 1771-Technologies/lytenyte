@@ -1,6 +1,5 @@
-import { describe, test, expect } from "vitest";
-import { getCoordsFromPlacement } from "../get-coords-from-placement";
-import type { Rect, Dimensions } from "../types";
+import { getCoordsFromPlacement } from "../get-coords-from-placement.js";
+import type { Rect, Dimensions } from "../types.js";
 
 describe("getCoordsFromPlacement", () => {
   const reference: Rect = {
