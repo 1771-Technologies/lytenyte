@@ -43,6 +43,7 @@ export interface ServerState<D, E> {
   readonly errorCache: Signal<string[]>;
 
   readonly currentView: ReadonlySignal<AsyncDataRequestBlock[]>;
+  readonly previousView: Signal<AsyncDataRequestBlock[]>;
 }
 
 export function createServerDataSource<D, E>(
@@ -82,6 +83,7 @@ export function createServerDataSource<D, E>(
     const blockLoadTimeLookup = signal(new Map<string, number>());
 
     const currentView = currentViewComputed(api$, graph, blockSize, separator);
+    const previousView = signal<AsyncDataRequestBlock[]>([]);
 
     return {
       api: api$,
@@ -95,6 +97,7 @@ export function createServerDataSource<D, E>(
       selectedIds,
       blockLoadTimeLookup,
       currentView,
+      previousView,
 
       rowClearOutOfView,
       rowClearOnCollapse,
@@ -105,11 +108,18 @@ export function createServerDataSource<D, E>(
       columnPivotsFetcher,
     } satisfies ServerState<D, E>;
   });
+
+  const watchers: (() => void)[] = [];
+
   const source: RowDataSourceEnterprise<D, E> = {
     init: (a) => {
       state.api.set(a);
+
+      watchers.push(state.currentView.watch(() => {}));
     },
     clean: () => {
+      while (watchers.length) watchers.pop()!();
+
       dispose();
     },
 
