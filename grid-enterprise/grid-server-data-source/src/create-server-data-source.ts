@@ -273,7 +273,9 @@ export function createServerDataSource<D, E>(
         },
       });
     },
-    rowReloadExpansion: () => {},
+    rowReloadExpansion: (row) => {
+      loadRowExpansion(state, row);
+    },
 
     // Server data source is read only
     rowSetData: () => {},
