@@ -20,6 +20,6 @@ export const defaultAxeProps: FrameAxeProps = {
     return `Started moving from position ${Math.round(x)} pixels from the left and ${Math.round(y)} pixels from the top`;
   },
   axeMoveEndText: (x, y) => {
-    return `Move ended at position ${Math.round(x)} pixels from the left and ${Math.round(y)} pixels from the right`;
+    return `Move ended at position ${Math.round(x)} pixels from the left and ${Math.round(y)} pixels from the top`;
   },
 };

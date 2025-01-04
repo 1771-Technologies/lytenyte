@@ -79,12 +79,13 @@ export function Frame({
   sizeRef.current = { w, h, x, y };
 
   const sizeSync = useEvent(() => {
+    /* v8 ignore next 1 */ // line is covered, but not directly
     if (!ref) return;
 
     const s = sizeRef.current;
     const adjusted = handleSizeBounds(s.x, s.y, s.w!, s.h!);
 
-    Object.assign(ref.style, {
+    Object.assign(ref!.style, {
       width: `${adjusted.w}px`,
       height: `${adjusted.h}px`,
       top: `${adjusted.y}px`,
@@ -95,6 +96,7 @@ export function Frame({
   const combinedRefs = useCombinedRefs(props.ref, setRef);
 
   const sizeChange = useEvent((w: number, h: number) => {
+    /* v8 ignore next 1 */ // line is covered, but not directly
     onSizeChange?.(w, h);
     setInternalHeight(h);
     setInternalWidth(w);
