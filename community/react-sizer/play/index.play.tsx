@@ -15,7 +15,14 @@ export default function Play() {
       <button onClick={() => setSize((prev) => prev + 50)}>Size Up</button>
       <button onClick={() => setSize((prev) => prev - 50)}>Size Down</button>
 
-      <div style={{ width: size, height: size, border: "1px solid black" }}>
+      <div>
+        <pre>Inner Height: {observedSize.innerHeight}</pre>
+        <pre>Inner Width: {observedSize.innerWidth}</pre>
+        <pre>Outer Height: {observedSize.outerHeight}</pre>
+        <pre>Outer Width: {observedSize.outerWidth}</pre>
+      </div>
+
+      <div style={{ width: "22.12rem", height: size, border: "1px solid black" }}>
         <div
           className={css`
             display: flex;
@@ -28,18 +35,16 @@ export default function Play() {
           <div
             className={css`
               flex: 1;
-              overflow: auto;
             `}
           >
-            <Sizer onSizeChange={setObservedSize} style={{ overflow: "auto" }}>
+            <Sizer onSizeChange={setObservedSize}>
               <div
-                style={{
-                  width: observedSize.innerWidth - 10,
-                  height: observedSize.innerHeight - 10,
-                  margin: 5,
-
-                  background: "red",
-                }}
+                className={css`
+                  width: calc(100% - 10px);
+                  height: calc(100% - 10px);
+                  margin: 5px;
+                  background-color: red;
+                `}
               ></div>
               <div style={{ width: 20000, height: 20000, background: "blue" }}></div>
             </Sizer>

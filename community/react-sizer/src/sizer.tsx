@@ -1,11 +1,11 @@
 import { getPreciseElementDimensions, IsoResizeObserver } from "@1771technologies/js-utils";
 import {
-  type UIEvent,
   useCallback,
   useEffect,
   useRef,
   type CSSProperties,
   type PropsWithChildren,
+  useState,
 } from "react";
 
 export interface SizeChange {
@@ -19,7 +19,6 @@ export interface SizerProps {
   className?: string;
   style?: CSSProperties;
   onSizeChange?: (size: SizeChange) => void;
-  onScroll?: (ev: UIEvent) => void;
   onInit?: (element: HTMLDivElement, size: SizeChange) => void;
   id?: string;
 }
@@ -30,10 +29,12 @@ export function Sizer({
   children,
   id,
   onSizeChange,
-  onScroll,
   onInit,
 }: PropsWithChildren<SizerProps>) {
   const ref = useRef<ResizeObserver>();
+
+  const [size, setSize] = useState<SizeChange | null>(null);
+
   useEffect(() => {
     return () => ref.current?.disconnect();
   }, []);
@@ -45,10 +46,12 @@ export function Sizer({
       const resize = new IsoResizeObserver(() => {
         const dims = getPreciseElementDimensions(el);
         onSizeChange?.(dims);
+        setSize(dims);
       });
 
       const dims = getPreciseElementDimensions(el);
       onInit?.(el, dims);
+      setSize(dims);
 
       resize.observe(el);
       ref.current = resize;
@@ -58,7 +61,6 @@ export function Sizer({
 
   return (
     <div
-      onScroll={onScroll}
       className={className}
       id={id}
       style={{
@@ -77,7 +79,18 @@ export function Sizer({
           pointerEvents: "none",
         }}
       />
-      {children}
+      {size && (
+        <div
+          style={{
+            width: size.innerWidth,
+            height: size.innerHeight,
+            position: "absolute",
+            overflow: "auto",
+          }}
+        >
+          {children}
+        </div>
+      )}
     </div>
   );
 }
