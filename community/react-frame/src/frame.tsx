@@ -3,7 +3,7 @@ import { useCombinedRefs, useEvent } from "@1771technologies/react-utils";
 import { useEffect, useRef, useState, type CSSProperties, type JSX, type ReactNode } from "react";
 import { ResizeDots } from "./resize-dots";
 import { handleResize } from "./handle-resize";
-import { getClientX, getClientY } from "@1771technologies/js-utils";
+import { clamp, getClientX, getClientY } from "@1771technologies/js-utils";
 
 export interface FrameProps {
   readonly show: boolean;
@@ -142,7 +142,10 @@ export function Frame({
                   const x = Number.parseInt(s.left);
                   const y = Number.parseInt(s.top);
 
-                  Object.assign(ref!.style, { top: `${y + deltaY}px`, left: `${x + deltaX}px` });
+                  const newX = clamp(0, x + deltaX, window.innerWidth - w!);
+                  const newY = clamp(0, y + deltaY, window.innerHeight - h!);
+
+                  Object.assign(ref!.style, { top: `${newY}px`, left: `${newX}px` });
 
                   prevX = currentX;
                   prevY = currentY;
