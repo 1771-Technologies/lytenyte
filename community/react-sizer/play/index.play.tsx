@@ -22,7 +22,7 @@ export default function Play() {
         <pre>Outer Width: {observedSize.outerWidth}</pre>
       </div>
 
-      <div style={{ width: "22.12rem", height: size, border: "1px solid black" }}>
+      <div style={{ width: size, height: size, border: "1px solid black" }}>
         <div
           className={css`
             display: flex;

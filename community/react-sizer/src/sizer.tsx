@@ -1,12 +1,5 @@
 import { getPreciseElementDimensions, IsoResizeObserver } from "@1771technologies/js-utils";
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  type CSSProperties,
-  type PropsWithChildren,
-  useState,
-} from "react";
+import { useCallback, useEffect, useRef, type PropsWithChildren, useState } from "react";
 
 export interface SizeChange {
   innerWidth: number;
@@ -16,21 +9,16 @@ export interface SizeChange {
 }
 
 export interface SizerProps {
-  className?: string;
-  style?: CSSProperties;
   onSizeChange?: (size: SizeChange) => void;
   onInit?: (element: HTMLDivElement, size: SizeChange) => void;
-  id?: string;
 }
 
 export function Sizer({
-  className,
-  style,
   children,
-  id,
   onSizeChange,
   onInit,
-}: PropsWithChildren<SizerProps>) {
+  ...props
+}: PropsWithChildren<SizerProps> & JSX.IntrinsicElements["div"]) {
   const ref = useRef<ResizeObserver>();
 
   const [size, setSize] = useState<SizeChange | null>(null);
@@ -38,7 +26,6 @@ export function Sizer({
   useEffect(() => {
     return () => ref.current?.disconnect();
   }, []);
-
   const init = useCallback(
     (el: HTMLDivElement | null) => {
       if (!el) return;
@@ -60,16 +47,7 @@ export function Sizer({
   );
 
   return (
-    <div
-      className={className}
-      id={id}
-      style={{
-        ...style,
-        width: "100%",
-        height: "100%",
-        position: "relative",
-      }}
-    >
+    <div style={{ width: "100%", height: "100%", position: "relative" }}>
       <div
         ref={init}
         style={{
@@ -81,7 +59,9 @@ export function Sizer({
       />
       {size && (
         <div
+          {...props}
           style={{
+            ...props.style,
             width: size.innerWidth,
             height: size.innerHeight,
             position: "absolute",
