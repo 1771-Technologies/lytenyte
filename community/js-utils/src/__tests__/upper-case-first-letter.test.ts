@@ -1,4 +1,4 @@
-import { upperCaseFirstLetter } from "../upper-case-first-letter";
+import { upperCaseFirstLetter } from "../upper-case-first-letter.js";
 
 test("should upper case the first letter", () => {
   expect(upperCaseFirstLetter("alpha")).toEqual("Alpha");

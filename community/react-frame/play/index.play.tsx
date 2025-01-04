@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Frame } from "../src/frame";
-import { defaultAxeProps } from "../src/default-axe-props";
+import { Frame } from "../src/frame.js";
+import { defaultAxeProps } from "../src/default-axe-props.js";
 
 export default function Play() {
   const [w, setW] = useState<number | null>(null);

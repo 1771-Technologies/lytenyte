@@ -1,5 +1,5 @@
 import { signal } from "@1771technologies/cascada";
-import { useCascada } from "../src/cascada";
+import { useCascada } from "../src/cascada.js";
 
 export default function SelectorSimple() {
   const s = useCascada(() => {

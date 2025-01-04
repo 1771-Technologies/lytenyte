@@ -1,8 +1,8 @@
 import { signal } from "@1771technologies/cascada";
-import { useCascada } from "../src/cascada";
+import { useCascada } from "../src/cascada.js";
 
 export default function Play() {
-  const { store, use } = useCascada(() => {
+  const { store, useValue } = useCascada(() => {
     const count = signal(0);
     return { count };
   });

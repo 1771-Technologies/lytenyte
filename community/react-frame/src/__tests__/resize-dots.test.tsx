@@ -1,5 +1,5 @@
 import { render } from "@1771technologies/aio/vitest";
-import { ResizeDots } from "../resize-dots";
+import { ResizeDots } from "../resize-dots.js";
 
 describe("ResizeDots", () => {
   test("smoke test - renders without crashing", () => {

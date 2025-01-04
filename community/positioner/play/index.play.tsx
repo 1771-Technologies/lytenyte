@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { getPosition } from "../src/get-position";
-import type { Placement } from "../src/types";
+import { getPosition } from "../src/get-position.js";
+import type { Placement } from "../src/types.js";
 
 export default function Play() {
   const [x, setX] = useState<HTMLElement | null>(null);

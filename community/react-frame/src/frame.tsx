@@ -1,51 +1,83 @@
 import { Dialog } from "@1771technologies/react-dialog";
-import { useCombinedRefs, useEvent } from "@1771technologies/react-utils";
+import { refCompat, useCombinedRefs, useEvent } from "@1771technologies/react-utils";
 import { useEffect, useRef, useState, type CSSProperties, type JSX, type ReactNode } from "react";
-import { ResizeDots } from "./resize-dots";
-import { handleResize } from "./handle-resize";
-import { handleMove } from "./handle-move";
-import { handleSizeBounds } from "./handle-size-bounds";
+import { ResizeDots } from "./resize-dots.js";
+import { handleResize } from "./handle-resize.js";
+import { handleMove } from "./handle-move.js";
+import { handleSizeBounds } from "./handle-size-bounds.js";
 
+/**
+ * Interface for accessibility props related to frame resizing and moving operations
+ */
 export interface FrameAxeProps {
+  /** Aria label for the resize handle */
   readonly axeResizeLabel: string;
+  /** Detailed description of resize functionality for screen readers */
   readonly axeResizeDescription: string;
+  /** Function to generate screen reader text when resize starts */
   readonly axeResizeStartText: (w: number, h: number) => string;
+  /** Function to generate screen reader text when resize ends */
   readonly axeResizeEndText: (w: number, h: number) => string;
 
+  /** Aria label for the move handle */
   readonly axeMoveLabel: string;
+  /** Detailed description of move functionality for screen readers */
   readonly axeMoveDescription: string;
+  /** Function to generate screen reader text when move starts */
   readonly axeMoveStartText: (x: number, y: number) => string;
+  /** Function to generate screen reader text when move ends */
   readonly axeMoveEndText: (x: number, y: number) => string;
 }
 
+/**
+ * Props interface for the Frame component
+ */
 export interface FrameProps {
+  /** Controls visibility of the frame */
   readonly show: boolean;
+  /** Callback fired when visibility changes */
   readonly onShowChange: (b: boolean) => void;
+  /** Horizontal position of the frame */
   readonly x: number;
+  /** Vertical position of the frame */
   readonly y: number;
+  /** Current width of the frame. If null, uses internal state */
   readonly width?: number | null;
+  /** Current height of the frame. If null, uses internal state */
   readonly height?: number | null;
 
+  /** Whether the frame can be moved by dragging. Defaults to true */
   readonly movable?: boolean;
+  /** Whether the frame can be resized. Defaults to true */
   readonly resizable?: boolean;
 
+  /** Callback fired when frame is resized */
   readonly onSizeChange?: (w: number, h: number) => void;
+  /** Callback fired when frame is moved */
   readonly onMove?: (x: number, y: number) => void;
 
+  /** Initial width of the frame */
   readonly initialWidth?: CSSProperties["width"];
+  /** Initial height of the frame */
   readonly initialHeight?: CSSProperties["height"];
 
+  /** Maximum allowed height */
   readonly maxHeight?: CSSProperties["width"];
+  /** Maximum allowed width */
   readonly maxWidth?: CSSProperties["width"];
+  /** Minimum allowed height */
   readonly minHeight?: CSSProperties["width"];
+  /** Minimum allowed width */
   readonly minWidth?: CSSProperties["width"];
 
+  /** Content to render in the frame header */
   readonly header?: ReactNode;
 
+  /** Accessibility props for resize and move operations */
   readonly axe: FrameAxeProps;
 }
 
-export function Frame({
+function FrameImpl({
   show,
   onShowChange,
   x,
@@ -274,3 +306,56 @@ export function Frame({
     </Dialog>
   );
 }
+
+/**
+ * A draggable and resizable frame component with accessibility support.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <Frame
+ *   show={isVisible}
+ *   onShowChange={setIsVisible}
+ *   x={100}
+ *   y={100}
+ *   width={400}
+ *   height={300}
+ *   header={<div>Frame Title</div>}
+ *   axe={{
+ *     axeResizeLabel: "Resize frame",
+ *     axeResizeDescription: "Use arrow keys to resize",
+ *     axeResizeStartText: (w, h) => `Starting resize at ${w}x${h}`,
+ *     axeResizeEndText: (w, h) => `Finished resize at ${w}x${h}`,
+ *     axeMoveLabel: "Move frame",
+ *     axeMoveDescription: "Use arrow keys to move",
+ *     axeMoveStartText: (x, y) => `Starting move at ${x},${y}`,
+ *     axeMoveEndText: (x, y) => `Finished move at ${x},${y}`
+ *   }}
+ * >
+ *   Frame content goes here
+ * </Frame>
+ * ```
+ *
+ * @param props - Component props
+ * @param props.show - Controls visibility of the frame
+ * @param props.onShowChange - Callback fired when visibility changes
+ * @param props.x - Horizontal position of the frame
+ * @param props.y - Vertical position of the frame
+ * @param props.width - Current width of the frame. If null, uses internal state
+ * @param props.height - Current height of the frame. If null, uses internal state
+ * @param props.movable - Whether the frame can be moved by dragging (default: true)
+ * @param props.resizable - Whether the frame can be resized (default: true)
+ * @param props.onSizeChange - Callback fired when frame is resized
+ * @param props.onMove - Callback fired when frame is moved
+ * @param props.initialWidth - Initial width of the frame
+ * @param props.initialHeight - Initial height of the frame
+ * @param props.maxHeight - Maximum allowed height
+ * @param props.maxWidth - Maximum allowed width
+ * @param props.minHeight - Minimum allowed height
+ * @param props.minWidth - Minimum allowed width
+ * @param props.header - Content to render in the frame header
+ * @param props.axe - Accessibility props for resize and move operations
+ *
+ * @returns A draggable and resizable frame component
+ */
+export const Frame = refCompat(FrameImpl, "Frame");

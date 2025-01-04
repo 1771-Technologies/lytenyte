@@ -1,4 +1,3 @@
-import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import { handleResize } from "../handle-resize.js";
 import { getClientX, getClientY } from "@1771technologies/js-utils";
 

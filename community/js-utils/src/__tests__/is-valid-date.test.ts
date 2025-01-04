@@ -1,4 +1,4 @@
-import { isValidDate } from "../is-valid-date";
+import { isValidDate } from "../is-valid-date.js";
 
 test("isValidDate", () => {
   expect(isValidDate(new Date("22aa"))).toEqual(false);

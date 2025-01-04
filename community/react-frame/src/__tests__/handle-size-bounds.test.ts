@@ -1,5 +1,5 @@
 import { describe, test, expect, beforeEach, afterEach, vi } from "vitest";
-import { handleSizeBounds } from "../handle-size-bounds";
+import { handleSizeBounds } from "../handle-size-bounds.js";
 
 describe("handleSizeBounds", () => {
   beforeEach(() => {

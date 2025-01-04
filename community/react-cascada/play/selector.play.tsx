@@ -1,6 +1,6 @@
 import { computed, signal, type ReadonlySignal, type Signal } from "@1771technologies/cascada";
-import { useCascada } from "../src/cascada";
-import type { CascadaStore } from "../src/types";
+import { useCascada } from "../src/cascada.js";
+import type { CascadaStore } from "../src/types.js";
 import { memo } from "react";
 
 type Store = CascadaStore<{

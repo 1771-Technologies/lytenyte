@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { defaultAxeProps } from "../default-axe-props";
-import { Frame } from "../frame";
+import { defaultAxeProps } from "../default-axe-props.js";
+import { Frame } from "../frame.js";
 import { page, render, userEvent } from "@1771technologies/aio/browser";
 
 test("should create a moveable frame", async () => {

@@ -1,6 +1,46 @@
 import { getClientX, getClientY } from "@1771technologies/js-utils";
-import type { FrameAxeProps } from "./frame";
+import type { FrameAxeProps } from "./frame.js";
 
+/**
+ * Handles the resizing behavior of a frame element using pointer events.
+ * Manages live resizing with window boundary constraints and accessibility announcements.
+ *
+ * @internal
+ * @param el - The initial pointer event that triggered the resize
+ * @param announcer - HTML element used for accessibility announcements
+ * @param axe - Accessibility props containing resize-related announcement text
+ * @param x - Current horizontal position of the frame
+ * @param y - Current vertical position of the frame
+ * @param w - Current width of the frame
+ * @param h - Current height of the frame
+ * @param ref - Reference to the frame element being resized
+ * @param sizeChange - Callback function invoked when frame dimensions change
+ * @param sizeSync - Function to synchronize the frame size after resizing
+ *
+ * @remarks
+ * The function implements the following behavior:
+ * - Tracks pointer movement to update frame dimensions in real-time
+ * - Constrains maximum dimensions to prevent overflow outside window bounds
+ * - Provides accessibility announcements at start and end of resize operation
+ * - Uses getBoundingClientRect for accurate final dimensions
+ * - Cleans up event listeners on resize completion
+ *
+ * @example
+ * ```typescript
+ * handleResize(
+ *   pointerEvent,
+ *   announcerElement,
+ *   axeProps,
+ *   100, // x position
+ *   100, // y position
+ *   400, // current width
+ *   300, // current height
+ *   frameRef.current,
+ *   (width, height) => console.log(`Resized to ${width}x${height}`),
+ *   () => syncFrameSize()
+ * );
+ * ```
+ */
 export function handleResize(
   el: PointerEvent,
   announcer: HTMLDivElement,

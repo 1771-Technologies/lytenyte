@@ -1,5 +1,29 @@
 import type { JSX } from "react";
 
+/**
+ * A presentational SVG component that renders a pattern of dots typically used
+ * as a visual indicator for resize handles. Uses currentcolor for fill, allowing
+ * the dots to inherit their color from the parent element.
+ *
+ * @component
+ * @param props - Standard SVG element props, extends React's SVG intrinsic elements
+ *
+ * @remarks
+ * - Renders as a 10x10 SVG with 6 dots in a diagonal pattern
+ * - Automatically hidden from screen readers via aria-hidden
+ * - Uses currentcolor to inherit color from parent
+ *
+ * @example
+ * ```tsx
+ * // Basic usage
+ * <ResizeDots />
+ *
+ * // With custom color
+ * <div style={{ color: "blue" }}>
+ *   <ResizeDots />
+ * </div>
+ * ```
+ */
 export const ResizeDots = (props: JSX.IntrinsicElements["svg"]) => {
   return (
     <svg

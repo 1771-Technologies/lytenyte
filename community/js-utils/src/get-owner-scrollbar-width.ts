@@ -1,4 +1,4 @@
-import { getOwningGlobalThis } from "./get-owning-global-this";
+import { getOwningGlobalThis } from "./get-owning-global-this.js";
 
 /**
  * Calculates the width of the scrollbar for the window that owns the given element,

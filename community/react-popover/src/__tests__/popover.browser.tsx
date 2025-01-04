@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Popover, type PopoverTarget } from "../popover";
+import { Popover, type PopoverTarget } from "../popover.js";
 import { render, userEvent } from "@1771technologies/aio/browser";
 import type { Placement } from "@1771technologies/positioner";
 

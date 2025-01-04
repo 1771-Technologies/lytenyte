@@ -1,7 +1,47 @@
 import { clamp, getClientX, getClientY } from "@1771technologies/js-utils";
 import type { RefObject } from "react";
-import type { FrameAxeProps } from "./frame";
+import type { FrameAxeProps } from "./frame.js";
 
+/**
+ * Handles the dragging/moving behavior of a frame element with pointer events.
+ * Includes accessibility announcements and bounds checking to keep the frame within the window.
+ *
+ * @internal
+ * @param el - The initial pointer event that triggered the move
+ * @param announcer - HTML element used for accessibility announcements
+ * @param axe - Accessibility props containing move-related announcement text
+ * @param ref - Reference to the frame element being moved
+ * @param raf - Reference to track requestAnimationFrame ID for cleanup
+ * @param onMove - Callback function invoked when the frame position changes
+ * @param w - Current width of the frame
+ * @param h - Current height of the frame
+ * @param sizeSync - Function to synchronize the frame size after movement
+ *
+ * @remarks
+ * The function implements the following behavior:
+ * - Prevents default pointer event handling
+ * - Sets up pointer move tracking with a small delay
+ * - Temporarily disables pointer events on the frame during movement
+ * - Uses requestAnimationFrame for smooth movement
+ * - Clamps the frame position to keep it within window bounds
+ * - Provides accessibility announcements at start and end of movement
+ * - Cleans up event listeners and restores pointer events on completion
+ *
+ * @example
+ * ```typescript
+ * handleMove(
+ *   pointerEvent,
+ *   announcerElement,
+ *   axeProps,
+ *   frameRef.current,
+ *   rafRef,
+ *   (x, y) => console.log(`Moved to ${x},${y}`),
+ *   400, // width
+ *   300, // height
+ *   () => syncFrameSize()
+ * );
+ * ```
+ */
 export function handleMove(
   el: PointerEvent,
   announcer: HTMLElement,

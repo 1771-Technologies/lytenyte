@@ -1,8 +1,8 @@
 import { getPosition, type Dimensions, type Placement } from "@1771technologies/positioner";
 import { useEffect, useState } from "react";
-import type { PopoverTarget } from "./popover";
-import type { ArrowSvgProps } from "./arrow-svgs";
-import { DownArrow, UpArrow, RightArrow, LeftArrow } from "./arrow-svgs";
+import type { PopoverTarget } from "./popover.js";
+import type { ArrowSvgProps } from "./arrow-svgs.js";
+import { DownArrow, UpArrow, RightArrow, LeftArrow } from "./arrow-svgs.js";
 import { createPortal } from "react-dom";
 import { isHTMLElement } from "@1771technologies/js-utils";
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Popover, type PopoverTarget } from "../src/popover";
+import { Popover, type PopoverTarget } from "../src/popover.js";
 import { type Placement } from "@1771technologies/positioner";
 
 export default function Play() {

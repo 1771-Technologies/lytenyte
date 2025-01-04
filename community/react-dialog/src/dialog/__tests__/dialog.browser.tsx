@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { render, userEvent } from "@1771technologies/aio/browser";
-import { Dialog } from "../dialog";
+import { Dialog } from "../dialog.js";
 
 test("Can and close a dialog", async () => {
   function Component() {

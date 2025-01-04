@@ -1,5 +1,42 @@
-import type { FrameAxeProps } from "./frame";
+import type { FrameAxeProps } from "./frame.js";
 
+/**
+ * Default accessibility props for the Frame component providing standard screen reader
+ * announcements for resize and move operations. All measurements are rounded to
+ * whole pixels for clearer audio feedback.
+ *
+ * @constant
+ * @type {FrameAxeProps}
+ *
+ * @property {string} axeResizeLabel - Label identifying the resize handle ("Resize panel")
+ * @property {string} axeResizeDescription - Comprehensive instructions for resizing using
+ *    keyboard or mouse, detailing available arrow key controls
+ * @property {function} axeResizeStartText - Announces initial dimensions when resize begins
+ * @property {function} axeResizeEndText - Announces final dimensions when resize completes
+ * @property {string} axeMoveLabel - Label identifying the draggable area ("Draggable Area")
+ * @property {string} axeMoveDescription - Instructions for moving the panel using keyboard or mouse
+ * @property {function} axeMoveStartText - Announces starting position when movement begins
+ * @property {function} axeMoveEndText - Announces final position when movement completes
+ *
+ * @example
+ * ```tsx
+ * // Using default props
+ * <Frame axe={defaultAxeProps} />
+ *
+ * // Extending default props
+ * <Frame axe={{
+ *   ...defaultAxeProps,
+ *   axeResizeLabel: "Custom resize label"
+ * }} />
+ * ```
+ *
+ * @remarks
+ * These defaults provide a complete set of accessibility messages that:
+ * - Give clear instructions for both keyboard and mouse interactions
+ * - Announce positions and dimensions in whole pixels
+ * - Use consistent language patterns for start/end announcements
+ * - Cover both resize and move operations comprehensively
+ */
 export const defaultAxeProps: FrameAxeProps = {
   axeResizeLabel: "Resize panel",
   axeResizeDescription:

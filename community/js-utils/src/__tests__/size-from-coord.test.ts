@@ -1,5 +1,5 @@
-import { sizeFromCoord } from "../size-from-coord";
-import { makeUint32PositionArray } from "../make-uint32-position-array";
+import { sizeFromCoord } from "../size-from-coord.js";
+import { makeUint32PositionArray } from "../make-uint32-position-array.js";
 
 test("sizeFromCoord should return the correct value", () => {
   const positions = makeUint32PositionArray(() => 20, 5);

@@ -1,5 +1,5 @@
 import { computed, remote } from "@1771technologies/cascada";
-import { useCascada } from "../src/cascada";
+import { useCascada } from "../src/cascada.js";
 
 let mouseDowns = 0;
 const subs = new Set<() => void>();

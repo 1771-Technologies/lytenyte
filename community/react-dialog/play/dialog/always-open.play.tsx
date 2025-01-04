@@ -1,4 +1,4 @@
-import { Dialog } from "../../src";
+import { Dialog } from "../../src/index.js";
 
 export default function AlwaysOpen() {
   return (

@@ -1,4 +1,4 @@
-import { equal } from "../equal";
+import { equal } from "../equal.js";
 
 describe("equal", () => {
   // Basic equality tests

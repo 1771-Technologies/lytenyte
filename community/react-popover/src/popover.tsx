@@ -4,7 +4,7 @@ import { getPosition } from "@1771technologies/positioner";
 import { Dialog } from "@1771technologies/react-dialog";
 import { refCompat, useCombinedRefs, useEvent, useIsoEffect } from "@1771technologies/react-utils";
 import { useState, type JSX, type PropsWithChildren } from "react";
-import { Arrow } from "./arrow";
+import { Arrow } from "./arrow.js";
 
 /**
  * Represents the target element or position that the popover should be positioned relative to.

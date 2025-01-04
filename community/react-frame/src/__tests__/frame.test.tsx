@@ -1,6 +1,5 @@
 import { fireEvent, render } from "@1771technologies/aio/vitest";
-import { vi } from "vitest";
-import { Frame } from "../frame";
+import { Frame } from "../frame.js";
 
 describe("Frame Component Smoke Test", () => {
   const defaultProps = {

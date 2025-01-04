@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Dialog } from "../../src";
+import { Dialog } from "../../src/index.js";
 
 export default function Play() {
   const [open, setOpen] = useState(false);

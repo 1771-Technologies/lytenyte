@@ -1,5 +1,4 @@
-import { describe, test, expect } from "vitest";
-import { defaultAxeProps } from "../default-axe-props";
+import { defaultAxeProps } from "../default-axe-props.js";
 
 describe("defaultAxeProps", () => {
   test("should have correct static string properties", () => {
