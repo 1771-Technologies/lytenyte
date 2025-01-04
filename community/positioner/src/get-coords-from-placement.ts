@@ -22,19 +22,16 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import { getAlignmentAxis, getAxis, getAxisLength } from "./utils.js";
+import { getAlignmentAxis, getAxisLength } from "./utils.js";
 import type { Alignment, Coords, Dimensions, Rect, Side } from "./types.js";
 
 /**
  * Calculates the coordinates for positioning a floating element relative to a reference element
- * based on placement side, alignment, and RTL context.
+ * based on placement side, and alignment.
  *
  * The function determines coordinates by:
  * 1. For vertical placements (top/bottom): Centers horizontally by default
  * 2. For horizontal placements (left/right): Centers vertically by default
- * 3. Adjusts final position based on:
- *    - Alignment (start/end) if specified
- *    - RTL context for vertical alignments
  *
  * @param reference - The reference element's dimensions and coordinates
  * @param floating - The floating element's dimensions
@@ -42,8 +39,6 @@ import type { Alignment, Coords, Dimensions, Rect, Side } from "./types.js";
  *               ("top", "right", "bottom", or "left")
  * @param alignment - Optional alignment along the cross axis
  *                   ("start" or "end"). If undefined, the element is centered
- * @param rtl - Whether the context is right-to-left. Affects alignment
- *              calculations for vertical placements
  *
  * @returns The calculated x/y coordinates for the floating element
  *
@@ -65,12 +60,9 @@ export function getCoordsFromPlacement(
   floating: Dimensions,
   side: Side,
   alignment: Alignment | undefined,
-  rtl: boolean,
 ) {
-  const sideAxis = getAxis(side);
   const alignmentAxis = getAlignmentAxis(side);
   const alignLength = getAxisLength(alignmentAxis);
-  const isVertical = sideAxis === "y";
 
   const commonX = reference.x + reference.width / 2 - floating.width / 2;
   const commonY = reference.y + reference.height / 2 - floating.height / 2;
@@ -96,10 +88,10 @@ export function getCoordsFromPlacement(
 
   switch (alignment) {
     case "start":
-      coords[alignmentAxis] -= commonAlign * (rtl && isVertical ? -1 : 1);
+      coords[alignmentAxis] -= commonAlign;
       break;
     case "end":
-      coords[alignmentAxis] += commonAlign * (rtl && isVertical ? -1 : 1);
+      coords[alignmentAxis] += commonAlign;
       break;
     default:
   }

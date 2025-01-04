@@ -48,7 +48,6 @@ function PopoverImpl({
       placement: placement ?? "bottom",
       arrow,
       offset,
-      rtl,
     });
 
     dialog.style.top = `${pos.y}px`;
@@ -65,7 +64,7 @@ function PopoverImpl({
       onOpenChange={onOpenChange}
       ref={combinedRef}
       {...props}
-      style={{ margin: 0, display: "none" }}
+      style={{ margin: 0, display: "none", direction: rtl ? "rtl" : "ltr", ...props.style }}
     >
       {children}
     </Dialog>

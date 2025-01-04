@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Popover, type PopoverTarget } from "../src/popover";
-import type { Placement } from "@1771technologies/positioner";
+import { type Placement } from "@1771technologies/positioner";
 
 export default function Play() {
   const [open, setOpen] = useState(false);
@@ -33,7 +33,7 @@ export default function Play() {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 500px;
+          width: 700px;
           height: 500px;
         `}
       >

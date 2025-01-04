@@ -20,11 +20,9 @@ import { getAxis } from "./utils.js";
  *                     - crossAxis: Offset along the cross axis
  *                     - alignmentAxis: Optional offset that can override crossAxis
  *                       for aligned placements
- * @param rtl - Whether the context is right-to-left. Affects how cross-axis
- *             offsets are applied for vertical placements
  *
  * @returns Calculated x/y offset coordinates. The direction and magnitude of the
- *          offset depends on the placement side and RTL context.
+ *          offset depends on the placement side.
  *
  * @example
  * ```typescript
@@ -42,15 +40,9 @@ import { getAxis } from "./utils.js";
  * // and alignment-adjusted cross axis vertically
  * ```
  */
-export function getOffset(
-  side: Side,
-  alignment: Alignment | undefined,
-  offsetValue: OffsetValue,
-  rtl: boolean,
-) {
+export function getOffset(side: Side, alignment: Alignment | undefined, offsetValue: OffsetValue) {
   const isVertical = getAxis(side) === "y";
   const mainAxisMulti = ["left", "top"].includes(side) ? -1 : 1;
-  const crossAxisMulti = rtl && isVertical ? -1 : 1;
 
   // eslint-disable-next-line prefer-const
   let { mainAxis, crossAxis, alignmentAxis } =
@@ -67,6 +59,6 @@ export function getOffset(
   }
 
   return isVertical
-    ? { x: crossAxis * crossAxisMulti, y: mainAxis * mainAxisMulti }
-    : { x: mainAxis * mainAxisMulti, y: crossAxis * crossAxisMulti };
+    ? { x: crossAxis, y: mainAxis * mainAxisMulti }
+    : { x: mainAxis * mainAxisMulti, y: crossAxis };
 }

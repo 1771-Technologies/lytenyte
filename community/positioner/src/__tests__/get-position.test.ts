@@ -166,28 +166,6 @@ describe("getPosition", () => {
     });
   });
 
-  describe("RTL support", () => {
-    test("handles RTL positioning", () => {
-      const position = getPosition({
-        reference,
-        floating,
-        placement: "right-start",
-        offset: 4,
-        rtl: true,
-      });
-
-      const ltrPosition = getPosition({
-        reference,
-        floating,
-        placement: "right-start",
-        offset: 4,
-        rtl: false,
-      });
-
-      expect(position.y).toBe(ltrPosition.y);
-    });
-  });
-
   describe("arrow positioning", () => {
     test("positions arrow correctly for bottom placement", () => {
       const position = getPosition({

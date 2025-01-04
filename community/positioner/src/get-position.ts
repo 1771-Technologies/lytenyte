@@ -48,14 +48,6 @@ export interface GetPositionArguments {
    * @default 4
    */
   offset?: OffsetValue;
-
-  /**
-   * Whether the layout is right-to-left.
-   * Affects positioning calculations, particularly for alignment offsets.
-   *
-   * @default false
-   */
-  rtl?: boolean;
 }
 
 /**
@@ -79,8 +71,6 @@ export interface GetPositionArguments {
  *                        @default 4
  * @param options.arrow - Dimensions of optional arrow element
  *                       @default { width: 0, height: 0 }
- * @param options.rtl - Whether the layout is right-to-left
- *                     @default false
  *
  * @returns An object containing:
  *          - x: Final x coordinate
@@ -114,7 +104,6 @@ export function getPosition({
   placement,
   offset = 4,
   arrow = { width: 0, height: 0 },
-  rtl = false,
 }: GetPositionArguments) {
   const alignment = getAlignment(placement);
   let side = getSide(placement);
@@ -128,12 +117,12 @@ export function getPosition({
   let y!: number;
   for (const path of paths) {
     side = path;
-    const res = getCoordsFromPlacement(reference, floating, side, alignment, rtl);
+    const res = getCoordsFromPlacement(reference, floating, side, alignment);
     x = res.x;
     y = res.y;
 
     if (offset) {
-      const off = getOffset(side, alignment, offset, rtl);
+      const off = getOffset(side, alignment, offset);
       x += off.x;
       y += off.y;
     }
