@@ -112,3 +112,44 @@ test("should create a moveable frame uncontrolled", async () => {
 
   screen.unmount();
 });
+
+test("should create a frame that is not movable or resizable", async () => {
+  function X() {
+    const [show, setShow] = useState(false);
+
+    return (
+      <div>
+        <button onClick={() => setShow((prev) => !prev)}>Show Frame</button>
+        <Frame
+          onShowChange={setShow}
+          show={show}
+          resizable={false}
+          movable={false}
+          x={22}
+          y={11}
+          maxWidth={"220vw"}
+          header={<div>This is my header content</div>}
+          axe={defaultAxeProps}
+        >
+          This is my driver content. I put a lot of content into it.
+        </Frame>
+      </div>
+    );
+  }
+
+  const screen = render(<X />);
+
+  const show = screen.getByText("Show Frame");
+
+  await show.click();
+
+  const t = screen.getByText("This is my driver content. I put a lot of content into it");
+  await expect.element(t).toBeVisible();
+
+  expect(screen.getByRole("button").all()).toHaveLength(1);
+
+  await userEvent.keyboard("{Escape}");
+  await expect.element(t).not.toBeInTheDocument();
+
+  screen.unmount();
+});

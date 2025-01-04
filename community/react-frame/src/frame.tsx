@@ -26,6 +26,9 @@ export interface FrameProps {
   readonly width?: number | null;
   readonly height?: number | null;
 
+  readonly movable?: boolean;
+  readonly resizable?: boolean;
+
   readonly onSizeChange?: (w: number, h: number) => void;
   readonly onMove?: (x: number, y: number) => void;
 
@@ -51,6 +54,9 @@ export function Frame({
   headerHeight = 20,
   header,
   children,
+
+  movable = true,
+  resizable = true,
 
   width,
   height,
@@ -159,106 +165,112 @@ export function Frame({
         role="status"
         aria-live="polite"
       ></div>
-      <div
-        role="button"
-        aria-label={axe.axeMoveLabel}
-        aria-description={axe.axeMoveDescription}
-        onKeyDown={(e) => {
-          const step = 10;
-
-          switch (e.key) {
-            case "ArrowUp":
-              onMove?.(x, Math.max(0, y - step));
-              break;
-            case "ArrowDown":
-              onMove?.(x, Math.min(window.innerHeight - h!, y + step));
-              break;
-            case "ArrowLeft":
-              onMove?.(Math.max(x - 10, 0), y);
-              break;
-            case "ArrowRight":
-              onMove?.(Math.min(window.innerWidth - w!, x + step), y);
-              break;
-          }
-        }}
-        tabIndex={0}
-        onPointerDown={(el) => {
-          handleMove(
-            el.nativeEvent,
-            resizeAnnouncer!,
-            axe,
-            ref!,
-            raf,
-            onMove ?? (() => {}),
-            w!,
-            h!,
-            sizeSync,
-          );
-
-          setTimeout(sizeSync);
-        }}
-      >
-        {header}
-      </div>
-      <div>{children}</div>
-      <div style={{ position: "sticky", bottom: 0 }}>
-        <button
-          aria-label={axe.axeResizeLabel}
-          aria-description={axe.axeResizeDescription}
+      {movable && (
+        <div
+          role="button"
+          aria-label={axe.axeMoveLabel}
+          aria-description={axe.axeMoveDescription}
           onKeyDown={(e) => {
             const step = 10;
 
             switch (e.key) {
               case "ArrowUp":
-                sizeChange(w!, h! - step);
+                onMove?.(x, Math.max(0, y - step));
                 break;
               case "ArrowDown":
-                sizeChange(w!, h! + step);
+                onMove?.(x, Math.min(window.innerHeight - h!, y + step));
                 break;
               case "ArrowLeft":
-                sizeChange(w! - step, h!);
+                onMove?.(Math.max(x - 10, 0), y);
                 break;
               case "ArrowRight":
-                sizeChange(w! + step, h!);
+                onMove?.(Math.min(window.innerWidth - w!, x + step), y);
                 break;
             }
           }}
+          tabIndex={0}
           onPointerDown={(el) => {
-            if (raf.current) cancelAnimationFrame(raf.current);
-            raf.current = requestAnimationFrame(() => {
-              handleResize(
-                el.nativeEvent,
-                resizeAnnouncer!,
-                axe,
-                x,
-                y,
-                w!,
-                h!,
-                ref!,
-                (w, h) => {
-                  sizeChange(w, h);
-                },
-                sizeSync,
-              );
+            handleMove(
+              el.nativeEvent,
+              resizeAnnouncer!,
+              axe,
+              ref!,
+              raf,
+              onMove ?? (() => {}),
+              w!,
+              h!,
+              sizeSync,
+            );
 
-              raf.current = null;
-            });
-          }}
-          style={{
-            cursor: "pointer",
-            width: 16,
-            height: 16,
-            position: "absolute",
-            padding: 0,
-            margin: 0,
-            border: "none",
-            background: "transparent",
-            insetInlineEnd: 0,
-            top: 2,
+            setTimeout(sizeSync);
           }}
         >
-          <ResizeDots />
-        </button>
+          {header}
+        </div>
+      )}
+      {/* v8 ignore next */}
+      {!movable && <div>{header}</div>}
+      <div>{children}</div>
+      <div style={{ position: "sticky", bottom: 0 }}>
+        {resizable && (
+          <button
+            aria-label={axe.axeResizeLabel}
+            aria-description={axe.axeResizeDescription}
+            onKeyDown={(e) => {
+              const step = 10;
+
+              switch (e.key) {
+                case "ArrowUp":
+                  sizeChange(w!, h! - step);
+                  break;
+                case "ArrowDown":
+                  sizeChange(w!, h! + step);
+                  break;
+                case "ArrowLeft":
+                  sizeChange(w! - step, h!);
+                  break;
+                case "ArrowRight":
+                  sizeChange(w! + step, h!);
+                  break;
+              }
+            }}
+            onPointerDown={(el) => {
+              if (raf.current) cancelAnimationFrame(raf.current);
+              raf.current = requestAnimationFrame(() => {
+                handleResize(
+                  el.nativeEvent,
+                  resizeAnnouncer!,
+                  axe,
+                  x,
+                  y,
+                  w!,
+                  h!,
+                  ref!,
+                  (w, h) => {
+                    sizeChange(w, h);
+                  },
+                  sizeSync,
+                );
+
+                raf.current = null;
+              });
+            }}
+            style={{
+              cursor: "pointer",
+              width: 16,
+              height: 16,
+              position: "absolute",
+              padding: 0,
+              margin: 0,
+              border: "none",
+              background: "transparent",
+              insetInlineEnd: 0,
+              top: 2,
+            }}
+          >
+            <ResizeDots />
+          </button>
+        )}
       </div>
     </Dialog>
   );
