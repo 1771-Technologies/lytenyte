@@ -3,7 +3,8 @@ import { useCombinedRefs, useEvent } from "@1771technologies/react-utils";
 import { useEffect, useRef, useState, type CSSProperties, type JSX, type ReactNode } from "react";
 import { ResizeDots } from "./resize-dots";
 import { handleResize } from "./handle-resize";
-import { clamp, getClientX, getClientY } from "@1771technologies/js-utils";
+import { handleMove } from "./handle-move";
+import { handleSizeBounds } from "./handle-size-bounds";
 
 export interface FrameProps {
   readonly show: boolean;
@@ -62,23 +63,37 @@ export function Frame({
   const sizeRef = useRef({ w, h, x, y });
   sizeRef.current = { w, h, x, y };
 
-  const resetToSize = useEvent(() => {
+  const sizeSync = useEvent(() => {
     if (!ref) return;
 
+    const s = sizeRef.current;
+    const adjusted = handleSizeBounds(s.x, s.y, s.w!, s.h!);
+
     Object.assign(ref.style, {
-      width: `${sizeRef.current.w}px`,
-      height: `${sizeRef.current.h}px`,
-      top: `${sizeRef.current.y}px`,
-      left: `${sizeRef.current.x}px`,
+      width: `${adjusted.w}px`,
+      height: `${adjusted.h}px`,
+      top: `${adjusted.y}px`,
+      left: `${adjusted.x}px`,
     });
   });
-
-  // Always reset to the size.
-  useEffect(() => resetToSize);
 
   const combinedRefs = useCombinedRefs(props.ref, setRef);
 
   const sizeChange = useEvent(onSizeChange ?? (() => {}));
+
+  useEffect(() => {
+    const controller = new AbortController();
+    window.addEventListener(
+      "resize",
+      () => {
+        console.log("i ran");
+        sizeSync();
+      },
+      { signal: controller.signal },
+    );
+
+    return () => controller.abort();
+  }, [sizeSync]);
 
   useEffect(() => {
     if (!ref) return;
@@ -88,7 +103,9 @@ export function Frame({
     sizeChange(bb.width, bb.height);
     setInternalWidth(bb.width);
     setInternalHeight(bb.height);
-  }, [ref, sizeChange]);
+
+    setTimeout(sizeSync);
+  }, [ref, sizeChange, sizeSync]);
 
   const raf = useRef<number | null>(null);
   return (
@@ -118,56 +135,9 @@ export function Frame({
     >
       <div
         onPointerDown={(el) => {
-          el.preventDefault();
-          let prevX = getClientX(el.nativeEvent);
-          let prevY = getClientY(el.nativeEvent);
+          handleMove(el.nativeEvent, ref!, raf, onMove ?? (() => {}), w!, h!, sizeSync);
 
-          const controller = new AbortController();
-          const prevPointerEvents = ref!.style.pointerEvents;
-
-          const t = setTimeout(() => {
-            ref!.style.pointerEvents = "none";
-            window.addEventListener(
-              "pointermove",
-              (el) => {
-                if (raf.current) cancelAnimationFrame(raf.current);
-                raf.current = requestAnimationFrame(() => {
-                  const currentX = getClientX(el);
-                  const currentY = getClientY(el);
-
-                  const deltaX = currentX - prevX;
-                  const deltaY = currentY - prevY;
-
-                  const s = getComputedStyle(ref!);
-                  const x = Number.parseInt(s.left);
-                  const y = Number.parseInt(s.top);
-
-                  const newX = clamp(0, x + deltaX, window.innerWidth - w!);
-                  const newY = clamp(0, y + deltaY, window.innerHeight - h!);
-
-                  Object.assign(ref!.style, { top: `${newY}px`, left: `${newX}px` });
-
-                  prevX = currentX;
-                  prevY = currentY;
-                });
-              },
-              { signal: controller.signal },
-            );
-          }, 40);
-
-          window.addEventListener("pointerup", () => {
-            controller.abort();
-            Object.assign(ref!.style, { pointerEvents: prevPointerEvents });
-
-            const s = getComputedStyle(ref!);
-            const x = Number.parseInt(s.left);
-            const y = Number.parseInt(s.top);
-
-            onMove?.(x, y);
-
-            raf.current = null;
-            clearTimeout(t);
-          });
+          setTimeout(sizeSync);
         }}
       >
         {header}
@@ -178,11 +148,20 @@ export function Frame({
           onPointerDown={(el) => {
             if (raf.current) cancelAnimationFrame(raf.current);
             raf.current = requestAnimationFrame(() => {
-              handleResize(el.nativeEvent, x, y, w!, h!, ref!, (w, h) => {
-                sizeChange(w, h);
-                setInternalHeight(h);
-                setInternalWidth(w);
-              });
+              handleResize(
+                el.nativeEvent,
+                x,
+                y,
+                w!,
+                h!,
+                ref!,
+                (w, h) => {
+                  sizeChange(w, h);
+                  setInternalHeight(h);
+                  setInternalWidth(w);
+                },
+                sizeSync,
+              );
 
               raf.current = null;
             });

@@ -8,6 +8,7 @@ export function handleResize(
   h: number,
   ref: HTMLElement,
   sizeChange: (w: number, h: number) => void,
+  sizeSync: () => void,
 ) {
   const startX = getClientX(el);
   const startY = getClientY(el);
@@ -37,6 +38,7 @@ export function handleResize(
       const bb = ref!.getBoundingClientRect();
 
       sizeChange(bb.width, bb.height);
+      setTimeout(sizeSync);
 
       controller.abort();
     },
