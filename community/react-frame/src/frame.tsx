@@ -86,7 +86,6 @@ export function Frame({
     window.addEventListener(
       "resize",
       () => {
-        console.log("i ran");
         sizeSync();
       },
       { signal: controller.signal },
