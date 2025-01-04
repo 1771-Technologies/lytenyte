@@ -1,0 +1,32 @@
+name: Bug report
+description: Create a bug report for LyteNyte Grid or related packages
+labels: ["pending", "bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Thank you for contributing by creating an issue! Please provide a searchable summary of the issue in the title above.
+  - type: input
+    attributes:
+      label: Search keyboards
+      description: |
+        Your issue may have already been reported!. First search for duplicates 
+        among the [existing issues](https://github.com/1771-Technologies/lytenyte/issues).
+        If your issue isn't a duplicate, great! Please list the keywords used so people in future
+        can find this one more easily. (Please note, duplicates will be closed with a link to a "source of truth" issue)
+      validation:
+        required: true
+  - type: checkboxes
+    attributes:
+      label: Latest version
+      description: We push bug fixes, performance enhancements, and new features into new releases.
+      options:
+        - label: I have tested the latest version
+          required: true
+  - type: dropdown
+    attributes:
+      label: Affected products
+      description: Which products are affected by this issue? If you're not sure, leave this blank.
+      multiple: true
+      options:
+        - LyteNyte Grid Community
+        - LyteNyte Grid Enterprise
