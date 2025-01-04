@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "@1771technologies/react-dialog": "workspace:^",
-    "@1771technologies/positioner": "workspace:^"
+    "@1771technologies/positioner": "workspace:^",
+    "@1771technologies/react-utils": "workspace:^"
   },
   "peerDependencies": {
     "react": "^18 | 19^",
