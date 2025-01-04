@@ -40,7 +40,6 @@ export interface FrameProps {
   readonly minHeight?: CSSProperties["width"];
   readonly minWidth?: CSSProperties["width"];
 
-  readonly headerHeight?: number;
   readonly header?: ReactNode;
 
   readonly axe: FrameAxeProps;
@@ -51,7 +50,6 @@ export function Frame({
   onShowChange,
   x,
   y,
-  headerHeight = 20,
   header,
   children,
 
@@ -145,9 +143,10 @@ export function Frame({
         left: x,
         padding: 0,
         margin: 0,
-        display: "grid",
+        display: "flex",
+        flexDirection: "column",
+
         boxSizing: "border-box",
-        gridTemplateRows: `${headerHeight}px 1fr 18px`,
         ...props.style,
 
         width: w ?? initialWidth,
@@ -210,8 +209,8 @@ export function Frame({
       )}
       {/* v8 ignore next */}
       {!movable && <div>{header}</div>}
-      <div>{children}</div>
-      <div style={{ position: "sticky", bottom: 0 }}>
+      <div style={{ flex: 1 }}>{children}</div>
+      <div style={{ position: "sticky", bottom: 0, height: 20 }}>
         {resizable && (
           <button
             aria-label={axe.axeResizeLabel}

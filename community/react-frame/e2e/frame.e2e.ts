@@ -27,6 +27,18 @@ test("dialog can be opened and closed", async ({ page }) => {
   const accessibilityScan = await new AxeBuilder({ page }).analyze();
   expect(accessibilityScan.violations).toEqual([]);
 
+  const resize = page.getByRole("button").nth(2);
+
+  const resizeBB = (await resize.boundingBox())!;
+
+  await page.mouse.move(resizeBB.x + 1, resizeBB.y + 1);
+  await page.mouse.down();
+  await page.waitForTimeout(200);
+  await page.mouse.move(resizeBB.x + 10, resizeBB.y + 20);
+  await page.mouse.up();
+
+  await expect(page).toHaveScreenshot("after-resize.png");
+
   const dialog = page.getByRole("dialog");
   await dialog.press("Escape");
   await expect(dialog).not.toBeVisible();
