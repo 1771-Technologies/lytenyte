@@ -2,29 +2,28 @@ import type { Side } from "./types.js";
 import { getAxis } from "./utils.js";
 
 /**
- * Calculates positioning offsets for a floating element based on its placement,
- * alignment, and provided offset values.
+ * Calculates positioning offsets for a floating element based on its placement side
+ * and offset value.
  *
  * The offset is calculated along two axes:
- * - Main axis: The axis running parallel to the placement side (e.g., y-axis for top/bottom)
- * - Cross axis: The axis running perpendicular to the placement side
+ * - Vertical axis (y): Used for top/bottom placements
+ * - Horizontal axis (x): Used for left/right placements
  *
- * The function handles both simple numeric offsets and complex offset objects with
- * separate main/cross axis values and alignment axis adjustments.
+ * The function applies the offset in the appropriate direction based on the placement side:
+ * - For "top"/"left": Negative offset (moving opposite to the side)
+ * - For "bottom"/"right": Positive offset (moving with the side)
  *
  * @param side - The placement side ("top", "right", "bottom", or "left")
- * @param alignment - Optional alignment ("start" or "end"). Affects how
- *                   alignmentAxis offset is applied
- * @param offsetValue - distance from reference
- *
- * @returns Calculated x/y offset coordinates. The direction and magnitude of the
- *          offset depends on the placement side.
+ * @param offsetValue - The distance to offset from the reference element
+ * @returns An object containing x/y coordinates for the offset
  *
  * @example
  * ```typescript
- * // Simple numeric offset
- * const offset1 = getOffset("top", undefined, 10, false);
+ * const offset = getOffset("top", 10);
  * // { x: 0, y: -10 }
+ *
+ * const offset = getOffset("right", 5);
+ * // { x: 5, y: 0 }
  * ```
  */
 export function getOffset(side: Side, offsetValue: number) {

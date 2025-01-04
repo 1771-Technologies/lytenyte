@@ -22,11 +22,6 @@ describe("getPosition", () => {
     height: 150,
   };
 
-  const arrow: Dimensions = {
-    width: 20,
-    height: 10,
-  };
-
   describe("basic positioning", () => {
     test("positions on bottom with default offset", () => {
       const position = getPosition({
@@ -35,16 +30,15 @@ describe("getPosition", () => {
         placement: "bottom",
       });
 
-      expect(position).toEqual({
-        x: 50, // reference.x + reference.width/2 - floating.width/2
-        y: 204, // reference.y + reference.height + offset
-        width: 200,
-        height: 150,
-        arrow: expect.objectContaining({
-          x: expect.any(Number),
-          y: expect.any(Number),
-        }),
-      });
+      expect(position).toMatchInlineSnapshot(`
+        {
+          "height": 150,
+          "placement": "bottom",
+          "width": 200,
+          "x": 50,
+          "y": 204,
+        }
+      `);
     });
 
     test("positions on top with custom offset", () => {
@@ -55,16 +49,15 @@ describe("getPosition", () => {
         offset: 10,
       });
 
-      expect(position).toEqual({
-        x: 50,
-        y: 210,
-        width: 200,
-        height: 150,
-        arrow: expect.objectContaining({
-          x: expect.any(Number),
-          y: expect.any(Number),
-        }),
-      });
+      expect(position).toMatchInlineSnapshot(`
+        {
+          "height": 150,
+          "placement": "bottom",
+          "width": 200,
+          "x": 50,
+          "y": 210,
+        }
+      `);
     });
 
     test("positions with alignment", () => {
@@ -75,16 +68,15 @@ describe("getPosition", () => {
         offset: 5,
       });
 
-      expect(position).toEqual({
-        x: 205, // reference.x + reference.width + offset
-        y: 100, // aligned to start, so reference.y
-        width: 200,
-        height: 150,
-        arrow: expect.objectContaining({
-          x: expect.any(Number),
-          y: expect.any(Number),
-        }),
-      });
+      expect(position).toMatchInlineSnapshot(`
+        {
+          "height": 150,
+          "placement": "right-start",
+          "width": 200,
+          "x": 205,
+          "y": 100,
+        }
+      `);
     });
   });
 
@@ -166,54 +158,23 @@ describe("getPosition", () => {
     });
   });
 
-  describe("arrow positioning", () => {
-    test("positions arrow correctly for bottom placement", () => {
-      const position = getPosition({
-        reference,
-        floating,
-        placement: "bottom",
-        arrow,
-        offset: 4,
-      });
-
-      expect(position.arrow).toEqual({
-        x: 90, // (200 - 20) / 2
-        y: -10, // -arrow.height
-      });
-    });
-
-    test("positions arrow correctly for right placement with alignment", () => {
-      const position = getPosition({
-        reference,
-        floating,
-        placement: "right-start",
-        arrow,
-        offset: 4,
-      });
-
-      expect(position.arrow).toEqual({
-        x: -20, // -arrow.width
-        y: 0, // start alignment
-      });
-    });
-  });
-
   describe("edge cases", () => {
     test("handles zero dimensions", () => {
       const position = getPosition({
         reference: { ...reference, width: 0, height: 0 },
         floating: { width: 0, height: 0 },
         placement: "bottom",
-        arrow: { width: 0, height: 0 },
       });
 
-      expect(position).toEqual({
-        x: 100, // reference.x
-        y: 104, // reference.y + offset
-        width: 0,
-        height: 0,
-        arrow: { x: 0, y: -0 },
-      });
+      expect(position).toMatchInlineSnapshot(`
+        {
+          "height": 0,
+          "placement": "bottom",
+          "width": 0,
+          "x": 100,
+          "y": 104,
+        }
+      `);
     });
 
     test("handles negative coordinates", () => {
