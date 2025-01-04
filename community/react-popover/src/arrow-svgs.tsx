@@ -1,5 +1,16 @@
+/** Props type for arrow SVG components, extending standard SVG element props */
 export type ArrowSvgProps = React.SVGProps<SVGSVGElement>;
 
+/**
+ * Renders an upward-pointing triangular arrow SVG.
+ * @component
+ * @param props - Standard SVG properties plus any additional props supported by SVG elements
+ * @returns An SVG element representing an upward-pointing arrow
+ * @example
+ * ```tsx
+ * <UpArrow className="text-blue-500" width={24} height={12} />
+ * ```
+ */
 export const UpArrow: React.FC<ArrowSvgProps> = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -13,6 +24,16 @@ export const UpArrow: React.FC<ArrowSvgProps> = (props) => (
   </svg>
 );
 
+/**
+ * Renders a downward-pointing triangular arrow SVG.
+ * @component
+ * @param props - Standard SVG properties plus any additional props supported by SVG elements
+ * @returns An SVG element representing a downward-pointing arrow
+ * @example
+ * ```tsx
+ * <DownArrow className="text-blue-500" width={24} height={12} />
+ * ```
+ */
 export const DownArrow: React.FC<ArrowSvgProps> = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -26,6 +47,16 @@ export const DownArrow: React.FC<ArrowSvgProps> = (props) => (
   </svg>
 );
 
+/**
+ * Renders a leftward-pointing triangular arrow SVG.
+ * @component
+ * @param props - Standard SVG properties plus any additional props supported by SVG elements
+ * @returns An SVG element representing a leftward-pointing arrow
+ * @example
+ * ```tsx
+ * <LeftArrow className="text-blue-500" width={12} height={24} />
+ * ```
+ */
 export const LeftArrow: React.FC<ArrowSvgProps> = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -39,6 +70,16 @@ export const LeftArrow: React.FC<ArrowSvgProps> = (props) => (
   </svg>
 );
 
+/**
+ * Renders a rightward-pointing triangular arrow SVG.
+ * @component
+ * @param props - Standard SVG properties plus any additional props supported by SVG elements
+ * @returns An SVG element representing a rightward-pointing arrow
+ * @example
+ * ```tsx
+ * <RightArrow className="text-blue-500" width={12} height={24} />
+ * ```
+ */
 export const RightArrow: React.FC<ArrowSvgProps> = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"

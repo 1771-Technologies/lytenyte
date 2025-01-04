@@ -6,19 +6,41 @@ import { refCompat, useCombinedRefs, useEvent, useIsoEffect } from "@1771technol
 import { useState, type JSX, type PropsWithChildren } from "react";
 import { Arrow } from "./arrow";
 
+/**
+ * Represents the target element or position that the popover should be positioned relative to.
+ * Can be an HTML element, a DOMRect, or null if no target is set.
+ */
 export type PopoverTarget = HTMLElement | Rect | null;
 
+/**
+ * Props for the Popover component.
+ * @interface
+ */
 export interface PopoverProps {
+  /** Element or position that the popover should be positioned relative to */
   readonly popoverTarget: PopoverTarget;
+  /** Controls whether the popover is visible */
   readonly open: boolean;
+  /** Callback fired when the open state changes */
   readonly onOpenChange: (b: boolean) => void;
+  /** Where to place the popover relative to the target (default: "bottom") */
   readonly placement?: Placement;
+  /** Distance in pixels between the popover and its target (default: 12) */
   readonly offset?: number;
+  /** Whether to show an arrow pointing to the target */
   readonly arrow?: boolean;
+  /** CSS color value for the arrow (default: "currentcolor") */
   readonly arrowColor?: string;
+  /** Custom dimensions for the arrow */
   readonly arrowDimensions?: Dimensions;
 }
 
+/**
+ * Internal implementation of the Popover component.
+ * This component handles the positioning logic and arrow rendering.
+ *
+ * @internal
+ */
 function PopoverImpl({
   popoverTarget,
   placement,
@@ -35,6 +57,10 @@ function PopoverImpl({
   const [dialog, setDialog] = useState<HTMLDialogElement | null>(null);
   const [arrowP, setArrowP] = useState<Placement | null>(null);
 
+  /**
+   * Updates the popover's position relative to its target.
+   * Calculates and applies the correct position based on the placement and offset.
+   */
   const handlePosition = useEvent(() => {
     dialog!.style.display = "block";
 
@@ -94,4 +120,23 @@ function PopoverImpl({
   );
 }
 
+/**
+ * A floating popover component that positions itself relative to a target element.
+ * Supports multiple placements, custom offsets, and an optional pointing arrow.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <Popover
+ *   popoverTarget={buttonRef.current}
+ *   open={isOpen}
+ *   onOpenChange={setIsOpen}
+ *   placement="top"
+ *   offset={8}
+ *   arrow
+ * >
+ *   Popover content
+ * </Popover>
+ * ```
+ */
 export const Popover = refCompat(PopoverImpl, "Popover");
