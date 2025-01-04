@@ -1,7 +1,6 @@
-import { getArrowPosition } from "./get-arrow-position.js";
 import { getCoordsFromPlacement } from "./get-coords-from-placement.js";
 import { getOffset } from "./get-offset.js";
-import type { Dimensions, OffsetValue, Placement, Rect, Side } from "./types.js";
+import type { Dimensions, Placement, Rect, Side } from "./types.js";
 import { getAlignment, getAxis, getOppositeAxis, getSide } from "./utils.js";
 
 /**
@@ -30,24 +29,12 @@ export interface GetPositionArguments {
    * "bottom-start" // Places below reference, aligned to start edge
    */
   placement: Placement;
-
-  /**
-   * Optional dimensions for an arrow element that points to the reference element.
-   * The arrow is positioned within the floating element's bounds.
-   *
-   * @default { width: 0, height: 0 }
-   */
-  arrow?: Dimensions;
-
   /**
    * Distance between reference and floating elements.
-   * Can be either:
-   * - A number (applied to main axis)
-   * - An object with mainAxis, crossAxis, and alignmentAxis offsets
    *
    * @default 4
    */
-  offset?: OffsetValue;
+  offset?: number;
 }
 
 /**
@@ -98,13 +85,7 @@ export interface GetPositionArguments {
  * - Top: [top, bottom, right, left, top]
  * - Bottom: [bottom, top, right, left, bottom]
  */
-export function getPosition({
-  reference,
-  floating,
-  placement,
-  offset = 4,
-  arrow = { width: 0, height: 0 },
-}: GetPositionArguments) {
+export function getPosition({ reference, floating, placement, offset = 4 }: GetPositionArguments) {
   const alignment = getAlignment(placement);
   let side = getSide(placement);
 
@@ -122,7 +103,7 @@ export function getPosition({
     y = res.y;
 
     if (offset) {
-      const off = getOffset(side, alignment, offset);
+      const off = getOffset(side, offset);
       x += off.x;
       y += off.y;
     }
@@ -155,7 +136,7 @@ export function getPosition({
     y,
     width: floating.width,
     height: floating.height,
-    arrow: getArrowPosition(side, alignment, x, y, floating, arrow),
+    placement: `${side}${alignment ? "-" + alignment : ""}` as Placement,
   };
 }
 

@@ -1,4 +1,4 @@
-import type { Alignment, OffsetValue, Side } from "./types.js";
+import type { Side } from "./types.js";
 import { getAxis } from "./utils.js";
 
 /**
@@ -15,11 +15,7 @@ import { getAxis } from "./utils.js";
  * @param side - The placement side ("top", "right", "bottom", or "left")
  * @param alignment - Optional alignment ("start" or "end"). Affects how
  *                   alignmentAxis offset is applied
- * @param offsetValue - Either a number (applied to main axis) or an object with:
- *                     - mainAxis: Offset along the main axis
- *                     - crossAxis: Offset along the cross axis
- *                     - alignmentAxis: Optional offset that can override crossAxis
- *                       for aligned placements
+ * @param offsetValue - distance from reference
  *
  * @returns Calculated x/y offset coordinates. The direction and magnitude of the
  *          offset depends on the placement side.
@@ -29,36 +25,13 @@ import { getAxis } from "./utils.js";
  * // Simple numeric offset
  * const offset1 = getOffset("top", undefined, 10, false);
  * // { x: 0, y: -10 }
- *
- * // Complex offset with alignment
- * const offset2 = getOffset("right", "start", {
- *   mainAxis: 10,
- *   crossAxis: 5,
- *   alignmentAxis: 8
- * }, false);
- * // Returns offset with main axis applied horizontally
- * // and alignment-adjusted cross axis vertically
  * ```
  */
-export function getOffset(side: Side, alignment: Alignment | undefined, offsetValue: OffsetValue) {
+export function getOffset(side: Side, offsetValue: number) {
   const isVertical = getAxis(side) === "y";
   const mainAxisMulti = ["left", "top"].includes(side) ? -1 : 1;
 
-  // eslint-disable-next-line prefer-const
-  let { mainAxis, crossAxis, alignmentAxis } =
-    typeof offsetValue === "number"
-      ? { mainAxis: offsetValue, crossAxis: 0, alignmentAxis: null }
-      : {
-          mainAxis: offsetValue.mainAxis || 0,
-          crossAxis: offsetValue.crossAxis || 0,
-          alignmentAxis: offsetValue.alignmentAxis,
-        };
-
-  if (alignment && typeof alignmentAxis === "number") {
-    crossAxis = alignment === "end" ? alignmentAxis * -1 : alignmentAxis;
-  }
-
   return isVertical
-    ? { x: crossAxis, y: mainAxis * mainAxisMulti }
-    : { x: mainAxis * mainAxisMulti, y: crossAxis };
+    ? { x: 0, y: offsetValue * mainAxisMulti }
+    : { x: offsetValue * mainAxisMulti, y: 0 };
 }

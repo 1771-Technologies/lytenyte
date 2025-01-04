@@ -4,14 +4,13 @@ import type { Placement } from "../src/types";
 
 export default function Play() {
   const [x, setX] = useState<HTMLElement | null>(null);
-  const [arrowEl, setArrowEl] = useState<HTMLElement | null>(null);
   const [ref, setRef] = useState<HTMLElement | null>(null);
   const [placement, setPlacement] = useState<Placement>("left");
 
   const [offset, setOffset] = useState(8);
 
   useEffect(() => {
-    if (!x || !ref || !arrowEl) return;
+    if (!x || !ref) return;
 
     const reference = ref.getBoundingClientRect();
     const floating = x.getBoundingClientRect();
@@ -20,16 +19,12 @@ export default function Play() {
       floating,
       placement,
       reference,
-      offset,
-      arrow: { height: 12, width: 12 },
+      offset: 12,
     });
 
     x.style.top = `${pos.y}px`;
     x.style.insetInlineStart = `${pos.x}px`;
-
-    arrowEl.style.top = `${pos.arrow.y}px`;
-    arrowEl.style.insetInlineStart = `${pos.arrow.x}px`;
-  }, [arrowEl, offset, placement, ref, x]);
+  }, [offset, placement, ref, x]);
 
   return (
     <div>
@@ -79,18 +74,7 @@ export default function Play() {
             position: fixed;
             z-index: 2;
           `}
-        >
-          <div
-            ref={setArrowEl}
-            className={css`
-              position: absolute;
-              width: 12px;
-              height: 12px;
-              background-color: blue;
-              z-index: -1;
-            `}
-          />
-        </div>
+        ></div>
         <div
           ref={setRef}
           className={css`
