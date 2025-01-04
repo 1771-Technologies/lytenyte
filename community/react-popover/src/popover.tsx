@@ -4,7 +4,7 @@ import { getPosition } from "@1771technologies/positioner";
 import { Dialog } from "@1771technologies/react-dialog";
 import { refCompat, useCombinedRefs, useIsoEffect } from "@1771technologies/react-utils";
 import { useState, type JSX, type PropsWithChildren } from "react";
-import { ArrowSvg } from "./arrow";
+import { DownArrow, LeftArrow, RightArrow, UpArrow, type ArrowProps } from "./arrow";
 
 export type PopoverTarget = HTMLElement | Rect | null;
 
@@ -19,7 +19,7 @@ export interface PopoverProps {
   readonly arrowDimensions?: Dimensions;
 }
 
-const arrowDimensions = { width: 15, height: 7 };
+const arrowDimensions = { width: 16, height: 8 };
 function PopoverImpl({
   popoverTarget,
   placement,
@@ -35,6 +35,7 @@ function PopoverImpl({
 }: PropsWithChildren<PopoverProps> & Omit<JSX.IntrinsicElements["dialog"], "popoverTarget">) {
   const [dialog, setDialog] = useState<HTMLDialogElement | null>(null);
   const [arrowEl, setArrowEl] = useState<HTMLDivElement | null>(null);
+  const [arrowPlacement, setArrowPlacement] = useState<Placement | null>();
 
   useIsoEffect(() => {
     if (!dialog || !popoverTarget) return;
@@ -50,21 +51,18 @@ function PopoverImpl({
       floating,
       reference,
       placement: placement ?? "bottom",
-      offset: offset ?? 16,
+      offset: offset ?? 12,
       arrow: arrow ? arrowDimensions : undefined,
     });
     dialog.style.top = `${pos.y}px`;
     dialog.style.left = `${pos.x}px`;
 
     if (arrowEl) {
-      arrowEl.style.top = `${pos.arrow.y}px`;
-      arrowEl.style.left = `${pos.arrow.x}px`;
-
-      let transform: string = "";
-      if (pos.arrow.arrowPlacement.includes("right")) transform = `rotate(90deg)`;
-      if (pos.arrow.arrowPlacement.includes("left")) transform = `rotate(90deg)`;
-
-      arrowEl.style.transform = transform;
+      setArrowPlacement(pos.arrow.arrowPlacement);
+      arrowEl.style.top = `1px`;
+      arrowEl.style.left = `calc(100% - 1px)`;
+    } else {
+      setArrowPlacement(null);
     }
   }, [arrow, arrowEl, dialog, offset, placement, popoverTarget]);
 
@@ -72,6 +70,7 @@ function PopoverImpl({
 
   if (!popoverTarget) return null;
 
+  const Arrow = arrowPlacement ? placeToArrow[arrowPlacement] : null;
   return (
     <Dialog
       open={open}
@@ -92,11 +91,29 @@ function PopoverImpl({
             justifyContent: "center",
           }}
         >
-          <ArrowSvg fill={arrowColor} />
+          {Arrow && <Arrow fill={arrowColor} />}
         </div>
       )}
     </Dialog>
   );
 }
+
+const placeToArrow: Record<Placement, React.FC<ArrowProps>> = {
+  "bottom-end": DownArrow,
+  bottom: DownArrow,
+  "bottom-start": DownArrow,
+
+  "top-end": UpArrow,
+  top: UpArrow,
+  "top-start": UpArrow,
+
+  "left-end": RightArrow,
+  left: RightArrow,
+  "left-start": RightArrow,
+
+  "right-end": LeftArrow,
+  right: LeftArrow,
+  "right-start": LeftArrow,
+};
 
 export const Popover = refCompat(PopoverImpl, "Popover");
