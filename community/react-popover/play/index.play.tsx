@@ -6,10 +6,12 @@ export default function Play() {
   const [open, setOpen] = useState(false);
   const [target, setTarget] = useState<PopoverTarget>(null);
   const [placement, setPlacement] = useState<Placement>("left-start");
+  const [arrow, setArrow] = useState(false);
 
   return (
     <>
       <h1>Popover Playground</h1>
+      <button onClick={() => setArrow(!arrow)}>Arrow Enabled: {arrow ? "Yes" : "No"}</button>
       <label>
         Popover Placement
         <select value={placement} onChange={(e) => setPlacement(e.target.value as Placement)}>
@@ -47,7 +49,13 @@ export default function Play() {
         >
           Show Popover
         </button>
-        <Popover open={open} onOpenChange={setOpen} popoverTarget={target} placement={placement}>
+        <Popover
+          open={open}
+          onOpenChange={setOpen}
+          popoverTarget={target}
+          placement={placement}
+          arrow={arrow}
+        >
           This is the popover content
         </Popover>
       </div>

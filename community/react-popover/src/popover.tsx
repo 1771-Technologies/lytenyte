@@ -4,6 +4,7 @@ import { getPosition } from "@1771technologies/positioner";
 import { Dialog } from "@1771technologies/react-dialog";
 import { refCompat, useCombinedRefs, useIsoEffect } from "@1771technologies/react-utils";
 import { useState, type JSX, type PropsWithChildren } from "react";
+import { ArrowSvg } from "./arrow";
 
 export type PopoverTarget = HTMLElement | Rect | null;
 
@@ -13,14 +14,18 @@ export interface PopoverProps {
   readonly onOpenChange: (b: boolean) => void;
   readonly placement?: Placement;
   readonly offset?: OffsetValue;
-  readonly arrow?: Dimensions;
+  readonly arrow?: boolean;
+  readonly arrowColor?: string;
+  readonly arrowDimensions?: Dimensions;
 }
 
+const arrowDimensions = { width: 15, height: 7 };
 function PopoverImpl({
   popoverTarget,
   placement,
   offset,
   arrow,
+  arrowColor = "currentcolor",
   onOpenChange,
   open,
 
@@ -29,6 +34,7 @@ function PopoverImpl({
   ...props
 }: PropsWithChildren<PopoverProps> & Omit<JSX.IntrinsicElements["dialog"], "popoverTarget">) {
   const [dialog, setDialog] = useState<HTMLDialogElement | null>(null);
+  const [arrowEl, setArrowEl] = useState<HTMLDivElement | null>(null);
 
   useIsoEffect(() => {
     if (!dialog || !popoverTarget) return;
@@ -44,13 +50,23 @@ function PopoverImpl({
       floating,
       reference,
       placement: placement ?? "bottom",
-      arrow,
-      offset,
+      offset: offset ?? 16,
+      arrow: arrow ? arrowDimensions : undefined,
     });
-
     dialog.style.top = `${pos.y}px`;
     dialog.style.left = `${pos.x}px`;
-  }, [arrow, dialog, offset, placement, popoverTarget]);
+
+    if (arrowEl) {
+      arrowEl.style.top = `${pos.arrow.y}px`;
+      arrowEl.style.left = `${pos.arrow.x}px`;
+
+      let transform: string = "";
+      if (pos.arrow.arrowPlacement.includes("right")) transform = `rotate(90deg)`;
+      if (pos.arrow.arrowPlacement.includes("left")) transform = `rotate(90deg)`;
+
+      arrowEl.style.transform = transform;
+    }
+  }, [arrow, arrowEl, dialog, offset, placement, popoverTarget]);
 
   const combinedRef = useCombinedRefs(ref, setDialog);
 
@@ -62,9 +78,23 @@ function PopoverImpl({
       onOpenChange={onOpenChange}
       ref={combinedRef}
       {...props}
-      style={{ margin: 0, display: "none", ...props.style }}
+      style={{ margin: 0, display: "none", overflow: "visible", ...props.style }}
     >
       {children}
+      {arrow && (
+        <div
+          ref={setArrowEl}
+          style={{
+            position: "absolute",
+            ...arrowDimensions,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <ArrowSvg fill={arrowColor} />
+        </div>
+      )}
     </Dialog>
   );
 }

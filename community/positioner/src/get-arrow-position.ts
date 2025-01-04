@@ -64,5 +64,5 @@ export function getArrowPosition(
     else arrowX = floating.width;
   }
 
-  return { x: arrowX, y: arrowY };
+  return { x: arrowX, y: arrowY, arrowPlacement };
 }
