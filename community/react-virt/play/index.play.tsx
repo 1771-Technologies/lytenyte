@@ -5,6 +5,7 @@ const data = Array.from({ length: 2000 }, (_, i) => i);
 
 export default function Home() {
   const [preventFlash, setPreventFlash] = useState(false);
+
   return (
     <>
       <button onClick={() => setPreventFlash((p) => !p)}>
@@ -32,6 +33,10 @@ function RowImpl({ rowIndex, data, y }: RendererProps<number>) {
         font-size: 12px;
         font-family: monospace;
         border-bottom: 1px solid gray;
+
+        &:focus {
+          background-color: rgba(0, 0, 0, 0.23);
+        }
       `}
     >
       {rowIndex} | {data}

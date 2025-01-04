@@ -22,7 +22,9 @@ export function Virt<D>({
   itemHeight,
   renderer: Row,
   preventFlash,
-}: VirtProps<D>) {
+
+  ...props
+}: VirtProps<D> & Omit<JSX.IntrinsicElements["div"], "ref">) {
   const [size, setSize] = useState<SizeChange | null>(null);
 
   const init = useCallback((_: HTMLElement, size: SizeChange) => {
@@ -66,7 +68,7 @@ export function Virt<D>({
   }, [handleScroll, vp]);
 
   return (
-    <Sizer onInit={init} onSizeChange={setSize} onScroll={handleScroll} ref={setVp}>
+    <Sizer onInit={init} onSizeChange={setSize} {...props} onScroll={handleScroll} ref={setVp}>
       {preventFlash && (
         <>
           <div
@@ -82,7 +84,12 @@ export function Virt<D>({
           </div>
 
           <div
-            style={{ height: data.length * itemHeight, width: "100%", position: "relative" }}
+            style={{
+              height: data.length * itemHeight,
+              width: "100%",
+              position: "relative",
+              pointerEvents: "none",
+            }}
           ></div>
         </>
       )}
