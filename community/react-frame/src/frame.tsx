@@ -11,6 +11,11 @@ export interface FrameAxeProps {
   readonly axeResizeDescription: string;
   readonly axeResizeStartText: (w: number, h: number) => string;
   readonly axeResizeEndText: (w: number, h: number) => string;
+
+  readonly axeMoveLabel: string;
+  readonly axeMoveDescription: string;
+  readonly axeMoveStartText: (x: number, y: number) => string;
+  readonly axeMoveEndText: (x: number, y: number) => string;
 }
 
 export interface FrameProps {
@@ -153,8 +158,22 @@ export function Frame({
         aria-live="polite"
       ></div>
       <div
+        role="button"
+        aria-label={axe.axeMoveLabel}
+        aria-description={axe.axeMoveDescription}
+        tabIndex={0}
         onPointerDown={(el) => {
-          handleMove(el.nativeEvent, ref!, raf, onMove ?? (() => {}), w!, h!, sizeSync);
+          handleMove(
+            el.nativeEvent,
+            resizeAnnouncer!,
+            axe,
+            ref!,
+            raf,
+            onMove ?? (() => {}),
+            w!,
+            h!,
+            sizeSync,
+          );
 
           setTimeout(sizeSync);
         }}

@@ -1,8 +1,11 @@
 import { clamp, getClientX, getClientY } from "@1771technologies/js-utils";
 import type { RefObject } from "react";
+import type { FrameAxeProps } from "./frame";
 
 export function handleMove(
   el: PointerEvent,
+  announcer: HTMLElement,
+  axe: FrameAxeProps,
   ref: HTMLElement,
   raf: RefObject<number | null>,
   onMove: (x: number, h: number) => void,
@@ -19,6 +22,8 @@ export function handleMove(
 
   const t = setTimeout(() => {
     ref!.style.pointerEvents = "none";
+
+    announcer.textContent = axe.axeMoveStartText(prevX, prevY);
     window.addEventListener(
       "pointermove",
       (el) => {
@@ -55,6 +60,7 @@ export function handleMove(
     const x = Number.parseInt(s.left);
     const y = Number.parseInt(s.top);
 
+    announcer.textContent = axe.axeMoveEndText(x, y);
     onMove?.(x, y);
 
     setTimeout(sizeSync);
