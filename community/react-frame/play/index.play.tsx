@@ -7,14 +7,16 @@ export default function Play() {
   const [h, setH] = useState<number | null>(null);
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
+  const [show, setShow] = useState(false);
 
   return (
     <div>
       <div>Width: {w}</div>
       <div>Height: {h}</div>
+      <button onClick={() => setShow((prev) => !prev)}>Show Frame</button>
       <Frame
-        onShowChange={() => {}}
-        show
+        onShowChange={setShow}
+        show={show}
         x={x}
         y={y}
         width={w}
