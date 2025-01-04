@@ -8,6 +8,7 @@ export { getClientX, getClientY } from "./get-client-xy.js";
 export { getFocusableBoundary } from "./get-focusable-boundary.js";
 export { getOwnerScrollbarWidth } from "./get-owner-scrollbar-width.js";
 export { getOwningGlobalThis } from "./get-owning-global-this.js";
+export { getPreciseElementDimensions } from "./get-precise-element-dimensions.js";
 export { getStringTableWidths } from "./get-string-table-widths.js";
 export { get } from "./get.js";
 export { handleCircularFocus } from "./handle-circular-focus.js";
