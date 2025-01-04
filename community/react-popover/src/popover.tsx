@@ -1,8 +1,8 @@
-import { isHTMLElement } from "@1771technologies/js-utils";
+import { isHTMLElement, IsoResizeObserver } from "@1771technologies/js-utils";
 import type { Dimensions, Placement, Rect } from "@1771technologies/positioner";
 import { getPosition } from "@1771technologies/positioner";
 import { Dialog } from "@1771technologies/react-dialog";
-import { refCompat, useCombinedRefs, useIsoEffect } from "@1771technologies/react-utils";
+import { refCompat, useCombinedRefs, useEvent, useIsoEffect } from "@1771technologies/react-utils";
 import { useState, type JSX, type PropsWithChildren } from "react";
 import { Arrow } from "./arrow";
 
@@ -35,15 +35,13 @@ function PopoverImpl({
   const [dialog, setDialog] = useState<HTMLDialogElement | null>(null);
   const [arrowP, setArrowP] = useState<Placement | null>(null);
 
-  useIsoEffect(() => {
-    if (!dialog || !popoverTarget) return;
+  const handlePosition = useEvent(() => {
+    dialog!.style.display = "block";
 
-    dialog.style.display = "block";
-
-    const floating = dialog.getBoundingClientRect();
-    const reference = isHTMLElement(popoverTarget)
+    const floating = dialog!.getBoundingClientRect();
+    const reference = isHTMLElement(popoverTarget!)
       ? popoverTarget.getBoundingClientRect()
-      : popoverTarget;
+      : popoverTarget!;
 
     const pos = getPosition({
       floating,
@@ -52,12 +50,24 @@ function PopoverImpl({
       offset: offset ?? 12,
     });
 
-    dialog.style.top = `${pos.y}px`;
-    dialog.style.left = `${pos.x}px`;
+    dialog!.style.top = `${pos.y}px`;
+    dialog!.style.left = `${pos.x}px`;
+
+    dialog!.style.setProperty("--lng-reference-width", `${reference.width}px`);
+    dialog!.style.setProperty("--lng-reference-height", `${reference.height}px`);
 
     if (arrow) setArrowP(pos.placement);
     else setArrowP(null);
-  }, [arrow, dialog, offset, placement, popoverTarget]);
+  });
+
+  useIsoEffect(() => {
+    if (!dialog || !popoverTarget) return;
+
+    const resizeObserver = new IsoResizeObserver(() => handlePosition());
+    resizeObserver.observe(dialog);
+
+    return () => resizeObserver.disconnect();
+  }, [dialog, handlePosition, popoverTarget]);
 
   const combinedRef = useCombinedRefs(ref, setDialog);
 

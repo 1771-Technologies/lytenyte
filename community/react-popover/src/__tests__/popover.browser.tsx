@@ -3,6 +3,15 @@ import { Popover, type PopoverTarget } from "../popover";
 import { render, userEvent } from "@1771technologies/aio/browser";
 import type { Placement } from "@1771technologies/positioner";
 
+// A workaround for a vitest bug the appears to print null when a resize observer is used
+const fn = console.error;
+console.error = (...args) => {
+  const print = args.filter((c) => c != null);
+  if (print.length === 0) return;
+
+  fn(...print);
+};
+
 test("should be able to manage the popover", async () => {
   function Component() {
     const [open, setOpen] = useState(false);
