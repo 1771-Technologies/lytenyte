@@ -47,7 +47,13 @@ export default function Play() {
         >
           Show Popover
         </button>
-        <Popover open={open} onOpenChange={setOpen} popoverTarget={target} placement={placement}>
+        <Popover
+          open={open}
+          onOpenChange={setOpen}
+          popoverTarget={target}
+          placement={placement}
+          arrow
+        >
           This is the popover content
         </Popover>
       </div>
