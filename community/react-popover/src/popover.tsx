@@ -17,12 +17,12 @@ export interface PopoverProps {
 }
 
 function PopoverImpl({
-  open,
-  onOpenChange,
   popoverTarget,
   placement,
   offset,
   arrow,
+  onOpenChange,
+  open,
 
   ref,
   children,
