@@ -6,6 +6,13 @@ import { handleResize } from "./handle-resize";
 import { handleMove } from "./handle-move";
 import { handleSizeBounds } from "./handle-size-bounds";
 
+export interface FrameAxeProps {
+  readonly axeResizeLabel: string;
+  readonly axeResizeDescription: string;
+  readonly axeResizeStartText: (w: number, h: number) => string;
+  readonly axeResizeEndText: (w: number, h: number) => string;
+}
+
 export interface FrameProps {
   readonly show: boolean;
   readonly onShowChange: (b: boolean) => void;
@@ -27,6 +34,8 @@ export interface FrameProps {
 
   readonly headerHeight?: number;
   readonly header?: ReactNode;
+
+  readonly axe: FrameAxeProps;
 }
 
 export function Frame({
@@ -49,6 +58,7 @@ export function Frame({
 
   onSizeChange,
   onMove,
+  axe,
 
   ...props
 }: FrameProps & JSX.IntrinsicElements["dialog"]) {
@@ -79,7 +89,11 @@ export function Frame({
 
   const combinedRefs = useCombinedRefs(props.ref, setRef);
 
-  const sizeChange = useEvent(onSizeChange ?? (() => {}));
+  const sizeChange = useEvent((w: number, h: number) => {
+    onSizeChange?.(w, h);
+    setInternalHeight(h);
+    setInternalWidth(w);
+  });
 
   useEffect(() => {
     const controller = new AbortController();
@@ -100,11 +114,11 @@ export function Frame({
     const bb = ref.getBoundingClientRect();
 
     sizeChange(bb.width, bb.height);
-    setInternalWidth(bb.width);
-    setInternalHeight(bb.height);
 
     setTimeout(sizeSync);
   }, [ref, sizeChange, sizeSync]);
+
+  const [resizeAnnouncer, setResizeAnnouncer] = useState<HTMLDivElement | null>(null);
 
   const raf = useRef<number | null>(null);
   return (
@@ -133,6 +147,12 @@ export function Frame({
       }}
     >
       <div
+        ref={setResizeAnnouncer}
+        style={{ position: "fixed", top: -9999, left: -9999 }}
+        role="status"
+        aria-live="polite"
+      ></div>
+      <div
         onPointerDown={(el) => {
           handleMove(el.nativeEvent, ref!, raf, onMove ?? (() => {}), w!, h!, sizeSync);
 
@@ -144,11 +164,33 @@ export function Frame({
       <div>{children}</div>
       <div style={{ position: "sticky", bottom: 0 }}>
         <button
+          aria-label={axe.axeResizeLabel}
+          aria-description={axe.axeResizeDescription}
+          onKeyDown={(e) => {
+            const step = 10;
+
+            switch (e.key) {
+              case "ArrowUp":
+                sizeChange(w!, h! - step);
+                break;
+              case "ArrowDown":
+                sizeChange(w!, h! + step);
+                break;
+              case "ArrowLeft":
+                sizeChange(w! - step, h!);
+                break;
+              case "ArrowRight":
+                sizeChange(w! + step, h!);
+                break;
+            }
+          }}
           onPointerDown={(el) => {
             if (raf.current) cancelAnimationFrame(raf.current);
             raf.current = requestAnimationFrame(() => {
               handleResize(
                 el.nativeEvent,
+                resizeAnnouncer!,
+                axe,
                 x,
                 y,
                 w!,
@@ -156,8 +198,6 @@ export function Frame({
                 ref!,
                 (w, h) => {
                   sizeChange(w, h);
-                  setInternalHeight(h);
-                  setInternalWidth(w);
                 },
                 sizeSync,
               );

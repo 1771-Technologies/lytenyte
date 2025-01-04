@@ -1,7 +1,10 @@
 import { getClientX, getClientY } from "@1771technologies/js-utils";
+import type { FrameAxeProps } from "./frame";
 
 export function handleResize(
   el: PointerEvent,
+  announcer: HTMLDivElement,
+  axe: FrameAxeProps,
   x: number,
   y: number,
   w: number,
@@ -12,6 +15,8 @@ export function handleResize(
 ) {
   const startX = getClientX(el);
   const startY = getClientY(el);
+
+  announcer.textContent = axe.axeResizeStartText(w, h);
 
   const controller = new AbortController();
   window.addEventListener(
@@ -40,6 +45,7 @@ export function handleResize(
       sizeChange(bb.width, bb.height);
       setTimeout(sizeSync);
 
+      announcer.textContent = axe.axeResizeEndText(w, h);
       controller.abort();
     },
     { signal: controller.signal },

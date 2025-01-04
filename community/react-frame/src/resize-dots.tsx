@@ -3,6 +3,8 @@ import type { JSX } from "react";
 export const ResizeDots = (props: JSX.IntrinsicElements["svg"]) => {
   return (
     <svg
+      role="presentation"
+      aria-hidden="true"
       width="10"
       height="10"
       viewBox="0 0 10 10"
