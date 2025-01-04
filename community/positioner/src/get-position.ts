@@ -42,29 +42,28 @@ export interface GetPositionArguments {
  * with collision detection and automatic repositioning.
  *
  * The positioning algorithm works as follows:
- * 1. Attempts to place the floating element at the preferred side
- * 2. If collision detected, tries alternative positions in a predefined order
- * 3. Applies offset adjustments
- * 4. Performs edge detection and shifts to keep element in viewport
- * 5. Calculates arrow position if arrow dimensions provided
+ * 1. Determines initial placement using the provided side and alignment
+ * 2. Checks for viewport collisions and repositions using predefined collision paths:
+ *    - Left: [left → right → bottom → top → left]
+ *    - Right: [right → left → bottom → top → right]
+ *    - Top: [top → bottom → right → left → top]
+ *    - Bottom: [bottom → top → right → left → bottom]
+ * 3. Applies offset adjustments to maintain the specified gap
+ * 4. Performs edge detection and shifts to keep the element within viewport bounds
  *
  * @param options - Positioning options
  * @param options.reference - The reference element's dimensions and coordinates
  * @param options.floating - The floating element's dimensions
  * @param options.placement - Desired placement of floating element (e.g., "top", "bottom-start")
- * @param options.offset - Distance between reference and floating elements. Can be:
- *                        - number: Applied to main axis
- *                        - object: Specify main/cross/alignment axis offsets
+ * @param options.offset - Distance in pixels between reference and floating elements
  *                        @default 4
- * @param options.arrow - Dimensions of optional arrow element
- *                       @default { width: 0, height: 0 }
  *
  * @returns An object containing:
  *          - x: Final x coordinate
  *          - y: Final y coordinate
  *          - width: Floating element width
  *          - height: Floating element height
- *          - arrow: Coordinates for arrow placement
+ *          - placement: Final placement after collision resolution
  *
  * @example
  * ```typescript
@@ -72,18 +71,10 @@ export interface GetPositionArguments {
  *   reference: { x: 100, y: 100, width: 200, height: 100 },
  *   floating: { width: 150, height: 80 },
  *   placement: "top-start",
- *   offset: 8,
- *   arrow: { width: 12, height: 8 }
+ *   offset: 8
  * });
+ * // Returns: { x: 100, y: 12, width: 150, height: 80, placement: "top-start" }
  * ```
- *
- * @remarks
- * The function uses a predefined collision path for each side to determine alternative
- * placements when the preferred placement results in a collision. The paths are:
- * - Left: [left, right, bottom, top, left]
- * - Right: [right, left, bottom, top, right]
- * - Top: [top, bottom, right, left, top]
- * - Bottom: [bottom, top, right, left, bottom]
  */
 export function getPosition({ reference, floating, placement, offset = 4 }: GetPositionArguments) {
   const alignment = getAlignment(placement);
