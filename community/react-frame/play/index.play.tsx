@@ -4,6 +4,9 @@ import { Frame } from "../src/frame";
 export default function Play() {
   const [w, setW] = useState<number | null>(null);
   const [h, setH] = useState<number | null>(null);
+  const [x, setX] = useState(0);
+  const [y, setY] = useState(0);
+
   return (
     <div>
       <div>Width: {w}</div>
@@ -11,8 +14,8 @@ export default function Play() {
       <Frame
         onShowChange={() => {}}
         show
-        x={0}
-        y={0}
+        x={x}
+        y={y}
         width={w}
         height={h}
         maxWidth={"220vw"}
@@ -20,6 +23,10 @@ export default function Play() {
         onSizeChange={(w, h) => {
           setW(w);
           setH(h);
+        }}
+        onMove={(x, y) => {
+          setX(x);
+          setY(y);
         }}
         className={css`
           &::backdrop {

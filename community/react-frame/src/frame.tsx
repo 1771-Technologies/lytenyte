@@ -1,7 +1,8 @@
 import { Dialog } from "@1771technologies/react-dialog";
 import { useCombinedRefs, useEvent } from "@1771technologies/react-utils";
-import { useEffect, useState, type CSSProperties, type JSX, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type JSX, type ReactNode } from "react";
 import { ResizeDots } from "./resize-dots";
+import { handleResize } from "./handle-resize";
 import { getClientX, getClientY } from "@1771technologies/js-utils";
 
 export interface FrameProps {
@@ -13,6 +14,7 @@ export interface FrameProps {
   readonly height?: number | null;
 
   readonly onSizeChange?: (w: number, h: number) => void;
+  readonly onMove?: (x: number, y: number) => void;
 
   readonly initialWidth?: CSSProperties["width"];
   readonly initialHeight?: CSSProperties["height"];
@@ -45,6 +47,7 @@ export function Frame({
   minHeight,
 
   onSizeChange,
+  onMove,
 
   ...props
 }: FrameProps & JSX.IntrinsicElements["dialog"]) {
@@ -56,9 +59,22 @@ export function Frame({
 
   const [ref, setRef] = useState<HTMLElement | null>(null);
 
-  // Ensure the width and height is always respected
-  if (ref && w != null && h != null)
-    Object.assign(ref.style, { width: `${w}px`, height: `${h}px` });
+  const sizeRef = useRef({ w, h, x, y });
+  sizeRef.current = { w, h, x, y };
+
+  const resetToSize = useEvent(() => {
+    if (!ref) return;
+
+    Object.assign(ref.style, {
+      width: `${sizeRef.current.w}px`,
+      height: `${sizeRef.current.h}px`,
+      top: `${sizeRef.current.y}px`,
+      left: `${sizeRef.current.x}px`,
+    });
+  });
+
+  // Always reset to the size.
+  useEffect(() => resetToSize);
 
   const combinedRefs = useCombinedRefs(props.ref, setRef);
 
@@ -74,6 +90,7 @@ export function Frame({
     setInternalHeight(bb.height);
   }, [ref, sizeChange]);
 
+  const raf = useRef<number | null>(null);
   return (
     <Dialog
       open={show}
@@ -99,46 +116,73 @@ export function Frame({
         minHeight: minHeight,
       }}
     >
-      <div>{header}</div>
+      <div
+        onPointerDown={(el) => {
+          el.preventDefault();
+          let prevX = getClientX(el.nativeEvent);
+          let prevY = getClientY(el.nativeEvent);
+
+          const controller = new AbortController();
+          const prevPointerEvents = ref!.style.pointerEvents;
+
+          const t = setTimeout(() => {
+            ref!.style.pointerEvents = "none";
+            window.addEventListener(
+              "pointermove",
+              (el) => {
+                if (raf.current) cancelAnimationFrame(raf.current);
+                raf.current = requestAnimationFrame(() => {
+                  const currentX = getClientX(el);
+                  const currentY = getClientY(el);
+
+                  const deltaX = currentX - prevX;
+                  const deltaY = currentY - prevY;
+
+                  const s = getComputedStyle(ref!);
+                  const x = Number.parseInt(s.left);
+                  const y = Number.parseInt(s.top);
+
+                  Object.assign(ref!.style, { top: `${y + deltaY}px`, left: `${x + deltaX}px` });
+
+                  prevX = currentX;
+                  prevY = currentY;
+                });
+              },
+              { signal: controller.signal },
+            );
+          }, 40);
+
+          window.addEventListener("pointerup", () => {
+            controller.abort();
+            Object.assign(ref!.style, { pointerEvents: prevPointerEvents });
+
+            const s = getComputedStyle(ref!);
+            const x = Number.parseInt(s.left);
+            const y = Number.parseInt(s.top);
+
+            onMove?.(x, y);
+
+            raf.current = null;
+            clearTimeout(t);
+          });
+        }}
+      >
+        {header}
+      </div>
       <div>{children}</div>
       <div style={{ position: "sticky", bottom: 0 }}>
         <button
           onPointerDown={(el) => {
-            const startX = getClientX(el.nativeEvent);
-            const startY = getClientY(el.nativeEvent);
+            if (raf.current) cancelAnimationFrame(raf.current);
+            raf.current = requestAnimationFrame(() => {
+              handleResize(el.nativeEvent, x, y, w!, h!, ref!, (w, h) => {
+                sizeChange(w, h);
+                setInternalHeight(h);
+                setInternalWidth(w);
+              });
 
-            const controller = new AbortController();
-            window.addEventListener(
-              "pointermove",
-              (ev) => {
-                const currentX = getClientX(ev);
-                const currentY = getClientY(ev);
-                const xDelta = currentX - startX;
-                const yDelta = currentY - startY;
-
-                const maxWidth = window.innerWidth - x;
-                const maxHeight = window.innerHeight - y;
-
-                const newWidth = Math.min(w! + xDelta, maxWidth);
-                const newHeight = Math.min(h! + yDelta, maxHeight);
-
-                Object.assign(ref!.style, { width: `${newWidth}px`, height: `${newHeight}px` });
-              },
-              { signal: controller.signal },
-            );
-            window.addEventListener(
-              "pointerup",
-              () => {
-                const bb = ref!.getBoundingClientRect();
-
-                sizeChange(bb.width, bb.height);
-                setInternalWidth(bb.width);
-                setInternalHeight(bb.height);
-
-                controller.abort();
-              },
-              { signal: controller.signal },
-            );
+              raf.current = null;
+            });
           }}
           style={{
             cursor: "pointer",
