@@ -14,6 +14,7 @@ export interface PopoverProps {
   readonly placement?: Placement;
   readonly offset?: OffsetValue;
   readonly arrow?: Dimensions;
+  readonly rtl?: boolean;
 }
 
 function PopoverImpl({
@@ -23,6 +24,7 @@ function PopoverImpl({
   arrow,
   onOpenChange,
   open,
+  rtl,
 
   ref,
   children,
@@ -46,11 +48,12 @@ function PopoverImpl({
       placement: placement ?? "bottom",
       arrow,
       offset,
+      rtl,
     });
 
     dialog.style.top = `${pos.y}px`;
     dialog.style.insetInlineStart = `${pos.x}px`;
-  }, [dialog]);
+  }, [arrow, dialog, offset, placement, popoverTarget, rtl]);
 
   const combinedRef = useCombinedRefs(ref, setDialog);
 
