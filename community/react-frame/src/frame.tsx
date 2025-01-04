@@ -161,6 +161,24 @@ export function Frame({
         role="button"
         aria-label={axe.axeMoveLabel}
         aria-description={axe.axeMoveDescription}
+        onKeyDown={(e) => {
+          const step = 10;
+
+          switch (e.key) {
+            case "ArrowUp":
+              onMove?.(x, Math.max(0, y - step));
+              break;
+            case "ArrowDown":
+              onMove?.(x, Math.min(window.innerHeight - h!, y + step));
+              break;
+            case "ArrowLeft":
+              onMove?.(Math.max(x - 10, 0), y);
+              break;
+            case "ArrowRight":
+              onMove?.(Math.min(window.innerWidth - w!, x + step), y);
+              break;
+          }
+        }}
         tabIndex={0}
         onPointerDown={(el) => {
           handleMove(
