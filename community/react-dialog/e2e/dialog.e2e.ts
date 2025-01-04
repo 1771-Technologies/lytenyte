@@ -1,5 +1,5 @@
 import { test, expect, AxeBuilder } from "@1771technologies/aio/playwright";
-import { getUrl } from "./get-url";
+import { getUrl } from "./get-url.js";
 
 test("always open dialog cannot be closed", async ({ page }) => {
   await page.goto(getUrl("dialog/always-open"));

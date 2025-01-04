@@ -6,28 +6,30 @@ export default function Play() {
   const [open, setOpen] = useState(false);
   const [target, setTarget] = useState<PopoverTarget>(null);
   const [placement, setPlacement] = useState<Placement>("left-start");
-  const [rtl, setRtl] = useState(false);
 
   return (
     <>
-      <button onClick={() => setRtl(!rtl)}>Rtl {rtl ? "on" : "off"}</button>
-      <select value={placement} onChange={(e) => setPlacement(e.target.value as Placement)}>
-        <option value={"left-start"}>left-start</option>
-        <option value={"left"}>left</option>
-        <option value={"left-end"}>left-end</option>
+      <h1>Popover Playground</h1>
+      <label>
+        Popover Placement
+        <select value={placement} onChange={(e) => setPlacement(e.target.value as Placement)}>
+          <option value={"left-start"}>left-start</option>
+          <option value={"left"}>left</option>
+          <option value={"left-end"}>left-end</option>
 
-        <option value={"right-start"}>right-start</option>
-        <option value={"right"}>right</option>
-        <option value={"right-end"}>right-end</option>
+          <option value={"right-start"}>right-start</option>
+          <option value={"right"}>right</option>
+          <option value={"right-end"}>right-end</option>
 
-        <option value={"bottom-start"}>bottom-start</option>
-        <option value={"bottom"}>bottom</option>
-        <option value={"bottom-end"}>bottom-end</option>
+          <option value={"bottom-start"}>bottom-start</option>
+          <option value={"bottom"}>bottom</option>
+          <option value={"bottom-end"}>bottom-end</option>
 
-        <option value={"top-start"}>top-start</option>
-        <option value={"top"}>top</option>
-        <option value={"top-end"}>top-end</option>
-      </select>
+          <option value={"top-start"}>top-start</option>
+          <option value={"top"}>top</option>
+          <option value={"top-end"}>top-end</option>
+        </select>
+      </label>
       <div
         className={css`
           display: flex;
@@ -45,13 +47,7 @@ export default function Play() {
         >
           Show Popover
         </button>
-        <Popover
-          open={open}
-          onOpenChange={setOpen}
-          popoverTarget={target}
-          placement={placement}
-          rtl={rtl}
-        >
+        <Popover open={open} onOpenChange={setOpen} popoverTarget={target} placement={placement}>
           This is the popover content
         </Popover>
       </div>

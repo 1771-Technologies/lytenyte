@@ -14,7 +14,6 @@ export interface PopoverProps {
   readonly placement?: Placement;
   readonly offset?: OffsetValue;
   readonly arrow?: Dimensions;
-  readonly rtl?: boolean;
 }
 
 function PopoverImpl({
@@ -24,7 +23,6 @@ function PopoverImpl({
   arrow,
   onOpenChange,
   open,
-  rtl,
 
   ref,
   children,
@@ -51,8 +49,8 @@ function PopoverImpl({
     });
 
     dialog.style.top = `${pos.y}px`;
-    dialog.style.insetInlineStart = `${pos.x}px`;
-  }, [arrow, dialog, offset, placement, popoverTarget, rtl]);
+    dialog.style.left = `${pos.x}px`;
+  }, [arrow, dialog, offset, placement, popoverTarget]);
 
   const combinedRef = useCombinedRefs(ref, setDialog);
 
@@ -64,7 +62,7 @@ function PopoverImpl({
       onOpenChange={onOpenChange}
       ref={combinedRef}
       {...props}
-      style={{ margin: 0, display: "none", direction: rtl ? "rtl" : "ltr", ...props.style }}
+      style={{ margin: 0, display: "none", ...props.style }}
     >
       {children}
     </Dialog>

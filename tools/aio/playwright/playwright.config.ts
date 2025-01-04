@@ -34,7 +34,7 @@ export default defineConfig({
   snapshotPathTemplate: `{testDir}/__snapshots__/{projectName}/{testFilePath}/{arg}{ext}`,
 
   webServer: {
-    command: "aio play dev",
+    command: "aio play dev --host",
     url: "http://127.0.0.1:5173/",
     reuseExistingServer: !process.env.CI,
     stdout: "pipe",
