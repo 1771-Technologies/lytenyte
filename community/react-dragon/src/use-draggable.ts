@@ -106,7 +106,7 @@ export function useDraggable({
 
         if (anim) cancelAnimationFrame(anim);
 
-        const isValid = event.dataTransfer?.dropEffect === "move";
+        const isValid = event.dataTransfer?.dropEffect !== "none";
         if (!isValid) {
           onDragCancel?.({ event, tags });
         } else {
