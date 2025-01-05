@@ -30,7 +30,9 @@ export function useDroppable({ tags, onDragEnter, onDragLeave, onDrop }: Droppab
     if (hasTags(tags)) {
       event.preventDefault();
       setCanDrop(true);
-    } else setCanDrop(false);
+    } else {
+      setCanDrop(false);
+    }
 
     if (immediateOver.current) return;
 
@@ -45,7 +47,7 @@ export function useDroppable({ tags, onDragEnter, onDragLeave, onDrop }: Droppab
           getData: dragState.store.dragData.peek(),
           event,
           overTags: tags,
-          dragTags: dragState.store.activeTags.peek() ?? [],
+          dragTags: dragState.store.activeTags.peek()!,
         });
 
         return false;
@@ -75,7 +77,7 @@ export function useDroppable({ tags, onDragEnter, onDragLeave, onDrop }: Droppab
       getData: dragState.store.dragData.peek(),
       event,
       overTags: tags,
-      dragTags: dragState.store.activeTags.peek() ?? [],
+      dragTags: dragState.store.activeTags.peek()!,
     });
 
     return;
