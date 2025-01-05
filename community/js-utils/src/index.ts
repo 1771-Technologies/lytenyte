@@ -1,4 +1,5 @@
 export { clamp } from "./clamp.js";
+export { clsx } from "./clsx.js";
 export { containsADuplicateId } from "./contains-a-duplicate-id.js";
 export { containsElement } from "./contains-element.js";
 export { containsPoint } from "./contains-point.js";

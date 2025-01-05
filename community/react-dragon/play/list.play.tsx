@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDraggable, useDroppable } from "../src";
+import { clsx } from "@1771technologies/js-utils";
 
 export default function List() {
   return (
@@ -80,11 +81,7 @@ function ItemAdder() {
 function Dropper({ tags }: { tags: string[] }) {
   const [items, setItems] = useState<number[]>([]);
 
-  const {
-    isOver: _,
-    onDragOver,
-    onDrop,
-  } = useDroppable({
+  const { isOver, canDrop, onDragOver, onDrop } = useDroppable({
     tags,
     onDrop: ({ getData }) => {
       const c = getData() as number;
@@ -96,11 +93,23 @@ function Dropper({ tags }: { tags: string[] }) {
     <div
       onDragOver={onDragOver}
       onDrop={onDrop}
-      className={css`
-        width: 200px;
-        height: 200px;
-        border: 1px solid green;
-      `}
+      className={clsx(
+        css`
+          width: 200px;
+          height: 200px;
+          border: 1px solid green;
+        `,
+        isOver &&
+          canDrop &&
+          css`
+            background-color: lightblue;
+          `,
+        isOver &&
+          !canDrop &&
+          css`
+            background-color: lightcoral;
+          `,
+      )}
     >
       {items.map((d) => {
         return <div key={d}>{d}</div>;

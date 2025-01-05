@@ -19,13 +19,16 @@ export interface DroppableArgs {
 
 export function useDroppable({ tags, onDragEnter, onDragLeave, onDrop }: DroppableArgs) {
   const [isOver, setIsOver] = useState(false);
+  const [canDrop, setCanDrop] = useState(false);
   const immediateOver = useRef(false);
 
   const onDragOver = useEvent((event: ReactDragEvent) => {
-    if (!dragState.store.dragActive.peek() || !hasTags(tags)) return;
+    if (!dragState.store.dragActive.peek()) return;
 
-    event.stopPropagation();
-    event.preventDefault();
+    if (hasTags(tags)) {
+      event.preventDefault();
+      setCanDrop(true);
+    } else setCanDrop(false);
 
     if (immediateOver.current) return;
 
@@ -78,6 +81,7 @@ export function useDroppable({ tags, onDragEnter, onDragLeave, onDrop }: Droppab
   return {
     onDragOver,
     onDrop: handleDrop,
+    canDrop,
     isOver,
   };
 }
