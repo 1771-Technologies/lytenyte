@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDraggable } from "../src/use-draggable";
+import { useDroppable } from "../src/use-droppable";
 
 export default function Drag() {
   const [y, setY] = useState(0);
@@ -34,6 +35,8 @@ export default function Drag() {
     },
   });
 
+  const { isOver, onDragOver, onDrop } = useDroppable({ tags: ["alpha"] });
+
   return (
     <div>
       <div>
@@ -48,6 +51,28 @@ export default function Drag() {
         {...d}
       >
         I can be dragged
+      </div>
+
+      <div
+        onDragOver={onDragOver}
+        onDrop={onDrop}
+        className={
+          css`
+            width: 200px;
+            height: 200px;
+            border: 1px solid red;
+            position: relative;
+            top: 200px;
+          ` +
+          (isOver
+            ? " " +
+              css`
+                background-color: green;
+              `
+            : "")
+        }
+      >
+        I am a box
       </div>
     </div>
   );

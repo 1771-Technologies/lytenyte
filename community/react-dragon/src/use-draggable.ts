@@ -55,7 +55,7 @@ export function useDraggable({
     const tags = dragTags();
     dragState.store.activeTags.set(tags);
     dragState.store.dragActive.set(true);
-    dragState.store.dragData.set(dragData);
+    dragState.store.dragData.set(() => dragData);
 
     onDragStart?.({ tags, event: e.nativeEvent });
 
