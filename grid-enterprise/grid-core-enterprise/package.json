@@ -11,8 +11,8 @@
     }
   },
   "dependencies": {
-    "@1771technologies/grid-types": "workspace:^",
-    "@1771technologies/grid-core": "workspace:^",
-    "@1771technologies/js-utils": "workspace:^"
+    "@1771technologies/grid-types": "workspace:*",
+    "@1771technologies/grid-core": "workspace:*",
+    "@1771technologies/js-utils": "workspace:*"
   }
 }

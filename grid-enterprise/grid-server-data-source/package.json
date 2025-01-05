@@ -11,12 +11,12 @@
     }
   },
   "dependencies": {
-    "@1771technologies/cascada": "workspace:^",
-    "@1771technologies/path-tree": "workspace:^",
-    "@1771technologies/grid-graph": "workspace:^",
-    "@1771technologies/grid-types": "workspace:^",
-    "@1771technologies/grid-constants": "workspace:^",
-    "@1771technologies/grid-core": "workspace:^",
-    "@1771technologies/js-utils": "workspace:^"
+    "@1771technologies/cascada": "workspace:*",
+    "@1771technologies/path-tree": "workspace:*",
+    "@1771technologies/grid-graph": "workspace:*",
+    "@1771technologies/grid-types": "workspace:*",
+    "@1771technologies/grid-constants": "workspace:*",
+    "@1771technologies/grid-core": "workspace:*",
+    "@1771technologies/js-utils": "workspace:*"
   }
 }

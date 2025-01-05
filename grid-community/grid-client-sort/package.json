@@ -12,7 +12,7 @@
     }
   },
   "dependencies": {
-    "@1771technologies/grid-types": "workspace:^",
-    "@1771technologies/js-utils": "workspace:^"
+    "@1771technologies/grid-types": "workspace:*",
+    "@1771technologies/js-utils": "workspace:*"
   }
 }

@@ -1,8 +1,12 @@
 {
   "name": "@1771technologies/react-virt",
+  "version": "0.0.1",
   "description": "",
   "license": "Apache-2.0",
   "type": "module",
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
       "types": "./src/index.ts",
@@ -10,10 +14,19 @@
       "require": "./src/index.ts"
     }
   },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./dist/types/index.d.ts",
+        "import": "./dist/index.js",
+        "require": "./dist/index.js"
+      }
+    }
+  },
   "dependencies": {
-    "@1771technologies/js-utils": "workspace:^",
-    "@1771technologies/react-utils": "workspace:^",
-    "@1771technologies/react-sizer": "workspace:^"
+    "@1771technologies/js-utils": "workspace:*",
+    "@1771technologies/react-utils": "workspace:*",
+    "@1771technologies/react-sizer": "workspace:*"
   },
   "peerDependencies": {
     "react": "^18 | 19^",

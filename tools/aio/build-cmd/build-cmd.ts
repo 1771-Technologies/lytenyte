@@ -6,7 +6,7 @@ import { readFileSync } from "fs";
 import { resolve } from "path";
 
 export const buildCmd = new Command("build")
-  .description("Builds a library package. This will ensure it is releaseable")
+  .description("Builds a library package. This will ensure it can be released")
   .action(async () => {
     const pkgPath = getClosestNpmPackage();
     if (!pkgPath) throw new Error("Failed to determine the package to build");

@@ -11,6 +11,6 @@
     }
   },
   "dependencies": {
-    "@1771technologies/js-utils": "workspace:^"
+    "@1771technologies/js-utils": "workspace:*"
   }
 }

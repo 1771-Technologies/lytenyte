@@ -34,7 +34,13 @@ export function getViteConfig(pkgPath: string, packageJson: PackageJson) {
         logLevel: "warn",
         exclude: ["pages", "src/*.stories*"],
         include: ["src"],
-        outDir: "build",
+        outDir: "dist/types",
+        beforeWriteFile: (path, content) => {
+          return {
+            filePath: path,
+            content: "// TODO: 1771 Technologies\n" + content,
+          };
+        },
       }),
     ],
     build: {
