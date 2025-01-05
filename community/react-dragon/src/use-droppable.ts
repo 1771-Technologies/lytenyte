@@ -68,6 +68,7 @@ export function useDroppable({ tags, onDragEnter, onDragLeave, onDrop }: Droppab
 
   const handleDrop = useEvent((event) => {
     event.preventDefault();
+    event.stopPropagation();
     if (!hasTags(tags)) return;
 
     onDrop?.({
