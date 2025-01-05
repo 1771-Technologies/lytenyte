@@ -3,3 +3,4 @@ export type { UseDraggableArgs, DragEventParams, DragMoveParams } from "./use-dr
 
 export type { DropParams, DroppableArgs } from "./use-droppable.js";
 export { useDroppable } from "./use-droppable.js";
+export { state as dragState, useDragState } from "./drag-state.js";

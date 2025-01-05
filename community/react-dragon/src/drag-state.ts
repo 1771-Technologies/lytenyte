@@ -13,3 +13,6 @@ export const dragState = cascada(() => {
     overTags,
   };
 });
+
+export const state = dragState.store;
+export const useDragState = dragState.useValue;

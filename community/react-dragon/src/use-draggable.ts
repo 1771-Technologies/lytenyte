@@ -37,21 +37,30 @@ export function useDraggable({
   onDragMove,
 }: UseDraggableArgs) {
   const handleDragStart = useEvent((e: ReactDragEvent) => {
+    // If the drag is disabled, we don't want to do anything, hence we prevent
+    // if from even happening.
     if (disabled) {
       e.preventDefault();
+      e.stopPropagation();
       return;
     }
+
+    // If the user has a placeholder element that we should create it and use it. The placeholder
+    // get's rendered using React's render to string function, hence it is a separate react context
+    // with separate states.
     let img: HTMLElement | null = null;
     if (placeholder) {
       img = dragPlaceholder(placeholder);
       document.body.appendChild(img);
-
       e.dataTransfer.setDragImage(img, 0, 0);
     }
 
+    // We set the drag effects to prevent the cursor from showing a plus icon. Unfortunately we
+    // cannot override the cursor whilst dragging.
     e.dataTransfer.effectAllowed = "move";
     e.dataTransfer.dropEffect = "move";
 
+    // Grab the drag tags for this drag. We set our initial drag state here.
     const tags = dragTags();
     dragState.store.activeTags.set(tags);
     dragState.store.dragActive.set(true);
@@ -60,8 +69,9 @@ export function useDraggable({
     onDragStart?.({ tags, event: e.nativeEvent });
 
     const controller = new AbortController();
-
     let anim: number | null = null;
+
+    // If the user has provided a drag move function, we enable cursor tracking. We do
     if (onDragMove) {
       const startX = getClientX(e.nativeEvent);
       const startY = getClientY(e.nativeEvent);
@@ -91,6 +101,13 @@ export function useDraggable({
           // It doesn't really make sense to fire faster than this.
           if (anim) cancelAnimationFrame(anim);
           anim = requestAnimationFrame(() => {
+            // We only track drag moves within its own view. It's possible for a drag to start in
+            // an iframe. In this case the clientX and clientY will not be correct if the drag is
+            // moved outside the frame. There isn't a clear reason for allowing two sets of client
+            // coordinates to be reported. If we do encounter a situation where this may be desirable
+            // we can remove this condition. But that should definitely be considered a breaking change
+            if (ev.view?.window !== window) return;
+
             onDragMove({ clientX: x, clientY: y, event: ev, tags });
           });
         },
@@ -106,6 +123,7 @@ export function useDraggable({
 
         if (anim) cancelAnimationFrame(anim);
 
+        // If the drag ended but it wasn't dropped, we consider it cancelled.
         const isValid = event.dataTransfer?.dropEffect !== "none";
         if (!isValid) {
           onDragCancel?.({ event, tags });
@@ -120,8 +138,6 @@ export function useDraggable({
       },
       { signal: controller.signal },
     );
-
-    // We need to begin the drag. First step is the drag image handling
   });
 
   return {
