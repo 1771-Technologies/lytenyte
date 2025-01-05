@@ -5,6 +5,7 @@ import { clsx } from "@1771technologies/js-utils";
 export default function NestedPlay() {
   return (
     <div>
+      <h1>Nested drag test</h1>
       <ItemAdder />
 
       <div
@@ -64,6 +65,7 @@ function ItemAdder() {
     >
       <div
         {...draggable}
+        data-testid="drag-handle"
         className={css`
           display: inline-block;
           padding: 8px;
@@ -89,6 +91,7 @@ function Dropper({ children, tags }: PropsWithChildren<{ tags: string[] }>) {
   return (
     <div
       {...props}
+      data-testid={`drop-${tags.join("")}`}
       className={clsx(
         css`
           padding: 50px;
@@ -112,7 +115,7 @@ function Dropper({ children, tags }: PropsWithChildren<{ tags: string[] }>) {
           height: 20px;
         `}
       >
-        I have {JSON.stringify(count)}. I accept: {tags.join(" , ")}
+        I have {JSON.stringify(count)}
       </div>
       <div>{children}</div>
     </div>

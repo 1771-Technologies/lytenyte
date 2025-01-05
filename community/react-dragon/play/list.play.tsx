@@ -4,28 +4,31 @@ import { clsx } from "@1771technologies/js-utils";
 
 export default function List() {
   return (
-    <div
-      className={css`
-        display: grid;
-        grid-template-columns: 200px 400px 200px;
-      `}
-    >
-      <div>
-        <ItemAdder />
-      </div>
-
-      <div></div>
+    <>
+      <h1>List Dragging</h1>
       <div
         className={css`
-          display: flex;
-          flex-direction: column;
-          gap: 20px;
+          display: grid;
+          gap: 4px;
         `}
       >
-        <Dropper tags={["odd"]} />
-        <Dropper tags={["even"]} />
+        <div>
+          <ItemAdder />
+        </div>
+
+        <div></div>
+        <div
+          className={css`
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+          `}
+        >
+          <Dropper tags={["odd"]} />
+          <Dropper tags={["even"]} />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
@@ -64,6 +67,7 @@ function ItemAdder() {
     >
       <div
         {...draggable}
+        data-testid="drag-handle"
         className={css`
           display: inline-block;
           padding: 8px;
@@ -93,6 +97,7 @@ function Dropper({ tags }: { tags: string[] }) {
     <div
       onDragOver={onDragOver}
       onDrop={onDrop}
+      data-testid={`drop-${tags.join("")}`}
       className={clsx(
         css`
           width: 200px;
