@@ -125,10 +125,7 @@ export function useDraggable({
 
         if (anim) cancelAnimationFrame(anim);
 
-        // If the drag ended but it wasn't dropped, we consider it cancelled. We specifically check
-        // for move since this is what the expected drop effect should be for react-dragon.
         const isValid = event.dataTransfer?.dropEffect !== "none";
-
         if (!isValid) {
           onDragCancel?.({ event, tags });
         } else {
