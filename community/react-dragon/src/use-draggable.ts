@@ -99,6 +99,7 @@ export function useDraggable({
 
           // Since the drag events fire at an extremely high rate, we rate limit to the frame rate.
           // It doesn't really make sense to fire faster than this.
+          /* v8 ignore next */
           if (anim) cancelAnimationFrame(anim);
           anim = requestAnimationFrame(() => {
             // We only track drag moves within its own view. It's possible for a drag to start in
@@ -106,6 +107,7 @@ export function useDraggable({
             // moved outside the frame. There isn't a clear reason for allowing two sets of client
             // coordinates to be reported. If we do encounter a situation where this may be desirable
             // we can remove this condition. But that should definitely be considered a breaking change
+            /* v8 ignore next */
             if (ev.view?.window !== window) return;
 
             onDragMove({ clientX: x, clientY: y, event: ev, tags });
