@@ -1,5 +1,15 @@
 import { cascada, signal } from "@1771technologies/react-cascada";
 
+/**
+ * Creates a global drag and drop state manager using Cascada.
+ * This state tracks the active drag operation, associated tags, and drag data.
+ *
+ * @returns An object containing the following signals:
+ * - dragActive: Indicates if a drag operation is currently active
+ * - activeTags: Array of tags associated with the dragged item
+ * - dragData: Function that returns the data being dragged
+ * - overTags: Array of tags associated with the element being dragged over
+ */
 export const dragState = cascada(() => {
   const dragActive = signal(false);
   const activeTags = signal<string[] | null>(null);
@@ -14,5 +24,25 @@ export const dragState = cascada(() => {
   };
 });
 
+/** Direct access to the Cascada store instance for drag state management */
 export const state = dragState.store;
+
+/**
+ * React hook that provides access to the current drag state values.
+ *
+ * @returns An object containing the current values of:
+ * - dragActive: boolean
+ * - activeTags: string[] | null
+ * - dragData: () => unknown
+ * - overTags: string[] | null
+ *
+ * @example
+ * ```tsx
+ * function DragComponent() {
+ *   const { dragActive, activeTags } = useDragState();
+ *
+ *   return dragActive ? <div>Dragging items with tags: {activeTags?.join(', ')}</div> : null;
+ * }
+ * ```
+ */
 export const useDragState = dragState.useValue;

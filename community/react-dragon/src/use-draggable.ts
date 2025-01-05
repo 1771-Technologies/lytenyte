@@ -4,28 +4,74 @@ import { dragPlaceholder } from "./drag-placeholder";
 import { dragState } from "./drag-state";
 import { getClientX, getClientY } from "@1771technologies/js-utils";
 
+/** Parameters passed to drag event callbacks */
 export type DragEventParams = {
   readonly tags: string[];
   readonly event: DragEvent;
 };
 
+/** Parameters passed to drag move callback */
 export type DragMoveParams = {
   readonly clientY: number;
   readonly clientX: number;
 } & DragEventParams;
 
+/**
+ * Configuration options for the useDraggable hook
+ */
 export interface UseDraggableArgs {
+  /** Function that returns the data to be associated with the drag operation */
   readonly dragData: () => unknown;
+
+  /** Function that returns an array of tags identifying the dragged content */
   readonly dragTags: () => string[];
+
+  /** Optional function that returns a React node to use as a custom drag image */
   readonly placeholder?: () => ReactNode;
 
+  /** Optional callback fired when drag operation starts */
   readonly onDragStart?: (args: DragEventParams) => void;
+
+  /** Optional callback fired when drag operation is cancelled */
   readonly onDragCancel?: (args: DragEventParams) => void;
+
+  /** Optional callback fired when drag operation ends successfully */
   readonly onDragEnd?: (args: DragEventParams) => void;
+
+  /** Optional callback fired during drag movement */
   readonly onDragMove?: (args: DragMoveParams) => void;
+
+  /** Optional flag to disable drag functionality */
   readonly disabled?: boolean;
 }
 
+/**
+ * React hook that implements drag functionality with enhanced features like custom drag images,
+ * movement tracking, and state management.
+ *
+ * @param args - Configuration options for the draggable behavior
+ *
+ * @returns An object containing:
+ * - draggable: boolean indicating element can be dragged
+ * - onDragStart: Event handler to be attached to draggable element
+ *
+ * @example
+ * ```tsx
+ * function DraggableItem({ data }) {
+ *   const { draggable, onDragStart } = useDraggable({
+ *     dragData: () => data,
+ *     dragTags: () => ['item'],
+ *     onDragStart: ({ tags }) => console.log('Started dragging:', tags)
+ *   });
+ *
+ *   return (
+ *     <div draggable={draggable} onDragStart={onDragStart}>
+ *       Drag me
+ *     </div>
+ *   );
+ * }
+ * ```
+ */
 export function useDraggable({
   dragData,
   dragTags,
