@@ -25,6 +25,8 @@ export function useDroppable({ tags, onDragEnter, onDragLeave, onDrop }: Droppab
   const onDragOver = useEvent((event: ReactDragEvent) => {
     if (!dragState.store.dragActive.peek()) return;
 
+    event.stopPropagation();
+
     if (hasTags(tags)) {
       event.preventDefault();
       setCanDrop(true);
