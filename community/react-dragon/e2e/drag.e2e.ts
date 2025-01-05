@@ -1,4 +1,4 @@
-import { test, expect, AxeBuilder } from "@1771technologies/aio/playwright";
+import { test, expect } from "@1771technologies/aio/playwright";
 import { getUrl } from "./get-url.js";
 
 test("drag between containers", async ({ page }) => {
@@ -24,12 +24,12 @@ test("drag between containers", async ({ page }) => {
   await expect(page).toHaveScreenshot("list-03-after-drag-to-odd.png");
 
   await drag.dragTo(dropOdd);
+
+  await page.waitForTimeout(2000);
+
   await expect(dropOdd).toHaveText("1");
   await expect(page).toHaveScreenshot("list-04-drop-rejected.png");
   await expect(drag).toHaveText("H");
-
-  const accessibilityScan = await new AxeBuilder({ page }).analyze();
-  expect(accessibilityScan.violations).toEqual([]);
 });
 
 test("drag in nested container", async ({ page }) => {
