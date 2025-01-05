@@ -3,19 +3,75 @@ import { Sizer } from "@1771technologies/react-sizer";
 import { useEvent } from "@1771technologies/react-utils";
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 
+/**
+ * Props for the row renderer function used by the Virt component.
+ * @template D The type of data item being rendered
+ */
 export interface RendererProps<D> {
+  /** Zero-based index of the row being rendered */
   readonly rowIndex: number;
+  /** Data item corresponding to this row */
   readonly data: D;
+  /** Vertical position of the row in pixels */
   readonly y: number;
 }
 
+/**
+ * Props for the Virt component.
+ * @template D The type of data items in the list
+ */
 export interface VirtProps<D> {
+  /** Fixed height of each row in pixels */
   readonly itemHeight: number;
+  /** Array of data items to be virtualized */
   readonly data: D[];
+  /** Optional index of a row that should always be rendered, regardless of viewport position */
   readonly focusedIndex?: number | null;
+  /** Function to render each row, receiving position and data information */
   readonly renderer: (p: RendererProps<D>) => ReactNode;
+  /**
+   * When true, uses a different rendering strategy that prevents content flash during scrolling.
+   * This may impact performance but provides smoother visual results.
+   */
   readonly preventFlash?: boolean;
 }
+
+/**
+ * A virtualized list component that efficiently renders large datasets by only mounting
+ * rows that are visible within the viewport (plus a small buffer).
+ *
+ * @template D The type of data items in the list
+ *
+ * @example
+ * ```tsx
+ * interface RowData {
+ *   id: string;
+ *   content: string;
+ * }
+ *
+ * const rowRenderer = ({ data, rowIndex, y }: RendererProps<RowData>) => (
+ *   <div style={{ position: 'absolute', top: y }}>
+ *     {data.content}
+ *   </div>
+ * );
+ *
+ * <Virt
+ *   data={items}
+ *   itemHeight={40}
+ *   renderer={rowRenderer}
+ *   preventFlash={true}
+ * />
+ * ```
+ *
+ * @remarks
+ * - Uses window-based virtualization to maintain smooth scrolling performance
+ * - Supports a focused index that remains mounted even when scrolled out of view
+ * - Provides flash prevention option for smoother visual updates
+ * - Automatically handles viewport size changes and scroll position
+ *
+ * @param props Component props combining VirtProps with standard div props (excluding ref)
+ * @returns A virtualized scrollable list
+ */
 export function Virt<D>({
   data,
   focusedIndex,
