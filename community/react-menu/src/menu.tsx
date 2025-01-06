@@ -42,9 +42,9 @@ export function Menu({ item, disabled: parentDisabled, parentId }: MenuProps) {
           if (e.key === " " || e.key === "Enter") item.action({ item, state });
         }}
         aria-label={item.axe?.axeLabel}
+        aria-describedby={item.axe?.axeDescription}
         aria-disabled={disabled}
         data-disabled={disabled}
-        data-orientation={orientation}
       >
         {item.label}
       </div>
@@ -83,10 +83,10 @@ export function Menu({ item, disabled: parentDisabled, parentId }: MenuProps) {
         }}
         aria-checked={item.checked}
         aria-label={item.axe?.axeLabel}
+        aria-describedby={item.axe?.axeDescription}
         aria-disabled={disabled}
         data-disabled={disabled}
         data-checked={item.checked}
-        data-orientation={orientation}
       >
         {item.label}
       </div>
@@ -101,6 +101,7 @@ export function Menu({ item, disabled: parentDisabled, parentId }: MenuProps) {
         className={clsx(classes.group, item.className)}
         style={item.style}
         aria-label={item.axe?.axeLabel ?? item.label}
+        aria-describedby={item.axe?.axeDescription}
         aria-disabled={disabled}
         data-disabled={disabled}
       >
@@ -177,6 +178,7 @@ function Submenu({
         aria-controls={referenceId}
         aria-disabled={disabled}
         aria-label={item.axe?.axeLabel}
+        aria-describedby={item.axe?.axeDescription}
         data-haspopover={true}
         data-disabled={disabled}
       >
@@ -186,7 +188,7 @@ function Submenu({
         <MenuPortal
           id={referenceId}
           hasParent={!!parentId}
-          itemId={item.id}
+          item={item}
           target={ref.current!}
           aria-disabled={disabled}
           data-disabled={disabled}

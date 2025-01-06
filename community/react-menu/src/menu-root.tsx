@@ -20,6 +20,7 @@ export interface BaseMenuItem {
 
   readonly axe?: {
     readonly axeLabel: string;
+    readonly axeDescription: string;
   };
 }
 
@@ -54,6 +55,8 @@ export interface MenuParent<D = any> extends BaseMenuItem {
 
   readonly menuClassName?: string;
   readonly menuStyle?: CSSProperties;
+
+  readonly axe?: BaseMenuItem["axe"] & { axeMenuLabel?: string; axeMenuDescription?: string };
 }
 
 export type MenuItem<D = any> =

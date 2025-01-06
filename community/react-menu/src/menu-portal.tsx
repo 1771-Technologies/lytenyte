@@ -9,6 +9,7 @@ import {
   getFocusableElements,
 } from "@1771technologies/js-utils";
 import { useIsRtl } from "@1771technologies/react-utils";
+import type { MenuParent } from "./menu-root";
 
 export function MenuPortal({
   target,
@@ -17,17 +18,18 @@ export function MenuPortal({
   id,
   className,
   hasParent,
-  itemId,
+  item,
   style,
 }: PropsWithChildren<{
   target: HTMLDivElement;
   id: string;
-  itemId: string;
+  item: MenuParent;
   hasParent: boolean;
   disabled?: boolean;
   className?: string;
   style?: CSSProperties;
 }>) {
+  const itemId = item.id;
   const [menu, setMenu] = useState<HTMLElement | null>(null);
   const display = style?.display ?? "block";
   const rtl = useIsRtl();
@@ -151,6 +153,8 @@ export function MenuPortal({
       }}
       ref={setMenu}
       aria-disabled={disabled}
+      aria-label={item.axe?.axeLabel}
+      aria-description={item.axe?.axeDescription}
       data-disabled={disabled}
       data-itemid={itemId}
       className={className}
