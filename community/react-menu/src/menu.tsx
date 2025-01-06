@@ -157,6 +157,7 @@ function Submenu({
         aria-controls={referenceId}
         aria-disabled={disabled}
         aria-label={item.axe?.axeLabel}
+        data-haspopover={true}
       >
         {item.label}
       </div>

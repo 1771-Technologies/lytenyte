@@ -1,8 +1,8 @@
 import { MenuStateProvider } from "./menu-state-context";
 import { Menu } from "./menu";
 import { MenuClassProvider } from "./menu-class-context";
-import { useRef, type CSSProperties } from "react";
-import { MenuStoreProvider } from "./menu-store-content";
+import { act, useRef, type CSSProperties } from "react";
+import { MenuStoreProvider, useMenuStore } from "./menu-store-content";
 import { getFocusableElements } from "@1771technologies/js-utils";
 
 export interface BaseMenuItem {
@@ -85,66 +85,97 @@ export function MenuRoot<D = any>({
   id,
   menuItems,
   state,
-  orientation = "vertical",
+  orientation,
   disabled,
   classes,
+  ...props
 }: MenuProps<D>) {
-  const ref = useRef<HTMLDivElement | null>(null);
   return (
     <MenuStoreProvider>
       <MenuClassProvider value={classes}>
         <MenuStateProvider value={state}>
-          <div
-            role="menu"
+          <MenuImpl
             id={id}
-            ref={ref}
-            aria-disabled={disabled}
-            data-disabled={disabled}
-            className={classes.menu}
-            tabIndex={0}
-            onKeyDown={(ev) => {
-              const unfilteredItems = getFocusableElements(ref.current!, true);
-              const items = unfilteredItems.filter((c) => c.getAttribute("role")?.includes("menu"));
-
-              if (!items.length || !document.activeElement) return;
-
-              if (ev.key === "ArrowDown" && document.activeElement === ref.current) {
-                items[0].focus();
-                ev.preventDefault();
-                return;
-              }
-
-              const keys = ["ArrowDown", "ArrowUp"];
-
-              if (!keys.includes(ev.key)) return;
-
-              let activeMenuItem = document.activeElement as HTMLElement;
-              while (activeMenuItem && !activeMenuItem.role?.includes("menu"))
-                activeMenuItem = activeMenuItem.parentElement as HTMLElement;
-
-              const active = items.indexOf(document.activeElement as HTMLElement);
-              if (active === -1) return;
-
-              if (ev.key === "ArrowDown") {
-                const next = active + 1;
-                if (next >= items.length) return;
-
-                items[next].focus();
-              }
-
-              if (ev.key === "ArrowUp") {
-                const next = active - 1;
-                if (next < 0) return;
-                items[next].focus();
-              }
-            }}
-          >
-            {menuItems.map((c, i) => {
-              return <Menu key={i} item={c} orientation={orientation} disabled={disabled} />;
-            })}
-          </div>
+            menuItems={menuItems}
+            orientation={orientation}
+            disabled={disabled}
+            classes={classes}
+            state={state}
+            {...props}
+          />
         </MenuStateProvider>
       </MenuClassProvider>
     </MenuStoreProvider>
+  );
+}
+
+function MenuImpl({ id, disabled, classes, menuItems, orientation = "vertical" }: MenuProps) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const s = useMenuStore();
+  return (
+    <div
+      role="menu"
+      id={id}
+      ref={ref}
+      aria-disabled={disabled}
+      data-disabled={disabled}
+      className={classes.menu}
+      tabIndex={0}
+      onKeyDown={(ev) => {
+        const unfilteredItems = getFocusableElements(ref.current!, true);
+        const items = unfilteredItems.filter((c) => c.getAttribute("role")?.includes("menu"));
+
+        if (!items.length || !document.activeElement) return;
+
+        if (ev.key === "ArrowDown" && document.activeElement === ref.current) {
+          items[0].focus();
+          ev.preventDefault();
+          return;
+        }
+
+        const keys = ["ArrowDown", "ArrowUp", "ArrowRight", "ArrowLeft"];
+
+        if (!keys.includes(ev.key)) return;
+
+        let activeMenuItem = document.activeElement as HTMLElement;
+        while (activeMenuItem && !activeMenuItem.role?.includes("menu"))
+          activeMenuItem = activeMenuItem.parentElement as HTMLElement;
+
+        const active = items.indexOf(document.activeElement as HTMLElement);
+        if (active === -1) return;
+
+        if (ev.key === "ArrowDown") {
+          const next = active + 1;
+          if (next >= items.length) return;
+
+          items[next].focus();
+        }
+
+        if (ev.key === "ArrowUp") {
+          const next = active - 1;
+          if (next < 0) return;
+          items[next].focus();
+        }
+
+        if (ev.key === "ArrowRight") {
+          const current = items[active];
+          console.log(current.id, current.dataset.haspopover);
+
+          if (current.dataset.haspopover) {
+            s.store.activeId.set(current.id);
+
+            setTimeout(() => {
+              const el = document.querySelector(`[data-itemid="${current.id}"]`) as HTMLElement;
+
+              el?.focus();
+            }, 20);
+          }
+        }
+      }}
+    >
+      {menuItems.map((c, i) => {
+        return <Menu key={i} item={c} orientation={orientation} disabled={disabled} />;
+      })}
+    </div>
   );
 }

@@ -1,5 +1,11 @@
 import { getPosition } from "@1771technologies/positioner";
-import { useEffect, useState, type CSSProperties, type PropsWithChildren } from "react";
+import {
+  useCallback,
+  useEffect,
+  useState,
+  type CSSProperties,
+  type PropsWithChildren,
+} from "react";
 import { createPortal } from "react-dom";
 import { useMenuStore } from "./menu-store-content";
 import { containsPoint, getClientX, getClientY } from "@1771technologies/js-utils";
@@ -63,6 +69,7 @@ export function MenuPortal({
       ref={setMenu}
       aria-disabled={disabled}
       data-disabled={disabled}
+      data-itemid={itemId}
       className={className}
       style={{ ...style, display: "none", position: "fixed" }}
     >
