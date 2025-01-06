@@ -9,10 +9,11 @@ import { MenuIdProvider } from "./menu-id-stack";
 export interface MenuProps {
   item: MenuItem;
   orientation: "vertical" | "horizontal";
+  parentId?: string;
   disabled?: boolean;
 }
 
-export function Menu({ item, orientation, disabled: parentDisabled }: MenuProps) {
+export function Menu({ item, orientation, disabled: parentDisabled, parentId }: MenuProps) {
   const classes = useClasses();
   if (item.kind === "separator") {
     return <div className={classes.separator} role="separator" aria-orientation={orientation} />;
@@ -75,23 +76,33 @@ export function Menu({ item, orientation, disabled: parentDisabled }: MenuProps)
         data-disabled={disabled}
         data-orientation={orientation}
       >
-        {item.children.map((item, i) => {
-          return <Menu key={i} item={item} orientation={orientation} disabled={disabled} />;
+        {item.children.map((childItem, i) => {
+          return (
+            <Menu
+              key={i}
+              item={childItem}
+              orientation={orientation}
+              disabled={disabled}
+              parentId={item.id}
+            />
+          );
         })}
       </div>
     );
   }
 
-  return <Submenu item={item} disabled={disabled} orientation={orientation} />;
+  return <Submenu item={item} disabled={disabled} orientation={orientation} parentId={parentId} />;
 }
 
 function Submenu({
   item,
   disabled,
   orientation,
+  parentId,
 }: {
   item: MenuParent;
   orientation: "vertical" | "horizontal";
+  parentId?: string;
   disabled?: boolean;
 }) {
   const s = useMenuStore();
@@ -106,6 +117,7 @@ function Submenu({
     const stack = [...item.children];
 
     const ids = new Set<string>([item.id]);
+    if (parentId) ids.add(parentId);
 
     while (stack.length) {
       const c = stack.pop()!;
@@ -116,7 +128,7 @@ function Submenu({
     }
 
     return ids;
-  }, [item.children, item.id]);
+  }, [item.children, item.id, parentId]);
 
   return (
     <>
@@ -129,7 +141,8 @@ function Submenu({
         onPointerLeave={(e) => {
           const parent = (e.target as HTMLElement).parentElement as HTMLElement;
           if (containsPoint(parent, getClientX(e.nativeEvent), getClientY(e.nativeEvent))) {
-            s.store.setActiveId.peek()(item.id);
+            console.log(parentId);
+            s.store.setActiveId.peek()(parentId ?? null);
           } else {
             s.store.setActiveId.peek()(null);
           }
@@ -145,7 +158,7 @@ function Submenu({
       >
         {item.label}
       </div>
-      {relatedIds.has(activeId ?? "") && (
+      {relatedIds.has(activeId ?? "") && ref.current && (
         <MenuIdProvider value={childId}>
           <MenuPortal
             id={childId}
@@ -157,7 +170,15 @@ function Submenu({
             style={item.menuStyle}
           >
             {item.children.map((c, i) => {
-              return <Menu key={i} item={c} orientation={orientation} disabled={disabled} />;
+              return (
+                <Menu
+                  key={i}
+                  item={c}
+                  orientation={orientation}
+                  disabled={disabled}
+                  parentId={item.id}
+                />
+              );
             })}
           </MenuPortal>
         </MenuIdProvider>
