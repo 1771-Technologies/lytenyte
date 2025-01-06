@@ -145,10 +145,10 @@ function Submenu({
         onMouseLeave={(e) => {
           const parent = (e.target as HTMLElement).parentElement!;
           if (containsPoint(parent, getClientX(e.nativeEvent), getClientY(e.nativeEvent))) {
-            setActive(parentId ?? "");
+            setActive(parentId ?? "", 20);
             return;
           }
-          setActive(null);
+          setActive(null, 20);
         }}
         aria-haspopup="menu"
         aria-expanded={false}

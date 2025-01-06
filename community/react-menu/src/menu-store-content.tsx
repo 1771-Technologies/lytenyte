@@ -3,7 +3,7 @@ import { createContext, useContext, useState, type PropsWithChildren } from "rea
 
 type MenuStore = {
   readonly activeId: Signal<string | null>;
-  readonly setActiveId: Signal<(id: string | null) => void>;
+  readonly setActiveId: Signal<(id: string | null, timeout?: number) => void>;
 };
 
 type Store = CascadaStore<MenuStore>;
@@ -17,13 +17,13 @@ export function MenuStoreProvider(p: PropsWithChildren) {
 
       let t: null | ReturnType<typeof setTimeout>;
 
-      const setActiveId = signal<(id: string | null) => void>((id) => {
+      const setActiveId = signal<(id: string | null, timeout?: number) => void>((id, timeout) => {
         if (t) clearTimeout(t);
 
         t = setTimeout(() => {
           activeId.set(id);
           t = null;
-        }, 200);
+        }, timeout ?? 200);
       });
 
       return {

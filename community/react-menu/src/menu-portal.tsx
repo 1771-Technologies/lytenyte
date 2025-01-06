@@ -54,10 +54,10 @@ export function MenuPortal({
           hasParent &&
           containsPoint(parent, getClientX(e.nativeEvent), getClientY(e.nativeEvent))
         ) {
-          setActive(itemId ?? null);
+          setActive(itemId ?? null, 20);
           return;
         }
-        setActive(null);
+        setActive(null, 20);
       }}
       ref={setMenu}
       aria-disabled={disabled}
