@@ -2,6 +2,7 @@ import { MenuStateProvider } from "./menu-state-context";
 import { Menu } from "./menu";
 import { MenuClassProvider } from "./menu-class-context";
 import type { CSSProperties } from "react";
+import { MenuStoreProvider } from "./menu-store-content";
 
 export interface BaseMenuItem {
   readonly id: string;
@@ -88,20 +89,22 @@ export function MenuRoot<D = any>({
   classes,
 }: MenuProps<D>) {
   return (
-    <MenuClassProvider value={classes}>
-      <MenuStateProvider value={state}>
-        <div
-          role="menu"
-          id={id}
-          aria-disabled={disabled}
-          data-disabled={disabled}
-          className={classes.menu}
-        >
-          {menuItems.map((c, i) => {
-            return <Menu key={i} item={c} orientation={orientation} disabled={disabled} />;
-          })}
-        </div>
-      </MenuStateProvider>
-    </MenuClassProvider>
+    <MenuStoreProvider>
+      <MenuClassProvider value={classes}>
+        <MenuStateProvider value={state}>
+          <div
+            role="menu"
+            id={id}
+            aria-disabled={disabled}
+            data-disabled={disabled}
+            className={classes.menu}
+          >
+            {menuItems.map((c, i) => {
+              return <Menu key={i} item={c} orientation={orientation} disabled={disabled} />;
+            })}
+          </div>
+        </MenuStateProvider>
+      </MenuClassProvider>
+    </MenuStoreProvider>
   );
 }

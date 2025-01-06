@@ -1,8 +1,11 @@
-import { useId, useRef, useState } from "react";
+import { useEffect, useId, useRef } from "react";
 import { type MenuItem, type MenuParent } from "./menu-root";
 import { useClasses } from "./menu-class-context";
 import { clsx } from "@1771technologies/js-utils";
 import { MenuPortal } from "./menu-portal";
+import { useHovered } from "@1771technologies/react-utils";
+import { useMenuStore } from "./menu-store-content";
+import { MenuIdProvider } from "./menu-id-stack";
 
 export interface MenuProps {
   item: MenuItem;
@@ -92,44 +95,52 @@ function Submenu({
   orientation: "vertical" | "horizontal";
   disabled?: boolean;
 }) {
-  const [open, setOpen] = useState(false);
+  const s = useMenuStore();
+
+  const expanded = s.useValue("expandedIds");
   const classes = useClasses();
 
   const id = useId();
-
   const ref = useRef<HTMLDivElement | null>(null);
+
+  const [hovered, setHovered] = useHovered();
+
+  useEffect(() => {
+    s.store.updateExpansion.peek()(id, hovered);
+  }, [hovered, id, s]);
 
   return (
     <>
       <div
-        onMouseEnter={() => setOpen(true)}
-        onMouseLeave={() => setOpen(false)}
         ref={ref}
+        {...setHovered}
         role="menuitem"
         className={clsx(classes.base, classes.parent, item.className)}
         style={item.style}
         id={item.id}
         aria-haspopup="menu"
-        aria-expanded={open}
+        aria-expanded={!expanded.has(id)}
         aria-controls={id}
         aria-disabled={disabled}
         aria-label={item.axe?.axeLabel}
       >
         {item.label}
       </div>
-      {open && (
-        <MenuPortal
-          id={id}
-          target={ref.current!}
-          aria-disabled={disabled}
-          data-disabled={disabled}
-          className={clsx(classes.menu, classes.parentMenu, item.menuClassName)}
-          style={item.menuStyle}
-        >
-          {item.children.map((c, i) => {
-            return <Menu key={i} item={c} orientation={orientation} disabled={disabled} />;
-          })}
-        </MenuPortal>
+      {expanded.has(id) && (
+        <MenuIdProvider value={id}>
+          <MenuPortal
+            id={id}
+            target={ref.current!}
+            aria-disabled={disabled}
+            data-disabled={disabled}
+            className={clsx(classes.menu, classes.parentMenu, item.menuClassName)}
+            style={item.menuStyle}
+          >
+            {item.children.map((c, i) => {
+              return <Menu key={i} item={c} orientation={orientation} disabled={disabled} />;
+            })}
+          </MenuPortal>
+        </MenuIdProvider>
       )}
     </>
   );
