@@ -6,7 +6,7 @@ const menuItems: MenuItem[] = [
   { kind: "separator" },
   {
     kind: "submenu",
-    id: "z",
+    id: "Favorites",
     label: "Favorites",
     children: [
       { kind: "item", label: "Github", action: () => {}, id: "v" },
@@ -14,7 +14,7 @@ const menuItems: MenuItem[] = [
       { kind: "item", label: "Twitter", action: () => {}, id: "twitter" },
       {
         kind: "submenu",
-        id: "subsub",
+        id: "Sub Sub",
         label: "Sub Sub",
         children: [
           { kind: "item", label: "V", id: "VV", action: () => {} },

@@ -1,10 +1,9 @@
-import { useMemo, useRef } from "react";
+import { useId, useRef } from "react";
 import { type MenuItem, type MenuParent } from "./menu-root";
 import { useClasses } from "./menu-class-context";
 import { clsx, containsPoint, getClientX, getClientY } from "@1771technologies/js-utils";
 import { MenuPortal } from "./menu-portal";
 import { useMenuStore } from "./menu-store-content";
-import { MenuIdProvider } from "./menu-id-stack";
 
 export interface MenuProps {
   item: MenuItem;
@@ -83,7 +82,7 @@ export function Menu({ item, orientation, disabled: parentDisabled, parentId }: 
               item={childItem}
               orientation={orientation}
               disabled={disabled}
-              parentId={item.id}
+              parentId={parentId}
             />
           );
         })}
@@ -106,82 +105,64 @@ function Submenu({
   disabled?: boolean;
 }) {
   const s = useMenuStore();
+  const setActive = s.store.setActiveId.peek();
 
   const activeId = s.useValue("activeId");
   const classes = useClasses();
 
   const ref = useRef<HTMLDivElement | null>(null);
 
-  const childId = `${item.id}-child`;
-  const relatedIds = useMemo(() => {
-    const stack = [...item.children];
-
-    const ids = new Set<string>([item.id]);
-    if (parentId) ids.add(parentId);
-
-    while (stack.length) {
-      const c = stack.pop()!;
-      if (c.kind === "submenu") {
-        ids.add(c.id);
-        stack.push(...c.children);
-      }
-    }
-
-    return ids;
-  }, [item.children, item.id, parentId]);
+  const referenceId = useId();
 
   return (
     <>
       <div
         ref={ref}
         role="menuitem"
-        onPointerEnter={() => {
-          s.store.setActiveId.peek()(item.id);
-        }}
-        onPointerLeave={(e) => {
-          const parent = (e.target as HTMLElement).parentElement as HTMLElement;
-          if (containsPoint(parent, getClientX(e.nativeEvent), getClientY(e.nativeEvent))) {
-            console.log(parentId);
-            s.store.setActiveId.peek()(parentId ?? null);
-          } else {
-            s.store.setActiveId.peek()(null);
-          }
-        }}
         className={clsx(classes.base, classes.parent, item.className)}
         style={item.style}
         id={item.id}
+        onPointerEnter={() => {
+          setActive(item.id);
+        }}
+        onMouseLeave={(e) => {
+          const parent = (e.target as HTMLElement).parentElement!;
+          if (containsPoint(parent, getClientX(e.nativeEvent), getClientY(e.nativeEvent))) {
+            setActive(item.id);
+          }
+          setActive(null);
+        }}
         aria-haspopup="menu"
-        aria-expanded={!relatedIds.has(activeId ?? "")}
-        aria-controls={childId}
+        aria-expanded={false}
+        aria-controls={referenceId}
         aria-disabled={disabled}
         aria-label={item.axe?.axeLabel}
       >
         {item.label}
       </div>
-      {relatedIds.has(activeId ?? "") && ref.current && (
-        <MenuIdProvider value={childId}>
-          <MenuPortal
-            id={childId}
-            parentId={item.id}
-            target={ref.current!}
-            aria-disabled={disabled}
-            data-disabled={disabled}
-            className={clsx(classes.menu, classes.parentMenu, item.menuClassName)}
-            style={item.menuStyle}
-          >
-            {item.children.map((c, i) => {
-              return (
-                <Menu
-                  key={i}
-                  item={c}
-                  orientation={orientation}
-                  disabled={disabled}
-                  parentId={item.id}
-                />
-              );
-            })}
-          </MenuPortal>
-        </MenuIdProvider>
+      {ref.current && activeId === item.id && (
+        <MenuPortal
+          id={referenceId}
+          parentId={item.id}
+          target={ref.current!}
+          aria-disabled={disabled}
+          data-disabled={disabled}
+          className={clsx(classes.menu, classes.parentMenu, item.menuClassName)}
+          style={item.menuStyle}
+        >
+          {item.id}
+          {item.children.map((c, i) => {
+            return (
+              <Menu
+                key={i}
+                item={c}
+                orientation={orientation}
+                disabled={disabled}
+                parentId={item.id}
+              />
+            );
+          })}
+        </MenuPortal>
       )}
     </>
   );
