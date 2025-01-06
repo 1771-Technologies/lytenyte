@@ -1,7 +1,7 @@
 import { MenuStateProvider } from "./menu-state-context";
 import { Menu } from "./menu";
 import { MenuClassProvider } from "./menu-class-context";
-import { act, useRef, type CSSProperties } from "react";
+import { useRef, type CSSProperties } from "react";
 import { MenuStoreProvider, useMenuStore } from "./menu-store-content";
 import { getFocusableElements } from "@1771technologies/js-utils";
 
@@ -133,7 +133,7 @@ function MenuImpl({ id, disabled, classes, menuItems, orientation = "vertical" }
           return;
         }
 
-        const keys = ["ArrowDown", "ArrowUp", "ArrowRight", "ArrowLeft"];
+        const keys = ["ArrowDown", "ArrowUp", "ArrowRight"];
 
         if (!keys.includes(ev.key)) return;
 
@@ -149,27 +149,34 @@ function MenuImpl({ id, disabled, classes, menuItems, orientation = "vertical" }
           if (next >= items.length) return;
 
           items[next].focus();
+
+          ev.preventDefault();
+          ev.stopPropagation();
         }
 
         if (ev.key === "ArrowUp") {
           const next = active - 1;
           if (next < 0) return;
           items[next].focus();
+
+          ev.preventDefault();
+          ev.stopPropagation();
         }
 
         if (ev.key === "ArrowRight") {
           const current = items[active];
-          console.log(current.id, current.dataset.haspopover);
 
           if (current.dataset.haspopover) {
             s.store.activeId.set(current.id);
 
             setTimeout(() => {
               const el = document.querySelector(`[data-itemid="${current.id}"]`) as HTMLElement;
-
               el?.focus();
             }, 20);
           }
+
+          ev.preventDefault();
+          ev.stopPropagation();
         }
       }}
     >
