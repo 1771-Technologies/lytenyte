@@ -3,7 +3,7 @@ import { type MenuItem, type MenuParent } from "./menu-root";
 import { useClasses } from "./menu-class-context";
 import { clsx, containsPoint, getClientX, getClientY } from "@1771technologies/js-utils";
 import { MenuPortal } from "./menu-portal";
-import { useMenuStore } from "./menu-store-content";
+import { useMenuStore } from "./menu-store-context";
 import { useMenuState } from "./menu-state-context";
 
 export interface MenuProps {

@@ -1,7 +1,7 @@
 import { getPosition } from "@1771technologies/positioner";
 import { useEffect, useState, type CSSProperties, type PropsWithChildren } from "react";
 import { createPortal } from "react-dom";
-import { useMenuStore } from "./menu-store-content";
+import { useMenuStore } from "./menu-store-context";
 import {
   containsPoint,
   getClientX,

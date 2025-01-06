@@ -2,7 +2,7 @@ import { MenuStateProvider } from "./menu-state-context";
 import { Menu } from "./menu";
 import { MenuClassProvider } from "./menu-class-context";
 import { useRef, type CSSProperties } from "react";
-import { MenuStoreProvider, useMenuStore } from "./menu-store-content";
+import { MenuStoreProvider, useMenuStore } from "./menu-store-context";
 import { getFocusableElements } from "@1771technologies/js-utils";
 import { RtlProvider } from "@1771technologies/react-utils";
 
@@ -77,7 +77,7 @@ export interface MenuProps<D = any> {
   readonly ariaLabelledBy: string;
   readonly axe: MenuAxe;
 
-  readonly rtl: boolean;
+  readonly rtl?: boolean;
 
   readonly classes: {
     readonly base: string;
