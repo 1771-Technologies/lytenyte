@@ -7,6 +7,7 @@ export { equal } from "./equal.js";
 export { formatTable } from "./format-table.js";
 export { getClientX, getClientY } from "./get-client-xy.js";
 export { getFocusableBoundary } from "./get-focusable-boundary.js";
+export { getFocusableElements } from "./get-focusable-elements.js";
 export { getOwnerScrollbarWidth } from "./get-owner-scrollbar-width.js";
 export { getOwningGlobalThis } from "./get-owning-global-this.js";
 export { getPreciseElementDimensions } from "./get-precise-element-dimensions.js";

@@ -1,8 +1,9 @@
 import { MenuStateProvider } from "./menu-state-context";
 import { Menu } from "./menu";
 import { MenuClassProvider } from "./menu-class-context";
-import type { CSSProperties } from "react";
+import { useRef, type CSSProperties } from "react";
 import { MenuStoreProvider } from "./menu-store-content";
+import { getFocusableElements } from "@1771technologies/js-utils";
 
 export interface BaseMenuItem {
   readonly id: string;
@@ -88,6 +89,7 @@ export function MenuRoot<D = any>({
   disabled,
   classes,
 }: MenuProps<D>) {
+  const ref = useRef<HTMLDivElement | null>(null);
   return (
     <MenuStoreProvider>
       <MenuClassProvider value={classes}>
@@ -95,10 +97,47 @@ export function MenuRoot<D = any>({
           <div
             role="menu"
             id={id}
+            ref={ref}
             aria-disabled={disabled}
             data-disabled={disabled}
             className={classes.menu}
             tabIndex={0}
+            onKeyDown={(ev) => {
+              const unfilteredItems = getFocusableElements(ref.current!, true);
+              const items = unfilteredItems.filter((c) => c.getAttribute("role")?.includes("menu"));
+
+              if (!items.length || !document.activeElement) return;
+
+              if (ev.key === "ArrowDown" && document.activeElement === ref.current) {
+                items[0].focus();
+                ev.preventDefault();
+                return;
+              }
+
+              const keys = ["ArrowDown", "ArrowUp"];
+
+              if (!keys.includes(ev.key)) return;
+
+              let activeMenuItem = document.activeElement as HTMLElement;
+              while (activeMenuItem && !activeMenuItem.role?.includes("menu"))
+                activeMenuItem = activeMenuItem.parentElement as HTMLElement;
+
+              const active = items.indexOf(document.activeElement as HTMLElement);
+              if (active === -1) return;
+
+              if (ev.key === "ArrowDown") {
+                const next = active + 1;
+                if (next >= items.length) return;
+
+                items[next].focus();
+              }
+
+              if (ev.key === "ArrowUp") {
+                const next = active - 1;
+                if (next < 0) return;
+                items[next].focus();
+              }
+            }}
           >
             {menuItems.map((c, i) => {
               return <Menu key={i} item={c} orientation={orientation} disabled={disabled} />;
