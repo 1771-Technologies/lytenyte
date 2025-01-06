@@ -1,4 +1,4 @@
-import { useId, useRef } from "react";
+import { useId, useMemo, useRef } from "react";
 import { type MenuItem, type MenuParent } from "./menu-root";
 import { useClasses } from "./menu-class-context";
 import { clsx, containsPoint, getClientX, getClientY } from "@1771technologies/js-utils";
@@ -114,6 +114,23 @@ function Submenu({
 
   const referenceId = useId();
 
+  const childIds = useMemo(() => {
+    const ids = new Set<string>();
+    const stack = [...item.children];
+    while (stack.length) {
+      const c = stack.pop()!;
+      if (c.kind === "submenu") {
+        stack.push(...c.children);
+        ids.add(c.id);
+      }
+      if (c.kind === "group") {
+        stack.push(...c.children);
+      }
+    }
+
+    return ids;
+  }, [item.children]);
+
   return (
     <>
       <div
@@ -128,7 +145,8 @@ function Submenu({
         onMouseLeave={(e) => {
           const parent = (e.target as HTMLElement).parentElement!;
           if (containsPoint(parent, getClientX(e.nativeEvent), getClientY(e.nativeEvent))) {
-            setActive(item.id);
+            setActive(parentId ?? "");
+            return;
           }
           setActive(null);
         }}
@@ -140,10 +158,11 @@ function Submenu({
       >
         {item.label}
       </div>
-      {ref.current && activeId === item.id && (
+      {ref.current && (activeId === item.id || childIds.has(activeId ?? "")) && (
         <MenuPortal
           id={referenceId}
-          parentId={item.id}
+          hasParent={!!parentId}
+          itemId={item.id}
           target={ref.current!}
           aria-disabled={disabled}
           data-disabled={disabled}
