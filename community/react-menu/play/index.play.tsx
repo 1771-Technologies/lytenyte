@@ -1,3 +1,4 @@
+import { menuAxeDefault } from "../src/menu-axe";
 import { MenuRoot, type MenuItem } from "../src/menu-root";
 
 const menuItems: MenuItem[] = [
@@ -8,7 +9,6 @@ const menuItems: MenuItem[] = [
     kind: "submenu",
     id: "Favorites",
     label: "Favorites",
-    disabled: true,
     children: [
       { kind: "item", label: "Github", action: () => {}, id: "v" },
       { kind: "item", label: "Radix", action: () => {}, id: "radix" },
@@ -54,6 +54,7 @@ export default function MenuPlay() {
       <button id="me">Menu</button>
       <MenuRoot
         ariaLabelledBy="me"
+        axe={menuAxeDefault}
         menuItems={menuItems}
         state={{}}
         classes={{

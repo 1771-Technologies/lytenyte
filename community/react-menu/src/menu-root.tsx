@@ -5,6 +5,10 @@ import { useRef, type CSSProperties } from "react";
 import { MenuStoreProvider, useMenuStore } from "./menu-store-content";
 import { getFocusableElements } from "@1771technologies/js-utils";
 
+export interface MenuAxe {
+  readonly axeDescription: string;
+}
+
 export interface BaseMenuItem {
   readonly id: string;
   readonly label: string;
@@ -63,10 +67,12 @@ export interface MenuProps<D = any> {
   readonly menuItems: MenuItem<D>[];
   readonly state: D;
 
-  readonly ariaLabelledBy: string;
   readonly orientation?: "vertical" | "horizontal";
   readonly id?: string;
   readonly disabled?: boolean;
+
+  readonly ariaLabelledBy: string;
+  readonly axe: MenuAxe;
 
   readonly classes: {
     readonly base: string;
@@ -109,7 +115,15 @@ export function MenuRoot<D = any>({
   );
 }
 
-function MenuImpl({ id, disabled, classes, menuItems, orientation = "vertical" }: MenuProps) {
+function MenuImpl({
+  axe,
+  ariaLabelledBy,
+  id,
+  disabled,
+  classes,
+  menuItems,
+  orientation = "vertical",
+}: MenuProps) {
   const ref = useRef<HTMLDivElement | null>(null);
   const s = useMenuStore();
   return (
@@ -117,6 +131,8 @@ function MenuImpl({ id, disabled, classes, menuItems, orientation = "vertical" }
       role="menu"
       id={id}
       ref={ref}
+      aria-labelledby={ariaLabelledBy}
+      aria-description={axe.axeDescription}
       aria-disabled={disabled}
       data-disabled={disabled}
       className={classes.menu}
