@@ -169,7 +169,6 @@ function Submenu({
           className={clsx(classes.menu, classes.parentMenu, item.menuClassName)}
           style={item.menuStyle}
         >
-          {item.id}
           {item.children.map((c, i) => {
             return (
               <Menu

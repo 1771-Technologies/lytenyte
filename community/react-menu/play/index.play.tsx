@@ -58,7 +58,7 @@ export default function MenuPlay() {
         classes={{
           menu: css`
             width: fit-content;
-            padding: 2px;
+            padding: 2px 0px;
             border: 1px solid grey;
             border-radius: 3px;
           `,
