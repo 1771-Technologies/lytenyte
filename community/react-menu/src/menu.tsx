@@ -4,6 +4,7 @@ import { useClasses } from "./menu-class-context";
 import { clsx, containsPoint, getClientX, getClientY } from "@1771technologies/js-utils";
 import { MenuPortal } from "./menu-portal";
 import { useMenuStore } from "./menu-store-content";
+import { useMenuState } from "./menu-state-context";
 
 export interface MenuProps {
   item: MenuItem;
@@ -15,6 +16,7 @@ export interface MenuProps {
 export function Menu({ item, orientation, disabled: parentDisabled, parentId }: MenuProps) {
   const store = useMenuStore();
   const classes = useClasses();
+  const state = useMenuState();
   if (item.kind === "separator") {
     return <div className={classes.separator} role="separator" aria-orientation={orientation} />;
   }
@@ -28,9 +30,13 @@ export function Menu({ item, orientation, disabled: parentDisabled, parentId }: 
         style={item.style}
         id={item.id}
         role="menuitem"
-        tabIndex={-1}
+        tabIndex={disabled ? undefined : -1}
         onFocus={() => {
           store.store.activeId.set(parentId ?? null);
+        }}
+        onKeyDown={(e) => {
+          if (item.disabled) return;
+          if (e.key === " " || e.key === "Enter") item.action({ item, state });
         }}
         aria-label={item.axe?.axeLabel}
         aria-disabled={disabled}
@@ -54,9 +60,18 @@ export function Menu({ item, orientation, disabled: parentDisabled, parentId }: 
         )}
         style={item.style}
         role={item.kind === "checkbox" ? "menuitemcheckbox" : "menuitemradio"}
-        tabIndex={-1}
+        tabIndex={disabled ? undefined : -1}
         onFocus={() => {
           store.store.activeId.set(parentId ?? null);
+        }}
+        onKeyDown={(e) => {
+          if (item.disabled) return;
+          const key = e.key;
+          if (key === "Enter" || key === " ") {
+            if (item.kind === "checkbox")
+              item.onCheckChange({ item, state, checked: !item.checked });
+            else item.onCheckChange({ item, state, checked: !item.checked });
+          }
         }}
         aria-checked={item.checked}
         aria-label={item.axe?.axeLabel}
@@ -75,7 +90,6 @@ export function Menu({ item, orientation, disabled: parentDisabled, parentId }: 
       <div
         id={item.id}
         role="group"
-        tabIndex={-1}
         className={clsx(classes.group, item.className)}
         style={item.style}
         aria-label={item.axe?.axeLabel ?? item.label}
@@ -147,11 +161,13 @@ function Submenu({
         className={clsx(classes.base, classes.parent, item.className)}
         style={item.style}
         id={item.id}
-        tabIndex={-1}
+        tabIndex={disabled ? undefined : -1}
         onPointerEnter={() => {
+          if (disabled) return;
           setActive(item.id);
         }}
         onMouseLeave={(e) => {
+          if (disabled) return;
           const parent = (e.target as HTMLElement).parentElement!;
           if (containsPoint(parent, getClientX(e.nativeEvent), getClientY(e.nativeEvent))) {
             setActive(parentId ?? "", 200);
@@ -165,6 +181,7 @@ function Submenu({
         aria-disabled={disabled}
         aria-label={item.axe?.axeLabel}
         data-haspopover={true}
+        data-disabled={disabled}
       >
         {item.label}
       </div>

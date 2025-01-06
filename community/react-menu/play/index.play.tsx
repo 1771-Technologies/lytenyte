@@ -8,6 +8,7 @@ const menuItems: MenuItem[] = [
     kind: "submenu",
     id: "Favorites",
     label: "Favorites",
+    disabled: true,
     children: [
       { kind: "item", label: "Github", action: () => {}, id: "v" },
       { kind: "item", label: "Radix", action: () => {}, id: "radix" },

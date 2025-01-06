@@ -25,13 +25,13 @@ export interface MenuItemLeaf<D = any> extends BaseMenuItem {
 
 export interface MenuItemCheckbox<D = any> extends BaseMenuItem {
   readonly kind: "checkbox";
-  readonly onCheckChange: (s: { state: D; item: MenuItemCheckbox<D> }) => void;
+  readonly onCheckChange: (s: { state: D; item: MenuItemCheckbox<D>; checked: boolean }) => void;
   readonly checked: boolean;
 }
 
 export interface MenuItemRadio<D = any> extends BaseMenuItem {
   readonly kind: "radio";
-  readonly onCheckChange: (s: { state: D; item: MenuItemRadio<D> }) => void;
+  readonly onCheckChange: (s: { state: D; item: MenuItemRadio<D>; checked: boolean }) => void;
   readonly checked: boolean;
 }
 
