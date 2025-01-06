@@ -19,6 +19,7 @@ export function MenuStoreProvider(p: PropsWithChildren) {
 
       const setActiveId = signal<(id: string | null) => void>((id) => {
         if (t) clearTimeout(t);
+
         t = setTimeout(() => {
           activeId.set(id);
           t = null;

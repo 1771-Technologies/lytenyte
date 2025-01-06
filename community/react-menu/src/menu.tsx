@@ -1,13 +1,7 @@
-import { act, useMemo, useRef } from "react";
+import { useMemo, useRef } from "react";
 import { type MenuItem, type MenuParent } from "./menu-root";
 import { useClasses } from "./menu-class-context";
-import {
-  clsx,
-  containsElement,
-  containsPoint,
-  getClientX,
-  getClientY,
-} from "@1771technologies/js-utils";
+import { clsx, containsPoint, getClientX, getClientY } from "@1771technologies/js-utils";
 import { MenuPortal } from "./menu-portal";
 import { useMenuStore } from "./menu-store-content";
 import { MenuIdProvider } from "./menu-id-stack";
@@ -111,35 +105,34 @@ function Submenu({
   const relatedIds = useMemo(() => {
     const stack = [...item.children];
 
-    const ids = new Set<string>([childId]);
+    const ids = new Set<string>([item.id]);
 
     while (stack.length) {
       const c = stack.pop()!;
       if (c.kind === "submenu") {
-        ids.add(`${c.id}-child`);
+        ids.add(c.id);
         stack.push(...c.children);
       }
     }
 
     return ids;
-  }, [childId, item.children]);
+  }, [item.children, item.id]);
 
   return (
     <>
       <div
         ref={ref}
         role="menuitem"
-        onMouseEnter={() => {
-          s.store.setActiveId.peek()(childId);
+        onPointerEnter={() => {
+          s.store.setActiveId.peek()(item.id);
         }}
-        onMouseLeave={(e) => {
-          const parent = (e.target as HTMLElement).parentElement!;
+        onPointerLeave={(e) => {
+          const parent = (e.target as HTMLElement).parentElement as HTMLElement;
           if (containsPoint(parent, getClientX(e.nativeEvent), getClientY(e.nativeEvent))) {
-            s.store.setActiveId.peek()(childId);
-            return;
+            s.store.setActiveId.peek()(item.id);
+          } else {
+            s.store.setActiveId.peek()(null);
           }
-
-          s.store.setActiveId.peek()(null);
         }}
         className={clsx(classes.base, classes.parent, item.className)}
         style={item.style}
@@ -156,6 +149,7 @@ function Submenu({
         <MenuIdProvider value={childId}>
           <MenuPortal
             id={childId}
+            parentId={item.id}
             target={ref.current!}
             aria-disabled={disabled}
             data-disabled={disabled}

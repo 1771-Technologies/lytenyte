@@ -2,17 +2,20 @@ import { getPosition } from "@1771technologies/positioner";
 import { useEffect, useState, type CSSProperties, type PropsWithChildren } from "react";
 import { createPortal } from "react-dom";
 import { useMenuStore } from "./menu-store-content";
+import { containsPoint, getClientX, getClientY } from "@1771technologies/js-utils";
 
 export function MenuPortal({
   target,
   children,
   disabled,
   id,
+  parentId,
   className,
   style,
 }: PropsWithChildren<{
   target: HTMLDivElement;
   id: string;
+  parentId: string;
   disabled?: boolean;
   className?: string;
   style?: CSSProperties;
@@ -38,13 +41,16 @@ export function MenuPortal({
   return createPortal(
     <div
       role="menu"
-      onMouseEnter={() => {
-        s.store.setActiveId.peek()(id);
-      }}
-      onMouseLeave={() => {
-        s.store.setActiveId.peek()(null);
-      }}
       id={id}
+      onMouseEnter={() => s.store.setActiveId.peek()(parentId)}
+      onMouseLeave={(e) => {
+        const parent = (e.target as HTMLElement).parentElement as HTMLElement;
+        if (containsPoint(parent, getClientX(e.nativeEvent), getClientY(e.nativeEvent))) {
+          s.store.setActiveId.peek()(parentId);
+        } else {
+          s.store.setActiveId.peek()(null);
+        }
+      }}
       ref={setMenu}
       aria-disabled={disabled}
       data-disabled={disabled}
