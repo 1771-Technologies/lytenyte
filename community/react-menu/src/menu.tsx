@@ -123,7 +123,7 @@ function Submenu({
           target={ref.current!}
           aria-disabled={disabled}
           data-disabled={disabled}
-          className={clsx(classes.parentMenu, item.menuClassName)}
+          className={clsx(classes.menu, classes.parentMenu, item.menuClassName)}
           style={item.menuStyle}
         >
           {item.children.map((c, i) => {
