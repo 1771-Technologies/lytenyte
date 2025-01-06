@@ -8,3 +8,5 @@ export const MenuIdProvider = (props: PropsWithChildren<{ value: string }>) => {
 
   return <menuId.Provider value={next}>{props.children}</menuId.Provider>;
 };
+
+export const useIdStack = () => useContext(menuId);

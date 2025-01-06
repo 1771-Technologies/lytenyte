@@ -1,7 +1,7 @@
 import { getPosition } from "@1771technologies/positioner";
-import { useHovered } from "@1771technologies/react-utils";
 import { useEffect, useState, type CSSProperties, type PropsWithChildren } from "react";
 import { createPortal } from "react-dom";
+import { useIdStack } from "./menu-id-stack";
 import { useMenuStore } from "./menu-store-content";
 
 export function MenuPortal({
@@ -34,24 +34,19 @@ export function MenuPortal({
     menu.style.left = `${pos.x}px`;
   }, [display, menu, target]);
 
-  const [hovered, props] = useHovered();
-
+  const ids = useIdStack();
   const s = useMenuStore();
-
-  useEffect(() => {
-    s.store.expandedIds.set((prev) => {
-      const next = new Set(prev);
-      if (hovered) next.add(id);
-      else next.delete(id);
-      return next;
-    });
-  }, [hovered, id, s]);
 
   return createPortal(
     <div
       role="menu"
+      onMouseEnter={() => {
+        ids.forEach((id) => s.store.updateExpansion.peek()(id, true));
+      }}
+      onMouseLeave={() => {
+        ids.forEach((id) => s.store.updateExpansion.peek()(id, false));
+      }}
       id={id}
-      {...props}
       ref={setMenu}
       aria-disabled={disabled}
       data-disabled={disabled}

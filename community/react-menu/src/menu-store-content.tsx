@@ -21,7 +21,6 @@ export function MenuStoreProvider(p: PropsWithChildren) {
       const updateExpansion = signal((id: string, newState: boolean) => {
         const pendingTimeout = pendingTimeouts.get(id);
         if (pendingTimeout) clearTimeout(pendingTimeout);
-
         if (pendingExpansions.has(id)) pendingExpansions.delete(id);
 
         const c = setTimeout(() => {
