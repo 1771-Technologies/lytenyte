@@ -13,6 +13,7 @@ export interface MenuProps {
 }
 
 export function Menu({ item, orientation, disabled: parentDisabled, parentId }: MenuProps) {
+  const store = useMenuStore();
   const classes = useClasses();
   if (item.kind === "separator") {
     return <div className={classes.separator} role="separator" aria-orientation={orientation} />;
@@ -28,6 +29,9 @@ export function Menu({ item, orientation, disabled: parentDisabled, parentId }: 
         id={item.id}
         role="menuitem"
         tabIndex={-1}
+        onFocus={() => {
+          store.store.activeId.set(parentId ?? null);
+        }}
         aria-label={item.axe?.axeLabel}
         aria-disabled={disabled}
         data-disabled={disabled}
@@ -51,6 +55,9 @@ export function Menu({ item, orientation, disabled: parentDisabled, parentId }: 
         style={item.style}
         role={item.kind === "checkbox" ? "menuitemcheckbox" : "menuitemradio"}
         tabIndex={-1}
+        onFocus={() => {
+          store.store.activeId.set(parentId ?? null);
+        }}
         aria-checked={item.checked}
         aria-label={item.axe?.axeLabel}
         aria-disabled={disabled}
