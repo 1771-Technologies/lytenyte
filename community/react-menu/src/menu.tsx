@@ -68,6 +68,7 @@ export function Menu({ item, orientation, disabled: parentDisabled, parentId }: 
       <div
         id={item.id}
         role="group"
+        tabIndex={-1}
         className={clsx(classes.group, item.className)}
         style={item.style}
         aria-label={item.axe?.axeLabel ?? item.label}
@@ -139,6 +140,7 @@ function Submenu({
         className={clsx(classes.base, classes.parent, item.className)}
         style={item.style}
         id={item.id}
+        tabIndex={-1}
         onPointerEnter={() => {
           setActive(item.id);
         }}

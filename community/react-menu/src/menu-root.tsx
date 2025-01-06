@@ -98,6 +98,7 @@ export function MenuRoot<D = any>({
             aria-disabled={disabled}
             data-disabled={disabled}
             className={classes.menu}
+            tabIndex={0}
           >
             {menuItems.map((c, i) => {
               return <Menu key={i} item={c} orientation={orientation} disabled={disabled} />;

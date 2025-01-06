@@ -40,8 +40,8 @@ const menuItems: MenuItem[] = [
       {
         kind: "checkbox",
         checked: false,
-        id: "show-toolbar",
-        label: "Show Toolbar",
+        id: "show-navbar",
+        label: "Show navbar",
         onCheckChange: () => {},
       },
     ],

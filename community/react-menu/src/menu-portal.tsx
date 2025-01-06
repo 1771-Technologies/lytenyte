@@ -45,6 +45,7 @@ export function MenuPortal({
     <div
       role="menu"
       id={id}
+      tabIndex={-1}
       onPointerEnter={() => {
         setActive(itemId);
       }}
