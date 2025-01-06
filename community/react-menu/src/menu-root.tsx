@@ -4,6 +4,7 @@ import { MenuClassProvider } from "./menu-class-context";
 import { useRef, type CSSProperties } from "react";
 import { MenuStoreProvider, useMenuStore } from "./menu-store-content";
 import { getFocusableElements } from "@1771technologies/js-utils";
+import { RtlProvider } from "@1771technologies/react-utils";
 
 export interface MenuAxe {
   readonly axeDescription: string;
@@ -67,12 +68,13 @@ export interface MenuProps<D = any> {
   readonly menuItems: MenuItem<D>[];
   readonly state: D;
 
-  readonly orientation?: "vertical" | "horizontal";
   readonly id?: string;
   readonly disabled?: boolean;
 
   readonly ariaLabelledBy: string;
   readonly axe: MenuAxe;
+
+  readonly rtl: boolean;
 
   readonly classes: {
     readonly base: string;
@@ -91,39 +93,33 @@ export function MenuRoot<D = any>({
   id,
   menuItems,
   state,
-  orientation,
   disabled,
   classes,
+  rtl,
   ...props
 }: MenuProps<D>) {
   return (
-    <MenuStoreProvider>
-      <MenuClassProvider value={classes}>
-        <MenuStateProvider value={state}>
-          <MenuImpl
-            id={id}
-            menuItems={menuItems}
-            orientation={orientation}
-            disabled={disabled}
-            classes={classes}
-            state={state}
-            {...props}
-          />
-        </MenuStateProvider>
-      </MenuClassProvider>
-    </MenuStoreProvider>
+    <RtlProvider value={rtl ?? false}>
+      <MenuStoreProvider>
+        <MenuClassProvider value={classes}>
+          <MenuStateProvider value={state}>
+            <MenuImpl
+              id={id}
+              menuItems={menuItems}
+              disabled={disabled}
+              classes={classes}
+              state={state}
+              rtl={rtl}
+              {...props}
+            />
+          </MenuStateProvider>
+        </MenuClassProvider>
+      </MenuStoreProvider>
+    </RtlProvider>
   );
 }
 
-function MenuImpl({
-  axe,
-  ariaLabelledBy,
-  id,
-  disabled,
-  classes,
-  menuItems,
-  orientation = "vertical",
-}: MenuProps) {
+function MenuImpl({ axe, ariaLabelledBy, rtl, id, disabled, classes, menuItems }: MenuProps) {
   const ref = useRef<HTMLDivElement | null>(null);
   const s = useMenuStore();
   return (
@@ -149,7 +145,8 @@ function MenuImpl({
           return;
         }
 
-        const keys = ["ArrowDown", "ArrowUp", "ArrowRight"];
+        const directionArrow = rtl ? "ArrowLeft" : "ArrowRight";
+        const keys = ["ArrowDown", "ArrowUp", directionArrow];
 
         if (!keys.includes(ev.key)) return;
 
@@ -179,7 +176,7 @@ function MenuImpl({
           ev.stopPropagation();
         }
 
-        if (ev.key === "ArrowRight") {
+        if (ev.key === directionArrow) {
           const current = items[active];
 
           if (current.dataset.haspopover) {
@@ -197,7 +194,7 @@ function MenuImpl({
       }}
     >
       {menuItems.map((c, i) => {
-        return <Menu key={i} item={c} orientation={orientation} disabled={disabled} />;
+        return <Menu key={i} item={c} disabled={disabled} />;
       })}
     </div>
   );

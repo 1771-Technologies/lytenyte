@@ -8,6 +8,7 @@ import {
   getClientY,
   getFocusableElements,
 } from "@1771technologies/js-utils";
+import { useIsRtl } from "@1771technologies/react-utils";
 
 export function MenuPortal({
   target,
@@ -29,6 +30,7 @@ export function MenuPortal({
 }>) {
   const [menu, setMenu] = useState<HTMLElement | null>(null);
   const display = style?.display ?? "block";
+  const rtl = useIsRtl();
 
   useEffect(() => {
     if (!menu) return;
@@ -37,11 +39,12 @@ export function MenuPortal({
     const reference = target.getBoundingClientRect();
     const floating = menu.getBoundingClientRect();
 
-    const pos = getPosition({ reference, floating, placement: "right-start" });
+    const placement = rtl ? "left-start" : "right-start";
+    const pos = getPosition({ reference, floating, placement });
 
     menu.style.top = `${pos.y}px`;
     menu.style.left = `${pos.x}px`;
-  }, [display, menu, target]);
+  }, [display, menu, rtl, target]);
 
   const s = useMenuStore();
   const setActive = s.store.setActiveId.peek();
@@ -63,7 +66,10 @@ export function MenuPortal({
           return;
         }
 
-        if (ev.key === "ArrowLeft" && document.activeElement === menu) {
+        const startDir = rtl ? "ArrowRight" : "ArrowLeft";
+        const endDir = rtl ? "ArrowLeft" : "ArrowRight";
+
+        if (ev.key === startDir && document.activeElement === menu) {
           const parent = document.getElementById(itemId);
           ev.preventDefault();
           ev.stopPropagation();
@@ -104,7 +110,7 @@ export function MenuPortal({
           ev.stopPropagation();
         }
 
-        if (ev.key === "ArrowRight") {
+        if (ev.key === endDir) {
           const current = items[active];
 
           if (current.dataset.haspopover) {
@@ -119,7 +125,7 @@ export function MenuPortal({
           ev.preventDefault();
           ev.stopPropagation();
         }
-        if (ev.key === "ArrowLeft") {
+        if (ev.key === startDir) {
           const parent = document.getElementById(itemId);
           if (parent) {
             parent.focus();

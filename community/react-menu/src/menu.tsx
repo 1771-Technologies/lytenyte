@@ -8,17 +8,16 @@ import { useMenuState } from "./menu-state-context";
 
 export interface MenuProps {
   item: MenuItem;
-  orientation: "vertical" | "horizontal";
   parentId?: string;
   disabled?: boolean;
 }
 
-export function Menu({ item, orientation, disabled: parentDisabled, parentId }: MenuProps) {
+export function Menu({ item, disabled: parentDisabled, parentId }: MenuProps) {
   const store = useMenuStore();
   const classes = useClasses();
   const state = useMenuState();
   if (item.kind === "separator") {
-    return <div className={classes.separator} role="separator" aria-orientation={orientation} />;
+    return <div className={classes.separator} role="separator" aria-orientation="horizontal" />;
   }
 
   const disabled = parentDisabled ?? item.disabled;
@@ -104,34 +103,23 @@ export function Menu({ item, orientation, disabled: parentDisabled, parentId }: 
         aria-label={item.axe?.axeLabel ?? item.label}
         aria-disabled={disabled}
         data-disabled={disabled}
-        data-orientation={orientation}
       >
         {item.children.map((childItem, i) => {
-          return (
-            <Menu
-              key={i}
-              item={childItem}
-              orientation={orientation}
-              disabled={disabled}
-              parentId={parentId}
-            />
-          );
+          return <Menu key={i} item={childItem} disabled={disabled} parentId={parentId} />;
         })}
       </div>
     );
   }
 
-  return <Submenu item={item} disabled={disabled} orientation={orientation} parentId={parentId} />;
+  return <Submenu item={item} disabled={disabled} parentId={parentId} />;
 }
 
 function Submenu({
   item,
   disabled,
-  orientation,
   parentId,
 }: {
   item: MenuParent;
-  orientation: "vertical" | "horizontal";
   parentId?: string;
   disabled?: boolean;
 }) {
@@ -206,15 +194,7 @@ function Submenu({
           style={item.menuStyle}
         >
           {item.children.map((c, i) => {
-            return (
-              <Menu
-                key={i}
-                item={c}
-                orientation={orientation}
-                disabled={disabled}
-                parentId={item.id}
-              />
-            );
+            return <Menu key={i} item={c} disabled={disabled} parentId={item.id} />;
           })}
         </MenuPortal>
       )}
