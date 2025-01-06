@@ -12,6 +12,15 @@ const menuItems: MenuItem[] = [
       { kind: "item", label: "Github", action: () => {}, id: "v" },
       { kind: "item", label: "Radix", action: () => {}, id: "radix" },
       { kind: "item", label: "Twitter", action: () => {}, id: "twitter" },
+      {
+        kind: "submenu",
+        id: "subsub",
+        label: "Sub Sub",
+        children: [
+          { kind: "item", label: "V", id: "VV", action: () => {} },
+          { kind: "item", label: "C", id: "CC", action: () => {} },
+        ],
+      },
     ],
   },
   { kind: "item", action: () => {}, label: "Downloads", id: "downloads" },

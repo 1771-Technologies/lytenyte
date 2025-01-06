@@ -1,9 +1,14 @@
-import { useEffect, useId, useRef } from "react";
+import { act, useMemo, useRef } from "react";
 import { type MenuItem, type MenuParent } from "./menu-root";
 import { useClasses } from "./menu-class-context";
-import { clsx } from "@1771technologies/js-utils";
+import {
+  clsx,
+  containsElement,
+  containsPoint,
+  getClientX,
+  getClientY,
+} from "@1771technologies/js-utils";
 import { MenuPortal } from "./menu-portal";
-import { useHovered } from "@1771technologies/react-utils";
 import { useMenuStore } from "./menu-store-content";
 import { MenuIdProvider } from "./menu-id-stack";
 
@@ -97,39 +102,60 @@ function Submenu({
 }) {
   const s = useMenuStore();
 
-  const expanded = s.useValue("expandedIds");
+  const activeId = s.useValue("activeId");
   const classes = useClasses();
 
-  const id = useId();
   const ref = useRef<HTMLDivElement | null>(null);
 
-  const [hovered, setHovered] = useHovered();
+  const childId = `${item.id}-child`;
+  const relatedIds = useMemo(() => {
+    const stack = [...item.children];
 
-  useEffect(() => {
-    s.store.updateExpansion.peek()(id, hovered);
-  }, [hovered, id, s]);
+    const ids = new Set<string>([childId]);
+
+    while (stack.length) {
+      const c = stack.pop()!;
+      if (c.kind === "submenu") {
+        ids.add(`${c.id}-child`);
+        stack.push(...c.children);
+      }
+    }
+
+    return ids;
+  }, [childId, item.children]);
 
   return (
     <>
       <div
         ref={ref}
-        {...setHovered}
         role="menuitem"
+        onMouseEnter={() => {
+          s.store.setActiveId.peek()(childId);
+        }}
+        onMouseLeave={(e) => {
+          const parent = (e.target as HTMLElement).parentElement!;
+          if (containsPoint(parent, getClientX(e.nativeEvent), getClientY(e.nativeEvent))) {
+            s.store.setActiveId.peek()(childId);
+            return;
+          }
+
+          s.store.setActiveId.peek()(null);
+        }}
         className={clsx(classes.base, classes.parent, item.className)}
         style={item.style}
         id={item.id}
         aria-haspopup="menu"
-        aria-expanded={!expanded.has(id)}
-        aria-controls={id}
+        aria-expanded={!relatedIds.has(activeId ?? "")}
+        aria-controls={childId}
         aria-disabled={disabled}
         aria-label={item.axe?.axeLabel}
       >
         {item.label}
       </div>
-      {expanded.has(id) && (
-        <MenuIdProvider value={id}>
+      {relatedIds.has(activeId ?? "") && (
+        <MenuIdProvider value={childId}>
           <MenuPortal
-            id={id}
+            id={childId}
             target={ref.current!}
             aria-disabled={disabled}
             data-disabled={disabled}

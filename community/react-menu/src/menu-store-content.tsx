@@ -2,8 +2,8 @@ import { cascada, signal, type CascadaStore, type Signal } from "@1771technologi
 import { createContext, useContext, useState, type PropsWithChildren } from "react";
 
 type MenuStore = {
-  readonly expandedIds: Signal<Set<string>>;
-  readonly updateExpansion: Signal<(id: string, newState: boolean) => void>;
+  readonly activeId: Signal<string | null>;
+  readonly setActiveId: Signal<(id: string | null) => void>;
 };
 
 type Store = CascadaStore<MenuStore>;
@@ -13,38 +13,21 @@ const context = createContext<Store>({} as unknown as Store);
 export function MenuStoreProvider(p: PropsWithChildren) {
   const s = useState(() => {
     const store = cascada(() => {
-      const expandedIds = signal(new Set<string>());
+      const activeId = signal<string | null>(null);
 
-      const pendingExpansions = new Map<string, boolean>();
-      const pendingTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
+      let t: null | ReturnType<typeof setTimeout>;
 
-      const updateExpansion = signal((id: string, newState: boolean) => {
-        const pendingTimeout = pendingTimeouts.get(id);
-        if (pendingTimeout) clearTimeout(pendingTimeout);
-        if (pendingExpansions.has(id)) pendingExpansions.delete(id);
-
-        const c = setTimeout(() => {
-          const next = pendingExpansions.get(id);
-
-          expandedIds.set((prev) => {
-            const n = new Set(prev);
-            if (next) n.add(id);
-            else n.delete(id);
-
-            return n;
-          });
-
-          pendingTimeouts.delete(id);
-          pendingExpansions.delete(id);
+      const setActiveId = signal<(id: string | null) => void>((id) => {
+        if (t) clearTimeout(t);
+        t = setTimeout(() => {
+          activeId.set(id);
+          t = null;
         }, 200);
-
-        pendingExpansions.set(id, newState);
-        pendingTimeouts.set(id, c);
       });
 
       return {
-        expandedIds,
-        updateExpansion,
+        activeId,
+        setActiveId,
       };
     });
 

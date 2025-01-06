@@ -1,7 +1,6 @@
 import { getPosition } from "@1771technologies/positioner";
 import { useEffect, useState, type CSSProperties, type PropsWithChildren } from "react";
 import { createPortal } from "react-dom";
-import { useIdStack } from "./menu-id-stack";
 import { useMenuStore } from "./menu-store-content";
 
 export function MenuPortal({
@@ -34,17 +33,16 @@ export function MenuPortal({
     menu.style.left = `${pos.x}px`;
   }, [display, menu, target]);
 
-  const ids = useIdStack();
   const s = useMenuStore();
 
   return createPortal(
     <div
       role="menu"
       onMouseEnter={() => {
-        ids.forEach((id) => s.store.updateExpansion.peek()(id, true));
+        s.store.setActiveId.peek()(id);
       }}
       onMouseLeave={() => {
-        ids.forEach((id) => s.store.updateExpansion.peek()(id, false));
+        s.store.setActiveId.peek()(null);
       }}
       id={id}
       ref={setMenu}
