@@ -5,6 +5,7 @@ import { ResizeDots } from "./resize-dots.js";
 import { handleResize } from "./handle-resize.js";
 import { handleMove } from "./handle-move.js";
 import { handleSizeBounds } from "./handle-size-bounds.js";
+import { srOnlyStyle } from "@1771technologies/js-utils";
 
 /**
  * Interface for accessibility props related to frame resizing and moving operations
@@ -190,12 +191,7 @@ function FrameImpl({
         minHeight: minHeight,
       }}
     >
-      <div
-        ref={setResizeAnnouncer}
-        style={{ position: "fixed", top: -9999, left: -9999 }}
-        role="status"
-        aria-live="polite"
-      ></div>
+      <div ref={setResizeAnnouncer} style={srOnlyStyle} role="status" aria-live="polite"></div>
       {movable && (
         <div
           role="button"

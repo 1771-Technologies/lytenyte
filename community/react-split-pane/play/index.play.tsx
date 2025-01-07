@@ -1,4 +1,5 @@
 import { SplitPane } from "../src/split-pane";
+import { splitPaneAxe } from "../src/split-pane-axe";
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
         <SplitPane
           min={20}
           max={80}
+          axe={splitPaneAxe}
           primary={
             <div
               className={css`
@@ -40,6 +42,7 @@ export default function Home() {
       <div style={{ height: 500, width: 500 }}>
         <SplitPane
           orientation="horizontal"
+          axe={splitPaneAxe}
           primary={
             <div
               className={css`
