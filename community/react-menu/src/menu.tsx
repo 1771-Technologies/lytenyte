@@ -183,23 +183,24 @@ function Submenu({
         data-disabled={disabled}
       >
         {item.label}
+
+        {ref.current && (activeId === item.id || childIds.has(activeId ?? "")) && (
+          <MenuPortal
+            id={referenceId}
+            hasParent={!!parentId}
+            item={item}
+            target={ref.current!}
+            aria-disabled={disabled}
+            data-disabled={disabled}
+            className={clsx(classes.menu, classes.parentMenu, item.menuClassName)}
+            style={item.menuStyle}
+          >
+            {item.children.map((c, i) => {
+              return <Menu key={i} item={c} disabled={disabled} parentId={item.id} />;
+            })}
+          </MenuPortal>
+        )}
       </div>
-      {ref.current && (activeId === item.id || childIds.has(activeId ?? "")) && (
-        <MenuPortal
-          id={referenceId}
-          hasParent={!!parentId}
-          item={item}
-          target={ref.current!}
-          aria-disabled={disabled}
-          data-disabled={disabled}
-          className={clsx(classes.menu, classes.parentMenu, item.menuClassName)}
-          style={item.menuStyle}
-        >
-          {item.children.map((c, i) => {
-            return <Menu key={i} item={c} disabled={disabled} parentId={item.id} />;
-          })}
-        </MenuPortal>
-      )}
     </>
   );
 }
