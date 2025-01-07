@@ -64,6 +64,7 @@ export function MenuPortal({
         if (ev.key === "ArrowDown" && document.activeElement === menu) {
           items[0].focus();
           ev.preventDefault();
+          ev.stopPropagation();
           return;
         }
 
