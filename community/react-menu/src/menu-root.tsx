@@ -79,6 +79,11 @@ export interface MenuProps<D = any> {
 
   readonly rtl?: boolean;
 
+  readonly rendererItem?: (item: MenuItemLeaf<D>) => void;
+  readonly rendererCheckbox?: (item: MenuItemCheckbox<D>) => void;
+  readonly rendererRadio?: (item: MenuItemRadio<D>) => void;
+  readonly rendererParent?: (item: MenuParent<D>) => void;
+
   readonly classes: {
     readonly base: string;
     readonly menu?: string;
