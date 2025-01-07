@@ -79,6 +79,8 @@ export interface MenuProps<D = any> {
 
   readonly rtl?: boolean;
 
+  readonly autoFocus?: boolean;
+
   readonly classes: {
     readonly base: string;
     readonly menu?: string;

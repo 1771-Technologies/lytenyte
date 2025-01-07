@@ -14,7 +14,7 @@ const X = () => {
   );
 };
 
-test("should product the correct context", async () => {
+test("should produce the correct context", async () => {
   const screen = render(<X />);
 
   await expect.element(screen.getByText("alpha,group")).toBeVisible();

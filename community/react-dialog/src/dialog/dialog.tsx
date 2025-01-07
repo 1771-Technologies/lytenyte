@@ -5,6 +5,7 @@ import { handleKeydown } from "./handle-key-down.js";
 import { handlePointerDown } from "./handle-pointer-down.js";
 import { handleClose } from "./handle-close.js";
 import { handleOpen } from "./handle-open.js";
+import { getFocusableElements } from "@1771technologies/js-utils";
 
 /**
  * Props for the Dialog component, which provides a modal dialog implementation
@@ -111,6 +112,15 @@ function DialogImpl({
     if (open) handleOpen(dialog, activeRef, scrollbarWidthRef);
     else dialog.close();
   }, [dialog, onOpenChange, open]);
+
+  useEffect(() => {
+    if (!dialog) return;
+
+    const focusableItems = getFocusableElements(dialog);
+    setTimeout(() => {
+      focusableItems.at(0)?.focus();
+    }, 20);
+  }, [dialog]);
 
   // Cleanup Effect:
   // We need to ensure proper cleanup when the dialog closes, regardless of how it was closed.

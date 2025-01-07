@@ -1,5 +1,7 @@
 import { menuAxeDefault } from "../src/menu-axe";
 import { MenuRoot, type MenuItem } from "../src/menu-root";
+import { useRef, useState } from "react";
+import { Popover } from "@1771technologies/react-popover";
 
 const menuItems: MenuItem[] = [
   { kind: "item", action: () => {}, id: "x", label: "New Tab" },
@@ -49,33 +51,53 @@ const menuItems: MenuItem[] = [
   },
 ];
 export default function MenuPlay() {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLButtonElement | null>(null);
   return (
     <div>
-      <button id="me">Menu</button>
-      <MenuRoot
-        ariaLabelledBy="me"
-        axe={menuAxeDefault}
-        menuItems={menuItems}
-        state={{}}
-        classes={{
-          menu: css`
-            width: fit-content;
-            padding: 2px 0px;
-            border: 1px solid grey;
-            border-radius: 3px;
-          `,
-          base: css`
-            display: flex;
-            align-items: center;
-            padding: 4px 8px;
-          `,
-          separator: css`
-            height: 1px;
-            margin: 1px 0px;
-            background-color: black;
-          `,
-        }}
-      />
+      <button onClick={() => setOpen((prev) => !prev)} ref={ref} id="me">
+        Menu
+      </button>
+      {ref.current && (
+        <Popover
+          open={open}
+          onOpenChange={setOpen}
+          popoverTarget={ref.current}
+          placement="bottom"
+          className={css`
+            padding: 0px;
+            border: none;
+            &::backdrop {
+              background-color: transparent;
+            }
+          `}
+        >
+          <MenuRoot
+            ariaLabelledBy="me"
+            axe={menuAxeDefault}
+            menuItems={menuItems}
+            state={{}}
+            classes={{
+              menu: css`
+                width: fit-content;
+                padding: 2px 0px;
+                border: 1px solid grey;
+                border-radius: 3px;
+              `,
+              base: css`
+                display: flex;
+                align-items: center;
+                padding: 4px 8px;
+              `,
+              separator: css`
+                height: 1px;
+                margin: 1px 0px;
+                background-color: black;
+              `,
+            }}
+          />
+        </Popover>
+      )}
     </div>
   );
 }

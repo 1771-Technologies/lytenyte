@@ -1,6 +1,5 @@
 import { getPosition } from "@1771technologies/positioner";
 import { useEffect, useState, type CSSProperties, type PropsWithChildren } from "react";
-import { createPortal } from "react-dom";
 import { useMenuStore } from "./menu-store-context";
 import {
   containsPoint,
@@ -51,7 +50,7 @@ export function MenuPortal({
   const s = useMenuStore();
   const setActive = s.store.setActiveId.peek();
 
-  return createPortal(
+  return (
     <div
       role="menu"
       id={id}
@@ -161,7 +160,6 @@ export function MenuPortal({
       style={{ ...style, display: "none", position: "fixed" }}
     >
       {children}
-    </div>,
-    document.body,
+    </div>
   );
 }
