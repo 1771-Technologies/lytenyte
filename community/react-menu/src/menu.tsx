@@ -1,5 +1,11 @@
-import { useId, useMemo, useRef } from "react";
-import { type MenuItem, type MenuParent } from "./menu-root";
+import { useId, useMemo, useRef, type ReactNode } from "react";
+import {
+  type MenuItem,
+  type MenuItemCheckbox,
+  type MenuItemLeaf,
+  type MenuItemRadio,
+  type MenuParent,
+} from "./menu-root";
 import { useClasses } from "./menu-class-context";
 import { clsx, containsPoint, getClientX, getClientY } from "@1771technologies/js-utils";
 import { MenuPortal } from "./menu-portal";
@@ -10,9 +16,14 @@ export interface MenuProps {
   item: MenuItem;
   parentId?: string;
   disabled?: boolean;
+
+  readonly rendererItem?: (item: MenuItemLeaf) => ReactNode;
+  readonly rendererCheckbox?: (item: MenuItemCheckbox) => ReactNode;
+  readonly rendererRadio?: (item: MenuItemRadio) => ReactNode;
+  readonly rendererParent?: (item: MenuParent) => ReactNode;
 }
 
-export function Menu({ item, disabled: parentDisabled, parentId }: MenuProps) {
+export function Menu({ item, disabled: parentDisabled, parentId, ...props }: MenuProps) {
   const store = useMenuStore();
   const classes = useClasses();
   const state = useMenuState();
@@ -46,7 +57,8 @@ export function Menu({ item, disabled: parentDisabled, parentId }: MenuProps) {
         aria-disabled={disabled}
         data-disabled={disabled}
       >
-        {item.label}
+        {props.rendererItem && <props.rendererItem {...item} />}
+        {!props.rendererItem && item.label}
       </div>
     );
   }
@@ -88,7 +100,11 @@ export function Menu({ item, disabled: parentDisabled, parentId }: MenuProps) {
         data-disabled={disabled}
         data-checked={item.checked}
       >
-        {item.label}
+        {props.rendererCheckbox && item.kind === "checkbox" && <props.rendererCheckbox {...item} />}
+        {props.rendererRadio && item.kind === "radio" && <props.rendererRadio {...item} />}
+        {((!props.rendererCheckbox && item.kind === "checkbox") ||
+          (!props.rendererRadio && item.kind === "radio")) &&
+          item.label}
       </div>
     );
   }
@@ -106,23 +122,31 @@ export function Menu({ item, disabled: parentDisabled, parentId }: MenuProps) {
         data-disabled={disabled}
       >
         {item.children.map((childItem, i) => {
-          return <Menu key={i} item={childItem} disabled={disabled} parentId={parentId} />;
+          return (
+            <Menu key={i} item={childItem} disabled={disabled} parentId={parentId} {...props} />
+          );
         })}
       </div>
     );
   }
 
-  return <Submenu item={item} disabled={disabled} parentId={parentId} />;
+  return <Submenu item={item} disabled={disabled} parentId={parentId} {...props} />;
 }
 
 function Submenu({
   item,
   disabled,
   parentId,
+  ...props
 }: {
   item: MenuParent;
   parentId?: string;
   disabled?: boolean;
+
+  readonly rendererItem?: (item: MenuItemLeaf) => ReactNode;
+  readonly rendererCheckbox?: (item: MenuItemCheckbox) => ReactNode;
+  readonly rendererRadio?: (item: MenuItemRadio) => ReactNode;
+  readonly rendererParent?: (item: MenuParent) => ReactNode;
 }) {
   const s = useMenuStore();
   const setActive = s.store.setActiveId.peek();
@@ -182,7 +206,8 @@ function Submenu({
         data-haspopover={true}
         data-disabled={disabled}
       >
-        {item.label}
+        {props.rendererParent && <props.rendererParent {...item} />}
+        {!props.rendererParent && item.label}
 
         {ref.current && (activeId === item.id || childIds.has(activeId ?? "")) && (
           <MenuPortal
@@ -196,7 +221,7 @@ function Submenu({
             style={item.menuStyle}
           >
             {item.children.map((c, i) => {
-              return <Menu key={i} item={c} disabled={disabled} parentId={item.id} />;
+              return <Menu key={i} item={c} disabled={disabled} parentId={item.id} {...props} />;
             })}
           </MenuPortal>
         )}

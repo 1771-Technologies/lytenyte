@@ -2,11 +2,65 @@ import { SplitPane } from "../src/split-pane";
 
 export default function Home() {
   return (
-    <div style={{ height: 500 }}>
-      <SplitPane orientation="horizontal" minSize={100} maxSize={500} defaultSize={250}>
-        <div style={{ background: "#f5f5f5", width: "100%" }}>Left Panel</div>
-        <div style={{ background: "#eaeaea", width: "100%" }}>Right Panel</div>
-      </SplitPane>
+    <div
+      className={css`
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      `}
+    >
+      <div style={{ height: 500, width: 500 }}>
+        <SplitPane
+          primary={
+            <div
+              className={css`
+                background-color: red;
+                height: 100%;
+                width: 100%;
+              `}
+            >
+              X
+            </div>
+          }
+          secondary={
+            <div
+              className={css`
+                background-color: green;
+                height: 100%;
+              `}
+            >
+              Y
+            </div>
+          }
+        />
+      </div>
+
+      <div style={{ height: 500, width: 500 }}>
+        <SplitPane
+          orientation="horizontal"
+          primary={
+            <div
+              className={css`
+                background-color: red;
+                height: 100%;
+                width: 100%;
+              `}
+            >
+              X
+            </div>
+          }
+          secondary={
+            <div
+              className={css`
+                background-color: green;
+                height: 100%;
+              `}
+            >
+              Y
+            </div>
+          }
+        />
+      </div>
     </div>
   );
 }

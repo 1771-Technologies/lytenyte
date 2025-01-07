@@ -20,5 +20,8 @@
     "react": "19.0.0",
     "react-dom": "^19.0.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@1771technologies/react-utils": "workspace:*",
+    "@1771technologies/js-utils": "workspace:*"
+  }
 }

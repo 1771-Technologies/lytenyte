@@ -1,7 +1,7 @@
 import { MenuStateProvider } from "./menu-state-context";
 import { Menu } from "./menu";
 import { MenuClassProvider } from "./menu-class-context";
-import { useRef, type CSSProperties } from "react";
+import { useRef, type CSSProperties, type ReactNode } from "react";
 import { MenuStoreProvider, useMenuStore } from "./menu-store-context";
 import { getFocusableElements } from "@1771technologies/js-utils";
 import { RtlProvider } from "@1771technologies/react-utils";
@@ -79,10 +79,10 @@ export interface MenuProps<D = any> {
 
   readonly rtl?: boolean;
 
-  readonly rendererItem?: (item: MenuItemLeaf<D>) => void;
-  readonly rendererCheckbox?: (item: MenuItemCheckbox<D>) => void;
-  readonly rendererRadio?: (item: MenuItemRadio<D>) => void;
-  readonly rendererParent?: (item: MenuParent<D>) => void;
+  readonly rendererItem?: (item: MenuItemLeaf<D>) => ReactNode;
+  readonly rendererCheckbox?: (item: MenuItemCheckbox<D>) => ReactNode;
+  readonly rendererRadio?: (item: MenuItemRadio<D>) => ReactNode;
+  readonly rendererParent?: (item: MenuParent<D>) => ReactNode;
 
   readonly classes: {
     readonly base: string;
@@ -127,7 +127,16 @@ export function MenuRoot<D = any>({
   );
 }
 
-function MenuImpl({ axe, ariaLabelledBy, rtl, id, disabled, classes, menuItems }: MenuProps) {
+function MenuImpl({
+  axe,
+  ariaLabelledBy,
+  rtl,
+  id,
+  disabled,
+  classes,
+  menuItems,
+  ...props
+}: MenuProps) {
   const ref = useRef<HTMLDivElement | null>(null);
   const s = useMenuStore();
   return (
@@ -202,7 +211,7 @@ function MenuImpl({ axe, ariaLabelledBy, rtl, id, disabled, classes, menuItems }
       }}
     >
       {menuItems.map((c, i) => {
-        return <Menu key={i} item={c} disabled={disabled} />;
+        return <Menu key={i} item={c} disabled={disabled} {...props} />;
       })}
     </div>
   );
