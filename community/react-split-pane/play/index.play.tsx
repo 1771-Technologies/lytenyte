@@ -9,8 +9,10 @@ export default function Home() {
         gap: 4px;
       `}
     >
-      <div style={{ height: 500, width: 500 }}>
+      <div style={{ height: 500, width: "100%" }}>
         <SplitPane
+          min={20}
+          max={80}
           primary={
             <div
               className={css`

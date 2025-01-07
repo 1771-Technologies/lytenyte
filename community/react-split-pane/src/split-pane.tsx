@@ -1,5 +1,12 @@
-import { clamp } from "@1771technologies/js-utils";
-import { useMemo, useState, type PropsWithChildren, type ReactNode } from "react";
+import { clamp, getClientX, getClientY } from "@1771technologies/js-utils";
+import {
+  useMemo,
+  useRef,
+  useState,
+  type PointerEvent,
+  type PropsWithChildren,
+  type ReactNode,
+} from "react";
 
 export interface SplitPaneProps {
   readonly split?: number;
@@ -44,8 +51,43 @@ export function SplitPane({
     return `${secondarySplit}%`;
   }, [secondarySplit]);
 
+  const ref = useRef<HTMLDivElement | null>(null);
+  const isV = orientation === "vertical";
+  const handleDrag = (ev: PointerEvent) => {
+    const container = ref.current!;
+    const bb = container.getBoundingClientRect();
+    const start = isV ? getClientX(ev.nativeEvent) - bb.left : getClientY(ev.nativeEvent) - bb.top;
+    const startPct = clampedSplit;
+
+    const controller = new AbortController();
+
+    document.addEventListener(
+      "pointermove",
+      (e) => {
+        const bb = container.getBoundingClientRect();
+        const current = isV ? getClientX(e) - bb.left : getClientY(e) - bb.top;
+
+        const delta = (current - start) / (isV ? bb.width : bb.height);
+
+        const final = clamp(min ?? 0, startPct + delta * 100, max ?? 100);
+
+        setInternalSplit(final);
+      },
+      { signal: controller.signal },
+    );
+
+    globalThis.addEventListener(
+      "pointerup",
+      () => {
+        controller.abort();
+      },
+      { signal: controller.signal },
+    );
+  };
+
   return (
     <div
+      ref={ref}
       style={{
         display: "flex",
         flexDirection: orientation === "horizontal" ? "column" : "row",
@@ -55,10 +97,16 @@ export function SplitPane({
     >
       <div style={{ flexBasis: primaryGrow, minWidth: 0, overflow: "hidden" }}>{primary}</div>
       {orientation === "horizontal" && (
-        <div style={{ width: "100%", height: "3px", background: "blue" }}></div>
+        <div
+          onPointerDown={handleDrag}
+          style={{ width: "100%", height: "3px", background: "blue", cursor: "row-resize" }}
+        ></div>
       )}
       {orientation === "vertical" && (
-        <div style={{ width: "3px", height: "100%", background: "blue" }}></div>
+        <div
+          onPointerDown={handleDrag}
+          style={{ width: "3px", height: "100%", background: "blue", cursor: "col-resize" }}
+        ></div>
       )}
 
       <div style={{ flexBasis: secondaryGrow, minWidth: 0, overflow: "hidden" }}>{secondary}</div>
