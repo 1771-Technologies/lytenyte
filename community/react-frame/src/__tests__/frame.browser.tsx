@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { defaultAxeProps } from "../default-axe-props.js";
+import { frameDefaultAxe } from "../frame-default-axe.js";
 import { Frame } from "../frame.js";
 import { page, render, userEvent } from "@1771technologies/aio/browser";
 
@@ -25,7 +25,7 @@ test("should create a moveable frame", async () => {
           height={h}
           maxWidth={"220vw"}
           header={<div>This is my header content</div>}
-          axe={defaultAxeProps}
+          axe={frameDefaultAxe}
           onSizeChange={(w, h) => {
             setW(w);
             setH(h);
@@ -80,7 +80,7 @@ test("should create a moveable frame uncontrolled", async () => {
           y={11}
           maxWidth={"220vw"}
           header={<div>This is my header content</div>}
-          axe={defaultAxeProps}
+          axe={frameDefaultAxe}
         >
           This is my driver content. I put a lot of content into it.
         </Frame>
@@ -129,7 +129,7 @@ test("should create a frame that is not movable or resizable", async () => {
           y={11}
           maxWidth={"220vw"}
           header={<div>This is my header content</div>}
-          axe={defaultAxeProps}
+          axe={frameDefaultAxe}
         >
           This is my driver content. I put a lot of content into it.
         </Frame>

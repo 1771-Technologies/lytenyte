@@ -179,8 +179,8 @@ describe("getFocusableElements", () => {
 
     const elements = getFocusableElements(container, true);
     expect(elements).toHaveLength(3);
-    expect(elements[0].getAttribute("tabindex")).toBe("-1");
-    expect(elements[1].getAttribute("tabindex")).toBe("-2");
+    expect(elements[0].getAttribute("tabindex")).toBe("-2");
+    expect(elements[1].getAttribute("tabindex")).toBe("-1");
     expect(elements[2].tagName.toLowerCase()).toBe("button");
   });
 

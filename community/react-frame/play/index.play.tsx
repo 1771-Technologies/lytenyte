@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Frame } from "../src/frame.js";
-import { defaultAxeProps } from "../src/default-axe-props.js";
+import { frameDefaultAxe } from "../src/frame-default-axe.js";
 
 export default function Play() {
   const [w, setW] = useState<number | null>(null);
@@ -23,7 +23,7 @@ export default function Play() {
         height={h}
         maxWidth={"220vw"}
         header={<div>This is my header content</div>}
-        axe={defaultAxeProps}
+        axe={frameDefaultAxe}
         onSizeChange={(w, h) => {
           setW(w);
           setH(h);

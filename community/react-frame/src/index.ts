@@ -1,3 +1,3 @@
 export type { FrameAxeProps, FrameProps } from "./frame.js";
-export { defaultAxeProps } from "./default-axe-props.js";
+export { frameDefaultAxe } from "./frame-default-axe.js";
 export { Frame } from "./frame.js";

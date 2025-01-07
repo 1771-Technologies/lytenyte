@@ -25,4 +25,5 @@ export { padStringLeft } from "./pad-string-left.js";
 export { padStringRight } from "./pad-string-right.js";
 export { rangedBinarySearch } from "./ranged-binary-search.js";
 export { sizeFromCoord } from "./size-from-coord.js";
+export { srOnlyStyle } from "./sr-only-styles.js";
 export { upperCaseFirstLetter } from "./upper-case-first-letter.js";

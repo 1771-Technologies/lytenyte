@@ -37,7 +37,7 @@ import type { FrameAxeProps } from "./frame.js";
  * - Use consistent language patterns for start/end announcements
  * - Cover both resize and move operations comprehensively
  */
-export const defaultAxeProps: FrameAxeProps = {
+export const frameDefaultAxe: FrameAxeProps = {
   axeResizeLabel: "Resize panel",
   axeResizeDescription:
     "Use arrow keys to resize the panel: " +

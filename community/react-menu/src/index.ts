@@ -1,4 +1,5 @@
 export type {
+  BaseMenuItem,
   MenuAxe,
   MenuItem,
   MenuItemCheckbox,
