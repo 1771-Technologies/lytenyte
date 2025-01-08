@@ -13,7 +13,7 @@ import { Tooltip, type TooltipApi, type TooltipProps } from "./tooltip";
 import { useEvent } from "@1771technologies/react-utils";
 import type { Placement } from "@1771technologies/positioner";
 
-export const context = createContext<TooltipApi | null>(null as unknown as TooltipApi | null);
+const context = createContext<TooltipApi | null>(null as unknown as TooltipApi | null);
 
 export function TooltipProvider({
   children,
