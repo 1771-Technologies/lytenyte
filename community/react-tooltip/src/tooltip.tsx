@@ -34,12 +34,25 @@ export interface TooltipProps {
   readonly className?: string;
   readonly style?: CSSProperties;
 
+  readonly showDelay?: number;
+  readonly hideDelay?: number;
+
   readonly onInit: (el: HTMLElement) => void;
   readonly onOpen: (el: HTMLElement) => void;
   readonly onClose: (el: HTMLElement) => void;
 }
 
-function TooltipImpl({ ref, onInit, onClose, onOpen, arrowColor, className, style }: TooltipProps) {
+function TooltipImpl({
+  ref,
+  onInit,
+  onClose,
+  onOpen,
+  arrowColor,
+  className,
+  style,
+  showDelay,
+  hideDelay,
+}: TooltipProps) {
   const [immediate, setImmediate] = useState<Record<string, boolean>>({});
   const [shown, setShown] = useState<Record<string, boolean>>({});
   const [tooltips, setTooltips] = useState<Record<string, ShowTooltipParams>>({});
@@ -73,7 +86,7 @@ function TooltipImpl({ ref, onInit, onClose, onOpen, arrowColor, className, styl
           setTooltips((prev) => ({ ...prev, [p.id]: p }));
           setContentLookup((prev) => ({ ...prev, [p.id]: p.content }));
           clear();
-        }, 300);
+        }, showDelay ?? 300);
       }
     };
 
@@ -109,14 +122,14 @@ function TooltipImpl({ ref, onInit, onClose, onOpen, arrowColor, className, styl
           return next;
         });
         clear();
-      }, 300);
+      }, hideDelay ?? 300);
     };
 
     const update = (id: string, content: ReactNode) =>
       setContentLookup((prev) => ({ ...prev, [id]: content }));
 
     return { close, show, isOpen: (id: string) => shownRef.current[id] ?? false, update };
-  }, []);
+  }, [hideDelay, showDelay]);
 
   useImperativeHandle(ref, () => {
     return api;

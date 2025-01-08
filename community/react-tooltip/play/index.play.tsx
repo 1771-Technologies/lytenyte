@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { TooltipProvider, useTooltip } from "../src/tooltip-provider";
 
 export default function Home() {
@@ -38,7 +39,17 @@ export default function Home() {
 
 function TooltipDemo() {
   const t = useTooltip("x", <div>Showing content</div>);
-  const beta = useTooltip("y", <div>Showing Beta</div>);
+
+  const [count, setCount] = useState(0);
+  const beta = useTooltip("y", <div>{count}</div>);
+
+  useEffect(() => {
+    const c = setInterval(() => {
+      setCount((prev) => prev + 1);
+    }, 1000);
+
+    return () => clearInterval(c);
+  });
   return (
     <>
       <button {...t}>Alpha</button>
