@@ -49,7 +49,7 @@ function TooltipImpl({ ref, onInit, onClose, onOpen, arrowColor, className, styl
   const shownRef = useRef(shown);
   shownRef.current = shown;
 
-  useImperativeHandle(ref, () => {
+  const api = useMemo(() => {
     const show = (p: ShowTooltipParams) => {
       const clear = () => {
         if (pending.current[p.id]) {
@@ -118,6 +118,10 @@ function TooltipImpl({ ref, onInit, onClose, onOpen, arrowColor, className, styl
     return { close, show, isOpen: (id: string) => shownRef.current[id] ?? false, update };
   }, []);
 
+  useImperativeHandle(ref, () => {
+    return api;
+  }, [api]);
+
   const tooltipContent = useMemo(() => {
     return Object.values(tooltips);
   }, [tooltips]);
@@ -131,6 +135,8 @@ function TooltipImpl({ ref, onInit, onClose, onOpen, arrowColor, className, styl
           <TooltipPortal
             arrowColor={arrowColor}
             className={className}
+            params={c}
+            api={api}
             style={style}
             target={c.target}
             offset={c.offset ?? 16}

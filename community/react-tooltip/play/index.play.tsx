@@ -19,6 +19,8 @@ export default function Home() {
         `}
         arrowColor="black"
         onInit={(el) => {
+          el.style.transition = "opacity 200ms linear";
+          el.style.transitionDelay = "20ms";
           el.style.opacity = "0";
         }}
         onOpen={(el) => {

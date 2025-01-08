@@ -9,6 +9,7 @@ import {
   type PropsWithChildren,
 } from "react";
 import { createPortal } from "react-dom";
+import type { ShowTooltipParams, TooltipApi } from "./tooltip";
 
 export interface TooltipPortalProps {
   readonly target: HTMLElement | Rect;
@@ -19,6 +20,9 @@ export interface TooltipPortalProps {
   readonly arrowColor?: string;
   readonly className?: string;
   readonly style?: CSSProperties;
+
+  readonly api: TooltipApi;
+  readonly params: ShowTooltipParams;
 
   readonly onInit: (el: HTMLElement) => void;
   readonly onOpen: (el: HTMLElement) => void;
@@ -36,6 +40,8 @@ export function TooltipPortal({
   className,
   style,
   arrowColor,
+  params,
+  api,
 }: PropsWithChildren<TooltipPortalProps>) {
   const [ref, setRef] = useState<HTMLElement | null>(null);
 
@@ -69,6 +75,15 @@ export function TooltipPortal({
 
   return createPortal(
     <div
+      onPointerEnter={() => {
+        api.show({
+          ...params,
+          content: children,
+        });
+      }}
+      onPointerLeave={() => {
+        api.close(params.id);
+      }}
       role="tooltip"
       className={className}
       ref={useCallback(
