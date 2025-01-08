@@ -12,6 +12,12 @@ export default function Home() {
       `}
     >
       <TooltipProvider
+        className={css`
+          padding: 8px;
+          background-color: black;
+          color: white;
+        `}
+        arrowColor="black"
         onInit={(el) => {
           el.style.opacity = "0";
         }}

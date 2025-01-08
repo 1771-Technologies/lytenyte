@@ -33,6 +33,9 @@ export function TooltipPortal({
   onClose,
   onInit,
   onOpen,
+  className,
+  style,
+  arrowColor,
 }: PropsWithChildren<TooltipPortalProps>) {
   const [ref, setRef] = useState<HTMLElement | null>(null);
 
@@ -67,6 +70,7 @@ export function TooltipPortal({
   return createPortal(
     <div
       role="tooltip"
+      className={className}
       ref={useCallback(
         (el: HTMLElement | null) => {
           setRef(el);
@@ -76,11 +80,16 @@ export function TooltipPortal({
         },
         [onInitEvent],
       )}
-      style={{ position: "fixed", display: "none", transition: "opacity 200ms linear" }}
+      style={{ ...style, position: "fixed", display: "none" }}
     >
       {children}
       {arrowP && (
-        <Arrow placement={arrowP} popoverTarget={target} offset={offset} arrowColor="black" />
+        <Arrow
+          placement={arrowP}
+          popoverTarget={target}
+          offset={offset}
+          arrowColor={arrowColor ?? "black"}
+        />
       )}
     </div>,
     document.body,
