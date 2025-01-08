@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { Tooltip, type TooltipApi } from "../src/tooltip";
 
 export default function Home() {
-  const ref = useRef<TooltipApi | null>(null);
+  const ref = useRef<TooltipApi>(null as unknown as TooltipApi);
 
   return (
     <div
@@ -16,14 +16,14 @@ export default function Home() {
     >
       <button
         onMouseEnter={(ev) => {
-          ref.current?.show({
+          ref.current.show({
             id: "x",
             content: <div>This is content</div>,
             target: ev.currentTarget,
           });
         }}
         onMouseLeave={() => {
-          ref.current?.close("x");
+          ref.current.close("x");
         }}
       >
         My Button

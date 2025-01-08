@@ -1,10 +1,11 @@
-import { type Rect } from "@1771technologies/positioner";
+import { type Placement, type Rect } from "@1771technologies/positioner";
 import { refCompat } from "@1771technologies/react-utils";
 import {
   useImperativeHandle,
   useMemo,
   useRef,
   useState,
+  type CSSProperties,
   type ReactNode,
   type RefObject,
 } from "react";
@@ -14,6 +15,9 @@ export interface ShowTooltipParams {
   readonly id: string;
   readonly content: ReactNode;
   readonly target: HTMLElement | Rect;
+
+  readonly offset?: number;
+  readonly placement?: Placement;
 }
 
 export interface TooltipApi {
@@ -22,14 +26,18 @@ export interface TooltipApi {
 }
 
 export interface TooltipProps {
-  readonly ref: RefObject<TooltipApi | null> | ((c: TooltipApi | null) => void);
+  readonly ref: RefObject<TooltipApi> | ((c: TooltipApi) => void);
+
+  readonly arrowColor?: string;
+  readonly className?: string;
+  readonly style?: CSSProperties;
 
   readonly onInit: (el: HTMLElement) => void;
   readonly onOpen: (el: HTMLElement) => void;
   readonly onClose: (el: HTMLElement) => void;
 }
 
-function TooltipImpl({ ref, onInit, onClose, onOpen }: TooltipProps) {
+function TooltipImpl({ ref, onInit, onClose, onOpen, arrowColor, className, style }: TooltipProps) {
   const [immediate, setImmediate] = useState<Record<string, boolean>>({});
   const [shown, setShown] = useState<Record<string, boolean>>({});
   const [tooltips, setTooltips] = useState<Record<string, ShowTooltipParams>>({});
@@ -46,6 +54,8 @@ function TooltipImpl({ ref, onInit, onClose, onOpen }: TooltipProps) {
           delete pending.current[p.id];
         }
       };
+
+      clear();
 
       const aTooltipIsAlreadyVisible = Object.values(shownRef.current).some((c) => c);
       if (aTooltipIsAlreadyVisible) {
@@ -100,7 +110,12 @@ function TooltipImpl({ ref, onInit, onClose, onOpen }: TooltipProps) {
 
         return (
           <TooltipPortal
+            arrowColor={arrowColor}
+            className={className}
+            style={style}
             target={c.target}
+            offset={c.offset ?? 16}
+            placement={c.placement ?? "top"}
             shown={immediate[c.id]}
             onClose={onClose}
             onInit={onInit}

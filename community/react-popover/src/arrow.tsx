@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import type { PopoverTarget } from "./popover.js";
 import type { ArrowSvgProps } from "./arrow-svgs.js";
 import { DownArrow, UpArrow, RightArrow, LeftArrow } from "./arrow-svgs.js";
-import { createPortal } from "react-dom";
 import { isHTMLElement } from "@1771technologies/js-utils";
 
 /**
@@ -68,7 +67,7 @@ export function Arrow({ placement, popoverTarget, offset, arrowColor }: ArrowPro
   }, [aRef, offset, placement, popoverTarget]);
 
   const El = placeToArrow[placement];
-  return createPortal(
+  return (
     <div
       ref={setARef}
       style={{
@@ -80,8 +79,7 @@ export function Arrow({ placement, popoverTarget, offset, arrowColor }: ArrowPro
       }}
     >
       <El fill={arrowColor} />
-    </div>,
-    document.body,
+    </div>
   );
 }
 
