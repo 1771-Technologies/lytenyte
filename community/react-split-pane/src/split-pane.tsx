@@ -7,7 +7,6 @@ import {
   useState,
   type CSSProperties,
   type PointerEvent,
-  type PropsWithChildren,
   type ReactNode,
 } from "react";
 
