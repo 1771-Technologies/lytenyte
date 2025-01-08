@@ -116,7 +116,7 @@ function TooltipImpl({ ref, onInit, onClose, onOpen, arrowColor, className, styl
       setContentLookup((prev) => ({ ...prev, [id]: content }));
 
     return { close, show, isOpen: (id: string) => shownRef.current[id] ?? false, update };
-  });
+  }, []);
 
   const tooltipContent = useMemo(() => {
     return Object.values(tooltips);

@@ -30,9 +30,11 @@ export default function Home() {
 
 function TooltipDemo() {
   const t = useTooltip("x", <div>Showing content</div>);
+  const beta = useTooltip("y", <div>Showing Beta</div>);
   return (
     <>
       <button {...t}>Alpha</button>
+      <button {...beta}>Beta</button>
     </>
   );
 }
