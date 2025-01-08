@@ -22,11 +22,13 @@ export interface ShowTooltipParams {
 
 export interface TooltipApi {
   readonly show: (p: ShowTooltipParams) => void;
+  readonly update: (id: string, content: ReactNode) => void;
   readonly close: (id: string) => void;
+  readonly isOpen: (id: string) => boolean;
 }
 
 export interface TooltipProps {
-  readonly ref: RefObject<TooltipApi> | ((c: TooltipApi) => void);
+  readonly ref: RefObject<TooltipApi | null> | ((c: TooltipApi | null) => void);
 
   readonly arrowColor?: string;
   readonly className?: string;
@@ -41,6 +43,7 @@ function TooltipImpl({ ref, onInit, onClose, onOpen, arrowColor, className, styl
   const [immediate, setImmediate] = useState<Record<string, boolean>>({});
   const [shown, setShown] = useState<Record<string, boolean>>({});
   const [tooltips, setTooltips] = useState<Record<string, ShowTooltipParams>>({});
+  const [contentLookup, setContentLookup] = useState<Record<string, ReactNode>>({});
   const pending = useRef<Record<string, ReturnType<typeof setTimeout>>>({});
 
   const shownRef = useRef(shown);
@@ -62,11 +65,13 @@ function TooltipImpl({ ref, onInit, onClose, onOpen, arrowColor, className, styl
         setShown((prev) => ({ ...prev, [p.id]: true }));
         setImmediate((prev) => ({ ...prev, [p.id]: true }));
         setTooltips((prev) => ({ ...prev, [p.id]: p }));
+        setContentLookup((prev) => ({ ...prev, [p.id]: p.content }));
       } else {
         pending.current[p.id] = setTimeout(() => {
           setImmediate((prev) => ({ ...prev, [p.id]: true }));
           setShown((prev) => ({ ...prev, [p.id]: true }));
           setTooltips((prev) => ({ ...prev, [p.id]: p }));
+          setContentLookup((prev) => ({ ...prev, [p.id]: p.content }));
           clear();
         }, 300);
       }
@@ -82,10 +87,23 @@ function TooltipImpl({ ref, onInit, onClose, onOpen, arrowColor, className, styl
 
       clear();
 
-      setImmediate((prev) => ({ ...prev, [id]: false }));
+      setImmediate((prev) => {
+        const next = { ...prev };
+        delete next[id];
+        return next;
+      });
       pending.current[id] = setTimeout(() => {
-        setShown((prev) => ({ ...prev, [id]: false }));
+        setShown((prev) => {
+          const next = { ...prev };
+          delete next[id];
+          return next;
+        });
         setTooltips((prev) => {
+          const next = { ...prev };
+          delete next[id];
+          return next;
+        });
+        setContentLookup((prev) => {
           const next = { ...prev };
           delete next[id];
           return next;
@@ -94,7 +112,10 @@ function TooltipImpl({ ref, onInit, onClose, onOpen, arrowColor, className, styl
       }, 300);
     };
 
-    return { close, show };
+    const update = (id: string, content: ReactNode) =>
+      setContentLookup((prev) => ({ ...prev, [id]: content }));
+
+    return { close, show, isOpen: (id: string) => shownRef.current[id] ?? false, update };
   });
 
   const tooltipContent = useMemo(() => {
@@ -106,8 +127,6 @@ function TooltipImpl({ ref, onInit, onClose, onOpen, arrowColor, className, styl
       {tooltipContent.map((c) => {
         if (!shown[c.id]) return null;
 
-        const content = c.content;
-
         return (
           <TooltipPortal
             arrowColor={arrowColor}
@@ -116,13 +135,13 @@ function TooltipImpl({ ref, onInit, onClose, onOpen, arrowColor, className, styl
             target={c.target}
             offset={c.offset ?? 16}
             placement={c.placement ?? "top"}
-            shown={immediate[c.id]}
+            shown={immediate[c.id] ?? false}
             onClose={onClose}
             onInit={onInit}
             onOpen={onOpen}
             key={c.id}
           >
-            {content}
+            {contentLookup[c.id]}
           </TooltipPortal>
         );
       })}

@@ -1,9 +1,6 @@
-import { useRef } from "react";
-import { Tooltip, type TooltipApi } from "../src/tooltip";
+import { TooltipProvider, useTooltip } from "../src/tooltip-provider";
 
 export default function Home() {
-  const ref = useRef<TooltipApi>(null as unknown as TooltipApi);
-
   return (
     <div
       className={css`
@@ -14,22 +11,7 @@ export default function Home() {
         justify-content: center;
       `}
     >
-      <button
-        onMouseEnter={(ev) => {
-          ref.current.show({
-            id: "x",
-            content: <div>This is content</div>,
-            target: ev.currentTarget,
-          });
-        }}
-        onMouseLeave={() => {
-          ref.current.close("x");
-        }}
-      >
-        My Button
-      </button>
-      <Tooltip
-        ref={ref}
+      <TooltipProvider
         onInit={(el) => {
           el.style.opacity = "0";
         }}
@@ -39,7 +21,18 @@ export default function Home() {
         onClose={(el) => {
           el.style.opacity = "0";
         }}
-      />
+      >
+        <TooltipDemo />
+      </TooltipProvider>
     </div>
+  );
+}
+
+function TooltipDemo() {
+  const t = useTooltip("x", <div>Showing content</div>);
+  return (
+    <>
+      <button {...t}>Alpha</button>
+    </>
   );
 }
