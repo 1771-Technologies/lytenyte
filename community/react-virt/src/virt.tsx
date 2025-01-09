@@ -120,15 +120,17 @@ export function Virt<D>({
 
   const rows = useMemo(() => {
     const rows: ReactNode[] = [];
-    if (focusedIndex != null && focusedIndex < rowStart)
+    if (focusedIndex != null && focusedIndex < rowStart) {
       rows.push(
         <Row
+          key={focusedIndex}
           rowIndex={focusedIndex}
           data={data[focusedIndex]}
-          y={focusedIndex * y}
+          y={focusedIndex * itemHeight}
           height={itemHeight}
         />,
       );
+    }
 
     for (let i = rowStart; i < rowEnd; i++) {
       rows.push(<Row key={i} rowIndex={i} data={data[i]} y={i * itemHeight} height={itemHeight} />);
@@ -139,13 +141,13 @@ export function Virt<D>({
         <Row
           rowIndex={focusedIndex}
           data={data[focusedIndex]}
-          y={focusedIndex * y}
+          y={focusedIndex * itemHeight}
           height={itemHeight}
         />,
       );
 
     return rows;
-  }, [Row, data, focusedIndex, itemHeight, rowEnd, rowStart, y]);
+  }, [Row, data, focusedIndex, itemHeight, rowEnd, rowStart]);
 
   useEffect(() => {
     handleScroll();

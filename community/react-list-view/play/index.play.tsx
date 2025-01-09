@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { ListView, type ListViewItemRendererProps } from "../src/tree-view";
+import { ListView, type ListViewItemRendererProps } from "../src/list-view";
 import type { PathTreeInputItem } from "@1771technologies/path-tree";
 
 export const bankColumns = [

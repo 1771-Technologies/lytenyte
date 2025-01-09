@@ -6,7 +6,7 @@ import {
   type ReactNode,
   type SetStateAction,
 } from "react";
-import type { ListViewAxe, ListViewItemRendererProps } from "./tree-view";
+import type { ListViewAxe, ListViewItemRendererProps } from "./list-view";
 import type { PathTreeLeafNode, PathTreeParentNode } from "@1771technologies/path-tree";
 
 export interface ListViewContextType<D> {
