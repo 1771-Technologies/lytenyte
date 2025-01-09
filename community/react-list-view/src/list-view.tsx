@@ -26,6 +26,10 @@ export interface ListViewProps<D> {
   readonly expansions: Record<string, boolean>;
   readonly onExpansionChange: (id: string, state: boolean) => void;
   readonly onAction: (p: PathTreeLeafNode<D> | PathTreeParentNode<D>) => void;
+  readonly onKeydown?: (
+    p: KeyboardEvent,
+    item: PathTreeLeafNode<D> | PathTreeParentNode<D>,
+  ) => void;
 
   readonly renderer: (p: ListViewItemRendererProps<D>) => ReactNode;
   readonly axe: ListViewAxe<D>;
@@ -38,6 +42,7 @@ export function ListView<D>({
   paths,
   expansions,
   onExpansionChange,
+  onKeydown,
   onAction,
   axe,
   renderer,
@@ -76,11 +81,22 @@ export function ListView<D>({
       axe,
       renderer,
       setFocused,
+      onKeydown,
       focused,
       onAction,
       rtl,
     };
-  }, [axe, expansions, flattenedTree.length, focused, onAction, onExpansionChange, renderer, rtl]);
+  }, [
+    axe,
+    expansions,
+    flattenedTree.length,
+    focused,
+    onAction,
+    onExpansionChange,
+    onKeydown,
+    renderer,
+    rtl,
+  ]);
 
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -203,21 +219,27 @@ function ListItemRenderer<D>(p: RendererProps<PathTreeLeafNode<D> | PathTreePare
         if (ev.key === " " && p.data.type === "parent") {
           ctx.onExpansionChange(p.data.occurrence, !isExpanded);
           ev.preventDefault();
+          return;
         }
 
         if (ev.key === open && p.data.type === "parent") {
           ctx.onExpansionChange(p.data.occurrence, true);
           ev.preventDefault();
+          return;
         }
         if (ev.key === close && p.data.type === "parent") {
           ctx.onExpansionChange(p.data.occurrence, false);
           ev.preventDefault();
+          return;
         }
 
         if (ev.key === "Enter") {
           ctx.onAction(p.data);
           ev.preventDefault();
+          return;
         }
+
+        ctx.onKeydown?.(ev.nativeEvent, p.data);
       }}
       role="treeitem"
       style={{

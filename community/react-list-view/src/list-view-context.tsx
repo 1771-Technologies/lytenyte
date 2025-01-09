@@ -19,6 +19,10 @@ export interface ListViewContextType<D> {
   readonly rtl: boolean;
   readonly onExpansionChange: (id: string, state: boolean) => void;
   readonly onAction: (p: PathTreeLeafNode<D> | PathTreeParentNode<D>) => void;
+  readonly onKeydown?: (
+    ev: KeyboardEvent,
+    item: PathTreeLeafNode<D> | PathTreeParentNode<D>,
+  ) => void;
 }
 
 const context = createContext<ListViewContextType<any>>({
