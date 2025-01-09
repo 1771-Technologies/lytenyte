@@ -1,5 +1,13 @@
 import { getPreciseElementDimensions, IsoResizeObserver } from "@1771technologies/js-utils";
-import { useCallback, useEffect, useRef, type PropsWithChildren, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  type PropsWithChildren,
+  useState,
+  type JSX,
+  type RefObject,
+} from "react";
 
 /**
  * Represents the dimensions of an element, including both inner and outer measurements.
@@ -67,9 +75,13 @@ export function Sizer({
   children,
   onSizeChange,
   onInit,
+  elRef,
   ...props
-}: PropsWithChildren<SizerProps> & JSX.IntrinsicElements["div"]) {
-  const ref = useRef<ResizeObserver>();
+}: PropsWithChildren<SizerProps> &
+  Omit<JSX.IntrinsicElements["div"], "ref"> & {
+    elRef?: RefObject<HTMLDivElement | null> | ((el: HTMLDivElement | null) => void);
+  }) {
+  const ref = useRef<ResizeObserver>(null);
 
   const [size, setSize] = useState<SizeChange | null>(null);
 
@@ -110,6 +122,7 @@ export function Sizer({
       {size && (
         <div
           {...props}
+          ref={elRef}
           style={{
             ...props.style,
             width: size.innerWidth,

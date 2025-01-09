@@ -5,7 +5,7 @@ import {
   type PathTreeParentNode,
 } from "@1771technologies/path-tree";
 import { Virt, type RendererProps } from "@1771technologies/react-virt";
-import { useMemo, type ReactNode } from "react";
+import { useMemo, useRef, useState, type ReactNode } from "react";
 import { ListViewProvider, useListView } from "./list-view-context";
 
 export interface ListViewAxe<D> {
@@ -51,26 +51,111 @@ export function ListView<D>({
       if (item.type === "leaf") {
         flattened.push(item);
       } else {
-        stack.unshift(...item.children);
+        if (expansions[item.occurrence] ?? true) {
+          stack.unshift(...item.children);
+        }
         flattened.push(item);
       }
     }
 
     return flattened;
-  }, [tree]);
+  }, [expansions, tree]);
 
+  const [focused, setFocused] = useState<null | number>(null);
   const context = useMemo(() => {
-    return { count: flattenedTree.length, expansions, axe, renderer };
-  }, [axe, expansions, flattenedTree.length, renderer]);
+    return { count: flattenedTree.length, expansions, axe, renderer, setFocused, focused };
+  }, [axe, expansions, flattenedTree.length, focused, renderer]);
+
+  const ref = useRef<HTMLDivElement | null>(null);
 
   return (
     <ListViewProvider value={context}>
       <Virt
+        elRef={ref}
         tabIndex={0}
+        onKeyDown={(ev) => {
+          if (document.activeElement === ref.current && ev.key === "ArrowDown") {
+            // Focused the first item
+            setFocused(0);
+
+            const firstChild = ref.current?.firstElementChild?.firstElementChild;
+            if (firstChild?.getAttribute("data-rowindex") !== "0")
+              ref.current?.scrollTo({ top: 0 });
+
+            setTimeout(() => {
+              const child = ref.current?.firstElementChild?.firstElementChild;
+
+              if (child) (child as HTMLElement).focus();
+            }, 20);
+
+            ev.preventDefault();
+            ev.stopPropagation();
+          }
+
+          if (focused == null) return;
+
+          if (ev.key === "ArrowDown") {
+            const next = ref.current?.querySelector(
+              `[data-rowindex="${focused + 1}"]`,
+            ) as HTMLElement;
+
+            ev.preventDefault();
+            ev.stopPropagation();
+
+            if (!next) {
+              document.activeElement?.scrollIntoView();
+              setTimeout(() => {
+                const next = ref.current?.querySelector(
+                  `[data-rowindex=${focused + 1}]`,
+                ) as HTMLElement;
+                if (!next) return;
+                next.focus();
+              }, 20);
+
+              return;
+            }
+
+            const bb = ref.current!.getBoundingClientRect();
+            const n = next.getBoundingClientRect();
+
+            next.focus({ preventScroll: true });
+            if (bb.bottom - (n.top + n.height) < 0) {
+              next.scrollIntoView({ behavior: "smooth", block: "end" });
+            }
+          }
+          if (ev.key === "ArrowUp") {
+            const next = ref.current?.querySelector(
+              `[data-rowindex="${focused - 1}"]`,
+            ) as HTMLElement;
+
+            ev.preventDefault();
+            ev.stopPropagation();
+
+            if (!next) {
+              document.activeElement?.scrollIntoView();
+              setTimeout(() => {
+                const next = ref.current?.querySelector(
+                  `[data-rowindex=${focused - 1}]`,
+                ) as HTMLElement;
+                if (!next) return;
+                next.focus();
+              }, 20);
+
+              return;
+            }
+
+            const bb = ref.current!.getBoundingClientRect();
+            const n = next.getBoundingClientRect();
+            next.focus({ preventScroll: true });
+            if (bb.top - n.top > 0) {
+              next.scrollIntoView({ behavior: "smooth" });
+            }
+          }
+        }}
         data={flattenedTree}
         itemHeight={itemHeight}
         renderer={ListItemRenderer}
-        focusedIndex={null}
+        focusedIndex={focused}
         preventFlash
       />
     </ListViewProvider>
@@ -91,6 +176,9 @@ function ListItemRenderer<D>(p: RendererProps<PathTreeLeafNode<D> | PathTreePare
   return (
     <div
       tabIndex={-1}
+      data-rowindex={p.rowIndex}
+      onFocus={() => ctx.setFocused(p.rowIndex)}
+      onBlur={() => ctx.setFocused(null)}
       role="treeitem"
       style={{
         position: "absolute",

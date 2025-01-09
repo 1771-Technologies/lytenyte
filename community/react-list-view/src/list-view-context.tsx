@@ -1,4 +1,11 @@
-import { createContext, useContext, type PropsWithChildren, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  type Dispatch,
+  type PropsWithChildren,
+  type ReactNode,
+  type SetStateAction,
+} from "react";
 import type { ListViewAxe, ListViewItemRendererProps } from "./tree-view";
 
 export interface ListViewContextType<D> {
@@ -6,6 +13,8 @@ export interface ListViewContextType<D> {
   readonly expansions: Record<string, boolean>;
   readonly axe: ListViewAxe<D>;
   readonly renderer: (p: ListViewItemRendererProps<D>) => ReactNode;
+  readonly focused: number | null;
+  readonly setFocused: Dispatch<SetStateAction<number | null>>;
 }
 
 const context = createContext<ListViewContextType<any>>({
@@ -13,6 +22,8 @@ const context = createContext<ListViewContextType<any>>({
   expansions: {},
   axe: { axeItemLabels: () => "" } as unknown as ListViewAxe<any>,
   renderer: () => null,
+  focused: null,
+  setFocused: () => {},
 });
 
 export function ListViewProvider<D>(props: PropsWithChildren<{ value: ListViewContextType<D> }>) {

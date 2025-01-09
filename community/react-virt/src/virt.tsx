@@ -1,7 +1,15 @@
 import type { SizeChange } from "@1771technologies/react-sizer";
 import { Sizer } from "@1771technologies/react-sizer";
-import { useEvent } from "@1771technologies/react-utils";
-import { useCallback, useEffect, useMemo, useState, type JSX, type ReactNode } from "react";
+import { useCombinedRefs, useEvent } from "@1771technologies/react-utils";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type JSX,
+  type ReactNode,
+  type RefObject,
+} from "react";
 
 /**
  * Props for the row renderer function used by the Virt component.
@@ -80,9 +88,13 @@ export function Virt<D>({
   itemHeight,
   renderer: Row,
   preventFlash,
+  elRef,
 
   ...props
-}: VirtProps<D> & Omit<JSX.IntrinsicElements["div"], "ref">) {
+}: VirtProps<D> &
+  Omit<JSX.IntrinsicElements["div"], "ref"> & {
+    elRef?: RefObject<HTMLDivElement | null> | ((el: HTMLDivElement | null) => void);
+  }) {
   const [size, setSize] = useState<SizeChange | null>(null);
 
   const init = useCallback((_: HTMLElement, size: SizeChange) => {
@@ -139,8 +151,16 @@ export function Virt<D>({
     handleScroll();
   }, [handleScroll, vp]);
 
+  const combinedRef = useCombinedRefs(setVp, elRef);
+
   return (
-    <Sizer onInit={init} onSizeChange={setSize} {...props} onScroll={handleScroll} ref={setVp}>
+    <Sizer
+      onInit={init}
+      onSizeChange={setSize}
+      {...props}
+      onScroll={handleScroll}
+      elRef={combinedRef}
+    >
       {preventFlash && (
         <>
           <div
