@@ -1,5 +1,5 @@
 {
-  "name": "@1771technologies/grid-core-enterprise",
+  "name": "@1771technologies/grid-components",
   "version": "0.0.1",
   "license": "COMMERCIAL",
   "type": "module",
@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "@1771technologies/grid-types": "workspace:*",
-    "@1771technologies/grid-core": "workspace:*",
+    "@1771technologies/grid-design": "workspace:*",
     "@1771technologies/js-utils": "workspace:*"
-  }
+  },
+  "devDependencies": {}
 }
