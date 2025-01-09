@@ -125,6 +125,14 @@ export function createPathTree<T>(
     currentLevel: number,
     currentParent: PathTreeParentNode<T> | null,
   ): PathTreeParentNode<T> {
+    // Special handling for single-element paths at root level
+    if (considerAdjacency && !currentParent && path.length === 1) {
+      const lastRoot = roots[roots.length - 1] as PathTreeParentNode<T> | undefined;
+      if (lastRoot?.type === "parent" && lastRoot.path[0] === path[0]) {
+        return lastRoot;
+      }
+    }
+
     // If we're at the last parent level (one before the leaf)
     if (currentLevel === path.length - 1) {
       if (!considerAdjacency) {

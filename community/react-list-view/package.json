@@ -1,7 +1,6 @@
 {
-  "name": "@1771technologies/react-virt",
+  "name": "@1771technologies/react-list-view",
   "version": "0.0.1",
-  "description": "",
   "license": "Apache-2.0",
   "type": "module",
   "exports": {
@@ -10,11 +9,6 @@
       "import": "./src/index.ts",
       "require": "./src/index.ts"
     }
-  },
-  "dependencies": {
-    "@1771technologies/js-utils": "workspace:*",
-    "@1771technologies/react-utils": "workspace:*",
-    "@1771technologies/react-sizer": "workspace:*"
   },
   "peerDependencies": {
     "react": "^18 | 19^",
@@ -25,5 +19,12 @@
     "@types/react-dom": "^19.0.2",
     "react": "19.0.0",
     "react-dom": "^19.0.0"
+  },
+  "dependencies": {
+    "@1771technologies/react-sizer": "workspace:*",
+    "@1771technologies/react-virt": "workspace:*",
+    "@1771technologies/path-tree": "workspace:*",
+    "@1771technologies/react-utils": "workspace:*",
+    "@1771technologies/js-utils": "workspace:*"
   }
 }

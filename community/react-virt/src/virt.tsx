@@ -1,7 +1,7 @@
 import type { SizeChange } from "@1771technologies/react-sizer";
 import { Sizer } from "@1771technologies/react-sizer";
 import { useEvent } from "@1771technologies/react-utils";
-import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useState, type JSX, type ReactNode } from "react";
 
 /**
  * Props for the row renderer function used by the Virt component.
@@ -14,6 +14,8 @@ export interface RendererProps<D> {
   readonly data: D;
   /** Vertical position of the row in pixels */
   readonly y: number;
+  /** The row height settings */
+  readonly height: number;
 }
 
 /**
@@ -107,14 +109,28 @@ export function Virt<D>({
   const rows = useMemo(() => {
     const rows: ReactNode[] = [];
     if (focusedIndex != null && focusedIndex < rowStart)
-      rows.push(<Row rowIndex={focusedIndex} data={data[focusedIndex]} y={focusedIndex * y} />);
+      rows.push(
+        <Row
+          rowIndex={focusedIndex}
+          data={data[focusedIndex]}
+          y={focusedIndex * y}
+          height={itemHeight}
+        />,
+      );
 
     for (let i = rowStart; i < rowEnd; i++) {
-      rows.push(<Row key={i} rowIndex={i} data={data[i]} y={i * itemHeight} />);
+      rows.push(<Row key={i} rowIndex={i} data={data[i]} y={i * itemHeight} height={itemHeight} />);
     }
 
     if (focusedIndex != null && focusedIndex >= rowEnd)
-      rows.push(<Row rowIndex={focusedIndex} data={data[focusedIndex]} y={focusedIndex * y} />);
+      rows.push(
+        <Row
+          rowIndex={focusedIndex}
+          data={data[focusedIndex]}
+          y={focusedIndex * y}
+          height={itemHeight}
+        />,
+      );
 
     return rows;
   }, [Row, data, focusedIndex, itemHeight, rowEnd, rowStart, y]);

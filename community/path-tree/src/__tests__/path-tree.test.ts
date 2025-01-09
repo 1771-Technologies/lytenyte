@@ -195,14 +195,93 @@ test("should handle mixed depth paths", () => {
   ];
   expect(printTrees(createPathTree(input, { considerAdjacency: true }))).toMatchInlineSnapshot(`
     "
-    ├── folder1 [folder1#0]
-    │   └── subA [folder1/subA#0]
-    │       └── deepA [folder1/subA/deepA#0]
-    │           └── (X)
-    └── folder1 [folder1#1]
+    └── folder1 [folder1#0]
+        ├── subA [folder1/subA#0]
+        │   └── deepA [folder1/subA/deepA#0]
+        │       └── (X)
         ├── (Y)
         └── subA [folder1/subA#1]
             └── (Z)
+    "
+  `);
+});
+
+test("should handle single parent paths", () => {
+  const input = [
+    { path: ["Folder1"], data: "A" },
+    { path: ["Folder1"], data: "B" },
+    { path: ["Folder1"], data: "C" },
+  ];
+
+  expect(printTrees(createPathTree(input, { considerAdjacency: true }))).toMatchInlineSnapshot(`
+    "
+    └── Folder1 [Folder1#0]
+        ├── (A)
+        ├── (B)
+        └── (C)
+    "
+  `);
+});
+
+test("should handle columns", () => {
+  const bankColumns = [
+    {
+      id: "age",
+      type: "number",
+      floatingCellRenderer: "date",
+      groupPath: ["Information"],
+      aggFunc: "sum",
+      columnMenuTrigger: "icon-on-hover",
+    },
+    {
+      id: "job",
+      cellEditPredicate: true,
+      groupPath: ["Information"],
+      headerTooltip: "forever 1",
+      secondaryLabel: "alpha",
+      aggFunc: "count",
+      headerAggFuncDisplayMode: "secondary",
+    },
+    { id: "balance", headerJustify: "end", type: "number", measureFunc: "sum" },
+    { id: "education", groupPath: ["Information"], headerJustify: "start" },
+    { id: "marital", groupPath: ["Information"], headerJustify: "center" },
+    { id: "default" },
+    { id: "housing", pin: "start", secondaryLabel: "alpha", aggFunc: "first" },
+    { id: "loan", pin: "end" },
+    { id: "contact" },
+    { id: "day" },
+    { id: "month" },
+    { id: "duration" },
+    { id: "campaign" },
+    { id: "pdays" },
+    { id: "previous" },
+    { id: "poutcome" },
+    { id: "y" },
+  ];
+
+  const paths = bankColumns.map((c) => ({ path: c.groupPath ?? [], data: c.id }));
+
+  expect(printTrees(createPathTree(paths, { considerAdjacency: true }))).toMatchInlineSnapshot(`
+    "
+    ├── Information [Information#0]
+    │   ├── (age)
+    │   └── (job)
+    ├── (balance)
+    ├── Information [Information#1]
+    │   ├── (education)
+    │   └── (marital)
+    ├── (default)
+    ├── (housing)
+    ├── (loan)
+    ├── (contact)
+    ├── (day)
+    ├── (month)
+    ├── (duration)
+    ├── (campaign)
+    ├── (pdays)
+    ├── (previous)
+    ├── (poutcome)
+    └── (y)
     "
   `);
 });
