@@ -4,10 +4,12 @@ import { BrowserRouter, useRoutes, type RouteObject } from "react-router-dom";
 
 import { Shell } from "./shell";
 import routes from "~react-pages";
+import { useTheme } from "./use-theme";
 
 const withHome: RouteObject[] = [{ path: "/", element: <Shell routes={routes} /> }, ...routes];
 
 function App() {
+  useTheme();
   return <Suspense fallback={<p>Loading...</p>}>{useRoutes(withHome)}</Suspense>;
 }
 

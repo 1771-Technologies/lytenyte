@@ -1,6 +1,7 @@
 import { useSearchParams, type RouteObject } from "react-router-dom";
 import { t } from "./theme";
 import { useMemo } from "react";
+import { ThemeSwitcher } from "./theme-switcher";
 
 const headerHeight = "60px";
 const sidebarWidth = "360px";
@@ -47,7 +48,7 @@ export function Shell(props: { routes: RouteObject[] }) {
             padding-inline: ${t.space._04};
           `}
         >
-          Toolbar
+          <ThemeSwitcher />
         </div>
       </div>
       <div
