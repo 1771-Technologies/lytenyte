@@ -75,6 +75,7 @@ export default function Home() {
           renderer={Renderer}
           expansions={expansions}
           onExpansionChange={(id, s) => setExpansions((prev) => ({ ...prev, [id]: s }))}
+          onAction={(p) => alert(JSON.stringify(p.path))}
           axe={{
             axeDescription: "T",
             axeItemLabels: (item) => {

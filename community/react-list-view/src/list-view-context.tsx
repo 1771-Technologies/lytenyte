@@ -7,6 +7,7 @@ import {
   type SetStateAction,
 } from "react";
 import type { ListViewAxe, ListViewItemRendererProps } from "./tree-view";
+import type { PathTreeLeafNode, PathTreeParentNode } from "@1771technologies/path-tree";
 
 export interface ListViewContextType<D> {
   readonly count: number;
@@ -15,6 +16,9 @@ export interface ListViewContextType<D> {
   readonly renderer: (p: ListViewItemRendererProps<D>) => ReactNode;
   readonly focused: number | null;
   readonly setFocused: Dispatch<SetStateAction<number | null>>;
+  readonly rtl: boolean;
+  readonly onExpansionChange: (id: string, state: boolean) => void;
+  readonly onAction: (p: PathTreeLeafNode<D> | PathTreeParentNode<D>) => void;
 }
 
 const context = createContext<ListViewContextType<any>>({
@@ -24,6 +28,9 @@ const context = createContext<ListViewContextType<any>>({
   renderer: () => null,
   focused: null,
   setFocused: () => {},
+  rtl: false,
+  onExpansionChange: () => {},
+  onAction: () => {},
 });
 
 export function ListViewProvider<D>(props: PropsWithChildren<{ value: ListViewContextType<D> }>) {

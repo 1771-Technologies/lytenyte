@@ -25,17 +25,23 @@ export interface ListViewProps<D> {
   readonly paths: PathTreeInputItem<D>[];
   readonly expansions: Record<string, boolean>;
   readonly onExpansionChange: (id: string, state: boolean) => void;
+  readonly onAction: (p: PathTreeLeafNode<D> | PathTreeParentNode<D>) => void;
 
   readonly renderer: (p: ListViewItemRendererProps<D>) => ReactNode;
   readonly axe: ListViewAxe<D>;
+
+  readonly rtl?: boolean;
 
   readonly itemHeight?: number;
 }
 export function ListView<D>({
   paths,
   expansions,
+  onExpansionChange,
+  onAction,
   axe,
   renderer,
+  rtl = false,
   itemHeight = 24,
 }: ListViewProps<D>) {
   const tree = useMemo(() => {
@@ -63,8 +69,18 @@ export function ListView<D>({
 
   const [focused, setFocused] = useState<null | number>(null);
   const context = useMemo(() => {
-    return { count: flattenedTree.length, expansions, axe, renderer, setFocused, focused };
-  }, [axe, expansions, flattenedTree.length, focused, renderer]);
+    return {
+      count: flattenedTree.length,
+      onExpansionChange,
+      expansions,
+      axe,
+      renderer,
+      setFocused,
+      focused,
+      onAction,
+      rtl,
+    };
+  }, [axe, expansions, flattenedTree.length, focused, onAction, onExpansionChange, renderer, rtl]);
 
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -120,7 +136,7 @@ export function ListView<D>({
 
             next.focus({ preventScroll: true });
             if (bb.bottom - (n.top + n.height) < 0) {
-              next.scrollIntoView({ behavior: "smooth", block: "end" });
+              next.scrollIntoView({ behavior: "instant", block: "end" });
             }
           }
           if (ev.key === "ArrowUp") {
@@ -148,7 +164,7 @@ export function ListView<D>({
             const n = next.getBoundingClientRect();
             next.focus({ preventScroll: true });
             if (bb.top - n.top > 0) {
-              next.scrollIntoView({ behavior: "smooth" });
+              next.scrollIntoView({ behavior: "instant" });
             }
           }
         }}
@@ -172,13 +188,37 @@ function ListItemRenderer<D>(p: RendererProps<PathTreeLeafNode<D> | PathTreePare
   }
   const ctx = useListView();
 
-  const isExpanded = p.data.type === "parent" ? ctx.expansions[p.data.occurrence] : undefined;
+  const isExpanded =
+    p.data.type === "parent" ? (ctx.expansions[p.data.occurrence] ?? true) : undefined;
   return (
     <div
       tabIndex={-1}
       data-rowindex={p.rowIndex}
       onFocus={() => ctx.setFocused(p.rowIndex)}
       onBlur={() => ctx.setFocused(null)}
+      onKeyDown={(ev) => {
+        const open = ctx.rtl ? "ArrowLeft" : "ArrowRight";
+        const close = ctx.rtl ? "ArrowRight" : "ArrowLeft";
+
+        if (ev.key === " " && p.data.type === "parent") {
+          ctx.onExpansionChange(p.data.occurrence, !isExpanded);
+          ev.preventDefault();
+        }
+
+        if (ev.key === open && p.data.type === "parent") {
+          ctx.onExpansionChange(p.data.occurrence, true);
+          ev.preventDefault();
+        }
+        if (ev.key === close && p.data.type === "parent") {
+          ctx.onExpansionChange(p.data.occurrence, false);
+          ev.preventDefault();
+        }
+
+        if (ev.key === "Enter") {
+          ctx.onAction(p.data);
+          ev.preventDefault();
+        }
+      }}
       role="treeitem"
       style={{
         position: "absolute",
