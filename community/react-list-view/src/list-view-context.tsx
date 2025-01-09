@@ -1,6 +1,7 @@
 import {
   createContext,
   useContext,
+  type CSSProperties,
   type Dispatch,
   type PropsWithChildren,
   type ReactNode,
@@ -23,6 +24,8 @@ export interface ListViewContextType<D> {
     ev: KeyboardEvent,
     item: PathTreeLeafNode<D> | PathTreeParentNode<D>,
   ) => void;
+  readonly className?: string;
+  readonly itemStyle?: CSSProperties;
 }
 
 const context = createContext<ListViewContextType<any>>({

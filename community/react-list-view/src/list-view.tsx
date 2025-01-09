@@ -5,7 +5,7 @@ import {
   type PathTreeParentNode,
 } from "@1771technologies/path-tree";
 import { Virt, type RendererProps } from "@1771technologies/react-virt";
-import { useMemo, useRef, useState, type ReactNode } from "react";
+import { useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { ListViewProvider, useListView } from "./list-view-context";
 
 export interface ListViewAxe<D> {
@@ -31,6 +31,12 @@ export interface ListViewProps<D> {
     item: PathTreeLeafNode<D> | PathTreeParentNode<D>,
   ) => void;
 
+  readonly className?: string;
+  readonly style?: CSSProperties;
+
+  readonly itemClassName?: string;
+  readonly itemStyle?: CSSProperties;
+
   readonly renderer: (p: ListViewItemRendererProps<D>) => ReactNode;
   readonly axe: ListViewAxe<D>;
 
@@ -38,6 +44,7 @@ export interface ListViewProps<D> {
 
   readonly itemHeight?: number;
 }
+
 export function ListView<D>({
   paths,
   expansions,
@@ -46,6 +53,10 @@ export function ListView<D>({
   onAction,
   axe,
   renderer,
+  itemClassName,
+  itemStyle,
+  className,
+  style,
   rtl = false,
   itemHeight = 24,
 }: ListViewProps<D>) {
@@ -84,6 +95,8 @@ export function ListView<D>({
       onKeydown,
       focused,
       onAction,
+      itemClassName,
+      itemStyle,
       rtl,
     };
   }, [
@@ -91,6 +104,8 @@ export function ListView<D>({
     expansions,
     flattenedTree.length,
     focused,
+    itemClassName,
+    itemStyle,
     onAction,
     onExpansionChange,
     onKeydown,
@@ -104,6 +119,8 @@ export function ListView<D>({
     <ListViewProvider value={context}>
       <Virt
         elRef={ref}
+        className={className}
+        style={style}
         tabIndex={0}
         onKeyDown={(ev) => {
           if (document.activeElement === ref.current && ev.key === "ArrowDown") {

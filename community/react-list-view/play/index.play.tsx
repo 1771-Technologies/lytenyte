@@ -64,13 +64,12 @@ export default function Home() {
         height: 100vh;
       `}
     >
-      <div
-        className={css`
-          border: 1px solid black;
-        `}
-        style={{ width: 400, height: 600 }}
-      >
+      <div style={{ width: 400, height: 600 }}>
         <ListView
+          className={css`
+            border: 1px solid black;
+            border-radius: 4px;
+          `}
           paths={paths}
           renderer={Renderer}
           expansions={expansions}
