@@ -1,4 +1,4 @@
-import { computed, signal } from "@1771technologies/cascada";
+import { computed, signal } from "@1771technologies/react-cascada";
 import type { ApiCommunity, ApiEnterprise, ColumnEnterprise } from "@1771technologies/grid-types";
 import type { ColumnFilter as CFC } from "@1771technologies/grid-types/community";
 import type { ColumnFilter as CFE } from "@1771technologies/grid-types/enterprise";

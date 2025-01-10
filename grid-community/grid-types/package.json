@@ -23,6 +23,6 @@
   "devDependencies": {
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.2",
-    "@1771technologies/cascada": "workspace:*"
+    "@1771technologies/react-cascada": "workspace:*"
   }
 }

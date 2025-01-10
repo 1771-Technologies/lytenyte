@@ -1,4 +1,4 @@
-import { computed, signal } from "@1771technologies/cascada";
+import { computed, signal } from "@1771technologies/react-cascada";
 import { columnGroups, columnsByPin, columnsVisible } from "@1771technologies/grid-core";
 import {
   columnsComputed,

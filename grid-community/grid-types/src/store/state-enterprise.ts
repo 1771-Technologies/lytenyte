@@ -1,4 +1,4 @@
-import type { ReadonlySignal, Signal } from "@1771technologies/cascada";
+import type { ReadonlySignal, Signal } from "@1771technologies/react-cascada";
 import type { Api, Column, Init } from "../make-grid-enterprise";
 import type {
   ColumnPivotSensitiveState,

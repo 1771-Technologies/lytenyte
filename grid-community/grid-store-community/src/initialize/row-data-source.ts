@@ -1,4 +1,4 @@
-import { computed } from "@1771technologies/cascada";
+import { computed } from "@1771technologies/react-cascada";
 import { createClientDataSource } from "@1771technologies/grid-client-data-source-community";
 import type { StoreCommunity } from "@1771technologies/grid-types";
 

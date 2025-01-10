@@ -1,4 +1,9 @@
-import { computed, signal, type ReadonlySignal, type Signal } from "@1771technologies/cascada";
+import {
+  computed,
+  signal,
+  type ReadonlySignal,
+  type Signal,
+} from "@1771technologies/react-cascada";
 import { columnGetPositions, type ColumnWidthLike } from "@1771technologies/grid-core";
 
 export const columnPositions = <T extends ColumnWidthLike>(

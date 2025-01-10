@@ -3,7 +3,7 @@ import { cascada, computed, signal } from "../cascada.js";
 describe("signal", () => {
   // Test basic signal creation and usage
   test("should create a signal with initial value", () => {
-    const { store: result } = cascada(() => {
+    const result = cascada(() => {
       const count = signal(0);
       return { count };
     });
@@ -12,7 +12,7 @@ describe("signal", () => {
   });
 
   test("should update signal value using set", () => {
-    const { store: signals } = cascada(() => {
+    const signals = cascada(() => {
       const count = signal(0);
       return { count };
     });
@@ -23,7 +23,7 @@ describe("signal", () => {
   });
 
   test("should update signal using setter function", () => {
-    const { store: signals } = cascada(() => {
+    const signals = cascada(() => {
       const count = signal(0);
       return { count };
     });
@@ -36,7 +36,7 @@ describe("signal", () => {
     vi.useFakeTimers();
     const watchFn = vi.fn();
 
-    const { store: signals } = cascada(() => {
+    const signals = cascada(() => {
       const count = signal(0);
       count.watch(watchFn);
       return { count };
@@ -62,7 +62,7 @@ describe("signal", () => {
 
   test("watcher notifies only on change when immediate is false", () => {
     const fn = vi.fn();
-    const { store } = cascada(() => {
+    const store = cascada(() => {
       const count = signal(0);
 
       return { count };
@@ -74,7 +74,7 @@ describe("signal", () => {
 
   test("should be able to call dispose multiple times", () => {
     const watchFn = vi.fn();
-    const { store } = cascada(() => {
+    const store = cascada(() => {
       const s = signal(22);
       return { s };
     });
@@ -91,7 +91,7 @@ describe("signal", () => {
     const watchFn1 = vi.fn();
     const watchFn2 = vi.fn();
 
-    const { store: signals } = cascada(() => {
+    const signals = cascada(() => {
       const count = signal(0);
       count.watch(watchFn1);
       count.watch(watchFn2);
@@ -110,7 +110,7 @@ describe("signal", () => {
   test("should cleanup watchers when dispose is called", () => {
     const watchFn = vi.fn();
 
-    const { store: signals } = cascada(() => {
+    const signals = cascada(() => {
       const count = signal(0);
       return { count };
     });
@@ -124,7 +124,7 @@ describe("signal", () => {
   test("should respect custom equality function", async () => {
     vi.useFakeTimers();
 
-    const { store: signals } = cascada(() => {
+    const signals = cascada(() => {
       const obj = signal({ value: 1 }, { equal: (a, b) => a.value === b.value });
       return { obj };
     });
@@ -158,7 +158,7 @@ describe("signal", () => {
   test("should handle nested signals correctly", async () => {
     vi.useFakeTimers();
 
-    const { store: result } = cascada(() => {
+    const result = cascada(() => {
       const outer = signal(0);
       const inner = signal(1);
 
@@ -180,7 +180,7 @@ describe("signal", () => {
   });
 
   test("should handle undefined and null values", () => {
-    const { store: signals } = cascada(() => {
+    const signals = cascada(() => {
       const nullSignal = signal<null | undefined>(null);
       const undefinedSignal = signal<null | undefined>(undefined);
       return { nullSignal, undefinedSignal };
@@ -200,7 +200,7 @@ describe("signal", () => {
     vi.useFakeTimers();
     const watchFn = vi.fn();
 
-    const { store: signals } = cascada(() => {
+    const signals = cascada(() => {
       const count = signal(0);
       count.watch(watchFn);
       return { count };
@@ -235,9 +235,9 @@ describe("signal", () => {
       };
     });
 
-    expect(s.store.s.get()).toEqual(4);
-    s.store.v.set(4);
-    expect(s.store.s.get()).toEqual(4);
+    expect(s.s.get()).toEqual(4);
+    s.v.set(4);
+    expect(s.s.get()).toEqual(4);
   });
 
   // Test signal with object values and reference equality
@@ -246,7 +246,7 @@ describe("signal", () => {
     const watchFn = vi.fn();
     const initialObj = { count: 0 };
 
-    const { store: signals } = cascada(() => {
+    const signals = cascada(() => {
       const obj = signal(initialObj);
       obj.watch(watchFn);
       return { obj };
@@ -271,7 +271,7 @@ describe("signal", () => {
 });
 
 test("should handle a bind call", () => {
-  const { store: signals } = cascada(() => {
+  const signals = cascada(() => {
     const x = signal(20, { bind: (v) => v * 2 });
 
     return { x };
@@ -284,7 +284,7 @@ test("should handle a bind call", () => {
 
 test("should handle a post set function", () => {
   const fn = vi.fn();
-  const { store: signals } = cascada(() => {
+  const signals = cascada(() => {
     const x = signal(10, { postUpdate: fn });
 
     return { x };

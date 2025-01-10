@@ -1,4 +1,4 @@
-import { computed, type ReadonlySignal } from "@1771technologies/cascada";
+import { computed, type ReadonlySignal } from "@1771technologies/react-cascada";
 import type { BlockPayload } from "@1771technologies/grid-graph";
 import type { RowNodeLeaf } from "@1771technologies/grid-types/community";
 

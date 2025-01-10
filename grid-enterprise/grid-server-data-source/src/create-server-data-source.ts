@@ -5,7 +5,7 @@ import type {
   ColumnPivotsFetcher,
   DataFetcher,
 } from "./types";
-import { cascada, signal, type ReadonlySignal, type Signal } from "@1771technologies/cascada";
+import { cascada, signal, type ReadonlySignal, type Signal } from "@1771technologies/react-cascada";
 import type { RowNode } from "@1771technologies/grid-types/community";
 import { BlockGraph } from "@1771technologies/grid-graph";
 import { ROW_DEFAULT_PATH_SEPARATOR } from "@1771technologies/grid-constants";

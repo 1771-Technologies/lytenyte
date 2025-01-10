@@ -1,4 +1,4 @@
-import { computed } from "@1771technologies/cascada";
+import { computed } from "@1771technologies/react-cascada";
 import { rowGetPositions } from "@1771technologies/grid-core";
 import type { StoreCommunity, StoreEnterprise } from "@1771technologies/grid-types";
 

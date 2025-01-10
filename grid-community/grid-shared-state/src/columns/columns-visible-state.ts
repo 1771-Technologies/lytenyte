@@ -1,4 +1,4 @@
-import { computed, type Signal } from "@1771technologies/cascada";
+import { computed, type Signal } from "@1771technologies/react-cascada";
 import {
   columnGroups,
   columnsByPin,

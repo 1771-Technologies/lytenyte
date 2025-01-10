@@ -1,4 +1,4 @@
-import { computed } from "@1771technologies/cascada";
+import { computed } from "@1771technologies/react-cascada";
 import type {
   ColumnPivotSensitiveStateEnterprise,
   StateEnterprise,

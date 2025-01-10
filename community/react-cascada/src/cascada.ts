@@ -1,194 +1,457 @@
-import type { AllSignalTypes, signal, Cascada } from "@1771technologies/cascada";
-import { cascada as vanilla } from "@1771technologies/cascada";
-import { useRef, useState, useSyncExternalStore } from "react";
-import type { CascadaStore } from "./types.js";
+/* eslint-disable react-hooks/rules-of-hooks */
+import { useSyncExternalStore } from "react";
+import { addTask } from "./scheduler.js";
+import type {
+  DisposableSignal,
+  ReadonlySignal,
+  ReadonlyRemoteSource,
+  Setter,
+  Signal,
+  SignalOptions,
+  Watch,
+  WritableRemoteSource,
+} from "./types.js";
+
+const identify = <T>(v: T) => v;
+let watchersLookup: null | Map<symbol, Set<() => void>> = null;
+let depsLookup: null | Map<symbol, Set<() => void>> = null;
+let remoteSources: null | Map<symbol, () => void> = null;
+
+let currentScope: null | Set<Watch>;
 
 /**
- * Interface for the factory function used to create Cascada stores in React components.
- * Provides access to signal creation utilities while maintaining type safety.
+ * Creates a new reactive scope that serves as a container for managing reactive state. This function
+ * is the foundation for creating and managing reactive values, computed states, and remote data sources.
+ *
+ * @template F - A record type mapping string keys to reactive values (Signal, ComputedSignal, or RemoteSignal)
+ * @param fn - A factory function that initializes and returns a collection of reactive values
+ * @param use - A factory function for creating use hooks (mainly for use with React)
+ *
+ * @returns {Cascada<F>} An object containing:
+ * - `store`: The reactive store containing all signals created within the factory function
+ * - `dispose`: A cleanup function that releases all reactive resources
+ * - `selector`: A function for creating computed values derived from the store's state
+ *
+ * @throws {Error} If attempts are made to create signals outside this scope
+ *
+ * @example
+ * Creating a basic reactive store:
+ * ```typescript
+ * const { store, dispose } = cascada(() => ({
+ *   count: signal(0),
+ *   name: signal('Alice'),
+ *   isValid: computed(() => store.count.get() > 0 && store.name.get().length > 0)
+ * }));
+ * ```
+ *
+ * @example
+ * Using the selector for derived state:
+ * ```typescript
+ * const { store, selector } = cascada(() => ({
+ *   users: signal([{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }]),
+ *   selectedId: signal<number | null>(null)
+ * }));
+ *
+ * const selectedUser = selector(s => {
+ *   const id = s.selectedId.get();
+ *   return id ? s.users.get().find(u => u.id === id) : null;
+ * });
+ * ```
+ *
+ * @remarks
+ * The cascada scope provides several key guarantees:
+ * - All signals are properly initialized and tracked
+ * - Dependencies between signals are automatically managed
+ * - Memory leaks are prevented through proper cleanup
+ * - Computed values are lazily evaluated and cached
+ * - Remote sources are synchronized and disposed properly
  */
-export interface CascadaReactCreationFn {
-  readonly signal: typeof signal;
+export const cascada = <F extends Record<string, any>>(fn: () => F): F => {
+  const prevWatchers = watchersLookup;
+  const prevDeps = depsLookup;
+  const prevRemove = remoteSources;
+
+  watchersLookup = new Map();
+  depsLookup = new Map();
+  remoteSources = new Map();
+
+  const store = fn();
+
+  watchersLookup = prevWatchers;
+  depsLookup = prevDeps;
+  remoteSources = prevRemove;
+
+  return store;
+};
+
+/**
+ * Creates a reactive signal that holds a mutable value. Signals are the basic building blocks of
+ * reactive state and must be created within a cascada scope.
+ *
+ * @template T - The type of value stored in the signal
+ * @param value - The initial value to store in the signal
+ * @param options - Configuration options for the signal
+ * @param {function(T, T): boolean} [options.equal] - Custom equality function to determine value changes
+ * @param {function(T): T} [options.bind] - Transform function applied to new values before storage
+ * @param {function(): void} [options.postUpdate] - Callback function executed after value updates
+ *
+ * @returns {Signal<T>} A Signal object with methods:
+ * - `get()`: Retrieves the current value
+ * - `set(newValue | updater)`: Updates the value directly or via an updater function
+ * - `watch(callback)`: Subscribes to value changes
+ * - `peek()`: Gets the current value without creating a dependency
+ *
+ * @throws {Error} When called outside of a cascada scope
+ *
+ * @example
+ * Basic usage:
+ * ```typescript
+ * const counter = signal(0);
+ * counter.set(5);
+ * counter.set(prev => prev + 1);
+ * ```
+ *
+ * @example
+ * Custom equality comparison:
+ * ```typescript
+ * const user = signal({ id: 1, name: 'Alice' }, {
+ *   equal: (a, b) => a.id === b.id && a.name === b.name
+ * });
+ * ```
+ *
+ * @example
+ * Value transformation and post-update callback:
+ * ```typescript
+ * const count = signal(0, {
+ *   bind: v => Math.max(0, v), // Ensure count never goes negative
+ *   postUpdate: () => console.log('Count updated')
+ * });
+ * ```
+ */
+export const signal = <T>(
+  value: T,
+  { equal = Object.is, bind = identify, postUpdate }: SignalOptions<T> = {},
+): Signal<T> => {
+  if (!watchersLookup) throw new Error("`signal` must be called from within the make function.");
+  const symbol = Symbol();
+  const watch = makeWatch(symbol, watchersLookup!);
+  const dependentOn = makeDependsOn(symbol, depsLookup!);
+
+  const watchers = watchersLookup;
+  const deps = depsLookup!;
+
+  const set = (nextValue: Setter<T>) => {
+    let next = typeof nextValue === "function" ? (nextValue as (v: T) => T)(value) : nextValue;
+    next = bind(next);
+
+    if (equal(next, value)) return;
+
+    value = next;
+
+    postUpdate?.();
+    notify(symbol, watchers, deps);
+  };
+
+  const get = () => {
+    if (currentScope) currentScope.add(dependentOn);
+
+    return value;
+  };
+
+  const peak = makePeek(get);
+
+  const s = { set, get, watch, peek: peak };
+  const use = () => useSyncExternalStore(s.watch, s.get, s.get);
+
+  return { ...s, use };
+};
+
+/**
+ * Creates a read-only computed value that automatically updates when its dependencies change.
+ * Computed values are lazy and cached - they only recalculate when accessed after dependencies change.
+ *
+ * @template T - The type of the computed value
+ *
+ * @overload
+ * @param fn - A function that derives a value from other signals
+ * @returns {ReadonlySignal<T>} A read-only computed signal
+ *
+ * @overload
+ * @param fn - A function that derives a value from other signals
+ * @param set - Optional setter function to make the computed value writable
+ * @returns {DisposableSignal<T>} A writable computed signal
+ *
+ * @returns A signal with methods:
+ * - `get()`: Retrieves the current computed value
+ * - `watch(callback)`: Subscribes to value changes
+ * - `peek()`: Gets the current value without creating a dependency
+ * - `dispose()`: Cleans up the computation and its dependencies
+ * - `set()`: Updates the value (only available when setter provided)
+ *
+ * @throws {Error} When called outside of a cascada scope
+ *
+ * @example
+ * Basic read-only computed value:
+ * ```typescript
+ * const count = signal(0);
+ * const doubled = computed(() => count.get() * 2);
+ *
+ * console.log(doubled.get()); // 0
+ * count.set(5);
+ * console.log(doubled.get()); // 10
+ * ```
+ *
+ * @example
+ * Writable computed value:
+ * ```typescript
+ * const celsius = signal(0);
+ * const fahrenheit = computed(
+ *   () => celsius.get() * 9/5 + 32,
+ *   (f) => celsius.set((f - 32) * 5/9)
+ * );
+ *
+ * fahrenheit.set(68); // Updates celsius to 20
+ * ```
+ *
+ * @remarks
+ * - Computed values automatically track their dependencies
+ * - They only recompute when accessed after a dependency changes
+ * - The computation is guaranteed to be consistent with its dependencies
+ * - Memory leaks are prevented through proper cleanup when disposed
+ * - When a setter is provided, the computed value becomes writable
+ */
+export function computed<T>(fn: () => T, set: (v: T) => void): DisposableSignal<T>;
+export function computed<T>(fn: () => T): ReadonlySignal<T>;
+export function computed<T>(
+  fn: () => T,
+  set?: (v: T) => void,
+): ReadonlySignal<T> | DisposableSignal<T> {
+  if (!watchersLookup) throw new Error("`computed` must be called from within the make function.");
+  let state: 0 | 1 = 0;
+  let value: T = null as unknown as T;
+
+  let prev: (() => void)[] = [];
+
+  const symbol = Symbol();
+
+  const watch = makeWatch(symbol, watchersLookup!);
+  const dependentOn = makeDependsOn(symbol, depsLookup!);
+
+  const watchers = watchersLookup;
+  const deps = depsLookup!;
+
+  const reset = () => {
+    state = 0;
+    notify(symbol, watchers, deps);
+  };
+
+  const get = () => {
+    if (currentScope) currentScope.add(dependentOn);
+    if (state === 1) return value;
+
+    const previousScope = currentScope;
+    prev.forEach((c) => c());
+
+    currentScope = new Set();
+    value = fn();
+    prev = [...currentScope].map((c) => c(reset));
+
+    currentScope = previousScope;
+
+    // Mark the node as clean
+    state = 1;
+    return value;
+  };
+
+  const peek = makePeek(get);
+  const dispose = () => {
+    state = 0;
+    prev.forEach((c) => c());
+  };
+
+  const s = { get, peek, watch, dispose };
+  const use = () => useSyncExternalStore(s.watch, s.get, s.get);
+
+  if (set) {
+    const setInternal = (nextValue: Setter<T>) => {
+      const next = typeof nextValue === "function" ? (nextValue as (v: T) => T)(value) : nextValue;
+      set(next);
+    };
+
+    return { ...s, use, set: setInternal };
+  }
+
+  return { ...s, use };
 }
 
 /**
- * Creates a React-optimized Cascada store with hooks for accessing reactive state.
- * This function enhances the vanilla Cascada store with React-specific functionality
- * for efficient integration with React's component lifecycle and reconciliation.
+ * Creates a signal that synchronizes with an external data source. Remote signals provide a reactive
+ * interface to non-reactive data sources and must be created within a cascada scope.
  *
- * @template F - A record type mapping string keys to reactive signals
- * @param fn - Factory function that initializes and returns a collection of signals
- * @returns A React-optimized store with hooks for accessing and selecting state
+ * @template T - The type of the remote value
+ * @param args - Configuration for the remote source
+ * @param args.get - Function to fetch the current value
+ * @param args.subscribe - Function to subscribe to source changes
+ * @param args.set - Optional function to update the remote value
  *
- * @example
- * ```typescript
- * const store = cascada(() => ({
- *   count: signal(0),
- *   name: signal('Alice')
- * }));
+ * @returns {DisposableSignal<T> | ReadonlySignal<T>} A signal that can be:
+ * - Read using `get()`
+ * - Written to using `set()` (if writable)
+ * - Watched for changes using `watch(callback)`
+ * - Cleaned up using `dispose()`
  *
- * // In a component:
- * function Counter() {
- *   const count = store.useValue('count');
- *   return <div>{count}</div>;
- * }
- * ```
- */
-export const cascada = <F extends Record<string, AllSignalTypes<any>>>(
-  fn: () => F,
-): CascadaStore<F> => {
-  const store = vanilla(fn);
-
-  return cascadaFromVanilla(store);
-};
-
-/**
- * React hook for creating a Cascada store within a component. The store is created only once
- * when the component mounts and persists across re-renders.
- *
- * @template F - A record type mapping string keys to reactive signals
- * @param fn - Factory function that creates the store's signals
- * @returns A React-optimized Cascada store instance
+ * @throws {Error} When called outside of a cascada scope
  *
  * @example
+ * Read-only remote source:
  * ```typescript
- * function UserProfile() {
- *   const store = useCascada(() => ({
- *     name: signal(''),
- *     email: signal(''),
- *     isValid: computed(() =>
- *       name.get().length > 0 &&
- *       email.get().includes('@')
- *     )
- *   }));
- *
- *   const name = store.useValue('name');
- *   const isValid = store.useValue('isValid');
- *
- *   return (
- *     <form>
- *       <input value={name} />
- *       {!isValid && <span>Please fill in all fields</span>}
- *     </form>
- *   );
- * }
+ * const serverTime = remote({
+ *   get: () => fetch('/api/time').then(r => r.json()),
+ *   subscribe: callback => {
+ *     const ws = new WebSocket('/api/time/updates');
+ *     ws.onmessage = () => callback();
+ *     return () => ws.close();
+ *   }
+ * });
  * ```
  *
  * @remarks
- * - The store is created only once when the component mounts
- * - The store persists across component re-renders
- * - Store cleanup is handled automatically when the component unmounts
- * - Signals and computed values maintain referential stability
+ * Remote signals provide several guarantees:
+ * - The remote value is cached until invalidated
+ * - Updates are properly synchronized with the source
+ * - Subscriptions are cleaned up when disposed
+ * - The API remains consistent whether read-only or writable
+ * - Error handling should be implemented in the provided functions
  */
-export const useCascada = <F extends Record<string, AllSignalTypes<any>>>(fn: () => F) => {
-  const [store, _] = useState(() => cascada(fn));
-  return store;
-};
+export function remote<T>(args: WritableRemoteSource<T>): DisposableSignal<T>;
+export function remote<T>(args: ReadonlyRemoteSource<T>): ReadonlySignal<T>;
+export function remote<T>(args: {
+  get: () => T;
+  subscribe: Watch;
+  set?: (v: T) => void;
+}): DisposableSignal<T> | ReadonlySignal<T> {
+  if (!watchersLookup) throw new Error("`remote` must be called from within the make function.");
+
+  const symbol = Symbol();
+
+  const watch = makeWatch(symbol, watchersLookup!);
+  const dependentOn = makeDependsOn(symbol, depsLookup!);
+
+  const watchers = watchersLookup;
+  const deps = depsLookup!;
+
+  const fetchRemoteValue = args.get;
+  const subscribe = args.subscribe;
+
+  let value: T = null as T;
+  let cached = false;
+
+  const get = () => {
+    if (currentScope) currentScope.add(dependentOn);
+    if (cached) return value;
+
+    value = fetchRemoteValue();
+    cached = true;
+
+    return value;
+  };
+
+  const dispose = subscribe(() => {
+    cached = false;
+    notify(symbol, watchers, deps);
+  });
+
+  // Register for clean up later if necessary
+  remoteSources!.set(symbol, dispose);
+
+  const peek = makePeek(get);
+  const set = args.set;
+
+  const s = { get, peek, watch, dispose };
+  const use = () => useSyncExternalStore(s.watch, s.get, s.get);
+  if (set) {
+    const setter = (v: Setter<T>) => {
+      const next = typeof v === "function" ? (v as (v: T) => T)(value) : v;
+      set(next);
+    };
+
+    return { ...s, use, set: setter };
+  }
+
+  return { ...s, use };
+}
 
 /**
- * React hook for creating a React-optimized Cascada store from an existing vanilla Cascada instance.
- * This hook ensures the store is properly integrated with React's lifecycle and only created once.
- *
- * @template F - A record type mapping string keys to reactive signals
- * @param v - An existing vanilla Cascada store instance
- * @returns A React-optimized Cascada store with hooks for accessing state
- *
- * @example
- * ```typescript
- * // Create a vanilla store outside of React
- * const vanillaStore = vanilla(() => ({
- *   count: signal(0),
- *   doubleCount: computed(() => count.get() * 2)
- * }));
- *
- * // Use it in a React component
- * function Counter() {
- *   const store = useCascadaStore(vanillaStore);
- *   const count = store.useValue('count');
- *   return <div>{count}</div>;
- * }
- * ```
+ * Internal utility to create a watch function for a signal
+ * @internal
  */
-export const useCascadaStore = <F extends Record<string, AllSignalTypes<any>>>(v: Cascada<F>) => {
-  const [store, _] = useState(() => cascadaFromVanilla(v));
+function makeWatch(symbol: symbol, watchersLookup: Map<symbol, Set<() => void>>) {
+  const watch = (fn: () => void, immediate = true) => {
+    if (!watchersLookup.has(symbol)) watchersLookup.set(symbol, new Set());
 
-  return store;
-};
+    // Call the function immediately on first watch
+    if (immediate) fn();
+
+    const queue = () => addTask(fn);
+    watchersLookup!.get(symbol)!.add(queue);
+
+    return () => {
+      const set = watchersLookup!.get(symbol);
+      if (!set) return;
+
+      set.delete(queue);
+      if (set.size === 0) watchersLookup!.delete(symbol);
+    };
+  };
+
+  return watch;
+}
 
 /**
- * Converts a vanilla Cascada store into a React-optimized store with hooks for accessing state.
- * This function adds React-specific functionality while preserving the original store's behavior.
- *
- * @template F - A record type mapping string keys to reactive signals
- * @param store - The vanilla Cascada store to convert
- * @returns A React-optimized store with additional hooks for accessing state
- *
- * @remarks
- * - Adds `useValue` hook for accessing individual signals
- * - Adds `useSelector` hook for computing derived state
- * - Maintains referential stability of selectors
- * - Integrates with React's reconciliation process
- *
- * @example
- * ```typescript
- * const vanillaStore = vanilla(() => ({
- *   count: signal(0)
- * }));
- *
- * const reactStore = cascadaFromVanilla(vanillaStore);
- *
- * // Now you can use React hooks
- * function Counter() {
- *   const count = reactStore.useValue('count');
- *   return <div>{count}</div>;
- * }
- * ```
+ * Internal utility to track dependencies between signals
+ * @internal
  */
-export const cascadaFromVanilla = <F extends Record<string, AllSignalTypes<any>>>(
-  store: Cascada<F>,
-) => {
-  const useSignal = (s: keyof (typeof store)["store"]) => {
-    const signal = store.store[s];
-    return useSyncExternalStore(signal.watch, signal.get, signal.get);
+function makeDependsOn(symbol: symbol, depsLookup: Map<symbol, Set<() => void>>) {
+  const dependentOn = (fn: () => void) => {
+    if (!depsLookup.has(symbol)) depsLookup.set(symbol, new Set());
+
+    depsLookup.get(symbol)!.add(fn);
+
+    return () => {
+      const set = depsLookup.get(symbol);
+      if (!set) return;
+
+      set.delete(fn);
+      if (set.size === 0) depsLookup.delete(symbol);
+    };
   };
-  const useSelector = <T>(f: (v: F) => T, equal: (l: T, v: T) => boolean = Object.is): T => {
-    const fn = useRef(f);
-    fn.current = f;
-    const equalRef = useRef(equal);
-    equalRef.current = equal;
-    const cbRef = useRef<() => any>(null as any);
-    if (!cbRef.current) {
-      cbRef.current = () => store.selector(fn.current);
-    }
-    const selectorRef = useRef<any>(null as any);
-    if (!selectorRef.current) {
-      const s = cbRef.current();
-      let prev = s.get();
-      selectorRef.current = {
-        get: s.get,
-        watch: (fn: () => void) => {
-          const dispose = s.watch(() => {
-            const current = s.get();
-            if (equalRef.current(prev, current)) return;
-            prev = current;
-            fn();
-          });
-          return () => {
-            dispose();
-            s.dispose();
-          };
-        },
-      };
-    }
-    return useSyncExternalStore(
-      selectorRef.current.watch,
-      selectorRef.current.get,
-      selectorRef.current.get,
-    );
+
+  return dependentOn;
+}
+
+/**
+ * Internal utility to notify watchers and dependents of changes
+ * @internal
+ */
+function notify(
+  symbol: symbol,
+  watchersLookup: Map<symbol, Set<() => void>>,
+  depsLookup: Map<symbol, Set<() => void>>,
+) {
+  const watchers = watchersLookup.get(symbol);
+  if (watchers) watchers.forEach((c) => c());
+
+  const dependents = depsLookup.get(symbol);
+  if (dependents) dependents.forEach((c) => c());
+}
+
+function makePeek<T>(get: () => T) {
+  return () => {
+    const prev = currentScope;
+    currentScope = null;
+    const value = get();
+    currentScope = prev;
+
+    return value;
   };
-  return {
-    ...store,
-    useValue: useSignal,
-    useSelector,
-  };
-};
+}

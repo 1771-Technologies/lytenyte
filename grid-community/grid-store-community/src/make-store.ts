@@ -1,4 +1,4 @@
-import { cascada } from "@1771technologies/cascada";
+import { cascada } from "@1771technologies/react-cascada";
 import type { StateCommunity, StoreCommunity } from "@1771technologies/grid-types";
 import { type PropsCommunity } from "@1771technologies/grid-types";
 import { initialize } from "./initialize/initialize";

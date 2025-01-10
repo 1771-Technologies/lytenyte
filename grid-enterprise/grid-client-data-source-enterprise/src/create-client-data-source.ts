@@ -4,7 +4,7 @@ import {
   signal,
   type ReadonlySignal,
   type Signal,
-} from "@1771technologies/cascada";
+} from "@1771technologies/react-cascada";
 import type { ApiEnterprise, RowDataSourceEnterprise } from "@1771technologies/grid-types";
 import { BlockGraph } from "@1771technologies/grid-graph";
 import type { RowNodeLeaf } from "@1771technologies/grid-types/community";

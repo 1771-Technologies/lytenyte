@@ -1,4 +1,4 @@
-import { computed, type Signal } from "@1771technologies/cascada";
+import { computed, type Signal } from "@1771technologies/react-cascada";
 import type { AsyncDataRequestBlock } from "../types";
 import type { ApiEnterprise } from "@1771technologies/grid-types";
 import type { BlockGraph } from "@1771technologies/grid-graph";

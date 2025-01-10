@@ -4,7 +4,7 @@ import type {
   PropsEnterprise,
   StateEnterprise,
 } from "@1771technologies/grid-types";
-import { signal } from "@1771technologies/cascada";
+import { signal } from "@1771technologies/react-cascada";
 import { emptyRowDataSource } from "./utils/empty-row-data-source";
 import {
   COLUMN_GROUP_HEADER_HEIGHT,

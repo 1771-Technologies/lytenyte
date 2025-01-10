@@ -1,4 +1,4 @@
-import { computed, signal } from "@1771technologies/cascada";
+import { computed, signal } from "@1771technologies/react-cascada";
 import type { ColumnCommunity, StateCommunity } from "@1771technologies/grid-types";
 import { type StoreCommunity } from "@1771technologies/grid-types";
 import type { ColumnPin, KeyBindingString, Position } from "@1771technologies/grid-types/community";

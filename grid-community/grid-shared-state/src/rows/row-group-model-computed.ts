@@ -1,4 +1,4 @@
-import { computed, signal } from "@1771technologies/cascada";
+import { computed, signal } from "@1771technologies/react-cascada";
 import { rowCleanRowGroupModel } from "@1771technologies/grid-core";
 import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
 

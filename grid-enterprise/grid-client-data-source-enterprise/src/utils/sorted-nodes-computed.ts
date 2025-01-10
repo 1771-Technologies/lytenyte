@@ -1,4 +1,4 @@
-import { computed, type ReadonlySignal, type Signal } from "@1771technologies/cascada";
+import { computed, type ReadonlySignal, type Signal } from "@1771technologies/react-cascada";
 import { getComparatorsForModel, makeCombinedComparator } from "@1771technologies/grid-client-sort";
 import type { ApiEnterprise } from "@1771technologies/grid-types";
 import type { RowNodeLeaf } from "@1771technologies/grid-types/community";

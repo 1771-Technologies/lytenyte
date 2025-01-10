@@ -1,4 +1,4 @@
-import { cascada } from "@1771technologies/cascada";
+import { cascada } from "@1771technologies/react-cascada";
 import type {
   PropsEnterprise,
   StateEnterprise,

@@ -12,7 +12,7 @@ export const emptyRowDataSource: Required<PropsEnterprise<any, any>>["rowDataSou
   init: () => {},
 
   columnInFilterItems: () => [],
-  columnPivotGetDefinitions: () => [],
+  columnPivots: () => [],
   paginateGetCount: () => 0,
   paginateRowStartAndEndForPage: () => [0, 0],
   rowChildCount: () => 0,
@@ -23,10 +23,11 @@ export const emptyRowDataSource: Required<PropsEnterprise<any, any>>["rowDataSou
   rowReplaceBottomData: () => {},
   rowReplaceData: () => {},
   rowReplaceTopData: () => {},
-  rowRetryExpansion: () => {},
-  rowRetryFailed: () => {},
+  rowReloadExpansion: () => {},
+  rowReset: () => {},
 
   rowSelectionAllRowsSelected: () => false,
+  rowSelectionSelectAllSupported: () => false,
   rowSelectionSelectAll: () => {},
   rowSelectionClear: () => {},
   rowSelectionDeselect: () => {},

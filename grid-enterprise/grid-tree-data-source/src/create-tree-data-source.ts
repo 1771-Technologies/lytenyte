@@ -16,7 +16,7 @@ import {
   signal,
   type ReadonlySignal,
   type Signal,
-} from "@1771technologies/cascada";
+} from "@1771technologies/react-cascada";
 import type { RowNodeGroup, RowNodeLeaf } from "@1771technologies/grid-types/community";
 import { ROW_DEFAULT_PATH_SEPARATOR } from "@1771technologies/grid-constants";
 import { BlockGraph } from "@1771technologies/grid-graph";
@@ -58,7 +58,7 @@ export interface ClientState<D, E> {
 export function createTreeDataSource<D, E>(
   r: TreeDataSourceInitial<D, E>,
 ): RowDataSourceEnterprise<D, E> {
-  const { store: state, dispose } = cascada<ClientState<D, E>>(() => {
+  const state = cascada<ClientState<D, E>>(() => {
     const api$ = signal<ApiEnterprise<D, E>>(null as unknown as ApiEnterprise<D, E>);
 
     const selectedIds = signal(new Set<string>());
@@ -124,9 +124,7 @@ export function createTreeDataSource<D, E>(
     init: (a) => {
       state.api.set(a);
     },
-    clean: () => {
-      dispose();
-    },
+    clean: () => {},
 
     rowByIndex: (r) => rowByIndex(state, r),
     rowById: (r) => rowById(state, r),
@@ -165,7 +163,7 @@ export function createTreeDataSource<D, E>(
     paginateRowStartAndEndForPage: () => [0, 0],
 
     rowReload: () => {},
-    rowRetryExpansion: () => {},
-    rowRetryFailed: () => {},
+    rowReloadExpansion: () => {},
+    rowReset: () => {},
   };
 }

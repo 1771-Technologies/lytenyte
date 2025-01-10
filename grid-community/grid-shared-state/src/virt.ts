@@ -1,4 +1,4 @@
-import { computed } from "@1771technologies/cascada";
+import { computed } from "@1771technologies/react-cascada";
 import { END_ENCODING, FULL_WIDTH_POSITION } from "@1771technologies/grid-constants";
 import { computeBounds } from "@1771technologies/grid-core";
 import type { ApiCommunity, ApiEnterprise, StoreEnterprise } from "@1771technologies/grid-types";

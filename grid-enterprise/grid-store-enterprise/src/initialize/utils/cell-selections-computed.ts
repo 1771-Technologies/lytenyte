@@ -1,4 +1,4 @@
-import { computed, signal } from "@1771technologies/cascada";
+import { computed, signal } from "@1771technologies/react-cascada";
 import { boundSelectionRect } from "@1771technologies/grid-core-enterprise";
 import type { ApiEnterprise } from "@1771technologies/grid-types";
 import type { CellSelectionRect } from "@1771technologies/grid-types/enterprise";

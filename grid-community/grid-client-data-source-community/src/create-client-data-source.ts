@@ -12,7 +12,7 @@ import {
   signal,
   type ReadonlySignal,
   type Signal,
-} from "@1771technologies/cascada";
+} from "@1771technologies/react-cascada";
 import { filterNodesComputed } from "./utils/filter-nodes-computed";
 import { sortedNodesComputed } from "./utils/sorted-nodes-computed";
 import { BLOCK_SIZE, flatBlockPayloadsComputed } from "./utils/flat-block-payloads-computed";

@@ -1,4 +1,4 @@
-import { signal } from "@1771technologies/cascada";
+import { signal } from "@1771technologies/react-cascada";
 import {
   COLUMN_GROUP_HEADER_HEIGHT,
   COLUMN_GROUP_ID_DELIMITER,

@@ -16,7 +16,7 @@ test("should be able to handle remote values", () => {
     },
   };
 
-  const { store: s } = cascada(() => {
+  const s = cascada(() => {
     const x = remote(remoteValue);
     return { x };
   });
@@ -29,13 +29,11 @@ test("should be able to handle remote values", () => {
   subs.forEach((s) => s());
   expect(s.x.get()).toEqual(44);
   expect(fn).toHaveBeenCalledTimes(2);
-
-  expect(s.x.use()).toEqual(44);
 });
 
 test("should be able to handle writable remote values", () => {
   const { remoteValue, fn } = makeRemoteValue();
-  const { store: s } = cascada(() => {
+  const s = cascada(() => {
     const r = remote(remoteValue);
 
     return { r };
@@ -51,14 +49,12 @@ test("should be able to handle writable remote values", () => {
   s.r.set((prev) => prev + 1);
   expect(s.r.get()).toEqual(12);
   expect(fn).toHaveBeenCalledTimes(3);
-
-  expect(s.r.use()).toEqual(12);
 });
 
 test("should be able to use remote values in a computed calc", () => {
   const { remoteValue } = makeRemoteValue();
 
-  const { store: s } = cascada(() => {
+  const s = cascada(() => {
     const x = signal(11);
     const y = remote(remoteValue);
     const z = computed(() => x.get() + y.get());
@@ -74,7 +70,7 @@ test("should be able to use remote values in a computed calc", () => {
 test("should be able to watch a remote value", async () => {
   vi.useFakeTimers();
   const { remoteValue } = makeRemoteValue();
-  const { store: s } = cascada(() => {
+  const s = cascada(() => {
     const r = remote(remoteValue);
     return { r };
   });
@@ -105,10 +101,10 @@ test("should be able to dispose of remote sources", () => {
     return { v };
   });
 
-  expect(s.store.v.get()).toEqual(4);
-  s.store.v.dispose();
+  expect(s.v.get()).toEqual(4);
+  s.v.dispose();
   remoteValue.set(11);
-  expect(s.store.v.get()).toEqual(4);
+  expect(s.v.get()).toEqual(4);
 });
 
 test("should be able to peek the remote value", () => {
@@ -120,9 +116,9 @@ test("should be able to peek the remote value", () => {
     return { v, c };
   });
 
-  expect(s.store.c.get()).toEqual(8);
-  s.store.v.set(8);
-  expect(s.store.c.get()).toEqual(8);
+  expect(s.c.get()).toEqual(8);
+  s.v.set(8);
+  expect(s.c.get()).toEqual(8);
 });
 
 function makeRemoteValue() {

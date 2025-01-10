@@ -1,5 +1,5 @@
 import type { Api, Column, Init } from "../make-grid-community.js";
-import type { ReadonlySignal, Signal } from "@1771technologies/cascada";
+import type { ReadonlySignal, Signal } from "@1771technologies/react-cascada";
 import type {
   CellEditLocation,
   ColumnFilter,

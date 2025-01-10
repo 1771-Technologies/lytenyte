@@ -1,4 +1,4 @@
-import { computed, type ReadonlySignal, type Signal } from "@1771technologies/cascada";
+import { computed, type ReadonlySignal, type Signal } from "@1771technologies/react-cascada";
 import type {
   ColumnBaseCommunity,
   ColumnBaseEnterprise,

@@ -1,4 +1,4 @@
-import { computed, signal } from "@1771technologies/cascada";
+import { computed, signal } from "@1771technologies/react-cascada";
 import type { ApiEnterprise } from "@1771technologies/grid-types";
 import { itemsWithIdToMap } from "@1771technologies/js-utils";
 

@@ -1,7 +1,7 @@
 import { cascada, computed, signal } from "../cascada.js";
 
 test("Should return the correct computed value", () => {
-  const { store: s } = cascada(() => {
+  const s = cascada(() => {
     const x = signal(2);
     const y = signal(3);
 
@@ -14,15 +14,11 @@ test("Should return the correct computed value", () => {
 
   s.x.set(22);
   expect(s.z.get()).toEqual(25);
-
-  expect(s.x.use()).toEqual(22);
 });
 
 test("Should lazily compute the computed values", () => {
   const fn = vi.fn();
-  const {
-    store: { x, z },
-  } = cascada(() => {
+  const { x, z } = cascada(() => {
     const x = signal(2);
     const y = signal(3);
     const z = computed(() => {
@@ -45,9 +41,7 @@ test("Should lazily compute the computed values", () => {
 
 test("Should not be active until `get` is called at least once", async () => {
   vi.useFakeTimers();
-  const {
-    store: { x, z },
-  } = cascada(() => {
+  const { x, z } = cascada(() => {
     const x = signal(2);
     const z = computed(() => x.get() * 2);
 
@@ -78,7 +72,7 @@ test("Should not be active until `get` is called at least once", async () => {
 });
 
 test("Should be able to peek a computed value", () => {
-  const { store } = cascada(() => {
+  const store = cascada(() => {
     const x = signal(4);
     const y = computed(() => x.get() * 2);
     const z = computed(() => y.peek() * 2);
@@ -93,14 +87,10 @@ test("Should be able to peek a computed value", () => {
   expect(store.x.get()).toEqual(8);
   expect(store.y.get()).toEqual(16);
   expect(store.z.get()).toEqual(16);
-
-  expect(store.y.use()).toEqual(16);
 });
 
 test("Should be able to call dispose multiple times", () => {
-  const {
-    store: { y },
-  } = cascada(() => {
+  const { y } = cascada(() => {
     const x = signal(2);
     const y = computed(() => x.get() * 2);
 
@@ -119,7 +109,7 @@ test("Should not be able to make a computed value outside of cascada", () => {
 });
 
 test("Should be able to handle computed values within computed values forming a chain", () => {
-  const { store: s } = cascada(() => {
+  const s = cascada(() => {
     const x = signal(10);
     const y = computed(() => x.get() * 2);
     const z = computed(() => y.get() * 2);
@@ -133,7 +123,7 @@ test("Should be able to handle computed values within computed values forming a 
 });
 
 test("Should be able to create a settable signal", () => {
-  const { store: s } = cascada(() => {
+  const s = cascada(() => {
     const x = signal(10);
     const y = computed(
       () => x.get() * 10,
@@ -148,5 +138,4 @@ test("Should be able to create a settable signal", () => {
   expect(s.y.get()).toEqual(50);
   s.y.set((prev) => prev / 2);
   expect(s.y.get()).toEqual(250);
-  expect(s.y.use()).toEqual(250);
 });

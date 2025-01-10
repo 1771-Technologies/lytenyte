@@ -1,4 +1,4 @@
-import { computed } from "@1771technologies/cascada";
+import { computed } from "@1771technologies/react-cascada";
 import type { RowDataSourceEnterprise, StoreEnterprise } from "@1771technologies/grid-types";
 import { emptyRowDataSource } from "./empty-row-data-source";
 
