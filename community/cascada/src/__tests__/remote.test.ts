@@ -29,6 +29,8 @@ test("should be able to handle remote values", () => {
   subs.forEach((s) => s());
   expect(s.x.get()).toEqual(44);
   expect(fn).toHaveBeenCalledTimes(2);
+
+  expect(s.x.use()).toEqual(44);
 });
 
 test("should be able to handle writable remote values", () => {
@@ -49,6 +51,8 @@ test("should be able to handle writable remote values", () => {
   s.r.set((prev) => prev + 1);
   expect(s.r.get()).toEqual(12);
   expect(fn).toHaveBeenCalledTimes(3);
+
+  expect(s.r.use()).toEqual(12);
 });
 
 test("should be able to use remote values in a computed calc", () => {

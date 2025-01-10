@@ -33,11 +33,13 @@ export type Watch = (fn: () => void, immediate?: boolean) => () => void;
  * @property set - Updates the signal's value either directly or through an updater function
  * @property peek - Returns the current value without establishing a dependency
  * @property watch - Subscribes to changes in the signal's value
+ * @property use - Returns the current value, but with a custom hook implementation
  */
 export type Signal<T> = {
   readonly get: () => T;
   readonly set: (v: Setter<T>) => void;
   readonly peek: () => T;
+  readonly use: () => T;
   readonly watch: Watch;
 };
 
@@ -63,11 +65,13 @@ export type DisposableSignal<T> = {
  * @property peek - Returns the current value without establishing a dependency
  * @property watch - Subscribes to changes in the value
  * @property dispose - Cleans up any resources or computations
+ * @property use - Returns the current value, but with a custom hook implementation
  */
 export type ReadonlySignal<T> = {
   readonly get: () => T;
   readonly peek: () => T;
   readonly watch: Watch;
+  readonly use: () => T;
   readonly dispose: () => void;
 };
 

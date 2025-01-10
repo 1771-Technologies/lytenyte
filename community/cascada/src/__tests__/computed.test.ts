@@ -14,6 +14,8 @@ test("Should return the correct computed value", () => {
 
   s.x.set(22);
   expect(s.z.get()).toEqual(25);
+
+  expect(s.x.use()).toEqual(22);
 });
 
 test("Should lazily compute the computed values", () => {
@@ -91,6 +93,8 @@ test("Should be able to peek a computed value", () => {
   expect(store.x.get()).toEqual(8);
   expect(store.y.get()).toEqual(16);
   expect(store.z.get()).toEqual(16);
+
+  expect(store.y.use()).toEqual(16);
 });
 
 test("Should be able to call dispose multiple times", () => {
@@ -144,4 +148,5 @@ test("Should be able to create a settable signal", () => {
   expect(s.y.get()).toEqual(50);
   s.y.set((prev) => prev / 2);
   expect(s.y.get()).toEqual(250);
+  expect(s.y.use()).toEqual(250);
 });

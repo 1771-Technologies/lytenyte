@@ -18,6 +18,7 @@ let depsLookup: null | Map<symbol, Set<() => void>> = null;
 let remoteSources: null | Map<symbol, () => void> = null;
 
 let currentScope: null | Set<Watch>;
+let useMaker: null | (<V>(s: Omit<AllSignalTypes<V>, "use">) => V) = null;
 
 /**
  * Creates a new reactive scope that serves as a container for managing reactive state. This function
@@ -25,6 +26,7 @@ let currentScope: null | Set<Watch>;
  *
  * @template F - A record type mapping string keys to reactive values (Signal, ComputedSignal, or RemoteSignal)
  * @param fn - A factory function that initializes and returns a collection of reactive values
+ * @param use - A factory function for creating use hooks (mainly for use with React)
  *
  * @returns {Cascada<F>} An object containing:
  * - `store`: The reactive store containing all signals created within the factory function
@@ -65,14 +67,21 @@ let currentScope: null | Set<Watch>;
  * - Computed values are lazily evaluated and cached
  * - Remote sources are synchronized and disposed properly
  */
-export const cascada = <F extends Record<string, AllSignalTypes<any>>>(fn: () => F): Cascada<F> => {
+export const cascada = <F extends Record<string, any>>(
+  fn: () => F,
+  use?: <V>(s: Omit<AllSignalTypes<V>, "use">) => V,
+): Cascada<F> => {
   const prevWatchers = watchersLookup;
   const prevDeps = depsLookup;
   const prevRemove = remoteSources;
 
+  const prevUse = useMaker;
+
   watchersLookup = new Map();
   depsLookup = new Map();
   remoteSources = new Map();
+
+  useMaker = use ?? ((v) => v.get());
 
   const watchers = watchersLookup;
   const deps = depsLookup;
@@ -93,6 +102,7 @@ export const cascada = <F extends Record<string, AllSignalTypes<any>>>(fn: () =>
   watchersLookup = prevWatchers;
   depsLookup = prevDeps;
   remoteSources = prevRemove;
+  useMaker = prevUse;
   return { store: result, dispose, selector };
 };
 
@@ -151,6 +161,7 @@ export const signal = <T>(
 
   const watchers = watchersLookup;
   const deps = depsLookup!;
+  const useInternal = useMaker;
 
   const set = (nextValue: Setter<T>) => {
     let next = typeof nextValue === "function" ? (nextValue as (v: T) => T)(value) : nextValue;
@@ -171,7 +182,11 @@ export const signal = <T>(
   };
 
   const peak = makePeek(get);
-  return { set, get, watch, peek: peak };
+
+  const s = { set, get, watch, peek: peak };
+  const use = () => useInternal!(s);
+
+  return { ...s, use };
 };
 
 /**
@@ -244,6 +259,7 @@ export function computed<T>(
 
   const watch = makeWatch(symbol, watchersLookup!);
   const dependentOn = makeDependsOn(symbol, depsLookup!);
+  const useInternal = useMaker;
 
   const watchers = watchersLookup;
   const deps = depsLookup!;
@@ -282,15 +298,17 @@ export function computed<T>(
       const next = typeof nextValue === "function" ? (nextValue as (v: T) => T)(value) : nextValue;
       set(next);
     };
-    return { get, peek, watch, dispose, set: setInternal };
+
+    const s = { get, peek, watch, dispose, set: setInternal };
+    const use = () => useInternal!(s);
+
+    return { ...s, use };
   }
 
-  return {
-    get,
-    peek,
-    watch,
-    dispose,
-  };
+  const s = { get, peek, watch, dispose };
+  const use = () => useInternal!(s);
+
+  return { ...s, use };
 }
 
 /**
@@ -345,6 +363,7 @@ export function remote<T>(args: {
 
   const watch = makeWatch(symbol, watchersLookup!);
   const dependentOn = makeDependsOn(symbol, depsLookup!);
+  const useInternal = useMaker;
 
   const watchers = watchersLookup;
   const deps = depsLookup!;
@@ -381,21 +400,16 @@ export function remote<T>(args: {
       set(next);
     };
 
-    return {
-      get,
-      peek,
-      set: setter,
-      watch,
-      dispose,
-    };
+    const s = { get, peek, set: setter, watch, dispose };
+    const use = () => useInternal!(s);
+
+    return { ...s, use };
   }
 
-  return {
-    get,
-    peek,
-    watch,
-    dispose,
-  };
+  const s = { get, peek, watch, dispose };
+  const use = () => useInternal!(s);
+
+  return { ...s, use };
 }
 
 /**
