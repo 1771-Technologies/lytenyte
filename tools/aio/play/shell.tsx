@@ -1,7 +1,8 @@
 import { useSearchParams, type RouteObject } from "react-router-dom";
-import { t } from "./theme";
+import { t } from "@1771technologies/grid-design";
 import { useMemo } from "react";
 import { ThemeSwitcher } from "./theme-switcher";
+import { useTheme } from "./use-theme";
 
 const headerHeight = "60px";
 const sidebarWidth = "360px";
@@ -9,6 +10,7 @@ const sidebarWidth = "360px";
 export function Shell(props: { routes: RouteObject[] }) {
   const [searchParams, setSearchParams] = useSearchParams();
 
+  useTheme();
   const routes = useMemo(() => {
     return flattenRoutes(props.routes);
   }, [props.routes]);
@@ -17,7 +19,7 @@ export function Shell(props: { routes: RouteObject[] }) {
   return (
     <div
       className={css`
-        background-color: ${t.colors.bg};
+        background-color: ${t.colors.backgrounds_page};
       `}
     >
       <div
@@ -26,17 +28,17 @@ export function Shell(props: { routes: RouteObject[] }) {
           height: ${headerHeight};
           display: grid;
           grid-template-columns: ${sidebarWidth} 1fr;
-          background-color: ${t.colors.bgHeader};
+          background-color: ${t.colors.backgrounds_ui_panel};
           width: 100%;
           z-index: 2;
         `}
       >
         <div
           className={css`
-            background-color: ${t.colors.bgSideBar};
+            background-color: ${t.colors.backgrounds_default};
             display: flex;
             align-items: center;
-            padding-inline: ${t.space._04};
+            padding-inline: ${t.spacing.space_50};
           `}
         >
           Title
@@ -45,7 +47,7 @@ export function Shell(props: { routes: RouteObject[] }) {
           className={css`
             display: flex;
             align-items: center;
-            padding-inline: ${t.space._04};
+            padding-inline: ${t.spacing.space_50};
           `}
         >
           <ThemeSwitcher />
@@ -55,7 +57,7 @@ export function Shell(props: { routes: RouteObject[] }) {
         className={css`
           position: fixed;
           height: 100vh;
-          background-color: ${t.colors.bgSideBar};
+          background-color: ${t.colors.backgrounds_default};
           width: ${sidebarWidth};
           padding-top: ${headerHeight};
         `}
@@ -81,10 +83,10 @@ export function Shell(props: { routes: RouteObject[] }) {
       >
         <div
           className={css`
-            background-color: ${t.colors.bgFrame};
-            margin: ${t.space._04};
-            width: calc(100% - ${t.space._04} * 2);
-            height: calc(100% - ${t.space._04} * 2);
+            background-color: ${t.colors.backgrounds_light};
+            margin: ${t.spacing.space_30};
+            width: calc(100% - ${t.spacing.space_30} * 2);
+            height: calc(100% - ${t.spacing.space_30} * 2);
             border-radius: 4px;
           `}
         >

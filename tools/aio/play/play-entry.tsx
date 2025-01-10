@@ -1,10 +1,12 @@
 import { StrictMode, Suspense } from "react";
+import "@1771technologies/grid-design/css";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, useRoutes, type RouteObject } from "react-router-dom";
 
 import { Shell } from "./shell";
 import routes from "~react-pages";
 import { useTheme } from "./use-theme";
+import { t } from "@1771technologies/grid-design";
 
 const withHome: RouteObject[] = [{ path: "/", element: <Shell routes={routes} /> }, ...routes];
 
@@ -25,17 +27,13 @@ const _ = css`
       min-height: 100dvh;
       font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
         "Segoe UI Symbol", "Noto Color Emoji";
+
+      color: ${t.colors.text_medium};
+      background-color: ${t.colors.backgrounds_page};
     }
 
     #root {
       min-height: 100dvh;
-    }
-
-    :root {
-      --play-bg-color: #eeecec;
-      --play-bg-sidebar: #f9f9f9;
-      --play-bg-header: #ffffff;
-      --play-bg-frame: #ffffff;
     }
   }
 `;

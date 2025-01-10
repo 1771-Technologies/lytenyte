@@ -50,9 +50,9 @@ export type GridInternalState<D, E> = {
   readonly columnWidthDeltas: Signal<Record<string, number> | null>;
   readonly columnResizeIsActive: Signal<boolean>;
 
-  readonly fieldCacheRef: {
+  readonly fieldCacheRef: ReadonlySignal<{
     [c in "group" | "column" | "pivot" | "quick-search"]: { [columnId: string]: unknown };
-  };
+  }>;
 
   readonly keyBindingIdToKey: ReadonlySignal<Record<string, KeyBindingString[]>>;
 
@@ -67,7 +67,7 @@ export type GridInternalState<D, E> = {
   readonly rowTopCount: ReadonlySignal<number>;
   readonly rowBottomCount: ReadonlySignal<number>;
 
-  readonly rowDetailAutoHeightCache: { [rowId: string]: number };
+  readonly rowDetailAutoHeightCache: ReadonlySignal<{ [rowId: string]: number }>;
 
   readonly rowDragIsActive: Signal<boolean>;
   readonly rowDragOverIndex: Signal<number>;
@@ -76,7 +76,7 @@ export type GridInternalState<D, E> = {
 
   readonly rowPositions: ReadonlySignal<Uint32Array>;
   readonly rowDetailHeight: ReadonlySignal<(i: number) => number>;
-  readonly rowAutoHeightCache: { [rowIndex: number]: number };
+  readonly rowAutoHeightCache: ReadonlySignal<{ [rowIndex: number]: number }>;
 
   readonly rowFirstVisible: Signal<number>;
   readonly rowLastVisible: Signal<number>;

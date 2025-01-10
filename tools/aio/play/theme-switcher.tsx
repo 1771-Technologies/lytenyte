@@ -31,8 +31,8 @@ export function ThemeSwitcher() {
     >
       <option value="dark">Dark</option>
       <option value="light">Light</option>
-      <option value="lng-term256">Term</option>
-      <option value="lng-teal">Teal</option>
+      <option value="lng1771-term256">Term</option>
+      <option value="lng1771-teal">Teal</option>
     </select>
   );
 }

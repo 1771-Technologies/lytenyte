@@ -44,6 +44,7 @@
     "@vitest/browser": "^2.1.8",
     "@vitest/coverage-v8": "^2.1.8",
     "@vitest/ui": "2.1.8",
+    "@1771technologies/grid-design": "workspace:*",
     "@wyw-in-js/babel-preset": "^0.5.5",
     "@wyw-in-js/vite": "^0.5.5",
     "ajv": "^8.17.1",
