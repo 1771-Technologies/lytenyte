@@ -65,7 +65,7 @@ let currentScope: null | Set<Watch>;
  * - Computed values are lazily evaluated and cached
  * - Remote sources are synchronized and disposed properly
  */
-export const cascada = <F extends Record<string, any>>(fn: () => F): Cascada<F> => {
+export const cascada = <F extends Record<string, AllSignalTypes<any>>>(fn: () => F): Cascada<F> => {
   const prevWatchers = watchersLookup;
   const prevDeps = depsLookup;
   const prevRemove = remoteSources;

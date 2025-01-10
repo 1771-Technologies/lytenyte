@@ -1,5 +1,5 @@
-import { computed, signal, type Signal } from "@1771technologies/cascada";
-import { useCascada } from "../cascada.js";
+import { cascada, computed, signal, type Signal } from "@1771technologies/cascada";
+import { useCascada, useCascadaStore } from "../cascada.js";
 import { render } from "@1771technologies/aio/browser";
 import type { CascadaStore } from "../types.js";
 
@@ -147,4 +147,23 @@ test("should only renderer at the correct level", async () => {
 
   expect(childFn).toHaveBeenCalledTimes(2);
   expect(fn).toHaveBeenCalledOnce();
+});
+
+test("should be able to use a vanilla store", async () => {
+  type Store = { count: Signal<number> };
+  const s = cascada<Store>(() => {
+    const count = signal(0);
+
+    return { count };
+  });
+
+  const Component = () => {
+    const store = useCascadaStore<Store>(s);
+
+    return <button>{store.useValue("count")}</button>;
+  };
+
+  const screen = render(<Component />);
+
+  await expect.element(screen.getByText("0")).toBeVisible();
 });

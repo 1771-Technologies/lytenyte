@@ -1,4 +1,4 @@
-import type { AllSignalTypes, signal } from "@1771technologies/cascada";
+import type { AllSignalTypes, signal, Cascada } from "@1771technologies/cascada";
 import { cascada as vanilla } from "@1771technologies/cascada";
 import { useRef, useState, useSyncExternalStore } from "react";
 import type { CascadaStore } from "./types.js";
@@ -38,6 +38,62 @@ export const cascada = <F extends Record<string, AllSignalTypes<any>>>(
   fn: () => F,
 ): CascadaStore<F> => {
   const store = vanilla(fn);
+
+  return cascadaFromVanilla(store);
+};
+
+/**
+ * React hook for creating a Cascada store within a component. The store is created only once
+ * when the component mounts and persists across re-renders.
+ *
+ * @template F - A record type mapping string keys to reactive signals
+ * @param fn - Factory function that creates the store's signals
+ * @returns A React-optimized Cascada store instance
+ *
+ * @example
+ * ```typescript
+ * function UserProfile() {
+ *   const store = useCascada(() => ({
+ *     name: signal(''),
+ *     email: signal(''),
+ *     isValid: computed(() =>
+ *       name.get().length > 0 &&
+ *       email.get().includes('@')
+ *     )
+ *   }));
+ *
+ *   const name = store.useValue('name');
+ *   const isValid = store.useValue('isValid');
+ *
+ *   return (
+ *     <form>
+ *       <input value={name} />
+ *       {!isValid && <span>Please fill in all fields</span>}
+ *     </form>
+ *   );
+ * }
+ * ```
+ *
+ * @remarks
+ * - The store is created only once when the component mounts
+ * - The store persists across component re-renders
+ * - Store cleanup is handled automatically when the component unmounts
+ * - Signals and computed values maintain referential stability
+ */
+export const useCascada = <F extends Record<string, AllSignalTypes<any>>>(fn: () => F) => {
+  const [store, _] = useState(() => cascada(fn));
+  return store;
+};
+
+export const useCascadaStore = <F extends Record<string, AllSignalTypes<any>>>(v: Cascada<F>) => {
+  const [store, _] = useState(() => cascadaFromVanilla(v));
+
+  return store;
+};
+
+export const cascadaFromVanilla = <F extends Record<string, AllSignalTypes<any>>>(
+  store: Cascada<F>,
+) => {
   const useSignal = (s: keyof (typeof store)["store"]) => {
     const signal = store.store[s];
     return useSyncExternalStore(signal.watch, signal.get, signal.get);
@@ -82,47 +138,4 @@ export const cascada = <F extends Record<string, AllSignalTypes<any>>>(
     useValue: useSignal,
     useSelector,
   };
-};
-
-/**
- * React hook for creating a Cascada store within a component. The store is created only once
- * when the component mounts and persists across re-renders.
- *
- * @template F - A record type mapping string keys to reactive signals
- * @param fn - Factory function that creates the store's signals
- * @returns A React-optimized Cascada store instance
- *
- * @example
- * ```typescript
- * function UserProfile() {
- *   const store = useCascada(() => ({
- *     name: signal(''),
- *     email: signal(''),
- *     isValid: computed(() =>
- *       name.get().length > 0 &&
- *       email.get().includes('@')
- *     )
- *   }));
- *
- *   const name = store.useValue('name');
- *   const isValid = store.useValue('isValid');
- *
- *   return (
- *     <form>
- *       <input value={name} />
- *       {!isValid && <span>Please fill in all fields</span>}
- *     </form>
- *   );
- * }
- * ```
- *
- * @remarks
- * - The store is created only once when the component mounts
- * - The store persists across component re-renders
- * - Store cleanup is handled automatically when the component unmounts
- * - Signals and computed values maintain referential stability
- */
-export const useCascada = <F extends Record<string, AllSignalTypes<any>>>(fn: () => F) => {
-  const [store, _] = useState(() => cascada(fn));
-  return store;
 };
