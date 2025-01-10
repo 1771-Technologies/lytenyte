@@ -85,12 +85,65 @@ export const useCascada = <F extends Record<string, AllSignalTypes<any>>>(fn: ()
   return store;
 };
 
+/**
+ * React hook for creating a React-optimized Cascada store from an existing vanilla Cascada instance.
+ * This hook ensures the store is properly integrated with React's lifecycle and only created once.
+ *
+ * @template F - A record type mapping string keys to reactive signals
+ * @param v - An existing vanilla Cascada store instance
+ * @returns A React-optimized Cascada store with hooks for accessing state
+ *
+ * @example
+ * ```typescript
+ * // Create a vanilla store outside of React
+ * const vanillaStore = vanilla(() => ({
+ *   count: signal(0),
+ *   doubleCount: computed(() => count.get() * 2)
+ * }));
+ *
+ * // Use it in a React component
+ * function Counter() {
+ *   const store = useCascadaStore(vanillaStore);
+ *   const count = store.useValue('count');
+ *   return <div>{count}</div>;
+ * }
+ * ```
+ */
 export const useCascadaStore = <F extends Record<string, AllSignalTypes<any>>>(v: Cascada<F>) => {
   const [store, _] = useState(() => cascadaFromVanilla(v));
 
   return store;
 };
 
+/**
+ * Converts a vanilla Cascada store into a React-optimized store with hooks for accessing state.
+ * This function adds React-specific functionality while preserving the original store's behavior.
+ *
+ * @template F - A record type mapping string keys to reactive signals
+ * @param store - The vanilla Cascada store to convert
+ * @returns A React-optimized store with additional hooks for accessing state
+ *
+ * @remarks
+ * - Adds `useValue` hook for accessing individual signals
+ * - Adds `useSelector` hook for computing derived state
+ * - Maintains referential stability of selectors
+ * - Integrates with React's reconciliation process
+ *
+ * @example
+ * ```typescript
+ * const vanillaStore = vanilla(() => ({
+ *   count: signal(0)
+ * }));
+ *
+ * const reactStore = cascadaFromVanilla(vanillaStore);
+ *
+ * // Now you can use React hooks
+ * function Counter() {
+ *   const count = reactStore.useValue('count');
+ *   return <div>{count}</div>;
+ * }
+ * ```
+ */
 export const cascadaFromVanilla = <F extends Record<string, AllSignalTypes<any>>>(
   store: Cascada<F>,
 ) => {
