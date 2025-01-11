@@ -20,7 +20,7 @@ const base: ComputeBoundsArgs = {
 function printBounds(bounds: ComputeBoundsArgs) {
   const b = computeBounds(bounds);
 
-  const values = [`${b.firstCol}`, `${b.lastCol}`, `${b.firstRow}`, `${b.lastRow}`];
+  const values = [`${b.columnStart}`, `${b.columnEnd}`, `${b.rowStart}`, `${b.rowEnd}`];
 
   return formatTable([values], ["First Col", "Last Col", "First Row", "Last Row"]);
 }

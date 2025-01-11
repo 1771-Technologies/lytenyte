@@ -57,7 +57,7 @@ export interface ServerState<D, E> {
 export function createServerDataSource<D, E>(
   init: ServerDataSourceInitial<D, E>,
 ): RowDataSourceEnterprise<D, E> {
-  const { store: state, dispose } = cascada(() => {
+  const state = cascada(() => {
     const api$ = signal(null as unknown as ApiEnterprise<D, E>);
     const rowDataFetcher = init.rowDataFetcher;
     const rowClearOutOfView = init.rowClearOutOfViewBlocks ?? false;
@@ -162,7 +162,6 @@ export function createServerDataSource<D, E>(
     },
     clean: () => {
       while (watchers.length) watchers.pop()!();
-      dispose();
     },
 
     rowById: (id) => state.graph.rowById(id),
