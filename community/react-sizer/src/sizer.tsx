@@ -109,13 +109,27 @@ export function Sizer({
   );
 
   return (
-    <div style={{ width: "100%", height: "100%", position: "relative" }}>
+    <div
+      style={{
+        minHeight: "inherit",
+        maxHeight: "inherit",
+        height: "100%",
+        width: "100%",
+        minWidth: "inherit",
+        maxWidth: "inherit",
+        position: "relative",
+      }}
+    >
       <div
         ref={init}
         style={{
           position: "absolute",
-          inlineSize: "100%",
-          blockSize: "100%",
+          minHeight: "inherit",
+          maxHeight: "inherit",
+          height: "100%",
+          width: "100%",
+          minWidth: "inherit",
+          maxWidth: "inherit",
           pointerEvents: "none",
         }}
       />

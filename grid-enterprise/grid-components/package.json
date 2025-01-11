@@ -13,7 +13,10 @@
   "dependencies": {
     "@1771technologies/grid-types": "workspace:*",
     "@1771technologies/grid-design": "workspace:*",
-    "@1771technologies/js-utils": "workspace:*"
+    "@1771technologies/js-utils": "workspace:*",
+    "@1771technologies/react-list-view": "workspace:*",
+    "@1771technologies/react-popover": "workspace:*",
+    "@1771technologies/react-utils": "workspace:*"
   },
   "devDependencies": {}
 }
