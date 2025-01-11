@@ -1,16 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useSyncExternalStore } from "react";
 import { addTask } from "./scheduler.js";
-import type {
-  DisposableSignal,
-  ReadonlySignal,
-  ReadonlyRemoteSource,
-  Setter,
-  Signal,
-  SignalOptions,
-  Watch,
-  WritableRemoteSource,
-} from "./types.js";
+import type { ReadonlySignal, Setter, Signal, SignalOptions, Watch } from "./types.js";
 
 const identify = <T>(v: T) => v;
 let watchersLookup: null | Map<symbol, Set<() => void>> = null;
@@ -75,12 +66,9 @@ export const signal = <T>(
   return { ...s, use };
 };
 
-export function computed<T>(fn: () => T, set: (v: T) => void): DisposableSignal<T>;
+export function computed<T>(fn: () => T, set: (v: T) => void): Signal<T>;
 export function computed<T>(fn: () => T): ReadonlySignal<T>;
-export function computed<T>(
-  fn: () => T,
-  set?: (v: T) => void,
-): ReadonlySignal<T> | DisposableSignal<T> {
+export function computed<T>(fn: () => T, set?: (v: T) => void): ReadonlySignal<T> | Signal<T> {
   if (!watchersLookup) throw new Error("`computed` must be called from within the make function.");
   let state: 0 | 1 = 0;
   let value: T = null as unknown as T;
@@ -119,12 +107,8 @@ export function computed<T>(
   };
 
   const peek = makePeek(get);
-  const dispose = () => {
-    state = 0;
-    prev.forEach((c) => c());
-  };
 
-  const s = { get, peek, watch, dispose };
+  const s = { get, peek, watch };
   const use = () => useSyncExternalStore(s.watch, s.get, s.get);
 
   if (set) {
@@ -134,64 +118,6 @@ export function computed<T>(
     };
 
     return { ...s, use, set: setInternal };
-  }
-
-  return { ...s, use };
-}
-
-export function remote<T>(args: WritableRemoteSource<T>): DisposableSignal<T>;
-export function remote<T>(args: ReadonlyRemoteSource<T>): ReadonlySignal<T>;
-export function remote<T>(args: {
-  get: () => T;
-  subscribe: Watch;
-  set?: (v: T) => void;
-}): DisposableSignal<T> | ReadonlySignal<T> {
-  if (!watchersLookup) throw new Error("`remote` must be called from within the make function.");
-
-  const symbol = Symbol();
-
-  const watch = makeWatch(symbol, watchersLookup!);
-  const dependentOn = makeDependsOn(symbol, depsLookup!);
-
-  const watchers = watchersLookup;
-  const deps = depsLookup!;
-
-  const fetchRemoteValue = args.get;
-  const subscribe = args.subscribe;
-
-  let value: T = null as T;
-  let cached = false;
-
-  const get = () => {
-    if (currentScope) currentScope.add(dependentOn);
-    if (cached) return value;
-
-    value = fetchRemoteValue();
-    cached = true;
-
-    return value;
-  };
-
-  const dispose = subscribe(() => {
-    cached = false;
-    notify(symbol, watchers, deps);
-  });
-
-  // Register for clean up later if necessary
-  remoteSources!.set(symbol, dispose);
-
-  const peek = makePeek(get);
-  const set = args.set;
-
-  const s = { get, peek, watch, dispose };
-  const use = () => useSyncExternalStore(s.watch, s.get, s.get);
-  if (set) {
-    const setter = (v: Setter<T>) => {
-      const next = typeof v === "function" ? (v as (v: T) => T)(value) : v;
-      set(next);
-    };
-
-    return { ...s, use, set: setter };
   }
 
   return { ...s, use };
@@ -226,8 +152,7 @@ function makeDependsOn(symbol: symbol, depsLookup: Map<symbol, Set<() => void>>)
     depsLookup.get(symbol)!.add(fn);
 
     return () => {
-      const set = depsLookup.get(symbol);
-      if (!set) return;
+      const set = depsLookup.get(symbol)!;
 
       set.delete(fn);
       if (set.size === 0) depsLookup.delete(symbol);

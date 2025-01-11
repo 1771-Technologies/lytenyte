@@ -61,14 +61,6 @@ test("Should not be active until `get` is called at least once", async () => {
   x.set(10);
   await vi.runOnlyPendingTimersAsync();
   expect(fn).toHaveBeenCalledTimes(2);
-
-  // disposing removes the subscriptions
-  z.dispose();
-  x.set(120);
-  await vi.runOnlyPendingTimersAsync();
-  expect(fn).toHaveBeenCalledTimes(2);
-
-  vi.useRealTimers();
 });
 
 test("Should be able to peek a computed value", () => {
@@ -98,8 +90,6 @@ test("Should be able to call dispose multiple times", () => {
   });
 
   y.get();
-  y.dispose();
-  y.dispose();
 });
 
 test("Should not be able to make a computed value outside of cascada", () => {

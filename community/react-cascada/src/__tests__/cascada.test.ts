@@ -1,19 +1,16 @@
-import { cascada, computed, remote, signal } from "../cascada.js";
+import { cascada, computed, signal } from "../cascada.js";
 
 test("Should be able to create a store then dispose of it", async () => {
   vi.useFakeTimers();
-  const remoteValue = makeRemoveValue().remoteValue;
   const x = cascada(() => {
-    const rr = remote(remoteValue);
     const x = signal(10);
-    const v = computed(() => rr.get() + x.get());
+    const v = computed(() => x.get() * 2);
 
-    return { rr, x, v };
+    return { x, v };
   });
 
-  expect(x.rr.get()).toEqual(4);
   expect(x.x.get()).toEqual(10);
-  expect(x.v.get()).toEqual(14);
+  expect(x.v.get()).toEqual(20);
 
   const fn = vi.fn();
   x.x.watch(fn);
@@ -23,42 +20,11 @@ test("Should be able to create a store then dispose of it", async () => {
 
   await vi.runOnlyPendingTimersAsync();
   expect(fn).toHaveBeenCalledTimes(2);
-  expect(x.rr.get()).toEqual(4);
   expect(x.x.get()).toEqual(20);
-  expect(x.v.get()).toEqual(24);
-
-  x.rr.set(8);
-
-  expect(x.rr.get()).toEqual(8);
-  expect(x.x.get()).toEqual(20);
-  expect(x.v.get()).toEqual(28);
+  expect(x.v.get()).toEqual(40);
 
   vi.useRealTimers();
 });
-
-function makeRemoveValue() {
-  const subs = new Set<() => void>();
-  let value = 4;
-  const fn = vi.fn();
-  const remoteValue = {
-    get: () => {
-      fn();
-      return value;
-    },
-    set: (v: number) => {
-      value = v;
-      subs.forEach((c) => c());
-    },
-
-    subscribe: (fn: () => void) => {
-      subs.add(fn);
-
-      return () => subs.delete(fn);
-    },
-  };
-
-  return { remoteValue, fn };
-}
 
 test("Should support nested cascada systems", () => {
   const s = cascada(() => {
