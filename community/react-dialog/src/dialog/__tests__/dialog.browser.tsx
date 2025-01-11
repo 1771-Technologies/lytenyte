@@ -58,27 +58,27 @@ test("The dialog captures focus", async () => {
 
   // The first element should automatically be focused.
   await expect.element(alpha).toHaveFocus();
-  userEvent.keyboard("{Tab}");
+  await userEvent.keyboard("{Tab}");
 
   const input = screen.getByTestId("input");
   await expect.element(input).toBeVisible();
   await expect.element(input).toHaveFocus();
-  userEvent.keyboard("{Tab}");
+  await userEvent.keyboard("{Tab}");
 
   const live = screen.getByText("Live");
   await expect.element(live).toBeVisible();
   await expect.element(live).toHaveFocus();
 
-  userEvent.keyboard("{Tab}");
+  await userEvent.keyboard("{Tab}");
   await expect.element(alpha).toHaveFocus();
 
-  userEvent.keyboard("{Shift>}{Tab}{/Shift}");
+  await userEvent.keyboard("{Shift>}{Tab}{/Shift}");
   await expect.element(live).toHaveFocus();
-  userEvent.keyboard("{Shift>}{Tab}{/Shift}");
+  await userEvent.keyboard("{Shift>}{Tab}{/Shift}");
   await expect.element(input).toHaveFocus();
-  userEvent.keyboard("{Shift>}{Tab}{/Shift}");
+  await userEvent.keyboard("{Shift>}{Tab}{/Shift}");
   await expect.element(alpha).toHaveFocus();
-  userEvent.keyboard("{Shift>}{Tab}{/Shift}");
+  await userEvent.keyboard("{Shift>}{Tab}{/Shift}");
   await expect.element(live).toHaveFocus();
 });
 
