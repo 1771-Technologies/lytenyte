@@ -23,26 +23,3 @@ export const dragState = cascada(() => {
     overTags,
   };
 });
-
-/** Direct access to the Cascada store instance for drag state management */
-export const state = dragState.store;
-
-/**
- * React hook that provides access to the current drag state values.
- *
- * @returns An object containing the current values of:
- * - dragActive: boolean
- * - activeTags: string[] | null
- * - dragData: () => unknown
- * - overTags: string[] | null
- *
- * @example
- * ```tsx
- * function DragComponent() {
- *   const { dragActive, activeTags } = useDragState();
- *
- *   return dragActive ? <div>Dragging items with tags: {activeTags?.join(', ')}</div> : null;
- * }
- * ```
- */
-export const useDragState = dragState.useValue;

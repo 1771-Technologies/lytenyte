@@ -76,7 +76,7 @@ export function useDroppable({ tags, onDragEnter, onDragLeave, onDrop }: Droppab
   const immediateOver = useRef(false);
 
   const onDragOver = useEvent((event: ReactDragEvent) => {
-    if (!dragState.store.dragActive.peek()) return;
+    if (!dragState.dragActive.peek()) return;
 
     event.stopPropagation();
 
@@ -97,10 +97,10 @@ export function useDroppable({ tags, onDragEnter, onDragLeave, onDrop }: Droppab
         controller.abort();
 
         onDragLeave?.({
-          getData: dragState.store.dragData.peek(),
+          getData: dragState.dragData.peek(),
           event,
           overTags: tags,
-          dragTags: dragState.store.activeTags.peek()!,
+          dragTags: dragState.activeTags.peek()!,
         });
 
         return false;
@@ -112,10 +112,10 @@ export function useDroppable({ tags, onDragEnter, onDragLeave, onDrop }: Droppab
     document.addEventListener("dragend", handleEnd, { signal: controller.signal });
 
     onDragEnter?.({
-      getData: dragState.store.dragData.peek(),
+      getData: dragState.dragData.peek(),
       event: event.nativeEvent,
       overTags: tags,
-      dragTags: dragState.store.activeTags.peek() ?? [],
+      dragTags: dragState.activeTags.peek() ?? [],
     });
     immediateOver.current = true;
     setIsOver(true);
@@ -127,10 +127,10 @@ export function useDroppable({ tags, onDragEnter, onDragLeave, onDrop }: Droppab
     if (!hasTags(tags)) return;
 
     onDrop?.({
-      getData: dragState.store.dragData.peek(),
+      getData: dragState.dragData.peek(),
       event,
       overTags: tags,
-      dragTags: dragState.store.activeTags.peek()!,
+      dragTags: dragState.activeTags.peek()!,
     });
 
     return;
@@ -153,7 +153,7 @@ export function useDroppable({ tags, onDragEnter, onDragLeave, onDrop }: Droppab
  * @private
  */
 function hasTags(allowedTags: string[]) {
-  const tags = dragState.store.activeTags.peek() ?? [];
+  const tags = dragState.activeTags.peek() ?? [];
 
   return tags.some((c) => allowedTags.includes(c));
 }

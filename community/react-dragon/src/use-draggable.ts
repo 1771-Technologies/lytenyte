@@ -108,9 +108,9 @@ export function useDraggable({
 
     // Grab the drag tags for this drag. We set our initial drag state here.
     const tags = dragTags();
-    dragState.store.activeTags.set(tags);
-    dragState.store.dragActive.set(true);
-    dragState.store.dragData.set(() => dragData);
+    dragState.activeTags.set(tags);
+    dragState.dragActive.set(true);
+    dragState.dragData.set(() => dragData);
 
     onDragStart?.({ tags, event: e.nativeEvent });
 
@@ -178,10 +178,10 @@ export function useDraggable({
           onDragEnd?.({ event, tags });
         }
 
-        dragState.store.activeTags.set(null);
-        dragState.store.dragActive.set(false);
-        dragState.store.dragData.set(() => () => null);
-        dragState.store.overTags.set(null);
+        dragState.activeTags.set(null);
+        dragState.dragActive.set(false);
+        dragState.dragData.set(() => () => null);
+        dragState.overTags.set(null);
       },
       { signal: controller.signal },
     );
