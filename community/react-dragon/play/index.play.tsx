@@ -2,6 +2,14 @@ import { useState } from "react";
 import { useDraggable } from "../src/use-draggable";
 import { useDroppable } from "../src/use-droppable";
 
+void css`
+  :global() {
+    pre {
+      margin: 0px;
+    }
+  }
+`;
+
 export default function Drag() {
   const [y, setY] = useState(0);
   const [x, setX] = useState(0);

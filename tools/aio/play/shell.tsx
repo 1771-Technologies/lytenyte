@@ -39,6 +39,7 @@ export function Shell(props: { routes: RouteObject[] }) {
             display: flex;
             align-items: center;
             padding-inline: ${t.spacing.space_50};
+            border-right: 1px solid ${t.colors.borders_separator};
           `}
         >
           Title
@@ -48,6 +49,8 @@ export function Shell(props: { routes: RouteObject[] }) {
             display: flex;
             align-items: center;
             padding-inline: ${t.spacing.space_50};
+            background-color: ${t.colors.backgrounds_default};
+            border-bottom: 1px solid ${t.colors.borders_separator};
           `}
         >
           <ThemeSwitcher />
@@ -60,6 +63,7 @@ export function Shell(props: { routes: RouteObject[] }) {
           background-color: ${t.colors.backgrounds_default};
           width: ${sidebarWidth};
           padding-top: ${headerHeight};
+          border-right: 1px solid ${t.colors.borders_separator};
         `}
       >
         <ul>
@@ -83,11 +87,13 @@ export function Shell(props: { routes: RouteObject[] }) {
       >
         <div
           className={css`
-            background-color: ${t.colors.backgrounds_light};
             margin: ${t.spacing.space_30};
             width: calc(100% - ${t.spacing.space_30} * 2);
             height: calc(100% - ${t.spacing.space_30} * 2);
             border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid ${t.colors.borders_strong};
+            box-shadow: ${t.shadows[700]};
           `}
         >
           <iframe
