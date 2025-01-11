@@ -4,9 +4,6 @@ import { Command } from "commander";
 
 const dirname = import.meta.dir;
 const viteConfigPath = path.join(dirname, "vite.config.ts");
-const viteWorkspacePath = path.relative(process.cwd(), path.join(dirname, "vite.workspace.ts"));
-
-console.log(viteWorkspacePath);
 
 export const testCmd = new Command("test")
   .description("Testing powered by vitest")

@@ -24,6 +24,8 @@ certs/
 
 .dev.vars
 
+__screenshots__/
+
 .turbo
 
 **/_vitest-coverage

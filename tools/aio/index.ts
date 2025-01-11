@@ -5,6 +5,7 @@ import { testCmd } from "./test/test-cmd";
 import { playCmd } from "./play/play-cmd";
 import { playwrightCmd } from "./playwright/playwright-cmd";
 import { buildCmd } from "./build-cmd/build-cmd";
+import { checkCmd } from "./check/check-cmd";
 
 program
   .name("1771 AIO")
@@ -17,5 +18,6 @@ program.addCommand(testCmd);
 program.addCommand(playCmd);
 program.addCommand(playwrightCmd);
 program.addCommand(buildCmd);
+program.addCommand(checkCmd);
 
 program.parse();
