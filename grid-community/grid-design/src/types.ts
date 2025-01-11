@@ -133,6 +133,8 @@ export type Theme = {
     readonly space_10: string;
     /** 8px */
     readonly space_20: string;
+    /** 10px */
+    readonly space_25: string;
     /** 12px */
     readonly space_30: string;
     /** 16px */

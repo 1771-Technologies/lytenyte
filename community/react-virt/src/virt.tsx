@@ -5,6 +5,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type JSX,
   type ReactNode,
@@ -44,6 +45,10 @@ export interface VirtProps<D> {
    * This may impact performance but provides smoother visual results.
    */
   readonly preventFlash?: boolean;
+  /**
+   * An index to initially scroll an item into view
+   */
+  readonly scrollIntoViewIndex?: number;
 }
 
 /**
@@ -89,6 +94,7 @@ export function Virt<D>({
   renderer: Row,
   preventFlash,
   elRef,
+  scrollIntoViewIndex,
 
   ...props
 }: VirtProps<D> &
@@ -151,7 +157,26 @@ export function Virt<D>({
 
   useEffect(() => {
     handleScroll();
-  }, [handleScroll, vp]);
+  }, [handleScroll, vp, size]);
+
+  const scrolled = useRef(false);
+  useEffect(() => {
+    if (!vp || scrollIntoViewIndex == null || scrolled.current) return;
+
+    const t = setTimeout(() => {
+      vp.scrollBy({ top: scrollIntoViewIndex * itemHeight });
+      scrolled.current = true;
+
+      setTimeout(() => {
+        const child = vp.firstElementChild?.children?.[5];
+        if (child) {
+          (child as HTMLElement).focus();
+        }
+      }, 30);
+    }, 10);
+
+    return () => clearTimeout(t);
+  }, [itemHeight, scrollIntoViewIndex, vp]);
 
   const combinedRef = useCombinedRefs(setVp, elRef);
 

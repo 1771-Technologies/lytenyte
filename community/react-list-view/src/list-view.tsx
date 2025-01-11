@@ -34,6 +34,8 @@ export interface ListViewProps<D> {
   readonly className?: string;
   readonly style?: CSSProperties;
 
+  readonly scrollIntoViewIndex?: number;
+
   readonly itemClassName?: string;
   readonly itemStyle?: CSSProperties;
 
@@ -59,6 +61,7 @@ export function ListView<D>({
   style,
   rtl = false,
   itemHeight = 24,
+  scrollIntoViewIndex,
 }: ListViewProps<D>) {
   const tree = useMemo(() => {
     return createPathTree(paths, { considerAdjacency: true });
@@ -122,6 +125,7 @@ export function ListView<D>({
         className={className}
         style={style}
         tabIndex={0}
+        role="tree"
         onKeyDown={(ev) => {
           if (document.activeElement === ref.current && ev.key === "ArrowDown") {
             // Focused the first item
@@ -205,6 +209,7 @@ export function ListView<D>({
         itemHeight={itemHeight}
         renderer={ListItemRenderer}
         focusedIndex={focused}
+        scrollIntoViewIndex={scrollIntoViewIndex}
         preventFlash
       />
     </ListViewProvider>
@@ -229,6 +234,7 @@ function ListItemRenderer<D>(p: RendererProps<PathTreeLeafNode<D> | PathTreePare
       data-rowindex={p.rowIndex}
       onFocus={() => ctx.setFocused(p.rowIndex)}
       onBlur={() => ctx.setFocused(null)}
+      onClick={() => ctx.onAction(p.data)}
       onKeyDown={(ev) => {
         const open = ctx.rtl ? "ArrowLeft" : "ArrowRight";
         const close = ctx.rtl ? "ArrowRight" : "ArrowLeft";
@@ -260,12 +266,14 @@ function ListItemRenderer<D>(p: RendererProps<PathTreeLeafNode<D> | PathTreePare
       }}
       role="treeitem"
       style={{
+        ...ctx.itemStyle,
         position: "absolute",
         top: p.y,
         height: p.height,
         width: "100%",
         boxSizing: "border-box",
       }}
+      className={ctx.itemClassName}
       aria-posinset={p.rowIndex + 1}
       aria-label={ctx.axe.axeItemLabels(p.data)}
       aria-level={depth}

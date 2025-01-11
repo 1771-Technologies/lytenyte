@@ -15,6 +15,10 @@ export const LngPopover: typeof Popover = (props) => {
 
           box-shadow: ${t.shadows[400]};
 
+          &:focus {
+            outline: none;
+          }
+
           &::backdrop {
             background-color: transparent;
           }

@@ -26,6 +26,7 @@ export interface ListViewContextType<D> {
   ) => void;
   readonly className?: string;
   readonly itemStyle?: CSSProperties;
+  readonly itemClassName?: string;
 }
 
 const context = createContext<ListViewContextType<any>>({

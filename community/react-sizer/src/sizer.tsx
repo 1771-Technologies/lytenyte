@@ -88,6 +88,7 @@ export function Sizer({
   useEffect(() => {
     return () => ref.current?.disconnect();
   }, []);
+
   const init = useCallback(
     (el: HTMLDivElement | null) => {
       if (!el) return;

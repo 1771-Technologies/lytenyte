@@ -120,6 +120,7 @@ export const t: Theme = {
     space_05:                            "var(--lng1771-space-05)",
     space_10:                            "var(--lng1771-space-10)",
     space_20:                            "var(--lng1771-space-20)",
+    space_25:                            "var(--lng1771-space-25)",
     space_30:                            "var(--lng1771-space-30)",
     space_40:                            "var(--lng1771-space-40)",
     space_50:                            "var(--lng1771-space-50)",
