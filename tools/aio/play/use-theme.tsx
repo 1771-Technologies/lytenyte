@@ -15,10 +15,10 @@ export const useTheme = () => {
       }
     };
 
-    window.addEventListener("storage", handleStorageChange);
+    globalThis.addEventListener("storage", handleStorageChange);
 
     return () => {
-      window.removeEventListener("storage", handleStorageChange);
+      globalThis.removeEventListener("storage", handleStorageChange);
     };
   }, []);
 };

@@ -102,6 +102,7 @@ export function Shell(props: { routes: RouteObject[] }) {
               height: 100%;
               box-sizing: border-box;
               border: none;
+              background-color: transparent;
             `}
             src={frame}
           />

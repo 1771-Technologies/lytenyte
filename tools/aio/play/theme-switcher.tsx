@@ -16,8 +16,8 @@ export function ThemeSwitcher() {
 
   const updateTheme = useCallback((ev: ChangeEvent<HTMLSelectElement>) => {
     const theme = ev.target.value;
-    document.documentElement.classList.remove("light", "dark");
-    document.documentElement.classList.add(theme);
+    document.body.classList.remove("light", "dark", "lng1771-term256", "lng1771-teal");
+    document.body.classList.add(theme);
     localStorage.setItem("theme", theme);
     setTheme(theme);
   }, []);
