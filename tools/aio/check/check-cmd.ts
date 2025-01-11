@@ -13,7 +13,7 @@ export const checkCmd = new Command("check")
     if (typeCheckProc.exitCode !== 0) process.exit(1);
 
     console.log("\nRunning Unit Tests\n");
-    const testCheck = Bun.spawn(["aio", "test", "run", "--pass-with-no-tests"], {
+    const testCheck = Bun.spawn(["aio", "test", "run", "--pass-with-no-tests", "--coverage"], {
       stdio: ["inherit", "inherit", "inherit"],
     });
     await testCheck.exited;
