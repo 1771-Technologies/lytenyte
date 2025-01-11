@@ -3,13 +3,13 @@ import type {
   LngAddEventListenerEnterprise,
   LngRemoveEventListenerEnterprise,
 } from "../events/events-enterprise";
-import type { ColumnInFilterItem } from "../row-data-source/rds-enterprise";
 import type { State } from "../store/state-enterprise";
 import type { RowNode, RowNodeGroup, SortModelItem } from "../types";
 import type {
   CellSelectionRect,
   ClipboardCopyOptions,
   ColumnFilter,
+  ColumnInFilterItem,
   Target,
 } from "../types-enterprise";
 import type { ApiCommunity } from "./api-community";
@@ -91,8 +91,8 @@ export interface ApiEnterprise<D, C, E>
   readonly panelFrameClose: () => void;
 
   readonly rowReload: () => void;
-  readonly rowRetryExpansion: (row: RowNodeGroup) => void;
-  readonly rowRetryFailed: () => void;
+  readonly rowReloadExpansion: (row: RowNodeGroup) => void;
+  readonly rowReset: () => void;
 
   readonly eventAddListener: LngAddEventListenerEnterprise<this, D, C>;
   readonly eventRemoveListener: LngRemoveEventListenerEnterprise<this, D, C>;

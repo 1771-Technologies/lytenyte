@@ -175,9 +175,7 @@ export function initializeInternalState<D, E>(
 
     paginatePageCount,
 
-    fieldCacheRef: computed(() => {
-      return { "quick-search": {}, column: {}, group: {}, pivot: {} };
-    }),
+    fieldCacheRef: { "quick-search": {}, column: {}, group: {}, pivot: {} },
 
     filterMenuColumn: signal<ColumnEnterprise<D, E> | null>(null),
     filterMenuHandle: signal<HandleRef | null>(null),
@@ -207,8 +205,8 @@ export function initializeInternalState<D, E>(
 
     rowIsFullWidthInternal: rowIsFullWidthComputed(state, api),
 
-    rowAutoHeightCache: computed(() => ({})),
-    rowDetailAutoHeightCache: computed(() => ({})),
+    rowAutoHeightCache: {},
+    rowDetailAutoHeightCache: {},
     rowFirstVisible: signal(-1),
     rowLastVisible: signal(-1),
 

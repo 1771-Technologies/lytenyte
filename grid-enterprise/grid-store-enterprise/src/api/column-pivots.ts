@@ -32,7 +32,7 @@ export const columnPivots = <D, E>(api: ApiEnterprise<D, E>) => {
       const sx = api.getState();
       const rds = sx.internal.rowBackingDataSource.peek();
 
-      const pivots = rds.columnPivotGetDefinitions(api);
+      const pivots = rds.columnPivots(api);
 
       if (prevAbortController) {
         prevAbortController.abort();

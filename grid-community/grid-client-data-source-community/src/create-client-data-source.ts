@@ -47,7 +47,7 @@ export function createClientDataSource<D, E>(
 ): RowDataSourceBackingCommunity<D, E> {
   let watchers: (() => void)[] = [];
 
-  const { store: state, dispose } = cascada(() => {
+  const state = cascada(() => {
     const api$ = signal<ApiCommunity<D, E>>(null as unknown as ApiCommunity<D, E>);
 
     const cache = signal<Record<string, any>>({});
@@ -122,8 +122,6 @@ export function createClientDataSource<D, E>(
     clean: () => {
       watchers.forEach((c) => c());
       watchers = [];
-
-      dispose();
     },
 
     rowByIndex: (r: number) => rowByIndex(state, r),

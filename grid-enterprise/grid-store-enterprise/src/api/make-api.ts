@@ -249,7 +249,7 @@ export function makeApi<D, E>(
     columnPivotsReload: pivots.columnPivotsReload,
 
     columnInFilterItems: (c) =>
-      api.getState().internal.rowBackingDataSource.peek().columnInFilterItems(api, c),
+      api.getState().internal.rowBackingDataSource.peek().columnInFilterItems(c),
 
     contextMenuClose: () => api.getState().internal.contextMenuTarget.set(null),
 
@@ -261,9 +261,9 @@ export function makeApi<D, E>(
     panelFrameOpen: frame.panelFrameOpen,
 
     rowReload: () => api.getState().internal.rowBackingDataSource.peek().rowReload(),
-    rowRetryExpansion: (row) =>
-      api.getState().internal.rowBackingDataSource.peek().rowRetryExpansion(row),
-    rowRetryFailed: () => api.getState().internal.rowBackingDataSource.peek().rowRetryFailed(),
+    rowReloadExpansion: (row) =>
+      api.getState().internal.rowBackingDataSource.peek().rowReloadExpansion(row),
+    rowReset: () => api.getState().internal.rowBackingDataSource.peek().rowReset(),
   } satisfies StoreEnterprise<D, E>["api"];
 
   Object.assign(api, partial);

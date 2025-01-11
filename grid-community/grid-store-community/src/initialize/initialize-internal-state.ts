@@ -101,12 +101,7 @@ export function initializeInternalState<D, E>(
 
     navigatePosition: signal<Position | null>(null),
 
-    fieldCacheRef: {
-      "quick-search": {},
-      column: {},
-      group: {},
-      pivot: {},
-    },
+    fieldCacheRef: { "quick-search": {}, column: {}, group: {}, pivot: {} },
 
     keyBindingIdToKey: computed<Record<string, KeyBindingString[]>>(() => {
       return {};

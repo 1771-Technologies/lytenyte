@@ -1,6 +1,6 @@
 import { computed, type Signal } from "@1771technologies/react-cascada";
 import { evaluateClientFilter } from "@1771technologies/grid-client-filter";
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
+import type { ApiEnterprise } from "@1771technologies/grid-types";
 import type { RowNodeLeaf } from "@1771technologies/grid-types/community";
 
 export function filterNodesComputed<D, E>(

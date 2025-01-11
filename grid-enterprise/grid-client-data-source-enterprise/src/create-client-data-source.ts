@@ -52,7 +52,7 @@ export interface ClientDataSourceInitial<D> {
 export function createClientDataSource<D, E>(
   r: ClientDataSourceInitial<D>,
 ): RowDataSourceEnterprise<D, E> {
-  const { store: state, dispose } = cascada(() => {
+  const state = cascada(() => {
     const api$ = signal<ApiEnterprise<D, E>>(null as unknown as ApiEnterprise<D, E>);
 
     const cache = signal<Record<string, any>>({});
@@ -149,8 +149,6 @@ export function createClientDataSource<D, E>(
     clean: () => {
       watchers.forEach((c) => c());
       watchers = [];
-
-      dispose();
     },
 
     rowByIndex: (r) => rowByIndex(state, r),
@@ -194,7 +192,7 @@ export function createClientDataSource<D, E>(
 
     // Not relevant for client data source.
     rowReload: () => {},
-    rowRetryExpansion: () => {},
-    rowRetryFailed: () => {},
+    rowReloadExpansion: () => {},
+    rowReset: () => {},
   };
 }
