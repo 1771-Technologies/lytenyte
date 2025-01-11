@@ -174,6 +174,7 @@ function MenuImpl({
         const active = items.indexOf(document.activeElement as HTMLElement);
         if (active === -1) return;
 
+        console.log(items);
         if (ev.key === "ArrowDown") {
           const next = active + 1;
           if (next >= items.length) return;

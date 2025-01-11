@@ -59,6 +59,8 @@ export function MenuPortal({
         const unfilteredItems = getFocusableElements(menu!, true);
         const items = unfilteredItems.filter((c) => c.getAttribute("role")?.includes("menu"));
 
+        // This line should never be hit, the element must be active for it to encounter key events
+        /* v8 ignore next */
         if (!items.length || !document.activeElement) return;
 
         if (ev.key === "ArrowDown" && document.activeElement === menu) {
@@ -95,21 +97,23 @@ export function MenuPortal({
 
         if (ev.key === "ArrowDown") {
           const next = active + 1;
-          if (next >= items.length) return;
-
-          items[next].focus();
 
           ev.preventDefault();
           ev.stopPropagation();
+
+          if (next >= items.length) return;
+
+          items[next].focus();
         }
 
         if (ev.key === "ArrowUp") {
           const next = active - 1;
-          if (next < 0) return;
-          items[next].focus();
 
           ev.preventDefault();
           ev.stopPropagation();
+
+          if (next < 0) return;
+          items[next].focus();
         }
 
         if (ev.key === endDir) {
