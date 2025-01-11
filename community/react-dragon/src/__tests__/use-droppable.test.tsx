@@ -14,10 +14,10 @@ describe("useDroppable", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.useFakeTimers();
-    dragState.store.activeTags.set(null);
-    dragState.store.dragActive.set(false);
-    dragState.store.dragData.set(() => () => null);
-    dragState.store.overTags.set(null);
+    dragState.activeTags.set(null);
+    dragState.dragActive.set(false);
+    dragState.dragData.set(() => () => null);
+    dragState.overTags.set(null);
   });
 
   afterEach(() => {
@@ -80,9 +80,9 @@ describe("useDroppable", () => {
     });
 
     it("should handle dragOver with matching tags", () => {
-      dragState.store.dragActive.set(true);
-      dragState.store.activeTags.set(["tag1"]);
-      dragState.store.dragData.set(() => () => mockDragData);
+      dragState.dragActive.set(true);
+      dragState.activeTags.set(["tag1"]);
+      dragState.dragData.set(() => () => mockDragData);
 
       const { result } = renderHook(() =>
         useDroppable({
@@ -115,9 +115,9 @@ describe("useDroppable", () => {
     });
 
     it("should handle dragOver with non-matching tags", () => {
-      dragState.store.dragActive.set(true);
-      dragState.store.activeTags.set(["tag3"]);
-      dragState.store.dragData.set(() => () => mockDragData);
+      dragState.dragActive.set(true);
+      dragState.activeTags.set(["tag3"]);
+      dragState.dragData.set(() => () => mockDragData);
 
       const { result } = renderHook(() =>
         useDroppable({
@@ -142,9 +142,9 @@ describe("useDroppable", () => {
     });
 
     it("should not trigger dragEnter when already over", () => {
-      dragState.store.dragActive.set(true);
-      dragState.store.activeTags.set(["tag1"]);
-      dragState.store.dragData.set(() => () => mockDragData);
+      dragState.dragActive.set(true);
+      dragState.activeTags.set(["tag1"]);
+      dragState.dragData.set(() => () => mockDragData);
 
       const { result } = renderHook(() =>
         useDroppable({
@@ -169,8 +169,8 @@ describe("useDroppable", () => {
     });
 
     it("should handle dragOver with null activeTags", () => {
-      dragState.store.dragActive.set(true);
-      dragState.store.activeTags.set(null);
+      dragState.dragActive.set(true);
+      dragState.activeTags.set(null);
 
       const { result } = renderHook(() =>
         useDroppable({
@@ -196,9 +196,9 @@ describe("useDroppable", () => {
 
   describe("drag leave handling", () => {
     it("should handle dragLeave correctly", async () => {
-      dragState.store.dragActive.set(true);
-      dragState.store.activeTags.set(["tag1"]);
-      dragState.store.dragData.set(() => () => mockDragData);
+      dragState.dragActive.set(true);
+      dragState.activeTags.set(["tag1"]);
+      dragState.dragData.set(() => () => mockDragData);
 
       const { result } = renderHook(() =>
         useDroppable({
@@ -238,9 +238,9 @@ describe("useDroppable", () => {
     });
 
     it("should handle dragLeave without onDragLeave handler", async () => {
-      dragState.store.dragActive.set(true);
-      dragState.store.activeTags.set(["tag1"]);
-      dragState.store.dragData.set(() => () => mockDragData);
+      dragState.dragActive.set(true);
+      dragState.activeTags.set(["tag1"]);
+      dragState.dragData.set(() => () => mockDragData);
 
       const { result } = renderHook(() =>
         useDroppable({
@@ -271,9 +271,9 @@ describe("useDroppable", () => {
 
   describe("drop handling", () => {
     it("should handle drop with matching tags", () => {
-      dragState.store.dragActive.set(true);
-      dragState.store.activeTags.set(["tag1"]);
-      dragState.store.dragData.set(() => () => mockDragData);
+      dragState.dragActive.set(true);
+      dragState.activeTags.set(["tag1"]);
+      dragState.dragData.set(() => () => mockDragData);
 
       const { result } = renderHook(() =>
         useDroppable({
@@ -303,9 +303,9 @@ describe("useDroppable", () => {
     });
 
     it("should not trigger onDrop with non-matching tags", () => {
-      dragState.store.dragActive.set(true);
-      dragState.store.activeTags.set(["tag3"]);
-      dragState.store.dragData.set(() => () => mockDragData);
+      dragState.dragActive.set(true);
+      dragState.activeTags.set(["tag3"]);
+      dragState.dragData.set(() => () => mockDragData);
 
       const { result } = renderHook(() =>
         useDroppable({
@@ -330,9 +330,9 @@ describe("useDroppable", () => {
     });
 
     it("should handle drop when onDrop is not provided", () => {
-      dragState.store.dragActive.set(true);
-      dragState.store.activeTags.set(["tag1"]);
-      dragState.store.dragData.set(() => () => mockDragData);
+      dragState.dragActive.set(true);
+      dragState.activeTags.set(["tag1"]);
+      dragState.dragData.set(() => () => mockDragData);
 
       const { result } = renderHook(() =>
         useDroppable({
@@ -357,9 +357,9 @@ describe("useDroppable", () => {
 
   describe("cleanup and edge cases", () => {
     it("should cleanup event listeners on dragend", async () => {
-      dragState.store.dragActive.set(true);
-      dragState.store.activeTags.set(["tag1"]);
-      dragState.store.dragData.set(() => () => mockDragData);
+      dragState.dragActive.set(true);
+      dragState.activeTags.set(["tag1"]);
+      dragState.dragData.set(() => () => mockDragData);
 
       const { result } = renderHook(() =>
         useDroppable({
@@ -398,9 +398,9 @@ describe("useDroppable", () => {
     });
 
     it("should handle multiple dragOver events without creating multiple listeners", () => {
-      dragState.store.dragActive.set(true);
-      dragState.store.activeTags.set(["tag1"]);
-      dragState.store.dragData.set(() => () => mockDragData);
+      dragState.dragActive.set(true);
+      dragState.activeTags.set(["tag1"]);
+      dragState.dragData.set(() => () => mockDragData);
 
       const { result } = renderHook(() =>
         useDroppable({

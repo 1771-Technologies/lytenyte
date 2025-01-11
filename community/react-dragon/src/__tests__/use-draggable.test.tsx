@@ -24,10 +24,10 @@ describe("useDraggable", () => {
     vi.clearAllMocks();
 
     // Reset dragState
-    dragState.store.activeTags.set(null);
-    dragState.store.dragActive.set(false);
-    dragState.store.dragData.set(() => () => null);
-    dragState.store.overTags.set(null);
+    dragState.activeTags.set(null);
+    dragState.dragActive.set(false);
+    dragState.dragData.set(() => () => null);
+    dragState.overTags.set(null);
   });
 
   afterEach(() => {
@@ -75,8 +75,8 @@ describe("useDraggable", () => {
       tags: mockTags,
       event: mockEvent.nativeEvent,
     });
-    expect(dragState.store.dragActive.get()).toBe(true);
-    expect(dragState.store.activeTags.get()).toEqual(mockTags);
+    expect(dragState.dragActive.get()).toBe(true);
+    expect(dragState.activeTags.get()).toEqual(mockTags);
   });
 
   test("should not start drag when disabled", () => {
@@ -102,7 +102,7 @@ describe("useDraggable", () => {
 
     expect(mockEvent.preventDefault).toHaveBeenCalled();
     expect(mockEvent.stopPropagation).toHaveBeenCalled();
-    expect(dragState.store.dragActive.get()).toBe(false);
+    expect(dragState.dragActive.get()).toBe(false);
   });
 
   test("should handle drag move correctly", async () => {
@@ -183,8 +183,8 @@ describe("useDraggable", () => {
       tags: mockTags,
     });
     expect(onDragCancel).not.toHaveBeenCalled();
-    expect(dragState.store.dragActive.get()).toBe(false);
-    expect(dragState.store.activeTags.get()).toBe(null);
+    expect(dragState.dragActive.get()).toBe(false);
+    expect(dragState.activeTags.get()).toBe(null);
   });
 
   test("should handle drag cancel correctly", () => {
@@ -222,7 +222,7 @@ describe("useDraggable", () => {
       tags: mockTags,
     });
     expect(onDragEnd).not.toHaveBeenCalled();
-    expect(dragState.store.dragActive.get()).toBe(false);
-    expect(dragState.store.activeTags.get()).toBe(null);
+    expect(dragState.dragActive.get()).toBe(false);
+    expect(dragState.activeTags.get()).toBe(null);
   });
 });
