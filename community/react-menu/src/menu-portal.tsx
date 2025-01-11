@@ -48,7 +48,7 @@ export function MenuPortal({
   }, [display, menu, rtl, target]);
 
   const s = useMenuStore();
-  const setActive = s.store.setActiveId.peek();
+  const setActive = s.setActiveId.peek();
 
   return (
     <div
@@ -77,7 +77,7 @@ export function MenuPortal({
           ev.stopPropagation();
 
           parent?.focus();
-          s.store.activeId.set(itemId);
+          s.activeId.set(itemId);
 
           return;
         }
@@ -116,7 +116,7 @@ export function MenuPortal({
           const current = items[active];
 
           if (current.dataset.haspopover) {
-            s.store.activeId.set(current.id);
+            s.activeId.set(current.id);
 
             setTimeout(() => {
               const el = document.querySelector(`[data-itemid="${current.id}"]`) as HTMLElement;
@@ -131,7 +131,7 @@ export function MenuPortal({
           const parent = document.getElementById(itemId);
           if (parent) {
             parent.focus();
-            s.store.activeId.set(itemId);
+            s.activeId.set(itemId);
           }
           ev.preventDefault();
           ev.stopPropagation();

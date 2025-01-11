@@ -197,7 +197,7 @@ function MenuImpl({
           const current = items[active];
 
           if (current.dataset.haspopover) {
-            s.store.activeId.set(current.id);
+            s.activeId.set(current.id);
 
             setTimeout(() => {
               const el = document.querySelector(`[data-itemid="${current.id}"]`) as HTMLElement;

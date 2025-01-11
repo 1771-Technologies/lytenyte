@@ -5,12 +5,12 @@ const X = () => {
   function Z() {
     const s = useMenuStore();
 
-    const v = s.useValue("activeId");
+    const v = s.activeId.use();
 
     return (
       <div>
         {v ?? "bob"}
-        <button onClick={() => s.store.setActiveId.peek()("x")}></button>
+        <button onClick={() => s.setActiveId.peek()("x")}></button>
       </div>
     );
   }

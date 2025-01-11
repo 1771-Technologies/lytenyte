@@ -1,4 +1,4 @@
-import { cascada, signal, type CascadaStore, type Signal } from "@1771technologies/react-cascada";
+import { cascada, signal, type Signal } from "@1771technologies/react-cascada";
 import { createContext, useContext, useState, type PropsWithChildren } from "react";
 
 type MenuStore = {
@@ -6,9 +6,7 @@ type MenuStore = {
   readonly setActiveId: Signal<(id: string | null, timeout?: number) => void>;
 };
 
-type Store = CascadaStore<MenuStore>;
-
-const context = createContext<Store>({} as unknown as Store);
+const context = createContext<MenuStore>({} as unknown as MenuStore);
 
 export function MenuStoreProvider(p: PropsWithChildren) {
   const s = useState(() => {

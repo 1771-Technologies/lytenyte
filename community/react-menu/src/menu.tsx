@@ -42,7 +42,7 @@ export function Menu({ item, disabled: parentDisabled, parentId, ...props }: Men
         role="menuitem"
         tabIndex={disabled ? undefined : -1}
         onFocus={() => {
-          store.store.activeId.set(parentId ?? null);
+          store.activeId.set(parentId ?? null);
         }}
         onClick={() => {
           if (disabled) return;
@@ -82,7 +82,7 @@ export function Menu({ item, disabled: parentDisabled, parentId, ...props }: Men
           else item.onCheckChange({ item, state, checked: !item.checked });
         }}
         onFocus={() => {
-          store.store.activeId.set(parentId ?? null);
+          store.activeId.set(parentId ?? null);
         }}
         onKeyDown={(e) => {
           if (disabled) return;
@@ -149,9 +149,9 @@ function Submenu({
   readonly rendererParent?: (item: MenuParent) => ReactNode;
 }) {
   const s = useMenuStore();
-  const setActive = s.store.setActiveId.peek();
+  const setActive = s.setActiveId.peek();
 
-  const activeId = s.useValue("activeId");
+  const activeId = s.activeId.use();
   const classes = useClasses();
 
   const ref = useRef<HTMLDivElement | null>(null);
