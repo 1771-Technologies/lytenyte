@@ -17,12 +17,14 @@ export function MenuPortal({
   id,
   className,
   hasParent,
+  depth,
   item,
   style,
 }: PropsWithChildren<{
   target: HTMLDivElement;
   id: string;
   item: MenuParent;
+  depth: number;
   hasParent: boolean;
   disabled?: boolean;
   className?: string;
@@ -57,7 +59,11 @@ export function MenuPortal({
       tabIndex={-1}
       onKeyDown={(ev) => {
         const unfilteredItems = getFocusableElements(menu!, true);
-        const items = unfilteredItems.filter((c) => c.getAttribute("role")?.includes("menu"));
+        const items = unfilteredItems.filter(
+          (c) =>
+            c.getAttribute("role")?.includes("menu") &&
+            c.parentElement!.getAttribute("data-menu-depth") === `${depth}`,
+        );
 
         // This line should never be hit, the element must be active for it to encounter key events
         /* v8 ignore next */
@@ -161,6 +167,7 @@ export function MenuPortal({
       aria-description={item.axe?.axeDescription}
       data-disabled={disabled}
       data-itemid={itemId}
+      data-menu-depth={depth}
       className={className}
       style={{ ...style, display: "none", position: "fixed" }}
     >

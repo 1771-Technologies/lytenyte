@@ -17,13 +17,15 @@ export interface MenuProps {
   parentId?: string;
   disabled?: boolean;
 
+  readonly depth: number;
+
   readonly rendererItem?: (item: MenuItemLeaf) => ReactNode;
   readonly rendererCheckbox?: (item: MenuItemCheckbox) => ReactNode;
   readonly rendererRadio?: (item: MenuItemRadio) => ReactNode;
   readonly rendererParent?: (item: MenuParent) => ReactNode;
 }
 
-export function Menu({ item, disabled: parentDisabled, parentId, ...props }: MenuProps) {
+export function Menu({ item, disabled: parentDisabled, parentId, depth, ...props }: MenuProps) {
   const store = useMenuStore();
   const classes = useClasses();
   const state = useMenuState();
@@ -120,29 +122,41 @@ export function Menu({ item, disabled: parentDisabled, parentId, ...props }: Men
         aria-describedby={item.axe?.axeDescription}
         aria-disabled={disabled}
         data-disabled={disabled}
+        data-menu-depth={depth}
       >
         {item.children.map((childItem, i) => {
           return (
-            <Menu key={i} item={childItem} disabled={disabled} parentId={parentId} {...props} />
+            <Menu
+              key={i}
+              item={childItem}
+              disabled={disabled}
+              parentId={parentId}
+              {...props}
+              depth={depth}
+            />
           );
         })}
       </div>
     );
   }
 
-  return <Submenu item={item} disabled={disabled} parentId={parentId} {...props} />;
+  return (
+    <Submenu item={item} disabled={disabled} parentId={parentId} {...props} depth={depth + 1} />
+  );
 }
 
 function Submenu({
   item,
   disabled,
   parentId,
+  depth,
   ...props
 }: {
   item: MenuParent;
   parentId?: string;
   disabled?: boolean;
 
+  readonly depth: number;
   readonly rendererItem?: (item: MenuItemLeaf) => ReactNode;
   readonly rendererCheckbox?: (item: MenuItemCheckbox) => ReactNode;
   readonly rendererRadio?: (item: MenuItemRadio) => ReactNode;
@@ -219,9 +233,19 @@ function Submenu({
             data-disabled={disabled}
             className={clsx(classes.menu, classes.parentMenu, item.menuClassName)}
             style={item.menuStyle}
+            depth={depth}
           >
             {item.children.map((c, i) => {
-              return <Menu key={i} item={c} disabled={disabled} parentId={item.id} {...props} />;
+              return (
+                <Menu
+                  key={i}
+                  item={c}
+                  disabled={disabled}
+                  parentId={item.id}
+                  depth={depth}
+                  {...props}
+                />
+              );
             })}
           </MenuPortal>
         )}

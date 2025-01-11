@@ -148,11 +148,16 @@ function MenuImpl({
       aria-description={axe.axeDescription}
       aria-disabled={disabled}
       data-disabled={disabled}
+      data-menu-depth={0}
       className={classes.menu}
       tabIndex={0}
       onKeyDown={(ev) => {
         const unfilteredItems = getFocusableElements(ref.current!, true);
-        const items = unfilteredItems.filter((c) => c.getAttribute("role")?.includes("menu"));
+        const items = unfilteredItems.filter(
+          (c) =>
+            c.getAttribute("role")?.includes("menu") &&
+            c.parentElement!.getAttribute("data-menu-depth") === `${0}`,
+        );
 
         if (!items.length || !document.activeElement) return;
 
@@ -174,7 +179,6 @@ function MenuImpl({
         const active = items.indexOf(document.activeElement as HTMLElement);
         if (active === -1) return;
 
-        console.log(items);
         if (ev.key === "ArrowDown") {
           const next = active + 1;
           if (next >= items.length) return;
@@ -212,7 +216,7 @@ function MenuImpl({
       }}
     >
       {menuItems.map((c, i) => {
-        return <Menu key={i} item={c} disabled={disabled} {...props} />;
+        return <Menu key={i} item={c} disabled={disabled} {...props} depth={0} />;
       })}
     </div>
   );
