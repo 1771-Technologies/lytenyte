@@ -12,14 +12,26 @@ import { useSortState, type SortItem } from "./use-sort-state";
 import { sortModelToSortItems } from "./sort-model-to-sort-items";
 import { sortItemsToSortModel } from "./sort-items-to-sort-model";
 
+export interface SortDeleteComponentProps {
+  onDelete: () => void;
+  disabled: boolean;
+  disableReason: string;
+}
+
+export interface SortAddComponentProps {
+  onAdd: () => void;
+  disabled: boolean;
+  disableReason: string;
+}
+
 export interface SortManagerConfiguration {
   readonly columnSelectComponent?: (s: SelectProps) => ReactNode;
   readonly sortSelectComponent?: (s: SelectProps) => ReactNode;
   readonly sortDirectionComponent?: (s: SelectProps) => ReactNode;
-  readonly sortDeleteComponent?: (s: { onDelete: () => void }) => ReactNode;
-  readonly sortAddComponent?: (s: { onAdd: () => void }) => ReactNode;
+  readonly sortDeleteComponent?: (s: SortDeleteComponentProps) => ReactNode;
+  readonly sortAddComponent?: (s: SortAddComponentProps) => ReactNode;
 
-  readonly localization: {
+  readonly localization?: {
     readonly title: string;
     readonly labelSortByColumn: string;
     readonly labelSortOn: string;
@@ -30,6 +42,9 @@ export interface SortManagerConfiguration {
     readonly placeholderColumnSelect: string;
     readonly placeholderSort: string;
     readonly placeholderOrder: string;
+
+    readonly disabledNoMoreSortableColumns: string;
+    readonly disabledLastItem: string;
   };
 
   readonly axe?: {
@@ -51,6 +66,8 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
   const Select = config.columnSelectComponent ?? DefaultSelect;
   const Delete = config.sortDeleteComponent ?? DefaultDelete;
   const Add = config.sortAddComponent ?? DefaultAdd;
+
+  const localization = config.localization! ?? {};
 
   const [columnItems, columnValues] = useColumnsSelectItems(grid);
 
@@ -78,8 +95,8 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
             padding-block-end: ${t.spacing.space_05};
           `}
         >
-          <div className={"lng1771-text-small-700"}>{config.localization.labelSortByColumn}</div>
-          <div className={"lng1771-text-small-700"}>{config.localization.labelSortOn}</div>
+          <div className={"lng1771-text-small-700"}>{localization.labelSortByColumn}</div>
+          <div className={"lng1771-text-small-700"}>{localization.labelSortOn}</div>
           <div
             className={clsx(
               "lng1771-text-small-700",
@@ -88,7 +105,7 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
               `,
             )}
           >
-            {config.localization.labelOrder}
+            {localization.labelOrder}
           </div>
         </div>
 
@@ -118,7 +135,7 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
                   });
                 }}
                 value={columnValues[c.columnId ?? ""] ?? null}
-                placeholder={config.localization.placeholderColumnSelect}
+                placeholder={localization.placeholderColumnSelect}
               />
               <Select
                 items={sortValuesValues}
@@ -133,7 +150,7 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
                     return next;
                   });
                 }}
-                placeholder={config.localization.placeholderSort}
+                placeholder={localization.placeholderSort}
               />
               <Select
                 items={sortDirectionValues}
@@ -152,7 +169,7 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
                     ? { label: "Asc", value: "ascending" }
                     : { label: "Desc", value: "descending" }
                 }
-                placeholder={config.localization.placeholderOrder}
+                placeholder={localization.placeholderOrder}
               />
               <div
                 className={css`
@@ -162,6 +179,8 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
                 `}
               >
                 <Delete
+                  disabled={state.length === 1}
+                  disableReason={localization.disabledLastItem}
                   onDelete={() => {
                     setState((prev) => {
                       const next = [...prev];
@@ -172,6 +191,8 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
                   }}
                 />
                 <Add
+                  disabled={columnItems.length === 1}
+                  disableReason={localization.disabledNoMoreSortableColumns}
                   onAdd={() => {
                     setState((prev) => {
                       const next = [...prev];
@@ -204,7 +225,7 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
             onCancel?.();
           }}
         >
-          {config.localization.labelCancel}
+          {localization.labelCancel}
         </Button>
         <Button
           kind="primary"
@@ -214,7 +235,7 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
             onApply?.();
           }}
         >
-          {config.localization.labelApply}
+          {localization.labelApply}
         </Button>
       </div>
     </form>
