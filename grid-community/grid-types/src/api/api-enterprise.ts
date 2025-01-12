@@ -82,12 +82,10 @@ export interface ApiEnterprise<D, C, E>
   ) => Promise<void>;
   readonly clipboardPasteCells: (rect?: CellSelectionRect | null) => Promise<void>;
 
-  readonly floatingFrameIsOpen: () => boolean;
   readonly floatingFrameOpen: (id: string) => void;
   readonly floatingFrameClose: () => void;
 
-  readonly panelFrameIsOpen: () => boolean;
-  readonly panelFrameOpen: (id: string, side?: "start" | "end") => void;
+  readonly panelFrameOpen: (id: string) => void;
   readonly panelFrameClose: () => void;
 
   readonly rowReload: () => void;

@@ -151,8 +151,6 @@ export interface FloatingFrame<A, E> {
 export interface PanelFrame<A, E> {
   readonly title: string;
   readonly component: (p: { api: A; frame: PanelFrame<A, E> }) => E;
-  readonly w?: number;
-  readonly isResizable?: boolean;
 }
 
 // Column Pivots

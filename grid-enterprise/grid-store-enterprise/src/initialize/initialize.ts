@@ -148,8 +148,7 @@ export function initialize<D, E>(
 
     measureModel: measuresComputed(props.measureModel ?? [], api),
 
-    panelFrameEndButtons: signal(props.panelFrameEndButtons ?? []),
-    panelFrameStartButtons: signal(props.panelFrameStartButtons ?? []),
+    panelFrameButtons: signal(props.panelFrameButtons ?? []),
     panelFrames: signal(props.panelFrames ?? {}),
 
     rowGroupBarDisplayMode: signal(props.rowGroupBarDisplayMode ?? "never"),

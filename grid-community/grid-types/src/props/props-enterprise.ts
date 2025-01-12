@@ -35,10 +35,9 @@ export interface PropsEnterprise<A, D, C, E, Base, Group>
   readonly filterQuickSearch?: string | null;
 
   readonly floatingFrames?: Record<string, FloatingFrame<A, E>>;
-  readonly panelFrames?: Record<string, PanelFrame<A, E>>;
 
-  readonly panelFrameStartButtons?: { label: string; id: string; icon?: () => E }[];
-  readonly panelFrameEndButtons?: { label: string; id: string; icon?: () => E }[];
+  readonly panelFrames?: Record<string, PanelFrame<A, E>>;
+  readonly panelFrameButtons?: { label: string; id: string; icon?: () => E }[];
 
   readonly measureModel?: string[];
 
