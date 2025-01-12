@@ -8,6 +8,7 @@ import { t } from "@1771technologies/grid-design";
 import { useColumnsSelectItems } from "./use-column-select-items";
 import { DefaultDelete } from "./delete-component";
 import { Button } from "../buttons/button";
+import { useSortState, type SortItem } from "./use-sort-state";
 
 export interface SortManagerConfiguration {
   readonly columnSelectComponent?: (s: SelectProps) => ReactNode;
@@ -45,11 +46,12 @@ export interface SortManagerProps<D> {
 
 export function SortManager<D>({ grid }: SortManagerProps<D>) {
   const config = cc.sortManager.use();
+  const Select = config.columnSelectComponent ?? DefaultSelect;
+  const Delete = config.sortDeleteComponent ?? DefaultDelete;
 
   const columnItems = useColumnsSelectItems(grid);
 
-  const Select = config.columnSelectComponent ?? DefaultSelect;
-  const Delete = config.sortDeleteComponent ?? DefaultDelete;
+  const [state, setState] = useSortState(grid);
 
   return (
     <form onSubmit={(e) => e.preventDefault()}>
@@ -88,43 +90,79 @@ export function SortManager<D>({ grid }: SortManagerProps<D>) {
         </div>
 
         {/* SORT SECTION */}
-        <div
-          className={css`
-            display: grid;
-            grid-template-columns: subgrid;
-            grid-column: -1/1;
-            padding-block: ${t.spacing.space_10};
-            align-items: center;
-          `}
-        >
-          <Select
-            items={columnItems}
-            onSelect={() => {}}
-            value={null}
-            placeholder={config.localization.placeholderColumnSelect}
-          />
-          <Select
-            items={sortValuesValues}
-            value={null}
-            onSelect={() => {}}
-            placeholder={config.localization.placeholderSort}
-          />
-          <Select
-            items={sortDirectionValues}
-            value={null}
-            onSelect={() => {}}
-            placeholder={config.localization.placeholderOrder}
-          />
-          <div
-            className={css`
-              display: flex;
-              align-items: center;
-              justify-content: center;
-            `}
-          >
-            <Delete />
-          </div>
-        </div>
+        {state.map((c, i) => {
+          return (
+            <div
+              key={i}
+              className={css`
+                display: grid;
+                grid-template-columns: subgrid;
+                grid-column: -1/1;
+                padding-block: ${t.spacing.space_10};
+                align-items: center;
+              `}
+            >
+              <Select
+                items={columnItems}
+                onSelect={(column) => {
+                  setState((prev) => {
+                    const v = { ...prev[i] };
+                    v.columnId = column.value;
+                    const next = [...prev];
+                    next.splice(i, 1, v);
+
+                    return next;
+                  });
+                }}
+                value={columnItems.find((v) => v.value === c.columnId) ?? null}
+                placeholder={config.localization.placeholderColumnSelect}
+              />
+              <Select
+                items={sortValuesValues}
+                value={sortValuesValues.find((v) => v.value === c.sortOn) ?? null}
+                onSelect={(sortOn) => {
+                  setState((prev) => {
+                    const v = { ...prev[i] };
+                    v.sortOn = sortOn.value as SortItem["sortOn"];
+                    const next = [...prev];
+                    next.splice(i, 1, v);
+
+                    return next;
+                  });
+                }}
+                placeholder={config.localization.placeholderSort}
+              />
+              <Select
+                items={sortDirectionValues}
+                onSelect={(item) => {
+                  setState((prev) => {
+                    const v = { ...prev[i] };
+                    v.sortDirection = item.value as SortItem["sortDirection"];
+                    const next = [...prev];
+                    next.splice(i, 1, v);
+
+                    return next;
+                  });
+                }}
+                value={
+                  c.sortDirection === "ascending"
+                    ? { label: "Asc", value: "ascending" }
+                    : { label: "Desc", value: "descending" }
+                }
+                placeholder={config.localization.placeholderOrder}
+              />
+              <div
+                className={css`
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                `}
+              >
+                <Delete />
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       <Separator soft dir="horizontal" />
@@ -133,7 +171,7 @@ export function SortManager<D>({ grid }: SortManagerProps<D>) {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: ${t.spacing.space_40};
+          padding: ${t.spacing.space_40} calc(${t.spacing.space_40} + ${t.spacing.space_05});
         `}
       >
         <Button kind="secondary">{config.localization.labelCancel}</Button>

@@ -102,7 +102,7 @@ export function Select({ items, value, onSelect, placeholder }: SelectProps) {
             style={{ height: Math.min(items.length * 36, 400) }}
             className={css`
               max-height: 500px;
-              min-width: 200px;
+              min-width: 120px;
               width: var(--lng-reference-width);
               max-width: 350px;
             `}
