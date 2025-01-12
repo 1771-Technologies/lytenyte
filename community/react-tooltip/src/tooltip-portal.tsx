@@ -4,6 +4,7 @@ import { useEvent } from "@1771technologies/react-utils";
 import {
   useCallback,
   useEffect,
+  useMemo,
   useState,
   type CSSProperties,
   type PropsWithChildren,
@@ -50,6 +51,19 @@ export function TooltipPortal({
   const onInitEvent = useEvent(onInit);
   const onCloseEvent = useEvent(onClose);
   const onOpenEvent = useEvent(onOpen);
+
+  const topParent = useMemo(() => {
+    if ("clientHeight" in target) {
+      let current = target;
+      while (current && current != document.body && current.matches(":modal") === false) {
+        current = current.parentElement as HTMLElement;
+      }
+
+      return current;
+    }
+
+    return document.body;
+  }, [target]);
 
   useEffect(() => {
     if (!ref) return;
@@ -107,6 +121,6 @@ export function TooltipPortal({
         />
       )}
     </div>,
-    document.body,
+    topParent,
   );
 }
