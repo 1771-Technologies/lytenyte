@@ -42,9 +42,11 @@ export interface SortManagerProps<D> {
 
   readonly onCancel?: () => void;
   readonly onApply?: () => void;
+  readonly onAdd?: () => void;
+  readonly onDelete?: () => void;
 }
 
-export function SortManager<D>({ grid, onCancel, onApply }: SortManagerProps<D>) {
+export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: SortManagerProps<D>) {
   const config = cc.sortManager.use();
   const Select = config.columnSelectComponent ?? DefaultSelect;
   const Delete = config.sortDeleteComponent ?? DefaultDelete;
@@ -166,6 +168,7 @@ export function SortManager<D>({ grid, onCancel, onApply }: SortManagerProps<D>)
                       next.splice(i, 1);
                       return next;
                     });
+                    onDelete?.();
                   }}
                 />
                 <Add
@@ -175,6 +178,7 @@ export function SortManager<D>({ grid, onCancel, onApply }: SortManagerProps<D>)
                       next.splice(i, 0, { sortDirection: "ascending" });
                       return next;
                     });
+                    onAdd?.();
                   }}
                 />
               </div>
