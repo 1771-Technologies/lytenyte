@@ -50,7 +50,7 @@ function FloatingFrameImpl({ frameId }: { frameId: string }) {
   return (
     <Frame
       show
-      onShowChange={() => {}}
+      onShowChange={() => grid.api.floatingFrameClose()}
       onMove={(x, y) => setCoords({ x, y })}
       onSizeChange={(w, h) => {
         setDims({ width: w, height: h });
@@ -70,6 +70,7 @@ function FloatingFrameImpl({ frameId }: { frameId: string }) {
           className={clsx(
             "lng1771-text-large-700",
             css`
+              outline: none;
               display: flex;
               justify-content: space-between;
               align-items: center;
@@ -87,7 +88,7 @@ function FloatingFrameImpl({ frameId }: { frameId: string }) {
               top: -8px;
             `}
           >
-            <IconButton kind="ghost">
+            <IconButton kind="ghost" onClick={() => grid.api.floatingFrameClose()}>
               <CrossIcon />
             </IconButton>
           </div>
