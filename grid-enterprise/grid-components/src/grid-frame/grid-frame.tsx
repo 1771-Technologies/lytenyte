@@ -27,8 +27,6 @@ export function GridFrame<D>({
     return f.join(" ");
   }, [buttons.length]);
 
-  console.log(openId);
-
   return (
     <div
       className={css`
