@@ -96,151 +96,153 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
         >
           <div
             className={css`
-              display: grid;
-              grid-template-columns: 2fr 210px 1fr 48px;
-              grid-column-gap: ${t.spacing.space_10};
-              padding-block: ${t.spacing.space_30};
-              padding-inline-start: ${t.spacing.space_50};
-              padding-inline-end: ${t.spacing.space_30};
-              box-sizing: border-box;
+              flex: 1;
+              overflow: auto;
             `}
           >
-            {/*  LABEL SECTION    */}
             <div
               className={css`
                 display: grid;
-                grid-template-columns: subgrid;
-                grid-column: -1 /1;
-                padding-block-end: ${t.spacing.space_05};
+                grid-template-columns: 2fr 210px 1fr 48px;
+                grid-column-gap: ${t.spacing.space_10};
+                padding-block: ${t.spacing.space_30};
+                padding-inline-start: ${t.spacing.space_50};
+                padding-inline-end: ${t.spacing.space_30};
+                box-sizing: border-box;
               `}
             >
-              <div className={"lng1771-text-small-700"}>{localization.labelSortByColumn}</div>
-              <div className={"lng1771-text-small-700"}>{localization.labelSortOn}</div>
+              {/*  LABEL SECTION    */}
               <div
-                className={clsx(
-                  "lng1771-text-small-700",
-                  css`
-                    grid-column: span 2;
-                  `,
-                )}
+                className={css`
+                  display: grid;
+                  grid-template-columns: subgrid;
+                  grid-column: -1 /1;
+                  padding-block-end: ${t.spacing.space_05};
+                `}
               >
-                {localization.labelOrder}
-              </div>
-            </div>
-
-            {/* SORT SECTION */}
-            {state.map((c, i) => {
-              const columnItem: SelectItem | null =
-                columnItems.find((s) => c.columnId === s.value) ?? null;
-
-              return (
+                <div className={"lng1771-text-small-700"}>{localization.labelSortByColumn}</div>
+                <div className={"lng1771-text-small-700"}>{localization.labelSortOn}</div>
                 <div
-                  key={i}
-                  className={css`
-                    display: grid;
-                    grid-template-columns: subgrid;
-                    grid-column: -1/1;
-                    padding-block: ${t.spacing.space_10};
-                    align-items: center;
-                  `}
+                  className={clsx(
+                    "lng1771-text-small-700",
+                    css`
+                      grid-column: span 2;
+                    `,
+                  )}
                 >
-                  <Select
-                    items={
-                      columnItem
-                        ? [columnItem, ...unselectedSortedColumns]
-                        : unselectedSortedColumns
-                    }
-                    disabled={Boolean(columnItems.length <= 1 && columnItem)}
-                    disabledReason={localization.disabledNoMoreSortableColumns}
-                    onSelect={(column) => {
-                      setState((prev) => {
-                        const v = { ...prev[i] };
-                        v.columnId = column.value;
-                        const next = [...prev];
-                        next.splice(i, 1, v);
+                  {localization.labelOrder}
+                </div>
+              </div>
 
-                        return next;
-                      });
-                    }}
-                    value={columnItem}
-                    placeholder={localization.placeholderColumnSelect}
-                  />
-                  <Select
-                    items={sortValuesValues}
-                    value={sortValuesValues.find((v) => v.value === c.sortOn) ?? null}
-                    onSelect={(sortOn) => {
-                      setState((prev) => {
-                        const v = { ...prev[i] };
-                        v.sortOn = sortOn.value as SortItem["sortOn"];
-                        const next = [...prev];
-                        next.splice(i, 1, v);
+              {/* SORT SECTION */}
+              {state.map((c, i) => {
+                const columnItem: SelectItem | null =
+                  columnItems.find((s) => c.columnId === s.value) ?? null;
 
-                        return next;
-                      });
-                    }}
-                    placeholder={localization.placeholderSort}
-                  />
-                  <Select
-                    items={sortDirectionValues}
-                    onSelect={(item) => {
-                      setState((prev) => {
-                        const v = { ...prev[i] };
-                        v.sortDirection = item.value as SortItem["sortDirection"];
-                        const next = [...prev];
-                        next.splice(i, 1, v);
-
-                        return next;
-                      });
-                    }}
-                    value={
-                      c.sortDirection === "ascending"
-                        ? { label: "Asc", value: "ascending" }
-                        : { label: "Desc", value: "descending" }
-                    }
-                    placeholder={localization.placeholderOrder}
-                  />
+                return (
                   <div
+                    key={i}
                     className={css`
-                      display: flex;
+                      display: grid;
+                      grid-template-columns: subgrid;
+                      grid-column: -1/1;
+                      padding-block: ${t.spacing.space_10};
                       align-items: center;
-                      justify-content: center;
                     `}
                   >
-                    <Delete
-                      disabled={state.length === 1}
-                      disableReason={localization.disabledLastItem}
-                      onDelete={() => {
+                    <Select
+                      items={
+                        columnItem
+                          ? [columnItem, ...unselectedSortedColumns]
+                          : unselectedSortedColumns
+                      }
+                      disabled={Boolean(columnItems.length <= 1 && columnItem)}
+                      disabledReason={localization.disabledNoMoreSortableColumns}
+                      onSelect={(column) => {
                         setState((prev) => {
+                          const v = { ...prev[i] };
+                          v.columnId = column.value;
                           const next = [...prev];
-                          next.splice(i, 1);
+                          next.splice(i, 1, v);
+
                           return next;
                         });
-                        onDelete?.();
                       }}
+                      value={columnItem}
+                      placeholder={localization.placeholderColumnSelect}
                     />
-                    <Add
-                      disabled={columnItems.length === 1}
-                      disableReason={localization.disabledNoMoreSortableColumns}
-                      onAdd={() => {
+                    <Select
+                      items={sortValuesValues}
+                      value={sortValuesValues.find((v) => v.value === c.sortOn) ?? null}
+                      onSelect={(sortOn) => {
                         setState((prev) => {
+                          const v = { ...prev[i] };
+                          v.sortOn = sortOn.value as SortItem["sortOn"];
                           const next = [...prev];
-                          next.splice(i + 1, 0, { sortDirection: "ascending" });
+                          next.splice(i, 1, v);
+
                           return next;
                         });
-                        onAdd?.();
                       }}
+                      placeholder={localization.placeholderSort}
                     />
+                    <Select
+                      items={sortDirectionValues}
+                      onSelect={(item) => {
+                        setState((prev) => {
+                          const v = { ...prev[i] };
+                          v.sortDirection = item.value as SortItem["sortDirection"];
+                          const next = [...prev];
+                          next.splice(i, 1, v);
+
+                          return next;
+                        });
+                      }}
+                      value={
+                        c.sortDirection === "ascending"
+                          ? { label: "Asc", value: "ascending" }
+                          : { label: "Desc", value: "descending" }
+                      }
+                      placeholder={localization.placeholderOrder}
+                    />
+                    <div
+                      className={css`
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                      `}
+                    >
+                      <Delete
+                        disabled={state.length === 1}
+                        disableReason={localization.disabledLastItem}
+                        onDelete={() => {
+                          setState((prev) => {
+                            const next = [...prev];
+                            next.splice(i, 1);
+                            return next;
+                          });
+                          onDelete?.();
+                        }}
+                      />
+                      <Add
+                        disabled={columnItems.length === 1}
+                        disableReason={localization.disabledNoMoreSortableColumns}
+                        onAdd={() => {
+                          setState((prev) => {
+                            const next = [...prev];
+                            next.splice(i + 1, 0, { sortDirection: "ascending" });
+                            return next;
+                          });
+                          onAdd?.();
+                        }}
+                      />
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
 
-          <div
-            className={css`
-              flex: 1;
-            `}
-          />
           <Separator soft dir="horizontal" />
           <div
             className={css`
