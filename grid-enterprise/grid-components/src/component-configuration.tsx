@@ -49,6 +49,8 @@ export const cc = cascada<ComponentConfiguration>(() => {
           labelApply: "OK",
           labelCancel: "Cancel",
 
+          labelEmptyColumnSet: "There are no sortable columns.",
+
           placeholderColumnSelect: "Sort by",
           placeholderSort: "Select...",
           placeholderOrder: "Select...",

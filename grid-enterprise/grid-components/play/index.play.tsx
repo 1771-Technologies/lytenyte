@@ -25,7 +25,7 @@ const columns: ColumnEnterpriseReact<any>[] = [
 
 const grid = makeStore({
   columns,
-  columnBase: { sortable: true },
+  columnBase: { sortable: false },
 });
 
 export default function Home() {

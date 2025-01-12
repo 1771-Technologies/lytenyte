@@ -6,7 +6,7 @@ import { clsx } from "@1771technologies/js-utils";
 import { Separator } from "../separator/separator";
 import { t } from "@1771technologies/grid-design";
 import { useColumnsSelectItems } from "./use-column-select-items";
-import { DefaultAdd, DefaultDelete } from "./components";
+import { DefaultAdd, DefaultDelete, DefaultEmpty } from "./components";
 import { Button } from "../buttons/button";
 import { useSortState, type SortItem } from "./use-sort-state";
 import { sortModelToSortItems } from "./sort-model-to-sort-items";
@@ -26,11 +26,10 @@ export interface SortAddComponentProps {
 }
 
 export interface SortManagerConfiguration {
-  readonly columnSelectComponent?: (s: SelectProps) => ReactNode;
-  readonly sortSelectComponent?: (s: SelectProps) => ReactNode;
-  readonly sortDirectionComponent?: (s: SelectProps) => ReactNode;
+  readonly selectComponent?: (s: SelectProps) => ReactNode;
   readonly sortDeleteComponent?: (s: SortDeleteComponentProps) => ReactNode;
   readonly sortAddComponent?: (s: SortAddComponentProps) => ReactNode;
+  readonly sortEmptyComponent?: () => ReactNode;
 
   readonly localization?: {
     readonly title: string;
@@ -39,6 +38,8 @@ export interface SortManagerConfiguration {
     readonly labelOrder: string;
     readonly labelApply: string;
     readonly labelCancel: string;
+
+    readonly labelEmptyColumnSet: string;
 
     readonly placeholderColumnSelect: string;
     readonly placeholderSort: string;
@@ -64,9 +65,10 @@ export interface SortManagerProps<D> {
 
 export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: SortManagerProps<D>) {
   const config = cc.sortManager.use();
-  const Select = config.columnSelectComponent ?? DefaultSelect;
+  const Select = config.selectComponent ?? DefaultSelect;
   const Delete = config.sortDeleteComponent ?? DefaultDelete;
   const Add = config.sortAddComponent ?? DefaultAdd;
+  const Empty = config.sortEmptyComponent ?? DefaultEmpty;
 
   const localization = config.localization! ?? {};
 
@@ -82,6 +84,7 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
 
   return (
     <LngTooltip>
+      {columnItems.length === 0 && <Empty />}
       {columnItems.length > 0 && (
         <form
           onSubmit={(e) => e.preventDefault()}
