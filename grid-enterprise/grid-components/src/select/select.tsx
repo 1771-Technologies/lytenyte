@@ -45,11 +45,22 @@ export function Select({ items, value, onSelect, placeholder }: SelectProps) {
           justify-content: space-between;
           padding: 0;
           border: none;
-          background-color: transparent;
-          box-shadow: ${t.shadows.field_and_button};
+          background-color: ${t.colors.backgrounds_form_field};
+          border: 1px solid transparent;
+          box-sizing: border-box;
+          box-shadow:
+            0px 1.5px 2px 0px var(--lng1771-borders-field-and-button-shadow),
+            0px 0px 0px 1px var(--lng1771-borders-field-and-button);
           border-radius: ${t.spacing.field_radius_small};
           padding-inline: ${t.spacing.space_25};
           height: ${t.spacing.input_height};
+
+          &:focus {
+            outline: none;
+            border-color: ${t.colors.borders_focus};
+            box-shadow: 0px 0px 0px 2px ${t.colors.borders_focus_shadow};
+            background-color: ${t.colors.backgrounds_form_field_focus};
+          }
         `}
       >
         {value && <span className="lng1771-text-medium">{value.label}</span>}

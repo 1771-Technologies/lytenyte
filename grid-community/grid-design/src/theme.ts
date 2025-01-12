@@ -33,6 +33,7 @@ export const t: Theme = {
     backgrounds_context_menu:            "var(--lng1771-backgrounds-context-menu)",
     backgrounds_floating_panel:          "var(--lng1771-backgrounds-floating-panel)",
     backgrounds_form_field:              "var(--lng1771-backgrounds-form-field)",
+    backgrounds_form_field_focus:        "var(--lng1771-backgrounds-form-field-focus)",
     backgrounds_page:                    "var(--lng1771-backgrounds-page)",
     backgrounds_row_alternate:           "var(--lng1771-backgrounds-row-alternate)",
     backgrounds_row_hover:               "var(--lng1771-backgrounds-row-hover)",
@@ -50,6 +51,8 @@ export const t: Theme = {
     borders_ui_panel:                    "var(--lng1771-borders-ui-panel)",
     borders_floating_panel:              "var(--lng1771-borders-ui-panel)",
     borders_separator:                   "var(--lng1771-borders-separator)",
+    borders_focus_shadow:                "var(--lng1771-borders-focus-shadow)",
+    borders_focus:                       "var(--lng1771-borders-focus)",
     
     system_plain_pill_fill:              "var(--lng1771-system-plain-pill-fill)",
     system_column_pill_fill:             "var(--lng1771-system-column-pill-fill)",
@@ -114,8 +117,6 @@ export const t: Theme = {
     dark_500:                            "var(--lng1771-shadow-500-dark)",
     dark_600:                            "var(--lng1771-shadow-600-dark)",
     dark_700:                            "var(--lng1771-shadow-700-dark)",
-
-    field_and_button:                    'var(--lng1771-shadow-field-and-button)',
   },
   spacing: {
     space_02:                            "var(--lng1771-space-02)",
@@ -133,7 +134,7 @@ export const t: Theme = {
     space_90:                            "var(--lng1771-space-90)",
     space_100:                           "var(--lng1771-space-100)",
 
-    input_height:                        'var(--lng1771-input-height)',
+    input_height:                        "var(--lng1771-input-height)",
 
     box_radius_regular:                  "var(--lng1771-box-radius-regular)",
     box_radius_medium:                   "var(--lng1771-box-radius-medium)",

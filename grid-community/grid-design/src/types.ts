@@ -27,6 +27,7 @@ export type Theme = {
     readonly backgrounds_context_menu: string;
     readonly backgrounds_floating_panel: string;
     readonly backgrounds_form_field: string;
+    readonly backgrounds_form_field_focus: string;
     readonly backgrounds_page: string;
     readonly backgrounds_row_alternate: string;
     readonly backgrounds_row_hover: string;
@@ -43,6 +44,8 @@ export type Theme = {
     readonly borders_ui_panel: string;
     readonly borders_floating_panel: string;
     readonly borders_separator: string;
+    readonly borders_focus_shadow: string;
+    readonly borders_focus: string;
     readonly system_plain_pill_fill: string;
     readonly system_column_pill_fill: string;
     readonly system_column_pill_stroke: string;
@@ -122,8 +125,6 @@ export type Theme = {
     readonly dark_600: string;
     /** 0px 16px 22px -10px rgba(0, 0, 0, 0.28), 0px 22px 64px 0px rgba(0, 0, 0, 0.35) */
     readonly dark_700: string;
-
-    readonly field_and_button: string;
   };
 
   readonly spacing: {

@@ -5,7 +5,7 @@ import { Select } from "../src/select/select";
 export default function Home() {
   const [item, setItem] = useState<SelectItem | null>(null);
   return (
-    <div>
+    <div style={{ padding: 20 }}>
       <Select placeholder="select..." items={largeList} value={item} onSelect={setItem} />
     </div>
   );

@@ -34,10 +34,6 @@
   --lng1771-shadow-700-dark: 0px 16px 22px -10px rgba(0, 0, 0, 0.28),
     0px 22px 64px 0px rgba(0, 0, 0, 0.35);
 
-  --lng1771-shadow-field-and-button: 0px 1.5px 2px 0px
-      var(--lng1771-borders-field-and-button-shadow),
-    0px 0px 0px 1px var(--lng1771-borders-field-and-button);
-
   --lng1771-space-02: 2px;
   --lng1771-space-05: 4px;
   --lng1771-space-10: 6px;

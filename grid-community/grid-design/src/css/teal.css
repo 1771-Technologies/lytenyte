@@ -30,6 +30,7 @@
   --lng1771-backgrounds-context-menu: var(--lng1771-backgrounds-strong);
   --lng1771-backgrounds-floating-panel: var(--lng1771-backgrounds-default);
   --lng1771-backgrounds-form-field: var(--lng1771-gray-05);
+  --lng1771-backgrounds-form-field-focus: var(--lng1771-gray-00);
   --lng1771-backgrounds-page: #080b0f;
   --lng1771-backgrounds-row-alternate: var(--lng1771-gray-02);
   --lng1771-backgrounds-row-hover: var(--lng1771-primary-05);
@@ -47,6 +48,8 @@
   --lng1771-borders-ui-panel: var(--lng1771-gray-10);
   --lng1771-borders-floating-panel: var(--lng1771-borders-strong);
   --lng1771-borders-separator: var(--lng1771-borders-strong);
+  --lng1771-borders-focus-shadow: var(--lng1771-primary-30);
+  --lng1771-borders-focus: var(--lng1771-primary-50);
 
   --lng1771-system-plain-pill-fill: var(--lng1771-backgrounds-strong);
   --lng1771-system-column-pill-fill: #1b3237;
