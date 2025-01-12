@@ -72,7 +72,6 @@ export interface GridInternalState<D, E> extends Omit<CommunityInternalState<D, 
   readonly filterMenuTarget: Signal<Target | null>;
 
   readonly floatingFrameOpen: Signal<string | null>;
-  readonly floatingFrameHandle: Signal<HandleRef | null>;
 
   readonly panelFrameOpen: Signal<string | null>;
   readonly panelFrameSide: Signal<"start" | "end" | null>;

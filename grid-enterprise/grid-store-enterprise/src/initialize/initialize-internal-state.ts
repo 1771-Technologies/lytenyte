@@ -182,7 +182,6 @@ export function initializeInternalState<D, E>(
     filterMenuTarget: signal<Target | null>(null),
 
     floatingFrameOpen: signal<string | null>(null),
-    floatingFrameHandle: signal<HandleRef | null>(null),
 
     panelFrameOpen: signal<string | null>(null),
     panelFrameHandle: signal<PanelFrameHandle | null>(null),
