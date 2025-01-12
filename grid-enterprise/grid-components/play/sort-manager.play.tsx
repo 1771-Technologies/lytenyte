@@ -1,27 +1,7 @@
-import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import { SortManager } from "../src/sort-manager/sort-manager";
 import { makeStore } from "@1771technologies/grid-store-enterprise";
 import { t } from "@1771technologies/grid-design";
-
-const columns: ColumnEnterpriseReact<any>[] = [
-  { id: "age", type: "number" },
-  { id: "job" },
-  { id: "balance", type: "number" },
-  { id: "education" },
-  { id: "marital" },
-  { id: "default" },
-  { id: "housing" },
-  { id: "loan" },
-  { id: "contact" },
-  { id: "day" },
-  { id: "month" },
-  { id: "duration" },
-  { id: "campaign" },
-  { id: "pdays" },
-  { id: "previous" },
-  { id: "poutcome" },
-  { id: "y" },
-];
+import { columns } from "./helpers";
 
 const grid = makeStore({
   columns,

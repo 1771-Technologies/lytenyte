@@ -57,3 +57,12 @@
   font-weight: 400;
   line-height: 20px;
 }
+
+.lng1771-text-large-700 {
+  color: var(--lng1771-text-dark);
+  font-family: var(--lng1771-typeface-body);
+  font-size: var(--lng1771-body-l);
+  font-style: normal;
+  font-weight: 600;
+  line-height: 22px;
+}
