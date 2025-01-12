@@ -15,11 +15,18 @@ export const cc = cascada<ComponentConfiguration>(() => {
       className: clsx(
         "lng1771-text-medium",
         css`
-          background-color: ${t.colors.gray_00};
+          background-color: ${t.colors.gray_90};
+          color: ${t.colors.gray_00};
+          border-radius: ${t.spacing.box_radius_regular};
+          padding-inline: ${t.spacing.space_10};
+          padding-block: ${t.spacing.space_05};
+          max-width: 300px;
+
           box-shadow: 0px 6px 19px 0px rgba(30, 30, 41, 0.2);
         `,
       ),
-      arrowColor: t.colors.gray_00,
+      arrowColor: t.colors.gray_90,
+
       onInit: (el) => {
         el.style.transition = `opacity ${t.transitions.fast} ${t.transitions.fn}`;
         el.style.transitionDelay = "20ms";

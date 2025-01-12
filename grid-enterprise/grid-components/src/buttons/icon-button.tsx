@@ -2,80 +2,37 @@ import { t } from "@1771technologies/grid-design";
 import { clsx } from "@1771technologies/js-utils";
 import { useTooltip } from "@1771technologies/react-tooltip";
 import { refCompat } from "@1771technologies/react-utils";
-import {
-  useId,
-  useMemo,
-  type FocusEvent,
-  type JSX,
-  type KeyboardEvent,
-  type PointerEvent,
-} from "react";
+import { useId, type JSX, type ReactNode } from "react";
+import { useMergedTooltipEvents } from "./use-merged-tooltip-events";
 
 function IconButtonImpl({
   kind,
   disabledReason,
-  onFocus: focus,
-  onBlur: blur,
-  onKeyDown: keydown,
-  onPointerEnter: enter,
-  onPointerLeave: leave,
   disabled,
+  tooltip,
 
   ...props
-}: JSX.IntrinsicElements["button"] & { kind: "ghost" | "normal"; disabledReason?: string }) {
+}: JSX.IntrinsicElements["button"] & {
+  kind: "ghost" | "normal";
+  disabledReason?: ReactNode;
+  tooltip?: ReactNode;
+}) {
   const id = useId();
-  const {
-    onBlur: tBlur,
-    onFocus: tFocus,
-    onKeyDown: tKeydown,
-    onPointerEnter: tEnter,
-    onPointerLeave: tLeave,
-  } = useTooltip(id, <div>{disabledReason}</div>);
+  const disableTooltip = useTooltip(id, <div>{disabledReason}</div>, { placement: "top" });
+  const infoTooltip = useTooltip(id, <div>{tooltip}</div>, { placement: "top" });
 
-  const mergedProps = useMemo(() => {
-    if (!disabled || !disabledReason) return {};
-
-    const onBlur = (ev: FocusEvent<HTMLButtonElement>) => {
-      blur?.(ev);
-      tBlur();
-    };
-    const onFocus = (ev: FocusEvent<HTMLButtonElement>) => {
-      focus?.(ev);
-      tFocus(ev);
-    };
-    const onKeyDown = (ev: KeyboardEvent<HTMLButtonElement>) => {
-      keydown?.(ev);
-      tKeydown(ev);
-    };
-    const onPointerEnter = (ev: PointerEvent<HTMLButtonElement>) => {
-      enter?.(ev);
-      tEnter(ev);
-    };
-    const onPointerLeave = (ev: PointerEvent<HTMLButtonElement>) => {
-      leave?.(ev);
-      tLeave();
-    };
-
-    return { onBlur, onFocus, onKeyDown, onPointerEnter, onPointerLeave };
-  }, [
-    blur,
-    disabled,
-    disabledReason,
-    enter,
-    focus,
-    keydown,
-    leave,
-    tBlur,
-    tEnter,
-    tFocus,
-    tKeydown,
-    tLeave,
-  ]);
+  const mergedDisabled = useMergedTooltipEvents(
+    props,
+    disableTooltip,
+    Boolean(disabled && disabledReason),
+  );
+  const mergedInfo = useMergedTooltipEvents(props, infoTooltip, Boolean(!disabled && tooltip));
 
   return (
     <button
       {...props}
-      {...mergedProps}
+      {...mergedDisabled}
+      {...mergedInfo}
       disabled={disabled}
       className={clsx(
         css`
@@ -84,9 +41,20 @@ function IconButtonImpl({
           justify-content: center;
           width: 24px;
           height: 24px;
+          color: ${t.colors.borders_icons_default};
         `,
 
-        kind === "ghost" &&
+        disabled &&
+          css`
+            border: 1px solid transparent;
+            border-radius: ${t.spacing.box_radius_regular};
+            background-color: ${t.colors.backgrounds_strong};
+            color: ${t.colors.text_x_light};
+            cursor: not-allowed;
+          `,
+
+        !disabled &&
+          kind === "ghost" &&
           css`
             &:focus {
               background-color: ${t.colors.backgrounds_light};
@@ -96,7 +64,6 @@ function IconButtonImpl({
             background-color: transparent;
             border: 1px solid transparent;
             border-radius: ${t.spacing.box_radius_regular};
-            color: ${t.colors.borders_icons_default};
           `,
         props.className,
       )}

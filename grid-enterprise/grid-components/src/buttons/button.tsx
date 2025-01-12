@@ -1,15 +1,40 @@
 import { t } from "@1771technologies/grid-design";
 import { clsx } from "@1771technologies/js-utils";
+import { useTooltip } from "@1771technologies/react-tooltip";
 import { refCompat } from "@1771technologies/react-utils";
-import type { JSX } from "react";
+import { useId, type JSX, type ReactNode } from "react";
+import { useMergedTooltipEvents } from "./use-merged-tooltip-events";
 
 const ButtonImpl = ({
   kind,
+  disabledReason,
+  disabled,
+  tooltip,
+
   ...props
-}: JSX.IntrinsicElements["button"] & { kind: "primary" | "secondary" }) => {
+}: JSX.IntrinsicElements["button"] & {
+  kind: "primary" | "secondary";
+  disabledReason?: ReactNode;
+  tooltip?: ReactNode;
+}) => {
+  const id = useId();
+  const disableTooltip = useTooltip(id, <div>{disabledReason}</div>, { placement: "top" });
+
+  const infoTooltip = useTooltip(id, <div>{tooltip}</div>, { placement: "top" });
+
+  const mergedDisabled = useMergedTooltipEvents(
+    props,
+    disableTooltip,
+    Boolean(disabled && disabledReason),
+  );
+  const mergedInfo = useMergedTooltipEvents(props, infoTooltip, Boolean(!disabled && tooltip));
+
   return (
     <button
       {...props}
+      disabled={disabled}
+      {...mergedDisabled}
+      {...mergedInfo}
       className={clsx(
         "lng1771-text-small",
         css`

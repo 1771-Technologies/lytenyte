@@ -76,9 +76,10 @@ export function Arrow({ placement, popoverTarget, offset, arrowColor }: ArrowPro
         alignItems: "center",
         width: "fit-content",
         height: "fit-content",
+        color: arrowColor,
       }}
     >
-      <El fill={arrowColor} />
+      <El fill="currentcolor" />
     </div>
   );
 }
