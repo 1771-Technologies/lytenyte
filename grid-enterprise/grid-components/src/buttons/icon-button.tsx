@@ -42,6 +42,7 @@ function IconButtonImpl({
           width: 24px;
           height: 24px;
           color: ${t.colors.borders_icons_default};
+          cursor: pointer;
         `,
 
         disabled &&
@@ -60,6 +61,9 @@ function IconButtonImpl({
               background-color: ${t.colors.backgrounds_light};
               border: 1px solid ${t.colors.borders_focus};
               outline: none;
+            }
+            &:hover {
+              background-color: ${t.colors.backgrounds_button_light};
             }
             background-color: transparent;
             border: 1px solid transparent;

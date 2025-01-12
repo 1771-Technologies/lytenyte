@@ -13,7 +13,7 @@ const ButtonImpl = ({
 
   ...props
 }: JSX.IntrinsicElements["button"] & {
-  kind: "primary" | "secondary";
+  kind: "primary" | "secondary" | "plain";
   disabledReason?: ReactNode;
   tooltip?: ReactNode;
 }) => {
@@ -36,18 +36,19 @@ const ButtonImpl = ({
       {...mergedDisabled}
       {...mergedInfo}
       className={clsx(
-        "lng1771-text-small",
-        css`
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding-inline: ${t.spacing.space_05};
-          height: ${t.spacing.input_height};
-          min-width: 56px;
-          border: 1px solid transparent;
-          border-radius: ${t.spacing.field_radius_small};
-          cursor: pointer;
-        `,
+        kind !== "plain" && "lng1771-text-small",
+        kind !== "plain" &&
+          css`
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-inline: ${t.spacing.space_05};
+            height: ${t.spacing.input_height};
+            min-width: 56px;
+            border: 1px solid transparent;
+            border-radius: ${t.spacing.field_radius_small};
+            cursor: pointer;
+          `,
         kind === "primary" &&
           css`
             color: ${t.colors.text_primary_button};

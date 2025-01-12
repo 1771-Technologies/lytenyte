@@ -1,8 +1,9 @@
 import { ListView, type ListViewItemRendererProps } from "@1771technologies/react-list-view";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, type ReactNode } from "react";
 import { LngPopover } from "../popover/lng-popover";
 import { t } from "@1771technologies/grid-design";
 import { clsx } from "@1771technologies/js-utils";
+import { Button } from "../buttons/button";
 
 export interface SelectItem {
   readonly label: string;
@@ -14,12 +15,23 @@ export interface SelectProps {
   readonly onSelect: (s: SelectItem) => void;
   readonly value: SelectItem | null;
   readonly placeholder?: string;
+  readonly disabled?: boolean;
+  readonly disabledReason?: ReactNode;
+  readonly tooltip?: ReactNode;
 }
 
 const expansions = {};
 const onExpansionChange = () => {};
 
-export function Select({ items, value, onSelect, placeholder }: SelectProps) {
+export function Select({
+  items,
+  value,
+  onSelect,
+  placeholder,
+  disabled,
+  disabledReason,
+  tooltip,
+}: SelectProps) {
   const [open, setOpen] = useState(false);
   const paths = useMemo(() => {
     return items.map((c) => ({ path: [], data: { ...c, isSelected: c.value === value?.value } }));
@@ -35,8 +47,9 @@ export function Select({ items, value, onSelect, placeholder }: SelectProps) {
 
   return (
     <>
-      <button
+      <Button
         ref={ref}
+        kind="plain"
         onClick={() => setOpen(true)}
         onKeyDown={(ev) => {
           if (ev.key === "ArrowDown") {
@@ -44,6 +57,9 @@ export function Select({ items, value, onSelect, placeholder }: SelectProps) {
             setOpen(true);
           }
         }}
+        disabled={disabled}
+        disabledReason={disabledReason}
+        tooltip={tooltip}
         className={clsx(
           css`
             min-width: 120px;
@@ -69,6 +85,11 @@ export function Select({ items, value, onSelect, placeholder }: SelectProps) {
               background-color: ${t.colors.backgrounds_form_field_focus};
             }
           `,
+          disabled &&
+            css`
+              background-color: ${t.colors.backgrounds_default};
+              cursor: not-allowed;
+            `,
           open &&
             css`
               border: 1px solid ${t.colors.primary_30};
@@ -88,7 +109,7 @@ export function Select({ items, value, onSelect, placeholder }: SelectProps) {
         >
           ›
         </span>
-      </button>
+      </Button>
       {ref.current && (
         <LngPopover
           open={open}

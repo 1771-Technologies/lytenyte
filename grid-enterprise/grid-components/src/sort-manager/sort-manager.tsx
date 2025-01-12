@@ -134,6 +134,7 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
               >
                 <Select
                   items={columnItems}
+                  disabled
                   onSelect={(column) => {
                     setState((prev) => {
                       const v = { ...prev[i] };
