@@ -1,12 +1,37 @@
 import { cascada, signal, type Signal } from "@1771technologies/react-cascada";
 import type { SortManagerConfiguration } from "./sort-manager/sort-manager";
+import type { TooltipProps } from "@1771technologies/react-tooltip";
+import { clsx } from "@1771technologies/js-utils";
+import { t } from "@1771technologies/grid-design";
 
 export type ComponentConfiguration = {
+  tooltip: Signal<Omit<TooltipProps, "ref">>;
   sortManager: Signal<SortManagerConfiguration>;
 };
 
 export const cc = cascada<ComponentConfiguration>(() => {
   return {
+    tooltip: signal<Omit<TooltipProps, "ref">>({
+      className: clsx(
+        "lng1771-text-medium",
+        css`
+          background-color: ${t.colors.gray_00};
+          box-shadow: 0px 6px 19px 0px rgba(30, 30, 41, 0.2);
+        `,
+      ),
+      arrowColor: t.colors.gray_00,
+      onInit: (el) => {
+        el.style.transition = `opacity ${t.transitions.fast} ${t.transitions.fn}`;
+        el.style.transitionDelay = "20ms";
+        el.style.opacity = "0";
+      },
+      onOpen: (el) => {
+        el.style.opacity = "1";
+      },
+      onClose: (el) => {
+        el.style.opacity = "0";
+      },
+    }),
     sortManager: signal<SortManagerConfiguration>(
       {
         localization: {
@@ -20,6 +45,10 @@ export const cc = cascada<ComponentConfiguration>(() => {
           placeholderColumnSelect: "Sort by",
           placeholderSort: "Select...",
           placeholderOrder: "Select...",
+
+          disabledLastItem: "This sort can not be removed because it is the last item.",
+          disabledNoMoreSortableColumns:
+            "Another sort can not be added because there are no more sortable columns left.",
         },
       },
       {
