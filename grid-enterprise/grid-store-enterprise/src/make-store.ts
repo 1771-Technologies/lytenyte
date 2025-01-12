@@ -1,18 +1,14 @@
 import { cascada } from "@1771technologies/react-cascada";
-import type {
-  PropsEnterprise,
-  StateEnterprise,
-  StoreEnterprise,
-} from "@1771technologies/grid-types";
+import type { PropsEnterpriseReact, StoreEnterpriseReact } from "@1771technologies/grid-types";
 import { initialize } from "./initialize/initialize";
 import { makeApi } from "./api/make-api";
 import { initializeInternalState } from "./initialize/initialize-internal-state";
 import { initializePivotSensitiveState } from "./initialize/initialize-pivot-sensitive-state";
 
-export function makeStore<D, E>(props: PropsEnterprise<D, E>) {
+export function makeStore<D>(props: PropsEnterpriseReact<D>) {
   const store = cascada(() => {
-    const apiInit = {} as StoreEnterprise<D, E>["api"];
-    const stateInit = {} as StateEnterprise<D, E>;
+    const apiInit = {} as StoreEnterpriseReact<D>["api"];
+    const stateInit = {} as StoreEnterpriseReact<D>["state"];
 
     initialize(props, stateInit, apiInit);
     initializeInternalState(stateInit, apiInit);
@@ -23,7 +19,7 @@ export function makeStore<D, E>(props: PropsEnterprise<D, E>) {
     return {
       state: stateInit,
       api,
-    } satisfies StoreEnterprise<D, E>;
+    } satisfies StoreEnterpriseReact<D>;
   });
 
   return store;
