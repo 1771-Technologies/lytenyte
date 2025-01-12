@@ -168,7 +168,7 @@ export function Virt<D>({
       scrolled.current = true;
 
       setTimeout(() => {
-        const child = vp.firstElementChild?.children?.[5];
+        const child = vp.querySelector(`[data-rowindex="${scrollIntoViewIndex}"]`);
         if (child) {
           (child as HTMLElement).focus();
         }

@@ -52,7 +52,8 @@ export function Select({ items, value, onSelect, placeholder }: SelectProps) {
           height: ${t.spacing.input_height};
         `}
       >
-        <span>{value?.label ?? placeholder ?? ""}</span>
+        {value && <span className="lng1771-text-medium">{value.label}</span>}
+        {!value && <span className="lng1771-text-small-300">{placeholder ?? ""} </span>}
         <span
           className={css`
             position: relative;

@@ -6,7 +6,7 @@ export default function Home() {
   const [item, setItem] = useState<SelectItem | null>(null);
   return (
     <div>
-      <Select items={largeList} value={item} onSelect={setItem} />
+      <Select placeholder="select..." items={largeList} value={item} onSelect={setItem} />
     </div>
   );
 }
