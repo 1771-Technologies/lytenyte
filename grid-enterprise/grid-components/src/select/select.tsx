@@ -38,30 +38,36 @@ export function Select({ items, value, onSelect, placeholder }: SelectProps) {
       <button
         ref={ref}
         onClick={() => setOpen(true)}
-        className={css`
-          min-width: 120px;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 0;
-          border: none;
-          background-color: ${t.colors.backgrounds_form_field};
-          border: 1px solid transparent;
-          box-sizing: border-box;
-          box-shadow:
-            0px 1.5px 2px 0px var(--lng1771-borders-field-and-button-shadow),
-            0px 0px 0px 1px var(--lng1771-borders-field-and-button);
-          border-radius: ${t.spacing.field_radius_small};
-          padding-inline: ${t.spacing.space_25};
-          height: ${t.spacing.input_height};
+        className={clsx(
+          css`
+            min-width: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0;
+            border: none;
+            background-color: ${t.colors.backgrounds_form_field};
+            border: 1px solid transparent;
+            box-sizing: border-box;
+            box-shadow:
+              0px 1.5px 2px 0px var(--lng1771-borders-field-and-button-shadow),
+              0px 0px 0px 1px var(--lng1771-borders-field-and-button);
+            border-radius: ${t.spacing.field_radius_small};
+            padding-inline: ${t.spacing.space_25};
+            height: ${t.spacing.input_height};
 
-          &:focus {
-            outline: none;
-            border-color: ${t.colors.borders_focus};
-            box-shadow: 0px 0px 0px 2px ${t.colors.borders_focus_shadow};
-            background-color: ${t.colors.backgrounds_form_field_focus};
-          }
-        `}
+            &:focus {
+              outline: none;
+              border-color: ${t.colors.borders_focus};
+              box-shadow: 0px 0px 0px 2px ${t.colors.borders_focus_shadow};
+              background-color: ${t.colors.backgrounds_form_field_focus};
+            }
+          `,
+          open &&
+            css`
+              border: 1px solid ${t.colors.primary_30};
+            `,
+        )}
       >
         {value && <span className="lng1771-text-medium">{value.label}</span>}
         {!value && <span className="lng1771-text-small-300">{placeholder ?? ""} </span>}
