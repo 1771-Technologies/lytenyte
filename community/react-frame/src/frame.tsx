@@ -76,6 +76,11 @@ export interface FrameProps {
 
   /** Accessibility props for resize and move operations */
   readonly axe: FrameAxeProps;
+
+  readonly headerClassName?: string;
+  readonly headerStyle?: CSSProperties;
+  readonly contentClassName?: string;
+  readonly contentStyle?: CSSProperties;
 }
 
 function FrameImpl({
@@ -101,6 +106,12 @@ function FrameImpl({
   onSizeChange,
   onMove,
   axe,
+
+  headerClassName,
+  headerStyle,
+
+  contentClassName,
+  contentStyle,
 
   ...props
 }: FrameProps & JSX.IntrinsicElements["dialog"]) {
@@ -197,6 +208,8 @@ function FrameImpl({
           role="button"
           aria-label={axe.axeMoveLabel}
           aria-description={axe.axeMoveDescription}
+          className={headerClassName}
+          style={headerStyle}
           onKeyDown={(e) => {
             const step = 10;
 
@@ -236,8 +249,17 @@ function FrameImpl({
         </div>
       )}
       {/* v8 ignore next */}
-      {!movable && <div>{header}</div>}
-      <div style={{ flex: 1, overflow: "auto", scrollbarWidth: "thin" }}>{children}</div>
+      {!movable && (
+        <div className={headerClassName} style={headerStyle}>
+          {header}
+        </div>
+      )}
+      <div
+        style={{ flex: 1, overflow: "auto", scrollbarWidth: "thin", ...contentStyle }}
+        className={contentClassName}
+      >
+        {children}
+      </div>
       <div style={{ position: "sticky", bottom: 0, height: 20 }}>
         {resizable && (
           <button

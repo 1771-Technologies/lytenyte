@@ -65,6 +65,9 @@ function FloatingFrameImpl({ frameId }: { frameId: string }) {
       maxHeight={960}
       maxWidth={1280}
       title={frame.title}
+      headerClassName={css`
+        outline: none;
+      `}
       header={
         <div
           className={clsx(
