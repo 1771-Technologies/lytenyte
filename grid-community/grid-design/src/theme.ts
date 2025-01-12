@@ -114,6 +114,8 @@ export const t: Theme = {
     dark_500:                            "var(--lng1771-shadow-500-dark)",
     dark_600:                            "var(--lng1771-shadow-600-dark)",
     dark_700:                            "var(--lng1771-shadow-700-dark)",
+
+    field_and_button:                    'var(--lng1771-shadow-field-and-button)',
   },
   spacing: {
     space_02:                            "var(--lng1771-space-02)",
@@ -130,6 +132,8 @@ export const t: Theme = {
     space_80:                            "var(--lng1771-space-80)",
     space_90:                            "var(--lng1771-space-90)",
     space_100:                           "var(--lng1771-space-100)",
+
+    input_height:                        'var(--lng1771-input-height)',
 
     box_radius_regular:                  "var(--lng1771-box-radius-regular)",
     box_radius_medium:                   "var(--lng1771-box-radius-medium)",

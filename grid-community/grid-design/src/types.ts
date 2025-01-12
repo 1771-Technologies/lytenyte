@@ -122,6 +122,8 @@ export type Theme = {
     readonly dark_600: string;
     /** 0px 16px 22px -10px rgba(0, 0, 0, 0.28), 0px 22px 64px 0px rgba(0, 0, 0, 0.35) */
     readonly dark_700: string;
+
+    readonly field_and_button: string;
   };
 
   readonly spacing: {
@@ -160,6 +162,9 @@ export type Theme = {
     readonly box_radius_medium: string;
     /** 12px */
     readonly box_radius_large: string;
+
+    /** 24px */
+    readonly input_height: string;
 
     /** 10px */
     readonly field_radius_large: string;

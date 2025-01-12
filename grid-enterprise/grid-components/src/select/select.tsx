@@ -18,6 +18,7 @@ export interface SelectProps {
 
 const expansions = {};
 const onExpansionChange = () => {};
+
 export function Select({ items, value, onSelect, placeholder }: SelectProps) {
   const [open, setOpen] = useState(false);
   const paths = useMemo(() => {
@@ -45,10 +46,24 @@ export function Select({ items, value, onSelect, placeholder }: SelectProps) {
           padding: 0;
           border: none;
           background-color: transparent;
+          box-shadow: ${t.shadows.field_and_button};
+          border-radius: ${t.spacing.field_radius_small};
+          padding-inline: ${t.spacing.space_25};
+          height: ${t.spacing.input_height};
         `}
       >
         <span>{value?.label ?? placeholder ?? ""}</span>
-        <span>⌵</span>
+        <span
+          className={css`
+            position: relative;
+            top: 1px;
+            transform: rotate(90deg);
+            color: ${t.colors.borders_icons_default};
+            font-size: 16px;
+          `}
+        >
+          ›
+        </span>
       </button>
       {ref.current && (
         <LngPopover
