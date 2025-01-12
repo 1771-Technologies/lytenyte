@@ -5,6 +5,8 @@ import { t } from "@1771technologies/grid-design";
 import { useEffect, useState } from "react";
 import { getFrameCoords } from "./get-frame-coords";
 import { clsx } from "@1771technologies/js-utils";
+import { IconButton } from "../buttons/icon-button";
+import { CrossIcon } from "../icons/cross-icon";
 
 export interface FloatingFrameConfiguration {
   axe: FrameAxeProps;
@@ -69,13 +71,26 @@ function FloatingFrameImpl({ frameId }: { frameId: string }) {
             "lng1771-text-large-700",
             css`
               display: flex;
+              justify-content: space-between;
+              align-items: center;
               padding-block: ${t.spacing.space_05};
               padding-inline: ${t.spacing.space_50};
               cursor: grab;
             `,
           )}
         >
-          {frame.title}
+          <div>{frame.title}</div>
+          <div
+            className={css`
+              position: relative;
+              left: 16px;
+              top: -8px;
+            `}
+          >
+            <IconButton kind="ghost">
+              <CrossIcon />
+            </IconButton>
+          </div>
         </div>
       }
       style={{

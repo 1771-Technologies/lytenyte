@@ -2,6 +2,7 @@ import { clsx } from "@1771technologies/js-utils";
 import { IconButton } from "../buttons/icon-button";
 import { cc } from "../component-configuration";
 import type { SortAddComponentProps, SortDeleteComponentProps } from "./sort-manager";
+import { CrossIcon } from "../icons/cross-icon";
 
 export const DefaultDelete = (props: SortDeleteComponentProps) => {
   return (
@@ -11,7 +12,7 @@ export const DefaultDelete = (props: SortDeleteComponentProps) => {
       disabled={props.disabled}
       disabledReason={props.disableReason}
     >
-      ⛌
+      <CrossIcon />
     </IconButton>
   );
 };
