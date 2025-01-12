@@ -237,7 +237,7 @@ function FrameImpl({
       )}
       {/* v8 ignore next */}
       {!movable && <div>{header}</div>}
-      <div style={{ flex: 1 }}>{children}</div>
+      <div style={{ flex: 1, overflow: "auto", scrollbarWidth: "thin" }}>{children}</div>
       <div style={{ position: "sticky", bottom: 0, height: 20 }}>
         {resizable && (
           <button

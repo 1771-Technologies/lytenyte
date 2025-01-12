@@ -107,6 +107,10 @@ function FloatingFrameImpl({ frameId }: { frameId: string }) {
           0px 3px 20px 0px rgba(30, 30, 41, 0.1),
           0px 19px 24.75px -9px rgba(30, 30, 41, 0.11),
           0px 0px 0px 1px rgba(43, 68, 105, 0.07);
+
+        &::backdrop {
+          background-color: transparent;
+        }
       `}
     >
       <Component api={grid.api} frame={frame} />
