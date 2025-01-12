@@ -86,8 +86,7 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
     <LngTooltip>
       {columnItems.length === 0 && <Empty />}
       {columnItems.length > 0 && (
-        <form
-          onSubmit={(e) => e.preventDefault()}
+        <div
           className={css`
             display: flex;
             flex-direction: column;
@@ -274,7 +273,7 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
               {localization.labelApply}
             </Button>
           </div>
-        </form>
+        </div>
       )}
     </LngTooltip>
   );

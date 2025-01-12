@@ -14,12 +14,10 @@ export function SortFloatingFrame<D>({ api }: Parameters<FloatingFrameReact<D>["
   }, [api, state]);
 
   return (
-    <>
-      <SortManager
-        grid={grid}
-        onAdd={() => api.floatingFrameClose()}
-        onCancel={() => api.floatingFrameClose()}
-      />
-    </>
+    <SortManager
+      grid={grid}
+      onApply={() => api.floatingFrameClose()}
+      onCancel={() => api.floatingFrameClose()}
+    />
   );
 }

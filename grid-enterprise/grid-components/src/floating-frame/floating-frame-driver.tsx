@@ -88,19 +88,26 @@ function FloatingFrameImpl({ frameId }: { frameId: string }) {
             `,
           )}
         >
-          <div>{frame.title}</div>
           <div
             className={css`
-              position: relative;
-              left: 16px;
-              top: -8px;
+              position: absolute;
+              inset-inline-end: 2px;
+              top: 4px;
             `}
           >
-            <IconButton kind="ghost" onClick={() => grid.api.floatingFrameClose()}>
-              <SrOnly>{localization.labelClose}</SrOnly>
+            <IconButton
+              kind="ghost"
+              onPointerDownCapture={(el) => el.stopPropagation()}
+              onKeyDownCapture={(el) => el.stopPropagation()}
+              onClick={() => {
+                grid.api.floatingFrameClose();
+              }}
+            >
               <CrossIcon />
             </IconButton>
+            <SrOnly>{localization.labelClose}</SrOnly>
           </div>
+          <div>{frame.title}</div>
         </div>
       }
       style={{

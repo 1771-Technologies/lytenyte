@@ -230,6 +230,8 @@ function FrameImpl({
           }}
           tabIndex={0}
           onPointerDown={(el) => {
+            if (el.button !== 0) return;
+
             handleMove(
               el.nativeEvent,
               resizeAnnouncer!,
