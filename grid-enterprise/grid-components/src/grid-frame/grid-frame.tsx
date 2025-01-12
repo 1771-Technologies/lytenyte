@@ -1,8 +1,13 @@
 import { t } from "@1771technologies/grid-design";
 import type { StoreEnterpriseReact } from "@1771technologies/grid-types";
 import { clsx } from "@1771technologies/js-utils";
-import { SplitPane, splitPaneAxe } from "@1771technologies/react-split-pane";
+import { SplitPane, type SplitPaneAxe } from "@1771technologies/react-split-pane";
 import { useMemo, useState, type PropsWithChildren } from "react";
+import { cc } from "../component-configuration";
+
+export interface GridFrameConfiguration {
+  readonly axe?: SplitPaneAxe;
+}
 
 export interface GridFrameProps<D> {
   readonly grid: StoreEnterpriseReact<D>;
@@ -12,6 +17,7 @@ export function GridFrame<D>({
   grid: { api, state },
   children,
 }: PropsWithChildren<GridFrameProps<D>>) {
+  const config = cc.gridFrame.use();
   const buttons = state.panelFrameButtons.use();
   const frames = state.panelFrames.use();
   const openId = state.internal.panelFrameOpen.use();
@@ -40,7 +46,7 @@ export function GridFrame<D>({
       {frame ? (
         <>
           <SplitPane
-            axe={splitPaneAxe}
+            axe={config.axe!}
             orientation="vertical"
             primary={<div>{children}</div>}
             secondary={

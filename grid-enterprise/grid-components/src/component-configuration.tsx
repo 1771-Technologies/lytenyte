@@ -5,8 +5,11 @@ import { clsx } from "@1771technologies/js-utils";
 import { t } from "@1771technologies/grid-design";
 import type { FloatingFrameConfiguration } from "./floating-frame/floating-frame-driver";
 import { frameDefaultAxe } from "@1771technologies/react-frame";
+import type { GridFrameConfiguration } from "./grid-frame/grid-frame";
+import { splitPaneAxe } from "@1771technologies/react-split-pane";
 
 export type ComponentConfiguration = {
+  gridFrame: Signal<GridFrameConfiguration>;
   floatingFrame: Signal<FloatingFrameConfiguration>;
   sortManager: Signal<SortManagerConfiguration>;
   tooltip: Signal<Omit<TooltipProps, "ref">>;
@@ -25,6 +28,9 @@ function mergeSignal<T>(c: T): Signal<T> {
 
 export const cc = cascada<ComponentConfiguration>(() => {
   return {
+    gridFrame: mergeSignal<GridFrameConfiguration>({
+      axe: splitPaneAxe,
+    }),
     floatingFrame: mergeSignal<FloatingFrameConfiguration>({
       axe: frameDefaultAxe,
       localization: {
