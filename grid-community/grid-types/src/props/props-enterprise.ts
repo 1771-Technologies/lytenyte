@@ -44,7 +44,7 @@ export interface PropsEnterprise<A, D, C, E, Base, Group>
 
   readonly rowDataSource?: RowDataSourceEnterprise<A, D, C>;
 
-  readonly rowGroupBarDisplayMode: "always" | "only-when-grouping" | "never";
+  readonly rowGroupBarDisplayMode?: "always" | "only-when-grouping" | "never";
 
   readonly treeData?: boolean;
 }

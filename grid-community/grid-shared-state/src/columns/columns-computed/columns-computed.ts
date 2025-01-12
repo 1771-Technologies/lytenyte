@@ -1,4 +1,4 @@
-import { computed, signal } from "@1771technologies/react-cascada";
+import { signal } from "@1771technologies/react-cascada";
 import { columnsByPin } from "@1771technologies/grid-core";
 import type {
   ApiCommunity,
@@ -53,17 +53,12 @@ export function columnsComputed<D, E>(
     return [...byPin.start, ...byPin.center, ...byPin.end];
   };
 
-  const columns$ = signal(rawColumns, { postUpdate: () => !pivots && api.cellEditEndAll(true) });
-  const columns = computed(
-    () => {
-      const columns = processColumns(columns$.get());
-
-      return columns;
+  const columns = signal(rawColumns, {
+    postUpdate: () => !pivots && api.cellEditEndAll(true),
+    bind: (v) => {
+      return processColumns(v);
     },
-    (v) => {
-      return v;
-    },
-  );
+  });
 
   return columns as any;
 }

@@ -38,6 +38,12 @@ export function Select({ items, value, onSelect, placeholder }: SelectProps) {
       <button
         ref={ref}
         onClick={() => setOpen(true)}
+        onKeyDown={(ev) => {
+          if (ev.key === "ArrowDown") {
+            ev.preventDefault();
+            setOpen(true);
+          }
+        }}
         className={clsx(
           css`
             min-width: 120px;
@@ -93,11 +99,12 @@ export function Select({ items, value, onSelect, placeholder }: SelectProps) {
           `}
         >
           <div
+            style={{ height: Math.min(items.length * 36, 400) }}
             className={css`
-              min-height: 400px;
               max-height: 500px;
               min-width: 200px;
-              max-width: 250px;
+              width: var(--lng-reference-width);
+              max-width: 350px;
             `}
           >
             <ListView<SelectItem & { isSelected: boolean }>

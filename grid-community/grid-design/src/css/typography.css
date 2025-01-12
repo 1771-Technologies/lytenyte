@@ -31,6 +31,24 @@
   line-height: 17px;
 }
 
+.lng1771-text-small {
+  color: var(--lng1771-text-medium);
+  font-family: var(--lng1771-typeface-body);
+  font-size: var(--lng1771-body-s);
+  font-style: normal;
+  font-weight: 500;
+  line-height: 17px;
+}
+
+.lng1771-text-small-700 {
+  color: var(--lng1771-text-x-light);
+  font-family: var(--lng1771-typeface-body);
+  font-size: var(--lng1771-body-s);
+  font-style: normal;
+  font-weight: 500;
+  line-height: 10px;
+}
+
 .lng1771-text-medium {
   color: var(--lng1771-text-medium);
   font-family: var(--lng1771-typeface-body);
