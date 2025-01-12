@@ -15,7 +15,11 @@ export function SortFloatingFrame<D>({ api }: Parameters<FloatingFrameReact<D>["
 
   return (
     <>
-      <SortManager grid={grid} />
+      <SortManager
+        grid={grid}
+        onAdd={() => api.floatingFrameClose()}
+        onCancel={() => api.floatingFrameClose()}
+      />
     </>
   );
 }
