@@ -138,7 +138,7 @@ export type ColumnFilter<A, D> =
 
 export interface FloatingFrame<A, E> {
   readonly title: string;
-  readonly component: (p: { api: A }) => E;
+  readonly component: (p: { readonly api: A; frame: FloatingFrame<A, E> }) => E;
   readonly x?: number;
   readonly y?: number;
   readonly w?: number;
@@ -150,7 +150,7 @@ export interface FloatingFrame<A, E> {
 
 export interface PanelFrame<A, E> {
   readonly title: string;
-  readonly component: (p: { api: A }) => E;
+  readonly component: (p: { api: A; frame: PanelFrame<A, E> }) => E;
   readonly w?: number;
   readonly isResizable?: boolean;
 }

@@ -42,7 +42,6 @@ export const cc = cascada<ComponentConfiguration>(() => {
     sortManager: signal<SortManagerConfiguration>(
       {
         localization: {
-          title: "Sort",
           labelSortByColumn: "Column",
           labelSortOn: "Sort on",
           labelOrder: "Order",

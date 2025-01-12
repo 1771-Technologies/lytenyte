@@ -19,6 +19,7 @@
     "@1771technologies/react-utils": "workspace:*",
     "@1771technologies/react-cascada": "workspace:*",
     "@1771technologies/react-tooltip": "workspace:*",
+    "@1771technologies/react-frame": "workspace:*",
     "@1771technologies/grid-store-enterprise": "workspace:*"
   }
 }

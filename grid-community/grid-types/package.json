@@ -18,6 +18,11 @@
       "import": "./src/types-enterprise.ts",
       "require": "./src/types-enterprise.ts",
       "types": "./src/types-enterprise.ts"
+    },
+    "./enterprise-react": {
+      "import": "./src/types-enterprise-react.ts",
+      "require": "./src/types-enterprise-react.ts",
+      "types": "./src/types-enterprise-react.ts"
     }
   },
   "devDependencies": {

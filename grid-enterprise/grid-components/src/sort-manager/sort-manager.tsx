@@ -32,7 +32,6 @@ export interface SortManagerConfiguration {
   readonly sortEmptyComponent?: () => ReactNode;
 
   readonly localization?: {
-    readonly title: string;
     readonly labelSortByColumn: string;
     readonly labelSortOn: string;
     readonly labelOrder: string;
