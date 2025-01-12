@@ -11,6 +11,7 @@
     }
   },
   "dependencies": {
+    "@1771technologies/grid-provider": "workspace:*",
     "@1771technologies/grid-types": "workspace:*",
     "@1771technologies/grid-design": "workspace:*",
     "@1771technologies/js-utils": "workspace:*",
