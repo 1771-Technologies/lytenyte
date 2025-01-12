@@ -76,7 +76,15 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
 
   return (
     <LngTooltip>
-      <form onSubmit={(e) => e.preventDefault()}>
+      <form
+        onSubmit={(e) => e.preventDefault()}
+        className={css`
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          width: 100%;
+        `}
+      >
         <div
           className={css`
             display: grid;
@@ -210,6 +218,11 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
           })}
         </div>
 
+        <div
+          className={css`
+            flex: 1;
+          `}
+        />
         <Separator soft dir="horizontal" />
         <div
           className={css`
