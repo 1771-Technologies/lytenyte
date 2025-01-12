@@ -7,9 +7,13 @@ import { getFrameCoords } from "./get-frame-coords";
 import { clsx } from "@1771technologies/js-utils";
 import { IconButton } from "../buttons/icon-button";
 import { CrossIcon } from "../icons/cross-icon";
+import { SrOnly } from "../sr-only";
 
 export interface FloatingFrameConfiguration {
   axe: FrameAxeProps;
+  localization?: {
+    readonly labelClose: string;
+  };
 }
 
 export const FloatingFrameDriver = () => {
@@ -23,7 +27,9 @@ export const FloatingFrameDriver = () => {
 
 function FloatingFrameImpl({ frameId }: { frameId: string }) {
   const grid = useGrid();
-  const axe = cc.floatingFrame.use().axe;
+  const config = cc.floatingFrame.use();
+  const axe = config.axe;
+  const localization = config.localization!;
 
   const frame = grid.state.floatingFrames.use()[frameId];
 
@@ -92,6 +98,7 @@ function FloatingFrameImpl({ frameId }: { frameId: string }) {
             `}
           >
             <IconButton kind="ghost" onClick={() => grid.api.floatingFrameClose()}>
+              <SrOnly>{localization.labelClose}</SrOnly>
               <CrossIcon />
             </IconButton>
           </div>

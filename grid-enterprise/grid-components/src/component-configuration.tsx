@@ -8,47 +8,52 @@ import { frameDefaultAxe } from "@1771technologies/react-frame";
 
 export type ComponentConfiguration = {
   floatingFrame: Signal<FloatingFrameConfiguration>;
-
   sortManager: Signal<SortManagerConfiguration>;
   tooltip: Signal<Omit<TooltipProps, "ref">>;
 };
 
+function mergeSignal<T>(c: T): Signal<T> {
+  const x = signal(c, {
+    bind: (v) => {
+      const current = x.peek() as T;
+
+      return { ...current, ...v } as T;
+    },
+  });
+  return x;
+}
+
 export const cc = cascada<ComponentConfiguration>(() => {
   return {
-    floatingFrame: signal<FloatingFrameConfiguration>({
+    floatingFrame: mergeSignal<FloatingFrameConfiguration>({
       axe: frameDefaultAxe,
+      localization: {
+        labelClose: "Close",
+      },
     }),
 
-    sortManager: signal<SortManagerConfiguration>(
-      {
-        localization: {
-          labelSortByColumn: "Column",
-          labelSortOn: "Sort on",
-          labelOrder: "Order",
-          labelApply: "OK",
-          labelCancel: "Cancel",
+    sortManager: mergeSignal<SortManagerConfiguration>({
+      localization: {
+        labelSortByColumn: "Column",
+        labelSortOn: "Sort on",
+        labelOrder: "Order",
+        labelApply: "OK",
+        labelCancel: "Cancel",
+        labelAdd: "Add sort",
+        labelDelete: "Delete sort",
+        labelEmptyColumnSet: "There are no sortable columns.",
 
-          labelEmptyColumnSet: "There are no sortable columns.",
+        placeholderColumnSelect: "Sort by",
+        placeholderSort: "Select...",
+        placeholderOrder: "Select...",
 
-          placeholderColumnSelect: "Sort by",
-          placeholderSort: "Select...",
-          placeholderOrder: "Select...",
-
-          disabledLastItem: "This sort can not be removed because it is the last item.",
-          disabledNoMoreSortableColumns:
-            "Another sort can not be added because there are no more sortable columns left.",
-        },
+        disabledLastItem: "This sort can not be removed because it is the last item.",
+        disabledNoMoreSortableColumns:
+          "Another sort can not be added because there are no more sortable columns left.",
       },
-      {
-        bind: (v: SortManagerConfiguration) => {
-          const current = cc.sortManager.peek() as SortManagerConfiguration;
+    }),
 
-          return { ...current, ...v } as SortManagerConfiguration;
-        },
-      },
-    ),
-
-    tooltip: signal<Omit<TooltipProps, "ref">>({
+    tooltip: mergeSignal<Omit<TooltipProps, "ref">>({
       className: clsx(
         "lng1771-text-medium",
         css`

@@ -37,8 +37,9 @@ export interface SortManagerConfiguration {
     readonly labelOrder: string;
     readonly labelApply: string;
     readonly labelCancel: string;
-
     readonly labelEmptyColumnSet: string;
+    readonly labelDelete: string;
+    readonly labelAdd: string;
 
     readonly placeholderColumnSelect: string;
     readonly placeholderSort: string;

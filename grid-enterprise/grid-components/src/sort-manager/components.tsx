@@ -3,6 +3,7 @@ import { IconButton } from "../buttons/icon-button";
 import { cc } from "../component-configuration";
 import type { SortAddComponentProps, SortDeleteComponentProps } from "./sort-manager";
 import { CrossIcon } from "../icons/cross-icon";
+import { SrOnly } from "../sr-only";
 
 export const DefaultDelete = (props: SortDeleteComponentProps) => {
   return (
@@ -13,6 +14,7 @@ export const DefaultDelete = (props: SortDeleteComponentProps) => {
       disabledReason={props.disableReason}
     >
       <CrossIcon />
+      <SrOnly>{cc.sortManager.use().localization!.labelDelete}</SrOnly>
     </IconButton>
   );
 };
@@ -32,6 +34,7 @@ export const DefaultAdd = (props: SortAddComponentProps) => {
       >
         +
       </span>
+      <SrOnly>{cc.sortManager.use().localization!.labelAdd}</SrOnly>
     </IconButton>
   );
 };
