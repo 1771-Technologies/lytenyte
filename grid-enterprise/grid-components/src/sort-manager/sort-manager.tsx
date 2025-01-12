@@ -1,6 +1,6 @@
 import type { StoreEnterpriseReact } from "@1771technologies/grid-types";
 import { Select as DefaultSelect, type SelectItem, type SelectProps } from "../select/select";
-import { type ReactNode } from "react";
+import { useMemo, type ReactNode } from "react";
 import { cc } from "../component-configuration";
 import { clsx } from "@1771technologies/js-utils";
 import { Separator } from "../separator/separator";
@@ -74,6 +74,12 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
 
   const [state, setState] = useSortState(grid);
 
+  const unselectedSortedColumns = useMemo(() => {
+    const selected = new Set(state.map((c) => c.columnId).filter((c) => c != null));
+
+    return columnItems.filter((c) => !selected.has(c.value));
+  }, [columnItems, state]);
+
   return (
     <LngTooltip>
       <form
@@ -136,7 +142,9 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
                 `}
               >
                 <Select
-                  items={columnItems}
+                  items={
+                    columnItem ? [columnItem, ...unselectedSortedColumns] : unselectedSortedColumns
+                  }
                   disabled={Boolean(columnItems.length <= 1 && columnItem)}
                   disabledReason={localization.disabledNoMoreSortableColumns}
                   onSelect={(column) => {
