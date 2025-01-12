@@ -3,7 +3,10 @@ import { clsx } from "@1771technologies/js-utils";
 import { refCompat } from "@1771technologies/react-utils";
 import type { JSX } from "react";
 
-const ButtonImpl = (props: JSX.IntrinsicElements["button"] & { kind: "primary" | "secondary" }) => {
+const ButtonImpl = ({
+  kind,
+  ...props
+}: JSX.IntrinsicElements["button"] & { kind: "primary" | "secondary" }) => {
   return (
     <button
       {...props}
@@ -20,7 +23,7 @@ const ButtonImpl = (props: JSX.IntrinsicElements["button"] & { kind: "primary" |
           border-radius: ${t.spacing.field_radius_small};
           cursor: pointer;
         `,
-        props.kind === "primary" &&
+        kind === "primary" &&
           css`
             color: ${t.colors.text_primary_button};
             background-color: ${t.colors.primary_50};
@@ -35,7 +38,7 @@ const ButtonImpl = (props: JSX.IntrinsicElements["button"] & { kind: "primary" |
               background-color: color-mix(in srgb, ${t.colors.primary_50} 90%, white 10%);
             }
           `,
-        props.kind === "secondary" &&
+        kind === "secondary" &&
           css`
             background-color: ${t.colors.backgrounds_button_light};
             box-shadow:

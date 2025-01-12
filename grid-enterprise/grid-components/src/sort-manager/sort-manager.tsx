@@ -6,15 +6,18 @@ import { clsx } from "@1771technologies/js-utils";
 import { Separator } from "../separator/separator";
 import { t } from "@1771technologies/grid-design";
 import { useColumnsSelectItems } from "./use-column-select-items";
-import { DefaultDelete } from "./delete-component";
+import { DefaultAdd, DefaultDelete } from "./components";
 import { Button } from "../buttons/button";
 import { useSortState, type SortItem } from "./use-sort-state";
+import { sortModelToSortItems } from "./sort-model-to-sort-items";
+import { sortItemsToSortModel } from "./sort-items-to-sort-model";
 
 export interface SortManagerConfiguration {
   readonly columnSelectComponent?: (s: SelectProps) => ReactNode;
   readonly sortSelectComponent?: (s: SelectProps) => ReactNode;
   readonly sortDirectionComponent?: (s: SelectProps) => ReactNode;
-  readonly sortDeleteComponent?: () => ReactNode;
+  readonly sortDeleteComponent?: (s: { onDelete: () => void }) => ReactNode;
+  readonly sortAddComponent?: (s: { onAdd: () => void }) => ReactNode;
 
   readonly localization: {
     readonly title: string;
@@ -32,24 +35,22 @@ export interface SortManagerConfiguration {
   readonly axe?: {
     readonly ar: string;
   };
-
-  readonly icons?: {
-    readonly checked?: () => ReactNode;
-    readonly dropdown?: () => ReactNode;
-    readonly delete?: () => ReactNode;
-  };
 }
 
 export interface SortManagerProps<D> {
   readonly grid: StoreEnterpriseReact<D>;
+
+  readonly onCancel?: () => void;
+  readonly onApply?: () => void;
 }
 
-export function SortManager<D>({ grid }: SortManagerProps<D>) {
+export function SortManager<D>({ grid, onCancel, onApply }: SortManagerProps<D>) {
   const config = cc.sortManager.use();
   const Select = config.columnSelectComponent ?? DefaultSelect;
   const Delete = config.sortDeleteComponent ?? DefaultDelete;
+  const Add = config.sortAddComponent ?? DefaultAdd;
 
-  const columnItems = useColumnsSelectItems(grid);
+  const [columnItems, columnValues] = useColumnsSelectItems(grid);
 
   const [state, setState] = useSortState(grid);
 
@@ -58,7 +59,7 @@ export function SortManager<D>({ grid }: SortManagerProps<D>) {
       <div
         className={css`
           display: grid;
-          grid-template-columns: 2fr 210px 1fr 36px;
+          grid-template-columns: 2fr 210px 1fr 48px;
           grid-column-gap: ${t.spacing.space_10};
           padding-block: ${t.spacing.space_30};
           padding-inline-start: ${t.spacing.space_50};
@@ -114,7 +115,7 @@ export function SortManager<D>({ grid }: SortManagerProps<D>) {
                     return next;
                   });
                 }}
-                value={columnItems.find((v) => v.value === c.columnId) ?? null}
+                value={columnValues[c.columnId ?? ""] ?? null}
                 placeholder={config.localization.placeholderColumnSelect}
               />
               <Select
@@ -158,7 +159,24 @@ export function SortManager<D>({ grid }: SortManagerProps<D>) {
                   justify-content: center;
                 `}
               >
-                <Delete />
+                <Delete
+                  onDelete={() => {
+                    setState((prev) => {
+                      const next = [...prev];
+                      next.splice(i, 1);
+                      return next;
+                    });
+                  }}
+                />
+                <Add
+                  onAdd={() => {
+                    setState((prev) => {
+                      const next = [...prev];
+                      next.splice(i, 0, { sortDirection: "ascending" });
+                      return next;
+                    });
+                  }}
+                />
               </div>
             </div>
           );
@@ -174,8 +192,26 @@ export function SortManager<D>({ grid }: SortManagerProps<D>) {
           padding: ${t.spacing.space_40} calc(${t.spacing.space_40} + ${t.spacing.space_05});
         `}
       >
-        <Button kind="secondary">{config.localization.labelCancel}</Button>
-        <Button kind="primary">{config.localization.labelApply}</Button>
+        <Button
+          kind="secondary"
+          onClick={() => {
+            setState(sortModelToSortItems(grid.state.sortModel.peek(), grid));
+
+            onCancel?.();
+          }}
+        >
+          {config.localization.labelCancel}
+        </Button>
+        <Button
+          kind="primary"
+          onClick={() => {
+            grid.state.sortModel.set(sortItemsToSortModel(state));
+
+            onApply?.();
+          }}
+        >
+          {config.localization.labelApply}
+        </Button>
       </div>
     </form>
   );

@@ -63,6 +63,7 @@ function PopoverImpl({
    */
   const handlePosition = useEvent(() => {
     dialog!.style.display = "block";
+    dialog!.style.visibility = "hidden";
 
     const floating = dialog!.getBoundingClientRect();
     const reference = isHTMLElement(popoverTarget!)
@@ -78,6 +79,10 @@ function PopoverImpl({
 
     dialog!.style.top = `${pos.y}px`;
     dialog!.style.left = `${pos.x}px`;
+
+    setTimeout(() => {
+      dialog!.style.visibility = "";
+    });
 
     dialog!.style.setProperty("--lng-reference-width", `${reference.width}px`);
     dialog!.style.setProperty("--lng-reference-height", `${reference.height}px`);

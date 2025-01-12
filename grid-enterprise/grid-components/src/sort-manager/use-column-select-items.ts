@@ -9,12 +9,20 @@ export function useColumnsSelectItems<D>({ state, api }: StoreEnterpriseReact<D>
   const columnsWithSort = useMemo(() => {
     return new Set(sortModel.map((c) => c.columnId));
   }, [sortModel]);
+
   const candidateColumns = useMemo(() => {
     return columns.filter((c) => api.columnIsSortable(c) && !columnsWithSort.has(c.id));
   }, [api, columns, columnsWithSort]);
+
+  const columnValues = useMemo(() => {
+    const v = columns.filter((c) => columnsWithSort.has(c.id));
+
+    return Object.fromEntries(v.map((c) => [c.id, { label: c.headerName ?? c.id, value: c.id }]));
+  }, [columns, columnsWithSort]);
+
   const columnItems = useMemo(() => {
     return candidateColumns.map<SelectItem>((c) => ({ label: c.headerName ?? c.id, value: c.id }));
   }, [candidateColumns]);
 
-  return columnItems;
+  return [columnItems, columnValues] as const;
 }
