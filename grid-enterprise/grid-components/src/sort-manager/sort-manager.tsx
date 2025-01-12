@@ -1,5 +1,5 @@
 import type { StoreEnterpriseReact } from "@1771technologies/grid-types";
-import { Select as DefaultSelect, type SelectProps } from "../select/select";
+import { Select as DefaultSelect, type SelectItem, type SelectProps } from "../select/select";
 import { type ReactNode } from "react";
 import { cc } from "../component-configuration";
 import { clsx } from "@1771technologies/js-utils";
@@ -70,7 +70,7 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
 
   const localization = config.localization! ?? {};
 
-  const [columnItems, columnValues] = useColumnsSelectItems(grid);
+  const columnItems = useColumnsSelectItems(grid);
 
   const [state, setState] = useSortState(grid);
 
@@ -121,6 +121,9 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
 
           {/* SORT SECTION */}
           {state.map((c, i) => {
+            const columnItem: SelectItem | null =
+              columnItems.find((s) => c.columnId === s.value) ?? null;
+
             return (
               <div
                 key={i}
@@ -134,7 +137,8 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
               >
                 <Select
                   items={columnItems}
-                  disabled
+                  disabled={Boolean(columnItems.length <= 1 && columnItem)}
+                  disabledReason={localization.disabledNoMoreSortableColumns}
                   onSelect={(column) => {
                     setState((prev) => {
                       const v = { ...prev[i] };
@@ -145,7 +149,7 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
                       return next;
                     });
                   }}
-                  value={columnValues[c.columnId ?? ""] ?? null}
+                  value={columnItem}
                   placeholder={localization.placeholderColumnSelect}
                 />
                 <Select
@@ -207,7 +211,7 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
                     onAdd={() => {
                       setState((prev) => {
                         const next = [...prev];
-                        next.splice(i, 0, { sortDirection: "ascending" });
+                        next.splice(i + 1, 0, { sortDirection: "ascending" });
                         return next;
                       });
                       onAdd?.();

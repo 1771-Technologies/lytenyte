@@ -1,8 +1,17 @@
 import { IconButton } from "../buttons/icon-button";
-import type { SortAddComponentProps } from "./sort-manager";
+import type { SortAddComponentProps, SortDeleteComponentProps } from "./sort-manager";
 
-export const DefaultDelete = () => {
-  return <IconButton kind="ghost">⛌</IconButton>;
+export const DefaultDelete = (props: SortDeleteComponentProps) => {
+  return (
+    <IconButton
+      kind="ghost"
+      onClick={props.onDelete}
+      disabled={props.disabled}
+      disabledReason={props.disableReason}
+    >
+      ⛌
+    </IconButton>
+  );
 };
 
 export const DefaultAdd = (props: SortAddComponentProps) => {
