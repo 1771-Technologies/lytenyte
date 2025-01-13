@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { cc } from "../../component-configuration";
 import { useGrid } from "../../provider/grid-provider";
 import { BoxDropZone } from "./box-drop-zone";
@@ -12,8 +13,16 @@ export function ValuesBox() {
   const Empty = config.iconEmpty!;
   const Icon = config.iconValues!;
 
+  const columns = state.columns.use();
+  const base = state.columnBase.use();
+  const items = useMemo(() => {
+    return columns.filter((c) => c.aggFunc ?? base.aggFunc);
+  }, [base.aggFunc, columns]);
+
   return (
     <BoxDropZone
+      items={items}
+      renderer={({ column }) => <div>{column.id}</div>}
       collapsed={!expansions.values}
       onCollapseChange={() => {
         boxExpansions.set((p) => ({ ...p, values: !p.values }));

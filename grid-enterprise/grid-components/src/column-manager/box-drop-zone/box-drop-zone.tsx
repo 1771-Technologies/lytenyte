@@ -2,6 +2,7 @@ import { t } from "@1771technologies/grid-design";
 import { clsx } from "@1771technologies/js-utils";
 import type { ReactNode } from "react";
 import { CollapsedIcon, ExpandedIcon } from "./components";
+import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 
 export interface BoxDropZone {
   readonly collapsed: boolean;
@@ -10,6 +11,9 @@ export interface BoxDropZone {
   readonly emptyIcon: ReactNode;
   readonly label: string;
   readonly icon: ReactNode;
+
+  readonly items: ColumnEnterpriseReact<any>[];
+  readonly renderer: (p: { column: ColumnEnterpriseReact<any> }) => ReactNode;
 }
 export function BoxDropZone({
   icon,
@@ -18,6 +22,8 @@ export function BoxDropZone({
   emptyIcon,
   collapsed,
   onCollapseChange,
+  items,
+  renderer: Renderer,
 }: BoxDropZone) {
   return (
     <div
@@ -73,35 +79,40 @@ export function BoxDropZone({
             background-color: ${t.colors.backgrounds_light};
           `}
         >
-          <div
-            className={css`
-              display: flex;
-              flex: 1;
-              flex-direction: column;
-              justify-content: center;
-              align-items: center;
-              width: 100%;
-              gap: ${t.spacing.space_10};
-            `}
-          >
+          {items.length === 0 && (
             <div
               className={css`
-                color: ${t.colors.gray_50};
+                display: flex;
+                flex: 1;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                gap: ${t.spacing.space_10};
               `}
             >
-              {emptyIcon}
+              <div
+                className={css`
+                  color: ${t.colors.gray_50};
+                `}
+              >
+                {emptyIcon}
+              </div>
+              <div
+                className={clsx(
+                  "lng1771-text-small-300",
+                  css`
+                    text-align: center;
+                  `,
+                )}
+              >
+                {emptyLabel}
+              </div>
             </div>
-            <div
-              className={clsx(
-                "lng1771-text-small-300",
-                css`
-                  text-align: center;
-                `,
-              )}
-            >
-              {emptyLabel}
-            </div>
-          </div>
+          )}
+          {items.map((c) => {
+            return <Renderer column={c} key={c.id} />;
+          })}
         </div>
       )}
     </div>
