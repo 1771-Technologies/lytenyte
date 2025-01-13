@@ -113,6 +113,11 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
   const className = clsx(
     treeClx,
     isOver &&
+      !canDrop &&
+      css`
+        background-color: ${t.colors.system_red_30};
+      `,
+    isOver &&
       isBefore &&
       canDrop &&
       css`
