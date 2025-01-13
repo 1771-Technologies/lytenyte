@@ -178,7 +178,7 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
 
     const column = columns.get(data.id)!;
     const hidden = column.hide ?? base.hide;
-    const hidable = column.hidable ?? base.hidable ?? true;
+    const hidable = api.columnIsHidable(column);
 
     return (
       <div
@@ -190,7 +190,7 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
         className={className}
       >
         <DragIcon data={props.data} dragIndex={props.treeFlatIndex} />
-        <Checkbox tabIndex={-1} isChecked={!hidden} disabled={!hidable} />
+        <Checkbox isDisabled={!hidable} tabIndex={-1} isChecked={!hidden} disabled={!hidable} />
         <span
           className={clsx(
             "lng1771-text-medium",
@@ -215,6 +215,8 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
     const checked = columns.every((c) => !(c.hide ?? base.hide));
     const isIndeterminate = columns.some((c) => !(c.hide ?? base.hide)) && !checked;
 
+    const hidable = columns.every((c) => api.columnIsHidable(c));
+
     return (
       <div
         style={{
@@ -228,6 +230,7 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
         <DragIcon data={props.data} dragIndex={props.treeFlatIndex} />
         <Checkbox
           tabIndex={-1}
+          isDisabled={!hidable}
           isChecked={checked || isIndeterminate}
           isDeterminate={isIndeterminate}
         />
