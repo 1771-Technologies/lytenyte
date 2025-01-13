@@ -125,8 +125,11 @@ export function Virt<D>({
   });
 
   const rows = useMemo(() => {
+    const safeRowStart = Math.max(0, rowStart);
+    const safeRowEnd = Math.min(data.length, rowEnd);
+
     const rows: ReactNode[] = [];
-    if (focusedIndex != null && focusedIndex < rowStart) {
+    if (focusedIndex != null && focusedIndex < safeRowStart) {
       rows.push(
         <Row
           key={focusedIndex}
@@ -138,7 +141,7 @@ export function Virt<D>({
       );
     }
 
-    for (let i = rowStart; i < rowEnd; i++) {
+    for (let i = safeRowStart; i < safeRowEnd; i++) {
       rows.push(<Row key={i} rowIndex={i} data={data[i]} y={i * itemHeight} height={itemHeight} />);
     }
 

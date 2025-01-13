@@ -75,7 +75,7 @@ export function columnHandleGroupColumn<D, E>({
     }
   }
 
-  if (!hasGroupColumn) columns = columns.filter((c) => c.id.startsWith(GROUP_COLUMN_PREFIX));
+  if (!hasGroupColumn) columns = columns.filter((c) => !c.id.startsWith(GROUP_COLUMN_PREFIX));
 
   return columns;
 }

@@ -37,10 +37,11 @@ export const cc = cascada<ComponentConfiguration>(() => {
             "The column tree display the available columns in the grid. " +
             "Use the up and down arrow keys to navigate up and down the tree. Use space to " +
             "toggle an expansion group. Use the left or right arrows to expand and collapse a group.",
-          axeItemLabels: (item) =>
-            item.type === "leaf"
+          axeItemLabels: (item) => {
+            return item.type === "leaf"
               ? (item.data.headerName ?? item.data.id)
-              : (item.path.at(-1) ?? ""),
+              : (item.path.at(-1) ?? "");
+          },
           axeLabel: (cnt) => `There are ${cnt} choices in the tree`,
         },
       },

@@ -50,7 +50,10 @@ export function columnsComputed<D, E>(
     });
 
     const byPin = columnsByPin(columnsWithMarker);
-    return [...byPin.start, ...byPin.center, ...byPin.end];
+
+    const final = [...byPin.start, ...byPin.center, ...byPin.end];
+
+    return final;
   };
 
   const columns = signal(rawColumns, {
