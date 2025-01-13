@@ -59,8 +59,17 @@ export function ColumnTree() {
 }
 
 function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseReact<any>>) {
+  const { api, state } = useGrid();
+  const base = state.columnBase.use();
+  const columns = state.internal.columnLookup.use();
+
   if (props.data.type === "leaf") {
     const data = props.data.data;
+
+    const column = columns.get(data.id)!;
+    const hidden = column.hide ?? base.hide;
+    const hidable = column.hidable ?? base.hidable ?? true;
+
     return (
       <div
         style={{
@@ -74,7 +83,11 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
         `}
       >
         <DragIcon />
-        <Checkbox isChecked={true} />
+        <Checkbox
+          isChecked={!hidden}
+          disabled={!hidable}
+          onCheckChange={() => api.columnUpdate(column, { hide: !hidden })}
+        />
         <span
           className={clsx(
             "lng1771-text-medium",
