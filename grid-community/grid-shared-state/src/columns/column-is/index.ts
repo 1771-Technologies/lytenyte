@@ -2,7 +2,6 @@ export { columnIsEditable } from "./column-is-editable.js";
 export { columnIsEmpty } from "./column-is-empty.js";
 export { columnIsGridGenerated } from "./column-is-grid-generated.js";
 export { columnIsGroupAutoColumn } from "./column-is-group-auto-column.js";
-export { columnIsGroupLocked } from "./column-is-group-locked.js";
 export { columnIsHidable } from "./column-is-hidable.js";
 export { columnIsMarker } from "./column-is-marker.js";
 export { columnIsMovable } from "./column-is-movable.js";

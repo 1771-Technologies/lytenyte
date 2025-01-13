@@ -21,10 +21,10 @@ export const columns: ColumnEnterpriseReact<any>[] = [
 ];
 export const bankColumns: ColumnEnterpriseReact<any>[] = [
   { id: "age", groupPath: ["Information"] },
-  { id: "job", cellEditPredicate: true, groupPath: ["Information"] },
+  { id: "job", cellEditPredicate: true, groupPath: ["Information"], rowGroupable: true },
   { id: "balance", pin: "start", measureFunc: "sum" },
   { id: "education", groupPath: ["Information"], rowGroupable: true },
-  { id: "marital", groupPath: ["Information"], groupLocked: true },
+  { id: "marital", groupPath: ["Information"] },
   { id: "default", columnPivotable: true },
   { id: "housing", columnPivotable: true, aggFunc: "count" },
   { id: "loan", pin: "start", columnPivotable: true },

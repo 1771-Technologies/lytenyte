@@ -64,7 +64,6 @@ export interface ApiCommunity<D, C, E> {
   readonly columnIsResizable: (c: C) => boolean;
   readonly columnIsSortable: (c: C) => boolean;
   readonly columnIsMovable: (c: C) => boolean;
-  readonly columnIsGroupLocked: (c: C) => boolean;
   readonly columnIsHidable: (c: C) => boolean;
   readonly columnIsEmpty: (c: C) => boolean;
   readonly columnIsMarker: (c: C) => boolean;

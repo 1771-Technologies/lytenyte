@@ -25,7 +25,6 @@ import {
   columnIsEditable,
   columnIsGridGenerated,
   columnIsGroupAutoColumn,
-  columnIsGroupLocked,
   columnIsHidable,
   columnIsMarker,
   columnIsMovable,
@@ -123,7 +122,6 @@ export function makeApi<D, E>(
     columnIsEmpty: (c) => columnIsEmpty(c),
     columnIsGridGenerated: (c) => columnIsGridGenerated(api, c),
     columnIsGroupAutoColumn: (c) => columnIsGroupAutoColumn(c),
-    columnIsGroupLocked: (c) => columnIsGroupLocked(api, c),
     columnIsHidable: (c) => columnIsHidable(api, c),
     columnIsMarker: (c) => columnIsMarker(c),
     columnIsMovable: (c) => columnIsMovable(api, c),
@@ -254,10 +252,8 @@ export function makeApi<D, E>(
     contextMenuClose: () => api.getState().internal.contextMenuTarget.set(null),
 
     floatingFrameClose: frame.floatingFrameClose,
-    floatingFrameIsOpen: frame.floatingFrameIsOpen,
     floatingFrameOpen: frame.floatingFrameOpen,
     panelFrameClose: frame.panelFrameClose,
-    panelFrameIsOpen: frame.panelFrameIsOpen,
     panelFrameOpen: frame.panelFrameOpen,
 
     rowReload: () => api.getState().internal.rowBackingDataSource.peek().rowReload(),

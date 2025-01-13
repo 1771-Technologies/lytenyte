@@ -8,9 +8,12 @@ import { MeasuresBox } from "../src/column-manager/box-drop-zone/measures-box";
 import { ValuesBox } from "../src/column-manager/box-drop-zone/values-box";
 
 const grid = makeStore({
+  gridId: "x",
   columns: bankColumns,
   columnBase: { sortable: true, movable: true },
-  gridId: "x",
+  rowGroupModel: ["education"],
+  columnPivotModel: ["loan"],
+  measureModel: ["poutcome"],
 });
 
 export default function Home() {

@@ -92,7 +92,6 @@ export interface Column<A, D, E> {
 
   readonly groupPath?: string[];
   readonly groupVisibility?: "visible-when-open" | "visible-when-closed" | "always-visible";
-  readonly groupLocked?: boolean;
 
   readonly widthMin?: number;
   readonly widthMax?: number;
