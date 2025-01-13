@@ -10,10 +10,12 @@ function IconButtonImpl({
   disabledReason,
   disabled,
   tooltip,
+  small,
 
   ...props
 }: JSX.IntrinsicElements["button"] & {
   kind: "ghost" | "normal";
+  small?: boolean;
   disabledReason?: ReactNode;
   tooltip?: ReactNode;
 }) {
@@ -44,6 +46,11 @@ function IconButtonImpl({
           color: ${t.colors.borders_icons_default};
           cursor: pointer;
         `,
+        small &&
+          css`
+            width: 20px;
+            height: 20px;
+          `,
 
         disabled &&
           css`

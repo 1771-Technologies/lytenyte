@@ -7,8 +7,10 @@ import type { FloatingFrameConfiguration } from "./floating-frame/floating-frame
 import { frameDefaultAxe } from "@1771technologies/react-frame";
 import type { GridFrameConfiguration } from "./grid-frame/grid-frame";
 import { splitPaneAxe } from "@1771technologies/react-split-pane";
+import type { ColumnManagerConfiguration } from "./column-manager/column-manager";
 
 export type ComponentConfiguration = {
+  columnManager: Signal<ColumnManagerConfiguration>;
   gridFrame: Signal<GridFrameConfiguration>;
   floatingFrame: Signal<FloatingFrameConfiguration>;
   sortManager: Signal<SortManagerConfiguration>;
@@ -28,6 +30,21 @@ function mergeSignal<T>(c: T): Signal<T> {
 
 export const cc = cascada<ComponentConfiguration>(() => {
   return {
+    columnManager: mergeSignal<ColumnManagerConfiguration>({
+      columnTree: {
+        axe: {
+          axeDescription:
+            "The column tree display the available columns in the grid. " +
+            "Use the up and down arrow keys to navigate up and down the tree. Use space to " +
+            "toggle an expansion group. Use the left or right arrows to expand and collapse a group.",
+          axeItemLabels: (item) =>
+            item.type === "leaf"
+              ? (item.data.headerName ?? item.data.id)
+              : (item.path.at(-1) ?? ""),
+          axeLabel: (cnt) => `There are ${cnt} choices in the tree`,
+        },
+      },
+    }),
     gridFrame: mergeSignal<GridFrameConfiguration>({
       axe: splitPaneAxe,
     }),
@@ -56,6 +73,14 @@ export const cc = cascada<ComponentConfiguration>(() => {
         disabledLastItem: "This sort can not be removed because it is the last item.",
         disabledNoMoreSortableColumns:
           "Another sort can not be added because there are no more sortable columns left.",
+      },
+
+      axe: {
+        axeDescription:
+          "Select an item. Use the up and down arrow keys to navigate to an item. " +
+          "Press enter to accept the option. Escape to cancel.",
+        axeItemLabels: (item) => (item.type === "leaf" ? item.data.label : ""),
+        axeLabel: (cnt) => `There are ${cnt} items to choose from`,
       },
     }),
 

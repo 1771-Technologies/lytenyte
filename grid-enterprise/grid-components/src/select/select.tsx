@@ -1,4 +1,8 @@
-import { ListView, type ListViewItemRendererProps } from "@1771technologies/react-list-view";
+import {
+  ListView,
+  type ListViewAxe,
+  type ListViewItemRendererProps,
+} from "@1771technologies/react-list-view";
 import { useMemo, useRef, useState, type ReactNode } from "react";
 import { LngPopover } from "../popover/lng-popover";
 import { t } from "@1771technologies/grid-design";
@@ -18,6 +22,7 @@ export interface SelectProps {
   readonly disabled?: boolean;
   readonly disabledReason?: ReactNode;
   readonly tooltip?: ReactNode;
+  readonly axe: ListViewAxe<SelectItem>;
 }
 
 const expansions = {};
@@ -31,6 +36,7 @@ export function Select({
   disabled,
   disabledReason,
   tooltip,
+  axe,
 }: SelectProps) {
   const [open, setOpen] = useState(false);
   const paths = useMemo(() => {
@@ -149,11 +155,7 @@ export function Select({
                 }
               `}
               itemHeight={36}
-              axe={{
-                axeDescription: "",
-                axeItemLabels: () => "",
-                axeLabel: () => "",
-              }}
+              axe={axe}
               onAction={(s) => {
                 void (s.type === "leaf" && onSelect(s.data));
                 setOpen(false);

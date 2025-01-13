@@ -19,3 +19,22 @@ export const columns: ColumnEnterpriseReact<any>[] = [
   { id: "poutcome" },
   { id: "y" },
 ];
+export const bankColumns: ColumnEnterpriseReact<any>[] = [
+  { id: "age", groupPath: ["Information"] },
+  { id: "job", cellEditPredicate: true, groupPath: ["Information"] },
+  { id: "balance", pin: "start", measureFunc: "sum" },
+  { id: "education", groupPath: ["Information"], rowGroupable: true },
+  { id: "marital", groupPath: ["Information"], groupLocked: true },
+  { id: "default", columnPivotable: true },
+  { id: "housing", columnPivotable: true, aggFunc: "count" },
+  { id: "loan", pin: "start", columnPivotable: true },
+  { id: "contact", pin: "end", aggFunc: "sum" },
+  { id: "day" },
+  { id: "month", measureFunc: "count" },
+  { id: "duration" },
+  { id: "campaign" },
+  { id: "pdays" },
+  { id: "previous" },
+  { id: "poutcome", measureFuncsAllowed: ["sum", "count"], measureFuncDefault: "count" },
+  { id: "y", measureFuncsAllowed: ["sum", "count"] },
+];

@@ -219,15 +219,15 @@ export function ListView<D>({
 function ListItemRenderer<D>(p: RendererProps<PathTreeLeafNode<D> | PathTreeParentNode<D>>) {
   let depth = 1;
 
-  let current = p.data.parent;
+  let current = p.data?.parent;
   while (current) {
-    current = current.parent;
+    current = current?.parent;
     depth++;
   }
   const ctx = useListView();
 
   const isExpanded =
-    p.data.type === "parent" ? (ctx.expansions[p.data.occurrence] ?? true) : undefined;
+    p.data?.type === "parent" ? (ctx.expansions[p.data.occurrence] ?? true) : undefined;
   return (
     <div
       tabIndex={-1}

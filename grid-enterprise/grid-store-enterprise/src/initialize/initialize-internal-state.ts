@@ -114,6 +114,7 @@ export function initializeInternalState<D, E>(
 
     contextMenuTarget: signal<Target | null>(null),
 
+    columnManagerTreeExpansions: signal<Record<string, boolean>>({}),
     columnLookup,
     columnsVisible,
     columnVisibleCenterCount,

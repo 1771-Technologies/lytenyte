@@ -12,6 +12,7 @@ import { useSortState, type SortItem } from "./use-sort-state";
 import { sortModelToSortItems } from "./sort-model-to-sort-items";
 import { sortItemsToSortModel } from "./sort-items-to-sort-model";
 import { LngTooltip } from "../tooltip/lng-tooltip";
+import type { ListViewAxe } from "@1771technologies/react-list-view";
 
 export interface SortDeleteComponentProps {
   onDelete: () => void;
@@ -49,9 +50,7 @@ export interface SortManagerConfiguration {
     readonly disabledLastItem: string;
   };
 
-  readonly axe?: {
-    readonly ar: string;
-  };
+  readonly axe?: ListViewAxe<SelectItem>;
 }
 
 export interface SortManagerProps<D> {
@@ -65,6 +64,8 @@ export interface SortManagerProps<D> {
 
 export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: SortManagerProps<D>) {
   const config = cc.sortManager.use();
+
+  const axe = config.axe!;
   const Select = config.selectComponent ?? DefaultSelect;
   const Delete = config.sortDeleteComponent ?? DefaultDelete;
   const Add = config.sortAddComponent ?? DefaultAdd;
@@ -158,6 +159,7 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
                       }
                       disabled={Boolean(columnItems.length <= 1 && columnItem)}
                       disabledReason={localization.disabledNoMoreSortableColumns}
+                      axe={axe}
                       onSelect={(column) => {
                         setState((prev) => {
                           const v = { ...prev[i] };
@@ -174,6 +176,7 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
                     <Select
                       items={sortValuesValues}
                       value={sortValuesValues.find((v) => v.value === c.sortOn) ?? null}
+                      axe={axe}
                       onSelect={(sortOn) => {
                         setState((prev) => {
                           const v = { ...prev[i] };
@@ -188,6 +191,7 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
                     />
                     <Select
                       items={sortDirectionValues}
+                      axe={axe}
                       onSelect={(item) => {
                         setState((prev) => {
                           const v = { ...prev[i] };

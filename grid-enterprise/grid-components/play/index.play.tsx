@@ -1,38 +1,19 @@
 import { makeStore } from "@1771technologies/grid-store-enterprise";
-import { columns } from "./helpers";
-import { SortFloatingFrame } from "../src/sort-manager/sort-frame";
-import { FloatingFrameDriver } from "../src/floating-frame/floating-frame-driver";
-import { useCallback, useEffect } from "react";
+import { bankColumns } from "./helpers";
 import { GridProvider } from "../src/provider/grid-provider";
+import { ColumnTree } from "../src/column-manager/column-tree";
 
 const grid = makeStore({
-  columns,
+  columns: bankColumns,
   columnBase: { sortable: true },
-
-  floatingFrames: {
-    sort: {
-      component: SortFloatingFrame,
-      title: "Sort",
-    },
-  },
 });
 
 export default function Home() {
-  useEffect(() => {
-    grid.api.floatingFrameOpen("sort");
-  }, []);
-
-  const ref = useCallback((el: HTMLElement | null) => {
-    if (!el) return;
-    grid.state.internal.viewport.set(el);
-  }, []);
-
   return (
-    <div style={{ width: "100vw", height: "100vh" }} ref={ref}>
-      <button onClick={() => grid.api.floatingFrameOpen("sort")}>Open</button>
-      <GridProvider grid={grid}>
-        <FloatingFrameDriver />
-      </GridProvider>
-    </div>
+    <GridProvider grid={grid}>
+      <div style={{ width: "100vw", height: "100vh" }}>
+        <ColumnTree />
+      </div>
+    </GridProvider>
   );
 }
