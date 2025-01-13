@@ -6,6 +6,7 @@ import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import { useMemo } from "react";
 import { useDraggable } from "@1771technologies/react-dragon";
 import { itemDragLabel } from "./column-tree/item-drag-label";
+import { allLeafs } from "./column-tree/all-leafs";
 
 export const ExpandedIcon = ({ id }: { id: string }) => {
   const { state } = useGrid();
@@ -73,17 +74,27 @@ export const DragIcon = ({
   data: PathTreeNode<ColumnEnterpriseReact<any>>;
   dragIndex: number;
 }) => {
-  const { state } = useGrid();
+  const { state, api } = useGrid();
 
   const gridId = state.gridId.use();
   const dragTag = useMemo(() => {
     return [itemDragLabel(gridId, data)];
   }, [data, gridId]);
 
+  const isMovable = useMemo(() => {
+    if (data.type === "parent") {
+      const all = allLeafs(data);
+      return all.every((c) => api.columnIsMovable(c));
+    }
+
+    return api.columnIsMovable(data.data);
+  }, [api, data]);
+
   const drag = useDraggable({
     dragData: () => ({ node: data, index: dragIndex }),
     dragTags: () => dragTag,
     placeholder: () => <div>Ragi</div>,
+    disabled: !isMovable,
   });
 
   return (
@@ -92,6 +103,7 @@ export const DragIcon = ({
       tabIndex={-1}
       kind="ghost"
       small
+      disabled={!isMovable}
       onClick={(ev) => {
         ev.stopPropagation();
       }}

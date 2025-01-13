@@ -4,7 +4,7 @@ import type {
 } from "@1771technologies/react-list-view";
 import { ListView } from "@1771technologies/react-list-view";
 import { useGrid } from "../../provider/grid-provider";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import { cc } from "../../component-configuration";
 import { t } from "@1771technologies/grid-design";
@@ -13,7 +13,7 @@ import { Checkbox } from "../../checkbox/checkbox";
 import { clsx } from "@1771technologies/js-utils";
 import { handleItemHide } from "./handle-item-hide";
 import { allLeafs } from "./all-leafs";
-import { dragState, useDraggable, useDroppable } from "@1771technologies/react-dragon";
+import { dragState, useDroppable } from "@1771technologies/react-dragon";
 import { itemDragLabel } from "./item-drag-label";
 
 export function ColumnTree() {
@@ -140,6 +140,7 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
           paddingInlineStart: `calc(${t.spacing.space_30} + ${props.depth > 0 ? props.depth + 1 : 0} * ${t.spacing.space_30} + 22px)`,
         }}
         onDragOver={onDragOver}
+        onDrop={onDrop}
         className={className}
       >
         <DragIcon data={props.data} dragIndex={props.treeFlatIndex} />
@@ -174,6 +175,7 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
           paddingInlineStart: `calc(${t.spacing.space_30} + ${props.depth} * ${t.spacing.space_30})`,
         }}
         onDragOver={onDragOver}
+        onDrop={onDrop}
         className={className}
       >
         {props.expanded ? <ExpandedIcon id={id} /> : <CollapsedIcon id={id} />}
