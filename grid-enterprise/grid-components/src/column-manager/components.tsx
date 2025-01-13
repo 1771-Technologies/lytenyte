@@ -76,7 +76,7 @@ export const DragIcon = ({
   dragIndex: number;
 }) => {
   const { state, api } = useGrid();
-  const dragLabel = cc.columnManager.use().columnTree?.dragLabel;
+  const dragLabel = cc.columnManager.use().columnTree?.labelDrag;
 
   const gridId = state.gridId.use();
   const dragTag = useMemo(() => {

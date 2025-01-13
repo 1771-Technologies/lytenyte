@@ -8,6 +8,10 @@ import { frameDefaultAxe } from "@1771technologies/react-frame";
 import type { GridFrameConfiguration } from "./grid-frame/grid-frame";
 import { splitPaneAxe } from "@1771technologies/react-split-pane";
 import type { ColumnManagerConfiguration } from "./column-manager/column-manager";
+import { ColumnPivotIcon } from "./column-manager/icons/column-pivot-icon";
+import { DragGroupIcon } from "./column-manager/icons/drag-group-icon";
+import { MeasuresIcon } from "./column-manager/icons/measures-icon";
+import { RowGroupIcon } from "./column-manager/icons/row-group-icon";
 
 export type ComponentConfiguration = {
   columnManager: Signal<ColumnManagerConfiguration>;
@@ -44,9 +48,24 @@ export const cc = cascada<ComponentConfiguration>(() => {
           },
           axeLabel: (cnt) => `There are ${cnt} choices in the tree`,
         },
-        checkboxLabel: "Toggle column visibility",
-        dragLabel: "Move column",
-        toggleLabel: "Toggle group visibility",
+        labelDrag: "Move column",
+      },
+      columnBoxes: {
+        labelColumnPivots: "Column Pivots",
+        labelMeasures: "Measures",
+        labelRowGroups: "Row Groups",
+        labelValues: "Values",
+
+        labelEmptyValues: "Drag here to aggregate",
+        labelEmptyColumnPivot: "Drag here to create a pivot",
+        labelEmptyMeasures: "Drag here to add a measure",
+        labelEmptyRowGroups: "Drag here to set row groups",
+
+        iconColumnPivots: () => <ColumnPivotIcon />,
+        iconEmpty: () => <DragGroupIcon />,
+        iconMeasures: () => <MeasuresIcon />,
+        iconRowGroups: () => <RowGroupIcon />,
+        iconValues: () => <MeasuresIcon />,
       },
     }),
     gridFrame: mergeSignal<GridFrameConfiguration>({
