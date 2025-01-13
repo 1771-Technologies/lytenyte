@@ -1,4 +1,5 @@
 import { t } from "@1771technologies/grid-design";
+import { clsx } from "@1771technologies/js-utils";
 import type { ReactNode } from "react";
 
 export interface BoxDropZone {
@@ -20,12 +21,33 @@ export function BoxDropZone({ icon, label, emptyLabel, emptyIcon }: BoxDropZone)
     >
       <div
         className={css`
-          display: grid;
-          grid-template-columns: 24px 1fr 24px;
+          display: flex;
+          align-items: center;
+          gap: ${t.spacing.space_10};
         `}
       >
-        <div>{icon}</div>
-        <div>{label}</div>
+        <div
+          className={css`
+            color: ${t.colors.borders_icons_default};
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          `}
+        >
+          {icon}
+        </div>
+        <div
+          className={clsx(
+            "lng1771-text-medium",
+            css`
+              flex: 1;
+            `,
+          )}
+        >
+          {label}
+        </div>
         <div>X</div>
       </div>
       <div
@@ -46,13 +68,23 @@ export function BoxDropZone({ icon, label, emptyLabel, emptyIcon }: BoxDropZone)
             justify-content: center;
             align-items: center;
             width: 100%;
+            gap: ${t.spacing.space_10};
           `}
         >
-          <div>{emptyIcon}</div>
           <div
             className={css`
-              text-align: center;
+              color: ${t.colors.gray_50};
             `}
+          >
+            {emptyIcon}
+          </div>
+          <div
+            className={clsx(
+              "lng1771-text-small-300",
+              css`
+                text-align: center;
+              `,
+            )}
           >
             {emptyLabel}
           </div>
