@@ -10,6 +10,7 @@ export function PillWrapper({
   return (
     <div
       {...props}
+      tabIndex={-1}
       className={clsx(
         isFirst &&
           css`
@@ -20,6 +21,13 @@ export function PillWrapper({
           display: flex;
           align-items: center;
           padding-inline: ${t.spacing.space_20};
+          &:focus {
+            outline: none;
+          }
+          &:focus > div {
+            outline: 1px solid ${t.colors.borders_focus};
+            outline-offset: -2px;
+          }
         `,
         props.className,
       )}
