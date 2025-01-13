@@ -1,13 +1,13 @@
 import { t } from "@1771technologies/grid-design";
-import { IconButton } from "../buttons/icon-button";
-import { useGrid } from "../provider/grid-provider";
+import { IconButton } from "../../buttons/icon-button";
+import { useGrid } from "../../provider/grid-provider";
 import type { PathTreeNode } from "@1771technologies/react-list-view";
 import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import { useMemo } from "react";
 import { useDraggable } from "@1771technologies/react-dragon";
-import { itemDragLabel } from "./column-tree/item-drag-label";
-import { allLeafs } from "./column-tree/all-leafs";
-import { cc } from "../component-configuration";
+import { itemDragLabel } from "./item-drag-label";
+import { allLeafs } from "./all-leafs";
+import { cc } from "../../component-configuration";
 
 export const ExpandedIcon = ({ id }: { id: string }) => {
   const { state } = useGrid();

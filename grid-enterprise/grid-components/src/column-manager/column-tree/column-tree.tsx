@@ -9,7 +9,7 @@ import { useId, useMemo } from "react";
 import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import { cc } from "../../component-configuration";
 import { t } from "@1771technologies/grid-design";
-import { CollapsedIcon, DragIcon, ExpandedIcon } from "../components";
+import { CollapsedIcon, DragIcon, ExpandedIcon } from "./components";
 import { Checkbox } from "../../checkbox/checkbox";
 import { clsx } from "@1771technologies/js-utils";
 import { handleItemHide } from "./handle-item-hide";
