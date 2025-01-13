@@ -1,6 +1,6 @@
 import { t } from "@1771technologies/grid-design";
 import { clsx } from "@1771technologies/js-utils";
-import type { ReactNode } from "react";
+import { act, type ReactNode } from "react";
 import { CollapsedIcon, ExpandedIcon } from "./components";
 import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 
@@ -70,6 +70,35 @@ export function BoxDropZone({
       </div>
       {!collapsed && (
         <div
+          tabIndex={0}
+          onKeyDown={(ev) => {
+            if (items.length === 0) return;
+
+            if (ev.key === "ArrowDown") {
+              ev.preventDefault();
+              ev.stopPropagation();
+
+              const active = document.activeElement!;
+              const next =
+                active === ev.currentTarget
+                  ? (active.firstElementChild as HTMLElement)
+                  : (active.nextElementSibling as HTMLElement);
+
+              if (!next) return;
+
+              next.focus();
+            }
+            if (ev.key === "ArrowUp") {
+              ev.preventDefault();
+              ev.stopPropagation();
+
+              const active = document.activeElement!;
+              const next = active.previousElementSibling as HTMLElement;
+              if (!next) return;
+
+              next.focus();
+            }
+          }}
           className={css`
             display: flex;
             flex-direction: column;
@@ -78,6 +107,10 @@ export function BoxDropZone({
             border-radius: ${t.spacing.box_radius_regular};
             border: 1px dashed ${t.colors.borders_strong};
             background-color: ${t.colors.backgrounds_light};
+            &:focus {
+              outline: none;
+              border: 1px solid ${t.colors.borders_focus};
+            }
           `}
         >
           {items.length === 0 && (
