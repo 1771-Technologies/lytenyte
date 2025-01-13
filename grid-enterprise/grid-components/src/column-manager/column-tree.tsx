@@ -34,6 +34,21 @@ export function ColumnTree() {
       axe={config.columnTree!.axe!}
       expansions={expansions}
       onAction={() => {}}
+      className={css`
+        max-width: 400px;
+        overflow-x: hidden;
+      `}
+      itemClassName={css`
+        padding-inline: ${t.spacing.space_10};
+        &:focus {
+          outline: none;
+
+          & > div {
+            background-color: ${t.colors.backgrounds_light};
+            border-radius: ${t.spacing.box_radius_medium};
+          }
+        }
+      `}
       onExpansionChange={(id, s) =>
         state.internal.columnManagerTreeExpansions.set((prev) => ({ ...prev, [id]: s }))
       }
