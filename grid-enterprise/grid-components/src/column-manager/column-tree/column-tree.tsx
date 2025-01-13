@@ -5,7 +5,7 @@ import type {
 } from "@1771technologies/react-list-view";
 import { ListView } from "@1771technologies/react-list-view";
 import { useGrid } from "../../provider/grid-provider";
-import { useMemo } from "react";
+import { useId, useMemo } from "react";
 import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import { cc } from "../../component-configuration";
 import { t } from "@1771technologies/grid-design";
@@ -98,6 +98,7 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
   const base = state.columnBase.use();
   const columns = state.internal.columnLookup.use();
   const pivotMode = state.columnPivotModeIsOn.use();
+  const labelId = useId();
 
   const gridId = state.gridId.use();
 
@@ -193,8 +194,16 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
         className={className}
       >
         <DragIcon data={props.data} dragIndex={props.treeFlatIndex} />
-        <Checkbox isDisabled={!hidable} tabIndex={-1} isChecked={!hidden} disabled={!hidable} />
-        <span
+        <Checkbox
+          htmlFor={labelId}
+          aria-labelledby={labelId}
+          isDisabled={!hidable}
+          tabIndex={-1}
+          isChecked={!hidden}
+          disabled={!hidable}
+        />
+        <label
+          id={labelId}
           className={clsx(
             "lng1771-text-medium",
             css`
@@ -207,7 +216,7 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
           )}
         >
           {data.headerName ?? data.id}
-        </span>
+        </label>
       </div>
     );
   } else {
@@ -232,13 +241,16 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
         {props.expanded ? <ExpandedIcon id={id} /> : <CollapsedIcon id={id} />}
         <DragIcon data={props.data} dragIndex={props.treeFlatIndex} />
         <Checkbox
+          htmlFor={labelId}
+          aria-labelledby={labelId}
           tabIndex={-1}
           isDisabled={!hidable}
           isChecked={checked || isIndeterminate}
           isDeterminate={isIndeterminate}
         />
 
-        <span
+        <label
+          id={labelId}
           className={clsx(
             "lng1771-text-medium",
             css`
@@ -251,7 +263,7 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
           )}
         >
           {path}
-        </span>
+        </label>
       </div>
     );
   }

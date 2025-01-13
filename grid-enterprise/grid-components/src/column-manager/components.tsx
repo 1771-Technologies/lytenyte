@@ -7,6 +7,7 @@ import { useMemo } from "react";
 import { useDraggable } from "@1771technologies/react-dragon";
 import { itemDragLabel } from "./column-tree/item-drag-label";
 import { allLeafs } from "./column-tree/all-leafs";
+import { cc } from "../component-configuration";
 
 export const ExpandedIcon = ({ id }: { id: string }) => {
   const { state } = useGrid();
@@ -75,6 +76,7 @@ export const DragIcon = ({
   dragIndex: number;
 }) => {
   const { state, api } = useGrid();
+  const dragLabel = cc.columnManager.use().columnTree?.dragLabel;
 
   const gridId = state.gridId.use();
   const dragTag = useMemo(() => {
@@ -101,6 +103,7 @@ export const DragIcon = ({
     <IconButton
       {...drag}
       tabIndex={-1}
+      aria-label={dragLabel}
       kind="ghost"
       small
       className={css`

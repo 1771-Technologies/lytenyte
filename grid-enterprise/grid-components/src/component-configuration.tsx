@@ -44,6 +44,9 @@ export const cc = cascada<ComponentConfiguration>(() => {
           },
           axeLabel: (cnt) => `There are ${cnt} choices in the tree`,
         },
+        checkboxLabel: "Toggle column visibility",
+        dragLabel: "Move column",
+        toggleLabel: "Toggle group visibility",
       },
     }),
     gridFrame: mergeSignal<GridFrameConfiguration>({
