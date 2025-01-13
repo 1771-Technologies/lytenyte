@@ -115,6 +115,13 @@ export function initializeInternalState<D, E>(
     contextMenuTarget: signal<Target | null>(null),
 
     columnManagerTreeExpansions: signal<Record<string, boolean>>({}),
+    columnManagerBoxExpansions: signal({
+      // TS WTF
+      columnPivots: true as boolean,
+      measures: true as boolean,
+      rowGroups: true as boolean,
+      values: true as boolean,
+    }),
     columnLookup,
     columnsVisible,
     columnVisibleCenterCount,

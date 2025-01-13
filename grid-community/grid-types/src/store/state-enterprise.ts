@@ -38,6 +38,12 @@ export interface GridInternalState<D, E> extends Omit<CommunityInternalState<D, 
   readonly cellSelectionFlashOn: Signal<boolean>;
 
   readonly columnManagerTreeExpansions: Signal<Record<string, boolean>>;
+  readonly columnManagerBoxExpansions: Signal<{
+    rowGroups: boolean;
+    columnPivots: boolean;
+    measures: boolean;
+    values: boolean;
+  }>;
 
   readonly columnPivotColumns: Signal<Column<D, E>[]>;
   readonly columnPivotLookup: ReadonlySignal<Map<string, Column<D, E>>>;

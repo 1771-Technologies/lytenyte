@@ -1,6 +1,7 @@
 import { t } from "@1771technologies/grid-design";
 import { clsx } from "@1771technologies/js-utils";
 import type { ReactNode } from "react";
+import { CollapsedIcon, ExpandedIcon } from "./components";
 
 export interface BoxDropZone {
   readonly collapsed: boolean;
@@ -10,7 +11,14 @@ export interface BoxDropZone {
   readonly label: string;
   readonly icon: ReactNode;
 }
-export function BoxDropZone({ icon, label, emptyLabel, emptyIcon }: BoxDropZone) {
+export function BoxDropZone({
+  icon,
+  label,
+  emptyLabel,
+  emptyIcon,
+  collapsed,
+  onCollapseChange,
+}: BoxDropZone) {
   return (
     <div
       className={css`
@@ -48,48 +56,54 @@ export function BoxDropZone({ icon, label, emptyLabel, emptyIcon }: BoxDropZone)
         >
           {label}
         </div>
-        <div>X</div>
+        {collapsed ? (
+          <CollapsedIcon onClick={() => onCollapseChange(!collapsed)} />
+        ) : (
+          <ExpandedIcon onClick={() => onCollapseChange(!collapsed)} />
+        )}
       </div>
-      <div
-        className={css`
-          display: flex;
-          min-height: 120px;
-          min-width: 260px;
-          border-radius: ${t.spacing.box_radius_regular};
-          border: 1px dashed ${t.colors.borders_strong};
-          background-color: ${t.colors.backgrounds_light};
-        `}
-      >
+      {!collapsed && (
         <div
           className={css`
             display: flex;
-            flex: 1;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            gap: ${t.spacing.space_10};
+            min-height: 120px;
+            min-width: 260px;
+            border-radius: ${t.spacing.box_radius_regular};
+            border: 1px dashed ${t.colors.borders_strong};
+            background-color: ${t.colors.backgrounds_light};
           `}
         >
           <div
             className={css`
-              color: ${t.colors.gray_50};
+              display: flex;
+              flex: 1;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              width: 100%;
+              gap: ${t.spacing.space_10};
             `}
           >
-            {emptyIcon}
-          </div>
-          <div
-            className={clsx(
-              "lng1771-text-small-300",
-              css`
-                text-align: center;
-              `,
-            )}
-          >
-            {emptyLabel}
+            <div
+              className={css`
+                color: ${t.colors.gray_50};
+              `}
+            >
+              {emptyIcon}
+            </div>
+            <div
+              className={clsx(
+                "lng1771-text-small-300",
+                css`
+                  text-align: center;
+                `,
+              )}
+            >
+              {emptyLabel}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
