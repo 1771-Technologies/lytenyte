@@ -97,12 +97,15 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
   const { api, state } = useGrid();
   const base = state.columnBase.use();
   const columns = state.internal.columnLookup.use();
+  const pivotMode = state.columnPivotModeIsOn.use();
 
   const gridId = state.gridId.use();
 
   const dragTags = useMemo(() => {
+    if (pivotMode) return [];
+
     return [itemDragLabel(gridId, props.data)];
-  }, [gridId, props.data]);
+  }, [gridId, pivotMode, props.data]);
 
   const draggedIndex = (dragState.dragData.use()?.() as { index?: number })?.index ?? -1;
   const isBefore = props.treeFlatIndex < draggedIndex;
@@ -178,7 +181,7 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
 
     const column = columns.get(data.id)!;
     const hidden = column.hide ?? base.hide;
-    const hidable = api.columnIsHidable(column);
+    const hidable = !pivotMode && api.columnIsHidable(column);
 
     return (
       <div
@@ -215,7 +218,7 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
     const checked = columns.every((c) => !(c.hide ?? base.hide));
     const isIndeterminate = columns.some((c) => !(c.hide ?? base.hide)) && !checked;
 
-    const hidable = columns.every((c) => api.columnIsHidable(c));
+    const hidable = !pivotMode && columns.every((c) => api.columnIsHidable(c));
 
     return (
       <div
