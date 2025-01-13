@@ -4,6 +4,8 @@ import { useGrid } from "../../provider/grid-provider";
 import { BoxDropZone } from "./box-drop-zone";
 import { Pill } from "../../pills/pill";
 import { PillWrapper } from "./pill-wrapper";
+import { IconButton } from "../../buttons/icon-button";
+import { DragIcon } from "../../icons/drag-icon";
 
 export function ColumnPivotsBox() {
   const { api, state } = useGrid();
@@ -26,7 +28,15 @@ export function ColumnPivotsBox() {
       items={columns}
       renderer={({ column, index }) => (
         <PillWrapper isFirst={index === 0}>
-          <Pill kind="pivot" label={column.headerName ?? column.id} />
+          <Pill
+            kind="pivot"
+            label={column.headerName ?? column.id}
+            startItem={
+              <IconButton kind="ghost" tabIndex={-1}>
+                <DragIcon />
+              </IconButton>
+            }
+          />
         </PillWrapper>
       )}
       collapsed={!expansions.columnPivots}

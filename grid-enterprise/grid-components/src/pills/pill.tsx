@@ -20,6 +20,7 @@ export function Pill({ kind, label, startItem, endItem }: PillProps) {
           max-height: 28px;
           min-height: 28px;
           display: flex;
+          gap: ${t.spacing.space_02};
           align-items: center;
           padding-inline-start: ${t.spacing.space_05};
           padding-inline-end: ${t.spacing.space_10};

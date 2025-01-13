@@ -1,6 +1,6 @@
 import { t } from "@1771technologies/grid-design";
 import { clsx } from "@1771technologies/js-utils";
-import { act, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { CollapsedIcon, ExpandedIcon } from "./components";
 import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 
