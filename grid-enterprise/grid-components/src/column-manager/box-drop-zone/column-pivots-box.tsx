@@ -2,6 +2,8 @@ import { useMemo } from "react";
 import { cc } from "../../component-configuration";
 import { useGrid } from "../../provider/grid-provider";
 import { BoxDropZone } from "./box-drop-zone";
+import { Pill } from "../../pills/pill";
+import { PillWrapper } from "./pill-wrapper";
 
 export function ColumnPivotsBox() {
   const { api, state } = useGrid();
@@ -22,7 +24,11 @@ export function ColumnPivotsBox() {
   return (
     <BoxDropZone
       items={columns}
-      renderer={({ column }) => <div>{column.id}</div>}
+      renderer={({ column, index }) => (
+        <PillWrapper isFirst={index === 0}>
+          <Pill kind="pivot" label={column.headerName ?? column.id} />
+        </PillWrapper>
+      )}
       collapsed={!expansions.columnPivots}
       onCollapseChange={() => {
         boxExpansions.set((p) => ({ ...p, columnPivots: !p.columnPivots }));

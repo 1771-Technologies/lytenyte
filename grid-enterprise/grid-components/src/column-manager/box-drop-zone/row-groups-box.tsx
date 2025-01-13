@@ -2,6 +2,8 @@ import { useMemo } from "react";
 import { cc } from "../../component-configuration";
 import { useGrid } from "../../provider/grid-provider";
 import { BoxDropZone } from "./box-drop-zone";
+import { Pill } from "../../pills/pill";
+import { PillWrapper } from "./pill-wrapper";
 
 export function RowGroupsBox() {
   const { state, api } = useGrid();
@@ -21,7 +23,11 @@ export function RowGroupsBox() {
   return (
     <BoxDropZone
       items={columns}
-      renderer={({ column }) => <div>{column.id}</div>}
+      renderer={({ column, index }) => (
+        <PillWrapper isFirst={index === 0}>
+          <Pill kind="group" label={column.headerName ?? column.id} />
+        </PillWrapper>
+      )}
       collapsed={!expansions.rowGroups}
       onCollapseChange={() => {
         boxExpansions.set((p) => ({ ...p, rowGroups: !p.rowGroups }));

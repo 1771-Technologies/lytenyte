@@ -13,7 +13,7 @@ export interface BoxDropZone {
   readonly icon: ReactNode;
 
   readonly items: ColumnEnterpriseReact<any>[];
-  readonly renderer: (p: { column: ColumnEnterpriseReact<any> }) => ReactNode;
+  readonly renderer: (p: { column: ColumnEnterpriseReact<any>; index: number }) => ReactNode;
 }
 export function BoxDropZone({
   icon,
@@ -72,6 +72,7 @@ export function BoxDropZone({
         <div
           className={css`
             display: flex;
+            flex-direction: column;
             min-height: 120px;
             min-width: 260px;
             border-radius: ${t.spacing.box_radius_regular};
@@ -110,8 +111,8 @@ export function BoxDropZone({
               </div>
             </div>
           )}
-          {items.map((c) => {
-            return <Renderer column={c} key={c.id} />;
+          {items.map((c, i) => {
+            return <Renderer column={c} key={c.id} index={i} />;
           })}
         </div>
       )}
