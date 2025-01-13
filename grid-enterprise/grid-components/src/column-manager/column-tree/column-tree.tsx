@@ -3,17 +3,19 @@ import type {
   PathTreeInputItem,
 } from "@1771technologies/react-list-view";
 import { ListView } from "@1771technologies/react-list-view";
-import { useGrid } from "../provider/grid-provider";
+import { useGrid } from "../../provider/grid-provider";
 import { useMemo } from "react";
 import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
-import { cc } from "../component-configuration";
+import { cc } from "../../component-configuration";
 import { t } from "@1771technologies/grid-design";
-import { CollapsedIcon, DragIcon, ExpandedIcon } from "./components";
-import { Checkbox } from "../checkbox/checkbox";
+import { CollapsedIcon, DragIcon, ExpandedIcon } from "../components";
+import { Checkbox } from "../../checkbox/checkbox";
 import { clsx } from "@1771technologies/js-utils";
+import { handleItemHide } from "./handle-item-hide";
+import { allLeafs } from "./all-leafs";
 
 export function ColumnTree() {
-  const { state } = useGrid();
+  const { api, state } = useGrid();
 
   const config = cc.columnManager.use();
   const columns = state.columns.use();
@@ -33,13 +35,20 @@ export function ColumnTree() {
       paths={paths}
       axe={config.columnTree!.axe!}
       expansions={expansions}
-      onAction={() => {}}
+      onAction={(item) => {
+        handleItemHide(item, api);
+      }}
       className={css`
+        padding-block-start: 8px;
+        box-sizing: border-box;
         max-width: 400px;
         overflow-x: hidden;
       `}
       itemClassName={css`
         padding-inline: ${t.spacing.space_10};
+        user-select: none;
+        cursor: pointer;
+
         &:focus {
           outline: none;
 
@@ -52,14 +61,22 @@ export function ColumnTree() {
       onExpansionChange={(id, s) =>
         state.internal.columnManagerTreeExpansions.set((prev) => ({ ...prev, [id]: s }))
       }
-      itemHeight={34}
+      itemHeight={30}
       renderer={ColumnTreeRenderer}
     ></ListView>
   );
 }
 
+const treeClx = css`
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  height: 100%;
+  padding-inline-end: ${t.spacing.space_30};
+`;
+
 function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseReact<any>>) {
-  const { api, state } = useGrid();
+  const { state } = useGrid();
   const base = state.columnBase.use();
   const columns = state.internal.columnLookup.use();
 
@@ -75,19 +92,10 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
         style={{
           paddingInlineStart: `calc(${t.spacing.space_30} + ${props.depth > 0 ? props.depth + 1 : 0} * ${t.spacing.space_30} + 22px)`,
         }}
-        className={css`
-          display: flex;
-          align-items: center;
-          height: 100%;
-          padding-inline-end: ${t.spacing.space_30};
-        `}
+        className={treeClx}
       >
         <DragIcon />
-        <Checkbox
-          isChecked={!hidden}
-          disabled={!hidable}
-          onCheckChange={() => api.columnUpdate(column, { hide: !hidden })}
-        />
+        <Checkbox tabIndex={-1} isChecked={!hidden} disabled={!hidable} />
         <span
           className={clsx(
             "lng1771-text-medium",
@@ -101,23 +109,27 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
       </div>
     );
   } else {
+    const id = props.data.occurrence;
     const path = props.data.path.at(-1)!;
+
+    const columns = allLeafs(props.data);
+    const checked = columns.every((c) => !(c.hide ?? base.hide));
+    const isIndeterminate = columns.some((c) => !(c.hide ?? base.hide)) && !checked;
+
     return (
       <div
         style={{
           paddingInlineStart: `calc(${t.spacing.space_30} + ${props.depth} * ${t.spacing.space_30})`,
         }}
-        className={css`
-          display: flex;
-          align-items: center;
-          gap: 1px;
-          height: 100%;
-          padding-inline-end: ${t.spacing.space_30};
-        `}
+        className={treeClx}
       >
-        {props.expanded ? <ExpandedIcon /> : <CollapsedIcon />}
+        {props.expanded ? <ExpandedIcon id={id} /> : <CollapsedIcon id={id} />}
         <DragIcon />
-        <Checkbox isChecked={true} />
+        <Checkbox
+          tabIndex={-1}
+          isChecked={checked || isIndeterminate}
+          isDeterminate={isIndeterminate}
+        />
 
         <span
           className={clsx(

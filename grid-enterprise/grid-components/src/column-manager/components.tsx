@@ -1,13 +1,20 @@
 import { t } from "@1771technologies/grid-design";
 import { IconButton } from "../buttons/icon-button";
+import { useGrid } from "../provider/grid-provider";
 
-export const ExpandedIcon = () => {
+export const ExpandedIcon = ({ id }: { id: string }) => {
+  const { state } = useGrid();
+
   return (
     <IconButton
       tabIndex={-1}
       kind="ghost"
       small
       onFocus={(ev) => ev.currentTarget.blur()}
+      onClick={(ev) => {
+        ev.stopPropagation();
+        state.internal.columnManagerTreeExpansions.set((prev) => ({ ...prev, [id]: false }));
+      }}
       className={css`
         transform: rotate(90deg);
         color: ${t.colors.borders_icons_default};
@@ -26,11 +33,16 @@ export const ExpandedIcon = () => {
   );
 };
 
-export const CollapsedIcon = () => {
+export const CollapsedIcon = ({ id }: { id: string }) => {
+  const { state } = useGrid();
   return (
     <IconButton
       tabIndex={-1}
       kind="ghost"
+      onClick={(ev) => {
+        ev.stopPropagation();
+        state.internal.columnManagerTreeExpansions.set((prev) => ({ ...prev, [id]: true }));
+      }}
       small
       className={css`
         color: ${t.colors.borders_icons_default};
@@ -51,7 +63,14 @@ export const CollapsedIcon = () => {
 
 export const DragIcon = () => {
   return (
-    <IconButton kind="ghost" small>
+    <IconButton
+      tabIndex={-1}
+      kind="ghost"
+      small
+      onClick={(ev) => {
+        ev.stopPropagation();
+      }}
+    >
       <span
         className={css`
           display: grid;

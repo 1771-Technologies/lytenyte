@@ -22,5 +22,9 @@ export function makeStore<D>(props: PropsEnterpriseReact<D>) {
     } satisfies StoreEnterpriseReact<D>;
   });
 
+  // Post initialization now that the store is ready. This ensures the validation of these fields
+  // holds before the first use.
+  store.state.columns.set((prev) => [...prev]);
+
   return store;
 }
