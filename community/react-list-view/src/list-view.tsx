@@ -19,6 +19,7 @@ export interface ListViewItemRendererProps<D> {
   readonly expanded: boolean;
   readonly parent: boolean;
   readonly depth: number;
+  readonly treeFlatIndex: number;
 }
 
 export interface ListViewProps<D> {
@@ -285,6 +286,7 @@ function ListItemRenderer<D>(p: RendererProps<PathTreeLeafNode<D> | PathTreePare
         depth={depth - 1}
         expanded={!!isExpanded}
         parent={p.data.type === "parent"}
+        treeFlatIndex={p.rowIndex}
       />
     </div>
   );

@@ -4,7 +4,7 @@ import type {
 } from "@1771technologies/react-list-view";
 import { ListView } from "@1771technologies/react-list-view";
 import { useGrid } from "../../provider/grid-provider";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import { cc } from "../../component-configuration";
 import { t } from "@1771technologies/grid-design";
@@ -13,7 +13,8 @@ import { Checkbox } from "../../checkbox/checkbox";
 import { clsx } from "@1771technologies/js-utils";
 import { handleItemHide } from "./handle-item-hide";
 import { allLeafs } from "./all-leafs";
-import { useDraggable } from "@1771technologies/react-dragon";
+import { dragState, useDraggable, useDroppable } from "@1771technologies/react-dragon";
+import { itemDragLabel } from "./item-drag-label";
 
 export function ColumnTree() {
   const { api, state } = useGrid();
@@ -81,6 +82,51 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
   const base = state.columnBase.use();
   const columns = state.internal.columnLookup.use();
 
+  const gridId = state.gridId.use();
+
+  const dragTags = useMemo(() => {
+    return [itemDragLabel(gridId, props.data)];
+  }, [gridId, props.data]);
+
+  const { isOver, canDrop, onDragOver, onDrop } = useDroppable({
+    tags: dragTags,
+  });
+
+  const draggedIndex = (dragState.dragData.use()?.() as { index?: number })?.index ?? -1;
+  const isBefore = props.treeFlatIndex < draggedIndex;
+
+  const className = clsx(
+    treeClx,
+    isOver &&
+      isBefore &&
+      canDrop &&
+      css`
+        position: relative;
+        &::before {
+          content: "";
+          height: 1px;
+          width: 90%;
+          position: absolute;
+          top: 0px;
+          background-color: blue;
+        }
+      `,
+    isOver &&
+      !isBefore &&
+      canDrop &&
+      css`
+        position: relative;
+        &::after {
+          content: "";
+          height: 1px;
+          width: 90%;
+          position: absolute;
+          bottom: 0px;
+          background-color: blue;
+        }
+      `,
+  );
+
   if (props.data.type === "leaf") {
     const data = props.data.data;
 
@@ -93,9 +139,10 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
         style={{
           paddingInlineStart: `calc(${t.spacing.space_30} + ${props.depth > 0 ? props.depth + 1 : 0} * ${t.spacing.space_30} + 22px)`,
         }}
-        className={treeClx}
+        onDragOver={onDragOver}
+        className={className}
       >
-        <DragIcon data={props.data} />
+        <DragIcon data={props.data} dragIndex={props.treeFlatIndex} />
         <Checkbox tabIndex={-1} isChecked={!hidden} disabled={!hidable} />
         <span
           className={clsx(
@@ -103,6 +150,10 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
             css`
               margin-inline-start: 4px;
             `,
+            draggedIndex === props.treeFlatIndex &&
+              css`
+                color: ${t.colors.text_light};
+              `,
           )}
         >
           {data.headerName ?? data.id}
@@ -122,10 +173,11 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
         style={{
           paddingInlineStart: `calc(${t.spacing.space_30} + ${props.depth} * ${t.spacing.space_30})`,
         }}
-        className={treeClx}
+        onDragOver={onDragOver}
+        className={className}
       >
         {props.expanded ? <ExpandedIcon id={id} /> : <CollapsedIcon id={id} />}
-        <DragIcon data={props.data} />
+        <DragIcon data={props.data} dragIndex={props.treeFlatIndex} />
         <Checkbox
           tabIndex={-1}
           isChecked={checked || isIndeterminate}
@@ -138,6 +190,10 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
             css`
               margin-inline-start: 4px;
             `,
+            draggedIndex === props.treeFlatIndex &&
+              css`
+                color: ${t.colors.text_light};
+              `,
           )}
         >
           {path}

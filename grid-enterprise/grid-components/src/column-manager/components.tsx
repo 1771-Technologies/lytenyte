@@ -5,6 +5,7 @@ import type { PathTreeNode } from "@1771technologies/react-list-view";
 import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import { useMemo } from "react";
 import { useDraggable } from "@1771technologies/react-dragon";
+import { itemDragLabel } from "./column-tree/item-drag-label";
 
 export const ExpandedIcon = ({ id }: { id: string }) => {
   const { state } = useGrid();
@@ -65,17 +66,23 @@ export const CollapsedIcon = ({ id }: { id: string }) => {
   );
 };
 
-export const DragIcon = ({ data }: { data: PathTreeNode<ColumnEnterpriseReact<any>> }) => {
+export const DragIcon = ({
+  data,
+  dragIndex,
+}: {
+  data: PathTreeNode<ColumnEnterpriseReact<any>>;
+  dragIndex: number;
+}) => {
   const { state } = useGrid();
 
   const gridId = state.gridId.use();
-  const dragId = useMemo(() => {
-    return `${gridId}:column`;
-  }, [gridId]);
+  const dragTag = useMemo(() => {
+    return [itemDragLabel(gridId, data)];
+  }, [data, gridId]);
 
   const drag = useDraggable({
-    dragData: () => data,
-    dragTags: () => [dragId],
+    dragData: () => ({ node: data, index: dragIndex }),
+    dragTags: () => dragTag,
     placeholder: () => <div>Ragi</div>,
   });
 
