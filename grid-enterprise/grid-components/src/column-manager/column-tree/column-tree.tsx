@@ -45,6 +45,11 @@ export function ColumnTree() {
         box-sizing: border-box;
         max-width: 400px;
         overflow-x: hidden;
+
+        &:focus {
+          outline: 1px solid ${t.colors.borders_focus};
+          outline-offset: -2px;
+        }
       `}
       itemClassName={css`
         padding-inline: ${t.spacing.space_10};
@@ -55,8 +60,18 @@ export function ColumnTree() {
           outline: none;
 
           & > div {
-            background-color: ${t.colors.backgrounds_light};
+            background-color: ${t.colors.backgrounds_default};
             border-radius: ${t.spacing.box_radius_medium};
+
+            position: relative;
+            &::before {
+              content: "";
+              position: absolute;
+              inset-inline-start: 0px;
+              width: 2px;
+              height: 100%;
+              background-color: ${t.colors.borders_focus};
+            }
           }
         }
       `}

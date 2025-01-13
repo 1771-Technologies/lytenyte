@@ -5,7 +5,8 @@ import { ColumnTree } from "../src/column-manager/column-tree/column-tree";
 
 const grid = makeStore({
   columns: bankColumns,
-  columnBase: { sortable: true },
+  columnBase: { sortable: true, movable: true },
+  gridId: "x",
 });
 
 export default function Home() {
