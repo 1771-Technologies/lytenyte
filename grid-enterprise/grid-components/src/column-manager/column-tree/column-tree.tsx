@@ -1,6 +1,7 @@
 import type {
   ListViewItemRendererProps,
   PathTreeInputItem,
+  PathTreeNode,
 } from "@1771technologies/react-list-view";
 import { ListView } from "@1771technologies/react-list-view";
 import { useGrid } from "../../provider/grid-provider";
@@ -93,7 +94,7 @@ const treeClx = css`
 `;
 
 function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseReact<any>>) {
-  const { state } = useGrid();
+  const { api, state } = useGrid();
   const base = state.columnBase.use();
   const columns = state.internal.columnLookup.use();
 
@@ -103,12 +104,37 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
     return [itemDragLabel(gridId, props.data)];
   }, [gridId, props.data]);
 
-  const { isOver, canDrop, onDragOver, onDrop } = useDroppable({
-    tags: dragTags,
-  });
-
   const draggedIndex = (dragState.dragData.use()?.() as { index?: number })?.index ?? -1;
   const isBefore = props.treeFlatIndex < draggedIndex;
+
+  dragState.dragActive.use();
+
+  const { isOver, canDrop, onDragOver, onDrop } = useDroppable({
+    tags: dragTags,
+
+    onDrop: (p) => {
+      const dropData = p.getData() as { node: PathTreeNode<ColumnEnterpriseReact<any>> };
+
+      const columns =
+        dropData.node.type === "leaf" ? [dropData.node.data] : allLeafs(dropData.node);
+
+      const target = props.data.type === "leaf" ? props.data.data : allLeafs(props.data).at(0)!;
+
+      // It contains the target, so the move doesn't make sense
+      if (columns.find((c) => c.id === target.id)) return;
+
+      if (isBefore)
+        api.columnMoveBefore(
+          columns.map((c) => c.id),
+          target.id,
+        );
+      else
+        api.columnMoveAfter(
+          columns.map((c) => c.id),
+          target.id,
+        );
+    },
+  });
 
   const className = clsx(
     treeClx,

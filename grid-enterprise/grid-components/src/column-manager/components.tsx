@@ -103,6 +103,12 @@ export const DragIcon = ({
       tabIndex={-1}
       kind="ghost"
       small
+      className={css`
+        &:focus {
+          outline: none;
+          border-color: transparent;
+        }
+      `}
       disabled={!isMovable}
       onClick={(ev) => {
         ev.stopPropagation();
