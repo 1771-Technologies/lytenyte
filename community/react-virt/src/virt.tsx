@@ -160,7 +160,7 @@ export function Virt<D>({
 
   useEffect(() => {
     handleScroll();
-  }, [handleScroll, vp, size]);
+  }, [handleScroll, vp, size, data.length]);
 
   const scrolled = useRef(false);
   useEffect(() => {

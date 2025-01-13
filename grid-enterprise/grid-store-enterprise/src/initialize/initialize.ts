@@ -58,7 +58,7 @@ export function initialize<D, E>(
     floatingRowEnabled: signal(props.floatingRowEnabled ?? false),
     floatingRowHeight: signal(props.floatingRowHeight ?? COLUMN_HEADER_HEIGHT),
 
-    gridId: signal(props.gridId ?? ""),
+    gridId: signal(props.gridId),
 
     keyBindings: signal(props.keyBindings ?? {}),
 

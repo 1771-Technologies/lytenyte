@@ -64,7 +64,7 @@ export interface PropsCommunity<A, D, C, E, Base, Group> {
   readonly floatingRowHeight?: ColumnHeaderHeightProperty;
   readonly floatingCellRenderers?: FloatingCellRenderers<A, C, E>;
 
-  readonly gridId?: string;
+  readonly gridId: string;
 
   readonly keyBindings?: KeyBindingMap<A>;
 

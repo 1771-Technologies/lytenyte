@@ -13,6 +13,7 @@ import { Checkbox } from "../../checkbox/checkbox";
 import { clsx } from "@1771technologies/js-utils";
 import { handleItemHide } from "./handle-item-hide";
 import { allLeafs } from "./all-leafs";
+import { useDraggable } from "@1771technologies/react-dragon";
 
 export function ColumnTree() {
   const { api, state } = useGrid();
@@ -63,7 +64,7 @@ export function ColumnTree() {
       }
       itemHeight={30}
       renderer={ColumnTreeRenderer}
-    ></ListView>
+    />
   );
 }
 
@@ -94,7 +95,7 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
         }}
         className={treeClx}
       >
-        <DragIcon />
+        <DragIcon data={props.data} />
         <Checkbox tabIndex={-1} isChecked={!hidden} disabled={!hidable} />
         <span
           className={clsx(
@@ -124,7 +125,7 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
         className={treeClx}
       >
         {props.expanded ? <ExpandedIcon id={id} /> : <CollapsedIcon id={id} />}
-        <DragIcon />
+        <DragIcon data={props.data} />
         <Checkbox
           tabIndex={-1}
           isChecked={checked || isIndeterminate}
