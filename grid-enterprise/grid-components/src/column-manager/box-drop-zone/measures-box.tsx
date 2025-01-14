@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { cc } from "../../component-configuration";
 import { useGrid } from "../../provider/grid-provider";
-import { BoxDropZone } from "./box-drop-zone";
+import { BoxDropZone, type BoxDropZoneRendererProps } from "./box-drop-zone";
 import { Pill } from "../../pills/pill";
 import { PillWrapper } from "./pill-wrapper";
 
@@ -23,11 +23,7 @@ export function MeasuresBox() {
   return (
     <BoxDropZone
       items={columns}
-      renderer={({ column, index }) => (
-        <PillWrapper isFirst={index === 0}>
-          <Pill kind="column" label={column.headerName ?? column.id} />
-        </PillWrapper>
-      )}
+      renderer={MeasurePillRenderer}
       collapsed={!expansions.measures}
       onCollapseChange={() => {
         boxExpansions.set((p) => ({ ...p, measures: !p.measures }));
@@ -37,5 +33,13 @@ export function MeasuresBox() {
       emptyLabel={config.labelEmptyMeasures!}
       label={config.labelMeasures!}
     />
+  );
+}
+
+function MeasurePillRenderer({ index, column }: BoxDropZoneRendererProps) {
+  return (
+    <PillWrapper isFirst={index === 0}>
+      <Pill kind="column" label={column.headerName ?? column.id} />
+    </PillWrapper>
   );
 }

@@ -4,6 +4,11 @@ import { type ReactNode } from "react";
 import { CollapsedIcon, ExpandedIcon } from "./components";
 import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 
+export interface BoxDropZoneRendererProps {
+  column: ColumnEnterpriseReact<any>;
+  index: number;
+}
+
 export interface BoxDropZone {
   readonly collapsed: boolean;
   readonly onCollapseChange: (c: boolean) => void;
@@ -13,7 +18,7 @@ export interface BoxDropZone {
   readonly icon: ReactNode;
 
   readonly items: ColumnEnterpriseReact<any>[];
-  readonly renderer: (p: { column: ColumnEnterpriseReact<any>; index: number }) => ReactNode;
+  readonly renderer: (p: BoxDropZoneRendererProps) => ReactNode;
 }
 export function BoxDropZone({
   icon,

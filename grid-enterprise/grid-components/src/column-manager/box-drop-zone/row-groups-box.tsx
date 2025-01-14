@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { cc } from "../../component-configuration";
 import { useGrid } from "../../provider/grid-provider";
-import { BoxDropZone } from "./box-drop-zone";
+import { BoxDropZone, type BoxDropZoneRendererProps } from "./box-drop-zone";
 import { Pill } from "../../pills/pill";
 import { PillWrapper } from "./pill-wrapper";
 import { PillDelete, PillDragger } from "./components";
@@ -24,16 +24,7 @@ export function RowGroupsBox() {
   return (
     <BoxDropZone
       items={columns}
-      renderer={({ column, index }) => (
-        <PillWrapper isFirst={index === 0}>
-          <Pill
-            kind="group"
-            label={column.headerName ?? column.id}
-            startItem={<PillDragger />}
-            endItem={<PillDelete />}
-          />
-        </PillWrapper>
-      )}
+      renderer={RowGroupsPillRenderer}
       collapsed={!expansions.rowGroups}
       onCollapseChange={() => {
         boxExpansions.set((p) => ({ ...p, rowGroups: !p.rowGroups }));
@@ -43,5 +34,18 @@ export function RowGroupsBox() {
       emptyLabel={config.labelEmptyRowGroups!}
       label={config.labelRowGroups!}
     />
+  );
+}
+
+function RowGroupsPillRenderer({ column, index }: BoxDropZoneRendererProps) {
+  return (
+    <PillWrapper isFirst={index === 0}>
+      <Pill
+        kind="group"
+        label={column.headerName ?? column.id}
+        startItem={<PillDragger />}
+        endItem={<PillDelete />}
+      />
+    </PillWrapper>
   );
 }

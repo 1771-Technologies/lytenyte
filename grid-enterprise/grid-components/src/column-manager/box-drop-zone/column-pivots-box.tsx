@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { cc } from "../../component-configuration";
 import { useGrid } from "../../provider/grid-provider";
-import { BoxDropZone } from "./box-drop-zone";
+import { BoxDropZone, type BoxDropZoneRendererProps } from "./box-drop-zone";
 import { Pill } from "../../pills/pill";
 import { PillWrapper } from "./pill-wrapper";
 import { PillDelete, PillDragger } from "./components";
@@ -25,16 +25,7 @@ export function ColumnPivotsBox() {
   return (
     <BoxDropZone
       items={columns}
-      renderer={({ column, index }) => (
-        <PillWrapper isFirst={index === 0}>
-          <Pill
-            kind="pivot"
-            label={column.headerName ?? column.id}
-            startItem={<PillDragger />}
-            endItem={<PillDelete />}
-          />
-        </PillWrapper>
-      )}
+      renderer={PivotPill}
       collapsed={!expansions.columnPivots}
       onCollapseChange={() => {
         boxExpansions.set((p) => ({ ...p, columnPivots: !p.columnPivots }));
@@ -44,5 +35,18 @@ export function ColumnPivotsBox() {
       emptyLabel={config.labelEmptyColumnPivot!}
       label={config.labelColumnPivots!}
     />
+  );
+}
+
+function PivotPill({ index, column }: BoxDropZoneRendererProps) {
+  return (
+    <PillWrapper isFirst={index === 0}>
+      <Pill
+        kind="pivot"
+        label={column.headerName ?? column.id}
+        startItem={<PillDragger />}
+        endItem={<PillDelete />}
+      />
+    </PillWrapper>
   );
 }

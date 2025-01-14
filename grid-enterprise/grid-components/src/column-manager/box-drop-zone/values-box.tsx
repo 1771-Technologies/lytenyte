@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { cc } from "../../component-configuration";
 import { useGrid } from "../../provider/grid-provider";
-import { BoxDropZone } from "./box-drop-zone";
+import { BoxDropZone, type BoxDropZoneRendererProps } from "./box-drop-zone";
 import { Pill } from "../../pills/pill";
 import { PillWrapper } from "./pill-wrapper";
 
@@ -24,11 +24,7 @@ export function ValuesBox() {
   return (
     <BoxDropZone
       items={items}
-      renderer={({ column, index }) => (
-        <PillWrapper isFirst={index === 0}>
-          <Pill kind="plain" label={column.headerName ?? column.id} />
-        </PillWrapper>
-      )}
+      renderer={ValuesPillRenderer}
       collapsed={!expansions.values}
       onCollapseChange={() => {
         boxExpansions.set((p) => ({ ...p, values: !p.values }));
@@ -38,5 +34,13 @@ export function ValuesBox() {
       emptyLabel={config.labelEmptyValues!}
       label={config.labelValues!}
     />
+  );
+}
+
+function ValuesPillRenderer({ column, index }: BoxDropZoneRendererProps) {
+  return (
+    <PillWrapper isFirst={index === 0}>
+      <Pill kind="plain" label={column.headerName ?? column.id} />
+    </PillWrapper>
   );
 }
