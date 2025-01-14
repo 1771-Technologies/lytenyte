@@ -116,34 +116,19 @@ export function BoxDropZone({
               next.focus();
             }
           }}
-          className={clsx(
-            css`
-              display: flex;
-              flex-direction: column;
-              min-height: 120px;
-              min-width: 260px;
-              border-radius: ${t.spacing.box_radius_regular};
-              border: 1px dashed ${t.colors.borders_strong};
-              background-color: ${t.colors.backgrounds_light};
-              &:focus {
-                outline: none;
-                border: 1px solid ${t.colors.borders_focus};
-              }
-            `,
-            isOver &&
-              canDrop &&
-              css`
-                position: relative;
-                &::after {
-                  position: absolute;
-                  bottom: ${t.spacing.space_05};
-                  content: "";
-                  width: 100%;
-                  height: 1px;
-                  background-color: ${t.colors.primary_50};
-                }
-              `,
-          )}
+          className={clsx(css`
+            display: flex;
+            flex-direction: column;
+            min-height: 120px;
+            min-width: 260px;
+            border-radius: ${t.spacing.box_radius_regular};
+            border: 1px dashed ${t.colors.borders_strong};
+            background-color: ${t.colors.backgrounds_light};
+            &:focus {
+              outline: none;
+              border: 1px solid ${t.colors.borders_focus};
+            }
+          `)}
         >
           {items.length === 0 && (
             <div
@@ -179,6 +164,15 @@ export function BoxDropZone({
           {items.map((c, i) => {
             return <Renderer column={c} key={c.id} index={i} />;
           })}
+          {isOver && canDrop && (
+            <div
+              className={css`
+                height: 1px;
+                background-color: ${t.colors.primary_50};
+                width: 100%;
+              `}
+            />
+          )}
         </div>
       )}
     </div>

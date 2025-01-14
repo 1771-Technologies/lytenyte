@@ -8,6 +8,7 @@ import { useDraggable } from "@1771technologies/react-dragon";
 import { itemDragTag } from "./item-drag-label";
 import { allLeafs } from "./all-leafs";
 import { cc } from "../../component-configuration";
+import { groupTag } from "../box-drop-zone/tags";
 
 export const ExpandedIcon = ({ id }: { id: string }) => {
   const { state } = useGrid();
@@ -82,17 +83,17 @@ export const DragIcon = ({
 
   const gridId = state.gridId.use();
   const dragTag = useMemo(() => {
-    return [itemDragTag(gridId, data)];
-  }, [data, gridId]);
+    const tags: string[] = [];
 
-  const isMovable = useMemo(() => {
-    if (data.type === "parent") {
-      const all = allLeafs(data);
-      return all.every((c) => api.columnIsMovable(c));
-    }
+    const columns = data.type === "parent" ? allLeafs(data) : [data.data];
+    const isMovable = columns.every((p) => api.columnIsMovable(p));
+    const isRowGroupable = columns.every((p) => api.columnIsRowGroupable(p));
 
-    return api.columnIsMovable(data.data);
-  }, [api, data]);
+    if (isRowGroupable) tags.push(groupTag(gridId));
+    if (isMovable) tags.push(itemDragTag(gridId, data));
+
+    return tags;
+  }, [api, data, gridId]);
 
   const drag = useDraggable({
     dragData: () => ({ node: data, index: dragIndex }),
@@ -102,7 +103,6 @@ export const DragIcon = ({
         label={data.type === "leaf" ? (data.data.headerName ?? data.data.id) : data.path.at(-1)!}
       />
     ),
-    disabled: !isMovable,
   });
 
   return (
@@ -118,7 +118,7 @@ export const DragIcon = ({
           border-color: transparent;
         }
       `}
-      disabled={!isMovable}
+      disabled={dragTag.length === 0}
       onClick={(ev) => {
         ev.stopPropagation();
       }}

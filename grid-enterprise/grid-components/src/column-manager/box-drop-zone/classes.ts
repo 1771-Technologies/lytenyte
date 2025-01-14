@@ -6,6 +6,7 @@ export const dragCls = css`
     content: "";
     position: absolute;
     top: 0;
+    inset-inline-start: 0;
     width: 100%;
     height: 1px;
     background-color: ${t.colors.primary_50};
