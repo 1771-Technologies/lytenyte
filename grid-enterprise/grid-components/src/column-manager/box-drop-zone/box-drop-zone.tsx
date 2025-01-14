@@ -140,8 +140,20 @@ export function BoxDropZone({
                 align-items: center;
                 width: 100%;
                 gap: ${t.spacing.space_10};
+                position: relative;
               `}
             >
+              {isOver && canDrop && (
+                <div
+                  className={css`
+                    position: absolute;
+                    top: ${t.spacing.space_05};
+                    height: 1px;
+                    background-color: ${t.colors.primary_50};
+                    width: 100%;
+                  `}
+                />
+              )}
               <div
                 className={css`
                   color: ${t.colors.gray_50};
@@ -164,7 +176,7 @@ export function BoxDropZone({
           {items.map((c, i) => {
             return <Renderer column={c} key={c.id} index={i} />;
           })}
-          {isOver && canDrop && (
+          {isOver && canDrop && items.length > 0 && (
             <div
               className={css`
                 height: 1px;

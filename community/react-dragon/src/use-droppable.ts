@@ -105,11 +105,21 @@ export function useDroppable({ tags, onDragEnter, onDragLeave, onDrop }: Droppab
 
         return false;
       });
+
+      setCanDrop(false);
     };
 
     const controller = new AbortController();
     element.addEventListener("dragleave", handleEnd, { signal: controller.signal });
-    document.addEventListener("dragend", handleEnd, { signal: controller.signal });
+    window.addEventListener("dragend", handleEnd, { signal: controller.signal });
+    window.addEventListener(
+      "drop",
+      () => {
+        setIsOver(false);
+        setCanDrop(false);
+      },
+      { signal: controller.signal, capture: true },
+    );
 
     onDragEnter?.({
       getData: dragState.dragData.peek(),
@@ -132,6 +142,8 @@ export function useDroppable({ tags, onDragEnter, onDragLeave, onDrop }: Droppab
       overTags: tags,
       dragTags: dragState.activeTags.peek()!,
     });
+
+    dragState.dragData.set(() => () => null);
 
     return;
   });

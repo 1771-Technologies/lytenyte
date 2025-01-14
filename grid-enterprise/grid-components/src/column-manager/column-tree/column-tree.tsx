@@ -16,7 +16,6 @@ import { handleItemHide } from "./handle-item-hide";
 import { allLeafs } from "./all-leafs";
 import { dragState, useDroppable } from "@1771technologies/react-dragon";
 import { itemDragTag } from "./item-drag-label";
-import { groupTag } from "../box-drop-zone/tags";
 
 export function ColumnTree() {
   const { api, state } = useGrid();
@@ -125,7 +124,7 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
       const columns =
         dropData.node.type === "leaf" ? [dropData.node.data] : allLeafs(dropData.node);
 
-      const target = props.data.type === "leaf" ? props.data.data : allLeafs(props.data).at(0)!;
+      const target = props.data.type === "leaf" ? props.data.data : allLeafs(props.data).at(-1)!;
 
       // It contains the target, so the move doesn't make sense
       if (columns.find((c) => c.id === target.id)) return;
