@@ -25,6 +25,7 @@ export function makeStore<D>(props: PropsEnterpriseReact<D>) {
   // Post initialization now that the store is ready. This ensures the validation of these fields
   // holds before the first use.
   store.state.columns.set((prev) => [...prev]);
+  store.state.rowGroupModel.set((prev) => [...prev]);
 
   return store;
 }
