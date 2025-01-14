@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, type KeyboardEvent, type MouseEvent } from "react";
 import { cc } from "../../component-configuration";
 import { useGrid } from "../../provider/grid-provider";
 import { BoxDropZone, type BoxDropZoneRendererProps } from "./box-drop-zone";
@@ -11,6 +11,7 @@ import { dragCls, dragClsFirst } from "./classes";
 import { getColumns } from "./get-columns-from-drag-data";
 import { groupTag } from "./tags";
 import { insertIdsIntoModel } from "./insert-ids-in-model";
+import { useEvent } from "@1771technologies/react-utils";
 
 export function RowGroupsBox() {
   const { state, api } = useGrid();
@@ -82,20 +83,22 @@ function RowGroupsPillRenderer({ column, index }: BoxDropZoneRendererProps) {
     },
   });
 
+  const del = useEvent((ev: KeyboardEvent | MouseEvent) => {
+    grid.state.rowGroupModel.set((prev) => prev.filter((c) => c !== column.id));
+    ev.preventDefault();
+    const thisDiv = ev.currentTarget;
+    const next =
+      thisDiv.nextElementSibling ?? thisDiv.previousElementSibling ?? thisDiv.parentElement;
+
+    (next as HTMLElement)?.focus();
+  });
+
   return (
     <PillWrapper
       isFirst={index === 0}
       {...props}
       onKeyDown={(ev) => {
-        if (ev.key === "Delete") {
-          grid.state.rowGroupModel.set((prev) => prev.filter((c) => c !== column.id));
-          ev.preventDefault();
-          const thisDiv = ev.currentTarget;
-          const next =
-            thisDiv.nextElementSibling ?? thisDiv.previousElementSibling ?? thisDiv.parentElement;
-
-          (next as HTMLElement)?.focus();
-        }
+        if (ev.key === "Delete") del(ev);
       }}
       className={clsx(
         isOver && canDrop && dragCls,
@@ -106,7 +109,15 @@ function RowGroupsPillRenderer({ column, index }: BoxDropZoneRendererProps) {
         kind="group"
         label={column.headerName ?? column.id}
         startItem={<PillDragger {...drag} />}
-        endItem={<PillDelete />}
+        endItem={
+          <PillDelete
+            tabIndex={-1}
+            role="button"
+            onClick={(ev) => {
+              del(ev);
+            }}
+          />
+        }
       />
     </PillWrapper>
   );

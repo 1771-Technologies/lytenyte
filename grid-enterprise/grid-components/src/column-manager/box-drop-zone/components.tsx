@@ -80,6 +80,7 @@ export function PillDelete(props: JSX.IntrinsicElements["div"]) {
         display: flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
         width: 20px;
         height: 20px;
         transform: translate(0px, -1px);
