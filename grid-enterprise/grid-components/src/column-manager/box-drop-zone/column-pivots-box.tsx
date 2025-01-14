@@ -87,6 +87,7 @@ function PivotPill({ index, column }: BoxDropZoneRendererProps) {
   const pivotTags = useMemo(() => {
     return [pivotTag(gridId)];
   }, [gridId]);
+
   const { isOver, canDrop, ...props } = useDroppable({
     tags: pivotTags,
     onDrop: (p) => {
