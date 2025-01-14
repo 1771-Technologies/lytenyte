@@ -13,6 +13,8 @@ import { insertIdsIntoModel } from "./insert-ids-in-model";
 import { useEvent } from "@1771technologies/react-utils";
 import { clsx } from "@1771technologies/js-utils";
 import { dragCls, dragClsFirst } from "./classes";
+import { AggMenu } from "./agg-menu";
+import { t } from "@1771technologies/grid-design";
 
 export function MeasuresBox() {
   const { state, api } = useGrid();
@@ -72,6 +74,7 @@ function MeasurePillRenderer({ index, column }: BoxDropZoneRendererProps) {
   const config = cc.columnManager.use();
   const Placeholder = config.dragPlaceholder!;
 
+  const base = grid.state.columnBase.use();
   const gridId = grid.state.gridId.use();
   const drag = useDraggable({
     dragData: () => ({ column, source: measureSource }),
@@ -121,6 +124,14 @@ function MeasurePillRenderer({ index, column }: BoxDropZoneRendererProps) {
     (next as HTMLElement)?.focus();
   });
 
+  const measureFunc =
+    column.measureFunc ??
+    column.measureFuncDefault ??
+    base.measureFunc ??
+    base.measureFuncsAllowed ??
+    "Fn(x)";
+  const allowed = column.measureFuncsAllowed ?? base.measureFuncsAllowed ?? [];
+
   return (
     <PillWrapper
       isFirst={index === 0}
@@ -135,8 +146,34 @@ function MeasurePillRenderer({ index, column }: BoxDropZoneRendererProps) {
     >
       <Pill
         kind="column"
-        label={column.headerName ?? column.id}
+        label={
+          <div
+            className={css`
+              display: flex;
+              align-items: center;
+              gap: ${t.spacing.space_05};
+            `}
+          >
+            <span>{column.headerName ?? column.id}</span>
+            <span
+              className={css`
+                color: ${t.colors.primary_50};
+              `}
+            >
+              {typeof measureFunc === "string" ? `(${measureFunc})` : "Fn(x)"}
+            </span>
+          </div>
+        }
         startItem={<PillDragger {...drag} />}
+        endItem={
+          <AggMenu
+            allowed={allowed}
+            current={typeof measureFunc === "string" ? measureFunc : "Fn(x)"}
+            onSelect={(s) => {
+              grid.api.columnUpdate(column, { measureFunc: s });
+            }}
+          />
+        }
       />
     </PillWrapper>
   );

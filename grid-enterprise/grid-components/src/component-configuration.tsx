@@ -13,6 +13,8 @@ import { DragGroupIcon } from "./column-manager/icons/drag-group-icon";
 import { MeasuresIcon } from "./column-manager/icons/measures-icon";
 import { RowGroupIcon } from "./column-manager/icons/row-group-icon";
 import { DragPlaceholder } from "./drag-placeholder/drag-placeholder";
+import type { MenuConfiguration } from "./popover-menu/popover-menu";
+import { menuAxeDefault } from "@1771technologies/react-menu";
 
 export type ComponentConfiguration = {
   columnManager: Signal<ColumnManagerConfiguration>;
@@ -20,6 +22,7 @@ export type ComponentConfiguration = {
   floatingFrame: Signal<FloatingFrameConfiguration>;
   sortManager: Signal<SortManagerConfiguration>;
   tooltip: Signal<Omit<TooltipProps, "ref">>;
+  menu: Signal<MenuConfiguration>;
 };
 
 function mergeSignal<T>(c: T): Signal<T> {
@@ -78,6 +81,10 @@ export const cc = cascada<ComponentConfiguration>(() => {
       localization: {
         labelClose: "Close",
       },
+    }),
+
+    menu: mergeSignal<MenuConfiguration>({
+      axe: menuAxeDefault,
     }),
 
     sortManager: mergeSignal<SortManagerConfiguration>({

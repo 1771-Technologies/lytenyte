@@ -16,6 +16,7 @@
     "@1771technologies/grid-design": "workspace:*",
     "@1771technologies/grid-constants": "workspace:*",
     "@1771technologies/js-utils": "workspace:*",
+    "@1771technologies/positioner": "workspace:*",
     "@1771technologies/react-list-view": "workspace:*",
     "@1771technologies/react-popover": "workspace:*",
     "@1771technologies/react-utils": "workspace:*",
@@ -24,6 +25,7 @@
     "@1771technologies/react-tooltip": "workspace:*",
     "@1771technologies/react-frame": "workspace:*",
     "@1771technologies/react-dragon": "workspace:*",
-    "@1771technologies/grid-store-enterprise": "workspace:*"
+    "@1771technologies/grid-store-enterprise": "workspace:*",
+    "@1771technologies/react-menu": "workspace:*"
   }
 }
