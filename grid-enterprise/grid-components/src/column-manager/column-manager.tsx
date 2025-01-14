@@ -6,6 +6,8 @@ export interface ColumnManagerConfiguration {
   readonly columnTree?: {
     readonly axe: ListViewAxe<ColumnEnterpriseReact<any>>;
     readonly labelDrag: string;
+
+    readonly dragPlaceholder: (p: { label: string }) => ReactNode;
   };
   readonly columnBoxes?: {
     readonly labelValues: string;

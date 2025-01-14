@@ -12,6 +12,7 @@ import { ColumnPivotIcon } from "./column-manager/icons/column-pivot-icon";
 import { DragGroupIcon } from "./column-manager/icons/drag-group-icon";
 import { MeasuresIcon } from "./column-manager/icons/measures-icon";
 import { RowGroupIcon } from "./column-manager/icons/row-group-icon";
+import { DragPlaceholder } from "./drag-placeholder/drag-placeholder";
 
 export type ComponentConfiguration = {
   columnManager: Signal<ColumnManagerConfiguration>;
@@ -49,6 +50,8 @@ export const cc = cascada<ComponentConfiguration>(() => {
           axeLabel: (cnt) => `There are ${cnt} choices in the tree`,
         },
         labelDrag: "Move column",
+
+        dragPlaceholder: DragPlaceholder,
       },
       columnBoxes: {
         labelColumnPivots: "Column Pivots",

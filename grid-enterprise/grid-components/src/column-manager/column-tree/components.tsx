@@ -76,7 +76,9 @@ export const DragIcon = ({
   dragIndex: number;
 }) => {
   const { state, api } = useGrid();
-  const dragLabel = cc.columnManager.use().columnTree?.labelDrag;
+  const config = cc.columnManager.use();
+  const dragLabel = config.columnTree?.labelDrag;
+  const DragPlaceholder = config.columnTree!.dragPlaceholder;
 
   const gridId = state.gridId.use();
   const dragTag = useMemo(() => {
@@ -95,7 +97,11 @@ export const DragIcon = ({
   const drag = useDraggable({
     dragData: () => ({ node: data, index: dragIndex }),
     dragTags: () => dragTag,
-    placeholder: () => <div>Ragi</div>,
+    placeholder: () => (
+      <DragPlaceholder
+        label={data.type === "leaf" ? (data.data.headerName ?? data.data.id) : data.path.at(-1)!}
+      />
+    ),
     disabled: !isMovable,
   });
 
