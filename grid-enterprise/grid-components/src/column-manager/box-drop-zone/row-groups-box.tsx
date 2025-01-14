@@ -9,6 +9,8 @@ import { useDraggable, useDroppable } from "@1771technologies/react-dragon";
 import { clsx } from "@1771technologies/js-utils";
 import { dragCls, dragClsFirst } from "./classes";
 import { getColumns } from "./get-columns-from-drag-data";
+import { groupTag } from "./tags";
+import { insertIdsIntoModel } from "./insert-ids-in-model";
 
 export function RowGroupsBox() {
   const { state, api } = useGrid();
@@ -25,6 +27,11 @@ export function RowGroupsBox() {
     return model.map((c) => api.columnById(c)!);
   }, [api, model]);
 
+  const gridId = state.gridId.use();
+  const tags = useMemo(() => {
+    return [groupTag(gridId)];
+  }, [gridId]);
+
   return (
     <BoxDropZone
       items={columns}
@@ -37,6 +44,14 @@ export function RowGroupsBox() {
       icon={<Icon />}
       emptyLabel={config.labelEmptyRowGroups!}
       label={config.labelRowGroups!}
+      tags={tags}
+      onDrop={(p) => {
+        const columns = getColumns(p.getData()).map((c) => c.id);
+        const index = model.length;
+        const newModel = insertIdsIntoModel(model, columns, index);
+
+        state.rowGroupModel.set(newModel);
+      }}
     />
   );
 }
@@ -48,12 +63,12 @@ function RowGroupsPillRenderer({ column, index }: BoxDropZoneRendererProps) {
   const gridId = grid.state.gridId.use();
   const drag = useDraggable({
     dragData: () => column,
-    dragTags: () => [`${gridId}:row-group`],
+    dragTags: () => [groupTag(gridId)],
     placeholder: () => <Placeholder label={column.headerName ?? column.id} />,
   });
 
   const groupTags = useMemo(() => {
-    return [`${gridId}:row-group`];
+    return [groupTag(gridId)];
   }, [gridId]);
 
   const { isOver, canDrop, ...props } = useDroppable({
@@ -61,12 +76,7 @@ function RowGroupsPillRenderer({ column, index }: BoxDropZoneRendererProps) {
     onDrop: (p) => {
       const columns = getColumns(p.getData()).map((c) => c.id);
 
-      const model = grid.state.rowGroupModel.peek();
-
-      const left = model.slice(0, index).filter((c) => !columns.includes(c));
-      const right = model.slice(index).filter((c) => !columns.includes(c));
-
-      const newModel = [...left, ...columns, ...right];
+      const newModel = insertIdsIntoModel(grid.state.rowGroupModel.peek(), columns, index);
 
       grid.state.rowGroupModel.set(newModel);
     },

@@ -3,6 +3,7 @@ import { clsx } from "@1771technologies/js-utils";
 import { type ReactNode } from "react";
 import { CollapsedIcon, ExpandedIcon } from "./components";
 import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
+import { useDroppable, type DropParams } from "@1771technologies/react-dragon";
 
 export interface BoxDropZoneRendererProps {
   column: ColumnEnterpriseReact<any>;
@@ -19,6 +20,9 @@ export interface BoxDropZone {
 
   readonly items: ColumnEnterpriseReact<any>[];
   readonly renderer: (p: BoxDropZoneRendererProps) => ReactNode;
+
+  readonly tags: string[];
+  readonly onDrop: (p: DropParams) => void;
 }
 export function BoxDropZone({
   icon,
@@ -29,7 +33,14 @@ export function BoxDropZone({
   onCollapseChange,
   items,
   renderer: Renderer,
+  onDrop,
+  tags,
 }: BoxDropZone) {
+  const { isOver, canDrop, ...props } = useDroppable({
+    tags,
+    onDrop,
+  });
+
   return (
     <div
       className={css`
@@ -76,6 +87,7 @@ export function BoxDropZone({
       {!collapsed && (
         <div
           tabIndex={0}
+          {...props}
           onKeyDown={(ev) => {
             if (items.length === 0) return;
 
@@ -104,19 +116,34 @@ export function BoxDropZone({
               next.focus();
             }
           }}
-          className={css`
-            display: flex;
-            flex-direction: column;
-            min-height: 120px;
-            min-width: 260px;
-            border-radius: ${t.spacing.box_radius_regular};
-            border: 1px dashed ${t.colors.borders_strong};
-            background-color: ${t.colors.backgrounds_light};
-            &:focus {
-              outline: none;
-              border: 1px solid ${t.colors.borders_focus};
-            }
-          `}
+          className={clsx(
+            css`
+              display: flex;
+              flex-direction: column;
+              min-height: 120px;
+              min-width: 260px;
+              border-radius: ${t.spacing.box_radius_regular};
+              border: 1px dashed ${t.colors.borders_strong};
+              background-color: ${t.colors.backgrounds_light};
+              &:focus {
+                outline: none;
+                border: 1px solid ${t.colors.borders_focus};
+              }
+            `,
+            isOver &&
+              canDrop &&
+              css`
+                position: relative;
+                &::after {
+                  position: absolute;
+                  bottom: ${t.spacing.space_05};
+                  content: "";
+                  width: 100%;
+                  height: 1px;
+                  background-color: ${t.colors.primary_50};
+                }
+              `,
+          )}
         >
           {items.length === 0 && (
             <div
