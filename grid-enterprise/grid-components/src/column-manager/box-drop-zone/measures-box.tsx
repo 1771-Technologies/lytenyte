@@ -113,22 +113,6 @@ function MeasurePillRenderer({ index, column }: BoxDropZoneRendererProps) {
         grid.state.columnPivotModel.set((prev) => prev.filter((c) => !columns.includes(c)));
       }
 
-      const updates = Object.fromEntries(
-        columns
-          .map((c) => {
-            const column = grid.api.columnById(c)!;
-            const fn = getMeasureFunc(column, base);
-            if (!fn)
-              return [
-                c,
-                {
-                  measureFunc: column.measureFuncsAllowed?.at(0) ?? base.measureFuncsAllowed?.at(0),
-                },
-              ];
-          })
-          .filter((b) => b != null),
-      );
-
       const newModel = insertIdsIntoModel(grid.state.measureModel.peek(), columns, index);
       grid.state.measureModel.set(newModel);
     },
