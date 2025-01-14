@@ -26,12 +26,14 @@ export function ColumnTree() {
   const expansions = state.internal.columnManagerTreeExpansions.use();
 
   const paths = useMemo(() => {
-    const paths = columns.map<PathTreeInputItem<ColumnEnterpriseReact<any>>>((c) => {
-      return { path: c.groupPath ?? [], data: c };
-    });
+    const paths = columns
+      .filter((c) => api.columnIsGroupAutoColumn(c) || !api.columnIsGridGenerated(c))
+      .map<PathTreeInputItem<ColumnEnterpriseReact<any>>>((c) => {
+        return { path: c.groupPath ?? [], data: c };
+      });
 
     return paths;
-  }, [columns]);
+  }, [api, columns]);
 
   return (
     <ListView

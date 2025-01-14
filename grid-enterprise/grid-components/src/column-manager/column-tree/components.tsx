@@ -8,7 +8,7 @@ import { useDraggable } from "@1771technologies/react-dragon";
 import { itemDragTag } from "./item-drag-label";
 import { allLeafs } from "./all-leafs";
 import { cc } from "../../component-configuration";
-import { groupTag, pivotTag } from "../box-drop-zone/tags";
+import { groupTag, measureTag, pivotTag } from "../box-drop-zone/tags";
 
 export const ExpandedIcon = ({ id }: { id: string }) => {
   const { state } = useGrid();
@@ -89,10 +89,12 @@ export const DragIcon = ({
     const isMovable = columns.every((p) => api.columnIsMovable(p));
     const isRowGroupable = columns.every((p) => api.columnIsRowGroupable(p));
     const isPivotable = columns.every((p) => api.columnIsPivotable(p));
+    const isMeasurable = columns.every((p) => api.columnIsMeasurable(p));
 
     if (isRowGroupable) tags.push(groupTag(gridId));
     if (isMovable) tags.push(itemDragTag(gridId, data));
     if (isPivotable) tags.push(pivotTag(gridId));
+    if (isMeasurable) tags.push(measureTag(gridId));
 
     return tags;
   }, [api, data, gridId]);
