@@ -8,10 +8,11 @@ import { PillDelete, PillDragger } from "./components";
 import { useEvent } from "@1771technologies/react-utils";
 import { useDraggable, useDroppable } from "@1771technologies/react-dragon";
 import { groupTag, pivotTag } from "./tags";
-import { getColumns } from "./get-columns-from-drag-data";
+import { getColumns, getDataSource } from "./get-columns-from-drag-data";
 import { insertIdsIntoModel } from "./insert-ids-in-model";
 import { dragCls, dragClsFirst } from "./classes";
 import { clsx } from "@1771technologies/js-utils";
+import { groupSource, pivotSource } from "./sources";
 
 export function ColumnPivotsBox() {
   const { api, state } = useGrid();
@@ -48,10 +49,16 @@ export function ColumnPivotsBox() {
       label={config.labelColumnPivots!}
       tags={tags}
       onDrop={(p) => {
-        const columns = getColumns(p.getData()).map((c) => c.id);
+        const data = p.getData();
+        const columns = getColumns(data).map((c) => c.id);
+        const source = getDataSource(data);
+
+        if (source === groupSource) {
+          state.rowGroupModel.set((prev) => prev.filter((c) => !columns.includes(c)));
+        }
+
         const index = model.length;
         const newModel = insertIdsIntoModel(model, columns, index);
-
         state.columnPivotModel.set(newModel);
       }}
     />
@@ -65,7 +72,7 @@ function PivotPill({ index, column }: BoxDropZoneRendererProps) {
 
   const gridId = grid.state.gridId.use();
   const drag = useDraggable({
-    dragData: () => column,
+    dragData: () => ({ column, source: pivotSource }),
     dragTags: () => {
       const isG = grid.api.columnIsRowGroupable(column);
 
@@ -83,7 +90,14 @@ function PivotPill({ index, column }: BoxDropZoneRendererProps) {
   const { isOver, canDrop, ...props } = useDroppable({
     tags: pivotTags,
     onDrop: (p) => {
-      const columns = getColumns(p.getData()).map((c) => c.id);
+      const data = p.getData();
+      const columns = getColumns(data).map((c) => c.id);
+      const source = getDataSource(data);
+
+      if (source === groupSource) {
+        grid.state.rowGroupModel.set((prev) => prev.filter((c) => !columns.includes(c)));
+      }
+
       const newModel = insertIdsIntoModel(grid.state.columnPivotModel.peek(), columns, index);
       grid.state.columnPivotModel.set(newModel);
     },

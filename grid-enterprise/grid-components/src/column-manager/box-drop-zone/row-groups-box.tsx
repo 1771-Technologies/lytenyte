@@ -8,10 +8,11 @@ import { PillDelete, PillDragger } from "./components";
 import { useDraggable, useDroppable } from "@1771technologies/react-dragon";
 import { clsx } from "@1771technologies/js-utils";
 import { dragCls, dragClsFirst } from "./classes";
-import { getColumns } from "./get-columns-from-drag-data";
-import { groupTag } from "./tags";
+import { getColumns, getDataSource } from "./get-columns-from-drag-data";
+import { groupTag, pivotTag } from "./tags";
 import { insertIdsIntoModel } from "./insert-ids-in-model";
 import { useEvent } from "@1771technologies/react-utils";
+import { groupSource, pivotSource } from "./sources";
 
 export function RowGroupsBox() {
   const { state, api } = useGrid();
@@ -47,9 +48,15 @@ export function RowGroupsBox() {
       label={config.labelRowGroups!}
       tags={tags}
       onDrop={(p) => {
-        const columns = getColumns(p.getData()).map((c) => c.id);
+        const data = p.getData();
+        const columns = getColumns(data).map((c) => c.id);
+        const source = getDataSource(data);
         const index = model.length;
         const newModel = insertIdsIntoModel(model, columns, index);
+
+        if (source === pivotSource) {
+          state.columnPivotModel.set((prev) => prev.filter((c) => !columns.includes(c)));
+        }
 
         state.rowGroupModel.set(newModel);
       }}
@@ -63,8 +70,15 @@ function RowGroupsPillRenderer({ column, index }: BoxDropZoneRendererProps) {
   const Placeholder = config.dragPlaceholder!;
   const gridId = grid.state.gridId.use();
   const drag = useDraggable({
-    dragData: () => column,
-    dragTags: () => [groupTag(gridId)],
+    dragData: () => ({ column, source: groupSource }),
+    dragTags: () => {
+      const tags = [groupTag(gridId)];
+
+      const isP = grid.api.columnIsPivotable(column);
+      if (isP) tags.push(pivotTag(gridId));
+
+      return tags;
+    },
     placeholder: () => <Placeholder label={column.headerName ?? column.id} />,
   });
 
@@ -75,7 +89,14 @@ function RowGroupsPillRenderer({ column, index }: BoxDropZoneRendererProps) {
   const { isOver, canDrop, ...props } = useDroppable({
     tags: groupTags,
     onDrop: (p) => {
-      const columns = getColumns(p.getData()).map((c) => c.id);
+      const data = p.getData();
+      const columns = getColumns(data).map((c) => c.id);
+      const source = getDataSource(data);
+
+      if (source === pivotSource) {
+        grid.state.columnPivotModel.set((prev) => prev.filter((c) => !columns.includes(c)));
+      }
+
       const newModel = insertIdsIntoModel(grid.state.rowGroupModel.peek(), columns, index);
       grid.state.rowGroupModel.set(newModel);
     },
