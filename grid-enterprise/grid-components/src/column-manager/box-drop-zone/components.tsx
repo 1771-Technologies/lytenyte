@@ -1,5 +1,8 @@
 import { t } from "@1771technologies/grid-design";
 import { IconButton } from "../../buttons/icon-button";
+import type { JSX } from "react";
+import { DragIcon } from "../../icons/drag-icon";
+import { CrossIcon } from "../../icons/cross-icon";
 
 export const CollapsedIcon = (p: { onClick: () => void }) => {
   return (
@@ -50,3 +53,39 @@ export const ExpandedIcon = (p: { onClick: () => void }) => {
     </IconButton>
   );
 };
+
+export function PillDragger(props: JSX.IntrinsicElements["div"]) {
+  return (
+    <div
+      {...props}
+      className={css`
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        transform: translate(0px, 1px);
+      `}
+    >
+      <DragIcon />
+    </div>
+  );
+}
+
+export function PillDelete(props: JSX.IntrinsicElements["div"]) {
+  return (
+    <div
+      {...props}
+      className={css`
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        transform: translate(0px, -1px);
+      `}
+    >
+      <CrossIcon />
+    </div>
+  );
+}

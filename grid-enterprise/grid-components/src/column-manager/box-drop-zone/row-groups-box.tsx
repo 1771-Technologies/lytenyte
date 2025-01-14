@@ -4,8 +4,7 @@ import { useGrid } from "../../provider/grid-provider";
 import { BoxDropZone } from "./box-drop-zone";
 import { Pill } from "../../pills/pill";
 import { PillWrapper } from "./pill-wrapper";
-import { IconButton } from "../../buttons/icon-button";
-import { DragIcon } from "../../icons/drag-icon";
+import { PillDelete, PillDragger } from "./components";
 
 export function RowGroupsBox() {
   const { state, api } = useGrid();
@@ -30,11 +29,8 @@ export function RowGroupsBox() {
           <Pill
             kind="group"
             label={column.headerName ?? column.id}
-            startItem={
-              <IconButton kind="ghost" tabIndex={-1}>
-                <DragIcon />
-              </IconButton>
-            }
+            startItem={<PillDragger />}
+            endItem={<PillDelete />}
           />
         </PillWrapper>
       )}
