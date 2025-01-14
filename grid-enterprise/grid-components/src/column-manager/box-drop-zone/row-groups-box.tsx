@@ -76,9 +76,7 @@ function RowGroupsPillRenderer({ column, index }: BoxDropZoneRendererProps) {
     tags: groupTags,
     onDrop: (p) => {
       const columns = getColumns(p.getData()).map((c) => c.id);
-
       const newModel = insertIdsIntoModel(grid.state.rowGroupModel.peek(), columns, index);
-
       grid.state.rowGroupModel.set(newModel);
     },
   });
