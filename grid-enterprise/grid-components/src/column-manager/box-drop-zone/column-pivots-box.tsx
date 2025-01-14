@@ -7,7 +7,7 @@ import { PillWrapper } from "./pill-wrapper";
 import { PillDelete, PillDragger } from "./components";
 import { useEvent } from "@1771technologies/react-utils";
 import { useDraggable, useDroppable } from "@1771technologies/react-dragon";
-import { pivotTag } from "./tags";
+import { groupTag, pivotTag } from "./tags";
 import { getColumns } from "./get-columns-from-drag-data";
 import { insertIdsIntoModel } from "./insert-ids-in-model";
 import { dragCls, dragClsFirst } from "./classes";
@@ -66,7 +66,14 @@ function PivotPill({ index, column }: BoxDropZoneRendererProps) {
   const gridId = grid.state.gridId.use();
   const drag = useDraggable({
     dragData: () => column,
-    dragTags: () => [pivotTag(gridId)],
+    dragTags: () => {
+      const isG = grid.api.columnIsRowGroupable(column);
+
+      const tags = [pivotTag(gridId)];
+      if (isG) tags.push(groupTag(gridId));
+
+      return tags;
+    },
     placeholder: () => <Placeholder label={column.headerName ?? column.id} />,
   });
 

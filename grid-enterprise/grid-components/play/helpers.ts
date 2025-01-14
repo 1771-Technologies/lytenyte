@@ -26,7 +26,7 @@ export const bankColumns: ColumnEnterpriseReact<any>[] = [
   { id: "education", groupPath: ["Information"], rowGroupable: true },
   { id: "marital", groupPath: ["Information"] },
   { id: "default", columnPivotable: true },
-  { id: "housing", columnPivotable: true, aggFunc: "count" },
+  { id: "housing", columnPivotable: true, aggFunc: "count", rowGroupable: true },
   { id: "loan", pin: "start", columnPivotable: true },
   { id: "contact", pin: "end", aggFunc: "sum" },
   { id: "day", rowGroupable: true },
