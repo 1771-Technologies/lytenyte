@@ -10,7 +10,7 @@ import { ValuesBox } from "../src/column-manager/box-drop-zone/values-box";
 const grid = makeStore({
   gridId: "x",
   columns: bankColumns,
-  columnBase: { sortable: true, movable: true },
+  columnBase: { sortable: true, movable: true, measureFunc: "avg", measureFuncsAllowed: ["avg"] },
   rowGroupModel: ["education", "day"],
   columnPivotModel: ["loan"],
   measureModel: ["poutcome"],
