@@ -11,7 +11,7 @@ const grid = makeStore({
   gridId: "x",
   columns: bankColumns,
   columnBase: { sortable: true, movable: true },
-  rowGroupModel: ["education"],
+  rowGroupModel: ["education", "job", "day"],
   columnPivotModel: ["loan"],
   measureModel: ["poutcome"],
 });

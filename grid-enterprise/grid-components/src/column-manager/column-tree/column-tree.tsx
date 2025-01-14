@@ -15,7 +15,7 @@ import { clsx } from "@1771technologies/js-utils";
 import { handleItemHide } from "./handle-item-hide";
 import { allLeafs } from "./all-leafs";
 import { dragState, useDroppable } from "@1771technologies/react-dragon";
-import { itemDragLabel } from "./item-drag-label";
+import { itemDragTag } from "./item-drag-label";
 
 export function ColumnTree() {
   const { api, state } = useGrid();
@@ -105,7 +105,7 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
   const dragTags = useMemo(() => {
     if (pivotMode) return [];
 
-    return [itemDragLabel(gridId, props.data)];
+    return [itemDragTag(gridId, props.data)];
   }, [gridId, pivotMode, props.data]);
 
   const draggedIndex = (dragState.dragData.use()?.() as { index?: number })?.index ?? -1;

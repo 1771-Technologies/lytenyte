@@ -5,6 +5,10 @@ import { BoxDropZone, type BoxDropZoneRendererProps } from "./box-drop-zone";
 import { Pill } from "../../pills/pill";
 import { PillWrapper } from "./pill-wrapper";
 import { PillDelete, PillDragger } from "./components";
+import { useDraggable, useDroppable } from "@1771technologies/react-dragon";
+import { clsx } from "@1771technologies/js-utils";
+import { dragCls, dragClsFirst } from "./classes";
+import { getColumns } from "./get-columns-from-drag-data";
 
 export function RowGroupsBox() {
   const { state, api } = useGrid();
@@ -38,12 +42,49 @@ export function RowGroupsBox() {
 }
 
 function RowGroupsPillRenderer({ column, index }: BoxDropZoneRendererProps) {
+  const grid = useGrid();
+  const config = cc.columnManager.use();
+  const Placeholder = config.dragPlaceholder!;
+  const gridId = grid.state.gridId.use();
+  const drag = useDraggable({
+    dragData: () => column,
+    dragTags: () => [`${gridId}:row-group`],
+    placeholder: () => <Placeholder label={column.headerName ?? column.id} />,
+  });
+
+  const groupTags = useMemo(() => {
+    return [`${gridId}:row-group`];
+  }, [gridId]);
+
+  const { isOver, canDrop, ...props } = useDroppable({
+    tags: groupTags,
+    onDrop: (p) => {
+      const columns = getColumns(p.getData()).map((c) => c.id);
+
+      const model = grid.state.rowGroupModel.peek();
+
+      const left = model.slice(0, index).filter((c) => !columns.includes(c));
+      const right = model.slice(index).filter((c) => !columns.includes(c));
+
+      const newModel = [...left, ...columns, ...right];
+
+      grid.state.rowGroupModel.set(newModel);
+    },
+  });
+
   return (
-    <PillWrapper isFirst={index === 0}>
+    <PillWrapper
+      isFirst={index === 0}
+      {...props}
+      className={clsx(
+        isOver && canDrop && dragCls,
+        isOver && canDrop && index === 0 && dragClsFirst,
+      )}
+    >
       <Pill
         kind="group"
         label={column.headerName ?? column.id}
-        startItem={<PillDragger />}
+        startItem={<PillDragger {...drag} />}
         endItem={<PillDelete />}
       />
     </PillWrapper>

@@ -5,7 +5,7 @@ import type { PathTreeNode } from "@1771technologies/react-list-view";
 import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import { useMemo } from "react";
 import { useDraggable } from "@1771technologies/react-dragon";
-import { itemDragLabel } from "./item-drag-label";
+import { itemDragTag } from "./item-drag-label";
 import { allLeafs } from "./all-leafs";
 import { cc } from "../../component-configuration";
 
@@ -82,7 +82,7 @@ export const DragIcon = ({
 
   const gridId = state.gridId.use();
   const dragTag = useMemo(() => {
-    return [itemDragLabel(gridId, data)];
+    return [itemDragTag(gridId, data)];
   }, [data, gridId]);
 
   const isMovable = useMemo(() => {
