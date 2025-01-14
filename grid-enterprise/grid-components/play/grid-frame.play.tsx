@@ -5,6 +5,7 @@ import { GridFrame } from "../src/grid-frame/grid-frame";
 const grid = makeStore({
   columns,
   columnBase: { sortable: true },
+  gridId: "x",
 
   panelFrames: {
     sort: {
