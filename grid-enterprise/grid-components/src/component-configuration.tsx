@@ -36,6 +36,7 @@ function mergeSignal<T>(c: T): Signal<T> {
 export const cc = cascada<ComponentConfiguration>(() => {
   return {
     columnManager: mergeSignal<ColumnManagerConfiguration>({
+      dragPlaceholder: DragPlaceholder,
       columnTree: {
         axe: {
           axeDescription:
@@ -50,8 +51,6 @@ export const cc = cascada<ComponentConfiguration>(() => {
           axeLabel: (cnt) => `There are ${cnt} choices in the tree`,
         },
         labelDrag: "Move column",
-
-        dragPlaceholder: DragPlaceholder,
       },
       columnBoxes: {
         labelColumnPivots: "Column Pivots",

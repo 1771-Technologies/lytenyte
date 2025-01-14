@@ -3,11 +3,10 @@ import type { ListViewAxe } from "@1771technologies/react-list-view";
 import type { ReactNode } from "react";
 
 export interface ColumnManagerConfiguration {
+  readonly dragPlaceholder?: (p: { label: string }) => ReactNode;
   readonly columnTree?: {
     readonly axe: ListViewAxe<ColumnEnterpriseReact<any>>;
     readonly labelDrag: string;
-
-    readonly dragPlaceholder: (p: { label: string }) => ReactNode;
   };
   readonly columnBoxes?: {
     readonly labelValues: string;
