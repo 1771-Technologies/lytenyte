@@ -100,6 +100,7 @@ export function GridFrame<D>({
             const isActive = c.id === openId;
             return (
               <button
+                key={c.id}
                 onClick={() => {
                   if (isActive) api.panelFrameClose();
                   else api.panelFrameOpen(c.id);

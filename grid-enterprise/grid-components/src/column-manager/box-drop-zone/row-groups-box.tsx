@@ -86,6 +86,17 @@ function RowGroupsPillRenderer({ column, index }: BoxDropZoneRendererProps) {
     <PillWrapper
       isFirst={index === 0}
       {...props}
+      onKeyDown={(ev) => {
+        if (ev.key === "Delete") {
+          grid.state.rowGroupModel.set((prev) => prev.filter((c) => c !== column.id));
+          ev.preventDefault();
+          const thisDiv = ev.currentTarget;
+          const next =
+            thisDiv.nextElementSibling ?? thisDiv.previousElementSibling ?? thisDiv.parentElement;
+
+          (next as HTMLElement)?.focus();
+        }
+      }}
       className={clsx(
         isOver && canDrop && dragCls,
         isOver && canDrop && index === 0 && dragClsFirst,
