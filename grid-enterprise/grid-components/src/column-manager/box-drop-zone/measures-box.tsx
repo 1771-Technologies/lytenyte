@@ -1,4 +1,4 @@
-import { useMemo, type KeyboardEvent, type MouseEvent } from "react";
+import { useMemo, useRef } from "react";
 import { cc } from "../../component-configuration";
 import { useGrid } from "../../provider/grid-provider";
 import { BoxDropZone, type BoxDropZoneRendererProps } from "./box-drop-zone";
@@ -118,14 +118,16 @@ function MeasurePillRenderer({ index, column }: BoxDropZoneRendererProps) {
     },
   });
 
-  const del = useEvent((ev: KeyboardEvent | MouseEvent) => {
+  const pillRef = useRef<HTMLDivElement | null>(null);
+  const del = useEvent(() => {
     grid.state.measureModel.set((prev) => prev.filter((c) => c !== column.id));
-    ev.preventDefault();
-    const thisDiv = ev.currentTarget;
+    const thisDiv = pillRef.current!;
     const next =
       thisDiv.nextElementSibling ?? thisDiv.previousElementSibling ?? thisDiv.parentElement;
 
-    (next as HTMLElement)?.focus();
+    setTimeout(() => {
+      (next as HTMLElement)?.focus();
+    }, 40);
   });
 
   const measureFunc = getMeasureFunc(column, base) ?? "Fn(x)";
@@ -133,10 +135,14 @@ function MeasurePillRenderer({ index, column }: BoxDropZoneRendererProps) {
 
   return (
     <PillWrapper
+      pillRef={pillRef}
       isFirst={index === 0}
       {...props}
       onKeyDown={(ev) => {
-        if (ev.key === "Delete") del(ev);
+        if (ev.key === "Delete") {
+          ev.preventDefault();
+          del();
+        }
       }}
       className={clsx(
         isOver && canDrop && dragCls,
@@ -168,6 +174,7 @@ function MeasurePillRenderer({ index, column }: BoxDropZoneRendererProps) {
           <AggMenu
             allowed={allowed}
             current={typeof measureFunc === "string" ? measureFunc : "Fn(x)"}
+            onRemove={del}
             onSelect={(s) => {
               grid.api.columnUpdate(column, { measureFunc: s });
             }}
@@ -179,5 +186,5 @@ function MeasurePillRenderer({ index, column }: BoxDropZoneRendererProps) {
 }
 
 function getMeasureFunc(c: ColumnEnterpriseReact<any>, base: ColumnBaseEnterpriseReact<any>) {
-  return c.measureFunc ?? c.measureFuncDefault ?? base.measureFunc ?? base.measureFuncDefault;
+  return c.measureFunc ?? c.measureFuncDefault ?? base.measureFunc;
 }

@@ -72,6 +72,11 @@ export function PopoverMenu({
               }
             `,
           ),
+          separator: css`
+            background-color: ${t.colors.borders_separator};
+            height: 1px;
+            margin-block: ${t.spacing.space_02};
+          `,
         }}
       />
     </LngPopover>

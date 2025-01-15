@@ -1,15 +1,20 @@
 import { t } from "@1771technologies/grid-design";
 import { clsx } from "@1771technologies/js-utils";
-import type { JSX } from "react";
+import type { JSX, RefObject } from "react";
 
 export function PillWrapper({
   children,
   isFirst,
+  pillRef,
   ...props
-}: JSX.IntrinsicElements["div"] & { isFirst: boolean }) {
+}: JSX.IntrinsicElements["div"] & {
+  isFirst: boolean;
+  pillRef?: RefObject<HTMLDivElement | null>;
+}) {
   return (
     <div
       {...props}
+      ref={pillRef}
       tabIndex={-1}
       className={clsx(
         isFirst &&

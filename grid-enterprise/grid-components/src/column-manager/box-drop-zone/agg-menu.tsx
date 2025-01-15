@@ -2,21 +2,43 @@ import { IconButton } from "../../buttons/icon-button";
 import { t } from "@1771technologies/grid-design";
 import { useGrid } from "../../provider/grid-provider";
 import { PopoverMenu } from "../../popover-menu/popover-menu";
-import { useRef, useState } from "react";
-import type { MenuItemCheckbox } from "@1771technologies/react-menu";
+import { useMemo, useRef, useState } from "react";
+import type { MenuItem, MenuItemCheckbox } from "@1771technologies/react-menu";
 
 export function AggMenu({
   allowed,
   current,
   onSelect,
+  onRemove,
 }: {
   allowed: string[];
   current: string;
+  onRemove: () => void;
   onSelect: (s: string) => void;
 }) {
   const { state } = useGrid();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLSpanElement | null>(null);
+
+  const menuItems = useMemo(() => {
+    const items: MenuItem[] = allowed.map((c) => {
+      return {
+        checked: c === current,
+        id: c,
+        kind: "checkbox",
+        label: c,
+        onCheckChange: () => {
+          onSelect(c);
+          setOpen(false);
+        },
+      } satisfies MenuItemCheckbox;
+    });
+
+    items.push({ kind: "separator" });
+    items.push({ kind: "item", action: onRemove, id: "lng-delete", label: "Remove" });
+
+    return items;
+  }, [allowed, current, onRemove, onSelect]);
 
   if (allowed.length === 0) return null;
 
@@ -66,18 +88,7 @@ export function AggMenu({
           onOpenChange={setOpen}
           placement="bottom"
           popoverTarget={ref.current!}
-          menuItems={allowed.map((c) => {
-            return {
-              checked: c === current,
-              id: c,
-              kind: "checkbox",
-              label: c,
-              onCheckChange: () => {
-                onSelect(c);
-                setOpen(false);
-              },
-            } satisfies MenuItemCheckbox;
-          })}
+          menuItems={menuItems}
           rtl={state.rtl.peek()}
         />
       )}

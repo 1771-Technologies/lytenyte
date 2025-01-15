@@ -96,6 +96,7 @@ export type ColumnBase<A, D, E> = Omit<
   | "quickSearchField"
   | "groupVisibility"
   | "groupPath"
+  | "measureFuncDefault"
 >;
 
 export type ColumnRowGroup<A, D, E> = Omit<

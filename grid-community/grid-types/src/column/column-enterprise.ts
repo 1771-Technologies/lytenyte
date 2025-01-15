@@ -133,6 +133,7 @@ export type ColumnBase<D, E, I> = Omit<
   | "quickSearchField"
   | "groupVisibility"
   | "groupPath"
+  | "measureFuncDefault"
 >;
 
 export type ColumnRowGroup<D, E, I> = Omit<
