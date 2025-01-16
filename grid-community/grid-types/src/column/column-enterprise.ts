@@ -134,6 +134,7 @@ export type ColumnBase<D, E, I> = Omit<
   | "groupVisibility"
   | "groupPath"
   | "measureFuncDefault"
+  | "aggFuncDefault"
 >;
 
 export type ColumnRowGroup<D, E, I> = Omit<

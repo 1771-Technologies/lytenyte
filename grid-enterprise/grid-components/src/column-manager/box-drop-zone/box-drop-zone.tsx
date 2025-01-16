@@ -23,6 +23,8 @@ export interface BoxDropZone {
 
   readonly tags: string[];
   readonly onDrop: (p: DropParams) => void;
+
+  readonly onlyContainer?: boolean;
 }
 export function BoxDropZone({
   icon,
@@ -35,6 +37,7 @@ export function BoxDropZone({
   renderer: Renderer,
   onDrop,
   tags,
+  onlyContainer,
 }: BoxDropZone) {
   const { isOver, canDrop, ...props } = useDroppable({
     tags,
@@ -116,19 +119,29 @@ export function BoxDropZone({
               next.focus();
             }
           }}
-          className={clsx(css`
-            display: flex;
-            flex-direction: column;
-            min-height: 120px;
-            min-width: 260px;
-            border-radius: ${t.spacing.box_radius_regular};
-            border: 1px dashed ${t.colors.borders_strong};
-            background-color: ${t.colors.backgrounds_light};
-            &:focus {
-              outline: none;
-              border: 1px solid ${t.colors.borders_focus};
-            }
-          `)}
+          className={clsx(
+            css`
+              display: flex;
+              flex-direction: column;
+              min-height: 120px;
+              min-width: 260px;
+              border-radius: ${t.spacing.box_radius_regular};
+              border: 1px dashed ${t.colors.borders_strong};
+              background-color: ${t.colors.backgrounds_light};
+              &:focus {
+                outline: none;
+                border: 1px solid ${t.colors.borders_focus};
+              }
+            `,
+
+            isOver &&
+              canDrop &&
+              onlyContainer &&
+              css`
+                border-color: ${t.colors.primary_50};
+                background-color: ${t.colors.system_green_10};
+              `,
+          )}
         >
           {items.length === 0 && (
             <div
@@ -143,7 +156,7 @@ export function BoxDropZone({
                 position: relative;
               `}
             >
-              {isOver && canDrop && (
+              {isOver && canDrop && !onlyContainer && (
                 <div
                   className={css`
                     position: absolute;
@@ -176,7 +189,7 @@ export function BoxDropZone({
           {items.map((c, i) => {
             return <Renderer column={c} key={c.id} index={i} />;
           })}
-          {isOver && canDrop && items.length > 0 && (
+          {isOver && canDrop && !onlyContainer && items.length > 0 && (
             <div
               className={css`
                 height: 1px;

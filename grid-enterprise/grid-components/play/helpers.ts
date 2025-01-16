@@ -29,7 +29,7 @@ export const bankColumns: ColumnEnterpriseReact<any>[] = [
   { id: "housing", columnPivotable: true, aggFunc: "count", rowGroupable: true },
   { id: "loan", pin: "start", columnPivotable: true },
   { id: "contact", pin: "end", aggFunc: "sum" },
-  { id: "day", rowGroupable: true },
+  { id: "day", rowGroupable: true, aggFuncDefault: "first", aggFuncsAllowed: ["first", "last"] },
   { id: "month", measureFunc: "count" },
   { id: "duration" },
   { id: "campaign" },
