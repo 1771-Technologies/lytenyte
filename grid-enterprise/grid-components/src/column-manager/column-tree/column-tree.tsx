@@ -17,7 +17,7 @@ import { allLeafs } from "./all-leafs";
 import { dragState, useDroppable } from "@1771technologies/react-dragon";
 import { itemDragTag } from "./item-drag-label";
 
-export function ColumnTree() {
+export function ColumnTree({ query = "" }: { query?: string }) {
   const { api, state } = useGrid();
 
   const config = cc.columnManager.use();
@@ -27,13 +27,20 @@ export function ColumnTree() {
 
   const paths = useMemo(() => {
     const paths = columns
-      .filter((c) => api.columnIsGroupAutoColumn(c) || !api.columnIsGridGenerated(c))
+      .filter((c) => {
+        if (api.columnIsGridGenerated(c) && !api.columnIsGroupAutoColumn(c)) return false;
+
+        if (!query) return true;
+
+        const label = c.headerName ?? c.id;
+        return label.toLowerCase().includes(query.toLowerCase());
+      })
       .map<PathTreeInputItem<ColumnEnterpriseReact<any>>>((c) => {
         return { path: c.groupPath ?? [], data: c };
       });
 
     return paths;
-  }, [api, columns]);
+  }, [api, columns, query]);
 
   return (
     <ListView

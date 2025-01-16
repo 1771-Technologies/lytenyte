@@ -1,11 +1,8 @@
 import { makeStore } from "@1771technologies/grid-store-enterprise";
 import { bankColumns } from "./helpers";
 import { GridProvider } from "../src/provider/grid-provider";
-import { ColumnTree } from "../src/column-manager/column-tree/column-tree";
-import { RowGroupsBox } from "../src/column-manager/box-drop-zone/row-groups-box";
-import { ColumnPivotsBox } from "../src/column-manager/box-drop-zone/column-pivots-box";
-import { MeasuresBox } from "../src/column-manager/box-drop-zone/measures-box";
-import { ValuesBox } from "../src/column-manager/box-drop-zone/values-box";
+import { ColumnManagerFrame } from "../src/column-manager/column-manager";
+import { t } from "@1771technologies/grid-design";
 
 const grid = makeStore({
   gridId: "x",
@@ -19,30 +16,15 @@ const grid = makeStore({
 export default function Home() {
   return (
     <GridProvider grid={grid}>
-      <div style={{ width: "100vw", height: "100vh" }}>
+      <div style={{ width: "100vw", height: "100vh", background: t.colors.gray_00 }}>
         <div
           className={css`
             display: grid;
-            grid-template-columns: 400px 400px;
+            grid-template-columns: 604px 400px;
             height: 100%;
           `}
         >
-          <div>
-            <ColumnTree />
-          </div>
-          <div
-            className={css`
-              padding-block: 24px;
-              display: flex;
-              flex-direction: column;
-              gap: 24px;
-            `}
-          >
-            <RowGroupsBox />
-            <ColumnPivotsBox />
-            <MeasuresBox />
-            <ValuesBox />
-          </div>
+          <ColumnManagerFrame showPivotToggle />
         </div>
       </div>
     </GridProvider>

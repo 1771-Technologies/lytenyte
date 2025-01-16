@@ -15,6 +15,7 @@ import { RowGroupIcon } from "./column-manager/icons/row-group-icon";
 import { DragPlaceholder } from "./drag-placeholder/drag-placeholder";
 import type { MenuConfiguration } from "./popover-menu/popover-menu";
 import { menuAxeDefault } from "@1771technologies/react-menu";
+import { SearchIcon } from "./icons/search-icon";
 
 export type ComponentConfiguration = {
   columnManager: Signal<ColumnManagerConfiguration>;
@@ -71,6 +72,13 @@ export const cc = cascada<ComponentConfiguration>(() => {
         iconMeasures: () => <MeasuresIcon />,
         iconRowGroups: () => <RowGroupIcon />,
         iconValues: () => <MeasuresIcon />,
+      },
+      searchInput: {
+        placeholderSearch: "Search...",
+        icon: SearchIcon,
+      },
+      pivot: {
+        labelPivotModeToggle: "Pivot mode",
       },
     }),
     gridFrame: mergeSignal<GridFrameConfiguration>({

@@ -6,6 +6,7 @@ import { columns } from "./helpers";
 const grid = makeStore({
   columns,
   columnBase: { sortable: true },
+  gridId: "x",
 });
 
 export default function Home() {
