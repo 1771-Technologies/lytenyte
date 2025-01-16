@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useState } from "react";
 import { cc } from "../../component-configuration";
 import { useGrid } from "../../provider/grid-provider";
 import { BoxDropZone, type BoxDropZoneRendererProps } from "./box-drop-zone";
@@ -133,6 +133,8 @@ function MeasurePillRenderer({ index, column }: BoxDropZoneRendererProps) {
   const measureFunc = getMeasureFunc(column, base) ?? "Fn(x)";
   const allowed = column.measureFuncsAllowed ?? base.measureFuncsAllowed ?? [];
 
+  const [open, setOpen] = useState(false);
+
   return (
     <PillWrapper
       pillRef={pillRef}
@@ -142,6 +144,10 @@ function MeasurePillRenderer({ index, column }: BoxDropZoneRendererProps) {
         if (ev.key === "Delete") {
           ev.preventDefault();
           del();
+        }
+        if (ev.key === "Enter") {
+          ev.preventDefault();
+          setOpen(true);
         }
       }}
       className={clsx(
@@ -174,6 +180,8 @@ function MeasurePillRenderer({ index, column }: BoxDropZoneRendererProps) {
           <AggMenu
             allowed={allowed}
             current={typeof measureFunc === "string" ? measureFunc : "Fn(x)"}
+            onOpenChange={setOpen}
+            open={open}
             onRemove={del}
             onSelect={(s) => {
               grid.api.columnUpdate(column, { measureFunc: s });

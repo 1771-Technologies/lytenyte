@@ -2,7 +2,7 @@ import { IconButton } from "../../buttons/icon-button";
 import { t } from "@1771technologies/grid-design";
 import { useGrid } from "../../provider/grid-provider";
 import { PopoverMenu } from "../../popover-menu/popover-menu";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef } from "react";
 import type { MenuItem, MenuItemCheckbox } from "@1771technologies/react-menu";
 
 export function AggMenu({
@@ -10,14 +10,17 @@ export function AggMenu({
   current,
   onSelect,
   onRemove,
+  onOpenChange,
+  open,
 }: {
   allowed: string[];
   current: string;
   onRemove: () => void;
   onSelect: (s: string) => void;
+  onOpenChange: (b: boolean) => void;
+  open: boolean;
 }) {
   const { state } = useGrid();
-  const [open, setOpen] = useState(false);
   const ref = useRef<HTMLSpanElement | null>(null);
 
   const menuItems = useMemo(() => {
@@ -29,7 +32,7 @@ export function AggMenu({
         label: c,
         onCheckChange: () => {
           onSelect(c);
-          setOpen(false);
+          onOpenChange(false);
         },
       } satisfies MenuItemCheckbox;
     });
@@ -38,7 +41,7 @@ export function AggMenu({
     items.push({ kind: "item", action: onRemove, id: "lng-delete", label: "Remove" });
 
     return items;
-  }, [allowed, current, onRemove, onSelect]);
+  }, [allowed, current, onOpenChange, onRemove, onSelect]);
 
   if (allowed.length === 0) return null;
 
@@ -47,7 +50,7 @@ export function AggMenu({
       <IconButton
         tabIndex={-1}
         kind="ghost"
-        onClick={() => setOpen(true)}
+        onClick={() => onOpenChange(true)}
         className={css`
           &:focus {
             outline: none;
@@ -85,7 +88,7 @@ export function AggMenu({
       {ref.current && (
         <PopoverMenu
           open={open}
-          onOpenChange={setOpen}
+          onOpenChange={onOpenChange}
           placement="bottom"
           popoverTarget={ref.current!}
           menuItems={menuItems}
