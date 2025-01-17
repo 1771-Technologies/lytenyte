@@ -28,5 +28,5 @@ export function useColumnPills(api: ApiEnterpriseReact<any>) {
     });
   }, [base.hide, columns]);
 
-  return pillItems;
+  return { pillItems };
 }

@@ -15,10 +15,12 @@ export function PillRowControls({
 }) {
   return (
     <div
-      className={clsx(
-        "lng1771-pill-manager-row-controls",
-        hasOverflowShadow && "lng1771-pill-manager-row-controls-have-overflow",
-      )}
+      className={clsx(css`
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--lng1771-backgrounds-ui-panel);
+      `)}
     >
       <IconButton kind="ghost" disabled={!hasOverflow} onClick={() => onExpand(!expanded)}>
         {expanded ? (
