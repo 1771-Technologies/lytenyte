@@ -77,6 +77,8 @@ function ValuesPillRenderer({ column, index }: BoxDropZoneRendererProps) {
   const grid = useGrid();
   const base = grid.state.columnBase.use();
 
+  const config = cc.columnManager.use();
+
   const measureFunc = getAggFunc(column, base) ?? "Fn(x)";
   const allowed = column.measureFuncsAllowed ?? base.measureFuncsAllowed ?? [];
 
@@ -132,6 +134,7 @@ function ValuesPillRenderer({ column, index }: BoxDropZoneRendererProps) {
         endItem={
           <AggMenu
             allowed={allowed}
+            label={config.columnBoxes?.labelAggregationButton(column.headerName ?? column.id) ?? ""}
             current={typeof measureFunc === "string" ? measureFunc : "Fn(x)"}
             onOpenChange={setOpen}
             open={open}

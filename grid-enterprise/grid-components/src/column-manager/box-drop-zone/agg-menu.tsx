@@ -12,6 +12,7 @@ export function AggMenu({
   onRemove,
   onOpenChange,
   open,
+  label,
 }: {
   allowed: string[];
   current: string;
@@ -19,6 +20,7 @@ export function AggMenu({
   onSelect: (s: string) => void;
   onOpenChange: (b: boolean) => void;
   open: boolean;
+  label: string;
 }) {
   const { state } = useGrid();
   const ref = useRef<HTMLSpanElement | null>(null);
@@ -51,6 +53,7 @@ export function AggMenu({
         tabIndex={-1}
         kind="ghost"
         onClick={() => onOpenChange(true)}
+        aria-label={label}
         className={css`
           &:focus {
             outline: none;

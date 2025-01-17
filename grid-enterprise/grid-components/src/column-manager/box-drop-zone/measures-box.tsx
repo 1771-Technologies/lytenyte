@@ -182,6 +182,7 @@ function MeasurePillRenderer({ index, column }: BoxDropZoneRendererProps) {
             current={typeof measureFunc === "string" ? measureFunc : "Fn(x)"}
             onOpenChange={setOpen}
             open={open}
+            label={config.columnBoxes?.labelAggregationButton(column.headerName ?? column.id) ?? ""}
             onRemove={del}
             onSelect={(s) => {
               grid.api.columnUpdate(column, { measureFunc: s });

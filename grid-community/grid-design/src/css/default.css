@@ -50,7 +50,7 @@
   --lng1771-borders-focus-shadow: var(--lng1771-primary-30);
   --lng1771-borders-focus: var(--lng1771-primary-50);
 
-  --lng1771-system-plain-pill-fill: var(--lng1771-backgrounds-default);
+  --lng1771-system-plain-pill-fill: var(--lng1771-backgrounds-button-light);
   --lng1771-system-column-pill-fill: #ffffff;
   --lng1771-system-column-pill-stroke: rgba(1, 34, 89, 0.14);
   --lng1771-system-pivot-pill-fill: #ece6f8;

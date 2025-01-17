@@ -100,6 +100,7 @@ export function Input({
           css`
             border: none;
             background-color: transparent;
+            color: ${t.colors.text_medium};
             height: 100%;
             width: 100%;
             margin-top: -1px;
@@ -110,6 +111,7 @@ export function Input({
               outline: none;
             }
             &::placeholder {
+              color: ${t.colors.text_light};
               position: relative;
               top: 1px;
             }

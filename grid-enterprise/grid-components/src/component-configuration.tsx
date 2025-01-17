@@ -67,6 +67,8 @@ export const cc = cascada<ComponentConfiguration>(() => {
         labelEmptyMeasures: "Drag here to add a measure",
         labelEmptyRowGroups: "Drag here to set row groups",
 
+        labelAggregationButton: (c) => `${c} aggregation menu`,
+
         iconColumnPivots: () => <ColumnPivotIcon />,
         iconEmpty: () => <DragGroupIcon />,
         iconMeasures: () => <MeasuresIcon />,

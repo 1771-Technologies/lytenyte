@@ -1,6 +1,6 @@
 import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import type { ListViewAxe } from "@1771technologies/react-list-view";
-import { useState, type JSX, type ReactNode } from "react";
+import { useId, useState, type JSX, type ReactNode } from "react";
 import { Input } from "../input/Input";
 import { cc } from "../component-configuration";
 import { SearchIcon } from "../icons/search-icon";
@@ -26,6 +26,8 @@ export interface ColumnManagerConfiguration {
     readonly labelEmptyRowGroups: string;
     readonly labelEmptyColumnPivot: string;
     readonly labelEmptyMeasures: string;
+
+    readonly labelAggregationButton: (columnName: string) => string;
 
     readonly iconRowGroups?: () => ReactNode;
     readonly iconValues?: () => ReactNode;
@@ -56,6 +58,7 @@ export function ColumnManagerFrame({ showPivotToggle }: ColumnManagerFrameProps)
   const pivotMode = state.columnPivotModeIsOn.use();
 
   const [query, setQuery] = useState("");
+  const id = useId();
 
   return (
     <div
@@ -94,8 +97,10 @@ export function ColumnManagerFrame({ showPivotToggle }: ColumnManagerFrameProps)
               gap: ${t.spacing.space_10};
             `}
           >
-            <Toggle on={pivotMode} onChange={(b) => state.columnPivotModeIsOn.set(b)} />
-            <label className="lng1771-text-medium">{config.pivot?.labelPivotModeToggle}</label>
+            <Toggle id={id} on={pivotMode} onChange={(b) => state.columnPivotModeIsOn.set(b)} />
+            <label htmlFor={id} className="lng1771-text-medium">
+              {config.pivot?.labelPivotModeToggle}
+            </label>
           </div>
         )}
       </div>

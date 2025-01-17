@@ -6,8 +6,9 @@ export interface ToggleProps {
   readonly on: boolean;
   readonly onChange: (b: boolean) => void;
   readonly disabled?: boolean;
+  readonly id?: string;
 }
-export function Toggle({ on, onChange, disabled }: ToggleProps) {
+export function Toggle({ on, onChange, disabled, id }: ToggleProps) {
   const ref = useRef<HTMLInputElement>(null);
   return (
     <div
@@ -85,6 +86,7 @@ export function Toggle({ on, onChange, disabled }: ToggleProps) {
       ></div>
       <input
         ref={ref}
+        id={id}
         type="checkbox"
         checked={on}
         onChange={(e) => onChange(e.target.checked)}
