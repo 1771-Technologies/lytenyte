@@ -65,6 +65,7 @@ export const cc = cascada<ComponentConfiguration>(() => {
         labelNumber: "Number filter",
       },
       inFilter: {
+        labelItem: "In filter item toggle",
         labelLoadError: "Error Occurred",
         labelNoItems: "No items",
       },

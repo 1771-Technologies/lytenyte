@@ -16,6 +16,7 @@ export interface FilterConfiguration {
   };
 
   readonly inFilter?: {
+    readonly labelItem: string;
     readonly labelLoadError: string;
     readonly labelNoItems: string;
   };
