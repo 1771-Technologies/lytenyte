@@ -21,6 +21,7 @@ import type { ListViewAxe } from "@1771technologies/react-list-view";
 import type { SelectItem } from "./select/select";
 import type { ColumnMenuConfiguration } from "./column-menu-driver/column-menu-driver";
 import type { ContextMenuConfiguration } from "./context-menu-driver/context-menu-driver";
+import type { PillManagerConfiguration } from "./pill-manager/pill-manager";
 
 export type ComponentConfiguration = {
   columnManager: Signal<ColumnManagerConfiguration>;
@@ -32,6 +33,7 @@ export type ComponentConfiguration = {
   columnMenu: Signal<ColumnMenuConfiguration>;
   contextMenu: Signal<ContextMenuConfiguration>;
   filter: Signal<FilterConfiguration>;
+  pillManager: Signal<PillManagerConfiguration>;
 };
 
 function mergeSignal<T>(c: T): Signal<T> {
@@ -55,6 +57,14 @@ const itemAxe: ListViewAxe<SelectItem> = {
 
 export const cc = cascada<ComponentConfiguration>(() => {
   return {
+    pillManager: mergeSignal<PillManagerConfiguration>({
+      axe: {
+        labelColumnPivots: "Column Pivots",
+        labelColumns: "Columns",
+        labelMeasures: "Measures",
+        labelRowGroups: "Row Groups",
+      },
+    }),
     filter: mergeSignal<FilterConfiguration>({
       simpleFilter: {
         placeholderNoChoice: "Choose one",

@@ -5,7 +5,7 @@ import { t } from "@1771technologies/grid-design";
 import { TrashIcon } from "../src/icons/trash-icon";
 import { MeasuresIcon } from "../src/column-manager/icons/measures-icon";
 import { useCallback } from "react";
-import { ContextMenuDriver } from "../src/context-menu-driver/context-menu-driver";
+import { PillManager } from "../src/pill-manager/pill-manager";
 
 const grid = makeStore({
   gridId: "x",
@@ -59,7 +59,7 @@ export default function Home() {
   return (
     <GridProvider grid={grid}>
       <div style={{ width: "100vw", height: "100vh", background: t.colors.gray_00 }} ref={s}>
-        <ContextMenuDriver />
+        <PillManager api={grid.api} />
       </div>
     </GridProvider>
   );
