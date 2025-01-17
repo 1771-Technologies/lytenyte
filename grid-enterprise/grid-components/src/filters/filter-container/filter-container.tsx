@@ -25,9 +25,6 @@ export interface FilterContainerProps<D> {
   readonly onClearFilters?: () => void;
   readonly onApplyFilters?: () => void;
 
-  readonly cancelLabel?: string;
-  readonly applyFiltersLabel?: string;
-
   readonly treeViewportHeight?: number;
   readonly showInFilter?: boolean;
 }
@@ -41,9 +38,6 @@ export function FilterContainer<D>({
   onApplyFilters,
   onCancel,
   onClearFilters,
-
-  cancelLabel = "Cancel",
-  applyFiltersLabel = "Apply Filters",
 
   treeViewportHeight = 300,
   showInFilter = false,
@@ -106,7 +100,7 @@ export function FilterContainer<D>({
       >
         <div style={{ flex: 1 }}>
           <Button kind="secondary" onClick={() => onCancel?.()}>
-            {cancelLabel}
+            {config.container?.labelCancel}
           </Button>
         </div>
         <Button
@@ -136,7 +130,7 @@ export function FilterContainer<D>({
             onClearFilters?.();
           }}
         >
-          Clear
+          {config.container?.labelClear}
         </Button>
         <Button
           kind="primary"
@@ -176,7 +170,7 @@ export function FilterContainer<D>({
             onApplyFilters?.();
           }}
         >
-          {applyFiltersLabel}
+          {config.container?.labelApply}
         </Button>
       </div>
     </div>

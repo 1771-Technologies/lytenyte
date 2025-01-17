@@ -15,4 +15,10 @@ export interface FilterConfiguration {
     readonly labelLoadError: string;
     readonly labelNoItems: string;
   };
+
+  readonly container?: {
+    readonly labelCancel: string;
+    readonly labelClear: string;
+    readonly labelApply: string;
+  };
 }

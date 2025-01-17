@@ -64,6 +64,12 @@ export const cc = cascada<ComponentConfiguration>(() => {
         labelLoadError: "Error Occurred",
         labelNoItems: "No items",
       },
+
+      container: {
+        labelApply: "Apply Filter",
+        labelCancel: "Cancel",
+        labelClear: "Clear",
+      },
     }),
     columnManager: mergeSignal<ColumnManagerConfiguration>({
       dragPlaceholder: DragPlaceholder,
