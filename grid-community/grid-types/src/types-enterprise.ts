@@ -178,4 +178,4 @@ export interface PanelFrameHandle {
   close: () => void;
 }
 
-export type Target = { getBoundingClientRect(): DOMRect };
+export type Target = HTMLElement | { x: number; y: number; width: number; height: number };

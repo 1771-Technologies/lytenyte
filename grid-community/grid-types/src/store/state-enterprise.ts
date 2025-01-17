@@ -75,7 +75,6 @@ export interface GridInternalState<D, E> extends Omit<CommunityInternalState<D, 
 
   readonly contextMenuTarget: Signal<Target | null>;
 
-  readonly filterMenuHandle: Signal<HandleRef | null>;
   readonly filterMenuColumn: Signal<Column<D, E> | null>;
   readonly filterMenuTarget: Signal<Target | null>;
 

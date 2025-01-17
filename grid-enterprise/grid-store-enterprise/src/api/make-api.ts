@@ -215,12 +215,10 @@ export function makeApi<D, E>(
     clipboardCutCells: c.clipboardCutCells,
     clipboardPasteCells: c.clipboardPasteCells,
 
-    columnCloseFilterMenu: menu.columnCloseFilterMenu,
-    columnCloseMenu: menu.columnCloseMenu,
-    columnFilterMenuIsOpen: menu.columnFilterMenuIsOpen,
-    columnMenuIsOpen: menu.columnMenuIsOpen,
-    columnOpenMenu: menu.columnOpenMenu,
-    columnOpenFilterMenu: menu.columnOpenFilterMenu,
+    columnFilterMenuClose: menu.columnCloseFilterMenu,
+    columnMenuClose: menu.columnCloseMenu,
+    columnMenuOpen: menu.columnOpenMenu,
+    columnFilterMenuOpen: menu.columnOpenFilterMenu,
 
     columnIsMeasurable: (c) => columnIsMeasurable(api, c),
     columnIsPivot: (c) => columnIsPivot(api, c),

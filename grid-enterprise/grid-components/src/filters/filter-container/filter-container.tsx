@@ -56,7 +56,6 @@ export function FilterContainer<D>({
       className={css`
         container-type: inline-size;
         padding-block-start: ${t.spacing.space_20};
-        background-color: ${t.colors.backgrounds_ui_panel};
         display: flex;
         flex-direction: column;
         gap: ${t.spacing.space_20};

@@ -62,13 +62,10 @@ export interface ApiEnterprise<D, C, E>
 
   readonly columnIsPivotable: (c: C) => boolean;
 
-  readonly columnFilterMenuIsOpen: () => boolean;
-  readonly columnMenuIsOpen: () => boolean;
-
-  readonly columnOpenFilterMenu: (c: C, bb: Target) => void;
-  readonly columnCloseFilterMenu: () => void;
-  readonly columnOpenMenu: (c: C, bb: Target) => void;
-  readonly columnCloseMenu: () => void;
+  readonly columnFilterMenuOpen: (c: C, bb: Target) => void;
+  readonly columnFilterMenuClose: () => void;
+  readonly columnMenuOpen: (c: C, bb: Target) => void;
+  readonly columnMenuClose: () => void;
 
   readonly contextMenuClose: () => void;
 

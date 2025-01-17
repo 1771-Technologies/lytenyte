@@ -16,11 +16,6 @@ export function TextFilterInput({ filter, onChange, onValueChange }: TextFilterP
 
   const change: TextFilterProps["onChange"] = (v) => {
     onChange(v);
-    // Need to set timeout as the browser will return the dialog focus
-    // to the select button.
-    setTimeout(() => {
-      ref.current?.focus();
-    }, 2);
   };
 
   return (

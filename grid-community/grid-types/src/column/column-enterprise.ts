@@ -49,14 +49,14 @@ export interface Column<A, D, E> {
   readonly aggFuncDefault?: AggBuiltIns | (string & {});
   readonly headerAggFuncDisplayMode?: "secondary" | "inline" | "none";
 
-  readonly columnMenuTrigger?: "header" | "icon" | "icon-on-hover" | "none";
+  readonly columnMenuShowTriggerInHeader?: boolean;
   readonly columnMenuGetItems?: (api: A, column: this) => ColumnMenuItem<E>[];
 
-  readonly filterMenuTrigger?: "icon" | "icon-on-hover" | "none";
-  readonly filterTreeFilterable?: boolean;
-  readonly filterColumnFilterable?: boolean;
+  readonly filterShowTriggerInHeader?: boolean;
+  readonly filterSupportsIn?: boolean;
+  readonly filterSupportsSimple?: boolean;
+  readonly filterSupportsQuickSearch?: boolean;
   readonly filterParams?: FilterParams;
-  readonly filterQuickSearchable?: boolean;
 
   readonly hidable?: boolean;
   readonly hide?: boolean;

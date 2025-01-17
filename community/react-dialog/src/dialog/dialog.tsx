@@ -119,7 +119,7 @@ function DialogImpl({
     const focusableItems = getFocusableElements(dialog);
     setTimeout(() => {
       focusableItems.at(0)?.focus();
-    }, 20);
+    }, 50);
   }, [dialog]);
 
   // Cleanup Effect:
