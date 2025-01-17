@@ -3,8 +3,8 @@ import { flattenTreeItems } from "./flatten-tree-items";
 import { getChildValues } from "./get-child-values";
 import type { ColumnInFilterItem } from "@1771technologies/grid-types/enterprise";
 import { Checkbox } from "../../checkbox/checkbox";
-import { CollapsedIcon, ExpandedIcon } from "../../column-manager/box-drop-zone/components";
 import { t } from "@1771technologies/grid-design";
+import { IconButton } from "../../buttons/icon-button";
 
 export interface InFilterViewport {
   readonly treeItems: ColumnInFilterItem[];
@@ -245,8 +245,8 @@ export function InFilterViewport({
                 ) : (
                   <div
                     className={css`
-                      width: 24px;
-                      height: 24px;
+                      width: 20px;
+                      height: 20px;
                     `}
                     role="presentation"
                   ></div>
@@ -254,8 +254,17 @@ export function InFilterViewport({
               ) : (
                 <>
                   {expansions.has(item.label) && (
-                    <CollapsedIcon
-                      onClick={() => {
+                    <IconButton
+                      kind="ghost"
+                      className={css`
+                        width: 20px;
+                        height: 20px;
+                        color: ${t.colors.borders_icons_default};
+                        font-size: 20px;
+                      `}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        event.preventDefault();
                         setExpansions((prev) => {
                           const next = new Set(prev);
                           if (prev.has(item.label)) {
@@ -265,11 +274,30 @@ export function InFilterViewport({
                           return next;
                         });
                       }}
-                    />
+                    >
+                      <span
+                        className={css`
+                          position: relative;
+                          top: -2px;
+                          inset-inline-start: 1px;
+                        `}
+                      >
+                        ›
+                      </span>
+                    </IconButton>
                   )}
                   {!expansions.has(item.label) && (
-                    <ExpandedIcon
-                      onClick={() => {
+                    <IconButton
+                      kind="ghost"
+                      className={css`
+                        width: 20px;
+                        height: 20px;
+                        color: ${t.colors.borders_icons_default};
+                        font-size: 20px;
+                      `}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        event.preventDefault();
                         setExpansions((prev) => {
                           const next = new Set(prev);
                           if (prev.has(item.label)) {
@@ -279,7 +307,17 @@ export function InFilterViewport({
                           return next;
                         });
                       }}
-                    />
+                    >
+                      <span
+                        className={css`
+                          position: relative;
+                          top: -2px;
+                          inset-inline-start: 1px;
+                        `}
+                      >
+                        ›
+                      </span>
+                    </IconButton>
                   )}
                 </>
               )}
