@@ -20,7 +20,7 @@ export default function Home() {
         <div
           className={css`
             display: grid;
-            grid-template-columns: 604px 400px;
+            grid-template-columns: 460px 400px;
             height: 100%;
           `}
         >

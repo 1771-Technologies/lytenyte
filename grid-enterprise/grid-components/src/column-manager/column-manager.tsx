@@ -108,15 +108,38 @@ export function ColumnManagerFrame({ showPivotToggle }: ColumnManagerFrameProps)
         className={css`
           display: grid;
           height: 100%;
-          grid-template-columns: 1fr 1px 1fr;
-          grid-template-rows: 100%;
+          grid-template-columns: 1fr;
+          grid-template-rows: 60% 1px calc(100% - 1px - 60%);
           box-sizing: border-box;
+
+          @container (min-width: 500px) {
+            grid-template-columns: 1fr 1px 1fr;
+            grid-template-rows: 100%;
+          }
         `}
       >
         <div>
           <ColumnTree query={query} />
         </div>
-        <Separator dir="vertical" />
+        <Separator
+          dir="vertical"
+          className={css`
+            display: none;
+
+            @container (min-width: 500px) {
+              display: block;
+            }
+          `}
+        />
+        <Separator
+          dir="horizontal"
+          className={css`
+            display: block;
+            @container (min-width: 500px) {
+              display: none;
+            }
+          `}
+        />
         <div>
           <div
             className={css`
