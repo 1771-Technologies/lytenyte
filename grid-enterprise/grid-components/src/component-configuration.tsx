@@ -7,7 +7,7 @@ import type { FloatingFrameConfiguration } from "./floating-frame/floating-frame
 import { frameDefaultAxe } from "@1771technologies/react-frame";
 import type { GridFrameConfiguration } from "./grid-frame/grid-frame";
 import { splitPaneAxe } from "@1771technologies/react-split-pane";
-import type { ColumnManagerConfiguration } from "./column-manager/column-manager";
+import type { ColumnManagerConfiguration } from "./column-manager/column-manager-frame";
 import { ColumnPivotIcon } from "./column-manager/icons/column-pivot-icon";
 import { DragGroupIcon } from "./column-manager/icons/drag-group-icon";
 import { MeasuresIcon } from "./column-manager/icons/measures-icon";

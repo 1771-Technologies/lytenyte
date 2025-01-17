@@ -9,6 +9,7 @@ import { useGrid } from "../provider/grid-provider";
 import { t } from "@1771technologies/grid-design";
 import { Separator } from "../separator/separator";
 import { ColumnManagerBase } from "./column-manager-base";
+
 export interface ColumnManagerConfiguration {
   readonly dragPlaceholder?: (p: { label: string }) => ReactNode;
   readonly columnTree?: {
@@ -46,7 +47,7 @@ export interface ColumnManagerFrameProps {
   readonly showPivotToggle?: boolean;
 }
 
-export function ColumnManagerFrame({ showPivotToggle }: ColumnManagerFrameProps) {
+export function ColumnManagerFrame({ showPivotToggle }: ColumnManagerFrameProps): ReactNode {
   const config = cc.columnManager.use();
   const Icon = config.searchInput?.icon ?? SearchIcon;
 
@@ -100,6 +101,7 @@ export function ColumnManagerFrame({ showPivotToggle }: ColumnManagerFrameProps)
       </div>
       <Separator dir="horizontal" />
       <ColumnManagerBase query={query} />
+      <Separator dir="horizontal" />
     </div>
   );
 }
