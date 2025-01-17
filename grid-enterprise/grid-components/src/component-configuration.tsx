@@ -55,10 +55,14 @@ export const cc = cascada<ComponentConfiguration>(() => {
       simpleFilter: {
         placeholderNoChoice: "Choose one",
 
-        dateOperatorAxe: itemAxe,
-        datePeriodAxe: itemAxe,
-        numberOperatorAxe: itemAxe,
-        textOperatorAxe: itemAxe,
+        axeDateOperator: itemAxe,
+        axeDatePeriod: itemAxe,
+        axeNumberOperator: itemAxe,
+        axeTextOperator: itemAxe,
+
+        labelText: "Text filter",
+        labelDate: "Date filter",
+        labelNumber: "Number filter",
       },
       inFilter: {
         labelLoadError: "Error Occurred",

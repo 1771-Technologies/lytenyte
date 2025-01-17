@@ -19,7 +19,7 @@ export function TextOperatorSelect({ filter, onChange }: TextOperatorSelectProps
 
   return (
     <Select
-      axe={config.simpleFilter!.textOperatorAxe}
+      axe={config.simpleFilter!.axeTextOperator}
       placeholder={noChoice}
       items={selectItems}
       value={value}

@@ -26,7 +26,7 @@ export function DatePeriodSelect({
 
   return (
     <Select
-      axe={config.simpleFilter!.datePeriodAxe}
+      axe={config.simpleFilter!.axeDatePeriod}
       selectRef={selectRef}
       items={allDatePeriodOptions}
       value={item}

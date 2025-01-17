@@ -20,7 +20,7 @@ export function NumberOperatorSelect({ filter, onChange }: NumberOperatorSelectP
 
   return (
     <Select
-      axe={config.simpleFilter!.numberOperatorAxe}
+      axe={config.simpleFilter!.axeNumberOperator}
       placeholder={noChoice}
       value={value}
       items={selectItems}

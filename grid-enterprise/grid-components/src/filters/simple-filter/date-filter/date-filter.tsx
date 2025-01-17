@@ -1,8 +1,9 @@
 import { DatePeriodSelect } from "./date-period-select";
 import { DateOperatorSelect } from "./date-operator-select";
-import { useRef } from "react";
+import { useId, useRef } from "react";
 import type { FilterDate } from "@1771technologies/grid-types/community";
 import { Input } from "../../../input/Input";
+import { cc } from "../../../component-configuration";
 
 export interface DateFilterProps {
   readonly filter: Partial<FilterDate>;
@@ -35,18 +36,27 @@ export function FilterDateInput({
     }, 2);
   };
 
+  const config = cc.filter.use();
+  const id = useId();
+
   return (
     <>
       <DateOperatorSelect filter={filter} onChange={change} />
       {!operator && <Input disabled type="date" />}
       {operator && operatorsWithDate.includes(operator) && (
-        <Input
-          small
-          inputRef={ref}
-          type="date"
-          onChange={(e) => onValueChange(e.target.value)}
-          value={filter.value ?? ""}
-        />
+        <>
+          <Input
+            small
+            id={id}
+            inputRef={ref}
+            type="date"
+            onChange={(e) => onValueChange(e.target.value)}
+            value={filter.value ?? ""}
+          />
+          <label htmlFor={id} className="lng1771-sr-only">
+            {config.simpleFilter?.labelDate}
+          </label>
+        </>
       )}
       {operator === "all_dates_in_the_period" && (
         <DatePeriodSelect

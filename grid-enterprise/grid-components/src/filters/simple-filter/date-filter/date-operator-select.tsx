@@ -24,7 +24,7 @@ export function DateOperatorSelect({ filter, onChange }: DateOperatorSelectProps
 
   return (
     <Select
-      axe={config.simpleFilter!.dateOperatorAxe}
+      axe={config.simpleFilter!.axeDateOperator}
       style={{ gridColumn: fullSpan ? "span 2" : undefined }}
       placeholder={config.simpleFilter?.placeholderNoChoice}
       items={dateItems}

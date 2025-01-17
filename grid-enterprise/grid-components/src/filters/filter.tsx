@@ -5,10 +5,14 @@ export interface FilterConfiguration {
   readonly simpleFilter?: {
     readonly placeholderNoChoice: string;
 
-    readonly datePeriodAxe: ListViewAxe<SelectItem>;
-    readonly dateOperatorAxe: ListViewAxe<SelectItem>;
-    readonly numberOperatorAxe: ListViewAxe<SelectItem>;
-    readonly textOperatorAxe: ListViewAxe<SelectItem>;
+    readonly axeDatePeriod: ListViewAxe<SelectItem>;
+    readonly axeDateOperator: ListViewAxe<SelectItem>;
+    readonly axeNumberOperator: ListViewAxe<SelectItem>;
+    readonly axeTextOperator: ListViewAxe<SelectItem>;
+
+    readonly labelText: string;
+    readonly labelNumber: string;
+    readonly labelDate: string;
   };
 
   readonly inFilter?: {

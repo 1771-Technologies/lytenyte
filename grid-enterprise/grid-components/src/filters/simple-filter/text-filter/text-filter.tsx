@@ -1,7 +1,8 @@
 import type { FilterText } from "@1771technologies/grid-types/community";
 import { TextOperatorSelect } from "./text-operator-select";
-import { useRef } from "react";
+import { useId, useRef } from "react";
 import { Input } from "../../../input/Input";
+import { cc } from "../../../component-configuration";
 
 interface TextFilterProps {
   readonly filter: Partial<FilterText>;
@@ -18,6 +19,9 @@ export function TextFilterInput({ filter, onChange, onValueChange }: TextFilterP
     onChange(v);
   };
 
+  const config = cc.filter.use();
+  const id = useId();
+
   return (
     <>
       <TextOperatorSelect filter={filter} onChange={change} />
@@ -28,6 +32,9 @@ export function TextFilterInput({ filter, onChange, onValueChange }: TextFilterP
         value={filter.value ?? ""}
         onChange={(e) => onValueChange(e.target.value)}
       />
+      <label htmlFor={id} className="lng1771-sr-only">
+        {config.simpleFilter?.labelText}
+      </label>
     </>
   );
 }
