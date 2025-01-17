@@ -36,7 +36,14 @@ export function PillRow({ label, icon, pillItems }: PillRowProps) {
               className={clsx(
                 c.inactive &&
                   css`
+                    user-select: none;
+                    cursor: pointer;
                     opacity: 0.4;
+                    transition: opacity ${t.transitions.normal} ${t.transitions.fn};
+
+                    &:hover {
+                      opacity: 0.75;
+                    }
                   `,
                 css`
                   padding-inline: ${t.spacing.space_10};
