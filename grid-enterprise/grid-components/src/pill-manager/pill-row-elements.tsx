@@ -2,22 +2,23 @@ import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import { clsx } from "@1771technologies/js-utils";
 import type { PropsWithChildren } from "react";
 import { useEffect, useState } from "react";
+import type { PillProps } from "../pills/pill";
 
 export interface PillRowItem {
   readonly id: string;
   readonly column: ColumnEnterpriseReact<any>;
+  readonly kind: PillProps["kind"];
+  readonly inactive: boolean;
 }
 
 export function PillRowElements({
   onOverflow,
   onScroll,
-  onScrollEnd,
   expanded,
   children,
 }: PropsWithChildren<{
   onOverflow: (b: boolean) => void;
   onScroll: (b: boolean) => void;
-  onScrollEnd: (b: boolean) => void;
   expanded: boolean;
 }>) {
   const [row, setRow] = useState<HTMLDivElement | null>(null);
@@ -38,7 +39,6 @@ export function PillRowElements({
       ref={setRow}
       onScroll={() => {
         onScroll(Math.abs(row?.scrollLeft ?? 0) > 0);
-        onScrollEnd(row!.scrollLeft >= row!.scrollWidth - row!.offsetWidth);
       }}
       className={clsx(
         css`

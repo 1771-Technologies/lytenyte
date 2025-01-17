@@ -18,14 +18,26 @@ export function useColumnPills(api: ApiEnterpriseReact<any>) {
       else visible.push(c);
     }
 
-    const merged = [...visible, ...hidden];
+    const merged = [
+      ...visible.map<PillRowItem>((c) => {
+        return {
+          column: c,
+          id: c.id,
+          kind: "column",
+          inactive: false,
+        };
+      }),
+      ...hidden.map<PillRowItem>((c) => {
+        return {
+          column: c,
+          id: c.id,
+          kind: "column",
+          inactive: true,
+        };
+      }),
+    ];
 
-    return merged.map<PillRowItem>((c) => {
-      return {
-        column: c,
-        id: c.id,
-      };
-    });
+    return merged;
   }, [base.hide, columns]);
 
   return { pillItems };

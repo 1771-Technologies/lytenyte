@@ -4,12 +4,10 @@ import { CollapseGroupIcon, ExpandGroupIcon } from "../icons/expand-icon";
 
 export function PillRowControls({
   hasOverflow,
-  hasOverflowShadow,
   expanded,
   onExpand,
 }: {
   hasOverflow: boolean;
-  hasOverflowShadow: boolean;
   onExpand: (b: boolean) => void;
   expanded: boolean;
 }) {
