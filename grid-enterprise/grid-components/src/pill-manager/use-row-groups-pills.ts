@@ -1,6 +1,7 @@
 import type { ApiEnterpriseReact } from "@1771technologies/grid-types";
 import { useMemo } from "react";
 import type { PillRowItem } from "./pill-row-elements";
+import { useEvent } from "@1771technologies/react-utils";
 
 export function useRowGroupPills(api: ApiEnterpriseReact<any>) {
   const sx = api.getState();
@@ -22,5 +23,10 @@ export function useRowGroupPills(api: ApiEnterpriseReact<any>) {
     });
   }, [api, columns, model]);
 
-  return { pillItems };
+  const onPillSelect = useEvent((p: PillRowItem) => {
+    if (model.includes(p.id)) sx.rowGroupModel.set((prev) => prev.filter((c) => c !== p.id));
+    else sx.rowGroupModel.set((prev) => [...prev, p.id]);
+  });
+
+  return { pillItems, onPillSelect };
 }

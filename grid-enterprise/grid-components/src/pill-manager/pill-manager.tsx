@@ -32,10 +32,11 @@ export interface PillManagerProps<D> {
 export function PillManager<D>({ api }: PillManagerProps<D>) {
   const config = cc.pillManager.use();
 
-  const { pillItems: columnPills } = useColumnPills(api);
-  const { pillItems: rowGroupPills } = useRowGroupPills(api);
-  const { pillItems: columnPivotPills } = useColumnPivotPills(api);
-  const { pillItems: measurePills } = useMeasurePills(api);
+  const { pillItems: columnPills, onPillSelect: onColumnPillSelect } = useColumnPills(api);
+  const { pillItems: rowGroupPills, onPillSelect: onRowGroupPillSelect } = useRowGroupPills(api);
+  const { pillItems: columnPivotPills, onPillSelect: onColumnPivotPillSelect } =
+    useColumnPivotPills(api);
+  const { pillItems: measurePills, onPillSelect: onMeasurePillSelect } = useMeasurePills(api);
 
   return (
     <div
@@ -48,20 +49,42 @@ export function PillManager<D>({ api }: PillManagerProps<D>) {
           display: grid;
           grid-template-columns: 160px calc(100% - 160px - 30px) 30px;
 
+          --lng1771-opacity-val: 0;
+
+          &:hover {
+            --lng1771-opacity-val: 0.45;
+          }
+
           @container (max-width: 450px) {
             display: grid;
             grid-template-columns: 50px calc(100% - 50px - 30px) 30px;
           }
         `}
       >
-        <PillRow label={config.axe!.labelColumns} icon={ColumnsIcon} pillItems={columnPills} />
-        <PillRow label={config.axe!.labelMeasures} icon={MeasuresIcon} pillItems={measurePills} />
-        <PillRow label={config.axe!.labelRowGroups} icon={RowGroupIcon} pillItems={rowGroupPills} />
+        <PillRow
+          label={config.axe!.labelColumns}
+          icon={ColumnsIcon}
+          pillItems={columnPills}
+          onPillSelect={onColumnPillSelect}
+        />
+        <PillRow
+          label={config.axe!.labelMeasures}
+          icon={MeasuresIcon}
+          pillItems={measurePills}
+          onPillSelect={onMeasurePillSelect}
+        />
+        <PillRow
+          label={config.axe!.labelRowGroups}
+          icon={RowGroupIcon}
+          pillItems={rowGroupPills}
+          onPillSelect={onRowGroupPillSelect}
+        />
         <SwapPivots api={api} />
         <PillRow
           label={config.axe!.labelColumnPivots}
           icon={ColumnPivotIcon}
           pillItems={columnPivotPills}
+          onPillSelect={onColumnPivotPillSelect}
         />
       </div>
     </div>

@@ -10,9 +10,10 @@ export interface PillRowProps {
   readonly label: string;
   readonly icon: (props: JSX.IntrinsicElements["svg"]) => ReactNode;
   readonly pillItems: PillRowItem[];
+  readonly onPillSelect: (p: PillRowItem) => void;
 }
 
-export function PillRow({ label, icon, pillItems }: PillRowProps) {
+export function PillRow({ label, icon, pillItems, onPillSelect }: PillRowProps) {
   const [expanded, setExpanded] = useState(false);
   const [hasOverflow, setHasOverflow] = useState(false);
   const [hasScroll, setHasScroll] = useState(false);
@@ -32,13 +33,17 @@ export function PillRow({ label, icon, pillItems }: PillRowProps) {
         {pillItems.map((c) => {
           return (
             <div
+              role="button"
+              tabIndex={-1}
+              onClick={() => onPillSelect(c)}
+              onKeyDown={(ev) => {
+                if (ev.key === "Enter") onPillSelect(c);
+              }}
               key={c.id}
               className={clsx(
                 c.inactive &&
                   css`
-                    user-select: none;
-                    cursor: pointer;
-                    opacity: 0.4;
+                    opacity: var(--lng1771-opacity-val);
                     transition: opacity ${t.transitions.normal} ${t.transitions.fn};
 
                     &:hover {
@@ -46,6 +51,8 @@ export function PillRow({ label, icon, pillItems }: PillRowProps) {
                     }
                   `,
                 css`
+                  user-select: none;
+                  cursor: pointer;
                   padding-inline: ${t.spacing.space_10};
                   padding-block: ${t.spacing.space_10};
                 `,
