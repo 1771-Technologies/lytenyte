@@ -7,7 +7,7 @@ import { SearchIcon } from "../../icons/search-icon";
 import { Button } from "../../buttons/button";
 import { RefreshIcon } from "../../icons/refresh-icon";
 import { t } from "@1771technologies/grid-design";
-import { TreeViewport } from "./in-filter-tree";
+import { InFilterViewport } from "./in-filter-tree";
 
 export interface TreeFilterProps<D> {
   readonly api: ApiEnterpriseReact<D>;
@@ -136,7 +136,7 @@ export function InFilter<D>({
           </div>
         )}
         {!isEmpty && !isLoading && !hasError && (
-          <TreeViewport
+          <InFilterViewport
             itemHeight={itemHeight}
             treeItems={treeFilterItems}
             viewportHeight={treeViewportHeight}

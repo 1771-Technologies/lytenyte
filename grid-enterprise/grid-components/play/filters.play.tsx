@@ -23,7 +23,35 @@ export default function Home() {
           api={grid.api}
           column={columns[0]}
           showInFilter
-          getTreeFilterItems={() => [{ kind: "leaf", label: "Alpha", value: "Beta" }]}
+          getTreeFilterItems={() => [
+            {
+              kind: "parent",
+              label: "2022",
+              children: [
+                {
+                  kind: "parent",
+                  label: "January",
+                  children: [
+                    {
+                      kind: "leaf",
+                      label: "01",
+                      value: "01",
+                    },
+                    {
+                      kind: "leaf",
+                      label: "02",
+                      value: "02",
+                    },
+                    {
+                      kind: "leaf",
+                      label: "03",
+                      value: "03",
+                    },
+                  ],
+                },
+              ],
+            },
+          ]}
         />
       </div>
     </>

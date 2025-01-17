@@ -4,8 +4,9 @@ import { getChildValues } from "./get-child-values";
 import type { ColumnInFilterItem } from "@1771technologies/grid-types/enterprise";
 import { Checkbox } from "../../checkbox/checkbox";
 import { CollapsedIcon, ExpandedIcon } from "../../column-manager/box-drop-zone/components";
+import { t } from "@1771technologies/grid-design";
 
-export interface TreeViewport {
+export interface InFilterViewport {
   readonly treeItems: ColumnInFilterItem[];
   readonly itemHeight: number;
   readonly viewportHeight: number;
@@ -14,14 +15,14 @@ export interface TreeViewport {
   readonly filterValue: string;
 }
 
-export function TreeViewport({
+export function InFilterViewport({
   treeItems,
   itemHeight,
   viewportHeight,
   values,
   onValuesChange,
   filterValue,
-}: TreeViewport) {
+}: InFilterViewport) {
   const [rowStart, setRowStart] = useState(0);
   const [rowEnd, setRowEnd] = useState(0);
   const [vp, setVp] = useState<HTMLDivElement | null>(null);
@@ -177,7 +178,25 @@ export function TreeViewport({
             <div
               key={c}
               tabIndex={i === 0 ? 0 : -1}
-              className="lng1771-tree-filter-row"
+              className={css`
+                position: absolute;
+                display: flex;
+                align-items: center;
+                gap: ${t.spacing.space_20};
+                font-size: ${t.typography.body_m};
+                font-family: ${t.typography.typeface_body};
+                color: ${t.colors.text_medium};
+                padding-inline: ${t.spacing.space_20};
+
+                &:hover {
+                  background-color: ${t.colors.backgrounds_strong};
+                  outline: none;
+                }
+                &:focus {
+                  background-color: ${t.colors.backgrounds_strong};
+                  outline: none;
+                }
+              `}
               onClick={() => {
                 handleChange();
               }}
