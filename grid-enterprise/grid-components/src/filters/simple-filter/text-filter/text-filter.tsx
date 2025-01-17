@@ -27,6 +27,7 @@ export function TextFilterInput({ filter, onChange, onValueChange }: TextFilterP
     <>
       <TextOperatorSelect filter={filter} onChange={change} />
       <Input
+        small
         inputRef={ref}
         disabled={!operator}
         value={filter.value ?? ""}

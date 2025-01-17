@@ -34,7 +34,7 @@ export function Input({
             0px 1.5px 2px 0px ${t.colors.borders_field_and_button_shadow},
             0px 0px 0px 1px ${t.colors.borders_field_and_button};
           box-sizing: border-box;
-          border-radius: ${t.spacing.field_padding_small};
+          border-radius: ${t.spacing.field_radius_small};
           transition:
             box-shadow ${t.transitions.fn} ${t.transitions.normal},
             border-color ${t.transitions.fn} ${t.transitions.normal};

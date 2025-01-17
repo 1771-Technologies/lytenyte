@@ -41,6 +41,7 @@ export function FilterDateInput({
       {!operator && <Input disabled type="date" />}
       {operator && operatorsWithDate.includes(operator) && (
         <Input
+          small
           inputRef={ref}
           type="date"
           onChange={(e) => onValueChange(e.target.value)}

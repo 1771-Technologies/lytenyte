@@ -1,5 +1,4 @@
 import type { ApiEnterpriseReact, ColumnEnterpriseReact } from "@1771technologies/grid-types";
-import "./column-filter-manager.css";
 import type { ColumnFilter, ColumnInFilterItem } from "@1771technologies/grid-types/enterprise";
 import { useSimpleFilters } from "./use-simple-filters";
 import { useInFilter as useInFilter } from "./use-in-filter";
@@ -7,8 +6,7 @@ import { SimpleFilter } from "../simple-filter/simple-filter";
 import { Button } from "../../buttons/button";
 import { flatToCombined } from "./flat-to-combined";
 import { combinedFilterIsForColumn } from "./combined-filter-is-for-column";
-import { IconButton } from "../../buttons/icon-button";
-import { TrashIcon } from "../../icons/trash-icon";
+import { t } from "@1771technologies/grid-design";
 
 export interface ColumnFilterContainer<D> {
   readonly api: ApiEnterpriseReact<D>;
@@ -31,7 +29,7 @@ export interface ColumnFilterContainer<D> {
   readonly treeViewportHeight?: number;
   readonly showTreeFilter?: boolean;
 }
-export function ColumnFilterManager<D>({
+export function FilterContainer<D>({
   api,
   column,
   showConditionalWhenFilterValid = true,
@@ -57,8 +55,26 @@ export function ColumnFilterManager<D>({
   const { values, setValues } = useInFilter(api, column);
 
   return (
-    <div className="lng1771-column-filter-manager-root">
-      <div className="lng1771-column-filter-manager-simple-filter">
+    <div
+      className={css`
+        container-type: inline-size;
+        padding-block-start: ${t.spacing.space_20};
+        background-color: ${t.colors.backgrounds_ui_panel};
+        display: flex;
+        flex-direction: column;
+        gap: ${t.spacing.space_20};
+        height: 100%;
+        box-sizing: border-box;
+      `}
+    >
+      <div
+        className={css`
+          display: flex;
+          flex-direction: column;
+          gap: ${t.spacing.space_20};
+          padding-inline: ${t.spacing.space_40};
+        `}
+      >
         {showSimpleFilters && (
           <SimpleFilter filters={flatFilters} onFiltersChange={onFilterChange} />
         )}
@@ -75,15 +91,24 @@ export function ColumnFilterManager<D>({
           />
         )} */}
       </div>
-      <div className="lng1771-column-filter-manager-controls">
+      <div
+        className={css`
+          display: flex;
+          flex: 1;
+          align-items: flex-end;
+          gap: ${t.spacing.space_10};
+          border-top: 1px solid ${t.colors.borders_separator};
+          padding-inline: ${t.spacing.space_20};
+          padding-block: ${t.spacing.space_30};
+        `}
+      >
         <div style={{ flex: 1 }}>
           <Button kind="secondary" onClick={() => onCancel?.()}>
             {cancelLabel}
           </Button>
         </div>
-        <IconButton
-          kind="ghost"
-          small
+        <Button
+          kind="secondary"
           style={{ color: "var(--lng1771-system-red-50)" }}
           onClick={() => {
             const index = findInternalFilterIndex(filters, column.id);
@@ -109,8 +134,8 @@ export function ColumnFilterManager<D>({
             onClearFilters?.();
           }}
         >
-          <TrashIcon />
-        </IconButton>
+          Clear
+        </Button>
         <Button
           kind="primary"
           onClick={() => {

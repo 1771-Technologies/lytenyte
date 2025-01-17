@@ -27,6 +27,7 @@ export function FilterNumberInput({ filter, onChange, onValueChange }: NumberFil
     <>
       <NumberOperatorSelect filter={filter} onChange={change} />
       <Input
+        small
         type="number"
         inputRef={ref}
         disabled={!operator}
