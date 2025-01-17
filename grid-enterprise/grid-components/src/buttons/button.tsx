@@ -13,7 +13,7 @@ const ButtonImpl = ({
 
   ...props
 }: JSX.IntrinsicElements["button"] & {
-  kind: "primary" | "secondary" | "plain";
+  kind: "primary" | "secondary" | "tertiary" | "plain";
   disabledReason?: ReactNode;
   tooltip?: ReactNode;
 }) => {
@@ -62,6 +62,16 @@ const ButtonImpl = ({
 
             &:hover {
               background-color: color-mix(in srgb, ${t.colors.primary_50} 90%, white 10%);
+            }
+          `,
+        kind === "tertiary" &&
+          css`
+            background-color: transparent;
+            border: 1px solid transparent;
+            cursor: pointer;
+
+            &:hover {
+              background-color: ${t.colors.backgrounds_default};
             }
           `,
         kind === "secondary" &&

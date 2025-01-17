@@ -179,7 +179,9 @@ export function InFilterViewport({
               key={c}
               tabIndex={i === 0 ? 0 : -1}
               className={css`
+                width: 100%;
                 position: absolute;
+                cursor: pointer;
                 display: flex;
                 align-items: center;
                 gap: ${t.spacing.space_20};

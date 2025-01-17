@@ -110,7 +110,7 @@ export function FilterContainer<D>({
           </Button>
         </div>
         <Button
-          kind="secondary"
+          kind="tertiary"
           style={{ color: "var(--lng1771-system-red-50)" }}
           onClick={() => {
             const index = findInternalFilterIndex(filters, column.id);

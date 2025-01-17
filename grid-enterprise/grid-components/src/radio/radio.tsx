@@ -27,7 +27,7 @@ export function Radio({
           background-color: ${t.colors.backgrounds_form_field};
           box-shadow:
             0px 1.5px 2px 0px ${t.colors.borders_field_and_button_shadow},
-            0px 0px 0px 1px ${t.colors.borders_field_and_button_shadow};
+            0px 0px 0px 1px ${t.colors.borders_field_and_button};
           cursor: pointer;
 
           &:focus-within {
