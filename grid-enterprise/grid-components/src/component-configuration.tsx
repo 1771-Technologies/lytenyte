@@ -55,9 +55,14 @@ export const cc = cascada<ComponentConfiguration>(() => {
       simpleFilter: {
         placeholderNoChoice: "Choose one",
 
-        dateFilterAxe: itemAxe,
+        dateOperatorAxe: itemAxe,
+        datePeriodAxe: itemAxe,
         numberOperatorAxe: itemAxe,
         textOperatorAxe: itemAxe,
+      },
+      inFilter: {
+        labelLoadError: "Error Occurred",
+        labelNoItems: "No items",
       },
     }),
     columnManager: mergeSignal<ColumnManagerConfiguration>({

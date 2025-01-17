@@ -7,8 +7,10 @@ import { Button } from "../../buttons/button";
 import { flatToCombined } from "./flat-to-combined";
 import { combinedFilterIsForColumn } from "./combined-filter-is-for-column";
 import { t } from "@1771technologies/grid-design";
+import { InFilter } from "../in-filter/in-filter";
+import { cc } from "../../component-configuration";
 
-export interface ColumnFilterContainer<D> {
+export interface FilterContainerProps<D> {
   readonly api: ApiEnterpriseReact<D>;
   readonly column: ColumnEnterpriseReact<D>;
   readonly showConditionalWhenFilterValid?: boolean;
@@ -27,7 +29,7 @@ export interface ColumnFilterContainer<D> {
   readonly applyFiltersLabel?: string;
 
   readonly treeViewportHeight?: number;
-  readonly showTreeFilter?: boolean;
+  readonly showInFilter?: boolean;
 }
 export function FilterContainer<D>({
   api,
@@ -44,8 +46,8 @@ export function FilterContainer<D>({
   applyFiltersLabel = "Apply Filters",
 
   treeViewportHeight = 300,
-  showTreeFilter = false,
-}: ColumnFilterContainer<D>) {
+  showInFilter = false,
+}: FilterContainerProps<D>) {
   const { flatFilters, onFilterChange, filters, isPivot } = useSimpleFilters(
     api,
     column,
@@ -53,6 +55,7 @@ export function FilterContainer<D>({
   );
 
   const { values, setValues } = useInFilter(api, column);
+  const config = cc.filter.use();
 
   return (
     <div
@@ -78,23 +81,22 @@ export function FilterContainer<D>({
         {showSimpleFilters && (
           <SimpleFilter filters={flatFilters} onFiltersChange={onFilterChange} />
         )}
-        {/* {showTreeFilter && (
-          <TreeFilter
+        {showInFilter && (
+          <InFilter
             getTreeFilterItems={getTreeFilterItems}
             api={api}
             column={column}
-            errorLabel={treeFilterErrorLabel}
-            noItemsLabel={treeFilterEmptyLabel}
+            errorLabel={config.inFilter!.labelLoadError}
+            noItemsLabel={config.inFilter!.labelNoItems}
             values={values}
             onValuesChange={setValues}
             treeViewportHeight={treeViewportHeight}
           />
-        )} */}
+        )}
       </div>
       <div
         className={css`
           display: flex;
-          flex: 1;
           align-items: flex-end;
           gap: ${t.spacing.space_10};
           border-top: 1px solid ${t.colors.borders_separator};
@@ -119,7 +121,7 @@ export function FilterContainer<D>({
               newFilters.splice(index, 1);
             }
 
-            if (showTreeFilter) {
+            if (showInFilter) {
               newFilters = newFilters.filter(
                 (c) => c.kind !== "in" || (c.kind === "in" && !c.isInternal),
               );
@@ -151,7 +153,7 @@ export function FilterContainer<D>({
               if (combined) newFilters.push(combined);
             }
 
-            if (showTreeFilter) {
+            if (showInFilter) {
               newFilters = newFilters.filter(
                 (c) => c.kind !== "in" || (c.kind === "in" && !c.isInternal),
               );

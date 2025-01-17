@@ -10,4 +10,9 @@ export interface FilterConfiguration {
     readonly numberOperatorAxe: ListViewAxe<SelectItem>;
     readonly textOperatorAxe: ListViewAxe<SelectItem>;
   };
+
+  readonly inFilter?: {
+    readonly labelLoadError: string;
+    readonly labelNoItems: string;
+  };
 }

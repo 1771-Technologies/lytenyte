@@ -19,7 +19,12 @@ export default function Home() {
           background-color: ${t.colors.backgrounds_default};
         `}
       >
-        <FilterContainer api={grid.api} column={columns[0]} />
+        <FilterContainer
+          api={grid.api}
+          column={columns[0]}
+          showInFilter
+          getTreeFilterItems={() => [{ kind: "leaf", label: "Alpha", value: "Beta" }]}
+        />
       </div>
     </>
   );
