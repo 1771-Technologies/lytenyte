@@ -8,12 +8,7 @@ import { Toggle } from "../toggle/toggle";
 import { useGrid } from "../provider/grid-provider";
 import { t } from "@1771technologies/grid-design";
 import { Separator } from "../separator/separator";
-import { ColumnTree } from "./column-tree/column-tree";
-import { RowGroupsBox } from "./box-drop-zone/row-groups-box";
-import { ColumnPivotsBox } from "./box-drop-zone/column-pivots-box";
-import { MeasuresBox } from "./box-drop-zone/measures-box";
-import { ValuesBox } from "./box-drop-zone/values-box";
-
+import { ColumnManagerBase } from "./column-manager-base";
 export interface ColumnManagerConfiguration {
   readonly dragPlaceholder?: (p: { label: string }) => ReactNode;
   readonly columnTree?: {
@@ -104,91 +99,7 @@ export function ColumnManagerFrame({ showPivotToggle }: ColumnManagerFrameProps)
         )}
       </div>
       <Separator dir="horizontal" />
-      <div
-        className={css`
-          display: grid;
-          height: 100%;
-          grid-template-columns: 1fr;
-          grid-template-rows: 60% 1px calc(100% - 1px - 60%);
-          box-sizing: border-box;
-
-          @container (min-width: 500px) {
-            grid-template-columns: 1fr 1px 1fr;
-            grid-template-rows: 100%;
-          }
-        `}
-      >
-        <div>
-          <ColumnTree query={query} />
-        </div>
-        <Separator
-          dir="vertical"
-          className={css`
-            display: none;
-
-            @container (min-width: 500px) {
-              display: block;
-            }
-          `}
-        />
-        <Separator
-          dir="horizontal"
-          className={css`
-            display: block;
-            @container (min-width: 500px) {
-              display: none;
-            }
-          `}
-        />
-        <div>
-          <div
-            className={css`
-              padding: ${t.spacing.space_30};
-            `}
-          >
-            <RowGroupsBox />
-          </div>
-          <Separator dir="horizontal" />
-          {pivotMode && (
-            <>
-              <div
-                className={css`
-                  padding: ${t.spacing.space_30};
-                `}
-              >
-                <ColumnPivotsBox />
-              </div>
-              <Separator dir="horizontal" />
-            </>
-          )}
-          {pivotMode && (
-            <>
-              <div
-                className={css`
-                  padding: ${t.spacing.space_30};
-                `}
-              >
-                <MeasuresBox />
-              </div>
-
-              <Separator dir="horizontal" />
-            </>
-          )}
-          {!pivotMode && (
-            <>
-              <div
-                className={css`
-                  padding: ${t.spacing.space_30};
-                `}
-              >
-                <ValuesBox />
-              </div>
-
-              <Separator dir="horizontal" />
-            </>
-          )}
-        </div>
-      </div>
+      <ColumnManagerBase query={query} />
     </div>
   );
 }
