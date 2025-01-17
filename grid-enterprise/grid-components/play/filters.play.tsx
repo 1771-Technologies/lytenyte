@@ -7,7 +7,7 @@ import { FilterMenuDriver } from "../src/filter-menu-driver/filter-menu-driver";
 
 const grid = makeStore({
   columns,
-  columnBase: { sortable: true, filterSupportsIn: true, filterSupportsSimple: true },
+  columnBase: { sortable: true, filterSupportsIn: false, filterSupportsSimple: true },
   gridId: "x",
 });
 
