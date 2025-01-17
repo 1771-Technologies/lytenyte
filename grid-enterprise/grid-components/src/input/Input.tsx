@@ -7,7 +7,7 @@ export interface InputProps {
   readonly small?: boolean;
   readonly ghost?: boolean;
   readonly icon?: (p: JSX.IntrinsicElements["svg"]) => ReactNode;
-  readonly inputRef?: RefObject<HTMLInputElement>;
+  readonly inputRef?: RefObject<HTMLInputElement | null>;
 }
 
 export function Input({

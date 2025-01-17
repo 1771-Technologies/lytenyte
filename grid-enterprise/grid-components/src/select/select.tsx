@@ -3,11 +3,19 @@ import {
   type ListViewAxe,
   type ListViewItemRendererProps,
 } from "@1771technologies/react-list-view";
-import { useMemo, useRef, useState, type ReactNode } from "react";
+import {
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+  type RefObject,
+} from "react";
 import { LngPopover } from "../popover/lng-popover";
 import { t } from "@1771technologies/grid-design";
 import { clsx } from "@1771technologies/js-utils";
 import { Button } from "../buttons/button";
+import { useCombinedRefs } from "@1771technologies/react-utils";
 
 export interface SelectItem {
   readonly label: string;
@@ -23,6 +31,9 @@ export interface SelectProps {
   readonly disabledReason?: ReactNode;
   readonly tooltip?: ReactNode;
   readonly axe: ListViewAxe<SelectItem>;
+  readonly selectRef?: RefObject<HTMLButtonElement | null>;
+
+  readonly style?: CSSProperties;
 }
 
 const expansions = {};
@@ -37,6 +48,8 @@ export function Select({
   disabledReason,
   tooltip,
   axe,
+  style,
+  selectRef,
 }: SelectProps) {
   const [open, setOpen] = useState(false);
   const paths = useMemo(() => {
@@ -51,10 +64,11 @@ export function Select({
 
   const ref = useRef<HTMLButtonElement | null>(null);
 
+  const combined = useCombinedRefs(ref, selectRef);
   return (
     <>
       <Button
-        ref={ref}
+        ref={combined}
         kind="plain"
         onClick={() => setOpen(true)}
         onKeyDown={(ev) => {
@@ -63,6 +77,7 @@ export function Select({
             setOpen(true);
           }
         }}
+        style={style}
         disabled={disabled}
         disabledReason={disabledReason}
         tooltip={tooltip}

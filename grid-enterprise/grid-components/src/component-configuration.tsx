@@ -16,6 +16,9 @@ import { DragPlaceholder } from "./drag-placeholder/drag-placeholder";
 import type { MenuConfiguration } from "./popover-menu/popover-menu";
 import { menuAxeDefault } from "@1771technologies/react-menu";
 import { SearchIcon } from "./icons/search-icon";
+import type { FilterConfiguration } from "./filters/filter";
+import type { ListViewAxe } from "@1771technologies/react-list-view";
+import type { SelectItem } from "./select/select";
 
 export type ComponentConfiguration = {
   columnManager: Signal<ColumnManagerConfiguration>;
@@ -24,6 +27,7 @@ export type ComponentConfiguration = {
   sortManager: Signal<SortManagerConfiguration>;
   tooltip: Signal<Omit<TooltipProps, "ref">>;
   menu: Signal<MenuConfiguration>;
+  filter: Signal<FilterConfiguration>;
 };
 
 function mergeSignal<T>(c: T): Signal<T> {
@@ -37,8 +41,25 @@ function mergeSignal<T>(c: T): Signal<T> {
   return x;
 }
 
+const itemAxe: ListViewAxe<SelectItem> = {
+  axeDescription:
+    "Select an item. Use the up and down arrow keys to navigate to an item. " +
+    "Press enter to accept the option. Escape to cancel.",
+  axeItemLabels: (item) => (item.type === "leaf" ? item.data.label : ""),
+  axeLabel: (cnt) => `There are ${cnt} items to choose from`,
+};
+
 export const cc = cascada<ComponentConfiguration>(() => {
   return {
+    filter: mergeSignal<FilterConfiguration>({
+      simpleFilter: {
+        placeholderNoChoice: "Choose one",
+
+        dateFilterAxe: itemAxe,
+        numberOperatorAxe: itemAxe,
+        textOperatorAxe: itemAxe,
+      },
+    }),
     columnManager: mergeSignal<ColumnManagerConfiguration>({
       dragPlaceholder: DragPlaceholder,
       columnTree: {
@@ -117,13 +138,7 @@ export const cc = cascada<ComponentConfiguration>(() => {
           "Another sort can not be added because there are no more sortable columns left.",
       },
 
-      axe: {
-        axeDescription:
-          "Select an item. Use the up and down arrow keys to navigate to an item. " +
-          "Press enter to accept the option. Escape to cancel.",
-        axeItemLabels: (item) => (item.type === "leaf" ? item.data.label : ""),
-        axeLabel: (cnt) => `There are ${cnt} items to choose from`,
-      },
+      axe: itemAxe,
     }),
 
     tooltip: mergeSignal<Omit<TooltipProps, "ref">>({
