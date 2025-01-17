@@ -5,13 +5,7 @@ import type {
   GridInternalState as CommunityInternalState,
 } from "./state-community";
 import type { RowDataSourceEnterprise } from "../row-data-source/rds-enterprise";
-import type {
-  CellSelectionRect,
-  ColumnFilter,
-  HandleRef,
-  PanelFrameHandle,
-  Target,
-} from "../types-enterprise";
+import type { CellSelectionRect, ColumnFilter, Target } from "../types-enterprise";
 import type { ColumnGroupRows, SortModelItem } from "../types";
 import type { ApiEnterprise } from "../api/api-enterprise";
 import type { ColumnEnterprise } from "..";
@@ -80,7 +74,6 @@ export interface GridInternalState<D, E> extends Omit<CommunityInternalState<D, 
   readonly floatingFrameOpen: Signal<string | null>;
 
   readonly panelFrameOpen: Signal<string | null>;
-  readonly panelFrameHandle: Signal<PanelFrameHandle | null>;
 }
 
 type Props<D, E> = Required<Init<D, E>>;

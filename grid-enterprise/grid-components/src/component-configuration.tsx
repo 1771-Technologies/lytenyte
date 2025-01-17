@@ -19,6 +19,7 @@ import { SearchIcon } from "./icons/search-icon";
 import type { FilterConfiguration } from "./filters/filter";
 import type { ListViewAxe } from "@1771technologies/react-list-view";
 import type { SelectItem } from "./select/select";
+import type { ColumnMenuConfiguration } from "./column-menu-driver/column-menu-driver";
 
 export type ComponentConfiguration = {
   columnManager: Signal<ColumnManagerConfiguration>;
@@ -27,6 +28,7 @@ export type ComponentConfiguration = {
   sortManager: Signal<SortManagerConfiguration>;
   tooltip: Signal<Omit<TooltipProps, "ref">>;
   menu: Signal<MenuConfiguration>;
+  columnMenu: Signal<ColumnMenuConfiguration>;
   filter: Signal<FilterConfiguration>;
 };
 
@@ -131,6 +133,9 @@ export const cc = cascada<ComponentConfiguration>(() => {
     }),
 
     menu: mergeSignal<MenuConfiguration>({
+      axe: menuAxeDefault,
+    }),
+    columnMenu: mergeSignal<ColumnMenuConfiguration>({
       axe: menuAxeDefault,
     }),
 

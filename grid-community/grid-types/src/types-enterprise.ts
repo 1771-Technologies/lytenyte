@@ -52,6 +52,7 @@ export interface BaseMenuItem {
 export interface ColumnMenuItemLeaf<D = any> extends BaseMenuItem {
   readonly kind: "item";
   readonly action: (s: { state: D; item: ColumnMenuItemLeaf<D> }) => void;
+  readonly endIcon?: () => ReactNode;
 }
 
 export interface ColumnMenuSeparator {
@@ -189,15 +190,5 @@ export interface ColumnMenuOpenChangeParams<A, C> {
   readonly column: C | null;
 }
 export type ColumnFilterMenuOpenChangeParams<A, C> = ColumnMenuOpenChangeParams<A, C>;
-
-export interface HandleRef {
-  open(bb: { getBoundingClientRect(): DOMRect }): void;
-  close(): void;
-}
-
-export interface PanelFrameHandle {
-  open: (side: "start" | "end") => void;
-  close: () => void;
-}
 
 export type Target = HTMLElement | { x: number; y: number; width: number; height: number };

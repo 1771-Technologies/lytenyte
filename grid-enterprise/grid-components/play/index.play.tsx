@@ -3,6 +3,8 @@ import { bankColumns } from "./helpers";
 import { GridProvider } from "../src/provider/grid-provider";
 import { t } from "@1771technologies/grid-design";
 import { ColumnMenuDriver } from "../src/column-menu-driver/column-menu-driver";
+import { TrashIcon } from "../src/icons/trash-icon";
+import { MeasuresIcon } from "../src/column-manager/icons/measures-icon";
 
 const grid = makeStore({
   gridId: "x",
@@ -12,7 +14,31 @@ const grid = makeStore({
     movable: true,
     measureFuncsAllowed: ["avg"],
     columnMenuGetItems: () => [
-      { kind: "item", action: () => console.log("ir an"), id: "x", label: "Alpha" },
+      {
+        kind: "item",
+        action: () => console.log("ir an"),
+        id: "x",
+        label: "Alpha",
+        icon: () => <TrashIcon />,
+      },
+      {
+        kind: "item",
+        action: () => console.log("c"),
+        id: "v",
+        label: "ZZ",
+        icon: () => <MeasuresIcon />,
+        endIcon: () => <div>X</div>,
+      },
+      { kind: "separator" },
+      {
+        kind: "submenu",
+        id: "ev",
+        label: "Extra",
+        children: [
+          { kind: "item", label: "for", action: () => {}, id: "bb" },
+          { kind: "item", label: "for", action: () => {}, id: "bbc" },
+        ],
+      },
     ],
   },
   rowGroupModel: ["education", "day"],

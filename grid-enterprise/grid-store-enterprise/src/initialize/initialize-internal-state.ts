@@ -14,7 +14,7 @@ import {
   rowPositionsComputed,
   virt,
 } from "@1771technologies/grid-shared-state";
-import type { HandleRef, Target, PanelFrameHandle } from "@1771technologies/grid-types/enterprise";
+import type { Target } from "@1771technologies/grid-types/enterprise";
 import { type CellSelectionRect } from "@1771technologies/grid-types/enterprise";
 import { rowDataSource } from "./utils/row-data-source";
 import { cellSelectionSplits } from "./utils/cell-selection-splits";
@@ -109,7 +109,6 @@ export function initializeInternalState<D, E>(
     cellSelectionSplits: cellSelectionSplits(state),
 
     columnMenuColumn: signal<ColumnEnterprise<D, E> | null>(null),
-    columnMenuHandle: signal<HandleRef | null>(null),
     columnMenuTarget: signal<Target | null>(null),
 
     contextMenuTarget: signal<Target | null>(null),
@@ -186,13 +185,11 @@ export function initializeInternalState<D, E>(
     fieldCacheRef: { "quick-search": {}, column: {}, group: {}, pivot: {} },
 
     filterMenuColumn: signal<ColumnEnterprise<D, E> | null>(null),
-    filterMenuHandle: signal<HandleRef | null>(null),
     filterMenuTarget: signal<Target | null>(null),
 
     floatingFrameOpen: signal<string | null>(null),
 
     panelFrameOpen: signal<string | null>(null),
-    panelFrameHandle: signal<PanelFrameHandle | null>(null),
 
     keyBindingIdToKey: computed<Record<string, KeyBindingString[]>>(() => {
       return {};
