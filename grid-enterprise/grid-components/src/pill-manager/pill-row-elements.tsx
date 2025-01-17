@@ -1,6 +1,12 @@
+import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import { clsx } from "@1771technologies/js-utils";
 import type { PropsWithChildren } from "react";
 import { useEffect, useState } from "react";
+
+export interface PillRowItem {
+  readonly id: string;
+  readonly column: ColumnEnterpriseReact<any>;
+}
 
 export function PillRowElements({
   onOverflow,
@@ -36,6 +42,7 @@ export function PillRowElements({
       }}
       className={clsx(
         css`
+          min-height: 42px;
           display: flex;
           width: 100%;
           overflow: auto;

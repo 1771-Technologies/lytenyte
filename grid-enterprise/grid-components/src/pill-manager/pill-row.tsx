@@ -1,15 +1,17 @@
 import { t } from "@1771technologies/grid-design";
 import { useState, type JSX, type ReactNode } from "react";
 import { PillRowLabel } from "./pill-row-label";
-import { PillRowElements } from "./pill-row-elements";
+import { PillRowElements, type PillRowItem } from "./pill-row-elements";
 import { PillRowControls } from "./pill-row-controls";
+import { Pill } from "../pills/pill";
 
 export interface PillRowProps {
   readonly label: string;
   readonly icon: (props: JSX.IntrinsicElements["svg"]) => ReactNode;
+  readonly pillItems: PillRowItem[];
 }
 
-export function PillRow({ label, icon }: PillRowProps) {
+export function PillRow({ label, icon, pillItems }: PillRowProps) {
   const [expanded, setExpanded] = useState(false);
   const [hasOverflow, setHasOverflow] = useState(false);
   const [hasScroll, setHasScroll] = useState(false);
@@ -31,7 +33,21 @@ export function PillRow({ label, icon }: PillRowProps) {
         expanded={expanded}
         onScroll={setHasScroll}
         onScrollEnd={setAtScrollEnd}
-      ></PillRowElements>
+      >
+        {pillItems.map((c) => {
+          return (
+            <div
+              key={c.id}
+              className={css`
+                padding-inline: ${t.spacing.space_10};
+                padding-block: ${t.spacing.space_10};
+              `}
+            >
+              <Pill kind="column" label={c.column.headerName ?? c.id} />
+            </div>
+          );
+        })}
+      </PillRowElements>
       <PillRowControls
         expanded={expanded}
         onExpand={setExpanded}

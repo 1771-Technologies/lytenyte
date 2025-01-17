@@ -6,6 +6,7 @@ import { MeasuresIcon } from "../column-manager/icons/measures-icon";
 import { RowGroupIcon } from "../icons/row-group-icon";
 import { SwapPivots } from "./swap-pivots";
 import { ColumnPivotIcon } from "../icons/column-pivots-icon";
+import { useColumnPills } from "./use-column-pills";
 
 export interface PillManagerConfiguration {
   readonly axe?: {
@@ -38,6 +39,8 @@ export function PillManager<D>({
 
   const config = cc.pillManager.use();
 
+  const column = useColumnPills(api);
+
   return (
     <div
       className={css`
@@ -56,17 +59,19 @@ export function PillManager<D>({
         `}
       >
         {!isPivotMode && !hideColumns && (
-          <PillRow label={config.axe!.labelColumns} icon={ColumnsIcon} />
+          <PillRow label={config.axe!.labelColumns} icon={ColumnsIcon} pillItems={column} />
         )}
         {isPivotMode && !hideMeasures && (
-          <PillRow label={config.axe!.labelMeasures} icon={MeasuresIcon} />
+          <PillRow label={config.axe!.labelMeasures} icon={MeasuresIcon} pillItems={[]} />
         )}
-        {!hideRowGroups && <PillRow label={config.axe!.labelRowGroups} icon={RowGroupIcon} />}
+        {!hideRowGroups && (
+          <PillRow label={config.axe!.labelRowGroups} icon={RowGroupIcon} pillItems={[]} />
+        )}
         {isPivotMode && !hideRowGroups && !hideColumnPivots && showSwapButton && (
           <SwapPivots api={api} />
         )}
         {isPivotMode && !hideColumnPivots && (
-          <PillRow label={config.axe!.labelColumnPivots} icon={ColumnPivotIcon} />
+          <PillRow label={config.axe!.labelColumnPivots} icon={ColumnPivotIcon} pillItems={[]} />
         )}
       </div>
     </div>
