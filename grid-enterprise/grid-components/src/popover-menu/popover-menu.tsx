@@ -18,6 +18,8 @@ interface PopoverMenuProps {
   readonly placement: Placement;
   readonly popoverTarget: HTMLElement | Rect;
   readonly rtl?: boolean;
+
+  readonly state?: any;
 }
 
 export interface MenuConfiguration {
@@ -35,6 +37,7 @@ export function PopoverMenu({
   onOpenChange,
   placement,
   popoverTarget,
+  state = {},
   rtl = false,
 }: PopoverMenuProps) {
   const config = cc.menu.use();
@@ -52,7 +55,7 @@ export function PopoverMenu({
         menuItems={menuItems}
         ariaLabelledBy={"clientHeight" in popoverTarget ? (popoverTarget.id ?? "") : ""}
         axe={config.axe!}
-        state={{}}
+        state={state}
         rtl={rtl}
         rendererCheckbox={Checkbox}
         classes={{

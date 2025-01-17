@@ -1,3 +1,4 @@
+import type { CSSProperties, ReactNode } from "react";
 import type {
   FilterCombined,
   FilterDate,
@@ -18,14 +19,6 @@ export interface CellSelectionRect {
 export type CellSelectionMode = "single" | "range" | "multi-range" | "none";
 
 // Column
-export interface ColumnMenuItemLeaf<E> {
-  readonly label: string;
-  readonly disabled?: boolean | { reason: string };
-  readonly startIconPadding?: boolean;
-  readonly action: () => void;
-  readonly icon?: () => E;
-  readonly endElement?: () => E;
-}
 
 export type ColumnInFilterItemLeaf = {
   readonly kind: "leaf";
@@ -40,14 +33,43 @@ export type ColumnInFilterItemParent = {
 };
 export type ColumnInFilterItem = ColumnInFilterItemLeaf | ColumnInFilterItemParent;
 
-export interface ColumnMenuItemGroup<E> {
-  readonly icon?: () => E;
+export interface BaseMenuItem {
+  readonly id: string;
   readonly label: string;
-  readonly children: ColumnMenuItem<E>[];
-  readonly disabled?: boolean | { reason: string };
+
+  readonly icon?: () => ReactNode;
+  readonly disabled?: boolean;
+
+  readonly className?: string;
+  readonly style?: CSSProperties;
+
+  readonly axe?: {
+    readonly axeLabel: string;
+    readonly axeDescription: string;
+  };
 }
 
-export type ColumnMenuItem<E> = ColumnMenuItemLeaf<E> | ColumnMenuItemGroup<E> | "--";
+export interface ColumnMenuItemLeaf<D = any> extends BaseMenuItem {
+  readonly kind: "item";
+  readonly action: (s: { state: D; item: ColumnMenuItemLeaf<D> }) => void;
+}
+
+export interface ColumnMenuSeparator {
+  readonly kind: "separator";
+}
+export interface ColumnMenuParent<D = any> extends BaseMenuItem {
+  readonly kind: "submenu";
+  readonly children: ColumnMenuItem<D>[];
+  readonly menuClassName?: string;
+  readonly menuStyle?: CSSProperties;
+
+  readonly axe?: BaseMenuItem["axe"] & { axeMenuLabel?: string; axeMenuDescription?: string };
+}
+
+export type ColumnMenuItem<D = any> =
+  | ColumnMenuParent<D>
+  | ColumnMenuItemLeaf<D>
+  | ColumnMenuSeparator;
 
 // Context Menu
 

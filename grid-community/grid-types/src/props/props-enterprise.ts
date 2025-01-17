@@ -22,6 +22,8 @@ export interface PropsEnterprise<A, D, C, E, Base, Group>
   readonly columnPivotModeIsOn?: boolean;
   readonly columnPivotModel?: string[];
 
+  readonly columnMenuState?: any;
+
   readonly contextMenuItems?: ContextMenuItems<A, E> | null;
 
   readonly clipboardTransformCellValue?: ClipboardTransformCellValue<A, D, C> | null;

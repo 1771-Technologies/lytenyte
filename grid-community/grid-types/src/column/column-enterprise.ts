@@ -50,7 +50,7 @@ export interface Column<A, D, E> {
   readonly headerAggFuncDisplayMode?: "secondary" | "inline" | "none";
 
   readonly columnMenuShowTriggerInHeader?: boolean;
-  readonly columnMenuGetItems?: (api: A, column: this) => ColumnMenuItem<E>[];
+  readonly columnMenuGetItems?: (api: A) => ColumnMenuItem<E>[];
 
   readonly filterShowTriggerInHeader?: boolean;
   readonly filterSupportsIn?: boolean;
