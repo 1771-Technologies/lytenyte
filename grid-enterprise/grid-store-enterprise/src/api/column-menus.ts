@@ -6,6 +6,7 @@ export const columnMenus = <D, E>(api: ApiEnterprise<D, E>) => {
       const s = api.getState();
 
       s.internal.filterMenuColumn.set(null);
+      s.internal.filterMenuTarget.set(null);
       api.eventFire("onColumnFilterMenuOpenChange", {
         api,
         column: s.internal.filterMenuColumn.peek(),
@@ -13,10 +14,9 @@ export const columnMenus = <D, E>(api: ApiEnterprise<D, E>) => {
     },
     columnCloseMenu: () => {
       const s = api.getState();
-      const handle = s.internal.columnMenuHandle.peek();
-      if (!handle) return;
+      s.internal.columnMenuColumn.set(null);
+      s.internal.columnMenuTarget.set(null);
 
-      handle.close();
       api.eventFire("onColumnMenuOpenChange", { api, column: s.internal.columnMenuColumn.peek()! });
     },
     columnOpenFilterMenu: (c, bb) => {
@@ -29,10 +29,7 @@ export const columnMenus = <D, E>(api: ApiEnterprise<D, E>) => {
     },
     columnOpenMenu: (c, bb) => {
       const s = api.getState();
-      const handle = s.internal.columnMenuHandle.peek();
-      if (!handle) return;
 
-      handle.close();
       s.internal.columnMenuColumn.set(c);
       s.internal.columnMenuTarget.set(bb);
       api.eventFire("onColumnMenuOpenChange", { api, column: c });

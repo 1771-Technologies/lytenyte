@@ -12,6 +12,7 @@ export const ColumnMenuDriver = () => {
   const menuColumn = grid.state.internal.columnMenuColumn.use();
   const target = grid.state.internal.columnMenuTarget.use();
 
+  console.log(menuColumn, target);
   if (!menuColumn || !target) return;
 
   return <ColumnMenuDriverImpl menuColumn={menuColumn} target={target} />;

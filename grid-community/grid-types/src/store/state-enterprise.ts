@@ -69,7 +69,6 @@ export interface GridInternalState<D, E> extends Omit<CommunityInternalState<D, 
   readonly columnPivotGroupEndLevels: ReadonlySignal<ColumnGroupRows>;
   readonly columnPivotGroupLevels: ReadonlySignal<ColumnGroupRows>;
 
-  readonly columnMenuHandle: Signal<HandleRef | null>;
   readonly columnMenuColumn: Signal<Column<D, E> | null>;
   readonly columnMenuTarget: Signal<Target | null>;
 
