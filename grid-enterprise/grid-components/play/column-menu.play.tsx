@@ -13,10 +13,7 @@ const grid = makeStore({
     sortable: true,
     movable: true,
     measureFuncsAllowed: ["avg"],
-    columnMenuGetItems: () => [],
-  },
-  contextMenuItems: () => {
-    return [
+    columnMenuGetItems: () => [
       {
         kind: "item",
         action: () => console.log("ir an"),
@@ -42,7 +39,7 @@ const grid = makeStore({
           { kind: "item", label: "for", action: () => {}, id: "bbc" },
         ],
       },
-    ];
+    ],
   },
   rowGroupModel: ["education", "day"],
   columnPivotModel: ["loan"],

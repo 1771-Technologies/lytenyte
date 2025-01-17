@@ -48,7 +48,24 @@ function ColumnMenuDriverImpl({
   const menuItems = useMemo<MenuItem[]>(() => {
     if (!getMenuItems) return [];
 
-    return getMenuItems(grid.api);
+    const wrap = (menuItem: MenuItem): MenuItem => {
+      if (menuItem.kind === "item")
+        return {
+          ...menuItem,
+          action: (s) => {
+            menuItem.action(s);
+            grid.api.columnMenuClose();
+          },
+        } satisfies MenuItemLeaf;
+
+      if (menuItem.kind === "submenu") {
+        return { ...menuItem, children: menuItem.children.map(wrap) };
+      }
+
+      return menuItem;
+    };
+
+    return getMenuItems(grid.api).map(wrap);
   }, [getMenuItems, grid.api]);
 
   const config = cc.columnMenu.use();
