@@ -9,6 +9,8 @@ export interface PillRowItem {
   readonly column: ColumnEnterpriseReact<any>;
   readonly kind: PillProps["kind"];
   readonly inactive: boolean;
+  readonly dragTag: string;
+  readonly dropTag: string;
 }
 
 export function PillRowElements({

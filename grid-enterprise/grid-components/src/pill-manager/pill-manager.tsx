@@ -66,6 +66,7 @@ export function PillManager<D>({ api }: PillManagerProps<D>) {
           icon={ColumnsIcon}
           pillItems={columnPills}
           onPillSelect={onColumnPillSelect}
+          draggable
         />
         <PillRow
           label={config.axe!.labelMeasures}

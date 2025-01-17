@@ -19,6 +19,8 @@ export function useColumnPivotPills(api: ApiEnterpriseReact<any>) {
         column: c,
         kind: "pivot",
         inactive: !model.includes(c.id),
+        dragTag: "",
+        dropTag: "",
       };
     });
   }, [api, columns, model]);

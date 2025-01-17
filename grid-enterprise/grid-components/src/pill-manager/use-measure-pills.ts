@@ -19,6 +19,8 @@ export function useMeasurePills(api: ApiEnterpriseReact<any>) {
         column: c,
         kind: "column",
         inactive: !model.includes(c.id),
+        dragTag: "",
+        dropTag: "",
       };
     });
   }, [api, columns, model]);

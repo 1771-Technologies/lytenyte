@@ -9,6 +9,8 @@ export function useColumnPills(api: ApiEnterpriseReact<any>) {
   const columns = sx.columns.use();
   const base = sx.columnBase.use();
 
+  const gridId = sx.gridId.use();
+
   const pillItems = useMemo(() => {
     const hidden: ColumnEnterpriseReact<any>[] = [];
     const visible: ColumnEnterpriseReact<any>[] = [];
@@ -28,6 +30,9 @@ export function useColumnPills(api: ApiEnterpriseReact<any>) {
           id: c.id,
           kind: "column",
           inactive: false,
+
+          dragTag: `${gridId}:column:${c.pin ? c.pin : "none"}`,
+          dropTag: `${gridId}:column:${c.pin ? c.pin : "none"}`,
         };
       }),
       ...hidden.map<PillRowItem>((c) => {
@@ -36,12 +41,15 @@ export function useColumnPills(api: ApiEnterpriseReact<any>) {
           id: c.id,
           kind: "column",
           inactive: true,
+
+          dragTag: `${gridId}:column:${c.pin ? c.pin : "none"}`,
+          dropTag: `${gridId}:column:${c.pin ? c.pin : "none"}`,
         };
       }),
     ];
 
     return merged;
-  }, [api, base.hide, columns]);
+  }, [api, base.hide, columns, gridId]);
 
   const onPillSelect = useEvent((p: PillRowItem) => {
     if (!api.columnIsHidable(p.column)) return;

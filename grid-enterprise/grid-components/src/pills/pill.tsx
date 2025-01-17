@@ -26,6 +26,11 @@ export function Pill({ kind, label, startItem, endItem }: PillProps) {
           padding-inline-end: ${t.spacing.space_10};
           border-radius: ${t.spacing.box_radius_regular};
         `,
+        !startItem &&
+          !endItem &&
+          css`
+            padding-inline-start: ${t.spacing.space_10};
+          `,
         kind === "plain" &&
           css`
             background-color: ${t.colors.system_plain_pill_fill};
