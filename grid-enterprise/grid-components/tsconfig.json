@@ -1,6 +1,15 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "plugins": [
+      {
+        "name": "@styled/typescript-styled-plugin",
+        "lint": {
+          "validProperties": ["container-type"],
+          "unknownAtRules": "ignore"
+        }
+      }
+    ]
   }
 }

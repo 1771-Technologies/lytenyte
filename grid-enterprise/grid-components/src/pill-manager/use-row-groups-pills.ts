@@ -9,16 +9,17 @@ export function useRowGroupPills(api: ApiEnterpriseReact<any>) {
   const model = sx.rowGroupModel.use();
 
   const pillItems = useMemo(() => {
-    return columns
-      .filter((c) => api.columnIsRowGroupable(c))
-      .map<PillRowItem>((c) => {
-        return {
-          id: c.id,
-          column: c,
-          kind: "group",
-          inactive: !model.includes(c.id),
-        };
-      });
+    const inModel = model.map((c) => api.columnById(c)!);
+    const outOfModel = columns.filter((c) => api.columnIsRowGroupable(c) && !model.includes(c.id));
+
+    return [...inModel, ...outOfModel].map<PillRowItem>((c) => {
+      return {
+        id: c.id,
+        column: c,
+        kind: "group",
+        inactive: !model.includes(c.id),
+      };
+    });
   }, [api, columns, model]);
 
   return { pillItems };
