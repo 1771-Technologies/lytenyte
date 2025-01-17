@@ -52,6 +52,7 @@ export function initialize<D, E>(
     columnSpanScanDistance: signal(props.columnSpanScanDistance ?? COLUMN_SCAN_DISTANCE),
 
     columnMenuState: signal(props.columnMenuState ?? {}),
+    contextMenuState: signal(props.contextMenuState ?? {}),
 
     filterFunctions: signal(props.filterFunctions ?? {}),
     filterModel: filterModelComputed(props.filterModel ?? [], api),

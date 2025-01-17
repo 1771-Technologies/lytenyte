@@ -2,9 +2,10 @@ import { makeStore } from "@1771technologies/grid-store-enterprise";
 import { bankColumns } from "./helpers";
 import { GridProvider } from "../src/provider/grid-provider";
 import { t } from "@1771technologies/grid-design";
-import { ColumnMenuDriver } from "../src/column-menu-driver/column-menu-driver";
 import { TrashIcon } from "../src/icons/trash-icon";
 import { MeasuresIcon } from "../src/column-manager/icons/measures-icon";
+import { useCallback } from "react";
+import { ContextMenuDriver } from "../src/context-menu-driver/context-menu-driver";
 
 const grid = makeStore({
   gridId: "x",
@@ -50,13 +51,15 @@ const grid = makeStore({
 });
 
 export default function Home() {
+  const s = useCallback((el: HTMLElement | null) => {
+    if (!el) return;
+    grid.state.internal.viewport.set(el);
+  }, []);
+
   return (
     <GridProvider grid={grid}>
-      <div style={{ width: "100vw", height: "100vh", background: t.colors.gray_00 }}>
-        <button onClick={(e) => grid.api.columnMenuOpen(bankColumns[0], e.currentTarget)}>
-          Open Menu
-        </button>
-        <ColumnMenuDriver />
+      <div style={{ width: "100vw", height: "100vh", background: t.colors.gray_00 }} ref={s}>
+        <ContextMenuDriver />
       </div>
     </GridProvider>
   );

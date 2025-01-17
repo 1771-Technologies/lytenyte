@@ -25,6 +25,7 @@ export interface PropsEnterprise<A, D, C, E, Base, Group>
   readonly columnMenuState?: any;
 
   readonly contextMenuItems?: ContextMenuItems<A, E> | null;
+  readonly contextMenuState?: any;
 
   readonly clipboardTransformCellValue?: ClipboardTransformCellValue<A, D, C> | null;
   readonly clipboardTransformHeader?: ClipboardTransformHeader<A, C> | null;

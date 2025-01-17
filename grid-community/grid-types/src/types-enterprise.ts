@@ -88,9 +88,7 @@ export type ContextMenuItemParams<A> = {
   readonly rowIndex?: number | null;
 };
 
-export type ContextMenuItems<A, E> = (
-  p: ContextMenuItemParams<A>,
-) => (ColumnMenuItem<E> | null | undefined | false)[] | null;
+export type ContextMenuItems<A, E> = (p: ContextMenuItemParams<A>) => ColumnMenuItem<E>[] | null;
 
 // Clipboard
 export interface ClipboardTransformCopyParams<A> {

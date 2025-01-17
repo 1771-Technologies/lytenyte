@@ -20,6 +20,7 @@ import type { FilterConfiguration } from "./filters/filter";
 import type { ListViewAxe } from "@1771technologies/react-list-view";
 import type { SelectItem } from "./select/select";
 import type { ColumnMenuConfiguration } from "./column-menu-driver/column-menu-driver";
+import type { ContextMenuConfiguration } from "./context-menu-driver/context-menu-driver";
 
 export type ComponentConfiguration = {
   columnManager: Signal<ColumnManagerConfiguration>;
@@ -29,6 +30,7 @@ export type ComponentConfiguration = {
   tooltip: Signal<Omit<TooltipProps, "ref">>;
   menu: Signal<MenuConfiguration>;
   columnMenu: Signal<ColumnMenuConfiguration>;
+  contextMenu: Signal<ContextMenuConfiguration>;
   filter: Signal<FilterConfiguration>;
 };
 
@@ -136,6 +138,9 @@ export const cc = cascada<ComponentConfiguration>(() => {
       axe: menuAxeDefault,
     }),
     columnMenu: mergeSignal<ColumnMenuConfiguration>({
+      axe: menuAxeDefault,
+    }),
+    contextMenu: mergeSignal<ContextMenuConfiguration>({
       axe: menuAxeDefault,
     }),
 
