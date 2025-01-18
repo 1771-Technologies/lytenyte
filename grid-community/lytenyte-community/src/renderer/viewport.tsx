@@ -20,8 +20,7 @@ export function Viewport() {
     }
   });
 
-  const onInit = useEvent<Required<SizerProps>["onInit"]>((el, size) => {
-    state.internal.viewport.set(el);
+  const onInit = useEvent<Required<SizerProps>["onInit"]>((_, size) => {
     onSizeChange(size);
   });
 
@@ -33,6 +32,10 @@ export function Viewport() {
     state.internal.viewportYScroll.set(Math.abs(viewport.scrollTop));
   });
 
+  const ref = useEvent((el: HTMLElement | null) => {
+    state.internal.viewport.set(el);
+  });
+
   const totalHeight = state.internal.rowPositions.use().at(-1)!;
   const totalWidth = state.internal.columnPositions.use().at(-1)!;
 
@@ -41,6 +44,7 @@ export function Viewport() {
       onInit={onInit}
       onSizeChange={onSizeChange}
       onScroll={onScroll}
+      elRef={ref}
       className={css`
         display: grid;
         grid-template-rows: auto 1fr;
@@ -50,6 +54,7 @@ export function Viewport() {
         style={{ width: totalWidth, height: 200 }}
         className={css`
           position: sticky;
+          z-index: 20;
           top: 0;
           inset-inline-start: 0px;
           min-width: 100%;
