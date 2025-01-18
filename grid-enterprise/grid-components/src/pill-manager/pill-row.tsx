@@ -1,5 +1,5 @@
 import { t } from "@1771technologies/grid-design";
-import { useState, type JSX, type ReactNode } from "react";
+import { useRef, useState, type JSX, type ReactNode } from "react";
 import { PillRowLabel } from "./pill-row-label";
 import { PillRowElements, type PillRowItem } from "./pill-row-elements";
 import { PillRowControls } from "./pill-row-controls";
@@ -34,13 +34,27 @@ export function PillRow({
   const [expanded, setExpanded] = useState(false);
   const [hasOverflow, setHasOverflow] = useState(false);
   const [hasScroll, setHasScroll] = useState(false);
+  const dir = api.getState().rtl.use();
+
+  const ref = useRef<HTMLDivElement | null>(null);
 
   return (
     <div
       tabIndex={0}
-      onKeyDown={(event) => {
-        if (event.key === " " && hasOverflow) {
-          setExpanded((prev) => !prev);
+      onKeyDown={(ev) => {
+        if (ev.key === " " && hasOverflow) setExpanded((prev) => !prev);
+
+        const forward = dir ? "ArrowLeft" : "ArrowRight";
+
+        if (ev.key === forward) {
+          // First
+          if (document.activeElement === ev.currentTarget) {
+            const first = ref.current?.firstElementChild as HTMLElement | undefined;
+            const active = !first?.getAttribute("data-lng1771-inactive");
+            if (active) first?.focus();
+            ev.preventDefault();
+            ev.stopPropagation();
+          }
         }
       }}
       className={css`
@@ -54,10 +68,19 @@ export function PillRow({
           outline: 1px solid ${t.colors.borders_focus};
           outline-offset: -1px;
         }
+        &:focus-within {
+          --lng1771-opacity-val: 0.45;
+          --lng1771-overflow-val: auto;
+        }
       `}
     >
       <PillRowLabel label={label} icon={icon} hasOverflow={hasScroll} />
-      <PillRowElements onOverflow={setHasOverflow} expanded={expanded} onScroll={setHasScroll}>
+      <PillRowElements
+        onOverflow={setHasOverflow}
+        expanded={expanded}
+        onScroll={setHasScroll}
+        rowRef={ref}
+      >
         {(expanded ? expandedPills : pillItems).map((c, i) => {
           return (
             <PillItem
@@ -118,15 +141,35 @@ function PillItem({
     (c.column.headerName ?? c.id)
   );
 
+  const dir = api.getState().rtl.use();
+
+  const ref = useRef<HTMLDivElement | null>(null);
   return (
     <div
       role="button"
       tabIndex={-1}
+      ref={ref}
       onClick={() => {
         onPillSelect(c);
       }}
       onKeyDown={(ev) => {
         if (ev.key === "Enter") onPillSelect(c);
+
+        const forward = dir ? "ArrowLeft" : "ArrowRight";
+        const backward = dir ? "ArrowRight" : "ArrowLeft";
+
+        let el: HTMLElement | undefined = undefined;
+        if (ev.key === forward) {
+          el = ref.current?.nextElementSibling as HTMLElement | undefined;
+        }
+        if (ev.key === backward) {
+          el = ref.current?.previousElementSibling as HTMLElement | undefined;
+        }
+        if (el) {
+          el?.focus();
+          ev.preventDefault();
+          ev.stopPropagation();
+        }
       }}
       {...dropProps}
       key={c.id}
@@ -151,6 +194,11 @@ function PillItem({
           cursor: pointer;
           padding-inline: ${t.spacing.space_10};
           padding-block: ${t.spacing.space_10};
+
+          &:focus-visible {
+            outline: 1px solid ${t.colors.borders_focus};
+            outline-offset: -1px;
+          }
         `,
         isOver &&
           !canDrop &&

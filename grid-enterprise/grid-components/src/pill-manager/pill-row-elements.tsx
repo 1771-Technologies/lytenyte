@@ -1,8 +1,9 @@
 import type { ApiEnterpriseReact, ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import { clsx } from "@1771technologies/js-utils";
-import type { PropsWithChildren, ReactNode } from "react";
+import type { PropsWithChildren, ReactNode, RefObject } from "react";
 import { useEffect, useState } from "react";
 import type { PillProps } from "../pills/pill";
+import { useCombinedRefs } from "@1771technologies/react-utils";
 
 export interface PillRowItem {
   readonly id: string;
@@ -19,13 +20,17 @@ export function PillRowElements({
   onOverflow,
   onScroll,
   expanded,
+  rowRef,
   children,
 }: PropsWithChildren<{
   onOverflow: (b: boolean) => void;
   onScroll: (b: boolean) => void;
   expanded: boolean;
+  rowRef: RefObject<HTMLDivElement | null>;
 }>) {
   const [row, setRow] = useState<HTMLDivElement | null>(null);
+
+  const ref = useCombinedRefs(rowRef, setRow);
 
   useEffect(() => {
     if (!row) return;
@@ -40,7 +45,7 @@ export function PillRowElements({
 
   return (
     <div
-      ref={setRow}
+      ref={ref}
       onScroll={() => {
         onScroll(Math.abs(row?.scrollLeft ?? 0) > 0);
       }}
