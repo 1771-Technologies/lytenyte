@@ -6,6 +6,7 @@ import { TrashIcon } from "../src/icons/trash-icon";
 import { MeasuresIcon } from "../src/column-manager/icons/measures-icon";
 import { useCallback } from "react";
 import { PillManager } from "../src/pill-manager/pill-manager";
+import { ColumnMenuDriver } from "../src/column-menu-driver/column-menu-driver";
 
 const grid = makeStore({
   gridId: "x",
@@ -14,10 +15,7 @@ const grid = makeStore({
     sortable: true,
     movable: true,
     measureFuncsAllowed: ["avg"],
-    columnMenuGetItems: () => [],
-  },
-  contextMenuItems: () => {
-    return [
+    columnMenuGetItems: () => [
       {
         kind: "item",
         action: () => console.log("ir an"),
@@ -43,7 +41,7 @@ const grid = makeStore({
           { kind: "item", label: "for", action: () => {}, id: "bbc" },
         ],
       },
-    ];
+    ],
   },
   rowGroupModel: ["education", "day"],
   columnPivotModel: ["loan"],
@@ -60,6 +58,7 @@ export default function Home() {
     <GridProvider grid={grid}>
       <div style={{ width: "100vw", height: "100vh", background: t.colors.gray_00 }} ref={s}>
         <PillManager api={grid.api} />
+        <ColumnMenuDriver />
       </div>
     </GridProvider>
   );

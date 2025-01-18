@@ -1,6 +1,6 @@
-import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
+import type { ApiEnterpriseReact, ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import { clsx } from "@1771technologies/js-utils";
-import type { PropsWithChildren } from "react";
+import type { PropsWithChildren, ReactNode } from "react";
 import { useEffect, useState } from "react";
 import type { PillProps } from "../pills/pill";
 
@@ -11,6 +11,8 @@ export interface PillRowItem {
   readonly inactive: boolean;
   readonly dragTag: string;
   readonly dropTag: string;
+  readonly labelRenderer?: (p: { item: PillRowItem; api: ApiEnterpriseReact<any> }) => ReactNode;
+  readonly endContent?: ReactNode;
 }
 
 export function PillRowElements({

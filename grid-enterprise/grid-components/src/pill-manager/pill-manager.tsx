@@ -80,6 +80,7 @@ export function PillManager<D>({ api }: PillManagerProps<D>) {
         `}
       >
         <PillRow
+          api={api}
           label={config.axe!.labelColumns}
           icon={ColumnsIcon}
           pillItems={columnPills}
@@ -89,6 +90,7 @@ export function PillManager<D>({ api }: PillManagerProps<D>) {
           draggable
         />
         <PillRow
+          api={api}
           label={config.axe!.labelMeasures}
           icon={MeasuresIcon}
           pillItems={measurePills}
@@ -97,6 +99,7 @@ export function PillManager<D>({ api }: PillManagerProps<D>) {
           draggable
         />
         <PillRow
+          api={api}
           label={config.axe!.labelRowGroups}
           icon={RowGroupIcon}
           pillItems={rowGroupPills}
@@ -106,6 +109,7 @@ export function PillManager<D>({ api }: PillManagerProps<D>) {
         />
         <SwapPivots api={api} />
         <PillRow
+          api={api}
           label={config.axe!.labelColumnPivots}
           icon={ColumnPivotIcon}
           pillItems={columnPivotPills}

@@ -8,18 +8,21 @@ import { clsx } from "@1771technologies/js-utils";
 import { DragIcon } from "../icons/drag-icon";
 import { IconButton } from "../buttons/icon-button";
 import { dragState, useDraggable, useDroppable } from "@1771technologies/react-dragon";
+import type { ApiEnterpriseReact } from "@1771technologies/grid-types";
 
 export interface PillRowProps {
+  readonly api: ApiEnterpriseReact<any>;
   readonly label: string;
   readonly icon: (props: JSX.IntrinsicElements["svg"]) => ReactNode;
   readonly pillItems: PillRowItem[];
-  readonly expandedPills?: PillRowItem[];
   readonly onPillSelect: (p: PillRowItem) => void;
+  readonly expandedPills?: PillRowItem[];
   readonly draggable?: boolean;
   readonly onPillDrop?: (dragged: PillRowItem, dropped: PillRowItem, isBefore: boolean) => void;
 }
 
 export function PillRow({
+  api,
   label,
   icon,
   pillItems,
@@ -47,6 +50,7 @@ export function PillRow({
         {(expanded ? expandedPills : pillItems).map((c, i) => {
           return (
             <PillItem
+              api={api}
               item={c}
               draggable={draggable ?? false}
               onPillSelect={onPillSelect}
@@ -68,6 +72,7 @@ export function PillRow({
 }
 
 function PillItem({
+  api,
   item: c,
   onPillSelect,
   onPillDrop,
@@ -75,6 +80,7 @@ function PillItem({
   draggable,
   index,
 }: {
+  api: ApiEnterpriseReact<any>;
   item: PillRowItem;
   index: number;
   onPillSelect: (c: PillRowItem) => void;
@@ -94,6 +100,12 @@ function PillItem({
   });
 
   const dropProps = c.inactive ? {} : props;
+
+  const label = c.labelRenderer ? (
+    <c.labelRenderer api={api} item={c} />
+  ) : (
+    (c.column.headerName ?? c.id)
+  );
 
   return (
     <div
@@ -166,11 +178,13 @@ function PillItem({
     >
       <Pill
         kind={c.kind}
-        label={c.column.headerName ?? c.id}
+        label={label}
         startItem={!c.inactive && draggable && <PillDragger pillItem={c} index={index} />}
+        endItem={c.endContent}
         className={clsx(
           !c.inactive &&
             draggable &&
+            !c.endContent &&
             css`
               padding-inline-end: ${t.spacing.space_25};
             `,
