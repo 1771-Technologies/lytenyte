@@ -149,7 +149,7 @@ export function initialize<D, E>(
 
     floatingFrames: signal(props.floatingFrames ?? {}),
 
-    measureModel: measuresComputed(props.measureModel ?? [], api),
+    measureModel: measuresComputed([], api), // We post initialize this
 
     panelFrameButtons: signal(props.panelFrameButtons ?? []),
     panelFrames: signal(props.panelFrames ?? {}),
