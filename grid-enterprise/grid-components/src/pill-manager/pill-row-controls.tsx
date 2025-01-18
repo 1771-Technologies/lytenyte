@@ -18,6 +18,7 @@ export function PillRowControls({
       tabIndex={-1}
       disabled={!hasOverflow}
       onClick={() => onExpand(!expanded)}
+      aria-label={config.labelExpand}
       className={clsx(css`
         display: flex;
         align-items: center;
@@ -47,7 +48,6 @@ export function PillRowControls({
       ) : (
         <ExpandGroupIcon color={hasOverflow ? "var(--lng1771-text-medium)" : undefined} />
       )}
-      <span className="lng1771-sr-only">{config.labelExpand}</span>
     </button>
   );
 }

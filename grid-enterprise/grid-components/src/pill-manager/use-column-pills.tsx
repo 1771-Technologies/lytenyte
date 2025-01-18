@@ -129,6 +129,7 @@ const MenuContent = (p: {
         }
       `}
       tabIndex={-1}
+      aria-label={config.axe?.labelColumnMenu}
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -136,7 +137,6 @@ const MenuContent = (p: {
       }}
     >
       <DotsIcon width={16} height={16} />
-      <span className="lng1771-sr-only">{config.axe?.labelColumnMenu}</span>
     </button>
   );
 };

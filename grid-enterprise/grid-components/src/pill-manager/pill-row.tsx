@@ -267,9 +267,14 @@ function PillDragger({ pillItem: p, index }: { pillItem: PillRowItem; index: num
   const config = cc.pillManager.use();
 
   return (
-    <IconButton tabIndex={-1} small kind="ghost" {...draggable}>
+    <IconButton
+      aria-label={config.axe?.labelDragHandle}
+      tabIndex={-1}
+      small
+      kind="ghost"
+      {...draggable}
+    >
       <DragIcon />
-      <span className="lng1771-sr-only">{config.axe?.labelDragHandle}</span>
     </IconButton>
   );
 }
