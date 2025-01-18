@@ -30,6 +30,7 @@ export type Theme = {
     readonly backgrounds_form_field_focus: string;
     readonly backgrounds_page: string;
     readonly backgrounds_row_alternate: string;
+    readonly backgrounds_row: string;
     readonly backgrounds_row_hover: string;
     readonly backgrounds_ui_panel: string;
     readonly backgrounds_row_selected: string;

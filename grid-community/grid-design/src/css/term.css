@@ -32,6 +32,7 @@
   --lng1771-backgrounds-form-field: var(--lng1771-gray-05);
   --lng1771-backgrounds-form-field-focus: var(--lng1771-backgrounds-form-field);
   --lng1771-backgrounds-page: #0a0a0a;
+  --lng1771-backgrounds-row: var(--lng1771-gray-00);
   --lng1771-backgrounds-row-alternate: var(--lng1771-gray-02);
   --lng1771-backgrounds-row-hover: var(--lng1771-primary-05);
   --lng1771-backgrounds-ui-panel: var(--lng1771-gray-05);

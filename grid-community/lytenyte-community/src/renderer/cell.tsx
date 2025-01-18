@@ -1,6 +1,7 @@
-import { sizeFromCoord } from "@1771technologies/js-utils";
+import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
 import { memo } from "react";
 import { getTransform } from "./get-transform";
+import { t } from "@1771technologies/grid-design";
 
 export interface CellProps {
   readonly rowIndex: number;
@@ -17,15 +18,29 @@ function CellImpl({ rowIndex, columnIndex, rowSpan, colSpan, yPositions, xPositi
 
   const transform = getTransform(xPositions[columnIndex], yPositions[rowIndex]);
 
+  const row =
+    rowIndex % 2
+      ? css`
+          background-color: ${t.colors.backgrounds_row};
+        `
+      : css`
+          background-color: ${t.colors.backgrounds_row_alternate};
+        `;
   return (
     <div
       style={{ height, width, transform }}
-      className={css`
-        grid-row-start: 1;
-        grid-row-end: 2;
-        grid-column-start: 1;
-        grid-column-end: 2;
-      `}
+      className={clsx(
+        css`
+          grid-row-start: 1;
+          grid-row-end: 2;
+          grid-column-start: 1;
+          grid-column-end: 2;
+          box-sizing: border-box;
+          border-bottom: 1px solid ${t.colors.borders_row};
+          overflow: hidden;
+        `,
+        row,
+      )}
     >
       {rowIndex},{columnIndex}
     </div>

@@ -35,6 +35,7 @@ export const t: Theme = {
     backgrounds_form_field:              "var(--lng1771-backgrounds-form-field)",
     backgrounds_form_field_focus:        "var(--lng1771-backgrounds-form-field-focus)",
     backgrounds_page:                    "var(--lng1771-backgrounds-page)",
+    backgrounds_row:                     "var(--lng1771-backgrounds-row)",
     backgrounds_row_alternate:           "var(--lng1771-backgrounds-row-alternate)",
     backgrounds_row_hover:               "var(--lng1771-backgrounds-row-hover)",
     backgrounds_ui_panel:                "var(--lng1771-backgrounds-ui-panel)",
