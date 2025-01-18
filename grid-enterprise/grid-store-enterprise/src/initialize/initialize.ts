@@ -154,8 +154,6 @@ export function initialize<D, E>(
     panelFrameButtons: signal(props.panelFrameButtons ?? []),
     panelFrames: signal(props.panelFrames ?? {}),
 
-    rowGroupBarDisplayMode: signal(props.rowGroupBarDisplayMode ?? "never"),
-
     treeData: signal(props.treeData ?? false),
   } satisfies InitialStateEnterprise<D, E>;
 
