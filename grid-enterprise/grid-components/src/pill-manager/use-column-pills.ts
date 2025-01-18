@@ -48,7 +48,18 @@ export function useColumnPills(api: ApiEnterpriseReact<any>) {
       }),
     ];
 
-    return merged;
+    const expanded = normalColumns.map<PillRowItem>((c) => {
+      return {
+        column: c,
+        id: c.id,
+        kind: "column",
+        inactive: c.hide ?? base.hide ?? false,
+        dragTag: "",
+        dropTag: "",
+      };
+    });
+
+    return { merged, expanded };
   }, [api, base.hide, columns, gridId]);
 
   const onPillSelect = useEvent((p: PillRowItem) => {
@@ -68,5 +79,10 @@ export function useColumnPills(api: ApiEnterpriseReact<any>) {
     else api.columnMoveAfter([src], target);
   });
 
-  return { pillItems, onPillSelect, onDrop };
+  return {
+    pillItems: pillItems.merged,
+    expandedPillItems: pillItems.expanded,
+    onPillSelect,
+    onDrop,
+  };
 }

@@ -13,6 +13,7 @@ export interface PillRowProps {
   readonly label: string;
   readonly icon: (props: JSX.IntrinsicElements["svg"]) => ReactNode;
   readonly pillItems: PillRowItem[];
+  readonly expandedPills?: PillRowItem[];
   readonly onPillSelect: (p: PillRowItem) => void;
   readonly draggable?: boolean;
   readonly onPillDrop?: (dragged: PillRowItem, dropped: PillRowItem, isBefore: boolean) => void;
@@ -22,6 +23,7 @@ export function PillRow({
   label,
   icon,
   pillItems,
+  expandedPills = pillItems,
   onPillSelect,
   onPillDrop,
   draggable,
@@ -42,7 +44,7 @@ export function PillRow({
     >
       <PillRowLabel label={label} icon={icon} hasOverflow={hasScroll} />
       <PillRowElements onOverflow={setHasOverflow} expanded={expanded} onScroll={setHasScroll}>
-        {pillItems.map((c, i) => {
+        {(expanded ? expandedPills : pillItems).map((c, i) => {
           return (
             <PillItem
               item={c}

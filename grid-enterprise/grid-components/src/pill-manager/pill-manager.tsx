@@ -36,6 +36,7 @@ export function PillManager<D>({ api }: PillManagerProps<D>) {
     pillItems: columnPills,
     onPillSelect: onColumnPillSelect,
     onDrop: onColumnDrop,
+    expandedPillItems,
   } = useColumnPills(api);
   const {
     pillItems: rowGroupPills,
@@ -84,6 +85,7 @@ export function PillManager<D>({ api }: PillManagerProps<D>) {
           pillItems={columnPills}
           onPillSelect={onColumnPillSelect}
           onPillDrop={onColumnDrop}
+          expandedPills={expandedPillItems}
           draggable
         />
         <PillRow
