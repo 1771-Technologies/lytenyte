@@ -1,6 +1,8 @@
 import { Sizer, type SizerProps } from "@1771technologies/react-sizer";
 import { useEvent } from "@1771technologies/react-utils";
 import { useGrid } from "../use-grid";
+import { Header } from "./header";
+import { Rows } from "./rows";
 
 export function Viewport() {
   const { state } = useGrid();
@@ -31,23 +33,40 @@ export function Viewport() {
     state.internal.viewportYScroll.set(Math.abs(viewport.scrollTop));
   });
 
+  const totalHeight = state.internal.rowPositions.use().at(-1)!;
+  const totalWidth = state.internal.columnPositions.use().at(-1)!;
+
   return (
-    <Sizer onInit={onInit} onSizeChange={onSizeChange} onScroll={onScroll}>
-      <div
+    <Sizer
+      onInit={onInit}
+      onSizeChange={onSizeChange}
+      onScroll={onScroll}
+      className={css`
+        display: grid;
+        grid-template-rows: auto 1fr;
+      `}
+    >
+      <Header
+        style={{ width: totalWidth, height: 200 }}
         className={css`
           position: sticky;
           top: 0;
           inset-inline-start: 0px;
-          height: 200px;
-          background-color: red;
-        `}
-      ></div>
-      <div
-        className={css`
-          height: 4000px;
-          width: 4000px;
+          min-width: 100%;
+          background-color: green;
         `}
       />
+      <div
+        style={{ width: totalWidth, minHeight: totalHeight }}
+        className={css`
+          background-color: blue;
+          display: grid;
+          grid-template-columns: 1px;
+          grid-template-rows: 1px;
+        `}
+      >
+        <Rows />
+      </div>
     </Sizer>
   );
 }

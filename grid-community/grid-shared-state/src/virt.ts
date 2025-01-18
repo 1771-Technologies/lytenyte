@@ -1,5 +1,5 @@
 import { computed } from "@1771technologies/react-cascada";
-import { END_ENCODING, FULL_WIDTH_POSITION } from "@1771technologies/grid-constants";
+import { END_ENCODING, FULL_ENCODING } from "@1771technologies/grid-constants";
 import { computeBounds } from "@1771technologies/grid-core";
 import type { ApiCommunity, ApiEnterprise, StoreEnterprise } from "@1771technologies/grid-types";
 
@@ -88,7 +88,7 @@ export const virt = <D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>) => {
           if (isFullWidth(r)) {
             const v = new Int32Array(2);
 
-            v[0] = FULL_WIDTH_POSITION;
+            v[0] = FULL_ENCODING;
             v[1] = END_ENCODING;
 
             // This is a full width row
@@ -142,6 +142,7 @@ export const virt = <D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>) => {
           }
 
           processCols(colEndBegin, colEndFinish, cover);
+          v[pos] = END_ENCODING;
 
           bounds.set(r, v);
         }
