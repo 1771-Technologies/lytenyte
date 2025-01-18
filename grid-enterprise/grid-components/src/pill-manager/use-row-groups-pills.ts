@@ -30,5 +30,22 @@ export function useRowGroupPills(api: ApiEnterpriseReact<any>) {
     else sx.rowGroupModel.set((prev) => [...prev, p.id]);
   });
 
-  return { pillItems, onPillSelect };
+  const onDrop = useEvent((dragged: PillRowItem, over: PillRowItem, isBefore: boolean) => {
+    const id = dragged.id;
+    const target = over.id;
+    const index = model.indexOf(id);
+    if (index === -1) return;
+    const next = [...model];
+    next.splice(index, 1);
+
+    const targetIndex = next.indexOf(target);
+    if (targetIndex === -1) return;
+
+    if (isBefore) next.splice(targetIndex, 0, id);
+    else next.splice(targetIndex + 1, 0, id);
+
+    sx.rowGroupModel.set(next);
+  });
+
+  return { pillItems, onPillSelect, onDrop };
 }

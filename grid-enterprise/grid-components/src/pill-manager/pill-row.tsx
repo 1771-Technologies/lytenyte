@@ -84,12 +84,14 @@ function PillItem({
   const isBefore = (data?.index ?? -1) > index;
 
   const { canDrop, isOver, ...props } = useDroppable({
-    tags: [c.dropTag],
+    tags: c.inactive ? [] : [c.dropTag],
     onDrop: (p) => {
       const d = p.getData() as { pillItem: PillRowItem };
       onPillDrop?.(d.pillItem, c, isBefore);
     },
   });
+
+  const dropProps = c.inactive ? {} : props;
 
   return (
     <div
@@ -99,7 +101,7 @@ function PillItem({
       onKeyDown={(ev) => {
         if (ev.key === "Enter") onPillSelect(c);
       }}
-      {...props}
+      {...dropProps}
       key={c.id}
       className={clsx(
         c.inactive &&
