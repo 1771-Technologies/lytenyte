@@ -33,9 +33,17 @@ export interface PillManagerProps<D> {
   readonly hideColumnPivots?: boolean;
   readonly hideMeasures?: boolean;
 }
-export function PillManager<D>({ api }: PillManagerProps<D>) {
+export function PillManager<D>({
+  api,
+  hideColumnPivots,
+  hideColumns,
+  hideMeasures,
+  hideRowGroups,
+  showSwapButton,
+}: PillManagerProps<D>) {
   const config = cc.pillManager.use();
 
+  const isPivotMode = api.getState().columnPivotModeIsOn.use();
   const {
     pillItems: columnPills,
     onPillSelect: onColumnPillSelect,
@@ -83,44 +91,54 @@ export function PillManager<D>({ api }: PillManagerProps<D>) {
           }
         `}
       >
-        <PillRow
-          api={api}
-          label={config.axe!.labelColumns}
-          icon={ColumnsIcon}
-          pillItems={columnPills}
-          onPillSelect={onColumnPillSelect}
-          onPillDrop={onColumnDrop}
-          expandedPills={expandedPillItems}
-          draggable
-        />
-        <PillRow
-          api={api}
-          label={config.axe!.labelMeasures}
-          icon={MeasuresIcon}
-          pillItems={measurePills}
-          onPillSelect={onMeasurePillSelect}
-          onPillDrop={onMeasureDrop}
-          draggable
-        />
-        <PillRow
-          api={api}
-          label={config.axe!.labelRowGroups}
-          icon={RowGroupIcon}
-          pillItems={rowGroupPills}
-          onPillSelect={onRowGroupPillSelect}
-          onPillDrop={onGroupDrop}
-          draggable
-        />
-        <SwapPivots api={api} />
-        <PillRow
-          api={api}
-          label={config.axe!.labelColumnPivots}
-          icon={ColumnPivotIcon}
-          pillItems={columnPivotPills}
-          onPillDrop={onColumnPivotDrop}
-          onPillSelect={onColumnPivotPillSelect}
-          draggable
-        />
+        {!isPivotMode && !hideColumns && (
+          <PillRow
+            api={api}
+            label={config.axe!.labelColumns}
+            icon={ColumnsIcon}
+            pillItems={columnPills}
+            onPillSelect={onColumnPillSelect}
+            onPillDrop={onColumnDrop}
+            expandedPills={expandedPillItems}
+            draggable
+          />
+        )}
+        {isPivotMode && !hideMeasures && (
+          <PillRow
+            api={api}
+            label={config.axe!.labelMeasures}
+            icon={MeasuresIcon}
+            pillItems={measurePills}
+            onPillSelect={onMeasurePillSelect}
+            onPillDrop={onMeasureDrop}
+            draggable
+          />
+        )}
+        {!hideRowGroups && (
+          <PillRow
+            api={api}
+            label={config.axe!.labelRowGroups}
+            icon={RowGroupIcon}
+            pillItems={rowGroupPills}
+            onPillSelect={onRowGroupPillSelect}
+            onPillDrop={onGroupDrop}
+            draggable
+          />
+        )}
+        {isPivotMode && !hideRowGroups && !hideColumnPivots && showSwapButton && (
+          <SwapPivots api={api} />
+        )}
+        {isPivotMode && !hideColumnPivots && (
+          <PillRow
+            api={api}
+            label={config.axe!.labelColumnPivots}
+            icon={ColumnPivotIcon}
+            pillItems={columnPivotPills}
+            onPillDrop={onColumnPivotDrop}
+            onPillSelect={onColumnPivotPillSelect}
+            draggable
+          />
+        )}
       </div>
     </div>
   );
