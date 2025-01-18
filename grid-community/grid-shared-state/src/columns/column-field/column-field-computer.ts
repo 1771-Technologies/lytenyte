@@ -25,10 +25,12 @@ export const columnFieldComputer = <D, E>(
   const s = api.getState();
   const cache = s.internal.fieldCacheRef[cacheId];
   cache[row.id] ??= {};
+  const valueCache = cache[row.id];
 
-  if (cache[column.id] !== undefined) return cache[column.id];
+  if (valueCache[column.id] !== undefined) return valueCache[column.id];
+
   const value = columnGetField(row.data, field, column, api);
-  cache[column.id] = value;
+  valueCache[column.id] = value;
 
   return value;
 };

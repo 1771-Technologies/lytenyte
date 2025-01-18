@@ -51,7 +51,11 @@ export type GridInternalState<D, E> = {
   readonly columnResizeIsActive: Signal<boolean>;
 
   readonly fieldCacheRef: {
-    [c in "group" | "column" | "pivot" | "quick-search"]: { [columnId: string]: unknown };
+    [c in "group" | "column" | "pivot" | "quick-search"]: {
+      [rowId: string]: {
+        [columnId: string]: unknown;
+      };
+    };
   };
 
   readonly keyBindingIdToKey: ReadonlySignal<Record<string, KeyBindingString[]>>;
