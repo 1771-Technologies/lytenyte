@@ -112,7 +112,8 @@ function PillItem({
             }
           `,
 
-        expanded &&
+        c.inactive &&
+          expanded &&
           css`
             opacity: 0.4;
           `,
