@@ -2,6 +2,7 @@ import { memo } from "react";
 
 export interface CellFullWidthProps {
   readonly rowIndex: number;
+  readonly yPositions: Uint32Array;
 }
 
 function CellFullWidthImpl({ rowIndex }: CellFullWidthProps) {
