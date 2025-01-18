@@ -7,7 +7,7 @@ import { Pill } from "../pills/pill";
 import { clsx } from "@1771technologies/js-utils";
 import { DragIcon } from "../icons/drag-icon";
 import { IconButton } from "../buttons/icon-button";
-import { useDraggable, useDroppable } from "@1771technologies/react-dragon";
+import { dragState, useDraggable, useDroppable } from "@1771technologies/react-dragon";
 
 export interface PillRowProps {
   readonly label: string;
@@ -34,7 +34,7 @@ export function PillRow({ label, icon, pillItems, onPillSelect, draggable }: Pil
     >
       <PillRowLabel label={label} icon={icon} hasOverflow={hasScroll} />
       <PillRowElements onOverflow={setHasOverflow} expanded={expanded} onScroll={setHasScroll}>
-        {pillItems.map((c) => {
+        {pillItems.map((c, i) => {
           return (
             <PillItem
               item={c}
@@ -42,6 +42,7 @@ export function PillRow({ label, icon, pillItems, onPillSelect, draggable }: Pil
               onPillSelect={onPillSelect}
               expanded={expanded}
               key={c.id}
+              index={i}
             />
           );
         })}
@@ -60,8 +61,10 @@ function PillItem({
   onPillSelect,
   expanded,
   draggable,
+  index,
 }: {
   item: PillRowItem;
+  index: number;
   onPillSelect: (c: PillRowItem) => void;
   expanded: boolean;
   draggable: boolean;
@@ -69,6 +72,10 @@ function PillItem({
   const { canDrop, isOver, ...props } = useDroppable({
     tags: [c.dropTag],
   });
+
+  const data = dragState.dragData.use()?.() as { index?: number };
+  const isBefore = (data?.index ?? -1) < index;
+
   return (
     <div
       role="button"
@@ -105,20 +112,50 @@ function PillItem({
           css`
             background-color: ${t.colors.system_red_30};
           `,
+        isOver &&
+          canDrop &&
+          !isBefore &&
+          css`
+            position: relative;
+            &::before {
+              content: "";
+              top: 0px;
+              inset-inline-start: 0px;
+              position: absolute;
+              height: 100%;
+              width: 1px;
+              background-color: ${t.colors.primary_50};
+            }
+          `,
+        isOver &&
+          canDrop &&
+          isBefore &&
+          css`
+            position: relative;
+            &::after {
+              content: "";
+              top: 0px;
+              inset-inline-end: 0px;
+              position: absolute;
+              height: 100%;
+              width: 1px;
+              background-color: ${t.colors.primary_50};
+            }
+          `,
       )}
     >
       <Pill
         kind={c.kind}
         label={c.column.headerName ?? c.id}
-        startItem={draggable && <PillDragger {...c} />}
+        startItem={draggable && <PillDragger pillItem={c} index={index} />}
       />
     </div>
   );
 }
 
-function PillDragger(p: PillRowItem) {
+function PillDragger({ pillItem: p, index }: { pillItem: PillRowItem; index: number }) {
   const draggable = useDraggable({
-    dragData: () => p,
+    dragData: () => ({ pillItem: p, index }),
     dragTags: () => [p.dragTag],
     placeholder: () => <Pill kind={p.kind} label={p.column.headerName ?? p.column.id} />,
   });

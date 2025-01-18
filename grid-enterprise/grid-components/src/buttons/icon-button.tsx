@@ -64,7 +64,7 @@ function IconButtonImpl({
         !disabled &&
           kind === "ghost" &&
           css`
-            &:focus {
+            &:focus-visible {
               background-color: ${t.colors.backgrounds_light};
               border: 1px solid ${t.colors.borders_focus};
               outline: none;
