@@ -59,5 +59,14 @@ export function useColumnPills(api: ApiEnterpriseReact<any>) {
     api.columnUpdate(p.column, { hide: nextState });
   });
 
-  return { pillItems, onPillSelect };
+  const onDrop = useEvent((dragged: PillRowItem, over: PillRowItem, isBefore: boolean) => {
+    const src = dragged.id;
+    const target = over.id;
+    if (src === target) return;
+
+    if (isBefore) api.columnMoveBefore([src], target);
+    else api.columnMoveAfter([src], target);
+  });
+
+  return { pillItems, onPillSelect, onDrop };
 }

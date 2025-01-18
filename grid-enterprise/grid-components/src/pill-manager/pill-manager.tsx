@@ -32,7 +32,11 @@ export interface PillManagerProps<D> {
 export function PillManager<D>({ api }: PillManagerProps<D>) {
   const config = cc.pillManager.use();
 
-  const { pillItems: columnPills, onPillSelect: onColumnPillSelect } = useColumnPills(api);
+  const {
+    pillItems: columnPills,
+    onPillSelect: onColumnPillSelect,
+    onDrop: onColumnDrop,
+  } = useColumnPills(api);
   const { pillItems: rowGroupPills, onPillSelect: onRowGroupPillSelect } = useRowGroupPills(api);
   const { pillItems: columnPivotPills, onPillSelect: onColumnPivotPillSelect } =
     useColumnPivotPills(api);
@@ -68,6 +72,7 @@ export function PillManager<D>({ api }: PillManagerProps<D>) {
           icon={ColumnsIcon}
           pillItems={columnPills}
           onPillSelect={onColumnPillSelect}
+          onPillDrop={onColumnDrop}
           draggable
         />
         <PillRow
