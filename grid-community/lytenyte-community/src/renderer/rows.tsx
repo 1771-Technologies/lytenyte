@@ -5,19 +5,23 @@ import { Cell } from "./cell";
 import { CellFullWidth } from "./cell-full-width";
 
 export function Rows() {
-  const state = useGrid().state;
+  const { state, api } = useGrid();
 
   const layout = state.internal.virtLayout.use();
 
   const xPositions = state.internal.columnPositions.use();
   const yPositions = state.internal.rowPositions.use();
+  const columns = state.columnsVisible.use();
+  const refreshKey = state.internal.rowRefreshCount.use();
 
   const [fullWidthCache, cellCache] = useMemo(() => {
     void xPositions;
     void yPositions;
+    void columns;
+    void refreshKey;
 
     return [{}, {}] as [Record<number, ReactNode>, Record<number, Record<number, ReactNode>>];
-  }, [xPositions, yPositions]);
+  }, [columns, refreshKey, xPositions, yPositions]);
 
   const rowCount = state.internal.rowCount.use();
 
@@ -51,6 +55,8 @@ export function Rows() {
           cellCache[rowIndex] ??= {};
           cellCache[rowIndex][colIndex] = (
             <Cell
+              api={api}
+              column={columns[colIndex]}
               key={`r${rowIndex}-c${colIndex}`}
               rowIndex={rowIndex}
               rowSpan={rowSpan}
@@ -66,7 +72,7 @@ export function Rows() {
     }
 
     return els;
-  }, [cellCache, fullWidthCache, layout, rowCount, xPositions, yPositions]);
+  }, [api, cellCache, columns, fullWidthCache, layout, rowCount, xPositions, yPositions]);
 
   return <>{cells}</>;
 }

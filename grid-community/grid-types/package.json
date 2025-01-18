@@ -14,6 +14,11 @@
       "require": "./src/types.ts",
       "types": "./src/types.ts"
     },
+    "./community-react": {
+      "import": "./src/types-react.ts",
+      "require": "./src/types-react.ts",
+      "types": "./src/types-react.ts"
+    },
     "./enterprise": {
       "import": "./src/types-enterprise.ts",
       "require": "./src/types-enterprise.ts",

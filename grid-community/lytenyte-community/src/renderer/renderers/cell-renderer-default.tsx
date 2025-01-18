@@ -1,0 +1,20 @@
+import { t } from "@1771technologies/grid-design";
+import type { CellRendererParamsReact } from "@1771technologies/grid-types/community-react";
+
+export function CellRendererDefault(p: CellRendererParamsReact<any>) {
+  const field = p.api.columnField(p.row, p.column);
+  return (
+    <div
+      className={css`
+        display: flex;
+        align-items: center;
+        padding-inline-start: ${t.spacing.cell_horizontal_padding};
+        height: 100%;
+        width: 100%;
+        box-sizing: border-box;
+      `}
+    >
+      {field as string}
+    </div>
+  );
+}

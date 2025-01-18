@@ -1,6 +1,7 @@
 import type {
   AggBuiltIns,
   AggFunc,
+  AutosizeCellParameters,
   AutosizeHeaderParameters,
   CellEditBuiltInProviders,
   CellEditParams,
@@ -9,7 +10,6 @@ import type {
   CellEditProvider,
   CellEditRowUpdater,
   CellEditUnparser,
-  CellOptions,
   CellRenderer,
   ColumnHeaderRenderer,
   ColumnPin,
@@ -52,6 +52,9 @@ export interface Column<A, D, E> {
   readonly cellEditParams?: CellEditParams;
   readonly cellEditRowUpdater?: CellEditRowUpdater<A, D, this>;
 
+  readonly cellAutosizeFn?: (c: AutosizeCellParameters<A, D, this>) => number;
+  readonly cellSkipOnAutosizeAll?: boolean;
+
   readonly floatingCellRenderer?: string | FloatingCellRenderer<A, this, E>;
 
   readonly sortable?: boolean;
@@ -72,7 +75,6 @@ export interface Column<A, D, E> {
   readonly widthFlex?: number;
 
   readonly cellRenderer?: string | CellRenderer<A, D, this, E>;
-  readonly cellOptions?: CellOptions<A, D, this>;
 
   readonly columnSpan?: number | ColumnSpanCallback<A, D>;
   readonly rowSpan?: number | RowSpanCallback<A, D, this>;

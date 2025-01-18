@@ -118,17 +118,11 @@ export type CellRendererParams<A, D, C> = {
   columnIndex: number;
   api: A;
   row: RowNode<D>;
-  options: CellOptions<A, D, C>;
 };
 
 export type CellRenderer<A, D, C, E> = (params: CellRendererParams<A, D, C>) => E;
 export type CellRenderers<A, D, C, E> = {
   [id: string]: CellRenderer<A, D, C, E>;
-};
-
-export type CellOptions<A, D, C> = {
-  readonly autosizeFunc?: (c: AutosizeCellParameters<A, D, C>) => number;
-  readonly skipOnAutosizeAll?: boolean;
 };
 
 // Column Headers
