@@ -25,7 +25,7 @@ export function columnsComputed<D, E>(
       throw new Error("Duplicate column id detected. Every column should have a unique ID.");
     }
     const sx = api.getState();
-    const treeData = ((sx as any)?.treeData.get() as boolean | undefined) ?? false;
+    const treeData = ((sx as any)?.treeData?.get() as boolean | undefined) ?? false;
 
     const rowGroupTemplate = sx.rowGroupColumnTemplate.get() ?? {};
 
