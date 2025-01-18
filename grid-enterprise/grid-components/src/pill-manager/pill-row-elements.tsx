@@ -47,7 +47,7 @@ export function PillRowElements({
           min-height: 42px;
           display: flex;
           width: 100%;
-          overflow: auto;
+          overflow: var(--lng1771-overflow-val);
           scrollbar-width: none;
           align-items: center;
           padding-inline-end: var(--lng1771-space-04);

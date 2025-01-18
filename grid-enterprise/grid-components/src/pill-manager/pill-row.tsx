@@ -15,9 +15,17 @@ export interface PillRowProps {
   readonly pillItems: PillRowItem[];
   readonly onPillSelect: (p: PillRowItem) => void;
   readonly draggable?: boolean;
+  readonly onPillDrop?: (dragged: PillRowItem, dropped: PillRowItem, isBefore: boolean) => void;
 }
 
-export function PillRow({ label, icon, pillItems, onPillSelect, draggable }: PillRowProps) {
+export function PillRow({
+  label,
+  icon,
+  pillItems,
+  onPillSelect,
+  onPillDrop,
+  draggable,
+}: PillRowProps) {
   const [expanded, setExpanded] = useState(false);
   const [hasOverflow, setHasOverflow] = useState(false);
   const [hasScroll, setHasScroll] = useState(false);
@@ -41,6 +49,7 @@ export function PillRow({ label, icon, pillItems, onPillSelect, draggable }: Pil
               draggable={draggable ?? false}
               onPillSelect={onPillSelect}
               expanded={expanded}
+              onPillDrop={onPillDrop}
               key={c.id}
               index={i}
             />
@@ -59,6 +68,7 @@ export function PillRow({ label, icon, pillItems, onPillSelect, draggable }: Pil
 function PillItem({
   item: c,
   onPillSelect,
+  onPillDrop,
   expanded,
   draggable,
   index,
@@ -66,15 +76,20 @@ function PillItem({
   item: PillRowItem;
   index: number;
   onPillSelect: (c: PillRowItem) => void;
+  onPillDrop?: (dragged: PillRowItem, dropped: PillRowItem, isBefore: boolean) => void;
   expanded: boolean;
   draggable: boolean;
 }) {
+  const data = dragState.dragData.use()?.() as { index?: number };
+  const isBefore = (data?.index ?? -1) > index;
+
   const { canDrop, isOver, ...props } = useDroppable({
     tags: [c.dropTag],
+    onDrop: (p) => {
+      const d = p.getData() as { pillItem: PillRowItem };
+      onPillDrop?.(d.pillItem, c, isBefore);
+    },
   });
-
-  const data = dragState.dragData.use()?.() as { index?: number };
-  const isBefore = (data?.index ?? -1) < index;
 
   return (
     <div
@@ -114,7 +129,7 @@ function PillItem({
           `,
         isOver &&
           canDrop &&
-          !isBefore &&
+          isBefore &&
           css`
             position: relative;
             &::before {
@@ -129,7 +144,7 @@ function PillItem({
           `,
         isOver &&
           canDrop &&
-          isBefore &&
+          !isBefore &&
           css`
             position: relative;
             &::after {
@@ -147,7 +162,7 @@ function PillItem({
       <Pill
         kind={c.kind}
         label={c.column.headerName ?? c.id}
-        startItem={draggable && <PillDragger pillItem={c} index={index} />}
+        startItem={!c.inactive && draggable && <PillDragger pillItem={c} index={index} />}
       />
     </div>
   );

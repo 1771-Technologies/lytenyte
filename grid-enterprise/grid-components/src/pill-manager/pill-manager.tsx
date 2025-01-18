@@ -50,9 +50,11 @@ export function PillManager<D>({ api }: PillManagerProps<D>) {
           grid-template-columns: 160px calc(100% - 160px - 30px) 30px;
 
           --lng1771-opacity-val: 0;
+          --lng1771-overflow-val: hidden;
 
           &:hover {
             --lng1771-opacity-val: 0.45;
+            --lng1771-overflow-val: auto;
           }
 
           @container (max-width: 450px) {
