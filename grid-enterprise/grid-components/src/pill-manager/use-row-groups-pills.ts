@@ -2,6 +2,7 @@ import type { ApiEnterpriseReact } from "@1771technologies/grid-types";
 import { useMemo } from "react";
 import type { PillRowItem } from "./pill-row-elements";
 import { useEvent } from "@1771technologies/react-utils";
+import type { Signal } from "@1771technologies/react-cascada";
 
 export function useRowGroupPills(api: ApiEnterpriseReact<any>) {
   const sx = api.getState();
@@ -30,6 +31,12 @@ export function useRowGroupPills(api: ApiEnterpriseReact<any>) {
     else sx.rowGroupModel.set((prev) => [...prev, p.id]);
   });
 
+  const onDrop = useDrop(model, sx.rowGroupModel);
+
+  return { pillItems, onPillSelect, onDrop };
+}
+
+export function useDrop(model: string[], signal: Signal<string[]>) {
   const onDrop = useEvent((dragged: PillRowItem, over: PillRowItem, isBefore: boolean) => {
     const id = dragged.id;
     const target = over.id;
@@ -44,8 +51,8 @@ export function useRowGroupPills(api: ApiEnterpriseReact<any>) {
     if (isBefore) next.splice(targetIndex, 0, id);
     else next.splice(targetIndex + 1, 0, id);
 
-    sx.rowGroupModel.set(next);
+    signal.set(next);
   });
 
-  return { pillItems, onPillSelect, onDrop };
+  return onDrop;
 }

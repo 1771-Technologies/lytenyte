@@ -2,6 +2,7 @@ import type { ApiEnterpriseReact } from "@1771technologies/grid-types";
 import { useMemo } from "react";
 import type { PillRowItem } from "./pill-row-elements";
 import { useEvent } from "@1771technologies/react-utils";
+import { useDrop } from "./use-row-groups-pills";
 
 export function useMeasurePills(api: ApiEnterpriseReact<any>) {
   const sx = api.getState();
@@ -30,5 +31,7 @@ export function useMeasurePills(api: ApiEnterpriseReact<any>) {
     else sx.measureModel.set((prev) => [...prev, p.id]);
   });
 
-  return { pillItems, onPillSelect };
+  const onDrop = useDrop(model, sx.measureModel);
+
+  return { pillItems, onPillSelect, onDrop };
 }

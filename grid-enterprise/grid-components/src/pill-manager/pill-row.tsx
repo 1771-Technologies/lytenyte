@@ -166,6 +166,13 @@ function PillItem({
         kind={c.kind}
         label={c.column.headerName ?? c.id}
         startItem={!c.inactive && draggable && <PillDragger pillItem={c} index={index} />}
+        className={clsx(
+          !c.inactive &&
+            draggable &&
+            css`
+              padding-inline-end: ${t.spacing.space_25};
+            `,
+        )}
       />
     </div>
   );

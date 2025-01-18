@@ -7,9 +7,11 @@ export interface PillProps {
   readonly kind: "pivot" | "group" | "plain" | "column";
   readonly startItem?: ReactNode;
   readonly endItem?: ReactNode;
+
+  readonly className?: string;
 }
 
-export function Pill({ kind, label, startItem, endItem }: PillProps) {
+export function Pill({ kind, label, startItem, endItem, className }: PillProps) {
   return (
     <div
       className={clsx(
@@ -53,6 +55,7 @@ export function Pill({ kind, label, startItem, endItem }: PillProps) {
             background-color: ${t.colors.system_column_pill_fill};
             border: 1px solid ${t.colors.system_column_pill_stroke};
           `,
+        className,
       )}
     >
       {startItem && <div>{startItem}</div>}

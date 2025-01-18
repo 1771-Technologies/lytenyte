@@ -42,9 +42,16 @@ export function PillManager<D>({ api }: PillManagerProps<D>) {
     onPillSelect: onRowGroupPillSelect,
     onDrop: onGroupDrop,
   } = useRowGroupPills(api);
-  const { pillItems: columnPivotPills, onPillSelect: onColumnPivotPillSelect } =
-    useColumnPivotPills(api);
-  const { pillItems: measurePills, onPillSelect: onMeasurePillSelect } = useMeasurePills(api);
+  const {
+    pillItems: columnPivotPills,
+    onPillSelect: onColumnPivotPillSelect,
+    onDrop: onColumnPivotDrop,
+  } = useColumnPivotPills(api);
+  const {
+    pillItems: measurePills,
+    onPillSelect: onMeasurePillSelect,
+    onDrop: onMeasureDrop,
+  } = useMeasurePills(api);
 
   return (
     <div
@@ -84,6 +91,8 @@ export function PillManager<D>({ api }: PillManagerProps<D>) {
           icon={MeasuresIcon}
           pillItems={measurePills}
           onPillSelect={onMeasurePillSelect}
+          onPillDrop={onMeasureDrop}
+          draggable
         />
         <PillRow
           label={config.axe!.labelRowGroups}
@@ -98,7 +107,9 @@ export function PillManager<D>({ api }: PillManagerProps<D>) {
           label={config.axe!.labelColumnPivots}
           icon={ColumnPivotIcon}
           pillItems={columnPivotPills}
+          onPillDrop={onColumnPivotDrop}
           onPillSelect={onColumnPivotPillSelect}
+          draggable
         />
       </div>
     </div>
