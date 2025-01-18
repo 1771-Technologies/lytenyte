@@ -1,6 +1,7 @@
 import { clsx } from "@1771technologies/js-utils";
 import { CollapseGroupIcon, ExpandGroupIcon } from "../icons/expand-icon";
 import { t } from "@1771technologies/grid-design";
+import { cc } from "../component-configuration";
 
 export function PillRowControls({
   hasOverflow,
@@ -11,6 +12,7 @@ export function PillRowControls({
   onExpand: (b: boolean) => void;
   expanded: boolean;
 }) {
+  const config = cc.pillManager.use().axe!;
   return (
     <button
       tabIndex={-1}
@@ -45,6 +47,7 @@ export function PillRowControls({
       ) : (
         <ExpandGroupIcon color={hasOverflow ? "var(--lng1771-text-medium)" : undefined} />
       )}
+      <span className="lng1771-sr-only">{config.labelExpand}</span>
     </button>
   );
 }

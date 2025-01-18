@@ -63,6 +63,10 @@ export const cc = cascada<ComponentConfiguration>(() => {
         labelColumns: "Columns",
         labelMeasures: "Measures",
         labelRowGroups: "Row Groups",
+
+        labelColumnMenu: "Column Menu",
+        labelDragHandle: "Move item",
+        labelExpand: "Expand items",
       },
     }),
     filter: mergeSignal<FilterConfiguration>({

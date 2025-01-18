@@ -9,6 +9,7 @@ import { DragIcon } from "../icons/drag-icon";
 import { IconButton } from "../buttons/icon-button";
 import { dragState, useDraggable, useDroppable } from "@1771technologies/react-dragon";
 import type { ApiEnterpriseReact } from "@1771technologies/grid-types";
+import { cc } from "../component-configuration";
 
 export interface PillRowProps {
   readonly api: ApiEnterpriseReact<any>;
@@ -144,6 +145,7 @@ function PillItem({
   const dir = api.getState().rtl.use();
 
   const ref = useRef<HTMLDivElement | null>(null);
+
   return (
     <div
       role="button"
@@ -261,9 +263,13 @@ function PillDragger({ pillItem: p, index }: { pillItem: PillRowItem; index: num
     dragTags: () => [p.dragTag],
     placeholder: () => <Pill kind={p.kind} label={p.column.headerName ?? p.column.id} />,
   });
+
+  const config = cc.pillManager.use();
+
   return (
     <IconButton tabIndex={-1} small kind="ghost" {...draggable}>
       <DragIcon />
+      <span className="lng1771-sr-only">{config.axe?.labelDragHandle}</span>
     </IconButton>
   );
 }

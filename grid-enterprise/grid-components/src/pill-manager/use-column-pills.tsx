@@ -8,6 +8,7 @@ import type { PillRowItem } from "./pill-row-elements";
 import { useEvent } from "@1771technologies/react-utils";
 import { t } from "@1771technologies/grid-design";
 import { DotsIcon } from "../icons/dots-icon";
+import { cc } from "../component-configuration";
 
 export function useColumnPills(api: ApiEnterpriseReact<any>) {
   const sx = api.getState();
@@ -105,6 +106,7 @@ const MenuContent = (p: {
   base: ColumnBaseEnterpriseReact<any>;
   api: ApiEnterpriseReact<any>;
 }) => {
+  const config = cc.pillManager.use();
   const columnMenu = p.column.columnMenuGetItems ?? p.base.columnMenuGetItems;
   if (!columnMenu) return null;
 
@@ -134,6 +136,7 @@ const MenuContent = (p: {
       }}
     >
       <DotsIcon width={16} height={16} />
+      <span className="lng1771-sr-only">{config.axe?.labelColumnMenu}</span>
     </button>
   );
 };

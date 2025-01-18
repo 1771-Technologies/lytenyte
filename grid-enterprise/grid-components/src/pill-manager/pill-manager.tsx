@@ -17,6 +17,10 @@ export interface PillManagerConfiguration {
     readonly labelMeasures: string;
     readonly labelRowGroups: string;
     readonly labelColumnPivots: string;
+
+    readonly labelDragHandle: string;
+    readonly labelExpand: string;
+    readonly labelColumnMenu: string;
   };
 }
 
