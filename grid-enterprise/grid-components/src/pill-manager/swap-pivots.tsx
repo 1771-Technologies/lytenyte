@@ -1,5 +1,6 @@
 import type { ApiEnterpriseReact } from "@1771technologies/grid-types";
 import { RefreshIcon } from "../icons/refresh-icon";
+import { t } from "@1771technologies/grid-design";
 
 export function SwapPivots<D>({ api }: { api: ApiEnterpriseReact<D> }) {
   return (
@@ -23,6 +24,11 @@ export function SwapPivots<D>({ api }: { api: ApiEnterpriseReact<D> }) {
           border-radius: var(--lng1771-box-radius-medium);
           cursor: pointer;
           z-index: 2;
+
+          &:focus-visible {
+            outline: none;
+            border: 1px solid ${t.colors.borders_focus};
+          }
 
           @container (max-width: 450px) {
             left: 22px;

@@ -83,6 +83,7 @@ function Renderer({ api, item: { column } }: { item: PillRowItem; api: ApiEnterp
     >
       <span>{column.headerName ?? column.id}</span>
       <button
+        tabIndex={-1}
         onClick={(e) => {
           e.stopPropagation();
           e.preventDefault();

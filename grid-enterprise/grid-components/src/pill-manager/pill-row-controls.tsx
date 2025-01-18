@@ -13,6 +13,7 @@ export function PillRowControls({
 }) {
   return (
     <button
+      tabIndex={-1}
       disabled={!hasOverflow}
       onClick={() => onExpand(!expanded)}
       className={clsx(css`
@@ -24,6 +25,11 @@ export function PillRowControls({
         border-inline-start: 1px solid ${t.colors.borders_separator};
         box-sizing: border-box;
         cursor: pointer;
+
+        &:focus-visible {
+          outline: 1px solid ${t.colors.borders_focus};
+          outline-offset: -1px;
+        }
 
         &:hover:not(:disabled) {
           background-color: ${t.colors.borders_button_light};

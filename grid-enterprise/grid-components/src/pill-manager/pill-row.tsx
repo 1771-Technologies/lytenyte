@@ -37,12 +37,23 @@ export function PillRow({
 
   return (
     <div
+      tabIndex={0}
+      onKeyDown={(event) => {
+        if (event.key === " " && hasOverflow) {
+          setExpanded((prev) => !prev);
+        }
+      }}
       className={css`
         display: grid;
         grid-template-columns: subgrid;
         grid-column: span 3;
         box-sizing: content-box;
         border-bottom: 1px solid ${t.colors.borders_separator};
+
+        &:focus-visible {
+          outline: 1px solid ${t.colors.borders_focus};
+          outline-offset: -1px;
+        }
       `}
     >
       <PillRowLabel label={label} icon={icon} hasOverflow={hasScroll} />
