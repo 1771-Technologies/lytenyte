@@ -46,13 +46,17 @@ export function Menu({ item, disabled: parentDisabled, parentId, depth, ...props
         onFocus={() => {
           store.activeId.set(parentId ?? null);
         }}
-        onClick={() => {
+        onClick={(e) => {
           if (disabled) return;
+          e.stopPropagation();
+          e.preventDefault();
           item.action({ item, state });
         }}
         onKeyDown={(e) => {
           if (disabled) return;
-          if (e.key === " " || e.key === "Enter") item.action({ item, state });
+          if (e.key === " " || e.key === "Enter") {
+            item.action({ item, state });
+          }
         }}
         aria-label={item.axe?.axeLabel}
         aria-describedby={item.axe?.axeDescription}
@@ -78,10 +82,13 @@ export function Menu({ item, disabled: parentDisabled, parentId, depth, ...props
         style={item.style}
         role={item.kind === "checkbox" ? "menuitemcheckbox" : "menuitemradio"}
         tabIndex={disabled ? undefined : -1}
-        onClick={() => {
+        onClick={(e) => {
           if (disabled) return;
           if (item.kind === "checkbox") item.onCheckChange({ item, state, checked: !item.checked });
           else item.onCheckChange({ item, state, checked: !item.checked });
+
+          e.stopPropagation();
+          e.preventDefault();
         }}
         onFocus={() => {
           store.activeId.set(parentId ?? null);

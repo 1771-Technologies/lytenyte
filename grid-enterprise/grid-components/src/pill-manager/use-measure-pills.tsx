@@ -6,6 +6,7 @@ import { useDrop } from "./use-row-groups-pills";
 import { t } from "@1771technologies/grid-design";
 import type { MenuItem, MenuItemCheckbox } from "@1771technologies/react-menu";
 import { PopoverMenu } from "../popover-menu/popover-menu";
+import { clsx } from "@1771technologies/js-utils";
 
 export function useMeasurePills(api: ApiEnterpriseReact<any>) {
   const sx = api.getState();
@@ -70,6 +71,8 @@ function Renderer({ api, item: { column } }: { item: PillRowItem; api: ApiEnterp
     return items;
   }, [allowed, api, column, name]);
 
+  const disabled = menuItems.length === 0;
+
   return (
     <div
       className={css`
@@ -86,19 +89,33 @@ function Renderer({ api, item: { column } }: { item: PillRowItem; api: ApiEnterp
 
           setOpen(true);
         }}
+        disabled={disabled}
         ref={target}
-        className={css`
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding-inline: ${t.spacing.space_02};
-          font-size: ${t.typography.body_s};
-          background-color: transparent;
-          border: none;
-          padding: 0px;
-          color: ${t.colors.primary_50};
-          cursor: pointer;
-        `}
+        className={clsx(
+          css`
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-inline: ${t.spacing.space_02};
+            font-size: ${t.typography.body_s};
+            background-color: transparent;
+            border: none;
+            padding: 0px;
+            color: ${t.colors.primary_50};
+            padding-block: 2px;
+            padding-inline: ${t.spacing.space_05};
+            cursor: pointer;
+            border-radius: ${t.spacing.box_radius_regular};
+
+            &:hover:not(:disabled) {
+              background-color: ${t.colors.backgrounds_button_light};
+            }
+          `,
+          disabled &&
+            css`
+              color: ${t.colors.primary_70};
+            `,
+        )}
       >
         {name}
       </button>

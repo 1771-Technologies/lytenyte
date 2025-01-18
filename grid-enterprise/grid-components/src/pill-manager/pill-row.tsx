@@ -111,7 +111,9 @@ function PillItem({
     <div
       role="button"
       tabIndex={-1}
-      onClick={() => onPillSelect(c)}
+      onClick={() => {
+        onPillSelect(c);
+      }}
       onKeyDown={(ev) => {
         if (ev.key === "Enter") onPillSelect(c);
       }}
