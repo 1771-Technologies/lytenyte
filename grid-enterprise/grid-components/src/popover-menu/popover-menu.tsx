@@ -66,7 +66,7 @@ export function PopoverMenu({
               align-items: center;
               padding-inline-start: ${t.spacing.space_25};
               padding-inline-end: ${t.spacing.space_20};
-              padding-block: ${t.spacing.space_20};
+              padding-block: ${t.spacing.space_10};
               min-width: 150px;
               border-radius: ${t.spacing.box_radius_medium};
               cursor: pointer;
