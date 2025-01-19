@@ -36,6 +36,7 @@ export function HeaderGroupDefault({ group, api }: HeaderGroupRendererProps) {
       {group.isCollapsible && (
         <button
           tabIndex={-1}
+          onClick={() => api.columnGroupToggle(group.id)}
           className={css`
             border: none;
             padding: 0px;

@@ -5,6 +5,7 @@ import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
 import { useHeaderCellRenderer } from "./use-header-cell-renderer";
 import { t } from "@1771technologies/grid-design";
 import { useHeaderMove } from "./use-header-move";
+import { COLUMN_EMPTY_PREFIX } from "@1771technologies/grid-constants";
 
 interface HeaderCellProps {
   readonly api: ApiCommunityReact<any>;
@@ -63,6 +64,33 @@ export function HeaderCell({
     columnIndex,
   );
 
+  if (api.columnIsEmpty(column)) {
+    return (
+      <div
+        role="button"
+        tabIndex={-1}
+        onClick={() => {
+          const id = column.id.replace(COLUMN_EMPTY_PREFIX, "").split("|>").slice(0, -1);
+
+          api.columnGroupToggle(id.join(api.getState().columnGroupIdDelimiter.peek()));
+        }}
+        style={style}
+        className={css`
+          grid-column-start: 1;
+          grid-column-end: 2;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: ${t.colors.text_dark};
+          cursor: pointer;
+        `}
+      >
+        +
+      </div>
+    );
+  }
+
   return (
     <div
       style={style}
@@ -72,6 +100,7 @@ export function HeaderCell({
         css`
           grid-column-start: 1;
           grid-column-end: 2;
+          overflow: hidden;
         `,
         isOver &&
           css`
