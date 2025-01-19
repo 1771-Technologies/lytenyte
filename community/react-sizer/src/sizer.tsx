@@ -111,6 +111,7 @@ export function Sizer({
 
   return (
     <div
+      {...props}
       style={{
         minHeight: "inherit",
         maxHeight: "inherit",
@@ -119,6 +120,7 @@ export function Sizer({
         minWidth: "inherit",
         maxWidth: "inherit",
         position: "relative",
+        ...props.style,
       }}
     >
       <div
@@ -136,14 +138,11 @@ export function Sizer({
       />
       {size && (
         <div
-          {...props}
           ref={elRef}
           style={{
-            ...props.style,
             width: size.innerWidth,
             height: size.innerHeight,
             position: "absolute",
-            overflow: "auto",
           }}
         >
           {children}

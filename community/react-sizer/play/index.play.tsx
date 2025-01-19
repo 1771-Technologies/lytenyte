@@ -39,7 +39,7 @@ export default function Play() {
               flex: 1;
             `}
           >
-            <Sizer onSizeChange={setObservedSize}>
+            <Sizer onSizeChange={setObservedSize} style={{ overflow: "auto" }}>
               <div
                 className={css`
                   width: calc(100% - 10px);
