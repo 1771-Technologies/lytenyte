@@ -1,0 +1,62 @@
+import type { ColumnGroupRowItem, ColumnPin } from "@1771technologies/grid-types/community";
+import { sizeFromCoord } from "@1771technologies/js-utils";
+import { useMemo, type CSSProperties } from "react";
+import { getTransform } from "../renderer/get-transform";
+
+export interface HeaderGroupCellProps {
+  readonly groupItem: ColumnGroupRowItem;
+  readonly pin: ColumnPin;
+  readonly rowStart: number;
+  readonly viewportWidth: number;
+
+  readonly xPositions: Uint32Array;
+  readonly startCount: number;
+  readonly centerCount: number;
+  readonly endCount: number;
+}
+export function HeaderGroupCell({
+  groupItem,
+  pin,
+  viewportWidth,
+  rowStart,
+  xPositions,
+}: HeaderGroupCellProps) {
+  const style = useMemo(() => {
+    const width = sizeFromCoord(groupItem.start, xPositions, groupItem.end - groupItem.start);
+
+    const isStart = pin === "start";
+    const isEnd = pin == "end";
+    const columnIndex = groupItem.start;
+
+    const x = isEnd
+      ? xPositions[columnIndex] - xPositions.at(-1)! + viewportWidth
+      : xPositions[columnIndex];
+
+    const style = {
+      transform: getTransform(x, 0),
+      gridRowStart: rowStart,
+      gridRowEnd: rowStart + 1,
+      width,
+    } as CSSProperties;
+
+    if (isStart || isEnd) {
+      style.insetInlineStart = "0px";
+      style.position = "sticky";
+      style.zIndex = 2;
+    }
+
+    return style;
+  }, [groupItem.end, groupItem.start, pin, rowStart, viewportWidth, xPositions]);
+
+  return (
+    <div
+      style={style}
+      className={css`
+        grid-column-start: 1;
+        grid-column-end: 1;
+      `}
+    >
+      Column Group Header
+    </div>
+  );
+}

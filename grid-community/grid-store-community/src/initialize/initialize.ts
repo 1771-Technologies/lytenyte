@@ -96,7 +96,6 @@ export function initialize<D, E>(
     rowGroupDisplayMode: signal(props.rowGroupDisplayMode ?? "single-column"),
     rowGroupFullWidthRowRenderer: signal(props.rowGroupFullWidthRowRenderer ?? null),
     rowGroupModel: rowGroupModelComputed(props.rowGroupModel ?? [], api),
-    rowGroupStickyParents: signal(props.rowGroupStickyParents ?? false),
 
     rowHeight: signal(props.rowHeight ?? ROW_HEIGHT),
     rowAutoHeightDefaultGuess: signal(props.rowAutoHeightDefaultGuess ?? ROW_HEIGHT),

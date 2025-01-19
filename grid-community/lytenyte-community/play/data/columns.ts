@@ -1,16 +1,16 @@
 import type { ColumnCommunityReact } from "@1771technologies/grid-types";
 
 export const columns: ColumnCommunityReact<any>[] = [
-  { id: "age", type: "number", pin: "start" },
+  { id: "age", groupPath: ["Information"], type: "number", pin: "start" },
   { id: "job" },
   { id: "balance", type: "number", pin: "start" },
   { id: "education", pin: "end" },
   { id: "marital" },
-  { id: "default", pin: "end" },
+  { id: "default", pin: "end", groupPath: ["Alpha"] },
   { id: "housing" },
-  { id: "loan" },
-  { id: "contact" },
-  { id: "day" },
+  { id: "loan", groupPath: ["Xeno", "Sigma"] },
+  { id: "contact", groupPath: ["Xeno", "Sigma"] },
+  { id: "day", groupPath: ["Xeno"] },
   { id: "month" },
   { id: "duration" },
   { id: "campaign" },

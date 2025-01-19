@@ -3,6 +3,7 @@ import { useGrid } from "../use-grid";
 import { useHeaderDisplayGridTemplate } from "./use-header-display-grid-template";
 import { t } from "@1771technologies/grid-design";
 import { useHeaderCells } from "./use-header-cells";
+import { useHeaderGroupCells } from "./use-header-group-cells";
 
 export function Header() {
   const { state, api } = useGrid();
@@ -14,6 +15,7 @@ export function Header() {
 
   const hierarchy = state.columnGroupLevels.use();
 
+  const headerGroupCells = useHeaderGroupCells(api);
   const headerCells = useHeaderCells(api);
 
   const gridTemplateRows = useHeaderDisplayGridTemplate(
@@ -39,6 +41,7 @@ export function Header() {
       `)}
       style={{ gridTemplateRows }}
     >
+      {headerGroupCells}
       {headerCells}
     </div>
   );

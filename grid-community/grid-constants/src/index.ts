@@ -21,8 +21,8 @@ export const GROUP_COLUMN_MULTI_PREFIX = `${GROUP_COLUMN_PREFIX}:multi:`;
 export const GROUP_COLUMN_SINGLE_ID = `${GROUP_COLUMN_PREFIX}:single`;
 export const GROUP_COLUMN_TREE_DATA = `${GROUP_COLUMN_PREFIX}:tree`;
 
-export const COLUMN_GROUP_HEADER_HEIGHT = 40;
-export const COLUMN_HEADER_HEIGHT = 40;
+export const COLUMN_GROUP_HEADER_HEIGHT = 28;
+export const COLUMN_HEADER_HEIGHT = 32;
 export const COLUMN_SCAN_DISTANCE = 20;
 export const PAGINATE_PAGE_SIZE = 50;
 
