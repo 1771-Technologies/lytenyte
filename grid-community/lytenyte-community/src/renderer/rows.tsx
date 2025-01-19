@@ -14,16 +14,23 @@ export function Rows() {
   const columns = state.columnsVisible.use();
   const refreshKey = state.internal.rowRefreshCount.use();
 
+  const rowCount = state.internal.rowCount.use();
+  const topCount = state.internal.rowTopCount.use();
+  const botCount = state.internal.rowBottomCount.use();
+
   const [fullWidthCache, cellCache] = useMemo(() => {
     void xPositions;
     void yPositions;
     void columns;
     void refreshKey;
+    void rowCount;
+    void topCount;
+    void botCount;
 
     return [{}, {}] as [Record<number, ReactNode>, Record<number, Record<number, ReactNode>>];
-  }, [columns, refreshKey, xPositions, yPositions]);
+  }, [botCount, columns, refreshKey, rowCount, topCount, xPositions, yPositions]);
 
-  const rowCount = state.internal.rowCount.use();
+  const firstBotIndex = rowCount - botCount;
 
   const cells = useMemo(() => {
     const els: ReactNode[] = [];
@@ -52,6 +59,9 @@ export function Rows() {
           const colIndex = cells[i++];
           const colSpan = cells[i++];
 
+          const row = api.rowByIndex(rowIndex);
+          if (!row) continue;
+
           cellCache[rowIndex] ??= {};
           cellCache[rowIndex][colIndex] = (
             <Cell
@@ -61,6 +71,8 @@ export function Rows() {
               rowIndex={rowIndex}
               rowSpan={rowSpan}
               colSpan={colSpan}
+              rowPin={rowIndex < topCount ? "top" : rowIndex >= firstBotIndex ? "bottom" : null}
+              rowNode={row}
               columnIndex={colIndex}
               yPositions={yPositions}
               xPositions={xPositions}
@@ -72,7 +84,18 @@ export function Rows() {
     }
 
     return els;
-  }, [api, cellCache, columns, fullWidthCache, layout, rowCount, xPositions, yPositions]);
+  }, [
+    api,
+    cellCache,
+    columns,
+    firstBotIndex,
+    fullWidthCache,
+    layout,
+    rowCount,
+    topCount,
+    xPositions,
+    yPositions,
+  ]);
 
   return <>{cells}</>;
 }

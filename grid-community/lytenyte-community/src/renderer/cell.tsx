@@ -4,6 +4,7 @@ import { t } from "@1771technologies/grid-design";
 import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
 import { useCellStyle } from "./cell/use-cell-style";
 import { useCellRenderer } from "./cell/use-cell-renderer";
+import type { RowNode, RowPin } from "@1771technologies/grid-types/community";
 
 export interface CellProps {
   readonly api: ApiCommunityReact<any>;
@@ -12,6 +13,8 @@ export interface CellProps {
   readonly column: ColumnCommunityReact<any>;
   readonly rowSpan: number;
   readonly colSpan: number;
+  readonly rowPin: RowPin;
+  readonly rowNode: RowNode<any>;
   readonly xPositions: Uint32Array;
   readonly yPositions: Uint32Array;
 }
@@ -24,6 +27,7 @@ function CellImpl({
   yPositions,
   xPositions,
   column,
+  rowNode,
   api,
 }: CellProps) {
   const row = rowIndex % 2 ? rowClx : rowAltClx;
@@ -41,8 +45,6 @@ function CellImpl({
     column,
   );
 
-  const rowNode = api.rowByIndex(rowIndex);
-  if (!rowNode) return null;
   return (
     <div style={cx.style} className={clsx(rowBaseClx, row)}>
       <Renderer api={api} column={column} columnIndex={columnIndex} row={rowNode} />
