@@ -15,8 +15,6 @@ export function useHeaderCells(api: ApiCommunityReact<any>) {
   const endCount = sx.columnVisibleEndCount.use();
   const viewportWidth = sx.internal.viewportInnerWidth.use();
 
-  console.log(hierarchy);
-
   return useMemo(() => {
     const cells: ReactNode[] = [];
     const columnRowCount = hierarchy.length + 1;

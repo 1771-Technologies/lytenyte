@@ -1,8 +1,9 @@
 import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
 import { useMemo, type CSSProperties } from "react";
 import { getTransform } from "../renderer/get-transform";
-import { sizeFromCoord } from "@1771technologies/js-utils";
+import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
 import { useHeaderCellRenderer } from "./use-header-cell-renderer";
+import { t } from "@1771technologies/grid-design";
 
 interface HeaderCellProps {
   readonly api: ApiCommunityReact<any>;
@@ -27,10 +28,9 @@ export function HeaderCell({
   rowEnd,
   xPositions,
 }: HeaderCellProps) {
+  const isStart = column.pin === "start";
+  const isEnd = column.pin === "end";
   const style = useMemo(() => {
-    const isStart = column.pin === "start";
-    const isEnd = column.pin == "end";
-
     const x = isEnd
       ? xPositions[columnIndex] - xPositions.at(-1)! + viewportWidth
       : xPositions[columnIndex];
@@ -50,7 +50,7 @@ export function HeaderCell({
     }
 
     return style;
-  }, [column.pin, columnIndex, rowEnd, rowStart, viewportWidth, xPositions]);
+  }, [columnIndex, isEnd, isStart, rowEnd, rowStart, viewportWidth, xPositions]);
 
   const Renderer = useHeaderCellRenderer(api, column);
 
@@ -63,6 +63,25 @@ export function HeaderCell({
       `}
     >
       <Renderer api={api} column={column} columnIndex={columnIndex} />
+      <div
+        className={clsx(
+          !isEnd &&
+            css`
+              inset-inline-end: 0px;
+            `,
+          isEnd &&
+            css`
+              inset-inline-start: 0px;
+            `,
+          css`
+            position: absolute;
+            width: 1px;
+            height: calc(100% - 12px);
+            background-color: ${t.colors.borders_pin_separator};
+            top: 6px;
+          `,
+        )}
+      />
     </div>
   );
 }
