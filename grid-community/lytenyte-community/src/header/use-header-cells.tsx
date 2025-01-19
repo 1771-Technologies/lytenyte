@@ -30,6 +30,7 @@ export function useHeaderCells(api: ApiCommunityReact<any>) {
 
       cells.push(
         <HeaderCell
+          api={api}
           column={column}
           columnIndex={i}
           viewportWidth={viewportWidth}
@@ -58,6 +59,7 @@ export function useHeaderCells(api: ApiCommunityReact<any>) {
 
     return cells;
   }, [
+    api,
     bounds.columnEnd,
     bounds.columnStart,
     centerCount,

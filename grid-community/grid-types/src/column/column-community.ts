@@ -30,7 +30,6 @@ export interface Column<A, D, E> {
 
   readonly headerName?: string;
   readonly headerRenderer?: string | ColumnHeaderRenderer<A, this, E>;
-  readonly headerClass?: string;
   readonly headerAutosizeFunc?: (c: AutosizeHeaderParameters<A, this>) => number;
 
   readonly aggFunc?: AggBuiltIns | (string & {}) | AggFunc<A>;

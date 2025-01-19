@@ -1,9 +1,11 @@
-import type { ColumnCommunityReact } from "@1771technologies/grid-types";
+import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
 import { useMemo, type CSSProperties } from "react";
 import { getTransform } from "../renderer/get-transform";
 import { sizeFromCoord } from "@1771technologies/js-utils";
+import { useHeaderCellRenderer } from "./use-header-cell-renderer";
 
 interface HeaderCellProps {
+  readonly api: ApiCommunityReact<any>;
   readonly column: ColumnCommunityReact<any>;
   readonly columnIndex: number;
   readonly viewportWidth: number;
@@ -17,6 +19,7 @@ interface HeaderCellProps {
 }
 
 export function HeaderCell({
+  api,
   column,
   columnIndex,
   viewportWidth,
@@ -49,6 +52,8 @@ export function HeaderCell({
     return style;
   }, [column.pin, columnIndex, rowEnd, rowStart, viewportWidth, xPositions]);
 
+  const Renderer = useHeaderCellRenderer(api, column);
+
   return (
     <div
       style={style}
@@ -57,7 +62,7 @@ export function HeaderCell({
         grid-column-end: 2;
       `}
     >
-      {column.headerName ?? column.id}
+      <Renderer api={api} column={column} columnIndex={columnIndex} />
     </div>
   );
 }
