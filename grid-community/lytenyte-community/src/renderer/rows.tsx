@@ -54,13 +54,23 @@ export function Rows({ width }: { width: number }) {
 
       const place = isCenter ? center : isTop ? top : bottom;
 
+      const row = api.rowByIndex(rowIndex);
+      if (!row) continue;
+
       let i = 0;
       while (i < cells.length) {
         const encoding = cells[i];
 
         if (encoding === FULL_ENCODING) {
           fullWidthCache[rowIndex] ??= (
-            <CellFullWidth key={`${rowIndex}-full`} rowIndex={rowIndex} yPositions={yPositions} />
+            <CellFullWidth
+              api={api}
+              row={row}
+              rowPin={rowIndex < topCount ? "top" : rowIndex >= firstBotIndex ? "bottom" : null}
+              key={`${rowIndex}-full`}
+              rowIndex={rowIndex}
+              yPositions={yPositions}
+            />
           );
 
           place.push(fullWidthCache[rowIndex]);
@@ -72,9 +82,6 @@ export function Rows({ width }: { width: number }) {
           const rowSpan = cells[i++];
           const colIndex = cells[i++];
           const colSpan = cells[i++];
-
-          const row = api.rowByIndex(rowIndex);
-          if (!row) continue;
 
           cellCache[rowIndex] ??= {};
           cellCache[rowIndex][colIndex] = (
@@ -126,7 +133,7 @@ export function Rows({ width }: { width: number }) {
           }}
           className={css`
             position: sticky;
-            background-color: red;
+            background-color: ${t.colors.backgrounds_row};
             z-index: 4;
             &::after {
               position: absolute;
@@ -160,7 +167,7 @@ export function Rows({ width }: { width: number }) {
         }}
         className={css`
           position: sticky;
-          background-color: gray;
+          background-color: ${t.colors.backgrounds_row};
           z-index: 4;
 
           &::before {
