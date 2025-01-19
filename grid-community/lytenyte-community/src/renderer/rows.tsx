@@ -118,14 +118,18 @@ export function Rows({ width }: { width: number }) {
     yPositions,
   ]);
 
+  const viewportWidth = state.internal.viewportInnerWidth.use();
+  const endCount = state.columnVisibleEndCount.use();
+
+  const minWidth = Math.max(endCount > 0 ? viewportWidth : 0, width);
+
   return (
     <>
       {topHeight > 0 && (
         <div
           style={{
             width,
-            minWidth: width,
-            maxWidth: width,
+            minWidth,
             top: headerHeight,
             height: topHeight,
             minHeight: topHeight,
@@ -149,8 +153,13 @@ export function Rows({ width }: { width: number }) {
         </div>
       )}
       <div
+        style={{
+          width,
+          minWidth,
+        }}
         className={css`
           flex: 1;
+          background-color: ${t.colors.backgrounds_row};
         `}
       >
         {center}
@@ -159,8 +168,7 @@ export function Rows({ width }: { width: number }) {
         style={{
           bottom: 0,
           width,
-          minWidth: width,
-          maxWidth: width,
+          minWidth,
           height: botHeight,
           minHeight: botHeight,
           maxHeight: botHeight,
