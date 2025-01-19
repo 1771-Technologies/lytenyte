@@ -5,6 +5,7 @@ import { t } from "@1771technologies/grid-design";
 import { useHeaderCells } from "./use-header-cells";
 import { useHeaderGroupCells } from "./use-header-group-cells";
 import { useHeaderDividers } from "./header-divider/use-header-dividers";
+import type { CSSProperties } from "react";
 
 export function Header() {
   const { state, api } = useGrid();
@@ -27,6 +28,7 @@ export function Header() {
     floatingRowEnabled,
     floatingRowHeight,
   );
+  const headerHeight = state.internal.viewportHeaderHeight.use();
 
   return (
     <div
@@ -41,7 +43,12 @@ export function Header() {
 
         border-bottom: 1px solid ${t.colors.borders_default};
       `)}
-      style={{ gridTemplateRows }}
+      style={
+        {
+          gridTemplateRows,
+          "--lng1771-header-height": `${headerHeight - (floatingRowEnabled ? floatingRowHeight : 0)}px`,
+        } as CSSProperties
+      }
     >
       {headerGroupCells}
       {headerCells}
