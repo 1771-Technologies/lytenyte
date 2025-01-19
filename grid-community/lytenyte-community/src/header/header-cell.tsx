@@ -1,6 +1,7 @@
 import type { ColumnCommunityReact } from "@1771technologies/grid-types";
 import { useMemo, type CSSProperties } from "react";
 import { getTransform } from "../renderer/get-transform";
+import { sizeFromCoord } from "@1771technologies/js-utils";
 
 interface HeaderCellProps {
   readonly column: ColumnCommunityReact<any>;
@@ -31,10 +32,12 @@ export function HeaderCell({
       ? xPositions[columnIndex] - xPositions.at(-1)! + viewportWidth
       : xPositions[columnIndex];
 
+    const width = sizeFromCoord(columnIndex, xPositions);
     const style = {
       transform: getTransform(x, 0),
       gridRowStart: rowStart,
       gridRowEnd: rowEnd,
+      width,
     } as CSSProperties;
 
     if (isStart || isEnd) {
@@ -45,6 +48,7 @@ export function HeaderCell({
 
     return style;
   }, [column.pin, columnIndex, rowEnd, rowStart, viewportWidth, xPositions]);
+
   return (
     <div
       style={style}
