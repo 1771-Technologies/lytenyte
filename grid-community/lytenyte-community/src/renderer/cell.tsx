@@ -48,7 +48,7 @@ function CellImpl({
   );
 
   return (
-    <div style={cx.style} className={clsx(rowBaseClx, row)}>
+    <div style={cx.style} className={clsx(rowBaseClx, row, cx.className)}>
       <Renderer api={api} column={column} columnIndex={columnIndex} row={rowNode} />
     </div>
   );

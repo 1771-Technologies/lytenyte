@@ -5,7 +5,7 @@ import { bankDataSmall } from "./data/bank-data-small";
 import { useState } from "react";
 
 export default function Play() {
-  const x = useState(() =>
+  const [grid] = useState(() =>
     makeStore({
       gridId: "x",
       columns: columns,
@@ -15,12 +15,28 @@ export default function Play() {
         topData: bankDataSmall.slice(0, 2),
         bottomData: bankDataSmall.slice(2, 4),
       },
+      rtl: true,
     }),
   );
 
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
-      <LyteNyteCommunity grid={x[0]} />
+    <div
+      className={css`
+        display: flex;
+        flex-direction: column;
+      `}
+      style={{ width: "100vw", height: "100vh" }}
+    >
+      <div>
+        <button onClick={() => grid.state.rtl.set((prev) => !prev)}>RTL</button>
+      </div>
+      <div
+        className={css`
+          flex: 1;
+        `}
+      >
+        <LyteNyteCommunity grid={grid} />
+      </div>
     </div>
   );
 }

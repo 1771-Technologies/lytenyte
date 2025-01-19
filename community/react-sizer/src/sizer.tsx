@@ -158,6 +158,7 @@ export function Sizer({
             height: size.innerHeight,
             position: "absolute",
             overflow: "auto",
+            ...props.style,
           }}
         >
           {children}

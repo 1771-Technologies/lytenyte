@@ -3,7 +3,6 @@ import { useEvent } from "@1771technologies/react-utils";
 import { useGrid } from "../use-grid";
 import { Header } from "./header";
 import { Rows } from "./rows";
-import { PinBorders } from "./pin-borders";
 import { useEffect, useRef } from "react";
 import { IsoResizeObserver } from "@1771technologies/js-utils";
 
@@ -61,18 +60,20 @@ export function Viewport() {
   const totalHeight = state.internal.rowPositions.use().at(-1)!;
   const totalWidth = state.internal.columnPositions.use().at(-1)!;
 
+  const rtl = state.rtl.use();
+
   return (
     <Sizer
       onInit={onInit}
       onSizeChange={onSizeChange}
       onScroll={onScroll}
       elRef={ref}
+      style={{ direction: rtl ? "rtl" : undefined }}
       className={css`
         display: grid;
         grid-template-rows: 0px auto 1fr;
       `}
     >
-      <PinBorders />
       <Header
         style={{ width: totalWidth, height: 100 }}
         className={css`
