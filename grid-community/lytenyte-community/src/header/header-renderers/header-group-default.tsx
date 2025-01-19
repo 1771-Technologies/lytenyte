@@ -33,28 +33,30 @@ export function HeaderGroupDefault({ group, api }: HeaderGroupRendererProps) {
       `}
     >
       {label}
-      <button
-        tabIndex={-1}
-        className={css`
-          border: none;
-          padding: 0px;
-          font-weight: 600;
-          height: 24px;
-          width: 24px;
-          border-radius: ${t.spacing.box_radius_regular};
-          cursor: pointer;
+      {group.isCollapsible && (
+        <button
+          tabIndex={-1}
+          className={css`
+            border: none;
+            padding: 0px;
+            font-weight: 600;
+            height: 24px;
+            width: 24px;
+            border-radius: ${t.spacing.box_radius_regular};
+            cursor: pointer;
 
-          background-color: ${t.colors.backgrounds_default};
-          &:focus-visible {
-            outline: none;
-          }
-          &:hover {
-            background-color: ${t.colors.backgrounds_button_light};
-          }
-        `}
-      >
-        -
-      </button>
+            background-color: ${t.colors.backgrounds_default};
+            &:focus-visible {
+              outline: none;
+            }
+            &:hover {
+              background-color: ${t.colors.backgrounds_button_light};
+            }
+          `}
+        >
+          -
+        </button>
+      )}
     </div>
   );
 }

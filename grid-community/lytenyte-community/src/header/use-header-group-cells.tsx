@@ -1,7 +1,7 @@
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
 import { useMemo, type ReactNode } from "react";
 import { HeaderGroupCell } from "./header-group-cell";
-import type { ColumnGroupRow, ColumnPin } from "@1771technologies/grid-types/community";
+import type { ColumnGroupRowItem, ColumnPin } from "@1771technologies/grid-types/community";
 
 export function useHeaderGroupCells(api: ApiCommunityReact<any>) {
   const sx = api.getState();
@@ -18,12 +18,10 @@ export function useHeaderGroupCells(api: ApiCommunityReact<any>) {
   return useMemo(() => {
     const cells: ReactNode[] = [];
 
-    function handleCell(i: number, level: ColumnGroupRow, levelIndex: number, pin: ColumnPin) {
-      const groupItem = level[i];
-      if (!groupItem) return;
-
+    function handleCell(groupItem: ColumnGroupRowItem, levelIndex: number, pin: ColumnPin) {
       cells.push(
         <HeaderGroupCell
+          key={groupItem.occurrenceKey}
           api={api}
           groupItem={groupItem}
           pin={pin}
@@ -42,19 +40,28 @@ export function useHeaderGroupCells(api: ApiCommunityReact<any>) {
       const row = hierarchy[level];
 
       for (let i = 0; i < startCount; i++) {
-        if (!processedIndices.has(i)) handleCell(i, row, level, "start");
-        processedIndices.add(i);
+        const groupItem = row[i];
+        if (!groupItem) continue;
+
+        if (!processedIndices.has(i)) handleCell(groupItem, level, "start");
+        for (let j = groupItem.start; j < groupItem.end; j++) processedIndices.add(j);
       }
 
       for (let i = bounds.columnStart; i < bounds.columnEnd; i++) {
-        if (!processedIndices.has(i)) handleCell(i, row, level, null);
-        processedIndices.add(i);
+        const groupItem = row[i];
+        if (!groupItem) continue;
+
+        if (!processedIndices.has(i)) handleCell(groupItem, level, null);
+        for (let j = groupItem.start; j < groupItem.end; j++) processedIndices.add(j);
       }
 
       const first = startCount + centerCount;
       for (let i = first; i < row.length; i++) {
-        if (!processedIndices.has(i)) handleCell(i, row, level, "end");
-        processedIndices.add(i);
+        const groupItem = row[i];
+        if (!groupItem) continue;
+
+        if (!processedIndices.has(i)) handleCell(groupItem, level, "end");
+        for (let j = groupItem.start; j < groupItem.end; j++) processedIndices.add(j);
       }
     }
 
