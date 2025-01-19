@@ -12,9 +12,11 @@ export function useResizeDivider(api: ApiCommunityReact<any>, column: ColumnComm
     if (!isResizable) return {};
 
     const onPointerDown = (_: PointerEvent) => {
+      const startWidth = api.columnVisualWidth(column);
+      const isRtl = api.getState().rtl.peek();
+
       let startX: number | null = null;
       let anim: number | null = null;
-      const startWidth = api.columnVisualWidth(column);
       let delta = 0;
 
       if (timeOutRef.current) clearTimeout(timeOutRef.current);
@@ -34,8 +36,9 @@ export function useResizeDivider(api: ApiCommunityReact<any>, column: ColumnComm
             return;
           }
           const endAdjust = column.pin === "end" ? -1 : 1;
+          const rtlAdjust = isRtl ? -1 : 1;
 
-          delta = (getClientX(ev) - startX!) * endAdjust;
+          delta = (getClientX(ev) - startX!) * endAdjust * rtlAdjust;
 
           if (anim) cancelAnimationFrame(anim);
           anim = requestAnimationFrame(() => {
