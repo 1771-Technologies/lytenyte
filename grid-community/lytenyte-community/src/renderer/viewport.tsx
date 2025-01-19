@@ -3,6 +3,7 @@ import { useEvent } from "@1771technologies/react-utils";
 import { useGrid } from "../use-grid";
 import { Header } from "./header";
 import { Rows } from "./rows";
+import { PinBorders } from "./pin-borders";
 
 export function Viewport() {
   const { state } = useGrid();
@@ -52,6 +53,7 @@ export function Viewport() {
         grid-template-rows: auto 1fr;
       `}
     >
+      <PinBorders />
       <Header
         style={{ width: totalWidth, height: 200 }}
         className={css`
