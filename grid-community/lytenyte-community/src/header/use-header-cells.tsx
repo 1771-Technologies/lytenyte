@@ -5,18 +5,21 @@ import { HeaderCell } from "./header-cell";
 export function useHeaderCells(api: ApiCommunityReact<any>) {
   const sx = api.getState();
   const visibleColumns = sx.columnsVisible.use();
+  const xPositions = sx.columnPositions.use();
 
   const bounds = sx.internal.virtBounds.use();
   const hierarchy = sx.columnGroupLevels.use();
 
   const startCount = sx.columnVisibleStartCount.use();
+  const centerCount = sx.columnVisibleCenterCount.use();
   const endCount = sx.columnVisibleEndCount.use();
+  const viewportWidth = sx.internal.viewportInnerWidth.use();
 
   return useMemo(() => {
     const cells: ReactNode[] = [];
     const columnRowCount = hierarchy.length + 1;
 
-    for (let i = 0; i < startCount; i++) {
+    function handleCell(i: number) {
       const column = visibleColumns[i];
       let rowStart = columnRowCount;
       let level = columnRowCount - 2;
@@ -25,33 +28,44 @@ export function useHeaderCells(api: ApiCommunityReact<any>) {
         level--;
       }
 
-      cells.push(<HeaderCell column={column} rowStart={rowStart} rowEnd={columnRowCount + 1} />);
+      cells.push(
+        <HeaderCell
+          column={column}
+          columnIndex={i}
+          viewportWidth={viewportWidth}
+          xPositions={xPositions}
+          rowStart={rowStart}
+          rowEnd={columnRowCount + 1}
+          startCount={startCount}
+          centerCount={centerCount}
+          endCount={endCount}
+        />,
+      );
+    }
+
+    for (let i = 0; i < startCount; i++) {
+      handleCell(i);
     }
 
     for (let i = bounds.columnStart; i < bounds.columnEnd; i++) {
-      const column = visibleColumns[i];
-      let rowStart = columnRowCount;
-      let level = columnRowCount - 2;
-      while (hierarchy[level]?.[i] === null) {
-        rowStart--;
-        level--;
-      }
-
-      cells.push(<HeaderCell column={column} rowStart={rowStart} rowEnd={columnRowCount + 1} />);
+      handleCell(i);
     }
 
-    const first = visibleColumns.length - endCount;
+    const first = startCount + centerCount;
     for (let i = first; i < visibleColumns.length; i++) {
-      const column = visibleColumns[i];
-      let rowStart = columnRowCount;
-      let level = columnRowCount - 2;
-      while (hierarchy[level]?.[i] === null) {
-        rowStart--;
-        level--;
-      }
-      cells.push(<HeaderCell column={column} rowStart={rowStart} rowEnd={columnRowCount + 1} />);
+      handleCell(i);
     }
 
     return cells;
-  }, [bounds.columnEnd, bounds.columnStart, endCount, hierarchy, startCount, visibleColumns]);
+  }, [
+    bounds.columnEnd,
+    bounds.columnStart,
+    centerCount,
+    endCount,
+    hierarchy,
+    startCount,
+    viewportWidth,
+    visibleColumns,
+    xPositions,
+  ]);
 }
