@@ -1,9 +1,9 @@
-import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
-import { memo, useMemo, type CSSProperties } from "react";
-import { getTransform } from "./get-transform";
+import { clsx } from "@1771technologies/js-utils";
+import { memo, useMemo } from "react";
 import { t } from "@1771technologies/grid-design";
 import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
 import { CellRendererDefault } from "./renderers/cell-renderer-default";
+import { useCellStyle } from "./cell/use-cell-style";
 
 export interface CellProps {
   readonly api: ApiCommunityReact<any>;
@@ -27,8 +27,6 @@ function CellImpl({
   api,
 }: CellProps) {
   const sx = api.getState();
-  const height = sizeFromCoord(rowIndex, yPositions, rowSpan);
-  const width = sizeFromCoord(columnIndex, xPositions, colSpan);
 
   const row = rowIndex % 2 ? rowClx : rowAltClx;
 
@@ -48,49 +46,22 @@ function CellImpl({
 
   const rowNode = api.rowByIndex(rowIndex);
 
-  const pinStart = column.pin === "start";
-  const pinEnd = column.pin === "end";
-
   const viewportWidth = sx.internal.viewportInnerWidth.use();
-  const styles = useMemo(() => {
-    const transform = getTransform(xPositions[columnIndex], yPositions[rowIndex]);
-    const style = { height, width, transform } as CSSProperties;
 
-    if (pinStart) style.insetInlineStart = "0px";
-    if (pinEnd) {
-      style.insetInlineStart = "0px";
-      const x = xPositions[columnIndex] - xPositions.at(-1)! + viewportWidth;
-
-      style.transform = getTransform(x, yPositions[rowIndex]);
-    }
-
-    return style;
-  }, [
-    columnIndex,
-    height,
-    pinEnd,
-    pinStart,
-    rowIndex,
-    viewportWidth,
-    width,
+  const style = useCellStyle(
     xPositions,
     yPositions,
-  ]);
+    columnIndex,
+    rowIndex,
+    colSpan,
+    rowSpan,
+    column,
+    viewportWidth,
+  );
 
   if (!rowNode) return null;
   return (
-    <div
-      style={styles}
-      className={clsx(
-        rowBaseClx,
-        row,
-        (pinStart || pinEnd) &&
-          css`
-            position: sticky;
-            z-index: 2;
-          `,
-      )}
-    >
+    <div style={style} className={clsx(rowBaseClx, row)}>
       <Renderer api={api} column={column} columnIndex={columnIndex} row={rowNode} />
     </div>
   );
