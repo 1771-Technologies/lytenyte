@@ -3,6 +3,7 @@ import { useGrid } from "../use-grid";
 import { END_ENCODING, FULL_ENCODING } from "@1771technologies/grid-constants";
 import { Cell } from "./cell";
 import { CellFullWidth } from "./cell-full-width";
+import { t } from "@1771technologies/grid-design";
 
 export function Rows({ width }: { width: number }) {
   const { state, api } = useGrid();
@@ -112,24 +113,34 @@ export function Rows({ width }: { width: number }) {
 
   return (
     <>
-      <div
-        style={{
-          width,
-          minWidth: width,
-          maxWidth: width,
-          top: headerHeight,
-          height: topHeight,
-          minHeight: topHeight,
-          maxHeight: topHeight,
-        }}
-        className={css`
-          position: sticky;
-          background-color: red;
-          z-index: 4;
-        `}
-      >
-        {top}
-      </div>
+      {topHeight > 0 && (
+        <div
+          style={{
+            width,
+            minWidth: width,
+            maxWidth: width,
+            top: headerHeight,
+            height: topHeight,
+            minHeight: topHeight,
+            maxHeight: topHeight,
+          }}
+          className={css`
+            position: sticky;
+            background-color: red;
+            z-index: 4;
+            &::after {
+              position: absolute;
+              bottom: -1px;
+              width: 100%;
+              height: 1px;
+              content: "";
+              background-color: ${t.colors.borders_pin_separator};
+            }
+          `}
+        >
+          {top}
+        </div>
+      )}
       <div
         className={css`
           flex: 1;
@@ -143,6 +154,15 @@ export function Rows({ width }: { width: number }) {
           position: sticky;
           background-color: gray;
           z-index: 4;
+
+          &::before {
+            position: absolute;
+            top: -1px;
+            width: 100%;
+            height: 1px;
+            content: "";
+            background-color: ${t.colors.borders_pin_separator};
+          }
         `}
       >
         {bottom}

@@ -38,6 +38,7 @@
   --lng1771-backgrounds-row-selected: #1c2b44;
 
   --lng1771-borders-row: var(--lng1771-gray-05);
+  --lng1771-borders-pin-separator: var(--lng1771-gray-50);
   --lng1771-borders-default: var(--lng1771-gray-10);
   --lng1771-borders-strong: var(--lng1771-gray-20);
   --lng1771-borders-button-light: var(--lng1771-gray-30);

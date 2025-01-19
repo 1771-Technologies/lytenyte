@@ -33,7 +33,7 @@ export function PinBorders() {
           className={css`
             position: absolute;
             width: 1px;
-            background-color: ${t.colors.borders_separator};
+            background-color: ${t.colors.borders_pin_separator};
             top: 0px;
           `}
           style={{ height: viewportHeight, insetInlineStart: xPositions.at(startCount)! }}
@@ -44,7 +44,7 @@ export function PinBorders() {
           className={css`
             position: absolute;
             width: 1px;
-            background-color: ${t.colors.borders_separator};
+            background-color: ${t.colors.borders_pin_separator};
             top: 0px;
           `}
           style={{ height: viewportHeight, insetInlineStart: endX - 1 }}

@@ -35,6 +35,7 @@ export type Theme = {
     readonly backgrounds_ui_panel: string;
     readonly backgrounds_row_selected: string;
     readonly borders_row: string;
+    readonly borders_pin_separator: string;
     readonly borders_default: string;
     readonly borders_strong: string;
     readonly borders_button_light: string;

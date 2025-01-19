@@ -42,6 +42,7 @@ export const t: Theme = {
     backgrounds_row_selected:            "var(--lng1771-backgrounds-row-selected)",
     
     borders_row:                         "var(--lng1771-borders-row)",
+    borders_pin_separator:               "var(--lng1771-borders-pin-separator)",
     borders_default:                     "var(--lng1771-borders-default)",
     borders_strong:                      "var(--lng1771-borders-strong)",
     borders_button_light:                "var(--lng1771-borders-button-light)",

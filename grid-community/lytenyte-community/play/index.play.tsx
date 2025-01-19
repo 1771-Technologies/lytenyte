@@ -13,7 +13,7 @@ export default function Play() {
         kind: "client",
         data: bankDataSmall,
         topData: bankDataSmall.slice(0, 2),
-        bottomData: bankDataSmall.slice(0, 1),
+        bottomData: bankDataSmall.slice(2, 4),
       },
     }),
   );
