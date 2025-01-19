@@ -3,6 +3,7 @@ import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
 import { useMemo, type CSSProperties } from "react";
 import { getTransform } from "../../renderer/get-transform";
 import { t } from "@1771technologies/grid-design";
+import { useResizeDivider } from "./use-resize-divider";
 
 interface HeaderDividerProps {
   readonly api: ApiCommunityReact<any>;
@@ -31,6 +32,8 @@ export function HeaderDivider({
   endCount,
 }: HeaderDividerProps) {
   const isResizable = api.columnIsResizable(column);
+
+  const resizeProps = useResizeDivider(api, column);
 
   const style = useMemo(() => {
     const isStart = column.pin === "start";
@@ -69,6 +72,7 @@ export function HeaderDivider({
 
   return (
     <div
+      {...resizeProps}
       className={clsx(
         css`
           grid-column-start: 1;
