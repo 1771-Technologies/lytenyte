@@ -24,6 +24,8 @@ export function useHeaderMove(
       const src = data.columns.map((c) => c.id);
       const target = column.id;
 
+      if (src.includes(target)) return;
+
       if (isBefore) api.columnMoveBefore(src, target);
       else api.columnMoveAfter(src, target);
     },

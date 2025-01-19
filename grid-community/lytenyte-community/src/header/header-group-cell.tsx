@@ -4,6 +4,7 @@ import { useMemo, type CSSProperties } from "react";
 import { getTransform } from "../renderer/get-transform";
 import { HeaderGroupDefault } from "./header-renderers/header-group-default";
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
+import { useHeaderGroupMove } from "./use-header-group-move";
 
 export interface HeaderGroupCellProps {
   readonly api: ApiCommunityReact<any>;
@@ -54,9 +55,12 @@ export function HeaderGroupCell({
     return style;
   }, [groupItem.end, groupItem.start, pin, rowStart, rtl, viewportWidth, xPositions]);
 
+  const headerMove = useHeaderGroupMove(api, groupItem, pin);
+
   return (
     <div
       style={style}
+      {...headerMove.moveProps}
       className={css`
         grid-column-start: 1;
         grid-column-end: 1;
