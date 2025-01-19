@@ -50,7 +50,7 @@ export function Viewport() {
       elRef={ref}
       className={css`
         display: grid;
-        grid-template-rows: auto 1fr;
+        grid-template-rows: 0px auto 1fr;
       `}
     >
       <PinBorders />

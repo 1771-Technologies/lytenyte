@@ -28,6 +28,7 @@ function CellImpl({
   xPositions,
   column,
   rowNode,
+  rowPin,
   api,
 }: CellProps) {
   const row = rowIndex % 2 ? rowClx : rowAltClx;
@@ -43,6 +44,7 @@ function CellImpl({
     colSpan,
     rowSpan,
     column,
+    rowPin,
   );
 
   return (

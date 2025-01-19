@@ -22,7 +22,7 @@ export function PinBorders() {
         height: 0px;
         top: 0px;
         inset-inline-start: 0px;
-        z-index: 2;
+        z-index: 5;
       `}
     >
       {startCount > 0 && (
