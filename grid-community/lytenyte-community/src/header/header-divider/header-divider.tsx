@@ -35,6 +35,7 @@ export function HeaderDivider({
 
   const resizeProps = useResizeDivider(api, column);
 
+  const rtl = api.getState().rtl.use();
   const style = useMemo(() => {
     const isStart = column.pin === "start";
     const isEnd = column.pin == "end";
@@ -46,7 +47,7 @@ export function HeaderDivider({
       : xPositions[columnIndex] + sizeFromCoord(columnIndex, xPositions) - 3 - endAdjustment;
 
     const style = {
-      transform: getTransform(x, 0),
+      transform: getTransform(x * (rtl ? -1 : 1), 0),
       gridRowStart: rowStart,
       gridRowEnd: rowEnd,
     } as CSSProperties;
@@ -65,6 +66,7 @@ export function HeaderDivider({
     endCount,
     rowEnd,
     rowStart,
+    rtl,
     startCount,
     viewportWidth,
     xPositions,

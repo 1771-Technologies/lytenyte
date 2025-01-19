@@ -26,6 +26,7 @@ export function HeaderGroupCell({
   rowStart,
   xPositions,
 }: HeaderGroupCellProps) {
+  const rtl = api.getState().rtl.use();
   const style = useMemo(() => {
     const isStart = pin === "start";
     const isEnd = pin == "end";
@@ -38,7 +39,7 @@ export function HeaderGroupCell({
       : xPositions[columnIndex];
 
     const style = {
-      transform: getTransform(x, 0),
+      transform: getTransform(x * (rtl ? -1 : 1), 0),
       gridRowStart: rowStart,
       gridRowEnd: rowStart + 1,
       width,
@@ -51,7 +52,7 @@ export function HeaderGroupCell({
     }
 
     return style;
-  }, [groupItem.end, groupItem.start, pin, rowStart, viewportWidth, xPositions]);
+  }, [groupItem.end, groupItem.start, pin, rowStart, rtl, viewportWidth, xPositions]);
 
   return (
     <div

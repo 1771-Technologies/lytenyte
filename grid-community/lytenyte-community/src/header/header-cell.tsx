@@ -29,6 +29,8 @@ export function HeaderCell({
 }: HeaderCellProps) {
   const isStart = column.pin === "start";
   const isEnd = column.pin === "end";
+
+  const rtl = api.getState().rtl.use();
   const style = useMemo(() => {
     const x = isEnd
       ? xPositions[columnIndex] - xPositions.at(-1)! + viewportWidth
@@ -36,7 +38,7 @@ export function HeaderCell({
 
     const width = sizeFromCoord(columnIndex, xPositions);
     const style = {
-      transform: getTransform(x, 0),
+      transform: getTransform(x * (rtl ? -1 : 1), 0),
       gridRowStart: rowStart,
       gridRowEnd: rowEnd,
       width,
@@ -49,7 +51,7 @@ export function HeaderCell({
     }
 
     return style;
-  }, [columnIndex, isEnd, isStart, rowEnd, rowStart, viewportWidth, xPositions]);
+  }, [columnIndex, isEnd, isStart, rowEnd, rowStart, rtl, viewportWidth, xPositions]);
 
   const Renderer = useHeaderCellRenderer(api, column);
 
