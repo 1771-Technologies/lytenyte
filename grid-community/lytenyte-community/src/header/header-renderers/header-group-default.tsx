@@ -21,6 +21,8 @@ export function HeaderGroupDefault({ group, api }: HeaderGroupRendererProps) {
         height: 100%;
         display: flex;
         align-items: center;
+        box-sizing: border-box;
+        justify-content: space-between;
         padding-inline: ${t.spacing.cell_horizontal_padding};
 
         color: ${t.colors.text_medium};
@@ -31,6 +33,28 @@ export function HeaderGroupDefault({ group, api }: HeaderGroupRendererProps) {
       `}
     >
       {label}
+      <button
+        tabIndex={-1}
+        className={css`
+          border: none;
+          padding: 0px;
+          font-weight: 600;
+          height: 24px;
+          width: 24px;
+          border-radius: ${t.spacing.box_radius_regular};
+          cursor: pointer;
+
+          background-color: ${t.colors.backgrounds_default};
+          &:focus-visible {
+            outline: none;
+          }
+          &:hover {
+            background-color: ${t.colors.backgrounds_button_light};
+          }
+        `}
+      >
+        -
+      </button>
     </div>
   );
 }
