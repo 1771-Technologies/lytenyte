@@ -5,6 +5,7 @@ import { Header } from "./header";
 import { Rows } from "./rows";
 import { useEffect, useRef } from "react";
 import { IsoResizeObserver } from "@1771technologies/js-utils";
+import { t } from "@1771technologies/grid-design";
 
 export function Viewport() {
   const { state } = useGrid();
@@ -88,7 +89,7 @@ export function Viewport() {
       <div
         style={{ width: totalWidth, minHeight: totalHeight }}
         className={css`
-          background-color: blue;
+          background-color: ${t.colors.backgrounds_row};
           display: flex;
           flex-direction: column;
 
