@@ -103,17 +103,20 @@ function getRowStart(
 ) {
   const isFirstEndIndex = columnIndex === firstEndIndex;
   const isLastStartIndex = columnIndex === startCount - 1 && startCount > 0;
+
   const hasGroup = isPartOfGroup(columnIndex, hierarchy);
 
   if (isFirstEndIndex || isLastStartIndex || !hasGroup) return 1;
-
   let level = 0;
   while (level < hierarchy.length && hierarchy[level][columnIndex] != null) {
     level++;
   }
-  const groupItem = hierarchy[level - 1][columnIndex]!;
-  if (groupItem.end - 1 === columnIndex) {
-    return level;
+
+  while (
+    hierarchy[level - 1]?.[columnIndex] &&
+    hierarchy[level - 1]![columnIndex]!.end - 1 === columnIndex
+  ) {
+    level--;
   }
 
   return level + 1;
