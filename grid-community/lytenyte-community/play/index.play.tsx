@@ -8,7 +8,7 @@ export default function Play() {
   const x = useState(() =>
     makeStore({
       gridId: "x",
-      columns: columns,
+      columns: columns.slice(0, 1),
       rowDataSource: {
         kind: "client",
         data: [],
