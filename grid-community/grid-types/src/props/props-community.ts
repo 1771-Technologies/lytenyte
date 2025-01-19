@@ -44,8 +44,8 @@ export interface PropsCommunity<A, D, C, E, Base, Group> {
   readonly cellRenderers?: CellRenderers<A, D, C, E>;
 
   readonly columnHeaderHeight?: ColumnHeaderHeightProperty;
-  readonly columnGroupHeaderHeight?: ColumnHeaderHeightProperty;
   readonly columnHeaderRenderers?: ColumnHeaderRenderers<A, C, E>;
+  readonly columnGroupHeaderHeight?: ColumnHeaderHeightProperty;
   readonly columnGroupStickyHeaders?: boolean;
 
   readonly columnGroupIdDelimiter?: string;

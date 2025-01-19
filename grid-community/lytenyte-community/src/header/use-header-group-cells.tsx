@@ -24,6 +24,7 @@ export function useHeaderGroupCells(api: ApiCommunityReact<any>) {
 
       cells.push(
         <HeaderGroupCell
+          api={api}
           groupItem={groupItem}
           pin={pin}
           rowStart={levelIndex + 1}
@@ -59,6 +60,7 @@ export function useHeaderGroupCells(api: ApiCommunityReact<any>) {
 
     return cells;
   }, [
+    api,
     bounds.columnEnd,
     bounds.columnStart,
     centerCount,

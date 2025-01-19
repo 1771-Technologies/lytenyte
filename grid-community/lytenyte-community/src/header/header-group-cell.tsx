@@ -2,8 +2,11 @@ import type { ColumnGroupRowItem, ColumnPin } from "@1771technologies/grid-types
 import { sizeFromCoord } from "@1771technologies/js-utils";
 import { useMemo, type CSSProperties } from "react";
 import { getTransform } from "../renderer/get-transform";
+import { HeaderGroupDefault } from "./header-renderers/header-group-default";
+import type { ApiCommunityReact } from "@1771technologies/grid-types";
 
 export interface HeaderGroupCellProps {
+  readonly api: ApiCommunityReact<any>;
   readonly groupItem: ColumnGroupRowItem;
   readonly pin: ColumnPin;
   readonly rowStart: number;
@@ -14,7 +17,9 @@ export interface HeaderGroupCellProps {
   readonly centerCount: number;
   readonly endCount: number;
 }
+
 export function HeaderGroupCell({
+  api,
   groupItem,
   pin,
   viewportWidth,
@@ -54,9 +59,10 @@ export function HeaderGroupCell({
       className={css`
         grid-column-start: 1;
         grid-column-end: 1;
+        overflow: hidden;
       `}
     >
-      Column Group Header
+      <HeaderGroupDefault group={groupItem} api={api} />
     </div>
   );
 }
