@@ -78,6 +78,7 @@ export function HeaderCell({
         className={css`
           grid-column-start: 1;
           grid-column-end: 2;
+          background-color: ${t.colors.backgrounds_ui_panel};
           overflow: hidden;
           display: flex;
           align-items: center;
