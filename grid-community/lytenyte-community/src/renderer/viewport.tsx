@@ -17,6 +17,8 @@ export function Viewport() {
     if (el) {
       state.internal.viewportXScroll.set(Math.abs(el.scrollLeft));
       state.internal.viewportYScroll.set(Math.abs(el.scrollTop));
+      state.internal.viewportInnerWidth.set(el.clientWidth);
+      state.internal.viewportInnerHeight.set(el.clientHeight);
     }
   });
 

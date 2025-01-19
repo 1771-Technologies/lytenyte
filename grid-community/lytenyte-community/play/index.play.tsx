@@ -2,19 +2,23 @@ import { makeStore } from "@1771technologies/grid-store-community";
 import { LyteNyteCommunity } from "../src/lytenyte-community";
 import { columns } from "./data/columns";
 import { bankDataSmall } from "./data/bank-data-small";
+import { useState } from "react";
 
-const grid = makeStore({
-  gridId: "x",
-  columns: columns,
-  rowDataSource: {
-    kind: "client",
-    data: bankDataSmall,
-  },
-});
 export default function Play() {
+  const x = useState(() =>
+    makeStore({
+      gridId: "x",
+      columns: columns,
+      rowDataSource: {
+        kind: "client",
+        data: bankDataSmall,
+      },
+    }),
+  );
+
   return (
     <div style={{ width: "100vw", height: "100vh" }}>
-      <LyteNyteCommunity grid={grid} />
+      <LyteNyteCommunity grid={x[0]} />
     </div>
   );
 }
