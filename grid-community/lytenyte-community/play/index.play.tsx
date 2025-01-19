@@ -9,6 +9,7 @@ export default function Play() {
     makeStore({
       gridId: "x",
       columns: columns,
+      columnBase: { resizable: true },
       rowDataSource: {
         kind: "client",
         data: bankDataSmall,

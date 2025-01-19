@@ -1,19 +1,21 @@
 import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
-import type { ColumnPin } from "@1771technologies/grid-types/community";
 import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
 import { useMemo, type CSSProperties } from "react";
 import { getTransform } from "../../renderer/get-transform";
 import { t } from "@1771technologies/grid-design";
 
 interface HeaderDividerProps {
-  xPositions: Uint32Array;
-  rowStart: number;
-  rowEnd: number;
-  pin: ColumnPin;
-  column: ColumnCommunityReact<any>;
-  api: ApiCommunityReact<any>;
-  columnIndex: number;
-  viewportWidth: number;
+  readonly api: ApiCommunityReact<any>;
+  readonly rowStart: number;
+  readonly rowEnd: number;
+  readonly column: ColumnCommunityReact<any>;
+  readonly columnIndex: number;
+  readonly viewportWidth: number;
+
+  readonly xPositions: Uint32Array;
+  readonly startCount: number;
+  readonly centerCount: number;
+  readonly endCount: number;
 }
 
 export function HeaderDivider({
@@ -22,19 +24,23 @@ export function HeaderDivider({
   xPositions,
   viewportWidth,
   rowStart,
-  pin,
   rowEnd,
   column,
+  startCount,
+  centerCount,
+  endCount,
 }: HeaderDividerProps) {
   const isResizable = api.columnIsResizable(column);
 
   const style = useMemo(() => {
-    const isStart = pin === "start";
-    const isEnd = pin == "end";
+    const isStart = column.pin === "start";
+    const isEnd = column.pin == "end";
+
+    const endAdjustment = centerCount + startCount - 1 === columnIndex && endCount > 0 ? 2 : 0;
 
     const x = isEnd
-      ? xPositions[columnIndex] - xPositions.at(-1)! + viewportWidth
-      : xPositions[columnIndex] + sizeFromCoord(columnIndex, xPositions) - 1;
+      ? xPositions[columnIndex] - xPositions.at(-1)! + viewportWidth - 2
+      : xPositions[columnIndex] + sizeFromCoord(columnIndex, xPositions) - 3 - endAdjustment;
 
     const style = {
       transform: getTransform(x, 0),
@@ -49,7 +55,17 @@ export function HeaderDivider({
     }
 
     return style;
-  }, [columnIndex, pin, rowEnd, rowStart, viewportWidth, xPositions]);
+  }, [
+    centerCount,
+    column.pin,
+    columnIndex,
+    endCount,
+    rowEnd,
+    rowStart,
+    startCount,
+    viewportWidth,
+    xPositions,
+  ]);
 
   return (
     <div
@@ -60,7 +76,7 @@ export function HeaderDivider({
 
           box-sizing: border-box;
 
-          width: 1px;
+          width: 4px;
           height: 100%;
           display: flex;
           align-items: center;
@@ -69,6 +85,10 @@ export function HeaderDivider({
         isResizable &&
           css`
             cursor: col-resize;
+
+            &:hover div {
+              background-color: ${t.colors.primary_50};
+            }
           `,
       )}
       style={style}
@@ -76,7 +96,7 @@ export function HeaderDivider({
       <div
         className={css`
           height: calc(100% - 8px);
-          width: 2px;
+          width: 1px;
           background-color: ${t.colors.borders_pin_separator};
         `}
       />

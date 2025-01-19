@@ -32,11 +32,8 @@ export function useHeaderDividers(api: ApiCommunityReact<any>) {
 
     for (let i = 0; i < indices.length - endCount; i++) {
       const columnIndex = indices[i];
-
       const rowStart = getRowStart(hierarchy, startCount, firstEndIndex, columnIndex);
-
       const column = columns[columnIndex];
-      const pinStart = columnIndex < startCount;
 
       dividers.push(
         <HeaderDivider
@@ -47,8 +44,10 @@ export function useHeaderDividers(api: ApiCommunityReact<any>) {
           viewportWidth={viewportWidth}
           rowStart={rowStart}
           rowEnd={columnRowCount + 1}
-          pin={pinStart ? "start" : null}
           columnIndex={columnIndex}
+          startCount={startCount}
+          centerCount={centerCount}
+          endCount={endCount}
         />,
       );
     }
@@ -68,8 +67,10 @@ export function useHeaderDividers(api: ApiCommunityReact<any>) {
           viewportWidth={viewportWidth}
           rowStart={rowStart}
           rowEnd={columnRowCount + 1}
-          pin="end"
           columnIndex={columnIndex}
+          startCount={startCount}
+          centerCount={centerCount}
+          endCount={endCount}
         />,
       );
     }
