@@ -13,6 +13,7 @@ export function Rows() {
   const yPositions = state.internal.rowPositions.use();
   const columns = state.columnsVisible.use();
   const refreshKey = state.internal.rowRefreshCount.use();
+  const headerHeight = state.internal.viewportHeaderHeight.use();
 
   const rowCount = state.internal.rowCount.use();
   const topCount = state.internal.rowTopCount.use();
@@ -26,9 +27,10 @@ export function Rows() {
     void rowCount;
     void topCount;
     void botCount;
+    void headerHeight;
 
     return [{}, {}] as [Record<number, ReactNode>, Record<number, Record<number, ReactNode>>];
-  }, [botCount, columns, refreshKey, rowCount, topCount, xPositions, yPositions]);
+  }, [botCount, columns, headerHeight, refreshKey, rowCount, topCount, xPositions, yPositions]);
 
   const firstBotIndex = rowCount - botCount;
 

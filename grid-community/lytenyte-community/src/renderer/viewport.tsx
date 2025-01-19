@@ -4,6 +4,8 @@ import { useGrid } from "../use-grid";
 import { Header } from "./header";
 import { Rows } from "./rows";
 import { PinBorders } from "./pin-borders";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { IsoResizeObserver } from "@1771technologies/js-utils";
 
 export function Viewport() {
   const { state } = useGrid();
@@ -35,8 +37,25 @@ export function Viewport() {
     state.internal.viewportYScroll.set(Math.abs(viewport.scrollTop));
   });
 
+  const resizeRef = useRef<ResizeObserver | null>(null);
+  useEffect(() => {
+    return () => resizeRef.current?.disconnect();
+  }, []);
+
   const ref = useEvent((el: HTMLElement | null) => {
     state.internal.viewport.set(el);
+
+    const re = new IsoResizeObserver(() => {
+      if (el) {
+        state.internal.viewportXScroll.set(Math.abs(el.scrollLeft));
+        state.internal.viewportYScroll.set(Math.abs(el.scrollTop));
+        state.internal.viewportInnerWidth.set(el.clientWidth);
+        state.internal.viewportInnerHeight.set(el.clientHeight);
+      }
+    });
+    if (el) re.observe(el);
+
+    resizeRef.current = re;
   });
 
   const totalHeight = state.internal.rowPositions.use().at(-1)!;
@@ -55,7 +74,7 @@ export function Viewport() {
     >
       <PinBorders />
       <Header
-        style={{ width: totalWidth, height: 200 }}
+        style={{ width: totalWidth, height: 100 }}
         className={css`
           position: sticky;
           z-index: 20;

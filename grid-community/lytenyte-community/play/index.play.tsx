@@ -12,8 +12,8 @@ export default function Play() {
       rowDataSource: {
         kind: "client",
         data: [],
-        topData: bankDataSmall.slice(0, 2),
-        bottomData: bankDataSmall.slice(1, 3),
+        // topData: bankDataSmall.slice(0, 2),
+        bottomData: bankDataSmall.slice(0, 1),
       },
     }),
   );

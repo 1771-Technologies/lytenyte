@@ -37,6 +37,10 @@ export function useCellStyle(
         ? 0
         : yPositions[rowIndex];
 
+    if (isBot) {
+      console.log(headerHeight, y);
+    }
+
     const transform = getTransform(x, y);
     const style = { height, width, transform } as CSSProperties;
 

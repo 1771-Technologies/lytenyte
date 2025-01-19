@@ -20,9 +20,12 @@ export function PinBorders() {
         position: sticky;
         width: 0px;
         height: 0px;
+        min-height: 0px;
+        max-height: 0px;
         top: 0px;
         inset-inline-start: 0px;
         z-index: 5;
+        pointer-events: none;
       `}
     >
       {startCount > 0 && (
