@@ -149,7 +149,15 @@ export function Rows({ width }: { width: number }) {
         {center}
       </div>
       <div
-        style={{ bottom: 0, height: botHeight, minHeight: botHeight, maxHeight: botHeight }}
+        style={{
+          bottom: 0,
+          width,
+          minWidth: width,
+          maxWidth: width,
+          height: botHeight,
+          minHeight: botHeight,
+          maxHeight: botHeight,
+        }}
         className={css`
           position: sticky;
           background-color: gray;

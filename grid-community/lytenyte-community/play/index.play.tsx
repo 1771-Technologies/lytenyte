@@ -15,7 +15,7 @@ export default function Play() {
         topData: bankDataSmall.slice(0, 2),
         bottomData: bankDataSmall.slice(2, 4),
       },
-      rtl: true,
+      rowFullWidthPredicate: (p) => p.row.rowIndex == 2,
     }),
   );
 

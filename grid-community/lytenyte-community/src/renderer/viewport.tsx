@@ -72,7 +72,7 @@ export function Viewport() {
       style={{ direction: rtl ? "rtl" : undefined }}
       className={css`
         display: grid;
-        grid-template-rows: 0px auto 1fr;
+        grid-template-rows: auto 1fr;
       `}
     >
       <Header
