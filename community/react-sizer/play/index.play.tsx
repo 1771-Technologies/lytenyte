@@ -4,6 +4,7 @@ import { Sizer } from "../src";
 
 export default function Play() {
   const [size, setSize] = useState(200);
+  const [over, setOver] = useState(false);
   const [observedSize, setObservedSize] = useState<SizeChange>({
     innerHeight: 0,
     innerWidth: 0,
@@ -14,6 +15,7 @@ export default function Play() {
     <div>
       <button onClick={() => setSize((prev) => prev + 50)}>Size Up</button>
       <button onClick={() => setSize((prev) => prev - 50)}>Size Down</button>
+      <button onClick={() => setOver((prev) => !prev)}>Overflow Toggle</button>
 
       <div>
         <pre>Inner Height: {observedSize.innerHeight}</pre>
@@ -46,7 +48,7 @@ export default function Play() {
                   background-color: red;
                 `}
               ></div>
-              <div style={{ width: 20000, height: 20000, background: "blue" }}></div>
+              {over && <div style={{ width: 20000, height: 20000, background: "blue" }}></div>}
             </Sizer>
           </div>
         </div>
