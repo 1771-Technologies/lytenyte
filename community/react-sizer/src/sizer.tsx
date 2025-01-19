@@ -1,4 +1,5 @@
 import { getPreciseElementDimensions, IsoResizeObserver } from "@1771technologies/js-utils";
+import { useCombinedRefs } from "@1771technologies/react-utils";
 import {
   useCallback,
   useEffect,
@@ -89,29 +90,42 @@ export function Sizer({
     return () => ref.current?.disconnect();
   }, []);
 
-  const init = useCallback(
-    (el: HTMLDivElement | null) => {
-      if (!el) return;
+  const init = useCallback((el: HTMLDivElement | null) => {
+    if (!el) return;
 
-      const resize = new IsoResizeObserver(() => {
-        const dims = getPreciseElementDimensions(el);
-        onSizeChange?.(dims);
-        setSize(dims);
-      });
-
+    const resize = new IsoResizeObserver(() => {
       const dims = getPreciseElementDimensions(el);
-      onInit?.(el, dims);
       setSize(dims);
+    });
 
-      resize.observe(el);
-      ref.current = resize;
-    },
-    [onSizeChange, onInit],
-  );
+    const dims = getPreciseElementDimensions(el);
+    setSize(dims);
+
+    resize.observe(el);
+    ref.current = resize;
+  }, []);
+
+  const [inner, setInner] = useState<HTMLDivElement | null>(null);
+  const combined = useCombinedRefs(elRef, setInner);
+
+  useEffect(() => {
+    if (!inner) return;
+
+    const resizer = new IsoResizeObserver(() => {
+      const dims = getPreciseElementDimensions(inner);
+      onSizeChange?.(dims);
+    });
+
+    resizer.observe(inner);
+
+    const dims = getPreciseElementDimensions(inner);
+    onSizeChange?.(dims);
+
+    return () => resizer.disconnect();
+  }, [inner, onInit, onSizeChange]);
 
   return (
     <div
-      {...props}
       style={{
         minHeight: "inherit",
         maxHeight: "inherit",
@@ -120,7 +134,6 @@ export function Sizer({
         minWidth: "inherit",
         maxWidth: "inherit",
         position: "relative",
-        ...props.style,
       }}
     >
       <div
@@ -138,11 +151,13 @@ export function Sizer({
       />
       {size && (
         <div
-          ref={elRef}
+          {...props}
+          ref={combined}
           style={{
             width: size.innerWidth,
             height: size.innerHeight,
             position: "absolute",
+            overflow: "auto",
           }}
         >
           {children}

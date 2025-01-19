@@ -4,7 +4,7 @@ import { useGrid } from "../use-grid";
 import { Header } from "./header";
 import { Rows } from "./rows";
 import { PinBorders } from "./pin-borders";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { IsoResizeObserver } from "@1771technologies/js-utils";
 
 export function Viewport() {

@@ -12,7 +12,8 @@
     }
   },
   "dependencies": {
-    "@1771technologies/js-utils": "workspace:*"
+    "@1771technologies/js-utils": "workspace:*",
+    "@1771technologies/react-utils": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^19.0.1",
