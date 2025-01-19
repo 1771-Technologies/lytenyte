@@ -31,7 +31,6 @@ export function useCellStyle(
       style.zIndex = 2;
 
       const x = xPositions[columnIndex] - xPositions.at(-1)! + viewportWidth;
-
       style.transform = getTransform(x, yPositions[rowIndex]);
     }
 

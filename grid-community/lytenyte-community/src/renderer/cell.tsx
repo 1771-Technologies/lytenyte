@@ -1,9 +1,9 @@
 import { clsx } from "@1771technologies/js-utils";
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import { t } from "@1771technologies/grid-design";
 import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
-import { CellRendererDefault } from "./renderers/cell-renderer-default";
 import { useCellStyle } from "./cell/use-cell-style";
+import { useCellRenderer } from "./cell/use-cell-renderer";
 
 export interface CellProps {
   readonly api: ApiCommunityReact<any>;
@@ -30,24 +30,9 @@ function CellImpl({
 
   const row = rowIndex % 2 ? rowClx : rowAltClx;
 
-  const renderers = sx.cellRenderers.peek();
-  const Renderer = useMemo(() => {
-    const base = api.getState().columnBase.peek();
-    const renderKey = column.cellRenderer ?? base.cellRenderer;
-    if (!renderKey) return CellRendererDefault;
-
-    if (typeof renderKey === "string") {
-      const El = renderers[renderKey];
-      if (!El) throw new Error(`Renderer with name ${renderKey} is not present in grid renderers.`);
-      return El;
-    }
-    return renderKey;
-  }, [api, column.cellRenderer, renderers]);
-
-  const rowNode = api.rowByIndex(rowIndex);
+  const Renderer = useCellRenderer(api, column);
 
   const viewportWidth = sx.internal.viewportInnerWidth.use();
-
   const style = useCellStyle(
     xPositions,
     yPositions,
@@ -59,6 +44,7 @@ function CellImpl({
     viewportWidth,
   );
 
+  const rowNode = api.rowByIndex(rowIndex);
   if (!rowNode) return null;
   return (
     <div style={style} className={clsx(rowBaseClx, row)}>

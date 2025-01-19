@@ -9,6 +9,10 @@ export function CellRendererDefault(p: CellRendererParamsReact<any>) {
         display: flex;
         align-items: center;
         padding-inline-start: ${t.spacing.cell_horizontal_padding};
+        font-family: ${t.typography.typeface_body};
+        font-size: ${t.typography.body_m};
+        color: ${t.colors.text_medium};
+        line-height: 20px;
         height: 100%;
         width: 100%;
         box-sizing: border-box;
