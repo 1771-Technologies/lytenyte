@@ -93,7 +93,6 @@ export interface PropsCommunity<A, D, C, E, Base, Group> {
   readonly rowGroupDisplayMode?: RowGroupDisplayMode;
   readonly rowGroupDefaultExpansion?: boolean | number;
   readonly rowGroupCloseChildrenAsWell?: boolean;
-  readonly rowGroupStickyParents?: boolean;
   readonly rowGroupFullWidthRowRenderer?: null | RowGroupFullWidthRenderer<A, E>;
 
   readonly paginate?: boolean;
