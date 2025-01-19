@@ -13,10 +13,11 @@ export function HeaderCellDefault(p: ColumnHeaderRendererParamsReact<any>) {
         width: 100%;
         height: 100%;
 
-        color: ${t.colors.text_medium};
+        color: ${t.colors.text_x_light};
         font-size: ${t.typography.body_m};
         font-family: ${t.typography.typeface_body};
-        font-weight: 600;
+        font-weight: 500;
+        line-height: 20px;
         background-color: ${t.colors.backgrounds_ui_panel};
       `}
     >
