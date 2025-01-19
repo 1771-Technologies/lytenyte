@@ -127,7 +127,7 @@ export type CellRenderers<A, D, C, E> = {
 
 // Column Headers
 
-export type ColumnHeaderHeightProperty = number | "auto";
+export type ColumnHeaderHeightProperty = number;
 
 export type ColumnHeaderRendererParams<A, C> = {
   columnIndex: number;

@@ -1,7 +1,7 @@
 import { Sizer, type SizerProps } from "@1771technologies/react-sizer";
 import { useEvent } from "@1771technologies/react-utils";
 import { useGrid } from "../use-grid";
-import { Header } from "./header";
+import { HeaderContainer } from "./header-container";
 import { Rows } from "./rows";
 import { useEffect, useRef } from "react";
 import { IsoResizeObserver } from "@1771technologies/js-utils";
@@ -75,8 +75,8 @@ export function Viewport() {
         grid-template-rows: auto 1fr;
       `}
     >
-      <Header
-        style={{ width: totalWidth, height: 100 }}
+      <HeaderContainer
+        style={{ width: totalWidth }}
         className={css`
           position: sticky;
           z-index: 20;

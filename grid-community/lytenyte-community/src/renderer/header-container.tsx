@@ -2,13 +2,14 @@ import { useState, type CSSProperties } from "react";
 import { useGrid } from "../use-grid";
 import { useIsoEffect } from "@1771technologies/react-utils";
 import { getPreciseElementDimensions, IsoResizeObserver } from "@1771technologies/js-utils";
+import { Header } from "../header/header";
 
 export interface HeaderProps {
   readonly style?: CSSProperties;
   readonly className?: string;
 }
 
-export function Header({ style, className }: HeaderProps) {
+export function HeaderContainer({ style, className }: HeaderProps) {
   const { state } = useGrid();
 
   const [header, setHeader] = useState<HTMLElement | null>(null);
@@ -27,5 +28,9 @@ export function Header({ style, className }: HeaderProps) {
     return () => resize.disconnect();
   }, [header]);
 
-  return <div ref={setHeader} className={className} style={style}></div>;
+  return (
+    <div ref={setHeader} className={className} style={style}>
+      <Header />
+    </div>
+  );
 }
