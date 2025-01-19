@@ -88,12 +88,17 @@ export function Viewport() {
         style={{ width: totalWidth, minHeight: totalHeight }}
         className={css`
           background-color: blue;
-          display: grid;
-          grid-template-columns: 1px;
-          grid-template-rows: 1px;
+          display: flex;
+          flex-direction: column;
+
+          & > div {
+            display: grid;
+            grid-template-rows: 0px;
+            grid-template-columns: 0px;
+          }
         `}
       >
-        <Rows />
+        <Rows width={totalWidth} />
       </div>
     </Sizer>
   );

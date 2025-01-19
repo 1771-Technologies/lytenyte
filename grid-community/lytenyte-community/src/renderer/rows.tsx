@@ -4,7 +4,7 @@ import { END_ENCODING, FULL_ENCODING } from "@1771technologies/grid-constants";
 import { Cell } from "./cell";
 import { CellFullWidth } from "./cell-full-width";
 
-export function Rows() {
+export function Rows({ width }: { width: number }) {
   const { state, api } = useGrid();
 
   const layout = state.internal.virtLayout.use();
@@ -18,6 +18,9 @@ export function Rows() {
   const rowCount = state.internal.rowCount.use();
   const topCount = state.internal.rowTopCount.use();
   const botCount = state.internal.rowBottomCount.use();
+
+  const topHeight = yPositions[topCount];
+  const botHeight = yPositions.at(-1)! - yPositions[rowCount - botCount];
 
   const [fullWidthCache, cellCache] = useMemo(() => {
     void xPositions;
@@ -34,13 +37,21 @@ export function Rows() {
 
   const firstBotIndex = rowCount - botCount;
 
-  const cells = useMemo(() => {
-    const els: ReactNode[] = [];
+  const [top, center, bottom] = useMemo(() => {
+    const top: ReactNode[] = [];
+    const center: ReactNode[] = [];
+    const bottom: ReactNode[] = [];
 
     for (const [rowIndex, cells] of layout) {
       // We have to ensure the layout never exceeds the row count. The layout can temporarily exceed
       // the row count when the number of rows changes.
       if (rowIndex >= rowCount) continue;
+
+      const isTop = rowIndex < topCount;
+      const isBot = rowIndex >= firstBotIndex;
+      const isCenter = !isTop && !isBot;
+
+      const place = isCenter ? center : isTop ? top : bottom;
 
       let i = 0;
       while (i < cells.length) {
@@ -51,7 +62,7 @@ export function Rows() {
             <CellFullWidth key={`${rowIndex}-full`} rowIndex={rowIndex} yPositions={yPositions} />
           );
 
-          els.push(fullWidthCache[rowIndex]);
+          place.push(fullWidthCache[rowIndex]);
           i++;
         } else if (encoding === END_ENCODING) {
           break;
@@ -80,12 +91,12 @@ export function Rows() {
               xPositions={xPositions}
             />
           );
-          els.push(cellCache[rowIndex][colIndex]);
+          place.push(cellCache[rowIndex][colIndex]);
         }
       }
     }
 
-    return els;
+    return [top, center, bottom];
   }, [
     api,
     cellCache,
@@ -99,5 +110,43 @@ export function Rows() {
     yPositions,
   ]);
 
-  return <>{cells}</>;
+  return (
+    <>
+      <div
+        style={{
+          width,
+          minWidth: width,
+          maxWidth: width,
+          top: headerHeight,
+          height: topHeight,
+          minHeight: topHeight,
+          maxHeight: topHeight,
+        }}
+        className={css`
+          position: sticky;
+          background-color: red;
+          z-index: 4;
+        `}
+      >
+        {top}
+      </div>
+      <div
+        className={css`
+          flex: 1;
+        `}
+      >
+        {center}
+      </div>
+      <div
+        style={{ bottom: 0, height: botHeight, minHeight: botHeight, maxHeight: botHeight }}
+        className={css`
+          position: sticky;
+          background-color: gray;
+          z-index: 4;
+        `}
+      >
+        {bottom}
+      </div>
+    </>
+  );
 }

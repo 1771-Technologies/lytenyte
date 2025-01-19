@@ -8,11 +8,11 @@ export default function Play() {
   const x = useState(() =>
     makeStore({
       gridId: "x",
-      columns: columns.slice(0, 1),
+      columns: columns,
       rowDataSource: {
         kind: "client",
-        data: [],
-        // topData: bankDataSmall.slice(0, 2),
+        data: bankDataSmall,
+        topData: bankDataSmall.slice(0, 2),
         bottomData: bankDataSmall.slice(0, 1),
       },
     }),

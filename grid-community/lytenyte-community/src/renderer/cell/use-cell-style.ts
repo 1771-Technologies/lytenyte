@@ -17,8 +17,6 @@ export function useCellStyle(
 ) {
   const sx = api.getState();
   const vpWidth = sx.internal.viewportInnerWidth.use();
-  const vpHeight = sx.internal.viewportInnerHeight.use();
-  const headerHeight = sx.internal.viewportHeaderHeight.use();
   const height = sizeFromCoord(rowIndex, yPositions, rowSpan);
   const width = sizeFromCoord(columnIndex, xPositions, columnSpan);
 
@@ -28,18 +26,20 @@ export function useCellStyle(
     const isTop = rowPin === "top";
     const isBot = rowPin === "bottom";
 
+    const rowCount = sx.internal.rowCount.peek();
+    const rowTopCount = sx.internal.rowTopCount.peek();
+    const rowBotCount = sx.internal.rowBottomCount.peek();
+
+    const firstBotIndex = rowCount - rowBotCount;
+
     const x = isEnd
       ? xPositions[columnIndex] - xPositions.at(-1)! + vpWidth
       : xPositions[columnIndex];
     const y = isBot
-      ? yPositions[rowIndex] - yPositions.at(-1)! + (vpHeight - headerHeight)
+      ? yPositions[rowIndex] - yPositions[firstBotIndex]
       : isTop
-        ? 0
-        : yPositions[rowIndex];
-
-    if (isBot) {
-      console.log(headerHeight, y);
-    }
+        ? yPositions[rowIndex]
+        : yPositions[rowIndex] - yPositions[rowTopCount];
 
     const transform = getTransform(x, y);
     const style = { height, width, transform } as CSSProperties;
@@ -59,11 +59,12 @@ export function useCellStyle(
   }, [
     column.pin,
     columnIndex,
-    headerHeight,
     height,
     rowIndex,
     rowPin,
-    vpHeight,
+    sx.internal.rowBottomCount,
+    sx.internal.rowCount,
+    sx.internal.rowTopCount,
     vpWidth,
     width,
     xPositions,
