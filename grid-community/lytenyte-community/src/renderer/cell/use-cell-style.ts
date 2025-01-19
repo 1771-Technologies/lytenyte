@@ -1,9 +1,10 @@
 import { useMemo, type CSSProperties } from "react";
 import { getTransform } from "../get-transform";
-import type { ColumnCommunityReact } from "@1771technologies/grid-types";
+import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
 import { sizeFromCoord } from "@1771technologies/js-utils";
 
 export function useCellStyle(
+  api: ApiCommunityReact<any>,
   xPositions: Uint32Array,
   yPositions: Uint32Array,
   columnIndex: number,
@@ -11,12 +12,12 @@ export function useCellStyle(
   columnSpan: number,
   rowSpan: number,
   column: ColumnCommunityReact<any>,
-  viewportWidth: number,
 ) {
+  const viewportWidth = api.getState().internal.viewportInnerWidth.use();
   const height = sizeFromCoord(rowIndex, yPositions, rowSpan);
   const width = sizeFromCoord(columnIndex, xPositions, columnSpan);
 
-  const styles = useMemo(() => {
+  const styleAndCss = useMemo(() => {
     const transform = getTransform(xPositions[columnIndex], yPositions[rowIndex]);
     const style = { height, width, transform } as CSSProperties;
 
@@ -34,8 +35,8 @@ export function useCellStyle(
       style.transform = getTransform(x, yPositions[rowIndex]);
     }
 
-    return style;
+    return { style };
   }, [column.pin, columnIndex, height, rowIndex, viewportWidth, width, xPositions, yPositions]);
 
-  return styles;
+  return styleAndCss;
 }

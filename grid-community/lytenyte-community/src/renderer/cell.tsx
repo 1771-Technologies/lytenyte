@@ -26,14 +26,12 @@ function CellImpl({
   column,
   api,
 }: CellProps) {
-  const sx = api.getState();
-
   const row = rowIndex % 2 ? rowClx : rowAltClx;
 
   const Renderer = useCellRenderer(api, column);
 
-  const viewportWidth = sx.internal.viewportInnerWidth.use();
-  const style = useCellStyle(
+  const cx = useCellStyle(
+    api,
     xPositions,
     yPositions,
     columnIndex,
@@ -41,13 +39,12 @@ function CellImpl({
     colSpan,
     rowSpan,
     column,
-    viewportWidth,
   );
 
   const rowNode = api.rowByIndex(rowIndex);
   if (!rowNode) return null;
   return (
-    <div style={style} className={clsx(rowBaseClx, row)}>
+    <div style={cx.style} className={clsx(rowBaseClx, row)}>
       <Renderer api={api} column={column} columnIndex={columnIndex} row={rowNode} />
     </div>
   );
