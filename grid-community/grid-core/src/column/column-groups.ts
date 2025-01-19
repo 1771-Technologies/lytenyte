@@ -154,7 +154,7 @@ function createHierarchyLevels<T extends ColumnLike>(
 
       // A group is collapsible if any of its columns aren't marked as always-visible
       const isCollapsible = columns
-        .slice(item.start, item.end)
+        .slice(item.start - indexOffset, item.end - indexOffset)
         .some((c) => c.groupVisibility !== "always-visible");
 
       item.isCollapsible = isCollapsible;
