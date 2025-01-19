@@ -38,14 +38,13 @@ export function useHeaderDividers(api: ApiCommunityReact<any>) {
       const column = columns[columnIndex];
       const pinStart = columnIndex < startCount;
 
-      const x = xPositions[columnIndex];
-
       dividers.push(
         <HeaderDivider
           api={api}
           key={column.id}
           column={column}
-          x={x}
+          xPositions={xPositions}
+          viewportWidth={viewportWidth}
           rowStart={rowStart}
           rowEnd={columnRowCount + 1}
           pin={pinStart ? "start" : null}
@@ -57,8 +56,6 @@ export function useHeaderDividers(api: ApiCommunityReact<any>) {
     for (let i = indices.length - endCount; i < indices.length; i++) {
       const columnIndex = indices[i];
 
-      const x = xPositions[columnIndex] - xPositions.at(-1)! + viewportWidth;
-
       const rowStart = getRowStart(hierarchy, startCount, firstEndIndex, columnIndex);
       const column = columns[columnIndex];
 
@@ -67,7 +64,8 @@ export function useHeaderDividers(api: ApiCommunityReact<any>) {
           api={api}
           key={column.id}
           column={column}
-          x={x}
+          xPositions={xPositions}
+          viewportWidth={viewportWidth}
           rowStart={rowStart}
           rowEnd={columnRowCount + 1}
           pin="end"

@@ -27,10 +27,10 @@ export function HeaderGroupCell({
   xPositions,
 }: HeaderGroupCellProps) {
   const style = useMemo(() => {
-    const width = sizeFromCoord(groupItem.start, xPositions, groupItem.end - groupItem.start);
-
     const isStart = pin === "start";
     const isEnd = pin == "end";
+    const width = sizeFromCoord(groupItem.start, xPositions, groupItem.end - groupItem.start);
+
     const columnIndex = groupItem.start;
 
     const x = isEnd

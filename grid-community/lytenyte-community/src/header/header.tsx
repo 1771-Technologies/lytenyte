@@ -18,7 +18,7 @@ export function Header() {
 
   const headerGroupCells = useHeaderGroupCells(api);
   const headerCells = useHeaderCells(api);
-  // const headerDividers = useHeaderDividers(api);
+  const headerDividers = useHeaderDividers(api);
 
   const gridTemplateRows = useHeaderDisplayGridTemplate(
     hierarchy.length,
@@ -45,6 +45,7 @@ export function Header() {
     >
       {headerGroupCells}
       {headerCells}
+      {headerDividers}
     </div>
   );
 }
