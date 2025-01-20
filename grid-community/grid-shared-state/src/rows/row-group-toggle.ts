@@ -8,11 +8,19 @@ export const rowGroupToggle = <D, E>(
 ) => {
   const s = api.getState();
 
-  const backing = s.internal.rowBackingDataSource.peek();
+  const expansions = s.rowGroupExpansions;
 
   const next = state ?? !row.expanded;
 
-  backing.rowGroupToggle(row.id, next);
+  const depth = api.rowDepth(row.rowIndex!);
+
+  expansions.set((prev) => ({
+    ...prev,
+    [depth]: {
+      ...prev[depth],
+      [row.id]: next,
+    },
+  }));
 
   api.rowRefresh();
 };

@@ -8,7 +8,6 @@ export { rowByIndex } from "./api/row-by-index.js";
 export { rowChildCount } from "./api/row-child-count.js";
 export { rowDepth } from "./api/row-depth.js";
 export { rowGetMany } from "./api/row-get-many.js";
-export { rowGroupToggle } from "./api/row-group-toggle.js";
 export { rowParentIndex } from "./api/row-parent-index.js";
 export { rowSelection } from "./api/row-selection.js";
 export { rowSetDataMany } from "./api/row-set-data-many.js";

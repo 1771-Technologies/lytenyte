@@ -35,8 +35,6 @@ export interface RowDataSourceEnterprise<A, D, C> {
 
   columnInFilterItems?: (column: C) => Promise<ColumnInFilterItem[]> | ColumnInFilterItem[];
 
-  rowGroupToggle?: (id: string, state?: boolean) => void;
-
   paginateGetCount?: () => number;
   paginateRowStartAndEndForPage?: (i: number) => [number, number];
 

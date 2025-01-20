@@ -14,6 +14,7 @@ import {
   BLOCK_SIZE,
   dataToRowNodes,
   flatBlockPayloadsComputed,
+  groupBlockPayloadsComputed,
   paginateGetCount,
   paginateRowStartAndEndForPage,
   rowById,
@@ -21,7 +22,6 @@ import {
   rowChildCount,
   rowDepth,
   rowGetMany,
-  rowGroupToggle,
   rowParentIndex,
   rowSelection,
   rowSetData,
@@ -80,7 +80,7 @@ export function createClientDataSource<D, E>(
     const sortedNodes = sortedNodesComputed(api$, filteredNodes);
 
     const flatPayload = flatBlockPayloadsComputed(sortedNodes);
-    const groupPayload = flatBlockPayloadsComputed(sortedNodes);
+    const groupPayload = groupBlockPayloadsComputed(api$, sortedNodes);
 
     const graph$ = signal(new BlockGraph<D>(BLOCK_SIZE));
 
@@ -158,8 +158,6 @@ export function createClientDataSource<D, E>(
     rowChildCount: (r) => rowChildCount(state, r),
     rowDepth: (r) => rowDepth(state, r),
     rowParentIndex: (r) => rowParentIndex(state, r),
-
-    rowGroupToggle: (id, s) => rowGroupToggle(state, id, s),
 
     rowSetData: (id, d) => rowSetData(state, id, d),
     rowSetDataMany: (updates) => rowSetDataMany(state, updates),
