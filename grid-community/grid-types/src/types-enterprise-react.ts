@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import type { Api } from "./make-grid-enterprise";
 import type { FloatingFrame as FF, PanelFrame } from "./types-enterprise";
-import type { CellRendererParams } from "./types";
+import type { CellRendererParams, RowDetailParams } from "./types";
 import type { ColumnEnterpriseReact } from "./make-grid-react";
 
 export type FloatingFrameReact<D> = FF<Api<D, ReactNode>, ReactNode>;
@@ -12,3 +12,5 @@ export type CellRendererParamsReact<D> = CellRendererParams<
   D,
   ColumnEnterpriseReact<D>
 >;
+
+export type RowDetailParamsReact<D> = RowDetailParams<Api<D, ReactNode>, D>;
