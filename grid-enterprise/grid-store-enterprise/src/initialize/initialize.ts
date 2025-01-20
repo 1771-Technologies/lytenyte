@@ -19,6 +19,7 @@ import {
 import {
   columnsComputed,
   filterModelComputed,
+  rowGroupExpansionsComputed,
   rowGroupModelComputed,
   sortModelComputed,
 } from "@1771technologies/grid-shared-state";
@@ -74,7 +75,6 @@ export function initialize<D, E>(
 
     rowDataSource: signal(props.rowDataSource ?? emptyRowDataSource),
 
-    rowDetailAutoHeightEstimate: signal(props.rowDetailAutoHeightEstimate ?? ROW_DETAIL_HEIGHT),
     rowDetailPredicate: signal(props.rowDetailPredicate ?? false),
     rowDetailExpansions: signal(props.rowDetailExpansions ?? new Set()),
     rowDetailHeight: signal(props.rowDetailHeight ?? ROW_DETAIL_HEIGHT),
@@ -93,13 +93,12 @@ export function initialize<D, E>(
     rowGroupCloseChildrenAsWell: signal(props.rowGroupCloseChildrenAsWell ?? false),
     rowGroupColumnTemplate: signal(props.rowGroupColumnTemplate ?? null),
     rowGroupDefaultExpansion: signal(props.rowGroupDefaultExpansion ?? false),
+    rowGroupExpansions: rowGroupExpansionsComputed(props.rowGroupExpansions ?? {}, api),
     rowGroupDisplayMode: signal(props.rowGroupDisplayMode ?? "single-column"),
     rowGroupFullWidthRowRenderer: signal(props.rowGroupFullWidthRowRenderer ?? null),
     rowGroupModel: rowGroupModelComputed(props.rowGroupModel ?? [], api),
-    rowGroupStickyParents: signal(props.rowGroupStickyParents ?? false),
 
     rowHeight: signal(props.rowHeight ?? ROW_HEIGHT),
-    rowAutoHeightDefaultGuess: signal(props.rowAutoHeightDefaultGuess ?? ROW_HEIGHT),
 
     rowTotalsPinned: signal(props.rowTotalsPinned ?? false),
     rowTotalRow: signal(props.rowTotalRow ?? null),

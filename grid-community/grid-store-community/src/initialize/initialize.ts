@@ -12,6 +12,7 @@ import {
 import {
   columnsComputed,
   filterModelComputed,
+  rowGroupExpansionsComputed,
   rowGroupModelComputed,
   sortModelComputed,
 } from "@1771technologies/grid-shared-state";
@@ -95,6 +96,7 @@ export function initialize<D, E>(
     rowGroupDisplayMode: signal(props.rowGroupDisplayMode ?? "single-column"),
     rowGroupFullWidthRowRenderer: signal(props.rowGroupFullWidthRowRenderer ?? null),
     rowGroupModel: rowGroupModelComputed(props.rowGroupModel ?? [], api),
+    rowGroupExpansions: rowGroupExpansionsComputed(props.rowGroupExpansions ?? {}, api),
 
     rowHeight: signal(props.rowHeight ?? ROW_HEIGHT),
 

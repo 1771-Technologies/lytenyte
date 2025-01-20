@@ -33,6 +33,7 @@ export { rowDetailVisibleHeight } from "./rows/row-detail-visible-height.js";
 export { rowIsDraggable } from "./rows/row-is-draggable.js";
 export { rowIsFullWidthComputed } from "./rows/row-is-full-width-computed.js";
 export { rowPositionsComputed } from "./rows/row-positions.js";
+export { rowGroupExpansionsComputed } from "./rows/row-group-expansions-computed.js";
 export { rowGroupModelComputed } from "./rows/row-group-model-computed.js";
 export { rowGroupToggle } from "./rows/row-group-toggle.js";
 export {

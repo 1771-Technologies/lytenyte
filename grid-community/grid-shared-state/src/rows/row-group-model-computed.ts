@@ -20,6 +20,7 @@ export function rowGroupModelComputed<D, E>(
     },
     postUpdate: () => {
       api.getState().columns.set((prev: any[]) => [...prev]);
+      api.getState().rowGroupExpansions.set((prev) => ({ ...prev }));
     },
   });
 
