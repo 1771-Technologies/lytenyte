@@ -95,7 +95,6 @@ export function initialize<D, E>(
     rowGroupDefaultExpansion: signal(props.rowGroupDefaultExpansion ?? false),
     rowGroupExpansions: rowGroupExpansionsComputed(props.rowGroupExpansions ?? {}, api),
     rowGroupDisplayMode: rowDisplayModeComputed(props.rowGroupDisplayMode ?? "single-column", api),
-    rowGroupFullWidthRowRenderer: signal(props.rowGroupFullWidthRowRenderer ?? null),
     rowGroupModel: rowGroupModelComputed(props.rowGroupModel ?? [], api),
 
     rowHeight: signal(props.rowHeight ?? ROW_HEIGHT),

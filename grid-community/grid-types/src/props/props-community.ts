@@ -20,7 +20,6 @@ import type {
   RowFullWidthPredicate,
   RowFullWidthRenderer,
   RowGroupDisplayMode,
-  RowGroupFullWidthRenderer,
   RowHeight,
   RowPin,
   RowSelectionCheckbox,
@@ -92,7 +91,6 @@ export interface PropsCommunity<A, D, C, E, Base, Group> {
   readonly rowGroupDisplayMode?: RowGroupDisplayMode;
   readonly rowGroupDefaultExpansion?: boolean | number;
   readonly rowGroupExpansions?: { [level: number]: { [rowId: string]: boolean } };
-  readonly rowGroupFullWidthRowRenderer?: null | RowGroupFullWidthRenderer<A, E>;
 
   readonly paginate?: boolean;
   readonly paginatePageSize?: number;
