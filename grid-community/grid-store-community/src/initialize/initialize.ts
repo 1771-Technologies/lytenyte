@@ -90,7 +90,6 @@ export function initialize<D, E>(
     rowFullWidthPredicate: signal(props.rowFullWidthPredicate ?? null),
     rowFullWidthRenderer: signal(props.rowFullWidthRenderer ?? null),
 
-    rowGroupCloseChildrenAsWell: signal(props.rowGroupCloseChildrenAsWell ?? false),
     rowGroupColumnTemplate: signal(props.rowGroupColumnTemplate ?? null),
     rowGroupDefaultExpansion: signal(props.rowGroupDefaultExpansion ?? false),
     rowGroupDisplayMode: signal(props.rowGroupDisplayMode ?? "single-column"),
