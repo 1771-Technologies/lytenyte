@@ -58,12 +58,14 @@ export function columnHandleGroupColumn<D, E>({
       return true;
     });
 
+    let reorder = false;
     for (let i = weNeedXColumns - 1; i >= 0; i--) {
       const columnId = `${GROUP_COLUMN_MULTI_PREFIX}${i}`;
 
       if (!lookup.has(columnId)) {
         const column = { ...baseGroup, ...rowGroupColumnTemplate, id: columnId };
         columns.unshift(column);
+        reorder = true;
         lookup.set(columnId, column);
       }
 
@@ -72,6 +74,14 @@ export function columnHandleGroupColumn<D, E>({
 
       (groupColumn as { headerName?: string }).headerName =
         referenceColumn?.headerName ?? referenceColumn?.id ?? `Group ${i}`;
+    }
+    if (reorder) {
+      const group = columns
+        .filter((c) => c.id.startsWith(GROUP_COLUMN_MULTI_PREFIX))
+        .sort((l, r) => l.id.localeCompare(r.id));
+      console.log(group);
+      const nonGroup = columns.filter((c) => !c.id.startsWith(GROUP_COLUMN_MULTI_PREFIX));
+      columns = [...group, ...nonGroup];
     }
   }
 
