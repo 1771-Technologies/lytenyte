@@ -6,14 +6,11 @@ export function rowIsFullWidthComputed<D, E>(
   api: StoreCommunity<D, E>["api"] | StoreEnterprise<D, E>["api"],
 ) {
   return computed(() => {
-    const rowDisplayMode = state.rowGroupDisplayMode.get();
     const rowFullWidthPredicate = state.rowFullWidthPredicate.get();
 
     return (r: number) => {
       const row = api.rowByIndex(r);
       if (!row) return false;
-
-      if (api.rowIsGroup(row) && rowDisplayMode === "full-row") return true;
 
       return rowFullWidthPredicate ? rowFullWidthPredicate({ api: api as any, row }) : false;
     };

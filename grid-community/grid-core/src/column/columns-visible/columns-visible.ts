@@ -7,7 +7,6 @@ export type ColumnLike = {
   hide?: boolean;
   groupVisibility?: ColumnGroupVisibility;
   groupPath?: string[];
-  keepMounted?: boolean;
   pin?: ColumnPin;
 };
 

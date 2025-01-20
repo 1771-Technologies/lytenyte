@@ -472,7 +472,7 @@ export type RowDragActivator = "handle" | "full-row" | "full-row-and-handle";
 export type RowDragPredicate<A, D> = (p: { api: A; row: RowNode<D> }) => boolean;
 
 // Row Groups
-export type RowGroupDisplayMode = "single-column" | "multi-column" | "full-row" | "custom";
+export type RowGroupDisplayMode = "single-column" | "multi-column" | "custom";
 export type RowGroupFullWidthRenderer<A, E> = (params: { api: A; row: RowNodeGroup }) => E;
 
 // Rows

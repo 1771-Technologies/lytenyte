@@ -33,7 +33,6 @@ export function initializeInternalState<D, E>(
     columnVisibleCenterCount,
     columnVisibleEndCount,
     columnVisibleStartCount,
-    columnForceMountedColumnIndices,
   } = columnsVisibleState(
     state.columns,
     state.columnBase,
@@ -75,7 +74,6 @@ export function initializeInternalState<D, E>(
 
     columnWidthDeltas,
     columnPositions: columnPositions,
-    columnForceMountedColumnIndices,
 
     columnGetRowSpan: columnGetRowSpan,
     columnGetColSpan: columnGetColSpan,
@@ -122,8 +120,6 @@ export function initializeInternalState<D, E>(
 
     rowIsFullWidthInternal: rowIsFullWidthComputed(state, api),
 
-    rowAutoHeightCache: {},
-    rowDetailAutoHeightCache: {},
     rowFirstVisible: signal(-1),
     rowLastVisible: signal(-1),
 
