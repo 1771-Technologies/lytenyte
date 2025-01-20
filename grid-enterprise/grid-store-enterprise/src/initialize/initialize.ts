@@ -82,7 +82,6 @@ export function initialize<D, E>(
     rowDetailMarker: signal(props.rowDetailMarker ?? true),
     rowDetailRenderer: signal(props.rowDetailRenderer ?? null),
 
-    rowDragActivator: signal(props.rowDragActivator ?? "handle"),
     rowDragEnabled: signal(props.rowDragEnabled ?? false),
     rowDragExternalGrids: signal(props.rowDragExternalGrids ?? []),
     rowDragMultiRow: signal(props.rowDragMultiRow ?? false),

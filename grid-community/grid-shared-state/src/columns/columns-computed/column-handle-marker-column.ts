@@ -3,7 +3,6 @@ import type { ColumnCommunity } from "@1771technologies/grid-types";
 import type {
   RowSelectionCheckbox,
   RowSelectionMode,
-  RowDragActivator,
 } from "@1771technologies/grid-types/community";
 import { itemsWithIdToMap } from "@1771technologies/js-utils";
 
@@ -11,7 +10,6 @@ interface ColumnHandleMarkerArgs<D, E> {
   readonly columns: ColumnCommunity<D, E>[];
   readonly rowSelectionCheckbox: RowSelectionCheckbox;
   readonly rowSelectionMode: RowSelectionMode;
-  readonly rowDragActivator: RowDragActivator;
   readonly rowDragEnabled: boolean;
   readonly rowDetailEnabled: boolean;
   readonly rowDetailMarker: boolean;
@@ -19,7 +17,6 @@ interface ColumnHandleMarkerArgs<D, E> {
 
 export function columnHandleMarker<D, E>({
   columns,
-  rowDragActivator,
   rowDragEnabled,
   rowSelectionCheckbox,
   rowSelectionMode,
@@ -28,7 +25,7 @@ export function columnHandleMarker<D, E>({
 }: ColumnHandleMarkerArgs<D, E>) {
   const markerForRowSelection = rowSelectionMode !== "none" && rowSelectionCheckbox !== "hide";
   const markerForRowDetail = rowDetailEnabled && rowDetailMarker;
-  const markerForRowDrag = rowDragEnabled && rowDragActivator !== "full-row";
+  const markerForRowDrag = rowDragEnabled;
 
   const hasMarkerColumn = markerForRowDrag || markerForRowDetail || markerForRowSelection;
 

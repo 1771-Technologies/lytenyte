@@ -468,7 +468,6 @@ export type RowDetailPredicate<A, D> = boolean | "all" | ((p: RowDetailParams<A,
 export type RowDetailRenderer<A, D, E> = (p: RowDetailParams<A, D>) => E;
 
 // Row Dragging
-export type RowDragActivator = "handle" | "full-row" | "full-row-and-handle";
 export type RowDragPredicate<A, D> = (p: { api: A; row: RowNode<D> }) => boolean;
 
 // Row Groups

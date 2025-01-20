@@ -15,7 +15,6 @@ import type {
   RowDetailHeight,
   RowDetailPredicate,
   RowDetailRenderer,
-  RowDragActivator,
   RowDragPredicate,
   RowFullWidthPredicate,
   RowFullWidthRenderer,
@@ -81,7 +80,6 @@ export interface PropsCommunity<A, D, C, E, Base, Group> {
   readonly rowDetailExpansions?: Set<string>;
 
   readonly rowDragEnabled?: boolean;
-  readonly rowDragActivator?: RowDragActivator;
   readonly rowDragMultiRow?: boolean;
   readonly rowDragExternalGrids?: A[];
   readonly rowDragPredicate?: RowDragPredicate<A, D> | null;
