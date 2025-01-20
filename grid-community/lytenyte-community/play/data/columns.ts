@@ -2,11 +2,11 @@ import type { ColumnCommunityReact } from "@1771technologies/grid-types";
 
 export const columns: ColumnCommunityReact<any>[] = [
   { id: "age", groupPath: ["Information"], type: "number", pin: "start" },
-  { id: "job" },
+  { id: "job", columnSpan: 2, rowSpan: 2 },
   { id: "balance", type: "number", pin: "start" },
-  { id: "education", pin: "end" },
+  { id: "education" },
   { id: "marital" },
-  { id: "default", pin: "end", groupPath: ["Alpha"] },
+  { id: "default", groupPath: ["Alpha"] },
   { id: "housing" },
   { id: "loan", groupPath: ["Xeno", "Sigma"] },
   { id: "contact", groupPath: ["Xeno", "Sigma"] },

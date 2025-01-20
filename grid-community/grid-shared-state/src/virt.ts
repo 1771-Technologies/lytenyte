@@ -62,13 +62,7 @@ export const virt = <D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>) => {
 
       const coveredSoFar: Record<number, Set<number> | undefined> = {};
 
-      const forced = s.columnForceMountedColumnIndices.get();
-
-      const forceBeforeStart = forced.filter((c) => c >= startCount && c < colMidStart);
-      const forceAfterStart = forced.filter((c) => c >= columnEnd && c < colEndBegin);
-
-      const size =
-        (startCount + endCount + colScan + (columnEnd - columnStart) + forced.length) * 4 + 1;
+      const size = (startCount + endCount + colScan + (columnEnd - columnStart)) * 4 + 1;
 
       const columnsWithRowSpan = s.columnsWithRowSpan.get();
       const columnsWithColSpan = s.columnsWithColSpan.get();
@@ -109,37 +103,14 @@ export const virt = <D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>) => {
             }
           }
 
+          coveredSoFar[r] ??= new Set();
           const cover = coveredSoFar[r];
           const v = new Int32Array(size);
           let pos = 0;
 
           processCols(0, startCount, cover);
 
-          for (let i = 0; i < forceBeforeStart.length; i++) {
-            const c = forceBeforeStart[i];
-            if (cover?.has(c)) continue;
-
-            const colSpan = columnsWithColSpan.has(c) ? getColSpan(r, c) : 1;
-            const rowSpan = columnsWithRowSpan.has(c) ? getRowSpan(r, c) : 1;
-
-            markCoveredSpans(coveredSoFar, r, c, colSpan, rowSpan);
-            encodeCell(v, pos, r, rowSpan, c, colSpan);
-            pos += 4;
-          }
-
           processCols(colMidStart, columnEnd, cover);
-
-          for (let i = 0; i < forceAfterStart.length; i++) {
-            const c = forceBeforeStart[i];
-            if (cover?.has(c)) continue;
-
-            const colSpan = columnsWithColSpan.has(c) ? getColSpan(r, c) : 1;
-            const rowSpan = columnsWithRowSpan.has(c) ? getRowSpan(r, c) : 1;
-
-            markCoveredSpans(coveredSoFar, r, c, colSpan, rowSpan);
-            encodeCell(v, pos, r, rowSpan, c, colSpan);
-            pos += 4;
-          }
 
           processCols(colEndBegin, colEndFinish, cover);
           v[pos] = END_ENCODING;
@@ -176,22 +147,19 @@ function markCoveredSpans(
   rowSpan: number,
 ) {
   // This cell spans
-  if (colSpan > 1)
-    for (let cs = c + 1; cs < c + colSpan; cs++) {
-      coveredSoFar[r] ??= new Set();
-      coveredSoFar[r]?.add(cs);
-    }
-  if (rowSpan > 1)
-    for (let rs = r + 1; rs < r + rowSpan; rs++) {
-      coveredSoFar[rs] ??= new Set();
-      coveredSoFar[rs]?.add(c);
-    }
-
-  if (rowSpan > 1 && colSpan > 1) {
-    for (let rs = r + 1; rs < r + rowSpan; rs++) {
+  if (colSpan > 1) {
+    for (let rs = r; rs < r + rowSpan; rs++) {
       for (let cs = c + 1; cs < c + colSpan; cs++) {
+        coveredSoFar[rs] ??= new Set();
         coveredSoFar[rs]?.add(cs);
       }
     }
   }
+  if (rowSpan > 1)
+    for (let rs = r + 1; rs < r + rowSpan; rs++) {
+      for (let cs = c; cs < c + colSpan; cs++) {
+        coveredSoFar[rs] ??= new Set();
+        coveredSoFar[rs]?.add(cs);
+      }
+    }
 }

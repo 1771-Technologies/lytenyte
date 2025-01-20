@@ -5,7 +5,6 @@ import type {
 
 export function initializePivotSensitiveState<D, E>(state: StateCommunity<D, E>) {
   const pivotSensitive = {
-    columnForceMountedColumnIndices: state.internal.columnForceMountedColumnIndices,
     columnGroupCenterLevels: state.internal.columnGroupCenterLevels,
     columnGroupEndLevels: state.internal.columnGroupEndLevels,
     columnGroupLevels: state.internal.columnGroupLevels,

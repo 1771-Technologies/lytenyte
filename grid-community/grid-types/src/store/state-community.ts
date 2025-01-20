@@ -27,7 +27,6 @@ export type GridInternalState<D, E> = {
   readonly columnVisibleStartCount: ReadonlySignal<number>;
   readonly columnVisibleCenterCount: ReadonlySignal<number>;
   readonly columnVisibleEndCount: ReadonlySignal<number>;
-  readonly columnForceMountedColumnIndices: ReadonlySignal<number[]>;
   readonly columnsWithRowSpan: ReadonlySignal<Set<number>>;
   readonly columnsWithColSpan: ReadonlySignal<Set<number>>;
   readonly columnPositions: ReadonlySignal<Uint32Array>;
@@ -120,7 +119,6 @@ export type ColumnPivotSensitiveState<D, E> = {
   readonly columnVisibleStartCount: ReadonlySignal<number>;
   readonly columnVisibleCenterCount: ReadonlySignal<number>;
   readonly columnVisibleEndCount: ReadonlySignal<number>;
-  readonly columnForceMountedColumnIndices: ReadonlySignal<number[]>;
   readonly columnsWithRowSpan: ReadonlySignal<Set<number>>;
   readonly columnsWithColSpan: ReadonlySignal<Set<number>>;
   readonly columnPositions: ReadonlySignal<Uint32Array>;

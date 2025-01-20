@@ -65,17 +65,18 @@ export function columnsWithSpan<D, E>(
 
     return (r: number, c: number) => {
       const column = columns[c];
+
       const row = api.rowByIndex(r);
-      const span = column.rowSpan ?? base.rowSpan;
+      const span = column.columnSpan ?? base.columnSpan;
 
       if (!column || !row || !span) return 1;
 
       if (typeof span === "number") {
         const spanToUse = Math.max(1, span);
-        return c % spanToUse === 0 ? spanToUse : 1;
+        return spanToUse;
       }
 
-      return Math.max(1, span({ api: api as any, row, column: column as any }));
+      return Math.max(1, span({ api: api as any, row }));
     };
   });
 
