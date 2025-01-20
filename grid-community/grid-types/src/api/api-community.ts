@@ -139,6 +139,8 @@ export interface ApiCommunity<D, C, E> {
   readonly rowIsDraggable: (id: string) => boolean;
   readonly rowVisibleRowHeight: (i: number, section?: RowSections) => number;
 
+  readonly rowGroupToggle: (row: RowNodeGroup, state?: boolean) => void;
+
   readonly rowUpdateRedo: () => void;
   readonly rowUpdateUndo: () => void;
 

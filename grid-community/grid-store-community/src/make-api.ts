@@ -70,6 +70,7 @@ import {
   keyBindingCallWithEvent,
   navigate,
   columnIsEditable,
+  rowGroupToggle,
 } from "@1771technologies/grid-shared-state";
 import { events } from "../../grid-shared-state/src/events";
 
@@ -185,6 +186,7 @@ export function makeApi<D, E>(
     rowIsTotal,
     rowIsDraggable: (id) => rowIsDraggable(api, id),
     rowVisibleRowHeight: (id, s) => rowVisibleRowHeight(api, id, s),
+    rowGroupToggle: (row, state) => rowGroupToggle(api, row, state),
 
     rowReplaceBottomData: (d) => rowReplaceBottomData(api, d),
     rowReplaceData: (d) => rowReplaceData(api, d),
