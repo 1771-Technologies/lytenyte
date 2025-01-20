@@ -9,6 +9,7 @@ export function flatBlockPayloadsComputed<D>(nodes: ReadonlySignal<RowNodeLeaf<D
     const rowNodes = nodes.get();
     const blockCount = Math.ceil(rowNodes.length / BLOCK_SIZE);
     const payloads: BlockPayload<D>[] = [];
+
     for (let i = 0; i < blockCount; i++) {
       payloads.push({
         index: i,

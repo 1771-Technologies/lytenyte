@@ -28,6 +28,7 @@ import { rowSetDataMany } from "./api/row-set-data-many";
 import { paginateGetCount } from "./api/paginate-get-count";
 import { paginateRowStartAndEndForPage } from "./api/paginate-row-stand-and-end-for-page";
 import { rowSelection } from "./api/row-selection";
+import { groupBlockPayloadsComputed } from "./utils/group-block-payloads-computed";
 
 export interface ClientState<D, E> {
   api: Signal<ApiCommunity<D, E>> | Signal<ApiEnterprise<D, E>>;
@@ -65,7 +66,7 @@ export function createClientDataSource<D, E>(
     const sortedNodes = sortedNodesComputed(api$, filteredNodes);
 
     const flatPayload = flatBlockPayloadsComputed(sortedNodes);
-    const groupPayload = flatBlockPayloadsComputed(sortedNodes);
+    const groupPayload = groupBlockPayloadsComputed(api$, sortedNodes);
 
     const graph$ = signal(new BlockGraph<D>(BLOCK_SIZE));
 
@@ -92,6 +93,8 @@ export function createClientDataSource<D, E>(
       graph.setBottom(rowBottomNodes.get());
 
       graph.blockFlatten();
+
+      api.rowRefresh();
 
       return graph;
     });

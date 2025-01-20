@@ -153,6 +153,7 @@ function makeDependsOn(symbol: symbol, depsLookup: Map<symbol, Set<() => void>>)
 
     return () => {
       const set = depsLookup.get(symbol)!;
+      if (!set) return;
 
       set.delete(fn);
       if (set.size === 0) depsLookup.delete(symbol);

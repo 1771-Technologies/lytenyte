@@ -12,21 +12,17 @@ export function groupBlockPayloadsComputed<D, E>(
   return computed(() => {
     const api = api$.get() as ApiEnterprise<D, E>;
     const sx = api.getState();
-
     const rowModel = sx.rowGroupModel.get();
 
+    // If the model is empty, then we can skip the rest of the code, there is nothing to group on.
     if (!rowModel.length) return { sizes: [], payloads: [] };
 
     const pathIdToDirectChildren = new Map<string, RowNode<D>[]>();
     const seenPaths = new Set<string>();
-
     const defaultExpansion = sx.rowGroupDefaultExpansion.peek();
 
     const nodes = rows.get();
-    for (let i = 0; i < nodes.length; i++) {
-      let path = "";
-      processPath(path, nodes[i], 0);
-    }
+    for (let i = 0; i < nodes.length; i++) processPath("", nodes[i], 0);
 
     const result: { sizes: { path: string; size: number }[]; payloads: BlockPayload<D>[] } = {
       sizes: [],
@@ -52,21 +48,32 @@ export function groupBlockPayloadsComputed<D, E>(
     // Helpers
 
     function processPath(path: string, row: RowNodeLeaf<D>, modelIndex: number) {
-      // We are at the leaf level
+      // We are at the leaf level - i.e. this is a leaf node that we need to insert into our tree.
       if (modelIndex === rowModel.length) {
-        if (!pathIdToDirectChildren.has(path)) pathIdToDirectChildren.set(path, []);
-        pathIdToDirectChildren.get(path)!.push(row);
+        if (!pathIdToDirectChildren.has(path)) pathIdToDirectChildren.set(path, []); // Ensure exists
 
+        // The child to the path rows.
+        pathIdToDirectChildren.get(path)!.push(row);
         return;
       }
 
-      // We are at the group level
+      // We are at the group level. So we need to get the column for that group index. The grid
+      // ensures the row model is valid, so the column must be row groupable.
       const column = api.columnById(rowModel[modelIndex])!;
 
+      // This is the group key for the column. This determines what we should group on.
       const groupKey = String(api.columnFieldGroup(row, column));
-      const groupPath = path + ROW_DEFAULT_PATH_SEPARATOR + groupKey;
+
+      // If it is the first entry in the path, we just use the group key, otherwise we join it with
+      // our delimiter for the path.
+      const groupPath = path ? path + ROW_DEFAULT_PATH_SEPARATOR + groupKey : groupKey;
+
+      // If we have already seen the path, it means a row node already exists for this path. Hence
+      // it doesn't make sense for use to create a node for this path.
       if (!seenPaths.has(groupPath)) {
-        // We need to create a group node and add it to the direct children for this group.
+        seenPaths.add(groupPath);
+        // Otherwise we need to create a group node and add it to our current level. When the path
+        // is empty this will be our root level.
         const node: RowNodeGroup = {
           id: groupPath,
           kind: ROW_GROUP_KIND,
