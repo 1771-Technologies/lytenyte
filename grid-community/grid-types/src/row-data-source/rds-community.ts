@@ -21,8 +21,6 @@ export interface RowDataSource<A, D> {
   rowReplaceTopData: (d: D[]) => void;
   rowReplaceBottomData: (d: D[]) => void;
 
-  rowGroupToggle: (id: string, state?: boolean) => void;
-
   paginateGetCount: () => number;
   paginateRowStartAndEndForPage: (i: number) => [number, number];
 

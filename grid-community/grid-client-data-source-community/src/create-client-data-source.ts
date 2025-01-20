@@ -21,7 +21,6 @@ import { rowById } from "./api/row-by-id";
 import { rowGetMany } from "./api/row-get-many";
 import { rowChildCount } from "./api/row-child-count";
 import { rowDepth } from "./api/row-depth";
-import { rowGroupToggle } from "./api/row-group-toggle";
 import { rowParentIndex } from "./api/row-parent-index";
 import { rowSetData } from "./api/row-set-data";
 import { rowSetDataMany } from "./api/row-set-data-many";
@@ -134,8 +133,6 @@ export function createClientDataSource<D, E>(
     rowChildCount: (r) => rowChildCount(state, r),
     rowDepth: (r) => rowDepth(state, r),
     rowParentIndex: (r) => rowParentIndex(state, r),
-
-    rowGroupToggle: (id, s) => rowGroupToggle(state, id, s),
 
     rowSetData: (id, d) => rowSetData(state, id, d),
     rowSetDataMany: (updates) => rowSetDataMany(state, updates),
