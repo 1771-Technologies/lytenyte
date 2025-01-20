@@ -43,7 +43,6 @@ export function columnsComputed<D, E>(
       columns: columnsWithTree,
       rowDetailEnabled: sx.rowDetailPredicate.get() !== false,
       rowDetailMarker: sx.rowDetailMarker.get(),
-      rowDragActivator: sx.rowDragActivator.get(),
       rowDragEnabled: sx.rowDragEnabled.get(),
       rowSelectionCheckbox: sx.rowSelectionCheckbox.get(),
       rowSelectionMode: sx.rowSelectionMode.get(),

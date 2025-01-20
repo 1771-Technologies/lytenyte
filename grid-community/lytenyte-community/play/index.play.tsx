@@ -11,6 +11,7 @@ export default function Play() {
       columns: columns,
       columnBase: { resizable: true, movable: true },
       rowDetailPredicate: true,
+      rowDragEnabled: true,
       rowDataSource: {
         kind: "client",
         data: bankDataSmall,
