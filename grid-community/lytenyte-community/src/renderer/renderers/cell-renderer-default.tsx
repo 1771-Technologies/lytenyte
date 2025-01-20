@@ -1,24 +1,20 @@
 import { t } from "@1771technologies/grid-design";
 import type { CellRendererParamsReact } from "@1771technologies/grid-types/community-react";
 
+export const cellCls = css`
+  display: flex;
+  align-items: center;
+  padding-inline-start: ${t.spacing.cell_horizontal_padding};
+  font-family: ${t.typography.typeface_body};
+  font-size: ${t.typography.body_m};
+  color: ${t.colors.text_medium};
+  line-height: 20px;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+`;
+
 export function CellRendererDefault(p: CellRendererParamsReact<any>) {
   const field = p.api.columnField(p.row, p.column);
-  return (
-    <div
-      className={css`
-        display: flex;
-        align-items: center;
-        padding-inline-start: ${t.spacing.cell_horizontal_padding};
-        font-family: ${t.typography.typeface_body};
-        font-size: ${t.typography.body_m};
-        color: ${t.colors.text_medium};
-        line-height: 20px;
-        height: 100%;
-        width: 100%;
-        box-sizing: border-box;
-      `}
-    >
-      {field as string}
-    </div>
-  );
+  return <div className={cellCls}>{field as string}</div>;
 }

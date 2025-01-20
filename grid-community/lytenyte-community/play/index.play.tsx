@@ -30,7 +30,7 @@ export default function Play() {
     >
       <div>
         <button onClick={() => grid.state.rtl.set((prev) => !prev)}>RTL</button>
-        <button onClick={() => grid.state.rowGroupModel.set(["job"])}>Grouped</button>
+        <button onClick={() => grid.state.rowGroupModel.set(["job", "age"])}>Grouped</button>
         <button onClick={() => grid.state.rowGroupModel.set([])}>Un-group</button>
       </div>
       <div

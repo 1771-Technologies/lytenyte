@@ -2,6 +2,7 @@ import type { CellRendererParamsReact } from "@1771technologies/grid-types/commu
 import { GridButton } from "../../components/buttons";
 import { t } from "@1771technologies/grid-design";
 import { clsx } from "@1771technologies/js-utils";
+import { cellCls } from "./cell-renderer-default";
 
 export function CellGroupRendererDefault({ api, row }: CellRendererParamsReact<any>) {
   if (!api.rowIsGroup(row)) {
@@ -14,14 +15,12 @@ export function CellGroupRendererDefault({ api, row }: CellRendererParamsReact<a
   return (
     <div
       style={{ paddingInlineStart: depth * 24 + 16 }}
-      className={css`
-        display: flex;
-        align-items: center;
-        height: 100%;
-        width: 100%;
-        box-sizing: border-box;
-        gap: ${t.spacing.space_02};
-      `}
+      className={clsx(
+        cellCls,
+        css`
+          gap: ${t.spacing.space_02};
+        `,
+      )}
     >
       <GridButton
         onClick={() => api.rowGroupToggle(row)}
