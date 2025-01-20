@@ -18,8 +18,10 @@ export function useCellStyle(
 ) {
   const sx = api.getState();
   const vpWidth = sx.internal.viewportInnerWidth.use();
-  const height = sizeFromCoord(rowIndex, yPositions, rowSpan);
+  const rowDetailHeight = sx.internal.rowDetailHeight.use();
+  const height = sizeFromCoord(rowIndex, yPositions, rowSpan) - rowDetailHeight(rowIndex);
   const width = sizeFromCoord(columnIndex, xPositions, columnSpan);
+
   const rtl = sx.rtl.use();
 
   const styleAndCss = useMemo(() => {
