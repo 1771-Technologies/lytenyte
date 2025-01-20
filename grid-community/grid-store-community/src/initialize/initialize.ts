@@ -74,7 +74,6 @@ export function initialize<D, E>(
 
     rowDataSource: signal(props.rowDataSource ?? rowDataSource),
 
-    rowDetailAutoHeightEstimate: signal(props.rowDetailAutoHeightEstimate ?? ROW_DETAIL_HEIGHT),
     rowDetailPredicate: signal(props.rowDetailPredicate ?? false),
     rowDetailExpansions: signal(props.rowDetailExpansions ?? new Set()),
     rowDetailHeight: signal(props.rowDetailHeight ?? ROW_DETAIL_HEIGHT),
@@ -98,7 +97,6 @@ export function initialize<D, E>(
     rowGroupModel: rowGroupModelComputed(props.rowGroupModel ?? [], api),
 
     rowHeight: signal(props.rowHeight ?? ROW_HEIGHT),
-    rowAutoHeightDefaultGuess: signal(props.rowAutoHeightDefaultGuess ?? ROW_HEIGHT),
 
     rowTotalsPinned: signal(props.rowTotalsPinned ?? false),
     rowTotalRow: signal(props.rowTotalRow ?? null),

@@ -80,7 +80,6 @@ export interface PropsCommunity<A, D, C, E, Base, Group> {
   readonly rowDetailPredicate?: RowDetailPredicate<A, D>;
   readonly rowDetailHeight?: RowDetailHeight<A, D>;
   readonly rowDetailExpansions?: Set<string>;
-  readonly rowDetailAutoHeightEstimate?: number;
 
   readonly rowDragEnabled?: boolean;
   readonly rowDragActivator?: RowDragActivator;
@@ -100,7 +99,6 @@ export interface PropsCommunity<A, D, C, E, Base, Group> {
   readonly paginateCurrentPage?: number;
 
   readonly rowHeight?: RowHeight;
-  readonly rowAutoHeightDefaultGuess?: number;
 
   readonly rowSelectionCheckbox?: RowSelectionCheckbox;
   readonly rowSelectionPointerActivator?: RowSelectionPointerActivator;

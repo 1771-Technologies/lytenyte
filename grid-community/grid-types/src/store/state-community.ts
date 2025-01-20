@@ -71,8 +71,6 @@ export type GridInternalState<D, E> = {
   readonly rowTopCount: ReadonlySignal<number>;
   readonly rowBottomCount: ReadonlySignal<number>;
 
-  readonly rowDetailAutoHeightCache: { [rowId: string]: number };
-
   readonly rowDragIsActive: Signal<boolean>;
   readonly rowDragOverIndex: Signal<number>;
 
@@ -80,7 +78,6 @@ export type GridInternalState<D, E> = {
 
   readonly rowPositions: ReadonlySignal<Uint32Array>;
   readonly rowDetailHeight: ReadonlySignal<(i: number) => number>;
-  readonly rowAutoHeightCache: { [rowIndex: number]: number };
 
   readonly rowFirstVisible: Signal<number>;
   readonly rowLastVisible: Signal<number>;

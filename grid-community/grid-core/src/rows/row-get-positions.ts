@@ -49,17 +49,10 @@ import { makeUint32PositionArray } from "@1771technologies/js-utils";
 export function rowGetPositions(
   rowCount: number,
   rowHeight: RowHeight,
-  autoHeightCache: Record<number, number>,
-  autoHeightGuess: number,
   rowDetailEnabled: null | ((i: number) => boolean),
   getDetailHeight: null | ((i: number) => number),
 ) {
-  const rowHeightCalculator =
-    rowHeight === "auto"
-      ? (i: number) => autoHeightCache[i] ?? autoHeightGuess
-      : typeof rowHeight === "number"
-        ? () => rowHeight
-        : rowHeight;
+  const rowHeightCalculator = typeof rowHeight === "number" ? () => rowHeight : rowHeight;
 
   if (rowDetailEnabled) {
     const calculatorWithDetailHeight = (i: number) => {

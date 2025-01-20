@@ -463,7 +463,7 @@ export type RowDetailParams<A, D> = {
   readonly row: RowNode<D>;
 };
 
-export type RowDetailHeight<A, D> = "auto" | number | ((p: RowDetailParams<A, D>) => number);
+export type RowDetailHeight<A, D> = number | ((p: RowDetailParams<A, D>) => number);
 export type RowDetailPredicate<A, D> = boolean | "all" | ((p: RowDetailParams<A, D>) => boolean);
 export type RowDetailRenderer<A, D, E> = (p: RowDetailParams<A, D>) => E;
 
@@ -489,7 +489,7 @@ export type RowFullWidthPredicateParams<A, D> = {
   row: RowNode<D>;
 };
 export type RowFullWidthPredicate<A, D> = (p: RowFullWidthPredicateParams<A, D>) => boolean;
-export type RowHeight = "auto" | number | ((i: number) => number);
+export type RowHeight = number | ((i: number) => number);
 
 export type RowDragEventParams<A, D> = {
   event: DragEvent;

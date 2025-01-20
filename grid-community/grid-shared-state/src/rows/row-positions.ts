@@ -29,41 +29,29 @@ export function rowPositionsComputed<D, E>(
   const rowDetailHeight = computed(() => {
     const enabled = rowDetailEnabled$.get();
     const detailHeight = state.rowDetailHeight.get();
-    const detailHeightCache = state.internal.rowDetailAutoHeightCache;
-    const detailHeightGuess = state.rowDetailAutoHeightEstimate.get();
 
     return (i: number) => {
       const row = api.rowByIndex(i)!;
       if (!enabled(i) || !api.rowDetailIsExpanded(row.id)) return 0;
 
-      if (typeof detailHeight === "number") return Math.min(detailHeight, 1);
-
-      if (detailHeight === "auto")
-        return Math.min(detailHeightCache[row.id] ?? detailHeightGuess, 1);
+      if (typeof detailHeight === "number") return Math.max(detailHeight, 1);
 
       // The API types are not compatible between enterprise and community, so TypeScript complains,
       // however casting to any here is fine since the detailHeight function will expect the API of
       // the current grid to be provided.
-      return Math.min(detailHeight({ api: api as any, row }), 1);
+      return Math.max(detailHeight({ api: api as any, row }), 1);
     };
   });
 
   const rowPositions = computed(() => {
     const rowCount = state.internal.rowCount.get();
     const rowHeight = state.rowHeight.get();
-    const rowAutoHeightCache = state.internal.rowAutoHeightCache;
-    const rowAutoHeightGuess = state.rowAutoHeightDefaultGuess.get();
     const rowDetailEnabled = rowDetailEnabled$.get();
     const rowDetailHeightGetter = rowDetailHeight.get();
 
-    return rowGetPositions(
-      rowCount,
-      rowHeight,
-      rowAutoHeightCache,
-      rowAutoHeightGuess,
-      rowDetailEnabled,
-      rowDetailHeightGetter,
-    );
+    const positions = rowGetPositions(rowCount, rowHeight, rowDetailEnabled, rowDetailHeightGetter);
+
+    return positions;
   });
 
   return {
