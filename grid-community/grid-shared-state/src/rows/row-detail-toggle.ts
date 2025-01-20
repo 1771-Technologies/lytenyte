@@ -21,4 +21,6 @@ export const rowDetailToggle = <D, E>(
 
   s.rowDetailExpansions.set(next);
   (api as any).eventFire("onRowDetailExpansionsChange", api);
+
+  api.rowRefresh();
 };

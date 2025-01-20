@@ -2,6 +2,7 @@ import { t } from "@1771technologies/grid-design";
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
 import type { ColumnGroupRowItem } from "@1771technologies/grid-types/community";
 import { useMemo } from "react";
+import { CollapseButton } from "../../components/buttons";
 
 export interface HeaderGroupRendererProps {
   readonly group: ColumnGroupRowItem;
@@ -34,29 +35,7 @@ export function HeaderGroupDefault({ group, api }: HeaderGroupRendererProps) {
     >
       {label}
       {group.isCollapsible && (
-        <button
-          tabIndex={-1}
-          onClick={() => api.columnGroupToggle(group.id)}
-          className={css`
-            border: none;
-            padding: 0px;
-            font-weight: 600;
-            height: 24px;
-            width: 24px;
-            border-radius: ${t.spacing.box_radius_regular};
-            cursor: pointer;
-
-            background-color: ${t.colors.backgrounds_default};
-            &:focus-visible {
-              outline: none;
-            }
-            &:hover {
-              background-color: ${t.colors.backgrounds_button_light};
-            }
-          `}
-        >
-          -
-        </button>
+        <CollapseButton onClick={() => api.columnGroupToggle(group.id)}>-</CollapseButton>
       )}
     </div>
   );

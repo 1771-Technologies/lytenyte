@@ -6,6 +6,7 @@ import { useHeaderCellRenderer } from "./use-header-cell-renderer";
 import { t } from "@1771technologies/grid-design";
 import { useHeaderMove } from "./use-header-move";
 import { COLUMN_EMPTY_PREFIX } from "@1771technologies/grid-constants";
+import { ExpandButton } from "../components/buttons";
 
 interface HeaderCellProps {
   readonly api: ApiCommunityReact<any>;
@@ -66,9 +67,7 @@ export function HeaderCell({
 
   if (api.columnIsEmpty(column)) {
     return (
-      <div
-        role="button"
-        tabIndex={-1}
+      <ExpandButton
         onClick={() => {
           const id = column.id.replace(COLUMN_EMPTY_PREFIX, "").split("|>").slice(0, -1);
 
@@ -81,6 +80,7 @@ export function HeaderCell({
           background-color: ${t.colors.backgrounds_ui_panel};
           overflow: hidden;
           display: flex;
+          height: 100% !important;
           align-items: center;
           justify-content: center;
           color: ${t.colors.text_dark};
@@ -88,7 +88,7 @@ export function HeaderCell({
         `}
       >
         +
-      </div>
+      </ExpandButton>
     );
   }
 

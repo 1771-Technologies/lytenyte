@@ -1,10 +1,13 @@
 import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
 import { useMemo } from "react";
 import { CellRendererDefault } from "../renderers/cell-renderer-default";
+import { COLUMN_MARKER_ID } from "@1771technologies/grid-constants";
+import { CellMarkerRenderer } from "../renderers/cell-marker-renderer";
 
 export function useCellRenderer(api: ApiCommunityReact<any>, column: ColumnCommunityReact<any>) {
   const renderers = api.getState().cellRenderers.peek();
   const Renderer = useMemo(() => {
+    if (column.id === COLUMN_MARKER_ID) return CellMarkerRenderer;
     const base = api.getState().columnBase.peek();
     const renderKey = column.cellRenderer ?? base.cellRenderer;
     if (!renderKey) return CellRendererDefault;
@@ -15,7 +18,7 @@ export function useCellRenderer(api: ApiCommunityReact<any>, column: ColumnCommu
       return El;
     }
     return renderKey;
-  }, [api, column.cellRenderer, renderers]);
+  }, [api, column.cellRenderer, column.id, renderers]);
 
   return Renderer;
 }

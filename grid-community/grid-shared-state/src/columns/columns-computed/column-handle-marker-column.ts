@@ -39,6 +39,7 @@ export function columnHandleMarker<D, E>({
       { id: COLUMN_MARKER_ID, headerName: "", pin: "start", width: 30, widthMin: 30, widthMax: 30 },
       ...columns,
     ];
+    lookup.set(COLUMN_MARKER_ID, columns[0]);
   } else if (!hasMarkerColumn && lookup.has(COLUMN_MARKER_ID)) {
     const index = columns.findIndex((c) => c.id === COLUMN_MARKER_ID);
     columns.splice(index, 1);
