@@ -18,7 +18,7 @@ interface ColumnHandleGroupColumnArgs<D, E> {
 
 export const baseGroup: ColumnRowGroupCommunity<any, any> = {
   headerName: "Group",
-  cellOptions: { autosizeFunc: autosizeGroupColumnDefault },
+  cellAutosizeFn: autosizeGroupColumnDefault,
 };
 
 export function columnHandleGroupColumn<D, E>({
