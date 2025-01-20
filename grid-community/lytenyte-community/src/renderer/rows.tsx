@@ -4,6 +4,7 @@ import { END_ENCODING, FULL_ENCODING } from "@1771technologies/grid-constants";
 import { Cell } from "./cell";
 import { CellFullWidth } from "./cell-full-width";
 import { t } from "@1771technologies/grid-design";
+import { RowDetail } from "./row-detail";
 
 export function Rows({ width }: { width: number }) {
   const { state, api } = useGrid();
@@ -22,6 +23,8 @@ export function Rows({ width }: { width: number }) {
 
   const topHeight = yPositions[topCount];
   const botHeight = yPositions.at(-1)! - yPositions[rowCount - botCount];
+
+  const detailHeight = state.internal.rowDetailHeight.use();
 
   const [fullWidthCache, cellCache] = useMemo(() => {
     void xPositions;
@@ -102,6 +105,20 @@ export function Rows({ width }: { width: number }) {
           place.push(cellCache[rowIndex][colIndex]);
         }
       }
+      // Finished processing cells
+      const rowDetailHeight = detailHeight(rowIndex);
+      if (rowDetailHeight > 0) {
+        place.push(
+          <RowDetail
+            api={api}
+            height={rowDetailHeight}
+            row={row}
+            rowPin={rowIndex < topCount ? "top" : rowIndex >= firstBotIndex ? "bottom" : null}
+            rowIndex={rowIndex}
+            yPositions={yPositions}
+          />,
+        );
+      }
     }
 
     return [top, center, bottom];
@@ -109,6 +126,7 @@ export function Rows({ width }: { width: number }) {
     api,
     cellCache,
     columns,
+    detailHeight,
     firstBotIndex,
     fullWidthCache,
     layout,
