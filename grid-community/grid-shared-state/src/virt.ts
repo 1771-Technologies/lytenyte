@@ -71,17 +71,16 @@ export const virt = <D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>) => {
 
       const isFullWidth = s.internal.rowIsFullWidthInternal.get();
 
-      process(0, topCount);
-      process(Math.max(rowStart - rowScan, topCount), rowEnd);
-      process(rowCount - bottomCount, rowCount);
+      process(0, topCount, topCount);
+      process(Math.max(rowStart - rowScan, topCount), rowEnd, rowCount - bottomCount);
+      process(rowCount - bottomCount, rowCount, rowCount);
 
       return bounds;
 
-      function process(start: number, end: number) {
+      function process(start: number, end: number, lastRow: number) {
         for (let r = start; r < end; r++) {
           if (isFullWidth(r)) {
             const v = new Int32Array(2);
-
             v[0] = FULL_ENCODING;
             v[1] = END_ENCODING;
 
@@ -90,32 +89,61 @@ export const virt = <D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>) => {
             continue;
           }
 
-          function processCols(start: number, end: number, cover: Set<number> | undefined) {
-            for (let c = start; c < end; c++) {
-              if (cover?.has(c)) continue;
-
-              const colSpan = columnsWithColSpan.has(c) ? getColSpan(r, c) : 1;
-              const rowSpan = columnsWithRowSpan.has(c) ? getRowSpan(r, c) : 1;
-
-              markCoveredSpans(coveredSoFar, r, c, colSpan, rowSpan);
-              encodeCell(v, pos, r, rowSpan, c, colSpan);
-              pos += 4;
-            }
-          }
-
           coveredSoFar[r] ??= new Set();
           const cover = coveredSoFar[r];
           const v = new Int32Array(size);
-          let pos = 0;
+          const posRef = { current: 0 };
 
-          processCols(0, startCount, cover);
+          processCols(posRef, v, r, 0, startCount, cover, lastRow, startCount);
+          processCols(
+            posRef,
+            v,
+            r,
+            colMidStart,
+            columnEnd,
+            cover,
+            lastRow,
+            startCount + centerCount,
+          );
+          processCols(
+            posRef,
+            v,
+            r,
+            colEndBegin,
+            colEndFinish,
+            cover,
+            lastRow,
+            startCount + centerCount + endCount,
+          );
 
-          processCols(colMidStart, columnEnd, cover);
-
-          processCols(colEndBegin, colEndFinish, cover);
-          v[pos] = END_ENCODING;
+          v[posRef.current] = END_ENCODING;
 
           bounds.set(r, v);
+        }
+      }
+
+      function processCols(
+        pos: { current: number },
+        v: Int32Array,
+        r: number,
+        start: number,
+        end: number,
+        cover: Set<number> | undefined,
+        lastRow: number,
+        lastCol: number,
+      ) {
+        for (let c = start; c < end; c++) {
+          if (cover?.has(c)) continue;
+
+          const maxRowSpan = lastRow - r;
+          const maxColSpan = lastCol - c;
+
+          const colSpan = columnsWithColSpan.has(c) ? Math.min(getColSpan(r, c), maxColSpan) : 1;
+          const rowSpan = columnsWithRowSpan.has(c) ? Math.min(getRowSpan(r, c), maxRowSpan) : 1;
+
+          markCoveredSpans(coveredSoFar, r, c, colSpan, rowSpan);
+          encodeCell(v, pos.current, r, rowSpan, c, colSpan);
+          pos.current += 4;
         }
       }
     }),

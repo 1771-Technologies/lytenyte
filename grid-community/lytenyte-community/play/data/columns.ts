@@ -2,8 +2,8 @@ import type { ColumnCommunityReact } from "@1771technologies/grid-types";
 
 export const columns: ColumnCommunityReact<any>[] = [
   { id: "age", groupPath: ["Information"], type: "number", pin: "start" },
-  { id: "job", columnSpan: 2, rowSpan: 2 },
-  { id: "balance", type: "number", pin: "start" },
+  { id: "job", rowGroupable: true },
+  { id: "balance", type: "number", pin: "start", rowGroupable: true },
   { id: "education" },
   { id: "marital" },
   { id: "default", groupPath: ["Alpha"] },
@@ -16,6 +16,6 @@ export const columns: ColumnCommunityReact<any>[] = [
   { id: "campaign" },
   { id: "pdays" },
   { id: "previous" },
-  { id: "poutcome" },
+  { id: "poutcome", columnSpan: 2 },
   { id: "y" },
 ];
