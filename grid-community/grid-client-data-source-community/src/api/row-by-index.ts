@@ -15,9 +15,5 @@ export function rowByIndex<D, E>(state: ClientState<D, E>, r: number) {
     return row;
   }
 
-  const cache = state.cache.peek();
-
-  if (cache[row.id]) return row;
-
   return calculateRowAgg(state, row);
 }

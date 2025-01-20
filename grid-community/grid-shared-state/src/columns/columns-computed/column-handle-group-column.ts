@@ -79,7 +79,7 @@ export function columnHandleGroupColumn<D, E>({
       const group = columns
         .filter((c) => c.id.startsWith(GROUP_COLUMN_MULTI_PREFIX))
         .sort((l, r) => l.id.localeCompare(r.id));
-      console.log(group);
+
       const nonGroup = columns.filter((c) => !c.id.startsWith(GROUP_COLUMN_MULTI_PREFIX));
       columns = [...group, ...nonGroup];
     }

@@ -6,6 +6,12 @@ export function calculateRowAgg<D, E>(state: ClientState<D, E>, row: RowNodeGrou
   const api = state.api.peek();
   const cache = state.cache.peek();
 
+  if (cache[row.id]) {
+    (row as { data: unknown }).data = cache[row.id];
+
+    return row;
+  }
+
   if (api.rowIsTotal(row)) {
     const nodes = state.rowCenterNodes.peek();
     const aggResult = aggregator(api, nodes);

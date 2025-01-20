@@ -19,8 +19,9 @@ export function rowGroupModelComputed<D, E>(
       return model;
     },
     postUpdate: () => {
-      api.getState().columns.set((prev: any[]) => [...prev]);
-      api.getState().rowGroupExpansions.set((prev) => ({ ...prev }));
+      const sx = api.getState();
+      sx.columns.set((prev: any[]) => [...prev]);
+      sx.rowGroupExpansions.set((prev) => ({ ...prev }));
     },
   });
 

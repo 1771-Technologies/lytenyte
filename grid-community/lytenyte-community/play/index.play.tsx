@@ -33,6 +33,7 @@ export default function Play() {
         <button onClick={() => grid.state.rowGroupModel.set(["job", "age"])}>Grouped</button>
         <button onClick={() => grid.state.rowGroupModel.set(["job"])}>Un-group</button>
         <button onClick={() => grid.state.rowGroupDisplayMode.set("multi-column")}>Multi</button>
+        <button onClick={() => grid.state.rowGroupDisplayMode.set("single-column")}>Single</button>
       </div>
       <div
         className={css`
