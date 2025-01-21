@@ -5,7 +5,7 @@ import { HeaderContainer } from "./header-container";
 import { Rows } from "./rows";
 import { useEffect, useRef } from "react";
 import { IsoResizeObserver } from "@1771technologies/js-utils";
-import { t } from "@1771technologies/grid-design";
+import { RowContainer } from "./viewport/row-container";
 
 export function Viewport() {
   const { state } = useGrid();
@@ -83,25 +83,11 @@ export function Viewport() {
           top: 0;
           inset-inline-start: 0px;
           min-width: 100%;
-          background-color: green;
         `}
       />
-      <div
-        style={{ width: totalWidth, minHeight: totalHeight }}
-        className={css`
-          background-color: ${t.colors.backgrounds_row};
-          display: flex;
-          flex-direction: column;
-
-          & > div {
-            display: grid;
-            grid-template-rows: 0px;
-            grid-template-columns: 0px;
-          }
-        `}
-      >
+      <RowContainer totalHeight={totalHeight} totalWidth={totalWidth}>
         <Rows width={totalWidth} />
-      </div>
+      </RowContainer>
     </Sizer>
   );
 }
