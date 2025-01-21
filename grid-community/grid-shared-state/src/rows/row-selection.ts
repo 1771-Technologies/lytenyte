@@ -18,6 +18,7 @@ export const rowSelection = <D, E>(api: ApiEnterprise<D, E> | ApiCommunity<D, E>
     },
     rowSelectionSelect: (ids: string[], childrenAsWell?: boolean) => {
       const sx = api.getState();
+
       const backing = sx.internal.rowBackingDataSource.peek();
 
       const next = new Set(sx.rowSelectionSelectedIds.peek());

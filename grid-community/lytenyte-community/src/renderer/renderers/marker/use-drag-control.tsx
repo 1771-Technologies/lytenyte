@@ -10,13 +10,11 @@ export function useDragControl(api: ApiCommunityReact<any>, row: RowNode<any>) {
     dragData: () => {
       const sx = api.getState();
 
-      const multi = sx.rowDragMultiRow.peek();
+      const rows = sx.rowDragMultiRow.peek()
+        ? [row, ...api.rowSelectionGetSelected().filter((r) => r !== row)]
+        : [row];
 
-      if (multi) {
-        // TDOD
-      }
-
-      return { rows: [row], api };
+      return { rows, api };
     },
     dragTags: () => {
       const sx = api.getState();
@@ -36,10 +34,14 @@ export function useDragControl(api: ApiCommunityReact<any>, row: RowNode<any>) {
       const sx = api.getState();
 
       sx.internal.rowDragStartIndex.set(row.rowIndex!);
+
+      const rows = sx.rowDragMultiRow.peek()
+        ? [row, ...api.rowSelectionGetSelected().filter((r) => r !== row)]
+        : [row];
       const ref: RowDragEventParams<ApiCommunityReact<any>, any> = {
         event: ev.event,
         api,
-        rows: [row],
+        rows,
         overIndex: -1,
       };
 
@@ -107,12 +109,20 @@ export function useDragControl(api: ApiCommunityReact<any>, row: RowNode<any>) {
         }
       });
     },
-    placeholder: () => <DragPlaceholder row={row} />,
+    placeholder: () => {
+      const sx = api.getState();
+      const rows = sx.rowDragMultiRow.peek()
+        ? [row, ...api.rowSelectionGetSelected().filter((r) => r !== row)]
+        : [row];
+      return <DragPlaceholder rows={rows} />;
+    },
   });
 
   return draggable;
 }
-const DragPlaceholder = (p: { row: RowNode }) => {
+const DragPlaceholder = (p: { rows: RowNode[] }) => {
+  const label =
+    p.rows.length === 1 ? `Moving row ${p.rows[0].rowIndex}` : `Moving ${p.rows.length} rows`;
   return (
     <div
       className={clsx(css`
@@ -123,7 +133,7 @@ const DragPlaceholder = (p: { row: RowNode }) => {
         border-radius: ${t.spacing.box_radius_regular};
       `)}
     >
-      Moving row {p.row.rowIndex}
+      {label}
     </div>
   );
 };
