@@ -133,6 +133,15 @@ export interface ApiCommunity<D, C, E> {
   readonly rowDetailRowPredicate: (id: string) => boolean;
   readonly rowDetailVisibleHeight: (id: string) => number;
 
+  readonly rowSelectionGetSelected: () => RowNode[];
+  readonly rowSelectionSelect: (id: string[], childrenAsWell?: boolean) => void;
+  readonly rowSelectionDeselect: (id: string[], childrenAsWell?: boolean) => void;
+  readonly rowSelectionIsIndeterminate: (id: string) => boolean;
+  readonly rowSelectionAllRowsSelected: () => boolean;
+  readonly rowSelectionSelectAll: () => void;
+  readonly rowSelectionClear: () => void;
+  readonly rowSelectionSelectAllSupported: () => boolean;
+
   readonly rowIsGroup: (row: RowNode<D>) => row is RowNodeGroup;
   readonly rowIsLeaf: (row: RowNode<D>) => row is RowNodeLeaf<D>;
   readonly rowIsTotal: (row: RowNode<D>) => row is RowNodeTotal;

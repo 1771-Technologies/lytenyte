@@ -33,7 +33,6 @@ export interface ClientState<D, E> {
   api: Signal<ApiCommunity<D, E>> | Signal<ApiEnterprise<D, E>>;
 
   graph: ReadonlySignal<BlockGraph<D>>;
-  selectedIds: Signal<Set<string>>;
 
   cache: Signal<Record<string, any>>;
 
@@ -51,7 +50,6 @@ export function createClientDataSource<D, E>(
     const api$ = signal<ApiCommunity<D, E>>(null as unknown as ApiCommunity<D, E>);
 
     const cache = signal<Record<string, any>>({});
-    const selectedIds = signal<Set<string>>(new Set());
 
     const initialTopNodes = dataToRowNodes(r.topData ?? [], "top", "top");
     const initialBottomNodes = dataToRowNodes(r.bottomData ?? [], "bottom", "bottom");
@@ -103,7 +101,6 @@ export function createClientDataSource<D, E>(
 
       graph,
       cache,
-      selectedIds,
 
       rowTopNodes,
       rowCenterNodes,
@@ -140,14 +137,14 @@ export function createClientDataSource<D, E>(
     rowReplaceData: (d) => state.rowCenterNodes.set(dataToRowNodes(d, null, "center")),
     rowReplaceTopData: (d) => state.rowTopNodes.set(dataToRowNodes(d, "top", "top")),
 
-    rowSelectionSelectAll: selected.rowSelectionSelectAll,
-    rowSelectionAllRowsSelected: selected.rowSelectionAllRowsSelected,
-    rowSelectionClear: selected.rowSelectionClear,
     rowSelectionDeselect: selected.rowSelectionDeselect,
     rowSelectionSelect: selected.rowSelectionSelect,
-    rowSelectionGetSelected: selected.rowSelectionGetSelected,
+    rowSelectionSelectAll: selected.rowSelectionSelectAll,
+    rowSelectionAllRowsSelected: selected.rowSelectionAllRowsSelected,
     rowSelectionIsIndeterminate: selected.rowSelectionIsIndeterminate,
-    rowSelectionIsSelected: selected.rowSelectionIsSelected,
+    rowSelectionSelectAllSupported: selected.rowSelectionSelectAllSupported,
+    rowSelectionClear: selected.rowSelectionClear,
+    rowSelectionGetSelected: selected.rowSelectionGetSelected,
 
     rowBottomCount: () => state.graph.peek().rowBotCount(),
     rowTopCount: () => state.graph.peek().rowTopCount(),

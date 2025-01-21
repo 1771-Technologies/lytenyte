@@ -24,14 +24,14 @@ export interface RowDataSource<A, D> {
   paginateGetCount: () => number;
   paginateRowStartAndEndForPage: (i: number) => [number, number];
 
-  rowSelectionIsSelected: (id: string) => boolean;
-  rowSelectionGetSelected: () => string[];
   rowSelectionSelect: (id: string[], selectChildren?: boolean) => void;
   rowSelectionDeselect: (id: string[], selectChildren?: boolean) => void;
+  rowSelectionGetSelected: () => RowNode<D>[];
   rowSelectionIsIndeterminate: (id: string) => boolean;
   rowSelectionAllRowsSelected: () => boolean;
   rowSelectionSelectAll: () => void;
   rowSelectionClear: () => void;
+  rowSelectionSelectAllSupported: () => boolean;
 
   rowGetMany: (
     start: number,

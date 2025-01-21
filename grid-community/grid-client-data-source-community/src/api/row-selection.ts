@@ -11,7 +11,9 @@ export function rowSelection<D, E>(state: ClientState<D, E>) {
 
       const rowIds = allRows.map((c) => c.id);
 
-      state.selectedIds.set(new Set(rowIds));
+      const sx = state.api.peek().getState();
+
+      sx.rowSelectionSelectedIds.set(new Set(rowIds));
     },
     rowSelectionAllRowsSelected: () => {
       const graph = state.graph.peek();
@@ -19,26 +21,60 @@ export function rowSelection<D, E>(state: ClientState<D, E>) {
       const allRows = graph.rowGetAllRows();
       const rowIds = new Set(allRows.map((c) => c.id));
 
-      return rowIds.isSubsetOf(state.selectedIds.peek());
+      const sx = state.api.peek().getState();
+      const current = sx.rowSelectionSelectedIds.peek();
+      return rowIds.isSubsetOf(current);
     },
     rowSelectionClear: () => {
-      state.selectedIds.set(new Set());
+      const sx = state.api.peek().getState();
+
+      sx.rowSelectionSelectedIds.set(new Set());
       state.api.peek().rowRefresh();
     },
-    rowSelectionDeselect: (ids: string[]) => {
-      const selectedIds = state.selectedIds.peek();
-      for (let i = 0; i < ids.length; i++) selectedIds.delete(ids[i]);
+    rowSelectionDeselect: (ids: string[], childrenAsWell = false) => {
+      const sx = state.api.peek().getState();
+      const selectedIds = sx.rowSelectionSelectedIds.peek();
+
+      const graph = state.graph.peek();
+      for (let i = 0; i < ids.length; i++) {
+        const id = ids[i];
+        const rowIndex = graph.rowIdToRowIndex(id);
+        if (rowIndex == null) {
+          selectedIds.delete(id);
+          continue;
+        }
+        if (childrenAsWell) {
+          const children = graph.rowAllChildren(rowIndex);
+
+          for (let i = 0; i < children.length; i++) selectedIds.delete(children[i].id);
+        }
+      }
 
       state.api.peek().rowRefresh();
     },
-    rowSelectionSelect: (ids: string[]) => {
-      const selectedIds = state.selectedIds.peek();
-      for (let i = 0; i < ids.length; i++) selectedIds.add(ids[i]);
+    rowSelectionSelect: (ids: string[], childrenAsWell = false) => {
+      const sx = state.api.peek().getState();
+      const selectedIds = sx.rowSelectionSelectedIds.peek();
+      const graph = state.graph.peek();
+
+      for (let i = 0; i < ids.length; i++) {
+        const id = ids[i];
+        const rowIndex = graph.rowIdToRowIndex(id);
+        if (rowIndex == null) continue;
+
+        selectedIds.add(id);
+
+        if (childrenAsWell) {
+          const children = graph.rowAllChildren(rowIndex);
+
+          for (let i = 0; i < children.length; i++) selectedIds.add(children[i].id);
+        }
+      }
 
       state.api.peek().rowRefresh();
     },
     rowSelectionGetSelected: () => {
-      const selected = state.selectedIds.peek();
+      const selected = state.api.peek().getState().rowSelectionSelectedIds.peek();
 
       const nodes: RowNode<D>[] = [];
       for (const id of selected) {
@@ -47,7 +83,7 @@ export function rowSelection<D, E>(state: ClientState<D, E>) {
         nodes.push(row);
       }
 
-      return nodes.map((c) => c.id);
+      return nodes;
     },
     rowSelectionIsIndeterminate: (id: string) => {
       const graph = state.graph.peek();
@@ -58,7 +94,8 @@ export function rowSelection<D, E>(state: ClientState<D, E>) {
 
       const allChildren = graph.rowAllChildren(index);
 
-      const selectedIds = state.selectedIds.peek();
+      const sx = state.api.peek().getState();
+      const selectedIds = sx.rowSelectionSelectedIds.peek();
 
       // Not every id is select but some are selected. Note we cannot simply compare set sizes
       // since the select ids may have ids of rows that have since been removed.
@@ -67,6 +104,7 @@ export function rowSelection<D, E>(state: ClientState<D, E>) {
         allChildren.some((c) => selectedIds.has(c.id))
       );
     },
-    rowSelectionIsSelected: (id: string) => state.selectedIds.peek().has(id),
+    rowSelectionIsSelected: (id: string) =>
+      state.api.peek().getState().rowSelectionSelectedIds.peek().has(id),
   };
 }

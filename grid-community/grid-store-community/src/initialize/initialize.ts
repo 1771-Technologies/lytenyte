@@ -104,13 +104,11 @@ export function initialize<D, E>(
     rowSelectionPredicate: signal(props.rowSelectionPredicate ?? null),
     rowSelectionAllowDeselect: signal(props.rowSelectionAllowDeselect ?? true),
     rowSelectionCheckbox: signal(props.rowSelectionCheckbox ?? "normal"),
-    rowSelectionGroupRowsAllowed: signal(props.rowSelectionGroupRowsAllowed ?? false),
-    rowSelectionLeafRowsAllowed: signal(props.rowSelectionLeafRowsAllowed ?? false),
     rowSelectionMode: signal(props.rowSelectionMode ?? "none"),
     rowSelectionMultiSelectOnClick: signal(props.rowSelectionMultiSelectOnClick ?? false),
     rowSelectionPointerActivator: signal(props.rowSelectionPointerActivator ?? "none"),
     rowSelectionSelectChildren: signal(props.rowSelectionSelectChildren ?? true),
-    rowSelectionTotalsRowAllowed: signal(props.rowSelectionTotalsRowAllowed ?? false),
+    rowSelectionSelectedIds: signal(props.rowSelectionSelectedIds ?? new Set()),
 
     rowSpanScanDistance: signal(props.rowSpanScanDistance ?? COLUMN_SCAN_DISTANCE),
 

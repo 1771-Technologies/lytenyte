@@ -100,12 +100,8 @@ export interface PropsCommunity<A, D, C, E, Base, Group> {
   readonly rowSelectionPointerActivator?: RowSelectionPointerActivator;
   readonly rowSelectionMode?: RowSelectionMode;
   readonly rowSelectionAllowDeselect?: boolean;
-
-  readonly rowSelectionPredicate?: RowSelectionPredicate<A, D> | null;
-  readonly rowSelectionGroupRowsAllowed?: boolean;
-  readonly rowSelectionTotalsRowAllowed?: boolean;
-  readonly rowSelectionLeafRowsAllowed?: boolean;
-
+  readonly rowSelectionSelectedIds?: Set<string>;
+  readonly rowSelectionPredicate?: true | "all" | RowSelectionPredicate<A, D> | null;
   readonly rowSelectionSelectChildren?: boolean;
   readonly rowSelectionMultiSelectOnClick?: boolean;
 
