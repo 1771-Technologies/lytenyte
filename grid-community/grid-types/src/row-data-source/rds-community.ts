@@ -6,6 +6,7 @@ export interface RowDataSource<A, D> {
 
   rowByIndex: (rowIndex: number) => RowNode<D> | null | undefined;
   rowById: (id: string) => RowNode<D> | null | undefined;
+  rowIdToRowIndex: (id: string) => number | null | undefined;
 
   rowChildCount: (rowIndex: number) => number;
   rowParentIndex: (rowIndex: number) => number | null;
@@ -21,17 +22,13 @@ export interface RowDataSource<A, D> {
   rowReplaceTopData: (d: D[]) => void;
   rowReplaceBottomData: (d: D[]) => void;
 
+  rowGetAllIds: () => string[];
+  rowGetAllChildrenIds: (rowIndex: number) => string[];
+  rowSelectionIndeterminateSupported: () => boolean;
+  rowSelectionSelectAllSupported: () => boolean;
+
   paginateGetCount: () => number;
   paginateRowStartAndEndForPage: (i: number) => [number, number];
-
-  rowSelectionSelect: (id: string[], selectChildren?: boolean) => void;
-  rowSelectionDeselect: (id: string[], selectChildren?: boolean) => void;
-  rowSelectionGetSelected: () => RowNode<D>[];
-  rowSelectionIsIndeterminate: (id: string) => boolean;
-  rowSelectionAllRowsSelected: () => boolean;
-  rowSelectionSelectAll: () => void;
-  rowSelectionClear: () => void;
-  rowSelectionSelectAllSupported: () => boolean;
 
   rowGetMany: (
     start: number,

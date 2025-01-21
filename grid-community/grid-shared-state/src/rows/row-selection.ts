@@ -1,61 +1,141 @@
 import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
+import type { RowNode } from "@1771technologies/grid-types/community";
 
 export const rowSelection = <D, E>(api: ApiEnterprise<D, E> | ApiCommunity<D, E>) => {
   return {
     rowSelectionGetSelected: () => {
       const sx = api.getState();
-      const backing = sx.internal.rowBackingDataSource.peek();
 
-      return backing.rowSelectionGetSelected();
+      const selectedIds = sx.rowSelectionSelectedIds.peek();
+
+      const nodes: RowNode<D>[] = [];
+      for (const id of selectedIds) {
+        const row = api.rowById(id);
+        if (row) nodes.push(row);
+      }
+
+      return nodes;
     },
-    rowSelectionSelect: (id: string[], childrenAsWell?: boolean) => {
+    rowSelectionSelect: (ids: string[], childrenAsWell?: boolean) => {
       const sx = api.getState();
       const backing = sx.internal.rowBackingDataSource.peek();
 
-      backing.rowSelectionSelect(id, childrenAsWell);
+      const next = new Set(sx.rowSelectionSelectedIds.peek());
 
+      const rows: RowNode<D>[] = [];
+      for (let i = 0; i < ids.length; i++) {
+        const id = ids[i];
+        const row = api.rowById(id);
+        if (row == null) continue;
+
+        next.add(row.id);
+        rows.push(row);
+        const rowIndex = backing.rowIdToRowIndex(row.id);
+
+        if (childrenAsWell && api.rowIsGroup(row) && rowIndex != null) {
+          const children = backing.rowGetAllChildrenIds(rowIndex);
+
+          for (let c = 0; c < children.length; c++) {
+            const row = api.rowById(children[c]);
+            if (row) {
+              rows.push(row);
+              next.add(children[c]);
+            }
+          }
+        }
+      }
+
+      sx.rowSelectionSelectedIds.set(next);
       (api as ApiCommunity<D, E>).eventFire("onRowSelectionSelected", {
         api: api as any,
-        rows: id.map((c) => api.rowById(c)).filter((c) => !!c),
+        rows,
       });
     },
-    rowSelectionDeselect: (id: string[], childrenAsWell?: boolean) => {
+    rowSelectionDeselect: (ids: string[], childrenAsWell?: boolean) => {
       const sx = api.getState();
       const backing = sx.internal.rowBackingDataSource.peek();
 
-      backing.rowSelectionDeselect(id, childrenAsWell);
+      const next = new Set(sx.rowSelectionSelectedIds.peek());
 
+      const rows: RowNode<D>[] = [];
+      for (let i = 0; i < ids.length; i++) {
+        const id = ids[i];
+        const row = api.rowById(id);
+        if (row == null) {
+          next.delete(id);
+          continue;
+        }
+
+        next.delete(row.id);
+        rows.push(row);
+        const rowIndex = backing.rowIdToRowIndex(row.id);
+
+        if (childrenAsWell && api.rowIsGroup(row) && rowIndex != null) {
+          const children = backing.rowGetAllChildrenIds(rowIndex);
+
+          for (let c = 0; c < children.length; c++) {
+            const row = api.rowById(children[c]);
+            if (row) {
+              rows.push(row);
+              next.delete(children[c]);
+            }
+          }
+        }
+      }
+
+      sx.rowSelectionSelectedIds.set(next);
       (api as ApiCommunity<D, E>).eventFire("onRowSelectionDeselected", {
         api: api as any,
-        rows: id.map((c) => api.rowById(c)).filter((c) => !!c),
+        rows,
       });
     },
     rowSelectionIsIndeterminate: (id: string) => {
       const sx = api.getState();
       const backing = sx.internal.rowBackingDataSource.peek();
 
-      return backing.rowSelectionIsIndeterminate(id);
+      if (!backing.rowSelectionIndeterminateSupported()) return false;
+
+      const row = api.rowById(id);
+      if (!row) return false;
+
+      const rowIndex = backing.rowIdToRowIndex(id);
+      if (rowIndex == null) return false;
+
+      const allChildren = backing.rowGetAllChildrenIds(rowIndex);
+      const selectedIds = sx.rowSelectionSelectedIds.peek();
+
+      // Not every id is select but some are selected. Note we cannot simply compare set sizes
+      // since the select ids may have ids of rows that have since been removed.
+      return (
+        !allChildren.every((c) => selectedIds.has(c)) && allChildren.some((c) => selectedIds.has(c))
+      );
     },
     rowSelectionAllRowsSelected: () => {
       const sx = api.getState();
       const backing = sx.internal.rowBackingDataSource.peek();
+      if (!backing.rowSelectionSelectAllSupported()) return false;
 
-      return backing.rowSelectionAllRowsSelected();
+      const allIds = new Set(backing.rowGetAllIds());
+      const selectedIds = sx.rowSelectionSelectedIds.peek();
+
+      return allIds.isSubsetOf(selectedIds);
     },
     rowSelectionSelectAll: () => {
       const sx = api.getState();
       const backing = sx.internal.rowBackingDataSource.peek();
 
-      backing.rowSelectionSelectAll();
+      if (!backing.rowSelectionSelectAllSupported()) return;
+
+      const allIds = new Set(backing.rowGetAllIds());
+
+      sx.rowSelectionSelectedIds.set(allIds);
 
       (api as ApiCommunity<D, E>).eventFire("onRowSelectionAllSelected", api as any);
     },
     rowSelectionClear: () => {
       const sx = api.getState();
-      const backing = sx.internal.rowBackingDataSource.peek();
 
-      backing.rowSelectionClear();
-
+      sx.rowSelectionSelectedIds.set(new Set());
       (api as ApiCommunity<D, E>).eventFire("onRowSelectionClear", api as any);
     },
     rowSelectionSelectAllSupported: () => {

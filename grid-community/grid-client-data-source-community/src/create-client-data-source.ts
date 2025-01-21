@@ -26,7 +26,6 @@ import { rowSetData } from "./api/row-set-data";
 import { rowSetDataMany } from "./api/row-set-data-many";
 import { paginateGetCount } from "./api/paginate-get-count";
 import { paginateRowStartAndEndForPage } from "./api/paginate-row-stand-and-end-for-page";
-import { rowSelection } from "./api/row-selection";
 import { groupBlockPayloadsComputed } from "./utils/group-block-payloads-computed";
 
 export interface ClientState<D, E> {
@@ -108,7 +107,6 @@ export function createClientDataSource<D, E>(
     } satisfies ClientState<D, E>;
   });
 
-  const selected = rowSelection(state);
   return {
     init: (a) => {
       state.api.set(a);
@@ -126,6 +124,7 @@ export function createClientDataSource<D, E>(
     rowByIndex: (r: number) => rowByIndex(state, r),
     rowById: (id) => rowById(state, id),
     rowGetMany: (start, end) => rowGetMany(state, start, end),
+    rowIdToRowIndex: (id) => state.graph.peek().rowIdToRowIndex(id),
 
     rowChildCount: (r) => rowChildCount(state, r),
     rowDepth: (r) => rowDepth(state, r),
@@ -137,14 +136,20 @@ export function createClientDataSource<D, E>(
     rowReplaceData: (d) => state.rowCenterNodes.set(dataToRowNodes(d, null, "center")),
     rowReplaceTopData: (d) => state.rowTopNodes.set(dataToRowNodes(d, "top", "top")),
 
-    rowSelectionDeselect: selected.rowSelectionDeselect,
-    rowSelectionSelect: selected.rowSelectionSelect,
-    rowSelectionSelectAll: selected.rowSelectionSelectAll,
-    rowSelectionAllRowsSelected: selected.rowSelectionAllRowsSelected,
-    rowSelectionIsIndeterminate: selected.rowSelectionIsIndeterminate,
-    rowSelectionSelectAllSupported: selected.rowSelectionSelectAllSupported,
-    rowSelectionClear: selected.rowSelectionClear,
-    rowSelectionGetSelected: selected.rowSelectionGetSelected,
+    rowGetAllChildrenIds: (rowByIndex) => {
+      return state.graph
+        .peek()
+        .rowAllChildren(rowByIndex)
+        .map((c) => c.id);
+    },
+    rowGetAllIds: () => {
+      const graph = state.graph.peek();
+      const allRows = graph.rowGetAllRows();
+
+      return allRows.map((c) => c.id);
+    },
+    rowSelectionIndeterminateSupported: () => true,
+    rowSelectionSelectAllSupported: () => true,
 
     rowBottomCount: () => state.graph.peek().rowBotCount(),
     rowTopCount: () => state.graph.peek().rowTopCount(),

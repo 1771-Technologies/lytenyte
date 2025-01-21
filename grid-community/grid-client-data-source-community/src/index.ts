@@ -9,7 +9,6 @@ export { rowChildCount } from "./api/row-child-count.js";
 export { rowDepth } from "./api/row-depth.js";
 export { rowGetMany } from "./api/row-get-many.js";
 export { rowParentIndex } from "./api/row-parent-index.js";
-export { rowSelection } from "./api/row-selection.js";
 export { rowSetDataMany } from "./api/row-set-data-many.js";
 export { rowSetData } from "./api/row-set-data.js";
 export { flatBlockPayloadsComputed, BLOCK_SIZE } from "./utils/flat-block-payloads-computed.js";

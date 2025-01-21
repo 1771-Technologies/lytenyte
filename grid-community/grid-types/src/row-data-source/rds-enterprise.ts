@@ -9,6 +9,7 @@ export interface RowDataSourceEnterprise<A, D, C> {
 
   rowByIndex: (rowIndex: number) => RowNode<D> | null | undefined;
   rowById: (id: string) => RowNode<D> | null | undefined;
+  rowIdToRowIndex: (id: string) => number | null | undefined;
 
   // Row counts are necessary for rendering the correct
   // number of rows in the virtualized view.
@@ -38,13 +39,9 @@ export interface RowDataSourceEnterprise<A, D, C> {
   paginateGetCount?: () => number;
   paginateRowStartAndEndForPage?: (i: number) => [number, number];
 
-  rowSelectionSelect: (id: string[], selectChildren?: boolean) => void;
-  rowSelectionDeselect: (id: string[], selectChildren?: boolean) => void;
-  rowSelectionGetSelected: () => RowNode<D>[];
-  rowSelectionIsIndeterminate: (id: string) => boolean;
-  rowSelectionAllRowsSelected: () => boolean;
-  rowSelectionSelectAll: () => void;
-  rowSelectionClear: () => void;
+  rowGetAllIds: () => string[];
+  rowGetAllChildrenIds: (rowIndex: number) => string[];
+  rowSelectionIndeterminateSupported: () => boolean;
   rowSelectionSelectAllSupported: () => boolean;
 
   // column pivot support
