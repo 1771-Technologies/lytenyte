@@ -70,7 +70,7 @@ export type GridInternalState<D, E> = {
   readonly rowTopCount: ReadonlySignal<number>;
   readonly rowBottomCount: ReadonlySignal<number>;
 
-  readonly rowDragIsActive: Signal<boolean>;
+  readonly rowDragStartIndex: Signal<number>;
   readonly rowDragOverIndex: Signal<number>;
 
   readonly paginatePageCount: ReadonlySignal<number>;

@@ -26,6 +26,7 @@ export function useDragControl(api: ApiCommunityReact<any>, row: RowNode<any>) {
       const sx = api.getState();
       const viewport = sx.internal.viewport.peek();
 
+      sx.internal.rowDragStartIndex.set(row.rowIndex!);
       const ref: RowDragEventParams<ApiCommunityReact<any>, any> = {
         event: ev.event,
         api,
@@ -81,6 +82,7 @@ export function useDragControl(api: ApiCommunityReact<any>, row: RowNode<any>) {
         else api.eventFire("onRowDragEnd", ref);
 
         sx.internal.rowDragOverIndex.set(-1);
+        sx.internal.rowDragStartIndex.set(-1);
       });
     },
     placeholder: () => <DragPlaceholder row={row} />,

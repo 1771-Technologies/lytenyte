@@ -115,7 +115,7 @@ export function initializeInternalState<D, E>(
     rowPositions,
     rowDetailHeight,
 
-    rowDragIsActive: signal(false),
+    rowDragStartIndex: signal(-1),
     rowDragOverIndex: signal(-1),
 
     rowIsFullWidthInternal: rowIsFullWidthComputed(state, api),

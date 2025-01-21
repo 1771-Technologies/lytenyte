@@ -5,6 +5,7 @@ import { Cell } from "./cell";
 import { CellFullWidth } from "./cell-full-width";
 import { t } from "@1771technologies/grid-design";
 import { RowDetail } from "./row-detail";
+import { DragIndicator } from "./drag-indicator";
 
 export function Rows({ width }: { width: number }) {
   const { state, api } = useGrid();
@@ -168,6 +169,7 @@ export function Rows({ width }: { width: number }) {
           `}
         >
           {top}
+          <DragIndicator section="top" />
         </div>
       )}
       <div
@@ -181,6 +183,7 @@ export function Rows({ width }: { width: number }) {
         `}
       >
         {center}
+        <DragIndicator section="center" />
       </div>
       <div
         style={{
@@ -207,6 +210,7 @@ export function Rows({ width }: { width: number }) {
         `}
       >
         {bottom}
+        <DragIndicator section="bottom" />
       </div>
     </>
   );
