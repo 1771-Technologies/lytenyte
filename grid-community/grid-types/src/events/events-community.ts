@@ -59,6 +59,7 @@ export interface EventsCommunity<A, D, C> extends PropEvents<A> {
   readonly onRowDragMove: RowDragEvent<A, D>;
   readonly onRowDragCancel: RowDragEvent<A, D>;
   readonly onRowDragEnd: RowDragEvent<A, D>;
+  readonly onRowDragDrop: RowDragEvent<A, D>;
 
   readonly onRowExpansionChange: (api: A, rowId: string) => void;
 

@@ -7,7 +7,7 @@ import { useDraggable } from "@1771technologies/react-dragon";
 
 export function useDragControl(api: ApiCommunityReact<any>, row: RowNode<any>) {
   const draggable = useDraggable({
-    dragData: () => ({ row }),
+    dragData: () => ({ rows: [row] }),
     dragTags: () => {
       const sx = api.getState();
       const id = sx.gridId.peek();
@@ -32,7 +32,6 @@ export function useDragControl(api: ApiCommunityReact<any>, row: RowNode<any>) {
         api,
         rows: [row],
         overIndex: -1,
-        y: startY,
       };
 
       api.eventFire("onRowDragStart", ref);
@@ -55,7 +54,6 @@ export function useDragControl(api: ApiCommunityReact<any>, row: RowNode<any>) {
             const rowDragOverIndex = isOutOfBounds ? null : getHoveredRowIndex(api, updates[0]);
 
             ref.event = ev;
-            ref.y = updates[0];
             if (rowDragOverIndex != null) {
               sx.internal.rowDragOverIndex.set(rowDragOverIndex);
               ref.overIndex = rowDragOverIndex;

@@ -492,7 +492,6 @@ export type RowHeight = number | ((i: number) => number);
 
 export type RowDragEventParams<A, D> = {
   event: DragEvent;
-  y: number;
   api: A;
   rows: RowNode<D>[];
   overIndex: number;

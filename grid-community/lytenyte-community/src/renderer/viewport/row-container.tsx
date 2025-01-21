@@ -2,18 +2,23 @@ import type { PropsWithChildren } from "react";
 import { t } from "@1771technologies/grid-design";
 import { useDroppable } from "@1771technologies/react-dragon";
 import { useGrid } from "../../use-grid";
+import type { RowNode } from "@1771technologies/grid-types/community";
 
 export function RowContainer({
   totalHeight,
   totalWidth,
   children,
 }: PropsWithChildren<{ totalWidth: number; totalHeight: number }>) {
-  const { state } = useGrid();
+  const { api, state } = useGrid();
   const gridId = state.gridId.use();
   const { onDragOver, onDrop } = useDroppable({
     tags: [`${gridId}:row-drag`],
-    onDrop: () => {
-      console.log("i ran");
+    onDrop: (p) => {
+      const overIndex = state.internal.rowDragOverIndex.peek();
+
+      const data = p.getData() as { rows: RowNode[] };
+
+      api.eventFire("onRowDragDrop", { api, event: p.event, overIndex, rows: data.rows });
     },
   });
 
