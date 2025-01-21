@@ -2,13 +2,15 @@ import type { CellRendererParamsReact } from "@1771technologies/grid-types/commu
 import { CollapseButton, ExpandButton } from "../../../components/buttons";
 import { useEvent } from "@1771technologies/react-utils";
 import { DragButton } from "./drag-button";
+import { SelectionCheckbox } from "./selection-checkbox";
 
 export function CellMarkerRenderer({ row, api }: CellRendererParamsReact<any>) {
   const isRowDetail = api.rowDetailRowPredicate(row.id);
   const isExpanded = api.rowDetailIsExpanded(row.id);
   const isRowDrag = api.rowIsDraggable(row.id);
-
   const toggleDetail = useEvent(() => api.rowDetailToggle(row.id));
+
+  const rowSelectionEnabled = api.getState().rowSelectionMode.use() !== "none";
 
   return (
     <div
@@ -22,6 +24,7 @@ export function CellMarkerRenderer({ row, api }: CellRendererParamsReact<any>) {
         position: relative;
       `}
     >
+      {rowSelectionEnabled && <SelectionCheckbox api={api} row={row} />}
       {isRowDrag && <DragButton api={api} row={row} />}
       {isRowDetail &&
         (isExpanded ? (

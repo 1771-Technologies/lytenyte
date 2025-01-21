@@ -12,13 +12,13 @@ export const rowSelection = <D, E>(api: ApiEnterprise<D, E> | ApiCommunity<D, E>
       const sx = api.getState();
       const backing = sx.internal.rowBackingDataSource.peek();
 
-      return backing.rowSelectionSelect(id, childrenAsWell);
+      backing.rowSelectionSelect(id, childrenAsWell);
     },
     rowSelectionDeselect: (id: string[], childrenAsWell?: boolean) => {
       const sx = api.getState();
       const backing = sx.internal.rowBackingDataSource.peek();
 
-      return backing.rowSelectionDeselect(id, childrenAsWell);
+      backing.rowSelectionDeselect(id, childrenAsWell);
     },
     rowSelectionIsIndeterminate: (id: string) => {
       const sx = api.getState();
@@ -36,13 +36,13 @@ export const rowSelection = <D, E>(api: ApiEnterprise<D, E> | ApiCommunity<D, E>
       const sx = api.getState();
       const backing = sx.internal.rowBackingDataSource.peek();
 
-      return backing.rowSelectionSelectAll();
+      backing.rowSelectionSelectAll();
     },
     rowSelectionClear: () => {
       const sx = api.getState();
       const backing = sx.internal.rowBackingDataSource.peek();
 
-      return backing.rowSelectionClear();
+      backing.rowSelectionClear();
     },
     rowSelectionSelectAllSupported: () => {
       const sx = api.getState();

@@ -29,49 +29,53 @@ export function rowSelection<D, E>(state: ClientState<D, E>) {
       const sx = state.api.peek().getState();
 
       sx.rowSelectionSelectedIds.set(new Set());
-      state.api.peek().rowRefresh();
     },
     rowSelectionDeselect: (ids: string[], childrenAsWell = false) => {
       const sx = state.api.peek().getState();
       const selectedIds = sx.rowSelectionSelectedIds.peek();
+
+      const next = new Set(selectedIds);
 
       const graph = state.graph.peek();
       for (let i = 0; i < ids.length; i++) {
         const id = ids[i];
         const rowIndex = graph.rowIdToRowIndex(id);
         if (rowIndex == null) {
-          selectedIds.delete(id);
+          next.delete(id);
           continue;
         }
+
+        next.delete(id);
         if (childrenAsWell) {
           const children = graph.rowAllChildren(rowIndex);
 
-          for (let i = 0; i < children.length; i++) selectedIds.delete(children[i].id);
+          for (let i = 0; i < children.length; i++) next.delete(children[i].id);
         }
       }
 
-      state.api.peek().rowRefresh();
+      sx.rowSelectionSelectedIds.set(next);
     },
     rowSelectionSelect: (ids: string[], childrenAsWell = false) => {
       const sx = state.api.peek().getState();
       const selectedIds = sx.rowSelectionSelectedIds.peek();
       const graph = state.graph.peek();
 
+      const next = new Set(selectedIds);
       for (let i = 0; i < ids.length; i++) {
         const id = ids[i];
         const rowIndex = graph.rowIdToRowIndex(id);
         if (rowIndex == null) continue;
 
-        selectedIds.add(id);
+        next.add(id);
 
         if (childrenAsWell) {
           const children = graph.rowAllChildren(rowIndex);
 
-          for (let i = 0; i < children.length; i++) selectedIds.add(children[i].id);
+          for (let i = 0; i < children.length; i++) next.add(children[i].id);
         }
       }
 
-      state.api.peek().rowRefresh();
+      sx.rowSelectionSelectedIds.set(next);
     },
     rowSelectionGetSelected: () => {
       const selected = state.api.peek().getState().rowSelectionSelectedIds.peek();
