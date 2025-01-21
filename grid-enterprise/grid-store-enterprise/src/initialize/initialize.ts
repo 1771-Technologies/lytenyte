@@ -103,7 +103,6 @@ export function initialize<D, E>(
     rowTotalRow: signal(props.rowTotalRow ?? null),
 
     rowSelectionPredicate: signal(props.rowSelectionPredicate ?? "leaf-only"),
-    rowSelectionAllowDeselect: signal(props.rowSelectionAllowDeselect ?? true),
     rowSelectionCheckbox: signal(props.rowSelectionCheckbox ?? "normal"),
     rowSelectionMode: signal(props.rowSelectionMode ?? "none"),
     rowSelectionMultiSelectOnClick: signal(props.rowSelectionMultiSelectOnClick ?? false),

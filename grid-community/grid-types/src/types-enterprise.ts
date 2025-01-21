@@ -183,10 +183,4 @@ export interface ColumnPivotEventParams<A, C> {
 }
 export type ColumnPivotEvent<A, C> = (p: ColumnPivotEventParams<A, C>) => void;
 
-export interface ColumnMenuOpenChangeParams<A, C> {
-  readonly api: A;
-  readonly column: C | null;
-}
-export type ColumnFilterMenuOpenChangeParams<A, C> = ColumnMenuOpenChangeParams<A, C>;
-
 export type Target = HTMLElement | { x: number; y: number; width: number; height: number };

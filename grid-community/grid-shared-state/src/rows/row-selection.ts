@@ -13,12 +13,22 @@ export const rowSelection = <D, E>(api: ApiEnterprise<D, E> | ApiCommunity<D, E>
       const backing = sx.internal.rowBackingDataSource.peek();
 
       backing.rowSelectionSelect(id, childrenAsWell);
+
+      (api as ApiCommunity<D, E>).eventFire("onRowSelectionSelected", {
+        api: api as any,
+        rows: id.map((c) => api.rowById(c)).filter((c) => !!c),
+      });
     },
     rowSelectionDeselect: (id: string[], childrenAsWell?: boolean) => {
       const sx = api.getState();
       const backing = sx.internal.rowBackingDataSource.peek();
 
       backing.rowSelectionDeselect(id, childrenAsWell);
+
+      (api as ApiCommunity<D, E>).eventFire("onRowSelectionDeselected", {
+        api: api as any,
+        rows: id.map((c) => api.rowById(c)).filter((c) => !!c),
+      });
     },
     rowSelectionIsIndeterminate: (id: string) => {
       const sx = api.getState();
@@ -37,12 +47,16 @@ export const rowSelection = <D, E>(api: ApiEnterprise<D, E> | ApiCommunity<D, E>
       const backing = sx.internal.rowBackingDataSource.peek();
 
       backing.rowSelectionSelectAll();
+
+      (api as ApiCommunity<D, E>).eventFire("onRowSelectionAllSelected", api as any);
     },
     rowSelectionClear: () => {
       const sx = api.getState();
       const backing = sx.internal.rowBackingDataSource.peek();
 
       backing.rowSelectionClear();
+
+      (api as ApiCommunity<D, E>).eventFire("onRowSelectionClear", api as any);
     },
     rowSelectionSelectAllSupported: () => {
       const sx = api.getState();

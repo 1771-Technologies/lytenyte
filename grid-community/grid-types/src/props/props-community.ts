@@ -99,7 +99,6 @@ export interface PropsCommunity<A, D, C, E, Base, Group> {
   readonly rowSelectionCheckbox?: RowSelectionCheckbox;
   readonly rowSelectionPointerActivator?: RowSelectionPointerActivator;
   readonly rowSelectionMode?: RowSelectionMode;
-  readonly rowSelectionAllowDeselect?: boolean;
   readonly rowSelectionSelectedIds?: Set<string>;
   readonly rowSelectionPredicate?: "all" | "group-only" | "leaf-only" | RowSelectionPredicate<A, D>;
   readonly rowSelectionSelectChildren?: boolean;

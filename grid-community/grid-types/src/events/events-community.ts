@@ -1,4 +1,3 @@
-import type { PropsCommunity } from "../props/props-community";
 import type {
   CellEditBeginEvent,
   CellEditEndEvent,
@@ -11,13 +10,7 @@ import type {
 
 export type LngEvent<A> = (api: A) => void;
 
-export type PropEvents<A> = {
-  [key in keyof Required<
-    PropsCommunity<any, any, any, any, any, any>
-  > as `on${Capitalize<key>}Change`]: LngEvent<A>;
-};
-
-export interface EventsCommunity<A, D, C> extends PropEvents<A> {
+export interface EventsCommunity<A, D, C> {
   readonly onCellEditBegin: CellEditBeginEvent<A>;
   readonly onCellEditValueChange: CellEditEvent<A>;
   readonly onCellEditSuccess: CellEditEvent<A>;
@@ -26,7 +19,6 @@ export interface EventsCommunity<A, D, C> extends PropEvents<A> {
   readonly onCellEditEnd: CellEditEndEvent<A>;
 
   readonly onColumnMove: LngEvent<A>;
-
   readonly onColumnMoveDragStart: ColumnMoveDragEvent<A>;
   readonly onColumnMoveDragMove: ColumnMoveDragEvent<A>;
   readonly onColumnMoveDragCancel: ColumnMoveDragEvent<A>;
