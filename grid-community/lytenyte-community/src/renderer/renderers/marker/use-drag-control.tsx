@@ -7,7 +7,17 @@ import { useDraggable } from "@1771technologies/react-dragon";
 
 export function useDragControl(api: ApiCommunityReact<any>, row: RowNode<any>) {
   const draggable = useDraggable({
-    dragData: () => ({ rows: [row] }),
+    dragData: () => {
+      const sx = api.getState();
+
+      const multi = sx.rowDragMultiRow.peek();
+
+      if (multi) {
+        // TDOD
+      }
+
+      return { rows: [row], api };
+    },
     dragTags: () => {
       const sx = api.getState();
       const id = sx.gridId.peek();
@@ -24,7 +34,6 @@ export function useDragControl(api: ApiCommunityReact<any>, row: RowNode<any>) {
       let anim: number | null = null;
 
       const sx = api.getState();
-      const viewport = sx.internal.viewport.peek();
 
       sx.internal.rowDragStartIndex.set(row.rowIndex!);
       const ref: RowDragEventParams<ApiCommunityReact<any>, any> = {
@@ -35,6 +44,9 @@ export function useDragControl(api: ApiCommunityReact<any>, row: RowNode<any>) {
       };
 
       api.eventFire("onRowDragStart", ref);
+
+      const externalGrids = sx.rowDragExternalGrids.peek();
+      const apis = [api, ...externalGrids];
 
       document.addEventListener(
         "drag",
@@ -47,21 +59,30 @@ export function useDragControl(api: ApiCommunityReact<any>, row: RowNode<any>) {
           if (updates[0] === clientY) return;
 
           if (anim) cancelAnimationFrame(anim);
+
           anim = requestAnimationFrame(() => {
-            const relative = getRelativeXPosition(viewport!, clientX);
-            const isOutOfBounds = relative.left < 0 || relative.right < 0;
+            for (let i = 0; i < apis.length; i++) {
+              const api = apis[i];
+              const sx = api.getState();
 
-            const rowDragOverIndex = isOutOfBounds ? null : getHoveredRowIndex(api, updates[0]);
+              const viewport = sx.internal.viewport.peek();
+              if (!viewport) continue;
 
-            ref.event = ev;
-            if (rowDragOverIndex != null) {
-              sx.internal.rowDragOverIndex.set(rowDragOverIndex);
-              ref.overIndex = rowDragOverIndex;
-              api.eventFire("onRowDragMove", ref);
-            } else {
-              sx.internal.rowDragOverIndex.set(-1);
-              ref.overIndex = -1;
-              api.eventFire("onRowDragMove", ref);
+              const relative = getRelativeXPosition(viewport, clientX);
+              const isOutOfBounds = relative.left < 0 || relative.right < 0;
+
+              const rowDragOverIndex = isOutOfBounds ? null : getHoveredRowIndex(api, updates[0]);
+
+              ref.event = ev;
+              if (rowDragOverIndex != null) {
+                sx.internal.rowDragOverIndex.set(rowDragOverIndex);
+                ref.overIndex = rowDragOverIndex;
+                api.eventFire("onRowDragMove", ref);
+              } else {
+                sx.internal.rowDragOverIndex.set(-1);
+                ref.overIndex = -1;
+                api.eventFire("onRowDragMove", ref);
+              }
             }
           });
         },
@@ -79,8 +100,11 @@ export function useDragControl(api: ApiCommunityReact<any>, row: RowNode<any>) {
         if (!isValid) api.eventFire("onRowDragCancel", ref);
         else api.eventFire("onRowDragEnd", ref);
 
-        sx.internal.rowDragOverIndex.set(-1);
-        sx.internal.rowDragStartIndex.set(-1);
+        for (const api of apis) {
+          const sx = api.getState();
+          sx.internal.rowDragOverIndex.set(-1);
+          sx.internal.rowDragStartIndex.set(-1);
+        }
       });
     },
     placeholder: () => <DragPlaceholder row={row} />,

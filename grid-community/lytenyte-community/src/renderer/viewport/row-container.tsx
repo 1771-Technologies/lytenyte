@@ -3,6 +3,7 @@ import { t } from "@1771technologies/grid-design";
 import { useDroppable } from "@1771technologies/react-dragon";
 import { useGrid } from "../../use-grid";
 import type { RowNode } from "@1771technologies/grid-types/community";
+import type { ApiCommunityReact } from "@1771technologies/grid-types";
 
 export function RowContainer({
   totalHeight,
@@ -16,9 +17,20 @@ export function RowContainer({
     onDrop: (p) => {
       const overIndex = state.internal.rowDragOverIndex.peek();
 
-      const data = p.getData() as { rows: RowNode[] };
+      const data = p.getData() as { rows: RowNode[]; api: ApiCommunityReact<any> };
 
-      api.eventFire("onRowDragDrop", { api, event: p.event, overIndex, rows: data.rows });
+      if (!data?.rows || !data?.api) return;
+
+      const isExternal = data.api !== api;
+      const additional = isExternal ? { externalGridApi: data.api, isExternal: true } : {};
+
+      api.eventFire("onRowDragDrop", {
+        api,
+        event: p.event,
+        overIndex,
+        rows: data.rows,
+        ...additional,
+      });
     },
   });
 
