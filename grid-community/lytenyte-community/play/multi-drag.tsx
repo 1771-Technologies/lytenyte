@@ -5,6 +5,22 @@ import { bankDataSmall } from "./data/bank-data-small";
 import { useState } from "react";
 
 export default function Play() {
+  const [otherGrid] = useState(() => {
+    return makeStore({
+      gridId: "d",
+      columns: columns,
+      columnBase: { resizable: true, movable: true },
+      rowDetailPredicate: true,
+      rowDragEnabled: true,
+      rowDataSource: {
+        kind: "client",
+        data: bankDataSmall,
+        topData: bankDataSmall.slice(0, 2),
+        bottomData: bankDataSmall.slice(2, 4),
+      },
+    });
+  });
+
   const [grid] = useState(() =>
     makeStore({
       gridId: "x",
@@ -18,6 +34,7 @@ export default function Play() {
         topData: bankDataSmall.slice(0, 2),
         bottomData: bankDataSmall.slice(2, 4),
       },
+      rowDragExternalGrids: [otherGrid.api],
     }),
   );
 
@@ -42,6 +59,13 @@ export default function Play() {
         `}
       >
         <LyteNyteCommunity grid={grid} />
+      </div>
+      <div
+        className={css`
+          flex: 1;
+        `}
+      >
+        <LyteNyteCommunity grid={otherGrid} />
       </div>
     </div>
   );
