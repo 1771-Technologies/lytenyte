@@ -71,6 +71,7 @@ import {
   navigate,
   columnIsEditable,
   rowGroupToggle,
+  rowSelection,
 } from "@1771technologies/grid-shared-state";
 import { events } from "../../grid-shared-state/src/events";
 
@@ -81,6 +82,8 @@ export function makeApi<D, E>(
   const ev = events<D, E>();
 
   const n = navigate<D, E, ApiCommunity<D, E>>(api);
+
+  const rowSelect = rowSelection(api);
 
   const partial = {
     autosizeColumn: (column, options) => autosizeColumn(api, column, options),
@@ -187,6 +190,15 @@ export function makeApi<D, E>(
     rowIsDraggable: (id) => rowIsDraggable(api, id),
     rowVisibleRowHeight: (id, s) => rowVisibleRowHeight(api, id, s),
     rowGroupToggle: (row, state) => rowGroupToggle(api, row, state),
+
+    rowSelectionAllRowsSelected: rowSelect.rowSelectionAllRowsSelected,
+    rowSelectionClear: rowSelect.rowSelectionClear,
+    rowSelectionDeselect: rowSelect.rowSelectionDeselect,
+    rowSelectionGetSelected: rowSelect.rowSelectionGetSelected,
+    rowSelectionIsIndeterminate: rowSelect.rowSelectionIsIndeterminate,
+    rowSelectionSelect: rowSelect.rowSelectionSelect,
+    rowSelectionSelectAll: rowSelect.rowSelectionSelectAll,
+    rowSelectionSelectAllSupported: rowSelect.rowSelectionSelectAllSupported,
 
     rowReplaceBottomData: (d) => rowReplaceBottomData(api, d),
     rowReplaceData: (d) => rowReplaceData(api, d),

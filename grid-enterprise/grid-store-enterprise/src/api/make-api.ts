@@ -66,6 +66,7 @@ import {
   rowReplaceBottomData,
   rowReplaceData,
   rowReplaceTopData,
+  rowSelection,
   rowSetData,
   rowSetDataMany,
   rowUpdateRedo,
@@ -92,12 +93,14 @@ export function makeApi<D, E>(
 ): StoreEnterprise<D, E>["api"] {
   const ev = events<D, E>();
 
-  const n = navigate<D, E, ApiEnterprise<D, E>>(api);
-  const c = clipboard(api);
+  const nav = navigate<D, E, ApiEnterprise<D, E>>(api);
+  const clip = clipboard(api);
   const menu = columnMenus(api);
   const sel = cellSelection(api);
   const pivots = columnPivots(api);
   const frame = frames(api);
+
+  const rowSelect = rowSelection(api);
 
   const partial = {
     autosizeColumn: (column, options) => autosizeColumn(api, column, options),
@@ -163,29 +166,29 @@ export function makeApi<D, E>(
     keyBindingCall: (k) => keyBindingCall(api, k),
     keyBindingCallWithEvent: (event) => keyBindingCallWithEvent(api, event),
 
-    navigateDown: n.navigateDown,
-    navigateGetBottom: n.navigateGetBottom,
-    navigateGetDown: n.navigateGetDown,
-    navigateGetEnd: n.navigateGetEnd,
-    navigateGetNext: n.navigateGetNext,
-    navigateGetPageDown: n.navigateGetPageDown,
-    navigateGetPageUp: n.navigateGetPageUp,
-    navigateGetPosition: n.navigateGetPosition,
-    navigateGetPrev: n.navigateGetPrev,
-    navigateGetStart: n.navigateGetStart,
-    navigateGetTop: n.navigateGetTop,
-    navigateGetUp: n.navigateGetUp,
-    navigateNext: n.navigateNext,
-    navigatePageDown: n.navigatePageDown,
-    navigatePageUp: n.navigatePageUp,
-    navigatePrev: n.navigatePrev,
-    navigateScrollIntoView: n.navigateScrollIntoView,
-    navigateSetPosition: n.navigateSetPosition,
-    navigateToBottom: n.navigateToBottom,
-    navigateToEnd: n.navigateToEnd,
-    navigateToStart: n.navigateToStart,
-    navigateToTop: n.navigateToTop,
-    navigateUp: n.navigateUp,
+    navigateDown: nav.navigateDown,
+    navigateGetBottom: nav.navigateGetBottom,
+    navigateGetDown: nav.navigateGetDown,
+    navigateGetEnd: nav.navigateGetEnd,
+    navigateGetNext: nav.navigateGetNext,
+    navigateGetPageDown: nav.navigateGetPageDown,
+    navigateGetPageUp: nav.navigateGetPageUp,
+    navigateGetPosition: nav.navigateGetPosition,
+    navigateGetPrev: nav.navigateGetPrev,
+    navigateGetStart: nav.navigateGetStart,
+    navigateGetTop: nav.navigateGetTop,
+    navigateGetUp: nav.navigateGetUp,
+    navigateNext: nav.navigateNext,
+    navigatePageDown: nav.navigatePageDown,
+    navigatePageUp: nav.navigatePageUp,
+    navigatePrev: nav.navigatePrev,
+    navigateScrollIntoView: nav.navigateScrollIntoView,
+    navigateSetPosition: nav.navigateSetPosition,
+    navigateToBottom: nav.navigateToBottom,
+    navigateToEnd: nav.navigateToEnd,
+    navigateToStart: nav.navigateToStart,
+    navigateToTop: nav.navigateToTop,
+    navigateUp: nav.navigateUp,
 
     paginateRowStartAndEndForPage: (i) => paginateRowStartAndEndForPage(api, i),
 
@@ -204,6 +207,15 @@ export function makeApi<D, E>(
     rowVisibleRowHeight: (id, s) => rowVisibleRowHeight(api, id, s),
     rowGroupToggle: (row, state) => rowGroupToggle(api, row, state),
 
+    rowSelectionAllRowsSelected: rowSelect.rowSelectionAllRowsSelected,
+    rowSelectionClear: rowSelect.rowSelectionClear,
+    rowSelectionDeselect: rowSelect.rowSelectionDeselect,
+    rowSelectionGetSelected: rowSelect.rowSelectionGetSelected,
+    rowSelectionIsIndeterminate: rowSelect.rowSelectionIsIndeterminate,
+    rowSelectionSelect: rowSelect.rowSelectionSelect,
+    rowSelectionSelectAll: rowSelect.rowSelectionSelectAll,
+    rowSelectionSelectAllSupported: rowSelect.rowSelectionSelectAllSupported,
+
     rowReplaceBottomData: (d) => rowReplaceBottomData(api, d),
     rowReplaceData: (d) => rowReplaceData(api, d),
     rowReplaceTopData: (d) => rowReplaceTopData(api, d),
@@ -213,9 +225,9 @@ export function makeApi<D, E>(
     rowUpdateUndo: () => rowUpdateUndo(api),
 
     // Enterprise Api
-    clipboardCopyCells: c.clipboardCopyCells,
-    clipboardCutCells: c.clipboardCutCells,
-    clipboardPasteCells: c.clipboardPasteCells,
+    clipboardCopyCells: clip.clipboardCopyCells,
+    clipboardCutCells: clip.clipboardCutCells,
+    clipboardPasteCells: clip.clipboardPasteCells,
 
     columnFilterMenuClose: menu.columnCloseFilterMenu,
     columnMenuClose: menu.columnCloseMenu,
