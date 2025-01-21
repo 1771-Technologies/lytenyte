@@ -23,7 +23,6 @@ import {
   rowDepth,
   rowGetMany,
   rowParentIndex,
-  rowSelection,
   rowSetData,
   rowSetDataMany,
 } from "@1771technologies/grid-client-data-source-community";
@@ -123,7 +122,6 @@ export function createClientDataSource<D, E>(
 
   let watchers: (() => void)[] = [];
 
-  const selected = rowSelection(state);
   return {
     init: (a) => {
       state.api.set(a);
@@ -150,6 +148,7 @@ export function createClientDataSource<D, E>(
 
     rowByIndex: (r) => rowByIndex(state, r),
     rowById: (id) => rowById(state, id),
+    rowIdToRowIndex: (id) => state.graph.peek().rowIdToRowIndex(id),
     rowGetMany: (start, end) => rowGetMany(state, start, end),
 
     rowChildCount: (r) => rowChildCount(state, r),
@@ -162,14 +161,20 @@ export function createClientDataSource<D, E>(
     rowReplaceData: (d) => state.rowCenterNodes.set(dataToRowNodes(d, null, "center")),
     rowReplaceTopData: (d) => state.rowTopNodes.set(dataToRowNodes(d, "top", "top")),
 
-    rowSelectionAllRowsSelected: selected.rowSelectionAllRowsSelected,
-    rowSelectionClear: selected.rowSelectionClear,
-    rowSelectionDeselect: selected.rowSelectionDeselect,
-    rowSelectionGetSelected: selected.rowSelectionGetSelected,
-    rowSelectionIsIndeterminate: selected.rowSelectionIsIndeterminate,
-    rowSelectionSelect: selected.rowSelectionSelect,
-    rowSelectionSelectAll: selected.rowSelectionSelectAll,
-    rowSelectionSelectAllSupported: selected.rowSelectionSelectAllSupported,
+    rowGetAllChildrenIds: (rowByIndex) => {
+      return state.graph
+        .peek()
+        .rowAllChildren(rowByIndex)
+        .map((c) => c.id);
+    },
+    rowGetAllIds: () => {
+      const graph = state.graph.peek();
+      const allRows = graph.rowGetAllRows();
+
+      return allRows.map((c) => c.id);
+    },
+    rowSelectionIndeterminateSupported: () => true,
+    rowSelectionSelectAllSupported: () => true,
 
     columnInFilterItems: (c) => columnInFilterItems(state, c),
     columnPivots: () => {
