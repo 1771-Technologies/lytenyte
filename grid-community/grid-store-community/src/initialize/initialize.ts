@@ -15,6 +15,7 @@ import {
   rowDisplayModeComputed,
   rowGroupExpansionsComputed,
   rowGroupModelComputed,
+  rowSelectionComputed,
   sortModelComputed,
 } from "@1771technologies/grid-shared-state";
 import type {
@@ -101,14 +102,14 @@ export function initialize<D, E>(
     rowTotalsPinned: signal(props.rowTotalsPinned ?? false),
     rowTotalRow: signal(props.rowTotalRow ?? null),
 
-    rowSelectionPredicate: signal(props.rowSelectionPredicate ?? null),
+    rowSelectionPredicate: signal(props.rowSelectionPredicate ?? "leaf-only"),
     rowSelectionAllowDeselect: signal(props.rowSelectionAllowDeselect ?? true),
     rowSelectionCheckbox: signal(props.rowSelectionCheckbox ?? "normal"),
     rowSelectionMode: signal(props.rowSelectionMode ?? "none"),
     rowSelectionMultiSelectOnClick: signal(props.rowSelectionMultiSelectOnClick ?? false),
     rowSelectionPointerActivator: signal(props.rowSelectionPointerActivator ?? "none"),
     rowSelectionSelectChildren: signal(props.rowSelectionSelectChildren ?? true),
-    rowSelectionSelectedIds: signal(props.rowSelectionSelectedIds ?? new Set()),
+    rowSelectionSelectedIds: rowSelectionComputed(props.rowSelectionSelectedIds ?? new Set(), api),
 
     rowSpanScanDistance: signal(props.rowSpanScanDistance ?? COLUMN_SCAN_DISTANCE),
 

@@ -32,6 +32,8 @@ export { rowDetailToggle } from "./rows/row-detail-toggle.js";
 export { rowDetailVisibleHeight } from "./rows/row-detail-visible-height.js";
 export { rowIsDraggable } from "./rows/row-is-draggable.js";
 export { rowIsFullWidthComputed } from "./rows/row-is-full-width-computed.js";
+export { rowSelection } from "./rows/row-selection.js";
+export { rowSelectionComputed } from "./rows/row-selection-computed.js";
 export { rowPositionsComputed } from "./rows/row-positions.js";
 export { rowGroupExpansionsComputed } from "./rows/row-group-expansions-computed.js";
 export { rowDisplayModeComputed } from "./rows/row-display-mode-computed.js";
