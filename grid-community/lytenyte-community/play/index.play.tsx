@@ -36,9 +36,16 @@ export default function Play() {
       <div>
         <button onClick={() => grid.state.rtl.set((prev) => !prev)}>RTL</button>
         <button onClick={() => grid.state.rowGroupModel.set(["job", "age"])}>Grouped</button>
-        <button onClick={() => grid.state.rowGroupModel.set(["job"])}>Un-group</button>
-        <button onClick={() => grid.state.rowGroupDisplayMode.set("multi-column")}>Multi</button>
-        <button onClick={() => grid.state.rowGroupDisplayMode.set("single-column")}>Single</button>
+        <button onClick={() => grid.state.rowGroupModel.set([])}>Un-group</button>
+        <button onClick={() => grid.state.rowGroupDisplayMode.set("multi-column")}>
+          Multi Group
+        </button>
+        <button onClick={() => grid.state.rowGroupDisplayMode.set("single-column")}>
+          Single Group
+        </button>
+        <button onClick={() => grid.state.rowSelectionMode.set("multiple")}>Multi Select</button>
+        <button onClick={() => grid.state.rowSelectionMode.set("single")}>Single Select</button>
+        <button onClick={() => grid.state.rowSelectionMode.set("none")}>None</button>
       </div>
       <div
         className={css`
