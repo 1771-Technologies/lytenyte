@@ -3,6 +3,7 @@ import { CollapseButton, ExpandButton } from "../../../components/buttons";
 import { useEvent } from "@1771technologies/react-utils";
 import { DragButton } from "./drag-button";
 import { SelectionCheckbox } from "./selection-checkbox";
+import { t } from "@1771technologies/grid-design";
 
 export function CellMarkerRenderer({ row, api }: CellRendererParamsReact<any>) {
   const isRowDetail = api.rowDetailRowPredicate(row.id);
@@ -17,7 +18,7 @@ export function CellMarkerRenderer({ row, api }: CellRendererParamsReact<any>) {
       className={css`
         display: flex;
         align-items: center;
-        justify-content: center;
+        padding-inline-start: ${t.spacing.cell_horizontal_padding};
         width: 100%;
         height: 100%;
         box-sizing: border-box;

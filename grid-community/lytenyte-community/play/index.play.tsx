@@ -12,7 +12,8 @@ export default function Play() {
       columnBase: { resizable: true, movable: true },
       rowDetailPredicate: true,
       rowDragEnabled: true,
-      rowSelectionMode: "single",
+      rowSelectionMode: "multiple",
+      rowSelectionSelectChildren: true,
       rowSelectionPredicate: "all",
       rowDragMultiRow: true,
       rowDataSource: {
