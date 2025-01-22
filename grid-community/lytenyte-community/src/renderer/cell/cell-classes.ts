@@ -7,6 +7,7 @@ export const rowBaseClx = css`
   grid-column-end: 2;
   box-sizing: border-box;
   border-bottom: 1px solid ${t.colors.borders_row};
+  user-select: none;
   overflow: hidden;
 `;
 
