@@ -1,6 +1,8 @@
 import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
 import { useMemo } from "react";
 import { HeaderCellDefault } from "./header-renderers/header-cell-default";
+import { COLUMN_MARKER_ID } from "@1771technologies/grid-constants";
+import { HeaderCellMarker } from "./header-renderers/header-cell-marker";
 
 export function useHeaderCellRenderer(
   api: ApiCommunityReact<any>,
@@ -11,6 +13,8 @@ export function useHeaderCellRenderer(
   const base = sx.columnBase.use();
 
   const Renderer = useMemo(() => {
+    if (column.id === COLUMN_MARKER_ID) return HeaderCellMarker;
+
     const fn = column.headerRenderer ?? base.headerRenderer;
     if (!fn) return HeaderCellDefault;
 
@@ -21,7 +25,7 @@ export function useHeaderCellRenderer(
     }
 
     return fn;
-  }, [base.headerRenderer, column.headerRenderer, renderers]);
+  }, [base.headerRenderer, column.headerRenderer, column.id, renderers]);
 
   return Renderer;
 }
