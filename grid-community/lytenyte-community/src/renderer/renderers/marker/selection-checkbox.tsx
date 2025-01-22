@@ -37,6 +37,15 @@ export function SelectionCheckbox({
       isDeterminate={isIndeterminate}
       onCheckChange={() => {
         const selectChildren = sx.rowSelectionSelectChildren.peek();
+        const mode = sx.rowSelectionMode.peek();
+
+        if (mode === "single") {
+          api.rowSelectionClear();
+
+          if (!isChecked) api.rowSelectionSelect([row.id]);
+          return;
+        }
+
         if (isChecked) api.rowSelectionDeselect([row.id], selectChildren);
         else api.rowSelectionSelect([row.id], selectChildren);
       }}

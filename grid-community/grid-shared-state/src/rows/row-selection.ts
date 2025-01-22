@@ -18,11 +18,11 @@ export const rowSelection = <D, E>(api: ApiEnterprise<D, E> | ApiCommunity<D, E>
     },
     rowSelectionSelect: (ids: string[], childrenAsWell?: boolean) => {
       const sx = api.getState();
+      if (ids.length <= 0) return;
 
       const backing = sx.internal.rowBackingDataSource.peek();
 
       const next = new Set(sx.rowSelectionSelectedIds.peek());
-
       const rows: RowNode<D>[] = [];
       for (let i = 0; i < ids.length; i++) {
         const id = ids[i];
@@ -53,6 +53,7 @@ export const rowSelection = <D, E>(api: ApiEnterprise<D, E> | ApiCommunity<D, E>
       });
     },
     rowSelectionDeselect: (ids: string[], childrenAsWell?: boolean) => {
+      if (ids.length <= 0) return;
       const sx = api.getState();
       const backing = sx.internal.rowBackingDataSource.peek();
 
