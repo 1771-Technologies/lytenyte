@@ -2,6 +2,7 @@ import type { ApiCommunityReact } from "@1771technologies/grid-types";
 import type { RowNode } from "@1771technologies/grid-types/community";
 import { useMemo } from "react";
 import { Checkbox } from "../../../components/checkbox";
+import { handleRowSelection } from "../../cell/utils/handle-row-selection";
 
 export function SelectionCheckbox({
   api,
@@ -36,19 +37,8 @@ export function SelectionCheckbox({
       tabIndex={-1}
       isChecked={isChecked || isIndeterminate}
       isDeterminate={isIndeterminate}
-      onCheckChange={() => {
-        const selectChildren = sx.rowSelectionSelectChildren.peek();
-        const mode = sx.rowSelectionMode.peek();
-
-        if (mode === "single") {
-          api.rowSelectionClear();
-
-          if (!isChecked) api.rowSelectionSelect([row.id]);
-          return;
-        }
-
-        if (isChecked) api.rowSelectionDeselect([row.id], selectChildren);
-        else api.rowSelectionSelect([row.id], selectChildren);
+      onClick={(event) => {
+        handleRowSelection(api, row, event.shiftKey, true, true);
       }}
     />
   );

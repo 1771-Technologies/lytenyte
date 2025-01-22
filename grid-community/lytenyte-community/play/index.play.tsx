@@ -16,7 +16,6 @@ export default function Play() {
       rowSelectionSelectChildren: true,
       rowSelectionPredicate: "all",
       rowDragMultiRow: true,
-      rowSelectionPointerActivator: "single-click",
       rowDataSource: {
         kind: "client",
         data: bankDataSmall,
