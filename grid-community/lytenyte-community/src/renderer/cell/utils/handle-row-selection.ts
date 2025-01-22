@@ -6,13 +6,14 @@ export function handleRowSelection(
   row: RowNode,
   bulk: boolean,
   meta: boolean,
-  ignoreActivator?: boolean,
+  ignoreActivator: boolean = false,
+  expectedActivator: "single-click" | "double-click" = "single-click",
 ) {
   const sx = api.getState();
 
   const mode = sx.rowSelectionMode.peek();
   const activator = sx.rowSelectionPointerActivator.peek();
-  if (mode === "none" || (activator !== "single-click" && !ignoreActivator)) return;
+  if (mode === "none" || (activator === expectedActivator && !ignoreActivator)) return;
 
   const canSelect = canSelectRow(api, row);
 

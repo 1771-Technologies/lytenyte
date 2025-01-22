@@ -13,8 +13,26 @@ export function useCellEvents(
   void row;
 
   const onClick = useEvent((event: MouseEvent) => {
-    handleRowSelection(api, row, event.shiftKey, event.metaKey || event.ctrlKey);
+    handleRowSelection(
+      api,
+      row,
+      event.shiftKey,
+      event.metaKey || event.ctrlKey,
+      false,
+      "single-click",
+    );
   });
 
-  return { onClick };
+  const onDoubleClick = useEvent((event: MouseEvent) => {
+    handleRowSelection(
+      api,
+      row,
+      event.shiftKey,
+      event.metaKey || event.ctrlKey,
+      false,
+      "double-click",
+    );
+  });
+
+  return { onClick, onDoubleClick };
 }
