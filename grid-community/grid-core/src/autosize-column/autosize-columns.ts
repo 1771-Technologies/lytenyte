@@ -14,10 +14,16 @@ export const autosizeColumns = <D, E>(
     ? c.map((id) => api.columnById(id)).filter((c) => !!c)
     : s.columnsVisible.peek();
 
-  const isAll = !!c;
+  const autosizeAll = !!c;
   const columnsThatCanBeResized = columns
     .filter((c) => api.columnIsResizable(c as any))
-    .filter((c) => !isAll || (isAll && !c.cellOptions?.skipOnAutosizeAll));
+    .filter((c) => {
+      if (!api.columnIsResizable(c as any)) return false;
+
+      if (!autosizeAll) return true;
+
+      return !(c.cellSkipOnAutosizeAll ?? base.cellSkipOnAutosizeAll ?? false);
+    });
 
   if (columnsThatCanBeResized.length === 0) return null;
 
@@ -67,8 +73,7 @@ export const autosizeColumns = <D, E>(
       for (let i = 0; i < columnsThatCanBeResized.length; i++) {
         const column = columnsThatCanBeResized[i];
 
-        const autoFn =
-          column.cellOptions?.autosizeFunc ?? base.cellOptions?.autosizeFunc ?? autosizeCellDefault;
+        const autoFn = column.cellAutosizeFn ?? base.cellAutosizeFn ?? autosizeCellDefault;
         const width = autoFn({ api: api as any, column: column as any, row });
         result[column.id] ??= 0;
         result[column.id] = Math.max(width, result[column.id]);

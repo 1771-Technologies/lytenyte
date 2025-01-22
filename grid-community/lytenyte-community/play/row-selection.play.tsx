@@ -10,6 +10,13 @@ export default function Play() {
       gridId: "x",
       columns: columns,
       columnBase: { resizable: true, movable: true, sortable: true },
+      rowDetailPredicate: true,
+      rowDragEnabled: true,
+      rowSelectionMode: "multiple",
+      rowSelectionSelectChildren: true,
+      rowSelectionPredicate: "all",
+      rowSelectionPointerActivator: "single-click",
+      rowDragMultiRow: true,
       rowDataSource: {
         kind: "client",
         data: bankDataSmall,
@@ -42,6 +49,15 @@ export default function Play() {
         </button>
         <button onClick={() => grid.state.rowGroupDisplayMode.set("single-column")}>
           Single Group
+        </button>
+        <button onClick={() => grid.state.rowSelectionMode.set("multiple")}>Multi Select</button>
+        <button onClick={() => grid.state.rowSelectionMode.set("single")}>Single Select</button>
+        <button onClick={() => grid.state.rowSelectionMode.set("none")}>None</button>
+
+        <div>Page: {grid.state.paginateCurrentPage.use()}</div>
+        <button onClick={() => grid.state.paginateCurrentPage.set((prev) => prev + 1)}>Next</button>
+        <button onClick={() => grid.state.paginateCurrentPage.set((prev) => prev - 1)}>
+          Previous
         </button>
       </div>
       <div
