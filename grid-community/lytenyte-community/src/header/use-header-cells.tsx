@@ -1,8 +1,12 @@
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
 import { useMemo, type ReactNode } from "react";
 import { HeaderCell } from "./header-cell";
+import type { ColumnHeaderRendererParamsReact } from "@1771technologies/grid-types/community-react";
 
-export function useHeaderCells(api: ApiCommunityReact<any>) {
+export function useHeaderCells(
+  api: ApiCommunityReact<any>,
+  headerDefault: (p: ColumnHeaderRendererParamsReact<any>) => ReactNode,
+) {
   const sx = api.getState();
   const visibleColumns = sx.columnsVisible.use();
   const xPositions = sx.columnPositions.use();
@@ -41,6 +45,7 @@ export function useHeaderCells(api: ApiCommunityReact<any>) {
           startCount={startCount}
           centerCount={centerCount}
           endCount={endCount}
+          headerDefault={headerDefault}
         />,
       );
     }
@@ -65,6 +70,7 @@ export function useHeaderCells(api: ApiCommunityReact<any>) {
     bounds.columnStart,
     centerCount,
     endCount,
+    headerDefault,
     hierarchy,
     startCount,
     viewportWidth,

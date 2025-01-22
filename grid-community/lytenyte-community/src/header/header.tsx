@@ -5,9 +5,14 @@ import { t } from "@1771technologies/grid-design";
 import { useHeaderCells } from "./use-header-cells";
 import { useHeaderGroupCells } from "./use-header-group-cells";
 import { useHeaderDividers } from "./header-divider/use-header-dividers";
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
+import type { ColumnHeaderRendererParamsReact } from "@1771technologies/grid-types/community-react";
 
-export function Header() {
+export function Header({
+  headerDefault,
+}: {
+  readonly headerDefault: (p: ColumnHeaderRendererParamsReact<any>) => ReactNode;
+}) {
   const { state, api } = useGrid();
 
   const columnHeaderHeight = state.columnHeaderHeight.use();
@@ -18,7 +23,7 @@ export function Header() {
   const hierarchy = state.columnGroupLevels.use();
 
   const headerGroupCells = useHeaderGroupCells(api);
-  const headerCells = useHeaderCells(api);
+  const headerCells = useHeaderCells(api, headerDefault);
   const headerDividers = useHeaderDividers(api);
 
   const gridTemplateRows = useHeaderDisplayGridTemplate(

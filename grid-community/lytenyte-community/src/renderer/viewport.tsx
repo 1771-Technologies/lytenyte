@@ -3,11 +3,16 @@ import { useEvent } from "@1771technologies/react-utils";
 import { useGrid } from "../use-grid";
 import { HeaderContainer } from "./header-container";
 import { Rows } from "./rows";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { IsoResizeObserver } from "@1771technologies/js-utils";
 import { RowContainer } from "./viewport/row-container";
+import type { ColumnHeaderRendererParamsReact } from "@1771technologies/grid-types/community-react";
 
-export function Viewport() {
+export function Viewport({
+  headerDefault,
+}: {
+  headerDefault: (p: ColumnHeaderRendererParamsReact<any>) => ReactNode;
+}) {
   const { state } = useGrid();
 
   const onSizeChange = useEvent<Required<SizerProps>["onSizeChange"]>((size) => {
@@ -77,6 +82,7 @@ export function Viewport() {
       `}
     >
       <HeaderContainer
+        headerDefault={headerDefault}
         style={{ width: totalWidth }}
         className={css`
           position: sticky;

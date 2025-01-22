@@ -1,5 +1,5 @@
 import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
-import { useMemo, type CSSProperties } from "react";
+import { useMemo, type CSSProperties, type ReactNode } from "react";
 import { getTransform } from "../renderer/get-transform";
 import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
 import { useHeaderCellRenderer } from "./use-header-cell-renderer";
@@ -7,6 +7,7 @@ import { t } from "@1771technologies/grid-design";
 import { useHeaderMove } from "./use-header-move";
 import { COLUMN_EMPTY_PREFIX } from "@1771technologies/grid-constants";
 import { ExpandButton } from "../components/buttons";
+import type { ColumnHeaderRendererParamsReact } from "@1771technologies/grid-types/community-react";
 
 interface HeaderCellProps {
   readonly api: ApiCommunityReact<any>;
@@ -20,6 +21,7 @@ interface HeaderCellProps {
   readonly startCount: number;
   readonly centerCount: number;
   readonly endCount: number;
+  readonly headerDefault: (p: ColumnHeaderRendererParamsReact<any>) => ReactNode;
 }
 
 export function HeaderCell({
@@ -30,6 +32,7 @@ export function HeaderCell({
   rowStart,
   rowEnd,
   xPositions,
+  headerDefault,
 }: HeaderCellProps) {
   const isStart = column.pin === "start";
   const isEnd = column.pin === "end";
@@ -57,7 +60,7 @@ export function HeaderCell({
     return style;
   }, [columnIndex, isEnd, isStart, rowEnd, rowStart, rtl, viewportWidth, xPositions]);
 
-  const Renderer = useHeaderCellRenderer(api, column);
+  const Renderer = useHeaderCellRenderer(api, column, headerDefault);
 
   const { moveProps, dropProps, isBefore, isOver, canDrop } = useHeaderMove(
     api,

@@ -15,5 +15,5 @@ export function LyteNyteGrid<D>({ grid }: LyteNyteGridEnterpriseProps<D>) {
 }
 
 function LyteNyteCommunityImpl() {
-  return <Viewport />;
+  return <Viewport headerDefault={() => <div />} />;
 }
