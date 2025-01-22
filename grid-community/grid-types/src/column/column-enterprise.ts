@@ -36,17 +36,15 @@ export interface Column<A, D, E> {
   readonly id: string;
   readonly type?: "text" | "number" | "date" | "complex";
 
-  readonly headerTooltip?: HeaderTooltip<A, this, E>;
   readonly headerName?: string;
-  readonly secondaryLabel?: string;
+  readonly headerSecondaryLabel?: string;
   readonly headerRenderer?: string | ColumnHeaderRenderer<A, this, E>;
-  readonly headerClass?: string;
   readonly headerAutosizeFunc?: (c: AutosizeHeaderParameters<A, this>) => number;
+  readonly headerAggFuncDisplayMode?: "secondary" | "inline" | "none";
 
   readonly aggFunc?: AggBuiltIns | (string & {}) | AggFunc<A>;
   readonly aggFuncsAllowed?: (AggBuiltIns | (string & {}))[];
   readonly aggFuncDefault?: AggBuiltIns | (string & {});
-  readonly headerAggFuncDisplayMode?: "secondary" | "inline" | "none";
 
   readonly columnMenuShowTriggerInHeader?: boolean;
   readonly columnMenuGetItems?: (api: A) => ColumnMenuItem<E>[];
@@ -126,8 +124,7 @@ export type ColumnBase<D, E, I> = Omit<
   | "field"
   | "pin"
   | "headerName"
-  | "secondaryLabel"
-  | "headerTooltip"
+  | "headerSecondaryLabel"
   | "rowGroupField"
   | "columnPivotField"
   | "inFilterField"
