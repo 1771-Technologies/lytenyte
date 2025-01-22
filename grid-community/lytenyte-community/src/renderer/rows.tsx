@@ -1,7 +1,7 @@
 import { useMemo, type ReactNode } from "react";
 import { useGrid } from "../use-grid";
 import { END_ENCODING, FULL_ENCODING } from "@1771technologies/grid-constants";
-import { Cell } from "./cell";
+import { Cell } from "./cell/cell";
 import { CellFullWidth } from "./cell-full-width";
 import { t } from "@1771technologies/grid-design";
 import { RowDetail } from "./row-detail";
@@ -101,6 +101,8 @@ export function Rows({ width }: { width: number }) {
               columnIndex={colIndex}
               yPositions={yPositions}
               xPositions={xPositions}
+              isFirstCell={colIndex === 0}
+              isLastCell={colIndex === columns.length - 1}
             />
           );
           place.push(cellCache[rowIndex][colIndex]);

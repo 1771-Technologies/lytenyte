@@ -4,6 +4,7 @@ import { memo, useMemo } from "react";
 import { getTransform } from "./get-transform";
 import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
 import { t } from "@1771technologies/grid-design";
+import { cellSelected } from "./cell/cell-classes";
 
 export interface CellFullWidthProps {
   readonly api: ApiCommunityReact<any>;
@@ -57,8 +58,13 @@ function CellFullWidthImpl({ row, rowIndex, rowPin, yPositions, api }: CellFullW
 
   const Renderer = sx.rowFullWidthRenderer.use() ?? DefaultRenderer;
 
+  const selected = sx.rowSelectionSelectedIds.use();
+  const isSelected = selected.has(row.id);
+
   return (
     <div
+      data-lng1771-is-first-cell
+      data-lng1771-is-last-cell
       style={{ width, ...cx.style }}
       className={clsx(
         rowClx,
@@ -72,6 +78,7 @@ function CellFullWidthImpl({ row, rowIndex, rowPin, yPositions, api }: CellFullW
           border-bottom: 1px solid ${t.colors.borders_row};
           box-sizing: border-box;
         `,
+        isSelected && cellSelected,
       )}
     >
       <Renderer api={api} row={row} />

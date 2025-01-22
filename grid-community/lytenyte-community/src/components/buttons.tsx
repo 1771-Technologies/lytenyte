@@ -18,7 +18,7 @@ const ButtonImpl = (props: JSX.IntrinsicElements["button"]) => {
           border-radius: ${t.spacing.box_radius_regular};
           cursor: pointer;
 
-          background-color: ${t.colors.backgrounds_light};
+          background-color: transparent;
           &:focus-visible {
             outline: none;
           }
