@@ -33,6 +33,7 @@ export function SelectionCheckbox({
 
   return (
     <Checkbox
+      tabIndex={-1}
       isChecked={isChecked || isIndeterminate}
       isDeterminate={isIndeterminate}
       onCheckChange={() => {
