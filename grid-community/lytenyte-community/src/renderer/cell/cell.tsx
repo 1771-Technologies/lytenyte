@@ -5,6 +5,7 @@ import { useCellStyle } from "./use-cell-style";
 import { useCellRenderer } from "./use-cell-renderer";
 import type { RowNode, RowPin } from "@1771technologies/grid-types/community";
 import { rowAltClx, rowBaseClx, rowClx } from "./cell-classes";
+import { useCellEvents } from "./use-cell-events";
 
 export interface CellProps {
   readonly api: ApiCommunityReact<any>;
@@ -50,8 +51,10 @@ function CellImpl({
     rowNode.id,
   );
 
+  const events = useCellEvents(api, column, rowNode);
+
   return (
-    <div style={cx.style} className={clsx(rowBaseClx, row, cx.className)}>
+    <div style={cx.style} className={clsx(rowBaseClx, row, cx.className)} {...events}>
       <Renderer api={api} column={column} columnIndex={columnIndex} row={rowNode} />
     </div>
   );
