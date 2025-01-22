@@ -1,21 +1,20 @@
-import { makeStore } from "@1771technologies/grid-store-community";
-import { LyteNyteGridCommunity } from "../src/lytenyte-community";
 import { columns } from "./data/columns";
 import { bankDataSmall } from "./data/bank-data-small";
 import { useState } from "react";
+import { LyteNyteGrid } from "../src/lytenyte-grid-enterprise";
+import { makeStore } from "@1771technologies/grid-store-enterprise";
+import { useClientDataSource } from "../src/use-client-data-source";
 
 export default function Play() {
+  const ds = useClientDataSource({
+    data: bankDataSmall,
+  });
   const [grid] = useState(() =>
     makeStore({
       gridId: "x",
       columns: columns,
       columnBase: { resizable: true, movable: true, sortable: true },
-      rowDataSource: {
-        kind: "client",
-        data: bankDataSmall,
-        topData: bankDataSmall.slice(0, 2),
-        bottomData: bankDataSmall.slice(2, 4),
-      },
+      rowDataSource: ds,
     }),
   );
 
@@ -50,7 +49,7 @@ export default function Play() {
           flex: 1;
         `}
       >
-        <LyteNyteGridCommunity grid={grid} />
+        <LyteNyteGrid grid={grid} />
       </div>
     </div>
   );

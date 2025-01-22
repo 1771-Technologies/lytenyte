@@ -1,5 +1,5 @@
 import { makeStore } from "@1771technologies/grid-store-community";
-import { LyteNyteCommunity } from "../src/lytenyte-community";
+import { LyteNyteGridCommunity } from "../src/lytenyte-community";
 import { columns } from "./data/columns";
 import { bankDataSmall } from "./data/bank-data-small";
 import { useState } from "react";
@@ -65,7 +65,7 @@ export default function Play() {
           flex: 1;
         `}
       >
-        <LyteNyteCommunity grid={grid} />
+        <LyteNyteGridCommunity grid={grid} />
       </div>
     </div>
   );

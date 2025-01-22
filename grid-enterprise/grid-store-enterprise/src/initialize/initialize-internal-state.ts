@@ -44,7 +44,6 @@ export function initializeInternalState<D, E>(
     columnVisibleCenterCount,
     columnVisibleEndCount,
     columnVisibleStartCount,
-    columnForceMountedColumnIndices,
   } = columnsVisibleState(
     state.columns,
     state.columnBase,
@@ -165,7 +164,6 @@ export function initializeInternalState<D, E>(
 
     columnFirstVisible: signal(-1),
     columnLastVisible: signal(-1),
-    columnForceMountedColumnIndices,
 
     columnMoveActive: signal(false),
     columnMoveIds: signal<string[]>([]),
@@ -203,13 +201,11 @@ export function initializeInternalState<D, E>(
     rowPositions,
     rowDetailHeight,
 
-    rowDragIsActive: signal(false),
+    rowDragStartIndex: signal(-1),
     rowDragOverIndex: signal(-1),
 
     rowIsFullWidthInternal: rowIsFullWidthComputed(state, api),
 
-    rowAutoHeightCache: {},
-    rowDetailAutoHeightCache: {},
     rowFirstVisible: signal(-1),
     rowLastVisible: signal(-1),
 
