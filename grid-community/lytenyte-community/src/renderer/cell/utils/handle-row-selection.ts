@@ -13,7 +13,7 @@ export function handleRowSelection(
 
   const mode = sx.rowSelectionMode.peek();
   const activator = sx.rowSelectionPointerActivator.peek();
-  if (mode === "none" || (activator === expectedActivator && !ignoreActivator)) return;
+  if (mode === "none" || (activator !== expectedActivator && !ignoreActivator)) return;
 
   const canSelect = canSelectRow(api, row);
 

@@ -15,8 +15,8 @@ export default function Play() {
       rowSelectionMode: "multiple",
       rowSelectionSelectChildren: true,
       rowSelectionPredicate: "all",
+      rowSelectionPointerActivator: "single-click",
       rowDragMultiRow: true,
-      paginate: true,
       rowDataSource: {
         kind: "client",
         data: bankDataSmall,
