@@ -34,7 +34,13 @@ export default function Play() {
       `}
       style={{ width: "100vw", height: "100vh" }}
     >
-      <div>
+      <div
+        className={css`
+          display: flex;
+          align-items: center;
+          gap: 4px;
+        `}
+      >
         <button onClick={() => grid.state.rtl.set((prev) => !prev)}>RTL</button>
         <button onClick={() => grid.state.rowGroupModel.set(["job", "age"])}>Grouped</button>
         <button onClick={() => grid.state.rowGroupModel.set([])}>Un-group</button>
@@ -47,6 +53,12 @@ export default function Play() {
         <button onClick={() => grid.state.rowSelectionMode.set("multiple")}>Multi Select</button>
         <button onClick={() => grid.state.rowSelectionMode.set("single")}>Single Select</button>
         <button onClick={() => grid.state.rowSelectionMode.set("none")}>None</button>
+
+        <div>Page: {grid.state.paginateCurrentPage.use()}</div>
+        <button onClick={() => grid.state.paginateCurrentPage.set((prev) => prev + 1)}>Next</button>
+        <button onClick={() => grid.state.paginateCurrentPage.set((prev) => prev - 1)}>
+          Previous
+        </button>
       </div>
       <div
         className={css`
