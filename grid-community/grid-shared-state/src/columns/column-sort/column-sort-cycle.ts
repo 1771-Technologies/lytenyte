@@ -13,7 +13,7 @@ export const columnSortCycle = <D, E>(
   api = api as ApiCommunity<D, E>;
   c = c as ColumnCommunity<D, E>;
 
-  if (api.columnIsSortable(c)) return null;
+  if (!api.columnIsSortable(c)) return null;
 
   const s = api.getState();
   const base = s.columnBase.peek();

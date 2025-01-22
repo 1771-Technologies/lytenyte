@@ -9,7 +9,7 @@ export default function Play() {
     makeStore({
       gridId: "x",
       columns: columns,
-      columnBase: { resizable: true, movable: true },
+      columnBase: { resizable: true, movable: true, sortable: true },
       rowDetailPredicate: true,
       rowDragEnabled: true,
       rowSelectionMode: "multiple",
