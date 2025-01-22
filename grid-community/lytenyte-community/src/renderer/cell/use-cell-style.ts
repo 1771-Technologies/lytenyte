@@ -17,6 +17,7 @@ export function useCellStyle(
   column: ColumnCommunityReact<any>,
   rowPin: RowPin,
   rowId: string,
+  paginateOffset: number,
 ) {
   const sx = api.getState();
   const vpWidth = sx.internal.viewportInnerWidth.use();
@@ -46,11 +47,12 @@ export function useCellStyle(
     const x = isEnd
       ? xPositions[columnIndex] - xPositions.at(-1)! + vpWidth
       : xPositions[columnIndex];
+
     const y = isBot
       ? yPositions[rowIndex] - yPositions[firstBotIndex]
       : isTop
         ? yPositions[rowIndex]
-        : yPositions[rowIndex] - yPositions[rowTopCount];
+        : yPositions[rowIndex] - yPositions[rowTopCount] - paginateOffset;
 
     const transform = getTransform(x * (rtl ? -1 : 1), y);
     const style = { height, width, transform } as CSSProperties;
@@ -102,6 +104,7 @@ export function useCellStyle(
     column.pin,
     columnIndex,
     height,
+    paginateOffset,
     rowId,
     rowIndex,
     rowPin,

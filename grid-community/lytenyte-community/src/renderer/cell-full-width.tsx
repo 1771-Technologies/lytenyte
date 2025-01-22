@@ -12,9 +12,17 @@ export interface CellFullWidthProps {
   readonly row: RowNode<any>;
   readonly rowIndex: number;
   readonly yPositions: Uint32Array;
+  readonly paginateOffset: number;
 }
 
-function CellFullWidthImpl({ row, rowIndex, rowPin, yPositions, api }: CellFullWidthProps) {
+function CellFullWidthImpl({
+  row,
+  rowIndex,
+  rowPin,
+  yPositions,
+  api,
+  paginateOffset,
+}: CellFullWidthProps) {
   const sx = api.getState();
   const width = sx.internal.viewportInnerWidth.use();
 
@@ -33,12 +41,13 @@ function CellFullWidthImpl({ row, rowIndex, rowPin, yPositions, api }: CellFullW
       ? yPositions[rowIndex] - yPositions[firstBotIndex]
       : isTop
         ? yPositions[rowIndex]
-        : yPositions[rowIndex] - yPositions[rowTopCount];
+        : yPositions[rowIndex] - yPositions[rowTopCount] - paginateOffset;
 
     const transform = getTransform(0, y);
 
     return { style: { transform, height } };
   }, [
+    paginateOffset,
     rowIndex,
     rowPin,
     sx.internal.rowBottomCount,

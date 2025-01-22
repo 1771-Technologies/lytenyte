@@ -18,8 +18,7 @@ export interface CellProps {
   readonly rowNode: RowNode<any>;
   readonly xPositions: Uint32Array;
   readonly yPositions: Uint32Array;
-  readonly isFirstCell: boolean;
-  readonly isLastCell: boolean;
+  readonly paginateOffset: number;
 }
 
 function CellImpl({
@@ -33,6 +32,7 @@ function CellImpl({
   rowNode,
   rowPin,
   api,
+  paginateOffset,
 }: CellProps) {
   const row = rowIndex % 2 ? rowClx : rowAltClx;
 
@@ -49,6 +49,7 @@ function CellImpl({
     column,
     rowPin,
     rowNode.id,
+    paginateOffset,
   );
 
   const events = useCellEvents(api, column, rowNode);

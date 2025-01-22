@@ -42,10 +42,19 @@ export function Rows({ width }: { width: number }) {
 
   const firstBotIndex = rowCount - botCount;
 
+  const paginate = state.paginate.use();
+  const currentPage = state.paginateCurrentPage.use();
+
   const [top, center, bottom] = useMemo(() => {
     const top: ReactNode[] = [];
     const center: ReactNode[] = [];
     const bottom: ReactNode[] = [];
+
+    let paginateOffset = 0;
+    if (paginate) {
+      const [rowStart] = api.paginateRowStartAndEndForPage(currentPage);
+      paginateOffset = yPositions[rowStart];
+    }
 
     for (const [rowIndex, cells] of layout) {
       // We have to ensure the layout never exceeds the row count. The layout can temporarily exceed
@@ -74,6 +83,7 @@ export function Rows({ width }: { width: number }) {
               key={`${rowIndex}-full`}
               rowIndex={rowIndex}
               yPositions={yPositions}
+              paginateOffset={paginateOffset}
             />
           );
 
@@ -101,8 +111,7 @@ export function Rows({ width }: { width: number }) {
               columnIndex={colIndex}
               yPositions={yPositions}
               xPositions={xPositions}
-              isFirstCell={colIndex === 0}
-              isLastCell={colIndex === columns.length - 1}
+              paginateOffset={paginateOffset}
             />
           );
           place.push(cellCache[rowIndex][colIndex]);
@@ -129,10 +138,12 @@ export function Rows({ width }: { width: number }) {
     api,
     cellCache,
     columns,
+    currentPage,
     detailHeight,
     firstBotIndex,
     fullWidthCache,
     layout,
+    paginate,
     rowCount,
     topCount,
     xPositions,
