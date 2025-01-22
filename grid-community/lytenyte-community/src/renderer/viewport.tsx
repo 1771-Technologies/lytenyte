@@ -58,7 +58,8 @@ export function Viewport() {
     resizeRef.current = re;
   });
 
-  const totalHeight = state.internal.rowPositions.use().at(-1)!;
+  const paginate = state.paginate.use();
+  const totalHeight = paginate ? undefined : state.internal.rowPositions.use().at(-1)!;
   const totalWidth = state.internal.columnPositions.use().at(-1)!;
 
   const rtl = state.rtl.use();

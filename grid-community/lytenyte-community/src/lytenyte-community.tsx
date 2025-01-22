@@ -5,6 +5,7 @@ import { Viewport } from "./renderer/viewport";
 export interface LyteNyteCommunityProps<D> {
   readonly grid: StoreCommunityReact<D>;
 }
+
 export function LyteNyteCommunity<D>({ grid }: LyteNyteCommunityProps<D>) {
   return (
     <GridProvider value={grid}>

@@ -9,7 +9,7 @@ export function RowContainer({
   totalHeight,
   totalWidth,
   children,
-}: PropsWithChildren<{ totalWidth: number; totalHeight: number }>) {
+}: PropsWithChildren<{ totalWidth: number; totalHeight: number | undefined }>) {
   const { api, state } = useGrid();
   const gridId = state.gridId.use();
   const { onDragOver, onDrop } = useDroppable({

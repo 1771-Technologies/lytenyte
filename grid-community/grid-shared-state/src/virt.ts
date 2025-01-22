@@ -54,7 +54,18 @@ export const virt = <D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>) => {
       const rowScan = s.rowSpanScanDistance.get();
       const colScan = s.columnSpanScanDistance.get();
 
-      const { columnStart, columnEnd, rowStart, rowEnd } = s.internal.virtBounds.get();
+      const virtBounds = s.internal.virtBounds.get();
+
+      let rowStart = virtBounds.rowStart;
+      let rowEnd = virtBounds.rowEnd;
+      const columnStart = virtBounds.columnStart;
+      const columnEnd = virtBounds.columnEnd;
+
+      const paginated = s.paginate.get();
+      if (paginated) {
+        const page = s.paginateCurrentPage.get();
+        [rowStart, rowEnd] = api.paginateRowStartAndEndForPage(page);
+      }
 
       const colMidStart = Math.max(columnStart - colScan, startCount);
       const colEndBegin = startCount + centerCount;
