@@ -65,6 +65,10 @@ export function HeaderCell({
     columnIndex,
   );
 
+  // syncs
+  const sx = api.getState();
+  sx.sortModel.use();
+
   if (api.columnIsEmpty(column)) {
     return (
       <ExpandButton

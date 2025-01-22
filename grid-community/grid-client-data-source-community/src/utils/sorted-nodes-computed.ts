@@ -13,6 +13,7 @@ export function sortedNodesComputed<D, E>(
 
     const rowNodes = nodes.get();
     const sortModel = sx.sortModel.get();
+
     if (sortModel.length === 0) return rowNodes;
 
     const comparators = getComparatorsForModel(

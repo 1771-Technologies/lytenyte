@@ -10,8 +10,6 @@ export function HeaderCellDefault({ api, column }: ColumnHeaderRendererParamsRea
   const sortDirection = api.columnSortDirection(column);
   const sortIndex = api.columnSortModelIndex(column);
 
-  api.getState().sortModel.use();
-
   return (
     <div
       onClick={(ev) => {
