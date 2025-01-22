@@ -18,7 +18,12 @@ export function HeaderCellDefault({ column, api }: ColumnHeaderRendererParamsRea
   void sortable;
   void endOffset;
   return (
-    <div>
+    <div
+      className={css`
+        width: 100%;
+        height: 100%;
+      `}
+    >
       <HeaderLabel api={api} column={column} />
     </div>
   );
