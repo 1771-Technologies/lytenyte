@@ -19,6 +19,4 @@ export const rowAltClx = css`
 
 export const cellSelected = css`
   background-color: ${t.colors.backgrounds_row_selected};
-  box-shadow: 0 -1px 0 0 ${t.colors.primary_50};
-  border-bottom: 1px solid ${t.colors.primary_50};
 `;

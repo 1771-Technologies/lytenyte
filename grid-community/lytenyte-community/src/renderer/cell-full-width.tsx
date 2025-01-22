@@ -63,8 +63,6 @@ function CellFullWidthImpl({ row, rowIndex, rowPin, yPositions, api }: CellFullW
 
   return (
     <div
-      data-lng1771-is-first-cell
-      data-lng1771-is-last-cell
       style={{ width, ...cx.style }}
       className={clsx(
         rowClx,

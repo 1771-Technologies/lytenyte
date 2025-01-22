@@ -1,5 +1,5 @@
 import { clsx } from "@1771technologies/js-utils";
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
 import { useCellStyle } from "./use-cell-style";
 import { useCellRenderer } from "./use-cell-renderer";
@@ -32,8 +32,6 @@ function CellImpl({
   rowNode,
   rowPin,
   api,
-  isFirstCell,
-  isLastCell,
 }: CellProps) {
   const row = rowIndex % 2 ? rowClx : rowAltClx;
 
@@ -52,17 +50,8 @@ function CellImpl({
     rowNode.id,
   );
 
-  const attrs = useMemo(() => {
-    const attrs: any = {};
-
-    if (isFirstCell) attrs["data-lng1771-is-first-cell"] = true;
-
-    if (isLastCell) attrs["data-lng1771-is-last-cell"] = true;
-    return attrs;
-  }, [isFirstCell, isLastCell]);
-
   return (
-    <div {...attrs} style={cx.style} className={clsx(rowBaseClx, row, cx.className)}>
+    <div style={cx.style} className={clsx(rowBaseClx, row, cx.className)}>
       <Renderer api={api} column={column} columnIndex={columnIndex} row={rowNode} />
     </div>
   );
