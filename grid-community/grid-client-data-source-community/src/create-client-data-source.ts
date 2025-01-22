@@ -137,10 +137,12 @@ export function createClientDataSource<D, E>(
     rowReplaceTopData: (d) => state.rowTopNodes.set(dataToRowNodes(d, "top", "top")),
 
     rowGetAllChildrenIds: (rowByIndex) => {
-      return state.graph
+      const children = state.graph
         .peek()
         .rowAllChildren(rowByIndex)
         .map((c) => c.id);
+
+      return children;
     },
     rowGetAllIds: () => {
       const graph = state.graph.peek();

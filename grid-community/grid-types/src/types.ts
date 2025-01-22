@@ -518,11 +518,11 @@ export type RowFullWidthRenderer<A, D, E> = (p: RowSelectionPredicateParams<A, D
 export type RowSpanParams<A, D, C> = { api: A; row: RowNode<D>; column: C };
 export type RowSpanCallback<A, D, C> = (p: RowSpanParams<A, D, C>) => number;
 
-export type RowSelectionEventParams<A, D> = {
+export type RowSelectionEventParams<A> = {
   readonly api: A;
-  readonly rows: RowNode<D>[];
+  readonly rowIds: string[];
 };
-export type RowSelectionEvent<A, D> = (p: RowSelectionEventParams<A, D>) => void;
+export type RowSelectionEvent<A> = (p: RowSelectionEventParams<A>) => void;
 
 // Sort
 export interface SortParams {

@@ -55,8 +55,8 @@ export interface EventsCommunity<A, D, C> {
 
   readonly onRowExpansionChange: (api: A, rowId: string) => void;
 
-  readonly onRowSelectionSelected: RowSelectionEvent<A, D>;
-  readonly onRowSelectionDeselected: RowSelectionEvent<A, D>;
+  readonly onRowSelectionSelected: RowSelectionEvent<A>;
+  readonly onRowSelectionDeselected: RowSelectionEvent<A>;
   readonly onRowSelectionAllSelected: LngEvent<A>;
   readonly onRowSelectionClear: LngEvent<A>;
 

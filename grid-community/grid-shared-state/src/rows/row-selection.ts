@@ -23,33 +23,28 @@ export const rowSelection = <D, E>(api: ApiEnterprise<D, E> | ApiCommunity<D, E>
       const backing = sx.internal.rowBackingDataSource.peek();
 
       const next = new Set(sx.rowSelectionSelectedIds.peek());
-      const rows: RowNode<D>[] = [];
+      const rowIds: string[] = [];
       for (let i = 0; i < ids.length; i++) {
         const id = ids[i];
         const row = api.rowById(id);
         if (row == null) continue;
 
         next.add(row.id);
-        rows.push(row);
+        rowIds.push(row.id);
         const rowIndex = backing.rowIdToRowIndex(row.id);
 
         if (childrenAsWell && api.rowIsGroup(row) && rowIndex != null) {
           const children = backing.rowGetAllChildrenIds(rowIndex);
 
-          for (let c = 0; c < children.length; c++) {
-            const row = api.rowById(children[c]);
-            if (row) {
-              rows.push(row);
-              next.add(children[c]);
-            }
-          }
+          for (let c = 0; c < children.length; c++) next.add(children[c]);
+          rowIds.push(...children);
         }
       }
 
       sx.rowSelectionSelectedIds.set(next);
       (api as ApiCommunity<D, E>).eventFire("onRowSelectionSelected", {
         api: api as any,
-        rows,
+        rowIds,
       });
     },
     rowSelectionDeselect: (ids: string[], childrenAsWell?: boolean) => {
@@ -59,7 +54,7 @@ export const rowSelection = <D, E>(api: ApiEnterprise<D, E> | ApiCommunity<D, E>
 
       const next = new Set(sx.rowSelectionSelectedIds.peek());
 
-      const rows: RowNode<D>[] = [];
+      const rowIds: string[] = [];
       for (let i = 0; i < ids.length; i++) {
         const id = ids[i];
         const row = api.rowById(id);
@@ -69,26 +64,21 @@ export const rowSelection = <D, E>(api: ApiEnterprise<D, E> | ApiCommunity<D, E>
         }
 
         next.delete(row.id);
-        rows.push(row);
+        rowIds.push(row.id);
         const rowIndex = backing.rowIdToRowIndex(row.id);
 
         if (childrenAsWell && api.rowIsGroup(row) && rowIndex != null) {
           const children = backing.rowGetAllChildrenIds(rowIndex);
 
-          for (let c = 0; c < children.length; c++) {
-            const row = api.rowById(children[c]);
-            if (row) {
-              rows.push(row);
-              next.delete(children[c]);
-            }
-          }
+          for (let c = 0; c < children.length; c++) next.delete(children[c]);
+          rowIds.push(...children);
         }
       }
 
       sx.rowSelectionSelectedIds.set(next);
       (api as ApiCommunity<D, E>).eventFire("onRowSelectionDeselected", {
         api: api as any,
-        rows,
+        rowIds,
       });
     },
     rowSelectionIsIndeterminate: (id: string) => {
