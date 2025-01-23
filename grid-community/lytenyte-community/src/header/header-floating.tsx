@@ -1,6 +1,6 @@
 import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
 import { sizeFromCoord } from "@1771technologies/js-utils";
-import { Fragment, useMemo, type CSSProperties } from "react";
+import { useMemo, type CSSProperties } from "react";
 import { getTransform } from "../renderer/get-transform";
 import { t } from "@1771technologies/grid-design";
 
@@ -63,7 +63,7 @@ export function FloatingCell({
       return renderers[rendererKey];
     }
 
-    if (!rendererKey) return Fragment;
+    if (!rendererKey) return () => <></>;
 
     return rendererKey;
   }, [rendererKey, renderers]);

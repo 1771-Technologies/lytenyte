@@ -14,6 +14,7 @@ export const autosizeColumns = <D, E>(
     ? c.map((id) => api.columnById(id)).filter((c) => !!c)
     : s.columnsVisible.peek();
 
+  const base = s.columnBase.peek();
   const autosizeAll = !!c;
   const columnsThatCanBeResized = columns
     .filter((c) => api.columnIsResizable(c as any))
@@ -34,7 +35,6 @@ export const autosizeColumns = <D, E>(
   const rowTopCount = s.internal.rowTopCount.peek();
   const rowCount = s.internal.rowCount.peek();
   const rowBottomCount = s.internal.rowBottomCount.peek();
-  const base = s.columnBase.peek();
 
   const rowStart = Math.max(rowFirstVisible, 0);
   const rowEnd = rowLastVisible === -1 ? Math.min(50, rowCount - rowBottomCount) : rowLastVisible;

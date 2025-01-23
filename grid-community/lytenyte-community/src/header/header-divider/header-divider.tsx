@@ -72,9 +72,18 @@ export function HeaderDivider({
     xPositions,
   ]);
 
+  const autosizeOnDouble = api.getState().autosizeDoubleClickHeader.use();
+
   return (
     <div
       {...resizeProps}
+      onDoubleClick={
+        autosizeOnDouble
+          ? () => {
+              api.autosizeColumn(column, { includeHeader: true });
+            }
+          : undefined
+      }
       className={clsx(
         css`
           grid-column-start: 1;
