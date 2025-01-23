@@ -79,31 +79,15 @@ export function createClientDataSource<D, E>(
     const flatPayload = flatBlockPayloadsComputed(sortedNodes);
     const groupPayload = groupBlockPayloadsComputed(api$, sortedNodes);
 
-    const graph$ = signal(
-      new BlockGraph<D>(
-        BLOCK_SIZE,
-        () => {
-          const sx = api$.peek().getState();
-          const expansions = sx.rowGroupExpansions.peek();
-          const expanded = Object.fromEntries(
-            Object.values(expansions).flatMap((c) => Object.entries(c)),
-          );
-
-          return expanded;
-        },
-        () => {
-          const sx = api$.peek().getState();
-          return sx.rowGroupDefaultExpansion.peek();
-        },
-      ),
-    );
+    const graph$ = signal(new BlockGraph<D>(BLOCK_SIZE));
 
     const graph = computed(() => {
       const graph = graph$.get();
       const api = api$.get();
       const sx = api.getState();
 
-      void sx.rowGroupExpansions.get();
+      const expansions = sx.rowGroupExpansions.get();
+      const expansionDefault = sx.rowGroupDefaultExpansion.peek();
 
       const rowModel = sx.rowGroupModel.get();
 
@@ -122,7 +106,7 @@ export function createClientDataSource<D, E>(
       graph.setTop(rowTopNodes.get());
       graph.setBottom(rowBottomNodes.get());
 
-      graph.blockFlatten();
+      graph.blockFlatten(expansions, expansionDefault);
 
       api.rowRefresh();
 

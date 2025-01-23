@@ -38,17 +38,15 @@ export function flattenCenterRows<D>(
   separator: string,
   lookup: BlockPaths<D>,
   topOffset: number,
-  rowExpansions: () => Record<string, boolean>,
-  rowExpansionsDefault: () => number | boolean,
+  rowExpansions: Record<string, boolean | undefined>,
+  rowExpansionsDefault: number | boolean,
 ) {
-  const expansions = rowExpansions();
-  const rowDefault = rowExpansionsDefault();
   const rowIsExpanded = (r: RowNodeGroup, depth: number) => {
-    if (expansions[r.id] != null) return expansions[r.id];
+    if (rowExpansions[r.id] != null) return rowExpansions[r.id];
 
-    if (typeof rowDefault === "number") return depth <= rowDefault;
+    if (typeof rowExpansionsDefault === "number") return depth <= rowExpansionsDefault;
 
-    return rowDefault;
+    return rowExpansionsDefault;
   };
 
   // Recursive function to process blocks and their nested groups

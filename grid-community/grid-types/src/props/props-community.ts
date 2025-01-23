@@ -87,7 +87,7 @@ export interface PropsCommunity<A, D, C, E, Base, Group> {
   readonly rowGroupModel?: string[];
   readonly rowGroupDisplayMode?: RowGroupDisplayMode;
   readonly rowGroupDefaultExpansion?: boolean | number;
-  readonly rowGroupExpansions?: { [level: number]: { [rowId: string]: boolean } };
+  readonly rowGroupExpansions?: { [rowId: string]: boolean | undefined };
 
   readonly paginate?: boolean;
   readonly paginatePageSize?: number;

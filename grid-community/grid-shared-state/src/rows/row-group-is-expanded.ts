@@ -11,15 +11,12 @@ export const rowGroupIsExpanded = <D, E>(
   const defaultExpansions = sx.rowGroupDefaultExpansion.peek();
 
   const expansions = sx.rowGroupExpansions.peek();
-  const expanded = Object.fromEntries(Object.values(expansions).flatMap((c) => Object.entries(c)));
-
-  if (expanded[row.id] != null) return expanded[row.id];
+  if (expansions[row.id] != null) return expansions[row.id];
 
   const rowIndex = sx.internal.rowBackingDataSource.peek().rowIdToRowIndex(row.id);
   if (rowIndex == null) return false;
 
   const depth = api.rowDepth(rowIndex);
-
   if (typeof defaultExpansions === "number") return depth <= defaultExpansions;
   return defaultExpansions;
 };

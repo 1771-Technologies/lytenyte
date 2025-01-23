@@ -11,16 +11,7 @@ export const rowGroupToggle = <D, E>(
   const expansions = s.rowGroupExpansions;
 
   const next = state ?? !api.rowGroupIsExpanded(row);
-
-  const depth = api.rowDepth(row.rowIndex!);
-
-  expansions.set((prev) => ({
-    ...prev,
-    [depth]: {
-      ...prev[depth],
-      [row.id]: next,
-    },
-  }));
+  expansions.set((prev) => ({ ...prev, [row.id]: next }));
 
   api.rowRefresh();
 };
