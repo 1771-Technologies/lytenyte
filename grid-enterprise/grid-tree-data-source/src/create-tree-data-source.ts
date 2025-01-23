@@ -3,9 +3,7 @@ import {
   dataToRowNodes,
   rowChildCount,
   rowDepth,
-  rowGroupToggle,
   rowParentIndex,
-  rowSelection,
   rowSetData,
   rowSetDataMany,
 } from "@1771technologies/grid-client-data-source-community";
@@ -45,7 +43,6 @@ export interface ClientState<D, E> {
   api: Signal<ApiEnterprise<D, E>>;
 
   graph: ReadonlySignal<BlockGraph<D>>;
-  selectedIds: Signal<Set<string>>;
   cache: Signal<Record<string, any>>;
 
   rowTopNodes: Signal<RowNodeLeaf<D>[]>;
@@ -60,8 +57,6 @@ export function createTreeDataSource<D, E>(
 ): RowDataSourceEnterprise<D, E> {
   const state = cascada<ClientState<D, E>>(() => {
     const api$ = signal<ApiEnterprise<D, E>>(null as unknown as ApiEnterprise<D, E>);
-
-    const selectedIds = signal(new Set<string>());
 
     const initialTopNodes = dataToRowNodes(r.topData ?? [], "top", "top");
     const initialBottomNodes = dataToRowNodes(r.bottomData ?? [], "bottom", "bottom");
@@ -90,7 +85,7 @@ export function createTreeDataSource<D, E>(
       ),
     );
 
-    const graph = computed<BlockGraph<D>>(() => {
+    const graph$ = computed<BlockGraph<D>>(() => {
       const separator = r.pathSeparator ?? ROW_DEFAULT_PATH_SEPARATOR;
       const g = new BlockGraph<D>(2000, separator);
 
@@ -102,12 +97,26 @@ export function createTreeDataSource<D, E>(
       return g;
     });
 
+    const graph = computed(() => {
+      const graph = graph$.get();
+      const api = api$.get();
+      const sx = api.getState();
+
+      const expansions = sx.rowGroupExpansions.get();
+      const expansionDefault = sx.rowGroupDefaultExpansion.peek();
+
+      graph.blockFlatten(expansions, expansionDefault);
+
+      api.rowRefresh();
+
+      return graph;
+    });
+
     const getRowDataForGroup = (row: RowNodeGroup) => r.getDataForGroup(row, api$.get());
 
     return {
       api: api$,
       graph,
-      selectedIds,
 
       getRowDataForGroup,
       cache: signal({}),
@@ -117,8 +126,6 @@ export function createTreeDataSource<D, E>(
       rowBottomNodes,
     } satisfies ClientState<D, E>;
   });
-
-  const selection = rowSelection(state);
 
   return {
     init: (a) => {
@@ -134,23 +141,28 @@ export function createTreeDataSource<D, E>(
     rowDepth: (r) => rowDepth(state, r),
     rowParentIndex: (r) => rowParentIndex(state, r),
 
-    rowGroupToggle: (id, s) => rowGroupToggle(state, id, s),
-
     rowSetData: (row, d) => rowSetData(state, row, d),
     rowSetDataMany: (updates) => rowSetDataMany(state, updates),
     rowReplaceBottomData: (d) => state.rowBottomNodes.set(dataToRowNodes(d, "bottom", "bottom")),
     rowReplaceData: (d) => state.rowCenterNodes.set(dataToRowNodes(d, null, "center")),
     rowReplaceTopData: (d) => state.rowTopNodes.set(dataToRowNodes(d, "top", "top")),
 
-    rowSelectionAllRowsSelected: selection.rowSelectionAllRowsSelected,
-    rowSelectionClear: selection.rowSelectionClear,
-    rowSelectionDeselect: selection.rowSelectionDeselect,
-    rowSelectionGetSelected: selection.rowSelectionGetSelected,
-    rowSelectionIsIndeterminate: selection.rowSelectionIsIndeterminate,
-    rowSelectionIsSelected: selection.rowSelectionIsSelected,
-    rowSelectionSelect: selection.rowSelectionSelect,
-    rowSelectionSelectAll: selection.rowSelectionSelectAll,
-    rowSelectionSelectAllSupported: selection.rowSelectionSelectAllSupported,
+    rowGetAllChildrenIds: (rowByIndex) => {
+      return state.graph
+        .peek()
+        .rowAllChildren(rowByIndex)
+        .map((c) => c.id);
+    },
+    rowGetAllIds: () => {
+      const graph = state.graph.peek();
+      const allRows = graph.rowGetAllRows();
+
+      return allRows.map((c) => c.id);
+    },
+
+    rowIdToRowIndex: (id) => state.graph.peek().rowIdToRowIndex(id),
+    rowSelectionIndeterminateSupported: () => true,
+    rowSelectionSelectAllSupported: () => true,
 
     columnInFilterItems: () => [],
     rowBottomCount: () => state.graph.peek().rowBotCount(),
