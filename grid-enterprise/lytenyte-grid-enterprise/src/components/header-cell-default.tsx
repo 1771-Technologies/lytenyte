@@ -14,14 +14,8 @@ export function HeaderCellDefault({ column, api }: ColumnHeaderRendererParamsRea
   const menuTrigger =
     column.columnMenuShowTriggerInHeader ?? base.columnMenuShowTriggerInHeader ?? true;
   const filterTrigger = column.filterShowTriggerInHeader ?? base.filterShowTriggerInHeader ?? true;
-
   const sortable = api.columnIsSortable(column);
 
-  let endOffset = 0;
-  if (menuTrigger) endOffset++;
-  if (filterTrigger) endOffset++;
-
-  void endOffset;
   return (
     <div
       className={css`
