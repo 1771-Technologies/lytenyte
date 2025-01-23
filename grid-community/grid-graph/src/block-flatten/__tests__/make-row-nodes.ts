@@ -28,13 +28,12 @@ export function makeLeafNode(s: string) {
   } satisfies RowNodeLeaf;
 }
 
-export function makeGroupNode(s: string, path: string, expanded: boolean) {
+export function makeGroupNode(s: string, path: string) {
   return {
     kind: ROW_GROUP_KIND,
     data: {},
     pathKey: path,
     id: s,
-    expanded,
     rowIndex: null,
   } satisfies RowNodeGroup;
 }

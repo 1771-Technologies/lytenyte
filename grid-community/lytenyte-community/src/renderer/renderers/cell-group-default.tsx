@@ -41,7 +41,7 @@ export function CellGroupRendererDefault({ api, row, column }: CellRendererParam
             width: 20px;
             height: 20px;
           `,
-          row.expanded &&
+          api.rowGroupIsExpanded(row) &&
             css`
               transform: rotate(90deg);
             `,

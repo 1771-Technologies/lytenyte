@@ -1,6 +1,7 @@
 import { rowIsGroup } from "@1771technologies/grid-core";
 import type { BlockPaths, BlockStore } from "../types.js";
 import type { FlattenRowContext } from "./types.js";
+import type { RowNodeGroup } from "@1771technologies/grid-types/community";
 
 /**
  * Flattens the center rows of a grid, handling hierarchical data structures organized in blocks.
@@ -37,7 +38,18 @@ export function flattenCenterRows<D>(
   separator: string,
   lookup: BlockPaths<D>,
   topOffset: number,
+  rowExpansions: () => Record<string, boolean>,
+  rowExpansionsDefault: () => number | boolean,
 ) {
+  const expansions = rowExpansions();
+  const rowDefault = rowExpansionsDefault();
+  const rowIsExpanded = (r: RowNodeGroup) => {
+    if (expansions[r.id] != null) return expansions[r.id];
+
+    if (typeof rowDefault === "number") return false;
+
+    return rowDefault;
+  };
   // Recursive function to process blocks and their nested groups
   function processBlocks(path: string, blockStore: BlockStore<D>, start: number) {
     // Sort blocks by their index to ensure correct order
@@ -66,7 +78,7 @@ export function flattenCenterRows<D>(
         rowIdToRow.set(row.id, row);
 
         // If this row is an expanded group, recursively process its children
-        if (rowIsGroup(row) && row.expanded) {
+        if (rowIsGroup(row) && rowIsExpanded(row)) {
           // Build the path for this group's children
           const childPath = path ? path + separator + row.pathKey : row.pathKey;
           const childBlockStore = lookup.get(childPath);

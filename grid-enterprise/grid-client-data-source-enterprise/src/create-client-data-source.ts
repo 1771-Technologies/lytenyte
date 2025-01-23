@@ -79,7 +79,24 @@ export function createClientDataSource<D, E>(
     const flatPayload = flatBlockPayloadsComputed(sortedNodes);
     const groupPayload = groupBlockPayloadsComputed(api$, sortedNodes);
 
-    const graph$ = signal(new BlockGraph<D>(BLOCK_SIZE));
+    const graph$ = signal(
+      new BlockGraph<D>(
+        BLOCK_SIZE,
+        () => {
+          const sx = api$.peek().getState();
+          const expansions = sx.rowGroupExpansions.peek();
+          const expanded = Object.fromEntries(
+            Object.values(expansions).flatMap((c) => Object.entries(c)),
+          );
+
+          return expanded;
+        },
+        () => {
+          const sx = api$.peek().getState();
+          return sx.rowGroupDefaultExpansion.peek();
+        },
+      ),
+    );
 
     const graph = computed(() => {
       const graph = graph$.get();
@@ -104,6 +121,8 @@ export function createClientDataSource<D, E>(
       graph.setBottom(rowBottomNodes.get());
 
       graph.blockFlatten();
+
+      api.rowRefresh();
 
       return graph;
     });

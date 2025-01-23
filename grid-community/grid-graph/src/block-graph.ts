@@ -90,16 +90,26 @@ export class BlockGraph<D> {
   /** Tree structure for range-based operations */
   #rangeTree: RangeTree = new RangeTree([]);
 
+  #rowExpansions: () => Record<string, boolean>;
+  #rowExpansionDefault: () => number | boolean;
+
   /**
    * Creates a new BlockGraph instance.
    *
    * @param blockSize - Number of rows per block
    * @param blockPathSeparator - Optional custom separator for block paths
    */
-  constructor(blockSize: number, blockPathSeparator?: string) {
+  constructor(
+    blockSize: number,
+    rowExpansions: () => Record<string, boolean>,
+    rowExpansionDefault: () => number | boolean,
+    blockPathSeparator?: string,
+  ) {
     this.#blockSize = blockSize;
     this.#blockPaths = new Map();
     this.#blockPathSeparator = blockPathSeparator ?? ROW_DEFAULT_PATH_SEPARATOR;
+    this.#rowExpansions = rowExpansions;
+    this.#rowExpansionDefault = rowExpansionDefault;
   }
 
   /**
@@ -513,6 +523,8 @@ export class BlockGraph<D> {
       this.#blockPathSeparator,
       this.#blockPaths,
       topOffset,
+      this.#rowExpansions,
+      this.#rowExpansionDefault,
     );
 
     const rowCount = flattenBottomRows(

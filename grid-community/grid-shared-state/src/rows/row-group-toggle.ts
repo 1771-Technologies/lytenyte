@@ -10,7 +10,7 @@ export const rowGroupToggle = <D, E>(
 
   const expansions = s.rowGroupExpansions;
 
-  const next = state ?? !row.expanded;
+  const next = state ?? !api.rowGroupIsExpanded(row);
 
   const depth = api.rowDepth(row.rowIndex!);
 

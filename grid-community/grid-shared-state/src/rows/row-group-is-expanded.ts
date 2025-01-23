@@ -8,9 +8,9 @@ export const rowGroupIsExpanded = <D, E>(
   if (!api.rowIsGroup(row)) return false;
 
   const sx = api.getState();
-  const expansions = sx.rowGroupExpansions.peek();
   const defaultExpansions = sx.rowGroupDefaultExpansion.peek();
 
+  const expansions = sx.rowGroupExpansions.peek();
   const expanded = Object.fromEntries(Object.values(expansions).flatMap((c) => Object.entries(c)));
 
   if (expanded[row.id] != null) return expanded[row.id];
