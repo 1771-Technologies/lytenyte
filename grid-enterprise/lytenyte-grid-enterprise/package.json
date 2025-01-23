@@ -14,6 +14,7 @@
     "@1771technologies/grid-types": "workspace:*",
     "@1771technologies/grid-store-enterprise": "workspace:*",
     "@1771technologies/grid-client-data-source-enterprise": "workspace:*",
+    "@1771technologies/grid-tree-data-source": "workspace:*",
     "@1771technologies/lytenyte-grid-community": "workspace:*",
     "@1771technologies/grid-components": "workspace:*",
     "@1771technologies/grid-provider": "workspace:*",
