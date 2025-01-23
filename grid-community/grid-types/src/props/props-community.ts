@@ -27,7 +27,6 @@ import type {
   RowSelectionPredicate,
   SortComparatorFunc,
   SortModelItem,
-  SortPostFunc,
 } from "../types";
 
 export interface PropsCommunity<A, D, C, E, Base, Group> {
@@ -115,7 +114,5 @@ export interface PropsCommunity<A, D, C, E, Base, Group> {
   readonly rtl?: boolean;
 
   readonly sortModel?: SortModelItem[];
-  readonly sortMultiColumnEnabled?: boolean;
-  readonly sortPostFunc?: null | SortPostFunc<A>;
   readonly sortComparatorFuncs?: Record<string, SortComparatorFunc<A, D>>;
 }

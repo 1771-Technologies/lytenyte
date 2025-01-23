@@ -550,8 +550,6 @@ export type SortComparatorFunc<A, D> = (
   sort: SortModelItem,
 ) => number;
 
-export type SortPostFunc<A> = (api: A) => void;
-
 export type SortComparators = "string" | "number" | "date" | (string & {});
 
 export type SortTypes = "asc" | "desc";

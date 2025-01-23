@@ -120,7 +120,5 @@ export function initialize<D, E>(
 
     sortComparatorFuncs: signal(props.sortComparatorFuncs ?? {}),
     sortModel: sortModelComputed(props.sortModel ?? [], api),
-    sortMultiColumnEnabled: signal(props.sortMultiColumnEnabled ?? false),
-    sortPostFunc: signal(props.sortPostFunc ?? null),
   } satisfies InitialStateCommunity<D, E>);
 }

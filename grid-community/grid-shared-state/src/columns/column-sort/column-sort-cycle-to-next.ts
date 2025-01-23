@@ -14,7 +14,7 @@ import type {
 export const columnSortCycleToNext = <D, E>(
   api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
   c: ColumnCommunity<D, E> | ColumnEnterprise<D, E>,
-  additive: boolean = false,
+  isAdditive: boolean = false,
 ) => {
   api = api as ApiCommunity<D, E>;
   c = c as ColumnCommunity<D, E>;
@@ -22,7 +22,6 @@ export const columnSortCycleToNext = <D, E>(
   if (!api.columnIsSortable(c)) return;
 
   const s = api.getState();
-  const isAdditive = s.sortMultiColumnEnabled.peek() ? false : additive;
 
   const nextSort = api.columnSortGetNext(c);
 
