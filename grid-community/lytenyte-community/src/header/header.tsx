@@ -7,6 +7,7 @@ import { useHeaderGroupCells } from "./use-header-group-cells";
 import { useHeaderDividers } from "./header-divider/use-header-dividers";
 import type { CSSProperties, ReactNode } from "react";
 import type { ColumnHeaderRendererParamsReact } from "@1771technologies/grid-types/community-react";
+import { useFloatingCells } from "./use-floating-cells";
 
 export function Header({
   headerDefault,
@@ -25,6 +26,7 @@ export function Header({
   const headerGroupCells = useHeaderGroupCells(api);
   const headerCells = useHeaderCells(api, headerDefault);
   const headerDividers = useHeaderDividers(api);
+  const floatingCells = useFloatingCells(api);
 
   const gridTemplateRows = useHeaderDisplayGridTemplate(
     hierarchy.length,
@@ -58,6 +60,7 @@ export function Header({
       {headerGroupCells}
       {headerCells}
       {headerDividers}
+      {floatingCells}
     </div>
   );
 }

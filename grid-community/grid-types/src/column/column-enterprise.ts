@@ -71,12 +71,7 @@ export interface Column<A, D, E> {
   readonly cellAutosizeFn?: (c: AutosizeCellParameters<A, D, this>) => number;
   readonly cellSkipOnAutosizeAll?: boolean;
 
-  readonly floatingCellRenderer?:
-    | "number"
-    | "text"
-    | "date"
-    | (string & {})
-    | FloatingCellRenderer<A, this, E>;
+  readonly floatingCellRenderer?: string | FloatingCellRenderer<A, this, E>;
 
   readonly sortable?: boolean;
   readonly sortCycle?: SortCycleOption[];
