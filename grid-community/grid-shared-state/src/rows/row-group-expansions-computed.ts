@@ -6,22 +6,29 @@ export function rowGroupExpansionsComputed<D, E>(
   expansions: rowGroupExpansions,
   api: ApiCommunity<D, E> | ApiEnterprise<D, E>,
 ) {
-  return signal(expansions, {
-    bind: (v) => {
-      const keys = Object.keys(v);
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
+  let lastExp: null | rowGroupExpansions = null;
+  const exp = signal(expansions, {
+    postUpdate: () => {
+      if (timeoutId) clearTimeout(timeoutId);
 
-      const keysToKeep: number[] = [];
-      const model = api.getState().rowGroupModel.peek();
-      for (let i = 0; i < keys.length; i++) {
-        const key = Number.parseInt(keys[i]);
-        if (Number.isNaN(key) || key >= model.length) continue;
+      timeoutId = setTimeout(() => {
+        const expansions = exp.peek();
 
-        keysToKeep.push(key);
-      }
+        if (expansions === lastExp) {
+          timeoutId = null;
+          return;
+        }
 
-      const final = Object.fromEntries(keysToKeep.map((c) => [c, v[c]]));
+        const entries = Object.entries(expansions).filter(([key]) => api.rowById(key) != null);
+        const cleanExpansions = Object.fromEntries(entries);
 
-      return final;
+        lastExp = cleanExpansions;
+        exp.set(cleanExpansions);
+        timeoutId = null;
+      }, 50);
     },
   });
+
+  return exp;
 }

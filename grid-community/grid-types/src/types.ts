@@ -471,7 +471,7 @@ export type RowDragPredicate<A, D> = (p: { api: A; row: RowNode<D> }) => boolean
 
 // Row Groups
 export type RowGroupDisplayMode = "single-column" | "multi-column" | "custom";
-export type rowGroupExpansions = { [level: number]: { [rowId: string]: boolean } };
+export type rowGroupExpansions = { [rowId: string]: boolean | undefined };
 
 // Rows
 
