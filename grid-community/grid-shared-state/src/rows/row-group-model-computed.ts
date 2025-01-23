@@ -7,6 +7,8 @@ export function rowGroupModelComputed<D, E>(
   model: string[],
   api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
 ) {
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
   const model$ = signal(model, {
     equal: (l, r) => {
       return equal(l, r);
@@ -21,7 +23,18 @@ export function rowGroupModelComputed<D, E>(
     postUpdate: () => {
       const sx = api.getState();
       sx.columns.set((prev: any[]) => [...prev]);
-      sx.rowGroupExpansions.set((prev) => ({ ...prev }));
+
+      if (timeoutId) clearTimeout(timeoutId);
+
+      timeoutId = setTimeout(() => {
+        const expansions = sx.rowGroupExpansions.peek();
+
+        const entries = Object.entries(expansions).filter(([key]) => api.rowById(key) != null);
+        const cleanExpansions = Object.fromEntries(entries);
+
+        sx.rowGroupExpansions.set(cleanExpansions);
+        timeoutId = null;
+      }, 50);
     },
   });
 

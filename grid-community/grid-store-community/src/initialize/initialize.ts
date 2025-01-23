@@ -13,7 +13,6 @@ import {
   columnsComputed,
   filterModelComputed,
   rowDisplayModeComputed,
-  rowGroupExpansionsComputed,
   rowGroupModelComputed,
   rowSelectionComputed,
   sortModelComputed,
@@ -95,7 +94,7 @@ export function initialize<D, E>(
     rowGroupDefaultExpansion: signal(props.rowGroupDefaultExpansion ?? false),
     rowGroupDisplayMode: rowDisplayModeComputed(props.rowGroupDisplayMode ?? "single-column", api),
     rowGroupModel: rowGroupModelComputed(props.rowGroupModel ?? [], api),
-    rowGroupExpansions: rowGroupExpansionsComputed(props.rowGroupExpansions ?? {}, api),
+    rowGroupExpansions: signal(props.rowGroupExpansions ?? {}),
 
     rowHeight: signal(props.rowHeight ?? ROW_HEIGHT),
 

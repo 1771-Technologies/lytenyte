@@ -36,6 +36,7 @@ export default function Play() {
         <button onClick={() => grid.api.autosizeColumns()}>Autosize</button>
         <button onClick={() => grid.state.rtl.set((prev) => !prev)}>RTL</button>
         <button onClick={() => grid.state.rowGroupModel.set(["job", "age"])}>Grouped</button>
+        <button onClick={() => grid.state.rowGroupModel.set(["job"])}>Grouped 2</button>
         <button onClick={() => grid.state.rowGroupModel.set([])}>Un-group</button>
         <button onClick={() => grid.state.rowGroupDisplayMode.set("multi-column")}>
           Multi Group
