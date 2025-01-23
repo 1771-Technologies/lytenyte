@@ -13,14 +13,12 @@ export function groupBlockPayloadsComputed<D, E>(
     const api = api$.get() as ApiEnterprise<D, E>;
     const sx = api.getState();
     const rowModel = sx.rowGroupModel.get();
-    const expansions = sx.rowGroupExpansions.get();
 
     // If the model is empty, then we can skip the rest of the code, there is nothing to group on.
     if (!rowModel.length) return { sizes: [], payloads: [] };
 
     const pathIdToDirectChildren = new Map<string, RowNode<D>[]>();
     const seenPaths = new Set<string>();
-    const defaultExpansion = sx.rowGroupDefaultExpansion.peek();
 
     const nodes = rows.get();
     for (let i = 0; i < nodes.length; i++) processPath("", nodes[i], 0);
@@ -74,11 +72,6 @@ export function groupBlockPayloadsComputed<D, E>(
       if (!seenPaths.has(groupPath)) {
         seenPaths.add(groupPath);
 
-        const expansion =
-          expansions[modelIndex]?.[groupPath] ??
-          (typeof defaultExpansion === "number"
-            ? modelIndex <= defaultExpansion
-            : defaultExpansion);
         // Otherwise we need to create a group node and add it to our current level. When the path
         // is empty this will be our root level.
         const node: RowNodeGroup = {
@@ -86,7 +79,6 @@ export function groupBlockPayloadsComputed<D, E>(
           kind: ROW_GROUP_KIND,
           pathKey: groupKey,
           rowIndex: null,
-          expanded: expansion,
           data: {},
         };
 

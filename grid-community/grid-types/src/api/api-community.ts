@@ -149,6 +149,7 @@ export interface ApiCommunity<D, C, E> {
   readonly rowVisibleRowHeight: (i: number, section?: RowSections) => number;
 
   readonly rowGroupToggle: (row: RowNodeGroup, state?: boolean) => void;
+  readonly rowGroupIsExpanded: (row: RowNode<D>) => boolean;
 
   readonly rowUpdateRedo: () => void;
   readonly rowUpdateUndo: () => void;

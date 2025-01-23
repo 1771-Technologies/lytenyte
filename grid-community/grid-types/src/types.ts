@@ -201,7 +201,6 @@ export interface RowNodeGroup extends RowNodeBase {
   readonly kind: RowGroupKind;
   readonly pathKey: string;
   readonly data: Record<string, unknown>;
-  readonly expanded: boolean;
 }
 
 export interface RowNodeTotal extends RowNodeBase {

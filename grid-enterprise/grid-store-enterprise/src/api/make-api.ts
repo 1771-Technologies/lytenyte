@@ -61,6 +61,7 @@ import {
   rowDetailRowPredicate,
   rowDetailToggle,
   rowDetailVisibleHeight,
+  rowGroupIsExpanded,
   rowGroupToggle,
   rowIsDraggable,
   rowReplaceBottomData,
@@ -206,6 +207,7 @@ export function makeApi<D, E>(
     rowIsDraggable: (id) => rowIsDraggable(api, id),
     rowVisibleRowHeight: (id, s) => rowVisibleRowHeight(api, id, s),
     rowGroupToggle: (row, state) => rowGroupToggle(api, row, state),
+    rowGroupIsExpanded: (row) => rowGroupIsExpanded(api, row),
 
     rowSelectionAllRowsSelected: rowSelect.rowSelectionAllRowsSelected,
     rowSelectionClear: rowSelect.rowSelectionClear,

@@ -72,6 +72,7 @@ import {
   columnIsEditable,
   rowGroupToggle,
   rowSelection,
+  rowGroupIsExpanded,
 } from "@1771technologies/grid-shared-state";
 import { events } from "../../grid-shared-state/src/events";
 
@@ -190,6 +191,7 @@ export function makeApi<D, E>(
     rowIsDraggable: (id) => rowIsDraggable(api, id),
     rowVisibleRowHeight: (id, s) => rowVisibleRowHeight(api, id, s),
     rowGroupToggle: (row, state) => rowGroupToggle(api, row, state),
+    rowGroupIsExpanded: (row) => rowGroupIsExpanded(api, row),
 
     rowSelectionAllRowsSelected: rowSelect.rowSelectionAllRowsSelected,
     rowSelectionClear: rowSelect.rowSelectionClear,

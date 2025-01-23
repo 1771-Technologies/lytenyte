@@ -36,6 +36,7 @@ export { rowSelection } from "./rows/row-selection.js";
 export { rowSelectionComputed } from "./rows/row-selection-computed.js";
 export { rowPositionsComputed } from "./rows/row-positions.js";
 export { rowGroupExpansionsComputed } from "./rows/row-group-expansions-computed.js";
+export { rowGroupIsExpanded } from "./rows/row-group-is-expanded.js";
 export { rowDisplayModeComputed } from "./rows/row-display-mode-computed.js";
 export { rowGroupModelComputed } from "./rows/row-group-model-computed.js";
 export { rowGroupToggle } from "./rows/row-group-toggle.js";
