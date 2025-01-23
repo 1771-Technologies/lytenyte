@@ -26,37 +26,65 @@ export function HeaderLabel({ column, api }: HeaderLabelProps) {
     <div
       className={css`
         display: flex;
-        align-items: center;
-        box-sizing: border-box;
-        padding-inline: ${t.spacing.cell_horizontal_padding};
-        width: 100%;
-        height: 100%;
-
-        color: ${t.colors.text_x_light};
-        font-size: ${t.typography.body_m};
-        font-family: ${t.typography.typeface_body};
-        font-weight: 500;
-        line-height: 20px;
-        background-color: ${t.colors.backgrounds_ui_panel};
+        flex-direction: column;
       `}
     >
       <div
         className={clsx(
-          "lng1771-header-cell-label",
-          hasSecondary && "lng1771-header-cell-label-with-secondary",
+          css`
+            display: flex;
+            align-items: center;
+            gap: 3px;
+          `,
+          hasSecondary &&
+            css`
+              position: relative;
+              top: 4px;
+            `,
         )}
       >
         {headerName}
         {hasAggFunc && rowGroupModel && aggFuncDisplayMode === "inline" && (
-          <span className="lng1771-header-cell-agg-label"> ({columnAggFunc})</span>
+          <span
+            className={css`
+              color: ${t.colors.primary_50};
+              font-size: ${t.typography.body_xs};
+              font-weight: 600;
+            `}
+          >
+            ({columnAggFunc})
+          </span>
         )}
       </div>
-      <div className="lng1771-header-cell-label-secondary-root">
+      <div
+        className={css`
+          display: flex;
+          align-items: center;
+          gap: 3px;
+          position: relative;
+        `}
+      >
         {column.headerSecondaryLabel && (
-          <span className="lng1771-header-cell-secondary-label">{column.headerSecondaryLabel}</span>
+          <span
+            className={css`
+              font-size: ${t.typography.body_xs};
+              color: ${t.colors.text_light};
+            `}
+          >
+            {column.headerSecondaryLabel}
+          </span>
         )}
         {rowGroupModel && hasAggFunc && aggFuncDisplayMode === "secondary" && (
-          <span className="lng1771-header-cell-agg-label"> ({columnAggFunc})</span>
+          <span
+            className={css`
+              color: ${t.colors.primary_50};
+              font-size: ${t.typography.body_xs};
+              font-weight: 600;
+            `}
+          >
+            {" "}
+            ({columnAggFunc})
+          </span>
         )}
       </div>
     </div>
