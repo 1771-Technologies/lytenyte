@@ -43,15 +43,16 @@ export function flattenCenterRows<D>(
 ) {
   const expansions = rowExpansions();
   const rowDefault = rowExpansionsDefault();
-  const rowIsExpanded = (r: RowNodeGroup) => {
+  const rowIsExpanded = (r: RowNodeGroup, depth: number) => {
     if (expansions[r.id] != null) return expansions[r.id];
 
-    if (typeof rowDefault === "number") return false;
+    if (typeof rowDefault === "number") return depth <= rowDefault;
 
     return rowDefault;
   };
+
   // Recursive function to process blocks and their nested groups
-  function processBlocks(path: string, blockStore: BlockStore<D>, start: number) {
+  function processBlocks(path: string, blockStore: BlockStore<D>, start: number, depth: number) {
     // Sort blocks by their index to ensure correct order
     const blocks = [...blockStore.map.values()].sort((l, r) => l.index - r.index);
 
@@ -78,7 +79,7 @@ export function flattenCenterRows<D>(
         rowIdToRow.set(row.id, row);
 
         // If this row is an expanded group, recursively process its children
-        if (rowIsGroup(row) && rowIsExpanded(row)) {
+        if (rowIsGroup(row) && rowIsExpanded(row, depth)) {
           // Build the path for this group's children
           const childPath = path ? path + separator + row.pathKey : row.pathKey;
           const childBlockStore = lookup.get(childPath);
@@ -87,7 +88,7 @@ export function flattenCenterRows<D>(
           if (!childBlockStore) continue;
 
           // Recursively process child blocks and accumulate their size
-          offset += processBlocks(childPath, childBlockStore, rowIndex + 1);
+          offset += processBlocks(childPath, childBlockStore, rowIndex + 1, depth + 1);
         }
       }
     }
@@ -100,7 +101,7 @@ export function flattenCenterRows<D>(
   }
 
   // Start processing from the root level ("") and return total size
-  const size = processBlocks("", lookup.get("") ?? { size: 0, map: new Map() }, topOffset);
+  const size = processBlocks("", lookup.get("") ?? { size: 0, map: new Map() }, topOffset, 0);
 
   return size + topOffset;
 }

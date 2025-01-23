@@ -103,6 +103,8 @@ export function createClientDataSource<D, E>(
       const api = api$.get();
       const sx = api.getState();
 
+      void sx.rowGroupExpansions.get();
+
       const rowModel = sx.rowGroupModel.get();
 
       graph.blockReset();
