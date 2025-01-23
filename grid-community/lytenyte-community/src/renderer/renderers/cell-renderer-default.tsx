@@ -16,5 +16,18 @@ export const cellCls = css`
 
 export function CellRendererDefault(p: CellRendererParamsReact<any>) {
   const field = p.api.columnField(p.row, p.column);
-  return <div className={cellCls}>{field as string}</div>;
+  return (
+    <div className={cellCls}>
+      <div
+        className={css`
+          width: calc(100% - ${t.spacing.cell_horizontal_padding} / 2);
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        `}
+      >
+        {String(field ?? "")}
+      </div>
+    </div>
+  );
 }
