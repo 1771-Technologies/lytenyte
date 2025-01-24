@@ -66,15 +66,15 @@ function CellImpl({
       const position = sx.internal.navigatePosition.peek();
       if (!ref.current || !position || position.kind !== GRID_CELL_POSITION) return;
 
-      const pri = position.root?.rowIndex ?? position.rowIndex;
-      const pci = position.root?.columnIndex ?? position.columnIndex;
+      const posRow = position.root?.rowIndex ?? position.rowIndex;
+      const posCol = position.root?.columnIndex ?? position.columnIndex;
 
       if (
-        rowIndex === pri &&
-        pci === columnIndex &&
+        rowIndex === posRow &&
+        posCol === columnIndex &&
         !ref.current.contains(document.activeElement)
       ) {
-        api.navigateScrollIntoView(pri, pci);
+        api.navigateScrollIntoView(posRow, posCol);
         ref.current.focus();
       }
     }, false);
