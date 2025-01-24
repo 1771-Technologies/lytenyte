@@ -1,8 +1,9 @@
 import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
-import { sizeFromCoord } from "@1771technologies/js-utils";
+import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
 import { useMemo, type CSSProperties } from "react";
 import { getTransform } from "../renderer/get-transform";
 import { t } from "@1771technologies/grid-design";
+import { focusHeaderOutlineClx } from "./header-cell";
 
 interface FloatingCellProps {
   readonly api: ApiCommunityReact<any>;
@@ -71,25 +72,32 @@ export function FloatingCell({
   return (
     <div
       style={style}
-      className={css`
-        grid-column-start: 1;
-        grid-column-end: 2;
-        overflow: hidden;
-        box-sizing: border-box;
-        background-color: ${t.colors.backgrounds_ui_panel};
-        position: relative;
-        border-block: 1px solid ${t.colors.borders_strong};
+      role="columnheader"
+      aria-colindex={columnIndex}
+      aria-colspan={1}
+      tabIndex={-1}
+      className={clsx(
+        css`
+          grid-column-start: 1;
+          grid-column-end: 2;
+          overflow: hidden;
+          box-sizing: border-box;
+          background-color: ${t.colors.backgrounds_ui_panel};
+          position: relative;
+          border-block: 1px solid ${t.colors.borders_strong};
 
-        &::after {
-          position: absolute;
-          content: "";
-          width: 1px;
-          height: calc(100% - 12px);
-          inset-inline-end: 0px;
-          top: 6px;
-          background-color: ${t.colors.borders_pin_separator};
-        }
-      `}
+          &::before {
+            position: absolute;
+            content: "";
+            width: 1px;
+            height: calc(100% - 12px);
+            inset-inline-end: 0px;
+            top: 6px;
+            background-color: ${t.colors.borders_pin_separator};
+          }
+        `,
+        focusHeaderOutlineClx,
+      )}
     >
       <Component api={api} column={column} />
     </div>
