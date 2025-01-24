@@ -206,9 +206,6 @@ export function initializeInternalState<D, E>(
 
     rowIsFullWidthInternal: rowIsFullWidthComputed(state, api),
 
-    rowFirstVisible: signal(-1),
-    rowLastVisible: signal(-1),
-
     rowSelectionLastWasDeselect: signal(false),
     rowSelectionPivotIndex: signal<number | null>(null),
 

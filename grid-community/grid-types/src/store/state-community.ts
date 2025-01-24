@@ -78,9 +78,6 @@ export type GridInternalState<D, E> = {
   readonly rowPositions: ReadonlySignal<Uint32Array>;
   readonly rowDetailHeight: ReadonlySignal<(i: number) => number>;
 
-  readonly rowFirstVisible: Signal<number>;
-  readonly rowLastVisible: Signal<number>;
-
   readonly rowSelectionPivotIndex: Signal<number | null>;
   readonly rowSelectionLastWasDeselect: Signal<boolean>;
 
