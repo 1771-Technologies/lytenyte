@@ -99,9 +99,15 @@ export function HeaderCell({
     );
   }
 
+  const sortDir = api.columnSortDirection(column);
   return (
     <div
       style={style}
+      role="columnheader"
+      aria-colindex={columnIndex + 1}
+      aria-colspan={1}
+      aria-sort={sortDir === "asc" ? "ascending" : sortDir === "desc" ? "descending" : "none"}
+      tabIndex={-1}
       {...moveProps}
       {...dropProps}
       className={clsx(
@@ -110,6 +116,7 @@ export function HeaderCell({
           grid-column-end: 2;
           overflow: hidden;
         `,
+        focusHeaderOutlineClx,
         isOver &&
           css`
             &::after {
@@ -148,3 +155,21 @@ export function HeaderCell({
     </div>
   );
 }
+
+export const focusHeaderOutlineClx = css`
+  &:focus {
+    outline: none;
+  }
+  &:focus::after {
+    content: "";
+    position: absolute;
+    top: 0px;
+    inset-inline-start: 1px;
+    width: calc(100% - 2px);
+    height: 100%;
+    pointer-events: none;
+    box-sizing: border-box;
+    border: 1px solid ${t.colors.primary_50};
+    border-radius: 2px;
+  }
+`;
