@@ -38,7 +38,13 @@ export function NavigationDriver() {
 
         let handled = false;
         const meta = ev.ctrlKey || ev.metaKey;
-        if (key === "ArrowUp") {
+        if (key === "PageUp") {
+          api.navigatePageUp();
+          handled = true;
+        } else if (key === "PageDown") {
+          api.navigatePageDown();
+          handled = true;
+        } else if (key === "ArrowUp") {
           if (meta) {
             api.navigateToTop();
           } else {
@@ -95,6 +101,7 @@ export function NavigationDriver() {
             return;
           }
 
+          console.log("iran");
           // Focus has left our viewport
           api.getState().internal.navigatePosition.set(null);
         }, 100);

@@ -30,14 +30,13 @@ export const autosizeColumns = <D, E>(
 
   const result: Record<string, number> = {};
 
-  const rowFirstVisible = s.internal.rowFirstVisible.peek();
-  const rowLastVisible = s.internal.rowLastVisible.peek();
+  const { rowStart: rowFirstVisible, rowEnd: rowLastVisible } = s.internal.virtBounds.peek();
   const rowTopCount = s.internal.rowTopCount.peek();
   const rowCount = s.internal.rowCount.peek();
   const rowBottomCount = s.internal.rowBottomCount.peek();
 
   const rowStart = Math.max(rowFirstVisible, 0);
-  const rowEnd = rowLastVisible === -1 ? Math.min(50, rowCount - rowBottomCount) : rowLastVisible;
+  const rowEnd = rowLastVisible === 0 ? Math.min(50, rowCount - rowBottomCount) : rowLastVisible;
 
   calculateWidths(rowStart, rowEnd);
   if (rowTopCount) calculateWidths(0, rowTopCount);

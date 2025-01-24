@@ -17,13 +17,12 @@ export function getPageDown<D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>)
 
   if (paginate) return getBottom(api);
 
-  const firstVisibleRow = s.internal.rowFirstVisible.peek();
-  const lastVisibleRow = s.internal.rowLastVisible.peek();
-  if (lastVisibleRow <= 0) return position;
+  const { rowStart, rowEnd } = s.internal.virtBounds.peek();
+  if (rowEnd <= 0) return position;
 
   const p = position as PositionGridCell | PositionFullWidthRow;
 
-  const pageJump = lastVisibleRow - firstVisibleRow;
+  const pageJump = rowEnd - rowStart;
 
   const rowCount = s.internal.rowCount.peek();
   const row = Math.min(p.rowIndex + pageJump, rowCount - 1);
@@ -39,13 +38,12 @@ export function getPageUp<D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>) {
 
   if (s.paginate.peek()) return getTop(api);
 
-  const firstVisibleRow = s.internal.rowFirstVisible.peek();
-  const lastVisibleRow = s.internal.rowLastVisible.peek();
-  if (lastVisibleRow <= 0) return position;
+  const { rowStart, rowEnd } = s.internal.virtBounds.peek();
+  if (rowEnd <= 0) return position;
 
   const p = position as PositionGridCell | PositionFullWidthRow;
 
-  const pageJump = lastVisibleRow - firstVisibleRow;
+  const pageJump = rowEnd - rowStart;
 
   const row = Math.max(p.rowIndex - pageJump, 0);
 
