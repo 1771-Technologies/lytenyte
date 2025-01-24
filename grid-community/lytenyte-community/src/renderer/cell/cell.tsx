@@ -6,6 +6,7 @@ import { useCellRenderer } from "./use-cell-renderer";
 import type { RowNode, RowPin } from "@1771technologies/grid-types/community";
 import { rowAltClx, rowBaseClx, rowClx } from "./cell-classes";
 import { useCellEvents } from "./use-cell-events";
+import { focusCellOutline } from "../../header/header-cell";
 
 export interface CellProps {
   readonly api: ApiCommunityReact<any>;
@@ -54,8 +55,22 @@ function CellImpl({
 
   const events = useCellEvents(api, column, rowNode);
 
+  const isGroup = api.rowIsGroup(rowNode);
+  const isExpanded = isGroup && api.rowGroupIsExpanded(rowNode);
+
   return (
-    <div style={cx.style} className={clsx(rowBaseClx, row, cx.className)} {...events}>
+    <div
+      style={cx.style}
+      role="gridcell"
+      aria-expanded={isGroup ? isExpanded : undefined}
+      aria-rowspan={rowSpan}
+      aria-colspan={colSpan}
+      aria-rowindex={rowIndex + 1}
+      aria-colindex={columnIndex + 1}
+      className={clsx(rowBaseClx, row, cx.className, focusCellOutline)}
+      tabIndex={-1}
+      {...events}
+    >
       <Renderer api={api} column={column} columnIndex={columnIndex} row={rowNode} />
     </div>
   );

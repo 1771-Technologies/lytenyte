@@ -118,7 +118,7 @@ export function HeaderCell({
           grid-column-end: 2;
           overflow: hidden;
         `,
-        focusHeaderOutlineClx,
+        focusCellOutline,
         isOver &&
           css`
             &::after {
@@ -158,7 +158,7 @@ export function HeaderCell({
   );
 }
 
-export const focusHeaderOutlineClx = css`
+export const focusCellOutline = css`
   &:focus {
     outline: none;
   }

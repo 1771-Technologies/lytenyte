@@ -3,7 +3,7 @@ import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
 import { useMemo, type CSSProperties } from "react";
 import { getTransform } from "../renderer/get-transform";
 import { t } from "@1771technologies/grid-design";
-import { focusHeaderOutlineClx } from "./header-cell";
+import { focusCellOutline } from "./header-cell";
 import { HEADER_FLOATING_CELL } from "@1771technologies/grid-constants";
 
 interface FloatingCellProps {
@@ -99,7 +99,7 @@ export function FloatingCell({
             background-color: ${t.colors.borders_pin_separator};
           }
         `,
-        focusHeaderOutlineClx,
+        focusCellOutline,
       )}
     >
       <Component api={api} column={column} />

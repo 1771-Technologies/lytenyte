@@ -74,7 +74,7 @@ export function useCellStyle(
       isLastStart &&
         css`
           position: relative;
-          &::after {
+          &::before {
             position: absolute;
             content: "";
             top: 0px;
@@ -87,7 +87,7 @@ export function useCellStyle(
       isFirstEnd &&
         css`
           position: relative;
-          &::after {
+          &::before {
             position: absolute;
             content: "";
             top: 0px;
