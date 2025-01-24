@@ -3,7 +3,7 @@ import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
 import { useMemo, useRef, type CSSProperties } from "react";
 import { getTransform } from "../../renderer/get-transform";
 import { t } from "@1771technologies/grid-design";
-import { focusCellOutline } from "../header-cell";
+import { focusCellOutline } from "../header-cell/header-cell";
 import { HEADER_FLOATING_CELL } from "@1771technologies/grid-constants";
 import { useFloatingFocus } from "./use-floating-focus";
 

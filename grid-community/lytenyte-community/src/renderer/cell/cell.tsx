@@ -6,7 +6,7 @@ import { useCellRenderer } from "./use-cell-renderer";
 import type { RowNode, RowPin } from "@1771technologies/grid-types/community";
 import { rowAltClx, rowBaseClx, rowClx } from "./cell-classes";
 import { useCellEvents } from "./use-cell-events";
-import { focusCellOutline } from "../../header/header-cell";
+import { focusCellOutline } from "../../header/header-cell/header-cell";
 import { useCellPositionChange } from "./use-cell-position-change";
 
 export interface CellProps {

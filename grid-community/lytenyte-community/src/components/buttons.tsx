@@ -1,13 +1,17 @@
 import { t } from "@1771technologies/grid-design";
 import { clsx } from "@1771technologies/js-utils";
 import { refCompat } from "@1771technologies/react-utils";
-import type { JSX } from "react";
+import type { JSX, RefObject } from "react";
 
-const ButtonImpl = (props: JSX.IntrinsicElements["button"]) => {
+const ButtonImpl = ({
+  buttonRef,
+  ...props
+}: JSX.IntrinsicElements["button"] & { buttonRef?: RefObject<HTMLButtonElement | null> }) => {
   return (
     <button
       tabIndex={-1}
       {...props}
+      ref={buttonRef}
       className={clsx(
         css`
           border: none;
@@ -36,9 +40,13 @@ const ButtonImpl = (props: JSX.IntrinsicElements["button"]) => {
 
 export const GridButton = refCompat(ButtonImpl, "Button");
 
-export function CollapseButton(props: JSX.IntrinsicElements["button"]) {
+export function CollapseButton(
+  props: JSX.IntrinsicElements["button"] & { buttonRef?: RefObject<HTMLButtonElement | null> },
+) {
   return <GridButton {...props}>-</GridButton>;
 }
-export function ExpandButton(props: JSX.IntrinsicElements["button"]) {
+export function ExpandButton(
+  props: JSX.IntrinsicElements["button"] & { buttonRef?: RefObject<HTMLButtonElement | null> },
+) {
   return <GridButton {...props}>+</GridButton>;
 }

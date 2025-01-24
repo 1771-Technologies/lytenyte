@@ -5,7 +5,7 @@ import { getTransform } from "../renderer/get-transform";
 import { HeaderGroupDefault } from "./header-renderers/header-group-default";
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
 import { useHeaderGroupMove } from "./use-header-group-move";
-import { focusCellOutline } from "./header-cell";
+import { focusCellOutline } from "./header-cell/header-cell";
 import { HEADER_GROUP_CELL } from "@1771technologies/grid-constants";
 
 export interface HeaderGroupCellProps {

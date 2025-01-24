@@ -1,13 +1,14 @@
 import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
-import { useMemo, type CSSProperties, type ReactNode } from "react";
-import { getTransform } from "../renderer/get-transform";
+import { useMemo, useRef, type CSSProperties, type ReactNode } from "react";
+import { getTransform } from "../../renderer/get-transform";
 import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
-import { useHeaderCellRenderer } from "./use-header-cell-renderer";
+import { useHeaderCellRenderer } from "../use-header-cell-renderer";
 import { t } from "@1771technologies/grid-design";
-import { useHeaderMove } from "./use-header-move";
+import { useHeaderMove } from "../use-header-move";
 import { COLUMN_EMPTY_PREFIX, HEADER_CELL } from "@1771technologies/grid-constants";
-import { ExpandButton } from "../components/buttons";
+import { ExpandButton } from "../../components/buttons";
 import type { ColumnHeaderRendererParamsReact } from "@1771technologies/grid-types/community-react";
+import { useHeaderFocus } from "./use-header-focus";
 
 interface HeaderCellProps {
   readonly api: ApiCommunityReact<any>;
@@ -71,10 +72,15 @@ export function HeaderCell({
   // syncs
   const sx = api.getState();
   sx.sortModel.use();
+  const ref = useRef<HTMLElement | null>(null);
+
+  const events = useHeaderFocus(api, ref, columnIndex);
 
   if (api.columnIsEmpty(column)) {
     return (
       <ExpandButton
+        {...events}
+        buttonRef={ref as any}
         onClick={() => {
           const id = column.id.replace(COLUMN_EMPTY_PREFIX, "").split("|>").slice(0, -1);
 
@@ -103,6 +109,7 @@ export function HeaderCell({
   return (
     <div
       style={style}
+      ref={ref as any}
       role="columnheader"
       data-lng1771-column-id={column.id}
       aria-colindex={columnIndex + 1}
@@ -111,6 +118,7 @@ export function HeaderCell({
       tabIndex={-1}
       {...moveProps}
       {...dropProps}
+      {...events}
       className={clsx(
         HEADER_CELL,
         css`
