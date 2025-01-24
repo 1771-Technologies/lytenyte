@@ -5,8 +5,8 @@ import { useEffect, type RefObject } from "react";
 export function useCellPositionChange(
   api: ApiCommunityReact<any>,
   ref: RefObject<HTMLDivElement | null>,
-  columnIndex: number,
   rowIndex: number,
+  columnIndex: number,
 ) {
   useEffect(() => {
     const sx = api.getState();
@@ -20,12 +20,15 @@ export function useCellPositionChange(
       if (
         rowIndex === posRow &&
         posCol === columnIndex &&
-        !ref.current.contains(document.activeElement)
+        !ref.current.contains(document.activeElement) &&
+        ref.current !== document.activeElement
       ) {
         api.navigateScrollIntoView(posRow, posCol);
         ref.current.focus();
       }
     }, false);
-    return () => unsub();
+    return () => {
+      unsub();
+    };
   }, [api, columnIndex, ref, rowIndex]);
 }
