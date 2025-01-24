@@ -89,17 +89,15 @@ export function NavigationDriver() {
 
     viewport.addEventListener(
       "focusout",
-      (event) => {
-        if (
-          event.relatedTarget &&
-          event.relatedTarget instanceof HTMLElement &&
-          viewport.contains(event.relatedTarget) &&
-          event.relatedTarget !== viewport
-        ) {
-          return;
-        }
-        // Focus has left our viewport
-        api.getState().internal.navigatePosition.set(null);
+      () => {
+        setTimeout(() => {
+          if (viewport.contains(document.activeElement)) {
+            return;
+          }
+
+          // Focus has left our viewport
+          api.getState().internal.navigatePosition.set(null);
+        }, 100);
       },
       { signal: controller.signal },
     );
