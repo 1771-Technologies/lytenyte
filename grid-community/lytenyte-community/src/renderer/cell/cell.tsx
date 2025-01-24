@@ -1,5 +1,5 @@
 import { clsx } from "@1771technologies/js-utils";
-import { memo, useEffect, useRef } from "react";
+import { memo, useRef } from "react";
 import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
 import { useCellStyle } from "./use-cell-style";
 import { useCellRenderer } from "./use-cell-renderer";
@@ -7,7 +7,7 @@ import type { RowNode, RowPin } from "@1771technologies/grid-types/community";
 import { rowAltClx, rowBaseClx, rowClx } from "./cell-classes";
 import { useCellEvents } from "./use-cell-events";
 import { focusCellOutline } from "../../header/header-cell";
-import { GRID_CELL_POSITION } from "@1771technologies/grid-constants";
+import { useCellPositionChange } from "./use-cell-position-change";
 
 export interface CellProps {
   readonly api: ApiCommunityReact<any>;
@@ -60,26 +60,7 @@ function CellImpl({
   const isExpanded = isGroup && api.rowGroupIsExpanded(rowNode);
   const ref = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    const sx = api.getState();
-    const unsub = sx.internal.navigatePosition.watch(() => {
-      const position = sx.internal.navigatePosition.peek();
-      if (!ref.current || !position || position.kind !== GRID_CELL_POSITION) return;
-
-      const posRow = position.root?.rowIndex ?? position.rowIndex;
-      const posCol = position.root?.columnIndex ?? position.columnIndex;
-
-      if (
-        rowIndex === posRow &&
-        posCol === columnIndex &&
-        !ref.current.contains(document.activeElement)
-      ) {
-        api.navigateScrollIntoView(posRow, posCol);
-        ref.current.focus();
-      }
-    }, false);
-    return () => unsub();
-  }, [api, columnIndex, rowIndex]);
+  useCellPositionChange(api, ref, rowIndex, columnIndex);
 
   return (
     <div
