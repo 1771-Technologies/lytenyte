@@ -39,6 +39,7 @@ export function Header({
 
   return (
     <div
+      role="row"
       className={clsx(css`
         display: grid;
         block-size: fit-content;

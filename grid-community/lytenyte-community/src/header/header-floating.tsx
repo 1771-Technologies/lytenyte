@@ -4,6 +4,7 @@ import { useMemo, type CSSProperties } from "react";
 import { getTransform } from "../renderer/get-transform";
 import { t } from "@1771technologies/grid-design";
 import { focusHeaderOutlineClx } from "./header-cell";
+import { HEADER_FLOATING_CELL } from "@1771technologies/grid-constants";
 
 interface FloatingCellProps {
   readonly api: ApiCommunityReact<any>;
@@ -73,10 +74,12 @@ export function FloatingCell({
     <div
       style={style}
       role="columnheader"
+      data-lng1771-column-id={column.id}
       aria-colindex={columnIndex}
       aria-colspan={1}
       tabIndex={-1}
       className={clsx(
+        HEADER_FLOATING_CELL,
         css`
           grid-column-start: 1;
           grid-column-end: 2;

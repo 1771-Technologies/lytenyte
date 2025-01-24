@@ -5,7 +5,7 @@ import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
 import { useHeaderCellRenderer } from "./use-header-cell-renderer";
 import { t } from "@1771technologies/grid-design";
 import { useHeaderMove } from "./use-header-move";
-import { COLUMN_EMPTY_PREFIX } from "@1771technologies/grid-constants";
+import { COLUMN_EMPTY_PREFIX, HEADER_CELL } from "@1771technologies/grid-constants";
 import { ExpandButton } from "../components/buttons";
 import type { ColumnHeaderRendererParamsReact } from "@1771technologies/grid-types/community-react";
 
@@ -104,6 +104,7 @@ export function HeaderCell({
     <div
       style={style}
       role="columnheader"
+      data-lng1771-column-id={column.id}
       aria-colindex={columnIndex + 1}
       aria-colspan={1}
       aria-sort={sortDir === "asc" ? "ascending" : sortDir === "desc" ? "descending" : "none"}
@@ -111,6 +112,7 @@ export function HeaderCell({
       {...moveProps}
       {...dropProps}
       className={clsx(
+        HEADER_CELL,
         css`
           grid-column-start: 1;
           grid-column-end: 2;

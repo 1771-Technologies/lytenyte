@@ -6,6 +6,7 @@ import { HeaderGroupDefault } from "./header-renderers/header-group-default";
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
 import { useHeaderGroupMove } from "./use-header-group-move";
 import { focusHeaderOutlineClx } from "./header-cell";
+import { HEADER_GROUP_CELL } from "@1771technologies/grid-constants";
 
 export interface HeaderGroupCellProps {
   readonly api: ApiCommunityReact<any>;
@@ -61,12 +62,14 @@ export function HeaderGroupCell({
   return (
     <div
       style={style}
+      data-lng1771-group-id={groupItem.id}
       aria-colindex={groupItem.start + 1}
       aria-colspan={groupItem.end - groupItem.start}
       role="columnheader"
       tabIndex={-1}
       {...headerMove.moveProps}
       className={clsx(
+        HEADER_GROUP_CELL,
         css`
           grid-column-start: 1;
           grid-column-end: 1;

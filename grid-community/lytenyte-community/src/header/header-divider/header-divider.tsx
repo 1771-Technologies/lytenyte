@@ -4,6 +4,7 @@ import { useMemo, type CSSProperties } from "react";
 import { getTransform } from "../../renderer/get-transform";
 import { t } from "@1771technologies/grid-design";
 import { useResizeDivider } from "./use-resize-divider";
+import { HEADER_CELL_DIVIDER } from "@1771technologies/grid-constants";
 
 interface HeaderDividerProps {
   readonly api: ApiCommunityReact<any>;
@@ -85,6 +86,7 @@ export function HeaderDivider({
           : undefined
       }
       className={clsx(
+        HEADER_CELL_DIVIDER,
         css`
           grid-column-start: 1;
           grid-column-end: 2;
