@@ -106,8 +106,6 @@ export function NavigationDriver() {
           if (viewport.contains(document.activeElement)) {
             return;
           }
-
-          console.log("iran");
           // Focus has left our viewport
           api.getState().internal.navigatePosition.set(null);
         }, 100);
