@@ -5,6 +5,7 @@ import { getTransform } from "../renderer/get-transform";
 import { HeaderGroupDefault } from "./header-renderers/header-group-default";
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
 import { useHeaderGroupMove } from "./use-header-group-move";
+import { t } from "@1771technologies/grid-design";
 
 export interface HeaderGroupCellProps {
   readonly api: ApiCommunityReact<any>;
@@ -60,11 +61,32 @@ export function HeaderGroupCell({
   return (
     <div
       style={style}
+      aria-colindex={groupItem.start + 1}
+      aria-colspan={groupItem.end - groupItem.start}
+      role="columnheader"
+      tabIndex={-1}
       {...headerMove.moveProps}
       className={css`
         grid-column-start: 1;
         grid-column-end: 1;
         overflow: hidden;
+        position: relative;
+
+        &:focus {
+          outline: none;
+        }
+        &:focus::after {
+          content: "";
+          position: absolute;
+          top: 0px;
+          inset-inline-start: 1px;
+          width: calc(100% - 2px);
+          height: 100%;
+          pointer-events: none;
+          box-sizing: border-box;
+          border: 1px solid ${t.colors.primary_50};
+          border-radius: 2px;
+        }
       `}
     >
       <HeaderGroupDefault group={groupItem} api={api} />
