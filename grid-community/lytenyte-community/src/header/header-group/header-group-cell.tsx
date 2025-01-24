@@ -1,12 +1,13 @@
 import type { ColumnGroupRowItem, ColumnPin } from "@1771technologies/grid-types/community";
 import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
-import { useMemo, type CSSProperties } from "react";
-import { getTransform } from "../renderer/get-transform";
-import { HeaderGroupDefault } from "./header-renderers/header-group-default";
+import { useEffect, useMemo, useRef, type CSSProperties } from "react";
+import { getTransform } from "../../renderer/get-transform";
+import { HeaderGroupDefault } from "../header-renderers/header-group-default";
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
-import { useHeaderGroupMove } from "./use-header-group-move";
-import { focusCellOutline } from "./header-cell/header-cell";
-import { HEADER_GROUP_CELL } from "@1771technologies/grid-constants";
+import { useHeaderGroupMove } from "../use-header-group-move";
+import { focusCellOutline } from "../header-cell/header-cell";
+import { HEADER_GROUP_CELL, HEADER_GROUP_CELL_POSITION } from "@1771technologies/grid-constants";
+import { useEvent } from "@1771technologies/react-utils";
 
 export interface HeaderGroupCellProps {
   readonly api: ApiCommunityReact<any>;
@@ -58,9 +59,48 @@ export function HeaderGroupCell({
   }, [groupItem.end, groupItem.start, pin, rowStart, rtl, viewportWidth, xPositions]);
 
   const headerMove = useHeaderGroupMove(api, groupItem, pin);
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const sx = api.getState();
+    const position = sx.internal.navigatePosition;
+    const unsub = position.watch(() => {
+      const pos = position.peek();
+      if (!pos || !ref.current || pos.kind !== HEADER_GROUP_CELL_POSITION) return;
+
+      if (
+        groupItem.start === pos.columnStartIndex &&
+        groupItem.end === pos.columnEndIndex &&
+        pos.hierarchyRowIndex === rowStart - 1 &&
+        !ref.current.contains(document.activeElement) &&
+        ref.current !== document.activeElement
+      ) {
+        api.navigateScrollIntoView(null, pos.columnIndex);
+        ref.current.focus();
+      }
+    });
+
+    return () => unsub();
+  }, [api, groupItem.end, groupItem.start, rowStart]);
+
+  const onFocus = useEvent(() => {
+    api.getState().internal.navigatePosition.set({
+      kind: HEADER_GROUP_CELL_POSITION,
+      columnStartIndex: groupItem.start,
+      columnEndIndex: groupItem.end,
+      columnIndex: groupItem.start,
+      hierarchyRowIndex: rowStart - 1,
+    });
+  });
+  const onBlur = useEvent(() => {
+    api.getState().internal.navigatePosition.set(null);
+  });
 
   return (
     <div
+      ref={ref}
+      onFocus={onFocus}
+      onBlur={onBlur}
       style={style}
       data-lng1771-group-id={groupItem.id}
       aria-colindex={groupItem.start + 1}
