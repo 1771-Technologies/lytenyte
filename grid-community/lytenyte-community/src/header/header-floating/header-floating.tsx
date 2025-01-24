@@ -1,10 +1,11 @@
 import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
 import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
-import { useMemo, type CSSProperties } from "react";
-import { getTransform } from "../renderer/get-transform";
+import { useMemo, useRef, type CSSProperties } from "react";
+import { getTransform } from "../../renderer/get-transform";
 import { t } from "@1771technologies/grid-design";
-import { focusCellOutline } from "./header-cell";
+import { focusCellOutline } from "../header-cell";
 import { HEADER_FLOATING_CELL } from "@1771technologies/grid-constants";
+import { useFloatingFocus } from "./use-floating-focus";
 
 interface FloatingCellProps {
   readonly api: ApiCommunityReact<any>;
@@ -70,9 +71,14 @@ export function FloatingCell({
     return rendererKey;
   }, [rendererKey, renderers]);
 
+  const ref = useRef<HTMLDivElement | null>(null);
+  const events = useFloatingFocus(api, ref, columnIndex);
+
   return (
     <div
+      ref={ref}
       style={style}
+      {...events}
       role="columnheader"
       data-lng1771-column-id={column.id}
       aria-colindex={columnIndex}
