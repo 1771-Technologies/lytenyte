@@ -60,6 +60,7 @@ export function HeaderGroupCell({
 
   const headerMove = useHeaderGroupMove(api, groupItem, pin);
   const ref = useRef<HTMLDivElement | null>(null);
+  const skipRef = useRef(false);
 
   useEffect(() => {
     const sx = api.getState();
@@ -76,6 +77,7 @@ export function HeaderGroupCell({
         ref.current !== document.activeElement
       ) {
         api.navigateScrollIntoView(null, pos.columnIndex);
+        skipRef.current = true;
         ref.current.focus();
       }
     });
@@ -84,6 +86,11 @@ export function HeaderGroupCell({
   }, [api, groupItem.end, groupItem.start, rowStart]);
 
   const onFocus = useEvent(() => {
+    if (skipRef.current) {
+      skipRef.current = false;
+      return;
+    }
+
     api.getState().internal.navigatePosition.set({
       kind: HEADER_GROUP_CELL_POSITION,
       columnStartIndex: groupItem.start,
@@ -92,15 +99,11 @@ export function HeaderGroupCell({
       hierarchyRowIndex: rowStart - 1,
     });
   });
-  const onBlur = useEvent(() => {
-    api.getState().internal.navigatePosition.set(null);
-  });
 
   return (
     <div
       ref={ref}
       onFocus={onFocus}
-      onBlur={onBlur}
       style={style}
       data-lng1771-group-id={groupItem.id}
       aria-colindex={groupItem.start + 1}

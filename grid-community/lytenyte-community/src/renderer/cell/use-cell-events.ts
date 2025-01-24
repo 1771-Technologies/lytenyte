@@ -17,9 +17,6 @@ export function useCellEvents(
   void column;
   void row;
 
-  const onBlur = useEvent(() => {
-    api.getState().internal.navigatePosition.set(null);
-  });
   const onFocus = useEvent(() => {
     api.getState().internal.navigatePosition.set({
       kind: GRID_CELL_POSITION,
@@ -51,5 +48,5 @@ export function useCellEvents(
     );
   });
 
-  return { onClick, onDoubleClick, onFocus, onBlur };
+  return { onClick, onDoubleClick, onFocus };
 }

@@ -26,9 +26,6 @@ export function useHeaderFocus(
   const onFocus = useEvent(() => {
     api.getState().internal.navigatePosition.set({ kind: HEADER_CELL_POSITION, columnIndex });
   });
-  const onBlur = useEvent(() => {
-    api.getState().internal.navigatePosition.set(null);
-  });
 
-  return { onBlur, onFocus };
+  return { onFocus };
 }

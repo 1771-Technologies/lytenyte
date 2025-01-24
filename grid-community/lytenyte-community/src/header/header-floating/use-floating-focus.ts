@@ -26,9 +26,6 @@ export function useFloatingFocus(
   const onFocus = useEvent(() => {
     api.getState().internal.navigatePosition.set({ kind: FLOATING_CELL_POSITION, columnIndex });
   });
-  const onBlur = useEvent(() => {
-    api.getState().internal.navigatePosition.set(null);
-  });
 
-  return { onBlur, onFocus };
+  return { onFocus };
 }
