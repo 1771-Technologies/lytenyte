@@ -44,6 +44,12 @@ export function NavigationDriver() {
         } else if (key === "PageDown") {
           api.navigatePageDown();
           handled = true;
+        } else if (key === "Home") {
+          api.navigateToTop();
+          handled = true;
+        } else if (key === "End") {
+          api.navigateToBottom();
+          handled = true;
         } else if (key === "ArrowUp") {
           if (meta) {
             api.navigateToTop();
