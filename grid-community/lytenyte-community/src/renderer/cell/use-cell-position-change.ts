@@ -26,7 +26,10 @@ export function useCellPositionChange(
       element !== document.activeElement
     ) {
       api.navigateScrollIntoView(posRow, posCol);
-      element.focus();
+
+      setTimeout(() => {
+        element.focus();
+      });
     }
   });
 

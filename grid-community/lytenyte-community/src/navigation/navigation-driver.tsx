@@ -37,17 +37,34 @@ export function NavigationDriver() {
         if (!position) return;
 
         let handled = false;
+        const meta = ev.ctrlKey || ev.metaKey;
         if (key === "ArrowUp") {
-          api.navigateUp();
+          if (meta) {
+            api.navigateToTop();
+          } else {
+            api.navigateUp();
+          }
           handled = true;
         } else if (key === "ArrowDown") {
-          api.navigateDown();
+          if (meta) {
+            api.navigateToBottom();
+          } else {
+            api.navigateDown();
+          }
           handled = true;
         } else if (key === startDir) {
-          api.navigatePrev();
+          if (meta) {
+            api.navigateToStart();
+          } else {
+            api.navigatePrev();
+          }
           handled = true;
         } else if (key === endDir) {
-          api.navigateNext();
+          if (meta) {
+            api.navigateToEnd();
+          } else {
+            api.navigateNext();
+          }
           handled = true;
         }
 
@@ -58,6 +75,17 @@ export function NavigationDriver() {
       },
       { signal: controller.signal },
     );
+
+    // Ensure the cell is always visible
+    const unsub = state.internal.navigatePosition.watch(() => {
+      const position = state.internal.navigatePosition.peek();
+      if (!position) return;
+
+      const rowIndex = "rowIndex" in position ? position.rowIndex : null;
+      const columnIndex = position.columnIndex;
+
+      api.navigateScrollIntoView(rowIndex, columnIndex);
+    });
 
     viewport.addEventListener(
       "focusout",
@@ -76,7 +104,10 @@ export function NavigationDriver() {
       { signal: controller.signal },
     );
 
-    return () => controller.abort();
+    return () => {
+      controller.abort();
+      unsub();
+    };
   }, [
     api,
     rtl,
