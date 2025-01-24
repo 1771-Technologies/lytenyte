@@ -8,6 +8,8 @@ import { useClientDataSource } from "../src/use-client-data-source";
 export default function Play() {
   const ds = useClientDataSource({
     data: bankDataSmall,
+    topData: bankDataSmall.slice(0, 2),
+    bottomData: bankDataSmall.slice(0, 2),
   });
   const [grid] = useState(() =>
     makeStore({
