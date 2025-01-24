@@ -7,6 +7,7 @@ import { useEffect, useRef, type ReactNode } from "react";
 import { IsoResizeObserver } from "@1771technologies/js-utils";
 import { RowContainer } from "./viewport/row-container";
 import type { ColumnHeaderRendererParamsReact } from "@1771technologies/grid-types/community-react";
+import { NavigationDriver } from "../navigation/navigation-driver";
 
 export function Viewport({
   headerDefault,
@@ -95,6 +96,7 @@ export function Viewport({
       <RowContainer totalHeight={totalHeight} totalWidth={totalWidth}>
         <Rows width={totalWidth} />
       </RowContainer>
+      <NavigationDriver />
     </Sizer>
   );
 }
