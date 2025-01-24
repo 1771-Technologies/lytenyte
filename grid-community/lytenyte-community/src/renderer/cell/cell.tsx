@@ -1,5 +1,5 @@
 import { clsx } from "@1771technologies/js-utils";
-import { memo, useRef } from "react";
+import { memo } from "react";
 import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
 import { useCellStyle } from "./use-cell-style";
 import { useCellRenderer } from "./use-cell-renderer";
@@ -58,14 +58,13 @@ function CellImpl({
 
   const isGroup = api.rowIsGroup(rowNode);
   const isExpanded = isGroup && api.rowGroupIsExpanded(rowNode);
-  const ref = useRef<HTMLDivElement | null>(null);
 
-  useCellPositionChange(api, ref, rowIndex, columnIndex);
+  const handleRef = useCellPositionChange(api, rowIndex, columnIndex);
 
   return (
     <div
       style={cx.style}
-      ref={ref}
+      ref={handleRef}
       role="gridcell"
       aria-expanded={isGroup ? isExpanded : undefined}
       aria-rowspan={rowSpan}
