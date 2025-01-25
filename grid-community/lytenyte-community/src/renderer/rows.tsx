@@ -79,6 +79,7 @@ export function Rows({ width }: { width: number }) {
             <CellFullWidth
               api={api}
               row={row}
+              colCount={columns.length}
               rowPin={rowIndex < topCount ? "top" : rowIndex >= firstBotIndex ? "bottom" : null}
               key={`${rowIndex}-full`}
               rowIndex={rowIndex}

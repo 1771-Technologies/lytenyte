@@ -54,12 +54,18 @@ function CellImpl({
     paginateOffset,
   );
 
-  const events = useCellEvents(api, column, rowNode, rowIndex, columnIndex, rowSpan, colSpan);
+  const events = useCellEvents(api, column, rowNode);
 
   const isGroup = api.rowIsGroup(rowNode);
   const isExpanded = isGroup && api.rowGroupIsExpanded(rowNode);
 
-  const handleRef = useCellPositionChange(api, rowIndex, columnIndex);
+  const { handleRef, onFocus } = useCellPositionChange(
+    api,
+    rowIndex,
+    columnIndex,
+    rowSpan,
+    colSpan,
+  );
 
   return (
     <div
@@ -74,6 +80,7 @@ function CellImpl({
       className={clsx(rowBaseClx, row, cx.className, focusCellOutline)}
       tabIndex={-1}
       {...events}
+      onFocus={onFocus}
     >
       <Renderer api={api} column={column} columnIndex={columnIndex} row={rowNode} />
     </div>

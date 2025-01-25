@@ -7,8 +7,25 @@ export function useCellPositionChange(
   api: ApiCommunityReact<any>,
   rowIndex: number,
   columnIndex: number,
+  rowSpan: number,
+  columnSpan: number,
 ) {
   const ref = useRef<HTMLElement | null>(null);
+  const skipRef = useRef(false);
+
+  const onFocus = useEvent(() => {
+    if (skipRef.current) {
+      skipRef.current = false;
+      return;
+    }
+
+    api.getState().internal.navigatePosition.set({
+      kind: GRID_CELL_POSITION,
+      columnIndex,
+      rowIndex,
+      root: { columnIndex, columnSpan, rowIndex, rowSpan },
+    });
+  });
 
   const tryFocus = useEvent((element: HTMLElement | null) => {
     const sx = api.getState();
@@ -26,10 +43,8 @@ export function useCellPositionChange(
       element !== document.activeElement
     ) {
       api.navigateScrollIntoView(posRow, posCol);
-
-      setTimeout(() => {
-        element.focus();
-      });
+      skipRef.current = true;
+      element.focus();
     }
   });
 
@@ -52,5 +67,5 @@ export function useCellPositionChange(
     };
   }, [api, columnIndex, ref, rowIndex, tryFocus]);
 
-  return handleRef;
+  return { handleRef, onFocus };
 }
