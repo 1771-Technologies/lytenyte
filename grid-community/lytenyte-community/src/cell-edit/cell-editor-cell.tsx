@@ -3,7 +3,7 @@ import type { CellEditLocation, RowNode } from "@1771technologies/grid-types/com
 import { getFocusableElements, sizeFromCoord } from "@1771technologies/js-utils";
 import { useGrid } from "../use-grid";
 import { getCellEditor } from "./cell-get-editor";
-import { useCallback, useEffect, useMemo, useState, type CSSProperties } from "react";
+import { useCallback, useMemo, type CSSProperties } from "react";
 import { cellEditLocation } from "./cell-edit-location";
 import { getTransform } from "../renderer/get-transform";
 import { getRootCell } from "@1771technologies/grid-core";
@@ -99,41 +99,10 @@ export function CellEditorCell<D>({
   const values = state.internal.cellEditActiveEditValues.use();
   const value = values.get(cellEditLocation(location));
 
-  const [cell, setCell] = useState<HTMLDivElement | null>(null);
-
   const isValid = api.cellEditIsValueValid(location);
-
-  useEffect(() => {
-    if (!cell) return;
-
-    const controller = new AbortController();
-    const signal = controller.signal;
-
-    cell.addEventListener(
-      "focusout",
-      () => {
-        if (!api.cellEditIsActive()) return;
-        if (state.cellEditFullRow.peek()) return;
-
-        api.cellEditEnd(location);
-      },
-      { signal },
-    );
-    cell.addEventListener(
-      "focusin",
-      () => {
-        if (!api.cellEditIsActive()) return;
-        state.internal.cellEditActiveLocation.set(location);
-      },
-      { signal },
-    );
-
-    return () => controller.abort();
-  }, [api, cell, location, state.cellEditFullRow, state.internal.cellEditActiveLocation]);
 
   const autoFocus = useCallback(
     (el: HTMLDivElement | null) => {
-      setCell(el);
       if (!isActive || !el) return;
 
       const focusable = getFocusableElements(el)[0];
@@ -155,7 +124,29 @@ export function CellEditorCell<D>({
   );
 
   return (
-    <div ref={autoFocus} style={style}>
+    <div
+      ref={autoFocus}
+      style={style}
+      className={css`
+        grid-column-start: 1;
+        grid-column-end: 2;
+        grid-row-start: 1;
+        grid-row-end: 2;
+      `}
+      onFocus={() => {
+        state.internal.cellEditActiveLocation.set(location);
+      }}
+      onBlur={() => {
+        api.cellEditEnd(location);
+      }}
+      onKeyDown={(ev) => {
+        if (ev.key === "Enter") {
+          api.cellEditEnd(location);
+          ev.preventDefault();
+          ev.stopPropagation();
+        }
+      }}
+    >
       <Renderer
         api={api}
         column={column}

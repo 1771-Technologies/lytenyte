@@ -28,11 +28,7 @@ export function initializeInternalState<D, E>(
 ) {
   const viewportXScroll = signal(0);
   const viewportYScroll = signal(0);
-  const rowRefreshCount = signal(0, {
-    postUpdate: () => {
-      api.cellEditEndAll(true);
-    },
-  });
+  const rowRefreshCount = signal(0);
 
   const {
     columnsVisible,
