@@ -5,6 +5,7 @@ import type { ColumnPin, KeyBindingString, Position } from "@1771technologies/gr
 import { type CellEditLocation } from "@1771technologies/grid-types/community";
 import { rowDataSource } from "./row-data-source";
 import {
+  cellFocusQueue,
   columnPositions as columnPositionsComputed,
   columnsVisibleState,
   columnsWithSpan,
@@ -83,9 +84,6 @@ export function initializeInternalState<D, E>(
     columnLookup,
     columnsVisible,
 
-    columnFirstVisible: signal(-1),
-    columnLastVisible: signal(-1),
-
     columnMoveActive: signal(false),
     columnMoveIds: signal<string[]>([]),
     columnMoveLockedByRange: signal(false),
@@ -97,6 +95,7 @@ export function initializeInternalState<D, E>(
 
     columnResizeIsActive: signal(false),
 
+    cellFocusQueue: cellFocusQueue(),
     navigatePosition: signal<Position | null>(null),
 
     fieldCacheRef: { "quick-search": {}, column: {}, group: {}, pivot: {} },

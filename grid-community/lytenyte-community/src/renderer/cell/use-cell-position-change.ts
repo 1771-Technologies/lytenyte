@@ -27,7 +27,7 @@ export function useCellPositionChange(
     });
   });
 
-  const tryFocus = useEvent((element: HTMLElement | null) => {
+  const tryFocus = useEvent((element: HTMLElement | null, skip: boolean = true) => {
     const sx = api.getState();
 
     const position = sx.internal.navigatePosition.peek();
@@ -43,7 +43,7 @@ export function useCellPositionChange(
       element !== document.activeElement
     ) {
       api.navigateScrollIntoView(posRow, posCol);
-      skipRef.current = true;
+      skipRef.current = skip;
       element.focus();
     }
   });
@@ -62,8 +62,19 @@ export function useCellPositionChange(
     const unsub = sx.internal.navigatePosition.watch(() => {
       tryFocus(ref.current);
     }, false);
+
+    const unsubFocus = sx.internal.cellFocusQueue.watch(() => {
+      const focus = sx.internal.cellFocusQueue.peek();
+      if (!focus) return;
+
+      if (rowIndex === focus.rowIndex && columnIndex === focus.columnIndex) {
+        ref.current?.focus();
+      }
+    }, false);
+
     return () => {
       unsub();
+      unsubFocus();
     };
   }, [api, columnIndex, ref, rowIndex, tryFocus]);
 

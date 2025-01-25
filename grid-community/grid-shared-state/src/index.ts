@@ -1,3 +1,4 @@
+export { cellFocusQueue } from "./cell-focus-queue.js";
 export { columnPositions } from "./columns/column-positions.js";
 export { columnsComputed } from "./columns/columns-computed/columns-computed.js";
 export { columnsWithSpan } from "./columns/columns-with-span.js";

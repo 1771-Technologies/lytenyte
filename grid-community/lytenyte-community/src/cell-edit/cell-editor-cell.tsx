@@ -138,12 +138,30 @@ export function CellEditorCell<D>({
       }}
       onBlur={() => {
         api.cellEditEnd(location);
+        state.internal.cellEditActiveLocation.set(null);
       }}
       onKeyDown={(ev) => {
         if (ev.key === "Enter") {
           api.cellEditEnd(location);
           ev.preventDefault();
           ev.stopPropagation();
+
+          state.internal.cellFocusQueue.set({
+            kind: "cell",
+            columnIndex: location.columnIndex,
+            rowIndex: location.rowIndex,
+          });
+        }
+        if (ev.key === "Escape") {
+          api.cellEditEndAll(true);
+          ev.preventDefault();
+          ev.stopPropagation();
+
+          state.internal.cellFocusQueue.set({
+            kind: "cell",
+            columnIndex: location.columnIndex,
+            rowIndex: location.rowIndex,
+          });
         }
       }}
     >

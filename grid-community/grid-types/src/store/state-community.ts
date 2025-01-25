@@ -5,6 +5,7 @@ import type {
   ColumnFilter,
   ColumnGroupRows,
   ColumnPin,
+  FocusPosition,
   KeyBindingString,
   Position,
   ScrollBounds,
@@ -14,6 +15,8 @@ import type { RowDataSource } from "../row-data-source/rds-community.js";
 import type { ApiCommunity } from "../index.js";
 
 export type GridInternalState<D, E> = {
+  readonly cellFocusQueue: Signal<FocusPosition | null>;
+
   readonly cellEditActiveLocation: Signal<CellEditLocation | null>;
   readonly cellEditActiveEdits: Signal<Map<string, CellEditLocation>>;
   readonly cellEditActiveEditValues: Signal<Map<string, unknown>>;
@@ -33,9 +36,6 @@ export type GridInternalState<D, E> = {
   readonly columnLookup: ReadonlySignal<Map<string, Column<D, E>>>;
   readonly columnGetColSpan: ReadonlySignal<(r: number, c: number) => number>;
   readonly columnGetRowSpan: ReadonlySignal<(r: number, c: number) => number>;
-
-  readonly columnFirstVisible: Signal<number>;
-  readonly columnLastVisible: Signal<number>;
 
   readonly columnMoveActive: Signal<boolean>;
   readonly columnMoveLockedByRange: Signal<boolean>;

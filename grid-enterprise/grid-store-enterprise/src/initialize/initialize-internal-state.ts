@@ -7,6 +7,7 @@ import type {
 import type { ColumnPin, KeyBindingString, Position } from "@1771technologies/grid-types/community";
 import { type CellEditLocation } from "@1771technologies/grid-types/community";
 import {
+  cellFocusQueue,
   columnPositions as columnPositionsComputed,
   columnsVisibleState,
   columnsWithSpan,
@@ -158,9 +159,6 @@ export function initializeInternalState<D, E>(
     columnsWithColSpan: columnsWithColSpan,
     columnsWithRowSpan: columnsWithRowSpan,
 
-    columnFirstVisible: signal(-1),
-    columnLastVisible: signal(-1),
-
     columnMoveActive: signal(false),
     columnMoveIds: signal<string[]>([]),
     columnMoveLockedByRange: signal(false),
@@ -172,6 +170,7 @@ export function initializeInternalState<D, E>(
 
     columnResizeIsActive: signal(false),
 
+    cellFocusQueue: cellFocusQueue(),
     navigatePosition: signal<Position | null>(null),
 
     paginatePageCount,

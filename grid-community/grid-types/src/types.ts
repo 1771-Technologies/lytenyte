@@ -435,6 +435,8 @@ export type Position =
   | PositionFullWidthRow
   | PositionHeaderGroupCell;
 
+export type FocusPosition = { kind: "cell"; rowIndex: number; columnIndex: number };
+
 // Overlays
 export type OverlayId =
   | "lng1771-loading-overlay"
