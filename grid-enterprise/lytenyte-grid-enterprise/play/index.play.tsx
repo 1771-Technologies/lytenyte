@@ -15,6 +15,7 @@ export default function Play() {
     makeStore({
       gridId: "x",
       columns: columns,
+      rowFullWidthPredicate: (p) => p.row.rowIndex === 8,
       columnBase: { resizable: true, movable: true, sortable: true },
       floatingRowEnabled: true,
       floatingRowHeight: 32,
