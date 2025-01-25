@@ -1,8 +1,8 @@
 import type { FilterText } from "@1771technologies/grid-types/community";
 import { TextOperatorSelect } from "./text-operator-select";
 import { useId, useRef } from "react";
-import { Input } from "../../../input/Input";
 import { cc } from "../../../component-configuration";
+import { Input } from "@1771technologies/lytenyte-grid-community/internal";
 
 interface TextFilterProps {
   readonly filter: Partial<FilterText>;

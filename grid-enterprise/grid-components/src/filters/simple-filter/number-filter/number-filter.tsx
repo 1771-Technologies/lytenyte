@@ -1,8 +1,8 @@
 import type { FilterNumber } from "@1771technologies/grid-types/community";
 import { NumberOperatorSelect } from "./number-operator-select";
 import { useId, useRef } from "react";
-import { Input } from "../../../input/Input";
 import { cc } from "../../../component-configuration";
+import { Input } from "@1771technologies/lytenyte-grid-community/internal";
 
 interface NumberFilterProps {
   readonly filter: Partial<FilterNumber>;

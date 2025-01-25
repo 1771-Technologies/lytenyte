@@ -1,7 +1,6 @@
 import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import type { ListViewAxe } from "@1771technologies/react-list-view";
 import { useId, useState, type JSX, type ReactNode } from "react";
-import { Input } from "../input/Input";
 import { cc } from "../component-configuration";
 import { SearchIcon } from "../icons/search-icon";
 import { Toggle } from "../toggle/toggle";
@@ -9,6 +8,7 @@ import { useGrid } from "../provider/grid-provider";
 import { t } from "@1771technologies/grid-design";
 import { Separator } from "../separator/separator";
 import { ColumnManagerBase } from "./column-manager-base";
+import { Input } from "@1771technologies/lytenyte-grid-community/internal";
 
 export interface ColumnManagerConfiguration {
   readonly dragPlaceholder?: (p: { label: string }) => ReactNode;

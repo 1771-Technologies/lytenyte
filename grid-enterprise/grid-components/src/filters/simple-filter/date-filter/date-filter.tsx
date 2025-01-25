@@ -2,8 +2,8 @@ import { DatePeriodSelect } from "./date-period-select";
 import { DateOperatorSelect } from "./date-operator-select";
 import { useId, useRef } from "react";
 import type { FilterDate } from "@1771technologies/grid-types/community";
-import { Input } from "../../../input/Input";
 import { cc } from "../../../component-configuration";
+import { Input } from "@1771technologies/lytenyte-grid-community/internal";
 
 export interface DateFilterProps {
   readonly filter: Partial<FilterDate>;
