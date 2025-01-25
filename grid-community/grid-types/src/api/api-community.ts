@@ -32,8 +32,6 @@ export interface ApiCommunity<D, C, E> {
 
   readonly cellEditBegin: (p: CellEditLocation, makeActive?: boolean) => void;
   readonly cellEditEnd: (p: CellEditLocation, cancel?: boolean) => void;
-  readonly cellEditEndAll: (cancel?: boolean) => void;
-  readonly cellEditEndMany: (p: CellEditLocation[], cancel?: boolean) => void;
   readonly cellEditValue: (p: CellEditLocation) => unknown;
   readonly cellEditSetValue: (p: CellEditLocation, v: unknown) => void;
   readonly cellEditIsValueValid: (p: CellEditLocation) => boolean;

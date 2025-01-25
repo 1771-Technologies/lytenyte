@@ -21,49 +21,15 @@ export function CellEditDriver() {
     }
 
     if (cellEditActivator === "double-click") {
-      viewport.addEventListener("dblclick", (ev) => {
-        if (state.internal.cellEditActiveEdits.peek().size > 0) return;
-        handleBeginCellEditFromEvent(api, ev);
-      });
+      viewport.addEventListener(
+        "dblclick",
+        (ev) => {
+          if (state.internal.cellEditActiveEdits.peek().size > 0) return;
+          handleBeginCellEditFromEvent(api, ev);
+        },
+        { signal },
+      );
     }
-
-    document.addEventListener(
-      "keydown",
-      (ev) => {
-        if (state.internal.cellEditActiveEdits.peek().size === 0) return;
-
-        if (ev.key === "Tab") {
-          const visible = state.columnsVisible.peek();
-          const location = state.internal.cellEditActiveLocation.peek();
-
-          if (!location) return;
-          const row = api.rowByIndex(location.rowIndex);
-          if (!row) return;
-
-          const indices = visible
-
-            .map((c, i) => (api.cellEditPredicate(row, c) ? i : null))
-            .filter((c) => c !== null);
-
-          const check = ev.shiftKey ? Math.min(...indices) : Math.max(...indices);
-          if (check === location.columnIndex) {
-            ev.preventDefault();
-            ev.stopPropagation();
-            return;
-          }
-
-          const currentIndex = indices.findIndex((c) => c === location.columnIndex);
-          const next = ev.shiftKey ? indices[currentIndex - 1] : indices[currentIndex + 1];
-
-          const nextLocation = { rowIndex: location.rowIndex, columnIndex: next };
-
-          api.cellEditBegin(nextLocation, true);
-          ev.preventDefault();
-          ev.stopPropagation();
-        }
-      },
-      { signal, capture: true },
-    );
 
     return () => controller.abort();
   }, [

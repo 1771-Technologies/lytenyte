@@ -10,8 +10,6 @@ import {
 import {
   cellEditBegin,
   cellEditEnd,
-  cellEditEndAll,
-  cellEditEndMany,
   cellEditIsValueValid,
   cellEditPredicate,
   cellEditSetValue,
@@ -93,8 +91,6 @@ export function makeApi<D, E>(
 
     cellEditBegin: (l, makeActive) => cellEditBegin(api, l, makeActive),
     cellEditEnd: (p, cancel) => cellEditEnd(api, p, cancel),
-    cellEditEndAll: (cancel) => cellEditEndAll(api, cancel),
-    cellEditEndMany: (p, cancel) => cellEditEndMany(api, p, cancel),
     cellEditIsValueValid: (p) => cellEditIsValueValid(api, p),
     cellEditSetValue: (p, v) => cellEditSetValue(api, p, v),
     cellEditValue: (p) => cellEditValue(api, p),

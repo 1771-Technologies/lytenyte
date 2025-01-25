@@ -21,6 +21,7 @@ export const columns: ColumnEnterpriseReact<any>[] = [
   {
     id: "education",
     rowGroupable: true,
+    cellEditPredicate: true,
     rowSpan: (a) => (a.row.rowIndex === 4 ? 3 : 1),
     columnSpan: (a) => (a.row.rowIndex === 4 ? 3 : 1),
   },

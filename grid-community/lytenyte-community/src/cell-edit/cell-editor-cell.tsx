@@ -6,6 +6,7 @@ import { getCellEditor } from "./cell-get-editor";
 import { useCallback } from "react";
 import { cellEditLocation } from "./cell-edit-location";
 import { useCellEditStyle } from "./use-cell-edit-style";
+import { useCellEditNavigation } from "./use-cell-edit-navigation";
 
 export interface CellEditorCellProps<D> {
   row: RowNode<D>;
@@ -54,6 +55,8 @@ export function CellEditorCell<D>({
     [api, location],
   );
 
+  const onKeyDown = useCellEditNavigation(api, location);
+
   return (
     <div
       ref={autoFocus}
@@ -73,35 +76,7 @@ export function CellEditorCell<D>({
 
         state.internal.cellEditActiveLocation.set(null);
       }}
-      onKeyDown={(ev) => {
-        // Tab should go to the next cell or previous cell
-        // Enter should go down one, shift enter accepts the edit
-        // escape cancels the edit.
-        // Refactor cell edit apis to only show one edit functionality
-
-        if (ev.key === "Enter" && ev.shiftKey) {
-          api.cellEditEnd(location);
-          ev.preventDefault();
-          ev.stopPropagation();
-
-          state.internal.cellFocusQueue.set({
-            kind: "cell",
-            columnIndex: location.columnIndex,
-            rowIndex: location.rowIndex,
-          });
-        }
-        if (ev.key === "Escape") {
-          api.cellEditEndAll(true);
-          ev.preventDefault();
-          ev.stopPropagation();
-
-          state.internal.cellFocusQueue.set({
-            kind: "cell",
-            columnIndex: location.columnIndex,
-            rowIndex: location.rowIndex,
-          });
-        }
-      }}
+      onKeyDown={onKeyDown}
     >
       <Renderer
         api={api}
