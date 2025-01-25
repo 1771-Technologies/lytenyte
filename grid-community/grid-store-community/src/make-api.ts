@@ -99,6 +99,7 @@ export function makeApi<D, E>(
     cellEditSetValue: (p, v) => cellEditSetValue(api, p, v),
     cellEditValue: (p) => cellEditValue(api, p),
     cellEditPredicate: (row, c) => cellEditPredicate(api, row, c),
+    cellEditIsActive: () => state.internal.cellEditActiveEdits.peek().size > 0,
 
     columnById: (id) => columnById(api, id),
     columnByIndex: (index) => columnByIndex(api, index) as ColumnCommunity<D, E>,

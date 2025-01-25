@@ -1,5 +1,5 @@
 import type { CellEditLocation } from "@1771technologies/grid-types/community";
 
-export function getEditLocationKey(c: CellEditLocation) {
+export function cellEditLocation(c: CellEditLocation) {
   return `r${c.rowIndex}-c${c.columnIndex}`;
 }

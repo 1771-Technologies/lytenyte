@@ -38,6 +38,7 @@ export interface ApiCommunity<D, C, E> {
   readonly cellEditSetValue: (p: CellEditLocation, v: unknown) => void;
   readonly cellEditIsValueValid: (p: CellEditLocation) => boolean;
   readonly cellEditPredicate: (row: RowNode<D>, column: C) => boolean;
+  readonly cellEditIsActive: () => boolean;
 
   readonly columnField: (row: RowNode<D>, column: C) => unknown;
   readonly columnFieldGroup: (row: RowNodeLeaf<D>, column: C) => unknown;

@@ -1,21 +1,16 @@
+import type { ColumnCommunityReact } from "@1771technologies/grid-types";
+import type { CellEditLocation, RowNode } from "@1771technologies/grid-types/community";
 import { getFocusableElements, sizeFromCoord } from "@1771technologies/js-utils";
-import type { CellEditLocation, Column, RowNode } from "@1771technologies/grid-types-react";
-import { getCellEditor } from "./get-cell-editor";
+import { useGrid } from "../use-grid";
+import { getCellEditor } from "./cell-get-editor";
 import { useCallback, useEffect, useState } from "react";
-import { useGridStore } from "@1771technologies/lng-component-react-store-provider";
-import { useGetX } from "@1771technologies/lng-component-react-use-get-x";
-import { getPositionStyles } from "@1771technologies/lng-component-react-get-position-styles";
+import { cellEditLocation } from "./cell-edit-location";
 
 export interface CellEditorCellProps<D> {
-  isStart: boolean;
-  isEnd: boolean;
   row: RowNode<D>;
-  column: Column<D>;
+  column: ColumnCommunityReact<D>;
   xPositions: Uint32Array;
   height: number;
-  endCount: number;
-  startCount: number;
-  viewportWidth: number;
   isActive: boolean;
   location: CellEditLocation;
 }
@@ -24,31 +19,23 @@ export function CellEditorCell<D>({
   column,
   row,
   xPositions,
-  endCount,
-  viewportWidth,
   height,
-  isStart,
-  isEnd,
-  startCount,
   location,
   isActive,
 }: CellEditorCellProps<D>) {
   const { columnIndex } = location;
-  const store = useGridStore();
-  const api = store.state.api;
+  const { state, api } = useGrid();
 
-  const getX = useGetX(startCount, endCount, xPositions, store.state.rtl);
   const width = sizeFromCoord(columnIndex, xPositions);
 
-  const x = getX(columnIndex);
-  const positionStyle = getPositionStyles(isStart, isEnd, viewportWidth, width, x);
+  const Renderer = getCellEditor(api, column, state.columnBase.use());
 
-  const Renderer = getCellEditor(api, column, api.getProperty("columnBase"));
-  const value = api.useSelector((s) => s.cellEditValue(location));
+  const values = state.internal.cellEditActiveEditValues.use();
+  const value = values.get(cellEditLocation(location));
 
   const [cell, setCell] = useState<HTMLDivElement | null>(null);
 
-  const isValid = api.useSelector((s) => s.cellEditIsValueValid(location));
+  const isValid = api.cellEditIsValueValid(location);
 
   useEffect(() => {
     if (!cell) return;
@@ -60,7 +47,8 @@ export function CellEditorCell<D>({
       "focusout",
       () => {
         if (!api.cellEditIsActive()) return;
-        if (!api.getProperty("cellEditFullRow")) api.cellEditEnd(location);
+        const fullRow = state.cellEditFullRow.peek();
+        if (!fullRow) api.cellEditEnd(location);
       },
       { signal },
     );
@@ -68,13 +56,14 @@ export function CellEditorCell<D>({
       "focusin",
       () => {
         if (!api.cellEditIsActive()) return;
-        store.set({ activeCellEditLocation: location });
+
+        state.internal.cellEditActiveLocation.set(location);
       },
       { signal },
     );
 
     return () => controller.abort();
-  }, [api, cell, location, store]);
+  }, [api, cell, location, state.cellEditFullRow, state.internal.cellEditActiveLocation]);
 
   const autoFocus = useCallback(
     (el: HTMLDivElement | null) => {
@@ -106,7 +95,6 @@ export function CellEditorCell<D>({
         width: width,
         height: height,
         display: "inline-block",
-        ...positionStyle,
       }}
     >
       <Renderer

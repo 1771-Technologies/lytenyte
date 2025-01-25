@@ -11,7 +11,7 @@ export const rowGroupIsExpanded = <D, E>(
   const defaultExpansions = sx.rowGroupDefaultExpansion.peek();
 
   const expansions = sx.rowGroupExpansions.peek();
-  if (expansions[row.id] != null) return expansions[row.id];
+  if (expansions[row.id] != null) return expansions[row.id]!;
 
   const rowIndex = sx.internal.rowBackingDataSource.peek().rowIdToRowIndex(row.id);
   if (rowIndex == null) return false;
