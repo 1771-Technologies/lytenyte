@@ -5,6 +5,20 @@ import { useCallback, useEffect, useRef } from "react";
 
 export function useCellFullWidthFocus(api: ApiCommunityReact<any>, rowIndex: number) {
   const ref = useRef<HTMLElement | null>(null);
+  const skipRef = useRef(false);
+
+  const onFocus = useEvent(() => {
+    if (skipRef.current) {
+      skipRef.current = false;
+      return;
+    }
+
+    api.getState().internal.navigatePosition.set({
+      kind: FULL_WIDTH_POSITION,
+      columnIndex: 0,
+      rowIndex,
+    });
+  });
 
   const tryFocus = useEvent((element: HTMLElement | null) => {
     const sx = api.getState();
@@ -13,18 +27,15 @@ export function useCellFullWidthFocus(api: ApiCommunityReact<any>, rowIndex: num
     if (!element || !position || position.kind !== FULL_WIDTH_POSITION) return;
 
     const posRow = position.rowIndex;
-    const posCol = position.columnIndex;
 
     if (
       rowIndex === posRow &&
       !element.contains(document.activeElement) &&
       element !== document.activeElement
     ) {
-      api.navigateScrollIntoView(posRow, posCol);
-
-      setTimeout(() => {
-        element.focus();
-      });
+      api.navigateScrollIntoView(posRow);
+      skipRef.current = true;
+      element.focus();
     }
   });
 
@@ -47,5 +58,5 @@ export function useCellFullWidthFocus(api: ApiCommunityReact<any>, rowIndex: num
     };
   }, [api, ref, rowIndex, tryFocus]);
 
-  return handleRef;
+  return { handleRef, onFocus };
 }

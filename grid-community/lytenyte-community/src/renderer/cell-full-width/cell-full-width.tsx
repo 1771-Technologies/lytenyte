@@ -7,6 +7,7 @@ import { t } from "@1771technologies/grid-design";
 import { cellSelected } from "../cell/cell-classes";
 import { useCellFullWidthFocus } from "./use-cell-full-width-focus";
 import { useFullWidthEvents } from "./use-full-width-events";
+import { focusCellOutline } from "../../header/header-cell/header-cell";
 
 export interface CellFullWidthProps {
   readonly api: ApiCommunityReact<any>;
@@ -74,13 +75,13 @@ function CellFullWidthImpl({
   const selected = sx.rowSelectionSelectedIds.use();
   const isSelected = selected.has(row.id);
 
-  const ref = useCellFullWidthFocus(api, rowIndex);
-  const events = useFullWidthEvents(api, row, rowIndex);
+  const { handleRef, onFocus } = useCellFullWidthFocus(api, rowIndex);
+  const events = useFullWidthEvents(api, row);
 
   return (
     <div
       role="gridcell"
-      ref={ref}
+      ref={handleRef}
       aria-colindex={1}
       aria-colspan={colCount}
       aria-rowindex={rowIndex + 1}
@@ -88,8 +89,10 @@ function CellFullWidthImpl({
       tabIndex={-1}
       style={{ width, ...cx.style }}
       {...events}
+      onFocus={onFocus}
       className={clsx(
         rowClx,
+        focusCellOutline,
         css`
           position: sticky;
           inset-inline-start: 0px;
