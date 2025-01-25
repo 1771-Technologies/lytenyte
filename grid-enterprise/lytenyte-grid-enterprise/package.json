@@ -18,6 +18,7 @@
     "@1771technologies/lytenyte-grid-community": "workspace:*",
     "@1771technologies/grid-components": "workspace:*",
     "@1771technologies/grid-provider": "workspace:*",
+    "@1771technologies/grid-core": "workspace:*",
     "@1771technologies/grid-design": "workspace:*",
     "@1771technologies/react-dragon": "workspace:*",
     "@1771technologies/react-sizer": "workspace:*",
