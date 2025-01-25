@@ -1,5 +1,10 @@
 import type { StoreEnterpriseReact } from "@1771technologies/grid-types";
-import { Viewport } from "@1771technologies/lytenyte-grid-community/internal";
+import {
+  CellEditorBottom,
+  CellEditorCenter,
+  CellEditorTop,
+  Viewport,
+} from "@1771technologies/lytenyte-grid-community/internal";
 import { GridProvider } from "./use-grid";
 import { HeaderCellDefault } from "./components/header-cell-default";
 import {
@@ -29,5 +34,30 @@ export function LyteNyteGrid<D>({ grid }: LyteNyteGridEnterpriseProps<D>) {
 }
 
 function LyteNyteCommunityImpl() {
-  return <Viewport headerDefault={HeaderCellDefault as any} />;
+  return (
+    <Viewport headerDefault={HeaderCellDefault as any} top={Top} center={Center} bottom={Bottom} />
+  );
+}
+
+function Center() {
+  return (
+    <>
+      <CellEditorCenter />
+    </>
+  );
+}
+
+function Top() {
+  return (
+    <>
+      <CellEditorTop />
+    </>
+  );
+}
+function Bottom() {
+  return (
+    <>
+      <CellEditorBottom />
+    </>
+  );
 }

@@ -6,13 +6,17 @@ import { CellFullWidth } from "./cell-full-width/cell-full-width";
 import { t } from "@1771technologies/grid-design";
 import { RowDetail } from "./row-detail";
 import { DragIndicator } from "./drag-indicator";
-import {
-  CellEditorBottom,
-  CellEditorCenter,
-  CellEditorTop,
-} from "../cell-edit/cell-edit-containers";
 
-export function Rows({ width }: { width: number }) {
+export function Rows({
+  width,
+  ...els
+}: {
+  width: number;
+
+  top: () => ReactNode;
+  bottom: () => ReactNode;
+  center: () => ReactNode;
+}) {
   const { state, api } = useGrid();
 
   const layout = state.internal.virtLayout.use();
@@ -189,7 +193,7 @@ export function Rows({ width }: { width: number }) {
         >
           {top}
           <DragIndicator section="top" />
-          <CellEditorTop />
+          <els.top />
         </div>
       )}
       <div
@@ -204,7 +208,7 @@ export function Rows({ width }: { width: number }) {
       >
         {center}
         <DragIndicator section="center" />
-        <CellEditorCenter />
+        <els.center />
       </div>
       <div
         style={{
@@ -232,7 +236,7 @@ export function Rows({ width }: { width: number }) {
       >
         {bottom}
         <DragIndicator section="bottom" />
-        <CellEditorBottom />
+        <els.bottom />
       </div>
     </>
   );

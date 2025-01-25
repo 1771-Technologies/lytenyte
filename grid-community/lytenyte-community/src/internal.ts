@@ -7,6 +7,12 @@ export {
   MoreDotsVertical,
 } from "./components/icons.js";
 
+export {
+  CellEditorBottom,
+  CellEditorCenter,
+  CellEditorTop,
+} from "./cell-edit/cell-edit-containers.js";
+
 export type { CheckboxProps } from "./components/checkbox.js";
 export { Checkbox } from "./components/checkbox.js";
 export { Input } from "./components/Input.js";

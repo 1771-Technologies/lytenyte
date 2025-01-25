@@ -12,8 +12,12 @@ import { CellEditDriver } from "../cell-edit/cell-edit-driver";
 
 export function Viewport({
   headerDefault,
+  ...els
 }: {
   headerDefault: (p: ColumnHeaderRendererParamsReact<any>) => ReactNode;
+  top: () => ReactNode;
+  bottom: () => ReactNode;
+  center: () => ReactNode;
 }) {
   const { state } = useGrid();
 
@@ -95,7 +99,7 @@ export function Viewport({
         `}
       />
       <RowContainer totalHeight={totalHeight} totalWidth={totalWidth}>
-        <Rows width={totalWidth} />
+        <Rows width={totalWidth} {...els} />
       </RowContainer>
       <NavigationDriver />
       <CellEditDriver />
