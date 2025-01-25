@@ -1,6 +1,5 @@
 import type { CellEditLocation } from "@1771technologies/grid-types/community";
 import { cellEditKey } from "./cell-edit-key";
-import { cellEditFullRowLocations } from "./cell-edit-full-row-locations";
 import { cellEditUnparser } from "./cell-edit-unparser";
 import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
 
@@ -30,8 +29,7 @@ export function cellEditBegin<D, E>(
   const nextActiveValues = new Map(s.internal.cellEditActiveEditValues.peek());
   const nextActiveEdits = new Map(s.internal.cellEditActiveEdits.peek());
 
-  const isFullRow = s.cellEditFullRow.peek();
-  const locations = isFullRow ? cellEditFullRowLocations(api, l, row) : [l];
+  const locations = [l];
 
   const visible = s.columnsVisible.peek();
   for (const location of locations) {

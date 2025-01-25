@@ -74,8 +74,12 @@ export function CellEditorCell<D>({
         state.internal.cellEditActiveLocation.set(null);
       }}
       onKeyDown={(ev) => {
-        if (ev.key === "Enter") {
-          // Should go down one row.
+        // Tab should go to the next cell or previous cell
+        // Enter should go down one, shift enter accepts the edit
+        // escape cancels the edit.
+        // Refactor cell edit apis to only show one edit functionality
+
+        if (ev.key === "Enter" && ev.shiftKey) {
           api.cellEditEnd(location);
           ev.preventDefault();
           ev.stopPropagation();

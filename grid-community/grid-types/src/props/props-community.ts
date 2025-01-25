@@ -35,7 +35,6 @@ export interface PropsCommunity<A, D, C, E, Base, Group> {
 
   readonly autosizeDoubleClickHeader?: boolean;
 
-  readonly cellEditFullRow?: boolean;
   readonly cellEditPointerActivator?: CellEditPointerActivator;
   readonly cellEditProviders?: CellEditProviders<A, D, C, E>;
 

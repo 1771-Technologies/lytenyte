@@ -52,8 +52,6 @@ export function CellEditDriver() {
             return;
           }
 
-          if (state.cellEditFullRow.peek()) return;
-
           const currentIndex = indices.findIndex((c) => c === location.columnIndex);
           const next = ev.shiftKey ? indices[currentIndex - 1] : indices[currentIndex + 1];
 
@@ -71,7 +69,6 @@ export function CellEditDriver() {
   }, [
     api,
     cellEditActivator,
-    state.cellEditFullRow,
     state.columnsVisible,
     state.internal.cellEditActiveEdits,
     state.internal.cellEditActiveLocation,

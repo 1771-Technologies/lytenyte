@@ -36,7 +36,6 @@ export function initialize<D, E>(
     aggFuncs: signal(props.aggFuncs ?? {}),
     autosizeDoubleClickHeader: signal(props.autosizeDoubleClickHeader ?? true),
 
-    cellEditFullRow: signal(props.cellEditFullRow ?? false),
     cellEditPointerActivator: signal(props.cellEditPointerActivator ?? "none"),
     cellEditProviders: signal(props.cellEditProviders ?? {}),
 
