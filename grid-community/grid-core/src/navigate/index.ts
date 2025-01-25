@@ -6,3 +6,4 @@ export { getRootCell } from "./get-root-cell.js";
 export { getEnd, getStart } from "./get-start-and-end.js";
 export { getTop, getBottom } from "./get-top-and-bottom.js";
 export { getUp } from "./get-up.js";
+export { getGridCellPosition } from "./utils.js";

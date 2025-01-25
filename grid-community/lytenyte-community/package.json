@@ -20,6 +20,7 @@
     "@1771technologies/grid-store-community": "workspace:*",
     "@1771technologies/grid-provider": "workspace:*",
     "@1771technologies/grid-design": "workspace:*",
+    "@1771technologies/grid-core": "workspace:*",
     "@1771technologies/react-dragon": "workspace:*",
     "@1771technologies/react-sizer": "workspace:*",
     "@1771technologies/react-utils": "workspace:*",
