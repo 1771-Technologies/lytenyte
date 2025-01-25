@@ -27,6 +27,7 @@
     "@1771technologies/react-frame": "workspace:*",
     "@1771technologies/react-dragon": "workspace:*",
     "@1771technologies/grid-store-enterprise": "workspace:*",
+    "@1771technologies/lytenyte-grid-community": "workspace:*",
     "@1771technologies/react-menu": "workspace:*"
   }
 }

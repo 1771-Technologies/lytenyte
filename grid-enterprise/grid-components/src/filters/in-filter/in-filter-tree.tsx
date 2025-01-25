@@ -2,10 +2,10 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { flattenTreeItems } from "./flatten-tree-items";
 import { getChildValues } from "./get-child-values";
 import type { ColumnInFilterItem } from "@1771technologies/grid-types/enterprise";
-import { Checkbox } from "../../checkbox/checkbox";
 import { t } from "@1771technologies/grid-design";
 import { IconButton } from "../../buttons/icon-button";
 import { cc } from "../../component-configuration";
+import { Checkbox } from "@1771technologies/lytenyte-grid-community/internal";
 
 export interface InFilterViewport {
   readonly treeItems: ColumnInFilterItem[];

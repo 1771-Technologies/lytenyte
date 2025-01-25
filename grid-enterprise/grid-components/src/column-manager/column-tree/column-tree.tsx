@@ -10,12 +10,12 @@ import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import { cc } from "../../component-configuration";
 import { t } from "@1771technologies/grid-design";
 import { CollapsedIcon, DragIcon, ExpandedIcon } from "./components";
-import { Checkbox } from "../../checkbox/checkbox";
 import { clsx } from "@1771technologies/js-utils";
 import { handleItemHide } from "./handle-item-hide";
 import { allLeafs } from "./all-leafs";
 import { dragState, useDroppable } from "@1771technologies/react-dragon";
 import { itemDragTag } from "./item-drag-label";
+import { Checkbox } from "@1771technologies/lytenyte-grid-community/internal";
 
 export function ColumnTree({ query = "" }: { query?: string }) {
   const { api, state } = useGrid();
