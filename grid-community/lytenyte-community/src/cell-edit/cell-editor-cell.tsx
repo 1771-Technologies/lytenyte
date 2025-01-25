@@ -9,17 +9,17 @@ import { cellEditLocation } from "./cell-edit-location";
 export interface CellEditorCellProps<D> {
   row: RowNode<D>;
   column: ColumnCommunityReact<D>;
-  xPositions: Uint32Array;
-  height: number;
   isActive: boolean;
   location: CellEditLocation;
+  xPositions: Uint32Array;
+  yPositions: Uint32Array;
 }
 
 export function CellEditorCell<D>({
   column,
   row,
   xPositions,
-  height,
+  yPositions,
   location,
   isActive,
 }: CellEditorCellProps<D>) {
@@ -47,8 +47,9 @@ export function CellEditorCell<D>({
       "focusout",
       () => {
         if (!api.cellEditIsActive()) return;
-        const fullRow = state.cellEditFullRow.peek();
-        if (!fullRow) api.cellEditEnd(location);
+        if (state.cellEditFullRow.peek()) return;
+
+        api.cellEditEnd(location);
       },
       { signal },
     );
@@ -56,7 +57,6 @@ export function CellEditorCell<D>({
       "focusin",
       () => {
         if (!api.cellEditIsActive()) return;
-
         state.internal.cellEditActiveLocation.set(location);
       },
       { signal },
@@ -93,7 +93,6 @@ export function CellEditorCell<D>({
       ref={autoFocus}
       style={{
         width: width,
-        height: height,
         display: "inline-block",
       }}
     >

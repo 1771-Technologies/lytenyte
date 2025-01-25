@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { useGrid } from "../use-grid";
 import { getEditRows } from "./cell-get-edit-rows";
 import { CellEditorRow } from "./cell-edit-row";
@@ -12,13 +12,10 @@ export function CellEditorTop() {
     return getEditRows(p, (l) => l.rowIndex < topCount);
   }, [p, topCount]);
 
-  const yPositions = state.internal.rowPositions.use();
-  const getY = useCallback((i: number) => yPositions[i], [yPositions]);
-
   return (
     <>
       {locations.map(([key, locations]) => {
-        return <CellEditorRow getY={getY} locations={locations} key={key} />;
+        return <CellEditorRow locations={locations} key={key} />;
       })}
     </>
   );
@@ -30,8 +27,6 @@ export function CellEditorCenter() {
   const yPositions = state.internal.rowPositions.use();
   const topCount = state.internal.rowTopCount.use();
 
-  const getY = useCallback((i: number) => yPositions[i], [yPositions]);
-
   const p = state.internal.cellEditActiveEdits.use();
 
   const botCount = state.internal.rowBottomCount.use();
@@ -44,7 +39,7 @@ export function CellEditorCenter() {
   return (
     <>
       {locations.map(([key, locations]) => {
-        return <CellEditorRow getY={getY} locations={locations} key={key} />;
+        return <CellEditorRow locations={locations} key={key} />;
       })}
     </>
   );
@@ -56,8 +51,6 @@ export function CellEditorBottom() {
   const yPositions = state.internal.rowPositions.use();
   const topCount = state.internal.rowTopCount.use();
 
-  const getY = useCallback((i: number) => yPositions[i], [yPositions]);
-
   const p = state.internal.cellEditActiveEdits.use();
 
   const botCount = state.internal.rowBottomCount.use();
@@ -70,7 +63,7 @@ export function CellEditorBottom() {
   return (
     <>
       {locations.map(([key, locations]) => {
-        return <CellEditorRow getY={getY} locations={locations} key={key} />;
+        return <CellEditorRow locations={locations} key={key} />;
       })}
     </>
   );
