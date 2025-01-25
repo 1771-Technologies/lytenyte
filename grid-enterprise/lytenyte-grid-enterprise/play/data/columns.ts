@@ -1,7 +1,14 @@
 import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 
 export const columns: ColumnEnterpriseReact<any>[] = [
-  { id: "age", groupPath: ["Information"], type: "number", pin: "start", rowGroupable: true },
+  {
+    id: "age",
+    groupPath: ["Information"],
+    type: "number",
+    pin: "start",
+    rowGroupable: true,
+    cellEditPredicate: true,
+  },
   { id: "job", rowGroupable: true, cellEditPredicate: true },
   {
     id: "balance",

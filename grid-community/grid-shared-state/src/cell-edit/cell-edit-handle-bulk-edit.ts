@@ -64,7 +64,7 @@ export function cellEditHandleBulkEdit<D, E>(
       const updater = column.cellEditRowUpdater ?? base.cellEditRowUpdater;
       if (updater) {
         updater({ api, column, row, value: field });
-        return;
+        continue;
       }
       if (!api.rowIsLeaf(row))
         throw new Error("An updater function must be provided when editing non-leaf rows");
@@ -78,7 +78,7 @@ export function cellEditHandleBulkEdit<D, E>(
         data[fieldKey] = field;
 
         api.eventFire("onCellEditSuccess", { api, newValue, oldValue, location: l });
-        return;
+        continue;
       }
 
       throw new Error(

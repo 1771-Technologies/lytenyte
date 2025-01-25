@@ -49,7 +49,6 @@ export function CellEditorBottom() {
   const { state } = useGrid();
 
   const yPositions = state.internal.rowPositions.use();
-  const topCount = state.internal.rowTopCount.use();
 
   const p = state.internal.cellEditActiveEdits.use();
 
@@ -57,8 +56,8 @@ export function CellEditorBottom() {
   const firstBotIndex = yPositions.length - 2 - botCount;
 
   const locations = useMemo(() => {
-    return getEditRows(p, (l) => l.rowIndex >= topCount && l.rowIndex < firstBotIndex);
-  }, [firstBotIndex, p, topCount]);
+    return getEditRows(p, (l) => l.rowIndex >= firstBotIndex);
+  }, [firstBotIndex, p]);
 
   return (
     <>
