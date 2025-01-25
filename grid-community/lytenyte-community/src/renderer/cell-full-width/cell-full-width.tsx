@@ -1,10 +1,12 @@
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
 import type { RowNode, RowPin } from "@1771technologies/grid-types/community";
 import { memo, useMemo } from "react";
-import { getTransform } from "./get-transform";
+import { getTransform } from "../get-transform";
 import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
 import { t } from "@1771technologies/grid-design";
-import { cellSelected } from "./cell/cell-classes";
+import { cellSelected } from "../cell/cell-classes";
+import { useCellFullWidthFocus } from "./use-cell-full-width-focus";
+import { useFullWidthEvents } from "./use-full-width-events";
 
 export interface CellFullWidthProps {
   readonly api: ApiCommunityReact<any>;
@@ -13,12 +15,14 @@ export interface CellFullWidthProps {
   readonly rowIndex: number;
   readonly yPositions: Uint32Array;
   readonly paginateOffset: number;
+  readonly colCount: number;
 }
 
 function CellFullWidthImpl({
   row,
   rowIndex,
   rowPin,
+  colCount,
   yPositions,
   api,
   paginateOffset,
@@ -70,9 +74,20 @@ function CellFullWidthImpl({
   const selected = sx.rowSelectionSelectedIds.use();
   const isSelected = selected.has(row.id);
 
+  const ref = useCellFullWidthFocus(api, rowIndex);
+  const events = useFullWidthEvents(api, row, rowIndex);
+
   return (
     <div
+      role="gridcell"
+      ref={ref}
+      aria-colindex={1}
+      aria-colspan={colCount}
+      aria-rowindex={rowIndex + 1}
+      aria-rowspan={1}
+      tabIndex={-1}
       style={{ width, ...cx.style }}
+      {...events}
       className={clsx(
         rowClx,
         css`

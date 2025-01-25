@@ -11,7 +11,12 @@ export const columns: ColumnEnterpriseReact<any>[] = [
     aggFunc: "sum",
     headerSecondaryLabel: "ex",
   },
-  { id: "education", rowGroupable: true },
+  {
+    id: "education",
+    rowGroupable: true,
+    rowSpan: (a) => (a.row.rowIndex === 4 ? 3 : 1),
+    columnSpan: (a) => (a.row.rowIndex === 4 ? 3 : 1),
+  },
   {
     id: "marital",
     aggFunc: "first",

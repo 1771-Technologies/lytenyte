@@ -1,27 +1,16 @@
-import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
+import type { ApiCommunityReact } from "@1771technologies/grid-types";
 import type { RowNode } from "@1771technologies/grid-types/community";
 import { useEvent } from "@1771technologies/react-utils";
 import type { MouseEvent } from "react";
-import { handleRowSelection } from "./utils/handle-row-selection";
-import { GRID_CELL_POSITION } from "@1771technologies/grid-constants";
+import { FULL_WIDTH_POSITION } from "@1771technologies/grid-constants";
+import { handleRowSelection } from "../cell/utils/handle-row-selection";
 
-export function useCellEvents(
-  api: ApiCommunityReact<any>,
-  column: ColumnCommunityReact<any>,
-  row: RowNode,
-  rowIndex: number,
-  columnIndex: number,
-  rowSpan: number,
-  columnSpan: number,
-) {
-  void column;
-
+export function useFullWidthEvents(api: ApiCommunityReact<any>, row: RowNode, rowIndex: number) {
   const onFocus = useEvent(() => {
     api.getState().internal.navigatePosition.set({
-      kind: GRID_CELL_POSITION,
-      columnIndex,
+      kind: FULL_WIDTH_POSITION,
+      columnIndex: 0,
       rowIndex,
-      root: { columnIndex, columnSpan, rowIndex, rowSpan },
     });
   });
 
