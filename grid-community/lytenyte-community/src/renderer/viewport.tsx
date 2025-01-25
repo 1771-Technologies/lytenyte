@@ -8,6 +8,7 @@ import { IsoResizeObserver } from "@1771technologies/js-utils";
 import { RowContainer } from "./viewport/row-container";
 import type { ColumnHeaderRendererParamsReact } from "@1771technologies/grid-types/community-react";
 import { NavigationDriver } from "../navigation/navigation-driver";
+import { CellEditDriver } from "../cell-edit/cell-edit-driver";
 
 export function Viewport({
   headerDefault,
@@ -97,6 +98,7 @@ export function Viewport({
         <Rows width={totalWidth} />
       </RowContainer>
       <NavigationDriver />
+      <CellEditDriver />
     </Sizer>
   );
 }
