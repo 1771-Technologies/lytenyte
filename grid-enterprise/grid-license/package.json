@@ -1,7 +1,7 @@
 {
   "name": "@1771technologies/lng-license",
   "version": "0.0.1",
-  "license": "TODO",
+  "license": "COMMERCIAL",
   "type": "module",
   "exports": {
     ".": {
