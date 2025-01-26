@@ -51,6 +51,13 @@ export default function Play() {
         <button onClick={() => grid.state.rowGroupDisplayMode.set("single-column")}>
           Single Group
         </button>
+        <button
+          onClick={async () => {
+            console.log(await grid.api.exportCsv());
+          }}
+        >
+          Export
+        </button>
       </div>
       <div
         className={css`
