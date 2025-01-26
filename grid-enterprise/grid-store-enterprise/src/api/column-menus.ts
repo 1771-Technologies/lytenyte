@@ -1,6 +1,13 @@
 import type { ApiEnterprise } from "@1771technologies/grid-types";
 
-export const columnMenus = <D, E>(api: ApiEnterprise<D, E>) => {
+export const columnMenus = <D, E>(
+  api: ApiEnterprise<D, E>,
+): {
+  columnCloseFilterMenu: ApiEnterprise<D, E>["columnFilterMenuClose"];
+  columnCloseMenu: ApiEnterprise<D, E>["columnMenuClose"];
+  columnOpenMenu: ApiEnterprise<D, E>["columnMenuOpen"];
+  columnOpenFilterMenu: ApiEnterprise<D, E>["columnFilterMenuOpen"];
+} => {
   return {
     columnCloseFilterMenu: () => {
       const s = api.getState();

@@ -4,7 +4,17 @@ import { useEffect, useState } from "react";
 
 type ChangeReturnType<F extends (...args: any[]) => any, R> = (...args: Parameters<F>) => R;
 
-export const useLyteNyte = <D>(p: PropsEnterpriseReact<D>) => {
+type UseLyteNyteCommunityReturn<D> = {
+  state: StoreEnterpriseReact<D>["state"];
+  api: StoreEnterpriseReact<D>["api"];
+  useSignalWatcher: (
+    c: keyof Omit<StoreEnterpriseReact<D>["state"], "internal">,
+    fn: () => void,
+  ) => void;
+  useEvent: ChangeReturnType<StoreEnterpriseReact<D>["api"]["eventAddListener"], void>;
+};
+
+export const useLyteNyte = <D>(p: PropsEnterpriseReact<D>): UseLyteNyteCommunityReturn<D> => {
   const [grid] = useState(() => {
     const s = makeStore<D>(p);
 

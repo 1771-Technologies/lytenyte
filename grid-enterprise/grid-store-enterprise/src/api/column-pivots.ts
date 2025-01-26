@@ -2,7 +2,20 @@ import { columnFieldComputer, columnGetField } from "@1771technologies/grid-shar
 import type { ApiEnterprise } from "@1771technologies/grid-types";
 import { isPromise } from "@1771technologies/js-utils";
 
-export const columnPivots = <D, E>(api: ApiEnterprise<D, E>) => {
+export const columnPivots = <D, E>(
+  api: ApiEnterprise<D, E>,
+): {
+  columnPivotFieldFromData: ApiEnterprise<D, E>["columnPivotFieldFromData"];
+  columnPivotField: ApiEnterprise<D, E>["columnPivotField"];
+  columnPivotFilterModel: ApiEnterprise<D, E>["columnPivotFilterModel"];
+  columnPivotMeasureField: ApiEnterprise<D, E>["columnPivotMeasureField"];
+  columnPivots: ApiEnterprise<D, E>["columnPivots"];
+  columnPivotSetFilterModel: ApiEnterprise<D, E>["columnPivotSetFilterModel"];
+  columnPivotSetSortModel: ApiEnterprise<D, E>["columnPivotSetSortModel"];
+  columnPivotsLoading: ApiEnterprise<D, E>["columnPivotsLoading"];
+  columnPivotSortModel: ApiEnterprise<D, E>["columnPivotSortModel"];
+  columnPivotsReload: ApiEnterprise<D, E>["columnPivotsReload"];
+} => {
   let prevAbortController: AbortController | null = null;
 
   return {
