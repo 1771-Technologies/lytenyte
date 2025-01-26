@@ -41,8 +41,7 @@ export const bulkCmd = new Command("bulk").description("Bulk Commands").action(a
   for (const node of order) {
     const packageName = node.node[0].name;
 
-    console.log(`Building: ${packageName}`);
-    console.log(node.node[1]);
+    console.log(`Checking: ${packageName}`);
 
     const proc = Bun.spawn(["aio", "check"], {
       stdio: ["inherit", "inherit", "inherit"],
@@ -53,6 +52,23 @@ export const bulkCmd = new Command("bulk").description("Bulk Commands").action(a
 
     if (proc.exitCode !== 0) {
       console.log("FAILED\n\n", node.node[1]);
+      break;
+    }
+  }
+
+  for (const node of order) {
+    const packageName = node.node[0].name;
+    console.log(`Building: ${packageName}`);
+
+    const proc = Bun.spawn(["aio", "build"], {
+      stdio: ["inherit", "inherit", "inherit"],
+      cwd: node.node[1].replace("package.json", ""),
+    });
+
+    await proc.exited;
+
+    if (proc.exitCode !== 0) {
+      console.log("FAILED to build: \n\n", node.node[1]);
       break;
     }
   }
