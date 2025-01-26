@@ -12,6 +12,9 @@ export const CellSelectionTop = memo(function CellSelectionTop() {
     return allRects.filter((rect) => isTopRect(api, rect));
   }, [allRects, api]);
 
+  const mode = state.cellSelectionMode.use();
+  const showPivot = mode === "multi-range" || mode === "range";
+
   const additive = state.internal.cellSelectionAdditiveRects.use();
   const isDeselect = state.internal.cellSelectionIsDeselect.use();
   const pivot = state.internal.cellSelectionPivot.use();
@@ -28,7 +31,7 @@ export const CellSelectionTop = memo(function CellSelectionTop() {
       {additiveRects.map((rect) => {
         return <CellStyleRow rect={rect} key={rect.columnStart} isDeselect={isDeselect} />;
       })}
-      {pivot && isTopRect(api, pivot) && <CellStyleRow rect={pivot} isPivot />}
+      {showPivot && pivot && isTopRect(api, pivot) && <CellStyleRow rect={pivot} isPivot />}
     </>
   );
 });
@@ -50,6 +53,9 @@ export const CellSelectionCenter = memo(function CellSelectionCenter() {
     return additive.filter((rect) => isCenterRect(api, rect));
   }, [additive, api]);
 
+  const mode = state.cellSelectionMode.use();
+  const showPivot = mode === "multi-range" || mode === "range";
+
   return (
     <>
       {centerRects.map((rect, i) => {
@@ -58,7 +64,7 @@ export const CellSelectionCenter = memo(function CellSelectionCenter() {
       {additiveRects.map((rect) => {
         return <CellStyleRow rect={rect} key={rect.columnStart} isDeselect={isDeselect} />;
       })}
-      {pivot && isCenterRect(api, pivot) && <CellStyleRow rect={pivot} isPivot />}
+      {showPivot && pivot && isCenterRect(api, pivot) && <CellStyleRow rect={pivot} isPivot />}
     </>
   );
 });
@@ -80,6 +86,9 @@ export const CellSelectionBottom = memo(function CellSelectionBottom() {
     return additive.filter((rect) => isBottomRect(api, rect));
   }, [additive, api]);
 
+  const mode = state.cellSelectionMode.use();
+  const showPivot = mode === "multi-range" || mode === "range";
+
   return (
     <>
       {bottomRects.map((rect, i) => {
@@ -88,7 +97,7 @@ export const CellSelectionBottom = memo(function CellSelectionBottom() {
       {additiveRects.map((rect) => {
         return <CellStyleRow rect={rect} key={rect.columnStart} isDeselect={isDeselect} />;
       })}
-      {pivot && isBottomRect(api, pivot) && <CellStyleRow rect={pivot} isPivot />}
+      {showPivot && pivot && isBottomRect(api, pivot) && <CellStyleRow rect={pivot} isPivot />}
     </>
   );
 });

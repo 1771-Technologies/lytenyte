@@ -273,6 +273,8 @@ export function CellSelectionDriver() {
   ]);
 
   useEffect(() => {
+    if (mode === "none") return;
+
     const unsub = state.internal.navigatePosition.watch(() => {
       const pos = state.internal.navigatePosition.peek();
       if (!pos) return;
@@ -293,6 +295,7 @@ export function CellSelectionDriver() {
     return () => unsub();
   }, [
     api,
+    mode,
     state.cellSelections,
     state.internal.cellSelectionPivot,
     state.internal.navigatePosition,
