@@ -13,6 +13,8 @@ export {
   CellEditorTop,
 } from "./cell-edit/cell-edit-containers.js";
 
+export { getTransform } from "./renderer/get-transform.js";
+
 export type { CheckboxProps } from "./components/checkbox.js";
 export { Checkbox } from "./components/checkbox.js";
 export { Input } from "./components/Input.js";

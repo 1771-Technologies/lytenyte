@@ -3,7 +3,7 @@ import { useEvent } from "@1771technologies/react-utils";
 import { useGrid } from "../use-grid";
 import { HeaderContainer } from "./header-container";
 import { Rows } from "./rows";
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, type PropsWithChildren, type ReactNode } from "react";
 import { IsoResizeObserver } from "@1771technologies/js-utils";
 import { RowContainer } from "./viewport/row-container";
 import type { ColumnHeaderRendererParamsReact } from "@1771technologies/grid-types/community-react";
@@ -12,13 +12,14 @@ import { CellEditDriver } from "../cell-edit/cell-edit-driver";
 
 export function Viewport({
   headerDefault,
+  children,
   ...els
-}: {
+}: PropsWithChildren<{
   headerDefault: (p: ColumnHeaderRendererParamsReact<any>) => ReactNode;
   top: () => ReactNode;
   bottom: () => ReactNode;
   center: () => ReactNode;
-}) {
+}>) {
   const { state } = useGrid();
 
   const onSizeChange = useEvent<Required<SizerProps>["onSizeChange"]>((size) => {
@@ -103,6 +104,7 @@ export function Viewport({
       </RowContainer>
       <NavigationDriver />
       <CellEditDriver />
+      {children}
     </Sizer>
   );
 }

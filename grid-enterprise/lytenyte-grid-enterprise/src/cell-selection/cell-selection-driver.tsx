@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { useEdgeScroll } from "./use-edge-scroll";
-import { useGrid } from "./use-grid";
+import { useEdgeScroll } from "../use-edge-scroll";
+import { useGrid } from "../use-grid";
 import type { CellSelectionRect } from "@1771technologies/grid-types/enterprise";
 import {
   getClientX,
