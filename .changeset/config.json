@@ -1,6 +1,6 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@3.0.5/schema.json",
-  "changelog": "@changesets/cli/changelog",
+  "changelog": ".changeset/config.js",
   "commit": false,
   "fixed": [["@1771technologies/*"]],
   "access": "public",
