@@ -10,11 +10,13 @@ export function CellStyleRow({
   isRowPinnedTop,
   isDeselect,
   isRowPinnedBottom,
+  isPivot,
 }: {
   rect: CellSelectionRect;
   isRowPinnedTop?: boolean;
   isDeselect?: boolean;
   isRowPinnedBottom?: boolean;
+  isPivot?: boolean;
 }) {
   const { state, api } = useGrid();
 
@@ -115,6 +117,10 @@ export function CellStyleRow({
           css`
             background-color: ${t.colors.system_red_30};
             border: 1px solid ${t.colors.system_red_50};
+          `,
+        isPivot &&
+          css`
+            background-color: transparent;
           `,
       )}
     />

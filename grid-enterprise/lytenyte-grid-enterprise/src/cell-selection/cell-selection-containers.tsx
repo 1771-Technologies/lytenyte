@@ -14,6 +14,7 @@ export const CellSelectionTop = memo(function CellSelectionTop() {
 
   const additive = state.internal.cellSelectionAdditiveRects.use();
   const isDeselect = state.internal.cellSelectionIsDeselect.use();
+  const pivot = state.internal.cellSelectionPivot.use();
   const additiveRects = useMemo(() => {
     if (!additive) return [];
     return additive.filter((rect) => isTopRect(api, rect));
@@ -27,6 +28,7 @@ export const CellSelectionTop = memo(function CellSelectionTop() {
       {additiveRects.map((rect) => {
         return <CellStyleRow rect={rect} key={rect.columnStart} isDeselect={isDeselect} />;
       })}
+      {pivot && isTopRect(api, pivot) && <CellStyleRow rect={pivot} isPivot />}
     </>
   );
 });
@@ -36,6 +38,7 @@ export const CellSelectionCenter = memo(function CellSelectionCenter() {
 
   const allRects = state.internal.cellSelectionSplits.use();
 
+  const pivot = state.internal.cellSelectionPivot.use();
   const centerRects = useMemo(() => {
     return allRects.filter((rect) => isCenterRect(api, rect));
   }, [allRects, api]);
@@ -55,6 +58,7 @@ export const CellSelectionCenter = memo(function CellSelectionCenter() {
       {additiveRects.map((rect) => {
         return <CellStyleRow rect={rect} key={rect.columnStart} isDeselect={isDeselect} />;
       })}
+      {pivot && isCenterRect(api, pivot) && <CellStyleRow rect={pivot} isPivot />}
     </>
   );
 });
@@ -64,6 +68,7 @@ export const CellSelectionBottom = memo(function CellSelectionBottom() {
 
   const allRects = state.internal.cellSelectionSplits.use();
 
+  const pivot = state.internal.cellSelectionPivot.use();
   const bottomRects = useMemo(() => {
     return allRects.filter((rect) => isBottomRect(api, rect));
   }, [allRects, api]);
@@ -83,6 +88,7 @@ export const CellSelectionBottom = memo(function CellSelectionBottom() {
       {additiveRects.map((rect) => {
         return <CellStyleRow rect={rect} key={rect.columnStart} isDeselect={isDeselect} />;
       })}
+      {pivot && isBottomRect(api, pivot) && <CellStyleRow rect={pivot} isPivot />}
     </>
   );
 });
