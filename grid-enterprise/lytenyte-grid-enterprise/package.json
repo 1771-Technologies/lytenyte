@@ -14,10 +14,11 @@
     "access": "public",
     "exports": {
       ".": {
-        "types": "./src/index.ts",
-        "import": "./src/index.ts",
-        "require": "./src/index.ts"
-      }
+        "types": "./dist/types/index.d.ts",
+        "import": "./dist/index.js",
+        "require": "./dist/index.js"
+      },
+      "./css": "./dist/lytenyte-grid-enterprise.css"
     }
   },
   "dependencies": {
