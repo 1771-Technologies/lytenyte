@@ -3,6 +3,9 @@
   "version": "0.0.2",
   "license": "COMMERCIAL",
   "type": "module",
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
       "types": "./src/index.ts",
