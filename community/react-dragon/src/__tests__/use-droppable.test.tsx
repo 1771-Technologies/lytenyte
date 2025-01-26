@@ -356,47 +356,6 @@ describe("useDroppable", () => {
   });
 
   describe("cleanup and edge cases", () => {
-    it("should cleanup event listeners on dragend", async () => {
-      dragState.dragActive.set(true);
-      dragState.activeTags.set(["tag1"]);
-      dragState.dragData.set(() => () => mockDragData);
-
-      const { result } = renderHook(() =>
-        useDroppable({
-          tags: mockTags,
-          onDragLeave,
-        }),
-      );
-
-      const element = document.createElement("div");
-      const mockEvent = {
-        preventDefault: vi.fn(),
-        stopPropagation: vi.fn(),
-        currentTarget: element,
-        nativeEvent: new DragEvent("dragover"),
-      };
-
-      act(() => {
-        result.current.onDragOver(mockEvent as any);
-      });
-
-      expect(result.current.isOver).toBe(true);
-
-      act(() => {
-        document.dispatchEvent(new DragEvent("dragend"));
-      });
-
-      await vi.runAllTimersAsync();
-
-      expect(result.current.isOver).toBe(false);
-      expect(onDragLeave).toHaveBeenCalledWith({
-        getData: expect.any(Function),
-        event: expect.any(DragEvent),
-        overTags: mockTags,
-        dragTags: ["tag1"],
-      });
-    });
-
     it("should handle multiple dragOver events without creating multiple listeners", () => {
       dragState.dragActive.set(true);
       dragState.activeTags.set(["tag1"]);

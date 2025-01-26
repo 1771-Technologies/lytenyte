@@ -11,7 +11,6 @@ import { BlockGraph } from "@1771technologies/grid-graph";
 import { ROW_DEFAULT_PATH_SEPARATOR } from "@1771technologies/grid-constants";
 import { currentViewComputed } from "./utils/current-view-computed";
 import { handleViewChange } from "./utils/handle-view-change";
-import { getRowGroupPath } from "./utils/get-row-group-path";
 import { loadRowExpansion } from "./utils/load-row-expansion";
 import { getAsyncDataRequestBlocks } from "./utils/get-async-data-request-blocks";
 import { loadBlockData } from "./utils/load-block-data";
@@ -166,6 +165,7 @@ export function createServerDataSource<D, E>(
 
     rowById: (id) => state.graph.rowById(id),
     rowByIndex: (r) => state.graph.rowByIndex(r),
+    rowIdToRowIndex: (id) => state.graph.rowIdToRowIndex(id),
     rowGetMany: (s, e) => {
       const rows: RowNode<D>[] = [];
 
@@ -187,61 +187,11 @@ export function createServerDataSource<D, E>(
       return parentIndex === -1 ? null : parentIndex;
     },
 
-    rowGroupToggle: (id, toggleState) => {
-      const api = state.api.peek();
-      const row = state.graph.rowById(id);
-      if (!row || !api.rowIsGroup(row)) return;
-
-      const next = toggleState != null ? toggleState : !row.expanded;
-      if (next === row.expanded) return;
-
-      (row as { expanded: boolean }).expanded = next;
-
-      state.rowGroupExpansions.set(row.id, next);
-
-      if (next == false && state.rowClearOnCollapse) {
-        const path = getRowGroupPath(state, row);
-        if (path.length) {
-          state.graph.blockDeleteByPath(path.join(state.rowPathSeparator));
-        }
-
-        state.graph.blockFlatten();
-        api.rowRefresh();
-      } else if (next == false) {
-        state.graph.blockFlatten();
-        api.rowRefresh();
-      } else {
-        loadRowExpansion(state, row);
-      }
-    },
-
-    rowSelectionAllRowsSelected: () => false,
     rowSelectionSelectAllSupported: () => false,
-    rowSelectionClear: () => {
-      state.selectedIds.set(new Set());
-      state.api.peek().rowRefresh();
-    },
-    rowSelectionDeselect: (ids) => {
-      const selectedIds = state.selectedIds.peek();
-      for (let i = 0; i < ids.length; i++) selectedIds.delete(ids[i]);
+    rowSelectionIndeterminateSupported: () => false,
 
-      state.api.peek().rowRefresh();
-    },
-    rowSelectionGetSelected: () => {
-      const selected = state.selectedIds.peek();
-      return [...selected];
-    },
-    rowSelectionIsIndeterminate: () => false,
-    rowSelectionIsSelected: (id) => {
-      return state.selectedIds.peek().has(id);
-    },
-    rowSelectionSelect: (ids: string[]) => {
-      const selectedIds = state.selectedIds.peek();
-      for (let i = 0; i < ids.length; i++) selectedIds.add(ids[i]);
-
-      state.api.peek().rowRefresh();
-    },
-    rowSelectionSelectAll: () => {},
+    rowGetAllChildrenIds: (r) => state.graph.rowAllChildren(r).map((c) => c.id),
+    rowGetAllIds: () => state.graph.rowGetAllRows().map((c) => c.id),
 
     columnInFilterItems: (column) => state.columnInFilterFetcher({ api: state.api.peek(), column }),
     columnPivots: () => state.columnPivotsFetcher({ api: state.api.peek() }),

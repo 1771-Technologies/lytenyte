@@ -1,6 +1,6 @@
 import type { MenuProps } from "@1771technologies/react-menu";
-import { CheckMark } from "../checkbox/checkbox";
 import { t } from "@1771technologies/grid-design";
+import { CheckMark } from "@1771technologies/lytenyte-grid-community/internal";
 
 export const DefaultCheckbox: MenuProps["rendererCheckbox"] = (props) => {
   return (

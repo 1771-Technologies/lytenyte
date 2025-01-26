@@ -78,11 +78,7 @@ export function createTreeDataSource<D, E>(
     const tree = computed(() => createPathTree(paths.get()));
 
     const payloads = computed(() =>
-      treeToPayload(
-        tree.get(),
-        api$.get().getState().rowGroupDefaultExpansion.peek(),
-        r.pathSeparator ?? ROW_DEFAULT_PATH_SEPARATOR,
-      ),
+      treeToPayload(tree.get(), r.pathSeparator ?? ROW_DEFAULT_PATH_SEPARATOR),
     );
 
     const graph$ = computed<BlockGraph<D>>(() => {

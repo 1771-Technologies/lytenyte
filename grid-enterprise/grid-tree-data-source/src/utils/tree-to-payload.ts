@@ -4,11 +4,7 @@ import type { BlockPayload } from "@1771technologies/grid-graph";
 import type { RowNode, RowNodeLeaf } from "@1771technologies/grid-types/community";
 import type { PathTreeNode } from "@1771technologies/path-tree";
 
-export function treeToPayload<D>(
-  tree: PathTreeNode<RowNodeLeaf<D>>[],
-  defaultExpansion: number | boolean,
-  separator: string,
-) {
+export function treeToPayload<D>(tree: PathTreeNode<RowNodeLeaf<D>>[], separator: string) {
   const stack = [...tree.map((c) => ["", c, 0] as [string, PathTreeNode<RowNodeLeaf<D>>, number])];
 
   const paths: Record<string, RowNode<D>[]> = {};
@@ -27,8 +23,6 @@ export function treeToPayload<D>(
         data: {},
         id: item.occurrence,
         rowIndex: null,
-        expanded:
-          typeof defaultExpansion === "number" ? depth <= defaultExpansion : defaultExpansion,
         pathKey: item.path.at(-1)!,
       });
 

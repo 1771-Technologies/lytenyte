@@ -77,7 +77,6 @@ export function handleDataBlocks<D, E>(payload: AsyncDataResponse, state: Server
           data: d as any,
           kind: ROW_GROUP_KIND,
           rowIndex: null,
-          expanded,
           pathKey,
         } satisfies RowNodeGroup;
       }

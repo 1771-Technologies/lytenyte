@@ -37,13 +37,6 @@ export function initializePivotSensitiveState<D, E>(state: StateEnterprise<D, E>
       },
     ),
 
-    columnForceMountedColumnIndices: computed(() => {
-      const mode = state.columnPivotModeIsOn.get();
-
-      return mode
-        ? state.internal.columnPivotForceMountedColumnIndices.get()
-        : state.internal.columnForceMountedColumnIndices.get();
-    }),
     columnGroupExpansionState: computed(
       () => {
         const mode = state.columnPivotModeIsOn.get();

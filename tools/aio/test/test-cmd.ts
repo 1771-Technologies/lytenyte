@@ -31,4 +31,6 @@ export const testCmd = new Command("test")
     );
 
     await proc.exited;
+
+    process.exitCode = proc.exitCode ?? 0;
   });

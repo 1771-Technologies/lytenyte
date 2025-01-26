@@ -6,7 +6,13 @@ export default function Home() {
   const [item, setItem] = useState<SelectItem | null>(null);
   return (
     <div style={{ padding: 20 }}>
-      <Select placeholder="select..." items={largeList} value={item} onSelect={setItem} />
+      <Select
+        axe={{ axeDescription: "", axeItemLabels: () => "", axeLabel: () => "" }}
+        placeholder="select..."
+        items={largeList}
+        value={item}
+        onSelect={setItem}
+      />
     </div>
   );
 }

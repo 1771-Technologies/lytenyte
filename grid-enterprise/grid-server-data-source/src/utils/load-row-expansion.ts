@@ -27,7 +27,6 @@ export function loadRowExpansion<D, E>(state: ServerState<D, E>, row: Writable<R
   // If we have already request this block, we can expand immediately
 
   if (state.graph.blockContains(joinedPath, 0)) {
-    row.expanded = true;
     state.graph.blockFlatten();
     state.api.peek().rowRefresh();
 
@@ -54,7 +53,6 @@ export function loadRowExpansion<D, E>(state: ServerState<D, E>, row: Writable<R
 
       row.loading = false;
       row.error = false;
-      row.expanded = true;
 
       state.graph.blockFlatten();
       state.api.peek().rowRefresh();

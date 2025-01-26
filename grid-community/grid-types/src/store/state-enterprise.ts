@@ -49,7 +49,6 @@ export interface GridInternalState<D, E> extends Omit<CommunityInternalState<D, 
   readonly columnPivotsLoading: Signal<boolean>;
   readonly columnPivotSortModel: Signal<SortModelItem[]>;
   readonly columnPivotFilterModel: Signal<ColumnFilter<Api<D, E>, D>[]>;
-  readonly columnPivotForceMountedColumnIndices: ReadonlySignal<number[]>;
   readonly columnPivotPositions: ReadonlySignal<Uint32Array>;
   readonly columnPivotsWithRowSpan: ReadonlySignal<Set<number>>;
   readonly columnPivotsWithColSpan: ReadonlySignal<Set<number>>;
