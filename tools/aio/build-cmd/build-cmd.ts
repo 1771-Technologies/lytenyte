@@ -19,4 +19,6 @@ export const buildCmd = new Command("build")
     });
 
     await proc.exited;
+
+    process.exitCode = proc.exitCode ?? 0;
   });

@@ -59,7 +59,7 @@ export function cellEditHandleBulkEdit<D, E>(
 
     try {
       const parser = cellEditParser(api, l.columnIndex);
-      const field = parser({ api, column, row, value: newValue });
+      const field = parser!({ api, column, row, value: newValue });
 
       const updater = column.cellEditRowUpdater ?? base.cellEditRowUpdater;
       if (updater) {

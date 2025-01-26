@@ -16,7 +16,7 @@ export const cellEditIsValueValid = <D, E>(
   const value = api.cellEditValue(l);
   try {
     const parser = cellEditParser(api, l.columnIndex);
-    parser({ api, column, row, value });
+    parser!({ api, column, row, value });
 
     return true;
   } catch {

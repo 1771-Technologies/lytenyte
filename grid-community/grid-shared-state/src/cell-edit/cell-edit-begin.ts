@@ -35,7 +35,7 @@ export function cellEditBegin<D, E>(
   for (const location of locations) {
     const key = cellEditKey(location);
     const column = visible[location.columnIndex];
-    const unparser = cellEditUnparser(api, location.columnIndex);
+    const unparser = cellEditUnparser(api, location.columnIndex)!;
 
     const field = api.columnField(row, column);
     const value = unparser({ api, column, row, value: field });

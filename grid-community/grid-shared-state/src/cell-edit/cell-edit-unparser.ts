@@ -1,9 +1,12 @@
-import type { ApiCommunity } from "@1771technologies/grid-types";
+import type { ApiCommunity, ColumnCommunity } from "@1771technologies/grid-types";
 import { dateUnparser } from "./cell-edit-date-unparser";
 import { numberUnparser } from "./cell-edit-number-unparser";
 import { stringUnparser } from "./cell-edit-string-unparser";
 
-export function cellEditUnparser<D, E>(api: ApiCommunity<D, E>, index: number) {
+export function cellEditUnparser<D, E>(
+  api: ApiCommunity<D, E>,
+  index: number,
+): Required<ColumnCommunity<D, E>>["cellEditUnparser"] {
   const column = api.columnByIndex(index);
   const base = api.getState().columnBase.peek();
 

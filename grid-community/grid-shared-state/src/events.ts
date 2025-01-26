@@ -1,6 +1,11 @@
 import type { ApiEnterprise } from "@1771technologies/grid-types";
 
-export const events = <D, E>() => {
+export const events = <D, E>(): {
+  eventAddListeners: ApiEnterprise<D, E>["eventAddListener"];
+  eventFire: ApiEnterprise<D, E>["eventFire"];
+  eventGetListeners: ApiEnterprise<D, E>["eventGetListeners"];
+  eventRemoveListener: ApiEnterprise<D, E>["eventRemoveListener"];
+} => {
   const events: Record<string, Set<any>> = {};
 
   return {
