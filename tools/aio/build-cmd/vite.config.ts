@@ -4,6 +4,8 @@ import viteDTS from "vite-plugin-dts";
 import react from "@vitejs/plugin-react";
 import { resolve } from "path";
 import { getClosestNpmPackage } from "../utils/get-closed-npm-package";
+import wyw from "@wyw-in-js/vite";
+import AutoImport from "unplugin-auto-import/vite";
 
 export interface PackageJson {
   name: string;
@@ -31,6 +33,19 @@ function getViteConfig(pkgPath: string, packageJson: PackageJson) {
   return defineConfig({
     root: pkgPath,
     plugins: [
+      AutoImport({
+        imports: {
+          "@linaria/core": ["css"],
+        },
+        dts: false,
+      }),
+      wyw({
+        include: ["**/*.{ts,tsx}"],
+        babelOptions: {
+          presets: ["@babel/preset-typescript", "@babel/preset-react"],
+        },
+      }),
+
       react(),
       viteDTS({
         logLevel: "warn",

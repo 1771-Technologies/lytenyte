@@ -10,6 +10,16 @@
       "require": "./src/index.ts"
     }
   },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./src/index.ts",
+        "import": "./src/index.ts",
+        "require": "./src/index.ts"
+      }
+    }
+  },
   "dependencies": {
     "@1771technologies/grid-types": "workspace:*",
     "@1771technologies/grid-store-enterprise": "workspace:*",
