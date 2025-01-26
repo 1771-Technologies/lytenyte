@@ -10,6 +10,7 @@ import {
 } from "@1771technologies/js-utils";
 import { getHoveredColumnIndex, getHoveredRowIndex } from "@1771technologies/grid-core";
 import {
+  adjustRectForRowAndCellSpan,
   deselectRectRange,
   updateAdditiveCellSelection,
 } from "@1771technologies/grid-core-enterprise";
@@ -43,6 +44,7 @@ export function CellSelectionDriver() {
 
     const pointerMove = (event: PointerEvent) => {
       if (animFrame) cancelAnimationFrame(animFrame);
+
       animFrame = requestAnimationFrame(() => {
         animFrame = null;
 
@@ -53,19 +55,16 @@ export function CellSelectionDriver() {
 
         const columnIndex = getHoveredColumnIndex(api, clientX);
         const rowIndex = getHoveredRowIndex(api, clientY);
-
         if (rowIndex == null || columnIndex == null) return;
 
         // Check if we have moved enough to qualify for a drag even.
         if (pointerStartX != null && pointerStartY != null) {
           const moveDeltaX = Math.abs(pointerStartX - clientX);
           const moveDeltaY = Math.abs(pointerStartY - clientY);
-
           if (moveDeltaX < 20 && moveDeltaY < 20) return;
           pointerStartX = null;
           pointerStartY = null;
         }
-
         if (!startSelection) return;
 
         // Handle edge scrolling
@@ -109,7 +108,8 @@ export function CellSelectionDriver() {
         if (isAdditive) {
           updateAdditiveCellSelection(api, active[0]);
         } else {
-          s.cellSelections.set(active);
+          const adjusted = active.map((c) => adjustRectForRowAndCellSpan(api, c));
+          s.cellSelections.set(adjusted);
         }
         lastRect = active[0];
       });
@@ -189,7 +189,8 @@ export function CellSelectionDriver() {
       if (isAdditive) {
         updateAdditiveCellSelection(api, startSelection);
       } else {
-        s.cellSelections.set([startSelection]);
+        const adjusted = [startSelection].map((c) => adjustRectForRowAndCellSpan(api, c));
+        s.cellSelections.set(adjusted);
       }
 
       lastRect = startSelection;
