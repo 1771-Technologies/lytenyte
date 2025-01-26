@@ -34,7 +34,7 @@ export function Watermark({ id }: { id: string }) {
 
   if (!mountable) return null;
 
-  if (!hasAValidLicense) return null;
+  if (hasAValidLicense) return null;
 
   if (showing && showing !== id) return null;
   if (typeof document === "undefined") return null;
