@@ -21,7 +21,8 @@ jobs:
         run: bun i
 
       - name: Create Release Pull Request or Publish to npm
-        id: changesets
         uses: changesets/action@v1
+        with:
+          version: bun run ci:version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

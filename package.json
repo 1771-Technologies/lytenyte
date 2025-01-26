@@ -9,6 +9,10 @@
     "enterprise/*",
     "tools/*"
   ],
+  "scripts": {
+    "ci:version": "changeset version",
+    "ci:publish": "changeset publish"
+  },
   "dependencies": {
     "@1771technologies/aio": "workspace:*",
     "@1771technologies/eslint-preset": "0.0.3",
