@@ -437,26 +437,6 @@ export type Position =
 
 export type FocusPosition = { kind: "cell"; rowIndex: number; columnIndex: number };
 
-// Overlays
-export type OverlayId =
-  | "lng1771-loading-overlay"
-  | "lng1771-no-data-overlay"
-  | "lng1771-load-error-overlay"
-  | (string & {});
-
-export type OverlayRendererParams<A> = {
-  readonly api: A;
-};
-
-export interface Overlay<A, E> {
-  readonly renderer: (p: OverlayRendererParams<A>) => E;
-  readonly overRows?: boolean;
-}
-
-export type Overlays<A, E> = {
-  [id: string]: Overlay<A, E>;
-};
-
 // Row Detail
 
 export type RowDetailParams<A, D> = {

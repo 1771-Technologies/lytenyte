@@ -66,9 +66,6 @@ export function initialize<D, E>(
 
     keyBindings: signal(props.keyBindings ?? {}),
 
-    overlays: signal(props.overlays ?? {}),
-    overlayToShow: signal(props.overlayToShow ?? null),
-
     paginate: signal(props.paginate ?? false),
     paginatePageSize: signal(props.paginatePageSize ?? PAGINATE_PAGE_SIZE),
     paginateCurrentPage: signal(props.paginateCurrentPage ?? 0),

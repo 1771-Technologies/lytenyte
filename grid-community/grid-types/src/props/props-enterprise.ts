@@ -10,12 +10,17 @@ import type {
   ColumnFilter,
   ContextMenuItems,
   FloatingFrame,
+  OverlayId,
+  Overlays,
   PanelFrame,
 } from "../types-enterprise";
 import type { PropsCommunity } from "./props-community";
 
 export interface PropsEnterprise<A, D, C, E, Base, Group>
   extends Omit<PropsCommunity<A, D, C, E, Base, Group>, "filterModel" | "rowDataSource"> {
+  readonly overlayToShow?: OverlayId | null;
+  readonly overlays?: Overlays<A, E>;
+
   readonly cellSelections?: CellSelectionRect[];
   readonly cellSelectionMode?: CellSelectionMode;
 

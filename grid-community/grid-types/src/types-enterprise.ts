@@ -155,6 +155,26 @@ export type ColumnFilter<A, D> =
   | FilterFunction<A, D>
   | FilterIn;
 
+// Overlays
+export type OverlayId =
+  | "lng1771-loading-overlay"
+  | "lng1771-no-data-overlay"
+  | "lng1771-load-error-overlay"
+  | (string & {});
+
+export type OverlayRendererParams<A> = {
+  readonly api: A;
+};
+
+export interface Overlay<A, E> {
+  readonly renderer: (p: OverlayRendererParams<A>) => E;
+  readonly overRows?: boolean;
+}
+
+export type Overlays<A, E> = {
+  [id: string]: Overlay<A, E>;
+};
+
 // floating Frame
 
 export interface FloatingFrame<A, E> {

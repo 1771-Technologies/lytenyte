@@ -9,8 +9,6 @@ import type {
   FilterRegisteredFuncs,
   FloatingCellRenderers,
   KeyBindingMap,
-  OverlayId,
-  Overlays,
   RowDataSourceClient,
   RowDetailHeight,
   RowDetailPredicate,
@@ -64,9 +62,6 @@ export interface PropsCommunity<A, D, C, E, Base, Group> {
   readonly gridId: string;
 
   readonly keyBindings?: KeyBindingMap<A>;
-
-  readonly overlayToShow?: OverlayId | null;
-  readonly overlays?: Overlays<A, E>;
 
   readonly rowDataSource?: RowDataSourceClient<D>;
   readonly rowUpdateStackMaxSize?: number;

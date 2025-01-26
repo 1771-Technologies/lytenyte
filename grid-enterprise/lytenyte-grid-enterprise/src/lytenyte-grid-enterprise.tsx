@@ -24,6 +24,7 @@ import {
 } from "./cell-selection/cell-selection-containers";
 import { useMemo } from "react";
 import { Watermark } from "./watermark";
+import { OverlayDriver } from "./overlay/overlay-driver";
 
 export interface LyteNyteGridEnterpriseProps<D> {
   readonly grid: StoreEnterpriseReact<D>;
@@ -60,6 +61,7 @@ function LyteNyteCommunityImpl() {
 
   return (
     <ClassProvider value={classes}>
+      <OverlayDriver />
       <Viewport headerDefault={HeaderCellDefault as any} top={Top} center={Center} bottom={Bottom}>
         <CellSelectionDriver />
         <Watermark id={state.gridId.use()} />

@@ -37,6 +37,16 @@ export default function Play() {
           gap: 4px;
         `}
       >
+        <button onClick={() => grid.state.overlayToShow.set("lng1771-load-error-overlay")}>
+          Error
+        </button>
+        <button onClick={() => grid.state.overlayToShow.set("lng1771-no-data-overlay")}>
+          No data
+        </button>
+        <button onClick={() => grid.state.overlayToShow.set(null)}>No data</button>
+        <button onClick={() => grid.state.overlayToShow.set("lng1771-loading-overlay")}>
+          Loading
+        </button>
         <button onClick={() => grid.api.autosizeColumns()}>Autosize</button>
         <button onClick={() => grid.state.rtl.set((prev) => !prev)}>RTL</button>
         <button onClick={() => grid.state.rowGroupModel.set(["job", "age"])}>Grouped</button>
