@@ -106,6 +106,7 @@ export function CellStyleRow({
       style={style}
       className={clsx(
         css`
+          pointer-events: none;
           grid-column-start: 1;
           grid-column-end: 2;
           grid-row-start: 1;
