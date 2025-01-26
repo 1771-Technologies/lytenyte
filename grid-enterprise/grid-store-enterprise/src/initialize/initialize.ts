@@ -131,9 +131,7 @@ export function initialize<D, E>(
     clipboardTransformHeaderGroup: signal(props.clipboardTransformHeaderGroup ?? null),
     clipboardTransformPaste: signal(props.clipboardTransformPaste ?? null),
 
-    columnPivotModeIsOn: signal(props.columnPivotModeIsOn ?? false, {
-      postUpdate: () => api.cellEditEndAll(true), // immediately cancel all edits when updating
-    }),
+    columnPivotModeIsOn: signal(props.columnPivotModeIsOn ?? false),
     columnPivotModel: signal(props.columnPivotModel ?? []),
 
     filterQuickSearch: signal(props.filterQuickSearch ?? null),

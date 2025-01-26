@@ -1,5 +1,8 @@
 import { computed, signal } from "@1771technologies/react-cascada";
-import { boundSelectionRect } from "@1771technologies/grid-core-enterprise";
+import {
+  adjustRectForRowAndCellSpan,
+  boundSelectionRect,
+} from "@1771technologies/grid-core-enterprise";
 import type { ApiEnterprise } from "@1771technologies/grid-types";
 import type { CellSelectionRect } from "@1771technologies/grid-types/enterprise";
 
@@ -11,7 +14,7 @@ export const cellSelectionComputed = <D, E>(
 
   return computed(
     () => {
-      const current = rects$.get();
+      const current = rects$.get().map((v) => adjustRectForRowAndCellSpan(api, v));
 
       const sx = api.getState();
 

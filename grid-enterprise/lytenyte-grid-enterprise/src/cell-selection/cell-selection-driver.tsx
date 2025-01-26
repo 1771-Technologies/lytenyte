@@ -10,7 +10,6 @@ import {
 } from "@1771technologies/js-utils";
 import { getHoveredColumnIndex, getHoveredRowIndex } from "@1771technologies/grid-core";
 import {
-  adjustRectForRowAndCellSpan,
   deselectRectRange,
   updateAdditiveCellSelection,
 } from "@1771technologies/grid-core-enterprise";
@@ -108,8 +107,7 @@ export function CellSelectionDriver() {
         if (isAdditive) {
           updateAdditiveCellSelection(api, active[0]);
         } else {
-          const adjusted = active.map((c) => adjustRectForRowAndCellSpan(api, c));
-          s.cellSelections.set(adjusted);
+          s.cellSelections.set(active);
         }
         lastRect = active[0];
       });
@@ -167,8 +165,11 @@ export function CellSelectionDriver() {
       if (event.shiftKey && pivot) {
         const active = { ...pivot };
 
-        active.columnEnd = columnIndex + 1;
-        active.rowEnd = rowIndex + 1;
+        active.columnStart = Math.min(columnIndex, active.columnStart);
+        active.columnEnd = Math.max(columnIndex + 1, active.columnEnd);
+
+        active.rowStart = Math.min(rowIndex, active.rowStart);
+        active.rowEnd = Math.max(rowIndex + 1, active.rowEnd);
 
         s.cellSelections.set([active]);
 
@@ -189,8 +190,7 @@ export function CellSelectionDriver() {
       if (isAdditive) {
         updateAdditiveCellSelection(api, startSelection);
       } else {
-        const adjusted = [startSelection].map((c) => adjustRectForRowAndCellSpan(api, c));
-        s.cellSelections.set(adjusted);
+        s.cellSelections.set([startSelection]);
       }
 
       lastRect = startSelection;
