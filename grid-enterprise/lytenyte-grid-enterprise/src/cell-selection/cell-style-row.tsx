@@ -24,6 +24,8 @@ export function CellStyleRow({
   const yPositions = state.internal.rowPositions.use();
   const rtl = state.rtl.use();
 
+  const flash = state.internal.cellSelectionFlashOn.use();
+
   const startCount = state.columnVisibleStartCount.use();
   const centerCount = state.columnVisibleCenterCount.use();
   const paginate = state.paginate.use();
@@ -122,6 +124,21 @@ export function CellStyleRow({
         isPivot &&
           css`
             background-color: transparent;
+          `,
+        flash &&
+          css`
+            @keyframes lng1771-flash-animation {
+              0% {
+                background-color: ${t.colors.primary_30};
+              }
+
+              100% {
+                background-color: ${t.colors.primary_05};
+              }
+            }
+
+            animation: lng1771-flash-animation;
+            animation-duration: 0.2s;
           `,
       )}
     />

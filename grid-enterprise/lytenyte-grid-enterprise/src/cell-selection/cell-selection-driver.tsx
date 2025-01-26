@@ -273,7 +273,23 @@ export function CellSelectionDriver() {
   ]);
 
   useEffect(() => {
-    if (mode === "none") return;
+    if (mode === "none" || !viewport) return;
+
+    const controller = new AbortController();
+    viewport.addEventListener(
+      "keydown",
+      (ev) => {
+        const meta = ev.ctrlKey || ev.metaKey;
+        if (ev.key === "c" && meta) {
+          api.clipboardCopyCells();
+        } else if (ev.key === "x" && meta) {
+          api.clipboardCutCells();
+        } else if (ev.key === "v" && meta) {
+          api.clipboardPasteCells();
+        }
+      },
+      { signal: controller.signal },
+    );
 
     const unsub = state.internal.navigatePosition.watch(() => {
       const pos = state.internal.navigatePosition.peek();
@@ -292,13 +308,17 @@ export function CellSelectionDriver() {
       }
     });
 
-    return () => unsub();
+    return () => {
+      unsub();
+      controller.abort();
+    };
   }, [
     api,
     mode,
     state.cellSelections,
     state.internal.cellSelectionPivot,
     state.internal.navigatePosition,
+    viewport,
   ]);
 
   return <></>;
