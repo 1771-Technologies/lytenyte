@@ -6,16 +6,14 @@ import { CellStyleRow } from "./cell-style-row";
 export const CellSelectionTop = memo(function CellSelectionTop() {
   const { state, api } = useGrid();
 
-  const allRects = state.cellSelections.use();
+  const allRects = state.internal.cellSelectionSplits.use();
 
-  console.log(allRects);
   const topRects = useMemo(() => {
     return allRects.filter((rect) => isTopRect(api, rect));
   }, [allRects, api]);
 
   const additive = state.internal.cellSelectionAdditiveRects.use();
   const isDeselect = state.internal.cellSelectionIsDeselect.use();
-
   const additiveRects = useMemo(() => {
     if (!additive) return [];
     return additive.filter((rect) => isTopRect(api, rect));
@@ -36,7 +34,7 @@ export const CellSelectionTop = memo(function CellSelectionTop() {
 export const CellSelectionCenter = memo(function CellSelectionCenter() {
   const { state, api } = useGrid();
 
-  const allRects = state.cellSelections.use();
+  const allRects = state.internal.cellSelectionSplits.use();
 
   const centerRects = useMemo(() => {
     return allRects.filter((rect) => isCenterRect(api, rect));
@@ -64,7 +62,8 @@ export const CellSelectionCenter = memo(function CellSelectionCenter() {
 export const CellSelectionBottom = memo(function CellSelectionBottom() {
   const { state, api } = useGrid();
 
-  const allRects = state.cellSelections.use();
+  const allRects = state.internal.cellSelectionSplits.use();
+
   const bottomRects = useMemo(() => {
     return allRects.filter((rect) => isBottomRect(api, rect));
   }, [allRects, api]);

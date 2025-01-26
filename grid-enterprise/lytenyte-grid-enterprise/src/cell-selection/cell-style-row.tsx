@@ -109,11 +109,12 @@ export function CellStyleRow({
           grid-row-start: 1;
           grid-row-end: 2;
           background-color: ${t.colors.primary_30};
-          z-index: 10;
+          border: 1px solid ${t.colors.primary_50};
         `,
         isDeselect &&
           css`
             background-color: ${t.colors.system_red_30};
+            border: 1px solid ${t.colors.system_red_50};
           `,
       )}
     />
