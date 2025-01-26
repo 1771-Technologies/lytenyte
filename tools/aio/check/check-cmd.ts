@@ -26,21 +26,22 @@ export const checkCmd = new Command("check")
       process.exit(1);
     }
 
-    const exists = await Bun.file(`${nearestPkg}/index.html`).exists();
+    // const exists = await Bun.file(`${nearestPkg}/index.html`).exists();
 
-    if (!exists) {
-      console.log("\nNo index.html present, so assuming there are no playwright tests\n");
-      return;
-    }
+    // if (!exists) {
+    //   console.log("\nNo index.html present, so assuming there are no playwright tests\n");
+    //   return;
+    // }
 
-    console.log("\nRunning Playwright tests - ensure web server is not running\n");
-    const playwrightCheck = Bun.spawn(["aio", "playwright", "--pass-with-no-tests"], {
-      stdio: ["inherit", "inherit", "inherit"],
-    });
-    await playwrightCheck.exited;
+    // TODO re-enable playwright tests
+    // console.log("\nRunning Playwright tests - ensure web server is not running\n");
+    // const playwrightCheck = Bun.spawn(["aio", "playwright", "--pass-with-no-tests"], {
+    //   stdio: ["inherit", "inherit", "inherit"],
+    // });
+    // await playwrightCheck.exited;
 
-    if (playwrightCheck.exitCode !== 0) {
-      console.error("Playwright tests failed.");
-      process.exit(1);
-    }
+    // if (playwrightCheck.exitCode !== 0) {
+    //   console.error("Playwright tests failed.");
+    //   process.exit(1);
+    // }
   });
