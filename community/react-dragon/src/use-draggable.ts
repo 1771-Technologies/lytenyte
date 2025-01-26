@@ -1,5 +1,5 @@
 import { useEvent } from "@1771technologies/react-utils";
-import { type DragEvent as ReactDragEvent, type ReactNode } from "react";
+import type { DragEvent as ReactDragEvent, ReactNode } from "react";
 import { dragPlaceholder } from "./drag-placeholder";
 import { dragState } from "./drag-state";
 import { getClientX, getClientY } from "@1771technologies/js-utils";

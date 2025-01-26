@@ -59,6 +59,7 @@ function getViteConfig(pkgPath: string, packageJson: PackageJson) {
         external: [
           "react",
           "react-dom",
+          "react-dom/server",
           "react/jsx-runtime",
           "react-dom/client",
           "@mdx-js/rollup",
