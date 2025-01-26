@@ -1,0 +1,16 @@
+{
+  "name": "@1771technologies/lng-license",
+  "version": "0.0.1",
+  "license": "TODO",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "require": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "build": "aio build && node ./post-build.js"
+  }
+}

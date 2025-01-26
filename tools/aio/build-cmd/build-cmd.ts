@@ -1,23 +1,22 @@
 import { Command } from "commander";
-import { getClosestNpmPackage } from "../utils/get-closed-npm-package";
-import { build } from "vite";
-import { getViteConfig, type PackageJson } from "./vite.config";
-import { readFileSync } from "fs";
-import { resolve } from "path";
+import { argv } from "bun";
+import path from "path";
+
+const dirname = import.meta.dir;
+const viteConfigPath = path.join(dirname, "vite.config.ts");
 
 export const buildCmd = new Command("build")
   .description("Builds a library package. This will ensure it can be released")
   .action(async () => {
-    const pkgPath = getClosestNpmPackage();
-    if (!pkgPath) throw new Error("Failed to determine the package to build");
+    const testIndex = argv.indexOf("build");
+    if (testIndex === -1) {
+      console.error("Expected a test command to be present");
+      process.exit(1);
+    }
 
-    const packageJson = getPackageJson(pkgPath);
-    const path = pkgPath.replace("package.json", "");
+    const proc = Bun.spawn(["vite", "build", "-c", viteConfigPath, ...argv.slice(testIndex + 1)], {
+      stdio: ["inherit", "inherit", "inherit"],
+    });
 
-    const viteConfig = getViteConfig(path, packageJson);
-    await build(viteConfig);
+    await proc.exited;
   });
-
-function getPackageJson(path: string) {
-  return JSON.parse(readFileSync(resolve(path), "utf8")) as PackageJson;
-}

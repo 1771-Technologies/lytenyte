@@ -1,7 +1,9 @@
 import { defineConfig } from "vite";
+import { readFileSync } from "fs";
 import viteDTS from "vite-plugin-dts";
 import react from "@vitejs/plugin-react";
-import { resolve } from "node:path";
+import { resolve } from "path";
+import { getClosestNpmPackage } from "../utils/get-closed-npm-package";
 
 export interface PackageJson {
   name: string;
@@ -17,7 +19,7 @@ export interface PackageJson {
   };
 }
 
-export function getViteConfig(pkgPath: string, packageJson: PackageJson) {
+function getViteConfig(pkgPath: string, packageJson: PackageJson) {
   const paths = Object.values(packageJson.exports ?? {})
     .map((c) => c.import!)
     .filter(Boolean);
@@ -66,3 +68,15 @@ export function getViteConfig(pkgPath: string, packageJson: PackageJson) {
     },
   });
 }
+
+const pkgPath = getClosestNpmPackage();
+if (!pkgPath) throw new Error("Failed to determine the package to build");
+
+const packageJson = getPackageJson(pkgPath);
+const path = pkgPath.replace("package.json", "");
+
+function getPackageJson(path: string) {
+  return JSON.parse(readFileSync(resolve(path), "utf8")) as PackageJson;
+}
+
+export default getViteConfig(path, packageJson);
