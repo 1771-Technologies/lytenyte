@@ -4,7 +4,8 @@
   "license": "COMMERCIAL",
   "type": "module",
   "files": [
-    "dist"
+    "dist",
+    "LICENSE"
   ],
   "exports": {
     ".": {
