@@ -13,6 +13,7 @@ import {
   deselectRectRange,
   updateAdditiveCellSelection,
 } from "@1771technologies/grid-core-enterprise";
+import { GRID_CELL_POSITION } from "@1771technologies/grid-constants";
 
 function isNormalClick(event: MouseEvent) {
   return event.button === 0 && !event.ctrlKey && !event.altKey && !event.metaKey;
@@ -220,13 +221,39 @@ export function CellSelectionDriver() {
       document.removeEventListener("pointerup", pointerUp);
       document.removeEventListener("pointermove", pointerMove);
     };
-
     viewport.addEventListener("pointerdown", pointerDown);
+
+    const unsub = state.internal.navigatePosition.watch(() => {
+      const pos = state.internal.navigatePosition.peek();
+      if (!pos) return;
+      if (pos.kind !== GRID_CELL_POSITION) return state.cellSelections.set([]);
+      else {
+        state.cellSelections.set([
+          {
+            rowStart: pos.rowIndex,
+            rowEnd: pos.rowIndex + 1,
+            columnStart: pos.columnIndex,
+            columnEnd: pos.columnIndex + 1,
+          },
+        ]);
+      }
+    });
 
     return () => {
       viewport.removeEventListener("pointerdown", pointerDown);
+      unsub();
     };
-  }, [api, cancelX, cancelY, edgeScrollX, edgeScrollY, mode, viewport]);
+  }, [
+    api,
+    cancelX,
+    cancelY,
+    edgeScrollX,
+    edgeScrollY,
+    mode,
+    state.cellSelections,
+    state.internal.navigatePosition,
+    viewport,
+  ]);
 
   return <></>;
 }
