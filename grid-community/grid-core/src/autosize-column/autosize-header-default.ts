@@ -30,7 +30,7 @@ export function autosizeHeaderDefaultEnterprise<D, E>({
   const aggFn = column.aggFunc ?? base.aggFunc;
 
   const headerText = column.headerName ?? column.id;
-  const secondary = column.secondaryLabel ?? "";
+  const secondary = column.headerSecondaryLabel ?? "";
   const aggFuncText =
     !rowGroupModel.length || !aggFn ? "" : typeof aggFn === "string" ? `(${aggFn})` : `FN(X)`;
 

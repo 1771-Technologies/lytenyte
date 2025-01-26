@@ -11,10 +11,7 @@ export function getAggregationFunction<D, E>(
   column: ColumnCommunity<D, E>,
   columnBase: ColumnBaseCommunity<D, E>,
 ) {
-  const funcOrId = (column.aggFunc ||
-    column.aggFuncDefault ||
-    columnBase.aggFunc ||
-    columnBase.aggFuncDefault)!;
+  const funcOrId = (column.aggFunc || column.aggFuncDefault || columnBase.aggFunc)!;
 
   if (typeof funcOrId === "function") return funcOrId;
 

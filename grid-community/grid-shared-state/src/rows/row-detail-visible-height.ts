@@ -9,10 +9,7 @@ export const rowDetailVisibleHeight = <D, E>(
   const s = api.getState();
   const detailHeight = s.rowDetailHeight.peek();
 
-  const cache = s.internal.rowDetailAutoHeightCache;
-  const estimate = s.rowDetailAutoHeightEstimate.peek();
   if (typeof detailHeight === "number") return detailHeight;
-  if (detailHeight === "auto") return cache[id] ?? estimate;
 
   const row = api.rowById(id)!;
   return detailHeight({ api: api as any, row });

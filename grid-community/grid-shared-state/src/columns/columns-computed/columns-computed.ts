@@ -56,7 +56,6 @@ export function columnsComputed<D, E>(
   };
 
   const columns = signal(rawColumns, {
-    postUpdate: () => !pivots && api.cellEditEndAll(true),
     bind: (v) => {
       return processColumns(v);
     },

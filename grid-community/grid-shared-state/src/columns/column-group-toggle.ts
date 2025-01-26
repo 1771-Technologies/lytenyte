@@ -13,8 +13,4 @@ export const columnGroupToggle = <D, E>(
   const nextState = { ...groupState, [id]: nextValue };
 
   s.columnGroupExpansionState.set(nextState);
-  (api as ApiCommunity<D, E>).eventFire(
-    "onColumnGroupExpansionStateChange",
-    api as ApiCommunity<D, E>,
-  );
 };

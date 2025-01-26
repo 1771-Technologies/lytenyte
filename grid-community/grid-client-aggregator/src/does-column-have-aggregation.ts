@@ -5,13 +5,12 @@ import type {
 } from "@1771technologies/grid-types";
 import { validBuiltIns } from "./built-ins/built-ins.js";
 
-export function doesColumnHaveAggregation<D, E, I>(
+export function doesColumnHaveAggregation<D, E>(
   api: ApiCommunity<D, E>,
   column: ColumnCommunity<D, E>,
   columnBase: ColumnBaseCommunity<D, E>,
 ) {
-  const aggFunc =
-    column.aggFunc ?? column.aggFuncDefault ?? columnBase.aggFunc ?? columnBase.aggFuncDefault;
+  const aggFunc = column.aggFunc ?? column.aggFuncDefault ?? columnBase.aggFunc;
 
   if (!aggFunc) return false;
   if (typeof aggFunc === "function" || validBuiltIns.has(aggFunc)) return true;

@@ -17,7 +17,6 @@ export const emptyRowDataSource: Required<PropsEnterprise<any, any>>["rowDataSou
   paginateRowStartAndEndForPage: () => [0, 0],
   rowChildCount: () => 0,
   rowDepth: () => 0,
-  rowGroupToggle: () => {},
   rowParentIndex: () => null,
   rowReload: () => {},
   rowReplaceBottomData: () => {},
@@ -26,15 +25,12 @@ export const emptyRowDataSource: Required<PropsEnterprise<any, any>>["rowDataSou
   rowReloadExpansion: () => {},
   rowReset: () => {},
 
-  rowSelectionAllRowsSelected: () => false,
+  rowGetAllChildrenIds: () => [],
+  rowGetAllIds: () => [],
+  rowIdToRowIndex: () => null,
+  rowSelectionIndeterminateSupported: () => false,
+
   rowSelectionSelectAllSupported: () => false,
-  rowSelectionSelectAll: () => {},
-  rowSelectionClear: () => {},
-  rowSelectionDeselect: () => {},
-  rowSelectionGetSelected: () => [],
-  rowSelectionIsIndeterminate: () => false,
-  rowSelectionIsSelected: () => false,
-  rowSelectionSelect: () => {},
   rowSetData: () => {},
   rowSetDataMany: () => {},
 };

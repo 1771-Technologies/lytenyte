@@ -75,7 +75,7 @@ if (!pkgPath) throw new Error("Failed to determine the package to build");
 const packageJson = getPackageJson(pkgPath);
 const path = pkgPath.replace("package.json", "");
 
-function getPackageJson(path: string) {
+export function getPackageJson(path: string) {
   return JSON.parse(readFileSync(resolve(path), "utf8")) as PackageJson;
 }
 

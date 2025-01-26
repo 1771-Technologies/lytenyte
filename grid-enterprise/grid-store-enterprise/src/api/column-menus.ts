@@ -7,32 +7,23 @@ export const columnMenus = <D, E>(api: ApiEnterprise<D, E>) => {
 
       s.internal.filterMenuColumn.set(null);
       s.internal.filterMenuTarget.set(null);
-      api.eventFire("onColumnFilterMenuOpenChange", {
-        api,
-        column: s.internal.filterMenuColumn.peek(),
-      });
     },
     columnCloseMenu: () => {
       const s = api.getState();
       s.internal.columnMenuColumn.set(null);
       s.internal.columnMenuTarget.set(null);
-
-      api.eventFire("onColumnMenuOpenChange", { api, column: s.internal.columnMenuColumn.peek()! });
     },
     columnOpenFilterMenu: (c, bb) => {
       const sx = api.getState();
 
       sx.internal.filterMenuColumn.set(c);
       sx.internal.filterMenuTarget.set(bb);
-
-      api.eventFire("onColumnFilterMenuOpenChange", { api, column: c });
     },
     columnOpenMenu: (c, bb) => {
       const s = api.getState();
 
       s.internal.columnMenuColumn.set(c);
       s.internal.columnMenuTarget.set(bb);
-      api.eventFire("onColumnMenuOpenChange", { api, column: c });
     },
   } satisfies {
     columnCloseFilterMenu: ApiEnterprise<D, E>["columnFilterMenuClose"];

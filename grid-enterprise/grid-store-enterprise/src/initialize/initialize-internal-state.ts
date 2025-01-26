@@ -76,7 +76,6 @@ export function initializeInternalState<D, E>(
     columnPivotVisibleStartCount,
     columnPivotsLoading,
     columnPivotsVisible,
-    columnPivotForceMountedColumnIndices,
     columnPivotGroupExpansionState,
   } = columnPivotsState(state, api);
 
@@ -139,7 +138,6 @@ export function initializeInternalState<D, E>(
     columnPivotVisibleCenterCount,
     columnPivotVisibleEndCount,
     columnPivotVisibleStartCount,
-    columnPivotForceMountedColumnIndices,
     columnPivotPositions,
     columnPivotWidthDeltas,
     columnPivotsGetColSpan,

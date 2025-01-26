@@ -52,20 +52,6 @@ export function columnPivotsState<D, E>(
   const columnPivotGroupEndLevels = computed(() => columnPivotGroups.get().endLevels);
   const columnPivotGroupLevels = computed(() => columnPivotGroups.get().allLevels);
 
-  const columnPivotForceMountedColumnIndices = computed(() => {
-    const columns = columnPivotsVisible.get();
-    const base = state.columnBase.get();
-
-    const indices: number[] = [];
-    for (let i = 0; i < columns.length; i++) {
-      const column = columns[i];
-      const keepMounted = column.keepMounted ?? base.keepMounted;
-      if (keepMounted) indices.push(i);
-    }
-
-    return indices;
-  });
-
   return {
     columnPivotColumns,
     columnPivotLookup,
@@ -83,6 +69,5 @@ export function columnPivotsState<D, E>(
     columnPivotGroupStartLevels,
     columnPivotGroupCenterLevels,
     columnPivotGroupEndLevels,
-    columnPivotForceMountedColumnIndices,
   };
 }

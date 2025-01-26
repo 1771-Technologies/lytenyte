@@ -5,7 +5,7 @@ export const columnIsMeasurable = <D, E>(api: ApiEnterprise<D, E>, c: ColumnEnte
 
   const base = api.getState().columnBase.peek();
 
-  const defaultMeasure = c.measureFuncDefault ?? base.measureFuncDefault;
+  const defaultMeasure = c.measureFuncDefault;
   const allowedMeasures = c.measureFuncsAllowed ?? base.measureFuncsAllowed ?? [];
   const hasMeasureFunc = c.measureFunc ?? base.measureFunc;
 
