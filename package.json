@@ -11,7 +11,7 @@
   ],
   "dependencies": {
     "@1771technologies/aio": "workspace:*",
-    "@1771technologies/eslint-preset": "../eslint-preset",
+    "@1771technologies/eslint-preset": "0.0.3",
     "@changesets/cli": "^2.27.12",
     "eslint": "^9.17.0",
     "prettier": "^3.4.2"
