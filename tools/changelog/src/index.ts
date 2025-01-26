@@ -1,7 +1,11 @@
 import type { ChangelogFunctions } from "@changesets/types";
 
 const defaultChangelogFunctions: ChangelogFunctions = {
-  getReleaseLine: (changeset, type, opts) => {},
+  getReleaseLine: async (changeset, type, opts) => {
+    console.log(changeset);
+
+    return "";
+  },
   getDependencyReleaseLine: async () => "",
 };
 
