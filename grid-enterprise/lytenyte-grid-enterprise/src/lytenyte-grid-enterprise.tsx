@@ -3,9 +3,11 @@ import {
   CellEditorBottom,
   CellEditorCenter,
   CellEditorTop,
+  ClassProvider,
   Viewport,
+  type CellClasses,
 } from "@1771technologies/lytenyte-grid-community/internal";
-import { GridProvider } from "./use-grid";
+import { GridProvider, useGrid } from "./use-grid";
 import { HeaderCellDefault } from "./components/header-cell-default";
 import {
   GridFrame,
@@ -20,6 +22,7 @@ import {
   CellSelectionCenter,
   CellSelectionTop,
 } from "./cell-selection/cell-selection-containers";
+import { useMemo } from "react";
 
 export interface LyteNyteGridEnterpriseProps<D> {
   readonly grid: StoreEnterpriseReact<D>;
@@ -40,10 +43,26 @@ export function LyteNyteGrid<D>({ grid }: LyteNyteGridEnterpriseProps<D>) {
 }
 
 function LyteNyteCommunityImpl() {
+  const { state } = useGrid();
+  const cellSelectionEnabled = state.cellSelectionMode.use() !== "none";
+
+  const classes = useMemo<CellClasses>(() => {
+    if (!cellSelectionEnabled) return { cellClasses: "" };
+    return {
+      cellClasses: css`
+        &:focus::after {
+          border-color: transparent;
+        }
+      `,
+    };
+  }, [cellSelectionEnabled]);
+
   return (
-    <Viewport headerDefault={HeaderCellDefault as any} top={Top} center={Center} bottom={Bottom}>
-      <CellSelectionDriver />
-    </Viewport>
+    <ClassProvider value={classes}>
+      <Viewport headerDefault={HeaderCellDefault as any} top={Top} center={Center} bottom={Bottom}>
+        <CellSelectionDriver />
+      </Viewport>
+    </ClassProvider>
   );
 }
 

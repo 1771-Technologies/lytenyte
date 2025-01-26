@@ -224,23 +224,6 @@ export function CellSelectionDriver() {
     };
     viewport.addEventListener("pointerdown", pointerDown);
 
-    const unsub = state.internal.navigatePosition.watch(() => {
-      const pos = state.internal.navigatePosition.peek();
-      if (!pos) return;
-      if (pos.kind !== GRID_CELL_POSITION) return state.cellSelections.set([]);
-      else {
-        const rect = adjustRectForRowAndCellSpan(api, {
-          rowStart: pos.rowIndex,
-          rowEnd: pos.rowIndex + 1,
-          columnStart: pos.columnIndex,
-          columnEnd: pos.columnIndex + 1,
-        });
-
-        state.internal.cellSelectionPivot.set(rect);
-        state.cellSelections.set([rect]);
-      }
-    });
-
     const handleKey = (ev: KeyboardEvent) => {
       const rtl = state.rtl.peek();
       const start = rtl ? "ArrowRight" : "ArrowLeft";
@@ -274,7 +257,6 @@ export function CellSelectionDriver() {
     return () => {
       viewport.removeEventListener("pointerdown", pointerDown);
       viewport.removeEventListener("keydown", handleKey);
-      unsub();
     };
   }, [
     api,
@@ -288,6 +270,32 @@ export function CellSelectionDriver() {
     state.internal.navigatePosition,
     state.rtl,
     viewport,
+  ]);
+
+  useEffect(() => {
+    const unsub = state.internal.navigatePosition.watch(() => {
+      const pos = state.internal.navigatePosition.peek();
+      if (!pos) return;
+      if (pos.kind !== GRID_CELL_POSITION) return state.cellSelections.set([]);
+      else {
+        const rect = adjustRectForRowAndCellSpan(api, {
+          rowStart: pos.rowIndex,
+          rowEnd: pos.rowIndex + 1,
+          columnStart: pos.columnIndex,
+          columnEnd: pos.columnIndex + 1,
+        });
+
+        state.internal.cellSelectionPivot.set(rect);
+        state.cellSelections.set([rect]);
+      }
+    });
+
+    return () => unsub();
+  }, [
+    api,
+    state.cellSelections,
+    state.internal.cellSelectionPivot,
+    state.internal.navigatePosition,
   ]);
 
   return <></>;

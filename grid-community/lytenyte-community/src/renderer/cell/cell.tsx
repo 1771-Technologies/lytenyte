@@ -6,8 +6,9 @@ import { useCellRenderer } from "./use-cell-renderer";
 import type { RowNode, RowPin } from "@1771technologies/grid-types/community";
 import { rowAltClx, rowBaseClx, rowClx } from "./cell-classes";
 import { useCellEvents } from "./use-cell-events";
-import { focusCellOutline } from "../../header/header-cell/header-cell";
 import { useCellPositionChange } from "./use-cell-position-change";
+import { focusCellOutline } from "../../header/header-cell/header-cell";
+import { useClassProvider } from "../../class-provider";
 
 export interface CellProps {
   readonly api: ApiCommunityReact<any>;
@@ -67,6 +68,8 @@ function CellImpl({
     colSpan,
   );
 
+  const classes = useClassProvider();
+
   return (
     <div
       style={cx.style}
@@ -77,7 +80,7 @@ function CellImpl({
       aria-colspan={colSpan}
       aria-rowindex={rowIndex + 1}
       aria-colindex={columnIndex + 1}
-      className={clsx(rowBaseClx, row, cx.className, focusCellOutline)}
+      className={clsx(rowBaseClx, row, cx.className, focusCellOutline, classes.cellClasses)}
       tabIndex={-1}
       {...events}
       onFocus={onFocus}
