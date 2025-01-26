@@ -10,6 +10,7 @@ import {
 } from "@1771technologies/js-utils";
 import { getHoveredColumnIndex, getHoveredRowIndex } from "@1771technologies/grid-core";
 import {
+  adjustRectForRowAndCellSpan,
   deselectRectRange,
   updateAdditiveCellSelection,
 } from "@1771technologies/grid-core-enterprise";
@@ -228,19 +229,51 @@ export function CellSelectionDriver() {
       if (!pos) return;
       if (pos.kind !== GRID_CELL_POSITION) return state.cellSelections.set([]);
       else {
-        state.cellSelections.set([
-          {
-            rowStart: pos.rowIndex,
-            rowEnd: pos.rowIndex + 1,
-            columnStart: pos.columnIndex,
-            columnEnd: pos.columnIndex + 1,
-          },
-        ]);
+        const rect = adjustRectForRowAndCellSpan(api, {
+          rowStart: pos.rowIndex,
+          rowEnd: pos.rowIndex + 1,
+          columnStart: pos.columnIndex,
+          columnEnd: pos.columnIndex + 1,
+        });
+
+        state.internal.cellSelectionPivot.set(rect);
+        state.cellSelections.set([rect]);
       }
     });
 
+    const handleKey = (ev: KeyboardEvent) => {
+      const rtl = state.rtl.peek();
+      const start = rtl ? "ArrowRight" : "ArrowLeft";
+      const end = rtl ? "ArrowLeft" : "ArrowRight";
+
+      if (!ev.shiftKey) return;
+
+      let handled = false;
+      if (ev.key === start) {
+        api.cellSelectionExpandStart();
+        handled = true;
+      } else if (ev.key === end) {
+        api.cellSelectionExpandEnd();
+        handled = true;
+      } else if (ev.key === "ArrowDown") {
+        api.cellSelectionExpandDown();
+        handled = true;
+      } else if (ev.key === "ArrowUp") {
+        api.cellSelectionExpandUp();
+        handled = true;
+      }
+
+      if (handled) {
+        ev.preventDefault();
+        ev.stopPropagation();
+      }
+    };
+
+    viewport.addEventListener("keydown", handleKey);
+
     return () => {
       viewport.removeEventListener("pointerdown", pointerDown);
+      viewport.removeEventListener("keydown", handleKey);
       unsub();
     };
   }, [
@@ -251,7 +284,9 @@ export function CellSelectionDriver() {
     edgeScrollY,
     mode,
     state.cellSelections,
+    state.internal.cellSelectionPivot,
     state.internal.navigatePosition,
+    state.rtl,
     viewport,
   ]);
 

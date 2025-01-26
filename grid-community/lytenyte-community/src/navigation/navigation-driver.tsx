@@ -23,7 +23,7 @@ export function NavigationDriver() {
 
         const position = state.internal.navigatePosition.peek();
         const activeEdit = state.internal.cellEditActiveLocation.peek();
-        if (activeEdit) return;
+        if (activeEdit || ev.shiftKey) return;
 
         if (document.activeElement === viewport && (key === "ArrowDown" || key === endDir)) {
           if (state.columnsVisible.peek().length) {
@@ -38,6 +38,7 @@ export function NavigationDriver() {
 
         let handled = false;
         const meta = ev.ctrlKey || ev.metaKey;
+
         if (key === "PageUp") {
           api.navigatePageUp();
           handled = true;
