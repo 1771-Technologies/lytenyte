@@ -8,5 +8,4 @@ const newContents = file.replace(
 const finalContents = newContents.replace(' ?? /* @__PURE__ */ new Date("2023-03-01")', "");
 
 writeFileSync("./dist/index.js", finalContents);
-
-copyFileSync("./dist/index.js", "../../packages/lytenyte-grid-react-enterprise/src/license.js");
+copyFileSync("./dist/index.js", "../lytenyte-grid-enterprise/src/license.js");

@@ -23,6 +23,7 @@ import {
   CellSelectionTop,
 } from "./cell-selection/cell-selection-containers";
 import { useMemo } from "react";
+import { Watermark } from "./watermark";
 
 export interface LyteNyteGridEnterpriseProps<D> {
   readonly grid: StoreEnterpriseReact<D>;
@@ -61,6 +62,7 @@ function LyteNyteCommunityImpl() {
     <ClassProvider value={classes}>
       <Viewport headerDefault={HeaderCellDefault as any} top={Top} center={Center} bottom={Bottom}>
         <CellSelectionDriver />
+        <Watermark id={state.gridId.use()} />
       </Viewport>
     </ClassProvider>
   );
