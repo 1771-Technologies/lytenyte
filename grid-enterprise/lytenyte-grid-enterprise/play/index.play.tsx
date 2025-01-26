@@ -1,9 +1,8 @@
 import { columns } from "./data/columns";
 import { bankDataSmall } from "./data/bank-data-small";
-import { useState } from "react";
 import { LyteNyteGrid } from "../src/lytenyte-grid-enterprise";
-import { makeStore } from "@1771technologies/grid-store-enterprise";
 import { useClientDataSource } from "../src/use-client-data-source";
+import { useLyteNyte } from "../src/use-lyte-nyte";
 
 export default function Play() {
   const ds = useClientDataSource({
@@ -11,19 +10,17 @@ export default function Play() {
     topData: bankDataSmall.slice(0, 2),
     bottomData: bankDataSmall.slice(0, 2),
   });
-  const [grid] = useState(() =>
-    makeStore({
-      gridId: "x",
-      columns: columns,
-      cellSelectionMode: "range",
-      cellEditPointerActivator: "double-click",
-      rowFullWidthPredicate: (p) => p.row.rowIndex === 8,
-      columnBase: { resizable: true, movable: true, sortable: true },
-      floatingRowEnabled: true,
-      floatingRowHeight: 32,
-      rowDataSource: ds,
-    }),
-  );
+  const grid = useLyteNyte({
+    gridId: "x",
+    columns: columns,
+    cellSelectionMode: "range",
+    cellEditPointerActivator: "double-click",
+    rowFullWidthPredicate: (p) => p.row.rowIndex === 8,
+    columnBase: { resizable: true, movable: true, sortable: true },
+    floatingRowEnabled: true,
+    floatingRowHeight: 32,
+    rowDataSource: ds,
+  });
 
   return (
     <div
