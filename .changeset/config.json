@@ -1,10 +1,10 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@3.0.5/schema.json",
-  "changelog": ".changeset/config.js",
+  "changelog": "@1771technologies/changelog",
   "commit": false,
   "fixed": [["@1771technologies/*"]],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@1771technologies/aio"]
+  "ignore": ["@1771technologies/aio", "@1771technologies/changelog"]
 }
