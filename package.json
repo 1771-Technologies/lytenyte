@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "ci:version": "changeset version",
-    "ci:publish": "changeset tag && changeset publish --no-git-tag"
+    "ci:publish": "aio bulk && changeset tag && changeset publish --no-git-tag"
   },
   "dependencies": {
     "@1771technologies/aio": "workspace:*",
