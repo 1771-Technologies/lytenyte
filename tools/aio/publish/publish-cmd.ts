@@ -115,7 +115,6 @@ async function publishIfNew(
     const pkg = JSON.parse(await Bun.file(pkgPath).text());
     const { name, version } = pkg;
 
-    console.log(version, !version, name, !name);
     if (!name || !version) {
       throw new Error("Package name and version are required in package.json");
     }
@@ -135,6 +134,7 @@ async function publishIfNew(
       const publish = Bun.spawn(["bun", "publish"], {
         stdout: "pipe",
         stderr: "pipe",
+        cwd: pkgPath.replace("package.json", ""),
       });
 
       const output = await new Response(publish.stdout).text();
