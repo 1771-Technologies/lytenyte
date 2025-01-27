@@ -3,6 +3,10 @@
   "version": "0.0.3",
   "license": "Apache-2.0",
   "type": "module",
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
   "exports": {
     ".": {
       "types": "./src/index.ts",
@@ -13,6 +17,16 @@
   "dependencies": {
     "@1771technologies/react-utils": "workspace:*",
     "@1771technologies/js-utils": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/types/index.d.ts",
+        "import": "./dist/index.js",
+        "require": "./dist/index.js"
+      }
+    }
   },
   "peerDependencies": {
     "react": "^18 | 19^",

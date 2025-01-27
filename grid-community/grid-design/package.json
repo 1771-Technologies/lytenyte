@@ -3,6 +3,10 @@
   "version": "0.0.3",
   "license": "Apache-2.0",
   "type": "module",
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
   "exports": {
     ".": {
       "types": "./src/index.ts",
@@ -13,6 +17,17 @@
       "types": "./src/css.ts",
       "import": "./src/css.ts",
       "require": "./src/css.ts"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/types/index.d.ts",
+        "import": "./dist/index.js",
+        "require": "./dist/index.js"
+      },
+      "./css": "./dist/grid-design.css"
     }
   },
   "dependencies": {

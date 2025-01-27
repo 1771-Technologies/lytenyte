@@ -3,6 +3,10 @@
   "version": "0.0.3",
   "license": "Apache-2.0",
   "type": "module",
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
   "exports": {
     ".": {
       "types": "./src/index.ts",
@@ -13,6 +17,22 @@
       "types": "./src/internal.ts",
       "import": "./src/internal.ts",
       "require": "./src/internal.ts"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/types/index.d.ts",
+        "import": "./dist/index.js",
+        "require": "./dist/index.js"
+      },
+      "./css": "./dist/lytenyte-grid-community.css",
+      "./internal": {
+        "types": "./dist/types/internal.d.ts",
+        "import": "./dist/internal.js",
+        "require": "./dist/internal.js"
+      }
     }
   },
   "dependencies": {

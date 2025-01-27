@@ -3,6 +3,10 @@
   "version": "0.0.3",
   "license": "Apache-2.0",
   "type": "module",
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
   "exports": {
     ".": {
       "types": "./src/index.ts",
@@ -28,6 +32,36 @@
       "types": "./src/types-enterprise-react.ts",
       "import": "./src/types-enterprise-react.ts",
       "require": "./src/types-enterprise-react.ts"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/types/index.d.ts",
+        "import": "./dist/index.js",
+        "require": "./dist/index.js"
+      },
+      "./community": {
+        "types": "./dist/types/types.d.ts",
+        "import": "./dist/types.js",
+        "require": "./dist/types.js"
+      },
+      "./community-react": {
+        "types": "./dist/types/types-react.d.ts",
+        "import": "./dist/types-react.js",
+        "require": "./dist/types-react.js"
+      },
+      "./enterprise": {
+        "types": "./dist/types/types-enterprise.d.ts",
+        "import": "./dist/types-enterprise.js",
+        "require": "./dist/types-enterprise.js"
+      },
+      "./enterprise-react": {
+        "types": "./dist/types/types-enterprise-react.d.ts",
+        "import": "./dist/types-enterprise-react.js",
+        "require": "./dist/types-enterprise-react.js"
+      }
     }
   },
   "devDependencies": {
