@@ -46,7 +46,13 @@ export const publishCmd = new Command("publish").description("Bulk Commands").ac
   for (const node of order) {
     const res = await publishIfNew(node.node[1]);
 
-    if (!res.success) process.exit(1);
+    if (!res.success) {
+      console.log(res.message);
+      console.error(res.error);
+      process.exit(1);
+    }
+
+    console.log(res.message);
   }
 });
 
