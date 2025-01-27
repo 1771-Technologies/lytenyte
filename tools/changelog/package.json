@@ -1,6 +1,6 @@
 {
   "name": "@1771technologies/changelog",
-  "version": "0.0.4",
+  "version": "0.0.3",
   "license": "Apache-2.0",
   "exports": {
     ".": {
