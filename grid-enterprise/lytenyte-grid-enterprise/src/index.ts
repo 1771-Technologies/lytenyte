@@ -1,4 +1,6 @@
 import "@1771technologies/grid-design/css";
+import "@1771technologies/grid-components/css";
+
 export type { LyteNyteGridEnterpriseProps } from "./lytenyte-grid-enterprise.js";
 export { LyteNyteGrid } from "./lytenyte-grid-enterprise.js";
 
@@ -7,3 +9,6 @@ export { useClientDataSource } from "./use-client-data-source.js";
 export { useTreeDataSource } from "./use-tree-data-source.js";
 
 export { activateLicense, hasAValidLicense } from "./license.js";
+
+export type { ColumnManagerFrameProps, PillManagerProps } from "@1771technologies/grid-components";
+export { ColumnManagerFrame, PillManager } from "@1771technologies/grid-components";

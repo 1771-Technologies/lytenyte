@@ -12,7 +12,8 @@
       "types": "./src/index.ts",
       "import": "./src/index.ts",
       "require": "./src/index.ts"
-    }
+    },
+    "./css": "./dist/grid-components.css"
   },
   "publishConfig": {
     "access": "public",
@@ -21,7 +22,8 @@
         "types": "./dist/types/index.d.ts",
         "import": "./dist/index.js",
         "require": "./dist/index.js"
-      }
+      },
+      "./css": "./dist/grid-components.css"
     }
   },
   "dependencies": {
