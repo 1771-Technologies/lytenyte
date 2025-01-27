@@ -7,6 +7,7 @@ import { playwrightCmd } from "./playwright/playwright-cmd";
 import { buildCmd } from "./build-cmd/build-cmd";
 import { checkCmd } from "./check/check-cmd";
 import { bulkCmd } from "./bulk/bulk-cmd";
+import { publishCmd } from "./publish/publish-cmd";
 
 program
   .name("1771 AIO")
@@ -21,5 +22,6 @@ program.addCommand(playwrightCmd);
 program.addCommand(buildCmd);
 program.addCommand(checkCmd);
 program.addCommand(bulkCmd);
+program.addCommand(publishCmd);
 
 program.parse();

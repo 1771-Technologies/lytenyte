@@ -1,6 +1,5 @@
 import { Command } from "commander";
 import path from "path";
-import fs from "fs/promises";
 import fg from "fast-glob";
 import { getAioConfig } from "./get-aio-config";
 import { getProjectRoot } from "./get-project-root";
@@ -73,42 +72,4 @@ export const bulkCmd = new Command("bulk").description("Bulk Commands").action(a
       break;
     }
   }
-
-  for (const node of order) {
-    await applyPublishConfig(node.node[1]);
-  }
 });
-
-async function applyPublishConfig(packageJsonPath: string) {
-  try {
-    const packageJsonContent = await fs.readFile(packageJsonPath, "utf-8");
-    const packageJson = JSON.parse(packageJsonContent);
-
-    // Check if publishConfig exists
-    if (!packageJson.publishConfig) {
-      console.log("No publishConfig found in package.json");
-      return;
-    }
-
-    // Create a backup of the original package.json
-    const backupPath = path.resolve(process.cwd(), "package.json.backup");
-    await fs.writeFile(backupPath, packageJsonContent);
-    console.log("Created backup at package.json.backup");
-
-    // Apply publishConfig properties to the root level
-    const { publishConfig, ...restPackageJson } = packageJson;
-    const updatedPackageJson = {
-      ...restPackageJson,
-      ...publishConfig,
-    };
-
-    // Write the updated package.json
-    await fs.writeFile(packageJsonPath, JSON.stringify(updatedPackageJson, null, 2) + "\n");
-
-    console.log("Successfully applied publishConfig to package.json");
-    console.log("The following properties were updated:", Object.keys(publishConfig).join(", "));
-  } catch (error) {
-    console.error("Error:", error);
-    process.exit(1);
-  }
-}
