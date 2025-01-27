@@ -44,6 +44,8 @@ export const publishCmd = new Command("publish").description("Bulk Commands").ac
   }
 
   for (const node of order) {
+    if (node.node[0].name === "root") continue;
+
     const res = await publishIfNew(node.node[1]);
 
     if (!res.success) {
