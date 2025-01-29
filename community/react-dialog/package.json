@@ -29,7 +29,7 @@
     }
   },
   "peerDependencies": {
-    "react": "^18 | 19^",
-    "react-dom": "^18 | 19^"
+    "react": "^18 | ^19",
+    "react-dom": "^18 | ^19"
   }
 }

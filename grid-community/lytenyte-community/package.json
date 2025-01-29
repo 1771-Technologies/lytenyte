@@ -35,6 +35,10 @@
       }
     }
   },
+  "peerDependencies": {
+    "react": "^18 | ^19",
+    "react-dom": "^18 | ^19"
+  },
   "dependencies": {
     "@1771technologies/grid-types": "workspace:*",
     "@1771technologies/grid-store-community": "workspace:*",

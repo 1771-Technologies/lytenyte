@@ -26,6 +26,10 @@
       "./css": "./dist/grid-components.css"
     }
   },
+  "peerDependencies": {
+    "react": "^18 | ^19",
+    "react-dom": "^18 | ^19"
+  },
   "dependencies": {
     "@1771technologies/grid-provider": "workspace:*",
     "@1771technologies/grid-types": "workspace:*",
