@@ -3,8 +3,7 @@ import { useEvent } from "@1771technologies/react-utils";
 import { useGrid } from "../use-grid";
 import { HeaderContainer } from "./header-container";
 import { Rows } from "./rows";
-import { useEffect, useRef, type PropsWithChildren, type ReactNode } from "react";
-import { IsoResizeObserver } from "@1771technologies/js-utils";
+import { type PropsWithChildren, type ReactNode } from "react";
 import { RowContainer } from "./viewport/row-container";
 import type { ColumnHeaderRendererParamsReact } from "@1771technologies/grid-types/community-react";
 import { NavigationDriver } from "../navigation/navigation-driver";
@@ -49,25 +48,8 @@ export function Viewport({
     state.internal.viewportYScroll.set(Math.abs(viewport.scrollTop));
   });
 
-  const resizeRef = useRef<ResizeObserver | null>(null);
-  useEffect(() => {
-    return () => resizeRef.current?.disconnect();
-  }, []);
-
   const ref = useEvent((el: HTMLElement | null) => {
     state.internal.viewport.set(el);
-
-    const re = new IsoResizeObserver(() => {
-      if (el) {
-        state.internal.viewportXScroll.set(Math.abs(el.scrollLeft));
-        state.internal.viewportYScroll.set(Math.abs(el.scrollTop));
-        state.internal.viewportInnerWidth.set(el.clientWidth);
-        state.internal.viewportInnerHeight.set(el.clientHeight);
-      }
-    });
-    if (el) re.observe(el);
-
-    resizeRef.current = re;
   });
 
   const paginate = state.paginate.use();

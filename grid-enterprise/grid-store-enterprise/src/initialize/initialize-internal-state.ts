@@ -210,7 +210,7 @@ export function initializeInternalState<D, E>(
 
     viewport: signal<HTMLElement | null>(null),
     viewportInnerHeight: signal(0),
-    viewportInnerWidth: signal(0),
+    viewportInnerWidth: viewportInnerWidth,
     viewportOuterHeight: signal(0),
     viewportOuterWidth: signal(0),
     viewportHeaderHeight: signal(0),

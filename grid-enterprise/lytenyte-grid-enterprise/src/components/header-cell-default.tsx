@@ -12,8 +12,8 @@ export function HeaderCellDefault({ column, api }: ColumnHeaderRendererParamsRea
   const base = sx.columnBase.use();
 
   const menuTrigger =
-    column.columnMenuShowTriggerInHeader ?? base.columnMenuShowTriggerInHeader ?? true;
-  const filterTrigger = column.filterShowTriggerInHeader ?? base.filterShowTriggerInHeader ?? true;
+    column.columnMenuShowTriggerInHeader ?? base.columnMenuShowTriggerInHeader ?? false;
+  const filterTrigger = column.filterShowTriggerInHeader ?? base.filterShowTriggerInHeader ?? false;
   const sortable = api.columnIsSortable(column);
 
   return (
