@@ -93,9 +93,17 @@ export function Sizer({
   const init = useCallback((el: HTMLDivElement | null) => {
     if (!el) return;
 
+    let raf: ReturnType<typeof setTimeout> | null = null;
+
     const resize = new IsoResizeObserver(() => {
-      const dims = getPreciseElementDimensions(el);
-      setSize(dims);
+      if (raf) return;
+
+      raf = setTimeout(() => {
+        raf = null;
+
+        const dims = getPreciseElementDimensions(el);
+        setSize(dims);
+      }, 50);
     });
 
     const dims = getPreciseElementDimensions(el);
