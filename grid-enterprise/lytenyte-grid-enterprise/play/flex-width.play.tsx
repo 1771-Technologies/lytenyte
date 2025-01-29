@@ -14,27 +14,39 @@ export default function Play() {
   });
 
   return (
-    <div
-      className={css`
-        display: flex;
-        flex-direction: column;
-      `}
-      style={{ width: "100vw", height: "100vh" }}
-    >
+    <>
+      <div
+        className={css`
+          position: fixed;
+          top: 4px;
+          height: 60px;
+          width: 100%;
+          background-color: rgba(0, 0, 222, 0.5);
+        `}
+      ></div>
+
       <div
         className={css`
           display: flex;
-          align-items: center;
-          gap: 4px;
+          flex-direction: column;
         `}
-      ></div>
-      <div
-        className={css`
-          height: 400px;
-        `}
+        style={{ width: "100vw", height: "100vh" }}
       >
-        <LyteNyteGrid grid={grid} />
+        <div
+          className={css`
+            display: flex;
+            align-items: center;
+            gap: 4px;
+          `}
+        ></div>
+        <div
+          className={css`
+            height: 400px;
+          `}
+        >
+          <LyteNyteGrid grid={grid} />
+        </div>
       </div>
-    </div>
+    </>
   );
 }

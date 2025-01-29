@@ -68,6 +68,7 @@ export function Viewport({
       className={css`
         display: grid;
         grid-template-rows: auto 1fr;
+        z-index: 0;
       `}
     >
       <HeaderContainer
