@@ -2,7 +2,7 @@ import type { ApiCommunityReact } from "@1771technologies/grid-types";
 import { useMemo, type ReactNode } from "react";
 import { FloatingCell } from "./header-floating/header-floating";
 
-export function useFloatingCells(api: ApiCommunityReact<any>) {
+export function useFloatingCells(api: ApiCommunityReact<any>, enabled: boolean) {
   const sx = api.getState();
   const visibleColumns = sx.columnsVisible.use();
   const xPositions = sx.columnPositions.use();
@@ -16,6 +16,8 @@ export function useFloatingCells(api: ApiCommunityReact<any>) {
   const viewportWidth = sx.internal.viewportInnerWidth.use();
 
   return useMemo(() => {
+    if (!enabled) return [];
+
     const cells: ReactNode[] = [];
     const columnRowCount = hierarchy.length + 1;
 
@@ -58,8 +60,9 @@ export function useFloatingCells(api: ApiCommunityReact<any>) {
     bounds.columnEnd,
     bounds.columnStart,
     centerCount,
+    enabled,
     endCount,
-    hierarchy,
+    hierarchy.length,
     startCount,
     viewportWidth,
     visibleColumns,

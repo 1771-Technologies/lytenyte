@@ -26,7 +26,7 @@ export function Header({
   const headerGroupCells = useHeaderGroupCells(api);
   const headerCells = useHeaderCells(api, headerDefault);
   const headerDividers = useHeaderDividers(api);
-  const floatingCells = useFloatingCells(api);
+  const floatingCells = useFloatingCells(api, floatingRowEnabled);
 
   const gridTemplateRows = useHeaderDisplayGridTemplate(
     hierarchy.length,

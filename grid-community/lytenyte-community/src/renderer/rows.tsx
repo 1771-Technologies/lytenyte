@@ -210,34 +210,36 @@ export function Rows({
         <DragIndicator section="center" />
         <els.center />
       </div>
-      <div
-        style={{
-          bottom: 0,
-          width,
-          minWidth,
-          height: botHeight,
-          minHeight: botHeight,
-          maxHeight: botHeight,
-        }}
-        className={css`
-          position: sticky;
-          background-color: ${t.colors.backgrounds_row};
-          z-index: 4;
+      {botHeight > 0 && (
+        <div
+          style={{
+            bottom: 0,
+            width,
+            minWidth,
+            height: botHeight,
+            minHeight: botHeight,
+            maxHeight: botHeight,
+          }}
+          className={css`
+            position: sticky;
+            background-color: ${t.colors.backgrounds_row};
+            z-index: 4;
 
-          &::before {
-            position: absolute;
-            top: -1px;
-            width: 100%;
-            height: 1px;
-            content: "";
-            background-color: ${t.colors.borders_pin_separator};
-          }
-        `}
-      >
-        {bottom}
-        <DragIndicator section="bottom" />
-        <els.bottom />
-      </div>
+            &::before {
+              position: absolute;
+              top: -1px;
+              width: 100%;
+              height: 1px;
+              content: "";
+              background-color: ${t.colors.borders_pin_separator};
+            }
+          `}
+        >
+          {bottom}
+          <DragIndicator section="bottom" />
+          <els.bottom />
+        </div>
+      )}
     </>
   );
 }
