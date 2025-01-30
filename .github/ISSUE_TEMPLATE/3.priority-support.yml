@@ -1,12 +1,10 @@
-name: "Priority Support: SLA ⏰"
-description: I'm a LyteNyte Grid user and we have Priority Support through our license agreement.
-title: "[question] "
-labels: ["status: waiting for maintainer", "support: commercial", "support: unknown"]
+name: Priority SLA Bug Report
+description: I am a LyteNyte Grid Pro or Enterprise user and I want to create a priority SLA Bug Report.
+labels: ["pending", "bug", "priority-sla"]
 body:
   - type: markdown
     attributes:
-      value: |
-        Please provide a searchable summary of the issue in the title above.
+      value: Thanks for contributing by creating an issue! Please provide a searchable summary of the issue in the title above.
   - type: input
     attributes:
       label: Search keywords
@@ -22,10 +20,20 @@ body:
       options:
         - label: I have tested the latest version
           required: true
+  - type: dropdown
+    attributes:
+      label: Affected products
+      description: Which products are affected by this issue? If you're not sure, leave this blank.
+      multiple: true
+      options:
+        - LyteNyte Grid Community
+        - LyteNyte Grid Enterprise
   - type: textarea
     attributes:
       label: Steps to reproduce
       description: |
+        **⚠️ Issues that we can't reproduce can't be fixed.**
+
         Please provide a link to a live example and an unambiguous set of steps to reproduce this bug. 
         See our [documentation](https://1771technologies/docs/support) on how to build a reproduction case.
       value: |
@@ -33,6 +41,18 @@ body:
         1. Open this link to live example: (required)
         2.
         3.
+  - type: textarea
+    attributes:
+      label: Current behavior
+      description: Describe what happens instead of the expected behavior.
+  - type: textarea
+    attributes:
+      label: Expected behavior
+      description: Describe what should happen.
+  - type: textarea
+    attributes:
+      label: Context
+      description: What are you trying to accomplish? Providing context helps us come up with a solution that is more useful in the real world.
   - type: textarea
     attributes:
       label: Your environment
@@ -43,9 +63,9 @@ body:
         ```
   - type: input
     id: contact
-    validation:
-      require: true
     attributes:
       label: Customer ID (required)
-      description: Enterprise customers can receive priority support. Providing your Customer ID gives your problem more attention.
-      placeholder: "e.g. CUS-JANE-1221"
+      description: Enterprise customers receive priority support.
+      placeholder: "e.g. JANE-1221"
+    validations:
+      required: true

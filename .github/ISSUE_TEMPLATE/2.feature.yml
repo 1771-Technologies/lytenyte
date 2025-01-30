@@ -37,4 +37,4 @@ body:
     attributes:
       label: Customer ID (optional)
       description: Enterprise customers can receive priority support. Providing your Customer ID gives your problem more attention.
-      placeholder: "e.g. CUS-JANE-1221"
+      placeholder: "e.g. JANE-1221"
