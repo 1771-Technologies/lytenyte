@@ -77,7 +77,7 @@ export function columnGetPositions<T extends ColumnWidthLike>(
       // costly - so it's better to just disallow weird configurations.
       const ratioMultiplier = column.widthFlex / flexTotal;
       const additionalWidth =
-        Math.floor(freeSpace * ratioMultiplier) + (spaceThatWillBeLeft > 0 ? 1 : 0);
+        Math.floor(freeSpace * ratioMultiplier) + (spaceThatWillBeLeft > 1 ? 1 : 0);
       spaceThatWillBeLeft--;
 
       widths[column.id] += additionalWidth;

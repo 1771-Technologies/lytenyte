@@ -56,9 +56,9 @@ test("should create the correct positions", () => {
   ).toMatchInlineSnapshot(`
     Uint32Array [
       0,
-      151,
-      351,
-      501,
+      150,
+      350,
+      500,
     ]
   `);
 });
