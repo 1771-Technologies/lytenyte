@@ -12,3 +12,5 @@ export { activateLicense, hasAValidLicense } from "./license.js";
 
 export type { ColumnManagerFrameProps, PillManagerProps } from "@1771technologies/grid-components";
 export { ColumnManagerFrame, PillManager } from "@1771technologies/grid-components";
+
+export type * from "@1771technologies/grid-types/enterprise-react";
