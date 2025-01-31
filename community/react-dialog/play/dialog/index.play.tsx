@@ -1,6 +1,14 @@
 import { useState } from "react";
 import { Dialog } from "../../src/index.js";
 
+void css`
+  :global() {
+    body {
+      margin-left: 20px;
+    }
+  }
+`;
+
 export default function Play() {
   const [open, setOpen] = useState(false);
   return (

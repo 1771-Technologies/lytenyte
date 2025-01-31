@@ -19,7 +19,7 @@ export function handleOpen(
 ) {
   activeRef.current = document.activeElement as HTMLElement | null;
 
-  scrollbarWidthRef.current = getOwnerScrollbarWidth(dialog);
+  scrollbarWidthRef.current = getOwnerScrollbarWidth();
 
   if (scrollbarWidthRef.current)
     document.body.style.setProperty("--scrollbar-width-removed", `${scrollbarWidthRef.current}px`);
