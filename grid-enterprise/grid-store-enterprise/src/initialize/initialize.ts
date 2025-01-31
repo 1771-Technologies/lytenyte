@@ -48,7 +48,7 @@ export function initialize<D, E>(
     columnGroupHeaderHeight: signal(props.columnGroupHeaderHeight ?? COLUMN_GROUP_HEADER_HEIGHT),
     columnGroupIdDelimiter: signal(props.columnGroupIdDelimiter ?? COLUMN_GROUP_ID_DELIMITER),
     columnGroupStickyHeaders: signal(props.columnGroupStickyHeaders ?? false),
-    columnHeaderHeight: signal(props.columnGroupHeaderHeight ?? COLUMN_HEADER_HEIGHT),
+    columnHeaderHeight: signal(props.columnHeaderHeight ?? COLUMN_HEADER_HEIGHT),
     columnHeaderRenderers: signal(props.columnHeaderRenderers ?? {}),
     columnSpanScanDistance: signal(props.columnSpanScanDistance ?? COLUMN_SCAN_DISTANCE),
 
