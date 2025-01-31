@@ -93,17 +93,9 @@ export function Sizer({
   const init = useCallback((el: HTMLDivElement | null) => {
     if (!el) return;
 
-    let raf: ReturnType<typeof setTimeout> | null = null;
-
     const resize = new IsoResizeObserver(() => {
-      if (raf) return;
-
-      raf = setTimeout(() => {
-        raf = null;
-
-        const dims = getPreciseElementDimensions(el);
-        setSize(dims);
-      }, 50);
+      const dims = getPreciseElementDimensions(el);
+      setSize(dims);
     });
 
     const dims = getPreciseElementDimensions(el);
@@ -119,9 +111,14 @@ export function Sizer({
   useEffect(() => {
     if (!inner) return;
 
+    let raf: ReturnType<typeof setTimeout> | null = null;
     const resizer = new IsoResizeObserver(() => {
-      const dims = getPreciseElementDimensions(inner);
-      onSizeChange?.(dims);
+      if (raf) return;
+      raf = setTimeout(() => {
+        const dims = getPreciseElementDimensions(inner);
+        onSizeChange?.(dims);
+        raf = null;
+      }, 20);
     });
 
     resizer.observe(inner);
