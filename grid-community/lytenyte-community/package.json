@@ -36,8 +36,8 @@
     }
   },
   "peerDependencies": {
-    "react": "^18.0.0 | ^19.0.0",
-    "react-dom": "^18.0.0 | ^19.0.0"
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
   },
   "dependencies": {
     "@1771technologies/grid-types": "workspace:*",
@@ -51,7 +51,7 @@
     "@1771technologies/js-utils": "workspace:*"
   },
   "devDependencies": {
-    "@types/react": "^19.0.0.0.1",
-    "@types/react-dom": "^19.0.0.0.2"
+    "@types/react": "^19.0.1",
+    "@types/react-dom": "^19.0.2"
   }
 }
