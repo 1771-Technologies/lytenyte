@@ -8,7 +8,7 @@ import {
   type CellClasses,
 } from "@1771technologies/lytenyte-grid-community/internal";
 import { GridProvider, useGrid } from "./use-grid";
-import { HeaderCellDefault } from "./components/header-cell-default";
+import { HeaderCellDefault } from "./components/header-cell/header-cell-default";
 import {
   GridFrame,
   FilterMenuDriver,

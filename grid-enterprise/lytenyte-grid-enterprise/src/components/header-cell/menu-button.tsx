@@ -1,6 +1,6 @@
 import type { ApiEnterpriseReact, ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import { GridButton, MoreDotsVertical } from "@1771technologies/lytenyte-grid-community/internal";
-import { iconCls } from "../header-cell-default";
+import { iconCls } from "./header-cell-default";
 import { clsx } from "@1771technologies/js-utils";
 
 export interface ColumnMenuProps {

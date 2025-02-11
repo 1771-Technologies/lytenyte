@@ -6,6 +6,7 @@ interface HeaderLabelProps {
   readonly column: ColumnEnterpriseReact<any>;
   readonly api: ApiEnterpriseReact<any>;
 }
+
 export function HeaderLabel({ column, api }: HeaderLabelProps) {
   const sx = api.getState();
   const base = sx.columnBase.peek();

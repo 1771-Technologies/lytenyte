@@ -1,9 +1,9 @@
 import type { ColumnHeaderRendererParamsReact } from "@1771technologies/grid-types/enterprise-react";
-import { HeaderLabel } from "./header-cell/header-label";
+import { HeaderLabel } from "./header-label";
 import { t } from "@1771technologies/grid-design";
-import { SortButton } from "./header-cell/sort-button";
-import { FilterButton } from "./header-cell/filter-button";
-import { ColumnMenu } from "./header-cell/menu-button";
+import { SortButton } from "./sort-button";
+import { FilterButton } from "./filter-button";
+import { ColumnMenu } from "./menu-button";
 
 export const iconCls = css``;
 
@@ -24,20 +24,6 @@ export function HeaderCellDefault({ column, api }: ColumnHeaderRendererParamsRea
         box-sizing: border-box;
         width: 100%;
         height: 100%;
-
-        font-size: ${t.typography.body_m};
-        font-family: ${t.typography.typeface_body};
-        font-weight: 500;
-        line-height: 20px;
-        background-color: ${t.colors.backgrounds_ui_panel};
-
-        & .${iconCls} {
-          opacity: 0;
-          transition: opacity ${t.transitions.fast} ${t.transitions.fn};
-        }
-        &:hover .${iconCls} {
-          opacity: 1;
-        }
       `}
     >
       <div

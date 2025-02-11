@@ -1,6 +1,6 @@
 import type { ApiEnterpriseReact, ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import { FilterDashesIcon, GridButton } from "@1771technologies/lytenyte-grid-community/internal";
-import { iconCls } from "../header-cell-default";
+import { iconCls } from "./header-cell-default";
 import { clsx } from "@1771technologies/js-utils";
 
 interface FilterButtonProps {

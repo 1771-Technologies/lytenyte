@@ -5,7 +5,7 @@ import {
   SortArrowAsc,
   SortArrowDesc,
 } from "@1771technologies/lytenyte-grid-community/internal";
-import { iconCls } from "../header-cell-default";
+import { iconCls } from "./header-cell-default";
 import { t } from "@1771technologies/grid-design";
 
 export interface SortButtonProps {
