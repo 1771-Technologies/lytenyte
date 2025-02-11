@@ -52,14 +52,14 @@ export function HeaderLabel({ column, api }: HeaderLabelProps) {
             align-items: center;
             gap: 2px;
             position: relative;
-            top: -2px;
+            top: -1px;
           `}
         >
           {column.headerSecondaryLabel && (
             <span
               className={css`
                 font-size: ${t.headerFontSizeAlt};
-                color: ${t.colors.text_light};
+                color: ${t.headerFgAlt};
               `}
             >
               {column.headerSecondaryLabel}
@@ -68,9 +68,9 @@ export function HeaderLabel({ column, api }: HeaderLabelProps) {
           {hasGroup && hasAggFunc && aggFuncDisplayMode === "secondary" && (
             <span
               className={css`
-                color: ${t.colors.primary_50};
-                font-size: ${t.typography.body_xs};
-                font-weight: 600;
+                color: ${t.headerFgAgg};
+                font-size: ${t.headerFontSizeAlt};
+                font-weight: ${t.headerFontWeightAlt};
               `}
             >
               ({columnAggFunc})

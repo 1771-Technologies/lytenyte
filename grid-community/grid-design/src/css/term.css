@@ -2,27 +2,6 @@
   color-scheme: dark;
   --lng1771-gradient-shadow: linear-gradient(90deg, var(--lng1771-gray-70), var(--lng1771-gray-70));
 
-  --lng1771-primary-05: rgba(87, 255, 255, 0.07);
-  --lng1771-primary-10: rgba(87, 255, 255, 0.07);
-  --lng1771-primary-30: rgba(87, 255, 255, 0.3);
-  --lng1771-primary-50: #57ffff;
-  --lng1771-primary-70: #278081;
-  --lng1771-primary-90: #278081;
-
-  --lng1771-gray-00: #000000;
-  --lng1771-gray-02: #0f0f0f;
-  --lng1771-gray-05: #121212;
-  --lng1771-gray-10: #1c1c1c;
-  --lng1771-gray-20: #262626;
-  --lng1771-gray-30: #303030;
-  --lng1771-gray-40: #3a3a3a;
-  --lng1771-gray-50: #4e4e4e;
-  --lng1771-gray-60: #626262;
-  --lng1771-gray-70: #8a8a8a;
-  --lng1771-gray-80: #a8a8a8;
-  --lng1771-gray-90: #dadada;
-  --lng1771-gray-100: #eeeeee;
-
   --lng1771-backgrounds-default: var(--lng1771-gray-10);
   --lng1771-backgrounds-strong: var(--lng1771-gray-20);
   --lng1771-backgrounds-light: var(--lng1771-gray-05);
@@ -89,4 +68,39 @@
   --lng1771-text-light: var(--lng1771-gray-70);
   --lng1771-text-medium: var(--lng1771-gray-80);
   --lng1771-text-x-light: var(--lng1771-gray-60);
+
+  /* Grid theme */
+
+  --lng1771-typeface: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  --lng1771-header-font-typeface: var(--lng1771-typeface);
+
+  --lng1771-primary-05: rgba(87, 255, 255, 0.07);
+  --lng1771-primary-10: rgba(87, 255, 255, 0.07);
+  --lng1771-primary-30: rgba(87, 255, 255, 0.3);
+  --lng1771-primary-50: #57ffff;
+  --lng1771-primary-70: #278081;
+  --lng1771-primary-90: #278081;
+
+  --lng1771-gray-00: #000000;
+  --lng1771-gray-02: #0f0f0f;
+  --lng1771-gray-05: #121212;
+  --lng1771-gray-10: #1c1c1c;
+  --lng1771-gray-20: #262626;
+  --lng1771-gray-30: #303030;
+  --lng1771-gray-40: #3a3a3a;
+  --lng1771-gray-50: #4e4e4e;
+  --lng1771-gray-60: #626262;
+  --lng1771-gray-70: #8a8a8a;
+  --lng1771-gray-80: #a8a8a8;
+  --lng1771-gray-90: #dadada;
+  --lng1771-gray-100: #eeeeee;
+
+  --lng1771-header-bg: var(--lng1771-gray-00);
+  --lng1771-header-bg-hover: var(--lng1771-primary-10);
+  --lng1771-header-fg: var(--lng1771-gray-60);
+  --lng1771-header-fg-alt: var(--lng1771-gray-70);
+  --lng1771-header-fg-agg: var(--lng1771-primary-50);
+  --lng1771-header-y-divider: var(--lng1771-gray-50);
+  --lng1771-header-x-divider: var(--lng1771-gray-10);
 }
