@@ -13,7 +13,7 @@
       "import": "./src/index.ts",
       "require": "./src/index.ts"
     },
-    "./css": "./dist/grid-components.css"
+    "./css": "./src/grid-components.css"
   },
   "publishConfig": {
     "access": "public",

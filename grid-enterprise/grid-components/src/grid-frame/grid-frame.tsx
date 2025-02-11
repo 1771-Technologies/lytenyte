@@ -2,7 +2,7 @@ import { t } from "@1771technologies/grid-design";
 import type { StoreEnterpriseReact } from "@1771technologies/grid-types";
 import { clsx } from "@1771technologies/js-utils";
 import { SplitPane, type SplitPaneAxe } from "@1771technologies/react-split-pane";
-import { useMemo, useState, type PropsWithChildren } from "react";
+import { useMemo, useState, type CSSProperties, type PropsWithChildren } from "react";
 import { cc } from "../component-configuration";
 
 export interface GridFrameConfiguration {
@@ -11,10 +11,14 @@ export interface GridFrameConfiguration {
 
 export interface GridFrameProps<D> {
   readonly grid: StoreEnterpriseReact<D>;
+  readonly className?: string;
+  readonly style?: CSSProperties;
 }
 
 export function GridFrame<D>({
   grid: { api, state },
+  className,
+  style,
   children,
 }: PropsWithChildren<GridFrameProps<D>>) {
   const config = cc.gridFrame.use();
@@ -35,13 +39,16 @@ export function GridFrame<D>({
 
   return (
     <div
-      className={css`
-        width: 100%;
-        height: 100%;
-        display: grid;
-        grid-template-rows: 1fr;
-      `}
-      style={{ gridTemplateColumns: template }}
+      className={clsx(
+        css`
+          width: 100%;
+          height: 100%;
+          display: grid;
+          grid-template-rows: 1fr;
+        `,
+        className,
+      )}
+      style={{ ...style, gridTemplateColumns: template }}
     >
       {frame ? (
         <>
