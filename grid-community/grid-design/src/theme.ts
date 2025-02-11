@@ -9,6 +9,7 @@ export const t: Theme = {
   headerFontWeightAlt: "var(--lng1771-header-font-weight-alt)",
 
   headerBg: "var(--lng1771-header-bg)",
+  headerBgHover: "var(--lng1771-header-bg-hover)",
   headerFg: "var(--lng1771-header-fg)",
   headerFgAlt: "var(--lng1771-header-fg-alt)",
   headerFgAgg: "var(--lng1771-primary-50)",

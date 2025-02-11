@@ -6,6 +6,7 @@ export type Theme = {
   readonly headerFontTypeface: string;
 
   readonly headerBg: string;
+  readonly headerBgHover: string;
   readonly headerFg: string;
   readonly headerFgAlt: string;
   readonly headerFgAgg: string;

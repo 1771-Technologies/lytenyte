@@ -129,6 +129,7 @@ export function HeaderCell({
           border-bottom: 1px solid ${t.headerXDivider};
           background-color: ${t.headerBg};
           color: ${t.headerFg};
+          box-sizing: border-box;
           padding-inline: ${t.headerPx};
           padding-block: ${t.headerPy};
 

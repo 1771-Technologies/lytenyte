@@ -115,8 +115,14 @@
   --lng1771-typeface: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
+  --lng1771-transition-fn: cubic-bezier(0.4, 0, 0.2, 1);
+  --lng1771-transition-slow: 200ms;
+  --lng1771-transition-normal: 150ms;
+  --lng1771-transition-fast: 100ms;
+  --lng1771-transition-vfast: 50ms;
+
   --lng1771-header-py: 4px;
-  --lng1771-header-px: 10px;
+  --lng1771-header-px: 6px;
   --lng1771-header-font-size: 14px;
   --lng1771-header-font-weight: 500;
   --lng1771-header-font-size-alt: 11px;
@@ -124,6 +130,7 @@
   --lng1771-header-font-typeface: var(--lng1771-typeface);
 
   --lng1771-header-bg: var(--lng1771-gray-00);
+  --lng1771-header-bg-hover: var(--lng1771-gray-10);
   --lng1771-header-fg: var(--lng1771-gray-60);
   --lng1771-header-fg-alt: var(--lng1771-gray-70);
   --lng1771-header-fg-agg: var(--lng1771-primary-50);

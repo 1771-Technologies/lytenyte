@@ -1,10 +1,4 @@
 :root {
-  --lng1771-transition-fn: cubic-bezier(0.4, 0, 0.2, 1);
-  --lng1771-transition-slow: 200ms;
-  --lng1771-transition-normal: 150ms;
-  --lng1771-transition-fast: 100ms;
-  --lng1771-transition-vfast: 50ms;
-
   --lng1771-shadow-100: 0px 1px 2.5px 0px rgba(30, 30, 41, 0.13),
     0px 0px 0px 1px rgba(30, 30, 41, 0.02);
   --lng1771-shadow-200: 0px 1px 1px 0px rgba(30, 30, 41, 0.06),
@@ -65,7 +59,4 @@
   --lng1771-thead-vertical-padding: 4px;
   --lng1771-cell-vertical-padding: 8px;
   --lng1771-cell-horizontal-padding: 10px;
-
-  --lng1771-header-px: 10px;
-  --lng1771-header-py: 4px;
 }

@@ -1,9 +1,9 @@
 import type { ColumnHeaderRendererParamsReact } from "@1771technologies/grid-types/enterprise-react";
 import { HeaderLabel } from "./header-label";
-import { t } from "@1771technologies/grid-design";
 import { SortButton } from "./sort-button";
 import { FilterButton } from "./filter-button";
 import { ColumnMenu } from "./menu-button";
+import { t } from "@1771technologies/grid-design";
 
 export const iconCls = css``;
 
@@ -22,8 +22,14 @@ export function HeaderCellDefault({ column, api }: ColumnHeaderRendererParamsRea
         display: flex;
         align-items: center;
         box-sizing: border-box;
-        width: 100%;
         height: 100%;
+        padding-inline: 4px;
+        border-radius: 4px;
+        transition: background-color ${t.transitions.normal} ${t.transitions.fn};
+
+        &:hover {
+          background-color: ${t.headerBgHover};
+        }
       `}
     >
       <div
@@ -37,7 +43,7 @@ export function HeaderCellDefault({ column, api }: ColumnHeaderRendererParamsRea
           className={css`
             position: absolute;
             inset-inline-end: 0px;
-            gap: ${t.spacing.space_02};
+            gap: 2px;
           `}
         >
           {sortable && <SortButton api={api} column={column} />}

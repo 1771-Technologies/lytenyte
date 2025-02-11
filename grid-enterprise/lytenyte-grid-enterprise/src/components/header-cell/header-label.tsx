@@ -52,6 +52,7 @@ export function HeaderLabel({ column, api }: HeaderLabelProps) {
             align-items: center;
             gap: 2px;
             position: relative;
+            top: -2px;
           `}
         >
           {column.headerSecondaryLabel && (
