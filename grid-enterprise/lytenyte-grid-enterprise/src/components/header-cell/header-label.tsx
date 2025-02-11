@@ -1,6 +1,9 @@
 import { t } from "@1771technologies/grid-design";
 import type { ApiEnterpriseReact, ColumnEnterpriseReact } from "@1771technologies/grid-types";
-import { clsx } from "@1771technologies/js-utils";
+import { getAggFuncDisplayMode } from "../../utils/get-agg-func-display-mode";
+import { getHeaderName } from "../../utils/get-header-name";
+import { getAggFuncName } from "../../utils/get-agg-func-name";
+import { hasSecondaryLabel } from "../../utils/has-secondary-label";
 
 interface HeaderLabelProps {
   readonly column: ColumnEnterpriseReact<any>;
@@ -10,84 +13,70 @@ interface HeaderLabelProps {
 export function HeaderLabel({ column, api }: HeaderLabelProps) {
   const sx = api.getState();
   const base = sx.columnBase.peek();
-  const rowGroupModel = sx.rowGroupModel.peek().length > 0;
+  const hasGroup = sx.rowGroupModel.peek().length > 0;
 
-  const headerName = column.headerName ?? column.id;
+  const headerName = getHeaderName(column);
+  const aggFuncDisplayMode = getAggFuncDisplayMode(column, base);
+  const columnAggFunc = getAggFuncName(column);
 
-  const aggFuncDisplayMode =
-    column.headerAggFuncDisplayMode ?? base.headerAggFuncDisplayMode ?? "inline";
-  const columnAggFunc = typeof column.aggFunc === "string" ? column.aggFunc : "FN(X)";
   const hasAggFunc = !!column.aggFunc;
-
-  const hasSecondary =
-    column.headerSecondaryLabel ||
-    (rowGroupModel && hasAggFunc && aggFuncDisplayMode === "secondary");
+  const hasSecondary = hasSecondaryLabel(column, hasGroup, hasAggFunc, aggFuncDisplayMode);
 
   return (
-    <div
-      className={css`
-        display: flex;
-        flex-direction: column;
-      `}
-    >
-      <div
-        className={clsx(
-          css`
-            display: flex;
-            align-items: center;
-            gap: 3px;
-          `,
-          hasSecondary &&
-            css`
-              position: relative;
-              top: 4px;
-            `,
-        )}
-      >
-        {headerName}
-        {hasAggFunc && rowGroupModel && aggFuncDisplayMode === "inline" && (
-          <span
-            className={css`
-              color: ${t.colors.primary_50};
-              font-size: ${t.typography.body_xs};
-              font-weight: 600;
-            `}
-          >
-            ({columnAggFunc})
-          </span>
-        )}
-      </div>
+    <>
       <div
         className={css`
           display: flex;
           align-items: center;
-          gap: 3px;
-          position: relative;
+          gap: 2px;
         `}
       >
-        {column.headerSecondaryLabel && (
+        <span>{headerName}</span>
+        {hasAggFunc && hasGroup && aggFuncDisplayMode === "inline" && (
           <span
             className={css`
-              font-size: ${t.typography.body_xs};
-              color: ${t.colors.text_light};
+              color: ${t.headerFgAgg};
+              font-size: ${t.headerFontSizeAlt};
+              font-weight: ${t.headerFontWeightAlt};
             `}
           >
-            {column.headerSecondaryLabel}
-          </span>
-        )}
-        {rowGroupModel && hasAggFunc && aggFuncDisplayMode === "secondary" && (
-          <span
-            className={css`
-              color: ${t.colors.primary_50};
-              font-size: ${t.typography.body_xs};
-              font-weight: 600;
-            `}
-          >
-            {" "}
-            ({columnAggFunc})
+            (sum) ({columnAggFunc})
           </span>
         )}
       </div>
-    </div>
+
+      {hasSecondary && (
+        <div
+          className={css`
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            position: relative;
+          `}
+        >
+          {column.headerSecondaryLabel && (
+            <span
+              className={css`
+                font-size: ${t.headerFontSizeAlt};
+                color: ${t.colors.text_light};
+              `}
+            >
+              {column.headerSecondaryLabel}
+            </span>
+          )}
+          {hasGroup && hasAggFunc && aggFuncDisplayMode === "secondary" && (
+            <span
+              className={css`
+                color: ${t.colors.primary_50};
+                font-size: ${t.typography.body_xs};
+                font-weight: 600;
+              `}
+            >
+              ({columnAggFunc})
+            </span>
+          )}
+        </div>
+      )}
+    </>
   );
 }

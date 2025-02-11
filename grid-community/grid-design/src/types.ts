@@ -8,6 +8,7 @@ export type Theme = {
   readonly headerBg: string;
   readonly headerFg: string;
   readonly headerFgAlt: string;
+  readonly headerFgAgg: string;
   readonly headerPx: string;
   readonly headerPy: string;
   readonly headerYDivider: string;

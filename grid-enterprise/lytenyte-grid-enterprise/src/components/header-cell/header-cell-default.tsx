@@ -28,8 +28,6 @@ export function HeaderCellDefault({ column, api }: ColumnHeaderRendererParamsRea
     >
       <div
         className={css`
-          display: flex;
-          align-items: center;
           position: relative;
           width: 100%;
         `}

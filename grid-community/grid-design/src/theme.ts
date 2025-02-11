@@ -11,6 +11,7 @@ export const t: Theme = {
   headerBg: "var(--lng1771-header-bg)",
   headerFg: "var(--lng1771-header-fg)",
   headerFgAlt: "var(--lng1771-header-fg-alt)",
+  headerFgAgg: "var(--lng1771-primary-50)",
   headerPx: "var(--lng1771-header-px)",
   headerPy: "var(--lng1771-header-py)",
   headerXDivider: "var(--lng1771-header-x-divider)",
