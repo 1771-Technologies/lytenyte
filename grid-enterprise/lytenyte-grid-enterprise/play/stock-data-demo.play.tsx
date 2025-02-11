@@ -1,11 +1,16 @@
 import { GridFrame } from "@1771technologies/grid-components";
-import { LyteNyteGrid, useLyteNyte } from "../src";
+import { LyteNyteGrid, useClientDataSource, useLyteNyte } from "../src";
 import { stockColumns } from "../stock-data/columns";
+import { stockData } from "../stock-data/stocks";
 
 export default function StockDataDemo() {
+  const ds = useClientDataSource({
+    data: stockData,
+  });
   const grid = useLyteNyte({
     gridId: "stock-demo",
     columns: stockColumns,
+    rowDataSource: ds,
   });
 
   return (
