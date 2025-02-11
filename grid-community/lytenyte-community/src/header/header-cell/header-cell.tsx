@@ -122,9 +122,19 @@ export function HeaderCell({
       className={clsx(
         HEADER_CELL,
         css`
+          overflow: hidden;
           grid-column-start: 1;
           grid-column-end: 2;
-          overflow: hidden;
+
+          border-bottom: 1px solid ${t.headerXDivider};
+          background-color: ${t.headerBg};
+          color: ${t.headerFg};
+          padding-inline: ${t.headerPx};
+          padding-block: ${t.headerPy};
+
+          font-size: ${t.headerFontSize};
+          font-weight: ${t.headerFontWeight};
+          font-family: ${t.headerFontTypeface};
         `,
         focusCellOutline,
         isOver &&

@@ -2,6 +2,20 @@ import type { Theme } from "./types";
 
 // prettier-ignore
 export const t: Theme = {
+  headerFontTypeface: "var(--lng1771-header-font-typeface)",
+  headerFontSize: "var(--lng1771-header-font-size)",
+  headerFontSizeAlt: "var(--lng1771-header-font-size-alt)",
+  headerFontWeight: "var(--lng1771-header-font-weight)",
+  headerFontWeightAlt: "var(--lng1771-header-font-weight-alt)",
+
+  headerBg: "var(--lng1771-header-bg)",
+  headerFg: "var(--lng1771-header-fg)",
+  headerFgAlt: "var(--lng1771-header-fg-alt)",
+  headerPx: "var(--lng1771-header-px)",
+  headerPy: "var(--lng1771-header-py)",
+  headerXDivider: "var(--lng1771-header-x-divider)",
+  headerYDivider: "var(--lng1771-header-y-divider)",
+
   colors: {
     gradient_shadow:                    "var(--lng1771-gradient-shadow)",
     

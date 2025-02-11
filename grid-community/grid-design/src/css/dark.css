@@ -1,27 +1,6 @@
 .dark {
   color-scheme: dark;
 
-  --lng1771-primary-05: rgba(18, 108, 255, 0.05);
-  --lng1771-primary-10: rgba(49, 127, 255, 0.1);
-  --lng1771-primary-30: rgba(18, 108, 255, 0.3);
-  --lng1771-primary-50: #126cff;
-  --lng1771-primary-70: #004dcc;
-  --lng1771-primary-90: #00307d;
-
-  --lng1771-gray-00: #151519;
-  --lng1771-gray-02: #121316;
-  --lng1771-gray-05: #1c1e21;
-  --lng1771-gray-10: #282a2e;
-  --lng1771-gray-20: #2f3137;
-  --lng1771-gray-30: #3f424a;
-  --lng1771-gray-40: #525660;
-  --lng1771-gray-50: #676c79;
-  --lng1771-gray-60: #62636a;
-  --lng1771-gray-70: #7a7b85;
-  --lng1771-gray-80: #9898a0;
-  --lng1771-gray-90: #e4e4e7;
-  --lng1771-gray-100: #e4e4e7;
-
   --lng1771-backgrounds-default: var(--lng1771-gray-05);
   --lng1771-backgrounds-strong: var(--lng1771-gray-10);
   --lng1771-backgrounds-light: var(--lng1771-gray-00);
@@ -88,4 +67,43 @@
   --lng1771-text-light: var(--lng1771-gray-70);
   --lng1771-text-medium: var(--lng1771-gray-80);
   --lng1771-text-x-light: var(--lng1771-gray-60);
+
+  /* Grid theme */
+
+  --lng1771-primary-05: rgba(18, 108, 255, 0.05);
+  --lng1771-primary-10: rgba(49, 127, 255, 0.1);
+  --lng1771-primary-30: rgba(18, 108, 255, 0.3);
+  --lng1771-primary-50: #126cff;
+  --lng1771-primary-70: #004dcc;
+  --lng1771-primary-90: #00307d;
+
+  --lng1771-gray-00: #151519;
+  --lng1771-gray-02: #121316;
+  --lng1771-gray-05: #1c1e21;
+  --lng1771-gray-10: #282a2e;
+  --lng1771-gray-20: #2f3137;
+  --lng1771-gray-30: #3f424a;
+  --lng1771-gray-40: #525660;
+  --lng1771-gray-50: #676c79;
+  --lng1771-gray-60: #62636a;
+  --lng1771-gray-70: #7a7b85;
+  --lng1771-gray-80: #9898a0;
+  --lng1771-gray-90: #e4e4e7;
+  --lng1771-gray-100: #e4e4e7;
+
+  --lng1771-typeface: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  --lng1771-header-font-size: 14px;
+  --lng1771-header-font-weight: 500;
+  --lng1771-header-font-size-alt: 12px;
+  --lng1771-header-font-weight-alt: 300;
+  --lng1771-header-font-typeface: var(--lng1771-typeface);
+
+  --lng1771-header-bg: var(--lng1771-gray-00);
+  --lng1771-header-fg: var(--lng1771-gray-60);
+  --lng1771-header-fg-alt: var(--lng1771-gray-70);
+  --lng1771-header-fg-agg: var(--lng1771-primary-50);
+  --lng1771-header-y-divider: var(--lng1771-gray-50);
+  --lng1771-header-x-divider: var(--lng1771-gray-10);
 }

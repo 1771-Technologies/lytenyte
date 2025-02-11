@@ -1,4 +1,18 @@
 export type Theme = {
+  readonly headerFontSize: string;
+  readonly headerFontWeight: string;
+  readonly headerFontSizeAlt: string;
+  readonly headerFontWeightAlt: string;
+  readonly headerFontTypeface: string;
+
+  readonly headerBg: string;
+  readonly headerFg: string;
+  readonly headerFgAlt: string;
+  readonly headerPx: string;
+  readonly headerPy: string;
+  readonly headerYDivider: string;
+  readonly headerXDivider: string;
+
   readonly colors: {
     readonly gradient_shadow: string;
     readonly primary_05: string;

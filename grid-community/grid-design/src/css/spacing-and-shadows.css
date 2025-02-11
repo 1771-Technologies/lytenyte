@@ -65,4 +65,7 @@
   --lng1771-thead-vertical-padding: 4px;
   --lng1771-cell-vertical-padding: 8px;
   --lng1771-cell-horizontal-padding: 10px;
+
+  --lng1771-header-px: 10px;
+  --lng1771-header-py: 4px;
 }
