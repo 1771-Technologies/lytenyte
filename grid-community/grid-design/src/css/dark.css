@@ -92,7 +92,7 @@
   --lng1771-gray-100: #e4e4e7;
 
   --lng1771-header-bg: var(--lng1771-gray-00);
-  --lng1771-header-bg-hover: var(--lng1771-gray-05);
+  --lng1771-header-bg-hover: var(--lng1771-primary-10);
   --lng1771-header-fg: var(--lng1771-gray-60);
   --lng1771-header-fg-alt: var(--lng1771-gray-70);
   --lng1771-header-fg-agg: var(--lng1771-primary-50);
