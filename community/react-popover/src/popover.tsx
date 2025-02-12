@@ -96,6 +96,7 @@ function PopoverImpl({
 
     const resizeObserver = new IsoResizeObserver(() => handlePosition());
     resizeObserver.observe(dialog);
+    handlePosition();
 
     return () => resizeObserver.disconnect();
   }, [dialog, handlePosition, popoverTarget]);

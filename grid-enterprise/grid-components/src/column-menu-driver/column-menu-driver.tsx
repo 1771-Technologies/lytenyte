@@ -7,7 +7,7 @@ import type {
 } from "@1771technologies/grid-types/enterprise";
 import { LngPopover } from "../popover/lng-popover";
 import { clsx } from "@1771technologies/js-utils";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   MenuRoot,
   type MenuAxe,
@@ -70,10 +70,17 @@ function ColumnMenuDriverImpl({
 
   const config = cc.columnMenu.use();
 
+  const [isOpen, setIsOpen] = useState(true);
+
+  useEffect(() => {
+    if (isOpen) return;
+    grid.api.columnMenuClose();
+  }, [grid.api, isOpen]);
+
   return (
     <>
       {!getMenuItems && (
-        <LngPopover open onOpenChange={() => grid.api.columnMenuClose()} popoverTarget={target}>
+        <LngPopover open onOpenChange={() => setIsOpen(false)} popoverTarget={target}>
           <div
             className={clsx(
               "lng1771-text-medium",
@@ -95,7 +102,7 @@ function ColumnMenuDriverImpl({
       {getMenuItems && (
         <LngPopover
           open
-          onOpenChange={() => grid.api.columnMenuClose()}
+          onOpenChange={() => setIsOpen(false)}
           popoverTarget={target}
           placement="bottom"
         >

@@ -115,6 +115,7 @@ export function HeaderCell({
       aria-colindex={columnIndex + 1}
       aria-colspan={1}
       aria-sort={sortDir === "asc" ? "ascending" : sortDir === "desc" ? "descending" : "none"}
+      tabIndex={-1}
       {...moveProps}
       {...dropProps}
       {...events}

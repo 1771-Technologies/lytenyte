@@ -1,6 +1,6 @@
 import { createPortal } from "react-dom";
 import { useEffect, useRef, useState, type JSX } from "react";
-import { refCompat, useCombinedRefs } from "@1771technologies/react-utils";
+import { refCompat, useCombinedRefs, useEvent } from "@1771technologies/react-utils";
 import { handleKeydown } from "./handle-key-down.js";
 import { handlePointerDown } from "./handle-pointer-down.js";
 import { handleClose } from "./handle-close.js";
@@ -68,6 +68,20 @@ function DialogImpl({
   const openRef = useRef(open);
   openRef.current = open;
 
+  const handleOpenChange = useEvent((b: boolean) => {
+    if (b) {
+      onOpenChange(b);
+      return;
+    }
+
+    const returnFocus = activeRef.current;
+    setTimeout(() => {
+      if (returnFocus) returnFocus.focus();
+    }, 10);
+
+    onOpenChange(b);
+  });
+
   useEffect(() => {
     if (!dialog) return;
 
@@ -84,17 +98,21 @@ function DialogImpl({
         "keydown",
         (ev) => {
           if (dialog.contains(document.activeElement)) return;
-          handleKeydown(ev, dialog, onOpenChange);
+          handleKeydown(ev, dialog, handleOpenChange);
         },
         { signal: signal },
       );
 
-      dialog.addEventListener("keydown", (ev) => handleKeydown(ev, dialog, onOpenChange), {
+      dialog.addEventListener("keydown", (ev) => handleKeydown(ev, dialog, handleOpenChange), {
         signal: signal,
       });
-      dialog.addEventListener("pointerdown", (ev) => handlePointerDown(ev, dialog, onOpenChange), {
-        signal,
-      });
+      dialog.addEventListener(
+        "pointerdown",
+        (ev) => handlePointerDown(ev, dialog, handleOpenChange),
+        {
+          signal,
+        },
+      );
       dialog.addEventListener(
         "close",
         () => {
@@ -111,7 +129,7 @@ function DialogImpl({
 
     if (open) handleOpen(dialog, activeRef, scrollbarWidthRef);
     else dialog.close();
-  }, [dialog, onOpenChange, open]);
+  }, [dialog, handleOpenChange, open]);
 
   useEffect(() => {
     if (!dialog) return;

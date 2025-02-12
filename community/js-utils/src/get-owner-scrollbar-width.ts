@@ -18,6 +18,8 @@
  * ```
  */
 export function getOwnerScrollbarWidth(): number {
+  if (globalThis.document.body.scrollHeight <= globalThis.document.body.clientHeight) return 0;
+
   return getScrollbarWidth();
   // const owner = getOwningGlobalThis(el);
 
