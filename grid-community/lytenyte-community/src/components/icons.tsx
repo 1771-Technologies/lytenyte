@@ -1,3 +1,4 @@
+import { clsx } from "@1771technologies/js-utils";
 import type { JSX } from "react";
 
 export const SortArrowAsc = (p: JSX.IntrinsicElements["svg"]) => {
@@ -16,9 +17,12 @@ export const SortArrowAsc = (p: JSX.IntrinsicElements["svg"]) => {
 export const SortArrowDesc = (p: JSX.IntrinsicElements["svg"]) => {
   return (
     <SortArrowAsc
-      className={css`
-        transform: rotate(180deg);
-      `}
+      className={clsx(
+        css`
+          transform: rotate(180deg);
+        `,
+        p.className,
+      )}
       {...p}
     />
   );

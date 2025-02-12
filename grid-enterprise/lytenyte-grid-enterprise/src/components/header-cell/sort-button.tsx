@@ -37,17 +37,34 @@ export function SortButton({ api, column }: SortButtonProps) {
             color: ${t.colors.text_light};
           `,
       )}
-      onClick={(event) => {
+      onClickCapture={(event) => {
         event.stopPropagation();
+        event.preventDefault();
         if (!api.columnIsSortable(column)) return;
 
         api.columnSortCycleToNext(column, event.ctrlKey || event.metaKey);
       }}
     >
-      {NextSortIcon && <NextSortIcon width={16} height={16} />}
+      {NextSortIcon && (
+        <NextSortIcon
+          width={16}
+          height={16}
+          className={css`
+            position: relative;
+            top: 1px;
+          `}
+        />
+      )}
       {sortDirection === "asc" && (
         <>
-          <SortArrowAsc width={16} height={16} />
+          <SortArrowAsc
+            width={16}
+            height={16}
+            className={css`
+              position: relative;
+              top: 1px;
+            `}
+          />
           {multipleSorts && sortIndex > 0 && (
             <span
               className={css`
@@ -64,7 +81,15 @@ export function SortButton({ api, column }: SortButtonProps) {
       )}
       {sortDirection === "desc" && (
         <>
-          <SortArrowDesc width={16} height={16} />
+          <SortArrowDesc
+            width={16}
+            height={16}
+            className={css`
+              transform: rotate(180deg);
+              position: relative;
+              top: 1px;
+            `}
+          />
           {multipleSorts && sortIndex > 0 && (
             <span
               className={css`
