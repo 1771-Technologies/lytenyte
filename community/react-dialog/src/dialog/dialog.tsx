@@ -134,8 +134,8 @@ function DialogImpl({
   useEffect(() => {
     if (!dialog) return;
 
-    const focusableItems = getFocusableElements(dialog);
     setTimeout(() => {
+      const focusableItems = getFocusableElements(dialog);
       focusableItems.at(0)?.focus();
     }, 50);
   }, [dialog]);
