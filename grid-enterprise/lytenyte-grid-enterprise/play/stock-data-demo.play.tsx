@@ -9,6 +9,17 @@ export default function StockDataDemo() {
   });
   const grid = useLyteNyte({
     gridId: "stock-demo",
+    columnBase: {
+      sortable: true,
+      columnMenuGetItems: () => [
+        {
+          kind: "item",
+          action: () => console.log("ABC"),
+          id: "cx",
+          label: "Try",
+        },
+      ],
+    },
     columns: stockColumns,
     rowDataSource: ds,
   });

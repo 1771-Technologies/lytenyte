@@ -23,7 +23,7 @@ export function HeaderLabel({ column, api }: HeaderLabelProps) {
   const hasSecondary = hasSecondaryLabel(column, hasGroup, hasAggFunc, aggFuncDisplayMode);
 
   return (
-    <>
+    <div>
       <div
         className={css`
           display: flex;
@@ -78,6 +78,6 @@ export function HeaderLabel({ column, api }: HeaderLabelProps) {
           )}
         </div>
       )}
-    </>
+    </div>
   );
 }

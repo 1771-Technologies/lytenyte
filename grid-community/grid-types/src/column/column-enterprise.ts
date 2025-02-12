@@ -46,7 +46,6 @@ export interface Column<A, D, E> {
   readonly aggFuncsAllowed?: (AggBuiltIns | (string & {}))[];
   readonly aggFuncDefault?: AggBuiltIns | (string & {});
 
-  readonly columnMenuShowTriggerInHeader?: boolean;
   readonly columnMenuGetItems?: (api: A) => ColumnMenuItem<E>[];
 
   readonly filterShowTriggerInHeader?: boolean;

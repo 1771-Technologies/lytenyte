@@ -2,7 +2,7 @@ import { columns } from "./data/columns";
 import { bankDataSmall } from "./data/bank-data-small";
 import { LyteNyteGrid } from "../src/lytenyte-grid-enterprise";
 import { useClientDataSource } from "../src/use-client-data-source";
-import { useLyteNyte } from "../src/use-lyte-nyte";
+import { useLyteNyte } from "../src/use-lytenyte";
 
 export default function Play() {
   const ds = useClientDataSource({

@@ -4,7 +4,7 @@ import "@1771technologies/grid-components/css";
 export type { LyteNyteGridEnterpriseProps } from "./lytenyte-grid-enterprise.js";
 export { LyteNyteGrid } from "./lytenyte-grid-enterprise.js";
 
-export { useLyteNyte } from "./use-lyte-nyte.js";
+export { useLyteNyte } from "./use-lytenyte.js";
 export { useClientDataSource } from "./use-client-data-source.js";
 export { useTreeDataSource } from "./use-tree-data-source.js";
 

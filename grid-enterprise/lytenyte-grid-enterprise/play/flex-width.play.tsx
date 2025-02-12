@@ -1,5 +1,5 @@
 import { LyteNyteGrid } from "../src/lytenyte-grid-enterprise";
-import { useLyteNyte } from "../src/use-lyte-nyte";
+import { useLyteNyte } from "../src/use-lytenyte";
 
 export default function Play() {
   const grid = useLyteNyte({
