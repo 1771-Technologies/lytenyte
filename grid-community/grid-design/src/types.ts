@@ -16,6 +16,7 @@ export type Theme = {
   readonly headerFgAgg: string;
   readonly headerPx: string;
   readonly headerPy: string;
+  readonly headerYDividerResize: string;
   readonly headerYDivider: string;
   readonly headerXDivider: string;
 

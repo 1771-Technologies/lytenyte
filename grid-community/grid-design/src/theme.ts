@@ -6,6 +6,7 @@ export const t: Theme = {
   gridDragBarNotAllowedColor: "var(--lng1771-grid-drag-bar-not-allowed-color)",
   gridFocusOutline: "var(--lng1771-grid-focus-outline)",
 
+
   headerFontTypeface: "var(--lng1771-header-font-typeface)",
   headerFontSize: "var(--lng1771-header-font-size)",
   headerFontSizeAlt: "var(--lng1771-header-font-size-alt)",
@@ -19,6 +20,7 @@ export const t: Theme = {
   headerFgAgg: "var(--lng1771-primary-50)",
   headerPx: "var(--lng1771-header-px)",
   headerPy: "var(--lng1771-header-py)",
+  headerYDividerResize: "var(--lng1771-header-y-divider-resize)",
   headerXDivider: "var(--lng1771-header-x-divider)",
   headerYDivider: "var(--lng1771-header-y-divider)",
 

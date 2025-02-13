@@ -105,6 +105,7 @@
   --lng1771-header-fg: var(--lng1771-gray-60);
   --lng1771-header-fg-alt: var(--lng1771-gray-70);
   --lng1771-header-fg-agg: var(--lng1771-primary-50);
+  --lng1771-header-y-divider-resize: var(--lng1771-primary-50);
   --lng1771-header-y-divider: var(--lng1771-gray-50);
   --lng1771-header-x-divider: var(--lng1771-gray-10);
 }

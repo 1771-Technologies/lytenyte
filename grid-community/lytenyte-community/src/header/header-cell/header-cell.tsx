@@ -148,7 +148,7 @@ export function HeaderCell({
               border-radius: 9999px;
               height: 100%;
               content: "";
-              background-color: var(--lng1771-allowed-to-drop, ${t.colors.primary_50});
+              background-color: var(--lng1771-allowed-to-drop, ${t.gridDragBarColor});
               z-index: 20;
             }
           `,
@@ -169,7 +169,7 @@ export function HeaderCell({
         isOver &&
           !canDrop &&
           css`
-            --lng1771-allowed-to-drop: ${t.colors.system_red_50};
+            --lng1771-allowed-to-drop: ${t.gridDragBarNotAllowedColor};
           `,
       )}
     >
