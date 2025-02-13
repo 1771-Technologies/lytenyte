@@ -130,8 +130,6 @@ export function HeaderCell({
           background-color: ${t.headerBg};
           color: ${t.headerFg};
           box-sizing: border-box;
-          padding-inline: ${t.headerPx};
-          padding-block: ${t.headerPy};
 
           font-size: ${t.headerFontSize};
           font-weight: ${t.headerFontWeight};

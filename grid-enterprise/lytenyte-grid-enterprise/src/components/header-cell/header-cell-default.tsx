@@ -72,9 +72,11 @@ export function HeaderCellDefault({ column, api }: ColumnHeaderRendererParamsRea
           align-items: center;
           box-sizing: border-box;
           height: 100%;
-          padding-inline: 4px;
           border-radius: 4px;
           transition: background-color ${t.transitions.normal} ${t.transitions.fn};
+
+          padding-inline: ${t.headerPx};
+          padding-block: ${t.headerPy};
 
           .${iconCls} {
             opacity: 0;
