@@ -9,9 +9,9 @@
   ],
   "exports": {
     ".": {
-      "types": "./src/index.ts",
-      "import": "./src/index.ts",
-      "require": "./src/index.ts"
+      "types": "./types/index.d.ts",
+      "import": "./src/index.js",
+      "require": "./src/index.js"
     }
   },
   "dependencies": {
@@ -22,9 +22,9 @@
     "access": "public",
     "exports": {
       ".": {
-        "types": "./dist/types/index.d.ts",
-        "import": "./dist/index.js",
-        "require": "./dist/index.js"
+        "types": "./types/types/index.d.ts",
+        "import": "./src/index.js",
+        "require": "./src/index.js"
       }
     }
   },
