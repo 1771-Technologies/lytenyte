@@ -11,6 +11,9 @@ export default function StockDataDemo() {
     gridId: "stock-demo",
     columnBase: {
       sortable: true,
+      resizable: true,
+      movable: true,
+
       columnMenuGetItems: () => [
         {
           kind: "item",

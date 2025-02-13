@@ -48,7 +48,6 @@ export interface Column<A, D, E> {
 
   readonly columnMenuGetItems?: (api: A) => ColumnMenuItem<E>[];
 
-  readonly filterShowTriggerInHeader?: boolean;
   readonly filterSupportsIn?: boolean;
   readonly filterSupportsSimple?: boolean;
   readonly filterSupportsQuickSearch?: boolean;
