@@ -1,23 +1,24 @@
-import { unstable_batchedUpdates } from 'react-dom';
+import { unstable_batchedUpdates } from "react-dom";
 
-export const isMenuOpen = (state) => !!state && state[0] === 'o';
+export const isMenuOpen = (state) => !!state && state[0] === "o";
 export const batchedUpdates = unstable_batchedUpdates;
 export const floatEqual = (a, b, diff = 0.0001) => Math.abs(a - b) < diff;
 export const getTransition = (transition, name) =>
   transition === true || !!(transition && transition[name]);
-export const safeCall = (fn, arg) => (typeof fn === 'function' ? fn(arg) : fn);
+export const safeCall = (fn, arg) => (typeof fn === "function" ? fn(arg) : fn);
 
-const internalKey = '_szhsinMenu';
+const internalKey = "_szhsinMenu";
 export const getName = (component) => component[internalKey];
 export const defineName = (name, component) =>
   Object.defineProperty(component, internalKey, { value: name });
 
 export const mergeProps = (target, source) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
   source &&
     Object.keys(source).forEach((key) => {
       const targetProp = target[key];
       const sourceProp = source[key];
-      if (typeof sourceProp === 'function' && targetProp) {
+      if (typeof sourceProp === "function" && targetProp) {
         target[key] = (...arg) => {
           sourceProp(...arg);
           targetProp(...arg);
@@ -31,7 +32,7 @@ export const mergeProps = (target, source) => {
 };
 
 export const parsePadding = (paddingStr) => {
-  if (typeof paddingStr !== 'string') return { top: 0, right: 0, bottom: 0, left: 0 };
+  if (typeof paddingStr !== "string") return { top: 0, right: 0, bottom: 0, left: 0 };
 
   const padding = paddingStr.trim().split(/\s+/, 4).map(parseFloat);
   const top = !isNaN(padding[0]) ? padding[0] : 0;
@@ -40,7 +41,7 @@ export const parsePadding = (paddingStr) => {
     top,
     right,
     bottom: !isNaN(padding[2]) ? padding[2] : top,
-    left: !isNaN(padding[3]) ? padding[3] : right
+    left: !isNaN(padding[3]) ? padding[3] : right,
   };
 };
 
@@ -56,8 +57,8 @@ export const getScrollAncestor = (node) => {
 
 export function commonProps(isDisabled, isHovering) {
   return {
-    'aria-disabled': isDisabled || undefined,
-    tabIndex: isHovering ? 0 : -1
+    "aria-disabled": isDisabled || undefined,
+    tabIndex: isHovering ? 0 : -1,
   };
 }
 

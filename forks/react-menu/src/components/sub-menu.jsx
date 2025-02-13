@@ -1,7 +1,7 @@
 import { useState, useRef, useContext, useEffect, useMemo, useImperativeHandle } from "react";
 import { createPortal } from "react-dom";
 import { useBEM, useCombinedRef, useMenuStateAndFocus, useItemEffect } from "../hooks";
-import { MenuList } from "./MenuList";
+import { MenuList } from "./menu-list";
 import {
   mergeProps,
   batchedUpdates,

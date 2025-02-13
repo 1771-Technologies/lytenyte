@@ -1,6 +1,6 @@
 import { useState, useReducer, useEffect, useRef, useMemo, useCallback, useContext } from "react";
 import { flushSync } from "react-dom";
-import { MenuContainer } from "./MenuContainer";
+import { MenuContainer } from "./menu-container";
 import { useBEM, useCombinedRef, useLayoutEffect, useItems } from "../hooks";
 import { getPositionHelpers, positionMenu } from "../positionUtils";
 import {

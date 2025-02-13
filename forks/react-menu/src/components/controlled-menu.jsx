@@ -1,6 +1,6 @@
 import { forwardRef, useRef, useMemo } from "react";
 import { createPortal } from "react-dom";
-import { MenuList } from "./MenuList";
+import { MenuList } from "./menu-list";
 import { safeCall, CloseReason, Keys, EventHandlersContext, SettingsContext } from "../utils";
 
 export const ControlledMenu = forwardRef(function ControlledMenu(
