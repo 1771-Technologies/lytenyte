@@ -7,7 +7,7 @@ import {
   useImperativeHandle,
   version as REACT_VERSION,
 } from "react";
-import { ControlledMenu } from "./ControlledMenu";
+import { ControlledMenu } from "./controlled-menu";
 import { useMenuStateAndFocus, useCombinedRef, useClick } from "../hooks";
 import { getName, mergeProps, safeCall, isMenuOpen, Keys, FocusPositions } from "../utils";
 

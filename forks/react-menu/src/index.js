@@ -1,7 +1,7 @@
 export { useClick, useHover, useMenuState } from "./hooks";
 export { MenuButton } from "./components/MenuButton";
 export { Menu } from "./components/Menu";
-export { ControlledMenu } from "./components/ControlledMenu";
+export { ControlledMenu } from "./components/controlled-menu";
 export { SubMenu } from "./components/SubMenu";
 export { MenuItem } from "./components/MenuItem";
 export { FocusableItem } from "./components/FocusableItem";
