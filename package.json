@@ -5,6 +5,7 @@
   "workspaces": [
     "grid-community/*",
     "grid-enterprise/*",
+    "forks/*",
     "community/*",
     "enterprise/*",
     "tools/*"
