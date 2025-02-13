@@ -13,15 +13,7 @@ export default function StockDataDemo() {
       sortable: true,
       resizable: true,
       movable: true,
-
-      columnMenuGetItems: () => [
-        {
-          kind: "item",
-          action: () => console.log("ABC"),
-          id: "cx",
-          label: "Try",
-        },
-      ],
+      columnMenuPredicate: true,
     },
     columns: stockColumns,
     rowDataSource: ds,

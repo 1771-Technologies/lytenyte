@@ -13,8 +13,6 @@ export function HeaderCellDefault({ column, api }: ColumnHeaderRendererParamsRea
   const sx = api.getState();
   const base = sx.columnBase.use();
 
-  const menuItemsFn = column.columnMenuGetItems ?? base.columnMenuGetItems;
-
   const justify = useMemo(() => {
     const s =
       column.headerJustify ?? base.headerJustify ?? (column.type === "number" ? "end" : "start");
@@ -24,17 +22,11 @@ export function HeaderCellDefault({ column, api }: ColumnHeaderRendererParamsRea
     return "flex-start";
   }, [base.headerJustify, column.headerJustify, column.type]);
 
-  const menuItems = useMemo(() => {
-    if (!menuItemsFn) return [];
-
-    return menuItemsFn(api);
-  }, [api, menuItemsFn]);
-
-  const hasMenu = menuItems.length > 0;
+  const hasColumnMenu = column.columnMenuPredicate ?? base.columnMenuPredicate;
 
   const [el, setEl] = useState<HTMLDivElement | null>(null);
   useEffect(() => {
-    if (!el || !hasMenu) return;
+    if (!el || !hasColumnMenu) return;
     const parent = el.parentElement;
     if (!parent) return;
 
@@ -59,11 +51,11 @@ export function HeaderCellDefault({ column, api }: ColumnHeaderRendererParamsRea
     );
 
     return () => controller.abort();
-  }, [api, column, el, hasMenu]);
+  }, [api, column, el, hasColumnMenu]);
 
   return (
     <div
-      role={hasMenu ? "button" : undefined}
+      role={hasColumnMenu ? "button" : undefined}
       ref={setEl}
       style={{ justifyContent: justify }}
       className={clsx(
@@ -86,7 +78,7 @@ export function HeaderCellDefault({ column, api }: ColumnHeaderRendererParamsRea
             opacity: 1;
           }
         `,
-        hasMenu &&
+        hasColumnMenu &&
           css`
             &:hover {
               background-color: ${t.headerBgHover};

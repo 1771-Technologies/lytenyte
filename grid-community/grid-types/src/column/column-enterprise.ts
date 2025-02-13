@@ -23,7 +23,6 @@ import type {
   SortCycleOption,
   SortParams,
 } from "../types";
-import type { ColumnMenuItem } from "../types-enterprise";
 
 export type HeaderTooltip<A, C, E> =
   | string
@@ -47,7 +46,7 @@ export interface Column<A, D, E> {
   readonly aggFuncsAllowed?: (AggBuiltIns | (string & {}))[];
   readonly aggFuncDefault?: AggBuiltIns | (string & {});
 
-  readonly columnMenuGetItems?: (api: A) => ColumnMenuItem<E>[];
+  readonly columnMenuPredicate?: boolean;
 
   readonly filterSupportsIn?: boolean;
   readonly filterSupportsSimple?: boolean;
