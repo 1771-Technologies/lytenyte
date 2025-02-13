@@ -38,7 +38,7 @@ export function useHeaderMove(
 
   const moveProps = api.columnIsMovable(column) ? dragProps : {};
 
-  return { moveProps, dropProps, isBefore, canDrop, isOver };
+  return { moveProps, dropProps, isBefore, canDrop, isOver, dragIndex };
 }
 function DragPlaceholder(c: { column: ColumnCommunityReact<any> }) {
   return (

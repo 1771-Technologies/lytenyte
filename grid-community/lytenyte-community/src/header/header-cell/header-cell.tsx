@@ -63,7 +63,7 @@ export function HeaderCell({
 
   const Renderer = useHeaderCellRenderer(api, column, headerDefault);
 
-  const { moveProps, dropProps, isBefore, isOver, canDrop } = useHeaderMove(
+  const { moveProps, dropProps, isBefore, isOver, canDrop, dragIndex } = useHeaderMove(
     api,
     column,
     columnIndex,
@@ -139,6 +139,7 @@ export function HeaderCell({
         `,
         focusCellOutline,
         isOver &&
+          columnIndex !== dragIndex &&
           css`
             &::after {
               top: 0px;

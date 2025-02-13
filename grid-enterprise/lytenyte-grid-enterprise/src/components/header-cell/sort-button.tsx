@@ -11,8 +11,9 @@ import { t } from "@1771technologies/grid-design";
 export interface SortButtonProps {
   readonly api: ApiEnterpriseReact<any>;
   readonly column: ColumnEnterpriseReact<any>;
+  readonly justify: "flex-end" | "flex-start" | "center";
 }
-export function SortButton({ api, column }: SortButtonProps) {
+export function SortButton({ api, column, justify }: SortButtonProps) {
   const sortDirection = api.columnSortDirection(column);
   const sortIndex = api.columnSortModelIndex(column) + 1;
   const nextSort = api.columnSortGetNext(column);
@@ -23,9 +24,11 @@ export function SortButton({ api, column }: SortButtonProps) {
   const NextSortIcon =
     sortDirection == null ? (nextSort?.includes("desc") ? SortArrowDesc : SortArrowAsc) : null;
 
+  const style = justify === "flex-end" ? { insetInlineStart: "4px" } : { insetInlineEnd: "4px" };
   return (
     <GridButton
       tabIndex={-1}
+      style={style}
       className={clsx(
         iconCls,
         sortDirection != null &&

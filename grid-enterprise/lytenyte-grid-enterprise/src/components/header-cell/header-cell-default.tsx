@@ -7,7 +7,6 @@ import { SortButton } from "./sort-button";
 
 export const iconCls = css`
   position: absolute;
-  inset-inline-end: 4px;
 `;
 
 export function HeaderCellDefault({ column, api }: ColumnHeaderRendererParamsReact<any>) {
@@ -95,7 +94,7 @@ export function HeaderCellDefault({ column, api }: ColumnHeaderRendererParamsRea
     >
       <HeaderLabel api={api} column={column} justify={justify} />
 
-      {api.columnIsSortable(column) && <SortButton api={api} column={column} />}
+      {api.columnIsSortable(column) && <SortButton api={api} column={column} justify={justify} />}
     </div>
   );
 }
