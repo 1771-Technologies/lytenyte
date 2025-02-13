@@ -1,3 +1,4 @@
+import "@1771technologies/react-menu/css";
 import { Menu, MenuItem } from "@1771technologies/react-menu";
 
 export default function Home() {

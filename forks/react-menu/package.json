@@ -4,6 +4,8 @@
   "license": "Apache-2.0",
   "type": "module",
   "files": [
+    "src",
+    "types",
     "LICENSE",
     "LICENSE_ORIGINAL"
   ],
@@ -12,7 +14,8 @@
       "types": "./types/index.d.ts",
       "import": "./src/index.js",
       "require": "./src/index.js"
-    }
+    },
+    "./css": "./src/css/core.css"
   },
   "dependencies": {
     "@1771technologies/react-utils": "workspace:*",
@@ -25,7 +28,8 @@
         "types": "./types/types/index.d.ts",
         "import": "./src/index.js",
         "require": "./src/index.js"
-      }
+      },
+      "./css": "./src/css/core.css"
     }
   },
   "peerDependencies": {
