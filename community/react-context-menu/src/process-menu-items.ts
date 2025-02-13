@@ -1,4 +1,4 @@
-import type { MenuItemGroup, MenuParent } from "@1771technologies/react-menu";
+import type { MenuItemGroup, MenuParent } from "@1771technologies/react-menu-legacy";
 import type { ContextMenuCheckbox, ContextMenuItem, ContextMenuItemRadio } from "./context-menu";
 
 export function processMenuItems(items: ContextMenuItem[], close: () => void) {

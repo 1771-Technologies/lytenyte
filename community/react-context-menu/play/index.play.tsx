@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { ContextMenu, type ContextMenuApi, type ContextMenuItem } from "../src/context-menu";
 import { getClientX, getClientY } from "@1771technologies/js-utils";
 import { contextMenuAxeDefault } from "../src/context-menu-axe";
-import { menuAxeDefault } from "@1771technologies/react-menu";
+import { menuAxeDefault } from "@1771technologies/react-menu-legacy";
 
 export default function Menu() {
   const ref = useRef<ContextMenuApi>(null);

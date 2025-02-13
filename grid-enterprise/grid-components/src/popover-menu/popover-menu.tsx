@@ -3,7 +3,7 @@ import {
   type MenuAxe,
   type MenuItem,
   type MenuProps,
-} from "@1771technologies/react-menu";
+} from "@1771technologies/react-menu-legacy";
 import { LngPopover } from "../popover/lng-popover";
 import type { Placement, Rect } from "@1771technologies/positioner";
 import { cc } from "../component-configuration";

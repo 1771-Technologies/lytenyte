@@ -14,7 +14,7 @@ import {
   type MenuItem,
   type MenuItemLeaf,
   type MenuParent,
-} from "@1771technologies/react-menu";
+} from "@1771technologies/react-menu-legacy";
 import { t } from "@1771technologies/grid-design";
 import { cc } from "../component-configuration";
 

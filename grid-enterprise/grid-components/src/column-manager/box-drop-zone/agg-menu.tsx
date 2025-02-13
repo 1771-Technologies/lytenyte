@@ -3,7 +3,7 @@ import { t } from "@1771technologies/grid-design";
 import { useGrid } from "../../provider/grid-provider";
 import { PopoverMenu } from "../../popover-menu/popover-menu";
 import { useMemo, useRef } from "react";
-import type { MenuItem, MenuItemCheckbox } from "@1771technologies/react-menu";
+import type { MenuItem, MenuItemCheckbox } from "@1771technologies/react-menu-legacy";
 
 export function AggMenu({
   allowed,

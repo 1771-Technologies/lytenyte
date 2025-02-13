@@ -1,4 +1,4 @@
-import type { MenuItemCheckbox, MenuItemGroup } from "@1771technologies/react-menu";
+import type { MenuItemCheckbox, MenuItemGroup } from "@1771technologies/react-menu-legacy";
 import { processMenuItems } from "../process-menu-items";
 import { menuItems } from "./items";
 

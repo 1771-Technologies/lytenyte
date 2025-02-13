@@ -10,7 +10,7 @@ import {
   type MenuParent,
   type MenuProps,
   type MenuSeparator,
-} from "@1771technologies/react-menu";
+} from "@1771technologies/react-menu-legacy";
 import { Popover } from "@1771technologies/react-popover";
 import { refCompat } from "@1771technologies/react-utils";
 import { useId, useImperativeHandle, useState, type CSSProperties, type RefObject } from "react";

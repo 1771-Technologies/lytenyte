@@ -14,7 +14,7 @@ import { MeasuresIcon } from "./column-manager/icons/measures-icon";
 import { RowGroupIcon } from "./column-manager/icons/row-group-icon";
 import { DragPlaceholder } from "./drag-placeholder/drag-placeholder";
 import type { MenuConfiguration } from "./popover-menu/popover-menu";
-import { menuAxeDefault } from "@1771technologies/react-menu";
+import { menuAxeDefault } from "@1771technologies/react-menu-legacy";
 import { SearchIcon } from "./icons/search-icon";
 import type { FilterConfiguration } from "./filters/filter";
 import type { ListViewAxe } from "@1771technologies/react-list-view";

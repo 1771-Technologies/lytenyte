@@ -4,7 +4,7 @@ import type { PillRowItem } from "./pill-row-elements";
 import { useEvent } from "@1771technologies/react-utils";
 import { useDrop } from "./use-row-groups-pills";
 import { t } from "@1771technologies/grid-design";
-import type { MenuItem, MenuItemCheckbox } from "@1771technologies/react-menu";
+import type { MenuItem, MenuItemCheckbox } from "@1771technologies/react-menu-legacy";
 import { PopoverMenu } from "../popover-menu/popover-menu";
 import { clsx } from "@1771technologies/js-utils";
 

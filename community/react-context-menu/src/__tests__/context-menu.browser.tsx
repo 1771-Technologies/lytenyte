@@ -1,4 +1,4 @@
-import { menuAxeDefault } from "@1771technologies/react-menu";
+import { menuAxeDefault } from "@1771technologies/react-menu-legacy";
 import { contextMenuAxeDefault } from "../context-menu-axe";
 import { ContextMenu, type ContextMenuApi } from "../context-menu";
 import { getClientX, getClientY } from "@1771technologies/js-utils";

@@ -1,4 +1,4 @@
-import type { MenuProps } from "@1771technologies/react-menu";
+import type { MenuProps } from "@1771technologies/react-menu-legacy";
 import { t } from "@1771technologies/grid-design";
 import { CheckMark } from "@1771technologies/lytenyte-grid-community/internal";
 

@@ -1,4 +1,4 @@
-# @1771technologies/react-menu
+# @1771technologies/react-menu-legacy
 
 ## 0.0.10
 
