@@ -22,7 +22,8 @@ export function HeaderCellDefault({ column, api }: ColumnHeaderRendererParamsRea
     return "flex-start";
   }, [base.headerJustify, column.headerJustify, column.type]);
 
-  const hasColumnMenu = column.columnMenuPredicate ?? base.columnMenuPredicate;
+  const columnMenu = sx.columnMenuRenderer.use();
+  const hasColumnMenu = columnMenu && (column.columnMenuPredicate ?? base.columnMenuPredicate);
 
   const [el, setEl] = useState<HTMLDivElement | null>(null);
   useEffect(() => {

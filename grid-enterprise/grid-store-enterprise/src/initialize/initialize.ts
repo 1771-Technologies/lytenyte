@@ -123,6 +123,8 @@ export function initialize<D, E>(
     cellSelections: cellSelectionComputed(props.cellSelections ?? [], api),
     cellSelectionMode: signal(props.cellSelectionMode ?? "none"),
 
+    columnMenuRenderer: signal(props.columnMenuRenderer ?? null),
+
     contextMenuItems: signal(props.contextMenuItems ?? null),
 
     clipboardTransformCellValue: signal(props.clipboardTransformCellValue ?? null),

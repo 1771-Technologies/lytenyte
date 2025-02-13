@@ -24,6 +24,8 @@ export interface PropsEnterprise<A, D, C, E, Base, Group>
   readonly cellSelections?: CellSelectionRect[];
   readonly cellSelectionMode?: CellSelectionMode;
 
+  readonly columnMenuRenderer?: null | ((p: { api: A; column: C }) => E);
+
   readonly columnPivotModeIsOn?: boolean;
   readonly columnPivotModel?: string[];
 

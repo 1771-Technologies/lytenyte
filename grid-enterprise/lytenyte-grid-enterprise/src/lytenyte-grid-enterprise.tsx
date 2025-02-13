@@ -12,7 +12,6 @@ import { HeaderCellDefault } from "./components/header-cell/header-cell-default"
 import {
   GridFrame,
   FilterMenuDriver,
-  ColumnMenuDriver,
   ContextMenuDriver,
   FloatingFrameDriver,
 } from "@1771technologies/grid-components";
@@ -25,6 +24,7 @@ import {
 import { useMemo } from "react";
 import { Watermark } from "./watermark";
 import { OverlayDriver } from "./overlay/overlay-driver";
+import { ColumnMenuDriver } from "./components/column-menu-driver";
 
 export interface LyteNyteGridEnterpriseProps<D> {
   readonly grid: StoreEnterpriseReact<D>;
