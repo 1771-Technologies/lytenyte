@@ -16,6 +16,15 @@ export function HeaderCellDefault({ column, api }: ColumnHeaderRendererParamsRea
 
   const menuItemsFn = column.columnMenuGetItems ?? base.columnMenuGetItems;
 
+  const justify = useMemo(() => {
+    const s =
+      column.headerJustify ?? base.headerJustify ?? (column.type === "number" ? "end" : "start");
+
+    if (s === "end") return "flex-end";
+    if (s === "center") return "center";
+    return "flex-start";
+  }, [base.headerJustify, column.headerJustify, column.type]);
+
   const menuItems = useMemo(() => {
     if (!menuItemsFn) return [];
 
@@ -57,6 +66,7 @@ export function HeaderCellDefault({ column, api }: ColumnHeaderRendererParamsRea
     <div
       role={hasMenu ? "button" : undefined}
       ref={setEl}
+      style={{ justifyContent: justify }}
       className={clsx(
         css`
           display: flex;
@@ -83,7 +93,7 @@ export function HeaderCellDefault({ column, api }: ColumnHeaderRendererParamsRea
           `,
       )}
     >
-      <HeaderLabel api={api} column={column} />
+      <HeaderLabel api={api} column={column} justify={justify} />
 
       {api.columnIsSortable(column) && <SortButton api={api} column={column} />}
     </div>

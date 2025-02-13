@@ -41,6 +41,7 @@ export interface Column<A, D, E> {
   readonly headerRenderer?: string | ColumnHeaderRenderer<A, this, E>;
   readonly headerAutosizeFunc?: (c: AutosizeHeaderParameters<A, this>) => number;
   readonly headerAggFuncDisplayMode?: "secondary" | "inline" | "none";
+  readonly headerJustify?: "start" | "center" | "end";
 
   readonly aggFunc?: AggBuiltIns | (string & {}) | AggFunc<A>;
   readonly aggFuncsAllowed?: (AggBuiltIns | (string & {}))[];

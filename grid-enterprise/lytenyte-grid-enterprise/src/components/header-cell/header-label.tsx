@@ -8,9 +8,10 @@ import { hasSecondaryLabel } from "../../utils/has-secondary-label";
 interface HeaderLabelProps {
   readonly column: ColumnEnterpriseReact<any>;
   readonly api: ApiEnterpriseReact<any>;
+  readonly justify: "flex-end" | "flex-start" | "center";
 }
 
-export function HeaderLabel({ column, api }: HeaderLabelProps) {
+export function HeaderLabel({ column, api, justify }: HeaderLabelProps) {
   const sx = api.getState();
   const base = sx.columnBase.peek();
   const hasGroup = sx.rowGroupModel.peek().length > 0;
@@ -22,9 +23,12 @@ export function HeaderLabel({ column, api }: HeaderLabelProps) {
   const hasAggFunc = !!column.aggFunc;
   const hasSecondary = hasSecondaryLabel(column, hasGroup, hasAggFunc, aggFuncDisplayMode);
 
+  const hasSecondaryAgg = hasGroup && hasAggFunc && aggFuncDisplayMode === "secondary";
+
   return (
     <div>
       <div
+        style={{ justifyContent: justify }}
         className={css`
           display: flex;
           align-items: center;
@@ -47,6 +51,10 @@ export function HeaderLabel({ column, api }: HeaderLabelProps) {
 
       {hasSecondary && (
         <div
+          style={{
+            justifyContent: justify,
+            flexDirection: justify === "flex-end" && hasSecondaryAgg ? "row-reverse" : "row",
+          }}
           className={css`
             display: flex;
             align-items: center;
@@ -65,7 +73,7 @@ export function HeaderLabel({ column, api }: HeaderLabelProps) {
               {column.headerSecondaryLabel}
             </span>
           )}
-          {hasGroup && hasAggFunc && aggFuncDisplayMode === "secondary" && (
+          {hasSecondaryAgg && (
             <span
               className={css`
                 color: ${t.headerFgAgg};
@@ -73,7 +81,7 @@ export function HeaderLabel({ column, api }: HeaderLabelProps) {
                 font-weight: ${t.headerFontWeightAlt};
               `}
             >
-              ({columnAggFunc})
+              FN ({columnAggFunc})
             </span>
           )}
         </div>
