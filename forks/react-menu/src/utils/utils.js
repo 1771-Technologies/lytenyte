@@ -7,7 +7,7 @@ export const getTransition = (transition, name) =>
   transition === true || !!(transition && transition[name]);
 export const safeCall = (fn, arg) => (typeof fn === "function" ? fn(arg) : fn);
 
-const internalKey = "_szhsinMenu";
+const internalKey = "_lng1771sinMenu";
 export const getName = (component) => component[internalKey];
 export const defineName = (name, component) =>
   Object.defineProperty(component, internalKey, { value: name });

@@ -1,73 +1,90 @@
-.szh-menu {
+.lng1771-menu {
   margin: 0;
-  padding: 0;
+  padding: 4px; /* Make a variable */
   list-style: none;
   box-sizing: border-box;
   width: max-content;
   z-index: 100;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  background-color: #fff;
+  background-color: white; /* Make a variable */
+  border-radius: 12px; /* Make a variable */
+  box-shadow:
+    0px 14px 18px -6px rgba(0, 0, 0, 0.25),
+    0px 3px 13px 0px rgba(0, 0, 0, 0.35);
 }
-.szh-menu:focus {
+
+.lng1771-menu:focus {
   outline: none;
 }
-.szh-menu__arrow {
+
+.lng1771-menu__arrow {
   box-sizing: border-box;
-  width: 0.75rem;
-  height: 0.75rem;
-  background-color: #fff;
-  border: 1px solid transparent;
-  border-left-color: rgba(0, 0, 0, 0.1);
-  border-top-color: rgba(0, 0, 0, 0.1);
+  width: 12px;
+  height: 12px;
+  background-color: #fff; /* Same as menu bg */
   z-index: -1;
+  box-shadow: 0px 14px 18px -6px rgba(0, 0, 0, 0.25);
 }
-.szh-menu__arrow--dir-left {
+
+.lng1771-menu__arrow--dir-left {
   right: -0.375rem;
   transform: translateY(-50%) rotate(135deg);
 }
-.szh-menu__arrow--dir-right {
+.lng1771-menu__arrow--dir-right {
   left: -0.375rem;
   transform: translateY(-50%) rotate(-45deg);
 }
-.szh-menu__arrow--dir-top {
+.lng1771-menu__arrow--dir-top {
   bottom: -0.375rem;
   transform: translateX(-50%) rotate(-135deg);
 }
-.szh-menu__arrow--dir-bottom {
+.lng1771-menu__arrow--dir-bottom {
   top: -0.375rem;
   transform: translateX(-50%) rotate(45deg);
 }
-.szh-menu__item {
+
+.lng1771-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Make a variable */
+  border-radius: 8px; /* Make a variable */
   cursor: pointer;
+  padding-inline-start: calc(8px + 2px); /* Make a variable */
+  padding-inline-end: 8px; /* Make a variable */
+  padding-block: 8px; /* Make a variable */
 }
-.szh-menu__item:focus {
+
+.lng1771-menu__item:focus {
   outline: none;
 }
-.szh-menu__item--hover {
-  background-color: #ebebeb;
+
+.lng1771-menu__item--hover {
+  background-color: #ebebeb; /* Make a variable */
 }
-.szh-menu__item--focusable {
+.lng1771-menu__item--focusable {
   cursor: default;
   background-color: inherit;
 }
-.szh-menu__item--disabled {
+.lng1771-menu__item--disabled {
   cursor: default;
-  color: #aaa;
+  color: #aaa /** Make a variable */;
 }
-.szh-menu__group {
+
+.lng1771-menu__group {
   box-sizing: border-box;
 }
-.szh-menu__radio-group {
+
+.lng1771-menu__radio-group {
   margin: 0;
   padding: 0;
   list-style: none;
 }
-.szh-menu__divider {
+
+.lng1771-menu__divider {
   height: 1px;
   margin: 0.5rem 0;
   background-color: rgba(0, 0, 0, 0.12);
 }
 
-.szh-menu-button {
+.lng1771-menu-button {
   box-sizing: border-box;
 }

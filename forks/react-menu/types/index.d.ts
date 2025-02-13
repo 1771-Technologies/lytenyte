@@ -155,7 +155,6 @@ export interface MenuStateOptions extends MenuStateEvents {
    * You can set 'open', 'close' and 'item' at the same time with one boolean value or separately with an object.
    *
    * *If you enable transition on menu, make sure to add your own animation styles,
-   * or import `'@szhsin/react-menu/dist/transitions/slide.css'`,
    * otherwise menu cannot be closed or have visible delay when closed.*
    *
    * @example [CodeSandbox Demo](https://codesandbox.io/s/react-menu-sass-i1wxo)
@@ -605,8 +604,6 @@ export interface FocusableItemProps extends BaseProps<FocusableItemModifiers>, H
 /**
  * A component to wrap focusable element (input, button) in a menu item.
  * It manages focus automatically among other menu items during mouse and keyboard interactions.
- *
- * @example https://szhsin.github.io/react-menu/#focusable-item
  */
 export const FocusableItem: React.NamedExoticComponent<FocusableItemProps>;
 
@@ -638,8 +635,6 @@ export interface MenuGroupProps extends BaseProps {
 
 /**
  * A component to wrap a subset related menu items and make them scrollable.
- *
- * @example https://szhsin.github.io/react-menu/#menu-overflow
  */
 export const MenuGroup: React.NamedExoticComponent<MenuGroupProps>;
 

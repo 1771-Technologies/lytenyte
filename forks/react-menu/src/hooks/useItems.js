@@ -38,7 +38,7 @@ export const useItems = (menuRef) => {
       const { items, hoverIndex } = mutableState;
       const sortItems = () => {
         if (mutableState.sorted) return;
-        const orderedNodes = menuRef.current.querySelectorAll(".szh-menu__item");
+        const orderedNodes = menuRef.current.querySelectorAll(".lng1771-menu__item");
         items.sort((a, b) => indexOfNode(orderedNodes, a) - indexOfNode(orderedNodes, b));
         mutableState.sorted = true;
       };

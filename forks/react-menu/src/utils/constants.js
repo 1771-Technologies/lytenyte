@@ -1,8 +1,8 @@
 import { createContext } from "react";
 
-export const menuContainerClass = "szh-menu-container";
-export const menuClass = "szh-menu";
-export const menuButtonClass = "szh-menu-button";
+export const menuContainerClass = "lng1771-menu-container";
+export const menuClass = "lng1771-menu";
+export const menuButtonClass = "lng1771-menu-button";
 export const menuArrowClass = "arrow";
 export const menuItemClass = "item";
 export const menuDividerClass = "divider";
