@@ -205,6 +205,9 @@ export function initializeInternalState<D, E>(
     rowUpdateStack: signal([]) as unknown as InternalState<D, E>["rowUpdateStack"],
     rowUpdateStackPointer: signal(-1),
 
+    hoveredCol: signal<number | null>(null),
+    hoveredRow: signal<number | null>(null),
+
     virtBounds: v.virtBounds,
     virtLayout: v.virtLayout,
 

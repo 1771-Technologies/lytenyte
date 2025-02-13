@@ -20,6 +20,10 @@ export type Theme = {
   readonly headerYDivider: string;
   readonly headerXDivider: string;
 
+  readonly rowBg: string;
+  readonly rowBgAlt: string;
+  readonly rowBgHover: string;
+
   readonly colors: {
     readonly gradient_shadow: string;
     readonly primary_05: string;

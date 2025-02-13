@@ -8,8 +8,20 @@ export function useCellEvents(
   api: ApiCommunityReact<any>,
   column: ColumnCommunityReact<any>,
   row: RowNode,
+  rowIndex: number,
+  columnIndex: number,
 ) {
   void column;
+
+  const onPointerEnter = useEvent(() => {
+    api.getState().internal.hoveredRow.set(rowIndex);
+    api.getState().internal.hoveredCol.set(columnIndex);
+  });
+
+  const onPointerLeave = useEvent(() => {
+    api.getState().internal.hoveredRow.set(null);
+    api.getState().internal.hoveredCol.set(null);
+  });
 
   const onClick = useEvent((event: MouseEvent) => {
     handleRowSelection(
@@ -33,5 +45,5 @@ export function useCellEvents(
     );
   });
 
-  return { onClick, onDoubleClick };
+  return { onClick, onDoubleClick, onPointerEnter, onPointerLeave };
 }

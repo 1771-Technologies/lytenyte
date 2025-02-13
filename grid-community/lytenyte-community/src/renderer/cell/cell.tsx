@@ -55,7 +55,7 @@ function CellImpl({
     paginateOffset,
   );
 
-  const events = useCellEvents(api, column, rowNode);
+  const events = useCellEvents(api, column, rowNode, rowIndex, columnIndex);
 
   const isGroup = api.rowIsGroup(rowNode);
   const isExpanded = isGroup && api.rowGroupIsExpanded(rowNode);

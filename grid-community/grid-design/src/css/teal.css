@@ -128,4 +128,8 @@
   --lng1771-header-y-divider-resize: var(--lng1771-primary-50);
   --lng1771-header-y-divider: var(--lng1771-gray-50);
   --lng1771-header-x-divider: var(--lng1771-gray-10);
+
+  --lng1771-row-bg: var(--lng1771-gray-00);
+  --lng1771-row-bg-alt: var(--lng1771-gray-02);
+  --lng1771-row-bg-hover: var(--lng1771-gray-10);
 }

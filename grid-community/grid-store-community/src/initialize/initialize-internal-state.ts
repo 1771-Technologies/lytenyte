@@ -128,6 +128,9 @@ export function initializeInternalState<D, E>(
     virtBounds: v.virtBounds,
     virtLayout: v.virtLayout,
 
+    hoveredCol: signal<number | null>(null),
+    hoveredRow: signal<number | null>(null),
+
     viewport: signal<HTMLElement | null>(null),
     viewportInnerHeight: signal(0),
     viewportInnerWidth,

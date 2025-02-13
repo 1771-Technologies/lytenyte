@@ -84,6 +84,9 @@ export type GridInternalState<D, E> = {
   readonly rowRefreshCount: Signal<number>;
   readonly rowIsFullWidthInternal: ReadonlySignal<(r: number) => boolean>;
 
+  readonly hoveredRow: Signal<number | null>;
+  readonly hoveredCol: Signal<number | null>;
+
   readonly virtBounds: ReadonlySignal<ScrollBounds>;
   readonly virtLayout: ReadonlySignal<Map<number, Int32Array>>;
 

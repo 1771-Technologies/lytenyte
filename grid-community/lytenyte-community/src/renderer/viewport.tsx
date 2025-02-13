@@ -8,6 +8,7 @@ import { RowContainer } from "./viewport/row-container";
 import type { ColumnHeaderRendererParamsReact } from "@1771technologies/grid-types/community-react";
 import { NavigationDriver } from "../navigation/navigation-driver";
 import { CellEditDriver } from "../cell-edit/cell-edit-driver";
+import { HoverDriver } from "./hover-driver";
 
 export function Viewport({
   headerDefault,
@@ -57,6 +58,7 @@ export function Viewport({
   const totalWidth = state.internal.columnPositions.use().at(-1)!;
 
   const rtl = state.rtl.use();
+  const grid = state.gridId.use();
 
   return (
     <Sizer
@@ -65,6 +67,7 @@ export function Viewport({
       onScroll={onScroll}
       elRef={ref}
       style={{ direction: rtl ? "rtl" : undefined }}
+      id={grid}
       className={css`
         display: grid;
         grid-template-rows: auto 1fr;
@@ -87,6 +90,7 @@ export function Viewport({
       </RowContainer>
       <NavigationDriver />
       <CellEditDriver />
+      <HoverDriver />
       {children}
     </Sizer>
   );

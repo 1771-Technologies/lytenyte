@@ -24,6 +24,11 @@ export const t: Theme = {
   headerXDivider: "var(--lng1771-header-x-divider)",
   headerYDivider: "var(--lng1771-header-y-divider)",
 
+
+  rowBg: 'var(--lng1771-row-bg)',
+  rowBgAlt: 'var(--lng1771-row-bg-alt)',
+  rowBgHover: 'var(--lng1771-row-bg-hover)',
+
   colors: {
     gradient_shadow:                    "var(--lng1771-gradient-shadow)",
     
