@@ -1,4 +1,8 @@
 export type Theme = {
+  readonly gridDragBarColor: string;
+  readonly gridDragBarNotAllowedColor: string;
+  readonly gridFocusOutline: string;
+
   readonly headerFontSize: string;
   readonly headerFontWeight: string;
   readonly headerFontSizeAlt: string;

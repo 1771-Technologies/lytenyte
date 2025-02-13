@@ -90,13 +90,13 @@ export function HeaderCell({
         className={css`
           grid-column-start: 1;
           grid-column-end: 2;
-          background-color: ${t.colors.backgrounds_ui_panel};
+          background-color: ${t.headerBg};
+          color: ${t.headerFg};
           overflow: hidden;
           display: flex;
           height: 100% !important;
           align-items: center;
           justify-content: center;
-          color: ${t.colors.text_dark};
           cursor: pointer;
         `}
       >
@@ -191,7 +191,7 @@ export const focusCellOutline = css`
     height: 100%;
     pointer-events: none;
     box-sizing: border-box;
-    border: 1px solid ${t.colors.primary_50};
+    border: 1px solid ${t.gridFocusOutline};
     border-radius: 2px;
   }
 `;

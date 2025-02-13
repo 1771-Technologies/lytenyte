@@ -117,7 +117,8 @@
   --lng1771-gray-100: #edeeef;
 
   --lng1771-grid-drag-bar-color: var(--lng1771-primary-50);
-  --lng1771-grid-drag-bar-now-allowed-color: #f4284d;
+  --lng1771-grid-drag-bar-not-allowed-color: #f4284d;
+  --lng1771-grid-focus-outline: var(--lng1771-primary-50);
 
   --lng1771-header-bg: var(--lng1771-gray-00);
   --lng1771-header-bg-hover: var(--lng1771-primary-10);

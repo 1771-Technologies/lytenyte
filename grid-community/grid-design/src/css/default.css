@@ -130,7 +130,8 @@
   --lng1771-header-font-typeface: var(--lng1771-typeface);
 
   --lng1771-grid-drag-bar-color: var(--lng1771-primary-50);
-  --lng1771-grid-drag-bar-now-allowed-color: #d9263d;
+  --lng1771-grid-drag-bar-not-allowed-color: #d9263d;
+  --lng1771-grid-focus-outline: var(--lng1771-primary-50);
 
   --lng1771-header-bg: var(--lng1771-gray-00);
   --lng1771-header-bg-hover: var(--lng1771-gray-10);
