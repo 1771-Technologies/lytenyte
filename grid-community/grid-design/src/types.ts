@@ -3,6 +3,23 @@ export type Theme = {
   readonly gridDragBarNotAllowedColor: string;
   readonly gridFocusOutline: string;
 
+  readonly menuBg: string;
+  readonly menuPaddingX: string;
+  readonly menuPaddingY: string;
+  readonly menuBorderRadius: string;
+
+  readonly menuItemFontSize: string;
+  readonly menuItemFontWeight: string;
+  readonly menuItemFontTypeface: string;
+  readonly menuItemFg: string;
+  readonly menuItemFgDisabled: string;
+  readonly menuItemBg: string;
+  readonly menuItemBgHover: string;
+  readonly menuItemBorderRadius: string;
+  readonly menuItemPaddingX: string;
+  readonly menuItemPaddingY: string;
+  readonly menuItemDivider: string;
+
   readonly headerFontSize: string;
   readonly headerFontWeight: string;
   readonly headerFontSizeAlt: string;

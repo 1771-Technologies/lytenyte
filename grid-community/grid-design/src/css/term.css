@@ -100,6 +100,13 @@
   --lng1771-grid-drag-bar-not-allowed-color: #f62b45;
   --lng1771-grid-focus-outline: var(--lng1771-primary-50);
 
+  --lng1771-menu-item-bg: transparent;
+  --lng1771-menu-item-bg-hover: var(--lng1771-gray-05);
+  --lng1771-menu-item-fg: var(--lng1771-gray-80);
+  --lng1771-menu-item-fg-disabled: var(--lgn1771-gray-50);
+  --lng1771-menu-bg: var(--lng1771-gray-20);
+  --lng1771-menu-item-divider: var(--lng1771-gray-40);
+
   --lng1771-header-bg: var(--lng1771-gray-00);
   --lng1771-header-bg-hover: var(--lng1771-primary-10);
   --lng1771-header-fg: var(--lng1771-gray-60);

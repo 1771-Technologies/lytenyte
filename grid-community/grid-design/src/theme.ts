@@ -6,6 +6,23 @@ export const t: Theme = {
   gridDragBarNotAllowedColor: "var(--lng1771-grid-drag-bar-not-allowed-color)",
   gridFocusOutline: "var(--lng1771-grid-focus-outline)",
 
+  menuBg: "var(--lng1771-menu-bg)",
+  menuBorderRadius: "var(--lng1771-menu-border-radius)",
+  menuPaddingX: "var(--lng1771-menu-padding-x)",
+  menuPaddingY: "var(--lng1771-menu-padding-y)",
+
+  menuItemBg: "var(--lng1771-menu-item-bg)",
+  menuItemBgHover: "var(--lng1771-menu-item-bg-hover)",
+  menuItemBorderRadius: "var(--lng1771-menu-item-border-radius)",
+  menuItemFg: "var(--lng1771-menu-item-fg)",
+  menuItemFgDisabled: "var(--lng1771-menu-item-fg-disabled)",
+  menuItemDivider: "var(--lng1771-menu-item-divider)",
+  menuItemFontTypeface: "var(--lng1771-menu-item-font-typeface)",
+  menuItemFontSize: "var(--lng1771-menu-item-font-size)",
+  menuItemFontWeight: "var(--lng1771-menu-item-font-weight)",
+  menuItemPaddingX: "var(--lng1771-menu-item-padding-x)",
+  menuItemPaddingY: "var(--lng1771-menu-item-padding-y)",
+
 
   headerFontTypeface: "var(--lng1771-header-font-typeface)",
   headerFontSize: "var(--lng1771-header-font-size)",
@@ -23,7 +40,6 @@ export const t: Theme = {
   headerYDividerResize: "var(--lng1771-header-y-divider-resize)",
   headerXDivider: "var(--lng1771-header-x-divider)",
   headerYDivider: "var(--lng1771-header-y-divider)",
-
 
   rowBg: 'var(--lng1771-row-bg)',
   rowBgAlt: 'var(--lng1771-row-bg-alt)',

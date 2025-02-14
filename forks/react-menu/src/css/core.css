@@ -1,12 +1,13 @@
 .lng1771-menu {
   margin: 0;
-  padding: 4px; /* Make a variable */
+  padding-inline: var(--lng1771-menu-padding-x);
+  padding-block: var(--lng1771-menu-padding-y);
   list-style: none;
   box-sizing: border-box;
   width: max-content;
   z-index: 100;
-  background-color: white; /* Make a variable */
-  border-radius: 12px; /* Make a variable */
+  background-color: var(--lng1771-menu-bg);
+  border-radius: var(--lng1771-menu-border-radius);
   box-shadow:
     0px 14px 18px -6px rgba(0, 0, 0, 0.25),
     0px 3px 13px 0px rgba(0, 0, 0, 0.35);
@@ -20,7 +21,7 @@
   box-sizing: border-box;
   width: 12px;
   height: 12px;
-  background-color: #fff; /* Same as menu bg */
+  background-color: var(--lng1771-menu-bg);
   z-index: -1;
   box-shadow: 0px 14px 18px -6px rgba(0, 0, 0, 0.25);
 }
@@ -45,12 +46,14 @@
 .lng1771-menu__item {
   display: flex;
   align-items: center;
-  gap: 10px; /* Make a variable */
-  border-radius: 8px; /* Make a variable */
+  gap: 10px;
+  border-radius: var(--lng1771-menu-item-border-radius);
   cursor: pointer;
-  padding-inline-start: calc(8px + 2px); /* Make a variable */
-  padding-inline-end: 8px; /* Make a variable */
-  padding-block: 8px; /* Make a variable */
+  padding-inline: var(--lng1771-menu-item-padding-x);
+  padding-block: var(--lng1771-menu-item-padding-y);
+  font-family: var(--lng1771-menu-item-font-typeface);
+  font-weight: var(--lng1771-menu-item-font-weight);
+  font-size: var(--lng1771-menu-item-font-size);
 }
 
 .lng1771-menu__item:focus {
@@ -58,7 +61,7 @@
 }
 
 .lng1771-menu__item--hover {
-  background-color: #ebebeb; /* Make a variable */
+  background-color: var(--lng1771-menu-item-bg-hover);
 }
 .lng1771-menu__item--focusable {
   cursor: default;
@@ -66,7 +69,7 @@
 }
 .lng1771-menu__item--disabled {
   cursor: default;
-  color: #aaa /** Make a variable */;
+  color: var(--lng1771-menu-item-divider);
 }
 
 .lng1771-menu__group {
@@ -82,7 +85,7 @@
 .lng1771-menu__divider {
   height: 1px;
   margin: 0.5rem 0;
-  background-color: rgba(0, 0, 0, 0.12);
+  background-color: var(--lng1771-menu-item-divider);
 }
 
 .lng1771-menu-button {
