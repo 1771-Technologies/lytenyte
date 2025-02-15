@@ -1,5 +1,5 @@
 import "@1771technologies/react-menu/css";
-import { GridFrame } from "@1771technologies/grid-components";
+import { ColumnManagerFrame } from "@1771technologies/grid-components";
 import { LyteNyteGrid, useClientDataSource, useLyteNyte } from "../src";
 import { stockColumns } from "../stock-data/columns";
 import { stockData } from "../stock-data/stocks";
@@ -30,6 +30,12 @@ export default function StockDataDemo() {
     columns: stockColumns,
     rowDataSource: ds,
     columnMenuRenderer: MenuRenderer,
+    panelFrameButtons: [
+      { id: "column-manager", label: "Columns", icon: () => <ManageColumnsIcon /> },
+    ],
+    panelFrames: {
+      "column-manager": { component: () => <ColumnManagerFrame />, title: "Columns" },
+    },
   });
 
   return (
@@ -41,9 +47,7 @@ export default function StockDataDemo() {
         height: 100vh;
       `}
     >
-      <GridFrame grid={grid}>
-        <LyteNyteGrid grid={grid} />
-      </GridFrame>
+      <LyteNyteGrid grid={grid} />
     </div>
   );
 }

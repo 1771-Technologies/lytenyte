@@ -113,7 +113,7 @@ export function Virt<D>({
   const [vp, setVp] = useState<HTMLDivElement | null>(null);
   const [y, setY] = useState(0);
   const handleScroll = useEvent(() => {
-    if (!vp) return;
+    if (!vp || !size) return;
     const scrollTop = vp.scrollTop;
 
     const rowStart = Math.floor(scrollTop / itemHeight);
