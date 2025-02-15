@@ -1,4 +1,3 @@
-import "./icon-button.css";
 import "./button.css";
 import { clsx } from "@1771technologies/js-utils";
 import type { JSX } from "react";

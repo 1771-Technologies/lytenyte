@@ -1,11 +1,12 @@
 .button {
   display: flex;
   align-items: center;
+  gap: 8px;
+  height: 28px;
   border: 0px solid transparent;
   cursor: pointer;
   border-radius: var(--lng1771-button-radius);
-  padding-inline: var(--lng1771-button-px);
-  padding-block: var(--lng1771-button-py);
+  padding-inline: 12px;
   color: var(--lng1771-button-fg);
   background-color: var(--lng1771-button-bg);
   box-shadow:
@@ -17,4 +18,11 @@
 }
 .button:hover {
   background-color: var(--lng1771-button-bg-hover);
+}
+
+.button__icon {
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0px;
 }

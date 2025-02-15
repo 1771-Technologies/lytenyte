@@ -17,8 +17,6 @@ export const t: Theme = {
   buttonBg: "var(--lng1771-button-bg)",
   buttonBgHover: 'var(--lng1771-button-bg-hover)',
   buttonBorder: 'var(--lng1771-button-border)',
-  buttonPx: 'var(--lng1771-button-px)',
-  buttonPy: 'var(--lng1771-button-py)',
   buttonRadius: 'var(--lng1771-button-radius)',
 
   menuBg: "var(--lng1771-menu-bg)",

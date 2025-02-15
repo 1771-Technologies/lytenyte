@@ -14,8 +14,6 @@ export type Theme = {
   readonly buttonBg: string;
   readonly buttonBgHover: string;
   readonly buttonBorder: string;
-  readonly buttonPx: string;
-  readonly buttonPy: string;
 
   readonly menuBg: string;
   readonly menuPx: string;

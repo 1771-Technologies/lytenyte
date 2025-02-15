@@ -16,6 +16,7 @@ import { ResetColumnsIcon } from "../src/components/icons/reset-columns-icon";
 import { SortIcon } from "../src/components/icons/sort-icon";
 import { ExportMenu } from "../src/components/export-menu";
 import { GridContainer } from "../src/components/grid-container/grid-container";
+import { SortPanel } from "../src/components/sort-panel";
 
 export default function StockDataDemo() {
   const ds = useClientDataSource({
@@ -51,9 +52,17 @@ export default function StockDataDemo() {
     >
       <GridContainer
         top={
-          <>
+          <div
+            className={css`
+              display: flex;
+              align-items: center;
+              justify-content: flex-end;
+              gap: 16px;
+            `}
+          >
+            <SortPanel grid={grid} />
             <ExportMenu grid={grid} />
-          </>
+          </div>
         }
       >
         <LyteNyteGrid grid={grid} />
