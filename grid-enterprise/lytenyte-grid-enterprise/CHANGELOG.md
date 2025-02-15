@@ -1,5 +1,12 @@
 # @1771technologies/lytenyte-grid-enterprise
 
+## 0.0.11
+
+### Patch Changes
+
+[Commit: 8a91f88b591b](https://github.com/1771-Technologies/lytenyte/commit/8a91f88b591bd858b8bf0410cd4c6c2b9e15a4dc)
+Add row hover
+
 ## 0.0.10
 
 ### Patch Changes
