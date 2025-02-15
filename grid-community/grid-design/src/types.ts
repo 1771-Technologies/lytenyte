@@ -1,4 +1,5 @@
 export type Theme = {
+  readonly gridContainerDivider: string;
   readonly gridContainerBg: string;
   readonly gridContainerPx: string;
   readonly gridContainerPy: string;

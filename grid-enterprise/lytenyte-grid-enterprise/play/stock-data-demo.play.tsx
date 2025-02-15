@@ -52,7 +52,7 @@ export default function StockDataDemo() {
       <GridContainer
         top={
           <>
-            <ExportMenu />
+            <ExportMenu grid={grid} />
           </>
         }
       >

@@ -141,6 +141,7 @@
   --lng1771-grid-container-py: 12px;
 
   --lng1771-grid-container-bg: var(--lng1771-gray-02);
+  --lng1771-grid-container-divider: var(--lng1771-gray-20);
   --lng1771-grid-drag-bar-color: var(--lng1771-primary-50);
   --lng1771-grid-drag-bar-not-allowed-color: #d9263d;
   --lng1771-grid-focus-outline: var(--lng1771-primary-50);

@@ -15,6 +15,10 @@
     0px 1.5px 2px 0px rgba(18, 46, 88, 0.08),
     0px 0px 0px 1px var(--lng1771-button-icon-border);
 }
+.button__icon:focus-visible {
+  outline: 1px solid var(--lng1771-grid-focus-outline);
+}
+
 .button__icon:hover {
   background-color: var(--lng1771-button-icon-bg-hover);
 }

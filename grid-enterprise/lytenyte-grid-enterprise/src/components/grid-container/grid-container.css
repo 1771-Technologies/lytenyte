@@ -9,6 +9,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  border-bottom: 1px solid var(--lng1771-grid-container-divider);
   padding-inline: var(--lng1771-grid-container-px);
   padding-block: var(--lng1771-grid-container-py);
 }
@@ -16,6 +17,7 @@
 .grid-container__bottom {
   display: flex;
   align-items: center;
+  border-top: 1px solid var(--lng1771-grid-container-divider);
   padding-inline: var(--lng1771-grid-container-px);
   padding-block: var(--lng1771-grid-container-py);
 }

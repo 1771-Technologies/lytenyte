@@ -2,6 +2,7 @@ import type { Theme } from "./types";
 
 // prettier-ignore
 export const t: Theme = {
+  gridContainerDivider: "var(--lng1771-grid-container-divider)",
   gridContainerBg: "var(--lng1771-grid-container-bg)",
   gridContainerPx: "var(--lng1771-grid-container-px)",
   gridContainerPy: "var(--lng1771-grid-container-py)",
