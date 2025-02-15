@@ -1,29 +1,34 @@
-import { t } from "@1771technologies/grid-design";
 import type { CellRendererParamsReact } from "@1771technologies/grid-types/community-react";
+import { clsx } from "@1771technologies/js-utils";
 
 export const cellCls = css`
   display: flex;
   align-items: center;
-  padding-inline-start: ${t.spacing.cell_horizontal_padding};
-  font-family: ${t.typography.typeface_body};
-  font-size: ${t.typography.body_m};
-  color: ${t.colors.text_medium};
-  line-height: 20px;
   height: 100%;
   width: 100%;
-  box-sizing: border-box;
 `;
 
-export function CellRendererDefault(p: CellRendererParamsReact<any>) {
-  const field = p.api.columnField(p.row, p.column);
+export function CellRendererDefault({ api, row, column }: CellRendererParamsReact<any>) {
+  const sx = api.getState();
+
+  const base = sx.columnBase.peek();
+
+  const textAlign =
+    column.cellJustify ?? base.cellJustify ?? (column.type === "number" ? "end" : "start");
+
+  const field = api.columnField(row, column);
+
   return (
-    <div className={cellCls}>
+    <div className={clsx(cellCls)} style={{}}>
       <div
+        style={{
+          textAlign,
+        }}
         className={css`
-          width: calc(100% - ${t.spacing.cell_horizontal_padding} / 2);
-          overflow: hidden;
-          white-space: nowrap;
+          width: 100%;
           text-overflow: ellipsis;
+          text-align: start;
+          overflow: hidden;
         `}
       >
         {String(field ?? "")}

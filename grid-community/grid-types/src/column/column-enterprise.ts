@@ -116,6 +116,7 @@ export type ColumnBase<D, E, I> = Omit<
   Column<D, E, I>,
   | "id"
   | "field"
+  | "type"
   | "pin"
   | "headerName"
   | "headerSecondaryLabel"

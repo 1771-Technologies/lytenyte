@@ -81,7 +81,7 @@ export function useCellStyle(
             inset-inline-end: 0px;
             width: 1px;
             height: 100%;
-            background-color: ${t.colors.borders_pin_separator};
+            background-color: ${t.gridPinSeparatorX};
           }
         `,
       isFirstEnd &&
@@ -94,7 +94,7 @@ export function useCellStyle(
             inset-inline-start: 0px;
             width: 1px;
             height: 100%;
-            background-color: ${t.colors.borders_pin_separator};
+            background-color: ${t.gridPinSeparatorY};
           }
         `,
     );

@@ -37,8 +37,6 @@ function CellImpl({
   api,
   paginateOffset,
 }: CellProps) {
-  const cellClassName = rowIndex % 2 ? cellCls : cellClsAlt;
-
   const Renderer = useCellRenderer(api, column);
 
   const cx = useCellStyle(
@@ -82,7 +80,7 @@ function CellImpl({
       aria-colindex={columnIndex + 1}
       className={clsx(
         cellBaseClsx,
-        cellClassName,
+        rowIndex % 2 ? cellCls : cellClsAlt,
         cx.className,
         focusCellOutline,
         classes.cellClasses,

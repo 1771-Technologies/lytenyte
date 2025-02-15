@@ -53,6 +53,7 @@ export interface Column<A, D, E> {
 
   readonly cellAutosizeFn?: (c: AutosizeCellParameters<A, D, this>) => number;
   readonly cellSkipOnAutosizeAll?: boolean;
+  readonly cellJustify?: "start" | "center" | "end";
 
   readonly floatingCellRenderer?: string | FloatingCellRenderer<A, this, E>;
 
@@ -89,6 +90,7 @@ export type ColumnBase<A, D, E> = Omit<
   Column<A, D, E>,
   | "id"
   | "field"
+  | "type"
   | "pin"
   | "rowGroupField"
   | "columnPivotField"

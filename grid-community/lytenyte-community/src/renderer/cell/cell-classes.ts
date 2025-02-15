@@ -6,7 +6,16 @@ export const cellBaseClsx = css`
   grid-column-start: 1;
   grid-column-end: 2;
   box-sizing: border-box;
-  border-bottom: 1px solid ${t.colors.borders_row};
+
+  border-bottom: 1px solid ${t.cellDividerX};
+  border-right: 1px solid ${t.cellDividerY};
+  padding-inline: ${t.cellPx};
+  padding-block: ${t.cellPy};
+
+  font-size: ${t.cellFontSize};
+  font-weight: ${t.cellFontWeight};
+  font-family: ${t.cellFontTypeface};
+
   user-select: none;
   overflow: hidden;
 `;
@@ -19,5 +28,5 @@ export const cellClsAlt = css`
 `;
 
 export const cellSelected = css`
-  background-color: ${t.colors.backgrounds_row_selected};
+  background-color: ${t.rowBgSelected};
 `;
