@@ -1,7 +1,7 @@
 .lng1771-menu {
   margin: 0;
-  padding-inline: var(--lng1771-menu-padding-x);
-  padding-block: var(--lng1771-menu-padding-y);
+  padding-inline: var(--lng1771-menu-px);
+  padding-block: var(--lng1771-menu-py);
   list-style: none;
   box-sizing: border-box;
   width: max-content;
@@ -49,8 +49,8 @@
   gap: 10px;
   border-radius: var(--lng1771-menu-item-border-radius);
   cursor: pointer;
-  padding-inline: var(--lng1771-menu-item-padding-x);
-  padding-block: var(--lng1771-menu-item-padding-y);
+  padding-inline: var(--lng1771-menu-item-px);
+  padding-block: var(--lng1771-menu-item-py);
   font-family: var(--lng1771-menu-item-font-typeface);
   font-weight: var(--lng1771-menu-item-font-weight);
   font-size: var(--lng1771-menu-item-font-size);

@@ -6,8 +6,8 @@ export type Theme = {
   readonly gridPinSeparatorY: string;
 
   readonly menuBg: string;
-  readonly menuPaddingX: string;
-  readonly menuPaddingY: string;
+  readonly menuPx: string;
+  readonly menuPy: string;
   readonly menuBorderRadius: string;
 
   readonly menuItemFontSize: string;
@@ -18,8 +18,8 @@ export type Theme = {
   readonly menuItemBg: string;
   readonly menuItemBgHover: string;
   readonly menuItemBorderRadius: string;
-  readonly menuItemPaddingX: string;
-  readonly menuItemPaddingY: string;
+  readonly menuItemPx: string;
+  readonly menuItemPy: string;
   readonly menuItemDivider: string;
 
   readonly headerFontSize: string;
@@ -47,8 +47,8 @@ export type Theme = {
   readonly cellFontSize: string;
   readonly cellFontWeight: string;
   readonly cellFontTypeface: string;
-  readonly cellPaddingX: string;
-  readonly cellPaddingY: string;
+  readonly cellPx: string;
+  readonly cellPy: string;
   readonly cellDividerX: string;
   readonly cellDividerY: string;
 

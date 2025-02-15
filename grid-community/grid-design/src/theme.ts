@@ -10,8 +10,8 @@ export const t: Theme = {
 
   menuBg: "var(--lng1771-menu-bg)",
   menuBorderRadius: "var(--lng1771-menu-border-radius)",
-  menuPaddingX: "var(--lng1771-menu-padding-x)",
-  menuPaddingY: "var(--lng1771-menu-padding-y)",
+  menuPx: "var(--lng1771-menu-px)",
+  menuPy: "var(--lng1771-menu-py)",
 
   menuItemBg: "var(--lng1771-menu-item-bg)",
   menuItemBgHover: "var(--lng1771-menu-item-bg-hover)",
@@ -22,8 +22,8 @@ export const t: Theme = {
   menuItemFontTypeface: "var(--lng1771-menu-item-font-typeface)",
   menuItemFontSize: "var(--lng1771-menu-item-font-size)",
   menuItemFontWeight: "var(--lng1771-menu-item-font-weight)",
-  menuItemPaddingX: "var(--lng1771-menu-item-padding-x)",
-  menuItemPaddingY: "var(--lng1771-menu-item-padding-y)",
+  menuItemPx: "var(--lng1771-menu-item-px)",
+  menuItemPy: "var(--lng1771-menu-item-py)",
 
   headerFontTypeface: "var(--lng1771-header-font-typeface)",
   headerFontSize: "var(--lng1771-header-font-size)",
@@ -50,8 +50,8 @@ export const t: Theme = {
   cellFontSize: 'var(--lng1771-cell-font-size)',
   cellFontWeight: 'var(--lng1771-cell-font-weight)',
   cellFontTypeface: 'var(--lng1771-cell-font-typeface)',
-  cellPaddingX: 'var(--lng1771-cell-px)',
-  cellPaddingY: 'var(--lng1771-cell-py)',
+  cellPx: 'var(--lng1771-cell-px)',
+  cellPy: 'var(--lng1771-cell-py)',
   cellDividerX: 'var(--lng1771-cell-divider-x)',
   cellDividerY: 'var(--lng1771-cell-divider-y)',
 

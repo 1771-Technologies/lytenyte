@@ -137,13 +137,13 @@
 
   --lng1771-menu-item-border-radius: 8px;
   --lng1771-menu-border-radius: 12px;
-  --lng1771-menu-padding-x: 4px;
-  --lng1771-menu-padding-y: 4px;
+  --lng1771-menu-px: 4px;
+  --lng1771-menu-py: 4px;
   --lng1771-menu-item-font-typeface: var(--lng1771-typeface);
   --lng1771-menu-item-font-size: 14px;
   --lng1771-menu-item-font-weight: 400;
-  --lng1771-menu-item-padding-x: 8px;
-  --lng1771-menu-item-padding-y: 6px;
+  --lng1771-menu-item-px: 8px;
+  --lng1771-menu-item-py: 6px;
 
   --lng1771-menu-item-bg: transparent;
   --lng1771-menu-item-bg-hover: var(--lng1771-gray-05);
