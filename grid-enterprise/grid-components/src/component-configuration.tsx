@@ -5,8 +5,6 @@ import { clsx } from "@1771technologies/js-utils";
 import { t } from "@1771technologies/grid-design";
 import type { FloatingFrameConfiguration } from "./floating-frame/floating-frame-driver";
 import { frameDefaultAxe } from "@1771technologies/react-frame";
-import type { GridFrameConfiguration } from "./grid-frame/grid-frame";
-import { splitPaneAxe } from "@1771technologies/react-split-pane";
 import type { ColumnManagerConfiguration } from "./column-manager/column-manager-frame";
 import { ColumnPivotIcon } from "./column-manager/icons/column-pivot-icon";
 import { DragGroupIcon } from "./column-manager/icons/drag-group-icon";
@@ -24,7 +22,6 @@ import type { PillManagerConfiguration } from "./pill-manager/pill-manager";
 
 export type ComponentConfiguration = {
   columnManager: Signal<ColumnManagerConfiguration>;
-  gridFrame: Signal<GridFrameConfiguration>;
   floatingFrame: Signal<FloatingFrameConfiguration>;
   sortManager: Signal<SortManagerConfiguration>;
   tooltip: Signal<Omit<TooltipProps, "ref">>;
@@ -135,9 +132,6 @@ export const cc = cascada<ComponentConfiguration>(() => {
       pivot: {
         labelPivotModeToggle: "Pivot mode",
       },
-    }),
-    gridFrame: mergeSignal<GridFrameConfiguration>({
-      axe: splitPaneAxe,
     }),
     floatingFrame: mergeSignal<FloatingFrameConfiguration>({
       axe: frameDefaultAxe,
