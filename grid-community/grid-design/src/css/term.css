@@ -96,7 +96,7 @@
   --lng1771-gray-90: #dadada;
   --lng1771-gray-100: #eeeeee;
 
-  --lng1771-grid-container-bg: var(--lng1771-gray-10);
+  --lng1771-grid-container-bg: var(--lng1771-gray-05);
   --lng1771-grid-container-divider: var(--lng1771-gray-20);
   --lng1771-grid-drag-bar-color: var(--lng1771-primary-50);
   --lng1771-grid-drag-bar-not-allowed-color: #f62b45;
@@ -112,8 +112,8 @@
   --lng1771-menu-item-divider: var(--lng1771-gray-40);
 
   --lng1771-button-fg: var(--lng1771-gray-70);
-  --lng1771-button-bg: var(--lng1771-gray-20);
-  --lng1771-button-bg-hover: var(--lng1771-gray-30);
+  --lng1771-button-bg: var(--lng1771-gray-10);
+  --lng1771-button-bg-hover: var(--lng1771-gray-20);
   --lng1771-button-border: var(--lng1771-gray-30);
 
   --lng1771-header-bg: var(--lng1771-gray-00);
