@@ -14,7 +14,8 @@ export function sortedNodesComputed<D, E>(
     const mode = sx.columnPivotModeIsOn.peek();
 
     const rowNodes = nodes.get();
-    const sortModel = mode ? sx.internal.columnPivotSortModel.peek() : sx.sortModel.get();
+    const sortModel = mode ? sx.internal.columnPivotSortModel.get() : sx.sortModel.get();
+
     if (sortModel.length === 0) return rowNodes;
 
     const comparators = getComparatorsForModel(
