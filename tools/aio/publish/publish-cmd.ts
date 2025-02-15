@@ -59,7 +59,7 @@ export const publishCmd = new Command("publish").description("Bulk Commands").ac
   }
 });
 
-async function applyPublishConfig(packageJsonPath: string) {
+export async function applyPublishConfig(packageJsonPath: string) {
   try {
     const packageJsonContent = await fs.readFile(packageJsonPath, "utf-8");
     const packageJson = JSON.parse(packageJsonContent);
@@ -104,7 +104,7 @@ type PublishResult = {
  * @param options Optional configuration for publishing
  * @returns Promise with the result of the publish attempt
  */
-async function publishIfNew(
+export async function publishIfNew(
   pkgPath: string,
   options?: {
     dryRun?: boolean;
@@ -131,7 +131,7 @@ async function publishIfNew(
       }
 
       // Execute the publish command
-      const publish = Bun.spawn(["bun", "publish"], {
+      const publish = Bun.spawn(["bun", "publish", "--access", "public"], {
         stdout: "pipe",
         stderr: "pipe",
         cwd: pkgPath.replace("package.json", ""),
