@@ -132,6 +132,8 @@
   --lng1771-grid-drag-bar-color: var(--lng1771-primary-50);
   --lng1771-grid-drag-bar-not-allowed-color: #d9263d;
   --lng1771-grid-focus-outline: var(--lng1771-primary-50);
+  --lng1771-grid-pin-separator-x: var(--lng1771-gray-50);
+  --lng1771-grid-pin-separator-y: var(--lng1771-gray-50);
 
   --lng1771-menu-item-border-radius: 8px;
   --lng1771-menu-border-radius: 12px;
@@ -155,11 +157,21 @@
   --lng1771-header-fg: var(--lng1771-gray-60);
   --lng1771-header-fg-alt: var(--lng1771-gray-70);
   --lng1771-header-fg-agg: var(--lng1771-primary-50);
-  --lng1771-header-y-divider-resize: var(--lng1771-primary-50);
-  --lng1771-header-y-divider: var(--lng1771-gray-50);
-  --lng1771-header-x-divider: var(--lng1771-gray-10);
+  --lng1771-header-divider-y-resize: var(--lng1771-primary-50);
+  --lng1771-header-divider-y: var(--lng1771-gray-50);
+  --lng1771-header-divider-x: var(--lng1771-gray-10);
 
   --lng1771-row-bg: var(--lng1771-gray-00);
   --lng1771-row-bg-alt: var(--lng1771-gray-02);
   --lng1771-row-bg-hover: var(--lng1771-gray-10);
+  --lng1771-row-bg-selected: #d6e4fe;
+
+  --lng1771-cell-font-size: 14px;
+  --lng1771-cell-font-weight: 400;
+  --lng1771-cell-font-typeface: var(--lng1771-typeface);
+  --lng1771-cell-px: 12px;
+  --lng1771-cell-py: 4px;
+
+  --lng1771-cell-divider-y: transparent;
+  --lng1771-cell-divider-x: var(--lng1771-gray-20);
 }

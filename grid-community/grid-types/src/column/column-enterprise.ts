@@ -68,6 +68,7 @@ export interface Column<A, D, E> {
 
   readonly cellAutosizeFn?: (c: AutosizeCellParameters<A, D, this>) => number;
   readonly cellSkipOnAutosizeAll?: boolean;
+  readonly cellJustify?: "start" | "center" | "end";
 
   readonly floatingCellRenderer?: string | FloatingCellRenderer<A, this, E>;
 

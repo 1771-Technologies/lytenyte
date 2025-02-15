@@ -4,7 +4,7 @@ import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/
 import { useCellStyle } from "./use-cell-style";
 import { useCellRenderer } from "./use-cell-renderer";
 import type { RowNode, RowPin } from "@1771technologies/grid-types/community";
-import { rowAltClx, rowBaseClx, rowClx } from "./cell-classes";
+import { cellClsAlt, cellBaseClsx, cellCls } from "./cell-classes";
 import { useCellEvents } from "./use-cell-events";
 import { useCellPositionChange } from "./use-cell-position-change";
 import { focusCellOutline } from "../../header/header-cell/header-cell";
@@ -37,7 +37,7 @@ function CellImpl({
   api,
   paginateOffset,
 }: CellProps) {
-  const row = rowIndex % 2 ? rowClx : rowAltClx;
+  const cellClassName = rowIndex % 2 ? cellCls : cellClsAlt;
 
   const Renderer = useCellRenderer(api, column);
 
@@ -80,7 +80,13 @@ function CellImpl({
       aria-colspan={colSpan}
       aria-rowindex={rowIndex + 1}
       aria-colindex={columnIndex + 1}
-      className={clsx(rowBaseClx, row, cx.className, focusCellOutline, classes.cellClasses)}
+      className={clsx(
+        cellBaseClsx,
+        cellClassName,
+        cx.className,
+        focusCellOutline,
+        classes.cellClasses,
+      )}
       tabIndex={-1}
       {...events}
       onFocus={onFocus}

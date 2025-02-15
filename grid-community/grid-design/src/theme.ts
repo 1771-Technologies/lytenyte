@@ -5,6 +5,8 @@ export const t: Theme = {
   gridDragBarColor: "var(--lng1771-grid-drag-bar-color)",
   gridDragBarNotAllowedColor: "var(--lng1771-grid-drag-bar-not-allowed-color)",
   gridFocusOutline: "var(--lng1771-grid-focus-outline)",
+  gridPinSeparatorX: 'var(--lng1771-grid-pin-separator-x)',
+  gridPinSeparatorY: 'var(--lng1771-grid-pin-separator-y)',
 
   menuBg: "var(--lng1771-menu-bg)",
   menuBorderRadius: "var(--lng1771-menu-border-radius)",
@@ -23,7 +25,6 @@ export const t: Theme = {
   menuItemPaddingX: "var(--lng1771-menu-item-padding-x)",
   menuItemPaddingY: "var(--lng1771-menu-item-padding-y)",
 
-
   headerFontTypeface: "var(--lng1771-header-font-typeface)",
   headerFontSize: "var(--lng1771-header-font-size)",
   headerFontSizeAlt: "var(--lng1771-header-font-size-alt)",
@@ -37,13 +38,23 @@ export const t: Theme = {
   headerFgAgg: "var(--lng1771-primary-50)",
   headerPx: "var(--lng1771-header-px)",
   headerPy: "var(--lng1771-header-py)",
-  headerYDividerResize: "var(--lng1771-header-y-divider-resize)",
-  headerXDivider: "var(--lng1771-header-x-divider)",
-  headerYDivider: "var(--lng1771-header-y-divider)",
+  headerDividerResizeY: "var(--lng1771-header-divider-y-resize)",
+  headerDividerX: "var(--lng1771-header-divider-x)",
+  headerDividerY: "var(--lng1771-header-divider-y)",
 
   rowBg: 'var(--lng1771-row-bg)',
   rowBgAlt: 'var(--lng1771-row-bg-alt)',
   rowBgHover: 'var(--lng1771-row-bg-hover)',
+  rowBgSelected: 'var(--lng1771-row-bg-selected)',
+
+  cellFontSize: 'var(--lng1771-cell-font-size)',
+  cellFontWeight: 'var(--lng1771-cell-font-weight)',
+  cellFontTypeface: 'var(--lng1771-cell-font-typeface)',
+  cellPaddingX: 'var(--lng1771-cell-px)',
+  cellPaddingY: 'var(--lng1771-cell-py)',
+  cellDividerX: 'var(--lng1771-cell-divider-x)',
+  cellDividerY: 'var(--lng1771-cell-divider-y)',
+
 
   colors: {
     gradient_shadow:                    "var(--lng1771-gradient-shadow)",

@@ -126,7 +126,7 @@ export function HeaderCell({
           grid-column-start: 1;
           grid-column-end: 2;
 
-          border-bottom: 1px solid ${t.headerXDivider};
+          border-bottom: 1px solid ${t.headerDividerX};
           background-color: ${t.headerBg};
           color: ${t.headerFg};
           box-sizing: border-box;

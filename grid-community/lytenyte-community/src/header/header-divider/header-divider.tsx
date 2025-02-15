@@ -108,7 +108,7 @@ export function HeaderDivider({
             cursor: col-resize;
 
             &:hover div {
-              background-color: ${t.headerYDividerResize};
+              background-color: ${t.headerDividerResizeY};
             }
           `,
       )}
@@ -118,7 +118,7 @@ export function HeaderDivider({
         className={css`
           height: calc(100% - 8px);
           width: 1px;
-          background-color: ${t.headerYDivider};
+          background-color: ${t.headerDividerY};
         `}
       />
     </div>

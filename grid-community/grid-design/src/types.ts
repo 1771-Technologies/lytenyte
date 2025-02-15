@@ -2,6 +2,8 @@ export type Theme = {
   readonly gridDragBarColor: string;
   readonly gridDragBarNotAllowedColor: string;
   readonly gridFocusOutline: string;
+  readonly gridPinSeparatorX: string;
+  readonly gridPinSeparatorY: string;
 
   readonly menuBg: string;
   readonly menuPaddingX: string;
@@ -33,13 +35,22 @@ export type Theme = {
   readonly headerFgAgg: string;
   readonly headerPx: string;
   readonly headerPy: string;
-  readonly headerYDividerResize: string;
-  readonly headerYDivider: string;
-  readonly headerXDivider: string;
+  readonly headerDividerResizeY: string;
+  readonly headerDividerY: string;
+  readonly headerDividerX: string;
 
   readonly rowBg: string;
   readonly rowBgAlt: string;
   readonly rowBgHover: string;
+  readonly rowBgSelected: string;
+
+  readonly cellFontSize: string;
+  readonly cellFontWeight: string;
+  readonly cellFontTypeface: string;
+  readonly cellPaddingX: string;
+  readonly cellPaddingY: string;
+  readonly cellDividerX: string;
+  readonly cellDividerY: string;
 
   readonly colors: {
     readonly gradient_shadow: string;
