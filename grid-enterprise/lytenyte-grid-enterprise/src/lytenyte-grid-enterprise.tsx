@@ -10,7 +10,6 @@ import {
 import { GridProvider, useGrid } from "./use-grid";
 import { HeaderCellDefault } from "./components/header-cell/header-cell-default";
 import {
-  GridFrame,
   FilterMenuDriver,
   ContextMenuDriver,
   FloatingFrameDriver,
@@ -25,15 +24,18 @@ import { useMemo } from "react";
 import { Watermark } from "./watermark";
 import { OverlayDriver } from "./overlay/overlay-driver";
 import { ColumnMenuDriver } from "./components/column-menu-driver";
+import { GridFrame } from "./components/grid-frame";
+import type { SplitPaneAxe } from "@1771technologies/react-split-pane";
 
 export interface LyteNyteGridEnterpriseProps<D> {
   readonly grid: StoreEnterpriseReact<D>;
+  readonly frameAxe?: SplitPaneAxe;
 }
 
-export function LyteNyteGrid<D>({ grid }: LyteNyteGridEnterpriseProps<D>) {
+export function LyteNyteGrid<D>({ grid, frameAxe }: LyteNyteGridEnterpriseProps<D>) {
   return (
     <GridProvider value={grid}>
-      <GridFrame grid={grid}>
+      <GridFrame grid={grid} axe={frameAxe}>
         <LyteNyteCommunityImpl />
         <FilterMenuDriver />
         <ColumnMenuDriver />

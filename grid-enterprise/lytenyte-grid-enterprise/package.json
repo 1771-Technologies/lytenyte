@@ -40,6 +40,7 @@
     "@1771technologies/grid-core": "workspace:*",
     "@1771technologies/react-cascada": "workspace:*",
     "@1771technologies/grid-design": "workspace:*",
+    "@1771technologies/react-split-pane": "workspace:*",
     "@1771technologies/react-dragon": "workspace:*",
     "@1771technologies/react-menu": "workspace:*",
     "@1771technologies/react-sizer": "workspace:*",
