@@ -5,6 +5,7 @@ export const frames = <D, E>(api: ApiEnterprise<D, E>) => {
     floatingFrameOpen: (id) => {
       const s = api.getState();
       const frames = s.floatingFrames.peek();
+
       const frame = frames[id];
       if (!frame) return;
 

@@ -1,6 +1,6 @@
 import type { StoreEnterpriseReact } from "@1771technologies/grid-types";
-import { Button } from "./buttons/button";
-import { SortIcon } from "./icons/sort-icon";
+import { Button } from "../buttons/button";
+import { SortIcon } from "../icons/sort-icon";
 
 export interface SortPanelProps<D> {
   readonly label?: string;
@@ -13,7 +13,7 @@ export function SortPanel<D>({ grid, panelId = "sort", label = "Sort" }: SortPan
   return (
     <Button
       onClick={() => {
-        api.panelFrameOpen(panelId);
+        api.floatingFrameOpen(panelId);
       }}
     >
       <SortIcon /> <span>{label}</span>
