@@ -131,9 +131,9 @@
   --lng1771-menu-item-divider: var(--lng1771-gray-40);
 
   --lng1771-button-icon-fg: var(--lng1771-gray-70);
-  --lng1771-button-icon-bg: var(--lng1771-gray-40);
-  --lng1771-button-icon-bg-hover: var(--lng1771-gray-50);
-  --lng1771-button-icon-border: var(--lng1771-gray-40);
+  --lng1771-button-icon-bg: var(--lng1771-gray-20);
+  --lng1771-button-icon-bg-hover: var(--lng1771-gray-30);
+  --lng1771-button-icon-border: var(--lng1771-gray-30);
 
   --lng1771-header-bg: var(--lng1771-gray-00);
   --lng1771-header-bg-hover: var(--lng1771-primary-10);
