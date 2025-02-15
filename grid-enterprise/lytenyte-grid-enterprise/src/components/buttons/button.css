@@ -1,0 +1,20 @@
+.button {
+  display: flex;
+  align-items: center;
+  border: 0px solid transparent;
+  cursor: pointer;
+  border-radius: var(--lng1771-button-radius);
+  padding-inline: var(--lng1771-button-px);
+  padding-block: var(--lng1771-button-py);
+  color: var(--lng1771-button-fg);
+  background-color: var(--lng1771-button-bg);
+  box-shadow:
+    0px 1.5px 2px 0px rgba(18, 46, 88, 0.08),
+    0px 0px 0px 1px var(--lng1771-button-border);
+}
+.button:focus-visible {
+  outline: 1px solid var(--lng1771-grid-focus-outline);
+}
+.button:hover {
+  background-color: var(--lng1771-button-bg-hover);
+}

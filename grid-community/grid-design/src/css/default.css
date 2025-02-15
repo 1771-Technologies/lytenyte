@@ -129,13 +129,13 @@
   --lng1771-header-font-weight-alt: 600;
   --lng1771-header-font-typeface: var(--lng1771-typeface);
 
-  --lng1771-button-icon-fg: var(--lng1771-gray-70);
-  --lng1771-button-icon-bg: var(--lng1771-gray-20);
-  --lng1771-button-icon-bg-hover: var(--lng1771-gray-30);
-  --lng1771-button-icon-border: var(--lng1771-gray-40);
-  --lng1771-button-icon-px: 4px;
-  --lng1771-button-icon-py: 4px;
-  --lng1771-button-icon-radius: 6px;
+  --lng1771-button-fg: var(--lng1771-gray-70);
+  --lng1771-button-bg: var(--lng1771-gray-20);
+  --lng1771-button-bg-hover: var(--lng1771-gray-30);
+  --lng1771-button-border: var(--lng1771-gray-40);
+  --lng1771-button-px: 4px;
+  --lng1771-button-py: 4px;
+  --lng1771-button-radius: 6px;
 
   --lng1771-grid-container-px: 16px;
   --lng1771-grid-container-py: 12px;

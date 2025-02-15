@@ -9,13 +9,13 @@ export type Theme = {
   readonly gridPinSeparatorX: string;
   readonly gridPinSeparatorY: string;
 
-  readonly buttonIconRadius: string;
-  readonly buttonIconFg: string;
-  readonly buttonIconBg: string;
-  readonly buttonIconBgHover: string;
-  readonly buttonIconBorder: string;
-  readonly buttonIconPx: string;
-  readonly buttonIconPy: string;
+  readonly buttonRadius: string;
+  readonly buttonFg: string;
+  readonly buttonBg: string;
+  readonly buttonBgHover: string;
+  readonly buttonBorder: string;
+  readonly buttonPx: string;
+  readonly buttonPy: string;
 
   readonly menuBg: string;
   readonly menuPx: string;
