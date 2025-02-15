@@ -107,7 +107,7 @@ const MenuContent = (p: {
   api: ApiEnterpriseReact<any>;
 }) => {
   const config = cc.pillManager.use();
-  const columnMenu = p.column.columnMenuGetItems ?? p.base.columnMenuGetItems;
+  const columnMenu = null; // ;p.column.columnMenuGetItems ?? p.base.columnMenuGetItems;
   if (!columnMenu) return null;
 
   return (

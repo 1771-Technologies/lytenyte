@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { clsx, getClientX, getClientY } from "@1771technologies/js-utils";
 import { getHoveredColumnIndex, getHoveredRowIndex } from "@1771technologies/grid-core";
 import { MenuRoot, type MenuAxe } from "@1771technologies/react-menu-legacy";
-import { MenuItemRenderer, MenuParentRenderer } from "../column-menu-driver/column-menu-driver";
 import { t } from "@1771technologies/grid-design";
 import { cc } from "../component-configuration";
 
@@ -136,8 +135,8 @@ function ContextMenuImpl({ target, menuItems }: { target: Target; menuItems: Col
         ariaLabelledBy={"clientHeight" in target ? (target.id ?? "") : ""}
         state={contextMenuState}
         rtl={grid.state.rtl.use()}
-        rendererItem={MenuItemRenderer}
-        rendererParent={MenuParentRenderer}
+        // rendererItem={MenuItemRenderer}
+        // rendererParent={MenuParentRenderer}
         classes={{
           base: clsx(
             "lng1771-text-medium",

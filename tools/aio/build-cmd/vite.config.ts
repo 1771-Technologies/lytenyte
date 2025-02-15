@@ -26,9 +26,7 @@ function getViteConfig(pkgPath: string, packageJson: PackageJson) {
     .map((c) => c.import!)
     .filter(Boolean);
 
-  const entries = paths.map((p) =>
-    resolve(pkgPath, p).replace("dist", "src").replace(/\.js$/, ".ts"),
-  );
+  const entries = paths.map((p) => resolve(pkgPath, p).replace("dist", "src"));
 
   return defineConfig({
     root: pkgPath,
