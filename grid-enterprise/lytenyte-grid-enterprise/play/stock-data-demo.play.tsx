@@ -1,5 +1,5 @@
 import "@1771technologies/react-menu/css";
-import { ColumnManagerFrame } from "@1771technologies/grid-components";
+import { ColumnManagerFrame, SortManager } from "@1771technologies/grid-components";
 import { LyteNyteGrid, useClientDataSource, useLyteNyte } from "../src";
 import { stockColumns } from "../stock-data/columns";
 import { stockData } from "../stock-data/stocks";
@@ -33,6 +33,14 @@ export default function StockDataDemo() {
     columns: stockColumns,
     rowDataSource: ds,
     columnMenuRenderer: MenuRenderer,
+
+    floatingFrames: {
+      sort: {
+        component: () => <SortManager grid={grid} />,
+        title: "Sort",
+      },
+    },
+
     panelFrameButtons: [
       { id: "column-manager", label: "Columns", icon: () => <ManageColumnsIcon /> },
     ],

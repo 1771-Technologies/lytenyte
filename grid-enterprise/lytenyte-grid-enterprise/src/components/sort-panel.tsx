@@ -4,13 +4,18 @@ import { SortIcon } from "./icons/sort-icon";
 
 export interface SortPanelProps<D> {
   readonly label?: string;
+  readonly panelId?: string;
   readonly grid: StoreEnterpriseReact<D>;
 }
 
-export function SortPanel<D>({ grid, label = "Sort" }: SortPanelProps<D>) {
+export function SortPanel<D>({ grid, panelId = "sort", label = "Sort" }: SortPanelProps<D>) {
   const api = grid.api;
   return (
-    <Button onClick={() => api.panelFrameOpen("sort")}>
+    <Button
+      onClick={() => {
+        api.panelFrameOpen(panelId);
+      }}
+    >
       <SortIcon /> <span>{label}</span>
     </Button>
   );
