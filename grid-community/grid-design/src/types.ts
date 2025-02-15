@@ -5,6 +5,14 @@ export type Theme = {
   readonly gridPinSeparatorX: string;
   readonly gridPinSeparatorY: string;
 
+  readonly buttonIconRadius: string;
+  readonly buttonIconFg: string;
+  readonly buttonIconBg: string;
+  readonly buttonIconBgHover: string;
+  readonly buttonIconBorder: string;
+  readonly buttonIconPx: string;
+  readonly buttonIconPy: string;
+
   readonly menuBg: string;
   readonly menuPx: string;
   readonly menuPy: string;

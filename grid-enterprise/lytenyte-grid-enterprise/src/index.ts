@@ -20,6 +20,8 @@ export type * from "@1771technologies/grid-types/enterprise-react";
 
 // For Column Menu and Context Menu
 export {
+  ControlledMenu,
+  Menu,
   FocusableItem,
   MenuItem,
   MenuDivider,

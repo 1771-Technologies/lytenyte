@@ -60,6 +60,14 @@
   outline: none;
 }
 
+.lng1771-menu__header {
+  font-size: var(--lng1771-menu-item-font-size);
+  text-transform: uppercase;
+  font-weight: 300;
+  padding-inline: var(--lng1771-menu-item-px);
+  padding-block: 4px;
+}
+
 .lng1771-menu__item--hover {
   background-color: var(--lng1771-menu-item-bg-hover);
 }

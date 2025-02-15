@@ -14,6 +14,7 @@ import { HideColumnIcon } from "../src/components/icons/hide-column-icon";
 import { ManageColumnsIcon } from "../src/components/icons/manage-columns-icon";
 import { ResetColumnsIcon } from "../src/components/icons/reset-columns-icon";
 import { SortIcon } from "../src/components/icons/sort-icon";
+import { ExportMenu } from "../src/components/export-menu";
 
 export default function StockDataDemo() {
   const ds = useClientDataSource({
@@ -47,7 +48,28 @@ export default function StockDataDemo() {
         height: 100vh;
       `}
     >
-      <LyteNyteGrid grid={grid} />
+      <div
+        className={css`
+          width: 100%;
+          height: 100%;
+          display: grid;
+          grid-template-rows: auto 1fr auto;
+        `}
+      >
+        <div
+          className={css`
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-inline: 30px;
+            padding-block: 12px;
+          `}
+        >
+          <ExportMenu />
+        </div>
+        <LyteNyteGrid grid={grid} />
+        <div />
+      </div>
     </div>
   );
 }

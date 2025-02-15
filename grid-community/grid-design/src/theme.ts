@@ -8,6 +8,14 @@ export const t: Theme = {
   gridPinSeparatorX: 'var(--lng1771-grid-pin-separator-x)',
   gridPinSeparatorY: 'var(--lng1771-grid-pin-separator-y)',
 
+  buttonIconFg: 'var(--lng1771-button-icon-fg)',
+  buttonIconBg: 'var(--lng1771-button-icon-bg)',
+  buttonIconBgHover: 'var(--lng1771-button-icon-bg-hover)',
+  buttonIconBorder: 'var(--lng1771-button-icon-border)',
+  buttonIconPx: 'var(--lng1771-button-icon-px)',
+  buttonIconPy: 'var(--lng1771-button-icon-py)',
+  buttonIconRadius: 'var(--lng1771-button-icon-radius)',
+
   menuBg: "var(--lng1771-menu-bg)",
   menuBorderRadius: "var(--lng1771-menu-border-radius)",
   menuPx: "var(--lng1771-menu-px)",
@@ -54,6 +62,7 @@ export const t: Theme = {
   cellPy: 'var(--lng1771-cell-py)',
   cellDividerX: 'var(--lng1771-cell-divider-x)',
   cellDividerY: 'var(--lng1771-cell-divider-y)',
+
 
 
   colors: {

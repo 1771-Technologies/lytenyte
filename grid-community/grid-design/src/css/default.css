@@ -129,6 +129,14 @@
   --lng1771-header-font-weight-alt: 600;
   --lng1771-header-font-typeface: var(--lng1771-typeface);
 
+  --lng1771-button-icon-fg: var(--lng1771-gray-70);
+  --lng1771-button-icon-bg: var(--lng1771-gray-20);
+  --lng1771-button-icon-bg-hover: var(--lng1771-gray-30);
+  --lng1771-button-icon-border: var(--lng1771-gray-40);
+  --lng1771-button-icon-px: 4px;
+  --lng1771-button-icon-py: 4px;
+  --lng1771-button-icon-radius: 6px;
+
   --lng1771-grid-drag-bar-color: var(--lng1771-primary-50);
   --lng1771-grid-drag-bar-not-allowed-color: #d9263d;
   --lng1771-grid-focus-outline: var(--lng1771-primary-50);
