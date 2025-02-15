@@ -52,3 +52,21 @@ test("Should support nested cascada systems", () => {
   expect(s.y.get()).toEqual(100);
   expect(s.r.get()).toEqual(108);
 });
+
+test("Should handle parallel cascada systems", () => {
+  const s = cascada(() => {
+    const x = signal(20);
+
+    return { x };
+  });
+
+  const y = cascada(() => {
+    const y = computed(() => s.x.get() * 2);
+
+    return y;
+  });
+
+  expect(y.peek()).toEqual(40);
+  s.x.set(40);
+  expect(y.peek()).toEqual(80);
+});
