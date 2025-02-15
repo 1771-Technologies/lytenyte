@@ -2,6 +2,10 @@ import type { Theme } from "./types";
 
 // prettier-ignore
 export const t: Theme = {
+  gridContainerBg: "var(--lng1771-grid-container-bg)",
+  gridContainerPx: "var(--lng1771-grid-container-px)",
+  gridContainerPy: "var(--lng1771-grid-container-py)",
+
   gridDragBarColor: "var(--lng1771-grid-drag-bar-color)",
   gridDragBarNotAllowedColor: "var(--lng1771-grid-drag-bar-not-allowed-color)",
   gridFocusOutline: "var(--lng1771-grid-focus-outline)",

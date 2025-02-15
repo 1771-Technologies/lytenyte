@@ -1,4 +1,7 @@
 export type Theme = {
+  readonly gridContainerBg: string;
+  readonly gridContainerPx: string;
+  readonly gridContainerPy: string;
   readonly gridDragBarColor: string;
   readonly gridDragBarNotAllowedColor: string;
   readonly gridFocusOutline: string;
