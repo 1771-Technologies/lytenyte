@@ -1,6 +1,12 @@
 import "@1771technologies/react-menu/css";
 import { ColumnManagerFrame } from "@1771technologies/grid-components";
-import { LyteNyteGrid, useClientDataSource, useLyteNyte } from "../src";
+import {
+  ColumnManagerButton,
+  columnManagerFloatingFrame,
+  LyteNyteGrid,
+  useClientDataSource,
+  useLyteNyte,
+} from "../src";
 import { stockColumns } from "../stock-data/columns";
 import { stockData } from "../stock-data/stocks";
 import { MenuDivider, MenuItem, SubMenu } from "@1771technologies/react-menu";
@@ -16,7 +22,7 @@ import { ResetColumnsIcon } from "../src/components/icons/reset-columns-icon";
 import { SortIcon } from "../src/components/icons/sort-icon";
 import { ExportMenu } from "../src/components/export-menu";
 import { GridContainer } from "../src/components/grid-container/grid-container";
-import { SortPanel } from "../src/components/sort/sort-floating-frame-button";
+import { SortPanelButton } from "../src/components/sort/sort-floating-frame-button";
 import { SortFloatingFrame } from "../src/components/sort/sort-floating-frame";
 import { QuickSearchInput } from "../src/components/quick-search";
 
@@ -38,6 +44,7 @@ export default function StockDataDemo() {
 
     floatingFrames: {
       sort: SortFloatingFrame,
+      columns: columnManagerFloatingFrame,
     },
 
     panelFrameButtons: [
@@ -63,12 +70,20 @@ export default function StockDataDemo() {
             className={css`
               display: flex;
               align-items: center;
-              justify-content: flex-end;
               gap: 16px;
             `}
           >
+            <div
+              className={css`
+                flex: 1;
+              `}
+            >
+              Stocks Demo
+            </div>
+
             <QuickSearchInput grid={grid} />
-            <SortPanel grid={grid} />
+            <ColumnManagerButton grid={grid} />
+            <SortPanelButton grid={grid} />
             <ExportMenu grid={grid} />
           </div>
         }

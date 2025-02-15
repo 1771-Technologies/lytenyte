@@ -1,18 +1,18 @@
 import type { StoreEnterpriseReact } from "@1771technologies/grid-types";
 import { Button } from "../buttons/button";
-import { SortIcon } from "../icons/sort-icon";
+import { ManageColumnsIcon } from "../icons/manage-columns-icon";
 
-export interface SortPanelButtonProps<D> {
+export interface ColumnManagerButtonProps<D> {
   readonly label?: string;
   readonly panelId?: string;
   readonly grid: StoreEnterpriseReact<D>;
 }
 
-export function SortPanelButton<D>({
+export function ColumnManagerButton<D>({
   grid,
-  panelId = "sort",
-  label = "Sort",
-}: SortPanelButtonProps<D>) {
+  panelId = "columns",
+  label = "Columns",
+}: ColumnManagerButtonProps<D>) {
   const api = grid.api;
   return (
     <Button
@@ -20,7 +20,7 @@ export function SortPanelButton<D>({
         api.floatingFrameOpen(panelId);
       }}
     >
-      <SortIcon /> <span>{label}</span>
+      <ManageColumnsIcon /> <span>{label}</span>
     </Button>
   );
 }
