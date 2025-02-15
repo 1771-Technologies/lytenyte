@@ -55,7 +55,16 @@ export function GridFrame<D>({
           <SplitPane
             axe={config.axe!}
             orientation="vertical"
-            primary={<div>{children}</div>}
+            primary={
+              <div
+                className={css`
+                  width: 100%;
+                  height: 100%;
+                `}
+              >
+                {children}
+              </div>
+            }
             secondary={
               <div
                 className={css`
