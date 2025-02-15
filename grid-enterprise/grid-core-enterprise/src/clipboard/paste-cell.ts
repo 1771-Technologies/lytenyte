@@ -62,7 +62,7 @@ async function defaultTransformer<D, E>({
 
   const visibleColumns = sx.columnsVisible.peek();
 
-  const parseTypes = visibleColumns.map((c) => c.type ?? sx.columnBase.peek().type ?? "string");
+  const parseTypes = visibleColumns.map((c) => c.type ?? "string");
 
   return data.map((row) => {
     return row.map((r, i) => {
