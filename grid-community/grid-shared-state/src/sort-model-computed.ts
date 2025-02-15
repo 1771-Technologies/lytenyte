@@ -31,6 +31,7 @@ export function sortModelComputed<D, E>(
         );
       });
 
+      queueMicrotask(api.rowRefresh);
       return model;
     },
     (v) => sortModel$.set(v),
