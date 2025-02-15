@@ -11,14 +11,13 @@ export { useTreeDataSource } from "./use-tree-data-source.js";
 
 export { activateLicense, hasAValidLicense } from "./license.js";
 
+/**
+ *  COMPONENTS
+ */
+
 export type { ColumnManagerFrameProps, PillManagerProps } from "@1771technologies/grid-components";
 export { ColumnManagerFrame, PillManager } from "@1771technologies/grid-components";
 
-export type * from "@1771technologies/grid-types/enterprise-react";
-
-// Component Exports
-
-// For Column Menu and Context Menu
 export {
   ControlledMenu,
   Menu,
@@ -30,3 +29,8 @@ export {
   MenuHeader,
   SubMenu,
 } from "@1771technologies/react-menu";
+
+// Floating Frame Components
+export { SortFloatingFrame } from "./components/sort/sort-floating-frame.js";
+export type { SortPanelProps } from "./components/sort/sort-floating-frame-button.js";
+export { SortPanel } from "./components/sort/sort-floating-frame-button.js";

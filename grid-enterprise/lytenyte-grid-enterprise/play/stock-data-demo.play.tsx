@@ -18,6 +18,7 @@ import { ExportMenu } from "../src/components/export-menu";
 import { GridContainer } from "../src/components/grid-container/grid-container";
 import { SortPanel } from "../src/components/sort/sort-floating-frame-button";
 import { SortFloatingFrame } from "../src/components/sort/sort-floating-frame";
+import { QuickSearchInput } from "../src/components/quick-search";
 
 export default function StockDataDemo() {
   const ds = useClientDataSource({
@@ -66,6 +67,7 @@ export default function StockDataDemo() {
               gap: 16px;
             `}
           >
+            <QuickSearchInput grid={grid} />
             <SortPanel grid={grid} />
             <ExportMenu grid={grid} />
           </div>
