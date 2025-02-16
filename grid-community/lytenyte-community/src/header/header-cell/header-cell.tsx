@@ -191,5 +191,6 @@ export const focusCellOutline = css`
     box-sizing: border-box;
     border: 1px solid ${t.gridFocusOutline};
     border-radius: 2px;
+    z-index: 10;
   }
 `;
