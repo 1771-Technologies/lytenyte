@@ -1,5 +1,12 @@
 # @1771technologies/react-dialog
 
+## 0.0.18
+
+### Patch Changes
+
+[Commit: ce2cb29f7c53](https://github.com/1771-Technologies/lytenyte/commit/ce2cb29f7c53269252f8bf8f3172bf7c37f52bf9)
+Amend html
+
 ## 0.0.17
 
 ## 0.0.16
