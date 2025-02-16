@@ -30,7 +30,7 @@
       "./types": {
         "types": "./dist/types/types.d.ts",
         "import": "./dist/types.js",
-        "require": "./dist/types."
+        "require": "./dist/types.js"
       },
       "./css": "./dist/lytenyte-grid-enterprise.css"
     }
