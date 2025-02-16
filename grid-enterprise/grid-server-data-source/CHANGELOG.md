@@ -1,5 +1,7 @@
 # @1771technologies/grid-server-data-source
 
+## 0.0.17
+
 ## 0.0.16
 
 ## 0.0.15
