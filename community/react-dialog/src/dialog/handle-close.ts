@@ -21,6 +21,7 @@ export function handleClose(
   if (activeRef.current) activeRef.current.focus();
   activeRef.current = null;
 
-  if (scrollbarWidthRef.current) document.body.style.removeProperty("--scrollbar-width-removed");
+  if (scrollbarWidthRef.current)
+    document.documentElement.style.removeProperty("--scrollbar-width-removed");
   scrollbarWidthRef.current = 0;
 }

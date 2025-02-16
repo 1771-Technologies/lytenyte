@@ -22,7 +22,10 @@ export function handleOpen(
   scrollbarWidthRef.current = getOwnerScrollbarWidth();
 
   if (scrollbarWidthRef.current)
-    document.body.style.setProperty("--scrollbar-width-removed", `${scrollbarWidthRef.current}px`);
+    document.documentElement.style.setProperty(
+      "--scrollbar-width-removed",
+      `${scrollbarWidthRef.current}px`,
+    );
 
   dialog.showModal();
 }
