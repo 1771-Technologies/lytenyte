@@ -12,6 +12,7 @@ export const cellBaseClsx = css`
   padding-inline: ${t.cellPx};
   padding-block: ${t.cellPy};
 
+  color: ${t.cellFg};
   font-size: ${t.cellFontSize};
   font-weight: ${t.cellFontWeight};
   font-family: ${t.cellFontTypeface};

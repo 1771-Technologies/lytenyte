@@ -127,4 +127,5 @@
 
   --lng1771-cell-divider-y: transparent;
   --lng1771-cell-divider-x: var(--lng1771-gray-05);
+  --lng1771-cell-fg: var(--lng1771-gray-80);
 }

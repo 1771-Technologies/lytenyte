@@ -54,6 +54,7 @@ export type Theme = {
   readonly rowBgHover: string;
   readonly rowBgSelected: string;
 
+  readonly cellFg: string;
   readonly cellFontSize: string;
   readonly cellFontWeight: string;
   readonly cellFontTypeface: string;
