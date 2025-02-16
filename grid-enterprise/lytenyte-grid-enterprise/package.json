@@ -27,6 +27,11 @@
         "import": "./dist/index.js",
         "require": "./dist/index.js"
       },
+      "./types": {
+        "types": "./dist/types/types.d.ts",
+        "import": "./dist/types.js",
+        "require": "./dist/types."
+      },
       "./css": "./dist/lytenyte-grid-enterprise.css"
     }
   },

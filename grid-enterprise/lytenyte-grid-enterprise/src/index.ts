@@ -41,8 +41,8 @@ export { GridContainer } from "./components/grid-container/grid-container.js";
 
 // Floating Frame Components
 export { SortFloatingFrame } from "./components/sort/sort-floating-frame.js";
-export type { SortPanelButtonProps as SortPanelProps } from "./components/sort/sort-floating-frame-button.js";
-export { SortPanelButton as SortPanel } from "./components/sort/sort-floating-frame-button.js";
+export type { SortPanelButtonProps } from "./components/sort/sort-floating-frame-button.js";
+export { SortPanelButton } from "./components/sort/sort-floating-frame-button.js";
 export { columnManagerFloatingFrame } from "./components/column-manager/column-manager-floating-frame.js";
 export type { ColumnManagerButtonProps } from "./components/column-manager/column-manager-floating-frame-button.js";
 export { ColumnManagerButton } from "./components/column-manager/column-manager-floating-frame-button.js";
