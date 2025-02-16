@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "type": "module",
   "files": [
-    "src",
+    "dist",
     "types",
     "LICENSE",
     "LICENSE_ORIGINAL"
@@ -26,8 +26,8 @@
     "exports": {
       ".": {
         "types": "./types/types/index.d.ts",
-        "import": "./src/index.js",
-        "require": "./src/index.js"
+        "import": "./dist/index.js",
+        "require": "./dist/index.js"
       },
       "./css": "./src/css/core.css"
     }
