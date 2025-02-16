@@ -30,6 +30,15 @@ export {
   SubMenu,
 } from "@1771technologies/react-menu";
 
+export type { ExportMenuProps } from "./components/export-menu.js";
+export { ExportMenu } from "./components/export-menu.js";
+
+export type { QuickSearchInputProps } from "./components/quick-search.js";
+export { QuickSearchInput } from "./components/quick-search.js";
+
+export type { GridContainerProps } from "./components/grid-container/grid-container.js";
+export { GridContainer } from "./components/grid-container/grid-container.js";
+
 // Floating Frame Components
 export { SortFloatingFrame } from "./components/sort/sort-floating-frame.js";
 export type { SortPanelButtonProps as SortPanelProps } from "./components/sort/sort-floating-frame-button.js";
