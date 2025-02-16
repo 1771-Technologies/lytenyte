@@ -2,6 +2,8 @@ import "@1771technologies/react-menu/css";
 import "@1771technologies/grid-design/css";
 import "@1771technologies/grid-components/css";
 
+export * from "@1771technologies/grid-constants";
+
 export type { LyteNyteGridEnterpriseProps } from "./lytenyte-grid-enterprise.js";
 export { LyteNyteGrid } from "./lytenyte-grid-enterprise.js";
 
