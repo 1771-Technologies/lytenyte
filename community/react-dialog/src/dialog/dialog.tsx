@@ -158,7 +158,7 @@ function DialogImpl({
     <dialog ref={refs} {...props}>
       <style>
         {`
-          body:has(dialog[open]) {
+          html:has(dialog[open]) {
             overflow: hidden;
             padding-inline-end: var(--scrollbar-width-removed, 0px);
           }
