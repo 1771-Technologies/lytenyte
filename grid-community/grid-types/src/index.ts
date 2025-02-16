@@ -18,11 +18,11 @@ export type {
   RowDataSourceEnterprise,
 } from "./make-grid-enterprise.js";
 
-export * as CommunityTypes from "./types.js";
-export * as EnterpriseTypes from "./types-enterprise.js";
+export type * as CommunityTypes from "./types.js";
+export type * as EnterpriseTypes from "./types-enterprise.js";
 
 // React version of the grid exports
-export * from "./make-grid-react.js";
+export type * from "./make-grid-react.js";
 
 export type {
   StoreCommunity,
