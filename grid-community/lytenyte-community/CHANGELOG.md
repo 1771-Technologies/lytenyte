@@ -1,5 +1,12 @@
 # @1771technologies/lytenyte-grid-community
 
+## 0.0.15
+
+### Patch Changes
+
+[Commit: d3508ff1d4b8](https://github.com/1771-Technologies/lytenyte/commit/d3508ff1d4b881cd37d8d79727d5f6a01b0abb60)
+Improved styles
+
 ## 0.0.14
 
 ## 0.0.13
