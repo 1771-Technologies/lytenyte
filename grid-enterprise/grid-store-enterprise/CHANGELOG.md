@@ -1,5 +1,7 @@
 # @1771technologies/grid-store-enterprise
 
+## 0.0.13
+
 ## 0.0.12
 
 ## 0.0.11

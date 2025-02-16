@@ -1,5 +1,7 @@
 # @1771technologies/lytenyte-grid-enterprise
 
+## 0.0.13
+
 ## 0.0.12
 
 ### Patch Changes
