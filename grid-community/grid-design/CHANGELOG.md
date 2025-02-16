@@ -1,5 +1,7 @@
 # @1771technologies/grid-design
 
+## 0.0.19
+
 ## 0.0.18
 
 ## 0.0.17
