@@ -163,6 +163,7 @@ export function Sizer({
             height: size.innerHeight,
             position: "absolute",
             overflow: "auto",
+            scrollbarWidth: "thin",
             ...props.style,
           }}
         >

@@ -1,6 +1,7 @@
 import { t } from "@1771technologies/grid-design";
 import type { StoreEnterpriseReact } from "@1771technologies/grid-types";
 import { clsx } from "@1771technologies/js-utils";
+import { Sizer } from "@1771technologies/react-sizer";
 import type { SplitPaneAxe } from "@1771technologies/react-split-pane";
 import { SplitPane, splitPaneAxe } from "@1771technologies/react-split-pane";
 import { useMemo, useState, type CSSProperties, type PropsWithChildren } from "react";
@@ -45,6 +46,7 @@ export function GridFrame<D>({
         css`
           width: 100%;
           height: 100%;
+          overflow: hidden;
           display: grid;
           grid-template-rows: 1fr;
         `,
@@ -68,15 +70,16 @@ export function GridFrame<D>({
               </div>
             }
             secondary={
-              <div
+              <Sizer
                 className={css`
                   background-color: ${t.colors.backgrounds_ui_panel};
                   height: 100%;
                   width: 100%;
+                  scrollbar-width: thin;
                 `}
               >
                 <frame.component api={api} frame={frame} />
-              </div>
+              </Sizer>
             }
             split={frame ? frameSplit : 100}
             onSplitChange={(n) => setFrameSplit(n)}

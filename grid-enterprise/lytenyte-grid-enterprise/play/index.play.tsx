@@ -3,6 +3,7 @@ import { bankDataSmall } from "./data/bank-data-small";
 import { LyteNyteGrid } from "../src/lytenyte-grid-enterprise";
 import { useClientDataSource } from "../src/use-client-data-source";
 import { useLyteNyte } from "../src/use-lytenyte";
+import { ColumnManager } from "@1771technologies/grid-components";
 
 export default function Play() {
   const ds = useClientDataSource({
@@ -20,6 +21,14 @@ export default function Play() {
     floatingRowEnabled: true,
     floatingRowHeight: 32,
     rowDataSource: ds,
+
+    panelFrameButtons: [{ id: "columns", label: "Columns" }],
+    panelFrames: {
+      columns: {
+        component: (p) => <ColumnManager api={p.api} />,
+        title: "Columns",
+      },
+    },
   });
 
   return (
