@@ -54,6 +54,8 @@ export function PillManager<D>({
     pillItems: rowGroupPills,
     onPillSelect: onRowGroupPillSelect,
     onDrop: onGroupDrop,
+    containerTags: rowGroupContainerTags,
+    onContainerDrop: onRowGroupContainerDrop,
   } = useRowGroupPills(api);
   const {
     pillItems: columnPivotPills,
@@ -122,6 +124,8 @@ export function PillManager<D>({
             pillItems={rowGroupPills}
             onPillSelect={onRowGroupPillSelect}
             onPillDrop={onGroupDrop}
+            onContainerDrop={onRowGroupContainerDrop}
+            containerDropTags={rowGroupContainerTags}
             draggable
           />
         )}

@@ -7,7 +7,12 @@ import { Pill } from "../pills/pill";
 import { clsx } from "@1771technologies/js-utils";
 import { DragIcon } from "../icons/drag-icon";
 import { IconButton } from "../buttons/icon-button";
-import { dragState, useDraggable, useDroppable } from "@1771technologies/react-dragon";
+import {
+  dragState,
+  useDraggable,
+  useDroppable,
+  type DropParams,
+} from "@1771technologies/react-dragon";
 import type { ApiEnterpriseReact } from "@1771technologies/grid-types";
 import { cc } from "../component-configuration";
 
@@ -20,6 +25,9 @@ export interface PillRowProps {
   readonly expandedPills?: PillRowItem[];
   readonly draggable?: boolean;
   readonly onPillDrop?: (dragged: PillRowItem, dropped: PillRowItem, isBefore: boolean) => void;
+
+  readonly containerDropTags?: string[];
+  readonly onContainerDrop?: (p: DropParams) => void;
 }
 
 export function PillRow({
@@ -31,6 +39,8 @@ export function PillRow({
   onPillSelect,
   onPillDrop,
   draggable,
+  containerDropTags,
+  onContainerDrop,
 }: PillRowProps) {
   const [expanded, setExpanded] = useState(false);
   const [hasOverflow, setHasOverflow] = useState(false);
@@ -81,6 +91,8 @@ export function PillRow({
         expanded={expanded}
         onScroll={setHasScroll}
         rowRef={ref}
+        onContainerDrop={onContainerDrop}
+        containerDropTags={containerDropTags}
       >
         {(expanded ? expandedPills : pillItems).map((c, i) => {
           return (

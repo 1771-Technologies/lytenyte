@@ -4,6 +4,8 @@ import type { PropsWithChildren, ReactNode, RefObject } from "react";
 import { useEffect, useState } from "react";
 import type { PillProps } from "../pills/pill";
 import { useCombinedRefs } from "@1771technologies/react-utils";
+import { useDroppable, type DropParams } from "@1771technologies/react-dragon";
+import { t } from "@1771technologies/grid-design";
 
 export interface PillRowItem {
   readonly id: string;
@@ -22,15 +24,27 @@ export function PillRowElements({
   expanded,
   rowRef,
   children,
+  containerDropTags,
+  onContainerDrop,
 }: PropsWithChildren<{
   onOverflow: (b: boolean) => void;
   onScroll: (b: boolean) => void;
   expanded: boolean;
   rowRef: RefObject<HTMLDivElement | null>;
+
+  readonly containerDropTags?: string[];
+  readonly onContainerDrop?: (p: DropParams) => void;
 }>) {
   const [row, setRow] = useState<HTMLDivElement | null>(null);
 
   const ref = useCombinedRefs(rowRef, setRow);
+
+  const { isOver, canDrop, ...props } = useDroppable({
+    tags: containerDropTags ?? [],
+    onDrop: onContainerDrop,
+  });
+
+  const dragProps = containerDropTags?.length ? props : {};
 
   useEffect(() => {
     if (!row) return;
@@ -49,6 +63,7 @@ export function PillRowElements({
       onScroll={() => {
         onScroll(Math.abs(row?.scrollLeft ?? 0) > 0);
       }}
+      {...dragProps}
       className={clsx(
         css`
           min-height: 42px;
@@ -72,6 +87,15 @@ export function PillRowElements({
       )}
     >
       {children}
+      {canDrop && isOver && (
+        <div
+          className={css`
+            width: 1px;
+            background-color: ${t.colors.primary_50};
+            height: 100%;
+          `}
+        />
+      )}
     </div>
   );
 }

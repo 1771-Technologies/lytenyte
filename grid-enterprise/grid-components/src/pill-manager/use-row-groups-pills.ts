@@ -1,9 +1,11 @@
 import type { ApiEnterpriseReact } from "@1771technologies/grid-types";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import type { PillRowItem } from "./pill-row-elements";
 import { useEvent } from "@1771technologies/react-utils";
 import type { Signal } from "@1771technologies/react-cascada";
+import type { DropParams } from "@1771technologies/react-dragon";
 
+const containerTags = ["column-groupable"];
 export function useRowGroupPills(api: ApiEnterpriseReact<any>) {
   const sx = api.getState();
 
@@ -33,7 +35,22 @@ export function useRowGroupPills(api: ApiEnterpriseReact<any>) {
 
   const onDrop = useDrop(model, sx.rowGroupModel, api);
 
-  return { pillItems, onPillSelect, onDrop };
+  const onContainerDrop = useCallback(
+    (p: DropParams) => {
+      const dragged = p.getData() as { pillItem: PillRowItem };
+
+      const column = dragged.pillItem.column;
+      if (model.includes(column.id)) return;
+
+      const next = [...model, column.id];
+
+      api.columnUpdate(column, { hide: true });
+      sx.rowGroupModel.set(next);
+    },
+    [api, model, sx.rowGroupModel],
+  );
+
+  return { pillItems, onPillSelect, onDrop, containerTags, onContainerDrop };
 }
 
 export function useDrop<D>(model: string[], signal: Signal<string[]>, api: ApiEnterpriseReact<D>) {
