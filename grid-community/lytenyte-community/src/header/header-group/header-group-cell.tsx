@@ -128,8 +128,6 @@ export function HeaderGroupCell({
           font-size: ${t.headerFontSize};
           font-weight: ${t.headerFontWeight};
           font-family: ${t.headerFontTypeface};
-          padding-inline: ${t.headerPx};
-          padding-block: ${t.headerPy};
         `,
         focusCellOutline,
       )}

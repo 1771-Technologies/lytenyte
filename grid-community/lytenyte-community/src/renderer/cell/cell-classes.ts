@@ -9,8 +9,6 @@ export const cellBaseClsx = css`
 
   border-bottom: 1px solid ${t.cellDividerX};
   border-right: 1px solid ${t.cellDividerY};
-  padding-inline: ${t.cellPx};
-  padding-block: ${t.cellPy};
 
   color: ${t.cellFg};
   font-size: ${t.cellFontSize};

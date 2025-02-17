@@ -1,12 +1,4 @@
 import type { CellRendererParamsReact } from "@1771technologies/grid-types/community-react";
-import { clsx } from "@1771technologies/js-utils";
-
-export const cellCls = css`
-  display: flex;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-`;
 
 export function CellRendererDefault({ api, row, column }: CellRendererParamsReact<any>) {
   const sx = api.getState();
@@ -19,20 +11,31 @@ export function CellRendererDefault({ api, row, column }: CellRendererParamsReac
   const field = api.columnField(row, column);
 
   return (
-    <div className={clsx(cellCls)} style={{}}>
-      <div
-        style={{
-          textAlign,
-        }}
+    <div
+      style={{
+        textAlign,
+      }}
+      className={css`
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        padding-inline: 12px;
+        text-align: start;
+        overflow: hidden;
+      `}
+    >
+      <span
         className={css`
           width: 100%;
           text-overflow: ellipsis;
-          text-align: start;
+          white-space: nowrap;
           overflow: hidden;
         `}
       >
         {String(field ?? "")}
-      </div>
+      </span>
     </div>
   );
 }

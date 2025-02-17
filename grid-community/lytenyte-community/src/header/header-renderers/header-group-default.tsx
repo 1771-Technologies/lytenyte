@@ -24,6 +24,7 @@ export function HeaderGroupDefault({ group, api }: HeaderGroupRendererProps) {
         box-sizing: border-box;
         justify-content: space-between;
         font-weight: 600;
+        padding-inline: 12px;
       `}
     >
       {label}

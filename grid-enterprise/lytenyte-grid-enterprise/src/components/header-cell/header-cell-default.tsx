@@ -68,8 +68,7 @@ export function HeaderCellDefault({ column, api }: ColumnHeaderRendererParamsRea
           border-radius: 4px;
           transition: background-color ${t.transitions.normal} ${t.transitions.fn};
 
-          padding-inline: ${t.headerPx};
-          padding-block: ${t.headerPy};
+          padding-inline: 12px;
 
           .${iconCls} {
             opacity: 0;

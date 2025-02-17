@@ -1,8 +1,6 @@
 import type { CellRendererParamsReact } from "@1771technologies/grid-types/community-react";
 import { GridButton } from "../../components/buttons";
-import { t } from "@1771technologies/grid-design";
 import { clsx } from "@1771technologies/js-utils";
-import { cellCls } from "./cell-renderer-default";
 
 export function CellGroupRendererDefault({ api, row, column }: CellRendererParamsReact<any>) {
   if (!api.rowIsGroup(row)) {
@@ -21,18 +19,18 @@ export function CellGroupRendererDefault({ api, row, column }: CellRendererParam
   const columnDepth = Number.parseInt(column.id.split(":").pop()!);
 
   if (isMulti && columnDepth !== rowDepth) {
-    return <div className={cellCls} />;
+    return <div className={css``} />;
   }
 
   return (
     <div
       style={{ paddingInlineStart: depth * 24 + 4 }}
-      className={clsx(
-        cellCls,
-        css`
-          gap: ${t.spacing.space_02};
-        `,
-      )}
+      className={clsx(css`
+        white-space: nowrap;
+        display: grid;
+        align-items: center;
+        grid-template-columns: 24px 1fr;
+      `)}
     >
       <GridButton
         onClick={() => api.rowGroupToggle(row)}
@@ -49,7 +47,15 @@ export function CellGroupRendererDefault({ api, row, column }: CellRendererParam
       >
         ›
       </GridButton>
-      {key}
+      <div
+        className={css`
+          width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        `}
+      >
+        {key}
+      </div>
     </div>
   );
 }

@@ -43,8 +43,6 @@ export type Theme = {
   readonly headerFg: string;
   readonly headerFgAlt: string;
   readonly headerFgAgg: string;
-  readonly headerPx: string;
-  readonly headerPy: string;
   readonly headerDividerResizeY: string;
   readonly headerDividerY: string;
   readonly headerDividerX: string;
@@ -58,8 +56,6 @@ export type Theme = {
   readonly cellFontSize: string;
   readonly cellFontWeight: string;
   readonly cellFontTypeface: string;
-  readonly cellPx: string;
-  readonly cellPy: string;
   readonly cellDividerX: string;
   readonly cellDividerY: string;
 

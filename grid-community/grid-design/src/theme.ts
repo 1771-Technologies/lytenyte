@@ -47,8 +47,6 @@ export const t: Theme = {
   headerFg: "var(--lng1771-header-fg)",
   headerFgAlt: "var(--lng1771-header-fg-alt)",
   headerFgAgg: "var(--lng1771-primary-50)",
-  headerPx: "var(--lng1771-header-px)",
-  headerPy: "var(--lng1771-header-py)",
   headerDividerResizeY: "var(--lng1771-header-divider-y-resize)",
   headerDividerX: "var(--lng1771-header-divider-x)",
   headerDividerY: "var(--lng1771-header-divider-y)",
@@ -62,8 +60,6 @@ export const t: Theme = {
   cellFontSize: 'var(--lng1771-cell-font-size)',
   cellFontWeight: 'var(--lng1771-cell-font-weight)',
   cellFontTypeface: 'var(--lng1771-cell-font-typeface)',
-  cellPx: 'var(--lng1771-cell-px)',
-  cellPy: 'var(--lng1771-cell-py)',
   cellDividerX: 'var(--lng1771-cell-divider-x)',
   cellDividerY: 'var(--lng1771-cell-divider-y)',
 

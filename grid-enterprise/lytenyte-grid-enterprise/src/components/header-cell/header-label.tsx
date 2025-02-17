@@ -28,7 +28,10 @@ export function HeaderLabel({ column, api, justify }: HeaderLabelProps) {
   return (
     <div>
       <div
-        style={{ justifyContent: justify }}
+        style={{
+          justifyContent: justify,
+          flexDirection: justify === "flex-end" ? "row-reverse" : "row",
+        }}
         className={css`
           display: flex;
           align-items: center;
@@ -44,7 +47,7 @@ export function HeaderLabel({ column, api, justify }: HeaderLabelProps) {
               font-weight: ${t.headerFontWeightAlt};
             `}
           >
-            (sum) ({columnAggFunc})
+            ({columnAggFunc})
           </span>
         )}
       </div>
@@ -81,7 +84,7 @@ export function HeaderLabel({ column, api, justify }: HeaderLabelProps) {
                 font-weight: ${t.headerFontWeightAlt};
               `}
             >
-              FN ({columnAggFunc})
+              ({columnAggFunc})
             </span>
           )}
         </div>
