@@ -74,6 +74,8 @@
   --lng1771-typeface: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     "Courier New", monospace;
   --lng1771-header-font-typeface: var(--lng1771-typeface);
+  --lng1771-cell-font-typeface: var(--lng1771-typeface);
+  --lng1771-menu-item-font-typeface: var(--lng1771-typeface);
 
   --lng1771-primary-05: rgba(87, 255, 255, 0.07);
   --lng1771-primary-10: rgba(87, 255, 255, 0.07);
