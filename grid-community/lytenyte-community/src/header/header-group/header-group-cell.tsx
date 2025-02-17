@@ -8,6 +8,7 @@ import { useHeaderGroupMove } from "../use-header-group-move";
 import { focusCellOutline } from "../header-cell/header-cell";
 import { HEADER_GROUP_CELL, HEADER_GROUP_CELL_POSITION } from "@1771technologies/grid-constants";
 import { useEvent } from "@1771technologies/react-utils";
+import { t } from "@1771technologies/grid-design";
 
 export interface HeaderGroupCellProps {
   readonly api: ApiCommunityReact<any>;
@@ -118,6 +119,17 @@ export function HeaderGroupCell({
           grid-column-end: 1;
           overflow: hidden;
           position: relative;
+
+          border-bottom: 1px solid ${t.headerDividerX};
+          background-color: ${t.headerBg};
+          color: ${t.headerFg};
+          box-sizing: border-box;
+
+          font-size: ${t.headerFontSize};
+          font-weight: ${t.headerFontWeight};
+          font-family: ${t.headerFontTypeface};
+          padding-inline: ${t.headerPx};
+          padding-block: ${t.headerPy};
         `,
         focusCellOutline,
       )}

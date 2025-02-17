@@ -1,4 +1,3 @@
-import { t } from "@1771technologies/grid-design";
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
 import type { ColumnGroupRowItem } from "@1771technologies/grid-types/community";
 import { useMemo } from "react";
@@ -24,13 +23,7 @@ export function HeaderGroupDefault({ group, api }: HeaderGroupRendererProps) {
         align-items: center;
         box-sizing: border-box;
         justify-content: space-between;
-        padding-inline: ${t.spacing.cell_horizontal_padding};
-
-        color: ${t.colors.text_medium};
-        font-size: ${t.typography.body_m};
-        font-family: ${t.typography.typeface_body};
         font-weight: 600;
-        background-color: ${t.colors.backgrounds_ui_panel};
       `}
     >
       {label}

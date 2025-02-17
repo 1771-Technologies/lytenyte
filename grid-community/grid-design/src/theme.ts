@@ -67,8 +67,6 @@ export const t: Theme = {
   cellDividerX: 'var(--lng1771-cell-divider-x)',
   cellDividerY: 'var(--lng1771-cell-divider-y)',
 
-
-
   colors: {
     gradient_shadow:                    "var(--lng1771-gradient-shadow)",
     
