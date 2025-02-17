@@ -17,6 +17,8 @@ export const rowReplaceBottomData = <D, E>(
 
   clearCache(api);
   s.internal.rowBackingDataSource.peek().rowReplaceBottomData(d);
+
+  queueMicrotask(api.rowRefresh);
 };
 
 export const rowReplaceTopData = <D, E>(api: ApiEnterprise<D, E> | ApiCommunity<D, E>, d: D[]) => {
@@ -24,10 +26,14 @@ export const rowReplaceTopData = <D, E>(api: ApiEnterprise<D, E> | ApiCommunity<
 
   clearCache(api);
   s.internal.rowBackingDataSource.peek().rowReplaceTopData(d);
+
+  queueMicrotask(api.rowRefresh);
 };
 export const rowReplaceData = <D, E>(api: ApiEnterprise<D, E> | ApiCommunity<D, E>, d: D[]) => {
   const s = api.getState();
 
   clearCache(api);
   s.internal.rowBackingDataSource.peek().rowReplaceData(d);
+
+  queueMicrotask(api.rowRefresh);
 };

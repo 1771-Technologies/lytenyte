@@ -27,6 +27,8 @@ export const rowSetData = <D, E>(
   }
 
   s.internal.rowBackingDataSource.peek().rowSetData(rowId, data);
+
+  queueMicrotask(api.rowRefresh);
 };
 
 export const rowSetDataMany = <D, E>(
@@ -60,4 +62,6 @@ export const rowSetDataMany = <D, E>(
   }
 
   s.internal.rowBackingDataSource.peek().rowSetDataMany(updates);
+
+  queueMicrotask(api.rowRefresh);
 };
