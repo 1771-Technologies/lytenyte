@@ -146,6 +146,7 @@ export function CellSelectionDriver() {
       // This ends the row selection.
       if (columnIndex == null || rowIndex == null) {
         s.cellSelections.set([]);
+        s.internal.cellSelectionPivot.set(null);
         return;
       }
 
