@@ -1,5 +1,7 @@
 # @1771technologies/react-menu-legacy
 
+## 0.0.21
+
 ## 0.0.20
 
 ## 0.0.19
