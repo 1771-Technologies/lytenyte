@@ -32,6 +32,11 @@ export function useColumnPills(api: ApiEnterpriseReact<any>) {
 
     const merged = [
       ...visible.map<PillRowItem>((c) => {
+        const dragTags = [`${gridId}:column:${c.pin ? c.pin : "none"}`];
+        const dropTags = [`${gridId}:column:${c.pin ? c.pin : "none"}`];
+
+        if (api.columnIsRowGroupable(c)) dragTags.push("column-groupable");
+
         return {
           column: c,
           id: c.id,
@@ -40,11 +45,13 @@ export function useColumnPills(api: ApiEnterpriseReact<any>) {
           labelRenderer: Renderer,
           endContent: <MenuContent api={api} base={base} column={c} />,
 
-          dragTags: [`${gridId}:column:${c.pin ? c.pin : "none"}`],
-          dropTags: [`${gridId}:column:${c.pin ? c.pin : "none"}`],
+          dragTags,
+          dropTags,
         };
       }),
       ...hidden.map<PillRowItem>((c) => {
+        const dragTags = [`${gridId}:column:${c.pin ? c.pin : "none"}`];
+        const dropTags = [`${gridId}:column:${c.pin ? c.pin : "none"}`];
         return {
           column: c,
           id: c.id,
@@ -52,14 +59,17 @@ export function useColumnPills(api: ApiEnterpriseReact<any>) {
           inactive: true,
           labelRenderer: Renderer,
 
-          dragTags: [`${gridId}:column:${c.pin ? c.pin : "none"}`],
-          dropTags: [`${gridId}:column:${c.pin ? c.pin : "none"}`],
+          dragTags,
+          dropTags,
         };
       }),
     ];
 
     const expanded = normalColumns.map<PillRowItem>((c) => {
       const inactive = c.hide ?? base.hide ?? false;
+      const dragTags = [`${gridId}:column:${c.pin ? c.pin : "none"}`];
+      const dropTags = [`${gridId}:column:${c.pin ? c.pin : "none"}`];
+
       return {
         column: c,
         id: c.id,
@@ -68,8 +78,8 @@ export function useColumnPills(api: ApiEnterpriseReact<any>) {
         labelRenderer: Renderer,
         endContent: inactive ? null : <MenuContent api={api} base={base} column={c} />,
 
-        dragTags: [`${gridId}:column:${c.pin ? c.pin : "none"}`],
-        dropTags: [`${gridId}:column:${c.pin ? c.pin : "none"}`],
+        dragTags,
+        dropTags,
       };
     });
 

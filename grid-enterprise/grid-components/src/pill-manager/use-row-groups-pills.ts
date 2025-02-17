@@ -21,7 +21,7 @@ export function useRowGroupPills(api: ApiEnterpriseReact<any>) {
         kind: "group",
         inactive: !model.includes(c.id),
         dragTags: [],
-        dropTags: [],
+        dropTags: ["column-groupable"],
       };
     });
   }, [api, columns, model]);
