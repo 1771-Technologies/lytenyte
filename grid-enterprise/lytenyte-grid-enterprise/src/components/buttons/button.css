@@ -5,8 +5,9 @@
   height: 28px;
   border: 0px solid transparent;
   cursor: pointer;
-  border-radius: var(--lng1771-button-radius);
   padding-inline: 12px;
+  font-family: var(--lng1771-typeface);
+  border-radius: var(--lng1771-button-radius);
   color: var(--lng1771-button-fg);
   background-color: var(--lng1771-button-bg);
   box-shadow:

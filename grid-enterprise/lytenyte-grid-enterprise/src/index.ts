@@ -20,6 +20,9 @@ export { activateLicense, hasAValidLicense } from "./license.js";
 export type { ColumnManagerFrameProps, PillManagerProps } from "@1771technologies/grid-components";
 export { ColumnManagerFrame, PillManager } from "@1771technologies/grid-components";
 
+export { Button } from "./components/buttons/button.js";
+export { IconButton } from "./components/buttons/icon-button.js";
+
 export {
   ControlledMenu,
   Menu,
