@@ -20,7 +20,7 @@ export function useRowGroupPills(api: ApiEnterpriseReact<any>) {
         column: c,
         kind: "group",
         inactive: !model.includes(c.id),
-        dragTags: [],
+        dragTags: ["column-groupable"],
         dropTags: ["column-groupable"],
       };
     });
@@ -31,24 +31,30 @@ export function useRowGroupPills(api: ApiEnterpriseReact<any>) {
     else sx.rowGroupModel.set((prev) => [...prev, p.id]);
   });
 
-  const onDrop = useDrop(model, sx.rowGroupModel);
+  const onDrop = useDrop(model, sx.rowGroupModel, api);
 
   return { pillItems, onPillSelect, onDrop };
 }
 
-export function useDrop(model: string[], signal: Signal<string[]>) {
+export function useDrop<D>(model: string[], signal: Signal<string[]>, api: ApiEnterpriseReact<D>) {
   const onDrop = useEvent((dragged: PillRowItem, over: PillRowItem, isBefore: boolean) => {
     const id = dragged.id;
     const target = over.id;
     const index = model.indexOf(id);
-    if (index === -1) return;
+
     const next = [...model];
-    next.splice(index, 1);
+    if (index !== -1) {
+      next.splice(index, 1);
+    }
 
     const targetIndex = next.indexOf(target);
     if (targetIndex === -1) return;
 
-    if (isBefore) next.splice(targetIndex, 0, id);
+    if (index === -1) {
+      // This means the item came from the columns row - so we should grab the column id and hide it.
+      next.splice(targetIndex, 0, id);
+      api.columnUpdate(dragged.column, { hide: true });
+    } else if (isBefore) next.splice(targetIndex, 0, id);
     else next.splice(targetIndex + 1, 0, id);
 
     signal.set(next);
