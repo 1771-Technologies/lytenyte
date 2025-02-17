@@ -20,8 +20,8 @@ export function useRowGroupPills(api: ApiEnterpriseReact<any>) {
         column: c,
         kind: "group",
         inactive: !model.includes(c.id),
-        dragTag: "",
-        dropTag: "",
+        dragTags: [],
+        dropTags: [],
       };
     });
   }, [api, columns, model]);

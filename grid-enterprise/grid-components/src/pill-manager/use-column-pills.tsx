@@ -40,8 +40,8 @@ export function useColumnPills(api: ApiEnterpriseReact<any>) {
           labelRenderer: Renderer,
           endContent: <MenuContent api={api} base={base} column={c} />,
 
-          dragTag: `${gridId}:column:${c.pin ? c.pin : "none"}`,
-          dropTag: `${gridId}:column:${c.pin ? c.pin : "none"}`,
+          dragTags: [`${gridId}:column:${c.pin ? c.pin : "none"}`],
+          dropTags: [`${gridId}:column:${c.pin ? c.pin : "none"}`],
         };
       }),
       ...hidden.map<PillRowItem>((c) => {
@@ -52,8 +52,8 @@ export function useColumnPills(api: ApiEnterpriseReact<any>) {
           inactive: true,
           labelRenderer: Renderer,
 
-          dragTag: `${gridId}:column:${c.pin ? c.pin : "none"}`,
-          dropTag: `${gridId}:column:${c.pin ? c.pin : "none"}`,
+          dragTags: [`${gridId}:column:${c.pin ? c.pin : "none"}`],
+          dropTags: [`${gridId}:column:${c.pin ? c.pin : "none"}`],
         };
       }),
     ];
@@ -68,8 +68,8 @@ export function useColumnPills(api: ApiEnterpriseReact<any>) {
         labelRenderer: Renderer,
         endContent: inactive ? null : <MenuContent api={api} base={base} column={c} />,
 
-        dragTag: `${gridId}:column:${c.pin ? c.pin : "none"}`,
-        dropTag: `${gridId}:column:${c.pin ? c.pin : "none"}`,
+        dragTags: [`${gridId}:column:${c.pin ? c.pin : "none"}`],
+        dropTags: [`${gridId}:column:${c.pin ? c.pin : "none"}`],
       };
     });
 

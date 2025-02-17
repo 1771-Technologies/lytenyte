@@ -26,8 +26,8 @@ export function useMeasurePills(api: ApiEnterpriseReact<any>) {
         kind: "column",
         inactive,
         labelRenderer: inactive ? undefined : Renderer,
-        dragTag: "",
-        dropTag: "",
+        dragTags: [],
+        dropTags: [],
       };
     });
   }, [api, columns, model]);

@@ -10,8 +10,8 @@ export interface PillRowItem {
   readonly column: ColumnEnterpriseReact<any>;
   readonly kind: PillProps["kind"];
   readonly inactive: boolean;
-  readonly dragTag: string;
-  readonly dropTag: string;
+  readonly dragTags: string[];
+  readonly dropTags: string[];
   readonly labelRenderer?: (p: { item: PillRowItem; api: ApiEnterpriseReact<any> }) => ReactNode;
   readonly endContent?: ReactNode;
 }

@@ -3,7 +3,7 @@ import { bankDataSmall } from "./data/bank-data-small";
 import { LyteNyteGrid } from "../src/lytenyte-grid-enterprise";
 import { useClientDataSource } from "../src/use-client-data-source";
 import { useLyteNyte } from "../src/use-lytenyte";
-import { ColumnManager } from "@1771technologies/grid-components";
+import { ColumnManager, PillManager } from "@1771technologies/grid-components";
 
 export default function Play() {
   const ds = useClientDataSource({
@@ -41,39 +41,10 @@ export default function Play() {
     >
       <div
         className={css`
-          display: flex;
-          align-items: center;
-          gap: 4px;
+          width: 100%;
         `}
       >
-        <button onClick={() => grid.state.overlayToShow.set("lng1771-load-error-overlay")}>
-          Error
-        </button>
-        <button onClick={() => grid.state.overlayToShow.set("lng1771-no-data-overlay")}>
-          No data
-        </button>
-        <button onClick={() => grid.state.overlayToShow.set(null)}>No data</button>
-        <button onClick={() => grid.state.overlayToShow.set("lng1771-loading-overlay")}>
-          Loading
-        </button>
-        <button onClick={() => grid.api.autosizeColumns()}>Autosize</button>
-        <button onClick={() => grid.state.rtl.set((prev) => !prev)}>RTL</button>
-        <button onClick={() => grid.state.rowGroupModel.set(["job", "age"])}>Grouped</button>
-        <button onClick={() => grid.state.rowGroupModel.set(["job"])}>Grouped 2</button>
-        <button onClick={() => grid.state.rowGroupModel.set([])}>Un-group</button>
-        <button onClick={() => grid.state.rowGroupDisplayMode.set("multi-column")}>
-          Multi Group
-        </button>
-        <button onClick={() => grid.state.rowGroupDisplayMode.set("single-column")}>
-          Single Group
-        </button>
-        <button
-          onClick={async () => {
-            console.log(await grid.api.exportCsv());
-          }}
-        >
-          Export
-        </button>
+        <PillManager api={grid.api} />
       </div>
       <div
         className={css`

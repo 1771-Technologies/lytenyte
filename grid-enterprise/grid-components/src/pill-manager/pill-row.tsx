@@ -127,7 +127,7 @@ function PillItem({
   const isBefore = (data?.index ?? -1) > index;
 
   const { canDrop, isOver, ...props } = useDroppable({
-    tags: c.inactive ? [] : [c.dropTag],
+    tags: c.inactive ? [] : c.dropTags,
     onDrop: (p) => {
       const d = p.getData() as { pillItem: PillRowItem };
       onPillDrop?.(d.pillItem, c, isBefore);
@@ -260,7 +260,7 @@ function PillItem({
 function PillDragger({ pillItem: p, index }: { pillItem: PillRowItem; index: number }) {
   const draggable = useDraggable({
     dragData: () => ({ pillItem: p, index }),
-    dragTags: () => [p.dragTag],
+    dragTags: () => p.dragTags,
     placeholder: () => <Pill kind={p.kind} label={p.column.headerName ?? p.column.id} />,
   });
 

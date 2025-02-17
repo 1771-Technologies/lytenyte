@@ -16,7 +16,7 @@ export function GridContainer({ top, bottom, children }: PropsWithChildren<GridC
   }, [bottom, top]);
 
   return (
-    <div className="grid-container" style={{ gridTemplateRows: template }}>
+    <div className="lng1771-grid-container" style={{ gridTemplateRows: template }}>
       {top && <div className="lng1771-grid-container__top">{top}</div>}
       {children}
       {bottom && <div className="lng1771-grid-container__bottom">{bottom}</div>}
