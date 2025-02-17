@@ -1,6 +1,7 @@
 import { avg } from "./avg.js";
 import { count } from "./count.js";
 import { first } from "./first.js";
+import { group } from "./group.js";
 import { last } from "./last.js";
 import { max } from "./max.js";
 import { min } from "./min.js";
@@ -31,6 +32,8 @@ export const builtIns = {
   min: min,
   /** Find maximum value among non-null/undefined numbers in array */
   max: max,
+  /** Return the aggregation group */
+  group: group,
 };
 
 /**

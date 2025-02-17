@@ -1,6 +1,6 @@
 // Aggregations
 
-export type AggBuiltIns = "sum" | "min" | "max" | "avg" | "count" | "first" | "last";
+export type AggBuiltIns = "sum" | "min" | "max" | "avg" | "count" | "first" | "last" | "group";
 export type AggFunc<A> = (data: unknown[], api: A) => unknown;
 export type AggFuncs<A> = { [id: string]: AggFunc<A> };
 

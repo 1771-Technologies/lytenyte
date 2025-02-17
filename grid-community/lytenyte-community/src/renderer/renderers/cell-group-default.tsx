@@ -30,6 +30,7 @@ export function CellGroupRendererDefault({ api, row, column }: CellRendererParam
         display: grid;
         align-items: center;
         grid-template-columns: 24px 1fr;
+        height: 100%;
       `)}
     >
       <GridButton
