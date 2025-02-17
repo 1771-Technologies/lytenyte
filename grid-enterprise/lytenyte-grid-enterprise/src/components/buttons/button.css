@@ -1,4 +1,4 @@
-.button {
+.lng1771-button {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -13,14 +13,14 @@
     0px 1.5px 2px 0px rgba(18, 46, 88, 0.08),
     0px 0px 0px 1px var(--lng1771-button-border);
 }
-.button:focus-visible {
+.lng1771-button:focus-visible {
   outline: 1px solid var(--lng1771-grid-focus-outline);
 }
-.button:hover {
+.lng1771-button:hover {
   background-color: var(--lng1771-button-bg-hover);
 }
 
-.button__icon {
+.lng1771-button__icon {
   justify-content: center;
   width: 28px;
   height: 28px;

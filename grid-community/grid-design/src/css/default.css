@@ -121,8 +121,6 @@
   --lng1771-transition-fast: 100ms;
   --lng1771-transition-vfast: 50ms;
 
-  --lng1771-header-py: 4px;
-  --lng1771-header-px: 12px;
   --lng1771-header-font-size: 14px;
   --lng1771-header-font-weight: 500;
   --lng1771-header-font-size-alt: 11px;
@@ -181,8 +179,6 @@
   --lng1771-cell-font-size: 14px;
   --lng1771-cell-font-weight: 400;
   --lng1771-cell-font-typeface: var(--lng1771-typeface);
-  --lng1771-cell-px: 12px;
-  --lng1771-cell-py: 4px;
 
   --lng1771-cell-divider-y: transparent;
   --lng1771-cell-divider-x: var(--lng1771-gray-20);
