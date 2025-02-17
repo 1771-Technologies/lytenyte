@@ -1,5 +1,7 @@
 # @1771technologies/grid-core-enterprise
 
+## 0.0.20
+
 ## 0.0.19
 
 ## 0.0.18

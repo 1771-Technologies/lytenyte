@@ -1,5 +1,7 @@
 # @1771technologies/react-split-pane
 
+## 0.0.20
+
 ## 0.0.19
 
 ## 0.0.18
