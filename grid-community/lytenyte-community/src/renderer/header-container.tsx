@@ -1,17 +1,15 @@
-import { useState, type CSSProperties, type ReactNode } from "react";
+import { useState, type CSSProperties } from "react";
 import { useGrid } from "../use-grid";
 import { useIsoEffect } from "@1771technologies/react-utils";
 import { getPreciseElementDimensions, IsoResizeObserver } from "@1771technologies/js-utils";
 import { Header } from "../header/header";
-import type { ColumnHeaderRendererParamsReact } from "@1771technologies/grid-types/community-react";
 
 export interface HeaderProps {
   readonly style?: CSSProperties;
   readonly className?: string;
-  readonly headerDefault: (p: ColumnHeaderRendererParamsReact<any>) => ReactNode;
 }
 
-export function HeaderContainer({ headerDefault, style, className }: HeaderProps) {
+export function HeaderContainer({ style, className }: HeaderProps) {
   const { state } = useGrid();
 
   const [header, setHeader] = useState<HTMLElement | null>(null);
@@ -32,7 +30,7 @@ export function HeaderContainer({ headerDefault, style, className }: HeaderProps
 
   return (
     <div ref={setHeader} className={className} style={style}>
-      <Header headerDefault={headerDefault} />
+      <Header />
     </div>
   );
 }

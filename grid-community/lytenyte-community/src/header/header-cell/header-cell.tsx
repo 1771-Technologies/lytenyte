@@ -1,5 +1,5 @@
 import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
-import { useMemo, useRef, type CSSProperties, type ReactNode } from "react";
+import { useMemo, useRef, type CSSProperties } from "react";
 import { getTransform } from "../../renderer/get-transform";
 import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
 import { useHeaderCellRenderer } from "../use-header-cell-renderer";
@@ -7,7 +7,6 @@ import { t } from "@1771technologies/grid-design";
 import { useHeaderMove } from "../use-header-move";
 import { COLUMN_EMPTY_PREFIX, HEADER_CELL } from "@1771technologies/grid-constants";
 import { ExpandButton } from "../../components/buttons";
-import type { ColumnHeaderRendererParamsReact } from "@1771technologies/grid-types/community-react";
 import { useHeaderFocus } from "./use-header-focus";
 
 interface HeaderCellProps {
@@ -22,7 +21,6 @@ interface HeaderCellProps {
   readonly startCount: number;
   readonly centerCount: number;
   readonly endCount: number;
-  readonly headerDefault: (p: ColumnHeaderRendererParamsReact<any>) => ReactNode;
 }
 
 export function HeaderCell({
@@ -33,7 +31,6 @@ export function HeaderCell({
   rowStart,
   rowEnd,
   xPositions,
-  headerDefault,
 }: HeaderCellProps) {
   const isStart = column.pin === "start";
   const isEnd = column.pin === "end";
@@ -61,7 +58,7 @@ export function HeaderCell({
     return style;
   }, [columnIndex, isEnd, isStart, rowEnd, rowStart, rtl, viewportWidth, xPositions]);
 
-  const Renderer = useHeaderCellRenderer(api, column, headerDefault);
+  const Renderer = useHeaderCellRenderer(api, column);
 
   const { moveProps, dropProps, isBefore, isOver, canDrop, dragIndex } = useHeaderMove(
     api,
@@ -125,11 +122,11 @@ export function HeaderCell({
           overflow: hidden;
           grid-column-start: 1;
           grid-column-end: 2;
+          box-sizing: border-box;
 
           border-bottom: 1px solid ${t.headerDividerX};
           background-color: ${t.headerBg};
           color: ${t.headerFg};
-          box-sizing: border-box;
 
           font-size: ${t.headerFontSize};
           font-weight: ${t.headerFontWeight};

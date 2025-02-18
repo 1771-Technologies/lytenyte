@@ -1,11 +1,8 @@
-import { Menu, MenuHeader, MenuItem } from "@1771technologies/react-menu";
-import { IconButton } from "./buttons/icon-button";
-import { DownloadIcon } from "./icons/download-icon";
-import { CsvIcon } from "./icons/svg-icon";
+import { MenuHeader, MenuItem } from "@1771technologies/react-menu";
+import { CsvIcon } from "../icons/svg-icon";
 import type { StoreEnterpriseReact } from "@1771technologies/grid-types";
 
-export interface ExportMenuProps<D> {
-  readonly ariaLabel?: string;
+export interface CsvExportMenuItemsProps<D> {
   readonly csvLabels?: {
     readonly dataOnly?: string;
     readonly withHeader?: string;
@@ -14,22 +11,10 @@ export interface ExportMenuProps<D> {
   readonly grid: StoreEnterpriseReact<D>;
 }
 
-export function ExportMenu<D>({
-  ariaLabel = "csv export menu",
-  csvLabels,
-  grid,
-}: ExportMenuProps<D>) {
+export function CsvExportMenuItems<D>({ csvLabels, grid }: CsvExportMenuItemsProps<D>) {
   const api = grid.api;
   return (
-    <Menu
-      align="center"
-      arrow
-      menuButton={
-        <IconButton aria-label={ariaLabel}>
-          <DownloadIcon />
-        </IconButton>
-      }
-    >
+    <>
       <MenuHeader>CSV Export</MenuHeader>
       <MenuItem onClick={() => api.exportCsvFile().then(downloadFile)}>
         <CsvIcon />
@@ -47,7 +32,7 @@ export function ExportMenu<D>({
         <CsvIcon />
         {csvLabels?.withGroupHeader ?? "With Group Headers"}
       </MenuItem>
-    </Menu>
+    </>
   );
 }
 

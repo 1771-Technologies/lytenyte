@@ -17,7 +17,11 @@ export default function Play() {
     cellSelectionMode: "range",
     cellEditPointerActivator: "double-click",
     rowFullWidthPredicate: (p) => p.row.rowIndex === 8,
-    columnBase: { resizable: true, movable: true, sortable: true },
+    columnBase: {
+      resizable: true,
+      movable: true,
+      sortable: true,
+    },
     floatingRowEnabled: true,
     floatingRowHeight: 32,
     rowDataSource: ds,

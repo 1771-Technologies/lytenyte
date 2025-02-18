@@ -8,7 +8,6 @@ import {
   type CellClasses,
 } from "@1771technologies/lytenyte-grid-community/internal";
 import { GridProvider, useGrid } from "./use-grid";
-import { HeaderCellDefault } from "./components/header-cell/header-cell-default";
 import {
   FilterMenuDriver,
   ContextMenuDriver,
@@ -23,8 +22,8 @@ import {
 import { useMemo } from "react";
 import { Watermark } from "./watermark";
 import { OverlayDriver } from "./overlay/overlay-driver";
-import { ColumnMenuDriver } from "./components/column-menu-driver";
-import { GridFrame } from "./components/grid-frame";
+import { ColumnMenuDriver } from "./components-internal/column-menu-driver";
+import { GridFrame } from "./components-internal/grid-frame";
 import type { SplitPaneAxe } from "@1771technologies/react-split-pane";
 
 export interface LyteNyteGridEnterpriseProps<D> {
@@ -64,7 +63,7 @@ function LyteNyteCommunityImpl() {
   return (
     <ClassProvider value={classes}>
       <OverlayDriver />
-      <Viewport headerDefault={HeaderCellDefault as any} top={Top} center={Center} bottom={Bottom}>
+      <Viewport top={Top} center={Center} bottom={Bottom}>
         <CellSelectionDriver />
         <Watermark id={state.gridId.use()} />
       </Viewport>

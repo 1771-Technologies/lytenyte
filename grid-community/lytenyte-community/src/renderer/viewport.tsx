@@ -5,17 +5,14 @@ import { HeaderContainer } from "./header-container";
 import { Rows } from "./rows";
 import { type PropsWithChildren, type ReactNode } from "react";
 import { RowContainer } from "./viewport/row-container";
-import type { ColumnHeaderRendererParamsReact } from "@1771technologies/grid-types/community-react";
 import { NavigationDriver } from "../navigation/navigation-driver";
 import { CellEditDriver } from "../cell-edit/cell-edit-driver";
 import { HoverDriver } from "./hover-driver";
 
 export function Viewport({
-  headerDefault,
   children,
   ...els
 }: PropsWithChildren<{
-  headerDefault: (p: ColumnHeaderRendererParamsReact<any>) => ReactNode;
   top: () => ReactNode;
   bottom: () => ReactNode;
   center: () => ReactNode;
@@ -75,7 +72,6 @@ export function Viewport({
       `}
     >
       <HeaderContainer
-        headerDefault={headerDefault}
         style={{ width: totalWidth }}
         className={css`
           position: sticky;

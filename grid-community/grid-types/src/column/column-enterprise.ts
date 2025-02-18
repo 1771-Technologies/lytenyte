@@ -36,17 +36,12 @@ export interface Column<A, D, E> {
   readonly type?: "text" | "number" | "date" | "complex";
 
   readonly headerName?: string;
-  readonly headerSecondaryLabel?: string;
   readonly headerRenderer?: string | ColumnHeaderRenderer<A, this, E>;
   readonly headerAutosizeFunc?: (c: AutosizeHeaderParameters<A, this>) => number;
-  readonly headerAggFuncDisplayMode?: "secondary" | "inline" | "none";
-  readonly headerJustify?: "start" | "center" | "end";
 
   readonly aggFunc?: AggBuiltIns | (string & {}) | AggFunc<A>;
   readonly aggFuncsAllowed?: (AggBuiltIns | (string & {}))[];
   readonly aggFuncDefault?: AggBuiltIns | (string & {});
-
-  readonly columnMenuPredicate?: boolean;
 
   readonly filterSupportsIn?: boolean;
   readonly filterSupportsSimple?: boolean;
@@ -68,7 +63,6 @@ export interface Column<A, D, E> {
 
   readonly cellAutosizeFn?: (c: AutosizeCellParameters<A, D, this>) => number;
   readonly cellSkipOnAutosizeAll?: boolean;
-  readonly cellJustify?: "start" | "center" | "end";
 
   readonly floatingCellRenderer?: string | FloatingCellRenderer<A, this, E>;
 
