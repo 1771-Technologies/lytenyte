@@ -1,3 +1,4 @@
+import "./header-cell.css";
 import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
 import { useMemo, useRef, type CSSProperties } from "react";
 import { getTransform } from "../../renderer/get-transform";
@@ -5,8 +6,7 @@ import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
 import { useHeaderCellRenderer } from "../use-header-cell-renderer";
 import { t } from "@1771technologies/grid-design";
 import { useHeaderMove } from "../use-header-move";
-import { COLUMN_EMPTY_PREFIX, HEADER_CELL } from "@1771technologies/grid-constants";
-import { ExpandButton } from "../../components/buttons";
+import { COLUMN_EMPTY_PREFIX } from "@1771technologies/grid-constants";
 import { useHeaderFocus } from "./use-header-focus";
 
 interface HeaderCellProps {
@@ -75,30 +75,19 @@ export function HeaderCell({
 
   if (api.columnIsEmpty(column)) {
     return (
-      <ExpandButton
+      <button
         {...events}
-        buttonRef={ref as any}
+        ref={ref as any}
         onClick={() => {
           const id = column.id.replace(COLUMN_EMPTY_PREFIX, "").split("|>").slice(0, -1);
 
           api.columnGroupToggle(id.join(api.getState().columnGroupIdDelimiter.peek()));
         }}
         style={style}
-        className={css`
-          grid-column-start: 1;
-          grid-column-end: 2;
-          background-color: ${t.headerBg};
-          color: ${t.headerFg};
-          overflow: hidden;
-          display: flex;
-          height: 100% !important;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-        `}
+        className={clsx("lng1771-header__cell-expand")}
       >
         +
-      </ExpandButton>
+      </button>
     );
   }
 
@@ -117,55 +106,11 @@ export function HeaderCell({
       {...dropProps}
       {...events}
       className={clsx(
-        HEADER_CELL,
-        css`
-          overflow: hidden;
-          grid-column-start: 1;
-          grid-column-end: 2;
-          box-sizing: border-box;
-
-          border-bottom: 1px solid ${t.headerDividerX};
-          background-color: ${t.headerBg};
-          color: ${t.headerFg};
-
-          font-size: ${t.headerFontSize};
-          font-weight: ${t.headerFontWeight};
-          font-family: ${t.headerFontTypeface};
-        `,
-        focusCellOutline,
-        isOver &&
-          columnIndex !== dragIndex &&
-          css`
-            &::after {
-              top: 0px;
-              position: absolute;
-              width: 2px;
-              border-radius: 9999px;
-              height: 100%;
-              content: "";
-              background-color: var(--lng1771-allowed-to-drop, ${t.gridDragBarColor});
-              z-index: 20;
-            }
-          `,
-        isOver &&
-          isBefore &&
-          css`
-            &::after {
-              inset-inline-start: 1px;
-            }
-          `,
-        isOver &&
-          !isBefore &&
-          css`
-            &::after {
-              inset-inline-end: 1px;
-            }
-          `,
-        isOver &&
-          !canDrop &&
-          css`
-            --lng1771-allowed-to-drop: ${t.gridDragBarNotAllowedColor};
-          `,
+        "lng1771-header__cell",
+        isOver && columnIndex !== dragIndex && "lng1771-header__cell--over",
+        isOver && isBefore && "lng1771-header__cell--over-before",
+        isOver && !isBefore && "lng1771-header__cell--over-after",
+        isOver && !canDrop && "lng1771-header__cell--over-not-allowed",
       )}
     >
       <Renderer api={api} column={column} columnIndex={columnIndex} />

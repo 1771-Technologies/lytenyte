@@ -34,15 +34,9 @@ export type Theme = {
 
   readonly headerFontSize: string;
   readonly headerFontWeight: string;
-  readonly headerFontSizeAlt: string;
-  readonly headerFontWeightAlt: string;
   readonly headerFontTypeface: string;
-
   readonly headerBg: string;
-  readonly headerBgHover: string;
   readonly headerFg: string;
-  readonly headerFgAlt: string;
-  readonly headerFgAgg: string;
   readonly headerDividerResizeY: string;
   readonly headerDividerY: string;
   readonly headerDividerX: string;

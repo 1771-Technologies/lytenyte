@@ -38,15 +38,9 @@ export const t: Theme = {
 
   headerFontTypeface: "var(--lng1771-header-font-typeface)",
   headerFontSize: "var(--lng1771-header-font-size)",
-  headerFontSizeAlt: "var(--lng1771-header-font-size-alt)",
   headerFontWeight: "var(--lng1771-header-font-weight)",
-  headerFontWeightAlt: "var(--lng1771-header-font-weight-alt)",
-
   headerBg: "var(--lng1771-header-bg)",
-  headerBgHover: "var(--lng1771-header-bg-hover)",
   headerFg: "var(--lng1771-header-fg)",
-  headerFgAlt: "var(--lng1771-header-fg-alt)",
-  headerFgAgg: "var(--lng1771-primary-50)",
   headerDividerResizeY: "var(--lng1771-header-divider-y-resize)",
   headerDividerX: "var(--lng1771-header-divider-x)",
   headerDividerY: "var(--lng1771-header-divider-y)",

@@ -46,9 +46,10 @@ export const FULL_ENCODING = -2;
 export const END_ENCODING = -1;
 
 // Classes
-export const HEADER_GROUP_CELL = "lng1771-header-group-cell";
-export const HEADER_CELL = "lng1771-header-cell";
-export const HEADER_FLOATING_CELL = "lng1771-header-floating-cell";
-export const HEADER_CELL_DIVIDER = "lng1771-header-cell-divider";
-export const GRID_CELL = "lng1771-grid-cell";
-export const GRID_DETAIL_CONTAINER = "lng1771-grid-detail-container";
+export const HEADER_GROUP_CELL = "lng1771-header__group-cell";
+export const HEADER_CELL = "lng1771-header__cell";
+export const HEADER_FLOATING_CELL = "lng1771-header__floating-cell";
+export const HEADER_CELL_DIVIDER = "lng1771-header__cell-divider";
+
+export const GRID_CELL = "lng1771-rows__cell";
+export const GRID_DETAIL_CONTAINER = "lng1771-rows__detail";

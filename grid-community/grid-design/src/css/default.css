@@ -1,26 +1,11 @@
 :root {
   --lng1771-gradient-shadow: linear-gradient(90deg, var(--lng1771-gray-50), var(--lng1771-gray-50));
 
-  --lng1771-primary-05: rgba(18, 108, 255, 0.05);
-  --lng1771-primary-10: rgba(18, 108, 255, 0.1);
-  --lng1771-primary-30: rgba(18, 108, 255, 0.3);
-  --lng1771-primary-50: #126cff;
-  --lng1771-primary-70: #053f9e;
-  --lng1771-primary-90: #012259;
-
-  --lng1771-gray-00: #ffffff;
-  --lng1771-gray-02: #fafbfc;
-  --lng1771-gray-05: #f6f8fa;
-  --lng1771-gray-10: #f2f4f7;
-  --lng1771-gray-20: #e9edf1;
-  --lng1771-gray-30: #dadfe7;
-  --lng1771-gray-40: #c3c9d5;
-  --lng1771-gray-50: #949ba8;
-  --lng1771-gray-60: #787e8c;
-  --lng1771-gray-70: #5c6170;
-  --lng1771-gray-80: #2d2f39;
-  --lng1771-gray-90: #1e1e29;
-  --lng1771-gray-100: #15151e;
+  --lng1771-transition-fn: cubic-bezier(0.4, 0, 0.2, 1);
+  --lng1771-transition-slow: 200ms;
+  --lng1771-transition-normal: 150ms;
+  --lng1771-transition-fast: 100ms;
+  --lng1771-transition-vfast: 50ms;
 
   --lng1771-backgrounds-default: var(--lng1771-gray-10);
   --lng1771-backgrounds-strong: var(--lng1771-gray-20);
@@ -115,18 +100,6 @@
   --lng1771-typeface: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 
-  --lng1771-transition-fn: cubic-bezier(0.4, 0, 0.2, 1);
-  --lng1771-transition-slow: 200ms;
-  --lng1771-transition-normal: 150ms;
-  --lng1771-transition-fast: 100ms;
-  --lng1771-transition-vfast: 50ms;
-
-  --lng1771-header-font-size: 14px;
-  --lng1771-header-font-weight: 500;
-  --lng1771-header-font-size-alt: 11px;
-  --lng1771-header-font-weight-alt: 600;
-  --lng1771-header-font-typeface: var(--lng1771-typeface);
-
   --lng1771-button-fg: var(--lng1771-gray-70);
   --lng1771-button-bg: var(--lng1771-gray-10);
   --lng1771-button-bg-hover: var(--lng1771-gray-20);
@@ -161,11 +134,11 @@
   --lng1771-menu-bg: var(--lng1771-gray-00);
   --lng1771-menu-item-divider: var(--lng1771-gray-40);
 
+  --lng1771-header-font-size: 14px;
+  --lng1771-header-font-weight: 500;
+  --lng1771-header-font-typeface: var(--lng1771-typeface);
   --lng1771-header-bg: var(--lng1771-gray-00);
-  --lng1771-header-bg-hover: var(--lng1771-gray-10);
   --lng1771-header-fg: var(--lng1771-gray-60);
-  --lng1771-header-fg-alt: var(--lng1771-gray-70);
-  --lng1771-header-fg-agg: var(--lng1771-primary-50);
   --lng1771-header-divider-y-resize: var(--lng1771-primary-50);
   --lng1771-header-divider-y: var(--lng1771-gray-50);
   --lng1771-header-divider-x: var(--lng1771-gray-10);

@@ -8,6 +8,7 @@ export function HeaderCellDefault({ column }: ColumnHeaderRendererParamsReact<an
     <div
       className={clsx(css`
         display: flex;
+        padding-inline: 12px;
         align-items: center;
         box-sizing: border-box;
         width: 100%;
