@@ -6,10 +6,9 @@ import { Header } from "./header";
 
 export interface HeaderProps {
   readonly style?: CSSProperties;
-  readonly className?: string;
 }
 
-export function HeaderContainer({ style, className }: HeaderProps) {
+export function HeaderContainer({ style }: HeaderProps) {
   const { state } = useGrid();
 
   const [header, setHeader] = useState<HTMLElement | null>(null);
@@ -29,7 +28,7 @@ export function HeaderContainer({ style, className }: HeaderProps) {
   }, [header]);
 
   return (
-    <div ref={setHeader} className={className} style={style}>
+    <div ref={setHeader} className="lng1771-header-container" style={style}>
       <Header />
     </div>
   );

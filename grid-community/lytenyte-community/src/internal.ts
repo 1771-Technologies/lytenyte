@@ -1,6 +1,6 @@
 import "./lytenyte.css";
 
-export { Viewport } from "./renderer/viewport.js";
+export { Viewport } from "./viewport/viewport.js";
 export { GridButton } from "./components/buttons.js";
 
 export {

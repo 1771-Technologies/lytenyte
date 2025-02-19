@@ -1,3 +1,5 @@
+import "./viewport.css";
+
 import { Sizer, type SizerProps } from "@1771technologies/react-sizer";
 import { useEvent } from "@1771technologies/react-utils";
 import { useGrid } from "../use-grid";
@@ -7,7 +9,7 @@ import { type PropsWithChildren, type ReactNode } from "react";
 import { RowContainer } from "../row-container/row-container";
 import { NavigationDriver } from "../navigation/navigation-driver";
 import { CellEditDriver } from "../cell-edit/cell-edit-driver";
-import { HoverDriver } from "./hover-driver";
+import { HoverDriver } from "../renderer/hover-driver";
 
 export function Viewport({
   children,
@@ -65,22 +67,9 @@ export function Viewport({
       elRef={ref}
       style={{ direction: rtl ? "rtl" : undefined }}
       id={grid}
-      className={css`
-        display: grid;
-        grid-template-rows: auto 1fr;
-        z-index: 0;
-      `}
+      className="lng1771-viewport"
     >
-      <HeaderContainer
-        style={{ width: totalWidth }}
-        className={css`
-          position: sticky;
-          z-index: 20;
-          top: 0;
-          inset-inline-start: 0px;
-          min-width: 100%;
-        `}
-      />
+      <HeaderContainer style={{ width: totalWidth }} />
       <RowContainer totalHeight={totalHeight} totalWidth={totalWidth}>
         <Rows width={totalWidth} {...els} />
       </RowContainer>

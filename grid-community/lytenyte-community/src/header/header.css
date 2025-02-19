@@ -8,3 +8,11 @@
   position: relative;
   border-bottom: 1px solid var(--lng1771-gray-20);
 }
+
+.lng1771-header-container {
+  position: sticky;
+  z-index: 20;
+  top: 0;
+  inset-inline-start: 0px;
+  min-width: 100%;
+}
