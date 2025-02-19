@@ -4,11 +4,11 @@ import type { ColumnGroupRowItem, ColumnPin } from "@1771technologies/grid-types
 import { sizeFromCoord } from "@1771technologies/js-utils";
 import { useEffect, useMemo, useRef, type CSSProperties } from "react";
 import { getTransform } from "../../renderer/get-transform";
-import { HeaderGroupDefault } from "../header-renderers/header-group-default";
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
-import { useHeaderGroupMove } from "../use-header-group-move";
+import { useHeaderGroupMove } from "./use-header-group-move";
 import { HEADER_GROUP_CELL_POSITION } from "@1771technologies/grid-constants";
 import { useEvent } from "@1771technologies/react-utils";
+import { CollapseButton } from "../../components/buttons";
 
 export interface HeaderGroupCellProps {
   readonly api: ApiCommunityReact<any>;
@@ -115,6 +115,40 @@ export function HeaderGroupCell({
       className={"lng1771-header__cell-group"}
     >
       <HeaderGroupDefault group={groupItem} api={api} />
+    </div>
+  );
+}
+
+/**
+ * TODO: we should really make this available to users to change.
+ */
+interface HeaderGroupRendererProps {
+  readonly group: ColumnGroupRowItem;
+  readonly api: ApiCommunityReact<any>;
+}
+
+function HeaderGroupDefault({ group, api }: HeaderGroupRendererProps) {
+  const label = useMemo(() => {
+    const delimiter = api.getState().columnGroupIdDelimiter.peek();
+    return group.id.split(delimiter).at(-1)!;
+  }, [api, group.id]);
+
+  return (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+        boxSizing: "border-box",
+        justifyContent: "space-between",
+        paddingInline: 12,
+      }}
+    >
+      {label}
+      {group.isCollapsible && (
+        <CollapseButton onClick={() => api.columnGroupToggle(group.id)}>-</CollapseButton>
+      )}
     </div>
   );
 }

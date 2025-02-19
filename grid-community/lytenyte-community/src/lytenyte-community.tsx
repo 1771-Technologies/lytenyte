@@ -1,7 +1,6 @@
 import type { StoreCommunityReact } from "@1771technologies/grid-types";
 import { GridProvider } from "./use-grid";
 import { Viewport } from "./renderer/viewport";
-import { HeaderCellDefault } from "./header/header-renderers/header-cell-default";
 import {
   CellEditorBottom,
   CellEditorCenter,
@@ -21,12 +20,5 @@ export function LyteNyteGridCommunity<D>({ grid }: LyteNyteGridCommunityProps<D>
 }
 
 function LyteNyteCommunityImpl() {
-  return (
-    <Viewport
-      headerDefault={HeaderCellDefault}
-      top={CellEditorTop}
-      center={CellEditorCenter}
-      bottom={CellEditorBottom}
-    />
-  );
+  return <Viewport top={CellEditorTop} center={CellEditorCenter} bottom={CellEditorBottom} />;
 }

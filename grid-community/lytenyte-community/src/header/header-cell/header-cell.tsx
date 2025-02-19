@@ -3,9 +3,9 @@ import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/
 import { useMemo, useRef, type CSSProperties } from "react";
 import { getTransform } from "../../renderer/get-transform";
 import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
-import { useHeaderCellRenderer } from "../use-header-cell-renderer";
+import { useHeaderCellRenderer } from "./use-header-cell-renderer";
 import { t } from "@1771technologies/grid-design";
-import { useHeaderMove } from "../use-header-move";
+import { useHeaderMove } from "./use-header-move";
 import { COLUMN_EMPTY_PREFIX } from "@1771technologies/grid-constants";
 import { useHeaderFocus } from "./use-header-focus";
 

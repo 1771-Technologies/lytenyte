@@ -1,6 +1,6 @@
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
 import { useMemo, type ReactNode } from "react";
-import { HeaderCell } from "./header-cell/header-cell";
+import { HeaderCell } from "./header-cell";
 
 export function useHeaderCells(api: ApiCommunityReact<any>) {
   const sx = api.getState();

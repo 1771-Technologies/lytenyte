@@ -4,11 +4,11 @@ import { clsx } from "@1771technologies/js-utils";
 import { useGrid } from "../use-grid";
 import { useHeaderDisplayGridTemplate } from "./use-header-display-grid-template";
 import { t } from "@1771technologies/grid-design";
-import { useHeaderCells } from "./use-header-cells";
-import { useHeaderGroupCells } from "./use-header-group-cells";
+import { useHeaderCells } from "./header-cell/use-header-cells";
 import { useHeaderDividers } from "./header-divider/use-header-dividers";
 import type { CSSProperties } from "react";
-import { useFloatingCells } from "./use-floating-cells";
+import { useHeaderGroupCells } from "./header-group/use-header-group-cells";
+import { useFloatingCells } from "./header-floating/use-floating-cells";
 
 export function Header() {
   const { state, api } = useGrid();
