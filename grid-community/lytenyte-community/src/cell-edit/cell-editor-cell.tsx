@@ -1,3 +1,5 @@
+import "./cell-edit.css";
+
 import type { ColumnCommunityReact } from "@1771technologies/grid-types";
 import type { CellEditLocation, RowNode } from "@1771technologies/grid-types/community";
 import { getFocusableElements } from "@1771technologies/js-utils";
@@ -61,12 +63,7 @@ export function CellEditorCell<D>({
     <div
       ref={autoFocus}
       style={style}
-      className={css`
-        grid-column-start: 1;
-        grid-column-end: 2;
-        grid-row-start: 1;
-        grid-row-end: 2;
-      `}
+      className="lng1771-cell__edit"
       onFocus={() => {
         state.internal.cellEditActiveLocation.set(location);
       }}

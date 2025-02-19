@@ -1,5 +1,5 @@
 import type { CellEditProviderParamsReact } from "@1771technologies/grid-types/community-react";
-import { Input } from "../../components/Input";
+import { Input } from "../../components/Input.js";
 
 export function DateEditor<D>({
   value,
@@ -12,15 +12,7 @@ export function DateEditor<D>({
   return (
     <Input
       type="date"
-      className={css`
-        width: calc(100% - 8px);
-        height: calc(100% - 8px);
-        padding: 0px;
-        position: relative;
-        inset-inline-start: 4px;
-        top: 4px;
-        border-radius: 0px;
-      `}
+      className="lng1771-cell__edit-input"
       error={!isValid}
       min={opts.min}
       max={opts.max}

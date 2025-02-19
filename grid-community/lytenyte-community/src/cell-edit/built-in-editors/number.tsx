@@ -15,15 +15,7 @@ export function NumberEditor<D>({
       max={opts.max}
       step={opts.step}
       error={!isValid}
-      className={css`
-        width: calc(100% - 8px);
-        height: calc(100% - 8px);
-        padding: 0px;
-        position: relative;
-        inset-inline-start: 4px;
-        top: 4px;
-        border-radius: 0px;
-      `}
+      className="lng1771-cell__edit-input"
       value={`${value ?? ""}`}
       onChange={(event) => setValue(Number.parseFloat(event.target.value))}
     />

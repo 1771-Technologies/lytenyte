@@ -12,15 +12,7 @@ export function TextEditor<D>({
     <Input
       error={!isValid}
       maxLength={opts.maxLength}
-      className={css`
-        width: calc(100% - 8px);
-        height: calc(100% - 8px);
-        padding: 0px;
-        position: relative;
-        inset-inline-start: 4px;
-        top: 4px;
-        border-radius: 0px;
-      `}
+      className="lng1771-cell__edit-input"
       value={`${value as string}`}
       onChange={(event) => setValue(event.target.value)}
     />
