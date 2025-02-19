@@ -6,7 +6,7 @@ import { memo, useMemo } from "react";
 import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
 import { useCellFullWidthFocus } from "./use-cell-full-width-focus";
 import { useFullWidthEvents } from "./use-full-width-events";
-import { getTransform } from "../get-transform";
+import { getTransform } from "../utils/get-transform";
 
 export interface CellFullWidthProps {
   readonly api: ApiCommunityReact<any>;

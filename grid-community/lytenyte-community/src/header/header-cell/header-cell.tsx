@@ -1,7 +1,7 @@
 import "./header-cell.css";
 import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
 import { useMemo, useRef, type CSSProperties } from "react";
-import { getTransform } from "../../get-transform";
+import { getTransform } from "../../utils/get-transform";
 import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
 import { useHeaderCellRenderer } from "./use-header-cell-renderer";
 import { t } from "@1771technologies/grid-design";

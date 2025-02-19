@@ -4,7 +4,7 @@ import type { ColumnCommunityReact } from "@1771technologies/grid-types";
 import type { CellEditLocation } from "@1771technologies/grid-types/community";
 import { getRootCell } from "@1771technologies/grid-core";
 import { sizeFromCoord } from "@1771technologies/js-utils";
-import { getTransform } from "../get-transform";
+import { getTransform } from "../utils/get-transform";
 
 export function useCellEditStyle(
   column: ColumnCommunityReact<any>,

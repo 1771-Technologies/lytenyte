@@ -1,7 +1,7 @@
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
 import type { RowNode, RowPin } from "@1771technologies/grid-types/community";
 import { useMemo } from "react";
-import { getTransform } from "../get-transform";
+import { getTransform } from "../utils/get-transform";
 import { sizeFromCoord } from "@1771technologies/js-utils";
 import { t } from "@1771technologies/grid-design";
 
