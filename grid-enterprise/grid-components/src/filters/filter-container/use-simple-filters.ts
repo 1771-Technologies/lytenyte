@@ -1,10 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
-import { combinedFilterIsForColumn } from "./combined-filter-is-for-column";
 import { combinedToFlat } from "./combined-to-flat";
 import { isFilterComplete } from "./is-filter-complete";
 import type { ApiEnterpriseReact, ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import type { FlatSimpleFilters } from "../simple-filter/simple-filter";
-import type { ColumnFilter } from "@1771technologies/grid-types/enterprise";
 
 export function useSimpleFilters<D>(
   api: ApiEnterpriseReact<D>,
@@ -20,16 +18,14 @@ export function useSimpleFilters<D>(
 
   const [flatFilters, setFlatFilters] = useState(() => {
     const columnId = column.id;
-    const filterIndex = findInternalFilterIndex(filters, columnId);
-    const filter = filters[filterIndex];
-    return combinedToFlat(filter, column);
+    const filter = filters[columnId];
+    return combinedToFlat(filter.simple!, column);
   });
 
   useEffect(() => {
     const columnId = column.id;
-    const filterIndex = findInternalFilterIndex(filters, columnId);
-    const filter = filters[filterIndex];
-    setFlatFilters(combinedToFlat(filter, column));
+    const filter = filters[columnId];
+    setFlatFilters(combinedToFlat(filter.simple!, column));
   }, [column, filters]);
 
   const onFilterChange = useCallback(
@@ -48,22 +44,4 @@ export function useSimpleFilters<D>(
   );
 
   return { flatFilters, onFilterChange, filters, isPivot };
-}
-
-function findInternalFilterIndex<D>(
-  filters: ColumnFilter<ApiEnterpriseReact<D>, D>[],
-  columnId: string,
-) {
-  const filterIndex = filters.findIndex((c) => {
-    if (c.kind === "registered" || c.kind === "function" || c.kind === "in") return;
-
-    if (!c.isInternal) return false;
-    if (c.kind === "combined") {
-      return combinedFilterIsForColumn(c, columnId);
-    }
-
-    return c.columnId === columnId;
-  });
-
-  return filterIndex;
 }

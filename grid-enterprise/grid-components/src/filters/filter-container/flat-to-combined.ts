@@ -13,12 +13,11 @@ export function flatToCombined<D>(
   const rightFilter = isFilterComplete(right?.[0]) ? (right?.[0] as FilterSimpleColumn) : null;
   const operator = left?.[1] as "and" | "or";
 
-  if (!leftFilter && rightFilter) return { ...rightFilter, isInternal: true };
-  if (leftFilter && !rightFilter) return { ...leftFilter, isInternal: true };
+  if (!leftFilter && rightFilter) return { ...rightFilter };
+  if (leftFilter && !rightFilter) return { ...leftFilter };
   if (!leftFilter && !rightFilter) return null;
 
   const combined: FilterCombined<ApiEnterpriseReact<D>, D> = {
-    isInternal: true,
     kind: "combined",
     left: leftFilter!,
     right: rightFilter!,

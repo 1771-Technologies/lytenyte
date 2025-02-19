@@ -11,17 +11,18 @@ export function useInFilter<D>(api: ApiEnterpriseReact<D>, column: ColumnEnterpr
   const filters = isPivot ? pivotFilterModel : filterModel;
 
   const thisFilter = useMemo(() => {
-    const filter = filters.find((c) => c.kind === "in" && c.isInternal);
+    const filter = filters[column.id].set;
+
     if (!filter) return null;
 
     return filter as FilterIn;
-  }, [filters]);
+  }, [column.id, filters]);
 
   const [values, setValues] = useState(() => (thisFilter ? new Set(thisFilter.set) : null));
 
   useEffect(() => {
     setValues(() => {
-      const filter = filters.find((c) => c.kind === "in" && c.isInternal) as FilterIn | undefined;
+      const filter = filters[column.id].set;
       if (!filter) return null;
 
       return new Set(filter ? new Set(filter.set) : null);

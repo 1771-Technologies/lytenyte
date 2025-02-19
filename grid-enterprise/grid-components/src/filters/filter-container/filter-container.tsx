@@ -1,11 +1,10 @@
 import type { ApiEnterpriseReact, ColumnEnterpriseReact } from "@1771technologies/grid-types";
-import type { ColumnFilter, ColumnInFilterItem } from "@1771technologies/grid-types/enterprise";
+import type { ColumnInFilterItem } from "@1771technologies/grid-types/enterprise";
 import { useSimpleFilters } from "./use-simple-filters";
 import { useInFilter as useInFilter } from "./use-in-filter";
 import { SimpleFilter } from "../simple-filter/simple-filter";
 import { Button } from "../../buttons/button";
 import { flatToCombined } from "./flat-to-combined";
-import { combinedFilterIsForColumn } from "./combined-filter-is-for-column";
 import { t } from "@1771technologies/grid-design";
 import { InFilter } from "../in-filter/in-filter";
 import { cc } from "../../component-configuration";
@@ -106,19 +105,8 @@ export function FilterContainer<D>({
           kind="tertiary"
           style={{ color: "var(--lng1771-system-red-50)" }}
           onClick={() => {
-            const index = findInternalFilterIndex(filters, column.id);
-            let newFilters = filters;
-
-            if (index !== -1 && showSimpleFilters) {
-              newFilters = [...filters];
-              newFilters.splice(index, 1);
-            }
-
-            if (showInFilter) {
-              newFilters = newFilters.filter(
-                (c) => c.kind !== "in" || (c.kind === "in" && !c.isInternal),
-              );
-            }
+            const newFilters = { ...filters };
+            delete newFilters[column.id];
 
             if (isPivot) {
               api.columnPivotSetFilterModel(newFilters);
@@ -135,30 +123,23 @@ export function FilterContainer<D>({
           kind="primary"
           onClick={() => {
             const combined = flatToCombined<D>(flatFilters);
-            const index = findInternalFilterIndex(filters, column.id);
-            let newFilters = filters;
+            const newFilters = { ...filters };
 
             if (showSimpleFilters) {
-              newFilters = [...newFilters];
-              if (index !== -1) {
-                newFilters.splice(index, 1);
-              }
-              if (combined) newFilters.push(combined);
+              newFilters[column.id] ??= {};
+              newFilters[column.id].simple = combined;
             }
 
             if (showInFilter) {
-              newFilters = newFilters.filter(
-                (c) => c.kind !== "in" || (c.kind === "in" && !c.isInternal),
-              );
-              if (values?.size) {
-                newFilters.push({
-                  columnId: column.id,
-                  kind: "in",
-                  set: values,
-                  operator: "notin",
-                  isInternal: true,
-                });
-              }
+              newFilters[column.id] ??= {};
+              newFilters[column.id].set = values?.size
+                ? {
+                    columnId: column.id,
+                    kind: "in",
+                    operator: "notin",
+                    set: values,
+                  }
+                : null;
             }
 
             if (isPivot) {
@@ -174,22 +155,4 @@ export function FilterContainer<D>({
       </div>
     </div>
   );
-}
-
-function findInternalFilterIndex<D>(
-  filters: ColumnFilter<ApiEnterpriseReact<D>, D>[],
-  columnId: string,
-) {
-  const filterIndex = filters.findIndex((c) => {
-    if (c.kind === "registered" || c.kind === "function") return;
-
-    if (!c.isInternal) return false;
-    if (c.kind === "combined") {
-      return combinedFilterIsForColumn(c, columnId);
-    }
-
-    return c.columnId === columnId;
-  });
-
-  return filterIndex;
 }
