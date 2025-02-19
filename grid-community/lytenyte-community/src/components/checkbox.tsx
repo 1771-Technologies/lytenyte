@@ -1,3 +1,5 @@
+import "./components.css";
+
 import { clsx } from "@1771technologies/js-utils";
 import type { ChangeEvent, HTMLProps } from "react";
 
@@ -18,38 +20,10 @@ export function Checkbox({
   ...props
 }: CheckboxProps & Omit<HTMLProps<HTMLInputElement>, "className">) {
   return (
-    <div
-      className={clsx(
-        css`
-          --lng1771-checkbox-size: 16px;
-          position: relative;
-          width: fit-content;
-          height: fit-content;
-          padding: var(--lng1771-space-02);
-          border-radius: var(--lng1771-box-radius-regular);
-          transition: background-color var(--lng1771-transition-normal) var(--lng1771-transition-fn);
-        `,
-        !isDisabled &&
-          css`
-            &:hover {
-              background-color: var(--lng1771-gray-30);
-            }
-          `,
-      )}
-    >
+    <div className={clsx("lng1771-checkbox", !isDisabled && "lng1771-checkbox--disabled")}>
       <input
         {...props}
-        className={css`
-          position: absolute;
-          inset-inline-start: var(--lng1771-space-02);
-          top: var(--lng1771-space-02);
-          cursor: pointer;
-          margin: 0;
-          display: inline-block;
-          opacity: 0;
-          width: var(--lng1771-checkbox-size);
-          height: var(--lng1771-checkbox-size);
-        `}
+        className="lng1771-checkbox__input"
         checked={isChecked}
         onPointerDownCapture={(e) => {
           e.stopPropagation();
@@ -63,62 +37,10 @@ export function Checkbox({
       />
       <div
         className={clsx(
-          css`
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-sizing: border-box;
-            border: 2px solid var(--lng1771-gray-40);
-            border-radius: 4px;
-            background-color: var(--lng1771-gray-00);
-            width: var(--lng1771-checkbox-size);
-            height: var(--lng1771-checkbox-size);
-            pointer-events: none;
-
-            & > svg {
-              width: calc(var(--lng1771-checkbox-size) - 6px);
-            }
-          `,
-          isDisabled &&
-            css`
-              background-color: var(--lng1771-gray-30);
-              border-color: var(--lng1771-gray-30);
-              color: var(--lng1771-gray-70);
-            `,
-
-          !isDisabled &&
-            isChecked &&
-            css`
-              background-color: var(--lng1771-primary-50);
-              border-color: var(--lng1771-primary-50);
-              color: var(--lng1771-gray-00);
-            `,
-
-          isLoading &&
-            css`
-              @keyframes lng1771-checkbox-spinner {
-                to {
-                  transform: rotate(360deg);
-                }
-              }
-
-              &::before {
-                --lng1771-loading-size: calc(var(--lng1771-checkbox-size) - 4px);
-                content: "";
-                box-sizing: border-box;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                width: var(--lng1771-loading-size);
-                height: var(--lng1771-loading-size);
-                margin-top: calc(var(--lng1771-loading-size) / 2 * -1);
-                margin-left: calc(var(--lng1771-loading-size) / 2 * -1);
-                border-radius: 50%;
-                border-top: 2px solid currentColor;
-                border-right: 2px solid transparent;
-                animation: lng1771-checkbox-spinner 0.6s linear infinite;
-              }
-            `,
+          "lng1771-checkbox__mark",
+          isDisabled && "lng1771-checkbox__mark--disabled",
+          !isDisabled && isChecked && "lng1771-checkbox__mark--checked",
+          isLoading && "lng1771-checkbox__mark--loading",
         )}
       >
         {isChecked && !isDeterminate && <CheckMark />}

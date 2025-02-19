@@ -1,4 +1,5 @@
-import { t } from "@1771technologies/grid-design";
+import "./components.css";
+
 import { clsx } from "@1771technologies/js-utils";
 import { refCompat } from "@1771technologies/react-utils";
 import type { JSX, RefObject } from "react";
@@ -12,26 +13,7 @@ const ButtonImpl = ({
       tabIndex={-1}
       {...props}
       ref={buttonRef}
-      className={clsx(
-        css`
-          border: none;
-          padding: 0px;
-          font-weight: 600;
-          height: 24px;
-          width: 24px;
-          border-radius: ${t.spacing.box_radius_regular};
-          cursor: pointer;
-
-          background-color: transparent;
-          &:focus-visible {
-            outline: none;
-          }
-          &:hover {
-            background-color: ${t.colors.backgrounds_button_light};
-          }
-        `,
-        props.className,
-      )}
+      className={clsx("lng1771-icon-button", props.className)}
     >
       {props.children}
     </button>
