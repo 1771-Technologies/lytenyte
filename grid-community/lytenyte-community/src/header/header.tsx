@@ -1,12 +1,10 @@
 import "./header.css";
 
-import { clsx } from "@1771technologies/js-utils";
 import { useGrid } from "../use-grid";
 import { useHeaderDisplayGridTemplate } from "./use-header-display-grid-template";
-import { t } from "@1771technologies/grid-design";
 import { useHeaderCells } from "./header-cell/use-header-cells";
 import { useHeaderDividers } from "./header-divider/use-header-dividers";
-import type { CSSProperties } from "react";
+import { useMemo, type CSSProperties } from "react";
 import { useHeaderGroupCells } from "./header-group/use-header-group-cells";
 import { useFloatingCells } from "./header-floating/use-floating-cells";
 
@@ -32,28 +30,17 @@ export function Header() {
     floatingRowEnabled,
     floatingRowHeight,
   );
-  const headerHeight = state.internal.viewportHeaderHeight.use();
+  const headerHeightSetting = state.internal.viewportHeaderHeight.use();
+
+  const headerHeight = useMemo(() => {
+    return `${headerHeightSetting - (floatingRowEnabled ? floatingRowHeight : 0)}px`;
+  }, [floatingRowEnabled, floatingRowHeight, headerHeightSetting]);
 
   return (
     <div
       role="row"
-      className={clsx(css`
-        display: grid;
-        block-size: fit-content;
-        box-sizing: border-box;
-        grid-template-columns: 0px;
-        user-select: none;
-        background-color: ${t.colors.backgrounds_ui_panel};
-        position: relative;
-
-        border-bottom: 1px solid ${t.colors.borders_default};
-      `)}
-      style={
-        {
-          gridTemplateRows,
-          "--lng1771-header-height": `${headerHeight - (floatingRowEnabled ? floatingRowHeight : 0)}px`,
-        } as CSSProperties
-      }
+      className={"lng1771-header"}
+      style={{ gridTemplateRows, "--lng1771-header-height": headerHeight } as CSSProperties}
     >
       {headerGroupCells}
       {headerCells}
