@@ -2,13 +2,34 @@ import type { ApiEnterprise } from "@1771technologies/grid-types";
 import { evaluateDate } from "./evaluate-date-filter";
 import type { ColumnFilter } from "@1771technologies/grid-types/enterprise";
 import type { RowNode } from "@1771technologies/grid-types/community";
+import type { ColumnFilterModel } from "@1771technologies/grid-types/enterprise";
+import type { FilterIn } from "@1771technologies/grid-types/enterprise";
 
 export function evaluateColumnFilter<D, E>(
   api: ApiEnterprise<D, E>,
-  filter: ColumnFilter<ApiEnterprise<D, E>, D>,
+  filter: ColumnFilterModel<ApiEnterprise<D, E>, D>["string"],
   row: RowNode<D>,
 ): boolean {
-  return evaluateFilter(api, filter, row);
+  const simple = filter.simple ? evaluateFilter(api, filter.simple, row) : true;
+  const inResult = filter.set ? evaluateInFilter(api, filter.set, row) : true;
+
+  return simple && inResult;
+}
+
+function evaluateInFilter<D, E>(api: ApiEnterprise<D, E>, filter: FilterIn, row: RowNode<D>) {
+  const expr = filter as unknown as {
+    columnId: string;
+    set: Set<unknown>;
+    operator: string;
+  };
+  const column = api.columnById(expr.columnId);
+  if (!column) return false;
+
+  const value = api.columnField(row, column);
+
+  const result = expr.set.has(value);
+
+  return expr.operator === "in" ? result : !result;
 }
 
 function evaluateFilter<D, E>(
@@ -66,20 +87,6 @@ function evaluateFilter<D, E>(
     return fn(api, row);
   } else if (filter.kind === "function") {
     return filter.func(api, row);
-  } else if (filter.kind === "in") {
-    const expr = filter as unknown as {
-      columnId: string;
-      set: Set<unknown>;
-      operator: string;
-    };
-    const column = api.columnById(expr.columnId);
-    if (!column) return false;
-
-    const value = api.columnField(row, column);
-
-    const result = expr.set.has(value);
-
-    return expr.operator === "in" ? result : !result;
   } else {
     if (filter.operator === "or") {
       return evaluateFilter(api, filter.left, row) || evaluateFilter(api, filter.right, row);
