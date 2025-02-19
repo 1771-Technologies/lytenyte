@@ -1,7 +1,6 @@
 import {
   autosizeColumn,
   autosizeColumns,
-  autosizeHeaderDefaultEnterprise,
   columnIsEmpty,
   rowIsGroup,
   rowIsLeaf,
@@ -103,8 +102,7 @@ export function makeApi<D, E>(
 
   const partial = {
     autosizeColumn: (column, options) => autosizeColumn(api, column, options),
-    autosizeColumns: (columns, options) =>
-      autosizeColumns(api, autosizeHeaderDefaultEnterprise as any, columns, options),
+    autosizeColumns: (columns, options) => autosizeColumns(api, columns, options),
 
     cellEditBegin: (l, makeActive) => cellEditBegin(api, l, makeActive),
     cellEditEnd: (p, cancel) => cellEditEnd(api, p, cancel),

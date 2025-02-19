@@ -5,7 +5,6 @@ import { autosizeHeaderDefault } from "./autosize-header-default";
 
 export const autosizeColumns = <D, E>(
   api: ApiCommunity<D, E> | ApiEnterprise<D, E>,
-  autosizeHeader = autosizeHeaderDefault,
   c?: string[] | null,
   opts?: AutosizeOptions,
 ) => {
@@ -46,7 +45,7 @@ export const autosizeColumns = <D, E>(
     for (let columnIndex = 0; columnIndex < columnsThatCanBeResized.length; columnIndex++) {
       const column = columnsThatCanBeResized[columnIndex];
 
-      const autoFn = column.headerAutosizeFunc ?? base.headerAutosizeFunc ?? autosizeHeader;
+      const autoFn = column.headerAutosizeFunc ?? base.headerAutosizeFunc ?? autosizeHeaderDefault;
 
       const width = autoFn({ api: api as any, column: column as any });
 
