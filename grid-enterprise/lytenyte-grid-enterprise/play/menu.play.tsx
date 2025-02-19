@@ -7,17 +7,18 @@ import {
   useClick,
 } from "@1771technologies/react-menu";
 import { useRef, useState } from "react";
-import { SortIcon } from "../src/components/icons/sort-icon";
-import { FunnelIcon } from "../src/components/icons/funnel-icon";
-import { AutosizeIcon } from "../src/components/icons/autosize-icon";
-import { GroupByColumnIcon } from "../src/components/icons/group-by-column-icon";
-import { ManageColumnsIcon } from "../src/components/icons/manage-columns-icon";
-import { ResetColumnsIcon } from "../src/components/icons/reset-columns-icon";
-import { HideColumnIcon } from "../src/components/icons/hide-column-icon";
-import { AggregationIcon } from "../src/components/icons/aggregation-icon";
-import { AscendingIcon } from "../src/components/icons/ascending-icon";
-import { DescendingIcon } from "../src/components/icons/descending-icon";
-
+import {
+  AggregationIcon,
+  AscendingIcon,
+  AutosizeIcon,
+  DescendingIcon,
+  FunnelIcon,
+  GroupByColumnIcon,
+  HideColumnIcon,
+  ManageColumnsIcon,
+  ResetColumnsIcon,
+  SortIcon,
+} from "@1771technologies/lytenyte-grid-community/icons";
 export default function Home() {
   const ref = useRef<HTMLButtonElement | null>(null);
   const [isOpen, setIsOpen] = useState(true);
