@@ -1,8 +1,8 @@
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
 import { useDragControl } from "./use-drag-control";
 import type { RowNode } from "@1771technologies/grid-types/community";
-import { GridButton } from "../../../components/buttons";
 import type { JSX } from "react";
+import { GridButton } from "../components/buttons";
 
 export function DragButton({ api, row }: { api: ApiCommunityReact<any>; row: RowNode<any> }) {
   const draggable = useDragControl(api, row);

@@ -1,0 +1,9 @@
+.lng1771-cell__marker {
+  display: flex;
+  align-items: center;
+  padding-inline-start: 12px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  position: relative;
+}

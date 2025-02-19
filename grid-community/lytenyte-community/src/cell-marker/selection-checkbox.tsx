@@ -1,8 +1,8 @@
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
 import type { RowNode } from "@1771technologies/grid-types/community";
 import { useMemo } from "react";
-import { Checkbox } from "../../../components/checkbox";
-import { handleRowSelection } from "../../cell/utils/handle-row-selection";
+import { Checkbox } from "../components/checkbox";
+import { handleRowSelection } from "../renderer/cell/utils/handle-row-selection";
 
 export function SelectionCheckbox({
   api,

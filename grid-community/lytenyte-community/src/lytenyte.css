@@ -21,3 +21,11 @@
     z-index: 10;
   }
 }
+
+.lng1771-grid__row-drag-placeholder {
+  padding-inline: 12px;
+  padding-block: 8px;
+  border: 1px solid var(--lng1771-primary-50);
+  background-color: var(--lng1771-gray-10);
+  border-radius: 8px;
+}

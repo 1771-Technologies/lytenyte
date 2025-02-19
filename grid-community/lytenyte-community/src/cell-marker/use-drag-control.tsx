@@ -1,8 +1,7 @@
 import { getHoveredRowIndex } from "@1771technologies/grid-core";
-import { t } from "@1771technologies/grid-design";
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
 import type { RowDragEventParams, RowNode } from "@1771technologies/grid-types/community";
-import { clsx, getClientX, getClientY, getRelativeXPosition } from "@1771technologies/js-utils";
+import { getClientX, getClientY, getRelativeXPosition } from "@1771technologies/js-utils";
 import { useDraggable } from "@1771technologies/react-dragon";
 
 export function useDragControl(api: ApiCommunityReact<any>, row: RowNode<any>) {
@@ -120,20 +119,9 @@ export function useDragControl(api: ApiCommunityReact<any>, row: RowNode<any>) {
 
   return draggable;
 }
+
 const DragPlaceholder = (p: { rows: RowNode[] }) => {
   const label =
     p.rows.length === 1 ? `Moving row ${p.rows[0].rowIndex}` : `Moving ${p.rows.length} rows`;
-  return (
-    <div
-      className={clsx(css`
-        padding-inline: ${t.spacing.cell_horizontal_padding};
-        padding-block: ${t.spacing.cell_vertical_padding};
-        border: 1px solid ${t.colors.primary_50};
-        background-color: ${t.colors.backgrounds_default};
-        border-radius: ${t.spacing.box_radius_regular};
-      `)}
-    >
-      {label}
-    </div>
-  );
+  return <div className="lng1771-grid__row-drag-placeholder">{label}</div>;
 };

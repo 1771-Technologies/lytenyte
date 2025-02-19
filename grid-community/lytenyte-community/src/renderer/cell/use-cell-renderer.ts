@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { CellRendererDefault } from "./cell-renderer-default";
 import { COLUMN_MARKER_ID } from "@1771technologies/grid-constants";
 import { CellGroupRendererDefault } from "./cell-group-default";
-import { CellMarkerRenderer } from "./marker/cell-marker-renderer";
+import { CellMarkerRenderer } from "../../cell-marker/cell-marker-renderer";
 
 export function useCellRenderer(api: ApiCommunityReact<any>, column: ColumnCommunityReact<any>) {
   const renderers = api.getState().cellRenderers.peek();

@@ -1,9 +1,9 @@
+import "./cell-marker.css";
 import type { CellRendererParamsReact } from "@1771technologies/grid-types/community-react";
-import { CollapseButton, ExpandButton } from "../../../components/buttons";
 import { useEvent } from "@1771technologies/react-utils";
 import { DragButton } from "./drag-button";
 import { SelectionCheckbox } from "./selection-checkbox";
-import { t } from "@1771technologies/grid-design";
+import { CollapseButton, ExpandButton } from "../components/buttons";
 
 export function CellMarkerRenderer({ row, api }: CellRendererParamsReact<any>) {
   const isRowDetail = api.rowDetailRowPredicate(row.id);
@@ -14,17 +14,7 @@ export function CellMarkerRenderer({ row, api }: CellRendererParamsReact<any>) {
   const rowSelectionEnabled = api.getState().rowSelectionMode.use() !== "none";
 
   return (
-    <div
-      className={css`
-        display: flex;
-        align-items: center;
-        padding-inline-start: ${t.spacing.cell_horizontal_padding};
-        width: 100%;
-        height: 100%;
-        box-sizing: border-box;
-        position: relative;
-      `}
-    >
+    <div className={"lng1771-cell__marker"}>
       {rowSelectionEnabled && <SelectionCheckbox api={api} row={row} />}
       {isRowDrag && <DragButton api={api} row={row} />}
       {isRowDetail &&
