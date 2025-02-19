@@ -6,9 +6,9 @@ import { SelectionCheckbox } from "./selection-checkbox";
 import { CollapseButton, ExpandButton } from "../components/buttons";
 
 export function CellMarkerRenderer({ row, api }: CellRendererParamsReact<any>) {
-  const isRowDetail = api.rowDetailRowPredicate(row.id);
+  const doesRowHaveDetail = api.rowDetailRowPredicate(row.id);
   const isExpanded = api.rowDetailIsExpanded(row.id);
-  const isRowDrag = api.rowIsDraggable(row.id);
+  const isRowDraggable = api.rowIsDraggable(row.id);
   const toggleDetail = useEvent(() => api.rowDetailToggle(row.id));
 
   const rowSelectionEnabled = api.getState().rowSelectionMode.use() !== "none";
@@ -16,8 +16,8 @@ export function CellMarkerRenderer({ row, api }: CellRendererParamsReact<any>) {
   return (
     <div className={"lng1771-cell__marker"}>
       {rowSelectionEnabled && <SelectionCheckbox api={api} row={row} />}
-      {isRowDrag && <DragButton api={api} row={row} />}
-      {isRowDetail &&
+      {isRowDraggable && <DragButton api={api} row={row} />}
+      {doesRowHaveDetail &&
         (isExpanded ? (
           <CollapseButton onClick={toggleDetail} />
         ) : (

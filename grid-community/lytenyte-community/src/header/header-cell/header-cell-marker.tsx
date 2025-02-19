@@ -1,4 +1,3 @@
-import { t } from "@1771technologies/grid-design";
 import type { ColumnHeaderRendererParamsReact } from "@1771technologies/grid-types/community-react";
 import { Checkbox } from "../../components/checkbox";
 import { useMemo } from "react";
@@ -20,13 +19,13 @@ export function HeaderCellMarker({ api }: ColumnHeaderRendererParamsReact<any>) 
 
   return (
     <div
-      className={css`
-        display: flex;
-        align-items: center;
-        padding-inline-start: ${t.spacing.cell_horizontal_padding};
-        width: 100%;
-        height: 100%;
-      `}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100%",
+        height: "100%",
+      }}
     >
       <Checkbox
         tabIndex={-1}

@@ -3,7 +3,7 @@ import "./header-floating.css";
 import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
 import { sizeFromCoord } from "@1771technologies/js-utils";
 import { useMemo, useRef, type CSSProperties } from "react";
-import { getTransform } from "../../renderer/get-transform";
+import { getTransform } from "../../get-transform";
 import { useFloatingFocus } from "./use-floating-focus";
 
 interface FloatingCellProps {

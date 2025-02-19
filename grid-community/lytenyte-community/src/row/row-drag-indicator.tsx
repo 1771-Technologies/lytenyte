@@ -1,7 +1,7 @@
 import "./row-drag-indicator.css";
 
 import { useGrid } from "../use-grid";
-import { getTransform } from "../renderer/get-transform";
+import { getTransform } from "../get-transform";
 import { sizeFromCoord } from "@1771technologies/js-utils";
 
 export interface DragIndicatorProps {
