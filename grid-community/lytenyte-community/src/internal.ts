@@ -14,6 +14,3 @@ export { getTransform } from "./utils/get-transform.js";
 export type { CheckboxProps } from "./components/checkbox.js";
 export { Checkbox, CheckMark } from "./components/checkbox.js";
 export { Input } from "./components/Input.js";
-
-export type { CellClasses } from "./class-provider.js";
-export { ClassProvider, useClassProvider } from "./class-provider.js";

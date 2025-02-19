@@ -27,7 +27,6 @@ export const columns: ColumnEnterpriseReact<any>[] = [
   {
     id: "marital",
     aggFunc: "first",
-    pin: "end",
   },
   { id: "default", groupPath: ["Alpha"] },
   { id: "housing" },

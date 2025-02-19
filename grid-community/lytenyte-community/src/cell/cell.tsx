@@ -8,7 +8,6 @@ import { useCellRenderer } from "./use-cell-renderer";
 import type { RowNode, RowPin } from "@1771technologies/grid-types/community";
 import { useCellEvents } from "./use-cell-events";
 import { useCellPositionChange } from "./use-cell-position-change";
-import { useClassProvider } from "../class-provider";
 
 export interface CellProps {
   readonly api: ApiCommunityReact<any>;
@@ -66,8 +65,6 @@ function CellImpl({
     colSpan,
   );
 
-  const classes = useClassProvider();
-
   return (
     <div
       style={cx.style}
@@ -82,7 +79,6 @@ function CellImpl({
         "lng1771-cell",
         rowIndex % 2 === 1 && "lng1771-cell--alternate",
         cx.className,
-        classes.cellClasses,
       )}
       tabIndex={-1}
       {...events}

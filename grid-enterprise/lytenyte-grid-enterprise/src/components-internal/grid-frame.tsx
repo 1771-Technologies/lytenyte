@@ -40,8 +40,11 @@ export function GridFrame<D>({
     return f.join(" ");
   }, [buttons.length]);
 
+  const cellSelectionEnabled = state.cellSelectionMode.use() !== "none";
+
   return (
     <div
+      data-lng1771-cell-selection-enabled={cellSelectionEnabled ? true : undefined}
       className={clsx(
         css`
           width: 100%;
