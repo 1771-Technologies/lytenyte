@@ -1,4 +1,5 @@
 import type { RowDataSourceEnterprise } from "../row-data-source/rds-enterprise";
+import type { ColumnFilterModel } from "../types";
 import type {
   CellSelectionMode,
   CellSelectionRect,
@@ -7,7 +8,6 @@ import type {
   ClipboardTransformHeader,
   ClipboardTransformHeaderGroup,
   ClipboardTransformPaste,
-  ColumnFilter,
   ContextMenuItems,
   FloatingFrame,
   OverlayId,
@@ -41,7 +41,7 @@ export interface PropsEnterprise<A, D, C, E, Base, Group>
   readonly clipboardTransformCopy?: ClipboardTransformCopy<A> | null;
   readonly clipboardTransformPaste?: ClipboardTransformPaste<A> | null;
 
-  readonly filterModel?: ColumnFilter<A, D>[];
+  readonly filterModel?: ColumnFilterModel<A, D>;
   readonly filterQuickSearch?: string | null;
 
   readonly floatingFrames?: Record<string, FloatingFrame<A, E>>;
