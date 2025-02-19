@@ -11,7 +11,7 @@ import type {
   KeyBindingMap,
   RowDataSourceClient,
   RowDetailHeight,
-  RowDetailPredicate,
+  rowDetailEnabled,
   RowDetailRenderer,
   RowDragPredicate,
   RowFullWidthPredicate,
@@ -69,7 +69,7 @@ export interface PropsCommunity<A, D, C, E, Base, Group> {
 
   readonly rowDetailMarker?: boolean;
   readonly rowDetailRenderer?: RowDetailRenderer<A, D, E> | null;
-  readonly rowDetailPredicate?: RowDetailPredicate<A, D>;
+  readonly rowDetailEnabled?: rowDetailEnabled<A, D>;
   readonly rowDetailHeight?: RowDetailHeight<A, D>;
   readonly rowDetailExpansions?: Set<string>;
 

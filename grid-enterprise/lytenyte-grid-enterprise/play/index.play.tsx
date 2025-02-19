@@ -21,6 +21,9 @@ export default function Play() {
     rowSelectionMode: "multiple",
     rowSelectionCheckbox: "normal",
 
+    rowDragEnabled: true,
+    rowDetailEnabled: true,
+
     columnBase: {
       resizable: true,
       movable: true,

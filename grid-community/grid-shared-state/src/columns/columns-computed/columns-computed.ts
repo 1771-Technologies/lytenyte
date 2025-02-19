@@ -41,7 +41,7 @@ export function columnsComputed<D, E>(
 
     const columnsWithMarker = columnHandleMarker({
       columns: columnsWithTree,
-      rowDetailEnabled: sx.rowDetailPredicate.get() !== false,
+      rowDetailEnabled: sx.rowDetailEnabled.get() !== false,
       rowDetailMarker: sx.rowDetailMarker.get(),
       rowDragEnabled: sx.rowDragEnabled.get(),
       rowSelectionCheckbox: sx.rowSelectionCheckbox.get(),

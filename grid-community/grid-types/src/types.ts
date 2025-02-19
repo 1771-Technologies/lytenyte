@@ -445,7 +445,7 @@ export type RowDetailParams<A, D> = {
 };
 
 export type RowDetailHeight<A, D> = number | ((p: RowDetailParams<A, D>) => number);
-export type RowDetailPredicate<A, D> = boolean | "all" | ((p: RowDetailParams<A, D>) => boolean);
+export type rowDetailEnabled<A, D> = boolean | "all" | ((p: RowDetailParams<A, D>) => boolean);
 export type RowDetailRenderer<A, D, E> = (p: RowDetailParams<A, D>) => E;
 
 // Row Dragging

@@ -72,7 +72,7 @@ export function initialize<D, E>(
 
     rowDataSource: signal(props.rowDataSource ?? rowDataSource),
 
-    rowDetailPredicate: signal(props.rowDetailPredicate ?? false),
+    rowDetailEnabled: signal(props.rowDetailEnabled ?? false),
     rowDetailExpansions: signal(props.rowDetailExpansions ?? new Set()),
     rowDetailHeight: signal(props.rowDetailHeight ?? ROW_DETAIL_HEIGHT),
     rowDetailMarker: signal(props.rowDetailMarker ?? true),

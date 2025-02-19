@@ -9,7 +9,7 @@ export const rowDetailRowPredicate = <D, E>(
   const row = api.rowById(id);
   if (!row) return false;
 
-  const predicate = s.rowDetailPredicate.peek();
+  const predicate = s.rowDetailEnabled.peek();
   return typeof predicate === "boolean"
     ? predicate && api.rowIsLeaf(row)
     : predicate === "all"

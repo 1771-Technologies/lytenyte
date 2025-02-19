@@ -7,7 +7,7 @@ export function rowPositionsComputed<D, E>(
   api: StoreCommunity<D, E>["api"] | StoreEnterprise<D, E>["api"],
 ) {
   const rowDetailEnabled$ = computed(() => {
-    const predicate = state.rowDetailPredicate.get();
+    const predicate = state.rowDetailEnabled.get();
 
     return (i: number) => {
       if (predicate === "all") return true;

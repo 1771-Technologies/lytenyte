@@ -10,7 +10,7 @@ export default function Play() {
       gridId: "d",
       columns: columns,
       columnBase: { resizable: true, movable: true },
-      rowDetailPredicate: true,
+      rowDetailEnabled: true,
       rowDragEnabled: true,
       rowDataSource: {
         kind: "client",
@@ -26,7 +26,7 @@ export default function Play() {
       gridId: "x",
       columns: columns,
       columnBase: { resizable: true, movable: true },
-      rowDetailPredicate: true,
+      rowDetailEnabled: true,
       rowDragEnabled: true,
       rowDataSource: {
         kind: "client",

@@ -10,7 +10,7 @@ export default function Play() {
       gridId: "x",
       columns: columns,
       columnBase: { resizable: true, movable: true, sortable: true },
-      rowDetailPredicate: true,
+      rowDetailEnabled: true,
       rowDragEnabled: true,
       rowSelectionMode: "multiple",
       rowSelectionSelectChildren: true,
