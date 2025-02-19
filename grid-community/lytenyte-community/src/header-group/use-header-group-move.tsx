@@ -1,4 +1,3 @@
-import { t } from "@1771technologies/grid-design";
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
 import type { ColumnGroupRowItem, ColumnPin } from "@1771technologies/grid-types/community";
 import { useDraggable } from "@1771technologies/react-dragon";
@@ -35,16 +34,7 @@ export function useHeaderGroupMove(
 
 function DragPlaceholder(c: { label: string; cnt: number }) {
   return (
-    <div
-      className={css`
-        background-color: ${t.colors.backgrounds_light};
-        padding: ${t.spacing.space_10} ${t.spacing.space_40};
-        border: 1px solid ${t.colors.primary_50};
-        border-radius: ${t.spacing.box_radius_medium};
-        font-size: ${t.typography.body_m};
-        font-family: ${t.typography.typeface_body};
-      `}
-    >
+    <div className="lng1771-drag-placeholder">
       {c.label} | moving {c.cnt} columns
     </div>
   );

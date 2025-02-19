@@ -1,4 +1,3 @@
-import { t } from "@1771technologies/grid-design";
 import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
 import { dragState, useDraggable, useDroppable } from "@1771technologies/react-dragon";
 
@@ -41,18 +40,5 @@ export function useHeaderMove(
   return { moveProps, dropProps, isBefore, canDrop, isOver, dragIndex };
 }
 function DragPlaceholder(c: { column: ColumnCommunityReact<any> }) {
-  return (
-    <div
-      className={css`
-        background-color: ${t.colors.backgrounds_light};
-        padding: ${t.spacing.space_10} ${t.spacing.space_40};
-        border: 1px solid ${t.colors.primary_50};
-        border-radius: ${t.spacing.box_radius_medium};
-        font-size: ${t.typography.body_m};
-        font-family: ${t.typography.typeface_body};
-      `}
-    >
-      {c.column.headerName ?? c.column.id}
-    </div>
-  );
+  return <div className="lng1771-drag-placeholder">{c.column.headerName ?? c.column.id}</div>;
 }

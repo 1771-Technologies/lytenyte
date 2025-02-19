@@ -1,9 +1,10 @@
+import "./row-detail.css";
+
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
 import type { RowNode, RowPin } from "@1771technologies/grid-types/community";
 import { useMemo } from "react";
 import { getTransform } from "../utils/get-transform";
 import { sizeFromCoord } from "@1771technologies/js-utils";
-import { t } from "@1771technologies/grid-design";
 
 export interface RowDetailProps {
   readonly api: ApiCommunityReact<any>;
@@ -53,13 +54,7 @@ export function RowDetail({ api, row, rowPin, yPositions, rowIndex, height }: Ro
   ]);
 
   return (
-    <div
-      style={style}
-      className={css`
-        box-sizing: border-box;
-        background-color: ${t.colors.borders_ui_panel};
-      `}
-    >
+    <div style={style} className="lng1771-row-detail">
       <Renderer api={api} row={row} />
     </div>
   );

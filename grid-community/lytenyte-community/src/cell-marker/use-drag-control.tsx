@@ -123,5 +123,5 @@ export function useDragControl(api: ApiCommunityReact<any>, row: RowNode<any>) {
 const DragPlaceholder = (p: { rows: RowNode[] }) => {
   const label =
     p.rows.length === 1 ? `Moving row ${p.rows[0].rowIndex}` : `Moving ${p.rows.length} rows`;
-  return <div className="lng1771-grid__row-drag-placeholder">{label}</div>;
+  return <div className="lng1771-drag-placeholder">{label}</div>;
 };

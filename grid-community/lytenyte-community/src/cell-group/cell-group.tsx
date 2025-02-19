@@ -18,7 +18,7 @@ export function CellGroupRendererDefault({ api, row, column }: CellRendererParam
   const columnDepth = Number.parseInt(column.id.split(":").pop()!);
 
   if (isMulti && columnDepth !== rowDepth) {
-    return <div className={css``} />;
+    return <div />;
   }
 
   return (
