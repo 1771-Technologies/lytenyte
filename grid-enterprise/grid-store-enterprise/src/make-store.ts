@@ -27,7 +27,7 @@ export function makeStore<D>(props: PropsEnterpriseReact<D>) {
   store.state.columns.set((prev) => [...prev]);
   store.state.rowGroupModel.set((prev) => [...prev]);
   store.state.measureModel.set(props.measureModel ?? []);
-  store.state.filterModel.set((prev) => ({ ...prev }));
+  store.state.filterModel.set(props.filterModel ?? {});
 
   return store;
 }
