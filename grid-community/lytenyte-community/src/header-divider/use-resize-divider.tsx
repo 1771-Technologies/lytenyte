@@ -11,7 +11,9 @@ export function useResizeDivider(api: ApiCommunityReact<any>, column: ColumnComm
   const resizeProps = useMemo(() => {
     if (!isResizable) return {};
 
-    const onPointerDown = (_: PointerEvent) => {
+    const onPointerDown = (e: PointerEvent) => {
+      e.preventDefault();
+
       const startWidth = api.columnVisualWidth(column);
       const isRtl = api.getState().rtl.peek();
 

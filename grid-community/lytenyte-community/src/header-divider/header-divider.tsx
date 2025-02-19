@@ -34,6 +34,9 @@ export function HeaderDivider({
 }: HeaderDividerProps) {
   const isResizable = api.columnIsResizable(column);
 
+  const isLastStart = startCount > 0 && columnIndex === startCount - 1;
+  const isFirstEnd = endCount > 0 && startCount + centerCount === columnIndex;
+
   const resizeProps = useResizeDivider(api, column);
 
   const isLast = startCount + centerCount + endCount - 1 === columnIndex;
@@ -48,8 +51,10 @@ export function HeaderDivider({
       ? xPositions[columnIndex] - xPositions.at(-1)! + viewportWidth - 2
       : xPositions[columnIndex] + sizeFromCoord(columnIndex, xPositions) - 3 - endAdjustment;
 
+    const xAdjustment = isLastStart ? 1 : isFirstEnd ? 0 : isLast ? 0 : 0;
+
     const style = {
-      transform: getTransform((x - (isLast ? 2 : 0)) * (rtl ? -1 : 1), 0),
+      transform: getTransform((x - xAdjustment) * (rtl ? -1 : 1), 0),
       gridRowStart: rowStart,
       gridRowEnd: rowEnd,
     } as CSSProperties;
@@ -67,7 +72,9 @@ export function HeaderDivider({
     column.pin,
     columnIndex,
     endCount,
+    isFirstEnd,
     isLast,
+    isLastStart,
     isResizable,
     rowEnd,
     rowStart,

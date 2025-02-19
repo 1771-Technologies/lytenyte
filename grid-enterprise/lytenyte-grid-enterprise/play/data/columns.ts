@@ -16,7 +16,6 @@ export const columns: ColumnEnterpriseReact<any>[] = [
     pin: "start",
     rowGroupable: true,
     aggFunc: "sum",
-    headerSecondaryLabel: "ex",
   },
   {
     id: "education",
@@ -28,10 +27,9 @@ export const columns: ColumnEnterpriseReact<any>[] = [
   {
     id: "marital",
     aggFunc: "first",
-    headerSecondaryLabel: "something",
-    headerAggFuncDisplayMode: "secondary",
+    pin: "end",
   },
-  { id: "default", groupPath: ["Alpha"], headerSecondaryLabel: "extra" },
+  { id: "default", groupPath: ["Alpha"] },
   { id: "housing" },
   { id: "loan", groupPath: ["Xeno", "Sigma"] },
   { id: "contact", groupPath: ["Xeno", "Sigma"] },
