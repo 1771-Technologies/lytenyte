@@ -1,13 +1,13 @@
+import "./cell.css";
+
 import { clsx } from "@1771technologies/js-utils";
 import { memo } from "react";
 import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
 import { useCellStyle } from "./use-cell-style";
 import { useCellRenderer } from "./use-cell-renderer";
 import type { RowNode, RowPin } from "@1771technologies/grid-types/community";
-import { cellClsAlt, cellBaseClsx, cellCls } from "./cell-classes";
 import { useCellEvents } from "./use-cell-events";
 import { useCellPositionChange } from "./use-cell-position-change";
-import { focusCellOutline } from "../header/header-cell/header-cell";
 import { useClassProvider } from "../class-provider";
 
 export interface CellProps {
@@ -79,10 +79,9 @@ function CellImpl({
       aria-rowindex={rowIndex + 1}
       aria-colindex={columnIndex + 1}
       className={clsx(
-        cellBaseClsx,
-        rowIndex % 2 ? cellCls : cellClsAlt,
+        "lng1771-cell",
+        rowIndex % 2 === 1 && "lng1771-cell--alternate",
         cx.className,
-        focusCellOutline,
         classes.cellClasses,
       )}
       tabIndex={-1}

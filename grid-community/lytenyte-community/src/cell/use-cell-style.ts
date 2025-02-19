@@ -2,8 +2,6 @@ import { useMemo, type CSSProperties } from "react";
 import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
 import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
 import type { RowPin } from "@1771technologies/grid-types/community";
-import { t } from "@1771technologies/grid-design";
-import { cellSelected } from "./cell-classes";
 import { getTransform } from "../utils/get-transform";
 
 export function useCellStyle(
@@ -70,33 +68,9 @@ export function useCellStyle(
 
     const selected = selectedIds.has(rowId);
     const className = clsx(
-      selected && cellSelected,
-      isLastStart &&
-        css`
-          position: relative;
-          &::before {
-            position: absolute;
-            content: "";
-            top: 0px;
-            inset-inline-end: 0px;
-            width: 1px;
-            height: 100%;
-            background-color: ${t.gridPinSeparatorX};
-          }
-        `,
-      isFirstEnd &&
-        css`
-          position: relative;
-          &::before {
-            position: absolute;
-            content: "";
-            top: 0px;
-            inset-inline-start: 0px;
-            width: 1px;
-            height: 100%;
-            background-color: ${t.gridPinSeparatorY};
-          }
-        `,
+      selected && "lng1771-cell--selected",
+      isLastStart && "lng1771-cell--last-start",
+      isFirstEnd && "lng1771-cell--first-end",
     );
 
     return { style, className };

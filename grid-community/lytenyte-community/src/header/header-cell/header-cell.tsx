@@ -4,7 +4,6 @@ import { useMemo, useRef, type CSSProperties } from "react";
 import { getTransform } from "../../utils/get-transform";
 import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
 import { useHeaderCellRenderer } from "./use-header-cell-renderer";
-import { t } from "@1771technologies/grid-design";
 import { useHeaderMove } from "./use-header-move";
 import { COLUMN_EMPTY_PREFIX } from "@1771technologies/grid-constants";
 import { useHeaderFocus } from "./use-header-focus";
@@ -117,22 +116,3 @@ export function HeaderCell({
     </div>
   );
 }
-
-export const focusCellOutline = css`
-  &:focus {
-    outline: none;
-  }
-  &:focus::after {
-    content: "";
-    position: absolute;
-    top: 0px;
-    inset-inline-start: 1px;
-    width: calc(100% - 2px);
-    height: 100%;
-    pointer-events: none;
-    box-sizing: border-box;
-    border: 1px solid ${t.gridFocusOutline};
-    border-radius: 2px;
-    z-index: 10;
-  }
-`;
