@@ -2,7 +2,7 @@ import { useState, type CSSProperties } from "react";
 import { useGrid } from "../use-grid";
 import { useIsoEffect } from "@1771technologies/react-utils";
 import { getPreciseElementDimensions, IsoResizeObserver } from "@1771technologies/js-utils";
-import { Header } from "../header/header";
+import { Header } from "./header";
 
 export interface HeaderProps {
   readonly style?: CSSProperties;
