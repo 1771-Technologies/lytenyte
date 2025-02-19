@@ -1,6 +1,5 @@
 import type { CellRendererParamsReact } from "@1771technologies/grid-types/community-react";
-import { GridButton } from "../../components/buttons";
-import { clsx } from "@1771technologies/js-utils";
+import { GridButton } from "../components/buttons";
 
 export function CellGroupRendererDefault({ api, row, column }: CellRendererParamsReact<any>) {
   if (!api.rowIsGroup(row)) {
@@ -24,36 +23,31 @@ export function CellGroupRendererDefault({ api, row, column }: CellRendererParam
 
   return (
     <div
-      style={{ paddingInlineStart: depth * 24 + 4 }}
-      className={clsx(css`
-        white-space: nowrap;
-        display: grid;
-        align-items: center;
-        grid-template-columns: 24px 1fr;
-        height: 100%;
-      `)}
+      style={{
+        paddingInlineStart: depth * 24 + 4,
+        whiteSpace: "nowrap",
+        display: "grid",
+        alignItems: "center",
+        gridTemplateColumns: "24px 1fr",
+        height: "100%",
+      }}
     >
       <GridButton
         onClick={() => api.rowGroupToggle(row)}
-        className={clsx(
-          css`
-            width: 20px;
-            height: 20px;
-          `,
-          api.rowGroupIsExpanded(row) &&
-            css`
-              transform: rotate(90deg);
-            `,
-        )}
+        style={{
+          width: 20,
+          height: 20,
+          transform: api.rowGroupIsExpanded(row) ? "rotate(90deg)" : undefined,
+        }}
       >
         ›
       </GridButton>
       <div
-        className={css`
-          width: 100%;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        `}
+        style={{
+          width: "100%",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+        }}
       >
         {key}
       </div>

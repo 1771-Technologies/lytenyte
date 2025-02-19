@@ -2,10 +2,10 @@ import { useMemo, type ReactNode } from "react";
 import { useGrid } from "../use-grid";
 import { END_ENCODING, FULL_ENCODING } from "@1771technologies/grid-constants";
 import { Cell } from "./cell/cell";
-import { CellFullWidth } from "./cell-full-width/cell-full-width";
 import { t } from "@1771technologies/grid-design";
 import { RowDetail } from "./row-detail";
 import { DragIndicator } from "./drag-indicator";
+import { CellFullWidth } from "../cell-full-width/cell-full-width";
 
 export function Rows({
   width,
