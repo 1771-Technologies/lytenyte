@@ -17,7 +17,7 @@ export function columnPivotsState<D, E>(
   const columnPivotLookup = computed(() => itemsWithIdToMap(columnPivotColumns.get()));
   const columnPivotsLoading = signal(false);
 
-  const columnPivotFilterModel = filterModelComputed([], api, true);
+  const columnPivotFilterModel = filterModelComputed({}, api, true);
   const columnPivotSortModel = sortModelComputed([], api, true);
   const columnPivotGroupExpansionState = signal<Record<string, boolean>>({});
 
