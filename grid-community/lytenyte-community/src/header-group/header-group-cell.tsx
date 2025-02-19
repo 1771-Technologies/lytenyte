@@ -3,12 +3,12 @@ import "./header-group-cell.css";
 import type { ColumnGroupRowItem, ColumnPin } from "@1771technologies/grid-types/community";
 import { sizeFromCoord } from "@1771technologies/js-utils";
 import { useEffect, useMemo, useRef, type CSSProperties } from "react";
-import { getTransform } from "../../utils/get-transform";
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
 import { useHeaderGroupMove } from "./use-header-group-move";
 import { HEADER_GROUP_CELL_POSITION } from "@1771technologies/grid-constants";
 import { useEvent } from "@1771technologies/react-utils";
-import { CollapseButton } from "../../components/buttons";
+import { getTransform } from "../utils/get-transform";
+import { CollapseButton } from "../components/buttons";
 
 export interface HeaderGroupCellProps {
   readonly api: ApiCommunityReact<any>;
