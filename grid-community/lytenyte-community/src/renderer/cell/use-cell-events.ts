@@ -2,7 +2,7 @@ import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/
 import type { RowNode } from "@1771technologies/grid-types/community";
 import { useEvent } from "@1771technologies/react-utils";
 import type { MouseEvent } from "react";
-import { handleRowSelection } from "./utils/handle-row-selection";
+import { handleRowSelection } from "./handle-row-selection";
 
 export function useCellEvents(
   api: ApiCommunityReact<any>,

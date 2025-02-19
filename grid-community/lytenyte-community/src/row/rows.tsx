@@ -4,7 +4,7 @@ import { useMemo, type ReactNode } from "react";
 import { useGrid } from "../use-grid";
 import { END_ENCODING, FULL_ENCODING } from "@1771technologies/grid-constants";
 import { Cell } from "../renderer/cell/cell";
-import { RowDetail } from "../renderer/row-detail";
+import { RowDetail } from "../row-detail/row-detail";
 import { RowDragIndicator } from "./row-drag-indicator";
 import { CellFullWidth } from "../cell-full-width/cell-full-width";
 
