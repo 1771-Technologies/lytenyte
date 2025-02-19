@@ -7,8 +7,8 @@ import type { RowNode, RowPin } from "@1771technologies/grid-types/community";
 import { cellClsAlt, cellBaseClsx, cellCls } from "./cell-classes";
 import { useCellEvents } from "./use-cell-events";
 import { useCellPositionChange } from "./use-cell-position-change";
-import { focusCellOutline } from "../../header/header-cell/header-cell";
-import { useClassProvider } from "../../class-provider";
+import { focusCellOutline } from "../header/header-cell/header-cell";
+import { useClassProvider } from "../class-provider";
 
 export interface CellProps {
   readonly api: ApiCommunityReact<any>;
