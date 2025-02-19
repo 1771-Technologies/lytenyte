@@ -84,6 +84,9 @@
   --lng1771-primary-70: #278081;
   --lng1771-primary-90: #278081;
 
+  --lng1771-row-selected: #192b2d;
+  --lng1771-focus-outline: var(--lng1771-primary-50);
+
   --lng1771-gray-00: #000000;
   --lng1771-gray-02: #0f0f0f;
   --lng1771-gray-05: #121212;
@@ -130,7 +133,6 @@
   --lng1771-row-bg: var(--lng1771-gray-00);
   --lng1771-row-bg-alt: var(--lng1771-gray-02);
   --lng1771-row-bg-hover: var(--lng1771-gray-10);
-  --lng1771-row-bg-selected: #192b2d;
 
   --lng1771-cell-divider-y: transparent;
   --lng1771-cell-divider-x: var(--lng1771-gray-10);

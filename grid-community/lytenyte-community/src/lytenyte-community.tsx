@@ -1,3 +1,4 @@
+import "./lytenyte.css";
 import type { StoreCommunityReact } from "@1771technologies/grid-types";
 import { GridProvider } from "./use-grid";
 import { Viewport } from "./renderer/viewport";

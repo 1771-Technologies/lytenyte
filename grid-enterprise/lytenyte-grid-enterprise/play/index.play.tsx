@@ -14,7 +14,7 @@ export default function Play() {
   const grid = useLyteNyte({
     gridId: "x",
     columns: columns,
-    cellSelectionMode: "range",
+    // cellSelectionMode: "range",
     cellEditPointerActivator: "double-click",
     rowFullWidthPredicate: (p) => p.row.rowIndex === 8,
     columnBase: {

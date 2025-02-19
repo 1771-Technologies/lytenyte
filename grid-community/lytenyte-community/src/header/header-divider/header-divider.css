@@ -17,7 +17,7 @@
   }
 }
 
-.lng1771-header__cell-divider-resizable {
+.lng1771-header__cell-divider--resizable {
   cursor: col-resize;
 
   &:hover div {

@@ -83,6 +83,9 @@
   --lng1771-primary-70: #053f9e;
   --lng1771-primary-90: #012259;
 
+  --lng1771-row-selected: #d6e4fe;
+  --lng1771-focus-outline: var(--lng1771-primary-50);
+
   --lng1771-gray-00: #ffffff;
   --lng1771-gray-02: #fafbfc;
   --lng1771-gray-05: #f6f8fa;
@@ -146,7 +149,6 @@
   --lng1771-row-bg: var(--lng1771-gray-00);
   --lng1771-row-bg-alt: var(--lng1771-gray-02);
   --lng1771-row-bg-hover: var(--lng1771-gray-10);
-  --lng1771-row-bg-selected: #d6e4fe;
 
   --lng1771-cell-fg: var(--lng1771-gray-80);
   --lng1771-cell-font-size: 14px;

@@ -1,6 +1,5 @@
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
 import type { RowNode, RowPin } from "@1771technologies/grid-types/community";
-import { RowDetailDefault } from "./renderers/row-detail-default";
 import { useMemo } from "react";
 import { getTransform } from "./get-transform";
 import { sizeFromCoord } from "@1771technologies/js-utils";
@@ -64,4 +63,8 @@ export function RowDetail({ api, row, rowPin, yPositions, rowIndex, height }: Ro
       <Renderer api={api} row={row} />
     </div>
   );
+}
+
+function RowDetailDefault() {
+  return <div>Not Implemented</div>;
 }

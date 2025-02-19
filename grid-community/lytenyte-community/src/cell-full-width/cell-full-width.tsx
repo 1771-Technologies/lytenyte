@@ -1,13 +1,12 @@
+import "./cell-full-width.css";
+
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
 import type { RowNode, RowPin } from "@1771technologies/grid-types/community";
 import { memo, useMemo } from "react";
-import { getTransform } from "../get-transform";
 import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
-import { t } from "@1771technologies/grid-design";
-import { cellSelected } from "../cell/cell-classes";
 import { useCellFullWidthFocus } from "./use-cell-full-width-focus";
 import { useFullWidthEvents } from "./use-full-width-events";
-import { focusCellOutline } from "../../header/header-cell/header-cell";
+import { getTransform } from "../renderer/get-transform";
 
 export interface CellFullWidthProps {
   readonly api: ApiCommunityReact<any>;
@@ -61,15 +60,6 @@ function CellFullWidthImpl({
     yPositions,
   ]);
 
-  const rowClx =
-    rowIndex % 2 === 1
-      ? css`
-          background-color: ${t.colors.backgrounds_row};
-        `
-      : css`
-          background-color: ${t.colors.backgrounds_row_alternate};
-        `;
-
   const Renderer = sx.rowFullWidthRenderer.use() ?? DefaultRenderer;
 
   const selected = sx.rowSelectionSelectedIds.use();
@@ -91,19 +81,9 @@ function CellFullWidthImpl({
       {...events}
       onFocus={onFocus}
       className={clsx(
-        rowClx,
-        focusCellOutline,
-        css`
-          position: sticky;
-          inset-inline-start: 0px;
-          grid-column-start: 1;
-          grid-column-end: 2;
-          grid-row-start: 1;
-          grid-row-end: 2;
-          border-bottom: 1px solid ${t.colors.borders_row};
-          box-sizing: border-box;
-        `,
-        isSelected && cellSelected,
+        "lng1771-cell__full-width",
+        rowIndex % 2 === 1 && "lng1771-cell__full-width--alternate",
+        isSelected && "lng1771-cell__full-width--selected",
       )}
     >
       <Renderer api={api} row={row} />

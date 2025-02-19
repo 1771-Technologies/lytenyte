@@ -48,7 +48,7 @@ export const t: Theme = {
   rowBg: 'var(--lng1771-row-bg)',
   rowBgAlt: 'var(--lng1771-row-bg-alt)',
   rowBgHover: 'var(--lng1771-row-bg-hover)',
-  rowBgSelected: 'var(--lng1771-row-bg-selected)',
+  rowBgSelected: 'var(--lng1771-row-selected)',
 
   cellFg: 'var(--lng1771-cell-fg)',
   cellFontSize: 'var(--lng1771-cell-font-size)',

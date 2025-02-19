@@ -86,7 +86,7 @@ export function HeaderDivider({
       }}
       className={clsx(
         "lng1771-header__cell-divider",
-        isResizable && "lng1771-header__cell-divider-resizable",
+        isResizable && "lng1771-header__cell-divider--resizable",
       )}
       style={style}
     >
