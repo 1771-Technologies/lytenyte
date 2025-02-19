@@ -1,13 +1,14 @@
-import { t } from "@1771technologies/grid-design";
+import "./row-drag-indicator.css";
+
 import { useGrid } from "../use-grid";
-import { getTransform } from "./get-transform";
+import { getTransform } from "../renderer/get-transform";
 import { sizeFromCoord } from "@1771technologies/js-utils";
 
 export interface DragIndicatorProps {
   readonly section: "top" | "bottom" | "center";
 }
 
-export function DragIndicator({ section }: DragIndicatorProps) {
+export function RowDragIndicator({ section }: DragIndicatorProps) {
   const { state } = useGrid();
 
   const rowIndex = state.internal.rowDragOverIndex.use();
@@ -40,15 +41,7 @@ export function DragIndicator({ section }: DragIndicatorProps) {
   return (
     <div
       style={{ transform: getTransform(0, y + (isBefore ? 0 : height)), width }}
-      className={css`
-        height: 2px;
-        position: sticky;
-        inset-inline-start: 0px;
-        grid-column-start: 1;
-        grid-column-end: 2;
-        background-color: ${t.colors.primary_50};
-        z-index: 20;
-      `}
+      className="lng1771-row-drag-indicator"
     />
   );
 }

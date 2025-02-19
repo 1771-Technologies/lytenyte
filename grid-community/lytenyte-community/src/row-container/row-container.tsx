@@ -1,7 +1,8 @@
+import "./row-container.css";
+
 import type { PropsWithChildren } from "react";
-import { t } from "@1771technologies/grid-design";
 import { useDroppable } from "@1771technologies/react-dragon";
-import { useGrid } from "../../use-grid";
+import { useGrid } from "../use-grid";
 import type { RowNode } from "@1771technologies/grid-types/community";
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
 
@@ -39,17 +40,7 @@ export function RowContainer({
       style={{ width: totalWidth, minHeight: totalHeight }}
       onDrop={onDrop}
       onDragOver={onDragOver}
-      className={css`
-        background-color: ${t.colors.backgrounds_row};
-        display: flex;
-        flex-direction: column;
-
-        & > div {
-          display: grid;
-          grid-template-rows: 0px;
-          grid-template-columns: 0px;
-        }
-      `}
+      className="lng1771-row-container"
     >
       {children}
     </div>

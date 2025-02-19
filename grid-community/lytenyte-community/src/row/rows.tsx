@@ -1,10 +1,11 @@
+import "./rows.css";
+
 import { useMemo, type ReactNode } from "react";
 import { useGrid } from "../use-grid";
 import { END_ENCODING, FULL_ENCODING } from "@1771technologies/grid-constants";
-import { Cell } from "./cell/cell";
-import { t } from "@1771technologies/grid-design";
-import { RowDetail } from "./row-detail";
-import { DragIndicator } from "./drag-indicator";
+import { Cell } from "../renderer/cell/cell";
+import { RowDetail } from "../renderer/row-detail";
+import { RowDragIndicator } from "./row-drag-indicator";
 import { CellFullWidth } from "../cell-full-width/cell-full-width";
 
 export function Rows({
@@ -177,22 +178,10 @@ export function Rows({
             minHeight: topHeight,
             maxHeight: topHeight,
           }}
-          className={css`
-            position: sticky;
-            background-color: ${t.colors.backgrounds_row};
-            z-index: 4;
-            &::after {
-              position: absolute;
-              bottom: -1px;
-              width: 100%;
-              height: 1px;
-              content: "";
-              background-color: ${t.colors.borders_pin_separator};
-            }
-          `}
+          className="lng1771-rows__top-section"
         >
           {top}
-          <DragIndicator section="top" />
+          <RowDragIndicator section="top" />
           <els.top />
         </div>
       )}
@@ -201,13 +190,10 @@ export function Rows({
           width,
           minWidth,
         }}
-        className={css`
-          flex: 1;
-          background-color: ${t.colors.backgrounds_row};
-        `}
+        className="lng1771-rows__center-section"
       >
         {center}
-        <DragIndicator section="center" />
+        <RowDragIndicator section="center" />
         <els.center />
       </div>
       {botHeight > 0 && (
@@ -220,23 +206,10 @@ export function Rows({
             minHeight: botHeight,
             maxHeight: botHeight,
           }}
-          className={css`
-            position: sticky;
-            background-color: ${t.colors.backgrounds_row};
-            z-index: 4;
-
-            &::before {
-              position: absolute;
-              top: -1px;
-              width: 100%;
-              height: 1px;
-              content: "";
-              background-color: ${t.colors.borders_pin_separator};
-            }
-          `}
+          className="lng1771-rows__bottom-section"
         >
           {bottom}
-          <DragIndicator section="bottom" />
+          <RowDragIndicator section="bottom" />
           <els.bottom />
         </div>
       )}
