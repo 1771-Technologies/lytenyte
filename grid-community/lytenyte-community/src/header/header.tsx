@@ -1,3 +1,5 @@
+import "./header.css";
+
 import { clsx } from "@1771technologies/js-utils";
 import { useGrid } from "../use-grid";
 import { useHeaderDisplayGridTemplate } from "./use-header-display-grid-template";

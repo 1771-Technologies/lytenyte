@@ -1,0 +1,22 @@
+.lng1771-header__cell,
+.lng1771-header__cell-expand,
+.lng1771-header__cell-floating,
+.lng1771-header__cell-group {
+  &:focus {
+    outline: none;
+  }
+
+  &:focus:after {
+    content: "";
+    position: absolute;
+    top: 0px;
+    inset-inline-start: 1px;
+    width: calc(100% - 2px);
+    height: 100%;
+    pointer-events: none;
+    box-sizing: border-box;
+    border: 1px solid var(--lng1771-primary-50);
+    border-radius: 2px;
+    z-index: 10;
+  }
+}

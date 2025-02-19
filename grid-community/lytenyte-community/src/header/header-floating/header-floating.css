@@ -1,0 +1,19 @@
+.lng1771-header__cell-floating {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  overflow: hidden;
+  box-sizing: border-box;
+  background-color: var(--lng1771-gray-05);
+  position: relative;
+  border-block: 1px solid var(--lng1771-gray-40);
+
+  &::before {
+    position: absolute;
+    content: "";
+    width: 1px;
+    height: calc(100% - 12px);
+    inset-inline-end: 0px;
+    top: 6px;
+    background-color: var(--lng1771-gray-50);
+  }
+}

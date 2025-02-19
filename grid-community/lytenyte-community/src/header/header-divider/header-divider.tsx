@@ -1,10 +1,10 @@
+import "./header-divider.css";
+
 import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
 import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
 import { useMemo, type CSSProperties } from "react";
 import { getTransform } from "../../renderer/get-transform";
-import { t } from "@1771technologies/grid-design";
 import { useResizeDivider } from "./use-resize-divider";
-import { HEADER_CELL_DIVIDER } from "@1771technologies/grid-constants";
 
 interface HeaderDividerProps {
   readonly api: ApiCommunityReact<any>;
@@ -77,50 +77,20 @@ export function HeaderDivider({
     xPositions,
   ]);
 
-  const autosizeOnDouble = api.getState().autosizeDoubleClickHeader.use();
-
   return (
     <div
       {...resizeProps}
-      onDoubleClick={
-        autosizeOnDouble
-          ? () => {
-              api.autosizeColumn(column, { includeHeader: true });
-            }
-          : undefined
-      }
+      onDoubleClick={() => {
+        const autosize = api.getState().autosizeDoubleClickHeader.peek();
+        if (autosize) api.autosizeColumn(column, { includeHeader: true });
+      }}
       className={clsx(
-        HEADER_CELL_DIVIDER,
-        css`
-          grid-column-start: 1;
-          grid-column-end: 2;
-
-          box-sizing: border-box;
-
-          width: 4px;
-          height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        `,
-        isResizable &&
-          css`
-            cursor: col-resize;
-
-            &:hover div {
-              background-color: ${t.headerDividerResizeY};
-            }
-          `,
+        "lng1771-header__cell-divider",
+        isResizable && "lng1771-header__cell-divider-resizable",
       )}
       style={style}
     >
-      <div
-        className={css`
-          height: calc(100% - 8px);
-          width: 1px;
-          background-color: ${t.headerDividerY};
-        `}
-      />
+      <div />
     </div>
   );
 }
