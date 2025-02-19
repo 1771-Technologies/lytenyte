@@ -154,7 +154,7 @@ export type ColumnFilter<A, D> =
   | FilterFunction<A, D>;
 
 export type ColumnFilterModel<A, D> = {
-  [columnId: string]: { simple?: ColumnFilter<A, D>; set?: FilterIn };
+  [columnId: string]: { simple?: ColumnFilter<A, D> | null; set?: FilterIn | null };
 };
 
 // Overlays

@@ -1,5 +1,4 @@
 import type { RowDataSourceEnterprise } from "../row-data-source/rds-enterprise";
-import type { ColumnFilterModel } from "../types";
 import type {
   CellSelectionMode,
   CellSelectionRect,
@@ -8,6 +7,7 @@ import type {
   ClipboardTransformHeader,
   ClipboardTransformHeaderGroup,
   ClipboardTransformPaste,
+  ColumnFilterModel,
   ContextMenuItems,
   FloatingFrame,
   OverlayId,

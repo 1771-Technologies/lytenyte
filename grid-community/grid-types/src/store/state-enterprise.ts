@@ -5,8 +5,8 @@ import type {
   GridInternalState as CommunityInternalState,
 } from "./state-community";
 import type { RowDataSourceEnterprise } from "../row-data-source/rds-enterprise";
-import type { CellSelectionRect, Target } from "../types-enterprise";
-import type { ColumnFilterModel, ColumnGroupRows, SortModelItem } from "../types";
+import type { CellSelectionRect, ColumnFilterModel, Target } from "../types-enterprise";
+import type { ColumnGroupRows, SortModelItem } from "../types";
 import type { ApiEnterprise } from "../api/api-enterprise";
 import type { ColumnEnterprise } from "..";
 
