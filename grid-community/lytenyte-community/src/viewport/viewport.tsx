@@ -9,7 +9,7 @@ import { type PropsWithChildren, type ReactNode } from "react";
 import { RowContainer } from "../row-container/row-container";
 import { NavigationDriver } from "../navigation/navigation-driver";
 import { CellEditDriver } from "../cell-edit/cell-edit-driver";
-import { HoverDriver } from "../renderer/hover-driver";
+import { RowHoverDriver } from "../row-hover-driver/row-hover-driver";
 
 export function Viewport({
   children,
@@ -75,7 +75,7 @@ export function Viewport({
       </RowContainer>
       <NavigationDriver />
       <CellEditDriver />
-      <HoverDriver />
+      <RowHoverDriver />
       {children}
     </Sizer>
   );

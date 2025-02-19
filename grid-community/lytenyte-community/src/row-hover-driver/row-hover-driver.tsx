@@ -1,7 +1,7 @@
 import { t } from "@1771technologies/grid-design";
 import { useGrid } from "../use-grid";
 
-export function HoverDriver() {
+export function RowHoverDriver() {
   const s = useGrid();
   const gridId = s.state.gridId.use();
 
