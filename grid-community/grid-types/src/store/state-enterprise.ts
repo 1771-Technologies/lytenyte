@@ -5,8 +5,8 @@ import type {
   GridInternalState as CommunityInternalState,
 } from "./state-community";
 import type { RowDataSourceEnterprise } from "../row-data-source/rds-enterprise";
-import type { CellSelectionRect, ColumnFilter, Target } from "../types-enterprise";
-import type { ColumnGroupRows, SortModelItem } from "../types";
+import type { CellSelectionRect, Target } from "../types-enterprise";
+import type { ColumnFilterModel, ColumnGroupRows, SortModelItem } from "../types";
 import type { ApiEnterprise } from "../api/api-enterprise";
 import type { ColumnEnterprise } from "..";
 
@@ -48,7 +48,7 @@ export interface GridInternalState<D, E> extends Omit<CommunityInternalState<D, 
   readonly columnPivotGroupExpansionState: Signal<Record<string, boolean>>;
   readonly columnPivotsLoading: Signal<boolean>;
   readonly columnPivotSortModel: Signal<SortModelItem[]>;
-  readonly columnPivotFilterModel: Signal<ColumnFilter<Api<D, E>, D>[]>;
+  readonly columnPivotFilterModel: Signal<ColumnFilterModel<Api<D, E>, D>>;
   readonly columnPivotPositions: ReadonlySignal<Uint32Array>;
   readonly columnPivotsWithRowSpan: ReadonlySignal<Set<number>>;
   readonly columnPivotsWithColSpan: ReadonlySignal<Set<number>>;
@@ -90,7 +90,7 @@ export type ColumnPivotSensitiveStateEnterprise<D, E> = Omit<
   "columnsVisible" | "filterModel"
 > & {
   readonly columnsVisible: ReadonlySignal<Column<D, E>[]>;
-  readonly filterModel: Signal<ColumnFilter<ApiEnterprise<D, ColumnEnterprise<D, E>, E>, D>[]>;
+  readonly filterModel: Signal<ColumnFilterModel<ApiEnterprise<D, ColumnEnterprise<D, E>, E>, D>>;
 };
 
 export type State<D, E> = InitialStateAndInternalState<D, E> &

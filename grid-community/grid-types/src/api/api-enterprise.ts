@@ -4,11 +4,10 @@ import type {
   LngRemoveEventListenerEnterprise,
 } from "../events/events-enterprise";
 import type { State } from "../store/state-enterprise";
-import type { RowNode, RowNodeGroup, SortModelItem } from "../types";
+import type { ColumnFilterModel, RowNode, RowNodeGroup, SortModelItem } from "../types";
 import type {
   CellSelectionRect,
   ClipboardCopyOptions,
-  ColumnFilter,
   ColumnInFilterItem,
   Target,
 } from "../types-enterprise";
@@ -44,10 +43,10 @@ export interface ApiEnterprise<D, C, E>
   readonly columnPivotsLoading: () => boolean;
   readonly columnPivotsReload: () => void;
 
-  readonly columnPivotFilterModel: () => ColumnFilter<this, D>[];
+  readonly columnPivotFilterModel: () => ColumnFilterModel<this, D>;
   readonly columnPivotSortModel: () => SortModelItem[];
   readonly columnPivotSetSortModel: (s: SortModelItem[]) => void;
-  readonly columnPivotSetFilterModel: (s: ColumnFilter<this, D>[]) => void;
+  readonly columnPivotSetFilterModel: (s: ColumnFilterModel<this, D>) => void;
 
   readonly columnPivotField: (row: RowNode<D>, column: C) => unknown;
   readonly columnPivotFieldFromData: (data: D, column: C) => unknown;

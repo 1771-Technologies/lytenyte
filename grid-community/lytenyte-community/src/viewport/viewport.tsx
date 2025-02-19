@@ -4,7 +4,7 @@ import { Sizer, type SizerProps } from "@1771technologies/react-sizer";
 import { useEvent } from "@1771technologies/react-utils";
 import { useGrid } from "../use-grid";
 import { HeaderContainer } from "../header/header-container";
-import { Rows } from "../row/rows";
+import { Rows } from "../rows/rows";
 import { type PropsWithChildren, type ReactNode } from "react";
 import { RowContainer } from "../row-container/row-container";
 import { NavigationDriver } from "../navigation/navigation-driver";

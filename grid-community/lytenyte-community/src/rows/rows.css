@@ -14,12 +14,12 @@
 
 .lng1771-rows__center-section {
   flex: 1;
-  background-color: var(--lng1771-gray-50);
+  background-color: var(--lng1771-gray-00);
 }
 
 .lng1771-rows__bottom-section {
   position: sticky;
-  background-color: var(--lng1771-gray-50);
+  background-color: var(--lng1771-gray-00);
   z-index: 4;
 
   &::before {

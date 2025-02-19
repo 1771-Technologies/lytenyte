@@ -30,6 +30,17 @@ export default function Play() {
     floatingRowHeight: 32,
     rowDataSource: ds,
 
+    filterModel: {
+      age: {
+        simple: {
+          columnId: "age",
+          kind: "number",
+          operator: "equal",
+          value: 30,
+        },
+      },
+    },
+
     panelFrameButtons: [{ id: "columns", label: "Columns" }],
     panelFrames: {
       columns: {

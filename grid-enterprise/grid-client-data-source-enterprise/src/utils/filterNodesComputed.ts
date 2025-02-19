@@ -15,7 +15,7 @@ export function filterNodesComputed<D, E>(
     const rowNodes = nodes.get();
     const filterModel = mode ? sx.internal.columnPivotFilterModel.get() : sx.filterModel.get();
 
-    if (filterModel.length === 0) return rowNodes;
+    if (Object.keys(filterModel).length === 0) return rowNodes;
 
     const filteredNodes: RowNodeLeaf<D>[] = [];
     for (let i = 0; i < rowNodes.length; i++) {
