@@ -139,7 +139,6 @@ export type ClipboardCopyOptions = {
 };
 
 export type FilterIn = {
-  readonly isInternal?: boolean;
   readonly kind: "in";
   readonly operator: "in" | "notin";
   readonly columnId: string;
@@ -155,7 +154,7 @@ export type ColumnFilter<A, D> =
   | FilterFunction<A, D>;
 
 export type ColumnFilterModel<A, D> = {
-  [columnId: string]: { simple: ColumnFilter<A, D>; in: FilterIn };
+  [columnId: string]: { simple?: ColumnFilter<A, D>; set?: FilterIn };
 };
 
 // Overlays

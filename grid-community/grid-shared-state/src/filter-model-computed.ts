@@ -1,11 +1,11 @@
 import { computed, signal } from "@1771technologies/react-cascada";
 import type { ApiCommunity, ApiEnterprise, ColumnEnterprise } from "@1771technologies/grid-types";
-import type { ColumnFilter as CFC } from "@1771technologies/grid-types/community";
-import type { ColumnFilter as CFE } from "@1771technologies/grid-types/enterprise";
+import type { ColumnFilterModel as CFC } from "@1771technologies/grid-types/community";
+import type { ColumnFilterModel as CFE } from "@1771technologies/grid-types/enterprise";
 import { itemsWithIdToMap } from "@1771technologies/js-utils";
 
 export function filterModelComputed<D, E>(
-  filters: CFE<any, any>[] | CFC<any, any>[],
+  filters: CFE<any, any> | CFC<any, any>,
   api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
   pivots: boolean = false,
 ) {
@@ -35,31 +35,59 @@ export function filterModelComputed<D, E>(
         );
       };
 
-      const model = model$.get().filter((f) => {
-        return isValidFilter(f, lookup, registered, isColumnValid);
-      });
+      const model = Object.entries(model$.get())
+        .map((c) => {
+          const columnId = c[0];
+          const filter = c[1] as CFE<any, any>["string"];
 
-      return model;
+          if (!isColumnValid(columnId)) return null;
+          const validSimple = isValidSimpleFilter(filter.simple, lookup, registered, isColumnValid);
+          const validSet = isValidSetFilter(filter.set, isColumnValid);
+
+          if (!validSimple && !validSet) return null;
+
+          const v: any = {};
+
+          if (validSimple) v.simple = filter.simple;
+          if (validSet) v.set = filter.set;
+
+          return [columnId, v as CFE<any, any>["string"]];
+        })
+        .filter((c) => c !== null);
+
+      return Object.fromEntries(model);
     },
     (v) => model$.set(v),
   );
 }
 
-function isValidFilter(
-  f: CFE<any, any>,
+function isValidSetFilter(
+  f: CFE<any, any>["string"]["set"],
+  isColumnValid: (id: string) => boolean,
+) {
+  if (!f) return false;
+  if (!isColumnValid(f.columnId)) return;
+
+  return f;
+}
+
+function isValidSimpleFilter(
+  f: CFE<any, any>["string"]["simple"],
   lookup: Map<string, ColumnEnterprise<any, any>>,
   register: Record<string, any>,
   isColumnValid: (id: string) => boolean,
 ): boolean {
+  if (!f) return false;
+
   if (f.kind === "function") return true;
   if (f.kind === "registered") return !!register[f.id];
-  if (f.kind === "date" || f.kind === "number" || f.kind === "text" || f.kind === "in") {
+  if (f.kind === "date" || f.kind === "number" || f.kind === "text") {
     return isColumnValid(f.columnId);
   }
   if (f.kind === "combined")
     return (
-      isValidFilter(f.left, lookup, register, isColumnValid) &&
-      isValidFilter(f.right, lookup, register, isColumnValid)
+      isValidSimpleFilter(f.left, lookup, register, isColumnValid) &&
+      isValidSimpleFilter(f.right, lookup, register, isColumnValid)
     );
 
   return false;

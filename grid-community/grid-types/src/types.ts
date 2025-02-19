@@ -225,7 +225,6 @@ export type FilterTextOperator =
   | "not_contains";
 
 export interface FilterText {
-  readonly isInternal?: boolean;
   readonly kind: "text";
   readonly columnId: string;
   readonly operator: FilterTextOperator;
@@ -241,7 +240,6 @@ export type FilterNumberOperator =
   | "less_than_or_equal";
 
 export interface FilterNumber {
-  readonly isInternal?: boolean;
   readonly kind: "number";
   readonly columnId: string;
   readonly operator: FilterNumberOperator;
@@ -290,7 +288,6 @@ export type FilterDatePeriod =
   | "december";
 
 export interface FilterDate {
-  readonly isInternal?: boolean;
   readonly kind: "date";
   readonly value: string;
   readonly columnId: string;
@@ -305,7 +302,6 @@ export interface FilterRegistered {
 }
 
 export interface FilterCombined<A, D> {
-  readonly isInternal?: boolean;
   readonly kind: "combined";
   readonly operator: "and" | "or";
   readonly left: FilterNonCombined<A, D>;
@@ -338,7 +334,7 @@ export type ColumnFilter<A, D> =
   | FilterFunction<A, D>;
 
 export type ColumnFilterModel<A, D> = {
-  [columnId: string]: { simple: ColumnFilter<A, D> };
+  [columnId: string]: { simple?: ColumnFilter<A, D> };
 };
 
 export type FilterRegisteredFunc<A, D> = (api: A, row: RowNode<D>) => boolean;
