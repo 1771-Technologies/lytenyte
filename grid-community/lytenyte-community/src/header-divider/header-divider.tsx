@@ -3,8 +3,8 @@ import "./header-divider.css";
 import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
 import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
 import { useMemo, type CSSProperties } from "react";
-import { getTransform } from "../../utils/get-transform";
 import { useResizeDivider } from "./use-resize-divider";
+import { getTransform } from "../utils/get-transform";
 
 interface HeaderDividerProps {
   readonly api: ApiCommunityReact<any>;

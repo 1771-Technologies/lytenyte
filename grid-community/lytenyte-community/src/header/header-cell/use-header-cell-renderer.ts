@@ -1,8 +1,8 @@
 import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
 import { useMemo } from "react";
 import { COLUMN_MARKER_ID } from "@1771technologies/grid-constants";
-import { HeaderCellMarker } from "./header-cell-marker";
 import { HeaderCellDefault } from "./header-cell-default";
+import { HeaderCellMarker } from "../../header-marker/header-cell-marker";
 
 export function useHeaderCellRenderer(
   api: ApiCommunityReact<any>,
