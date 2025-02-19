@@ -3,7 +3,6 @@ import type {
   CellEditPointerActivator,
   CellEditProviders,
   CellRenderers,
-  ColumnFilter,
   ColumnHeaderHeightProperty,
   ColumnHeaderRenderers,
   FilterRegisteredFuncs,
@@ -26,6 +25,7 @@ import type {
   RowSelectionPredicate,
   SortComparatorFunc,
   SortModelItem,
+  ColumnFilterModel,
 } from "../types";
 
 export interface PropsCommunity<A, D, C, E, Base, Group> {
@@ -52,7 +52,7 @@ export interface PropsCommunity<A, D, C, E, Base, Group> {
   readonly columns?: C[];
   readonly columnBase?: Base;
 
-  readonly filterModel?: ColumnFilter<A, D>[];
+  readonly filterModel?: ColumnFilterModel<A, D>;
   readonly filterFunctions?: FilterRegisteredFuncs<A, D>;
 
   readonly floatingRowEnabled?: boolean;

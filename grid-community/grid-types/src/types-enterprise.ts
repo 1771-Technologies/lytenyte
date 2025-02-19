@@ -152,8 +152,11 @@ export type ColumnFilter<A, D> =
   | FilterDate
   | FilterCombined<A, D>
   | FilterRegistered
-  | FilterFunction<A, D>
-  | FilterIn;
+  | FilterFunction<A, D>;
+
+export type ColumnFilterModel<A, D> = {
+  [columnId: string]: { simple: ColumnFilter<A, D>; in: FilterIn };
+};
 
 // Overlays
 export type OverlayId =

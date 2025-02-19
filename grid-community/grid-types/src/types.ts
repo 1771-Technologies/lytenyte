@@ -337,6 +337,10 @@ export type ColumnFilter<A, D> =
   | FilterRegistered
   | FilterFunction<A, D>;
 
+export type ColumnFilterModel<A, D> = {
+  [columnId: string]: { simple: ColumnFilter<A, D> };
+};
+
 export type FilterRegisteredFunc<A, D> = (api: A, row: RowNode<D>) => boolean;
 export type FilterRegisteredFuncs<A, D> = {
   [id: string]: FilterRegisteredFunc<A, D>;
