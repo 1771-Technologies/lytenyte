@@ -79,6 +79,7 @@ export function FloatingCell({
       style={style}
       {...events}
       role="columnheader"
+      data-pin={column.pin ?? "center"}
       data-lng1771-column-id={column.id}
       aria-colindex={columnIndex}
       aria-colspan={1}

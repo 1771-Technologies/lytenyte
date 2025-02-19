@@ -16,4 +16,12 @@
     top: 6px;
     background-color: var(--lng1771-gray-50);
   }
+
+  &[data-pin="start"]::before {
+    inset-inline-end: 1px;
+  }
+
+  &[data-pin="end"]::before {
+    inset-inline-start: 0px;
+  }
 }
