@@ -1,5 +1,14 @@
 # @1771technologies/lytenyte-grid-community
 
+## 0.0.22
+
+### Patch Changes
+
+[Commit: e900d8e9a595](https://github.com/1771-Technologies/lytenyte/commit/e900d8e9a595a311a901c90ab04df556a28a9229)
+Filter changes
+[Commit: 0ce043666867](https://github.com/1771-Technologies/lytenyte/commit/0ce043666867db95abe63fd19825b122c9a92b10)
+Serious CSS refactors
+
 ## 0.0.21
 
 ## 0.0.20

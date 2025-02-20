@@ -1,5 +1,7 @@
 # @1771technologies/react-popover
 
+## 0.0.22
+
 ## 0.0.21
 
 ## 0.0.20
