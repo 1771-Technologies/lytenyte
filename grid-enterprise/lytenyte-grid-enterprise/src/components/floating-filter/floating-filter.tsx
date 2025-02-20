@@ -22,7 +22,12 @@ function FilterImpl<D>({ api, column }: FloatingCellRendererParamsReact<D>) {
   return (
     <div className="lng1771-floating-filter">
       <Input className="lng1771-floating-filter__input" {...inputProps} />
-      <button className="lng1771-floating-filter__button">
+      <button
+        className="lng1771-floating-filter__button"
+        onClick={(ev) => {
+          api.columnFilterMenuOpen(column, ev.currentTarget.parentElement as HTMLElement);
+        }}
+      >
         <FunnelIcon />
       </button>
     </div>

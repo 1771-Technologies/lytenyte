@@ -43,9 +43,8 @@ export interface Column<A, D, E> {
   readonly aggFuncsAllowed?: (AggBuiltIns | (string & {}))[];
   readonly aggFuncDefault?: AggBuiltIns | (string & {});
 
-  readonly filterSupportsIn?: boolean;
-  readonly filterSupportsSimple?: boolean;
   readonly filterSupportsQuickSearch?: boolean;
+  readonly filterSupportsIn?: boolean;
   readonly filterParams?: FilterParams;
 
   readonly hidable?: boolean;
