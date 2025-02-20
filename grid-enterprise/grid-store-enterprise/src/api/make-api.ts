@@ -84,6 +84,7 @@ import { columnIsPivotable } from "./column-is/column-is-pivotable";
 import { cellSelection } from "./cell-selection";
 import { columnPivots } from "./column-pivots";
 import { frames } from "./frames";
+import { quickSearchField } from "./quick-search-field";
 
 export function makeApi<D, E>(
   state: StoreEnterprise<D, E>["state"],
@@ -254,6 +255,8 @@ export function makeApi<D, E>(
     columnPivotsLoading: pivots.columnPivotsLoading,
     columnPivotSortModel: pivots.columnPivotSortModel,
     columnPivotsReload: pivots.columnPivotsReload,
+
+    columnQuickSearchField: (row, column) => quickSearchField(api, row, column),
 
     columnInFilterItems: (c) =>
       api.getState().internal.rowBackingDataSource.peek().columnInFilterItems(c),

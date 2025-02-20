@@ -2,6 +2,7 @@ import { computed, type Signal } from "@1771technologies/react-cascada";
 import { evaluateClientFilter } from "@1771technologies/grid-client-filter";
 import type { ApiEnterprise } from "@1771technologies/grid-types";
 import type { RowNodeLeaf } from "@1771technologies/grid-types/community";
+import { evaluateQuickFilter } from "@1771technologies/grid-core-enterprise";
 
 export function filterNodesComputed<D, E>(
   api$: Signal<ApiEnterprise<D, E>>,
@@ -17,10 +18,18 @@ export function filterNodesComputed<D, E>(
 
     if (Object.keys(filterModel).length === 0) return rowNodes;
 
+    const visible = sx.columnsVisible.get();
+    const quickFilter = sx.filterQuickSearch.get();
+    const columnsWithQuickFilter = visible.filter((c) => c.filterSupportsQuickSearch);
+
     const filteredNodes: RowNodeLeaf<D>[] = [];
     for (let i = 0; i < rowNodes.length; i++) {
       if (!evaluateClientFilter(api, filterModel, rowNodes[i])) continue;
       filteredNodes.push(rowNodes[i]);
+
+      if (quickFilter) {
+        evaluateQuickFilter(api, columnsWithQuickFilter, quickFilter, rowNodes[i]);
+      }
     }
 
     return filteredNodes;

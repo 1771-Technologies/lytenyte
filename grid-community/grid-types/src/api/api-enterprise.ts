@@ -59,6 +59,8 @@ export interface ApiEnterprise<D, C, E>
 
   readonly columnIsMeasurable: (c: C) => boolean;
 
+  readonly columnQuickSearchField: (row: RowNode<D>, column: C) => unknown;
+
   readonly columnIsPivotable: (c: C) => boolean;
 
   readonly columnFilterMenuOpen: (c: C, bb: Target) => void;
