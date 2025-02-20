@@ -24,8 +24,6 @@ export const columns: ColumnEnterpriseReact<any>[] = [
     rowGroupable: true,
     columnPivotable: true,
     cellEditPredicate: true,
-    rowSpan: (a) => (a.row.rowIndex === 4 ? 3 : 1),
-    columnSpan: (a) => (a.row.rowIndex === 4 ? 3 : 1),
     filterSupportsQuickSearch: true,
   },
   {

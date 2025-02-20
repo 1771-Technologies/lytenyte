@@ -8,7 +8,7 @@ import { FloatingFilter } from "../src/components/floating-filter/floating-filte
 
 export default function Play() {
   const ds = useClientDataSource({
-    data: bankDataSmall,
+    data: bankDataSmall.slice(0, 8),
     topData: bankDataSmall.slice(0, 2),
     bottomData: bankDataSmall.slice(0, 2),
   });
@@ -17,7 +17,6 @@ export default function Play() {
     gridId: "x",
     columns: columns,
     cellEditPointerActivator: "double-click",
-    rowFullWidthPredicate: (p) => p.row.rowIndex === 8,
 
     cellSelectionMode: "range",
 

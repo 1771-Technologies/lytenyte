@@ -115,6 +115,7 @@ export function CellStyleRow({
           grid-row-end: 2;
           background-color: ${t.colors.primary_30};
           border: 1px solid ${t.colors.primary_50};
+          box-sizing: border-box;
         `,
         isDeselect &&
           css`

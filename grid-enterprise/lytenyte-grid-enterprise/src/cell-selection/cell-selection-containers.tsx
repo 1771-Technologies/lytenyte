@@ -31,7 +31,9 @@ export const CellSelectionTop = memo(function CellSelectionTop() {
       {additiveRects.map((rect) => {
         return <CellStyleRow rect={rect} key={rect.columnStart} isDeselect={isDeselect} />;
       })}
-      {showPivot && pivot && isTopRect(api, pivot) && <CellStyleRow rect={pivot} isPivot />}
+      {showPivot && pivot && isTopRect(api, pivot) && (
+        <CellStyleRow rect={pivot} isPivot isRowPinnedTop />
+      )}
     </>
   );
 });
@@ -97,7 +99,9 @@ export const CellSelectionBottom = memo(function CellSelectionBottom() {
       {additiveRects.map((rect) => {
         return <CellStyleRow rect={rect} key={rect.columnStart} isDeselect={isDeselect} />;
       })}
-      {showPivot && pivot && isBottomRect(api, pivot) && <CellStyleRow rect={pivot} isPivot />}
+      {showPivot && pivot && isBottomRect(api, pivot) && (
+        <CellStyleRow rect={pivot} isPivot isRowPinnedBottom />
+      )}
     </>
   );
 });
