@@ -28,7 +28,8 @@ export function getHoveredRowIndex(
   const viewportHeight = viewportInnerHeight;
 
   let y = -1;
-  // Start by checking that the clientY value is within the viewport value.
+  // Start by checking that the clientY value is within the viewport value. This just ensures the
+  // the the cursor is actually inside the grid.
   if (visualY > 0 && visualY < viewportHeight) {
     if (visualY > headerHeight && visualY < topHeight) {
       y = visualY - headerHeight;
@@ -36,6 +37,8 @@ export function getHoveredRowIndex(
       y = visualY - (viewportHeight - bottomHeight) + rowPositions[rowCount - bottomCount];
     } else if (visualY >= topHeight && visualY <= viewportHeight - bottomHeight) {
       y = visualY - headerHeight + scrollY;
+
+      if (y > rowPositions.at(-bottomCount - 1)!) y = -1;
 
       // We need specific handling for paginate rows. We can only hover over rows on the page.
       // Hence we have a top cap on the end row. The end row will be one past the end, so it would

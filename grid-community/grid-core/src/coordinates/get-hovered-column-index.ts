@@ -24,10 +24,15 @@ export function getHoveredColumnIndex(
 
   let x = -1;
   if (visualX > 0 && visualX < viewportWidth) {
-    if (visualX < startWidth) x = visualX;
-    else if (visualX > viewportWidth - endWidth)
+    if (visualX < startWidth) {
+      x = visualX;
+    } else if (visualX > viewportWidth - endWidth) {
       x = visualX - (viewportWidth - endWidth) + xPositions[visibleStartCount + visibleCenterCount];
-    else x = visualX + Math.abs(viewport.scrollLeft);
+    } else {
+      x = visualX + Math.abs(viewport.scrollLeft);
+      const maxX = xPositions.at(-visibleEndCount - 1)!;
+      if (x > maxX) x = -1;
+    }
   }
 
   return x >= 0 ? rangedBinarySearch(xPositions, x) : null;
