@@ -54,7 +54,7 @@ export function Viewport({
 
   const paginate = state.paginate.use();
   const totalHeight = paginate ? undefined : state.internal.rowPositions.use().at(-1)!;
-  const totalWidth = state.internal.columnPositions.use().at(-1)!;
+  const totalWidth = state.columnPositions.use().at(-1)!;
 
   const rtl = state.rtl.use();
   const grid = state.gridId.use();

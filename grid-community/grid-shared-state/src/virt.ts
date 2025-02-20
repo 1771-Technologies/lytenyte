@@ -11,7 +11,7 @@ export const virt = <D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>) => {
       const viewportWidth = sx.viewportInnerWidth.get();
       const viewportHeight = sx.viewportInnerHeight.get();
       const yPositions = sx.rowPositions.get();
-      const xPositions = sx.columnPositions.get();
+      const xPositions = s.columnPositions.get();
 
       const topCount = sx.rowTopCount.get();
       const bottomCount = sx.rowBottomCount.get();

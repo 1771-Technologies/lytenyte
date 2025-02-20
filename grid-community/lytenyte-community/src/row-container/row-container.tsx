@@ -35,6 +35,10 @@ export function RowContainer({
     },
   });
 
+  const columns = state.columnsVisible.use();
+
+  if (columns.length === 0) return <></>;
+
   return (
     <div
       style={{ width: totalWidth, minHeight: totalHeight }}

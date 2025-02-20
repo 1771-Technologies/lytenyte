@@ -36,7 +36,7 @@ export default function Play() {
     panelFrameButtons: [{ id: "columns", label: "Columns" }],
     panelFrames: {
       columns: {
-        component: (p) => <ColumnManager api={p.api} />,
+        component: (p) => <ColumnManager api={p.api} showPivotToggle />,
         title: "Columns",
       },
     },
