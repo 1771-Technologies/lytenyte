@@ -27,6 +27,7 @@ export default function Play() {
       movable: true,
       sortable: true,
       floatingCellRenderer: FloatingFilter,
+      filterSupportsIn: true,
     },
     floatingRowEnabled: true,
     floatingRowHeight: 32,

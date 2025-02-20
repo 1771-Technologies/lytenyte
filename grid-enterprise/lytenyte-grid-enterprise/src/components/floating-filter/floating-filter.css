@@ -13,6 +13,7 @@
 }
 
 .lng1771-floating-filter__button {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -33,4 +34,14 @@
     color: var(--lng1771-gray-50);
     cursor: not-allowed;
   }
+}
+
+.lng1771-floating-filter__button--indicator {
+  width: 8px;
+  height: 8px;
+  background-color: var(--lng1771-primary-50);
+  position: absolute;
+  top: 0px;
+  inset-inline-end: 0px;
+  border-radius: 9999px;
 }

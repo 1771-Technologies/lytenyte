@@ -28,6 +28,7 @@ function FilterImpl<D>({ api, column }: FloatingCellRendererParamsReact<D>) {
           api.columnFilterMenuOpen(column, ev.currentTarget.parentElement as HTMLElement);
         }}
       >
+        {filters[column.id] && <span className="lng1771-floating-filter__button--indicator"></span>}
         <FunnelIcon />
       </button>
     </div>
