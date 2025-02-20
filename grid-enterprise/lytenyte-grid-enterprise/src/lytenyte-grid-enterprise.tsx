@@ -20,7 +20,7 @@ import {
 import { Watermark } from "./watermark";
 import { OverlayDriver } from "./overlay/overlay-driver";
 import { ColumnMenuDriver } from "./components-internal/column-menu-driver";
-import { GridFrame } from "./components-internal/grid-frame";
+import { GridFrame } from "./components-internal/grid-frame/grid-frame";
 import type { SplitPaneAxe } from "@1771technologies/react-split-pane";
 
 export interface LyteNyteGridEnterpriseProps<D> {

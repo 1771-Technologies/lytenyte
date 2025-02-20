@@ -85,6 +85,7 @@
 
   --lng1771-row-selected: #d6e4fe;
   --lng1771-focus-outline: var(--lng1771-primary-50);
+  --lng1771-gradient-shadow: linear-gradient(90deg, var(--lng1771-gray-50), var(--lng1771-gray-50));
 
   --lng1771-gray-00: #ffffff;
   --lng1771-gray-02: #fafbfc;
