@@ -18,8 +18,6 @@ export function filterModelComputed<D, E>(
       const sx = api.getState();
       const columns = pivots ? sx.internal.columnPivotColumns.get() : sx.columns.get();
 
-      const registered = sx.filterFunctions.get();
-
       const lookup = itemsWithIdToMap(columns);
 
       const isColumnValid = (id: string) => {
@@ -46,7 +44,7 @@ export function filterModelComputed<D, E>(
           const filter = c[1] as CFE<any, any>["string"];
 
           if (!isColumnValid(columnId)) return null;
-          const validSimple = isValidSimpleFilter(filter.simple, lookup, registered, isColumnValid);
+          const validSimple = isValidSimpleFilter(filter.simple, lookup, isColumnValid);
           const validSet = isValidSetFilter(filter.set, isColumnValid);
 
           if (!validSimple && !validSet) return null;
@@ -79,20 +77,18 @@ function isValidSetFilter(
 function isValidSimpleFilter(
   f: CFE<any, any>["string"]["simple"],
   lookup: Map<string, ColumnEnterprise<any, any>>,
-  register: Record<string, any>,
   isColumnValid: (id: string) => boolean,
 ): boolean {
   if (!f) return false;
 
   if (f.kind === "function") return true;
-  if (f.kind === "registered") return !!register[f.id];
   if (f.kind === "date" || f.kind === "number" || f.kind === "text") {
     return isColumnValid(f.columnId);
   }
   if (f.kind === "combined")
     return (
-      isValidSimpleFilter(f.left, lookup, register, isColumnValid) &&
-      isValidSimpleFilter(f.right, lookup, register, isColumnValid)
+      isValidSimpleFilter(f.left, lookup, isColumnValid) &&
+      isValidSimpleFilter(f.right, lookup, isColumnValid)
     );
 
   return false;

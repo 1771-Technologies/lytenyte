@@ -5,7 +5,6 @@ import type {
   CellRenderers,
   ColumnHeaderHeightProperty,
   ColumnHeaderRenderers,
-  FilterRegisteredFuncs,
   FloatingCellRenderers,
   KeyBindingMap,
   RowDataSourceClient,
@@ -53,7 +52,6 @@ export interface PropsCommunity<A, D, C, E, Base, Group> {
   readonly columnBase?: Base;
 
   readonly filterModel?: ColumnFilterModel<A, D>;
-  readonly filterFunctions?: FilterRegisteredFuncs<A, D>;
 
   readonly floatingRowEnabled?: boolean;
   readonly floatingRowHeight?: ColumnHeaderHeightProperty;

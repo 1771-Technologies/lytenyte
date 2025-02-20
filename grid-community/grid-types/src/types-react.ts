@@ -4,7 +4,10 @@ import type {
   CellEditProvider,
   CellEditProviderParams,
   CellRendererParams,
+  ColumnFilter,
+  ColumnFilterModel,
   ColumnHeaderRendererParams,
+  FloatingCellRendererParams,
   RowDetailParams,
 } from "./types";
 import type { ColumnCommunityReact } from "./make-grid-react";
@@ -31,4 +34,13 @@ export type ColumnHeaderRendererParamsReact<D> = ColumnHeaderRendererParams<
   Api<D, ReactNode>,
   ColumnCommunityReact<D>
 >;
+
 export type RowDetailParamsReact<D> = RowDetailParams<Api<D, ReactNode>, D>;
+
+export type FloatingCellRendererParamsReact<D> = FloatingCellRendererParams<
+  Api<D, ReactNode>,
+  ColumnCommunityReact<D>
+>;
+
+export type ColumnFilterReact<D> = ColumnFilter<Api<D, ReactNode>, D>;
+export type ColumnFilterModelReact<D> = ColumnFilterModel<Api<D, ReactNode>, D>;

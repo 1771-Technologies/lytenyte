@@ -4,7 +4,6 @@ import type {
   FilterDate,
   FilterFunction,
   FilterNumber,
-  FilterRegistered,
   FilterText,
   RowNode,
 } from "./types";
@@ -150,7 +149,6 @@ export type ColumnFilter<A, D> =
   | FilterNumber
   | FilterDate
   | FilterCombined<A, D>
-  | FilterRegistered
   | FilterFunction<A, D>;
 
 export type ColumnFilterModel<A, D> = {

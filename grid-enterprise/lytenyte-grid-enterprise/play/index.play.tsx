@@ -4,6 +4,7 @@ import { LyteNyteGrid } from "../src/lytenyte-grid-enterprise";
 import { useClientDataSource } from "../src/use-client-data-source";
 import { useLyteNyte } from "../src/use-lytenyte";
 import { ColumnManager, PillManager } from "@1771technologies/grid-components";
+import { FloatingFilter } from "../src/components/floating-filter/floating-filter";
 
 export default function Play() {
   const ds = useClientDataSource({
@@ -25,6 +26,7 @@ export default function Play() {
       resizable: true,
       movable: true,
       sortable: true,
+      floatingCellRenderer: FloatingFilter,
     },
     floatingRowEnabled: true,
     floatingRowHeight: 32,

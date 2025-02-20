@@ -79,12 +79,6 @@ function evaluateFilter<D, E>(
     const value = toDate(rawValue);
 
     return evaluateDate(value, filter);
-  } else if (filter.kind === "registered") {
-    const funcs = api.getState().filterFunctions.peek();
-
-    const fn = funcs[filter.id];
-
-    return fn(api, row);
   } else if (filter.kind === "function") {
     return filter.func(api, row);
   } else {

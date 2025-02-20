@@ -1,0 +1,32 @@
+.lng1771-floating-filter {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  gap: 8px;
+  padding-inline: 10px;
+  box-sizing: border-box;
+}
+
+.lng1771-floating-filter__input {
+  height: 24px;
+}
+
+.lng1771-floating-filter__button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  box-sizing: border-box;
+  height: 32px;
+  width: 32px;
+  padding: 0px;
+  background-color: transparent;
+  border: none;
+  color: var(--lng1771-gray-70);
+  cursor: pointer;
+
+  &:disabled {
+    color: var(--lng1771-gray-50);
+    cursor: not-allowed;
+  }
+}

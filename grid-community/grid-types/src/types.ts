@@ -295,12 +295,6 @@ export interface FilterDate {
   readonly datePeriod: FilterDatePeriod;
 }
 
-export interface FilterRegistered {
-  readonly kind: "registered";
-  readonly id: string;
-  readonly name?: string;
-}
-
 export interface FilterCombined<A, D> {
   readonly kind: "combined";
   readonly operator: "and" | "or";
@@ -318,28 +312,17 @@ export interface FilterParams {
 }
 
 export type FilterSimpleColumn = FilterText | FilterDate | FilterNumber;
-export type FilterNonCombined<A, D> =
-  | FilterText
-  | FilterNumber
-  | FilterDate
-  | FilterRegistered
-  | FilterFunction<A, D>;
+export type FilterNonCombined<A, D> = FilterText | FilterNumber | FilterDate | FilterFunction<A, D>;
 
 export type ColumnFilter<A, D> =
   | FilterText
   | FilterNumber
   | FilterDate
   | FilterCombined<A, D>
-  | FilterRegistered
   | FilterFunction<A, D>;
 
 export type ColumnFilterModel<A, D> = {
   [columnId: string]: { simple?: ColumnFilter<A, D> | null };
-};
-
-export type FilterRegisteredFunc<A, D> = (api: A, row: RowNode<D>) => boolean;
-export type FilterRegisteredFuncs<A, D> = {
-  [id: string]: FilterRegisteredFunc<A, D>;
 };
 
 export type FloatingCellRendererParams<A, C> = {
