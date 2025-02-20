@@ -9,7 +9,7 @@ import { Input } from "@1771technologies/lytenyte-grid-community/internal";
 
 export default function Play() {
   const ds = useClientDataSource({
-    data: bankDataSmall,
+    data: bankDataSmall.slice(0, 20),
     topData: bankDataSmall.slice(0, 2),
     bottomData: bankDataSmall.slice(0, 2),
   });
@@ -19,6 +19,8 @@ export default function Play() {
     columns: columns,
     cellEditPointerActivator: "double-click",
     rowFullWidthPredicate: (p) => p.row.rowIndex === 8,
+
+    cellSelectionMode: "range",
 
     rowSelectionMode: "multiple",
     rowSelectionCheckbox: "normal",
