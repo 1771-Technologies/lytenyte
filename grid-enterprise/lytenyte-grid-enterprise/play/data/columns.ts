@@ -26,10 +26,12 @@ export const columns: ColumnEnterpriseReact<any>[] = [
     cellEditPredicate: true,
     rowSpan: (a) => (a.row.rowIndex === 4 ? 3 : 1),
     columnSpan: (a) => (a.row.rowIndex === 4 ? 3 : 1),
+    filterSupportsQuickSearch: true,
   },
   {
     id: "marital",
     aggFunc: "first",
+    filterSupportsQuickSearch: true,
   },
   { id: "default", groupPath: ["Alpha"] },
   { id: "housing" },

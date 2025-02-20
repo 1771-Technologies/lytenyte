@@ -15,21 +15,21 @@ export function filterNodesComputed<D, E>(
     const mode = sx.columnPivotModeIsOn.get();
     const rowNodes = nodes.get();
     const filterModel = mode ? sx.internal.columnPivotFilterModel.get() : sx.filterModel.get();
+    const quickFilter = sx.filterQuickSearch.get();
 
-    if (Object.keys(filterModel).length === 0) return rowNodes;
+    if (Object.keys(filterModel).length === 0 && !quickFilter) return rowNodes;
 
     const visible = sx.columnsVisible.get();
-    const quickFilter = sx.filterQuickSearch.get();
     const columnsWithQuickFilter = visible.filter((c) => c.filterSupportsQuickSearch);
 
     const filteredNodes: RowNodeLeaf<D>[] = [];
     for (let i = 0; i < rowNodes.length; i++) {
       if (!evaluateClientFilter(api, filterModel, rowNodes[i])) continue;
-      filteredNodes.push(rowNodes[i]);
-
+      console.log(quickFilter);
       if (quickFilter) {
-        evaluateQuickFilter(api, columnsWithQuickFilter, quickFilter, rowNodes[i]);
+        if (!evaluateQuickFilter(api, columnsWithQuickFilter, quickFilter, rowNodes[i])) continue;
       }
+      filteredNodes.push(rowNodes[i]);
     }
 
     return filteredNodes;

@@ -135,7 +135,9 @@ export function initialize<D, E>(
     columnPivotModeIsOn: signal(props.columnPivotModeIsOn ?? false),
     columnPivotModel: signal(props.columnPivotModel ?? []),
 
-    filterQuickSearch: signal(props.filterQuickSearch ?? null),
+    filterQuickSearch: signal(props.filterQuickSearch ?? null, {
+      postUpdate: () => queueMicrotask(api.rowRefresh),
+    }),
 
     floatingFrames: signal(props.floatingFrames ?? {}),
 

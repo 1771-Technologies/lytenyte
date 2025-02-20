@@ -5,6 +5,7 @@ import { useClientDataSource } from "../src/use-client-data-source";
 import { useLyteNyte } from "../src/use-lytenyte";
 import { ColumnManager, PillManager } from "@1771technologies/grid-components";
 import { FloatingFilter } from "../src/components/floating-filter/floating-filter";
+import { Input } from "@1771technologies/lytenyte-grid-community/internal";
 
 export default function Play() {
   const ds = useClientDataSource({
@@ -56,6 +57,10 @@ export default function Play() {
         `}
       >
         <PillManager api={grid.api} />
+        <Input
+          value={grid.state.filterQuickSearch.use() ?? ""}
+          onChange={(e) => grid.state.filterQuickSearch.set(e.target.value)}
+        />
       </div>
       <div
         className={css`

@@ -10,8 +10,8 @@ export function evaluateQuickFilter<D, E>(
   for (let i = 0; i < columns.length; i++) {
     const field = api.columnQuickSearchField(row, columns[i]);
 
-    if (!quickFilter.includes(`${field}`)) return false;
+    if (`${field}`.includes(quickFilter)) return true;
   }
 
-  return true;
+  return false;
 }
