@@ -1,5 +1,7 @@
 # @1771technologies/grid-provider
 
+## 0.0.23
+
 ## 0.0.22
 
 ## 0.0.21
