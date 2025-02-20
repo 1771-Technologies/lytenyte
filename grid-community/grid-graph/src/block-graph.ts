@@ -350,16 +350,13 @@ export class BlockGraph<D> {
    */
   readonly rowGroupPath = (r: number) => {
     const row = this.rowByIndex(r);
+
     if (!row || row.kind !== ROW_GROUP_KIND) return null;
 
     const ranges = this.rowRangesForIndex(r);
 
-    return (
-      ranges
-        .toReversed()
-        .map((r) => r.path)
-        .join(this.#blockPathSeparator) + row.pathKey
-    );
+    const lastPath = ranges.at(-1)!.path;
+    return lastPath ? `${lastPath}${this.#blockPathSeparator}${row.pathKey}` : row.pathKey;
   };
 
   /**
