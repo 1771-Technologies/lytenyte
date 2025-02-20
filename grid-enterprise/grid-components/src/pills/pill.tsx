@@ -17,6 +17,7 @@ export function Pill({ kind, label, startItem, endItem, className }: PillProps) 
       className={clsx(
         "lng1771-text-small",
         css`
+          white-space: nowrap;
           flex: 1;
           height: 28px;
           max-height: 28px;
