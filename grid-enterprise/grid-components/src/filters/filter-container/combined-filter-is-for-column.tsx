@@ -8,12 +8,7 @@ export function combinedFilterIsForColumn<D>(
   const left = c.left;
   const right = c.right;
 
-  if (
-    left.kind === "function" ||
-    right.kind === "function" ||
-    left.kind === "registered" ||
-    right.kind === "registered"
-  ) {
+  if (left.kind === "function" || right.kind === "function") {
     return false;
   }
 

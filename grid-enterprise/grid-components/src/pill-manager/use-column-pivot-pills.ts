@@ -31,7 +31,7 @@ export function useColumnPivotPills(api: ApiEnterpriseReact<any>) {
     else sx.columnPivotModel.set((prev) => [...prev, p.id]);
   });
 
-  const onDrop = useDrop(model, sx.columnPivotModel);
+  const onDrop = useDrop(model, sx.columnPivotModel, api);
 
   return { pillItems, onPillSelect, onDrop };
 }

@@ -37,7 +37,7 @@ export function useMeasurePills(api: ApiEnterpriseReact<any>) {
     else sx.measureModel.set((prev) => [...prev, p.id]);
   });
 
-  const onDrop = useDrop(model, sx.measureModel);
+  const onDrop = useDrop(model, sx.measureModel, api);
 
   return { pillItems, onPillSelect, onDrop };
 }

@@ -1,6 +1,6 @@
 import { MenuHeader, MenuItem } from "@1771technologies/react-menu";
-import { CsvIcon } from "../icons/svg-icon";
 import type { StoreEnterpriseReact } from "@1771technologies/grid-types";
+import { CsvIcon } from "@1771technologies/lytenyte-grid-community/icons";
 
 export interface CsvExportMenuItemsProps<D> {
   readonly csvLabels?: {
