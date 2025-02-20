@@ -55,7 +55,6 @@ export function initialize<D, E>(
     columnMenuState: signal(props.columnMenuState ?? {}),
     contextMenuState: signal(props.contextMenuState ?? {}),
 
-    filterFunctions: signal(props.filterFunctions ?? {}),
     filterModel: filterModelComputed(props.filterModel ?? {}, api),
 
     floatingCellRenderers: signal(props.floatingCellRenderers ?? {}),
