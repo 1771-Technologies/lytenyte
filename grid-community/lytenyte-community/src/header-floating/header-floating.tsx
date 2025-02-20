@@ -73,6 +73,8 @@ export function FloatingCell({
   const ref = useRef<HTMLDivElement | null>(null);
   const events = useFloatingFocus(api, ref, columnIndex);
 
+  const hide = api.columnIsGridGenerated(column) && !api.columnIsGroupAutoColumn(column);
+
   return (
     <div
       ref={ref}
@@ -86,7 +88,7 @@ export function FloatingCell({
       tabIndex={-1}
       className={"lng1771-header__cell-floating"}
     >
-      <Component api={api} column={column} />
+      {!hide && <Component api={api} column={column} />}
     </div>
   );
 }

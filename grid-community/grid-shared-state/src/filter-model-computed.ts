@@ -33,11 +33,6 @@ export function filterModelComputed<D, E>(
         );
       };
 
-      if (!pivots) {
-        console.log(model$.get());
-        console.log("i ran");
-      }
-
       const model = Object.entries(model$.get())
         .map((c) => {
           const columnId = c[0];
@@ -60,7 +55,10 @@ export function filterModelComputed<D, E>(
 
       return Object.fromEntries(model);
     },
-    (v) => model$.set(v),
+    (v) => {
+      model$.set(v);
+      queueMicrotask(api.rowRefresh);
+    },
   );
 }
 

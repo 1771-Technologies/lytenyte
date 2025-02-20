@@ -17,13 +17,17 @@
   align-items: center;
   justify-content: flex-end;
   box-sizing: border-box;
-  height: 32px;
-  width: 32px;
-  padding: 0px;
+  border-radius: 8px;
+  padding: 2px;
   background-color: transparent;
   border: none;
   color: var(--lng1771-gray-70);
   cursor: pointer;
+
+  &:focus-visible {
+    outline: 1px solid var(--lng1771-focus-outline);
+    outline-offset: -2px;
+  }
 
   &:disabled {
     color: var(--lng1771-gray-50);
