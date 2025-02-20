@@ -5,7 +5,7 @@ import type { FlatSimpleFilters } from "../simple-filter/simple-filter";
 import type { FilterCombined } from "@1771technologies/grid-types/community";
 
 export function combinedToFlat<D>(
-  filter: ColumnFilter<ApiEnterpriseReact<D>, D>,
+  filter: ColumnFilter<ApiEnterpriseReact<D>, D> | undefined | null,
   column: ColumnEnterpriseReact<D>,
 ) {
   const columnId = column.id;

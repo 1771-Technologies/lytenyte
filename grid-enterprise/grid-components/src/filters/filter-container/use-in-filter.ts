@@ -11,7 +11,7 @@ export function useInFilter<D>(api: ApiEnterpriseReact<D>, column: ColumnEnterpr
   const filters = isPivot ? pivotFilterModel : filterModel;
 
   const thisFilter = useMemo(() => {
-    const filter = filters[column.id].set;
+    const filter = filters[column.id]?.set;
 
     if (!filter) return null;
 
@@ -22,7 +22,7 @@ export function useInFilter<D>(api: ApiEnterpriseReact<D>, column: ColumnEnterpr
 
   useEffect(() => {
     setValues(() => {
-      const filter = filters[column.id].set;
+      const filter = filters[column.id]?.set;
       if (!filter) return null;
 
       return new Set(filter ? new Set(filter.set) : null);

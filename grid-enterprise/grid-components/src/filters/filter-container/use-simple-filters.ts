@@ -19,13 +19,13 @@ export function useSimpleFilters<D>(
   const [flatFilters, setFlatFilters] = useState(() => {
     const columnId = column.id;
     const filter = filters[columnId];
-    return combinedToFlat(filter.simple!, column);
+    return combinedToFlat(filter?.simple, column);
   });
 
   useEffect(() => {
     const columnId = column.id;
     const filter = filters[columnId];
-    setFlatFilters(combinedToFlat(filter.simple!, column));
+    setFlatFilters(combinedToFlat(filter?.simple, column));
   }, [column, filters]);
 
   const onFilterChange = useCallback(
