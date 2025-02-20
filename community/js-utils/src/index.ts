@@ -3,6 +3,7 @@ export { clsx } from "./clsx.js";
 export { containsADuplicateId } from "./contains-a-duplicate-id.js";
 export { containsElement } from "./contains-element.js";
 export { containsPoint } from "./contains-point.js";
+export { debounce } from "./debounce/debounce.js";
 export { equal } from "./equal.js";
 export { formatTable } from "./format-table.js";
 export { getClientX, getClientY } from "./get-client-xy.js";
