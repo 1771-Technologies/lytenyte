@@ -7,12 +7,7 @@ import { SrOnly } from "../sr-only";
 
 export const DefaultDelete = (props: SortDeleteComponentProps) => {
   return (
-    <IconButton
-      kind="ghost"
-      onClick={props.onDelete}
-      disabled={props.disabled}
-      disabledReason={props.disableReason}
-    >
+    <IconButton kind="ghost" onClick={props.onDelete}>
       <CrossIcon />
       <SrOnly>{cc.sortManager.use().localization!.labelDelete}</SrOnly>
     </IconButton>

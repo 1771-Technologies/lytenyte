@@ -16,8 +16,6 @@ import type { ListViewAxe } from "@1771technologies/react-list-view";
 
 export interface SortDeleteComponentProps {
   onDelete: () => void;
-  disabled: boolean;
-  disableReason: string;
 }
 
 export interface SortAddComponentProps {
@@ -217,12 +215,15 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
                       `}
                     >
                       <Delete
-                        disabled={state.length === 1}
-                        disableReason={localization.disabledLastItem}
                         onDelete={() => {
                           setState((prev) => {
                             const next = [...prev];
                             next.splice(i, 1);
+
+                            if (!next.length) {
+                              return [{ sortDirection: "ascending" }];
+                            }
+
                             return next;
                           });
                           onDelete?.();
