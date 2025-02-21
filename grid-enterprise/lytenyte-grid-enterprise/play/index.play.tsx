@@ -9,8 +9,8 @@ import { FloatingFilter } from "../src/components/floating-filter/floating-filte
 export default function Play() {
   const ds = useClientDataSource({
     data: bankDataSmall,
-    topData: bankDataSmall.slice(0, 2),
-    bottomData: bankDataSmall.slice(0, 2),
+    // topData: bankDataSmall.slice(0, 2),
+    // bottomData: bankDataSmall.slice(0, 2),
   });
 
   const grid = useLyteNyte({

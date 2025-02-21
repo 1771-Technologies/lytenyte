@@ -110,7 +110,7 @@ export const rowSelection = <D, E>(api: ApiEnterprise<D, E> | ApiCommunity<D, E>
       const allIds = new Set(backing.rowGetAllIds());
       const selectedIds = sx.rowSelectionSelectedIds.peek();
 
-      return allIds.isSubsetOf(selectedIds);
+      return allIds.size && allIds.isSubsetOf(selectedIds);
     },
     rowSelectionSelectAll: () => {
       const sx = api.getState();
