@@ -36,10 +36,10 @@ export function HeaderDivider({
 
   const isLastStart = startCount > 0 && columnIndex === startCount - 1;
   const isFirstEnd = endCount > 0 && startCount + centerCount === columnIndex;
+  const isLast = startCount + centerCount + endCount - 1 === columnIndex;
 
   const resizeProps = useResizeDivider(api, column);
 
-  const isLast = startCount + centerCount + endCount - 1 === columnIndex;
   const rtl = api.getState().rtl.use();
   const style = useMemo(() => {
     const isStart = column.pin === "start";
@@ -51,7 +51,7 @@ export function HeaderDivider({
       ? xPositions[columnIndex] - xPositions.at(-1)! + viewportWidth - 2
       : xPositions[columnIndex] + sizeFromCoord(columnIndex, xPositions) - 3 - endAdjustment;
 
-    const xAdjustment = isLastStart ? 1 : isFirstEnd ? 0 : isLast ? 0 : 0;
+    const xAdjustment = isLastStart ? 1 : isFirstEnd ? 0 : isLast ? 1 : 0;
 
     const style = {
       transform: getTransform((x - xAdjustment) * (rtl ? -1 : 1), 0),

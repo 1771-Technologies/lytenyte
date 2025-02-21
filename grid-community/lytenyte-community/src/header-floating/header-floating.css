@@ -17,11 +17,15 @@
     background-color: var(--lng1771-gray-50);
   }
 
-  &[data-pin="start"]::before {
+  &[data-lng1771-pin="start"]::before {
+    inset-inline-end: 0px;
+  }
+
+  &[data-lng1771-last-start]::before {
     inset-inline-end: 1px;
   }
 
-  &[data-pin="end"]::before {
+  &[data-lng1771-pin="end"]::before {
     inset-inline-start: 0px;
   }
 }

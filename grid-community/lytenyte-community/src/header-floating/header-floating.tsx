@@ -25,9 +25,13 @@ export function FloatingCell({
   xPositions,
   columnIndex,
   rowStart,
+
+  startCount,
 }: FloatingCellProps) {
   const isStart = column.pin === "start";
   const isEnd = column.pin === "end";
+
+  const isLastStart = columnIndex === startCount - 1;
 
   const rtl = api.getState().rtl.use();
   const style = useMemo(() => {
@@ -81,7 +85,8 @@ export function FloatingCell({
       style={style}
       {...events}
       role="columnheader"
-      data-pin={column.pin ?? "center"}
+      data-lng1771-pin={column.pin ?? "center"}
+      data-lng1771-last-start={isLastStart ? true : undefined}
       data-lng1771-column-id={column.id}
       aria-colindex={columnIndex}
       aria-colspan={1}

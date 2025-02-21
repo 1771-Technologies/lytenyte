@@ -33,7 +33,7 @@
     position: absolute;
     content: "";
     top: 0px;
-    inset-inline-end: 1px;
+    inset-inline-end: 0px;
     width: 1px;
     height: 100%;
     background-color: var(--lng1771-gray-50);
