@@ -1,5 +1,7 @@
 # @1771technologies/react-list-view
 
+## 0.0.26
+
 ## 0.0.25
 
 ## 0.0.24
