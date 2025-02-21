@@ -1,5 +1,7 @@
 # @1771technologies/react-virt
 
+## 0.0.25
+
 ## 0.0.24
 
 ## 0.0.23
