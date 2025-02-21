@@ -75,6 +75,10 @@ function CellImpl({
       aria-colspan={colSpan}
       aria-rowindex={rowIndex + 1}
       aria-colindex={columnIndex + 1}
+      data-lng1771-colid={column.id}
+      data-lng1771-rowid={rowNode.id}
+      data-lng1771-rowindex={rowIndex}
+      data-lng1771-colindex={rowIndex}
       className={clsx(
         "lng1771-cell",
         rowIndex % 2 === 1 && "lng1771-cell--alternate",

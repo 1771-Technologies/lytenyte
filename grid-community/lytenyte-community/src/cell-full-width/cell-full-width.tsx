@@ -76,6 +76,8 @@ function CellFullWidthImpl({
       aria-colspan={colCount}
       aria-rowindex={rowIndex + 1}
       aria-rowspan={1}
+      data-lng1771-rowid={row.id}
+      data-lng1771-rowindex={rowIndex}
       tabIndex={-1}
       style={{ width, ...cx.style }}
       {...events}
