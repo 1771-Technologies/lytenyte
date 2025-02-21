@@ -7,6 +7,8 @@ export function handleBeginCellEditFromEvent<D>(
   api: ApiCommunityReact<D>,
   event: MouseEvent | PointerEvent,
 ) {
+  if (event.button !== 0) return;
+
   const clientY = getClientY(event);
   const clientX = getClientX(event);
   const rowIndex = getHoveredRowIndex(api, clientY);

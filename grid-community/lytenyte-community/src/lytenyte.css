@@ -4,11 +4,11 @@
 .lng1771-header__cell-group,
 .lng1771-cell,
 .lng1771-cell__full-width {
-  &:focus-visible {
+  &:focus {
     outline: none;
   }
 
-  &:focus-visible:after {
+  &:focus:after {
     content: "";
     position: absolute;
     top: 0px;

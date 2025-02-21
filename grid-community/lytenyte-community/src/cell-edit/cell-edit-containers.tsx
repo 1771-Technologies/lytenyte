@@ -30,7 +30,7 @@ export function CellEditorCenter() {
   const p = state.internal.cellEditActiveEdits.use();
 
   const botCount = state.internal.rowBottomCount.use();
-  const firstBotIndex = yPositions.length - 2 - botCount;
+  const firstBotIndex = yPositions.length - 1 - botCount;
 
   const locations = useMemo(() => {
     return getEditRows(p, (l) => l.rowIndex >= topCount && l.rowIndex < firstBotIndex);
@@ -53,7 +53,7 @@ export function CellEditorBottom() {
   const p = state.internal.cellEditActiveEdits.use();
 
   const botCount = state.internal.rowBottomCount.use();
-  const firstBotIndex = yPositions.length - 2 - botCount;
+  const firstBotIndex = yPositions.length - 1 - botCount;
 
   const locations = useMemo(() => {
     return getEditRows(p, (l) => l.rowIndex >= firstBotIndex);
