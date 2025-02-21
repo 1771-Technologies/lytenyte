@@ -24,6 +24,10 @@ export function rowGroupModelComputed<D, E>(
       const sx = api.getState();
       sx.columns.set((prev: any[]) => [...prev]);
 
+      if ("columnPivotModeIsOn" in sx) {
+        sx.internal.columnPivotColumns.set((prev) => [...prev]);
+      }
+
       if (timeoutId) clearTimeout(timeoutId);
 
       timeoutId = setTimeout(() => {

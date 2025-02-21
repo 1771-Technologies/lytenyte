@@ -22,7 +22,7 @@ export function Rows({
 
   const layout = state.internal.virtLayout.use();
 
-  const xPositions = state.internal.columnPositions.use();
+  const xPositions = state.columnPositions.use();
   const yPositions = state.internal.rowPositions.use();
   const columns = state.columnsVisible.use();
   const refreshKey = state.internal.rowRefreshCount.use();

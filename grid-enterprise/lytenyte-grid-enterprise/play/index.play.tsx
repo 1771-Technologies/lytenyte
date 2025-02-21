@@ -3,14 +3,14 @@ import { bankDataSmall } from "./data/bank-data-small";
 import { LyteNyteGrid } from "../src/lytenyte-grid-enterprise";
 import { useClientDataSource } from "../src/use-client-data-source";
 import { useLyteNyte } from "../src/use-lytenyte";
-import { ColumnManager } from "@1771technologies/grid-components";
+import { ColumnManager, PillManager } from "@1771technologies/grid-components";
 import { FloatingFilter } from "../src/components/floating-filter/floating-filter";
 
 export default function Play() {
   const ds = useClientDataSource({
     data: bankDataSmall,
-    // topData: bankDataSmall.slice(0, 2),
-    // bottomData: bankDataSmall.slice(0, 2),
+    topData: bankDataSmall.slice(0, 2),
+    bottomData: bankDataSmall.slice(0, 2),
   });
 
   const grid = useLyteNyte({
@@ -57,11 +57,7 @@ export default function Play() {
           width: 100%;
         `}
       >
-        <input
-          value={grid.state.filterQuickSearch.use() ?? ""}
-          onChange={(e) => grid.state.filterQuickSearch.set(e.target.value || null)}
-        />
-        {/* <PillManager api={grid.api} /> */}
+        <PillManager api={grid.api} />
       </div>
       <div
         className={css`

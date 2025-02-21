@@ -59,6 +59,7 @@ export function columnsComputed<D, E>(
     bind: (v) => {
       return processColumns(v);
     },
+    postUpdate: () => queueMicrotask(api.rowRefresh),
   });
 
   return columns as any;
