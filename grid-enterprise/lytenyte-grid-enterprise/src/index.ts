@@ -8,7 +8,7 @@ export type { LyteNyteGridEnterpriseProps } from "./lytenyte-grid-enterprise.js"
 export { LyteNyteGrid } from "./lytenyte-grid-enterprise.js";
 
 export { useLyteNyte } from "./use-lytenyte.js";
-export { useClientDataSource } from "./use-client-data-source.js";
+export * from "./use-client-data-source.js";
 export { useTreeDataSource } from "./use-tree-data-source.js";
 
 export { activateLicense, hasAValidLicense } from "./license.js";

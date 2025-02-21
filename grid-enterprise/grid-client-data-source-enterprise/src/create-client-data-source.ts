@@ -47,9 +47,13 @@ export interface ClientDataSourceInitial<D> {
   readonly bottomData?: D[];
 }
 
+export interface ClientRowDataSource<D, E> extends RowDataSourceEnterprise<D, E> {
+  readonly data: (section?: "top" | "center" | "bottom") => D[];
+}
+
 export function createClientDataSource<D, E>(
   r: ClientDataSourceInitial<D>,
-): RowDataSourceEnterprise<D, E> {
+): ClientRowDataSource<D, E> {
   const state = cascada(() => {
     const api$ = signal<ApiEnterprise<D, E>>(null as unknown as ApiEnterprise<D, E>);
 
@@ -149,6 +153,20 @@ export function createClientDataSource<D, E>(
     clean: () => {
       watchers.forEach((c) => c());
       watchers = [];
+    },
+
+    data: (section) => {
+      if (!section) {
+        return [
+          ...state.rowTopNodes.peek(),
+          ...state.rowCenterNodes.peek(),
+          ...state.rowBottomNodes.peek(),
+        ].map((c) => c.data);
+      }
+      if (section === "bottom") return state.rowBottomNodes.peek().map((c) => c.data);
+      if (section === "top") return state.rowTopNodes.peek().map((c) => c.data);
+
+      return state.rowCenterNodes.peek().map((c) => c.data);
     },
 
     rowByIndex: (r) => rowByIndex(state, r),
