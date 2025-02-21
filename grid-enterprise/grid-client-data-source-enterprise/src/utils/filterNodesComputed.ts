@@ -3,6 +3,7 @@ import { evaluateClientFilter } from "@1771technologies/grid-client-filter";
 import type { ApiEnterprise } from "@1771technologies/grid-types";
 import type { RowNodeLeaf } from "@1771technologies/grid-types/community";
 import { evaluateQuickFilter } from "@1771technologies/grid-core-enterprise";
+import { hasUppercaseLetter } from "@1771technologies/js-utils";
 
 export function filterNodesComputed<D, E>(
   api$: Signal<ApiEnterprise<D, E>>,
@@ -16,7 +17,7 @@ export function filterNodesComputed<D, E>(
     const rowNodes = nodes.get();
     const filterModel = mode ? sx.internal.columnPivotFilterModel.get() : sx.filterModel.get();
 
-    const quickFilter = sx.filterQuickSearch.get();
+    const quickFilter = sx.filterQuickSearch.get() ?? "";
     if (Object.keys(filterModel).length === 0 && !quickFilter) return rowNodes;
 
     const filteredNodes: RowNodeLeaf<D>[] = [];
@@ -24,10 +25,15 @@ export function filterNodesComputed<D, E>(
     const visible = sx.columnsVisible.get();
     const columnsWithQuickFilter = visible.filter((c) => c.filterSupportsQuickSearch);
 
+    const caseSensitive = hasUppercaseLetter(quickFilter);
+
     for (let i = 0; i < rowNodes.length; i++) {
       if (!evaluateClientFilter(api, filterModel, rowNodes[i])) continue;
       if (quickFilter) {
-        if (!evaluateQuickFilter(api, columnsWithQuickFilter, quickFilter, rowNodes[i])) continue;
+        if (
+          !evaluateQuickFilter(api, columnsWithQuickFilter, quickFilter, rowNodes[i], caseSensitive)
+        )
+          continue;
       }
 
       filteredNodes.push(rowNodes[i]);

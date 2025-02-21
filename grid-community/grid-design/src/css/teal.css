@@ -70,10 +70,6 @@
   --lng1771-text-x-light: var(--lng1771-gray-60);
 
   /* Grid theme */
-
-  --lng1771-typeface: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
-    "Courier New", monospace;
-
   --lng1771-primary-05: rgba(3, 182, 161, 0.05);
   --lng1771-primary-10: rgba(3, 182, 161, 0.05);
   --lng1771-primary-30: rgba(3, 182, 161, 0.25);

@@ -6,11 +6,14 @@ export function evaluateQuickFilter<D, E>(
   columns: ColumnEnterprise<D, E>[],
   quickFilter: string,
   row: RowNodeLeaf<D>,
+  caseSensitive: boolean,
 ) {
   for (let i = 0; i < columns.length; i++) {
     const field = api.columnQuickSearchField(row, columns[i]);
 
-    if (`${field}`.includes(quickFilter)) return true;
+    const stringField = caseSensitive ? String(field) : String(field).toLowerCase();
+
+    if (stringField.includes(quickFilter)) return true;
   }
 
   return false;

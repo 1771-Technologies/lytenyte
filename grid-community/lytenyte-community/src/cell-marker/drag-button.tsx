@@ -8,7 +8,9 @@ export function DragButton({ api, row }: { api: ApiCommunityReact<any>; row: Row
   const draggable = useDragControl(api, row);
 
   return (
-    <GridButton {...draggable}>
+    // We need to stop propagation on capture to prevent other drag events like
+    // range cell selection from occurring.
+    <GridButton {...draggable} onPointerDownCapture={(e) => e.stopPropagation()}>
       <DragDots width={10} height={10} />
     </GridButton>
   );

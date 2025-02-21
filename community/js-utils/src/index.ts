@@ -17,6 +17,7 @@ export { getRelativeYPosition } from "./get-relative-y-position.js";
 export { getStringTableWidths } from "./get-string-table-widths.js";
 export { get } from "./get.js";
 export { handleCircularFocus } from "./handle-circular-focus.js";
+export { hasUppercaseLetter } from "./has-uppercase-letter.js";
 export { isHTMLElement } from "./is-html-element.js";
 export { isPromise } from "./is-promise.js";
 export { isValidDate } from "./is-valid-date.js";

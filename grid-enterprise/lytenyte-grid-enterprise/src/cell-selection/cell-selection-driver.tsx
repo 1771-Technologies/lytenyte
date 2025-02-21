@@ -198,6 +198,7 @@ export function CellSelectionDriver() {
 
       lastRect = startSelection;
       document.addEventListener("pointermove", pointerMove);
+      document.addEventListener("contextmenu", pointerUp);
       document.addEventListener("pointerup", pointerUp);
     };
 
@@ -221,6 +222,7 @@ export function CellSelectionDriver() {
       cancelX();
       cancelY();
       document.removeEventListener("pointerup", pointerUp);
+      document.removeEventListener("contextmenu", pointerUp);
       document.removeEventListener("pointermove", pointerMove);
     };
     viewport.addEventListener("pointerdown", pointerDown);
