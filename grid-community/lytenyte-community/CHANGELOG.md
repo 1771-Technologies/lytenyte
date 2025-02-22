@@ -1,5 +1,7 @@
 # @1771technologies/lytenyte-grid-community
 
+## 0.0.31
+
 ## 0.0.30
 
 ## 0.0.29
