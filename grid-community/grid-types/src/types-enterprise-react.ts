@@ -3,6 +3,10 @@ import type { Api } from "./make-grid-enterprise";
 import type {
   ColumnFilter,
   ColumnFilterModel,
+  ColumnMenuRenderer,
+  ColumnMenuRendererParams,
+  ContextMenuRenderer,
+  ContextMenuRendererParams,
   FloatingFrame as FF,
   PanelFrame,
 } from "./types-enterprise";
@@ -37,3 +41,16 @@ export type FloatingCellRendererParamsReact<D> = FloatingCellRendererParams<
 
 export type ColumnFilterReact<D> = ColumnFilter<Api<D, ReactNode>, D>;
 export type ColumnFilterModelReact<D> = ColumnFilterModel<Api<D, ReactNode>, D>;
+
+export type ContextMenuRendererParamsReact<D> = ContextMenuRendererParams<Api<D, ReactNode>>;
+export type ContextMenuRendererReact<D> = ContextMenuRenderer<Api<D, ReactNode>, ReactNode>;
+
+export type ColumnMenuRendererReact<D> = ColumnMenuRenderer<
+  Api<D, ReactNode>,
+  ColumnEnterpriseReact<D>,
+  ReactNode
+>;
+export type ColumnMenuRendererParamsReact<D> = ColumnMenuRendererParams<
+  Api<D, ReactNode>,
+  ColumnEnterpriseReact<D>
+>;

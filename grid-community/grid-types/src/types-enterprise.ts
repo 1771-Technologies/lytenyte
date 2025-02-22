@@ -73,21 +73,22 @@ export type ColumnMenuItem<D = any> =
 
 // Context Menu
 
-export type ContextMenuGridTargets =
-  | "cell"
-  | "header"
-  | "header-group"
-  | "header-floating"
-  | (string & {});
+export type ColumnMenuRendererParams<A, C> = {
+  api: A;
+  column: C;
+};
+export type ColumnMenuRenderer<A, C, E> = (p: ColumnMenuRendererParams<A, C>) => E;
 
-export type ContextMenuItemParams<A> = {
+export type ContextMenuGridTargets = "cell" | "header" | "header-group" | "header-floating";
+
+export type ContextMenuRendererParams<A> = {
+  readonly menuTarget: ContextMenuGridTargets;
   readonly api: A;
-  readonly target: ContextMenuGridTargets;
   readonly columnIndex?: number | null;
   readonly rowIndex?: number | null;
 };
 
-export type ContextMenuItems<A, E> = (p: ContextMenuItemParams<A>) => ColumnMenuItem<E>[] | null;
+export type ContextMenuRenderer<A, E> = (p: ContextMenuRendererParams<A>) => E;
 
 // Clipboard
 export interface ClipboardTransformCopyParams<A> {

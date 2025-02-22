@@ -8,7 +8,8 @@ import type {
   ClipboardTransformHeaderGroup,
   ClipboardTransformPaste,
   ColumnFilterModel,
-  ContextMenuItems,
+  ColumnMenuRenderer,
+  ContextMenuRenderer,
   FloatingFrame,
   OverlayId,
   Overlays,
@@ -24,14 +25,14 @@ export interface PropsEnterprise<A, D, C, E, Base, Group>
   readonly cellSelections?: CellSelectionRect[];
   readonly cellSelectionMode?: CellSelectionMode;
 
-  readonly columnMenuRenderer?: null | ((p: { api: A; column: C }) => E);
+  readonly columnMenuRenderer?: null | ColumnMenuRenderer<A, C, E>;
 
   readonly columnPivotModeIsOn?: boolean;
   readonly columnPivotModel?: string[];
 
   readonly columnMenuState?: any;
 
-  readonly contextMenuItems?: ContextMenuItems<A, E> | null;
+  readonly contextMenuRenderer?: ContextMenuRenderer<A, E>;
   readonly contextMenuState?: any;
 
   readonly clipboardTransformCellValue?: ClipboardTransformCellValue<A, D, C> | null;
