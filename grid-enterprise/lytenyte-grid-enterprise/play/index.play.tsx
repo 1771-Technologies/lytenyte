@@ -30,6 +30,22 @@ export default function Play() {
       return <div>Context menu</div>;
     },
 
+    rowGroupColumnTemplate: {
+      headerRenderer: (p) => {
+        return (
+          <div
+            className={css`
+              width: 100%;
+              height: 100%;
+            `}
+            onClick={() => p.api.columnSortCycleToNext(p.column)}
+          >
+            Group
+          </div>
+        );
+      },
+    },
+
     columnBase: {
       resizable: true,
       movable: true,

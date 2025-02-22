@@ -24,7 +24,8 @@ export function sortModelComputed<D, E>(
         const column = lookup.get(c.columnId);
         if (!column) return false;
 
-        if (!pivots && api.columnIsPivot?.(column)) return false;
+        if (!pivots && !api.columnIsGroupAutoColumn(column) && api.columnIsPivot?.(column))
+          return false;
 
         return (
           !api.columnIsEmpty(column) && !api.columnIsMarker(column) && api.columnIsSortable(column)
