@@ -1,5 +1,12 @@
 # @1771technologies/lytenyte-grid-enterprise
 
+## 0.0.30
+
+### Patch Changes
+
+[Commit: 5bc1a620c2c6](https://github.com/1771-Technologies/lytenyte/commit/5bc1a620c2c61520d63a9f2f58a1d976c5526803)
+Changes
+
 ## 0.0.29
 
 ### Patch Changes

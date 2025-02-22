@@ -1,5 +1,7 @@
 # @1771technologies/react-context-menu
 
+## 0.0.30
+
 ## 0.0.29
 
 ## 0.0.28
