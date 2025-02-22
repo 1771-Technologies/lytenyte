@@ -52,9 +52,6 @@ export function initialize<D, E>(
     columnHeaderRenderers: signal(props.columnHeaderRenderers ?? {}),
     columnSpanScanDistance: signal(props.columnSpanScanDistance ?? COLUMN_SCAN_DISTANCE),
 
-    columnMenuState: signal(props.columnMenuState ?? {}),
-    contextMenuState: signal(props.contextMenuState ?? {}),
-
     filterModel: filterModelComputed(props.filterModel ?? {}, api),
 
     floatingCellRenderers: signal(props.floatingCellRenderers ?? {}),
@@ -123,8 +120,7 @@ export function initialize<D, E>(
     cellSelectionMode: signal(props.cellSelectionMode ?? "none"),
 
     columnMenuRenderer: signal(props.columnMenuRenderer ?? null),
-
-    contextMenuItems: signal(props.contextMenuItems ?? null),
+    contextMenuRenderer: signal(props.contextMenuRenderer ?? null),
 
     clipboardTransformCellValue: signal(props.clipboardTransformCellValue ?? null),
     clipboardTransformCopy: signal(props.clipboardTransformCopy ?? null),

@@ -107,6 +107,7 @@ export function HeaderGroupCell({
       onFocus={onFocus}
       style={style}
       data-lng1771-group-id={groupItem.id}
+      data-lng1771-kind="header-group"
       aria-colindex={groupItem.start + 1}
       aria-colspan={groupItem.end - groupItem.start}
       role="columnheader"

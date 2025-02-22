@@ -24,6 +24,12 @@ export default function Play() {
     rowSelectionCheckbox: "normal",
     rowDragEnabled: true,
 
+    contextMenuRenderer: (p) => {
+      if (p.menuTarget === "header") return null;
+
+      return <div>Context menu</div>;
+    },
+
     columnBase: {
       resizable: true,
       movable: true,

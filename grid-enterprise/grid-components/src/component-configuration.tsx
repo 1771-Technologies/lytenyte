@@ -17,7 +17,6 @@ import { SearchIcon } from "./icons/search-icon";
 import type { FilterConfiguration } from "./filters/filter";
 import type { ListViewAxe } from "@1771technologies/react-list-view";
 import type { SelectItem } from "./select/select";
-import type { ContextMenuConfiguration } from "./context-menu-driver/context-menu-driver";
 import type { PillManagerConfiguration } from "./pill-manager/pill-manager";
 
 export type ComponentConfiguration = {
@@ -26,7 +25,6 @@ export type ComponentConfiguration = {
   sortManager: Signal<SortManagerConfiguration>;
   tooltip: Signal<Omit<TooltipProps, "ref">>;
   menu: Signal<MenuConfiguration>;
-  contextMenu: Signal<ContextMenuConfiguration>;
   filter: Signal<FilterConfiguration>;
   pillManager: Signal<PillManagerConfiguration>;
 };
@@ -141,9 +139,6 @@ export const cc = cascada<ComponentConfiguration>(() => {
     }),
 
     menu: mergeSignal<MenuConfiguration>({
-      axe: menuAxeDefault,
-    }),
-    contextMenu: mergeSignal<ContextMenuConfiguration>({
       axe: menuAxeDefault,
     }),
 

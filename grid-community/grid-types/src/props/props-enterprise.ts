@@ -30,10 +30,7 @@ export interface PropsEnterprise<A, D, C, E, Base, Group>
   readonly columnPivotModeIsOn?: boolean;
   readonly columnPivotModel?: string[];
 
-  readonly columnMenuState?: any;
-
-  readonly contextMenuRenderer?: ContextMenuRenderer<A, E>;
-  readonly contextMenuState?: any;
+  readonly contextMenuRenderer?: null | ContextMenuRenderer<A, E>;
 
   readonly clipboardTransformCellValue?: ClipboardTransformCellValue<A, D, C> | null;
   readonly clipboardTransformHeader?: ClipboardTransformHeader<A, C> | null;

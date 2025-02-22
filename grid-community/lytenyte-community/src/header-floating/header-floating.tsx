@@ -85,6 +85,7 @@ export function FloatingCell({
       style={style}
       {...events}
       role="columnheader"
+      data-lng1771-kind="floating"
       data-lng1771-pin={column.pin ?? "center"}
       data-lng1771-last-start={isLastStart ? true : undefined}
       data-lng1771-column-id={column.id}

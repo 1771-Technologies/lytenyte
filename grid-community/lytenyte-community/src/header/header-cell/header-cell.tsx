@@ -97,6 +97,7 @@ export function HeaderCell({
       ref={ref as any}
       role="columnheader"
       data-lng1771-column-id={column.id}
+      data-lng1771-kind="header"
       aria-colindex={columnIndex + 1}
       aria-colspan={1}
       aria-sort={sortDir === "asc" ? "ascending" : sortDir === "desc" ? "descending" : "none"}
