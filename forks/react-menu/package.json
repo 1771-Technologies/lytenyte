@@ -25,7 +25,7 @@
     "access": "public",
     "exports": {
       ".": {
-        "types": "./types/types/index.d.ts",
+        "types": "./types/index.d.ts",
         "import": "./dist/index.js",
         "require": "./dist/index.js"
       },
