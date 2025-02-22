@@ -34,18 +34,5 @@ export { FloatingFilter } from "./components/floating-filter/floating-filter.js"
 export { SortManagerFloating } from "./components/sort/sort-floating-frame.js";
 export { ColumnManagerFloating } from "./components/column-manager/column-manager-floating-frame.js";
 
-// Menu
-export {
-  ControlledMenu,
-  Menu,
-  FocusableItem,
-  MenuItem,
-  MenuDivider,
-  MenuRadioGroup,
-  MenuGroup,
-  MenuHeader,
-  SubMenu,
-} from "@1771technologies/react-menu";
-
 export type { CsvExportMenuItemsProps } from "./components/export/export-menu.js";
 export { CsvExportMenuItems } from "./components/export/export-menu.js";

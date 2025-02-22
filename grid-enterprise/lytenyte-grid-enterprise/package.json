@@ -17,6 +17,11 @@
       "types": "./src/types.ts",
       "import": "./src/types.ts",
       "require": "./src/types.ts"
+    },
+    "./menu": {
+      "types": "./src/menu.ts",
+      "import": "./src/menu.ts",
+      "require": "./src/menu.ts"
     }
   },
   "publishConfig": {
@@ -31,6 +36,11 @@
         "types": "./dist/types/types.d.ts",
         "import": "./dist/types.js",
         "require": "./dist/types.js"
+      },
+      "./menu": {
+        "types": "./dist/types/menu.d.ts",
+        "import": "./dist/menu.js",
+        "require": "./dist/menu.js"
       },
       "./css": "./dist/lytenyte-grid-enterprise.css"
     }
