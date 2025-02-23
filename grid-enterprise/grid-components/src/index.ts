@@ -10,6 +10,3 @@ export { ColumnManager } from "./column-manager/column-manager.js";
 
 export type { PillManagerProps } from "./pill-manager/pill-manager.js";
 export { PillManager } from "./pill-manager/pill-manager.js";
-
-export type { SortManagerProps } from "./sort-manager/sort-manager.js";
-export { SortManager } from "./sort-manager/sort-manager.js";

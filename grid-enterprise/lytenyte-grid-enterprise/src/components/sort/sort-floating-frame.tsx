@@ -1,5 +1,5 @@
-import { SortManager } from "@1771technologies/grid-components";
 import type { StoreEnterpriseReact } from "@1771technologies/grid-types";
+import { SortManager } from "../sort-manager/sort-manager";
 
 export function SortManagerFloating<D>({ grid }: { grid: StoreEnterpriseReact<D> }) {
   return (

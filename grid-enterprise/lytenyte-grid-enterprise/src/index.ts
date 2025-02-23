@@ -17,8 +17,6 @@ export { activateLicense, hasAValidLicense } from "./license.js";
  *  COMPONENTS
  */
 
-export * from "@1771technologies/lytenyte-grid-community/icons";
-
 // Managers
 export type { ColumnManagerFrameProps, PillManagerProps } from "@1771technologies/grid-components";
 export { ColumnManagerFrame, PillManager } from "@1771technologies/grid-components";

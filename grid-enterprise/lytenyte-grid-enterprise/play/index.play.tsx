@@ -2,11 +2,9 @@ import { columns } from "./data/columns";
 import { bankDataSmall } from "./data/bank-data-small";
 import { useClientDataSource } from "../src/use-client-data-source";
 import { useLyteNyte } from "../src/use-lytenyte";
-import { ColumnManager, SortManager } from "@1771technologies/grid-components";
+import { ColumnManager } from "@1771technologies/grid-components";
 import { FloatingFilter } from "../src/components/floating-filter/floating-filter";
-import { Dropdown } from "../src/components-internal/dropdown/dropdown";
-import { useState } from "react";
-import { SortManager2 } from "../src/components/sort-mananger/sort-manager";
+import { LyteNyteGrid } from "../src";
 
 export default function Play() {
   const ds = useClientDataSource({
@@ -97,17 +95,8 @@ export default function Play() {
           className={css`
             flex: 1;
           `}
-        >
-          <SortManager2 grid={grid} />
-        </div>
-        <div
-          className={css`
-            flex: 1;
-          `}
-        >
-          <SortManager grid={grid} />
-        </div>
-        {/* <LyteNyteGrid grid={grid} /> */}
+        ></div>
+        <LyteNyteGrid grid={grid} />
       </div>
     </div>
   );

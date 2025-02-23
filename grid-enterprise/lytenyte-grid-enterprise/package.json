@@ -18,6 +18,11 @@
       "import": "./src/types.ts",
       "require": "./src/types.ts"
     },
+    "./icons": {
+      "types": "./src/icons.ts",
+      "import": "./src/icons.ts",
+      "require": "./src/icons.ts"
+    },
     "./menu": {
       "types": "./src/menu.ts",
       "import": "./src/menu.ts",
@@ -36,6 +41,11 @@
         "types": "./dist/types/types.d.ts",
         "import": "./dist/types.js",
         "require": "./dist/types.js"
+      },
+      "./icons": {
+        "types": "./dist/types/icons.d.ts",
+        "import": "./dist/icons.js",
+        "require": "./dist/icons.js"
       },
       "./menu": {
         "types": "./dist/types/menu.d.ts",

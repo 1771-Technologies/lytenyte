@@ -8,6 +8,7 @@ import { Separator } from "../../components-internal/separator";
 import { sortModelToSortItems } from "./sort-model-to-sort-items";
 import { sortItemsToSortModel } from "./sort-items-to-sort-model";
 import { CrossIcon, PlusIcon } from "@1771technologies/lytenyte-grid-community/icons";
+import { Button } from "../../components-internal/button/button";
 
 export interface SortDeleteComponentProps {
   onDelete: () => void;
@@ -28,7 +29,7 @@ export interface SortManagerProps<D> {
   readonly onDelete?: () => void;
 }
 
-export function SortManager2<D>({ grid, onCancel, onApply, onAdd, onDelete }: SortManagerProps<D>) {
+export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: SortManagerProps<D>) {
   const columnItems = useColumnsSelectItems(grid);
 
   const [state, setState] = useSortState(grid);
@@ -79,14 +80,15 @@ export function SortManager2<D>({ grid, onCancel, onApply, onAdd, onDelete }: So
                 />
                 <Dropdown
                   items={sortValuesValues}
-                  selected={sortDirectionValues.find((v) => v.value === c.sortOn) ?? null}
+                  selected={sortValuesValues.find((v) => v.value === c.sortOn) ?? null}
                   onSelect={(sortOn) => {
+                    if (!sortOn) return;
                     setState((prev) => {
                       const v = { ...prev[i] };
                       v.sortOn = sortOn!.value as SortItem["sortOn"];
                       const next = [...prev];
-                      next.splice(i, 1, v);
 
+                      next.splice(i, 1, v);
                       return next;
                     });
                   }}
@@ -95,6 +97,7 @@ export function SortManager2<D>({ grid, onCancel, onApply, onAdd, onDelete }: So
                 <Dropdown
                   items={sortDirectionValues}
                   onSelect={(item) => {
+                    if (!item) return;
                     setState((prev) => {
                       const v = { ...prev[i] };
                       v.sortDirection = item!.value as SortItem["sortDirection"];
@@ -152,7 +155,8 @@ export function SortManager2<D>({ grid, onCancel, onApply, onAdd, onDelete }: So
           {/* Controls */}
           <Separator dir="horizontal" style={{ gridColumn: "-1 / 1" }} />
           <div className="lng1771-sort-manager__sort-controls">
-            <button
+            <Button
+              kind="secondary"
               onClick={() => {
                 setState(sortModelToSortItems(grid.state.sortModel.peek(), grid));
 
@@ -161,8 +165,9 @@ export function SortManager2<D>({ grid, onCancel, onApply, onAdd, onDelete }: So
               className="lng1771-sort-manager__sort_cancel"
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
+              kind="primary"
               onClick={() => {
                 grid.state.sortModel.set(sortItemsToSortModel(state));
 
@@ -171,7 +176,7 @@ export function SortManager2<D>({ grid, onCancel, onApply, onAdd, onDelete }: So
               className="lng1771-sort-manager__sort_apply"
             >
               Apply
-            </button>
+            </Button>
           </div>
         </div>
       </div>
