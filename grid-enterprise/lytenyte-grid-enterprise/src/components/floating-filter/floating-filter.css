@@ -8,8 +8,9 @@
   box-sizing: border-box;
 }
 
-.lng1771-floating-filter__input {
+.lng1771-input.lng1771-floating-filter__input {
   height: 24px;
+  flex: 1;
 }
 
 .lng1771-floating-filter__button {
