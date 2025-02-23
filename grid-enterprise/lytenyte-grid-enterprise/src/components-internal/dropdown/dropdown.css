@@ -1,0 +1,118 @@
+.lng1771-dropdown {
+  min-width: 120px;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  border: none;
+  background-color: var(--lng1771-gray-05);
+  border: 1px solid transparent;
+  box-sizing: border-box;
+  box-shadow:
+    0px 1.5px 2px 0px rgba(0, 0, 0, 0),
+    0px 0px 0px 1px var(--lng1771-gray-30);
+  border-radius: 6px;
+  height: 28px;
+
+  &:focus-within {
+    outline: none;
+    border-color: var(--lng1771-focus-outline);
+  }
+}
+
+.lng1771-dropdown__input {
+  flex: 1;
+  height: 100%;
+  padding-inline: 10px;
+  border: none;
+  background-color: transparent;
+
+  color: var(--lng1771-gray-80);
+  user-select: none;
+
+  cursor: pointer;
+
+  &::selection {
+    background-color: transparent;
+  }
+  &:focus {
+    outline: none;
+  }
+}
+
+.lng1771-dropdown__chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  margin: 0px;
+  padding: 0px;
+  background-color: transparent;
+  border: none;
+  height: 32px;
+  width: 28px;
+
+  transform: rotate(90deg);
+  color: var(--lng1771-gray-70);
+  font-size: 16px;
+  font-weight: bold;
+  outline: none;
+}
+
+.lng1771-dropdown__label {
+  font-size: 12px;
+  font-family: var(--lng1771-typeface);
+  color: var(--lng1771-gray-80);
+}
+
+.lng1771-dropdown__list-container {
+  background-color: var(--lng1771-gray-10);
+  border: 1px solid var(--lng1771-gray-30);
+  padding: 4px;
+  border-radius: 8px;
+
+  box-sizing: border-box;
+
+  box-shadow:
+    0px 14px 18px -6px rgba(30, 30, 41, 0.07),
+    0px 3px 13px 0px rgba(30, 30, 41, 0.1);
+}
+
+.lng1771-dropdown__list {
+  padding: 0px;
+  list-style: none;
+  margin: 0px;
+  background-color: transparent;
+  padding-inline: 2px;
+}
+
+.lng1771-dropdown__list-item {
+  padding-inline-start: 8px;
+  padding-inline-end: 6px;
+  padding-block: 8px;
+  max-width: 100%;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 24px;
+  border-radius: 6px;
+
+  font-size: 14px;
+  font-family: var(--lng1771-typeface);
+  color: var(--lng1771-gray-80);
+
+  & span {
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+}
+
+.lng1771-dropdown__list-item--focused {
+  background-color: var(--lng1771-gray-30);
+}
+
+.lng1771-dropdown__list-item--select-icon {
+  color: var(--lng1771-primary-50);
+  font-weight: 600;
+}

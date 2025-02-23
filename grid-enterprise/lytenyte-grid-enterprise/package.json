@@ -50,6 +50,7 @@
     "react-dom": "^18.0.0 || ^19.0.0"
   },
   "dependencies": {
+    "@1771technologies/positioner": "workspace:*",
     "@1771technologies/grid-types": "workspace:*",
     "@1771technologies/grid-store-enterprise": "workspace:*",
     "@1771technologies/grid-client-data-source-enterprise": "workspace:*",
@@ -63,6 +64,7 @@
     "@1771technologies/react-split-pane": "workspace:*",
     "@1771technologies/react-dragon": "workspace:*",
     "@1771technologies/react-menu": "workspace:*",
+    "@1771technologies/react-autocomplete": "workspace:*",
     "@1771technologies/react-sizer": "workspace:*",
     "@1771technologies/react-utils": "workspace:*",
     "@1771technologies/js-utils": "workspace:*"
