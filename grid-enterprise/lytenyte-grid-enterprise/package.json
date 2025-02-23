@@ -32,6 +32,11 @@
       "types": "./src/sort-manager.ts",
       "import": "./src/sort-manager.ts",
       "require": "./src/sort-manager.ts"
+    },
+    "./filters": {
+      "types": "./src/filters.ts",
+      "import": "./src/filters.ts",
+      "require": "./src/filters.ts"
     }
   },
   "publishConfig": {
@@ -61,6 +66,11 @@
         "types": "./dist/types/sort-manager.d.ts",
         "import": "./dist/sort-manager.js",
         "require": "./dist/sort-manager.js"
+      },
+      "./filters": {
+        "types": "./dist/types/filters.d.ts",
+        "import": "./dist/filters.js",
+        "require": "./dist/filters.js"
       },
       "./css": "./dist/lytenyte-grid-enterprise.css"
     }

@@ -1,5 +1,4 @@
 import { cascada, signal, type Signal } from "@1771technologies/react-cascada";
-import type { SortManagerConfiguration } from "./sort-manager/sort-manager";
 import type { TooltipProps } from "@1771technologies/react-tooltip";
 import { clsx } from "@1771technologies/js-utils";
 import { t } from "@1771technologies/grid-design";
@@ -22,7 +21,6 @@ import type { PillManagerConfiguration } from "./pill-manager/pill-manager";
 export type ComponentConfiguration = {
   columnManager: Signal<ColumnManagerConfiguration>;
   floatingFrame: Signal<FloatingFrameConfiguration>;
-  sortManager: Signal<SortManagerConfiguration>;
   tooltip: Signal<Omit<TooltipProps, "ref">>;
   menu: Signal<MenuConfiguration>;
   filter: Signal<FilterConfiguration>;
@@ -140,29 +138,6 @@ export const cc = cascada<ComponentConfiguration>(() => {
 
     menu: mergeSignal<MenuConfiguration>({
       axe: menuAxeDefault,
-    }),
-
-    sortManager: mergeSignal<SortManagerConfiguration>({
-      localization: {
-        labelSortByColumn: "Column",
-        labelSortOn: "Sort on",
-        labelOrder: "Order",
-        labelApply: "OK",
-        labelCancel: "Cancel",
-        labelAdd: "Add sort",
-        labelDelete: "Delete sort",
-        labelEmptyColumnSet: "There are no sortable columns.",
-
-        placeholderColumnSelect: "Sort by",
-        placeholderSort: "Select...",
-        placeholderOrder: "Select...",
-
-        disabledLastItem: "This sort can not be removed because it is the last item.",
-        disabledNoMoreSortableColumns:
-          "Another sort can not be added because there are no more sortable columns left.",
-      },
-
-      axe: itemAxe,
     }),
 
     tooltip: mergeSignal<Omit<TooltipProps, "ref">>({

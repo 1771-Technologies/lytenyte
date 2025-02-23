@@ -29,7 +29,6 @@ export { GridContainer } from "./components/grid-container/grid-container.js";
 export { FloatingFilter } from "./components/floating-filter/floating-filter.js";
 
 // Floating Frame Components
-export { SortManagerFloating } from "./components/sort/sort-floating-frame.js";
 export { ColumnManagerFloating } from "./components/column-manager/column-manager-floating-frame.js";
 
 export type { CsvExportMenuItemsProps } from "./components/export/export-menu.js";
