@@ -6,6 +6,7 @@ import { ColumnManager, SortManager } from "@1771technologies/grid-components";
 import { FloatingFilter } from "../src/components/floating-filter/floating-filter";
 import { Dropdown } from "../src/components-internal/dropdown/dropdown";
 import { useState } from "react";
+import { SortManager2 } from "../src/components/sort-mananger/sort-manager";
 
 export default function Play() {
   const ds = useClientDataSource({
@@ -92,7 +93,20 @@ export default function Play() {
           flex: 1;
         `}
       >
-        <SortManager grid={grid} />
+        <div
+          className={css`
+            flex: 1;
+          `}
+        >
+          <SortManager2 grid={grid} />
+        </div>
+        <div
+          className={css`
+            flex: 1;
+          `}
+        >
+          <SortManager grid={grid} />
+        </div>
         {/* <LyteNyteGrid grid={grid} /> */}
       </div>
     </div>

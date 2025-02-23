@@ -1,6 +1,7 @@
 export { AggregationIcon } from "./aggregation-icon.js";
 export { AscendingIcon } from "./ascending-icon.js";
 export { AutosizeIcon } from "./autosize-icon.js";
+export { CrossIcon } from "./cross-icon.js";
 export { DescendingIcon } from "./descending-icon.js";
 export { DownloadIcon } from "./download-icon.js";
 export { ExcelIcon } from "./excel-icon.js";
@@ -8,6 +9,7 @@ export { FunnelIcon } from "./funnel-icon.js";
 export { GroupByColumnIcon } from "./group-by-column-icon.js";
 export { HideColumnIcon } from "./hide-column-icon.js";
 export { ManageColumnsIcon } from "./manage-columns-icon.js";
+export { PlusIcon } from "./plus-icon.js";
 export { ResetColumnsIcon } from "./reset-columns-icon.js";
 export { SearchIcon } from "./search-icon.js";
 export { SortIcon } from "./sort-icon.js";
