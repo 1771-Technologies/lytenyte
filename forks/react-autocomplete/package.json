@@ -1,5 +1,5 @@
 {
-  "name": "@1771technologies/react-menu",
+  "name": "@1771technologies/react-autocomplete",
   "version": "0.0.30",
   "license": "Apache-2.0",
   "type": "module",
@@ -11,11 +11,10 @@
   ],
   "exports": {
     ".": {
-      "types": "./types/index.d.ts",
-      "import": "./src/index.js",
-      "require": "./src/index.js"
-    },
-    "./css": "./src/css/core.css"
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "require": "./src/index.ts"
+    }
   },
   "dependencies": {
     "@1771technologies/react-utils": "workspace:*",
@@ -25,11 +24,10 @@
     "access": "public",
     "exports": {
       ".": {
-        "types": "./types/index.d.ts",
+        "types": "./dist/types/index.d.ts",
         "import": "./dist/index.js",
         "require": "./dist/index.js"
-      },
-      "./css": "./src/css/core.css"
+      }
     }
   },
   "peerDependencies": {

@@ -1,22 +1,18 @@
-import type { Feature, GetProps, AutocompleteFeatureProps, FeatureState } from '../../types';
-import { getId, buttonProps, defaultFocusIndex } from '../../common';
-import { useFocusCapture } from '../../hooks/useFocusCapture';
+import type { Feature, GetProps, AutocompleteFeatureProps, FeatureState } from "../../types";
+import { getId, buttonProps, defaultFocusIndex } from "../../common";
+import { useFocusCapture } from "../../hooks/useFocusCapture";
 
 type AutocompleteLiteFeature<T> = Feature<
   T,
   Pick<
     GetProps<T>,
-    | 'getInputProps'
-    | 'getListProps'
-    | 'getItemProps'
-    | 'getClearProps'
-    | 'getFocusCaptureProps'
+    "getInputProps" | "getListProps" | "getItemProps" | "getClearProps" | "getFocusCaptureProps"
   > &
     FeatureState
 >;
 
 const scrollIntoView = (element: HTMLElement | null) =>
-  element?.scrollIntoView({ block: 'nearest' });
+  element?.scrollIntoView({ block: "nearest" });
 
 const autocompleteLite =
   <T>({
@@ -24,7 +20,7 @@ const autocompleteLite =
     rovingText = !select,
     deselectOnClear = true,
     deselectOnChange = true,
-    closeOnSelect = true
+    closeOnSelect = true,
   }: AutocompleteFeatureProps<T> = {}): AutocompleteLiteFeature<T> =>
   ({
     getItemValue,
@@ -44,14 +40,14 @@ const autocompleteLite =
     setOpen,
     inputRef,
     items,
-    id
+    id,
   }) => {
     const [startCapture, inCapture, stopCapture] = useFocusCapture(inputRef);
 
     const inputValue =
-      (tmpValue || value) ?? (Array.isArray(selected) ? '' : getItemValue(selected));
+      (tmpValue || value) ?? (Array.isArray(selected) ? "" : getItemValue(selected));
     const focusItem = items[focusIndex];
-    const listId = getId(id, 'l');
+    const listId = getId(id, "l");
 
     const selectItemOrAction = (item: T) => {
       if (isItemAction?.(item)) {
@@ -98,9 +94,9 @@ const autocompleteLite =
       if (rovingText) setTmpValue(getItemValue(newItem));
     };
 
-    const focusCaptureProps: ReturnType<GetProps<T>['getFocusCaptureProps']> = {
+    const focusCaptureProps: ReturnType<GetProps<T>["getFocusCaptureProps"]> = {
       onMouseDown: startCapture,
-      onMouseUp: stopCapture
+      onMouseUp: stopCapture,
     };
 
     return {
@@ -115,34 +111,34 @@ const autocompleteLite =
         onClick: () => {
           setTmpValue();
           setFocusIndex(defaultFocusIndex);
-          onChange('');
+          onChange("");
           if (deselectOnClear) onSelectChange();
-        }
+        },
       }),
 
       getListProps: () => ({
         ...focusCaptureProps,
         id: listId,
-        role: 'listbox'
+        role: "listbox",
       }),
 
       getItemProps: ({ item, index }) => ({
         id: getId(id, index),
-        role: 'option',
-        'aria-selected': select ? isItemSelected(item) : index === focusIndex,
+        role: "option",
+        "aria-selected": select ? isItemSelected(item) : index === focusIndex,
         ref: index === focusIndex ? scrollIntoView : undefined,
         onClick: () => !isItemDisabled?.(item) && resetState(selectItemOrAction(item)),
-        onPointerMove: () => !isItemDisabled?.(item) && setFocusIndex(index)
+        onPointerMove: () => !isItemDisabled?.(item) && setFocusIndex(index),
       }),
 
       getInputProps: () => ({
-        type: 'text',
-        role: 'combobox',
-        autoComplete: 'off',
-        'aria-autocomplete': 'list',
-        'aria-expanded': open,
-        'aria-controls': listId,
-        'aria-activedescendant': focusIndex >= 0 ? getId(id, focusIndex) : undefined,
+        type: "text",
+        role: "combobox",
+        autoComplete: "off",
+        "aria-autocomplete": "list",
+        "aria-expanded": open,
+        "aria-controls": listId,
+        "aria-activedescendant": focusIndex >= 0 ? getId(id, focusIndex) : undefined,
         ref: inputRef,
         value: inputValue,
 
@@ -166,16 +162,16 @@ const autocompleteLite =
 
         onKeyDown: (e) => {
           switch (e.key) {
-            case 'ArrowUp':
-            case 'ArrowDown':
+            case "ArrowUp":
+            case "ArrowDown":
               e.preventDefault();
               if (open) {
-                traverse(e.key != 'ArrowUp');
+                traverse(e.key != "ArrowUp");
               } else {
                 setOpen(true);
               }
               break;
-            case 'Enter':
+            case "Enter":
               if (open) {
                 if (focusItem) {
                   // Call preventDefault as we've already triggered on* events in this branch
@@ -186,11 +182,11 @@ const autocompleteLite =
                 }
               }
               break;
-            case 'Escape':
+            case "Escape":
               if (open) {
                 resetState(true);
               } else {
-                onChange('');
+                onChange("");
                 if (deselectOnClear) onSelectChange();
               }
               break;
@@ -198,8 +194,8 @@ const autocompleteLite =
         },
 
         onMouseDown: (e) => e.stopPropagation(),
-        onClick: () => setOpen(true)
-      })
+        onClick: () => setOpen(true),
+      }),
     };
   };
 

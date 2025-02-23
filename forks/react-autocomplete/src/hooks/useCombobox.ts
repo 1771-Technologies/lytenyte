@@ -1,6 +1,6 @@
-import type { ComboboxProps } from '../types';
-import { defaultEqual } from '../common';
-import { useAutocomplete } from './useAutocomplete';
+import type { ComboboxProps } from "../types";
+import { defaultEqual } from "../common";
+import { useAutocomplete } from "./useAutocomplete";
 
 const useCombobox = <T, FeatureYield extends object>({
   isEqual = defaultEqual,
@@ -20,7 +20,7 @@ const useCombobox = <T, FeatureYield extends object>({
       } else if (flipOnSelect) {
         onSelectChange?.();
       }
-    }
+    },
   });
 
 export { useCombobox };

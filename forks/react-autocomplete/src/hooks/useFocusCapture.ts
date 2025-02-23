@@ -1,4 +1,4 @@
-import { useMutableState } from './useMutableState';
+import { useMutableState } from "./useMutableState";
 
 interface MutableState {
   /**
@@ -25,7 +25,7 @@ const useFocusCapture = (focusRef: React.RefObject<HTMLElement | null>) => {
     () => {
       mutable.a = 0;
       focusRef.current?.focus();
-    }
+    },
   ] as const;
 };
 

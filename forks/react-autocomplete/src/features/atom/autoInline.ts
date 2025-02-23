@@ -1,15 +1,15 @@
-import type { Feature, GetProps, FeatureProps } from '../../types';
+import type { Feature, GetProps, FeatureProps } from "../../types";
 
-type AutoInlineFeature<T> = Feature<T, Pick<GetProps<T>, 'getInputProps'>>;
+type AutoInlineFeature<T> = Feature<T, Pick<GetProps<T>, "getInputProps">>;
 
 const autoInline =
-  <T>({ onRequestItem }: Pick<FeatureProps<T>, 'onRequestItem'>): AutoInlineFeature<T> =>
+  <T>({ onRequestItem }: Pick<FeatureProps<T>, "onRequestItem">): AutoInlineFeature<T> =>
   ({ getItemValue, setTmpValue, setFocusIndex }) => ({
     getInputProps: () => ({
-      'aria-autocomplete': 'both',
+      "aria-autocomplete": "both",
 
       onChange: ({ target, nativeEvent }) => {
-        if ((nativeEvent as unknown as { inputType: string }).inputType !== 'insertText') {
+        if ((nativeEvent as unknown as { inputType: string }).inputType !== "insertText") {
           return;
         }
 
@@ -22,8 +22,8 @@ const autoInline =
           setTmpValue(value + itemValue.slice(start));
           setTimeout(() => target.setSelectionRange(start, end), 0);
         });
-      }
-    })
+      },
+    }),
   });
 
 export { type AutoInlineFeature, autoInline };

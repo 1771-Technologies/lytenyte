@@ -1,30 +1,30 @@
-import type { Feature, GetProps } from '../../types';
-import { getId } from '../../common';
+import type { Feature, GetProps } from "../../types";
+import { getId } from "../../common";
 
 type LabelFeature<T> = Feature<
   T,
-  Pick<GetProps<T>, 'getLabelProps' | 'getInputProps' | 'getListProps'>
+  Pick<GetProps<T>, "getLabelProps" | "getInputProps" | "getListProps">
 >;
 
 const label =
   <T>(): LabelFeature<T> =>
   ({ id }) => {
-    const inputId = getId(id, 'i');
-    const labelId = getId(id, 'a');
+    const inputId = getId(id, "i");
+    const labelId = getId(id, "a");
 
     return {
       getLabelProps: () => ({
         id: labelId,
-        htmlFor: inputId
+        htmlFor: inputId,
       }),
 
       getInputProps: () => ({
-        id: inputId
+        id: inputId,
       }),
 
       getListProps: () => ({
-        'aria-labelledby': labelId
-      })
+        "aria-labelledby": labelId,
+      }),
     };
   };
 

@@ -1,6 +1,6 @@
-import type { MultiSelectProps, AdapterProps } from '../types';
-import { defaultEqual } from '../common';
-import { useAutocomplete } from './useAutocomplete';
+import type { MultiSelectProps, AdapterProps } from "../types";
+import { defaultEqual } from "../common";
+import { useAutocomplete } from "./useAutocomplete";
 
 const useMultiSelect = <T, FeatureYield extends object>({
   isEqual = defaultEqual,
@@ -12,11 +12,11 @@ const useMultiSelect = <T, FeatureYield extends object>({
   const removeItem = (itemToRemove: T) =>
     onSelectChange?.(selected.filter((item) => !isEqual(itemToRemove, item)));
 
-  const removeSelect: AdapterProps<T>['removeSelect'] = (item) => {
+  const removeSelect: AdapterProps<T>["removeSelect"] = (item) => {
     if (item) {
       removeItem(item);
     } else {
-      selected.length && onSelectChange?.(selected.slice(0, selected.length - 1));
+      if (selected.length) onSelectChange?.(selected.slice(0, selected.length - 1));
     }
   };
 
@@ -37,9 +37,9 @@ const useMultiSelect = <T, FeatureYield extends object>({
           removeItem(newItem);
         }
       },
-      removeSelect
+      removeSelect,
     }),
-    removeSelect
+    removeSelect,
   };
 };
 

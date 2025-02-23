@@ -1,10 +1,7 @@
-import { useState } from 'react';
-import type { Feature, GetProps } from '../../types';
+import { useState } from "react";
+import type { Feature, GetProps } from "../../types";
 
-type InputFocusFeature<T> = Feature<
-  T,
-  Pick<GetProps<T>, 'getInputProps'> & { focused: boolean }
->;
+type InputFocusFeature<T> = Feature<T, Pick<GetProps<T>, "getInputProps"> & { focused: boolean }>;
 
 const inputFocus =
   <T>(): InputFocusFeature<T> =>
@@ -16,8 +13,8 @@ const inputFocus =
 
       getInputProps: () => ({
         onFocusCapture: () => setFocused(true),
-        onBlurCapture: () => setFocused(false)
-      })
+        onBlurCapture: () => setFocused(false),
+      }),
     };
   };
 

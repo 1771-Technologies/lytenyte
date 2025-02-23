@@ -1,7 +1,7 @@
-import { useState, useRef } from 'react';
-import { useId } from './useId';
-import { defaultFocusIndex } from '../common';
-import type { AutocompleteProps, AutocompleteReturn } from '../types';
+import { useState, useRef } from "react";
+import { useId } from "./useId";
+import { defaultFocusIndex } from "../common";
+import type { AutocompleteProps, AutocompleteReturn } from "../types";
 
 const useAutocomplete = <T, FeatureYield extends object>({
   onChange,
@@ -22,7 +22,7 @@ const useAutocomplete = <T, FeatureYield extends object>({
     focusIndex,
     setFocusIndex,
     open,
-    setOpen
+    setOpen,
   };
 
   const featureYield = useFeature({
@@ -31,14 +31,14 @@ const useAutocomplete = <T, FeatureYield extends object>({
     setTmpValue,
     onChange: (newValue) => passthrough.value != newValue && onChange?.(newValue),
     getItemValue: (item) =>
-      item == null ? '' : getItemValue ? getItemValue(item) : item.toString(),
+      item == null ? "" : getItemValue ? getItemValue(item) : item.toString(),
     ...passthrough,
-    ...state
+    ...state,
   });
 
   return {
     ...state,
-    ...featureYield
+    ...featureYield,
   };
 };
 

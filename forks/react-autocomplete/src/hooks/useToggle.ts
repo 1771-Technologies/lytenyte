@@ -1,4 +1,4 @@
-import { useMutableState } from './useMutableState';
+import { useMutableState } from "./useMutableState";
 
 interface MutableState {
   /**
@@ -19,7 +19,7 @@ const useToggle = (open: boolean, setOpen: (value: boolean) => void) => {
       } else {
         setOpen(true);
       }
-    }
+    },
   ] as const;
 };
 

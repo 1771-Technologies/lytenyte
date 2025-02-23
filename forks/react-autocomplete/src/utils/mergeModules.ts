@@ -1,7 +1,7 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
-/* eslint-disable */
 
-import { mergeObjects } from './mergeObjects';
+import { mergeObjects } from "./mergeObjects";
 
 const mergeModules =
   (...modules) =>
