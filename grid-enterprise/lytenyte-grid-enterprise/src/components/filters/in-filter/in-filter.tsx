@@ -5,9 +5,8 @@ import { useInFilterItemLoader } from "./use-in-filter-item-loader";
 import { t } from "@1771technologies/grid-design";
 import { InFilterViewport } from "./in-filter-tree";
 import { Input } from "@1771technologies/lytenyte-grid-community/internal";
-import { SearchIcon } from "@1771technologies/lytenyte-grid-community/icons";
+import { ResetColumnsIcon, SearchIcon } from "@1771technologies/lytenyte-grid-community/icons";
 import { Button } from "../../../components-internal/button/button";
-import { RefreshIcon } from "../../../../../grid-components/src/icons/refresh-icon";
 
 export interface TreeFilterProps<D> {
   readonly api: ApiEnterpriseReact<D>;
@@ -131,7 +130,7 @@ export function InFilter<D>({
               onClick={retry}
             >
               {errorLabel}
-              <RefreshIcon />
+              <ResetColumnsIcon />
             </Button>
           </div>
         )}
