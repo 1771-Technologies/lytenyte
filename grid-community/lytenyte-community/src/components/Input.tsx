@@ -1,24 +1,23 @@
 import "./components.css";
 
 import { clsx } from "@1771technologies/js-utils";
-import type { JSX, ReactNode, RefObject } from "react";
+import { refCompat } from "@1771technologies/react-utils";
+import type { JSX, ReactNode } from "react";
 
 export interface InputProps {
   readonly error?: boolean;
   readonly small?: boolean;
   readonly ghost?: boolean;
   readonly icon?: (p: JSX.IntrinsicElements["svg"]) => ReactNode;
-  readonly inputRef?: RefObject<HTMLInputElement | null>;
 }
 
-export function Input({
+function InputImpl({
   className,
   error,
   small,
   ghost,
   disabled,
   icon: Icon,
-  inputRef,
   ...props
 }: JSX.IntrinsicElements["input"] & InputProps) {
   return (
@@ -33,12 +32,9 @@ export function Input({
       )}
     >
       {Icon && <Icon width={small ? 16 : 20} height={small ? 16 : 20} />}
-      <input
-        ref={inputRef}
-        {...props}
-        disabled={disabled}
-        className={clsx("lng1771-input__inner")}
-      />
+      <input {...props} disabled={disabled} className={clsx("lng1771-input__inner")} />
     </div>
   );
 }
+
+export const Input = refCompat(InputImpl, "Input");

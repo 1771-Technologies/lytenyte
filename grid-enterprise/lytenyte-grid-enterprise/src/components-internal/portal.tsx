@@ -34,7 +34,7 @@ export function Portal({
   const merged = useCombinedRefs(setFloating, props.ref);
 
   return createPortal(
-    <div {...props} style={{ display: "none", position: "absolute", ...props.style }} ref={merged}>
+    <div {...props} style={{ position: "absolute", ...props.style }} ref={merged}>
       {children}
     </div>,
     document.body,

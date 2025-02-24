@@ -48,7 +48,7 @@ export function FilterDateInput({
           <Input
             small
             id={id}
-            inputRef={ref}
+            ref={ref}
             type="date"
             onChange={(e) => onValueChange(e.target.value)}
             value={filter.value ?? ""}

@@ -67,6 +67,7 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
                   items={
                     columnItem ? [columnItem, ...unselectedSortedColumns] : unselectedSortedColumns
                   }
+                  searchable={unselectedSortedColumns.length > 5}
                   onSelect={(column) => {
                     setState((prev) => {
                       const v = { ...prev[i] };

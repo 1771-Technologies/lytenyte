@@ -34,7 +34,7 @@ export function FilterNumberInput({ filter, onChange, onValueChange }: NumberFil
         id={id}
         small
         type="number"
-        inputRef={ref}
+        ref={ref}
         disabled={!operator}
         value={filter.value ?? ""}
         onChange={(e) => onValueChange(Number.parseFloat(e.target.value))}

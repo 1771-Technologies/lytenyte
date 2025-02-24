@@ -1,15 +1,19 @@
 import "./dropdown.css";
 
 import { dropdown, useCombobox } from "@1771technologies/react-autocomplete";
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Portal } from "../portal";
 import { clsx } from "@1771technologies/js-utils";
+import { Input } from "@1771technologies/lytenyte-grid-community/internal";
+import { SearchIcon } from "@1771technologies/lytenyte-grid-community/icons";
 
 export interface DropdownProps<T extends { label: string; value: unknown }> {
   readonly items: T[];
   readonly placeholder?: string;
   readonly selected: T | null;
   readonly onSelect: (v: T | null) => void;
+
+  readonly searchable?: boolean;
 }
 
 const noop = () => {};
@@ -18,6 +22,7 @@ export function Dropdown<T extends { label: string; value: unknown }>({
   placeholder,
   selected,
   onSelect,
+  searchable = false,
 }: DropdownProps<T>) {
   const { options, labelToItem } = useMemo(() => {
     const options = items.map((c) => c.label);
@@ -26,17 +31,25 @@ export function Dropdown<T extends { label: string; value: unknown }>({
     return { options, labelToItem };
   }, [items]);
 
+  const [value, setValue] = useState<string>();
+
+  const filteredOptions = useMemo(() => {
+    if (!value) return options.toSorted();
+
+    return options.filter((c) => c.toLocaleLowerCase().includes(value.toLocaleLowerCase())).sort();
+  }, [options, value]);
+
   const label = useMemo(() => {
     if (selected == null) return "";
 
     return selected.label;
   }, [selected]);
 
-  const { getToggleProps, getInputProps, getItemProps, getListProps, open, focusIndex } =
+  const { getToggleProps, getInputProps, getItemProps, getListProps, open, focusIndex, toggleRef } =
     useCombobox({
-      items: options,
-      value: label,
-      onChange: noop,
+      items: filteredOptions,
+      value: searchable ? value : label,
+      onChange: searchable ? setValue : noop,
 
       selected: label,
       onSelectChange: (v) => {
@@ -53,32 +66,56 @@ export function Dropdown<T extends { label: string; value: unknown }>({
       }),
     });
 
-  const toggleProps = getToggleProps();
   const ref = useRef<HTMLDivElement>(null);
+
+  const refForPlacement = searchable ? toggleRef : ref;
 
   return (
     <>
-      <div className="lng1771-dropdown" ref={ref}>
-        <input
-          className="lng1771-dropdown__input"
-          readOnly
-          placeholder={placeholder}
-          {...getInputProps()}
-        />
-        <button className="lng1771-dropdown__chevron" {...toggleProps} tabIndex={-1}>
-          ›
+      {!searchable && (
+        <div className="lng1771-dropdown" ref={ref}>
+          <input
+            className="lng1771-dropdown__input"
+            readOnly
+            placeholder={placeholder}
+            {...getInputProps()}
+          />
+          <button className="lng1771-dropdown__chevron" {...getToggleProps()} tabIndex={-1}>
+            ›
+          </button>
+        </div>
+      )}
+      {searchable && (
+        <button className="lng1771-dropdown-searchable" {...getToggleProps()}>
+          {selected?.label && (
+            <span className="lng1771-dropdown-searchable__label">{selected.label}</span>
+          )}
+          {!selected && (
+            <span className="lng1771-dropdown-searchable__placeholder">{placeholder ?? ""}</span>
+          )}
+          <span className="lng1771-dropdown__chevron">›</span>
         </button>
-      </div>
-      {open && ref.current && (
+      )}
+      {open && refForPlacement.current && (
         <Portal
-          portalTarget={ref.current}
+          portalTarget={refForPlacement.current}
           matchWidth
           {...getListProps()}
           style={{ minWidth: 120 }}
           className="lng1771-dropdown__list-container"
         >
-          <ul className="lng1771-dropdown__list">
-            {options.map((c, i) => {
+          {searchable && (
+            <div>
+              <Input {...getInputProps()} icon={SearchIcon} />
+            </div>
+          )}
+          <ul
+            className={clsx(
+              "lng1771-dropdown__list",
+              searchable && "lng1771-dropdown__list--searchable",
+            )}
+          >
+            {filteredOptions.map((c, i) => {
               return (
                 <li
                   key={c}
