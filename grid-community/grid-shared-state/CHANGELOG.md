@@ -1,5 +1,7 @@
 # @1771technologies/grid-shared-state
 
+## 0.0.32
+
 ## 0.0.31
 
 ## 0.0.30
