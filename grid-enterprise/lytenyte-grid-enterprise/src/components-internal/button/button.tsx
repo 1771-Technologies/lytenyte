@@ -1,5 +1,4 @@
 import "./button.css";
-import { t } from "@1771technologies/grid-design";
 import { clsx } from "@1771technologies/js-utils";
 import { refCompat } from "@1771technologies/react-utils";
 import type { JSX } from "react";
@@ -19,16 +18,7 @@ const ButtonImpl = ({
       className={clsx(
         "lng1771-button",
         kind === "primary" && "lng1771-button--primary",
-        kind === "tertiary" &&
-          css`
-            background-color: transparent;
-            border: 1px solid transparent;
-            cursor: pointer;
-
-            &:hover {
-              background-color: ${t.colors.backgrounds_default};
-            }
-          `,
+        kind === "tertiary" && "lng1771-button-tertiary",
         kind === "secondary" && "lng1771-button--secondary",
         props.className,
       )}

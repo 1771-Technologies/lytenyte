@@ -27,6 +27,17 @@
     background-color: color-mix(in srgb, var(--lng1771-primary-50) 90%, white 10%);
   }
 }
+
+.lng1771-button--tertiary {
+  background-color: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--lng1771-gray-10);
+  }
+}
+
 .dark .lng1771-button--primary {
   color: white;
 }
