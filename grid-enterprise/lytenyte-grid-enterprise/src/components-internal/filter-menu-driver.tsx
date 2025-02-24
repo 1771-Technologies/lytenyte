@@ -39,7 +39,6 @@ function FilterMenuImpl({
       }}
       anchorRef={target instanceof HTMLElement ? { current: target } : undefined}
       anchorPoint={!(target instanceof HTMLElement) ? target : undefined}
-      portal
       gap={12}
     >
       <div
