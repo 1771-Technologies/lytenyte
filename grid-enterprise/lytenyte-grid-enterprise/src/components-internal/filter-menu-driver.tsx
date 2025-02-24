@@ -2,7 +2,7 @@ import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import { useGrid } from "../use-grid";
 import type { Target } from "@1771technologies/grid-types/enterprise";
 import { FilterContainer } from "../components/filters/filter-container/filter-container";
-import { LngPopover } from "./popover/lng-popover";
+import { ControlledMenu } from "@1771technologies/react-menu";
 
 export const FilterMenuDriver = () => {
   const grid = useGrid();
@@ -27,7 +27,20 @@ function FilterMenuImpl({
   const supportsIn = filterColumn.filterSupportsIn ?? base.filterSupportsIn ?? false;
 
   return (
-    <LngPopover open onOpenChange={() => grid.api.columnFilterMenuClose()} popoverTarget={target}>
+    <ControlledMenu
+      state="open"
+      onClose={() => {
+        const current = target;
+        setTimeout(() => {
+          if (current instanceof HTMLElement) current.focus();
+        }, 20);
+
+        grid.api.columnFilterMenuClose();
+      }}
+      anchorRef={target instanceof HTMLElement ? { current: target } : undefined}
+      anchorPoint={!(target instanceof HTMLElement) ? target : undefined}
+      portal
+    >
       <div
         className={css`
           width: 320px;
@@ -45,6 +58,6 @@ function FilterMenuImpl({
           treeViewportHeight={250}
         />
       </div>
-    </LngPopover>
+    </ControlledMenu>
   );
 }

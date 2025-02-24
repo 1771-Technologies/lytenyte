@@ -81,6 +81,7 @@
 }
 
 .lng1771-dropdown__list-container {
+  z-index: 110;
   background-color: var(--lng1771-gray-10);
   border: 1px solid var(--lng1771-gray-30);
   padding: 4px;
