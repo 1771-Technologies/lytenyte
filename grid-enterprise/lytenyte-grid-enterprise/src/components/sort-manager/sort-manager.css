@@ -73,6 +73,16 @@
   justify-content: center;
   cursor: pointer;
   background-color: transparent;
+  border-radius: 6px;
+
+  &:disabled {
+    cursor: not-allowed;
+    color: var(--lng1771-gray-50);
+  }
+
+  &:focus-visible {
+    outline: 1px solid var(--lng1771-primary-50);
+  }
 }
 
 .lng1771-sort-manager__sort-item-controls--add {
@@ -86,4 +96,5 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-inline: 12px;
 }

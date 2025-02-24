@@ -5,6 +5,7 @@ import { useLyteNyte } from "../src/use-lytenyte";
 import { ColumnManager } from "@1771technologies/grid-components";
 import { FloatingFilter } from "../src/components/floating-filter/floating-filter";
 import { LyteNyteGrid } from "../src";
+import { SortManager } from "../src/components/sort-manager/sort-manager";
 
 export default function Play() {
   const ds = useClientDataSource({
@@ -91,12 +92,8 @@ export default function Play() {
           flex: 1;
         `}
       >
-        <div
-          className={css`
-            flex: 1;
-          `}
-        ></div>
-        <LyteNyteGrid grid={grid} />
+        <SortManager grid={grid} />
+        {/* <LyteNyteGrid grid={grid} /> */}
       </div>
     </div>
   );

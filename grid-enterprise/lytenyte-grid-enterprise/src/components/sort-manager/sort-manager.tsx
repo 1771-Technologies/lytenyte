@@ -1,6 +1,6 @@
 import "./sort-manager.css";
 import type { StoreEnterpriseReact } from "@1771technologies/grid-types";
-import { useColumnsSelectItems } from "./use-column-select-items";
+import { useSortableColumnItems } from "./use-sortable-column-items";
 import { useSortState, type SortItem } from "./use-sort-state";
 import { useMemo } from "react";
 import { Dropdown } from "../../components-internal/dropdown/dropdown";
@@ -30,7 +30,7 @@ export interface SortManagerProps<D> {
 }
 
 export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: SortManagerProps<D>) {
-  const columnItems = useColumnsSelectItems(grid);
+  const columnItems = useSortableColumnItems(grid);
 
   const [state, setState] = useSortState(grid);
 
@@ -43,6 +43,8 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
   if (columnItems.length === 0) {
     return <div className="lng1771-sort-manager__empty">There are no sortable columns.</div>;
   }
+
+  const maxSortCount = columnItems.length;
 
   return (
     <div className="lng1771-sort-manager">
@@ -134,7 +136,7 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
                     <CrossIcon width={20} height={20} />
                   </button>
                   <button
-                    disabled={unselectedSortedColumns.length === 1}
+                    disabled={maxSortCount <= state.length}
                     onClick={() => {
                       setState((prev) => {
                         const next = [...prev];
@@ -151,34 +153,35 @@ export function SortManager<D>({ grid, onCancel, onApply, onAdd, onDelete }: Sor
               </div>
             );
           })}
-
-          {/* Controls */}
-          <Separator dir="horizontal" style={{ gridColumn: "-1 / 1" }} />
-          <div className="lng1771-sort-manager__sort-controls">
-            <Button
-              kind="secondary"
-              onClick={() => {
-                setState(sortModelToSortItems(grid.state.sortModel.peek(), grid));
-
-                onCancel?.();
-              }}
-              className="lng1771-sort-manager__sort_cancel"
-            >
-              Cancel
-            </Button>
-            <Button
-              kind="primary"
-              onClick={() => {
-                grid.state.sortModel.set(sortItemsToSortModel(state));
-
-                onApply?.();
-              }}
-              className="lng1771-sort-manager__sort_apply"
-            >
-              Apply
-            </Button>
-          </div>
         </div>
+      </div>
+      <Separator dir="horizontal" style={{ gridColumn: "-1 / 1" }} />
+      {/* Controls */}
+      <div className="lng1771-sort-manager__sort-controls">
+        <Button
+          kind="secondary"
+          onClick={() => {
+            const model = grid.state.sortModel.peek();
+            if (model.length) setState(sortModelToSortItems(model, grid));
+            else setState([{ sortDirection: "ascending" }]);
+
+            onCancel?.();
+          }}
+          className="lng1771-sort-manager__sort_cancel"
+        >
+          Cancel
+        </Button>
+        <Button
+          kind="primary"
+          onClick={() => {
+            grid.state.sortModel.set(sortItemsToSortModel(state));
+
+            onApply?.();
+          }}
+          className="lng1771-sort-manager__sort_apply"
+        >
+          Apply
+        </Button>
       </div>
     </div>
   );

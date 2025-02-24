@@ -1,7 +1,11 @@
 import type { StoreEnterpriseReact } from "@1771technologies/grid-types";
 import { useMemo } from "react";
 
-export function useColumnsSelectItems<D>({ state, api }: StoreEnterpriseReact<D>) {
+/**
+ * Returns a list of the columns that are sortable for use in a dropdown. This is used by the sort
+ * manager. This represents all the possible sort items a user can select from.
+ */
+export function useSortableColumnItems<D>({ state, api }: StoreEnterpriseReact<D>) {
   const columns = state.columns.use();
 
   const candidateColumns = useMemo(() => {

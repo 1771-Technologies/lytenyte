@@ -7,6 +7,10 @@
   border: 1px solid transparent;
   border-radius: 6px;
   cursor: pointer;
+
+  &:focus-visible {
+    outline: 1px solid var(--lng1771-primary-50);
+  }
 }
 
 .lng1771-button--primary {

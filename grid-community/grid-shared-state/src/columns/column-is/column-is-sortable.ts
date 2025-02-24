@@ -10,6 +10,7 @@ export const columnIsSortable = <D, E>(
   c: ColumnCommunity<D, E> | ColumnEnterprise<D, E>,
 ) => {
   const base = api.getState().columnBase.peek();
+  if (api.columnIsGridGenerated(c as any) && !api.columnIsGroupAutoColumn(c as any)) return false;
 
   return c.sortable ?? base.sortable ?? false;
 };
