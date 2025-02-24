@@ -95,6 +95,7 @@
     "@1771technologies/react-dragon": "workspace:*",
     "@1771technologies/react-menu": "workspace:*",
     "@1771technologies/react-autocomplete": "workspace:*",
+    "@1771technologies/react-popover": "workspace:*",
     "@1771technologies/react-sizer": "workspace:*",
     "@1771technologies/react-utils": "workspace:*",
     "@1771technologies/js-utils": "workspace:*"

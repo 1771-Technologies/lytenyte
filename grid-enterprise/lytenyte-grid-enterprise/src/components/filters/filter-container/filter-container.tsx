@@ -79,7 +79,6 @@ export function FilterContainer<D>({
         </div>
         <Button
           kind="tertiary"
-          style={{ color: "red" }}
           onClick={() => {
             const newFilters = { ...filters };
             delete newFilters[column.id];

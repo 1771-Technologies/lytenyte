@@ -1,7 +1,6 @@
 import type { FilterNumber } from "@1771technologies/grid-types/community";
 import { useMemo } from "react";
-import { cc } from "../../../component-configuration";
-import { Select } from "../../../select/select";
+import { Dropdown } from "../../../../components-internal/dropdown/dropdown";
 
 interface NumberOperatorSelectProps {
   readonly filter: Partial<FilterNumber>;
@@ -15,18 +14,7 @@ export function NumberOperatorSelect({ filter, onChange }: NumberOperatorSelectP
     return { label: valueToLabel[filter.operator], value: filter.operator };
   }, [filter.operator]);
 
-  const config = cc.filter.use();
-  const noChoice = config.simpleFilter!.placeholderNoChoice;
-
-  return (
-    <Select
-      axe={config.simpleFilter!.axeNumberOperator}
-      placeholder={noChoice}
-      value={value}
-      items={selectItems}
-      onSelect={onChange as any}
-    />
-  );
+  return <Dropdown selected={value} items={selectItems} onSelect={onChange as any} />;
 }
 
 const valueToLabel: Record<FilterNumber["operator"], string> = {

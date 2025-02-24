@@ -1,7 +1,6 @@
 import type { FilterText } from "@1771technologies/grid-types/community";
 import { TextOperatorSelect } from "./text-operator-select";
 import { useId, useRef } from "react";
-import { cc } from "../../../component-configuration";
 import { Input } from "@1771technologies/lytenyte-grid-community/internal";
 
 interface TextFilterProps {
@@ -19,7 +18,6 @@ export function TextFilterInput({ filter, onChange, onValueChange }: TextFilterP
     onChange(v);
   };
 
-  const config = cc.filter.use();
   const id = useId();
 
   return (
@@ -33,7 +31,7 @@ export function TextFilterInput({ filter, onChange, onValueChange }: TextFilterP
         onChange={(e) => onValueChange(e.target.value)}
       />
       <label htmlFor={id} className="lng1771-sr-only">
-        {config.simpleFilter?.labelText}
+        Text filter
       </label>
     </>
   );

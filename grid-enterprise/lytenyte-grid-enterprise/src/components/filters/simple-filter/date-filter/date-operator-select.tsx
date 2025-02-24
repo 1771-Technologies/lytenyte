@@ -1,7 +1,6 @@
 import type { FilterDate } from "@1771technologies/grid-types/community";
 import { useMemo } from "react";
-import { cc } from "../../../component-configuration";
-import { Select, type SelectItem } from "../../../select/select";
+import { Dropdown } from "../../../../components-internal/dropdown/dropdown";
 
 interface DateOperatorSelectProps {
   readonly filter: Partial<FilterDate>;
@@ -18,17 +17,15 @@ export function DateOperatorSelect({ filter, onChange }: DateOperatorSelectProps
 
   const operator = filter.operator;
 
-  const config = cc.filter.use();
   const fullSpan =
     operator && !operatorsWithDate.includes(operator) && operator !== "all_dates_in_the_period";
 
   return (
-    <Select
-      axe={config.simpleFilter!.axeDateOperator}
+    <Dropdown
       style={{ gridColumn: fullSpan ? "span 2" : undefined }}
-      placeholder={config.simpleFilter?.placeholderNoChoice}
+      placeholder=""
       items={dateItems}
-      value={value}
+      selected={value}
       onSelect={onChange as any}
     />
   );
@@ -61,7 +58,7 @@ const valueToLabel: Record<FilterDate["operator"], string> = {
   all_dates_in_the_period: "All Dates In Period",
 };
 
-const dateItems: SelectItem[] = [
+const dateItems = [
   { label: "Equal", value: "equal" },
 
   { label: "Before", value: "before" },

@@ -2,7 +2,6 @@ import { DatePeriodSelect } from "./date-period-select";
 import { DateOperatorSelect } from "./date-operator-select";
 import { useId, useRef } from "react";
 import type { FilterDate } from "@1771technologies/grid-types/community";
-import { cc } from "../../../component-configuration";
 import { Input } from "@1771technologies/lytenyte-grid-community/internal";
 
 export interface DateFilterProps {
@@ -36,7 +35,6 @@ export function FilterDateInput({
     }, 2);
   };
 
-  const config = cc.filter.use();
   const id = useId();
 
   return (
@@ -54,7 +52,7 @@ export function FilterDateInput({
             value={filter.value ?? ""}
           />
           <label htmlFor={id} className="lng1771-sr-only">
-            {config.simpleFilter?.labelDate}
+            Date filter
           </label>
         </>
       )}

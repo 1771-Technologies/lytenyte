@@ -91,7 +91,7 @@ export default function Play() {
           flex: 1;
         `}
       >
-        {/* <LyteNyteGrid grid={grid} /> */}
+        <LyteNyteGrid grid={grid} />
       </div>
     </div>
   );

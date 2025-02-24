@@ -1,11 +1,12 @@
 import "./dropdown.css";
 
 import { dropdown, useCombobox } from "@1771technologies/react-autocomplete";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, type CSSProperties, type RefObject } from "react";
 import { Portal } from "../portal";
 import { clsx } from "@1771technologies/js-utils";
 import { Input } from "@1771technologies/lytenyte-grid-community/internal";
 import { SearchIcon } from "@1771technologies/lytenyte-grid-community/icons";
+import { useCombinedRefs } from "@1771technologies/react-utils";
 
 export interface DropdownProps<T extends { label: string; value: unknown }> {
   readonly items: T[];
@@ -14,6 +15,9 @@ export interface DropdownProps<T extends { label: string; value: unknown }> {
   readonly onSelect: (v: T | null) => void;
 
   readonly searchable?: boolean;
+
+  readonly style?: CSSProperties;
+  readonly dropdownRef?: RefObject<HTMLElement | null>;
 }
 
 const noop = () => {};
@@ -23,6 +27,8 @@ export function Dropdown<T extends { label: string; value: unknown }>({
   selected,
   onSelect,
   searchable = false,
+  style,
+  dropdownRef,
 }: DropdownProps<T>) {
   const { options, labelToItem } = useMemo(() => {
     const options = items.map((c) => c.label);
@@ -53,7 +59,7 @@ export function Dropdown<T extends { label: string; value: unknown }>({
 
       selected: label,
       onSelectChange: (v) => {
-        if (!v) return onSelect(null);
+        if (!v) return;
 
         const value = labelToItem.get(v);
         onSelect(value ?? null);
@@ -70,10 +76,12 @@ export function Dropdown<T extends { label: string; value: unknown }>({
 
   const refForPlacement = searchable ? toggleRef : ref;
 
+  const combined = useCombinedRefs(dropdownRef, ref);
+
   return (
     <>
       {!searchable && (
-        <div className="lng1771-dropdown" ref={ref}>
+        <div className="lng1771-dropdown" ref={combined} style={style}>
           <input
             className="lng1771-dropdown__input"
             readOnly
@@ -86,7 +94,7 @@ export function Dropdown<T extends { label: string; value: unknown }>({
         </div>
       )}
       {searchable && (
-        <button className="lng1771-dropdown-searchable" {...getToggleProps()}>
+        <button className="lng1771-dropdown-searchable" {...getToggleProps()} style={style}>
           {selected?.label && (
             <span className="lng1771-dropdown-searchable__label">{selected.label}</span>
           )}

@@ -1,13 +1,12 @@
 import type { FilterDate } from "@1771technologies/grid-types/community";
 import type { RefObject } from "react";
 import { useMemo } from "react";
-import { cc } from "../../../component-configuration";
-import { Select, type SelectItem } from "../../../select/select";
+import { Dropdown } from "../../../../components-internal/dropdown/dropdown";
 
 interface DatePeriodSelectProps {
   readonly value: FilterDate["datePeriod"] | null;
   readonly onAllDatePeriodSelect: (v: FilterDate["datePeriod"]) => void;
-  readonly selectRef: RefObject<HTMLButtonElement | null>;
+  readonly selectRef: RefObject<HTMLElement | null>;
 }
 
 export function DatePeriodSelect({
@@ -21,18 +20,14 @@ export function DatePeriodSelect({
     return { label: allDatePeriodValueToLabel[value], value };
   }, [value]);
 
-  const config = cc.filter.use();
-  const noChoice = config.simpleFilter?.placeholderNoChoice ?? "";
-
   return (
-    <Select
-      axe={config.simpleFilter!.axeDatePeriod}
-      selectRef={selectRef}
+    <Dropdown
+      dropdownRef={selectRef}
       items={allDatePeriodOptions}
-      value={item}
-      placeholder={noChoice}
+      selected={item}
+      placeholder=""
       onSelect={(v) => {
-        onAllDatePeriodSelect(v.value as FilterDate["datePeriod"]);
+        onAllDatePeriodSelect(v!.value as any);
       }}
     />
   );
@@ -57,7 +52,7 @@ const allDatePeriodValueToLabel: Record<NonNullable<FilterDate["datePeriod"]>, s
   december: "December",
 };
 
-const allDatePeriodOptions: SelectItem[] = [
+const allDatePeriodOptions = [
   { label: "Quarter 1", value: "quarter-1" },
   { label: "Quarter 2", value: "quarter-2" },
   { label: "Quarter 3", value: "quarter-3" },

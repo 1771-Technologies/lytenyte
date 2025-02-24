@@ -1,5 +1,5 @@
 import { t } from "@1771technologies/grid-design";
-import { Radio } from "../../radio/radio";
+import { Radio } from "../../../components-internal/radio/radio";
 
 interface LogicalSwitchProps {
   value: "and" | "or";

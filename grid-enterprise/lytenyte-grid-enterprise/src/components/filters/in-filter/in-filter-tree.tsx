@@ -3,8 +3,6 @@ import { flattenTreeItems } from "./flatten-tree-items";
 import { getChildValues } from "./get-child-values";
 import type { ColumnInFilterItem } from "@1771technologies/grid-types/enterprise";
 import { t } from "@1771technologies/grid-design";
-import { IconButton } from "../../buttons/icon-button";
-import { cc } from "../../component-configuration";
 import { Checkbox } from "@1771technologies/lytenyte-grid-community/internal";
 
 export interface InFilterViewport {
@@ -101,7 +99,6 @@ export function InFilterViewport({
     return childSet.some((c) => values.has(c)) && !childSet.every((c) => values.has(c));
   };
 
-  const config = cc.filter.use();
   return (
     <div
       ref={setVp}
@@ -258,8 +255,7 @@ export function InFilterViewport({
               ) : (
                 <>
                   {expansions.has(item.label) && (
-                    <IconButton
-                      kind="ghost"
+                    <button
                       className={css`
                         width: 20px;
                         height: 20px;
@@ -288,11 +284,10 @@ export function InFilterViewport({
                       >
                         ›
                       </span>
-                    </IconButton>
+                    </button>
                   )}
                   {!expansions.has(item.label) && (
-                    <IconButton
-                      kind="ghost"
+                    <button
                       className={css`
                         width: 20px;
                         height: 20px;
@@ -321,12 +316,11 @@ export function InFilterViewport({
                       >
                         ›
                       </span>
-                    </IconButton>
+                    </button>
                   )}
                 </>
               )}
               <Checkbox
-                aria-label={config.inFilter?.labelItem}
                 tabIndex={-1}
                 isChecked={selected || indeterminate}
                 isDeterminate={indeterminate}

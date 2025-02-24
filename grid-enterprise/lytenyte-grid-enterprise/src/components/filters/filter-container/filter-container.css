@@ -18,7 +18,7 @@
 .lng1771-filter__controls {
   display: flex;
   align-items: flex-end;
-  grid-area: 4px;
+  gap: 8px;
   border-top: 1px solid var(--lng1771-gray-40);
   padding-inline: 8px;
   padding-block: 14px;

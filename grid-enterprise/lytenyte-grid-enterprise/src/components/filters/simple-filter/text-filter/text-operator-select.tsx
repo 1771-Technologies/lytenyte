@@ -1,7 +1,6 @@
 import type { FilterText } from "@1771technologies/grid-types/community";
 import { useMemo } from "react";
-import { cc } from "../../../component-configuration";
-import { Select } from "../../../select/select";
+import { Dropdown } from "../../../../components-internal/dropdown/dropdown";
 
 interface TextOperatorSelectProps {
   readonly filter: Partial<FilterText>;
@@ -14,15 +13,12 @@ export function TextOperatorSelect({ filter, onChange }: TextOperatorSelectProps
 
     return { label: valueToToLabel[filter.operator], value: filter.operator };
   }, [filter.operator]);
-  const config = cc.filter.use();
-  const noChoice = config.simpleFilter!.placeholderNoChoice;
 
   return (
-    <Select
-      axe={config.simpleFilter!.axeTextOperator}
-      placeholder={noChoice}
+    <Dropdown
+      placeholder="Select..."
       items={selectItems}
-      value={value}
+      selected={value}
       onSelect={onChange as any}
     />
   );

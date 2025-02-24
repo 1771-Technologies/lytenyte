@@ -1,7 +1,6 @@
 import type { FilterNumber } from "@1771technologies/grid-types/community";
 import { NumberOperatorSelect } from "./number-operator-select";
 import { useId, useRef } from "react";
-import { cc } from "../../../component-configuration";
 import { Input } from "@1771technologies/lytenyte-grid-community/internal";
 
 interface NumberFilterProps {
@@ -24,7 +23,6 @@ export function FilterNumberInput({ filter, onChange, onValueChange }: NumberFil
     }, 2);
   };
 
-  const config = cc.filter.use();
   const id = useId();
 
   return (
@@ -40,7 +38,7 @@ export function FilterNumberInput({ filter, onChange, onValueChange }: NumberFil
         onChange={(e) => onValueChange(Number.parseFloat(e.target.value))}
       />
       <label htmlFor={id} className="lng1771-sr-only">
-        {config.simpleFilter?.labelNumber}
+        Number filter
       </label>
     </>
   );
