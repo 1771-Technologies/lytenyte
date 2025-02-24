@@ -23,7 +23,7 @@ export function DateOperatorSelect({ filter, onChange }: DateOperatorSelectProps
   return (
     <Dropdown
       style={{ gridColumn: fullSpan ? "span 2" : undefined }}
-      placeholder=""
+      placeholder="Select"
       items={dateItems}
       selected={value}
       onSelect={onChange as any}

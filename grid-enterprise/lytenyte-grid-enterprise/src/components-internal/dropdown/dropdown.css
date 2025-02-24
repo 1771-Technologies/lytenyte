@@ -87,6 +87,12 @@
   padding: 4px;
   border-radius: 8px;
 
+  min-width: 120px;
+  width: 100%;
+
+  top: 36px;
+  position: absolute;
+
   box-sizing: border-box;
 
   box-shadow:

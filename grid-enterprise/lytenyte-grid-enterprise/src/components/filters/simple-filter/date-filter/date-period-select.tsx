@@ -25,7 +25,7 @@ export function DatePeriodSelect({
       dropdownRef={selectRef}
       items={allDatePeriodOptions}
       selected={item}
-      placeholder=""
+      placeholder="Select..."
       onSelect={(v) => {
         onAllDatePeriodSelect(v!.value as any);
       }}

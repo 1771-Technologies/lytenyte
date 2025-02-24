@@ -2,7 +2,6 @@ import "./dropdown.css";
 
 import { dropdown, useCombobox } from "@1771technologies/react-autocomplete";
 import { useMemo, useRef, useState, type CSSProperties, type RefObject } from "react";
-import { Portal } from "../portal";
 import { clsx } from "@1771technologies/js-utils";
 import { Input } from "@1771technologies/lytenyte-grid-community/internal";
 import { SearchIcon } from "@1771technologies/lytenyte-grid-community/icons";
@@ -79,7 +78,7 @@ export function Dropdown<T extends { label: string; value: unknown }>({
   const combined = useCombinedRefs(dropdownRef, ref);
 
   return (
-    <>
+    <div style={{ position: "relative" }}>
       {!searchable && (
         <div className="lng1771-dropdown" ref={combined} style={style}>
           <input
@@ -105,13 +104,7 @@ export function Dropdown<T extends { label: string; value: unknown }>({
         </button>
       )}
       {open && refForPlacement.current && (
-        <Portal
-          portalTarget={refForPlacement.current}
-          matchWidth
-          {...getListProps()}
-          style={{ minWidth: 120 }}
-          className="lng1771-dropdown__list-container"
-        >
+        <div {...getListProps()} className="lng1771-dropdown__list-container">
           {searchable && (
             <div>
               <Input {...getInputProps()} icon={SearchIcon} />
@@ -141,8 +134,8 @@ export function Dropdown<T extends { label: string; value: unknown }>({
               );
             })}
           </ul>
-        </Portal>
+        </div>
       )}
-    </>
+    </div>
   );
 }

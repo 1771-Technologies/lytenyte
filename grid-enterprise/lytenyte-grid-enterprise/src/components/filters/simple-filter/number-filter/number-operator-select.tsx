@@ -14,7 +14,14 @@ export function NumberOperatorSelect({ filter, onChange }: NumberOperatorSelectP
     return { label: valueToLabel[filter.operator], value: filter.operator };
   }, [filter.operator]);
 
-  return <Dropdown selected={value} items={selectItems} onSelect={onChange as any} />;
+  return (
+    <Dropdown
+      selected={value}
+      items={selectItems}
+      onSelect={onChange as any}
+      placeholder="Select..."
+    />
+  );
 }
 
 const valueToLabel: Record<FilterNumber["operator"], string> = {
