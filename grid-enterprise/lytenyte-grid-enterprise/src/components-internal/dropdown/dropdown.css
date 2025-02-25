@@ -24,6 +24,7 @@
   justify-content: space-between;
   cursor: pointer;
   padding-inline-start: 10px;
+  width: 100%;
 }
 .lng1771-dropdown-searchable__label {
   color: var(--lng1771-gray-80);
@@ -88,10 +89,6 @@
   border-radius: 8px;
 
   min-width: 120px;
-  width: 100%;
-
-  top: 36px;
-  position: absolute;
 
   box-sizing: border-box;
 

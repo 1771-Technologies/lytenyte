@@ -6,6 +6,8 @@ import { clsx } from "@1771technologies/js-utils";
 import { Input } from "@1771technologies/lytenyte-grid-community/internal";
 import { SearchIcon } from "@1771technologies/lytenyte-grid-community/icons";
 import { useCombinedRefs } from "@1771technologies/react-utils";
+import { Portal } from "./portal";
+import { LngPopover } from "../popover/lng-popover";
 
 export interface DropdownProps<T extends { label: string; value: unknown }> {
   readonly items: T[];
@@ -50,26 +52,34 @@ export function Dropdown<T extends { label: string; value: unknown }>({
     return selected.label;
   }, [selected]);
 
-  const { getToggleProps, getInputProps, getItemProps, getListProps, open, focusIndex, toggleRef } =
-    useCombobox({
-      items: filteredOptions,
-      value: searchable ? value : label,
-      onChange: searchable ? setValue : noop,
+  const {
+    getToggleProps,
+    getInputProps,
+    getItemProps,
+    getListProps,
+    open,
+    setOpen,
+    focusIndex,
+    toggleRef,
+  } = useCombobox({
+    items: filteredOptions,
+    value: searchable ? value : label,
+    onChange: searchable ? setValue : noop,
 
-      selected: label,
-      onSelectChange: (v) => {
-        if (!v) return;
+    selected: label,
+    onSelectChange: (v) => {
+      if (!v) return;
 
-        const value = labelToItem.get(v);
-        onSelect(value ?? null);
-      },
+      const value = labelToItem.get(v);
+      onSelect(value ?? null);
+    },
 
-      flipOnSelect: true,
-      feature: dropdown({
-        closeOnSelect: true,
-        rovingText: false,
-      }),
-    });
+    flipOnSelect: true,
+    feature: dropdown({
+      closeOnSelect: true,
+      rovingText: false,
+    }),
+  });
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -81,14 +91,14 @@ export function Dropdown<T extends { label: string; value: unknown }>({
     <div style={{ position: "relative" }}>
       {!searchable && (
         <div className="lng1771-dropdown" ref={combined} style={style}>
-          <input
-            className="lng1771-dropdown__input"
-            readOnly
-            placeholder={placeholder}
-            {...getInputProps()}
-          />
-          <button className="lng1771-dropdown__chevron" {...getToggleProps()} tabIndex={-1}>
-            ›
+          <button className="lng1771-dropdown-searchable" {...getToggleProps()}>
+            {selected?.label && (
+              <span className="lng1771-dropdown-searchable__label">{selected.label}</span>
+            )}
+            {!selected && (
+              <span className="lng1771-dropdown-searchable__placeholder">{placeholder ?? ""}</span>
+            )}
+            <span className="lng1771-dropdown__chevron">›</span>
           </button>
         </div>
       )}
@@ -104,7 +114,24 @@ export function Dropdown<T extends { label: string; value: unknown }>({
         </button>
       )}
       {open && refForPlacement.current && (
-        <div {...getListProps()} className="lng1771-dropdown__list-container">
+        <LngPopover
+          {...getListProps()}
+          open
+          style={{ width: refForPlacement.current.offsetWidth }}
+          onOpenChange={() => setOpen(false)}
+          popoverTarget={refForPlacement.current as HTMLElement}
+          className="lng1771-dropdown__list-container"
+        >
+          {!searchable && (
+            <input
+              className="lng1771-dropdown__input"
+              readOnly
+              placeholder={placeholder}
+              {...getInputProps()}
+              style={{ display: "none" }}
+            />
+          )}
+
           {searchable && (
             <div>
               <Input {...getInputProps()} icon={SearchIcon} />
@@ -134,7 +161,7 @@ export function Dropdown<T extends { label: string; value: unknown }>({
               );
             })}
           </ul>
-        </div>
+        </LngPopover>
       )}
     </div>
   );

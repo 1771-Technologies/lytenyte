@@ -5,6 +5,7 @@ import { useLyteNyte } from "../src/use-lytenyte";
 import { ColumnManager } from "@1771technologies/grid-components";
 import { FloatingFilter } from "../src/components/floating-filter/floating-filter";
 import { LyteNyteGrid } from "../src";
+import { SortManagerFloating } from "../src/sort-manager";
 
 export default function Play() {
   const ds = useClientDataSource({
@@ -57,6 +58,13 @@ export default function Play() {
     floatingRowHeight: 32,
     rowDataSource: ds,
 
+    floatingFrames: {
+      sort: {
+        component: () => <SortManagerFloating grid={grid} />,
+        title: "Sort",
+      },
+    },
+
     panelFrameButtons: [{ id: "columns", label: "Columns" }],
     panelFrames: {
       columns: {
@@ -84,7 +92,9 @@ export default function Play() {
             padding: 20px;
             width: 200px;
           `}
-        ></div>
+        >
+          <button onClick={() => grid.api.floatingFrameOpen("sort")}>Sort</button>
+        </div>
       </div>
       <div
         className={css`
