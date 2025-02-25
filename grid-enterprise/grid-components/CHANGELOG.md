@@ -1,5 +1,7 @@
 # @1771technologies/grid-components
 
+## 0.0.34
+
 ## 0.0.33
 
 ## 0.0.32
