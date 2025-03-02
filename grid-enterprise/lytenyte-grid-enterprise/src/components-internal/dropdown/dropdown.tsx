@@ -6,7 +6,6 @@ import { clsx } from "@1771technologies/js-utils";
 import { Input } from "@1771technologies/lytenyte-grid-community/internal";
 import { SearchIcon } from "@1771technologies/lytenyte-grid-community/icons";
 import { useCombinedRefs } from "@1771technologies/react-utils";
-import { Portal } from "./portal";
 import { LngPopover } from "../popover/lng-popover";
 
 export interface DropdownProps<T extends { label: string; value: unknown }> {

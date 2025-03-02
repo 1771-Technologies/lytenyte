@@ -8,12 +8,16 @@ export function evaluateQuickFilter<D, E>(
   row: RowNodeLeaf<D>,
   caseSensitive: boolean,
 ) {
+  const quickFilters = quickFilter.split(/\s+/).map((c) => {
+    return c.trim();
+  });
+
   for (let i = 0; i < columns.length; i++) {
     const field = api.columnQuickSearchField(row, columns[i]);
 
     const stringField = caseSensitive ? String(field) : String(field).toLowerCase();
 
-    if (stringField.includes(quickFilter)) return true;
+    if (quickFilters.some((c) => stringField.includes(c))) return true;
   }
 
   return false;
