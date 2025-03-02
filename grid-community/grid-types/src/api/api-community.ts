@@ -29,6 +29,7 @@ export interface ApiCommunity<D, C, E> {
     c?: string[] | null,
     options?: AutosizeOptions,
   ) => AutosizeResult | null;
+  readonly autosizeMeasure: (text: string, font?: string) => TextMetrics | null;
 
   readonly cellEditBegin: (p: CellEditLocation, makeActive?: boolean) => void;
   readonly cellEditEnd: (p: CellEditLocation, cancel?: boolean) => void;

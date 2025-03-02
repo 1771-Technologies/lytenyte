@@ -2,6 +2,7 @@ import type { ApiCommunity, ColumnCommunity, StoreCommunity } from "@1771technol
 import {
   autosizeColumn,
   autosizeColumns,
+  autosizeMeasure,
   rowIsGroup,
   rowIsLeaf,
   rowIsTotal,
@@ -86,6 +87,7 @@ export function makeApi<D, E>(
   const partial = {
     autosizeColumn: (column, options) => autosizeColumn(api, column, options),
     autosizeColumns: (columns, options) => autosizeColumns(api, columns, options),
+    autosizeMeasure: (text, font) => autosizeMeasure(api, text, font),
 
     cellEditBegin: (l, makeActive) => cellEditBegin(api, l, makeActive),
     cellEditEnd: (p, cancel) => cellEditEnd(api, p, cancel),
