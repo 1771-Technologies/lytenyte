@@ -8,9 +8,12 @@ export function evaluateQuickFilter<D, E>(
   row: RowNodeLeaf<D>,
   caseSensitive: boolean,
 ) {
-  const quickFilters = quickFilter.split(/\s+/).map((c) => {
-    return c.trim();
-  });
+  const quickFilters = quickFilter
+    .split(/\s+/)
+    .map((c) => {
+      return c.trim();
+    })
+    .filter((c) => !!c);
 
   for (let i = 0; i < columns.length; i++) {
     const field = api.columnQuickSearchField(row, columns[i]);
