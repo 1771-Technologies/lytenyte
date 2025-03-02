@@ -11,6 +11,8 @@ import type {
   PanelFrame,
 } from "./types-enterprise";
 import type {
+  AutosizeCellParameters,
+  AutosizeHeaderParameters,
   CellRendererParams,
   ColumnHeaderRendererParams,
   FloatingCellRendererParams,
@@ -54,3 +56,6 @@ export type ColumnMenuRendererParamsReact<D> = ColumnMenuRendererParams<
   Api<D, ReactNode>,
   ColumnEnterpriseReact<D>
 >;
+
+export type AutosizeHeaderParamsReact<D> = AutosizeHeaderParameters<Api<D, ReactNode>, ReactNode>;
+export type AutosizeCellParamsReact<D> = AutosizeCellParameters<Api<D, ReactNode>, D, ReactNode>;
