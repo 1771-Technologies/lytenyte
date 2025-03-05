@@ -1,3 +1,22 @@
+const c = {
+  age: 30,
+  job: "unemployed",
+  marital: "married",
+  education: "primary",
+  default: "no",
+  balance: 1787,
+  housing: "no",
+  loan: "no",
+  contact: "cellular",
+  day: 19,
+  month: "oct",
+  duration: 79,
+  campaign: "1",
+  pdays: "-1",
+  previous: "0",
+  poutcome: "unknown",
+  y: "no",
+};
 // prettier-ignore
 export const bankDataSmall = [
 	{"age":30,"job":"unemployed","marital":"married","education":"primary","default":"no","balance":1787,"housing":"no","loan":"no","contact":"cellular","day":19,"month":"oct","duration":79,"campaign":"1","pdays":"-1","previous":"0","poutcome":"unknown","y":"no"},
