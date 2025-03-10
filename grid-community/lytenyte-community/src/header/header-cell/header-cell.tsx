@@ -83,7 +83,7 @@ export function HeaderCell({
           api.columnGroupToggle(id.join(api.getState().columnGroupIdDelimiter.peek()));
         }}
         style={style}
-        className={clsx("lng1771-header__cell-expand")}
+        className="lng1771-header__cell-expand"
       >
         +
       </button>

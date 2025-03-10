@@ -113,7 +113,7 @@ export function HeaderGroupCell({
       role="columnheader"
       tabIndex={-1}
       {...headerMove.moveProps}
-      className={"lng1771-header__cell-group"}
+      className="lng1771-header__group"
     >
       <HeaderGroupDefault group={groupItem} api={api} />
     </div>

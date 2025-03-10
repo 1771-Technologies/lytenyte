@@ -102,7 +102,6 @@ export interface Column<A, D, E> {
 
   readonly resizable?: boolean;
   readonly movable?: boolean;
-  readonly keepMounted?: boolean;
 }
 
 export type ColumnBase<D, E, I> = Omit<

@@ -39,7 +39,7 @@ export function Header() {
   return (
     <div
       role="row"
-      className={"lng1771-header"}
+      className="lng1771-header"
       style={{ gridTemplateRows, "--lng1771-header-height": headerHeight } as CSSProperties}
     >
       {headerGroupCells}
