@@ -41,7 +41,7 @@ export interface ClientState<D, E> {
 }
 
 export function createClientDataSource<D, E>(
-  r: RowDataSourceClient<D>,
+  r: RowDataSourceClient<D, E>,
 ): RowDataSourceBackingCommunity<D, E> {
   let watchers: (() => void)[] = [];
 
@@ -58,8 +58,16 @@ export function createClientDataSource<D, E>(
     const rowCenterNodes = signal(initialCenterNodes, { postUpdate: () => cache.set({}) });
     const rowBottomNodes = signal(initialBottomNodes, { postUpdate: () => cache.set({}) });
 
-    const filteredNodes = filterNodesComputed(api$, rowCenterNodes);
-    const sortedNodes = sortedNodesComputed(api$, filteredNodes);
+    const filteredNodes = filterNodesComputed(
+      api$,
+      rowCenterNodes,
+      r.filterToDate ?? (((c: number) => new Date(c)) as any),
+    );
+    const sortedNodes = sortedNodesComputed(
+      api$,
+      filteredNodes,
+      r.sortToDate ?? (((c: number) => new Date(c)) as any),
+    );
 
     const flatPayload = flatBlockPayloadsComputed(sortedNodes);
     const groupPayload = groupBlockPayloadsComputed(api$, sortedNodes);

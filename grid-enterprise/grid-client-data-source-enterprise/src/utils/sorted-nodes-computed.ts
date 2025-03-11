@@ -23,6 +23,7 @@ export function sortedNodesComputed<D, E>(
       api as any,
       sortModel,
       sx.internal.columnLookup.get() as any,
+      toDate,
     );
     const combined = makeCombinedComparator(api as any, sortModel, comparators);
 

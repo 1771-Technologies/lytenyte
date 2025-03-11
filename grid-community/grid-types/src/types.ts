@@ -1,5 +1,7 @@
 // Aggregations
 
+import type { ColumnCommunity } from ".";
+
 export type AggBuiltIns = "sum" | "min" | "max" | "avg" | "count" | "first" | "last" | "group";
 export type AggFunc<A> = (data: unknown[], api: A) => unknown;
 export type AggFuncs<A> = { [id: string]: AggFunc<A> };
@@ -436,11 +438,14 @@ export type RowGroupExpansions = { [rowId: string]: boolean | undefined };
 
 // Rows
 
-export interface RowDataSourceClient<D = unknown> {
+export interface RowDataSourceClient<D = unknown, E = unknown> {
   readonly kind: "client";
   data: D[];
   topData?: D[];
   bottomData?: D[];
+
+  readonly filterToDate?: (value: unknown, column: ColumnCommunity<D, E>) => Date;
+  readonly sortToDate?: (value: unknown, column: ColumnCommunity<D, E>) => Date;
 }
 
 export type RowFullWidthPredicateParams<A, D> = {

@@ -50,10 +50,8 @@ export interface ClientDataSourceInitial<D, E> {
   readonly topData?: D[];
   readonly bottomData?: D[];
 
-  readonly filterToDate?: (
-    value: unknown,
-    column: ColumnEnterprise<ApiEnterprise<D, E>, D>,
-  ) => Date;
+  readonly filterToDate?: (value: unknown, column: ColumnEnterprise<D, E>) => Date;
+  readonly sortToDate?: (value: unknown, column: ColumnEnterprise<D, E>) => Date;
 }
 
 export interface ClientRowDataSource<D, E> extends RowDataSourceEnterprise<D, E> {
@@ -91,7 +89,11 @@ export function createClientDataSource<D, E>(
       rowCenterNodes,
       r.filterToDate ?? (((v: number) => new Date(v)) as any),
     );
-    const sortedNodes = sortedNodesComputed(api$, filteredNodes);
+    const sortedNodes = sortedNodesComputed(
+      api$,
+      filteredNodes,
+      r.sortToDate ?? (((c: number) => new Date(c)) as any),
+    );
 
     const flatPayload = flatBlockPayloadsComputed(sortedNodes);
     const groupPayload = groupBlockPayloadsComputed(api$, sortedNodes);
