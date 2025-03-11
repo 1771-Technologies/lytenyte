@@ -13,5 +13,5 @@ export const rowGroupToggle = <D, E>(
   const next = state ?? !api.rowGroupIsExpanded(row);
   expansions.set((prev) => ({ ...prev, [row.id]: next }));
 
-  api.rowRefresh();
+  queueMicrotask(api.rowRefresh);
 };

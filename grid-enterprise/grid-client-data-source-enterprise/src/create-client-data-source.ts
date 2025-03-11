@@ -5,7 +5,11 @@ import {
   type ReadonlySignal,
   type Signal,
 } from "@1771technologies/react-cascada";
-import type { ApiEnterprise, RowDataSourceEnterprise } from "@1771technologies/grid-types";
+import type {
+  ApiEnterprise,
+  ColumnEnterprise,
+  RowDataSourceEnterprise,
+} from "@1771technologies/grid-types";
 import { BlockGraph } from "@1771technologies/grid-graph";
 import type { RowNodeLeaf } from "@1771technologies/grid-types/community";
 import { filterNodesComputed } from "./utils/filterNodesComputed";
@@ -41,10 +45,15 @@ export interface ClientState<D, E> {
   rowBottomNodes: Signal<RowNodeLeaf<D>[]>;
 }
 
-export interface ClientDataSourceInitial<D> {
+export interface ClientDataSourceInitial<D, E> {
   readonly data: D[];
   readonly topData?: D[];
   readonly bottomData?: D[];
+
+  readonly filterToDate?: (
+    value: unknown,
+    column: ColumnEnterprise<ApiEnterprise<D, E>, D>,
+  ) => Date;
 }
 
 export interface ClientRowDataSource<D, E> extends RowDataSourceEnterprise<D, E> {
@@ -52,7 +61,7 @@ export interface ClientRowDataSource<D, E> extends RowDataSourceEnterprise<D, E>
 }
 
 export function createClientDataSource<D, E>(
-  r: ClientDataSourceInitial<D>,
+  r: ClientDataSourceInitial<D, E>,
 ): ClientRowDataSource<D, E> {
   const state = cascada(() => {
     const api$ = signal<ApiEnterprise<D, E>>(null as unknown as ApiEnterprise<D, E>);
@@ -77,7 +86,11 @@ export function createClientDataSource<D, E>(
     const rowCenterNodes = signal(initialCenterNodes, { postUpdate: postUpdate });
     const rowBottomNodes = signal(initialBottomNodes, { postUpdate: postUpdate });
 
-    const filteredNodes = filterNodesComputed(api$, rowCenterNodes);
+    const filteredNodes = filterNodesComputed(
+      api$,
+      rowCenterNodes,
+      r.filterToDate ?? (((v: number) => new Date(v)) as any),
+    );
     const sortedNodes = sortedNodesComputed(api$, filteredNodes);
 
     const flatPayload = flatBlockPayloadsComputed(sortedNodes);

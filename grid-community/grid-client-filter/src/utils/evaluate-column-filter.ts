@@ -1,4 +1,4 @@
-import type { ApiEnterprise } from "@1771technologies/grid-types";
+import type { ApiEnterprise, ColumnEnterprise } from "@1771technologies/grid-types";
 import { evaluateDate } from "./evaluate-date-filter";
 import type { ColumnFilter } from "@1771technologies/grid-types/enterprise";
 import type { RowNode } from "@1771technologies/grid-types/community";
@@ -9,8 +9,9 @@ export function evaluateColumnFilter<D, E>(
   api: ApiEnterprise<D, E>,
   filter: ColumnFilterModel<ApiEnterprise<D, E>, D>["string"],
   row: RowNode<D>,
+  providedToDate: (value: unknown, column: ColumnEnterprise<D, E>) => Date,
 ): boolean {
-  const simple = filter.simple ? evaluateFilter(api, filter.simple, row) : true;
+  const simple = filter.simple ? evaluateFilter(api, filter.simple, row, providedToDate) : true;
   const inResult = filter.set ? evaluateInFilter(api, filter.set, row) : true;
 
   return simple && inResult;
@@ -36,6 +37,7 @@ function evaluateFilter<D, E>(
   api: ApiEnterprise<D, E>,
   filter: ColumnFilter<ApiEnterprise<D, E>, D>,
   row: RowNode<D>,
+  providedToDate: (value: unknown, column: ColumnEnterprise<D, E>) => Date,
 ): boolean {
   if (filter.kind === "text") {
     const column = api.columnById(filter.columnId)!;
@@ -73,19 +75,25 @@ function evaluateFilter<D, E>(
     }
   } else if (filter.kind === "date") {
     const column = api.columnById(filter.columnId)!;
-    const toDate = column.filterParams?.toDate ?? ((d: number) => new Date(d));
+    const toDate = providedToDate;
 
     const rawValue = api.columnField(row, column) as number;
-    const value = toDate(rawValue);
+    const value = toDate(rawValue, column);
 
     return evaluateDate(value, filter);
   } else if (filter.kind === "function") {
     return filter.func(api, row);
   } else {
     if (filter.operator === "or") {
-      return evaluateFilter(api, filter.left, row) || evaluateFilter(api, filter.right, row);
+      return (
+        evaluateFilter(api, filter.left, row, providedToDate) ||
+        evaluateFilter(api, filter.right, row, providedToDate)
+      );
     } else {
-      return evaluateFilter(api, filter.left, row) && evaluateFilter(api, filter.right, row);
+      return (
+        evaluateFilter(api, filter.left, row, providedToDate) &&
+        evaluateFilter(api, filter.right, row, providedToDate)
+      );
     }
   }
 }

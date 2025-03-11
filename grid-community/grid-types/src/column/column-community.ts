@@ -15,13 +15,11 @@ import type {
   ColumnPin,
   ColumnSpanCallback,
   Field,
-  FilterParams,
   FloatingCellRenderer,
   RowSpanCallback,
   SortComparatorFunc,
   SortComparators,
   SortCycleOption,
-  SortParams,
 } from "../types";
 
 export interface Column<A, D, E> {
@@ -38,8 +36,6 @@ export interface Column<A, D, E> {
 
   readonly hidable?: boolean;
   readonly hide?: boolean;
-
-  readonly filterParams?: FilterParams;
 
   readonly cellEditPredicate?: boolean | CellEditPredicate<A, D, this>;
   readonly cellEditParser?: CellEditParser<A, D, this> | null;
@@ -59,7 +55,6 @@ export interface Column<A, D, E> {
   readonly sortable?: boolean;
   readonly sortCycle?: SortCycleOption[];
   readonly sortComparator?: SortComparators | SortComparatorFunc<A, D>;
-  readonly sortParams?: SortParams;
 
   readonly pin?: ColumnPin;
 

@@ -307,10 +307,6 @@ export interface FilterFunction<A, D> {
   readonly func: (api: A, row: RowNode<D>) => boolean;
 }
 
-export interface FilterParams {
-  toDate?: (d: unknown) => Date;
-}
-
 export type FilterSimpleColumn = FilterText | FilterDate | FilterNumber;
 export type FilterNonCombined<A, D> = FilterText | FilterNumber | FilterDate | FilterFunction<A, D>;
 
@@ -487,11 +483,6 @@ export type RowSelectionEventParams<A> = {
   readonly rowIds: string[];
 };
 export type RowSelectionEvent<A> = (p: RowSelectionEventParams<A>) => void;
-
-// Sort
-export interface SortParams {
-  toDate?: (d: unknown) => Date;
-}
 
 export interface SortOptions {
   readonly isAccented?: boolean;

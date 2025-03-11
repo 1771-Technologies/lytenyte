@@ -15,13 +15,11 @@ import type {
   ColumnPin,
   ColumnSpanCallback,
   Field,
-  FilterParams,
   FloatingCellRenderer,
   RowSpanCallback,
   SortComparatorFunc,
   SortComparators,
   SortCycleOption,
-  SortParams,
 } from "../types";
 
 export type HeaderTooltip<A, C, E> =
@@ -45,7 +43,6 @@ export interface Column<A, D, E> {
 
   readonly filterSupportsQuickSearch?: boolean;
   readonly filterSupportsIn?: boolean;
-  readonly filterParams?: FilterParams;
 
   readonly hidable?: boolean;
   readonly hide?: boolean;
@@ -68,7 +65,6 @@ export interface Column<A, D, E> {
   readonly sortable?: boolean;
   readonly sortCycle?: SortCycleOption[];
   readonly sortComparator?: SortComparators | SortComparatorFunc<A, D>;
-  readonly sortParams?: SortParams;
 
   readonly pin?: ColumnPin;
 
