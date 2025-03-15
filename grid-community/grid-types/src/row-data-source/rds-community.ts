@@ -24,6 +24,7 @@ export interface RowDataSource<A, D> {
 
   rowGetAllIds: () => string[];
   rowGetAllChildrenIds: (rowIndex: number) => string[];
+
   rowSelectionIndeterminateSupported: () => boolean;
   rowSelectionSelectAllSupported: () => boolean;
 
