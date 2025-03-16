@@ -1,13 +1,13 @@
+import "./column-tree.css";
 import type {
   ListViewItemRendererProps,
   PathTreeInputItem,
   PathTreeNode,
+  ListViewAxe,
 } from "@1771technologies/react-list-view";
 import { ListView } from "@1771technologies/react-list-view";
 import { useId, useMemo } from "react";
 import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
-import { cc } from "../../component-configuration";
-import { t } from "@1771technologies/grid-design";
 import { CollapsedIcon, DragIcon, ExpandedIcon } from "./components";
 import { clsx } from "@1771technologies/js-utils";
 import { handleItemHide } from "./handle-item-hide";
@@ -17,10 +17,21 @@ import { itemDragTag } from "./item-drag-label";
 import { Checkbox } from "@1771technologies/lytenyte-grid-community/internal";
 import { useGrid } from "../../../use-grid";
 
-export function ColumnTree({ query = "" }: { query?: string }) {
+const itemAxe: ListViewAxe<any> = {
+  axeDescription:
+    "Select an item. Use the up and down arrow keys to navigate to an item. " +
+    "Press enter to accept the option. Escape to cancel.",
+  axeItemLabels: (item) => (item.type === "leaf" ? item.data.label : ""),
+  axeLabel: (cnt) => `There are ${cnt} items to choose from`,
+};
+
+interface ColumnTree {
+  readonly query?: string;
+}
+
+export function ColumnTree({ query = "" }: ColumnTree) {
   const { api, state } = useGrid();
 
-  const config = cc.columnManager.use();
   const columns = state.columns.use();
 
   const expansions = state.internal.columnManagerTreeExpansions.use();
@@ -45,46 +56,13 @@ export function ColumnTree({ query = "" }: { query?: string }) {
   return (
     <ListView
       paths={paths}
-      axe={config.columnTree!.axe!}
+      axe={itemAxe}
       expansions={expansions}
       onAction={(item) => {
         handleItemHide(item, api);
       }}
-      className={css`
-        padding-block-start: 8px;
-        box-sizing: border-box;
-        max-width: 400px;
-        overflow-x: hidden;
-
-        &:focus {
-          outline: 1px solid ${t.colors.borders_focus};
-          outline-offset: -2px;
-        }
-      `}
-      itemClassName={css`
-        padding-inline: ${t.spacing.space_10};
-        user-select: none;
-        cursor: pointer;
-
-        &:focus {
-          outline: none;
-
-          & > div {
-            background-color: ${t.colors.backgrounds_default};
-            border-radius: ${t.spacing.box_radius_medium};
-
-            position: relative;
-            &::before {
-              content: "";
-              position: absolute;
-              inset-inline-start: 0px;
-              width: 2px;
-              height: 100%;
-              background-color: ${t.colors.borders_focus};
-            }
-          }
-        }
-      `}
+      className="lng1771-column-manager__column-tree"
+      itemClassName="lng1771-column-manager__column-tree-item"
       onExpansionChange={(id, s) =>
         state.internal.columnManagerTreeExpansions.set((prev) => ({ ...prev, [id]: s }))
       }
@@ -93,14 +71,6 @@ export function ColumnTree({ query = "" }: { query?: string }) {
     />
   );
 }
-
-const treeClx = css`
-  display: flex;
-  align-items: center;
-  gap: 1px;
-  height: 100%;
-  padding-inline-end: ${t.spacing.space_30};
-`;
 
 function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseReact<any>>) {
   const { api, state } = useGrid();
@@ -152,40 +122,16 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
   });
 
   const className = clsx(
-    treeClx,
-    isOver &&
-      !canDrop &&
-      css`
-        background-color: ${t.colors.system_red_30};
-      `,
+    "lng1771-column-manager__column-renderer",
+    isOver && !canDrop && "lng1771-column-manager__column-renderer--is-over-cannot-drop",
     isOver &&
       isBefore &&
       canDrop &&
-      css`
-        position: relative;
-        &::before {
-          content: "";
-          height: 1px;
-          width: 90%;
-          position: absolute;
-          top: 0px;
-          background-color: blue;
-        }
-      `,
+      "lng1771-column-manager__column-renderer--is-over-can-drop-before",
     isOver &&
       !isBefore &&
       canDrop &&
-      css`
-        position: relative;
-        &::after {
-          content: "";
-          height: 1px;
-          width: 90%;
-          position: absolute;
-          bottom: 0px;
-          background-color: blue;
-        }
-      `,
+      "lng1771-column-manager__column-renderer--is-over-can-drop-after",
   );
 
   if (props.data.type === "leaf") {
@@ -198,7 +144,7 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
     return (
       <div
         style={{
-          paddingInlineStart: `calc(${t.spacing.space_30} + ${props.depth > 0 ? props.depth + 1 : 0} * ${t.spacing.space_30} + 22px)`,
+          paddingInlineStart: `calc(12px + ${props.depth > 0 ? props.depth + 1 : 0} * 12px + 22px)`,
         }}
         onDragOver={onDragOver}
         onDrop={onDrop}
@@ -216,14 +162,9 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
         <label
           id={labelId}
           className={clsx(
-            "lng1771-text-medium",
-            css`
-              margin-inline-start: 4px;
-            `,
+            "lng1771-column-manager__column-renderer-label",
             draggedIndex === props.treeFlatIndex &&
-              css`
-                color: ${t.colors.text_light};
-              `,
+              "lng1771-column-manager__column-renderer-label--dragging",
           )}
         >
           {data.headerName ?? data.id}
@@ -243,7 +184,7 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
     return (
       <div
         style={{
-          paddingInlineStart: `calc(${t.spacing.space_30} + ${props.depth} * ${t.spacing.space_30})`,
+          paddingInlineStart: `calc(12px + ${props.depth > 0 ? props.depth + 1 : 0} * 12px + 22px)`,
         }}
         onDragOver={onDragOver}
         onDrop={onDrop}
@@ -263,14 +204,9 @@ function ColumnTreeRenderer(props: ListViewItemRendererProps<ColumnEnterpriseRea
         <label
           id={labelId}
           className={clsx(
-            "lng1771-text-medium",
-            css`
-              margin-inline-start: 4px;
-            `,
+            "lng1771-column-manager__column-renderer-label",
             draggedIndex === props.treeFlatIndex &&
-              css`
-                color: ${t.colors.text_light};
-              `,
+              "lng1771-column-manager__column-renderer-label--dragging",
           )}
         >
           {path}
