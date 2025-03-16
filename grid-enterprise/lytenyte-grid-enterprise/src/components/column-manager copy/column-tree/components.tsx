@@ -1,23 +1,22 @@
 import { t } from "@1771technologies/grid-design";
-import { IconButton } from "../../buttons/icon-button";
-import { useGrid } from "../../provider/grid-provider";
 import type { PathTreeNode } from "@1771technologies/react-list-view";
 import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import { useMemo } from "react";
 import { useDraggable } from "@1771technologies/react-dragon";
 import { itemDragTag } from "./item-drag-label";
 import { allLeafs } from "./all-leafs";
-import { cc } from "../../component-configuration";
 import { groupTag, measureTag, pivotTag, valueTag } from "../box-drop-zone/tags";
+import { Button } from "../../../components-internal/button/button";
+import { useGrid } from "../../../use-grid";
+import { DragPlaceholder } from "../../../components-internal/drag-placeholder/drag-placeholder";
 
 export const ExpandedIcon = ({ id }: { id: string }) => {
   const { state } = useGrid();
 
   return (
-    <IconButton
+    <Button
       tabIndex={-1}
-      kind="ghost"
-      small
+      kind="tertiary"
       onFocus={(ev) => ev.currentTarget.blur()}
       onClick={(ev) => {
         ev.stopPropagation();
@@ -37,21 +36,20 @@ export const ExpandedIcon = ({ id }: { id: string }) => {
       >
         ›
       </span>
-    </IconButton>
+    </Button>
   );
 };
 
 export const CollapsedIcon = ({ id }: { id: string }) => {
   const { state } = useGrid();
   return (
-    <IconButton
+    <Button
       tabIndex={-1}
-      kind="ghost"
+      kind="tertiary"
       onClick={(ev) => {
         ev.stopPropagation();
         state.internal.columnManagerTreeExpansions.set((prev) => ({ ...prev, [id]: true }));
       }}
-      small
       className={css`
         color: ${t.colors.borders_icons_default};
         font-size: 20px;
@@ -65,7 +63,7 @@ export const CollapsedIcon = ({ id }: { id: string }) => {
       >
         ›
       </span>
-    </IconButton>
+    </Button>
   );
 };
 
@@ -77,9 +75,6 @@ export const DragIcon = ({
   dragIndex: number;
 }) => {
   const { state, api } = useGrid();
-  const config = cc.columnManager.use();
-  const dragLabel = config.columnTree?.labelDrag;
-  const DragPlaceholder = config.dragPlaceholder!;
 
   const gridId = state.gridId.use();
   const dragTag = useMemo(() => {
@@ -115,12 +110,10 @@ export const DragIcon = ({
   });
 
   return (
-    <IconButton
+    <Button
       {...drag}
       tabIndex={-1}
-      aria-label={dragLabel}
-      kind="ghost"
-      small
+      kind="tertiary"
       className={css`
         &:focus {
           outline: none;
@@ -152,6 +145,6 @@ export const DragIcon = ({
         <span />
         <span />
       </span>
-    </IconButton>
+    </Button>
   );
 };
