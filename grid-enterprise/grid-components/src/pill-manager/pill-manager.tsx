@@ -2,7 +2,6 @@ import type { ApiEnterpriseReact } from "@1771technologies/grid-types";
 import { PillRow } from "./pill-row";
 import { cc } from "../component-configuration";
 import { ColumnsIcon } from "../icons/columns-icon";
-import { MeasuresIcon } from "../column-manager/icons/measures-icon";
 import { RowGroupIcon } from "../icons/row-group-icon";
 import { SwapPivots } from "./swap-pivots";
 import { ColumnPivotIcon } from "../icons/column-pivots-icon";
@@ -10,6 +9,7 @@ import { useColumnPills } from "./use-column-pills";
 import { useRowGroupPills } from "./use-row-groups-pills";
 import { useColumnPivotPills } from "./use-column-pivot-pills";
 import { useMeasurePills } from "./use-measure-pills";
+import { MeasuresIcon } from "@1771technologies/lytenyte-grid-community/icons";
 
 export interface PillManagerConfiguration {
   readonly axe?: {

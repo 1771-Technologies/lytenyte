@@ -5,10 +5,6 @@ import { t } from "@1771technologies/grid-design";
 import type { FloatingFrameConfiguration } from "./floating-frame/floating-frame-driver";
 import { frameDefaultAxe } from "@1771technologies/react-frame";
 import type { ColumnManagerConfiguration } from "./column-manager/column-manager-frame";
-import { ColumnPivotIcon } from "./column-manager/icons/column-pivot-icon";
-import { DragGroupIcon } from "./column-manager/icons/drag-group-icon";
-import { MeasuresIcon } from "./column-manager/icons/measures-icon";
-import { RowGroupIcon } from "./column-manager/icons/row-group-icon";
 import { DragPlaceholder } from "./drag-placeholder/drag-placeholder";
 import type { MenuConfiguration } from "./popover-menu/popover-menu";
 import { menuAxeDefault } from "@1771technologies/react-menu-legacy";
@@ -17,6 +13,12 @@ import type { FilterConfiguration } from "./filters/filter";
 import type { ListViewAxe } from "@1771technologies/react-list-view";
 import type { SelectItem } from "./select/select";
 import type { PillManagerConfiguration } from "./pill-manager/pill-manager";
+import { ColumnPivotIcon } from "./icons/column-pivots-icon";
+import {
+  DragGroupIcon,
+  MeasuresIcon,
+  RowGroupIcon,
+} from "@1771technologies/lytenyte-grid-community/icons";
 
 export type ComponentConfiguration = {
   columnManager: Signal<ColumnManagerConfiguration>;
