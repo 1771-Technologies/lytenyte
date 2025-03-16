@@ -92,9 +92,7 @@ export default function Play() {
             padding: 20px;
             width: 200px;
           `}
-        >
-          <button onClick={() => grid.api.floatingFrameOpen("sort")}>Sort</button>
-        </div>
+        ></div>
       </div>
       <div
         className={css`
