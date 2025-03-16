@@ -1,0 +1,37 @@
+.lng1771-column-manager__drag-button:focus {
+  outline: none;
+  border-color: transparent;
+}
+
+.lng1771-column-manager__drag-icon {
+  display: grid;
+  grid-template-columns: 2px 2px;
+  grid-template-rows: 2px 2px 2px;
+  grid-row-gap: 2px;
+  grid-column-gap: 2px;
+
+  & span {
+    background-color: var(--lng1771-gray-70);
+  }
+}
+
+.lng1771-column-manager__collapsed-icon {
+  color: var(--lng1771-gray-70);
+  font-size: 20px;
+
+  & span {
+    position: relative;
+    inset-block-end: 2px;
+  }
+}
+
+.lng1771-column-manager__expanded-icon {
+  transform: rotate(90deg);
+  color: var(--lng1771-gray-70);
+  font-size: 20px;
+
+  & span {
+    position: relative;
+    inset-block-end: 2px;
+  }
+}

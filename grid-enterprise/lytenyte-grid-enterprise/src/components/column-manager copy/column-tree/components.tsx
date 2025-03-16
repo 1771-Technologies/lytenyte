@@ -1,4 +1,4 @@
-import { t } from "@1771technologies/grid-design";
+import "./components.css";
 import type { PathTreeNode } from "@1771technologies/react-list-view";
 import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import { useMemo } from "react";
@@ -22,20 +22,9 @@ export const ExpandedIcon = ({ id }: { id: string }) => {
         ev.stopPropagation();
         state.internal.columnManagerTreeExpansions.set((prev) => ({ ...prev, [id]: false }));
       }}
-      className={css`
-        transform: rotate(90deg);
-        color: ${t.colors.borders_icons_default};
-        font-size: 20px;
-      `}
+      className="lng1771-column-manager__expanded-icon"
     >
-      <span
-        className={css`
-          position: relative;
-          inset-block-end: 2px;
-        `}
-      >
-        ›
-      </span>
+      <span>›</span>
     </Button>
   );
 };
@@ -50,19 +39,9 @@ export const CollapsedIcon = ({ id }: { id: string }) => {
         ev.stopPropagation();
         state.internal.columnManagerTreeExpansions.set((prev) => ({ ...prev, [id]: true }));
       }}
-      className={css`
-        color: ${t.colors.borders_icons_default};
-        font-size: 20px;
-      `}
+      className="lng1771-column-manager__collapsed-icon"
     >
-      <span
-        className={css`
-          position: relative;
-          inset-block-end: 2px;
-        `}
-      >
-        ›
-      </span>
+      <span>›</span>
     </Button>
   );
 };
@@ -114,30 +93,13 @@ export const DragIcon = ({
       {...drag}
       tabIndex={-1}
       kind="tertiary"
-      className={css`
-        &:focus {
-          outline: none;
-          border-color: transparent;
-        }
-      `}
+      className="lng1771-column-manager__drag-button"
       disabled={dragTag.length === 0}
       onClick={(ev) => {
         ev.stopPropagation();
       }}
     >
-      <span
-        className={css`
-          display: grid;
-          grid-template-columns: 2px 2px;
-          grid-template-rows: 2px 2px 2px;
-          grid-row-gap: 2px;
-          grid-column-gap: 2px;
-
-          & span {
-            background-color: ${t.colors.borders_icons_default};
-          }
-        `}
-      >
+      <span className="lng1771-column-manager__drag-icon">
         <span />
         <span />
         <span />
