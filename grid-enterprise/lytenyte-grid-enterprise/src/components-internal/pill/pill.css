@@ -1,3 +1,45 @@
 .lng1771-pill {
-    white-space: nowrap;
+  white-space: nowrap;
+  flex: 1;
+  height: 28px;
+  max-height: 28px;
+  min-height: 28px;
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  padding-inline-start: 4px;
+  padding-inline-end: 6px;
+  border-radius: 6px;
+
+  color: var(--lng1771-gray-60);
+  font-family: var(--lng1771-typeface);
+  font-size: 12px;
+}
+
+.lng1771-pill__content {
+  flex: 1;
+}
+
+.lng1771-pill--no-start-end {
+  padding-inline-start: 6px;
+}
+
+.lng1771-pill--plain {
+  background-color: var(--lng1771-pill-plain-fill);
+  border: 1px solid var(--lng1771-pill-plain-fill);
+}
+
+.lng1771-pill--group {
+  background-color: var(--lng1771-pill-group-fill);
+  border: 1px solid var(--lng1771-pill-group-stroke);
+}
+
+.lng1771-pill--pivot {
+  background-color: var(--lng1771-pill-pivot-fill);
+  border: 1px solid var(--lng1771-pill-pivot-stroke);
+}
+
+.lng1771-pill--column {
+  background-color: var(--lng1771-pill-column-fill);
+  border: 1px solid var(--lng1771-pill-column-stroke);
 }

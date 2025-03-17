@@ -101,6 +101,17 @@
   --lng1771-gray-90: #dadada;
   --lng1771-gray-100: #eeeeee;
 
+  --lng1771-pill-plain-fill: var(--lng1771-backgrounds-default);
+  --lng1771-pill-column-fill: #182a2a;
+  --lng1771-pill-column-stroke: rgba(0, 181, 181, 0.266);
+  --lng1771-pill-pivot-fill: rgba(120, 57, 255, 0.18);
+  --lng1771-pill-pivot-stroke: rgba(136, 81, 255, 0.6);
+  --lng1771-pill-group-fill: rgba(0, 221, 147, 0.14);
+  --lng1771-pill-group-stroke: rgba(26, 255, 172, 0.35);
+  --lng1771-pill-icon-color: var(--lng1771-gray-60);
+
+  /* Grid Theme End */
+
   --lng1771-grid-container-bg: var(--lng1771-gray-05);
   --lng1771-grid-container-divider: var(--lng1771-gray-20);
   --lng1771-grid-drag-bar-color: var(--lng1771-primary-50);
