@@ -1,6 +1,5 @@
 import { useMemo, type KeyboardEvent, type MouseEvent } from "react";
 import { cc } from "../../component-configuration";
-import { useGrid } from "../../provider/grid-provider";
 import { BoxDropZone, type BoxDropZoneRendererProps } from "./box-drop-zone";
 import { Pill } from "../../pills/pill";
 import { PillWrapper } from "./pill-wrapper";
@@ -13,6 +12,7 @@ import { groupTag, measureTag, pivotTag } from "./tags";
 import { insertIdsIntoModel } from "./insert-ids-in-model";
 import { useEvent } from "@1771technologies/react-utils";
 import { groupSource, measureSource, pivotSource } from "./sources";
+import { useGrid } from "../../../use-grid";
 
 export function RowGroupsBox() {
   const { state, api } = useGrid();

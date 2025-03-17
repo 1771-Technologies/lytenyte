@@ -1,6 +1,5 @@
 import { useMemo, useRef, useState } from "react";
 import { cc } from "../../component-configuration";
-import { useGrid } from "../../provider/grid-provider";
 import { BoxDropZone, type BoxDropZoneRendererProps } from "./box-drop-zone";
 import { Pill } from "../../pills/pill";
 import { PillWrapper } from "./pill-wrapper";
@@ -19,6 +18,7 @@ import type {
   ColumnBaseEnterpriseReact,
   ColumnEnterpriseReact,
 } from "@1771technologies/grid-types";
+import { useGrid } from "../../../use-grid";
 
 export function MeasuresBox() {
   const { state, api } = useGrid();

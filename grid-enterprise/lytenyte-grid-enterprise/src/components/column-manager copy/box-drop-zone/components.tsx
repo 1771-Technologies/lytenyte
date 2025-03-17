@@ -1,15 +1,13 @@
 import { t } from "@1771technologies/grid-design";
-import { IconButton } from "../../buttons/icon-button";
 import type { JSX } from "react";
-import { DragIcon } from "../../icons/drag-icon";
-import { CrossIcon } from "../../icons/cross-icon";
+import { Button } from "../../../components-internal/button/button";
+import { CrossIcon, DragIcon } from "@1771technologies/lytenyte-grid-community/icons";
 
 export const CollapsedIcon = (p: { onClick: () => void }) => {
   return (
-    <IconButton
+    <Button
       tabIndex={-1}
-      kind="ghost"
-      small
+      kind="tertiary"
       onClick={p.onClick}
       className={css`
         transform: rotate(-90deg);
@@ -25,17 +23,16 @@ export const CollapsedIcon = (p: { onClick: () => void }) => {
       >
         ›
       </span>
-    </IconButton>
+    </Button>
   );
 };
 
 export const ExpandedIcon = (p: { onClick: () => void }) => {
   return (
-    <IconButton
+    <Button
       tabIndex={-1}
-      kind="ghost"
+      kind="tertiary"
       onClick={p.onClick}
-      small
       className={css`
         transform: rotate(90deg);
         color: ${t.colors.borders_icons_default};
@@ -50,7 +47,7 @@ export const ExpandedIcon = (p: { onClick: () => void }) => {
       >
         ›
       </span>
-    </IconButton>
+    </Button>
   );
 };
 

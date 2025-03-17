@@ -6,6 +6,7 @@ export { CrossIcon } from "./cross-icon.js";
 export { DescendingIcon } from "./descending-icon.js";
 export { DownloadIcon } from "./download-icon.js";
 export { DragGroupIcon } from "./drag-group-icon.js";
+export { DragIcon } from "./drag-icon.js";
 export { ExcelIcon } from "./excel-icon.js";
 export { FunnelIcon } from "./funnel-icon.js";
 export { GroupByColumnIcon } from "./group-by-column-icon.js";
