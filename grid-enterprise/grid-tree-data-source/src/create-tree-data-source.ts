@@ -7,7 +7,11 @@ import {
   rowSetData,
   rowSetDataMany,
 } from "@1771technologies/grid-client-data-source-community";
-import type { ApiEnterprise, RowDataSourceEnterprise } from "@1771technologies/grid-types";
+import type {
+  ApiEnterprise,
+  ColumnEnterprise,
+  RowDataSourceEnterprise,
+} from "@1771technologies/grid-types";
 import {
   cascada,
   computed,
@@ -37,6 +41,9 @@ export interface TreeDataSourceInitial<D, E> {
   readonly bottomData?: D[];
   readonly pathSeparator?: string;
   readonly distinctNonAdjacentPaths?: boolean;
+
+  readonly filterToDate?: (value: unknown, column: ColumnEnterprise<D, E>) => Date;
+  readonly sortToDate?: (value: unknown, column: ColumnEnterprise<D, E>) => Date;
 }
 
 export interface ClientState<D, E> {
@@ -66,8 +73,16 @@ export function createTreeDataSource<D, E>(
     const rowCenterNodes = signal(initialCenterNodes);
     const rowBottomNodes = signal(initialBottomNodes);
 
-    const filteredNodes = filterNodesComputed(api$, rowCenterNodes);
-    const sortedNodes = sortedNodesComputed(api$, filteredNodes);
+    const filteredNodes = filterNodesComputed(
+      api$,
+      rowCenterNodes,
+      r.filterToDate ?? (((v: number) => new Date(v)) as any),
+    );
+    const sortedNodes = sortedNodesComputed(
+      api$,
+      filteredNodes,
+      r.sortToDate ?? (((c: number) => new Date(c)) as any),
+    );
 
     const paths = computed(() => {
       return sortedNodes
