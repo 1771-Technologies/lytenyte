@@ -1,7 +1,5 @@
-import { useMemo, useRef, useState } from "react";
-import { cc } from "../../component-configuration";
+import { useMemo, useRef } from "react";
 import { BoxDropZone, type BoxDropZoneRendererProps } from "./box-drop-zone";
-import { Pill } from "../../pills/pill";
 import { PillWrapper } from "./pill-wrapper";
 import { groupTag, measureTag, pivotTag } from "./tags";
 import { groupSource, measureSource, pivotSource } from "./sources";
@@ -12,22 +10,20 @@ import { insertIdsIntoModel } from "./insert-ids-in-model";
 import { useEvent } from "@1771technologies/react-utils";
 import { clsx } from "@1771technologies/js-utils";
 import { dragCls, dragClsFirst } from "./classes";
-import { AggMenu } from "./agg-menu";
 import { t } from "@1771technologies/grid-design";
 import type {
   ColumnBaseEnterpriseReact,
   ColumnEnterpriseReact,
 } from "@1771technologies/grid-types";
 import { useGrid } from "../../../use-grid";
+import { Pill } from "../../../components-internal/pill/pill";
+import { DragGroupIcon, MeasuresIcon } from "@1771technologies/lytenyte-grid-community/icons";
+import { DragPlaceholder } from "../../../components-internal/drag-placeholder/drag-placeholder";
 
 export function MeasuresBox() {
   const { state, api } = useGrid();
   const boxExpansions = state.internal.columnManagerBoxExpansions;
   const expansions = boxExpansions.use();
-
-  const config = cc.columnManager.use().columnBoxes!;
-  const Empty = config.iconEmpty!;
-  const Icon = config.iconMeasures!;
 
   const model = state.measureModel.use();
 
@@ -48,10 +44,10 @@ export function MeasuresBox() {
       onCollapseChange={() => {
         boxExpansions.set((p) => ({ ...p, measures: !p.measures }));
       }}
-      emptyIcon={<Empty />}
-      icon={<Icon />}
-      emptyLabel={config.labelEmptyMeasures!}
-      label={config.labelMeasures!}
+      emptyIcon={<DragGroupIcon />}
+      icon={<MeasuresIcon />}
+      emptyLabel="Drag here to add a measure"
+      label="Measures"
       tags={tags}
       onDrop={(p) => {
         const data = p.getData();
@@ -75,8 +71,6 @@ export function MeasuresBox() {
 
 function MeasurePillRenderer({ index, column }: BoxDropZoneRendererProps) {
   const grid = useGrid();
-  const config = cc.columnManager.use();
-  const Placeholder = config.dragPlaceholder!;
 
   const base = grid.state.columnBase.use();
   const gridId = grid.state.gridId.use();
@@ -92,7 +86,7 @@ function MeasurePillRenderer({ index, column }: BoxDropZoneRendererProps) {
 
       return tags;
     },
-    placeholder: () => <Placeholder label={column.headerName ?? column.id} />,
+    placeholder: () => <DragPlaceholder label={column.headerName ?? column.id} />,
   });
 
   const measureTags = useMemo(() => {
@@ -131,9 +125,6 @@ function MeasurePillRenderer({ index, column }: BoxDropZoneRendererProps) {
   });
 
   const measureFunc = getMeasureFunc(column, base) ?? "Fn(x)";
-  const allowed = column.measureFuncsAllowed ?? base.measureFuncsAllowed ?? [];
-
-  const [open, setOpen] = useState(false);
 
   return (
     <PillWrapper
@@ -147,7 +138,6 @@ function MeasurePillRenderer({ index, column }: BoxDropZoneRendererProps) {
         }
         if (ev.key === "Enter") {
           ev.preventDefault();
-          setOpen(true);
         }
       }}
       className={clsx(
@@ -176,19 +166,6 @@ function MeasurePillRenderer({ index, column }: BoxDropZoneRendererProps) {
           </div>
         }
         startItem={<PillDragger {...drag} />}
-        endItem={
-          <AggMenu
-            allowed={allowed}
-            current={typeof measureFunc === "string" ? measureFunc : "Fn(x)"}
-            onOpenChange={setOpen}
-            open={open}
-            label={config.columnBoxes?.labelAggregationButton(column.headerName ?? column.id) ?? ""}
-            onRemove={del}
-            onSelect={(s) => {
-              grid.api.columnUpdate(column, { measureFunc: s });
-            }}
-          />
-        }
       />
     </PillWrapper>
   );

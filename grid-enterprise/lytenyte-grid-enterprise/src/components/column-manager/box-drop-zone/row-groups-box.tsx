@@ -1,7 +1,5 @@
 import { useMemo, type KeyboardEvent, type MouseEvent } from "react";
-import { cc } from "../../component-configuration";
 import { BoxDropZone, type BoxDropZoneRendererProps } from "./box-drop-zone";
-import { Pill } from "../../pills/pill";
 import { PillWrapper } from "./pill-wrapper";
 import { PillDelete, PillDragger } from "./components";
 import { useDraggable, useDroppable } from "@1771technologies/react-dragon";
@@ -13,16 +11,14 @@ import { insertIdsIntoModel } from "./insert-ids-in-model";
 import { useEvent } from "@1771technologies/react-utils";
 import { groupSource, measureSource, pivotSource } from "./sources";
 import { useGrid } from "../../../use-grid";
+import { Pill } from "../../../components-internal/pill/pill";
+import { DragPlaceholder } from "../../../components-internal/drag-placeholder/drag-placeholder";
+import { DragGroupIcon, RowGroupIcon } from "@1771technologies/lytenyte-grid-community/icons";
 
 export function RowGroupsBox() {
   const { state, api } = useGrid();
   const boxExpansions = state.internal.columnManagerBoxExpansions;
   const expansions = boxExpansions.use();
-
-  const config = cc.columnManager.use().columnBoxes!;
-
-  const Empty = config.iconEmpty!;
-  const Icon = config.iconRowGroups!;
 
   const model = state.rowGroupModel.use();
   const columns = useMemo(() => {
@@ -42,10 +38,10 @@ export function RowGroupsBox() {
       onCollapseChange={() => {
         boxExpansions.set((p) => ({ ...p, rowGroups: !p.rowGroups }));
       }}
-      emptyIcon={<Empty />}
-      icon={<Icon />}
-      emptyLabel={config.labelEmptyRowGroups!}
-      label={config.labelRowGroups!}
+      emptyIcon={<DragGroupIcon />}
+      icon={<RowGroupIcon />}
+      emptyLabel="Drag here to set row groups"
+      label="Row Groups"
       tags={tags}
       onDrop={(p) => {
         const data = p.getData();
@@ -69,8 +65,6 @@ export function RowGroupsBox() {
 
 function RowGroupsPillRenderer({ column, index }: BoxDropZoneRendererProps) {
   const grid = useGrid();
-  const config = cc.columnManager.use();
-  const Placeholder = config.dragPlaceholder!;
   const gridId = grid.state.gridId.use();
   const drag = useDraggable({
     dragData: () => ({ column, source: groupSource }),
@@ -84,7 +78,7 @@ function RowGroupsPillRenderer({ column, index }: BoxDropZoneRendererProps) {
 
       return tags;
     },
-    placeholder: () => <Placeholder label={column.headerName ?? column.id} />,
+    placeholder: () => <DragPlaceholder label={column.headerName ?? column.id} />,
   });
 
   const groupTags = useMemo(() => {

@@ -1,8 +1,5 @@
 import { useMemo, type KeyboardEvent, type MouseEvent } from "react";
-import { cc } from "../../component-configuration";
-import { useGrid } from "../../provider/grid-provider";
 import { BoxDropZone, type BoxDropZoneRendererProps } from "./box-drop-zone";
-import { Pill } from "../../pills/pill";
 import { PillWrapper } from "./pill-wrapper";
 import { PillDelete, PillDragger } from "./components";
 import { useEvent } from "@1771technologies/react-utils";
@@ -13,17 +10,16 @@ import { insertIdsIntoModel } from "./insert-ids-in-model";
 import { dragCls, dragClsFirst } from "./classes";
 import { clsx } from "@1771technologies/js-utils";
 import { groupSource, measureSource, pivotSource } from "./sources";
+import { useGrid } from "../../../use-grid";
+import { Pill } from "../../../components-internal/pill/pill";
+import { ColumnPivotIcon, DragGroupIcon } from "@1771technologies/lytenyte-grid-community/icons";
+import { DragPlaceholder } from "../../../components-internal/drag-placeholder/drag-placeholder";
 
 export function ColumnPivotsBox() {
   const { api, state } = useGrid();
 
   const boxExpansions = state.internal.columnManagerBoxExpansions;
   const expansions = boxExpansions.use();
-
-  const config = cc.columnManager.use().columnBoxes!;
-
-  const Empty = config.iconEmpty!;
-  const Icon = config.iconColumnPivots!;
 
   const model = state.columnPivotModel.use();
   const columns = useMemo(() => {
@@ -43,10 +39,10 @@ export function ColumnPivotsBox() {
       onCollapseChange={() => {
         boxExpansions.set((p) => ({ ...p, columnPivots: !p.columnPivots }));
       }}
-      emptyIcon={<Empty />}
-      icon={<Icon />}
-      emptyLabel={config.labelEmptyColumnPivot!}
-      label={config.labelColumnPivots!}
+      emptyIcon={<DragGroupIcon />}
+      icon={<ColumnPivotIcon />}
+      emptyLabel="Drag here to creata a pivot"
+      label="Column Pivots"
       tags={tags}
       onDrop={(p) => {
         const data = p.getData();
@@ -70,8 +66,6 @@ export function ColumnPivotsBox() {
 
 function PivotPill({ index, column }: BoxDropZoneRendererProps) {
   const grid = useGrid();
-  const config = cc.columnManager.use();
-  const Placeholder = config.dragPlaceholder!;
 
   const gridId = grid.state.gridId.use();
   const drag = useDraggable({
@@ -86,7 +80,7 @@ function PivotPill({ index, column }: BoxDropZoneRendererProps) {
 
       return tags;
     },
-    placeholder: () => <Placeholder label={column.headerName ?? column.id} />,
+    placeholder: () => <DragPlaceholder label={column.headerName ?? column.id} />,
   });
 
   const pivotTags = useMemo(() => {

@@ -1,11 +1,8 @@
-import { useMemo, useRef, useState } from "react";
-import { cc } from "../../component-configuration";
+import { useMemo, useRef } from "react";
 import { BoxDropZone, type BoxDropZoneRendererProps } from "./box-drop-zone";
-import { Pill } from "../../pills/pill";
 import { PillWrapper } from "./pill-wrapper";
 import { valueTag } from "./tags";
 import { getColumns } from "./get-columns-from-drag-data";
-import { AggMenu } from "./agg-menu";
 import { t } from "@1771technologies/grid-design";
 import type {
   ColumnBaseEnterpriseReact,
@@ -13,16 +10,13 @@ import type {
 } from "@1771technologies/grid-types";
 import { useEvent } from "@1771technologies/react-utils";
 import { useGrid } from "../../../use-grid";
+import { Pill } from "../../../components-internal/pill/pill";
+import { DragGroupIcon, MeasuresIcon } from "@1771technologies/lytenyte-grid-community/icons";
 
 export function ValuesBox() {
   const { api, state } = useGrid();
   const boxExpansions = state.internal.columnManagerBoxExpansions;
   const expansions = boxExpansions.use();
-
-  const config = cc.columnManager.use().columnBoxes!;
-
-  const Empty = config.iconEmpty!;
-  const Icon = config.iconValues!;
 
   const columns = state.columns.use();
   const base = state.columnBase.use();
@@ -44,10 +38,10 @@ export function ValuesBox() {
       onCollapseChange={() => {
         boxExpansions.set((p) => ({ ...p, values: !p.values }));
       }}
-      emptyIcon={<Empty />}
-      icon={<Icon />}
-      emptyLabel={config.labelEmptyValues!}
-      label={config.labelValues!}
+      emptyIcon={<DragGroupIcon />}
+      icon={<MeasuresIcon />}
+      emptyLabel="Drag here to aggregate"
+      label="Values"
       tags={tags}
       onDrop={(p) => {
         const data = p.getData();
@@ -77,12 +71,7 @@ function ValuesPillRenderer({ column, index }: BoxDropZoneRendererProps) {
   const grid = useGrid();
   const base = grid.state.columnBase.use();
 
-  const config = cc.columnManager.use();
-
   const measureFunc = getAggFunc(column, base) ?? "Fn(x)";
-  const allowed = column.measureFuncsAllowed ?? base.measureFuncsAllowed ?? [];
-
-  const [open, setOpen] = useState(false);
 
   const pillRef = useRef<HTMLDivElement | null>(null);
   const del = useEvent(() => {
@@ -107,7 +96,6 @@ function ValuesPillRenderer({ column, index }: BoxDropZoneRendererProps) {
         }
         if (ev.key === "Enter") {
           ev.preventDefault();
-          setOpen(true);
         }
       }}
     >
@@ -130,19 +118,6 @@ function ValuesPillRenderer({ column, index }: BoxDropZoneRendererProps) {
               {typeof measureFunc === "string" ? `(${measureFunc})` : "Fn(x)"}
             </span>
           </div>
-        }
-        endItem={
-          <AggMenu
-            allowed={allowed}
-            label={config.columnBoxes?.labelAggregationButton(column.headerName ?? column.id) ?? ""}
-            current={typeof measureFunc === "string" ? measureFunc : "Fn(x)"}
-            onOpenChange={setOpen}
-            open={open}
-            onRemove={del}
-            onSelect={(s) => {
-              grid.api.columnUpdate(column, { aggFunc: s });
-            }}
-          />
         }
       />
     </PillWrapper>
