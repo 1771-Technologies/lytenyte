@@ -1,4 +1,4 @@
-import { t } from "@1771technologies/grid-design";
+import "./pill-wrapper.css";
 import { clsx } from "@1771technologies/js-utils";
 import type { JSX, RefObject } from "react";
 
@@ -17,23 +17,8 @@ export function PillWrapper({
       ref={pillRef}
       tabIndex={-1}
       className={clsx(
-        isFirst &&
-          css`
-            padding-block-start: 4px;
-          `,
-        css`
-          height: 36px;
-          display: flex;
-          align-items: center;
-          padding-inline: ${t.spacing.space_20};
-          &:focus {
-            outline: none;
-          }
-          &:focus > div {
-            outline: 1px solid ${t.colors.borders_focus};
-            outline-offset: -2px;
-          }
-        `,
+        "lng1771-pill-wrapper",
+        isFirst && "lng1771-pill-wrapper--first",
         props.className,
       )}
     >

@@ -1,3 +1,4 @@
+import "./values-box.css";
 import { useMemo, useRef } from "react";
 import { BoxDropZone, type BoxDropZoneRendererProps } from "./box-drop-zone";
 import { PillWrapper } from "./pill-wrapper";
@@ -10,7 +11,6 @@ import { insertIdsIntoModel } from "./insert-ids-in-model";
 import { useEvent } from "@1771technologies/react-utils";
 import { clsx } from "@1771technologies/js-utils";
 import { dragCls, dragClsFirst } from "./classes";
-import { t } from "@1771technologies/grid-design";
 import type {
   ColumnBaseEnterpriseReact,
   ColumnEnterpriseReact,
@@ -148,19 +148,9 @@ function MeasurePillRenderer({ index, column }: BoxDropZoneRendererProps) {
       <Pill
         kind="column"
         label={
-          <div
-            className={css`
-              display: flex;
-              align-items: center;
-              gap: ${t.spacing.space_05};
-            `}
-          >
+          <div className="lng1771-values-pill-label">
             <span>{column.headerName ?? column.id}</span>
-            <span
-              className={css`
-                color: ${t.colors.primary_50};
-              `}
-            >
+            <span className="lng1771-values-pill-label__agg">
               {typeof measureFunc === "string" ? `(${measureFunc})` : "Fn(x)"}
             </span>
           </div>

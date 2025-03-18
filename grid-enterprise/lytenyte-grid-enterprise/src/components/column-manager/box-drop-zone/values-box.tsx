@@ -1,9 +1,9 @@
+import "./values-box.css";
 import { useMemo, useRef } from "react";
 import { BoxDropZone, type BoxDropZoneRendererProps } from "./box-drop-zone";
 import { PillWrapper } from "./pill-wrapper";
 import { valueTag } from "./tags";
 import { getColumns } from "./get-columns-from-drag-data";
-import { t } from "@1771technologies/grid-design";
 import type {
   ColumnBaseEnterpriseReact,
   ColumnEnterpriseReact,
@@ -102,19 +102,9 @@ function ValuesPillRenderer({ column, index }: BoxDropZoneRendererProps) {
       <Pill
         kind="plain"
         label={
-          <div
-            className={css`
-              display: flex;
-              align-items: center;
-              gap: ${t.spacing.space_05};
-            `}
-          >
+          <div className="lng1771-values-pill-label">
             <span>{column.headerName ?? column.id}</span>
-            <span
-              className={css`
-                color: ${t.colors.primary_50};
-              `}
-            >
+            <span className="lng1771-values-pill-label__agg">
               {typeof measureFunc === "string" ? `(${measureFunc})` : "Fn(x)"}
             </span>
           </div>

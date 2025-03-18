@@ -1,0 +1,17 @@
+.lng1771-pill-wrapper {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  padding-inline: 8px;
+  &:focus {
+    outline: none;
+  }
+  &:focus > div {
+    outline: 1px solid var(--lng1771-focus-outline);
+    outline-offset: -2px;
+  }
+}
+
+.lng1771-pill-wrapper--first {
+  padding-block-start: 4px;
+}
