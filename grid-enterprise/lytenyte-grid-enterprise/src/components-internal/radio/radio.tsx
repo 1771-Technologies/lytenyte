@@ -23,12 +23,6 @@ export function Radio({
     >
       <input
         type="radio"
-        className={css`
-          all: unset;
-          width: 100%;
-          height: 100%;
-          opacity: 0;
-        `}
         checked={checked}
         onChange={(e) => onCheckChange?.(e.target.checked, e)}
         {...other}
