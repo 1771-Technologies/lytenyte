@@ -3,6 +3,20 @@
   color: var(--lng1771-gray-70);
   font-size: 20px;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  width: 24px;
+  height: 24px;
+  padding: 0px;
+
+  background-color: transparent;
+
+  &:hover {
+    background-color: var(--lng1771-gray-10);
+  }
+
   & span {
     position: relative;
     inset-block-end: 2px;
@@ -13,6 +27,19 @@
   transform: rotate(90deg);
   color: var(--lng1771-gray-70);
   font-size: 20px;
+  padding: 0px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  width: 24px;
+  height: 24px;
+
+  background-color: transparent;
+  &:hover {
+    background-color: var(--lng1771-gray-10);
+  }
 
   & span {
     position: relative;

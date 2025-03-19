@@ -2,10 +2,10 @@ import { columns } from "./data/columns";
 import { bankDataSmall } from "./data/bank-data-small";
 import { useClientDataSource } from "../src/use-client-data-source";
 import { useLyteNyte } from "../src/use-lytenyte";
-import { ColumnManager } from "@1771technologies/grid-components";
 import { FloatingFilter } from "../src/components/floating-filter/floating-filter";
 import { LyteNyteGrid } from "../src";
 import { SortManagerFloating } from "../src/sort-manager";
+import { ColumnManager } from "../src/components/column-manager/column-manager";
 
 export default function Play() {
   const ds = useClientDataSource({

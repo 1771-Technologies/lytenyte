@@ -1,3 +1,10 @@
+.lng1771-column-manager__drag-button {
+  background-color: transparent;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+}
+
 .lng1771-column-manager__drag-button:focus {
   outline: none;
   border-color: transparent;
@@ -19,6 +26,11 @@
   color: var(--lng1771-gray-70);
   font-size: 20px;
 
+  min-width: 24px;
+  width: 24px;
+  height: 24px;
+  background-color: transparent;
+
   & span {
     position: relative;
     inset-block-end: 2px;
@@ -29,6 +41,11 @@
   transform: rotate(90deg);
   color: var(--lng1771-gray-70);
   font-size: 20px;
+
+  min-width: 24px;
+  width: 24px;
+  height: 24px;
+  background-color: transparent;
 
   & span {
     position: relative;
