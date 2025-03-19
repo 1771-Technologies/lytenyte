@@ -9,9 +9,6 @@ import { DragPlaceholder } from "./drag-placeholder/drag-placeholder";
 import type { MenuConfiguration } from "./popover-menu/popover-menu";
 import { menuAxeDefault } from "@1771technologies/react-menu-legacy";
 import { SearchIcon } from "./icons/search-icon";
-import type { FilterConfiguration } from "./filters/filter";
-import type { ListViewAxe } from "@1771technologies/react-list-view";
-import type { SelectItem } from "./select/select";
 import type { PillManagerConfiguration } from "./pill-manager/pill-manager";
 import { ColumnPivotIcon } from "./icons/column-pivots-icon";
 import {
@@ -25,7 +22,6 @@ export type ComponentConfiguration = {
   floatingFrame: Signal<FloatingFrameConfiguration>;
   tooltip: Signal<Omit<TooltipProps, "ref">>;
   menu: Signal<MenuConfiguration>;
-  filter: Signal<FilterConfiguration>;
   pillManager: Signal<PillManagerConfiguration>;
 };
 
@@ -40,14 +36,6 @@ function mergeSignal<T>(c: T): Signal<T> {
   return x;
 }
 
-const itemAxe: ListViewAxe<SelectItem> = {
-  axeDescription:
-    "Select an item. Use the up and down arrow keys to navigate to an item. " +
-    "Press enter to accept the option. Escape to cancel.",
-  axeItemLabels: (item) => (item.type === "leaf" ? item.data.label : ""),
-  axeLabel: (cnt) => `There are ${cnt} items to choose from`,
-};
-
 export const cc = cascada<ComponentConfiguration>(() => {
   return {
     pillManager: mergeSignal<PillManagerConfiguration>({
@@ -60,31 +48,6 @@ export const cc = cascada<ComponentConfiguration>(() => {
         labelColumnMenu: "Column Menu",
         labelDragHandle: "Move item",
         labelExpand: "Expand items",
-      },
-    }),
-    filter: mergeSignal<FilterConfiguration>({
-      simpleFilter: {
-        placeholderNoChoice: "Choose one",
-
-        axeDateOperator: itemAxe,
-        axeDatePeriod: itemAxe,
-        axeNumberOperator: itemAxe,
-        axeTextOperator: itemAxe,
-
-        labelText: "Text filter",
-        labelDate: "Date filter",
-        labelNumber: "Number filter",
-      },
-      inFilter: {
-        labelItem: "In filter item toggle",
-        labelLoadError: "Error Occurred",
-        labelNoItems: "No items",
-      },
-
-      container: {
-        labelApply: "Apply Filter",
-        labelCancel: "Cancel",
-        labelClear: "Clear",
       },
     }),
     columnManager: mergeSignal<ColumnManagerConfiguration>({

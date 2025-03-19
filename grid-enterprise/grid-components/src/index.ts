@@ -1,5 +1,4 @@
 export { FloatingFrameDriver } from "./floating-frame/floating-frame-driver.js";
-export { FilterMenuDriver } from "./filter-menu-driver/filter-menu-driver.js";
 
 // Components
 export type { ColumnManagerFrameProps } from "./column-manager/column-manager-frame.js";
