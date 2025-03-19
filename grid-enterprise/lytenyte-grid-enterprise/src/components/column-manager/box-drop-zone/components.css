@@ -1,0 +1,40 @@
+.lng1771-box-collapse-button {
+  transform: rotate(-90deg);
+  color: var(--lng1771-gray-70);
+  font-size: 20px;
+
+  & span {
+    position: relative;
+    inset-block-end: 2px;
+  }
+}
+
+.lng1771-box-expand-button {
+  transform: rotate(90deg);
+  color: var(--lng1771-gray-70);
+  font-size: 20px;
+
+  & span {
+    position: relative;
+    inset-block-end: 2px;
+  }
+}
+
+.lng1771-box-pill-dragger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  transform: translate(0px, 1px);
+}
+
+.lng1771-box-pill-delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  transform: translate(0px, -1px);
+}

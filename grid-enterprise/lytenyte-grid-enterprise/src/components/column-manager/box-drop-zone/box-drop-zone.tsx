@@ -1,4 +1,4 @@
-import { t } from "@1771technologies/grid-design";
+import "./box-drop-zone.css";
 import { clsx } from "@1771technologies/js-utils";
 import { type ReactNode } from "react";
 import { CollapsedIcon, ExpandedIcon } from "./components";
@@ -45,42 +45,10 @@ export function BoxDropZone({
   });
 
   return (
-    <div
-      className={css`
-        display: flex;
-        flex-direction: column;
-        gap: ${t.spacing.space_20};
-      `}
-    >
-      <div
-        className={css`
-          display: flex;
-          align-items: center;
-          gap: ${t.spacing.space_10};
-        `}
-      >
-        <div
-          className={css`
-            color: ${t.colors.borders_icons_default};
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          `}
-        >
-          {icon}
-        </div>
-        <div
-          className={clsx(
-            "lng1771-text-medium",
-            css`
-              flex: 1;
-            `,
-          )}
-        >
-          {label}
-        </div>
+    <div className="lng1771-box-drop-zone">
+      <div className="lng1771-box-drop-zone__controls">
+        <div className="lng1771-box-drop-zone__controls-icon">{icon}</div>
+        <div className="lng1771-box-drop-zone__controls-label">{label}</div>
         {collapsed ? (
           <CollapsedIcon onClick={() => onCollapseChange(!collapsed)} />
         ) : (
@@ -120,83 +88,24 @@ export function BoxDropZone({
             }
           }}
           className={clsx(
-            css`
-              display: flex;
-              flex-direction: column;
-              min-height: 120px;
-              min-width: 260px;
-              border-radius: ${t.spacing.box_radius_regular};
-              border: 1px dashed ${t.colors.borders_strong};
-              background-color: ${t.colors.backgrounds_light};
-              &:focus {
-                outline: none;
-                border: 1px solid ${t.colors.borders_focus};
-              }
-            `,
-
-            isOver &&
-              canDrop &&
-              onlyContainer &&
-              css`
-                border-color: ${t.colors.primary_50};
-                background-color: ${t.colors.system_green_10};
-              `,
+            "lng1771-box-drop-zone__box",
+            isOver && canDrop && onlyContainer && "lng1771-box-drop-zone_box--over",
           )}
         >
           {items.length === 0 && (
-            <div
-              className={css`
-                display: flex;
-                flex: 1;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                width: 100%;
-                gap: ${t.spacing.space_10};
-                position: relative;
-              `}
-            >
+            <div className="lng1771-box-drop-zone__box-item">
               {isOver && canDrop && !onlyContainer && (
-                <div
-                  className={css`
-                    position: absolute;
-                    top: ${t.spacing.space_05};
-                    height: 1px;
-                    background-color: ${t.colors.primary_50};
-                    width: 100%;
-                  `}
-                />
+                <div className="lng1771-box-drop-zone__drop-indicator" />
               )}
-              <div
-                className={css`
-                  color: ${t.colors.gray_50};
-                `}
-              >
-                {emptyIcon}
-              </div>
-              <div
-                className={clsx(
-                  "lng1771-text-small-300",
-                  css`
-                    text-align: center;
-                  `,
-                )}
-              >
-                {emptyLabel}
-              </div>
+              <div className="lng1771-box-drop-zone__empty-icon">{emptyIcon}</div>
+              <div className="lng1771-box-drop-zone__empty-label">{emptyLabel}</div>
             </div>
           )}
           {items.map((c, i) => {
             return <Renderer column={c} key={c.id} index={i} />;
           })}
           {isOver && canDrop && !onlyContainer && items.length > 0 && (
-            <div
-              className={css`
-                height: 1px;
-                background-color: ${t.colors.primary_50};
-                width: 100%;
-              `}
-            />
+            <div className="lng1771-box-drop-zone__item-drop-indicator" />
           )}
         </div>
       )}
