@@ -1,8 +1,8 @@
+import "./cell-style-row.css";
 import type { CellSelectionRect } from "@1771technologies/grid-types/enterprise";
 import { useMemo, type CSSProperties } from "react";
 import { useGrid } from "../use-grid";
 import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
-import { t } from "@1771technologies/grid-design";
 import { getTransform } from "@1771technologies/lytenyte-grid-community/internal";
 
 export function CellStyleRow({
@@ -107,40 +107,10 @@ export function CellStyleRow({
     <div
       style={style}
       className={clsx(
-        css`
-          pointer-events: none;
-          grid-column-start: 1;
-          grid-column-end: 2;
-          grid-row-start: 1;
-          grid-row-end: 2;
-          background-color: ${t.colors.primary_30};
-          border: 1px solid ${t.colors.primary_50};
-          box-sizing: border-box;
-        `,
-        isDeselect &&
-          css`
-            background-color: ${t.colors.system_red_30};
-            border: 1px solid ${t.colors.system_red_50};
-          `,
-        isPivot &&
-          css`
-            background-color: transparent;
-          `,
-        flash &&
-          css`
-            @keyframes lng1771-flash-animation {
-              0% {
-                background-color: ${t.colors.primary_30};
-              }
-
-              100% {
-                background-color: ${t.colors.primary_05};
-              }
-            }
-
-            animation: lng1771-flash-animation;
-            animation-duration: 0.2s;
-          `,
+        "lng1771-cell-selection",
+        isDeselect && "lng1771-cell-selection--deselect",
+        isPivot && "lng1771-cell-selection--pivot",
+        flash && "lng1771-cell-selection--flash",
       )}
     />
   );
