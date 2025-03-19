@@ -94,7 +94,7 @@
   --lng1771-gray-90: #d7dbdd;
   --lng1771-gray-100: #edeeef;
 
-  --lng1771-pill-plain-fill: var(--lng1771-backgrounds-strong);
+  --lng1771-pill-plain-fill: var(--lng1771-gray-20);
   --lng1771-pill-column-fill: #1b3237;
   --lng1771-pill-column-stroke: rgba(0, 181, 181, 0.36);
   --lng1771-pill-pivot-fill: rgba(120, 57, 255, 0.18);

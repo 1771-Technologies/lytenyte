@@ -94,7 +94,7 @@
   --lng1771-gray-90: #e4e4e7;
   --lng1771-gray-100: #e4e4e7;
 
-  --lng1771-pill-plain-fill: var(--lng1771-backgrounds-default);
+  --lng1771-pill-plain-fill: var(--lng1771-gray-20);
   --lng1771-pill-column-fill: #182644;
   --lng1771-pill-column-stroke: rgba(68, 109, 177, 0.58);
   --lng1771-pill-pivot-fill: rgba(120, 57, 255, 0.18);

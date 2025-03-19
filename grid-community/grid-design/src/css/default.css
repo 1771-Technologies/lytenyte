@@ -101,7 +101,7 @@
   --lng1771-gray-90: #1e1e29;
   --lng1771-gray-100: #15151e;
 
-  --lng1771-pill-plain-fill: var(--lng1771-backgrounds-button-light);
+  --lng1771-pill-plain-fill: var(--lng1771-gray-20);
   --lng1771-pill-column-fill: #ffffff;
   --lng1771-pill-column-stroke: rgba(1, 34, 89, 0.14);
   --lng1771-pill-pivot-fill: #ece6f8;
