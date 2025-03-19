@@ -4,7 +4,7 @@ import type { ListViewAxe } from "@1771technologies/react-list-view";
 import { useId, useState, type JSX, type ReactNode } from "react";
 import { ColumnManagerBase } from "./column-manager-base";
 import { Input } from "@1771technologies/lytenyte-grid-community/internal";
-import { Separator } from "../../components-internal/separator";
+import { Separator } from "../../components-internal/separator/separator";
 import { useGrid } from "../../use-grid";
 import { Toggle } from "../../components-internal/toggle/toggle";
 import { SearchIcon } from "@1771technologies/lytenyte-grid-community/icons";

@@ -4,7 +4,7 @@ import { useSortableColumnItems } from "./use-sortable-column-items";
 import { useSortState, type SortItem } from "./use-sort-state";
 import { useMemo } from "react";
 import { Dropdown } from "../../components-internal/dropdown/dropdown";
-import { Separator } from "../../components-internal/separator";
+import { Separator } from "../../components-internal/separator/separator";
 import { sortModelToSortItems } from "./sort-model-to-sort-items";
 import { sortItemsToSortModel } from "./sort-items-to-sort-model";
 import { CrossIcon, PlusIcon } from "@1771technologies/lytenyte-grid-community/icons";

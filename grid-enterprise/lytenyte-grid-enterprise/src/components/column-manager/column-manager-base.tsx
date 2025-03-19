@@ -5,7 +5,7 @@ import { RowGroupsBox } from "./box-drop-zone/row-groups-box";
 import { ValuesBox } from "./box-drop-zone/values-box";
 import { ColumnTree } from "./column-tree/column-tree";
 import { useGrid } from "../../use-grid";
-import { Separator } from "../../components-internal/separator";
+import { Separator } from "../../components-internal/separator/separator";
 
 export function ColumnManagerBase({ query }: { query: string }) {
   const { state } = useGrid();

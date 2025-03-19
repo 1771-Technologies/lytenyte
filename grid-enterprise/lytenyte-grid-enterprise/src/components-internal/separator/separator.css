@@ -1,0 +1,15 @@
+.lng1771-separator--horizontal {
+  width: 100%;
+  height: 1px;
+  background-color: var(--lng1771-gray-30);
+}
+
+.lng1771-separator--vertical {
+  width: 1px;
+  height: 100%;
+  background-color: var(--lng1771-gray-30);
+}
+
+.lng1771-separator--soft {
+  background-color: var(--lng1771-gray-20);
+}

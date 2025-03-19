@@ -5,7 +5,7 @@ import { ColumnManagerBase } from "./column-manager-base";
 import { Input } from "@1771technologies/lytenyte-grid-community/internal";
 import { SearchIcon } from "@1771technologies/lytenyte-grid-community/icons";
 import { GridProvider } from "../../use-grid";
-import { Separator } from "../../components-internal/separator";
+import { Separator } from "../../components-internal/separator/separator";
 import { Toggle } from "../../components-internal/toggle/toggle";
 
 export interface ColumnManagerProps<D> {

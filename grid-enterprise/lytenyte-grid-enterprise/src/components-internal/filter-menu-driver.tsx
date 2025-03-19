@@ -41,11 +41,7 @@ function FilterMenuImpl({
       anchorPoint={!(target instanceof HTMLElement) ? target : undefined}
       gap={12}
     >
-      <div
-        className={css`
-          width: 320px;
-        `}
-      >
+      <div style={{ width: 320 }}>
         <FilterContainer
           api={grid.api}
           column={filterColumn}
