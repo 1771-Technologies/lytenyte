@@ -177,27 +177,7 @@ export function InFilterViewport({
             <div
               key={c}
               tabIndex={i === 0 ? 0 : -1}
-              className={css`
-                width: 100%;
-                position: absolute;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                gap: ${t.spacing.space_20};
-                font-size: ${t.typography.body_m};
-                font-family: ${t.typography.typeface_body};
-                color: ${t.colors.text_medium};
-                padding-inline: ${t.spacing.space_20};
-
-                &:hover {
-                  background-color: ${t.colors.backgrounds_strong};
-                  outline: none;
-                }
-                &:focus {
-                  background-color: ${t.colors.backgrounds_strong};
-                  outline: none;
-                }
-              `}
+              className="lng1771-in-filter-tree"
               onClick={() => {
                 handleChange();
               }}
@@ -244,13 +224,7 @@ export function InFilterViewport({
                 allItemsAreLeafs ? (
                   <></>
                 ) : (
-                  <div
-                    className={css`
-                      width: 20px;
-                      height: 20px;
-                    `}
-                    role="presentation"
-                  ></div>
+                  <div style={{ width: 20, height: 20 }} role="presentation"></div>
                 )
               ) : (
                 <>
