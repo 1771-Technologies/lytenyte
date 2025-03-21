@@ -31,6 +31,15 @@ export default function Play() {
         </MenuContainer>
       );
     },
+    contextMenuRenderer: () => {
+      return (
+        <MenuContainer>
+          <MenuItem>Label 1</MenuItem>
+          <MenuItem>Label 2</MenuItem>
+          <MenuItem>Label 3</MenuItem>
+        </MenuContainer>
+      );
+    },
 
     columnBase: {
       resizable: true,

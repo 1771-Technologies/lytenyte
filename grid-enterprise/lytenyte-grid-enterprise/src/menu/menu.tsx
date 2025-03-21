@@ -6,8 +6,10 @@ import { useMenuClassName } from "./use-menu-class-name.js";
 import { ArrowSvg } from "./arrow-svg";
 
 export const Unstyled = {
-  MenuContainer: Menu.Popup,
-  MenuItem: Menu.Item,
+  Container: Menu.Popup,
+  Item: Menu.Item,
+  Separator: Menu.Separator,
+  Arrow: Menu.Arrow,
 };
 
 export const MenuContainer: typeof Menu.Popup = forwardRef(function MenuContainer(

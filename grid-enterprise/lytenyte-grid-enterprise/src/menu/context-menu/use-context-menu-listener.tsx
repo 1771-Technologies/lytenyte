@@ -1,19 +1,24 @@
-import { useEffect, useState, type ReactNode } from "react";
-import { useGrid } from "../use-grid";
-import { getClientX, getClientY } from "@1771technologies/js-utils";
+import { useEffect } from "react";
+import { useGrid } from "../../use-grid";
 import { getHoveredColumnIndex, getHoveredRowIndex } from "@1771technologies/grid-core";
+import { getClientX, getClientY } from "@1771technologies/js-utils";
 import type { ContextMenuGridTargets } from "@1771technologies/grid-types/enterprise";
-import { ControlledMenu } from "@1771technologies/react-menu";
 
-export function ContextMenuDriver() {
+export function useContextMenuListener(
+  setMenu: (
+    p: {
+      hoveredRow: number | null;
+      hoveredColumn: number | null;
+      menuTarget: ContextMenuGridTargets;
+    } | null,
+  ) => void,
+) {
   const grid = useGrid();
 
   const viewport = grid.state.internal.viewport.use();
   const menuRenderer = grid.state.contextMenuRenderer.use();
 
   const target = grid.state.internal.contextMenuTarget.use();
-  const [menuItems, setMenuItems] = useState<ReactNode | null>(null);
-
   useEffect(() => {
     if (!viewport || !menuRenderer) return;
 
@@ -56,23 +61,19 @@ export function ContextMenuDriver() {
           }
         }
 
-        if (!menuTarget || hoveredCell == null) return;
-
-        const menuItems = menuRenderer({
-          api: grid.api,
-          menuTarget: menuTarget,
-          rowIndex: hoveredRow,
-          columnIndex: hoveredCell,
-        });
-
-        if (menuItems == null) {
+        if (!menuTarget || hoveredCell == null) {
+          setMenu(null);
           return;
         }
 
+        setMenu({
+          menuTarget: menuTarget,
+          hoveredRow: hoveredRow,
+          hoveredColumn: hoveredCell,
+        });
+
         e.stopPropagation();
         e.preventDefault();
-
-        setMenuItems(menuItems);
 
         const cellSelectionMode = grid.state.cellSelectionMode.peek();
         if (
@@ -104,23 +105,6 @@ export function ContextMenuDriver() {
     grid.state.internal.contextMenuTarget,
     menuRenderer,
     viewport,
+    setMenu,
   ]);
-
-  if (!menuItems || !target) return null;
-
-  return (
-    <ControlledMenu
-      state="open"
-      submenuCloseDelay={20}
-      onClose={() => {
-        setMenuItems(null);
-        grid.api.contextMenuClose();
-      }}
-      anchorRef={target instanceof HTMLElement ? { current: target } : undefined}
-      anchorPoint={!(target instanceof HTMLElement) ? target : undefined}
-      portal
-    >
-      {menuItems}
-    </ControlledMenu>
-  );
 }

@@ -18,8 +18,8 @@ import { OverlayDriver } from "./overlay/overlay-driver";
 import { ColumnMenuDriver } from "./menu/column-menu/column-menu-driver";
 import { GridFrame } from "./components-internal/grid-frame/grid-frame";
 import type { SplitPaneAxe } from "@1771technologies/react-split-pane";
-import { ContextMenuDriver } from "./components-internal/context-menu-driver";
 import { FilterMenuDriver } from "./components-internal/filter-menu-driver";
+import { ContextMenuDriver } from "./menu/context-menu/context-menu-driver";
 
 export interface LyteNyteGridEnterpriseProps<D> {
   readonly grid: StoreEnterpriseReact<D>;

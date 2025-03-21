@@ -1,8 +1,8 @@
 import { useGrid } from "../../use-grid";
-import { Menu } from "../../external";
+import { Menu } from "@base-ui-components/react/menu";
 import { useEffect, useState } from "react";
 
-const emptyBB = {
+export const emptyBB = {
   getBoundingClientRect: (): DOMRect => ({
     x: 0,
     y: 0,
@@ -50,7 +50,6 @@ export function ColumnMenuDriver() {
     >
       <Menu.Portal>
         <Menu.Positioner
-          side="right"
           anchor={
             target
               ? "getBoundingClientRect" in target
