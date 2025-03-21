@@ -10,6 +10,16 @@ export const Unstyled = {
   Item: Menu.Item,
   Separator: Menu.Separator,
   Arrow: Menu.Arrow,
+
+  Group: Menu.Group,
+  GroupLabel: Menu.GroupLabel,
+
+  RadioGroup: Menu.RadioGroup,
+  RadioItem: Menu.RadioItem,
+  RadioItemIndicator: Menu.RadioItemIndicator,
+
+  CheckItem: Menu.CheckboxItem,
+  CheckboxItemIndicator: Menu.CheckboxItemIndicator,
 };
 
 export const MenuContainer: typeof Menu.Popup = forwardRef(function MenuContainer(
@@ -47,4 +57,20 @@ export const MenuArrow: typeof Menu.Arrow = forwardRef(function MenuArrow(
       {props.children ?? <ArrowSvg />}
     </Menu.Arrow>
   );
+});
+
+export const MenuGroup: typeof Menu.Group = forwardRef(function MenuGroup(
+  { className, ...props },
+  ref,
+) {
+  const cl = useMenuClassName("lng1771-menu__group", className);
+  return <Menu.Group {...props} ref={ref} className={cl} />;
+});
+
+export const MenuGroupLabel: typeof Menu.GroupLabel = forwardRef(function MenuGroupLabel(
+  { className, ...props },
+  ref,
+) {
+  const cl = useMenuClassName("lng1771-menu__group-label", className);
+  return <Menu.GroupLabel {...props} ref={ref} className={cl} />;
 });
