@@ -1,4 +1,4 @@
-import "./loading-error-overlay.css";
+import "./load-error-overlay.css";
 import { GridButton } from "@1771technologies/lytenyte-grid-community/internal";
 import { useGrid } from "../use-grid";
 
