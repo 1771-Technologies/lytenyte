@@ -113,7 +113,7 @@ export function HeaderCell({
         isOver && !canDrop && "lng1771-header__cell--over-not-allowed",
       )}
     >
-      <Renderer api={api} column={column} columnIndex={columnIndex} />
+      <Renderer api={api} column={column} />
     </div>
   );
 }
