@@ -15,7 +15,7 @@ import {
 } from "./cell-selection/cell-selection-containers";
 import { Watermark } from "./watermark";
 import { OverlayDriver } from "./overlay/overlay-driver";
-import { ColumnMenuDriver } from "./components-internal/column-menu-driver";
+import { ColumnMenuDriver } from "./menu/column-menu/column-menu-driver";
 import { GridFrame } from "./components-internal/grid-frame/grid-frame";
 import type { SplitPaneAxe } from "@1771technologies/react-split-pane";
 import { ContextMenuDriver } from "./components-internal/context-menu-driver";

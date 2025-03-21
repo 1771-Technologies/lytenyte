@@ -132,7 +132,6 @@ export type CellRenderers<A, D, C, E> = {
 export type ColumnHeaderHeightProperty = number;
 
 export type ColumnHeaderRendererParams<A, C> = {
-  columnIndex: number;
   column: C;
   api: A;
 };

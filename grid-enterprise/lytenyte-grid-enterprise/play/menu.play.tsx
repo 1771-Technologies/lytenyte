@@ -1,87 +1,81 @@
-import "@1771technologies/react-menu/css";
-import {
-  ControlledMenu,
-  MenuDivider,
-  MenuItem,
-  SubMenu,
-  useClick,
-} from "@1771technologies/react-menu";
-import { useRef, useState } from "react";
-import {
-  AggregationIcon,
-  AscendingIcon,
-  AutosizeIcon,
-  DescendingIcon,
-  FunnelIcon,
-  GroupByColumnIcon,
-  HideColumnIcon,
-  ManageColumnsIcon,
-  ResetColumnsIcon,
-  SortIcon,
-} from "@1771technologies/lytenyte-grid-community/icons";
-export default function Home() {
-  const ref = useRef<HTMLButtonElement | null>(null);
-  const [isOpen, setIsOpen] = useState(true);
-  const anchorProps = useClick(isOpen, setIsOpen);
+import { columns } from "./data/columns";
+import { bankDataSmall } from "./data/bank-data-small";
+import { useClientDataSource } from "../src/use-client-data-source";
+import { useLyteNyte } from "../src/use-lytenyte";
+import { LyteNyteGrid } from "../src";
+import { MenuArrow, MenuContainer, MenuItem } from "../src/menu/menu";
+
+export default function Play() {
+  const ds = useClientDataSource({
+    data: bankDataSmall,
+    topData: bankDataSmall.slice(0, 2),
+    bottomData: bankDataSmall.slice(0, 2),
+  });
+
+  const grid = useLyteNyte({
+    gridId: "x",
+    columns: columns,
+    rowDataSource: ds,
+
+    rowSelectionMode: "multiple",
+    rowSelectionCheckbox: "normal",
+    rowDragEnabled: true,
+
+    columnMenuRenderer: () => {
+      return (
+        <MenuContainer>
+          <MenuArrow />
+          <MenuItem>Label 1</MenuItem>
+          <MenuItem>Label 2</MenuItem>
+          <MenuItem>Label 3</MenuItem>
+        </MenuContainer>
+      );
+    },
+
+    columnBase: {
+      resizable: true,
+      movable: true,
+      sortable: true,
+      headerRenderer: ({ column, api }) => {
+        return (
+          <div
+            style={{ width: "100%", height: "100%" }}
+            onClick={(e) => api.columnMenuOpen(column, e.currentTarget)}
+          >
+            {column.headerName ?? column.id}
+          </div>
+        );
+      },
+    },
+  });
+
   return (
-    <div style={{ padding: 400 }}>
-      <button ref={ref} {...anchorProps}>
-        Open Menu
-      </button>
-
-      <ControlledMenu state={"open"} anchorRef={ref as any} onClose={() => setIsOpen(false)} arrow>
-        <SubMenu
-          label={
-            <>
-              <SortIcon /> Sort
-            </>
-          }
-        >
-          <MenuItem>
-            <AscendingIcon /> Ascending
-          </MenuItem>
-          <MenuItem>
-            <DescendingIcon /> Descending
-          </MenuItem>
-        </SubMenu>
-
-        <MenuItem>
-          <FunnelIcon /> Filter
-        </MenuItem>
-
-        <MenuItem>
-          <AutosizeIcon /> Autosize
-        </MenuItem>
-        <MenuItem>
-          <GroupByColumnIcon /> Group By Column
-        </MenuItem>
-        <MenuItem>
-          <ManageColumnsIcon /> Manage Columns
-        </MenuItem>
-        <MenuItem>
-          <ResetColumnsIcon /> Reset Columns
-        </MenuItem>
-        <MenuItem>
-          <HideColumnIcon /> Hide Column
-        </MenuItem>
-        <MenuDivider />
-        <SubMenu
-          label={
-            <>
-              <AggregationIcon /> Aggregation Select
-            </>
-          }
-        >
-          <MenuItem type="checkbox" checked>
-            Avg
-          </MenuItem>
-          <MenuItem type="checkbox">Sum</MenuItem>
-          <MenuItem type="checkbox">Min</MenuItem>
-          <MenuItem type="checkbox">Max</MenuItem>
-          <MenuItem type="checkbox">First</MenuItem>
-          <MenuItem type="checkbox">Last</MenuItem>
-        </SubMenu>
-      </ControlledMenu>
+    <div
+      className={css`
+        display: flex;
+        flex-direction: column;
+      `}
+      style={{ width: "100vw", height: "100vh" }}
+    >
+      <div
+        className={css`
+          width: 100%;
+        `}
+      >
+        <div
+          className={css`
+            padding: 20px;
+            width: 200px;
+          `}
+        ></div>
+      </div>
+      <div
+        className={css`
+          flex: 1;
+        `}
+      >
+        <LyteNyteGrid grid={grid} />
+      </div>
     </div>
   );
 }
