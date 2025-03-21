@@ -99,7 +99,7 @@
     "@1771technologies/react-sizer": "workspace:*",
     "@1771technologies/react-split-pane": "workspace:*",
     "@1771technologies/react-utils": "workspace:*",
-    "@base-ui-components/react": "^1.0.0-alpha.7"
+    "@base-ui-components/react": "1.0.0-alpha.7"
   },
   "devDependencies": {
     "@types/react": "^19.0.1",
