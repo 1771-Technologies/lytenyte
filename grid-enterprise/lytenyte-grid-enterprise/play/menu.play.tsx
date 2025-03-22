@@ -3,7 +3,14 @@ import { bankDataSmall } from "./data/bank-data-small";
 import { useClientDataSource } from "../src/use-client-data-source";
 import { useLyteNyte } from "../src/use-lytenyte";
 import { LyteNyteGrid } from "../src";
-import { MenuArrow, MenuContainer, MenuItem, MenuSeparator } from "../src/menu/menu";
+import {
+  MenuArrow,
+  MenuContainer,
+  MenuGroup,
+  MenuGroupLabel,
+  MenuItem,
+  MenuSeparator,
+} from "../src/menu/menu";
 
 export default function Play() {
   const ds = useClientDataSource({
@@ -32,6 +39,12 @@ export default function Play() {
           <MenuItem>Label 4</MenuItem>
           <MenuItem>Label 5</MenuItem>
           <MenuItem disabled>Label 6</MenuItem>
+          <MenuGroup>
+            <MenuGroupLabel>Export</MenuGroupLabel>
+            <MenuItem>CSX Export</MenuItem>
+            <MenuItem>Excel Export</MenuItem>
+            <MenuItem>PDF Export</MenuItem>
+          </MenuGroup>
         </MenuContainer>
       );
     },

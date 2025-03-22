@@ -2,7 +2,7 @@
   border: 1px solid var(--lng1771-gray-30);
   background-color: var(--lng1771-gray-05);
 
-  padding-block: 4px;
+  padding-block: 3px;
   border-radius: 8px;
   box-sizing: border-box;
   box-shadow:
@@ -10,6 +10,10 @@
     0px 0px 0px 1px rgba(30, 30, 41, 0.02);
 
   transition: opacity 150ms;
+
+  &:focus {
+    outline: none;
+  }
 
   &[data-starting-style],
   &[data-ending-style] {
@@ -66,4 +70,17 @@
     bottom: -14px;
     transform: rotate(180deg);
   }
+}
+
+.lng1771-menu__group-label {
+  color: var(--lng1771-gray-70);
+  font-size: 12px;
+  padding-inline: 4px;
+  padding-block: 2px;
+  margin-top: 6px;
+  border-top: 1px solid var(--lng1771-gray-40);
+  display: flex;
+  align-items: center;
+  background-color: inherit;
+  text-transform: uppercase;
 }

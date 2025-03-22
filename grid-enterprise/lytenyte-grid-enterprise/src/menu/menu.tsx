@@ -6,20 +6,22 @@ import { useMenuClassName } from "./use-menu-class-name.js";
 import { ArrowSvg } from "./arrow-svg";
 
 export const Unstyled = {
-  Container: Menu.Popup,
-  Item: Menu.Item,
-  Separator: Menu.Separator,
+  Root: Menu.Root,
+  Trigger: Menu.Trigger,
+  Portal: Menu.Portal,
+  Positioner: Menu.Positioner,
+  Popup: Menu.Popup,
   Arrow: Menu.Arrow,
-
+  Item: Menu.Item,
   Group: Menu.Group,
   GroupLabel: Menu.GroupLabel,
-
   RadioGroup: Menu.RadioGroup,
   RadioItem: Menu.RadioItem,
   RadioItemIndicator: Menu.RadioItemIndicator,
-
   CheckItem: Menu.CheckboxItem,
   CheckboxItemIndicator: Menu.CheckboxItemIndicator,
+  Separator: Menu.Separator,
+  SubmenuTrigger: Menu.SubmenuTrigger,
 };
 
 export const MenuContainer: typeof Menu.Popup = forwardRef(function MenuContainer(
