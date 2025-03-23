@@ -170,3 +170,7 @@
   --lng1771-cell-divider-y: transparent;
   --lng1771-cell-divider-x: var(--lng1771-gray-20);
 }
+
+.lng1771-drag-on * {
+  cursor: grabbing !important;
+}

@@ -52,6 +52,7 @@ export default function Play() {
         `}
       >
         <PillManager.Root grid={grid}>
+          <PillManager.DragPlaceholder />
           <PillManager.Rows>
             <PillManager.Row>
               <PillManager.RowLabelColumns />

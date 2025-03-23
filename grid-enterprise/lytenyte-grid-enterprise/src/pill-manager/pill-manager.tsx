@@ -18,6 +18,8 @@ import { PillManagerRows } from "./pill-manager-rows";
 import { clsx } from "@1771technologies/js-utils";
 import { PillManagerExpander } from "./pill-manager-expander";
 import { PillManagerSeparator } from "./pill-manager-separator";
+import { DragProvider } from "@1771technologies/lytenyte-grid-community/internal";
+import { PillManagerDragPlaceholder } from "./pill-manager-drag-placeholder";
 
 interface RootProps {
   readonly grid: StoreEnterpriseReact<any>;
@@ -28,11 +30,13 @@ const Root = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & RootProps
   ref,
 ) {
   return (
-    <GridProvider value={grid}>
-      <div {...props} className={clsx("lng1771-pill-manager", props.className)} ref={ref}>
-        {children}
-      </div>
-    </GridProvider>
+    <DragProvider>
+      <GridProvider value={grid}>
+        <div {...props} className={clsx("lng1771-pill-manager", props.className)} ref={ref}>
+          {children}
+        </div>
+      </GridProvider>
+    </DragProvider>
   );
 });
 
@@ -46,6 +50,7 @@ export interface PillManagerPillItem {
 
   readonly draggable: boolean;
   readonly dragTags: DragTag[];
+  readonly dragData?: any;
 
   readonly onClick: () => void;
 }
@@ -64,4 +69,6 @@ export const PillManager = {
   Expander: PillManagerExpander,
   Pills: PillManagerPills,
   Pill: PillManagerPill,
+
+  DragPlaceholder: PillManagerDragPlaceholder,
 };

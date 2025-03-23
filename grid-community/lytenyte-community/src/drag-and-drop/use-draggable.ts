@@ -1,7 +1,7 @@
 import type { PointerEventHandler } from "react";
 import { useCallback, useRef, useState } from "react";
 import type { DragActive } from "./drag-store";
-import { store } from "./drag-store";
+import { useDragStore } from "./drag-store";
 import { computeActiveDrag } from "./compute-active-drag";
 
 export interface UseDraggableArgs {
@@ -26,6 +26,8 @@ export function useDraggable({
 }: UseDraggableArgs) {
   const hasDragStartedRef = useRef(false);
   const [isActive, setIsActive] = useState(false);
+
+  const store = useDragStore();
 
   const onPointerDown: PointerEventHandler = useCallback(
     (ev) => {
@@ -128,7 +130,7 @@ export function useDraggable({
         store.setState({ active: null });
       }
     },
-    [getData, getTags, id, onDragCancel, onDragEnd, onDragMove, onDragStart],
+    [getData, getTags, id, onDragCancel, onDragEnd, onDragMove, onDragStart, store],
   );
 
   return { onPointerDown, isActive };

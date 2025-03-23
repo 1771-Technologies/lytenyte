@@ -83,6 +83,13 @@
   border-inline-start: 1px solid var(--lng1771-gray-40);
 }
 
+.lng1771-pill-manager__drag-placeholder {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  pointer-events: none;
+}
+
 /** INDIVIDUAL PILLS */
 
 .lng1771-pill-manager__pill-outer {
@@ -119,7 +126,22 @@
   }
 }
 
+.lng1771-pill-manager__pill-inner[data-draggable="true"] {
+  padding-inline-end: 6px;
+}
+
 .lng1771-pill-manager__pill-inner--secondary-label {
   color: var(--lng1771-primary-50);
   font-size: 13px;
+}
+
+.lng1771-pill-manager__pill-dragger {
+  cursor: grab;
+  padding: 0px;
+  border: none;
+  background-color: transparent;
+  color: var(--lng1771-gray-70);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
