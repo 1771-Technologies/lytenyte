@@ -66,7 +66,7 @@ export function useMeasuresSource(source: PillsProps["pillSource"]) {
         const onToggle = () =>
           sx.measureModel.set((prev) =>
             measureFn
-              ? { ...prev, [c.id]: { field: (c.field ?? c.id) as string, fn: measureName } }
+              ? { ...prev, [c.id]: { field: (c.field ?? c.id) as string, fn: measureFn } }
               : prev,
           );
 
