@@ -6,8 +6,8 @@ import { useGrid } from "../../use-grid";
 export function useColumnPivotSource(source: PillsProps["pillSource"]) {
   const { api, state: sx } = useGrid();
 
-  const columns = sx.columns.peek();
-  const pivotModel = sx.columnPivotModel.peek();
+  const columns = sx.columns.use();
+  const pivotModel = sx.columnPivotModel.use();
 
   return useMemo(() => {
     if (source !== "column-pivots") return [];

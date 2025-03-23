@@ -6,8 +6,8 @@ import { useGrid } from "../../use-grid";
 export function useAggregationSource(source: PillsProps["pillSource"]) {
   const { api, state: sx } = useGrid();
 
-  const columns = sx.columns.peek();
-  const aggModel = sx.aggModel.peek();
+  const columns = sx.columns.use();
+  const aggModel = sx.aggModel.use();
 
   return useMemo(() => {
     if (source !== "aggregations") return [];

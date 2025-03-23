@@ -6,7 +6,7 @@ import { useGrid } from "../../use-grid";
 export function useColumnSoruce(source: PillsProps["pillSource"]) {
   const { api, state: sx } = useGrid();
 
-  const columns = sx.columns.peek();
+  const columns = sx.columns.use();
 
   return useMemo(() => {
     if (source !== "columns") return [];

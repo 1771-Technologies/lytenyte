@@ -6,8 +6,8 @@ import { useGrid } from "../../use-grid";
 export function useRowGroupsSource(source: PillsProps["pillSource"]) {
   const { api, state: sx } = useGrid();
 
-  const rowModel = sx.rowGroupModel.peek();
-  const columns = sx.columns.peek();
+  const rowModel = sx.rowGroupModel.use();
+  const columns = sx.columns.use();
 
   return useMemo(() => {
     if (source !== "row-groups") return [];

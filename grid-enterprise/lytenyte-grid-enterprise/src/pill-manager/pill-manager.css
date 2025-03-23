@@ -118,3 +118,8 @@
     }
   }
 }
+
+.lng1771-pill-manager__pill-inner--secondary-label {
+  color: var(--lng1771-primary-50);
+  font-size: 13px;
+}

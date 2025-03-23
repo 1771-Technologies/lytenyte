@@ -9,14 +9,23 @@ export const PillManagerPill = forwardRef<
   return (
     <div
       {...props}
+      role="button"
       ref={ref}
       data-pill-active={item.active}
       className="lng1771-pill-manager__pill-outer"
+      tabIndex={-1}
+      onClick={() => {
+        item.onToggle();
+      }}
     >
       {!children && (
         <Pill kind={item.kind} className="lng1771-pill-manager__pill-inner" interactive>
           <span>{item.label}</span>
-          {item.secondaryLabel && <span>{item.secondaryLabel}</span>}
+          {item.secondaryLabel && (
+            <span className="lng1771-pill-manager__pill-inner--secondary-label">
+              {item.secondaryLabel}
+            </span>
+          )}
         </Pill>
       )}
     </div>

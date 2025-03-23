@@ -6,8 +6,8 @@ import { useGrid } from "../../use-grid";
 export function useMeasuresSource(source: PillsProps["pillSource"]) {
   const { api, state: sx } = useGrid();
 
-  const columns = sx.columns.peek();
-  const measureModel = sx.measureModel.peek();
+  const columns = sx.columns.use();
+  const measureModel = sx.measureModel.use();
 
   return useMemo(() => {
     if (source !== "measures") return [];
