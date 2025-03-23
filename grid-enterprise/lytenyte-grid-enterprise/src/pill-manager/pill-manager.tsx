@@ -3,7 +3,7 @@ import type { StoreEnterpriseReact } from "@1771technologies/grid-types";
 import { GridProvider } from "../use-grid";
 import { forwardRef, type JSX } from "react";
 import { type PillProps } from "../pill/pill";
-import { PillManagerPills } from "./pill-manager-pills";
+import { PillManagerPills } from "./pill-manager-pills/pill-manager-pills";
 import { PillManagerPill } from "./pill-manager-pill";
 import { PillManagerRow } from "./pill-manager-row";
 import {
@@ -41,6 +41,8 @@ export interface PillManagerPillItem {
   readonly label: string;
   readonly secondaryLabel?: string;
   readonly active: boolean;
+
+  readonly onToggle: () => void;
 }
 
 export const PillManager = {
