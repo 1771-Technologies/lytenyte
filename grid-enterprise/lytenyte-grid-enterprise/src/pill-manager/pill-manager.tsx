@@ -36,15 +36,18 @@ const Root = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & RootProps
   );
 });
 
+export type DragTag = "row-group" | "column-pivot" | "columns" | "aggregations" | "measures";
+
 export interface PillManagerPillItem {
   readonly kind: Required<PillProps>["kind"];
   readonly label: string;
   readonly secondaryLabel?: string;
   readonly active: boolean;
 
-  readonly onClick: () => void;
+  readonly draggable: boolean;
+  readonly dragTags: DragTag[];
 
-  readonly onPointerDown?: () => void;
+  readonly onClick: () => void;
 }
 
 export const PillManager = {

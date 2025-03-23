@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import type { PillsProps } from "./pill-manager-pills";
-import type { PillManagerPillItem } from "../pill-manager";
+import type { DragTag, PillManagerPillItem } from "../pill-manager";
 import { useGrid } from "../../use-grid";
 
 export function useColumnPivotSource(source: PillsProps["pillSource"]) {
@@ -20,11 +20,18 @@ export function useColumnPivotSource(source: PillsProps["pillSource"]) {
 
     const activeItems = pivttedColumns.map<PillManagerPillItem>((c) => {
       const onToggle = () => sx.columnPivotModel.set((prev) => prev.filter((x) => x !== c.id));
+
+      const tags: DragTag[] = ["column-pivot"];
+      if (api.columnIsRowGroupable(c)) tags.push("row-group");
+
       return {
         kind: "column-pivot",
         label: c.headerName ?? c.id,
         active: true,
         onClick: onToggle,
+
+        draggable: true,
+        dragTags: tags,
       };
     });
 
@@ -35,6 +42,9 @@ export function useColumnPivotSource(source: PillsProps["pillSource"]) {
         label: c.headerName ?? c.id,
         active: false,
         onClick: onToggle,
+
+        draggable: false,
+        dragTags: [],
       };
     });
 

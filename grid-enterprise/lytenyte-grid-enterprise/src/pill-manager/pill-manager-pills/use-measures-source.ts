@@ -34,6 +34,8 @@ export function useMeasuresSource(source: PillsProps["pillSource"]) {
           label: column.headerName ?? column.id,
           secondaryLabel,
           onClick: onToggle,
+          draggable: false,
+          dragTags: [],
         });
       } else {
         active.push({
@@ -42,6 +44,9 @@ export function useMeasuresSource(source: PillsProps["pillSource"]) {
           label: key,
           secondaryLabel,
           onClick: onToggle,
+
+          draggable: false,
+          dragTags: [],
         });
       }
     }
@@ -82,6 +87,8 @@ export function useMeasuresSource(source: PillsProps["pillSource"]) {
           active: false,
           secondaryLabel: measureName,
           onClick: onToggle,
+          draggable: false,
+          dragTags: [],
         };
       });
 

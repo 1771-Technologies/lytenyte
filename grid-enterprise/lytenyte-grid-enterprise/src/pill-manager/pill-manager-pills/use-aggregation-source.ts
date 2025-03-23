@@ -27,6 +27,7 @@ export function useAggregationSource(source: PillsProps["pillSource"]) {
 
           return next;
         });
+
       if (column) {
         active.push({
           kind: "column",
@@ -34,6 +35,8 @@ export function useAggregationSource(source: PillsProps["pillSource"]) {
           label: column.headerName ?? column.id,
           secondaryLabel,
           onClick: onToggle,
+          draggable: false,
+          dragTags: [],
         });
       } else {
         active.push({
@@ -42,6 +45,8 @@ export function useAggregationSource(source: PillsProps["pillSource"]) {
           label: key,
           secondaryLabel,
           onClick: onToggle,
+          draggable: false,
+          dragTags: [],
         });
       }
     }
@@ -80,6 +85,8 @@ export function useAggregationSource(source: PillsProps["pillSource"]) {
           active: false,
           secondaryLabel: aggName,
           onClick: onToggle,
+          draggable: false,
+          dragTags: [],
         };
       });
 
