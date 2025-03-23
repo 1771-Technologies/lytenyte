@@ -6,10 +6,18 @@ import { type PillProps } from "../pill/pill";
 import { PillManagerPills } from "./pill-manager-pills";
 import { PillManagerPill } from "./pill-manager-pill";
 import { PillManagerRow } from "./pill-manager-row";
-import { PillManagerRowLabel } from "./pill-manager-row-label";
+import {
+  PillManagerAggLabel,
+  PillManagerColumnPivotsLabel,
+  PillManagerColumnsLabel,
+  PillManagerMeasureLabel,
+  PillManagerRowGroupsLabel,
+  PillManagerRowLabel,
+} from "./pill-manager-row-label";
 import { PillManagerRows } from "./pill-manager-rows";
 import { clsx } from "@1771technologies/js-utils";
 import { PillManagerExpander } from "./pill-manager-expander";
+import { PillManagerSeparator } from "./pill-manager-separator";
 
 interface RootProps {
   readonly grid: StoreEnterpriseReact<any>;
@@ -40,6 +48,12 @@ export const PillManager = {
   Rows: PillManagerRows,
   Row: PillManagerRow,
   RowLabel: PillManagerRowLabel,
+  RowLabelColumns: PillManagerColumnsLabel,
+  RowLabelMeasures: PillManagerMeasureLabel,
+  RowLabelAggregations: PillManagerAggLabel,
+  RowLabelColumnPivots: PillManagerColumnPivotsLabel,
+  RowLabelRowGroups: PillManagerRowGroupsLabel,
+  Separator: PillManagerSeparator,
   Expander: PillManagerExpander,
   Pills: PillManagerPills,
   Pill: PillManagerPill,

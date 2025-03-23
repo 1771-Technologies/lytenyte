@@ -54,8 +54,76 @@ export default function Play() {
         <PillManager.Root grid={grid}>
           <PillManager.Rows>
             <PillManager.Row>
-              <PillManager.RowLabel>Columns</PillManager.RowLabel>
+              <PillManager.RowLabelColumns />
               <PillManager.Pills pillSource="columns">
+                {({ pills }) => {
+                  return (
+                    <>
+                      {pills.map((c) => (
+                        <PillManager.Pill key={c.label} item={c} />
+                      ))}
+                    </>
+                  );
+                }}
+              </PillManager.Pills>
+              <PillManager.Expander>X</PillManager.Expander>
+            </PillManager.Row>
+            <PillManager.Separator />
+
+            <PillManager.Row>
+              <PillManager.RowLabelRowGroups />
+              <PillManager.Pills pillSource="row-groups">
+                {({ pills }) => {
+                  return (
+                    <>
+                      {pills.map((c) => (
+                        <PillManager.Pill key={c.label} item={c} />
+                      ))}
+                    </>
+                  );
+                }}
+              </PillManager.Pills>
+              <PillManager.Expander>X</PillManager.Expander>
+            </PillManager.Row>
+            <PillManager.Separator />
+
+            <PillManager.Row>
+              <PillManager.RowLabelAggregations />
+              <PillManager.Pills pillSource="aggregations">
+                {({ pills }) => {
+                  return (
+                    <>
+                      {pills.map((c) => (
+                        <PillManager.Pill key={c.label} item={c} />
+                      ))}
+                    </>
+                  );
+                }}
+              </PillManager.Pills>
+              <PillManager.Expander>X</PillManager.Expander>
+            </PillManager.Row>
+            <PillManager.Separator />
+
+            <PillManager.Row>
+              <PillManager.RowLabelMeasures />
+              <PillManager.Pills pillSource="measures">
+                {({ pills }) => {
+                  return (
+                    <>
+                      {pills.map((c) => (
+                        <PillManager.Pill key={c.label} item={c} />
+                      ))}
+                    </>
+                  );
+                }}
+              </PillManager.Pills>
+              <PillManager.Expander>X</PillManager.Expander>
+            </PillManager.Row>
+            <PillManager.Separator />
+
+            <PillManager.Row>
+              <PillManager.RowLabelColumnPivots />
+              <PillManager.Pills pillSource="column-pivots">
                 {({ pills }) => {
                   return (
                     <>
