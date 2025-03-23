@@ -91,6 +91,17 @@
   pointer-events: none;
 }
 
+.lng1771-pill-manager__drag-placeholder--default {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--lng1771-gray-05);
+  border: 1px solid var(--lng1771-primary-30);
+  border-radius: 6px;
+  padding-inline: 8px;
+  padding-block: 6px;
+}
+
 /** INDIVIDUAL PILLS */
 
 .lng1771-pill-manager__pill-outer {
