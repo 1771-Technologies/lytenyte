@@ -6,6 +6,10 @@ export type AggBuiltIns = "sum" | "min" | "max" | "avg" | "count" | "first" | "l
 export type AggFn<A> = (data: unknown[], api: A) => unknown;
 export type AggFns<A> = { [id: string]: AggFn<A> };
 
+export type AggModel<A> = {
+  [columnId: string]: AggBuiltIns | ({} & string) | AggFn<A>;
+};
+
 // Autosize
 
 export interface AutosizeOptions {

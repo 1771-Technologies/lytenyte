@@ -25,10 +25,12 @@ import type {
   SortComparatorFn,
   SortModelItem,
   ColumnFilterModel,
+  AggModel,
 } from "../types";
 
 export interface PropsCommunity<A, D, C, E, Base, Group> {
   readonly aggFns?: AggFns<A>;
+  readonly aggModel?: AggModel<A>;
 
   readonly autosizeDoubleClickHeader?: boolean;
 

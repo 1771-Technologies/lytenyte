@@ -34,6 +34,8 @@ export function initialize<D, E>(
 ) {
   const s = {
     aggFns: signal(props.aggFns ?? {}),
+    aggModel: signal(props.aggModel ?? {}),
+
     autosizeDoubleClickHeader: signal(props.autosizeDoubleClickHeader ?? true),
 
     cellEditPointerActivator: signal(props.cellEditPointerActivator ?? "none"),

@@ -37,6 +37,8 @@ export function initialize<D, E>(
 ) {
   Object.assign(state, {
     aggFns: signal(props.aggFns ?? {}),
+    aggModel: signal(props.aggModel ?? {}),
+
     autosizeDoubleClickHeader: signal(props.autosizeDoubleClickHeader ?? true),
 
     cellEditPointerActivator: signal(props.cellEditPointerActivator ?? "none"),
