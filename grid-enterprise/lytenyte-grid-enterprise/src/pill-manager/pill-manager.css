@@ -26,6 +26,7 @@
   grid-template-columns: subgrid;
   grid-column: span 3;
   gap: 4px;
+  min-height: 46px;
 }
 
 .lng1771-pill-manager__row:not([data-expanded="true"])

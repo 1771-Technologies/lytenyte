@@ -23,9 +23,7 @@ export const PillManagerPill = forwardRef<
       data-pill-active={item.active}
       className="lng1771-pill-manager__pill-outer"
       tabIndex={-1}
-      onPointerDown={() => {
-        item.onClick();
-      }}
+      onClick={item.onClick}
     >
       {!children && (
         <Pill

@@ -21,24 +21,10 @@ export function useColumnSoruce(source: PillsProps["pillSource"]) {
     const inactive: PillManagerPillItem[] = [];
 
     const canAgg = (c: ColumnEnterpriseReact<any>) => {
-      return (
-        typeof (c.field ?? c.id) === "string" &&
-        (c.aggFn ??
-          c.aggFnDefault ??
-          c.aggFnsAllowed?.length ??
-          base.aggFn ??
-          base.aggFnsAllowed?.length)
-      );
+      return c.aggFnDefault ?? c.aggFnsAllowed?.length ?? base.aggFnsAllowed?.length;
     };
     const canMeasure = (c: ColumnEnterpriseReact<any>) => {
-      return (
-        typeof (c.field ?? c.id) === "string" &&
-        (c.measureFn ??
-          c.measureFnDefault ??
-          c.measureFnsAllowed?.length ??
-          base.measureFn ??
-          base.measureFnsAllowed?.length)
-      );
+      return c.measureFnDefault ?? c.measureFnsAllowed?.length ?? base.measureFnsAllowed?.length;
     };
 
     for (const c of columns) {
@@ -80,9 +66,7 @@ export function useColumnSoruce(source: PillsProps["pillSource"]) {
   }, [
     aggModel,
     api,
-    base.aggFn,
     base.aggFnsAllowed?.length,
-    base.measureFn,
     base.measureFnsAllowed?.length,
     columns,
     groupModel,

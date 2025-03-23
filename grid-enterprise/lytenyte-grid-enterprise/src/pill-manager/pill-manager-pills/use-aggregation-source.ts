@@ -54,28 +54,16 @@ export function useAggregationSource(source: PillsProps["pillSource"]) {
     const base = sx.columnBase.peek();
     const inactive = columns
       .filter((c) => {
-        const agg =
-          c.aggFn ??
-          c.aggFnDefault ??
-          c.aggFnsAllowed?.length ??
-          base.aggFn ??
-          base.aggFnsAllowed?.length;
+        const agg = c.aggFnDefault ?? c.aggFnsAllowed?.length ?? base.aggFnsAllowed?.length;
         const isAgged = !!aggModel[c.id];
 
-        return !!agg && !isAgged && typeof (c.field ?? c.id) === "string";
+        return !!agg && !isAgged;
       })
       .map<PillManagerPillItem>((c) => {
-        const aggFn =
-          c.aggFn ??
-          c.aggFnDefault ??
-          c.aggFnsAllowed?.[0] ??
-          base.aggFn ??
-          base.aggFnsAllowed?.at(0);
+        const aggFn = c.aggFnDefault ?? c.aggFnsAllowed?.[0] ?? base.aggFnsAllowed?.at(0);
 
         const onToggle = () =>
-          sx.aggModel.set((prev) =>
-            aggFn ? { ...prev, [c.id]: { field: (c.field ?? c.id) as string, fn: aggFn } } : prev,
-          );
+          sx.aggModel.set((prev) => (aggFn ? { ...prev, [c.id]: { fn: aggFn } } : prev));
 
         const aggName = typeof aggFn === "string" ? `(${aggFn})` : "Fn(x)";
 

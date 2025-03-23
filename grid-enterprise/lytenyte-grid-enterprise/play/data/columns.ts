@@ -8,6 +8,7 @@ export const columns: ColumnEnterpriseReact<any>[] = [
     pin: "start",
     rowGroupable: true,
     columnPivotable: true,
+    aggFnsAllowed: ["count"],
   },
   { id: "job", rowGroupable: true, widthFlex: 1 },
   {
@@ -15,8 +16,7 @@ export const columns: ColumnEnterpriseReact<any>[] = [
     type: "number",
     pin: "start",
     rowGroupable: true,
-    aggFn: "sum",
-    measureFn: "sum",
+    aggFnDefault: "avg",
   },
   {
     id: "education",
@@ -25,11 +25,10 @@ export const columns: ColumnEnterpriseReact<any>[] = [
   },
   {
     id: "marital",
-    aggFn: "first",
   },
   { id: "default", groupPath: ["Alpha"] },
   { id: "housing" },
-  { id: "loan", groupPath: ["Xeno", "Sigma"] },
+  { id: "loan", groupPath: ["Xeno", "Sigma"], measureFnsAllowed: ["first", "last"] },
   { id: "contact", groupPath: ["Xeno", "Sigma"] },
   { id: "day", groupPath: ["Xeno"] },
   { id: "month" },

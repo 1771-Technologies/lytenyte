@@ -55,30 +55,20 @@ export function useMeasuresSource(source: PillsProps["pillSource"]) {
     const inactive = columns
       .filter((c) => {
         const measure =
-          c.measureFn ??
-          c.measureFnDefault ??
-          c.measureFnsAllowed?.length ??
-          base.measureFn ??
-          base.measureFnsAllowed?.length;
+          c.measureFnDefault ?? c.measureFnsAllowed?.length ?? base.measureFnsAllowed?.length;
         const isMeasured = !!measureModel[c.id];
 
-        return !!measure && !isMeasured && typeof (c.field ?? c.id) === "string";
+        return !!measure && !isMeasured;
       })
       .map<PillManagerPillItem>((c) => {
         const measureFn =
-          c.measureFn ??
-          c.measureFnDefault ??
-          c.measureFnsAllowed?.[0] ??
-          base.measureFn ??
-          base.measureFnsAllowed?.at(0);
+          c.measureFnDefault ?? c.measureFnsAllowed?.[0] ?? base.measureFnsAllowed?.at(0);
 
         const measureName = typeof measureFn === "string" ? `(${measureFn})` : "Fn(x)";
 
         const onToggle = () =>
           sx.measureModel.set((prev) =>
-            measureFn
-              ? { ...prev, [c.id]: { field: (c.field ?? c.id) as string, fn: measureFn } }
-              : prev,
+            measureFn ? { ...prev, [c.id]: { fn: measureFn } } : prev,
           );
 
         return {

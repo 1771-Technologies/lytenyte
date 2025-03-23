@@ -77,12 +77,16 @@ export function useDraggable({
       document.addEventListener(
         "pointerup",
         (ev) => {
+          // Stop the pointer up event from doing anything. It should end the drag only
+          ev.preventDefault();
+          ev.stopPropagation();
+
           c.abort();
           if (!hasDragStartedRef.current) return;
 
           endDrag(ev.clientX, ev.clientY);
         },
-        { signal: c.signal },
+        { signal: c.signal, capture: true },
       );
       document.addEventListener(
         "pointercancel",
@@ -100,11 +104,14 @@ export function useDraggable({
           c.abort();
           if (!hasDragStartedRef.current) return;
           if (ev.key === "Escape") {
+            // Stop the escape from doing anything else
+            ev.preventDefault();
+            ev.stopPropagation();
             const s = store.getState().active!;
             endDrag(s.x, s.y, true);
           }
         },
-        { signal: c.signal },
+        { signal: c.signal, capture: true },
       );
 
       function endDrag(x: number, y: number, isCancel = false) {

@@ -20,6 +20,9 @@ export function useRowGroupsSource(source: PillsProps["pillSource"]) {
           label: c.headerName ?? c.id,
           active: true,
           onClick: onToggle,
+
+          draggable: false,
+          dragTags: [],
         };
       });
 
@@ -32,6 +35,9 @@ export function useRowGroupsSource(source: PillsProps["pillSource"]) {
           label: c.headerName ?? c.id,
           active: false,
           onClick: onToggle,
+
+          draggable: false,
+          dragTags: [],
         };
       });
 
