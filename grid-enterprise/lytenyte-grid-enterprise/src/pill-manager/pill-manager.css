@@ -28,9 +28,15 @@
   gap: 4px;
 }
 
-.lng1771-pill-manager__row .lng1771-pill-manager__pill-outer[data-pill-active="false"] {
+.lng1771-pill-manager__row:not([data-expanded="true"])
+  .lng1771-pill-manager__pill-outer[data-pill-active="false"] {
   transition: opacity ease-in-out 100ms;
   opacity: 0;
+}
+
+.lng1771-pill-manager__row[data-expanded="true"]
+  .lng1771-pill-manager__pill-outer[data-pill-active="false"] {
+  opacity: 0.7;
 }
 
 .lng1771-pill-manager__row:hover .lng1771-pill-manager__pill-outer[data-pill-active="false"] {
@@ -48,7 +54,8 @@
   }
 }
 
-.lng1771-pill-manager__rows[data-expanded="true"] .lng1771-pill-manager__pills {
+.lng1771-pill-manager__row[data-expanded="true"] .lng1771-pill-manager__pills {
+  overflow: initial;
   flex-wrap: wrap;
 }
 
@@ -64,6 +71,16 @@
   & svg {
     color: var(--lng1771-gray-70);
   }
+}
+
+.lng1771-pill-manager__expander {
+  padding: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: none;
+  border-inline-start: 1px solid var(--lng1771-gray-40);
 }
 
 /** INDIVIDUAL PILLS */

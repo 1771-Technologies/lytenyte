@@ -58,19 +58,3 @@ export const PillManager = {
   Pills: PillManagerPills,
   Pill: PillManagerPill,
 };
-
-/**
-
-<PillManager.Root>
-  <PillManager.Rows>
-    <PillManager.Row>
-      <PillManager.RowLabel />
-      <PillManager.Pills>
-        {({ pills }) => <PillManager.Pill item={item} />}
-      </PillManager.Pills
-      <PillManager.Expander />
-    </PillManager.Row>
-  <PillManager.Rows>
-<PillManager.Root>
-
- */

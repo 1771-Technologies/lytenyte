@@ -66,7 +66,7 @@ export default function Play() {
                   );
                 }}
               </PillManager.Pills>
-              <PillManager.Expander>X</PillManager.Expander>
+              <PillManager.Expander></PillManager.Expander>
             </PillManager.Row>
             <PillManager.Separator />
 
@@ -83,7 +83,7 @@ export default function Play() {
                   );
                 }}
               </PillManager.Pills>
-              <PillManager.Expander>X</PillManager.Expander>
+              <PillManager.Expander />
             </PillManager.Row>
             <PillManager.Separator />
 
@@ -100,7 +100,7 @@ export default function Play() {
                   );
                 }}
               </PillManager.Pills>
-              <PillManager.Expander>X</PillManager.Expander>
+              <PillManager.Expander />
             </PillManager.Row>
             <PillManager.Separator />
 
@@ -117,7 +117,7 @@ export default function Play() {
                   );
                 }}
               </PillManager.Pills>
-              <PillManager.Expander>X</PillManager.Expander>
+              <PillManager.Expander />
             </PillManager.Row>
             <PillManager.Separator />
 
@@ -134,7 +134,7 @@ export default function Play() {
                   );
                 }}
               </PillManager.Pills>
-              <PillManager.Expander>X</PillManager.Expander>
+              <PillManager.Expander />
             </PillManager.Row>
           </PillManager.Rows>
         </PillManager.Root>

@@ -10,6 +10,7 @@ export { DownloadIcon } from "./download-icon.js";
 export { DragGroupIcon } from "./drag-group-icon.js";
 export { DragIcon } from "./drag-icon.js";
 export { ExcelIcon } from "./excel-icon.js";
+export { ExpandIcon, CollapseIcon } from "./expand-and-collapse-icons.js";
 export { FunnelIcon } from "./funnel-icon.js";
 export { GroupByColumnIcon } from "./group-by-column-icon.js";
 export { HideColumnIcon } from "./hide-column-icon.js";
