@@ -60,18 +60,7 @@ function DragHandle({ item }: { item: PillManagerPillItem }) {
   });
 
   return (
-    <button
-      className="lng1771-pill-manager__pill-dragger"
-      onPointerDownCapture={(ev) => {
-        ev.preventDefault();
-        ev.stopPropagation();
-        onPointerDown(ev);
-      }}
-      onClickCapture={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-      }}
-    >
+    <button className="lng1771-pill-manager__pill-dragger" onPointerDown={onPointerDown}>
       <DragIcon width={16} height={16} />
     </button>
   );

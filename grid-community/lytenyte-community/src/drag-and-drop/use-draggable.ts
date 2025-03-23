@@ -37,6 +37,21 @@ export function useDraggable({
       const c = new AbortController();
 
       let anim: number | null = null;
+
+      // This is a stupid hack, but it seems to work. Sometimes the drag handle is within a clickable element.
+      // For some reason the click will still fire if the cursor is moved over the element and released. We
+      // prevent this here by just blocking all clicks whilst a drag is active. Furthermore for some reason
+      // remove the listener with an abort controller is insufficient, hence we use the removeEventListener
+      // method here. All said this is an ugly hack but it seams to work so hey - maybe one day the browser
+      // will provide a decent drag and drop api.
+      const clickFix = (ev: MouseEvent) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        ev.stopImmediatePropagation();
+        globalThis.removeEventListener("click", clickFix, { capture: true });
+      };
+      globalThis.addEventListener("click", clickFix, { capture: true });
+
       document.addEventListener(
         "pointermove",
         (ev) => {
@@ -77,11 +92,9 @@ export function useDraggable({
       document.addEventListener(
         "pointerup",
         (ev) => {
-          // Stop the pointer up event from doing anything. It should end the drag only
-          ev.preventDefault();
-          ev.stopPropagation();
-
           c.abort();
+          globalThis.removeEventListener("click", clickFix);
+
           if (!hasDragStartedRef.current) return;
 
           endDrag(ev.clientX, ev.clientY);
@@ -92,6 +105,8 @@ export function useDraggable({
         "pointercancel",
         (ev) => {
           c.abort();
+          globalThis.removeEventListener("click", clickFix);
+
           if (!hasDragStartedRef.current) return;
 
           endDrag(ev.clientX, ev.clientY, true);
@@ -102,6 +117,8 @@ export function useDraggable({
         "keydown",
         (ev) => {
           c.abort();
+          globalThis.removeEventListener("click", clickFix);
+
           if (!hasDragStartedRef.current) return;
           if (ev.key === "Escape") {
             // Stop the escape from doing anything else
