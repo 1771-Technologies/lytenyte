@@ -1,22 +1,51 @@
+.lng1771-pill-manager {
+  container-type: inline-size;
+}
+
+.lng1771-pill-manager__rows {
+  display: grid;
+  grid-template-columns: 160px calc(100% - 160px - 30px) 30px;
+}
+
+@container (max-width: 450px) {
+  .lng1771-pill-manager_rows {
+    display: grid;
+    grid-template-columns: 50px calc(100% -50px - 30px) 30px;
+  }
+}
+
 .lng1771-pill-manager__row {
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: span 3;
   gap: 4px;
 }
 
-.lng1771-pill-manager__row .lng1771-pill-manager__pill-outer:not([data-pill-active]) {
+.lng1771-pill-manager__row .lng1771-pill-manager__pill-outer[data-pill-active="false"] {
   transition: opacity ease-in-out 100ms;
   opacity: 0;
 }
 
-.lng1771-pill-manager__row:hover .lng1771-pill-manager__pill-outer:not([data-pill-active]) {
+.lng1771-pill-manager__row:hover .lng1771-pill-manager__pill-outer[data-pill-active="false"] {
   opacity: 0.7;
 }
 
+/** Pill CONTAINER **/
 .lng1771-pill-manager__pills {
   display: flex;
   align-items: center;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
+
+.lng1771-pill-manager__rows[data-expanded="true"] .lng1771-pill-manager__pills {
+  flex-wrap: wrap;
+}
+
+/** INDIVIDUAL PILLS */
 
 .lng1771-pill-manager__pill-outer {
   padding-inline: 4px;

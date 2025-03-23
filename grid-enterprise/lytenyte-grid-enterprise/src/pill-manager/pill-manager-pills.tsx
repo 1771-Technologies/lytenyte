@@ -22,17 +22,20 @@ export const PillManagerPills = forwardRef<
 
   const sourceItems = useMemo(() => {
     if (pillSource === "columns") {
-      return columns
-        .map<PillManagerPillItem | null>((c) => {
-          if (api.columnIsGridGenerated(c)) return null;
+      const active: PillManagerPillItem[] = [];
+      const inactive: PillManagerPillItem[] = [];
 
-          return {
-            kind: "column",
-            active: api.columnIsVisible(c, true),
-            label: c.id ?? c.headerName,
-          } satisfies PillManagerPillItem;
-        })
-        .filter((c) => !!c);
+      for (const c of columns) {
+        if (api.columnIsGridGenerated(c)) continue;
+
+        if (api.columnIsVisible(c, true)) {
+          active.push({ kind: "column", active: true, label: c.headerName ?? c.id });
+        } else {
+          inactive.push({ kind: "column", active: false, label: c.headerName ?? c.id });
+        }
+      }
+
+      return [...active, ...inactive];
     }
     if (pillSource === "column-pivots") {
       const appliedPivots = new Set(pivotModel);

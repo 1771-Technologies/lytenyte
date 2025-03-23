@@ -24,7 +24,6 @@ import {
   rowSelectionComputed,
   sortModelComputed,
 } from "@1771technologies/grid-shared-state";
-import { measuresComputed } from "./utils/measures-computed";
 import { cellSelectionComputed } from "./utils/cell-selections-computed";
 
 export function initialize<D, E>(

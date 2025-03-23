@@ -52,19 +52,23 @@ export default function Play() {
         `}
       >
         <PillManager.Root grid={grid}>
-          <PillManager.Row>
-            <PillManager.Pills pillSource="columns">
-              {({ pills }) => {
-                return (
-                  <>
-                    {pills.map((c) => (
-                      <PillManager.Pill key={c.label} item={c} />
-                    ))}
-                  </>
-                );
-              }}
-            </PillManager.Pills>
-          </PillManager.Row>
+          <PillManager.Rows>
+            <PillManager.Row>
+              <PillManager.RowLabel>Columns</PillManager.RowLabel>
+              <PillManager.Pills pillSource="columns">
+                {({ pills }) => {
+                  return (
+                    <>
+                      {pills.map((c) => (
+                        <PillManager.Pill key={c.label} item={c} />
+                      ))}
+                    </>
+                  );
+                }}
+              </PillManager.Pills>
+              <PillManager.Expander>X</PillManager.Expander>
+            </PillManager.Row>
+          </PillManager.Rows>
         </PillManager.Root>
       </div>
       <div
