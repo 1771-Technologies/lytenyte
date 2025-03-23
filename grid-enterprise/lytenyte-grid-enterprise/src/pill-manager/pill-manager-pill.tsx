@@ -4,6 +4,13 @@ import { Pill } from "../pill/pill";
 import { DragIcon } from "../icons";
 import { useDraggable } from "@1771technologies/lytenyte-grid-community/internal";
 
+/**
+ * Add drop zones
+ * add drop indications
+ * add collision detection
+ * add swap functionality
+ */
+
 export const PillManagerPill = forwardRef<
   HTMLDivElement,
   JSX.IntrinsicElements["div"] & { item: PillManagerPillItem }
