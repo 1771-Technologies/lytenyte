@@ -1,3 +1,4 @@
+export { arrayOverlap } from "./array-overlap.js";
 export { clamp } from "./clamp.js";
 export { clsx } from "./clsx.js";
 export { containsADuplicateId } from "./contains-a-duplicate-id.js";
