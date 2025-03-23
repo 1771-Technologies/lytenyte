@@ -1,8 +1,10 @@
 export { AggregationIcon } from "./aggregation-icon.js";
+export { ArrowRightIcon } from "./arrow-right-icon.js";
 export { AscendingIcon } from "./ascending-icon.js";
 export { AutosizeIcon } from "./autosize-icon.js";
 export { ColumnPivotIcon } from "./column-pivot-icon.js";
 export { CrossIcon } from "./cross-icon.js";
+export { CsvIcon } from "./csv-icon.js";
 export { DescendingIcon } from "./descending-icon.js";
 export { DownloadIcon } from "./download-icon.js";
 export { DragGroupIcon } from "./drag-group-icon.js";
@@ -18,4 +20,4 @@ export { ResetColumnsIcon } from "./reset-columns-icon.js";
 export { RowGroupIcon } from "./row-group-icon.js";
 export { SearchIcon } from "./search-icon.js";
 export { SortIcon } from "./sort-icon.js";
-export { CsvIcon } from "./csv-icon.js";
+export { TickmarkIcon } from "./tickmark-icon.js";

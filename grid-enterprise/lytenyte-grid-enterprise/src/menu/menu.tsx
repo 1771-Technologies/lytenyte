@@ -1,16 +1,33 @@
 import "./menu.css";
 
-import { forwardRef } from "react";
+import { forwardRef, type ComponentProps, type ReactNode } from "react";
 import { Menu } from "@base-ui-components/react/menu";
 import { useMenuClassName } from "./use-menu-class-name.js";
 import { ArrowSvg } from "./arrow-svg";
+import { ArrowRightIcon, TickmarkIcon } from "../icons";
+
+export const MenuSubmenu = ({
+  children,
+  trigger,
+  ...props
+}: ComponentProps<typeof Menu.Root> & { trigger: ReactNode }) => {
+  return (
+    <Menu.Root {...props}>
+      {trigger}
+
+      <Menu.Portal>
+        <Menu.Positioner>{children}</Menu.Positioner>
+      </Menu.Portal>
+    </Menu.Root>
+  );
+};
 
 export const Unstyled = {
   Root: Menu.Root,
   Trigger: Menu.Trigger,
   Portal: Menu.Portal,
-  Positioner: Menu.Positioner,
-  Popup: Menu.Popup,
+  Submenu: MenuSubmenu,
+  Container: Menu.Popup,
   Arrow: Menu.Arrow,
   Item: Menu.Item,
   Group: Menu.Group,
@@ -75,4 +92,67 @@ export const MenuGroupLabel: typeof Menu.GroupLabel = forwardRef(function MenuGr
 ) {
   const cl = useMenuClassName("lng1771-menu__group-label", className);
   return <Menu.GroupLabel {...props} ref={ref} className={cl} />;
+});
+
+export const MenuSubmenuTrigger: typeof Menu.SubmenuTrigger = forwardRef(function SubmenuTrigger(
+  { className, children, ...props },
+  ref,
+) {
+  const cl = useMenuClassName("lng1771-menu__submenu-trigger", className);
+  return (
+    <Menu.SubmenuTrigger {...props} className={cl} ref={ref}>
+      <div>{children}</div>
+      <ArrowRightIcon width={16} height={16} />
+    </Menu.SubmenuTrigger>
+  );
+});
+
+export const MenuRadioGroup: typeof Menu.RadioGroup = forwardRef(function RadioGroup(
+  { className, ...props },
+  ref,
+) {
+  const cl = useMenuClassName("lng1771-menu__radio-group", className);
+  return <Menu.RadioGroup {...props} className={cl} ref={ref} />;
+});
+
+export const MenuRadioItemIndicator = forwardRef(function RadioItemIndicator(
+  { children, className, ...props }: ComponentProps<typeof Menu.RadioItemIndicator>,
+  ref: ComponentProps<typeof Menu.RadioItemIndicator>["ref"],
+) {
+  const cl = useMenuClassName("lng1771-menu__radio-item-indicator", className);
+
+  return (
+    <Menu.RadioItemIndicator {...props} ref={ref} className={cl}>
+      {children ?? <TickmarkIcon width={16} height={16} />}
+    </Menu.RadioItemIndicator>
+  );
+});
+
+export const MenuRadioItem: typeof Menu.RadioItem = forwardRef(function RadioItem(
+  { className, ...props },
+  ref,
+) {
+  const cl = useMenuClassName("lng1771-menu__radio-item", className);
+  return <Menu.RadioItem {...props} ref={ref} className={cl} />;
+});
+
+export const MenuCheckboxItemIndicator = forwardRef(function CheckboxItemIndicator(
+  { children, className, ...props }: ComponentProps<typeof Menu.CheckboxItemIndicator>,
+  ref: ComponentProps<typeof Menu.CheckboxItemIndicator>["ref"],
+) {
+  const cl = useMenuClassName("lng1771-menu__checkbox-item-indicator", className);
+
+  return (
+    <Menu.CheckboxItemIndicator {...props} ref={ref} className={cl}>
+      {children ?? <TickmarkIcon width={16} height={16} />}
+    </Menu.CheckboxItemIndicator>
+  );
+});
+
+export const MenuCheckboxItem: typeof Menu.CheckboxItem = forwardRef(function CheckboxItem(
+  { className, ...props },
+  ref,
+) {
+  const cl = useMenuClassName("lng1771-menu__checkbox-item", className);
+  return <Menu.CheckboxItem {...props} ref={ref} className={cl} />;
 });

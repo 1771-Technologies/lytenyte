@@ -5,11 +5,18 @@ import { useLyteNyte } from "../src/use-lytenyte";
 import { LyteNyteGrid } from "../src";
 import {
   MenuArrow,
+  MenuCheckboxItem,
+  MenuCheckboxItemIndicator,
   MenuContainer,
   MenuGroup,
   MenuGroupLabel,
   MenuItem,
+  MenuRadioGroup,
+  MenuRadioItem,
+  MenuRadioItemIndicator,
   MenuSeparator,
+  MenuSubmenu,
+  MenuSubmenuTrigger,
 } from "../src/menu/menu";
 
 export default function Play() {
@@ -45,6 +52,39 @@ export default function Play() {
             <MenuItem>Excel Export</MenuItem>
             <MenuItem>PDF Export</MenuItem>
           </MenuGroup>
+          <MenuSubmenu trigger={<MenuSubmenuTrigger>Trigger Me</MenuSubmenuTrigger>}>
+            <MenuContainer>
+              <MenuItem>Label 1</MenuItem>
+              <MenuItem>Label 2</MenuItem>
+              <MenuItem>Label 3</MenuItem>
+            </MenuContainer>
+          </MenuSubmenu>
+
+          <MenuSeparator />
+
+          <MenuCheckboxItem>
+            <span>Minify</span>
+            <MenuCheckboxItemIndicator />
+          </MenuCheckboxItem>
+          <MenuCheckboxItem>
+            <span>Expand</span>
+            <MenuCheckboxItemIndicator />
+          </MenuCheckboxItem>
+
+          <MenuRadioGroup>
+            <MenuRadioItem value="alpha">
+              <span>Alpha</span>
+              <MenuRadioItemIndicator />
+            </MenuRadioItem>
+            <MenuRadioItem value="beta">
+              <span>Beta</span>
+              <MenuRadioItemIndicator />
+            </MenuRadioItem>
+            <MenuRadioItem value="theta">
+              <span>Theta</span>
+              <MenuRadioItemIndicator />
+            </MenuRadioItem>
+          </MenuRadioGroup>
         </MenuContainer>
       );
     },
