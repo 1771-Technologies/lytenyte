@@ -37,7 +37,7 @@ export function initialize<D, E>(
 ) {
   Object.assign(state, {
     aggFns: signal(props.aggFns ?? {}),
-    aggModel: signal(props.aggModel ?? {}),
+    aggModel: signal(props.aggModel ?? {}, { postUpdate: () => queueMicrotask(api.rowRefresh) }),
 
     autosizeDoubleClickHeader: signal(props.autosizeDoubleClickHeader ?? true),
 
