@@ -6,8 +6,13 @@ export type AggBuiltIns = "sum" | "min" | "max" | "avg" | "count" | "first" | "l
 export type AggFn<A> = (data: unknown[], api: A) => unknown;
 export type AggFns<A> = { [id: string]: AggFn<A> };
 
+export type AggField = string | number | { kind: FieldTypePath; path: string };
+
 export type AggModel<A> = {
-  [columnId: string]: AggBuiltIns | ({} & string) | AggFn<A>;
+  [columnId: string]: {
+    field: AggField;
+    fn: AggBuiltIns | ({} & string) | AggFn<A>;
+  };
 };
 
 // Autosize

@@ -1,7 +1,7 @@
 import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
-import { doesColumnHaveAggregation } from "./does-column-have-aggregation.js";
-import { getAggregationFunction } from "./get-aggregation-function.js";
 import type { RowNodeLeaf } from "@1771technologies/grid-types/community";
+import { get } from "@1771technologies/js-utils";
+import { builtIns } from "./built-ins/built-ins.js";
 
 export function aggregator<D, E>(
   api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
@@ -10,22 +10,24 @@ export function aggregator<D, E>(
   api = api as ApiCommunity<D, E>;
 
   const sx = api.getState();
-  const columns = sx.columnsVisible.peek();
-
   const aggCalc: Record<string, unknown> = {};
-  const columnBase = sx.columnBase.peek();
 
-  for (const column of columns) {
-    const hasAggFn = doesColumnHaveAggregation(api, column, columnBase);
+  const aggModel = sx.aggModel.peek();
+  const aggFns = sx.aggFns.peek();
 
-    if (hasAggFn) {
-      const dataForCalc = rows.map((row) => api.columnField(row, column));
+  for (const [id, m] of Object.entries(aggModel)) {
+    const isDirect = typeof m.field === "string" || typeof m.field === "number";
 
-      const aggFn = getAggregationFunction(api, column, columnBase);
+    const dataForCalc = rows.map((row) => {
+      if (isDirect) return (row.data as any)[m.field as any];
 
-      const result = aggFn(dataForCalc, api);
-      aggCalc[column.id] = result;
-    }
+      return get(row.data, (m.field as { path: string }).path);
+    });
+
+    const aggFn = typeof m.fn === "string" ? (aggFns[m.fn] ?? builtIns[m.fn as "sum"]) : m.fn;
+
+    const result = aggFn(dataForCalc, api);
+    aggCalc[id] = result;
   }
 
   return aggCalc;
