@@ -1,0 +1,53 @@
+.lng1771-pill-manager__row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.lng1771-pill-manager__row .lng1771-pill-manager__pill-outer:not([data-pill-active]) {
+  transition: opacity ease-in-out 100ms;
+  opacity: 0;
+}
+
+.lng1771-pill-manager__row:hover .lng1771-pill-manager__pill-outer:not([data-pill-active]) {
+  opacity: 0.7;
+}
+
+.lng1771-pill-manager__pills {
+  display: flex;
+  align-items: center;
+}
+
+.lng1771-pill-manager__pill-outer {
+  padding-inline: 4px;
+  padding-block: 8px;
+  cursor: pointer;
+
+  &:hover > .lng1771-pill[data-pill-kind="plain"] {
+    &[data-pill-interactive] {
+      background-color: color-mix(in srgb, var(--lng1771-pill-plain-fill) 95%, white 5%);
+      cursor: pointer;
+    }
+  }
+
+  &:hover > .lng1771-pill[data-pill-kind="row-group"] {
+    &[data-pill-interactive] {
+      background-color: color-mix(in srgb, var(--lng1771-pill-group-fill) 95%, white 5%);
+      cursor: pointer;
+    }
+  }
+
+  &:hover > .lng1771-pill[data-pill-kind="column-pivot"] {
+    &[data-pill-interactive] {
+      background-color: color-mix(in srgb, var(--lng1771-pill-pivot-fill) 95%, white 5%);
+      cursor: pointer;
+    }
+  }
+
+  &:hover > .lng1771-pill[data-pill-kind="column"] {
+    &[data-pill-interactive] {
+      background-color: color-mix(in srgb, var(--lng1771-pill-column-fill) 95%, white 5%);
+      cursor: pointer;
+    }
+  }
+}

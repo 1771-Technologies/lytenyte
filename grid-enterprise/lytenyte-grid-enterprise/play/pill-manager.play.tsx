@@ -14,7 +14,7 @@ export default function Play() {
 
   const grid = useLyteNyte({
     gridId: "x",
-    columns: columns,
+    columns: columns.map((c, i) => ({ ...c, hide: i % 2 === 0 })),
     rowDataSource: ds,
 
     rowSelectionMode: "multiple",
@@ -52,12 +52,19 @@ export default function Play() {
         `}
       >
         <PillManager.Root grid={grid}>
-          <div
-            className={css`
-              display: flex;
-              flex-direction: column;
-            `}
-          ></div>
+          <PillManager.Row>
+            <PillManager.Pills pillSource="columns">
+              {({ pills }) => {
+                return (
+                  <>
+                    {pills.map((c) => (
+                      <PillManager.Pill key={c.label} item={c} />
+                    ))}
+                  </>
+                );
+              }}
+            </PillManager.Pills>
+          </PillManager.Row>
         </PillManager.Root>
       </div>
       <div

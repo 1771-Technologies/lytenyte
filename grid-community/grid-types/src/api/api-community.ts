@@ -72,7 +72,7 @@ export interface ApiCommunity<D, C, E> {
   readonly columnIsRowGroupable: (c: C) => boolean;
   readonly columnIsEditable: (c: C) => boolean;
 
-  readonly columnIsVisible: (c: C, ignoreGroupVisibility?: boolean) => void;
+  readonly columnIsVisible: (c: C, ignoreGroupVisibility?: boolean) => boolean;
 
   readonly columnSortModelIndex: (c: C) => number;
   readonly columnSortCycle: (c: C) => SortCycleOption[] | null;

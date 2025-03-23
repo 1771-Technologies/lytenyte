@@ -139,7 +139,9 @@ export function initialize<D, E>(
 
     floatingFrames: signal(props.floatingFrames ?? {}),
 
-    measureModel: measuresComputed([], api), // We post initialize this
+    measureModel: signal(props.measureModel ?? {}, {
+      postUpdate: () => queueMicrotask(api.rowRefresh),
+    }),
 
     panelFrameButtons: signal(props.panelFrameButtons ?? []),
     panelFrames: signal(props.panelFrames ?? {}),

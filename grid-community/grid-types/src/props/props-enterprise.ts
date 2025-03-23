@@ -1,4 +1,5 @@
 import type { RowDataSourceEnterprise } from "../row-data-source/rds-enterprise";
+import type { AggModel } from "../types";
 import type {
   CellSelectionMode,
   CellSelectionRect,
@@ -47,7 +48,7 @@ export interface PropsEnterprise<A, D, C, E, Base, Group>
   readonly panelFrames?: Record<string, PanelFrame<A, E>>;
   readonly panelFrameButtons?: { label: string; id: string; icon?: () => E }[];
 
-  readonly measureModel?: string[];
+  readonly measureModel?: AggModel<A>;
 
   readonly rowDataSource?: RowDataSourceEnterprise<A, D, C>;
 
