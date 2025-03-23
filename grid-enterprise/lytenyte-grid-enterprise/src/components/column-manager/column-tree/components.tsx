@@ -66,7 +66,7 @@ export const DragIcon = ({
     const isPivotable = columns.every((p) => api.columnIsPivotable(p));
     const isMeasurable = columns.every((p) => api.columnIsMeasurable(p));
     const isAggregate = columns.every((p) =>
-      Boolean(p.aggFuncDefault ?? p.aggFuncsAllowed?.length ?? base.aggFuncsAllowed?.length),
+      Boolean(p.aggFnDefault ?? p.aggFnsAllowed?.length ?? base.aggFnsAllowed?.length),
     );
 
     if (isRowGroupable) tags.push(groupTag(gridId));

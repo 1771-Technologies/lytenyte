@@ -22,18 +22,16 @@ export function measuresComputed<D, E>(measures: string[], api: ApiEnterprise<D,
 
       const measureColumns = sx.measureModel.peek().map((c) => api.columnById(c)!);
       const columnsWithMeasureApplied = measureColumns.filter(
-        (c) => !(c.measureFunc ?? base.measureFunc),
+        (c) => !(c.measureFn ?? base.measureFn),
       );
 
       if (columnsWithMeasureApplied.length) {
         const updates = Object.fromEntries(
           columnsWithMeasureApplied.map((c) => {
             const candidates =
-              c.measureFuncDefault ??
-              c.measureFuncsAllowed?.at(0) ??
-              base.measureFuncsAllowed?.at(0);
+              c.measureFnDefault ?? c.measureFnsAllowed?.at(0) ?? base.measureFnsAllowed?.at(0);
 
-            return [c.id, { measureFunc: candidates }] as const;
+            return [c.id, { measureFn: candidates }] as const;
           }),
         );
 

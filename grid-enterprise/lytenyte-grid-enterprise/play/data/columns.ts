@@ -15,8 +15,8 @@ export const columns: ColumnEnterpriseReact<any>[] = [
     type: "number",
     pin: "start",
     rowGroupable: true,
-    aggFunc: "sum",
-    measureFunc: "sum",
+    aggFn: "sum",
+    measureFn: "sum",
   },
   {
     id: "education",
@@ -25,7 +25,7 @@ export const columns: ColumnEnterpriseReact<any>[] = [
   },
   {
     id: "marital",
-    aggFunc: "first",
+    aggFn: "first",
   },
   { id: "default", groupPath: ["Alpha"] },
   { id: "housing" },

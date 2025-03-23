@@ -46,10 +46,10 @@ function Renderer({ api, item: { column } }: { item: PillRowItem; api: ApiEnterp
   const sx = api.getState();
   const base = sx.columnBase.use();
 
-  const aggFunc = column.measureFunc ?? base.measureFunc;
-  const name = typeof aggFunc === "string" ? `(${aggFunc})` : `Fn(x)`;
+  const aggFn = column.measureFn ?? base.measureFn;
+  const name = typeof aggFn === "string" ? `(${aggFn})` : `Fn(x)`;
 
-  const allowed = column.measureFuncsAllowed ?? base.measureFuncsAllowed;
+  const allowed = column.measureFnsAllowed ?? base.measureFnsAllowed;
   const target = useRef<HTMLButtonElement | null>(null);
 
   const [open, setOpen] = useState(false);
@@ -62,7 +62,7 @@ function Renderer({ api, item: { column } }: { item: PillRowItem; api: ApiEnterp
         kind: "checkbox",
         label: c,
         onCheckChange: () => {
-          api.columnUpdate(column, { measureFunc: c });
+          api.columnUpdate(column, { measureFn: c });
           setOpen(false);
         },
       } satisfies MenuItemCheckbox;

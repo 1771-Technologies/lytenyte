@@ -1,14 +1,14 @@
 import type { ApiCommunity, ApiEnterprise, ColumnEnterprise } from "@1771technologies/grid-types";
 import type {
   RowNode,
-  SortComparatorFunc,
+  SortComparatorFn,
   SortModelItem,
 } from "@1771technologies/grid-types/community";
 
 export function makeCombinedComparator<D, E>(
   api: ApiEnterprise<D, E>,
   sortModel: SortModelItem[],
-  comparators: [SortComparatorFunc<ApiEnterprise<D, E>, D>, ColumnEnterprise<D, E>][],
+  comparators: [SortComparatorFn<ApiEnterprise<D, E>, D>, ColumnEnterprise<D, E>][],
 ) {
   return (leftNode: RowNode<D>, rightNode: RowNode<D>) => {
     for (let i = 0; i < comparators.length; i++) {

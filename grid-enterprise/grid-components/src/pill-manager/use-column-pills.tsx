@@ -162,10 +162,10 @@ const Renderer = ({
   const base = sx.columnBase.use();
   const hasRowGroup = sx.rowGroupModel.use().length > 0;
 
-  const aggFunc = column.aggFunc ?? base.aggFunc;
-  const name = typeof aggFunc === "string" ? `(${aggFunc})` : `Fn(x)`;
+  const aggFn = column.aggFn ?? base.aggFn;
+  const name = typeof aggFn === "string" ? `(${aggFn})` : `Fn(x)`;
 
-  if (!hasRowGroup || !aggFunc) return column.headerName ?? column.id;
+  if (!hasRowGroup || !aggFn) return column.headerName ?? column.id;
 
   return (
     <div

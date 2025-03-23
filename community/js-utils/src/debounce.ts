@@ -65,7 +65,7 @@ export const debounce = <F extends (...args: Parameters<F>) => ReturnType<F>>(
 
   const { leading = false, trailing = true } = options;
 
-  const invokeFunc = () => {
+  const invokeFn = () => {
     if (lastArgs) {
       func.apply(lastThis, lastArgs);
       lastArgs = null;
@@ -81,14 +81,14 @@ export const debounce = <F extends (...args: Parameters<F>) => ReturnType<F>>(
     const shouldCallLeading = leading && !isLeadingCalled;
     if (shouldCallLeading) {
       isLeadingCalled = true;
-      invokeFunc();
+      invokeFn();
     }
 
     if (timeout) clearTimeout(timeout);
 
     timeout = setTimeout(() => {
       if (trailing && (!leading || lastArgs !== null)) {
-        invokeFunc();
+        invokeFn();
       }
       timeout = null;
       isLeadingCalled = false;
@@ -104,7 +104,7 @@ export const debounce = <F extends (...args: Parameters<F>) => ReturnType<F>>(
   };
 
   debounced.flush = () => {
-    invokeFunc();
+    invokeFn();
     debounced.cancel();
   };
 

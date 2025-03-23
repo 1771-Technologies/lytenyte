@@ -3,8 +3,8 @@
 import type { ColumnCommunity } from ".";
 
 export type AggBuiltIns = "sum" | "min" | "max" | "avg" | "count" | "first" | "last" | "group";
-export type AggFunc<A> = (data: unknown[], api: A) => unknown;
-export type AggFuncs<A> = { [id: string]: AggFunc<A> };
+export type AggFn<A> = (data: unknown[], api: A) => unknown;
+export type AggFns<A> = { [id: string]: AggFn<A> };
 
 // Autosize
 
@@ -500,7 +500,7 @@ export interface SortModelItem {
   readonly isDescending?: boolean;
 }
 
-export type SortComparatorFunc<A, D> = (
+export type SortComparatorFn<A, D> = (
   api: A,
   leftField: unknown,
   rightField: unknown,

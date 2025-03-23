@@ -124,7 +124,7 @@ function MeasurePillRenderer({ index, column }: BoxDropZoneRendererProps) {
     }, 40);
   });
 
-  const measureFunc = getMeasureFunc(column, base) ?? "Fn(x)";
+  const measureFn = getMeasureFn(column, base) ?? "Fn(x)";
 
   return (
     <PillWrapper
@@ -151,7 +151,7 @@ function MeasurePillRenderer({ index, column }: BoxDropZoneRendererProps) {
           <div className="lng1771-values-pill-label">
             <span>{column.headerName ?? column.id}</span>
             <span className="lng1771-values-pill-label__agg">
-              {typeof measureFunc === "string" ? `(${measureFunc})` : "Fn(x)"}
+              {typeof measureFn === "string" ? `(${measureFn})` : "Fn(x)"}
             </span>
           </div>
         }
@@ -161,6 +161,6 @@ function MeasurePillRenderer({ index, column }: BoxDropZoneRendererProps) {
   );
 }
 
-function getMeasureFunc(c: ColumnEnterpriseReact<any>, base: ColumnBaseEnterpriseReact<any>) {
-  return c.measureFunc ?? c.measureFuncDefault ?? base.measureFunc;
+function getMeasureFn(c: ColumnEnterpriseReact<any>, base: ColumnBaseEnterpriseReact<any>) {
+  return c.measureFn ?? c.measureFnDefault ?? base.measureFn;
 }

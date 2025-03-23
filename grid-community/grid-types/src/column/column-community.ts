@@ -1,6 +1,6 @@
 import type {
   AggBuiltIns,
-  AggFunc,
+  AggFn,
   AutosizeCellParameters,
   AutosizeHeaderParameters,
   CellEditBuiltInProviders,
@@ -17,7 +17,7 @@ import type {
   Field,
   FloatingCellRenderer,
   RowSpanCallback,
-  SortComparatorFunc,
+  SortComparatorFn,
   SortComparators,
   SortCycleOption,
 } from "../types";
@@ -28,11 +28,11 @@ export interface Column<A, D, E> {
 
   readonly headerName?: string;
   readonly headerRenderer?: string | ColumnHeaderRenderer<A, this, E>;
-  readonly headerAutosizeFunc?: (c: AutosizeHeaderParameters<A, this>) => number;
+  readonly headerAutosizeFn?: (c: AutosizeHeaderParameters<A, this>) => number;
 
-  readonly aggFunc?: AggBuiltIns | (string & {}) | AggFunc<A>;
-  readonly aggFuncsAllowed?: (AggBuiltIns | (string & {}))[];
-  readonly aggFuncDefault?: AggBuiltIns | (string & {});
+  readonly aggFn?: AggBuiltIns | (string & {}) | AggFn<A>;
+  readonly aggFnsAllowed?: (AggBuiltIns | (string & {}))[];
+  readonly aggFnDefault?: AggBuiltIns | (string & {});
 
   readonly hidable?: boolean;
   readonly hide?: boolean;
@@ -54,7 +54,7 @@ export interface Column<A, D, E> {
 
   readonly sortable?: boolean;
   readonly sortCycle?: SortCycleOption[];
-  readonly sortComparator?: SortComparators | SortComparatorFunc<A, D>;
+  readonly sortComparator?: SortComparators | SortComparatorFn<A, D>;
 
   readonly pin?: ColumnPin;
 
@@ -92,8 +92,8 @@ export type ColumnBase<A, D, E> = Omit<
   | "quickSearchField"
   | "groupVisibility"
   | "groupPath"
-  | "measureFuncDefault"
-  | "aggFuncDefault"
+  | "measureFnDefault"
+  | "aggFnDefault"
 >;
 
 export type ColumnRowGroup<A, D, E> = Omit<

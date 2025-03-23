@@ -16,14 +16,14 @@ export function aggregator<D, E>(
   const columnBase = sx.columnBase.peek();
 
   for (const column of columns) {
-    const hasAggFunc = doesColumnHaveAggregation(api, column, columnBase);
+    const hasAggFn = doesColumnHaveAggregation(api, column, columnBase);
 
-    if (hasAggFunc) {
+    if (hasAggFn) {
       const dataForCalc = rows.map((row) => api.columnField(row, column));
 
-      const aggFunc = getAggregationFunction(api, column, columnBase);
+      const aggFn = getAggregationFunction(api, column, columnBase);
 
-      const result = aggFunc(dataForCalc, api);
+      const result = aggFn(dataForCalc, api);
       aggCalc[column.id] = result;
     }
   }

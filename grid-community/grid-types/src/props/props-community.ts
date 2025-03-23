@@ -1,5 +1,5 @@
 import type {
-  AggFuncs,
+  AggFns,
   CellEditPointerActivator,
   CellEditProviders,
   CellRenderers,
@@ -22,13 +22,13 @@ import type {
   RowSelectionMode,
   RowSelectionPointerActivator,
   RowSelectionPredicate,
-  SortComparatorFunc,
+  SortComparatorFn,
   SortModelItem,
   ColumnFilterModel,
 } from "../types";
 
 export interface PropsCommunity<A, D, C, E, Base, Group> {
-  readonly aggFuncs?: AggFuncs<A>;
+  readonly aggFns?: AggFns<A>;
 
   readonly autosizeDoubleClickHeader?: boolean;
 
@@ -61,7 +61,7 @@ export interface PropsCommunity<A, D, C, E, Base, Group> {
 
   readonly keyBindings?: KeyBindingMap<A>;
 
-  readonly rowDataSource?: RowDataSourceClient<D>;
+  readonly rowDataSource?: RowDataSourceClient<D, E>;
   readonly rowUpdateStackMaxSize?: number;
   readonly rowUpdateStackEnabled?: boolean;
 
@@ -107,5 +107,5 @@ export interface PropsCommunity<A, D, C, E, Base, Group> {
   readonly rtl?: boolean;
 
   readonly sortModel?: SortModelItem[];
-  readonly sortComparatorFuncs?: Record<string, SortComparatorFunc<A, D>>;
+  readonly sortComparatorFns?: Record<string, SortComparatorFn<A, D>>;
 }

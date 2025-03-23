@@ -5,9 +5,9 @@ export const columnIsMeasurable = <D, E>(api: ApiEnterprise<D, E>, c: ColumnEnte
 
   const base = api.getState().columnBase.peek();
 
-  const defaultMeasure = c.measureFuncDefault;
-  const allowedMeasures = c.measureFuncsAllowed ?? base.measureFuncsAllowed ?? [];
-  const hasMeasureFunc = c.measureFunc ?? base.measureFunc;
+  const defaultMeasure = c.measureFnDefault;
+  const allowedMeasures = c.measureFnsAllowed ?? base.measureFnsAllowed ?? [];
+  const hasMeasureFn = c.measureFn ?? base.measureFn;
 
-  return Boolean(defaultMeasure || hasMeasureFunc || allowedMeasures.length > 0);
+  return Boolean(defaultMeasure || hasMeasureFn || allowedMeasures.length > 0);
 };

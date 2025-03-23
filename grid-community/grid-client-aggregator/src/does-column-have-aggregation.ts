@@ -10,12 +10,12 @@ export function doesColumnHaveAggregation<D, E>(
   column: ColumnCommunity<D, E>,
   columnBase: ColumnBaseCommunity<D, E>,
 ) {
-  const aggFunc = column.aggFunc ?? column.aggFuncDefault ?? columnBase.aggFunc;
+  const aggFn = column.aggFn ?? column.aggFnDefault ?? columnBase.aggFn;
 
-  if (!aggFunc) return false;
-  if (typeof aggFunc === "function" || validBuiltIns.has(aggFunc)) return true;
+  if (!aggFn) return false;
+  if (typeof aggFn === "function" || validBuiltIns.has(aggFn)) return true;
 
-  const registered = api.getState().aggFuncs.peek();
+  const registered = api.getState().aggFns.peek();
 
-  return !!registered[aggFunc];
+  return !!registered[aggFn];
 }

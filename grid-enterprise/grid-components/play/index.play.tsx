@@ -11,7 +11,7 @@ const grid = makeStore({
   columnBase: {
     sortable: true,
     movable: true,
-    measureFuncsAllowed: ["avg"],
+    measureFnsAllowed: ["avg"],
   },
   rowGroupModel: ["education", "day"],
   columnPivotModel: ["loan"],

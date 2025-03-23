@@ -7,7 +7,7 @@ import type {
   ColumnCommunity,
   ColumnEnterprise,
 } from "@1771technologies/grid-types";
-import type { SortComparatorFunc } from "@1771technologies/grid-types/community";
+import type { SortComparatorFn } from "@1771technologies/grid-types/community";
 import { GROUP_COLUMN_PREFIX } from "@1771technologies/grid-constants";
 import { makeDateComparator } from "./sort-functions/date-comparator";
 
@@ -15,7 +15,7 @@ export function getSortComparator<D, E>(
   api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
   column: ColumnCommunity<D, E> | ColumnEnterprise<D, E>,
   toDate: (value: unknown, column: ColumnEnterprise<D, E>) => Date,
-): SortComparatorFunc<ApiEnterprise<D, E>, D> {
+): SortComparatorFn<ApiEnterprise<D, E>, D> {
   api = api as ApiEnterprise<D, E>;
   column = column as ColumnEnterprise<D, E>;
 
@@ -36,9 +36,9 @@ export function getSortComparator<D, E>(
   if (comparator === "date") return makeDateComparator(toDate as any);
 
   const sx = api.getState();
-  const comparatorFunc = sx.sortComparatorFuncs.peek()[comparator];
-  if (!comparatorFunc)
+  const comparatorFn = sx.sortComparatorFns.peek()[comparator];
+  if (!comparatorFn)
     throw new Error(`Failed to find a sort comparator with the name: ${comparator}`);
 
-  return comparatorFunc;
+  return comparatorFn;
 }

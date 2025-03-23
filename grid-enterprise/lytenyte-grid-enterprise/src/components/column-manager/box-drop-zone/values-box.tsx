@@ -21,8 +21,8 @@ export function ValuesBox() {
   const columns = state.columns.use();
   const base = state.columnBase.use();
   const items = useMemo(() => {
-    return columns.filter((c) => c.aggFunc ?? base.aggFunc);
-  }, [base.aggFunc, columns]);
+    return columns.filter((c) => c.aggFn ?? base.aggFn);
+  }, [base.aggFn, columns]);
 
   const gridId = state.gridId.use();
   const tags = useMemo(() => {
@@ -50,13 +50,12 @@ export function ValuesBox() {
         const updates = Object.fromEntries(
           columns
             .map((c) => {
-              if (c.aggFunc ?? base.aggFunc) return null;
+              if (c.aggFn ?? base.aggFn) return null;
 
-              const fn =
-                c.aggFuncDefault ?? c.aggFuncsAllowed?.at(0) ?? base.aggFuncsAllowed?.at(0);
+              const fn = c.aggFnDefault ?? c.aggFnsAllowed?.at(0) ?? base.aggFnsAllowed?.at(0);
               if (!fn) return null;
 
-              return [c.id, { aggFunc: fn }];
+              return [c.id, { aggFn: fn }];
             })
             .filter((c) => c != null),
         );
@@ -71,11 +70,11 @@ function ValuesPillRenderer({ column, index }: BoxDropZoneRendererProps) {
   const grid = useGrid();
   const base = grid.state.columnBase.use();
 
-  const measureFunc = getAggFunc(column, base) ?? "Fn(x)";
+  const measureFn = getAggFn(column, base) ?? "Fn(x)";
 
   const pillRef = useRef<HTMLDivElement | null>(null);
   const del = useEvent(() => {
-    grid.api.columnUpdate(column, { aggFunc: undefined });
+    grid.api.columnUpdate(column, { aggFn: undefined });
     const thisDiv = pillRef.current!;
     const next =
       thisDiv.nextElementSibling ?? thisDiv.previousElementSibling ?? thisDiv.parentElement;
@@ -105,7 +104,7 @@ function ValuesPillRenderer({ column, index }: BoxDropZoneRendererProps) {
           <div className="lng1771-values-pill-label">
             <span>{column.headerName ?? column.id}</span>
             <span className="lng1771-values-pill-label__agg">
-              {typeof measureFunc === "string" ? `(${measureFunc})` : "Fn(x)"}
+              {typeof measureFn === "string" ? `(${measureFn})` : "Fn(x)"}
             </span>
           </div>
         }
@@ -114,6 +113,6 @@ function ValuesPillRenderer({ column, index }: BoxDropZoneRendererProps) {
   );
 }
 
-function getAggFunc(c: ColumnEnterpriseReact<any>, base: ColumnBaseEnterpriseReact<any>) {
-  return c.aggFunc ?? c.aggFuncDefault ?? base.aggFunc;
+function getAggFn(c: ColumnEnterpriseReact<any>, base: ColumnBaseEnterpriseReact<any>) {
+  return c.aggFn ?? c.aggFnDefault ?? base.aggFn;
 }

@@ -33,7 +33,7 @@ export function initialize<D, E>(
   api: ApiEnterprise<D, E>,
 ) {
   const s = {
-    aggFuncs: signal(props.aggFuncs ?? {}),
+    aggFns: signal(props.aggFns ?? {}),
     autosizeDoubleClickHeader: signal(props.autosizeDoubleClickHeader ?? true),
 
     cellEditPointerActivator: signal(props.cellEditPointerActivator ?? "none"),
@@ -112,7 +112,7 @@ export function initialize<D, E>(
 
     rtl: signal(props.rtl ?? false),
 
-    sortComparatorFuncs: signal(props.sortComparatorFuncs ?? {}),
+    sortComparatorFns: signal(props.sortComparatorFns ?? {}),
     sortModel: sortModelComputed(props.sortModel ?? [], api),
 
     // Enterprise state

@@ -7,7 +7,7 @@ import { t } from "@1771technologies/grid-design";
 const grid = makeStore({
   gridId: "x",
   columns: bankColumns,
-  columnBase: { sortable: true, movable: true, measureFuncsAllowed: ["avg"] },
+  columnBase: { sortable: true, movable: true, measureFnsAllowed: ["avg"] },
   rowGroupModel: ["education", "day"],
   columnPivotModel: ["loan"],
   measureModel: ["poutcome"],

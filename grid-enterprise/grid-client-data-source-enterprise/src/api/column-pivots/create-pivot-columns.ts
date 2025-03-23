@@ -36,14 +36,14 @@ export function createColumnPivots<D, E>(
       ...(isTotals ? parts : parts.slice(0, parts.length - 1)).map(upperCaseFirstLetter),
     );
 
-    const fn = measure.measureFunc ?? sx.columnBase.peek().measureFunc;
+    const fn = measure.measureFn ?? sx.columnBase.peek().measureFn;
 
     const { pin: _, ...measureProps } = measure;
     const newDefinitions: Writable<ColumnEnterprise<D, E>> = {
       ...measureProps,
       id: path,
       headerName: label,
-      aggFunc: fn,
+      aggFn: fn,
       groupPath,
       field: (data, _, api): unknown => {
         if (!path.startsWith("total")) {

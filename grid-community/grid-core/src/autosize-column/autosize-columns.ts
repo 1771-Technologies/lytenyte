@@ -45,7 +45,7 @@ export const autosizeColumns = <D, E>(
     for (let columnIndex = 0; columnIndex < columnsThatCanBeResized.length; columnIndex++) {
       const column = columnsThatCanBeResized[columnIndex];
 
-      const autoFn = column.headerAutosizeFunc ?? base.headerAutosizeFunc ?? autosizeHeaderDefault;
+      const autoFn = column.headerAutosizeFn ?? base.headerAutosizeFn ?? autosizeHeaderDefault;
 
       const width = autoFn({ api: api as any, column: column as any });
 

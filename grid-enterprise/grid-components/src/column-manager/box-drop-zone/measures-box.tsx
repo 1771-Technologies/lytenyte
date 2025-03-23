@@ -130,8 +130,8 @@ function MeasurePillRenderer({ index, column }: BoxDropZoneRendererProps) {
     }, 40);
   });
 
-  const measureFunc = getMeasureFunc(column, base) ?? "Fn(x)";
-  const allowed = column.measureFuncsAllowed ?? base.measureFuncsAllowed ?? [];
+  const measureFn = getMeasureFn(column, base) ?? "Fn(x)";
+  const allowed = column.measureFnsAllowed ?? base.measureFnsAllowed ?? [];
 
   const [open, setOpen] = useState(false);
 
@@ -171,7 +171,7 @@ function MeasurePillRenderer({ index, column }: BoxDropZoneRendererProps) {
                 color: ${t.colors.primary_50};
               `}
             >
-              {typeof measureFunc === "string" ? `(${measureFunc})` : "Fn(x)"}
+              {typeof measureFn === "string" ? `(${measureFn})` : "Fn(x)"}
             </span>
           </div>
         }
@@ -179,13 +179,13 @@ function MeasurePillRenderer({ index, column }: BoxDropZoneRendererProps) {
         endItem={
           <AggMenu
             allowed={allowed}
-            current={typeof measureFunc === "string" ? measureFunc : "Fn(x)"}
+            current={typeof measureFn === "string" ? measureFn : "Fn(x)"}
             onOpenChange={setOpen}
             open={open}
             label={config.columnBoxes?.labelAggregationButton(column.headerName ?? column.id) ?? ""}
             onRemove={del}
             onSelect={(s) => {
-              grid.api.columnUpdate(column, { measureFunc: s });
+              grid.api.columnUpdate(column, { measureFn: s });
             }}
           />
         }
@@ -194,6 +194,6 @@ function MeasurePillRenderer({ index, column }: BoxDropZoneRendererProps) {
   );
 }
 
-function getMeasureFunc(c: ColumnEnterpriseReact<any>, base: ColumnBaseEnterpriseReact<any>) {
-  return c.measureFunc ?? c.measureFuncDefault ?? base.measureFunc;
+function getMeasureFn(c: ColumnEnterpriseReact<any>, base: ColumnBaseEnterpriseReact<any>) {
+  return c.measureFn ?? c.measureFnDefault ?? base.measureFn;
 }
