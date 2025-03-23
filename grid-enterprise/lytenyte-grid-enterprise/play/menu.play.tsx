@@ -35,7 +35,7 @@ export default function Play() {
     rowSelectionCheckbox: "normal",
     rowDragEnabled: true,
 
-    columnMenuRenderer: () => {
+    contextMenuRenderer: () => {
       return (
         <MenuContainer>
           <MenuArrow />
@@ -85,15 +85,6 @@ export default function Play() {
               <MenuRadioItemIndicator />
             </MenuRadioItem>
           </MenuRadioGroup>
-        </MenuContainer>
-      );
-    },
-    contextMenuRenderer: () => {
-      return (
-        <MenuContainer>
-          <MenuItem>Label 1</MenuItem>
-          <MenuItem>Label 2</MenuItem>
-          <MenuItem>Label 3</MenuItem>
         </MenuContainer>
       );
     },
