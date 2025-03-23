@@ -36,6 +36,7 @@ export function useMeasuresSource(source: PillsProps["pillSource"]) {
           onClick: onToggle,
           draggable: false,
           dragTags: [],
+          dropTags: ["measures"],
         });
       } else {
         active.push({
@@ -47,6 +48,7 @@ export function useMeasuresSource(source: PillsProps["pillSource"]) {
 
           draggable: false,
           dragTags: [],
+          dropTags: ["measures"],
         });
       }
     }
@@ -79,6 +81,7 @@ export function useMeasuresSource(source: PillsProps["pillSource"]) {
           onClick: onToggle,
           draggable: false,
           dragTags: [],
+          dropTags: [],
         };
       });
 

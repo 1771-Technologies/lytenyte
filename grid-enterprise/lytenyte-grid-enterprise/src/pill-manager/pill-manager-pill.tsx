@@ -2,7 +2,8 @@ import { forwardRef, type JSX } from "react";
 import type { PillManagerPillItem } from "./pill-manager";
 import { Pill } from "../pill/pill";
 import { DragIcon } from "../icons";
-import { useDraggable } from "@1771technologies/lytenyte-grid-community/internal";
+import { useDraggable, useDroppable } from "@1771technologies/lytenyte-grid-community/internal";
+import { useCombinedRefs } from "@1771technologies/react-utils";
 
 /**
  * Add drop zones
@@ -15,12 +16,24 @@ export const PillManagerPill = forwardRef<
   HTMLDivElement,
   JSX.IntrinsicElements["div"] & { item: PillManagerPillItem }
 >(function PillManagerPill({ item, children, ...props }, ref) {
+  const {
+    ref: dropRef,
+    isTarget,
+    canDrop,
+  } = useDroppable({
+    id: item.label,
+    accepted: item.dropTags,
+  });
+
+  const combinedRefs = useCombinedRefs(ref, dropRef);
+
   return (
     <div
       {...props}
       role="button"
-      ref={ref}
+      ref={combinedRefs}
       data-pill-active={item.active}
+      data-is-droppable={isTarget && canDrop}
       className="lng1771-pill-manager__pill-outer"
       tabIndex={-1}
       onClick={item.onClick}
@@ -49,7 +62,7 @@ function DragHandle({ item }: { item: PillManagerPillItem }) {
   const { onPointerDown } = useDraggable({
     id: item.label,
     getTags: () => item.dragTags,
-    getData: () => item.dragData,
+    getData: () => item?.dragData,
 
     onDragStart: () => {
       document.body.classList.add("lng1771-drag-on");

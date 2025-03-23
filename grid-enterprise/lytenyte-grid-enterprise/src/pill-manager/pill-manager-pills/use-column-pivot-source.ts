@@ -32,6 +32,7 @@ export function useColumnPivotSource(source: PillsProps["pillSource"]) {
 
         draggable: true,
         dragTags: tags,
+        dropTags: ["column-pivot"],
       };
     });
 
@@ -45,6 +46,7 @@ export function useColumnPivotSource(source: PillsProps["pillSource"]) {
 
         draggable: false,
         dragTags: [],
+        dropTags: [],
       };
     });
 

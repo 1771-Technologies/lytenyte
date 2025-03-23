@@ -23,6 +23,7 @@ export function useRowGroupsSource(source: PillsProps["pillSource"]) {
 
           draggable: false,
           dragTags: [],
+          dropTags: [],
         };
       });
 
@@ -38,6 +39,7 @@ export function useRowGroupsSource(source: PillsProps["pillSource"]) {
 
           draggable: false,
           dragTags: [],
+          dropTags: [],
         };
       });
 

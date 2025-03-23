@@ -37,6 +37,8 @@ export function useAggregationSource(source: PillsProps["pillSource"]) {
           onClick: onToggle,
           draggable: false,
           dragTags: [],
+
+          dropTags: ["aggregations"],
         });
       } else {
         active.push({
@@ -47,6 +49,8 @@ export function useAggregationSource(source: PillsProps["pillSource"]) {
           onClick: onToggle,
           draggable: false,
           dragTags: [],
+
+          dropTags: ["aggregations"],
         });
       }
     }
@@ -74,6 +78,8 @@ export function useAggregationSource(source: PillsProps["pillSource"]) {
           secondaryLabel: aggName,
           onClick: onToggle,
           draggable: false,
+
+          dropTags: [],
           dragTags: [],
         };
       });
