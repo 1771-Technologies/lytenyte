@@ -15,7 +15,7 @@ export const PillManagerPill = forwardRef<
       className="lng1771-pill-manager__pill-outer"
       tabIndex={-1}
       onClick={() => {
-        item.onToggle();
+        item.onClick();
       }}
     >
       {!children && (

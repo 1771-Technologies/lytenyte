@@ -33,10 +33,16 @@ export function useAggregationSource(source: PillsProps["pillSource"]) {
           active: true,
           label: column.headerName ?? column.id,
           secondaryLabel,
-          onToggle,
+          onClick: onToggle,
         });
       } else {
-        active.push({ kind: "column", active: true, label: key, secondaryLabel, onToggle });
+        active.push({
+          kind: "column",
+          active: true,
+          label: key,
+          secondaryLabel,
+          onClick: onToggle,
+        });
       }
     }
 
@@ -73,7 +79,7 @@ export function useAggregationSource(source: PillsProps["pillSource"]) {
           label: c.headerName ?? c.id,
           active: false,
           secondaryLabel: aggName,
-          onToggle,
+          onClick: onToggle,
         };
       });
 

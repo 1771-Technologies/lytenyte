@@ -24,7 +24,7 @@ export function useColumnPivotSource(source: PillsProps["pillSource"]) {
         kind: "column-pivot",
         label: c.headerName ?? c.id,
         active: true,
-        onToggle,
+        onClick: onToggle,
       };
     });
 
@@ -34,7 +34,7 @@ export function useColumnPivotSource(source: PillsProps["pillSource"]) {
         kind: "column-pivot",
         label: c.headerName ?? c.id,
         active: false,
-        onToggle,
+        onClick: onToggle,
       };
     });
 

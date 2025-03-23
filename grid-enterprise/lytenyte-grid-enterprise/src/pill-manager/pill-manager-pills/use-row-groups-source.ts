@@ -19,7 +19,7 @@ export function useRowGroupsSource(source: PillsProps["pillSource"]) {
           kind: "row-group",
           label: c.headerName ?? c.id,
           active: true,
-          onToggle,
+          onClick: onToggle,
         };
       });
 
@@ -31,7 +31,7 @@ export function useRowGroupsSource(source: PillsProps["pillSource"]) {
           kind: "row-group",
           label: c.headerName ?? c.id,
           active: false,
-          onToggle,
+          onClick: onToggle,
         };
       });
 

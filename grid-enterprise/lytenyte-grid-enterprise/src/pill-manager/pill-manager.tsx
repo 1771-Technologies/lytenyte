@@ -42,7 +42,9 @@ export interface PillManagerPillItem {
   readonly secondaryLabel?: string;
   readonly active: boolean;
 
-  readonly onToggle: () => void;
+  readonly onClick: () => void;
+
+  readonly onPointerDown?: () => void;
 }
 
 export const PillManager = {

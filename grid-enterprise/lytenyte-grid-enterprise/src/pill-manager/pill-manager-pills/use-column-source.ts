@@ -20,10 +20,20 @@ export function useColumnSoruce(source: PillsProps["pillSource"]) {
       if (api.columnIsVisible(c, true)) {
         const onToggle = () => api.columnUpdate(c, { hide: true });
 
-        active.push({ kind: "column", active: true, label: c.headerName ?? c.id, onToggle });
+        active.push({
+          kind: "column",
+          active: true,
+          label: c.headerName ?? c.id,
+          onClick: onToggle,
+        });
       } else {
         const onToggle = () => api.columnUpdate(c, { hide: false });
-        inactive.push({ kind: "column", active: false, label: c.headerName ?? c.id, onToggle });
+        inactive.push({
+          kind: "column",
+          active: false,
+          label: c.headerName ?? c.id,
+          onClick: onToggle,
+        });
       }
     }
 
