@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { ContextMenuGridTargets } from "@1771technologies/grid-types/enterprise";
 import { useGrid } from "../../use-grid";
 import { useContextMenuListener } from "./use-context-menu-listener";
@@ -20,14 +20,24 @@ export function ContextMenuDriver() {
 
   useContextMenuListener(setMenu);
 
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (menu !== null) {
+      setOpen(true);
+    }
+  }, [menu]);
+
   return (
     <Menu.Root
-      open={!!menu}
-      onOpenChange={() => {
-        setMenu(null);
+      open={open}
+      onOpenChange={(c) => {
+        setOpen(c);
       }}
       onOpenChangeComplete={(c) => {
-        if (!c) grid.api.contextMenuClose();
+        if (!c) {
+          grid.api.contextMenuClose();
+          setMenu(null);
+        }
       }}
     >
       <Menu.Portal>

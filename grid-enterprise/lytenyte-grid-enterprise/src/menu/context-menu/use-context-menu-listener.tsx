@@ -31,7 +31,6 @@ export function useContextMenuListener(
         if (target) {
           e.preventDefault();
           e.stopPropagation();
-          grid.api.contextMenuClose();
           return;
         }
 
