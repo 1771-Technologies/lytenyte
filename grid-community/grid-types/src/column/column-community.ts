@@ -1,6 +1,5 @@
 import type {
   AggBuiltIns,
-  AggFn,
   AutosizeCellParameters,
   AutosizeHeaderParameters,
   CellEditBuiltInProviders,
@@ -30,7 +29,6 @@ export interface Column<A, D, E> {
   readonly headerRenderer?: string | ColumnHeaderRenderer<A, this, E>;
   readonly headerAutosizeFn?: (c: AutosizeHeaderParameters<A, this>) => number;
 
-  readonly aggFn?: AggBuiltIns | (string & {}) | AggFn<A>;
   readonly aggFnsAllowed?: (AggBuiltIns | (string & {}))[];
   readonly aggFnDefault?: AggBuiltIns | (string & {});
 

@@ -1,6 +1,5 @@
 import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
 import type { RowNodeLeaf } from "@1771technologies/grid-types/community";
-import { get } from "@1771technologies/js-utils";
 import { builtIns } from "./built-ins/built-ins.js";
 
 export function aggregator<D, E>(
@@ -16,12 +15,11 @@ export function aggregator<D, E>(
   const aggFns = sx.aggFns.peek();
 
   for (const [id, m] of Object.entries(aggModel)) {
-    const isDirect = typeof m.field === "string" || typeof m.field === "number";
+    const column = api.columnById(id);
+    if (!column) continue;
 
     const dataForCalc = rows.map((row) => {
-      if (isDirect) return (row.data as any)[m.field as any];
-
-      return get(row.data, (m.field as { path: string }).path);
+      return api.columnField(row, column);
     });
 
     const aggFn = typeof m.fn === "string" ? (aggFns[m.fn] ?? builtIns[m.fn as "sum"]) : m.fn;

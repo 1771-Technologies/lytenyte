@@ -10,7 +10,6 @@ export type AggField = string | number | { kind: FieldTypePath; path: string };
 
 export type AggModel<A> = {
   [columnId: string]: {
-    field: AggField;
     fn: AggBuiltIns | (string & {}) | AggFn<A>;
   };
 };
