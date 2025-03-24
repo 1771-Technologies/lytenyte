@@ -16,6 +16,7 @@ export const columns: ColumnEnterpriseReact<any>[] = [
     type: "number",
     pin: "start",
     rowGroupable: true,
+    columnPivotable: true,
     aggFnDefault: "avg",
     measureFnDefault: "first",
   },

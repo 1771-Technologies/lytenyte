@@ -20,7 +20,7 @@ export function useRowGroupsSource(source: PillsProps["pillSource"]) {
       .map<PillManagerPillItem>((c) => {
         const onToggle = () => sx.rowGroupModel.set((prev) => prev.filter((x) => x !== c.id));
         const dragTags: DragTag[] = ["row-group"];
-        if (!api.columnIsVisible(c)) dragTags.push("columns");
+        if (!api.columnIsVisible(c, true)) dragTags.push("columns");
         if (api.columnIsPivotable(c)) dragTags.push("column-pivot");
         if (!aggModel[c.id] && canAgg(c, base)) dragTags.push("aggregations");
         if (!measureModel[c.id] && canMeasure(c, base)) dragTags.push("measures");
