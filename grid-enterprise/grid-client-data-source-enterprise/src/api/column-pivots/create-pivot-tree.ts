@@ -6,14 +6,16 @@ export function createPivotTree<D, E>(api: ApiEnterprise<D, E>, leafRows: RowNod
   const measureModel = sx.measureModel.peek();
   const columnPivotModel = sx.columnPivotModel.peek();
 
-  if (!measureModel.length || !columnPivotModel.length) {
+  const measureEntries = Object.entries(measureModel);
+
+  if (!measureEntries.length || !columnPivotModel.length) {
     return [];
   }
 
   const pivotedColumns = columnPivotModel.map((id) => api.columnById(id)).filter((c) => c != null);
 
   const separator = sx.columnGroupIdDelimiter.peek();
-  const paths = new Set<string>(measureModel.map((id) => `total${separator}${id}`));
+  const paths = new Set<string>(measureEntries.map(([id]) => `total${separator}${id}`));
 
   for (let i = 0; i < leafRows.length; i++) {
     const current: string[] = [];
@@ -22,7 +24,7 @@ export function createPivotTree<D, E>(api: ApiEnterprise<D, E>, leafRows: RowNod
       const pivotKey = String(api.columnPivotField(row, column));
       current.push(pivotKey);
 
-      for (const measure of measureModel) {
+      for (const [measure] of measureEntries) {
         paths.add([...current, measure].join(separator));
       }
     }

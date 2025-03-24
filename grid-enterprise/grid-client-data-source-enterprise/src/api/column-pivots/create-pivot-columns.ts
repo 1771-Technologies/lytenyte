@@ -18,7 +18,7 @@ export function createColumnPivots<D, E>(
     const parts = path.split(separator);
 
     const measureId = parts.at(-1)!;
-    const measure = api.columnById(measureId)!;
+    const measureCol = api.columnById(measureId)!;
 
     const groupPath = [upperCaseFirstLetter(parts.pop()!)];
 
@@ -36,14 +36,11 @@ export function createColumnPivots<D, E>(
       ...(isTotals ? parts : parts.slice(0, parts.length - 1)).map(upperCaseFirstLetter),
     );
 
-    const fn = measure.measureFn ?? sx.columnBase.peek().measureFn;
-
-    const { pin: _, ...measureProps } = measure;
+    const { pin: _, ...measureProps } = measureCol;
     const newDefinitions: Writable<ColumnEnterprise<D, E>> = {
       ...measureProps,
       id: path,
       headerName: label,
-      aggFn: fn,
       groupPath,
       field: (data, _, api): unknown => {
         if (!path.startsWith("total")) {
@@ -55,9 +52,9 @@ export function createColumnPivots<D, E>(
             if (key !== actual) return null;
           }
 
-          return api.columnPivotMeasureField(data, measure);
+          return api.columnPivotMeasureField(data, measureCol);
         } else {
-          return api.columnPivotMeasureField(data, measure);
+          return api.columnPivotMeasureField(data, measureCol);
         }
       },
     };

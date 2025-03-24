@@ -7,7 +7,6 @@ export const columnIsMeasurable = <D, E>(api: ApiEnterprise<D, E>, c: ColumnEnte
 
   const defaultMeasure = c.measureFnDefault;
   const allowedMeasures = c.measureFnsAllowed ?? base.measureFnsAllowed ?? [];
-  const hasMeasureFn = c.measureFn ?? base.measureFn;
 
-  return Boolean(defaultMeasure || hasMeasureFn || allowedMeasures.length > 0);
+  return Boolean(defaultMeasure || allowedMeasures.length > 0);
 };
