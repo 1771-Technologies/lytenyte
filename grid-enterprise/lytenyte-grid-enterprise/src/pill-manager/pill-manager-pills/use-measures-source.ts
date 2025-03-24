@@ -35,7 +35,7 @@ export function useMeasuresSource(source: PillsProps["pillSource"]) {
           onClick: onToggle,
           draggable: false,
           dragTags: [],
-          dropTags: ["measures"],
+          dropTags: [],
           dropData: {},
           dropId: `measure-${key}`,
         });
@@ -49,7 +49,7 @@ export function useMeasuresSource(source: PillsProps["pillSource"]) {
 
           draggable: false,
           dragTags: [],
-          dropTags: ["measures"],
+          dropTags: [],
           dropData: {},
           dropId: `measure-${key}`,
         });

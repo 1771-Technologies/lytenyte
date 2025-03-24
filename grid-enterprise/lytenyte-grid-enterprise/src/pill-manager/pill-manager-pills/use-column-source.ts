@@ -74,8 +74,40 @@ export function useColumnSource(source: PillsProps["pillSource"]) {
             return;
           }
 
-          if (over.data.target === "column-pivots-pills") {
+          if (over.id === "column-pivots-pills") {
             sx.columnPivotModel.set((prev) => [...prev, c.id]);
+            api.columnUpdate(c, { hide: true });
+            return;
+          }
+
+          if (over.data.target === "column-pivot") {
+            const id = over.data.id;
+            api.columnUpdate(c, { hide: true });
+            const model = sx.columnPivotModel.peek();
+            const isBefore = (sx.rtl.peek() ? "right" : "left") === over.xHalf;
+            const index = model.indexOf(id);
+            const nextModel = [...model];
+            nextModel.splice(isBefore ? index : index + 1, 0, c.id);
+
+            sx.columnPivotModel.set(nextModel);
+            return;
+          }
+
+          if (over.id === "aggregations-pills") {
+            const aggFn = c.aggFnDefault ?? c.aggFnsAllowed?.at(0) ?? base.aggFnsAllowed?.at(0);
+            if (!aggFn) return;
+
+            sx.aggModel.set((prev) => ({ ...prev, [c.id]: { fn: aggFn } }));
+            return;
+          }
+
+          if (over.id === "measures-pills") {
+            const measureFn =
+              c.measureFnDefault ?? c.measureFnsAllowed?.at(0) ?? base.measureFnsAllowed?.at(0);
+            if (!measureFn) return;
+
+            sx.measureModel.set((prev) => ({ ...prev, [c.id]: { fn: measureFn } }));
+            return;
           }
         };
 
@@ -117,14 +149,16 @@ export function useColumnSource(source: PillsProps["pillSource"]) {
   }, [
     aggModel,
     api,
-    base.aggFnsAllowed?.length,
-    base.measureFnsAllowed?.length,
+    base.aggFnsAllowed,
+    base.measureFnsAllowed,
     columns,
     groupModel,
     measureModel,
     pivotModel,
     source,
+    sx.aggModel,
     sx.columnPivotModel,
+    sx.measureModel,
     sx.rowGroupModel,
     sx.rtl,
   ]);

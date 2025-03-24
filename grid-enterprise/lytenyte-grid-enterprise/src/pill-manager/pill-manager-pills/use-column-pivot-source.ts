@@ -12,12 +12,12 @@ export function useColumnPivotSource(source: PillsProps["pillSource"]) {
     if (source !== "column-pivots") return [];
 
     const appliedPivots = new Set(pivotModel);
-    const canBePivotted = columns.filter(
+    const canBePivoted = columns.filter(
       (c) => !appliedPivots.has(c.id) && api.columnIsPivotable(c),
     );
-    const pivottedColumns = pivotModel.map((c) => api.columnById(c)!);
+    const pivotedColumns = pivotModel.map((c) => api.columnById(c)!);
 
-    const activeItems = pivottedColumns.map<PillManagerPillItem>((c) => {
+    const activeItems = pivotedColumns.map<PillManagerPillItem>((c) => {
       const onToggle = () => sx.columnPivotModel.set((prev) => prev.filter((x) => x !== c.id));
 
       const tags: DragTag[] = ["column-pivot"];
@@ -33,11 +33,11 @@ export function useColumnPivotSource(source: PillsProps["pillSource"]) {
         draggable: true,
         dragTags: tags,
         dropTags: ["column-pivot"],
-        dropData: {},
+        dropData: { target: "column-pivot", id: c.id },
       };
     });
 
-    const inactiveItems = canBePivotted.map<PillManagerPillItem>((c) => {
+    const inactiveItems = canBePivoted.map<PillManagerPillItem>((c) => {
       const onToggle = () => sx.columnPivotModel.set((prev) => [...prev, c.id]);
       return {
         kind: "column-pivot",
