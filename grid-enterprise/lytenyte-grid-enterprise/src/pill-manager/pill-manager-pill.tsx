@@ -23,6 +23,7 @@ export const PillManagerPill = forwardRef<
     id: item.dropId,
     accepted: item.dropTags,
     data: item.dropData,
+    active: item.active,
   });
 
   const grid = useGrid();

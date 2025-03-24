@@ -40,10 +40,13 @@
   opacity: 0.7;
 }
 
-body:not(.lng1771-drag-on)
+.lng1771-pill-manager__row:hover .lng1771-pill-manager__pill-outer[data-pill-active="false"] {
+  opacity: 0.7;
+}
+body.lng1771-drag-on
   .lng1771-pill-manager__row:hover
   .lng1771-pill-manager__pill-outer[data-pill-active="false"] {
-  opacity: 0.7;
+  display: none;
 }
 
 /** Pill CONTAINER **/
@@ -51,11 +54,22 @@ body:not(.lng1771-drag-on)
   display: flex;
   align-items: center;
   overflow: auto;
-  position: relative;
 
   &::-webkit-scrollbar {
     display: none;
   }
+
+  &[data-drop-visible="true"] {
+    outline: 1px dashed var(--lng1771-primary-50);
+    outline-offset: -2px;
+  }
+}
+
+.lng1771-pill-manager__pills-inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 4px;
 }
 
 .lng1771-pill-manager__row[data-expanded="true"] .lng1771-pill-manager__pills {

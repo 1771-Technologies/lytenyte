@@ -4,7 +4,7 @@ import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import type { DragActive } from "@1771technologies/lytenyte-grid-community/internal";
 import type { DragTag, PillManagerPillItem, PillsProps } from "../pill-manager-types";
 
-export function useColumnSoruce(source: PillsProps["pillSource"]) {
+export function useColumnSource(source: PillsProps["pillSource"]) {
   const { api, state: sx } = useGrid();
 
   const columns = sx.columns.use();
@@ -42,19 +42,40 @@ export function useColumnSoruce(source: PillsProps["pillSource"]) {
 
         const dragEnd = (d: DragActive) => {
           const over = d.over.at(-1);
-          if (!over) return;
+          if (!over || !over.canDrop) return;
 
           // Reorder columns
           if (over.data.target === "columns") {
             const id = over.data.id;
-
             if (id === c.id) return;
             const isBefore = (sx.rtl.peek() ? "right" : "left") === over.xHalf;
 
             if (isBefore) api.columnMoveBefore([c.id], id);
             else api.columnMoveAfter([c.id], id);
-
             return;
+          }
+
+          if (over.id === "row-groups-pills") {
+            sx.rowGroupModel.set((prev) => [...prev, c.id]);
+            api.columnUpdate(c, { hide: true });
+            return;
+          }
+
+          if (over.data.target === "row-group") {
+            const id = over.data.id;
+            api.columnUpdate(c, { hide: true });
+            const model = sx.rowGroupModel.peek();
+            const isBefore = (sx.rtl.peek() ? "right" : "left") === over.xHalf;
+            const index = model.indexOf(id);
+            const nextModel = [...model];
+            nextModel.splice(isBefore ? index : index + 1, 0, c.id);
+
+            sx.rowGroupModel.set(nextModel);
+            return;
+          }
+
+          if (over.data.target === "column-pivots-pills") {
+            sx.columnPivotModel.set((prev) => [...prev, c.id]);
           }
         };
 
@@ -84,7 +105,7 @@ export function useColumnSoruce(source: PillsProps["pillSource"]) {
           onClick: onToggle,
 
           dropId: `column-${c.id}`,
-          draggable: true,
+          draggable: false,
           dragTags: [],
           dropTags: [],
           dropData: {},
@@ -103,6 +124,8 @@ export function useColumnSoruce(source: PillsProps["pillSource"]) {
     measureModel,
     pivotModel,
     source,
+    sx.columnPivotModel,
+    sx.rowGroupModel,
     sx.rtl,
   ]);
 }

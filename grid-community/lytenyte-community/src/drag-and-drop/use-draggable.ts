@@ -93,7 +93,7 @@ export function useDraggable({
         "pointerup",
         (ev) => {
           c.abort();
-          globalThis.removeEventListener("click", clickFix);
+          setTimeout(() => globalThis.removeEventListener("click", clickFix, { capture: true }));
 
           if (!hasDragStartedRef.current) return;
 
@@ -105,7 +105,7 @@ export function useDraggable({
         "pointercancel",
         (ev) => {
           c.abort();
-          globalThis.removeEventListener("click", clickFix);
+          setTimeout(() => globalThis.removeEventListener("click", clickFix, { capture: true }));
 
           if (!hasDragStartedRef.current) return;
 
@@ -117,7 +117,7 @@ export function useDraggable({
         "keydown",
         (ev) => {
           c.abort();
-          globalThis.removeEventListener("click", clickFix);
+          setTimeout(() => globalThis.removeEventListener("click", clickFix, { capture: true }));
 
           if (!hasDragStartedRef.current) return;
           if (ev.key === "Escape") {

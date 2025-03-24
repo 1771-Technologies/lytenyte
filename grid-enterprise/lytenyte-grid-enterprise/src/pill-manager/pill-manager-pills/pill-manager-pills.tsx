@@ -2,7 +2,7 @@ import { forwardRef, useMemo, type JSX } from "react";
 import { clsx } from "@1771technologies/js-utils";
 import { useAggregationSource } from "./use-aggregation-source";
 import { useMeasuresSource } from "./use-measures-source";
-import { useColumnSoruce } from "./use-column-source";
+import { useColumnSource } from "./use-column-source";
 import { useRowGroupsSource } from "./use-row-groups-source";
 import { useColumnPivotSource } from "./use-column-pivot-source";
 import { useDroppable } from "@1771technologies/lytenyte-grid-community/internal";
@@ -15,7 +15,7 @@ export const PillManagerPills = forwardRef<
 >(function PillManagerRow({ pillSource, children, ...props }, ref) {
   const aggs = useAggregationSource(pillSource);
   const measures = useMeasuresSource(pillSource);
-  const columns = useColumnSoruce(pillSource);
+  const columns = useColumnSource(pillSource);
   const rowGroups = useRowGroupsSource(pillSource);
   const pivots = useColumnPivotSource(pillSource);
 
@@ -30,7 +30,7 @@ export const PillManagerPills = forwardRef<
   }, [aggs, columns, measures, pillSource, pivots, rowGroups]);
 
   const dropTags = useMemo<DragTag[]>(() => {
-    if (pillSource === "columns") return ["columns"];
+    if (pillSource === "columns") return []; // Nothing can be dropped on the column pills
     if (pillSource === "aggregations") return ["aggregations"];
     if (pillSource === "column-pivots") return ["column-pivot"];
     if (pillSource === "measures") return ["measures"];
@@ -40,12 +40,13 @@ export const PillManagerPills = forwardRef<
   }, [pillSource]);
 
   const dropData = useMemo(() => {
-    return { target: pillSource };
-  }, [pillSource]);
+    return { target: pillSource, sourceItems };
+  }, [pillSource, sourceItems]);
 
   const {
     canDrop,
     isTarget,
+    isNearestOver,
     ref: dropRef,
   } = useDroppable({
     id: `${pillSource}-pills`,
@@ -62,12 +63,14 @@ export const PillManagerPills = forwardRef<
       data-is-drop-target={isTarget}
       ref={combined}
       data-pill-source={pillSource}
+      data-drop-visible={canDrop && sourceItems.filter((c) => c.active).length === 0}
     >
-      {children({ pills: sourceItems })}
-
-      {canDrop && sourceItems.filter((c) => c.active).length === 0 && (
-        <div className="lng1771-pill-manager__drop-indicator-start" />
-      )}
+      <div className="lng1771-pill-manager__pills-inner">
+        {children({ pills: sourceItems })}
+        {canDrop && isNearestOver && sourceItems.filter((c) => c.active).length > 0 && (
+          <div className="lng1771-pill-manager__drop-indicator-end" />
+        )}
+      </div>
     </div>
   );
 });
