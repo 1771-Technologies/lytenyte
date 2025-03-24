@@ -49,6 +49,9 @@ export function useColumnSoruce(source: PillsProps["pillSource"]) {
           draggable: true,
           dragTags,
           dropTags: ["columns"],
+          dropData: {
+            target: "columns",
+          },
         });
       } else {
         const onToggle = () => api.columnUpdate(c, { hide: false });
@@ -60,6 +63,9 @@ export function useColumnSoruce(source: PillsProps["pillSource"]) {
           draggable: true,
           dragTags: [],
           dropTags: [],
+          dropData: {
+            target: "columns",
+          },
         });
       }
     }

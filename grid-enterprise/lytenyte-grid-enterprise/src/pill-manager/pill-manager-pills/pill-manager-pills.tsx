@@ -45,9 +45,14 @@ export const PillManagerPills = forwardRef<
     return [];
   }, [pillSource]);
 
+  const dropData = useMemo(() => {
+    return { target: pillSource };
+  }, [pillSource]);
+
   const { isTarget, ref: dropRef } = useDroppable({
     id: `${pillSource}-pills`,
     accepted: dropTags,
+    data: dropData,
   });
 
   const combined = useCombinedRefs(dropRef, ref);

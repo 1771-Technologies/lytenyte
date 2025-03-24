@@ -4,6 +4,7 @@ import { Pill } from "../pill/pill";
 import { DragIcon } from "../icons";
 import { useDraggable, useDroppable } from "@1771technologies/lytenyte-grid-community/internal";
 import { useCombinedRefs } from "@1771technologies/react-utils";
+import { useGrid } from "../use-grid";
 
 /**
  * Add drop zones
@@ -14,17 +15,21 @@ import { useCombinedRefs } from "@1771technologies/react-utils";
 
 export const PillManagerPill = forwardRef<
   HTMLDivElement,
-  JSX.IntrinsicElements["div"] & { item: PillManagerPillItem }
->(function PillManagerPill({ item, children, ...props }, ref) {
+  Omit<JSX.IntrinsicElements["div"], "children"> & { item: PillManagerPillItem }
+>(function PillManagerPill({ item, ...props }, ref) {
   const {
     ref: dropRef,
     isTarget,
     canDrop,
+    xHalf,
   } = useDroppable({
     id: item.label,
     accepted: item.dropTags,
+    data: item.dropData,
   });
 
+  const grid = useGrid();
+  const rtl = grid.state.rtl.use();
   const combinedRefs = useCombinedRefs(ref, dropRef);
 
   return (
@@ -38,21 +43,25 @@ export const PillManagerPill = forwardRef<
       tabIndex={-1}
       onClick={item.onClick}
     >
-      {!children && (
-        <Pill
-          kind={item.kind}
-          className="lng1771-pill-manager__pill-inner"
-          interactive
-          data-draggable={item.draggable}
-        >
-          {item.draggable && <DragHandle item={item} />}
-          <span>{item.label}</span>
-          {item.secondaryLabel && (
-            <span className="lng1771-pill-manager__pill-inner--secondary-label">
-              {item.secondaryLabel}
-            </span>
-          )}
-        </Pill>
+      <Pill
+        kind={item.kind}
+        className="lng1771-pill-manager__pill-inner"
+        interactive
+        data-draggable={item.draggable}
+      >
+        {item.draggable && <DragHandle item={item} />}
+        <span>{item.label}</span>
+        {item.secondaryLabel && (
+          <span className="lng1771-pill-manager__pill-inner--secondary-label">
+            {item.secondaryLabel}
+          </span>
+        )}
+      </Pill>
+      {canDrop && (rtl ? "left" : "right") === xHalf && (
+        <div className="lng1771-pill-manager__drop-indicator-end" />
+      )}
+      {canDrop && (rtl ? "right" : "left") === xHalf && (
+        <div className="lng1771-pill-manager__drop-indicator-start" />
       )}
     </div>
   );

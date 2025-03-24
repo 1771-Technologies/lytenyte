@@ -6,9 +6,10 @@ import { arrayOverlap } from "@1771technologies/js-utils";
 export interface UseDroppableArgs {
   readonly id: string;
   readonly accepted: string[];
+  readonly data: any;
 }
 
-export function useDroppable({ id, accepted }: UseDroppableArgs) {
+export function useDroppable({ id, accepted, data }: UseDroppableArgs) {
   const [target, ref] = useState<HTMLElement | null>(null);
   const store = useDragStore();
 
@@ -23,7 +24,7 @@ export function useDroppable({ id, accepted }: UseDroppableArgs) {
 
     store.setState((prev) => {
       return {
-        mounted: [...prev.mounted, { accepted, id, target }],
+        mounted: [...prev.mounted, { accepted, id, target, data }],
       };
     });
 
@@ -31,7 +32,7 @@ export function useDroppable({ id, accepted }: UseDroppableArgs) {
       store.setState((prev) => {
         return { mounted: prev.mounted.filter((c) => c.id !== id) };
       });
-  }, [accepted, id, store, target]);
+  }, [accepted, data, id, store, target]);
 
   return { ref, isOver, isTarget, canDrop, yHalf: over?.yHalf, xHalf: over?.xHalf };
 }

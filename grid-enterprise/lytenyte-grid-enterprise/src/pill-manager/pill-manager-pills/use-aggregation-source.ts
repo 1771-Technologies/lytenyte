@@ -39,6 +39,7 @@ export function useAggregationSource(source: PillsProps["pillSource"]) {
           dragTags: [],
 
           dropTags: ["aggregations"],
+          dropData: {},
         });
       } else {
         active.push({
@@ -51,6 +52,7 @@ export function useAggregationSource(source: PillsProps["pillSource"]) {
           dragTags: [],
 
           dropTags: ["aggregations"],
+          dropData: {},
         });
       }
     }
@@ -81,6 +83,7 @@ export function useAggregationSource(source: PillsProps["pillSource"]) {
 
           dropTags: [],
           dragTags: [],
+          dropData: {},
         };
       });
 

@@ -24,6 +24,7 @@ export function useRowGroupsSource(source: PillsProps["pillSource"]) {
           draggable: false,
           dragTags: [],
           dropTags: [],
+          dropData: {},
         };
       });
 
@@ -40,6 +41,7 @@ export function useRowGroupsSource(source: PillsProps["pillSource"]) {
           draggable: false,
           dragTags: [],
           dropTags: [],
+          dropData: {},
         };
       });
 

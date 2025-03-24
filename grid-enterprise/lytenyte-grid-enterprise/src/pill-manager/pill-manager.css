@@ -108,6 +108,7 @@
   padding-inline: 4px;
   padding-block: 8px;
   cursor: pointer;
+  position: relative;
 
   &:hover > .lng1771-pill[data-pill-kind="plain"] {
     &[data-pill-interactive] {
@@ -136,6 +137,23 @@
       cursor: pointer;
     }
   }
+}
+
+.lng1771-pill-manager__drop-indicator-end {
+  position: absolute;
+  top: 0px;
+  inset-inline-end: 0px;
+  width: 1px;
+  height: 100%;
+  background-color: var(--lng1771-primary-50);
+}
+.lng1771-pill-manager__drop-indicator-start {
+  position: absolute;
+  top: 0px;
+  inset-inline-start: 0px;
+  width: 1px;
+  height: 100%;
+  background-color: var(--lng1771-primary-50);
 }
 
 .lng1771-pill-manager__pill-inner[data-draggable="true"] {

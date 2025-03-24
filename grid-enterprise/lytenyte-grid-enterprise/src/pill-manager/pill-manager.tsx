@@ -51,7 +51,9 @@ export interface PillManagerPillItem {
   readonly draggable: boolean;
   readonly dragTags: DragTag[];
   readonly dragData?: any;
+
   readonly dropTags: DragTag[];
+  readonly dropData: any;
 
   readonly onClick: () => void;
 }

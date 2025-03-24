@@ -5,6 +5,7 @@ export interface Droppable {
   readonly id: string;
   readonly accepted: string[];
   readonly target: HTMLElement;
+  readonly data: any;
 }
 
 export interface DropTarget extends Droppable {
