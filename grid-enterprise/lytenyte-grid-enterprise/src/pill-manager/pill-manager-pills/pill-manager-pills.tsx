@@ -30,7 +30,7 @@ export const PillManagerPills = forwardRef<
   }, [aggs, columns, measures, pillSource, pivots, rowGroups]);
 
   const dropTags = useMemo<DragTag[]>(() => {
-    if (pillSource === "columns") return []; // Nothing can be dropped on the column pills
+    if (pillSource === "columns") return ["columns"];
     if (pillSource === "aggregations") return ["aggregations"];
     if (pillSource === "column-pivots") return ["column-pivot"];
     if (pillSource === "measures") return ["measures"];

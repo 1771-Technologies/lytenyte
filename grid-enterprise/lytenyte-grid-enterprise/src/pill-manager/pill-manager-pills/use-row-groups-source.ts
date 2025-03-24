@@ -46,10 +46,16 @@ export function useRowGroupsSource(source: PillsProps["pillSource"]) {
             return;
           }
 
+          if (over.id === "columns-pills") {
+            api.columnUpdate(c, { hide: false });
+            api.columnMoveToVisibleIndex([c.id], 0);
+            sx.rowGroupModel.set((prev) => prev.filter((x) => x !== c.id));
+            return;
+          }
+
           if (over.data.target === "columns") {
             const id = over.data.id;
             if (id === c.id) return;
-
             api.columnUpdate(c, { hide: false });
 
             if (isBefore) api.columnMoveBefore([c.id], id);
@@ -57,11 +63,27 @@ export function useRowGroupsSource(source: PillsProps["pillSource"]) {
             sx.rowGroupModel.set((prev) => prev.filter((x) => x !== c.id));
             return;
           }
-          if (over.id === "columns-pills") {
-            api.columnUpdate(c, { hide: false });
-            api.columnMoveToVisibleIndex([c.id], 0);
+
+          if (over.id === "column-pivots-pills") {
             sx.rowGroupModel.set((prev) => prev.filter((x) => x !== c.id));
+            sx.columnPivotModel.set((prev) => [...prev, c.id]);
             return;
+          }
+
+          if (over.data.target === "column-pivots") {
+            const id = over.data.id;
+            if (id === c.id) return;
+            sx.rowGroupModel.set((prev) => prev.filter((x) => x !== c.id));
+
+            sx.columnPivotModel.set((prev) => {
+              const next = [...prev];
+              const index = next.indexOf(id) + (isBefore ? 0 : 1);
+              next.splice(index, 0, c.id);
+
+              return next;
+            });
+
+            console.log(over);
           }
         };
 
@@ -99,5 +121,16 @@ export function useRowGroupsSource(source: PillsProps["pillSource"]) {
       });
 
     return [...activeItems, ...inactiveItems];
-  }, [aggModel, api, base, columns, measureModel, rowModel, source, sx.rowGroupModel, sx.rtl]);
+  }, [
+    aggModel,
+    api,
+    base,
+    columns,
+    measureModel,
+    rowModel,
+    source,
+    sx.columnPivotModel,
+    sx.rowGroupModel,
+    sx.rtl,
+  ]);
 }
