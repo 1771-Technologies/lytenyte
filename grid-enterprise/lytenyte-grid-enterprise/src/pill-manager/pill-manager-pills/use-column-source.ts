@@ -1,8 +1,8 @@
 import { useMemo } from "react";
-import type { PillsProps } from "./pill-manager-pills";
-import type { DragTag, PillManagerPillItem } from "../pill-manager";
 import { useGrid } from "../../use-grid";
 import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
+import type { DragActive } from "@1771technologies/lytenyte-grid-community/internal";
+import type { DragTag, PillManagerPillItem, PillsProps } from "../pill-manager-types";
 
 export function useColumnSoruce(source: PillsProps["pillSource"]) {
   const { api, state: sx } = useGrid();
@@ -40,17 +40,39 @@ export function useColumnSoruce(source: PillsProps["pillSource"]) {
         if (!aggModel[c.id] && canAgg(c)) dragTags.push("aggregations");
         if (!measureModel[c.id] && canMeasure(c)) dragTags.push("measures");
 
+        const dragEnd = (d: DragActive) => {
+          const over = d.over.at(-1);
+          if (!over) return;
+
+          // Reorder columns
+          if (over.data.target === "columns") {
+            const id = over.data.id;
+
+            if (id === c.id) return;
+            const isBefore = (sx.rtl.peek() ? "right" : "left") === over.xHalf;
+
+            if (isBefore) api.columnMoveBefore([c.id], id);
+            else api.columnMoveAfter([c.id], id);
+
+            return;
+          }
+        };
+
         active.push({
           kind: "column",
           active: true,
           label: c.headerName ?? c.id,
           onClick: onToggle,
 
-          draggable: true,
+          draggable: api.columnIsMovable(c),
           dragTags,
+          dragEnd,
+
+          dropId: `column-${c.id}`,
           dropTags: ["columns"],
           dropData: {
             target: "columns",
+            id: c.id,
           },
         });
       } else {
@@ -60,12 +82,12 @@ export function useColumnSoruce(source: PillsProps["pillSource"]) {
           active: false,
           label: c.headerName ?? c.id,
           onClick: onToggle,
+
+          dropId: `column-${c.id}`,
           draggable: true,
           dragTags: [],
           dropTags: [],
-          dropData: {
-            target: "columns",
-          },
+          dropData: {},
         });
       }
     }
@@ -81,5 +103,6 @@ export function useColumnSoruce(source: PillsProps["pillSource"]) {
     measureModel,
     pivotModel,
     source,
+    sx.rtl,
   ]);
 }

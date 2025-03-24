@@ -1,7 +1,6 @@
 import { useMemo } from "react";
-import type { PillsProps } from "./pill-manager-pills";
-import type { PillManagerPillItem } from "../pill-manager";
 import { useGrid } from "../../use-grid";
+import type { PillManagerPillItem, PillsProps } from "../pill-manager-types";
 
 export function useMeasuresSource(source: PillsProps["pillSource"]) {
   const { api, state: sx } = useGrid();
@@ -38,6 +37,7 @@ export function useMeasuresSource(source: PillsProps["pillSource"]) {
           dragTags: [],
           dropTags: ["measures"],
           dropData: {},
+          dropId: `measure-${key}`,
         });
       } else {
         active.push({
@@ -51,6 +51,7 @@ export function useMeasuresSource(source: PillsProps["pillSource"]) {
           dragTags: [],
           dropTags: ["measures"],
           dropData: {},
+          dropId: `measure-${key}`,
         });
       }
     }
@@ -85,6 +86,7 @@ export function useMeasuresSource(source: PillsProps["pillSource"]) {
           dragTags: [],
           dropTags: [],
           dropData: {},
+          dropId: `measure-${c.id}`,
         };
       });
 

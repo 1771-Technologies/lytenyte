@@ -1,7 +1,6 @@
 import { useMemo } from "react";
-import type { PillsProps } from "./pill-manager-pills";
-import type { PillManagerPillItem } from "../pill-manager";
 import { useGrid } from "../../use-grid";
+import type { PillManagerPillItem, PillsProps } from "../pill-manager-types";
 
 export function useAggregationSource(source: PillsProps["pillSource"]) {
   const { api, state: sx } = useGrid();
@@ -37,6 +36,7 @@ export function useAggregationSource(source: PillsProps["pillSource"]) {
           onClick: onToggle,
           draggable: false,
           dragTags: [],
+          dropId: `agg-${column.id}`,
 
           dropTags: ["aggregations"],
           dropData: {},
@@ -51,6 +51,7 @@ export function useAggregationSource(source: PillsProps["pillSource"]) {
           draggable: false,
           dragTags: [],
 
+          dropId: `agg-${key}`,
           dropTags: ["aggregations"],
           dropData: {},
         });
@@ -81,6 +82,7 @@ export function useAggregationSource(source: PillsProps["pillSource"]) {
           onClick: onToggle,
           draggable: false,
 
+          dropId: `agg-${c.id}`,
           dropTags: [],
           dragTags: [],
           dropData: {},

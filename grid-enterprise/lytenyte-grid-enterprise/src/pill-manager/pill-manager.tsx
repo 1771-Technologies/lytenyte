@@ -2,7 +2,6 @@ import "./pill-manager.css";
 import type { StoreEnterpriseReact } from "@1771technologies/grid-types";
 import { GridProvider } from "../use-grid";
 import { forwardRef, type JSX } from "react";
-import { type PillProps } from "../pill/pill";
 import { PillManagerPills } from "./pill-manager-pills/pill-manager-pills";
 import { PillManagerPill } from "./pill-manager-pill";
 import { PillManagerRow } from "./pill-manager-row";
@@ -50,24 +49,6 @@ const RootImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(functi
     </div>
   );
 });
-
-export type DragTag = "row-group" | "column-pivot" | "columns" | "aggregations" | "measures";
-
-export interface PillManagerPillItem {
-  readonly kind: Required<PillProps>["kind"];
-  readonly label: string;
-  readonly secondaryLabel?: string;
-  readonly active: boolean;
-
-  readonly draggable: boolean;
-  readonly dragTags: DragTag[];
-  readonly dragData?: any;
-
-  readonly dropTags: DragTag[];
-  readonly dropData: any;
-
-  readonly onClick: () => void;
-}
 
 export const PillManager = {
   Root,

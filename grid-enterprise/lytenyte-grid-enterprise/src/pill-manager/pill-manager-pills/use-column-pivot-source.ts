@@ -1,7 +1,6 @@
 import { useMemo } from "react";
-import type { PillsProps } from "./pill-manager-pills";
-import type { DragTag, PillManagerPillItem } from "../pill-manager";
 import { useGrid } from "../../use-grid";
+import type { DragTag, PillManagerPillItem, PillsProps } from "../pill-manager-types";
 
 export function useColumnPivotSource(source: PillsProps["pillSource"]) {
   const { api, state: sx } = useGrid();
@@ -16,9 +15,9 @@ export function useColumnPivotSource(source: PillsProps["pillSource"]) {
     const canBePivotted = columns.filter(
       (c) => !appliedPivots.has(c.id) && api.columnIsPivotable(c),
     );
-    const pivttedColumns = pivotModel.map((c) => api.columnById(c)!);
+    const pivottedColumns = pivotModel.map((c) => api.columnById(c)!);
 
-    const activeItems = pivttedColumns.map<PillManagerPillItem>((c) => {
+    const activeItems = pivottedColumns.map<PillManagerPillItem>((c) => {
       const onToggle = () => sx.columnPivotModel.set((prev) => prev.filter((x) => x !== c.id));
 
       const tags: DragTag[] = ["column-pivot"];
@@ -30,6 +29,7 @@ export function useColumnPivotSource(source: PillsProps["pillSource"]) {
         active: true,
         onClick: onToggle,
 
+        dropId: `pivot-${c.id}`,
         draggable: true,
         dragTags: tags,
         dropTags: ["column-pivot"],
@@ -46,6 +46,7 @@ export function useColumnPivotSource(source: PillsProps["pillSource"]) {
         onClick: onToggle,
 
         draggable: false,
+        dropId: `pivot-${c.id}`,
         dragTags: [],
         dropTags: [],
         dropData: {},

@@ -1,6 +1,4 @@
-import { forwardRef, useMemo, type JSX, type ReactNode } from "react";
-import type { DragTag } from "../pill-manager";
-import { type PillManagerPillItem } from "../pill-manager";
+import { forwardRef, useMemo, type JSX } from "react";
 import { clsx } from "@1771technologies/js-utils";
 import { useAggregationSource } from "./use-aggregation-source";
 import { useMeasuresSource } from "./use-measures-source";
@@ -9,11 +7,7 @@ import { useRowGroupsSource } from "./use-row-groups-source";
 import { useColumnPivotSource } from "./use-column-pivot-source";
 import { useDroppable } from "@1771technologies/lytenyte-grid-community/internal";
 import { useCombinedRefs } from "@1771technologies/react-utils";
-
-export interface PillsProps {
-  readonly pillSource: "columns" | "column-pivots" | "row-groups" | "measures" | "aggregations";
-  readonly children: (p: { pills: PillManagerPillItem[] }) => ReactNode;
-}
+import type { DragTag, PillsProps } from "../pill-manager-types";
 
 export const PillManagerPills = forwardRef<
   HTMLDivElement,

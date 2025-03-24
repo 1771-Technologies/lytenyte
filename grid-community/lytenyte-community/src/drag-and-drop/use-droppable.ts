@@ -23,6 +23,8 @@ export function useDroppable({ id, accepted, data }: UseDroppableArgs) {
     if (!target) return;
 
     store.setState((prev) => {
+      if (prev.mounted.find((c) => c.id === id)) return prev;
+
       return {
         mounted: [...prev.mounted, { accepted, id, target, data }],
       };

@@ -13,27 +13,10 @@ export function computeActiveDrag(
 
   // Sort by proximity of the x/y point to the edge of the box.
   const sortedRects = targets.sort((left, right) => {
-    const { x: rxA, y: ryA, width: wA, height: hA } = left.box;
-    const { x: rxB, y: ryB, width: wB, height: hB } = right.box;
+    const distanceToRootA = nodesToRoot(left.target);
+    const distanceToRootB = nodesToRoot(right.target);
 
-    // Compute minimum distance to edges for Rect A
-    const minDistanceA = Math.min(
-      Math.abs(x - rxA), // Distance to left edge
-      Math.abs(x - (rxA + wA)), // Distance to right edge
-      Math.abs(y - ryA), // Distance to top edge
-      Math.abs(y - (ryA + hA)), // Distance to bottom edge
-    );
-
-    // Compute minimum distance to edges for Rect B
-    const minDistanceB = Math.min(
-      Math.abs(x - rxB), // Distance to left edge
-      Math.abs(x - (rxB + wB)), // Distance to right edge
-      Math.abs(y - ryB), // Distance to top edge
-      Math.abs(y - (ryB + hB)), // Distance to bottom edge
-    );
-
-    // Sort in ascending order of minimum distance
-    return minDistanceA - minDistanceB;
+    return distanceToRootA - distanceToRootB;
   });
 
   return {
@@ -65,10 +48,21 @@ function getDropTargets(mounted: Droppable[], x: number, y: number, tags: string
       canDrop: c.accepted.some((c) => tags.includes(c)),
       xHalf: x <= bb.x + bb.width / 2 ? "left" : "right",
       yHalf: y <= bb.y + bb.height / 2 ? "top" : "bottom",
+      data: c.data,
     });
 
     return acc;
   }, []);
 
   return overlapping;
+}
+
+function nodesToRoot(c: HTMLElement | null) {
+  let current = 0;
+  while (c) {
+    current++;
+    c = c.parentElement;
+  }
+
+  return current;
 }

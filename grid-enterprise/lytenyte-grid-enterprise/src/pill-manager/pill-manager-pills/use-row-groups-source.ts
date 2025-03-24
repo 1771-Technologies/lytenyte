@@ -1,7 +1,6 @@
 import { useMemo } from "react";
-import type { PillsProps } from "./pill-manager-pills";
-import type { PillManagerPillItem } from "../pill-manager";
 import { useGrid } from "../../use-grid";
+import type { PillManagerPillItem, PillsProps } from "../pill-manager-types";
 
 export function useRowGroupsSource(source: PillsProps["pillSource"]) {
   const { api, state: sx } = useGrid();
@@ -25,6 +24,7 @@ export function useRowGroupsSource(source: PillsProps["pillSource"]) {
           dragTags: [],
           dropTags: [],
           dropData: {},
+          dropId: `row-group-${c.id}`,
         };
       });
 
@@ -42,6 +42,7 @@ export function useRowGroupsSource(source: PillsProps["pillSource"]) {
           dragTags: [],
           dropTags: [],
           dropData: {},
+          dropId: `row-group-${c.id}`,
         };
       });
 

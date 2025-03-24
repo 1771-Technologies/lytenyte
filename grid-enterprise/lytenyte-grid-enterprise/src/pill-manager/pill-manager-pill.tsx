@@ -1,10 +1,10 @@
 import { forwardRef, type JSX } from "react";
-import type { PillManagerPillItem } from "./pill-manager";
 import { Pill } from "../pill/pill";
 import { DragIcon } from "../icons";
 import { useDraggable, useDroppable } from "@1771technologies/lytenyte-grid-community/internal";
 import { useCombinedRefs } from "@1771technologies/react-utils";
 import { useGrid } from "../use-grid";
+import type { PillManagerPillItem } from "./pill-manager-types";
 
 /**
  * add swap functionality
@@ -20,7 +20,7 @@ export const PillManagerPill = forwardRef<
     canDrop,
     xHalf,
   } = useDroppable({
-    id: item.label,
+    id: item.dropId,
     accepted: item.dropTags,
     data: item.dropData,
   });
@@ -73,13 +73,21 @@ function DragHandle({ item }: { item: PillManagerPillItem }) {
     onDragStart: () => {
       document.body.classList.add("lng1771-drag-on");
     },
-    onDragEnd: () => {
+    onDragCancel: () => {
+      document.body.classList.remove("lng1771-drag-on");
+    },
+    onDragEnd: (p) => {
+      item.dragEnd?.(p);
       document.body.classList.remove("lng1771-drag-on");
     },
   });
 
   return (
-    <button className="lng1771-pill-manager__pill-dragger" onPointerDown={onPointerDown}>
+    <button
+      tabIndex={-1}
+      className="lng1771-pill-manager__pill-dragger"
+      onPointerDown={onPointerDown}
+    >
       <DragIcon width={16} height={16} />
     </button>
   );
