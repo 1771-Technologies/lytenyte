@@ -49,7 +49,11 @@ export const PillManagerPills = forwardRef<
     return { target: pillSource };
   }, [pillSource]);
 
-  const { isTarget, ref: dropRef } = useDroppable({
+  const {
+    canDrop,
+    isTarget,
+    ref: dropRef,
+  } = useDroppable({
     id: `${pillSource}-pills`,
     accepted: dropTags,
     data: dropData,
@@ -66,6 +70,10 @@ export const PillManagerPills = forwardRef<
       data-pill-source={pillSource}
     >
       {children({ pills: sourceItems })}
+
+      {canDrop && sourceItems.filter((c) => c.active).length === 0 && (
+        <div className="lng1771-pill-manager__drop-indicator-start" />
+      )}
     </div>
   );
 });

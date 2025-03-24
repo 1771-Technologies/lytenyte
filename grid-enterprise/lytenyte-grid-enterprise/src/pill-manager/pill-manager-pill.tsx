@@ -7,9 +7,6 @@ import { useCombinedRefs } from "@1771technologies/react-utils";
 import { useGrid } from "../use-grid";
 
 /**
- * Add drop zones
- * add drop indications
- * add collision detection
  * add swap functionality
  */
 

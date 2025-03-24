@@ -32,11 +32,22 @@ const Root = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & RootProps
   return (
     <DragProvider>
       <GridProvider value={grid}>
-        <div {...props} className={clsx("lng1771-pill-manager", props.className)} ref={ref}>
+        <RootImpl {...props} ref={ref}>
           {children}
-        </div>
+        </RootImpl>
       </GridProvider>
     </DragProvider>
+  );
+});
+
+const RootImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function RootImpl(
+  { children, ...props },
+  ref,
+) {
+  return (
+    <div {...props} className={clsx("lng1771-pill-manager", props.className)} ref={ref}>
+      {children}
+    </div>
   );
 });
 
