@@ -70,7 +70,7 @@ export function useRowGroupsSource(source: PillsProps["pillSource"]) {
             return;
           }
 
-          if (over.data.target === "column-pivots") {
+          if (over.data.target === "column-pivot") {
             const id = over.data.id;
             if (id === c.id) return;
             sx.rowGroupModel.set((prev) => prev.filter((x) => x !== c.id));
@@ -82,8 +82,23 @@ export function useRowGroupsSource(source: PillsProps["pillSource"]) {
 
               return next;
             });
+          }
 
-            console.log(over);
+          if (over.id === "aggregations-pills") {
+            const aggFn = c.aggFnDefault ?? c.aggFnsAllowed?.at(0) ?? base.aggFnsAllowed?.at(0);
+            if (!aggFn) return;
+
+            sx.aggModel.set((prev) => ({ ...prev, [c.id]: { fn: aggFn } }));
+            sx.rowGroupModel.set((prev) => prev.filter((x) => x !== c.id));
+          }
+
+          if (over.id === "measures-pills") {
+            const measureFn =
+              c.measureFnDefault ?? c.measureFnsAllowed?.at(0) ?? base.measureFnsAllowed?.at(0);
+            if (!measureFn) return;
+
+            sx.measureModel.set((prev) => ({ ...prev, [c.id]: { fn: measureFn } }));
+            sx.rowGroupModel.set((prev) => prev.filter((x) => x !== c.id));
           }
         };
 
@@ -129,7 +144,9 @@ export function useRowGroupsSource(source: PillsProps["pillSource"]) {
     measureModel,
     rowModel,
     source,
+    sx.aggModel,
     sx.columnPivotModel,
+    sx.measureModel,
     sx.rowGroupModel,
     sx.rtl,
   ]);
