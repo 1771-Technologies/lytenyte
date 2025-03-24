@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import { useGrid } from "../../use-grid";
-import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import type { DragActive } from "@1771technologies/lytenyte-grid-community/internal";
 import type { DragTag, PillManagerPillItem, PillsProps } from "../pill-manager-types";
+import { canAgg, canMeasure } from "./utils";
 
 export function useColumnSource(source: PillsProps["pillSource"]) {
   const { api, state: sx } = useGrid();
@@ -20,13 +20,6 @@ export function useColumnSource(source: PillsProps["pillSource"]) {
     const active: PillManagerPillItem[] = [];
     const inactive: PillManagerPillItem[] = [];
 
-    const canAgg = (c: ColumnEnterpriseReact<any>) => {
-      return c.aggFnDefault ?? c.aggFnsAllowed?.length ?? base.aggFnsAllowed?.length;
-    };
-    const canMeasure = (c: ColumnEnterpriseReact<any>) => {
-      return c.measureFnDefault ?? c.measureFnsAllowed?.length ?? base.measureFnsAllowed?.length;
-    };
-
     for (const c of columns) {
       if (api.columnIsGridGenerated(c)) continue;
 
@@ -37,8 +30,8 @@ export function useColumnSource(source: PillsProps["pillSource"]) {
 
         if (api.columnIsPivotable(c) && !pivotModel.includes(c.id)) dragTags.push("column-pivot");
         if (api.columnIsRowGroupable(c) && !groupModel.includes(c.id)) dragTags.push("row-group");
-        if (!aggModel[c.id] && canAgg(c)) dragTags.push("aggregations");
-        if (!measureModel[c.id] && canMeasure(c)) dragTags.push("measures");
+        if (!aggModel[c.id] && canAgg(c, base)) dragTags.push("aggregations");
+        if (!measureModel[c.id] && canMeasure(c, base)) dragTags.push("measures");
 
         const dragEnd = (d: DragActive) => {
           const over = d.over.at(-1);
@@ -149,8 +142,7 @@ export function useColumnSource(source: PillsProps["pillSource"]) {
   }, [
     aggModel,
     api,
-    base.aggFnsAllowed,
-    base.measureFnsAllowed,
+    base,
     columns,
     groupModel,
     measureModel,
