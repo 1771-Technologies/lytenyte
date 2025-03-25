@@ -16,7 +16,6 @@ export function PillManagerAggMenu<D>({ column, grid }: PillManagerAggMenuProps<
   const base = grid.state.columnBase.use();
   const aggModel = grid.state.aggModel.use();
 
-  console.log(aggModel);
   const agg = aggModel[column.id]?.fn;
 
   let allowed = column.aggFnsAllowed ?? base.aggFnsAllowed ?? [];
