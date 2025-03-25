@@ -1,5 +1,6 @@
 export { AggregationIcon } from "./aggregation-icon.js";
 export { ArrowRightIcon } from "./arrow-right-icon.js";
+export { ArrowDownIcon } from "./arrow-down-icon.js";
 export { AscendingIcon } from "./ascending-icon.js";
 export { AutosizeIcon } from "./autosize-icon.js";
 export { ColumnPivotIcon } from "./column-pivot-icon.js";
