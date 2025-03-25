@@ -57,6 +57,13 @@ export const PillManagerPill = forwardRef<
         data-draggable={item.draggable}
       >
         {item.draggable && <DragHandle item={item} />}
+        <span>{item.label}</span>
+        {item.secondaryLabel && (
+          <span className="lng1771-pill-manager__pill-inner--secondary-label">
+            {item.secondaryLabel}
+          </span>
+        )}
+
         {(item.isAggregation || item.isMeasure) && (
           <Menu.Root>
             <Menu.Trigger
@@ -85,12 +92,6 @@ export const PillManagerPill = forwardRef<
               </Menu.Positioner>
             </Menu.Portal>
           </Menu.Root>
-        )}
-        <span>{item.label}</span>
-        {item.secondaryLabel && (
-          <span className="lng1771-pill-manager__pill-inner--secondary-label">
-            {item.secondaryLabel}
-          </span>
         )}
       </Pill>
       {canDrop && (rtl ? "left" : "right") === xHalf && (
