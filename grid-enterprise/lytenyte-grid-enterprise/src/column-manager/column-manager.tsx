@@ -22,6 +22,7 @@ import type { StoreEnterpriseReact } from "@1771technologies/grid-types";
 import { ColumnStateProvider } from "./column-manager-state";
 import { ColumnManagerTree } from "./column-manager-tree";
 import { ColumnManagerTreeItem } from "./column-manager-tree-item";
+import { ColumnManagerDragPlaceholder } from "./column-manager-drag-placeholder";
 
 interface RootProps<D = any> {
   readonly grid: StoreEnterpriseReact<D>;
@@ -48,4 +49,5 @@ export const ColumnManager = {
   Root,
   Tree: ColumnManagerTree,
   TreeItem: ColumnManagerTreeItem,
+  DragPlaceholder: ColumnManagerDragPlaceholder,
 };

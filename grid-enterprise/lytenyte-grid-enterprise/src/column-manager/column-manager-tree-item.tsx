@@ -3,9 +3,14 @@ import type { ListViewItemRendererProps } from "../list-view/list-view";
 import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import { useGrid } from "../use-grid";
 import { ArrowDownIcon, ArrowRightIcon, DragIcon } from "../icons";
-import { Checkbox } from "@1771technologies/lytenyte-grid-community/internal";
+import {
+  Checkbox,
+  useDraggable,
+  useDroppable,
+} from "@1771technologies/lytenyte-grid-community/internal";
 import { allLeafs } from "./utils/all-leafs";
 import { clsx } from "@1771technologies/js-utils";
+import { useCombinedRefs } from "@1771technologies/react-utils";
 
 export const ColumnManagerTreeItem = forwardRef<
   HTMLDivElement,
@@ -20,6 +25,24 @@ export const ColumnManagerTreeItem = forwardRef<
   const pivotMode = state.columnPivotModeIsOn.use();
   const labelId = useId();
 
+  const { onPointerDown } = useDraggable({
+    id: ci.data.type === "leaf" ? ci.data.data.id : ci.data.occurrence,
+    getData: () => ci.data,
+    getTags: () => ["columns"],
+  });
+
+  const {
+    ref: dropRef,
+    canDrop,
+    yHalf,
+  } = useDroppable({
+    id: ci.data.type === "leaf" ? ci.data.data.id : ci.data.occurrence,
+    accepted: ["columns"],
+    data: ci.data,
+  });
+
+  const combinedRefs = useCombinedRefs(ref, dropRef);
+
   if (ci.data.type === "leaf") {
     const data = ci.data.data;
 
@@ -31,13 +54,20 @@ export const ColumnManagerTreeItem = forwardRef<
       <div
         {...props}
         className={clsx("lng1771-column-manager__tree-item", className)}
-        ref={ref}
+        ref={combinedRefs}
+        data-can-drop={canDrop}
         style={{
           paddingInlineStart: `calc(${depthPadding}px + ${ci.depth > 0 ? ci.depth + 1 : 0} * ${depthPadding}px + 22px)`,
           ...style,
         }}
       >
-        <DragIcon />
+        {canDrop && yHalf === "top" && (
+          <div className="lng1771-column-manager__tree-item-drop-indicator-top" />
+        )}
+        {canDrop && yHalf === "bottom" && (
+          <div className="lng1771-column-manager__tree-item-drop-indicator-bottom" />
+        )}
+        <DragIcon onPointerDown={onPointerDown} />
         <Checkbox
           htmlFor={labelId}
           aria-labelledby={labelId}
@@ -62,12 +92,20 @@ export const ColumnManagerTreeItem = forwardRef<
 
     return (
       <div
+        {...props}
         style={{
           paddingInlineStart: `calc(${depthPadding}px + ${ci.depth} * ${depthPadding}px)`,
           ...style,
         }}
+        ref={combinedRefs}
         className={clsx("lng1771-column-manager__tree-item", className)}
       >
+        {canDrop && yHalf === "top" && (
+          <div className="lng1771-column-manager__tree-item-drop-indicator-top" />
+        )}
+        {canDrop && yHalf === "bottom" && (
+          <div className="lng1771-column-manager__tree-item-drop-indicator-bottom" />
+        )}
         <button
           className="lng1771-column-manager__tree-item-expander"
           onFocus={(ev) => ev.currentTarget.blur()}
@@ -79,9 +117,13 @@ export const ColumnManagerTreeItem = forwardRef<
             }));
           }}
         >
-          {ci.expanded ? <ArrowDownIcon id={id} /> : <ArrowRightIcon id={id} />}
+          {ci.expanded ? (
+            <ArrowDownIcon width={16} height={16} id={id} />
+          ) : (
+            <ArrowRightIcon id={id} width={16} height={16} />
+          )}
         </button>
-        <DragIcon />
+        <DragIcon onPointerDown={onPointerDown} />
         <Checkbox
           htmlFor={labelId}
           aria-labelledby={labelId}

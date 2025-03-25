@@ -58,6 +58,7 @@ export default function Play() {
         `}
       >
         <ColumnManager.Root grid={grid}>
+          <ColumnManager.DragPlaceholder />
           <ColumnManager.Tree>
             {(c) => {
               return <ColumnManager.TreeItem columnItem={c} />;
