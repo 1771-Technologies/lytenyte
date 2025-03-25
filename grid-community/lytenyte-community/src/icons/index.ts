@@ -16,6 +16,7 @@ export { GroupByColumnIcon } from "./group-by-column-icon.js";
 export { HideColumnIcon } from "./hide-column-icon.js";
 export { ManageColumnsIcon } from "./manage-columns-icon.js";
 export { MeasuresIcon } from "./measures-icon.js";
+export { MoreDotsIcon } from "./more-dots-icon.js";
 export { PlusIcon } from "./plus-icon.js";
 export { ResetColumnsIcon } from "./reset-columns-icon.js";
 export { RowGroupIcon } from "./row-group-icon.js";

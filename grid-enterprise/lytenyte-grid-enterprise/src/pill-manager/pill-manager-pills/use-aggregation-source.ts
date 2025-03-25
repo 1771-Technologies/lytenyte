@@ -37,6 +37,8 @@ export function useAggregationSource(source: RowProps["pillSource"]) {
           draggable: false,
           dragTags: [],
           dropId: `agg-${column.id}`,
+          column: column,
+          isAggregation: true,
 
           dropTags: [],
           dropData: {},

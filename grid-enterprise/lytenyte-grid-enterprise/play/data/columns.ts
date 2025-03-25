@@ -18,7 +18,9 @@ export const columns: ColumnEnterpriseReact<any>[] = [
     rowGroupable: true,
     columnPivotable: true,
     aggFnDefault: "avg",
+    aggFnsAllowed: ["avg", "count", "first", "last"],
     measureFnDefault: "first",
+    measureFnsAllowed: ["avg", "count", "first", "last"],
   },
   {
     id: "education",

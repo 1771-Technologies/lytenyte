@@ -1,3 +1,4 @@
+import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import type { DragActive } from "@1771technologies/lytenyte-grid-community/internal";
 import type { ReactNode } from "react";
 
@@ -20,6 +21,10 @@ export interface PillManagerPillItem {
   readonly label: string;
   readonly secondaryLabel?: string;
   readonly active: boolean;
+
+  readonly column?: ColumnEnterpriseReact<any>;
+  readonly isAggregation?: boolean;
+  readonly isMeasure?: boolean;
 
   readonly draggable: boolean;
   readonly dragTags: DragTag[];

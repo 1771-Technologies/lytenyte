@@ -37,6 +37,8 @@ export function useMeasuresSource(source: RowProps["pillSource"]) {
           dragTags: [],
           dropTags: [],
           dropData: {},
+          column,
+          isMeasure: true,
           dropId: `measure-${key}`,
         });
       } else {

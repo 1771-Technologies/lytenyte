@@ -1,11 +1,13 @@
 import { forwardRef, type JSX } from "react";
 import { Pill } from "../pill/pill";
-import { DragIcon } from "../icons";
+import { DragIcon, MoreDotsIcon } from "../icons";
 import { useDraggable, useDroppable } from "@1771technologies/lytenyte-grid-community/internal";
 import { useCombinedRefs } from "@1771technologies/react-utils";
 import { useGrid } from "../use-grid";
 import type { PillManagerPillItem } from "./pill-manager-types";
 import { usePillControls } from "./pill-manager-controls";
+import { Menu } from "../external";
+import { useComponents } from "./pill-manager";
 
 /**
  * add swap functionality
@@ -32,6 +34,7 @@ export const PillManagerPill = forwardRef<
   const combinedRefs = useCombinedRefs(ref, dropRef);
 
   const { activePill } = usePillControls();
+  const { aggMenuRenderer: AggMenu, measureMenuRenderer: MeasureMenu } = useComponents();
 
   return (
     <div
@@ -57,6 +60,30 @@ export const PillManagerPill = forwardRef<
           <span className="lng1771-pill-manager__pill-inner--secondary-label">
             {item.secondaryLabel}
           </span>
+        )}
+        {item.isAggregation && (
+          <Menu.Root>
+            <Menu.Trigger className="lng1771-pill-manager__menu-trigger">
+              <MoreDotsIcon width={16} height={16} />
+            </Menu.Trigger>
+            <Menu.Portal>
+              <Menu.Positioner onClick={(ev) => ev.stopPropagation()}>
+                <AggMenu grid={grid} column={item.column!} />
+              </Menu.Positioner>
+            </Menu.Portal>
+          </Menu.Root>
+        )}
+        {item.isMeasure && (
+          <Menu.Root>
+            <Menu.Trigger className="lng1771-pill-manager__menu-trigger">
+              <MoreDotsIcon width={16} height={16} />
+            </Menu.Trigger>
+            <Menu.Portal>
+              <Menu.Positioner onClick={(ev) => ev.stopPropagation()}>
+                <MeasureMenu grid={grid} column={item.column!} />
+              </Menu.Positioner>
+            </Menu.Portal>
+          </Menu.Root>
         )}
       </Pill>
       {canDrop && (rtl ? "left" : "right") === xHalf && (

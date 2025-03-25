@@ -207,3 +207,20 @@ body.lng1771-drag-on
   align-items: center;
   justify-content: center;
 }
+
+.lng1771-pill-manager__menu-trigger {
+  background-color: transparent;
+  border: none;
+  color: var(--lng1771-gray-80);
+  padding: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--lng1771-gray-05);
+  }
+}
