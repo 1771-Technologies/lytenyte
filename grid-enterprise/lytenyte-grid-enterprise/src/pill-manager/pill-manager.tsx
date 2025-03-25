@@ -25,30 +25,34 @@ import {
   PillManagerMeasureMenu,
   type PillManagerAggMenuProps,
 } from "./pill-manager-agg-menu";
+import { MoreDotsIcon } from "../icons";
 
 interface RootProps<D = any> {
   readonly grid: StoreEnterpriseReact<D>;
   readonly aggMenuRenderer?: (p: PillManagerAggMenuProps<D>) => ReactNode;
   readonly measureMenuRenderer?: (p: PillManagerAggMenuProps<D>) => ReactNode;
+  readonly menuTriggerIcon?: (p: JSX.IntrinsicElements["svg"]) => ReactNode;
 }
 
 const context = createContext<{
   readonly aggMenuRenderer: (p: PillManagerAggMenuProps<any>) => ReactNode;
   readonly measureMenuRenderer: (p: PillManagerAggMenuProps<any>) => ReactNode;
+  readonly menuTriggerIcon: (p: JSX.IntrinsicElements["svg"]) => ReactNode;
 }>({} as any);
 
 export const useComponents = () => useContext(context);
 
 const Root = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & RootProps>(function Root(
-  { grid, children, aggMenuRenderer, measureMenuRenderer, ...props },
+  { grid, children, aggMenuRenderer, measureMenuRenderer, menuTriggerIcon, ...props },
   ref,
 ) {
   const components = useMemo(() => {
     return {
       aggMenuRenderer: aggMenuRenderer ?? PillManagerAggMenu,
       measureMenuRenderer: measureMenuRenderer ?? PillManagerMeasureMenu,
+      menuTriggerIcon: menuTriggerIcon ?? MoreDotsIcon,
     };
-  }, [aggMenuRenderer, measureMenuRenderer]);
+  }, [aggMenuRenderer, measureMenuRenderer, menuTriggerIcon]);
 
   return (
     <context.Provider value={components}>

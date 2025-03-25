@@ -1,6 +1,6 @@
 import { forwardRef, type JSX } from "react";
 import { Pill } from "../pill/pill";
-import { DragIcon, MoreDotsIcon } from "../icons";
+import { DragIcon } from "../icons";
 import { useDraggable, useDroppable } from "@1771technologies/lytenyte-grid-community/internal";
 import { useCombinedRefs } from "@1771technologies/react-utils";
 import { useGrid } from "../use-grid";
@@ -34,7 +34,11 @@ export const PillManagerPill = forwardRef<
   const combinedRefs = useCombinedRefs(ref, dropRef);
 
   const { activePill } = usePillControls();
-  const { aggMenuRenderer: AggMenu, measureMenuRenderer: MeasureMenu } = useComponents();
+  const {
+    aggMenuRenderer: AggMenu,
+    measureMenuRenderer: MeasureMenu,
+    menuTriggerIcon: TriggerIcon,
+  } = useComponents();
 
   return (
     <div
@@ -55,16 +59,10 @@ export const PillManagerPill = forwardRef<
         data-draggable={item.draggable}
       >
         {item.draggable && <DragHandle item={item} />}
-        <span>{item.label}</span>
-        {item.secondaryLabel && (
-          <span className="lng1771-pill-manager__pill-inner--secondary-label">
-            {item.secondaryLabel}
-          </span>
-        )}
         {item.isAggregation && (
           <Menu.Root>
             <Menu.Trigger className="lng1771-pill-manager__menu-trigger">
-              <MoreDotsIcon width={16} height={16} />
+              <TriggerIcon width={16} height={16} />
             </Menu.Trigger>
             <Menu.Portal>
               <Menu.Positioner onClick={(ev) => ev.stopPropagation()}>
@@ -76,7 +74,7 @@ export const PillManagerPill = forwardRef<
         {item.isMeasure && (
           <Menu.Root>
             <Menu.Trigger className="lng1771-pill-manager__menu-trigger">
-              <MoreDotsIcon width={16} height={16} />
+              <TriggerIcon width={16} height={16} />
             </Menu.Trigger>
             <Menu.Portal>
               <Menu.Positioner onClick={(ev) => ev.stopPropagation()}>
@@ -84,6 +82,12 @@ export const PillManagerPill = forwardRef<
               </Menu.Positioner>
             </Menu.Portal>
           </Menu.Root>
+        )}
+        <span>{item.label}</span>
+        {item.secondaryLabel && (
+          <span className="lng1771-pill-manager__pill-inner--secondary-label">
+            {item.secondaryLabel}
+          </span>
         )}
       </Pill>
       {canDrop && (rtl ? "left" : "right") === xHalf && (
