@@ -10,6 +10,7 @@
   padding-inline: 4px;
   border: 6px;
   user-select: none;
+  box-sizing: border-box;
 
   color: var(--lng1771-gray-80);
   font-family: var(--lng1771-typeface);

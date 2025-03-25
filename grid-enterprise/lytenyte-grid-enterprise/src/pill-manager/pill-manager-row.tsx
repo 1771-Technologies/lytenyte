@@ -10,6 +10,7 @@ import {
   type SetStateAction,
 } from "react";
 import type { RowProps } from "./pill-manager-types";
+import { usePillControls } from "./pill-manager-controls";
 
 interface PillRowContext {
   readonly expanded: boolean;
@@ -25,6 +26,8 @@ export const usePillRow = () => useContext(PillRowContext);
 export const PillManagerRow = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & RowProps>(
   function PillManagerRow({ pillSource, ...props }, ref) {
     const [expanded, setExpanded] = useState(false);
+
+    const { activeRow } = usePillControls();
 
     const value = useMemo<PillRowContext>(() => {
       return {
@@ -43,6 +46,7 @@ export const PillManagerRow = forwardRef<HTMLDivElement, JSX.IntrinsicElements["
           ref={ref}
           data-expanded={expanded}
           data-pill-row-key={pillSource}
+          data-pill-active={activeRow === pillSource}
         />
       </PillRowContext.Provider>
     );

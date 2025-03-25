@@ -12,6 +12,11 @@
 .lng1771-pill-manager__rows {
   display: grid;
   grid-template-columns: 160px calc(100% - 160px - 30px) 30px;
+
+  &:focus {
+    outline: 1px solid var(--lng1771-primary-50);
+    outline-offset: -1px;
+  }
 }
 
 @container (max-width: 450px) {
@@ -36,6 +41,8 @@
 }
 
 .lng1771-pill-manager__row[data-expanded="true"]
+  .lng1771-pill-manager__pill-outer[data-pill-active="false"],
+.lng1771-pill-manager__row[data-pill-active="true"]
   .lng1771-pill-manager__pill-outer[data-pill-active="false"] {
   opacity: 0.7;
 }
@@ -54,6 +61,7 @@ body.lng1771-drag-on
   display: flex;
   align-items: center;
   overflow: auto;
+  position: relative;
 
   &::-webkit-scrollbar {
     display: none;
@@ -63,6 +71,10 @@ body.lng1771-drag-on
     outline: 1px dashed var(--lng1771-primary-50);
     outline-offset: -2px;
   }
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .lng1771-pill-manager__pills-inner {
@@ -70,6 +82,9 @@ body.lng1771-drag-on
   display: flex;
   align-items: center;
   min-width: 4px;
+}
+.lng1771-pill-manager__pill-inner[data-pill-focused="true"].lng1771-pill-manager__pill-inner[data-pill-focused="true"] {
+  border-color: var(--lng1771-primary-50);
 }
 
 .lng1771-pill-manager__row[data-expanded="true"] .lng1771-pill-manager__pills-inner {
@@ -116,14 +131,14 @@ body.lng1771-drag-on
   border: 1px solid var(--lng1771-primary-30);
   border-radius: 6px;
   padding-inline: 8px;
-  padding-block: 6px;
+  padding-block: 8px;
 }
 
 /** INDIVIDUAL PILLS */
 
 .lng1771-pill-manager__pill-outer {
   padding-inline: 4px;
-  padding-block: 8px;
+  padding-block: 6px;
   cursor: pointer;
   position: relative;
 

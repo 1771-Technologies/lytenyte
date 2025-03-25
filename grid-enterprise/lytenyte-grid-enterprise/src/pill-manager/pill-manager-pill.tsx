@@ -5,6 +5,7 @@ import { useDraggable, useDroppable } from "@1771technologies/lytenyte-grid-comm
 import { useCombinedRefs } from "@1771technologies/react-utils";
 import { useGrid } from "../use-grid";
 import type { PillManagerPillItem } from "./pill-manager-types";
+import { usePillControls } from "./pill-manager-controls";
 
 /**
  * add swap functionality
@@ -30,19 +31,22 @@ export const PillManagerPill = forwardRef<
   const rtl = grid.state.rtl.use();
   const combinedRefs = useCombinedRefs(ref, dropRef);
 
+  const { activePill } = usePillControls();
+
   return (
     <div
       {...props}
       role="button"
       ref={combinedRefs}
+      data-pill-key={item.dropId}
       data-pill-active={item.active}
       data-is-droppable={isTarget && canDrop}
       className="lng1771-pill-manager__pill-outer"
-      tabIndex={-1}
       onClick={item.onClick}
     >
       <Pill
         kind={item.kind}
+        data-pill-focused={item.dropId === activePill}
         className="lng1771-pill-manager__pill-inner"
         interactive
         data-draggable={item.draggable}

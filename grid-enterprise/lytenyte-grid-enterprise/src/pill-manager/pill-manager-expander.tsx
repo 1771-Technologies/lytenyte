@@ -5,13 +5,14 @@ import { CollapseIcon, ExpandIcon } from "../icons";
 
 export const PillManagerExpander = forwardRef<HTMLButtonElement, JSX.IntrinsicElements["button"]>(
   function PillManagerExpander({ children, ...props }, ref) {
-    const { expanded, setExpanded } = usePillRow();
+    const { expanded, setExpanded, pillSource } = usePillRow();
     return (
       <button
         {...props}
         className={clsx("lng1771-pill-manager__expander")}
         ref={ref}
         tabIndex={-1}
+        data-pill-expander-source={pillSource}
         onClick={() => {
           setExpanded((prev) => !prev);
         }}
