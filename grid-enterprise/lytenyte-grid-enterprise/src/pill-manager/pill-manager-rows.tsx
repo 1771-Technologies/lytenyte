@@ -135,6 +135,7 @@ export const PillManagerRows = forwardRef<HTMLDivElement, JSX.IntrinsicElements[
           setActivePill(null);
         }}
         className={clsx("lng1771-pill-manager__rows", props.className)}
+        data-rows-root="true"
         data-active-row={activePill}
         data-active-pill={activeRow}
         ref={ref}

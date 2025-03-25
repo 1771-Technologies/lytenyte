@@ -8,10 +8,7 @@ import type { PillManagerPillItem } from "./pill-manager-types";
 import { usePillControls } from "./pill-manager-controls";
 import { Menu } from "../external";
 import { useComponents } from "./pill-manager";
-
-/**
- * add swap functionality
- */
+import { usePillRow } from "./pill-manager-row";
 
 export const PillManagerPill = forwardRef<
   HTMLDivElement,
@@ -33,7 +30,8 @@ export const PillManagerPill = forwardRef<
   const rtl = grid.state.rtl.use();
   const combinedRefs = useCombinedRefs(ref, dropRef);
 
-  const { activePill } = usePillControls();
+  const { activePill, setActivePill, setActiveRow } = usePillControls();
+  const { pillSource } = usePillRow();
   const {
     aggMenuRenderer: AggMenu,
     measureMenuRenderer: MeasureMenu,
@@ -59,26 +57,29 @@ export const PillManagerPill = forwardRef<
         data-draggable={item.draggable}
       >
         {item.draggable && <DragHandle item={item} />}
-        {item.isAggregation && (
+        {(item.isAggregation || item.isMeasure) && (
           <Menu.Root>
-            <Menu.Trigger className="lng1771-pill-manager__menu-trigger">
+            <Menu.Trigger
+              className="lng1771-pill-manager__menu-trigger"
+              tabIndex={-1}
+              onFocus={(ev) => {
+                let current: HTMLElement | null = ev.currentTarget;
+                while (current && current.getAttribute("data-rows-root") == null) {
+                  current = current.parentElement;
+                }
+                if (current) current.focus();
+                setTimeout(() => {
+                  setActivePill(item.dropId);
+                  setActiveRow(pillSource);
+                });
+              }}
+            >
               <TriggerIcon width={16} height={16} />
             </Menu.Trigger>
             <Menu.Portal>
               <Menu.Positioner onClick={(ev) => ev.stopPropagation()}>
-                <AggMenu grid={grid} column={item.column!} />
-              </Menu.Positioner>
-            </Menu.Portal>
-          </Menu.Root>
-        )}
-        {item.isMeasure && (
-          <Menu.Root>
-            <Menu.Trigger className="lng1771-pill-manager__menu-trigger">
-              <TriggerIcon width={16} height={16} />
-            </Menu.Trigger>
-            <Menu.Portal>
-              <Menu.Positioner onClick={(ev) => ev.stopPropagation()}>
-                <MeasureMenu grid={grid} column={item.column!} />
+                {item.isAggregation && <AggMenu grid={grid} column={item.column!} />}
+                {item.isMeasure && <MeasureMenu grid={grid} column={item.column!} />}
               </Menu.Positioner>
             </Menu.Portal>
           </Menu.Root>
