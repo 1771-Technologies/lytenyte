@@ -67,7 +67,7 @@ export const ColumnManagerTreeItem = forwardRef<
         {canDrop && yHalf === "bottom" && (
           <div className="lng1771-column-manager__tree-item-drop-indicator-bottom" />
         )}
-        <DragIcon onPointerDown={onPointerDown} />
+        <DragIcon width={16} height={16} onPointerDown={onPointerDown} />
         <Checkbox
           htmlFor={labelId}
           aria-labelledby={labelId}
@@ -123,7 +123,7 @@ export const ColumnManagerTreeItem = forwardRef<
             <ArrowRightIcon id={id} width={16} height={16} />
           )}
         </button>
-        <DragIcon onPointerDown={onPointerDown} />
+        <DragIcon width={16} height={16} onPointerDown={onPointerDown} />
         <Checkbox
           htmlFor={labelId}
           aria-labelledby={labelId}
