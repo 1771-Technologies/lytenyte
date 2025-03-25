@@ -9,19 +9,21 @@ import {
   type JSX,
   type SetStateAction,
 } from "react";
+import type { RowProps } from "./pill-manager-types";
 
 interface PillRowContext {
   readonly expanded: boolean;
   readonly expandable: boolean;
   readonly setExpanded: Dispatch<SetStateAction<boolean>>;
+  readonly pillSource: RowProps["pillSource"];
 }
 
 const PillRowContext = createContext<PillRowContext>(null as unknown as PillRowContext);
 
 export const usePillRow = () => useContext(PillRowContext);
 
-export const PillManagerRow = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(
-  function PillManagerRow(props, ref) {
+export const PillManagerRow = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & RowProps>(
+  function PillManagerRow({ pillSource, ...props }, ref) {
     const [expanded, setExpanded] = useState(false);
 
     const value = useMemo<PillRowContext>(() => {
@@ -29,8 +31,9 @@ export const PillManagerRow = forwardRef<HTMLDivElement, JSX.IntrinsicElements["
         expanded,
         setExpanded,
         expandable: true,
+        pillSource,
       };
-    }, [expanded]);
+    }, [expanded, pillSource]);
 
     return (
       <PillRowContext.Provider value={value}>
@@ -39,7 +42,8 @@ export const PillManagerRow = forwardRef<HTMLDivElement, JSX.IntrinsicElements["
           className={clsx("lng1771-pill-manager__row")}
           ref={ref}
           data-expanded={expanded}
-        ></div>
+          data-pill-row-key={pillSource}
+        />
       </PillRowContext.Provider>
     );
   },

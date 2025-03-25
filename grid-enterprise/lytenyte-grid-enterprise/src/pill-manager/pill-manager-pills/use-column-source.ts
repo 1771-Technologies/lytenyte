@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 import { useGrid } from "../../use-grid";
 import type { DragActive } from "@1771technologies/lytenyte-grid-community/internal";
-import type { DragTag, PillManagerPillItem, PillsProps } from "../pill-manager-types";
+import type { DragTag, PillManagerPillItem, RowProps } from "../pill-manager-types";
 import { canAgg, canMeasure } from "./utils";
 
-export function useColumnSource(source: PillsProps["pillSource"]) {
+export function useColumnSource(source: RowProps["pillSource"]) {
   const { api, state: sx } = useGrid();
 
   const columns = sx.columns.use();

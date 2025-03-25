@@ -6,8 +6,10 @@ export interface PillProps {
   interactive?: boolean;
 }
 
-export interface PillsProps {
+export interface RowProps {
   readonly pillSource: "columns" | "column-pivots" | "row-groups" | "measures" | "aggregations";
+}
+export interface PillProps {
   readonly children: (p: { pills: PillManagerPillItem[] }) => ReactNode;
 }
 

@@ -54,9 +54,9 @@ export default function Play() {
         <PillManager.Root grid={grid}>
           <PillManager.DragPlaceholder />
           <PillManager.Rows>
-            <PillManager.Row>
+            <PillManager.Row pillSource="columns">
               <PillManager.RowLabelColumns />
-              <PillManager.Pills pillSource="columns">
+              <PillManager.Pills>
                 {({ pills }) => {
                   return (
                     <>
@@ -71,9 +71,9 @@ export default function Play() {
             </PillManager.Row>
             <PillManager.Separator />
 
-            <PillManager.Row>
+            <PillManager.Row pillSource="row-groups">
               <PillManager.RowLabelRowGroups />
-              <PillManager.Pills pillSource="row-groups">
+              <PillManager.Pills>
                 {({ pills }) => {
                   return (
                     <>
@@ -88,9 +88,9 @@ export default function Play() {
             </PillManager.Row>
             <PillManager.Separator />
 
-            <PillManager.Row>
+            <PillManager.Row pillSource="aggregations">
               <PillManager.RowLabelAggregations />
-              <PillManager.Pills pillSource="aggregations">
+              <PillManager.Pills>
                 {({ pills }) => {
                   return (
                     <>
@@ -105,9 +105,9 @@ export default function Play() {
             </PillManager.Row>
             <PillManager.Separator />
 
-            <PillManager.Row>
+            <PillManager.Row pillSource="measures">
               <PillManager.RowLabelMeasures />
-              <PillManager.Pills pillSource="measures">
+              <PillManager.Pills>
                 {({ pills }) => {
                   return (
                     <>
@@ -122,9 +122,9 @@ export default function Play() {
             </PillManager.Row>
             <PillManager.Separator />
 
-            <PillManager.Row>
+            <PillManager.Row pillSource="column-pivots">
               <PillManager.RowLabelColumnPivots />
-              <PillManager.Pills pillSource="column-pivots">
+              <PillManager.Pills>
                 {({ pills }) => {
                   return (
                     <>

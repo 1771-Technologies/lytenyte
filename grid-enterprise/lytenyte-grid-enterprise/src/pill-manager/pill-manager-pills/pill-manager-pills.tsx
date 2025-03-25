@@ -7,12 +7,15 @@ import { useRowGroupsSource } from "./use-row-groups-source";
 import { useColumnPivotSource } from "./use-column-pivot-source";
 import { useDroppable } from "@1771technologies/lytenyte-grid-community/internal";
 import { useCombinedRefs } from "@1771technologies/react-utils";
-import type { DragTag, PillsProps } from "../pill-manager-types";
+import type { DragTag, PillProps } from "../pill-manager-types";
+import { usePillRow } from "../pill-manager-row";
 
 export const PillManagerPills = forwardRef<
   HTMLDivElement,
-  Omit<JSX.IntrinsicElements["div"], "children"> & PillsProps
->(function PillManagerRow({ pillSource, children, ...props }, ref) {
+  Omit<JSX.IntrinsicElements["div"], "children"> & PillProps
+>(function PillManagerRow({ children, ...props }, ref) {
+  const { pillSource } = usePillRow();
+
   const aggs = useAggregationSource(pillSource);
   const measures = useMeasuresSource(pillSource);
   const columns = useColumnSource(pillSource);
@@ -64,6 +67,7 @@ export const PillManagerPills = forwardRef<
       ref={combined}
       data-pill-source={pillSource}
       data-drop-visible={canDrop && sourceItems.filter((c) => c.active).length === 0}
+      tabIndex={-1}
     >
       <div className="lng1771-pill-manager__pills-inner">
         {children({ pills: sourceItems })}

@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import { useGrid } from "../../use-grid";
-import type { PillManagerPillItem, PillsProps } from "../pill-manager-types";
+import type { PillManagerPillItem, RowProps } from "../pill-manager-types";
 
-export function useMeasuresSource(source: PillsProps["pillSource"]) {
+export function useMeasuresSource(source: RowProps["pillSource"]) {
   const { api, state: sx } = useGrid();
 
   const columns = sx.columns.use();

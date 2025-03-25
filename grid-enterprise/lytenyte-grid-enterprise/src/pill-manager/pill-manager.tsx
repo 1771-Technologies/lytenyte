@@ -19,6 +19,7 @@ import { PillManagerExpander } from "./pill-manager-expander";
 import { PillManagerSeparator } from "./pill-manager-separator";
 import { DragProvider } from "@1771technologies/lytenyte-grid-community/internal";
 import { PillManagerDragPlaceholder } from "./pill-manager-drag-placeholder";
+import { PillManagerControlsProvider } from "./pill-manager-controls";
 
 interface RootProps {
   readonly grid: StoreEnterpriseReact<any>;
@@ -31,9 +32,11 @@ const Root = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & RootProps
   return (
     <DragProvider>
       <GridProvider value={grid}>
-        <RootImpl {...props} ref={ref}>
-          {children}
-        </RootImpl>
+        <PillManagerControlsProvider>
+          <RootImpl {...props} ref={ref}>
+            {children}
+          </RootImpl>
+        </PillManagerControlsProvider>
       </GridProvider>
     </DragProvider>
   );

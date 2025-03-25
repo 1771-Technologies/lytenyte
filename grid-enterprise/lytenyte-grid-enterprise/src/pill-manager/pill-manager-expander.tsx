@@ -11,6 +11,7 @@ export const PillManagerExpander = forwardRef<HTMLButtonElement, JSX.IntrinsicEl
         {...props}
         className={clsx("lng1771-pill-manager__expander")}
         ref={ref}
+        tabIndex={-1}
         onClick={() => {
           setExpanded((prev) => !prev);
         }}
