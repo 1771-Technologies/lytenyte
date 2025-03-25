@@ -13,9 +13,12 @@
   display: grid;
   grid-template-columns: 160px calc(100% - 160px - 30px) 30px;
 
-  &:focus-visible {
+  &:not([data-active-pill]):focus-visible {
     outline: 1px solid var(--lng1771-primary-50);
     outline-offset: -1px;
+  }
+  &[data-active-pill]:focus-visible {
+    outline: none;
   }
 }
 

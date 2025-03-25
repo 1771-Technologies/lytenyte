@@ -61,7 +61,9 @@ export const PillManagerPill = forwardRef<
           <Menu.Root>
             <Menu.Trigger
               className="lng1771-pill-manager__menu-trigger"
+              data-pill-menu-trigger="true"
               tabIndex={-1}
+              onClick={(e) => e.stopPropagation()}
               onFocus={(ev) => {
                 let current: HTMLElement | null = ev.currentTarget;
                 while (current && current.getAttribute("data-rows-root") == null) {

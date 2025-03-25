@@ -120,6 +120,19 @@ export const PillManagerRows = forwardRef<HTMLDivElement, JSX.IntrinsicElements[
             `[data-pill-expander-source]`,
           ) as HTMLElement;
           if (expander) expander.click();
+        } else if (ev.key === "m") {
+          if (!activePill) return;
+
+          const currentActive = targets.find((c) => c[0] === activeRow)?.[1];
+          if (!currentActive) return;
+          const pill = currentActive.querySelector(
+            `[data-pill-key="${activePill}"]`,
+          ) as HTMLElement;
+          if (!pill) return;
+
+          const menu = pill.querySelector('[data-pill-menu-trigger="true"]') as HTMLElement;
+          if (!menu) return;
+          menu.click();
         }
       },
       [activePill, activeRow, kd, setActivePill, setActiveRow, sx.state.rtl],
