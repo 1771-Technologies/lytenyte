@@ -24,9 +24,14 @@
       "require": "./src/icons.ts"
     },
     "./menu": {
-      "types": "./src/menu.ts",
-      "import": "./src/menu.ts",
-      "require": "./src/menu.ts"
+      "types": "./src/menu/index.ts",
+      "import": "./src/menu/index.ts",
+      "require": "./src/menu/index.ts"
+    },
+    "./pill-manager": {
+      "types": "./src/pill-manager/index.ts",
+      "import": "./src/pill-manager/index.ts",
+      "require": "./src/pill-manager/index.ts"
     },
     "./sort-manager": {
       "types": "./src/sort-manager.ts",
@@ -72,7 +77,8 @@
         "import": "./dist/filters.js",
         "require": "./dist/filters.js"
       },
-      "./css": "./dist/lytenyte-grid-enterprise.css"
+      "./css": "./dist/lytenyte-grid-enterprise.css",
+      "./menu.css": "./dist/menu.css"
     }
   },
   "peerDependencies": {
