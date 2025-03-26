@@ -87,7 +87,17 @@ export default function Play() {
                   </ColumnManager.DragBoxLabel>
                   <ColumnManager.DragBoxExpander />
                 </ColumnManager.DragBoxControls>
-                <ColumnManager.DropZone></ColumnManager.DropZone>
+                <ColumnManager.DropZone>
+                  {({ pills }) => {
+                    return (
+                      <>
+                        {pills.map((c) => (
+                          <ColumnManager.Pill item={c} key={c.label} />
+                        ))}
+                      </>
+                    );
+                  }}
+                </ColumnManager.DropZone>
               </ColumnManager.DragBox>
             );
           })}

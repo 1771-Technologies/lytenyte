@@ -153,3 +153,20 @@
   border: 1px solid var(--lng1771-gray-30);
   background-color: var(--lng1771-gray-05);
 }
+
+.lng1771-column-manager__drop-indicator-end {
+  position: absolute;
+  top: 0px;
+  inset-inline-end: 0px;
+  width: 1px;
+  height: 100%;
+  background-color: var(--lng1771-primary-50);
+}
+.lng1771-column-manager__drop-indicator-start {
+  position: absolute;
+  top: 0px;
+  inset-inline-start: 0px;
+  width: 1px;
+  height: 100%;
+  background-color: var(--lng1771-primary-50);
+}

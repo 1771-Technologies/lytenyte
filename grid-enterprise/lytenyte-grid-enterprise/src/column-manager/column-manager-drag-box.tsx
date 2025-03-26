@@ -1,4 +1,4 @@
-import { createContext, forwardRef, useMemo, type JSX } from "react";
+import { createContext, forwardRef, useContext, useMemo, type JSX } from "react";
 import type { ColumnManagerBoxSource } from "./column-manager-types";
 import { useAggregationSource } from "../pill-manager/pill-manager-pills/use-aggregation-source";
 import { clsx } from "@1771technologies/js-utils";
@@ -8,6 +8,7 @@ import { useColumnPivotSource } from "../pill-manager/pill-manager-pills/use-col
 import type { PillManagerPillItem } from "../pill-manager/pill-manager-types";
 
 const context = createContext<{
+  pillSource: string;
   dropTags: string[];
   dropData: { target: string; sourceItems: PillManagerPillItem[] };
 }>({} as any);
@@ -44,8 +45,8 @@ export const ColumnManagerDragBox = forwardRef<
   }, [source, sourceItems]);
 
   const value = useMemo(() => {
-    return { dropData, dropTags };
-  }, [dropData, dropTags]);
+    return { dropData, dropTags, pillSource: source };
+  }, [dropData, dropTags, source]);
 
   return (
     <context.Provider value={value}>
@@ -55,3 +56,5 @@ export const ColumnManagerDragBox = forwardRef<
     </context.Provider>
   );
 });
+
+export const useDragBox = () => useContext(context);

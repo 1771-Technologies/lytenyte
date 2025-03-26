@@ -1,22 +1,7 @@
 import "./column-manager.css";
-/**
- * <Root>
- *  <ColumnTree>
- *      <ColumnTreeItem/>
- *  </ColumnTree>
- *  <DragBox source="row-groups">
- *      <DragBoxLabel />
- *      <DragBoxExpander />
- *      <DragBoxPills>
- *          <DragBoxPill />
- *      </DragBoxPills>
- *  </DragBox>
- * </Root>
- */
-
 import { clsx } from "@1771technologies/js-utils";
 import { DragProvider } from "@1771technologies/lytenyte-grid-community/internal";
-import { forwardRef, type JSX } from "react";
+import { createContext, forwardRef, useContext, useMemo, type JSX, type ReactNode } from "react";
 import { GridProvider } from "../use-grid";
 import type { StoreEnterpriseReact } from "@1771technologies/grid-types";
 import { ColumnStateProvider } from "./column-manager-state";
@@ -29,24 +14,52 @@ import { ColumnManagerDragBoxLabel } from "./column-manager-drag-box-label";
 import { ColumnManagerDragBoxExpander } from "./column-manager-drag-box-expander";
 import { ColumnManagerDropZone } from "./column-manager-drop-zone";
 import { Separator } from "../components-internal/separator/separator";
+import {
+  PillManagerAggMenu,
+  PillManagerMeasureMenu,
+  type PillManagerAggMenuProps,
+} from "../pill-manager/pill-manager-agg-menu";
+import { MoreDotsIcon } from "../icons";
+import { ColumnManagerPill } from "./column-manager-pill";
 
 interface RootProps<D = any> {
+  readonly aggMenuRenderer?: (p: PillManagerAggMenuProps<D>) => ReactNode;
+  readonly measureMenuRenderer?: (p: PillManagerAggMenuProps<D>) => ReactNode;
+  readonly menuTriggerIcon?: (p: JSX.IntrinsicElements["svg"]) => ReactNode;
   readonly grid: StoreEnterpriseReact<D>;
 }
 
+const context = createContext<{
+  readonly aggMenuRenderer: (p: PillManagerAggMenuProps<any>) => ReactNode;
+  readonly measureMenuRenderer: (p: PillManagerAggMenuProps<any>) => ReactNode;
+  readonly menuTriggerIcon: (p: JSX.IntrinsicElements["svg"]) => ReactNode;
+}>({} as any);
+
+export const useComponents = () => useContext(context);
+
 const Root = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & RootProps>(function Root(
-  { children, className, grid, ...props },
+  { children, className, grid, aggMenuRenderer, measureMenuRenderer, menuTriggerIcon, ...props },
   ref,
 ) {
+  const components = useMemo(() => {
+    return {
+      aggMenuRenderer: aggMenuRenderer ?? PillManagerAggMenu,
+      measureMenuRenderer: measureMenuRenderer ?? PillManagerMeasureMenu,
+      menuTriggerIcon: menuTriggerIcon ?? MoreDotsIcon,
+    };
+  }, [aggMenuRenderer, measureMenuRenderer, menuTriggerIcon]);
+
   return (
     <ColumnStateProvider>
-      <GridProvider value={grid}>
-        <DragProvider>
-          <div {...props} className={clsx("lng1771-column-manager", className)} ref={ref}>
-            {children}
-          </div>
-        </DragProvider>
-      </GridProvider>
+      <context.Provider value={components}>
+        <GridProvider value={grid}>
+          <DragProvider>
+            <div {...props} className={clsx("lng1771-column-manager", className)} ref={ref}>
+              {children}
+            </div>
+          </DragProvider>
+        </GridProvider>
+      </context.Provider>
     </ColumnStateProvider>
   );
 });
@@ -63,6 +76,7 @@ export const ColumnManager = {
   DragBoxLabel: ColumnManagerDragBoxLabel,
   DragBoxExpander: ColumnManagerDragBoxExpander,
   DropZone: ColumnManagerDropZone,
+  Pill: ColumnManagerPill,
 
   DragPlaceholder: ColumnManagerDragPlaceholder,
 };
