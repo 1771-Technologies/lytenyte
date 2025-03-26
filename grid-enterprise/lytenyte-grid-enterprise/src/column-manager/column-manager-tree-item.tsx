@@ -141,8 +141,9 @@ export const ColumnManagerTreeItem = forwardRef<
 
   if (ci.data.type === "leaf") {
     const data = ci.data.data;
-
     const column = columns.get(data.id)!;
+    if (!column) return null;
+
     const hidden = column.hide ?? base.hide;
     const hidable = !pivotMode && api.columnIsHidable(column);
 

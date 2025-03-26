@@ -1,12 +1,12 @@
 import { forwardRef, type JSX } from "react";
 import { Pill } from "../pill/pill";
-import { DragIcon } from "../icons";
+import { CrossIcon, DragIcon } from "../icons";
 import { useDraggable, useDroppable } from "@1771technologies/lytenyte-grid-community/internal";
 import { useCombinedRefs } from "@1771technologies/react-utils";
 import { useGrid } from "../use-grid";
 import { Menu } from "../external";
 import type { PillManagerPillItem } from "../pill-manager/pill-manager-types";
-import { useComponents } from "./column-manager";
+import { useComponents } from "./column-mananger-context";
 
 export const ColumnManagerPill = forwardRef<
   HTMLDivElement,
@@ -16,7 +16,7 @@ export const ColumnManagerPill = forwardRef<
     ref: dropRef,
     isTarget,
     canDrop,
-    xHalf,
+    yHalf,
   } = useDroppable({
     id: item.dropId,
     accepted: item.dropTags,
@@ -25,7 +25,6 @@ export const ColumnManagerPill = forwardRef<
   });
 
   const grid = useGrid();
-  const rtl = grid.state.rtl.use();
   const combinedRefs = useCombinedRefs(ref, dropRef);
 
   const {
@@ -43,7 +42,6 @@ export const ColumnManagerPill = forwardRef<
       data-pill-active={item.active}
       data-is-droppable={isTarget && canDrop}
       className="lng1771-column-manager__pill-outer"
-      onClick={item.onClick}
     >
       <Pill
         kind={item.kind}
@@ -52,17 +50,20 @@ export const ColumnManagerPill = forwardRef<
         data-draggable={item.draggable}
       >
         {item.draggable && <DragHandle item={item} />}
-        <span>{item.label}</span>
-        {item.secondaryLabel && (
-          <span className="lng1771-column-manager__pill-inner--secondary-label">
-            {item.secondaryLabel}
-          </span>
-        )}
+
+        <div className="lng1771-column-manager__pill-labels">
+          <span>{item.label}</span>
+          {item.secondaryLabel && (
+            <span className="lng1771-column-manager__pill-inner--secondary-label">
+              {item.secondaryLabel}
+            </span>
+          )}
+        </div>
 
         {(item.isAggregation || item.isMeasure) && (
           <Menu.Root>
             <Menu.Trigger
-              className="lng1771-column-manager__menu-trigger"
+              className="lng1771-column-manager__pill-button"
               data-pill-menu-trigger="true"
               tabIndex={-1}
               onClick={(e) => e.stopPropagation()}
@@ -77,11 +78,17 @@ export const ColumnManagerPill = forwardRef<
             </Menu.Portal>
           </Menu.Root>
         )}
+
+        {(item.isRowGroup || item.isColumnPivot || item.isAggregation || item.isMeasure) && (
+          <button className="lng1771-column-manager__pill-button" onClick={item.onClick}>
+            <CrossIcon width={16} height={16} />
+          </button>
+        )}
       </Pill>
-      {canDrop && (rtl ? "left" : "right") === xHalf && (
+      {canDrop && "bottom" === yHalf && (
         <div className="lng1771-column-manager__drop-indicator-end" />
       )}
-      {canDrop && (rtl ? "right" : "left") === xHalf && (
+      {canDrop && "top" === yHalf && (
         <div className="lng1771-column-manager__drop-indicator-start" />
       )}
     </div>

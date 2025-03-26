@@ -172,36 +172,66 @@
 .lng1771-column-manager__pill-outer {
   padding-inline: 4px;
   padding-block: 6px;
-  cursor: pointer;
   position: relative;
 
   &:hover > .lng1771-pill[data-pill-kind="plain"] {
     &[data-pill-interactive] {
       background-color: color-mix(in srgb, var(--lng1771-pill-plain-fill) 95%, white 5%);
-      cursor: pointer;
+      cursor: unset;
     }
   }
 
   &:hover > .lng1771-pill[data-pill-kind="row-group"] {
     &[data-pill-interactive] {
       background-color: color-mix(in srgb, var(--lng1771-pill-group-fill) 95%, white 5%);
-      cursor: pointer;
+      cursor: unset;
     }
   }
 
   &:hover > .lng1771-pill[data-pill-kind="column-pivot"] {
     &[data-pill-interactive] {
       background-color: color-mix(in srgb, var(--lng1771-pill-pivot-fill) 95%, white 5%);
-      cursor: pointer;
+      cursor: unset;
     }
   }
 
   &:hover > .lng1771-pill[data-pill-kind="column"] {
     &[data-pill-interactive] {
       background-color: color-mix(in srgb, var(--lng1771-pill-column-fill) 95%, white 5%);
-      cursor: pointer;
+      cursor: unset;
     }
   }
+}
+.lng1771-column-manager__pill-inner {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.lng1771-column-manager__pill-labels {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.lng1771-column-manager__pill-button {
+  background-color: transparent;
+  border: none;
+  color: var(--lng1771-gray-80);
+  padding: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--lng1771-gray-05);
+  }
+}
+.lng1771-column-manager__pill-button + .lng1771-column-manager__pill-button {
+  padding-inline-start: 6px;
 }
 
 .lng1771-column-manager__pill-inner[data-draggable="true"] {
@@ -222,4 +252,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.lng1771-column-manager__drop-indicator-end {
+  position: absolute;
+  bottom: 0px;
+  inset-inline-start: 0px;
+  width: 100%;
+  height: 1px;
+  background-color: var(--lng1771-primary-50);
+}
+.lng1771-column-manager__drop-indicator-start {
+  position: absolute;
+  top: 0px;
+  inset-inline-start: 0px;
+  width: 100%;
+  height: 1px;
+  background-color: var(--lng1771-primary-50);
 }

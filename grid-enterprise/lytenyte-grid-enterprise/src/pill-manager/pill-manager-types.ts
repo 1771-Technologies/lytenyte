@@ -23,6 +23,9 @@ export interface PillManagerPillItem {
   readonly active: boolean;
 
   readonly column?: ColumnEnterpriseReact<any>;
+  readonly isColumn?: boolean;
+  readonly isRowGroup?: boolean;
+  readonly isColumnPivot?: boolean;
   readonly isAggregation?: boolean;
   readonly isMeasure?: boolean;
 

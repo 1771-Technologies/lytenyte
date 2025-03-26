@@ -21,6 +21,8 @@ export default function Play() {
     rowSelectionCheckbox: "normal",
     rowDragEnabled: true,
 
+    rowGroupModel: ["age", "education", "job"],
+
     columnBase: {
       resizable: true,
       movable: true,

@@ -4,7 +4,10 @@ import type { DragTag, PillManagerPillItem, RowProps } from "../pill-manager-typ
 import { canAgg, canMeasure } from "./utils";
 import type { DragActive } from "@1771technologies/lytenyte-grid-community/internal";
 
-export function useRowGroupsSource(source: RowProps["pillSource"]) {
+export function useRowGroupsSource(
+  source: RowProps["pillSource"],
+  dir: "horizontal" | "vertical" = "horizontal",
+) {
   const { api, state: sx } = useGrid();
 
   const rowModel = sx.rowGroupModel.use();
@@ -29,7 +32,11 @@ export function useRowGroupsSource(source: RowProps["pillSource"]) {
           const over = d.over.at(-1);
           if (!over || !over.canDrop) return;
 
-          const isBefore = (sx.rtl.peek() ? "right" : "left") === over.xHalf;
+          const isBefore =
+            dir === "horizontal"
+              ? (sx.rtl.peek() ? "right" : "left") === over.xHalf
+              : over.yHalf === "top";
+
           if (over.data.target === "row-group") {
             const id = over.data.id;
             if (id === c.id) return;
@@ -109,6 +116,7 @@ export function useRowGroupsSource(source: RowProps["pillSource"]) {
           onClick: onToggle,
 
           draggable: true,
+          isRowGroup: true,
           dragEnd,
           dragTags: dragTags,
           dropTags: ["row-group"],
@@ -141,6 +149,7 @@ export function useRowGroupsSource(source: RowProps["pillSource"]) {
     api,
     base,
     columns,
+    dir,
     measureModel,
     rowModel,
     source,

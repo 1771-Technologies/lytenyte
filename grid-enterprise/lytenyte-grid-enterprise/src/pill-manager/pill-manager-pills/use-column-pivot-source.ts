@@ -4,7 +4,10 @@ import type { DragTag, PillManagerPillItem, RowProps } from "../pill-manager-typ
 import { canAgg, canMeasure } from "./utils";
 import type { DragActive } from "@1771technologies/lytenyte-grid-community/internal";
 
-export function useColumnPivotSource(source: RowProps["pillSource"]) {
+export function useColumnPivotSource(
+  source: RowProps["pillSource"],
+  dir: "vertical" | "horizontal" = "horizontal",
+) {
   const { api, state: sx } = useGrid();
 
   const columns = sx.columns.use();
@@ -35,7 +38,11 @@ export function useColumnPivotSource(source: RowProps["pillSource"]) {
         const over = d.over.at(-1);
         if (!over || !over.canDrop) return;
 
-        const isBefore = (sx.rtl.peek() ? "right" : "left") === over.xHalf;
+        const isBefore =
+          dir === "horizontal"
+            ? (sx.rtl.peek() ? "right" : "left") === over.xHalf
+            : over.yHalf === "top";
+
         if (over.data.target === "column-pivot") {
           const id = over.data.id;
           if (id === c.id) return;
@@ -117,6 +124,7 @@ export function useColumnPivotSource(source: RowProps["pillSource"]) {
         dragEnd,
         dropId: `pivot-${c.id}`,
         draggable: true,
+        isColumnPivot: true,
         dragTags: dragTags,
         dropTags: ["column-pivot"],
         dropData: { target: "column-pivot", id: c.id },
@@ -145,6 +153,7 @@ export function useColumnPivotSource(source: RowProps["pillSource"]) {
     api,
     base,
     columns,
+    dir,
     measureModel,
     pivotModel,
     source,

@@ -1,7 +1,7 @@
 import "./column-manager.css";
 import { clsx } from "@1771technologies/js-utils";
 import { DragProvider } from "@1771technologies/lytenyte-grid-community/internal";
-import { createContext, forwardRef, useContext, useMemo, type JSX, type ReactNode } from "react";
+import { forwardRef, useMemo, type JSX, type ReactNode } from "react";
 import { GridProvider } from "../use-grid";
 import type { StoreEnterpriseReact } from "@1771technologies/grid-types";
 import { ColumnStateProvider } from "./column-manager-state";
@@ -21,6 +21,7 @@ import {
 } from "../pill-manager/pill-manager-agg-menu";
 import { MoreDotsIcon } from "../icons";
 import { ColumnManagerPill } from "./column-manager-pill";
+import { ColumnMangerContextProvider } from "./column-mananger-context";
 
 interface RootProps<D = any> {
   readonly aggMenuRenderer?: (p: PillManagerAggMenuProps<D>) => ReactNode;
@@ -28,14 +29,6 @@ interface RootProps<D = any> {
   readonly menuTriggerIcon?: (p: JSX.IntrinsicElements["svg"]) => ReactNode;
   readonly grid: StoreEnterpriseReact<D>;
 }
-
-const context = createContext<{
-  readonly aggMenuRenderer: (p: PillManagerAggMenuProps<any>) => ReactNode;
-  readonly measureMenuRenderer: (p: PillManagerAggMenuProps<any>) => ReactNode;
-  readonly menuTriggerIcon: (p: JSX.IntrinsicElements["svg"]) => ReactNode;
-}>({} as any);
-
-export const useComponents = () => useContext(context);
 
 const Root = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & RootProps>(function Root(
   { children, className, grid, aggMenuRenderer, measureMenuRenderer, menuTriggerIcon, ...props },
@@ -51,7 +44,7 @@ const Root = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & RootProps
 
   return (
     <ColumnStateProvider>
-      <context.Provider value={components}>
+      <ColumnMangerContextProvider value={components}>
         <GridProvider value={grid}>
           <DragProvider>
             <div {...props} className={clsx("lng1771-column-manager", className)} ref={ref}>
@@ -59,7 +52,7 @@ const Root = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & RootProps
             </div>
           </DragProvider>
         </GridProvider>
-      </context.Provider>
+      </ColumnMangerContextProvider>
     </ColumnStateProvider>
   );
 });

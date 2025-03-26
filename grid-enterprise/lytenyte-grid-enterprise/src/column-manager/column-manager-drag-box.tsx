@@ -19,8 +19,8 @@ export const ColumnManagerDragBox = forwardRef<
 >(function ColumnManagerDragBox({ source, className, children, ...props }, ref) {
   const aggs = useAggregationSource(source);
   const measures = useMeasuresSource(source);
-  const rowGroups = useRowGroupsSource(source);
-  const pivots = useColumnPivotSource(source);
+  const rowGroups = useRowGroupsSource(source, "vertical");
+  const pivots = useColumnPivotSource(source, "vertical");
 
   const sourceItems = useMemo(() => {
     if (source === "aggregations") return aggs.filter((c) => c.active);

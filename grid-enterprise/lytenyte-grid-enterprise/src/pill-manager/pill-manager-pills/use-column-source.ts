@@ -110,6 +110,7 @@ export function useColumnSource(source: RowProps["pillSource"]) {
           label: c.headerName ?? c.id,
           onClick: onToggle,
 
+          isColumn: true,
           draggable: api.columnIsMovable(c),
           dragTags,
           dragEnd,
