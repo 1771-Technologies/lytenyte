@@ -152,21 +152,17 @@
   border-radius: 6px;
   border: 1px solid var(--lng1771-gray-30);
   background-color: var(--lng1771-gray-05);
+
+  &[data-drop-visible="true"] {
+    border-style: dashed;
+    border-color: var(--lng1771-primary-50);
+  }
 }
 
-.lng1771-column-manager__drop-indicator-end {
-  position: absolute;
+.lng1771-column-manager__drop-zone-indicator {
   top: 0px;
   inset-inline-end: 0px;
-  width: 1px;
-  height: 100%;
-  background-color: var(--lng1771-primary-50);
-}
-.lng1771-column-manager__drop-indicator-start {
-  position: absolute;
-  top: 0px;
-  inset-inline-start: 0px;
-  width: 1px;
-  height: 100%;
+  width: 100%;
+  height: 1px;
   background-color: var(--lng1771-primary-50);
 }

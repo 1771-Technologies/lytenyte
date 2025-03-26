@@ -41,7 +41,7 @@ export const ColumnManagerDropZone = forwardRef<
       {children({ pills: dropData.sourceItems })}
 
       {canDrop && isNearestOver && dropData.sourceItems.filter((c) => c.active).length > 0 && (
-        <div className="lng1771-column-manager__drop-indicator-end" />
+        <div className="lng1771-column-manager__drop-zone-indicator" />
       )}
     </div>
   );

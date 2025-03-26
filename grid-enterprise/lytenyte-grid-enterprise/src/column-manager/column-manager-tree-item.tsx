@@ -11,6 +11,7 @@ import {
 import { allLeafs } from "./utils/all-leafs";
 import { clsx } from "@1771technologies/js-utils";
 import { useCombinedRefs } from "@1771technologies/react-utils";
+import { canAgg, canMeasure } from "../pill-manager/pill-manager-pills/utils";
 
 export const ColumnManagerTreeItem = forwardRef<
   HTMLDivElement,
@@ -25,6 +26,11 @@ export const ColumnManagerTreeItem = forwardRef<
   const pivotMode = state.columnPivotModeIsOn.use();
   const labelId = useId();
 
+  const pivotModel = state.columnPivotModel.use();
+  const aggModel = state.aggModel.use();
+  const groupModel = state.rowGroupModel.use();
+  const measureModel = state.measureModel.use();
+
   const dropData = useMemo(() => {
     const ids = ci.data.type === "leaf" ? [ci.data.data.id] : allLeafs(ci.data).map((c) => c.id);
     return { target: "columns", ids, isGroup: ci.data.type === "parent" };
@@ -36,7 +42,28 @@ export const ColumnManagerTreeItem = forwardRef<
       const columns = ci.data.type === "leaf" ? [ci.data.data] : allLeafs(ci.data);
       return { target: "columns", columns };
     },
-    getTags: () => ["columns"],
+    getTags: () => {
+      const columns = ci.data.type === "leaf" ? [ci.data.data] : allLeafs(ci.data);
+      const isPivotable =
+        columns.every((c) => api.columnIsPivotable(c)) &&
+        columns.some((c) => !pivotModel.includes(c.id));
+      const isGroupable =
+        columns.every((c) => api.columnIsRowGroupable(c)) &&
+        columns.some((c) => !groupModel.includes(c.id));
+      const isAggregable =
+        columns.every((c) => canAgg(c, base)) && columns.some((c) => !aggModel[c.id]);
+      const isMeasurable =
+        columns.every((c) => canMeasure(c, base)) && columns.some((c) => !measureModel[c.id]);
+
+      const dragTags = ["columns"];
+      console.log(isGroupable);
+      if (isPivotable) dragTags.push("column-pivot");
+      if (isGroupable) dragTags.push("row-group");
+      if (isAggregable) dragTags.push("aggregations");
+      if (isMeasurable) dragTags.push("measures");
+
+      return dragTags;
+    },
 
     onDragEnd: (p) => {
       const data = p.data as { target: string; columns: ColumnEnterpriseReact<any>[] };
@@ -52,6 +79,49 @@ export const ColumnManagerTreeItem = forwardRef<
 
         if (isGroup || over.yHalf === "top") api.columnMoveBefore(srcIds, ids[0]);
         else api.columnMoveAfter(srcIds, ids[0]);
+        return;
+      }
+
+      if (over.id === "row-groups-pills") {
+        const columns = data.columns.filter((c) => !groupModel.includes(c.id));
+        state.rowGroupModel.set((prev) => [...prev, ...columns.map((c) => c.id)]);
+        return;
+      }
+
+      if (over.id === "column-pivots-pills") {
+        const columns = data.columns.filter((c) => !pivotModel.includes(c.id));
+        state.columnPivotModel.set((prev) => [...prev, ...columns.map((c) => c.id)]);
+        return;
+      }
+
+      if (over.id === "aggregations-pills") {
+        const columns = Object.fromEntries(
+          data.columns
+            .filter((c) => !aggModel[c.id])
+            .map((c) => {
+              const aggFn = c.aggFnDefault ?? c.aggFnsAllowed?.at(0) ?? base.aggFnsAllowed?.at(0);
+
+              return [c.id, { fn: aggFn! }] as const;
+            }),
+        );
+
+        state.aggModel.set((prev) => ({ ...prev, ...columns }));
+        return;
+      }
+
+      if (over.id === "measures-pills") {
+        const columns = Object.fromEntries(
+          data.columns
+            .filter((c) => !measureModel[c.id])
+            .map((c) => {
+              const measureFn =
+                c.measureFnDefault ?? c.measureFnsAllowed?.at(0) ?? base.measureFnsAllowed?.at(0);
+
+              return [c.id, { fn: measureFn! }] as const;
+            }),
+        );
+
+        state.measureModel.set((prev) => ({ ...prev, ...columns }));
         return;
       }
     },
