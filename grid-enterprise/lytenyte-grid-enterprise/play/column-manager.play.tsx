@@ -60,16 +60,18 @@ export default function Play() {
         <ColumnManager.Root
           grid={grid}
           className={css`
-            display: grid;
-            grid-template-rows: 1fr auto auto auto auto;
+            display: flex;
+            flex-direction: column;
           `}
         >
           <ColumnManager.DragPlaceholder />
-          <ColumnManager.Tree>
-            {(c) => {
-              return <ColumnManager.TreeItem columnItem={c} />;
-            }}
-          </ColumnManager.Tree>
+          <div style={{ height: 600 }}>
+            <ColumnManager.Tree>
+              {(c) => {
+                return <ColumnManager.TreeItem columnItem={c} />;
+              }}
+            </ColumnManager.Tree>
+          </div>
 
           {(["row-groups", "aggregations", "column-pivots", "measures"] as const).map((c) => {
             return (
