@@ -1,4 +1,4 @@
-import { forwardRef, useId, type JSX } from "react";
+import { forwardRef, useId, useMemo, type JSX } from "react";
 import type { ListViewItemRendererProps } from "../list-view/list-view";
 import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import { useGrid } from "../use-grid";
@@ -25,10 +25,36 @@ export const ColumnManagerTreeItem = forwardRef<
   const pivotMode = state.columnPivotModeIsOn.use();
   const labelId = useId();
 
+  const dropData = useMemo(() => {
+    const ids = ci.data.type === "leaf" ? [ci.data.data.id] : allLeafs(ci.data).map((c) => c.id);
+    return { target: "columns", ids, isGroup: ci.data.type === "parent" };
+  }, [ci.data]);
+
   const { onPointerDown } = useDraggable({
     id: ci.data.type === "leaf" ? ci.data.data.id : ci.data.occurrence,
-    getData: () => ci.data,
+    getData: () => {
+      const columns = ci.data.type === "leaf" ? [ci.data.data] : allLeafs(ci.data);
+      return { target: "columns", columns };
+    },
     getTags: () => ["columns"],
+
+    onDragEnd: (p) => {
+      const data = p.data as { target: string; columns: ColumnEnterpriseReact<any>[] };
+
+      const over = p.over.at(-1);
+      if (!over) return;
+
+      if (over.data.target === "columns") {
+        const ids = over.data.ids;
+        const isGroup = over.data.isGroup;
+        const srcIds = data.columns.map((c) => c.id);
+        if (srcIds.some((c) => ids.includes(c))) return;
+
+        if (isGroup || over.yHalf === "top") api.columnMoveBefore(srcIds, ids[0]);
+        else api.columnMoveAfter(srcIds, ids[0]);
+        return;
+      }
+    },
   });
 
   const {
@@ -38,7 +64,7 @@ export const ColumnManagerTreeItem = forwardRef<
   } = useDroppable({
     id: ci.data.type === "leaf" ? ci.data.data.id : ci.data.occurrence,
     accepted: ["columns"],
-    data: ci.data,
+    data: dropData,
   });
 
   const combinedRefs = useCombinedRefs(ref, dropRef);
