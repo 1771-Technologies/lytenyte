@@ -57,13 +57,40 @@ export default function Play() {
           flex: 1;
         `}
       >
-        <ColumnManager.Root grid={grid}>
+        <ColumnManager.Root
+          grid={grid}
+          className={css`
+            display: grid;
+            grid-template-rows: 1fr auto auto auto auto;
+          `}
+        >
           <ColumnManager.DragPlaceholder />
           <ColumnManager.Tree>
             {(c) => {
               return <ColumnManager.TreeItem columnItem={c} />;
             }}
           </ColumnManager.Tree>
+
+          {(["row-groups", "aggregations", "column-pivots", "measures"] as const).map((c) => {
+            return (
+              <ColumnManager.DragBox source={c} key={c}>
+                <ColumnManager.Separator dir="horizontal" />
+                <ColumnManager.DragBoxControls>
+                  <ColumnManager.DragBoxLabel>
+                    {c === "row-groups"
+                      ? "Row Groups"
+                      : c === "aggregations"
+                        ? "Aggregations"
+                        : c === "column-pivots"
+                          ? "Column Pivots"
+                          : "Measures"}
+                  </ColumnManager.DragBoxLabel>
+                  <ColumnManager.DragBoxExpander />
+                </ColumnManager.DragBoxControls>
+                <ColumnManager.DropZone></ColumnManager.DropZone>
+              </ColumnManager.DragBox>
+            );
+          })}
         </ColumnManager.Root>
       </div>
     </div>

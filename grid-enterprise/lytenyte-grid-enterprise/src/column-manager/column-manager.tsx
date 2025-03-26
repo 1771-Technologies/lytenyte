@@ -23,6 +23,12 @@ import { ColumnStateProvider } from "./column-manager-state";
 import { ColumnManagerTree } from "./column-manager-tree";
 import { ColumnManagerTreeItem } from "./column-manager-tree-item";
 import { ColumnManagerDragPlaceholder } from "./column-manager-drag-placeholder";
+import { ColumnManagerDragBox } from "./column-manager-drag-box";
+import { ColumnManagerDragBoxControls } from "./column-manager-drag-box-controls";
+import { ColumnManagerDragBoxLabel } from "./column-manager-drag-box-label";
+import { ColumnManagerDragBoxExpander } from "./column-manager-drag-box-expander";
+import { ColumnManagerDropZone } from "./column-manager-drop-zone";
+import { Separator } from "../components-internal/separator/separator";
 
 interface RootProps<D = any> {
   readonly grid: StoreEnterpriseReact<D>;
@@ -49,5 +55,14 @@ export const ColumnManager = {
   Root,
   Tree: ColumnManagerTree,
   TreeItem: ColumnManagerTreeItem,
+
+  Separator: Separator,
+
+  DragBox: ColumnManagerDragBox,
+  DragBoxControls: ColumnManagerDragBoxControls,
+  DragBoxLabel: ColumnManagerDragBoxLabel,
+  DragBoxExpander: ColumnManagerDragBoxExpander,
+  DropZone: ColumnManagerDropZone,
+
   DragPlaceholder: ColumnManagerDragPlaceholder,
 };

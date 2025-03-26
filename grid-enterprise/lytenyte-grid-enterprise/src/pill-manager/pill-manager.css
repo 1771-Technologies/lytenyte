@@ -117,6 +117,12 @@ body.lng1771-drag-on
   background-color: transparent;
   border: none;
   border-inline-start: 1px solid var(--lng1771-gray-40);
+  cursor: pointer;
+  transition: background-color 100ms ease-in;
+
+  &:hover {
+    background-color: var(--lng1771-gray-20);
+  }
 }
 
 .lng1771-pill-manager__drag-placeholder {
