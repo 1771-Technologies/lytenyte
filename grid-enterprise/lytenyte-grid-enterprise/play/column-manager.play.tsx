@@ -66,6 +66,15 @@ export default function Play() {
             flex-direction: column;
           `}
         >
+          <div
+            className={css`
+              padding-inline: 8px;
+              display: flex;
+              align-items: center;
+            `}
+          >
+            <ColumnManager.Search />
+          </div>
           <ColumnManager.DragPlaceholder />
           <div style={{ height: 600 }}>
             <ColumnManager.Tree>

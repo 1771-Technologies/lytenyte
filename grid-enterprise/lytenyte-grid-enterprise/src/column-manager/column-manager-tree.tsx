@@ -32,8 +32,8 @@ export function ColumnManagerTree<D>({
 
         if (!query) return true;
 
-        const label = c.headerName ?? c.id;
-        return label.toLowerCase().includes(query.toLocaleLowerCase());
+        const searchLabel = [c.headerName ?? c.id, ...(c.groupPath ?? [])].join(" ");
+        return searchLabel.toLowerCase().includes(query.toLocaleLowerCase());
       })
       .map((c) => ({ path: c.groupPath ?? [], data: c }));
 

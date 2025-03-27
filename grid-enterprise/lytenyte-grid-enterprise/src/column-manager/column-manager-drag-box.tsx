@@ -50,7 +50,12 @@ export const ColumnManagerDragBox = forwardRef<
 
   return (
     <context.Provider value={value}>
-      <div {...props} className={clsx("lng1771-column-manager__drag-box", className)} ref={ref}>
+      <div
+        {...props}
+        tabIndex={0}
+        className={clsx("lng1771-column-manager__drag-box", className)}
+        ref={ref}
+      >
         {children}
       </div>
     </context.Provider>

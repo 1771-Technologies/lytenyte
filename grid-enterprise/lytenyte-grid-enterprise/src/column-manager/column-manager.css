@@ -112,6 +112,11 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+
+  &:focus-visible {
+    outline: 1px solid var(--lng1771-focus-outline);
+    outline-offset: -1px;
+  }
 }
 
 .lng1771-column-manager__drag-box-controls {
@@ -146,6 +151,10 @@
   border: none;
   cursor: pointer;
   transition: background-color 100ms ease-in;
+
+  &:focus-visible {
+    outline: 1px solid var(--lng1771-focus-outline);
+  }
 
   &:hover {
     background-color: var(--lng1771-gray-20);
@@ -234,12 +243,18 @@
   border-radius: 4px;
   cursor: pointer;
 
+  &:focus-visible {
+    outline: 1px solid var(--lng1771-primary-50);
+  }
   &:hover {
     background-color: var(--lng1771-gray-05);
   }
 }
-.lng1771-column-manager__pill-button + .lng1771-column-manager__pill-button {
-  padding-inline-start: 6px;
+
+.lng1771-column-manager__pill-buttons {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .lng1771-column-manager__pill-inner[data-draggable="true"] {

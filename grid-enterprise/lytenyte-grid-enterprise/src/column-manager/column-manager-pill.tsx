@@ -60,30 +60,31 @@ export const ColumnManagerPill = forwardRef<
           )}
         </div>
 
-        {(item.isAggregation || item.isMeasure) && (
-          <Menu.Root>
-            <Menu.Trigger
-              className="lng1771-column-manager__pill-button"
-              data-pill-menu-trigger="true"
-              tabIndex={-1}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <TriggerIcon width={16} height={16} />
-            </Menu.Trigger>
-            <Menu.Portal>
-              <Menu.Positioner onClick={(ev) => ev.stopPropagation()}>
-                {item.isAggregation && <AggMenu grid={grid} column={item.column!} />}
-                {item.isMeasure && <MeasureMenu grid={grid} column={item.column!} />}
-              </Menu.Positioner>
-            </Menu.Portal>
-          </Menu.Root>
-        )}
+        <div className="lng1771-column-manager__pill-buttons">
+          {(item.isAggregation || item.isMeasure) && (
+            <Menu.Root>
+              <Menu.Trigger
+                className="lng1771-column-manager__pill-button"
+                data-pill-menu-trigger="true"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <TriggerIcon width={16} height={16} />
+              </Menu.Trigger>
+              <Menu.Portal>
+                <Menu.Positioner onClick={(ev) => ev.stopPropagation()}>
+                  {item.isAggregation && <AggMenu grid={grid} column={item.column!} />}
+                  {item.isMeasure && <MeasureMenu grid={grid} column={item.column!} />}
+                </Menu.Positioner>
+              </Menu.Portal>
+            </Menu.Root>
+          )}
 
-        {(item.isRowGroup || item.isColumnPivot || item.isAggregation || item.isMeasure) && (
-          <button className="lng1771-column-manager__pill-button" onClick={item.onClick}>
-            <CrossIcon width={16} height={16} />
-          </button>
-        )}
+          {(item.isRowGroup || item.isColumnPivot || item.isAggregation || item.isMeasure) && (
+            <button className="lng1771-column-manager__pill-button" onClick={item.onClick}>
+              <CrossIcon width={16} height={16} />
+            </button>
+          )}
+        </div>
       </Pill>
       {canDrop && "bottom" === yHalf && (
         <div className="lng1771-column-manager__drop-indicator-end" />

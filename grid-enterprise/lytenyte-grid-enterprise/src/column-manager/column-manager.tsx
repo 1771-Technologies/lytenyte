@@ -22,6 +22,7 @@ import {
 import { MoreDotsIcon } from "../icons";
 import { ColumnManagerPill } from "./column-manager-pill";
 import { ColumnMangerContextProvider } from "./column-mananger-context";
+import { ColumnManagerSearch } from "./column-manager-search";
 
 interface RootProps<D = any> {
   readonly aggMenuRenderer?: (p: PillManagerAggMenuProps<D>) => ReactNode;
@@ -63,6 +64,7 @@ export const ColumnManager = {
   TreeItem: ColumnManagerTreeItem,
 
   Separator: Separator,
+  Search: ColumnManagerSearch,
 
   DragBox: ColumnManagerDragBox,
   DragBoxControls: ColumnManagerDragBoxControls,
