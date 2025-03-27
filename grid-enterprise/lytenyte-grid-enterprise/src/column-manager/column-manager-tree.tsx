@@ -5,6 +5,7 @@ import { useColumnManagerState } from "./column-manager-state";
 import { ListView, type ListViewItemRendererProps } from "../list-view/list-view";
 import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import { handleItemHide } from "./utils/handle-item-hide";
+import { useDrag, useDragStore } from "@1771technologies/lytenyte-grid-community/internal";
 
 interface ColumnManagerTreeProps<D> {
   children: (p: ListViewItemRendererProps<ColumnEnterpriseReact<D>>) => ReactNode;
@@ -40,8 +41,12 @@ export function ColumnManagerTree<D>({
     return paths;
   }, [api, columns, query]);
 
+  const dragStore = useDragStore();
+  const edgeScroll = useDrag(dragStore, (d) => !!d.active);
+
   return (
     <ListView
+      edgeScrollActive={edgeScroll}
       expansions={expansions}
       className={clsx("lng1771-column-manager__tree", className)}
       itemClassName={clsx("lng1771-column-manager__tree-item-wrapper", itemClassName)}

@@ -7,9 +7,11 @@ import {
 import { useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { ListViewProvider, useListView } from "./list-view-context";
 import {
+  useEdgeScroll,
   Virtualized,
   type RendererProps,
 } from "@1771technologies/lytenyte-grid-community/internal";
+import { useCombinedRefs } from "@1771technologies/react-utils";
 
 export interface ListViewItemRendererProps<D> {
   readonly data: PathTreeLeafNode<D> | PathTreeParentNode<D>;
@@ -29,6 +31,7 @@ export interface ListViewProps<D> {
     item: PathTreeLeafNode<D> | PathTreeParentNode<D>,
   ) => void;
 
+  readonly edgeScrollActive?: boolean;
   readonly className?: string;
   readonly style?: CSSProperties;
 
@@ -53,6 +56,7 @@ export function ListView<D>({
   renderer,
   itemClassName,
   itemStyle,
+  edgeScrollActive,
   className,
   style,
   rtl = false,
@@ -112,10 +116,17 @@ export function ListView<D>({
 
   const ref = useRef<HTMLDivElement | null>(null);
 
+  const r = useEdgeScroll({
+    isActive: !!edgeScrollActive,
+    direction: "vertical",
+  });
+
+  const combined = useCombinedRefs(r, ref);
+
   return (
     <ListViewProvider value={context}>
       <Virtualized
-        elRef={ref}
+        elRef={combined}
         className={className}
         style={style}
         tabIndex={0}
