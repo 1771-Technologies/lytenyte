@@ -1,5 +1,7 @@
 # @1771technologies/grid-store-community
 
+## 0.0.37
+
 ## 0.0.36
 
 ## 0.0.35
