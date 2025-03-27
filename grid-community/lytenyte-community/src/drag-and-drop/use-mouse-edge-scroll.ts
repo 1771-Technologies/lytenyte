@@ -107,7 +107,7 @@ export const useEdgeScroll = ({
         } else if (distanceToBottom < threshold) {
           startScrollBottom();
         } else {
-          stopScrollX();
+          stopScrollY();
         }
       }
     };
@@ -134,6 +134,7 @@ export const useEdgeScroll = ({
     stopScrollX,
     startScrollTop,
     startScrollBottom,
+    stopScrollY,
   ]);
 
   return ref;
