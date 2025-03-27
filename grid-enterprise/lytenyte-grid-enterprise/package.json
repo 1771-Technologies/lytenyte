@@ -28,6 +28,11 @@
       "import": "./src/menu/index.ts",
       "require": "./src/menu/index.ts"
     },
+    "./column-manager": {
+      "types": "./src/column-manager/index.ts",
+      "import": "./src/column-manager/index.ts",
+      "require": "./src/column-manager/index.ts"
+    },
     "./pill-manager": {
       "types": "./src/pill-manager/index.ts",
       "import": "./src/pill-manager/index.ts",
@@ -77,7 +82,7 @@
         "import": "./dist/filters.js",
         "require": "./dist/filters.js"
       },
-      "./css": "./dist/lytenyte-grid-enterprise.css",
+      "./grid.css": "./dist/lytenyte-grid-enterprise.css",
       "./menu.css": "./dist/menu.css"
     }
   },

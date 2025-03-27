@@ -1,9 +1,0 @@
-.lng1771-values-pill-label {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.lng1771-values-pill-label__agg {
-  color: var(--lng1771-primary-50);
-}

@@ -27,6 +27,3 @@ export { GridContainer } from "./components/grid-container/grid-container.js";
 
 // Floating Row Cells
 export { FloatingFilter } from "./components/floating-filter/floating-filter.js";
-
-// Floating Frame Components
-export { ColumnManagerFloating } from "./components/column-manager/column-manager-floating-frame.js";
