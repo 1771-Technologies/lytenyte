@@ -56,7 +56,6 @@ export const ColumnManagerTreeItem = forwardRef<
         columns.every((c) => canMeasure(c, base)) && columns.some((c) => !measureModel[c.id]);
 
       const dragTags = ["columns"];
-      console.log(isGroupable);
       if (isPivotable) dragTags.push("column-pivot");
       if (isGroupable) dragTags.push("row-group");
       if (isAggregable) dragTags.push("aggregations");

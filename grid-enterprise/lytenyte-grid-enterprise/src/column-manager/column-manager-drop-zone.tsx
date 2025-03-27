@@ -1,12 +1,14 @@
 import { clsx } from "@1771technologies/js-utils";
-import { forwardRef, type JSX, type ReactNode } from "react";
+import { forwardRef, useMemo, type JSX, type ReactNode } from "react";
 import type { PillManagerPillItem } from "../pill-manager/pill-manager-types";
 import { useDragBox } from "./column-manager-drag-box";
 import { useCombinedRefs } from "@1771technologies/react-utils";
 import { useDroppable } from "@1771technologies/lytenyte-grid-community/internal";
+import { DragGroupIcon } from "../icons";
 
 interface ColumnManagerDropZoneProps {
   children: (p: { pills: PillManagerPillItem[] }) => ReactNode;
+  empty?: ReactNode;
 }
 
 export const ColumnManagerDropZone = forwardRef<
@@ -39,6 +41,7 @@ export const ColumnManagerDropZone = forwardRef<
       tabIndex={-1}
     >
       {children({ pills: dropData.sourceItems })}
+      {dropData.sourceItems.length === 0 && <EmtpyDefault source={pillSource} />}
 
       {canDrop && isNearestOver && dropData.sourceItems.filter((c) => c.active).length > 0 && (
         <div className="lng1771-column-manager__drop-zone-indicator" />
@@ -46,3 +49,23 @@ export const ColumnManagerDropZone = forwardRef<
     </div>
   );
 });
+
+function EmtpyDefault({ source }: { source: string }) {
+  const label = useMemo(() => {
+    if (source === "aggregations") return "Drag here to aggregate";
+    if (source === "measures") return "Drag here to measure";
+    if (source === "column-pivots") return "Drag here to pivot";
+    if (source === "row-groups") return "Drag here to group";
+
+    return "";
+  }, [source]);
+
+  return (
+    <div className="lng1771-column-manager__empty-default-container">
+      <div className="lng1771-column-manager__empty-default-icon">
+        <DragGroupIcon />
+      </div>
+      <div className="lng1771-column-manager__empty-default-label">{label}</div>
+    </div>
+  );
+}
