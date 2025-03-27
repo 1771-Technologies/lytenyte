@@ -1,4 +1,4 @@
-import { forwardRef, type JSX } from "react";
+import { forwardRef, useEffect, useState, type JSX } from "react";
 import { Pill } from "../pill/pill";
 import { CrossIcon, DragIcon } from "../icons";
 import { useDraggable, useDroppable } from "@1771technologies/lytenyte-grid-community/internal";
@@ -27,6 +27,8 @@ export const ColumnManagerPill = forwardRef<
   const grid = useGrid();
   const combinedRefs = useCombinedRefs(ref, dropRef);
 
+  const [isDragging, setIsDragging] = useState(false);
+
   const {
     aggMenuRenderer: AggMenu,
     measureMenuRenderer: MeasureMenu,
@@ -48,8 +50,9 @@ export const ColumnManagerPill = forwardRef<
         className="lng1771-column-manager__pill-inner"
         interactive
         data-draggable={item.draggable}
+        data-drag-active={isDragging}
       >
-        {item.draggable && <DragHandle item={item} />}
+        {item.draggable && <DragHandle item={item} setIsDragging={setIsDragging} />}
 
         <div className="lng1771-column-manager__pill-labels">
           <span>{item.label}</span>
@@ -96,8 +99,14 @@ export const ColumnManagerPill = forwardRef<
   );
 });
 
-function DragHandle({ item }: { item: PillManagerPillItem }) {
-  const { onPointerDown } = useDraggable({
+function DragHandle({
+  item,
+  setIsDragging,
+}: {
+  item: PillManagerPillItem;
+  setIsDragging: (b: boolean) => void;
+}) {
+  const { onPointerDown, isActive } = useDraggable({
     id: item.label,
     getTags: () => item.dragTags,
     getData: () => item?.dragData,
@@ -113,6 +122,10 @@ function DragHandle({ item }: { item: PillManagerPillItem }) {
       document.body.classList.remove("lng1771-drag-on");
     },
   });
+
+  useEffect(() => {
+    setIsDragging(isActive);
+  }, [isActive, setIsDragging]);
 
   return (
     <button
