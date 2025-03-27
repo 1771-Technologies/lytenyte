@@ -74,6 +74,7 @@ export default function Play() {
             `}
           >
             <ColumnManager.Search />
+            <ColumnManager.PivotModeToggle />
           </div>
           <ColumnManager.DragPlaceholder />
           <div style={{ height: 600 }}>

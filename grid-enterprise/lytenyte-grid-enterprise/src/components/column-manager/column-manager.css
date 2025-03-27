@@ -30,3 +30,14 @@
   font-weight: 400;
   line-height: 20px;
 }
+
+.lng1771-column-manager__pivot-toggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.lng1771-column-manager__pivot-toggle-label {
+  color: var(--lng1771-gray-80);
+  font-family: var(--lng1771-typeface);
+  font-size: 14px;
+}
