@@ -1,4 +1,4 @@
-import { forwardRef, type JSX } from "react";
+import { forwardRef, useEffect, useState, type JSX } from "react";
 import { Pill } from "../pill/pill";
 import { DragIcon } from "../icons";
 import { useDraggable, useDroppable } from "@1771technologies/lytenyte-grid-community/internal";
@@ -38,6 +38,8 @@ export const PillManagerPill = forwardRef<
     menuTriggerIcon: TriggerIcon,
   } = useComponents();
 
+  const [isDragging, setIsDragging] = useState(false);
+
   return (
     <div
       {...props}
@@ -55,8 +57,9 @@ export const PillManagerPill = forwardRef<
         className="lng1771-pill-manager__pill-inner"
         interactive
         data-draggable={item.draggable}
+        data-drag-active={isDragging}
       >
-        {item.draggable && <DragHandle item={item} />}
+        {item.draggable && <DragHandle item={item} setIsDragging={setIsDragging} />}
         <span>{item.label}</span>
         {item.secondaryLabel && (
           <span className="lng1771-pill-manager__pill-inner--secondary-label">
@@ -104,8 +107,14 @@ export const PillManagerPill = forwardRef<
   );
 });
 
-function DragHandle({ item }: { item: PillManagerPillItem }) {
-  const { onPointerDown } = useDraggable({
+function DragHandle({
+  item,
+  setIsDragging,
+}: {
+  item: PillManagerPillItem;
+  setIsDragging: (b: boolean) => void;
+}) {
+  const { onPointerDown, isActive } = useDraggable({
     id: item.label,
     getTags: () => item.dragTags,
     getData: () => item?.dragData,
@@ -121,6 +130,10 @@ function DragHandle({ item }: { item: PillManagerPillItem }) {
       document.body.classList.remove("lng1771-drag-on");
     },
   });
+
+  useEffect(() => {
+    setIsDragging(isActive);
+  }, [isActive, setIsDragging]);
 
   return (
     <button

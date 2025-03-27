@@ -5,7 +5,12 @@ import { useMeasuresSource } from "./use-measures-source";
 import { useColumnSource } from "./use-column-source";
 import { useRowGroupsSource } from "./use-row-groups-source";
 import { useColumnPivotSource } from "./use-column-pivot-source";
-import { useDroppable } from "@1771technologies/lytenyte-grid-community/internal";
+import {
+  useDrag,
+  useDragStore,
+  useDroppable,
+  useEdgeScroll,
+} from "@1771technologies/lytenyte-grid-community/internal";
 import { useCombinedRefs } from "@1771technologies/react-utils";
 import type { DragTag, PillProps } from "../pill-manager-types";
 import { usePillRow } from "../pill-manager-row";
@@ -59,12 +64,19 @@ export const PillManagerPills = forwardRef<
 
   const combined = useCombinedRefs(dropRef, ref);
 
+  const store = useDragStore();
+  const isActive = useDrag(store, (s) => !!s.active);
+
+  const re = useEdgeScroll({ isActive: isActive, direction: "horizontal" });
+
+  const allRefs = useCombinedRefs(re, combined);
+
   return (
     <div
       {...props}
       className={clsx("lng1771-pill-manager__pills", props.className)}
       data-is-drop-target={isTarget}
-      ref={combined}
+      ref={allRefs}
       data-pill-source={pillSource}
       data-drop-visible={canDrop && sourceItems.filter((c) => c.active).length === 0}
       tabIndex={-1}
