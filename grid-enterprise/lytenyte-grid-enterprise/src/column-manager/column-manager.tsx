@@ -23,6 +23,7 @@ import { MoreDotsIcon } from "../icons";
 import { ColumnManagerPill } from "./column-manager-pill";
 import { ColumnMangerContextProvider } from "./column-mananger-context";
 import { ColumnManagerSearch } from "./column-manager-search";
+import { PivotModeToggle } from "./column-manager-pivot-mode-toggle";
 
 interface RootProps<D = any> {
   readonly aggMenuRenderer?: (p: PillManagerAggMenuProps<D>) => ReactNode;
@@ -62,6 +63,7 @@ export const ColumnManager = {
   Root,
   Tree: ColumnManagerTree,
   TreeItem: ColumnManagerTreeItem,
+  PivotModeToggle: PivotModeToggle,
 
   Separator: Separator,
   Search: ColumnManagerSearch,
