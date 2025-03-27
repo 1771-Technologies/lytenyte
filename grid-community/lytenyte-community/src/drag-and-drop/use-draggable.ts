@@ -34,6 +34,9 @@ export function useDraggable({
       const startX = ev.clientX;
       const startY = ev.clientY;
 
+      // If we are using a mouse we should press the left click
+      if (ev.pointerType === "mouse" && ev.button !== 0) return;
+
       const c = new AbortController();
 
       let anim: number | null = null;
