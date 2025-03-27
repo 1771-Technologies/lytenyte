@@ -265,8 +265,6 @@ export function makeApi<D, E>(
 
     contextMenuClose: () => api.getState().internal.contextMenuTarget.set(null),
 
-    floatingFrameClose: frame.floatingFrameClose,
-    floatingFrameOpen: frame.floatingFrameOpen,
     panelFrameClose: frame.panelFrameClose,
     panelFrameOpen: frame.panelFrameOpen,
 

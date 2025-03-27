@@ -4,8 +4,6 @@ import { useClientDataSource } from "../src/use-client-data-source";
 import { useLyteNyte } from "../src/use-lytenyte";
 import { FloatingFilter } from "../src/components/floating-filter/floating-filter";
 import { LyteNyteGrid } from "../src";
-import { SortManagerFloating } from "../src/sort-manager";
-import { ColumnManager } from "../src/components/column-manager/column-manager";
 
 export default function Play() {
   const ds = useClientDataSource({
@@ -51,21 +49,6 @@ export default function Play() {
     floatingRowEnabled: true,
     floatingRowHeight: 32,
     rowDataSource: ds,
-
-    floatingFrames: {
-      sort: {
-        component: () => <SortManagerFloating grid={grid} />,
-        title: "Sort",
-      },
-    },
-
-    panelFrameButtons: [{ id: "columns", label: "Columns" }],
-    panelFrames: {
-      columns: {
-        component: (p) => <ColumnManager api={p.api} showPivotToggle />,
-        title: "Columns",
-      },
-    },
   });
 
   return (

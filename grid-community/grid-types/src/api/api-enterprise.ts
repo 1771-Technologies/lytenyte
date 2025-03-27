@@ -80,9 +80,6 @@ export interface ApiEnterprise<D, C, E>
   ) => Promise<void>;
   readonly clipboardPasteCells: (rect?: CellSelectionRect | null) => Promise<void>;
 
-  readonly floatingFrameOpen: (id: string) => void;
-  readonly floatingFrameClose: () => void;
-
   readonly panelFrameOpen: (id: string) => void;
   readonly panelFrameClose: () => void;
 

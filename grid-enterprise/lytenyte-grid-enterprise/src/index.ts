@@ -17,10 +17,6 @@ export { activateLicense, hasAValidLicense } from "./license.js";
  *  COMPONENTS
  */
 
-// Managers
-export type { ColumnManagerFrameProps, PillManagerProps } from "@1771technologies/grid-components";
-export { ColumnManagerFrame, PillManager } from "@1771technologies/grid-components";
-
 // Grid Container
 export type { GridContainerProps } from "./components/grid-container/grid-container.js";
 export { GridContainer } from "./components/grid-container/grid-container.js";

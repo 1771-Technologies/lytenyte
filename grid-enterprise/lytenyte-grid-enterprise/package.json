@@ -92,7 +92,6 @@
   },
   "dependencies": {
     "@1771technologies/grid-client-data-source-enterprise": "workspace:*",
-    "@1771technologies/grid-components": "workspace:*",
     "@1771technologies/grid-core": "workspace:*",
     "@1771technologies/grid-design": "workspace:*",
     "@1771technologies/grid-provider": "workspace:*",

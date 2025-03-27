@@ -11,7 +11,6 @@ import type {
   ColumnFilterModel,
   ColumnMenuRenderer,
   ContextMenuRenderer,
-  FloatingFrame,
   OverlayId,
   Overlays,
   PanelFrame,
@@ -42,8 +41,6 @@ export interface PropsEnterprise<A, D, C, E, Base, Group>
 
   readonly filterModel?: ColumnFilterModel<A, D>;
   readonly filterQuickSearch?: string | null;
-
-  readonly floatingFrames?: Record<string, FloatingFrame<A, E>>;
 
   readonly panelFrames?: Record<string, PanelFrame<A, E>>;
   readonly panelFrameButtons?: { label: string; id: string; icon?: () => E }[];

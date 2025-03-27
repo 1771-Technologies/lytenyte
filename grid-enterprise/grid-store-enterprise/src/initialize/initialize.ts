@@ -136,8 +136,6 @@ export function initialize<D, E>(
       postUpdate: () => queueMicrotask(api.rowRefresh),
     }),
 
-    floatingFrames: signal(props.floatingFrames ?? {}),
-
     measureModel: signal(props.measureModel ?? {}, {
       postUpdate: () => queueMicrotask(api.rowRefresh),
     }),
