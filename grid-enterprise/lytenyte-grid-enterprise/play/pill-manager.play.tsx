@@ -3,7 +3,7 @@ import { bankDataSmall } from "./data/bank-data-small";
 import { useClientDataSource } from "../src/use-client-data-source";
 import { useLyteNyte } from "../src/use-lytenyte";
 import { LyteNyteGrid } from "../src";
-import { PillManager } from "../src/pill-manager/pill-manager";
+import { PillManager } from "../src/pill-manager/pill-manager-impl";
 
 export default function Play() {
   const ds = useClientDataSource({

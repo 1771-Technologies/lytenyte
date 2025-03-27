@@ -1,11 +1,5 @@
 import type { ColumnEnterpriseReact, StoreEnterpriseReact } from "@1771technologies/grid-types";
-import {
-  MenuArrow,
-  MenuContainer,
-  MenuRadioGroup,
-  MenuRadioItem,
-  MenuRadioItemIndicator,
-} from "../menu";
+import { Menu } from "../menu/menu.js";
 
 export interface PillManagerAggMenuProps<D> {
   grid: StoreEnterpriseReact<D>;
@@ -24,9 +18,9 @@ export function PillManagerAggMenu<D>({ column, grid }: PillManagerAggMenuProps<
   else if (typeof agg === "string" && !allowed.includes(agg)) allowed = [agg, ...allowed];
 
   return (
-    <MenuContainer>
-      <MenuArrow />
-      <MenuRadioGroup
+    <Menu.Container>
+      <Menu.Arrow />
+      <Menu.RadioGroup
         value={typeof agg === "function" ? "Fn(x)" : (agg ?? "")}
         onValueChange={(v) => {
           if (v === "Fn(x)") return;
@@ -39,14 +33,14 @@ export function PillManagerAggMenu<D>({ column, grid }: PillManagerAggMenuProps<
       >
         {allowed.map((c) => {
           return (
-            <MenuRadioItem key={c} value={c} closeOnClick>
+            <Menu.Radio key={c} value={c} closeOnClick>
               {c}
-              <MenuRadioItemIndicator />
-            </MenuRadioItem>
+              <Menu.RadioIndicator />
+            </Menu.Radio>
           );
         })}
-      </MenuRadioGroup>
-    </MenuContainer>
+      </Menu.RadioGroup>
+    </Menu.Container>
   );
 }
 
@@ -62,9 +56,9 @@ export function PillManagerMeasureMenu<D>({ column, grid }: PillManagerAggMenuPr
   else if (typeof agg === "string" && !allowed.includes(agg)) allowed = [agg, ...allowed];
 
   return (
-    <MenuContainer>
-      <MenuArrow />
-      <MenuRadioGroup
+    <Menu.Container>
+      <Menu.Arrow />
+      <Menu.RadioGroup
         value={typeof agg === "function" ? "Fn(x)" : (agg ?? "")}
         onValueChange={(v) => {
           if (v === "Fn(x)") return;
@@ -77,13 +71,13 @@ export function PillManagerMeasureMenu<D>({ column, grid }: PillManagerAggMenuPr
       >
         {allowed.map((c) => {
           return (
-            <MenuRadioItem key={c} value={c} closeOnClick>
+            <Menu.Radio key={c} value={c} closeOnClick>
               {c}
-              <MenuRadioItemIndicator />
-            </MenuRadioItem>
+              <Menu.RadioIndicator />
+            </Menu.Radio>
           );
         })}
-      </MenuRadioGroup>
-    </MenuContainer>
+      </Menu.RadioGroup>
+    </Menu.Container>
   );
 }

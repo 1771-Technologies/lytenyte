@@ -17,7 +17,7 @@ import {
   MenuSeparator,
   MenuSubmenu,
   MenuSubmenuTrigger,
-} from "../src/menu/menu";
+} from "../src/menu/menu-impl";
 
 export default function Play() {
   const ds = useClientDataSource({

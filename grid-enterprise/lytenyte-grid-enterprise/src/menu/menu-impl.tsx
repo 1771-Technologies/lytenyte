@@ -22,25 +22,6 @@ export const MenuSubmenu = ({
   );
 };
 
-export const Unstyled = {
-  Root: Menu.Root,
-  Trigger: Menu.Trigger,
-  Portal: Menu.Portal,
-  Submenu: MenuSubmenu,
-  Container: Menu.Popup,
-  Arrow: Menu.Arrow,
-  Item: Menu.Item,
-  Group: Menu.Group,
-  GroupLabel: Menu.GroupLabel,
-  RadioGroup: Menu.RadioGroup,
-  RadioItem: Menu.RadioItem,
-  RadioItemIndicator: Menu.RadioItemIndicator,
-  CheckItem: Menu.CheckboxItem,
-  CheckboxItemIndicator: Menu.CheckboxItemIndicator,
-  Separator: Menu.Separator,
-  SubmenuTrigger: Menu.SubmenuTrigger,
-};
-
 export const MenuContainer: typeof Menu.Popup = forwardRef(function MenuContainer(
   { className, ...props },
   ref,

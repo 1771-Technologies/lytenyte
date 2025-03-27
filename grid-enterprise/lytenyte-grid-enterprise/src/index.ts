@@ -1,6 +1,4 @@
-import "@1771technologies/react-menu/css";
 import "@1771technologies/grid-design/css";
-import "@1771technologies/grid-components/css";
 
 export * from "@1771technologies/grid-constants";
 

@@ -6,7 +6,7 @@ import { useCombinedRefs } from "@1771technologies/react-utils";
 import { useDroppable } from "@1771technologies/lytenyte-grid-community/internal";
 import { DragGroupIcon } from "../icons";
 
-interface ColumnManagerDropZoneProps {
+export interface ColumnManagerDropZoneProps {
   children: (p: { pills: PillManagerPillItem[] }) => ReactNode;
   empty?: ReactNode;
 }

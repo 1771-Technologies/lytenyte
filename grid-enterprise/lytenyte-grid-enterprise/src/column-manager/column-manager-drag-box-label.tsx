@@ -3,7 +3,7 @@ import { forwardRef, useMemo, type JSX, type ReactNode } from "react";
 import { useDragBox } from "./column-manager-drag-box";
 import { ColumnPivotIcon, MeasuresIcon, RowGroupIcon } from "../icons";
 
-interface ColumnManagerDragBoxLabelProps {
+export interface ColumnManagerDragBoxLabelProps {
   icon?: ReactNode;
 }
 

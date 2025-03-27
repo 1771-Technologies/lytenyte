@@ -7,7 +7,7 @@ import { useGrid } from "../use-grid";
 import type { PillManagerPillItem } from "./pill-manager-types";
 import { usePillControls } from "./pill-manager-controls";
 import { Menu } from "../external";
-import { useComponents } from "./pill-manager";
+import { useComponents } from "./pill-manager-impl";
 import { usePillRow } from "./pill-manager-row";
 
 export const PillManagerPill = forwardRef<

@@ -24,24 +24,19 @@
       "require": "./src/icons.ts"
     },
     "./menu": {
-      "types": "./src/menu/index.ts",
-      "import": "./src/menu/index.ts",
-      "require": "./src/menu/index.ts"
+      "types": "./src/menu/menu.ts",
+      "import": "./src/menu/menu.ts",
+      "require": "./src/menu/menu.ts"
     },
     "./column-manager": {
-      "types": "./src/column-manager/index.ts",
-      "import": "./src/column-manager/index.ts",
-      "require": "./src/column-manager/index.ts"
+      "types": "./src/column-manager/column-manager.ts",
+      "import": "./src/column-manager/column-manager.ts",
+      "require": "./src/column-manager/column-manager.ts"
     },
     "./pill-manager": {
-      "types": "./src/pill-manager/index.ts",
-      "import": "./src/pill-manager/index.ts",
-      "require": "./src/pill-manager/index.ts"
-    },
-    "./sort-manager": {
-      "types": "./src/sort-manager.ts",
-      "import": "./src/sort-manager.ts",
-      "require": "./src/sort-manager.ts"
+      "types": "./src/pill-manager/pill-manager.ts",
+      "import": "./src/pill-manager/pill-manager.ts",
+      "require": "./src/pill-manager/pill-manager.ts"
     },
     "./filters": {
       "types": "./src/filters.ts",
@@ -72,18 +67,22 @@
         "import": "./dist/menu.js",
         "require": "./dist/menu.js"
       },
-      "./sort-manager": {
-        "types": "./dist/types/sort-manager.d.ts",
-        "import": "./dist/sort-manager.js",
-        "require": "./dist/sort-manager.js"
+      "./column-manager": {
+        "types": "./dist/column-manager/column-manager.d.ts",
+        "import": "./src/column-manager/column-manager.js",
+        "require": "./src/column-manager/column-manager.js"
+      },
+      "./pill-manager": {
+        "types": "./dist/pill-manager/index.d.ts",
+        "import": "./dist/pill-manager/pill-manager.js",
+        "require": "./dist/pill-manager/pill-manager.js"
       },
       "./filters": {
         "types": "./dist/types/filters.d.ts",
         "import": "./dist/filters.js",
         "require": "./dist/filters.js"
       },
-      "./grid.css": "./dist/lytenyte-grid-enterprise.css",
-      "./menu.css": "./dist/menu.css"
+      "./grid.css": "./dist/lytenyte-grid-enterprise.css"
     }
   },
   "peerDependencies": {
