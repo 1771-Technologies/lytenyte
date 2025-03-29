@@ -18,6 +18,12 @@ export function Watermark({ id }: { id: string }) {
   }, []);
 
   useEffect(() => {
+    if (showing && showing === id) s.showing.set(id);
+
+    return () => s.showing.set(null);
+  });
+
+  useEffect(() => {
     if (hasAValidLicense) return;
     console.log(`
 ********************************************************************************
@@ -64,11 +70,11 @@ export function Watermark({ id }: { id: string }) {
             fontSize: "1.25rem",
           }}
         >
-          LyteNyte Grid Evaluation purposes only. Please visit{" "}
-          <a style={{ color: "blue" }} href="https://1771Technologies.com">
-            1771Technologies.com
+          LyteNyte Grid for evaluation only.
+          <a style={{ color: "blue" }} href="https://1771Technologies.com/pricing">
+            Click here
           </a>{" "}
-          to purchase a valid license.
+          to secure your license.
         </div>
       </div>
     </div>,
