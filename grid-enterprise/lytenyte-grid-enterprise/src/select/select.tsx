@@ -1,3 +1,4 @@
+import { clsx } from "@1771technologies/js-utils";
 import "./select.css";
 import { ArrowDownIcon } from "@1771technologies/lytenyte-grid-community/icons";
 import { CheckMark } from "@1771technologies/lytenyte-grid-community/internal";
@@ -11,7 +12,7 @@ export interface SelectProps {
   readonly placeholder?: string;
 }
 
-export function Select({ selected, onSelect, options }: SelectProps) {
+export function Select({ selected, onSelect, options, placeholder }: SelectProps) {
   return (
     <S.Root
       value={selected?.value ?? null}
@@ -22,7 +23,10 @@ export function Select({ selected, onSelect, options }: SelectProps) {
       }}
     >
       <S.Trigger className="lng1771-select">
-        <S.Value className="lng1771-select__value"></S.Value>
+        <S.Value
+          className={clsx("lng1771-select__value", !selected && "lng1771-select__value--no-value")}
+          placeholder={placeholder}
+        ></S.Value>
         <S.Icon className="lng1771-select__trigger">
           <ArrowDownIcon />
         </S.Icon>

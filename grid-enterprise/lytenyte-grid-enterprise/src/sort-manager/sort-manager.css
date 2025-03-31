@@ -15,4 +15,8 @@
   &:hover {
     background-color: var(--lng1771-gray-05);
   }
+
+  &:focus-visible {
+    outline: 1px solid var(--lng1771-focus-outline);
+  }
 }

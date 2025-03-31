@@ -58,6 +58,10 @@
   }
 }
 
+.lng1771-select__value--no-value {
+  color: var(--lng1771-gray-60);
+}
+
 .lng1771-select__item {
   display: flex;
   align-items: center;
