@@ -1,4 +1,5 @@
 .lng1771-select {
+  cursor: pointer;
   min-width: 120px;
   display: flex;
   align-items: center;
@@ -14,6 +15,10 @@
     0px 0px 0px 1px var(--lng1771-gray-30);
   border-radius: 6px;
   height: 28px;
+
+  &:hover {
+    background-color: var(--lng1771-gray-05);
+  }
 
   &:focus-within {
     outline: none;
