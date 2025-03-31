@@ -93,6 +93,7 @@ export default function Play() {
           </SortManager.Container>
           <SortManager.SortApply></SortManager.SortApply>
           <SortManager.SortCancel></SortManager.SortCancel>
+          <SortManager.SortClear></SortManager.SortClear>
         </SortManager.Root>
       </div>
     </div>

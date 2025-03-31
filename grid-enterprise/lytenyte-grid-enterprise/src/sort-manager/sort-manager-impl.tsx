@@ -10,8 +10,9 @@ import { SortAdder } from "./sort-adder";
 import { SortRemover } from "./sort-remove";
 import { useSortState } from "./use-sort-state";
 import { SortManagerContext } from "./sort-manager-context";
-import { SortApply } from "./sort-apply";
-import { SortCancel } from "./sort-cancel";
+import { SortApplyButton } from "./sort-apply";
+import { SortCancelButton } from "./sort-cancel";
+import { SortClearButton } from "./sort-clear";
 
 interface SortManagerRootProps<D = any> {
   readonly grid: StoreEnterpriseReact<D>;
@@ -37,6 +38,7 @@ export const SortManager = {
   SortAdder: SortAdder,
   SortRemove: SortRemover,
 
-  SortApply: SortApply,
-  SortCancel: SortCancel,
+  SortApply: SortApplyButton,
+  SortCancel: SortCancelButton,
+  SortClear: SortClearButton,
 };

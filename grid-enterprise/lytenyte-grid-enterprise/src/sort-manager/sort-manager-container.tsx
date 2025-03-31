@@ -1,8 +1,9 @@
 import { forwardRef, useMemo, type JSX, type ReactNode } from "react";
 import { useGrid } from "../use-grid";
 import { useSortableColumnItems } from "./use-sortable-column-items";
-import { useSortState, type SortItem } from "./use-sort-state";
+import { type SortItem } from "./use-sort-state";
 import { clsx } from "@1771technologies/js-utils";
+import { useSortManagerContext } from "./sort-manager-context";
 
 export interface SortRowItem {
   readonly columnItem: { value: string; label: string } | null;
@@ -34,7 +35,7 @@ export const SortManagerContainer = forwardRef<
   Omit<JSX.IntrinsicElements["div"], "children"> & SortContainerProps
 >(function ColumnSortContainer({ className, children, ...props }, ref) {
   const grid = useGrid();
-  const [state, setState] = useSortState(grid);
+  const [state, setState] = useSortManagerContext();
 
   const columnItems = useSortableColumnItems(grid);
 

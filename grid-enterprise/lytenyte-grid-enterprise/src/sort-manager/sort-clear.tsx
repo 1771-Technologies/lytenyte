@@ -1,11 +1,10 @@
 import { forwardRef, type JSX } from "react";
 import { useGrid } from "../use-grid";
 import { useSortManagerContext } from "./sort-manager-context";
-import { sortModelToSortItems } from "./sort-model-to-sort-items";
 import { clsx } from "@1771technologies/js-utils";
 
-export const SortCancelButton = forwardRef<HTMLButtonElement, JSX.IntrinsicElements["button"]>(
-  function SortCancelButton({ className, onClick, children, ...props }, ref) {
+export const SortClearButton = forwardRef<HTMLButtonElement, JSX.IntrinsicElements["button"]>(
+  function SortClearButton({ className, onClick, children, ...props }, ref) {
     const grid = useGrid();
     const [, setState] = useSortManagerContext();
 
@@ -15,14 +14,13 @@ export const SortCancelButton = forwardRef<HTMLButtonElement, JSX.IntrinsicEleme
         className={clsx("lng1771-sort-manager__button", className)}
         ref={ref}
         onClick={(ev) => {
-          const model = grid.state.sortModel.peek();
-          if (model.length) setState(sortModelToSortItems(model, grid));
-          else setState([{ sortDirection: "ascending" }]);
+          setState([]);
+          grid.state.sortModel.set([]);
 
           onClick?.(ev);
         }}
       >
-        {children ? children : "Cancel"}
+        {children ? children : "Clear"}
       </button>
     );
   },
