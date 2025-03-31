@@ -76,8 +76,11 @@ export const useEdgeScroll = ({
     }
   }, [acceleration, container, maxSpeed]);
 
+  const controllerRef = useRef<AbortController | null>(null);
   useEffect(() => {
     if (!isActive) {
+      controllerRef.current?.abort();
+      controllerRef.current = null;
       stopScrolling();
       return;
     }
@@ -113,8 +116,13 @@ export const useEdgeScroll = ({
     };
 
     const controller = new AbortController();
+    controllerRef.current = controller;
 
-    container.addEventListener("pointermove", handleMouseMove, { passive: false, capture: true });
+    container.addEventListener("pointermove", handleMouseMove, {
+      passive: false,
+      capture: true,
+      signal: controller.signal,
+    });
     container.addEventListener("pointerleave", stopScrolling);
 
     return () => {
