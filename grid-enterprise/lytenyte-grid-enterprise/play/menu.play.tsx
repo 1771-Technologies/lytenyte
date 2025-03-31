@@ -35,6 +35,60 @@ export default function Play() {
     rowSelectionCheckbox: "normal",
     rowDragEnabled: true,
 
+    columnMenuRenderer: () => {
+      return (
+        <MenuContainer>
+          <MenuArrow />
+          <MenuItem>Label 1</MenuItem>
+          <MenuItem>Label 2</MenuItem>
+          <MenuItem>Label 3</MenuItem>
+          <MenuSeparator />
+          <MenuItem>Label 4</MenuItem>
+          <MenuItem>Label 5</MenuItem>
+          <MenuItem disabled>Label 6</MenuItem>
+          <MenuGroup>
+            <MenuGroupLabel>Export</MenuGroupLabel>
+            <MenuItem>CSX Export</MenuItem>
+            <MenuItem>Excel Export</MenuItem>
+            <MenuItem>PDF Export</MenuItem>
+          </MenuGroup>
+          <MenuSubmenu trigger={<MenuSubmenuTrigger>Trigger Me</MenuSubmenuTrigger>}>
+            <MenuContainer>
+              <MenuItem>Label 1</MenuItem>
+              <MenuItem>Label 2</MenuItem>
+              <MenuItem>Label 3</MenuItem>
+            </MenuContainer>
+          </MenuSubmenu>
+
+          <MenuSeparator />
+
+          <MenuCheckboxItem>
+            <span>Minify</span>
+            <MenuCheckboxItemIndicator />
+          </MenuCheckboxItem>
+          <MenuCheckboxItem>
+            <span>Expand</span>
+            <MenuCheckboxItemIndicator />
+          </MenuCheckboxItem>
+
+          <MenuRadioGroup>
+            <MenuRadioItem value="alpha">
+              <span>Alpha</span>
+              <MenuRadioItemIndicator />
+            </MenuRadioItem>
+            <MenuRadioItem value="beta">
+              <span>Beta</span>
+              <MenuRadioItemIndicator />
+            </MenuRadioItem>
+            <MenuRadioItem value="theta">
+              <span>Theta</span>
+              <MenuRadioItemIndicator />
+            </MenuRadioItem>
+          </MenuRadioGroup>
+        </MenuContainer>
+      );
+    },
+
     contextMenuRenderer: () => {
       return (
         <MenuContainer>
