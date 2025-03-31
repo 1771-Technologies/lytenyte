@@ -26,7 +26,7 @@ export interface SortRowItem {
   readonly onDelete: () => void;
 }
 
-interface SortContainerProps {
+export interface SortContainerProps {
   readonly children: (c: { items: SortRowItem[] }) => ReactNode;
 }
 

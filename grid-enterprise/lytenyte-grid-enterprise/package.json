@@ -38,6 +38,11 @@
       "import": "./src/pill-manager/pill-manager.ts",
       "require": "./src/pill-manager/pill-manager.ts"
     },
+    "./sort-manager": {
+      "types": "./src/sort-manager/sort-manager.ts",
+      "import": "./src/sort-manager/sort-manager.ts",
+      "require": "./src/sort-manager/sort-manager.ts"
+    },
     "./filters": {
       "types": "./src/filters.ts",
       "import": "./src/filters.ts",
@@ -69,13 +74,18 @@
       },
       "./column-manager": {
         "types": "./dist/column-manager/column-manager.d.ts",
-        "import": "./src/column-manager/column-manager.js",
-        "require": "./src/column-manager/column-manager.js"
+        "import": "./dist/column-manager.js",
+        "require": "./dist/column-manager.js"
       },
       "./pill-manager": {
         "types": "./dist/pill-manager/index.d.ts",
-        "import": "./dist/pill-manager/pill-manager.js",
-        "require": "./dist/pill-manager/pill-manager.js"
+        "import": "./dist/pill-manager.js",
+        "require": "./dist/pill-manager.js"
+      },
+      "./sort-manager": {
+        "types": "./dist/sort-manager/index.d.ts",
+        "import": "./dist/sort-manager.js",
+        "require": "./dist/sort-manager.js"
       },
       "./filters": {
         "types": "./dist/types/filters.d.ts",
