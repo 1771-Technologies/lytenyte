@@ -48,6 +48,11 @@
       "import": "./src/dialog/dialog.ts",
       "require": "./src/dialog/dialog.ts"
     },
+    "./popover": {
+      "types": "./src/popover/popover.ts",
+      "import": "./src/popover/popover.ts",
+      "require": "./src/popover/popover.ts"
+    },
     "./filters": {
       "types": "./src/filters.ts",
       "import": "./src/filters.ts",
@@ -96,6 +101,11 @@
         "types": "./dist/types/dialog/dialog.d.ts",
         "import": "./dist/dialog.js",
         "require": "./dist/dialog.js"
+      },
+      "./popover": {
+        "types": "./dist/popover/popover.d.ts",
+        "import": "./dist/popover.js",
+        "require": "./dist/popover.js"
       },
       "./filters": {
         "types": "./dist/types/filters.d.ts",
