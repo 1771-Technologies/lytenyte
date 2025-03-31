@@ -3,6 +3,7 @@ import { bankDataSmall } from "./data/bank-data-small";
 import { useClientDataSource } from "../src/use-client-data-source";
 import { useLyteNyte } from "../src/use-lytenyte";
 import { LyteNyteGrid } from "../src";
+import { Dialog } from "../src/dialog/dialog";
 
 export default function Play() {
   const ds = useClientDataSource({
@@ -19,6 +20,16 @@ export default function Play() {
     rowSelectionMode: "multiple",
     rowSelectionCheckbox: "normal",
     rowDragEnabled: true,
+
+    dialogFrames: {
+      a: {
+        component: () => (
+          <Dialog.Container>
+            <Dialog.Description>Lee is one one</Dialog.Description>
+          </Dialog.Container>
+        ),
+      },
+    },
 
     columnBase: {
       resizable: true,
@@ -50,7 +61,13 @@ export default function Play() {
           width: 100%;
         `}
       >
-        Alpha
+        <button
+          onClick={() => {
+            grid.api.dialogFrameOpen("a");
+          }}
+        >
+          Open
+        </button>
       </div>
       <div
         className={css`

@@ -43,6 +43,11 @@
       "import": "./src/sort-manager/sort-manager.ts",
       "require": "./src/sort-manager/sort-manager.ts"
     },
+    "./dialog": {
+      "types": "./src/dialog/dialog.ts",
+      "import": "./src/dialog/dialog.ts",
+      "require": "./src/dialog/dialog.ts"
+    },
     "./filters": {
       "types": "./src/filters.ts",
       "import": "./src/filters.ts",
@@ -68,24 +73,29 @@
         "require": "./dist/icons.js"
       },
       "./menu": {
-        "types": "./dist/types/menu.d.ts",
+        "types": "./dist/types/menu/menu.d.ts",
         "import": "./dist/menu.js",
         "require": "./dist/menu.js"
       },
       "./column-manager": {
-        "types": "./dist/column-manager/column-manager.d.ts",
+        "types": "./dist/types/column-manager/column-manager.d.ts",
         "import": "./dist/column-manager.js",
         "require": "./dist/column-manager.js"
       },
       "./pill-manager": {
-        "types": "./dist/pill-manager/index.d.ts",
+        "types": "./dist/types/pill-manager/pill-manager.d.ts",
         "import": "./dist/pill-manager.js",
         "require": "./dist/pill-manager.js"
       },
       "./sort-manager": {
-        "types": "./dist/sort-manager/index.d.ts",
+        "types": "./dist/types/sort-manager/sort-manager.d.ts",
         "import": "./dist/sort-manager.js",
         "require": "./dist/sort-manager.js"
+      },
+      "./dialog": {
+        "types": "./dist/types/dialog/dialog.d.ts",
+        "import": "./dist/dialog.js",
+        "require": "./dist/dialog.js"
       },
       "./filters": {
         "types": "./dist/types/filters.d.ts",

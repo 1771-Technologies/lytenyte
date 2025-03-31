@@ -17,7 +17,7 @@ export const frames = <D, E>(api: ApiEnterprise<D, E>) => {
 
     dialogFrameClose: () => {
       const s = api.getState();
-      s.internal.panelFrameOpen.set(null);
+      s.internal.dialogFrameOpen.set(null);
     },
     dialogFrameOpen: (id) => {
       const s = api.getState();
@@ -26,7 +26,7 @@ export const frames = <D, E>(api: ApiEnterprise<D, E>) => {
 
       if (!frame) return;
 
-      s.internal.panelFrameOpen.set(id);
+      s.internal.dialogFrameOpen.set(id);
     },
   } satisfies {
     panelFrameClose: ApiEnterprise<D, E>["panelFrameClose"];

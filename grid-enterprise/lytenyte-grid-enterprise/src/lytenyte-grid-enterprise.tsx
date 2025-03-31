@@ -19,6 +19,7 @@ import { GridFrame } from "./components-internal/grid-frame/grid-frame";
 import type { SplitPaneAxe } from "@1771technologies/react-split-pane";
 import { FilterMenuDriver } from "./components-internal/filter-menu-driver";
 import { ContextMenuDriver } from "./menu/context-menu/context-menu-driver";
+import { DialogDriver } from "./dialog/dialog-driver";
 
 export interface LyteNyteGridEnterpriseProps<D> {
   readonly grid: StoreEnterpriseReact<D>;
@@ -33,6 +34,7 @@ export function LyteNyteGrid<D>({ grid, frameAxe }: LyteNyteGridEnterpriseProps<
         <FilterMenuDriver />
         <ColumnMenuDriver />
         <ContextMenuDriver />
+        <DialogDriver />
       </GridFrame>
     </GridProvider>
   );
