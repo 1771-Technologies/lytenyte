@@ -6,7 +6,7 @@ import { clsx } from "@1771technologies/js-utils";
 import { Input } from "@1771technologies/lytenyte-grid-community/internal";
 import { SearchIcon } from "@1771technologies/lytenyte-grid-community/icons";
 import { useCombinedRefs } from "@1771technologies/react-utils";
-import { LngPopover } from "../popover/lng-popover";
+import { Popover as P } from "@base-ui-components/react/popover";
 
 export interface DropdownProps<T extends { label: string; value: unknown }> {
   readonly items: T[];
@@ -80,6 +80,8 @@ export function Dropdown<T extends { label: string; value: unknown }>({
     }),
   });
 
+  console.log(focusIndex);
+
   const ref = useRef<HTMLDivElement>(null);
 
   const refForPlacement = searchable ? toggleRef : ref;
@@ -113,54 +115,57 @@ export function Dropdown<T extends { label: string; value: unknown }>({
         </button>
       )}
       {open && refForPlacement.current && (
-        <LngPopover
-          {...getListProps()}
-          open
-          style={{ width: refForPlacement.current.offsetWidth }}
-          onOpenChange={() => setOpen(false)}
-          popoverTarget={refForPlacement.current as HTMLElement}
-          className="lng1771-dropdown__list-container"
-        >
-          {!searchable && (
-            <input
-              className="lng1771-dropdown__input"
-              readOnly
-              placeholder={placeholder}
-              {...getInputProps()}
-              style={{ display: "none" }}
-            />
-          )}
+        <P.Root open onOpenChange={() => setOpen(false)}>
+          <P.Portal>
+            <P.Positioner anchor={refForPlacement.current as HTMLElement} sideOffset={8}>
+              <P.Popup
+                className="lng1771-popover"
+                {...getListProps()}
+                style={{ width: refForPlacement.current.offsetWidth }}
+              >
+                {!searchable && (
+                  <input
+                    className="lng1771-dropdown__input"
+                    readOnly
+                    placeholder={placeholder}
+                    {...getInputProps()}
+                    style={{ display: "none" }}
+                  />
+                )}
 
-          {searchable && (
-            <div>
-              <Input {...getInputProps()} icon={SearchIcon} />
-            </div>
-          )}
-          <ul
-            className={clsx(
-              "lng1771-dropdown__list",
-              searchable && "lng1771-dropdown__list--searchable",
-            )}
-          >
-            {filteredOptions.map((c, i) => {
-              return (
-                <li
-                  key={c}
-                  {...getItemProps({ item: c, index: i })}
+                {searchable && (
+                  <div>
+                    <Input {...getInputProps()} icon={SearchIcon} />
+                  </div>
+                )}
+                <ul
                   className={clsx(
-                    "lng1771-dropdown__list-item",
-                    focusIndex === i && "lng1771-dropdown__list-item--focused",
+                    "lng1771-dropdown__list",
+                    searchable && "lng1771-dropdown__list--searchable",
                   )}
                 >
-                  <span>{c}</span>
-                  {selected?.label === c && (
-                    <span className="lng1771-dropdown__list-item--select-icon">✓</span>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        </LngPopover>
+                  {filteredOptions.map((c, i) => {
+                    return (
+                      <li
+                        key={c}
+                        {...getItemProps({ item: c, index: i })}
+                        className={clsx(
+                          "lng1771-dropdown__list-item",
+                          focusIndex === i && "lng1771-dropdown__list-item--focused",
+                        )}
+                      >
+                        <span>{c}</span>
+                        {selected?.label === c && (
+                          <span className="lng1771-dropdown__list-item--select-icon">✓</span>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </P.Popup>
+            </P.Positioner>
+          </P.Portal>
+        </P.Root>
       )}
     </div>
   );

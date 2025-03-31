@@ -1,6 +1,7 @@
 .lng1771-popover {
   background-color: var(--lng1771-gray-10);
   border: 1px solid var(--lng1771-gray-30);
+  box-sizing: border-box;
   border-radius: 8px;
   padding: 4px;
   box-shadow:
