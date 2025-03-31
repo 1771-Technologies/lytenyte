@@ -67,7 +67,6 @@ export default function Play() {
             `}
           >
             {({ items }) => {
-              console.log(items);
               return (
                 <>
                   {items.map((c, i) => {
@@ -92,6 +91,8 @@ export default function Play() {
               );
             }}
           </SortManager.Container>
+          <SortManager.SortApply></SortManager.SortApply>
+          <SortManager.SortCancel></SortManager.SortCancel>
         </SortManager.Root>
       </div>
     </div>

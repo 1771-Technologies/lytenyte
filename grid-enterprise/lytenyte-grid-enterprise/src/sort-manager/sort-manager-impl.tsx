@@ -8,25 +8,24 @@ import { SortSelect } from "./sort-sort-select";
 import { SortDirectionSelection } from "./sort-direction-select";
 import { SortAdder } from "./sort-adder";
 import { SortRemover } from "./sort-remove";
+import { useSortState } from "./use-sort-state";
+import { SortManagerContext } from "./sort-manager-context";
+import { SortApply } from "./sort-apply";
+import { SortCancel } from "./sort-cancel";
 
 interface SortManagerRootProps<D = any> {
   readonly grid: StoreEnterpriseReact<D>;
 }
 
-function SortManagerRoot<D>(props: PropsWithChildren<SortManagerRootProps<D>>) {
-  return <GridProvider value={props.grid}>{props.children}</GridProvider>;
-}
+function SortManagerRoot<D>({ grid, children }: PropsWithChildren<SortManagerRootProps<D>>) {
+  const state = useSortState(grid);
 
-/**
- * ColumnSortRow
- *   - Column
- *   - Sort On
- *   - Order
- *   - Add
- *   - Remove
- * Cancel
- * Apply
- */
+  return (
+    <GridProvider value={grid}>
+      <SortManagerContext.Provider value={state}>{children}</SortManagerContext.Provider>
+    </GridProvider>
+  );
+}
 
 export const SortManager = {
   Root: SortManagerRoot,
@@ -37,4 +36,7 @@ export const SortManager = {
   SortDirectionSelect: SortDirectionSelection,
   SortAdder: SortAdder,
   SortRemove: SortRemover,
+
+  SortApply: SortApply,
+  SortCancel: SortCancel,
 };

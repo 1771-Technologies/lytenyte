@@ -34,9 +34,9 @@ export const SortManagerContainer = forwardRef<
   Omit<JSX.IntrinsicElements["div"], "children"> & SortContainerProps
 >(function ColumnSortContainer({ className, children, ...props }, ref) {
   const grid = useGrid();
+  const [state, setState] = useSortState(grid);
 
   const columnItems = useSortableColumnItems(grid);
-  const [state, setState] = useSortState(grid);
 
   const unselectedSortedColumns = useMemo(() => {
     const selected = new Set(state.map((c) => c.columnId).filter((c) => c != null));
