@@ -144,6 +144,7 @@ export function initialize<D, E>(
     panelFrames: signal(props.panelFrames ?? {}),
 
     dialogFrames: signal(props.dialogFrames ?? {}),
+    popoverFrames: signal(props.popoverFrames ?? {}),
 
     treeData: signal(props.treeData ?? false),
   } satisfies InitialStateEnterprise<D, E>;

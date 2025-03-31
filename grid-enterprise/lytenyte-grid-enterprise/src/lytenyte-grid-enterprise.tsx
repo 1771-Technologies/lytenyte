@@ -17,9 +17,9 @@ import { OverlayDriver } from "./overlay/overlay-driver";
 import { ColumnMenuDriver } from "./menu/column-menu/column-menu-driver";
 import { GridFrame } from "./components-internal/grid-frame/grid-frame";
 import type { SplitPaneAxe } from "@1771technologies/react-split-pane";
-import { FilterMenuDriver } from "./components-internal/filter-menu-driver";
 import { ContextMenuDriver } from "./menu/context-menu/context-menu-driver";
 import { DialogDriver } from "./dialog/dialog-driver";
+import { PopoverDriver } from "./popover/popover-driver";
 
 export interface LyteNyteGridEnterpriseProps<D> {
   readonly grid: StoreEnterpriseReact<D>;
@@ -31,10 +31,10 @@ export function LyteNyteGrid<D>({ grid, frameAxe }: LyteNyteGridEnterpriseProps<
     <GridProvider value={grid}>
       <GridFrame grid={grid} axe={frameAxe}>
         <LyteNyteCommunityImpl />
-        <FilterMenuDriver />
         <ColumnMenuDriver />
         <ContextMenuDriver />
         <DialogDriver />
+        <PopoverDriver />
       </GridFrame>
     </GridProvider>
   );

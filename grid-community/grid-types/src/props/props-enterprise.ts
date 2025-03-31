@@ -15,6 +15,7 @@ import type {
   OverlayId,
   Overlays,
   PanelFrame,
+  PopoverFrame,
 } from "../types-enterprise";
 import type { PropsCommunity } from "./props-community";
 
@@ -47,6 +48,7 @@ export interface PropsEnterprise<A, D, C, E, Base, Group>
   readonly panelFrameButtons?: { label: string; id: string; icon?: () => E }[];
 
   readonly dialogFrames?: Record<string, DialogFrame<A, E>>;
+  readonly popoverFrames?: Record<string, PopoverFrame<A, E>>;
 
   readonly measureModel?: AggModel<A>;
 

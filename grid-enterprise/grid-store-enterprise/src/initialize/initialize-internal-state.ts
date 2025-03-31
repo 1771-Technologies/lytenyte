@@ -175,13 +175,12 @@ export function initializeInternalState<D, E>(
 
     fieldCacheRef: { "quick-search": {}, column: {}, group: {}, pivot: {} },
 
-    filterMenuColumn: signal<ColumnEnterprise<D, E> | null>(null),
-    filterMenuTarget: signal<Target | null>(null),
-
     floatingFrameOpen: signal<string | null>(null),
 
     panelFrameOpen: signal<string | null>(null),
     dialogFrameOpen: signal<string | null>(null),
+    popoverFrameOpen: signal<string | null>(null),
+    popoverFrameBB: signal<Target | null>(null),
 
     keyBindingIdToKey: computed<Record<string, KeyBindingString[]>>(() => {
       return {};

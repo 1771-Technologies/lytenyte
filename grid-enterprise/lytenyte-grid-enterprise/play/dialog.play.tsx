@@ -4,6 +4,7 @@ import { useClientDataSource } from "../src/use-client-data-source";
 import { useLyteNyte } from "../src/use-lytenyte";
 import { LyteNyteGrid } from "../src";
 import { Dialog } from "../src/dialog/dialog";
+import { Popover } from "../src/popover/popover";
 
 export default function Play() {
   const ds = useClientDataSource({
@@ -28,6 +29,20 @@ export default function Play() {
             <Dialog.Description>Lee is one one</Dialog.Description>
           </Dialog.Container>
         ),
+      },
+    },
+    popoverFrames: {
+      p: {
+        component: () => {
+          return (
+            <Popover.Positioner>
+              <Popover.Container>
+                <Popover.Arrow></Popover.Arrow>
+                <Popover.Description>This is my popover</Popover.Description>
+              </Popover.Container>
+            </Popover.Positioner>
+          );
+        },
       },
     },
 
@@ -67,6 +82,13 @@ export default function Play() {
           }}
         >
           Open
+        </button>
+        <button
+          onClick={(e) => {
+            grid.api.popoverFrameOpen("p", e.currentTarget);
+          }}
+        >
+          Pop
         </button>
       </div>
       <div

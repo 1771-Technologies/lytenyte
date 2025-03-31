@@ -67,13 +67,12 @@ export interface GridInternalState<D, E> extends Omit<CommunityInternalState<D, 
 
   readonly contextMenuTarget: Signal<Target | null>;
 
-  readonly filterMenuColumn: Signal<Column<D, E> | null>;
-  readonly filterMenuTarget: Signal<Target | null>;
-
   readonly floatingFrameOpen: Signal<string | null>;
 
   readonly panelFrameOpen: Signal<string | null>;
   readonly dialogFrameOpen: Signal<string | null>;
+  readonly popoverFrameOpen: Signal<string | null>;
+  readonly popoverFrameBB: Signal<Target | null>;
 }
 
 type Props<D, E> = Required<Init<D, E>>;

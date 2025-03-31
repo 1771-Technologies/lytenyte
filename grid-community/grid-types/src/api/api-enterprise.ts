@@ -63,8 +63,6 @@ export interface ApiEnterprise<D, C, E>
 
   readonly columnIsPivotable: (c: C) => boolean;
 
-  readonly columnFilterMenuOpen: (c: C, bb: Target) => void;
-  readonly columnFilterMenuClose: () => void;
   readonly columnMenuOpen: (c: C, bb: Target) => void;
   readonly columnMenuClose: () => void;
 
@@ -85,6 +83,9 @@ export interface ApiEnterprise<D, C, E>
 
   readonly dialogFrameOpen: (id: string) => void;
   readonly dialogFrameClose: () => void;
+
+  readonly popoverFrameOpen: (id: string, bb: Target) => void;
+  readonly popoverFrameClose: () => void;
 
   readonly rowReload: () => void;
   readonly rowReloadExpansion: (row: RowNodeGroup) => void;

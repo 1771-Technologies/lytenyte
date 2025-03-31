@@ -198,6 +198,9 @@ export interface PanelFrame<A, E> {
 export interface DialogFrame<A, E> {
   readonly component: (p: { api: A; frame: DialogFrame<A, E> }) => E;
 }
+export interface PopoverFrame<A, E> {
+  readonly component: (p: { api: A; frame: PopoverFrame<A, E> }) => E;
+}
 
 // Column Pivots
 

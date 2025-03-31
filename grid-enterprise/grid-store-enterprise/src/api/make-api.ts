@@ -229,10 +229,8 @@ export function makeApi<D, E>(
     clipboardCutCells: clip.clipboardCutCells,
     clipboardPasteCells: clip.clipboardPasteCells,
 
-    columnFilterMenuClose: menu.columnCloseFilterMenu,
     columnMenuClose: menu.columnCloseMenu,
     columnMenuOpen: menu.columnOpenMenu,
-    columnFilterMenuOpen: menu.columnOpenFilterMenu,
 
     columnIsMeasurable: (c) => columnIsMeasurable(api, c),
     columnIsPivot: (c) => columnIsPivot(api, c),
@@ -270,6 +268,8 @@ export function makeApi<D, E>(
 
     dialogFrameClose: frame.dialogFrameClose,
     dialogFrameOpen: frame.dialogFrameOpen,
+    popoverFrameClose: frame.popoverFrameClose,
+    popoverFrameOpen: frame.popoverFrameOpen,
 
     rowReload: () => api.getState().internal.rowBackingDataSource.peek().rowReload(),
     rowReloadExpansion: (row) =>

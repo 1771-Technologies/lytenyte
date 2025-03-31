@@ -28,10 +28,29 @@ export const frames = <D, E>(api: ApiEnterprise<D, E>) => {
 
       s.internal.dialogFrameOpen.set(id);
     },
+
+    popoverFrameClose: () => {
+      const s = api.getState();
+      s.internal.popoverFrameOpen.set(null);
+      s.internal.popoverFrameBB.set(null);
+    },
+
+    popoverFrameOpen: (id, bb) => {
+      const s = api.getState();
+      const frames = s.popoverFrames.peek();
+      const frame = frames[id];
+
+      if (!frame) return;
+
+      s.internal.popoverFrameOpen.set(id);
+      s.internal.popoverFrameBB.set(bb);
+    },
   } satisfies {
     panelFrameClose: ApiEnterprise<D, E>["panelFrameClose"];
     panelFrameOpen: ApiEnterprise<D, E>["panelFrameOpen"];
     dialogFrameOpen: ApiEnterprise<D, E>["dialogFrameOpen"];
     dialogFrameClose: ApiEnterprise<D, E>["dialogFrameClose"];
+    popoverFrameOpen: ApiEnterprise<D, E>["popoverFrameOpen"];
+    popoverFrameClose: ApiEnterprise<D, E>["popoverFrameClose"];
   };
 };
