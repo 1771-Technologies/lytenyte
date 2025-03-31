@@ -14,8 +14,24 @@ export const frames = <D, E>(api: ApiEnterprise<D, E>) => {
       const s = api.getState();
       s.internal.panelFrameOpen.set(null);
     },
+
+    dialogFrameClose: () => {
+      const s = api.getState();
+      s.internal.panelFrameOpen.set(null);
+    },
+    dialogFrameOpen: (id) => {
+      const s = api.getState();
+      const frames = s.dialogFrames.peek();
+      const frame = frames[id];
+
+      if (!frame) return;
+
+      s.internal.panelFrameOpen.set(id);
+    },
   } satisfies {
     panelFrameClose: ApiEnterprise<D, E>["panelFrameClose"];
     panelFrameOpen: ApiEnterprise<D, E>["panelFrameOpen"];
+    dialogFrameOpen: ApiEnterprise<D, E>["dialogFrameOpen"];
+    dialogFrameClose: ApiEnterprise<D, E>["dialogFrameClose"];
   };
 };

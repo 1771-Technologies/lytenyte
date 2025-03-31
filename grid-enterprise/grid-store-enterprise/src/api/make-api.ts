@@ -268,6 +268,9 @@ export function makeApi<D, E>(
     panelFrameClose: frame.panelFrameClose,
     panelFrameOpen: frame.panelFrameOpen,
 
+    dialogFrameClose: frame.dialogFrameClose,
+    dialogFrameOpen: frame.dialogFrameOpen,
+
     rowReload: () => api.getState().internal.rowBackingDataSource.peek().rowReload(),
     rowReloadExpansion: (row) =>
       api.getState().internal.rowBackingDataSource.peek().rowReloadExpansion(row),

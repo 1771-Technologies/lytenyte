@@ -143,6 +143,8 @@ export function initialize<D, E>(
     panelFrameButtons: signal(props.panelFrameButtons ?? []),
     panelFrames: signal(props.panelFrames ?? {}),
 
+    dialogFrames: signal(props.dialogFrames ?? {}),
+
     treeData: signal(props.treeData ?? false),
   } satisfies InitialStateEnterprise<D, E>;
 

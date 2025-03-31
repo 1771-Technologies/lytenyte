@@ -73,6 +73,7 @@ export interface GridInternalState<D, E> extends Omit<CommunityInternalState<D, 
   readonly floatingFrameOpen: Signal<string | null>;
 
   readonly panelFrameOpen: Signal<string | null>;
+  readonly dialogFrameOpen: Signal<string | null>;
 }
 
 type Props<D, E> = Required<Init<D, E>>;

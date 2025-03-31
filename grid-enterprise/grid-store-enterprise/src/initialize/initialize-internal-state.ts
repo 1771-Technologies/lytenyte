@@ -181,6 +181,7 @@ export function initializeInternalState<D, E>(
     floatingFrameOpen: signal<string | null>(null),
 
     panelFrameOpen: signal<string | null>(null),
+    dialogFrameOpen: signal<string | null>(null),
 
     keyBindingIdToKey: computed<Record<string, KeyBindingString[]>>(() => {
       return {};

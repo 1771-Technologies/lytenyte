@@ -11,6 +11,7 @@ import type {
   ColumnFilterModel,
   ColumnMenuRenderer,
   ContextMenuRenderer,
+  DialogFrame,
   OverlayId,
   Overlays,
   PanelFrame,
@@ -44,6 +45,8 @@ export interface PropsEnterprise<A, D, C, E, Base, Group>
 
   readonly panelFrames?: Record<string, PanelFrame<A, E>>;
   readonly panelFrameButtons?: { label: string; id: string; icon?: () => E }[];
+
+  readonly dialogFrames?: Record<string, DialogFrame<A, E>>;
 
   readonly measureModel?: AggModel<A>;
 

@@ -195,6 +195,10 @@ export interface PanelFrame<A, E> {
   readonly component: (p: { api: A; frame: PanelFrame<A, E> }) => E;
 }
 
+export interface DialogFrame<A, E> {
+  readonly component: (p: { api: A; frame: DialogFrame<A, E> }) => E;
+}
+
 // Column Pivots
 
 export interface ColumnPivotEventParams<A, C> {

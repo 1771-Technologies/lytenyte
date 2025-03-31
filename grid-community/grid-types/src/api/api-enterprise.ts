@@ -83,6 +83,9 @@ export interface ApiEnterprise<D, C, E>
   readonly panelFrameOpen: (id: string) => void;
   readonly panelFrameClose: () => void;
 
+  readonly dialogFrameOpen: (id: string) => void;
+  readonly dialogFrameClose: () => void;
+
   readonly rowReload: () => void;
   readonly rowReloadExpansion: (row: RowNodeGroup) => void;
   readonly rowReset: () => void;
