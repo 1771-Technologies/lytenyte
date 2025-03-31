@@ -1,6 +1,6 @@
 import type { StoreEnterpriseReact } from "@1771technologies/grid-types";
 import { useEffect, useState } from "react";
-import { sortModelToSortItems } from "./sort-model-to-sort-items";
+import { sortModelToSortItems } from "./sort-model-to-sort-items.js";
 
 export interface SortItem {
   readonly columnId?: string;

@@ -1,5 +1,5 @@
-import { PlusIcon } from "../icons";
-import type { SortRowItem } from "./sort-manager-container";
+import { PlusIcon } from "../icons.js";
+import type { SortRowItem } from "./sort-manager-container.js";
 
 export function SortAdder({ item }: { item: SortRowItem }) {
   return (

@@ -1,9 +1,9 @@
 import { forwardRef, useMemo, type JSX, type ReactNode } from "react";
-import { useGrid } from "../use-grid";
-import { useSortableColumnItems } from "./use-sortable-column-items";
-import { type SortItem } from "./use-sort-state";
+import { useGrid } from "../use-grid.js";
+import { useSortableColumnItems } from "./use-sortable-column-items.js";
+import { type SortItem } from "./use-sort-state.js";
 import { clsx } from "@1771technologies/js-utils";
-import { useSortManagerContext } from "./sort-manager-context";
+import { useSortManagerContext } from "./sort-manager-context.js";
 
 export interface SortRowItem {
   readonly columnItem: { value: string; label: string } | null;

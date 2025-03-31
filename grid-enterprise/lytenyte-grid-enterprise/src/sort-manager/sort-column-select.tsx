@@ -1,5 +1,5 @@
-import { Select } from "../select/select";
-import type { SortRowItem } from "./sort-manager-container";
+import { Select } from "../select/select.js";
+import type { SortRowItem } from "./sort-manager-container.js";
 
 export const SortColumnSelect = ({
   item,

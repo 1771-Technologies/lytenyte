@@ -1,7 +1,7 @@
 import { forwardRef, type JSX } from "react";
-import { useGrid } from "../use-grid";
-import { useSortManagerContext } from "./sort-manager-context";
-import { sortModelToSortItems } from "./sort-model-to-sort-items";
+import { useGrid } from "../use-grid.js";
+import { useSortManagerContext } from "./sort-manager-context.js";
+import { sortModelToSortItems } from "./sort-model-to-sort-items.js";
 import { clsx } from "@1771technologies/js-utils";
 
 export const SortCancelButton = forwardRef<HTMLButtonElement, JSX.IntrinsicElements["button"]>(

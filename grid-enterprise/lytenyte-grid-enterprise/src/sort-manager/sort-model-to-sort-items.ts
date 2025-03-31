@@ -1,6 +1,6 @@
 import type { SortModelItem } from "@1771technologies/grid-types/community";
 import type { StoreEnterpriseReact } from "@1771technologies/grid-types";
-import type { SortItem } from "./use-sort-state";
+import type { SortItem } from "./use-sort-state.js";
 
 export function sortModelToSortItems<D>(
   c: SortModelItem[],

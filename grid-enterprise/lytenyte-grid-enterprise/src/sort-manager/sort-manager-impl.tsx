@@ -1,18 +1,18 @@
 import "./sort-manager.css";
 import type { StoreEnterpriseReact } from "@1771technologies/grid-types";
 import { type PropsWithChildren } from "react";
-import { GridProvider } from "../use-grid";
-import { SortManagerContainer } from "./sort-manager-container";
-import { SortColumnSelect } from "./sort-column-select";
-import { SortSelect } from "./sort-sort-select";
-import { SortDirectionSelection } from "./sort-direction-select";
-import { SortAdder } from "./sort-adder";
-import { SortRemover } from "./sort-remove";
-import { useSortState } from "./use-sort-state";
-import { SortManagerContext } from "./sort-manager-context";
-import { SortApplyButton } from "./sort-apply";
-import { SortCancelButton } from "./sort-cancel";
-import { SortClearButton } from "./sort-clear";
+import { GridProvider } from "../use-grid.js";
+import { SortManagerContainer } from "./sort-manager-container.js";
+import { SortColumnSelect } from "./sort-column-select.js";
+import { SortSelect } from "./sort-sort-select.js";
+import { SortDirectionSelection } from "./sort-direction-select.js";
+import { SortAdder } from "./sort-adder.js";
+import { SortRemover } from "./sort-remove.js";
+import { useSortState } from "./use-sort-state.js";
+import { SortManagerContext } from "./sort-manager-context.js";
+import { SortApplyButton } from "./sort-apply.js";
+import { SortCancelButton } from "./sort-cancel.js";
+import { SortClearButton } from "./sort-clear.js";
 
 interface SortManagerRootProps<D = any> {
   readonly grid: StoreEnterpriseReact<D>;

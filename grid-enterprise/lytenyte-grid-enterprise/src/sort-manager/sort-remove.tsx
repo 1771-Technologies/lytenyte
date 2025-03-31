@@ -1,5 +1,5 @@
-import { CrossIcon } from "../icons";
-import type { SortRowItem } from "./sort-manager-container";
+import { CrossIcon } from "../icons.js";
+import type { SortRowItem } from "./sort-manager-container.js";
 
 export function SortRemover({ item }: { item: SortRowItem }) {
   return (
