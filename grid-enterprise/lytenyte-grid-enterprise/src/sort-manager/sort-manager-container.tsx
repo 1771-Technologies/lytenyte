@@ -6,6 +6,7 @@ import { clsx } from "@1771technologies/js-utils";
 
 export interface SortRowItem {
   readonly columnItem: { value: string; label: string } | null;
+  readonly index: number;
 
   readonly columnOptions: { value: string; label: string }[];
   readonly columnSelected: { value: string; label: string } | null;
@@ -18,6 +19,10 @@ export interface SortRowItem {
   readonly sortDirectionOptions: { value: string; label: string }[];
   readonly sortDirectionSelected: { value: string; label: string } | null;
   readonly sortDirectionOnSelect: (c: { value: string; label: string } | null) => void;
+
+  readonly canAdd: boolean;
+  readonly onAdd: () => void;
+  readonly onDelete: () => void;
 }
 
 interface SortContainerProps {
@@ -90,7 +95,30 @@ export const SortManagerContainer = forwardRef<
         });
       };
 
+      const onDelete = () => {
+        setState((prev) => {
+          const next = [...prev];
+          next.splice(i, 1);
+
+          if (!next.length) {
+            return [{ sortDirection: "ascending" }];
+          }
+
+          return next;
+        });
+      };
+      const onAdd = () => {
+        setState((prev) => {
+          const next = [...prev];
+          next.splice(i + 1, 0, { sortDirection: "ascending" });
+          return next;
+        });
+      };
+
+      const maxSortCount = columnItems.length;
+
       return {
+        index: i,
         columnItem,
         columnOptions,
         columnSelected,
@@ -101,6 +129,9 @@ export const SortManagerContainer = forwardRef<
         sortDirectionOptions,
         sortDirectionSelected,
         sortDirectionOnSelect,
+        canAdd: maxSortCount > state.length,
+        onAdd,
+        onDelete,
       };
     });
   }, [columnItems, setState, state, unselectedSortedColumns]);

@@ -72,8 +72,19 @@ export default function Play() {
                 <>
                   {items.map((c, i) => {
                     return (
-                      <div key={i}>
-                        <SortManager.ColumnSelect item={c} />
+                      <div
+                        key={i}
+                        className={css`
+                          display: flex;
+                          flex-direction: column;
+                          gap: 8px;
+                        `}
+                      >
+                        <SortManager.SortColumnSelect item={c} />
+                        <SortManager.SortSelect item={c} />
+                        <SortManager.SortDirectionSelect item={c} />
+                        <SortManager.SortAdder item={c} />
+                        <SortManager.SortRemove item={c} />
                       </div>
                     );
                   })}
