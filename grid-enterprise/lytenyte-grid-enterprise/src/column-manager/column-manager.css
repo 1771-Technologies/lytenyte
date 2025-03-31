@@ -111,7 +111,6 @@
 .lng1771-column-manager__drag-box {
   display: flex;
   flex-direction: column;
-  gap: 8px;
 
   &:focus-visible {
     outline: 1px solid var(--lng1771-focus-outline);
@@ -122,6 +121,7 @@
 .lng1771-column-manager__drag-box-controls {
   display: flex;
   align-items: center;
+  padding-inline: 8px;
   gap: 6px;
 }
 
@@ -140,8 +140,8 @@
 }
 
 .lng1771-column-manager__drag-box-expander {
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   border-radius: 6px;
   padding: 0px;
   display: flex;
@@ -226,6 +226,12 @@
 }
 .lng1771-column-manager__pill-inner[data-drag-active="true"] {
   opacity: 0.7;
+}
+
+.lng1771-column-manager__pivot-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .lng1771-column-manager__pill-labels {

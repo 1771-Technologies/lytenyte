@@ -12,7 +12,7 @@ import { ColumnManagerDragBox } from "./column-manager-drag-box";
 import { ColumnManagerDragBoxControls } from "./column-manager-drag-box-controls";
 import { ColumnManagerDragBoxLabel } from "./column-manager-drag-box-label";
 import { ColumnManagerDragBoxExpander } from "./column-manager-drag-box-expander";
-import { ColumnManagerDropZone } from "./column-manager-drop-zone";
+import { ColumnManagerDropZone, ColumnManagerDropZoneVisibility } from "./column-manager-drop-zone";
 import { Separator } from "../components-internal/separator/separator";
 import {
   PillManagerAggMenu,
@@ -72,6 +72,7 @@ export const ColumnManager = {
   DragBoxControls: ColumnManagerDragBoxControls,
   DragBoxLabel: ColumnManagerDragBoxLabel,
   DragBoxExpander: ColumnManagerDragBoxExpander,
+  DropZoneVisibility: ColumnManagerDropZoneVisibility,
   DropZone: ColumnManagerDropZone,
   Pill: ColumnManagerPill,
 

@@ -64,6 +64,7 @@ export default function Play() {
           className={css`
             display: flex;
             flex-direction: column;
+            height: 100%;
           `}
         >
           <div
@@ -71,9 +72,14 @@ export default function Play() {
               padding-inline: 8px;
               display: flex;
               align-items: center;
+              box-sizing: border-box;
             `}
           >
-            <ColumnManager.Search />
+            <ColumnManager.Search
+              className={css`
+                flex: 1;
+              `}
+            />
             <ColumnManager.PivotModeToggle />
           </div>
           <ColumnManager.DragPlaceholder />
@@ -85,36 +91,63 @@ export default function Play() {
             </ColumnManager.Tree>
           </div>
 
-          {(["row-groups", "aggregations", "column-pivots", "measures"] as const).map((c) => {
-            return (
-              <ColumnManager.DragBox source={c} key={c}>
-                <ColumnManager.Separator dir="horizontal" />
-                <ColumnManager.DragBoxControls>
-                  <ColumnManager.DragBoxLabel>
-                    {c === "row-groups"
-                      ? "Row Groups"
-                      : c === "aggregations"
-                        ? "Aggregations"
-                        : c === "column-pivots"
-                          ? "Column Pivots"
-                          : "Measures"}
-                  </ColumnManager.DragBoxLabel>
-                  <ColumnManager.DragBoxExpander />
-                </ColumnManager.DragBoxControls>
-                <ColumnManager.DropZone>
-                  {({ pills }) => {
-                    return (
-                      <>
-                        {pills.map((c) => (
-                          <ColumnManager.Pill item={c} key={c.label} />
-                        ))}
-                      </>
-                    );
-                  }}
-                </ColumnManager.DropZone>
-              </ColumnManager.DragBox>
-            );
-          })}
+          <div
+            className={css`
+              flex: 1;
+              width: 100%;
+              overflow: auto;
+            `}
+          >
+            {(["row-groups", "aggregations", "column-pivots", "measures"] as const).map((c) => {
+              return (
+                <>
+                  <ColumnManager.Separator dir="horizontal" />
+                  <ColumnManager.DragBox
+                    source={c}
+                    key={c}
+                    className={css`
+                      padding-block: 8px;
+                    `}
+                  >
+                    <ColumnManager.DragBoxControls>
+                      <ColumnManager.DragBoxLabel>
+                        {c === "row-groups"
+                          ? "Row Groups"
+                          : c === "aggregations"
+                            ? "Aggregations"
+                            : c === "column-pivots"
+                              ? "Column Pivots"
+                              : "Measures"}
+                      </ColumnManager.DragBoxLabel>
+                      <ColumnManager.DragBoxExpander />
+                    </ColumnManager.DragBoxControls>
+                    <ColumnManager.DropZoneVisibility
+                      className={css`
+                        padding-inline: 8px;
+                        padding-bottom: 16px;
+                      `}
+                    >
+                      <ColumnManager.DropZone
+                        className={css`
+                          margin-top: 8px;
+                        `}
+                      >
+                        {({ pills }) => {
+                          return (
+                            <>
+                              {pills.map((c) => (
+                                <ColumnManager.Pill item={c} key={c.label} />
+                              ))}
+                            </>
+                          );
+                        }}
+                      </ColumnManager.DropZone>
+                    </ColumnManager.DropZoneVisibility>
+                  </ColumnManager.DragBox>
+                </>
+              );
+            })}
+          </div>
         </ColumnManager.Root>
       </div>
     </div>

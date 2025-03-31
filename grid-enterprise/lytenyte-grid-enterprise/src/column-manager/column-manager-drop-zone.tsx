@@ -5,11 +5,35 @@ import { useDragBox } from "./column-manager-drag-box";
 import { useCombinedRefs } from "@1771technologies/react-utils";
 import { useDroppable } from "@1771technologies/lytenyte-grid-community/internal";
 import { DragGroupIcon } from "../icons";
+import { useGrid } from "../use-grid";
 
 export interface ColumnManagerDropZoneProps {
   children: (p: { pills: PillManagerPillItem[] }) => ReactNode;
   empty?: ReactNode;
 }
+
+export const ColumnManagerDropZoneVisibility = forwardRef<
+  HTMLDivElement,
+  JSX.IntrinsicElements["div"]
+>(function ColumnManagerDropZoneVisibility(props, ref) {
+  const { pillSource } = useDragBox();
+  const { state: sx } = useGrid();
+
+  const key =
+    pillSource === "row-groups"
+      ? "rowGroups"
+      : pillSource === "aggregations"
+        ? "values"
+        : pillSource === "column-pivots"
+          ? "columnPivots"
+          : "measures";
+  const expansions = sx.internal.columnManagerBoxExpansions.use();
+  const expanded = expansions[key];
+
+  if (!expanded) return null;
+
+  return <div {...props} ref={ref} />;
+});
 
 export const ColumnManagerDropZone = forwardRef<
   HTMLDivElement,
