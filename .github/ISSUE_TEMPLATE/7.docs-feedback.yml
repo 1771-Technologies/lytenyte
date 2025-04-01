@@ -1,0 +1,51 @@
+name: "📚 Documentation Feedback"
+description: I have a suggestion that will improve the LyteNyte Grid documentation
+labels: ["pending", "docs-feedback"]
+body:
+  - type: input
+    attributes:
+      label: Search Keywords
+      description: |
+        Your feedback may have already been suggested. Please search
+        the [existing feedback](https://github.com/1771-Technologies/lytenyte/issues). 
+        If your feedback isn't a duplicate, great! Please list the keywords you used so people 
+        in the future can find this one more easily.
+    validations:
+      required: false
+
+  - type: checkboxes
+    attributes:
+      label: Latest version
+      description: We roll bug fixes, performance enhancements, and other improvements into new releases.
+      options:
+        - label: I have tested the latest version
+          required: true
+
+  - type: input
+    id: page-url
+    attributes:
+      label: Related page
+      description: Which page of the documentation is this about?
+      placeholder: https://1771technologies/docs/
+    validations:
+      required: true
+
+  - type: dropdown
+    attributes:
+      label: Kind of issue
+      description: What kind of problem are you facing?
+      options:
+        - Unclear explanations
+        - Missing information
+        - Broken demo
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Your feedback
+      description: Describe the changes you think should be made
+    validations:
+      required: true

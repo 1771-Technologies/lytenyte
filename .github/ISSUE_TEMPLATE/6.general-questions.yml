@@ -7,8 +7,8 @@ body:
       label: Search Keywords
       description: |
         Your question may have already been asked! First search for duplicates among 
-        the [existing questions](https://github.com/1771-Technologies/lytenyte/issues).
-        If your question isn't a duplicate, great! Please list the keywords you used so people in the future can find this one more easily.
+        the [existing questions](https://github.com/1771-Technologies/lytenyte/issues). If your question isn't a duplicate,
+        great! Please list the keywords you used so people in the future can find this one more easily.
     validations:
       required: false
 
