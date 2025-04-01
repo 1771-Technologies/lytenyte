@@ -120,4 +120,4 @@ body:
       description: Enterprise customers can receive priority support. Providing your Customer ID gives your problem more attention.
       placeholder: "e.g. JANE-1221"
     validations:
-      required: ${{ (contains(account_type, 'Organization') || contains(account_type, 'PRO')) }}
+      required: ${{ (contains(plan, 'Organization') || contains(plan, 'PRO')) }}
