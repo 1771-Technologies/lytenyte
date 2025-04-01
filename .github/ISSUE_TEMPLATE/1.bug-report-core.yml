@@ -21,6 +21,11 @@ body:
     validations:
       required: false
 
+  - type: markdown
+    attributes:
+      value: |
+        ### Bug Report For LyteNyte Grid Core
+
   - type: checkboxes
     attributes:
       label: Latest version
@@ -41,11 +46,6 @@ body:
         - Organization
     validations:
       required: true
-
-  - type: markdown
-    attributes:
-      value: |
-        This issue is for LyteNyte Grid Core
 
   - type: textarea
     id: description
