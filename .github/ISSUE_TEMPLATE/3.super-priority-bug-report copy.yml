@@ -1,31 +1,32 @@
 name: "🏎️ Super Priority Bug Report"
-description: Report a bug that should be looked at with priority
+description: Report a bug that should be addressed with super priority
 labels: ["pending", "bug", "super-priority"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thank you for reporting an issue :pray:.
+        Thank you for taking the time to report an issue.
 
-        This issue tracker is for reporting reproducible bugs or regression's found in [LyteNyte Grid](https://github.com/1771-Technologies/lytenyte).
-        If you have a question about how to achieve something and are struggling, please raise a 'General Questions' issue.
+        This tracker is specifically for reporting reproducible bugs or regressions in [LyteNyte Grid](https://github.com/1771-Technologies/lytenyte).
+        For usage questions, please create a 'General Questions' issue instead.
 
-        The more information you fill in, the better we can help you.
+        The more details you provide, the faster we can address your issue.
 
   - type: input
     attributes:
       label: Search Keywords
       description: |
-        Your issue may have already been reported! First search for duplicates among the [existing issues](https://github.com/1771-Technologies/lytenyte/issues).
-        If your issue isn't a duplicate, great! Please list the keywords you used so people in the future can find this one more easily.
+        Please check if your issue has already been reported in our [existing issues](https://github.com/1771-Technologies/lytenyte/issues).
+        If not, list keywords that others might use to find this issue in the future.
     validations:
       required: false
+
   - type: checkboxes
     attributes:
       label: Latest version
       description: We roll bug fixes, performance enhancements, and other improvements into new releases.
       options:
-        - label: I have tested the latest version
+        - label: I have tested with the latest version
           required: true
 
   - type: checkboxes
@@ -39,30 +40,30 @@ body:
   - type: textarea
     id: description
     attributes:
-      label: Describe the bug
-      description: Provide a clear and concise description of the challenge you are running into.
+      label: Bug Description
+      description: Provide a clear and concise description of the issue you're experiencing.
     validations:
       required: true
 
   - type: input
     id: link
     attributes:
-      label: Your minimal, reproducible example
+      label: Minimal Reproduction Example
       description: |
-        Please add a link to a minimal reproduction.
-        Note: 
-          - Your bug may get fixed much faster if we can run your code and it doesn't have dependencies other than React.
-          - To create a shareable code example for web, you can use Stackblitz (https://stackblitz.com).
-          - Please make sure the example is complete and runnable - e.g. avoid localhost URLs.
-          - To stub out real api requests - Promise.resolve and Promise.reject are good options for easy reproductions
-          - Feel free to fork any of the official examples to reproduce your issue (e.g. [the getting started stackblitz](https://stackblitz.com/fork/github/1771technologies/lytenyte/tree/main/examples/introduction/getting-started-final-demo))
-          - ⚠️ Please do not expose any confidential information in your reproductions
+        Please provide a link to a minimal reproduction of the issue.
+
+        Tips:
+        - Issues with reproducible examples are resolved much faster
+        - Use Stackblitz (https://stackblitz.com) for shareable web examples
+        - Ensure the example is complete and runnable without local dependencies
+        - You can fork our official examples (e.g., [getting started stackblitz](https://stackblitz.com/fork/github/1771technologies/lytenyte/tree/main/examples/introduction/getting-started-final-demo))
+        - ⚠️ Do not include any confidential information
 
   - type: textarea
     attributes:
-      label: Steps to reproduce
+      label: Reproduction Steps
       description: |
-        **⚠️ Issues that we can't reproduce can't be fixed.**
+        **⚠️ Issues we cannot reproduce cannot be fixed.**
       value: |
         Steps:
         1. Go to '...'
@@ -74,35 +75,41 @@ body:
 
   - type: textarea
     attributes:
-      label: Expected behavior
-      description: Describe what should happen.
+      label: Expected Behavior
+      description: Describe what you expected to happen.
     validations:
       required: true
 
   - type: dropdown
     attributes:
-      label: How often does this bug happen?
+      label: Issue Frequency
       description: |
-        Following the repro steps above, how easily are you able to reproduce this bug?
+        How consistently can you reproduce this issue?
       options:
         - Every time
         - Often
         - Sometimes
+        - Rarely
         - Only once
+    validations:
+      required: true
 
   - type: textarea
     attributes:
-      label: Your environment
-      description: Please provide your browser version and current OS.
+      label: Environment Details
+      description: Please provide your browser version and operating system.
       value: |
-        ```
-          Don't forget to mention which browser you used.
-        ```
+        Browser: 
+        Operating System: 
+        LyteNyte Version:
+    validations:
+      required: true
+
   - type: input
     id: contact
     attributes:
       label: Customer ID
-      description: Please provide your organization customer ID.
+      description: Please provide your organization customer ID for super priority support.
       placeholder: "e.g. JANE-1221"
     validations:
       required: true
