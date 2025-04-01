@@ -1,18 +1,25 @@
-name: Bug report
-description: Create a bug report for LyteNyte Grid.
+name: "🐛 Bug Report"
+description: Report a reproducible bug or regression
 labels: ["pending", "bug"]
 body:
   - type: markdown
     attributes:
-      value: Thanks for contributing by creating an issue! Please provide a searchable summary of the issue in the title above.
+      value: |
+        Thank you for reporting an issue :pray:.
+
+        This issue tracker is for reporting reproducible bugs or regression's found in [LyteNyte Grid](https://github.com/1771-Technologies/lytenyte).
+        If you have a question about how to achieve something and are struggling, please raise a 'General Questions' issue.
+
+        The more information you fill in, the better we can help you.
+
   - type: input
     attributes:
-      label: Search keywords
+      label: Search Keywords
       description: |
         Your issue may have already been reported! First search for duplicates among the [existing issues](https://github.com/1771-Technologies/lytenyte/issues).
-        If your issue isn't a duplicate, great! Please list the keywords you used so people in the future can find this one more easily:
+        If your issue isn't a duplicate, great! Please list the keywords you used so people in the future can find this one more easily.
     validations:
-      required: true
+      required: false
   - type: checkboxes
     attributes:
       label: Latest version
@@ -20,14 +27,26 @@ body:
       options:
         - label: I have tested the latest version
           required: true
+
   - type: dropdown
     attributes:
-      label: Affected products
-      description: Which products are affected by this issue? If you're not sure, leave this blank.
-      multiple: true
+      label: License Plan
+      description: Which license plan are you on? (If you do not have a license plan please select Core)
+      multiple: false
       options:
-        - LyteNyte Grid Community
-        - LyteNyte Grid Enterprise
+        - Core (free)
+        - PRO
+        - Organization
+      required: true
+  - type: dropdown
+    attributes:
+      label: LyteNyte Edition
+      description: What edition of LyteNyte Grid are you using, Core or PRO?
+      multiple: false
+      options:
+        - Core
+        - PRO
+
   - type: textarea
     attributes:
       label: Steps to reproduce
