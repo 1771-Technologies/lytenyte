@@ -1,78 +1,68 @@
 name: "💡 Feature Request"
-description: As a LyteNyte Grid license holder I would like to request a feature be added to the grid
+description: Request a new feature to be added to LyteNyte Grid
 labels: ["pending", "feature"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for contributing by requesting a feature!
+        Thank you for taking the time to request a feature.
+
+        This tracker is specifically for requesting new features for [LyteNyte Grid](https://github.com/1771-Technologies/lytenyte).
+        For usage questions, please create a 'General Questions' issue instead.
+
+        The more details you provide, the better we can understand your needs.
 
   - type: input
     attributes:
       label: Search Keywords
       description: |
-        Your feature may have already been requested! First search for duplicates among 
-        the [existing feature requests](https://github.com/1771-Technologies/lytenyte/issues).
-        If your feature request isn't a duplicate, great! Please list the keywords you used so people in the future can find this one more easily.
+        Please check if your feature has already been requested in our [existing feature requests](https://github.com/1771-Technologies/lytenyte/issues).
+        If not, list keywords that others might use to find this feature request in the future.
     validations:
       required: false
+
   - type: checkboxes
     attributes:
       label: Latest version
       description: We roll bug fixes, performance enhancements, and other improvements into new releases.
       options:
-        - label: I have tested the latest version
+        - label: I have tested with the latest version
           required: true
-
-  - type: dropdown
-    id: plan
-    attributes:
-      label: License Plan
-      description: Which license plan are you on? (If you do not have a license plan please select Core)
-      multiple: false
-      options:
-        - Core (free)
-        - PRO
-        - Organization
-  - type: dropdown
-    attributes:
-      label: LyteNyte Edition
-      description: What edition of LyteNyte Grid are you using, Core or PRO?
-      multiple: false
-      options:
-        - Core
-        - PRO
 
   - type: textarea
     id: description
     attributes:
-      label: Describe the feature
-      description: Provide a clear and concise description of the feature
+      label: Feature Description
+      description: Provide a clear and concise description of the feature you're requesting.
     validations:
       required: true
 
   - type: textarea
     attributes:
-      label: Suggested solution
-      description: Describe how LyteNyte Grid should implement your requested feature
+      label: Suggested Solution
+      description: Describe how you envision LyteNyte Grid implementing this feature.
     validations:
       required: true
 
   - type: textarea
     attributes:
-      label: Alternative solutions
-      description: Describe any alternatives you may have considered
+      label: Alternative Approaches
+      description: Describe any alternative solutions or features you've considered.
+    validations:
+      required: false
 
   - type: textarea
     attributes:
-      label: Additional context
-      description: Please provide any additional context that may be relevant to the feature you have requested
+      label: Additional Context
+      description: Provide any additional context, screenshots, or examples relevant to this feature request.
+    validations:
+      required: false
 
   - type: input
     id: contact
     attributes:
       label: Customer ID
-      description: License holders may raise feature requests
+      description: Please provide your customer ID (feature requests are for license holders).
       placeholder: "e.g. JANE-1221"
     validations:
       required: true
