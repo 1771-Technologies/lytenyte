@@ -1,5 +1,5 @@
-name: "🚨 Priority Bug Report"
-description: Report a bug that should be addressed with priority
+name: "🏎️ Priority Bug Report"
+description: Report a bug that should be addressed with super priority
 labels: ["pending", "bug", "priority"]
 body:
   - type: markdown
@@ -29,17 +29,13 @@ body:
         - label: I have tested with the latest version
           required: true
 
-  - type: dropdown
-    id: plan
+  - type: checkboxes
     attributes:
-      label: License Plan
-      description: Select your current license plan (Priority bug reports may only be raised by license holders)
-      multiple: false
+      label: Organization License Holder
+      description: Super priority bug reports are only available to organization license holders.
       options:
-        - PRO
-        - Organization
-    validations:
-      required: true
+        - label: I am an organization license holder
+          required: true
 
   - type: textarea
     id: description
@@ -113,7 +109,7 @@ body:
     id: contact
     attributes:
       label: Customer ID
-      description: Please provide your customer ID for priority support.
+      description: Please provide your organization customer ID for super priority support.
       placeholder: "e.g. JANE-1221"
     validations:
       required: true

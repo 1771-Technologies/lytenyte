@@ -1,14 +1,23 @@
 name: "❓ General Question"
-description: I have a general question that is not a bug or feature request
+description: Ask a general question about LyteNyte Grid
 labels: ["pending", "question"]
 body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to ask a question.
+
+        This tracker is for general questions about [LyteNyte Grid](https://github.com/1771-Technologies/lytenyte).
+        For bug reports or feature requests, please use the appropriate issue templates.
+
+        The more details you provide, the better we can assist you.
+
   - type: input
     attributes:
       label: Search Keywords
       description: |
-        Your question may have already been asked! First search for duplicates among 
-        the [existing questions](https://github.com/1771-Technologies/lytenyte/issues). If your question isn't a duplicate,
-        great! Please list the keywords you used so people in the future can find this one more easily.
+        Please check if your question has already been asked in our [existing questions](https://github.com/1771-Technologies/lytenyte/issues).
+        If not, list keywords that others might use to find this question in the future.
     validations:
       required: false
 
@@ -17,7 +26,7 @@ body:
       label: Latest version
       description: We roll bug fixes, performance enhancements, and other improvements into new releases.
       options:
-        - label: I have tested the latest version
+        - label: I have tested with the latest version
           required: true
 
   - type: dropdown
@@ -32,14 +41,14 @@ body:
   - type: textarea
     id: description
     attributes:
-      label: What is your question?
-      description: Provide a clear and concise description
+      label: Question
+      description: Provide a clear and concise description of your question.
     validations:
       required: true
 
   - type: input
     id: contact
     attributes:
-      label: Customer ID (Optional)
-      description: License holders may raise feature requests
+      label: Customer ID (optional)
+      description: License holders receive priority support. Your Customer ID helps us provide faster assistance.
       placeholder: "e.g. JANE-1221"

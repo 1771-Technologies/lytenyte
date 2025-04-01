@@ -1,6 +1,6 @@
-name: "🏎️ Super Priority Bug Report"
-description: Report a bug that should be addressed with super priority
-labels: ["pending", "bug", "super-priority"]
+name: "🐛 Bug Report Core"
+description: Report a reproducible bug or regression in LyteNyte Grid
+labels: ["pending", "bug"]
 body:
   - type: markdown
     attributes:
@@ -29,13 +29,29 @@ body:
         - label: I have tested with the latest version
           required: true
 
-  - type: checkboxes
+  - type: dropdown
+    id: plan
     attributes:
-      label: Organization License Holder
-      description: Super priority bug reports are only available to organization license holders.
+      label: License Plan
+      description: Select your current license plan (choose Core if you do not have a paid license)
+      multiple: false
       options:
-        - label: I am an organization license holder
-          required: true
+        - Core (free)
+        - PRO
+        - Organization
+    validations:
+      required: true
+
+  - type: dropdown
+    attributes:
+      label: LyteNyte Edition
+      description: Which edition of LyteNyte Grid are you using?
+      multiple: false
+      disabled: true
+      options:
+        - Core
+    validations:
+      required: true
 
   - type: textarea
     id: description
@@ -108,8 +124,6 @@ body:
   - type: input
     id: contact
     attributes:
-      label: Customer ID
-      description: Please provide your organization customer ID for super priority support.
+      label: Customer ID (optional)
+      description: License holders receive priority support. Your Customer ID helps us provide faster assistance.
       placeholder: "e.g. JANE-1221"
-    validations:
-      required: true
