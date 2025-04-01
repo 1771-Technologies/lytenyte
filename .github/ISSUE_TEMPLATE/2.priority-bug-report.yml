@@ -1,6 +1,6 @@
-name: "🐛 Bug Report"
-description: Report a reproducible bug or regression
-labels: ["pending", "bug"]
+name: " 🐛 Priority Bug Report"
+description: Report a bug that should be looked at with priority
+labels: ["pending", "bug", "priority"]
 body:
   - type: markdown
     attributes:
@@ -32,22 +32,11 @@ body:
     id: plan
     attributes:
       label: License Plan
-      description: Which license plan are you on? (If you do not have a license plan please select Core)
+      description: Which license plan are you on? (Priority bug reports may only be raised by license holders)
       multiple: false
       options:
-        - Core (free)
         - PRO
         - Organization
-    validations:
-      required: true
-  - type: dropdown
-    attributes:
-      label: LyteNyte Edition
-      description: What edition of LyteNyte Grid are you using, Core or PRO?
-      multiple: false
-      options:
-        - Core
-        - PRO
     validations:
       required: true
 
@@ -117,7 +106,7 @@ body:
     id: contact
     attributes:
       label: Customer ID
-      description: Enterprise customers can receive priority support. Providing your Customer ID gives your problem more attention.
+      description: Please provide your customer ID.
       placeholder: "e.g. JANE-1221"
     validations:
-      required: ${{ (contains(plan, 'Organization') || contains(plan, 'PRO')) }}
+      required: true

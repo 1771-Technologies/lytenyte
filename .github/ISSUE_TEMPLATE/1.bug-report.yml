@@ -38,8 +38,6 @@ body:
         - Core (free)
         - PRO
         - Organization
-    validations:
-      required: true
   - type: dropdown
     attributes:
       label: LyteNyte Edition
@@ -48,8 +46,6 @@ body:
       options:
         - Core
         - PRO
-    validations:
-      required: true
 
   - type: textarea
     id: description
@@ -116,8 +112,6 @@ body:
   - type: input
     id: contact
     attributes:
-      label: Customer ID
-      description: Enterprise customers can receive priority support. Providing your Customer ID gives your problem more attention.
+      label: Customer ID (optional)
+      description: License holders can receive priority support. Providing your Customer ID gives your problem more attention.
       placeholder: "e.g. JANE-1221"
-    validations:
-      required: ${{ (contains(plan, 'Organization') || contains(plan, 'PRO')) }}
