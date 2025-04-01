@@ -1,5 +1,3 @@
-![LyteNyte Logo](./assets/hero-bg-min.png)
-
 # LyteNyte Grid | Fastest React Data Grid
 
 LyteNyte Grid is a feature rich fully extendible React Data Grid. LyteNyte Grid focuses
@@ -8,6 +6,12 @@ on delivering:
 - Blazingly fast performance
 - Low memory overhead
 - Small bundle-size
+
+[![npm version](https://img.shields.io/npm/v/package-name.svg)](https://www.npmjs.com/package/@1771technologies/lytenyte-grid-enterprise)
+
+![LyteNyte Logo](./assets/hero-bg-min.png)
+
+---
 
 LyteGrid Grid has two versions:
 
@@ -27,7 +31,7 @@ LyteGrid Grid has two versions:
 - One way data binding and declarative rendering. In keeping with React's design
   principles LyteNyte Grid maintains a predicable state flow.
 
-## Documentation
+## Quick Start
 
 - Start quick by reading our [getting started guide](https://www.1771technologies.com/docs/intro-getting-started)
 - Learn about the different pricing options available by viewing our [pricing page](https://www.1771technologies.com/pricing)
