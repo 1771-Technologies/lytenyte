@@ -1,5 +1,5 @@
 name: "💡 Feature Request"
-description:
+description: As a LyteNyte Grid license holder I would like to request a feature be added to the grid
 labels: ["pending", "feature"]
 body:
   - type: markdown
