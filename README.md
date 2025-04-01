@@ -1,11 +1,11 @@
-# LyteNyte Grid | Fastest React Data Grid
+# LyteNyte Grid | The Fastest React Data Grid
 
-LyteNyte Grid is a feature rich fully extendible React Data Grid. LyteNyte Grid focuses
-on delivering:
+LyteNyte Grid is a high-performance, fully extensible React Data Grid
+designed to deliver exceptional user experiences through:
 
 - Blazingly fast performance
-- Low memory overhead
-- Small bundle-size
+- Minimal memory footprint
+- Optimized bundle size
 
 <div align="center">
 
@@ -23,60 +23,61 @@ on delivering:
 
 ---
 
-LyteGrid Grid has two versions:
+LyteNyte Grid is available in two editions:
 
-1. LyteNyte Core: A free feature packed edition of LyteNyte Grid. Core provides the
-   basic set of features of a high performance table. For example,
-   **row grouping**,**column autosizing**, and **row detail**. Licensed under Apache 2.0.
-2. LyteNyte PRO: A commercial edition of LyteNyte Grid extending the Core functionality
-   with enterprise grade features and components, such as **asynchronous data loading**, **column manager components**,
-   and **data exporting**.
+1. **LyteNyte Core**: A free, feature-rich edition offering essential high-performance table
+   capabilities including **row grouping**, **column autosizing**, and **row detail** views. Licensed under Apache 2.0.
+
+2. **LyteNyte PRO**: A premium commercial edition that extends Core functionality with enterprise-grade
+   features such as **asynchronous data loading**, **column manager components**, and **data exporting** capabilities.
 
 ## Key Design Principles
 
-- Efficient: performance is a must, and considerable effort has been made to ensure the
-  grid is fast and remains fast.
-- Leverages modern web technologies and APIs. For example, LyteNyte Grid uses the native
-  scroll functionality of Browsers ensuring the main thread is not blocked as users scroll.
-- One way data binding and declarative rendering. In keeping with React's design
-  principles LyteNyte Grid maintains a predicable state flow.
+- **Performance-First**: We've engineered LyteNyte Grid with speed as a non-negotiable priority,
+  ensuring the grid remains responsive even with large datasets.
+
+- **Modern Architecture**: LyteNyte Grid leverages cutting-edge web technologies, including native
+  browser scroll functionality that keeps the main thread free as users navigate through data.
+
+- **React-Aligned Philosophy**: Following React's core principles, LyteNyte Grid
+  implements one-way data binding and declarative rendering to maintain predictable state management.
 
 ## Quick Start
 
-- Start quick by reading our [getting started guide](https://www.1771technologies.com/docs/intro-getting-started)
-- Learn about the different pricing options available by viewing our [pricing page](https://www.1771technologies.com/pricing)
-- See how to install LyteNyte Grid by visiting our guide on [installation](https://www.1771technologies.com/docs/intro-installation)
+- Begin your journey with our comprehensive [getting started guide](https://www.1771technologies.com/docs/intro-getting-started)
+- Explore our flexible [pricing options](https://www.1771technologies.com/pricing) to find the right fit for your project
+- Follow our step-by-step [installation guide](https://www.1771technologies.com/docs/intro-installation) to integrate LyteNyte Grid into your application
 
 ## Licensing
 
-The Core edition of LyteNyte Grid is licensed under the [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0). This is a
-permissive license that allows royalty free commercial use. The core set of features that LyteNyte Grid offers
-are available in this edition.
+**LyteNyte Core** is licensed under [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0), a
+permissive license allowing royalty-free commercial use with access to the fundamental features that power LyteNyte Grid.
 
-More advanced features fall under the [LyteNyte Grid PRO Commercial license](https://www.1771technologies.com/eula). This is a perpetual
-fallback license that unlocks the most powerful features LyteNyte Grid has to offer. LyteNyte Grid PRO expands on the
-features available in Core, in addition to providing many unique enhancements.
+**LyteNyte Grid PRO** is available under our [Commercial License](https://www.1771technologies.com/eula), a
+perpetual fallback license that unlocks the full potential of LyteNyte Grid
+with advanced features and enhancements not available in the Core edition.
 
 ## Support
 
-We are committed to supporting and maintaining LyteNyte Grid Core and LyteNyte Grid PRO. Read our
-dedicated [support guide](https://www.1771technologies.com/support) for details.
+Our dedicated team is committed to the ongoing support and maintenance of both LyteNyte Grid Core
+and PRO editions. For details on support options and resources,
+please consult our [support guide](https://www.1771technologies.com/support).
 
 ## Contributing
 
 > [!IMPORTANT]
-> We are not accepting external pull requests at the moment. Please bear with us as we finalize the
-> overall code structure and tooling we'd like LyteNyte Grid to have.
+> We are not currently accepting external pull requests as we finalize our code architecture and
+> development tooling. We appreciate your patience and interest in contributing to LyteNyte Grid.
 
-Read the [contributing guide](./CONTRIBUTING.md) to learn about our development process, and how
-we go about fixing bugs and maintaining our code base.
+Please review our [contributing guide](./CONTRIBUTING.md) to learn about our development
+process, bug reporting procedures, and codebase maintenance practices.
 
 ## Changelog
 
-Our [changelog](https://www.1771technologies.com/docs/changelog/changelog) is regularly
-updated to reflect what's changed in each new release. LyteNyte Grid follows
-[semver](https://semver.org/) release formats,
+Our detailed [changelog](https://www.1771technologies.com/docs/changelog/changelog) is regularly
+updated to document improvements and fixes in each release. LyteNyte Grid
+adheres to [semantic versioning](https://semver.org/) standards for predictable release management.
 
 ## Security
 
-For details on reporting a security vulnerability please refer to our [security policy](./SECURITY.md)
+For information on reporting security vulnerabilities, please refer to our [security policy](./SECURITY.md).
