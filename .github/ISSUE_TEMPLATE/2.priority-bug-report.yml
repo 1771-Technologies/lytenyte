@@ -1,4 +1,4 @@
-name: " 🐛 Priority Bug Report"
+name: "🚗 Priority Bug Report"
 description: Report a bug that should be looked at with priority
 labels: ["pending", "bug", "priority"]
 body:
