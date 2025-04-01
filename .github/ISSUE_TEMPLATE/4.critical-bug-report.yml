@@ -1,4 +1,4 @@
-name: "🚨 Critical Bug Report"
+name: "🔥 Critical Bug Report"
 description: Report a bug that should be addressed with critical priority
 labels: ["pending", "bug", "critical"]
 body:

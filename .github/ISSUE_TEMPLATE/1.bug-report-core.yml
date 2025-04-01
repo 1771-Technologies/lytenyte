@@ -42,16 +42,10 @@ body:
     validations:
       required: true
 
-  - type: dropdown
+  - type: markdown
     attributes:
-      label: LyteNyte Edition
-      description: Which edition of LyteNyte Grid are you using?
-      multiple: false
-      disabled: true
-      options:
-        - Core
-    validations:
-      required: true
+      value: |
+        This issue is for LyteNyte Grid Core
 
   - type: textarea
     id: description
