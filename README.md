@@ -7,7 +7,17 @@ on delivering:
 - Low memory overhead
 - Small bundle-size
 
-[![npm version](https://img.shields.io/npm/v/package-name.svg)](https://www.npmjs.com/package/@1771technologies/lytenyte-grid-enterprise)
+<div align="center">
+
+[![npm version](https://img.shields.io/npm/v/@1771technologies/lytenyte-grid-enterprise)](https://www.npmjs.com/package/@1771technologies/lytenyte-grid-enterprise)
+[![GitHub branch status](https://img.shields.io/github/checks-status/1771-Technologies/lytenyte/HEAD)](https://github.com/1771-Technologies/lytenyte/HEAD/)
+[![Follow on X](https://img.shields.io/twitter/follow/1771tech.svg?label=follow+1771tech)](https://x.com/1771tech)
+
+<!-- [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/TODO/badge)](https://www.bestpractices.dev/projects/TODO) -->
+
+[![CI status](https://github.com/1771-Technologies/lytenyte/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/1771-Technologies/lytenyte/actions/workflows/release.yml?query=branch%3Amain)
+
+</div>
 
 ![LyteNyte Logo](./assets/hero-bg-min.png)
 
