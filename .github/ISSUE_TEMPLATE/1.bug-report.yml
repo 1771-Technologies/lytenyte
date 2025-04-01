@@ -31,6 +31,7 @@ body:
   - type: dropdown
     attributes:
       label: License Plan
+      id: plan
       description: Which license plan are you on? (If you do not have a license plan please select Core)
       multiple: false
       options:
@@ -83,19 +84,27 @@ body:
         2. Click on '...'
         3. Scroll down to '...'
         4. See error
+    validations:
+      required: true
 
-  - type: textarea
-    attributes:
-      label: Current behavior
-      description: Describe what happens instead of the expected behavior.
   - type: textarea
     attributes:
       label: Expected behavior
       description: Describe what should happen.
-  - type: textarea
+    validations:
+      required: true
+
+  - type: dropdown
     attributes:
-      label: Context
-      description: What are you trying to accomplish? Providing context helps us come up with a solution that is more useful in the real world.
+      label: How often does this bug happen?
+      description: |
+        Following the repro steps above, how easily are you able to reproduce this bug?
+      options:
+        - Every time
+        - Often
+        - Sometimes
+        - Only once
+
   - type: textarea
     attributes:
       label: Your environment
@@ -107,6 +116,8 @@ body:
   - type: input
     id: contact
     attributes:
-      label: Customer ID (optional)
+      label: Customer ID
       description: Enterprise customers can receive priority support. Providing your Customer ID gives your problem more attention.
       placeholder: "e.g. JANE-1221"
+    validations:
+      required: ${{ (contains(account_type, 'Organization') || contains(account_type, 'PRO')) }}
