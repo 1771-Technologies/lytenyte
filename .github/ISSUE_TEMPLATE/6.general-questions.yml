@@ -1,0 +1,45 @@
+name: "❓ General Question"
+description: I have a general question that is not a bug or feature request
+labels: ["pending", "question"]
+body:
+  - type: input
+    attributes:
+      label: Search Keywords
+      description: |
+        Your question may have already been asked! First search for duplicates among 
+        the [existing questions](https://github.com/1771-Technologies/lytenyte/issues).
+        If your question isn't a duplicate, great! Please list the keywords you used so people in the future can find this one more easily.
+    validations:
+      required: false
+
+  - type: checkboxes
+    attributes:
+      label: Latest version
+      description: We roll bug fixes, performance enhancements, and other improvements into new releases.
+      options:
+        - label: I have tested the latest version
+          required: true
+
+  - type: dropdown
+    attributes:
+      label: LyteNyte Edition
+      description: What edition of LyteNyte Grid are you using, Core or PRO?
+      multiple: false
+      options:
+        - Core
+        - PRO
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What is your question?
+      description: Provide a clear and concise description
+    validations:
+      required: true
+
+  - type: input
+    id: contact
+    attributes:
+      label: Customer ID (Optional)
+      description: License holders may raise feature requests
+      placeholder: "e.g. JANE-1221"
