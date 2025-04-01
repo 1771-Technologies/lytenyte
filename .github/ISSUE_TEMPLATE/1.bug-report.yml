@@ -37,7 +37,8 @@ body:
         - Core (free)
         - PRO
         - Organization
-      required: true
+    validations:
+      required: false
   - type: dropdown
     attributes:
       label: LyteNyte Edition
@@ -46,6 +47,8 @@ body:
       options:
         - Core
         - PRO
+    validations:
+      required: false
 
   - type: textarea
     attributes:
