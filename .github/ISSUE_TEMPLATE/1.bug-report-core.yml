@@ -1,6 +1,6 @@
 name: "🐛 Bug Report Core"
 description: Report a reproducible bug or regression in LyteNyte Grid
-labels: ["pending", "bug", "core"]
+labels: ["pending", "bug"]
 body:
   - type: markdown
     attributes:
@@ -20,6 +20,12 @@ body:
         If not, list keywords that others might use to find this issue in the future.
     validations:
       required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        > [!NOTE]
+        > This issue should only be used for raising bug reports against LyteNyte Grid Core
 
   - type: checkboxes
     attributes:
