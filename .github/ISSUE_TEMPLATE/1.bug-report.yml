@@ -29,9 +29,9 @@ body:
           required: true
 
   - type: dropdown
+    id: plan
     attributes:
       label: License Plan
-      id: plan
       description: Which license plan are you on? (If you do not have a license plan please select Core)
       multiple: false
       options:
