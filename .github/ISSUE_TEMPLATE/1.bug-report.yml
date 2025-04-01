@@ -38,7 +38,7 @@ body:
         - PRO
         - Organization
     validations:
-      required: false
+      required: true
   - type: dropdown
     attributes:
       label: LyteNyte Edition
@@ -48,21 +48,42 @@ body:
         - Core
         - PRO
     validations:
-      required: false
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: Provide a clear and concise description of the challenge you are running into.
+    validations:
+      required: true
+
+  - type: input
+    id: link
+    attributes:
+      label: Your minimal, reproducible example
+      description: |
+        Please add a link to a minimal reproduction.
+        Note: 
+          - Your bug may get fixed much faster if we can run your code and it doesn't have dependencies other than React.
+          - To create a shareable code example for web, you can use Stackblitz (https://stackblitz.com).
+          - Please make sure the example is complete and runnable - e.g. avoid localhost URLs.
+          - To stub out real api requests - Promise.resolve and Promise.reject are good options for easy reproductions
+          - Feel free to fork any of the official examples to reproduce your issue (e.g. [the getting started stackblitz](https://stackblitz.com/fork/github/1771technologies/lytenyte/tree/main/examples/introduction/getting-started-final-demo))
+          - ⚠️ Please do not expose any confidential information in your reproductions
 
   - type: textarea
     attributes:
       label: Steps to reproduce
       description: |
         **⚠️ Issues that we can't reproduce can't be fixed.**
-
-        Please provide a link to a live example and an unambiguous set of steps to reproduce this bug. 
-        See our [documentation](https://1771technologies/docs/support) on how to build a reproduction case.
       value: |
         Steps:
-        1. Open this link to live example: (required)
-        2.
-        3.
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll down to '...'
+        4. See error
+
   - type: textarea
     attributes:
       label: Current behavior
