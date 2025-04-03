@@ -2,7 +2,6 @@ import { columns } from "./data/columns";
 import { bankDataSmall } from "./data/bank-data-small";
 import { useClientDataSource } from "../src/use-client-data-source";
 import { useLyteNyte } from "../src/use-lytenyte";
-import { FloatingFilter } from "../src/components/floating-filter/floating-filter";
 import { LyteNyteGrid } from "../src";
 
 export default function Play() {
@@ -43,8 +42,6 @@ export default function Play() {
       resizable: true,
       movable: true,
       sortable: true,
-      floatingCellRenderer: FloatingFilter,
-      filterSupportsIn: true,
     },
     floatingRowEnabled: true,
     floatingRowHeight: 32,

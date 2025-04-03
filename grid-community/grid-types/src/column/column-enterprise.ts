@@ -40,7 +40,6 @@ export interface Column<A, D, E> {
   readonly aggFnDefault?: AggBuiltIns | (string & {});
 
   readonly filterSupportsQuickSearch?: boolean;
-  readonly filterSupportsIn?: boolean;
 
   readonly hidable?: boolean;
   readonly hide?: boolean;
