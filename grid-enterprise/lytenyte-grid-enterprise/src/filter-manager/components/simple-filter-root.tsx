@@ -1,4 +1,4 @@
-import { createContext, useCallback, useMemo, type PropsWithChildren } from "react";
+import { createContext, useCallback, useContext, useMemo, type PropsWithChildren } from "react";
 import { useFilterManagerState } from "../filter-state-context";
 import type { SemiPartialFilter } from "../types";
 
@@ -32,3 +32,5 @@ export function SimpleFilterRoot(props: PropsWithChildren<{ isAdditional?: boole
 
   return <context.Provider value={value}>{props.children}</context.Provider>;
 }
+
+export const useSimpleFilterRoot = () => useContext(context);

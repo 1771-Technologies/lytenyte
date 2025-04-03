@@ -3,6 +3,7 @@ import "./select.css";
 import { ArrowDownIcon } from "@1771technologies/lytenyte-grid-community/icons";
 import { CheckMark } from "@1771technologies/lytenyte-grid-community/internal";
 import { Select as S } from "@base-ui-components/react/select";
+import type { JSX } from "react";
 
 export interface SelectProps {
   readonly selected: { value: string; label: string } | null;
@@ -12,7 +13,13 @@ export interface SelectProps {
   readonly placeholder?: string;
 }
 
-export function Select({ selected, onSelect, options, placeholder }: SelectProps) {
+export function Select({
+  selected,
+  onSelect,
+  options,
+  placeholder,
+  ...props
+}: SelectProps & JSX.IntrinsicElements["div"]) {
   return (
     <S.Root
       value={selected?.value ?? null}
@@ -22,7 +29,7 @@ export function Select({ selected, onSelect, options, placeholder }: SelectProps
         onSelect(opt);
       }}
     >
-      <S.Trigger className="lng1771-select">
+      <S.Trigger {...props} className="lng1771-select">
         <S.Value
           className={clsx("lng1771-select__value", !selected && "lng1771-select__value--no-value")}
           placeholder={placeholder}

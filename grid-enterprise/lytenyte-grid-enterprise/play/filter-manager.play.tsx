@@ -57,10 +57,14 @@ export default function Play() {
       <div
         className={css`
           flex: 1;
+          padding-inline: 8px;
+          padding-top: 20px;
         `}
       >
         <FilterManager.Root grid={grid} column={columns[0]}>
-          <FilterManager.SimpleRoot></FilterManager.SimpleRoot>
+          <FilterManager.SimpleRoot>
+            <FilterManager.SimpleOperator />
+          </FilterManager.SimpleRoot>
         </FilterManager.Root>
       </div>
     </div>

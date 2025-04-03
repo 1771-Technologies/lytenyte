@@ -40,6 +40,7 @@ import { useSimpleFilters } from "./use-simple-filters";
 import { FilterManagerStateProvider } from "./filter-state-context";
 import { useInFilter } from "./use-in-filter";
 import { SimpleFilterRoot } from "./components/simple-filter-root";
+import { SimpleFilterOperator } from "./components/simple-filter-operator/simple-filter-operator";
 
 interface FilterManagerRootProps<D = any> {
   readonly grid: StoreEnterpriseReact<D>;
@@ -56,10 +57,11 @@ function Root<D>({ grid, column, children }: PropsWithChildren<FilterManagerRoot
         value={useMemo(
           () => ({
             ...simpleState,
+            column,
             inFilterValue: inFilterState.values,
             setInFilterValue: inFilterState.setValues,
           }),
-          [inFilterState, simpleState],
+          [column, inFilterState.setValues, inFilterState.values, simpleState],
         )}
       >
         {children}
@@ -71,4 +73,5 @@ function Root<D>({ grid, column, children }: PropsWithChildren<FilterManagerRoot
 export const FilterManager = {
   Root,
   SimpleRoot: SimpleFilterRoot,
+  SimpleOperator: SimpleFilterOperator,
 };

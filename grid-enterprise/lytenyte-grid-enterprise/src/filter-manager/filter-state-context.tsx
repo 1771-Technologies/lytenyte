@@ -1,6 +1,6 @@
 import type { ColumnFilterModel } from "@1771technologies/grid-types/enterprise";
 import type { FlatSimpleFilters } from "./types";
-import type { ApiEnterpriseReact } from "@1771technologies/grid-types";
+import type { ApiEnterpriseReact, ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import {
   createContext,
   useContext,
@@ -10,6 +10,8 @@ import {
 } from "react";
 
 export interface FilterManagerState {
+  column: ColumnEnterpriseReact<any>;
+
   flatFilters: FlatSimpleFilters;
   onFilterChange: (flat: FlatSimpleFilters) => void;
   filters: ColumnFilterModel<ApiEnterpriseReact<any>, any>;
