@@ -32,6 +32,7 @@
  * </Root>
  */
 
+import "./filter-manager.css";
 import type { ColumnEnterpriseReact, StoreEnterpriseReact } from "@1771technologies/grid-types";
 import { useMemo, type PropsWithChildren } from "react";
 import { GridProvider } from "../use-grid";
@@ -41,6 +42,7 @@ import { useInFilter } from "./use-in-filter";
 import { SimpleFilterRoot } from "./components/simple-filter-root";
 import { SimpleFilterOperator } from "./components/simple-filter-operator/simple-filter-operator";
 import { SimpleFilterValue } from "./components/simple-filter-value/simple-filter-value";
+import { SimpleFilterAdditionalSwitch } from "./components/simple-filter-additional-switch";
 
 interface FilterManagerRootProps<D = any> {
   readonly grid: StoreEnterpriseReact<D>;
@@ -75,4 +77,5 @@ export const FilterManager = {
   SimpleRoot: SimpleFilterRoot,
   SimpleOperator: SimpleFilterOperator,
   SimpleValue: SimpleFilterValue,
+  SimpleSwitch: SimpleFilterAdditionalSwitch,
 };

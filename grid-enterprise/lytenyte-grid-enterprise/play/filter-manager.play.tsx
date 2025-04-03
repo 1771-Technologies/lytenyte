@@ -73,6 +73,11 @@ export default function Play() {
               <FilterManager.SimpleOperator />
               <FilterManager.SimpleValue />
             </FilterManager.SimpleRoot>
+            <FilterManager.SimpleSwitch />
+            <FilterManager.SimpleRoot isAdditional>
+              <FilterManager.SimpleOperator />
+              <FilterManager.SimpleValue />
+            </FilterManager.SimpleRoot>
           </div>
         </FilterManager.Root>
       </div>

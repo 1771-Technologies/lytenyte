@@ -1,0 +1,19 @@
+.lng1771-filter-manager__switch-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.lng1771-filter-manager__switch-item--end {
+  justify-content: flex-end;
+}
+
+.lng1771-filter-manager__switch {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  color: var(--lng1771-gray-80);
+  font-family: var(--lng1771-typeface);
+  font-size: 14px;
+}
