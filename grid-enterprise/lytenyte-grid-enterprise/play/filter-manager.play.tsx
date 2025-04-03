@@ -4,6 +4,7 @@ import { useClientDataSource } from "../src/use-client-data-source";
 import { useLyteNyte } from "../src/use-lytenyte";
 import { LyteNyteGrid } from "../src";
 import { FilterManager } from "../src/filter-manager/filter-manager-impl";
+import { InFilterContainer } from "../src/filter-manager/components/in-filter-container";
 
 export default function Play() {
   const ds = useClientDataSource({
@@ -80,6 +81,12 @@ export default function Play() {
               <FilterManager.SimpleOperator />
               <FilterManager.SimpleValue />
             </FilterManager.SimpleRoot>
+
+            <FilterManager.InFilterRoot>
+              <FilterManager.InFilterContainer>
+                <FilterManager.InFilterViewport />
+              </FilterManager.InFilterContainer>
+            </FilterManager.InFilterRoot>
 
             <FilterManager.ApplyButton />
             <FilterManager.ClearButton />
