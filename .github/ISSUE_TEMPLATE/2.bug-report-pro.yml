@@ -1,4 +1,4 @@
-name: "🐞 Bug Report Pro"
+name: "🐞 Bug Report PRO"
 description: Report a bug that should be addressed with priority
 labels: ["pending", "bug", "pro"]
 body:
