@@ -5,6 +5,7 @@ import { Checkbox } from "@1771technologies/lytenyte-grid-community/internal";
 import { flattenTreeItems } from "../../components/filters/in-filter/flatten-tree-items";
 import { useInFilterState } from "./in-filter-root";
 import { getChildValues } from "./get-child-values";
+import { useFilterManagerState } from "../filter-state-context";
 
 export interface InFilterViewport {
   readonly treeItems: ColumnInFilterItem[];
@@ -15,19 +16,30 @@ export interface InFilterViewport {
   readonly filterValue: string;
 }
 
-export function InFilterViewport() {
+export interface InFilterViewportProps {
+  readonly itemHeight?: number;
+  readonly viewportHeight?: number;
+  readonly searchQuery?: string;
+}
+
+export function InFilterViewport({
+  itemHeight,
+  viewportHeight,
+  searchQuery,
+}: InFilterViewportProps) {
   const { treeFilterItems, hasError, isLoading } = useInFilterState();
+  const { inFilterValue, setInFilterValue } = useFilterManagerState();
 
   if (hasError || isLoading) return null;
 
   return (
     <InFilterViewportImpl
       treeItems={treeFilterItems}
-      itemHeight={28}
-      viewportHeight={300}
-      filterValue=""
-      onValuesChange={() => {}}
-      values={null}
+      itemHeight={itemHeight ?? 28}
+      viewportHeight={viewportHeight ?? 300}
+      filterValue={searchQuery ?? ""}
+      onValuesChange={setInFilterValue}
+      values={inFilterValue}
     />
   );
 }
