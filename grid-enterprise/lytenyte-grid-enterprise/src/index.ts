@@ -10,6 +10,3 @@ export * from "./use-client-data-source.js";
 export { useTreeDataSource } from "./use-tree-data-source.js";
 
 export { activateLicense, hasAValidLicense } from "./license.js";
-
-export type { GridContainerProps } from "./components/grid-container/grid-container.js";
-export { GridContainer } from "./components/grid-container/grid-container.js";

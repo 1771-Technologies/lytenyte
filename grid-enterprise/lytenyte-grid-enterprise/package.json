@@ -54,9 +54,9 @@
       "require": "./src/popover/popover.ts"
     },
     "./filters": {
-      "types": "./src/filters.ts",
-      "import": "./src/filters.ts",
-      "require": "./src/filters.ts"
+      "types": "./src/filter-manager/filter-manager.tsx",
+      "import": "./src/filter-manager/filter-manager.tsx",
+      "require": "./src/filter-manager/filter-manager.tsx"
     }
   },
   "publishConfig": {
@@ -103,14 +103,14 @@
         "require": "./dist/dialog.js"
       },
       "./popover": {
-        "types": "./dist/popover/popover.d.ts",
+        "types": "./dist/types/popover/popover.d.ts",
         "import": "./dist/popover.js",
         "require": "./dist/popover.js"
       },
       "./filters": {
-        "types": "./dist/types/filters.d.ts",
-        "import": "./dist/filters.js",
-        "require": "./dist/filters.js"
+        "types": "./dist/types/filter-manager/filter-manager.d.ts",
+        "import": "./dist/filter-manager.js",
+        "require": "./dist/filter-manager.js"
       },
       "./grid.css": "./dist/lytenyte-grid-enterprise.css"
     }
