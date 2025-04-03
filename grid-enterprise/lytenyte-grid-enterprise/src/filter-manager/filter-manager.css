@@ -17,3 +17,26 @@
   font-family: var(--lng1771-typeface);
   font-size: 14px;
 }
+
+.lng1771-filter-manager__button {
+  background-color: transparent;
+  border: none;
+  color: var(--lng1771-gray-80);
+  padding: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  height: fit-content;
+  padding: 2px;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--lng1771-gray-05);
+  }
+
+  &:focus-visible {
+    outline: 1px solid var(--lng1771-focus-outline);
+  }
+}

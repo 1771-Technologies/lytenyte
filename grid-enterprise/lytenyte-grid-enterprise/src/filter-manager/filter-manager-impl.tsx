@@ -43,6 +43,8 @@ import { SimpleFilterRoot } from "./components/simple-filter-root";
 import { SimpleFilterOperator } from "./components/simple-filter-operator/simple-filter-operator";
 import { SimpleFilterValue } from "./components/simple-filter-value/simple-filter-value";
 import { SimpleFilterAdditionalSwitch } from "./components/simple-filter-additional-switch";
+import { FilterManagerApplyButton } from "./components/apply-filter-button";
+import { FilterManagerClearButton } from "./components/clear-filter-button";
 
 interface FilterManagerRootProps<D = any> {
   readonly grid: StoreEnterpriseReact<D>;
@@ -78,4 +80,7 @@ export const FilterManager = {
   SimpleOperator: SimpleFilterOperator,
   SimpleValue: SimpleFilterValue,
   SimpleSwitch: SimpleFilterAdditionalSwitch,
+
+  ApplyButton: FilterManagerApplyButton,
+  ClearButton: FilterManagerClearButton,
 };
