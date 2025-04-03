@@ -3,7 +3,7 @@ import { bankDataSmall } from "./data/bank-data-small";
 import { useClientDataSource } from "../src/use-client-data-source";
 import { useLyteNyte } from "../src/use-lytenyte";
 import { LyteNyteGrid } from "../src";
-import { FilterManager } from "../src/filter-manager/filter-mananger-impl";
+import { FilterManager } from "../src/filter-manager/filter-manager-impl";
 
 export default function Play() {
   const ds = useClientDataSource({
@@ -62,9 +62,18 @@ export default function Play() {
         `}
       >
         <FilterManager.Root grid={grid} column={columns[0]}>
-          <FilterManager.SimpleRoot>
-            <FilterManager.SimpleOperator />
-          </FilterManager.SimpleRoot>
+          <div
+            className={css`
+              display: flex;
+              flex-direction: column;
+              gap: 4px;
+            `}
+          >
+            <FilterManager.SimpleRoot>
+              <FilterManager.SimpleOperator />
+              <FilterManager.SimpleValue />
+            </FilterManager.SimpleRoot>
+          </div>
         </FilterManager.Root>
       </div>
     </div>

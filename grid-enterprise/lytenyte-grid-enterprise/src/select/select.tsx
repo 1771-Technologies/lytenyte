@@ -19,7 +19,7 @@ export function Select({
   options,
   placeholder,
   ...props
-}: SelectProps & JSX.IntrinsicElements["div"]) {
+}: SelectProps & Omit<JSX.IntrinsicElements["div"], "onSelect">) {
   return (
     <S.Root
       value={selected?.value ?? null}
@@ -28,6 +28,7 @@ export function Select({
         if (!opt) return;
         onSelect(opt);
       }}
+      alignItemToTrigger={false}
     >
       <S.Trigger {...props} className="lng1771-select">
         <S.Value
@@ -39,7 +40,7 @@ export function Select({
         </S.Icon>
       </S.Trigger>
       <S.Portal>
-        <S.Positioner sideOffset={20}>
+        <S.Positioner sideOffset={8}>
           <S.Popup className="lng1771-select__popup">
             {options.map((c) => {
               return (

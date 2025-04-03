@@ -3,7 +3,6 @@
  *  <SimpleFilterRoot>
  *      <SimpleFilterOperator/>
  *      <SimpleFilterValue/>
- *      <SimpleFilterLabel />
  *      <SimpleFilterAdditional>
  *          <LogicalSwitch />
  *
@@ -41,6 +40,7 @@ import { FilterManagerStateProvider } from "./filter-state-context";
 import { useInFilter } from "./use-in-filter";
 import { SimpleFilterRoot } from "./components/simple-filter-root";
 import { SimpleFilterOperator } from "./components/simple-filter-operator/simple-filter-operator";
+import { SimpleFilterValue } from "./components/simple-filter-value/simple-filter-value";
 
 interface FilterManagerRootProps<D = any> {
   readonly grid: StoreEnterpriseReact<D>;
@@ -74,4 +74,5 @@ export const FilterManager = {
   Root,
   SimpleRoot: SimpleFilterRoot,
   SimpleOperator: SimpleFilterOperator,
+  SimpleValue: SimpleFilterValue,
 };
