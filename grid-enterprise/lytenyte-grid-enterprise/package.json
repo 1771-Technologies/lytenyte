@@ -23,6 +23,11 @@
       "import": "./src/icons.ts",
       "require": "./src/icons.ts"
     },
+    "./grid-container": {
+      "types": "./src/grid-container/grid-container.ts",
+      "import": "./src/grid-container/grid-container.ts",
+      "require": "./src/grid-container/grid-container.ts"
+    },
     "./menu": {
       "types": "./src/menu/menu.ts",
       "import": "./src/menu/menu.ts",
@@ -54,9 +59,9 @@
       "require": "./src/popover/popover.ts"
     },
     "./filters": {
-      "types": "./src/filter-manager/filter-manager.tsx",
-      "import": "./src/filter-manager/filter-manager.tsx",
-      "require": "./src/filter-manager/filter-manager.tsx"
+      "types": "./src/filter-manager/filter-manager.ts",
+      "import": "./src/filter-manager/filter-manager.ts",
+      "require": "./src/filter-manager/filter-manager.ts"
     }
   },
   "publishConfig": {
@@ -76,6 +81,11 @@
         "types": "./dist/types/icons.d.ts",
         "import": "./dist/icons.js",
         "require": "./dist/icons.js"
+      },
+      "./grid-container": {
+        "types": "./dist/types/grid-container/grid-container.d.ts",
+        "import": "./dist/grid-container.js",
+        "require": "./dist/grid-container.js"
       },
       "./menu": {
         "types": "./dist/types/menu/menu.d.ts",
