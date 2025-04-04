@@ -7,17 +7,24 @@
   </picture>
   <br><br>
 
-  <h3>LyteNyte is the fastest <a href="https://1771technologies.com/>React Data Grid</a> ever build on the modern web</h3>
+  <h3>The Fastest <a style="color:#139C8C;" href="https://1771technologies.com">React Data Grid</a> 
+   Ever Built On The Modern Web
+   </h3>
+
 </div>
+<div align="center">
 
 Unrivaled speed, memory efficient, feature-rich, and a tiny bundle size. Created
 to help your enterprise achieve extraordinary results. Command total control of your data
 with effortless sorting, filter for specific values, group and aggregate rows of data.
 All these features are available in our free Core edition.
 
-Go PRO and utilize tree data or asynchronous data loading. Leverage our purpose built
-UI components to manage columns and views. Create custom column menus, context menus,
+Go PRO and utilize tree data or asynchronous data loading. Leverage our purpose
+built UI components to manage columns and views.
+Create custom column menus, context menus,
 data exports, and popover dialogs.
+
+</div>
 
 <div align="center">
 
