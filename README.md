@@ -19,9 +19,10 @@ in a remarkably small bundle size. Engineered to help enterprises achieve except
 Take complete control of your data with intuitive sorting, precise filtering, powerful
 row grouping, and data aggregation capabilities. All these features come standard in our free Core edition.
 
-Upgrade to LyteNyte PRO to leverage tree data structures and asynchronous data loading.
-Access our purpose-built UI components for column and view management.
-Create customized column menus, context menus, data exports, and popover dialogs with ease.
+Upgrade to PRO to access a wealth of advanced capabilities, including tree data structures and asynchronous data
+loading—just to name a few. Take advantage of our purpose-built UI components
+for column and view management. Create customized column menus, context menus,
+data exports, and popover dialogs with ease. And that's only scratching the surface of what LyteNyte PRO offers.
 
 </div>
 
