@@ -1,11 +1,22 @@
-# LyteNyte Grid | The Fastest React Data Grid
+  <div align="center">
 
-LyteNyte Grid is a high-performance, fully extensible React Data Grid
-designed to deliver exceptional user experiences through:
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./resources/lytenyte-dark.svg"/>
+    <source media="(prefers-color-scheme: light)" srcset="./resources/lytenyte-light.svg"/>
+    <img width="360" alt="Logo of LyteNyte Grid" src="./resources/lytenyte-dark.svg"/>
+  </picture>
 
-- Blazingly fast performance
-- Minimal memory footprint
-- Optimized bundle size
+</div>
+Unrivaled speed, memory efficient, feature-rich, and a tiny bundle size. Created
+to help your enterprise achieve extraordinary results.
+
+Command total control of your data with effortless sorting, filter for specific values,
+group and aggregate rows of data. All these features are available in our free Core
+edition.
+
+Go PRO and utilize tree data or asynchronous data loading. Leverage our purpose built
+UI components to manage columns and views. Create custom column menus, context menus,
+data exports, and popover dialogs.
 
 <div align="center">
 
@@ -16,6 +27,12 @@ designed to deliver exceptional user experiences through:
 <!-- [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/TODO/badge)](https://www.bestpractices.dev/projects/TODO) -->
 
 [![CI status](https://github.com/1771-Technologies/lytenyte/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/1771-Technologies/lytenyte/actions/workflows/release.yml?query=branch%3Amain)
+
+</div>
+
+<div align="center">
+
+<a href="https://1771technologies.com">Website</a> &nbsp;&nbsp;—&nbsp;&nbsp; <a href="https://1771technologies.com/docs/intro-getting-started">Documentation</a> &nbsp;&nbsp;—&nbsp;&nbsp; <a href="https://1771technologeis.com/demo">Demo</a> &nbsp;&nbsp;—&nbsp;&nbsp; <a href="https://1771technologies.com/pricing">Pricing</a> &nbsp;&nbsp;—&nbsp;&nbsp; <a href="https://1771technologies.com/eula">EULA</a>
 
 </div>
 
