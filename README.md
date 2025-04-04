@@ -44,7 +44,7 @@ data exports, and popover dialogs with ease. And that's only scratching the surf
 
 </div>
 
-![LyteNyte Logo](./resources/grid-snapshot.png)
+![LyteNyte Logo](./resources/image.png)
 
 ---
 
