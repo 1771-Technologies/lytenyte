@@ -36,7 +36,7 @@ data exports, and popover dialogs.
 
 </div>
 
-![LyteNyte Logo](./assets/hero-bg-min.png)
+![LyteNyte Logo](./resources/grid-snapshot.svg)
 
 ---
 
