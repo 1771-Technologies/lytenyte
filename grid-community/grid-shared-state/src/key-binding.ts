@@ -1,5 +1,5 @@
 import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
-import type { KeyBindingString } from "@1771technologies/grid-types/community";
+import type { KeyBindingString } from "@1771technologies/grid-types/core";
 
 function getKey(event: KeyboardEvent) {
   if (event.code === "Space") return "space";

@@ -6,7 +6,7 @@ import type {
   ColumnBaseCommunityReact,
   ColumnCommunityReact,
 } from "@1771technologies/grid-types";
-import type { CellEditProviderReact } from "@1771technologies/grid-types/community-react";
+import type { CellEditProviderReact } from "@1771technologies/grid-types/core-react";
 
 export function getBuiltInEditorForType<D>(c: ColumnCommunityReact<D>) {
   if (c.type === "number") return "number";

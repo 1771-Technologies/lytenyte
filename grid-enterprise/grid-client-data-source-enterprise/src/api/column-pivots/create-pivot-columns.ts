@@ -1,7 +1,7 @@
 import type { ApiEnterprise, ColumnEnterprise } from "@1771technologies/grid-types";
 import { createPivotTree } from "./create-pivot-tree.js";
 import { upperCaseFirstLetter } from "@1771technologies/js-utils";
-import type { RowNodeLeaf, Writable } from "@1771technologies/grid-types/community";
+import type { RowNodeLeaf, Writable } from "@1771technologies/grid-types/core";
 
 export function createColumnPivots<D, E>(
   api: ApiEnterprise<D, E>,

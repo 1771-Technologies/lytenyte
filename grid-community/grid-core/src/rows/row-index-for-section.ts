@@ -1,4 +1,4 @@
-import type { RowPin } from "@1771technologies/grid-types/community";
+import type { RowPin } from "@1771technologies/grid-types/core";
 
 /**
  * LyteNyte grid represents the row space as a flat set of indices. It is convenient

@@ -6,7 +6,7 @@ import {
   HEADER_GROUP_CELL_POSITION,
 } from "@1771technologies/grid-constants";
 import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
-import type { Position } from "@1771technologies/grid-types/community";
+import type { Position } from "@1771technologies/grid-types/core";
 import { getRootCell } from "./get-root-cell";
 
 export const isTopRow = <D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>, rowIndex: number) => {

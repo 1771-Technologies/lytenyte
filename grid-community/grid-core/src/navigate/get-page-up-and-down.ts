@@ -1,9 +1,6 @@
 import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
 import { getGridCellPosition, isGridCellPosition } from "./utils";
-import type {
-  PositionFullWidthRow,
-  PositionGridCell,
-} from "@1771technologies/grid-types/community";
+import type { PositionFullWidthRow, PositionGridCell } from "@1771technologies/grid-types/core";
 import { getBottom, getTop } from "./get-top-and-bottom";
 
 export function getPageDown<D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>) {

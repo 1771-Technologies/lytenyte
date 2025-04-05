@@ -4,8 +4,8 @@ import type {
   StateEnterprise,
   StoreEnterprise,
 } from "@1771technologies/grid-types";
-import type { ColumnPin, KeyBindingString, Position } from "@1771technologies/grid-types/community";
-import { type CellEditLocation } from "@1771technologies/grid-types/community";
+import type { ColumnPin, KeyBindingString, Position } from "@1771technologies/grid-types/core";
+import { type CellEditLocation } from "@1771technologies/grid-types/core";
 import {
   cellFocusQueue,
   columnPositions as columnPositionsComputed,
@@ -15,8 +15,8 @@ import {
   rowPositionsComputed,
   virt,
 } from "@1771technologies/grid-shared-state";
-import type { Target } from "@1771technologies/grid-types/enterprise";
-import { type CellSelectionRect } from "@1771technologies/grid-types/enterprise";
+import type { Target } from "@1771technologies/grid-types/pro";
+import { type CellSelectionRect } from "@1771technologies/grid-types/pro";
 import { rowDataSource } from "./utils/row-data-source";
 import { cellSelectionSplits } from "./utils/cell-selection-splits";
 import { columnPivotsState } from "./utils/column-pivots-state";

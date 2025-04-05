@@ -9,7 +9,7 @@ import type {
   SortModelItem,
   SortOptions,
   Writable,
-} from "@1771technologies/grid-types/community";
+} from "@1771technologies/grid-types/core";
 
 export const columnSortCycleToNext = <D, E>(
   api: ApiEnterprise<D, E> | ApiCommunity<D, E>,

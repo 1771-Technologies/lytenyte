@@ -1,9 +1,6 @@
 import { COLUMN_MARKER_ID } from "@1771technologies/grid-constants";
 import type { ColumnCommunity } from "@1771technologies/grid-types";
-import type {
-  RowSelectionCheckbox,
-  RowSelectionMode,
-} from "@1771technologies/grid-types/community";
+import type { RowSelectionCheckbox, RowSelectionMode } from "@1771technologies/grid-types/core";
 import { itemsWithIdToMap } from "@1771technologies/js-utils";
 
 interface ColumnHandleMarkerArgs<D, E> {

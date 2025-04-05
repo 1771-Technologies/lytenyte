@@ -1,4 +1,4 @@
-import type { Target } from "@1771technologies/grid-types/enterprise";
+import type { Target } from "@1771technologies/grid-types/pro";
 import { createContext, useContext, type PropsWithChildren } from "react";
 
 const context = createContext<Target | null>(null);

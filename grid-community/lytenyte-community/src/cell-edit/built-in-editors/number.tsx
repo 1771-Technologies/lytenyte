@@ -1,4 +1,4 @@
-import type { CellEditProviderParamsReact } from "@1771technologies/grid-types/community-react";
+import type { CellEditProviderParamsReact } from "@1771technologies/grid-types/core-react";
 import { Input } from "../../components/Input";
 
 export function NumberEditor<D>({

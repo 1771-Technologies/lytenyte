@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import type { CellSelectionRect } from "@1771technologies/grid-types/enterprise";
+import type { CellSelectionRect } from "@1771technologies/grid-types/pro";
 import { formatTable } from "@1771technologies/js-utils";
 import { splitCellSelectionRect } from "../split-cell-selection-rect.js";
 

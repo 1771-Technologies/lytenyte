@@ -1,5 +1,5 @@
 import "./cell-style-row.css";
-import type { CellSelectionRect } from "@1771technologies/grid-types/enterprise";
+import type { CellSelectionRect } from "@1771technologies/grid-types/pro";
 import { useMemo, type CSSProperties } from "react";
 import { useGrid } from "../use-grid";
 import { clsx, sizeFromCoord } from "@1771technologies/js-utils";

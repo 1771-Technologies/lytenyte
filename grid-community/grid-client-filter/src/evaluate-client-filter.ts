@@ -1,7 +1,7 @@
 import type { ColumnFilterModel as CFE } from "@1771technologies/grid-types/pro";
 import { evaluateColumnFilter } from "./utils/evaluate-column-filter";
 import type { ApiCommunity, ApiEnterprise, ColumnEnterprise } from "@1771technologies/grid-types";
-import type { ColumnFilterModel, RowNode } from "@1771technologies/grid-types/community";
+import type { ColumnFilterModel, RowNode } from "@1771technologies/grid-types/core";
 
 export const evaluateClientFilter = <D, E>(
   api: ApiEnterprise<D, E> | ApiCommunity<D, E>,

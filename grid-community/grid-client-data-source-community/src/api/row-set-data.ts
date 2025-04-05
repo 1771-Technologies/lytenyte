@@ -1,4 +1,4 @@
-import type { RowNode, Writable } from "@1771technologies/grid-types/community";
+import type { RowNode, Writable } from "@1771technologies/grid-types/core";
 import type { ClientState } from "../create-client-data-source";
 
 export function rowSetData<D, E>(

@@ -1,4 +1,4 @@
-import type { ColumnHeaderRendererParamsReact } from "@1771technologies/grid-types/community-react";
+import type { ColumnHeaderRendererParamsReact } from "@1771technologies/grid-types/core-react";
 
 export function HeaderCellDefault({ column }: ColumnHeaderRendererParamsReact<any>) {
   const label = column.headerName ?? column.id;

@@ -1,4 +1,4 @@
-import type { RowNode } from "@1771technologies/grid-types/community";
+import type { RowNode } from "@1771technologies/grid-types/core";
 import { rowByIndex } from "./row-by-index";
 import type { ClientState } from "../create-tree-data-source";
 

@@ -1,8 +1,8 @@
 import { computed, signal } from "@1771technologies/react-cascada";
 import type { ColumnCommunity, StateCommunity } from "@1771technologies/grid-types";
 import { type StoreCommunity } from "@1771technologies/grid-types";
-import type { ColumnPin, KeyBindingString, Position } from "@1771technologies/grid-types/community";
-import { type CellEditLocation } from "@1771technologies/grid-types/community";
+import type { ColumnPin, KeyBindingString, Position } from "@1771technologies/grid-types/core";
+import { type CellEditLocation } from "@1771technologies/grid-types/core";
 import { rowDataSource } from "./row-data-source";
 import {
   cellFocusQueue,

@@ -1,6 +1,6 @@
 import { getRootCell } from "@1771technologies/grid-core";
 import type { ApiEnterprise } from "@1771technologies/grid-types";
-import type { CellSelectionRect } from "@1771technologies/grid-types/enterprise";
+import type { CellSelectionRect } from "@1771technologies/grid-types/pro";
 
 export function expandCellSelectionEnd<D, E>(
   api: ApiEnterprise<D, E>,

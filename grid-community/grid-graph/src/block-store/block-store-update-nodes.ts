@@ -1,4 +1,4 @@
-import type { RowNode } from "@1771technologies/grid-types/community";
+import type { RowNode } from "@1771technologies/grid-types/core";
 import type { BlockPaths, BlockPayload } from "../types.js";
 
 /**

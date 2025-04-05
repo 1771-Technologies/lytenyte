@@ -1,6 +1,6 @@
 import { ROW_LEAF_KIND } from "@1771technologies/grid-constants";
-import type { RowNodeLeaf } from "@1771technologies/grid-types/community";
-import type { RowNode } from "@1771technologies/grid-types/community";
+import type { RowNodeLeaf } from "@1771technologies/grid-types/core";
+import type { RowNode } from "@1771technologies/grid-types/core";
 
 /**
  * Type guard that checks if a row node is a leaf node.

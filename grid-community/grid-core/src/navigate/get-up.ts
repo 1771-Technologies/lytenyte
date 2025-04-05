@@ -13,7 +13,7 @@ import type {
   PositionGridCell,
   PositionHeaderCell,
   PositionHeaderGroupCell,
-} from "@1771technologies/grid-types/community";
+} from "@1771technologies/grid-types/core";
 import { getGridCellPosition } from "./utils";
 
 export const getUp = <D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>): Position | null => {

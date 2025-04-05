@@ -1,4 +1,4 @@
-import type { RowNodeGroup } from "@1771technologies/grid-types/community";
+import type { RowNodeGroup } from "@1771technologies/grid-types/core";
 import type { ServerState } from "../create-server-data-source";
 
 export function getRowGroupPath<D, E>(state: ServerState<D, E>, row: RowNodeGroup) {

@@ -1,6 +1,6 @@
 import { test, expect } from "vitest";
 import { COLUMN_EMPTY_PREFIX } from "@1771technologies/grid-constants";
-import type { ColumnPin } from "@1771technologies/grid-types/community";
+import type { ColumnPin } from "@1771technologies/grid-types/core";
 import { columnEmptyKey } from "../column-empty-key.js";
 
 test("should generate correct key for empty group path and no pin", () => {

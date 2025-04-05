@@ -1,7 +1,7 @@
 import { computed, type ReadonlySignal, type Signal } from "@1771technologies/react-cascada";
 import { ROW_DEFAULT_PATH_SEPARATOR, ROW_GROUP_KIND } from "@1771technologies/grid-constants";
 import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
-import type { RowNode, RowNodeGroup, RowNodeLeaf } from "@1771technologies/grid-types/community";
+import type { RowNode, RowNodeGroup, RowNodeLeaf } from "@1771technologies/grid-types/core";
 import { BLOCK_SIZE } from "./flat-block-payloads-computed";
 import type { BlockPayload } from "@1771technologies/grid-graph";
 

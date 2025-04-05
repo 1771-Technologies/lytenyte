@@ -1,4 +1,4 @@
-import type { ColumnGroupVisibility, ColumnPin } from "@1771technologies/grid-types/community";
+import type { ColumnGroupVisibility, ColumnPin } from "@1771technologies/grid-types/core";
 import { columnsGroupVisibility } from "./columns-group-visibility.js";
 import { COLUMN_MARKER_ID, GROUP_COLUMN_PREFIX } from "@1771technologies/grid-constants";
 

@@ -1,7 +1,7 @@
 import type { ApiEnterprise } from "@1771technologies/grid-types";
 import { datatypeComparator } from "./datatype-comparator";
 import { nullComparator } from "./null-comparator";
-import type { RowNode, SortModelItem } from "@1771technologies/grid-types/community";
+import type { RowNode, SortModelItem } from "@1771technologies/grid-types/core";
 
 export function numberComparator<D, E, I>(
   _api: ApiEnterprise<D, E>,

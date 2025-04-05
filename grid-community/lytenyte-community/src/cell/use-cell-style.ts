@@ -1,7 +1,7 @@
 import { useMemo, type CSSProperties } from "react";
 import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
 import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
-import type { RowPin } from "@1771technologies/grid-types/community";
+import type { RowPin } from "@1771technologies/grid-types/core";
 import { getTransform } from "../utils/get-transform";
 
 export function useCellStyle(

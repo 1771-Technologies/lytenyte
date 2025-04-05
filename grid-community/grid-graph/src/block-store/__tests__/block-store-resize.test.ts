@@ -1,6 +1,6 @@
 import { test, expect, beforeEach } from "vitest";
 import type { BlockPaths, BlockStore, Block } from "../../types.js";
-import type { RowNode } from "@1771technologies/grid-types/community";
+import type { RowNode } from "@1771technologies/grid-types/core";
 import { blockStoreResize } from "../block-store-resize.js";
 
 const ROW_GROUP_KIND = 2;

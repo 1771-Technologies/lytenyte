@@ -1,4 +1,4 @@
-import type { FilterDate } from "@1771technologies/grid-types/community";
+import type { FilterDate } from "@1771technologies/grid-types/core";
 import { useSimpleFilterRoot } from "../simple-filter-root";
 import { Input } from "@1771technologies/lytenyte-grid-community/internal";
 import { useDateFilterCallbacks } from "../use-date-filter-callbacks";

@@ -2,7 +2,7 @@ import type { ApiEnterprise } from "@1771technologies/grid-types";
 import type {
   CellSelectionRect,
   ClipboardTransformPasteParams,
-} from "@1771technologies/grid-types/enterprise";
+} from "@1771technologies/grid-types/pro";
 
 export async function clipboardPasteCells<D, E>(
   api: ApiEnterprise<D, E>,

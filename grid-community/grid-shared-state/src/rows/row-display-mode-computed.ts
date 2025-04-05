@@ -1,5 +1,5 @@
 import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
-import type { RowGroupDisplayMode } from "@1771technologies/grid-types/community";
+import type { RowGroupDisplayMode } from "@1771technologies/grid-types/core";
 import { signal } from "@1771technologies/react-cascada";
 
 export function rowDisplayModeComputed<D, E>(

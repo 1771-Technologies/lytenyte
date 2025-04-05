@@ -4,7 +4,7 @@ import type {
   ColumnCommunity,
   ColumnEnterprise,
 } from "@1771technologies/grid-types";
-import type { RowNode } from "@1771technologies/grid-types/community";
+import type { RowNode } from "@1771technologies/grid-types/core";
 
 export const cellEditPredicate = <D, E>(
   a: ApiCommunity<D, E> | ApiEnterprise<D, E>,

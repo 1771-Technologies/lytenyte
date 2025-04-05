@@ -1,4 +1,4 @@
-import type { FilterSimpleColumn } from "@1771technologies/grid-types/community";
+import type { FilterSimpleColumn } from "@1771technologies/grid-types/core";
 
 export type SemiPartialFilter = Partial<FilterSimpleColumn> & {
   kind: FilterSimpleColumn["kind"];

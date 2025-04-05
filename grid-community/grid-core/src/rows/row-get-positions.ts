@@ -1,4 +1,4 @@
-import type { RowHeight } from "@1771technologies/grid-types/community";
+import type { RowHeight } from "@1771technologies/grid-types/core";
 import { makeUint32PositionArray } from "@1771technologies/js-utils";
 
 /**

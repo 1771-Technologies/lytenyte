@@ -1,5 +1,5 @@
 import "./cell-marker.css";
-import type { CellRendererParamsReact } from "@1771technologies/grid-types/community-react";
+import type { CellRendererParamsReact } from "@1771technologies/grid-types/core-react";
 import { useEvent } from "@1771technologies/react-utils";
 import { DragButton } from "./drag-button";
 import { SelectionCheckbox } from "./selection-checkbox";

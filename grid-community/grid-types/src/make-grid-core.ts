@@ -1,11 +1,11 @@
-import type { ApiCommunity } from "./api/api-community";
+import type { ApiCommunity } from "./api/api-core";
 import type {
   ColumnBase as RawBaseColumn,
   Column as RawColumn,
   ColumnRowGroup as RawRowGroupColumn,
-} from "./column/column-community";
-import type { PropsCommunity } from "./props/props-community";
-import type { RowDataSource } from "./row-data-source/rds-community";
+} from "./column/column-core";
+import type { PropsCommunity } from "./props/props-core";
+import type { RowDataSource } from "./row-data-source/rds-core";
 
 export type Api<D, E> = ApiCommunity<D, RawColumn<Api<D, E>, D, E>, E>;
 export type Column<D, E> = RawColumn<Api<D, E>, D, E>;

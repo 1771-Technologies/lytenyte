@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, type PropsWithChildren } from "react";
 import { useGrid } from "../../use-grid";
 import { useFilterManagerState } from "../filter-state-context";
-import type { ColumnInFilterItem } from "@1771technologies/grid-types/enterprise";
+import type { ColumnInFilterItem } from "@1771technologies/grid-types/pro";
 import { useInFilterItemLoader } from "./use-in-filter-item-loader";
 
 interface InFilterState {

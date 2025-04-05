@@ -1,5 +1,5 @@
 import { ROW_GROUP_KIND, ROW_LEAF_KIND } from "@1771technologies/grid-constants";
-import type { RowNodeGroup, RowNodeLeaf } from "@1771technologies/grid-types/community";
+import type { RowNodeGroup, RowNodeLeaf } from "@1771technologies/grid-types/core";
 
 export function makeRowNodes(n: number, offset: number) {
   return Array.from(

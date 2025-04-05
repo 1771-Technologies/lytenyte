@@ -1,6 +1,6 @@
 import { getRootCell } from "@1771technologies/grid-core";
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
-import type { CellEditLocation } from "@1771technologies/grid-types/community";
+import type { CellEditLocation } from "@1771technologies/grid-types/core";
 import { useEvent } from "@1771technologies/react-utils";
 import type { KeyboardEvent } from "react";
 

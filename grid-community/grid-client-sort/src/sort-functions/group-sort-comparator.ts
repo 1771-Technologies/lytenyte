@@ -1,6 +1,6 @@
 import type { ApiEnterprise } from "@1771technologies/grid-types";
 import { nullComparator } from "./null-comparator";
-import type { RowNode, SortModelItem } from "@1771technologies/grid-types/community";
+import type { RowNode, SortModelItem } from "@1771technologies/grid-types/core";
 import { GROUP_COLUMN_SINGLE_ID } from "@1771technologies/grid-constants";
 
 export function groupSortComparator<D, E>(

@@ -1,5 +1,5 @@
 import type { ApiEnterprise, ColumnEnterprise } from "@1771technologies/grid-types";
-import type { RowNodeLeaf } from "@1771technologies/grid-types/community";
+import type { RowNodeLeaf } from "@1771technologies/grid-types/core";
 
 export function evaluateQuickFilter<D, E>(
   api: ApiEnterprise<D, E>,

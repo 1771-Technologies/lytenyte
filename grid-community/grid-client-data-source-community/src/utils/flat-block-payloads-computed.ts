@@ -1,6 +1,6 @@
 import { computed, type ReadonlySignal } from "@1771technologies/react-cascada";
 import type { BlockPayload } from "@1771technologies/grid-graph";
-import type { RowNodeLeaf } from "@1771technologies/grid-types/community";
+import type { RowNodeLeaf } from "@1771technologies/grid-types/core";
 
 export const BLOCK_SIZE = 2000;
 

@@ -4,7 +4,7 @@ import type {
   ColumnCommunity,
   ColumnEnterprise,
 } from "@1771technologies/grid-types";
-import type { AutosizeOptions } from "@1771technologies/grid-types/community";
+import type { AutosizeOptions } from "@1771technologies/grid-types/core";
 
 export const autosizeColumn = <D, E>(
   api: ApiCommunity<D, E> | ApiEnterprise<D, E>,

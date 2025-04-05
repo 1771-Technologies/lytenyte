@@ -1,5 +1,5 @@
 import type { ApiCommunity, ColumnCommunity } from "@1771technologies/grid-types";
-import type { CellEditParserParams } from "@1771technologies/grid-types/community";
+import type { CellEditParserParams } from "@1771technologies/grid-types/core";
 
 export const stringParser = <D, E>(
   p: CellEditParserParams<ApiCommunity<D, E>, D, ColumnCommunity<D, E>>,

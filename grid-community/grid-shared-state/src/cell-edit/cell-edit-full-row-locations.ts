@@ -1,5 +1,5 @@
 import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
-import type { CellEditLocation, RowNode } from "@1771technologies/grid-types/community";
+import type { CellEditLocation, RowNode } from "@1771technologies/grid-types/core";
 
 export function cellEditFullRowLocations<D, E>(
   a: ApiCommunity<D, E> | ApiEnterprise<D, E>,

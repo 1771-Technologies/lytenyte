@@ -6,7 +6,7 @@ import type {
   DataFetcher,
 } from "./types";
 import { cascada, signal, type ReadonlySignal, type Signal } from "@1771technologies/react-cascada";
-import type { RowNode } from "@1771technologies/grid-types/community";
+import type { RowNode } from "@1771technologies/grid-types/core";
 import { BlockGraph } from "@1771technologies/grid-graph";
 import { ROW_DEFAULT_PATH_SEPARATOR } from "@1771technologies/grid-constants";
 import { currentViewComputed } from "./utils/current-view-computed";

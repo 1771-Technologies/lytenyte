@@ -5,7 +5,7 @@ import {
 } from "@1771technologies/grid-constants";
 import { autosizeGroupColumnDefault } from "@1771technologies/grid-core";
 import type { ColumnCommunity, ColumnRowGroupCommunity } from "@1771technologies/grid-types";
-import type { RowGroupDisplayMode } from "@1771technologies/grid-types/community";
+import type { RowGroupDisplayMode } from "@1771technologies/grid-types/core";
 import { itemsWithIdToMap } from "@1771technologies/js-utils";
 
 interface ColumnHandleGroupColumnArgs<D, E> {

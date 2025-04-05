@@ -1,8 +1,5 @@
 import type { ApiEnterprise } from "@1771technologies/grid-types";
-import type {
-  CellSelectionRect,
-  ClipboardCopyOptions,
-} from "@1771technologies/grid-types/enterprise";
+import type { CellSelectionRect, ClipboardCopyOptions } from "@1771technologies/grid-types/pro";
 
 export async function clipboardCopyCells<D, E>(
   api: ApiEnterprise<D, E>,

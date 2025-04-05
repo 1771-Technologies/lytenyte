@@ -1,6 +1,6 @@
-import type { ColumnFilter } from "@1771technologies/grid-types/enterprise";
+import type { ColumnFilter } from "@1771technologies/grid-types/pro";
 import type { ApiEnterpriseReact, ColumnEnterpriseReact } from "@1771technologies/grid-types";
-import type { FilterCombined } from "@1771technologies/grid-types/community";
+import type { FilterCombined } from "@1771technologies/grid-types/core";
 import type { FlatSimpleFilters } from "./types";
 import { flattenCombinedFilter } from "./flatten-combined-filter";
 

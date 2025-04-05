@@ -1,4 +1,4 @@
-import type { RowNodeGroup, Writable } from "@1771technologies/grid-types/community";
+import type { RowNodeGroup, Writable } from "@1771technologies/grid-types/core";
 import type { ServerState } from "../create-server-data-source";
 import type { AsyncDataRequestBlock } from "../types";
 import { loadBlockData } from "./load-block-data";

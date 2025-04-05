@@ -4,7 +4,7 @@ import type {
   ColumnCommunity,
   ColumnEnterprise,
 } from "@1771technologies/grid-types";
-import type { SortModelItem, SortCycleOption } from "@1771technologies/grid-types/community";
+import type { SortModelItem, SortCycleOption } from "@1771technologies/grid-types/core";
 
 export const columnSortCycleIndex = <D, E>(
   api: ApiEnterprise<D, E> | ApiCommunity<D, E>,

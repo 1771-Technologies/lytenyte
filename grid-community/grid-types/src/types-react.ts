@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { Api } from "./make-grid-community";
+import type { Api } from "./make-grid-core";
 import type {
   CellEditProvider,
   CellEditProviderParams,

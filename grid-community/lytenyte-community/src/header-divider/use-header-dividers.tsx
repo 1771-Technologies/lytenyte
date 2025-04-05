@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { useMemo } from "react";
 import { HeaderDivider } from "./header-divider";
-import type { ColumnGroupRows } from "@1771technologies/grid-types/community";
+import type { ColumnGroupRows } from "@1771technologies/grid-types/core";
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
 
 export function useHeaderDividers(api: ApiCommunityReact<any>) {

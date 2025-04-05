@@ -4,7 +4,7 @@ import type {
   ColumnCommunity,
   ColumnEnterprise,
 } from "@1771technologies/grid-types";
-import type { Field, RowNode } from "@1771technologies/grid-types/community";
+import type { Field, RowNode } from "@1771technologies/grid-types/core";
 import { columnGetField } from "./column-get-field";
 
 export const columnFieldComputer = <D, E>(

@@ -1,4 +1,4 @@
-import type { ColumnGroupRow, ColumnGroupRows } from "@1771technologies/grid-types/community";
+import type { ColumnGroupRow, ColumnGroupRows } from "@1771technologies/grid-types/core";
 import { columnsByPin } from "./columns-by-pin.js";
 import type { ColumnLike } from "./columns-visible/columns-visible.js";
 

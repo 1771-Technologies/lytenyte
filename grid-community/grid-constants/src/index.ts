@@ -3,7 +3,7 @@ import type {
   RowLeafKind,
   RowTotalKind,
   SortCycleOption,
-} from "@1771technologies/grid-types/community";
+} from "@1771technologies/grid-types/core";
 
 export const ROW_LEAF_KIND: RowLeafKind = 1;
 export const ROW_GROUP_KIND: RowGroupKind = 2;

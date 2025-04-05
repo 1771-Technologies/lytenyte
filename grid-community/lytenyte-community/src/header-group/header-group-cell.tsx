@@ -1,6 +1,6 @@
 import "./header-group-cell.css";
 
-import type { ColumnGroupRowItem, ColumnPin } from "@1771technologies/grid-types/community";
+import type { ColumnGroupRowItem, ColumnPin } from "@1771technologies/grid-types/core";
 import { sizeFromCoord } from "@1771technologies/js-utils";
 import { useEffect, useMemo, useRef, type CSSProperties } from "react";
 import type { ApiCommunityReact } from "@1771technologies/grid-types";

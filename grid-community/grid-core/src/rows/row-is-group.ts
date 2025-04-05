@@ -1,5 +1,5 @@
 import { ROW_GROUP_KIND } from "@1771technologies/grid-constants";
-import type { RowNode, RowNodeGroup } from "@1771technologies/grid-types/community";
+import type { RowNode, RowNodeGroup } from "@1771technologies/grid-types/core";
 
 /**
  * Type guard that checks if a row node is a group node.

@@ -1,4 +1,4 @@
-import type { FilterNumber } from "@1771technologies/grid-types/community";
+import type { FilterNumber } from "@1771technologies/grid-types/core";
 import { useMemo } from "react";
 import { Select } from "../../../select/select";
 import { useSimpleFilterRoot } from "../simple-filter-root";

@@ -1,5 +1,5 @@
 import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
-import type { RowNode } from "@1771technologies/grid-types/community";
+import type { RowNode } from "@1771technologies/grid-types/core";
 
 export const rowSelection = <D, E>(api: ApiEnterprise<D, E> | ApiCommunity<D, E>) => {
   return {

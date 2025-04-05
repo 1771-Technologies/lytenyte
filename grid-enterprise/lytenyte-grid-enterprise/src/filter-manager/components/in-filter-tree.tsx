@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { ColumnInFilterItem } from "@1771technologies/grid-types/enterprise";
+import type { ColumnInFilterItem } from "@1771technologies/grid-types/pro";
 import { Checkbox } from "@1771technologies/lytenyte-grid-community/internal";
 import { useInFilterState } from "./in-filter-root";
 import { getChildValues } from "./get-child-values";

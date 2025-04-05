@@ -1,6 +1,6 @@
 import type { BlockPaths } from "../types.js";
 import { blockStoreUpdateSize } from "./block-store-update-size.js";
-import type { RowNode } from "@1771technologies/grid-types/community";
+import type { RowNode } from "@1771technologies/grid-types/core";
 import { blockStoreDeleteByNodes } from "./block-store-delete-by-nodes.js";
 
 /**

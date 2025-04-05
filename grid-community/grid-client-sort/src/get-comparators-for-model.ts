@@ -1,6 +1,6 @@
 import type { ApiEnterprise, ColumnEnterprise } from "@1771technologies/grid-types";
 import { getSortComparator } from "./get-sort-comparator";
-import type { SortComparatorFn, SortModelItem } from "@1771technologies/grid-types/community";
+import type { SortComparatorFn, SortModelItem } from "@1771technologies/grid-types/core";
 
 export function getComparatorsForModel<D, E>(
   api: ApiEnterprise<D, E>,

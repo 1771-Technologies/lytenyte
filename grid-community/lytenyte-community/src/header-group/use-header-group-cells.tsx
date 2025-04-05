@@ -1,7 +1,7 @@
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
 import { useMemo, type ReactNode } from "react";
 import { HeaderGroupCell } from "./header-group-cell";
-import type { ColumnGroupRowItem, ColumnPin } from "@1771technologies/grid-types/community";
+import type { ColumnGroupRowItem, ColumnPin } from "@1771technologies/grid-types/core";
 
 export function useHeaderGroupCells(api: ApiCommunityReact<any>) {
   const sx = api.getState();

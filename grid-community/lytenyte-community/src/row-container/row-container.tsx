@@ -3,7 +3,7 @@ import "./row-container.css";
 import type { PropsWithChildren } from "react";
 import { useDroppable } from "@1771technologies/react-dragon";
 import { useGrid } from "../use-grid";
-import type { RowNode } from "@1771technologies/grid-types/community";
+import type { RowNode } from "@1771technologies/grid-types/core";
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
 
 export function RowContainer({

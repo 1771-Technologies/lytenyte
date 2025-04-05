@@ -1,4 +1,4 @@
-import type { CellEditLocation } from "@1771technologies/grid-types/community";
+import type { CellEditLocation } from "@1771technologies/grid-types/core";
 
 export function getEditRows(
   locations: Map<string, CellEditLocation>,

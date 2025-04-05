@@ -1,7 +1,7 @@
 import { ROW_GROUP_KIND, ROW_LEAF_KIND } from "@1771technologies/grid-constants";
 import type { ServerState } from "../create-server-data-source";
 import type { AsyncDataResponse } from "../types";
-import type { RowNodeGroup, RowNodeLeaf } from "@1771technologies/grid-types/community";
+import type { RowNodeGroup, RowNodeLeaf } from "@1771technologies/grid-types/core";
 import type { BlockPayload } from "@1771technologies/grid-graph";
 
 export function handleDataBlocks<D, E>(payload: AsyncDataResponse, state: ServerState<D, E>) {

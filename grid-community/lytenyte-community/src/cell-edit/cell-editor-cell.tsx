@@ -1,7 +1,7 @@
 import "./cell-edit.css";
 
 import type { ColumnCommunityReact } from "@1771technologies/grid-types";
-import type { CellEditLocation, RowNode } from "@1771technologies/grid-types/community";
+import type { CellEditLocation, RowNode } from "@1771technologies/grid-types/core";
 import { getFocusableElements } from "@1771technologies/js-utils";
 import { useGrid } from "../use-grid";
 import { getCellEditor } from "./cell-get-editor";

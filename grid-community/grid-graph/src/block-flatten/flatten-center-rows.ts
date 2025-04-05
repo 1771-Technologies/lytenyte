@@ -1,7 +1,7 @@
 import { rowIsGroup } from "@1771technologies/grid-core";
 import type { BlockPaths, BlockStore } from "../types.js";
 import type { FlattenRowContext } from "./types.js";
-import type { RowNodeGroup } from "@1771technologies/grid-types/community";
+import type { RowNodeGroup } from "@1771technologies/grid-types/core";
 
 /**
  * Flattens the center rows of a grid, handling hierarchical data structures organized in blocks.

@@ -11,12 +11,7 @@ import { blockStoreIsShrinking } from "./block-store/block-store-is-shrinking.js
 import { blockStoreResize } from "./block-store/block-store-resize.js";
 import { blockStoreTruncatePayloadIfNecessary } from "./block-store/block-store-truncate-payload-if-necessary.js";
 import { blockStoreUpdateNodes } from "./block-store/block-store-update-nodes.js";
-import type {
-  RowNode,
-  RowNodeLeaf,
-  RowNodeTotal,
-  RowPin,
-} from "@1771technologies/grid-types/community";
+import type { RowNode, RowNodeLeaf, RowNodeTotal, RowPin } from "@1771technologies/grid-types/core";
 import { RangeTree, type FlattenedRange } from "./range-tree.js";
 import { flattenTopRows } from "./block-flatten/flatten-top-rows.js";
 import { flattenCenterRows } from "./block-flatten/flatten-center-rows.js";

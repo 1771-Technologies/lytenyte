@@ -1,4 +1,4 @@
-import type { ScrollBounds } from "@1771technologies/grid-types/community";
+import type { ScrollBounds } from "@1771technologies/grid-types/core";
 import { getBoundEnd } from "./get-bound-end.js";
 import { getBoundStart } from "./get-bound-start.js";
 

@@ -1,4 +1,4 @@
-import type { ColumnFilterModel } from "@1771technologies/grid-types/enterprise";
+import type { ColumnFilterModel } from "@1771technologies/grid-types/pro";
 import type { FlatSimpleFilters } from "./types";
 import type { ApiEnterpriseReact, ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import {

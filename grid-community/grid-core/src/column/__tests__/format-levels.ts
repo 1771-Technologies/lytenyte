@@ -1,4 +1,4 @@
-import type { ColumnGroupRows } from "@1771technologies/grid-types/community";
+import type { ColumnGroupRows } from "@1771technologies/grid-types/core";
 import { padStringRight, getStringTableWidths } from "@1771technologies/js-utils";
 import type { ColumnLike } from "../columns-visible/columns-visible.js";
 import { columnIsEmpty } from "../column-is-empty.js";

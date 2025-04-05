@@ -1,6 +1,6 @@
 import { computed, signal } from "@1771technologies/react-cascada";
 import type { ApiCommunity, ApiEnterprise, ColumnEnterprise } from "@1771technologies/grid-types";
-import type { ColumnFilterModel as CFC } from "@1771technologies/grid-types/community";
+import type { ColumnFilterModel as CFC } from "@1771technologies/grid-types/core";
 import type { ColumnFilterModel as CFE } from "@1771technologies/grid-types/pro";
 import { itemsWithIdToMap } from "@1771technologies/js-utils";
 

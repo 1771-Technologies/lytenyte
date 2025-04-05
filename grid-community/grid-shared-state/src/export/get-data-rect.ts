@@ -2,7 +2,7 @@ import type {
   DataRectResult,
   ExportTransformDataRow,
   RowNode,
-} from "@1771technologies/grid-types/community";
+} from "@1771technologies/grid-types/core";
 import type {
   ApiCommunity,
   ApiEnterprise,

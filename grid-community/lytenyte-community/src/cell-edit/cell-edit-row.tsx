@@ -1,5 +1,5 @@
 import { CellEditorCell } from "./cell-editor-cell";
-import type { CellEditLocation } from "@1771technologies/grid-types/community";
+import type { CellEditLocation } from "@1771technologies/grid-types/core";
 import { useGrid } from "../use-grid";
 
 export interface CellEditorProps {

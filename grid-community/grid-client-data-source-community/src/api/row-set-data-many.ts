@@ -1,4 +1,4 @@
-import type { RowNodeLeaf, Writable } from "@1771technologies/grid-types/community";
+import type { RowNodeLeaf, Writable } from "@1771technologies/grid-types/core";
 import type { ClientState } from "../create-client-data-source";
 
 export function rowSetDataMany<D, E>(state: ClientState<D, E>, updates: Record<string, D>) {

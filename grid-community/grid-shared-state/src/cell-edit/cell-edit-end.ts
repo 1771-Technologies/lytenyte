@@ -1,4 +1,4 @@
-import type { CellEditLocation } from "@1771technologies/grid-types/community";
+import type { CellEditLocation } from "@1771technologies/grid-types/core";
 import { cellEditHandleBulkEdit } from "./cell-edit-handle-bulk-edit";
 import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
 

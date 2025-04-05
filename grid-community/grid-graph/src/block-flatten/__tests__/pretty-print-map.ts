@@ -1,4 +1,4 @@
-import type { RowNode } from "@1771technologies/grid-types/community";
+import type { RowNode } from "@1771technologies/grid-types/core";
 
 export function prettyPrintMap(map: Map<string, RowNode> | Map<number, RowNode>) {
   const entries = [...map.entries()].map((c) => {

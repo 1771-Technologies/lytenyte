@@ -1,5 +1,5 @@
 import type { ApiEnterprise } from "@1771technologies/grid-types";
-import type { CellSelectionRect } from "@1771technologies/grid-types/enterprise";
+import type { CellSelectionRect } from "@1771technologies/grid-types/pro";
 import { clamp } from "@1771technologies/js-utils";
 
 export function boundSelectionRect<D, E>(

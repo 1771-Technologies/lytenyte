@@ -7,7 +7,7 @@ import type {
   ColumnCommunity,
   ColumnEnterprise,
 } from "@1771technologies/grid-types";
-import type { SortComparatorFn } from "@1771technologies/grid-types/community";
+import type { SortComparatorFn } from "@1771technologies/grid-types/core";
 import { GROUP_COLUMN_PREFIX } from "@1771technologies/grid-constants";
 import { makeDateComparator } from "./sort-functions/date-comparator";
 

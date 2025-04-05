@@ -1,5 +1,5 @@
 import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
-import type { RowNodeGroup } from "@1771technologies/grid-types/community";
+import type { RowNodeGroup } from "@1771technologies/grid-types/core";
 
 export const rowGroupToggle = <D, E>(
   api: ApiEnterprise<D, E> | ApiCommunity<D, E>,

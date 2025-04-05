@@ -3,7 +3,7 @@ import type { Api, Column, Init } from "../make-grid-pro";
 import type {
   ColumnPivotSensitiveState,
   GridInternalState as CommunityInternalState,
-} from "./state-community";
+} from "./state-core";
 import type { RowDataSourceEnterprise } from "../row-data-source/rds-pro";
 import type { CellSelectionRect, ColumnFilterModel, Target } from "../types-pro";
 import type { ColumnGroupRows, SortModelItem } from "../types";

@@ -1,5 +1,5 @@
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
-import type { RowNode } from "@1771technologies/grid-types/community";
+import type { RowNode } from "@1771technologies/grid-types/core";
 
 export function handleRowSelection(
   api: ApiCommunityReact<any>,

@@ -1,5 +1,5 @@
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
-import type { RowNode } from "@1771technologies/grid-types/community";
+import type { RowNode } from "@1771technologies/grid-types/core";
 import { useEvent } from "@1771technologies/react-utils";
 import type { MouseEvent } from "react";
 import { handleRowSelection } from "../cell/handle-row-selection";

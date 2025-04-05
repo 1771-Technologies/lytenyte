@@ -19,7 +19,7 @@ import {
   type ReadonlySignal,
   type Signal,
 } from "@1771technologies/react-cascada";
-import type { RowNodeGroup, RowNodeLeaf } from "@1771technologies/grid-types/community";
+import type { RowNodeGroup, RowNodeLeaf } from "@1771technologies/grid-types/core";
 import { ROW_DEFAULT_PATH_SEPARATOR } from "@1771technologies/grid-constants";
 import { BlockGraph } from "@1771technologies/grid-graph";
 import { rowByIndex } from "./api/row-by-index";

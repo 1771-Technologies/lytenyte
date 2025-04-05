@@ -4,7 +4,7 @@ import {
   clipboardPasteCells,
 } from "@1771technologies/grid-core-enterprise";
 import type { ApiEnterprise } from "@1771technologies/grid-types";
-import type { CellSelectionRect } from "@1771technologies/grid-types/enterprise";
+import type { CellSelectionRect } from "@1771technologies/grid-types/pro";
 
 export const clipboard = <D, E>(api: ApiEnterprise<D, E>) => {
   function flashCells(rect: CellSelectionRect | null | undefined) {

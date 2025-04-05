@@ -11,7 +11,7 @@ import type {
   ColumnInFilterItem,
   Target,
 } from "../types-pro";
-import type { ApiCommunity } from "./api-community";
+import type { ApiCommunity } from "./api-core";
 
 export interface ApiEnterprise<D, C, E>
   extends Omit<

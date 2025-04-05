@@ -2,8 +2,8 @@ import type {
   EventsCommunity,
   LngAddEventListenerCommunity,
   LngRemoveEventListenerCommunity,
-} from "../events/events-community";
-import type { State } from "../store/state-community";
+} from "../events/events-core";
+import type { State } from "../store/state-core";
 import type {
   AutosizeOptions,
   AutosizeResult,

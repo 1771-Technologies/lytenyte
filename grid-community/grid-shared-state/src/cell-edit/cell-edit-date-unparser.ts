@@ -1,4 +1,4 @@
-import type { CellEditParserParams } from "@1771technologies/grid-types/community";
+import type { CellEditParserParams } from "@1771technologies/grid-types/core";
 import type { ApiCommunity, ColumnCommunity } from "@1771technologies/grid-types";
 
 export const dateUnparser = <D, E>(

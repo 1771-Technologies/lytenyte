@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { ContextMenuGridTargets } from "@1771technologies/grid-types/enterprise";
+import type { ContextMenuGridTargets } from "@1771technologies/grid-types/pro";
 import { useGrid } from "../../use-grid";
 import { useContextMenuListener } from "./use-context-menu-listener";
 import { Menu } from "@base-ui-components/react/menu";

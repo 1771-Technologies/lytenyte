@@ -11,7 +11,7 @@ import type {
   RowDataSourceEnterprise,
 } from "@1771technologies/grid-types";
 import { BlockGraph } from "@1771technologies/grid-graph";
-import type { RowNodeLeaf } from "@1771technologies/grid-types/community";
+import type { RowNodeLeaf } from "@1771technologies/grid-types/core";
 import { filterNodesComputed } from "./utils/filterNodesComputed";
 import { sortedNodesComputed } from "./utils/sorted-nodes-computed";
 import {

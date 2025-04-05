@@ -1,5 +1,5 @@
 import { ROW_GROUP_KIND, ROW_LEAF_KIND } from "@1771technologies/grid-constants";
-import type { RowNode } from "@1771technologies/grid-types/community";
+import type { RowNode } from "@1771technologies/grid-types/core";
 import { blockStoreAllPaths } from "../block-store-all-paths.js";
 import type { Block, BlockStore } from "../../types.js";
 

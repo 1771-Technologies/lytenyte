@@ -1,4 +1,4 @@
-import type { FocusPosition } from "@1771technologies/grid-types/community";
+import type { FocusPosition } from "@1771technologies/grid-types/core";
 import { signal } from "@1771technologies/react-cascada";
 
 export function cellFocusQueue() {

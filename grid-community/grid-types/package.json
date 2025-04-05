@@ -13,12 +13,12 @@
       "import": "./src/index.ts",
       "require": "./src/index.ts"
     },
-    "./community": {
+    "./core": {
       "types": "./src/types.ts",
       "import": "./src/types.ts",
       "require": "./src/types.ts"
     },
-    "./community-react": {
+    "./core-react": {
       "types": "./src/types-react.ts",
       "import": "./src/types-react.ts",
       "require": "./src/types-react.ts"
@@ -42,12 +42,12 @@
         "import": "./dist/index.js",
         "require": "./dist/index.js"
       },
-      "./community": {
+      "./core": {
         "types": "./dist/types/types.d.ts",
         "import": "./dist/types.js",
         "require": "./dist/types.js"
       },
-      "./community-react": {
+      "./core-react": {
         "types": "./dist/types/types-react.d.ts",
         "import": "./dist/types-react.js",
         "require": "./dist/types-react.js"

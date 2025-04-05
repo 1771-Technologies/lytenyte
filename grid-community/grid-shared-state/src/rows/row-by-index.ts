@@ -1,4 +1,4 @@
-import type { RowSections } from "@1771technologies/grid-types/community";
+import type { RowSections } from "@1771technologies/grid-types/core";
 import { rowIndexForSection } from "@1771technologies/grid-core";
 import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
 

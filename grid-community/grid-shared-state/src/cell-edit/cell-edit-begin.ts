@@ -1,4 +1,4 @@
-import type { CellEditLocation } from "@1771technologies/grid-types/community";
+import type { CellEditLocation } from "@1771technologies/grid-types/core";
 import { cellEditKey } from "./cell-edit-key";
 import { cellEditUnparser } from "./cell-edit-unparser";
 import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";

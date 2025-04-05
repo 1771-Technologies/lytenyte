@@ -17,7 +17,7 @@ import type {
   PanelFrame,
   PopoverFrame,
 } from "../types-pro";
-import type { PropsCommunity } from "./props-community";
+import type { PropsCommunity } from "./props-core";
 
 export interface PropsEnterprise<A, D, C, E, Base, Group>
   extends Omit<PropsCommunity<A, D, C, E, Base, Group>, "filterModel" | "rowDataSource"> {

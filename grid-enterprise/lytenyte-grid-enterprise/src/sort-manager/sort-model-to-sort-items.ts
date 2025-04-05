@@ -1,4 +1,4 @@
-import type { SortModelItem } from "@1771technologies/grid-types/community";
+import type { SortModelItem } from "@1771technologies/grid-types/core";
 import type { StoreEnterpriseReact } from "@1771technologies/grid-types";
 import type { SortItem } from "./use-sort-state.js";
 

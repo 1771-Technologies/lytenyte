@@ -1,4 +1,4 @@
-import type { ColumnHeaderHeightProperty } from "@1771technologies/grid-types/community";
+import type { ColumnHeaderHeightProperty } from "@1771technologies/grid-types/core";
 import { useMemo } from "react";
 
 export function useHeaderDisplayGridTemplate(

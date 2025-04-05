@@ -1,5 +1,5 @@
 import { ROW_LEAF_KIND } from "@1771technologies/grid-constants";
-import type { RowNodeLeaf } from "@1771technologies/grid-types/community";
+import type { RowNodeLeaf } from "@1771technologies/grid-types/core";
 
 const nodeCache = new Map<number, RowNodeLeaf<any>>();
 

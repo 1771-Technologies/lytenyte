@@ -1,4 +1,4 @@
-import type { ColumnInFilterItem } from "@1771technologies/grid-types/enterprise";
+import type { ColumnInFilterItem } from "@1771technologies/grid-types/pro";
 
 export function flattenTreeItems(items: ColumnInFilterItem[], expansions: Set<string>) {
   const stack = [...items.map((c) => [c, 0] as [ColumnInFilterItem, number])];

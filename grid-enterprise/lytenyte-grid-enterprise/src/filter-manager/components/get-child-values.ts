@@ -1,4 +1,4 @@
-import type { ColumnInFilterItemParent } from "@1771technologies/grid-types/enterprise";
+import type { ColumnInFilterItemParent } from "@1771technologies/grid-types/pro";
 
 export function getChildValues(t: ColumnInFilterItemParent) {
   const stack = [...t.children];

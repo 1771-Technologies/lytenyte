@@ -1,5 +1,5 @@
 import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
-import type { AutosizeOptions } from "@1771technologies/grid-types/community";
+import type { AutosizeOptions } from "@1771technologies/grid-types/core";
 import { autosizeCellDefault } from "./autosize-cell-default";
 import { autosizeHeaderDefault } from "./autosize-header-default";
 

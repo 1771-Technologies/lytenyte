@@ -1,7 +1,7 @@
-import type { ColumnFilter } from "@1771technologies/grid-types/enterprise";
+import type { ColumnFilter } from "@1771technologies/grid-types/pro";
 import { isFilterComplete } from "./is-filter-complete";
 import type { ApiEnterpriseReact } from "@1771technologies/grid-types";
-import type { FilterCombined, FilterSimpleColumn } from "@1771technologies/grid-types/community";
+import type { FilterCombined, FilterSimpleColumn } from "@1771technologies/grid-types/core";
 import type { FlatSimpleFilters } from "./types";
 
 export function flatToCombined<D>(

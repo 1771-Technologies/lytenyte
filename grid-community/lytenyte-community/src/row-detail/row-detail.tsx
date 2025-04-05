@@ -1,7 +1,7 @@
 import "./row-detail.css";
 
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
-import type { RowNode, RowPin } from "@1771technologies/grid-types/community";
+import type { RowNode, RowPin } from "@1771technologies/grid-types/core";
 import { useMemo } from "react";
 import { getTransform } from "../utils/get-transform";
 import { sizeFromCoord } from "@1771technologies/js-utils";

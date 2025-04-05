@@ -1,4 +1,4 @@
-import type { ExportDataRectOptions } from "@1771technologies/grid-types/community";
+import type { ExportDataRectOptions } from "@1771technologies/grid-types/core";
 import type {
   ApiCommunity,
   ApiEnterprise,

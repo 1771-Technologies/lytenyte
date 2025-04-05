@@ -1,6 +1,6 @@
 import type { ColumnEnterprise } from "@1771technologies/grid-types";
 import type { ClientState } from "../create-client-data-source";
-import type { ColumnInFilterItem } from "@1771technologies/grid-types/enterprise";
+import type { ColumnInFilterItem } from "@1771technologies/grid-types/pro";
 
 export function columnInFilterItems<D, E>(
   state: ClientState<D, E>,

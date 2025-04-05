@@ -1,6 +1,6 @@
 import { getHoveredRowIndex } from "@1771technologies/grid-core";
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
-import type { RowDragEventParams, RowNode } from "@1771technologies/grid-types/community";
+import type { RowDragEventParams, RowNode } from "@1771technologies/grid-types/core";
 import { getClientX, getClientY, getRelativeXPosition } from "@1771technologies/js-utils";
 import { useDraggable } from "@1771technologies/react-dragon";
 

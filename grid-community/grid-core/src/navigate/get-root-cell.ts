@@ -1,5 +1,5 @@
 import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
-import type { PositionGridCell } from "@1771technologies/grid-types/community";
+import type { PositionGridCell } from "@1771technologies/grid-types/core";
 import { isBottomRow, isEndColumn, isStartColumn, isTopRow } from "./utils";
 
 export const getRootCell = <D, E>(

@@ -1,4 +1,4 @@
-import type { ColumnPin } from "@1771technologies/grid-types/community";
+import type { ColumnPin } from "@1771technologies/grid-types/core";
 
 /**
  * Groups an array of columns into three arrays based on their pin position: start, center (unpinned), or end.

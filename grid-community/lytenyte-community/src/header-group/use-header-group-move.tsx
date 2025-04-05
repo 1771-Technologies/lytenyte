@@ -1,5 +1,5 @@
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
-import type { ColumnGroupRowItem, ColumnPin } from "@1771technologies/grid-types/community";
+import type { ColumnGroupRowItem, ColumnPin } from "@1771technologies/grid-types/core";
 import { useDraggable } from "@1771technologies/react-dragon";
 import { useMemo } from "react";
 

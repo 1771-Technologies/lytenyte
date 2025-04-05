@@ -1,7 +1,7 @@
 import { BLOCK_SIZE } from "@1771technologies/grid-client-data-source-community";
 import { ROW_GROUP_KIND } from "@1771technologies/grid-constants";
 import type { BlockPayload } from "@1771technologies/grid-graph";
-import type { RowNode, RowNodeLeaf } from "@1771technologies/grid-types/community";
+import type { RowNode, RowNodeLeaf } from "@1771technologies/grid-types/core";
 import type { PathTreeNode } from "@1771technologies/path-tree";
 
 export function treeToPayload<D>(tree: PathTreeNode<RowNodeLeaf<D>>[], separator: string) {

@@ -1,6 +1,6 @@
 import type { ApiEnterprise, ColumnEnterprise } from "@1771technologies/grid-types";
-import type { RowGroupKind, RowLeafKind } from "@1771technologies/grid-types/community";
-import type { ColumnInFilterItem } from "@1771technologies/grid-types/enterprise";
+import type { RowGroupKind, RowLeafKind } from "@1771technologies/grid-types/core";
+import type { ColumnInFilterItem } from "@1771technologies/grid-types/pro";
 
 export type AsyncDataBlock = {
   readonly blockKey: number;

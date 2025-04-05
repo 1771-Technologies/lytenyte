@@ -1,4 +1,4 @@
-import type { ColumnPin } from "@1771technologies/grid-types/community";
+import type { ColumnPin } from "@1771technologies/grid-types/core";
 import { columnsByPin } from "../columns-by-pin.js";
 
 interface TestColumn {

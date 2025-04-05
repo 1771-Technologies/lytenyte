@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import type { ColumnInFilterItem } from "@1771technologies/grid-types/enterprise";
+import type { ColumnInFilterItem } from "@1771technologies/grid-types/pro";
 
 export function useInFilterItemLoader(
   getTreeFilterItems: () => Promise<ColumnInFilterItem[]> | ColumnInFilterItem[],

@@ -4,7 +4,7 @@ import type {
   ApiEnterprise,
   RowDataSourceBackingCommunity,
 } from "@1771technologies/grid-types";
-import type { RowDataSourceClient, RowNodeLeaf } from "@1771technologies/grid-types/community";
+import type { RowDataSourceClient, RowNodeLeaf } from "@1771technologies/grid-types/core";
 import { dataToRowNodes } from "./row-nodes";
 import {
   cascada,

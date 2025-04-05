@@ -1,4 +1,4 @@
-import type { FilterCombined, FilterSimpleColumn } from "@1771technologies/grid-types/community";
+import type { FilterCombined, FilterSimpleColumn } from "@1771technologies/grid-types/core";
 import type { ApiEnterpriseReact } from "@1771technologies/grid-types";
 import type { FlatSimpleFilters } from "./types";
 

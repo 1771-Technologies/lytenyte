@@ -5,7 +5,7 @@ import { memo } from "react";
 import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
 import { useCellStyle } from "./use-cell-style";
 import { useCellRenderer } from "./use-cell-renderer";
-import type { RowNode, RowPin } from "@1771technologies/grid-types/community";
+import type { RowNode, RowPin } from "@1771technologies/grid-types/core";
 import { useCellEvents } from "./use-cell-events";
 import { useCellPositionChange } from "./use-cell-position-change";
 

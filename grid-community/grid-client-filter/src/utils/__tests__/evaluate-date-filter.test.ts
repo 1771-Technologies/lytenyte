@@ -1,4 +1,4 @@
-import type { FilterDate, FilterDateOperator } from "@1771technologies/grid-types/community";
+import type { FilterDate, FilterDateOperator } from "@1771technologies/grid-types/core";
 import { evaluateDate } from "../evaluate-date-filter";
 
 const t: FilterDate = {

@@ -1,4 +1,4 @@
-import type { CellSelectionRect } from "@1771technologies/grid-types/enterprise";
+import type { CellSelectionRect } from "@1771technologies/grid-types/pro";
 
 interface SplitCellSelectionRectArgs {
   readonly rect: CellSelectionRect;

@@ -1,4 +1,4 @@
-import type { RowNodeGroup, RowNodeTotal } from "@1771technologies/grid-types/community";
+import type { RowNodeGroup, RowNodeTotal } from "@1771technologies/grid-types/core";
 import type { ClientState } from "../create-client-data-source";
 import { aggregator } from "@1771technologies/grid-client-aggregator";
 

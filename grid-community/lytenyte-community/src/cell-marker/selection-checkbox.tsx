@@ -1,5 +1,5 @@
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
-import type { RowNode } from "@1771technologies/grid-types/community";
+import type { RowNode } from "@1771technologies/grid-types/core";
 import { useMemo } from "react";
 import { Checkbox } from "../components/checkbox";
 import { handleRowSelection } from "../cell/handle-row-selection";

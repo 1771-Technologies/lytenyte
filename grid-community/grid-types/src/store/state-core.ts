@@ -1,4 +1,4 @@
-import type { Api, Column, Init } from "../make-grid-community.js";
+import type { Api, Column, Init } from "../make-grid-core.js";
 import type { ReadonlySignal, Signal } from "@1771technologies/react-cascada";
 import type {
   CellEditLocation,
@@ -11,7 +11,7 @@ import type {
   ScrollBounds,
   SortModelItem,
 } from "../types.js";
-import type { RowDataSource } from "../row-data-source/rds-community.js";
+import type { RowDataSource } from "../row-data-source/rds-core.js";
 import type { ApiCommunity } from "../index.js";
 
 export type GridInternalState<D, E> = {

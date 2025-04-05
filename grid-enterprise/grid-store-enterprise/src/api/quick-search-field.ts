@@ -1,6 +1,6 @@
 import { columnFieldComputer } from "@1771technologies/grid-shared-state";
 import type { ApiEnterprise, ColumnEnterprise } from "@1771technologies/grid-types";
-import type { RowNode } from "@1771technologies/grid-types/community";
+import type { RowNode } from "@1771technologies/grid-types/core";
 
 export function quickSearchField<D, E>(
   api: ApiEnterprise<D, E>,

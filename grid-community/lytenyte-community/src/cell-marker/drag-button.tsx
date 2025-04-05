@@ -1,6 +1,6 @@
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
 import { useDragControl } from "./use-drag-control";
-import type { RowNode } from "@1771technologies/grid-types/community";
+import type { RowNode } from "@1771technologies/grid-types/core";
 import type { JSX } from "react";
 import { GridButton } from "../components/buttons";
 

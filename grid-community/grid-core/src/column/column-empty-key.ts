@@ -1,5 +1,5 @@
 import { COLUMN_EMPTY_PREFIX } from "@1771technologies/grid-constants";
-import type { ColumnPin } from "@1771technologies/grid-types/community";
+import type { ColumnPin } from "@1771technologies/grid-types/core";
 
 /**
  * Generates a unique key for an empty column placeholder based on its group path and pin status.

@@ -1,4 +1,4 @@
-import type { ExportCsvOptions, RowNode } from "@1771technologies/grid-types/community";
+import type { ExportCsvOptions, RowNode } from "@1771technologies/grid-types/core";
 import type { ApiCommunity, ApiEnterprise, ColumnEnterprise } from "@1771technologies/grid-types";
 import { getDataRect } from "./get-data-rect";
 

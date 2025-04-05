@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useGrid } from "../../use-grid";
 import { getHoveredColumnIndex, getHoveredRowIndex } from "@1771technologies/grid-core";
 import { getClientX, getClientY } from "@1771technologies/js-utils";
-import type { ContextMenuGridTargets } from "@1771technologies/grid-types/enterprise";
+import type { ContextMenuGridTargets } from "@1771technologies/grid-types/pro";
 
 export function useContextMenuListener(
   setMenu: (

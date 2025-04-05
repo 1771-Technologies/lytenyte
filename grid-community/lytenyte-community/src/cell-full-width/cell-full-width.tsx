@@ -1,7 +1,7 @@
 import "./cell-full-width.css";
 
 import type { ApiCommunityReact } from "@1771technologies/grid-types";
-import type { RowNode, RowPin } from "@1771technologies/grid-types/community";
+import type { RowNode, RowPin } from "@1771technologies/grid-types/core";
 import { memo, useMemo } from "react";
 import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
 import { useCellFullWidthFocus } from "./use-cell-full-width-focus";

@@ -1,4 +1,4 @@
-import type { SortModelItem } from "@1771technologies/grid-types/community";
+import type { SortModelItem } from "@1771technologies/grid-types/core";
 import type { SortItem } from "./use-sort-state.js";
 
 export function sortItemsToSortModel(sortItems: SortItem[]): SortModelItem[] {

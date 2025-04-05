@@ -1,4 +1,4 @@
-import type { FilterDate } from "@1771technologies/grid-types/community";
+import type { FilterDate } from "@1771technologies/grid-types/core";
 import { calculateTimeRange } from "./calculate-time-range";
 import { isInPeriod } from "./is-in-period";
 import { isValidDate } from "./is-valid-date";

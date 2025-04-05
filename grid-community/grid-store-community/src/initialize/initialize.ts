@@ -23,7 +23,7 @@ import type {
   PropsCommunity,
   StateCommunity,
 } from "@1771technologies/grid-types";
-import type { RowDataSourceClient } from "@1771technologies/grid-types/community";
+import type { RowDataSourceClient } from "@1771technologies/grid-types/core";
 
 const rowDataSource: RowDataSourceClient<any, any> = {
   kind: "client",

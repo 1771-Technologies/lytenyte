@@ -1,5 +1,5 @@
 import type { ApiEnterpriseReact, ColumnEnterpriseReact } from "@1771technologies/grid-types";
-import type { FilterIn } from "@1771technologies/grid-types/enterprise";
+import type { FilterIn } from "@1771technologies/grid-types/pro";
 import { useEffect, useMemo, useState } from "react";
 
 export function useInFilter<D>(api: ApiEnterpriseReact<D>, column: ColumnEnterpriseReact<D>) {

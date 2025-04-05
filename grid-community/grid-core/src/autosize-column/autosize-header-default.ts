@@ -1,5 +1,5 @@
 import type { ApiCommunity, ColumnCommunity } from "@1771technologies/grid-types";
-import type { AutosizeHeaderParameters } from "@1771technologies/grid-types/community";
+import type { AutosizeHeaderParameters } from "@1771technologies/grid-types/core";
 import { measureText } from "./measure-text";
 
 export function autosizeHeaderDefault<D, E>({

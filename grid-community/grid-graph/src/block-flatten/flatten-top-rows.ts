@@ -1,4 +1,4 @@
-import type { RowNodeLeaf, RowNodeTotal, RowPin } from "@1771technologies/grid-types/community";
+import type { RowNodeLeaf, RowNodeTotal, RowPin } from "@1771technologies/grid-types/core";
 import { ROW_TOTAL_ID } from "@1771technologies/grid-constants";
 import type { FlattenRowContext } from "./types.js";
 

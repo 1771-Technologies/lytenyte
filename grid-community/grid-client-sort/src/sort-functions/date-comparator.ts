@@ -1,7 +1,7 @@
 import type { ApiEnterprise, ColumnEnterprise } from "@1771technologies/grid-types";
 import { nullComparator } from "./null-comparator";
 import { isValidDate } from "@1771technologies/js-utils";
-import type { RowNode, SortModelItem } from "@1771technologies/grid-types/community";
+import type { RowNode, SortModelItem } from "@1771technologies/grid-types/core";
 
 export function makeDateComparator<D, E>(
   toDate: (value: unknown, column: ColumnEnterprise<ApiEnterprise<D, E>, E>) => Date,

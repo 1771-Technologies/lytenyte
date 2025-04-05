@@ -1,5 +1,5 @@
 import type { ColumnPivotEvent } from "../types-pro";
-import type { EventsCommunity, LngEvent } from "./events-community";
+import type { EventsCommunity, LngEvent } from "./events-core";
 
 export interface EventsEnterprise<A, D, C> extends EventsCommunity<A, D, C> {
   readonly onColumnPivotsChange: LngEvent<A>;

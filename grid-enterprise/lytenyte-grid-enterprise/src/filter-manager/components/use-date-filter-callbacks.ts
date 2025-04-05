@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useSimpleFilterRoot } from "./simple-filter-root";
-import type { FilterDate } from "@1771technologies/grid-types/community";
+import type { FilterDate } from "@1771technologies/grid-types/core";
 import type { SemiPartialFilter } from "../types";
 
 export function useDateFilterCallbacks() {

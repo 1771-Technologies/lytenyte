@@ -6,7 +6,7 @@ export type {
   ColumnBase as ColumnBaseCommunity,
   ColumnRowGroup as ColumnRowGroupCommunity,
   RowDataSourceBackingCommunity,
-} from "./make-grid-community.js";
+} from "./make-grid-core.js";
 
 export type {
   MakeGridEnterprise,
@@ -30,7 +30,7 @@ export type {
   InitialStateCommunity,
   StateCommunity,
   ColumnPivotSensitiveStateCommunity,
-} from "./store/store-community.js";
+} from "./store/store-core.js";
 export type {
   StoreEnterprise,
   InitialStateAndInternalStateEnterprise,

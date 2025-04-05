@@ -3,7 +3,7 @@ import { adjustRectForRowAndCellSpan } from "./adjust-rect-for-row-and-cell-span
 import { areRectsEqual } from "./are-rects-equal";
 import type { ApiEnterprise } from "@1771technologies/grid-types";
 import { splitCellSelectionRect } from "./split-cell-selection-rect";
-import type { CellSelectionRect } from "@1771technologies/grid-types/enterprise";
+import type { CellSelectionRect } from "@1771technologies/grid-types/pro";
 
 export function updateAdditiveCellSelection<D, E>(
   api: ApiEnterprise<D, E>,

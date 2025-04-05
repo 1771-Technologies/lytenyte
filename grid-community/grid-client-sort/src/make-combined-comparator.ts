@@ -1,9 +1,5 @@
 import type { ApiCommunity, ApiEnterprise, ColumnEnterprise } from "@1771technologies/grid-types";
-import type {
-  RowNode,
-  SortComparatorFn,
-  SortModelItem,
-} from "@1771technologies/grid-types/community";
+import type { RowNode, SortComparatorFn, SortModelItem } from "@1771technologies/grid-types/core";
 
 export function makeCombinedComparator<D, E>(
   api: ApiEnterprise<D, E>,
