@@ -105,7 +105,7 @@ export type GridInternalState<D, E> = {
 type Props<D, E> = Required<Init<D, E>>;
 
 /**
- * In the enterprise grid some state is impacted by the present of pivot mode. These are the fields
+ * In the pro grid some state is impacted by the present of pivot mode. These are the fields
  * That are impacted. We put these fields on state. In community they will directly reference their
  * internal state. In Enterprise we the pivot mode determines the value.
  */

@@ -1,9 +1,9 @@
 import type { ApiEnterprise, ColumnEnterprise } from "@1771technologies/grid-types";
 import { evaluateDate } from "./evaluate-date-filter";
-import type { ColumnFilter } from "@1771technologies/grid-types/enterprise";
+import type { ColumnFilter } from "@1771technologies/grid-types/pro";
 import type { RowNode } from "@1771technologies/grid-types/community";
-import type { ColumnFilterModel } from "@1771technologies/grid-types/enterprise";
-import type { FilterIn } from "@1771technologies/grid-types/enterprise";
+import type { ColumnFilterModel } from "@1771technologies/grid-types/pro";
+import type { FilterIn } from "@1771technologies/grid-types/pro";
 
 export function evaluateColumnFilter<D, E>(
   api: ApiEnterprise<D, E>,

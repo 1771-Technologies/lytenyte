@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { Api } from "./make-grid-enterprise";
+import type { Api } from "./make-grid-pro";
 import type {
   ColumnFilter,
   ColumnFilterModel,
@@ -9,7 +9,7 @@ import type {
   ContextMenuRendererParams,
   FloatingFrame as FF,
   PanelFrame,
-} from "./types-enterprise";
+} from "./types-pro";
 import type {
   AutosizeCellParameters,
   AutosizeHeaderParameters,

@@ -23,15 +23,15 @@
       "import": "./src/types-react.ts",
       "require": "./src/types-react.ts"
     },
-    "./enterprise": {
-      "types": "./src/types-enterprise.ts",
-      "import": "./src/types-enterprise.ts",
-      "require": "./src/types-enterprise.ts"
+    "./pro": {
+      "types": "./src/types-pro.ts",
+      "import": "./src/types-pro.ts",
+      "require": "./src/types-pro.ts"
     },
-    "./enterprise-react": {
-      "types": "./src/types-enterprise-react.ts",
-      "import": "./src/types-enterprise-react.ts",
-      "require": "./src/types-enterprise-react.ts"
+    "./pro-react": {
+      "types": "./src/types-pro-react.ts",
+      "import": "./src/types-pro-react.ts",
+      "require": "./src/types-pro-react.ts"
     }
   },
   "publishConfig": {
@@ -52,15 +52,15 @@
         "import": "./dist/types-react.js",
         "require": "./dist/types-react.js"
       },
-      "./enterprise": {
-        "types": "./dist/types/types-enterprise.d.ts",
-        "import": "./dist/types-enterprise.js",
-        "require": "./dist/types-enterprise.js"
+      "./pro": {
+        "types": "./dist/types/types-pro.d.ts",
+        "import": "./dist/types-pro.js",
+        "require": "./dist/types-pro.js"
       },
-      "./enterprise-react": {
-        "types": "./dist/types/types-enterprise-react.d.ts",
-        "import": "./dist/types-enterprise-react.js",
-        "require": "./dist/types-enterprise-react.js"
+      "./pro-react": {
+        "types": "./dist/types/types-pro-react.d.ts",
+        "import": "./dist/types-pro-react.js",
+        "require": "./dist/types-pro-react.js"
       }
     }
   },

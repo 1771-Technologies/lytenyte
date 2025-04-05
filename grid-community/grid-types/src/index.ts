@@ -16,10 +16,10 @@ export type {
   ColumnBase as ColumnBaseEnterprise,
   ColumnRowGroup as ColumnRowGroupEnterprise,
   RowDataSourceEnterprise,
-} from "./make-grid-enterprise.js";
+} from "./make-grid-pro.js";
 
 export type * as CommunityTypes from "./types.js";
-export type * as EnterpriseTypes from "./types-enterprise.js";
+export type * as EnterpriseTypes from "./types-pro.js";
 
 // React version of the grid exports
 export type * from "./make-grid-react.js";
@@ -37,4 +37,4 @@ export type {
   InitialStateEnterprise,
   StateEnterprise,
   ColumnPivotSensitiveStateEnterprise,
-} from "./store/store-enterprise.js";
+} from "./store/store-pro.js";

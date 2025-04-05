@@ -2,15 +2,15 @@ import type {
   EventsEnterprise,
   LngAddEventListenerEnterprise,
   LngRemoveEventListenerEnterprise,
-} from "../events/events-enterprise";
-import type { State } from "../store/state-enterprise";
+} from "../events/events-pro";
+import type { State } from "../store/state-pro";
 import type { ColumnFilterModel, RowNode, RowNodeGroup, SortModelItem } from "../types";
 import type {
   CellSelectionRect,
   ClipboardCopyOptions,
   ColumnInFilterItem,
   Target,
-} from "../types-enterprise";
+} from "../types-pro";
 import type { ApiCommunity } from "./api-community";
 
 export interface ApiEnterprise<D, C, E>

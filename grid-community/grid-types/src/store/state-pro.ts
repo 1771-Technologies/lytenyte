@@ -1,13 +1,13 @@
 import type { ReadonlySignal, Signal } from "@1771technologies/react-cascada";
-import type { Api, Column, Init } from "../make-grid-enterprise";
+import type { Api, Column, Init } from "../make-grid-pro";
 import type {
   ColumnPivotSensitiveState,
   GridInternalState as CommunityInternalState,
 } from "./state-community";
-import type { RowDataSourceEnterprise } from "../row-data-source/rds-enterprise";
-import type { CellSelectionRect, ColumnFilterModel, Target } from "../types-enterprise";
+import type { RowDataSourceEnterprise } from "../row-data-source/rds-pro";
+import type { CellSelectionRect, ColumnFilterModel, Target } from "../types-pro";
 import type { ColumnGroupRows, SortModelItem } from "../types";
-import type { ApiEnterprise } from "../api/api-enterprise";
+import type { ApiEnterprise } from "../api/api-pro";
 import type { ColumnEnterprise } from "..";
 
 type CommunityOmit =

@@ -1,4 +1,4 @@
-import type { ColumnPivotEvent } from "../types-enterprise";
+import type { ColumnPivotEvent } from "../types-pro";
 import type { EventsCommunity, LngEvent } from "./events-community";
 
 export interface EventsEnterprise<A, D, C> extends EventsCommunity<A, D, C> {

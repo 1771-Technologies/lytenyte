@@ -1,4 +1,4 @@
-import type { RowDataSourceEnterprise } from "../row-data-source/rds-enterprise";
+import type { RowDataSourceEnterprise } from "../row-data-source/rds-pro";
 import type { AggModel } from "../types";
 import type {
   CellSelectionMode,
@@ -16,7 +16,7 @@ import type {
   Overlays,
   PanelFrame,
   PopoverFrame,
-} from "../types-enterprise";
+} from "../types-pro";
 import type { PropsCommunity } from "./props-community";
 
 export interface PropsEnterprise<A, D, C, E, Base, Group>

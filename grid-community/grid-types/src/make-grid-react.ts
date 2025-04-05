@@ -15,9 +15,9 @@ import type {
   ColumnBase as ColumnBaseEnterprise,
   ColumnRowGroup as ColumnRowGroupEnterprise,
   RowDataSourceEnterprise,
-} from "./make-grid-enterprise";
+} from "./make-grid-pro";
 import type { StoreCommunity as RawStoreCommunity } from "./store/store-community";
-import type { StoreEnterprise as RawStoreEnterprise } from "./store/store-enterprise";
+import type { StoreEnterprise as RawStoreEnterprise } from "./store/store-pro";
 
 export type MakeGridCommunityReact<D> = MakeGridCommunity<D, ReactNode>;
 export type ApiCommunityReact<D> = ApiCommunity<D, ReactNode>;

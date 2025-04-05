@@ -1,11 +1,11 @@
-import type { ApiEnterprise } from "./api/api-enterprise";
+import type { ApiEnterprise } from "./api/api-pro";
 import type {
   ColumnBase as RawBaseColumn,
   Column as RawColumn,
   ColumnRowGroup as RawRowGroupColumn,
-} from "./column/column-enterprise";
-import type { PropsEnterprise } from "./props/props-enterprise";
-import type { RowDataSourceEnterprise as RawRowDataSourceEnterprise } from "./row-data-source/rds-enterprise";
+} from "./column/column-pro";
+import type { PropsEnterprise } from "./props/props-pro";
+import type { RowDataSourceEnterprise as RawRowDataSourceEnterprise } from "./row-data-source/rds-pro";
 
 export type Api<D, E> = ApiEnterprise<D, RawColumn<Api<D, E>, D, E>, E>;
 export type Column<D, E> = RawColumn<Api<D, E>, D, E>;
