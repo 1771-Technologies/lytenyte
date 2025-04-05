@@ -1,4 +1,3 @@
-import { t } from "@1771technologies/grid-design";
 import type { ApiCommunity, ColumnCommunity } from "@1771technologies/grid-types";
 import type { AutosizeCellParameters } from "@1771technologies/grid-types/community";
 import { measureText } from "./measure-text";
@@ -14,9 +13,7 @@ export function autosizeGroupColumnDefault<D, E>({
   const el = api.getState().internal.viewport.get() ?? document.body;
   const width = measureText(text, el);
 
-  const style = getComputedStyle(el);
-  let paddingValue = Number.parseInt(style.getPropertyValue(t.spacing.cell_horizontal_padding));
-  paddingValue = Number.isNaN(paddingValue) ? 10 : paddingValue;
+  const paddingValue = 8;
 
   const depth = row.rowIndex != null ? api.rowDepth(row.rowIndex) : 0;
 

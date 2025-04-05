@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { ColumnInFilterItem } from "@1771technologies/grid-types/enterprise";
-import { t } from "@1771technologies/grid-design";
 import { Checkbox } from "@1771technologies/lytenyte-grid-community/internal";
 import { useInFilterState } from "./in-filter-root";
 import { getChildValues } from "./get-child-values";
@@ -260,12 +259,12 @@ function InFilterViewportImpl({
                 <>
                   {expansions.has(item.label) && (
                     <button
-                      className={css`
-                        width: 20px;
-                        height: 20px;
-                        color: ${t.colors.borders_icons_default};
-                        font-size: 20px;
-                      `}
+                      style={{
+                        width: 20,
+                        height: 20,
+                        color: "var(--lng1771-gray-70)",
+                        fontSize: 20,
+                      }}
                       onClick={(event) => {
                         event.stopPropagation();
                         event.preventDefault();
@@ -279,25 +278,19 @@ function InFilterViewportImpl({
                         });
                       }}
                     >
-                      <span
-                        className={css`
-                          position: relative;
-                          top: -2px;
-                          inset-inline-start: 1px;
-                        `}
-                      >
+                      <span style={{ position: "relative", top: "-2px", insetInlineStart: "1px" }}>
                         ›
                       </span>
                     </button>
                   )}
                   {!expansions.has(item.label) && (
                     <button
-                      className={css`
-                        width: 20px;
-                        height: 20px;
-                        color: ${t.colors.borders_icons_default};
-                        font-size: 20px;
-                      `}
+                      style={{
+                        width: 20,
+                        height: 20,
+                        color: "var(--lng1771-gray-70)",
+                        fontSize: 20,
+                      }}
                       onClick={(event) => {
                         event.stopPropagation();
                         event.preventDefault();
@@ -312,11 +305,11 @@ function InFilterViewportImpl({
                       }}
                     >
                       <span
-                        className={css`
-                          position: relative;
-                          top: -2px;
-                          inset-inline-start: 1px;
-                        `}
+                        style={{
+                          position: "relative",
+                          top: "-2px",
+                          insetInlineStart: "1px",
+                        }}
                       >
                         ›
                       </span>

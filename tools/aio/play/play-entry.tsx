@@ -6,7 +6,6 @@ import { BrowserRouter, useRoutes, type RouteObject } from "react-router-dom";
 import { Shell } from "./shell";
 import routes from "~react-pages";
 import { useTheme } from "./use-theme";
-import { t } from "@1771technologies/grid-design";
 
 const withHome: RouteObject[] = [{ path: "/", element: <Shell routes={routes} /> }, ...routes];
 
@@ -28,8 +27,8 @@ const _ = css`
       font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
         "Segoe UI Symbol", "Noto Color Emoji";
 
-      color: ${t.colors.text_medium};
-      background-color: ${t.colors.backgrounds_page};
+      color: var(--lng1771-gray-80);
+      background-color: var(--lng1771-gray-00);
     }
 
     #root {

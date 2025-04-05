@@ -1,5 +1,4 @@
 import { useSearchParams, type RouteObject } from "react-router-dom";
-import { t } from "@1771technologies/grid-design";
 import { useMemo } from "react";
 import { ThemeSwitcher } from "./theme-switcher";
 import { useTheme } from "./use-theme";
@@ -19,7 +18,7 @@ export function Shell(props: { routes: RouteObject[] }) {
   return (
     <div
       className={css`
-        background-color: ${t.colors.backgrounds_page};
+        background-color: black;
       `}
     >
       <div
@@ -28,18 +27,18 @@ export function Shell(props: { routes: RouteObject[] }) {
           height: ${headerHeight};
           display: grid;
           grid-template-columns: ${sidebarWidth} 1fr;
-          background-color: ${t.colors.backgrounds_ui_panel};
+          background-color: black;
           width: 100%;
           z-index: 2;
         `}
       >
         <div
           className={css`
-            background-color: ${t.colors.backgrounds_default};
+            background-color: black;
             display: flex;
             align-items: center;
-            padding-inline: ${t.spacing.space_50};
-            border-right: 1px solid ${t.colors.borders_separator};
+            padding-inline: 20px;
+            border-right: 1px solid white;
           `}
         >
           Title
@@ -48,9 +47,9 @@ export function Shell(props: { routes: RouteObject[] }) {
           className={css`
             display: flex;
             align-items: center;
-            padding-inline: ${t.spacing.space_50};
-            background-color: ${t.colors.backgrounds_default};
-            border-bottom: 1px solid ${t.colors.borders_separator};
+            padding-inline: 20px;
+            background-color: black;
+            border-bottom: 1px solid gray;
           `}
         >
           <ThemeSwitcher />
@@ -60,10 +59,10 @@ export function Shell(props: { routes: RouteObject[] }) {
         className={css`
           position: fixed;
           height: 100vh;
-          background-color: ${t.colors.backgrounds_default};
+          background-color: black;
           width: ${sidebarWidth};
           padding-top: ${headerHeight};
-          border-right: 1px solid ${t.colors.borders_separator};
+          border-right: 1px solid gray;
         `}
       >
         <ul>
@@ -87,13 +86,12 @@ export function Shell(props: { routes: RouteObject[] }) {
       >
         <div
           className={css`
-            margin: ${t.spacing.space_30};
-            width: calc(100% - ${t.spacing.space_30} * 2);
-            height: calc(100% - ${t.spacing.space_30} * 2);
+            margin: 20px;
+            width: calc(100% - 20px * 2);
+            height: calc(100% - 20px * 2);
             border-radius: 4px;
             overflow: hidden;
-            border: 1px solid ${t.colors.borders_strong};
-            box-shadow: ${t.shadows[700]};
+            border: 1px solid gray;
           `}
         >
           <iframe

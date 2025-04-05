@@ -2,17 +2,17 @@
   display: grid;
   height: 100%;
   width: 100%;
-  background-color: var(--lng1771-grid-container-bg);
+  background-color: var(--lng1771-gray-05);
 }
 
 .lng1771-grid-container__top {
-  border-bottom: 1px solid var(--lng1771-grid-container-divider);
-  padding-inline: var(--lng1771-grid-container-px);
-  padding-block: var(--lng1771-grid-container-py);
+  border-bottom: 1px solid var(--lng1771-gray-20);
+  padding-inline: 16px;
+  padding-block: 12px;
 }
 
 .lng1771-grid-container__bottom {
-  border-top: 1px solid var(--lng1771-grid-container-divider);
-  padding-inline: var(--lng1771-grid-container-px);
-  padding-block: var(--lng1771-grid-container-py);
+  border-top: 1px solid var(--lng1771-gray-20);
+  padding-inline: 16px;
+  padding-block: 12px;
 }

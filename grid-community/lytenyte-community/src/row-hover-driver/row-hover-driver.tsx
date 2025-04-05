@@ -1,4 +1,3 @@
-import { t } from "@1771technologies/grid-design";
 import { useGrid } from "../use-grid";
 
 export function RowHoverDriver() {
@@ -13,7 +12,7 @@ export function RowHoverDriver() {
     <style>
       {`
       #${gridId} > div > div > [aria-rowindex="${hoveredRow + 1}"] {
-        background-color: ${t.rowBgHover};
+        background-color: var(--lng1771-gray-10);
       }
   `}
     </style>
