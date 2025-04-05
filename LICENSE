@@ -1,0 +1,54 @@
+# LyteNyte Grid Licensing
+
+## Dual Licensing Structure
+
+LyteNyte Grid packages are distributed under two distinct licenses:
+
+1. **Core Packages**: Licensed under the Apache License 2.0, allowing free use for both personal and commercial applications.
+2. **PRO Packages**: Licensed under a proprietary commercial license owned and enforced by 1771 Technologies Ltd.
+
+---
+
+## Apache License 2.0 (Core Packages)
+
+```
+Copyright 2025 1771 Technologies Ltd.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
+
+---
+
+## Commercial License (PRO Packages)
+
+```
+Commercial License for LyteNyte Grid PRO
+Copyright © 2025 1771 Technologies Ltd.
+
+This software is proprietary commercial software that requires a valid license for use.
+By installing, copying, or otherwise using LyteNyte Grid PRO packages, you acknowledge 
+and agree to be bound by the terms of the End User License Agreement (EULA).
+
+License Requirements:
+
+1. Purchase a valid commercial license at: https://1771technologies.com/pricing
+2. Review and accept the EULA at: https://1771technologies.com/eula
+
+Unauthorized use, reproduction, modification, or distribution of this software is 
+strictly prohibited and may result in severe civil and criminal penalties, and will 
+be prosecuted to the maximum extent possible under law.
+
+For licensing inquiries or additional information:
+Email: licensing@1771technologies.com
+Website: https://1771technologies.com
+```
