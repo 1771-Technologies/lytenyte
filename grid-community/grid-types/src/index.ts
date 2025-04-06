@@ -30,11 +30,11 @@ export type {
   InitialStateCommunity,
   StateCommunity,
   ColumnPivotSensitiveStateCommunity,
-} from "./store/store-core.js";
+} from "./grid/grid-core.js";
 export type {
   StoreEnterprise,
   InitialStateAndInternalStateEnterprise,
   InitialStateEnterprise,
   StateEnterprise,
   ColumnPivotSensitiveStateEnterprise,
-} from "./store/store-pro.js";
+} from "./grid/grid-pro.js";

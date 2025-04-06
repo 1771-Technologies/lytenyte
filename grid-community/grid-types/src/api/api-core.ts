@@ -3,7 +3,7 @@ import type {
   LngAddEventListenerCommunity,
   LngRemoveEventListenerCommunity,
 } from "../events/events-core";
-import type { State } from "../store/state-core";
+import type { State } from "../state/state-core";
 import type {
   AutosizeOptions,
   AutosizeResult,

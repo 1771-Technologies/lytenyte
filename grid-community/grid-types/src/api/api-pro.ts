@@ -3,7 +3,7 @@ import type {
   LngAddEventListenerEnterprise,
   LngRemoveEventListenerEnterprise,
 } from "../events/events-pro";
-import type { State } from "../store/state-pro";
+import type { State } from "../state/state-pro";
 import type { ColumnFilterModel, RowNode, RowNodeGroup, SortModelItem } from "../types";
 import type {
   CellSelectionRect,
