@@ -1,18 +1,4 @@
-// Aggregations
-
 import type { ColumnCommunity } from ".";
-
-export type AggBuiltIns = "sum" | "min" | "max" | "avg" | "count" | "first" | "last" | "group";
-export type AggFn<A> = (data: unknown[], api: A) => unknown;
-export type AggFns<A> = { [id: string]: AggFn<A> };
-
-export type AggField = string | number | { kind: FieldTypePath; path: string };
-
-export type AggModel<A> = {
-  [columnId: string]: {
-    fn: AggBuiltIns | (string & {}) | AggFn<A>;
-  };
-};
 
 // Autosize
 
@@ -35,16 +21,6 @@ export type AutosizeHeaderParameters<A, C> = {
   readonly column: C;
   readonly api: A;
 };
-
-// Field
-
-export type FieldTypePath = 1;
-
-export type Field<A, D, C> =
-  | string
-  | number
-  | { kind: FieldTypePath; path: string }
-  | ((data: D, column: C, api: A) => unknown);
 
 // Cell Edit
 export type CellEditDateFormat =
