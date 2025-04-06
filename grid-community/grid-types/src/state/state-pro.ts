@@ -5,10 +5,13 @@ import type {
   GridInternalState as CommunityInternalState,
 } from "../state/state-core";
 import type { RowDataSourceEnterprise } from "../row-data-source/rds-pro";
-import type { CellSelectionRect, ColumnFilterModel, Target } from "../types-pro";
-import type { ColumnGroupRows, SortModelItem } from "../types";
 import type { ApiEnterprise } from "../api/api-pro";
 import type { ColumnEnterprise } from "..";
+import type { CellSelectionRect } from "../types/cell-selection-pro";
+import type { SortModelItem } from "../types/sort";
+import type { ColumnFilterModel } from "../types/filter-pro";
+import type { ColumnGroupRows } from "../types/column-group";
+import type { Target } from "../types/context-menu-pro";
 
 type CommunityOmit =
   | "columnsVisible"

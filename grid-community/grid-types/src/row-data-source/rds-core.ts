@@ -1,4 +1,5 @@
-import type { RowNode } from "../types";
+import type { ColumnCommunity } from "..";
+import type { RowNode } from "../types/row-nodes";
 
 export interface RowDataSource<A, D> {
   init: (api: A) => void;
@@ -35,4 +36,14 @@ export interface RowDataSource<A, D> {
     start: number,
     end: number,
   ) => Record<number, RowNode<D>> | Promise<Record<number, RowNode<D>>>;
+}
+
+export interface RowDataSourceClient<D = unknown, E = unknown> {
+  readonly kind: "client";
+  data: D[];
+  topData?: D[];
+  bottomData?: D[];
+
+  readonly filterToDate?: (value: unknown, column: ColumnCommunity<D, E>) => Date;
+  readonly sortToDate?: (value: unknown, column: ColumnCommunity<D, E>) => Date;
 }

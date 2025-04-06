@@ -1,22 +1,18 @@
 import type { RowDataSourceEnterprise } from "../row-data-source/rds-pro";
-import type { AggModel } from "../types";
+import type { AggModel } from "../types/aggregations";
+import type { CellSelectionMode, CellSelectionRect } from "../types/cell-selection-pro";
 import type {
-  CellSelectionMode,
-  CellSelectionRect,
   ClipboardTransformCellValue,
   ClipboardTransformCopy,
   ClipboardTransformHeader,
   ClipboardTransformHeaderGroup,
   ClipboardTransformPaste,
-  ColumnFilterModel,
-  ColumnMenuRenderer,
-  ContextMenuRenderer,
-  DialogFrame,
-  OverlayId,
-  Overlays,
-  PanelFrame,
-  PopoverFrame,
-} from "../types-pro";
+} from "../types/clipboard-pro";
+import type { ColumnMenuRenderer } from "../types/column-menu-pro";
+import type { DialogFrame, PanelFrame, PopoverFrame } from "../types/component-frames-pro";
+import type { ContextMenuRenderer } from "../types/context-menu-pro";
+import type { ColumnFilterModel } from "../types/filter-pro";
+import type { OverlayId, Overlays } from "../types/overlay-pro";
 import type { PropsCommunity } from "./props-core";
 
 export interface PropsEnterprise<A, D, C, E, Base, Group>

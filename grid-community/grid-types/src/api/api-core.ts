@@ -4,22 +4,13 @@ import type {
   LngRemoveEventListenerCommunity,
 } from "../events/events-core";
 import type { State } from "../state/state-core";
-import type {
-  AutosizeOptions,
-  AutosizeResult,
-  CellEditLocation,
-  DataRectResult,
-  ExportCsvOptions,
-  ExportDataRectOptions,
-  KeyBindingString,
-  Position,
-  RowNode,
-  RowNodeGroup,
-  RowNodeLeaf,
-  RowNodeTotal,
-  RowSections,
-  SortCycleOption,
-} from "../types";
+import type { AutosizeOptions, AutosizeResult } from "../types/autosize";
+import type { CellEditLocation } from "../types/cell-edit";
+import type { DataRectResult, ExportCsvOptions, ExportDataRectOptions } from "../types/export";
+import type { Position } from "../types/position";
+import type { RowSections } from "../types/row";
+import type { RowNode, RowNodeGroup, RowNodeLeaf, RowNodeTotal } from "../types/row-nodes";
+import type { SortCycleOption } from "../types/sort";
 
 export interface ApiCommunity<D, C, E> {
   readonly getState: () => State<D, E>;
@@ -86,9 +77,6 @@ export interface ApiCommunity<D, C, E> {
   ) => DataRectResult<C> | Promise<DataRectResult<C>>;
   readonly exportCsv: (opts?: ExportCsvOptions<this, C>) => string | Promise<string>;
   readonly exportCsvFile: (opts?: ExportCsvOptions<this, C>) => Promise<Blob>;
-
-  readonly keyBindingCall: (k: KeyBindingString) => void;
-  readonly keyBindingCallWithEvent: (event: KeyboardEvent) => void;
 
   readonly navigateNext: () => void;
   readonly navigatePrev: () => void;

@@ -1,21 +1,17 @@
 import type { Api, Column, Init } from "../make-grid-core.js";
 import type { ReadonlySignal, Signal } from "@1771technologies/react-cascada";
-import type {
-  CellEditLocation,
-  ColumnFilter,
-  ColumnGroupRows,
-  ColumnPin,
-  FocusPosition,
-  KeyBindingString,
-  Position,
-  ScrollBounds,
-  SortModelItem,
-} from "../types.js";
 import type { RowDataSource } from "../row-data-source/rds-core.js";
 import type { ApiCommunity } from "../index.js";
+import type { Position, PositionFocus } from "../types/position.js";
+import type { CellEditLocation } from "../types/cell-edit.js";
+import type { ColumnGroupRows } from "../types/column-group.js";
+import type { ColumnPin } from "../types/column-pin.js";
+import type { ScrollBounds } from "../types/virtualization.js";
+import type { SortModelItem } from "../types/sort.js";
+import type { ColumnFilter } from "../types/filters.js";
 
 export type GridInternalState<D, E> = {
-  readonly cellFocusQueue: Signal<FocusPosition | null>;
+  readonly cellFocusQueue: Signal<PositionFocus | null>;
 
   readonly cellEditActiveLocation: Signal<CellEditLocation | null>;
   readonly cellEditActiveEdits: Signal<Map<string, CellEditLocation>>;
@@ -56,8 +52,6 @@ export type GridInternalState<D, E> = {
       };
     };
   };
-
-  readonly keyBindingIdToKey: ReadonlySignal<Record<string, KeyBindingString[]>>;
 
   readonly navigatePosition: Signal<Position | null>;
 

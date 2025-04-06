@@ -4,13 +4,12 @@ import type {
   LngRemoveEventListenerEnterprise,
 } from "../events/events-pro";
 import type { State } from "../state/state-pro";
-import type { ColumnFilterModel, RowNode, RowNodeGroup, SortModelItem } from "../types";
-import type {
-  CellSelectionRect,
-  ClipboardCopyOptions,
-  ColumnInFilterItem,
-  Target,
-} from "../types-pro";
+import type { CellSelectionRect } from "../types/cell-selection-pro";
+import type { ClipboardCopyOptions } from "../types/clipboard-pro";
+import type { Target } from "../types/context-menu-pro";
+import type { ColumnFilterModel, ColumnInFilterItem } from "../types/filter-pro";
+import type { RowNode, RowNodeGroup } from "../types/row-nodes";
+import type { SortModelItem } from "../types/sort";
 import type { ApiCommunity } from "./api-core";
 
 export interface ApiEnterprise<D, C, E>

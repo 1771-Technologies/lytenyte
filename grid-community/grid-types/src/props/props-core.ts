@@ -1,32 +1,23 @@
+import type { RowDataSourceClient } from "../row-data-source/rds-core";
+import type { AggFns, AggModel } from "../types/aggregations";
+import type { CellEditPointerActivator, CellEditProviders } from "../types/cell-edit";
+import type { CellRenderers } from "../types/cell-renderer";
+import type { ColumnHeaderHeightProperty, ColumnHeaderRenderers } from "../types/column-header";
+import type { ColumnFilterModel } from "../types/filters";
+import type { FloatingCellRenderers } from "../types/floating-cell";
+import type { RowPin } from "../types/row";
+import type { RowDetailEnabled, RowDetailHeight, RowDetailRenderer } from "../types/row-detail";
+import type { RowDragPredicate } from "../types/row-drag";
+import type { RowFullWidthPredicate, RowFullWidthRenderer } from "../types/row-full-width";
+import type { RowGroupDisplayMode, RowGroupExpansions } from "../types/row-group";
+import type { RowHeight } from "../types/row-height";
 import type {
-  AggFns,
-  CellEditPointerActivator,
-  CellEditProviders,
-  CellRenderers,
-  ColumnHeaderHeightProperty,
-  ColumnHeaderRenderers,
-  FloatingCellRenderers,
-  KeyBindingMap,
-  RowDataSourceClient,
-  RowDetailHeight,
-  rowDetailEnabled,
-  RowDetailRenderer,
-  RowDragPredicate,
-  RowFullWidthPredicate,
-  RowFullWidthRenderer,
-  RowGroupDisplayMode,
-  RowGroupExpansions,
-  RowHeight,
-  RowPin,
   RowSelectionCheckbox,
   RowSelectionMode,
   RowSelectionPointerActivator,
   RowSelectionPredicate,
-  SortComparatorFn,
-  SortModelItem,
-  ColumnFilterModel,
-  AggModel,
-} from "../types";
+} from "../types/row-selection";
+import type { SortComparatorFn, SortModelItem } from "../types/sort";
 
 export interface PropsCommunity<A, D, C, E, Base, Group> {
   readonly aggFns?: AggFns<A>;
@@ -61,15 +52,13 @@ export interface PropsCommunity<A, D, C, E, Base, Group> {
 
   readonly gridId: string;
 
-  readonly keyBindings?: KeyBindingMap<A>;
-
   readonly rowDataSource?: RowDataSourceClient<D, E>;
   readonly rowUpdateStackMaxSize?: number;
   readonly rowUpdateStackEnabled?: boolean;
 
   readonly rowDetailMarker?: boolean;
   readonly rowDetailRenderer?: RowDetailRenderer<A, D, E> | null;
-  readonly rowDetailEnabled?: rowDetailEnabled<A, D>;
+  readonly rowDetailEnabled?: RowDetailEnabled<A, D>;
   readonly rowDetailHeight?: RowDetailHeight<A, D>;
   readonly rowDetailExpansions?: Set<string>;
 

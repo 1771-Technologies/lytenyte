@@ -1,12 +1,8 @@
-import type {
-  CellEditBeginEvent,
-  CellEditEndEvent,
-  CellEditEvent,
-  ColumnMoveDragEvent,
-  ColumnResizeDragEvent,
-  RowDragEvent,
-  RowSelectionEvent,
-} from "../types";
+import type { CellEditBeginEvent, CellEditEndEvent, CellEditEvent } from "../types/cell-edit";
+import type { ColumnMoveDragEvent } from "../types/column-move";
+import type { ColumnResizeDragEvent } from "../types/column-resize";
+import type { RowDragEvent } from "../types/row-drag";
+import type { RowSelectionEvent } from "../types/row-selection";
 
 export type LngEvent<A> = (api: A) => void;
 

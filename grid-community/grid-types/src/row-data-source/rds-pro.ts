@@ -1,5 +1,5 @@
-import type { RowNode, RowNodeGroup } from "../types";
-import type { ColumnInFilterItem } from "../types-pro";
+import type { ColumnInFilterItem } from "../types/filter-pro";
+import type { RowNode, RowNodeGroup } from "../types/row-nodes";
 
 type MaybePromise<T> = T | Promise<T>;
 

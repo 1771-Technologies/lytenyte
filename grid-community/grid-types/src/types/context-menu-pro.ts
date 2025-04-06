@@ -1,0 +1,20 @@
+import type { ApiPro } from "../export-pro";
+
+export type ContextMenuGridTargets = "cell" | "header" | "header-group" | "header-floating";
+
+export type ContextMenuRendererParams<A> = {
+  readonly menuTarget: ContextMenuGridTargets;
+  readonly api: A;
+  readonly columnIndex?: number | null;
+  readonly rowIndex?: number | null;
+};
+
+export type ContextMenuRenderer<A, E> = (p: ContextMenuRendererParams<A>) => E;
+
+// Additional
+
+export type ContextMenuGridTargetsPro = ContextMenuGridTargets;
+export type ContextMenuRendererParamsPro<D, E> = ContextMenuRendererParams<ApiPro<D, E>>;
+export type ContextMenuRendererPro<D, E> = ContextMenuRenderer<ApiPro<D, E>, E>;
+
+export type Target = HTMLElement | { x: number; y: number; width: number; height: number };

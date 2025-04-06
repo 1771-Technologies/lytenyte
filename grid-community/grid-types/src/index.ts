@@ -18,9 +18,6 @@ export type {
   RowDataSourceEnterprise,
 } from "./make-grid-pro.js";
 
-export type * as CommunityTypes from "./types.js";
-export type * as EnterpriseTypes from "./types-pro.js";
-
 // React version of the grid exports
 export type * from "./make-grid-react.js";
 

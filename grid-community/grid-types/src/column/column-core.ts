@@ -1,7 +1,6 @@
+import type { AggBuiltIns } from "../types/aggregations";
+import type { AutosizeCellParameters, AutosizeHeaderParameters } from "../types/autosize";
 import type {
-  AggBuiltIns,
-  AutosizeCellParameters,
-  AutosizeHeaderParameters,
   CellEditBuiltInProviders,
   CellEditParams,
   CellEditParser,
@@ -9,17 +8,15 @@ import type {
   CellEditProvider,
   CellEditRowUpdater,
   CellEditUnparser,
-  CellRenderer,
-  ColumnHeaderRenderer,
-  ColumnPin,
-  ColumnSpanCallback,
-  Field,
-  FloatingCellRenderer,
-  RowSpanCallback,
-  SortComparatorFn,
-  SortComparators,
-  SortCycleOption,
-} from "../types";
+} from "../types/cell-edit";
+import type { CellRenderer } from "../types/cell-renderer";
+import type { ColumnHeaderRenderer } from "../types/column-header";
+import type { ColumnPin } from "../types/column-pin";
+import type { ColumnSpanCallback } from "../types/column-span";
+import type { Field } from "../types/field";
+import type { FloatingCellRenderer } from "../types/floating-cell";
+import type { RowSpanCallback } from "../types/row-span";
+import type { SortComparatorFn, SortComparators, SortCycleOption } from "../types/sort";
 
 export interface Column<A, D, E> {
   readonly id: string;
