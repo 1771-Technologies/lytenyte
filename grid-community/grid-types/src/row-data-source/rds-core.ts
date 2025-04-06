@@ -1,4 +1,4 @@
-import type { ColumnCommunity } from "..";
+import type { ColumnCore } from "../export-core";
 import type { RowNode } from "../types/row-nodes";
 
 export interface RowDataSource<A, D> {
@@ -44,6 +44,6 @@ export interface RowDataSourceClient<D = unknown, E = unknown> {
   topData?: D[];
   bottomData?: D[];
 
-  readonly filterToDate?: (value: unknown, column: ColumnCommunity<D, E>) => Date;
-  readonly sortToDate?: (value: unknown, column: ColumnCommunity<D, E>) => Date;
+  readonly filterToDate?: (value: unknown, column: ColumnCore<D, E>) => Date;
+  readonly sortToDate?: (value: unknown, column: ColumnCore<D, E>) => Date;
 }

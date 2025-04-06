@@ -1,17 +1,16 @@
 import type { ReadonlySignal, Signal } from "@1771technologies/react-cascada";
-import type { Api, Column, Init } from "../make-grid-pro";
 import type {
   ColumnPivotSensitiveState,
   GridInternalState as CommunityInternalState,
 } from "../state/state-core";
 import type { RowDataSourceEnterprise } from "../row-data-source/rds-pro";
 import type { ApiEnterprise } from "../api/api-pro";
-import type { ColumnEnterprise } from "..";
 import type { CellSelectionRect } from "../types/cell-selection-pro";
 import type { SortModelItem } from "../types/sort";
 import type { ColumnFilterModel } from "../types/filter-pro";
 import type { ColumnGroupRows } from "../types/column-group";
 import type { Target } from "../types/context-menu-pro";
+import type { ColumnPro as Column, ApiPro as Api, StateInitPro as Init } from "../export-pro";
 
 type CommunityOmit =
   | "columnsVisible"
@@ -93,8 +92,8 @@ export type ColumnPivotSensitiveStateEnterprise<D, E> = Omit<
   "columnsVisible" | "filterModel"
 > & {
   readonly columnsVisible: ReadonlySignal<Column<D, E>[]>;
-  readonly filterModel: Signal<ColumnFilterModel<ApiEnterprise<D, ColumnEnterprise<D, E>, E>, D>>;
+  readonly filterModel: Signal<ColumnFilterModel<ApiEnterprise<D, Column<D, E>, E>, D>>;
 };
 
-export type State<D, E> = InitialStateAndInternalState<D, E> &
+export type StatePro<D, E> = InitialStateAndInternalState<D, E> &
   ColumnPivotSensitiveStateEnterprise<D, E>;

@@ -3,7 +3,7 @@ import type {
   LngAddEventListenerEnterprise,
   LngRemoveEventListenerEnterprise,
 } from "../events/events-pro";
-import type { State } from "../state/state-pro";
+import type { StatePro } from "../state/state-pro";
 import type { CellSelectionRect } from "../types/cell-selection-pro";
 import type { ClipboardCopyOptions } from "../types/clipboard-pro";
 import type { Target } from "../types/context-menu-pro";
@@ -17,7 +17,7 @@ export interface ApiEnterprise<D, C, E>
     ApiCommunity<D, C, E>,
     "eventAddListener" | "eventRemoveListener" | "eventGetListeners" | "eventFire" | "getState"
   > {
-  readonly getState: () => State<D, E>;
+  readonly getState: () => StatePro<D, E>;
 
   readonly cellSelectionIsSelected: (r: number, c: number) => boolean;
   readonly cellSelectionExpandDown: (p?: {

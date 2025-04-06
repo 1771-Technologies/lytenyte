@@ -1,7 +1,5 @@
-import type { Api, Column, Init } from "../make-grid-core.js";
 import type { ReadonlySignal, Signal } from "@1771technologies/react-cascada";
 import type { RowDataSource } from "../row-data-source/rds-core.js";
-import type { ApiCommunity } from "../index.js";
 import type { Position, PositionFocus } from "../types/position.js";
 import type { CellEditLocation } from "../types/cell-edit.js";
 import type { ColumnGroupRows } from "../types/column-group.js";
@@ -9,6 +7,11 @@ import type { ColumnPin } from "../types/column-pin.js";
 import type { ScrollBounds } from "../types/virtualization.js";
 import type { SortModelItem } from "../types/sort.js";
 import type { ColumnFilter } from "../types/filters.js";
+import type {
+  ColumnCore as Column,
+  ApiCore as Api,
+  StateInitCore as Init,
+} from "../export-core.js";
 
 export type GridInternalState<D, E> = {
   readonly cellFocusQueue: Signal<PositionFocus | null>;
@@ -120,7 +123,7 @@ export type ColumnPivotSensitiveState<D, E> = {
   readonly columnGetColSpan: ReadonlySignal<(r: number, c: number) => number>;
   readonly columnGetRowSpan: ReadonlySignal<(r: number, c: number) => number>;
 
-  readonly filterModel: Signal<ColumnFilter<ApiCommunity<D, E>, D>[]>;
+  readonly filterModel: Signal<ColumnFilter<Api<D, E>, D>[]>;
   readonly sortModel: Signal<SortModelItem[]>;
 };
 
@@ -132,4 +135,4 @@ export type InitialStateAndInternalState<D, E> = InitialState<D, E> & {
   readonly internal: GridInternalState<D, E>;
 };
 
-export type State<D, E> = InitialStateAndInternalState<D, E> & ColumnPivotSensitiveState<D, E>;
+export type StateCore<D, E> = InitialStateAndInternalState<D, E> & ColumnPivotSensitiveState<D, E>;

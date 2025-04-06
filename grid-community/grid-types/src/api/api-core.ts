@@ -3,7 +3,7 @@ import type {
   LngAddEventListenerCommunity,
   LngRemoveEventListenerCommunity,
 } from "../events/events-core";
-import type { State } from "../state/state-core";
+import type { StateCore } from "../state/state-core";
 import type { AutosizeOptions, AutosizeResult } from "../types/autosize";
 import type { CellEditLocation } from "../types/cell-edit";
 import type { DataRectResult, ExportCsvOptions, ExportDataRectOptions } from "../types/export";
@@ -13,7 +13,7 @@ import type { RowNode, RowNodeGroup, RowNodeLeaf, RowNodeTotal } from "../types/
 import type { SortCycleOption } from "../types/sort";
 
 export interface ApiCommunity<D, C, E> {
-  readonly getState: () => State<D, E>;
+  readonly getState: () => StateCore<D, E>;
 
   readonly autosizeColumn: (c: C, options?: AutosizeOptions) => AutosizeResult | null;
   readonly autosizeColumns: (

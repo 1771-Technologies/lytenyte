@@ -1,10 +1,26 @@
 import type { ApiCommunity } from "./api/api-core.js";
 import type { Column, ColumnBase, ColumnRowGroup } from "./column/column-core.js";
+import type { PropsCommunity } from "./props/props-core.js";
+import type { StateCore } from "./state/state-core.js";
 
 export type ApiCore<D, E> = ApiCommunity<D, ColumnCore<D, E>, E>;
 export type ColumnCore<D, E> = Column<ApiCore<D, E>, D, E>;
 export type ColumnBaseCore<D, E> = ColumnBase<ApiCore<D, E>, D, E>;
 export type ColumnRowGroupCore<D, E> = ColumnRowGroup<ApiCore<D, E>, D, E>;
+
+export type GridCore<D, E> = {
+  readonly state: StateCore<D, E>;
+  readonly api: ApiCore<D, E>;
+};
+
+export type StateInitCore<D, E> = PropsCommunity<
+  ApiCore<D, E>,
+  D,
+  ColumnCore<D, E>,
+  E,
+  ColumnBaseCore<D, E>,
+  ColumnRowGroupCore<D, E>
+>;
 
 // Additional types
 
