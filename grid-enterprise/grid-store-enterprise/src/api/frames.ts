@@ -1,6 +1,15 @@
 import type { ApiPro } from "@1771technologies/grid-types/pro";
 
-export const frames = <D, E>(api: ApiPro<D, E>) => {
+export const frames = <D, E>(
+  api: ApiPro<D, E>,
+): {
+  panelFrameClose: ApiPro<D, E>["panelFrameClose"];
+  panelFrameOpen: ApiPro<D, E>["panelFrameOpen"];
+  dialogFrameOpen: ApiPro<D, E>["dialogFrameOpen"];
+  dialogFrameClose: ApiPro<D, E>["dialogFrameClose"];
+  popoverFrameOpen: ApiPro<D, E>["popoverFrameOpen"];
+  popoverFrameClose: ApiPro<D, E>["popoverFrameClose"];
+} => {
   return {
     panelFrameOpen: (id) => {
       const s = api.getState();

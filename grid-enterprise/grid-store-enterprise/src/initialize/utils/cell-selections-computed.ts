@@ -1,11 +1,14 @@
-import { computed, signal } from "@1771technologies/react-cascada";
+import { computed, signal, type Signal } from "@1771technologies/react-cascada";
 import {
   adjustRectForRowAndCellSpan,
   boundSelectionRect,
 } from "@1771technologies/grid-core-enterprise";
 import type { ApiPro, CellSelectionRectPro } from "@1771technologies/grid-types/pro";
 
-export const cellSelectionComputed = <D, E>(rects: CellSelectionRectPro[], api: ApiPro<D, E>) => {
+export const cellSelectionComputed = <D, E>(
+  rects: CellSelectionRectPro[],
+  api: ApiPro<D, E>,
+): Signal<CellSelectionRectPro[]> => {
   const rects$ = signal(rects);
 
   return computed(

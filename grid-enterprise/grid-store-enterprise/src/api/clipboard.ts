@@ -5,7 +5,13 @@ import {
 } from "@1771technologies/grid-core-enterprise";
 import type { ApiPro, CellSelectionRectPro } from "@1771technologies/grid-types/pro";
 
-export const clipboard = <D, E>(api: ApiPro<D, E>) => {
+export const clipboard = <D, E>(
+  api: ApiPro<D, E>,
+): {
+  clipboardCopyCells: ApiPro<D, E>["clipboardCopyCells"];
+  clipboardCutCells: ApiPro<D, E>["clipboardCutCells"];
+  clipboardPasteCells: ApiPro<D, E>["clipboardPasteCells"];
+} => {
   function flashCells(rect: CellSelectionRectPro | null | undefined) {
     if (!rect) {
       const sx = api.getState();

@@ -8,7 +8,17 @@ import {
 } from "@1771technologies/grid-core-enterprise";
 import type { ApiPro } from "@1771technologies/grid-types/pro";
 
-export const cellSelection = <D, E>(api: ApiPro<D, E>) => {
+export const cellSelection = <D, E>(
+  api: ApiPro<D, E>,
+): {
+  cellSelectionIsSelected: ApiPro<D, E>["cellSelectionIsSelected"];
+  cellSelectionDeselectRect: ApiPro<D, E>["cellSelectionDeselectRect"];
+  cellSelectionExpandDown: ApiPro<D, E>["cellSelectionExpandDown"];
+  cellSelectionExpandEnd: ApiPro<D, E>["cellSelectionExpandEnd"];
+  cellSelectionExpandStart: ApiPro<D, E>["cellSelectionExpandStart"];
+  cellSelectionExpandUp: ApiPro<D, E>["cellSelectionExpandUp"];
+  cellSelectionSelectRect: ApiPro<D, E>["cellSelectionSelectRect"];
+} => {
   return {
     cellSelectionDeselectRect: (range) => {
       const s = api.getState();

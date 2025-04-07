@@ -1,8 +1,10 @@
-import { computed } from "@1771technologies/react-cascada";
+import { computed, type ReadonlySignal } from "@1771technologies/react-cascada";
 import { splitCellSelectionRect } from "@1771technologies/grid-core-enterprise";
-import type { GridPro } from "@1771technologies/grid-types/pro";
+import type { CellSelectionRectPro, GridPro } from "@1771technologies/grid-types/pro";
 
-export function cellSelectionSplits<D, E>(state: GridPro<D, E>["state"]) {
+export function cellSelectionSplits<D, E>(
+  state: GridPro<D, E>["state"],
+): ReadonlySignal<CellSelectionRectPro[]> {
   return computed(() => {
     const selections = state.cellSelections.get();
     const topCount = state.internal.rowTopCount.get();

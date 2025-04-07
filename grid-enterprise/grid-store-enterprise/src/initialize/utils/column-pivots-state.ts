@@ -1,14 +1,47 @@
-import { computed, signal } from "@1771technologies/react-cascada";
-import { columnGroups, columnsByPin, columnsVisible } from "@1771technologies/grid-core";
+import {
+  computed,
+  signal,
+  type ReadonlySignal,
+  type Signal,
+} from "@1771technologies/react-cascada";
+import {
+  columnGroups,
+  columnsByPin,
+  columnsVisible,
+  type ColumnLike,
+} from "@1771technologies/grid-core";
 import {
   columnsComputed,
   filterModelComputed,
   sortModelComputed,
 } from "@1771technologies/grid-shared-state";
 import { itemsWithIdToMap } from "@1771technologies/js-utils";
-import type { ApiPro, GridPro } from "@1771technologies/grid-types/pro";
+import type {
+  ApiPro,
+  ColumnGroupRowsPro,
+  GridPro,
+  SortModelItemPro,
+} from "@1771technologies/grid-types/pro";
 
-export function columnPivotsState<D, E>(state: GridPro<D, E>["state"], api: ApiPro<D, E>) {
+export function columnPivotsState<D, E>(
+  state: GridPro<D, E>["state"],
+  api: ApiPro<D, E>,
+): {
+  columnPivotColumns: any;
+  columnPivotLookup: ReadonlySignal<Map<string, { id: string }>>;
+  columnPivotsLoading: Signal<boolean>;
+  columnPivotFilterModel: Signal<any>;
+  columnPivotSortModel: Signal<SortModelItemPro[]>;
+  columnPivotGroupExpansionState: Signal<Record<string, boolean>>;
+  columnPivotsVisible: ReadonlySignal<ColumnLike[]>;
+  columnPivotVisibleStartCount: ReadonlySignal<number>;
+  columnPivotVisibleCenterCount: ReadonlySignal<number>;
+  columnPivotVisibleEndCount: ReadonlySignal<number>;
+  columnPivotGroupLevels: ReadonlySignal<ColumnGroupRowsPro>;
+  columnPivotGroupStartLevels: ReadonlySignal<ColumnGroupRowsPro>;
+  columnPivotGroupCenterLevels: ReadonlySignal<ColumnGroupRowsPro>;
+  columnPivotGroupEndLevels: ReadonlySignal<ColumnGroupRowsPro>;
+} {
   const columnPivotColumns = columnsComputed([], api, true);
 
   const columnPivotLookup = computed(() => itemsWithIdToMap(columnPivotColumns.get()));
