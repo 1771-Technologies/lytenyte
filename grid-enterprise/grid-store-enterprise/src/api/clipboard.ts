@@ -3,11 +3,10 @@ import {
   clipboardCopyCells,
   clipboardPasteCells,
 } from "@1771technologies/grid-core-enterprise";
-import type { ApiEnterprise } from "@1771technologies/grid-types";
-import type { CellSelectionRect } from "@1771technologies/grid-types/pro";
+import type { ApiPro, CellSelectionRectPro } from "@1771technologies/grid-types/pro";
 
-export const clipboard = <D, E>(api: ApiEnterprise<D, E>) => {
-  function flashCells(rect: CellSelectionRect | null | undefined) {
+export const clipboard = <D, E>(api: ApiPro<D, E>) => {
+  function flashCells(rect: CellSelectionRectPro | null | undefined) {
     if (!rect) {
       const sx = api.getState();
       sx.internal.cellSelectionFlashOn.set(true);
@@ -36,8 +35,8 @@ export const clipboard = <D, E>(api: ApiEnterprise<D, E>) => {
       flashCells(rect);
     },
   } satisfies {
-    clipboardCopyCells: ApiEnterprise<D, E>["clipboardCopyCells"];
-    clipboardCutCells: ApiEnterprise<D, E>["clipboardCutCells"];
-    clipboardPasteCells: ApiEnterprise<D, E>["clipboardPasteCells"];
+    clipboardCopyCells: ApiPro<D, E>["clipboardCopyCells"];
+    clipboardCutCells: ApiPro<D, E>["clipboardCutCells"];
+    clipboardPasteCells: ApiPro<D, E>["clipboardPasteCells"];
   };
 };

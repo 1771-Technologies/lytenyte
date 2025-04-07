@@ -1,6 +1,6 @@
-import type { CellSelectionRect } from "@1771technologies/grid-types/pro";
+import type { CellSelectionRectPro } from "@1771technologies/grid-types/pro";
 
-export function isOverlappingRect(rect1: CellSelectionRect, rect2: CellSelectionRect) {
+export function isOverlappingRect(rect1: CellSelectionRectPro, rect2: CellSelectionRectPro) {
   return !(
     rect1.rowEnd < rect2.rowStart ||
     rect1.rowStart > rect2.rowEnd ||

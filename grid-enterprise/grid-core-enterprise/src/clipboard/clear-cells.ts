@@ -1,10 +1,6 @@
-import type { ApiEnterprise } from "@1771technologies/grid-types";
-import type { CellSelectionRect } from "@1771technologies/grid-types/pro";
+import type { ApiPro, CellSelectionRectPro } from "@1771technologies/grid-types/pro";
 
-export function clearCells<D, E>(
-  api: ApiEnterprise<D, E>,
-  rect: CellSelectionRect | undefined | null,
-) {
+export function clearCells<D, E>(api: ApiPro<D, E>, rect: CellSelectionRectPro | undefined | null) {
   const s = api.getState();
 
   const selectedRects = s.cellSelections.peek();

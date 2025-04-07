@@ -1,11 +1,7 @@
-import type { ColumnEnterprise } from "@1771technologies/grid-types";
+import type { ColumnInFilterItemPro, ColumnPro } from "@1771technologies/grid-types/pro";
 import type { ClientState } from "../create-client-data-source";
-import type { ColumnInFilterItem } from "@1771technologies/grid-types/pro";
 
-export function columnInFilterItems<D, E>(
-  state: ClientState<D, E>,
-  column: ColumnEnterprise<D, E>,
-) {
+export function columnInFilterItems<D, E>(state: ClientState<D, E>, column: ColumnPro<D, E>) {
   const data = state.rowCenterNodes.peek();
   const api = state.api.peek();
   const values = new Set(data.map((row) => api.columnField(row, column)));
@@ -20,6 +16,6 @@ export function columnInFilterItems<D, E>(
         kind: "leaf",
         label: formatter(c),
         value: c,
-      }) satisfies ColumnInFilterItem,
+      }) satisfies ColumnInFilterItemPro,
   );
 }

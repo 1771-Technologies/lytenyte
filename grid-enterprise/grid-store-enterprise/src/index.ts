@@ -1,1 +1,1 @@
-export { makeStore } from "./make-store.js";
+export { makeGridPro } from "./make-grid.js";

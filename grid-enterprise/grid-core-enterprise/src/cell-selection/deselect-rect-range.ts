@@ -1,10 +1,10 @@
-import type { CellSelectionRect } from "@1771technologies/grid-types/pro";
+import type { CellSelectionRectPro } from "@1771technologies/grid-types/pro";
 import { isOverlappingRect } from "./is-overlapping-rect";
 
-export function deselectRectRange(rect: CellSelectionRect, deselectRect: CellSelectionRect) {
+export function deselectRectRange(rect: CellSelectionRectPro, deselectRect: CellSelectionRectPro) {
   if (!isOverlappingRect(rect, deselectRect)) return [rect];
 
-  const result: CellSelectionRect[] = [];
+  const result: CellSelectionRectPro[] = [];
   // Check for top split
   if (deselectRect.rowStart > rect.rowStart) {
     result.push({

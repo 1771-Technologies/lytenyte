@@ -7,11 +7,6 @@ import {
   rowSetData,
   rowSetDataMany,
 } from "@1771technologies/grid-client-data-source-community";
-import type {
-  ApiEnterprise,
-  ColumnEnterprise,
-  RowDataSourceEnterprise,
-} from "@1771technologies/grid-types";
 import {
   cascada,
   computed,
@@ -19,7 +14,6 @@ import {
   type ReadonlySignal,
   type Signal,
 } from "@1771technologies/react-cascada";
-import type { RowNodeGroup, RowNodeLeaf } from "@1771technologies/grid-types/core";
 import { ROW_DEFAULT_PATH_SEPARATOR } from "@1771technologies/grid-constants";
 import { BlockGraph } from "@1771technologies/grid-graph";
 import { rowByIndex } from "./api/row-by-index";
@@ -28,13 +22,17 @@ import { rowGetMany } from "./api/row-get-many";
 import { treeToPayload } from "./utils/tree-to-payload";
 import { filterNodesComputed } from "./utils/filterNodesComputed";
 import { sortedNodesComputed } from "./utils/sorted-nodes-computed";
+import type {
+  ApiPro,
+  ColumnPro,
+  RowDataSourcePro,
+  RowNodeGroupPro,
+  RowNodeLeafPro,
+} from "@1771technologies/grid-types/pro";
 
 export interface TreeDataSourceInitial<D, E> {
   readonly pathFromData: (d: D) => string[];
-  readonly getDataForGroup: (
-    row: RowNodeGroup,
-    api: ApiEnterprise<D, E>,
-  ) => Record<string, unknown>;
+  readonly getDataForGroup: (row: RowNodeGroupPro, api: ApiPro<D, E>) => Record<string, unknown>;
 
   readonly data: D[];
   readonly topData?: D[];
@@ -42,28 +40,26 @@ export interface TreeDataSourceInitial<D, E> {
   readonly pathSeparator?: string;
   readonly distinctNonAdjacentPaths?: boolean;
 
-  readonly filterToDate?: (value: unknown, column: ColumnEnterprise<D, E>) => Date;
-  readonly sortToDate?: (value: unknown, column: ColumnEnterprise<D, E>) => Date;
+  readonly filterToDate?: (value: unknown, column: ColumnPro<D, E>) => Date;
+  readonly sortToDate?: (value: unknown, column: ColumnPro<D, E>) => Date;
 }
 
 export interface ClientState<D, E> {
-  api: Signal<ApiEnterprise<D, E>>;
+  api: Signal<ApiPro<D, E>>;
 
   graph: ReadonlySignal<BlockGraph<D>>;
   cache: Signal<Record<string, any>>;
 
-  rowTopNodes: Signal<RowNodeLeaf<D>[]>;
-  rowCenterNodes: Signal<RowNodeLeaf<D>[]>;
-  rowBottomNodes: Signal<RowNodeLeaf<D>[]>;
+  rowTopNodes: Signal<RowNodeLeafPro<D>[]>;
+  rowCenterNodes: Signal<RowNodeLeafPro<D>[]>;
+  rowBottomNodes: Signal<RowNodeLeafPro<D>[]>;
 
-  getRowDataForGroup: (row: RowNodeGroup) => Record<string, unknown>;
+  getRowDataForGroup: (row: RowNodeGroupPro) => Record<string, unknown>;
 }
 
-export function createTreeDataSource<D, E>(
-  r: TreeDataSourceInitial<D, E>,
-): RowDataSourceEnterprise<D, E> {
+export function createTreeDataSource<D, E>(r: TreeDataSourceInitial<D, E>): RowDataSourcePro<D, E> {
   const state = cascada<ClientState<D, E>>(() => {
-    const api$ = signal<ApiEnterprise<D, E>>(null as unknown as ApiEnterprise<D, E>);
+    const api$ = signal<ApiPro<D, E>>(null as unknown as ApiPro<D, E>);
 
     const initialTopNodes = dataToRowNodes(r.topData ?? [], "top", "top");
     const initialBottomNodes = dataToRowNodes(r.bottomData ?? [], "bottom", "bottom");
@@ -87,7 +83,9 @@ export function createTreeDataSource<D, E>(
     const paths = computed(() => {
       return sortedNodes
         .get()
-        .map<PathTreeInputItem<RowNodeLeaf<D>>>((c) => ({ data: c, path: r.pathFromData(c.data) }));
+        .map<
+          PathTreeInputItem<RowNodeLeafPro<D>>
+        >((c) => ({ data: c, path: r.pathFromData(c.data) }));
     });
 
     const tree = computed(() => createPathTree(paths.get()));
@@ -123,7 +121,7 @@ export function createTreeDataSource<D, E>(
       return graph;
     });
 
-    const getRowDataForGroup = (row: RowNodeGroup) => r.getDataForGroup(row, api$.get());
+    const getRowDataForGroup = (row: RowNodeGroupPro) => r.getDataForGroup(row, api$.get());
 
     return {
       api: api$,

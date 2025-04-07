@@ -5,13 +5,10 @@ import {
   filterModelComputed,
   sortModelComputed,
 } from "@1771technologies/grid-shared-state";
-import type { ApiEnterprise, StoreEnterprise } from "@1771technologies/grid-types";
 import { itemsWithIdToMap } from "@1771technologies/js-utils";
+import type { ApiPro, GridPro } from "@1771technologies/grid-types/pro";
 
-export function columnPivotsState<D, E>(
-  state: StoreEnterprise<D, E>["state"],
-  api: ApiEnterprise<D, E>,
-) {
+export function columnPivotsState<D, E>(state: GridPro<D, E>["state"], api: ApiPro<D, E>) {
   const columnPivotColumns = columnsComputed([], api, true);
 
   const columnPivotLookup = computed(() => itemsWithIdToMap(columnPivotColumns.get()));

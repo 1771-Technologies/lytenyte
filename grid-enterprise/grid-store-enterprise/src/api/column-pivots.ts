@@ -1,20 +1,20 @@
 import { columnFieldComputer, columnGetField } from "@1771technologies/grid-shared-state";
-import type { ApiEnterprise } from "@1771technologies/grid-types";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 import { isPromise } from "@1771technologies/js-utils";
 
 export const columnPivots = <D, E>(
-  api: ApiEnterprise<D, E>,
+  api: ApiPro<D, E>,
 ): {
-  columnPivotFieldFromData: ApiEnterprise<D, E>["columnPivotFieldFromData"];
-  columnPivotField: ApiEnterprise<D, E>["columnPivotField"];
-  columnPivotFilterModel: ApiEnterprise<D, E>["columnPivotFilterModel"];
-  columnPivotMeasureField: ApiEnterprise<D, E>["columnPivotMeasureField"];
-  columnPivots: ApiEnterprise<D, E>["columnPivots"];
-  columnPivotSetFilterModel: ApiEnterprise<D, E>["columnPivotSetFilterModel"];
-  columnPivotSetSortModel: ApiEnterprise<D, E>["columnPivotSetSortModel"];
-  columnPivotsLoading: ApiEnterprise<D, E>["columnPivotsLoading"];
-  columnPivotSortModel: ApiEnterprise<D, E>["columnPivotSortModel"];
-  columnPivotsReload: ApiEnterprise<D, E>["columnPivotsReload"];
+  columnPivotFieldFromData: ApiPro<D, E>["columnPivotFieldFromData"];
+  columnPivotField: ApiPro<D, E>["columnPivotField"];
+  columnPivotFilterModel: ApiPro<D, E>["columnPivotFilterModel"];
+  columnPivotMeasureField: ApiPro<D, E>["columnPivotMeasureField"];
+  columnPivots: ApiPro<D, E>["columnPivots"];
+  columnPivotSetFilterModel: ApiPro<D, E>["columnPivotSetFilterModel"];
+  columnPivotSetSortModel: ApiPro<D, E>["columnPivotSetSortModel"];
+  columnPivotsLoading: ApiPro<D, E>["columnPivotsLoading"];
+  columnPivotSortModel: ApiPro<D, E>["columnPivotSortModel"];
+  columnPivotsReload: ApiPro<D, E>["columnPivotsReload"];
 } => {
   let prevAbortController: AbortController | null = null;
 
@@ -84,15 +84,15 @@ export const columnPivots = <D, E>(
       }
     },
   } satisfies {
-    columnPivotFieldFromData: ApiEnterprise<D, E>["columnPivotFieldFromData"];
-    columnPivotField: ApiEnterprise<D, E>["columnPivotField"];
-    columnPivotFilterModel: ApiEnterprise<D, E>["columnPivotFilterModel"];
-    columnPivotMeasureField: ApiEnterprise<D, E>["columnPivotMeasureField"];
-    columnPivots: ApiEnterprise<D, E>["columnPivots"];
-    columnPivotSetFilterModel: ApiEnterprise<D, E>["columnPivotSetFilterModel"];
-    columnPivotSetSortModel: ApiEnterprise<D, E>["columnPivotSetSortModel"];
-    columnPivotsLoading: ApiEnterprise<D, E>["columnPivotsLoading"];
-    columnPivotSortModel: ApiEnterprise<D, E>["columnPivotSortModel"];
-    columnPivotsReload: ApiEnterprise<D, E>["columnPivotsReload"];
+    columnPivotFieldFromData: ApiPro<D, E>["columnPivotFieldFromData"];
+    columnPivotField: ApiPro<D, E>["columnPivotField"];
+    columnPivotFilterModel: ApiPro<D, E>["columnPivotFilterModel"];
+    columnPivotMeasureField: ApiPro<D, E>["columnPivotMeasureField"];
+    columnPivots: ApiPro<D, E>["columnPivots"];
+    columnPivotSetFilterModel: ApiPro<D, E>["columnPivotSetFilterModel"];
+    columnPivotSetSortModel: ApiPro<D, E>["columnPivotSetSortModel"];
+    columnPivotsLoading: ApiPro<D, E>["columnPivotsLoading"];
+    columnPivotSortModel: ApiPro<D, E>["columnPivotSortModel"];
+    columnPivotsReload: ApiPro<D, E>["columnPivotsReload"];
   };
 };

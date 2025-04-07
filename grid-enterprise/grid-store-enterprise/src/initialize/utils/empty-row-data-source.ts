@@ -1,6 +1,8 @@
-import type { PropsEnterprise } from "@1771technologies/grid-types";
+import type { GridPro } from "@1771technologies/grid-types/pro";
 
-export const emptyRowDataSource: Required<PropsEnterprise<any, any>>["rowDataSource"] = {
+export const emptyRowDataSource: ReturnType<
+  Required<GridPro<any, any>>["state"]["rowDataSource"]["get"]
+> = {
   rowBottomCount: () => 0,
   rowTopCount: () => 0,
   rowCount: () => 0,

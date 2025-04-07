@@ -48,8 +48,6 @@ import {
   exportCsv,
   exportCsvFile,
   exportDataRect,
-  keyBindingCall,
-  keyBindingCallWithEvent,
   navigate,
   paginateRowStartAndEndForPage,
   rowById,
@@ -72,11 +70,6 @@ import {
   rowUpdateUndo,
   rowVisibleRowHeight,
 } from "@1771technologies/grid-shared-state";
-import type {
-  ApiEnterprise,
-  ColumnEnterprise,
-  StoreEnterprise,
-} from "@1771technologies/grid-types";
 import { clipboard } from "./clipboard";
 import { columnMenus } from "./column-menus";
 import { columnIsMeasurable } from "./column-is/column-is-measurable";
@@ -86,14 +79,17 @@ import { cellSelection } from "./cell-selection";
 import { columnPivots } from "./column-pivots";
 import { frames } from "./frames";
 import { quickSearchField } from "./quick-search-field";
+import type { GridPro } from "@1771technologies/grid-types/pro";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
+import type { ColumnPro } from "@1771technologies/grid-types/pro";
 
 export function makeApi<D, E>(
-  state: StoreEnterprise<D, E>["state"],
-  api: StoreEnterprise<D, E>["api"],
-): StoreEnterprise<D, E>["api"] {
+  state: GridPro<D, E>["state"],
+  api: GridPro<D, E>["api"],
+): GridPro<D, E>["api"] {
   const ev = events<D, E>();
 
-  const nav = navigate<D, E, ApiEnterprise<D, E>>(api);
+  const nav = navigate<D, E, ApiPro<D, E>>(api);
   const clip = clipboard(api);
   const menu = columnMenus(api);
   const sel = cellSelection(api);
@@ -116,7 +112,7 @@ export function makeApi<D, E>(
     cellEditIsActive: () => state.internal.cellEditActiveEdits.peek().size > 0,
 
     columnById: (id) => columnById(api, id) as any,
-    columnByIndex: (index) => columnByIndex(api, index) as ColumnEnterprise<D, E>,
+    columnByIndex: (index) => columnByIndex(api, index) as ColumnPro<D, E>,
     columnField: (row, column) => columnField(api, row, column),
     columnFieldGroup: (row, column) => columnFieldGroup(api, row, column),
     columnGroupToggle: (id, state) => columnGroupToggle(api, id, state),
@@ -161,9 +157,6 @@ export function makeApi<D, E>(
     exportDataRect: (opts) => exportDataRect(api, opts as any) as any,
 
     getState: () => state,
-
-    keyBindingCall: (k) => keyBindingCall(api, k),
-    keyBindingCallWithEvent: (event) => keyBindingCallWithEvent(api, event),
 
     navigateDown: nav.navigateDown,
     navigateGetBottom: nav.navigateGetBottom,
@@ -275,7 +268,7 @@ export function makeApi<D, E>(
     rowReloadExpansion: (row) =>
       api.getState().internal.rowBackingDataSource.peek().rowReloadExpansion(row),
     rowReset: () => api.getState().internal.rowBackingDataSource.peek().rowReset(),
-  } satisfies StoreEnterprise<D, E>["api"];
+  } satisfies GridPro<D, E>["api"];
 
   Object.assign(api, partial);
 

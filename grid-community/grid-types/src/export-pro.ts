@@ -15,6 +15,12 @@ export type GridPro<D, E> = {
   readonly api: ApiPro<D, E>;
 };
 
+export type {
+  StatePro,
+  ColumnPivotSensitiveStatePro,
+  InitialState as InitialStatePro,
+} from "./state/state-pro.js";
+
 export type StateInitPro<D, E> = PropsProRaw<
   ApiPro<D, E>,
   D,
@@ -233,6 +239,7 @@ export type {
   ContextMenuGridTargetsPro,
   ContextMenuRendererPro,
   ContextMenuRendererParamsPro,
+  TargetPro,
 } from "./types/context-menu-pro.js";
 
 export type {

@@ -11,10 +11,11 @@ export type ContextMenuRendererParams<A> = {
 
 export type ContextMenuRenderer<A, E> = (p: ContextMenuRendererParams<A>) => E;
 
+export type Target = HTMLElement | { x: number; y: number; width: number; height: number };
+
 // Additional
 
 export type ContextMenuGridTargetsPro = ContextMenuGridTargets;
 export type ContextMenuRendererParamsPro<D, E> = ContextMenuRendererParams<ApiPro<D, E>>;
 export type ContextMenuRendererPro<D, E> = ContextMenuRenderer<ApiPro<D, E>, E>;
-
-export type Target = HTMLElement | { x: number; y: number; width: number; height: number };
+export type TargetPro = Target;

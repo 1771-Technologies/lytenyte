@@ -1,8 +1,8 @@
 import { computed } from "@1771technologies/react-cascada";
 import { splitCellSelectionRect } from "@1771technologies/grid-core-enterprise";
-import type { StoreEnterprise } from "@1771technologies/grid-types";
+import type { GridPro } from "@1771technologies/grid-types/pro";
 
-export function cellSelectionSplits<D, E>(state: StoreEnterprise<D, E>["state"]) {
+export function cellSelectionSplits<D, E>(state: GridPro<D, E>["state"]) {
   return computed(() => {
     const selections = state.cellSelections.get();
     const topCount = state.internal.rowTopCount.get();

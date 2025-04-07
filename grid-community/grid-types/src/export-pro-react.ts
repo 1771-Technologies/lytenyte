@@ -232,6 +232,7 @@ export type ContextMenuRendererParamsProReact<D = any> = P.ContextMenuRendererPa
   D,
   ReactNode
 >;
+export type TargetProReact = P.TargetPro;
 
 export type ColumnMenuRendererParamsProReact<D = any> = P.ColumnMenuRendererParamsPro<D, ReactNode>;
 export type ColumnMenuRendererProReact<D = any> = P.ColumnMenuRendererPro<D, ReactNode>;

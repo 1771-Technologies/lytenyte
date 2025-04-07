@@ -1,13 +1,15 @@
 import { BLOCK_SIZE } from "@1771technologies/grid-client-data-source-community";
 import { ROW_GROUP_KIND } from "@1771technologies/grid-constants";
 import type { BlockPayload } from "@1771technologies/grid-graph";
-import type { RowNode, RowNodeLeaf } from "@1771technologies/grid-types/core";
+import type { RowNodeLeafPro, RowNodePro } from "@1771technologies/grid-types/pro";
 import type { PathTreeNode } from "@1771technologies/path-tree";
 
-export function treeToPayload<D>(tree: PathTreeNode<RowNodeLeaf<D>>[], separator: string) {
-  const stack = [...tree.map((c) => ["", c, 0] as [string, PathTreeNode<RowNodeLeaf<D>>, number])];
+export function treeToPayload<D>(tree: PathTreeNode<RowNodeLeafPro<D>>[], separator: string) {
+  const stack = [
+    ...tree.map((c) => ["", c, 0] as [string, PathTreeNode<RowNodeLeafPro<D>>, number]),
+  ];
 
-  const paths: Record<string, RowNode<D>[]> = {};
+  const paths: Record<string, RowNodePro<D>[]> = {};
   while (stack.length) {
     const [path, item, depth] = stack.pop()!;
 
@@ -31,7 +33,7 @@ export function treeToPayload<D>(tree: PathTreeNode<RowNodeLeaf<D>>[], separator
           (c) =>
             [item.path.join(separator), c, depth + 1] as [
               string,
-              PathTreeNode<RowNodeLeaf<D>>,
+              PathTreeNode<RowNodeLeafPro<D>>,
               number,
             ],
         ),

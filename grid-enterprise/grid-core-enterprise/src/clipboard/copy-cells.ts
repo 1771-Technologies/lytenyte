@@ -1,10 +1,13 @@
-import type { ApiEnterprise } from "@1771technologies/grid-types";
-import type { CellSelectionRect, ClipboardCopyOptions } from "@1771technologies/grid-types/pro";
+import type {
+  ApiPro,
+  CellSelectionRectPro,
+  ClipboardCopyOptionsPro,
+} from "@1771technologies/grid-types/pro";
 
 export async function clipboardCopyCells<D, E>(
-  api: ApiEnterprise<D, E>,
-  rect: CellSelectionRect | undefined | null,
-  opts: ClipboardCopyOptions = {},
+  api: ApiPro<D, E>,
+  rect: CellSelectionRectPro | undefined | null,
+  opts: ClipboardCopyOptionsPro = {},
 ) {
   const s = api.getState();
 

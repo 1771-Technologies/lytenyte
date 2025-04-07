@@ -1,7 +1,7 @@
-import type { CellSelectionRect } from "@1771technologies/grid-types/pro";
+import type { CellSelectionRectPro } from "@1771technologies/grid-types/pro";
 
 interface SplitCellSelectionRectArgs {
-  readonly rect: CellSelectionRect;
+  readonly rect: CellSelectionRectPro;
   readonly colStartCount: number;
   readonly colCenterCount: number;
   readonly rowTopCount: number;
@@ -43,17 +43,17 @@ export function splitCellSelectionRect({
   colCenterCount,
   rowTopCount,
   rowCenterCount,
-}: SplitCellSelectionRectArgs): CellSelectionRect[] {
+}: SplitCellSelectionRectArgs): CellSelectionRectPro[] {
   // Calculate the boundary positions for columns
   const colStartBound = colStartCount;
   const colEndBound = colStartCount + colCenterCount;
 
-  const colSplits: CellSelectionRect[] = [];
+  const colSplits: CellSelectionRectPro[] = [];
 
   // Handle column splits first
   // Case 1: Selection starts before the fixed columns and extends into the scrollable area
   if (rect.columnStart < colStartBound && rect.columnEnd > colStartBound) {
-    const startSplit: CellSelectionRect = {
+    const startSplit: CellSelectionRectPro = {
       ...rect,
       columnEnd: colStartBound,
     };
@@ -63,7 +63,7 @@ export function splitCellSelectionRect({
 
   // Case 2: Selection starts in the scrollable area and extends into the end section
   if (rect.columnStart < colEndBound && rect.columnEnd > colEndBound) {
-    const endSplit: CellSelectionRect = {
+    const endSplit: CellSelectionRectPro = {
       ...rect,
       columnStart: colEndBound,
     };
@@ -79,18 +79,18 @@ export function splitCellSelectionRect({
   const bottomBound = rowTopCount + rowCenterCount;
 
   // Process row splits for each column-split rectangle
-  const rowSplits: CellSelectionRect[] = [];
+  const rowSplits: CellSelectionRectPro[] = [];
   for (let split of colSplits) {
     // Case 1: Selection spans from top section into center section
     if (split.rowStart < topBound && split.rowEnd > topBound) {
-      const topSplit: CellSelectionRect = { ...split, rowEnd: topBound };
+      const topSplit: CellSelectionRectPro = { ...split, rowEnd: topBound };
       split = { ...split, rowStart: topBound };
       rowSplits.push(topSplit);
     }
 
     // Case 2: Selection spans from center section into bottom section
     if (split.rowStart < bottomBound && split.rowEnd > bottomBound) {
-      const bottomSplit: CellSelectionRect = { ...split, rowStart: bottomBound };
+      const bottomSplit: CellSelectionRectPro = { ...split, rowStart: bottomBound };
       split = { ...split, rowEnd: bottomBound };
       rowSplits.push(bottomSplit);
     }

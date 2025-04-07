@@ -3,13 +3,9 @@ import {
   adjustRectForRowAndCellSpan,
   boundSelectionRect,
 } from "@1771technologies/grid-core-enterprise";
-import type { ApiEnterprise } from "@1771technologies/grid-types";
-import type { CellSelectionRect } from "@1771technologies/grid-types/pro";
+import type { ApiPro, CellSelectionRectPro } from "@1771technologies/grid-types/pro";
 
-export const cellSelectionComputed = <D, E>(
-  rects: CellSelectionRect[],
-  api: ApiEnterprise<D, E>,
-) => {
+export const cellSelectionComputed = <D, E>(rects: CellSelectionRectPro[], api: ApiPro<D, E>) => {
   const rects$ = signal(rects);
 
   return computed(

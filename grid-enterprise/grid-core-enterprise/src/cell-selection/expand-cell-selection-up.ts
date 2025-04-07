@@ -1,11 +1,10 @@
 import { getRootCell } from "@1771technologies/grid-core";
-import type { ApiEnterprise } from "@1771technologies/grid-types";
-import type { CellSelectionRect } from "@1771technologies/grid-types/pro";
+import type { ApiPro, CellSelectionRectPro } from "@1771technologies/grid-types/pro";
 
 export function expandCellSelectionUp<D, E>(
-  api: ApiEnterprise<D, E>,
-  ref?: CellSelectionRect,
-  p?: CellSelectionRect,
+  api: ApiPro<D, E>,
+  ref?: CellSelectionRectPro,
+  p?: CellSelectionRectPro,
 ) {
   const s = api.getState();
 
@@ -14,7 +13,7 @@ export function expandCellSelectionUp<D, E>(
 
   if (!rect || !pivot) return;
 
-  let next: CellSelectionRect;
+  let next: CellSelectionRectPro;
   if (rect.rowEnd > pivot.rowEnd) {
     let rowOffset = 1;
     for (let i = rect.columnStart; i < rect.columnEnd; i++) {

@@ -1,9 +1,9 @@
 import { test, expect } from "vitest";
-import type { CellSelectionRect } from "@1771technologies/grid-types/pro";
 import { formatTable } from "@1771technologies/js-utils";
 import { splitCellSelectionRect } from "../split-cell-selection-rect.js";
+import type { CellSelectionRectPro } from "@1771technologies/grid-types/pro";
 
-function splitTable(c: CellSelectionRect[]) {
+function splitTable(c: CellSelectionRectPro[]) {
   const values = c.map((c) => [c.rowStart, c.rowEnd, c.columnStart, c.columnEnd].map(String));
   return formatTable(values, ["Row Start", "Row End", "Col Start", "Col End"]);
 }

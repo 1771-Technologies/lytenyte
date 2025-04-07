@@ -1,10 +1,7 @@
+import type { ColumnPivotSensitiveStatePro, StatePro } from "@1771technologies/grid-types/pro";
 import { computed } from "@1771technologies/react-cascada";
-import type {
-  ColumnPivotSensitiveStateEnterprise,
-  StateEnterprise,
-} from "@1771technologies/grid-types";
 
-export function initializePivotSensitiveState<D, E>(state: StateEnterprise<D, E>) {
+export function initializePivotSensitiveState<D, E>(state: StatePro<D, E>) {
   const normalExpansionState = state.columnGroupExpansionState;
   const normalFilterModel = state.filterModel;
   const normalSortModel = state.sortModel;
@@ -155,7 +152,7 @@ export function initializePivotSensitiveState<D, E>(state: StateEnterprise<D, E>
         else state.internal.columnWidthDeltas.set(v);
       },
     ),
-  } satisfies ColumnPivotSensitiveStateEnterprise<D, E>;
+  } satisfies ColumnPivotSensitiveStatePro<D, E>;
 
   Object.assign(state, pivotSensitive);
 }

@@ -1,14 +1,13 @@
 import { computed, type Signal } from "@1771technologies/react-cascada";
 import { evaluateClientFilter } from "@1771technologies/grid-client-filter";
-import type { ApiEnterprise, ColumnEnterprise } from "@1771technologies/grid-types";
-import type { RowNodeLeaf } from "@1771technologies/grid-types/core";
 import { evaluateQuickFilter } from "@1771technologies/grid-core-enterprise";
 import { hasUppercaseLetter } from "@1771technologies/js-utils";
+import type { ApiPro, ColumnPro, RowNodeLeafPro } from "@1771technologies/grid-types/pro";
 
 export function filterNodesComputed<D, E>(
-  api$: Signal<ApiEnterprise<D, E>>,
-  nodes: Signal<RowNodeLeaf<D>[]>,
-  toDate: (value: unknown, column: ColumnEnterprise<D, E>) => Date,
+  api$: Signal<ApiPro<D, E>>,
+  nodes: Signal<RowNodeLeafPro<D>[]>,
+  toDate: (value: unknown, column: ColumnPro<D, E>) => Date,
 ) {
   const filteredNodes = computed(() => {
     const api = api$.get();
@@ -21,7 +20,7 @@ export function filterNodesComputed<D, E>(
     const quickFilter = sx.filterQuickSearch.get() ?? "";
     if (Object.keys(filterModel).length === 0 && !quickFilter) return rowNodes;
 
-    const filteredNodes: RowNodeLeaf<D>[] = [];
+    const filteredNodes: RowNodeLeafPro<D>[] = [];
 
     const visible = sx.columnsVisible.get();
     const columnsWithQuickFilter = visible.filter((c) => c.filterSupportsQuickSearch);

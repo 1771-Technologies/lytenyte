@@ -1,7 +1,6 @@
-import type { ApiEnterprise } from "@1771technologies/grid-types";
-import type { RowNodeLeaf } from "@1771technologies/grid-types/core";
+import type { ApiPro, RowNodeLeafPro } from "@1771technologies/grid-types/pro";
 
-export function createPivotTree<D, E>(api: ApiEnterprise<D, E>, leafRows: RowNodeLeaf<D>[]) {
+export function createPivotTree<D, E>(api: ApiPro<D, E>, leafRows: RowNodeLeafPro<D>[]) {
   const sx = api.getState();
   const measureModel = sx.measureModel.peek();
   const columnPivotModel = sx.columnPivotModel.peek();

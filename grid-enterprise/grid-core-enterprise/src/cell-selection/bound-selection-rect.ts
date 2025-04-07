@@ -1,11 +1,10 @@
-import type { ApiEnterprise } from "@1771technologies/grid-types";
-import type { CellSelectionRect } from "@1771technologies/grid-types/pro";
+import type { ApiPro, CellSelectionRectPro } from "@1771technologies/grid-types/pro";
 import { clamp } from "@1771technologies/js-utils";
 
 export function boundSelectionRect<D, E>(
-  api: ApiEnterprise<D, E>,
-  rect: CellSelectionRect,
-): CellSelectionRect {
+  api: ApiPro<D, E>,
+  rect: CellSelectionRectPro,
+): CellSelectionRectPro {
   const s = api.getState();
   const rowCount = s.internal.rowCount.peek();
 

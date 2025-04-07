@@ -1,7 +1,7 @@
-import type { ApiEnterprise } from "@1771technologies/grid-types";
 import { isWithinSelectionRect } from "@1771technologies/grid-core-enterprise";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
-export const cellIsSelected = <D, E>(api: ApiEnterprise<D, E>, r: number, c: number) => {
+export const cellIsSelected = <D, E>(api: ApiPro<D, E>, r: number, c: number) => {
   const s = api.getState();
 
   for (const range of s.cellSelections.peek()) {

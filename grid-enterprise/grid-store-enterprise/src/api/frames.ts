@@ -1,6 +1,6 @@
-import type { ApiEnterprise } from "@1771technologies/grid-types";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
-export const frames = <D, E>(api: ApiEnterprise<D, E>) => {
+export const frames = <D, E>(api: ApiPro<D, E>) => {
   return {
     panelFrameOpen: (id) => {
       const s = api.getState();
@@ -46,11 +46,11 @@ export const frames = <D, E>(api: ApiEnterprise<D, E>) => {
       s.internal.popoverFrameBB.set(bb);
     },
   } satisfies {
-    panelFrameClose: ApiEnterprise<D, E>["panelFrameClose"];
-    panelFrameOpen: ApiEnterprise<D, E>["panelFrameOpen"];
-    dialogFrameOpen: ApiEnterprise<D, E>["dialogFrameOpen"];
-    dialogFrameClose: ApiEnterprise<D, E>["dialogFrameClose"];
-    popoverFrameOpen: ApiEnterprise<D, E>["popoverFrameOpen"];
-    popoverFrameClose: ApiEnterprise<D, E>["popoverFrameClose"];
+    panelFrameClose: ApiPro<D, E>["panelFrameClose"];
+    panelFrameOpen: ApiPro<D, E>["panelFrameOpen"];
+    dialogFrameOpen: ApiPro<D, E>["dialogFrameOpen"];
+    dialogFrameClose: ApiPro<D, E>["dialogFrameClose"];
+    popoverFrameOpen: ApiPro<D, E>["popoverFrameOpen"];
+    popoverFrameClose: ApiPro<D, E>["popoverFrameClose"];
   };
 };

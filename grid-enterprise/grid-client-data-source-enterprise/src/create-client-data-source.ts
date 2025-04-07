@@ -5,13 +5,7 @@ import {
   type ReadonlySignal,
   type Signal,
 } from "@1771technologies/react-cascada";
-import type {
-  ApiEnterprise,
-  ColumnEnterprise,
-  RowDataSourceEnterprise,
-} from "@1771technologies/grid-types";
 import { BlockGraph } from "@1771technologies/grid-graph";
-import type { RowNodeLeaf } from "@1771technologies/grid-types/core";
 import { filterNodesComputed } from "./utils/filterNodesComputed";
 import { sortedNodesComputed } from "./utils/sorted-nodes-computed";
 import {
@@ -32,17 +26,23 @@ import {
 } from "@1771technologies/grid-client-data-source-community";
 import { columnInFilterItems } from "./api/column-in-filter-items";
 import { createColumnPivots } from "./api/column-pivots/create-pivot-columns";
+import type {
+  ApiPro,
+  ColumnPro,
+  RowDataSourcePro,
+  RowNodeLeafPro,
+} from "@1771technologies/grid-types/pro";
 
 export interface ClientState<D, E> {
-  api: Signal<ApiEnterprise<D, E>>;
+  api: Signal<ApiPro<D, E>>;
 
   graph: ReadonlySignal<BlockGraph<D>>;
 
   cache: Signal<Record<string, any>>;
 
-  rowTopNodes: Signal<RowNodeLeaf<D>[]>;
-  rowCenterNodes: Signal<RowNodeLeaf<D>[]>;
-  rowBottomNodes: Signal<RowNodeLeaf<D>[]>;
+  rowTopNodes: Signal<RowNodeLeafPro<D>[]>;
+  rowCenterNodes: Signal<RowNodeLeafPro<D>[]>;
+  rowBottomNodes: Signal<RowNodeLeafPro<D>[]>;
 }
 
 export interface ClientDataSourceInitial<D, E> {
@@ -50,11 +50,11 @@ export interface ClientDataSourceInitial<D, E> {
   readonly topData?: D[];
   readonly bottomData?: D[];
 
-  readonly filterToDate?: (value: unknown, column: ColumnEnterprise<D, E>) => Date;
-  readonly sortToDate?: (value: unknown, column: ColumnEnterprise<D, E>) => Date;
+  readonly filterToDate?: (value: unknown, column: ColumnPro<D, E>) => Date;
+  readonly sortToDate?: (value: unknown, column: ColumnPro<D, E>) => Date;
 }
 
-export interface ClientRowDataSource<D, E> extends RowDataSourceEnterprise<D, E> {
+export interface ClientRowDataSource<D, E> extends RowDataSourcePro<D, E> {
   readonly data: (section?: "top" | "center" | "bottom") => D[];
 }
 
@@ -62,7 +62,7 @@ export function createClientDataSource<D, E>(
   r: ClientDataSourceInitial<D, E>,
 ): ClientRowDataSource<D, E> {
   const state = cascada(() => {
-    const api$ = signal<ApiEnterprise<D, E>>(null as unknown as ApiEnterprise<D, E>);
+    const api$ = signal<ApiPro<D, E>>(null as unknown as ApiPro<D, E>);
 
     const cache = signal<Record<string, any>>({});
 

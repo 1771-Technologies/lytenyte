@@ -6,9 +6,9 @@ import {
   expandCellSelectionUp,
   isWithinSelectionRect,
 } from "@1771technologies/grid-core-enterprise";
-import type { ApiEnterprise } from "@1771technologies/grid-types";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
-export const cellSelection = <D, E>(api: ApiEnterprise<D, E>) => {
+export const cellSelection = <D, E>(api: ApiPro<D, E>) => {
   return {
     cellSelectionDeselectRect: (range) => {
       const s = api.getState();
@@ -39,12 +39,12 @@ export const cellSelection = <D, E>(api: ApiEnterprise<D, E>) => {
     cellSelectionExpandStart: (p) => expandCellSelectionStart(api, p?.ref, p?.pivot),
     cellSelectionExpandEnd: (p) => expandCellSelectionEnd(api, p?.ref, p?.pivot),
   } satisfies {
-    cellSelectionIsSelected: ApiEnterprise<D, E>["cellSelectionIsSelected"];
-    cellSelectionDeselectRect: ApiEnterprise<D, E>["cellSelectionDeselectRect"];
-    cellSelectionExpandDown: ApiEnterprise<D, E>["cellSelectionExpandDown"];
-    cellSelectionExpandEnd: ApiEnterprise<D, E>["cellSelectionExpandEnd"];
-    cellSelectionExpandStart: ApiEnterprise<D, E>["cellSelectionExpandStart"];
-    cellSelectionExpandUp: ApiEnterprise<D, E>["cellSelectionExpandUp"];
-    cellSelectionSelectRect: ApiEnterprise<D, E>["cellSelectionSelectRect"];
+    cellSelectionIsSelected: ApiPro<D, E>["cellSelectionIsSelected"];
+    cellSelectionDeselectRect: ApiPro<D, E>["cellSelectionDeselectRect"];
+    cellSelectionExpandDown: ApiPro<D, E>["cellSelectionExpandDown"];
+    cellSelectionExpandEnd: ApiPro<D, E>["cellSelectionExpandEnd"];
+    cellSelectionExpandStart: ApiPro<D, E>["cellSelectionExpandStart"];
+    cellSelectionExpandUp: ApiPro<D, E>["cellSelectionExpandUp"];
+    cellSelectionSelectRect: ApiPro<D, E>["cellSelectionSelectRect"];
   };
 };

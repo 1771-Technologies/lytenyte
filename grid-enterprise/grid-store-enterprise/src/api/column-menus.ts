@@ -1,10 +1,10 @@
-import type { ApiEnterprise } from "@1771technologies/grid-types";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
 export const columnMenus = <D, E>(
-  api: ApiEnterprise<D, E>,
+  api: ApiPro<D, E>,
 ): {
-  columnCloseMenu: ApiEnterprise<D, E>["columnMenuClose"];
-  columnOpenMenu: ApiEnterprise<D, E>["columnMenuOpen"];
+  columnCloseMenu: ApiPro<D, E>["columnMenuClose"];
+  columnOpenMenu: ApiPro<D, E>["columnMenuOpen"];
 } => {
   return {
     columnCloseMenu: () => {
@@ -19,7 +19,7 @@ export const columnMenus = <D, E>(
       s.internal.columnMenuTarget.set(bb);
     },
   } satisfies {
-    columnCloseMenu: ApiEnterprise<D, E>["columnMenuClose"];
-    columnOpenMenu: ApiEnterprise<D, E>["columnMenuOpen"];
+    columnCloseMenu: ApiPro<D, E>["columnMenuClose"];
+    columnOpenMenu: ApiPro<D, E>["columnMenuOpen"];
   };
 };

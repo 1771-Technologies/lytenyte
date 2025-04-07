@@ -1,11 +1,10 @@
-import type { ApiEnterprise, ColumnEnterprise } from "@1771technologies/grid-types";
-import type { RowNodeLeaf } from "@1771technologies/grid-types/core";
+import type { ApiPro, ColumnPro, RowNodeLeafPro } from "@1771technologies/grid-types/pro";
 
 export function evaluateQuickFilter<D, E>(
-  api: ApiEnterprise<D, E>,
-  columns: ColumnEnterprise<D, E>[],
+  api: ApiPro<D, E>,
+  columns: ColumnPro<D, E>[],
   quickFilter: string,
-  row: RowNodeLeaf<D>,
+  row: RowNodeLeafPro<D>,
   caseSensitive: boolean,
 ) {
   const quickFilters = quickFilter

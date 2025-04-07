@@ -1,7 +1,7 @@
-import type { ApiEnterprise } from "@1771technologies/grid-types";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
 export function isEndRect<D, E>(
-  api: ApiEnterprise<D, E>,
+  api: ApiPro<D, E>,
   rect: { columnStart: number; columnEnd: number },
 ) {
   const s = api.getState();

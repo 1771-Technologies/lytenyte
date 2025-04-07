@@ -1,12 +1,15 @@
-import type { ApiEnterprise, ColumnEnterprise } from "@1771technologies/grid-types";
+import type { ApiPro, ColumnPro, RowNodeLeafPro } from "@1771technologies/grid-types/pro";
 import { createPivotTree } from "./create-pivot-tree.js";
 import { upperCaseFirstLetter } from "@1771technologies/js-utils";
-import type { RowNodeLeaf, Writable } from "@1771technologies/grid-types/core";
+
+type Writable<T> = {
+  -readonly [P in keyof T]: T[P];
+};
 
 export function createColumnPivots<D, E>(
-  api: ApiEnterprise<D, E>,
-  rows: RowNodeLeaf<D>[],
-): ColumnEnterprise<D, E>[] {
+  api: ApiPro<D, E>,
+  rows: RowNodeLeafPro<D>[],
+): ColumnPro<D, E>[] {
   const paths = createPivotTree(api, rows);
 
   const sx = api.getState();
@@ -37,7 +40,7 @@ export function createColumnPivots<D, E>(
     );
 
     const { pin: _, ...measureProps } = measureCol;
-    const newDefinitions: Writable<ColumnEnterprise<D, E>> = {
+    const newDefinitions: Writable<ColumnPro<D, E>> = {
       ...measureProps,
       id: path,
       headerName: label,
@@ -58,6 +61,6 @@ export function createColumnPivots<D, E>(
         }
       },
     };
-    return newDefinitions as ColumnEnterprise<D, E>;
+    return newDefinitions as ColumnPro<D, E>;
   });
 }

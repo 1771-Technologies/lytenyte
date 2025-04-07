@@ -1,11 +1,10 @@
 import { getRootCell } from "@1771technologies/grid-core";
-import type { ApiEnterprise } from "@1771technologies/grid-types";
-import type { CellSelectionRect } from "@1771technologies/grid-types/pro";
+import type { ApiPro, CellSelectionRectPro } from "@1771technologies/grid-types/pro";
 
 export function adjustRectForRowAndCellSpan<D, E>(
-  api: ApiEnterprise<D, E>,
-  rect: CellSelectionRect,
-): CellSelectionRect {
+  api: ApiPro<D, E>,
+  rect: CellSelectionRectPro,
+): CellSelectionRectPro {
   let { rowStart, rowEnd, columnStart, columnEnd } = rect;
 
   // Check the top row of the rect.

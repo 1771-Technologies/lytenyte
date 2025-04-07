@@ -1,9 +1,3 @@
-import type {
-  ApiEnterprise,
-  InitialStateEnterprise,
-  PropsEnterprise,
-  StateEnterprise,
-} from "@1771technologies/grid-types";
 import { signal } from "@1771technologies/react-cascada";
 import { emptyRowDataSource } from "./utils/empty-row-data-source";
 import {
@@ -25,11 +19,17 @@ import {
   sortModelComputed,
 } from "@1771technologies/grid-shared-state";
 import { cellSelectionComputed } from "./utils/cell-selections-computed";
+import type {
+  ApiPro,
+  InitialStatePro,
+  StateInitPro,
+  StatePro,
+} from "@1771technologies/grid-types/pro";
 
 export function initialize<D, E>(
-  props: PropsEnterprise<D, E>,
-  state: StateEnterprise<D, E>,
-  api: ApiEnterprise<D, E>,
+  props: StateInitPro<D, E>,
+  state: StatePro<D, E>,
+  api: ApiPro<D, E>,
 ) {
   const s = {
     aggFns: signal(props.aggFns ?? {}),
@@ -60,8 +60,6 @@ export function initialize<D, E>(
     floatingRowHeight: signal(props.floatingRowHeight ?? COLUMN_HEADER_HEIGHT),
 
     gridId: signal(props.gridId),
-
-    keyBindings: signal(props.keyBindings ?? {}),
 
     overlays: signal(props.overlays ?? {}),
     overlayToShow: signal(props.overlayToShow ?? null),
@@ -147,7 +145,7 @@ export function initialize<D, E>(
     popoverFrames: signal(props.popoverFrames ?? {}),
 
     treeData: signal(props.treeData ?? false),
-  } satisfies InitialStateEnterprise<D, E>;
+  } satisfies InitialStatePro<D, E>;
 
   Object.assign(state, s);
 }

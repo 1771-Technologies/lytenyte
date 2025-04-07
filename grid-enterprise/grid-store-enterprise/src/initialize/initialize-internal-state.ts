@@ -1,11 +1,4 @@
 import { computed, signal } from "@1771technologies/react-cascada";
-import type {
-  ColumnEnterprise,
-  StateEnterprise,
-  StoreEnterprise,
-} from "@1771technologies/grid-types";
-import type { ColumnPin, KeyBindingString, Position } from "@1771technologies/grid-types/core";
-import { type CellEditLocation } from "@1771technologies/grid-types/core";
 import {
   cellFocusQueue,
   columnPositions as columnPositionsComputed,
@@ -15,17 +8,24 @@ import {
   rowPositionsComputed,
   virt,
 } from "@1771technologies/grid-shared-state";
-import type { Target } from "@1771technologies/grid-types/pro";
-import { type CellSelectionRect } from "@1771technologies/grid-types/pro";
 import { rowDataSource } from "./utils/row-data-source";
 import { cellSelectionSplits } from "./utils/cell-selection-splits";
 import { columnPivotsState } from "./utils/column-pivots-state";
+import type {
+  CellEditLocationPro,
+  CellSelectionRectPro,
+  ColumnPinPro,
+  ColumnPro,
+  GridPro,
+  PositionPro,
+  TargetPro,
+} from "@1771technologies/grid-types/pro";
 
-type InternalState<D, E> = StoreEnterprise<D, E>["state"]["internal"];
+type InternalState<D, E> = GridPro<D, E>["state"]["internal"];
 
 export function initializeInternalState<D, E>(
-  state: StateEnterprise<D, E>,
-  api: StoreEnterprise<D, E>["api"],
+  state: GridPro<D, E>["state"],
+  api: GridPro<D, E>["api"],
 ) {
   const viewportXScroll = signal(0);
   const viewportYScroll = signal(0);
@@ -95,18 +95,18 @@ export function initializeInternalState<D, E>(
     cellEditActiveEdits: signal(new Map()),
     cellEditActiveEditValues: signal(new Map()),
     cellEditActiveInitialValues: signal(new Map()),
-    cellEditActiveLocation: signal<CellEditLocation | null>(null),
+    cellEditActiveLocation: signal<CellEditLocationPro | null>(null),
 
-    cellSelectionAdditiveRects: signal<CellSelectionRect[] | null>(null),
+    cellSelectionAdditiveRects: signal<CellSelectionRectPro[] | null>(null),
     cellSelectionFlashOn: signal(false),
     cellSelectionIsDeselect: signal(false),
-    cellSelectionPivot: signal<CellSelectionRect | null>(null),
+    cellSelectionPivot: signal<CellSelectionRectPro | null>(null),
     cellSelectionSplits: cellSelectionSplits(state),
 
-    columnMenuColumn: signal<ColumnEnterprise<D, E> | null>(null),
-    columnMenuTarget: signal<Target | null>(null),
+    columnMenuColumn: signal<ColumnPro<D, E> | null>(null),
+    columnMenuTarget: signal<TargetPro | null>(null),
 
-    contextMenuTarget: signal<Target | null>(null),
+    contextMenuTarget: signal<TargetPro | null>(null),
 
     columnManagerTreeExpansions: signal<Record<string, boolean>>({}),
     columnManagerBoxExpansions: signal({
@@ -160,16 +160,16 @@ export function initializeInternalState<D, E>(
     columnMoveActive: signal(false),
     columnMoveIds: signal<string[]>([]),
     columnMoveLockedByRange: signal(false),
-    columnMoveOverColumn: signal<ColumnEnterprise<D, E> | null>(null),
+    columnMoveOverColumn: signal<ColumnPro<D, E> | null>(null),
     columnMoveOverIndex: signal(-1),
     columnMoveOverlayHeight: signal(0),
-    columnMoveOverPin: signal<ColumnPin>(null),
-    columnMovePin: signal<ColumnPin>(null),
+    columnMoveOverPin: signal<ColumnPinPro>(null),
+    columnMovePin: signal<ColumnPinPro>(null),
 
     columnResizeIsActive: signal(false),
 
     cellFocusQueue: cellFocusQueue(),
-    navigatePosition: signal<Position | null>(null),
+    navigatePosition: signal<PositionPro | null>(null),
 
     paginatePageCount,
 
@@ -180,11 +180,7 @@ export function initializeInternalState<D, E>(
     panelFrameOpen: signal<string | null>(null),
     dialogFrameOpen: signal<string | null>(null),
     popoverFrameOpen: signal<string | null>(null),
-    popoverFrameBB: signal<Target | null>(null),
-
-    keyBindingIdToKey: computed<Record<string, KeyBindingString[]>>(() => {
-      return {};
-    }),
+    popoverFrameBB: signal<TargetPro | null>(null),
 
     rowRefreshCount,
     rowBackingDataSource,
@@ -221,7 +217,7 @@ export function initializeInternalState<D, E>(
     viewportYScroll,
     viewportHasXScroll: computed(() => viewportXScroll.get() > 0),
     viewportHasYScroll: computed(() => viewportYScroll.get() > 0),
-  } satisfies StoreEnterprise<D, E>["state"]["internal"];
+  } satisfies GridPro<D, E>["state"]["internal"];
 
   Object.assign(state, { internal: s });
 }
