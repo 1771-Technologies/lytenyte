@@ -1,5 +1,7 @@
 # @1771technologies/grid-constants
 
+## 0.0.39
+
 ## 0.0.38
 
 ## 0.0.37
