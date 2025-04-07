@@ -1,6 +1,10 @@
-import type { ApiEnterprise, ColumnEnterprise } from "@1771technologies/grid-types";
-import type { RowGroupKind, RowLeafKind } from "@1771technologies/grid-types/core";
-import type { ColumnInFilterItem } from "@1771technologies/grid-types/pro";
+import type {
+  ApiPro,
+  ColumnInFilterItemPro,
+  ColumnPro,
+  RowGroupKindPro,
+  RowLeafKindPro,
+} from "@1771technologies/grid-types/pro";
 
 export type AsyncDataBlock = {
   readonly blockKey: number;
@@ -8,7 +12,7 @@ export type AsyncDataBlock = {
     readonly data: unknown[];
     readonly ids: string[];
     readonly pathKeys: (string | null)[];
-    readonly kinds: (RowGroupKind | RowLeafKind)[];
+    readonly kinds: (RowGroupKindPro | RowLeafKindPro)[];
     readonly childCounts: number[];
     readonly expansions?: Record<string, boolean>;
   };
@@ -49,7 +53,7 @@ export interface AsyncDataRequestBlock {
 }
 
 export interface DataFetcherParams<D, E> {
-  readonly api: ApiEnterprise<D, E>;
+  readonly api: ApiPro<D, E>;
   readonly requestBlocks: AsyncDataRequestBlock[];
   readonly reqTime: number;
 }
@@ -57,16 +61,16 @@ export interface DataFetcherParams<D, E> {
 export type DataFetcher<D, E> = (p: DataFetcherParams<D, E>) => Promise<AsyncDataResponse>;
 
 export interface ColumnInFilterItemFetcherParams<D, E> {
-  readonly api: ApiEnterprise<D, E>;
-  readonly column: ColumnEnterprise<D, E>;
+  readonly api: ApiPro<D, E>;
+  readonly column: ColumnPro<D, E>;
 }
 export type ColumnInFilterItemFetcher<D, E> = (
   p: ColumnInFilterItemFetcherParams<D, E>,
-) => Promise<ColumnInFilterItem[]>;
+) => Promise<ColumnInFilterItemPro[]>;
 
 export interface ColumnPivotsFetcherParams<D, E> {
-  readonly api: ApiEnterprise<D, E>;
+  readonly api: ApiPro<D, E>;
 }
 export type ColumnPivotsFetcher<D, E> = (
   p: ColumnPivotsFetcherParams<D, E>,
-) => Promise<ColumnEnterprise<D, E>[]>;
+) => Promise<ColumnPro<D, E>[]>;

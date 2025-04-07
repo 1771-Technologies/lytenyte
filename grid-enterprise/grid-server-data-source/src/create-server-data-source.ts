@@ -1,4 +1,3 @@
-import type { ApiEnterprise, RowDataSourceEnterprise } from "@1771technologies/grid-types";
 import type {
   AsyncDataRequestBlock,
   ColumnInFilterItemFetcher,
@@ -6,7 +5,6 @@ import type {
   DataFetcher,
 } from "./types";
 import { cascada, signal, type ReadonlySignal, type Signal } from "@1771technologies/react-cascada";
-import type { RowNode } from "@1771technologies/grid-types/core";
 import { BlockGraph } from "@1771technologies/grid-graph";
 import { ROW_DEFAULT_PATH_SEPARATOR } from "@1771technologies/grid-constants";
 import { currentViewComputed } from "./utils/current-view-computed";
@@ -15,6 +13,7 @@ import { loadRowExpansion } from "./utils/load-row-expansion";
 import { getAsyncDataRequestBlocks } from "./utils/get-async-data-request-blocks";
 import { loadBlockData } from "./utils/load-block-data";
 import { loadInitialData } from "./utils/load-initial";
+import type { ApiPro, RowDataSourcePro, RowNodePro } from "@1771technologies/grid-types/pro";
 
 export interface ServerDataSourceInitial<D, E> {
   readonly rowDataFetcher: DataFetcher<D, E>;
@@ -43,7 +42,7 @@ export interface ServerState<D, E> {
   readonly controller: Signal<AbortController>;
   readonly selectedIds: Signal<Set<string>>;
 
-  readonly api: Signal<ApiEnterprise<D, E>>;
+  readonly api: Signal<ApiPro<D, E>>;
   readonly graph: BlockGraph<D>;
 
   readonly currentView: ReadonlySignal<AsyncDataRequestBlock[]>;
@@ -55,9 +54,9 @@ export interface ServerState<D, E> {
 
 export function createServerDataSource<D, E>(
   init: ServerDataSourceInitial<D, E>,
-): RowDataSourceEnterprise<D, E> {
+): RowDataSourcePro<D, E> {
   const state = cascada(() => {
-    const api$ = signal(null as unknown as ApiEnterprise<D, E>);
+    const api$ = signal(null as unknown as ApiPro<D, E>);
     const rowDataFetcher = init.rowDataFetcher;
     const rowClearOutOfView = init.rowClearOutOfViewBlocks ?? false;
     const rowClearOnCollapse = init.rowClearGroupChildrenOnCollapse ?? false;
@@ -134,7 +133,7 @@ export function createServerDataSource<D, E>(
     reset();
   };
 
-  const source: RowDataSourceEnterprise<D, E> = {
+  const source: RowDataSourcePro<D, E> = {
     init: (a) => {
       state.api.set(a);
 
@@ -167,7 +166,7 @@ export function createServerDataSource<D, E>(
     rowByIndex: (r) => state.graph.rowByIndex(r),
     rowIdToRowIndex: (id) => state.graph.rowIdToRowIndex(id),
     rowGetMany: (s, e) => {
-      const rows: RowNode<D>[] = [];
+      const rows: RowNodePro<D>[] = [];
 
       for (let i = s; i < e; i++) {
         const row = state.graph.rowByIndex(i);

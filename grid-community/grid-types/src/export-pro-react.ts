@@ -5,6 +5,7 @@ export type ApiProReact<D = any> = P.ApiPro<D, ReactNode>;
 export type ColumnProReact<D = any> = P.ColumnPro<D, ReactNode>;
 export type ColumnBaseProReact<D = any> = P.ColumnBasePro<D, ReactNode>;
 export type ColumnRowGroupProReact<D = any> = P.ColumnRowGroupPro<D, ReactNode>;
+export type RowDataSourceProReact<D = any> = P.RowDataSourcePro<D, ReactNode>;
 
 export type GridProReact<D = any> = P.GridPro<D, ReactNode>;
 
