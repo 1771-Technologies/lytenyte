@@ -5,7 +5,7 @@ export function cellEditFullRowLocations<D, E>(
   a: ApiPro<D, E> | ApiCore<D, E>,
   l: CellEditLocationCore,
   row: RowNodeCore<D>,
-) {
+): CellEditLocationCore[] {
   const api = a as ApiCore<D, E>;
 
   const columns = api.getState().columnsVisible.peek();

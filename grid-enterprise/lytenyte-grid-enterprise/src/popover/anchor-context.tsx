@@ -6,4 +6,4 @@ const context = createContext<TargetPro | null>(null);
 export function AnchorProvider(props: PropsWithChildren<{ anchor: TargetPro | null }>) {
   return <context.Provider value={props.anchor}>{props.children}</context.Provider>;
 }
-export const useAnchor = () => useContext(context);
+export const useAnchor = (): TargetPro | null => useContext(context);

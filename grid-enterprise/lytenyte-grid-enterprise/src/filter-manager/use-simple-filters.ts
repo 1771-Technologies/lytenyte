@@ -2,13 +2,18 @@ import { useCallback, useEffect, useState } from "react";
 import { isFilterComplete } from "./is-filter-complete";
 import { combinedToFlat } from "./combined-to-flat";
 import type { FlatSimpleFilters } from "./types";
-import type { ApiProReact, ColumnProReact } from "../types";
+import type { ApiProReact, ColumnFilterModelProReact, ColumnProReact } from "../types";
 
 export function useSimpleFilters<D>(
   api: ApiProReact<D>,
   column: ColumnProReact<D>,
   showConditionalWhenFilterValid: boolean,
-) {
+): {
+  flatFilters: FlatSimpleFilters;
+  onFilterChange: (flat: FlatSimpleFilters) => void;
+  filters: ColumnFilterModelProReact<D>;
+  isPivot: boolean;
+} {
   const isPivot = api.columnIsPivot(column);
 
   const state = api.getState();

@@ -1,7 +1,7 @@
 import type { PositionFocusCore } from "@1771technologies/grid-types/core";
-import { signal } from "@1771technologies/react-cascada";
+import { signal, type Signal } from "@1771technologies/react-cascada";
 
-export function cellFocusQueue() {
+export function cellFocusQueue(): Signal<PositionFocusCore | null> {
   let timeout: ReturnType<typeof setTimeout> | null = null;
 
   const s = signal<PositionFocusCore | null>(null, {

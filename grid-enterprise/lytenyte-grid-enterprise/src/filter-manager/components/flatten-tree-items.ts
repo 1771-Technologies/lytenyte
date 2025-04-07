@@ -1,6 +1,11 @@
 import type { ColumnInFilterItemPro } from "@1771technologies/grid-types/pro";
 
-export function flattenTreeItems(items: ColumnInFilterItemPro[], expansions: Set<string>) {
+export function flattenTreeItems(
+  items: ColumnInFilterItemPro[],
+  expansions: Set<string>,
+): (ColumnInFilterItemPro & {
+  depth: number;
+})[] {
   const stack = [...items.map((c) => [c, 0] as [ColumnInFilterItemPro, number])];
   const flat: (ColumnInFilterItemPro & { depth: number })[] = [];
 

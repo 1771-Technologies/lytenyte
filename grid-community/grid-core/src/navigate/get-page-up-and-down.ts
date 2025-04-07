@@ -2,12 +2,13 @@ import { getGridCellPosition, isGridCellPosition } from "./utils";
 import { getBottom, getTop } from "./get-top-and-bottom";
 import type {
   ApiCore,
+  PositionCore,
   PositionFullWidthRowCore,
   PositionGridCellCore,
 } from "@1771technologies/grid-types/core";
 import type { ApiPro } from "@1771technologies/grid-types/pro";
 
-export function getPageDown<D, E>(api: ApiCore<D, E> | ApiPro<D, E>) {
+export function getPageDown<D, E>(api: ApiCore<D, E> | ApiPro<D, E>): PositionCore | null {
   const position = api.navigateGetPosition();
 
   if (!isGridCellPosition(position)) return position;
@@ -31,7 +32,7 @@ export function getPageDown<D, E>(api: ApiCore<D, E> | ApiPro<D, E>) {
   return getGridCellPosition(api, row, p.columnIndex);
 }
 
-export function getPageUp<D, E>(api: ApiCore<D, E> | ApiPro<D, E>) {
+export function getPageUp<D, E>(api: ApiCore<D, E> | ApiPro<D, E>): PositionCore | null {
   const position = api.navigateGetPosition();
   if (!isGridCellPosition(position)) return position;
 

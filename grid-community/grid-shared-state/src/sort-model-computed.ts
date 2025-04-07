@@ -1,4 +1,4 @@
-import { computed, signal } from "@1771technologies/react-cascada";
+import { computed, signal, type Signal } from "@1771technologies/react-cascada";
 import { itemsWithIdToMap } from "@1771technologies/js-utils";
 import type { ApiCore, SortModelItemCore } from "@1771technologies/grid-types/core";
 import type { ApiPro } from "@1771technologies/grid-types/pro";
@@ -7,7 +7,7 @@ export function sortModelComputed<D, E>(
   s: SortModelItemCore[],
   api: ApiCore<D, E> | ApiPro<D, E>,
   pivots: boolean = false,
-) {
+): Signal<SortModelItemCore[]> {
   const sortModel$ = signal(s);
 
   api = api as ApiPro<D, E>;

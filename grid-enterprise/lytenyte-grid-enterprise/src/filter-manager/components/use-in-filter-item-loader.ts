@@ -3,7 +3,12 @@ import { useCallback, useEffect, useState } from "react";
 
 export function useInFilterItemLoader(
   getTreeFilterItems: () => Promise<ColumnInFilterItemPro[]> | ColumnInFilterItemPro[],
-) {
+): {
+  isLoading: boolean;
+  hasError: boolean;
+  treeFilterItems: ColumnInFilterItemPro[];
+  retry: () => never[] | undefined;
+} {
   const [treeFilterItems, setTreeFilterItems] = useState<ColumnInFilterItemPro[]>([]);
   const [hasError, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

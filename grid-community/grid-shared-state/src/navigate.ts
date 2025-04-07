@@ -12,11 +12,37 @@ import {
   getUp,
   rowScrollIntoViewValue,
 } from "@1771technologies/grid-core";
-import type { ApiCore } from "@1771technologies/grid-types/core";
+import type { ApiCore, PositionCore } from "@1771technologies/grid-types/core";
 import type { ApiPro } from "@1771technologies/grid-types/pro";
 import { equal } from "@1771technologies/js-utils";
 
-export const navigate = <D, E, T extends ApiCore<D, E> | ApiPro<D, E>>(a: T) => {
+export const navigate = <D, E, T extends ApiCore<D, E> | ApiPro<D, E>>(
+  a: T,
+): {
+  navigateNext: () => void;
+  navigatePrev: () => void;
+  navigateDown: () => void;
+  navigateUp: () => void;
+  navigatePageDown: () => void;
+  navigatePageUp: () => void;
+  navigateToBottom: () => void;
+  navigateToTop: () => void;
+  navigateToEnd: () => void;
+  navigateToStart: () => void;
+  navigateScrollIntoView: (r: number | null | undefined, c: number | null | undefined) => void;
+  navigateGetNext: () => PositionCore | null;
+  navigateGetPrev: () => PositionCore | null;
+  navigateGetUp: () => PositionCore | null;
+  navigateGetDown: () => PositionCore | null;
+  navigateGetBottom: () => PositionCore | null;
+  navigateGetTop: () => PositionCore | null;
+  navigateGetPageDown: () => PositionCore | null;
+  navigateGetPageUp: () => PositionCore | null;
+  navigateGetStart: () => PositionCore | null;
+  navigateGetEnd: () => PositionCore | null;
+  navigateSetPosition: (p: PositionCore | null) => void;
+  navigateGetPosition: () => PositionCore | null;
+} => {
   const get = () => api.getState().internal.navigatePosition.peek();
 
   const api = a as ApiCore<D, E>;

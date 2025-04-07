@@ -2,39 +2,15 @@ import type { ColumnGroupRowCore, ColumnGroupRowsCore } from "@1771technologies/
 import { columnsByPin } from "./columns-by-pin.js";
 import type { ColumnLike } from "./columns-visible/columns-visible.js";
 
-/**
- * Creates a hierarchical group structure for grid columns with support for pinned columns and nested groups.
- *
- * @description
- * This function organizes columns into a hierarchical group structure, handling:
- * - Nested group hierarchies with unlimited depth
- * - Pinned columns (start, center, end)
- * - Group collapsibility based on column visibility settings
- * - Multiple occurrences of the same group name
- *
- * The resulting structure maintains separate hierarchies for pinned columns while preserving
- * the relationships between groups across all columns.
- *
- * @template T - Type extending ColumnLike interface
- * @param {T[]} columns - Array of column definitions with optional grouping information
- * @param {string} delimiter - Character(s) used to join group path segments in group IDs
- *
- * @returns {{
- *   startLevels: ColumnGroupRows,
- *   centerLevels: ColumnGroupRows,
- *   endLevels: ColumnGroupRows,
- *   allLevels: ColumnGroupRows
- * }} Object containing hierarchical group structures for each pin position and combined
- *
- * @example
- * const columns = [
- *   { id: 'col1', groupPath: ['Group1', 'SubGroup1'], pin: 'start' },
- *   { id: 'col2', groupPath: ['Group1', 'SubGroup2'] },
- *   { id: 'col3', groupPath: ['Group2'], pin: 'end' }
- * ];
- * const groups = columnGroups(columns, '_');
- */
-export function columnGroups<T extends ColumnLike>(columns: T[], delimiter: string) {
+export function columnGroups<T extends ColumnLike>(
+  columns: T[],
+  delimiter: string,
+): {
+  startLevels: ColumnGroupRowsCore;
+  centerLevels: ColumnGroupRowsCore;
+  endLevels: ColumnGroupRowsCore;
+  allLevels: ColumnGroupRowsCore;
+} {
   // Separate columns by their pin position (start, center, end)
   const { start, center, end } = columnsByPin(columns);
 
