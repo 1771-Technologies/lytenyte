@@ -17,6 +17,16 @@
       "types": "./src/export-pro.ts",
       "import": "./src/export-pro.ts",
       "require": "./src/export-pro.ts"
+    },
+    "./core-react": {
+      "types": "./src/export-core-react.ts",
+      "import": "./src/export-core-react.ts",
+      "require": "./src/export-core-react.ts"
+    },
+    "./pro-react": {
+      "types": "./src/export-pro-react.ts",
+      "import": "./src/export-pro-react.ts",
+      "require": "./src/export-pro-react.ts"
     }
   },
   "publishConfig": {
@@ -31,6 +41,16 @@
         "types": "./dist/types/export-pro.d.ts",
         "import": "./dist/export-pro.js",
         "require": "./dist/export-pro.js"
+      },
+      "./core-react": {
+        "types": "./dist/types/export-core-react.d.ts",
+        "import": "./dist/export-core-react.js",
+        "require": "./dist/export-core-react.js"
+      },
+      "./pro-react": {
+        "types": "./dist/types/export-pro-react.d.ts",
+        "import": "./dist/export-pro-react.js",
+        "require": "./dist/export-pro-react.js"
       }
     }
   },
