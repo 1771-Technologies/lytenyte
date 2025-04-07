@@ -1,5 +1,4 @@
 import "./header-cell.css";
-import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
 import { useMemo, useRef, type CSSProperties } from "react";
 import { getTransform } from "../../utils/get-transform";
 import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
@@ -7,10 +6,11 @@ import { useHeaderCellRenderer } from "./use-header-cell-renderer";
 import { useHeaderMove } from "./use-header-move";
 import { COLUMN_EMPTY_PREFIX } from "@1771technologies/grid-constants";
 import { useHeaderFocus } from "./use-header-focus";
+import type { ApiCoreReact, ColumnCoreReact } from "@1771technologies/grid-types/core-react";
 
 interface HeaderCellProps {
-  readonly api: ApiCommunityReact<any>;
-  readonly column: ColumnCommunityReact<any>;
+  readonly api: ApiCoreReact<any>;
+  readonly column: ColumnCoreReact<any>;
   readonly columnIndex: number;
   readonly viewportWidth: number;
   readonly rowStart: number;

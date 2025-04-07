@@ -1,10 +1,10 @@
 import { FLOATING_CELL_POSITION } from "@1771technologies/grid-constants";
-import type { ApiCommunityReact } from "@1771technologies/grid-types";
+import type { ApiCoreReact } from "@1771technologies/grid-types/core-react";
 import { useEvent } from "@1771technologies/react-utils";
 import { useEffect, type RefObject } from "react";
 
 export function useFloatingFocus(
-  api: ApiCommunityReact<any>,
+  api: ApiCoreReact<any>,
   ref: RefObject<HTMLDivElement | null>,
   columnIndex: number,
 ) {

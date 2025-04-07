@@ -2,22 +2,22 @@ import "./cell.css";
 
 import { clsx } from "@1771technologies/js-utils";
 import { memo } from "react";
-import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
 import { useCellStyle } from "./use-cell-style";
 import { useCellRenderer } from "./use-cell-renderer";
-import type { RowNode, RowPin } from "@1771technologies/grid-types/core";
 import { useCellEvents } from "./use-cell-events";
 import { useCellPositionChange } from "./use-cell-position-change";
+import type { ApiCoreReact, ColumnCoreReact } from "@1771technologies/grid-types/core-react";
+import type { RowNodeCore, RowPinCore } from "@1771technologies/grid-types/core";
 
 export interface CellProps {
-  readonly api: ApiCommunityReact<any>;
+  readonly api: ApiCoreReact<any>;
   readonly rowIndex: number;
   readonly columnIndex: number;
-  readonly column: ColumnCommunityReact<any>;
+  readonly column: ColumnCoreReact<any>;
   readonly rowSpan: number;
   readonly colSpan: number;
-  readonly rowPin: RowPin;
-  readonly rowNode: RowNode<any>;
+  readonly rowPin: RowPinCore;
+  readonly rowNode: RowNodeCore<any>;
   readonly xPositions: Uint32Array;
   readonly yPositions: Uint32Array;
   readonly paginateOffset: number;

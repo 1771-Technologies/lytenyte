@@ -1,6 +1,6 @@
-import type { CellRendererParamsReact } from "@1771technologies/grid-types/core-react";
+import type { CellRendererParamsCoreReact } from "@1771technologies/grid-types/core-react";
 
-export function CellRendererDefault({ api, row, column }: CellRendererParamsReact<any>) {
+export function CellRendererDefault({ api, row, column }: CellRendererParamsCoreReact<any>) {
   const field = api.columnField(row, column);
 
   return (

@@ -1,12 +1,12 @@
-import type { ColumnHeaderHeightProperty } from "@1771technologies/grid-types/core";
+import type { ColumnHeaderHeightPropertyCore } from "@1771technologies/grid-types/core";
 import { useMemo } from "react";
 
 export function useHeaderDisplayGridTemplate(
   levelsCount: number,
-  headerHeight: ColumnHeaderHeightProperty,
-  groupHeaderHeight: ColumnHeaderHeightProperty,
+  headerHeight: ColumnHeaderHeightPropertyCore,
+  groupHeaderHeight: ColumnHeaderHeightPropertyCore,
   floatingRowEnabled: boolean,
-  floatingRowHeight: ColumnHeaderHeightProperty,
+  floatingRowHeight: ColumnHeaderHeightPropertyCore,
 ) {
   const gridTemplateRows = useMemo(() => {
     const groupHeight = typeof groupHeaderHeight === "number" ? `${groupHeaderHeight}px` : "auto";

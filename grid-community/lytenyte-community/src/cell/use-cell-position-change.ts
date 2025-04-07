@@ -1,10 +1,10 @@
 import { GRID_CELL_POSITION } from "@1771technologies/grid-constants";
-import type { ApiCommunityReact } from "@1771technologies/grid-types";
+import type { ApiCoreReact } from "@1771technologies/grid-types/core-react";
 import { useEvent } from "@1771technologies/react-utils";
 import { useCallback, useEffect, useRef } from "react";
 
 export function useCellPositionChange(
-  api: ApiCommunityReact<any>,
+  api: ApiCoreReact<any>,
   rowIndex: number,
   columnIndex: number,
   rowSpan: number,

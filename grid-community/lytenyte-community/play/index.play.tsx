@@ -1,4 +1,4 @@
-import { makeStore } from "@1771technologies/grid-store-community";
+import { makeGridCore } from "@1771technologies/grid-store-community";
 import { LyteNyteGridCommunity } from "../src/lytenyte-community";
 import { columns } from "./data/columns";
 import { bankDataSmall } from "./data/bank-data-small";
@@ -6,7 +6,7 @@ import { useState } from "react";
 
 export default function Play() {
   const [grid] = useState(() =>
-    makeStore({
+    makeGridCore({
       gridId: "x",
       columns: columns,
       columnBase: { resizable: true, movable: true, sortable: true },

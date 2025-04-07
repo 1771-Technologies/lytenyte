@@ -1,7 +1,5 @@
 import "./cell-edit.css";
 
-import type { ColumnCommunityReact } from "@1771technologies/grid-types";
-import type { CellEditLocation, RowNode } from "@1771technologies/grid-types/core";
 import { getFocusableElements } from "@1771technologies/js-utils";
 import { useGrid } from "../use-grid";
 import { getCellEditor } from "./cell-get-editor";
@@ -9,12 +7,14 @@ import { useCallback } from "react";
 import { cellEditLocation } from "./cell-edit-location";
 import { useCellEditStyle } from "./use-cell-edit-style";
 import { useCellEditNavigation } from "./use-cell-edit-navigation";
+import type { CellEditLocationCore, RowNodeCore } from "@1771technologies/grid-types/core";
+import type { ColumnCoreReact } from "@1771technologies/grid-types/core-react";
 
 export interface CellEditorCellProps<D> {
-  row: RowNode<D>;
-  column: ColumnCommunityReact<D>;
+  row: RowNodeCore<D>;
+  column: ColumnCoreReact<D>;
   isActive: boolean;
-  location: CellEditLocation;
+  location: CellEditLocationCore;
   xPositions: Uint32Array;
   yPositions: Uint32Array;
 }

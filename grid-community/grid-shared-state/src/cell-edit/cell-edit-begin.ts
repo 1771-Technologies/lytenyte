@@ -8,7 +8,7 @@ export function cellEditBegin<D, E>(
   l: CellEditLocationCore,
   makeActive = true,
 ) {
-  const api = a as ApiPro<D, E>;
+  const api = a as ApiCore<D, E>;
 
   const row = api.rowByIndex(l.rowIndex);
   const column = api.columnByIndex(l.columnIndex);

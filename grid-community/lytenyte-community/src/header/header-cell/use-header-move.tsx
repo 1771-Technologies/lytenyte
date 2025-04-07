@@ -1,9 +1,9 @@
-import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
+import type { ApiCoreReact, ColumnCoreReact } from "@1771technologies/grid-types/core-react";
 import { dragState, useDraggable, useDroppable } from "@1771technologies/react-dragon";
 
 export function useHeaderMove(
-  api: ApiCommunityReact<any>,
-  column: ColumnCommunityReact<any>,
+  api: ApiCoreReact<any>,
+  column: ColumnCoreReact<any>,
   columnIndex: number,
 ) {
   const gridId = api.getState().gridId.use();
@@ -16,7 +16,7 @@ export function useHeaderMove(
   const { canDrop, isOver, ...dropProps } = useDroppable({
     tags: [`${gridId}:grid:${column.pin ?? "none"}`],
     onDrop: (p) => {
-      const data = p.getData() as { columns: ColumnCommunityReact<any>[]; columnIndex: number };
+      const data = p.getData() as { columns: ColumnCoreReact<any>[]; columnIndex: number };
       const dragIndex = data.columnIndex;
 
       const isBefore = columnIndex < dragIndex;
@@ -39,6 +39,6 @@ export function useHeaderMove(
 
   return { moveProps, dropProps, isBefore, canDrop, isOver, dragIndex };
 }
-function DragPlaceholder(c: { column: ColumnCommunityReact<any> }) {
+function DragPlaceholder(c: { column: ColumnCoreReact<any> }) {
   return <div className="lng1771-drag-placeholder">{c.column.headerName ?? c.column.id}</div>;
 }

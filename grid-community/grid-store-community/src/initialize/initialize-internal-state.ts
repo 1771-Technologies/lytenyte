@@ -1,8 +1,4 @@
 import { computed, signal } from "@1771technologies/react-cascada";
-import type { ColumnCommunity, StateCommunity } from "@1771technologies/grid-types";
-import { type StoreCommunity } from "@1771technologies/grid-types";
-import type { ColumnPin, KeyBindingString, Position } from "@1771technologies/grid-types/core";
-import { type CellEditLocation } from "@1771technologies/grid-types/core";
 import { rowDataSource } from "./row-data-source";
 import {
   cellFocusQueue,
@@ -13,12 +9,17 @@ import {
   rowPositionsComputed,
   virt,
 } from "@1771technologies/grid-shared-state";
+import type { GridCore } from "@1771technologies/grid-types/core";
+import type { PositionCore } from "@1771technologies/grid-types/core";
+import type { ColumnPinCore } from "@1771technologies/grid-types/core";
+import type { ColumnCore } from "@1771technologies/grid-types/core";
+import type { CellEditLocationCore } from "@1771technologies/grid-types/core";
 
-type InternalState<D, E> = StateCommunity<D, E>["internal"];
+type InternalState<D, E> = GridCore<D, E>["state"]["internal"];
 
 export function initializeInternalState<D, E>(
-  state: StateCommunity<D, E>,
-  api: StoreCommunity<D, E>["api"],
+  state: GridCore<D, E>["state"],
+  api: GridCore<D, E>["api"],
 ) {
   const viewportXScroll = signal(0);
   const viewportYScroll = signal(0);
@@ -62,7 +63,7 @@ export function initializeInternalState<D, E>(
     cellEditActiveEdits: signal(new Map()),
     cellEditActiveEditValues: signal(new Map()),
     cellEditActiveInitialValues: signal(new Map()),
-    cellEditActiveLocation: signal<CellEditLocation | null>(null),
+    cellEditActiveLocation: signal<CellEditLocationCore | null>(null),
 
     columnVisibleCenterCount,
     columnVisibleEndCount,
@@ -87,22 +88,18 @@ export function initializeInternalState<D, E>(
     columnMoveActive: signal(false),
     columnMoveIds: signal<string[]>([]),
     columnMoveLockedByRange: signal(false),
-    columnMoveOverColumn: signal<ColumnCommunity<D, E> | null>(null),
+    columnMoveOverColumn: signal<ColumnCore<D, E> | null>(null),
     columnMoveOverIndex: signal(-1),
     columnMoveOverlayHeight: signal(0),
-    columnMoveOverPin: signal<ColumnPin>(null),
-    columnMovePin: signal<ColumnPin>(null),
+    columnMoveOverPin: signal<ColumnPinCore>(null),
+    columnMovePin: signal<ColumnPinCore>(null),
 
     columnResizeIsActive: signal(false),
 
     cellFocusQueue: cellFocusQueue(),
-    navigatePosition: signal<Position | null>(null),
+    navigatePosition: signal<PositionCore | null>(null),
 
     fieldCacheRef: { "quick-search": {}, column: {}, group: {}, pivot: {} },
-
-    keyBindingIdToKey: computed<Record<string, KeyBindingString[]>>(() => {
-      return {};
-    }),
 
     paginatePageCount,
 
@@ -141,7 +138,7 @@ export function initializeInternalState<D, E>(
     viewportYScroll,
     viewportHasXScroll: computed(() => viewportXScroll.get() > 0),
     viewportHasYScroll: computed(() => viewportYScroll.get() > 0),
-  } satisfies StateCommunity<D, E>["internal"];
+  } satisfies GridCore<D, E>["state"]["internal"];
 
   Object.assign(state, { internal });
 }

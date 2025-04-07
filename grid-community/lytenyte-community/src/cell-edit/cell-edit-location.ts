@@ -1,5 +1,5 @@
-import type { CellEditLocation } from "@1771technologies/grid-types/core";
+import type { CellEditLocationCore } from "@1771technologies/grid-types/core";
 
-export function cellEditLocation(c: CellEditLocation) {
+export function cellEditLocation(c: CellEditLocationCore) {
   return `r${c.rowIndex}-c${c.columnIndex}`;
 }

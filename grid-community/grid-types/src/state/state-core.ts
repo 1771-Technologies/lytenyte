@@ -106,7 +106,7 @@ type Props<D, E> = Required<Init<D, E>>;
  * That are impacted. We put these fields on state. In Core they will directly reference their
  * internal state. In Pro we the pivot mode determines the value.
  */
-export type ColumnPivotSensitiveState<D, E> = {
+export type ColumnPivotSensitiveStateCore<D, E> = {
   readonly columnGroupLevels: ReadonlySignal<ColumnGroupRows>;
   readonly columnGroupStartLevels: ReadonlySignal<ColumnGroupRows>;
   readonly columnGroupCenterLevels: ReadonlySignal<ColumnGroupRows>;
@@ -135,4 +135,5 @@ export type InitialStateAndInternalState<D, E> = InitialState<D, E> & {
   readonly internal: GridInternalState<D, E>;
 };
 
-export type StateCore<D, E> = InitialStateAndInternalState<D, E> & ColumnPivotSensitiveState<D, E>;
+export type StateCore<D, E> = InitialStateAndInternalState<D, E> &
+  ColumnPivotSensitiveStateCore<D, E>;

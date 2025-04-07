@@ -1,6 +1,6 @@
 import type { ReadonlySignal, Signal } from "@1771technologies/react-cascada";
 import type {
-  ColumnPivotSensitiveState,
+  ColumnPivotSensitiveStateCore,
   GridInternalState as CoreInternal,
 } from "../state/state-core";
 import type { RowDataSourcePro } from "../row-data-source/rds-pro";
@@ -84,7 +84,7 @@ export type InitialStateAndInternalState<D, E> = InitialState<D, E> & {
 };
 
 export type ColumnPivotSensitiveStatePro<D, E> = Omit<
-  ColumnPivotSensitiveState<D, E>,
+  ColumnPivotSensitiveStateCore<D, E>,
   "columnsVisible" | "filterModel"
 > & {
   readonly columnsVisible: ReadonlySignal<Column<D, E>[]>;

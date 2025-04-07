@@ -1,10 +1,10 @@
 import { getRootCell } from "@1771technologies/grid-core";
-import type { ApiCommunityReact } from "@1771technologies/grid-types";
-import type { CellEditLocation } from "@1771technologies/grid-types/core";
+import type { CellEditLocationCore } from "@1771technologies/grid-types/core";
+import type { ApiCoreReact } from "@1771technologies/grid-types/core-react";
 import { useEvent } from "@1771technologies/react-utils";
 import type { KeyboardEvent } from "react";
 
-export function useCellEditNavigation(api: ApiCommunityReact<any>, location: CellEditLocation) {
+export function useCellEditNavigation(api: ApiCoreReact<any>, location: CellEditLocationCore) {
   const onKeyDown = useEvent((ev: KeyboardEvent) => {
     const sx = api.getState();
 
@@ -28,7 +28,7 @@ export function useCellEditNavigation(api: ApiCommunityReact<any>, location: Cel
       const columnIndex = location.columnIndex;
       const rowCount = sx.internal.rowCount.peek();
 
-      let nextLocal: CellEditLocation | null = null;
+      let nextLocal: CellEditLocationCore | null = null;
 
       let currentRow = location.rowIndex;
       do {

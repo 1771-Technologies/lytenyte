@@ -1,10 +1,10 @@
 import { getHoveredColumnIndex, getHoveredRowIndex } from "@1771technologies/grid-core";
-import type { ApiCommunityReact } from "@1771technologies/grid-types";
 import { getClientX, getClientY } from "@1771technologies/js-utils";
 import { cellEditLocation } from "./cell-edit-location";
+import type { ApiCoreReact } from "@1771technologies/grid-types/core-react";
 
 export function handleBeginCellEditFromEvent<D>(
-  api: ApiCommunityReact<D>,
+  api: ApiCoreReact<D>,
   event: MouseEvent | PointerEvent,
 ) {
   if (event.button !== 0) return;

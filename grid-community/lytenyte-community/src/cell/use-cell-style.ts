@@ -1,19 +1,19 @@
 import { useMemo, type CSSProperties } from "react";
-import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
 import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
-import type { RowPin } from "@1771technologies/grid-types/core";
 import { getTransform } from "../utils/get-transform";
+import type { RowPinCore } from "@1771technologies/grid-types/core";
+import type { ApiCoreReact, ColumnCoreReact } from "@1771technologies/grid-types/core-react";
 
 export function useCellStyle(
-  api: ApiCommunityReact<any>,
+  api: ApiCoreReact<any>,
   xPositions: Uint32Array,
   yPositions: Uint32Array,
   columnIndex: number,
   rowIndex: number,
   columnSpan: number,
   rowSpan: number,
-  column: ColumnCommunityReact<any>,
-  rowPin: RowPin,
+  column: ColumnCoreReact<any>,
+  rowPin: RowPinCore,
   rowId: string,
   paginateOffset: number,
 ) {

@@ -1,8 +1,8 @@
-import type { ApiCommunityReact } from "@1771technologies/grid-types";
 import { useMemo, type ReactNode } from "react";
 import { FloatingCell } from "./header-floating";
+import type { ApiCoreReact } from "@1771technologies/grid-types/core-react";
 
-export function useFloatingCells(api: ApiCommunityReact<any>, enabled: boolean) {
+export function useFloatingCells(api: ApiCoreReact<any>, enabled: boolean) {
   const sx = api.getState();
   const visibleColumns = sx.columnsVisible.use();
   const xPositions = sx.columnPositions.use();

@@ -1,11 +1,8 @@
 import { computed } from "@1771technologies/react-cascada";
 import { createClientDataSource } from "@1771technologies/grid-client-data-source-community";
-import type { StoreCommunity } from "@1771technologies/grid-types";
+import type { GridCore } from "@1771technologies/grid-types/core";
 
-export function rowDataSource<D, E>(
-  state: StoreCommunity<D, E>["state"],
-  api: StoreCommunity<D, E>["api"],
-) {
+export function rowDataSource<D, E>(state: GridCore<D, E>["state"], api: GridCore<D, E>["api"]) {
   let prev: any;
   const backingDataSource = computed(() => {
     const cds = state.rowDataSource.get();

@@ -1,19 +1,19 @@
 import "./header-group-cell.css";
 
-import type { ColumnGroupRowItem, ColumnPin } from "@1771technologies/grid-types/core";
 import { sizeFromCoord } from "@1771technologies/js-utils";
 import { useEffect, useMemo, useRef, type CSSProperties } from "react";
-import type { ApiCommunityReact } from "@1771technologies/grid-types";
 import { useHeaderGroupMove } from "./use-header-group-move";
 import { HEADER_GROUP_CELL_POSITION } from "@1771technologies/grid-constants";
 import { useEvent } from "@1771technologies/react-utils";
 import { getTransform } from "../utils/get-transform";
 import { CollapseButton } from "../components/buttons";
+import type { ApiCoreReact } from "@1771technologies/grid-types/core-react";
+import type { ColumnGroupRowItemCore, ColumnPinCore } from "@1771technologies/grid-types/core";
 
 export interface HeaderGroupCellProps {
-  readonly api: ApiCommunityReact<any>;
-  readonly groupItem: ColumnGroupRowItem;
-  readonly pin: ColumnPin;
+  readonly api: ApiCoreReact<any>;
+  readonly groupItem: ColumnGroupRowItemCore;
+  readonly pin: ColumnPinCore;
   readonly rowStart: number;
   readonly viewportWidth: number;
 
@@ -124,8 +124,8 @@ export function HeaderGroupCell({
  * TODO: we should really make this available to users to change.
  */
 interface HeaderGroupRendererProps {
-  readonly group: ColumnGroupRowItem;
-  readonly api: ApiCommunityReact<any>;
+  readonly group: ColumnGroupRowItemCore;
+  readonly api: ApiCoreReact<any>;
 }
 
 function HeaderGroupDefault({ group, api }: HeaderGroupRendererProps) {

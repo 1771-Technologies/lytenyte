@@ -3,8 +3,8 @@ import "./row-container.css";
 import type { PropsWithChildren } from "react";
 import { useDroppable } from "@1771technologies/react-dragon";
 import { useGrid } from "../use-grid";
-import type { RowNode } from "@1771technologies/grid-types/core";
-import type { ApiCommunityReact } from "@1771technologies/grid-types";
+import type { RowNodeCore } from "@1771technologies/grid-types/core";
+import type { ApiCoreReact } from "@1771technologies/grid-types/core-react";
 
 export function RowContainer({
   totalHeight,
@@ -18,7 +18,7 @@ export function RowContainer({
     onDrop: (p) => {
       const overIndex = state.internal.rowDragOverIndex.peek();
 
-      const data = p.getData() as { rows: RowNode[]; api: ApiCommunityReact<any> };
+      const data = p.getData() as { rows: RowNodeCore<any>[]; api: ApiCoreReact<any> };
 
       if (!data?.rows || !data?.api) return;
 

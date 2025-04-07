@@ -1,17 +1,17 @@
 import "./cell-full-width.css";
 
-import type { ApiCommunityReact } from "@1771technologies/grid-types";
-import type { RowNode, RowPin } from "@1771technologies/grid-types/core";
 import { memo, useMemo } from "react";
 import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
 import { useCellFullWidthFocus } from "./use-cell-full-width-focus";
 import { useFullWidthEvents } from "./use-full-width-events";
 import { getTransform } from "../utils/get-transform";
+import type { ApiCoreReact } from "@1771technologies/grid-types/core-react";
+import type { RowNodeCore, RowPinCore } from "@1771technologies/grid-types/core";
 
 export interface CellFullWidthProps {
-  readonly api: ApiCommunityReact<any>;
-  readonly rowPin: RowPin;
-  readonly row: RowNode<any>;
+  readonly api: ApiCoreReact<any>;
+  readonly rowPin: RowPinCore;
+  readonly row: RowNodeCore<any>;
   readonly rowIndex: number;
   readonly yPositions: Uint32Array;
   readonly paginateOffset: number;

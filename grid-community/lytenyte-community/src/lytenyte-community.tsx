@@ -1,5 +1,4 @@
 import "./lytenyte.css";
-import type { StoreCommunityReact } from "@1771technologies/grid-types";
 import { GridProvider } from "./use-grid";
 import { Viewport } from "./viewport/viewport";
 import {
@@ -7,9 +6,10 @@ import {
   CellEditorCenter,
   CellEditorTop,
 } from "./cell-edit/cell-edit-containers";
+import type { GridCoreReact } from "@1771technologies/grid-types/core-react";
 
 export interface LyteNyteGridCommunityProps<D> {
-  readonly grid: StoreCommunityReact<D>;
+  readonly grid: GridCoreReact<D>;
 }
 
 export function LyteNyteGridCommunity<D>({ grid }: LyteNyteGridCommunityProps<D>) {

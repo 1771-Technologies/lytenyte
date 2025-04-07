@@ -1,8 +1,8 @@
-import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
+import type { ApiCoreReact, ColumnCoreReact } from "@1771technologies/grid-types/core-react";
 import { getClientX } from "@1771technologies/js-utils";
 import { useMemo, useRef, type PointerEvent } from "react";
 
-export function useResizeDivider(api: ApiCommunityReact<any>, column: ColumnCommunityReact<any>) {
+export function useResizeDivider(api: ApiCoreReact<any>, column: ColumnCoreReact<any>) {
   const isResizable = api.columnIsResizable(column);
 
   const timeOutRef = useRef<ReturnType<typeof setTimeout> | null>(null);

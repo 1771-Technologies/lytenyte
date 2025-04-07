@@ -1,9 +1,9 @@
 import { FULL_WIDTH_POSITION } from "@1771technologies/grid-constants";
-import type { ApiCommunityReact } from "@1771technologies/grid-types";
+import type { ApiCoreReact } from "@1771technologies/grid-types/core-react";
 import { useEvent } from "@1771technologies/react-utils";
 import { useCallback, useEffect, useRef } from "react";
 
-export function useCellFullWidthFocus(api: ApiCommunityReact<any>, rowIndex: number) {
+export function useCellFullWidthFocus(api: ApiCoreReact<any>, rowIndex: number) {
   const ref = useRef<HTMLElement | null>(null);
   const skipRef = useRef(false);
 

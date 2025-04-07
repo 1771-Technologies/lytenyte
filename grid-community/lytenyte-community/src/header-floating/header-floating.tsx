@@ -1,14 +1,14 @@
 import "./header-floating.css";
 
-import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
 import { sizeFromCoord } from "@1771technologies/js-utils";
 import { useMemo, useRef, type CSSProperties } from "react";
 import { useFloatingFocus } from "./use-floating-focus";
 import { getTransform } from "../utils/get-transform";
+import type { ApiCoreReact, ColumnCoreReact } from "@1771technologies/grid-types/core-react";
 
 interface FloatingCellProps {
-  readonly api: ApiCommunityReact<any>;
-  readonly column: ColumnCommunityReact<any>;
+  readonly api: ApiCoreReact<any>;
+  readonly column: ColumnCoreReact<any>;
   readonly columnIndex: number;
   readonly viewportWidth: number;
   readonly rowStart: number;

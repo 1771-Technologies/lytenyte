@@ -18,12 +18,12 @@ import {
   sortModelComputed,
 } from "@1771technologies/grid-shared-state";
 import type {
-  ApiCommunity,
-  InitialStateCommunity,
-  PropsCommunity,
-  StateCommunity,
-} from "@1771technologies/grid-types";
-import type { RowDataSourceClient } from "@1771technologies/grid-types/core";
+  ApiCore,
+  InitialStateCore,
+  RowDataSourceClient,
+  StateCore,
+  StateInitCore,
+} from "@1771technologies/grid-types/core";
 
 const rowDataSource: RowDataSourceClient<any, any> = {
   kind: "client",
@@ -31,9 +31,9 @@ const rowDataSource: RowDataSourceClient<any, any> = {
 };
 
 export function initialize<D, E>(
-  props: PropsCommunity<D, E>,
-  state: StateCommunity<D, E>,
-  api: ApiCommunity<D, E>,
+  props: StateInitCore<D, E>,
+  state: StateCore<D, E>,
+  api: ApiCore<D, E>,
 ) {
   Object.assign(state, {
     aggFns: signal(props.aggFns ?? {}),
@@ -64,8 +64,6 @@ export function initialize<D, E>(
     floatingRowHeight: signal(props.floatingRowHeight ?? COLUMN_HEADER_HEIGHT),
 
     gridId: signal(props.gridId ?? ""),
-
-    keyBindings: signal(props.keyBindings ?? {}),
 
     paginate: signal(props.paginate ?? false),
     paginatePageSize: signal(props.paginatePageSize ?? PAGINATE_PAGE_SIZE),
@@ -116,5 +114,5 @@ export function initialize<D, E>(
 
     sortComparatorFns: signal(props.sortComparatorFns ?? {}),
     sortModel: sortModelComputed(props.sortModel ?? [], api),
-  } satisfies InitialStateCommunity<D, E>);
+  } satisfies InitialStateCore<D, E>);
 }

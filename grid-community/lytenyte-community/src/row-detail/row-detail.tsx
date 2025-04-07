@@ -1,18 +1,18 @@
 import "./row-detail.css";
 
-import type { ApiCommunityReact } from "@1771technologies/grid-types";
-import type { RowNode, RowPin } from "@1771technologies/grid-types/core";
 import { useMemo } from "react";
 import { getTransform } from "../utils/get-transform";
 import { sizeFromCoord } from "@1771technologies/js-utils";
+import type { ApiCoreReact } from "@1771technologies/grid-types/core-react";
+import type { RowNodeCore, RowPinCore } from "@1771technologies/grid-types/core";
 
 export interface RowDetailProps {
-  readonly api: ApiCommunityReact<any>;
-  readonly row: RowNode<any>;
+  readonly api: ApiCoreReact<any>;
+  readonly row: RowNodeCore<any>;
   readonly yPositions: Uint32Array;
   readonly rowIndex: number;
   readonly height: number;
-  readonly rowPin: RowPin;
+  readonly rowPin: RowPinCore;
 }
 
 export function RowDetail({ api, row, rowPin, yPositions, rowIndex, height }: RowDetailProps) {

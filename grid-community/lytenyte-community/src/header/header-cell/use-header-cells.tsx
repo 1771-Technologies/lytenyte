@@ -1,8 +1,8 @@
-import type { ApiCommunityReact } from "@1771technologies/grid-types";
 import { useMemo, type ReactNode } from "react";
 import { HeaderCell } from "./header-cell";
+import type { ApiCoreReact } from "@1771technologies/grid-types/core-react";
 
-export function useHeaderCells(api: ApiCommunityReact<any>) {
+export function useHeaderCells(api: ApiCoreReact<any>) {
   const sx = api.getState();
   const visibleColumns = sx.columnsVisible.use();
   const xPositions = sx.columnPositions.use();

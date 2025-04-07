@@ -1,7 +1,7 @@
-import type { CellRendererParamsReact } from "@1771technologies/grid-types/core-react";
+import type { CellRendererParamsCoreReact } from "@1771technologies/grid-types/core-react";
 import { GridButton } from "../components/buttons";
 
-export function CellGroupRendererDefault({ api, row, column }: CellRendererParamsReact<any>) {
+export function CellGroupRendererDefault({ api, row, column }: CellRendererParamsCoreReact<any>) {
   if (!api.rowIsGroup(row)) {
     return <div></div>;
   }

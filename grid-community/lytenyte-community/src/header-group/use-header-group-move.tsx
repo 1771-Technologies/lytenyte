@@ -1,12 +1,12 @@
-import type { ApiCommunityReact } from "@1771technologies/grid-types";
-import type { ColumnGroupRowItem, ColumnPin } from "@1771technologies/grid-types/core";
+import type { ColumnGroupRowItemCore, ColumnPinCore } from "@1771technologies/grid-types/core";
+import type { ApiCoreReact } from "@1771technologies/grid-types/core-react";
 import { useDraggable } from "@1771technologies/react-dragon";
 import { useMemo } from "react";
 
 export function useHeaderGroupMove(
-  api: ApiCommunityReact<any>,
-  item: ColumnGroupRowItem,
-  pin: ColumnPin,
+  api: ApiCoreReact<any>,
+  item: ColumnGroupRowItemCore,
+  pin: ColumnPinCore,
 ) {
   const sx = api.getState();
   const gridId = sx.gridId.use();

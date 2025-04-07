@@ -1,16 +1,16 @@
 import "./header-divider.css";
 
-import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
 import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
 import { useMemo, type CSSProperties } from "react";
 import { useResizeDivider } from "./use-resize-divider";
 import { getTransform } from "../utils/get-transform";
+import type { ApiCoreReact, ColumnCoreReact } from "@1771technologies/grid-types/core-react";
 
 interface HeaderDividerProps {
-  readonly api: ApiCommunityReact<any>;
+  readonly api: ApiCoreReact<any>;
   readonly rowStart: number;
   readonly rowEnd: number;
-  readonly column: ColumnCommunityReact<any>;
+  readonly column: ColumnCoreReact<any>;
   readonly columnIndex: number;
   readonly viewportWidth: number;
 

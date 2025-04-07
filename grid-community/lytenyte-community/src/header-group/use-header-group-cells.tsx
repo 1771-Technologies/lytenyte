@@ -1,9 +1,9 @@
-import type { ApiCommunityReact } from "@1771technologies/grid-types";
 import { useMemo, type ReactNode } from "react";
 import { HeaderGroupCell } from "./header-group-cell";
-import type { ColumnGroupRowItem, ColumnPin } from "@1771technologies/grid-types/core";
+import type { ApiCoreReact } from "@1771technologies/grid-types/core-react";
+import type { ColumnGroupRowItemCore, ColumnPinCore } from "@1771technologies/grid-types/core";
 
-export function useHeaderGroupCells(api: ApiCommunityReact<any>) {
+export function useHeaderGroupCells(api: ApiCoreReact<any>) {
   const sx = api.getState();
 
   const bounds = sx.internal.virtBounds.use();
@@ -18,7 +18,7 @@ export function useHeaderGroupCells(api: ApiCommunityReact<any>) {
   return useMemo(() => {
     const cells: ReactNode[] = [];
 
-    function handleCell(groupItem: ColumnGroupRowItem, levelIndex: number, pin: ColumnPin) {
+    function handleCell(groupItem: ColumnGroupRowItemCore, levelIndex: number, pin: ColumnPinCore) {
       cells.push(
         <HeaderGroupCell
           key={groupItem.occurrenceKey}

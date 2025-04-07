@@ -1,9 +1,9 @@
 import { CellEditorCell } from "./cell-editor-cell";
-import type { CellEditLocation } from "@1771technologies/grid-types/core";
 import { useGrid } from "../use-grid";
+import type { CellEditLocationCore } from "@1771technologies/grid-types/core";
 
 export interface CellEditorProps {
-  locations: CellEditLocation[];
+  locations: CellEditLocationCore[];
 }
 
 export function CellEditorRow({ locations }: CellEditorProps) {

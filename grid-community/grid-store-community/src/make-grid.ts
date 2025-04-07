@@ -1,19 +1,14 @@
 import { cascada } from "@1771technologies/react-cascada";
-import type {
-  StateCommunity,
-  StoreCommunity,
-  StoreCommunityReact,
-} from "@1771technologies/grid-types";
-import { type PropsCommunity } from "@1771technologies/grid-types";
 import { initialize } from "./initialize/initialize";
 import { makeApi } from "./make-api";
 import { initializeInternalState } from "./initialize/initialize-internal-state";
 import { initializePivotSensitiveState } from "./initialize/initialize-pivot-sensitive-state";
+import type { GridCore, StateInitCore } from "@1771technologies/grid-types/core";
 
-export function makeStore<D, E>(props: PropsCommunity<D, E>): StoreCommunityReact<D> {
+export function makeGridCore<D, E>(props: StateInitCore<D, E>) {
   const store = cascada(() => {
-    const stateInit = {} as StateCommunity<D, E>;
-    const apiInit = {} as StoreCommunity<D, E>["api"];
+    const apiInit = {} as GridCore<D, E>["api"];
+    const stateInit = {} as GridCore<D, E>["state"];
 
     initialize(props, stateInit, apiInit);
     initializeInternalState(stateInit, apiInit);
@@ -24,7 +19,7 @@ export function makeStore<D, E>(props: PropsCommunity<D, E>): StoreCommunityReac
     return {
       state: stateInit,
       api,
-    } satisfies StoreCommunity<D, E>;
+    } satisfies GridCore<D, E>;
   });
 
   // Post initialization now that the store is ready. This ensures the validation of these fields
@@ -32,5 +27,5 @@ export function makeStore<D, E>(props: PropsCommunity<D, E>): StoreCommunityReac
   store.state.columns.set((prev) => [...prev]);
   store.state.rowGroupModel.set((prev) => [...prev]);
 
-  return store as unknown as StoreCommunityReact<D>;
+  return store as unknown as GridCore<D, E>;
 }

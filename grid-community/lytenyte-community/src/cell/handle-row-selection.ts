@@ -1,9 +1,9 @@
-import type { ApiCommunityReact } from "@1771technologies/grid-types";
-import type { RowNode } from "@1771technologies/grid-types/core";
+import type { RowNodeCore } from "@1771technologies/grid-types/core";
+import type { ApiCoreReact } from "@1771technologies/grid-types/core-react";
 
 export function handleRowSelection(
-  api: ApiCommunityReact<any>,
-  row: RowNode,
+  api: ApiCoreReact<any>,
+  row: RowNodeCore<any>,
   bulk: boolean,
   meta: boolean,
   ignoreActivator: boolean = false,
@@ -68,7 +68,7 @@ export function handleRowSelection(
   if (!isSelected) api.rowSelectionSelect([row.id]);
 }
 
-export function canSelectRow(api: ApiCommunityReact<any>, row: RowNode) {
+export function canSelectRow(api: ApiCoreReact<any>, row: RowNodeCore<any>) {
   const predicate = api.getState().rowSelectionPredicate.peek();
 
   const canSelect =

@@ -1,4 +1,4 @@
-import type { CellEditProviderParamsReact } from "@1771technologies/grid-types/core-react";
+import type { CellEditProviderParamsCoreReact } from "@1771technologies/grid-types/core-react";
 import { Input } from "../../components/Input.js";
 
 export function DateEditor<D>({
@@ -6,7 +6,7 @@ export function DateEditor<D>({
   setValue,
   isValid,
   column,
-}: CellEditProviderParamsReact<D>) {
+}: CellEditProviderParamsCoreReact<D>) {
   const opts = column.cellEditParams ?? {};
 
   return (

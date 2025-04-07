@@ -1,27 +1,24 @@
-import { makeStore } from "@1771technologies/grid-store-community";
-import type { PropsCommunityReact, StoreCommunityReact } from "@1771technologies/grid-types";
+import { makeGridCore } from "@1771technologies/grid-store-community";
+import type { GridCoreReact, StateInitCoreReact } from "@1771technologies/grid-types/core-react";
 import { useEffect, useState, type ReactNode } from "react";
 
 type ChangeReturnType<F extends (...args: any[]) => any, R> = (...args: Parameters<F>) => R;
 
 type UseLyteNyteCommunityReturn<D> = {
-  state: StoreCommunityReact<D>["state"];
-  api: StoreCommunityReact<D>["api"];
-  useSignalWatcher: (
-    c: keyof Omit<StoreCommunityReact<D>["state"], "internal">,
-    fn: () => void,
-  ) => void;
-  useEvent: ChangeReturnType<StoreCommunityReact<D>["api"]["eventAddListener"], void>;
+  state: GridCoreReact<D>["state"];
+  api: GridCoreReact<D>["api"];
+  useSignalWatcher: (c: keyof Omit<GridCoreReact<D>["state"], "internal">, fn: () => void) => void;
+  useEvent: ChangeReturnType<GridCoreReact<D>["api"]["eventAddListener"], void>;
 };
 
 export const useLyteNyteCommunity = <D>(
-  p: PropsCommunityReact<D>,
+  p: StateInitCoreReact<D>,
 ): UseLyteNyteCommunityReturn<D> => {
   const [grid] = useState(() => {
-    const s = makeStore<D, ReactNode>(p);
+    const s = makeGridCore<D, ReactNode>(p);
 
     const useSignalWatcher = (
-      c: keyof Omit<StoreCommunityReact<D>["state"], "internal">,
+      c: keyof Omit<GridCoreReact<D>["state"], "internal">,
       fn: () => void,
     ) => {
       const signal = s.state[c];
@@ -33,7 +30,7 @@ export const useLyteNyteCommunity = <D>(
       }, [fn, signal]);
     };
 
-    const useEvent: ChangeReturnType<StoreCommunityReact<D>["api"]["eventAddListener"], void> = (
+    const useEvent: ChangeReturnType<GridCoreReact<D>["api"]["eventAddListener"], void> = (
       ev,
       fn,
     ) => {

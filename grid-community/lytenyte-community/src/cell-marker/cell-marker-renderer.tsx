@@ -1,11 +1,11 @@
 import "./cell-marker.css";
-import type { CellRendererParamsReact } from "@1771technologies/grid-types/core-react";
 import { useEvent } from "@1771technologies/react-utils";
 import { DragButton } from "./drag-button";
 import { SelectionCheckbox } from "./selection-checkbox";
 import { CollapseButton, ExpandButton } from "../components/buttons";
+import type { CellRendererParamsCoreReact } from "@1771technologies/grid-types/core-react";
 
-export function CellMarkerRenderer({ row, api }: CellRendererParamsReact<any>) {
+export function CellMarkerRenderer({ row, api }: CellRendererParamsCoreReact<any>) {
   const doesRowHaveDetail = api.rowDetailRowPredicate(row.id);
   const isExpanded = api.rowDetailIsExpanded(row.id);
   const isRowDraggable = api.rowIsDraggable(row.id);

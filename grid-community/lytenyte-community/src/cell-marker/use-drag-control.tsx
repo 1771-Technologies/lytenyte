@@ -1,10 +1,13 @@
 import { getHoveredRowIndex } from "@1771technologies/grid-core";
-import type { ApiCommunityReact } from "@1771technologies/grid-types";
-import type { RowDragEventParams, RowNode } from "@1771technologies/grid-types/core";
+import type { RowNodeCore } from "@1771technologies/grid-types/core";
+import type {
+  ApiCoreReact,
+  RowDragEventParamsCoreReact,
+} from "@1771technologies/grid-types/core-react";
 import { getClientX, getClientY, getRelativeXPosition } from "@1771technologies/js-utils";
 import { useDraggable } from "@1771technologies/react-dragon";
 
-export function useDragControl(api: ApiCommunityReact<any>, row: RowNode<any>) {
+export function useDragControl(api: ApiCoreReact<any>, row: RowNodeCore<any>) {
   const draggable = useDraggable({
     dragData: () => {
       const sx = api.getState();
@@ -37,7 +40,7 @@ export function useDragControl(api: ApiCommunityReact<any>, row: RowNode<any>) {
       const rows = sx.rowDragMultiRow.peek()
         ? [row, ...api.rowSelectionGetSelected().filter((r) => r !== row)]
         : [row];
-      const ref: RowDragEventParams<ApiCommunityReact<any>, any> = {
+      const ref: RowDragEventParamsCoreReact<any> = {
         event: ev.event,
         api,
         rows,
@@ -120,7 +123,7 @@ export function useDragControl(api: ApiCommunityReact<any>, row: RowNode<any>) {
   return draggable;
 }
 
-const DragPlaceholder = (p: { rows: RowNode[] }) => {
+const DragPlaceholder = (p: { rows: RowNodeCore<any>[] }) => {
   const label =
     p.rows.length === 1 ? `Moving row ${p.rows[0].rowIndex}` : `Moving ${p.rows.length} rows`;
   return <div className="lng1771-drag-placeholder">{label}</div>;

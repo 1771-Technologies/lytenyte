@@ -1,4 +1,3 @@
-import type { ApiCommunity, ColumnCommunity, StoreCommunity } from "@1771technologies/grid-types";
 import {
   autosizeColumn,
   autosizeColumns,
@@ -64,8 +63,6 @@ import {
   rowUpdateRedo,
   rowUpdateUndo,
   rowVisibleRowHeight,
-  keyBindingCall,
-  keyBindingCallWithEvent,
   navigate,
   columnIsEditable,
   rowGroupToggle,
@@ -73,14 +70,15 @@ import {
   rowGroupIsExpanded,
 } from "@1771technologies/grid-shared-state";
 import { events } from "../../grid-shared-state/src/events";
+import type { ApiCore, ColumnCore, GridCore } from "@1771technologies/grid-types/core";
 
 export function makeApi<D, E>(
-  state: StoreCommunity<D, E>["state"],
-  api: StoreCommunity<D, E>["api"],
-): StoreCommunity<D, E>["api"] {
+  state: GridCore<D, E>["state"],
+  api: GridCore<D, E>["api"],
+): GridCore<D, E>["api"] {
   const ev = events<D, E>();
 
-  const n = navigate<D, E, ApiCommunity<D, E>>(api);
+  const n = navigate<D, E, ApiCore<D, E>>(api);
 
   const rowSelect = rowSelection(api);
 
@@ -98,7 +96,7 @@ export function makeApi<D, E>(
     cellEditIsActive: () => state.internal.cellEditActiveEdits.peek().size > 0,
 
     columnById: (id) => columnById(api, id),
-    columnByIndex: (index) => columnByIndex(api, index) as ColumnCommunity<D, E>,
+    columnByIndex: (index) => columnByIndex(api, index) as ColumnCore<D, E>,
     columnField: (row, column) => columnField(api, row, column),
     columnFieldGroup: (row, column) => columnFieldGroup(api, row, column),
     columnGroupToggle: (id, state) => columnGroupToggle(api, id, state),
@@ -144,9 +142,6 @@ export function makeApi<D, E>(
     exportDataRect: (opts) => exportDataRect(api, opts as any) as any,
 
     getState: () => state,
-
-    keyBindingCall: (k) => keyBindingCall(api, k),
-    keyBindingCallWithEvent: (event) => keyBindingCallWithEvent(api, event),
 
     navigateDown: n.navigateDown,
     navigateGetBottom: n.navigateGetBottom,
@@ -206,7 +201,7 @@ export function makeApi<D, E>(
     rowSetDataMany: (updates) => rowSetDataMany(api, updates),
     rowUpdateRedo: () => rowUpdateRedo(api),
     rowUpdateUndo: () => rowUpdateUndo(api),
-  } satisfies ApiCommunity<D, E>;
+  } satisfies ApiCore<D, E>;
 
   Object.assign(api, partial);
 

@@ -1,9 +1,6 @@
-import type {
-  ColumnPivotSensitiveStateCommunity,
-  StateCommunity,
-} from "@1771technologies/grid-types";
+import type { ColumnPivotSensitiveStateCore, GridCore } from "@1771technologies/grid-types/core";
 
-export function initializePivotSensitiveState<D, E>(state: StateCommunity<D, E>) {
+export function initializePivotSensitiveState<D, E>(state: GridCore<D, E>["state"]) {
   const pivotSensitive = {
     columnGroupCenterLevels: state.internal.columnGroupCenterLevels,
     columnGroupEndLevels: state.internal.columnGroupEndLevels,
@@ -23,7 +20,7 @@ export function initializePivotSensitiveState<D, E>(state: StateCommunity<D, E>)
 
     filterModel: state.filterModel,
     sortModel: state.sortModel,
-  } satisfies ColumnPivotSensitiveStateCommunity<D, E>;
+  } satisfies ColumnPivotSensitiveStateCore<D, E>;
 
   Object.assign(state, pivotSensitive);
 }

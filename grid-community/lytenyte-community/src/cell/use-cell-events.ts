@@ -1,13 +1,13 @@
-import type { ApiCommunityReact, ColumnCommunityReact } from "@1771technologies/grid-types";
-import type { RowNode } from "@1771technologies/grid-types/core";
 import { useEvent } from "@1771technologies/react-utils";
 import type { MouseEvent } from "react";
 import { handleRowSelection } from "./handle-row-selection";
+import type { ApiCoreReact, ColumnCoreReact } from "@1771technologies/grid-types/core-react";
+import type { RowNodeCore } from "@1771technologies/grid-types/core";
 
 export function useCellEvents(
-  api: ApiCommunityReact<any>,
-  column: ColumnCommunityReact<any>,
-  row: RowNode,
+  api: ApiCoreReact<any>,
+  column: ColumnCoreReact<any>,
+  row: RowNodeCore<any>,
   rowIndex: number,
   columnIndex: number,
 ) {

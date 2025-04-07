@@ -1,16 +1,16 @@
 import { useMemo, type CSSProperties } from "react";
 import { useGrid } from "../use-grid";
-import type { ColumnCommunityReact } from "@1771technologies/grid-types";
-import type { CellEditLocation } from "@1771technologies/grid-types/core";
 import { getRootCell } from "@1771technologies/grid-core";
 import { sizeFromCoord } from "@1771technologies/js-utils";
 import { getTransform } from "../utils/get-transform";
+import type { ColumnCoreReact } from "@1771technologies/grid-types/core-react";
+import type { CellEditLocationCore } from "@1771technologies/grid-types/core";
 
 export function useCellEditStyle(
-  column: ColumnCommunityReact<any>,
+  column: ColumnCoreReact<any>,
   xPositions: Uint32Array,
   yPositions: Uint32Array,
-  location: CellEditLocation,
+  location: CellEditLocationCore,
 ) {
   const { state, api } = useGrid();
 

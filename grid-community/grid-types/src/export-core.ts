@@ -19,6 +19,12 @@ export type GridCore<D, E> = {
   readonly api: ApiCore<D, E>;
 };
 
+export type {
+  StateCore,
+  ColumnPivotSensitiveStateCore,
+  InitialState as InitialStateCore,
+} from "./state/state-core.js";
+
 export type StateInitCore<D, E> = PropsCoreRaw<
   ApiCore<D, E>,
   D,

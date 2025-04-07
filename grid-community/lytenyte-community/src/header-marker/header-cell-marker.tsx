@@ -1,8 +1,8 @@
-import type { ColumnHeaderRendererParamsReact } from "@1771technologies/grid-types/core-react";
 import { useMemo } from "react";
 import { Checkbox } from "../components/checkbox";
+import type { ColumnHeaderRendererParamsCoreReact } from "@1771technologies/grid-types/core-react";
 
-export function HeaderCellMarker({ api }: ColumnHeaderRendererParamsReact<any>) {
+export function HeaderCellMarker({ api }: ColumnHeaderRendererParamsCoreReact<any>) {
   const supportsSelectedAll = api.rowSelectionSelectAllSupported();
 
   const allSelected = api.rowSelectionAllRowsSelected();

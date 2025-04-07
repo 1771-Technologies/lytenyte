@@ -1,16 +1,10 @@
-import type { ApiCommunityReact } from "@1771technologies/grid-types";
-import type { RowNode } from "@1771technologies/grid-types/core";
 import { useMemo } from "react";
 import { Checkbox } from "../components/checkbox";
 import { handleRowSelection } from "../cell/handle-row-selection";
+import type { ApiCoreReact } from "@1771technologies/grid-types/core-react";
+import type { RowNodeCore } from "@1771technologies/grid-types/core";
 
-export function SelectionCheckbox({
-  api,
-  row,
-}: {
-  api: ApiCommunityReact<any>;
-  row: RowNode<any>;
-}) {
+export function SelectionCheckbox({ api, row }: { api: ApiCoreReact<any>; row: RowNodeCore<any> }) {
   const sx = api.getState();
   const isSelect = sx.rowSelectionPredicate.use();
 

@@ -1,6 +1,6 @@
-import type { ColumnCommunityReact } from "@1771technologies/grid-types";
+import type { ColumnCoreReact } from "@1771technologies/grid-types/core-react";
 
-export const columns: ColumnCommunityReact<any>[] = [
+export const columns: ColumnCoreReact<any>[] = [
   { id: "age", groupPath: ["Information"], type: "number", pin: "start", rowGroupable: true },
   { id: "job", rowGroupable: true },
   { id: "balance", type: "number", pin: "start", rowGroupable: true },

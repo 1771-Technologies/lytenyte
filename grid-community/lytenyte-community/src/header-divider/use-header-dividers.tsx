@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
 import { useMemo } from "react";
 import { HeaderDivider } from "./header-divider";
-import type { ColumnGroupRows } from "@1771technologies/grid-types/core";
-import type { ApiCommunityReact } from "@1771technologies/grid-types";
+import type { ApiCoreReact } from "@1771technologies/grid-types/core-react";
+import type { ColumnGroupRowsCore } from "@1771technologies/grid-types/core";
 
-export function useHeaderDividers(api: ApiCommunityReact<any>) {
+export function useHeaderDividers(api: ApiCoreReact<any>) {
   const sx = api.getState();
   const xPositions = sx.columnPositions.use();
   const hierarchy = sx.columnGroupLevels.use();
@@ -89,14 +89,14 @@ export function useHeaderDividers(api: ApiCommunityReact<any>) {
   ]);
 }
 
-function isPartOfGroup(columnIndex: number, hierarchy: ColumnGroupRows) {
+function isPartOfGroup(columnIndex: number, hierarchy: ColumnGroupRowsCore) {
   if (!hierarchy.length) return false;
 
   return hierarchy.length > 0 && hierarchy[0][columnIndex] != null;
 }
 
 function getRowStart(
-  hierarchy: ColumnGroupRows,
+  hierarchy: ColumnGroupRowsCore,
   startCount: number,
   firstEndIndex: number,
   columnIndex: number,
