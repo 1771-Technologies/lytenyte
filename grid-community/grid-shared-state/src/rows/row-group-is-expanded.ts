@@ -1,9 +1,9 @@
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
-import type { RowNode } from "@1771technologies/grid-types/core";
+import type { ApiCore, RowNodeCore } from "@1771technologies/grid-types/core";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
 export const rowGroupIsExpanded = <D, E>(
-  api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
-  row: RowNode<D>,
+  api: ApiCore<D, E> | ApiPro<D, E>,
+  row: RowNodeCore<D>,
 ) => {
   if (!api.rowIsGroup(row)) return false;
 

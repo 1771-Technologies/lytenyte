@@ -1,9 +1,10 @@
 import { computed } from "@1771technologies/react-cascada";
 import { END_ENCODING, FULL_ENCODING } from "@1771technologies/grid-constants";
 import { computeBounds } from "@1771technologies/grid-core";
-import type { ApiCommunity, ApiEnterprise, StoreEnterprise } from "@1771technologies/grid-types";
+import type { ApiCore } from "@1771technologies/grid-types/core";
+import type { ApiPro, GridPro } from "@1771technologies/grid-types/pro";
 
-export const virt = <D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>) => {
+export const virt = <D, E>(api: ApiCore<D, E> | ApiPro<D, E>) => {
   return {
     virtBounds: computed(() => {
       const s = api.getState();
@@ -159,8 +160,8 @@ export const virt = <D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>) => {
       }
     }),
   } satisfies {
-    virtBounds: StoreEnterprise<D, E>["state"]["internal"]["virtBounds"];
-    virtLayout: StoreEnterprise<D, E>["state"]["internal"]["virtLayout"];
+    virtBounds: GridPro<D, E>["state"]["internal"]["virtBounds"];
+    virtLayout: GridPro<D, E>["state"]["internal"]["virtLayout"];
   };
 };
 

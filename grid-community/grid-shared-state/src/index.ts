@@ -49,7 +49,6 @@ export { rowSetData, rowSetDataMany } from "./rows/row-set-data.js";
 export { rowUpdateRedo, rowUpdateUndo } from "./rows/row-update-redo-undo.js";
 export { rowVisibleRowHeight } from "./rows/row-visible-row-height.js";
 
-export { keyBindingCall, keyBindingCallWithEvent } from "./key-binding.js";
 export { navigate } from "./navigate.js";
 export { events } from "./events.js";
 

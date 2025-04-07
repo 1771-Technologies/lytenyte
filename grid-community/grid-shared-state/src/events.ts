@@ -1,10 +1,10 @@
-import type { ApiEnterprise } from "@1771technologies/grid-types";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
 export const events = <D, E>(): {
-  eventAddListeners: ApiEnterprise<D, E>["eventAddListener"];
-  eventFire: ApiEnterprise<D, E>["eventFire"];
-  eventGetListeners: ApiEnterprise<D, E>["eventGetListeners"];
-  eventRemoveListener: ApiEnterprise<D, E>["eventRemoveListener"];
+  eventAddListeners: ApiPro<D, E>["eventAddListener"];
+  eventFire: ApiPro<D, E>["eventFire"];
+  eventGetListeners: ApiPro<D, E>["eventGetListeners"];
+  eventRemoveListener: ApiPro<D, E>["eventRemoveListener"];
 } => {
   const events: Record<string, Set<any>> = {};
 
@@ -28,9 +28,9 @@ export const events = <D, E>(): {
       events[name]?.delete(cb);
     },
   } satisfies {
-    eventAddListeners: ApiEnterprise<D, E>["eventAddListener"];
-    eventFire: ApiEnterprise<D, E>["eventFire"];
-    eventGetListeners: ApiEnterprise<D, E>["eventGetListeners"];
-    eventRemoveListener: ApiEnterprise<D, E>["eventRemoveListener"];
+    eventAddListeners: ApiPro<D, E>["eventAddListener"];
+    eventFire: ApiPro<D, E>["eventFire"];
+    eventGetListeners: ApiPro<D, E>["eventGetListeners"];
+    eventRemoveListener: ApiPro<D, E>["eventRemoveListener"];
   };
 };

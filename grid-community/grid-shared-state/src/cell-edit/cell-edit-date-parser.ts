@@ -1,9 +1,6 @@
-import type { ApiCommunity, ColumnCommunity } from "@1771technologies/grid-types";
-import type { CellEditParserParams } from "@1771technologies/grid-types/core";
+import type { CellEditParserParamsCore } from "@1771technologies/grid-types/core";
 
-export const dateParser = <D, E>(
-  p: CellEditParserParams<ApiCommunity<D, E>, D, ColumnCommunity<D, E>>,
-) => {
+export const dateParser = <D, E>(p: CellEditParserParamsCore<D, E>) => {
   const value = p.value as Date | string;
   if (value == null) return value;
 

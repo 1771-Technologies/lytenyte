@@ -1,10 +1,10 @@
-import type { CellEditLocation } from "@1771technologies/grid-types/core";
+import type { ApiCore, CellEditLocationCore } from "@1771technologies/grid-types/core";
 import { cellEditHandleBulkEdit } from "./cell-edit-handle-bulk-edit";
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
 export function cellEditEnd<D, E>(
-  api: ApiCommunity<D, E> | ApiEnterprise<D, E>,
-  l: CellEditLocation,
+  api: ApiCore<D, E> | ApiPro<D, E>,
+  l: CellEditLocationCore,
   cancel = false,
 ) {
   return cellEditHandleBulkEdit(api, [l], cancel);

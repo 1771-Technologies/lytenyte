@@ -4,19 +4,22 @@ import {
   GROUP_COLUMN_PREFIX,
 } from "@1771technologies/grid-constants";
 import { autosizeGroupColumnDefault } from "@1771technologies/grid-core";
-import type { ColumnCommunity, ColumnRowGroupCommunity } from "@1771technologies/grid-types";
-import type { RowGroupDisplayMode } from "@1771technologies/grid-types/core";
+import type {
+  ColumnCore,
+  ColumnRowGroupCore,
+  RowGroupDisplayModeCore,
+} from "@1771technologies/grid-types/core";
 import { itemsWithIdToMap } from "@1771technologies/js-utils";
 
 interface ColumnHandleGroupColumnArgs<D, E> {
-  readonly columns: ColumnCommunity<D, E>[];
+  readonly columns: ColumnCore<D, E>[];
   readonly rowGroupModel: string[];
-  readonly rowGroupDisplayMode: RowGroupDisplayMode;
-  readonly rowGroupColumnTemplate: ColumnRowGroupCommunity<D, E>;
+  readonly rowGroupDisplayMode: RowGroupDisplayModeCore;
+  readonly rowGroupColumnTemplate: ColumnRowGroupCore<D, E>;
   readonly treeData: boolean;
 }
 
-export const baseGroup: ColumnRowGroupCommunity<any, any> = {
+export const baseGroup: ColumnRowGroupCore<any, any> = {
   headerName: "Group",
   cellAutosizeFn: autosizeGroupColumnDefault,
 };

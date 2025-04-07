@@ -1,10 +1,7 @@
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
+import type { ApiCore } from "@1771technologies/grid-types/core";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
-export const rowSetData = <D, E>(
-  api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
-  rowId: string,
-  data: D,
-) => {
+export const rowSetData = <D, E>(api: ApiCore<D, E> | ApiPro<D, E>, rowId: string, data: D) => {
   const row = api.rowById(rowId);
   if (!row) return;
 
@@ -32,7 +29,7 @@ export const rowSetData = <D, E>(
 };
 
 export const rowSetDataMany = <D, E>(
-  api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
+  api: ApiCore<D, E> | ApiPro<D, E>,
   updates: Record<string, D>,
 ) => {
   const s = api.getState();

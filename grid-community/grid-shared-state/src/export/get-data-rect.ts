@@ -1,22 +1,17 @@
+import type { ApiCore, ColumnCore, RowNodeCore } from "@1771technologies/grid-types/core";
 import type {
-  DataRectResult,
-  ExportTransformDataRow,
-  RowNode,
-} from "@1771technologies/grid-types/core";
-import type {
-  ApiCommunity,
-  ApiEnterprise,
-  ColumnCommunity,
-  ColumnEnterprise,
-} from "@1771technologies/grid-types";
+  ApiPro,
+  DataRectResultPro,
+  ExportTransformDataRowPro,
+} from "@1771technologies/grid-types/pro";
 
 export interface GetDataRectArgs<D, E> {
   readonly columnStart: number;
   readonly columnEnd: number;
-  readonly rows: Record<number, RowNode<D>>;
-  readonly api: ApiEnterprise<D, E> | ApiCommunity<D, E>;
+  readonly rows: Record<number, RowNodeCore<D>>;
+  readonly api: ApiPro<D, E> | ApiCore<D, E>;
   readonly uniformGroupHeaders?: boolean;
-  readonly transform?: ExportTransformDataRow<ApiEnterprise<D, E>, ColumnEnterprise<D, E>>;
+  readonly transform?: ExportTransformDataRowPro<D, E>;
 }
 
 export function getDataRect<D, E>({
@@ -26,14 +21,14 @@ export function getDataRect<D, E>({
   api,
   uniformGroupHeaders,
   transform,
-}: GetDataRectArgs<D, E>): DataRectResult<ColumnEnterprise<D, E>> {
+}: GetDataRectArgs<D, E>): DataRectResultPro<D, E> {
   const s = api.getState();
 
   const visible = s.columnsVisible.peek();
 
   const data: unknown[][] = [];
 
-  const columns: ColumnCommunity<D, E>[] = [];
+  const columns: ColumnCore<D, E>[] = [];
 
   for (let i = columnStart; i < columnEnd && i < visible.length; i++) {
     const column = visible[i];

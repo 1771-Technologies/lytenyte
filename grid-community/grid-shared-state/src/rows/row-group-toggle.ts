@@ -1,9 +1,9 @@
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
-import type { RowNodeGroup } from "@1771technologies/grid-types/core";
+import type { ApiCore } from "@1771technologies/grid-types/core";
+import type { ApiPro, RowNodeGroupPro } from "@1771technologies/grid-types/pro";
 
 export const rowGroupToggle = <D, E>(
-  api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
-  row: RowNodeGroup,
+  api: ApiCore<D, E> | ApiPro<D, E>,
+  row: RowNodeGroupPro,
   state?: boolean,
 ) => {
   const s = api.getState();

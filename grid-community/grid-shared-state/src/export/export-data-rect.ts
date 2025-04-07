@@ -1,17 +1,10 @@
-import type { ExportDataRectOptions } from "@1771technologies/grid-types/core";
-import type {
-  ApiCommunity,
-  ApiEnterprise,
-  ColumnCommunity,
-  ColumnEnterprise,
-} from "@1771technologies/grid-types";
+import type { ApiPro, ExportDataRectOptionsPro } from "@1771technologies/grid-types/pro";
 import { getDataRect } from "./get-data-rect";
+import type { ApiCore, ExportDataRectOptionsCore } from "@1771technologies/grid-types/core";
 
 export const exportDataRect = <D, E>(
-  api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
-  opts:
-    | ExportDataRectOptions<ApiEnterprise<D, E>, ColumnEnterprise<D, E>>
-    | ExportDataRectOptions<ColumnCommunity<D, E>, ColumnCommunity<D, E>> = {},
+  api: ApiPro<D, E> | ApiCore<D, E>,
+  opts: ExportDataRectOptionsCore<D, E> | ExportDataRectOptionsPro<D, E> = {},
 ) => {
   const s = api.getState();
   const rowCount = s.internal.rowCount.peek();

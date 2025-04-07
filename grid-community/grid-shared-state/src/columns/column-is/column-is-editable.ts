@@ -1,13 +1,9 @@
-import type {
-  ApiCommunity,
-  ApiEnterprise,
-  ColumnCommunity,
-  ColumnEnterprise,
-} from "@1771technologies/grid-types";
+import type { ApiCore, ColumnCore } from "@1771technologies/grid-types/core";
+import type { ApiPro, ColumnPro } from "@1771technologies/grid-types/pro";
 
 export const columnIsEditable = <D, E>(
-  api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
-  c: ColumnCommunity<D, E> | ColumnEnterprise<D, E>,
+  api: ApiPro<D, E> | ApiCore<D, E>,
+  c: ColumnCore<D, E> | ColumnPro<D, E>,
 ) => {
   if (api.columnIsGridGenerated(c as any)) return false;
 

@@ -1,19 +1,12 @@
-import type { Field } from "@1771technologies/grid-types/core";
-import type {
-  ApiCommunity,
-  ApiEnterprise,
-  ColumnCommunity,
-  ColumnEnterprise,
-} from "@1771technologies/grid-types";
+import type { ApiCore, ColumnCore, FieldCore } from "@1771technologies/grid-types/core";
+import type { ApiPro, ColumnPro, FieldPro } from "@1771technologies/grid-types/pro";
 import { get } from "@1771technologies/js-utils";
 
 export function columnGetField<D, E>(
   data: any,
-  field:
-    | Field<ApiCommunity<D, E>, D, ColumnCommunity<D, E>>
-    | Field<ApiEnterprise<D, E>, D, ColumnEnterprise<D, E>>,
-  column: ColumnCommunity<D, E> | ColumnEnterprise<D, E>,
-  api: ApiCommunity<D, E> | ApiEnterprise<D, E>,
+  field: FieldCore<D, E> | FieldPro<D, E>,
+  column: ColumnCore<D, E> | ColumnPro<D, E>,
+  api: ApiCore<D, E> | ApiPro<D, E>,
 ) {
   if (data == null) return null;
 

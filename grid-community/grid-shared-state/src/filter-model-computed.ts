@@ -1,17 +1,16 @@
 import { computed, signal } from "@1771technologies/react-cascada";
-import type { ApiCommunity, ApiEnterprise, ColumnEnterprise } from "@1771technologies/grid-types";
-import type { ColumnFilterModel as CFC } from "@1771technologies/grid-types/core";
-import type { ColumnFilterModel as CFE } from "@1771technologies/grid-types/pro";
 import { itemsWithIdToMap } from "@1771technologies/js-utils";
+import type { ApiCore, ColumnFilterModelCore } from "@1771technologies/grid-types/core";
+import type { ApiPro, ColumnFilterModelPro, ColumnPro } from "@1771technologies/grid-types/pro";
 
 export function filterModelComputed<D, E>(
-  filters: CFE<any, any> | CFC<any, any>,
-  api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
+  filters: ColumnFilterModelCore<any, any> | ColumnFilterModelPro<any, any>,
+  api: ApiPro<D, E> | ApiCore<D, E>,
   pivots: boolean = false,
 ) {
   const model$ = signal(filters);
 
-  api = api as ApiEnterprise<D, E>;
+  api = api as ApiPro<D, E>;
 
   return computed(
     () => {
@@ -36,7 +35,7 @@ export function filterModelComputed<D, E>(
       const model = Object.entries(model$.get())
         .map((c) => {
           const columnId = c[0];
-          const filter = c[1] as CFE<any, any>["string"];
+          const filter = c[1] as ColumnFilterModelPro<any, any>["string"];
 
           if (!isColumnValid(columnId)) return null;
           const validSimple = isValidSimpleFilter(filter.simple, lookup, isColumnValid);
@@ -49,7 +48,7 @@ export function filterModelComputed<D, E>(
           if (validSimple) v.simple = filter.simple;
           if (validSet) v.set = filter.set;
 
-          return [columnId, v as CFE<any, any>["string"]];
+          return [columnId, v as ColumnFilterModelPro<any, any>["string"]];
         })
         .filter((c) => c !== null);
 
@@ -63,7 +62,7 @@ export function filterModelComputed<D, E>(
 }
 
 function isValidSetFilter(
-  f: CFE<any, any>["string"]["set"],
+  f: ColumnFilterModelPro<any, any>["string"]["set"],
   isColumnValid: (id: string) => boolean,
 ) {
   if (!f) return false;
@@ -73,8 +72,8 @@ function isValidSetFilter(
 }
 
 function isValidSimpleFilter(
-  f: CFE<any, any>["string"]["simple"],
-  lookup: Map<string, ColumnEnterprise<any, any>>,
+  f: ColumnFilterModelPro<any, any>["string"]["simple"],
+  lookup: Map<string, ColumnPro<any, any>>,
   isColumnValid: (id: string) => boolean,
 ): boolean {
   if (!f) return false;

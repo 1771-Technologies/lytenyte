@@ -1,11 +1,8 @@
-import type { CellEditLocation } from "@1771technologies/grid-types/core";
+import type { ApiCore, CellEditLocationCore } from "@1771technologies/grid-types/core";
 import { cellEditKey } from "./cell-edit-key";
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
-export const cellEditValue = <D, E>(
-  api: ApiCommunity<D, E> | ApiEnterprise<D, E>,
-  p: CellEditLocation,
-) => {
+export const cellEditValue = <D, E>(api: ApiCore<D, E> | ApiPro<D, E>, p: CellEditLocationCore) => {
   const key = cellEditKey(p);
   const activeValues = api.getState().internal.cellEditActiveEditValues.peek();
 

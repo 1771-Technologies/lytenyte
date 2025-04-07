@@ -1,14 +1,14 @@
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
-import type { RowNode } from "@1771technologies/grid-types/core";
+import type { ApiCore, RowNodeCore } from "@1771technologies/grid-types/core";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
-export const rowSelection = <D, E>(api: ApiEnterprise<D, E> | ApiCommunity<D, E>) => {
+export const rowSelection = <D, E>(api: ApiCore<D, E> | ApiPro<D, E>) => {
   return {
     rowSelectionGetSelected: () => {
       const sx = api.getState();
 
       const selectedIds = sx.rowSelectionSelectedIds.peek();
 
-      const nodes: RowNode<D>[] = [];
+      const nodes: RowNodeCore<D>[] = [];
       for (const id of selectedIds) {
         const row = api.rowById(id);
         if (row) nodes.push(row);
@@ -42,7 +42,7 @@ export const rowSelection = <D, E>(api: ApiEnterprise<D, E> | ApiCommunity<D, E>
       }
 
       sx.rowSelectionSelectedIds.set(next);
-      (api as ApiCommunity<D, E>).eventFire("onRowSelectionSelected", {
+      (api as ApiCore<D, E>).eventFire("onRowSelectionSelected", {
         api: api as any,
         rowIds,
       });
@@ -76,7 +76,7 @@ export const rowSelection = <D, E>(api: ApiEnterprise<D, E> | ApiCommunity<D, E>
       }
 
       sx.rowSelectionSelectedIds.set(next);
-      (api as ApiCommunity<D, E>).eventFire("onRowSelectionDeselected", {
+      (api as ApiCore<D, E>).eventFire("onRowSelectionDeselected", {
         api: api as any,
         rowIds,
       });
@@ -122,13 +122,13 @@ export const rowSelection = <D, E>(api: ApiEnterprise<D, E> | ApiCommunity<D, E>
 
       sx.rowSelectionSelectedIds.set(allIds);
 
-      (api as ApiCommunity<D, E>).eventFire("onRowSelectionAllSelected", api as any);
+      (api as ApiCore<D, E>).eventFire("onRowSelectionAllSelected", api as any);
     },
     rowSelectionClear: () => {
       const sx = api.getState();
 
       sx.rowSelectionSelectedIds.set(new Set());
-      (api as ApiCommunity<D, E>).eventFire("onRowSelectionClear", api as any);
+      (api as ApiCore<D, E>).eventFire("onRowSelectionClear", api as any);
     },
     rowSelectionSelectAllSupported: () => {
       const sx = api.getState();

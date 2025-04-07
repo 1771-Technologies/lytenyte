@@ -1,16 +1,12 @@
-import type {
-  ApiCommunity,
-  ApiEnterprise,
-  ColumnCommunity,
-  ColumnEnterprise,
-} from "@1771technologies/grid-types";
+import type { ApiCore, ColumnCore } from "@1771technologies/grid-types/core";
+import type { ApiPro, ColumnPro } from "@1771technologies/grid-types/pro";
 
 export const columnSortDirection = <D, E>(
-  api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
-  c: ColumnCommunity<D, E> | ColumnEnterprise<D, E>,
+  api: ApiPro<D, E> | ApiCore<D, E>,
+  c: ColumnCore<D, E> | ColumnPro<D, E>,
 ) => {
-  api = api as ApiCommunity<D, E>;
-  c = c as ColumnCommunity<D, E>;
+  api = api as ApiCore<D, E>;
+  c = c as ColumnCore<D, E>;
 
   const modelIndex = api.columnSortModelIndex(c);
 

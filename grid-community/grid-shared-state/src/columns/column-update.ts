@@ -1,31 +1,27 @@
-import type {
-  ApiCommunity,
-  ApiEnterprise,
-  ColumnCommunity,
-  ColumnEnterprise,
-} from "@1771technologies/grid-types";
+import type { ApiCore, ColumnCore } from "@1771technologies/grid-types/core";
+import type { ApiPro, ColumnPro } from "@1771technologies/grid-types/pro";
 
 export const columnUpdate = <D, E>(
-  api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
-  c: ColumnCommunity<D, E> | ColumnEnterprise<D, E>,
+  api: ApiPro<D, E> | ApiCore<D, E>,
+  c: ColumnCore<D, E> | ColumnPro<D, E>,
   update:
-    | Record<string, Omit<ColumnCommunity<D, E>, "id">>
-    | Record<string, Omit<ColumnEnterprise<D, E>, "id">>,
+    | Record<string, Omit<ColumnCore<D, E>, "id">>
+    | Record<string, Omit<ColumnPro<D, E>, "id">>,
 ) => {
-  api = api as ApiEnterprise<D, E>;
-  c = c as ColumnEnterprise<D, E>;
+  api = api as ApiPro<D, E>;
+  c = c as ColumnPro<D, E>;
 
   api.columnUpdateMany({ [c.id]: update });
 };
 
 export const columnUpdateMany = <D, E>(
-  api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
+  api: ApiPro<D, E> | ApiCore<D, E>,
   updates:
-    | Record<string, Omit<ColumnCommunity<D, E>, "id">>
-    | Record<string, Omit<ColumnEnterprise<D, E>, "id">>,
+    | Record<string, Omit<ColumnCore<D, E>, "id">>
+    | Record<string, Omit<ColumnPro<D, E>, "id">>,
 ) => {
-  api = api as ApiEnterprise<D, E>;
-  updates = updates as Record<string, Omit<ColumnEnterprise<D, E>, "id">>;
+  api = api as ApiPro<D, E>;
+  updates = updates as Record<string, Omit<ColumnPro<D, E>, "id">>;
 
   const s = api.getState();
 

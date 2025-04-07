@@ -1,16 +1,11 @@
-import type { RowNode } from "@1771technologies/grid-types/core";
-import type {
-  ApiCommunity,
-  ApiEnterprise,
-  ColumnCommunity,
-  ColumnEnterprise,
-} from "@1771technologies/grid-types";
+import type { ApiCore, ColumnCore, RowNodeCore } from "@1771technologies/grid-types/core";
 import { columnFieldComputer } from "./column-field-computer";
+import type { ApiPro, ColumnPro } from "@1771technologies/grid-types/pro";
 
 export const columnField = <D, E>(
-  api: ApiCommunity<D, E> | ApiEnterprise<D, E>,
-  row: RowNode<D>,
-  column: ColumnCommunity<D, E> | ColumnEnterprise<D, E>,
+  api: ApiCore<D, E> | ApiPro<D, E>,
+  row: RowNodeCore<D>,
+  column: ColumnCore<D, E> | ColumnPro<D, E>,
 ) => {
   return columnFieldComputer(api, row, column, "column", column.field ?? column.id);
 };

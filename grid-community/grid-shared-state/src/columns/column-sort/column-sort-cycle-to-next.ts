@@ -1,23 +1,23 @@
 import type {
-  ApiCommunity,
-  ApiEnterprise,
-  ColumnCommunity,
-  ColumnEnterprise,
-} from "@1771technologies/grid-types";
-import type {
-  SortCycleOption,
-  SortModelItem,
-  SortOptions,
-  Writable,
+  ApiCore,
+  ColumnCore,
+  SortCycleOptionCore,
+  SortModelItemCore,
+  SortOptionsCore,
 } from "@1771technologies/grid-types/core";
+import type { ApiPro, ColumnPro } from "@1771technologies/grid-types/pro";
+
+type Writable<T> = {
+  -readonly [P in keyof T]: T[P];
+};
 
 export const columnSortCycleToNext = <D, E>(
-  api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
-  c: ColumnCommunity<D, E> | ColumnEnterprise<D, E>,
+  api: ApiCore<D, E> | ApiPro<D, E>,
+  c: ColumnPro<D, E> | ColumnCore<D, E>,
   isAdditive: boolean = false,
 ) => {
-  api = api as ApiCommunity<D, E>;
-  c = c as ColumnCommunity<D, E>;
+  api = api as ApiCore<D, E>;
+  c = c as ColumnCore<D, E>;
 
   if (!api.columnIsSortable(c)) return;
 
@@ -57,9 +57,9 @@ export const columnSortCycleToNext = <D, E>(
 };
 
 function getSortFromSortOptionValue(
-  option: NonNullable<SortCycleOption>,
+  option: NonNullable<SortCycleOptionCore>,
   columnId: string,
-): SortModelItem {
+): SortModelItemCore {
   const parts = option.split("_");
 
   const isDesc = parts[0] === "desc";
@@ -67,7 +67,7 @@ function getSortFromSortOptionValue(
   const sort = {
     columnId,
     isDescending: isDesc,
-    options: {} as Writable<SortOptions>,
+    options: {} as Writable<SortOptionsCore>,
   };
 
   for (let i = 1; i < parts.length; i++) {
@@ -77,5 +77,5 @@ function getSortFromSortOptionValue(
     if (part === "nulls-first") sort.options.nullsAppearFirst = true;
   }
 
-  return sort satisfies SortModelItem;
+  return sort satisfies SortModelItemCore;
 }

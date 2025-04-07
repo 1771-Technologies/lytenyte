@@ -1,17 +1,17 @@
 import type {
-  ApiCommunity,
-  ApiEnterprise,
-  ColumnCommunity,
-  ColumnEnterprise,
-} from "@1771technologies/grid-types";
-import type { SortModelItem, SortCycleOption } from "@1771technologies/grid-types/core";
+  ApiCore,
+  ColumnCore,
+  SortCycleOptionCore,
+  SortModelItemCore,
+} from "@1771technologies/grid-types/core";
+import type { ApiPro, ColumnPro } from "@1771technologies/grid-types/pro";
 
 export const columnSortCycleIndex = <D, E>(
-  api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
-  c: ColumnCommunity<D, E> | ColumnEnterprise<D, E>,
+  api: ApiCore<D, E> | ApiPro<D, E>,
+  c: ColumnCore<D, E> | ColumnPro<D, E>,
 ) => {
-  api = api as ApiCommunity<D, E>;
-  c = c as ColumnCommunity<D, E>;
+  api = api as ApiCore<D, E>;
+  c = c as ColumnCore<D, E>;
 
   if (!api.columnIsSortable(c)) return null;
 
@@ -28,13 +28,13 @@ export const columnSortCycleIndex = <D, E>(
   return sortCycle.indexOf(sortString);
 };
 
-function getSortOptionValueFromSort(sort: SortModelItem): SortCycleOption {
+function getSortOptionValueFromSort(sort: SortModelItemCore): SortCycleOptionCore {
   const parts = [sort.isDescending ? "desc" : "asc"];
-  if (!sort.options) return parts[0] as SortCycleOption;
+  if (!sort.options) return parts[0] as SortCycleOptionCore;
 
   if (sort.options.isAccented) parts.push("accented");
   if (sort.options.isAbsolute) parts.push("abs");
   if (sort.options.nullsAppearFirst) parts.push("nulls-first");
 
-  return parts.join("_") as SortCycleOption;
+  return parts.join("_") as SortCycleOptionCore;
 }

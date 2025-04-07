@@ -1,7 +1,8 @@
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
+import type { ApiCore } from "@1771technologies/grid-types/core";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
 export const columnGroupToggle = <D, E>(
-  api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
+  api: ApiPro<D, E> | ApiCore<D, E>,
   id: string,
   state?: boolean,
 ) => {

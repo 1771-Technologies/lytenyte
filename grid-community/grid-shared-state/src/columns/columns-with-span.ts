@@ -1,19 +1,11 @@
+import type { ColumnBaseCore, ColumnCore, GridCore } from "@1771technologies/grid-types/core";
+import type { ColumnBasePro, ColumnPro, GridPro } from "@1771technologies/grid-types/pro";
 import { computed, type ReadonlySignal, type Signal } from "@1771technologies/react-cascada";
-import type {
-  ColumnBaseCommunity,
-  ColumnBaseEnterprise,
-  ColumnCommunity,
-  ColumnEnterprise,
-  StoreCommunity,
-  StoreEnterprise,
-} from "@1771technologies/grid-types";
 
 export function columnsWithSpan<D, E>(
-  columnsVisible:
-    | ReadonlySignal<ColumnCommunity<D, E>[]>
-    | ReadonlySignal<ColumnEnterprise<D, E>[]>,
-  columnBase: Signal<ColumnBaseCommunity<D, E>> | Signal<ColumnBaseEnterprise<D, E>>,
-  api: StoreCommunity<D, E>["api"] | StoreEnterprise<D, E>["api"],
+  columnsVisible: ReadonlySignal<ColumnCore<D, E>[]> | ReadonlySignal<ColumnPro<D, E>[]>,
+  columnBase: Signal<ColumnBaseCore<D, E>> | Signal<ColumnBasePro<D, E>>,
+  api: GridCore<D, E>["api"] | GridPro<D, E>["api"],
 ) {
   const columnsWithColSpan = computed(() => {
     const indices = new Set<number>();

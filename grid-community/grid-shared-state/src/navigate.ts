@@ -12,13 +12,14 @@ import {
   getUp,
   rowScrollIntoViewValue,
 } from "@1771technologies/grid-core";
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
+import type { ApiCore } from "@1771technologies/grid-types/core";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 import { equal } from "@1771technologies/js-utils";
 
-export const navigate = <D, E, T extends ApiCommunity<D, E> | ApiEnterprise<D, E>>(a: T) => {
+export const navigate = <D, E, T extends ApiCore<D, E> | ApiPro<D, E>>(a: T) => {
   const get = () => api.getState().internal.navigatePosition.peek();
 
-  const api = a as ApiCommunity<D, E>;
+  const api = a as ApiCore<D, E>;
 
   return {
     navigateNext: () => {

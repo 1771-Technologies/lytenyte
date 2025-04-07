@@ -1,25 +1,21 @@
 import { signal } from "@1771technologies/react-cascada";
 import { columnsByPin } from "@1771technologies/grid-core";
-import type {
-  ApiCommunity,
-  ApiEnterprise,
-  ColumnCommunity,
-  ColumnEnterprise,
-} from "@1771technologies/grid-types";
 import { containsADuplicateId } from "@1771technologies/js-utils";
 import { columnHandleGroupColumn } from "./column-handle-group-column";
 import { columnHandleMarker } from "./column-handle-marker-column";
 import { columnHandleTreeData } from "./column-handle-tree-data";
+import type { ApiCore, ColumnCore } from "@1771technologies/grid-types/core";
+import type { ApiPro, ColumnPro } from "@1771technologies/grid-types/pro";
 
 export function columnsComputed<D, E>(
-  rawColumns: ColumnCommunity<D, E>[] | ColumnEnterprise<D, E>[],
-  api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
+  rawColumns: ColumnCore<D, E>[] | ColumnPro<D, E>[],
+  api: ApiCore<D, E> | ApiPro<D, E>,
   pivots: boolean = false,
 ) {
-  rawColumns = rawColumns as ColumnCommunity<D, E>[];
-  api = api as ApiCommunity<D, E>;
+  rawColumns = rawColumns as ColumnCore<D, E>[];
+  api = api as ApiCore<D, E>;
 
-  const processColumns = (c: ColumnCommunity<D, E>[]) => {
+  const processColumns = (c: ColumnCore<D, E>[]) => {
     if (containsADuplicateId(c)) {
       console.error(c);
       throw new Error("Duplicate column id detected. Every column should have a unique ID.");

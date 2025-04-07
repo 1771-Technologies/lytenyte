@@ -1,16 +1,16 @@
 import { computed, signal } from "@1771technologies/react-cascada";
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
-import type { SortModelItem } from "@1771technologies/grid-types/core";
 import { itemsWithIdToMap } from "@1771technologies/js-utils";
+import type { ApiCore, SortModelItemCore } from "@1771technologies/grid-types/core";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
 export function sortModelComputed<D, E>(
-  s: SortModelItem[],
-  api: ApiCommunity<D, E> | ApiEnterprise<D, E>,
+  s: SortModelItemCore[],
+  api: ApiCore<D, E> | ApiPro<D, E>,
   pivots: boolean = false,
 ) {
   const sortModel$ = signal(s);
 
-  api = api as ApiEnterprise<D, E>;
+  api = api as ApiPro<D, E>;
 
   return computed(
     () => {

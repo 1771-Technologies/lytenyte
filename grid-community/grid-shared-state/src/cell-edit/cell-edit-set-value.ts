@@ -1,13 +1,13 @@
-import type { CellEditLocation } from "@1771technologies/grid-types/core";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 import { cellEditKey } from "./cell-edit-key";
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
+import type { ApiCore, CellEditLocationCore } from "@1771technologies/grid-types/core";
 
 export const cellEditSetValue = <D, E>(
-  a: ApiCommunity<D, E> | ApiEnterprise<D, E>,
-  p: CellEditLocation,
+  a: ApiPro<D, E> | ApiCore<D, E>,
+  p: CellEditLocationCore,
   v: unknown,
 ) => {
-  const api = a as ApiCommunity<D, E>;
+  const api = a as ApiCore<D, E>;
   const key = cellEditKey(p);
   const s = api.getState();
 

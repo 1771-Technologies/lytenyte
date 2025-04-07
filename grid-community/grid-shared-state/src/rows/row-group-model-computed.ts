@@ -1,12 +1,10 @@
 import { signal } from "@1771technologies/react-cascada";
 import { rowCleanRowGroupModel } from "@1771technologies/grid-core";
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
 import { equal } from "@1771technologies/js-utils";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
+import type { ApiCore } from "@1771technologies/grid-types/core";
 
-export function rowGroupModelComputed<D, E>(
-  model: string[],
-  api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
-) {
+export function rowGroupModelComputed<D, E>(model: string[], api: ApiPro<D, E> | ApiCore<D, E>) {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
   const model$ = signal(model, {

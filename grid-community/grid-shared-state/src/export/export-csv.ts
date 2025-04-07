@@ -1,10 +1,10 @@
-import type { ExportCsvOptions, RowNode } from "@1771technologies/grid-types/core";
-import type { ApiCommunity, ApiEnterprise, ColumnEnterprise } from "@1771technologies/grid-types";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 import { getDataRect } from "./get-data-rect";
+import type { ApiCore, ExportCsvOptionsCore, RowNodeCore } from "@1771technologies/grid-types/core";
 
 export const exportCsv = <D, E>(
-  api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
-  opts: ExportCsvOptions<ApiEnterprise<D, E>, ColumnEnterprise<D, E>> = {},
+  api: ApiPro<D, E> | ApiCore<D, E>,
+  opts: ExportCsvOptionsCore<D, E> = {},
 ) => {
   const s = api.getState();
   const rowCount = s.internal.rowCount.peek();
@@ -15,7 +15,7 @@ export const exportCsv = <D, E>(
 
   const rows = s.internal.rowBackingDataSource.peek().rowGetMany(rowStart, rowEnd);
 
-  const handleCsv = (rows: Record<number, RowNode<D>>) => {
+  const handleCsv = (rows: Record<number, RowNodeCore<D>>) => {
     const { data, groupHeaders, header } = getDataRect({
       rows,
       api,
@@ -46,8 +46,8 @@ export const exportCsv = <D, E>(
 };
 
 export const exportCsvFile = async <D, E>(
-  api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
-  opts: ExportCsvOptions<ApiEnterprise<D, E>, ColumnEnterprise<D, E>> = {},
+  api: ApiPro<D, E> | ApiCore<D, E>,
+  opts: ExportCsvOptionsCore<D, E> = {},
 ) => {
   const csv = await api.exportCsv(opts as any);
 

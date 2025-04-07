@@ -1,6 +1,7 @@
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
+import type { ApiCore } from "@1771technologies/grid-types/core";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
-export const rowUpdateRedo = <D, E>(api: ApiEnterprise<D, E> | ApiCommunity<D, E>) => {
+export const rowUpdateRedo = <D, E>(api: ApiCore<D, E> | ApiPro<D, E>) => {
   const s = api.getState();
   if (!s.rowUpdateStackEnabled.peek()) return;
 
@@ -17,7 +18,7 @@ export const rowUpdateRedo = <D, E>(api: ApiEnterprise<D, E> | ApiCommunity<D, E
   s.internal.rowBackingDataSource.peek().rowSetDataMany(update.redo);
 };
 
-export const rowUpdateUndo = <D, E>(api: ApiEnterprise<D, E> | ApiCommunity<D, E>) => {
+export const rowUpdateUndo = <D, E>(api: ApiCore<D, E> | ApiPro<D, E>) => {
   const s = api.getState();
   if (!s.rowUpdateStackEnabled.peek()) return;
 

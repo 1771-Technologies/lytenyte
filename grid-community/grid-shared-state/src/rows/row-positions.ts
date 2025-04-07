@@ -1,10 +1,11 @@
 import { computed } from "@1771technologies/react-cascada";
 import { rowGetPositions } from "@1771technologies/grid-core";
-import type { StoreCommunity, StoreEnterprise } from "@1771technologies/grid-types";
+import type { GridCore } from "@1771technologies/grid-types/core";
+import type { GridPro } from "@1771technologies/grid-types/pro";
 
 export function rowPositionsComputed<D, E>(
-  state: StoreCommunity<D, E>["state"] | StoreEnterprise<D, E>["state"],
-  api: StoreCommunity<D, E>["api"] | StoreEnterprise<D, E>["api"],
+  state: GridCore<D, E>["state"] | GridPro<D, E>["state"],
+  api: GridCore<D, E>["api"] | GridPro<D, E>["api"],
 ) {
   const rowDetailEnabled$ = computed(() => {
     const predicate = state.rowDetailEnabled.get();

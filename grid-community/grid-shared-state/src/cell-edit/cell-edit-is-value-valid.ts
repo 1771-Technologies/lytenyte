@@ -1,12 +1,12 @@
-import type { CellEditLocation } from "@1771technologies/grid-types/core";
+import type { ApiCore, CellEditLocationCore } from "@1771technologies/grid-types/core";
 import { cellEditParser } from "./cell-edit-parser";
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
 export const cellEditIsValueValid = <D, E>(
-  a: ApiCommunity<D, E> | ApiEnterprise<D, E>,
-  l: CellEditLocation,
+  a: ApiCore<D, E> | ApiPro<D, E>,
+  l: CellEditLocationCore,
 ) => {
-  const api = a as ApiCommunity<D, E>;
+  const api = a as ApiCore<D, E>;
   const s = api.getState();
   const column = s.columnsVisible.peek()[l.columnIndex];
   const row = api.rowByIndex(l.rowIndex);

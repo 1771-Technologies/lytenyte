@@ -1,14 +1,15 @@
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
+import type { ApiCore } from "@1771technologies/grid-types/core";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
 export const columnMoveAfter = <D, E>(
-  api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
+  api: ApiPro<D, E> | ApiCore<D, E>,
   src: string[],
   dest: string,
 ) => {
   moveColumn(api, src, dest, true);
 };
 export const columnMoveBefore = <D, E>(
-  api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
+  api: ApiPro<D, E> | ApiCore<D, E>,
   src: string[],
   dest: string,
 ) => {
@@ -16,7 +17,7 @@ export const columnMoveBefore = <D, E>(
 };
 
 export const columnMoveToVisibleIndex = <D, E>(
-  api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
+  api: ApiPro<D, E> | ApiCore<D, E>,
   src: string[],
   index: number,
   before = true,
@@ -28,12 +29,12 @@ export const columnMoveToVisibleIndex = <D, E>(
 };
 
 const moveColumn = <D, E>(
-  api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
+  api: ApiPro<D, E> | ApiCore<D, E>,
   src: string[],
   dest: string,
   after: boolean,
 ) => {
-  api = api as ApiEnterprise<D, E>;
+  api = api as ApiPro<D, E>;
 
   const colSet = new Set(src);
 

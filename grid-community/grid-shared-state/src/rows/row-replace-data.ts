@@ -1,6 +1,7 @@
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
+import type { ApiCore } from "@1771technologies/grid-types/core";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
-function clearCache<D, E>(api: ApiEnterprise<D, E> | ApiCommunity<D, E>) {
+function clearCache<D, E>(api: ApiPro<D, E> | ApiCore<D, E>) {
   const s = api.getState();
 
   s.internal.fieldCacheRef.column = {};
@@ -9,10 +10,7 @@ function clearCache<D, E>(api: ApiEnterprise<D, E> | ApiCommunity<D, E>) {
   s.internal.fieldCacheRef["quick-search"] = {};
 }
 
-export const rowReplaceBottomData = <D, E>(
-  api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
-  d: D[],
-) => {
+export const rowReplaceBottomData = <D, E>(api: ApiPro<D, E> | ApiCore<D, E>, d: D[]) => {
   const s = api.getState();
 
   clearCache(api);
@@ -21,7 +19,7 @@ export const rowReplaceBottomData = <D, E>(
   queueMicrotask(api.rowRefresh);
 };
 
-export const rowReplaceTopData = <D, E>(api: ApiEnterprise<D, E> | ApiCommunity<D, E>, d: D[]) => {
+export const rowReplaceTopData = <D, E>(api: ApiPro<D, E> | ApiCore<D, E>, d: D[]) => {
   const s = api.getState();
 
   clearCache(api);
@@ -29,7 +27,7 @@ export const rowReplaceTopData = <D, E>(api: ApiEnterprise<D, E> | ApiCommunity<
 
   queueMicrotask(api.rowRefresh);
 };
-export const rowReplaceData = <D, E>(api: ApiEnterprise<D, E> | ApiCommunity<D, E>, d: D[]) => {
+export const rowReplaceData = <D, E>(api: ApiPro<D, E> | ApiCore<D, E>, d: D[]) => {
   const s = api.getState();
 
   clearCache(api);

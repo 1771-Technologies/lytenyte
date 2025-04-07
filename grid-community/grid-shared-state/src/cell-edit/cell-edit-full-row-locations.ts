@@ -1,16 +1,16 @@
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
-import type { CellEditLocation, RowNode } from "@1771technologies/grid-types/core";
+import type { ApiCore, CellEditLocationCore, RowNodeCore } from "@1771technologies/grid-types/core";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
 export function cellEditFullRowLocations<D, E>(
-  a: ApiCommunity<D, E> | ApiEnterprise<D, E>,
-  l: CellEditLocation,
-  row: RowNode<D>,
+  a: ApiPro<D, E> | ApiCore<D, E>,
+  l: CellEditLocationCore,
+  row: RowNodeCore<D>,
 ) {
-  const api = a as ApiCommunity<D, E>;
+  const api = a as ApiCore<D, E>;
 
   const columns = api.getState().columnsVisible.peek();
 
-  const locations: CellEditLocation[] = [];
+  const locations: CellEditLocationCore[] = [];
 
   for (let i = 0; i < columns.length; i++) {
     const column = columns[i];
