@@ -4,7 +4,7 @@ import { useGrid } from "../use-grid";
 import { useColumnManagerState } from "./column-manager-state";
 import { ListView, type ListViewItemRendererProps } from "../list-view/list-view";
 import { handleItemHide } from "./utils/handle-item-hide";
-import { useDrag, useDragStore } from "@1771technologies/lytenyte-grid-community/internal";
+import { useDrag, useDragStore } from "@1771technologies/lytenyte-core/internal";
 import type { ColumnProReact } from "../types";
 
 interface ColumnManagerTreeProps<D> {

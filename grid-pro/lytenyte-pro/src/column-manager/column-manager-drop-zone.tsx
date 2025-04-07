@@ -3,7 +3,7 @@ import { forwardRef, useMemo, type JSX, type ReactNode } from "react";
 import type { PillManagerPillItem } from "../pill-manager/pill-manager-types";
 import { useDragBox } from "./column-manager-drag-box";
 import { useCombinedRefs } from "@1771technologies/react-utils";
-import { useDroppable } from "@1771technologies/lytenyte-grid-community/internal";
+import { useDroppable } from "@1771technologies/lytenyte-core/internal";
 import { DragGroupIcon } from "../icons";
 import { useGrid } from "../use-grid";
 

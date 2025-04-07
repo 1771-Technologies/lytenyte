@@ -10,7 +10,7 @@ import {
   useDragStore,
   useDroppable,
   useEdgeScroll,
-} from "@1771technologies/lytenyte-grid-community/internal";
+} from "@1771technologies/lytenyte-core/internal";
 import { useCombinedRefs } from "@1771technologies/react-utils";
 import type { DragTag, PillProps } from "../pill-manager-types";
 import { usePillRow } from "../pill-manager-row";

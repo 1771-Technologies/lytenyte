@@ -1,5 +1,5 @@
 import { useSimpleFilterRoot } from "../simple-filter-root";
-import { Input } from "@1771technologies/lytenyte-grid-community/internal";
+import { Input } from "@1771technologies/lytenyte-core/internal";
 import { useDateFilterCallbacks } from "../use-date-filter-callbacks";
 import { useMemo } from "react";
 import { Select } from "../../../select/select";

@@ -16,7 +16,7 @@ import { PillManagerRows } from "./pill-manager-rows";
 import { clsx } from "@1771technologies/js-utils";
 import { PillManagerExpander } from "./pill-manager-expander";
 import { PillManagerSeparator } from "./pill-manager-separator";
-import { DragProvider } from "@1771technologies/lytenyte-grid-community/internal";
+import { DragProvider } from "@1771technologies/lytenyte-core/internal";
 import { PillManagerDragPlaceholder } from "./pill-manager-drag-placeholder";
 import { PillManagerControlsProvider } from "./pill-manager-controls";
 import {

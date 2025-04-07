@@ -1,4 +1,4 @@
-import type { DragActive } from "@1771technologies/lytenyte-grid-community/internal";
+import type { DragActive } from "@1771technologies/lytenyte-core/internal";
 import type { ReactNode } from "react";
 import type { ColumnProReact } from "../types";
 

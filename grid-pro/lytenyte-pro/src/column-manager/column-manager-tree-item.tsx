@@ -2,11 +2,7 @@ import { forwardRef, useId, useMemo, type JSX } from "react";
 import type { ListViewItemRendererProps } from "../list-view/list-view";
 import { useGrid } from "../use-grid";
 import { ArrowDownIcon, ArrowRightIcon, DragIcon } from "../icons";
-import {
-  Checkbox,
-  useDraggable,
-  useDroppable,
-} from "@1771technologies/lytenyte-grid-community/internal";
+import { Checkbox, useDraggable, useDroppable } from "@1771technologies/lytenyte-core/internal";
 import { allLeafs } from "./utils/all-leafs";
 import { clsx } from "@1771technologies/js-utils";
 import { useCombinedRefs } from "@1771technologies/react-utils";

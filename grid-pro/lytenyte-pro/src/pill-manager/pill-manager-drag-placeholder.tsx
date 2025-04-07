@@ -1,8 +1,4 @@
-import {
-  useDrag,
-  useDragStore,
-  type DragActive,
-} from "@1771technologies/lytenyte-grid-community/internal";
+import { useDrag, useDragStore, type DragActive } from "@1771technologies/lytenyte-core/internal";
 import type { ReactNode } from "react";
 import { createPortal } from "react-dom";
 

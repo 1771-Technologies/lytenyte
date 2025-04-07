@@ -17,7 +17,7 @@ export const columnPositions = <T extends ColumnWidthLike>(
     const base = columnBase.get();
     const deltas = columnWidthDeltas.get();
 
-    // We just cast the types as there community columns and pro columns are not fully
+    // We just cast the types as there core columns and pro columns are not fully
     // compatible since they contain references to their respective APIs.
     return columnGetPositions(columns, base, deltas, width.get());
   });

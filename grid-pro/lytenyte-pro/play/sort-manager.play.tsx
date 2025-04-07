@@ -1,7 +1,7 @@
 import { columns } from "./data/columns";
 import { bankDataSmall } from "./data/bank-data-small";
 import { useClientDataSource } from "../src/use-client-data-source";
-import { useLyteNyte } from "../src/use-lytenyte";
+import { useLyteNytePro } from "../src/use-lytenyte";
 import { LyteNyteGrid } from "../src";
 import { SortManager } from "../src/sort-manager/sort-manager-impl";
 
@@ -12,7 +12,7 @@ export default function Play() {
     bottomData: bankDataSmall.slice(0, 2),
   });
 
-  const grid = useLyteNyte({
+  const grid = useLyteNytePro({
     gridId: "x",
     columns: columns.map((c, i) => ({ ...c, hide: i % 2 === 0 })),
     rowDataSource: ds,

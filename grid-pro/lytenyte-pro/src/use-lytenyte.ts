@@ -4,14 +4,14 @@ import type { GridProReact, StateInitProReact } from "./types";
 
 type ChangeReturnType<F extends (...args: any[]) => any, R> = (...args: Parameters<F>) => R;
 
-type UseLyteNyteCommunityReturn<D> = {
+type UseLyteNyteProReturn<D> = {
   state: GridProReact<D>["state"];
   api: GridProReact<D>["api"];
   useSignalWatcher: (c: keyof Omit<GridProReact<D>["state"], "internal">, fn: () => void) => void;
   useEvent: ChangeReturnType<GridProReact<D>["api"]["eventAddListener"], void>;
 };
 
-export const useLyteNyte = <D>(p: StateInitProReact<D>): UseLyteNyteCommunityReturn<D> => {
+export const useLyteNytePro = <D>(p: StateInitProReact<D>): UseLyteNyteProReturn<D> => {
   const [grid] = useState(() => {
     const s = makeGridPro<D, ReactNode>(p);
 

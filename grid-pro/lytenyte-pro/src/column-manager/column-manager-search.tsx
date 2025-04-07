@@ -1,6 +1,6 @@
 import { forwardRef, type JSX } from "react";
 import { useColumnManagerState } from "./column-manager-state";
-import { Input } from "@1771technologies/lytenyte-grid-community/internal";
+import { Input } from "@1771technologies/lytenyte-core/internal";
 import { SearchIcon } from "../icons";
 import { clsx } from "@1771technologies/js-utils";
 

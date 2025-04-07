@@ -1,4 +1,4 @@
-import { Input } from "@1771technologies/lytenyte-grid-community/internal";
+import { Input } from "@1771technologies/lytenyte-core/internal";
 import { useSimpleFilterRoot } from "../simple-filter-root";
 import { useTextFilterCallbacks } from "../use-text-filter-callbacks";
 import type { FilterTextPro } from "@1771technologies/grid-types/pro";

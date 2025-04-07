@@ -1,5 +1,5 @@
 {
-  "name": "@1771technologies/lytenyte-grid-community",
+  "name": "@1771technologies/lytenyte-core",
   "version": "0.0.38",
   "license": "Apache-2.0",
   "type": "module",
@@ -42,7 +42,7 @@
         "import": "./dist/icons.js",
         "require": "./dist/icons.js"
       },
-      "./css": "./dist/lytenyte-grid-community.css"
+      "./css": "./dist/lytenyte-core.css"
     }
   },
   "peerDependencies": {

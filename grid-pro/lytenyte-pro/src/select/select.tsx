@@ -1,7 +1,7 @@
 import { clsx } from "@1771technologies/js-utils";
 import "./select.css";
-import { ArrowDownIcon } from "@1771technologies/lytenyte-grid-community/icons";
-import { CheckMark } from "@1771technologies/lytenyte-grid-community/internal";
+import { ArrowDownIcon } from "@1771technologies/lytenyte-core/icons";
+import { CheckMark } from "@1771technologies/lytenyte-core/internal";
 import { Select as S } from "@base-ui-components/react/select";
 import type { JSX } from "react";
 

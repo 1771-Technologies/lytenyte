@@ -5,7 +5,7 @@ export * from "@1771technologies/grid-constants";
 export type { LyteNyteGridProProps } from "./lytenyte-pro.js";
 export { LyteNyteGrid } from "./lytenyte-pro.js";
 
-export { useLyteNyte } from "./use-lytenyte.js";
+export { useLyteNytePro } from "./use-lytenyte.js";
 export * from "./use-client-data-source.js";
 export { useTreeDataSource } from "./use-tree-data-source.js";
 

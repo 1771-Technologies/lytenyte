@@ -10,7 +10,7 @@ import {
   useEdgeScroll,
   Virtualized,
   type RendererProps,
-} from "@1771technologies/lytenyte-grid-community/internal";
+} from "@1771technologies/lytenyte-core/internal";
 import { useCombinedRefs } from "@1771technologies/react-utils";
 
 export interface ListViewItemRendererProps<D> {

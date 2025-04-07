@@ -1,6 +1,6 @@
 import "./column-manager.css";
 import { clsx } from "@1771technologies/js-utils";
-import { DragProvider } from "@1771technologies/lytenyte-grid-community/internal";
+import { DragProvider } from "@1771technologies/lytenyte-core/internal";
 import { forwardRef, useMemo, type JSX, type ReactNode } from "react";
 import { GridProvider } from "../use-grid";
 import { ColumnStateProvider } from "./column-manager-state";

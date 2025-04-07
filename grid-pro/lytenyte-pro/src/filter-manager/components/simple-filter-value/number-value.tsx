@@ -1,5 +1,5 @@
 import { useSimpleFilterRoot } from "../simple-filter-root";
-import { Input } from "@1771technologies/lytenyte-grid-community/internal";
+import { Input } from "@1771technologies/lytenyte-core/internal";
 import { useNumberFilterCallbacks } from "../use-number-filter-callbacks";
 import type { FilterNumberPro } from "@1771technologies/grid-types/pro";
 

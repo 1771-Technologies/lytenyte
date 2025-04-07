@@ -138,7 +138,7 @@
     "@1771technologies/grid-tree-data-source": "workspace:*",
     "@1771technologies/grid-types": "workspace:*",
     "@1771technologies/js-utils": "workspace:*",
-    "@1771technologies/lytenyte-grid-community": "workspace:*",
+    "@1771technologies/lytenyte-core": "workspace:*",
     "@1771technologies/positioner": "workspace:*",
     "@1771technologies/react-cascada": "workspace:*",
     "@1771technologies/react-dragon": "workspace:*",

@@ -3,7 +3,7 @@ import {
   CellEditorCenter,
   CellEditorTop,
   Viewport,
-} from "@1771technologies/lytenyte-grid-community/internal";
+} from "@1771technologies/lytenyte-core/internal";
 import { GridProvider, useGrid } from "./use-grid";
 import { CellSelectionDriver } from "./cell-selection/cell-selection-driver";
 import {
@@ -30,7 +30,7 @@ export function LyteNyteGrid<D>({ grid, frameAxe }: LyteNyteGridProProps<D>) {
   return (
     <GridProvider value={grid}>
       <GridFrame grid={grid} axe={frameAxe}>
-        <LyteNyteCommunityImpl />
+        <LyteNyteProImpl />
         <ColumnMenuDriver />
         <ContextMenuDriver />
         <DialogDriver />
@@ -40,7 +40,7 @@ export function LyteNyteGrid<D>({ grid, frameAxe }: LyteNyteGridProProps<D>) {
   );
 }
 
-function LyteNyteCommunityImpl() {
+function LyteNyteProImpl() {
   const { state } = useGrid();
 
   return (

@@ -1,4 +1,4 @@
-# @1771technologies/lytenyte-grid-community
+# @1771technologies/lytenyte-core
 
 ## 0.0.38
 

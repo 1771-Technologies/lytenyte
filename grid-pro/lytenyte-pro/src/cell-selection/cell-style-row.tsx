@@ -2,7 +2,7 @@ import "./cell-style-row.css";
 import { useMemo, type CSSProperties } from "react";
 import { useGrid } from "../use-grid";
 import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
-import { getTransform } from "@1771technologies/lytenyte-grid-community/internal";
+import { getTransform } from "@1771technologies/lytenyte-core/internal";
 import type { CellSelectionRectPro } from "@1771technologies/grid-types/pro";
 
 export function CellStyleRow({

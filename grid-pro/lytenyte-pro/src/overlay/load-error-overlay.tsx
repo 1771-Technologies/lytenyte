@@ -1,5 +1,5 @@
 import "./load-error-overlay.css";
-import { GridButton } from "@1771technologies/lytenyte-grid-community/internal";
+import { GridButton } from "@1771technologies/lytenyte-core/internal";
 import { useGrid } from "../use-grid";
 
 export function LoadErrorOverlay() {

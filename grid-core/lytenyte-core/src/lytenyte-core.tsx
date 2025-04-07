@@ -15,11 +15,11 @@ export interface LyteNyteGridCoreProps<D> {
 export function LyteNyteGridCore<D>({ grid }: LyteNyteGridCoreProps<D>) {
   return (
     <GridProvider value={grid}>
-      <LyteNyteCommunityImpl />
+      <LyteNyteCoreImpl />
     </GridProvider>
   );
 }
 
-function LyteNyteCommunityImpl() {
+function LyteNyteCoreImpl() {
   return <Viewport top={CellEditorTop} center={CellEditorCenter} bottom={CellEditorBottom} />;
 }

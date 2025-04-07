@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useGrid } from "../../use-grid";
 import type { DragTag, PillManagerPillItem, RowProps } from "../pill-manager-types";
 import { canAgg, canMeasure } from "./utils";
-import type { DragActive } from "@1771technologies/lytenyte-grid-community/internal";
+import type { DragActive } from "@1771technologies/lytenyte-core/internal";
 
 export function useRowGroupsSource(
   source: RowProps["pillSource"],

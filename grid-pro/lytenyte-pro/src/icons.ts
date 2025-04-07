@@ -1,1 +1,1 @@
-export * from "@1771technologies/lytenyte-grid-community/icons";
+export * from "@1771technologies/lytenyte-core/icons";

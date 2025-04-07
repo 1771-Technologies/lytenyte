@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useState, type JSX } from "react";
 import { Pill } from "../pill/pill";
 import { CrossIcon, DragIcon } from "../icons";
-import { useDraggable, useDroppable } from "@1771technologies/lytenyte-grid-community/internal";
+import { useDraggable, useDroppable } from "@1771technologies/lytenyte-core/internal";
 import { useCombinedRefs } from "@1771technologies/react-utils";
 import { useGrid } from "../use-grid";
 import { Menu } from "../external";

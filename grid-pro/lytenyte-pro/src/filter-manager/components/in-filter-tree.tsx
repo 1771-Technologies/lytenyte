@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Checkbox } from "@1771technologies/lytenyte-grid-community/internal";
+import { Checkbox } from "@1771technologies/lytenyte-core/internal";
 import { useInFilterState } from "./in-filter-root";
 import { getChildValues } from "./get-child-values";
 import { useFilterManagerState } from "../filter-state-context";
