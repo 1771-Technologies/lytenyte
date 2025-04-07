@@ -1,7 +1,7 @@
 import type { ColumnPivotEvent } from "../types/column-pivot-pro";
-import type { EventsCommunity, LngEvent } from "./events-core";
+import type { EventsCoreRaw, LngEvent } from "./events-core";
 
-export interface EventsEnterprise<A, D, C> extends EventsCommunity<A, D, C> {
+export interface EventsProRaw<A, D, C> extends EventsCoreRaw<A, D, C> {
   readonly onColumnPivotsChange: LngEvent<A>;
   readonly onColumnPivotsRequested: ColumnPivotEvent<A, C>;
   readonly onColumnPivotsResolved: ColumnPivotEvent<A, C>;
@@ -10,14 +10,14 @@ export interface EventsEnterprise<A, D, C> extends EventsCommunity<A, D, C> {
   readonly onColumnPivotsFilterModelChange: LngEvent<A>;
 }
 
-type LngEventNames = keyof EventsEnterprise<any, any, any>;
+type LngEventNames = keyof EventsProRaw<any, any, any>;
 
-export type LngAddEventListenerEnterprise<A, D, C> = <K extends LngEventNames>(
+export type LngAddEventListenerPro<A, D, C> = <K extends LngEventNames>(
   eventName: K,
-  callback: EventsEnterprise<A, D, C>[K],
+  callback: EventsProRaw<A, D, C>[K],
 ) => () => void;
 
-export type LngRemoveEventListenerEnterprise<A, D, C> = <K extends LngEventNames>(
+export type LngRemoveEventListenerPro<A, D, C> = <K extends LngEventNames>(
   eventName: K,
-  callback: EventsEnterprise<A, D, C>[K],
+  callback: EventsProRaw<A, D, C>[K],
 ) => void;

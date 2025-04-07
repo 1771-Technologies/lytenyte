@@ -1,10 +1,10 @@
 import type { ReadonlySignal, Signal } from "@1771technologies/react-cascada";
 import type {
   ColumnPivotSensitiveState,
-  GridInternalState as CommunityInternalState,
+  GridInternalState as CoreInternal,
 } from "../state/state-core";
-import type { RowDataSourceEnterprise } from "../row-data-source/rds-pro";
-import type { ApiEnterprise } from "../api/api-pro";
+import type { RowDataSourcePro } from "../row-data-source/rds-pro";
+import type { ApiProRaw } from "../api/api-pro";
 import type { CellSelectionRect } from "../types/cell-selection-pro";
 import type { SortModelItem } from "../types/sort";
 import type { ColumnFilterModel } from "../types/filter-pro";
@@ -12,21 +12,17 @@ import type { ColumnGroupRows } from "../types/column-group";
 import type { Target } from "../types/context-menu-pro";
 import type { ColumnPro as Column, ApiPro as Api, StateInitPro as Init } from "../export-pro";
 
-type CommunityOmit =
-  | "columnsVisible"
-  | "columnMoveOverColumn"
-  | "columnLookup"
-  | "rowBackingDataSource";
+type CoreOmit = "columnsVisible" | "columnMoveOverColumn" | "columnLookup" | "rowBackingDataSource";
 
-export interface GridInternalState<D, E> extends Omit<CommunityInternalState<D, E>, CommunityOmit> {
+export interface GridInternalState<D, E> extends Omit<CoreInternal<D, E>, CoreOmit> {
   readonly columnsVisible: ReadonlySignal<Column<D, E>[]>;
   readonly columnMoveOverColumn: Signal<Column<D, E> | null>;
   readonly columnLookup: ReadonlySignal<Map<string, Column<D, E>>>;
   readonly rowBackingDataSource: ReadonlySignal<
-    Required<RowDataSourceEnterprise<Api<D, E>, D, Column<D, E>>>
+    Required<RowDataSourcePro<Api<D, E>, D, Column<D, E>>>
   >;
 
-  // Enterprise State
+  // Pro State
   readonly cellSelectionPivot: Signal<CellSelectionRect | null>;
   readonly cellSelectionSplits: ReadonlySignal<CellSelectionRect[]>;
   readonly cellSelectionAdditiveRects: Signal<CellSelectionRect[] | null>;
@@ -87,13 +83,13 @@ export type InitialStateAndInternalState<D, E> = InitialState<D, E> & {
   readonly internal: GridInternalState<D, E>;
 };
 
-export type ColumnPivotSensitiveStateEnterprise<D, E> = Omit<
+export type ColumnPivotSensitiveStatePro<D, E> = Omit<
   ColumnPivotSensitiveState<D, E>,
   "columnsVisible" | "filterModel"
 > & {
   readonly columnsVisible: ReadonlySignal<Column<D, E>[]>;
-  readonly filterModel: Signal<ColumnFilterModel<ApiEnterprise<D, Column<D, E>, E>, D>>;
+  readonly filterModel: Signal<ColumnFilterModel<ApiProRaw<D, Column<D, E>, E>, D>>;
 };
 
 export type StatePro<D, E> = InitialStateAndInternalState<D, E> &
-  ColumnPivotSensitiveStateEnterprise<D, E>;
+  ColumnPivotSensitiveStatePro<D, E>;

@@ -1,7 +1,7 @@
 import type { ColumnCore } from "../export-core";
 import type { RowNode } from "../types/row-nodes";
 
-export interface RowDataSource<A, D> {
+export interface RowDataSourceCore<A, D> {
   init: (api: A) => void;
   clean: (api: A) => void;
 

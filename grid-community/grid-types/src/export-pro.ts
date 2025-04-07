@@ -1,9 +1,9 @@
-import type { ApiEnterprise } from "./api/api-pro.js";
+import type { ApiProRaw } from "./api/api-pro.js";
 import type { Column, ColumnBase, ColumnRowGroup } from "./column/column-pro.js";
-import type { PropsEnterprise } from "./props/props-pro.js";
+import type { PropsProRaw } from "./props/props-pro.js";
 import type { StatePro } from "./state/state-pro.js";
 
-export type ApiPro<D, E> = ApiEnterprise<D, ColumnPro<D, E>, E>;
+export type ApiPro<D, E> = ApiProRaw<D, ColumnPro<D, E>, E>;
 export type ColumnPro<D, E> = Column<ApiPro<D, E>, D, E>;
 export type ColumnBasePro<D, E> = ColumnBase<ApiPro<D, E>, D, E>;
 export type ColumnRowGroupPro<D, E> = ColumnRowGroup<ApiPro<D, E>, D, E>;
@@ -13,7 +13,7 @@ export type GridPro<D, E> = {
   readonly api: ApiPro<D, E>;
 };
 
-export type StateInitPro<D, E> = PropsEnterprise<
+export type StateInitPro<D, E> = PropsProRaw<
   ApiPro<D, E>,
   D,
   ColumnPro<D, E>,

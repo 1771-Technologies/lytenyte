@@ -1,5 +1,5 @@
 import type { ReadonlySignal, Signal } from "@1771technologies/react-cascada";
-import type { RowDataSource } from "../row-data-source/rds-core.js";
+import type { RowDataSourceCore } from "../row-data-source/rds-core.js";
 import type { Position, PositionFocus } from "../types/position.js";
 import type { CellEditLocation } from "../types/cell-edit.js";
 import type { ColumnGroupRows } from "../types/column-group.js";
@@ -58,7 +58,7 @@ export type GridInternalState<D, E> = {
 
   readonly navigatePosition: Signal<Position | null>;
 
-  readonly rowBackingDataSource: ReadonlySignal<RowDataSource<Api<D, E>, D>>;
+  readonly rowBackingDataSource: ReadonlySignal<RowDataSourceCore<Api<D, E>, D>>;
 
   readonly rowUpdateStack: Signal<{ redo: Record<string, D>; undo: Record<string, D> }[]>;
   readonly rowUpdateStackPointer: Signal<number>;
@@ -103,8 +103,8 @@ type Props<D, E> = Required<Init<D, E>>;
 
 /**
  * In the pro grid some state is impacted by the present of pivot mode. These are the fields
- * That are impacted. We put these fields on state. In community they will directly reference their
- * internal state. In Enterprise we the pivot mode determines the value.
+ * That are impacted. We put these fields on state. In Core they will directly reference their
+ * internal state. In Pro we the pivot mode determines the value.
  */
 export type ColumnPivotSensitiveState<D, E> = {
   readonly columnGroupLevels: ReadonlySignal<ColumnGroupRows>;

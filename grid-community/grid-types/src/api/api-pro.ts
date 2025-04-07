@@ -1,7 +1,7 @@
 import type {
-  EventsEnterprise,
-  LngAddEventListenerEnterprise,
-  LngRemoveEventListenerEnterprise,
+  EventsProRaw,
+  LngAddEventListenerPro,
+  LngRemoveEventListenerPro,
 } from "../events/events-pro";
 import type { StatePro } from "../state/state-pro";
 import type { CellSelectionRect } from "../types/cell-selection-pro";
@@ -10,11 +10,11 @@ import type { Target } from "../types/context-menu-pro";
 import type { ColumnFilterModel, ColumnInFilterItem } from "../types/filter-pro";
 import type { RowNode, RowNodeGroup } from "../types/row-nodes";
 import type { SortModelItem } from "../types/sort";
-import type { ApiCommunity } from "./api-core";
+import type { ApiCoreRaw } from "./api-core";
 
-export interface ApiEnterprise<D, C, E>
+export interface ApiProRaw<D, C, E>
   extends Omit<
-    ApiCommunity<D, C, E>,
+    ApiCoreRaw<D, C, E>,
     "eventAddListener" | "eventRemoveListener" | "eventGetListeners" | "eventFire" | "getState"
   > {
   readonly getState: () => StatePro<D, E>;
@@ -90,13 +90,13 @@ export interface ApiEnterprise<D, C, E>
   readonly rowReloadExpansion: (row: RowNodeGroup) => void;
   readonly rowReset: () => void;
 
-  readonly eventAddListener: LngAddEventListenerEnterprise<this, D, C>;
-  readonly eventRemoveListener: LngRemoveEventListenerEnterprise<this, D, C>;
-  readonly eventGetListeners: <K extends keyof EventsEnterprise<this, D, C>>(
+  readonly eventAddListener: LngAddEventListenerPro<this, D, C>;
+  readonly eventRemoveListener: LngRemoveEventListenerPro<this, D, C>;
+  readonly eventGetListeners: <K extends keyof EventsProRaw<this, D, C>>(
     eventName: K,
-  ) => Set<EventsEnterprise<this, D, C>[K]> | null;
-  readonly eventFire: <K extends keyof EventsEnterprise<this, D, C>>(
+  ) => Set<EventsProRaw<this, D, C>[K]> | null;
+  readonly eventFire: <K extends keyof EventsProRaw<this, D, C>>(
     name: K,
-    ...args: Parameters<EventsEnterprise<this, D, C>[K]>
+    ...args: Parameters<EventsProRaw<this, D, C>[K]>
   ) => void;
 }

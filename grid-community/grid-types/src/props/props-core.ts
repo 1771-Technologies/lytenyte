@@ -19,7 +19,7 @@ import type {
 } from "../types/row-selection";
 import type { SortComparatorFn, SortModelItem } from "../types/sort";
 
-export interface PropsCommunity<A, D, C, E, Base, Group> {
+export interface PropsCoreRaw<A, D, C, E, Base, Group> {
   readonly aggFns?: AggFns<A>;
   readonly aggModel?: AggModel<A>;
 

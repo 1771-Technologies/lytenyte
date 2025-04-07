@@ -1,7 +1,7 @@
 import type {
-  EventsCommunity,
-  LngAddEventListenerCommunity,
-  LngRemoveEventListenerCommunity,
+  EventsCoreRaw,
+  LngAddEventListenerCore,
+  LngRemoveEventListenerCore,
 } from "../events/events-core";
 import type { StateCore } from "../state/state-core";
 import type { AutosizeOptions, AutosizeResult } from "../types/autosize";
@@ -12,7 +12,7 @@ import type { RowSections } from "../types/row";
 import type { RowNode, RowNodeGroup, RowNodeLeaf, RowNodeTotal } from "../types/row-nodes";
 import type { SortCycleOption } from "../types/sort";
 
-export interface ApiCommunity<D, C, E> {
+export interface ApiCoreRaw<D, C, E> {
   readonly getState: () => StateCore<D, E>;
 
   readonly autosizeColumn: (c: C, options?: AutosizeOptions) => AutosizeResult | null;
@@ -148,13 +148,13 @@ export interface ApiCommunity<D, C, E> {
   readonly rowReplaceTopData: (d: D[]) => void;
   readonly rowReplaceBottomData: (d: D[]) => void;
 
-  readonly eventAddListener: LngAddEventListenerCommunity<this, D, C>;
-  readonly eventRemoveListener: LngRemoveEventListenerCommunity<this, D, C>;
-  readonly eventGetListeners: <K extends keyof EventsCommunity<this, D, C>>(
+  readonly eventAddListener: LngAddEventListenerCore<this, D, C>;
+  readonly eventRemoveListener: LngRemoveEventListenerCore<this, D, C>;
+  readonly eventGetListeners: <K extends keyof EventsCoreRaw<this, D, C>>(
     eventName: K,
-  ) => Set<EventsCommunity<this, D, C>[K]> | null;
-  readonly eventFire: <K extends keyof EventsCommunity<this, D, C>>(
+  ) => Set<EventsCoreRaw<this, D, C>[K]> | null;
+  readonly eventFire: <K extends keyof EventsCoreRaw<this, D, C>>(
     name: K,
-    ...args: Parameters<EventsCommunity<this, D, C>[K]>
+    ...args: Parameters<EventsCoreRaw<this, D, C>[K]>
   ) => void;
 }

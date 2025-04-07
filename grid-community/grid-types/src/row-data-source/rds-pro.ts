@@ -3,7 +3,7 @@ import type { RowNode, RowNodeGroup } from "../types/row-nodes";
 
 type MaybePromise<T> = T | Promise<T>;
 
-export interface RowDataSourceEnterprise<A, D, C> {
+export interface RowDataSourcePro<A, D, C> {
   init?: (api: A) => void;
   clean?: (api: A) => void;
 

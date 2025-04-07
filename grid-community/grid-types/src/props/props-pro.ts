@@ -1,4 +1,4 @@
-import type { RowDataSourceEnterprise } from "../row-data-source/rds-pro";
+import type { RowDataSourcePro } from "../row-data-source/rds-pro";
 import type { AggModel } from "../types/aggregations";
 import type { CellSelectionMode, CellSelectionRect } from "../types/cell-selection-pro";
 import type {
@@ -13,10 +13,10 @@ import type { DialogFrame, PanelFrame, PopoverFrame } from "../types/component-f
 import type { ContextMenuRenderer } from "../types/context-menu-pro";
 import type { ColumnFilterModel } from "../types/filter-pro";
 import type { OverlayId, Overlays } from "../types/overlay-pro";
-import type { PropsCommunity } from "./props-core";
+import type { PropsCoreRaw } from "./props-core";
 
-export interface PropsEnterprise<A, D, C, E, Base, Group>
-  extends Omit<PropsCommunity<A, D, C, E, Base, Group>, "filterModel" | "rowDataSource"> {
+export interface PropsProRaw<A, D, C, E, Base, Group>
+  extends Omit<PropsCoreRaw<A, D, C, E, Base, Group>, "filterModel" | "rowDataSource"> {
   readonly overlayToShow?: OverlayId | null;
   readonly overlays?: Overlays<A, E>;
 
@@ -48,7 +48,7 @@ export interface PropsEnterprise<A, D, C, E, Base, Group>
 
   readonly measureModel?: AggModel<A>;
 
-  readonly rowDataSource?: RowDataSourceEnterprise<A, D, C>;
+  readonly rowDataSource?: RowDataSourcePro<A, D, C>;
 
   readonly treeData?: boolean;
 }

@@ -6,7 +6,7 @@ import type { RowSelectionEvent } from "../types/row-selection";
 
 export type LngEvent<A> = (api: A) => void;
 
-export interface EventsCommunity<A, D, C> {
+export interface EventsCoreRaw<A, D, C> {
   readonly onCellEditBegin: CellEditBeginEvent<A>;
   readonly onCellEditValueChange: CellEditEvent<A>;
   readonly onCellEditSuccess: CellEditEvent<A>;
@@ -59,14 +59,14 @@ export interface EventsCommunity<A, D, C> {
   readonly onRowRefresh: LngEvent<A>;
 }
 
-type LngEventNames = keyof EventsCommunity<any, any, any>;
+type LngEventNames = keyof EventsCoreRaw<any, any, any>;
 
-export type LngAddEventListenerCommunity<A, D, C> = <K extends LngEventNames>(
+export type LngAddEventListenerCore<A, D, C> = <K extends LngEventNames>(
   eventName: K,
-  callback: EventsCommunity<A, D, C>[K],
+  callback: EventsCoreRaw<A, D, C>[K],
 ) => () => void;
 
-export type LngRemoveEventListenerCommunity<A, D, C> = <K extends LngEventNames>(
+export type LngRemoveEventListenerCore<A, D, C> = <K extends LngEventNames>(
   eventName: K,
-  callback: EventsCommunity<A, D, C>[K],
+  callback: EventsCoreRaw<A, D, C>[K],
 ) => void;
