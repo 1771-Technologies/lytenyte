@@ -1,10 +1,8 @@
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
+import type { ApiCore } from "@1771technologies/grid-types/core";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 import { sizeFromCoord } from "@1771technologies/js-utils";
 
-export function columnScrollIntoViewValue<D, E>(
-  api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
-  c: number,
-) {
+export function columnScrollIntoViewValue<D, E>(api: ApiCore<D, E> | ApiPro<D, E>, c: number) {
   const s = api.getState();
 
   const startCount = s.columnVisibleStartCount.peek();
@@ -38,10 +36,7 @@ export function columnScrollIntoViewValue<D, E>(
   }
 }
 
-export function rowScrollIntoViewValue<D, E>(
-  api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
-  r: number,
-) {
+export function rowScrollIntoViewValue<D, E>(api: ApiCore<D, E> | ApiPro<D, E>, r: number) {
   const s = api.getState();
 
   const topCount = s.internal.rowTopCount.peek();

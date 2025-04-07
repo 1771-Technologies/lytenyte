@@ -1,7 +1,8 @@
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
+import type { ApiCore } from "@1771technologies/grid-types/core";
 import { isGridCellPosition, getGridCellPosition } from "./utils";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
-export function getBottom<D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>) {
+export function getBottom<D, E>(api: ApiCore<D, E> | ApiPro<D, E>) {
   const p = api.navigateGetPosition();
   if (!isGridCellPosition(p)) return p;
 
@@ -22,7 +23,7 @@ export function getBottom<D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>) {
   return getGridCellPosition(api, lastRow, p!.columnIndex);
 }
 
-export function getTop<D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>) {
+export function getTop<D, E>(api: ApiCore<D, E> | ApiPro<D, E>) {
   const p = api.navigateGetPosition();
   if (!isGridCellPosition(p)) return p;
 

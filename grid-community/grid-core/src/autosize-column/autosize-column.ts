@@ -1,15 +1,10 @@
-import type {
-  ApiCommunity,
-  ApiEnterprise,
-  ColumnCommunity,
-  ColumnEnterprise,
-} from "@1771technologies/grid-types";
-import type { AutosizeOptions } from "@1771technologies/grid-types/core";
+import type { ApiCore, AutosizeOptionsCore, ColumnCore } from "@1771technologies/grid-types/core";
+import type { ApiPro, ColumnPro } from "@1771technologies/grid-types/pro";
 
 export const autosizeColumn = <D, E>(
-  api: ApiCommunity<D, E> | ApiEnterprise<D, E>,
-  c: ColumnCommunity<D, E> | ColumnEnterprise<D, E>,
-  opts?: AutosizeOptions,
+  api: ApiCore<D, E> | ApiPro<D, E>,
+  c: ColumnCore<D, E> | ColumnPro<D, E>,
+  opts?: AutosizeOptionsCore,
 ) => {
   return api.autosizeColumns([c.id], opts);
 };

@@ -1,11 +1,7 @@
-import type { ApiCommunity, ColumnCommunity } from "@1771technologies/grid-types";
-import type { AutosizeCellParameters } from "@1771technologies/grid-types/core";
+import type { AutosizeCellParametersCore } from "@1771technologies/grid-types/core";
 import { measureText } from "./measure-text";
 
-export function autosizeGroupColumnDefault<D, E>({
-  api,
-  row,
-}: AutosizeCellParameters<ApiCommunity<D, E>, D, ColumnCommunity<D, E>>) {
+export function autosizeGroupColumnDefault<D, E>({ api, row }: AutosizeCellParametersCore<D, E>) {
   if (!api.rowIsGroup(row)) return 0;
 
   const text = row.pathKey;

@@ -5,11 +5,11 @@ import {
   HEADER_CELL_POSITION,
   HEADER_GROUP_CELL_POSITION,
 } from "@1771technologies/grid-constants";
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
-import type { Position } from "@1771technologies/grid-types/core";
 import { getGridCellPosition } from "./utils";
+import type { ApiCore, PositionCore } from "@1771technologies/grid-types/core";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
-export function getEnd<D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>): Position | null {
+export function getEnd<D, E>(api: ApiCore<D, E> | ApiPro<D, E>): PositionCore | null {
   const p = api.navigateGetPosition();
   if (!p) return null;
 
@@ -46,7 +46,7 @@ export function getEnd<D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>): Pos
   return null;
 }
 
-export function getStart<D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>): Position | null {
+export function getStart<D, E>(api: ApiCore<D, E> | ApiPro<D, E>): PositionCore | null {
   const p = api.navigateGetPosition();
   if (!p) return null;
 

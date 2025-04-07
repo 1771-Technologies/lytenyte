@@ -1,7 +1,7 @@
 import { rowIsGroup } from "@1771technologies/grid-core";
 import type { BlockPaths, BlockStore } from "../types.js";
 import type { FlattenRowContext } from "./types.js";
-import type { RowNodeGroup } from "@1771technologies/grid-types/core";
+import type { RowNodeGroupCore } from "@1771technologies/grid-types/core";
 
 /**
  * Flattens the center rows of a grid, handling hierarchical data structures organized in blocks.
@@ -41,7 +41,7 @@ export function flattenCenterRows<D>(
   rowExpansions: Record<string, boolean | undefined>,
   rowExpansionsDefault: number | boolean,
 ) {
-  const rowIsExpanded = (r: RowNodeGroup, depth: number) => {
+  const rowIsExpanded = (r: RowNodeGroupCore, depth: number) => {
     if (rowExpansions[r.id] != null) return rowExpansions[r.id];
 
     if (typeof rowExpansionsDefault === "number") return depth <= rowExpansionsDefault;

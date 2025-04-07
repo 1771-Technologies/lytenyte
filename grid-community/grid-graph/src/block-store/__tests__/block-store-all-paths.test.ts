@@ -1,7 +1,7 @@
 import { ROW_GROUP_KIND, ROW_LEAF_KIND } from "@1771technologies/grid-constants";
-import type { RowNode } from "@1771technologies/grid-types/core";
 import { blockStoreAllPaths } from "../block-store-all-paths.js";
 import type { Block, BlockStore } from "../../types.js";
+import type { RowNodeCore } from "@1771technologies/grid-types/core";
 
 const lookup = createTestMap();
 test("returns an empty array when path not found in lookup", () => {
@@ -31,7 +31,7 @@ test("returns all the children for a top level node that is also a root", () => 
 });
 
 function createBlock(data: { kind: number; pathKey: string }[]): Block<any> {
-  return { data: data as RowNode[], index: 0 };
+  return { data: data as RowNodeCore<any>[], index: 0 };
 }
 
 function createBlockMap(data: { kind: number; pathKey: string }[]): BlockStore<any> {

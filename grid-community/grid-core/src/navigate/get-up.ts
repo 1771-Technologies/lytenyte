@@ -5,18 +5,19 @@ import {
   HEADER_CELL_POSITION,
   HEADER_GROUP_CELL_POSITION,
 } from "@1771technologies/grid-constants";
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
-import type {
-  Position,
-  PositionFloatingCell,
-  PositionFullWidthRow,
-  PositionGridCell,
-  PositionHeaderCell,
-  PositionHeaderGroupCell,
-} from "@1771technologies/grid-types/core";
 import { getGridCellPosition } from "./utils";
+import type {
+  ApiCore,
+  PositionCore,
+  PositionFloatingCellCore,
+  PositionFullWidthRowCore,
+  PositionGridCellCore,
+  PositionHeaderCellCore,
+  PositionHeaderGroupCellCore,
+} from "@1771technologies/grid-types/core";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
-export const getUp = <D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>): Position | null => {
+export const getUp = <D, E>(api: ApiCore<D, E> | ApiPro<D, E>): PositionCore | null => {
   const p = api.navigateGetPosition();
   if (!p) return null;
 
@@ -29,7 +30,7 @@ export const getUp = <D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>): Posi
   return null;
 };
 
-function handleUpFloatingCell(p: PositionFloatingCell): Position | null {
+function handleUpFloatingCell(p: PositionFloatingCellCore): PositionCore | null {
   return {
     kind: HEADER_CELL_POSITION,
     columnIndex: p.columnIndex,
@@ -37,9 +38,9 @@ function handleUpFloatingCell(p: PositionFloatingCell): Position | null {
 }
 
 function handleUpGridCell<D, E>(
-  api: ApiCommunity<D, E> | ApiEnterprise<D, E>,
-  p: PositionGridCell | PositionFullWidthRow,
-): Position | null {
+  api: ApiCore<D, E> | ApiPro<D, E>,
+  p: PositionGridCellCore | PositionFullWidthRowCore,
+): PositionCore | null {
   const s = api.getState();
 
   if (p.rowIndex === 0) {
@@ -71,9 +72,9 @@ function handleUpGridCell<D, E>(
 }
 
 function handleUpHeaderCell<D, E>(
-  api: ApiCommunity<D, E> | ApiEnterprise<D, E>,
-  p: PositionHeaderCell,
-): Position | null {
+  api: ApiCore<D, E> | ApiPro<D, E>,
+  p: PositionHeaderCellCore,
+): PositionCore | null {
   const allLevels = api.getState().columnGroupLevels.peek();
 
   if (!allLevels.length) return p;
@@ -95,9 +96,9 @@ function handleUpHeaderCell<D, E>(
 }
 
 function handleUpHeaderGroupCell<D, E>(
-  api: ApiCommunity<D, E> | ApiEnterprise<D, E>,
-  p: PositionHeaderGroupCell,
-): Position | null {
+  api: ApiCore<D, E> | ApiPro<D, E>,
+  p: PositionHeaderGroupCellCore,
+): PositionCore | null {
   const allLevels = api.getState().columnGroupLevels.peek();
   if (p.hierarchyRowIndex === 0) return p;
 

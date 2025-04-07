@@ -1,4 +1,4 @@
-import type { ColumnGroupRow, ColumnGroupRows } from "@1771technologies/grid-types/core";
+import type { ColumnGroupRowCore, ColumnGroupRowsCore } from "@1771technologies/grid-types/core";
 import { columnsByPin } from "./columns-by-pin.js";
 import type { ColumnLike } from "./columns-visible/columns-visible.js";
 
@@ -67,7 +67,7 @@ export function columnGroups<T extends ColumnLike>(columns: T[], delimiter: stri
   );
 
   // Combine all levels into a single array while maintaining pin order
-  const allLevels: ColumnGroupRows = [];
+  const allLevels: ColumnGroupRowsCore = [];
   for (let i = 0; i < hierarchyHeight; i++) {
     allLevels.push([...startLevels[i], ...centerLevels[i], ...endLevels[i]]);
   }
@@ -105,12 +105,12 @@ function createHierarchyLevels<T extends ColumnLike>(
   delimiter: string,
   indexOffset: number,
   occurrenceCount: Record<string, number> = {},
-): ColumnGroupRows {
-  const levels: ColumnGroupRows = [];
+): ColumnGroupRowsCore {
+  const levels: ColumnGroupRowsCore = [];
 
   // Process each level of the hierarchy
   for (let i = 0; i < height; i++) {
-    const level: ColumnGroupRow = [];
+    const level: ColumnGroupRowCore = [];
 
     // Process each column at the current level
     for (let j = 0; j < columns.length; j++) {

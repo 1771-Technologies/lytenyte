@@ -1,4 +1,4 @@
-import type { RowNode } from "@1771technologies/grid-types/core";
+import type { RowNodeCore } from "@1771technologies/grid-types/core";
 import type { BlockPaths } from "../types.js";
 import { blockStoreDelete } from "./block-store-delete.js";
 import { rowIsGroup } from "@1771technologies/grid-core";
@@ -38,7 +38,7 @@ import { rowIsGroup } from "@1771technologies/grid-core";
  */
 export function blockStoreDeleteByNodes(
   path: string,
-  nodes: RowNode[],
+  nodes: RowNodeCore<any>[],
   lookup: BlockPaths<any>,
   separator: string,
 ) {

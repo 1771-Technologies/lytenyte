@@ -1,4 +1,4 @@
-import type { RowNode } from "@1771technologies/grid-types/core";
+import type { RowNodeCore } from "@1771technologies/grid-types/core";
 import type { BlockPaths, BlockPayload } from "../types.js";
 
 /**
@@ -43,7 +43,7 @@ import type { BlockPaths, BlockPayload } from "../types.js";
  * ```
  */
 export function blockStoreUpdateNodes<D>(
-  nodes: RowNode<D>[],
+  nodes: RowNodeCore<D>[],
   payload: BlockPayload<D>,
   lookup: BlockPaths<D>,
 ) {

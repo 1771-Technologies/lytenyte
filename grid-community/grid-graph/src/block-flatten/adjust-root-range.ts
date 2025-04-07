@@ -1,4 +1,4 @@
-import type { RowPin } from "@1771technologies/grid-types/core";
+import type { RowPinCore } from "@1771technologies/grid-types/core";
 import type { FlattenedRange } from "../range-tree.js";
 
 /**
@@ -25,7 +25,7 @@ import type { FlattenedRange } from "../range-tree.js";
  */
 export function adjustRootRange(
   ranges: FlattenedRange[],
-  totalsPosition: RowPin,
+  totalsPosition: RowPinCore,
   totalsPinned: boolean,
 ) {
   if (totalsPinned || totalsPosition == null || !ranges.length) return ranges;

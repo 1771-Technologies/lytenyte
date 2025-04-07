@@ -1,9 +1,9 @@
-import type { ColumnPin } from "@1771technologies/grid-types/core";
+import type { ColumnPinCore } from "@1771technologies/grid-types/core";
 import { columnsByPin } from "../columns-by-pin.js";
 
 interface TestColumn {
   id: string;
-  pin: ColumnPin;
+  pin: ColumnPinCore;
 }
 
 test("correctly groups columns by pin position", () => {

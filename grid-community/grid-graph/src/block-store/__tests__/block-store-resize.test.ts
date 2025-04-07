@@ -1,7 +1,7 @@
 import { test, expect, beforeEach } from "vitest";
 import type { BlockPaths, BlockStore, Block } from "../../types.js";
-import type { RowNode } from "@1771technologies/grid-types/core";
 import { blockStoreResize } from "../block-store-resize.js";
+import type { RowNodeCore } from "@1771technologies/grid-types/core";
 
 const ROW_GROUP_KIND = 2;
 const ROW_LEAF_KIND = 1;
@@ -9,7 +9,7 @@ const ROW_LEAF_KIND = 1;
 let lookup: BlockPaths;
 
 function createBlock(data: { kind: number; pathKey: string }[], index: number): Block<any> {
-  return { data: data as RowNode[], index };
+  return { data: data as RowNodeCore<any>[], index };
 }
 
 function createBlockMap(

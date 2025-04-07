@@ -1,4 +1,8 @@
-import type { RowNodeLeaf, RowNodeTotal, RowPin } from "@1771technologies/grid-types/core";
+import type {
+  RowNodeLeafCore,
+  RowNodeTotalCore,
+  RowPinCore,
+} from "@1771technologies/grid-types/core";
 import type { FlattenRowContext } from "./types.js";
 import { ROW_TOTAL_ID } from "@1771technologies/grid-constants";
 
@@ -32,10 +36,10 @@ import { ROW_TOTAL_ID } from "@1771technologies/grid-constants";
  */
 export function flattenBottomRows<D>(
   { rowIdToRow, rowIndexToRow, rowIdToRowIndex }: FlattenRowContext<D>,
-  rowBottom: RowNodeLeaf<D>[],
-  rowTotalPosition: RowPin,
+  rowBottom: RowNodeLeafCore<D>[],
+  rowTotalPosition: RowPinCore,
   rowTotalIsPinned: boolean,
-  rowTotal: RowNodeTotal,
+  rowTotal: RowNodeTotalCore,
   centerOffset: number,
 ) {
   const isTotalBottom = rowTotalPosition === "bottom";

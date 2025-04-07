@@ -1,12 +1,12 @@
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
-import type { PositionGridCell } from "@1771technologies/grid-types/core";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 import { isBottomRow, isEndColumn, isStartColumn, isTopRow } from "./utils";
+import type { ApiCore, PositionGridCellCore } from "@1771technologies/grid-types/core";
 
 export const getRootCell = <D, E>(
-  api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
+  api: ApiPro<D, E> | ApiCore<D, E>,
   rowIndex: number,
   columnIndex: number,
-): PositionGridCell["root"] => {
+): PositionGridCellCore["root"] => {
   const s = api.getState();
 
   const columnsWithColSpan = s.columnsWithColSpan.peek();

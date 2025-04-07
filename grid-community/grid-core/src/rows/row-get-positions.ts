@@ -1,4 +1,4 @@
-import type { RowHeight } from "@1771technologies/grid-types/core";
+import type { RowHeightCore } from "@1771technologies/grid-types/core";
 import { makeUint32PositionArray } from "@1771technologies/js-utils";
 
 /**
@@ -48,7 +48,7 @@ import { makeUint32PositionArray } from "@1771technologies/js-utils";
  */
 export function rowGetPositions(
   rowCount: number,
-  rowHeight: RowHeight,
+  rowHeight: RowHeightCore,
   rowDetailEnabled: null | ((i: number) => boolean),
   getDetailHeight: null | ((i: number) => number),
 ) {

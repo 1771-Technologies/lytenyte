@@ -1,10 +1,8 @@
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
+import type { ApiCore } from "@1771technologies/grid-types/core";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 import { getRelativeYPosition, rangedBinarySearch } from "@1771technologies/js-utils";
 
-export function getHoveredRowIndex(
-  api: ApiEnterprise<any, any> | ApiCommunity<any, any>,
-  clientY: number,
-) {
+export function getHoveredRowIndex(api: ApiCore<any, any> | ApiPro<any, any>, clientY: number) {
   const sx = api.getState();
 
   const viewport = sx.internal.viewport.peek();

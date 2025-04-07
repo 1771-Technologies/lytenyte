@@ -1,12 +1,12 @@
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
-import type { AutosizeOptions } from "@1771technologies/grid-types/core";
+import type { ApiCore, AutosizeOptionsCore } from "@1771technologies/grid-types/core";
 import { autosizeCellDefault } from "./autosize-cell-default";
 import { autosizeHeaderDefault } from "./autosize-header-default";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
 export const autosizeColumns = <D, E>(
-  api: ApiCommunity<D, E> | ApiEnterprise<D, E>,
+  api: ApiCore<D, E> | ApiPro<D, E>,
   c?: string[] | null,
-  opts?: AutosizeOptions,
+  opts?: AutosizeOptionsCore,
 ) => {
   const s = api.getState();
   const columns = c

@@ -1,5 +1,5 @@
 import { ROW_TOTAL_KIND } from "@1771technologies/grid-constants";
-import type { RowNode, RowNodeTotal } from "@1771technologies/grid-types/core";
+import type { RowNodeCore, RowNodeTotalCore } from "@1771technologies/grid-types/core";
 
 /**
  * Type guard that checks if a row node is a total node.
@@ -16,6 +16,6 @@ import type { RowNode, RowNodeTotal } from "@1771technologies/grid-types/core";
  *   console.log(node.totalData);
  * }
  */
-export function rowIsTotal(r: RowNode<any>): r is RowNodeTotal {
+export function rowIsTotal(r: RowNodeCore<any>): r is RowNodeTotalCore {
   return r.kind === ROW_TOTAL_KIND;
 }

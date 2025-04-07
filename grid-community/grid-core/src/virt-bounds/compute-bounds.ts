@@ -1,4 +1,4 @@
-import type { ScrollBounds } from "@1771technologies/grid-types/core";
+import type { ScrollBoundsCore } from "@1771technologies/grid-types/core";
 import { getBoundEnd } from "./get-bound-end.js";
 import { getBoundStart } from "./get-bound-start.js";
 
@@ -29,7 +29,7 @@ export function computeBounds({
   bottomCount,
   startCount,
   endCount,
-}: ComputeBoundsArgs): ScrollBounds {
+}: ComputeBoundsArgs): ScrollBoundsCore {
   const maxCenterRowCount = yPositions.length - 1 - bottomCount;
 
   const topOffset = scrollTop + yPositions[topCount];

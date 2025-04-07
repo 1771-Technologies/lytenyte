@@ -1,5 +1,5 @@
 import { ROW_GROUP_KIND } from "@1771technologies/grid-constants";
-import type { RowNode, RowNodeGroup } from "@1771technologies/grid-types/core";
+import type { RowNodeCore, RowNodeGroupCore } from "@1771technologies/grid-types/core";
 
 /**
  * Type guard that checks if a row node is a group node.
@@ -16,6 +16,6 @@ import type { RowNode, RowNodeGroup } from "@1771technologies/grid-types/core";
  *   console.log(node.groupRows.length);
  * }
  */
-export function rowIsGroup(r: RowNode<any>): r is RowNodeGroup {
+export function rowIsGroup(r: RowNodeCore<any>): r is RowNodeGroupCore {
   return r.kind === ROW_GROUP_KIND;
 }

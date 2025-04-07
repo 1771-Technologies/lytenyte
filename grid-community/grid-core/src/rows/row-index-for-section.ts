@@ -1,4 +1,4 @@
-import type { RowPin } from "@1771technologies/grid-types/core";
+import type { RowPinCore } from "@1771technologies/grid-types/core";
 
 /**
  * LyteNyte grid represents the row space as a flat set of indices. It is convenient
@@ -8,7 +8,7 @@ import type { RowPin } from "@1771technologies/grid-types/core";
  */
 export function rowIndexForSection(
   requestedIndex: number,
-  section: RowPin | "flat",
+  section: RowPinCore | "flat",
   topCount: number,
   bottomCount: number,
   rowCount: number,

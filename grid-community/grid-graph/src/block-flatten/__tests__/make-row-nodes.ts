@@ -1,5 +1,5 @@
 import { ROW_GROUP_KIND, ROW_LEAF_KIND } from "@1771technologies/grid-constants";
-import type { RowNodeGroup, RowNodeLeaf } from "@1771technologies/grid-types/core";
+import type { RowNodeGroupCore, RowNodeLeafCore } from "@1771technologies/grid-types/core";
 
 export function makeRowNodes(n: number, offset: number) {
   return Array.from(
@@ -13,7 +13,7 @@ export function makeRowNodes(n: number, offset: number) {
         kind: ROW_LEAF_KIND,
         rowIndex: null,
         rowPin: null,
-      } satisfies RowNodeLeaf<any>;
+      } satisfies RowNodeLeafCore<any>;
     },
   );
 }
@@ -25,7 +25,7 @@ export function makeLeafNode(s: string) {
     id: s,
     rowIndex: null,
     rowPin: null,
-  } satisfies RowNodeLeaf;
+  } satisfies RowNodeLeafCore<any>;
 }
 
 export function makeGroupNode(s: string, path: string) {
@@ -35,5 +35,5 @@ export function makeGroupNode(s: string, path: string) {
     pathKey: path,
     id: s,
     rowIndex: null,
-  } satisfies RowNodeGroup;
+  } satisfies RowNodeGroupCore;
 }

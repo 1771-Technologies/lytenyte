@@ -1,11 +1,7 @@
-import type { ApiCommunity, ColumnCommunity } from "@1771technologies/grid-types";
-import type { AutosizeHeaderParameters } from "@1771technologies/grid-types/core";
+import type { AutosizeHeaderParametersCore } from "@1771technologies/grid-types/core";
 import { measureText } from "./measure-text";
 
-export function autosizeHeaderDefault<D, E>({
-  api,
-  column,
-}: AutosizeHeaderParameters<ApiCommunity<D, E>, ColumnCommunity<D, E>>) {
+export function autosizeHeaderDefault<D, E>({ api, column }: AutosizeHeaderParametersCore<D, E>) {
   const text = column.headerName ?? column.id;
 
   const state = api.getState();

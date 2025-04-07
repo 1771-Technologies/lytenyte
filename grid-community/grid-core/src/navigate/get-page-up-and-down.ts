@@ -1,9 +1,13 @@
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
 import { getGridCellPosition, isGridCellPosition } from "./utils";
-import type { PositionFullWidthRow, PositionGridCell } from "@1771technologies/grid-types/core";
 import { getBottom, getTop } from "./get-top-and-bottom";
+import type {
+  ApiCore,
+  PositionFullWidthRowCore,
+  PositionGridCellCore,
+} from "@1771technologies/grid-types/core";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
-export function getPageDown<D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>) {
+export function getPageDown<D, E>(api: ApiCore<D, E> | ApiPro<D, E>) {
   const position = api.navigateGetPosition();
 
   if (!isGridCellPosition(position)) return position;
@@ -17,7 +21,7 @@ export function getPageDown<D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>)
   const { rowStart, rowEnd } = s.internal.virtBounds.peek();
   if (rowEnd <= 0) return position;
 
-  const p = position as PositionGridCell | PositionFullWidthRow;
+  const p = position as PositionGridCellCore | PositionFullWidthRowCore;
 
   const pageJump = rowEnd - rowStart;
 
@@ -27,7 +31,7 @@ export function getPageDown<D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>)
   return getGridCellPosition(api, row, p.columnIndex);
 }
 
-export function getPageUp<D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>) {
+export function getPageUp<D, E>(api: ApiCore<D, E> | ApiPro<D, E>) {
   const position = api.navigateGetPosition();
   if (!isGridCellPosition(position)) return position;
 
@@ -38,7 +42,7 @@ export function getPageUp<D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>) {
   const { rowStart, rowEnd } = s.internal.virtBounds.peek();
   if (rowEnd <= 0) return position;
 
-  const p = position as PositionGridCell | PositionFullWidthRow;
+  const p = position as PositionGridCellCore | PositionFullWidthRowCore;
 
   const pageJump = rowEnd - rowStart;
 

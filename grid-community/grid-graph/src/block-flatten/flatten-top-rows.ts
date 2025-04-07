@@ -1,6 +1,10 @@
-import type { RowNodeLeaf, RowNodeTotal, RowPin } from "@1771technologies/grid-types/core";
 import { ROW_TOTAL_ID } from "@1771technologies/grid-constants";
 import type { FlattenRowContext } from "./types.js";
+import type {
+  RowNodeLeafCore,
+  RowNodeTotalCore,
+  RowPinCore,
+} from "@1771technologies/grid-types/core";
 
 /**
  * Processes and positions rows that should appear at the top of the grid, including pinned rows
@@ -31,10 +35,10 @@ import type { FlattenRowContext } from "./types.js";
  */
 export function flattenTopRows<D>(
   { rowIndexToRow, rowIdToRow, rowIdToRowIndex }: FlattenRowContext<D>,
-  rowsTop: RowNodeLeaf<D>[],
-  rowTotalPosition: RowPin,
+  rowsTop: RowNodeLeafCore<D>[],
+  rowTotalPosition: RowPinCore,
   rowTotalIsPinned: boolean,
-  rowTotal: RowNodeTotal,
+  rowTotal: RowNodeTotalCore,
 ) {
   // Calculate the total number of rows that will be in the top section.
   // This includes all pinned top rows plus the totals row if it's positioned at the top.

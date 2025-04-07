@@ -1,13 +1,13 @@
 import type {
-  RowGroupKind,
-  RowLeafKind,
-  RowTotalKind,
-  SortCycleOption,
+  RowGroupKindCore,
+  RowLeafKindCore,
+  RowTotalKindCore,
+  SortCycleOptionCore,
 } from "@1771technologies/grid-types/core";
 
-export const ROW_LEAF_KIND: RowLeafKind = 1;
-export const ROW_GROUP_KIND: RowGroupKind = 2;
-export const ROW_TOTAL_KIND: RowTotalKind = 3;
+export const ROW_LEAF_KIND: RowLeafKindCore = 1;
+export const ROW_GROUP_KIND: RowGroupKindCore = 2;
+export const ROW_TOTAL_KIND: RowTotalKindCore = 3;
 
 export const COLUMN_GROUP_ID_DELIMITER = "-->";
 export const ROW_DEFAULT_PATH_SEPARATOR = "-->";
@@ -34,7 +34,7 @@ export const DEFAULT_MAX_WIDTH = 1000;
 export const DEFAULT_MIN_WIDTH = 80;
 export const DEFAULT_WIDTH = 150;
 
-export const DEFAULT_SORT_CYCLE: SortCycleOption[] = ["asc", "desc", null];
+export const DEFAULT_SORT_CYCLE: SortCycleOptionCore[] = ["asc", "desc", null];
 
 export const GRID_CELL_POSITION = 1;
 export const FULL_WIDTH_POSITION = 2;

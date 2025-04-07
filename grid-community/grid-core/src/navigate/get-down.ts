@@ -5,18 +5,21 @@ import {
   HEADER_CELL_POSITION,
   HEADER_GROUP_CELL_POSITION,
 } from "@1771technologies/grid-constants";
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
-import type {
-  Position,
-  PositionFloatingCell,
-  PositionFullWidthRow,
-  PositionGridCell,
-  PositionHeaderCell,
-  PositionHeaderGroupCell,
-} from "@1771technologies/grid-types/core";
 import { getGridCellPosition, isLastRow, isPastLastPaginatedRow } from "./utils";
+import type {
+  ApiPro,
+  PositionFullWidthRowPro,
+  PositionGridCellPro,
+} from "@1771technologies/grid-types/pro";
+import type {
+  ApiCore,
+  PositionCore,
+  PositionFloatingCellCore,
+  PositionHeaderCellCore,
+  PositionHeaderGroupCellCore,
+} from "@1771technologies/grid-types/core";
 
-export const getDown = <D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>): Position | null => {
+export const getDown = <D, E>(api: ApiCore<D, E> | ApiPro<D, E>): PositionCore | null => {
   const p = api.navigateGetPosition();
   if (!p) return null;
 
@@ -30,9 +33,9 @@ export const getDown = <D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>): Po
 };
 
 function handleDownGridCell<D, E>(
-  api: ApiCommunity<D, E> | ApiEnterprise<D, E>,
-  p: PositionGridCell | PositionFullWidthRow,
-): Position | null {
+  api: ApiCore<D, E> | ApiPro<D, E>,
+  p: PositionGridCellPro | PositionFullWidthRowPro,
+): PositionCore | null {
   if (isLastRow(api, p.rowIndex)) return p;
 
   const s = api.getState();
@@ -61,8 +64,8 @@ function handleDownGridCell<D, E>(
 }
 
 function handleDownFloatingCell<D, E>(
-  api: ApiCommunity<D, E> | ApiEnterprise<D, E>,
-  p: PositionFloatingCell,
+  api: ApiCore<D, E> | ApiPro<D, E>,
+  p: PositionFloatingCellCore,
 ) {
   const s = api.getState();
   if (s.internal.rowCount.peek() === 0) return p;
@@ -71,9 +74,9 @@ function handleDownFloatingCell<D, E>(
 }
 
 function handleDownHeaderCell<D, E>(
-  api: ApiCommunity<D, E> | ApiEnterprise<D, E>,
-  p: PositionHeaderCell,
-): Position | null {
+  api: ApiCore<D, E> | ApiPro<D, E>,
+  p: PositionHeaderCellCore,
+): PositionCore | null {
   const s = api.getState();
 
   if (s.floatingRowEnabled.peek()) {
@@ -84,9 +87,9 @@ function handleDownHeaderCell<D, E>(
 }
 
 function handleDownHeaderGroupCell<D, E>(
-  api: ApiCommunity<D, E> | ApiEnterprise<D, E>,
-  p: PositionHeaderGroupCell,
-): Position | null {
+  api: ApiCore<D, E> | ApiPro<D, E>,
+  p: PositionHeaderGroupCellCore,
+): PositionCore | null {
   const s = api.getState();
 
   const start = p.columnStartIndex;

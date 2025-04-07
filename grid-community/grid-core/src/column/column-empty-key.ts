@@ -1,5 +1,5 @@
 import { COLUMN_EMPTY_PREFIX } from "@1771technologies/grid-constants";
-import type { ColumnPin } from "@1771technologies/grid-types/core";
+import type { ColumnPinCore } from "@1771technologies/grid-types/core";
 
 /**
  * Generates a unique key for an empty column placeholder based on its group path and pin status.
@@ -28,6 +28,6 @@ import type { ColumnPin } from "@1771technologies/grid-types/core";
  * when groups are collapsed. The key structure ensures uniqueness within the same
  * group path and pin combination.
  */
-export function columnEmptyKey(groupPath: string[], pin: ColumnPin) {
+export function columnEmptyKey(groupPath: string[], pin: ColumnPinCore) {
   return `${COLUMN_EMPTY_PREFIX}${groupPath.join("|>")}|>empty${pin ?? ""}`;
 }

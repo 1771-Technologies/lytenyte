@@ -1,4 +1,4 @@
-import type { ColumnPin } from "@1771technologies/grid-types/core";
+import type { ColumnPinCore } from "@1771technologies/grid-types/core";
 
 /**
  * Groups an array of columns into three arrays based on their pin position: start, center (unpinned), or end.
@@ -30,7 +30,7 @@ import type { ColumnPin } from "@1771technologies/grid-types/core";
  * - Maintains the relative order of columns within each group
  * - Columns without an explicit pin value are placed in the center group
  */
-export function columnsByPin<T extends { pin?: ColumnPin }>(
+export function columnsByPin<T extends { pin?: ColumnPinCore }>(
   columns: T[],
 ): { start: T[]; center: T[]; end: T[] } {
   const start: T[] = [];

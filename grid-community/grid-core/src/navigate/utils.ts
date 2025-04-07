@@ -5,47 +5,35 @@ import {
   HEADER_CELL_POSITION,
   HEADER_GROUP_CELL_POSITION,
 } from "@1771technologies/grid-constants";
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
-import type { Position } from "@1771technologies/grid-types/core";
 import { getRootCell } from "./get-root-cell";
+import type { ApiCore, PositionCore } from "@1771technologies/grid-types/core";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
-export const isTopRow = <D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>, rowIndex: number) => {
+export const isTopRow = <D, E>(api: ApiCore<D, E> | ApiPro<D, E>, rowIndex: number) => {
   return rowIndex < api.getState().internal.rowTopCount.peek();
 };
 
-export const isBottomRow = <D, E>(
-  api: ApiCommunity<D, E> | ApiEnterprise<D, E>,
-  rowIndex: number,
-) => {
+export const isBottomRow = <D, E>(api: ApiCore<D, E> | ApiPro<D, E>, rowIndex: number) => {
   const s = api.getState().internal;
   return rowIndex >= s.rowCount.peek() - s.rowBottomCount.peek();
 };
 
-export const isStartColumn = <D, E>(
-  api: ApiCommunity<D, E> | ApiEnterprise<D, E>,
-  columnIndex: number,
-) => {
+export const isStartColumn = <D, E>(api: ApiCore<D, E> | ApiPro<D, E>, columnIndex: number) => {
   return columnIndex < api.getState().columnVisibleStartCount.peek();
 };
 
-export const isEndColumn = <D, E>(
-  api: ApiCommunity<D, E> | ApiEnterprise<D, E>,
-  columnIndex: number,
-) => {
+export const isEndColumn = <D, E>(api: ApiCore<D, E> | ApiPro<D, E>, columnIndex: number) => {
   const s = api.getState();
 
   return columnIndex >= s.columnVisibleStartCount.peek() + s.columnVisibleCenterCount.peek();
 };
 
-export const isLastRow = <D, E>(
-  api: ApiCommunity<D, E> | ApiEnterprise<D, E>,
-  rowIndex: number,
-) => {
+export const isLastRow = <D, E>(api: ApiCore<D, E> | ApiPro<D, E>, rowIndex: number) => {
   return rowIndex === api.getState().internal.rowCount.peek() - 1;
 };
 
 export const isPastLastPaginatedRow = <D, E>(
-  api: ApiCommunity<D, E> | ApiEnterprise<D, E>,
+  api: ApiCore<D, E> | ApiPro<D, E>,
   rowIndex: number,
 ) => {
   const s = api.getState();
@@ -57,10 +45,10 @@ export const isPastLastPaginatedRow = <D, E>(
 };
 
 export const getGridCellPosition = <D, E>(
-  api: ApiCommunity<D, E> | ApiEnterprise<D, E>,
+  api: ApiCore<D, E> | ApiPro<D, E>,
   rowIndex: number,
   columnIndex: number,
-): Position => {
+): PositionCore => {
   const s = api.getState();
 
   if (s.internal.rowIsFullWidthInternal.peek()(rowIndex))
@@ -71,7 +59,7 @@ export const getGridCellPosition = <D, E>(
   return { kind: GRID_CELL_POSITION, rowIndex, columnIndex, root };
 };
 
-export function isGridCellPosition(p: Position | null) {
+export function isGridCellPosition(p: PositionCore | null) {
   if (
     !p ||
     p.kind === HEADER_CELL_POSITION ||

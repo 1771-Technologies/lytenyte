@@ -11,7 +11,6 @@ import { blockStoreIsShrinking } from "./block-store/block-store-is-shrinking.js
 import { blockStoreResize } from "./block-store/block-store-resize.js";
 import { blockStoreTruncatePayloadIfNecessary } from "./block-store/block-store-truncate-payload-if-necessary.js";
 import { blockStoreUpdateNodes } from "./block-store/block-store-update-nodes.js";
-import type { RowNode, RowNodeLeaf, RowNodeTotal, RowPin } from "@1771technologies/grid-types/core";
 import { RangeTree, type FlattenedRange } from "./range-tree.js";
 import { flattenTopRows } from "./block-flatten/flatten-top-rows.js";
 import { flattenCenterRows } from "./block-flatten/flatten-center-rows.js";
@@ -19,6 +18,12 @@ import { flattenBottomRows } from "./block-flatten/flatten-bottom-rows.js";
 import { EMPTY_TOTAL } from "./constants.js";
 import { adjustRootRange } from "./block-flatten/adjust-root-range.js";
 import { blockStoreAllPaths } from "./block-store/block-store-all-paths.js";
+import type {
+  RowNodeCore,
+  RowNodeLeafCore,
+  RowNodeTotalCore,
+  RowPinCore,
+} from "@1771technologies/grid-types/core";
 
 /**
  * Manages a hierarchical graph of row blocks with support for pinned rows, totals, and range-based operations.
@@ -63,21 +68,21 @@ export class BlockGraph<D> {
   readonly #blockPathSeparator: string;
 
   /** Array of pinned top rows */
-  #rowTop: RowNodeLeaf<D>[] = [];
+  #rowTop: RowNodeLeafCore<D>[] = [];
   /** Array of pinned bottom rows */
-  #rowBottom: RowNodeLeaf<D>[] = [];
+  #rowBottom: RowNodeLeafCore<D>[] = [];
 
   /** Total row configuration */
-  #rowTotal: RowNodeTotal = EMPTY_TOTAL;
+  #rowTotal: RowNodeTotalCore = EMPTY_TOTAL;
   /** Position of total row (top, bottom, or null) */
-  #rowTotalPosition: RowPin = null;
+  #rowTotalPosition: RowPinCore = null;
   /** Whether total row is pinned */
   #rowTotalIsPinned: boolean = false;
 
   /** Map of row IDs to row nodes */
-  #rowById: Map<string, RowNode<D>> = new Map();
+  #rowById: Map<string, RowNodeCore<D>> = new Map();
   /** Map of row indices to row nodes */
-  #rowByIndex: Map<number, RowNode<D>> = new Map();
+  #rowByIndex: Map<number, RowNodeCore<D>> = new Map();
   /** Map of row ids to row indices  */
   #rowIdToRowIndex: Map<string, number> = new Map();
   /** Total count of rows */
@@ -101,7 +106,7 @@ export class BlockGraph<D> {
    * Sets the array of pinned top rows.
    * @param nodes - Array of leaf nodes to pin at the top
    */
-  readonly setTop = (nodes: RowNodeLeaf<D>[]) => {
+  readonly setTop = (nodes: RowNodeLeafCore<D>[]) => {
     this.#rowTop = nodes;
   };
 
@@ -109,7 +114,7 @@ export class BlockGraph<D> {
    * Sets the array of pinned bottom rows.
    * @param nodes - Array of leaf nodes to pin at the bottom
    */
-  readonly setBottom = (nodes: RowNodeLeaf<D>[]) => {
+  readonly setBottom = (nodes: RowNodeLeafCore<D>[]) => {
     this.#rowBottom = nodes;
   };
 
@@ -117,7 +122,7 @@ export class BlockGraph<D> {
    * Sets the totals row.
    * @param node - Total row node
    */
-  readonly setTotal = (node: RowNodeTotal) => {
+  readonly setTotal = (node: RowNodeTotalCore) => {
     this.#rowTotal = node;
   };
 
@@ -133,7 +138,7 @@ export class BlockGraph<D> {
    * Sets the position of the totals row.
    * @param b - Position to place the totals row ("top", "bottom", or null)
    */
-  readonly setTotalPosition = (b: RowPin) => {
+  readonly setTotalPosition = (b: RowPinCore) => {
     this.#rowTotalPosition = b;
   };
 
@@ -211,7 +216,7 @@ export class BlockGraph<D> {
 
     const allPaths = blockStoreAllPaths(path, this.#blockPaths, this.#blockPathSeparator);
 
-    const leafNodes: RowNodeLeaf<D>[] = [];
+    const leafNodes: RowNodeLeafCore<D>[] = [];
     for (const path of allPaths) {
       const blocks = this.#blockPaths.get(path)!;
 
@@ -246,7 +251,7 @@ export class BlockGraph<D> {
     if (path == null) return [];
 
     const allPaths = blockStoreAllPaths(path, this.#blockPaths, this.#blockPathSeparator);
-    const nodes: RowNode<D>[] = [];
+    const nodes: RowNodeCore<D>[] = [];
     for (const path of allPaths) {
       const blocks = this.#blockPaths.get(path)!;
 
@@ -309,7 +314,7 @@ export class BlockGraph<D> {
    * ```
    */
   readonly rowGetAllRows = () => {
-    const nodes: RowNode<D>[] = [];
+    const nodes: RowNodeCore<D>[] = [];
 
     this.#rowTop.forEach((c) => nodes.push(c));
     if (this.#rowTotalPosition !== null) nodes.push(this.#rowTotal);
@@ -487,8 +492,8 @@ export class BlockGraph<D> {
     rowExpansions: Record<string, boolean | undefined> = {},
     rowDefaultExpansion: number | boolean = false,
   ) => {
-    const rowIndexToRow = new Map<number, RowNode<D>>();
-    const rowIdToRow = new Map<string, RowNode<D>>();
+    const rowIndexToRow = new Map<number, RowNodeCore<D>>();
+    const rowIdToRow = new Map<string, RowNodeCore<D>>();
     const rowIdToRowIndex = new Map<string, number>();
 
     const ranges: FlattenedRange[] = [];

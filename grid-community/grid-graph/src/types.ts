@@ -1,4 +1,4 @@
-import type { RowNode } from "@1771technologies/grid-types/core";
+import type { RowNodeCore } from "@1771technologies/grid-types/core";
 
 /**
  * Represents a block of row nodes with a specific index.
@@ -7,7 +7,7 @@ import type { RowNode } from "@1771technologies/grid-types/core";
  */
 export type Block<D = any> = {
   /** Array of row nodes contained in this block. Readonly to prevent direct mutation. */
-  readonly data: RowNode<D>[];
+  readonly data: RowNodeCore<D>[];
   /** Index identifying this block's position in the block store */
   readonly index: number;
 };
@@ -52,7 +52,7 @@ export type BlockPaths<D = any> = Map<string, BlockStore<D>>;
  */
 export interface BlockPayload<D = any> {
   /** Array of row nodes to be stored or processed. Readonly to prevent direct mutation. */
-  readonly data: RowNode<D>[];
+  readonly data: RowNodeCore<D>[];
   /** Index indicating where this payload should be stored in the block structure */
   readonly index: number;
   /** Path identifying the target location for this payload */

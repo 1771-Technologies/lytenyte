@@ -1,13 +1,13 @@
-import type { ColumnGroupVisibility, ColumnPin } from "@1771technologies/grid-types/core";
+import type { ColumnGroupVisibilityCore, ColumnPinCore } from "@1771technologies/grid-types/core";
 import { columnsGroupVisibility } from "./columns-group-visibility.js";
 import { COLUMN_MARKER_ID, GROUP_COLUMN_PREFIX } from "@1771technologies/grid-constants";
 
 export type ColumnLike = {
   id: string;
   hide?: boolean;
-  groupVisibility?: ColumnGroupVisibility;
+  groupVisibility?: ColumnGroupVisibilityCore;
   groupPath?: string[];
-  pin?: ColumnPin;
+  pin?: ColumnPinCore;
 };
 
 /**

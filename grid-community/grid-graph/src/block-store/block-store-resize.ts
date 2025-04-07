@@ -1,7 +1,7 @@
 import type { BlockPaths } from "../types.js";
 import { blockStoreUpdateSize } from "./block-store-update-size.js";
-import type { RowNode } from "@1771technologies/grid-types/core";
 import { blockStoreDeleteByNodes } from "./block-store-delete-by-nodes.js";
+import type { RowNodeCore } from "@1771technologies/grid-types/core";
 
 /**
  * Resizes a block and adjusts its child blocks to match the new size.
@@ -73,6 +73,6 @@ export function blockStoreResize(
   const maxCount = size - lastBlockIndex * blockSize;
 
   if (lastBlock && lastBlock.data.length > maxCount) {
-    (lastBlock as { data: RowNode[] }).data = lastBlock.data.slice(0, maxCount);
+    (lastBlock as { data: RowNodeCore<any>[] }).data = lastBlock.data.slice(0, maxCount);
   }
 }

@@ -1,6 +1,5 @@
 import { ROW_LEAF_KIND } from "@1771technologies/grid-constants";
-import type { RowNodeLeaf } from "@1771technologies/grid-types/core";
-import type { RowNode } from "@1771technologies/grid-types/core";
+import type { RowNodeCore, RowNodeLeafCore } from "@1771technologies/grid-types/core";
 
 /**
  * Type guard that checks if a row node is a leaf node.
@@ -17,6 +16,6 @@ import type { RowNode } from "@1771technologies/grid-types/core";
  *   console.log(node.data);
  * }
  */
-export function rowIsLeaf<D>(r: RowNode<D>): r is RowNodeLeaf<D> {
+export function rowIsLeaf<D>(r: RowNodeCore<D>): r is RowNodeLeafCore<D> {
   return r.kind === ROW_LEAF_KIND;
 }

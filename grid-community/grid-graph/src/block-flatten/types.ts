@@ -1,4 +1,4 @@
-import type { RowNode } from "@1771technologies/grid-types/core";
+import type { RowNodeCore } from "@1771technologies/grid-types/core";
 import type { FlattenedRange } from "../range-tree";
 
 /**
@@ -24,10 +24,10 @@ import type { FlattenedRange } from "../range-tree";
  */
 export interface FlattenRowContext<D> {
   /** Maps row string identifiers to their corresponding row nodes for direct data access */
-  readonly rowIdToRow: Map<string, RowNode<D>>;
+  readonly rowIdToRow: Map<string, RowNodeCore<D>>;
 
   /** Maps numeric indices to row nodes, enabling positional access in the flattened structure */
-  readonly rowIndexToRow: Map<number, RowNode<D>>;
+  readonly rowIndexToRow: Map<number, RowNodeCore<D>>;
 
   /**
    * Provides bidirectional mapping between row IDs and their current numeric indices,

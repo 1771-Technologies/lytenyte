@@ -5,17 +5,18 @@ import {
   HEADER_CELL_POSITION,
   HEADER_GROUP_CELL_POSITION,
 } from "@1771technologies/grid-constants";
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
-import type {
-  Position,
-  PositionFloatingCell,
-  PositionGridCell,
-  PositionHeaderCell,
-  PositionHeaderGroupCell,
-} from "@1771technologies/grid-types/core";
 import { getGridCellPosition } from "./utils";
+import type {
+  ApiCore,
+  PositionCore,
+  PositionFloatingCellCore,
+  PositionGridCellCore,
+  PositionHeaderCellCore,
+  PositionHeaderGroupCellCore,
+} from "@1771technologies/grid-types/core";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
-export const getPrev = <D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>): Position | null => {
+export const getPrev = <D, E>(api: ApiCore<D, E> | ApiPro<D, E>): PositionCore | null => {
   const p = api.navigateGetPosition();
   if (!p) return null;
 
@@ -29,9 +30,9 @@ export const getPrev = <D, E>(api: ApiCommunity<D, E> | ApiEnterprise<D, E>): Po
 };
 
 function handlePrevGridCell<D, E>(
-  api: ApiCommunity<D, E> | ApiEnterprise<D, E>,
-  p: PositionGridCell,
-): Position | null {
+  api: ApiCore<D, E> | ApiPro<D, E>,
+  p: PositionGridCellCore,
+): PositionCore | null {
   const nextColumnIndex = p.root ? p.root.columnIndex - 1 : p.columnIndex - 1;
 
   if (nextColumnIndex < 0) return p;
@@ -39,7 +40,9 @@ function handlePrevGridCell<D, E>(
   return getGridCellPosition(api, p.rowIndex, nextColumnIndex);
 }
 
-function handlePrevHeaderCell(p: PositionHeaderCell | PositionFloatingCell): Position | null {
+function handlePrevHeaderCell(
+  p: PositionHeaderCellCore | PositionFloatingCellCore,
+): PositionCore | null {
   const c = p.columnIndex;
   if (c === 0) return p;
 
@@ -50,9 +53,9 @@ function handlePrevHeaderCell(p: PositionHeaderCell | PositionFloatingCell): Pos
 }
 
 function handlePrevHeaderGroupCell<D, E>(
-  api: ApiCommunity<D, E> | ApiEnterprise<D, E>,
-  position: PositionHeaderGroupCell,
-): Position | null {
+  api: ApiCore<D, E> | ApiPro<D, E>,
+  position: PositionHeaderGroupCellCore,
+): PositionCore | null {
   const hierarchy = api.getState().columnGroupLevels.peek();
 
   let c = position.columnStartIndex - 1;
