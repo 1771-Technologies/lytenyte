@@ -22,30 +22,15 @@
   "publishConfig": {
     "access": "public",
     "exports": {
-      ".": {
-        "types": "./dist/types/index.d.ts",
-        "import": "./dist/index.js",
-        "require": "./dist/index.js"
-      },
       "./core": {
-        "types": "./dist/types/types.d.ts",
-        "import": "./dist/types.js",
-        "require": "./dist/types.js"
-      },
-      "./core-react": {
-        "types": "./dist/types/types-react.d.ts",
-        "import": "./dist/types-react.js",
-        "require": "./dist/types-react.js"
+        "types": "./dist/types/export-core.d.ts",
+        "import": "./dist/export-core.js",
+        "require": "./dist/export-core.js"
       },
       "./pro": {
-        "types": "./dist/types/types-pro.d.ts",
-        "import": "./dist/types-pro.js",
-        "require": "./dist/types-pro.js"
-      },
-      "./pro-react": {
-        "types": "./dist/types/types-pro-react.d.ts",
-        "import": "./dist/types-pro-react.js",
-        "require": "./dist/types-pro-react.js"
+        "types": "./dist/types/export-pro.d.ts",
+        "import": "./dist/export-pro.js",
+        "require": "./dist/export-pro.js"
       }
     }
   },
