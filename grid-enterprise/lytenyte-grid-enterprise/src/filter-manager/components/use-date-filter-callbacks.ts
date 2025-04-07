@@ -1,13 +1,13 @@
 import { useCallback } from "react";
 import { useSimpleFilterRoot } from "./simple-filter-root";
-import type { FilterDate } from "@1771technologies/grid-types/core";
 import type { SemiPartialFilter } from "../types";
+import type { FilterDatePro } from "@1771technologies/grid-types/pro";
 
 export function useDateFilterCallbacks() {
   const { value, onChange: onFilterChange } = useSimpleFilterRoot();
 
   const onChange = useCallback(
-    (item: { label: string; value: FilterDate["operator"] }) => {
+    (item: { label: string; value: FilterDatePro["operator"] }) => {
       const currentOperator = value.operator;
       // No change in the operator value
       if (currentOperator === item.value) return;
@@ -33,7 +33,7 @@ export function useDateFilterCallbacks() {
       const nextFilter: SemiPartialFilter = {
         kind: "date",
         columnId: value.columnId,
-        operator: value.operator as FilterDate["operator"],
+        operator: value.operator as FilterDatePro["operator"],
         value: c,
         datePeriod: null,
       };
@@ -43,14 +43,14 @@ export function useDateFilterCallbacks() {
     [onFilterChange, value.columnId, value.operator, value.value],
   );
   const onDatePeriodChange = useCallback(
-    (c: FilterDate["datePeriod"]) => {
-      const current = (value as FilterDate).datePeriod;
+    (c: FilterDatePro["datePeriod"]) => {
+      const current = (value as FilterDatePro).datePeriod;
       if (current === c) return;
 
       const nextFilter: SemiPartialFilter = {
         kind: "date",
         columnId: value.columnId,
-        operator: value.operator as FilterDate["operator"],
+        operator: value.operator as FilterDatePro["operator"],
         value: value as unknown as string,
         datePeriod: c,
       };

@@ -3,12 +3,12 @@ import { useMemo, type ReactNode } from "react";
 import { useGrid } from "../use-grid";
 import { useColumnManagerState } from "./column-manager-state";
 import { ListView, type ListViewItemRendererProps } from "../list-view/list-view";
-import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import { handleItemHide } from "./utils/handle-item-hide";
 import { useDrag, useDragStore } from "@1771technologies/lytenyte-grid-community/internal";
+import type { ColumnProReact } from "../types";
 
 interface ColumnManagerTreeProps<D> {
-  children: (p: ListViewItemRendererProps<ColumnEnterpriseReact<D>>) => ReactNode;
+  children: (p: ListViewItemRendererProps<ColumnProReact<D>>) => ReactNode;
   itemHeight?: number;
   className?: string;
   itemClassName?: string;

@@ -2,14 +2,14 @@ import { useEffect } from "react";
 import { useGrid } from "../../use-grid";
 import { getHoveredColumnIndex, getHoveredRowIndex } from "@1771technologies/grid-core";
 import { getClientX, getClientY } from "@1771technologies/js-utils";
-import type { ContextMenuGridTargets } from "@1771technologies/grid-types/pro";
+import type { ContextMenuGridTargetsProReact } from "@1771technologies/grid-types/pro-react";
 
 export function useContextMenuListener(
   setMenu: (
     p: {
       hoveredRow: number | null;
       hoveredColumn: number | null;
-      menuTarget: ContextMenuGridTargets;
+      menuTarget: ContextMenuGridTargetsProReact;
     } | null,
   ) => void,
 ) {
@@ -39,7 +39,7 @@ export function useContextMenuListener(
         const y = getClientY(e);
         const hoveredRow = getHoveredRowIndex(grid.api, y);
 
-        let menuTarget: ContextMenuGridTargets | null = hoveredRow != null ? "cell" : null;
+        let menuTarget: ContextMenuGridTargetsProReact | null = hoveredRow != null ? "cell" : null;
 
         if (hoveredRow == null) {
           // lets determine the header section.

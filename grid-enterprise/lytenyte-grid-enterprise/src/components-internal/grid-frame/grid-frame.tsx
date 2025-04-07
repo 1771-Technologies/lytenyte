@@ -1,6 +1,6 @@
+import type { GridProReact } from "@1771technologies/grid-types/pro-react";
 import "./grid-frame.css";
 
-import type { StoreEnterpriseReact } from "@1771technologies/grid-types";
 import { clsx } from "@1771technologies/js-utils";
 import { Sizer } from "@1771technologies/react-sizer";
 import type { SplitPaneAxe } from "@1771technologies/react-split-pane";
@@ -12,7 +12,7 @@ export interface GridFrameConfiguration {
 }
 
 export interface GridFrameProps<D> {
-  readonly grid: StoreEnterpriseReact<D>;
+  readonly grid: GridProReact<D>;
 
   readonly axe?: SplitPaneAxe;
 }

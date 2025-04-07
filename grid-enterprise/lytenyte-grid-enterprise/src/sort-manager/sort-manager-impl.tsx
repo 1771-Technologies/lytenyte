@@ -1,5 +1,4 @@
 import "./sort-manager.css";
-import type { StoreEnterpriseReact } from "@1771technologies/grid-types";
 import { type PropsWithChildren } from "react";
 import { GridProvider } from "../use-grid.js";
 import { SortManagerContainer } from "./sort-manager-container.js";
@@ -13,9 +12,10 @@ import { SortManagerContext } from "./sort-manager-context.js";
 import { SortApplyButton } from "./sort-apply.js";
 import { SortCancelButton } from "./sort-cancel.js";
 import { SortClearButton } from "./sort-clear.js";
+import type { GridProReact } from "../types";
 
 interface SortManagerRootProps<D = any> {
-  readonly grid: StoreEnterpriseReact<D>;
+  readonly grid: GridProReact<D>;
 }
 
 function SortManagerRoot<D>({ grid, children }: PropsWithChildren<SortManagerRootProps<D>>) {

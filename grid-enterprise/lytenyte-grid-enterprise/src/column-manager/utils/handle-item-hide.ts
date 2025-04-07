@@ -1,12 +1,9 @@
-import type { ApiEnterpriseReact, ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import { canHideItem } from "./can-hide-item.js";
 import { allLeafs } from "./all-leafs.js";
 import type { PathTreeNode } from "@1771technologies/path-tree";
+import type { ApiProReact, ColumnProReact } from "@1771technologies/grid-types/pro-react";
 
-export function handleItemHide(
-  item: PathTreeNode<ColumnEnterpriseReact<any>>,
-  api: ApiEnterpriseReact<any>,
-) {
+export function handleItemHide(item: PathTreeNode<ColumnProReact<any>>, api: ApiProReact<any>) {
   const state = api.getState();
   const base = state.columnBase.peek();
 

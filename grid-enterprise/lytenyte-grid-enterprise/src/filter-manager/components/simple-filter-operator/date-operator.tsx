@@ -1,16 +1,16 @@
-import type { FilterDate } from "@1771technologies/grid-types/core";
 import { useMemo } from "react";
 import { Select } from "../../../select/select";
 import { useSimpleFilterRoot } from "../simple-filter-root";
 import { useDateFilterCallbacks } from "../use-date-filter-callbacks";
+import type { FilterDatePro } from "@1771technologies/grid-types/pro";
 
-const operatorsWithDate: FilterDate["operator"][] = ["equal", "after", "before"];
+const operatorsWithDate: FilterDatePro["operator"][] = ["equal", "after", "before"];
 
 export function DateOperatorSelect() {
   const { value: v } = useSimpleFilterRoot();
   const s = useDateFilterCallbacks();
 
-  const filter = v as Partial<FilterDate>;
+  const filter = v as Partial<FilterDatePro>;
 
   const value = useMemo(() => {
     if (!filter.operator) return null;
@@ -32,7 +32,7 @@ export function DateOperatorSelect() {
     />
   );
 }
-const valueToLabel: Record<FilterDate["operator"], string> = {
+const valueToLabel: Record<FilterDatePro["operator"], string> = {
   equal: "Equal",
   before: "Before",
   after: "After",

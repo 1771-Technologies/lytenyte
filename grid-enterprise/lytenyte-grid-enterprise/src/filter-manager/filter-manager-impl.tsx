@@ -1,39 +1,4 @@
-/**
- * <Root> (Done)
- *  <SimpleFilterRoot>
- *      <SimpleFilterOperator/>
- *      <SimpleFilterValue/>
- *      <SimpleFilterAdditional>
- *          <LogicalSwitch />
- *
- *       <SimpleFilterOperator/>
- *      <SimpleFilterValue/>
- *      <SimpleFilterLabel />
- *
- *
- *      </SimpleFilterAdditional>
- *  </SimpleFilterRoot>
- *  <InFilter>
- *      <InFilterSearch />
- *      <InFilterContainer
- *          loadingContent={<div></div>}
- *          emptyContent={<div></div>}
- *          errorContent={<div><InFilterRetry/></div>}
- *       >
- *          <InFilterTree>
- *             {c => {
- *              <InFilterItem c={c} />
- *              }}
- *          </InFilterTree>
- *
- *      </InFilterContainer>
- *  </InFilter>
- *
- * </Root>
- */
-
 import "./filter-manager.css";
-import type { ColumnEnterpriseReact, StoreEnterpriseReact } from "@1771technologies/grid-types";
 import { useMemo, type PropsWithChildren } from "react";
 import { GridProvider } from "../use-grid";
 import { useSimpleFilters } from "./use-simple-filters";
@@ -50,10 +15,11 @@ import { InFilterError } from "./components/in-filter-error";
 import { InFilterLoading } from "./components/in-filter-loading";
 import { InFilterViewport } from "./components/in-filter-tree";
 import { InFilterContainer } from "./components/in-filter-container";
+import type { ColumnProReact, GridProReact } from "../types";
 
 interface FilterManagerRootProps<D = any> {
-  readonly grid: StoreEnterpriseReact<D>;
-  readonly column: ColumnEnterpriseReact<D>;
+  readonly grid: GridProReact<D>;
+  readonly column: ColumnProReact<D>;
 }
 
 function Root<D>({ grid, column, children }: PropsWithChildren<FilterManagerRootProps<D>>) {

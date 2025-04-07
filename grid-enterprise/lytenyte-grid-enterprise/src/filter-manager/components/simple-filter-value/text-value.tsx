@@ -1,12 +1,12 @@
 import { Input } from "@1771technologies/lytenyte-grid-community/internal";
 import { useSimpleFilterRoot } from "../simple-filter-root";
-import type { FilterText } from "@1771technologies/grid-types/core";
 import { useTextFilterCallbacks } from "../use-text-filter-callbacks";
+import type { FilterTextPro } from "@1771technologies/grid-types/pro";
 
 export function TextValue() {
   const { value } = useSimpleFilterRoot();
 
-  const filter = value as Partial<FilterText>;
+  const filter = value as Partial<FilterTextPro>;
 
   const operator = filter.operator;
   const { onValueChange } = useTextFilterCallbacks();

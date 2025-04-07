@@ -1,8 +1,8 @@
-import type { FilterSimpleColumn } from "@1771technologies/grid-types/core";
+import type { FilterSimpleColumnProReact } from "../types";
 
-export type SemiPartialFilter = Partial<FilterSimpleColumn> & {
-  kind: FilterSimpleColumn["kind"];
-  columnId: FilterSimpleColumn["columnId"];
+export type SemiPartialFilter = Partial<FilterSimpleColumnProReact> & {
+  kind: FilterSimpleColumnProReact["kind"];
+  columnId: FilterSimpleColumnProReact["columnId"];
 };
 
 export interface SimpleFilterItemProps {

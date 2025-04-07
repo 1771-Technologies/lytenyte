@@ -1,10 +1,10 @@
+import type { ColumnInFilterItemPro } from "@1771technologies/grid-types/pro";
 import { useCallback, useEffect, useState } from "react";
-import type { ColumnInFilterItem } from "@1771technologies/grid-types/pro";
 
 export function useInFilterItemLoader(
-  getTreeFilterItems: () => Promise<ColumnInFilterItem[]> | ColumnInFilterItem[],
+  getTreeFilterItems: () => Promise<ColumnInFilterItemPro[]> | ColumnInFilterItemPro[],
 ) {
-  const [treeFilterItems, setTreeFilterItems] = useState<ColumnInFilterItem[]>([]);
+  const [treeFilterItems, setTreeFilterItems] = useState<ColumnInFilterItemPro[]>([]);
   const [hasError, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 

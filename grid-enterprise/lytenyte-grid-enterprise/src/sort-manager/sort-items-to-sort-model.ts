@@ -1,7 +1,7 @@
-import type { SortModelItem } from "@1771technologies/grid-types/core";
+import type { SortModelItemPro } from "@1771technologies/grid-types/pro";
 import type { SortItem } from "./use-sort-state.js";
 
-export function sortItemsToSortModel(sortItems: SortItem[]): SortModelItem[] {
+export function sortItemsToSortModel(sortItems: SortItem[]): SortModelItemPro[] {
   return sortItems
     .filter((c) => {
       if (!c.columnId) return false;
@@ -9,7 +9,7 @@ export function sortItemsToSortModel(sortItems: SortItem[]): SortModelItem[] {
 
       return true;
     })
-    .map<SortModelItem>((c) => {
+    .map<SortModelItemPro>((c) => {
       return {
         columnId: c.columnId!,
         isDescending: c.sortDirection === "descending",

@@ -1,5 +1,4 @@
 import "./pill-manager.css";
-import type { StoreEnterpriseReact } from "@1771technologies/grid-types";
 import { GridProvider } from "../use-grid";
 import { createContext, forwardRef, useContext, useMemo, type JSX, type ReactNode } from "react";
 import { PillManagerPills } from "./pill-manager-pills/pill-manager-pills";
@@ -26,9 +25,10 @@ import {
   type PillManagerAggMenuProps,
 } from "./pill-manager-agg-menu";
 import { MoreDotsIcon } from "../icons";
+import type { GridProReact } from "../types";
 
 interface RootProps<D = any> {
-  readonly grid: StoreEnterpriseReact<D>;
+  readonly grid: GridProReact<D>;
   readonly aggMenuRenderer?: (p: PillManagerAggMenuProps<D>) => ReactNode;
   readonly measureMenuRenderer?: (p: PillManagerAggMenuProps<D>) => ReactNode;
   readonly menuTriggerIcon?: (p: JSX.IntrinsicElements["svg"]) => ReactNode;

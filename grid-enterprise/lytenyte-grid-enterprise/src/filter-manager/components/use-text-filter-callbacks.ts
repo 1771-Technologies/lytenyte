@@ -1,13 +1,13 @@
 import { useCallback } from "react";
 import { useSimpleFilterRoot } from "./simple-filter-root";
-import type { FilterText } from "@1771technologies/grid-types/core";
 import type { SemiPartialFilter } from "../types";
+import type { FilterTextPro } from "@1771technologies/grid-types/pro";
 
 export function useTextFilterCallbacks() {
   const { value, onChange: onFilterChange } = useSimpleFilterRoot();
 
   const onChange = useCallback(
-    (c: { label: string; value: FilterText["operator"] }) => {
+    (c: { label: string; value: FilterTextPro["operator"] }) => {
       const current = value.operator;
       if (current === c.value) return;
 
@@ -31,7 +31,7 @@ export function useTextFilterCallbacks() {
       const nextFilter: SemiPartialFilter = {
         kind: "text",
         columnId: value.columnId,
-        operator: value.operator as FilterText["operator"],
+        operator: value.operator as FilterTextPro["operator"],
         value: c,
       };
 

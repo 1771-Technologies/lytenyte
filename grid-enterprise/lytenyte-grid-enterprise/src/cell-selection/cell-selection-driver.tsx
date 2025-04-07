@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useEdgeScroll } from "../use-edge-scroll";
 import { useGrid } from "../use-grid";
-import type { CellSelectionRect } from "@1771technologies/grid-types/pro";
 import {
   getClientX,
   getClientY,
@@ -15,6 +14,7 @@ import {
   updateAdditiveCellSelection,
 } from "@1771technologies/grid-core-enterprise";
 import { GRID_CELL_POSITION } from "@1771technologies/grid-constants";
+import type { CellSelectionRectPro } from "@1771technologies/grid-types/pro";
 
 function isNormalClick(event: MouseEvent) {
   return event.button === 0 && !event.ctrlKey && !event.altKey && !event.metaKey;
@@ -35,12 +35,12 @@ export function CellSelectionDriver() {
 
     const isMultiRange = mode === "multi-range";
     let isAdditive = false;
-    let startSelection: CellSelectionRect | null = null;
+    let startSelection: CellSelectionRectPro | null = null;
 
     let pointerStartX: number | null = 0;
     let pointerStartY: number | null = 0;
 
-    let lastRect: CellSelectionRect | null = null;
+    let lastRect: CellSelectionRectPro | null = null;
     let animFrame: number | null = null;
 
     const pointerMove = (event: PointerEvent) => {
@@ -102,7 +102,7 @@ export function CellSelectionDriver() {
         const endCol =
           columnIndex < startSelection.columnStart ? startSelection.columnEnd : columnIndex + 1;
 
-        const active: CellSelectionRect[] = [
+        const active: CellSelectionRectPro[] = [
           { rowStart: startRow, rowEnd: endRow, columnStart: startCol, columnEnd: endCol },
         ];
 

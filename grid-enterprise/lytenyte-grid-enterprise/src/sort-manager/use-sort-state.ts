@@ -1,6 +1,6 @@
-import type { StoreEnterpriseReact } from "@1771technologies/grid-types";
 import { useEffect, useState } from "react";
 import { sortModelToSortItems } from "./sort-model-to-sort-items.js";
+import type { GridProReact } from "../types.js";
 
 export interface SortItem {
   readonly columnId?: string;
@@ -16,7 +16,7 @@ export interface SortItem {
   readonly sortDirection: "ascending" | "descending";
 }
 
-export function useSortState<D>(grid: StoreEnterpriseReact<D>) {
+export function useSortState<D>(grid: GridProReact<D>) {
   const [state, setState] = useState<SortItem[]>(() => {
     const initial = sortModelToSortItems(grid.state.sortModel.peek(), grid);
     if (initial.length) return initial;

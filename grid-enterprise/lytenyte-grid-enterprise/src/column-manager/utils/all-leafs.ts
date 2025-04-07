@@ -1,8 +1,8 @@
-import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
+import type { ColumnProReact } from "@1771technologies/grid-types/pro-react";
 import type { PathTreeParentNode } from "@1771technologies/path-tree";
 
-export function allLeafs(c: PathTreeParentNode<ColumnEnterpriseReact<any>>) {
-  const leafs: ColumnEnterpriseReact<any>[] = [];
+export function allLeafs(c: PathTreeParentNode<ColumnProReact<any>>) {
+  const leafs: ColumnProReact<any>[] = [];
 
   const stack = [...c.children];
 

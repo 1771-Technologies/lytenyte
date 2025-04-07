@@ -1,14 +1,14 @@
-import type { FilterNumber } from "@1771technologies/grid-types/core";
 import { useMemo } from "react";
 import { Select } from "../../../select/select";
 import { useSimpleFilterRoot } from "../simple-filter-root";
 import { useNumberFilterCallbacks } from "../use-number-filter-callbacks";
+import type { FilterNumberPro } from "@1771technologies/grid-types/pro";
 
 export function NumberOperatorSelect() {
   const { value: v } = useSimpleFilterRoot();
   const s = useNumberFilterCallbacks();
 
-  const filter = v as Partial<FilterNumber>;
+  const filter = v as Partial<FilterNumberPro>;
 
   const value = useMemo(() => {
     if (!filter.operator) return null;
@@ -26,7 +26,7 @@ export function NumberOperatorSelect() {
   );
 }
 
-const valueToLabel: Record<FilterNumber["operator"], string> = {
+const valueToLabel: Record<FilterNumberPro["operator"], string> = {
   equal: "Equal",
   not_equal: "Not Equal",
   greater_than: "Greater Than",
@@ -35,7 +35,7 @@ const valueToLabel: Record<FilterNumber["operator"], string> = {
   less_than_or_equal: "Less Than Or Equal To",
 };
 
-const selectItems: { label: string; value: FilterNumber["operator"] }[] = [
+const selectItems: { label: string; value: FilterNumberPro["operator"] }[] = [
   { value: "equal", label: "Equal" },
   { value: "not_equal", label: "Not Equal" },
   { value: "greater_than", label: "Greater Than" },

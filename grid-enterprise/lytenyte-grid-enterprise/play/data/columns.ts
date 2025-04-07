@@ -1,6 +1,6 @@
-import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
+import type { ColumnProReact } from "@1771technologies/grid-types/pro-react";
 
-export const columns: ColumnEnterpriseReact<any>[] = [
+export const columns: ColumnProReact<any>[] = [
   {
     id: "age",
     groupPath: ["Information"],

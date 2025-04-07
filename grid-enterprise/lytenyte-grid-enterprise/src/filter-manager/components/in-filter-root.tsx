@@ -1,13 +1,13 @@
 import { createContext, useCallback, useContext, type PropsWithChildren } from "react";
 import { useGrid } from "../../use-grid";
 import { useFilterManagerState } from "../filter-state-context";
-import type { ColumnInFilterItem } from "@1771technologies/grid-types/pro";
 import { useInFilterItemLoader } from "./use-in-filter-item-loader";
+import type { ColumnInFilterItemPro } from "@1771technologies/grid-types/pro";
 
 interface InFilterState {
   isLoading: boolean;
   hasError: boolean;
-  treeFilterItems: ColumnInFilterItem[];
+  treeFilterItems: ColumnInFilterItemPro[];
   retry: () => never[] | undefined;
 }
 

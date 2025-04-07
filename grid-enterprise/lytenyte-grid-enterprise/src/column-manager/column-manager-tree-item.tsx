@@ -1,6 +1,5 @@
 import { forwardRef, useId, useMemo, type JSX } from "react";
 import type { ListViewItemRendererProps } from "../list-view/list-view";
-import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import { useGrid } from "../use-grid";
 import { ArrowDownIcon, ArrowRightIcon, DragIcon } from "../icons";
 import {
@@ -12,11 +11,12 @@ import { allLeafs } from "./utils/all-leafs";
 import { clsx } from "@1771technologies/js-utils";
 import { useCombinedRefs } from "@1771technologies/react-utils";
 import { canAgg, canMeasure } from "../pill-manager/pill-manager-pills/utils";
+import type { ColumnProReact } from "../types";
 
 export const ColumnManagerTreeItem = forwardRef<
   HTMLDivElement,
   JSX.IntrinsicElements["div"] & {
-    columnItem: ListViewItemRendererProps<ColumnEnterpriseReact<any>>;
+    columnItem: ListViewItemRendererProps<ColumnProReact<any>>;
     depthPadding?: number;
   }
 >(function TreeItem({ className, depthPadding = 12, style, columnItem: ci, ...props }, ref) {
@@ -65,7 +65,7 @@ export const ColumnManagerTreeItem = forwardRef<
     },
 
     onDragEnd: (p) => {
-      const data = p.data as { target: string; columns: ColumnEnterpriseReact<any>[] };
+      const data = p.data as { target: string; columns: ColumnProReact<any>[] };
 
       const over = p.over.at(-1);
       if (!over) return;

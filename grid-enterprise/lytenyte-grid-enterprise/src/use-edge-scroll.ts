@@ -1,7 +1,7 @@
-import type { ApiEnterpriseReact } from "@1771technologies/grid-types";
 import { useCallback, useRef } from "react";
+import type { ApiProReact } from "./types";
 
-export function useEdgeScroll<D>(api: ApiEnterpriseReact<D>) {
+export function useEdgeScroll<D>(api: ApiProReact<D>) {
   const intervalIdX = useRef<ReturnType<typeof setInterval> | null>(null);
   const intervalIdY = useRef<ReturnType<typeof setInterval> | null>(null);
 

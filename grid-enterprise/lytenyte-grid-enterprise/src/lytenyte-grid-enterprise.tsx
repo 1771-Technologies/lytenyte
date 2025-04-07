@@ -1,4 +1,3 @@
-import type { StoreEnterpriseReact } from "@1771technologies/grid-types";
 import {
   CellEditorBottom,
   CellEditorCenter,
@@ -20,9 +19,10 @@ import type { SplitPaneAxe } from "@1771technologies/react-split-pane";
 import { ContextMenuDriver } from "./menu/context-menu/context-menu-driver";
 import { DialogDriver } from "./dialog/dialog-driver";
 import { PopoverDriver } from "./popover/popover-driver";
+import type { GridProReact } from "./types";
 
 export interface LyteNyteGridEnterpriseProps<D> {
-  readonly grid: StoreEnterpriseReact<D>;
+  readonly grid: GridProReact<D>;
   readonly frameAxe?: SplitPaneAxe;
 }
 

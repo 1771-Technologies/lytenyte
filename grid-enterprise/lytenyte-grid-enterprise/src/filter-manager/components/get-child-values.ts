@@ -1,6 +1,6 @@
-import type { ColumnInFilterItemParent } from "@1771technologies/grid-types/pro";
+import type { ColumnInFilterItemParentPro } from "@1771technologies/grid-types/pro";
 
-export function getChildValues(t: ColumnInFilterItemParent) {
+export function getChildValues(t: ColumnInFilterItemParentPro) {
   const stack = [...t.children];
   const values = new Set<unknown>();
 

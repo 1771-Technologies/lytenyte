@@ -1,9 +1,9 @@
 import "./cell-style-row.css";
-import type { CellSelectionRect } from "@1771technologies/grid-types/pro";
 import { useMemo, type CSSProperties } from "react";
 import { useGrid } from "../use-grid";
 import { clsx, sizeFromCoord } from "@1771technologies/js-utils";
 import { getTransform } from "@1771technologies/lytenyte-grid-community/internal";
+import type { CellSelectionRectPro } from "@1771technologies/grid-types/pro";
 
 export function CellStyleRow({
   rect,
@@ -12,7 +12,7 @@ export function CellStyleRow({
   isRowPinnedBottom,
   isPivot,
 }: {
-  rect: CellSelectionRect;
+  rect: CellSelectionRectPro;
   isRowPinnedTop?: boolean;
   isDeselect?: boolean;
   isRowPinnedBottom?: boolean;

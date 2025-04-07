@@ -1,12 +1,10 @@
-import type { ColumnFilter } from "@1771technologies/grid-types/pro";
-import type { ApiEnterpriseReact, ColumnEnterpriseReact } from "@1771technologies/grid-types";
-import type { FilterCombined } from "@1771technologies/grid-types/core";
 import type { FlatSimpleFilters } from "./types";
 import { flattenCombinedFilter } from "./flatten-combined-filter";
+import type { ColumnFilterProReact, ColumnProReact, FilterCombinedProReact } from "../types";
 
 export function combinedToFlat<D>(
-  filter: ColumnFilter<ApiEnterpriseReact<D>, D> | undefined | null,
-  column: ColumnEnterpriseReact<D>,
+  filter: ColumnFilterProReact<D> | undefined | null,
+  column: ColumnProReact<D>,
 ) {
   const columnId = column.id;
 
@@ -21,7 +19,7 @@ export function combinedToFlat<D>(
       [{ columnId, kind: filter.kind }, null],
     ];
   } else {
-    flat = flattenCombinedFilter(filter as FilterCombined<ApiEnterpriseReact<D>, D>);
+    flat = flattenCombinedFilter(filter as FilterCombinedProReact<D>);
   }
 
   return flat;

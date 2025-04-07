@@ -1,6 +1,6 @@
-import type { ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import type { DragActive } from "@1771technologies/lytenyte-grid-community/internal";
 import type { ReactNode } from "react";
+import type { ColumnProReact } from "../types";
 
 export interface PillProps {
   kind?: "plain" | "column-pivot" | "row-group" | "column" | ({} & string);
@@ -22,7 +22,7 @@ export interface PillManagerPillItem {
   readonly secondaryLabel?: string;
   readonly active: boolean;
 
-  readonly column?: ColumnEnterpriseReact<any>;
+  readonly column?: ColumnProReact<any>;
   readonly isColumn?: boolean;
   readonly isRowGroup?: boolean;
   readonly isColumnPivot?: boolean;

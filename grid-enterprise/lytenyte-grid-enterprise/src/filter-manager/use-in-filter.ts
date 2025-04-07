@@ -1,8 +1,7 @@
-import type { ApiEnterpriseReact, ColumnEnterpriseReact } from "@1771technologies/grid-types";
-import type { FilterIn } from "@1771technologies/grid-types/pro";
 import { useEffect, useMemo, useState } from "react";
+import type { ApiProReact, ColumnProReact, FilterInProReact } from "../types";
 
-export function useInFilter<D>(api: ApiEnterpriseReact<D>, column: ColumnEnterpriseReact<D>) {
+export function useInFilter<D>(api: ApiProReact<D>, column: ColumnProReact<D>) {
   const isPivot = api.columnIsPivot(column);
   const state = api.getState();
 
@@ -15,7 +14,7 @@ export function useInFilter<D>(api: ApiEnterpriseReact<D>, column: ColumnEnterpr
 
     if (!filter) return null;
 
-    return filter as FilterIn;
+    return filter as FilterInProReact;
   }, [column.id, filters]);
 
   const [values, setValues] = useState(() => (thisFilter ? new Set(thisFilter.set) : null));

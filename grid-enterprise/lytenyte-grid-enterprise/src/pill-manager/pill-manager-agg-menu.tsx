@@ -1,9 +1,9 @@
-import type { ColumnEnterpriseReact, StoreEnterpriseReact } from "@1771technologies/grid-types";
 import { Menu } from "../menu/menu.js";
+import type { ColumnProReact, GridProReact } from "../types.js";
 
 export interface PillManagerAggMenuProps<D> {
-  grid: StoreEnterpriseReact<D>;
-  column: ColumnEnterpriseReact<D>;
+  grid: GridProReact<D>;
+  column: ColumnProReact<D>;
 }
 
 export function PillManagerAggMenu<D>({ column, grid }: PillManagerAggMenuProps<D>) {

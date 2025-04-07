@@ -1,14 +1,14 @@
-import type { FilterText } from "@1771technologies/grid-types/core";
 import { useMemo } from "react";
 import { Select } from "../../../select/select";
 import { useSimpleFilterRoot } from "../simple-filter-root";
 import { useTextFilterCallbacks } from "../use-text-filter-callbacks";
+import type { FilterTextPro } from "@1771technologies/grid-types/pro";
 
 export function TextOperatorSelect() {
   const { value: v } = useSimpleFilterRoot();
   const s = useTextFilterCallbacks();
 
-  const filter = v as Partial<FilterText>;
+  const filter = v as Partial<FilterTextPro>;
 
   const value = useMemo(() => {
     if (!filter.operator) return null;
@@ -26,7 +26,7 @@ export function TextOperatorSelect() {
   );
 }
 
-const valueToToLabel: Record<FilterText["operator"], string> = {
+const valueToToLabel: Record<FilterTextPro["operator"], string> = {
   equal: "Equal",
   not_equal: "Not Equal",
   begins_with: "Begins With",
@@ -37,7 +37,7 @@ const valueToToLabel: Record<FilterText["operator"], string> = {
   not_contains: "Does Not Contain",
 };
 
-const selectItems: { label: string; value: FilterText["operator"] }[] = [
+const selectItems: { label: string; value: FilterTextPro["operator"] }[] = [
   { value: "equal", label: "Equal" },
   { value: "not_equal", label: "Not Equal" },
   { value: "begins_with", label: "Begins With" },

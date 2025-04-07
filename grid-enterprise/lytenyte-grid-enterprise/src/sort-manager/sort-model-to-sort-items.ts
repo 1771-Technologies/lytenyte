@@ -1,11 +1,8 @@
-import type { SortModelItem } from "@1771technologies/grid-types/core";
-import type { StoreEnterpriseReact } from "@1771technologies/grid-types";
+import type { SortModelItemPro } from "@1771technologies/grid-types/pro";
 import type { SortItem } from "./use-sort-state.js";
+import type { GridProReact } from "../types.js";
 
-export function sortModelToSortItems<D>(
-  c: SortModelItem[],
-  grid: StoreEnterpriseReact<D>,
-): SortItem[] {
+export function sortModelToSortItems<D>(c: SortModelItemPro[], grid: GridProReact<D>): SortItem[] {
   return c.map<SortItem>((c) => {
     const columnId = c.columnId;
     const sortDirection: SortItem["sortDirection"] = c.isDescending ? "descending" : "ascending";

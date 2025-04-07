@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { ColumnInFilterItem } from "@1771technologies/grid-types/pro";
 import { Checkbox } from "@1771technologies/lytenyte-grid-community/internal";
 import { useInFilterState } from "./in-filter-root";
 import { getChildValues } from "./get-child-values";
 import { useFilterManagerState } from "../filter-state-context";
 import { flattenTreeItems } from "./flatten-tree-items";
+import type { ColumnInFilterItemPro } from "@1771technologies/grid-types/pro";
 
 export interface InFilterViewport {
-  readonly treeItems: ColumnInFilterItem[];
+  readonly treeItems: ColumnInFilterItemPro[];
   readonly itemHeight: number;
   readonly viewportHeight: number;
   readonly values: Set<unknown> | null;
@@ -57,7 +57,7 @@ function InFilterViewportImpl({
   const [expansions, setExpansions] = useState<Set<string>>(() => new Set());
 
   const unfilteredFlat = useMemo(() => {
-    const selectAll: ColumnInFilterItem = {
+    const selectAll: ColumnInFilterItemPro = {
       kind: "leaf",
       label: "Select All",
       value: null,
@@ -99,7 +99,7 @@ function InFilterViewportImpl({
     return Array.from({ length: rowEnd - rowStart }, (_, i) => i + rowStart);
   }, [rowEnd, rowStart]);
 
-  const isSelected = (c: ColumnInFilterItem): boolean => {
+  const isSelected = (c: ColumnInFilterItemPro): boolean => {
     if (values === null) return true;
 
     if (c.label === "Select All" && c.kind === "leaf" && c.value === null) {
@@ -110,7 +110,7 @@ function InFilterViewportImpl({
     return c.children.every((c) => isSelected(c));
   };
 
-  const isIndeterminate = (c: ColumnInFilterItem): boolean => {
+  const isIndeterminate = (c: ColumnInFilterItemPro): boolean => {
     if (c.label === "Select All" && c.kind === "leaf" && c.value === null) {
       const allItems = new Set(
         treeItems.flatMap((item) =>

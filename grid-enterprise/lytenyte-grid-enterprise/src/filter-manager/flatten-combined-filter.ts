@@ -1,18 +1,15 @@
-import type { FilterCombined, FilterSimpleColumn } from "@1771technologies/grid-types/core";
-import type { ApiEnterpriseReact } from "@1771technologies/grid-types";
+import type { FilterCombinedProReact, FilterSimpleColumnProReact } from "../types";
 import type { FlatSimpleFilters } from "./types";
 
-export function flattenCombinedFilter<D>(
-  c: FilterCombined<ApiEnterpriseReact<D>, D>,
-): FlatSimpleFilters {
+export function flattenCombinedFilter<D>(c: FilterCombinedProReact<D>): FlatSimpleFilters {
   const stack = [c];
 
   const flat: FlatSimpleFilters = [];
   while (stack.length) {
     const f = stack.pop()!;
 
-    flat.push([f.left as FilterSimpleColumn, f.operator]);
-    flat.push([f.right as FilterSimpleColumn, null]);
+    flat.push([f.left as FilterSimpleColumnProReact, f.operator]);
+    flat.push([f.right as FilterSimpleColumnProReact, null]);
   }
 
   return flat;

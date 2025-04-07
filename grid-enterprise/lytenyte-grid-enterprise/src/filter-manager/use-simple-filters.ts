@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { isFilterComplete } from "./is-filter-complete";
-import type { ApiEnterpriseReact, ColumnEnterpriseReact } from "@1771technologies/grid-types";
 import { combinedToFlat } from "./combined-to-flat";
 import type { FlatSimpleFilters } from "./types";
+import type { ApiProReact, ColumnProReact } from "../types";
 
 export function useSimpleFilters<D>(
-  api: ApiEnterpriseReact<D>,
-  column: ColumnEnterpriseReact<D>,
+  api: ApiProReact<D>,
+  column: ColumnProReact<D>,
   showConditionalWhenFilterValid: boolean,
 ) {
   const isPivot = api.columnIsPivot(column);

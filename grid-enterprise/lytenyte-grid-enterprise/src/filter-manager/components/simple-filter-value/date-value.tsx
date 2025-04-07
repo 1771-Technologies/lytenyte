@@ -1,15 +1,15 @@
-import type { FilterDate } from "@1771technologies/grid-types/core";
 import { useSimpleFilterRoot } from "../simple-filter-root";
 import { Input } from "@1771technologies/lytenyte-grid-community/internal";
 import { useDateFilterCallbacks } from "../use-date-filter-callbacks";
 import { useMemo } from "react";
 import { Select } from "../../../select/select";
+import type { FilterDatePro } from "@1771technologies/grid-types/pro";
 
-const operatorsWithDate: FilterDate["operator"][] = ["equal", "after", "before"];
+const operatorsWithDate: FilterDatePro["operator"][] = ["equal", "after", "before"];
 export function DateValue() {
   const { value } = useSimpleFilterRoot();
 
-  const filter = value as Partial<FilterDate>;
+  const filter = value as Partial<FilterDatePro>;
 
   const operator = filter.operator;
 
@@ -40,8 +40,8 @@ export function DateValue() {
 }
 
 interface DatePeriodSelectProps {
-  readonly value: FilterDate["datePeriod"] | null;
-  readonly onAllDatePeriodSelect: (v: FilterDate["datePeriod"]) => void;
+  readonly value: FilterDatePro["datePeriod"] | null;
+  readonly onAllDatePeriodSelect: (v: FilterDatePro["datePeriod"]) => void;
 }
 
 function DatePeriodSelect({ value, onAllDatePeriodSelect }: DatePeriodSelectProps) {
@@ -63,7 +63,7 @@ function DatePeriodSelect({ value, onAllDatePeriodSelect }: DatePeriodSelectProp
   );
 }
 
-const allDatePeriodValueToLabel: Record<NonNullable<FilterDate["datePeriod"]>, string> = {
+const allDatePeriodValueToLabel: Record<NonNullable<FilterDatePro["datePeriod"]>, string> = {
   "quarter-1": "Quarter 1",
   "quarter-2": "Quarter 2",
   "quarter-3": "Quarter 3",
