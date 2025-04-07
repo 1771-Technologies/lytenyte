@@ -21,12 +21,12 @@ import { DialogDriver } from "./dialog/dialog-driver";
 import { PopoverDriver } from "./popover/popover-driver";
 import type { GridProReact } from "./types";
 
-export interface LyteNyteGridEnterpriseProps<D> {
+export interface LyteNyteGridProProps<D> {
   readonly grid: GridProReact<D>;
   readonly frameAxe?: SplitPaneAxe;
 }
 
-export function LyteNyteGrid<D>({ grid, frameAxe }: LyteNyteGridEnterpriseProps<D>) {
+export function LyteNyteGrid<D>({ grid, frameAxe }: LyteNyteGridProProps<D>) {
   return (
     <GridProvider value={grid}>
       <GridFrame grid={grid} axe={frameAxe}>

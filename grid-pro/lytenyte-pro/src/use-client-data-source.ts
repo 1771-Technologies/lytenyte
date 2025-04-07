@@ -1,8 +1,8 @@
 import type {
   ClientDataSourceInitial,
   ClientRowDataSource,
-} from "@1771technologies/grid-client-data-source-enterprise";
-import { createClientDataSource } from "@1771technologies/grid-client-data-source-enterprise";
+} from "@1771technologies/grid-client-data-source-pro";
+import { createClientDataSource } from "@1771technologies/grid-client-data-source-pro";
 import type { ReactNode } from "react";
 import { useState } from "react";
 

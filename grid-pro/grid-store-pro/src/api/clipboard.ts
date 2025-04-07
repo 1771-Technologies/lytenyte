@@ -2,7 +2,7 @@ import {
   clearCells,
   clipboardCopyCells,
   clipboardPasteCells,
-} from "@1771technologies/grid-core-enterprise";
+} from "@1771technologies/grid-core-pro";
 import type { ApiPro, CellSelectionRectPro } from "@1771technologies/grid-types/pro";
 
 export const clipboard = <D, E>(

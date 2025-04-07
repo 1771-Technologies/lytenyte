@@ -4,7 +4,7 @@
 set -e
 
 # Get version from package.json using bun
-VERSION=$(bun -e "console.log(require('./grid-enterprise/lytenyte-grid-enterprise/package.json').version)")
+VERSION=$(bun -e "console.log(require('./grid-pro/lytenyte-pro/package.json').version)")
 
 # Check if tag exists
 if ! git ls-remote --tags origin | grep -q "v${VERSION}"; then

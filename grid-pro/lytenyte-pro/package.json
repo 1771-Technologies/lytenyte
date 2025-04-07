@@ -1,5 +1,5 @@
 {
-  "name": "@1771technologies/lytenyte-grid-enterprise",
+  "name": "@1771technologies/lytenyte-pro",
   "version": "0.0.38",
   "license": "COMMERCIAL",
   "type": "module",
@@ -122,7 +122,7 @@
         "import": "./dist/filter-manager.js",
         "require": "./dist/filter-manager.js"
       },
-      "./grid.css": "./dist/lytenyte-grid-enterprise.css"
+      "./grid.css": "./dist/lytenyte-pro.css"
     }
   },
   "peerDependencies": {
@@ -130,11 +130,11 @@
     "react-dom": "^18.0.0 || ^19.0.0"
   },
   "dependencies": {
-    "@1771technologies/grid-client-data-source-enterprise": "workspace:*",
+    "@1771technologies/grid-client-data-source-pro": "workspace:*",
     "@1771technologies/grid-core": "workspace:*",
     "@1771technologies/grid-design": "workspace:*",
     "@1771technologies/grid-provider": "workspace:*",
-    "@1771technologies/grid-store-enterprise": "workspace:*",
+    "@1771technologies/grid-store-pro": "workspace:*",
     "@1771technologies/grid-tree-data-source": "workspace:*",
     "@1771technologies/grid-types": "workspace:*",
     "@1771technologies/js-utils": "workspace:*",

@@ -1,8 +1,5 @@
 import { computed, signal, type Signal } from "@1771technologies/react-cascada";
-import {
-  adjustRectForRowAndCellSpan,
-  boundSelectionRect,
-} from "@1771technologies/grid-core-enterprise";
+import { adjustRectForRowAndCellSpan, boundSelectionRect } from "@1771technologies/grid-core-pro";
 import type { ApiPro, CellSelectionRectPro } from "@1771technologies/grid-types/pro";
 
 export const cellSelectionComputed = <D, E>(

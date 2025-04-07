@@ -1,5 +1,5 @@
 import { computed, type ReadonlySignal } from "@1771technologies/react-cascada";
-import { splitCellSelectionRect } from "@1771technologies/grid-core-enterprise";
+import { splitCellSelectionRect } from "@1771technologies/grid-core-pro";
 import type { CellSelectionRectPro, GridPro } from "@1771technologies/grid-types/pro";
 
 export function cellSelectionSplits<D, E>(

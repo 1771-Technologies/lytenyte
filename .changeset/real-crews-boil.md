@@ -1,5 +1,5 @@
 ---
-"@1771technologies/lytenyte-grid-enterprise": patch
+"@1771technologies/lytenyte-pro": patch
 ---
 
 Next

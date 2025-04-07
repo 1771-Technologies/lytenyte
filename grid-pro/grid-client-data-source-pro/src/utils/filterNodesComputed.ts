@@ -1,6 +1,6 @@
 import { computed, type Signal } from "@1771technologies/react-cascada";
 import { evaluateClientFilter } from "@1771technologies/grid-client-filter";
-import { evaluateQuickFilter } from "@1771technologies/grid-core-enterprise";
+import { evaluateQuickFilter } from "@1771technologies/grid-core-pro";
 import { hasUppercaseLetter } from "@1771technologies/js-utils";
 import type { ApiPro, ColumnPro, RowNodeLeafPro } from "@1771technologies/grid-types/pro";
 

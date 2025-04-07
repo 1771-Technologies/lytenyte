@@ -12,7 +12,7 @@ import {
   adjustRectForRowAndCellSpan,
   deselectRectRange,
   updateAdditiveCellSelection,
-} from "@1771technologies/grid-core-enterprise";
+} from "@1771technologies/grid-core-pro";
 import { GRID_CELL_POSITION } from "@1771technologies/grid-constants";
 import type { CellSelectionRectPro } from "@1771technologies/grid-types/pro";
 

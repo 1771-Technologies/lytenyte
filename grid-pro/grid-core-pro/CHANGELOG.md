@@ -1,4 +1,4 @@
-# @1771technologies/grid-core-enterprise
+# @1771technologies/grid-core-pro
 
 ## 0.0.38
 

@@ -5,7 +5,7 @@ import {
   expandCellSelectionStart,
   expandCellSelectionUp,
   isWithinSelectionRect,
-} from "@1771technologies/grid-core-enterprise";
+} from "@1771technologies/grid-core-pro";
 import type { ApiPro } from "@1771technologies/grid-types/pro";
 
 export const cellSelection = <D, E>(

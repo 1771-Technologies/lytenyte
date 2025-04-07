@@ -1,6 +1,6 @@
 import { memo, useMemo } from "react";
 import { useGrid } from "../use-grid";
-import { isBottomRect, isCenterRect, isTopRect } from "@1771technologies/grid-core-enterprise";
+import { isBottomRect, isCenterRect, isTopRect } from "@1771technologies/grid-core-pro";
 import { CellStyleRow } from "./cell-style-row";
 
 export const CellSelectionTop = memo(function CellSelectionTop() {

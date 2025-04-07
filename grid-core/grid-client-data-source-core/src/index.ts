@@ -1,6 +1,6 @@
 export { createClientDataSource } from "./create-client-data-source.js";
 
-// shared with enterprise
+// shared with pro
 export { paginateGetCount } from "./api/paginate-get-count.js";
 export { paginateRowStartAndEndForPage } from "./api/paginate-row-stand-and-end-for-page.js";
 export { rowById } from "./api/row-by-id.js";

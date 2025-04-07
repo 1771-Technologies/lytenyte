@@ -2,8 +2,8 @@ import "@1771technologies/grid-design/css";
 
 export * from "@1771technologies/grid-constants";
 
-export type { LyteNyteGridEnterpriseProps } from "./lytenyte-grid-enterprise.js";
-export { LyteNyteGrid } from "./lytenyte-grid-enterprise.js";
+export type { LyteNyteGridProProps } from "./lytenyte-pro.js";
+export { LyteNyteGrid } from "./lytenyte-pro.js";
 
 export { useLyteNyte } from "./use-lytenyte.js";
 export * from "./use-client-data-source.js";

@@ -1,4 +1,4 @@
-# @1771technologies/lytenyte-grid-enterprise
+# @1771technologies/lytenyte-pro
 
 ## 0.0.38
 

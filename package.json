@@ -3,11 +3,10 @@
   "module": "index.ts",
   "type": "module",
   "workspaces": [
-    "grid-community/*",
-    "grid-enterprise/*",
+    "grid-core/*",
+    "grid-pro/*",
     "forks/*",
     "community/*",
-    "enterprise/*",
     "tools/*"
   ],
   "scripts": {

@@ -37,7 +37,7 @@ export function rowPositionsComputed<D, E>(
 
       if (typeof detailHeight === "number") return Math.max(detailHeight, 1);
 
-      // The API types are not compatible between enterprise and community, so TypeScript complains,
+      // The API types are not compatible between pro and core, so TypeScript complains,
       // however casting to any here is fine since the detailHeight function will expect the API of
       // the current grid to be provided.
       return Math.max(detailHeight({ api: api as any, row }), 1);

@@ -1,5 +1,5 @@
 {
-  "name": "@1771technologies/grid-client-data-source-enterprise",
+  "name": "@1771technologies/grid-client-data-source-pro",
   "version": "0.0.38",
   "license": "COMMERCIAL",
   "type": "module",
@@ -33,7 +33,7 @@
     "@1771technologies/grid-types": "workspace:*",
     "@1771technologies/grid-constants": "workspace:*",
     "@1771technologies/grid-core": "workspace:*",
-    "@1771technologies/grid-core-enterprise": "workspace:*",
+    "@1771technologies/grid-core-pro": "workspace:*",
     "@1771technologies/js-utils": "workspace:*"
   }
 }

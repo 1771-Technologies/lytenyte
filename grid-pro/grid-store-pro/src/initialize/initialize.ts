@@ -114,7 +114,7 @@ export function initialize<D, E>(
     sortComparatorFns: signal(props.sortComparatorFns ?? {}),
     sortModel: sortModelComputed(props.sortModel ?? [], api),
 
-    // Enterprise state
+    // Pro state
     cellSelections: cellSelectionComputed(props.cellSelections ?? [], api),
     cellSelectionMode: signal(props.cellSelectionMode ?? "none"),
 

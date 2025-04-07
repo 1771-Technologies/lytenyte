@@ -1,4 +1,4 @@
-import { makeGridPro } from "@1771technologies/grid-store-enterprise";
+import { makeGridPro } from "@1771technologies/grid-store-pro";
 import { useEffect, useState, type ReactNode } from "react";
 import type { GridProReact, StateInitProReact } from "./types";
 

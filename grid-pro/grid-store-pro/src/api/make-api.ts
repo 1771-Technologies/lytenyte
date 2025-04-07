@@ -217,7 +217,7 @@ export function makeApi<D, E>(
     rowUpdateRedo: () => rowUpdateRedo(api),
     rowUpdateUndo: () => rowUpdateUndo(api),
 
-    // Enterprise Api
+    // Pro Api
     clipboardCopyCells: clip.clipboardCopyCells,
     clipboardCutCells: clip.clipboardCutCells,
     clipboardPasteCells: clip.clipboardPasteCells,

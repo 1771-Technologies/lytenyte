@@ -1,4 +1,4 @@
-# @1771technologies/grid-client-data-source-enterprise
+# @1771technologies/grid-client-data-source-pro
 
 ## 0.0.38
 
