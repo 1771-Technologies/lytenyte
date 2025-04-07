@@ -1,4 +1,4 @@
-# @1771technologies/grid-client-data-source-community
+# @1771technologies/grid-client-data-source-core
 
 ## 0.0.38
 

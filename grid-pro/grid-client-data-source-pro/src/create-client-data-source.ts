@@ -23,7 +23,7 @@ import {
   rowParentIndex,
   rowSetData,
   rowSetDataMany,
-} from "@1771technologies/grid-client-data-source-community";
+} from "@1771technologies/grid-client-data-source-core";
 import { columnInFilterItems } from "./api/column-in-filter-items";
 import { createColumnPivots } from "./api/column-pivots/create-pivot-columns";
 import type {

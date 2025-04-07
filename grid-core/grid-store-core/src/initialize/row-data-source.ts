@@ -1,5 +1,5 @@
 import { computed } from "@1771technologies/react-cascada";
-import { createClientDataSource } from "@1771technologies/grid-client-data-source-community";
+import { createClientDataSource } from "@1771technologies/grid-client-data-source-core";
 import type { GridCore } from "@1771technologies/grid-types/core";
 
 export function rowDataSource<D, E>(state: GridCore<D, E>["state"], api: GridCore<D, E>["api"]) {

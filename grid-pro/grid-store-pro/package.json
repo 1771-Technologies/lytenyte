@@ -30,7 +30,7 @@
     "@1771technologies/grid-core": "workspace:*",
     "@1771technologies/js-utils": "workspace:*",
     "@1771technologies/grid-shared-state": "workspace:*",
-    "@1771technologies/grid-store-community": "workspace:*",
+    "@1771technologies/grid-store-core": "workspace:*",
     "@1771technologies/grid-constants": "workspace:*",
     "@1771technologies/react-cascada": "workspace:*"
   }

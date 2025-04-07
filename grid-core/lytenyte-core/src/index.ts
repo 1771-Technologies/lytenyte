@@ -1,6 +1,6 @@
 import "@1771technologies/grid-design/css";
 
-export type { LyteNyteGridCommunityProps } from "./lytenyte-community.js";
-export { LyteNyteGridCommunity } from "./lytenyte-community.js";
+export type { LyteNyteGridCoreProps } from "./lytenyte-core.js";
+export { LyteNyteGridCore } from "./lytenyte-core.js";
 
-export type * from "@1771technologies/grid-types/core-react";
+export { useLyteNyteCore } from "./use-lytenyte-core.js";

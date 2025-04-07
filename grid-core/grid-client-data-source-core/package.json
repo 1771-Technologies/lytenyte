@@ -1,5 +1,5 @@
 {
-  "name": "@1771technologies/grid-client-data-source-community",
+  "name": "@1771technologies/grid-client-data-source-core",
   "version": "0.0.38",
   "license": "Apache-2.0",
   "type": "module",

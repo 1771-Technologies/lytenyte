@@ -1,5 +1,5 @@
 {
-  "name": "@1771technologies/grid-store-community",
+  "name": "@1771technologies/grid-store-core",
   "version": "0.0.38",
   "license": "Apache-2.0",
   "type": "module",
@@ -25,7 +25,7 @@
     }
   },
   "dependencies": {
-    "@1771technologies/grid-client-data-source-community": "workspace:*",
+    "@1771technologies/grid-client-data-source-core": "workspace:*",
     "@1771technologies/grid-shared-state": "workspace:*",
     "@1771technologies/grid-types": "workspace:*",
     "@1771technologies/grid-constants": "workspace:*",

@@ -8,11 +8,11 @@ import {
 } from "./cell-edit/cell-edit-containers";
 import type { GridCoreReact } from "@1771technologies/grid-types/core-react";
 
-export interface LyteNyteGridCommunityProps<D> {
+export interface LyteNyteGridCoreProps<D> {
   readonly grid: GridCoreReact<D>;
 }
 
-export function LyteNyteGridCommunity<D>({ grid }: LyteNyteGridCommunityProps<D>) {
+export function LyteNyteGridCore<D>({ grid }: LyteNyteGridCoreProps<D>) {
   return (
     <GridProvider value={grid}>
       <LyteNyteCommunityImpl />

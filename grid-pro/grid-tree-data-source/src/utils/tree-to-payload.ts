@@ -1,4 +1,4 @@
-import { BLOCK_SIZE } from "@1771technologies/grid-client-data-source-community";
+import { BLOCK_SIZE } from "@1771technologies/grid-client-data-source-core";
 import { ROW_GROUP_KIND } from "@1771technologies/grid-constants";
 import type { BlockPayload } from "@1771technologies/grid-graph";
 import type { RowNodeLeafPro, RowNodePro } from "@1771technologies/grid-types/pro";
