@@ -1,10 +1,14 @@
-import type { RowNodeGroup, Writable } from "@1771technologies/grid-types/core";
 import type { ServerState } from "../create-server-data-source";
 import type { AsyncDataRequestBlock } from "../types";
 import { loadBlockData } from "./load-block-data";
 import { getRowGroupPath } from "./get-row-group-path";
+import type { RowNodeGroupPro } from "@1771technologies/grid-types/pro";
 
-export function loadRowExpansion<D, E>(state: ServerState<D, E>, row: Writable<RowNodeGroup>) {
+type Writable<T> = {
+  -readonly [P in keyof T]: T[P];
+};
+
+export function loadRowExpansion<D, E>(state: ServerState<D, E>, row: Writable<RowNodeGroupPro>) {
   const rowIndex = state.graph.rowIdToRowIndex(row.id);
   if (rowIndex == null) return;
 

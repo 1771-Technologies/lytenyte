@@ -1,9 +1,9 @@
 import { ROW_LEAF_KIND } from "@1771technologies/grid-constants";
-import type { RowNodeLeaf } from "@1771technologies/grid-types/core";
+import type { RowNodeLeafPro } from "@1771technologies/grid-types/pro";
 
-const nodeCache = new Map<number, RowNodeLeaf<any>>();
+const nodeCache = new Map<number, RowNodeLeafPro<any>>();
 
-export function createErrorRow<D>(index: number): RowNodeLeaf<D> {
+export function createErrorRow<D>(index: number): RowNodeLeafPro<D> {
   const row = nodeCache.get(index);
   if (row) return row;
 

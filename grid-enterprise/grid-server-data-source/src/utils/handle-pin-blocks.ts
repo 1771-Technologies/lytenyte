@@ -1,4 +1,4 @@
-import type { RowNodeLeaf, RowNodeTotal } from "@1771technologies/grid-types/core";
+import type { RowNodeLeafPro, RowNodeTotalPro } from "@1771technologies/grid-types/pro";
 import type { ServerState } from "../create-server-data-source";
 import type { AsyncDataResponse } from "../types";
 import { ROW_LEAF_KIND, ROW_TOTAL_ID, ROW_TOTAL_KIND } from "@1771technologies/grid-constants";
@@ -16,7 +16,7 @@ export function handleTopBlock<D, E>(payload: AsyncDataResponse, state: ServerSt
   const datum = payload.topBlock.frame.data;
   const ids = payload.topBlock.frame.ids;
 
-  const nodes = datum.map<RowNodeLeaf<D>>((data, i) => {
+  const nodes = datum.map<RowNodeLeafPro<D>>((data, i) => {
     return {
       id: ids[i],
       data: data as D,
@@ -43,7 +43,7 @@ export function handleBottomBlock<D, E>(payload: AsyncDataResponse, state: Serve
   const datum = payload.bottomBlock.frame.data;
   const ids = payload.bottomBlock.frame.ids;
 
-  const nodes = datum.map<RowNodeLeaf<D>>((data, i) => {
+  const nodes = datum.map<RowNodeLeafPro<D>>((data, i) => {
     return {
       id: ids[i],
       data: data as D,
@@ -67,7 +67,7 @@ export function handleTotalBlock<D, E>(payload: AsyncDataResponse, state: Server
 
   if (loadTime > payload.reqTime) return;
 
-  const node: RowNodeTotal = {
+  const node: RowNodeTotalPro = {
     id: ROW_TOTAL_ID,
     kind: ROW_TOTAL_KIND,
     data: payload.totalBlock.frame.data as Record<string, unknown>,

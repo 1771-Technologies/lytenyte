@@ -1,8 +1,8 @@
 import { ROW_GROUP_KIND, ROW_LEAF_KIND } from "@1771technologies/grid-constants";
 import type { ServerState } from "../create-server-data-source";
 import type { AsyncDataResponse } from "../types";
-import type { RowNodeGroup, RowNodeLeaf } from "@1771technologies/grid-types/core";
 import type { BlockPayload } from "@1771technologies/grid-graph";
+import type { RowNodeGroupPro, RowNodeLeafPro } from "@1771technologies/grid-types/pro";
 
 export function handleDataBlocks<D, E>(payload: AsyncDataResponse, state: ServerState<D, E>) {
   const blocks = payload.blocks;
@@ -42,7 +42,7 @@ export function handleDataBlocks<D, E>(payload: AsyncDataResponse, state: Server
           kind: ROW_LEAF_KIND,
           rowIndex: null,
           rowPin: null,
-        } satisfies RowNodeLeaf<D>;
+        } satisfies RowNodeLeafPro<D>;
       }
       if (kind === ROW_GROUP_KIND) {
         let expanded = expansions[ids[i]] ?? state.rowGroupExpansions.get(ids[i]);
@@ -78,7 +78,7 @@ export function handleDataBlocks<D, E>(payload: AsyncDataResponse, state: Server
           kind: ROW_GROUP_KIND,
           rowIndex: null,
           pathKey,
-        } satisfies RowNodeGroup;
+        } satisfies RowNodeGroupPro;
       }
 
       console.error("Handling", payload);

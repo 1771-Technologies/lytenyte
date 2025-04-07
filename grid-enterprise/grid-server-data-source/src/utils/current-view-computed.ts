@@ -1,11 +1,11 @@
 import { computed, type Signal } from "@1771technologies/react-cascada";
 import type { AsyncDataRequestBlock } from "../types";
-import type { ApiEnterprise } from "@1771technologies/grid-types";
 import type { BlockGraph } from "@1771technologies/grid-graph";
 import { getAsyncDataRequestBlocks } from "./get-async-data-request-blocks";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
 export function currentViewComputed<D, E>(
-  api$: Signal<ApiEnterprise<D, E>>,
+  api$: Signal<ApiPro<D, E>>,
   graph: BlockGraph<D>,
   blockSize: number,
   separator: string,
