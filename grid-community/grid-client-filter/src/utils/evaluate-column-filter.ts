@@ -1,15 +1,18 @@
-import type { ApiEnterprise, ColumnEnterprise } from "@1771technologies/grid-types";
+import type {
+  ApiPro,
+  ColumnFilterModelPro,
+  ColumnFilterPro,
+  ColumnPro,
+  FilterInPro,
+  RowNodePro,
+} from "@1771technologies/grid-types/pro";
 import { evaluateDate } from "./evaluate-date-filter";
-import type { ColumnFilter } from "@1771technologies/grid-types/pro";
-import type { RowNode } from "@1771technologies/grid-types/core";
-import type { ColumnFilterModel } from "@1771technologies/grid-types/pro";
-import type { FilterIn } from "@1771technologies/grid-types/pro";
 
 export function evaluateColumnFilter<D, E>(
-  api: ApiEnterprise<D, E>,
-  filter: ColumnFilterModel<ApiEnterprise<D, E>, D>["string"],
-  row: RowNode<D>,
-  providedToDate: (value: unknown, column: ColumnEnterprise<D, E>) => Date,
+  api: ApiPro<D, E>,
+  filter: ColumnFilterModelPro<D, E>["string"],
+  row: RowNodePro<D>,
+  providedToDate: (value: unknown, column: ColumnPro<D, E>) => Date,
 ): boolean {
   const simple = filter.simple ? evaluateFilter(api, filter.simple, row, providedToDate) : true;
   const inResult = filter.set ? evaluateInFilter(api, filter.set, row) : true;
@@ -17,7 +20,7 @@ export function evaluateColumnFilter<D, E>(
   return simple && inResult;
 }
 
-function evaluateInFilter<D, E>(api: ApiEnterprise<D, E>, filter: FilterIn, row: RowNode<D>) {
+function evaluateInFilter<D, E>(api: ApiPro<D, E>, filter: FilterInPro, row: RowNodePro<D>) {
   const expr = filter as unknown as {
     columnId: string;
     set: Set<unknown>;
@@ -34,10 +37,10 @@ function evaluateInFilter<D, E>(api: ApiEnterprise<D, E>, filter: FilterIn, row:
 }
 
 function evaluateFilter<D, E>(
-  api: ApiEnterprise<D, E>,
-  filter: ColumnFilter<ApiEnterprise<D, E>, D>,
-  row: RowNode<D>,
-  providedToDate: (value: unknown, column: ColumnEnterprise<D, E>) => Date,
+  api: ApiPro<D, E>,
+  filter: ColumnFilterPro<D, E>,
+  row: RowNodePro<D>,
+  providedToDate: (value: unknown, column: ColumnPro<D, E>) => Date,
 ): boolean {
   if (filter.kind === "text") {
     const column = api.columnById(filter.columnId)!;

@@ -1,20 +1,24 @@
-import type { ApiEnterprise, ColumnEnterprise } from "@1771technologies/grid-types";
+import type {
+  ApiPro,
+  ColumnPro,
+  RowNodePro,
+  SortModelItemPro,
+} from "@1771technologies/grid-types/pro";
 import { nullComparator } from "./null-comparator";
 import { isValidDate } from "@1771technologies/js-utils";
-import type { RowNode, SortModelItem } from "@1771technologies/grid-types/core";
 
 export function makeDateComparator<D, E>(
-  toDate: (value: unknown, column: ColumnEnterprise<ApiEnterprise<D, E>, E>) => Date,
+  toDate: (value: unknown, column: ColumnPro<D, E>) => Date,
 ) {
   return dateComparator;
 
   function dateComparator<D, E>(
-    api: ApiEnterprise<D, E>,
+    api: ApiPro<D, E>,
     left: unknown,
     right: unknown,
-    _: RowNode<D>,
-    __: RowNode<D>,
-    sort: SortModelItem,
+    _: RowNodePro<D>,
+    __: RowNodePro<D>,
+    sort: SortModelItemPro,
   ) {
     const options = sort.options;
 

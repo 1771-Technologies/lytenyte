@@ -1,5 +1,9 @@
-import type { RowNodeLeaf, Writable } from "@1771technologies/grid-types/core";
+import type { RowNodeLeafCore } from "@1771technologies/grid-types/core";
 import type { ClientState } from "../create-client-data-source";
+
+type Writable<T> = {
+  -readonly [P in keyof T]: T[P];
+};
 
 export function rowSetDataMany<D, E>(state: ClientState<D, E>, updates: Record<string, D>) {
   const rowIds = Object.keys(updates);
@@ -14,7 +18,7 @@ export function rowSetDataMany<D, E>(state: ClientState<D, E>, updates: Record<s
       );
     }
 
-    return row as Writable<RowNodeLeaf<D>>;
+    return row as Writable<RowNodeLeafCore<D>>;
   });
 
   for (const row of rows) {

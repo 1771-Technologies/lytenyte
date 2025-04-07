@@ -1,16 +1,20 @@
-import type { ColumnFilterModel as CFE } from "@1771technologies/grid-types/pro";
 import { evaluateColumnFilter } from "./utils/evaluate-column-filter";
-import type { ApiCommunity, ApiEnterprise, ColumnEnterprise } from "@1771technologies/grid-types";
-import type { ColumnFilterModel, RowNode } from "@1771technologies/grid-types/core";
+import type { ApiCore, ColumnFilterModelCore } from "@1771technologies/grid-types/core";
+import type {
+  ApiPro,
+  ColumnFilterModelPro,
+  ColumnPro,
+  RowNodePro,
+} from "@1771technologies/grid-types/pro";
 
 export const evaluateClientFilter = <D, E>(
-  api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
-  filterModel: CFE<ApiEnterprise<D, E>, D> | ColumnFilterModel<ApiCommunity<D, E>, D>,
-  row: RowNode<D>,
-  providedToDate: (value: unknown, column: ColumnEnterprise<D, E>) => Date,
+  api: ApiPro<D, E> | ApiCore<D, E>,
+  filterModel: ColumnFilterModelPro<D, E> | ColumnFilterModelCore<D, E>,
+  row: RowNodePro<D>,
+  providedToDate: (value: unknown, column: ColumnPro<D, E>) => Date,
 ) => {
-  api = api as ApiEnterprise<D, E>;
-  filterModel = filterModel as CFE<ApiEnterprise<D, E>, D>;
+  api = api as ApiPro<D, E>;
+  filterModel = filterModel as ColumnFilterModelPro<D, E>;
 
   const filters = Object.values(filterModel);
   if (!filters.length) return true;

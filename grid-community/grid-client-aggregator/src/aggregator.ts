@@ -1,12 +1,12 @@
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
-import type { RowNodeLeaf } from "@1771technologies/grid-types/core";
+import type { ApiPro, RowNodeLeafPro } from "@1771technologies/grid-types/pro";
 import { builtIns } from "./built-ins/built-ins.js";
+import type { ApiCore, RowNodeLeafCore } from "@1771technologies/grid-types/core";
 
 export function aggregator<D, E>(
-  api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
-  rows: RowNodeLeaf<D>[],
+  api: ApiPro<D, E> | ApiCore<D, E>,
+  rows: (RowNodeLeafPro<D> | RowNodeLeafCore<D>)[],
 ) {
-  api = api as ApiCommunity<D, E>;
+  api = api as ApiCore<D, E>;
 
   const sx = api.getState();
   const aggCalc: Record<string, unknown> = {};

@@ -1,17 +1,16 @@
-import type { ApiEnterprise } from "@1771technologies/grid-types";
+import type { ApiPro, RowNodePro, SortModelItemPro } from "@1771technologies/grid-types/pro";
 import { datatypeComparator } from "./datatype-comparator";
 import { nullComparator } from "./null-comparator";
-import type { RowNode, SortModelItem } from "@1771technologies/grid-types/core";
 
 const collator = Intl.Collator(undefined, { sensitivity: "base" });
 
 export function stringComparator<D, E>(
-  _api: ApiEnterprise<D, E>,
+  _api: ApiPro<D, E>,
   left: unknown,
   right: unknown,
-  _: RowNode<D>,
-  __: RowNode<D>,
-  sort: SortModelItem,
+  _: RowNodePro<D>,
+  __: RowNodePro<D>,
+  sort: SortModelItemPro,
 ) {
   const options = sort.options;
 

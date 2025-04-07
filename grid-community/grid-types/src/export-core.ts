@@ -2,13 +2,17 @@ import type { ApiCoreRaw } from "./api/api-core.js";
 import type { Column, ColumnBase, ColumnRowGroup } from "./column/column-core.js";
 import type { PropsCoreRaw } from "./props/props-core.js";
 import type { StateCore } from "./state/state-core.js";
-import type { RowDataSourceCore as RDS } from "./row-data-source/rds-core.js";
+import type {
+  RowDataSourceCore as RDS,
+  RowDataSourceClient as RDC,
+} from "./row-data-source/rds-core.js";
 
 export type ApiCore<D, E> = ApiCoreRaw<D, ColumnCore<D, E>, E>;
 export type ColumnCore<D, E> = Column<ApiCore<D, E>, D, E>;
 export type ColumnBaseCore<D, E> = ColumnBase<ApiCore<D, E>, D, E>;
 export type ColumnRowGroupCore<D, E> = ColumnRowGroup<ApiCore<D, E>, D, E>;
 export type RowDataSourceCore<D, E> = RDS<ApiCore<D, E>, D>;
+export type RowDataSourceClient<D, E> = RDC<D, E>;
 
 export type GridCore<D, E> = {
   readonly state: StateCore<D, E>;

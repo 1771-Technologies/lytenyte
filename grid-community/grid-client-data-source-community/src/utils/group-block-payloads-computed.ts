@@ -1,23 +1,28 @@
 import { computed, type ReadonlySignal, type Signal } from "@1771technologies/react-cascada";
 import { ROW_DEFAULT_PATH_SEPARATOR, ROW_GROUP_KIND } from "@1771technologies/grid-constants";
-import type { ApiCommunity, ApiEnterprise } from "@1771technologies/grid-types";
-import type { RowNode, RowNodeGroup, RowNodeLeaf } from "@1771technologies/grid-types/core";
 import { BLOCK_SIZE } from "./flat-block-payloads-computed";
 import type { BlockPayload } from "@1771technologies/grid-graph";
+import type { ApiPro, RowNodeLeafPro } from "@1771technologies/grid-types/pro";
+import type {
+  ApiCore,
+  RowNodeCore,
+  RowNodeGroupCore,
+  RowNodeLeafCore,
+} from "@1771technologies/grid-types/core";
 
 export function groupBlockPayloadsComputed<D, E>(
-  api$: Signal<ApiEnterprise<D, E>> | Signal<ApiCommunity<D, E>>,
-  rows: ReadonlySignal<RowNodeLeaf<D>[]>,
+  api$: Signal<ApiPro<D, E>> | Signal<ApiCore<D, E>>,
+  rows: ReadonlySignal<RowNodeLeafPro<D>[]>,
 ) {
   return computed(() => {
-    const api = api$.get() as ApiEnterprise<D, E>;
+    const api = api$.get() as ApiPro<D, E>;
     const sx = api.getState();
     const rowModel = sx.rowGroupModel.get();
 
     // If the model is empty, then we can skip the rest of the code, there is nothing to group on.
     if (!rowModel.length) return { sizes: [], payloads: [] };
 
-    const pathIdToDirectChildren = new Map<string, RowNode<D>[]>();
+    const pathIdToDirectChildren = new Map<string, RowNodeCore<D>[]>();
     const seenPaths = new Set<string>();
 
     const nodes = rows.get();
@@ -46,7 +51,7 @@ export function groupBlockPayloadsComputed<D, E>(
 
     // Helpers
 
-    function processPath(path: string, row: RowNodeLeaf<D>, modelIndex: number) {
+    function processPath(path: string, row: RowNodeLeafCore<D>, modelIndex: number) {
       // We are at the leaf level - i.e. this is a leaf node that we need to insert into our tree.
       if (modelIndex === rowModel.length) {
         if (!pathIdToDirectChildren.has(path)) pathIdToDirectChildren.set(path, []); // Ensure exists
@@ -74,7 +79,7 @@ export function groupBlockPayloadsComputed<D, E>(
 
         // Otherwise we need to create a group node and add it to our current level. When the path
         // is empty this will be our root level.
-        const node: RowNodeGroup = {
+        const node: RowNodeGroupCore = {
           id: groupPath,
           kind: ROW_GROUP_KIND,
           pathKey: groupKey,

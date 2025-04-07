@@ -1,10 +1,10 @@
 import { computed, type ReadonlySignal } from "@1771technologies/react-cascada";
 import type { BlockPayload } from "@1771technologies/grid-graph";
-import type { RowNodeLeaf } from "@1771technologies/grid-types/core";
+import type { RowNodeLeafCore } from "@1771technologies/grid-types/core";
 
 export const BLOCK_SIZE = 2000;
 
-export function flatBlockPayloadsComputed<D>(nodes: ReadonlySignal<RowNodeLeaf<D>[]>) {
+export function flatBlockPayloadsComputed<D>(nodes: ReadonlySignal<RowNodeLeafCore<D>[]>) {
   return computed(() => {
     const rowNodes = nodes.get();
     const blockCount = Math.ceil(rowNodes.length / BLOCK_SIZE);

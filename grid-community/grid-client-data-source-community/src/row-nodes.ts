@@ -1,5 +1,5 @@
 import { ROW_LEAF_KIND } from "@1771technologies/grid-constants";
-import type { RowNodeLeaf, RowPin } from "@1771technologies/grid-types/core";
+import type { RowNodeLeafCore, RowPinCore } from "@1771technologies/grid-types/core";
 
 const idCacheCenter: {
   top: Record<number, string>;
@@ -11,8 +11,8 @@ const idCacheCenter: {
   center: {},
 };
 
-export function dataToRowNodes<D>(c: D[], pin: RowPin, cacheKey: "top" | "center" | "bottom") {
-  const nodes: RowNodeLeaf<D>[] = [];
+export function dataToRowNodes<D>(c: D[], pin: RowPinCore, cacheKey: "top" | "center" | "bottom") {
+  const nodes: RowNodeLeafCore<D>[] = [];
   const cache = idCacheCenter[cacheKey];
 
   for (let i = 0; i < c.length; i++) {

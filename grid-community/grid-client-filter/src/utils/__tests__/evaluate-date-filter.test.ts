@@ -1,7 +1,7 @@
-import type { FilterDate, FilterDateOperator } from "@1771technologies/grid-types/core";
+import type { FilterDateCore, FilterDateOperatorCore } from "@1771technologies/grid-types/core";
 import { evaluateDate } from "../evaluate-date-filter";
 
-const t: FilterDate = {
+const t: FilterDateCore = {
   datePeriod: null,
   columnId: "",
   operator: "equal",
@@ -103,10 +103,10 @@ describe("evaluateDateFilter", () => {
     },
     {
       date: "2023-11-07",
-      filter: { ...t, operator: "xx" as unknown as FilterDateOperator },
+      filter: { ...t, operator: "xx" as unknown as FilterDateOperatorCore },
       is: false,
     },
-  ] satisfies { date: string; filter: FilterDate; is: boolean }[])(
+  ] satisfies { date: string; filter: FilterDateCore; is: boolean }[])(
     `evaluateDateFilter -- $date - $filter.operator`,
     ({ date, filter, is }) => {
       expect(evaluateDate(new Date(date), filter)).toBe(is);

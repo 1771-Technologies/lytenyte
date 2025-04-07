@@ -1,12 +1,12 @@
 import { computed, type ReadonlySignal, type Signal } from "@1771technologies/react-cascada";
 import { getComparatorsForModel, makeCombinedComparator } from "@1771technologies/grid-client-sort";
-import type { ApiCommunity, ApiEnterprise, ColumnCommunity } from "@1771technologies/grid-types";
-import type { RowNodeLeaf } from "@1771technologies/grid-types/core";
+import type { ApiCore, ColumnCore, RowNodeLeafCore } from "@1771technologies/grid-types/core";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
 export function sortedNodesComputed<D, E>(
-  api$: Signal<ApiEnterprise<D, E>> | Signal<ApiCommunity<D, E>>,
-  nodes: ReadonlySignal<RowNodeLeaf<D>[]>,
-  toDate: (value: unknown, column: ColumnCommunity<D, E>) => Date,
+  api$: Signal<ApiPro<D, E>> | Signal<ApiCore<D, E>>,
+  nodes: ReadonlySignal<RowNodeLeafCore<D>[]>,
+  toDate: (value: unknown, column: ColumnCore<D, E>) => Date,
 ) {
   const sortedNodes = computed(() => {
     const api = api$.get();

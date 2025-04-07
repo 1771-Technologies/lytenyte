@@ -1,23 +1,18 @@
 import { stringComparator } from "./sort-functions/string-comparator";
 import { numberComparator } from "./sort-functions/number-comparator";
 import { groupSortComparator } from "./sort-functions/group-sort-comparator";
-import type {
-  ApiCommunity,
-  ApiEnterprise,
-  ColumnCommunity,
-  ColumnEnterprise,
-} from "@1771technologies/grid-types";
-import type { SortComparatorFn } from "@1771technologies/grid-types/core";
 import { GROUP_COLUMN_PREFIX } from "@1771technologies/grid-constants";
 import { makeDateComparator } from "./sort-functions/date-comparator";
+import type { ApiPro, ColumnPro, SortComparatorFnPro } from "@1771technologies/grid-types/pro";
+import type { ApiCore, ColumnCore } from "@1771technologies/grid-types/core";
 
 export function getSortComparator<D, E>(
-  api: ApiEnterprise<D, E> | ApiCommunity<D, E>,
-  column: ColumnCommunity<D, E> | ColumnEnterprise<D, E>,
-  toDate: (value: unknown, column: ColumnEnterprise<D, E>) => Date,
-): SortComparatorFn<ApiEnterprise<D, E>, D> {
-  api = api as ApiEnterprise<D, E>;
-  column = column as ColumnEnterprise<D, E>;
+  api: ApiPro<D, E> | ApiCore<D, E>,
+  column: ColumnPro<D, E> | ColumnCore<D, E>,
+  toDate: (value: unknown, column: ColumnPro<D, E>) => Date,
+): SortComparatorFnPro<D, E> {
+  api = api as ApiPro<D, E>;
+  column = column as ColumnPro<D, E>;
 
   const comparator = column.sortComparator;
   if (typeof comparator === "function") return comparator;

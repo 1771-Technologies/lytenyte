@@ -1,10 +1,4 @@
 import { BlockGraph } from "@1771technologies/grid-graph";
-import type {
-  ApiCommunity,
-  ApiEnterprise,
-  RowDataSourceBackingCommunity,
-} from "@1771technologies/grid-types";
-import type { RowDataSourceClient, RowNodeLeaf } from "@1771technologies/grid-types/core";
 import { dataToRowNodes } from "./row-nodes";
 import {
   cascada,
@@ -27,26 +21,33 @@ import { rowSetDataMany } from "./api/row-set-data-many";
 import { paginateGetCount } from "./api/paginate-get-count";
 import { paginateRowStartAndEndForPage } from "./api/paginate-row-stand-and-end-for-page";
 import { groupBlockPayloadsComputed } from "./utils/group-block-payloads-computed";
+import type {
+  ApiCore,
+  RowDataSourceClient,
+  RowDataSourceCore,
+  RowNodeLeafCore,
+} from "@1771technologies/grid-types/core";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
 export interface ClientState<D, E> {
-  api: Signal<ApiCommunity<D, E>> | Signal<ApiEnterprise<D, E>>;
+  api: Signal<ApiCore<D, E>> | Signal<ApiPro<D, E>>;
 
   graph: ReadonlySignal<BlockGraph<D>>;
 
   cache: Signal<Record<string, any>>;
 
-  rowTopNodes: Signal<RowNodeLeaf<D>[]>;
-  rowCenterNodes: Signal<RowNodeLeaf<D>[]>;
-  rowBottomNodes: Signal<RowNodeLeaf<D>[]>;
+  rowTopNodes: Signal<RowNodeLeafCore<D>[]>;
+  rowCenterNodes: Signal<RowNodeLeafCore<D>[]>;
+  rowBottomNodes: Signal<RowNodeLeafCore<D>[]>;
 }
 
 export function createClientDataSource<D, E>(
   r: RowDataSourceClient<D, E>,
-): RowDataSourceBackingCommunity<D, E> {
+): RowDataSourceCore<D, E> {
   let watchers: (() => void)[] = [];
 
   const state = cascada(() => {
-    const api$ = signal<ApiCommunity<D, E>>(null as unknown as ApiCommunity<D, E>);
+    const api$ = signal<ApiCore<D, E>>(null as unknown as ApiCore<D, E>);
 
     const cache = signal<Record<string, any>>({});
 
@@ -167,5 +168,5 @@ export function createClientDataSource<D, E>(
 
     paginateGetCount: () => paginateGetCount(state),
     paginateRowStartAndEndForPage: (i) => paginateRowStartAndEndForPage(state, i),
-  } satisfies RowDataSourceBackingCommunity<D, E>;
+  } satisfies RowDataSourceCore<D, E>;
 }

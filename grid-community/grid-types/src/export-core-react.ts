@@ -6,6 +6,7 @@ export type ColumnCoreReact<D = any> = C.ColumnCore<D, ReactNode>;
 export type ColumnBaseCoreReact<D = any> = C.ColumnBaseCore<D, ReactNode>;
 export type ColumnRowGroupCoreReact<D = any> = C.ColumnRowGroupCore<D, ReactNode>;
 export type RowDataSourceCoreReact<D = any> = C.RowDataSourceCore<D, ReactNode>;
+export type RowDataSourceClientReact<D = any> = C.RowDataSourceClient<D, ReactNode>;
 
 export type GridCoreReact<D = any> = C.GridCore<D, ReactNode>;
 

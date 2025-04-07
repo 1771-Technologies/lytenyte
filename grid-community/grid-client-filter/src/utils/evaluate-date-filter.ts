@@ -1,4 +1,4 @@
-import type { FilterDate } from "@1771technologies/grid-types/core";
+import type { FilterDateCore } from "@1771technologies/grid-types/core";
 import { calculateTimeRange } from "./calculate-time-range";
 import { isInPeriod } from "./is-in-period";
 import { isValidDate } from "./is-valid-date";
@@ -13,7 +13,7 @@ function isDateBetweenInclusive(left: Date, d: Date, right: Date): boolean {
   return leftStr <= dStr && dStr <= rightStr;
 }
 
-export function evaluateDate(date: Date, filter: FilterDate): boolean {
+export function evaluateDate(date: Date, filter: FilterDateCore): boolean {
   if (!isValidDate(date)) return false;
 
   const getFilterDate = () => new Date(filter.value);

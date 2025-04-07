@@ -1,5 +1,9 @@
-import type { RowNode, Writable } from "@1771technologies/grid-types/core";
+import type { RowNodeCore } from "@1771technologies/grid-types/core";
 import type { ClientState } from "../create-client-data-source";
+
+type Writable<T> = {
+  -readonly [P in keyof T]: T[P];
+};
 
 export function rowSetData<D, E>(
   state: ClientState<D, E>,
@@ -10,7 +14,7 @@ export function rowSetData<D, E>(
   const graph = state.graph.peek();
   const api = state.api.peek();
 
-  const row = graph.rowById(rowId) as Writable<RowNode<D>> | undefined;
+  const row = graph.rowById(rowId) as Writable<RowNodeCore<D>> | undefined;
   if (!row) {
     throw new Error(
       `Attempting to update the data in the row ${rowId}, but it either was not found or is not a leaf node.`,
