@@ -22,5 +22,7 @@ export { PlusIcon } from "./plus-icon.js";
 export { ResetColumnsIcon } from "./reset-columns-icon.js";
 export { RowGroupIcon } from "./row-group-icon.js";
 export { SearchIcon } from "./search-icon.js";
+export { SortAscending } from "./sort-ascending.js";
+export { SortDescending } from "./sort-descending.js";
 export { SortIcon } from "./sort-icon.js";
 export { TickmarkIcon } from "./tickmark-icon.js";

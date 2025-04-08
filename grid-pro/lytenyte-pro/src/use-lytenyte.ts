@@ -1,6 +1,7 @@
 import { makeGridPro } from "@1771technologies/grid-store-pro";
 import { useEffect, useState, type ReactNode } from "react";
 import type { GridProReact, StateInitProReact } from "./types";
+import { HeaderCellDefault } from "./header-cell/header-cell-default";
 
 type ChangeReturnType<F extends (...args: any[]) => any, R> = (...args: Parameters<F>) => R;
 
@@ -14,6 +15,8 @@ type UseLyteNyteProReturn<D> = {
 export const useLyteNytePro = <D>(p: StateInitProReact<D>): UseLyteNyteProReturn<D> => {
   const [grid] = useState(() => {
     const s = makeGridPro<D, ReactNode>(p);
+
+    s.state.internal.columnHeaderDefaultRenderer.set(() => HeaderCellDefault);
 
     const useSignalWatcher = (
       c: keyof Omit<GridProReact<D>["state"], "internal">,

@@ -9,7 +9,7 @@ import {
   rowPositionsComputed,
   virt,
 } from "@1771technologies/grid-shared-state";
-import type { GridCore } from "@1771technologies/grid-types/core";
+import type { ColumnHeaderRendererCore, GridCore } from "@1771technologies/grid-types/core";
 import type { PositionCore } from "@1771technologies/grid-types/core";
 import type { ColumnPinCore } from "@1771technologies/grid-types/core";
 import type { ColumnCore } from "@1771technologies/grid-types/core";
@@ -95,6 +95,7 @@ export function initializeInternalState<D, E>(
     columnMovePin: signal<ColumnPinCore>(null),
 
     columnResizeIsActive: signal(false),
+    columnHeaderDefaultRenderer: signal<ColumnHeaderRendererCore<D, E> | null>(null),
 
     cellFocusQueue: cellFocusQueue(),
     navigatePosition: signal<PositionCore | null>(null),

@@ -11,6 +11,7 @@ import type {
   ColumnCore as Column,
   ApiCore as Api,
   StateInitCore as Init,
+  ColumnHeaderRendererCore,
 } from "../export-core.js";
 
 export type GridInternalState<D, E> = {
@@ -44,6 +45,8 @@ export type GridInternalState<D, E> = {
   readonly columnMoveOverColumn: Signal<Column<D, E> | null>;
   readonly columnMoveOverPin: Signal<ColumnPin>;
   readonly columnMoveOverlayHeight: Signal<number>;
+
+  readonly columnHeaderDefaultRenderer: Signal<ColumnHeaderRendererCore<D, E> | null>;
 
   readonly columnWidthDeltas: Signal<Record<string, number> | null>;
   readonly columnResizeIsActive: Signal<boolean>;

@@ -34,7 +34,7 @@ export const columns: ColumnProReact<any>[] = [
   { id: "housing" },
   { id: "loan", groupPath: ["Xeno", "Sigma"], measureFnsAllowed: ["first", "last"] },
   { id: "contact", groupPath: ["Xeno", "Sigma"] },
-  { id: "day", groupPath: ["Xeno"] },
+  { id: "day", groupPath: ["Xeno"], type: "number" },
   { id: "month" },
   { id: "duration" },
   { id: "campaign" },

@@ -10,9 +10,19 @@ import type { SortModelItem } from "../types/sort";
 import type { ColumnFilterModel } from "../types/filter-pro";
 import type { ColumnGroupRows } from "../types/column-group";
 import type { Target } from "../types/context-menu-pro";
-import type { ColumnPro as Column, ApiPro as Api, StateInitPro as Init } from "../export-pro";
+import type {
+  ColumnPro as Column,
+  ApiPro as Api,
+  StateInitPro as Init,
+  ColumnHeaderRendererPro,
+} from "../export-pro";
 
-type CoreOmit = "columnsVisible" | "columnMoveOverColumn" | "columnLookup" | "rowBackingDataSource";
+type CoreOmit =
+  | "columnsVisible"
+  | "columnMoveOverColumn"
+  | "columnLookup"
+  | "rowBackingDataSource"
+  | "columnHeaderDefaultRenderer";
 
 export interface GridInternalState<D, E> extends Omit<CoreInternal<D, E>, CoreOmit> {
   readonly columnsVisible: ReadonlySignal<Column<D, E>[]>;
@@ -62,6 +72,8 @@ export interface GridInternalState<D, E> extends Omit<CoreInternal<D, E>, CoreOm
 
   readonly columnMenuColumn: Signal<Column<D, E> | null>;
   readonly columnMenuTarget: Signal<Target | null>;
+
+  readonly columnHeaderDefaultRenderer: Signal<ColumnHeaderRendererPro<D, E> | null>;
 
   readonly contextMenuTarget: Signal<Target | null>;
 

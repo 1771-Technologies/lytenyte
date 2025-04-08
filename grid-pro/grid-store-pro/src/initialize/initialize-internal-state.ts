@@ -14,6 +14,7 @@ import { columnPivotsState } from "./utils/column-pivots-state";
 import type {
   CellEditLocationPro,
   CellSelectionRectPro,
+  ColumnHeaderRendererPro,
   ColumnPinPro,
   ColumnPro,
   GridPro,
@@ -167,6 +168,7 @@ export function initializeInternalState<D, E>(
     columnMovePin: signal<ColumnPinPro>(null),
 
     columnResizeIsActive: signal(false),
+    columnHeaderDefaultRenderer: signal<ColumnHeaderRendererPro<D, E> | null>(null),
 
     cellFocusQueue: cellFocusQueue(),
     navigatePosition: signal<PositionPro | null>(null),
