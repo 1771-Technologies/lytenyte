@@ -21,7 +21,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1px;
+  padding: 3px;
   border-radius: 4px;
   opacity: 0;
   transition: opacity 100ms ease-in;
@@ -37,6 +37,7 @@
 .lng1771-header-default__button[data-sort-active="true"] {
   opacity: 1;
   color: var(--lng1771-primary-50);
+  border-color: var(--lng1771-gray-40);
 }
 
 .lng1771-header-default:hover .lng1771-header-default__button {
