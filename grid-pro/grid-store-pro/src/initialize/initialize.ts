@@ -51,8 +51,9 @@ export function initialize<D, E>(
     columnGroupStickyHeaders: signal(props.columnGroupStickyHeaders ?? false),
     columnHeaderHeight: signal(props.columnHeaderHeight ?? COLUMN_HEADER_HEIGHT),
     columnHeaderRenderers: signal(props.columnHeaderRenderers ?? {}),
-    columnSpanScanDistance: signal(props.columnSpanScanDistance ?? COLUMN_SCAN_DISTANCE),
+    columnGroupHeaderRenderer: signal(props.columnGroupHeaderRenderer ?? null),
 
+    columnSpanScanDistance: signal(props.columnSpanScanDistance ?? COLUMN_SCAN_DISTANCE),
     columnMenuActiveColumn: computed(() => state.internal.columnMenuColumn.get()),
 
     filterModel: filterModelComputed(props.filterModel ?? {}, api),

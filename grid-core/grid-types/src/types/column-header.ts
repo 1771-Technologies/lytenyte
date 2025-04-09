@@ -4,13 +4,18 @@ import type { ApiPro, ColumnPro } from "../export-pro";
 export type ColumnHeaderHeightProperty = number;
 
 export type ColumnHeaderRendererParams<A, C> = {
-  column: C;
-  api: A;
+  readonly column: C;
+  readonly api: A;
 };
 export type ColumnHeaderRenderer<A, C, E> = (p: ColumnHeaderRendererParams<A, C>) => E;
 export type ColumnHeaderRenderers<A, C, E> = {
-  [id: string]: ColumnHeaderRenderer<A, C, E>;
+  readonly [id: string]: ColumnHeaderRenderer<A, C, E>;
 };
+
+export type ColumnGroupHeaderRendererParams<A> = {
+  readonly api: A;
+};
+export type ColumnGroupHeaderRenderer<A, E> = (p: ColumnGroupHeaderRendererParams<A>) => E;
 
 // Simplified
 export type ColumnHeaderHeightPropertyCore = ColumnHeaderHeightProperty;
@@ -29,6 +34,11 @@ export type ColumnHeaderRenderersCore<D, E> = ColumnHeaderRenderers<
   E
 >;
 
+export type ColumnGroupHeaderRendererParamsCore<D, E> = ColumnGroupHeaderRendererParams<
+  ApiCore<D, E>
+>;
+export type ColumnGroupHeaderRendererCore<D, E> = ColumnGroupHeaderRenderer<ApiCore<D, E>, E>;
+
 export type ColumnHeaderHeightPropertyPro = ColumnHeaderHeightProperty;
 export type ColumnHeaderRendererParamsPro<D, E> = ColumnHeaderRendererParams<
   ApiPro<D, E>,
@@ -40,3 +50,8 @@ export type ColumnHeaderRenderersPro<D, E> = ColumnHeaderRenderers<
   ColumnPro<D, E>,
   E
 >;
+
+export type ColumnGroupHeaderRendererParamsPro<D, E> = ColumnGroupHeaderRendererParams<
+  ApiPro<D, E>
+>;
+export type ColumnGroupHeaderRendererPro<D, E> = ColumnGroupHeaderRenderer<ApiPro<D, E>, E>;

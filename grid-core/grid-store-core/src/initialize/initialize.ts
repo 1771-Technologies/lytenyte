@@ -56,6 +56,7 @@ export function initialize<D, E>(
     columnHeaderHeight: signal(props.columnHeaderHeight ?? COLUMN_HEADER_HEIGHT),
     columnHeaderRenderers: signal(props.columnHeaderRenderers ?? {}),
     columnSpanScanDistance: signal(props.columnSpanScanDistance ?? COLUMN_SCAN_DISTANCE),
+    columnGroupHeaderRenderer: signal(props.columnGroupHeaderRenderer ?? null),
 
     filterModel: filterModelComputed(props.filterModel ?? {}, api) as any,
 

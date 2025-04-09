@@ -94,6 +94,8 @@ export type {
   ColumnHeaderRendererParamsCore,
   ColumnHeaderRenderersCore,
   ColumnHeaderHeightPropertyCore,
+  ColumnGroupHeaderRendererParamsCore,
+  ColumnGroupHeaderRendererCore,
 } from "./types/column-header.js";
 
 export type { ColumnSpanParamsCore, ColumnSpanCallbackCore } from "./types/column-span.js";

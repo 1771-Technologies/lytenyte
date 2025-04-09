@@ -82,6 +82,12 @@ export type ColumnHeaderRendererParamsCoreReact<D = any> = C.ColumnHeaderRendere
 >;
 export type ColumnHeaderRenderersCoreReact<D = any> = C.ColumnHeaderRenderersCore<D, ReactNode>;
 export type ColumnHeaderHeightPropertyCoreReact = C.ColumnHeaderHeightPropertyCore;
+export type ColumnGroupHeaderRendererCoreReact<D = any> = C.ColumnGroupHeaderRendererCore<
+  D,
+  ReactNode
+>;
+export type ColumnGroupHeaderRendererParamsCoreReact<D = any> =
+  C.ColumnGroupHeaderRendererParamsCore<D, ReactNode>;
 
 export type ColumnSpanParamsCoreReact<D = any> = C.ColumnSpanParamsCore<D, ReactNode>;
 export type ColumnSpanCallbackCoreReact<D = any> = C.ColumnSpanCallbackCore<D, ReactNode>;

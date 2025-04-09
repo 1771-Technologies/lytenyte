@@ -2,7 +2,11 @@ import type { RowDataSourceClient } from "../row-data-source/rds-core";
 import type { AggFns, AggModel } from "../types/aggregations";
 import type { CellEditPointerActivator, CellEditProviders } from "../types/cell-edit";
 import type { CellRenderers } from "../types/cell-renderer";
-import type { ColumnHeaderHeightProperty, ColumnHeaderRenderers } from "../types/column-header";
+import type {
+  ColumnGroupHeaderRenderer,
+  ColumnHeaderHeightProperty,
+  ColumnHeaderRenderers,
+} from "../types/column-header";
 import type { ColumnFilterModel } from "../types/filters";
 import type { FloatingCellRenderers } from "../types/floating-cell";
 import type { RowPin } from "../types/row";
@@ -33,6 +37,7 @@ export interface PropsCoreRaw<A, D, C, E, Base, Group> {
   readonly columnHeaderHeight?: ColumnHeaderHeightProperty;
   readonly columnHeaderRenderers?: ColumnHeaderRenderers<A, C, E>;
   readonly columnGroupHeaderHeight?: ColumnHeaderHeightProperty;
+  readonly columnGroupHeaderRenderer?: ColumnGroupHeaderRenderer<A, E> | null;
   readonly columnGroupStickyHeaders?: boolean;
 
   readonly columnGroupIdDelimiter?: string;

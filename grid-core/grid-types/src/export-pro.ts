@@ -90,6 +90,8 @@ export type {
   ColumnHeaderRendererParamsPro,
   ColumnHeaderRenderersPro,
   ColumnHeaderHeightPropertyPro,
+  ColumnGroupHeaderRendererParamsPro,
+  ColumnGroupHeaderRendererPro,
 } from "./types/column-header.js";
 
 export type { ColumnSpanParamsPro, ColumnSpanCallbackPro } from "./types/column-span.js";
