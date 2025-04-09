@@ -1,4 +1,4 @@
-import { signal } from "@1771technologies/react-cascada";
+import { computed, signal } from "@1771technologies/react-cascada";
 import { emptyRowDataSource } from "./utils/empty-row-data-source";
 import {
   COLUMN_GROUP_HEADER_HEIGHT,
@@ -52,6 +52,8 @@ export function initialize<D, E>(
     columnHeaderHeight: signal(props.columnHeaderHeight ?? COLUMN_HEADER_HEIGHT),
     columnHeaderRenderers: signal(props.columnHeaderRenderers ?? {}),
     columnSpanScanDistance: signal(props.columnSpanScanDistance ?? COLUMN_SCAN_DISTANCE),
+
+    columnMenuActiveColumn: computed(() => state.internal.columnMenuColumn.get()),
 
     filterModel: filterModelComputed(props.filterModel ?? {}, api),
 

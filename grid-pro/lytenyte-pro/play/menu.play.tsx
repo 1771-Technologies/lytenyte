@@ -147,16 +147,6 @@ export default function Play() {
       resizable: true,
       movable: true,
       sortable: true,
-      headerRenderer: ({ column, api }) => {
-        return (
-          <div
-            style={{ width: "100%", height: "100%" }}
-            onClick={(e) => api.columnMenuOpen(column, e.currentTarget)}
-          >
-            {column.headerName ?? column.id}
-          </div>
-        );
-      },
     },
   });
 

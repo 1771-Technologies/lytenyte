@@ -202,6 +202,7 @@ export type { RowSpanParamsPro, RowSpanCallbackPro } from "./types/row-span.js";
 export type { ScrollBoundsPro } from "./types/virtualization.js";
 
 // Only Pro Features
+export type { UIHintsColumnHeaderPro } from "./types/column-header-pro.js";
 
 export type { CellSelectionModePro, CellSelectionRectPro } from "./types/cell-selection-pro.js";
 

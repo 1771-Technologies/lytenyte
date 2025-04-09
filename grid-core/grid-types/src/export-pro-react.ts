@@ -185,6 +185,8 @@ export type ScrollBoundsProReact = P.ScrollBoundsPro;
 export type CellSelectionModeProReact = P.CellSelectionModePro;
 export type CellSelectionRectProReact = P.CellSelectionRectPro;
 
+export type UIHintsColumnHeaderProReact = P.UIHintsColumnHeaderPro;
+
 export type ColumnFilterProReact<D = any> = P.ColumnFilterPro<D, ReactNode>;
 export type FilterInProReact = P.FilterInPro;
 export type ColumnFilterModelProReact<D = any> = P.ColumnFilterModelPro<D, ReactNode>;

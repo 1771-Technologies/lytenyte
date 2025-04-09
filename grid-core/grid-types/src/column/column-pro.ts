@@ -1,3 +1,4 @@
+import type { UIHintsColumnHeaderPro } from "../export-pro";
 import type { AggBuiltIns } from "../types/aggregations";
 import type { AutosizeCellParameters, AutosizeHeaderParameters } from "../types/autosize";
 import type {
@@ -40,6 +41,8 @@ export interface Column<A, D, E> {
 
   readonly hidable?: boolean;
   readonly hide?: boolean;
+
+  readonly uiHints?: UIHintsColumnHeaderPro;
 
   readonly cellEditPredicate?: boolean | CellEditPredicate<A, D, this>;
   readonly cellEditParser?: CellEditParser<A, D, this> | null;

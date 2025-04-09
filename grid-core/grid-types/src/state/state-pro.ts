@@ -15,6 +15,7 @@ import type {
   ApiPro as Api,
   StateInitPro as Init,
   ColumnHeaderRendererPro,
+  ColumnPro,
 } from "../export-pro";
 
 type CoreOmit =
@@ -89,6 +90,8 @@ type Props<D, E> = Required<Init<D, E>>;
 
 export type InitialState<D, E> = {
   readonly [k in keyof Props<D, E>]: Signal<Props<D, E>[k]>;
+} & {
+  readonly columnMenuActiveColumn: ReadonlySignal<ColumnPro<D, E> | null>;
 };
 
 export type InitialStateAndInternalState<D, E> = InitialState<D, E> & {
