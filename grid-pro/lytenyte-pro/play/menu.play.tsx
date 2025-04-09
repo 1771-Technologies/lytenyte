@@ -147,6 +147,11 @@ export default function Play() {
       resizable: true,
       movable: true,
       sortable: true,
+
+      uiHints: {
+        sortButton: true,
+        columnMenu: true,
+      },
     },
   });
 

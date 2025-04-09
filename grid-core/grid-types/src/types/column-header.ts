@@ -1,5 +1,6 @@
 import type { ApiCore, ColumnCore } from "../export-core";
 import type { ApiPro, ColumnPro } from "../export-pro";
+import type { ColumnGroupRowItem } from "./column-group";
 
 export type ColumnHeaderHeightProperty = number;
 
@@ -14,6 +15,7 @@ export type ColumnHeaderRenderers<A, C, E> = {
 
 export type ColumnGroupHeaderRendererParams<A> = {
   readonly api: A;
+  readonly group: ColumnGroupRowItem;
 };
 export type ColumnGroupHeaderRenderer<A, E> = (p: ColumnGroupHeaderRendererParams<A>) => E;
 

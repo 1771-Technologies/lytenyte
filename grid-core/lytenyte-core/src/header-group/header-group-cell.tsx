@@ -101,6 +101,8 @@ export function HeaderGroupCell({
     });
   });
 
+  const Renderer = api.getState().columnGroupHeaderRenderer.use() ?? HeaderGroupDefault;
+
   return (
     <div
       ref={ref}
@@ -115,14 +117,11 @@ export function HeaderGroupCell({
       {...headerMove.moveProps}
       className="lng1771-header__group"
     >
-      <HeaderGroupDefault group={groupItem} api={api} />
+      <Renderer group={groupItem} api={api} />
     </div>
   );
 }
 
-/**
- * TODO: we should really make this available to users to change.
- */
 interface HeaderGroupRendererProps {
   readonly group: ColumnGroupRowItemCore;
   readonly api: ApiCoreReact<any>;

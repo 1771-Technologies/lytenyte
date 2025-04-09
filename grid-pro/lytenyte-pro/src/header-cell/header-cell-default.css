@@ -28,6 +28,7 @@
 
 .lng1771-header-default--end-align .lng1771-header-default__controls {
   inset-inline-start: 12px;
+  flex-direction: row-reverse;
 }
 
 .lng1771-header-default__button {
