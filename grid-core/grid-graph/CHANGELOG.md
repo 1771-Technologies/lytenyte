@@ -1,5 +1,7 @@
 # @1771technologies/grid-graph
 
+## 0.0.40
+
 ## 0.0.39
 
 ## 0.0.38
