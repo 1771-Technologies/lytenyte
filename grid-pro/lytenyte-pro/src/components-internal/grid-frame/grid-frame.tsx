@@ -41,7 +41,7 @@ export function GridFrame<D>({
 
   return (
     <div
-      data-lng1771-cell-selection-enabled={cellSelectionEnabled ? true : undefined}
+      data-cell-selection-enabled={cellSelectionEnabled ? true : undefined}
       className="lng1771-grid-frame"
       style={{ gridTemplateColumns: template }}
     >

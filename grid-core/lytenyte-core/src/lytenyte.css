@@ -5,21 +5,8 @@
 .lng1771-cell,
 .lng1771-cell__full-width {
   &:focus {
-    outline: none;
-  }
-
-  &:focus:after {
-    content: "";
-    position: absolute;
-    top: 0px;
-    inset-inline-start: 1px;
-    width: calc(100% - 2px);
-    height: 100%;
-    pointer-events: none;
-    box-sizing: border-box;
-    border: 1px solid var(--lng1771-focus-outline);
-    border-radius: 2px;
-    z-index: 10;
+    outline: 1px solid var(--lng1771-focus-outline);
+    outline-offset: -2px;
   }
 }
 
@@ -31,4 +18,10 @@
   border-radius: 8px;
   font-size: 14px;
   font-family: var(--lng1771-typeface);
+}
+
+[data-cell-selection-enabled="true"] .lng1771-cell:focus,
+[data-cell-selection-enabled="true"] .lng1771-cell__full-width:focus {
+  outline: none;
+  background-color: black;
 }

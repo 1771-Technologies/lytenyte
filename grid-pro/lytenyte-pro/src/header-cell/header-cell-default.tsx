@@ -26,6 +26,7 @@ export function HeaderCellDefault({ column, api }: ColumnHeaderRendererParamsPro
       <div>{column.headerName ?? column.id}</div>
       {isSortable && (
         <button
+          tabIndex={-1}
           data-sort-active={currentSort != null}
           className={clsx("lng1771-header-default__button")}
           onClick={() => api.columnSortCycleToNext(column)}

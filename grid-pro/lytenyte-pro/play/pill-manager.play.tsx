@@ -21,6 +21,8 @@ export default function Play() {
     rowSelectionCheckbox: "normal",
     rowDragEnabled: true,
 
+    cellSelectionMode: "range",
+
     columnBase: {
       resizable: true,
       movable: true,
