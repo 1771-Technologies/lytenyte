@@ -19,9 +19,3 @@
   font-size: 14px;
   font-family: var(--lng1771-typeface);
 }
-
-[data-cell-selection-enabled="true"] .lng1771-cell:focus,
-[data-cell-selection-enabled="true"] .lng1771-cell__full-width:focus {
-  outline: none;
-  background-color: black;
-}
