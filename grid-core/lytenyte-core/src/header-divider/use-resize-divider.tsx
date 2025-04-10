@@ -11,7 +11,7 @@ export function useResizeDivider(api: ApiCoreReact<any>, column: ColumnCoreReact
     if (!isResizable) return {};
 
     const onPointerDown = (e: PointerEvent) => {
-      e.preventDefault();
+      if (e.pointerType === "mouse" && e.button !== 0) return;
 
       const startWidth = api.columnVisualWidth(column);
       const isRtl = api.getState().rtl.peek();
