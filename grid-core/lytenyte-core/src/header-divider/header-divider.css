@@ -23,4 +23,12 @@
   &:hover div {
     background-color: var(--lng1771-primary-50);
   }
+
+  &[data-resize-active="true"] {
+    background-color: var(--lng1771-primary-50);
+  }
+}
+
+.lng1771-column-resize-active {
+  cursor: col-resize;
 }

@@ -1,12 +1,11 @@
 import type { ApiCoreReact, ColumnCoreReact } from "@1771technologies/grid-types/core-react";
 import { getClientX } from "@1771technologies/js-utils";
-import { useMemo, useRef, type PointerEvent } from "react";
+import { useMemo, useState, type PointerEvent } from "react";
 
 export function useResizeDivider(api: ApiCoreReact<any>, column: ColumnCoreReact<any>) {
   const isResizable = api.columnIsResizable(column);
 
-  const timeOutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const dragStarted = useRef(false);
+  const [active, setActive] = useState(false);
 
   const resizeProps = useMemo(() => {
     if (!isResizable) return {};
@@ -21,18 +20,17 @@ export function useResizeDivider(api: ApiCoreReact<any>, column: ColumnCoreReact
       let anim: number | null = null;
       let delta = 0;
 
-      if (timeOutRef.current) clearTimeout(timeOutRef.current);
-      timeOutRef.current = setTimeout(() => {
-        dragStarted.current = true;
-        timeOutRef.current = null;
-      }, 100);
+      e.preventDefault();
+      e.stopPropagation();
+
+      document.body.classList.add("lng1771-column-resize-active");
+
+      setActive(true);
 
       const controller = new AbortController();
       document.addEventListener(
         "pointermove",
         (ev) => {
-          if (dragStarted.current === false) return;
-
           if (startX === null) {
             startX = getClientX(ev);
             return;
@@ -53,10 +51,9 @@ export function useResizeDivider(api: ApiCoreReact<any>, column: ColumnCoreReact
       window.addEventListener(
         "pointerup",
         () => {
-          if (timeOutRef.current) clearTimeout(timeOutRef.current);
           if (anim) cancelAnimationFrame(anim);
-
-          dragStarted.current = false;
+          setActive(false);
+          document.body.classList.remove("lng1771-column-resize-active");
 
           const newWidth = startWidth + delta;
           api.columnResize(column, newWidth);
@@ -70,5 +67,5 @@ export function useResizeDivider(api: ApiCoreReact<any>, column: ColumnCoreReact
     return { onPointerDown };
   }, [api, column, isResizable]);
 
-  return resizeProps;
+  return { ...resizeProps, active };
 }

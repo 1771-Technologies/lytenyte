@@ -38,7 +38,7 @@ export function HeaderDivider({
   const isFirstEnd = endCount > 0 && startCount + centerCount === columnIndex;
   const isLast = startCount + centerCount + endCount - 1 === columnIndex;
 
-  const resizeProps = useResizeDivider(api, column);
+  const { onPointerDown, active: resizeActive } = useResizeDivider(api, column);
 
   const rtl = api.getState().rtl.use();
   const style = useMemo(() => {
@@ -86,7 +86,8 @@ export function HeaderDivider({
 
   return (
     <div
-      {...resizeProps}
+      onPointerDown={onPointerDown}
+      data-resize-active={resizeActive}
       onDoubleClick={() => {
         const autosize = api.getState().autosizeDoubleClickHeader.peek();
         if (autosize) api.autosizeColumn(column, { includeHeader: true });
