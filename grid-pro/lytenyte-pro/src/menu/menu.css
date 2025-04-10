@@ -26,6 +26,7 @@
   height: 1px;
   width: 100%;
   background-color: var(--lng1771-gray-40);
+  box-sizing: border-box;
 }
 
 .lng1771-menu__item,
@@ -62,6 +63,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  box-sizing: border-box;
 }
 
 .lng1771-menu__arrow {
@@ -92,6 +94,7 @@
   align-items: center;
   background-color: inherit;
   text-transform: uppercase;
+  box-sizing: border-box;
 }
 
 .lng1771-menu__radio-item-indicator,
@@ -100,4 +103,5 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
 }
