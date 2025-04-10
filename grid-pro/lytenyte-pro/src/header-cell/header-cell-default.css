@@ -23,12 +23,43 @@
   }
 }
 
+.lng1771-header-default__label:not(
+    .lng1771-header-default__label--stacked
+  ).lng1771-header-default__label--end-justify {
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 2px;
+  text-align: end;
+}
+
+.lng1771-header-default__label--stacked {
+  flex-direction: column;
+  gap: 2px;
+}
+
 .lng1771-header-default__label--end-justify {
+  width: 100%;
+  justify-content: flex-end;
+  align-items: flex-end;
+  text-align: end;
+}
+
+.lng1771-header-default__label-secondary {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 10px;
+}
+
+.lng1771-header-default--end-justify .lng1771-header-default__label-secondary {
   flex-direction: row-reverse;
 }
 
-.lng1771-header-default--end-justify {
-  justify-content: flex-end;
+.lng1771-header-default__label-secondary-agg {
+  color: var(--lng1771-primary-50);
+  font-weight: 600;
+  text-transform: lowercase;
 }
 
 .lng1771-header-default__controls {

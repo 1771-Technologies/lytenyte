@@ -9,6 +9,13 @@ export const columns: ColumnProReact<any>[] = [
     rowGroupable: true,
     columnPivotable: true,
     aggFnsAllowed: ["count"],
+    uiHints: {
+      columnMenu: true,
+      showAggName: true,
+      sortButton: true,
+      stacked: true,
+      subTitle: "RTM",
+    },
   },
   { id: "job", rowGroupable: true, widthFlex: 1 },
   {

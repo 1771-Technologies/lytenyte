@@ -3,7 +3,7 @@ export type UIHintsColumnHeader = {
   readonly sortButton?: boolean;
   readonly showAggName?: boolean;
 } & {
-  readonly [key: string]: boolean;
+  readonly [key: string]: any;
 };
 
 // Simplified

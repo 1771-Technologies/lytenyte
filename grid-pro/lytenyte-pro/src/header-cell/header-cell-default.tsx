@@ -35,6 +35,9 @@ export function HeaderCellDefault({ column, api }: ColumnHeaderRendererParamsPro
       : null;
   }, [agg, rowGroup.length]);
 
+  const subTitle = hints.subTitle;
+  const stacked = hints.stacked ?? false;
+
   return (
     <div
       className={clsx(
@@ -48,10 +51,18 @@ export function HeaderCellDefault({ column, api }: ColumnHeaderRendererParamsPro
           "lng1771-header-default__label",
           column.type === "number" && "lng1771-header-default__label--end-justify",
           column.type !== "number" && "lng1771-header-default__label--start-justify",
+          stacked && "lng1771-header-default__label--stacked",
         )}
       >
-        <span>{column.headerName ?? column.id}</span>
-        {hints.showAggName && fn ? <span>{fn}</span> : <span></span>}
+        <div>{column.headerName ?? column.id}</div>
+        <div className="lng1771-header-default__label-secondary">
+          {subTitle && (
+            <div className="lng1771-header-default__label-secondary-title">{subTitle}</div>
+          )}
+          {hints.showAggName && fn && (
+            <div className="lng1771-header-default__label-secondary-agg">{fn}</div>
+          )}
+        </div>
       </div>
       {hasControls && (
         <div className="lng1771-header-default__controls">
