@@ -27,6 +27,11 @@ export default function Play() {
       resizable: true,
       movable: true,
       sortable: true,
+      uiHints: {
+        columnMenu: true,
+        showAggName: true,
+        sortButton: true,
+      },
     },
   });
 
