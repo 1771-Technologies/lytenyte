@@ -28,6 +28,12 @@ export const columns: ColumnProReact<any>[] = [
     aggFnsAllowed: ["avg", "count", "first", "last"],
     measureFnDefault: "first",
     measureFnsAllowed: ["avg", "count", "first", "last"],
+    uiHints: {
+      columnMenu: true,
+      showAggName: true,
+      sortButton: true,
+      subTitle: "RTM",
+    },
   },
   {
     id: "education",
