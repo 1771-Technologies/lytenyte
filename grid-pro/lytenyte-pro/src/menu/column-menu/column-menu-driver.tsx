@@ -1,6 +1,7 @@
 import { useGrid } from "../../use-grid";
 import { Menu } from "@base-ui-components/react/menu";
 import { useEffect, useState } from "react";
+import { AnchorProvider } from "../../anchor-context/anchor-context";
 
 export const emptyBB = {
   getBoundingClientRect: (): DOMRect => ({
@@ -49,29 +50,9 @@ export function ColumnMenuDriver() {
       }}
     >
       <Menu.Portal>
-        <Menu.Positioner
-          anchor={
-            target
-              ? "getBoundingClientRect" in target
-                ? target
-                : {
-                    getBoundingClientRect: () => ({
-                      x: target.x,
-                      y: target.y,
-                      width: target.width,
-                      height: target.height,
-                      top: target.y,
-                      left: target.x,
-                      bottom: target.y,
-                      right: target.x,
-                      toJSON: () => "",
-                    }),
-                  }
-              : emptyBB
-          }
-        >
+        <AnchorProvider anchor={target}>
           {MenuRenderer && menuColumn && <MenuRenderer api={grid.api} column={menuColumn} />}
-        </Menu.Positioner>
+        </AnchorProvider>
       </Menu.Portal>
     </Menu.Root>
   );

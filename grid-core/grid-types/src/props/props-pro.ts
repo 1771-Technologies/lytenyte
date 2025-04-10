@@ -9,7 +9,12 @@ import type {
   ClipboardTransformPaste,
 } from "../types/clipboard-pro";
 import type { ColumnMenuRenderer } from "../types/column-menu-pro";
-import type { DialogFrame, PanelFrame, PopoverFrame } from "../types/component-frames-pro";
+import type {
+  DialogFrame,
+  MenuFrame,
+  PanelFrame,
+  PopoverFrame,
+} from "../types/component-frames-pro";
 import type { ContextMenuRenderer } from "../types/context-menu-pro";
 import type { ColumnFilterModel } from "../types/filter-pro";
 import type { OverlayId, Overlays } from "../types/overlay-pro";
@@ -45,6 +50,7 @@ export interface PropsProRaw<A, D, C, E, Base, Group>
 
   readonly dialogFrames?: Record<string, DialogFrame<A, E>>;
   readonly popoverFrames?: Record<string, PopoverFrame<A, E>>;
+  readonly menuFrames?: Record<string, MenuFrame<A, E>>;
 
   readonly measureModel?: AggModel<A>;
 

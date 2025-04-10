@@ -2,7 +2,7 @@ import { Popover as P } from "@base-ui-components/react/popover";
 import { forwardRef } from "react";
 import { usePopoverClass } from "./use-popover-class";
 import { ArrowSvg } from "../menu/arrow-svg";
-import { useAnchor } from "./anchor-context";
+import { useAnchor } from "../anchor-context/anchor-context";
 
 export const PopoverBackdrop: typeof P.Backdrop = forwardRef(function PopoverBackdrop(
   { className, ...props },

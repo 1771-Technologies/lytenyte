@@ -256,4 +256,5 @@ export type {
   DialogFramePro,
   PanelFramePro,
   PopoverFramePro,
+  MenuFramePro,
 } from "./types/component-frames-pro.js";

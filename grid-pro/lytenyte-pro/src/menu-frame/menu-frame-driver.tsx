@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useGrid } from "../use-grid";
-import { Popover as P } from "@base-ui-components/react/popover";
+import { Menu as M } from "@base-ui-components/react/menu";
 import { AnchorProvider } from "../anchor-context/anchor-context";
 
-export function PopoverDriver() {
+export function MenuFrameDriver() {
   const grid = useGrid();
 
-  const frames = grid.state.popoverFrames.use();
-  const frameId = grid.state.internal.popoverFrameOpen.use();
-  const frameBB = grid.state.internal.popoverFrameBB.use();
+  const frames = grid.state.menuFrames.use();
+  const frameId = grid.state.internal.menuFrameOpen.use();
+  const frameBB = grid.state.internal.menuFrameBB.use();
   const frame = frameId ? frames[frameId] : null;
 
   const [open, setOpen] = useState(false);
@@ -23,16 +23,16 @@ export function PopoverDriver() {
   }, [frame, frameBB]);
 
   return (
-    <P.Root
+    <M.Root
       open={open}
       onOpenChange={(c) => setOpen(c)}
       onOpenChangeComplete={(c) => {
-        if (!c) grid.api.popoverFrameClose();
+        if (!c) grid.api.menuFrameClose();
       }}
     >
       <AnchorProvider anchor={frameBB}>
-        <P.Portal>{frame && frameBB && <frame.component api={grid.api} frame={frame} />}</P.Portal>
+        <M.Portal>{frame && frameBB && <frame.component api={grid.api} frame={frame} />}</M.Portal>
       </AnchorProvider>
-    </P.Root>
+    </M.Root>
   );
 }

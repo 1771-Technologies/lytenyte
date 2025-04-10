@@ -9,6 +9,8 @@ export const frames = <D, E>(
   dialogFrameClose: ApiPro<D, E>["dialogFrameClose"];
   popoverFrameOpen: ApiPro<D, E>["popoverFrameOpen"];
   popoverFrameClose: ApiPro<D, E>["popoverFrameClose"];
+  menuFrameOpen: ApiPro<D, E>["menuFrameOpen"];
+  menuFrameClose: ApiPro<D, E>["menuFrameClose"];
 } => {
   return {
     panelFrameOpen: (id) => {
@@ -54,6 +56,22 @@ export const frames = <D, E>(
       s.internal.popoverFrameOpen.set(id);
       s.internal.popoverFrameBB.set(bb);
     },
+
+    menuFrameOpen: (id, bb) => {
+      const s = api.getState();
+      const frames = s.menuFrames.peek();
+      const frame = frames[id];
+
+      if (!frame) return;
+
+      s.internal.menuFrameOpen.set(id);
+      s.internal.menuFrameBB.set(bb);
+    },
+    menuFrameClose: () => {
+      const s = api.getState();
+      s.internal.menuFrameOpen.set(null);
+      s.internal.menuFrameBB.set(null);
+    },
   } satisfies {
     panelFrameClose: ApiPro<D, E>["panelFrameClose"];
     panelFrameOpen: ApiPro<D, E>["panelFrameOpen"];
@@ -61,5 +79,7 @@ export const frames = <D, E>(
     dialogFrameClose: ApiPro<D, E>["dialogFrameClose"];
     popoverFrameOpen: ApiPro<D, E>["popoverFrameOpen"];
     popoverFrameClose: ApiPro<D, E>["popoverFrameClose"];
+    menuFrameOpen: ApiPro<D, E>["menuFrameOpen"];
+    menuFrameClose: ApiPro<D, E>["menuFrameClose"];
   };
 };

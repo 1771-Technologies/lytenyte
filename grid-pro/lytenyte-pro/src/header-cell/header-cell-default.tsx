@@ -54,7 +54,9 @@ export function HeaderCellDefault({ column, api }: ColumnHeaderRendererParamsPro
           stacked && "lng1771-header-default__label--stacked",
         )}
       >
-        <div>{column.headerName ?? column.id}</div>
+        <div className="lng1771-header-default__label-primary">
+          {column.headerName ?? column.id}
+        </div>
         <div className="lng1771-header-default__label-secondary">
           {subTitle && (
             <div className="lng1771-header-default__label-secondary-title">{subTitle}</div>

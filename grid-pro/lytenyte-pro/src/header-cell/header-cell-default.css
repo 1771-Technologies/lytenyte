@@ -26,6 +26,7 @@
     .lng1771-header-default__label--stacked
   ).lng1771-header-default__label--end-justify {
   flex-direction: row-reverse;
+  flex-wrap: wrap;
   justify-content: flex-start;
   align-items: center;
   gap: 2px;
@@ -49,6 +50,11 @@
   align-items: center;
   gap: 2px;
   font-size: 10px;
+}
+
+.lng1771-header-default__label-primary {
+  white-space: nowrap;
+  text-overflow: clip;
 }
 
 .lng1771-header-default--end-justify .lng1771-header-default__label-secondary {

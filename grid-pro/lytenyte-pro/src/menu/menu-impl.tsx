@@ -3,8 +3,9 @@ import "./menu.css";
 import { forwardRef, type ComponentProps, type ReactNode } from "react";
 import { Menu } from "@base-ui-components/react/menu";
 import { useMenuClassName } from "./use-menu-class-name.js";
-import { ArrowSvg } from "./arrow-svg";
 import { ArrowRightIcon, TickmarkIcon } from "../icons";
+import { emptyBB } from "./column-menu/column-menu-driver";
+import { useAnchor } from "../anchor-context/anchor-context";
 
 export const MenuSubmenu = ({
   children,
@@ -44,19 +45,6 @@ export const MenuSeparator: typeof Menu.Separator = forwardRef(function MenuSepa
 ) {
   const cl = useMenuClassName("lng1771-menu__separator", className);
   return <Menu.Separator {...props} className={cl} ref={ref} />;
-});
-
-export const MenuArrow: typeof Menu.Arrow = forwardRef(function MenuArrow(
-  { className, ...props },
-  ref,
-) {
-  const cl = useMenuClassName("lng1771-menu__arrow", className);
-
-  return (
-    <Menu.Arrow {...props} className={cl} ref={ref}>
-      {props.children ?? <ArrowSvg />}
-    </Menu.Arrow>
-  );
 });
 
 export const MenuGroup: typeof Menu.Group = forwardRef(function MenuGroup(
@@ -136,4 +124,42 @@ export const MenuCheckboxItem: typeof Menu.CheckboxItem = forwardRef(function Ch
 ) {
   const cl = useMenuClassName("lng1771-menu__checkbox-item", className);
   return <Menu.CheckboxItem {...props} ref={ref} className={cl} />;
+});
+
+export const MenuPositioner: typeof Menu.Positioner = forwardRef(function MenuPositioner(
+  { className, ...props },
+  ref,
+) {
+  const cl = useMenuClassName("lng1771-menu__positioner", className);
+
+  const target = useAnchor();
+
+  return (
+    <Menu.Positioner
+      side="bottom"
+      align="start"
+      anchor={
+        target
+          ? "getBoundingClientRect" in target
+            ? target
+            : {
+                getBoundingClientRect: () => ({
+                  x: target.x,
+                  y: target.y,
+                  width: target.width,
+                  height: target.height,
+                  top: target.y,
+                  left: target.x,
+                  bottom: target.y,
+                  right: target.x,
+                  toJSON: () => "",
+                }),
+              }
+          : emptyBB
+      }
+      {...props}
+      ref={ref}
+      className={cl}
+    />
+  );
 });

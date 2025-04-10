@@ -20,6 +20,7 @@ import { ContextMenuDriver } from "./menu/context-menu/context-menu-driver";
 import { DialogDriver } from "./dialog/dialog-driver";
 import { PopoverDriver } from "./popover/popover-driver";
 import type { GridProReact } from "./types";
+import { MenuFrameDriver } from "./menu-frame/menu-frame-driver";
 
 export interface LyteNyteGridProProps<D> {
   readonly grid: GridProReact<D>;
@@ -35,6 +36,7 @@ export function LyteNyteGrid<D>({ grid, frameAxe }: LyteNyteGridProProps<D>) {
         <ContextMenuDriver />
         <DialogDriver />
         <PopoverDriver />
+        <MenuFrameDriver />
       </GridFrame>
     </GridProvider>
   );

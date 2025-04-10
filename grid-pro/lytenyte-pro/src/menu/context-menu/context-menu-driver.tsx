@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useGrid } from "../../use-grid";
 import { useContextMenuListener } from "./use-context-menu-listener";
 import { Menu } from "@base-ui-components/react/menu";
-import { emptyBB } from "../column-menu/column-menu-driver";
 import type { ContextMenuGridTargetsProReact } from "@1771technologies/grid-types/pro-react";
+import { AnchorProvider } from "../../anchor-context/anchor-context";
 
 export function ContextMenuDriver() {
   const grid = useGrid();
@@ -41,29 +41,7 @@ export function ContextMenuDriver() {
       }}
     >
       <Menu.Portal>
-        <Menu.Positioner
-          side="bottom"
-          align="start"
-          anchor={
-            target
-              ? "getBoundingClientRect" in target
-                ? target
-                : {
-                    getBoundingClientRect: () => ({
-                      x: target.x,
-                      y: target.y,
-                      width: target.width,
-                      height: target.height,
-                      top: target.y,
-                      left: target.x,
-                      bottom: target.y,
-                      right: target.x,
-                      toJSON: () => "",
-                    }),
-                  }
-              : emptyBB
-          }
-        >
+        <AnchorProvider anchor={target}>
           {menu && MenuRenderer && (
             <MenuRenderer
               api={grid.api}
@@ -72,7 +50,7 @@ export function ContextMenuDriver() {
               rowIndex={menu.hoveredRow}
             />
           )}
-        </Menu.Positioner>
+        </AnchorProvider>
       </Menu.Portal>
     </Menu.Root>
   );

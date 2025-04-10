@@ -5,7 +5,6 @@ import {
   MenuSubmenuTrigger,
   MenuItem,
   MenuSeparator,
-  MenuArrow,
   MenuGroup,
   MenuGroupLabel,
   MenuCheckboxItem,
@@ -13,6 +12,7 @@ import {
   MenuRadioGroup,
   MenuRadioItem,
   MenuRadioItemIndicator,
+  MenuPositioner,
 } from "./menu-impl.js";
 import type { Menu as B } from "@base-ui-components/react/menu";
 
@@ -22,7 +22,6 @@ export const Menu = {
   SubmenuTrigger: MenuSubmenuTrigger,
   Item: MenuItem,
   Separator: MenuSeparator as typeof B.Separator,
-  Arrow: MenuArrow,
   Group: MenuGroup,
   GroupLabel: MenuGroupLabel,
   RadioGroup: MenuRadioGroup as typeof B.RadioGroup,
@@ -30,4 +29,5 @@ export const Menu = {
   RadioIndicator: MenuRadioItemIndicator,
   Checkbox: MenuCheckboxItem,
   CheckboxIndicator: MenuCheckboxItemIndicator,
+  Positioner: MenuPositioner,
 };

@@ -148,6 +148,8 @@ export function initialize<D, E>(
     dialogFrames: signal(props.dialogFrames ?? {}),
     popoverFrames: signal(props.popoverFrames ?? {}),
 
+    menuFrames: signal(props.menuFrames ?? {}),
+
     treeData: signal(props.treeData ?? false),
   } satisfies InitialStatePro<D, E>;
 

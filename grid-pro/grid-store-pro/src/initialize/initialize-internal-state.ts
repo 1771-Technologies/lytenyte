@@ -183,6 +183,8 @@ export function initializeInternalState<D, E>(
     dialogFrameOpen: signal<string | null>(null),
     popoverFrameOpen: signal<string | null>(null),
     popoverFrameBB: signal<TargetPro | null>(null),
+    menuFrameOpen: signal<string | null>(null),
+    menuFrameBB: signal<TargetPro | null>(null),
 
     rowRefreshCount,
     rowBackingDataSource,

@@ -86,6 +86,9 @@ export interface ApiProRaw<D, C, E>
   readonly popoverFrameOpen: (id: string, bb: Target) => void;
   readonly popoverFrameClose: () => void;
 
+  readonly menuFrameOpen: (id: string, bb: Target) => void;
+  readonly menuFrameClose: () => void;
+
   readonly rowReload: () => void;
   readonly rowReloadExpansion: (row: RowNodeGroup) => void;
   readonly rowReset: () => void;

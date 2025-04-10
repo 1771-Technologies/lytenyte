@@ -4,13 +4,13 @@ import { useClientDataSource } from "../src/use-client-data-source";
 import { useLyteNytePro } from "../src/use-lytenyte";
 import { LyteNyteGrid } from "../src";
 import {
-  MenuArrow,
   MenuCheckboxItem,
   MenuCheckboxItemIndicator,
   MenuContainer,
   MenuGroup,
   MenuGroupLabel,
   MenuItem,
+  MenuPositioner,
   MenuRadioGroup,
   MenuRadioItem,
   MenuRadioItemIndicator,
@@ -37,110 +37,128 @@ export default function Play() {
 
     columnMenuRenderer: () => {
       return (
-        <MenuContainer>
-          <MenuArrow />
-          <MenuItem>Label 1</MenuItem>
-          <MenuItem>Label 2</MenuItem>
-          <MenuItem>Label 3</MenuItem>
-          <MenuSeparator />
-          <MenuItem>Label 4</MenuItem>
-          <MenuItem>Label 5</MenuItem>
-          <MenuItem disabled>Label 6</MenuItem>
-          <MenuGroup>
-            <MenuGroupLabel>Export</MenuGroupLabel>
-            <MenuItem>CSX Export</MenuItem>
-            <MenuItem>Excel Export</MenuItem>
-            <MenuItem>PDF Export</MenuItem>
-          </MenuGroup>
-          <MenuSubmenu trigger={<MenuSubmenuTrigger>Trigger Me</MenuSubmenuTrigger>}>
-            <MenuContainer>
-              <MenuItem>Label 1</MenuItem>
-              <MenuItem>Label 2</MenuItem>
-              <MenuItem>Label 3</MenuItem>
-            </MenuContainer>
-          </MenuSubmenu>
+        <MenuPositioner>
+          <MenuContainer>
+            <MenuItem>Label 1</MenuItem>
+            <MenuItem>Label 2</MenuItem>
+            <MenuItem>Label 3</MenuItem>
+            <MenuSeparator />
+            <MenuItem>Label 4</MenuItem>
+            <MenuItem>Label 5</MenuItem>
+            <MenuItem disabled>Label 6</MenuItem>
+            <MenuGroup>
+              <MenuGroupLabel>Export</MenuGroupLabel>
+              <MenuItem>CSX Export</MenuItem>
+              <MenuItem>Excel Export</MenuItem>
+              <MenuItem>PDF Export</MenuItem>
+            </MenuGroup>
+            <MenuSubmenu trigger={<MenuSubmenuTrigger>Trigger Me</MenuSubmenuTrigger>}>
+              <MenuContainer>
+                <MenuItem>Label 1</MenuItem>
+                <MenuItem>Label 2</MenuItem>
+                <MenuItem>Label 3</MenuItem>
+              </MenuContainer>
+            </MenuSubmenu>
 
-          <MenuSeparator />
+            <MenuSeparator />
 
-          <MenuCheckboxItem>
-            <span>Minify</span>
-            <MenuCheckboxItemIndicator />
-          </MenuCheckboxItem>
-          <MenuCheckboxItem>
-            <span>Expand</span>
-            <MenuCheckboxItemIndicator />
-          </MenuCheckboxItem>
+            <MenuCheckboxItem>
+              <span>Minify</span>
+              <MenuCheckboxItemIndicator />
+            </MenuCheckboxItem>
+            <MenuCheckboxItem>
+              <span>Expand</span>
+              <MenuCheckboxItemIndicator />
+            </MenuCheckboxItem>
 
-          <MenuRadioGroup>
-            <MenuRadioItem value="alpha">
-              <span>Alpha</span>
-              <MenuRadioItemIndicator />
-            </MenuRadioItem>
-            <MenuRadioItem value="beta">
-              <span>Beta</span>
-              <MenuRadioItemIndicator />
-            </MenuRadioItem>
-            <MenuRadioItem value="theta">
-              <span>Theta</span>
-              <MenuRadioItemIndicator />
-            </MenuRadioItem>
-          </MenuRadioGroup>
-        </MenuContainer>
+            <MenuRadioGroup>
+              <MenuRadioItem value="alpha">
+                <span>Alpha</span>
+                <MenuRadioItemIndicator />
+              </MenuRadioItem>
+              <MenuRadioItem value="beta">
+                <span>Beta</span>
+                <MenuRadioItemIndicator />
+              </MenuRadioItem>
+              <MenuRadioItem value="theta">
+                <span>Theta</span>
+                <MenuRadioItemIndicator />
+              </MenuRadioItem>
+            </MenuRadioGroup>
+          </MenuContainer>
+        </MenuPositioner>
       );
     },
 
     contextMenuRenderer: () => {
       return (
-        <MenuContainer>
-          <MenuArrow />
-          <MenuItem>Label 1</MenuItem>
-          <MenuItem>Label 2</MenuItem>
-          <MenuItem>Label 3</MenuItem>
-          <MenuSeparator />
-          <MenuItem>Label 4</MenuItem>
-          <MenuItem>Label 5</MenuItem>
-          <MenuItem disabled>Label 6</MenuItem>
-          <MenuGroup>
-            <MenuGroupLabel>Export</MenuGroupLabel>
-            <MenuItem>CSX Export</MenuItem>
-            <MenuItem>Excel Export</MenuItem>
-            <MenuItem>PDF Export</MenuItem>
-          </MenuGroup>
-          <MenuSubmenu trigger={<MenuSubmenuTrigger>Trigger Me</MenuSubmenuTrigger>}>
-            <MenuContainer>
-              <MenuItem>Label 1</MenuItem>
-              <MenuItem>Label 2</MenuItem>
-              <MenuItem>Label 3</MenuItem>
-            </MenuContainer>
-          </MenuSubmenu>
+        <MenuPositioner>
+          <MenuContainer>
+            <MenuItem>Label 1</MenuItem>
+            <MenuItem>Label 2</MenuItem>
+            <MenuItem>Label 3</MenuItem>
+            <MenuSeparator />
+            <MenuItem>Label 4</MenuItem>
+            <MenuItem>Label 5</MenuItem>
+            <MenuItem disabled>Label 6</MenuItem>
+            <MenuGroup>
+              <MenuGroupLabel>Export</MenuGroupLabel>
+              <MenuItem>CSX Export</MenuItem>
+              <MenuItem>Excel Export</MenuItem>
+              <MenuItem>PDF Export</MenuItem>
+            </MenuGroup>
+            <MenuSubmenu trigger={<MenuSubmenuTrigger>Trigger Me</MenuSubmenuTrigger>}>
+              <MenuContainer>
+                <MenuItem>Label 1</MenuItem>
+                <MenuItem>Label 2</MenuItem>
+                <MenuItem>Label 3</MenuItem>
+              </MenuContainer>
+            </MenuSubmenu>
 
-          <MenuSeparator />
+            <MenuSeparator />
 
-          <MenuCheckboxItem>
-            <span>Minify</span>
-            <MenuCheckboxItemIndicator />
-          </MenuCheckboxItem>
-          <MenuCheckboxItem>
-            <span>Expand</span>
-            <MenuCheckboxItemIndicator />
-          </MenuCheckboxItem>
+            <MenuCheckboxItem>
+              <span>Minify</span>
+              <MenuCheckboxItemIndicator />
+            </MenuCheckboxItem>
+            <MenuCheckboxItem>
+              <span>Expand</span>
+              <MenuCheckboxItemIndicator />
+            </MenuCheckboxItem>
 
-          <MenuRadioGroup>
-            <MenuRadioItem value="alpha">
-              <span>Alpha</span>
-              <MenuRadioItemIndicator />
-            </MenuRadioItem>
-            <MenuRadioItem value="beta">
-              <span>Beta</span>
-              <MenuRadioItemIndicator />
-            </MenuRadioItem>
-            <MenuRadioItem value="theta">
-              <span>Theta</span>
-              <MenuRadioItemIndicator />
-            </MenuRadioItem>
-          </MenuRadioGroup>
-        </MenuContainer>
+            <MenuRadioGroup>
+              <MenuRadioItem value="alpha">
+                <span>Alpha</span>
+                <MenuRadioItemIndicator />
+              </MenuRadioItem>
+              <MenuRadioItem value="beta">
+                <span>Beta</span>
+                <MenuRadioItemIndicator />
+              </MenuRadioItem>
+              <MenuRadioItem value="theta">
+                <span>Theta</span>
+                <MenuRadioItemIndicator />
+              </MenuRadioItem>
+            </MenuRadioGroup>
+          </MenuContainer>
+        </MenuPositioner>
       );
+    },
+
+    menuFrames: {
+      alpha: {
+        component: () => {
+          return (
+            <MenuPositioner>
+              <MenuContainer>
+                <MenuItem>Label 1</MenuItem>
+                <MenuItem>Label 2</MenuItem>
+                <MenuItem>Label 3</MenuItem>
+              </MenuContainer>
+            </MenuPositioner>
+          );
+        },
+      },
     },
 
     columnBase: {
@@ -173,7 +191,9 @@ export default function Play() {
             padding: 20px;
             width: 200px;
           `}
-        ></div>
+        >
+          <button onClick={(ev) => grid.api.menuFrameOpen("alpha", ev.currentTarget)}>Alpha</button>
+        </div>
       </div>
       <div
         className={css`

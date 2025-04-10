@@ -264,6 +264,9 @@ export function makeApi<D, E>(
     popoverFrameClose: frame.popoverFrameClose,
     popoverFrameOpen: frame.popoverFrameOpen,
 
+    menuFrameClose: frame.menuFrameClose,
+    menuFrameOpen: frame.menuFrameOpen,
+
     rowReload: () => api.getState().internal.rowBackingDataSource.peek().rowReload(),
     rowReloadExpansion: (row) =>
       api.getState().internal.rowBackingDataSource.peek().rowReloadExpansion(row),

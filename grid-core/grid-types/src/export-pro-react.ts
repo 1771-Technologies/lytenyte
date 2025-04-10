@@ -253,3 +253,4 @@ export type ColumnPivotEventProReact<D = any> = P.ColumnPivotEventPro<D, ReactNo
 export type DialogFrameProReact<D = any> = P.DialogFramePro<D, ReactNode>;
 export type PanelFrameProReact<D = any> = P.PanelFramePro<D, ReactNode>;
 export type PopoverFrameProReact<D = any> = P.PopoverFramePro<D, ReactNode>;
+export type MenuFrameProReact<D = any> = P.MenuFramePro<D, ReactNode>;
