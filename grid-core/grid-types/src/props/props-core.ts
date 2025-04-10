@@ -72,6 +72,7 @@ export interface PropsCoreRaw<A, D, C, E, Base, Group> {
   readonly rowDragExternalGrids?: A[];
   readonly rowDragPredicate?: RowDragPredicate<A, D> | null;
 
+  readonly rowGroupAutoApplyAggDefaults?: boolean;
   readonly rowGroupColumnTemplate?: null | Group;
   readonly rowGroupModel?: string[];
   readonly rowGroupDisplayMode?: RowGroupDisplayMode;

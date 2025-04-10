@@ -18,6 +18,7 @@
 
   & span:last-child {
     font-size: 10px;
+    text-transform: uppercase;
     color: var(--lng1771-primary-50);
   }
 }

@@ -87,6 +87,7 @@ export function initialize<D, E>(
     rowFullWidthPredicate: signal(props.rowFullWidthPredicate ?? null),
     rowFullWidthRenderer: signal(props.rowFullWidthRenderer ?? null),
 
+    rowGroupAutoApplyAggDefaults: signal(props.rowGroupAutoApplyAggDefaults ?? true),
     rowGroupColumnTemplate: signal(props.rowGroupColumnTemplate ?? null),
     rowGroupDefaultExpansion: signal(props.rowGroupDefaultExpansion ?? false),
     rowGroupExpansions: signal(props.rowGroupExpansions ?? {}),

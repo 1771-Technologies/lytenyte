@@ -28,7 +28,11 @@ export function HeaderCellDefault({ column, api }: ColumnHeaderRendererParamsPro
   const agg = aggModel[column.id];
 
   const fn = useMemo(() => {
-    return rowGroup.length > 0 && agg ? (typeof agg.fn === "string" ? agg.fn : "fn(x)") : null;
+    return rowGroup.length > 0 && agg
+      ? typeof agg.fn === "string"
+        ? `(${agg.fn})`
+        : "fn(x)"
+      : null;
   }, [agg, rowGroup.length]);
 
   return (
@@ -47,7 +51,7 @@ export function HeaderCellDefault({ column, api }: ColumnHeaderRendererParamsPro
         )}
       >
         <span>{column.headerName ?? column.id}</span>
-        {hints.showAggName && fn ? <span>fn</span> : <span></span>}
+        {hints.showAggName && fn ? <span>{fn}</span> : <span></span>}
       </div>
       {hasControls && (
         <div className="lng1771-header-default__controls">
