@@ -2,6 +2,7 @@ import "./header-cell-default.css";
 import { clsx } from "@1771technologies/js-utils";
 import type { ColumnHeaderRendererParamsProReact } from "../types";
 import { MoreDotsIcon, SortAscending, SortDescending } from "../icons";
+import { useMemo } from "react";
 
 export function HeaderCellDefault({ column, api }: ColumnHeaderRendererParamsProReact) {
   const sx = api.getState();
@@ -21,15 +22,33 @@ export function HeaderCellDefault({ column, api }: ColumnHeaderRendererParamsPro
 
   const hasControls = hints.columnMenu || (hints.sortButton && isSortable);
 
+  const rowGroup = sx.rowGroupModel.use();
+  const aggModel = sx.aggModel.use();
+
+  const agg = aggModel[column.id];
+
+  const fn = useMemo(() => {
+    return rowGroup.length > 0 && agg ? (typeof agg.fn === "string" ? agg.fn : "fn(x)") : null;
+  }, [agg, rowGroup.length]);
+
   return (
     <div
       className={clsx(
         "lng1771-header-default",
-        column.type === "number" && "lng1771-header-default--end-align",
-        column.type !== "number" && "lng1771-header-default--start-align",
+        column.type === "number" && "lng1771-header-default--end-justify",
+        column.type !== "number" && "lng1771-header-default--start-justify",
       )}
     >
-      <div>{column.headerName ?? column.id}</div>
+      <div
+        className={clsx(
+          "lng1771-header-default__label",
+          column.type === "number" && "lng1771-header-default__label--end-justify",
+          column.type !== "number" && "lng1771-header-default__label--start-justify",
+        )}
+      >
+        <span>{column.headerName ?? column.id}</span>
+        {hints.showAggName && fn ? <span>fn</span> : <span></span>}
+      </div>
       {hasControls && (
         <div className="lng1771-header-default__controls">
           {isSortable && hints.sortButton && (
@@ -37,6 +56,7 @@ export function HeaderCellDefault({ column, api }: ColumnHeaderRendererParamsPro
               tabIndex={-1}
               data-active={currentSort != null}
               className={clsx("lng1771-header-default__button")}
+              data-is-sort={true}
               onClick={() => api.columnSortCycleToNext(column)}
             >
               {currentSort === "asc" && <SortAscending width={16} height={16} />}
