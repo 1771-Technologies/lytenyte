@@ -23,6 +23,7 @@ export const COLUMN_HEADER_HEIGHT = 32;
 export const COLUMN_SCAN_DISTANCE = 20;
 export const PAGINATE_PAGE_SIZE = 50;
 
+export const ROW_BLANK_GROUP_KEY = "lytenyte-blank";
 export const ROW_HEIGHT = 32;
 export const ROW_DETAIL_HEIGHT = 300;
 export const ROW_UPDATE_STACK_SIZE = 20;

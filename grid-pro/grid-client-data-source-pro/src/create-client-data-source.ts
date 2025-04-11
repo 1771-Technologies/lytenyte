@@ -5,13 +5,9 @@ import {
   type ReadonlySignal,
   type Signal,
 } from "@1771technologies/react-cascada";
-import { BlockGraph } from "@1771technologies/grid-graph";
 import { filterNodesComputed } from "./utils/filterNodesComputed";
 import {
-  BLOCK_SIZE,
   dataToRowNodes,
-  flatBlockPayloadsComputed,
-  groupBlockPayloadsComputed,
   paginateGetCount,
   paginateRowStartAndEndForPage,
   rowById,
@@ -31,13 +27,24 @@ import type {
   RowDataSourcePro,
   RowNodeLeafPro,
 } from "@1771technologies/grid-types/pro";
+import { makeRowTree } from "./tree/make-row-tree";
+import type { RowNodeCore, RowNodeLeafCore } from "@1771technologies/grid-types/core";
+import { getComparatorsForModel, makeCombinedComparator } from "@1771technologies/grid-client-sort";
+import { getFlattenedTree } from "./tree/get-flattened-tree";
 
 export interface ClientState<D, E> {
   api: Signal<ApiPro<D, E>>;
 
-  graph: ReadonlySignal<BlockGraph<D>>;
-
-  cache: Signal<Record<string, any>>;
+  tree: ReadonlySignal<{
+    rowById: {
+      [x: string]: RowNodeLeafCore<D> | RowNodeCore<D>;
+    };
+    rowByIndex: Map<number, RowNodeCore<any>>;
+    rowIdToRowIndex: Map<string, number>;
+    rowIdToDepth: Map<string, number> | undefined;
+    rowIdToParent: Map<string, string | null> | undefined;
+    rows: RowNodeCore<D>[];
+  }>;
 
   rowTopNodes: Signal<RowNodeLeafPro<D>[]>;
   rowCenterNodes: Signal<RowNodeLeafPro<D>[]>;
@@ -63,15 +70,11 @@ export function createClientDataSource<D, E>(
   const state = cascada(() => {
     const api$ = signal<ApiPro<D, E>>(null as unknown as ApiPro<D, E>);
 
-    const cache = signal<Record<string, any>>({});
-
     const initialTopNodes = dataToRowNodes(r.topData ?? [], "top", "top");
     const initialBottomNodes = dataToRowNodes(r.bottomData ?? [], "bottom", "bottom");
     const initialCenterNodes = dataToRowNodes(r.data, null, "center");
 
     const postUpdate = () => {
-      cache.set({});
-
       const api = api$.peek();
       const mode = api.getState().columnPivotModeIsOn.peek();
       if (!mode) return;
@@ -89,43 +92,96 @@ export function createClientDataSource<D, E>(
       r.filterToDate ?? (((v: number) => new Date(v)) as any),
     );
 
-    const flatPayload = flatBlockPayloadsComputed(filteredNodes);
-    const groupPayload = groupBlockPayloadsComputed(api$, filteredNodes);
+    const tree = computed(() => {
+      const api = api$.get();
+      const sx = api.getState();
+      const rows = filteredNodes.get();
+      const indices = Array.from({ length: rows.length }, (_, i) => i);
 
-    const graph$ = signal(new BlockGraph<D>(BLOCK_SIZE));
+      const groupKeys = sx.rowGroupModel
+        .get()
+        .map((c) => api.columnById(c)!)
+        .map((c) => {
+          return (r: RowNodeLeafCore<any>) =>
+            api.columnFieldGroup(r, c) as string | null | undefined;
+        });
 
-    const graph = computed(() => {
-      const graph = graph$.get();
+      const tree = makeRowTree(rows, indices, groupKeys.length ? groupKeys : [(r) => r.id]);
+      return tree;
+    });
+
+    const flattenTree = computed(() => {
       const api = api$.get();
       const sx = api.getState();
 
       const expansions = sx.rowGroupExpansions.get();
-      const expansionDefault = sx.rowGroupDefaultExpansion.peek();
 
-      const rowModel = sx.rowGroupModel.get();
+      const mode = sx.columnPivotModeIsOn.peek();
+      const sortModel = mode ? sx.internal.columnPivotSortModel.get() : sx.sortModel.get();
+      let sorter = null;
+      if (sorter) {
+        const comparators = getComparatorsForModel(
+          api as any,
+          sortModel,
+          sx.internal.columnLookup.get() as any,
+          r.sortToDate ?? (((v: number) => new Date(v)) as any),
+        );
+        sorter = makeCombinedComparator(api as any, sortModel, comparators);
+      }
 
-      graph.blockReset();
+      const flattened = getFlattenedTree(
+        tree.get(),
+        expansions,
+        sx.rowGroupDefaultExpansion.peek(),
+        sx.rowGroupModel.get().length > 0,
+        sorter,
+        rowTopNodes.get().length,
+      );
+      return flattened;
+    });
 
-      const p = rowModel.length > 0 ? groupPayload.get() : flatPayload.get();
+    const final = computed(() => {
+      const flat = flattenTree.get();
+      const rowTree = tree.get();
 
-      for (const z of p.sizes) graph.blockSetSize(z.path, z.size);
-      graph.blockAdd(p.payloads);
+      const top = rowTopNodes.get();
+      const bot = rowBottomNodes.get();
 
-      graph.setTop(rowTopNodes.get());
-      graph.setBottom(rowBottomNodes.get());
+      const rowById = {
+        ...rowTree.rowIdToRowNode,
+        ...Object.fromEntries(top.map((c) => [c.id, c])),
+        ...Object.fromEntries(bot.map((c) => [c.id, c])),
+      };
 
-      graph.blockFlatten(expansions, expansionDefault);
+      const rowByIndex = new Map<number, RowNodeCore<any>>(flat.rowIndexToRow);
+      const rowIdToRowIndex = new Map<string, number>(flat.rowIdToRowIndex);
 
-      api.rowRefresh();
+      top.forEach((c, i) => {
+        rowByIndex.set(i, c);
+        rowIdToRowIndex.set(c.id, i);
+      });
 
-      return graph;
+      const botOffset = rowByIndex.size;
+      bot.forEach((c, i) => {
+        const index = i + botOffset;
+        rowByIndex.set(index, c);
+        rowIdToRowIndex.set(c.id, index);
+      });
+
+      return {
+        rowById,
+        rowByIndex,
+        rowIdToRowIndex,
+        rowIdToDepth: flat.rowIdToDepth,
+        rowIdToParent: flat.rowIdToParentId,
+        rows: flat.rows,
+      };
     });
 
     return {
       api: api$,
 
-      graph,
-      cache,
+      tree: final,
 
       rowTopNodes,
       rowBottomNodes,
@@ -140,9 +196,6 @@ export function createClientDataSource<D, E>(
       state.api.set(a);
 
       const sx = a.getState();
-
-      watchers.push(sx.columnBase.watch(() => state.cache.set({})));
-      watchers.push(sx.columnsVisible.watch(() => state.cache.set({})));
 
       const reloadPivots = () => {
         if (!sx.columnPivotModeIsOn.peek()) return;
@@ -173,10 +226,18 @@ export function createClientDataSource<D, E>(
       return state.rowCenterNodes.peek().map((c) => c.data);
     },
 
-    rowByIndex: (r) => rowByIndex(state, r),
-    rowById: (id) => rowById(state, id),
-    rowIdToRowIndex: (id) => state.graph.peek().rowIdToRowIndex(id),
-    rowGetMany: (start, end) => rowGetMany(state, start, end),
+    rowByIndex: (r) => state.tree.peek().rowByIndex.get(r),
+    rowById: (id) => state.tree.peek().rowById[id],
+    rowIdToRowIndex: (id) => state.tree.peek().rowIdToRowIndex.get(id),
+    rowGetMany: (start, end) => {
+      const rows: RowNodeCore<D>[] = [];
+      const s = state.tree.peek();
+      for (let i = start; i < end; i++) {
+        const row = s.rowByIndex.get(i);
+        if (row) rows.push(row);
+      }
+      return rows;
+    },
 
     rowChildCount: (r) => rowChildCount(state, r),
     rowDepth: (r) => rowDepth(state, r),
