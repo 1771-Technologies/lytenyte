@@ -12,7 +12,6 @@ export interface RowTree<DataType> {
   readonly rowGroupIdToDataRows: Record<string, number[]>;
   readonly rowIdToRowNode: Record<string, RowNodeCore<DataType>>;
   readonly rowGroupIdToChildRowIds: Record<string, string[]>;
-  readonly lastGroupDepth: number;
 }
 
 export const UNCOMPUTED_AGGREGATION = {};
@@ -28,6 +27,21 @@ export function makeRowTree<DataType>(
   indices: number[],
   groupKeys: GroupKeyFunc<DataType>[],
 ): RowTree<DataType> {
+  if (!groupKeys.length) {
+    const rowIdToRowNode = Object.fromEntries(rows.map((c) => [c.id, c]));
+    const rowGroupIdToDataRows: Record<string, number[]> = {};
+    const rowGroupIdToChildRowIds: Record<string, string[]> = {};
+    const rowIdToTreeDepth: Record<string, number> = {};
+
+    return {
+      rootIds: Object.keys(rowIdToRowNode),
+      rowIdToRowNode,
+      rowGroupIdToDataRows,
+      rowGroupIdToChildRowIds,
+      rowIdToTreeDepth,
+    };
+  }
+
   // Maps the row id to the actual row node created for it
   const rowIdToRowNode: Record<string, RowNodeCore<DataType>> = {};
   // Maps a groups row to the data rows that were used to create it. This is useful for calculating aggregations.
@@ -96,6 +110,5 @@ export function makeRowTree<DataType>(
     rowGroupIdToChildRowIds,
     rowGroupIdToDataRows,
     rowIdToTreeDepth,
-    lastGroupDepth: groupKeys.length - 1,
   };
 }

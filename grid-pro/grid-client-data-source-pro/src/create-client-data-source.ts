@@ -100,7 +100,7 @@ export function createClientDataSource<D, E>(
             api.columnFieldGroup(r, c) as string | null | undefined;
         });
 
-      const tree = makeRowTree(rows, indices, groupKeys.length ? groupKeys : [(r) => r.id]);
+      const tree = makeRowTree(rows, indices, groupKeys.length ? groupKeys : []);
       return tree;
     });
 
@@ -313,7 +313,6 @@ export function createClientDataSource<D, E>(
       state.rowBottomNodes.peek().length,
 
     paginateGetCount: () => {
-      const s = state.tree.peek();
       const api = state.api.peek();
       const sx = api.getState();
 
