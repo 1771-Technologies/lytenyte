@@ -66,11 +66,12 @@ export function getFlattenedTree<D>(
     // We have group row so potentially add more
     if (row.kind === ROW_GROUP_KIND) {
       if (isExpanded) {
-        const childIds = rowTree.rowGroupIdToChildRowIds[row.id];
+        const childIds = [...rowTree.rowGroupIdToChildRowIds[row.id]];
         const childRows = maybeSort(childIds.map((r) => rowTree.rowIdToRowNode[r]));
         const mapped = childRows.map(
           (r) => [r, row.id, depth + 1] as [RowNodeCore<D>, string | null, number],
         );
+
         stack.unshift(...mapped);
       }
     }

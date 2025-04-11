@@ -101,6 +101,7 @@ export function createClientDataSource<D, E>(
         });
 
       const tree = makeRowTree(rows, indices, groupKeys.length ? groupKeys : []);
+
       return tree;
     });
 
@@ -112,8 +113,9 @@ export function createClientDataSource<D, E>(
 
       const mode = sx.columnPivotModeIsOn.peek();
       const sortModel = mode ? sx.internal.columnPivotSortModel.get() : sx.sortModel.get();
+
       let sorter = null;
-      if (sorter) {
+      if (sortModel.length) {
         const comparators = getComparatorsForModel(
           api as any,
           sortModel,
@@ -161,6 +163,8 @@ export function createClientDataSource<D, E>(
         rowByIndex.set(index, c);
         rowIdToRowIndex.set(c.id, index);
       });
+
+      queueMicrotask(api$.peek().rowRefresh);
 
       return {
         rowById,
@@ -282,7 +286,7 @@ export function createClientDataSource<D, E>(
 
       const s = new Set<string>();
 
-      const stack = t.rowGroupIdToChildRowIds[id] ?? [];
+      const stack = [...(t.rowGroupIdToChildRowIds[id] ?? [])];
       while (stack.length) {
         const childId = stack.pop()!;
         s.add(childId);
