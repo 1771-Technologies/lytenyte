@@ -22,6 +22,17 @@ interface ColumnHandleGroupColumnArgs<D, E> {
 export const baseGroup: ColumnRowGroupCore<any, any> = {
   headerName: "Group",
   cellAutosizeFn: autosizeGroupColumnDefault,
+  sortComparator: (api, _, __, left, right) => {
+    if (api.rowIsLeaf(left) && api.rowIsLeaf(right)) return 0;
+    if (api.rowIsLeaf(left) && !api.rowIsLeaf(right)) return 1;
+    if (!api.rowIsLeaf(left) && api.rowIsLeaf(right)) return -1;
+
+    if (api.rowIsGroup(left) && api.rowIsGroup(right)) {
+      return left.pathKey.localeCompare(right.pathKey);
+    }
+
+    return 0;
+  },
 };
 
 export function columnHandleGroupColumn<D, E>({
