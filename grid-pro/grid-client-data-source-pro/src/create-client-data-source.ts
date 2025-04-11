@@ -6,19 +6,7 @@ import {
   type Signal,
 } from "@1771technologies/react-cascada";
 import { filterNodesComputed } from "./utils/filterNodesComputed";
-import {
-  dataToRowNodes,
-  paginateGetCount,
-  paginateRowStartAndEndForPage,
-  rowById,
-  rowByIndex,
-  rowChildCount,
-  rowDepth,
-  rowGetMany,
-  rowParentIndex,
-  rowSetData,
-  rowSetDataMany,
-} from "@1771technologies/grid-client-data-source-core";
+import { dataToRowNodes } from "@1771technologies/grid-client-data-source-core";
 import { columnInFilterItems } from "./api/column-in-filter-items";
 import { createColumnPivots } from "./api/column-pivots/create-pivot-columns";
 import type {
@@ -27,7 +15,7 @@ import type {
   RowDataSourcePro,
   RowNodeLeafPro,
 } from "@1771technologies/grid-types/pro";
-import { makeRowTree } from "./tree/make-row-tree";
+import { makeRowTree, type RowTree } from "./tree/make-row-tree";
 import type { RowNodeCore, RowNodeLeafCore } from "@1771technologies/grid-types/core";
 import { getComparatorsForModel, makeCombinedComparator } from "@1771technologies/grid-client-sort";
 import { getFlattenedTree } from "./tree/get-flattened-tree";
@@ -35,6 +23,7 @@ import { getFlattenedTree } from "./tree/get-flattened-tree";
 export interface ClientState<D, E> {
   api: Signal<ApiPro<D, E>>;
 
+  rowTree: ReadonlySignal<RowTree<D>>;
   tree: ReadonlySignal<{
     rowById: {
       [x: string]: RowNodeLeafCore<D> | RowNodeCore<D>;
@@ -45,6 +34,7 @@ export interface ClientState<D, E> {
     rowIdToParent: Map<string, string | null> | undefined;
     rows: RowNodeCore<D>[];
   }>;
+  refreshSignal: Signal<number>;
 
   rowTopNodes: Signal<RowNodeLeafPro<D>[]>;
   rowCenterNodes: Signal<RowNodeLeafPro<D>[]>;
@@ -92,11 +82,15 @@ export function createClientDataSource<D, E>(
       r.filterToDate ?? (((v: number) => new Date(v)) as any),
     );
 
+    const refreshSignal = signal(0);
+
     const tree = computed(() => {
       const api = api$.get();
       const sx = api.getState();
       const rows = filteredNodes.get();
       const indices = Array.from({ length: rows.length }, (_, i) => i);
+
+      void refreshSignal.get();
 
       const groupKeys = sx.rowGroupModel
         .get()
@@ -181,7 +175,9 @@ export function createClientDataSource<D, E>(
     return {
       api: api$,
 
+      rowTree: tree,
       tree: final,
+      refreshSignal,
 
       rowTopNodes,
       rowBottomNodes,
@@ -239,27 +235,66 @@ export function createClientDataSource<D, E>(
       return rows;
     },
 
-    rowChildCount: (r) => rowChildCount(state, r),
-    rowDepth: (r) => rowDepth(state, r),
-    rowParentIndex: (r) => rowParentIndex(state, r),
+    rowDepth: (r) => {
+      const s = state.tree.peek();
+      const id = s.rowByIndex.get(r)?.id;
+      if (!id) return 0;
 
-    rowSetData: (id, d) => rowSetData(state, id, d),
-    rowSetDataMany: (updates) => rowSetDataMany(state, updates),
+      return s.rowIdToDepth?.get(id) ?? 0;
+    },
+
+    rowSetData: (id, d) => {
+      const t = state.tree.peek();
+
+      const row = t.rowById[id];
+      if (!row) return;
+
+      (row as any).data = d;
+
+      state.refreshSignal.set((prev) => prev + 1);
+      state.api.peek().rowRefresh();
+    },
+    rowSetDataMany: (updates) => {
+      const entries = Object.entries(updates);
+      const s = state.tree.peek();
+
+      for (let i = 0; i < entries.length; i++) {
+        const [id, update] = entries[i];
+        const row = s.rowById[id];
+        if (!row) continue;
+
+        (row as any).data = update;
+      }
+
+      state.refreshSignal.set((prev) => prev + 1);
+      state.api.peek().rowRefresh();
+    },
     rowReplaceBottomData: (d) => state.rowBottomNodes.set(dataToRowNodes(d, "bottom", "bottom")),
     rowReplaceData: (d) => state.rowCenterNodes.set(dataToRowNodes(d, null, "center")),
     rowReplaceTopData: (d) => state.rowTopNodes.set(dataToRowNodes(d, "top", "top")),
 
     rowGetAllChildrenIds: (rowByIndex) => {
-      return state.graph
-        .peek()
-        .rowAllChildren(rowByIndex)
-        .map((c) => c.id);
+      const t = state.rowTree.peek();
+      const v = state.tree.peek();
+
+      const id = v.rowByIndex.get(rowByIndex)?.id;
+      if (!id) return [];
+
+      const s = new Set<string>();
+
+      const stack = t.rowGroupIdToChildRowIds[id] ?? [];
+      while (stack.length) {
+        const childId = stack.pop()!;
+        s.add(childId);
+
+        stack.push(...(t.rowGroupIdToChildRowIds[childId] ?? []));
+      }
+
+      return [...s.values()];
     },
     rowGetAllIds: () => {
-      const graph = state.graph.peek();
-      const allRows = graph.rowGetAllRows();
-
-      return allRows.map((c) => c.id);
+      const s = state.tree.peek();
+      return Object.keys(s.rowById);
     },
     rowSelectionIndeterminateSupported: () => true,
     rowSelectionSelectAllSupported: () => true,
@@ -270,12 +305,44 @@ export function createClientDataSource<D, E>(
       return columns;
     },
 
-    rowBottomCount: () => state.graph.peek().rowBotCount(),
-    rowTopCount: () => state.graph.peek().rowTopCount(),
-    rowCount: () => state.graph.peek().rowCount(),
+    rowBottomCount: () => state.rowBottomNodes.peek().length,
+    rowTopCount: () => state.rowTopNodes.peek().length,
+    rowCount: () =>
+      state.tree.peek().rows.length +
+      state.rowTopNodes.peek().length +
+      state.rowBottomNodes.peek().length,
 
-    paginateGetCount: () => paginateGetCount(state),
-    paginateRowStartAndEndForPage: (i) => paginateRowStartAndEndForPage(state, i),
+    paginateGetCount: () => {
+      const s = state.tree.peek();
+      const api = state.api.peek();
+      const sx = api.getState();
+
+      const flatRowCount = state.tree.peek().rows.length;
+      const pageSize = sx.paginatePageSize.peek();
+
+      const pageCount = Math.ceil(flatRowCount / pageSize);
+      return pageCount;
+    },
+    paginateRowStartAndEndForPage: (page) => {
+      const api = state.api.peek();
+      const sx = api.getState();
+      const pageCount = sx.internal.paginatePageCount.peek();
+
+      if (page > pageCount) {
+        throw new Error(`There are only ${pageCount} pages, but page ${page} was requested`);
+      }
+
+      const topCount = state.rowTopNodes.peek().length;
+      const bottomCount = state.rowBottomNodes.peek().length;
+      const rowCount = state.tree.peek().rows.length + topCount + bottomCount;
+
+      const pageOffset = sx.paginatePageSize.peek();
+
+      const startIndex = page * pageOffset + topCount;
+      const endIndex = Math.min(startIndex + pageOffset, rowCount - bottomCount);
+
+      return [startIndex, endIndex];
+    },
 
     // Not relevant for client data source.
     rowReload: () => {},

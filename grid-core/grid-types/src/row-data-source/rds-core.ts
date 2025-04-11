@@ -9,8 +9,6 @@ export interface RowDataSourceCore<A, D> {
   rowById: (id: string) => RowNode<D> | null | undefined;
   rowIdToRowIndex: (id: string) => number | null | undefined;
 
-  rowChildCount: (rowIndex: number) => number;
-  rowParentIndex: (rowIndex: number) => number | null;
   rowDepth: (rowIndex: number) => number;
 
   rowCount: () => number;

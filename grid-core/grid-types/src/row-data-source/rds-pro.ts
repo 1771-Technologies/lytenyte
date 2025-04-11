@@ -17,8 +17,6 @@ export interface RowDataSourcePro<A, D, C> {
   rowTopCount: () => number;
   rowBottomCount: () => number;
 
-  rowChildCount: (rowIndex: number) => number;
-  rowParentIndex: (rowIndex: number) => number | null;
   rowDepth: (rowIndex: number) => number;
 
   // Necessary for data editing and row updates
