@@ -18,6 +18,7 @@ export default function Play() {
     rowDataSource: ds,
 
     rowSelectionMode: "multiple",
+    rowSelectionPredicate: "all",
     rowSelectionCheckbox: "normal",
     rowDragEnabled: true,
 

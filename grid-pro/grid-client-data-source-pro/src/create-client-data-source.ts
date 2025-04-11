@@ -285,6 +285,7 @@ export function createClientDataSource<D, E>(
       const v = state.tree.peek();
 
       const id = v.rowByIndex.get(rowByIndex)?.id;
+
       if (!id) return [];
 
       const s = new Set<string>();

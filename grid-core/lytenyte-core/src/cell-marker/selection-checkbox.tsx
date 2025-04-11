@@ -31,6 +31,7 @@ export function SelectionCheckbox({ api, row }: { api: ApiCoreReact<any>; row: R
       tabIndex={-1}
       isChecked={isChecked || isIndeterminate}
       isDeterminate={isIndeterminate}
+      isDisabled={!isSelectable}
       onClick={(event) => {
         handleRowSelection(api, row, event.shiftKey, true, true);
       }}
