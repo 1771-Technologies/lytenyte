@@ -100,7 +100,10 @@ export function createClientDataSource<D, E>(
             api.columnFieldGroup(r, c) as string | null | undefined;
         });
 
-      const tree = makeRowTree(rows, indices, groupKeys.length ? groupKeys : []);
+      void sx.aggModel.get();
+      void sx.aggFns.get();
+
+      const tree = makeRowTree(api, rows, indices, groupKeys.length ? groupKeys : []);
 
       return tree;
     });

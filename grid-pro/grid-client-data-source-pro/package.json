@@ -27,6 +27,7 @@
   "dependencies": {
     "@1771technologies/react-cascada": "workspace:*",
     "@1771technologies/grid-client-data-source-core": "workspace:*",
+    "@1771technologies/grid-client-aggregator": "workspace:*",
     "@1771technologies/grid-client-filter": "workspace:*",
     "@1771technologies/grid-client-sort": "workspace:*",
     "@1771technologies/grid-graph": "workspace:*",

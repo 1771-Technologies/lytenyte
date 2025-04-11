@@ -1,9 +1,12 @@
+import { aggregator } from "@1771technologies/grid-client-aggregator";
 import { ROW_BLANK_GROUP_KEY, ROW_GROUP_KIND } from "@1771technologies/grid-constants";
 import type {
+  ApiCore,
   RowNodeCore,
   RowNodeGroupCore,
   RowNodeLeafCore,
 } from "@1771technologies/grid-types/core";
+import type { ApiPro } from "@1771technologies/grid-types/pro";
 
 export type GroupKeyFunc<DataType> = (row: RowNodeLeafCore<DataType>) => string | null | undefined;
 export interface RowTree<DataType> {
@@ -23,6 +26,7 @@ type Writable<T> = {
 };
 
 export function makeRowTree<DataType>(
+  api: ApiCore<DataType, any> | ApiPro<DataType, any>,
   rows: RowNodeLeafCore<DataType>[],
   indices: number[],
   groupKeys: GroupKeyFunc<DataType>[],
@@ -82,10 +86,15 @@ export function makeRowTree<DataType>(
             })
           : group(id, data, keyIndex + 1);
 
+      const agg = aggregator(
+        api,
+        data.map((i) => rows[i]),
+      );
+
       const groupNode = {
         id,
         kind: ROW_GROUP_KIND,
-        data: UNCOMPUTED_AGGREGATION, // computed when flattening the tree or when fetching a row
+        data: agg,
         pathKey: key,
         rowIndex: UNCOMPUTED_COUNT, // computed when flattening the tree
       } satisfies Writable<RowNodeGroupCore>;
