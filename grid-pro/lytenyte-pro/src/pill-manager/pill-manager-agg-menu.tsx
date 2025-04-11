@@ -19,7 +19,6 @@ export function PillManagerAggMenu<D>({ column, grid }: PillManagerAggMenuProps<
 
   return (
     <Menu.Container>
-      <Menu.Arrow />
       <Menu.RadioGroup
         value={typeof agg === "function" ? "Fn(x)" : (agg ?? "")}
         onValueChange={(v) => {
@@ -57,7 +56,6 @@ export function PillManagerMeasureMenu<D>({ column, grid }: PillManagerAggMenuPr
 
   return (
     <Menu.Container>
-      <Menu.Arrow />
       <Menu.RadioGroup
         value={typeof agg === "function" ? "Fn(x)" : (agg ?? "")}
         onValueChange={(v) => {

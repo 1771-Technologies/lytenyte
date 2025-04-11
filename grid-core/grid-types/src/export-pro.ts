@@ -50,9 +50,6 @@ export type {
   RowNodeLeafPro,
   RowGroupKindPro,
   RowNodeGroupPro,
-  RowNodeTotalPro,
-  RowTotalKindPro,
-  RowLeafOrRowTotalPro,
 } from "./types/row-nodes.js";
 
 export type {

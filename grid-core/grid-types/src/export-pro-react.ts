@@ -35,9 +35,6 @@ export type RowNodeBaseProReact = P.RowNodeBasePro;
 export type RowNodeLeafProReact<D = any> = P.RowNodeLeafPro<D>;
 export type RowGroupKindProReact = P.RowGroupKindPro;
 export type RowNodeGroupProReact = P.RowNodeGroupPro;
-export type RowNodeTotalProReact = P.RowNodeTotalPro;
-export type RowTotalKindProReact = P.RowTotalKindPro;
-export type RowLeafOrRowTotalProReact<D = any> = P.RowLeafOrRowTotalPro<D>;
 
 export type CellEditDateFormatProReact = P.CellEditDateFormatPro;
 export type CellEditParamsProReact = P.CellEditParamsPro;

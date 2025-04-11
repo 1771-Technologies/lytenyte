@@ -27,19 +27,12 @@ export type AsyncDataBlockPinned = {
   };
 };
 
-export type AsyncDataBlockTotal = {
-  readonly frame: {
-    readonly data: unknown;
-  };
-};
-
 export type AsyncDataResponse = {
   readonly rootCount?: number;
   readonly reqTime: number;
   readonly blocks: AsyncDataBlock[];
   readonly topBlock?: AsyncDataBlockPinned;
   readonly bottomBlock?: AsyncDataBlockPinned;
-  readonly totalBlock?: AsyncDataBlockTotal;
 };
 
 export interface AsyncDataRequestBlock {

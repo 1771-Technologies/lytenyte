@@ -5,7 +5,6 @@ import {
   columnIsEmpty,
   rowIsGroup,
   rowIsLeaf,
-  rowIsTotal,
 } from "@1771technologies/grid-core";
 import {
   cellEditBegin,
@@ -194,7 +193,6 @@ export function makeApi<D, E>(
     rowDetailVisibleHeight: (id) => rowDetailVisibleHeight(api, id),
     rowIsGroup,
     rowIsLeaf,
-    rowIsTotal,
     rowIsDraggable: (id) => rowIsDraggable(api, id),
     rowVisibleRowHeight: (id, s) => rowVisibleRowHeight(api, id, s),
     rowGroupToggle: (row, state) => rowGroupToggle(api, row, state),

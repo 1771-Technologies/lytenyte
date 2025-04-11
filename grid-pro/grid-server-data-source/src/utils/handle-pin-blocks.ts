@@ -1,7 +1,7 @@
-import type { RowNodeLeafPro, RowNodeTotalPro } from "@1771technologies/grid-types/pro";
+import type { RowNodeLeafPro } from "@1771technologies/grid-types/pro";
 import type { ServerState } from "../create-server-data-source";
 import type { AsyncDataResponse } from "../types";
-import { ROW_LEAF_KIND, ROW_TOTAL_ID, ROW_TOTAL_KIND } from "@1771technologies/grid-constants";
+import { ROW_LEAF_KIND } from "@1771technologies/grid-constants";
 
 export function handleTopBlock<D, E>(payload: AsyncDataResponse, state: ServerState<D, E>) {
   if (!payload.topBlock) return;
@@ -54,27 +54,5 @@ export function handleBottomBlock<D, E>(payload: AsyncDataResponse, state: Serve
   });
 
   state.graph.setBottom(nodes);
-  lookup.set(key, payload.reqTime);
-}
-
-export function handleTotalBlock<D, E>(payload: AsyncDataResponse, state: ServerState<D, E>) {
-  if (!payload.totalBlock) return;
-
-  const lookup = state.blockLoadTimeLookup.peek();
-
-  const key = "lng-row-total";
-  const loadTime = lookup.get(key) ?? 0;
-
-  if (loadTime > payload.reqTime) return;
-
-  const node: RowNodeTotalPro = {
-    id: ROW_TOTAL_ID,
-    kind: ROW_TOTAL_KIND,
-    data: payload.totalBlock.frame.data as Record<string, unknown>,
-    rowIndex: null,
-    rowPin: null,
-  };
-
-  state.graph.setTotal(node);
   lookup.set(key, payload.reqTime);
 }

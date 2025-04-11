@@ -17,8 +17,6 @@ export interface RowDataSourcePro<A, D, C> {
   rowTopCount: () => number;
   rowBottomCount: () => number;
 
-  // For row grouping functionality this is necessary for things like sticky
-  // rows and groups totals
   rowChildCount: (rowIndex: number) => number;
   rowParentIndex: (rowIndex: number) => number | null;
   rowDepth: (rowIndex: number) => number;

@@ -7,7 +7,6 @@ import {
 } from "@1771technologies/react-cascada";
 import { BlockGraph } from "@1771technologies/grid-graph";
 import { filterNodesComputed } from "./utils/filterNodesComputed";
-import { sortedNodesComputed } from "./utils/sorted-nodes-computed";
 import {
   BLOCK_SIZE,
   dataToRowNodes,
@@ -89,14 +88,9 @@ export function createClientDataSource<D, E>(
       rowCenterNodes,
       r.filterToDate ?? (((v: number) => new Date(v)) as any),
     );
-    const sortedNodes = sortedNodesComputed(
-      api$,
-      filteredNodes,
-      r.sortToDate ?? (((c: number) => new Date(c)) as any),
-    );
 
-    const flatPayload = flatBlockPayloadsComputed(sortedNodes);
-    const groupPayload = groupBlockPayloadsComputed(api$, sortedNodes);
+    const flatPayload = flatBlockPayloadsComputed(filteredNodes);
+    const groupPayload = groupBlockPayloadsComputed(api$, filteredNodes);
 
     const graph$ = signal(new BlockGraph<D>(BLOCK_SIZE));
 
@@ -116,11 +110,6 @@ export function createClientDataSource<D, E>(
 
       for (const z of p.sizes) graph.blockSetSize(z.path, z.size);
       graph.blockAdd(p.payloads);
-
-      const totals = sx.rowTotalRow.get();
-      graph.setTotalPosition(totals);
-      const pinTotals = sx.rowTotalsPinned.get();
-      graph.setTotalPin(pinTotals);
 
       graph.setTop(rowTopNodes.get());
       graph.setBottom(rowBottomNodes.get());

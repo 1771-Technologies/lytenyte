@@ -3,35 +3,6 @@ import type { BlockPaths, BlockStore } from "../types.js";
 import type { FlattenRowContext } from "./types.js";
 import type { RowNodeGroupCore } from "@1771technologies/grid-types/core";
 
-/**
- * Flattens the center rows of a grid, handling hierarchical data structures organized in blocks.
- * This function processes both regular rows and expandable group rows, maintaining their
- * hierarchical relationships while creating a flat index-based structure.
- *
- * The function handles:
- * 1. Block-based data organization for virtual scrolling
- * 2. Hierarchical group expansion/collapse
- * 3. Path-based navigation of the data hierarchy
- * 4. Range tracking for different hierarchical levels
- *
- * @param ctx - Context object for flattening operations
- * @param ctx.rowIdToRow - Map linking row IDs to row nodes
- * @param ctx.rowIndexToRow - Map linking row indices to row nodes
- * @param ctx.ranges - Array tracking row ranges for each hierarchical level
- *
- * @param blockSize - Number of rows in each block for virtual scrolling
- * @param separator - String used to separate path components in hierarchical paths
- * @param lookup - Map of paths to their corresponding block stores
- * @param topOffset - Starting index for center rows, accounting for pinned top rows
- *
- * @returns Total number of rows in the flattened center section
- *
- * @remarks
- * - The function maintains both index and ID-based lookups for efficient row access
- * - Handles nested group expansions recursively
- * - Tracks row ranges for each hierarchical level for easier navigation
- * - Respects block-based organization for optimal virtual scrolling
- */
 export function flattenCenterRows<D>(
   { rowIdToRow, rowIndexToRow, rowIdToRowIndex, ranges }: FlattenRowContext<D>,
   blockSize: number,
@@ -94,11 +65,9 @@ export function flattenCenterRows<D>(
     // Record the range of rows for this hierarchy level
     ranges.push({ rowStart: start, rowEnd: blockStore.size + start + offset, path });
 
-    // Return total size including this level and all expanded child levels
     return offset + blockStore.size;
   }
 
-  // Start processing from the root level ("") and return total size
   const size = processBlocks("", lookup.get("") ?? { size: 0, map: new Map() }, topOffset, 0);
 
   return size + topOffset;

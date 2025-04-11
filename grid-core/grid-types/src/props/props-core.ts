@@ -9,7 +9,6 @@ import type {
 } from "../types/column-header";
 import type { ColumnFilterModel } from "../types/filters";
 import type { FloatingCellRenderers } from "../types/floating-cell";
-import type { RowPin } from "../types/row";
 import type { RowDetailEnabled, RowDetailHeight, RowDetailRenderer } from "../types/row-detail";
 import type { RowDragPredicate } from "../types/row-drag";
 import type { RowFullWidthPredicate, RowFullWidthRenderer } from "../types/row-full-width";
@@ -95,8 +94,6 @@ export interface PropsCoreRaw<A, D, C, E, Base, Group> {
 
   readonly rowSpanScanDistance?: number;
 
-  readonly rowTotalRow?: RowPin;
-  readonly rowTotalsPinned?: boolean;
   readonly rowFullWidthPredicate?: null | RowFullWidthPredicate<A, D>;
   readonly rowFullWidthRenderer?: null | RowFullWidthRenderer<A, D, E>;
   readonly rowUseAbsolutePositioning?: boolean;

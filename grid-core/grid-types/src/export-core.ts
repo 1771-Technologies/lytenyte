@@ -54,9 +54,6 @@ export type {
   RowNodeLeafCore,
   RowGroupKindCore,
   RowNodeGroupCore,
-  RowNodeTotalCore,
-  RowTotalKindCore,
-  RowLeafOrRowTotalCore,
 } from "./types/row-nodes.js";
 
 export type {

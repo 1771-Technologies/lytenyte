@@ -19,7 +19,7 @@ export const columns: ColumnProReact<any>[] = [
   },
   { id: "job", rowGroupable: true, widthFlex: 1 },
   {
-    id: "balance with me",
+    id: "balance",
     type: "number",
     pin: "start",
     rowGroupable: true,

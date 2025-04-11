@@ -1,18 +1,15 @@
 import type {
   RowGroupKindCore,
   RowLeafKindCore,
-  RowTotalKindCore,
   SortCycleOptionCore,
 } from "@1771technologies/grid-types/core";
 
 export const ROW_LEAF_KIND: RowLeafKindCore = 1;
 export const ROW_GROUP_KIND: RowGroupKindCore = 2;
-export const ROW_TOTAL_KIND: RowTotalKindCore = 3;
 
 export const COLUMN_GROUP_ID_DELIMITER = "-->";
 export const ROW_DEFAULT_PATH_SEPARATOR = "-->";
 
-export const ROW_TOTAL_ID = "__lng__totals__row";
 export const COLUMN_EMPTY_PREFIX = "lytenyte-empty:";
 export const COLUMN_MARKER_ID = "lytenyte-marker-column";
 

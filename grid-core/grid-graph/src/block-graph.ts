@@ -15,50 +15,9 @@ import { RangeTree, type FlattenedRange } from "./range-tree.js";
 import { flattenTopRows } from "./block-flatten/flatten-top-rows.js";
 import { flattenCenterRows } from "./block-flatten/flatten-center-rows.js";
 import { flattenBottomRows } from "./block-flatten/flatten-bottom-rows.js";
-import { EMPTY_TOTAL } from "./constants.js";
-import { adjustRootRange } from "./block-flatten/adjust-root-range.js";
 import { blockStoreAllPaths } from "./block-store/block-store-all-paths.js";
-import type {
-  RowNodeCore,
-  RowNodeLeafCore,
-  RowNodeTotalCore,
-  RowPinCore,
-} from "@1771technologies/grid-types/core";
+import type { RowNodeCore, RowNodeLeafCore } from "@1771technologies/grid-types/core";
 
-/**
- * Manages a hierarchical graph of row blocks with support for pinned rows, totals, and range-based operations.
- *
- * BlockGraph provides a sophisticated data structure for handling large sets of rows with features like:
- * - Top and bottom pinned rows
- * - Totals rows with configurable positioning
- * - Block-based row management
- * - Range-based row lookups
- * - Efficient row access by ID or index
- *
- * @typeParam D - Type of data contained in the row nodes
- *
- * @example
- * ```typescript
- * const graph = new BlockGraph<MyDataType>(100); // Create with block size of 100
- *
- * // Configure pinned rows
- * graph.setTop([topRow1, topRow2]);
- * graph.setBottom([bottomRow1]);
- *
- * // Set up totals
- * graph.setTotal(totalRow);
- * graph.setTotalPosition("bottom");
- * graph.setTotalPin(true);
- *
- * // Manage blocks
- * graph.blockSetSize("root", 1000);
- * graph.blockAdd([{ path: "root", index: 0, data: rows }]);
- *
- * // Flatten and access data
- * graph.blockFlatten();
- * const row = graph.rowByIndex(5);
- * ```
- */
 export class BlockGraph<D> {
   /** Map of paths to block stores */
   readonly #blockPaths: BlockPaths<D>;
@@ -72,20 +31,12 @@ export class BlockGraph<D> {
   /** Array of pinned bottom rows */
   #rowBottom: RowNodeLeafCore<D>[] = [];
 
-  /** Total row configuration */
-  #rowTotal: RowNodeTotalCore = EMPTY_TOTAL;
-  /** Position of total row (top, bottom, or null) */
-  #rowTotalPosition: RowPinCore = null;
-  /** Whether total row is pinned */
-  #rowTotalIsPinned: boolean = false;
-
   /** Map of row IDs to row nodes */
   #rowById: Map<string, RowNodeCore<D>> = new Map();
   /** Map of row indices to row nodes */
   #rowByIndex: Map<number, RowNodeCore<D>> = new Map();
   /** Map of row ids to row indices  */
   #rowIdToRowIndex: Map<string, number> = new Map();
-  /** Total count of rows */
   #rowCount: number = 0;
   /** Tree structure for range-based operations */
   #rangeTree: RangeTree = new RangeTree([]);
@@ -116,30 +67,6 @@ export class BlockGraph<D> {
    */
   readonly setBottom = (nodes: RowNodeLeafCore<D>[]) => {
     this.#rowBottom = nodes;
-  };
-
-  /**
-   * Sets the totals row.
-   * @param node - Total row node
-   */
-  readonly setTotal = (node: RowNodeTotalCore) => {
-    this.#rowTotal = node;
-  };
-
-  /**
-   * Sets whether the totals row is pinned.
-   * @param b - True to pin the totals row
-   */
-  readonly setTotalPin = (b: boolean) => {
-    this.#rowTotalIsPinned = b;
-  };
-
-  /**
-   * Sets the position of the totals row.
-   * @param b - Position to place the totals row ("top", "bottom", or null)
-   */
-  readonly setTotalPosition = (b: RowPinCore) => {
-    this.#rowTotalPosition = b;
   };
 
   /**
@@ -317,7 +244,6 @@ export class BlockGraph<D> {
     const nodes: RowNodeCore<D>[] = [];
 
     this.#rowTop.forEach((c) => nodes.push(c));
-    if (this.#rowTotalPosition !== null) nodes.push(this.#rowTotal);
     this.#rowBottom.forEach((c) => nodes.push(c));
 
     for (const blocks of this.#blockPaths.values()) {
@@ -366,10 +292,8 @@ export class BlockGraph<D> {
    * @returns Array of ranges containing the index. Empty array if index is out of bounds
    */
   readonly rowRangesForIndex = (i: number): FlattenedRange[] => {
-    const topCount =
-      this.rowTopCount() + (this.#rowTotalIsPinned && this.#rowTotalPosition === "top" ? 1 : 0);
-    const botCount =
-      this.rowBotCount() + (this.#rowTotalIsPinned && this.#rowTotalPosition === "bottom" ? 1 : 0);
+    const topCount = this.rowTopCount();
+    const botCount = this.rowBotCount();
 
     const count = this.rowCount();
 
@@ -499,13 +423,7 @@ export class BlockGraph<D> {
     const ranges: FlattenedRange[] = [];
     const ctx = { rowIndexToRow, rowIdToRow, rowIdToRowIndex, ranges };
 
-    const topOffset = flattenTopRows(
-      ctx,
-      this.#rowTop,
-      this.#rowTotalPosition,
-      this.#rowTotalIsPinned,
-      this.#rowTotal,
-    );
+    const topOffset = flattenTopRows(ctx, this.#rowTop);
 
     const centerOffset = flattenCenterRows(
       ctx,
@@ -517,16 +435,7 @@ export class BlockGraph<D> {
       rowDefaultExpansion,
     );
 
-    const rowCount = flattenBottomRows(
-      ctx,
-      this.#rowBottom,
-      this.#rowTotalPosition,
-      this.#rowTotalIsPinned,
-      this.#rowTotal,
-      centerOffset,
-    );
-
-    adjustRootRange(ranges, this.#rowTotalPosition, this.#rowTotalIsPinned);
+    const rowCount = flattenBottomRows(ctx, this.#rowBottom, centerOffset);
 
     this.#rowByIndex = rowIndexToRow;
     this.#rowIdToRowIndex = rowIdToRowIndex;

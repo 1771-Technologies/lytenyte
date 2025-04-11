@@ -9,7 +9,7 @@ import type { CellEditLocation } from "../types/cell-edit";
 import type { DataRectResult, ExportCsvOptions, ExportDataRectOptions } from "../types/export";
 import type { Position } from "../types/position";
 import type { RowSections } from "../types/row";
-import type { RowNode, RowNodeGroup, RowNodeLeaf, RowNodeTotal } from "../types/row-nodes";
+import type { RowNode, RowNodeGroup, RowNodeLeaf } from "../types/row-nodes";
 import type { SortCycleOption } from "../types/sort";
 
 export interface ApiCoreRaw<D, C, E> {
@@ -132,7 +132,6 @@ export interface ApiCoreRaw<D, C, E> {
 
   readonly rowIsGroup: (row: RowNode<D>) => row is RowNodeGroup;
   readonly rowIsLeaf: (row: RowNode<D>) => row is RowNodeLeaf<D>;
-  readonly rowIsTotal: (row: RowNode<D>) => row is RowNodeTotal;
   readonly rowIsDraggable: (id: string) => boolean;
   readonly rowVisibleRowHeight: (i: number, section?: RowSections) => number;
 

@@ -96,9 +96,6 @@ export function initialize<D, E>(
 
     rowHeight: signal(props.rowHeight ?? ROW_HEIGHT),
 
-    rowTotalsPinned: signal(props.rowTotalsPinned ?? false),
-    rowTotalRow: signal(props.rowTotalRow ?? null),
-
     rowSelectionPredicate: signal(props.rowSelectionPredicate ?? "leaf-only"),
     rowSelectionCheckbox: signal(props.rowSelectionCheckbox ?? "normal"),
     rowSelectionMode: signal(props.rowSelectionMode ?? "none"),

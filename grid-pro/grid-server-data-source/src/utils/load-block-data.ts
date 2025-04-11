@@ -1,7 +1,7 @@
 import type { ServerState } from "../create-server-data-source";
 import type { AsyncDataRequestBlock } from "../types";
 import { handleDataBlocks } from "./handle-data-blocks";
-import { handleBottomBlock, handleTopBlock, handleTotalBlock } from "./handle-pin-blocks";
+import { handleBottomBlock, handleTopBlock } from "./handle-pin-blocks";
 
 export async function loadBlockData<D, E>(
   state: ServerState<D, E>,
@@ -23,7 +23,6 @@ export async function loadBlockData<D, E>(
 
     handleTopBlock(payload, state);
     handleBottomBlock(payload, state);
-    handleTotalBlock(payload, state);
     handleDataBlocks(payload, state);
 
     state.graph.blockFlatten();

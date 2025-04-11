@@ -39,9 +39,6 @@ export type RowNodeBaseCoreReact = C.RowNodeBaseCore;
 export type RowNodeLeafCoreReact<D> = C.RowNodeLeafCore<D>;
 export type RowGroupKindCoreReact = C.RowGroupKindCore;
 export type RowNodeGroupCoreReact = C.RowNodeGroupCore;
-export type RowNodeTotalCoreReact = C.RowNodeTotalCore;
-export type RowTotalKindCoreReact = C.RowTotalKindCore;
-export type RowLeafOrRowTotalCoreReact<D = any> = C.RowLeafOrRowTotalCore<D>;
 
 export type CellEditDateFormatCoreReact = C.CellEditDateFormatCore;
 export type CellEditParamsCoreReact = C.CellEditParamsCore;

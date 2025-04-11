@@ -89,11 +89,6 @@ export function createClientDataSource<D, E>(
       for (const z of p.sizes) graph.blockSetSize(z.path, z.size);
       graph.blockAdd(p.payloads);
 
-      const totals = sx.rowTotalRow.get();
-      graph.setTotalPosition(totals);
-      const pinTotals = sx.rowTotalsPinned.get();
-      graph.setTotalPin(pinTotals);
-
       graph.setTop(rowTopNodes.get());
       graph.setBottom(rowBottomNodes.get());
 
