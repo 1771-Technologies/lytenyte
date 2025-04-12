@@ -135,6 +135,7 @@ body.lng1771-drag-on .lng1771-pill-manager__pill-outer[data-pill-active="false"]
   position: fixed;
   top: 0px;
   left: 0px;
+  z-index: 100;
   pointer-events: none;
 }
 

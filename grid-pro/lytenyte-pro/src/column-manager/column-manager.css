@@ -95,6 +95,7 @@
   top: 0px;
   left: 0px;
   pointer-events: none;
+  z-index: 100;
 }
 
 .lng1771-column-manager__drag-placeholder--default {
