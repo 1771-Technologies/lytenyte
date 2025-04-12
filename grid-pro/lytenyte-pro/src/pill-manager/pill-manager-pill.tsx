@@ -1,5 +1,6 @@
 import { forwardRef, useEffect, useState, type JSX } from "react";
 import { Pill } from "../pill/pill";
+import { useDroppable as useNativeDrop } from "@1771technologies/react-dragon";
 import { DragIcon } from "../icons";
 import { useDraggable, useDroppable } from "@1771technologies/lytenyte-core/internal";
 import { useCombinedRefs } from "@1771technologies/react-utils";
@@ -9,6 +10,7 @@ import { usePillControls } from "./pill-manager-controls";
 import { Menu } from "../external";
 import { useComponents } from "./pill-manager-impl";
 import { usePillRow } from "./pill-manager-row";
+import type { ColumnProReact } from "../types";
 
 export const PillManagerPill = forwardRef<
   HTMLDivElement,
@@ -40,11 +42,42 @@ export const PillManagerPill = forwardRef<
 
   const [isDragging, setIsDragging] = useState(false);
 
+  const gridId = grid.state.gridId.use();
+  const {
+    canDrop: canDropNative,
+    onDrop,
+    onDragOver,
+  } = useNativeDrop({
+    tags: pillSource === "row-groups" ? [`${gridId}:grid:groupable`] : [],
+    onDrop: (p) => {
+      const data = p.getData() as { columns: ColumnProReact[] };
+      const column = data?.columns?.[0];
+      document.body.classList.remove("lng1771-drag-on");
+      if (!column) return;
+
+      const id = column.id;
+
+      console.log(item);
+      grid.state.rowGroupModel.set((prev) => {
+        const index = prev.indexOf(item.dropData?.id ?? "");
+        if (index === -1) return prev;
+
+        const next = [...prev];
+        next.splice(index, 0, id);
+
+        return next;
+      });
+      grid.api.columnUpdate(column, { hide: true });
+    },
+  });
+
   return (
     <div
       {...props}
       role="button"
       ref={combinedRefs}
+      onDrop={onDrop}
+      onDragOver={onDragOver}
       data-pill-key={item.dropId}
       data-pill-active={item.active}
       data-is-droppable={isTarget && canDrop}
@@ -103,6 +136,7 @@ export const PillManagerPill = forwardRef<
       {canDrop && (rtl ? "right" : "left") === xHalf && (
         <div className="lng1771-pill-manager__drop-indicator-start" />
       )}
+      {canDropNative && <div className="lng1771-pill-manager__drop-indicator-start" />}
     </div>
   );
 });
