@@ -70,7 +70,7 @@ export const MenuSubmenuTrigger: typeof Menu.SubmenuTrigger = forwardRef(functio
   const cl = useMenuClassName("lng1771-menu__submenu-trigger", className);
   return (
     <Menu.SubmenuTrigger {...props} className={cl} ref={ref}>
-      <div>{children}</div>
+      {children}
       <ArrowRightIcon width={16} height={16} />
     </Menu.SubmenuTrigger>
   );
