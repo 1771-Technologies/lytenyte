@@ -13,9 +13,7 @@ import { BLOCK_SIZE, flatBlockPayloadsComputed } from "./utils/flat-block-payloa
 import { rowByIndex } from "./api/row-by-index";
 import { rowById } from "./api/row-by-id";
 import { rowGetMany } from "./api/row-get-many";
-import { rowChildCount } from "./api/row-child-count";
 import { rowDepth } from "./api/row-depth";
-import { rowParentIndex } from "./api/row-parent-index";
 import { rowSetData } from "./api/row-set-data";
 import { rowSetDataMany } from "./api/row-set-data-many";
 import { paginateGetCount } from "./api/paginate-get-count";
@@ -130,9 +128,7 @@ export function createClientDataSource<D, E>(
     rowGetMany: (start, end) => rowGetMany(state, start, end),
     rowIdToRowIndex: (id) => state.graph.peek().rowIdToRowIndex(id),
 
-    rowChildCount: (r) => rowChildCount(state, r),
     rowDepth: (r) => rowDepth(state, r),
-    rowParentIndex: (r) => rowParentIndex(state, r),
 
     rowSetData: (id, d) => rowSetData(state, id, d),
     rowSetDataMany: (updates) => rowSetDataMany(state, updates),

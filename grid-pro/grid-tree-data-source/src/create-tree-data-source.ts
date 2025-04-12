@@ -1,9 +1,7 @@
 import { createPathTree, type PathTreeInputItem } from "@1771technologies/path-tree";
 import {
   dataToRowNodes,
-  rowChildCount,
   rowDepth,
-  rowParentIndex,
   rowSetData,
   rowSetDataMany,
 } from "@1771technologies/grid-client-data-source-core";
@@ -146,9 +144,7 @@ export function createTreeDataSource<D, E>(r: TreeDataSourceInitial<D, E>): RowD
     rowById: (r) => rowById(state, r),
     rowGetMany: (s, e) => rowGetMany(state, s, e),
 
-    rowChildCount: (r) => rowChildCount(state, r),
     rowDepth: (r) => rowDepth(state, r),
-    rowParentIndex: (r) => rowParentIndex(state, r),
 
     rowSetData: (row, d) => rowSetData(state, row, d),
     rowSetDataMany: (updates) => rowSetDataMany(state, updates),
