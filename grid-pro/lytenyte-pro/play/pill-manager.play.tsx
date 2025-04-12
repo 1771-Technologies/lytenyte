@@ -4,6 +4,7 @@ import { useClientDataSource } from "../src/use-client-data-source";
 import { useLyteNytePro } from "../src/use-lytenyte";
 import { LyteNyteGrid } from "../src";
 import { PillManager } from "../src/pill-manager/pill-manager-impl";
+import { Menu } from "../src/menu/menu";
 
 export default function Play() {
   const ds = useClientDataSource({
@@ -34,6 +35,22 @@ export default function Play() {
         sortButton: true,
       },
     },
+
+    menuFrames: {
+      x: {
+        component: () => {
+          return (
+            <Menu.Positioner>
+              <Menu.Container>
+                <Menu.Item>Lee</Menu.Item>
+                <Menu.Item>Lee</Menu.Item>
+                <Menu.Item>Lee</Menu.Item>
+              </Menu.Container>
+            </Menu.Positioner>
+          );
+        },
+      },
+    },
   });
 
   return (
@@ -59,7 +76,7 @@ export default function Play() {
                   return (
                     <>
                       {pills.map((c) => (
-                        <PillManager.Pill key={c.label} item={c} menu="$" />
+                        <PillManager.Pill key={c.label} item={c} menu="x" />
                       ))}
                     </>
                   );

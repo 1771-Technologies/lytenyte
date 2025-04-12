@@ -133,7 +133,16 @@ export const PillManagerPill = forwardRef<
           </Menu.Root>
         )}
         {menu && (
-          <button className="lng1771-pill-manager__menu-trigger" style={{ marginRight: -4 }}>
+          <button
+            className="lng1771-pill-manager__menu-trigger"
+            style={{ marginRight: -4 }}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+
+              grid.api.menuFrameOpen(menu, e.currentTarget);
+            }}
+          >
             <MoreDotsIcon width={14} height={14} />
           </button>
         )}
