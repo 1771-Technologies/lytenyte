@@ -169,7 +169,7 @@
   min-width: 260px;
   border-radius: 6px;
   border: 1px solid var(--lng1771-gray-30);
-  background-color: var(--lng1771-gray-05);
+  background-color: var(--lng1771-gray-02);
 
   &[data-drop-visible="true"] {
     border-style: dashed;
