@@ -124,6 +124,15 @@ export const MenuCheckboxItem: typeof Menu.CheckboxItem = forwardRef(function Ch
   return <Menu.CheckboxItem {...props} ref={ref} className={cl} />;
 });
 
+export const SubMenuPositioner: typeof Menu.Positioner = forwardRef(function SubMenuPositioner(
+  { className, ...props },
+  ref,
+) {
+  const cl = useMenuClassName("lng1771-menu__submenu-positioner", className);
+
+  return <Menu.Positioner {...props} ref={ref} className={cl} />;
+});
+
 export const MenuPositioner: typeof Menu.Positioner = forwardRef(function MenuPositioner(
   { className, ...props },
   ref,
