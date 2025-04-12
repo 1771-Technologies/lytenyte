@@ -5,6 +5,16 @@ import { CheckMark } from "@1771technologies/lytenyte-core/internal";
 import { Select as S } from "@base-ui-components/react/select";
 import type { JSX } from "react";
 
+export interface SelectClassNames {
+  readonly triggerClassName?: string;
+  readonly triggerValueClassName?: string;
+  readonly triggerIconClassName?: string;
+  readonly popupClassName?: string;
+  readonly itemClassName?: string;
+  readonly itemIndicatorClassName?: string;
+  readonly itemTextClassName?: string;
+}
+
 export interface SelectProps {
   readonly selected: { value: string; label: string } | null;
   readonly options: { value: string; label: string }[];
@@ -18,8 +28,17 @@ export function Select({
   onSelect,
   options,
   placeholder,
+
+  triggerClassName,
+  triggerValueClassName,
+  triggerIconClassName,
+  popupClassName,
+  itemClassName,
+  itemIndicatorClassName,
+  itemTextClassName,
+
   ...props
-}: SelectProps & Omit<JSX.IntrinsicElements["div"], "onSelect">) {
+}: SelectProps & SelectClassNames & Omit<JSX.IntrinsicElements["div"], "onSelect">) {
   return (
     <S.Root
       value={selected?.value ?? null}
@@ -30,23 +49,35 @@ export function Select({
       }}
       alignItemToTrigger={false}
     >
-      <S.Trigger {...props} className="lng1771-select">
+      <S.Trigger {...props} className={clsx("lng1771-select", triggerClassName)}>
         <S.Value
-          className={clsx("lng1771-select__value", !selected && "lng1771-select__value--no-value")}
+          className={clsx(
+            "lng1771-select__value",
+            !selected && "lng1771-select__value--no-value",
+            triggerValueClassName,
+          )}
           placeholder={placeholder}
         ></S.Value>
-        <S.Icon className="lng1771-select__trigger">
+        <S.Icon className={clsx("lng1771-select__trigger", triggerIconClassName)}>
           <ArrowDownIcon />
         </S.Icon>
       </S.Trigger>
       <S.Portal>
         <S.Positioner sideOffset={8}>
-          <S.Popup className="lng1771-select__popup">
+          <S.Popup className={clsx("lng1771-select__popup", popupClassName)}>
             {options.map((c) => {
               return (
-                <S.Item key={c.value} value={c.value} className="lng1771-select__item">
-                  <S.ItemText className="lng1771-select__item-text">{c.label}</S.ItemText>
-                  <S.ItemIndicator className="lng1771-select__item-indicator">
+                <S.Item
+                  key={c.value}
+                  value={c.value}
+                  className={clsx("lng1771-select__item", itemClassName)}
+                >
+                  <S.ItemText className={clsx("lng1771-select__item-text", itemIndicatorClassName)}>
+                    {c.label}
+                  </S.ItemText>
+                  <S.ItemIndicator
+                    className={clsx("lng1771-select__item-indicator", itemTextClassName)}
+                  >
                     <CheckMark />
                   </S.ItemIndicator>
                 </S.Item>

@@ -16,6 +16,9 @@
   border-radius: 6px;
   height: 28px;
 
+  color: var(--lng1771-gray-80);
+  font-family: var(--lng1771-typeface);
+
   &:hover {
     background-color: var(--lng1771-gray-05);
   }
@@ -29,6 +32,7 @@
 .lng1771-select__value {
   flex: 1;
 }
+
 .lng1771-select__trigger {
   padding: 0px;
   display: flex;
@@ -47,6 +51,8 @@
     0px 14px 18px -6px rgba(30, 30, 41, 0.07),
     0px 3px 13px 0px rgba(30, 30, 41, 0.1);
   width: var(--anchor-width);
+
+  z-index: 100;
 
   &:focus {
     outline: none;
@@ -84,6 +90,10 @@
     outline: none;
     background-color: var(--lng1771-gray-30);
   }
+}
+
+.lng1771-select__item-indicator {
+  color: var(--lng1771-primary-50);
 }
 
 .lng1771-select__item-text {

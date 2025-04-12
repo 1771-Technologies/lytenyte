@@ -13,6 +13,7 @@ import { SortApplyButton } from "./sort-apply.js";
 import { SortCancelButton } from "./sort-cancel.js";
 import { SortClearButton } from "./sort-clear.js";
 import type { GridProReact } from "../types";
+import { Separator } from "../components-internal/separator/separator";
 
 interface SortManagerRootProps<D = any> {
   readonly grid: GridProReact<D>;
@@ -37,6 +38,7 @@ export const SortManager = {
   SortDirectionSelect: SortDirectionSelection,
   SortAdder: SortAdder,
   SortRemove: SortRemover,
+  Separator,
 
   SortApply: SortApplyButton,
   SortCancel: SortCancelButton,
