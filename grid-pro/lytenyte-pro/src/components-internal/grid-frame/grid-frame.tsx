@@ -5,7 +5,7 @@ import { clsx } from "@1771technologies/js-utils";
 import { Sizer } from "@1771technologies/react-sizer";
 import type { SplitPaneAxe } from "@1771technologies/react-split-pane";
 import { SplitPane, splitPaneAxe } from "@1771technologies/react-split-pane";
-import { useMemo, useState, type PropsWithChildren } from "react";
+import { useEffect, useMemo, useState, type PropsWithChildren } from "react";
 
 export interface GridFrameConfiguration {
   readonly axe?: SplitPaneAxe;
@@ -28,7 +28,30 @@ export function GridFrame<D>({
 
   const frame = openId ? frames[openId] : null;
 
+  const [width, setWidth] = useState(500);
   const [frameSplit, setFrameSplit] = useState(70);
+
+  useEffect(() => {
+    if (width < 500) {
+      setFrameSplit(1);
+      return;
+    }
+
+    setFrameSplit(70);
+  }, [width]);
+
+  const [el, setEl] = useState<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (!el) return;
+
+    const re = new ResizeObserver(() => {
+      setWidth(el.clientWidth);
+      api.panelFrameClose();
+    });
+    re.observe(el);
+
+    return () => re.disconnect();
+  }, [api, el]);
 
   const template = useMemo(() => {
     const f = ["1fr"];
@@ -44,6 +67,7 @@ export function GridFrame<D>({
       data-cell-selection-enabled={cellSelectionEnabled ? true : undefined}
       className="lng1771-grid-frame"
       style={{ gridTemplateColumns: template }}
+      ref={setEl}
     >
       {frame ? (
         <>
@@ -61,9 +85,13 @@ export function GridFrame<D>({
               </Sizer>
             }
             split={frame ? frameSplit : 100}
-            onSplitChange={(n) => setFrameSplit(n)}
-            min={20}
-            max={80}
+            onSplitChange={(n) => {
+              console.log("n");
+              setFrameSplit(n);
+            }}
+            min={width < 500 ? 0 : 20}
+            max={width < 500 ? 100 : 80}
+            disabled={width < 500}
             splitterClassName="lng1771-grid-frame__open-panel--splitter"
           />
         </>

@@ -37,6 +37,7 @@ export interface SplitPaneProps {
   readonly splitterStyle?: CSSProperties;
 
   readonly rtl?: boolean;
+  readonly disabled?: boolean;
 
   readonly primary: ReactNode;
   readonly secondary: ReactNode;
@@ -63,6 +64,7 @@ export function SplitPane({
   secondaryStyle,
   splitterClassName,
   splitterStyle,
+  disabled,
 
   primary,
   secondary,
@@ -97,6 +99,7 @@ export function SplitPane({
   const ref = useRef<HTMLDivElement | null>(null);
   const isV = orientation === "vertical";
   const handleDrag = (ev: PointerEvent) => {
+    if (disabled) return;
     const container = ref.current!;
     const bb = container.getBoundingClientRect();
     const start = isV ? getClientX(ev.nativeEvent) - bb.left : getClientY(ev.nativeEvent) - bb.top;
@@ -147,6 +150,7 @@ export function SplitPane({
       </div>
       <div
         role="separator"
+        data-disabled={disabled}
         tabIndex={0}
         onKeyDown={(ev) => {
           const increase = isV ? (rtl ? "ArrowLeft" : "ArrowRight") : "ArrowDown";

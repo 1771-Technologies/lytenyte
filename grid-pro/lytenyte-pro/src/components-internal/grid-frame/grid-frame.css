@@ -24,6 +24,10 @@
   position: relative;
   cursor: col-resize;
 
+  &[data-disabled="true"] {
+    cursor: initial;
+  }
+
   &::after {
     position: absolute;
     inset-inline-start: -4px;

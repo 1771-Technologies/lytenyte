@@ -38,6 +38,10 @@ export default function Play() {
       },
     },
 
+    panelFrameButtons: [{ id: "columns", label: "Columns" }],
+    panelFrames: {
+      columns: { component: () => <div>l</div>, title: "x" },
+    },
     columnBase: {
       resizable: true,
       movable: true,
