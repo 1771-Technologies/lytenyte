@@ -1,5 +1,6 @@
 import { forwardRef, useMemo, type JSX } from "react";
 import { clsx } from "@1771technologies/js-utils";
+import { useDroppable as useNativeDrop } from "@1771technologies/react-dragon";
 import { useAggregationSource } from "./use-aggregation-source";
 import { useMeasuresSource } from "./use-measures-source";
 import { useColumnSource } from "./use-column-source";
@@ -14,6 +15,8 @@ import {
 import { useCombinedRefs } from "@1771technologies/react-utils";
 import type { DragTag, PillProps } from "../pill-manager-types";
 import { usePillRow } from "../pill-manager-row";
+import { useGrid } from "../../use-grid";
+import type { ColumnProReact } from "@1771technologies/grid-types/pro-react";
 
 export const PillManagerPills = forwardRef<
   HTMLDivElement,
@@ -62,6 +65,30 @@ export const PillManagerPills = forwardRef<
     data: dropData,
   });
 
+  const grid = useGrid();
+  const gridId = grid.state.gridId.use();
+
+  const {
+    canDrop: canDropNative,
+    onDragOver,
+    onDrop,
+  } = useNativeDrop({
+    tags: pillSource === "row-groups" ? [`${gridId}:grid:groupable`] : [],
+    onDrop: (p) => {
+      const data = p.getData() as { columns: ColumnProReact[] };
+      const column = data?.columns?.[0];
+      document.body.classList.remove("lng1771-drag-on");
+      if (!column) return;
+
+      const id = column.id;
+
+      grid.state.rowGroupModel.set((prev) => [...prev, id]);
+      grid.api.columnUpdate(column, { hide: true });
+    },
+  });
+
+  const canDropEither = canDrop || canDropNative;
+
   const combined = useCombinedRefs(dropRef, ref);
 
   const store = useDragStore();
@@ -74,16 +101,18 @@ export const PillManagerPills = forwardRef<
   return (
     <div
       {...props}
+      onDragOver={onDragOver}
+      onDrop={onDrop}
       className={clsx("lng1771-pill-manager__pills", props.className)}
       data-is-drop-target={isTarget}
       ref={allRefs}
       data-pill-source={pillSource}
-      data-drop-visible={canDrop && sourceItems.filter((c) => c.active).length === 0}
+      data-drop-visible={canDropEither && sourceItems.filter((c) => c.active).length === 0}
       tabIndex={-1}
     >
       <div className="lng1771-pill-manager__pills-inner">
         {children({ pills: sourceItems })}
-        {canDrop && isNearestOver && sourceItems.filter((c) => c.active).length > 0 && (
+        {canDropEither && isNearestOver && sourceItems.filter((c) => c.active).length > 0 && (
           <div className="lng1771-pill-manager__drop-indicator-end" />
         )}
       </div>

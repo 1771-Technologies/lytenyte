@@ -58,6 +58,9 @@ body.lng1771-drag-on
   .lng1771-pill-manager__pill-outer[data-pill-active="false"] {
   display: none;
 }
+body.lng1771-drag-on .lng1771-pill-manager__pill-outer[data-pill-active="false"] {
+  display: none;
+}
 
 /** Pill CONTAINER **/
 .lng1771-pill-manager__pills {

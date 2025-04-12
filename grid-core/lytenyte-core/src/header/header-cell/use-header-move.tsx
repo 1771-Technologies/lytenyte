@@ -8,8 +8,25 @@ export function useHeaderMove(
 ) {
   const gridId = api.getState().gridId.use();
   const dragProps = useDraggable({
+    onDragStart: () => {
+      document.body.classList.add("lng1771-drag-on");
+    },
+    onDragEnd: () => {
+      document.body.classList.remove("lng1771-drag-on");
+    },
+    onDragCancel: () => {
+      document.body.classList.remove("lng1771-drag-on");
+    },
     dragData: () => ({ columns: [column], columnIndex }),
-    dragTags: () => [`${gridId}:grid:${column.pin ?? "none"}`],
+    dragTags: () => {
+      const c = [`${gridId}:grid:${column.pin ?? "none"}`];
+
+      const groupable = api.columnIsRowGroupable(column);
+      const isGrouped = api.getState().rowGroupModel.peek().includes(column.id);
+      if (groupable && !isGrouped) c.push(`${gridId}:grid:groupable`);
+
+      return c;
+    },
     placeholder: () => <DragPlaceholder column={column} />,
   });
 
