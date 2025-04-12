@@ -1,5 +1,7 @@
 # @1771technologies/grid-tree-data-source
 
+## 0.0.43
+
 ## 0.0.42
 
 ## 0.0.41
