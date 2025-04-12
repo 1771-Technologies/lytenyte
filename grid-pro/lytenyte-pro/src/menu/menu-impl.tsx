@@ -16,9 +16,7 @@ export const MenuSubmenu = ({
     <Menu.Root {...props}>
       {trigger}
 
-      <Menu.Portal>
-        <Menu.Positioner>{children}</Menu.Positioner>
-      </Menu.Portal>
+      <Menu.Portal>{children}</Menu.Portal>
     </Menu.Root>
   );
 };
