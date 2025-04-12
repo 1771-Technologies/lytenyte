@@ -2,6 +2,9 @@
   position: fixed;
   z-index: 100;
 
+  color: var(--lng1771-gray-80);
+  font-family: var(--lng1771-typeface);
+
   top: 20%;
   left: 50%;
   transform: translate(-50%, -50%);

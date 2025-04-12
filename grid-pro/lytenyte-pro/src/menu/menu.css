@@ -11,6 +11,9 @@
 
   transition: opacity 150ms;
 
+  color: var(--lng1771-gray-80);
+  font-family: var(--lng1771-typeface);
+
   &:focus {
     outline: none;
   }
