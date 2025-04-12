@@ -180,11 +180,17 @@ export function initializeInternalState<D, E>(
     floatingFrameOpen: signal<string | null>(null),
 
     panelFrameOpen: signal<string | null>(null),
+    panelFrameContext: signal<any>(null),
     dialogFrameOpen: signal<string | null>(null),
+    dialogFrameContext: signal<any>(null),
+
     popoverFrameOpen: signal<string | null>(null),
     popoverFrameBB: signal<TargetPro | null>(null),
+    popoverFrameContext: signal<any>(null),
+
     menuFrameOpen: signal<string | null>(null),
     menuFrameBB: signal<TargetPro | null>(null),
+    menuFrameContext: signal<any>(null),
 
     rowRefreshCount,
     rowBackingDataSource,

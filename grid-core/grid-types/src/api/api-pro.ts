@@ -77,16 +77,16 @@ export interface ApiProRaw<D, C, E>
   ) => Promise<void>;
   readonly clipboardPasteCells: (rect?: CellSelectionRect | null) => Promise<void>;
 
-  readonly panelFrameOpen: (id: string) => void;
+  readonly panelFrameOpen: (id: string, context?: any) => void;
   readonly panelFrameClose: () => void;
 
-  readonly dialogFrameOpen: (id: string) => void;
+  readonly dialogFrameOpen: (id: string, context?: any) => void;
   readonly dialogFrameClose: () => void;
 
-  readonly popoverFrameOpen: (id: string, bb: Target) => void;
+  readonly popoverFrameOpen: (id: string, bb: Target, context?: any) => void;
   readonly popoverFrameClose: () => void;
 
-  readonly menuFrameOpen: (id: string, bb: Target) => void;
+  readonly menuFrameOpen: (id: string, bb: Target, context?: any) => void;
   readonly menuFrameClose: () => void;
 
   readonly rowReload: () => void;

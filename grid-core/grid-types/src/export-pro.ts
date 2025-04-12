@@ -250,8 +250,16 @@ export type {
 export type { ColumnPivotEventParamsPro, ColumnPivotEventPro } from "./types/column-pivot-pro.js";
 
 export type {
+  DialogFrameComponentParamsPro,
+  DialogFrameComponentPro,
   DialogFramePro,
+  PanelFrameComponentParamsPro,
+  PanelFrameComponentPro,
   PanelFramePro,
+  PopoverFrameComponentParamsPro,
+  PopoverFrameComponentPro,
   PopoverFramePro,
+  MenuFrameComponentParamsPro,
+  MenuFrameComponentPro,
   MenuFramePro,
 } from "./types/component-frames-pro.js";

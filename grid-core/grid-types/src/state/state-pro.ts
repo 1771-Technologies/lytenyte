@@ -81,13 +81,17 @@ export interface GridInternalState<D, E> extends Omit<CoreInternal<D, E>, CoreOm
   readonly floatingFrameOpen: Signal<string | null>;
 
   readonly panelFrameOpen: Signal<string | null>;
+  readonly panelFrameContext: Signal<any>;
   readonly dialogFrameOpen: Signal<string | null>;
+  readonly dialogFrameContext: Signal<any>;
 
   readonly popoverFrameOpen: Signal<string | null>;
   readonly popoverFrameBB: Signal<Target | null>;
+  readonly popoverFrameContext: Signal<any>;
 
   readonly menuFrameOpen: Signal<string | null>;
   readonly menuFrameBB: Signal<Target | null>;
+  readonly menuFrameContext: Signal<any>;
 }
 
 type Props<D, E> = Required<Init<D, E>>;
