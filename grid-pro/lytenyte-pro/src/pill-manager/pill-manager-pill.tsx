@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useState, type JSX } from "react";
 import { Pill } from "../pill/pill";
 import { useDroppable as useNativeDrop } from "@1771technologies/react-dragon";
-import { DragIcon } from "../icons";
+import { DragIcon, MoreDotsIcon } from "../icons";
 import { useDraggable, useDroppable } from "@1771technologies/lytenyte-core/internal";
 import { useCombinedRefs } from "@1771technologies/react-utils";
 import { useGrid } from "../use-grid";
@@ -14,8 +14,11 @@ import type { ColumnProReact } from "../types";
 
 export const PillManagerPill = forwardRef<
   HTMLDivElement,
-  Omit<JSX.IntrinsicElements["div"], "children"> & { item: PillManagerPillItem }
->(function PillManagerPill({ item, ...props }, ref) {
+  Omit<JSX.IntrinsicElements["div"], "children"> & {
+    item: PillManagerPillItem;
+    menu?: string;
+  }
+>(function PillManagerPill({ item, menu, ...props }, ref) {
   const {
     ref: dropRef,
     isTarget,
@@ -128,6 +131,11 @@ export const PillManagerPill = forwardRef<
               </Menu.Positioner>
             </Menu.Portal>
           </Menu.Root>
+        )}
+        {menu && (
+          <button className="lng1771-pill-manager__menu-trigger" style={{ marginRight: -4 }}>
+            <MoreDotsIcon width={14} height={14} />
+          </button>
         )}
       </Pill>
       {canDrop && (rtl ? "left" : "right") === xHalf && (

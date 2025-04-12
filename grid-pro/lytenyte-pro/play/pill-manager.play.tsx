@@ -59,7 +59,7 @@ export default function Play() {
                   return (
                     <>
                       {pills.map((c) => (
-                        <PillManager.Pill key={c.label} item={c} />
+                        <PillManager.Pill key={c.label} item={c} menu="$" />
                       ))}
                     </>
                   );
