@@ -63,7 +63,7 @@ export function Select({
         </S.Icon>
       </S.Trigger>
       <S.Portal>
-        <S.Positioner sideOffset={8}>
+        <S.Positioner sideOffset={8} className="lng1771-select__positioner">
           <S.Popup className={clsx("lng1771-select__popup", popupClassName)}>
             {options.map((c) => {
               return (

@@ -24,20 +24,6 @@
   }
 }
 
-.lng1771-popover__arrow {
-  &[data-side="bottom"] {
-    top: -14px;
-  }
-  &[data-side="left"] {
-    right: -14px;
-    transform: rotate(90deg);
-  }
-  &[data-side="right"] {
-    left: -14px;
-    transform: rotate(-90deg);
-  }
-  &[data-side="top"] {
-    bottom: -14px;
-    transform: rotate(180deg);
-  }
+.lng1771-popover__positioner {
+  z-index: 100;
 }

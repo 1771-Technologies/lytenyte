@@ -41,6 +41,10 @@
   color: var(--lng1771-gray-70);
 }
 
+.lng1771-select__positioner {
+  z-index: 100;
+}
+
 .lng1771-select__popup {
   background-color: var(--lng1771-gray-10);
   border: 1px solid var(--lng1771-gray-30);
@@ -51,8 +55,6 @@
     0px 14px 18px -6px rgba(30, 30, 41, 0.07),
     0px 3px 13px 0px rgba(30, 30, 41, 0.1);
   width: var(--anchor-width);
-
-  z-index: 100;
 
   &:focus {
     outline: none;
