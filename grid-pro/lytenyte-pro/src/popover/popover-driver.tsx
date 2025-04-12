@@ -9,6 +9,7 @@ export function PopoverDriver() {
   const frames = grid.state.popoverFrames.use();
   const frameId = grid.state.internal.popoverFrameOpen.use();
   const frameBB = grid.state.internal.popoverFrameBB.use();
+  const frameContext = grid.state.internal.popoverFrameContext.use();
   const frame = frameId ? frames[frameId] : null;
 
   const [open, setOpen] = useState(false);
@@ -31,7 +32,11 @@ export function PopoverDriver() {
       }}
     >
       <AnchorProvider anchor={frameBB}>
-        <P.Portal>{frame && frameBB && <frame.component api={grid.api} frame={frame} />}</P.Portal>
+        <P.Portal>
+          {frame && frameBB && (
+            <frame.component api={grid.api} frame={frame} context={frameContext} />
+          )}
+        </P.Portal>
       </AnchorProvider>
     </P.Root>
   );

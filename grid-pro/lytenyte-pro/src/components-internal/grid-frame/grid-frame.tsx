@@ -53,7 +53,11 @@ export function GridFrame<D>({
             primary={<div className="lng1771-grid-frame__grid-area">{children}</div>}
             secondary={
               <Sizer className="lng1771-grid-frame__open-panel">
-                <frame.component api={api} frame={frame} />
+                <frame.component
+                  api={api}
+                  frame={frame}
+                  context={state.internal.panelFrameContext.peek()}
+                />
               </Sizer>
             }
             split={frame ? frameSplit : 100}

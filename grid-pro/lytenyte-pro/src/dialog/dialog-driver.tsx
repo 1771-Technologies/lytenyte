@@ -7,6 +7,7 @@ export function DialogDriver() {
 
   const frames = grid.state.dialogFrames.use();
   const frameId = grid.state.internal.dialogFrameOpen.use();
+  const context = grid.state.internal.dialogFrameContext.use();
   const frame = frameId ? frames[frameId] : null;
 
   const [open, setOpen] = useState(false);
@@ -28,7 +29,9 @@ export function DialogDriver() {
         if (!c) grid.api.dialogFrameClose();
       }}
     >
-      <Dialog.Portal>{frame && <frame.component api={grid.api} frame={frame} />}</Dialog.Portal>
+      <Dialog.Portal>
+        {frame && <frame.component api={grid.api} frame={frame} context={context} />}
+      </Dialog.Portal>
     </Dialog.Root>
   );
 }

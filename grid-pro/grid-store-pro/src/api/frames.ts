@@ -13,24 +13,22 @@ export const frames = <D, E>(
   menuFrameClose: ApiPro<D, E>["menuFrameClose"];
 } => {
   return {
-    panelFrameOpen: (id) => {
+    panelFrameOpen: (id, context) => {
       const s = api.getState();
       const frames = s.panelFrames.peek();
       const frame = frames[id];
       if (!frame) return;
 
       s.internal.panelFrameOpen.set(id);
+      s.internal.panelFrameContext.set(context);
     },
     panelFrameClose: () => {
       const s = api.getState();
       s.internal.panelFrameOpen.set(null);
+      s.internal.panelFrameContext.set(null);
     },
 
-    dialogFrameClose: () => {
-      const s = api.getState();
-      s.internal.dialogFrameOpen.set(null);
-    },
-    dialogFrameOpen: (id) => {
+    dialogFrameOpen: (id, context) => {
       const s = api.getState();
       const frames = s.dialogFrames.peek();
       const frame = frames[id];
@@ -38,15 +36,15 @@ export const frames = <D, E>(
       if (!frame) return;
 
       s.internal.dialogFrameOpen.set(id);
+      s.internal.dialogFrameContext.set(context);
     },
-
-    popoverFrameClose: () => {
+    dialogFrameClose: () => {
       const s = api.getState();
-      s.internal.popoverFrameOpen.set(null);
-      s.internal.popoverFrameBB.set(null);
+      s.internal.dialogFrameOpen.set(null);
+      s.internal.dialogFrameContext.set(null);
     },
 
-    popoverFrameOpen: (id, bb) => {
+    popoverFrameOpen: (id, bb, context) => {
       const s = api.getState();
       const frames = s.popoverFrames.peek();
       const frame = frames[id];
@@ -55,9 +53,16 @@ export const frames = <D, E>(
 
       s.internal.popoverFrameOpen.set(id);
       s.internal.popoverFrameBB.set(bb);
+      s.internal.popoverFrameContext.set(context);
+    },
+    popoverFrameClose: () => {
+      const s = api.getState();
+      s.internal.popoverFrameOpen.set(null);
+      s.internal.popoverFrameBB.set(null);
+      s.internal.popoverFrameContext.set(null);
     },
 
-    menuFrameOpen: (id, bb) => {
+    menuFrameOpen: (id, bb, context) => {
       const s = api.getState();
       const frames = s.menuFrames.peek();
       const frame = frames[id];
@@ -66,11 +71,13 @@ export const frames = <D, E>(
 
       s.internal.menuFrameOpen.set(id);
       s.internal.menuFrameBB.set(bb);
+      s.internal.menuFrameContext.set(context);
     },
     menuFrameClose: () => {
       const s = api.getState();
       s.internal.menuFrameOpen.set(null);
       s.internal.menuFrameBB.set(null);
+      s.internal.menuFrameContext.set(null);
     },
   } satisfies {
     panelFrameClose: ApiPro<D, E>["panelFrameClose"];

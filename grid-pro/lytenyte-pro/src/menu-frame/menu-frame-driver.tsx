@@ -9,6 +9,7 @@ export function MenuFrameDriver() {
   const frames = grid.state.menuFrames.use();
   const frameId = grid.state.internal.menuFrameOpen.use();
   const frameBB = grid.state.internal.menuFrameBB.use();
+  const context = grid.state.internal.menuFrameContext.use();
   const frame = frameId ? frames[frameId] : null;
 
   const [open, setOpen] = useState(false);
@@ -31,7 +32,9 @@ export function MenuFrameDriver() {
       }}
     >
       <AnchorProvider anchor={frameBB}>
-        <M.Portal>{frame && frameBB && <frame.component api={grid.api} frame={frame} />}</M.Portal>
+        <M.Portal>
+          {frame && frameBB && <frame.component api={grid.api} frame={frame} context={context} />}
+        </M.Portal>
       </AnchorProvider>
     </M.Root>
   );
