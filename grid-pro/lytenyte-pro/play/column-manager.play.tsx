@@ -52,13 +52,6 @@ export default function Play() {
           flex: 1;
         `}
       >
-        <LyteNyteGrid grid={grid} />
-      </div>
-      <div
-        className={css`
-          flex: 1;
-        `}
-      >
         <ColumnManager.Root
           grid={grid}
           className={css`

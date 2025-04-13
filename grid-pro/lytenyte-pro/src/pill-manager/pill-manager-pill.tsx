@@ -165,7 +165,7 @@ function DragHandle({
   item: PillManagerPillItem;
   setIsDragging: (b: boolean) => void;
 }) {
-  const { onPointerDown, isActive } = useDraggable({
+  const { setDrag, isActive } = useDraggable({
     id: item.label,
     getTags: () => item.dragTags,
     getData: () => item?.dragData,
@@ -187,11 +187,7 @@ function DragHandle({
   }, [isActive, setIsDragging]);
 
   return (
-    <button
-      tabIndex={-1}
-      className="lng1771-pill-manager__pill-dragger"
-      onPointerDown={onPointerDown}
-    >
+    <button tabIndex={-1} className="lng1771-pill-manager__pill-dragger" ref={setDrag}>
       <DragIcon width={16} height={16} />
     </button>
   );

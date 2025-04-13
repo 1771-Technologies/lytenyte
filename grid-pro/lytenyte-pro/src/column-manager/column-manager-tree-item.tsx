@@ -32,7 +32,7 @@ export const ColumnManagerTreeItem = forwardRef<
     return { target: "columns", ids, isGroup: ci.data.type === "parent" };
   }, [ci.data]);
 
-  const { onPointerDown } = useDraggable({
+  const { setDrag } = useDraggable({
     id: ci.data.type === "leaf" ? ci.data.data.id : ci.data.occurrence,
     getData: () => {
       const columns = ci.data.type === "leaf" ? [ci.data.data] : allLeafs(ci.data);
@@ -159,7 +159,7 @@ export const ColumnManagerTreeItem = forwardRef<
         {canDrop && yHalf === "bottom" && (
           <div className="lng1771-column-manager__tree-item-drop-indicator-bottom" />
         )}
-        <DragIcon width={16} height={16} onPointerDown={onPointerDown} />
+        <DragIcon width={16} height={16} dragRef={setDrag as any} />
         <Checkbox
           htmlFor={labelId}
           aria-labelledby={labelId}
@@ -215,7 +215,7 @@ export const ColumnManagerTreeItem = forwardRef<
             <ArrowRightIcon id={id} width={16} height={16} />
           )}
         </button>
-        <DragIcon width={16} height={16} onPointerDown={onPointerDown} />
+        <DragIcon width={16} height={16} dragRef={setDrag as any} />
         <Checkbox
           htmlFor={labelId}
           aria-labelledby={labelId}
