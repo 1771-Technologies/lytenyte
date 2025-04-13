@@ -56,7 +56,7 @@ export default function Play() {
       </div>
       <div
         className={css`
-          flex: 1;
+          width: 30%;
         `}
       >
         <SortManager.Root grid={grid}>

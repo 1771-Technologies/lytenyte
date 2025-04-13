@@ -22,7 +22,7 @@ export function useInFilter<D>(api: ApiProReact<D>, column: ColumnProReact<D>) {
   useEffect(() => {
     setValues(() => {
       const filter = filters[column.id]?.set;
-      if (!filter) return null;
+      if (!filter || !filter.set.size) return null;
 
       return new Set(filter ? new Set(filter.set) : null);
     });

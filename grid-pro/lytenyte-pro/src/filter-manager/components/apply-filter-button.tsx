@@ -24,7 +24,7 @@ export const FilterManagerApplyButton = forwardRef<
           newFilters[column.id].simple = combined;
         }
 
-        if (inFilterValue) {
+        if (inFilterValue || filters[column.id]?.set) {
           newFilters[column.id] ??= {};
           newFilters[column.id].set = inFilterValue?.size
             ? {
