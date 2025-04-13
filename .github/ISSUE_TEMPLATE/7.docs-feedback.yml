@@ -1,40 +1,37 @@
 name: "📜 Documentation Feedback"
 description: Submit suggestions for improving LyteNyte Grid documentation.
-labels: ["pending", "docs-feedback"]
+labels: ["documentation feedback", "status: triage"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thank you for taking the time to provide documentation feedback.
+        Thank you for taking the time to help improve [LyteNyte Grid's](https://github.com/1771-Technologies/lytenyte) documentation. 
+        Please provide a clear, informative, and searchable summary title above.
 
-        This tracker is specifically for suggesting improvements to the 
-        [LyteNyte Grid](https://github.com/1771-Technologies/lytenyte) documentation. For bug reports or 
-        feature requests, please use the appropriate issue templates.
-
-        The more details you provide, the better we can improve our documentation.
-
+        For bug reports, regressions, feature requests, or general questions about 
+        using LyteNyte Grid, please use the appropriate issue template.
   - type: input
     attributes:
       label: Search Keywords
       description: |
-        Please check if your feedback has already been suggested in our [existing feedback](https://github.com/1771-Technologies/lytenyte/issues).
-        If not, list keywords that others might use to find this feedback in the future.
+        Before submitting your feedback, please review our [existing feedback](https://github.com/1771-Technologies/lytenyte/issues)
+        to ensure there are no duplicates. If no match is found, list the keywords you used to improve future discoverability.
     validations:
       required: false
 
   - type: checkboxes
     attributes:
-      label: Latest version
-      description: We roll bug fixes, performance enhancements, and other improvements into new releases.
+      label: Latest Version
+      description: We integrate bug fixes, performance enhancements, and other improvements in each new release.
       options:
-        - label: I have tested with the latest version
+        - label: I have tested the latest version
           required: true
 
   - type: input
     id: page-url
     attributes:
       label: Related Page
-      description: Which page of the documentation does this feedback apply to?
+      description: Please paste the URL of the documentation page that your feedback refers to.
       placeholder: https://1771technologies/docs/
     validations:
       required: true
@@ -42,11 +39,13 @@ body:
   - type: dropdown
     attributes:
       label: Feedback Type
-      description: What type of documentation issue are you reporting?
+      description: Select the type of documentation issue.
       options:
-        - Unclear explanations
-        - Missing information
-        - Broken demo
+        - Explanation is unclear
+        - Explanation lacks detail
+        - Information is outdated
+        - Information is missing
+        - Demo is broken
         - Other
     validations:
       required: true
@@ -55,13 +54,13 @@ body:
     id: description
     attributes:
       label: Your Feedback
-      description: Provide a clear and concise description of the suggested improvements.
+      description: Please describe what didn’t work and suggest how we can improve the documentation. Be as detailed and specific as possible.
     validations:
       required: true
 
   - type: input
     id: contact
     attributes:
-      label: Customer ID (optional)
-      description: License holders receive priority support. Your Customer ID helps us provide faster assistance.
+      label: Customer ID (Optional)
+      description: PRO license holders are entitled to priority review by including their customer ID when submitting documentation feedback.
       placeholder: "e.g. JANE-1221"
