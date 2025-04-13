@@ -48,10 +48,9 @@ body:
     id: plan
     attributes:
       label: License Plan
-      description: Choose your current license plan. If you don't have a paid license, select “Core.”
+      description: Choose your current license plan.
       multiple: false
       options:
-        - LyteNyte Core (free)
         - LyteNyte PRO
         - LyteNyte Organization PRO
     validations:
