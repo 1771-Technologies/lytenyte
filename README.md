@@ -7,22 +7,28 @@
   </picture>
   <br><br>
 
-  <h3>The Fastest <a style="color:#139C8C;" href="https://1771technologies.com">React Data Grid</a> 
-   Available on the Modern Web
-   </h3>
+  <h3>
+  The Fastest React Data Grid Available on the Modern Web
+  </h3>
 
 </div>
 <div align="center">
 
-Experience unmatched speed, memory efficiency, and a comprehensive feature set
-in a remarkably small bundle size. Engineered to help enterprises achieve exceptional results.
-Take complete control of your data with intuitive sorting, precise filtering, powerful
-row grouping, and data aggregation capabilities. All these features come standard in our free Core edition.
+Experience unrivaled performance, memory efficiency, and a
+comprehensive feature set, all in a tiny bundle size.
+LyteNyte Grid is designed to help developers handle large, real-time,
+and complex datasets without compromising speed or usability.
 
-Upgrade to PRO to access a wealth of advanced capabilities, including tree data structures and asynchronous data
-loading—just to name a few. Take advantage of our purpose-built UI components
-for column and view management. Create customized column menus, context menus,
-data exports, and popover dialogs with ease. And that's only scratching the surface of what LyteNyte PRO offers.
+The free **LyteNyte Grid Core** edition includes intuitive sorting, precise filtering, row grouping,
+and data aggregation capabilities, everything you need to take complete control of your data.
+
+Need more power? Upgrade to **LyteNyte Grid PRO** to access more advanced features like tree data structures,
+asynchronous data loading, and purpose-built UI components for managing columns, views, and exports.
+Build custom menus, popover dialogs, and dynamic workflows with ease.
+
+Meticulously engineered to redefine what your enterprise expects from a React data grid.
+
+[Compare Features](https://1771technologies.com/pricing)
 
 </div>
 
@@ -49,15 +55,16 @@ data exports, and popover dialogs with ease. And that's only scratching the surf
 
 ---
 
+## LyteNyte Editions
+
 LyteNyte Grid is available in two editions:
 
-1. **LyteNyte Core**: A free, feature-rich edition delivering essential high-performance
-   table capabilities including **row grouping**, **column autosizing**,
-   and **row detail** views. Licensed under Apache 2.0.
+1. **LyteNyte Grid Core**: A free, high-performance edition that delivers essential
+   table capabilities like **row grouping, column auto-sizing,** and **row detail** views.
 
-2. **LyteNyte PRO**: A premium commercial edition that enhances Core
-   functionality with enterprise-grade features such as **asynchronous data loading**,
-   **column manager components**, and **data exporting** capabilities.
+2. **LyteNyte Grid PRO**: An advanced enterprise edition that builds on Core with additional
+   features such as **asynchronous data loading, column manager components,** and 
+   **data exporting** capabilities.
 
 ## Key Design Principles
 
@@ -74,23 +81,31 @@ LyteNyte Grid is available in two editions:
 
 ## Quick Start
 
-- Begin with our comprehensive [getting started guide](https://www.1771technologies.com/docs/intro-getting-started)
-- Explore our flexible [pricing options](https://www.1771technologies.com/pricing) to find the ideal fit for your project
-- Follow our step-by-step [installation guide](https://www.1771technologies.com/docs/intro-installation) to seamlessly integrate LyteNyte Grid into your application
+- Begin with our comprehensive [getting started guide](https://www.1771technologies.com/docs/intro-getting-started).
+- Explore our flexible [pricing options](https://www.1771technologies.com/pricing) to find the ideal fit for your project.
+- Follow our step-by-step [installation guide](https://www.1771technologies.com/docs/intro-installation) to seamlessly integrate LyteNyte Grid into your application.
 
 ## Licensing
 
-**LyteNyte Core** is licensed under [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0), a permissive license
-that allows royalty-free commercial use with access to the foundational features that power LyteNyte Grid.
+LyteNyte Grid is available in two editions, Core and PRO, and offered under the following three license plans:
 
-**LyteNyte Grid PRO** is available under our [Commercial License](https://www.1771technologies.com/eula), a perpetual
-fallback license that unlocks the full potential of LyteNyte Grid with advanced features not available in the Core edition.
+1. Core License Plan: Free and open source, licensed under [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+   Includes LyteNyte Grid Core edition with foundational features like sorting, filtering, row grouping,
+   and column auto-sizing. Ideal for individual developers and community use.
+
+2. Developer PRO License Plan: A [commercial license](https://www.1771technologies.com/eula) for the PRO
+   edition, designed for individuals and teams with up to 50 developers. Unlocks the full potential of LyteNyte Grid
+   with advanced features unavailable in the Core edition.
+3. Organization PRO License Plan: A [commercial license](https://www.1771technologies.com/eula) for the PRO edition, tailored for teams
+   with 50+ developers. Includes all PRO features along with an enhanced support agreement and negotiated pricing terms.
+
+All **PRO licenses** are **perpetual** and include **12 months** of software updates, feature upgrades, and dedicated technical support.
 
 ## Support
 
-Our dedicated team is committed to the ongoing development and
-maintenance of both LyteNyte Grid Core and PRO editions. For details on
-support options and resources, please refer to our [support guide](https://www.1771technologies.com/support).
+Our team actively maintains and supports both the Core and PRO editions of LyteNyte Grid.
+Please refer to our [support guide](https://www.1771technologies.com/support) for detailed
+information on available support channels and response options.
 
 ## Contributing
 
@@ -104,9 +119,9 @@ process, bug reporting procedures, and codebase maintenance practices.
 
 ## Changelog
 
-Our detailed [changelog](https://www.1771technologies.com/docs/changelog/changelog) is regularly updated to
-document enhancements and fixes in each release. LyteNyte Grid
-adheres to [semantic versioning](https://semver.org/) standards for predictable release management.
+Our [changelog](https://www.1771technologies.com/docs/changelog/changelog) is regularly updated
+with detailed notes on new features, improvements, and bug fixes in each release.
+LyteNyte Grid follows [semantic versioning](https://semver.org/) to ensure clear and predictable upgrade paths.
 
 ## Security
 

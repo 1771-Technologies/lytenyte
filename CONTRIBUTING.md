@@ -13,9 +13,9 @@ we've decided not to accept external contributions.
 
 You can still contribute in other ways:
 
-- Create bug reports
-- Provide feedback on LyteNyte Grid
-- Suggest improvements to documentation
+- Create bug reports.
+- Provide feedback on LyteNyte Grid.
+- Suggest improvements to documentation.
 
 ## Future Contributions
 
