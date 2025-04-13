@@ -28,10 +28,7 @@ export function useCellEvents(
     const mode = sx.rowSelectionMode.peek();
     if (mode !== "none") {
       if (event.key === " ") {
-        const x = sx.rowSelectionSelectedIds.peek();
-        if (x.has(row.id)) api.rowSelectionDeselect([row.id]);
-        else api.rowSelectionSelect([row.id]);
-
+        handleRowSelection(api, row, false, false, true, "single-click");
         event.preventDefault();
       }
     }
