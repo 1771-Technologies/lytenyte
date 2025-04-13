@@ -1,6 +1,7 @@
 name: "🐞 Bug Report - LyteNyte Grid Core"
 description: Report a reproducible defect or regression in LyteNyte Grid Core.
 labels: ["bug", "edition: core", "status: triage"]
+type: "Bug"
 body:
   - type: markdown
     attributes:
