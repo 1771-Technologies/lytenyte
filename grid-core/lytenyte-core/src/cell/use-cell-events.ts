@@ -1,5 +1,5 @@
 import { useEvent } from "@1771technologies/react-utils";
-import type { MouseEvent } from "react";
+import type { KeyboardEvent, MouseEvent } from "react";
 import { handleRowSelection } from "./handle-row-selection";
 import type { ApiCoreReact, ColumnCoreReact } from "@1771technologies/grid-types/core-react";
 import type { RowNodeCore } from "@1771technologies/grid-types/core";
@@ -21,6 +21,20 @@ export function useCellEvents(
   const onPointerLeave = useEvent(() => {
     api.getState().internal.hoveredRow.set(null);
     api.getState().internal.hoveredCol.set(null);
+  });
+
+  const onKeyDown = useEvent((event: KeyboardEvent) => {
+    const sx = api.getState();
+    const mode = sx.rowSelectionMode.peek();
+    if (mode !== "none") {
+      if (event.key === " ") {
+        const x = sx.rowSelectionSelectedIds.peek();
+        if (x.has(row.id)) api.rowSelectionDeselect([row.id]);
+        else api.rowSelectionSelect([row.id]);
+
+        event.preventDefault();
+      }
+    }
   });
 
   const onClick = useEvent((event: MouseEvent) => {
@@ -45,5 +59,5 @@ export function useCellEvents(
     );
   });
 
-  return { onClick, onDoubleClick, onPointerEnter, onPointerLeave };
+  return { onClick, onDoubleClick, onPointerEnter, onPointerLeave, onKeyDown };
 }
