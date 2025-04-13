@@ -1,6 +1,6 @@
 name: "📜 Documentation Feedback"
 description: Submit suggestions for improving LyteNyte Grid documentation.
-labels: ["documentation feedback", "status: triage"]
+labels: ["documentation", "status: triage"]
 body:
   - type: markdown
     attributes:
