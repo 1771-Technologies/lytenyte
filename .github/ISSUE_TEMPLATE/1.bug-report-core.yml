@@ -1,5 +1,5 @@
-name: "🐛 Bug Report Core"
-description: Report a reproducible bug or regression in LyteNyte Grid
+name: "🐞 Bug Report - LyteNyte Grid Core"
+description: Report a reproducible defect or regression in LyteNyte Grid Core.
 labels: ["pending", "bug"]
 body:
   - type: markdown

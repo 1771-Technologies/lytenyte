@@ -1,5 +1,5 @@
-name: "🔥 Critical Bug Report"
-description: Report a bug that should be addressed with critical priority
+name: "💥 Critical Bug Report"
+description: Report a reproducible defect or regression requiring priority handling within 8 hours.
 labels: ["pending", "bug", "critical"]
 body:
   - type: markdown

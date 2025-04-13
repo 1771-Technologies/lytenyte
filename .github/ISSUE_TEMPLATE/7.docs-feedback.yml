@@ -1,5 +1,5 @@
-name: "📝 Documentation Feedback"
-description: Provide feedback to improve LyteNyte Grid documentation
+name: "📜 Documentation Feedback"
+description: Submit suggestions for improving LyteNyte Grid documentation.
 labels: ["pending", "docs-feedback"]
 body:
   - type: markdown

@@ -1,5 +1,5 @@
 name: "❓ General Question"
-description: Ask a general question about LyteNyte Grid
+description: Ask a general question regarding LyteNyte Grid.
 labels: ["pending", "question"]
 body:
   - type: markdown

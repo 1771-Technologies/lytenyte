@@ -1,5 +1,5 @@
-name: "🚨️ Priority Bug Report"
-description: Report a bug that should be addressed with super priority
+name: "‼️ Priority Bug Report"
+description: Report a reproducible defect or regression requiring priority handling within 16 working hours.
 labels: ["pending", "bug", "priority"]
 body:
   - type: markdown

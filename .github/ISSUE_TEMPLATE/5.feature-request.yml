@@ -1,5 +1,5 @@
-name: "💡 Feature Request"
-description: Request a new feature to be added to LyteNyte Grid
+name: "💎 Feature Request"
+description: Propose an innovative enhancement for LyteNyte Grid.
 labels: ["pending", "feature"]
 body:
   - type: markdown

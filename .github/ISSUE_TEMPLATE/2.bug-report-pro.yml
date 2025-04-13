@@ -1,5 +1,5 @@
-name: "🐞 Bug Report PRO"
-description: Report a bug that should be addressed with priority
+name: "👾 Bug Report - LyteNyte Grid Pro"
+description: Report a reproducible defect or regression in LyteNyte Grid PRO requiring priority handling within 24 working hours.
 labels: ["pending", "bug", "pro"]
 body:
   - type: markdown
