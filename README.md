@@ -59,23 +59,23 @@ Meticulously engineered to redefine what your enterprise expects from a React da
 
 LyteNyte Grid is available in two editions:
 
-1. **LyteNyte Grid Core**: A free, high-performance edition that delivers essential
+1. **LyteNyte Grid Core:** A free, high-performance edition that delivers essential
    table capabilities like **row grouping, column auto-sizing,** and **row detail** views.
 
-2. **LyteNyte Grid PRO**: An advanced enterprise edition that builds on Core with additional
+2. **LyteNyte Grid PRO:** An advanced enterprise edition that builds on Core with additional
    features such as **asynchronous data loading, column manager components,** and 
    **data exporting** capabilities.
 
 ## Key Design Principles
 
-- **Performance-First**: LyteNyte Grid is engineered with speed as a fundamental
+- **Performance-First:** LyteNyte Grid is engineered with speed as a fundamental
   priority, ensuring responsive performance even when handling large datasets.
 
-- **Modern Architecture**: Leveraging cutting-edge web technologies, LyteNyte
+- **Modern Architecture:** Leveraging cutting-edge web technologies, LyteNyte
   Grid utilizes native browser scroll functionality to keep the main
   thread unencumbered as users navigate through their data.
 
-- **React-Aligned Philosophy**: Adhering to React's core principles, LyteNyte Grid
+- **React-Aligned Philosophy:** Adhering to React's core principles, LyteNyte Grid
   implements one-way data binding and declarative rendering to
   maintain predictable state management.
 
@@ -89,14 +89,14 @@ LyteNyte Grid is available in two editions:
 
 LyteNyte Grid is available in two editions, Core and PRO, and offered under the following three license plans:
 
-1. Core License Plan: Free and open source, licensed under [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+1. **Core License Plan:** Free and open source, licensed under [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0).
    Includes LyteNyte Grid Core edition with foundational features like sorting, filtering, row grouping,
    and column auto-sizing. Ideal for individual developers and community use.
 
-2. Developer PRO License Plan: A [commercial license](https://www.1771technologies.com/eula) for the PRO
+2. **Developer PRO License Plan:** A [commercial license](https://www.1771technologies.com/eula) for the PRO
    edition, designed for individuals and teams with up to 50 developers. Unlocks the full potential of LyteNyte Grid
    with advanced features unavailable in the Core edition.
-3. Organization PRO License Plan: A [commercial license](https://www.1771technologies.com/eula) for the PRO edition, tailored for teams
+3. **Organization PRO License Plan:** A [commercial license](https://www.1771technologies.com/eula) for the PRO edition, tailored for teams
    with 50+ developers. Includes all PRO features along with an enhanced support agreement and negotiated pricing terms.
 
 All **PRO licenses** are **perpetual** and include **12 months** of software updates, feature upgrades, and dedicated technical support.
