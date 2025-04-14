@@ -107,7 +107,6 @@ export function initialize<D, E>(
 
     rowUpdateStackEnabled: signal(props.rowUpdateStackEnabled ?? false),
     rowUpdateStackMaxSize: signal(props.rowUpdateStackMaxSize ?? ROW_UPDATE_STACK_SIZE),
-    rowUseAbsolutePositioning: signal(props.rowUseAbsolutePositioning ?? false),
 
     rtl: signal(props.rtl ?? false),
 

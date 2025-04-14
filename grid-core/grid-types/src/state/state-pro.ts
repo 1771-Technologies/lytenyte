@@ -39,6 +39,7 @@ export interface GridInternalState<D, E> extends Omit<CoreInternal<D, E>, CoreOm
   readonly cellSelectionAdditiveRects: Signal<CellSelectionRect[] | null>;
   readonly cellSelectionIsDeselect: Signal<boolean>;
   readonly cellSelectionFlashOn: Signal<boolean>;
+  readonly cellSelectionSoftFocus: Signal<boolean>;
 
   readonly columnManagerTreeExpansions: Signal<Record<string, boolean>>;
   readonly columnManagerBoxExpansions: Signal<{

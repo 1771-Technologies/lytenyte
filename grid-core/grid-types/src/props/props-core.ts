@@ -96,7 +96,6 @@ export interface PropsCoreRaw<A, D, C, E, Base, Group> {
 
   readonly rowFullWidthPredicate?: null | RowFullWidthPredicate<A, D>;
   readonly rowFullWidthRenderer?: null | RowFullWidthRenderer<A, D, E>;
-  readonly rowUseAbsolutePositioning?: boolean;
 
   readonly rtl?: boolean;
 

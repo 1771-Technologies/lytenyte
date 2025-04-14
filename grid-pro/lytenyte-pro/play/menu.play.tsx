@@ -31,6 +31,7 @@ export default function Play() {
     columns: columns,
     rowDataSource: ds,
 
+    cellSelectionMode: "multi-range",
     rowSelectionMode: "multiple",
     rowSelectionCheckbox: "normal",
     rowDragEnabled: true,

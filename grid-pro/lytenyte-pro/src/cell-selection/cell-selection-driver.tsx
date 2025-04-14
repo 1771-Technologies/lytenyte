@@ -116,7 +116,7 @@ export function CellSelectionDriver() {
     };
 
     const pointerDown = (event: PointerEvent) => {
-      if (!isMultiRange && !isNormalClick(event)) {
+      if (!isNormalClick(event)) {
         document.removeEventListener("pointermove", pointerMove);
         event.preventDefault();
         return;
@@ -296,7 +296,11 @@ export function CellSelectionDriver() {
 
     const unsub = state.internal.navigatePosition.watch(() => {
       const pos = state.internal.navigatePosition.peek();
-      if (!pos) return;
+      if (!pos || state.internal.cellSelectionSoftFocus.peek()) {
+        state.internal.cellSelectionSoftFocus.set(false);
+        return;
+      }
+
       if (pos.kind !== GRID_CELL_POSITION) return state.cellSelections.set([]);
       else {
         const rect = adjustRectForRowAndCellSpan(api, {
@@ -320,6 +324,7 @@ export function CellSelectionDriver() {
     mode,
     state.cellSelections,
     state.internal.cellSelectionPivot,
+    state.internal.cellSelectionSoftFocus,
     state.internal.navigatePosition,
     viewport,
   ]);

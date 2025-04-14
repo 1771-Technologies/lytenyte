@@ -103,6 +103,7 @@ export function initializeInternalState<D, E>(
     cellSelectionIsDeselect: signal(false),
     cellSelectionPivot: signal<CellSelectionRectPro | null>(null),
     cellSelectionSplits: cellSelectionSplits(state),
+    cellSelectionSoftFocus: signal(false),
 
     columnMenuColumn: signal<ColumnPro<D, E> | null>(null),
     columnMenuTarget: signal<TargetPro | null>(null),

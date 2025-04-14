@@ -27,6 +27,12 @@ export function ContextMenuDriver() {
     }
   }, [menu]);
 
+  const soft = !!(
+    menu?.hoveredRow != null &&
+    menu.hoveredColumn != null &&
+    grid.api.cellSelectionIsSelected(menu.hoveredRow, menu.hoveredColumn)
+  );
+
   return (
     <Menu.Root
       open={open}
@@ -34,6 +40,9 @@ export function ContextMenuDriver() {
         setOpen(c);
       }}
       onOpenChangeComplete={(c) => {
+        if (c) {
+          grid.state.internal.cellSelectionSoftFocus.set(soft);
+        }
         if (!c) {
           grid.api.contextMenuClose();
           setMenu(null);
