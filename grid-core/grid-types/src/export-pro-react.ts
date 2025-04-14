@@ -209,6 +209,7 @@ export type OverlayRendererParamsProReact<D = any> = P.OverlayRendererParamsPro<
 export type ContextMenuGridTargetsProReact = P.ContextMenuGridTargetsPro;
 export type ContextMenuRendererProReact<D = any> = P.ContextMenuRendererPro<D, R>;
 export type ContextMenuRendererParamsProReact<D = any> = P.ContextMenuRendererParamsPro<D, R>;
+export type ContextMenuPredicateProReact<D = any> = P.ContextMenuPredicatePro<D, R>;
 export type TargetProReact = P.TargetPro;
 
 export type ColumnMenuRendererParamsProReact<D = any> = P.ColumnMenuRendererParamsPro<D, R>;

@@ -15,7 +15,7 @@ import type {
   PanelFrame,
   PopoverFrame,
 } from "../types/component-frames-pro";
-import type { ContextMenuRenderer } from "../types/context-menu-pro";
+import type { ContextMenuPredicate, ContextMenuRenderer } from "../types/context-menu-pro";
 import type { ColumnFilterModel } from "../types/filter-pro";
 import type { OverlayId, Overlays } from "../types/overlay-pro";
 import type { PropsCoreRaw } from "./props-core";
@@ -34,6 +34,7 @@ export interface PropsProRaw<A, D, C, E, Base, Group>
   readonly columnPivotModel?: string[];
 
   readonly contextMenuRenderer?: null | ContextMenuRenderer<A, E>;
+  readonly contextMenuPredicate?: null | ContextMenuPredicate<A>;
 
   readonly clipboardTransformCellValue?: ClipboardTransformCellValue<A, D, C> | null;
   readonly clipboardTransformHeader?: ClipboardTransformHeader<A, C> | null;

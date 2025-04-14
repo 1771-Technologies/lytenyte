@@ -121,6 +121,7 @@ export function initialize<D, E>(
 
     columnMenuRenderer: signal(props.columnMenuRenderer ?? null),
     contextMenuRenderer: signal(props.contextMenuRenderer ?? null),
+    contextMenuPredicate: signal(props.contextMenuPredicate ?? null),
 
     clipboardTransformCellValue: signal(props.clipboardTransformCellValue ?? null),
     clipboardTransformCopy: signal(props.clipboardTransformCopy ?? null),

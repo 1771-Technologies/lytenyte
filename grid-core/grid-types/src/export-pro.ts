@@ -238,6 +238,7 @@ export type {
 export type {
   ContextMenuGridTargetsPro,
   ContextMenuRendererPro,
+  ContextMenuPredicatePro,
   ContextMenuRendererParamsPro,
   TargetPro,
 } from "./types/context-menu-pro.js";

@@ -17,6 +17,7 @@ export function useContextMenuListener(
 
   const viewport = grid.state.internal.viewport.use();
   const menuRenderer = grid.state.contextMenuRenderer.use();
+  const predicate = grid.state.contextMenuPredicate.use();
 
   const target = grid.state.internal.contextMenuTarget.use();
   useEffect(() => {
@@ -65,6 +66,13 @@ export function useContextMenuListener(
           return;
         }
 
+        if (
+          predicate &&
+          !predicate({ api: grid.api, menuTarget, columnIndex: hoveredCell, rowIndex: hoveredRow })
+        ) {
+          return;
+        }
+
         setMenu({
           menuTarget: menuTarget,
           hoveredRow: hoveredRow,
@@ -105,5 +113,6 @@ export function useContextMenuListener(
     menuRenderer,
     viewport,
     setMenu,
+    predicate,
   ]);
 }

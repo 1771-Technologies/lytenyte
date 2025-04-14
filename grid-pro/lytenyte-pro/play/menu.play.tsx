@@ -90,6 +90,7 @@ export default function Play() {
       );
     },
 
+    contextMenuPredicate: (t) => t.menuTarget === "cell",
     contextMenuRenderer: () => {
       return (
         <MenuPositioner>
