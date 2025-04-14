@@ -46,7 +46,6 @@ body:
       description: Choose your current license plan.
       multiple: false
       options:
-        - LyteNyte PRO
         - LyteNyte Organization PRO
     validations:
       required: true

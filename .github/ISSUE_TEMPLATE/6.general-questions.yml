@@ -5,12 +5,9 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thank you for taking the time to ask a question about [LyteNyte Grid](https://github.com/1771-Technologies/lytenyte). 
-        Please provide a clear, informative, and searchable summary title above.  
+        Thank you for taking the time to ask a question about [LyteNyte Grid](https://github.com/1771-Technologies/lytenyte). Please provide a clear, informative, and searchable summary title above. 
 
-        If you're asking a question about a bug or regression in LyteNyte Grid, or 
-        want to request a new feature, please use the appropriate issue template.
-
+        If you're asking a question about a bug or regression in LyteNyte Grid, or want to request a new feature, please use the appropriate issue template.
   - type: input
     attributes:
       label: Search Keywords
@@ -36,13 +33,14 @@ body:
       options:
         - Core
         - PRO
+    validations:
+      required: true
 
   - type: markdown
     attributes:
       value: |
         > [!NOTE]
-        > Only PRO license holders can submit questions related to the PRO edition of LyteNyte Grid. 
-        > These questions will count towards the support request limit detailed in your PRO license plan.
+        > Only PRO license holders can submit questions related to the PRO edition of LyteNyte Grid. These questions will count towards the support request limit detailed in your PRO license plan.
 
   - type: textarea
     id: description

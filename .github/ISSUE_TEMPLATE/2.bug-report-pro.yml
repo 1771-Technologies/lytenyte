@@ -1,4 +1,4 @@
-name: "👾 Bug Report - LyteNyte Grid Pro"
+name: "👾 Bug Report - LyteNyte Grid PRO"
 description: Report a reproducible defect or regression in LyteNyte Grid PRO requiring priority handling within 24 working hours.
 labels: ["bug", "edition: pro", "status: triage"]
 type: "Bug"

@@ -5,11 +5,9 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thank you for taking the time to help improve [LyteNyte Grid's](https://github.com/1771-Technologies/lytenyte) documentation. 
-        Please provide a clear, informative, and searchable summary title above.
+        Thank you for taking the time to help improve [LyteNyte Grid's](https://github.com/1771-Technologies/lytenyte) documentation. Please provide a clear, informative, and searchable summary title above.
 
-        For bug reports, regressions, feature requests, or general questions about 
-        using LyteNyte Grid, please use the appropriate issue template.
+        For bug reports, regressions, feature requests, or general questions about using LyteNyte Grid, please use the appropriate issue template.
   - type: input
     attributes:
       label: Search Keywords

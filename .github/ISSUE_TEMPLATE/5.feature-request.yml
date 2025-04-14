@@ -1,6 +1,6 @@
 name: "💎 Feature Request"
 description: Propose an innovative enhancement for LyteNyte Grid.
-labels: ["feature request", "status: triage"],
+labels: ["feature request", "status: triage"]
 type: "Feature"
 body:
   - type: markdown
