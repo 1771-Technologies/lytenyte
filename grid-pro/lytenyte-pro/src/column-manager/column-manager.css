@@ -50,6 +50,7 @@
   font-size: 14px;
   color: var(--lng1771-gray-80);
   font-family: var(--lng1771-typeface);
+  white-space: nowrap;
   position: relative;
   overflow: hidden;
 }
