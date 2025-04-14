@@ -52,7 +52,7 @@ body:
     id: description
     attributes:
       label: Your Feedback
-      description: Please describe what didn’t work and suggest how we can improve the documentation. Be as detailed and specific as possible.
+      description: Please describe what didn't work and suggest how we can improve the documentation. Be as detailed and specific as possible.
     validations:
       required: true
 
