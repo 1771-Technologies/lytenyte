@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useEdgeScroll } from "../use-edge-scroll";
 import { useGrid } from "../use-grid";
 import {
+  equal,
   getClientX,
   getClientY,
   getRelativeXPosition,
@@ -294,12 +295,17 @@ export function CellSelectionDriver() {
       { signal: controller.signal },
     );
 
+    let previousPos = state.internal.navigatePosition.peek();
     const unsub = state.internal.navigatePosition.watch(() => {
       const pos = state.internal.navigatePosition.peek();
+
       if (!pos || state.internal.cellSelectionSoftFocus.peek()) {
         state.internal.cellSelectionSoftFocus.set(false);
         return;
       }
+
+      if (equal(previousPos, pos)) return;
+      previousPos = pos;
 
       if (pos.kind !== GRID_CELL_POSITION) return state.cellSelections.set([]);
       else {
