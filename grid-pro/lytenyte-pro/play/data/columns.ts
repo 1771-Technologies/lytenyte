@@ -17,7 +17,13 @@ export const columns: ColumnProReact<any>[] = [
       subTitle: "RTM",
     },
   },
-  { id: "job", rowGroupable: true, widthFlex: 1 },
+  {
+    id: "job",
+    rowGroupable: true,
+    widthFlex: 1,
+    quickSearchField: "job",
+    filterSupportsQuickSearch: true,
+  },
   {
     id: "balance",
     type: "number",

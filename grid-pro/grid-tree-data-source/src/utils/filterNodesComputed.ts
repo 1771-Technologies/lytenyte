@@ -26,9 +26,9 @@ export function filterNodesComputed<D, E>(
 
     const caseSensitive = hasUppercaseLetter(quickFilter);
     const filteredNodes: RowNodeLeafPro<D>[] = [];
+
     for (let i = 0; i < rowNodes.length; i++) {
       if (!evaluateClientFilter(api, filterModel, rowNodes[i], toDate)) continue;
-      console.log(quickFilter);
       if (quickFilter) {
         if (
           !evaluateQuickFilter(api, columnsWithQuickFilter, quickFilter, rowNodes[i], caseSensitive)

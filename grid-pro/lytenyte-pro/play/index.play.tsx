@@ -1,19 +1,17 @@
-import { columns } from "./data/columns";
-import { bankDataSmall } from "./data/bank-data-small";
 import { useClientDataSource } from "../src/use-client-data-source";
 import { useLyteNytePro } from "../src/use-lytenyte";
 import { LyteNyteGrid } from "../src";
+import { stockColumns } from "./data/stock-columns";
+import { stockData } from "./data/stock-data";
 
 export default function Play() {
   const ds = useClientDataSource({
-    data: bankDataSmall,
-    topData: bankDataSmall.slice(0, 2),
-    bottomData: bankDataSmall.slice(0, 2),
+    data: stockData,
   });
 
   const grid = useLyteNytePro({
     gridId: "x",
-    columns: columns,
+    columns: stockColumns,
     cellEditPointerActivator: "single-click",
 
     cellSelectionMode: "range",
@@ -70,7 +68,12 @@ export default function Play() {
             padding: 20px;
             width: 200px;
           `}
-        ></div>
+        >
+          <input
+            value={grid.state.filterQuickSearch.use() ?? ""}
+            onChange={(e) => grid.state.filterQuickSearch.set(e.target.value)}
+          />
+        </div>
       </div>
       <div
         className={css`
