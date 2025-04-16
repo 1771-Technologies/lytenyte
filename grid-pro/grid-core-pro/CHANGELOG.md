@@ -1,5 +1,7 @@
 # @1771technologies/grid-core-pro
 
+## 0.0.57
+
 ## 0.0.56
 
 ## 0.0.55
