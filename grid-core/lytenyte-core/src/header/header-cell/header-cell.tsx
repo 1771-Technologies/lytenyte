@@ -59,16 +59,17 @@ export function HeaderCell({
 
   const Renderer = useHeaderCellRenderer(api, column);
 
+  const ref = useRef<HTMLElement | null>(null);
   const { moveProps, dropProps, isBefore, isOver, canDrop, dragIndex } = useHeaderMove(
     api,
     column,
     columnIndex,
+    ref,
   );
 
   // syncs
   const sx = api.getState();
   sx.sortModel.use();
-  const ref = useRef<HTMLElement | null>(null);
 
   const events = useHeaderFocus(api, ref, columnIndex);
 

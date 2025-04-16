@@ -1,10 +1,12 @@
 import type { ApiCoreReact, ColumnCoreReact } from "@1771technologies/grid-types/core-react";
 import { dragState, useDraggable, useDroppable } from "@1771technologies/react-dragon";
+import type { RefObject } from "react";
 
 export function useHeaderMove(
   api: ApiCoreReact<any>,
   column: ColumnCoreReact<any>,
   columnIndex: number,
+  ref: RefObject<HTMLElement | null>,
 ) {
   const gridId = api.getState().gridId.use();
   const dragProps = useDraggable({
@@ -44,6 +46,16 @@ export function useHeaderMove(
 
       if (isBefore) api.columnMoveBefore(src, target);
       else api.columnMoveAfter(src, target);
+
+      setTimeout(() => {
+        if (!ref.current) return;
+        const parent = ref.current.parentElement;
+        const movedEl = parent?.querySelector(
+          `[data-lng1771-column-id="${src[0]}"]`,
+        ) as HTMLElement;
+
+        movedEl?.focus();
+      }, 10);
     },
   });
 
@@ -58,7 +70,7 @@ export function useHeaderMove(
 }
 function DragPlaceholder(c: { column: ColumnCoreReact<any> }) {
   return (
-    <div className="lng1771-pill-manager__drag-placeholder--default">
+    <div className="lng1771-header-drag-placeholder--default">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="20px"
