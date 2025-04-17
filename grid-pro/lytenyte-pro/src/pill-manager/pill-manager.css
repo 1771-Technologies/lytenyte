@@ -243,3 +243,7 @@ body.lng1771-drag-on .lng1771-pill-manager__pill-outer[data-pill-active="false"]
     background-color: var(--lng1771-gray-05);
   }
 }
+
+.lng1771-pill-manager__agg-menu {
+  z-index: 100;
+}

@@ -329,3 +329,7 @@
   font-weight: 400;
   line-height: 17px;
 }
+
+.lng1771-column-manager__agg-menu {
+  z-index: 100;
+}

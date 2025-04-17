@@ -74,7 +74,10 @@ export const ColumnManagerPill = forwardRef<
                 <TriggerIcon width={16} height={16} />
               </Menu.Trigger>
               <Menu.Portal>
-                <Menu.Positioner onClick={(ev) => ev.stopPropagation()} style={{ zIndex: 100 }}>
+                <Menu.Positioner
+                  onClick={(ev) => ev.stopPropagation()}
+                  className="lng1771-column-manager__agg-menu"
+                >
                   {item.isAggregation && <AggMenu grid={grid} column={item.column!} />}
                   {item.isMeasure && <MeasureMenu grid={grid} column={item.column!} />}
                 </Menu.Positioner>
