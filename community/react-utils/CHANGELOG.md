@@ -1,5 +1,7 @@
 # @1771technologies/react-utils
 
+## 0.0.59
+
 ## 0.0.58
 
 ## 0.0.57

@@ -1,5 +1,7 @@
 # @1771technologies/grid-store-core
 
+## 0.0.59
+
 ## 0.0.58
 
 ## 0.0.57
