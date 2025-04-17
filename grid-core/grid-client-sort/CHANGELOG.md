@@ -1,5 +1,7 @@
 # @1771technologies/grid-client-sort
 
+## 0.0.58
+
 ## 0.0.57
 
 ## 0.0.56
