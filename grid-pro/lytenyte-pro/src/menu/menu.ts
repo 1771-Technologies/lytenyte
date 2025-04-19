@@ -13,7 +13,7 @@ import {
   MenuRadioItem,
   MenuRadioItemIndicator,
   MenuPositioner,
-  SubMenuPositioner,
+  SubmenuPositioner,
 } from "./menu-impl.js";
 import type { Menu as B } from "@base-ui-components/react/menu";
 
@@ -21,7 +21,7 @@ export const Menu = {
   Container: MenuContainer,
   Submenu: MenuSubmenu,
   SubmenuTrigger: MenuSubmenuTrigger,
-  SubMenuPositioner: SubMenuPositioner,
+  SubmenuPositioner: SubmenuPositioner,
   Item: MenuItem,
   Separator: MenuSeparator as typeof B.Separator,
   Group: MenuGroup,

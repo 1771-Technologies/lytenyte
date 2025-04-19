@@ -36,7 +36,7 @@ export interface DataRectResult<C> {
   readonly columns: C[];
 }
 
-// Aditional
+// Additional
 
 export type DataRectCore = DataRect;
 export type ExportTransformDataRowParamsCore<D, E> = ExportTransformDataRowParams<

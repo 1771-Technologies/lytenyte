@@ -20,7 +20,7 @@ import {
 } from "../pill-manager/pill-manager-agg-menu";
 import { MoreDotsIcon } from "../icons";
 import { ColumnManagerPill } from "./column-manager-pill";
-import { ColumnMangerContextProvider } from "./column-mananger-context";
+import { ColumnMangerContextProvider } from "./column-manager-context";
 import { ColumnManagerSearch } from "./column-manager-search";
 import { PivotModeToggle } from "./column-manager-pivot-mode-toggle";
 import type { GridProReact } from "../types";

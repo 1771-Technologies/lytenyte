@@ -6,7 +6,7 @@ import { useCombinedRefs } from "@1771technologies/react-utils";
 import { useGrid } from "../use-grid";
 import { Menu } from "../external";
 import type { PillManagerPillItem } from "../pill-manager/pill-manager-types";
-import { useComponents } from "./column-mananger-context";
+import { useComponents } from "./column-manager-context";
 
 export const ColumnManagerPill = forwardRef<
   HTMLDivElement,
