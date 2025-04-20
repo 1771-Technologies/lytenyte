@@ -43,10 +43,19 @@ export type ClipboardTransformPaste<A> = (
   p: ClipboardTransformPasteParams<A>,
 ) => unknown[][] | Promise<unknown[][]>;
 
-export type ClipboardCopyOptions = {
-  includeHeaders?: boolean;
-  includeHeaderGroups?: boolean;
-  uniformHeaderGroupCopy?: boolean;
+export type ClipboardCopyOptions<A, D, C> = {
+  readonly includeHeaders?: boolean;
+  readonly includeHeaderGroups?: boolean;
+  readonly uniformHeaderGroupCopy?: boolean;
+
+  readonly transformCellValue?: ClipboardTransformCellValue<A, D, C>;
+  readonly transformHeader?: ClipboardTransformHeader<A, C>;
+  readonly transformHeaderGroup?: ClipboardTransformHeaderGroup<A, C>;
+  readonly transformCopy?: ClipboardTransformCopy<A>;
+};
+
+export type ClipboardPasteOptions<A> = {
+  readonly transformPaste?: ClipboardTransformPaste<A>;
 };
 
 // Additional
@@ -81,4 +90,5 @@ export type ClipboardTransformHeaderGroupPro<D, E> = ClipboardTransformHeaderGro
 >;
 export type ClipboardTransformCopyPro<D, E> = ClipboardTransformCopy<ApiPro<D, E>>;
 export type ClipboardTransformPastePro<D, E> = ClipboardTransformPaste<ApiPro<D, E>>;
-export type ClipboardCopyOptionsPro = ClipboardCopyOptions;
+export type ClipboardCopyOptionsPro<D, E> = ClipboardCopyOptions<ApiPro<D, E>, D, ColumnPro<D, E>>;
+export type ClipboardPasteOptionsPro<D, E> = ClipboardPasteOptions<ApiPro<D, E>>;

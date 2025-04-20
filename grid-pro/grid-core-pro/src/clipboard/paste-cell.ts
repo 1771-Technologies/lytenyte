@@ -1,12 +1,14 @@
 import type {
   ApiPro,
   CellSelectionRectPro,
+  ClipboardPasteOptionsPro,
   ClipboardTransformPasteParamsPro,
 } from "@1771technologies/grid-types/pro";
 
 export async function clipboardPasteCells<D, E>(
   api: ApiPro<D, E>,
   rect: CellSelectionRectPro | undefined | null,
+  opts?: ClipboardPasteOptionsPro<D, E>,
 ) {
   const sx = api.getState();
 
@@ -17,7 +19,7 @@ export async function clipboardPasteCells<D, E>(
 
   const clipboard = await navigator.clipboard.read();
 
-  const transformer = sx.clipboardTransformPaste.peek() ?? defaultTransformer;
+  const transformer = opts?.transformPaste ?? defaultTransformer;
 
   const result = await transformer({ api, rect: r, clipboard });
 

@@ -216,6 +216,7 @@ export type {
 
 export type {
   ClipboardCopyOptionsPro,
+  ClipboardPasteOptionsPro,
   ClipboardTransformCopyPro,
   ClipboardTransformPastePro,
   ClipboardTransformHeaderPro,

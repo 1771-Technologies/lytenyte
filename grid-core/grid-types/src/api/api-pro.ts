@@ -5,7 +5,7 @@ import type {
 } from "../events/events-pro";
 import type { StatePro } from "../state/state-pro";
 import type { CellSelectionRect } from "../types/cell-selection-pro";
-import type { ClipboardCopyOptions } from "../types/clipboard-pro";
+import type { ClipboardCopyOptions, ClipboardPasteOptions } from "../types/clipboard-pro";
 import type { Target } from "../types/context-menu-pro";
 import type { ColumnFilterModel, ColumnInFilterItem } from "../types/filter-pro";
 import type { RowNode, RowNodeGroup } from "../types/row-nodes";
@@ -69,13 +69,16 @@ export interface ApiProRaw<D, C, E>
 
   readonly clipboardCopyCells: (
     rect?: CellSelectionRect | null,
-    opts?: ClipboardCopyOptions,
+    opts?: ClipboardCopyOptions<this, D, C>,
   ) => Promise<void>;
   readonly clipboardCutCells: (
     rect?: CellSelectionRect | null,
-    opts?: ClipboardCopyOptions,
+    opts?: ClipboardCopyOptions<this, D, C>,
   ) => Promise<void>;
-  readonly clipboardPasteCells: (rect?: CellSelectionRect | null) => Promise<void>;
+  readonly clipboardPasteCells: (
+    rect?: CellSelectionRect | null,
+    opts?: ClipboardPasteOptions<this>,
+  ) => Promise<void>;
 
   readonly panelFrameOpen: (id: string, context?: any) => void;
   readonly panelFrameClose: () => void;

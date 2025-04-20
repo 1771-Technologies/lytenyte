@@ -7,7 +7,7 @@ import type {
 export async function clipboardCopyCells<D, E>(
   api: ApiPro<D, E>,
   rect: CellSelectionRectPro | undefined | null,
-  opts: ClipboardCopyOptionsPro = {},
+  opts: ClipboardCopyOptionsPro<D, E> = {},
 ) {
   const s = api.getState();
 
@@ -16,7 +16,7 @@ export async function clipboardCopyCells<D, E>(
 
   const r = rect ?? selectedRects[0];
 
-  const transform = s.clipboardTransformCellValue.peek() ?? (({ field }) => String(field));
+  const transform = opts.transformCellValue ?? (({ field }) => String(field));
 
   const data: unknown[][] = [];
   for (let rowIndex = r.rowStart; rowIndex < r.rowEnd; rowIndex++) {
@@ -39,7 +39,7 @@ export async function clipboardCopyCells<D, E>(
   if (opts.includeHeaders) {
     const dataRow: string[] = [];
 
-    const transform = s.clipboardTransformHeader.peek() ?? (({ header }) => header);
+    const transform = opts.transformHeader ?? (({ header }) => header);
 
     for (let colIndex = r.columnStart; colIndex < r.columnEnd; colIndex++) {
       const column = api.columnByIndex(colIndex);
@@ -60,7 +60,7 @@ export async function clipboardCopyCells<D, E>(
     const hierarchy = s.columnGroupLevels.peek();
 
     const rows: string[][] = [];
-    const transform = s.clipboardTransformHeaderGroup.peek() ?? (({ group }) => group);
+    const transform = opts.transformHeaderGroup ?? (({ group }) => group);
     for (let levelIndex = 0; levelIndex < hierarchy.length; levelIndex++) {
       const level = hierarchy[levelIndex];
 
@@ -90,8 +90,8 @@ export async function clipboardCopyCells<D, E>(
     data.unshift(...rows);
   }
 
-  if (s.clipboardTransformCopy.peek()) {
-    const item = s.clipboardTransformCopy.peek()!({ api, data, rect: r });
+  if (opts.transformCopy) {
+    const item = opts.transformCopy({ api, data, rect: r });
 
     await navigator.clipboard.write(item);
   } else {

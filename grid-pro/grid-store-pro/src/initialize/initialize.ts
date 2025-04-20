@@ -122,12 +122,6 @@ export function initialize<D, E>(
     contextMenuRenderer: signal(props.contextMenuRenderer ?? null),
     contextMenuPredicate: signal(props.contextMenuPredicate ?? null),
 
-    clipboardTransformCellValue: signal(props.clipboardTransformCellValue ?? null),
-    clipboardTransformCopy: signal(props.clipboardTransformCopy ?? null),
-    clipboardTransformHeader: signal(props.clipboardTransformHeader ?? null),
-    clipboardTransformHeaderGroup: signal(props.clipboardTransformHeaderGroup ?? null),
-    clipboardTransformPaste: signal(props.clipboardTransformPaste ?? null),
-
     columnPivotModeIsOn: signal(props.columnPivotModeIsOn ?? false),
     columnPivotModel: signal(props.columnPivotModel ?? []),
 

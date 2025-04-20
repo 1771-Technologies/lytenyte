@@ -178,7 +178,8 @@ export type ColumnInFilterItemProReact = P.ColumnInFilterItemPro;
 export type ColumnInFilterItemLeafProReact = P.ColumnInFilterItemLeafPro;
 export type ColumnInFilterItemParentProReact = P.ColumnInFilterItemParentPro;
 
-export type ClipboardCopyOptionsProReact = P.ClipboardCopyOptionsPro;
+export type ClipboardCopyOptionsProReact<D = any> = P.ClipboardCopyOptionsPro<D, R>;
+export type ClipboardPasteOptionsProReact<D = any> = P.ClipboardPasteOptionsPro<D, R>;
 export type ClipboardTransformCopyProReact<D = any> = P.ClipboardTransformCopyPro<D, R>;
 export type ClipboardTransformPasteProReact<D = any> = P.ClipboardTransformPastePro<D, R>;
 export type ClipboardTransformHeaderProReact<D = any> = P.ClipboardTransformHeaderPro<D, R>;

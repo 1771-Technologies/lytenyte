@@ -1,13 +1,6 @@
 import type { RowDataSourcePro } from "../row-data-source/rds-pro";
 import type { AggModel } from "../types/aggregations";
 import type { CellSelectionMode, CellSelectionRect } from "../types/cell-selection-pro";
-import type {
-  ClipboardTransformCellValue,
-  ClipboardTransformCopy,
-  ClipboardTransformHeader,
-  ClipboardTransformHeaderGroup,
-  ClipboardTransformPaste,
-} from "../types/clipboard-pro";
 import type { ColumnMenuRenderer } from "../types/column-menu-pro";
 import type {
   DialogFrame,
@@ -35,13 +28,6 @@ export interface PropsProRaw<A, D, C, E, Base, Group>
 
   readonly contextMenuRenderer?: null | ContextMenuRenderer<A, E>;
   readonly contextMenuPredicate?: null | ContextMenuPredicate<A>;
-
-  readonly clipboardTransformCellValue?: ClipboardTransformCellValue<A, D, C> | null;
-  readonly clipboardTransformHeader?: ClipboardTransformHeader<A, C> | null;
-  readonly clipboardTransformHeaderGroup?: ClipboardTransformHeaderGroup<A, C> | null;
-
-  readonly clipboardTransformCopy?: ClipboardTransformCopy<A> | null;
-  readonly clipboardTransformPaste?: ClipboardTransformPaste<A> | null;
 
   readonly filterModel?: ColumnFilterModel<A, D>;
   readonly filterQuickSearch?: string | null;
