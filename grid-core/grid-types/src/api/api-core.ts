@@ -4,6 +4,7 @@ import type {
   LngRemoveEventListenerCore,
 } from "../events/events-core";
 import type { StateCore } from "../state/state-core";
+import type { AggModel } from "../types/aggregations";
 import type { AutosizeOptions, AutosizeResult } from "../types/autosize";
 import type { CellEditLocation } from "../types/cell-edit";
 import type { DataRectResult, ExportCsvOptions, ExportDataRectOptions } from "../types/export";
@@ -64,6 +65,8 @@ export interface ApiCoreRaw<D, C, E> {
   readonly columnIsEditable: (c: C) => boolean;
 
   readonly columnIsVisible: (c: C, ignoreGroupVisibility?: boolean) => boolean;
+
+  readonly columnActiveAgg: (c: C) => AggModel<this>["string"] | null;
 
   readonly columnSortModelIndex: (c: C) => number;
   readonly columnSortCycle: (c: C) => SortCycleOption[] | null;

@@ -146,6 +146,19 @@ export function makeApi<D, E>(
     columnUpdateMany: (u) => columnUpdateMany(api, u),
     columnVisualWidth: (c) => columnVisualWidth(api, c),
 
+    columnActiveAgg: (c) => {
+      const aggModel = state.aggModel.peek();
+      const columnAgg = aggModel[c.id];
+
+      return columnAgg ?? null;
+    },
+    columnActiveMeasure: (c) => {
+      const measureModel = state.measureModel.peek();
+      const columnMeasure = measureModel[c.id];
+
+      return columnMeasure ?? null;
+    },
+
     eventAddListener: ev.eventAddListeners as any,
     eventFire: ev.eventFire as any,
     eventGetListeners: ev.eventGetListeners as any,

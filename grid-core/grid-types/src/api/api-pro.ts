@@ -4,6 +4,7 @@ import type {
   LngRemoveEventListenerPro,
 } from "../events/events-pro";
 import type { StatePro } from "../state/state-pro";
+import type { AggModel } from "../types/aggregations";
 import type { CellSelectionRect } from "../types/cell-selection-pro";
 import type { ClipboardCopyOptions, ClipboardPasteOptions } from "../types/clipboard-pro";
 import type { Target } from "../types/context-menu-pro";
@@ -15,7 +16,12 @@ import type { ApiCoreRaw } from "./api-core";
 export interface ApiProRaw<D, C, E>
   extends Omit<
     ApiCoreRaw<D, C, E>,
-    "eventAddListener" | "eventRemoveListener" | "eventGetListeners" | "eventFire" | "getState"
+    | "eventAddListener"
+    | "eventRemoveListener"
+    | "eventGetListeners"
+    | "eventFire"
+    | "getState"
+    | "columnActiveAgg"
   > {
   readonly getState: () => StatePro<D, E>;
 
@@ -57,10 +63,11 @@ export interface ApiProRaw<D, C, E>
   readonly columnInFilterItems: (column: C) => Promise<ColumnInFilterItem[]> | ColumnInFilterItem[];
 
   readonly columnIsMeasurable: (c: C) => boolean;
-
   readonly columnQuickSearchField: (row: RowNode<D>, column: C) => unknown;
-
   readonly columnIsPivotable: (c: C) => boolean;
+
+  readonly columnActiveAgg: (c: C) => AggModel<this>["string"] | null;
+  readonly columnActiveMeasure: (c: C) => AggModel<this>["string"];
 
   readonly columnMenuOpen: (c: C, bb: Target) => void;
   readonly columnMenuClose: () => void;

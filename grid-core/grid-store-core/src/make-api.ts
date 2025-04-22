@@ -113,6 +113,13 @@ export function makeApi<D, E>(
     columnIsVisible: (c) => columnIsVisible(api, c),
     columnIsEditable: (c) => columnIsEditable(api, c),
 
+    columnActiveAgg: (c) => {
+      const aggModel = state.aggModel.peek();
+      const columnAgg = aggModel[c.id];
+
+      return columnAgg ?? null;
+    },
+
     columnMoveAfter: (src, dest) => columnMoveAfter(api, src, dest),
     columnMoveBefore: (src, dest) => columnMoveBefore(api, src, dest),
     columnMoveToVisibleIndex: (src, i, b) => columnMoveToVisibleIndex(api, src, i, b),
