@@ -1,5 +1,7 @@
 # @1771technologies/grid-store-pro
 
+## 0.0.61
+
 ## 0.0.60
 
 ## 0.0.59
