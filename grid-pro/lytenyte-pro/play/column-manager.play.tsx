@@ -21,22 +21,12 @@ export default function Play() {
     rowSelectionCheckbox: "normal",
     rowDragEnabled: true,
 
-    rowGroupModel: ["age", "education", "job"],
+    rowGroupAutoApplyAggDefaults: true,
 
     columnBase: {
       resizable: true,
       movable: true,
       sortable: true,
-      headerRenderer: ({ column, api }) => {
-        return (
-          <div
-            style={{ width: "100%", height: "100%" }}
-            onClick={(e) => api.columnMenuOpen(column, e.currentTarget)}
-          >
-            {column.headerName ?? column.id}
-          </div>
-        );
-      },
     },
   });
 
@@ -142,6 +132,13 @@ export default function Play() {
             })}
           </div>
         </ColumnManager.Root>
+      </div>
+      <div
+        className={css`
+          flex: 1;
+        `}
+      >
+        <LyteNyteGrid grid={grid} />
       </div>
     </div>
   );

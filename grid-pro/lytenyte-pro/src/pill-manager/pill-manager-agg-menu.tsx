@@ -25,7 +25,10 @@ export function PillManagerAggMenu<D>({ column, grid }: PillManagerAggMenuProps<
           if (v === "Fn(x)") return;
 
           const next = { ...aggModel };
-          next[column.id].fn = v;
+          next[column.id] = {
+            ...next[column.id],
+            fn: v,
+          };
 
           grid.state.aggModel.set(next);
         }}
@@ -62,7 +65,10 @@ export function PillManagerMeasureMenu<D>({ column, grid }: PillManagerAggMenuPr
           if (v === "Fn(x)") return;
 
           const next = { ...measureModel };
-          next[column.id].fn = v;
+          next[column.id] = {
+            ...next[column.id],
+            fn: v,
+          };
 
           grid.state.measureModel.set(next);
         }}
