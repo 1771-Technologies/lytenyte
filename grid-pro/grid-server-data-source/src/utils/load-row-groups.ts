@@ -6,7 +6,9 @@ export function loadRowGroups(state: ServerState<any, any>) {
   const api = state.api.peek();
   const sx = api.getState();
 
-  const expandedRowIds = Object.entries(sx.rowGroupExpansions.peek())
+  const expansions = sx.rowGroupExpansions.peek();
+
+  const expandedRowIds = Object.entries(expansions)
     .filter((c) => c[1])
     .map((c) => c[0]);
 
@@ -18,5 +20,11 @@ export function loadRowGroups(state: ServerState<any, any>) {
     .map((c) => state.graph.rowByIndex(c)!)
     .filter((c) => c && api.rowIsGroup(c));
 
-  rows.forEach((c) => loadRowExpansion(state, c! as RowNodeGroupPro));
+  const loadedExpansions: Record<string, boolean> = {};
+
+  rows.forEach((c) => loadRowExpansion(state, c! as RowNodeGroupPro, loadedExpansions));
+
+  const finalExpansions = { ...expansions, ...loadedExpansions };
+
+  state.graph.blockFlatten(finalExpansions);
 }

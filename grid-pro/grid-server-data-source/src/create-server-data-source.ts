@@ -154,8 +154,6 @@ export function createServerDataSource<D, E>(
       watchers.push(
         sx.rowGroupExpansions.watch(() => {
           loadRowGroups(state);
-
-          state.graph.blockFlatten(sx.rowGroupExpansions.peek());
         }),
       );
     },
@@ -251,7 +249,7 @@ export function createServerDataSource<D, E>(
       });
     },
     rowReloadExpansion: (row) => {
-      loadRowExpansion(state, row);
+      loadRowExpansion(state, row, {});
     },
 
     // Server data source is read only

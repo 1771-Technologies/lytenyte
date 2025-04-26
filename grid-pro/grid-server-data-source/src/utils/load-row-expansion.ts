@@ -8,7 +8,11 @@ type Writable<T> = {
   -readonly [P in keyof T]: T[P];
 };
 
-export function loadRowExpansion<D, E>(state: ServerState<D, E>, row: Writable<RowNodeGroupPro>) {
+export function loadRowExpansion<D, E>(
+  state: ServerState<D, E>,
+  row: Writable<RowNodeGroupPro>,
+  loadedExpansions: Record<string, boolean>,
+) {
   const rowIndex = state.graph.rowIdToRowIndex(row.id);
   if (rowIndex == null) return;
 
@@ -38,6 +42,7 @@ export function loadRowExpansion<D, E>(state: ServerState<D, E>, row: Writable<R
   }
 
   row.loading = true;
+  loadedExpansions[row.id] = false;
 
   const controller = state.controller.peek();
 
