@@ -9,6 +9,8 @@ import { useCellPositionChange } from "./use-cell-position-change";
 import type { ApiCoreReact, ColumnCoreReact } from "@1771technologies/grid-types/core-react";
 import type { RowNodeCore, RowPinCore } from "@1771technologies/grid-types/core";
 import Skeleton from "./skeleton-cell";
+import { ErrorCellRenderer } from "./error-cell-renderer";
+import { COLUMN_MARKER_ID } from "@1771technologies/grid-constants";
 
 export interface CellProps {
   readonly api: ApiCoreReact<any>;
@@ -67,6 +69,7 @@ function CellImpl({
   );
 
   const isLoading = rowNode.loading && rowNode.data == null;
+  const isError = rowNode.error && rowNode.data === null;
 
   return (
     <div
@@ -91,8 +94,14 @@ function CellImpl({
       {...events}
       onFocus={onFocus}
     >
-      {!isLoading && <Renderer api={api} column={column} columnIndex={columnIndex} row={rowNode} />}
+      {!isLoading && !isError && (
+        <Renderer api={api} column={column} columnIndex={columnIndex} row={rowNode} />
+      )}
       {isLoading && <Skeleton />}
+      {isError &&
+        ((columnIndex === 0 && column.id !== COLUMN_MARKER_ID) ||
+          (api.getState().columnsVisible.peek()?.[0].id === COLUMN_MARKER_ID &&
+            columnIndex === 1)) && <ErrorCellRenderer api={api as any} />}
     </div>
   );
 }

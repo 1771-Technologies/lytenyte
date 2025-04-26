@@ -1,9 +1,14 @@
+import { equal } from "@1771technologies/js-utils";
 import type { ServerState } from "../create-server-data-source";
 import { loadBlockData } from "./load-block-data";
 
 export function handleViewChange<D, E>(state: ServerState<D, E>, force?: boolean) {
   const currentView = state.currentView.peek();
   const previousView = state.previousView.peek();
+
+  if (equal(currentView, previousView)) return;
+
+  state.previousView.set(currentView);
 
   const currentViewIds = new Set(currentView.map((c) => c.id));
   const previousViewIds = new Set(previousView.map((c) => c.id));
@@ -15,7 +20,6 @@ export function handleViewChange<D, E>(state: ServerState<D, E>, force?: boolean
     : currentView.filter((c) => newIds.has(c.id) && !requestedIds.has(c.id));
 
   const rowsBeingRequest = new Set<number>();
-
   blocksToRequest.forEach((b) => {
     for (let i = b.rowStart; i < b.rowEnd; i++) rowsBeingRequest.add(i);
   });
@@ -32,6 +36,7 @@ export function handleViewChange<D, E>(state: ServerState<D, E>, force?: boolean
   loadBlockData(state, blocksToRequest, {
     onFailure: () => {
       blocksToRequest.forEach((b) => requestedIds.delete(b.id));
+      rowsBeingRequest.forEach((row) => state.requestedFails.add(row));
 
       state.api.peek().rowRefresh();
     },

@@ -52,6 +52,7 @@ export interface ServerState<D, E> {
 
   requestedBlocks: Set<string>;
   requestedRows: Set<number>;
+  requestedFails: Set<number>;
 }
 
 const baseLoadingRow: RowNodeLeafPro<any> = {
@@ -61,6 +62,15 @@ const baseLoadingRow: RowNodeLeafPro<any> = {
   rowIndex: null,
   rowPin: null,
   loading: true,
+};
+const baseErrorRow: RowNodeLeafPro<any> = {
+  data: null,
+  id: `##REVERSED##__LYTENYTE__ERROR_ROW`,
+  kind: 1,
+  rowIndex: null,
+  rowPin: null,
+  loading: false,
+  error: true,
 };
 
 export function createServerDataSource<D, E>(
@@ -111,6 +121,7 @@ export function createServerDataSource<D, E>(
       previousView,
       requestedBlocks: new Set(),
       requestedRows: new Set(),
+      requestedFails: new Set(),
 
       rowPathSeparator: separator,
       rowGroupExpansions: new Map(),
@@ -124,6 +135,7 @@ export function createServerDataSource<D, E>(
 
   const reset = () => {
     state.graph.blockReset();
+    state.graph.blockFlatten();
     state.blockLoadTimeLookup.set(new Map());
 
     state.controller.peek().abort();
@@ -132,6 +144,7 @@ export function createServerDataSource<D, E>(
     state.previousView.set([]);
     state.requestedBlocks = new Set();
     state.requestedRows = new Set();
+    state.requestedFails = new Set();
 
     loadInitialData(state);
   };
@@ -176,10 +189,17 @@ export function createServerDataSource<D, E>(
     },
 
     rowById: (id) => {
+      const rowIndex = state.graph.rowIdToRowIndex(id);
+      if (rowIndex == null) return null;
+
+      if (state.requestedFails.has(rowIndex)) return baseErrorRow;
+
       return state.graph.rowById(id) ?? baseLoadingRow;
     },
     rowByIndex: (r) => {
       const row = state.graph.rowByIndex(r);
+
+      if (state.requestedFails.has(r)) return baseErrorRow;
 
       return row ?? baseLoadingRow;
     },
@@ -250,7 +270,10 @@ export function createServerDataSource<D, E>(
 
     rowReload: (r?: number) => {
       if (r === undefined) {
+        state.previousView.set([]);
+        state.requestedFails = new Set();
         handleViewChange(state);
+        state.api.peek().rowRefresh();
         return;
       }
 
@@ -261,7 +284,16 @@ export function createServerDataSource<D, E>(
         state.rowPathSeparator,
       );
 
+      const rowsBeingRequest = new Set<number>();
+      blocks.forEach((b) => {
+        for (let i = b.rowStart; i < b.rowEnd; i++) rowsBeingRequest.add(i);
+      });
+
       loadBlockData(state, blocks, {
+        onFailure: () => {
+          rowsBeingRequest.forEach((c) => state.requestedFails.add(c));
+          state.api.peek().rowRefresh();
+        },
         onSuccess: () => {
           state.graph.blockFlatten();
           state.api.peek().rowRefresh();

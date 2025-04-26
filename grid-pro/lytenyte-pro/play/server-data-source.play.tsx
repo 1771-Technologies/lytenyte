@@ -22,8 +22,6 @@ export default function Play() {
     rowSelectionCheckbox: "normal",
     rowDragEnabled: true,
 
-    rowGroupModel: ["age"],
-
     cellSelectionMode: "range",
 
     columnBase: {

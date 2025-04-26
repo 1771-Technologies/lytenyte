@@ -5,7 +5,7 @@ import { sql } from "./server";
 
 export const dataFetcher: ServerDataSourceInitial<any, ReactNode>["rowDataFetcher"] = async (p) => {
   await new Promise<void>((res) => {
-    setTimeout(() => res(), 8000);
+    setTimeout(() => res(), 500);
   });
 
   const blockSize = p.blockSize;
