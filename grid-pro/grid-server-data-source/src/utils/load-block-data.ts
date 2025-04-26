@@ -15,6 +15,7 @@ export async function loadBlockData<D, E>(
       api: state.api.peek(),
       reqTime: Date.now(),
       requestBlocks: reqBlocks,
+      blockSize: state.blockSize,
     });
 
     // If we have aborted this request we can just skip this. Requests are aborted when the

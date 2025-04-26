@@ -20,9 +20,9 @@ import type { RowNodeCore, RowNodeLeafCore } from "@1771technologies/grid-types/
 
 export class BlockGraph<D> {
   /** Map of paths to block stores */
-  readonly #blockPaths: BlockPaths<D>;
+  readonly blockPaths: BlockPaths<D>;
   /** Size of each block */
-  readonly #blockSize: number;
+  readonly blockSize: number;
   /** Separator used in block paths */
   readonly #blockPathSeparator: string;
 
@@ -48,8 +48,8 @@ export class BlockGraph<D> {
    * @param blockPathSeparator - Optional custom separator for block paths
    */
   constructor(blockSize: number, blockPathSeparator?: string) {
-    this.#blockSize = blockSize;
-    this.#blockPaths = new Map();
+    this.blockSize = blockSize;
+    this.blockPaths = new Map();
     this.#blockPathSeparator = blockPathSeparator ?? ROW_DEFAULT_PATH_SEPARATOR;
   }
 
@@ -117,7 +117,7 @@ export class BlockGraph<D> {
     const path = this.rowGroupPath(r);
     if (path == null) return 0;
 
-    const block = this.#blockPaths.get(path)!;
+    const block = this.blockPaths.get(path)!;
 
     return block.size;
   };
@@ -141,11 +141,11 @@ export class BlockGraph<D> {
     const path = this.rowGroupPath(r);
     if (path == null) return [];
 
-    const allPaths = blockStoreAllPaths(path, this.#blockPaths, this.#blockPathSeparator);
+    const allPaths = blockStoreAllPaths(path, this.blockPaths, this.#blockPathSeparator);
 
     const leafNodes: RowNodeLeafCore<D>[] = [];
     for (const path of allPaths) {
-      const blocks = this.#blockPaths.get(path)!;
+      const blocks = this.blockPaths.get(path)!;
 
       for (const block of blocks.map.values()) {
         for (const row of block.data) {
@@ -177,10 +177,10 @@ export class BlockGraph<D> {
 
     if (path == null) return [];
 
-    const allPaths = blockStoreAllPaths(path, this.#blockPaths, this.#blockPathSeparator);
+    const allPaths = blockStoreAllPaths(path, this.blockPaths, this.#blockPathSeparator);
     const nodes: RowNodeCore<D>[] = [];
     for (const path of allPaths) {
-      const blocks = this.#blockPaths.get(path)!;
+      const blocks = this.blockPaths.get(path)!;
 
       for (const block of blocks.map.values()) {
         nodes.push(...block.data);
@@ -246,7 +246,7 @@ export class BlockGraph<D> {
     this.#rowTop.forEach((c) => nodes.push(c));
     this.#rowBottom.forEach((c) => nodes.push(c));
 
-    for (const blocks of this.#blockPaths.values()) {
+    for (const blocks of this.blockPaths.values()) {
       for (const block of blocks.map.values()) {
         nodes.push(...block.data);
       }
@@ -315,23 +315,23 @@ export class BlockGraph<D> {
    * - Resizes existing block maintaining data consistency
    */
   readonly blockSetSize = (path: string, size: number) => {
-    if (!this.#blockPaths.has(path)) {
-      blockStoreCreate(path, size, this.#blockPaths);
+    if (!this.blockPaths.has(path)) {
+      blockStoreCreate(path, size, this.blockPaths);
       return;
     }
 
     if (size <= 0) {
-      blockStoreDelete(path, this.#blockPaths, this.#blockPathSeparator);
-      blockStoreUpdateSize(path, size, this.#blockPaths);
+      blockStoreDelete(path, this.blockPaths, this.#blockPathSeparator);
+      blockStoreUpdateSize(path, size, this.blockPaths);
       return;
     }
 
-    if (blockStoreIsShrinking(path, size, this.#blockPaths)) {
-      blockStoreResize(path, size, this.#blockSize, this.#blockPaths, this.#blockPathSeparator);
+    if (blockStoreIsShrinking(path, size, this.blockPaths)) {
+      blockStoreResize(path, size, this.blockSize, this.blockPaths, this.#blockPathSeparator);
       return;
     }
 
-    blockStoreUpdateSize(path, size, this.#blockPaths);
+    blockStoreUpdateSize(path, size, this.blockPaths);
   };
 
   /**
@@ -344,8 +344,8 @@ export class BlockGraph<D> {
     for (let i = 0; i < payloads.length; i++) {
       const payload = payloads[i];
 
-      const nodes = blockStoreTruncatePayloadIfNecessary(payload, this.#blockSize);
-      blockStoreUpdateNodes(nodes, payload, this.#blockPaths);
+      const nodes = blockStoreTruncatePayloadIfNecessary(payload, this.blockSize);
+      blockStoreUpdateNodes(nodes, payload, this.blockPaths);
     }
   };
 
@@ -356,7 +356,7 @@ export class BlockGraph<D> {
    * @param n the block index to check
    */
   readonly blockContains = (path: string, n: number) => {
-    return !!this.#blockPaths.get(path)?.map.has(n);
+    return !!this.blockPaths.get(path)?.map.has(n);
   };
 
   /**
@@ -365,7 +365,7 @@ export class BlockGraph<D> {
    * @param path - Path of the block to delete
    */
   readonly blockDeleteByPath = (path: string) => {
-    blockStoreDelete(path, this.#blockPaths, this.#blockPathSeparator);
+    blockStoreDelete(path, this.blockPaths, this.#blockPathSeparator);
   };
 
   /**
@@ -380,7 +380,7 @@ export class BlockGraph<D> {
     const n = Number.parseInt(parts.at(-1)!);
     const path = parts.slice(0, parts.length - 1).join("#");
 
-    const blockMap = this.#blockPaths.get(path);
+    const blockMap = this.blockPaths.get(path);
     if (!blockMap) return;
 
     blockMap.map.delete(n);
@@ -392,14 +392,14 @@ export class BlockGraph<D> {
    * @returns size of the root block
    */
   readonly blockRootSize = () => {
-    return this.#blockPaths.get("")?.size ?? 0;
+    return this.blockPaths.get("")?.size ?? 0;
   };
 
   /**
    * Resets the block graph by clearing all blocks.
    */
   readonly blockReset = () => {
-    this.#blockPaths.clear();
+    this.blockPaths.clear();
   };
 
   /**
@@ -427,9 +427,9 @@ export class BlockGraph<D> {
 
     const centerOffset = flattenCenterRows(
       ctx,
-      this.#blockSize,
+      this.blockSize,
       this.#blockPathSeparator,
-      this.#blockPaths,
+      this.blockPaths,
       topOffset,
       rowExpansions,
       rowDefaultExpansion,

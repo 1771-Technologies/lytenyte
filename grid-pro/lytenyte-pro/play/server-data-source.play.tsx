@@ -14,7 +14,7 @@ export default function Play() {
 
   const grid = useLyteNytePro({
     gridId: "x",
-    columns: columns.map((c, i) => ({ ...c, hide: i % 2 === 0 })),
+    columns: columns.map((c) => ({ ...c, pin: null })),
     rowDataSource: ds,
 
     rowSelectionMode: "multiple",

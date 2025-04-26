@@ -26,6 +26,6 @@ export function getAsyncDataRequestBlock(
     rowStart: absoluteRowStart,
     rowEnd: absoluteRowEnd,
     blockKey: blockKey,
-    path: range.path.split(separator),
+    path: range.path ? range.path.split(separator) : [],
   };
 }

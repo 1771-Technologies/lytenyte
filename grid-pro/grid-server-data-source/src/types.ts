@@ -49,6 +49,7 @@ export interface DataFetcherParams<D, E> {
   readonly api: ApiPro<D, E>;
   readonly requestBlocks: AsyncDataRequestBlock[];
   readonly reqTime: number;
+  readonly blockSize: number;
 }
 
 export type DataFetcher<D, E> = (p: DataFetcherParams<D, E>) => Promise<AsyncDataResponse>;

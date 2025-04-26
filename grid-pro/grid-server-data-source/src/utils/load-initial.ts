@@ -20,6 +20,8 @@ export function loadInitialData<D, E>(state: ServerState<D, E>) {
     },
   ];
 
+  if (state.requestedBlocks.has("#0")) return;
+
   state.requestedBlocks.add("#0");
 
   loadBlockData(state, reqBlocks, {

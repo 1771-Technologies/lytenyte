@@ -30,6 +30,12 @@ export function handleViewChange<D, E>(state: ServerState<D, E>, force?: boolean
   // Add the rows to our requested rows
   state.requestedRows = state.requestedRows.union(rowsBeingRequest);
 
+  if (!blocksToRequest.length) return;
+
+  if (blocksToRequest.every((c) => state.requestedBlocks.has(c.id))) return;
+
+  blocksToRequest.forEach((c) => state.requestedBlocks.add(c.id));
+
   loadBlockData(state, blocksToRequest, {
     onFailure: () => {
       blocksToRequest.forEach((b) => requestedIds.delete(b.id));

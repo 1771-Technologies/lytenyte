@@ -30,6 +30,7 @@ export function loadRowExpansion<D, E>(state: ServerState<D, E>, row: Writable<R
 
   // If we have already request this block, we can expand immediately
 
+  console.log(joinedPath);
   if (state.graph.blockContains(joinedPath, 0)) {
     state.graph.blockFlatten();
     state.api.peek().rowRefresh();

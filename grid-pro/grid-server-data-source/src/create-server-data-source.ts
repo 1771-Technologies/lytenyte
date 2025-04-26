@@ -14,6 +14,7 @@ import { getAsyncDataRequestBlocks } from "./utils/get-async-data-request-blocks
 import { loadBlockData } from "./utils/load-block-data";
 import { loadInitialData } from "./utils/load-initial";
 import type { ApiPro, RowDataSourcePro, RowNodePro } from "@1771technologies/grid-types/pro";
+import { loadRowGroups } from "./utils/load-row-groups";
 
 export interface ServerDataSourceInitial<D, E> {
   readonly rowDataFetcher: DataFetcher<D, E>;
@@ -157,6 +158,12 @@ export function createServerDataSource<D, E>(
       watchers.push(sx.internal.columnPivotFilterModel.watch(pivotReset));
       watchers.push(sx.columnPivotModel.watch(pivotReset));
       watchers.push(sx.measureModel.watch(pivotReset));
+
+      watchers.push(
+        sx.rowGroupExpansions.watch(() => {
+          loadRowGroups(state);
+        }),
+      );
     },
     clean: () => {
       while (watchers.length) watchers.pop()!();
