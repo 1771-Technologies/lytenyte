@@ -16,5 +16,7 @@ export const createClientDataSourceReact = <D>(
 };
 
 export function useClientDataSource<D>(init: ClientDataSourceInitial<D, ReactNode>) {
-  return useState(() => createClientDataSource<D, ReactNode>(init))[0];
+  return useState(() => {
+    return createClientDataSource<D, ReactNode>(init);
+  })[0];
 }

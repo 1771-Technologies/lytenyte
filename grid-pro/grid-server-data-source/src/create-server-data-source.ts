@@ -176,15 +176,7 @@ export function createServerDataSource<D, E>(
       return rows;
     },
 
-    rowChildCount: (r) => state.graph.rowChildCount(r),
     rowDepth: (r) => Math.max(state.graph.rowRangesForIndex(r).length - 1, 0),
-    rowParentIndex: (r) => {
-      const range = state.graph.rowRangesForIndex(r).at(-1);
-      if (!range) return null;
-
-      const parentIndex = range.rowStart - 1;
-      return parentIndex === -1 ? null : parentIndex;
-    },
 
     rowSelectionSelectAllSupported: () => false,
     rowSelectionIndeterminateSupported: () => false,

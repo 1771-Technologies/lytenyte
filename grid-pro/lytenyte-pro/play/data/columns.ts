@@ -59,6 +59,6 @@ export const columns: ColumnProReact<any>[] = [
   { id: "campaign" },
   { id: "pdays" },
   { id: "previous" },
-  { id: "poutcome", columnSpan: 2 },
+  { id: "poutcome" },
   { id: "y" },
 ];

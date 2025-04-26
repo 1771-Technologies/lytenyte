@@ -5,12 +5,17 @@ import type { GridPro, RowDataSourcePro } from "@1771technologies/grid-types/pro
 export function rowDataSource<D, E>(state: GridPro<D, E>["state"], api: GridPro<D, E>["api"]) {
   let prevDs: RowDataSourcePro<D, E> | null = null;
   const backingDataSource = computed(() => {
-    const ds = state.rowDataSource.get();
+    const ds = state.rowDataSource.peek();
 
     if (prevDs) prevDs.clean?.(api);
     prevDs = ds;
 
-    ds.init?.(api);
+    // Need to really rethink this. Essentially we are in a cascada scope at this point. Then the init
+    // call may also use cascada resulting in a infinite loop. The timeout breaks this, but we really shouldn't
+    // have this. For example init --> sx.get() --> init --> and so on
+    setTimeout(() => {
+      ds.init?.(api);
+    }, 0);
 
     const rds = { ...emptyRowDataSource, ...ds };
     return rds as Required<RowDataSourcePro<D, E>>;
