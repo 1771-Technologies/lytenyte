@@ -1,5 +1,6 @@
 import type { CellRendererParamsCoreReact } from "@1771technologies/grid-types/core-react";
 import { GridButton } from "../components/buttons";
+import LoadingSpinner from "./loading-spinner";
 
 export function CellGroupRendererDefault({ api, row, column }: CellRendererParamsCoreReact<any>) {
   if (!api.rowIsGroup(row)) {
@@ -21,6 +22,8 @@ export function CellGroupRendererDefault({ api, row, column }: CellRendererParam
     return <div />;
   }
 
+  const isLoading = !!row.loading;
+
   return (
     <div
       style={{
@@ -32,16 +35,19 @@ export function CellGroupRendererDefault({ api, row, column }: CellRendererParam
         height: "100%",
       }}
     >
-      <GridButton
-        onClick={() => api.rowGroupToggle(row)}
-        style={{
-          width: 20,
-          height: 20,
-          transform: api.rowGroupIsExpanded(row) ? "rotate(90deg)" : undefined,
-        }}
-      >
-        ›
-      </GridButton>
+      {!isLoading && (
+        <GridButton
+          onClick={() => api.rowGroupToggle(row)}
+          style={{
+            width: 20,
+            height: 20,
+            transform: api.rowGroupIsExpanded(row) ? "rotate(90deg)" : undefined,
+          }}
+        >
+          ›
+        </GridButton>
+      )}
+      {isLoading && <LoadingSpinner />}
       <div
         style={{
           width: "100%",
