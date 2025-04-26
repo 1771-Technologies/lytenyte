@@ -52,3 +52,12 @@
     background-color: var(--lng1771-gray-50);
   }
 }
+
+@keyframes lng1771-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}

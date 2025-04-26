@@ -13,7 +13,12 @@ import { loadRowExpansion } from "./utils/load-row-expansion";
 import { getAsyncDataRequestBlocks } from "./utils/get-async-data-request-blocks";
 import { loadBlockData } from "./utils/load-block-data";
 import { loadInitialData } from "./utils/load-initial";
-import type { ApiPro, RowDataSourcePro, RowNodePro } from "@1771technologies/grid-types/pro";
+import type {
+  ApiPro,
+  RowDataSourcePro,
+  RowNodeLeafPro,
+  RowNodePro,
+} from "@1771technologies/grid-types/pro";
 import { loadRowGroups } from "./utils/load-row-groups";
 
 export interface ServerDataSourceInitial<D, E> {
@@ -48,6 +53,15 @@ export interface ServerState<D, E> {
   requestedBlocks: Set<string>;
   requestedRows: Set<number>;
 }
+
+const baseLoadingRow: RowNodeLeafPro<any> = {
+  data: null,
+  id: `##REVERSED##__LYTENYTE__LOADING_ROW`,
+  kind: 1,
+  rowIndex: null,
+  rowPin: null,
+  loading: true,
+};
 
 export function createServerDataSource<D, E>(
   init: ServerDataSourceInitial<D, E>,
@@ -161,8 +175,14 @@ export function createServerDataSource<D, E>(
       while (watchers.length) watchers.pop()!();
     },
 
-    rowById: (id) => state.graph.rowById(id),
-    rowByIndex: (r) => state.graph.rowByIndex(r),
+    rowById: (id) => {
+      return state.graph.rowById(id) ?? baseLoadingRow;
+    },
+    rowByIndex: (r) => {
+      const row = state.graph.rowByIndex(r);
+
+      return row ?? baseLoadingRow;
+    },
     rowIdToRowIndex: (id) => state.graph.rowIdToRowIndex(id),
     rowGetMany: (s, e) => {
       const rows: RowNodePro<D>[] = [];

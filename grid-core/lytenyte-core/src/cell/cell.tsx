@@ -8,6 +8,7 @@ import { useCellEvents } from "./use-cell-events";
 import { useCellPositionChange } from "./use-cell-position-change";
 import type { ApiCoreReact, ColumnCoreReact } from "@1771technologies/grid-types/core-react";
 import type { RowNodeCore, RowPinCore } from "@1771technologies/grid-types/core";
+import Skeleton from "./skeleton-cell";
 
 export interface CellProps {
   readonly api: ApiCoreReact<any>;
@@ -65,6 +66,8 @@ function CellImpl({
     colSpan,
   );
 
+  const isLoading = rowNode.loading && rowNode.data == null;
+
   return (
     <div
       style={cx.style}
@@ -88,7 +91,8 @@ function CellImpl({
       {...events}
       onFocus={onFocus}
     >
-      <Renderer api={api} column={column} columnIndex={columnIndex} row={rowNode} />
+      {!isLoading && <Renderer api={api} column={column} columnIndex={columnIndex} row={rowNode} />}
+      {isLoading && <Skeleton />}
     </div>
   );
 }
