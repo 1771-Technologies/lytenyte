@@ -19,7 +19,7 @@ export const dataFetcher: ServerDataSourceInitial<any, ReactNode>["rowDataFetche
   if (isGrouping) {
     rootCount = sql<{ cnt: number }[]>(
       `SELECT count(*) AS cnt FROM banks GROUP BY ${groupModel[0]}`,
-    )[0].cnt;
+    ).length;
   } else {
     rootCount = sql<{ cnt: number }[]>(`SELECT count(*) AS cnt FROM banks`)[0].cnt;
   }
@@ -52,20 +52,30 @@ export const dataFetcher: ServerDataSourceInitial<any, ReactNode>["rowDataFetche
       continue;
     }
 
-    const data = sql(
-      `SELECT * FROM banks LIMIT ${blockSize} OFFSET ${b.blockKey * blockSize}`,
-    ) as any[];
-    const count = sql<{ cnt: number }[]>(`SELECT count(*) AS cnt FROM banks`)[0].cnt;
+    const whereParts = b.path
+      .map((c, i) => {
+        return `${groupModel[i]} = '${c}'`;
+      })
+      .join(" AND ");
+
+    const whereClause = whereParts ? `WHERE ${whereParts}` : "";
+
+    const query = `SELECT * FROM banks ${whereClause} LIMIT ${blockSize} OFFSET ${b.blockKey * blockSize}`;
+    const cntQuery = `SELECT count(*) AS cnt FROM banks ${whereClause}`;
+
+    const data = sql(query) as any[];
+    const count = sql<{ cnt: number }[]>(cntQuery)[0].cnt;
 
     blocks.push({
       blockKey: b.blockKey,
       frame: {
         childCounts: data.map(() => 0),
         data,
-        ids: data.map((_, i) => `${i + b.blockKey * blockSize}`),
+        ids: data.map((_, i) => `${b.path ? b.path.join("/") + "/" : ""}${i}`),
         kinds: data.map(() => 1),
         pathKeys: data.map(() => null),
       },
+      path: b.path,
       size: count,
     });
   }

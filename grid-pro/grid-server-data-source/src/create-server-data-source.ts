@@ -21,16 +21,12 @@ export interface ServerDataSourceInitial<D, E> {
   readonly rowBlockSize?: number;
   readonly rowPathSeparator?: string;
 
-  readonly rowClearGroupChildrenOnCollapse?: boolean;
-  readonly rowClearOutOfViewBlocks?: boolean;
   readonly columnInFilterFetcher?: ColumnInFilterItemFetcher<D, E>;
   readonly columnPivotsFetcher?: ColumnPivotsFetcher<D, E>;
 }
 
 export interface ServerState<D, E> {
   readonly rowDataFetcher: DataFetcher<D, E>;
-  readonly rowClearOutOfView: boolean;
-  readonly rowClearOnCollapse: boolean;
   readonly rowPathSeparator: string;
   readonly rowGroupExpansions: Map<string, boolean>;
 
@@ -59,8 +55,6 @@ export function createServerDataSource<D, E>(
   const state = cascada(() => {
     const api$ = signal(null as unknown as ApiPro<D, E>);
     const rowDataFetcher = init.rowDataFetcher;
-    const rowClearOutOfView = init.rowClearOutOfViewBlocks ?? false;
-    const rowClearOnCollapse = init.rowClearGroupChildrenOnCollapse ?? false;
 
     const columnInFilterFetcher =
       init.columnInFilterFetcher ??
@@ -104,8 +98,6 @@ export function createServerDataSource<D, E>(
       requestedBlocks: new Set(),
       requestedRows: new Set(),
 
-      rowClearOutOfView,
-      rowClearOnCollapse,
       rowPathSeparator: separator,
       rowGroupExpansions: new Map(),
 
@@ -162,6 +154,8 @@ export function createServerDataSource<D, E>(
       watchers.push(
         sx.rowGroupExpansions.watch(() => {
           loadRowGroups(state);
+
+          state.graph.blockFlatten(sx.rowGroupExpansions.peek());
         }),
       );
     },

@@ -51,6 +51,7 @@ export function flattenCenterRows<D>(
         if (rowIsGroup(row) && rowIsExpanded(row, depth)) {
           // Build the path for this group's children
           const childPath = path ? path + separator + row.pathKey : row.pathKey;
+
           const childBlockStore = lookup.get(childPath);
 
           // Skip if no child blocks exist

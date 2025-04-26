@@ -22,6 +22,8 @@ export default function Play() {
     rowSelectionCheckbox: "normal",
     rowDragEnabled: true,
 
+    rowGroupModel: ["job"],
+
     cellSelectionMode: "range",
 
     columnBase: {

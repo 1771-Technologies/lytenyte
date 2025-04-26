@@ -9,13 +9,6 @@ export function handleViewChange<D, E>(state: ServerState<D, E>, force?: boolean
   const previousViewIds = new Set(previousView.map((c) => c.id));
   const newIds = currentViewIds.difference(previousViewIds);
 
-  // We need to remove the ids that are now out of view.
-  if (state.rowClearOutOfView) {
-    const idsToRemove = previousViewIds.difference(currentViewIds);
-    idsToRemove.forEach((id) => state.graph.blockDeleteById(id));
-    state.graph.blockFlatten();
-  }
-
   const requestedIds = state.requestedBlocks;
   const blocksToRequest = force
     ? currentView

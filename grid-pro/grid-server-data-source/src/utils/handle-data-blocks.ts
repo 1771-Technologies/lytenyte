@@ -69,7 +69,10 @@ export function handleDataBlocks<D, E>(payload: AsyncDataResponse, state: Server
           );
         }
 
-        const childPath = path + state.rowPathSeparator + pathKey;
+        let childPath = path + state.rowPathSeparator + pathKey;
+        if (childPath.startsWith(state.rowPathSeparator))
+          childPath = childPath.replace(state.rowPathSeparator, "");
+
         result.sizes.push({ size: childCount, path: childPath });
 
         return {
@@ -94,6 +97,9 @@ export function handleDataBlocks<D, E>(payload: AsyncDataResponse, state: Server
     });
   }
 
-  for (const z of result.sizes) state.graph.blockSetSize(z.path, z.size);
+  for (const z of result.sizes) {
+    state.graph.blockSetSize(z.path, z.size);
+  }
+
   state.graph.blockAdd(result.payloads);
 }
