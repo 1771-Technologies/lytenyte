@@ -47,6 +47,7 @@ export const dataFetcher: ServerDataSourceInitial<any, ReactNode>["rowDataFetche
           kinds: data.map(() => 2),
           pathKeys: data.map((c) => c.pathKey.toString()),
         },
+        path: b.path,
         size: cnt,
       });
       continue;

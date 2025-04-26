@@ -7,7 +7,7 @@ export function getRowGroupPath<D, E>(state: ServerState<D, E>, row: RowNodeGrou
 
   const ranges = state.graph.rowRangesForIndex(rowIndex);
   const path = [...ranges.at(-1)!.path.split(state.rowPathSeparator), row.pathKey];
-  path.shift();
+  if (path.at(0) === "") path.shift();
 
   return path;
 }

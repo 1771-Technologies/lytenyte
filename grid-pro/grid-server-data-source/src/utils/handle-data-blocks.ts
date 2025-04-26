@@ -19,6 +19,7 @@ export function handleDataBlocks<D, E>(payload: AsyncDataResponse, state: Server
     const block = blocks[i];
 
     const path = (block.path ?? []).join(state.rowPathSeparator);
+
     const blockKey = path + "#" + block.blockKey;
 
     const loadTime = lookup.get(blockKey) ?? 0;
