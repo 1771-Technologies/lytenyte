@@ -22,7 +22,7 @@ export default function Play() {
     rowSelectionCheckbox: "normal",
     rowDragEnabled: true,
 
-    rowGroupModel: ["job"],
+    rowGroupModel: ["age"],
 
     cellSelectionMode: "range",
 

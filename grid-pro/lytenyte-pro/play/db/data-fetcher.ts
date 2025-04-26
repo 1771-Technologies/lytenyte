@@ -42,10 +42,10 @@ export const dataFetcher: ServerDataSourceInitial<any, ReactNode>["rowDataFetche
         blockKey: b.blockKey,
         frame: {
           childCounts: data.map((d) => d.childCnt),
-          data,
+          data: data.map((c) => ({ ...c, pathKey: c.pathKey.toString() })),
           ids: data.map((_, i) => `${i + b.blockKey * blockSize}__${b.path.join("/")}`),
           kinds: data.map(() => 2),
-          pathKeys: data.map((c) => c.pathKey),
+          pathKeys: data.map((c) => c.pathKey.toString()),
         },
         size: cnt,
       });
@@ -54,7 +54,8 @@ export const dataFetcher: ServerDataSourceInitial<any, ReactNode>["rowDataFetche
 
     const whereParts = b.path
       .map((c, i) => {
-        return `${groupModel[i]} = '${c}'`;
+        const column = p.api.columnById(groupModel[i])!;
+        return `${groupModel[i]} = ${column.type === "number" ? Number.parseFloat(c) : `'${c}'`}`;
       })
       .join(" AND ");
 
