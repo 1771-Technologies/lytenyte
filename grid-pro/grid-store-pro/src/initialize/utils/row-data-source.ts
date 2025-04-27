@@ -13,9 +13,7 @@ export function rowDataSource<D, E>(state: GridPro<D, E>["state"], api: GridPro<
     // Need to really rethink this. Essentially we are in a cascada scope at this point. Then the init
     // call may also use cascada resulting in a infinite loop. The timeout breaks this, but we really shouldn't
     // have this. For example init --> sx.get() --> init --> and so on
-    setTimeout(() => {
-      ds.init?.(api);
-    }, 0);
+    ds.init?.(api);
 
     const rds = { ...emptyRowDataSource, ...ds };
     return rds as Required<RowDataSourcePro<D, E>>;

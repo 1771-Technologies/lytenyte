@@ -53,18 +53,8 @@ export default function Play() {
   });
 
   return (
-    <div
-      className={css`
-        display: flex;
-        flex-direction: column;
-      `}
-      style={{ width: "100vw", height: "100vh" }}
-    >
-      <div
-        className={css`
-          width: 100%;
-        `}
-      >
+    <div style={{ width: "100vw", height: "100vh", display: "flex", flexDirection: "column" }}>
+      <div style={{ width: "100%" }}>
         <PillManager.Root grid={grid}>
           <PillManager.DragPlaceholder />
           <PillManager.Rows>
@@ -104,11 +94,7 @@ export default function Play() {
           </PillManager.Rows>
         </PillManager.Root>
       </div>
-      <div
-        className={css`
-          flex: 1;
-        `}
-      >
+      <div style={{ flex: "1" }}>
         <LyteNyteGrid grid={grid} />
       </div>
     </div>

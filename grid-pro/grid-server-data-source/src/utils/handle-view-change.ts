@@ -1,10 +1,11 @@
 import { equal } from "@1771technologies/js-utils";
 import type { ServerState } from "../create-server-data-source";
 import { loadBlockData } from "./load-block-data";
+import type { AsyncDataRequestBlock } from "../types";
 
 export function handleViewChange<D, E>(state: ServerState<D, E>, force?: boolean) {
-  const currentView = state.currentView.peek();
-  const previousView = state.previousView.peek();
+  const currentView = state.currentView.peek() as AsyncDataRequestBlock[];
+  const previousView = state.previousView.peek() as AsyncDataRequestBlock[];
 
   if (equal(currentView, previousView)) return;
 

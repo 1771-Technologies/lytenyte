@@ -148,6 +148,7 @@
   },
   "devDependencies": {
     "@types/react": "^19.0.1",
-    "@types/react-dom": "^19.0.2"
+    "@types/react-dom": "^19.0.2",
+    "alasql": "^4.6.6"
   }
 }

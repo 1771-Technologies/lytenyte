@@ -161,7 +161,9 @@ export function createServerDataSource<D, E>(
 
       watchers.push(
         state.currentView.watch(() => {
-          handleViewChange(state);
+          setTimeout(() => {
+            handleViewChange(state);
+          });
         }),
       );
 
