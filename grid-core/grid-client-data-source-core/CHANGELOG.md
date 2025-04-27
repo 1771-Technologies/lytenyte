@@ -1,5 +1,7 @@
 # @1771technologies/grid-client-data-source-core
 
+## 0.0.64
+
 ## 0.0.63
 
 ## 0.0.62
