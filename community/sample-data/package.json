@@ -1,0 +1,37 @@
+{
+  "name": "@1771technologies/sample-data",
+  "version": "0.0.64",
+  "license": "Apache-2.0",
+  "type": "module",
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
+  "exports": {
+    "./bank-data-smaller": {
+      "types": "./src/bank-data-smaller.ts",
+      "import": "./src/bank-data-smaller.ts",
+      "require": "./src/bank-data-smaller.ts"
+    },
+    "./bank-data": {
+      "types": "./src/bank-data.ts",
+      "import": "./src/bank-data.ts",
+      "require": "./src/bank-data.ts"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      "./bank-data-smaller": {
+        "types": "./dist/types/bank-data-smaller.d.ts",
+        "import": "./dist/bank-data-smaller.js",
+        "require": "./dist/bank-data-smaller.js"
+      },
+      "./bank-data": {
+        "types": "./dist/types/bank-data.d.ts",
+        "import": "./dist/bank-data.js",
+        "require": "./dist/bank-data.js"
+      }
+    }
+  }
+}
