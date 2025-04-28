@@ -17,6 +17,8 @@ export default function Play() {
     cellSelectionMode: "range",
 
     rowSelectionMode: "multiple",
+    rowSelectionPointerActivator: "single-click",
+    rowSelectionMultiSelectOnClick: true,
     rowSelectionCheckbox: "normal",
     rowDragEnabled: true,
 

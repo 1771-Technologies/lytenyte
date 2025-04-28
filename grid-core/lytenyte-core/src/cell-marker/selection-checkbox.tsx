@@ -33,6 +33,8 @@ export function SelectionCheckbox({ api, row }: { api: ApiCoreReact<any>; row: R
       isDeterminate={isIndeterminate}
       isDisabled={!isSelectable}
       onClick={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
         handleRowSelection(api, row, event.shiftKey, true, true);
       }}
     />

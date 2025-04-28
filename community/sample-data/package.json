@@ -8,6 +8,11 @@
     "LICENSE"
   ],
   "exports": {
+    "./companies-with-price-performance": {
+      "types": "./src/companies-with-price-performance.ts",
+      "import": "./src/companies-with-price-performance.ts",
+      "require": "./src/companies-with-price-performance.ts"
+    },
     "./bank-data-smaller": {
       "types": "./src/bank-data-smaller.ts",
       "import": "./src/bank-data-smaller.ts",
@@ -22,6 +27,11 @@
   "publishConfig": {
     "access": "public",
     "exports": {
+      "./companies-with-price-performance": {
+        "types": "./dist/types/companies-with-price-performance.d.ts",
+        "import": "./dist/companies-with-price-performance.js",
+        "require": "./dist/companies-with-price-performance.js"
+      },
       "./bank-data-smaller": {
         "types": "./dist/types/bank-data-smaller.d.ts",
         "import": "./dist/bank-data-smaller.js",
