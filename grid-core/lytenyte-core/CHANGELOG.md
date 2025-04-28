@@ -1,5 +1,7 @@
 # @1771technologies/lytenyte-core
 
+## 0.0.66
+
 ## 0.0.65
 
 ## 0.0.64
