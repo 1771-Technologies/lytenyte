@@ -13,6 +13,16 @@
       "import": "./src/companies-with-price-performance.ts",
       "require": "./src/companies-with-price-performance.ts"
     },
+    "./stock-data": {
+      "types": "./src/stock-data.ts",
+      "import": "./src/stock-data.ts",
+      "require": "./src/stock-data.ts"
+    },
+    "./stock-data-smaller": {
+      "types": "./src/stock-data-smaller.ts",
+      "import": "./src/stock-data-smaller.ts",
+      "require": "./src/stock-data-smaller.ts"
+    },
     "./bank-data-smaller": {
       "types": "./src/bank-data-smaller.ts",
       "import": "./src/bank-data-smaller.ts",
@@ -31,6 +41,16 @@
         "types": "./dist/types/companies-with-price-performance.d.ts",
         "import": "./dist/companies-with-price-performance.js",
         "require": "./dist/companies-with-price-performance.js"
+      },
+      "./stock-data-smaller": {
+        "types": "./dist/types/stock-data-smaller.d.ts",
+        "import": "./dist/stock-data-smaller.js",
+        "require": "./dist/stock-data-smaller.js"
+      },
+      "./stock-data": {
+        "types": "./dist/types/stock-data.d.ts",
+        "import": "./dist/stock-data.js",
+        "require": "./dist/stock-data.js"
       },
       "./bank-data-smaller": {
         "types": "./dist/types/bank-data-smaller.d.ts",
