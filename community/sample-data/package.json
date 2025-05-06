@@ -13,6 +13,11 @@
       "import": "./src/companies-with-price-performance.ts",
       "require": "./src/companies-with-price-performance.ts"
     },
+    "./performance": {
+      "types": "./src/performance.ts",
+      "import": "./src/performance.ts",
+      "require": "./src/performance.ts"
+    },
     "./stock-data": {
       "types": "./src/stock-data.ts",
       "import": "./src/stock-data.ts",
@@ -41,6 +46,11 @@
         "types": "./dist/types/companies-with-price-performance.d.ts",
         "import": "./dist/companies-with-price-performance.js",
         "require": "./dist/companies-with-price-performance.js"
+      },
+      "./performance": {
+        "types": "./dist/types/performance.d.ts",
+        "import": "./dist/performance.js",
+        "require": "./dist/performance.js"
       },
       "./stock-data-smaller": {
         "types": "./dist/types/stock-data-smaller.d.ts",
