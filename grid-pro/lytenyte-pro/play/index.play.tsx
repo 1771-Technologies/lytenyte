@@ -22,6 +22,9 @@ export default function Play() {
     rowSelectionCheckbox: "normal",
     rowDragEnabled: true,
 
+    floatingCellRenderers: {
+      "width-adjuster": () => <div>Lee</div>,
+    },
     rowGroupColumnTemplate: {
       headerRenderer: (p) => {
         return (
@@ -46,6 +49,7 @@ export default function Play() {
       resizable: true,
       movable: true,
       sortable: true,
+      floatingCellRenderer: "width-adjuster",
     },
     floatingRowEnabled: true,
     floatingRowHeight: 32,

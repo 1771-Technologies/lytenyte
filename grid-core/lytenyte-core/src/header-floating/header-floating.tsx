@@ -63,7 +63,7 @@ export function FloatingCell({
 
   const Component = useMemo(() => {
     if (typeof rendererKey === "string") {
-      if (renderers[rendererKey])
+      if (!renderers[rendererKey])
         throw new Error(`Failed to find floating renderer: ${rendererKey}`);
 
       return renderers[rendererKey];
