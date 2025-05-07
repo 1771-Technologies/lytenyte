@@ -1,5 +1,7 @@
 # @1771technologies/react-sizer
 
+## 0.0.69
+
 ## 0.0.68
 
 ## 0.0.67
