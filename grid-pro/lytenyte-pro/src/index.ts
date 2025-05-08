@@ -7,6 +7,7 @@ export { LyteNyteGrid } from "./lytenyte-pro.js";
 
 export { useLyteNytePro } from "./use-lytenyte.js";
 export * from "./use-client-data-source.js";
-export { useTreeDataSource } from "./use-tree-data-source.js";
+export * from "./use-tree-data-source.js";
+export * from "./use-server-data-source.js";
 
 export { activateLicense, hasAValidLicense } from "./license.js";
