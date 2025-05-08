@@ -1,5 +1,7 @@
 # @1771technologies/lng-license
 
+## 0.0.71
+
 ## 0.0.70
 
 ## 0.0.69
