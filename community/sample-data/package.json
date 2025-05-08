@@ -18,6 +18,11 @@
       "import": "./src/performance.ts",
       "require": "./src/performance.ts"
     },
+    "./file-data": {
+      "types": "./src/file-data.ts",
+      "import": "./src/file-data.ts",
+      "require": "./src/file-data.ts"
+    },
     "./stock-data": {
       "types": "./src/stock-data.ts",
       "import": "./src/stock-data.ts",
@@ -51,6 +56,11 @@
         "types": "./dist/types/performance.d.ts",
         "import": "./dist/performance.js",
         "require": "./dist/performance.js"
+      },
+      "./file-data": {
+        "types": "./dist/types/file-data.d.ts",
+        "import": "./dist/file-data.js",
+        "require": "./dist/file-data.js"
       },
       "./stock-data-smaller": {
         "types": "./dist/types/stock-data-smaller.d.ts",
