@@ -1,6 +1,8 @@
-import type { ServerDataSourceInitial } from "@1771technologies/grid-server-data-source";
+import type {
+  AsyncDataResponse,
+  ServerDataSourceInitial,
+} from "@1771technologies/grid-server-data-source";
 import type { ReactNode } from "react";
-import type { AsyncDataResponse } from "../../../grid-server-data-source/src/types";
 import { sql } from "./server";
 
 export const dataFetcher: ServerDataSourceInitial<any, ReactNode>["rowDataFetcher"] = async (p) => {
