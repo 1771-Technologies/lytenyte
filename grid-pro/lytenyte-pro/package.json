@@ -131,6 +131,7 @@
   },
   "dependencies": {
     "@1771technologies/grid-client-data-source-pro": "workspace:*",
+    "@1771technologies/grid-server-data-source": "workspace:*",
     "@1771technologies/grid-core": "workspace:*",
     "@1771technologies/grid-design": "workspace:*",
     "@1771technologies/grid-provider": "workspace:*",
