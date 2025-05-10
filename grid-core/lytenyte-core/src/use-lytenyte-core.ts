@@ -1,15 +1,24 @@
 import { makeGridCore } from "@1771technologies/grid-store-core";
-import type { GridCoreReact, StateInitCoreReact } from "@1771technologies/grid-types/core-react";
+import type {
+  EventsCoreReact,
+  GridCoreReact,
+  StateInitCoreReact,
+} from "@1771technologies/grid-types/core-react";
 import { useEffect, useState, type ReactNode } from "react";
 import { HeaderCellDefault } from "./header/header-cell/header-cell-default";
 
-type ChangeReturnType<F extends (...args: any[]) => any, R> = (...args: Parameters<F>) => R;
+type LngEventNames = keyof EventsCoreReact<any>;
+
+export type UseEvent<D> = <K extends LngEventNames>(
+  eventName: K,
+  callback: EventsCoreReact<D>[K],
+) => void;
 
 type UseLyteNyteCoreReturn<D> = {
   state: GridCoreReact<D>["state"];
   api: GridCoreReact<D>["api"];
   useSignalWatcher: (c: keyof Omit<GridCoreReact<D>["state"], "internal">, fn: () => void) => void;
-  useEvent: ChangeReturnType<GridCoreReact<D>["api"]["eventAddListener"], void>;
+  useEvent: UseEvent<D>;
 };
 
 export const useLyteNyteCore = <D>(p: StateInitCoreReact<D>): UseLyteNyteCoreReturn<D> => {
@@ -32,10 +41,7 @@ export const useLyteNyteCore = <D>(p: StateInitCoreReact<D>): UseLyteNyteCoreRet
       }, [fn, signal]);
     };
 
-    const useEvent: ChangeReturnType<GridCoreReact<D>["api"]["eventAddListener"], void> = (
-      ev,
-      fn,
-    ) => {
+    const useEvent: UseEvent<any> = (ev, fn) => {
       useEffect(() => {
         const unsub = s.api.eventAddListener(ev, fn);
 

@@ -1,3 +1,4 @@
+import type { EventsProRaw } from "./events/events-pro.js";
 import type * as P from "./export-pro.js";
 import type { ReactNode as R } from "react";
 
@@ -10,6 +11,8 @@ export type RowDataSourceProReact<D = any> = P.RowDataSourcePro<D, R>;
 export type GridProReact<D = any> = P.GridPro<D, R>;
 
 export type StateInitProReact<D = any> = P.StateInitPro<D, R>;
+
+export type EventsProReact<D = any> = EventsProRaw<ApiProReact<D>, D, ColumnProReact<D>>;
 
 // Additional Types
 

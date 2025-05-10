@@ -1,15 +1,20 @@
 import { makeGridPro } from "@1771technologies/grid-store-pro";
 import { useEffect, useState, type ReactNode } from "react";
-import type { GridProReact, StateInitProReact } from "./types";
+import type { EventsProReact, GridProReact, StateInitProReact } from "./types";
 import { HeaderCellDefault } from "./header-cell/header-cell-default";
 
-type ChangeReturnType<F extends (...args: any[]) => any, R> = (...args: Parameters<F>) => R;
+type LngEventNames = keyof EventsProReact<any>;
+
+export type UseEvent<D> = <K extends LngEventNames>(
+  eventName: K,
+  callback: EventsProReact<D>[K],
+) => void;
 
 type UseLyteNyteProReturn<D> = {
   state: GridProReact<D>["state"];
   api: GridProReact<D>["api"];
   useSignalWatcher: (c: keyof Omit<GridProReact<D>["state"], "internal">, fn: () => void) => void;
-  useEvent: ChangeReturnType<GridProReact<D>["api"]["eventAddListener"], void>;
+  useEvent: UseEvent<D>;
 };
 
 export const useLyteNytePro = <D>(p: StateInitProReact<D>): UseLyteNyteProReturn<D> => {
@@ -31,10 +36,7 @@ export const useLyteNytePro = <D>(p: StateInitProReact<D>): UseLyteNyteProReturn
       }, [fn, signal]);
     };
 
-    const useEvent: ChangeReturnType<GridProReact<D>["api"]["eventAddListener"], void> = (
-      ev,
-      fn,
-    ) => {
+    const useEvent: UseEvent<D> = (ev, fn) => {
       useEffect(() => {
         const unsub = s.api.eventAddListener(ev, fn);
 

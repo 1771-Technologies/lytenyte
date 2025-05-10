@@ -1,3 +1,4 @@
+import type { EventsCoreRaw } from "./events/events-core.js";
 import type * as C from "./export-core.js";
 import type { ReactNode } from "react";
 
@@ -11,6 +12,8 @@ export type RowDataSourceClientReact<D = any> = C.RowDataSourceClient<D, ReactNo
 export type GridCoreReact<D = any> = C.GridCore<D, ReactNode>;
 
 export type StateInitCoreReact<D = any> = C.StateInitCore<D, ReactNode>;
+
+export type EventsCoreReact<D = any> = EventsCoreRaw<ApiCoreReact<D>, D, ColumnCoreReact<D>>;
 
 // Additional types
 
