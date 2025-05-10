@@ -209,6 +209,10 @@ export function createClientDataSource<D, E>(
       watchers.push(sx.columnPivotModel.watch(reloadPivots, false));
       watchers.push(sx.measureModel.watch(reloadPivots, false));
       watchers.push(sx.columnPivotModeIsOn.watch(reloadPivots, false));
+
+      setTimeout(() => {
+        reloadPivots();
+      }, 0);
     },
     clean: () => {
       watchers.forEach((c) => c());
