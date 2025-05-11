@@ -19,6 +19,10 @@
   background-color: var(--lng1771-gray-00);
 }
 
+[data-lng1771-type="number"] {
+  text-align: end;
+}
+
 .lng1771-cell--alternate {
   background-color: var(--lng1771-gray-02);
 }

@@ -3,7 +3,8 @@ import { Checkbox } from "../components/checkbox";
 import type { ColumnHeaderRendererParamsCoreReact } from "@1771technologies/grid-types/core-react";
 
 export function HeaderCellMarker({ api }: ColumnHeaderRendererParamsCoreReact<any>) {
-  const supportsSelectedAll = api.rowSelectionSelectAllSupported();
+  const mode = api.getState().rowSelectionMode.use() === "multiple";
+  const supportsSelectedAll = api.rowSelectionSelectAllSupported() && mode;
 
   const allSelected = api.rowSelectionAllRowsSelected();
   const selected = api.getState().rowSelectionSelectedIds.use();

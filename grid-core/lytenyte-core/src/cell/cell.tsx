@@ -85,6 +85,7 @@ function CellImpl({
       data-lng1771-rowid={rowNode.id}
       data-lng1771-rowindex={rowIndex}
       data-lng1771-colindex={rowIndex}
+      data-lng1771-type={column.type ?? "text"}
       className={clsx(
         "lng1771-cell",
         rowIndex % 2 === 1 && "lng1771-cell--alternate",

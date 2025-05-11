@@ -21,6 +21,8 @@ export default function App() {
     rowDataSource: ds,
     columns,
 
+    rowDetailEnabled: true,
+
     measureModel: {
       balance: { fn: "sum" },
     },
