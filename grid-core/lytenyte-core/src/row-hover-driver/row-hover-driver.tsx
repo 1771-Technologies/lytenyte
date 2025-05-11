@@ -11,8 +11,11 @@ export function RowHoverDriver() {
   return (
     <style>
       {`
-      #${gridId} > div > div > [aria-rowindex="${hoveredRow + 1}"] {
+      #${gridId} > div > div > :not(.lng1771-cell--selected)[aria-rowindex="${hoveredRow + 1}"] {
         background-color: var(--lng1771-gray-10);
+      }
+      #${gridId} > div > div > .lng1771-cell--selected[aria-rowindex="${hoveredRow + 1}"] {
+        background-color: var(--lng1771-primary-30);
       }
   `}
     </style>
