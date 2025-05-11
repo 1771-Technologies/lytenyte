@@ -1,4 +1,5 @@
-:root {
+:root,
+.light {
   --lng1771-primary-05: rgba(18, 108, 255, 0.05);
   --lng1771-primary-10: rgba(18, 108, 255, 0.1);
   --lng1771-primary-30: rgba(18, 108, 255, 0.3);
@@ -32,7 +33,9 @@
   --lng1771-pill-group-fill: #e6f8f2;
   --lng1771-pill-group-stroke: #a8d4c4;
   --lng1771-pill-icon-color: var(--lng1771-gray-50);
+}
 
+:root {
   --lng1771-typeface: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
