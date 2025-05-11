@@ -5,7 +5,8 @@
   "type": "module",
   "files": [
     "dist",
-    "LICENSE"
+    "LICENSE",
+    "README.md"
   ],
   "exports": {
     ".": {
