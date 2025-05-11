@@ -14,14 +14,6 @@ export default function Play() {
     columns: stockColumns,
     cellEditPointerActivator: "single-click",
 
-    cellSelectionMode: "range",
-
-    rowSelectionMode: "multiple",
-    rowSelectionPointerActivator: "single-click",
-    rowSelectionMultiSelectOnClick: true,
-    rowSelectionCheckbox: "normal",
-    rowDragEnabled: true,
-
     floatingCellRenderers: {
       "width-adjuster": () => <div>Lee</div>,
     },
@@ -41,6 +33,14 @@ export default function Play() {
       },
     },
 
+    rowFullWidthPredicate: (row) => row.row.rowIndex! % 2 === 0,
+    rowFullWidthRenderer: () => {
+      return (
+        <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center" }}>
+          my rneder
+        </div>
+      );
+    },
     panelFrameButtons: [{ id: "columns", label: "Columns" }],
     panelFrames: {
       columns: { component: () => <div>l</div>, title: "x" },

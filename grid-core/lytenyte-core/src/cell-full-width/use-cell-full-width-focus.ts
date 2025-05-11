@@ -1,13 +1,14 @@
 import { FULL_WIDTH_POSITION } from "@1771technologies/grid-constants";
 import type { ApiCoreReact } from "@1771technologies/grid-types/core-react";
 import { useEvent } from "@1771technologies/react-utils";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, type FocusEvent } from "react";
 
 export function useCellFullWidthFocus(api: ApiCoreReact<any>, rowIndex: number) {
   const ref = useRef<HTMLElement | null>(null);
   const skipRef = useRef(false);
 
-  const onFocus = useEvent(() => {
+  const onFocus = useEvent((e: FocusEvent) => {
+    e.preventDefault();
     if (skipRef.current) {
       skipRef.current = false;
       return;
