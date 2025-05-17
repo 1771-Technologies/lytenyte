@@ -16,6 +16,7 @@ export function CellGroupRendererDefault({ api, row, column }: CellRendererParam
   const isMulti = displayMode === "multi-column";
 
   const rowDepth = api.rowDepth(row.rowIndex!);
+
   const depth = isMulti ? 0 : rowDepth;
   const columnDepth = Number.parseInt(column.id.split(":").pop()!);
 

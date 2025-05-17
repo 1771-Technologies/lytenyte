@@ -203,6 +203,10 @@ export function createServerDataSource<D, E>(
 
       if (state.requestedFails.has(r)) return baseErrorRow;
 
+      if (row) {
+        (row as any).rowIndex = r;
+      }
+
       return row ?? baseLoadingRow;
     },
     rowIdToRowIndex: (id) => state.graph.rowIdToRowIndex(id),
@@ -217,7 +221,9 @@ export function createServerDataSource<D, E>(
       return rows;
     },
 
-    rowDepth: (r) => Math.max(state.graph.rowRangesForIndex(r).length - 1, 0),
+    rowDepth: (r) => {
+      return Math.max(state.graph.rowRangesForIndex(r).length - 1, 0);
+    },
 
     rowSelectionSelectAllSupported: () => false,
     rowSelectionIndeterminateSupported: () => false,
