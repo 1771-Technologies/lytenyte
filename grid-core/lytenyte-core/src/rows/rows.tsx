@@ -133,6 +133,7 @@ export function Rows({
       if (rowDetailHeight > 0) {
         place.push(
           <RowDetail
+            key={`r${rowIndex}-detail`}
             api={api}
             height={rowDetailHeight}
             row={row}
