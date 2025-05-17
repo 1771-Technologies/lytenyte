@@ -37,6 +37,7 @@ export function rowGroupModelComputed<D, E>(model: string[], api: ApiPro<D, E> |
 
         const aggs = Object.fromEntries(
           column
+            .filter((c) => !api.columnIsGridGenerated(c as any))
             .map((c) => {
               const agg = c.aggFnDefault ?? c.aggFnsAllowed?.at(0) ?? base.aggFnsAllowed?.at(0);
               if (agg) return [c.id, { fn: agg }] as const;
