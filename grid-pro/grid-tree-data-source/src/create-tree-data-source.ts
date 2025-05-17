@@ -86,7 +86,9 @@ export function createTreeDataSource<D, E>(r: TreeDataSourceInitial<D, E>): RowD
         >((c) => ({ data: c, path: r.pathFromData(c.data) }));
     });
 
-    const tree = computed(() => createPathTree(paths.get()));
+    const tree = computed(() =>
+      createPathTree(paths.get(), { considerAdjacency: r.distinctNonAdjacentPaths }),
+    );
 
     const payloads = computed(() =>
       treeToPayload(tree.get(), r.pathSeparator ?? ROW_DEFAULT_PATH_SEPARATOR),
@@ -111,6 +113,9 @@ export function createTreeDataSource<D, E>(r: TreeDataSourceInitial<D, E>): RowD
 
       const expansions = sx.rowGroupExpansions.get();
       const expansionDefault = sx.rowGroupDefaultExpansion.peek();
+
+      graph.setTop(rowTopNodes.get());
+      graph.setBottom(rowBottomNodes.get());
 
       graph.blockFlatten(expansions, expansionDefault);
 
