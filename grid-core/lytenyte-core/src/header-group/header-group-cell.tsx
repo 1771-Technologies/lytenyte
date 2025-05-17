@@ -134,7 +134,8 @@ function HeaderGroupDefault({ group, api }: HeaderGroupRendererProps) {
   }, [api, group.id]);
 
   const expansionState = api.getState().columnGroupExpansionState.use();
-  const isExpanded = expansionState[group.id] ?? true;
+  const isExpanded =
+    expansionState[group.id] ?? api.getState().columnGroupDefaultExpansion.peek()(group.id);
 
   return (
     <div

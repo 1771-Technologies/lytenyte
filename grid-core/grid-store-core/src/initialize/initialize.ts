@@ -48,7 +48,7 @@ export function initialize<D, E>(
 
     columns: columnsComputed(props.columns ?? [], api),
     columnBase: signal(props.columnBase ?? {}),
-    columnGroupDefaultExpansion: signal(props.columnGroupDefaultExpansion ?? (() => false)),
+    columnGroupDefaultExpansion: signal(props.columnGroupDefaultExpansion ?? (() => true)),
     columnGroupExpansionState: signal(props.columnGroupExpansionState ?? {}),
     columnGroupHeaderHeight: signal(props.columnGroupHeaderHeight ?? COLUMN_GROUP_HEADER_HEIGHT),
     columnGroupIdDelimiter: signal(props.columnGroupIdDelimiter ?? COLUMN_GROUP_ID_DELIMITER),

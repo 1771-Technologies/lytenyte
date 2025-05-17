@@ -13,6 +13,7 @@ export function columnsVisibleState<T extends ColumnLike, B extends { hide?: boo
   columnBase: Signal<B>,
   columnGroupIdDelimiter: Signal<string>,
   columnGroupExpansionState: Signal<Record<string, boolean>>,
+  columnGroupDefaultExpansion: Signal<(s: string) => boolean>,
 ): {
   columnLookup: ReadonlySignal<Map<string, T>>;
   columnsVisible: ReadonlySignal<T[]>;
@@ -31,8 +32,9 @@ export function columnsVisibleState<T extends ColumnLike, B extends { hide?: boo
     const base = columnBase.get();
     const delimiter = columnGroupIdDelimiter.get();
     const expanded = columnGroupExpansionState.get();
+    const expandedDefault = columnGroupDefaultExpansion.peek();
 
-    return columnsVisibleCalc(c, base, (id) => !(expanded[id] ?? true), delimiter);
+    return columnsVisibleCalc(c, base, (id) => !(expanded[id] ?? expandedDefault(id)), delimiter);
   });
 
   const split = computed(() => {

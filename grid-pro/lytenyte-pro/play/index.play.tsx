@@ -30,7 +30,7 @@ export default function Play() {
       },
     },
 
-    cellSelectionMode: "range",
+    columnGroupDefaultExpansion: () => false,
 
     panelFrameButtons: [{ id: "columns", label: "Columns" }],
     panelFrames: {

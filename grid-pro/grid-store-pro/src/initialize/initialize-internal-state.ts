@@ -47,6 +47,7 @@ export function initializeInternalState<D, E>(
     state.columnBase,
     state.columnGroupIdDelimiter,
     state.columnGroupExpansionState,
+    state.columnGroupDefaultExpansion,
   );
 
   const viewportInnerWidth = signal(0);
