@@ -1,5 +1,7 @@
 # @1771technologies/grid-client-data-source-pro
 
+## 0.0.79
+
 ## 0.0.78
 
 ## 0.0.77
