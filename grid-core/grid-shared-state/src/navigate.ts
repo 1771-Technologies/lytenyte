@@ -127,7 +127,10 @@ export const navigate = <D, E, T extends ApiCore<D, E> | ApiPro<D, E>>(
       const rtlModifier = s.rtl.peek() ? -1 : 1;
 
       const vr = r != null ? rowScrollIntoViewValue(api, r) : undefined;
-      const vc = c != null ? columnScrollIntoViewValue(api, c) : undefined;
+
+      const isFullWidth = r != null && s.internal.rowIsFullWidthInternal.peek()(r);
+
+      const vc = c != null && !isFullWidth ? columnScrollIntoViewValue(api, c) : undefined;
 
       viewport.scrollTo({ top: vr, left: vc != null ? rtlModifier * vc : vc });
     },

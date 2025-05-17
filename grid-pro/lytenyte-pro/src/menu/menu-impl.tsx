@@ -66,6 +66,7 @@ export const MenuSubmenuTrigger: typeof Menu.SubmenuTrigger = forwardRef(functio
   ref,
 ) {
   const cl = useMenuClassName("lng1771-menu__submenu-trigger", className);
+  console.log("i ran");
   return (
     <Menu.SubmenuTrigger {...props} className={cl} ref={ref}>
       {children}

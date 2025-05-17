@@ -17,6 +17,7 @@ import {
   MenuSeparator,
   MenuSubmenu,
   MenuSubmenuTrigger,
+  SubmenuPositioner,
 } from "../src/menu/menu-impl";
 
 export default function Play() {
@@ -54,11 +55,13 @@ export default function Play() {
               <MenuItem>PDF Export</MenuItem>
             </MenuGroup>
             <MenuSubmenu trigger={<MenuSubmenuTrigger>Trigger Me</MenuSubmenuTrigger>}>
-              <MenuContainer>
-                <MenuItem>Label 1</MenuItem>
-                <MenuItem>Label 2</MenuItem>
-                <MenuItem>Label 3</MenuItem>
-              </MenuContainer>
+              <SubmenuPositioner>
+                <MenuContainer>
+                  <MenuItem>Label 1</MenuItem>
+                  <MenuItem>Label 2</MenuItem>
+                  <MenuItem>Label 3</MenuItem>
+                </MenuContainer>
+              </SubmenuPositioner>
             </MenuSubmenu>
 
             <MenuSeparator />
@@ -110,11 +113,13 @@ export default function Play() {
               <MenuItem>PDF Export</MenuItem>
             </MenuGroup>
             <MenuSubmenu trigger={<MenuSubmenuTrigger>Trigger Me</MenuSubmenuTrigger>}>
-              <MenuContainer>
-                <MenuItem>Label 1</MenuItem>
-                <MenuItem>Label 2</MenuItem>
-                <MenuItem>Label 3</MenuItem>
-              </MenuContainer>
+              <SubmenuPositioner>
+                <MenuContainer>
+                  <MenuItem>Label 1</MenuItem>
+                  <MenuItem>Label 2</MenuItem>
+                  <MenuItem>Label 3</MenuItem>
+                </MenuContainer>
+              </SubmenuPositioner>
             </MenuSubmenu>
 
             <MenuSeparator />

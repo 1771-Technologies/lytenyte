@@ -14,9 +14,6 @@ export default function Play() {
     columns: stockColumns,
     cellEditPointerActivator: "single-click",
 
-    floatingCellRenderers: {
-      "width-adjuster": () => <div>Lee</div>,
-    },
     rowGroupColumnTemplate: {
       headerRenderer: (p) => {
         return (
@@ -33,14 +30,8 @@ export default function Play() {
       },
     },
 
-    rowFullWidthPredicate: (row) => row.row.rowIndex! % 2 === 0,
-    rowFullWidthRenderer: () => {
-      return (
-        <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center" }}>
-          my rneder
-        </div>
-      );
-    },
+    cellSelectionMode: "range",
+
     panelFrameButtons: [{ id: "columns", label: "Columns" }],
     panelFrames: {
       columns: { component: () => <div>l</div>, title: "x" },
@@ -51,8 +42,6 @@ export default function Play() {
       sortable: true,
       floatingCellRenderer: "width-adjuster",
     },
-    floatingRowEnabled: true,
-    floatingRowHeight: 32,
     rowDataSource: ds,
   });
 
@@ -74,12 +63,7 @@ export default function Play() {
             padding: 20px;
             width: 200px;
           `}
-        >
-          <input
-            value={grid.state.filterQuickSearch.use() ?? ""}
-            onChange={(e) => grid.state.filterQuickSearch.set(e.target.value)}
-          />
-        </div>
+        ></div>
       </div>
       <div
         className={css`

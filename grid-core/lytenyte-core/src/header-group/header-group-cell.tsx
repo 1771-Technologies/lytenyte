@@ -133,6 +133,9 @@ function HeaderGroupDefault({ group, api }: HeaderGroupRendererProps) {
     return group.id.split(delimiter).at(-1)!;
   }, [api, group.id]);
 
+  const expansionState = api.getState().columnGroupExpansionState.use();
+  const isExpanded = expansionState[group.id] ?? true;
+
   return (
     <div
       style={{
@@ -146,7 +149,7 @@ function HeaderGroupDefault({ group, api }: HeaderGroupRendererProps) {
       }}
     >
       {label}
-      {group.isCollapsible && (
+      {group.isCollapsible && isExpanded && (
         <CollapseButton onClick={() => api.columnGroupToggle(group.id)}>-</CollapseButton>
       )}
     </div>

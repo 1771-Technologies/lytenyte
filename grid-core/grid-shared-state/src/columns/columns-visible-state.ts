@@ -32,7 +32,7 @@ export function columnsVisibleState<T extends ColumnLike, B extends { hide?: boo
     const delimiter = columnGroupIdDelimiter.get();
     const expanded = columnGroupExpansionState.get();
 
-    return columnsVisibleCalc(c, base, (id) => expanded[id], delimiter);
+    return columnsVisibleCalc(c, base, (id) => !(expanded[id] ?? true), delimiter);
   });
 
   const split = computed(() => {

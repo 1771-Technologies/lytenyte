@@ -9,7 +9,7 @@ export const columnGroupToggle = <D, E>(
   const s = api.getState();
   const groupState = s.columnGroupExpansionState.peek();
 
-  const nextValue = state == null ? !groupState[id] : state;
+  const nextValue = state == null ? !(groupState[id] ?? true) : state;
 
   const nextState = { ...groupState, [id]: nextValue };
 
