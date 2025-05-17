@@ -30,8 +30,6 @@ export default function Play() {
       },
     },
 
-    columnGroupDefaultExpansion: () => false,
-
     panelFrameButtons: [{ id: "columns", label: "Columns" }],
     panelFrames: {
       columns: { component: () => <div>l</div>, title: "x" },

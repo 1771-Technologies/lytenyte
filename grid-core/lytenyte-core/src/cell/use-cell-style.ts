@@ -32,7 +32,7 @@ export function useCellStyle(
     const isTop = rowPin === "top";
     const isBot = rowPin === "bottom";
 
-    const isLastStart = sx.columnVisibleStartCount.peek() - 1 === columnIndex && columnIndex > 0;
+    const isLastStart = sx.columnVisibleStartCount.peek() - 1 === columnIndex && columnIndex >= 0;
     const isFirstEnd =
       sx.columnVisibleCenterCount.peek() + sx.columnVisibleStartCount.peek() === columnIndex;
 
