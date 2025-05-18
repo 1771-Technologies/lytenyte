@@ -3,7 +3,7 @@
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://xwhoymbxqtnizjadugph.supabase.co/storage/v1/object/public/images//github-lytenyte-dark.svg"/>
     <source media="(prefers-color-scheme: light)" srcset="https://xwhoymbxqtnizjadugph.supabase.co/storage/v1/object/public/images//github-lytenyte-light.svg"/>
-    <img width="360" alt="Logo of LyteNyte Grid" src="https://xwhoymbxqtnizjadugph.supabase.co/storage/v1/object/public/images//github-lytenyte-dark.svg"/>
+    <img width="360" alt="Logo of LyteNyte Grid" src="https://xwhoymbxqtnizjadugph.supabase.co/storage/v1/object/public/images//github-lytenyte-light.svg"/>
   </picture>
   <br><br>
 
