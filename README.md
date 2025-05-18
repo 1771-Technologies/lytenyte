@@ -1,9 +1,9 @@
 <div align="center">
   <br><br>
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./resources/lytenyte-dark.svg"/>
-    <source media="(prefers-color-scheme: light)" srcset="./resources/lytenyte-light.svg"/>
-    <img width="360" alt="Logo of LyteNyte Grid" src="./resources/lytenyte-dark.svg"/>
+    <source media="(prefers-color-scheme: dark)" srcset="https://xwhoymbxqtnizjadugph.supabase.co/storage/v1/object/public/images//github-lytenyte-dark.svg"/>
+    <source media="(prefers-color-scheme: light)" srcset="https://xwhoymbxqtnizjadugph.supabase.co/storage/v1/object/public/images//github-lytenyte-light.svg"/>
+    <img width="360" alt="Logo of LyteNyte Grid" src="https://xwhoymbxqtnizjadugph.supabase.co/storage/v1/object/public/images//github-lytenyte-dark.svg"/>
   </picture>
   <br><br>
 
@@ -51,7 +51,7 @@ Meticulously engineered to redefine what your enterprise expects from a React da
 
 </div>
 
-![LyteNyte Logo](./resources/image.png)
+![LyteNyte Logo](https://xwhoymbxqtnizjadugph.supabase.co/storage/v1/object/public/images//github-readme-image.png)
 
 ---
 
