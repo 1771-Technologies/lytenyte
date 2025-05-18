@@ -1,5 +1,7 @@
 # @1771technologies/react-dragon
 
+## 0.0.80
+
 ## 0.0.79
 
 ## 0.0.78
