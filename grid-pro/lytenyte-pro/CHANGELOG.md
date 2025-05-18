@@ -1,5 +1,12 @@
 # @1771technologies/lytenyte-pro
 
+## 0.0.82
+
+### Patch Changes
+
+[Commit: e5bf6b87f5b1](https://github.com/1771-Technologies/lytenyte/commit/e5bf6b87f5b1486ae1cee6c6280b1285ae06bfe2)
+Version
+
 ## 0.0.81
 
 ### Patch Changes
