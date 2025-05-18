@@ -1,0 +1,67 @@
+{
+  "name": "@1771technologies/aio",
+  "version": "0.0.1",
+  "bin": "index.ts",
+  "type": "module",
+  "exports": {
+    "./vitest": {
+      "types": "./vitest.ts",
+      "import": "./vitest.ts",
+      "require": "./vitest.ts"
+    },
+    "./browser": {
+      "types": "./browser.ts",
+      "import": "./browser.ts",
+      "require": "./browser.ts"
+    },
+    "./vitest-types": {
+      "types": "./aio.d.ts",
+      "import": "./aio.ts",
+      "require": "./aio.ts"
+    },
+    "./play-entry.tsx": {
+      "types": "./play/play-entry.tsx",
+      "import": "./play/play-entry.tsx",
+      "require": "./play/play-entry.tsx"
+    },
+    "./playwright": {
+      "types": "./playwright.ts",
+      "import": "./playwright.ts",
+      "require": "./playwright.ts"
+    }
+  },
+  "dependencies": {
+    "@1771technologies/grid-design": "workspace:*",
+    "@axe-core/playwright": "^4.10.1",
+    "@babel/preset-react": "^7.26.3",
+    "@babel/preset-typescript": "^7.26.0",
+    "@linaria/core": "^6.2.0",
+    "@playwright/browser-chromium": "^1.49.1",
+    "@playwright/browser-firefox": "^1.49.1",
+    "@playwright/browser-webkit": "^1.49.1",
+    "@playwright/test": "^1.49.1",
+    "@testing-library/react": "^16.1.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "@vitest/browser": "^2.1.8",
+    "@vitest/coverage-v8": "^2.1.8",
+    "@vitest/ui": "2.1.8",
+    "@wyw-in-js/babel-preset": "^0.5.5",
+    "@wyw-in-js/vite": "^0.5.5",
+    "ajv": "^8.17.1",
+    "commander": "^12.1.0",
+    "elysia": "^1.2.10",
+    "elysia-connect-middleware": "^0.0.3",
+    "fast-glob": "^3.3.3",
+    "find-up": "^7.0.0",
+    "happy-dom": "^15.11.7",
+    "playwright": "^1.49.1",
+    "react-router-dom": "^7.1.0",
+    "topological-sort": "^0.3.0",
+    "unplugin-auto-import": "^0.19.0",
+    "vite": "^6.0.5",
+    "vite-plugin-dts": "^4.4.0",
+    "vite-plugin-pages": "^0.32.4",
+    "vitest": "2.1.8",
+    "vitest-browser-react": "^0.0.4"
+  }
+}

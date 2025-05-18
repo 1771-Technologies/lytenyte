@@ -1,0 +1,45 @@
+:root,
+.light {
+  --lng1771-primary-05: rgba(18, 108, 255, 0.05);
+  --lng1771-primary-10: rgba(18, 108, 255, 0.1);
+  --lng1771-primary-30: rgba(18, 108, 255, 0.3);
+  --lng1771-primary-50: #126cff;
+  --lng1771-primary-70: #053f9e;
+  --lng1771-primary-90: #012259;
+
+  --lng1771-row-selected: #d6e4fe;
+  --lng1771-focus-outline: var(--lng1771-primary-50);
+  --lng1771-gradient-shadow: linear-gradient(90deg, var(--lng1771-gray-50), var(--lng1771-gray-50));
+
+  --lng1771-gray-00: #ffffff;
+  --lng1771-gray-02: #fafbfc;
+  --lng1771-gray-05: #f6f8fa;
+  --lng1771-gray-10: #f2f4f7;
+  --lng1771-gray-20: #e9edf1;
+  --lng1771-gray-30: #dadfe7;
+  --lng1771-gray-40: #c3c9d5;
+  --lng1771-gray-50: #949ba8;
+  --lng1771-gray-60: #787e8c;
+  --lng1771-gray-70: #5c6170;
+  --lng1771-gray-80: #2d2f39;
+  --lng1771-gray-90: #1e1e29;
+  --lng1771-gray-100: #15151e;
+
+  --lng1771-pill-plain-fill: var(--lng1771-gray-20);
+  --lng1771-pill-column-fill: #ffffff;
+  --lng1771-pill-column-stroke: rgba(1, 34, 89, 0.14);
+  --lng1771-pill-pivot-fill: #ece6f8;
+  --lng1771-pill-pivot-stroke: #c6b5eb;
+  --lng1771-pill-group-fill: #e6f8f2;
+  --lng1771-pill-group-stroke: #a8d4c4;
+  --lng1771-pill-icon-color: var(--lng1771-gray-50);
+}
+
+:root {
+  --lng1771-typeface: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.lng1771-drag-on * {
+  cursor: grabbing !important;
+}

@@ -1,0 +1,106 @@
+.lng1771-select {
+  cursor: pointer;
+  min-width: 120px;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  padding-inline: 8px;
+  border: none;
+  background-color: var(--lng1771-gray-02);
+  border: 1px solid transparent;
+  box-sizing: border-box;
+  font-size: 14px;
+  box-shadow:
+    0px 1.5px 2px 0px rgba(0, 0, 0, 0),
+    0px 0px 0px 1px var(--lng1771-gray-30);
+  border-radius: 6px;
+  height: 28px;
+
+  color: var(--lng1771-gray-80);
+  font-family: var(--lng1771-typeface);
+
+  &:hover {
+    background-color: var(--lng1771-gray-05);
+  }
+
+  &:focus-within {
+    outline: none;
+    border-color: var(--lng1771-focus-outline);
+  }
+}
+
+.lng1771-select__value {
+  flex: 1;
+}
+
+.lng1771-select__trigger {
+  padding: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--lng1771-gray-70);
+}
+
+.lng1771-select__positioner {
+  z-index: 100;
+}
+
+.lng1771-select__popup {
+  background-color: var(--lng1771-gray-10);
+  border: 1px solid var(--lng1771-gray-30);
+  box-sizing: border-box;
+  border-radius: 8px;
+  padding: 4px;
+  box-shadow:
+    0px 14px 18px -6px rgba(30, 30, 41, 0.07),
+    0px 3px 13px 0px rgba(30, 30, 41, 0.1);
+  min-width: var(--anchor-width);
+
+  &:focus {
+    outline: none;
+  }
+  &::backdrop {
+    background-color: transparent;
+  }
+
+  transition: opacity 150ms;
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    opacity: 0;
+  }
+}
+
+.lng1771-select__value--no-value {
+  color: var(--lng1771-gray-60);
+}
+
+.lng1771-select__item {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding-inline: 8px;
+  height: 28px;
+  justify-content: space-between;
+  border-radius: 6px;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: var(--lng1771-gray-30);
+  }
+
+  &:focus-visible {
+    outline: none;
+    background-color: var(--lng1771-gray-30);
+  }
+}
+
+.lng1771-select__item-indicator {
+  color: var(--lng1771-primary-50);
+}
+
+.lng1771-select__item-text {
+  color: var(--lng1771-gray-80);
+  user-select: none;
+  font-size: 14px;
+}

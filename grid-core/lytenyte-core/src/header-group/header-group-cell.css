@@ -1,0 +1,13 @@
+.lng1771-header__group {
+  grid-column-start: 1;
+  grid-column-end: 1;
+  overflow: hidden;
+  position: relative;
+
+  border-bottom: 1px solid var(--lng1771-gray-10);
+  background-color: var(--lng1771-gray-00);
+  color: var(--lng1771-gray-60);
+  font-family: var(--lng1771-typeface);
+  font-size: 14px;
+  font-weight: 600;
+}

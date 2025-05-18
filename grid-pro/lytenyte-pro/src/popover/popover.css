@@ -1,0 +1,29 @@
+.lng1771-popover {
+  border: 1px solid var(--lng1771-gray-30);
+  background-color: var(--lng1771-gray-05);
+
+  padding-block: 3px;
+  border-radius: 8px;
+  box-sizing: border-box;
+  box-shadow:
+    1px 2.5px 0px rgba(30, 30, 41, 0.13),
+    0px 0px 0px 1px rgba(30, 30, 41, 0.02);
+
+  transition: opacity 150ms;
+
+  color: var(--lng1771-gray-80);
+  font-family: var(--lng1771-typeface);
+
+  &:focus {
+    outline: none;
+  }
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    opacity: 0;
+  }
+}
+
+.lng1771-popover__positioner {
+  z-index: 100;
+}

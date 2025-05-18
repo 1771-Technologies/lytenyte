@@ -1,0 +1,188 @@
+.lng1771-icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  padding: 0px;
+  font-weight: 600;
+  height: 24px;
+  width: 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: transparent;
+
+  &:focus-visible {
+    outline: none;
+  }
+  &:hover {
+    background-color: var(--lng1771-gray-10);
+  }
+}
+
+/**
+CHECKBOX
+*/
+
+.lng1771-checkbox {
+  --lng1771-checkbox-size: 16px;
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+  padding: 2px;
+  border-radius: 6px;
+  transition: background-color var(--lng1771-transition-normal) var(--lng1771-transition-fn);
+}
+.lng1771-checkbox--disabled:hover {
+  background-color: var(--lng1771-gray-30);
+}
+.lng1771-checkbox__input {
+  position: absolute;
+  inset-inline-start: 2px;
+  top: 2px;
+  cursor: pointer;
+  margin: 0;
+  display: inline-block;
+  opacity: 0;
+  width: var(--lng1771-checkbox-size);
+  height: var(--lng1771-checkbox-size);
+}
+
+.lng1771-checkbox__mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border: 2px solid var(--lng1771-gray-40);
+  border-radius: 4px;
+  background-color: var(--lng1771-gray-00);
+  width: var(--lng1771-checkbox-size);
+  height: var(--lng1771-checkbox-size);
+  pointer-events: none;
+
+  & > svg {
+    width: calc(var(--lng1771-checkbox-size) - 6px);
+  }
+}
+.lng1771-checkbox__mark--disabled {
+  background-color: var(--lng1771-gray-30);
+  border-color: var(--lng1771-gray-30);
+  color: var(--lng1771-gray-70);
+}
+.lng1771-checkbox__mark--checked {
+  background-color: var(--lng1771-primary-50);
+  border-color: var(--lng1771-primary-50);
+  color: var(--lng1771-gray-00);
+}
+
+@keyframes lng1771-checkbox__spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.lng1771-checkbox__mark--loading::before {
+  --lng1771-loading-size: calc(var(--lng1771-checkbox-size) - 4px);
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--lng1771-loading-size);
+  height: var(--lng1771-loading-size);
+  margin-top: calc(var(--lng1771-loading-size) / 2 * -1);
+  margin-left: calc(var(--lng1771-loading-size) / 2 * -1);
+  border-radius: 50%;
+  border-top: 2px solid currentColor;
+  border-right: 2px solid transparent;
+  animation: lng1771-checkbox-spinner 0.6s linear infinite;
+}
+
+/**
+INPUT
+*/
+.lng1771-input {
+  height: 32px;
+  color: var(--lng1771-gray-80);
+  display: flex;
+  align-items: center;
+  background-color: var(--lng1771-gray-00);
+  border: 1px solid transparent;
+  box-shadow:
+    0px 1.5px 2px 0px var(--lng1771-gray-30),
+    0px 0px 0px 1px var(--lng1771-gray-40);
+  box-sizing: border-box;
+  border-radius: 6px;
+  transition:
+    box-shadow var(--lng1771-transition-fn) var(--lng1771-transition-normal),
+    border-color var(--lng1771-transition-fn) var(--lng1771-transition-normal);
+
+  & svg {
+    padding-inline-start: 6px;
+  }
+  &:hover {
+    box-shadow:
+      0px 1.5px 2px 0px var(--lng1771-gray-30),
+      0px 0px 0px 1px var(--lng1771-primary-30);
+  }
+
+  &:focus-within {
+    border: 1px solid var(--lng1771-focus-outline);
+    box-shadow: 0px 0px 0px 2px var(--lng1771-primary-30);
+  }
+}
+
+.lng1771-input--error {
+  border: 1.5 solid red;
+  box-shadow: 0px 0px 0px 2px rgba(255, 0, 0, 0.6);
+
+  & svg {
+    color: red;
+  }
+}
+
+.lng1771-input--small {
+  height: 28px;
+}
+
+.lng1771-input--disabled {
+  color: var(--lng1771-gray-70);
+  box-shadow: unset;
+  border: 1px solid var(--lng1771-gray-30);
+  background-color: var(--lng1771-gray-10);
+
+  &::placeholder {
+    color: var(--lng1771-gray-60);
+  }
+  & svg {
+    color: var(--lng1771-gray-50);
+  }
+}
+
+.lng1771-input--ghost:not(:focus-within) {
+  box-shadow: none;
+  border: 1px solid transparent;
+}
+
+.lng1771-input__inner {
+  border: none;
+  background-color: transparent;
+  color: var(--lng1771-gray-70);
+  height: 100%;
+  width: 100%;
+  margin-top: -1px;
+  padding-block: 0px;
+  box-sizing: border-box;
+  padding-inline: 6px;
+  &:focus {
+    outline: none;
+  }
+  &::placeholder {
+    color: var(--lng1771-gray-60);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 17px;
+    position: relative;
+    top: 1px;
+  }
+}

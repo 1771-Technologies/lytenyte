@@ -1,0 +1,11 @@
+.lng1771-row-detail {
+  grid-row-start: 1;
+  grid-row-end: 2;
+  grid-column-start: 1;
+  grid-column-end: 2;
+
+  overflow: hidden;
+
+  box-sizing: border-box;
+  background-color: var(--lng1771-gray-05);
+}

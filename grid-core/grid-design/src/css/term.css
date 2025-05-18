@@ -1,0 +1,43 @@
+.lng1771-term256 {
+  color-scheme: dark;
+  /* Grid theme */
+
+  --lng1771-typeface: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  --lng1771-header-font-typeface: var(--lng1771-typeface);
+  --lng1771-cell-font-typeface: var(--lng1771-typeface);
+  --lng1771-menu-item-font-typeface: var(--lng1771-typeface);
+
+  --lng1771-primary-05: rgba(87, 255, 255, 0.07);
+  --lng1771-primary-10: rgba(87, 255, 255, 0.07);
+  --lng1771-primary-30: rgba(87, 255, 255, 0.3);
+  --lng1771-primary-50: #57ffff;
+  --lng1771-primary-70: #278081;
+  --lng1771-primary-90: #278081;
+
+  --lng1771-row-selected: #192b2d;
+  --lng1771-focus-outline: var(--lng1771-primary-50);
+
+  --lng1771-gray-00: #000000;
+  --lng1771-gray-02: #0f0f0f;
+  --lng1771-gray-05: #121212;
+  --lng1771-gray-10: #1c1c1c;
+  --lng1771-gray-20: #262626;
+  --lng1771-gray-30: #303030;
+  --lng1771-gray-40: #3a3a3a;
+  --lng1771-gray-50: #4e4e4e;
+  --lng1771-gray-60: #626262;
+  --lng1771-gray-70: #8a8a8a;
+  --lng1771-gray-80: #a8a8a8;
+  --lng1771-gray-90: #dadada;
+  --lng1771-gray-100: #eeeeee;
+
+  --lng1771-pill-plain-fill: var(--lng1771-gray-20);
+  --lng1771-pill-column-fill: #182a2a;
+  --lng1771-pill-column-stroke: rgba(0, 181, 181, 0.266);
+  --lng1771-pill-pivot-fill: rgba(120, 57, 255, 0.18);
+  --lng1771-pill-pivot-stroke: rgba(136, 81, 255, 0.6);
+  --lng1771-pill-group-fill: rgba(0, 221, 147, 0.14);
+  --lng1771-pill-group-stroke: rgba(26, 255, 172, 0.35);
+  --lng1771-pill-icon-color: var(--lng1771-gray-60);
+}

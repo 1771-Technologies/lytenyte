@@ -1,0 +1,115 @@
+.lng1771-menu {
+  border: 1px solid var(--lng1771-gray-30);
+  background-color: var(--lng1771-gray-05);
+
+  padding-block: 3px;
+  border-radius: 8px;
+  box-sizing: border-box;
+  box-shadow:
+    1px 2.5px 0px rgba(30, 30, 41, 0.13),
+    0px 0px 0px 1px rgba(30, 30, 41, 0.02);
+
+  transition: opacity 150ms;
+
+  color: var(--lng1771-gray-80);
+  font-family: var(--lng1771-typeface);
+
+  &:focus {
+    outline: none;
+  }
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    opacity: 0;
+  }
+}
+
+.lng1771-menu__separator {
+  margin-block: 1px;
+  height: 1px;
+  width: 100%;
+  background-color: var(--lng1771-gray-40);
+  box-sizing: border-box;
+}
+
+.lng1771-menu__item,
+.lng1771-menu__submenu-trigger,
+.lng1771-menu__radio-item,
+.lng1771-menu__checkbox-item {
+  padding-inline: 4px;
+  padding-block: 6px;
+  font-family: var(--lng1771-typeface);
+  color: var(--lng1771-gray-80);
+  font-size: 14px;
+  box-sizing: border-box;
+  background-color: transparent;
+  transition: background-color 50ms ease-in;
+  min-width: 120px;
+  cursor: pointer;
+
+  &:focus-visible {
+    background-color: var(--lng1771-gray-20);
+    outline: none;
+  }
+
+  &:not([data-disabled]):hover {
+    background-color: var(--lng1771-gray-20);
+  }
+
+  &[data-disabled] {
+    color: var(--lng1771-gray-50);
+  }
+}
+.lng1771-menu__submenu-trigger,
+.lng1771-menu__radio-item,
+.lng1771-menu__checkbox-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.lng1771-menu__arrow {
+  &[data-side="bottom"] {
+    top: -14px;
+  }
+  &[data-side="left"] {
+    right: -14px;
+    transform: rotate(90deg);
+  }
+  &[data-side="right"] {
+    left: -14px;
+    transform: rotate(-90deg);
+  }
+  &[data-side="top"] {
+    bottom: -14px;
+    transform: rotate(180deg);
+  }
+}
+
+.lng1771-menu__group-label {
+  color: var(--lng1771-gray-70);
+  font-size: 12px;
+  padding-inline: 4px;
+  padding-block: 2px;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  background-color: inherit;
+  text-transform: uppercase;
+  box-sizing: border-box;
+}
+
+.lng1771-menu__radio-item-indicator,
+.lng1771-menu__checkbox-item-indicator {
+  color: var(--lng1771-primary-50);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.lng1771-menu__submenu-positioner,
+.lng1771-menu__positioner {
+  z-index: 100;
+}

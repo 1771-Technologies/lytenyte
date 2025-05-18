@@ -1,0 +1,9 @@
+.lng1771-row-drag-indicator {
+  height: 2px;
+  position: sticky;
+  inset-inline-start: 0px;
+  grid-column-start: 1;
+  grid-column-end: 2;
+  background-color: var(--lng1771-primary-50);
+  z-index: 20;
+}

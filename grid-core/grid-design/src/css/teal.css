@@ -1,0 +1,35 @@
+.lng1771-teal {
+  color-scheme: dark;
+  --lng1771-primary-05: rgba(3, 182, 161, 0.05);
+  --lng1771-primary-10: rgba(3, 182, 161, 0.05);
+  --lng1771-primary-30: rgba(3, 182, 161, 0.25);
+  --lng1771-primary-50: #03b6a1;
+  --lng1771-primary-70: #278177;
+  --lng1771-primary-90: #278177;
+
+  --lng1771-focus-outline: var(--lng1771-primary-50);
+  --lng1771-row-selected: #192b2d;
+
+  --lng1771-gray-00: #0e1317;
+  --lng1771-gray-02: #11161b;
+  --lng1771-gray-05: #161b21;
+  --lng1771-gray-10: #1b2128;
+  --lng1771-gray-20: #20262d;
+  --lng1771-gray-30: #2a323c;
+  --lng1771-gray-40: #303a41;
+  --lng1771-gray-50: #465056;
+  --lng1771-gray-60: #65727b;
+  --lng1771-gray-70: #818f98;
+  --lng1771-gray-80: #a8b2b8;
+  --lng1771-gray-90: #d7dbdd;
+  --lng1771-gray-100: #edeeef;
+
+  --lng1771-pill-plain-fill: var(--lng1771-gray-20);
+  --lng1771-pill-column-fill: #1b3237;
+  --lng1771-pill-column-stroke: rgba(0, 181, 181, 0.36);
+  --lng1771-pill-pivot-fill: rgba(120, 57, 255, 0.18);
+  --lng1771-pill-pivot-stroke: rgba(136, 81, 255, 0.6);
+  --lng1771-pill-group-fill: rgba(0, 221, 147, 0.14);
+  --lng1771-pill-group-stroke: rgba(26, 255, 172, 0.35);
+  --lng1771-pill-icon-color: var(--lng1771-gray-70);
+}

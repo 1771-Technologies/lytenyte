@@ -1,0 +1,20 @@
+.lng1771-cell__full-width {
+  background-color: var(--lng1771-gray-00);
+
+  position: sticky;
+  inset-inline-start: 0px;
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  border-bottom: 1px solid var(--lng1771-gray-20);
+  box-sizing: border-box;
+}
+
+.lng1771-cell__full-width--alternate {
+  background-color: var(--lng1771-gray-02);
+}
+
+.lng1771-cell__full-width--selected {
+  background-color: var(--lng1771-row-selected);
+}

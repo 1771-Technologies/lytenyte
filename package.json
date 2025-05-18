@@ -1,0 +1,29 @@
+{
+  "name": "root",
+  "module": "index.ts",
+  "type": "module",
+  "workspaces": [
+    "grid-core/*",
+    "grid-pro/*",
+    "forks/*",
+    "community/*",
+    "tools/*"
+  ],
+  "scripts": {
+    "ci:version": "changeset version",
+    "ci:publish": "aio bulk && aio publish && ./tag-version.sh"
+  },
+  "dependencies": {
+    "@1771technologies/aio": "workspace:*",
+    "@1771technologies/eslint-preset": "0.0.3",
+    "@changesets/cli": "^2.27.12",
+    "@types/uuid": "^10.0.0",
+    "eslint": "^9.17.0",
+    "prettier": "^3.4.2",
+    "uuid": "^11.0.5"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.7.2"
+  }
+}

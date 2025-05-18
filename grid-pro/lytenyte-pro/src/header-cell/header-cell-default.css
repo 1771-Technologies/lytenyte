@@ -1,0 +1,119 @@
+.lng1771-header-default {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding-inline: 12px;
+  box-sizing: border-box;
+  text-transform: capitalize;
+  position: relative;
+  font-weight: 400;
+  letter-spacing: 0.25px;
+}
+
+.lng1771-header-default__label {
+  display: flex;
+  gap: 4px;
+
+  & span:last-child {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--lng1771-primary-50);
+  }
+}
+
+.lng1771-header-default__label:not(
+    .lng1771-header-default__label--stacked
+  ).lng1771-header-default__label--end-justify {
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 2px;
+  text-align: end;
+}
+
+.lng1771-header-default__label--stacked {
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lng1771-header-default__label--end-justify {
+  width: 100%;
+  justify-content: flex-end;
+  align-items: flex-end;
+  text-align: end;
+}
+
+.lng1771-header-default__label-secondary {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 10px;
+}
+
+.lng1771-header-default__label-primary {
+  white-space: nowrap;
+  text-overflow: clip;
+}
+
+.lng1771-header-default--end-justify .lng1771-header-default__label-secondary {
+  flex-direction: row-reverse;
+}
+
+.lng1771-header-default__label-secondary-agg {
+  color: var(--lng1771-primary-50);
+  font-weight: 600;
+  text-transform: lowercase;
+}
+
+.lng1771-header-default__controls {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.lng1771-header-default--start-justify .lng1771-header-default__controls {
+  inset-inline-end: 12px;
+}
+
+.lng1771-header-default--end-justify .lng1771-header-default__controls {
+  inset-inline-start: 12px;
+  flex-direction: row-reverse;
+}
+
+.lng1771-header-default__button {
+  background-color: transparent;
+  background-color: var(--lng1771-gray-05);
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 100ms ease-in;
+  color: var(--lng1771-gray-70);
+
+  &:hover {
+    background-color: var(--lng1771-gray-20);
+    cursor: pointer;
+  }
+}
+
+.lng1771-header-default__button[data-active="true"] {
+  opacity: 1;
+  color: var(--lng1771-primary-50);
+  border-color: var(--lng1771-gray-40);
+}
+
+.lng1771-header-default:hover .lng1771-header-default__button {
+  opacity: 1;
+}
+
+.lng1771-header-default__sort-count {
+  font-size: 10px;
+  position: relative;
+  top: -5px;
+}
