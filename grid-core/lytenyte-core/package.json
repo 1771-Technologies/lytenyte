@@ -51,7 +51,7 @@
         "import": "./dist/icons.js",
         "require": "./dist/icons.js"
       },
-      "./css": "./dist/lytenyte-core.css"
+      "./grid.css": "./dist/lytenyte-core.css"
     }
   },
   "peerDependencies": {
