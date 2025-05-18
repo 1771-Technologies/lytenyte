@@ -1,5 +1,5 @@
 ---
-"@1771technologies/lytenyte-pro": patch
+"@1771technologies/lytenyte-pro": minor
 ---
 
 Version

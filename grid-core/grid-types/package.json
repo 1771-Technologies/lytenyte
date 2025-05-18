@@ -5,8 +5,17 @@
   "type": "module",
   "files": [
     "dist",
-    "LICENSE"
+    "LICENSE",
+    "README.md"
   ],
+  "homepage": "https://1771technologies.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/1771-technologies/lytenyte.git"
+  },
+  "bugs": {
+    "url": "https://github.com/1771-technologies/lytenyte/issues"
+  },
   "exports": {
     "./core": {
       "types": "./src/export-core.ts",
