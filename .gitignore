@@ -28,6 +28,8 @@ __screenshots__/
 
 .turbo
 
+.source/
+
 **/_vitest-coverage
 .vscode
 

@@ -61,7 +61,7 @@
     "vite": "^6.0.5",
     "vite-plugin-dts": "^4.4.0",
     "vite-plugin-pages": "^0.32.4",
-    "vitest": "2.1.8",
+    "vitest": "^3.1.4",
     "vitest-browser-react": "^0.0.4"
   }
 }
