@@ -18,10 +18,6 @@ import { hasTabIndex } from "./has-tab-index.js";
 import { isContentEditable } from "./is-content-editable.js";
 
 export const getTabIndex = (node: HTMLElement) => {
-  if (!node) {
-    throw new Error("No node provided");
-  }
-
   if (node.tabIndex < 0) {
     // in Chrome, <details/>, <audio controls/> and <video controls/> elements get a default
     // `tabIndex` of -1 when the 'tabindex' attribute isn't specified in the DOM,

@@ -31,6 +31,23 @@ export default defineWorkspace([
   },
   {
     test: {
+      name: "Browser",
+      browser: {
+        provider: "playwright",
+        enabled: true,
+        instances: [
+          {
+            browser: "chromium",
+            headless: true,
+          },
+        ],
+      },
+      include: ["./packages/**/*.browser.?(c|m)[jt]s?(x)"],
+      globals: true,
+    },
+  },
+  {
+    test: {
       name: "node",
       globals: true,
       environment: "jsdom",
