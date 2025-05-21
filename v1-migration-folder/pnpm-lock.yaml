@@ -82,7 +82,27 @@ importers:
         specifier: ^19.1.0
         version: 19.1.0(react@19.1.0)
 
-  packages/lytenyte-path: {}
+  packages/dom-utils:
+    dependencies:
+      '@1771technologies/lytenyte-js-utils':
+        specifier: workspace:*
+        version: link:../js-utils
+
+  packages/focus:
+    dependencies:
+      '@1771technologies/lytenyte-dom-utils':
+        specifier: workspace:*
+        version: link:../dom-utils
+
+  packages/js-utils: {}
+
+  packages/path: {}
+
+  packages/scroll-lock:
+    dependencies:
+      '@1771technologies/lytenyte-dom-utils':
+        specifier: workspace:*
+        version: link:../dom-utils
 
 packages:
 
