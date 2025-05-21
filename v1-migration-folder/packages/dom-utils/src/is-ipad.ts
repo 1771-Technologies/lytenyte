@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import { cached } from "./cahed.js";
+import { cached } from "./cached.js";
 import { isMac } from "./is-mac.js";
 import { testPlatform } from "./test-platform.js";
 
