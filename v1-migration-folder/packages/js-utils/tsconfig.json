@@ -21,7 +21,8 @@
     // Some stricter flags (disabled by default)
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noPropertyAccessFromIndexSignature": false,
-    "types": ["@vitest/browser/providers/playwright"]
-  }
+    "noPropertyAccessFromIndexSignature": false
+  },
+  "exclude": ["**/__tests__/**", "**/*.stories*", "**/*.spec*", "**/*.test*"],
+  "include": ["src"]
 }
