@@ -14,9 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 export const isDetailsWithSummary = (node: Element): node is HTMLDetailsElement => {
-  const r =
-    node.tagName === "DETAILS" &&
-    Array.prototype.slice.apply(node.children).some((child) => child.tagName === "SUMMARY");
-
-  return r;
+  if (node.tagName !== "DETAILS") return false;
+  const children = node.children;
+  for (let i = 0; i < children.length; i++) {
+    if (children[i].tagName === "SUMMARY") return true;
+  }
+  return false;
 };

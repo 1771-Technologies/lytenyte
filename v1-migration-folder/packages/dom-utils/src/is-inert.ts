@@ -27,5 +27,5 @@ export const isInert = (node: Element, lookUp = true): boolean => {
   //  so it likely would not support `:is([inert] *)` either...
   const result = inert || (lookUp && node && isInert(node.parentNode as Element)); // recursive
 
-  return result;
+  return !!result;
 };
