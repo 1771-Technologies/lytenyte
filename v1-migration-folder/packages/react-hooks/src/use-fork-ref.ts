@@ -17,6 +17,7 @@ export function useForkRef<Instance>(
       if (typeof ref === "function") {
         const refCallback = ref;
         const refCleanup: void | (() => void) = refCallback(instance);
+        /* v8 ignore next 2 */
         return typeof refCleanup === "function"
           ? refCleanup
           : () => {
