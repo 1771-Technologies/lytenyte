@@ -1,4 +1,4 @@
-import { describe, expect, test, vi, beforeEach, type Mock } from "vitest";
+import { expect, test, vi, beforeEach, type Mock } from "vitest";
 import { isNodeMatchingSelectorFocusable } from "../is-node-matching-selector-focusable";
 import type { CheckOptions } from "../../+types.focus";
 
@@ -35,52 +35,50 @@ beforeEach(() => {
 
 const options: CheckOptions = { displayCheck: "full", getShadowRoot: true };
 
-describe("isNodeMatchingSelectorFocusable", () => {
-  test("returns false if node is disabled", () => {
-    const node = document.createElement("input");
-    node.disabled = true;
+test("isNodeMatchingSelectorFocusable: returns false if node is disabled", () => {
+  const node = document.createElement("input");
+  node.disabled = true;
 
-    expect(isNodeMatchingSelectorFocusable(options, node)).toBe(false);
-  });
+  expect(isNodeMatchingSelectorFocusable(options, node)).toBe(false);
+});
 
-  test("returns false if node is inert", () => {
-    const node = document.createElement("div");
-    (isInert as Mock).mockReturnValue(true);
+test("isNodeMatchingSelectorFocusable: returns false if node is inert", () => {
+  const node = document.createElement("div");
+  (isInert as Mock).mockReturnValue(true);
 
-    expect(isNodeMatchingSelectorFocusable(options, node)).toBe(false);
-  });
+  expect(isNodeMatchingSelectorFocusable(options, node)).toBe(false);
+});
 
-  test("returns false if node is a hidden input", () => {
-    const node = document.createElement("input");
-    (isHiddenInput as unknown as Mock).mockReturnValue(true);
+test("isNodeMatchingSelectorFocusable: returns false if node is a hidden input", () => {
+  const node = document.createElement("input");
+  (isHiddenInput as unknown as Mock).mockReturnValue(true);
 
-    expect(isNodeMatchingSelectorFocusable(options, node)).toBe(false);
-  });
+  expect(isNodeMatchingSelectorFocusable(options, node)).toBe(false);
+});
 
-  test("returns false if node is hidden by CSS or DOM state", () => {
-    const node = document.createElement("div");
-    (isHidden as Mock).mockReturnValue(true);
+test("isNodeMatchingSelectorFocusable: returns false if node is hidden by CSS or DOM state", () => {
+  const node = document.createElement("div");
+  (isHidden as Mock).mockReturnValue(true);
 
-    expect(isNodeMatchingSelectorFocusable(options, node)).toBe(false);
-  });
+  expect(isNodeMatchingSelectorFocusable(options, node)).toBe(false);
+});
 
-  test("returns false if node is a <details> with summary", () => {
-    const node = document.createElement("details");
-    (isDetailsWithSummary as unknown as Mock).mockReturnValue(true);
+test("isNodeMatchingSelectorFocusable: returns false if node is a <details> with summary", () => {
+  const node = document.createElement("details");
+  (isDetailsWithSummary as unknown as Mock).mockReturnValue(true);
 
-    expect(isNodeMatchingSelectorFocusable(options, node)).toBe(false);
-  });
+  expect(isNodeMatchingSelectorFocusable(options, node)).toBe(false);
+});
 
-  test("returns false if node is disabled from a fieldset", () => {
-    const node = document.createElement("input");
-    (isDisabledFromFieldset as Mock).mockReturnValue(true);
+test("isNodeMatchingSelectorFocusable: returns false if node is disabled from a fieldset", () => {
+  const node = document.createElement("input");
+  (isDisabledFromFieldset as Mock).mockReturnValue(true);
 
-    expect(isNodeMatchingSelectorFocusable(options, node)).toBe(false);
-  });
+  expect(isNodeMatchingSelectorFocusable(options, node)).toBe(false);
+});
 
-  test("returns true if all conditions are clear", () => {
-    const node = document.createElement("input");
+test("isNodeMatchingSelectorFocusable: returns true if all conditions are clear", () => {
+  const node = document.createElement("input");
 
-    expect(isNodeMatchingSelectorFocusable(options, node)).toBe(true);
-  });
+  expect(isNodeMatchingSelectorFocusable(options, node)).toBe(true);
 });
