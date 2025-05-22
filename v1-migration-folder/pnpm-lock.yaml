@@ -114,6 +114,12 @@ importers:
 
   packages/js-utils: {}
 
+  packages/layout:
+    dependencies:
+      '@1771technologies/lytenyte-js-utils':
+        specifier: workspace:*
+        version: link:../js-utils
+
   packages/path: {}
 
   packages/react-hooks:
