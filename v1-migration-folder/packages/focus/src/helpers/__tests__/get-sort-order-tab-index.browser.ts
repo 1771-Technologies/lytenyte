@@ -16,7 +16,7 @@ const { getTabIndex, hasTabIndex } = await import("@1771technologies/lytenyte-do
 const mockGetTabIndex = getTabIndex as unknown as any;
 const mockHasTabIndex = hasTabIndex as unknown as any;
 
-test("returns tabIndex if tabIndex >= 0", () => {
+test("getSortOrderTabIndex: returns tabIndex if tabIndex >= 0", () => {
   const node = document.createElement("div");
 
   mockGetTabIndex.mockReturnValue(2);
@@ -26,7 +26,7 @@ test("returns tabIndex if tabIndex >= 0", () => {
   expect(result).toBe(2);
 });
 
-test("returns tabIndex if isScope is false (even with negative tabIndex)", () => {
+test("getSortOrderTabIndex: returns tabIndex if isScope is false (even with negative tabIndex)", () => {
   const node = document.createElement("div");
 
   mockGetTabIndex.mockReturnValue(-1);
@@ -36,7 +36,7 @@ test("returns tabIndex if isScope is false (even with negative tabIndex)", () =>
   expect(result).toBe(-1);
 });
 
-test("returns tabIndex if hasTabIndex is true (even with negative tabIndex and isScope)", () => {
+test("getSortOrderTabIndex: returns tabIndex if hasTabIndex is true (even with negative tabIndex and isScope)", () => {
   const node = document.createElement("div");
 
   mockGetTabIndex.mockReturnValue(-1);
@@ -46,7 +46,7 @@ test("returns tabIndex if hasTabIndex is true (even with negative tabIndex and i
   expect(result).toBe(-1);
 });
 
-test("returns 0 if tabIndex < 0, isScope is true, and hasTabIndex is false", () => {
+test("getSortOrderTabIndex: returns 0 if tabIndex < 0, isScope is true, and hasTabIndex is false", () => {
   const node = document.createElement("div");
 
   mockGetTabIndex.mockReturnValue(-1);
