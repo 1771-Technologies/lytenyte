@@ -33,15 +33,7 @@ export const isTabbableRadio = (node: HTMLInputElement) => {
   ) {
     radioSet = queryRadios(window.CSS.escape(node.name));
   } else {
-    try {
-      radioSet = queryRadios(node.name);
-    } catch (err: any) {
-      console.error(
-        "Looks like you have a radio button with a name attribute containing invalid CSS selector characters and need the CSS.escape polyfill: %s",
-        err.message,
-      );
-      return false;
-    }
+    radioSet = queryRadios(node.name);
   }
 
   const checked = getCheckedRadio(radioSet as unknown as HTMLElement[], node.form!);

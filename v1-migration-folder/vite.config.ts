@@ -23,7 +23,12 @@ export default defineConfig({
         "**/*.stories.*",
         "**/*.d.ts",
       ],
-      include: ["**/packages/**/src/**/*.ts", "**/packages/**/src/**/*.tsx"],
+      include: [
+        "**/packages/**/src/**/*.ts",
+        "**/packages/**/src/**/*.tsx",
+        "src/**/*.ts",
+        "src/**/*.tsx",
+      ],
       thresholds: {
         "100": true,
       },
