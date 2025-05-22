@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { computePathTable } from "../compute-path-table.js";
-import type { PathTable } from "../_types.path-table.js";
+import type { PathTable } from "../+types.path-table.js";
 import { Table } from "@1771technologies/cli-table";
 import { expect, test } from "vitest";
 

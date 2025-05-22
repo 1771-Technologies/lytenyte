@@ -28,6 +28,7 @@ export const getCandidates = (
   }
 
   let candidates = Array.prototype.slice.apply(el.querySelectorAll(CANDIDATE_SELECTOR));
+  /* v8 ignore next 4 */
   if (includeContainer && matches.call(el, CANDIDATE_SELECTOR)) {
     candidates.unshift(el);
   }

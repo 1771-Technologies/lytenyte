@@ -9,8 +9,9 @@ export default defineConfig({
       provider: "v8",
       reporter: ["html", "json-summary", "text"],
       exclude: [
-        "**/_types*.ts",
-        "**/_constants*.ts",
+        "**/+types*.ts",
+        "**/+constants*.ts",
+        "**/+globals*.ts",
         "**/*.spec.ts",
         "**/*.spec.tsx",
         "**/*.test.ts",
