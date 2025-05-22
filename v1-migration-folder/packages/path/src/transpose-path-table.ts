@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { PathMatrix } from "./_types.path-table.js";
+import type { PathMatrix } from "./+types.path-table.js";
 
 /**
  * Transposes a column-based path matrix into a row-based path matrix.

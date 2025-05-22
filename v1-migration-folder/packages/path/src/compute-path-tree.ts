@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { PathBranch, PathProvidedItem, PathRoot } from "./_types.path-table.js";
+import type { PathBranch, PathProvidedItem, PathRoot } from "./+types.path-table.js";
 import { computePathMatrix } from "./compute-path-matrix.js";
 
 /**

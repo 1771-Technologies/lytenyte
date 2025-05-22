@@ -16,7 +16,7 @@ limitations under the License.
 
 import { Table } from "@1771technologies/cli-table";
 import { expect, test } from "vitest";
-import type { PathMatrixItem } from "../_types.path-table.js";
+import type { PathMatrixItem } from "../+types.path-table.js";
 import { computePathMatrix } from "../compute-path-matrix.js";
 
 const mapRowsToStrings = (row: (PathMatrixItem | null)[], useSeen: boolean = false) =>
