@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, test, vi, type Mock } from "vitest";
+import { beforeEach, expect, test, vi, type Mock } from "vitest";
 import { isHidden } from "../is-hidden";
 
 // Mock external utilities
@@ -32,88 +32,86 @@ function createTestElement(styles: Partial<CSSStyleDeclaration> = {}) {
   return el;
 }
 
-describe("isHidden", () => {
-  test("returns true if visibility is hidden", () => {
-    const el = createTestElement({ visibility: "hidden" });
+test("isHidden: returns true if visibility is hidden", () => {
+  const el = createTestElement({ visibility: "hidden" });
 
-    const result = isHidden(el, { displayCheck: "full", getShadowRoot: true });
-    expect(result).toBe(true);
+  const result = isHidden(el, { displayCheck: "full", getShadowRoot: true });
+  expect(result).toBe(true);
+});
+
+test("isHidden: returns true if element is inside a closed <details>", () => {
+  const el = createTestElement();
+
+  (matches as Mock).mockImplementation((_, sel) => {
+    if (sel === "details>summary:first-of-type") return false;
+    if (sel === "details:not([open]) *") return true;
+    return false;
   });
 
-  test("returns true if element is inside a closed <details>", () => {
-    const el = createTestElement();
+  const result = isHidden(el, { displayCheck: "full", getShadowRoot: true });
+  expect(result).toBe(false);
+});
 
-    (matches as Mock).mockImplementation((_, sel) => {
-      if (sel === "details>summary:first-of-type") return false;
-      if (sel === "details:not([open]) *") return true;
-      return false;
-    });
+test("isHidden: returns true if isNodeAttached but no client rects", () => {
+  const el = createTestElement();
+  (el as any).getClientRects = () => [];
 
-    const result = isHidden(el, { displayCheck: "full", getShadowRoot: true });
-    expect(result).toBe(false);
-  });
+  const result = isHidden(el, { displayCheck: "full", getShadowRoot: true });
+  expect(result).toBe(true);
+});
 
-  test("returns true if isNodeAttached but no client rects", () => {
-    const el = createTestElement();
-    (el as any).getClientRects = () => [];
+test("isHidden: returns false if client rects exist and node is attached", () => {
+  const el = createTestElement();
+  (el as any).getClientRects = () => [{ width: 100, height: 20 }];
 
-    const result = isHidden(el, { displayCheck: "full", getShadowRoot: true });
-    expect(result).toBe(true);
-  });
+  const result = isHidden(el, { displayCheck: "full", getShadowRoot: true });
+  expect(result).toBe(false);
+});
 
-  test("returns false if client rects exist and node is attached", () => {
-    const el = createTestElement();
-    (el as any).getClientRects = () => [{ width: 100, height: 20 }];
+test("isHidden: returns result of isZeroArea if node is in undisclosed shadow", () => {
+  const host = document.createElement("div");
+  const child = document.createElement("input");
+  host.appendChild(child);
 
-    const result = isHidden(el, { displayCheck: "full", getShadowRoot: true });
-    expect(result).toBe(false);
-  });
+  // Simulate a shadow DOM boundary without exposing shadowRoot
+  const getShadowRoot = (el: Element) => el === host && true;
 
-  test("returns result of isZeroArea if node is in undisclosed shadow", () => {
-    const host = document.createElement("div");
-    const child = document.createElement("input");
-    host.appendChild(child);
+  // Return false for inertness, return true from isZeroArea
+  (isZeroArea as Mock).mockReturnValue(true);
+  (getRootNode as Mock).mockReturnValue(document);
 
-    // Simulate a shadow DOM boundary without exposing shadowRoot
-    const getShadowRoot = (el: Element) => el === host && true;
+  const result = isHidden(child, { displayCheck: "full", getShadowRoot });
+  expect(result).toBe(true);
+});
 
-    // Return false for inertness, return true from isZeroArea
-    (isZeroArea as Mock).mockReturnValue(true);
-    (getRootNode as Mock).mockReturnValue(document);
+test("isHidden: returns true for detached node with displayCheck = full", () => {
+  const el = createTestElement();
+  (isNodeAttached as Mock).mockReturnValue(false);
 
-    const result = isHidden(child, { displayCheck: "full", getShadowRoot });
-    expect(result).toBe(true);
-  });
+  const result = isHidden(el, { displayCheck: "full", getShadowRoot: true });
+  expect(result).toBe(true);
+});
 
-  test("returns true for detached node with displayCheck = full", () => {
-    const el = createTestElement();
-    (isNodeAttached as Mock).mockReturnValue(false);
+test("isHidden: returns false for detached node with displayCheck = legacy-full", () => {
+  const el = createTestElement();
+  (isNodeAttached as Mock).mockReturnValue(false);
 
-    const result = isHidden(el, { displayCheck: "full", getShadowRoot: true });
-    expect(result).toBe(true);
-  });
+  const result = isHidden(el, { displayCheck: "legacy-full", getShadowRoot: true });
+  expect(result).toBe(false);
+});
 
-  test("returns false for detached node with displayCheck = legacy-full", () => {
-    const el = createTestElement();
-    (isNodeAttached as Mock).mockReturnValue(false);
+test("isHidden: returns result of isZeroArea when displayCheck is non-zero-area", () => {
+  const el = createTestElement();
+  (isZeroArea as Mock).mockReturnValue(true);
 
-    const result = isHidden(el, { displayCheck: "legacy-full", getShadowRoot: true });
-    expect(result).toBe(false);
-  });
+  const result = isHidden(el, { displayCheck: "non-zero-area", getShadowRoot: true });
+  expect(result).toBe(true);
+});
 
-  test("returns result of isZeroArea when displayCheck is non-zero-area", () => {
-    const el = createTestElement();
-    (isZeroArea as Mock).mockReturnValue(true);
+test("isHidden: returns false by default (fallback to visible)", () => {
+  const el = createTestElement();
+  (el as any).getClientRects = () => [{ width: 10 }];
 
-    const result = isHidden(el, { displayCheck: "non-zero-area", getShadowRoot: true });
-    expect(result).toBe(true);
-  });
-
-  test("returns false by default (fallback to visible)", () => {
-    const el = createTestElement();
-    (el as any).getClientRects = () => [{ width: 10 }];
-
-    const result = isHidden(el, { displayCheck: "none", getShadowRoot: false });
-    expect(result).toBe(false);
-  });
+  const result = isHidden(el, { displayCheck: "none", getShadowRoot: false });
+  expect(result).toBe(false);
 });
