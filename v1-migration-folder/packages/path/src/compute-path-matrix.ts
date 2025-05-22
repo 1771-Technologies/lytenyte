@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { PathProvidedItem, PathMatrix, PathMatrixItem } from "./_types.path-table.js";
+import type { PathProvidedItem, PathMatrix, PathMatrixItem } from "./+types.path-table.js";
 
 /**
  * Extracts the ID and join ID parts from a path component.

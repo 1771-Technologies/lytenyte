@@ -1,0 +1,66 @@
+import { expect, test, beforeEach, afterEach } from "vitest";
+import { shouldAllowTouchMove } from "../should-allow-touch-move";
+import { bslGlobals } from "../+globals.bsl.js";
+
+beforeEach(() => {
+  bslGlobals.locks = [];
+});
+
+afterEach(() => {
+  bslGlobals.locks = [];
+});
+
+test("shouldAllowTouchMove: returns false when no locks are present", () => {
+  const el = document.createElement("div");
+  expect(shouldAllowTouchMove(el)).toBe(false);
+});
+
+test("shouldAllowTouchMove: returns false when locks exist but none allow touch", () => {
+  const el = document.createElement("div");
+
+  bslGlobals.locks = [
+    { targetElement: document.createElement("div"), options: {} },
+    {
+      targetElement: document.createElement("div"),
+      options: { allowTouchMove: () => false },
+    },
+  ];
+
+  expect(shouldAllowTouchMove(el)).toBe(false);
+});
+
+test("shouldAllowTouchMove: returns true when a lock's allowTouchMove returns true", () => {
+  const el = document.createElement("div");
+
+  bslGlobals.locks = [
+    {
+      targetElement: document.createElement("div"),
+      options: {
+        allowTouchMove: (target) => target === el,
+      },
+    },
+  ];
+
+  expect(shouldAllowTouchMove(el)).toBe(true);
+});
+
+test("shouldAllowTouchMove: returns true if any lock allows touch, even if others don’t", () => {
+  const el = document.createElement("div");
+
+  bslGlobals.locks = [
+    {
+      targetElement: document.createElement("div"),
+      options: { allowTouchMove: () => false },
+    },
+    {
+      targetElement: document.createElement("div"),
+      options: { allowTouchMove: () => true },
+    },
+    {
+      targetElement: document.createElement("div"),
+      options: {},
+    },
+  ];
+
+  expect(shouldAllowTouchMove(el)).toBe(true);
+});

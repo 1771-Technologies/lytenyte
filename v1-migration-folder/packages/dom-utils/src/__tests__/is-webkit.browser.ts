@@ -39,7 +39,7 @@ afterEach(() => {
   });
 });
 
-test("testUserAgent: returns true if a brand in userAgentData matches", () => {
+test("isWebkit: returns true if a brand in userAgentData matches", () => {
   setNavigatorOverrides({
     userAgent: "ignored",
     userAgentDataBrands: [{ brand: "NotChrome" }, { brand: "AppleWebKit" }],
