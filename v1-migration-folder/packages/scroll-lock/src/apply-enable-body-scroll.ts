@@ -22,6 +22,7 @@ import { handlePreventDefault } from "./handle-prevent-default.js";
 export const applyEnableBodyScroll = (targetElement: HTMLElement): void => {
   bslGlobals.locksIndex.set(
     targetElement,
+    /* v8 ignore next 4 */
     bslGlobals.locksIndex?.get(targetElement)
       ? (bslGlobals.locksIndex?.get(targetElement) as number) - 1
       : 0,

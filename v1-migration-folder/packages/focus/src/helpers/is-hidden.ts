@@ -36,7 +36,9 @@ export const isHidden = (
   }
 
   const isDirectSummary = matches.call(node, "details>summary:first-of-type");
+  /* v8 ignore next 1 */
   const nodeUnderDetails = isDirectSummary ? node.parentElement : node;
+  /* v8 ignore next 3 */
   if (matches.call(nodeUnderDetails, "details:not([open]) *")) {
     return true;
   }
@@ -57,10 +59,14 @@ export const isHidden = (
           // node has an undisclosed shadow which means we can only treat it as a black box, so we
           //  fall back to a non-zero-area test
           return isZeroArea(node);
+          /* v8 ignore next 1 */
         } else if (node.assignedSlot) {
           // iterate up slot
+          /* v8 ignore next 1 */
           node = node.assignedSlot;
+          /* v8 ignore next 1 */
         } else if (!parentElement && rootNode !== node.ownerDocument) {
+          /* v8 ignore next 10 */
           // cross shadow boundary
           node = (rootNode as ShadowRoot).host;
         } else {

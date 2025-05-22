@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import type { PathRoot, PathBranch, PathLeaf } from "../_types.path-table.js";
+import type { PathRoot, PathBranch, PathLeaf } from "../+types.path-table.js";
 import { computePathTree } from "../compute-path-tree.js";
 import { expect, test } from "vitest";
 

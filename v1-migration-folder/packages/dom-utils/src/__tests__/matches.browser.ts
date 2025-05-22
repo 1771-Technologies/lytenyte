@@ -22,7 +22,7 @@ async function reloadMatches() {
   matches = mod.matches;
 }
 
-test("uses Element.prototype.matches if available", async () => {
+test("matches: uses Element.prototype.matches if available", async () => {
   Element.prototype.matches = function (selector: string) {
     return selector === "div";
   };
@@ -36,7 +36,7 @@ test("uses Element.prototype.matches if available", async () => {
   expect(matches.call(el, "span")).toBe(false);
 });
 
-test("uses Element.prototype.msMatchesSelector if matches is undefined", async () => {
+test("matches: uses Element.prototype.msMatchesSelector if matches is undefined", async () => {
   Element.prototype.matches = undefined!;
   Element.prototype.msMatchesSelector = function (selector: string) {
     return selector === "div";
@@ -50,7 +50,7 @@ test("uses Element.prototype.msMatchesSelector if matches is undefined", async (
   expect(matches.call(el, "span")).toBe(false);
 });
 
-test("uses Element.prototype.webkitMatchesSelector if others are undefined", async () => {
+test("matches: uses Element.prototype.webkitMatchesSelector if others are undefined", async () => {
   Element.prototype.matches = undefined!;
   Element.prototype.msMatchesSelector = undefined!;
   Element.prototype.webkitMatchesSelector = function (selector: string) {

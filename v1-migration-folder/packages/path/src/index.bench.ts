@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { Bench, hrtimeNow } from "tinybench";
-import type { PathProvidedItem } from "./_types.path-table";
+import type { PathProvidedItem } from "./+types.path-table";
 import { computePathMatrix } from "./compute-path-matrix";
 import { transposePathMatrix } from "./transpose-path-table";
 import { computePathTable } from "./compute-path-table";
