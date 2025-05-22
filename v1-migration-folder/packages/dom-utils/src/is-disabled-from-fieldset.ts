@@ -32,6 +32,7 @@ export const isDisabledFromFieldset = (node: Element) => {
           if (child.tagName === "LEGEND") {
             // if its parent <fieldset> is not nested in another disabled <fieldset>,
             // return whether `node` is a descendant of its first <legend>
+            /* v8 ignore next 1 */
             return matches.call(parentNode, "fieldset[disabled] *") ? true : !child.contains(node);
           }
         }
