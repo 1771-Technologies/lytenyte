@@ -9,6 +9,7 @@ export function mergeProps(slotProps: AnyProps, childProps: AnyProps) {
     const childPropValue = childProps[propName];
 
     const isHandler = /^on[A-Z]/.test(propName);
+
     if (isHandler) {
       // if the handler exists on both, we compose them
       if (slotPropValue && childPropValue) {
@@ -17,10 +18,6 @@ export function mergeProps(slotProps: AnyProps, childProps: AnyProps) {
           slotPropValue(...args);
           return result;
         };
-      }
-      // but if it exists only on the slot, we use only this one
-      else if (slotPropValue) {
-        overrideProps[propName] = slotPropValue;
       }
     }
     // if it's `style`, we merge them

@@ -1,6 +1,6 @@
 import { cloneElement, type ReactElement } from "react";
 import type { AnyProps, AnyRef } from "./+types.use-slot";
-import { mergeProps } from "./merge-props";
+import { mergeProps } from "./merge-props.js";
 import { getElementRef } from "./get-element-ref";
 import { useForkRef } from "@1771technologies/lytenyte-react-hooks";
 
