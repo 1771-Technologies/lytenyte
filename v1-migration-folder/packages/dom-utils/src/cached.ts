@@ -16,10 +16,16 @@ limitations under the License.
 
 export function cached(fn: () => boolean) {
   let res: boolean | null = null;
-  return () => {
+  const memo = () => {
     if (res == null) {
       res = fn();
     }
     return res;
   };
+
+  memo.__clear = () => {
+    res = null;
+  };
+
+  return memo;
 }

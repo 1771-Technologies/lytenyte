@@ -21,6 +21,7 @@ declare global {
   }
 }
 
+/* v8 ignore next 8 */
 export const matches = NoElement
   ? function () {
       return false;
