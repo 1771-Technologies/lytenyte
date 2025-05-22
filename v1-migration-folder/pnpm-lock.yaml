@@ -107,6 +107,27 @@ importers:
 
   packages/path: {}
 
+  packages/react-hooks:
+    dependencies:
+      react:
+        specifier: ^18.0.0 || ^19.0.0
+        version: 19.1.0
+      react-dom:
+        specifier: ^18.0.0 || ^19.0.0
+        version: 19.1.0(react@19.1.0)
+
+  packages/react-use-slot:
+    dependencies:
+      '@1771technologies/lytenyte-react-hooks':
+        specifier: workspace:*
+        version: link:../react-hooks
+      react:
+        specifier: ^18.0.0 || ^19.0.0
+        version: 19.1.0
+      react-dom:
+        specifier: ^18.0.0 || ^19.0.0
+        version: 19.1.0(react@19.1.0)
+
   packages/scroll-lock:
     dependencies:
       '@1771technologies/lytenyte-dom-utils':
