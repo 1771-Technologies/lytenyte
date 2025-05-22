@@ -19,7 +19,7 @@ export default defineWorkspace([
       storybookTest({ configDir: path.join(dirname, ".storybook") }),
     ],
     test: {
-      name: "storybook",
+      name: "Storybook",
       browser: {
         enabled: true,
         headless: true,
@@ -50,7 +50,7 @@ export default defineWorkspace([
   {
     extends: `${__dirname}/vite.config.ts`,
     test: {
-      name: "node",
+      name: "Node",
       globals: true,
       environment: "jsdom",
       include: ["./packages/src/**/*.test.?(c|m)[jt]s?(x)", "src/**/*.test.?(c|m)[jt]s?(x)"],
