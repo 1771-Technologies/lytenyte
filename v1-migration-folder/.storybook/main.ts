@@ -7,12 +7,7 @@ const stories = process.env.STORY_PATH?.split(",") ?? [
 
 const config: StorybookConfig = {
   stories: stories,
-  addons: [
-    "@storybook/addon-onboarding",
-    "@storybook/addon-docs",
-    "@storybook/addon-a11y",
-    "@storybook/addon-vitest",
-  ],
+  addons: ["@storybook/addon-docs", "@storybook/addon-a11y", "@storybook/addon-vitest"],
   framework: {
     name: "@storybook/react-vite",
     options: {},

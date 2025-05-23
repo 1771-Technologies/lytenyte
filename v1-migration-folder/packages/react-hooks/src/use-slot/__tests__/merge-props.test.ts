@@ -1,5 +1,5 @@
 import { expect, test, vi } from "vitest";
-import { mergeProps } from "../merge-props";
+import { mergeProps } from "../merge-props.js";
 
 test("mergeProps: child props override slot props by default", () => {
   const result = mergeProps({ id: "slot-id", "data-role": "slot" }, { id: "child-id" });
