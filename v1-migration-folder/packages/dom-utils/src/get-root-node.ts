@@ -17,7 +17,7 @@ limitations under the License.
 import { NoElement } from "./+constants.dom-utils.js";
 
 export const getRootNode =
-  /* v8 ignore next 2 */
+  /* v8 ignore next 8 */
   !NoElement && (Element.prototype.getRootNode as unknown as boolean | undefined)
     ? (element: Element) => element?.getRootNode?.()
     : (element: Element) => element?.ownerDocument;

@@ -30,6 +30,7 @@ declare global {
 }
 
 export function testUserAgent(re: RegExp) {
+  /* v8 ignore next 3 */
   if (typeof window === "undefined" || window.navigator == null) {
     return false;
   }
