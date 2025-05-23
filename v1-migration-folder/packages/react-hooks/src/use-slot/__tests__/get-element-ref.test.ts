@@ -1,5 +1,5 @@
 import { expect, test, vi, beforeEach } from "vitest";
-import { getElementRef } from "../get-element-ref";
+import { getElementRef } from "../get-element-ref.js";
 
 // Mocked dependency
 import * as reactVersionUtils from "@1771technologies/lytenyte-react-hooks";

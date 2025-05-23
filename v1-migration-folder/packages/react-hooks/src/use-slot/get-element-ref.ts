@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { isReactVersionAtLeast } from "@1771technologies/lytenyte-react-hooks";
+import { isReactVersionAtLeast } from "../react-version";
 
 export function getElementRef(element: ReactElement) {
   // React <=18 in DEV
