@@ -13,6 +13,7 @@
     "@storybook/react": "9.0.0-rc.4",
     "@storybook/react-vite": "9.0.0-rc.4",
     "@storybook/test": "9.0.0-alpha.2",
+    "@testing-library/react": "^16.3.0",
     "@vitejs/plugin-react": "^4.4.1",
     "@vitest/browser": "^3.1.4",
     "@vitest/coverage-v8": "^3.1.4",
