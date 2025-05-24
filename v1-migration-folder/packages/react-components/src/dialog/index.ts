@@ -1,16 +1,18 @@
-import { DialogPanel } from "./dialog.js";
+import { DialogPanel } from "./panel.js";
 import { DialogRoot } from "./root.js";
+import { DialogTrigger } from "./trigger.js";
 
 export const Dialog = {
   Root: DialogRoot,
   Panel: DialogPanel,
+  Trigger: DialogTrigger,
 };
 
 export type { DialogApi, DialogRootProps } from "./root.js";
 
 /**
  * <root>  done
- *  <trigger>
+ *  <trigger> done
  *  <portal>
  *    <panel> done
  *      <title />
