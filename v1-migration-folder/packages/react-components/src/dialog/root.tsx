@@ -1,16 +1,14 @@
 import {
-  createContext,
   forwardRef,
   useImperativeHandle,
   useMemo,
   useState,
-  type Dispatch,
   type PropsWithChildren,
   type SetStateAction,
 } from "react";
 import { useEvent } from "@1771technologies/lytenyte-react-hooks";
 import { useManagedDialog } from "./use-managed-dialog";
-import type { OpenState } from "./use-transition-effect";
+import { context, type DialogContext } from "./root.use-dialog";
 
 export interface DialogRootProps {
   readonly open?: boolean;
@@ -23,19 +21,7 @@ export interface DialogApi {
   readonly open: (() => boolean) | ((b: SetStateAction<boolean>) => void);
 }
 
-export interface DialogContext {
-  readonly open: boolean;
-  readonly onOpenChange: (b: boolean) => void;
-  readonly timeEnter: number;
-  readonly timeExit: number;
-  readonly dialogRef: Dispatch<SetStateAction<HTMLDialogElement | null>>;
-  readonly state: OpenState;
-  readonly shouldMount: boolean;
-}
-
-const context = createContext<DialogContext>({} as unknown as DialogContext);
-
-export const Root = forwardRef<DialogApi, PropsWithChildren<DialogRootProps>>(function Root(
+export const DialogRoot = forwardRef<DialogApi, PropsWithChildren<DialogRootProps>>(function Root(
   { children, ...p },
   forwardedRef,
 ) {
