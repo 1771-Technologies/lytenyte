@@ -10,7 +10,6 @@ export function useManagedDialog(
   const [dialog, setDialog] = useState<HTMLDialogElement | null>(null);
   const { shouldMount, state } = useTransitionEffect(open, timeEnter, timeExit);
 
-  console.log(open);
   useEffect(() => {
     if (!dialog) return;
 
