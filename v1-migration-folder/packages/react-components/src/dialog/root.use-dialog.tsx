@@ -5,6 +5,7 @@ export interface DialogContext {
   readonly open: boolean;
   readonly onOpenChange: (b: boolean) => void;
 
+  readonly alert: boolean;
   readonly modal: boolean;
   readonly dismissible: boolean;
   readonly lockBodyScroll: boolean;
