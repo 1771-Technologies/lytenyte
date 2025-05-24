@@ -16,7 +16,9 @@ export const DialogClose = forwardRef<
   const render = useSlot({
     props: [
       {
-        type: "button",
+        // Only pass the button type if the slot isn't provided, otherwise we may end
+        // up passing an invalid property to an element that does not accept it.
+        type: slot ? undefined : "button",
         onClick: () => {
           onOpenChange(false);
         },
