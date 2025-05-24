@@ -123,21 +123,21 @@ export function useManagedDialog(
           },
           { signal: controller.signal },
         );
+
+        document.addEventListener(
+          "keydown",
+          (ev) => {
+            if (ev.key === "Escape") {
+              ev.preventDefault();
+              ev.stopPropagation();
+              ev.stopImmediatePropagation();
+
+              onOpenChange(false);
+            }
+          },
+          { signal: controller.signal },
+        );
       }
-
-      document.addEventListener(
-        "keydown",
-        (ev) => {
-          if (ev.key === "Escape") {
-            ev.preventDefault();
-            ev.stopPropagation();
-            ev.stopImmediatePropagation();
-
-            onOpenChange(false);
-          }
-        },
-        { signal: controller.signal },
-      );
 
       dialog.addEventListener(
         "close",

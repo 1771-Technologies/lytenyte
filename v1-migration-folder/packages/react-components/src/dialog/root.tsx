@@ -17,6 +17,7 @@ export interface DialogRootProps {
   readonly timeEnter?: number;
   readonly timeExit?: number;
 
+  readonly alert?: boolean;
   readonly modal?: boolean;
   readonly dismissible?: boolean;
   readonly lockBodyScroll?: boolean;
@@ -65,9 +66,13 @@ export const DialogRoot = forwardRef<DialogApi, PropsWithChildren<DialogRootProp
   const timeExit = p.timeExit ?? 0;
 
   const modal = p.modal ?? true;
-  const trapFocus = p.trapFocus ?? true;
+  // If the dialog is a modal, we must trap the focus. This is an accessibility requirement.
+  // We are also leveraging the <dialog/> which will trap focus if opened as a modal.
+  const trapFocus = modal || (p.trapFocus ?? true);
   const lockBodyScroll = p.lockBodyScroll ?? true;
-  const dismissible = p.dismissible ?? true;
+
+  const alert = p.alert ?? false;
+  const dismissible = alert ? false : (p.dismissible ?? true);
 
   const { shouldMount, ref, state } = useManagedDialog(
     open,
@@ -92,6 +97,7 @@ export const DialogRoot = forwardRef<DialogApi, PropsWithChildren<DialogRootProp
       titleId,
       setTitleId,
 
+      alert,
       modal,
       trapFocus,
       lockBodyScroll,
@@ -107,6 +113,7 @@ export const DialogRoot = forwardRef<DialogApi, PropsWithChildren<DialogRootProp
       timeExit,
     };
   }, [
+    alert,
     childOpen,
     descriptionId,
     dismissible,
