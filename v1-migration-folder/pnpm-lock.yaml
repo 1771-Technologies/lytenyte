@@ -112,6 +112,21 @@ importers:
         specifier: workspace:*
         version: link:../dom-utils
 
+  packages/focus-trap:
+    dependencies:
+      '@1771technologies/lytenyte-dom-utils':
+        specifier: workspace:*
+        version: link:../dom-utils
+      '@1771technologies/lytenyte-focus':
+        specifier: workspace:*
+        version: link:../focus
+      react:
+        specifier: ^18.0.0 || ^19.0.0
+        version: 19.1.0
+      react-dom:
+        specifier: ^18.0.0 || ^19.0.0
+        version: 19.1.0(react@19.1.0)
+
   packages/js-utils: {}
 
   packages/layout:
@@ -124,9 +139,15 @@ importers:
 
   packages/react-components:
     dependencies:
+      '@1771technologies/lytenyte-dom-utils':
+        specifier: workspace:*
+        version: link:../dom-utils
       '@1771technologies/lytenyte-focus':
         specifier: workspace:*
         version: link:../focus
+      '@1771technologies/lytenyte-focus-trap':
+        specifier: workspace:*
+        version: link:../focus-trap
       '@1771technologies/lytenyte-react-hooks':
         specifier: workspace:*
         version: link:../react-hooks

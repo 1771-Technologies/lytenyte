@@ -1,3 +1,4 @@
+export { containsPoint } from "./contains-point.js";
 export { getCheckedRadio } from "./get-checked-radio.js";
 export { getRootNode } from "./get-root-node.js";
 export { getTabIndex } from "./get-tab-index.js";
