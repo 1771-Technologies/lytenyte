@@ -8,3 +8,4 @@ export { isReactVersionAtLeast } from "./react-version.js";
 export * from "./use-slot/index.js";
 
 export { useEvent } from "./use-event.js";
+export { useIsoEffect } from "./use-iso-effect.js";

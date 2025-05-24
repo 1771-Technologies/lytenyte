@@ -44,6 +44,9 @@ export const DialogRoot = forwardRef<DialogApi, PropsWithChildren<DialogRootProp
     else onOpenChange(b);
   });
 
+  const [descriptionId, setDescriptionId] = useState<string>();
+  const [titleId, setTitleId] = useState<string>();
+
   useEffect(() => {
     if (!parentDialog) return;
 
@@ -62,18 +65,36 @@ export const DialogRoot = forwardRef<DialogApi, PropsWithChildren<DialogRootProp
 
   const value = useMemo<DialogContext>(() => {
     return {
+      childOpen,
+      setChildOpen,
+
+      descriptionId,
+      setDescriptionId,
+      titleId,
+      setTitleId,
+
       shouldMount,
       dialogRef: ref,
       nestedCount,
       state,
       onOpenChange,
-      childOpen,
-      setChildOpen,
       open,
       timeEnter,
       timeExit,
     };
-  }, [childOpen, nestedCount, onOpenChange, open, ref, shouldMount, state, timeEnter, timeExit]);
+  }, [
+    childOpen,
+    descriptionId,
+    nestedCount,
+    onOpenChange,
+    open,
+    ref,
+    shouldMount,
+    state,
+    timeEnter,
+    timeExit,
+    titleId,
+  ]);
 
   return <context.Provider value={value}>{children}</context.Provider>;
 });
