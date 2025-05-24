@@ -49,3 +49,24 @@ export const WithOpen: Story = {
     open: { control: false, table: { disable: true } },
   },
 };
+
+function LocksBodyComponent(props: DialogRootProps) {
+  return (
+    <>
+      <DialogRoot {...props}>
+        <DialogTrigger>Open</DialogTrigger>
+        <DialogPortal>
+          <DialogPanel className="dialog">This is my dialog panel</DialogPanel>
+        </DialogPortal>
+      </DialogRoot>
+      <div style={{ width: 2000, height: 2000 }} />
+    </>
+  );
+}
+
+export const LocksBodyScroll: Story = {
+  render: LocksBodyComponent,
+  argTypes: {
+    open: { control: false, table: { disable: true } },
+  },
+};

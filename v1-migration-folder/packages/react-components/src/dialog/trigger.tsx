@@ -12,6 +12,7 @@ export const DialogTrigger = forwardRef<
   JSX.IntrinsicElements["button"] & DialogTriggerProps
 >(function DialogTrigger({ slot, ...props }, forwarded) {
   const ctx = useDialog();
+
   const defaultProps: JSX.IntrinsicElements["button"] & { "data-dialog-state": OpenState } = {
     onClick: () => {
       ctx.onOpenChange(!ctx.open);
