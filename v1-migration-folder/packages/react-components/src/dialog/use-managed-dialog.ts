@@ -41,6 +41,11 @@ export function useManagedDialog(
     }
 
     function handleFocusTrap() {
+      if (trapRef.current) {
+        trapRef.current.deactivate();
+        trapRef.current = null;
+      }
+
       if (trapFocus && dialog) {
         const el = tabbable(dialog);
         if (el.length === 0) {
@@ -96,8 +101,11 @@ export function useManagedDialog(
       if (lockBodyScroll) bodyScrollDisable(dialog);
       else bodyScrollEnable(dialog);
 
-      if (trapFocus && trapRef.current) trapRef.current.activate();
-      else if (!trapFocus && trapRef.current) trapRef.current.deactivate();
+      if (trapFocus && trapRef.current) {
+        trapRef.current.activate();
+      } else if (!trapFocus && trapRef.current) {
+        trapRef.current.deactivate();
+      }
 
       if (dialog.open && trapFocus && !trapRef.current) {
         handleFocusTrap();

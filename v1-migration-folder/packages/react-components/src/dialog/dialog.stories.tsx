@@ -1,4 +1,5 @@
 import "./dialog.stories.css";
+import "../css/main.css";
 
 import type { Meta, StoryObj } from "@storybook/react";
 import { DialogRoot, type DialogRootProps } from "./root";
@@ -11,7 +12,15 @@ const meta: Meta<DialogRootProps> = {
   title: "components/Dialog",
   component: DialogRoot,
   argTypes: {
-    onOpenChange: { control: false, table: { disable: true } },
+    onOpenChange: { table: { disable: true } },
+    alert: { table: { disable: true } },
+    dismissible: { table: { disable: true } },
+    lockBodyScroll: { table: { disable: true } },
+    modal: { table: { disable: true } },
+    open: { table: { disable: true } },
+    timeExit: { table: { disable: true } },
+    timeEnter: { table: { disable: true } },
+    trapFocus: { table: { disable: true } },
   },
 };
 
@@ -31,6 +40,12 @@ type Story = StoryObj<DialogRootProps>;
 
 export const Default: Story = {
   render: Base,
+  args: {
+    open: true,
+  },
+  argTypes: {
+    open: { control: { type: "boolean", disable: false }, table: { disable: false } },
+  },
 };
 
 function WithOpenDialog(props: DialogRootProps) {

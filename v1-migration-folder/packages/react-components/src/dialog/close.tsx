@@ -23,6 +23,7 @@ export const DialogClose = forwardRef<
           onOpenChange(false);
         },
       },
+
       props,
     ],
     ref: forwarded,

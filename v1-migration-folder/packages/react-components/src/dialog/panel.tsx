@@ -10,6 +10,7 @@ export const DialogPanel = forwardRef<HTMLDialogElement, JSX.IntrinsicElements["
     return (
       <dialog
         {...props}
+        data-ln-dialog
         data-dialog-state={state}
         data-nested={nestedCount > 0}
         data-nested-dialog-open={childOpen}
