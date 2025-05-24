@@ -17,6 +17,8 @@ export const DialogTrigger = forwardRef<
       ctx.onOpenChange(!ctx.open);
     },
     "data-dialog-state": ctx.state,
+    "aria-haspopup": "dialog",
+    "aria-expanded": ctx.shouldMount,
   };
 
   const renderedSlot = useSlot({

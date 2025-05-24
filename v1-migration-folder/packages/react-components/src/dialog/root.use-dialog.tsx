@@ -4,6 +4,9 @@ import type { OpenState } from "./use-transition-effect";
 export interface DialogContext {
   readonly open: boolean;
   readonly onOpenChange: (b: boolean) => void;
+  readonly nestedCount: number;
+  readonly childOpen: boolean;
+  readonly setChildOpen: Dispatch<SetStateAction<boolean>>;
   readonly timeEnter: number;
   readonly timeExit: number;
   readonly dialogRef: Dispatch<SetStateAction<HTMLDialogElement | null>>;
@@ -11,6 +14,6 @@ export interface DialogContext {
   readonly shouldMount: boolean;
 }
 
-export const context = createContext<DialogContext>({} as unknown as DialogContext);
+export const context = createContext<DialogContext>(null as unknown as DialogContext);
 
 export const useDialog = () => useContext(context);
