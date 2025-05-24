@@ -69,10 +69,24 @@ export const DialogRoot = forwardRef<DialogApi, PropsWithChildren<DialogRootProp
   // If the dialog is a modal, we must trap the focus. This is an accessibility requirement.
   // We are also leveraging the <dialog/> which will trap focus if opened as a modal.
   const trapFocus = modal || (p.trapFocus ?? true);
+
   const lockBodyScroll = p.lockBodyScroll ?? true;
 
   const alert = p.alert ?? false;
   const dismissible = alert ? false : (p.dismissible ?? true);
+
+  useEffect(() => {
+    if (modal && p.trapFocus === false) {
+      console.error(
+        "A modal dialog will always trap focus. Setting `trapFocus` to false has no impact. If you do not want to trap focus, set `modal` to false as well.",
+      );
+    }
+    if (alert && p.dismissible === true) {
+      console.error(
+        "An Alert Dialog will never be dismissible. Alert dialogs by definition require user input to proceed. Use or a normal dialog or set dismissible to false.",
+      );
+    }
+  }, [alert, modal, p.dismissible, p.trapFocus]);
 
   const { shouldMount, ref, state } = useManagedDialog(
     open,
