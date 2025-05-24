@@ -124,9 +124,15 @@ importers:
 
   packages/react-components:
     dependencies:
+      '@1771technologies/lytenyte-focus':
+        specifier: workspace:*
+        version: link:../focus
       '@1771technologies/lytenyte-react-hooks':
         specifier: workspace:*
         version: link:../react-hooks
+      '@1771technologies/lytenyte-scroll-lock':
+        specifier: workspace:*
+        version: link:../scroll-lock
       react:
         specifier: ^18.0.0 || ^19.0.0
         version: 19.1.0

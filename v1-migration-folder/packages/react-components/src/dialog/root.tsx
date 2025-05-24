@@ -16,6 +16,11 @@ export interface DialogRootProps {
   readonly onOpenChange?: (b: boolean) => void;
   readonly timeEnter?: number;
   readonly timeExit?: number;
+
+  readonly modal?: boolean;
+  readonly dismissible?: boolean;
+  readonly lockBodyScroll?: boolean;
+  readonly trapFocus?: boolean;
 }
 
 export interface DialogApi {
@@ -59,7 +64,21 @@ export const DialogRoot = forwardRef<DialogApi, PropsWithChildren<DialogRootProp
   const timeEnter = p.timeEnter ?? 0;
   const timeExit = p.timeExit ?? 0;
 
-  const { shouldMount, ref, state } = useManagedDialog(open, onOpenChange, timeEnter, timeExit);
+  const modal = p.modal ?? true;
+  const trapFocus = p.trapFocus ?? true;
+  const lockBodyScroll = p.lockBodyScroll ?? true;
+  const dismissible = p.dismissible ?? true;
+
+  const { shouldMount, ref, state } = useManagedDialog(
+    open,
+    onOpenChange,
+    timeEnter,
+    timeExit,
+    modal,
+    trapFocus,
+    lockBodyScroll,
+    dismissible,
+  );
 
   useImperativeHandle(forwardedRef, () => ({ open: openFn }), [openFn]);
 
@@ -73,6 +92,11 @@ export const DialogRoot = forwardRef<DialogApi, PropsWithChildren<DialogRootProp
       titleId,
       setTitleId,
 
+      modal,
+      trapFocus,
+      lockBodyScroll,
+      dismissible,
+
       shouldMount,
       dialogRef: ref,
       nestedCount,
@@ -85,6 +109,9 @@ export const DialogRoot = forwardRef<DialogApi, PropsWithChildren<DialogRootProp
   }, [
     childOpen,
     descriptionId,
+    dismissible,
+    lockBodyScroll,
+    modal,
     nestedCount,
     onOpenChange,
     open,
@@ -94,6 +121,7 @@ export const DialogRoot = forwardRef<DialogApi, PropsWithChildren<DialogRootProp
     timeEnter,
     timeExit,
     titleId,
+    trapFocus,
   ]);
 
   return <context.Provider value={value}>{children}</context.Provider>;
