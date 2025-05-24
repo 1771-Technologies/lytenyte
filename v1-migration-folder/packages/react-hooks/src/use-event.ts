@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
+/* v8 ignore next 1 */ // wtf
 import React, { useInsertionEffect } from "react";
 
 /** Represents any function type with any number of arguments and return type */
