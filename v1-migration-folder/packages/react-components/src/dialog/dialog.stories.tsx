@@ -5,6 +5,7 @@ import { DialogRoot, type DialogRootProps } from "./root";
 import { DialogPanel } from "./panel";
 import { DialogTrigger } from "./trigger";
 import { DialogPortal } from "./portal";
+import { useState } from "react";
 
 const meta: Meta<DialogRootProps> = {
   title: "components/Dialog",
@@ -56,7 +57,14 @@ function LocksBodyComponent(props: DialogRootProps) {
       <DialogRoot {...props}>
         <DialogTrigger>Open</DialogTrigger>
         <DialogPortal>
-          <DialogPanel className="dialog">This is my dialog panel</DialogPanel>
+          <DialogPanel className="dialog">
+            <div>
+              <input />
+              <input />
+              <input />
+              <button>X Run</button>
+            </div>
+          </DialogPanel>
         </DialogPortal>
       </DialogRoot>
       <div style={{ width: 2000, height: 2000 }} />
@@ -66,6 +74,42 @@ function LocksBodyComponent(props: DialogRootProps) {
 
 export const LocksBodyScroll: Story = {
   render: LocksBodyComponent,
+  argTypes: {
+    open: { control: false, table: { disable: true } },
+  },
+};
+
+function FocusAddAndRemove(props: DialogRootProps) {
+  const [remove, setRemove] = useState(false);
+  return (
+    <>
+      <DialogRoot {...props}>
+        <DialogTrigger>Open</DialogTrigger>
+        <DialogPortal>
+          <DialogPanel className="dialog" onClick={() => setRemove(false)}>
+            {!remove && (
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setRemove(true);
+                }}
+              >
+                <input />
+                <input />
+                <input />
+                <button>X Run</button>
+              </div>
+            )}
+          </DialogPanel>
+        </DialogPortal>
+      </DialogRoot>
+      <div style={{ width: 2000, height: 2000 }} />
+    </>
+  );
+}
+
+export const FocusRemove: Story = {
+  render: FocusAddAndRemove,
   argTypes: {
     open: { control: false, table: { disable: true } },
   },
