@@ -5,16 +5,18 @@ import { createPortal } from "react-dom";
 export interface DialogPortalProps {
   readonly target?: HTMLElement | string;
   readonly enabled?: boolean;
+  readonly keepMounted?: boolean;
 }
 
 export function DialogPortal({
   target,
   enabled = true,
+  keepMounted = false,
   children,
 }: PropsWithChildren<DialogPortalProps>) {
   const { shouldMount } = useDialog();
 
-  if (!shouldMount) return null;
+  if (!shouldMount && !keepMounted) return null;
   if (!enabled) return <>{children}</>;
 
   const element = target

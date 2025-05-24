@@ -1,5 +1,6 @@
 import {
   forwardRef,
+  useEffect,
   useImperativeHandle,
   useMemo,
   useState,
@@ -8,7 +9,7 @@ import {
 } from "react";
 import { useEvent } from "@1771technologies/lytenyte-react-hooks";
 import { useManagedDialog } from "./use-managed-dialog";
-import { context, type DialogContext } from "./root.use-dialog";
+import { context, useDialog, type DialogContext } from "./root.use-dialog";
 
 export interface DialogRootProps {
   readonly open?: boolean;
@@ -25,6 +26,12 @@ export const DialogRoot = forwardRef<DialogApi, PropsWithChildren<DialogRootProp
   { children, ...p },
   forwardedRef,
 ) {
+  const [childOpen, setChildOpen] = useState(false);
+  // If useDialog is not null, then this dialog must be nested inside another dialog in the React tree.
+  const parentDialog = useDialog();
+
+  const nestedCount = (parentDialog?.nestedCount ?? -1) + 1;
+
   const [localOpen, setLocalOpen] = useState(false);
 
   const open = p.open ?? localOpen;
@@ -37,6 +44,15 @@ export const DialogRoot = forwardRef<DialogApi, PropsWithChildren<DialogRootProp
     else onOpenChange(b);
   });
 
+  useEffect(() => {
+    if (!parentDialog) return;
+
+    if (open) parentDialog.setChildOpen(true);
+    else parentDialog.setChildOpen(false);
+
+    return () => parentDialog.setChildOpen(open);
+  }, [open, parentDialog]);
+
   const timeEnter = p.timeEnter ?? 0;
   const timeExit = p.timeExit ?? 0;
 
@@ -48,13 +64,16 @@ export const DialogRoot = forwardRef<DialogApi, PropsWithChildren<DialogRootProp
     return {
       shouldMount,
       dialogRef: ref,
+      nestedCount,
       state,
       onOpenChange,
+      childOpen,
+      setChildOpen,
       open,
       timeEnter,
       timeExit,
     };
-  }, [onOpenChange, open, ref, shouldMount, state, timeEnter, timeExit]);
+  }, [childOpen, nestedCount, onOpenChange, open, ref, shouldMount, state, timeEnter, timeExit]);
 
   return <context.Provider value={value}>{children}</context.Provider>;
 });
