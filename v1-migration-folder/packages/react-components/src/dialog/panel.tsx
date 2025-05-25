@@ -4,12 +4,14 @@ import { useForkRef } from "@1771technologies/lytenyte-react-hooks";
 
 export const DialogPanel = forwardRef<HTMLDialogElement, JSX.IntrinsicElements["dialog"]>(
   function DialogPanel(props, forwarded) {
-    const { state, dialogRef, nestedCount, childOpen, titleId, descriptionId } = useDialog();
+    const { state, dialogRef, alert, nestedCount, childOpen, titleId, descriptionId } = useDialog();
+
     const mergedRefs = useForkRef(forwarded, dialogRef);
 
     return (
       <dialog
         {...props}
+        role={alert ? "alertdialog" : undefined}
         data-ln-dialog
         data-dialog-state={state}
         data-nested={nestedCount > 0}
