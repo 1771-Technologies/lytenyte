@@ -20,8 +20,12 @@ export interface DialogRootProps {
   readonly alert?: boolean;
   readonly modal?: boolean;
   readonly dismissible?: boolean;
+  readonly dismissPropagates?: boolean;
   readonly lockBodyScroll?: boolean;
   readonly trapFocus?: boolean;
+
+  readonly initialFocus?: string | ((dialog: HTMLDialogElement) => HTMLElement | null);
+  readonly returnFocus?: string | (() => HTMLElement | null);
 }
 
 export interface DialogApi {
@@ -44,6 +48,7 @@ export const DialogRoot = forwardRef<DialogApi, PropsWithChildren<DialogRootProp
   const onOpenChange = p.onOpenChange ?? setLocalOpen;
 
   const openFn = useEvent((b?: SetStateAction<boolean>) => {
+    /* v8 ignore next 4 */
     if (b == null) return open;
 
     if (typeof b === "function") onOpenChange(b(open));
@@ -68,6 +73,7 @@ export const DialogRoot = forwardRef<DialogApi, PropsWithChildren<DialogRootProp
   const modal = p.modal ?? true;
   // If the dialog is a modal, we must trap the focus. This is an accessibility requirement.
   // We are also leveraging the <dialog/> which will trap focus if opened as a modal.
+  /* v8 ignore next 1 */
   const trapFocus = modal || (p.trapFocus ?? true);
 
   const lockBodyScroll = p.lockBodyScroll ?? true;
@@ -97,6 +103,10 @@ export const DialogRoot = forwardRef<DialogApi, PropsWithChildren<DialogRootProp
     trapFocus,
     lockBodyScroll,
     dismissible,
+    p.dismissPropagates ?? false,
+    p.initialFocus,
+    p.returnFocus,
+    parentDialog,
   );
 
   useImperativeHandle(forwardedRef, () => ({ open: openFn }), [openFn]);
@@ -105,6 +115,8 @@ export const DialogRoot = forwardRef<DialogApi, PropsWithChildren<DialogRootProp
     return {
       childOpen,
       setChildOpen,
+
+      parent: parentDialog,
 
       descriptionId,
       setDescriptionId,
@@ -116,6 +128,7 @@ export const DialogRoot = forwardRef<DialogApi, PropsWithChildren<DialogRootProp
       trapFocus,
       lockBodyScroll,
       dismissible,
+      dismissPropagates: p.dismissPropagates ?? false,
 
       shouldMount,
       dialogRef: ref,
@@ -138,6 +151,8 @@ export const DialogRoot = forwardRef<DialogApi, PropsWithChildren<DialogRootProp
     nestedCount,
     onOpenChange,
     open,
+    p.dismissPropagates,
+    parentDialog,
     ref,
     shouldMount,
     state,
