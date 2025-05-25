@@ -1,4 +1,4 @@
-import { expect, test, afterEach } from "vitest";
+import { expect, test, afterEach, describe } from "vitest";
 import { isWebKit } from "../is-webkit";
 
 // Helper to override navigator properties
@@ -32,18 +32,20 @@ function setNavigatorOverrides({
 const originalUserAgent = navigator.userAgent;
 const originalUserAgentData = navigator.userAgentData;
 
-afterEach(() => {
-  setNavigatorOverrides({
-    userAgent: originalUserAgent,
-    userAgentDataBrands: originalUserAgentData?.brands,
-  });
-});
-
-test("isWebkit: returns true if a brand in userAgentData matches", () => {
-  setNavigatorOverrides({
-    userAgent: "ignored",
-    userAgentDataBrands: [{ brand: "NotChrome" }, { brand: "AppleWebKit" }],
+describe("isWebkit", () => {
+  afterEach(() => {
+    setNavigatorOverrides({
+      userAgent: originalUserAgent,
+      userAgentDataBrands: originalUserAgentData?.brands,
+    });
   });
 
-  expect(isWebKit()).toBe(false);
+  test("returns true if a brand in userAgentData matches", () => {
+    setNavigatorOverrides({
+      userAgent: "ignored",
+      userAgentDataBrands: [{ brand: "NotChrome" }, { brand: "AppleWebKit" }],
+    });
+
+    expect(isWebKit()).toBe(false);
+  });
 });

@@ -1,4 +1,4 @@
-import { expect, test, afterEach } from "vitest";
+import { expect, test, afterEach, describe } from "vitest";
 import { testUserAgent } from "../test-user-agent";
 
 // Helper to override navigator properties
@@ -32,45 +32,47 @@ function setNavigatorOverrides({
 const originalUserAgent = navigator.userAgent;
 const originalUserAgentData = navigator.userAgentData;
 
-afterEach(() => {
-  setNavigatorOverrides({
-    userAgent: originalUserAgent,
-    userAgentDataBrands: originalUserAgentData?.brands,
-  });
-});
-
-test("testUserAgent: returns true if a brand in userAgentData matches", () => {
-  setNavigatorOverrides({
-    userAgent: "ignored",
-    userAgentDataBrands: [{ brand: "NotChrome" }, { brand: "AppleWebKit" }],
+describe("testUserAgent", () => {
+  afterEach(() => {
+    setNavigatorOverrides({
+      userAgent: originalUserAgent,
+      userAgentDataBrands: originalUserAgentData?.brands,
+    });
   });
 
-  expect(testUserAgent(/AppleWebKit/)).toBe(true);
-});
+  test("returns true if a brand in userAgentData matches", () => {
+    setNavigatorOverrides({
+      userAgent: "ignored",
+      userAgentDataBrands: [{ brand: "NotChrome" }, { brand: "AppleWebKit" }],
+    });
 
-test("testUserAgent: returns false if no brands in userAgentData match", () => {
-  setNavigatorOverrides({
-    userAgent: "ignored",
-    userAgentDataBrands: [{ brand: "Edge" }, { brand: "FakeBrowser" }],
+    expect(testUserAgent(/AppleWebKit/)).toBe(true);
   });
 
-  expect(testUserAgent(/WebKit/)).toBe(false);
-});
+  test("returns false if no brands in userAgentData match", () => {
+    setNavigatorOverrides({
+      userAgent: "ignored",
+      userAgentDataBrands: [{ brand: "Edge" }, { brand: "FakeBrowser" }],
+    });
 
-test("testUserAgent: falls back to userAgent if userAgentData is not present", () => {
-  setNavigatorOverrides({
-    userAgent: "Mozilla/5.0 AppleWebKit/537.36 Chrome/112.0.0.0",
-    userAgentDataBrands: undefined,
+    expect(testUserAgent(/WebKit/)).toBe(false);
   });
 
-  expect(testUserAgent(/AppleWebKit/)).toBe(true);
-});
+  test("falls back to userAgent if userAgentData is not present", () => {
+    setNavigatorOverrides({
+      userAgent: "Mozilla/5.0 AppleWebKit/537.36 Chrome/112.0.0.0",
+      userAgentDataBrands: undefined,
+    });
 
-test("testUserAgent: returns false if neither userAgentData nor userAgent match", () => {
-  setNavigatorOverrides({
-    userAgent: "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)",
-    userAgentDataBrands: [{ brand: "OtherBrand" }],
+    expect(testUserAgent(/AppleWebKit/)).toBe(true);
   });
 
-  expect(testUserAgent(/Chrome/)).toBe(false);
+  test("returns false if neither userAgentData nor userAgent match", () => {
+    setNavigatorOverrides({
+      userAgent: "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)",
+      userAgentDataBrands: [{ brand: "OtherBrand" }],
+    });
+
+    expect(testUserAgent(/Chrome/)).toBe(false);
+  });
 });
