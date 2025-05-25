@@ -1,7 +1,7 @@
 import { Table } from "@1771technologies/cli-table";
 import { makeUint32PositionArray } from "../../coordinates/make-uint32-position-array.js";
 import { computeBounds, type ComputeBoundsArgs } from "../compute-bounds.js";
-import { expect, test } from "vitest";
+import { describe, expect, test } from "vitest";
 
 const yPositions = makeUint32PositionArray(() => 50, 200);
 const xPositions = makeUint32PositionArray(() => 50, 100);
@@ -31,10 +31,11 @@ function printBounds(bounds: ComputeBoundsArgs) {
   return t.toString();
 }
 
-test("computeBounds: should return the correct value when there are no items", () => {
-  const next = { ...base, xPositions: new Uint32Array(), yPositions: new Uint32Array() };
+describe("computeBounds", () => {
+  test("should return the correct value when there are no items", () => {
+    const next = { ...base, xPositions: new Uint32Array(), yPositions: new Uint32Array() };
 
-  expect(printBounds(next)).toMatchInlineSnapshot(`
+    expect(printBounds(next)).toMatchInlineSnapshot(`
     "
     ┌───────────┬──────────┬───────────┬──────────┐
     │ First Col │ Last Col │ First Row │ Last Row │
@@ -42,10 +43,10 @@ test("computeBounds: should return the correct value when there are no items", (
     │ 0         │ 0        │ 0         │ 0        │
     └───────────┴──────────┴───────────┴──────────┘"
   `);
-});
+  });
 
-test("computeBounds: should return the correct value when there are no pinned items", () => {
-  expect(printBounds(base)).toMatchInlineSnapshot(`
+  test("should return the correct value when there are no pinned items", () => {
+    expect(printBounds(base)).toMatchInlineSnapshot(`
     "
     ┌───────────┬──────────┬───────────┬──────────┐
     │ First Col │ Last Col │ First Row │ Last Row │
@@ -54,8 +55,8 @@ test("computeBounds: should return the correct value when there are no pinned it
     └───────────┴──────────┴───────────┴──────────┘"
   `);
 
-  expect(printBounds({ ...base, scrollTop: 120, scrollLeft: 120 })).toMatchInlineSnapshot(
-    `
+    expect(printBounds({ ...base, scrollTop: 120, scrollLeft: 120 })).toMatchInlineSnapshot(
+      `
     "
     ┌───────────┬──────────┬───────────┬──────────┐
     │ First Col │ Last Col │ First Row │ Last Row │
@@ -63,10 +64,10 @@ test("computeBounds: should return the correct value when there are no pinned it
     │ 1         │ 14       │ 0         │ 17       │
     └───────────┴──────────┴───────────┴──────────┘"
   `,
-  );
+    );
 
-  expect(printBounds({ ...base, scrollTop: 200, scrollLeft: 200 })).toMatchInlineSnapshot(
-    `
+    expect(printBounds({ ...base, scrollTop: 200, scrollLeft: 200 })).toMatchInlineSnapshot(
+      `
     "
     ┌───────────┬──────────┬───────────┬──────────┐
     │ First Col │ Last Col │ First Row │ Last Row │
@@ -74,9 +75,9 @@ test("computeBounds: should return the correct value when there are no pinned it
     │ 3         │ 16       │ 2         │ 19       │
     └───────────┴──────────┴───────────┴──────────┘"
   `,
-  );
+    );
 
-  expect(printBounds({ ...base, scrollTop: 200 * 50 - 500 })).toMatchInlineSnapshot(`
+    expect(printBounds({ ...base, scrollTop: 200 * 50 - 500 })).toMatchInlineSnapshot(`
     "
     ┌───────────┬──────────┬───────────┬──────────┐
     │ First Col │ Last Col │ First Row │ Last Row │
@@ -85,7 +86,7 @@ test("computeBounds: should return the correct value when there are no pinned it
     └───────────┴──────────┴───────────┴──────────┘"
   `);
 
-  expect(printBounds({ ...base, scrollTop: 200 * 52 })).toMatchInlineSnapshot(`
+    expect(printBounds({ ...base, scrollTop: 200 * 52 })).toMatchInlineSnapshot(`
     "
     ┌───────────┬──────────┬───────────┬──────────┐
     │ First Col │ Last Col │ First Row │ Last Row │
@@ -94,7 +95,7 @@ test("computeBounds: should return the correct value when there are no pinned it
     └───────────┴──────────┴───────────┴──────────┘"
   `);
 
-  expect(printBounds({ ...base, scrollLeft: 100 * 50 - 500 })).toMatchInlineSnapshot(`
+    expect(printBounds({ ...base, scrollLeft: 100 * 50 - 500 })).toMatchInlineSnapshot(`
     "
     ┌───────────┬──────────┬───────────┬──────────┐
     │ First Col │ Last Col │ First Row │ Last Row │
@@ -102,18 +103,18 @@ test("computeBounds: should return the correct value when there are no pinned it
     │ 89        │ 100      │ 0         │ 15       │
     └───────────┴──────────┴───────────┴──────────┘"
   `);
-});
+  });
 
-test("computeBounds: should return the correct value when there are pinned items", () => {
-  const pinnedBase = {
-    ...base,
-    startCount: 2,
-    endCount: 2,
-    topCount: 2,
-    bottomCount: 2,
-  };
+  test("should return the correct value when there are pinned items", () => {
+    const pinnedBase = {
+      ...base,
+      startCount: 2,
+      endCount: 2,
+      topCount: 2,
+      bottomCount: 2,
+    };
 
-  expect(printBounds(pinnedBase)).toMatchInlineSnapshot(`
+    expect(printBounds(pinnedBase)).toMatchInlineSnapshot(`
     "
     ┌───────────┬──────────┬───────────┬──────────┐
     │ First Col │ Last Col │ First Row │ Last Row │
@@ -122,8 +123,8 @@ test("computeBounds: should return the correct value when there are pinned items
     └───────────┴──────────┴───────────┴──────────┘"
   `);
 
-  expect(printBounds({ ...pinnedBase, scrollTop: 120, scrollLeft: 120 })).toMatchInlineSnapshot(
-    `
+    expect(printBounds({ ...pinnedBase, scrollTop: 120, scrollLeft: 120 })).toMatchInlineSnapshot(
+      `
     "
     ┌───────────┬──────────┬───────────┬──────────┐
     │ First Col │ Last Col │ First Row │ Last Row │
@@ -131,10 +132,10 @@ test("computeBounds: should return the correct value when there are pinned items
     │ 3         │ 16       │ 2         │ 19       │
     └───────────┴──────────┴───────────┴──────────┘"
   `,
-  );
+    );
 
-  expect(printBounds({ ...pinnedBase, scrollTop: 200 * 50 - 500 })).toMatchInlineSnapshot(
-    `
+    expect(printBounds({ ...pinnedBase, scrollTop: 200 * 50 - 500 })).toMatchInlineSnapshot(
+      `
     "
     ┌───────────┬──────────┬───────────┬──────────┐
     │ First Col │ Last Col │ First Row │ Last Row │
@@ -142,10 +143,10 @@ test("computeBounds: should return the correct value when there are pinned items
     │ 2         │ 14       │ 190       │ 198      │
     └───────────┴──────────┴───────────┴──────────┘"
   `,
-  );
+    );
 
-  expect(printBounds({ ...pinnedBase, scrollLeft: 100 * 50 - 500 })).toMatchInlineSnapshot(
-    `
+    expect(printBounds({ ...pinnedBase, scrollLeft: 100 * 50 - 500 })).toMatchInlineSnapshot(
+      `
     "
     ┌───────────┬──────────┬───────────┬──────────┐
     │ First Col │ Last Col │ First Row │ Last Row │
@@ -153,22 +154,22 @@ test("computeBounds: should return the correct value when there are pinned items
     │ 91        │ 98       │ 2         │ 17       │
     └───────────┴──────────┴───────────┴──────────┘"
   `,
-  );
-});
+    );
+  });
 
-test("computeBounds: should return the correct bounds when there are variables sizes", () => {
-  const xPositions = new Uint32Array([0, 20, 60, 80, 120, 180, 220, 270, 300, 325]);
-  const yPositions = new Uint32Array([0, 60, 90, 140, 200, 230, 270, 310, 330, 350, 420]);
+  test("should return the correct bounds when there are variables sizes", () => {
+    const xPositions = new Uint32Array([0, 20, 60, 80, 120, 180, 220, 270, 300, 325]);
+    const yPositions = new Uint32Array([0, 60, 90, 140, 200, 230, 270, 310, 330, 350, 420]);
 
-  const b = {
-    ...base,
-    viewportWidth: 100,
-    viewportHeight: 100,
-    xPositions,
-    yPositions,
-  };
+    const b = {
+      ...base,
+      viewportWidth: 100,
+      viewportHeight: 100,
+      xPositions,
+      yPositions,
+    };
 
-  expect(printBounds(b)).toMatchInlineSnapshot(`
+    expect(printBounds(b)).toMatchInlineSnapshot(`
     "
     ┌───────────┬──────────┬───────────┬──────────┐
     │ First Col │ Last Col │ First Row │ Last Row │
@@ -177,7 +178,7 @@ test("computeBounds: should return the correct bounds when there are variables s
     └───────────┴──────────┴───────────┴──────────┘"
   `);
 
-  expect(printBounds({ ...b, scrollTop: 150, scrollLeft: 100 })).toMatchInlineSnapshot(`
+    expect(printBounds({ ...b, scrollTop: 150, scrollLeft: 100 })).toMatchInlineSnapshot(`
     "
     ┌───────────┬──────────┬───────────┬──────────┐
     │ First Col │ Last Col │ First Row │ Last Row │
@@ -186,7 +187,7 @@ test("computeBounds: should return the correct bounds when there are variables s
     └───────────┴──────────┴───────────┴──────────┘"
   `);
 
-  expect(printBounds({ ...b, scrollTop: 330, scrollLeft: 270 })).toMatchInlineSnapshot(`
+    expect(printBounds({ ...b, scrollTop: 330, scrollLeft: 270 })).toMatchInlineSnapshot(`
     "
     ┌───────────┬──────────┬───────────┬──────────┐
     │ First Col │ Last Col │ First Row │ Last Row │
@@ -194,25 +195,25 @@ test("computeBounds: should return the correct bounds when there are variables s
     │ 6         │ 9        │ 6         │ 10       │
     └───────────┴──────────┴───────────┴──────────┘"
   `);
-});
+  });
 
-test("computeBounds: should return the correct bounds when there are variables sizes and pins", () => {
-  const xPositions = new Uint32Array([0, 20, 60, 80, 120, 180, 220, 270, 300, 325]);
-  const yPositions = new Uint32Array([100, 200, 300, 350, 380, 410, 440, 500, 530, 600, 640]);
+  test("should return the correct bounds when there are variables sizes and pins", () => {
+    const xPositions = new Uint32Array([0, 20, 60, 80, 120, 180, 220, 270, 300, 325]);
+    const yPositions = new Uint32Array([100, 200, 300, 350, 380, 410, 440, 500, 530, 600, 640]);
 
-  const b = {
-    ...base,
-    viewportWidth: 100,
-    viewportHeight: 100,
-    startCount: 2,
-    endCount: 1,
-    topCount: 2,
-    bottomCount: 2,
-    xPositions,
-    yPositions,
-  };
+    const b = {
+      ...base,
+      viewportWidth: 100,
+      viewportHeight: 100,
+      startCount: 2,
+      endCount: 1,
+      topCount: 2,
+      bottomCount: 2,
+      xPositions,
+      yPositions,
+    };
 
-  expect(printBounds(b)).toMatchInlineSnapshot(`
+    expect(printBounds(b)).toMatchInlineSnapshot(`
     "
     ┌───────────┬──────────┬───────────┬──────────┐
     │ First Col │ Last Col │ First Row │ Last Row │
@@ -221,7 +222,7 @@ test("computeBounds: should return the correct bounds when there are variables s
     └───────────┴──────────┴───────────┴──────────┘"
   `);
 
-  expect(printBounds({ ...b, scrollTop: 120 })).toMatchInlineSnapshot(`
+    expect(printBounds({ ...b, scrollTop: 120 })).toMatchInlineSnapshot(`
     "
     ┌───────────┬──────────┬───────────┬──────────┐
     │ First Col │ Last Col │ First Row │ Last Row │
@@ -230,7 +231,7 @@ test("computeBounds: should return the correct bounds when there are variables s
     └───────────┴──────────┴───────────┴──────────┘"
   `);
 
-  expect(printBounds({ ...b, scrollTop: 200, scrollLeft: 200 })).toMatchInlineSnapshot(`
+    expect(printBounds({ ...b, scrollTop: 200, scrollLeft: 200 })).toMatchInlineSnapshot(`
     "
     ┌───────────┬──────────┬───────────┬──────────┐
     │ First Col │ Last Col │ First Row │ Last Row │
@@ -238,4 +239,5 @@ test("computeBounds: should return the correct bounds when there are variables s
     │ 5         │ 8        │ 5         │ 8        │
     └───────────┴──────────┴───────────┴──────────┘"
   `);
+  });
 });
