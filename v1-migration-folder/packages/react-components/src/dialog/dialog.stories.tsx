@@ -32,6 +32,7 @@ export default meta;
 function Base(props: DialogRootProps) {
   return (
     <DialogRoot {...props}>
+      <DialogTrigger>Open</DialogTrigger>
       <DialogPortal>
         <DialogPanel className="dialog">This is my dialog panel</DialogPanel>
       </DialogPortal>
@@ -65,9 +66,6 @@ function WithOpenDialog() {
       <DialogPortal>
         <DialogPanel className="dialog">This is my dialog panel</DialogPanel>
       </DialogPortal>
-      <button style={{ position: "relative", left: 200, top: 200 }} id="x">
-        Click Target
-      </button>
     </DialogRoot>
   );
 }
@@ -102,6 +100,69 @@ export const OpenTrigger: Story = {
       );
       await wait(100);
       await expect(canvas.queryByRole("dialog")).not.toBeInTheDocument();
+    });
+  },
+  argTypes: {
+    open: { control: false, table: { disable: true } },
+  },
+};
+
+export const AlwaysOpen: Story = {
+  render: Base,
+  args: {
+    open: true,
+  },
+  play: async ({ step }) => {
+    const canvas = within(document.body);
+
+    await step("Opening and closing a dialog when using normal trigger", async () => {
+      const dialog = await canvas.findByRole("dialog");
+
+      dialog.dispatchEvent(
+        new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true,
+          view: window,
+          clientX: 300,
+          clientY: 300,
+        }),
+      );
+      await wait(100);
+      await expect(canvas.queryByRole("dialog")).toBeInTheDocument();
+    });
+  },
+  argTypes: {
+    open: { control: false, table: { disable: true } },
+  },
+};
+
+export const NotDismissible: Story = {
+  render: Base,
+  args: {
+    dismissible: false,
+  },
+  play: async ({ step }) => {
+    const canvas = within(document.body);
+
+    await step("Opening and closing a dialog when using normal trigger", async () => {
+      const openButton = canvas.getByText("Open");
+      await expect(openButton).toBeVisible();
+
+      await userEvent.click(openButton);
+
+      const dialog = await canvas.findByRole("dialog");
+
+      dialog.dispatchEvent(
+        new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true,
+          view: window,
+          clientX: 300,
+          clientY: 300,
+        }),
+      );
+      await wait(100);
+      await expect(canvas.queryByRole("dialog")).toBeInTheDocument();
     });
   },
   argTypes: {
