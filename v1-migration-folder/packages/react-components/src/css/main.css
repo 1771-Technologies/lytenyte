@@ -8,5 +8,9 @@
     padding: unset;
     margin: unset;
     outline: none;
+
+    &::backdrop {
+      background-color: transparent;
+    }
   }
 }

@@ -5,9 +5,12 @@ export interface DialogContext {
   readonly open: boolean;
   readonly onOpenChange: (b: boolean) => void;
 
+  readonly parent: DialogContext | null;
+
   readonly alert: boolean;
   readonly modal: boolean;
   readonly dismissible: boolean;
+  readonly dismissPropagates: boolean;
   readonly lockBodyScroll: boolean;
   readonly trapFocus: boolean;
 
