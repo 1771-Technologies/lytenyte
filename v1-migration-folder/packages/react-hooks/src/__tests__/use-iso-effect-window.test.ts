@@ -8,5 +8,5 @@ test("will work if window is not defined", async () => {
   const c = await import("../use-iso-effect.js");
   globalThis.window = originalWindow;
 
-  renderHook(() => c.useIsoEffect(() => console.log("lee")));
+  renderHook(() => c.useIsoEffect(() => {}));
 });

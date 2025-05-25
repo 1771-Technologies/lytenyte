@@ -4,7 +4,7 @@ import { bodyScrollEnable, bodyScrollDisable } from "@1771technologies/lytenyte-
 import type { FocusTrap } from "@1771technologies/lytenyte-focus-trap";
 import { createFocusTrap } from "@1771technologies/lytenyte-focus-trap";
 import { tabbable } from "@1771technologies/lytenyte-focus";
-import { containsPoint } from "@1771technologies/lytenyte-dom-utils";
+import { containsPoint, isNodeAttached } from "@1771technologies/lytenyte-dom-utils";
 
 export function useManagedDialog(
   open: boolean,
@@ -23,8 +23,6 @@ export function useManagedDialog(
   const mutationRef = useRef<MutationObserver | null>(null);
 
   useEffect(() => {
-    if (!dialog) return;
-
     function cleanup() {
       if (mutationRef.current) {
         mutationRef.current.disconnect();
@@ -38,6 +36,11 @@ export function useManagedDialog(
         trapRef.current.deactivate();
         trapRef.current = null;
       }
+    }
+
+    if (!dialog) {
+      cleanup();
+      return;
     }
 
     function handleFocusTrap() {
@@ -95,8 +98,6 @@ export function useManagedDialog(
       }
     }
 
-    const controller = new AbortController();
-
     if (shouldMount) {
       if (lockBodyScroll) bodyScrollDisable(dialog);
       else bodyScrollEnable(dialog);
@@ -118,52 +119,54 @@ export function useManagedDialog(
         handleFocusTrap();
       }
 
+      const listeners: [string, any][] = [];
       if (dismissible) {
-        document.addEventListener(
-          "click",
-          (ev) => {
-            const element = document.elementFromPoint(ev.clientX, ev.clientY);
-            if (element !== dialog) return;
+        const dismissOnClick = (ev: MouseEvent) => {
+          const element = document.elementFromPoint(ev.clientX, ev.clientY);
+          if (element !== dialog) return;
 
-            if (!containsPoint(dialog, ev.clientX, ev.clientY)) {
-              onOpenChange(false);
-            }
-          },
-          { signal: controller.signal },
-        );
+          if (!containsPoint(dialog, ev.clientX, ev.clientY)) {
+            onOpenChange(false);
+          }
+        };
+        document.addEventListener("click", dismissOnClick);
+        listeners.push(["click", dismissOnClick]);
 
-        document.addEventListener(
-          "keydown",
-          (ev) => {
-            if (ev.key === "Escape") {
-              ev.preventDefault();
-              ev.stopPropagation();
-              ev.stopImmediatePropagation();
+        const dismissOnEscape = (ev: KeyboardEvent) => {
+          if (ev.key === "Escape") {
+            ev.preventDefault();
+            ev.stopPropagation();
+            ev.stopImmediatePropagation();
 
-              onOpenChange(false);
-            }
-          },
-          { signal: controller.signal },
-        );
+            onOpenChange(false);
+          }
+        };
+        document.addEventListener("keydown", dismissOnEscape);
+        listeners.push(["keydown", dismissOnEscape]);
       }
 
-      dialog.addEventListener(
-        "close",
-        (ev) => {
-          ev.preventDefault();
-          ev.stopPropagation();
-          ev.stopImmediatePropagation();
-        },
-        { signal: controller.signal },
-      );
+      const onClose = (ev: Event) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        ev.stopImmediatePropagation();
+      };
+      dialog.addEventListener("close", onClose);
+
+      return () => {
+        listeners.forEach((c) => document.removeEventListener(c[0], c[1]));
+        if (isNodeAttached(dialog)) dialog.removeEventListener("close", onClose);
+        cleanup();
+      };
     } else {
       cleanup();
 
       dialog.close();
       bodyScrollEnable(dialog);
-    }
 
-    return () => controller.abort();
+      return () => {
+        cleanup();
+      };
+    }
   }, [dialog, dismissible, lockBodyScroll, modal, onOpenChange, shouldMount, trapFocus]);
 
   return { shouldMount, ref: setDialog, state };

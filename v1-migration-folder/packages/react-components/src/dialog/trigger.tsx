@@ -4,13 +4,13 @@ import { useSlot, type SlotComponent } from "@1771technologies/lytenyte-react-ho
 import { useDialog } from "./root.use-dialog";
 
 export interface DialogTriggerProps {
-  readonly slot?: SlotComponent<OpenState>;
+  readonly as?: SlotComponent<OpenState>;
 }
 
 export const DialogTrigger = forwardRef<
   HTMLButtonElement,
   JSX.IntrinsicElements["button"] & DialogTriggerProps
->(function DialogTrigger({ slot, ...props }, forwarded) {
+>(function DialogTrigger({ as, ...props }, forwarded) {
   const ctx = useDialog();
 
   const defaultProps: JSX.IntrinsicElements["button"] & { "data-dialog-state": OpenState } = {
@@ -25,7 +25,7 @@ export const DialogTrigger = forwardRef<
   const renderedSlot = useSlot({
     props: [defaultProps, props],
     ref: forwarded,
-    slot: slot ?? <button />,
+    slot: as ?? <button />,
     state: ctx.state,
   });
 
