@@ -1,8 +1,8 @@
 import { cloneElement, type ReactElement } from "react";
-import type { AnyProps, AnyRef } from "./+types.use-slot";
+import type { AnyProps, AnyRef } from "./+types.use-slot.js";
 import { mergeProps } from "./merge-props.js";
-import { getElementRef } from "./get-element-ref";
-import { useForkRef } from "../use-fork-ref";
+import { getElementRef } from "./get-element-ref.js";
+import { useForkRef } from "../use-fork-ref.js";
 
 export interface UseSlotProps {
   readonly ref?: AnyRef;

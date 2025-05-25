@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { isReactVersionAtLeast } from "../react-version";
+import { isReactVersionAtLeast } from "../react-version.js";
 
 describe("isReactVersionAtLeast", () => {
   test("should return the correct value", () => {

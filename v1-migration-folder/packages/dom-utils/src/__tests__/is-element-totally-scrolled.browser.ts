@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { isElementTotallyScrolled } from "../is-element-totally-scrolled";
+import { isElementTotallyScrolled } from "../is-element-totally-scrolled.js";
 
 describe("isElementTotalScrolled", () => {
   test("should return the correct result", () => {

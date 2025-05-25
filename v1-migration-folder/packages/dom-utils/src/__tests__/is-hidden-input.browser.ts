@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { isHiddenInput } from "../is-hidden-input";
+import { isHiddenInput } from "../is-hidden-input.js";
 
 describe("isHiddenInput", () => {
   test("should return the correct result", () => {

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
-import { applyLayoutForRows } from "../apply-layout-for-rows";
-import { printLayoutMap } from "./print-layout-map";
+import { applyLayoutForRows } from "../apply-layout-for-rows.js";
+import { printLayoutMap } from "./print-layout-map.js";
 
 describe("applyLayoutForRows", () => {
   test("should apply row layouts for flat views", () => {

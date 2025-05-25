@@ -1,5 +1,5 @@
 import { Component } from "react";
-import type { Options as FocusTrapOptions } from "./focus-trap";
+import type { Options as FocusTrapOptions } from "./focus-trap.js";
 
 export interface FocusTrapProps {
   /**

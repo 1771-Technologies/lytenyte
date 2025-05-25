@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { isRadio } from "../is-radio";
+import { isRadio } from "../is-radio.js";
 
 // Simulate minimal implementation of isInput (assumed imported by isRadio)
 function createInput(type: string): HTMLInputElement {

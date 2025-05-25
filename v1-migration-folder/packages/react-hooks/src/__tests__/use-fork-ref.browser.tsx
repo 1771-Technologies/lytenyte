@@ -1,6 +1,6 @@
 import { describe, expect, test, vi } from "vitest";
 import { render } from "vitest-browser-react";
-import { useForkRef } from "../use-fork-ref";
+import { useForkRef } from "../use-fork-ref.js";
 
 describe("useForkRef", () => {
   test("should correctly merge refs", async () => {

@@ -1,6 +1,6 @@
 import { Bench, hrtimeNow } from "tinybench";
-import { applyLayoutUpdate } from "./layout/apply-layout-update";
-import { DEFAULT_PREVIOUS_LAYOUT } from "./+constants.layout";
+import { applyLayoutUpdate } from "./layout/apply-layout-update.js";
+import { DEFAULT_PREVIOUS_LAYOUT } from "./+constants.layout.js";
 
 const bench = new Bench({
   name: "Layout",
