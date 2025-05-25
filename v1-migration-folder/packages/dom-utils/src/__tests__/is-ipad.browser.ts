@@ -1,5 +1,5 @@
 import { expect, test, beforeEach, afterEach, describe } from "vitest";
-import { isIPad } from "../is-ipad";
+import { isIPad } from "../is-ipad.js";
 
 // Helper to override navigator properties
 function setNavigatorProperties({

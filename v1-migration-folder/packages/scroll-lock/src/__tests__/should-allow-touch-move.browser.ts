@@ -1,5 +1,5 @@
 import { expect, test, beforeEach, afterEach, describe } from "vitest";
-import { shouldAllowTouchMove } from "../should-allow-touch-move";
+import { shouldAllowTouchMove } from "../should-allow-touch-move.js";
 import { bslGlobals } from "../+globals.bsl.js";
 
 beforeEach(() => {

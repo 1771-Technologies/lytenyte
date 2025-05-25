@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { getRootNode } from "../get-root-node";
+import { getRootNode } from "../get-root-node.js";
 
 describe("getRootNode", () => {
   test("should return the correct result", () => {

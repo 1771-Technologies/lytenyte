@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
-import { applyCellLayoutForRow } from "../apply-cell-layout-for-row";
-import { printLayoutMap } from "./print-layout-map";
+import { applyCellLayoutForRow } from "../apply-cell-layout-for-row.js";
+import { printLayoutMap } from "./print-layout-map.js";
 
 describe("applyCellLayoutForRow", () => {
   test("should apply the correct cell layout when the layout is flat", () => {

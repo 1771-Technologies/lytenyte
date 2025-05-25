@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { isZeroArea } from "../is-zero-area";
+import { isZeroArea } from "../is-zero-area.js";
 
 describe("isZeroArea", () => {
   test("returns true when width and height are both 0", () => {

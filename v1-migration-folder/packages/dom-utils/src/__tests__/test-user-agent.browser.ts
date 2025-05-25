@@ -1,5 +1,5 @@
 import { expect, test, afterEach, describe } from "vitest";
-import { testUserAgent } from "../test-user-agent";
+import { testUserAgent } from "../test-user-agent.js";
 
 // Helper to override navigator properties
 function setNavigatorOverrides({

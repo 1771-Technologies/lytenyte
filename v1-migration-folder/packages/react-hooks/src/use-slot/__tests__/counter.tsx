@@ -1,6 +1,6 @@
 import { forwardRef, useMemo, useState, type CSSProperties } from "react";
-import type { SlotComponent } from "../+types.use-slot";
-import { useSlot } from "../use-slot";
+import type { SlotComponent } from "../+types.use-slot.js";
+import { useSlot } from "../use-slot.js";
 
 interface CounterProps {
   slot?: SlotComponent<{ count: number }>;

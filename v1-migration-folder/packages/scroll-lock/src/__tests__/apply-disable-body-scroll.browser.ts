@@ -1,8 +1,8 @@
 import { beforeEach, afterEach, expect, test, vi, describe } from "vitest";
-import { applyDisableBodyScroll } from "../apply-disable-body-scroll";
+import { applyDisableBodyScroll } from "../apply-disable-body-scroll.js";
 import { bslGlobals } from "../+globals.bsl.js";
 import type { BodyScrollOptions } from "../+types.bsl.js";
-import { handleScroll } from "../handle-scroll";
+import { handleScroll } from "../handle-scroll.js";
 
 // Mock dependencies
 vi.mock("@1771technologies/lytenyte-dom-utils", () => ({

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test } from "vitest";
-import { isNonTabbableRadio } from "../is-non-tabbable-radio";
+import { isNonTabbableRadio } from "../is-non-tabbable-radio.js";
 
 describe("isNonTabbableRadio", () => {
   afterEach(() => {

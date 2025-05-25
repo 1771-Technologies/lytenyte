@@ -1,6 +1,6 @@
 import { test, expect, vi, beforeEach, type Mock } from "vitest";
-import { sortByOrder } from "../sort-by-order";
-import type { CandidateScope } from "../get-candidates-iteratively";
+import { sortByOrder } from "../sort-by-order.js";
+import type { CandidateScope } from "../get-candidates-iteratively.js";
 
 // Mocks
 vi.mock("../get-sort-order-tab-index", () => ({

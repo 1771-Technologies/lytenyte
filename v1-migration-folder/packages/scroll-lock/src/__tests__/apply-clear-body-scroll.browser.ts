@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
-import { applyClearBodyScroll } from "../apply-clear-body-scroll";
+import { applyClearBodyScroll } from "../apply-clear-body-scroll.js";
 import { bslGlobals } from "../+globals.bsl.js";
 import type { Lock, BodyStyleType } from "../+types.bsl.js";
 
