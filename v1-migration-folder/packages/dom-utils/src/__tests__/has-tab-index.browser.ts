@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { hasTabIndex } from "../has-tab-index";
+import { hasTabIndex } from "../has-tab-index.js";
 
 describe("hasTabIndex", () => {
   test("should return the correct result", () => {

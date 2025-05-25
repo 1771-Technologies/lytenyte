@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { isContentEditable } from "../is-content-editable";
+import { isContentEditable } from "../is-content-editable.js";
 
 describe("isContentEditable", () => {
   test("should return the correct result", () => {

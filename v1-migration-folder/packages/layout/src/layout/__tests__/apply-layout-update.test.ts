@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
-import { applyLayoutUpdate } from "../apply-layout-update";
-import { printLayoutMap } from "./print-layout-map";
+import { applyLayoutUpdate } from "../apply-layout-update.js";
+import { printLayoutMap } from "./print-layout-map.js";
 
 describe("applyLayoutForRows", () => {
   test("should compute the standard layout", () => {

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { isFunction } from "../is-function";
+import { isFunction } from "../is-function.js";
 
 describe("isFunction", () => {
   test("returns true for regular functions", () => {

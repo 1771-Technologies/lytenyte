@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { getCheckedRadio } from "../get-checked-radio";
+import { getCheckedRadio } from "../get-checked-radio.js";
 
 import htm from "htm";
 import h from "hyperscript";

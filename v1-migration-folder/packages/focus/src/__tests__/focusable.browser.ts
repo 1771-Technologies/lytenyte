@@ -1,5 +1,5 @@
 import { describe, expect, test, vi, beforeEach, type Mock } from "vitest";
-import { focusable, isFocusable } from "../focusable";
+import { focusable, isFocusable } from "../focusable.js";
 
 // Mocks
 vi.mock("../helpers/get-candidates", () => ({

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { isNodeAttached } from "../is-node-attached";
+import { isNodeAttached } from "../is-node-attached.js";
 
 describe("isNodeAttached", () => {
   test("should return the correct result", () => {

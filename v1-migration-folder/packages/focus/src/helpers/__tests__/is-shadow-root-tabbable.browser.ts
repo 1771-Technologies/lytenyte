@@ -1,5 +1,5 @@
 import { expect, test, beforeEach, vi } from "vitest";
-import { isShadowRootTabbable } from "../is-shadow-root-tabbable";
+import { isShadowRootTabbable } from "../is-shadow-root-tabbable.js";
 
 beforeEach(() => {
   vi.restoreAllMocks();

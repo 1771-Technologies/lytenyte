@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
-import { cached } from "../cached";
+import { cached } from "../cached.js";
 
 describe("cached", () => {
   test("should correctly cache the result", () => {

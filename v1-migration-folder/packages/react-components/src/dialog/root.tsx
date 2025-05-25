@@ -8,8 +8,8 @@ import {
   type SetStateAction,
 } from "react";
 import { useEvent } from "@1771technologies/lytenyte-react-hooks";
-import { useManagedDialog } from "./use-managed-dialog";
-import { context, useDialog, type DialogContext } from "./root.use-dialog";
+import { useManagedDialog } from "./use-managed-dialog.js";
+import { context, useDialog, type DialogContext } from "./root.use-dialog.js";
 
 export interface DialogRootProps {
   readonly open?: boolean;

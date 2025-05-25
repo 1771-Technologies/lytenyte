@@ -1,7 +1,7 @@
 import htm from "htm";
 import h from "hyperscript";
 import { beforeEach, describe, expect, test } from "vitest";
-import { isDisabledFromFieldset } from "../is-disabled-from-fieldset";
+import { isDisabledFromFieldset } from "../is-disabled-from-fieldset.js";
 
 export const html = htm.bind(h);
 export const addToBody = (h: Element | Element[]) => {

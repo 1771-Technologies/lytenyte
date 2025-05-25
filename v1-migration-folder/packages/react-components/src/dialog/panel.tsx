@@ -1,5 +1,5 @@
 import { forwardRef, type CSSProperties, type JSX } from "react";
-import { useDialog } from "./root.use-dialog";
+import { useDialog } from "./root.use-dialog.js";
 import { useForkRef } from "@1771technologies/lytenyte-react-hooks";
 
 export const DialogPanel = forwardRef<HTMLDialogElement, JSX.IntrinsicElements["dialog"]>(

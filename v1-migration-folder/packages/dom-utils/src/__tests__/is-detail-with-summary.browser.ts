@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { isDetailsWithSummary } from "../is-detail-with-summary";
+import { isDetailsWithSummary } from "../is-detail-with-summary.js";
 
 describe("isDetailWithSummary", () => {
   test("should return the correct result", () => {
