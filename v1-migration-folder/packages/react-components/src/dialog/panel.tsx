@@ -8,6 +8,7 @@ export const DialogPanel = forwardRef<HTMLDialogElement, JSX.IntrinsicElements["
 
     const mergedRefs = useForkRef(forwarded, dialogRef);
 
+    console.log(props);
     return (
       <dialog
         {...props}
