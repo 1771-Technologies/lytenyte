@@ -8,12 +8,12 @@ export interface DialogPortalProps {
   readonly keepMounted?: boolean;
 }
 
-export function DialogPortal({
+export const DialogPortal = ({
   target,
   enabled = true,
   keepMounted = false,
   children,
-}: PropsWithChildren<DialogPortalProps>) {
+}: PropsWithChildren<DialogPortalProps>) => {
   const { shouldMount } = useDialog();
 
   if (!shouldMount && !keepMounted) return null;
@@ -26,4 +26,4 @@ export function DialogPortal({
     : document.body;
 
   return createPortal(<>{children}</>, element);
-}
+};
