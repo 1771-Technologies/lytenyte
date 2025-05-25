@@ -1,8 +1,9 @@
-import { expect, test } from "vitest";
+import { describe, expect, test } from "vitest";
 import { computeRowPositions } from "../compute-row-positions.js";
 
-test("computeRowPositions: should handle fixed row heights", () => {
-  expect(computeRowPositions(5, 20, 0, {}, () => 0, 0)).toMatchInlineSnapshot(`
+describe("computeRowPositions", () => {
+  test("should handle fixed row heights", () => {
+    expect(computeRowPositions(5, 20, 0, {}, () => 0, 0)).toMatchInlineSnapshot(`
     Uint32Array [
       0,
       20,
@@ -12,10 +13,10 @@ test("computeRowPositions: should handle fixed row heights", () => {
       100,
     ]
   `);
-});
+  });
 
-test("computeRowPositions: should handle fixed row heights with detail rows", () => {
-  expect(computeRowPositions(5, 20, 0, {}, (i) => (i % 2 ? 30 : 0), 0)).toMatchInlineSnapshot(`
+  test("should handle fixed row heights with detail rows", () => {
+    expect(computeRowPositions(5, 20, 0, {}, (i) => (i % 2 ? 30 : 0), 0)).toMatchInlineSnapshot(`
     Uint32Array [
       0,
       20,
@@ -25,10 +26,10 @@ test("computeRowPositions: should handle fixed row heights with detail rows", ()
       160,
     ]
   `);
-});
+  });
 
-test("computeRowPositions: should handle negative fixed row heights", () => {
-  expect(computeRowPositions(5, -20, 0, {}, () => 0, 0)).toMatchInlineSnapshot(`
+  test("should handle negative fixed row heights", () => {
+    expect(computeRowPositions(5, -20, 0, {}, () => 0, 0)).toMatchInlineSnapshot(`
     Uint32Array [
       0,
       0,
@@ -38,19 +39,19 @@ test("computeRowPositions: should handle negative fixed row heights", () => {
       0,
     ]
   `);
-});
+  });
 
-test("computeRowPositions: should handle variable row heights", () => {
-  expect(
-    computeRowPositions(
-      5,
-      (i) => (i % 2 ? 10 : 20),
-      0,
-      {},
-      () => 0,
-      0,
-    ),
-  ).toMatchInlineSnapshot(`
+  test("should handle variable row heights", () => {
+    expect(
+      computeRowPositions(
+        5,
+        (i) => (i % 2 ? 10 : 20),
+        0,
+        {},
+        () => 0,
+        0,
+      ),
+    ).toMatchInlineSnapshot(`
     Uint32Array [
       0,
       20,
@@ -60,19 +61,19 @@ test("computeRowPositions: should handle variable row heights", () => {
       80,
     ]
   `);
-});
+  });
 
-test("computeRowPositions: should handle variable row heights with detail rows", () => {
-  expect(
-    computeRowPositions(
-      5,
-      (i) => (i % 2 ? 10 : 20),
-      0,
-      {},
-      (i) => (i % 2 ? 10 : 0),
-      0,
-    ),
-  ).toMatchInlineSnapshot(`
+  test("should handle variable row heights with detail rows", () => {
+    expect(
+      computeRowPositions(
+        5,
+        (i) => (i % 2 ? 10 : 20),
+        0,
+        {},
+        (i) => (i % 2 ? 10 : 0),
+        0,
+      ),
+    ).toMatchInlineSnapshot(`
     Uint32Array [
       0,
       20,
@@ -82,19 +83,19 @@ test("computeRowPositions: should handle variable row heights with detail rows",
       100,
     ]
   `);
-});
+  });
 
-test("computeRowPositions: should handle variable row heights with negative values", () => {
-  expect(
-    computeRowPositions(
-      5,
-      (i) => (i % 2 ? -10 : 20),
-      0,
-      {},
-      () => 0,
-      0,
-    ),
-  ).toMatchInlineSnapshot(`
+  test("should handle variable row heights with negative values", () => {
+    expect(
+      computeRowPositions(
+        5,
+        (i) => (i % 2 ? -10 : 20),
+        0,
+        {},
+        () => 0,
+        0,
+      ),
+    ).toMatchInlineSnapshot(`
     Uint32Array [
       0,
       20,
@@ -104,27 +105,27 @@ test("computeRowPositions: should handle variable row heights with negative valu
       60,
     ]
   `);
-});
+  });
 
-test("computeRowPositions: should handle negative row counts with variable row height", () => {
-  expect(
-    computeRowPositions(
-      -5,
-      (i) => (i % 2 ? -10 : 20),
-      0,
-      {},
-      () => 0,
-      0,
-    ),
-  ).toMatchInlineSnapshot(`
+  test("should handle negative row counts with variable row height", () => {
+    expect(
+      computeRowPositions(
+        -5,
+        (i) => (i % 2 ? -10 : 20),
+        0,
+        {},
+        () => 0,
+        0,
+      ),
+    ).toMatchInlineSnapshot(`
     Uint32Array [
       0,
     ]
   `);
-});
+  });
 
-test("computeRowPositions: should handle auto row heights", () => {
-  expect(computeRowPositions(5, "auto", 20, { 2: 50 }, () => 0, 0)).toMatchInlineSnapshot(`
+  test("should handle auto row heights", () => {
+    expect(computeRowPositions(5, "auto", 20, { 2: 50 }, () => 0, 0)).toMatchInlineSnapshot(`
     Uint32Array [
       0,
       20,
@@ -134,10 +135,10 @@ test("computeRowPositions: should handle auto row heights", () => {
       130,
     ]
   `);
-});
+  });
 
-test("computeRowPositions: should handle auto row heights with row detail", () => {
-  expect(computeRowPositions(5, "auto", 20, { 2: 50 }, () => 10, 0)).toMatchInlineSnapshot(`
+  test("should handle auto row heights with row detail", () => {
+    expect(computeRowPositions(5, "auto", 20, { 2: 50 }, () => 10, 0)).toMatchInlineSnapshot(`
     Uint32Array [
       0,
       30,
@@ -147,10 +148,10 @@ test("computeRowPositions: should handle auto row heights with row detail", () =
       180,
     ]
   `);
-});
+  });
 
-test("computeRowPositions: should handle auto row heights with negative row heights", () => {
-  expect(computeRowPositions(5, "auto", -20, { 2: 50 }, () => 10, 0)).toMatchInlineSnapshot(`
+  test("should handle auto row heights with negative row heights", () => {
+    expect(computeRowPositions(5, "auto", -20, { 2: 50 }, () => 10, 0)).toMatchInlineSnapshot(`
     Uint32Array [
       0,
       0,
@@ -160,10 +161,10 @@ test("computeRowPositions: should handle auto row heights with negative row heig
       60,
     ]
   `);
-});
+  });
 
-test("computeRowPositions: should handle fill when there isn't enough space", () => {
-  expect(computeRowPositions(5, "fill:20", 0, {}, () => 0, 80)).toMatchInlineSnapshot(`
+  test("should handle fill when there isn't enough space", () => {
+    expect(computeRowPositions(5, "fill:20", 0, {}, () => 0, 80)).toMatchInlineSnapshot(`
     Uint32Array [
       0,
       20,
@@ -173,10 +174,10 @@ test("computeRowPositions: should handle fill when there isn't enough space", ()
       100,
     ]
   `);
-});
+  });
 
-test("computeRowPositions: should handle fill when there is enough space", () => {
-  expect(computeRowPositions(5, "fill:20", 0, {}, () => 0, 200)).toMatchInlineSnapshot(`
+  test("should handle fill when there is enough space", () => {
+    expect(computeRowPositions(5, "fill:20", 0, {}, () => 0, 200)).toMatchInlineSnapshot(`
     Uint32Array [
       0,
       40,
@@ -187,7 +188,7 @@ test("computeRowPositions: should handle fill when there is enough space", () =>
     ]
   `);
 
-  expect(computeRowPositions(5, "fill:20", 0, {}, () => 0, 211)).toMatchInlineSnapshot(`
+    expect(computeRowPositions(5, "fill:20", 0, {}, () => 0, 211)).toMatchInlineSnapshot(`
     Uint32Array [
       0,
       42,
@@ -198,7 +199,7 @@ test("computeRowPositions: should handle fill when there is enough space", () =>
     ]
   `);
 
-  expect(computeRowPositions(5, "fill:21", 0, {}, () => 0, 177)).toMatchInlineSnapshot(`
+    expect(computeRowPositions(5, "fill:21", 0, {}, () => 0, 177)).toMatchInlineSnapshot(`
     Uint32Array [
       0,
       36,
@@ -208,4 +209,5 @@ test("computeRowPositions: should handle fill when there is enough space", () =>
       176,
     ]
   `);
+  });
 });
