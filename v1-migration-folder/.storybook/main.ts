@@ -1,13 +1,13 @@
 import type { StorybookConfig } from "@storybook/react-vite";
 
+const stories = process.env.STORY_PATH?.split(",") ?? [
+  "../packages/**/*.stories.mdx",
+  "../packages/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+];
+
 const config: StorybookConfig = {
-  stories: ["../packages/**/*.stories.mdx", "../packages/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
-  addons: [
-    "@storybook/addon-onboarding",
-    "@storybook/addon-docs",
-    "@storybook/addon-a11y",
-    "@storybook/addon-vitest",
-  ],
+  stories: stories,
+  addons: ["@storybook/addon-docs", "@storybook/addon-a11y", "@storybook/addon-vitest"],
   framework: {
     name: "@storybook/react-vite",
     options: {},

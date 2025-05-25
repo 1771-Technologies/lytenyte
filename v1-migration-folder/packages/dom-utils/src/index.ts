@@ -1,3 +1,4 @@
+export { containsPoint } from "./contains-point.js";
 export { getCheckedRadio } from "./get-checked-radio.js";
 export { getRootNode } from "./get-root-node.js";
 export { getTabIndex } from "./get-tab-index.js";
@@ -21,6 +22,7 @@ export { isNodeAttached } from "./is-node-attached.js";
 export { isNonTabbableRadio } from "./is-non-tabbable-radio.js";
 export { isRadio } from "./is-radio.js";
 export { isTabbableRadio } from "./is-tabbable-radio.js";
+export { isVirtualClick } from "./is-virtual-click.js";
 export { isWebKit } from "./is-webkit.js";
 export { isZeroArea } from "./is-zero-area.js";
 export { makeLongTouchPressHandler } from "./make-long-touch-press-handler.js";

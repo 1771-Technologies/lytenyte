@@ -1,0 +1,16 @@
+@layer ln-components {
+  [data-ln-dialog] {
+    overflow: unset;
+    border: unset;
+    max-width: unset;
+    max-height: unset;
+    visibility: unset;
+    padding: unset;
+    margin: unset;
+    outline: none;
+
+    &::backdrop {
+      background-color: transparent;
+    }
+  }
+}
