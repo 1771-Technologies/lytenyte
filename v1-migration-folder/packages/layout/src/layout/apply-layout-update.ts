@@ -1,6 +1,6 @@
-import type { LayoutMap, RowPredicate, SpanFn, SpanLayout } from "../+types.layout";
-import { applyLayoutForRows } from "./apply-layout-for-rows";
-import { areLayoutsEqual } from "./are-layouts-equal";
+import type { LayoutMap, RowPredicate, SpanFn, SpanLayout } from "../+types.layout.js";
+import { applyLayoutForRows } from "./apply-layout-for-rows.js";
+import { areLayoutsEqual } from "./are-layouts-equal.js";
 
 export interface ApplyLayoutArgs {
   /** Previous layout configuration to compare against */

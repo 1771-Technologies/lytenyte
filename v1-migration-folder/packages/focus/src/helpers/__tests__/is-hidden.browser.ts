@@ -1,5 +1,5 @@
 import { beforeEach, expect, test, vi, type Mock } from "vitest";
-import { isHidden } from "../is-hidden";
+import { isHidden } from "../is-hidden.js";
 
 // Mock external utilities
 vi.mock("@1771technologies/lytenyte-dom-utils", () => ({

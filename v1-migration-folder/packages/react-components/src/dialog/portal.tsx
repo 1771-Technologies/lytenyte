@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from "react";
-import { useDialog } from "./root.use-dialog";
+import { useDialog } from "./root.use-dialog.js";
 import { createPortal } from "react-dom";
 
 export interface DialogPortalProps {

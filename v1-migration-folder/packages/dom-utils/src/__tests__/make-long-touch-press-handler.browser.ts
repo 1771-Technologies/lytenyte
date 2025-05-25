@@ -1,5 +1,5 @@
 import { expect, test, vi, beforeEach, describe } from "vitest";
-import { makeLongTouchPressHandler } from "../make-long-touch-press-handler";
+import { makeLongTouchPressHandler } from "../make-long-touch-press-handler.js";
 
 describe("makeLongTouchPressHandler", () => {
   beforeEach(() => {

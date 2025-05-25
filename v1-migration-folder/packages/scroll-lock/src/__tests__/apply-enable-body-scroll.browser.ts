@@ -1,5 +1,5 @@
 import { beforeEach, afterEach, expect, test, vi, describe } from "vitest";
-import { applyEnableBodyScroll } from "../apply-enable-body-scroll";
+import { applyEnableBodyScroll } from "../apply-enable-body-scroll.js";
 import { bslGlobals } from "../+globals.bsl.js";
 
 // Mock dependencies

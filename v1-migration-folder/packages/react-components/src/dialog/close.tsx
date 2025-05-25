@@ -1,7 +1,7 @@
 import { useSlot, type SlotComponent } from "@1771technologies/lytenyte-react-hooks";
-import type { OpenState } from "./use-transition-effect";
+import type { OpenState } from "./use-transition-effect.js";
 import { forwardRef, type JSX } from "react";
-import { useDialog } from "./root.use-dialog";
+import { useDialog } from "./root.use-dialog.js";
 
 export interface DialogCloseProps {
   readonly as?: SlotComponent<OpenState>;

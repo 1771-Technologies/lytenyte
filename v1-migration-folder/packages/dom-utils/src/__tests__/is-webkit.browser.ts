@@ -1,5 +1,5 @@
 import { expect, test, afterEach, describe } from "vitest";
-import { isWebKit } from "../is-webkit";
+import { isWebKit } from "../is-webkit.js";
 
 // Helper to override navigator properties
 function setNavigatorOverrides({

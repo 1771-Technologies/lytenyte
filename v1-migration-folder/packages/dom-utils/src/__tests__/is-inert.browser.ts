@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { isInert } from "../is-inert";
+import { isInert } from "../is-inert.js";
 
 describe("isInert", () => {
   test("should return the correct result", () => {

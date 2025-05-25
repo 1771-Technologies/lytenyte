@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { isReactVersionAtLeast } from "../react-version";
+import { isReactVersionAtLeast } from "../react-version.js";
 
 export function getElementRef(element: ReactElement) {
   // React <=18 in DEV

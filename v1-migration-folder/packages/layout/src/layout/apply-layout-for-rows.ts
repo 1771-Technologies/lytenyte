@@ -1,6 +1,6 @@
-import { FULL_WIDTH_MAP } from "../+constants.layout";
-import type { LayoutMap, Row, SpanFn, SpanLayout } from "../+types.layout";
-import { applyCellLayoutForRow } from "./apply-cell-layout-for-row";
+import { FULL_WIDTH_MAP } from "../+constants.layout.js";
+import type { LayoutMap, Row, SpanFn, SpanLayout } from "../+types.layout.js";
+import { applyCellLayoutForRow } from "./apply-cell-layout-for-row.js";
 
 export interface ApplyLayoutForRows {
   /** The first row index to compute from.  */

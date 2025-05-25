@@ -21,7 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-import type { CheckOptions as TabbableCheckOptions } from "./+types.focus.ts";
+import type { CheckOptions as TabbableCheckOptions } from "./+types.focus.js";
 
 export type FocusTargetValue = HTMLElement | SVGElement | string;
 export type FocusTargetValueOrFalse = FocusTargetValue | false;
