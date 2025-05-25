@@ -1,16 +1,16 @@
-import "../css/main.css";
+import "../../css/main.css";
 
 import type { Meta, StoryObj } from "@storybook/react";
-import type { DialogApi } from "./root";
-import { DialogRoot, type DialogRootProps } from "./root";
-import { DialogPanel } from "./panel";
-import { DialogTrigger } from "./trigger";
-import { DialogPortal } from "./portal";
+import type { DialogApi } from "../root.js";
+import { DialogRoot, type DialogRootProps } from "../root.js";
+import { DialogPanel } from "../panel.js";
+import { DialogTrigger } from "../trigger.js";
+import { DialogPortal } from "../portal.js";
 import { useRef, useState } from "react";
 import { expect, userEvent, waitFor, within, fn } from "@storybook/test";
-import { DialogTitle } from "./title";
-import { DialogDescription } from "./description";
-import { DialogClose } from "./close";
+import { DialogTitle } from "../title.js";
+import { DialogDescription } from "../description.js";
+import { DialogClose } from "../close.js";
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
