@@ -102,48 +102,45 @@ export function useManagedDialog(
       if (lockBodyScroll) bodyScrollDisable(dialog);
       else bodyScrollEnable(dialog);
 
-      if (trapFocus && trapRef.current) {
-        trapRef.current.activate();
-      } else if (!trapFocus && trapRef.current) {
-        trapRef.current.deactivate();
-      }
+      // Update the focus if necessary
+      if (trapFocus && trapRef.current) trapRef.current.activate();
+      else if (!trapFocus && trapRef.current) trapRef.current.deactivate();
+      else if (dialog.open && trapFocus && !trapRef.current) handleFocusTrap();
 
-      if (dialog.open && trapFocus && !trapRef.current) {
-        handleFocusTrap();
-      }
-
+      // Check if the dialog is open. If it is not, we should open it.
       if (!dialog.open) {
         if (modal) dialog.showModal();
         else dialog.show();
 
+        // When opening the dialog we need to enable focus trap if necessary. The `handleFocusTrap`
+        // function can be called even if the trap is already enabled.
         handleFocusTrap();
       }
 
       const listeners: [string, any][] = [];
-      if (dismissible) {
-        const dismissOnClick = (ev: MouseEvent) => {
-          const element = document.elementFromPoint(ev.clientX, ev.clientY);
-          if (element !== dialog) return;
+      const dismissOnClick = (ev: MouseEvent) => {
+        if (!dismissible) return;
+        const element = document.elementFromPoint(ev.clientX, ev.clientY);
+        if (element !== dialog) return;
 
-          if (!containsPoint(dialog, ev.clientX, ev.clientY)) {
-            onOpenChange(false);
-          }
-        };
-        document.addEventListener("click", dismissOnClick);
-        listeners.push(["click", dismissOnClick]);
+        if (!containsPoint(dialog, ev.clientX, ev.clientY)) {
+          onOpenChange(false);
+        }
+      };
+      document.addEventListener("click", dismissOnClick);
+      listeners.push(["click", dismissOnClick]);
 
-        const dismissOnEscape = (ev: KeyboardEvent) => {
-          if (ev.key === "Escape") {
-            ev.preventDefault();
-            ev.stopPropagation();
-            ev.stopImmediatePropagation();
+      const dismissOnEscape = (ev: KeyboardEvent) => {
+        if (ev.key === "Escape") {
+          ev.preventDefault();
+          ev.stopPropagation();
+          ev.stopImmediatePropagation();
 
-            onOpenChange(false);
-          }
-        };
-        document.addEventListener("keydown", dismissOnEscape);
-        listeners.push(["keydown", dismissOnEscape]);
-      }
+          if (dismissible) onOpenChange(false);
+        }
+      };
+      document.addEventListener("keydown", dismissOnEscape);
+      listeners.push(["keydown", dismissOnEscape]);
 
       const onClose = (ev: Event) => {
         ev.preventDefault();
@@ -153,6 +150,7 @@ export function useManagedDialog(
       dialog.addEventListener("close", onClose);
 
       return () => {
+        bodyScrollEnable(dialog);
         listeners.forEach((c) => document.removeEventListener(c[0], c[1]));
         if (isNodeAttached(dialog)) dialog.removeEventListener("close", onClose);
         cleanup();
