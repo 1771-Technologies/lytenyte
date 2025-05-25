@@ -13,4 +13,54 @@
       background-color: transparent;
     }
   }
+
+  [data-ln-drawer-side="start"] {
+    height: 100%;
+    width: 300px;
+
+    inset-inline-start: var(--drawer-offset-inline, 0px);
+    inset-block-start: var(--drawer-offset-block, 0px);
+
+    &::backdrop {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  [data-ln-drawer-side="end"] {
+    height: 100%;
+    width: 300px;
+
+    inset-inline-start: unset;
+    inset-inline-end: var(--drawer-offset-inline, 0px);
+    inset-block-start: var(--drawer-offset-block, 0px);
+
+    &::backdrop {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  [data-ln-drawer-side="top"] {
+    height: 300px;
+    width: 100%;
+
+    inset-inline-start: var(--drawer-offset-inline, 0px);
+    inset-block-start: var(--drawer-offset-block, 0px);
+
+    &::backdrop {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  [data-ln-drawer-side="bottom"] {
+    height: 300px;
+    width: 100%;
+
+    inset-block-start: unset;
+    inset-inline-start: var(--drawer-offset-inline, 0px);
+    inset-block-end: var(--drawer-offset-block, 0px);
+
+    &::backdrop {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
 }

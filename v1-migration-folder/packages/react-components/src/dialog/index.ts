@@ -8,9 +8,9 @@ import { DialogTrigger } from "./trigger.js";
 
 export const Dialog = {
   Root: DialogRoot,
-  Panel: DialogPanel,
   Trigger: DialogTrigger,
   Portal: DialogPortal,
+  Panel: DialogPanel,
   Title: DialogTitle,
   Description: DialogDescription,
   Close: DialogClose,
