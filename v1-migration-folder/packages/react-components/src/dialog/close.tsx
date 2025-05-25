@@ -4,13 +4,13 @@ import { forwardRef, type JSX } from "react";
 import { useDialog } from "./root.use-dialog";
 
 export interface DialogCloseProps {
-  readonly slot?: SlotComponent<OpenState>;
+  readonly as?: SlotComponent<OpenState>;
 }
 
 export const DialogClose = forwardRef<
   HTMLButtonElement,
   JSX.IntrinsicElements["button"] & DialogCloseProps
->(function DialogClose({ slot, ...props }, forwarded) {
+>(function DialogClose({ as, ...props }, forwarded) {
   const { state, onOpenChange } = useDialog();
 
   const render = useSlot({
@@ -18,7 +18,7 @@ export const DialogClose = forwardRef<
       {
         // Only pass the button type if the slot isn't provided, otherwise we may end
         // up passing an invalid property to an element that does not accept it.
-        type: slot ? undefined : "button",
+        type: as ? undefined : "button",
         onClick: () => {
           onOpenChange(false);
         },
@@ -27,7 +27,7 @@ export const DialogClose = forwardRef<
       props,
     ],
     ref: forwarded,
-    slot: slot ?? <button />,
+    slot: as ?? <button />,
     state,
   });
 

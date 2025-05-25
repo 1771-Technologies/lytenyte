@@ -41,7 +41,7 @@ export const DialogRoot = forwardRef<DialogApi, PropsWithChildren<DialogRootProp
   const [localOpen, setLocalOpen] = useState(false);
 
   const open = p.open ?? localOpen;
-  const onOpenChange = useEvent(p.onOpenChange ?? setLocalOpen);
+  const onOpenChange = p.onOpenChange ?? setLocalOpen;
 
   const openFn = useEvent((b?: SetStateAction<boolean>) => {
     if (b == null) return open;
@@ -121,7 +121,9 @@ export const DialogRoot = forwardRef<DialogApi, PropsWithChildren<DialogRootProp
       dialogRef: ref,
       nestedCount,
       state,
-      onOpenChange,
+      onOpenChange: (b) => {
+        onOpenChange(b);
+      },
       open,
       timeEnter,
       timeExit,
