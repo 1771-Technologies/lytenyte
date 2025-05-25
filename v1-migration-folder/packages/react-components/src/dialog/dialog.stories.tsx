@@ -7,6 +7,9 @@ import { DialogPanel } from "./panel";
 import { DialogTrigger } from "./trigger";
 import { DialogPortal } from "./portal";
 import { useState } from "react";
+import { expect, userEvent, waitFor, within } from "@storybook/test";
+
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const meta: Meta<DialogRootProps> = {
   title: "components/Dialog",
@@ -40,27 +43,67 @@ type Story = StoryObj<DialogRootProps>;
 
 export const Default: Story = {
   render: Base,
+  play: async () => {
+    const canvas = within(document.body);
+    const c = canvas.getByRole("dialog");
+    await expect(c).toBeVisible();
+    await expect(c).toHaveTextContent("This is my dialog panel");
+  },
   args: {
     open: true,
   },
   argTypes: {
-    open: { control: { type: "boolean", disable: false }, table: { disable: false } },
+    open: { table: { disable: false } },
+    modal: { table: { disable: false } },
   },
 };
 
-function WithOpenDialog(props: DialogRootProps) {
+function WithOpenDialog() {
   return (
-    <DialogRoot {...props}>
+    <DialogRoot>
       <DialogTrigger>Open</DialogTrigger>
       <DialogPortal>
         <DialogPanel className="dialog">This is my dialog panel</DialogPanel>
       </DialogPortal>
+      <button style={{ position: "relative", left: 200, top: 200 }} id="x">
+        Click Target
+      </button>
     </DialogRoot>
   );
 }
 
-export const WithOpen: Story = {
+export const OpenTrigger: Story = {
   render: WithOpenDialog,
+  play: async ({ step }) => {
+    const canvas = within(document.body);
+
+    await step("Opening and closing a dialog when using normal trigger", async () => {
+      const openButton = canvas.getByText("Open");
+      await expect(openButton).toBeVisible();
+
+      await userEvent.click(openButton);
+
+      let dialog = await canvas.findByRole("dialog");
+
+      await waitFor(async () => await expect(dialog).toBeVisible());
+      await userEvent.keyboard("{Escape}");
+
+      await userEvent.click(openButton);
+      dialog = await canvas.findByRole("dialog");
+
+      dialog.dispatchEvent(
+        new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true,
+          view: window,
+          clientX: 300,
+          clientY: 300,
+        }),
+      );
+      await wait(100);
+      await expect(canvas.queryByRole("dialog")).not.toBeInTheDocument();
+    });
+  },
   argTypes: {
     open: { control: false, table: { disable: true } },
   },

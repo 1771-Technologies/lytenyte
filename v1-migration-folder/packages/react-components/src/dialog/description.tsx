@@ -4,13 +4,13 @@ import { forwardRef, useId, type JSX } from "react";
 import { useDialog } from "./root.use-dialog";
 
 export interface DialogDescriptionProps {
-  readonly slot?: SlotComponent<OpenState>;
+  readonly as?: SlotComponent<OpenState>;
 }
 
 export const DialogDescription = forwardRef<
   HTMLHeadingElement,
   JSX.IntrinsicElements["h2"] & DialogDescriptionProps
->(function DialogDescription({ slot, ...props }, forwarded) {
+>(function DialogDescription({ as, ...props }, forwarded) {
   const { setDescriptionId, state } = useDialog();
   const internalId = useId();
   const id = props.id;
@@ -26,7 +26,7 @@ export const DialogDescription = forwardRef<
   const render = useSlot({
     props: [props, { id: id ?? internalId }],
     ref: forwarded,
-    slot: slot ?? <p />,
+    slot: as ?? <p />,
     state,
   });
 
