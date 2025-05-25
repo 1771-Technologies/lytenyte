@@ -1,6 +1,6 @@
 import { test, expect, vi, beforeEach, type Mock } from "vitest";
-import { isNodeMatchingSelectorTabbable } from "../is-node-matching-selector-tabbable";
-import type { CheckOptions } from "../../+types.focus";
+import { isNodeMatchingSelectorTabbable } from "../is-node-matching-selector-tabbable.js";
+import type { CheckOptions } from "../../+types.focus.js";
 
 // Mock dependencies
 vi.mock("@1771technologies/lytenyte-dom-utils", () => ({

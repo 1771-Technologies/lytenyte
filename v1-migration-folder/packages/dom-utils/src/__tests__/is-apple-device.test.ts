@@ -1,6 +1,8 @@
-import { expect, test } from "vitest";
-import { isAppleDevice } from "../is-apple-device";
+import { describe, expect, test } from "vitest";
+import { isAppleDevice } from "../is-apple-device.js";
 
-test("isAppleDevice: should return false as window is not defined", () => {
-  expect(isAppleDevice()).toEqual(false);
+describe("isAppleDevice", () => {
+  test("should return false as window is not defined", () => {
+    expect(isAppleDevice()).toEqual(false);
+  });
 });

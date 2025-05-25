@@ -13,8 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import { getCheckedRadio } from "./get-checked-radio";
-import { getRootNode } from "./get-root-node";
+import { getCheckedRadio } from "./get-checked-radio.js";
+import { getRootNode } from "./get-root-node.js";
 
 export const isTabbableRadio = (node: HTMLInputElement) => {
   if (!node.name) {

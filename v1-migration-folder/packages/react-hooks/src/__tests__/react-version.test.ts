@@ -1,6 +1,8 @@
-import { expect, test } from "vitest";
-import { isReactVersionAtLeast } from "../react-version";
+import { describe, expect, test } from "vitest";
+import { isReactVersionAtLeast } from "../react-version.js";
 
-test("isReactVersionAtLeast: should return the correct value", () => {
-  expect(isReactVersionAtLeast(18)).toEqual(true);
+describe("isReactVersionAtLeast", () => {
+  test("should return the correct value", () => {
+    expect(isReactVersionAtLeast(18)).toEqual(true);
+  });
 });

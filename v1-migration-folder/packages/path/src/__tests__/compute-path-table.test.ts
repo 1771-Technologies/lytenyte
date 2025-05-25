@@ -17,18 +17,19 @@ limitations under the License.
 import { computePathTable } from "../compute-path-table.js";
 import type { PathTable } from "../+types.path-table.js";
 import { Table } from "@1771technologies/cli-table";
-import { expect, test } from "vitest";
+import { describe, expect, test } from "vitest";
 
-test("computePathTable: should create the correct table", () => {
-  const t = computePathTable([
-    { id: "x", groupPath: ["A", "B"] },
-    { id: "y" },
-    { id: "z", groupPath: ["A", "B", "C"] },
-    { id: "d", groupPath: ["Y", "X", "C"] },
-    { id: "v", groupPath: ["F"] },
-  ]);
+describe("computePathTable", () => {
+  test("should create the correct table", () => {
+    const t = computePathTable([
+      { id: "x", groupPath: ["A", "B"] },
+      { id: "y" },
+      { id: "z", groupPath: ["A", "B", "C"] },
+      { id: "d", groupPath: ["Y", "X", "C"] },
+      { id: "v", groupPath: ["F"] },
+    ]);
 
-  expect(toGridTable(t)).toMatchInlineSnapshot(`
+    expect(toGridTable(t)).toMatchInlineSnapshot(`
     "
     ┌─────┬───┬───────┬───────┬───┐
     │ A   │ y │ A     │ Y     │ F │
@@ -40,33 +41,39 @@ test("computePathTable: should create the correct table", () => {
     │     │   │ z     │ d     │   │
     └─────┴───┴───────┴───────┴───┘"
   `);
-});
+  });
 
-test("computePathTable: should create a flat table when there are no paths", () => {
-  const table = computePathTable([{ id: "x" }, { id: "y" }, { id: "z" }, { id: "f" }, { id: "g" }]);
+  test("should create a flat table when there are no paths", () => {
+    const table = computePathTable([
+      { id: "x" },
+      { id: "y" },
+      { id: "z" },
+      { id: "f" },
+      { id: "g" },
+    ]);
 
-  expect(toGridTable(table)).toMatchInlineSnapshot(`
+    expect(toGridTable(table)).toMatchInlineSnapshot(`
     "
     ┌───┬───┬───┬───┬───┐
     │ x │ y │ z │ f │ g │
     └───┴───┴───┴───┴───┘"
   `);
-});
+  });
 
-test("computePathTable: should compute consecutive group paths", () => {
-  const table = computePathTable([
-    { id: "x", groupPath: ["A", "B"] },
-    { id: "y" },
-    { id: "z", groupPath: ["A", "B", "C"] },
-    { id: "f", groupPath: ["A", "B", "C"] },
-    { id: "g", groupPath: ["A", "B", "C"] },
-    { id: "d", groupPath: ["Y", "X", "C"] },
-    { id: "v", groupPath: ["F"] },
-    { id: "x", groupPath: ["F", "B"] },
-    { id: "z", groupPath: ["F", "A"] },
-  ]);
+  test("should compute consecutive group paths", () => {
+    const table = computePathTable([
+      { id: "x", groupPath: ["A", "B"] },
+      { id: "y" },
+      { id: "z", groupPath: ["A", "B", "C"] },
+      { id: "f", groupPath: ["A", "B", "C"] },
+      { id: "g", groupPath: ["A", "B", "C"] },
+      { id: "d", groupPath: ["Y", "X", "C"] },
+      { id: "v", groupPath: ["F"] },
+      { id: "x", groupPath: ["F", "B"] },
+      { id: "z", groupPath: ["F", "A"] },
+    ]);
 
-  expect(toGridTable(table)).toMatchInlineSnapshot(`
+    expect(toGridTable(table)).toMatchInlineSnapshot(`
     "
     ┌─────┬───┬───────────┬───────┬───────────────┐
     │ A   │ y │ A         │ Y     │ F             │
@@ -78,25 +85,25 @@ test("computePathTable: should compute consecutive group paths", () => {
     │     │   │ z │ f │ g │ d     │   │     │     │
     └─────┴───┴───┴───┴───┴───────┴───┴─────┴─────┘"
   `);
-});
+  });
 
-test("computePathTable: should correctly join paths", () => {
-  const table = computePathTable([
-    { id: "x", groupPath: ["A", "B"] },
-    { id: "y" },
-    { id: "z", groupPath: ["A", "B", "C"] },
-    { id: "f", groupPath: ["A", "B", "C"] },
-    { id: "g", groupPath: ["A", "B", "C"] },
-    {
-      id: "d",
-      groupPath: [{ id: "X", joinId: "A" }, { id: "C", joinId: "B" }, { id: "V" }],
-    },
-    { id: "v", groupPath: ["F"] },
-    { id: "x", groupPath: ["F", "B"] },
-    { id: "z", groupPath: ["F", "A"] },
-  ]);
+  test("should correctly join paths", () => {
+    const table = computePathTable([
+      { id: "x", groupPath: ["A", "B"] },
+      { id: "y" },
+      { id: "z", groupPath: ["A", "B", "C"] },
+      { id: "f", groupPath: ["A", "B", "C"] },
+      { id: "g", groupPath: ["A", "B", "C"] },
+      {
+        id: "d",
+        groupPath: [{ id: "X", joinId: "A" }, { id: "C", joinId: "B" }, { id: "V" }],
+      },
+      { id: "v", groupPath: ["F"] },
+      { id: "x", groupPath: ["F", "B"] },
+      { id: "z", groupPath: ["F", "A"] },
+    ]);
 
-  expect(toGridTable(table)).toMatchInlineSnapshot(`
+    expect(toGridTable(table)).toMatchInlineSnapshot(`
     "
     ┌─────┬───┬───────────────────┬───────────────┐
     │ A   │ y │ A                 │ F             │
@@ -108,39 +115,39 @@ test("computePathTable: should correctly join paths", () => {
     │     │   │ z │ f │ g │ d     │   │     │     │
     └─────┴───┴───┴───┴───┴───────┴───┴─────┴─────┘"
   `);
-});
+  });
 
-test("computePathTable: should handle empty rows", () => {
-  const table = computePathTable([]);
+  test("should handle empty rows", () => {
+    const table = computePathTable([]);
 
-  expect(toGridTable(table)).toMatchInlineSnapshot(`
+    expect(toGridTable(table)).toMatchInlineSnapshot(`
     "
     "
   `);
-});
+  });
 
-test("computePathTable: computes the max depth correctly when overridden", () => {
-  const table = computePathTable(
-    [
-      { id: "x", groupPath: ["A", "B"] },
-      { id: "y" },
-      { id: "z", groupPath: ["A", "B", "C"] },
-      { id: "f", groupPath: ["A", "B", "C"] },
-      { id: "g", groupPath: ["A", "F", "C"] },
-      { id: "f", groupPath: ["A", "B", "C"] },
-      {
-        id: "d",
-        groupPath: [{ id: "X", joinId: "A" }, { id: "C", joinId: "B" }, { id: "V" }],
-      },
-      { id: "v", groupPath: ["F"] },
-      { id: "x", groupPath: ["F", "B"] },
-      { id: "z", groupPath: ["F", "A"] },
-      { id: "z", groupPath: ["A", "F", "A"] },
-    ],
-    4,
-  );
+  test("computes the max depth correctly when overridden", () => {
+    const table = computePathTable(
+      [
+        { id: "x", groupPath: ["A", "B"] },
+        { id: "y" },
+        { id: "z", groupPath: ["A", "B", "C"] },
+        { id: "f", groupPath: ["A", "B", "C"] },
+        { id: "g", groupPath: ["A", "F", "C"] },
+        { id: "f", groupPath: ["A", "B", "C"] },
+        {
+          id: "d",
+          groupPath: [{ id: "X", joinId: "A" }, { id: "C", joinId: "B" }, { id: "V" }],
+        },
+        { id: "v", groupPath: ["F"] },
+        { id: "x", groupPath: ["F", "B"] },
+        { id: "z", groupPath: ["F", "A"] },
+        { id: "z", groupPath: ["A", "F", "A"] },
+      ],
+      4,
+    );
 
-  expect(toGridTable(table)).toMatchInlineSnapshot(`
+    expect(toGridTable(table)).toMatchInlineSnapshot(`
     "
     ┌─────┬───┬───────────────────────────────┬───────────────┬───────┐
     │ A   │ y │ A                             │ F             │ A     │
@@ -155,13 +162,13 @@ test("computePathTable: computes the max depth correctly when overridden", () =>
     └─────┴───┴───┴───┴───────┴───────┴───────┴───┴─────┴─────┴───────┘"
   `);
 
-  // There should be 5 rows only and not a 6th.
-  expect(table.table.length === 5);
-});
+    // There should be 5 rows only and not a 6th.
+    expect(table.table.length === 5);
+  });
 
-test("computePathTable: should handle a single path", () => {
-  const table = computePathTable([{ id: "x", groupPath: ["V"] }]);
-  expect(toGridTable(table)).toMatchInlineSnapshot(`
+  test("should handle a single path", () => {
+    const table = computePathTable([{ id: "x", groupPath: ["V"] }]);
+    expect(toGridTable(table)).toMatchInlineSnapshot(`
     "
     ┌───┐
     │ V │
@@ -169,15 +176,15 @@ test("computePathTable: should handle a single path", () => {
     │ x │
     └───┘"
   `);
-});
+  });
 
-test("computePathTable: should handle really long paths", () => {
-  const table = computePathTable([
-    { id: "x", groupPath: ["A", "B", "C", "D", "E", "V", "A", "T", "A"] },
-    { id: "v", groupPath: [] },
-    { id: "t", groupPath: ["A", "B"] },
-  ]);
-  expect(toGridTable(table)).toMatchInlineSnapshot(`
+  test("should handle really long paths", () => {
+    const table = computePathTable([
+      { id: "x", groupPath: ["A", "B", "C", "D", "E", "V", "A", "T", "A"] },
+      { id: "v", groupPath: [] },
+      { id: "t", groupPath: ["A", "B"] },
+    ]);
+    expect(toGridTable(table)).toMatchInlineSnapshot(`
     "
     ┌───────────────────┬───┬─────┐
     │ A                 │ v │ A   │
@@ -201,33 +208,34 @@ test("computePathTable: should handle really long paths", () => {
     │ x                 │   │     │
     └───────────────────┴───┴─────┘"
   `);
-});
-
-function toGridTable(t: PathTable<any>) {
-  const rows: any = Array.from({ length: t.maxRow }, () => {
-    return Array.from({ length: t.maxCol }, () => null);
   });
 
-  t.table.forEach((r, ri) => {
-    r.forEach((x, ci) => {
-      rows[x.rowStart][ci] = { content: x.data.id, colSpan: x.colSpan, rowSpan: x.rowSpan };
-
-      for (let r = ri; r < x.rowStart + x.rowSpan && r < t.maxRow; r++) {
-        for (let c = ci + 1; c < x.colStart + x.colSpan && c < t.maxCol; c++) {
-          rows[r][c] = null;
-        }
-      }
+  function toGridTable(t: PathTable<any>) {
+    const rows: any = Array.from({ length: t.maxRow }, () => {
+      return Array.from({ length: t.maxCol }, () => null);
     });
-  });
 
-  for (let i = t.maxRow - 1; i >= 0; i--) {
-    for (let j = t.maxCol - 1; j >= 0; j--) {
-      if (rows[i][j] === null) rows[i].pop();
+    t.table.forEach((r, ri) => {
+      r.forEach((x, ci) => {
+        rows[x.rowStart][ci] = { content: x.data.id, colSpan: x.colSpan, rowSpan: x.rowSpan };
+
+        for (let r = ri; r < x.rowStart + x.rowSpan && r < t.maxRow; r++) {
+          for (let c = ci + 1; c < x.colStart + x.colSpan && c < t.maxCol; c++) {
+            rows[r][c] = null;
+          }
+        }
+      });
+    });
+
+    for (let i = t.maxRow - 1; i >= 0; i--) {
+      for (let j = t.maxCol - 1; j >= 0; j--) {
+        if (rows[i][j] === null) rows[i].pop();
+      }
     }
+
+    const table = new Table();
+    table.push(...rows);
+
+    return table.toString();
   }
-
-  const table = new Table();
-  table.push(...rows);
-
-  return table.toString();
-}
+});

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { within, userEvent, expect } from "@storybook/test";
-import { Counter, CounterNoProps } from "./counter";
+import { Counter, CounterNoProps } from "./counter.js";
 import { useState } from "react";
 
 const meta: Meta = {

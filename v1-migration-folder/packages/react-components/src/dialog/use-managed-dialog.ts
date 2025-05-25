@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useTransitionEffect } from "./use-transition-effect";
+import { useTransitionEffect } from "./use-transition-effect.js";
 import { bodyScrollEnable, bodyScrollDisable } from "@1771technologies/lytenyte-scroll-lock";
 import type { FocusTrap } from "@1771technologies/lytenyte-focus-trap";
 import { createFocusTrap } from "@1771technologies/lytenyte-focus-trap";
@@ -9,7 +9,7 @@ import {
   isNodeAttached,
   isVirtualClick,
 } from "@1771technologies/lytenyte-dom-utils";
-import type { DialogContext } from "./root.use-dialog";
+import type { DialogContext } from "./root.use-dialog.js";
 
 export function useManagedDialog(
   open: boolean,

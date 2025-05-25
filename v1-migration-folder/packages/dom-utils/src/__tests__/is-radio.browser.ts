@@ -1,5 +1,5 @@
-import { expect, test } from "vitest";
-import { isRadio } from "../is-radio";
+import { describe, expect, test } from "vitest";
+import { isRadio } from "../is-radio.js";
 
 // Simulate minimal implementation of isInput (assumed imported by isRadio)
 function createInput(type: string): HTMLInputElement {
@@ -8,27 +8,29 @@ function createInput(type: string): HTMLInputElement {
   return input;
 }
 
-test("isRadio: returns true for input of type 'radio'", () => {
-  const radio = createInput("radio");
-  expect(isRadio(radio)).toBe(true);
-});
+describe("isRadio", () => {
+  test("returns true for input of type 'radio'", () => {
+    const radio = createInput("radio");
+    expect(isRadio(radio)).toBe(true);
+  });
 
-test("isRadio: returns false for input of other types", () => {
-  const textInput = createInput("text");
-  const checkboxInput = createInput("checkbox");
-  const submitInput = createInput("submit");
+  test("returns false for input of other types", () => {
+    const textInput = createInput("text");
+    const checkboxInput = createInput("checkbox");
+    const submitInput = createInput("submit");
 
-  expect(isRadio(textInput)).toBe(false);
-  expect(isRadio(checkboxInput)).toBe(false);
-  expect(isRadio(submitInput)).toBe(false);
-});
+    expect(isRadio(textInput)).toBe(false);
+    expect(isRadio(checkboxInput)).toBe(false);
+    expect(isRadio(submitInput)).toBe(false);
+  });
 
-test("isRadio: returns false for non-input elements", () => {
-  const div = document.createElement("div");
-  const span = document.createElement("span");
-  const button = document.createElement("button");
+  test("returns false for non-input elements", () => {
+    const div = document.createElement("div");
+    const span = document.createElement("span");
+    const button = document.createElement("button");
 
-  expect(isRadio(div)).toBe(false);
-  expect(isRadio(span)).toBe(false);
-  expect(isRadio(button)).toBe(false);
+    expect(isRadio(div)).toBe(false);
+    expect(isRadio(span)).toBe(false);
+    expect(isRadio(button)).toBe(false);
+  });
 });

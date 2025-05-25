@@ -1,6 +1,8 @@
-import { expect, test } from "vitest";
-import { isMac } from "../is-mac";
+import { describe, expect, test } from "vitest";
+import { isMac } from "../is-mac.js";
 
-test("isMac: should return false because the window is not present", () => {
-  expect(isMac()).toEqual(false);
+describe("isMac", () => {
+  test("should return false because the window is not present", () => {
+    expect(isMac()).toEqual(false);
+  });
 });

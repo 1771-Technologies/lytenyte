@@ -1,6 +1,8 @@
-import { expect, test } from "vitest";
-import { isFirefox } from "../is-firefox";
+import { describe, expect, test } from "vitest";
+import { isFirefox } from "../is-firefox.js";
 
-test("isFirefox: should return false since window is not defined", () => {
-  expect(isFirefox()).toEqual(false);
+describe("isFirefox", () => {
+  test("should return false since window is not defined", () => {
+    expect(isFirefox()).toEqual(false);
+  });
 });

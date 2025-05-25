@@ -1,6 +1,8 @@
-import { expect, test } from "vitest";
-import { isAndroid } from "../is-android";
+import { describe, expect, test } from "vitest";
+import { isAndroid } from "../is-android.js";
 
-test("isAndroid: should return false as window is not defined", () => {
-  expect(isAndroid()).toEqual(false);
+describe("isAndroid", () => {
+  test("should return false as window is not defined", () => {
+    expect(isAndroid()).toEqual(false);
+  });
 });

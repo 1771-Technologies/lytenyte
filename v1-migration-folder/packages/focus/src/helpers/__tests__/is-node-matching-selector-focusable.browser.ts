@@ -1,6 +1,6 @@
 import { expect, test, vi, beforeEach, type Mock } from "vitest";
-import { isNodeMatchingSelectorFocusable } from "../is-node-matching-selector-focusable";
-import type { CheckOptions } from "../../+types.focus";
+import { isNodeMatchingSelectorFocusable } from "../is-node-matching-selector-focusable.js";
+import type { CheckOptions } from "../../+types.focus.js";
 
 // Mocks
 vi.mock("@1771technologies/lytenyte-dom-utils", () => ({

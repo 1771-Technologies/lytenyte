@@ -1,5 +1,5 @@
 import { describe, test, expect, vi, beforeEach, type Mock } from "vitest";
-import { tabbable, isTabbable } from "../tabbable";
+import { tabbable, isTabbable } from "../tabbable.js";
 
 // Mocks
 vi.mock("../helpers/get-candidates", () => ({

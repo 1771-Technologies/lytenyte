@@ -1,6 +1,8 @@
-import { expect, test } from "vitest";
-import { isIPhone } from "../is-iphone";
+import { describe, expect, test } from "vitest";
+import { isIPhone } from "../is-iphone.js";
 
-test("isIPhone: should return false because the window is not present", () => {
-  expect(isIPhone()).toEqual(false);
+describe("isIPhone", () => {
+  test("should return false because the window is not present", () => {
+    expect(isIPhone()).toEqual(false);
+  });
 });

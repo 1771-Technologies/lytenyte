@@ -1,5 +1,5 @@
 import { createContext, useContext, type Dispatch, type SetStateAction } from "react";
-import type { OpenState } from "./use-transition-effect";
+import type { OpenState } from "./use-transition-effect.js";
 
 export interface DialogContext {
   readonly open: boolean;

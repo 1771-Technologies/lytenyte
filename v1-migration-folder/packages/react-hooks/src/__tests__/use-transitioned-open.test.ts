@@ -2,7 +2,7 @@
 
 import { describe, expect, test, vi, beforeEach, afterEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
-import { useTransitionedOpen } from "../use-transitioned-open";
+import { useTransitionedOpen } from "../use-transitioned-open.js";
 
 describe("useTransitionedOpen", () => {
   beforeEach(() => {

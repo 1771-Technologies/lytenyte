@@ -1,5 +1,5 @@
 import { beforeEach, expect, test, vi } from "vitest";
-import { getSortOrderTabIndex } from "../get-sort-order-tab-index";
+import { getSortOrderTabIndex } from "../get-sort-order-tab-index.js";
 
 // Mock getTabIndex and hasTabIndex
 vi.mock("@1771technologies/lytenyte-dom-utils", () => ({

@@ -1,4 +1,4 @@
-import type { AnyProps } from "./+types.use-slot";
+import type { AnyProps } from "./+types.use-slot.js";
 
 export function mergeProps(slotProps: AnyProps, childProps: AnyProps) {
   // all child props should override

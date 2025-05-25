@@ -1,6 +1,8 @@
-import { expect, test } from "vitest";
-import { isIOS } from "../is-ios";
+import { describe, expect, test } from "vitest";
+import { isIOS } from "../is-ios.js";
 
-test("isIOS: should return false because the window is not present", () => {
-  expect(isIOS()).toEqual(false);
+describe("isIOS", () => {
+  test("should return false because the window is not present", () => {
+    expect(isIOS()).toEqual(false);
+  });
 });

@@ -1,5 +1,5 @@
 import { beforeEach, expect, test, vi } from "vitest";
-import { sortOrderedTabbables } from "../sort-ordered-tabbables";
+import { sortOrderedTabbables } from "../sort-ordered-tabbables.js";
 
 beforeEach(() => {
   vi.restoreAllMocks();
