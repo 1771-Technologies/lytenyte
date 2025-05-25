@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import { Table } from "@1771technologies/cli-table";
-import { expect, test } from "vitest";
+import { describe, expect, test } from "vitest";
 import type { PathMatrixItem } from "../+types.path-table.js";
 import { computePathMatrix } from "../compute-path-matrix.js";
 
@@ -26,19 +26,20 @@ const mapRowsToStrings = (row: (PathMatrixItem | null)[], useSeen: boolean = fal
     return `${useSeen ? c.idOccurrence : c.id}|${c.start} / ${c.end}`;
   });
 
-test("computePathMatrix: should create the correct table", () => {
-  const table = computePathMatrix([
-    { id: "x", groupPath: ["A", "B"] },
-    { id: "y" },
-    { id: "z", groupPath: ["A", "B", "C"] },
-    { id: "d", groupPath: ["Y", "X", "C"] },
-    { id: "v", groupPath: ["F"] },
-  ]);
+describe("computePathMatrix", () => {
+  test("should create the correct table", () => {
+    const table = computePathMatrix([
+      { id: "x", groupPath: ["A", "B"] },
+      { id: "y" },
+      { id: "z", groupPath: ["A", "B", "C"] },
+      { id: "d", groupPath: ["Y", "X", "C"] },
+      { id: "v", groupPath: ["F"] },
+    ]);
 
-  const t = new Table();
-  table.forEach((row) => t.push(mapRowsToStrings(row)));
+    const t = new Table();
+    table.forEach((row) => t.push(mapRowsToStrings(row)));
 
-  expect(t.toString()).toMatchInlineSnapshot(`
+    expect(t.toString()).toMatchInlineSnapshot(`
     "
     ┌─────────┬───────────┬─────────────┐
     │ A|0 / 1 │ A#B|0 / 1 │ -           │
@@ -52,20 +53,20 @@ test("computePathMatrix: should create the correct table", () => {
     │ F|4 / 5 │ -         │ -           │
     └─────────┴───────────┴─────────────┘"
   `);
-});
+  });
 
-test("computePathMatrix: should be able to join two top level items", () => {
-  const table = computePathMatrix([
-    { id: "x", groupPath: ["A", "B"] },
-    { id: "y", groupPath: ["A", "B"] },
-    { id: "c", groupPath: [{ id: "V", joinId: "A" }, "C"] },
-    { id: "v" },
-  ]);
+  test("should be able to join two top level items", () => {
+    const table = computePathMatrix([
+      { id: "x", groupPath: ["A", "B"] },
+      { id: "y", groupPath: ["A", "B"] },
+      { id: "c", groupPath: [{ id: "V", joinId: "A" }, "C"] },
+      { id: "v" },
+    ]);
 
-  const t = new Table();
-  table.forEach((row) => t.push(mapRowsToStrings(row)));
+    const t = new Table();
+    table.forEach((row) => t.push(mapRowsToStrings(row)));
 
-  expect(t.toString()).toMatchInlineSnapshot(`
+    expect(t.toString()).toMatchInlineSnapshot(`
     "
     ┌─────────┬───────────┐
     │ A|0 / 3 │ A#B|0 / 2 │
@@ -78,49 +79,49 @@ test("computePathMatrix: should be able to join two top level items", () => {
     └─────────┴───────────┘"
   `);
 
-  expect(table.at(0)!.at(0)?.idsInNode).toMatchInlineSnapshot(`
+    expect(table.at(0)!.at(0)?.idsInNode).toMatchInlineSnapshot(`
     Set {
       "A",
       "V",
     }
   `);
-});
+  });
 
-test("computePathMatrix: handles the case where there are no group paths", () => {
-  const table = computePathMatrix([
-    { id: "x" },
-    { id: "y" },
-    { id: "z" },
-    { id: "f" },
-    { id: "g" },
-  ]);
+  test("handles the case where there are no group paths", () => {
+    const table = computePathMatrix([
+      { id: "x" },
+      { id: "y" },
+      { id: "z" },
+      { id: "f" },
+      { id: "g" },
+    ]);
 
-  const t = new Table();
-  table.forEach((row) => t.push(mapRowsToStrings(row)));
+    const t = new Table();
+    table.forEach((row) => t.push(mapRowsToStrings(row)));
 
-  expect(t.toString()).toMatchInlineSnapshot(`
+    expect(t.toString()).toMatchInlineSnapshot(`
     "
     "
   `);
-});
+  });
 
-test("computePathMatrix: should compute consecutive group paths", () => {
-  const table = computePathMatrix([
-    { id: "x", groupPath: ["A", "B"] },
-    { id: "y" },
-    { id: "z", groupPath: ["A", "B", "C"] },
-    { id: "f", groupPath: ["A", "B", "C"] },
-    { id: "g", groupPath: ["A", "B", "C"] },
-    { id: "d", groupPath: ["Y", "X", "C"] },
-    { id: "v", groupPath: ["F"] },
-    { id: "x", groupPath: ["F", "B"] },
-    { id: "z", groupPath: ["F", "A"] },
-  ]);
+  test("should compute consecutive group paths", () => {
+    const table = computePathMatrix([
+      { id: "x", groupPath: ["A", "B"] },
+      { id: "y" },
+      { id: "z", groupPath: ["A", "B", "C"] },
+      { id: "f", groupPath: ["A", "B", "C"] },
+      { id: "g", groupPath: ["A", "B", "C"] },
+      { id: "d", groupPath: ["Y", "X", "C"] },
+      { id: "v", groupPath: ["F"] },
+      { id: "x", groupPath: ["F", "B"] },
+      { id: "z", groupPath: ["F", "A"] },
+    ]);
 
-  const t = new Table();
-  table.forEach((row) => t.push(mapRowsToStrings(row)));
+    const t = new Table();
+    table.forEach((row) => t.push(mapRowsToStrings(row)));
 
-  expect(t.toString()).toMatchInlineSnapshot(`
+    expect(t.toString()).toMatchInlineSnapshot(`
     "
     ┌─────────┬───────────┬─────────────┐
     │ A|0 / 1 │ A#B|0 / 1 │ -           │
@@ -142,28 +143,28 @@ test("computePathMatrix: should compute consecutive group paths", () => {
     │ F|6 / 9 │ F#A|8 / 9 │ -           │
     └─────────┴───────────┴─────────────┘"
   `);
-});
+  });
 
-test("computePathMatrix: should correctly join on paths", () => {
-  const table = computePathMatrix([
-    { id: "x", groupPath: ["A", "B"] },
-    { id: "y" },
-    { id: "z", groupPath: ["A", "B", "C"] },
-    { id: "f", groupPath: ["A", "B", "C"] },
-    { id: "g", groupPath: ["A", "B", "C"] },
-    {
-      id: "d",
-      groupPath: [{ id: "X", joinId: "A" }, { id: "C", joinId: "B" }, { id: "V" }],
-    },
-    { id: "v", groupPath: ["F"] },
-    { id: "x", groupPath: ["F", "B"] },
-    { id: "z", groupPath: ["F", "A"] },
-  ]);
+  test("should correctly join on paths", () => {
+    const table = computePathMatrix([
+      { id: "x", groupPath: ["A", "B"] },
+      { id: "y" },
+      { id: "z", groupPath: ["A", "B", "C"] },
+      { id: "f", groupPath: ["A", "B", "C"] },
+      { id: "g", groupPath: ["A", "B", "C"] },
+      {
+        id: "d",
+        groupPath: [{ id: "X", joinId: "A" }, { id: "C", joinId: "B" }, { id: "V" }],
+      },
+      { id: "v", groupPath: ["F"] },
+      { id: "x", groupPath: ["F", "B"] },
+      { id: "z", groupPath: ["F", "A"] },
+    ]);
 
-  const t = new Table();
-  table.forEach((row) => t.push(mapRowsToStrings(row)));
+    const t = new Table();
+    table.forEach((row) => t.push(mapRowsToStrings(row)));
 
-  expect(t.toString()).toMatchInlineSnapshot(`
+    expect(t.toString()).toMatchInlineSnapshot(`
     "
     ┌─────────┬───────────┬─────────────┐
     │ A|0 / 1 │ A#B|0 / 1 │ -           │
@@ -186,81 +187,81 @@ test("computePathMatrix: should correctly join on paths", () => {
     └─────────┴───────────┴─────────────┘"
   `);
 
-  const idSet = table[2][0]?.idsInNode;
-  expect(idSet).toMatchInlineSnapshot(`
+    const idSet = table[2][0]?.idsInNode;
+    expect(idSet).toMatchInlineSnapshot(`
     Set {
       "A",
       "X",
     }
   `);
 
-  const idSet2 = table[2][1]?.idsInNode;
-  expect(idSet2).toMatchInlineSnapshot(`
+    const idSet2 = table[2][1]?.idsInNode;
+    expect(idSet2).toMatchInlineSnapshot(`
     Set {
       "A#B",
       "X#C",
     }
   `);
 
-  const idSet3 = table[2][2]?.idsInNode;
-  expect(idSet3).toMatchInlineSnapshot(`
+    const idSet3 = table[2][2]?.idsInNode;
+    expect(idSet3).toMatchInlineSnapshot(`
     Set {
       "A#B#C",
     }
   `);
-});
+  });
 
-test("computePathMatrix: should handle the case where there are no groups", () => {
-  const table = computePathMatrix([
-    { id: "x" },
-    { id: "y" },
-    { id: "z" },
-    { id: "d" },
-    { id: "v" },
-  ]);
+  test("should handle the case where there are no groups", () => {
+    const table = computePathMatrix([
+      { id: "x" },
+      { id: "y" },
+      { id: "z" },
+      { id: "d" },
+      { id: "v" },
+    ]);
 
-  const t = new Table();
-  table.forEach((row) => t.push(mapRowsToStrings(row)));
+    const t = new Table();
+    table.forEach((row) => t.push(mapRowsToStrings(row)));
 
-  expect(t.toString()).toMatchInlineSnapshot(`
+    expect(t.toString()).toMatchInlineSnapshot(`
     "
     "
   `);
-});
+  });
 
-test("computePathMatrix: should handle empty items", () => {
-  const table = computePathMatrix([]);
+  test("should handle empty items", () => {
+    const table = computePathMatrix([]);
 
-  const t = new Table();
-  table.forEach((row) => t.push(mapRowsToStrings(row)));
-  expect(t.toString()).toMatchInlineSnapshot(`
+    const t = new Table();
+    table.forEach((row) => t.push(mapRowsToStrings(row)));
+    expect(t.toString()).toMatchInlineSnapshot(`
     "
     "
   `);
-});
+  });
 
-test("computePathMatrix: should correctly compute seen ids", () => {
-  const table = computePathMatrix([
-    { id: "x", groupPath: ["A", "B"] },
-    { id: "y" },
-    { id: "z", groupPath: ["A", "B", "C"] },
-    { id: "f", groupPath: ["A", "B", "C"] },
-    { id: "g", groupPath: ["A", "F", "C"] },
-    { id: "f", groupPath: ["A", "B", "C"] },
-    {
-      id: "d",
-      groupPath: [{ id: "X", joinId: "A" }, { id: "C", joinId: "B" }, { id: "V" }],
-    },
-    { id: "v", groupPath: ["F"] },
-    { id: "x", groupPath: ["F", "B"] },
-    { id: "z", groupPath: ["F", "A"] },
-    { id: "z", groupPath: ["A", "F", "A"] },
-  ]);
+  test("should correctly compute seen ids", () => {
+    const table = computePathMatrix([
+      { id: "x", groupPath: ["A", "B"] },
+      { id: "y" },
+      { id: "z", groupPath: ["A", "B", "C"] },
+      { id: "f", groupPath: ["A", "B", "C"] },
+      { id: "g", groupPath: ["A", "F", "C"] },
+      { id: "f", groupPath: ["A", "B", "C"] },
+      {
+        id: "d",
+        groupPath: [{ id: "X", joinId: "A" }, { id: "C", joinId: "B" }, { id: "V" }],
+      },
+      { id: "v", groupPath: ["F"] },
+      { id: "x", groupPath: ["F", "B"] },
+      { id: "z", groupPath: ["F", "A"] },
+      { id: "z", groupPath: ["A", "F", "A"] },
+    ]);
 
-  const t = new Table();
-  table.forEach((row) => t.push(mapRowsToStrings(row, true)));
+    const t = new Table();
+    table.forEach((row) => t.push(mapRowsToStrings(row, true)));
 
-  expect(t.toString()).toMatchInlineSnapshot(`
+    expect(t.toString()).toMatchInlineSnapshot(`
     "
     ┌─────────────┬───────────────┬─────────────────┐
     │ A#0|0 / 1   │ A#B#0|0 / 1   │ -               │
@@ -286,34 +287,34 @@ test("computePathMatrix: should correctly compute seen ids", () => {
     │ A#2|10 / 11 │ A#F#1|10 / 11 │ A#F#A#0|10 / 11 │
     └─────────────┴───────────────┴─────────────────┘"
   `);
-});
+  });
 
-test("computePathMatrix: should correctly compute seen ids when a seen record is passed in.", () => {
-  const table = computePathMatrix(
-    [
-      { id: "x", groupPath: ["A", "B"] },
-      { id: "y" },
-      { id: "z", groupPath: ["A", "B", "C"] },
-      { id: "f", groupPath: ["A", "B", "C"] },
-      { id: "g", groupPath: ["A", "F", "C"] },
-      { id: "f", groupPath: ["A", "B", "C"] },
-      {
-        id: "d",
-        groupPath: [{ id: "X", joinId: "A" }, { id: "C", joinId: "B" }, { id: "V" }],
-      },
-      { id: "v", groupPath: ["F"] },
-      { id: "x", groupPath: ["F", "B"] },
-      { id: "z", groupPath: ["F", "A"] },
-      { id: "z", groupPath: ["A", "F", "A"] },
-    ],
-    undefined,
-    { "A#B": 2 },
-  );
+  test("should correctly compute seen ids when a seen record is passed in.", () => {
+    const table = computePathMatrix(
+      [
+        { id: "x", groupPath: ["A", "B"] },
+        { id: "y" },
+        { id: "z", groupPath: ["A", "B", "C"] },
+        { id: "f", groupPath: ["A", "B", "C"] },
+        { id: "g", groupPath: ["A", "F", "C"] },
+        { id: "f", groupPath: ["A", "B", "C"] },
+        {
+          id: "d",
+          groupPath: [{ id: "X", joinId: "A" }, { id: "C", joinId: "B" }, { id: "V" }],
+        },
+        { id: "v", groupPath: ["F"] },
+        { id: "x", groupPath: ["F", "B"] },
+        { id: "z", groupPath: ["F", "A"] },
+        { id: "z", groupPath: ["A", "F", "A"] },
+      ],
+      undefined,
+      { "A#B": 2 },
+    );
 
-  const t = new Table();
-  table.forEach((row) => t.push(mapRowsToStrings(row, true)));
+    const t = new Table();
+    table.forEach((row) => t.push(mapRowsToStrings(row, true)));
 
-  expect(t.toString()).toMatchInlineSnapshot(`
+    expect(t.toString()).toMatchInlineSnapshot(`
     "
     ┌─────────────┬───────────────┬─────────────────┐
     │ A#0|0 / 1   │ A#B#3|0 / 1   │ -               │
@@ -339,33 +340,33 @@ test("computePathMatrix: should correctly compute seen ids when a seen record is
     │ A#2|10 / 11 │ A#F#1|10 / 11 │ A#F#A#0|10 / 11 │
     └─────────────┴───────────────┴─────────────────┘"
   `);
-});
+  });
 
-test("computePathMatrix: computes the max depth correctly when overridden", () => {
-  const table = computePathMatrix(
-    [
-      { id: "x", groupPath: ["A", "B"] },
-      { id: "y" },
-      { id: "z", groupPath: ["A", "B", "C"] },
-      { id: "f", groupPath: ["A", "B", "C"] },
-      { id: "g", groupPath: ["A", "F", "C"] },
-      { id: "f", groupPath: ["A", "B", "C"] },
-      {
-        id: "d",
-        groupPath: [{ id: "X", joinId: "A" }, { id: "C", joinId: "B" }, { id: "V" }],
-      },
-      { id: "v", groupPath: ["F"] },
-      { id: "x", groupPath: ["F", "B"] },
-      { id: "z", groupPath: ["F", "A"] },
-      { id: "z", groupPath: ["A", "F", "A"] },
-    ],
-    4,
-  );
+  test("computes the max depth correctly when overridden", () => {
+    const table = computePathMatrix(
+      [
+        { id: "x", groupPath: ["A", "B"] },
+        { id: "y" },
+        { id: "z", groupPath: ["A", "B", "C"] },
+        { id: "f", groupPath: ["A", "B", "C"] },
+        { id: "g", groupPath: ["A", "F", "C"] },
+        { id: "f", groupPath: ["A", "B", "C"] },
+        {
+          id: "d",
+          groupPath: [{ id: "X", joinId: "A" }, { id: "C", joinId: "B" }, { id: "V" }],
+        },
+        { id: "v", groupPath: ["F"] },
+        { id: "x", groupPath: ["F", "B"] },
+        { id: "z", groupPath: ["F", "A"] },
+        { id: "z", groupPath: ["A", "F", "A"] },
+      ],
+      4,
+    );
 
-  const t = new Table();
-  table.forEach((row) => t.push(mapRowsToStrings(row, true)));
+    const t = new Table();
+    table.forEach((row) => t.push(mapRowsToStrings(row, true)));
 
-  expect(t.toString()).toMatchInlineSnapshot(`
+    expect(t.toString()).toMatchInlineSnapshot(`
     "
     ┌─────────────┬───────────────┬─────────────────┬───┐
     │ A#0|0 / 1   │ A#B#0|0 / 1   │ -               │ - │
@@ -391,33 +392,33 @@ test("computePathMatrix: computes the max depth correctly when overridden", () =
     │ A#2|10 / 11 │ A#F#1|10 / 11 │ A#F#A#0|10 / 11 │ - │
     └─────────────┴───────────────┴─────────────────┴───┘"
   `);
-});
+  });
 
-test("computePathMatrix: should ignore max depth override ", () => {
-  const table = computePathMatrix(
-    [
-      { id: "x", groupPath: ["A", "B"] },
-      { id: "y" },
-      { id: "z", groupPath: ["A", "B", "C"] },
-      { id: "f", groupPath: ["A", "B", "C"] },
-      { id: "g", groupPath: ["A", "F", "C"] },
-      { id: "f", groupPath: ["A", "B", "C"] },
-      {
-        id: "d",
-        groupPath: [{ id: "X", joinId: "A" }, { id: "C", joinId: "B" }, { id: "V" }],
-      },
-      { id: "v", groupPath: ["F"] },
-      { id: "x", groupPath: ["F", "B"] },
-      { id: "z", groupPath: ["F", "A"] },
-      { id: "z", groupPath: ["A", "F", "A"] },
-    ],
-    2,
-  );
+  test("should ignore max depth override ", () => {
+    const table = computePathMatrix(
+      [
+        { id: "x", groupPath: ["A", "B"] },
+        { id: "y" },
+        { id: "z", groupPath: ["A", "B", "C"] },
+        { id: "f", groupPath: ["A", "B", "C"] },
+        { id: "g", groupPath: ["A", "F", "C"] },
+        { id: "f", groupPath: ["A", "B", "C"] },
+        {
+          id: "d",
+          groupPath: [{ id: "X", joinId: "A" }, { id: "C", joinId: "B" }, { id: "V" }],
+        },
+        { id: "v", groupPath: ["F"] },
+        { id: "x", groupPath: ["F", "B"] },
+        { id: "z", groupPath: ["F", "A"] },
+        { id: "z", groupPath: ["A", "F", "A"] },
+      ],
+      2,
+    );
 
-  const t = new Table();
-  table.forEach((row) => t.push(mapRowsToStrings(row, true)));
+    const t = new Table();
+    table.forEach((row) => t.push(mapRowsToStrings(row, true)));
 
-  expect(t.toString()).toMatchInlineSnapshot(`
+    expect(t.toString()).toMatchInlineSnapshot(`
     "
     ┌─────────────┬───────────────┬─────────────────┐
     │ A#0|0 / 1   │ A#B#0|0 / 1   │ -               │
@@ -443,19 +444,19 @@ test("computePathMatrix: should ignore max depth override ", () => {
     │ A#2|10 / 11 │ A#F#1|10 / 11 │ A#F#A#0|10 / 11 │
     └─────────────┴───────────────┴─────────────────┘"
   `);
-});
+  });
 
-test("computePathMatrix: should handle paths at the edges", () => {
-  const table = computePathMatrix([
-    { id: "x", groupPath: ["A"] },
-    { id: "v" },
-    { id: "x", groupPath: ["A"] },
-  ]);
+  test("should handle paths at the edges", () => {
+    const table = computePathMatrix([
+      { id: "x", groupPath: ["A"] },
+      { id: "v" },
+      { id: "x", groupPath: ["A"] },
+    ]);
 
-  const t = new Table();
-  table.forEach((row) => t.push(mapRowsToStrings(row, true)));
+    const t = new Table();
+    table.forEach((row) => t.push(mapRowsToStrings(row, true)));
 
-  expect(t.toString()).toMatchInlineSnapshot(`
+    expect(t.toString()).toMatchInlineSnapshot(`
     "
     ┌───────────┐
     │ A#0|0 / 1 │
@@ -465,33 +466,33 @@ test("computePathMatrix: should handle paths at the edges", () => {
     │ A#1|2 / 3 │
     └───────────┘"
   `);
-});
+  });
 
-test("computePathMatrix: should handle a single path", () => {
-  const table = computePathMatrix([{ id: "x", groupPath: ["V"] }]);
+  test("should handle a single path", () => {
+    const table = computePathMatrix([{ id: "x", groupPath: ["V"] }]);
 
-  const t = new Table();
-  table.forEach((row) => t.push(mapRowsToStrings(row, true)));
+    const t = new Table();
+    table.forEach((row) => t.push(mapRowsToStrings(row, true)));
 
-  expect(t.toString()).toMatchInlineSnapshot(`
+    expect(t.toString()).toMatchInlineSnapshot(`
     "
     ┌───────────┐
     │ V#0|0 / 1 │
     └───────────┘"
   `);
-});
+  });
 
-test("computePathMatrix: should handle really long paths", () => {
-  const table = computePathMatrix([
-    { id: "x", groupPath: ["A", "B", "C", "D", "E", "V", "A", "T", "A"] },
-    { id: "v", groupPath: [] },
-    { id: "t", groupPath: ["A", "B"] },
-  ]);
+  test("should handle really long paths", () => {
+    const table = computePathMatrix([
+      { id: "x", groupPath: ["A", "B", "C", "D", "E", "V", "A", "T", "A"] },
+      { id: "v", groupPath: [] },
+      { id: "t", groupPath: ["A", "B"] },
+    ]);
 
-  const t = new Table();
-  table.forEach((row) => t.push(mapRowsToStrings(row, true)));
+    const t = new Table();
+    table.forEach((row) => t.push(mapRowsToStrings(row, true)));
 
-  expect(t.toString()).toMatchInlineSnapshot(`
+    expect(t.toString()).toMatchInlineSnapshot(`
     "
     ┌───────────┬─────────────┬───────────────┬─────────────────┬───────────────────┬─────────────────────┬───────────────────────┬─────────────────────────┬───────────────────────────┐
     │ A#0|0 / 1 │ A#B#0|0 / 1 │ A#B#C#0|0 / 1 │ A#B#C#D#0|0 / 1 │ A#B#C#D#E#0|0 / 1 │ A#B#C#D#E#V#0|0 / 1 │ A#B#C#D#E#V#A#0|0 / 1 │ A#B#C#D#E#V#A#T#0|0 / 1 │ A#B#C#D#E#V#A#T#A#0|0 / 1 │
@@ -501,4 +502,5 @@ test("computePathMatrix: should handle really long paths", () => {
     │ A#1|2 / 3 │ A#B#1|2 / 3 │ -             │ -               │ -                 │ -                   │ -                     │ -                       │ -                         │
     └───────────┴─────────────┴───────────────┴─────────────────┴───────────────────┴─────────────────────┴───────────────────────┴─────────────────────────┴───────────────────────────┘"
   `);
+  });
 });
