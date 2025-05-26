@@ -1,3 +1,5 @@
+import "./drawer.css";
+
 import type { Meta, StoryObj } from "@storybook/react";
 import { DrawerRoot, type DrawerRootProps } from "../root";
 import { DrawerTrigger } from "../trigger";
@@ -24,10 +26,10 @@ export default meta;
 
 function Base(props: DrawerRootProps) {
   return (
-    <DrawerRoot {...props}>
+    <DrawerRoot {...props} timeExit={300} timeEnter={200} offset={20}>
       <DrawerTrigger>Open</DrawerTrigger>
       <DrawerPortal>
-        <DrawerPanel className="dialog">This is my dialog panel</DrawerPanel>
+        <DrawerPanel className="drawer">This is my dialog panel</DrawerPanel>
       </DrawerPortal>
     </DrawerRoot>
   );
@@ -37,7 +39,4 @@ type Story = StoryObj<DrawerRootProps>;
 
 export const Default: Story = {
   render: Base,
-  args: {
-    open: true,
-  },
 };
