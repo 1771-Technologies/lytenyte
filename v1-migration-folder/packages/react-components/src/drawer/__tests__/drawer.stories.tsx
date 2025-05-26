@@ -1,14 +1,12 @@
 import "./drawer.css";
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { DrawerRoot, type DrawerRootProps } from "../root";
-import { DrawerTrigger } from "../trigger";
-import { DrawerPortal } from "../portal";
-import { DrawerPanel } from "../panel";
+import { Drawer } from "..";
+import type { DrawerRootProps } from "../root";
 
 const meta: Meta<DrawerRootProps> = {
   title: "components/Drawer",
-  component: DrawerRoot,
+  component: Drawer.Root,
   argTypes: {
     onOpenChange: { table: { disable: true } },
     alert: { table: { disable: true } },
@@ -26,12 +24,12 @@ export default meta;
 
 function Base(props: DrawerRootProps) {
   return (
-    <DrawerRoot {...props} timeExit={300} timeEnter={200} offset={20}>
-      <DrawerTrigger>Open</DrawerTrigger>
-      <DrawerPortal>
-        <DrawerPanel className="drawer">This is my dialog panel</DrawerPanel>
-      </DrawerPortal>
-    </DrawerRoot>
+    <Drawer.Root {...props} timeExit={300} timeEnter={200} offset={20}>
+      <Drawer.Trigger>Open</Drawer.Trigger>
+      <Drawer.Portal>
+        <Drawer.Panel className="drawer">This is my dialog panel</Drawer.Panel>
+      </Drawer.Portal>
+    </Drawer.Root>
   );
 }
 
