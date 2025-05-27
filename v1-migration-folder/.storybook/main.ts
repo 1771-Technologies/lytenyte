@@ -7,7 +7,12 @@ const stories = process.env.STORY_PATH?.split(",") ?? [
 
 const config: StorybookConfig = {
   stories: stories,
-  addons: ["@storybook/addon-docs", "@storybook/addon-a11y", "@storybook/addon-vitest"],
+  addons: [
+    "@storybook/addon-docs",
+    "@storybook/addon-a11y",
+    "@storybook/addon-vitest",
+    "@1771technologies/storybook-vitest-visual-regression",
+  ],
   framework: {
     name: "@storybook/react-vite",
     options: {},

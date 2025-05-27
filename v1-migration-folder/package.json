@@ -5,6 +5,7 @@
   "dependencies": {
     "@1771technologies/cli-table": "^1.0.1",
     "@1771technologies/eslint-preset": "0.0.5",
+    "@1771technologies/storybook-vitest-visual-regression": "workspace:*",
     "@changesets/cli": "^2.29.4",
     "@storybook/addon-a11y": "9.0.0-rc.4",
     "@storybook/addon-docs": "9.0.0-rc.4",
