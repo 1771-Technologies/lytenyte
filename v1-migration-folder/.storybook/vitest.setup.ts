@@ -17,17 +17,15 @@ expect.extend({
     // this soon enough.
     const { existsFile, compareImages, removeFile } = server.commands;
 
+    // Grab the file path where we want to save our snapshots.
     // @ts-expect-error this will be defined
     const filePath = this.snapshotState.testFilePath;
     const testFileName = filePath.split("/").pop()!.replace(".tsx", "");
-
     const pathPref = `./(snap)/${testFileName}/${this.currentTestName}`;
-
     const expectPath = `${pathPref}/${expected}.png`;
-    const resultPath = `${pathPref}/${expected}-result.png`;
+    const resultPath = `${pathPref}/${expected}.actual.png`;
 
     const snapExists = await existsFile(expectPath);
-
     if (!snapExists) {
       await page.screenshot({ element: received, path: expectPath });
 
@@ -35,11 +33,32 @@ expect.extend({
       return { pass: true, message: () => "" };
     }
 
+    // Create our actual screen shot. This will be compared with the current one on the server
     await page.screenshot({ element: received, path: resultPath });
 
-    const pass = await compareImages(`./(snap)/${expected}.png`, resultPath);
+    // Try compare images and see the result.
+    let pass: any;
+    try {
+      pass = await compareImages(expectPath, resultPath);
+    } catch (e: any) {
+      pass = false;
+      console.log(e.message);
+    }
 
-    await removeFile(resultPath);
+    // If the result is different but we should update the snapshot then update it.
+    const shouldUpdate = (this as any).snapshotState?._updateSnapshot === "all";
+    if (!pass && shouldUpdate) {
+      await page.screenshot({ element: received, path: expectPath });
+      console.log("Updated snapshot");
+      await removeFile(resultPath);
+      return {
+        pass: true,
+        message: () => "",
+      };
+    } else if (pass) {
+      // If we passed, then we should remove the actual file
+      await removeFile(resultPath);
+    }
 
     return {
       pass,
