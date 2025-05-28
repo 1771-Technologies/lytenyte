@@ -1,11 +1,20 @@
 import { addons, types, type API } from "storybook/manager-api";
 import { css } from "goober";
-import { NAME, SVVR_ID, SVVR_INIT_REQ, SVVR_INIT_RES } from "./+constants";
+import {
+  NAME,
+  SVVR_ID,
+  SVVR_INIT_REQ,
+  SVVR_INIT_RES,
+  SVVR_RERUN,
+  SVVR_RERUN_DONE,
+  SVVR_RERUN_LOADING,
+  SVVR_UPDATE,
+} from "./+constants";
 import type { Addon_RenderOptions } from "storybook/internal/types";
 
 // Storybooks requires this for some reason - didn't bother to investigate
 import * as React from "react";
-import type { SVVR_INIT_REQ_EVENT, SVVR_INIT_RES_EVENT } from "./+types";
+import type { SVVR_INIT_REQ_EVENT, SVVR_INIT_RES_EVENT, SVVR_RERUN_DONE_RES } from "./+types";
 import { ImageDiffer } from "./image-diff";
 
 addons.register(NAME, (api) => {
@@ -63,6 +72,24 @@ function Render({ api }: Partial<Addon_RenderOptions> & { api: API }) {
     });
   }, [api, storyData.id, storyData.importPath, storyData.name]);
 
+  React.useEffect(() => {
+    const x = api.on(SVVR_RERUN_LOADING, () => {
+      setLoading(true);
+    });
+    const y = api.on(SVVR_RERUN_DONE, (ev: SVVR_RERUN_DONE_RES) => {
+      setLoading(false);
+      setScreens(ev.screenshots);
+      if (ev.screenshots.length) {
+        setSelected(ev.screenshots.at(0)!.filename);
+      }
+    });
+
+    return () => {
+      x();
+      y();
+    };
+  });
+
   if (loading) {
     return (
       <div
@@ -104,7 +131,22 @@ function Render({ api }: Partial<Addon_RenderOptions> & { api: API }) {
             border-bottom: 1px solid white;
           `}
         >
-          <button className={buttonCls}>Rerun</button>
+          <button
+            onClick={() => {
+              api.emit(SVVR_RERUN, { importPath: storyData.importPath, name: storyData.name });
+            }}
+            className={buttonCls}
+          >
+            Rerun
+          </button>
+          <button
+            onClick={() => {
+              api.emit(SVVR_UPDATE, { importPath: storyData.importPath, name: storyData.name });
+            }}
+            className={buttonCls}
+          >
+            Update
+          </button>
         </div>
         <ul
           style={{

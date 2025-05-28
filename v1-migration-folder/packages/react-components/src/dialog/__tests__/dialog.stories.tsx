@@ -37,7 +37,7 @@ function Base(props: DialogRootProps) {
     <DialogRoot {...props}>
       <DialogTrigger>Open</DialogTrigger>
       <DialogPortal>
-        <DialogPanel className="dialog">This is my dialog</DialogPanel>
+        <DialogPanel className="dialog">This is my Dialog</DialogPanel>
       </DialogPortal>
     </DialogRoot>
   );
@@ -52,7 +52,7 @@ export const Default: Story = {
       const canvas = within(document.body);
       const c = canvas.getByRole("dialog");
       await expect(c).toBeVisible();
-      await expect(c).toHaveTextContent("This is my dialog");
+      await expect(c).toHaveTextContent("This is my Dialog");
 
       await expect(c).toMatchScreenshot("one-shot");
     });
@@ -71,7 +71,7 @@ function WithOpenDialog() {
     <DialogRoot>
       <DialogTrigger>Open</DialogTrigger>
       <DialogPortal>
-        <DialogPanel className="dialog">This is my dialog panel</DialogPanel>
+        <DialogPanel className="dialog">This is my panel</DialogPanel>
       </DialogPortal>
     </DialogRoot>
   );
