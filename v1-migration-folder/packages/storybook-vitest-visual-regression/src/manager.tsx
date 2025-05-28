@@ -51,6 +51,7 @@ function Render({ api }: Partial<Addon_RenderOptions> & { api: API }) {
     api.emit(SVVR_INIT_REQ, {
       importPath: storyData.importPath,
       id: storyData.id,
+      name: storyData.name,
     } satisfies SVVR_INIT_REQ_EVENT);
 
     return api.on(SVVR_INIT_RES, (ev: SVVR_INIT_RES_EVENT) => {
@@ -60,7 +61,7 @@ function Render({ api }: Partial<Addon_RenderOptions> & { api: API }) {
         setSelected(ev.screenshots.at(0)!.filename);
       }
     });
-  }, [api, storyData.id, storyData.importPath]);
+  }, [api, storyData.id, storyData.importPath, storyData.name]);
 
   if (loading) {
     return (
