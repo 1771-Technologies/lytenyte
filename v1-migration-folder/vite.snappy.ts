@@ -26,8 +26,17 @@ export const compareImages: BrowserCommand<[left: string, right: string]> = (
     const { width, height } = img1;
     const diff = new PNG({ width, height });
 
-    // @ts-expect-error types conflicting with other node types, but this works.
-    const result = pixelmatch(img1.data, img2.data, diff.data, width, height, { threshold: 0.05 });
+    let result;
+    try {
+      // @ts-expect-error types conflicting with other node types, but this works.
+      result = pixelmatch(img1.data, img2.data, diff.data, width, height, { threshold: 0.05 });
+    } catch (e: any) {
+      if (!e.message?.includes("Image sizes do not match")) {
+        console.error(e.message);
+      }
+
+      result = 1;
+    }
 
     const fileName = left.split("/").at(-1)!.replace(".png", "");
 
