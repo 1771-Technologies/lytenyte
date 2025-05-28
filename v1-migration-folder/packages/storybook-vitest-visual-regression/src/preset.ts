@@ -20,8 +20,8 @@ export const experimental_serverChannel = async (channel: Channel) => {
       .sort()
       .reverse()
       .reduce((acc, current) => {
-        const name = current.filename.replace("-result", "");
-        const isActual = current.filename.includes("-result");
+        const name = current.filename.replace(".actual", "");
+        const isActual = current.filename.includes(".actual");
         if (!isActual && acc[name]) return acc;
 
         if (isActual) acc[name].actual = current.base64;
