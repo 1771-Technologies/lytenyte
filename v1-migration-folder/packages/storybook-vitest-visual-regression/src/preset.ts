@@ -9,17 +9,19 @@ export const experimental_serverChannel = async (channel: Channel) => {
     // Check for the images
     // Send the image snapshots up the client.
     const splitPath = ev.importPath.split("/");
-    const fileName = splitPath.pop()!.split(".").slice(0, -2).join(".");
+    splitPath.pop();
     const folderPath = splitPath.join("/");
 
-    const finalPath = `${folderPath}/__vr__/${fileName}/${ev.id}`;
+    const filename = ev.importPath.split("/").pop()!.replace(".tsx", "");
+
+    const finalPath = `${folderPath}/(snap)/${filename}/${ev.name}`;
 
     const files = getScreensInFolder(finalPath)
       .sort()
       .reverse()
       .reduce((acc, current) => {
-        const name = current.filename.replace(".actual", "");
-        const isActual = current.filename.includes(".actual");
+        const name = current.filename.replace("-result", "");
+        const isActual = current.filename.includes("-result");
         if (!isActual && acc[name]) return acc;
 
         if (isActual) acc[name].actual = current.base64;
