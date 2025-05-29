@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
+import { compareImages, existsFile, getPlatform } from "./vite.snappy";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -22,6 +23,11 @@ export default defineConfig({
             headless: true,
             provider: "playwright",
             instances: [{ browser: "chromium" }],
+            commands: {
+              existsFile,
+              compareImages,
+              getPlatform,
+            },
           },
           setupFiles: [`${__dirname}/.storybook/vitest.setup.ts`],
         },

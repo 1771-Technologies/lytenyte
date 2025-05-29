@@ -1,0 +1,68 @@
+{
+  "name": "@1771technologies/storybook-vitest-visual-regression",
+  "version": "0.0.1",
+  "type": "module",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "homepage": "https://1771technologies.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/1771-technologies/lytenyte.git",
+    "directory": "packages/storybook-vitest-visual-regression"
+  },
+  "bugs": {
+    "url": "https://github.com/1771-technologies/lytenyte/issues"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "require": "./src/index.ts"
+    },
+    "./preset": {
+      "types": "./src/preset.ts",
+      "import": "./src/preset.ts",
+      "require": "./src/preset.ts"
+    },
+    "./manager": {
+      "types": "./src/manager.tsx",
+      "import": "./src/manager.tsx",
+      "require": "./src/manager.tsx"
+    },
+    "./preview": {
+      "types": "./src/preview.ts",
+      "import": "./src/preview.ts",
+      "require": "./src/preview.ts"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "require": "./dist/index.js"
+      },
+      "./manager": {
+        "types": "./dist/manager.d.ts",
+        "import": "./dist/manager.js",
+        "require": "./dist/manager.js"
+      },
+      "./preview": {
+        "types": "./dist/preview.d.ts",
+        "import": "./dist/preview.js",
+        "require": "./dist/preview.js"
+      }
+    }
+  },
+  "peerDependencies": {
+    "storybook": "^9.0.0-rc.4"
+  },
+  "dependencies": {
+    "execa": "^9.6.0",
+    "goober": "^2.1.16"
+  }
+}
