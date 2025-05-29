@@ -13,15 +13,15 @@ import type { SVVR_RERUN_EVENT, SVVR_INIT_REQ_EVENT, SVVR_INIT_RES_EVENT } from 
 import { getScreensInFolder } from "./utils/get-screens-in-folder.ts";
 
 function grabImages(importPath: string, name: string) {
-  // Check for the images
-  // Send the image snapshots up the client.
+  const platform = process.platform;
+
   const splitPath = importPath.split("/");
   splitPath.pop();
   const folderPath = splitPath.join("/");
 
   const filename = importPath.split("/").pop()!.replace(".tsx", "");
 
-  const finalPath = `${folderPath}/(snap)/${filename}/${name}`;
+  const finalPath = `${folderPath}/(snap)/${filename} ${name}/${platform}/`;
 
   const files = getScreensInFolder(finalPath)
     .sort()

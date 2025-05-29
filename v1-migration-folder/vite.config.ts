@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
-import { compareImages, existsFile } from "./vite.snappy";
+import { compareImages, existsFile, getPlatform } from "./vite.snappy";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -26,12 +26,10 @@ export default defineConfig({
             commands: {
               existsFile,
               compareImages,
+              getPlatform,
             },
           },
-          setupFiles: [
-            `${__dirname}/.storybook/vitest.setup.ts`,
-            `${__dirname}/vite.setup-browser.ts`,
-          ],
+          setupFiles: [`${__dirname}/.storybook/vitest.setup.ts`],
         },
       },
 
@@ -48,12 +46,7 @@ export default defineConfig({
                 headless: true,
               },
             ],
-            commands: {
-              existsFile,
-              compareImages,
-            },
           },
-          setupFiles: [`${__dirname}/vite.setup-browsers.ts`],
           include: ["./packages/**/*.browser.?(c|m)[jt]s?(x)", "src/**/*.browser.?(c|m)[jt]s?(x)"],
           globals: true,
         },

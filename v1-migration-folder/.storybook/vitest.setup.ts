@@ -15,15 +15,17 @@ expect.extend({
   async toMatchScreenshot(received: Locator | Element, expected: string, ...args) {
     // @ts-expect-error these commands do exist but to lazy to properly type them - I'll be refactoring
     // this soon enough.
-    const { existsFile, compareImages, removeFile } = server.commands;
+    const { existsFile, compareImages, removeFile, getPlatform } = server.commands;
+
+    const os = await getPlatform();
 
     // Grab the file path where we want to save our snapshots.
     // @ts-expect-error this will be defined
     const filePath = this.snapshotState.testFilePath;
     const testFileName = filePath.split("/").pop()!.replace(".tsx", "");
-    const pathPref = `./(snap)/${testFileName}/${this.currentTestName}`;
-    const expectPath = `${pathPref}/${expected}.png`;
-    const resultPath = `${pathPref}/${expected}.actual.png`;
+    const pathPref = `./(snap)/${testFileName} ${this.currentTestName}`;
+    const expectPath = `${pathPref}/${os}/${expected}.png`;
+    const resultPath = `${pathPref}/${os}/${expected}.actual.png`;
 
     const snapExists = await existsFile(expectPath);
     if (!snapExists) {
