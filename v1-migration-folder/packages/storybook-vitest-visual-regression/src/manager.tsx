@@ -15,7 +15,7 @@ import type { Addon_RenderOptions } from "storybook/internal/types";
 // Storybooks requires this for some reason - didn't bother to investigate
 import * as React from "react";
 import type { SVVR_INIT_REQ_EVENT, SVVR_INIT_RES_EVENT, SVVR_RERUN_DONE_RES } from "./+types";
-import { ImageDiffer } from "./image-diff";
+import { ImageDiffer } from "./components/image-diff";
 
 addons.register(NAME, (api) => {
   addons.add(SVVR_ID, {
