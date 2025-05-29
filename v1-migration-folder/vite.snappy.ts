@@ -13,6 +13,10 @@ export const existsFile: BrowserCommand<[arg1: string]> = ({ testPath, provider 
   throw new Error(`provider ${provider.name} is not supported`);
 };
 
+export const getPlatform: BrowserCommand<[]> = () => {
+  return process.platform;
+};
+
 export const compareImages: BrowserCommand<[left: string, right: string]> = (
   { testPath, provider },
   left,
