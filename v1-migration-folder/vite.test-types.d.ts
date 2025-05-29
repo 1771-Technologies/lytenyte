@@ -14,6 +14,7 @@ declare module "vitest" {
 
 declare module "@vitest/browser/context" {
   interface BrowserCommands {
+    getPlatform: () => Promise<string>;
     existsFile: (filename: string) => Promise<boolean>;
     compareImages: (left: string, right: string) => Promise<boolean>;
   }

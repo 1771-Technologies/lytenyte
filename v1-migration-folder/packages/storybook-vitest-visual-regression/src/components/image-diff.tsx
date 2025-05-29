@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ImageDiff } from "./image";
+import { ImageDiff } from "./image.js";
 import { css } from "goober";
 
 export interface ImageDifferProps {
