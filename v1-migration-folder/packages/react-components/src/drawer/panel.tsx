@@ -48,6 +48,8 @@ export const DrawerPanel = forwardRef<HTMLDialogElement, JSX.IntrinsicElements["
     const startPoint = useRef<SwipePoint | null>(null);
 
     const events = useMemo(() => {
+      // Can't really test this without having a mobile device.
+      /* v8 ignore next 45 */
       const onTouchStartInternal = (e: TouchEvent<HTMLDialogElement>) => {
         onTouchStart?.(e);
         if (!swipeToClose) return;
