@@ -1,12 +1,12 @@
 {
-  "name": "@1771technologies/lytenyte-scroll-lock",
+  "name": "@1771technologies/lytenyte-focus",
   "version": "0.0.1",
   "type": "module",
   "homepage": "https://1771technologies.com",
   "repository": {
     "type": "git",
     "url": "https://github.com/1771-technologies/lytenyte.git",
-    "directory": "packages/scroll-lock"
+    "directory": "packages/dependency-forks/focus"
   },
   "bugs": {
     "url": "https://github.com/1771-technologies/lytenyte/issues"

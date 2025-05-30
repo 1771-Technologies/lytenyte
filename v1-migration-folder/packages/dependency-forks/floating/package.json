@@ -1,12 +1,12 @@
 {
-  "name": "@1771technologies/lytenyte-focus",
+  "name": "@1771technologies/lytenyte-floating",
   "version": "0.0.1",
   "type": "module",
   "homepage": "https://1771technologies.com",
   "repository": {
     "type": "git",
     "url": "https://github.com/1771-technologies/lytenyte.git",
-    "directory": "packages/focus"
+    "directory": "packages/dependency-forks/floating"
   },
   "bugs": {
     "url": "https://github.com/1771-technologies/lytenyte/issues"
@@ -31,8 +31,5 @@
       "import": "./dist/index.js",
       "require": "./dist/index.js"
     }
-  },
-  "dependencies": {
-    "@1771technologies/lytenyte-dom-utils": "workspace:*"
   }
 }
