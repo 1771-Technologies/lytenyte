@@ -77,9 +77,7 @@ export default defineConfig({
         // These are vendored dependencies we've brought into the repo
         // to ensure we control all dependencies. There are tests for these
         // but we don't expect full coverage of them.
-        "**/packages/focus-trap/**",
-        "**/packages/focus/**",
-        "**/packages/scroll-lock/**",
+        "**/dependency-forks/**",
       ],
       include: [
         "**/packages/**/src/**/*.ts",
