@@ -1,6 +1,6 @@
 import { type Coords, evaluate, getAlignment, getSide, getSideAxis } from "../../utils/index.js";
 
-import type { Derivable, Middleware, MiddlewareState } from "../types";
+import type { Derivable, Middleware, MiddlewareState } from "../types.js";
 
 type OffsetValue =
   | number

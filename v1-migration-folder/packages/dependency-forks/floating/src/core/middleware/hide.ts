@@ -1,9 +1,8 @@
 import type { Rect, SideObject } from "../../utils/index.js";
 import { evaluate, sides } from "../../utils/index.js";
-
-import type { DetectOverflowOptions } from "../detectOverflow";
-import { detectOverflow } from "../detectOverflow";
-import type { Derivable, Middleware } from "../types";
+import type { DetectOverflowOptions } from "../detectOverflow.js";
+import { detectOverflow } from "../detectOverflow.js";
+import type { Derivable, Middleware } from "../types.js";
 
 function getSideOffsets(overflow: SideObject, rect: Rect) {
   return {

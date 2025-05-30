@@ -1,5 +1,5 @@
-import type { NodeScroll } from "../types";
-import { getWindowScrollBarX } from "./getWindowScrollBarX";
+import type { NodeScroll } from "../types.js";
+import { getWindowScrollBarX } from "./getWindowScrollBarX.js";
 
 export function getHTMLOffset(
   documentElement: HTMLElement,
