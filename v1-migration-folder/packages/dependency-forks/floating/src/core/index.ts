@@ -1,22 +1,22 @@
-export { computePosition } from "./computePosition";
-export type { DetectOverflowOptions } from "./detectOverflow";
-export { detectOverflow } from "./detectOverflow";
-export type { ArrowOptions } from "./middleware/arrow";
-export { arrow } from "./middleware/arrow";
-export type { AutoPlacementOptions } from "./middleware/autoPlacement";
-export { autoPlacement } from "./middleware/autoPlacement";
-export type { FlipOptions } from "./middleware/flip";
-export { flip } from "./middleware/flip";
-export type { HideOptions } from "./middleware/hide";
-export { hide } from "./middleware/hide";
-export type { InlineOptions } from "./middleware/inline";
-export { inline } from "./middleware/inline";
-export type { OffsetOptions } from "./middleware/offset";
-export { offset } from "./middleware/offset";
-export type { LimitShiftOptions, ShiftOptions } from "./middleware/shift";
-export { limitShift, shift } from "./middleware/shift";
-export type { SizeOptions } from "./middleware/size";
-export { size } from "./middleware/size";
+export { computePosition } from "./computePosition.js";
+export type { DetectOverflowOptions } from "./detectOverflow.js";
+export { detectOverflow } from "./detectOverflow.js";
+export type { ArrowOptions } from "./middleware/arrow.js";
+export { arrow } from "./middleware/arrow.js";
+export type { AutoPlacementOptions } from "./middleware/autoPlacement.js";
+export { autoPlacement } from "./middleware/autoPlacement.js";
+export type { FlipOptions } from "./middleware/flip.js";
+export { flip } from "./middleware/flip.js";
+export type { HideOptions } from "./middleware/hide.js";
+export { hide } from "./middleware/hide.js";
+export type { InlineOptions } from "./middleware/inline.js";
+export { inline } from "./middleware/inline.js";
+export type { OffsetOptions } from "./middleware/offset.js";
+export { offset } from "./middleware/offset.js";
+export type { LimitShiftOptions, ShiftOptions } from "./middleware/shift.js";
+export { limitShift, shift } from "./middleware/shift.js";
+export type { SizeOptions } from "./middleware/size.js";
+export { size } from "./middleware/size.js";
 export type {
   Boundary,
   ComputePosition,
@@ -34,7 +34,7 @@ export type {
   Platform,
   ReferenceElement,
   RootBoundary,
-} from "./types";
+} from "./types.js";
 export type {
   AlignedPlacement,
   Alignment,
@@ -54,4 +54,4 @@ export type {
 } from "../utils/index.js";
 // This export exists only for backwards compatibility. It will be removed in
 // the next major version.
-export { rectToClientRect } from "../utils/index";
+export { rectToClientRect } from "../utils/index.js";

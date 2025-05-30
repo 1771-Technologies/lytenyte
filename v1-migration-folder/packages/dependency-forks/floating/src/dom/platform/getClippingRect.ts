@@ -14,13 +14,13 @@ import {
   isTopLayer,
 } from "../../utils/dom.js";
 
-import type { Platform, ReferenceElement } from "../types";
-import { getBoundingClientRect } from "../utils/getBoundingClientRect";
-import { getDocumentRect } from "../utils/getDocumentRect";
-import { getViewportRect } from "../utils/getViewportRect";
-import { getVisualOffsets } from "../utils/getVisualOffsets";
-import { getScale } from "./getScale";
-import { isElement } from "./isElement";
+import type { Platform, ReferenceElement } from "../types.js";
+import { getBoundingClientRect } from "../utils/getBoundingClientRect.js";
+import { getDocumentRect } from "../utils/getDocumentRect.js";
+import { getViewportRect } from "../utils/getViewportRect.js";
+import { getVisualOffsets } from "../utils/getVisualOffsets.js";
+import { getScale } from "./getScale.js";
+import { isElement } from "./isElement.js";
 
 type PlatformWithCache = Platform & {
   _c: Map<ReferenceElement, Element[]>;

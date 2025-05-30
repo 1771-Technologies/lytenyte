@@ -9,9 +9,9 @@ import {
   isTopLayer,
 } from "../../utils/dom.js";
 
-import { getBoundingClientRect } from "../utils/getBoundingClientRect";
-import { getScale } from "./getScale";
-import { getHTMLOffset } from "../utils/getHTMLOffset";
+import { getBoundingClientRect } from "../utils/getBoundingClientRect.js";
+import { getScale } from "./getScale.js";
+import { getHTMLOffset } from "../utils/getHTMLOffset.js";
 
 export function convertOffsetParentRelativeRectToViewportRelativeRect({
   elements,

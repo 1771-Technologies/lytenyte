@@ -1,7 +1,12 @@
 import type { Padding, SideObject } from "../utils/index.js";
 import { evaluate, getPaddingObject, rectToClientRect } from "../utils/index.js";
-
-import type { Boundary, Derivable, ElementContext, MiddlewareState, RootBoundary } from "./types";
+import type {
+  Boundary,
+  Derivable,
+  ElementContext,
+  MiddlewareState,
+  RootBoundary,
+} from "./types.js";
 
 export interface DetectOverflowOptions {
   /**

@@ -1,7 +1,7 @@
 import type { Rect, Strategy } from "../../core/index.js";
 import { getWindow, isWebKit } from "../../utils/dom.js";
 
-import { getDocumentElement } from "../platform/getDocumentElement";
+import { getDocumentElement } from "../platform/getDocumentElement.js";
 
 export function getViewportRect(element: Element, strategy: Strategy): Rect {
   const win = getWindow(element);

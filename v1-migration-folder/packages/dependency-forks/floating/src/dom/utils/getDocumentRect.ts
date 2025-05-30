@@ -2,8 +2,8 @@ import type { Rect } from "../../core/index.js";
 import { max } from "../../utils/index.js";
 import { getComputedStyle, getNodeScroll } from "../../utils/dom.js";
 
-import { getDocumentElement } from "../platform/getDocumentElement";
-import { getWindowScrollBarX } from "./getWindowScrollBarX";
+import { getDocumentElement } from "../platform/getDocumentElement.js";
+import { getWindowScrollBarX } from "./getWindowScrollBarX.js";
 
 // Gets the entire size of the scrollable document area, even extending outside
 // of the `<html>` and `<body>` rect bounds if horizontally scrollable.

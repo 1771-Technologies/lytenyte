@@ -8,8 +8,7 @@ import {
   min,
   rectToClientRect,
 } from "../../utils/index.js";
-
-import type { Derivable, Middleware } from "../types";
+import type { Derivable, Middleware } from "../types.js";
 
 function getBoundingRect(rects: Array<ClientRectObject>) {
   const minX = min(...rects.map((rect) => rect.left));

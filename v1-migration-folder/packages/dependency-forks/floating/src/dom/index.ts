@@ -1,7 +1,7 @@
 import { computePosition as computePositionCore } from "../core/index.js";
 
-import { platform } from "./platform";
-import type { ComputePositionConfig, FloatingElement, ReferenceElement } from "./types";
+import { platform } from "./platform.js";
+import type { ComputePositionConfig, FloatingElement, ReferenceElement } from "./types.js";
 
 /**
  * Computes the `x` and `y` coordinates that will place the floating element
@@ -24,7 +24,7 @@ export const computePosition = (
   });
 };
 
-export { autoUpdate } from "./autoUpdate";
+export { autoUpdate } from "./autoUpdate.js";
 export {
   arrow,
   autoPlacement,
@@ -36,8 +36,8 @@ export {
   offset,
   shift,
   size,
-} from "./middleware";
-export { platform } from "./platform";
+} from "./middleware.js";
+export { platform } from "./platform.js";
 export type {
   ArrowOptions,
   AutoPlacementOptions,
@@ -60,7 +60,7 @@ export type {
   ShiftOptions,
   SizeOptions,
   VirtualElement,
-} from "./types";
+} from "./types.js";
 export type {
   AlignedPlacement,
   Alignment,

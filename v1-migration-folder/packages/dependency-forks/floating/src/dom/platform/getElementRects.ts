@@ -1,6 +1,6 @@
-import type { Platform } from "../types";
-import { getRectRelativeToOffsetParent } from "../utils/getRectRelativeToOffsetParent";
-import { getOffsetParent } from "./getOffsetParent";
+import type { Platform } from "../types.js";
+import { getRectRelativeToOffsetParent } from "../utils/getRectRelativeToOffsetParent.js";
+import { getOffsetParent } from "./getOffsetParent.js";
 
 export const getElementRects: Platform["getElementRects"] = async function (this: Platform, data) {
   const getOffsetParentFn = this.getOffsetParent || getOffsetParent;
