@@ -1,10 +1,10 @@
 import { floor, max, min } from "../utils/index.js";
 import { getDocumentElement, getOverflowAncestors } from "../utils/dom.js";
 
-import type { FloatingElement, ReferenceElement } from "./types";
-import { getBoundingClientRect } from "./utils/getBoundingClientRect";
-import { unwrapElement } from "./utils/unwrapElement";
-import { rectsAreEqual } from "./utils/rectsAreEqual";
+import type { FloatingElement, ReferenceElement } from "./types.js";
+import { getBoundingClientRect } from "./utils/getBoundingClientRect.js";
+import { unwrapElement } from "./utils/unwrapElement.js";
+import { rectsAreEqual } from "./utils/rectsAreEqual.js";
 
 export interface AutoUpdateOptions {
   /**

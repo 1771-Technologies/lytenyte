@@ -2,9 +2,9 @@ import type { Coords } from "../../utils/index.js";
 import { createCoords, round } from "../../utils/index.js";
 import { isHTMLElement } from "../../utils/dom.js";
 
-import type { VirtualElement } from "../types";
-import { getCssDimensions } from "../utils/getCssDimensions";
-import { unwrapElement } from "../utils/unwrapElement";
+import type { VirtualElement } from "../types.js";
+import { getCssDimensions } from "../utils/getCssDimensions.js";
+import { unwrapElement } from "../utils/unwrapElement.js";
 
 export function getScale(element: Element | VirtualElement): Coords {
   const domElement = unwrapElement(element);

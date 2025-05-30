@@ -103,6 +103,8 @@ importers:
         specifier: ^19.1.0
         version: 19.1.0(react@19.1.0)
 
+  packages/dependency-forks/floating: {}
+
   packages/dependency-forks/focus:
     dependencies:
       '@1771technologies/lytenyte-dom-utils':

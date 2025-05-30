@@ -3,11 +3,11 @@ import { rectToClientRect } from "../../core/index.js";
 import { createCoords } from "../../utils/index.js";
 import { getComputedStyle, getWindow } from "../../utils/dom.js";
 
-import { getScale } from "../platform/getScale";
-import { isElement } from "../platform/isElement";
-import { getVisualOffsets, shouldAddVisualOffsets } from "./getVisualOffsets";
-import { unwrapElement } from "./unwrapElement";
-import type { VirtualElement } from "../types";
+import { getScale } from "../platform/getScale.js";
+import { isElement } from "../platform/isElement.js";
+import { getVisualOffsets, shouldAddVisualOffsets } from "./getVisualOffsets.js";
+import { unwrapElement } from "./unwrapElement.js";
+import type { VirtualElement } from "../types.js";
 import { getFrameElement } from "../../utils/dom.js";
 
 export function getBoundingClientRect(

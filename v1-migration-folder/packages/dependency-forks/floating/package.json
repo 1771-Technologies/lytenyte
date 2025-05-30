@@ -6,7 +6,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/1771-technologies/lytenyte.git",
-    "directory": "packages/focus"
+    "directory": "packages/dependency-forks/floating"
   },
   "bugs": {
     "url": "https://github.com/1771-technologies/lytenyte/issues"
