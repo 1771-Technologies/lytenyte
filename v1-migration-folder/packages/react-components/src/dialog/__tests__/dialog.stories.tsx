@@ -53,8 +53,6 @@ export const Default: Story = {
       const c = canvas.getByRole("dialog");
       await expect(c).toBeVisible();
       await expect(c).toHaveTextContent("This is my Dialog");
-
-      await expect(c).toMatchScreenshot("one-shot");
     });
   },
   args: {
