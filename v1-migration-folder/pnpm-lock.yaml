@@ -103,23 +103,17 @@ importers:
         specifier: ^19.1.0
         version: 19.1.0(react@19.1.0)
 
-  packages/dom-utils:
-    dependencies:
-      '@1771technologies/lytenyte-js-utils':
-        specifier: workspace:*
-        version: link:../js-utils
-
-  packages/focus:
+  packages/dependency-forks/focus:
     dependencies:
       '@1771technologies/lytenyte-dom-utils':
         specifier: workspace:*
-        version: link:../dom-utils
+        version: link:../../dom-utils
 
-  packages/focus-trap:
+  packages/dependency-forks/focus-trap:
     dependencies:
       '@1771technologies/lytenyte-dom-utils':
         specifier: workspace:*
-        version: link:../dom-utils
+        version: link:../../dom-utils
       '@1771technologies/lytenyte-focus':
         specifier: workspace:*
         version: link:../focus
@@ -129,6 +123,18 @@ importers:
       react-dom:
         specifier: ^18.0.0 || ^19.0.0
         version: 19.1.0(react@19.1.0)
+
+  packages/dependency-forks/scroll-lock:
+    dependencies:
+      '@1771technologies/lytenyte-dom-utils':
+        specifier: workspace:*
+        version: link:../../dom-utils
+
+  packages/dom-utils:
+    dependencies:
+      '@1771technologies/lytenyte-js-utils':
+        specifier: workspace:*
+        version: link:../js-utils
 
   packages/js-utils: {}
 
@@ -147,16 +153,16 @@ importers:
         version: link:../dom-utils
       '@1771technologies/lytenyte-focus':
         specifier: workspace:*
-        version: link:../focus
+        version: link:../dependency-forks/focus
       '@1771technologies/lytenyte-focus-trap':
         specifier: workspace:*
-        version: link:../focus-trap
+        version: link:../dependency-forks/focus-trap
       '@1771technologies/lytenyte-react-hooks':
         specifier: workspace:*
         version: link:../react-hooks
       '@1771technologies/lytenyte-scroll-lock':
         specifier: workspace:*
-        version: link:../scroll-lock
+        version: link:../dependency-forks/scroll-lock
       react:
         specifier: ^18.0.0 || ^19.0.0
         version: 19.1.0
@@ -172,12 +178,6 @@ importers:
       react-dom:
         specifier: ^18.0.0 || ^19.0.0
         version: 19.1.0(react@19.1.0)
-
-  packages/scroll-lock:
-    dependencies:
-      '@1771technologies/lytenyte-dom-utils':
-        specifier: workspace:*
-        version: link:../dom-utils
 
 packages:
 
