@@ -2,11 +2,11 @@ import type { Rect, Strategy } from "../../core/index.js";
 import { createCoords } from "../../utils/index.js";
 import { getNodeName, getNodeScroll, isHTMLElement, isOverflowElement } from "../../utils/dom.js";
 
-import type { VirtualElement } from "../types";
-import { getDocumentElement } from "../platform/getDocumentElement";
-import { getBoundingClientRect } from "./getBoundingClientRect";
-import { getWindowScrollBarX } from "./getWindowScrollBarX";
-import { getHTMLOffset } from "./getHTMLOffset";
+import type { VirtualElement } from "../types.js";
+import { getDocumentElement } from "../platform/getDocumentElement.js";
+import { getBoundingClientRect } from "./getBoundingClientRect.js";
+import { getWindowScrollBarX } from "./getWindowScrollBarX.js";
+import { getHTMLOffset } from "./getHTMLOffset.js";
 
 export function getRectRelativeToOffsetParent(
   element: Element | VirtualElement,

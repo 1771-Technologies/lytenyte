@@ -7,10 +7,9 @@ import {
   getSide,
   placements as ALL_PLACEMENTS,
 } from "../../utils/index.js";
-
-import type { DetectOverflowOptions } from "../detectOverflow";
-import { detectOverflow } from "../detectOverflow";
-import type { Derivable, Middleware } from "../types";
+import type { DetectOverflowOptions } from "../detectOverflow.js";
+import { detectOverflow } from "../detectOverflow.js";
+import type { Derivable, Middleware } from "../types.js";
 
 export function getPlacementList(
   alignment: Alignment | null,

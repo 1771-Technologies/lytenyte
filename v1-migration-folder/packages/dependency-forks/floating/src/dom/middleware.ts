@@ -24,7 +24,7 @@ import type {
   OffsetOptions,
   ShiftOptions,
   SizeOptions,
-} from "./types";
+} from "./types.js";
 
 /**
  * Resolves with an object of overflow side offsets that determine how much the

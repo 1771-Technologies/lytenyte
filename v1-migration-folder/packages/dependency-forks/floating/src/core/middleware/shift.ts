@@ -7,9 +7,9 @@ import {
   getSideAxis,
 } from "../../utils/index.js";
 
-import type { DetectOverflowOptions } from "../detectOverflow";
-import { detectOverflow } from "../detectOverflow";
-import type { Derivable, Middleware, MiddlewareState } from "../types";
+import type { DetectOverflowOptions } from "../detectOverflow.js";
+import { detectOverflow } from "../detectOverflow.js";
+import type { Derivable, Middleware, MiddlewareState } from "../types.js";
 
 export interface ShiftOptions extends DetectOverflowOptions {
   /**
