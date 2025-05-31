@@ -31,6 +31,10 @@
       "require": "./dist/index.js"
     }
   },
+  "dependencies": {
+    "@1771technologies/lytenyte-js-utils": "workspace:*",
+    "@1771technologies/lytenyte-dom-utils": "workspace:*"
+  },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0"

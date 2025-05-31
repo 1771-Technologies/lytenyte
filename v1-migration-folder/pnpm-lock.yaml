@@ -22,7 +22,7 @@ importers:
         version: 9.0.1(storybook@9.0.1(@testing-library/dom@10.4.0)(prettier@3.5.3))
       '@storybook/addon-docs':
         specifier: 9.0.1
-        version: 9.0.1(@types/react@19.1.4)(storybook@9.0.1(@testing-library/dom@10.4.0)(prettier@3.5.3))
+        version: 9.0.1(@types/react@19.1.6)(storybook@9.0.1(@testing-library/dom@10.4.0)(prettier@3.5.3))
       '@storybook/addon-vitest':
         specifier: 9.0.1
         version: 9.0.1(@vitest/browser@3.1.4)(@vitest/runner@3.1.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(storybook@9.0.1(@testing-library/dom@10.4.0)(prettier@3.5.3))(vitest@3.1.4)
@@ -37,7 +37,7 @@ importers:
         version: 9.0.0-alpha.2(storybook@9.0.1(@testing-library/dom@10.4.0)(prettier@3.5.3))
       '@testing-library/react':
         specifier: ^16.3.0
-        version: 16.3.0(@testing-library/dom@10.4.0)(@types/react@19.1.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.1.5(@types/react@19.1.6))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@types/pngjs':
         specifier: ^6.0.5
         version: 6.0.5
@@ -91,52 +91,62 @@ importers:
         version: 3.1.4(@types/debug@4.1.12)(@types/node@22.15.21)(@vitest/browser@3.1.4)(@vitest/ui@3.1.4)(jiti@2.4.2)(jsdom@26.1.0)(lightningcss@1.29.2)(terser@5.39.2)(yaml@2.8.0)
       vitest-browser-react:
         specifier: ^0.2.0
-        version: 0.2.0(@types/react@19.1.4)(@vitest/browser@3.1.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(vitest@3.1.4)
+        version: 0.2.0(@types/react-dom@19.1.5(@types/react@19.1.6))(@types/react@19.1.6)(@vitest/browser@3.1.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(vitest@3.1.4)
     devDependencies:
       '@types/hyperscript':
         specifier: ^0.0.7
         version: 0.0.7
+      '@types/react':
+        specifier: ^19.1.6
+        version: 19.1.6
+      '@types/react-dom':
+        specifier: ^19.1.5
+        version: 19.1.5(@types/react@19.1.6)
       react:
         specifier: ^19.1.0
         version: 19.1.0
       react-dom:
         specifier: ^19.1.0
         version: 19.1.0(react@19.1.0)
-
-  packages/dependency-forks/floating: {}
-
-  packages/dependency-forks/focus:
-    dependencies:
-      '@1771technologies/lytenyte-dom-utils':
-        specifier: workspace:*
-        version: link:../../dom-utils
-
-  packages/dependency-forks/focus-trap:
-    dependencies:
-      '@1771technologies/lytenyte-dom-utils':
-        specifier: workspace:*
-        version: link:../../dom-utils
-      '@1771technologies/lytenyte-focus':
-        specifier: workspace:*
-        version: link:../focus
-      react:
-        specifier: ^18.0.0 || ^19.0.0
-        version: 19.1.0
-      react-dom:
-        specifier: ^18.0.0 || ^19.0.0
-        version: 19.1.0(react@19.1.0)
-
-  packages/dependency-forks/scroll-lock:
-    dependencies:
-      '@1771technologies/lytenyte-dom-utils':
-        specifier: workspace:*
-        version: link:../../dom-utils
 
   packages/dom-utils:
     dependencies:
       '@1771technologies/lytenyte-js-utils':
         specifier: workspace:*
         version: link:../js-utils
+
+  packages/fork-floating:
+    dependencies:
+      '@1771technologies/lytenyte-dom-utils':
+        specifier: workspace:*
+        version: link:../dom-utils
+
+  packages/fork-focus:
+    dependencies:
+      '@1771technologies/lytenyte-dom-utils':
+        specifier: workspace:*
+        version: link:../dom-utils
+
+  packages/fork-focus-trap:
+    dependencies:
+      '@1771technologies/lytenyte-dom-utils':
+        specifier: workspace:*
+        version: link:../dom-utils
+      '@1771technologies/lytenyte-focus':
+        specifier: workspace:*
+        version: link:../fork-focus
+      react:
+        specifier: ^18.0.0 || ^19.0.0
+        version: 19.1.0
+      react-dom:
+        specifier: ^18.0.0 || ^19.0.0
+        version: 19.1.0(react@19.1.0)
+
+  packages/fork-scroll-lock:
+    dependencies:
+      '@1771technologies/lytenyte-dom-utils':
+        specifier: workspace:*
+        version: link:../dom-utils
 
   packages/js-utils: {}
 
@@ -155,16 +165,16 @@ importers:
         version: link:../dom-utils
       '@1771technologies/lytenyte-focus':
         specifier: workspace:*
-        version: link:../dependency-forks/focus
+        version: link:../fork-focus
       '@1771technologies/lytenyte-focus-trap':
         specifier: workspace:*
-        version: link:../dependency-forks/focus-trap
+        version: link:../fork-focus-trap
       '@1771technologies/lytenyte-react-hooks':
         specifier: workspace:*
         version: link:../react-hooks
       '@1771technologies/lytenyte-scroll-lock':
         specifier: workspace:*
-        version: link:../dependency-forks/scroll-lock
+        version: link:../fork-scroll-lock
       react:
         specifier: ^18.0.0 || ^19.0.0
         version: 19.1.0
@@ -174,6 +184,12 @@ importers:
 
   packages/react-hooks:
     dependencies:
+      '@1771technologies/lytenyte-dom-utils':
+        specifier: workspace:*
+        version: link:../dom-utils
+      '@1771technologies/lytenyte-js-utils':
+        specifier: workspace:*
+        version: link:../js-utils
       react:
         specifier: ^18.0.0 || ^19.0.0
         version: 19.1.0
@@ -949,8 +965,13 @@ packages:
   '@types/pngjs@6.0.5':
     resolution: {integrity: sha512-0k5eKfrA83JOZPppLtS2C7OUtyNAl2wKNxfyYl9Q5g9lPkgBl/9hNyAu6HuEH2J4XmIv2znEpkDd0SaZVxW6iQ==}
 
-  '@types/react@19.1.4':
-    resolution: {integrity: sha512-EB1yiiYdvySuIITtD5lhW4yPyJ31RkJkkDw794LaQYrxCSaQV/47y5o1FMC4zF9ZyjUjzJMZwbovEnT5yHTW6g==}
+  '@types/react-dom@19.1.5':
+    resolution: {integrity: sha512-CMCjrWucUBZvohgZxkjd6S9h0nZxXjzus6yDfUb+xLxYM7VvjKNH1tQrE9GWLql1XoOP4/Ds3bwFqShHUYraGg==}
+    peerDependencies:
+      '@types/react': ^19.0.0
+
+  '@types/react@19.1.6':
+    resolution: {integrity: sha512-JeG0rEWak0N6Itr6QUx+X60uQmN+5t3j9r/OVDtWzFXKaj6kD1BwJzOksD0FF6iWxZlbE1kB0q9vtnU2ekqa1Q==}
 
   '@types/resolve@1.20.6':
     resolution: {integrity: sha512-A4STmOXPhMUtHH+S6ymgE2GiBSMqf4oTvcQZMcHzokuTLVYzXTB8ttjcgxOVaAp2lGwEdzZ0J+cRbbeevQj1UQ==}
@@ -3450,10 +3471,10 @@ snapshots:
       jju: 1.4.0
       js-yaml: 4.1.0
 
-  '@mdx-js/react@3.1.0(@types/react@19.1.4)(react@19.1.0)':
+  '@mdx-js/react@3.1.0(@types/react@19.1.6)(react@19.1.0)':
     dependencies:
       '@types/mdx': 2.0.13
-      '@types/react': 19.1.4
+      '@types/react': 19.1.6
       react: 19.1.0
 
   '@nodelib/fs.scandir@2.1.5':
@@ -3547,9 +3568,9 @@ snapshots:
       axe-core: 4.10.3
       storybook: 9.0.1(@testing-library/dom@10.4.0)(prettier@3.5.3)
 
-  '@storybook/addon-docs@9.0.1(@types/react@19.1.4)(storybook@9.0.1(@testing-library/dom@10.4.0)(prettier@3.5.3))':
+  '@storybook/addon-docs@9.0.1(@types/react@19.1.6)(storybook@9.0.1(@testing-library/dom@10.4.0)(prettier@3.5.3))':
     dependencies:
-      '@mdx-js/react': 3.1.0(@types/react@19.1.4)(react@19.1.0)
+      '@mdx-js/react': 3.1.0(@types/react@19.1.6)(react@19.1.0)
       '@storybook/csf-plugin': 9.0.1(storybook@9.0.1(@testing-library/dom@10.4.0)(prettier@3.5.3))
       '@storybook/icons': 1.4.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@storybook/react-dom-shim': 9.0.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(storybook@9.0.1(@testing-library/dom@10.4.0)(prettier@3.5.3))
@@ -3671,14 +3692,15 @@ snapshots:
       lodash: 4.17.21
       redent: 3.0.0
 
-  '@testing-library/react@16.3.0(@testing-library/dom@10.4.0)(@types/react@19.1.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@testing-library/react@16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.1.5(@types/react@19.1.6))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
       '@babel/runtime': 7.27.1
       '@testing-library/dom': 10.4.0
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
     optionalDependencies:
-      '@types/react': 19.1.4
+      '@types/react': 19.1.6
+      '@types/react-dom': 19.1.5(@types/react@19.1.6)
 
   '@testing-library/user-event@14.5.2(@testing-library/dom@10.4.0)':
     dependencies:
@@ -3748,7 +3770,11 @@ snapshots:
     dependencies:
       '@types/node': 22.15.21
 
-  '@types/react@19.1.4':
+  '@types/react-dom@19.1.5(@types/react@19.1.6)':
+    dependencies:
+      '@types/react': 19.1.6
+
+  '@types/react@19.1.6':
     dependencies:
       csstype: 3.1.3
 
@@ -5863,14 +5889,15 @@ snapshots:
       terser: 5.39.2
       yaml: 2.8.0
 
-  vitest-browser-react@0.2.0(@types/react@19.1.4)(@vitest/browser@3.1.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(vitest@3.1.4):
+  vitest-browser-react@0.2.0(@types/react-dom@19.1.5(@types/react@19.1.6))(@types/react@19.1.6)(@vitest/browser@3.1.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(vitest@3.1.4):
     dependencies:
       '@vitest/browser': 3.1.4(playwright@1.52.0)(vite@6.3.5(@types/node@22.15.21)(jiti@2.4.2)(lightningcss@1.29.2)(terser@5.39.2)(yaml@2.8.0))(vitest@3.1.4)
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
       vitest: 3.1.4(@types/debug@4.1.12)(@types/node@22.15.21)(@vitest/browser@3.1.4)(@vitest/ui@3.1.4)(jiti@2.4.2)(jsdom@26.1.0)(lightningcss@1.29.2)(terser@5.39.2)(yaml@2.8.0)
     optionalDependencies:
-      '@types/react': 19.1.4
+      '@types/react': 19.1.6
+      '@types/react-dom': 19.1.5(@types/react@19.1.6)
 
   vitest@3.1.4(@types/debug@4.1.12)(@types/node@22.15.21)(@vitest/browser@3.1.4)(@vitest/ui@3.1.4)(jiti@2.4.2)(jsdom@26.1.0)(lightningcss@1.29.2)(terser@5.39.2)(yaml@2.8.0):
     dependencies:
