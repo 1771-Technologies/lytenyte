@@ -109,22 +109,32 @@ importers:
         specifier: ^19.1.0
         version: 19.1.0(react@19.1.0)
 
-  packages/dependency-forks/floating: {}
+  packages/dom-utils:
+    dependencies:
+      '@1771technologies/lytenyte-js-utils':
+        specifier: workspace:*
+        version: link:../js-utils
 
-  packages/dependency-forks/focus:
+  packages/fork-floating:
     dependencies:
       '@1771technologies/lytenyte-dom-utils':
         specifier: workspace:*
-        version: link:../../dom-utils
+        version: link:../dom-utils
 
-  packages/dependency-forks/focus-trap:
+  packages/fork-focus:
     dependencies:
       '@1771technologies/lytenyte-dom-utils':
         specifier: workspace:*
-        version: link:../../dom-utils
+        version: link:../dom-utils
+
+  packages/fork-focus-trap:
+    dependencies:
+      '@1771technologies/lytenyte-dom-utils':
+        specifier: workspace:*
+        version: link:../dom-utils
       '@1771technologies/lytenyte-focus':
         specifier: workspace:*
-        version: link:../focus
+        version: link:../fork-focus
       react:
         specifier: ^18.0.0 || ^19.0.0
         version: 19.1.0
@@ -132,17 +142,11 @@ importers:
         specifier: ^18.0.0 || ^19.0.0
         version: 19.1.0(react@19.1.0)
 
-  packages/dependency-forks/scroll-lock:
+  packages/fork-scroll-lock:
     dependencies:
       '@1771technologies/lytenyte-dom-utils':
         specifier: workspace:*
-        version: link:../../dom-utils
-
-  packages/dom-utils:
-    dependencies:
-      '@1771technologies/lytenyte-js-utils':
-        specifier: workspace:*
-        version: link:../js-utils
+        version: link:../dom-utils
 
   packages/js-utils: {}
 
@@ -161,16 +165,16 @@ importers:
         version: link:../dom-utils
       '@1771technologies/lytenyte-focus':
         specifier: workspace:*
-        version: link:../dependency-forks/focus
+        version: link:../fork-focus
       '@1771technologies/lytenyte-focus-trap':
         specifier: workspace:*
-        version: link:../dependency-forks/focus-trap
+        version: link:../fork-focus-trap
       '@1771technologies/lytenyte-react-hooks':
         specifier: workspace:*
         version: link:../react-hooks
       '@1771technologies/lytenyte-scroll-lock':
         specifier: workspace:*
-        version: link:../dependency-forks/scroll-lock
+        version: link:../fork-scroll-lock
       react:
         specifier: ^18.0.0 || ^19.0.0
         version: 19.1.0
