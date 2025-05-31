@@ -1,66 +1,20 @@
 import { useEffect, useState, useRef, useMemo } from "react";
-
-function createDebounce<T extends (...args: any[]) => void>(callback: T, ms: number) {
-  let timeoutId: number;
-
-  return (...args: Parameters<T>): void => {
-    window.clearTimeout(timeoutId);
-    timeoutId = window.setTimeout(() => callback(...args), ms);
-  };
-}
-
-declare type ResizeObserverCallback = (entries: any[], observer: ResizeObserver) => void;
-declare class ResizeObserver {
-  constructor(callback: ResizeObserverCallback);
-  observe(target: Element, options?: any): void;
-  unobserve(target: Element): void;
-  disconnect(): void;
-  static toString(): string;
-}
-
-export interface RectReadOnly {
-  readonly x: number;
-  readonly y: number;
-  readonly width: number;
-  readonly height: number;
-  readonly top: number;
-  readonly right: number;
-  readonly bottom: number;
-  readonly left: number;
-  [key: string]: number;
-}
-
-type HTMLOrSVGElement = HTMLElement | SVGElement;
-
-type Result = [
-  (element: HTMLOrSVGElement | null) => void,
+import type {
+  HTMLOrSVGElement,
   RectReadOnly,
-  () => void,
-  HTMLOrSVGElement | null,
-];
-
-type State = {
-  element: HTMLOrSVGElement | null;
-  scrollContainers: HTMLOrSVGElement[] | null;
-  resizeObserver: ResizeObserver | null;
-  lastBounds: RectReadOnly;
-  orientationHandler: null | (() => void);
-};
-
-export type Options = {
-  debounce?: number | { scroll: number; resize: number };
-  scroll?: boolean;
-  offsetSize?: boolean;
-  onChange?: (next: RectReadOnly, prev: RectReadOnly) => void;
-};
+  UseMeasureState,
+  UseMeasureResult,
+  UseMeasureOptions,
+} from "./+types";
+import { debounce as createDebounce, equal } from "@1771technologies/lytenyte-js-utils";
 
 function useMeasure(
-  { debounce, scroll, offsetSize, onChange }: Options = {
+  { debounce, scroll, offsetSize, onChange }: UseMeasureOptions = {
     debounce: 0,
     scroll: false,
     offsetSize: false,
   },
-): Result {
+): UseMeasureResult {
   const ResizeObserver =
     typeof window === "undefined" ? class ResizeObserver {} : (window as any).ResizeObserver;
 
@@ -76,7 +30,7 @@ function useMeasure(
   });
 
   // keep all state in a ref
-  const state = useRef<State>({
+  const state = useRef<UseMeasureState>({
     element: null,
     scrollContainers: null,
     resizeObserver: null,
@@ -126,7 +80,7 @@ function useMeasure(
         size.width = state.current.element.offsetWidth;
       }
 
-      if (mounted.current && !areBoundsEqual(state.current.lastBounds, size)) {
+      if (mounted.current && !equal(state.current.lastBounds, size)) {
         onChange?.(size, state.current.lastBounds);
         set((state.current.lastBounds = size));
       }
@@ -239,19 +193,5 @@ function findScrollContainers(element: HTMLOrSVGElement | null): HTMLOrSVGElemen
     result.push(element);
   return [...result, ...findScrollContainers(element.parentElement)];
 }
-
-// Checks if element boundaries are equal
-const keys: (keyof RectReadOnly)[] = [
-  "x",
-  "y",
-  "top",
-  "bottom",
-  "left",
-  "right",
-  "width",
-  "height",
-];
-const areBoundsEqual = (a: RectReadOnly, b: RectReadOnly): boolean =>
-  keys.every((key) => a[key] === b[key]);
 
 export default useMeasure;
