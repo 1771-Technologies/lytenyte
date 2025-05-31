@@ -4,7 +4,7 @@ import { Counter, CounterNoProps } from "./counter.js";
 import { useState } from "react";
 
 const meta: Meta = {
-  title: "use-slot/useSlotBasic",
+  title: "react-hooks/useSlotBasic",
 };
 
 export default meta;
