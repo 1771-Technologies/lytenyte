@@ -184,6 +184,9 @@ importers:
 
   packages/react-hooks:
     dependencies:
+      '@1771technologies/lytenyte-dom-utils':
+        specifier: workspace:*
+        version: link:../dom-utils
       '@1771technologies/lytenyte-js-utils':
         specifier: workspace:*
         version: link:../js-utils

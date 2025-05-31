@@ -7,8 +7,12 @@ import type {
   UseMeasureOptions,
 } from "./+types";
 import { debounce as createDebounce, equal } from "@1771technologies/lytenyte-js-utils";
+import { useOnWindowResize } from "../use-on-window-resize";
+import { useOnWindowScroll } from "../use-on-window-scroll";
 
-function useMeasure(
+// Fork off: https://www.npmjs.com/package/react-use-measure
+/* v8 ignore next 9999 */
+export function useMeasure(
   { debounce, scroll, offsetSize, onChange }: UseMeasureOptions = {
     debounce: 0,
     scroll: false,
@@ -166,24 +170,6 @@ function useMeasure(
   return [ref, bounds, forceRefresh, state.current.element];
 }
 
-// Adds native resize listener to window
-function useOnWindowResize(onWindowResize: (event: Event) => void) {
-  useEffect(() => {
-    const cb = onWindowResize;
-    window.addEventListener("resize", cb);
-    return () => void window.removeEventListener("resize", cb);
-  }, [onWindowResize]);
-}
-function useOnWindowScroll(onScroll: () => void, enabled: boolean) {
-  useEffect(() => {
-    if (enabled) {
-      const cb = onScroll;
-      window.addEventListener("scroll", cb, { capture: true, passive: true });
-      return () => void window.removeEventListener("scroll", cb, true);
-    }
-  }, [onScroll, enabled]);
-}
-
 // Returns a list of scroll offsets
 function findScrollContainers(element: HTMLOrSVGElement | null): HTMLOrSVGElement[] {
   const result: HTMLOrSVGElement[] = [];
@@ -193,5 +179,3 @@ function findScrollContainers(element: HTMLOrSVGElement | null): HTMLOrSVGElemen
     result.push(element);
   return [...result, ...findScrollContainers(element.parentElement)];
 }
-
-export default useMeasure;
