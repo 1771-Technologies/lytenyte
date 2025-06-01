@@ -15,6 +15,8 @@ scratch.txt
 
 auto-imports.d.ts
 
+.content-collections/
+
 certs/
 .env
 .temp

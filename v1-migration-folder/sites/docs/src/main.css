@@ -1,0 +1,312 @@
+@layer {
+  * {
+    outline-width: 0px;
+  }
+}
+
+@import "tailwindcss";
+@theme {
+  --spacing-header: 113px;
+  --spacing-side-nav: 270px;
+  --spacing-full-client: calc(100% - var(--body-scroll-margin, 0px));
+  --spacing-full-header: calc(100vh - var(--spacing-header, 0px));
+
+  --breakpoint-*: initial;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 930px; /* Iphone PRO horizontal */
+  --breakpoint-xl: 1080px;
+  --breakpoint-2xl: 1360px;
+  --breakpoint-3xl: 1520px;
+
+  --color-*: initial;
+
+  --color-page: var(--page);
+  --color-white: white;
+  --color-black: black;
+
+  --color-primary-50: var(--primary-50);
+  --color-primary-100: var(--primary-100);
+  --color-primary-200: var(--primary-200);
+  --color-primary-300: var(--primary-300);
+  --color-primary-400: var(--primary-400);
+  --color-primary-500: var(--primary-500);
+  --color-primary-600: var(--primary-600);
+  --color-primary-700: var(--primary-700);
+  --color-primary-800: var(--primary-800);
+  --color-primary-900: var(--primary-900);
+  --color-primary-950: var(--primary-950);
+
+  --color-brand-50: var(--brand-50);
+  --color-brand-100: var(--brand-100);
+  --color-brand-200: var(--brand-200);
+  --color-brand-300: var(--brand-300);
+  --color-brand-400: var(--brand-400);
+  --color-brand-500: var(--brand-500);
+  --color-brand-600: var(--brand-600);
+  --color-brand-700: var(--brand-700);
+  --color-brand-800: var(--brand-800);
+  --color-brand-900: var(--brand-900);
+  --color-brand-950: var(--brand-950);
+
+  --color-gray-50: var(--gray-50);
+  --color-gray-100: var(--gray-100);
+  --color-gray-200: var(--gray-200);
+  --color-gray-300: var(--gray-300);
+  --color-gray-400: var(--gray-400);
+  --color-gray-500: var(--gray-500);
+  --color-gray-600: var(--gray-600);
+  --color-gray-700: var(--gray-700);
+  --color-gray-800: var(--gray-800);
+  --color-gray-900: var(--gray-900);
+  --color-gray-950: var(--gray-950);
+
+  --color-danger-50: var(--danger-50);
+  --color-danger-100: var(--danger-100);
+  --color-danger-200: var(--danger-200);
+  --color-danger-300: var(--danger-300);
+  --color-danger-400: var(--danger-400);
+  --color-danger-500: var(--danger-500);
+  --color-danger-600: var(--danger-600);
+  --color-danger-700: var(--danger-700);
+  --color-danger-800: var(--danger-800);
+  --color-danger-900: var(--danger-900);
+  --color-danger-950: var(--danger-950);
+
+  --color-warning-50: var(--warning-50);
+  --color-warning-100: var(--warning-100);
+  --color-warning-200: var(--warning-200);
+  --color-warning-300: var(--warning-300);
+  --color-warning-400: var(--warning-400);
+  --color-warning-500: var(--warning-500);
+  --color-warning-600: var(--warning-600);
+  --color-warning-700: var(--warning-700);
+  --color-warning-800: var(--warning-800);
+  --color-warning-900: var(--warning-900);
+  --color-warning-950: var(--warning-950);
+
+  --color-info-50: var(--info-50);
+  --color-info-100: var(--info-100);
+  --color-info-200: var(--info-200);
+  --color-info-300: var(--info-300);
+  --color-info-400: var(--info-400);
+  --color-info-500: var(--info-500);
+  --color-info-600: var(--info-600);
+  --color-info-700: var(--info-700);
+  --color-info-800: var(--info-800);
+  --color-info-900: var(--info-900);
+  --color-info-950: var(--info-950);
+
+  --color-success-50: var(--success-50);
+  --color-success-100: var(--success-100);
+  --color-success-200: var(--success-200);
+  --color-success-300: var(--success-300);
+  --color-success-400: var(--success-400);
+  --color-success-500: var(--success-500);
+  --color-success-600: var(--success-600);
+  --color-success-700: var(--success-700);
+  --color-success-800: var(--success-800);
+  --color-success-900: var(--success-900);
+  --color-success-950: var(--success-950);
+}
+
+:root {
+  --page: #fcfcfc;
+
+  --primary-50: oklch(96.71% 0.029 188.86);
+  --primary-100: oklch(94.17% 0.053 187.61);
+  --primary-200: oklch(89.15% 0.099 185.24);
+  --primary-300: oklch(84.91% 0.131 184.01);
+  --primary-400: oklch(78.75% 0.138 181.78);
+  --primary-500: oklch(62.31% 0.108 182.03);
+  --primary-600: oklch(52.46% 0.091 181.87);
+  --primary-700: oklch(43.78% 0.074 183.38);
+  --primary-800: oklch(33.54% 0.056 182.24);
+  --primary-900: oklch(22.13% 0.034 185.23);
+  --primary-950: oklch(14.97% 0.022 183.67);
+
+  --brand-50: oklch(97.18% 0.029 204.51);
+  --brand-100: oklch(94.95% 0.051 205.36);
+  --brand-200: oklch(90.93% 0.096 204.65);
+  --brand-300: oklch(87.63% 0.127 205.78);
+  --brand-400: oklch(85.52% 0.143 207.23);
+  --brand-500: oklch(77.94% 0.134 208.96);
+  --brand-600: oklch(66.1% 0.114 209.17);
+  --brand-700: oklch(53.65% 0.092 208.56);
+  --brand-800: oklch(40.43% 0.069 207.41);
+  --brand-900: oklch(25.68% 0.044 207.16);
+  --brand-950: oklch(16.6% 0.028 203.34);
+
+  --gray-50: oklch(0.985 0.001 106.423);
+  --gray-100: oklch(0.97 0.001 106.424);
+  --gray-200: oklch(0.923 0.003 48.717);
+  --gray-300: oklch(0.869 0.005 56.366);
+  --gray-400: oklch(0.709 0.01 56.259);
+  --gray-500: oklch(0.553 0.013 58.071);
+  --gray-600: oklch(0.444 0.011 73.639);
+  --gray-700: oklch(0.374 0.01 67.558);
+  --gray-800: oklch(0.268 0.007 34.298);
+  --gray-900: oklch(0.216 0.006 56.043);
+  --gray-950: oklch(0.147 0.004 49.25);
+
+  --danger-50: oklch(0.969 0.015 12.422);
+  --danger-100: oklch(0.941 0.03 12.58);
+  --danger-200: oklch(0.892 0.058 10.001);
+  --danger-300: oklch(0.81 0.117 11.638);
+  --danger-400: oklch(0.712 0.194 13.428);
+  --danger-500: oklch(0.645 0.246 16.439);
+  --danger-600: oklch(0.586 0.253 17.585);
+  --danger-700: oklch(0.514 0.222 16.935);
+  --danger-800: oklch(0.455 0.188 13.697);
+  --danger-900: oklch(0.41 0.159 10.272);
+  --danger-950: oklch(0.271 0.105 12.094);
+
+  --warning-50: oklch(0.987 0.022 95.277);
+  --warning-100: oklch(0.962 0.059 95.617);
+  --warning-200: oklch(0.924 0.12 95.746);
+  --warning-300: oklch(0.879 0.169 91.605);
+  --warning-400: oklch(0.828 0.189 84.429);
+  --warning-500: oklch(0.769 0.188 70.08);
+  --warning-600: oklch(0.666 0.179 58.318);
+  --warning-700: oklch(0.555 0.163 48.998);
+  --warning-800: oklch(0.473 0.137 46.201);
+  --warning-900: oklch(0.414 0.112 45.904);
+  --warning-950: oklch(0.279 0.077 45.635);
+
+  --info-50: oklch(0.977 0.013 236.62);
+  --info-100: oklch(0.951 0.026 236.824);
+  --info-200: oklch(0.901 0.058 230.902);
+  --info-300: oklch(0.828 0.111 230.318);
+  --info-400: oklch(0.746 0.16 232.661);
+  --info-500: oklch(0.685 0.169 237.323);
+  --info-600: oklch(0.588 0.158 241.966);
+  --info-700: oklch(0.5 0.134 242.749);
+  --info-800: oklch(0.443 0.11 240.79);
+  --info-900: oklch(0.391 0.09 240.876);
+  --info-950: oklch(0.293 0.066 243.157);
+
+  --success-50: oklch(0.986 0.031 120.757);
+  --success-100: oklch(0.967 0.067 122.328);
+  --success-200: oklch(0.938 0.127 124.321);
+  --success-300: oklch(0.897 0.196 126.665);
+  --success-400: oklch(0.841 0.238 128.85);
+  --success-500: oklch(0.768 0.233 130.85);
+  --success-600: oklch(0.648 0.2 131.684);
+  --success-700: oklch(0.532 0.157 131.589);
+  --success-800: oklch(0.453 0.124 130.933);
+  --success-900: oklch(0.405 0.101 131.063);
+  --success-950: oklch(0.274 0.072 132.109);
+}
+
+[data-theme="dark"] {
+  --page: #080b0f;
+
+  --primary-50: oklch(14.97% 0.022 183.67);
+  --primary-100: oklch(22.13% 0.034 185.23);
+  --primary-200: oklch(33.54% 0.056 182.24);
+  --primary-300: oklch(43.78% 0.074 183.38);
+  --primary-400: oklch(52.46% 0.091 181.87);
+  --primary-500: oklch(62.31% 0.108 182.03);
+  --primary-600: oklch(78.75% 0.138 181.78);
+  --primary-700: oklch(84.91% 0.131 184.01);
+  --primary-800: oklch(89.15% 0.099 185.24);
+  --primary-900: oklch(94.17% 0.053 187.61);
+  --primary-950: oklch(96.71% 0.029 188.86);
+
+  --brand-50: oklch(16.6% 0.028 203.34);
+  --brand-100: oklch(25.68% 0.044 207.16);
+  --brand-200: oklch(40.43% 0.069 207.41);
+  --brand-300: oklch(53.65% 0.092 208.56);
+  --brand-400: oklch(66.1% 0.114 209.17);
+  --brand-500: oklch(77.94% 0.134 208.96);
+  --brand-600: oklch(85.52% 0.143 207.23);
+  --brand-700: oklch(87.63% 0.127 205.78);
+  --brand-800: oklch(90.93% 0.096 204.65);
+  --brand-900: oklch(94.95% 0.051 205.36);
+  --brand-950: oklch(97.18% 0.029 204.51);
+
+  --gray-50: oklch(0.147 0.004 49.25);
+  --gray-100: oklch(0.216 0.006 56.043);
+  --gray-200: oklch(0.268 0.007 34.298);
+  --gray-300: oklch(0.374 0.01 67.558);
+  --gray-400: oklch(0.444 0.011 73.639);
+  --gray-500: oklch(0.553 0.013 58.071);
+  --gray-600: oklch(0.709 0.01 56.259);
+  --gray-700: oklch(0.869 0.005 56.366);
+  --gray-800: oklch(0.923 0.003 48.717);
+  --gray-900: oklch(0.97 0.001 106.424);
+  --gray-950: oklch(0.985 0.001 106.423);
+
+  --danger-50: oklch(0.271 0.105 12.094);
+  --danger-100: oklch(0.41 0.159 10.272);
+  --danger-200: oklch(0.455 0.188 13.697);
+  --danger-300: oklch(0.514 0.222 16.935);
+  --danger-400: oklch(0.586 0.253 17.585);
+  --danger-500: oklch(0.645 0.246 16.439);
+  --danger-600: oklch(0.712 0.194 13.428);
+  --danger-700: oklch(0.81 0.117 11.638);
+  --danger-800: oklch(0.892 0.058 10.001);
+  --danger-900: oklch(0.941 0.03 12.58);
+  --danger-950: oklch(0.969 0.015 12.422);
+
+  --warning-50: oklch(0.279 0.077 45.635);
+  --warning-100: oklch(0.414 0.112 45.904);
+  --warning-200: oklch(0.473 0.137 46.201);
+  --warning-300: oklch(0.555 0.163 48.998);
+  --warning-400: oklch(0.666 0.179 58.318);
+  --warning-500: oklch(0.769 0.188 70.08);
+  --warning-600: oklch(0.828 0.189 84.429);
+  --warning-700: oklch(0.879 0.169 91.605);
+  --warning-800: oklch(0.924 0.12 95.746);
+  --warning-900: oklch(0.962 0.059 95.617);
+  --warning-950: oklch(0.987 0.022 95.277);
+
+  --info-50: oklch(0.293 0.066 243.157);
+  --info-100: oklch(0.391 0.09 240.876);
+  --info-200: oklch(0.443 0.11 240.79);
+  --info-300: oklch(0.5 0.134 242.749);
+  --info-400: oklch(0.588 0.158 241.966);
+  --info-500: oklch(0.685 0.169 237.323);
+  --info-600: oklch(0.746 0.16 232.661);
+  --info-700: oklch(0.828 0.111 230.318);
+  --info-800: oklch(0.901 0.058 230.902);
+  --info-900: oklch(0.951 0.026 236.824);
+  --info-950: oklch(0.977 0.013 236.62);
+
+  --success-50: oklch(0.274 0.072 132.109);
+  --success-100: oklch(0.405 0.101 131.063);
+  --success-200: oklch(0.453 0.124 130.933);
+  --success-300: oklch(0.532 0.157 131.589);
+  --success-400: oklch(0.648 0.2 131.684);
+  --success-500: oklch(0.768 0.233 130.85);
+  --success-600: oklch(0.841 0.238 128.85);
+  --success-700: oklch(0.897 0.196 126.665);
+  --success-800: oklch(0.938 0.127 124.321);
+  --success-900: oklch(0.967 0.067 122.328);
+  --success-950: oklch(0.986 0.031 120.757);
+}
+
+html {
+  overflow-y: scroll;
+  scrollbar-width: thin;
+}
+
+html,
+body {
+  @apply bg-page text-gray-800 antialiased;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+.no-transitions * {
+  transition-property: color, background-color, border-color, fill, stroke;
+  transition-duration: 0s !important;
+}
