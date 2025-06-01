@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "esnext",
+    "noEmit": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "downlevelIteration": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "exactOptionalPropertyTypes": true,
+    "jsx": "react-jsx",
+    "paths": {
+      "content-collections": ["./.content-collections/generated"]
+    }
+  }
+}
