@@ -10,6 +10,8 @@ dist-mpa
 
 scratch.txt
 
+pages.gen.ts
+
 auto-imports.d.ts
 
 certs/
