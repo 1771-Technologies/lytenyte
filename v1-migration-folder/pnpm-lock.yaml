@@ -182,6 +182,27 @@ importers:
         specifier: ^18.0.0 || ^19.0.0
         version: 19.1.0(react@19.1.0)
 
+  packages/react-dragon:
+    dependencies:
+      '@1771technologies/atom':
+        specifier: ^1.0.1
+        version: 1.0.1(@types/react@19.1.6)(react@19.1.0)
+      '@1771technologies/lytenyte-dom-utils':
+        specifier: workspace:*
+        version: link:../dom-utils
+      '@1771technologies/lytenyte-js-utils':
+        specifier: workspace:*
+        version: link:../js-utils
+      '@1771technologies/lytenyte-react-hooks':
+        specifier: workspace:*
+        version: link:../react-hooks
+      react:
+        specifier: ^18.0.0 || ^19.0.0
+        version: 19.1.0
+      react-dom:
+        specifier: ^18.0.0 || ^19.0.0
+        version: 19.1.0(react@19.1.0)
+
   packages/react-hooks:
     dependencies:
       '@1771technologies/lytenyte-dom-utils':
@@ -198,6 +219,18 @@ importers:
         version: 19.1.0(react@19.1.0)
 
 packages:
+
+  '@1771technologies/atom@1.0.1':
+    resolution: {integrity: sha512-r96vcpnowyaMzx3HQzvPWvddwwcgOkI/3177Q7WYZO4UCpT7KGujSZi6zwED0sScKQo3nLcgIVpCwqQltJcTnw==}
+    engines: {node: '>=12.20.0'}
+    peerDependencies:
+      '@types/react': '>=17.0.0'
+      react: '>=17.0.0'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      react:
+        optional: true
 
   '@1771technologies/cli-table@1.0.1':
     resolution: {integrity: sha512-hrT5Dg0hLbz3+skubTuHaPnUs/WASEZXuLhqXb9kuo06fJGViZZqaMlO1VCDkozh4ff0cddnMemh3QC9MEUWng==}
@@ -2946,6 +2979,11 @@ packages:
     engines: {node: '>=10'}
 
 snapshots:
+
+  '@1771technologies/atom@1.0.1(@types/react@19.1.6)(react@19.1.0)':
+    optionalDependencies:
+      '@types/react': 19.1.6
+      react: 19.1.0
 
   '@1771technologies/cli-table@1.0.1':
     dependencies:
