@@ -12,6 +12,7 @@ export interface DragData {
 }
 
 export interface DragMoveState {
+  readonly isKeyboard: boolean;
   readonly x: number;
   readonly y: number;
   readonly dropElement: HTMLElement;
