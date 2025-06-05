@@ -5,6 +5,9 @@ import { createStore, atom, useAtomValue } from "@1771technologies/atom";
 
 export const store = createStore();
 
+export const dragKeyboardActive = atom(false);
+export const dragKeyboardDropZone = atom<HTMLElement | null>(null);
+
 export const dragDataAtom = atom<DragData | null>(null);
 export const dropAtom = atom<InCurrent<((params: OnDropParams) => void) | null>>({ current: null });
 
