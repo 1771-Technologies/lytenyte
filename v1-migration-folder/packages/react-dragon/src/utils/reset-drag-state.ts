@@ -2,6 +2,8 @@ import {
   activeDragElement,
   activeDropAtom,
   dragDataAtom,
+  dragKeyboardActive,
+  dragKeyboardDropZone,
   dragPositionAtom,
   dropAtom,
   isTouchDragAtom,
@@ -9,6 +11,8 @@ import {
 } from "../+globals";
 
 export function resetDragState() {
+  store.set(dragKeyboardActive, false);
+  store.set(dragKeyboardDropZone, null);
   store.set(dragDataAtom, null);
   store.set(dragPositionAtom, null);
   store.set(dropAtom, { current: null });

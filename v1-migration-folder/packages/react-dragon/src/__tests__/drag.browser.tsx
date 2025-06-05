@@ -377,4 +377,115 @@ describe("drag", () => {
 
     dragHandler.touchend(dragEl);
   });
+
+  test("should handle keyboard interactions", async () => {
+    const c = render(<DragWithKeyboard />);
+
+    const btn = c.getByText("I drag");
+    await expect.element(btn).toBeVisible();
+    (btn.element() as HTMLElement).focus();
+    await expect.element(btn).toHaveFocus();
+
+    await userEvent.keyboard("{Enter}");
+    await wait(20);
+    await userEvent.keyboard("{ArrowRight}");
+    await wait(20);
+    await userEvent.keyboard("{Enter}");
+    await expect.element(c.getByText("Dropzone X: 1")).toBeVisible();
+
+    await userEvent.keyboard("{Enter}");
+    await userEvent.keyboard("{ArrowRight}");
+    await userEvent.keyboard("{ArrowRight}");
+    await userEvent.keyboard("{ArrowRight}");
+    await userEvent.keyboard("{Enter}");
+    await expect.element(c.getByText("Dropzone Z: 0")).toBeVisible();
+    await userEvent.keyboard("{Enter}");
+    await userEvent.keyboard("{ArrowLeft}");
+    await userEvent.keyboard("{ArrowLeft}");
+    await userEvent.keyboard("{ArrowLeft}");
+    await userEvent.keyboard("{ArrowLeft}");
+    await userEvent.keyboard("{Escape}");
+    await expect.element(c.getByText("Dropzone Z: 0")).toBeVisible();
+    await userEvent.keyboard("{Meta>}{Enter}{/Meta}");
+    await userEvent.keyboard("{Control>}{Enter}{/Control}");
+    await userEvent.keyboard("{Shift>}{Enter}{/Shift}");
+    await userEvent.keyboard("{Enter}");
+    await userEvent.keyboard("{Meta>}{ArrowRight}{/Meta}");
+    await userEvent.keyboard("{Enter}");
+    await userEvent.keyboard("{Enter}");
+
+    (btn.element() as HTMLElement).blur();
+    await expect.element(btn).not.toHaveFocus();
+  });
 });
+
+function DragWithKeyboard() {
+  const { dragProps } = useDraggable({
+    getItems: (el) => {
+      return {
+        siteLocalData: {
+          fine: el.id,
+        },
+      };
+    },
+    placeholder: (d) => <div className="dragging">Value: {d.siteLocalData?.letter}</div>,
+    placeholderOffset: [20, 20],
+  });
+
+  const [dropX, setDropX] = useState(0);
+  const [dropY, setDropY] = useState(0);
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        height: "90vh",
+      }}
+    >
+      <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        <div {...dragProps}>I drag</div>
+      </div>
+      <div style={{ margin: 40, display: "flex", justifyContent: "space-between" }}>
+        <DropWrap
+          accepted={["fine"]}
+          style={{ width: 200, height: 200, background: "gray" }}
+          onDrop={() => setDropX((prev) => prev + 1)}
+        >
+          Dropzone X: {dropX}
+        </DropWrap>
+        <DropWrap
+          accepted={["fine"]}
+          style={{ width: 200, height: 200, background: "gray" }}
+          onDrop={() => setDropY((prev) => prev + 1)}
+        >
+          Dropzone Y: {dropY}
+        </DropWrap>
+        <DropWrap accepted={["blue"]} style={{ width: 200, height: 200, background: "gray" }}>
+          Dropzone Z: 0
+        </DropWrap>
+      </div>
+      <div style={{ minHeight: 4000, width: 100 }} />
+      <div style={{ margin: 40, display: "flex", justifyContent: "space-between" }}>
+        <DropWrap
+          accepted={["fine"]}
+          style={{ width: 200, height: 200, background: "gray" }}
+          onDrop={() => setDropX((prev) => prev + 1)}
+        >
+          Dropzone T: {dropX}
+        </DropWrap>
+        <DropWrap
+          accepted={["fine"]}
+          style={{ width: 200, height: 200, background: "gray" }}
+          onDrop={() => setDropY((prev) => prev + 1)}
+        >
+          Dropzone V: {dropY}
+        </DropWrap>
+        <DropWrap accepted={["blue"]} style={{ width: 200, height: 200, background: "gray" }}>
+          Dropzone G: 0
+        </DropWrap>
+      </div>
+    </div>
+  );
+}
