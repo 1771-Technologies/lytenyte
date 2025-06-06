@@ -1,0 +1,16 @@
+.dragging {
+  background-color: black;
+  color: white;
+  width: fit-content;
+}
+
+[data-drag-over="true"] {
+  border: 2px dashed yellow;
+}
+[data-drag-can-drop="true"] {
+  background-color: cadetblue !important;
+}
+
+[data-drag-keyboard-focus="true"] {
+  outline: 2px solid blue;
+}
