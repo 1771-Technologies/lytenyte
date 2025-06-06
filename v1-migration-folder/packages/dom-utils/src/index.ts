@@ -45,6 +45,7 @@ export { isTopLayer } from "./is-top-layer.js";
 export { isVirtualClick } from "./is-virtual-click.js";
 export { isWebKit } from "./is-webkit.js";
 export { isZeroArea } from "./is-zero-area.js";
+export { announce } from "./live-announcer.js";
 export { makeLongTouchPressHandler } from "./make-long-touch-press-handler.js";
 export { matches } from "./matches.js";
 export { testPlatform } from "./test-platform.js";

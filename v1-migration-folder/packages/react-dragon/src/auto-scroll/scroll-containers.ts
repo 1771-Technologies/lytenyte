@@ -3,7 +3,7 @@ import {
   getOverflowAncestors,
   isElement,
 } from "@1771technologies/lytenyte-dom-utils";
-import type { DragPosition } from "../+types";
+import type { DragPosition } from "../+types.js";
 
 export function scrollContainers(coords: DragPosition, margin: number, speed: number) {
   const el = document.elementFromPoint(coords.x, coords.y);

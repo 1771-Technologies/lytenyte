@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import type { DragPosition, DropZone, InCurrent, OnDropParams } from "./+types";
-import { type DragData } from "./+types";
+import type { DragPosition, DropZone, InCurrent, OnDropParams } from "./+types.js";
+import { type DragData } from "./+types.js";
 import { createStore, atom, useAtomValue } from "@1771technologies/atom";
 
 export const store = createStore();

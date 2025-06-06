@@ -1,8 +1,8 @@
 import { useEvent } from "@1771technologies/lytenyte-react-hooks";
 import { useEffect, useRef } from "react";
-import { dragState, isTouchDragAtom, store } from "../+globals";
+import { dragState, isTouchDragAtom, store } from "../+globals.js";
 import { useAtomValue } from "@1771technologies/atom";
-import { scrollContainers } from "./scroll-containers";
+import { scrollContainers } from "./scroll-containers.js";
 
 type UseAutoScrollOptions = {
   margin?: number;
