@@ -1,15 +1,17 @@
 import {
   forwardRef,
   useCallback,
+  useEffect,
   useState,
   type DragEvent as DragEventReact,
   type JSX,
 } from "react";
-import type { DragMoveState, DropWrapState, OnDropParams } from "../+types";
+import type { DragMoveState, DropWrapState, OnDropParams } from "../+types.js";
 import { useForkRef, useSlot, type SlotComponent } from "@1771technologies/lytenyte-react-hooks";
-import { useOnDragMove } from "./use-on-drag-move";
-import { useDropZone } from "./use-drop-zone";
-import { useRegisteredDropZone } from "./use-registered-drop-zone";
+import { useOnDragMove } from "./use-on-drag-move.js";
+import { useDropZone } from "./use-drop-zone.js";
+import { useRegisteredDropZone } from "./use-registered-drop-zone.js";
+import { announce } from "@1771technologies/lytenyte-dom-utils";
 
 export type DropWrapProps = Omit<JSX.IntrinsicElements["div"], "onDrop"> & {
   onDrop?: (params: OnDropParams) => void;
@@ -21,10 +23,26 @@ export type DropWrapProps = Omit<JSX.IntrinsicElements["div"], "onDrop"> & {
   accepted: string[];
 
   as?: SlotComponent<DropWrapState>;
+
+  announceOverNoDrop?: string;
+  announceOverCanDrop?: string;
+  announceOverLeave?: string;
 };
 
 export const DropWrap = forwardRef<HTMLDivElement, DropWrapProps>(function DropWrap(
-  { as, onDrop, onDragMove, onEnter, onLeave, moveEffect, accepted, ...otherProps },
+  {
+    as,
+    onDrop,
+    onDragMove,
+    onEnter,
+    onLeave,
+    moveEffect,
+    accepted,
+    announceOverCanDrop,
+    announceOverLeave,
+    announceOverNoDrop,
+    ...otherProps
+  },
   forwarded,
 ) {
   const [dropEl, setRef] = useState<HTMLDivElement | null>(null);
@@ -33,6 +51,18 @@ export const DropWrap = forwardRef<HTMLDivElement, DropWrapProps>(function DropW
 
   useOnDragMove(over, dropEl, onDragMove);
   useRegisteredDropZone({ dropEl, ...ons });
+
+  useEffect(() => {
+    if (!over) return;
+
+    if (canDrop) announce(announceOverCanDrop ?? "Over an item that accepts the current drag");
+    else announce(announceOverNoDrop ?? "Over an item that does not accept the current drag");
+
+    return () => {
+      if (canDrop) return;
+      announce(announceOverLeave ?? "Drag has left the item");
+    };
+  }, [announceOverCanDrop, announceOverLeave, announceOverNoDrop, canDrop, over]);
 
   const defaultProps: JSX.IntrinsicElements["div"] = {
     onDragEnter: useCallback(

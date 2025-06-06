@@ -4,7 +4,7 @@ import {
   type DragEvent as ReactDragEvent,
   type SetStateAction,
 } from "react";
-import type { UseDraggable } from "../use-draggable";
+import type { UseDraggableProps } from "../use-draggable";
 import { activeDragElement, dragDataAtom, dragPositionAtom, dropAtom, store } from "../+globals";
 import { createRoot } from "react-dom/client";
 import { resetDragState } from "../utils/reset-drag-state";
@@ -18,7 +18,7 @@ export function useDragEventHandler(
     onDrop,
     placeholder,
     placeholderOffset,
-  }: UseDraggable,
+  }: UseDraggableProps,
   setDragging: Dispatch<SetStateAction<boolean>>,
 ) {
   const handleDragStart = useCallback(

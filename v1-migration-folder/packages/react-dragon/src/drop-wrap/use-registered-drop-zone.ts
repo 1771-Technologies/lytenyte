@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import type { DropZone } from "../+types";
-import { dropZonesAtom } from "../+globals";
+import type { DropZone } from "../+types.js";
+import { dropZonesAtom } from "../+globals.js";
 
 interface UseRegisteredDropZoneArgs extends DropZone {
   readonly dropEl: HTMLElement | null;

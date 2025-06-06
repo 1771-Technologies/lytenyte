@@ -8,7 +8,7 @@ import {
   dropAtom,
   isTouchDragAtom,
   store,
-} from "../+globals";
+} from "../+globals.js";
 
 export function resetDragState() {
   store.set(dragKeyboardActive, false);
