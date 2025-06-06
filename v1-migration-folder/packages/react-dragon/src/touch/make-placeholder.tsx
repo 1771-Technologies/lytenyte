@@ -1,9 +1,9 @@
 import { createRoot } from "react-dom/client";
 import type { DragData } from "../+types";
-import type { UseDraggable } from "../use-draggable";
+import type { UseDraggableProps } from "../use-draggable";
 
 export function makePlaceholder(
-  placeholder: UseDraggable["placeholder"],
+  placeholder: UseDraggableProps["placeholder"],
   dragElement: HTMLElement,
   data: DragData,
   x: number,

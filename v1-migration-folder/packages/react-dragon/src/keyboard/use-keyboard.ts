@@ -9,9 +9,9 @@ import {
   dragPositionAtom,
   dropZonesAtom,
   store,
-} from "../+globals";
-import { resetDragState } from "../utils/reset-drag-state";
-import type { DragData } from "../+types";
+} from "../+globals.js";
+import { resetDragState } from "../utils/reset-drag-state.js";
+import type { DragData } from "../+types.js";
 
 export function useKeyboard(
   setIsDragging: Dispatch<SetStateAction<boolean>>,

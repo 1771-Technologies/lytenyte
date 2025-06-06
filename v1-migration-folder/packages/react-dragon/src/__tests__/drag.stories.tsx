@@ -4,7 +4,7 @@ import { useDraggable, type DragProps } from "../use-draggable.js";
 import { DropWrap } from "../drop-wrap/drop-wrap.js";
 import { useState, type Dispatch, type SetStateAction } from "react";
 import { expect, fn, within } from "@storybook/test";
-import { dragHandler } from "./drag-utils";
+import { dragHandler } from "./drag-utils.js";
 
 const wait = (n?: number) => new Promise((res) => setTimeout(res, n ?? 20));
 const meta: Meta = {
