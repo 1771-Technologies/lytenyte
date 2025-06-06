@@ -1,17 +1,18 @@
 import { useState } from "react";
 import { beforeEach, describe, expect, test, vi } from "vitest";
-import { useDraggable } from "../use-draggable";
-import { DropWrap } from "../drop-wrap/drop-wrap";
+import { useDraggable } from "../use-draggable.js";
+import { DropWrap } from "../drop-wrap/drop-wrap.js";
 import { render } from "vitest-browser-react";
 import { userEvent } from "@vitest/browser/context";
-import { dragHandler } from "./drag-utils";
-import { resetDragState } from "../utils/reset-drag-state";
+import { dragHandler } from "./drag-utils.js";
+import { resetDragState } from "../utils/reset-drag-state.js";
 
 const wait = (n?: number) => new Promise((res) => setTimeout(res, n ?? 20));
 
 describe("drag", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     resetDragState();
+    await wait();
   });
   test("should be able to perform a basic drag", async () => {
     function DropItemComp() {
@@ -57,7 +58,9 @@ describe("drag", () => {
     await expect.element(draggable).toBeVisible();
 
     await userEvent.dragAndDrop(draggable, screen.getByText("Target For Drop: 0"));
-    await expect.element(screen.getByText("Target For Drop: 1")).toBeVisible();
+    await wait(80);
+    const lo = document.querySelector('[data-drop-zone="true"]');
+    expect(lo?.textContent).toEqual("Target For Drop: 1");
   });
 
   test("should be able to perform a basic drag with touch", async () => {
@@ -116,7 +119,8 @@ describe("drag", () => {
     dragHandler.touchend(el, { x: bb.x + 2, y: bb.y + 2 });
 
     await wait(80);
-    await expect.element(screen.getByText("Target For Drop: 1")).toBeVisible();
+    const lo = document.querySelector('[data-drop-zone="true"]');
+    expect(lo?.textContent).toEqual("Target For Drop: 1");
   });
 
   test("should be able to perform a basic drag with touch that is then cancelled", async () => {

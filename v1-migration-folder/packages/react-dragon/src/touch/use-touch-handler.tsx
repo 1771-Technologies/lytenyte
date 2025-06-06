@@ -1,5 +1,5 @@
 import { useEffect, type Dispatch, type SetStateAction } from "react";
-import type { UseDraggable } from "../use-draggable";
+import type { UseDraggableProps } from "../use-draggable";
 import { makeLongTouchPressHandler } from "@1771technologies/lytenyte-dom-utils";
 import {
   activeDragElement,
@@ -24,7 +24,7 @@ export function useTouchHandler(
     onDrop,
     placeholder,
     placeholderOffset,
-  }: UseDraggable,
+  }: UseDraggableProps,
   setDragging: Dispatch<SetStateAction<boolean>>,
   dragElement: HTMLElement | null,
 ) {
