@@ -49,7 +49,6 @@ export const getCandidatesIteratively = (
     if (element.tagName === "SLOT") {
       // add shadow dom slot scope (slot itself cannot be focusable)
       const assigned = (element as HTMLSlotElement).assignedElements();
-      /* v8 ignore next 2 */
       const content = assigned.length ? assigned : element.children;
       const nestedCandidates = getCandidatesIteratively(content as Element[], true, options);
       if (options.flatten) {
@@ -75,7 +74,6 @@ export const getCandidatesIteratively = (
       const shadowRoot =
         element.shadowRoot ||
         // check for an undisclosed shadow
-        /* v8 ignore next 3 */
         (typeof options.getShadowRoot === "function" &&
           options.getShadowRoot(element as HTMLElement));
 
@@ -94,7 +92,6 @@ export const getCandidatesIteratively = (
         //  slotted somewhere _inside_ the undisclosed shadow) -- the scope is created below,
         //  _after_ we return from this recursive call
         const nestedCandidates = getCandidatesIteratively(
-          /* v8 ignore next 3 */
           (shadowRoot === true
             ? element.children
             : shadowRoot.children) as unknown as HTMLElement[],
