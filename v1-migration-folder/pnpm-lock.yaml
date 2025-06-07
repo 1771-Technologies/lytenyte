@@ -160,15 +160,24 @@ importers:
 
   packages/react-components:
     dependencies:
+      '@1771technologies/atom':
+        specifier: 1.0.1
+        version: 1.0.1(@types/react@19.1.6)(react@19.1.0)
       '@1771technologies/lytenyte-dom-utils':
         specifier: workspace:*
         version: link:../dom-utils
+      '@1771technologies/lytenyte-floating':
+        specifier: workspace:*
+        version: link:../fork-floating
       '@1771technologies/lytenyte-focus':
         specifier: workspace:*
         version: link:../fork-focus
       '@1771technologies/lytenyte-focus-trap':
         specifier: workspace:*
         version: link:../fork-focus-trap
+      '@1771technologies/lytenyte-js-utils':
+        specifier: workspace:*
+        version: link:../js-utils
       '@1771technologies/lytenyte-react-hooks':
         specifier: workspace:*
         version: link:../react-hooks

@@ -2,6 +2,7 @@ import { tabbable } from "@1771technologies/lytenyte-focus";
 import type { FocusEvent, KeyboardEvent } from "react";
 
 export const handleFocusCapture = (e: FocusEvent) => {
+  /* v8 ignore next 1 */
   if (!e.currentTarget) return;
   const target = e.currentTarget as HTMLElement;
   if (!e.relatedTarget || target.contains(e.relatedTarget as any)) return;
