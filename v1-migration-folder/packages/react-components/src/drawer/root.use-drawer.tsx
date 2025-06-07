@@ -1,5 +1,5 @@
 import { createContext, useContext, useMemo } from "react";
-import { useDialog, type DialogContext } from "../dialog/root.use-dialog";
+import { useDialog, type DialogContext } from "../dialog/root.use-dialog.js";
 
 export interface DrawerContext {
   readonly side: "top" | "bottom" | "end" | "start";
