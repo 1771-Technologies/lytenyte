@@ -24,7 +24,7 @@ import { isElement } from "@1771technologies/lytenyte-dom-utils";
 export type Side = "top" | "bottom" | "start" | "end";
 
 export interface UsePositioner {
-  readonly anchor: ReferenceElement | null;
+  readonly anchor?: ReferenceElement | null;
   readonly floating: FloatingElement | null;
 
   readonly arrow?: string;
