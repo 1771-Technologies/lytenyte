@@ -287,3 +287,63 @@ export const Api: StoryObj = {
     await userEvent.click(c.getByText("Explain more"));
   },
 };
+
+function TaggedComp() {
+  const t1 = useTooltip({
+    id: "1",
+    render: <div>Tooltip 1</div>,
+    tag: "alpha",
+    hideDelay: 100,
+  });
+  const t2 = useTooltip({
+    id: "2",
+    render: <div>Tooltip 2</div>,
+    tag: "alpha",
+    showDelay: 1000,
+    hideDelay: 500,
+  });
+  const t3 = useTooltip({
+    id: "3",
+    render: <div>Tooltip 2</div>,
+    showDelay: 1000,
+    hideDelay: 500,
+  });
+
+  return (
+    <>
+      <TooltipDriver />
+      <div
+        style={{
+          width: 200,
+          height: 200,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <div {...t1} style={{ border: "1px solid black" }}>
+          Tag 1
+        </div>
+        <div {...t2} style={{ border: "1px solid black" }}>
+          Tag 2
+        </div>
+        <div {...t3} style={{ border: "1px solid black" }}>
+          Tag 3
+        </div>
+      </div>
+    </>
+  );
+}
+
+export const Tagged: StoryObj = {
+  render: TaggedComp,
+  play: async ({ canvas: c }) => {
+    await userEvent.hover(c.getByText("Tag 1"));
+    await sleep(20);
+    await userEvent.unhover(c.getByText("Tag 1"));
+    await sleep(20);
+    await userEvent.hover(c.getByText("Tag 2"));
+    await sleep(20);
+    await userEvent.unhover(c.getByText("Tag 2"));
+  },
+};
