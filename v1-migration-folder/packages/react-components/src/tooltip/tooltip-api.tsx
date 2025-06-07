@@ -27,6 +27,16 @@ function removeTooltip(id: string) {
   });
 }
 
+function hasOpenTag(tag: string) {
+  return getTooltipsWithTag(tag).length > 0;
+}
+function getTooltipsWithTag(tag: string) {
+  const store = getDefaultStore();
+  const tools = [...store.get(tooltips).values()];
+
+  return tools.filter((c) => c.tag === tag);
+}
+
 export const show = (c: Tooltip) => {
   const store = getDefaultStore();
 
@@ -39,6 +49,10 @@ export const show = (c: Tooltip) => {
   if (current.has(c.id)) {
     updateTooltip(c);
     return;
+  } else if (c.tag && hasOpenTag(c.tag)) {
+    const others = getTooltipsWithTag(c.tag);
+    others.forEach((c) => hide(c.id, true));
+    updateTooltip(c);
   }
 
   // Since the tooltip is not open, we begin the process of updating it. If there was already an
