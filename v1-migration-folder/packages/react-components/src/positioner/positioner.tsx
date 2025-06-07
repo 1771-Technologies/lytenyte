@@ -1,11 +1,6 @@
-import { cloneElement, useState, type ReactElement } from "react";
+import { useState, type ReactElement } from "react";
 import { usePositioner, type UsePositioner } from "./use-positioner.js";
-import {
-  getElementRef,
-  mergeProps,
-  useEvent,
-  useForkRef,
-} from "@1771technologies/lytenyte-react-hooks";
+import { useEvent, useSlot } from "@1771technologies/lytenyte-react-hooks";
 
 export function Positioner({
   children,
@@ -37,11 +32,6 @@ export function Positioner({
     el.style.display = "none";
   });
 
-  const ref = getElementRef(children);
-
-  const mergedProps = mergeProps(props, children.props as any);
-  mergedProps.ref = useForkRef(ref, internalRef);
-
   usePositioner({
     floating,
     anchor,
@@ -59,7 +49,12 @@ export function Positioner({
     rootBoundary,
   });
 
-  if (!active) return null;
+  const slot = useSlot({
+    props: props,
+    ref: internalRef,
+    slot: children,
+  });
 
-  return cloneElement(children, mergedProps);
+  if (!active) return null;
+  return slot;
 }

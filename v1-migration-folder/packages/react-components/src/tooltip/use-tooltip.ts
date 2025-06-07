@@ -1,10 +1,9 @@
-import { useEffect, useId, useState } from "react";
+import { useEffect, useState } from "react";
 import { hide, show } from "./tooltip-api.js";
 import type { Tooltip } from "./+types.js";
 
-export function useTooltip(props: Omit<Tooltip, "anchor" | "id"> & { open?: boolean }) {
+export function useTooltip(props: Omit<Tooltip, "anchor"> & { open?: boolean }) {
   const [el, ref] = useState<HTMLElement | null>(null);
-  const internalId = useId();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -22,7 +21,6 @@ export function useTooltip(props: Omit<Tooltip, "anchor" | "id"> & { open?: bool
     if (props.open != null) {
       if (props.open) {
         show({
-          id: internalId,
           anchor: el,
           ...props,
           onHide,
@@ -31,7 +29,7 @@ export function useTooltip(props: Omit<Tooltip, "anchor" | "id"> & { open?: bool
           hideDelay: 0,
         });
       } else {
-        hide(internalId);
+        hide(props.id);
       }
       return;
     }
@@ -40,13 +38,7 @@ export function useTooltip(props: Omit<Tooltip, "anchor" | "id"> & { open?: bool
     el.addEventListener(
       "mouseenter",
       () => {
-        show({
-          id: internalId,
-          anchor: el,
-          ...props,
-          onShow,
-          onHide,
-        });
+        show({ anchor: el, ...props, onShow, onHide });
       },
       { signal: controller.signal },
     );
@@ -54,13 +46,24 @@ export function useTooltip(props: Omit<Tooltip, "anchor" | "id"> & { open?: bool
     el.addEventListener(
       "mouseleave",
       () => {
-        hide(internalId);
+        hide(props.id);
       },
       { signal: controller.signal },
     );
 
-    return () => controller.abort();
-  }, [el, internalId, props]);
+    el.addEventListener("focus", () => {
+      show({ anchor: el, ...props, onShow, onHide });
+    });
+    el.addEventListener("blur", () => {
+      hide(props.id);
+    });
 
-  return { "aria-describedby": internalId, "aria-haspopup": true, "aria-expanded": open, ref };
+    return () => controller.abort();
+  }, [el, props]);
+
+  return {
+    "aria-describedby": open ? props.id : undefined,
+    ref,
+    tabIndex: 0,
+  };
 }
