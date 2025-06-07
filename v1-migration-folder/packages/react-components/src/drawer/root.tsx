@@ -1,6 +1,6 @@
 import { forwardRef, useMemo, type PropsWithChildren } from "react";
-import { DialogRoot, type DialogApi, type DialogRootProps } from "../dialog/root";
-import { context } from "./root.use-drawer";
+import { DialogRoot, type DialogApi, type DialogRootProps } from "../dialog/root.js";
+import { context } from "./root.use-drawer.js";
 
 export interface DrawerRootProps extends DialogRootProps {
   readonly side?: "top" | "bottom" | "start" | "end";
