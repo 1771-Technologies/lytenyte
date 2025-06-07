@@ -34,7 +34,10 @@
   "dependencies": {
     "@1771technologies/lytenyte-react-hooks": "workspace:*",
     "@1771technologies/lytenyte-scroll-lock": "workspace:*",
+    "@1771technologies/lytenyte-floating": "workspace:*",
     "@1771technologies/lytenyte-dom-utils": "workspace:*",
+    "@1771technologies/lytenyte-js-utils": "workspace:*",
+    "@1771technologies/atom": "1.0.1",
     "@1771technologies/lytenyte-focus-trap": "workspace:*",
     "@1771technologies/lytenyte-focus": "workspace:*"
   },

@@ -1,10 +1,10 @@
-import { DialogClose } from "../dialog/close";
-import { DialogDescription } from "../dialog/description";
-import { DialogPortal } from "../dialog/portal";
-import { DialogTitle } from "../dialog/title";
-import { DialogTrigger } from "../dialog/trigger";
-import { DrawerPanel } from "./panel";
-import { DrawerRoot } from "./root";
+import { DialogClose } from "../dialog/close.js";
+import { DialogDescription } from "../dialog/description.js";
+import { DialogPortal } from "../dialog/portal.js";
+import { DialogTitle } from "../dialog/title.js";
+import { DialogTrigger } from "../dialog/trigger.js";
+import { DrawerPanel } from "./panel.js";
+import { DrawerRoot } from "./root.js";
 
 export const Drawer = {
   Root: DrawerRoot,

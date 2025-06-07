@@ -2,6 +2,8 @@ export { isReactVersionAtLeast } from "./react-version.js";
 
 export type { UseSlotProps, SlotComponent } from "./use-slot/index.js";
 export { useSlot } from "./use-slot/index.js";
+export { getElementRef } from "./use-slot/get-element-ref.js";
+export { mergeProps } from "./use-slot/merge-props.js";
 
 export { useTransitionedOpen } from "./use-transitioned-open.js";
 export type { TransitionOptions } from "./use-transitioned-open.js";

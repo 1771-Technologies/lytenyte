@@ -1,6 +1,6 @@
 import { forwardRef, useMemo, useRef, type CSSProperties, type JSX, type TouchEvent } from "react";
-import { DialogPanel } from "../dialog/panel";
-import { useDrawerContext } from "./root.use-drawer";
+import { DialogPanel } from "../dialog/panel.js";
+import { useDrawerContext } from "./root.use-drawer.js";
 
 const SWIPE_THRESHOLD = 100; // Minimum distance (px) for a swipe
 const SWIPE_TIME_THRESHOLD = 500; // Maximum time (ms) allowed to perform the swipe
