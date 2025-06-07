@@ -29,6 +29,8 @@ export interface DialogContext {
   readonly dialogRef: Dispatch<SetStateAction<HTMLDialogElement | null>>;
   readonly state: OpenState;
   readonly shouldMount: boolean;
+  readonly triggerRef: Dispatch<SetStateAction<HTMLElement | null>>;
+  readonly trigger: HTMLElement | null;
 }
 
 export const context = createContext<DialogContext>(null as unknown as DialogContext);
