@@ -111,6 +111,7 @@ export const DialogRoot = forwardRef<DialogApi, PropsWithChildren<DialogRootProp
 
   useImperativeHandle(forwardedRef, () => ({ open: openFn }), [openFn]);
 
+  const [trigger, triggerRef] = useState<HTMLElement | null>(null);
   const value = useMemo<DialogContext>(() => {
     return {
       childOpen,
@@ -140,6 +141,8 @@ export const DialogRoot = forwardRef<DialogApi, PropsWithChildren<DialogRootProp
       open,
       timeEnter,
       timeExit,
+      trigger,
+      triggerRef,
     };
   }, [
     alert,
@@ -160,6 +163,7 @@ export const DialogRoot = forwardRef<DialogApi, PropsWithChildren<DialogRootProp
     timeExit,
     titleId,
     trapFocus,
+    trigger,
   ]);
 
   return <context.Provider value={value}>{children}</context.Provider>;
