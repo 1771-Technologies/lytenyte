@@ -30,3 +30,13 @@ export type {
   PopoverTriggerProps,
 } from "./popover/index.js";
 export { Popover } from "./popover/index.js";
+
+export type {
+  TooltipGroupProps,
+  TooltipPanelProps,
+  TooltipPortalProps,
+  TooltipPositionerProps,
+  TooltipRootProps,
+  TooltipTriggerProps,
+} from "./tooltip/index.js";
+export { Tooltip } from "./tooltip/index.js";
