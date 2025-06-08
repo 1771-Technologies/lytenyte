@@ -26,6 +26,7 @@ export interface DialogContext {
   readonly nestedCount: number;
   readonly timeEnter: number;
   readonly timeExit: number;
+  readonly dialog: HTMLDialogElement | null;
   readonly dialogRef: Dispatch<SetStateAction<HTMLDialogElement | null>>;
   readonly state: OpenState;
   readonly shouldMount: boolean;

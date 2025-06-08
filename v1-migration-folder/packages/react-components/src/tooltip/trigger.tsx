@@ -1,14 +1,14 @@
 import { useForkRef, useSlot, type SlotComponent } from "@1771technologies/lytenyte-react-hooks";
 import { forwardRef, type JSX } from "react";
-import { useTooltipRoot } from "./context";
+import { useTooltipRoot } from "./context.js";
 
-export interface TriggerProps {
+export interface TooltipTriggerProps {
   readonly as?: SlotComponent;
 }
 
 export const TooltipTrigger = forwardRef<
   HTMLButtonElement,
-  JSX.IntrinsicElements["button"] & TriggerProps
+  JSX.IntrinsicElements["button"] & TooltipTriggerProps
 >(function TooltipTrigger({ as, ...props }, forwarded) {
   const ctx = useTooltipRoot();
 

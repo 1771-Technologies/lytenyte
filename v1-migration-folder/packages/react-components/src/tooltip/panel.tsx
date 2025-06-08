@@ -1,5 +1,5 @@
 import { forwardRef, useId, useState, type JSX } from "react";
-import { useTooltipRoot } from "./context";
+import { useTooltipRoot } from "./context.js";
 import { useForkRef, useSlot, type SlotComponent } from "@1771technologies/lytenyte-react-hooks";
 
 export interface TooltipPanelProps {

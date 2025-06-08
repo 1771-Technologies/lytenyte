@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, type PropsWithChildren, useId } from "react";
-import { contextRoot, useTooltipGroup, type TooltipRootContext } from "./context";
+import { contextRoot, useTooltipGroup, type TooltipRootContext } from "./context.js";
 import { useEvent } from "@1771technologies/lytenyte-react-hooks";
 
 export interface TooltipRootProps {

@@ -251,5 +251,5 @@ export function useManagedDialog(
     trapFocus,
   ]);
 
-  return { shouldMount, ref: setDialog, state };
+  return { shouldMount, ref: setDialog, dialog, state };
 }
