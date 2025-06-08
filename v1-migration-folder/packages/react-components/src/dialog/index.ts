@@ -17,3 +17,8 @@ export const Dialog = {
 };
 
 export type { DialogApi, DialogRootProps } from "./root.js";
+export type { DialogCloseProps } from "./close.js";
+export type { DialogDescriptionProps } from "./description.js";
+export type { DialogPortalProps } from "./portal.js";
+export type { DialogTitleProps } from "./title.js";
+export type { DialogTriggerProps } from "./trigger.js";

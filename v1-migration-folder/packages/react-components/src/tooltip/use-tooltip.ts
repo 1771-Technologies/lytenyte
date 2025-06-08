@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { hide, show } from "./tooltip-api.js";
 import type { Tooltip } from "./+types.js";
 
-export function useTooltip(props: Omit<Tooltip, "anchor"> & { open?: boolean }) {
+export type UseTooltipArgs = Omit<Tooltip, "anchor"> & { open?: boolean };
+
+export function useTooltip(props: UseTooltipArgs) {
   const [el, ref] = useState<HTMLElement | null>(null);
   const [open, setOpen] = useState(false);
 
