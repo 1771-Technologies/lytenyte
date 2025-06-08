@@ -31,6 +31,7 @@ export function Positioner({
     setFloating(el);
     if (!el) return;
 
+    el.style.position = "fixed";
     el.style.display = "none";
   });
 
