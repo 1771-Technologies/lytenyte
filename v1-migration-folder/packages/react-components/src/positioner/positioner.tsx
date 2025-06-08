@@ -2,6 +2,10 @@ import { useState, type ReactElement } from "react";
 import { usePositioner, type UsePositioner } from "./use-positioner.js";
 import { useEvent, useSlot } from "@1771technologies/lytenyte-react-hooks";
 
+export type PositionerProps = Omit<UsePositioner, "floating"> & {
+  children: ReactElement;
+};
+
 export function Positioner({
   children,
 
@@ -20,15 +24,14 @@ export function Positioner({
   rootBoundary,
 
   ...props
-}: {
-  children: ReactElement;
-} & Omit<UsePositioner, "floating">) {
+}: PositionerProps) {
   const [floating, setFloating] = useState<HTMLElement | null>(null);
 
   const internalRef = useEvent((el: HTMLElement | null) => {
     setFloating(el);
     if (!el) return;
 
+    el.style.position = "fixed";
     el.style.display = "none";
   });
 

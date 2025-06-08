@@ -1,6 +1,6 @@
 import { forwardRef, type JSX } from "react";
 import type { OpenState } from "./use-transition-effect.js";
-import { useSlot, type SlotComponent } from "@1771technologies/lytenyte-react-hooks";
+import { useForkRef, useSlot, type SlotComponent } from "@1771technologies/lytenyte-react-hooks";
 import { useDialog } from "./root.use-dialog.js";
 
 export interface DialogTriggerProps {
@@ -21,10 +21,11 @@ export const DialogTrigger = forwardRef<
     "aria-haspopup": "dialog",
     "aria-expanded": ctx.shouldMount,
   };
+  const ref = useForkRef(ctx.triggerRef, forwarded);
 
   const renderedSlot = useSlot({
     props: [defaultProps, props],
-    ref: forwarded,
+    ref: ref,
     slot: as ?? <button />,
     state: ctx.state,
   });
