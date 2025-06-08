@@ -1,6 +1,6 @@
 import "../../css/main.css";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Popover } from "../popover.js";
+import { Popover } from "../index.js";
 import { useRef, useState } from "react";
 import type { DialogApi } from "../../dialog/index.js";
 import type { ReferenceElement } from "@1771technologies/lytenyte-floating";
