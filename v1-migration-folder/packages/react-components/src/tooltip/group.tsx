@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState, type PropsWithChildren } from "react";
-import { context, type TooltipGroupContext } from "./context";
+import { context, type TooltipGroupContext } from "./context.js";
 
-interface TooltipProviderProps {
+export interface TooltipGroupProps {
   showDelay?: number;
   hideDelay?: number;
 }
@@ -10,7 +10,7 @@ export const TooltipGroup = ({
   children,
   showDelay,
   hideDelay,
-}: PropsWithChildren<TooltipProviderProps>) => {
+}: PropsWithChildren<TooltipGroupProps>) => {
   const [groupOpen, setGroupOpen] = useState(false);
   const [openGroupId, setOpenGroupId] = useState("");
   const groupClose = useRef<null | (() => void)>(null);

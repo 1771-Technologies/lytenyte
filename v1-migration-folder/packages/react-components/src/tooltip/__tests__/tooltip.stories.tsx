@@ -1,13 +1,18 @@
+import "../../css/main.css";
 import type { Meta, StoryObj } from "@storybook/react";
-import { TooltipGroup } from "../tooltip-group";
-import { TooltipRoot } from "../root";
-import { TooltipTrigger } from "../trigger";
-import { TooltipPositioner } from "../positioner";
-import { TooltipPanel } from "../panel";
-import { Portal } from "../../portal/portal";
+import { TooltipGroup } from "../group.js";
+import { TooltipRoot } from "../root.js";
+import { TooltipTrigger } from "../trigger.js";
+import { TooltipPositioner } from "../positioner.js";
+import { TooltipPanel } from "../panel.js";
+import { Portal } from "../../portal/portal.js";
 import { expect, userEvent, within } from "@storybook/test";
 import { sleep } from "@1771technologies/lytenyte-js-utils";
 import { useState } from "react";
+import { DialogPanel } from "../../dialog/panel.js";
+import { DialogPortal } from "../../dialog/portal.js";
+import { DialogTrigger } from "../../dialog/trigger.js";
+import { DialogRoot } from "../../dialog/root.js";
 
 const meta: Meta = {
   title: "Components/Tooltip",
@@ -157,4 +162,36 @@ export const Controlled: StoryObj = {
       await userEvent.unhover(c.getByText("Open"));
     });
   },
+};
+
+const InDialogComp = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <DialogRoot>
+      <DialogTrigger>Open</DialogTrigger>
+      <DialogPortal>
+        <DialogPanel className="dialog">
+          <TooltipRoot open={open} onOpenChange={(b) => setOpen(b)}>
+            <TooltipTrigger>Open</TooltipTrigger>
+
+            <Portal>
+              <TooltipPositioner sideOffset={8}>
+                <TooltipPanel style={{ border: "1px solid black" }}>
+                  Another
+                  <div tabIndex={0} role="dialog">
+                    Grab me
+                  </div>
+                </TooltipPanel>
+              </TooltipPositioner>
+            </Portal>
+          </TooltipRoot>
+        </DialogPanel>
+      </DialogPortal>
+    </DialogRoot>
+  );
+};
+
+export const InDialog: StoryObj = {
+  render: InDialogComp,
 };

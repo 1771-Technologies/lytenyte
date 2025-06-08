@@ -94,7 +94,7 @@ export const DialogRoot = forwardRef<DialogApi, PropsWithChildren<DialogRootProp
     }
   }, [alert, modal, p.dismissible, p.trapFocus]);
 
-  const { shouldMount, ref, state } = useManagedDialog(
+  const { shouldMount, dialog, ref, state } = useManagedDialog(
     open,
     onOpenChange,
     timeEnter,
@@ -132,6 +132,7 @@ export const DialogRoot = forwardRef<DialogApi, PropsWithChildren<DialogRootProp
       dismissPropagates: p.dismissPropagates ?? false,
 
       shouldMount,
+      dialog,
       dialogRef: ref,
       nestedCount,
       state,
@@ -148,6 +149,7 @@ export const DialogRoot = forwardRef<DialogApi, PropsWithChildren<DialogRootProp
     alert,
     childOpen,
     descriptionId,
+    dialog,
     dismissible,
     lockBodyScroll,
     modal,
