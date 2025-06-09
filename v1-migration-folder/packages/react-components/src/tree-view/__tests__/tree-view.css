@@ -1,0 +1,37 @@
+ul {
+  padding: 0px;
+  margin: 0px;
+  list-style: none;
+
+  li {
+    padding: 0px;
+    padding-left: calc(16px * var(--tree-depth));
+  }
+}
+
+[data-ln-tree-leaf][data-ln-selected="true"] {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+[data-ln-selected="true"] > [data-tree-branch-label] {
+  background-color: rgba(0, 0, 255, 0.2);
+}
+
+[data-tree-branch-label] {
+  display: flex;
+  gap: 8px;
+}
+
+[data-tree-branch-grid-wrapped] {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 100ms ease-in;
+  overflow: hidden;
+}
+
+[data-tree-branch-grid-wrapped][data-expanded="true"] {
+  grid-template-rows: 1fr;
+}
+
+[data-tree-branch-grid-wrapped-content] {
+  overflow: hidden;
+}
