@@ -130,6 +130,9 @@ export interface PathLeaf<T extends PathProvidedItem = PathProvidedItem> {
 export interface PathBranch<T extends PathProvidedItem = PathProvidedItem> {
   /** The type discriminant that identifies this as a branch node */
   readonly kind: "branch";
+
+  /** A unique identifier for this node*/
+  readonly id: string;
   /**
    * The matrix item associated with this branch node.
    * Contains the original matrix item describing the path and its position.

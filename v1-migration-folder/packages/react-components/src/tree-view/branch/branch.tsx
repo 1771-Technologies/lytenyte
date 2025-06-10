@@ -15,8 +15,6 @@ export interface TreeBranchProps {
   readonly label?: SlotComponent;
   readonly expander?: SlotComponent;
 
-  readonly expandedDefault?: boolean;
-
   readonly transitionEnterMs?: number;
   readonly transitionExitMs?: number;
   readonly gridWrapped?: boolean;
@@ -24,23 +22,14 @@ export interface TreeBranchProps {
 
 export const TreeBranch = forwardRef<HTMLLIElement, JSX.IntrinsicElements["li"] & TreeBranchProps>(
   function TreeBranch(
-    {
-      itemId,
-      label,
-      expander,
-      transitionEnterMs,
-      transitionExitMs,
-      expandedDefault,
-      gridWrapped,
-      ...props
-    },
+    { itemId, label, expander, transitionEnterMs, transitionExitMs, gridWrapped, ...props },
     forwarded,
   ) {
     const depth = useDepth();
     const root = useTreeRoot();
 
     // Manage the open and close state of the branch
-    const expanded = root.expansions[itemId] ?? expandedDefault ?? false;
+    const expanded = root.expansions[itemId] ?? root.expansionDefault ?? false;
 
     const { open, shouldMount, state, toggle } = useTransitionedOpen({
       initial: expanded,
@@ -67,7 +56,9 @@ export const TreeBranch = forwardRef<HTMLLIElement, JSX.IntrinsicElements["li"] 
     });
 
     const expandedProps: JSX.IntrinsicElements["div"] = {
-      onClick: () => onExpansionChange(!expanded),
+      onClick: () => {
+        onExpansionChange(!expanded);
+      },
     };
 
     const expanderRendered = useSlot({
@@ -81,12 +72,13 @@ export const TreeBranch = forwardRef<HTMLLIElement, JSX.IntrinsicElements["li"] 
       <depthContext.Provider value={depth + 1}>
         <li
           {...props}
-          onKeyDown={useBranchKeys(itemId, expandedDefault ?? false, props.onKeyDown)}
+          onKeyDown={useBranchKeys(itemId, root.expansionDefault ?? false, props.onKeyDown)}
           tabIndex={-1}
           ref={forwarded}
           role="treeitem"
           aria-expanded={open}
           aria-selected={root.selection.has(itemId)}
+          aria-level={depth + 1}
           data-ln-selected={root.selection.has(itemId)}
           data-ln-tree-node
           data-ln-tree-branch

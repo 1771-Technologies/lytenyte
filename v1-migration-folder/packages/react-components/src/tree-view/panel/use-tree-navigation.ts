@@ -5,6 +5,7 @@ import { makeHandleTypeahead } from "./make-handle-typeahead";
 import { makeHandleNavigation } from "./make-handle-navigation";
 import { makeHandleSelection } from "./make-handle-selection";
 import { getTreeNodeId } from "../utils/get-tree-node-id";
+import { tabbable } from "@1771technologies/lytenyte-focus";
 
 export function useTreeNavigation() {
   const ctx = useTreeRoot();
@@ -50,21 +51,39 @@ export function useTreeNavigation() {
     );
 
     const handleTypeahead = makeHandleTypeahead();
-    const handleNavigation = makeHandleNavigation();
+    const handleNavigation = makeHandleNavigation(ctx);
     const handleSelection = makeHandleSelection(ctx);
 
     panel.addEventListener(
       "keydown",
       (ev) => {
         handleTypeahead(panel, ev);
-        handleNavigation(panel, ev);
+        handleNavigation(ev);
         handleSelection(ev);
+
+        if (ev.key === "Tab") {
+          const els = tabbable(panel as any) as HTMLElement[];
+          if (!els.length) return;
+
+          const original = els.map((el) => {
+            const o = el.getAttribute("tabindex");
+            el.tabIndex = -1;
+
+            return o;
+          });
+          requestAnimationFrame(() => {
+            els.forEach((el, i) => {
+              if (original[i] == null) el.removeAttribute("tabindex");
+              else el.setAttribute("tabindex", original[i]);
+            });
+          });
+        }
       },
       { signal: controller.signal },
     );
 
     return () => controller.abort();
-  }, [ctx, panel]);
+  }, [ctx, focused, panel]);
 
   return focused;
 }

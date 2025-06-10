@@ -9,6 +9,12 @@ ul {
   }
 }
 
+[data-ln-tree-branch],
+[data-ln-tree-leaf] {
+  background-color: white;
+  transition: transform 100ms ease-in-out;
+}
+
 [data-ln-tree-leaf][data-ln-selected="true"] {
   background-color: rgba(0, 0, 0, 0.2);
 }

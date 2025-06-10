@@ -1,7 +1,16 @@
+import { isInView } from "@1771technologies/lytenyte-dom-utils";
 import type { TreeViewRootContext } from "../context";
+import { getFirstNode } from "../navigation/get-first-node";
+import { getLastNode } from "../navigation/get-last-node";
+import { getNextNode } from "../navigation/get-next-node";
+import { getPrevNode } from "../navigation/get-prev-node";
 import { getFocusableNodes } from "../utils/get-focusable-nodes";
 import { getFocusedNode } from "../utils/get-focused-node";
+import { getIdsBetweenNodes } from "../utils/get-ids-between-nodes";
 import { getTreeNodeId } from "../utils/get-tree-node-id";
+import { selectNode } from "../utils/select-node";
+import { toggleAllSelections } from "../utils/toggle-all-selections";
+import { toggleSelection } from "../utils/toggle-selection";
 
 export function makeHandleSelection(ctx: TreeViewRootContext) {
   const acceptedKeys = ["Enter", "Home", "End", "ArrowDown", "ArrowUp", "Space", " ", "a"];
@@ -10,30 +19,14 @@ export function makeHandleSelection(ctx: TreeViewRootContext) {
     if (ctx.selectionMode === "none") return;
     if (!acceptedKeys.includes(ev.key)) return;
 
+    ev.preventDefault();
+
     const pivot = ctx.selectionPivotRef.current;
 
     if (ev.key === " " && (ctx.selectionMode === "single" || !ev.shiftKey || !pivot)) {
       const node = getFocusedNode()!;
-      const id = getTreeNodeId(node);
-
-      const isSelected = ctx.selection.has(id);
-
-      if (ctx.selectionMode === "single") {
-        if (isSelected) ctx.onSelectionChange(new Set());
-        else ctx.onSelectionChange(new Set([id]));
-        return;
-      }
-
-      const next = new Set(ctx.selection);
-      if (next.has(id)) {
-        next.delete(id);
-        ctx.selectionPivotRef.current = null;
-      } else {
-        next.add(id);
-        ctx.selectionPivotRef.current = id;
-      }
-
-      ctx.onSelectionChange(next);
+      toggleSelection(node, ctx);
+      return;
     }
 
     if (ctx.selectionMode !== "multiple") return;
@@ -47,84 +40,68 @@ export function makeHandleSelection(ctx: TreeViewRootContext) {
     if (ev.ctrlKey || ev.metaKey) {
       if (ev.key === "a") {
         ev.preventDefault();
-
-        const allIds = new Set(focusables.map((c) => getTreeNodeId(c)));
-        const selection = ctx.selection;
-        if (allIds.isSubsetOf(selection)) {
-          ctx.onSelectionChange(new Set());
-        } else {
-          ctx.onSelectionChange(allIds);
-        }
+        toggleAllSelections(ctx);
+        return;
       }
     }
 
-    if (ev.shiftKey) {
-      if (ev.key === "ArrowUp" && focusedIndex !== 0) {
-        const node = focusables[focusedIndex - 1];
-        node.focus();
-        const id = getTreeNodeId(node);
-        if (ctx.selection.has(id)) return;
+    if (!ev.shiftKey) return;
 
-        ctx.selectionPivotRef.current = id;
-        const next = new Set(ctx.selection);
-        next.add(id);
-        ctx.onSelectionChange(next);
-        return;
-      }
-      if (ev.key === "ArrowDown" && focusedIndex !== focusables.length) {
-        const node = focusables[focusedIndex + 1];
-        node.focus();
-        const id = getTreeNodeId(node);
-        if (ctx.selection.has(id)) return;
+    if (ev.key === "ArrowUp" && focusedIndex !== 0) {
+      const node = getPrevNode(focused);
+      if (!isInView(node!, ctx.panel!))
+        node?.scrollIntoView({ behavior: "instant", block: "start" });
+      selectNode(node, ctx, true);
+      return;
+    }
+    if (ev.key === "ArrowDown" && focusedIndex !== focusables.length) {
+      const node = getNextNode(focused);
+      if (!isInView(node!, ctx.panel!)) node?.scrollIntoView({ behavior: "instant", block: "end" });
+      selectNode(node, ctx, true);
+      return;
+    }
 
-        ctx.selectionPivotRef.current = id;
-        const next = new Set(ctx.selection);
-        next.add(id);
-        ctx.onSelectionChange(next);
-        return;
-      }
+    if (ev.key === " ") {
+      const pivotNode = focusables.find((c) => getTreeNodeId(c) === pivot);
+      if (!pivotNode) return;
 
-      if (ev.key === " ") {
-        const pivotIndex = focusables.findIndex((c) => getTreeNodeId(c) === pivot);
-        if (pivotIndex === -1) return;
+      const ids = ctx.getIdsBetweenNodes(pivotNode, focused, ctx.panel!);
 
-        const [start, end] = [
-          Math.min(pivotIndex, focusedIndex),
-          Math.max(pivotIndex, focusedIndex),
-        ];
+      const next = new Set(ctx.selection);
+      ids.forEach((c) => next.add(c));
+      ctx.onSelectionChange(next);
+      ctx.selectionPivotRef.current = getTreeNodeId(focused);
+      return;
+    }
 
-        const idsToSelect = focusables.slice(start, end + 1).map((c) => getTreeNodeId(c));
-        const next = new Set(ctx.selection);
-        idsToSelect.forEach((c) => next.add(c));
-        ctx.onSelectionChange(next);
-        ctx.selectionPivotRef.current = getTreeNodeId(focused);
-        return;
-      }
+    if (!ev.ctrlKey && !ev.metaKey) return;
 
-      if (ev.ctrlKey || ev.metaKey) {
-        if (ev.key === "Home") {
-          const idsToSelect = focusables.slice(0, focusedIndex).map((c) => getTreeNodeId(c));
-          const next = new Set(ctx.selection);
-          idsToSelect.forEach((c) => next.add(c));
-          ctx.onSelectionChange(next);
-          ctx.selectionPivotRef.current = getTreeNodeId(focused);
+    if (ev.key === "Home") {
+      const firstNode = getFirstNode(ctx.panel!);
 
-          focusables.at(0)?.focus();
-          ctx.selectionPivotRef.current = idsToSelect.at(0) ?? null;
-          return;
-        }
-        if (ev.key === "End") {
-          const idsToSelect = focusables.slice(focusedIndex).map((c) => getTreeNodeId(c));
-          const next = new Set(ctx.selection);
-          idsToSelect.forEach((c) => next.add(c));
-          ctx.onSelectionChange(next);
-          ctx.selectionPivotRef.current = getTreeNodeId(focused);
+      const ids = getIdsBetweenNodes(firstNode!, focused, ctx.panel!);
 
-          focusables.at(-1)?.focus();
-          ctx.selectionPivotRef.current = idsToSelect.at(-1) ?? null;
-          return;
-        }
-      }
+      const next = new Set(ctx.selection);
+      ids.forEach((c) => next.add(c));
+      ctx.onSelectionChange(next);
+
+      firstNode?.focus();
+      ctx.selectionPivotRef.current = getTreeNodeId(firstNode!);
+      return;
+    }
+
+    if (ev.key === "End") {
+      const lastNode = getLastNode(ctx.panel!)!;
+
+      const ids = ctx.getIdsBetweenNodes(focused, lastNode, ctx.panel!);
+
+      const next = new Set(ctx.selection);
+      ids.forEach((c) => next.add(c));
+      ctx.onSelectionChange(next);
+
+      lastNode?.focus();
+      ctx.selectionPivotRef.current = getTreeNodeId(lastNode!);
+      return;
     }
   };
 
