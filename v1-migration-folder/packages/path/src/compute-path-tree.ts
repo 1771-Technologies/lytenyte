@@ -95,6 +95,7 @@ export function computePathTree<T extends PathProvidedItem>(
       if (!current.children.has(id)) {
         current.children.set(id, {
           kind: "branch",
+          id,
           data,
           parent: current,
           children: new Map(),

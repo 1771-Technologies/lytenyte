@@ -178,6 +178,9 @@ importers:
       '@1771technologies/lytenyte-js-utils':
         specifier: workspace:*
         version: link:../js-utils
+      '@1771technologies/lytenyte-path':
+        specifier: workspace:*
+        version: link:../path
       '@1771technologies/lytenyte-react-hooks':
         specifier: workspace:*
         version: link:../react-hooks
