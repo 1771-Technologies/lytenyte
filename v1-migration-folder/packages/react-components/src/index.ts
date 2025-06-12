@@ -40,3 +40,11 @@ export type {
   TooltipTriggerProps,
 } from "./tooltip/index.js";
 export { Tooltip } from "./tooltip/index.js";
+
+export type {
+  TreeBranchProps,
+  TreeLeafProps,
+  TreeRootProps,
+  VirtualizedTreeViewPathsArgs,
+} from "./tree-view/index.js";
+export { Tree } from "./tree-view/index.js";

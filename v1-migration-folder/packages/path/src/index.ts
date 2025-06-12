@@ -18,3 +18,17 @@ export { computePathTree } from "./compute-path-tree.js";
 export { computePathMatrix } from "./compute-path-matrix.js";
 export { computePathTable } from "./compute-path-table.js";
 export { transposePathMatrix } from "./transpose-path-table.js";
+
+export type {
+  PathRoot,
+  PathBranch,
+  PathLeaf,
+  PathMatrix,
+  PathMatrixItem,
+  PathProvidedItem,
+  PathProvidedItemObject,
+  PathTable,
+  PathTableGroup,
+  PathTableItem,
+  PathTableLeaf,
+} from "./+types.path-table.js";
