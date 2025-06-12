@@ -1,10 +1,10 @@
-import { TreeBranch } from "./branch/branch";
-import { useTreeViewPaths } from "./hooks/use-tree-view-paths";
-import { TreeLeaf } from "./leaf";
-import { TreePanel } from "./panel/panel";
-import { TreeRoot } from "./root";
-import { ForceSyncScrolling } from "./virtualized/force-sync-scrolling";
-import { useVirtualizedTree } from "./virtualized/use-virtualized-tree";
+import { TreeBranch } from "./branch/branch.js";
+import { useTreeViewPaths } from "./hooks/use-tree-view-paths.js";
+import { TreeLeaf } from "./leaf.js";
+import { TreePanel } from "./panel/panel.js";
+import { TreeRoot } from "./root.js";
+import { ForceSyncScrolling } from "./virtualized/force-sync-scrolling.js";
+import { useVirtualizedTree } from "./virtualized/use-virtualized-tree.js";
 
 export const Tree = {
   Leaf: TreeLeaf,

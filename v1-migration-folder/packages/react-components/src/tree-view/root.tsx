@@ -1,8 +1,8 @@
 import { forwardRef, useMemo, useRef, useState, type PropsWithChildren, type Ref } from "react";
 import { context, type TreeViewRootContext } from "./context";
 import { useEvent, useForkRef } from "@1771technologies/lytenyte-react-hooks";
-import { getAllIds } from "./navigation/get-all-ids";
-import { getIdsBetweenNodes } from "./utils/get-ids-between-nodes";
+import { getAllIds } from "./navigation/get-all-ids.js";
+import { getIdsBetweenNodes } from "./utils/get-ids-between-nodes.js";
 
 export interface TreeRootProps {
   readonly transitionEnter?: number;

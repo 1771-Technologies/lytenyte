@@ -1,13 +1,13 @@
 import { forwardRef, useEffect, type CSSProperties, type JSX, type PropsWithChildren } from "react";
-import { depthContext, useDepth } from "../depth-provider";
+import { depthContext, useDepth } from "../depth-provider.js";
 import {
   useEvent,
   useSlot,
   useTransitionedOpen,
   type SlotComponent,
 } from "@1771technologies/lytenyte-react-hooks";
-import { useTreeRoot } from "../context";
-import { useBranchKeys } from "./use-branch-keys";
+import { useTreeRoot } from "../context.js";
+import { useBranchKeys } from "./use-branch-keys.js";
 
 export interface TreeBranchProps {
   readonly itemId: string;

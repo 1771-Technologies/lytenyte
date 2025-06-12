@@ -1,5 +1,5 @@
-import type { TreeViewRootContext } from "../context";
-import { getAllIds } from "../navigation/get-all-ids";
+import type { TreeViewRootContext } from "../context.js";
+import { getAllIds } from "../navigation/get-all-ids.js";
 
 export function toggleAllSelections(ctx: TreeViewRootContext) {
   const allIds = getAllIds(ctx.panel!);

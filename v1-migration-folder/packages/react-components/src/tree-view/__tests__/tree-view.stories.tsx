@@ -1,16 +1,16 @@
 import "./tree-view.css";
 import type { Meta, StoryObj } from "@storybook/react";
-import { TreeRoot } from "../root";
-import { TreePanel } from "../panel/panel";
-import { TreeLeaf } from "../leaf";
-import { TreeBranch } from "../branch/branch";
-import { useTreeViewPaths } from "../hooks/use-tree-view-paths";
+import { TreeRoot } from "../root.js";
+import { TreePanel } from "../panel/panel.js";
+import { TreeLeaf } from "../leaf.js";
+import { TreeBranch } from "../branch/branch.js";
+import { useTreeViewPaths } from "../hooks/use-tree-view-paths.js";
 import type { PathBranch, PathLeaf } from "@1771technologies/lytenyte-path";
-import { useVirtualizedTree } from "../virtualized/use-virtualized-tree";
-import { figmaData } from "./data";
-import type { TreeVirtualItem } from "../virtualized/make-virtual-tree";
+import { useVirtualizedTree } from "../virtualized/use-virtualized-tree.js";
+import { figmaData } from "./data.js";
+import type { TreeVirtualItem } from "../virtualized/make-virtual-tree.js";
 import { useState } from "react";
-import { ForceSyncScrolling } from "../virtualized/force-sync-scrolling";
+import { ForceSyncScrolling } from "../virtualized/force-sync-scrolling.js";
 
 const meta: Meta = {
   title: "Components/TreeView",

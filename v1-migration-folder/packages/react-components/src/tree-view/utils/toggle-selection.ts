@@ -1,5 +1,5 @@
-import type { TreeViewRootContext } from "../context";
-import { getTreeNodeId } from "./get-tree-node-id";
+import type { TreeViewRootContext } from "../context.js";
+import { getTreeNodeId } from "./get-tree-node-id.js";
 
 export function toggleSelection(el: HTMLElement, ctx: TreeViewRootContext) {
   const id = getTreeNodeId(el);
