@@ -1,5 +1,5 @@
 import { useEffect, useState, type PropsWithChildren } from "react";
-import { useTreeRoot } from "../context";
+import { useTreeRoot } from "../context.js";
 
 export function ForceSyncScrolling(props: PropsWithChildren) {
   const [scroll, setScroll] = useState(0);

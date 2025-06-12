@@ -1,6 +1,6 @@
-import type { TreeViewRootContext } from "../context";
-import { getTreeNodeId } from "./get-tree-node-id";
-import { isTreeNodeDisabled } from "./is-tree-node-disabled";
+import type { TreeViewRootContext } from "../context.js";
+import { getTreeNodeId } from "./get-tree-node-id.js";
+import { isTreeNodeDisabled } from "./is-tree-node-disabled.js";
 
 export function selectNode(
   node: HTMLElement | null | undefined,

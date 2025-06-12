@@ -1,5 +1,5 @@
-import { getFocusableNodes } from "../utils/get-focusable-nodes";
-import { getPanel } from "../utils/get-panel";
+import { getFocusableNodes } from "../utils/get-focusable-nodes.js";
+import { getPanel } from "../utils/get-panel.js";
 
 // Assumes that el is a branch or leaf node
 export function getNextNode(el: HTMLElement) {
