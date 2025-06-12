@@ -1,5 +1,5 @@
-import { getFocusableNodes } from "./get-focusable-nodes";
-import { getTreeNodeId } from "./get-tree-node-id";
+import { getFocusableNodes } from "./get-focusable-nodes.js";
+import { getTreeNodeId } from "./get-tree-node-id.js";
 
 export function getIdsBetweenNodes(start: HTMLElement, end: HTMLElement, panel: HTMLElement) {
   const focusables = getFocusableNodes(panel);

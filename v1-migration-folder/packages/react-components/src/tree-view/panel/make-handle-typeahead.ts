@@ -1,6 +1,6 @@
-import { getFocusableNodes } from "../utils/get-focusable-nodes";
-import { getFocusedNode } from "../utils/get-focused-node";
-import { isBranchNode } from "../utils/is-branch-node";
+import { getFocusableNodes } from "../utils/get-focusable-nodes.js";
+import { getFocusedNode } from "../utils/get-focused-node.js";
+import { isBranchNode } from "../utils/is-branch-node.js";
 
 export function makeHandleTypeahead() {
   let typeaheadCapture: string[] = [];

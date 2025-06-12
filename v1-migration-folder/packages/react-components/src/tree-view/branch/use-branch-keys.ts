@@ -1,12 +1,12 @@
 import { useEvent } from "@1771technologies/lytenyte-react-hooks";
 import type { KeyboardEvent, KeyboardEventHandler } from "react";
-import { useTreeRoot } from "../context";
-import { getFocusableNodes } from "../utils/get-focusable-nodes";
-import { getFocusedNode } from "../utils/get-focused-node";
-import { isBranchNode } from "../utils/is-branch-node";
-import { getTreeNodeId } from "../utils/get-tree-node-id";
-import { getParentNode } from "../utils/get-parent-node";
-import { getSiblingBranches } from "../utils/get-sibling-branches";
+import { useTreeRoot } from "../context.js";
+import { getFocusableNodes } from "../utils/get-focusable-nodes.js";
+import { getFocusedNode } from "../utils/get-focused-node.js";
+import { isBranchNode } from "../utils/is-branch-node.js";
+import { getTreeNodeId } from "../utils/get-tree-node-id.js";
+import { getParentNode } from "../utils/get-parent-node.js";
+import { getSiblingBranches } from "../utils/get-sibling-branches.js";
 import { focusable } from "@1771technologies/lytenyte-focus";
 
 const accepted = ["ArrowRight", "ArrowLeft", "Enter", "*"];

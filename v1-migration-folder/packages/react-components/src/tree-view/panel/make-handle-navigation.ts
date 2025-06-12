@@ -1,10 +1,10 @@
 import { isInView } from "@1771technologies/lytenyte-dom-utils";
-import type { TreeViewRootContext } from "../context";
-import { getFirstNode } from "../navigation/get-first-node";
-import { getLastNode } from "../navigation/get-last-node";
-import { getNextNode } from "../navigation/get-next-node";
-import { getPrevNode } from "../navigation/get-prev-node";
-import { getFocusedNode } from "../utils/get-focused-node";
+import type { TreeViewRootContext } from "../context.js";
+import { getFirstNode } from "../navigation/get-first-node.js";
+import { getLastNode } from "../navigation/get-last-node.js";
+import { getNextNode } from "../navigation/get-next-node.js";
+import { getPrevNode } from "../navigation/get-prev-node.js";
+import { getFocusedNode } from "../utils/get-focused-node.js";
 
 export function makeHandleNavigation(ctx: TreeViewRootContext) {
   const acceptedKeys = ["ArrowUp", "ArrowDown", "Home", "End"];

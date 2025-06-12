@@ -1,4 +1,4 @@
-import { isBranchNode } from "./is-branch-node";
+import { isBranchNode } from "./is-branch-node.js";
 
 export function getParentNode(el: HTMLElement) {
   let current: HTMLElement | null = el.parentElement;
