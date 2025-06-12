@@ -26,6 +26,7 @@ export { isElement } from "./is-element.js";
 export { isFirefox } from "./is-firefox.js";
 export { isHiddenInput } from "./is-hidden-input.js";
 export { isHTMLElement } from "./is-html-element.js";
+export { isInView } from "./is-in-view.js";
 export { isInert } from "./is-inert.js";
 export { isInput } from "./is-input.js";
 export { isIOS } from "./is-ios.js";
