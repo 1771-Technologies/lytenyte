@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { handleFocusCapture, handleKeyDown } from "../grouped-focus";
+import { handleFocusCapture, handleKeyDown } from "../grouped-focus.js";
 import { expect, userEvent } from "@storybook/test";
 import { sleep } from "@1771technologies/lytenyte-js-utils";
 

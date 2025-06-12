@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { useTreeRoot } from "../context";
-import { getFocusableNodes } from "../utils/get-focusable-nodes";
-import { makeHandleTypeahead } from "./make-handle-typeahead";
-import { makeHandleNavigation } from "./make-handle-navigation";
-import { makeHandleSelection } from "./make-handle-selection";
-import { getTreeNodeId } from "../utils/get-tree-node-id";
+import { useTreeRoot } from "../context.js";
+import { getFocusableNodes } from "../utils/get-focusable-nodes.js";
+import { makeHandleTypeahead } from "./make-handle-typeahead.js";
+import { makeHandleNavigation } from "./make-handle-navigation.js";
+import { makeHandleSelection } from "./make-handle-selection.js";
+import { getTreeNodeId } from "../utils/get-tree-node-id.js";
 import { tabbable } from "@1771technologies/lytenyte-focus";
 
 export function useTreeNavigation() {

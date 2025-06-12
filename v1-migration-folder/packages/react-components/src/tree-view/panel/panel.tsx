@@ -1,10 +1,10 @@
 import { forwardRef, useRef, type JSX } from "react";
-import { depthContext } from "../depth-provider";
-import { useTreeRoot } from "../context";
+import { depthContext } from "../depth-provider.js";
+import { useTreeRoot } from "../context.js";
 import { useForkRef } from "@1771technologies/lytenyte-react-hooks";
-import { useTreeNavigation } from "./use-tree-navigation";
-import { getFocusedNode } from "../utils/get-focused-node";
-import { getFirstNode } from "../navigation/get-first-node";
+import { useTreeNavigation } from "./use-tree-navigation.js";
+import { getFocusedNode } from "../utils/get-focused-node.js";
+import { getFirstNode } from "../navigation/get-first-node.js";
 
 export const TreePanel = forwardRef<HTMLUListElement, JSX.IntrinsicElements["ul"]>(
   function TreePanel(props, forwarded) {
