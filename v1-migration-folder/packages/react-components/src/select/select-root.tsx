@@ -1,6 +1,6 @@
 import { type PropsWithChildren } from "react";
-import type { SelectContext } from "./context";
-import { context } from "./context";
+import type { SelectContext } from "./context.js";
+import { context } from "./context.js";
 
 export interface SelectRootProps {
   readonly context: SelectContext;

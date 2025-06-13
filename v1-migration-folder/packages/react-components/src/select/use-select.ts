@@ -1,26 +1,42 @@
 import { autocomplete, useCombobox } from "@1771technologies/lytenyte-react-autocomplete";
 import { useEvent } from "@1771technologies/lytenyte-react-hooks";
 import { useCallback, useMemo, useState } from "react";
-import type { SelectContext } from "./context";
+import type { SelectContext } from "./context.js";
 
 export type SelectItem = { id: string };
 export interface UseSelectArgs<T extends SelectItem> {
   readonly items: T[];
   readonly timeEnter?: number;
   readonly timeExit?: number;
+
+  readonly onSelect?: (item?: T) => void;
+  readonly selected?: T | null;
+  readonly itemToString?: (t?: T) => string;
 }
 
 export function useSelect<T extends SelectItem>({
   items,
   timeEnter = 0,
   timeExit = 0,
+
+  onSelect: providedOnSelect,
+  selected: providedSelect,
+
+  itemToString = (t) => t?.id ?? "",
 }: UseSelectArgs<T>) {
-  const [value, setValue] = useState<string>();
-  const [selected, setSelected] = useState<string>();
+  const [localSelected, setLocalSelect] = useState<T>();
 
   const options = useMemo(() => items.map((c) => c.id), [items]);
   const lookup = useMemo(() => new Map(items.map((c) => [c.id, c])), [items]);
   const [input, setInput] = useState<HTMLInputElement | null>(null);
+
+  const onSelect = useEvent((id?: string) => {
+    const item = id ? lookup.get(id) : undefined;
+    providedOnSelect?.(item);
+    setLocalSelect(item);
+  });
+
+  const selected = providedSelect ?? localSelected;
 
   const {
     getFocusCaptureProps,
@@ -30,12 +46,9 @@ export function useSelect<T extends SelectItem>({
     getToggleProps,
     getListProps,
 
+    open,
     focusIndex,
     isInputEmpty,
-    isItemSelected,
-    setFocusIndex,
-    open,
-    setOpen,
 
     getItemProps: getItem,
   } = useCombobox({
@@ -43,14 +56,13 @@ export function useSelect<T extends SelectItem>({
 
     feature: autocomplete({ select: true }),
 
-    onChange: setValue,
-    value: value,
+    onChange: () => {},
+    value: itemToString(selected),
 
-    selected,
-    onSelectChange: setSelected,
+    selected: selected?.id,
+    onSelectChange: onSelect,
   });
 
-  const getItemById = useEvent((id: string) => lookup.get(id));
   const getItemProps = useCallback(
     (id: string, index: number) => getItem({ index, item: id }),
     [getItem],
@@ -75,8 +87,7 @@ export function useSelect<T extends SelectItem>({
         focusIndex,
         isInputEmpty,
         open,
-        selected,
-        value,
+        selected: selected?.id,
       },
     };
   }, [
@@ -91,36 +102,19 @@ export function useSelect<T extends SelectItem>({
     input,
     isInputEmpty,
     open,
-    selected,
+    selected?.id,
     timeEnter,
     timeExit,
-    value,
   ]);
 
   const state = useMemo(() => {
     return {
-      getItemById,
+      open,
+      selected,
       lookup,
       options,
-
-      open: open,
-      setOpen,
-      focusIndex,
-      setFocusIndex,
-      isInputEmpty,
-      isItemSelected,
     };
-  }, [
-    focusIndex,
-    getItemById,
-    isInputEmpty,
-    isItemSelected,
-    lookup,
-    open,
-    options,
-    setFocusIndex,
-    setOpen,
-  ]);
+  }, [lookup, open, options, selected]);
 
   return { state, context };
 }

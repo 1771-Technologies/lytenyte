@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { SelectRoot } from "../select-root";
-import { SelectLabel } from "../select-label";
-import { useSelect } from "../use-select";
-import { SelectInput } from "../select-input";
-import { SelectOptions } from "../select-options";
-import { SelectOption } from "../select-item";
-import { SelectPositioner } from "../select-positioner";
-import { SelectPortal } from "../select-portal";
-import { SelectToggle } from "../select-toggle";
-import { SelectClear } from "../select-clear";
+import { SelectRoot } from "../select-root.js";
+import { SelectLabel } from "../select-label.js";
+import { useSelect } from "../use-select.js";
+import { SelectInput } from "../select-input.js";
+import { SelectOptions } from "../select-options.js";
+import { SelectOption } from "../select-item.js";
+import { SelectPositioner } from "../select-positioner.js";
+import { SelectPortal } from "../select-portal.js";
+import { SelectToggle } from "../select-toggle.js";
+import { SelectClear } from "../select-clear.js";
 
 const meta: Meta = {
   title: "Components/Select",
