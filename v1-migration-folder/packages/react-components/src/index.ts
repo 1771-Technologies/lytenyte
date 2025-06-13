@@ -48,3 +48,16 @@ export type {
   VirtualizedTreeViewPathsArgs,
 } from "./tree-view/index.js";
 export { Tree } from "./tree-view/index.js";
+
+export type {
+  SelectClearProps,
+  SelectItem,
+  SelectOptionProps,
+  SelectOptionsProps,
+  SelectPortalProps,
+  SelectPositionerProps,
+  SelectRootProps,
+  SelectToggleProps,
+  UseSelectArgs,
+} from "./select/index.js";
+export { Select } from "./select/index.js";

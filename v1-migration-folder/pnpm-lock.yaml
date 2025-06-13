@@ -183,6 +183,9 @@ importers:
       '@1771technologies/lytenyte-path':
         specifier: workspace:*
         version: link:../path
+      '@1771technologies/lytenyte-react-autocomplete':
+        specifier: workspace:*
+        version: link:../fork-react-autocomplete
       '@1771technologies/lytenyte-react-hooks':
         specifier: workspace:*
         version: link:../react-hooks
