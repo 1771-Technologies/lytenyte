@@ -98,7 +98,7 @@ function ViewFromPathHookComp() {
 
   return (
     <TreeRoot selectMode="multiple" gridWrappedBranches transitionEnter={200} transitionExit={200}>
-      <TreePanel>
+      <TreePanel id="xv">
         {nodes.map((c) => {
           return <RenderNode node={c} key={c.kind === "branch" ? c.id : c.data.id} />;
         })}
@@ -110,6 +110,67 @@ function ViewFromPathHookComp() {
 export const ViewFromPathHook: StoryObj = {
   render: () => {
     return <ViewFromPathHookComp />;
+  },
+  play: async ({ canvas: c }) => {
+    const panel = document.getElementById("xv");
+    await expect(panel).toBeVisible();
+    panel?.focus();
+    await sleep(200);
+
+    const home = c.getByText("Home").parentElement?.parentElement;
+    await expect(home).toHaveFocus();
+
+    await userEvent.keyboard("*");
+    await expect(c.getByText("Header")).toBeVisible();
+    await expect(c.getByText("Sidebar")).toBeVisible();
+    await expect(c.getByText("Profile")).toBeVisible();
+    await expect(c.getByText("Login_Form")).toBeVisible();
+
+    const main = c.getByText("Main").parentElement?.parentElement;
+    main?.focus();
+    await expect(main).toHaveFocus();
+    await userEvent.keyboard("{ArrowRight}");
+    await expect(c.getByText("StatsCard_1")).toBeVisible();
+    await expect(c.getByText("StatsCard_2")).toBeVisible();
+
+    const card = c.getByText("StatsCard_3");
+    card.focus();
+    await expect(card).toHaveFocus();
+    await userEvent.keyboard("{ArrowLeft}{ArrowLeft}");
+    await sleep(330);
+    expect(c.queryByText("StatsCard_1")).toBeNull();
+    await userEvent.keyboard("{ArrowRight}{ArrowRight}");
+    await expect(c.getByText("StatsCard_1")).toHaveFocus();
+    await userEvent.keyboard(" ");
+    await userEvent.keyboard("{ArrowUp}{ArrowUp}{ArrowUp}");
+    await userEvent.keyboard("{Shift>} {/Shift}");
+
+    let els = document.querySelectorAll('[data-ln-selected="true"]');
+    expect(els).toHaveLength(4);
+
+    await userEvent.keyboard("{Control>}a{/Control}");
+    els = document.querySelectorAll('[data-ln-selected="true"]');
+    expect(els).toHaveLength(35);
+    await userEvent.keyboard("{Control>}a{/Control}");
+    els = document.querySelectorAll('[data-ln-selected="true"]');
+    expect(els).toHaveLength(0);
+    await sleep(40);
+
+    const dashboard = c.getByText("Dashboard").parentElement?.parentElement;
+    dashboard?.focus();
+    await expect(dashboard).toHaveFocus();
+    await userEvent.keyboard("{Shift>}{ArrowDown}{/Shift}");
+    await userEvent.keyboard("{Shift>}{ArrowUp}{/Shift}");
+    els = document.querySelectorAll('[data-ln-selected="true"]');
+    expect(els).toHaveLength(2);
+
+    await userEvent.keyboard("{Shift>}{Control>}{Home}{/Control}{/Shift}");
+    els = document.querySelectorAll('[data-ln-selected="true"]');
+    expect(els).toHaveLength(7);
+    await userEvent.keyboard("{Shift>}{Control>}{End}{/Control}{/Shift}");
+    els = document.querySelectorAll('[data-ln-selected="true"]');
+    expect(els).toHaveLength(35);
+    await userEvent.keyboard("{Control>}a{/Control}");
   },
 };
 
