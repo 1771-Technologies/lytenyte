@@ -11,6 +11,8 @@ import { figmaData } from "./data.js";
 import type { TreeVirtualItem } from "../virtualized/make-virtual-tree.js";
 import { useState } from "react";
 import { ForceSyncScrolling } from "../virtualized/force-sync-scrolling.js";
+import { expect, userEvent } from "@storybook/test";
+import { sleep } from "@1771technologies/lytenyte-js-utils";
 
 const meta: Meta = {
   title: "Components/TreeView",
@@ -28,8 +30,8 @@ export const Main: StoryObj = {
         transitionExit={200}
         expansionDefault
       >
-        <TreePanel>
-          <TreeBranch itemId="x" label={<div>Run twice</div>}>
+        <TreePanel id="xv">
+          <TreeBranch itemId="x" label={<div>Run twice</div>} expander={<button>Fly</button>}>
             <TreeLeaf itemId="x1">Profile</TreeLeaf>
             <TreeLeaf itemId="x2">Security</TreeLeaf>
             <TreeLeaf itemId="x3">Email Alerts</TreeLeaf>
@@ -46,6 +48,25 @@ export const Main: StoryObj = {
           </TreeBranch>
         </TreePanel>
       </TreeRoot>
+    );
+  },
+  play: async ({ canvas: c }) => {
+    await expect(c.getByText("Profile")).toBeVisible();
+    await userEvent.click(c.getByText("Fly"));
+    await sleep(400);
+
+    await expect(c.queryByText("Profile")).toBeNull();
+    await userEvent.click(c.getByText("Fly"));
+    await sleep(400);
+
+    const panel = document.getElementById("xv");
+    await expect(panel).toBeVisible();
+    panel?.focus();
+
+    await sleep(100);
+
+    await userEvent.keyboard(
+      "{ArrowDown}{ArrowUp}{Enter}{Enter}{ArrowRight}{ArrowLeft}{End}{Home}",
     );
   },
 };
