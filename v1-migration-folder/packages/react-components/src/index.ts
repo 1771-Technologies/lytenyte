@@ -61,3 +61,16 @@ export type {
   UseSelectArgs,
 } from "./select/index.js";
 export { Select } from "./select/index.js";
+
+export type {
+  AutocompleteClearProps,
+  AutocompleteItem,
+  AutocompleteOptionProps,
+  AutocompleteOptionsProps,
+  AutocompletePortalProps,
+  AutocompletePositionProps,
+  AutocompleteRootProps,
+  AutocompleteToggleProps,
+  UseAutocompleteArgs,
+} from "./autocomplete/index.js";
+export { Autocomplete } from "./autocomplete/index.js";
