@@ -61,3 +61,32 @@ export type {
   UseSelectArgs,
 } from "./select/index.js";
 export { Select } from "./select/index.js";
+
+export type {
+  AutocompleteClearProps,
+  AutocompleteItem,
+  AutocompleteOptionProps,
+  AutocompleteOptionsProps,
+  AutocompletePortalProps,
+  AutocompletePositionProps,
+  AutocompleteRootProps,
+  AutocompleteToggleProps,
+  UseAutocompleteArgs,
+} from "./autocomplete/index.js";
+export { Autocomplete } from "./autocomplete/index.js";
+
+export type {
+  MultiSelectClearProps,
+  MultiSelectItem,
+  MultiSelectLabelProps,
+  MultiSelectOptionProps,
+  MultiSelectOptionsProps,
+  MultiSelectPanelProps,
+  MultiSelectPortalProps,
+  MultiSelectPositionerProps,
+  MultiSelectRootProps,
+  MultiSelectTagProps,
+  MultiSelectToggleProps,
+  UseMultiSelectArgs,
+} from "./multi-select/index.js";
+export { MultiSelect } from "./multi-select/index.js";

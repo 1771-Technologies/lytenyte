@@ -1,25 +1,25 @@
 import { forwardRef, type JSX } from "react";
-import { useSelectRoot, type SelectState } from "./context.js";
 import { useSlot, type SlotComponent } from "@1771technologies/lytenyte-react-hooks";
+import { useDropComboRoot, type DropComboState } from "./context.js";
 
-export interface SelectOptionProps {
+export interface DropComboOptionProps {
   readonly option: string;
   readonly index: number;
-  as?: SlotComponent<SelectState>;
+  as?: SlotComponent<DropComboState>;
 }
 
-export const SelectOption = forwardRef<
+export const DropComboOption = forwardRef<
   HTMLDivElement,
-  JSX.IntrinsicElements["div"] & SelectOptionProps
->(function SelectOption({ option, index, as, ...props }, forwarded) {
-  const ctx = useSelectRoot();
+  JSX.IntrinsicElements["div"] & DropComboOptionProps
+>(function DropComboOption({ option, index, as, ...props }, forwarded) {
+  const ctx = useDropComboRoot();
 
   const renderer = useSlot({
     props: [
       ctx.getItemProps(option, index),
       props,
       {
-        "data-ln-select-active": index === ctx.state.focusIndex,
+        "data-ln-active": index === ctx.state.focusIndex,
         "data-ln-selected": ctx.state.selected === option,
       },
     ],

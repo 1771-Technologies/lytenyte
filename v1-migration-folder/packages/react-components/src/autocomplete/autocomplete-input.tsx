@@ -1,8 +1,8 @@
 import { forwardRef, type JSX } from "react";
-import { useSelectRoot } from "./context.js";
 import { useForkRef, useSlot } from "@1771technologies/lytenyte-react-hooks";
+import { useSelectRoot } from "../select/context.js";
 
-export const SelectInput = forwardRef<
+export const AutocompleteInput = forwardRef<
   HTMLInputElement,
   Omit<JSX.IntrinsicElements["input"], "children" | "value" | "onChange">
 >(function SelectInput(props, forwarded) {
@@ -12,7 +12,7 @@ export const SelectInput = forwardRef<
   const ref = useForkRef((inputProps as any).ref, forwarded, ctx.setInput);
 
   const slot = useSlot({
-    props: [props, inputProps, { readOnly: true, "data-ln-select-open": ctx.state.open }],
+    props: [props, inputProps, { "data-ln-select-open": ctx.state.open }],
     ref,
     slot: <input />,
   });
