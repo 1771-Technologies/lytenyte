@@ -1,5 +1,5 @@
 import { forwardRef, type JSX } from "react";
-import { useForkRef } from "@1771technologies/lytenyte-react-hooks";
+import { useForkRef, useSlot } from "@1771technologies/lytenyte-react-hooks";
 import { useSelectRoot } from "../select/context.js";
 
 export const AutocompleteInput = forwardRef<
@@ -11,5 +11,11 @@ export const AutocompleteInput = forwardRef<
   const inputProps = ctx.getInputProps();
   const ref = useForkRef((inputProps as any).ref, forwarded, ctx.setInput);
 
-  return <input {...props} {...inputProps} ref={ref} data-ln-select-open={ctx.state.open} />;
+  const slot = useSlot({
+    props: [props, inputProps, { "data-ln-select-open": ctx.state.open }],
+    ref,
+    slot: <input />,
+  });
+
+  return slot;
 });

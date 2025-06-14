@@ -1,18 +1,18 @@
 import { forwardRef, type JSX } from "react";
+import { useMultiSelectRoot } from "./context.js";
 import { useForkRef, useSlot } from "@1771technologies/lytenyte-react-hooks";
-import { useDropComboRoot } from "./context.js";
 
-export const DropComboInput = forwardRef<
+export const MultiSelectInput = forwardRef<
   HTMLInputElement,
   Omit<JSX.IntrinsicElements["input"], "children" | "value" | "onChange">
->(function DropComboInput(props, forwarded) {
-  const ctx = useDropComboRoot();
+>(function MultiSelectInput(props, forwarded) {
+  const ctx = useMultiSelectRoot();
 
   const inputProps = ctx.getInputProps();
   const ref = useForkRef((inputProps as any).ref, forwarded, ctx.setInput);
 
   const slot = useSlot({
-    props: [props, inputProps],
+    props: [props, inputProps, { "data-ln-select-open": ctx.state.open }],
     ref,
     slot: <input />,
   });

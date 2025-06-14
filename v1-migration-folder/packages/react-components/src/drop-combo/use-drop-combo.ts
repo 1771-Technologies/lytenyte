@@ -129,8 +129,9 @@ export function useDropCombo<T extends DropItem>({
       selected,
       lookup,
       options,
+      isInputEmpty,
     };
-  }, [lookup, open, options, selected]);
+  }, [isInputEmpty, lookup, open, options, selected]);
 
   return { state, context };
 }

@@ -74,3 +74,19 @@ export type {
   UseAutocompleteArgs,
 } from "./autocomplete/index.js";
 export { Autocomplete } from "./autocomplete/index.js";
+
+export type {
+  MultiSelectClearProps,
+  MultiSelectItem,
+  MultiSelectLabelProps,
+  MultiSelectOptionProps,
+  MultiSelectOptionsProps,
+  MultiSelectPanelProps,
+  MultiSelectPortalProps,
+  MultiSelectPositionerProps,
+  MultiSelectRootProps,
+  MultiSelectTagProps,
+  MultiSelectToggleProps,
+  UseMultiSelectArgs,
+} from "./multi-select/index.js";
+export { MultiSelect } from "./multi-select/index.js";

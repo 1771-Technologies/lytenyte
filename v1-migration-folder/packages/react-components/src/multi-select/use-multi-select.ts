@@ -1,30 +1,30 @@
-import { supercomplete, useCombobox } from "@1771technologies/lytenyte-react-autocomplete";
+import {
+  useMultiSelect as useMulti,
+  multiSelect,
+} from "@1771technologies/lytenyte-react-autocomplete";
 import { useEvent } from "@1771technologies/lytenyte-react-hooks";
 import { useCallback, useMemo, useState } from "react";
 import { smartStringIncludes } from "@1771technologies/lytenyte-js-utils";
-import type { SelectContext } from "../select/context.js";
+import type { MultiSelectContext } from "./context.js";
 
-export type AutocompleteItem = { id: string };
-export interface UseAutocompleteArgs<T extends AutocompleteItem> {
+export type MultiSelectItem = { id: string };
+export interface UseMultiSelectArgs<T extends MultiSelectItem> {
   readonly items: T[];
   readonly timeEnter?: number;
   readonly timeExit?: number;
 
-  readonly onSelect?: (item?: T) => void;
-  readonly selected?: T | null;
+  readonly onSelect?: (item: T[]) => void;
+  readonly selected?: T[];
   readonly allowDeselect?: boolean;
 
   readonly filterPredicate?: (query: string | undefined, t: T) => boolean;
 
-  readonly onComplete?: (
-    query: string,
-    res: (data: { index: number; item: string }) => void,
-  ) => void;
-
   readonly closeOnSelect?: boolean;
+
+  readonly isDrop?: boolean;
 }
 
-export function useAutocomplete<T extends AutocompleteItem>({
+export function useMultiSelect<T extends MultiSelectItem>({
   items,
   timeEnter = 0,
   timeExit = 0,
@@ -33,15 +33,14 @@ export function useAutocomplete<T extends AutocompleteItem>({
   selected: providedSelect,
 
   filterPredicate = (q, t) => !q || smartStringIncludes(t.id, q),
-  onComplete,
 
   allowDeselect,
   closeOnSelect,
-}: UseAutocompleteArgs<T>) {
-  const [value, setValue] = useState<string>();
-  const [localSelected, setLocalSelect] = useState<T>();
-
+}: UseMultiSelectArgs<T>) {
   const lookup = useMemo(() => new Map(items.map((c) => [c.id, c])), [items]);
+
+  const [value, setValue] = useState<string>();
+  const [localSelected, setLocalSelect] = useState<T[]>([]);
 
   const filteredItems = useMemo(() => {
     return items.filter((item) => {
@@ -50,47 +49,49 @@ export function useAutocomplete<T extends AutocompleteItem>({
   }, [filterPredicate, items, value]);
   const options = useMemo(() => filteredItems.map((c) => c.id), [filteredItems]);
 
-  const onSelect = useEvent((id?: string) => {
-    const item = id ? lookup.get(id) : undefined;
-    providedOnSelect?.(item);
-    setLocalSelect(item);
-  });
-
   const selected = providedSelect ?? localSelected;
+
+  const selectedIds = useMemo(() => {
+    return selected.map((c) => c.id);
+  }, [selected]);
+
+  const onSelect = useEvent((ids: string[]) => {
+    const items = ids.map((c) => lookup.get(c)!);
+    providedOnSelect?.(items);
+    setLocalSelect(items);
+  });
 
   const [toggle, setToggle] = useState<HTMLElement | null>(null);
   const [input, setInput] = useState<HTMLInputElement | null>(null);
 
   const {
-    getFocusCaptureProps,
     getLabelProps,
+    getFocusCaptureProps,
     getInputProps,
     getClearProps,
     getToggleProps,
     getListProps,
+
+    removeSelect: remove,
+    isItemSelected,
+    isTagActive,
 
     open,
     focusIndex,
     isInputEmpty,
 
     getItemProps: getItem,
-  } = useCombobox({
+  } = useMulti({
+    feature: multiSelect({ closeOnSelect }),
+
     flipOnSelect: allowDeselect,
     items: options,
 
-    feature: supercomplete({
-      onRequestItem: (event, res) => {
-        onComplete?.(event.value, res);
-      },
-      select: true,
-      closeOnSelect,
-    }),
+    selected: selectedIds,
+    onSelectChange: onSelect,
 
     onChange: setValue,
     value,
-
-    selected: selected?.id,
-    onSelectChange: onSelect,
   });
 
   const getItemProps = useCallback(
@@ -98,29 +99,34 @@ export function useAutocomplete<T extends AutocompleteItem>({
     [getItem],
   );
 
-  const context = useMemo<SelectContext>(() => {
+  const context = useMemo<MultiSelectContext>(() => {
     return {
-      getFocusCaptureProps,
-      getLabelProps,
       getInputProps,
       getClearProps,
       getToggleProps,
       getListProps,
       getItemProps,
+      getFocusCaptureProps,
+      getLabelProps,
 
       input,
       setInput,
       toggle,
       setToggle,
 
+      removeSelect: remove,
+      isItemSelected,
+      isTagActive,
+
       timeEnter,
       timeExit,
 
+      isDrop: false,
       state: {
         focusIndex,
         isInputEmpty,
         open,
-        selected: selected?.id,
+        selected: selectedIds,
       },
     };
   }, [
@@ -134,8 +140,11 @@ export function useAutocomplete<T extends AutocompleteItem>({
     getToggleProps,
     input,
     isInputEmpty,
+    isItemSelected,
+    isTagActive,
     open,
-    selected?.id,
+    remove,
+    selectedIds,
     timeEnter,
     timeExit,
     toggle,
@@ -147,9 +156,12 @@ export function useAutocomplete<T extends AutocompleteItem>({
       selected,
       lookup,
       options,
+      remove,
       isInputEmpty,
+      isItemSelected,
+      isTagActive,
     };
-  }, [isInputEmpty, lookup, open, options, selected]);
+  }, [isInputEmpty, isItemSelected, isTagActive, lookup, open, options, remove, selected]);
 
   return { state, context };
 }

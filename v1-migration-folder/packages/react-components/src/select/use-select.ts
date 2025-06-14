@@ -113,8 +113,9 @@ export function useSelect<T extends SelectItem>({
       selected,
       lookup,
       options,
+      isInputEmpty,
     };
-  }, [lookup, open, options, selected]);
+  }, [isInputEmpty, lookup, open, options, selected]);
 
   return { state, context };
 }
