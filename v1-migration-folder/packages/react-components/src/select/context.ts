@@ -31,7 +31,6 @@ export interface SelectState {
   readonly open: boolean;
   readonly focusIndex: number;
   readonly isInputEmpty: boolean;
-
   readonly selected: string | undefined;
 }
 

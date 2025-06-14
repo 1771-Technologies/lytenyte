@@ -1,20 +1,30 @@
-import { autocomplete, useCombobox } from "@1771technologies/lytenyte-react-autocomplete";
+import { supercomplete, useCombobox } from "@1771technologies/lytenyte-react-autocomplete";
 import { useEvent } from "@1771technologies/lytenyte-react-hooks";
 import { useCallback, useMemo, useState } from "react";
-import type { SelectContext } from "./context.js";
+import { smartStringIncludes } from "@1771technologies/lytenyte-js-utils";
+import type { SelectContext } from "../select/context.js";
 
-export type SelectItem = { id: string };
-export interface UseSelectArgs<T extends SelectItem> {
+export type AutocompleteItem = { id: string };
+export interface UseAutocompleteArgs<T extends AutocompleteItem> {
   readonly items: T[];
   readonly timeEnter?: number;
   readonly timeExit?: number;
 
   readonly onSelect?: (item?: T) => void;
   readonly selected?: T | null;
-  readonly itemToString?: (t?: T) => string;
+  readonly allowDeselect?: boolean;
+
+  readonly filterPredicate?: (query: string | undefined, t: T) => boolean;
+
+  readonly onComplete?: (
+    query: string,
+    res: (data: { index: number; item: string }) => void,
+  ) => void;
+
+  readonly closeOnSelect?: boolean;
 }
 
-export function useSelect<T extends SelectItem>({
+export function useAutocomplete<T extends AutocompleteItem>({
   items,
   timeEnter = 0,
   timeExit = 0,
@@ -22,13 +32,23 @@ export function useSelect<T extends SelectItem>({
   onSelect: providedOnSelect,
   selected: providedSelect,
 
-  itemToString = (t) => t?.id ?? "",
-}: UseSelectArgs<T>) {
+  filterPredicate = (q, t) => !q || smartStringIncludes(t.id, q),
+  onComplete,
+
+  allowDeselect,
+  closeOnSelect,
+}: UseAutocompleteArgs<T>) {
+  const [value, setValue] = useState<string>();
   const [localSelected, setLocalSelect] = useState<T>();
 
-  const options = useMemo(() => items.map((c) => c.id), [items]);
   const lookup = useMemo(() => new Map(items.map((c) => [c.id, c])), [items]);
-  const [input, setInput] = useState<HTMLInputElement | null>(null);
+
+  const filteredItems = useMemo(() => {
+    return items.filter((item) => {
+      return filterPredicate(value, item);
+    });
+  }, [filterPredicate, items, value]);
+  const options = useMemo(() => filteredItems.map((c) => c.id), [filteredItems]);
 
   const onSelect = useEvent((id?: string) => {
     const item = id ? lookup.get(id) : undefined;
@@ -37,6 +57,9 @@ export function useSelect<T extends SelectItem>({
   });
 
   const selected = providedSelect ?? localSelected;
+
+  const [toggle, setToggle] = useState<HTMLElement | null>(null);
+  const [input, setInput] = useState<HTMLInputElement | null>(null);
 
   const {
     getFocusCaptureProps,
@@ -52,12 +75,19 @@ export function useSelect<T extends SelectItem>({
 
     getItemProps: getItem,
   } = useCombobox({
+    flipOnSelect: allowDeselect,
     items: options,
 
-    feature: autocomplete({ select: true }),
+    feature: supercomplete({
+      onRequestItem: (event, res) => {
+        onComplete?.(event.value, res);
+      },
+      select: true,
+      closeOnSelect,
+    }),
 
-    onChange: () => {},
-    value: itemToString(selected),
+    onChange: setValue,
+    value,
 
     selected: selected?.id,
     onSelectChange: onSelect,
@@ -77,8 +107,11 @@ export function useSelect<T extends SelectItem>({
       getToggleProps,
       getListProps,
       getItemProps,
+
       input,
       setInput,
+      toggle,
+      setToggle,
 
       timeEnter,
       timeExit,
@@ -105,6 +138,7 @@ export function useSelect<T extends SelectItem>({
     selected?.id,
     timeEnter,
     timeExit,
+    toggle,
   ]);
 
   const state = useMemo(() => {
