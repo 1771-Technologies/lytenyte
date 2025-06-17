@@ -727,23 +727,27 @@ export const Portal: Story = {
 
 function NestedDialogs() {
   return (
-    <DialogRoot>
-      <DialogTrigger>Open</DialogTrigger>
-      <DialogPortal>
-        <DialogPanel>
-          <DialogTitle>This is one</DialogTitle>
-          <DialogRoot>
-            <DialogTrigger>Open Nested</DialogTrigger>
-            <DialogPortal>
-              <DialogPanel>
-                <button>Nested</button>
-                <DialogClose>Close me</DialogClose>
-              </DialogPanel>
-            </DialogPortal>
-          </DialogRoot>
-        </DialogPanel>
-      </DialogPortal>
-    </DialogRoot>
+    <>
+      <DialogRoot>
+        <DialogTrigger>Open</DialogTrigger>
+        <DialogPortal>
+          <DialogPanel>
+            <DialogTitle>This is one</DialogTitle>
+            <DialogRoot>
+              <DialogTrigger>Open Nested</DialogTrigger>
+              <DialogPortal>
+                <DialogPanel>
+                  <button>Nested</button>
+                  <DialogClose>Close me</DialogClose>
+                </DialogPanel>
+              </DialogPortal>
+            </DialogRoot>
+          </DialogPanel>
+        </DialogPortal>
+      </DialogRoot>
+
+      <div style={{ height: 4000, width: 2000 }} />
+    </>
   );
 }
 
