@@ -9,6 +9,7 @@ import type {
 import { debounce as createDebounce, equal } from "@1771technologies/lytenyte-js-utils";
 import { useOnWindowResize } from "../use-on-window-resize";
 import { useOnWindowScroll } from "../use-on-window-scroll";
+import { useEvent } from "../use-event";
 
 // Fork off: https://www.npmjs.com/package/react-use-measure
 /* v8 ignore next 9999 */
@@ -145,13 +146,13 @@ export function useMeasure(
   }
 
   // the ref we expose to the user
-  const ref = (node: HTMLOrSVGElement | null) => {
+  const ref = useEvent((node: HTMLOrSVGElement | null) => {
     if (!node || node === state.current.element) return;
     removeListeners();
     state.current.element = node;
     state.current.scrollContainers = findScrollContainers(node);
     addListeners();
-  };
+  });
 
   // add general event listeners
   useOnWindowScroll(scrollChange, Boolean(scroll));
