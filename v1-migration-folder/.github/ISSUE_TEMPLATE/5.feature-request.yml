@@ -1,0 +1,66 @@
+name: "💎 Feature Request"
+description: Propose an innovative enhancement for LyteNyte Grid.
+labels: ["feature request", "status: triage"]
+type: "Feature"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to request a feature. Please provide a clear, informative, and searchable summary title above.  
+
+        If you have questions about using or implementing LyteNyte Grid, please submit a “General Question” issue rather than a feature request.
+
+  - type: input
+    attributes:
+      label: Search Keywords
+      description: |
+        Before submitting your feature request, please review our [existing feature requests](https://github.com/1771-Technologies/lytenyte/issues)
+        to ensure there are no duplicates. If no match is found, list the keywords you used to improve future discoverability.
+    validations:
+      required: false
+
+  - type: checkboxes
+    attributes:
+      label: Latest Version
+      description: We integrate bug fixes, performance enhancements, and other improvements in each new release.
+      options:
+        - label: I have tested the latest version
+          required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Feature Description
+      description:
+        Give a clear and concise description of the feature you're requesting. Please include
+        as much detail as possible about the reason for the request and its intended use cases.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Suggested Solution
+      description: Describe how you envision this feature being implemented in LyteNyte Grid.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Alternative Approaches
+      description: Describe any alternative solutions or features you’ve considered.
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Additional Context
+      description: Provide additional context, screenshots, or examples relevant to this feature request.
+    validations:
+      required: false
+
+  - type: input
+    id: contact
+    attributes:
+      label: Customer ID (Optional)
+      description: PRO license holders are entitled to priority review by including their customer ID when submitting a feature request.
+      placeholder: "e.g. JANE-1221"

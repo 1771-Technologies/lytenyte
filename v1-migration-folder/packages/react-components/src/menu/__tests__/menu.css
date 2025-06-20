@@ -1,0 +1,16 @@
+[role="menu"] {
+  width: fit-content;
+  border: 1px solid black;
+}
+
+[role="menuitem"],
+[role="menuitemradio"],
+[role="menuitemcheckbox"] {
+  padding: 8px;
+  width: 200px;
+
+  &:hover {
+    background-color: blue;
+    color: white;
+  }
+}
