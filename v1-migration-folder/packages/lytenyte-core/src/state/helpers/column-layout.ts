@@ -12,7 +12,10 @@ export function makeColumnLayout(
     const row = combinedView[r];
 
     const rowLayout: HeaderLayoutCell[] = [];
-    for (let col = 0; col < row.length; col++) {
+    for (let i = 0; i < row.length; i++) {
+      const c = row[i];
+      const col = c.colStart;
+
       if (
         !(col >= b.colStartStart && col < b.colStartEnd) && // not in start area
         !(col >= b.colCenterStart && col < b.colCenterEnd) && // not in center area
@@ -21,11 +24,12 @@ export function makeColumnLayout(
         continue;
       }
 
-      const c = row[col];
+      const colPin = col < b.colStartEnd ? "start" : col >= b.colEndStart ? "end" : null;
 
       if (c.kind === "leaf") {
         rowLayout.push({
           kind: "cell",
+          colPin,
           column: c.data,
           rowStart: c.rowStart,
           rowEnd: c.rowStart + c.rowSpan,
@@ -39,6 +43,7 @@ export function makeColumnLayout(
 
       rowLayout.push({
         kind: "group",
+        colPin,
         id: c.data.id,
         isCollapsible: groupMeta.groupIsCollapsible.get(c.data.id)!,
         idOccurrence: c.data.idOccurrence,

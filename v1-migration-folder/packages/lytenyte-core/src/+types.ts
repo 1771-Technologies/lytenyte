@@ -285,7 +285,7 @@ export interface GridView {
   /**
    *
    */
-  readonly rows: RowLayout;
+  readonly rows: RowSectionLayouts;
 }
 
 /**
@@ -321,6 +321,11 @@ export interface HeaderCellLayout {
    *
    */
   readonly colSpan: number;
+
+  /**
+   *
+   */
+  readonly colPin: ColumnPin;
 
   /**
    *
@@ -366,6 +371,11 @@ export interface HeaderGroupCellLayout {
    *
    */
   readonly colSpan: number;
+
+  /**
+   *
+   */
+  readonly colPin: ColumnPin;
 
   /**
    *
@@ -461,6 +471,16 @@ export interface RowCellLayout {
    *
    */
   readonly rowSpan: number;
+
+  /**
+   *
+   */
+  readonly rowPin: RowPin;
+
+  /**
+   *
+   */
+  readonly colPin: ColumnPin;
 }
 
 /**
@@ -476,17 +496,17 @@ export interface RowFullWidthRowLayout {
    *
    */
   readonly kind: "full-width";
+
+  /**
+   *
+   */
+  readonly rowPin: RowPin;
 }
 
 /**
  *
  */
-export interface RowLayout {
-  /**
-   *
-   */
-  readonly layout: (RowNormalRowLayout | RowFullWidthRowLayout)[];
-}
+export type RowLayout = RowNormalRowLayout | RowFullWidthRowLayout;
 
 /**
  *
@@ -506,6 +526,46 @@ export interface RowNormalRowLayout {
    *
    */
   readonly cells: RowCellLayout[];
+
+  /**
+   *
+   */
+  readonly rowPin: RowPin;
+}
+
+/**
+ *
+ */
+export interface RowSectionLayouts {
+  /**
+   *
+   */
+  readonly top: RowLayout[];
+
+  /**
+   *
+   */
+  readonly center: RowLayout[];
+
+  /**
+   *
+   */
+  readonly bottom: RowLayout[];
+
+  /**
+   *
+   */
+  readonly rowTopTotalHeight: number;
+
+  /**
+   *
+   */
+  readonly rowCenterTotalHeight: number;
+
+  /**
+   *
+   */
+  readonly rowBottomTotalHeight: number;
 }
 
 /**

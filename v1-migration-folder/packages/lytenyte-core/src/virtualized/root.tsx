@@ -35,11 +35,17 @@ export function Root({ grid, children }: PropsWithChildren<RootProps>) {
   useLayoutEffect(() => {
     if (!element) return;
 
-    grid.state.viewport.set((element as HTMLElement) ?? null);
-    grid.state.viewportHeightOuter.set(bounds.height);
-    grid.state.viewportWidthOuter.set(bounds.width);
-    grid.state.viewportWidthInner.set(element?.clientWidth ?? 0);
-    grid.state.viewportHeightInner.set(element?.clientHeight ?? 0);
+    const obs = new ResizeObserver(() => {
+      grid.state.viewport.set((element as HTMLElement) ?? null);
+      grid.state.viewportHeightOuter.set(bounds.height);
+      grid.state.viewportWidthOuter.set(bounds.width);
+      grid.state.viewportWidthInner.set(element?.clientWidth ?? 0);
+      grid.state.viewportHeightInner.set(element?.clientHeight ?? 0);
+    });
+
+    obs.observe(element);
+
+    return () => obs.disconnect();
   }, [
     bounds.height,
     bounds.width,

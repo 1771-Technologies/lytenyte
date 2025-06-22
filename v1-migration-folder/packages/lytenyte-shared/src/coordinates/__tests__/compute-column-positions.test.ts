@@ -210,28 +210,28 @@ describe("computeColumnPositions", () => {
     ];
 
     expect(computeColumnPositions(widths, {}, 973, false)).toMatchInlineSnapshot(`
-    Uint32Array [
-      0,
-      0,
-      243,
-      486,
-      972,
-    ]
-  `);
+      Uint32Array [
+        0,
+        0,
+        100,
+        200,
+        400,
+      ]
+    `);
   });
 
   test("should handle overriding the default width", () => {
     const widths: ColumnWidthItem[] = [{}, { width: 100 }, { width: 100 }, { width: 200 }];
 
     expect(computeColumnPositions(widths, {}, 973, false)).toMatchInlineSnapshot(`
-    Uint32Array [
-      0,
-      324,
-      486,
-      648,
-      972,
-    ]
-  `);
+      Uint32Array [
+        0,
+        200,
+        300,
+        400,
+        600,
+      ]
+    `);
   });
 
   test("should handle size to fit shrink", () => {

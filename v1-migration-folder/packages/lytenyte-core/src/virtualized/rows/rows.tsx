@@ -1,15 +1,21 @@
 import { forwardRef, type CSSProperties, type JSX } from "react";
 import { useGridRoot } from "../context";
 import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
-import { SCROLL_WIDTH_VARIABLE } from "../+constants";
+import {
+  SCROLL_WIDTH_VARIABLE,
+  VIEWPORT_HEIGHT_VARIABLE,
+  VIEWPORT_WIDTH_VARIABLE,
+} from "../+constants";
 
-const RowsImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(
-  function Rows(props, forwarded) {
+export const RowsContainer = fastDeepMemo(
+  forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function Rows(props, forwarded) {
     const ctx = useGridRoot().grid;
 
     const height = ctx.state.heightTotal.useValue();
     const width = ctx.state.widthTotal.useValue();
 
+    const viewportHeight = ctx.state.viewportHeightInner.useValue();
+    const viewportWidth = ctx.state.viewportWidthInner.useValue();
     return (
       <div
         {...props}
@@ -19,15 +25,15 @@ const RowsImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(
             ...props.style,
             height,
             width,
-            display: "grid",
-            gridTemplateRows: "0px",
-            gridTemplateColumns: "0px",
+            minWidth: "100%",
+            display: "flex",
+            flexDirection: "column",
             [SCROLL_WIDTH_VARIABLE]: `${width}px`,
+            [VIEWPORT_WIDTH_VARIABLE]: `${viewportWidth}px`,
+            [VIEWPORT_HEIGHT_VARIABLE]: `${viewportHeight}px`,
           } as CSSProperties
         }
       />
     );
-  },
+  }),
 );
-
-export const Rows = fastDeepMemo(RowsImpl);

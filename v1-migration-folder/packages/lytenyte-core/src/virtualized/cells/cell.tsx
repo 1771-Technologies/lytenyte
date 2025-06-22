@@ -1,8 +1,8 @@
-import { forwardRef, type JSX } from "react";
+import { forwardRef, useMemo, type CSSProperties, type JSX } from "react";
 import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
 import type { RowCellLayout } from "../../+types";
 import { useGridRoot } from "../context";
-import { getTranslate } from "@1771technologies/lytenyte-shared";
+import { getTranslate, sizeFromCoord } from "@1771technologies/lytenyte-shared";
 
 export interface CellProps {
   readonly cell: RowCellLayout;
@@ -16,28 +16,53 @@ const CellImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & CellP
   const xPositions = cx.xPositions.useValue();
   const yPositions = cx.yPositions.useValue();
 
-  const width = xPositions[cell.colIndex + 1] - xPositions[cell.colIndex];
-  const height = yPositions[cell.rowIndex + 1] - yPositions[cell.rowIndex];
-  const transform = getTranslate(xPositions[cell.colIndex], 0);
+  const viewport = cx.viewportWidthInner.useValue();
+  const width = sizeFromCoord(cell.colIndex, xPositions, cell.colSpan);
+  const height = sizeFromCoord(cell.rowIndex, yPositions, cell.rowSpan);
 
-  return (
-    <div
-      {...props}
-      ref={forwarded}
-      style={{
-        ...props.style,
+  const isSticky = !!cell.colPin;
+  const isRowPinned = !!cell.rowPin;
 
-        height,
-        width,
-        transform,
-        boxSizing: "border-box",
-        gridColumnStart: "1",
-        gridColumnEnd: "2",
-        gridRowStart: "1",
-        gridRowEnd: "2",
-      }}
-    />
-  );
+  const styles = useMemo(() => {
+    const styles: CSSProperties = {
+      height,
+      width,
+      minWidth: width,
+      maxWidth: width,
+      boxSizing: "border-box",
+      gridColumnStart: "1",
+      gridColumnEnd: "2",
+      gridRowStart: "1",
+      gridRowEnd: "2",
+    };
+    if (isSticky) {
+      styles.position = "sticky";
+      styles.left = 0;
+
+      styles.zIndex = isRowPinned ? 5 : 2;
+    }
+
+    if (cell.colPin === "end") {
+      const spaceLeft = xPositions.at(-1)! - xPositions[cell.colIndex];
+      styles.transform = getTranslate(viewport - spaceLeft, 0);
+    } else {
+      styles.transform = getTranslate(xPositions[cell.colIndex], 0);
+    }
+
+    return { ...props.style, ...styles };
+  }, [
+    cell.colIndex,
+    cell.colPin,
+    height,
+    isRowPinned,
+    isSticky,
+    props.style,
+    viewport,
+    width,
+    xPositions,
+  ]);
+
+  return <div {...props} ref={forwarded} style={styles} />;
 });
 
 export const Cell = fastDeepMemo(CellImpl);

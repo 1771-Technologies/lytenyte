@@ -1,4 +1,4 @@
-import { forwardRef, type JSX } from "react";
+import { forwardRef, useMemo, type CSSProperties, type JSX } from "react";
 import type { HeaderGroupCellLayout } from "../../+types";
 import { useGridRoot } from "../context";
 import { getTranslate } from "@1771technologies/lytenyte-shared";
@@ -19,18 +19,39 @@ const HeaderGroupCellImpl = forwardRef<
 
   const x = xPositions[cell.colStart];
   const width = xPositions[cell.colEnd] - x;
-  const transform = getTranslate(x, 0);
+
+  const isSticky = !!cell.colPin;
+  const viewport = ctx.viewportWidthInner.useValue();
+
+  const styles = useMemo(() => {
+    const styles: CSSProperties = {};
+    if (isSticky) {
+      styles.position = "sticky";
+      styles.left = 0;
+      styles.zIndex = 11;
+    }
+
+    if (cell.colPin === "end") {
+      const spaceLeft = xPositions.at(-1)! - xPositions[cell.colStart];
+      styles.transform = getTranslate(viewport - spaceLeft, 0);
+    } else {
+      styles.transform = getTranslate(xPositions[cell.colStart], 0);
+    }
+
+    return styles;
+  }, [cell.colPin, cell.colStart, isSticky, viewport, xPositions]);
 
   return (
     <div
       {...props}
       ref={forwarded}
       style={{
+        ...props.style,
+        ...styles,
         gridRow: "1 / 2",
         gridColumn: "1 / 2",
         width,
         height,
-        transform,
         boxSizing: "border-box",
       }}
     >

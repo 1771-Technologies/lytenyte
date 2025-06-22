@@ -10,6 +10,10 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
 
   const ref = useForkRef(ctx.ref, forwarded);
 
+  const vp = ctx.grid.state.viewport.useValue();
+  const width = ctx.grid.state.widthTotal.useValue();
+  const height = ctx.grid.state.heightTotal.useValue();
+
   return (
     <div
       {...props}
@@ -17,7 +21,9 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
       ref={ref}
       style={{ ...style, position: "relative", width: "100%", height: "100%", overflow: "auto" }}
     >
-      {children}
+      {vp && children}
+      {/* Prevents layouts shifts when the viewport size has not been retrieved. */}
+      {!vp && <div style={{ width, height }} />}
     </div>
   );
 });

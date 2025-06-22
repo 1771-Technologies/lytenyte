@@ -77,9 +77,9 @@ export function computeColumnPositions(
       }
     }
   }
-  // CASE 3: NON-FLEX EXPANSION
+  // CASE 3: SIZE-TO-FIT EXPANDING
   // If no flex columns exist but there's extra space, expand all columns proportionally
-  else if (flexTotal === 0 && totalWidth < containerWidth) {
+  else if (flexTotal === 0 && totalWidth < containerWidth && sizeToFit) {
     const availableSpace = containerWidth - totalWidth - 1;
     let spaceLeft = availableSpace;
 

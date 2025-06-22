@@ -18,6 +18,7 @@ import type { InternalAtoms } from "./+types.js";
 import { makeRowLayout } from "./helpers/row-layout.js";
 import { equal } from "@1771technologies/lytenyte-js-utils";
 import { makeColumnLayout } from "./helpers/column-layout.js";
+import { emptyRowDataSource } from "./helpers/empty-row-data-source.js";
 
 const DEFAULT_HEADER_HEIGHT = 40;
 const COLUMN_GROUP_JOIN_DELIMITER = "-->";
@@ -43,7 +44,8 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const columnGroupExpansions = atom(p.columnGroupExpansions ?? {});
   const columnGroupDefaultExpansion = atom(p.columnGroupDefaultExpansion ?? true);
 
-  const rowDataSource = atom<RowDataSource<T>>({ init: () => {} });
+  const rowDataSource = atom<RowDataSource<T>>(emptyRowDataSource);
+
   const rowHeight = atom(p.rowHeight ?? 40);
   const rowAutoHeightCache = atom(p.rowAutoHeightCache ?? {});
   const rowAutoHeightGuess = atom(p.rowAutoHeightGuess ?? 40);
@@ -124,7 +126,6 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
   const headerLayout = atom<GridView["header"]>((g) => {
     const view = g(columnView);
-
     const layout = makeColumnLayout(view.combinedView, view.meta, g(bounds));
 
     return { maxCol: view.maxCol, maxRow: view.maxRow, layout: layout };
@@ -146,6 +147,14 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     );
   });
   const widthTotal = atom((get) => get(xPositions).at(-1)!);
+
+  const headerHeightTotal = atom((g) => {
+    const ghh = g(headerGroupHeight);
+    const hh = g(headerHeight);
+    const view = g(columnView);
+
+    return (view.maxRow - 1) * ghh + hh;
+  });
 
   const startCount = atom((g) => g(columnView).startCount);
   const endCount = atom((g) => g(columnView).endCount);
@@ -190,8 +199,24 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
     prevLayout = n;
 
+    const topCount = g(rdsAtoms.topCount);
+    const botCount = g(rdsAtoms.bottomCount);
+    const rowCount = g(rdsAtoms.rowCount);
+    const yPos = g(yPositions);
+
+    const botStart = rowCount - botCount;
+
     const view = makeRowLayout({ layout: n, layoutMap });
-    return view;
+    const topHeight = yPos[topCount];
+    const botHeight = yPos.at(-1)! - yPos[botStart];
+    const centerHeight = yPos.at(-1)! - topHeight - botHeight;
+
+    return {
+      ...view,
+      rowTopTotalHeight: topHeight,
+      rowBottomTotalHeight: botHeight,
+      rowCenterTotalHeight: centerHeight,
+    };
   });
 
   /**
@@ -257,6 +282,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
         atom((g) => g(columnView).maxRow),
         store,
       ),
+      headerHeightTotal: makeGridAtom(headerHeightTotal, store),
       xScroll: makeGridAtom(xScroll, store),
       yScroll: makeGridAtom(yScroll, store),
     } satisfies InternalAtoms,
@@ -265,7 +291,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   store.sub(rowDataSource, () => {
     store.get(rowDataSource).init(result);
   });
-  store.set(rowDataSource, p.rowDataSource ?? { init: () => {} });
+  store.set(rowDataSource, p.rowDataSource ?? emptyRowDataSource);
 
   return result;
 }

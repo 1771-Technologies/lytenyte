@@ -17,6 +17,7 @@ export { computeBounds } from "./virtual-bounds/compute-bounds.js";
 export { DEFAULT_PREVIOUS_LAYOUT } from "./+constants.layout.js";
 
 export { getTranslate } from "./utils/get-translate.js";
+export { sizeFromCoord } from "./utils/size-from-coord.js";
 
 export { makeGridAtom } from "./grid-atom/make-grid-atom.js";
 export { makeRowDataStore } from "./row-data-store/make-row-data-store.js";

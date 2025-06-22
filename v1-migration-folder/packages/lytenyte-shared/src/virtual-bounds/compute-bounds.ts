@@ -123,23 +123,21 @@ export function computeBounds({
     colOverscanEnd,
   );
 
-  const colCenterLast = startCount + maxCenterRowCount;
-  const rowCenterLast = topCount + maxCenterRowCount;
   return {
     colStartStart: 0,
     colStartEnd: startCount,
     colCenterStart: columnStart,
     colCenterEnd: columnEnd,
-    colCenterLast: colCenterLast,
-    colEndStart: colCenterLast,
-    colEndEnd: colCenterLast + endCount,
+    colCenterLast: maxCenterColCount,
+    colEndStart: maxCenterColCount,
+    colEndEnd: maxCenterColCount + endCount,
 
     rowTopStart: 0,
     rowTopEnd: topCount,
     rowCenterStart: rowStart,
     rowCenterEnd: rowEnd,
-    rowCenterLast: rowCenterLast,
-    rowBotStart: rowCenterLast,
-    rowBotEnd: rowCenterLast + bottomCount,
+    rowCenterLast: maxCenterRowCount,
+    rowBotStart: maxCenterRowCount,
+    rowBotEnd: maxCenterRowCount + bottomCount,
   };
 }

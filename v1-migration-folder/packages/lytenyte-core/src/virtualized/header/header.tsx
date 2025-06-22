@@ -30,6 +30,7 @@ const HeaderImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(
           boxSizing: "border-box",
           position: "sticky",
           top: 0,
+          zIndex: 10,
           display: "grid",
           gridTemplateRows: gridRowTemplate,
         }}

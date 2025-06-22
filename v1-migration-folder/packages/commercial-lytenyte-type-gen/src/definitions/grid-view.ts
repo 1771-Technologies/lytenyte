@@ -51,6 +51,14 @@ const HeaderBase: InterfaceTypePartial = {
       tsDoc: ``,
       doc: { en: `` },
     },
+    {
+      kind: "property",
+      name: "colPin",
+      optional: false,
+      value: "ColumnPin",
+      tsDoc: ``,
+      doc: { en: `` },
+    },
   ],
 };
 
@@ -224,6 +232,14 @@ export const RowFullWidthRowLayout: InterfaceType = {
       doc: { en: `` },
       optional: false,
     },
+    {
+      kind: "property",
+      name: "rowPin",
+      value: "RowPin",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+    },
   ],
 };
 
@@ -267,6 +283,22 @@ export const RowCellLayout: InterfaceType = {
       doc: { en: `` },
       optional: false,
     },
+    {
+      kind: "property",
+      name: "rowPin",
+      value: "RowPin",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+    },
+    {
+      kind: "property",
+      name: "colPin",
+      value: "ColumnPin",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+    },
   ],
 };
 
@@ -294,23 +326,81 @@ export const RowNormalRowLayout: InterfaceType = {
       doc: { en: `` },
       optional: false,
     },
+    {
+      kind: "property",
+      name: "rowPin",
+      value: "RowPin",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+    },
   ],
 };
 
-export const RowLayout: InterfaceType = {
-  kind: "interface",
+export const RowLayout: UnionType = {
+  kind: "union",
   name: "RowLayout",
+  export: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  types: ["RowNormalRowLayout", "RowFullWidthRowLayout"],
+};
+
+export const RowSectionLayouts: InterfaceType = {
+  kind: "interface",
+  name: "RowSectionLayouts",
   export: true,
   tsDoc: ``,
   doc: { en: `` },
   properties: [
     {
       kind: "property",
-      name: "layout",
+      name: "top",
       tsDoc: ``,
       doc: { en: `` },
       optional: false,
-      value: "(RowNormalRowLayout | RowFullWidthRowLayout)[]",
+      value: "RowLayout[]",
+    },
+    {
+      kind: "property",
+      name: "center",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "RowLayout[]",
+    },
+    {
+      kind: "property",
+      name: "bottom",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "RowLayout[]",
+    },
+
+    {
+      kind: "property",
+      name: "rowTopTotalHeight",
+      value: "number",
+      doc: { en: `` },
+      tsDoc: ``,
+      optional: false,
+    },
+    {
+      kind: "property",
+      name: "rowCenterTotalHeight",
+      value: "number",
+      doc: { en: `` },
+      tsDoc: ``,
+      optional: false,
+    },
+    {
+      kind: "property",
+      name: "rowBottomTotalHeight",
+      value: "number",
+      doc: { en: `` },
+      tsDoc: ``,
+      optional: false,
     },
   ],
 };
@@ -336,7 +426,7 @@ export const GridView: InterfaceType = {
       tsDoc: ``,
       doc: { en: `` },
       optional: false,
-      value: "RowLayout",
+      value: "RowSectionLayouts",
     },
   ],
 };
