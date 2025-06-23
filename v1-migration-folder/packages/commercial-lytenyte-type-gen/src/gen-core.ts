@@ -28,7 +28,10 @@ const typeModules = [
 ] as GenTypes[];
 
 const types = typeModules
-  .filter((c) => c.kind === "interface" || c.kind === "prelude" || c.kind === "union")
+  .filter(
+    (c) =>
+      c.kind === "interface" || c.kind === "prelude" || c.kind === "union" || c.kind === "function",
+  )
   .filter((c) => !c.tag || c.tag === "core");
 
 const result: string[] = [];

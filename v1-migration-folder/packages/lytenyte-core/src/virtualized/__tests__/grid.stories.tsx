@@ -75,7 +75,12 @@ function MainComp() {
   const ds = useClientRowDataSource({
     data: bankDataSmall,
   });
-  const g = useLyteNyte({ gridId: useId(), columns, rowDataSource: ds });
+  const g = useLyteNyte({
+    gridId: useId(),
+    columns,
+    rowDataSource: ds,
+    rowFullWidthPredicate: (r) => r.row.data.age == 20,
+  });
 
   const view = g.view.useValue();
 

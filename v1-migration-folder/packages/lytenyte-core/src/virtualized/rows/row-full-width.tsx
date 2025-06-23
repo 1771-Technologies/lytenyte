@@ -1,31 +1,28 @@
 import { forwardRef, type JSX } from "react";
 import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
 import type { RowFullWidthRowLayout } from "../../+types";
+import { useRowStyle } from "./use-row-style";
+import { VIEWPORT_WIDTH_VARIABLE_USE } from "../+constants";
 
 export interface RowFullWidthProps {
   readonly row: RowFullWidthRowLayout;
+  readonly space?: "viewport" | "scroll-width";
 }
 
 const RowFullWidthImpl = forwardRef<
   HTMLDivElement,
   JSX.IntrinsicElements["div"] & RowFullWidthProps
->(function RowFullWidth(props, forwarded) {
+>(function RowFullWidth({ row, space, ...props }, forwarded) {
   return (
     <div
       {...props}
       ref={forwarded}
-      style={{
-        ...props.style,
-
-        boxSizing: "border-box",
-        display: "grid",
-        gridTemplateColumns: "0px",
-        gridTemplateRows: "0px",
-        gridColumnStart: "1",
-        gridColumnEnd: "2",
-        gridRowStart: "1",
-        gridRowEnd: "2",
-      }}
+      style={useRowStyle(row, props.style, {
+        left: "0px",
+        border: "1px solid black",
+        position: "sticky",
+        width: space === "scroll-width" ? undefined : VIEWPORT_WIDTH_VARIABLE_USE,
+      })}
     />
   );
 });

@@ -61,6 +61,8 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const xScroll = atom(0);
   const yScroll = atom(0);
 
+  const rowFullWidthPredicate = atom({ fn: p.rowFullWidthPredicate ?? (() => false) });
+
   const layoutMap: LayoutMap = new Map();
 
   /**
@@ -184,13 +186,22 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     const rowScan = g(rowScanDistance);
     const colScan = g(colScanDistance);
 
+    const rds = g(rowDataSource);
+    const predicate = g(rowFullWidthPredicate).fn;
+    const isFullWidth = (r: number) => {
+      const rowNode = rds.rowByIndex(r);
+      if (!rowNode) return false;
+
+      return predicate({ grid, row: rowNode });
+    };
+
     applyLayoutUpdate({
       computeColSpan: () => 1,
       computeRowSpan: () => 1,
       colScanDistance: colScan,
       rowScanDistance: rowScan,
       invalidated: false, // TODO,
-      isFullWidth: () => false,
+      isFullWidth,
       isRowCutoff: () => false,
       layoutMap,
       nextLayout: n,
@@ -268,11 +279,13 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     colOverscanEnd: makeGridAtom(colOverscanEnd, store),
     rowOverscanTop: makeGridAtom(rowOverscanTop, store),
     rowOverscanBottom: makeGridAtom(rowOverscanBottom, store),
+
+    rowFullWidthPredicate: makeGridAtom(rowFullWidthPredicate, store),
   };
 
-  const result: Grid<T> = { state, view: makeGridAtom(gridView, store) };
+  const grid: Grid<T> = { state, view: makeGridAtom(gridView, store) };
 
-  Object.assign(result, {
+  Object.assign(grid, {
     internal: {
       headerCols: makeGridAtom(
         atom((g) => g(columnView).maxCol),
@@ -289,11 +302,11 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   });
 
   store.sub(rowDataSource, () => {
-    store.get(rowDataSource).init(result);
+    store.get(rowDataSource).init(grid);
   });
   store.set(rowDataSource, p.rowDataSource ?? emptyRowDataSource);
 
-  return result;
+  return grid;
 }
 
 export function useLyteNyte<T>(p: UseLyteNyteProps<T>) {

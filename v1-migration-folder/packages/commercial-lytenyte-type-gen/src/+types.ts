@@ -74,7 +74,12 @@ export interface FunctionType {
   readonly kind: "function";
   readonly export: boolean;
   readonly name: string;
-  readonly properties: { prop: PropertyType; overrides?: Partial<PropertyType> }[];
+  readonly seeAlso?: SeeAlso[];
+  readonly properties: (
+    | PropertyType
+    | { kind: "withOverride"; prop: PropertyType; overrides?: Partial<PropertyType> }
+  )[];
+  readonly return: string;
   readonly tag?: string;
   readonly tsDoc: string;
   readonly doc: {

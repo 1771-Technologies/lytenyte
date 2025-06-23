@@ -96,6 +96,11 @@ export interface UseLyteNyteProps<T> {
    *
    */
   readonly colOverscanEnd?: number;
+
+  /**
+   *
+   */
+  readonly rowFullWidthPredicate?: RowFullWidthPredicate<T>;
 }
 
 /**
@@ -256,6 +261,11 @@ export interface GridState<T> {
    *
    */
   readonly colOverscanEnd: GridAtom<number>;
+
+  /**
+   *
+   */
+  readonly rowFullWidthPredicate: GridAtom<{ fn: RowFullWidthPredicate<T> }>;
 }
 
 /**
@@ -801,6 +811,31 @@ export interface GridAtomReadonly<T> {
    *
    */
   readonly useValue: () => T;
+}
+
+/**
+ *
+ */
+export type RowFullWidthPredicate<T> = (
+  /**
+   *
+   */
+  params: RowFullWidthPredicateParams<T>,
+) => boolean;
+
+/**
+ *
+ */
+export interface RowFullWidthPredicateParams<T> {
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly row: RowNode<T>;
 }
 
 /**

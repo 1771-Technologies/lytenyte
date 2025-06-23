@@ -1,4 +1,4 @@
-import type { InterfaceType, InterfaceTypePartial, UnionType } from "../+types.js";
+import type { FunctionType, InterfaceType, InterfaceTypePartial, UnionType } from "../+types.js";
 
 export const RowBase: InterfaceTypePartial = {
   kind: "interface-partial",
@@ -239,4 +239,49 @@ export const RowHeight: UnionType = {
   types: ["number", '"auto"', "`fill:${number}`", "((i: number) => number)"],
   tsDoc: ``,
   doc: { en: `` },
+};
+
+export const RowFullWidthPredicateParams: InterfaceType = {
+  kind: "interface",
+  name: "RowFullWidthPredicateParams<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  properties: [
+    {
+      kind: "property",
+      name: "grid",
+      value: "Grid<T>",
+      doc: { en: `` },
+      tsDoc: ``,
+      optional: false,
+    },
+    {
+      kind: "property",
+      name: "row",
+      value: "RowNode<T>",
+      doc: { en: `` },
+      tsDoc: ``,
+      optional: false,
+    },
+  ],
+};
+
+export const RowFullWidthPredicate: FunctionType = {
+  kind: "function",
+  name: "RowFullWidthPredicate<T>",
+  export: true,
+  doc: { en: `` },
+  tsDoc: ``,
+  properties: [
+    {
+      kind: "property",
+      doc: { en: `` },
+      name: "params",
+      optional: false,
+      tsDoc: ``,
+      value: "RowFullWidthPredicateParams<T>",
+    },
+  ],
+  return: "boolean",
 };

@@ -269,6 +269,15 @@ const ColOverscanEnd: PropertyType = {
   doc: { en: `` },
 };
 
+const RowFullWidthPredicate: PropertyType = {
+  kind: "property",
+  name: "rowFullWidthPredicate",
+  optional: false,
+  value: "GridAtom<{ fn: RowFullWidthPredicate<T>}>",
+  tsDoc: ``,
+  doc: { en: `` },
+};
+
 export const GridStateCore: InterfaceType = {
   kind: "interface",
   export: true,
@@ -309,5 +318,7 @@ export const GridStateCore: InterfaceType = {
     RowOverscanBottom,
     ColOverscanStart,
     ColOverscanEnd,
+
+    RowFullWidthPredicate,
   ],
 };

@@ -162,6 +162,15 @@ const ColOverscanEnd: PropertyType = {
   doc: { en: `` },
 };
 
+const RowFullWidthPredicate: PropertyType = {
+  kind: "property",
+  name: "rowFullWidthPredicate",
+  optional: true,
+  value: "RowFullWidthPredicate<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+};
+
 export const UseLyteNytePropsCore: InterfaceType = {
   kind: "interface",
   name: "UseLyteNyteProps<T>",
@@ -189,5 +198,7 @@ export const UseLyteNytePropsCore: InterfaceType = {
     RowOverscanBottom,
     ColOverscanStart,
     ColOverscanEnd,
+
+    RowFullWidthPredicate,
   ],
 };
