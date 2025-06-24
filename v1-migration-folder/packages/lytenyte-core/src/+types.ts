@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 /**
  *
  */
@@ -101,6 +103,16 @@ export interface UseLyteNyteProps<T> {
    *
    */
   readonly rowFullWidthPredicate?: RowFullWidthPredicate<T>;
+
+  /**
+   *
+   */
+  readonly cellRenderers?: Record<string, CellRendererFn<T>>;
+
+  /**
+   *
+   */
+  readonly sortModel?: SortModelItem<T>[];
 }
 
 /**
@@ -210,7 +222,7 @@ export interface GridState<T> {
   /**
    *
    */
-  readonly rowDataStore: RowDataStore;
+  readonly rowDataStore: RowDataStore<T>;
 
   /**
    *
@@ -266,6 +278,16 @@ export interface GridState<T> {
    *
    */
   readonly rowFullWidthPredicate: GridAtom<{ fn: RowFullWidthPredicate<T> }>;
+
+  /**
+   *
+   */
+  readonly cellRenderers: GridAtom<Record<string, CellRendererFn<T>>>;
+
+  /**
+   *
+   */
+  readonly sortModel: GridAtom<SortModelItem<T>[]>;
 }
 
 /**
@@ -281,6 +303,11 @@ export interface Grid<T> {
    *
    */
   readonly view: GridAtomReadonly<GridView<T>>;
+
+  /**
+   *
+   */
+  readonly api: GridApi<T>;
 }
 
 /**
@@ -295,7 +322,7 @@ export interface GridView<T> {
   /**
    *
    */
-  readonly rows: RowSectionLayouts;
+  readonly rows: RowSectionLayouts<T>;
 }
 
 /**
@@ -456,21 +483,11 @@ export type HeaderLayoutCell<T> = HeaderCellLayout<T> | HeaderGroupCellLayout;
 /**
  *
  */
-export interface RowCellLayout {
+export interface RowCellLayout<T> {
   /**
    *
    */
   readonly kind: "cell";
-
-  /**
-   *
-   */
-  readonly rowIndex: number;
-
-  /**
-   *
-   */
-  readonly colIndex: number;
 
   /**
    *
@@ -485,23 +502,38 @@ export interface RowCellLayout {
   /**
    *
    */
-  readonly rowPin: RowPin;
+  readonly rowIndex: number;
+
+  /**
+   *
+   */
+  readonly colIndex: number;
+
+  /**
+   *
+   */
+  readonly row: RowNode<T>;
+
+  /**
+   *
+   */
+  readonly column: Column<T>;
 
   /**
    *
    */
   readonly colPin: ColumnPin;
+
+  /**
+   *
+   */
+  readonly rowPin: RowPin;
 }
 
 /**
  *
  */
-export interface RowFullWidthRowLayout {
-  /**
-   *
-   */
-  readonly rowIndex: number;
-
+export interface RowFullWidthRowLayout<T> {
   /**
    *
    */
@@ -510,23 +542,28 @@ export interface RowFullWidthRowLayout {
   /**
    *
    */
+  readonly rowIndex: number;
+
+  /**
+   *
+   */
+  readonly row: RowNode<T>;
+
+  /**
+   *
+   */
   readonly rowPin: RowPin;
 }
 
 /**
  *
  */
-export type RowLayout = RowNormalRowLayout | RowFullWidthRowLayout;
+export type RowLayout<T> = RowNormalRowLayout<T> | RowFullWidthRowLayout<T>;
 
 /**
  *
  */
-export interface RowNormalRowLayout {
-  /**
-   *
-   */
-  readonly rowIndex: number;
-
+export interface RowNormalRowLayout<T> {
   /**
    *
    */
@@ -535,32 +572,42 @@ export interface RowNormalRowLayout {
   /**
    *
    */
-  readonly cells: RowCellLayout[];
+  readonly rowIndex: number;
+
+  /**
+   *
+   */
+  readonly row: RowNode<T>;
 
   /**
    *
    */
   readonly rowPin: RowPin;
+
+  /**
+   *
+   */
+  readonly cells: RowCellLayout<T>[];
 }
 
 /**
  *
  */
-export interface RowSectionLayouts {
+export interface RowSectionLayouts<T> {
   /**
    *
    */
-  readonly top: RowLayout[];
+  readonly top: RowLayout<T>[];
 
   /**
    *
    */
-  readonly center: RowLayout[];
+  readonly center: RowLayout<T>[];
 
   /**
    *
    */
-  readonly bottom: RowLayout[];
+  readonly bottom: RowLayout<T>[];
 
   /**
    *
@@ -606,6 +653,11 @@ export interface ColumnBase {
    *
    */
   readonly widthFlex?: number;
+
+  /**
+   *
+   */
+  readonly uiHints?: ColumnUIHints;
 }
 
 /**
@@ -676,6 +728,16 @@ export interface Column<T> {
    *
    */
   readonly field?: Field<T>;
+
+  /**
+   *
+   */
+  readonly cellRenderer?: string | CellRendererFn<T>;
+
+  /**
+   *
+   */
+  readonly uiHints?: ColumnUIHints;
 }
 
 /**
@@ -697,6 +759,16 @@ export interface ColumnMeta<T> {
  *
  */
 export type ColumnPin = "start" | "end" | null;
+
+/**
+ *
+ */
+export interface ColumnUIHints {
+  /**
+   *
+   */
+  readonly sortable?: boolean;
+}
 
 /**
  *
@@ -766,7 +838,7 @@ export interface RowDataSource<T> {
 /**
  *
  */
-export interface RowDataStore {
+export interface RowDataStore<T> {
   /**
    *
    */
@@ -786,6 +858,21 @@ export interface RowDataStore {
    *
    */
   readonly rowBottomCount: GridAtom<number>;
+
+  /**
+   *
+   */
+  readonly rowForIndex: (row: number) => GridAtomReadonly<RowNode<T> | null>;
+
+  /**
+   *
+   */
+  readonly rowClearCache: () => void;
+
+  /**
+   *
+   */
+  readonly rowInvalidateIndex: (row: number) => void;
 }
 
 /**
@@ -1071,3 +1158,238 @@ export interface FieldPath {
  *
  */
 export type Field<T> = number | string | FieldPath | FieldFn<T>;
+
+/**
+ *
+ */
+export type CellRendererFn<T> = (
+  /**
+   *
+   */
+  params: CellRendererParams<T>,
+) => ReactNode;
+
+/**
+ *
+ */
+export interface CellRendererParams<T> {
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly column: Column<T>;
+
+  /**
+   *
+   */
+  readonly row: RowNode<T>;
+}
+
+/**
+ *
+ */
+export interface GridApi<T> {
+  /**
+   *
+   */
+  readonly fieldForColumn: (
+    columnOrId: string | Column<T>,
+    data: T | Record<string, unknown>,
+  ) => unknown;
+}
+
+/**
+ *
+ */
+export type SortComparatorFn<T> = (
+  /**
+   *
+   */
+  left: T | Record<string, unknown>,
+  /**
+   *
+   */
+  right: T | Record<string, unknown>,
+  /**
+   *
+   */
+  options: any,
+) => number;
+
+/**
+ *
+ */
+export type SortComparators = "string" | "number" | "date" | (string & {});
+
+/**
+ *
+ */
+export interface SortCustomSort<T> {
+  /**
+   *
+   */
+  readonly columnId: string | null;
+
+  /**
+   *
+   */
+  readonly kind: "custom";
+
+  /**
+   *
+   */
+  readonly comparator: SortComparatorFn<T>;
+
+  /**
+   *
+   */
+  readonly options?: any;
+}
+
+/**
+ *
+ */
+export interface SortDateColumnSort {
+  /**
+   *
+   */
+  readonly kind: "date";
+
+  /**
+   *
+   */
+  readonly options?: SortDateComparatorOptions;
+}
+
+/**
+ *
+ */
+export interface SortDateComparatorOptions {
+  /**
+   *
+   */
+  readonly nullsFirst?: boolean;
+
+  /**
+   *
+   */
+  readonly toIsoDateString?: (v: unknown) => string;
+
+  /**
+   *
+   */
+  readonly includeTime?: boolean;
+}
+
+/**
+ *
+ */
+export type SortGridSorts<T> =
+  | SortCustomSort<T>
+  | SortDateColumnSort
+  | SortNumberColumnSort
+  | SortStringColumnSort;
+
+/**
+ *
+ */
+export interface SortModelItem<T> {
+  /**
+   *
+   */
+  readonly sort: SortGridSorts<T>;
+
+  /**
+   *
+   */
+  readonly columnId: string | null;
+
+  /**
+   *
+   */
+  readonly isDescending?: boolean;
+}
+
+/**
+ *
+ */
+export interface SortNumberColumnSort {
+  /**
+   *
+   */
+  readonly kind: "number";
+
+  /**
+   *
+   */
+  readonly options?: SortNumberComparatorOptions;
+}
+
+/**
+ *
+ */
+export interface SortNumberComparatorOptions {
+  /**
+   *
+   */
+  readonly nullsFirst?: boolean;
+
+  /**
+   *
+   */
+  readonly absoluteValue?: boolean;
+}
+
+/**
+ *
+ */
+export interface SortStringColumnSort {
+  /**
+   *
+   */
+  readonly kind: "string";
+
+  /**
+   *
+   */
+  readonly options?: SortStringComparatorOptions;
+}
+
+/**
+ *
+ */
+export interface SortStringComparatorOptions {
+  /**
+   *
+   */
+  readonly caseInsensitive?: boolean;
+
+  /**
+   *
+   */
+  readonly trimWhitespace?: boolean;
+
+  /**
+   *
+   */
+  readonly ignorePunctuation?: boolean;
+
+  /**
+   *
+   */
+  readonly locale?: string;
+
+  /**
+   *
+   */
+  readonly collator?: Intl.Collator;
+
+  /**
+   *
+   */
+  readonly nullsFirst?: boolean;
+}

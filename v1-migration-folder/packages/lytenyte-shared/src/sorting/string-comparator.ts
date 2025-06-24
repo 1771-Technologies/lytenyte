@@ -1,23 +1,18 @@
-export interface StringComparator {
-  readonly caseInsensitive: boolean;
-  readonly trimWhitespace: boolean;
-  readonly ignorePunctuation: boolean;
-  readonly nullsFirst: boolean;
-  readonly locale: string;
-  readonly collator: Intl.Collator;
-}
+import type { SortStringComparatorOptions } from "../+types";
+
+const defaultCollator = new Intl.Collator();
 
 export function stringComparator(
   left: string | null,
   right: string | null,
   {
-    caseInsensitive,
-    trimWhitespace,
-    ignorePunctuation,
-    locale,
-    collator,
-    nullsFirst,
-  }: StringComparator
+    caseInsensitive = false,
+    trimWhitespace = false,
+    ignorePunctuation = false,
+    locale = "en",
+    collator = defaultCollator,
+    nullsFirst = false,
+  }: SortStringComparatorOptions,
 ) {
   if (left == null && right == null) return 0;
   if (left != null && right == null) return nullsFirst ? 1 : -1;

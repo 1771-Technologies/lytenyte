@@ -4,7 +4,7 @@ import type { RowNormalRowLayout } from "../../+types";
 import { useRowStyle } from "./use-row-style";
 
 export interface RowProps {
-  readonly row: RowNormalRowLayout;
+  readonly row: RowNormalRowLayout<any>;
 }
 
 const RowImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & RowProps>(function Rows(

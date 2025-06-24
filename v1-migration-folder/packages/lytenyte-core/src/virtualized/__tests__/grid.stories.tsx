@@ -43,7 +43,7 @@ const columns: Column<any>[] = [
   { id: "y" },
 ];
 
-function RowHandler(props: { rows: RowLayout[] }) {
+function RowHandler(props: { rows: RowLayout<any>[] }) {
   return props.rows.map((row) => {
     if (row.kind === "full-width") return <RowFullWidth row={row} key={row.rowIndex} />;
 
@@ -61,9 +61,7 @@ function RowHandler(props: { rows: RowLayout[] }) {
                 background: "white",
                 border: "1px solid black",
               }}
-            >
-              {cell.rowIndex}, {cell.colIndex}
-            </Cell>
+            ></Cell>
           );
         })}
       </Row>
@@ -80,6 +78,15 @@ function MainComp() {
     columns,
     rowDataSource: ds,
     rowFullWidthPredicate: (r) => r.row.data.age == 20,
+
+    sortModel: [
+      {
+        sort: {
+          kind: "string",
+          columnId: "education",
+        },
+      },
+    ],
   });
 
   const view = g.view.useValue();

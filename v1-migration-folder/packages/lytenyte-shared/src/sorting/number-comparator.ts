@@ -1,12 +1,9 @@
-export interface NumberComparatorOptions {
-  readonly nullsFirst: boolean;
-  readonly absoluteValue: boolean;
-}
+import type { SortNumberComparatorOptions } from "../+types";
 
 export function numberComparator(
   left: number | null,
   right: number | null,
-  { nullsFirst, absoluteValue }: NumberComparatorOptions
+  { nullsFirst = false, absoluteValue = false }: SortNumberComparatorOptions,
 ) {
   if (left === right) return 0;
   if (left != null && right == null) return nullsFirst ? 1 : -1;

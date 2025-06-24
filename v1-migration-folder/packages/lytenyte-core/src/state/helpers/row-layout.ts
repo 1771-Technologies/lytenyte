@@ -1,14 +1,16 @@
 import { isFullWidthMap, type LayoutMap, type SpanLayout } from "@1771technologies/lytenyte-shared";
-import type { RowCellLayout, RowSectionLayouts } from "../../+types";
+import type { Column, RowCellLayout, RowDataSource, RowSectionLayouts } from "../../+types";
 
-interface MakeRowViewArgs {
+interface MakeRowViewArgs<T> {
   layout: SpanLayout;
   layoutMap: LayoutMap;
+  rds: RowDataSource<T>;
+  columns: Column<T>[];
 }
-export function makeRowLayout({ layout: n, layoutMap }: MakeRowViewArgs) {
-  const top: RowSectionLayouts["top"] = [];
-  const center: RowSectionLayouts["center"] = [];
-  const bottom: RowSectionLayouts["bottom"] = [];
+export function makeRowLayout<T>({ layout: n, layoutMap, rds, columns }: MakeRowViewArgs<T>) {
+  const top: RowSectionLayouts<T>["top"] = [];
+  const center: RowSectionLayouts<T>["center"] = [];
+  const bottom: RowSectionLayouts<T>["bottom"] = [];
 
   for (let r = n.rowTopStart; r < n.rowTopEnd; r++) {
     const row = layoutMap.get(r);
@@ -17,12 +19,18 @@ export function makeRowLayout({ layout: n, layoutMap }: MakeRowViewArgs) {
       continue;
     }
 
+    const node = rds.rowByIndex(r);
+    if (!node) {
+      console.error(`Row data source did not return a row for a valid row position at index: ${r}`);
+      break;
+    }
+
     if (isFullWidthMap(row)) {
-      top.push({ rowIndex: r, kind: "full-width", rowPin: "top" });
+      top.push({ rowIndex: r, kind: "full-width", rowPin: "top", row: node });
       continue;
     }
 
-    const cellLayout: RowCellLayout[] = [];
+    const cellLayout: RowCellLayout<T>[] = [];
     for (let c = n.colStartStart; c < n.colStartEnd; c++) {
       const v = row.get(c);
 
@@ -36,6 +44,9 @@ export function makeRowLayout({ layout: n, layoutMap }: MakeRowViewArgs) {
         colSpan: v[1],
         rowPin: "top",
         colPin: "start",
+
+        row: node,
+        column: columns[c],
       });
     }
     for (let c = n.colCenterStart; c < n.colCenterEnd; c++) {
@@ -50,6 +61,9 @@ export function makeRowLayout({ layout: n, layoutMap }: MakeRowViewArgs) {
         colSpan: v[1],
         rowPin: "top",
         colPin: null,
+
+        row: node,
+        column: columns[c],
       });
     }
     for (let c = n.colEndStart; c < n.colEndEnd; c++) {
@@ -64,10 +78,13 @@ export function makeRowLayout({ layout: n, layoutMap }: MakeRowViewArgs) {
         colSpan: v[1],
         rowPin: "top",
         colPin: "end",
+
+        row: node,
+        column: columns[c],
       });
     }
 
-    top.push({ rowIndex: r, kind: "row", cells: cellLayout, rowPin: "top" });
+    top.push({ rowIndex: r, kind: "row", cells: cellLayout, rowPin: "top", row: node });
   }
 
   for (let r = n.rowCenterStart; r < n.rowCenterEnd; r++) {
@@ -77,12 +94,18 @@ export function makeRowLayout({ layout: n, layoutMap }: MakeRowViewArgs) {
       continue;
     }
 
+    const node = rds.rowByIndex(r);
+    if (!node) {
+      console.error(`Row data source did not return a row for a valid row position at index: ${r}`);
+      break;
+    }
+
     if (isFullWidthMap(row)) {
-      center.push({ rowIndex: r, kind: "full-width", rowPin: null });
+      center.push({ rowIndex: r, kind: "full-width", rowPin: null, row: node });
       continue;
     }
 
-    const cellLayout: RowCellLayout[] = [];
+    const cellLayout: RowCellLayout<T>[] = [];
     for (let c = n.colStartStart; c < n.colStartEnd; c++) {
       const v = row.get(c);
 
@@ -96,6 +119,9 @@ export function makeRowLayout({ layout: n, layoutMap }: MakeRowViewArgs) {
         colSpan: v[1],
         rowPin: null,
         colPin: "start",
+
+        row: node,
+        column: columns[c],
       });
     }
     for (let c = n.colCenterStart; c < n.colCenterEnd; c++) {
@@ -110,6 +136,9 @@ export function makeRowLayout({ layout: n, layoutMap }: MakeRowViewArgs) {
         colSpan: v[1],
         rowPin: null,
         colPin: null,
+
+        row: node,
+        column: columns[c],
       });
     }
     for (let c = n.colEndStart; c < n.colEndEnd; c++) {
@@ -124,10 +153,13 @@ export function makeRowLayout({ layout: n, layoutMap }: MakeRowViewArgs) {
         colSpan: v[1],
         rowPin: null,
         colPin: "end",
+
+        row: node,
+        column: columns[c],
       });
     }
 
-    center.push({ rowIndex: r, kind: "row", cells: cellLayout, rowPin: null });
+    center.push({ rowIndex: r, kind: "row", cells: cellLayout, rowPin: null, row: node });
   }
 
   for (let r = n.rowBotStart; r < n.rowBotEnd; r++) {
@@ -137,12 +169,18 @@ export function makeRowLayout({ layout: n, layoutMap }: MakeRowViewArgs) {
       continue;
     }
 
+    const node = rds.rowByIndex(r);
+    if (!node) {
+      console.error(`Row data source did not return a row for a valid row position at index: ${r}`);
+      break;
+    }
+
     if (isFullWidthMap(row)) {
-      bottom.push({ rowIndex: r, kind: "full-width", rowPin: "bottom" });
+      bottom.push({ rowIndex: r, kind: "full-width", rowPin: "bottom", row: node });
       continue;
     }
 
-    const cellLayout: RowCellLayout[] = [];
+    const cellLayout: RowCellLayout<T>[] = [];
     for (let c = n.colStartStart; c < n.colStartEnd; c++) {
       const v = row.get(c);
 
@@ -156,6 +194,9 @@ export function makeRowLayout({ layout: n, layoutMap }: MakeRowViewArgs) {
         colSpan: v[1],
         rowPin: "bottom",
         colPin: "start",
+
+        row: node,
+        column: columns[c],
       });
     }
     for (let c = n.colCenterStart; c < n.colCenterEnd; c++) {
@@ -170,6 +211,9 @@ export function makeRowLayout({ layout: n, layoutMap }: MakeRowViewArgs) {
         colSpan: v[1],
         rowPin: "bottom",
         colPin: null,
+
+        row: node,
+        column: columns[c],
       });
     }
     for (let c = n.colEndStart; c < n.colEndEnd; c++) {
@@ -184,10 +228,13 @@ export function makeRowLayout({ layout: n, layoutMap }: MakeRowViewArgs) {
         colSpan: v[1],
         rowPin: "bottom",
         colPin: "end",
+
+        row: node,
+        column: columns[c],
       });
     }
 
-    bottom.push({ rowIndex: r, kind: "row", cells: cellLayout, rowPin: "bottom" });
+    bottom.push({ rowIndex: r, kind: "row", cells: cellLayout, rowPin: "bottom", row: node });
   }
 
   return {

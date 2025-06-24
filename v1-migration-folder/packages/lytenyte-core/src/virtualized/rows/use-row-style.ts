@@ -5,7 +5,7 @@ import { useGridRoot } from "../context";
 import { getTranslate } from "@1771technologies/lytenyte-shared";
 
 export function useRowStyle(
-  row: RowNormalRowLayout | RowFullWidthRowLayout,
+  row: RowNormalRowLayout<any> | RowFullWidthRowLayout<any>,
   propStyles: CSSProperties | undefined,
   additional?: CSSProperties | undefined,
 ) {

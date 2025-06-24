@@ -1,4 +1,12 @@
-import type { InterfaceType, InterfaceTypePartial, PropertyType, UnionType } from "../+types";
+import type { InterfaceType, InterfaceTypePartial, UnionType } from "../+types";
+import {
+  ColPinProp,
+  ColumnIndexProp,
+  ColumnProp,
+  RowIndexProp,
+  RowNodeProp,
+  RowPinProp,
+} from "./shared-properties";
 
 const HeaderBase: InterfaceTypePartial = {
   kind: "interface-partial",
@@ -207,23 +215,13 @@ export const HeaderLayout: InterfaceType = {
   ],
 };
 
-const RowIndex: PropertyType = {
-  kind: "property",
-  name: "rowIndex",
-  tsDoc: ``,
-  doc: { en: `` },
-  optional: false,
-  value: "number",
-};
-
 export const RowFullWidthRowLayout: InterfaceType = {
   kind: "interface",
-  name: "RowFullWidthRowLayout",
+  name: "RowFullWidthRowLayout<T>",
   tsDoc: ``,
   doc: { en: `` },
   export: true,
   properties: [
-    RowIndex,
     {
       kind: "property",
       name: "kind",
@@ -232,20 +230,15 @@ export const RowFullWidthRowLayout: InterfaceType = {
       doc: { en: `` },
       optional: false,
     },
-    {
-      kind: "property",
-      name: "rowPin",
-      value: "RowPin",
-      tsDoc: ``,
-      doc: { en: `` },
-      optional: false,
-    },
+    RowIndexProp,
+    RowNodeProp,
+    RowPinProp,
   ],
 };
 
 export const RowCellLayout: InterfaceType = {
   kind: "interface",
-  name: "RowCellLayout",
+  name: "RowCellLayout<T>",
   tsDoc: ``,
   doc: { en: `` },
   export: true,
@@ -254,15 +247,6 @@ export const RowCellLayout: InterfaceType = {
       kind: "property",
       name: "kind",
       value: '"cell"',
-      tsDoc: ``,
-      doc: { en: `` },
-      optional: false,
-    },
-    RowIndex,
-    {
-      kind: "property",
-      name: "colIndex",
-      value: "number",
       tsDoc: ``,
       doc: { en: `` },
       optional: false,
@@ -283,33 +267,22 @@ export const RowCellLayout: InterfaceType = {
       doc: { en: `` },
       optional: false,
     },
-    {
-      kind: "property",
-      name: "rowPin",
-      value: "RowPin",
-      tsDoc: ``,
-      doc: { en: `` },
-      optional: false,
-    },
-    {
-      kind: "property",
-      name: "colPin",
-      value: "ColumnPin",
-      tsDoc: ``,
-      doc: { en: `` },
-      optional: false,
-    },
+    RowIndexProp,
+    ColumnIndexProp,
+    RowNodeProp,
+    ColumnProp,
+    ColPinProp,
+    RowPinProp,
   ],
 };
 
 export const RowNormalRowLayout: InterfaceType = {
   kind: "interface",
-  name: "RowNormalRowLayout",
+  name: "RowNormalRowLayout<T>",
   tsDoc: ``,
   doc: { en: `` },
   export: true,
   properties: [
-    RowIndex,
     {
       kind: "property",
       name: "kind",
@@ -318,18 +291,13 @@ export const RowNormalRowLayout: InterfaceType = {
       doc: { en: `` },
       optional: false,
     },
+    RowIndexProp,
+    RowNodeProp,
+    RowPinProp,
     {
       kind: "property",
       name: "cells",
-      value: "RowCellLayout[]",
-      tsDoc: ``,
-      doc: { en: `` },
-      optional: false,
-    },
-    {
-      kind: "property",
-      name: "rowPin",
-      value: "RowPin",
+      value: "RowCellLayout<T>[]",
       tsDoc: ``,
       doc: { en: `` },
       optional: false,
@@ -339,16 +307,16 @@ export const RowNormalRowLayout: InterfaceType = {
 
 export const RowLayout: UnionType = {
   kind: "union",
-  name: "RowLayout",
+  name: "RowLayout<T>",
   export: true,
   tsDoc: ``,
   doc: { en: `` },
-  types: ["RowNormalRowLayout", "RowFullWidthRowLayout"],
+  types: ["RowNormalRowLayout<T>", "RowFullWidthRowLayout<T>"],
 };
 
 export const RowSectionLayouts: InterfaceType = {
   kind: "interface",
-  name: "RowSectionLayouts",
+  name: "RowSectionLayouts<T>",
   export: true,
   tsDoc: ``,
   doc: { en: `` },
@@ -359,7 +327,7 @@ export const RowSectionLayouts: InterfaceType = {
       tsDoc: ``,
       doc: { en: `` },
       optional: false,
-      value: "RowLayout[]",
+      value: "RowLayout<T>[]",
     },
     {
       kind: "property",
@@ -367,7 +335,7 @@ export const RowSectionLayouts: InterfaceType = {
       tsDoc: ``,
       doc: { en: `` },
       optional: false,
-      value: "RowLayout[]",
+      value: "RowLayout<T>[]",
     },
     {
       kind: "property",
@@ -375,7 +343,7 @@ export const RowSectionLayouts: InterfaceType = {
       tsDoc: ``,
       doc: { en: `` },
       optional: false,
-      value: "RowLayout[]",
+      value: "RowLayout<T>[]",
     },
 
     {
@@ -426,7 +394,7 @@ export const GridView: InterfaceType = {
       tsDoc: ``,
       doc: { en: `` },
       optional: false,
-      value: "RowSectionLayouts",
+      value: "RowSectionLayouts<T>",
     },
   ],
 };

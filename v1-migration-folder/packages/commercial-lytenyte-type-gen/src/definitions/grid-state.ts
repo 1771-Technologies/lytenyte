@@ -163,7 +163,7 @@ const RowDataStore: PropertyType = {
   kind: "property",
   name: "rowDataStore",
   optional: false,
-  value: "RowDataStore",
+  value: "RowDataStore<T>",
   tsDoc: ``,
   doc: { en: `` },
 };
@@ -278,6 +278,24 @@ const RowFullWidthPredicate: PropertyType = {
   doc: { en: `` },
 };
 
+const CellRenderers: PropertyType = {
+  kind: "property",
+  name: "cellRenderers",
+  optional: false,
+  value: "GridAtom<Record<string, CellRendererFn<T>>>",
+  tsDoc: ``,
+  doc: { en: `` },
+};
+
+const SortModel: PropertyType = {
+  kind: "property",
+  name: "sortModel",
+  optional: false,
+  tsDoc: ``,
+  doc: { en: `` },
+  value: "GridAtom<SortModelItem<T>[]>",
+};
+
 export const GridStateCore: InterfaceType = {
   kind: "interface",
   export: true,
@@ -320,5 +338,8 @@ export const GridStateCore: InterfaceType = {
     ColOverscanEnd,
 
     RowFullWidthPredicate,
+    CellRenderers,
+
+    SortModel,
   ],
 };

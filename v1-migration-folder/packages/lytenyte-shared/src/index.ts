@@ -22,6 +22,10 @@ export { sizeFromCoord } from "./utils/size-from-coord.js";
 export { makeGridAtom } from "./grid-atom/make-grid-atom.js";
 export { makeRowDataStore } from "./row-data-store/make-row-data-store.js";
 
+export { stringComparator } from "./sorting/string-comparator.js";
+export { dateComparator } from "./sorting/date-comparator.js";
+export { numberComparator } from "./sorting/number-comparator.js";
+
 export { computePathTree } from "./path/compute-path-tree.js";
 export { computePathTable } from "./path/compute-path-table.js";
 export { computePathMatrix } from "./path/compute-path-matrix.js";

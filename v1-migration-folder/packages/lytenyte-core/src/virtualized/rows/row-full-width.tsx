@@ -5,7 +5,7 @@ import { useRowStyle } from "./use-row-style";
 import { VIEWPORT_WIDTH_VARIABLE_USE } from "../+constants";
 
 export interface RowFullWidthProps {
-  readonly row: RowFullWidthRowLayout;
+  readonly row: RowFullWidthRowLayout<any>;
   readonly space?: "viewport" | "scroll-width";
 }
 

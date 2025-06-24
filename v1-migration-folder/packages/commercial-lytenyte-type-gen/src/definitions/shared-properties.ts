@@ -53,3 +53,21 @@ export const DataProp: PropertyType = {
   optional: false,
   value: "T",
 };
+
+export const ColPinProp: PropertyType = {
+  kind: "property",
+  name: "colPin",
+  doc: { en: `` },
+  tsDoc: ``,
+  optional: false,
+  value: "ColumnPin",
+};
+
+export const RowPinProp: PropertyType = {
+  kind: "property",
+  name: "rowPin",
+  doc: { en: `` },
+  tsDoc: ``,
+  optional: false,
+  value: "RowPin",
+};
