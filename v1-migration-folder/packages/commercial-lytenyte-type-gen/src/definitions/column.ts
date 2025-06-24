@@ -129,6 +129,24 @@ export const RowSpan: PropertyType = {
   value: `number | CellSpanFn<T>`,
 };
 
+export const Name: PropertyType = {
+  kind: "property",
+  name: "name",
+  optional: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  value: "string",
+};
+
+export const Field: PropertyType = {
+  kind: "property",
+  name: "field",
+  optional: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  value: "Field<T>",
+};
+
 export const ColumnCore: InterfaceType = {
   kind: "interface",
   export: true,
@@ -140,6 +158,7 @@ export const ColumnCore: InterfaceType = {
   },
   properties: [
     Id,
+    Name,
     Hide,
     Width,
     WidthMax,
@@ -151,6 +170,8 @@ export const ColumnCore: InterfaceType = {
 
     ColumnSpan,
     RowSpan,
+
+    Field,
   ],
 };
 

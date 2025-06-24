@@ -14,6 +14,7 @@ import * as RDS from "./definitions/rds.js";
 import * as GridAtom from "./definitions/grid-atom.js";
 import * as Row from "./definitions/row.js";
 import * as Spans from "./definitions/col-and-row-span.js";
+import * as Field from "./definitions/field.js";
 
 const typeModules = [
   ...Object.values(UseLng),
@@ -27,6 +28,7 @@ const typeModules = [
   ...Object.values(GridAtom),
   ...Object.values(Row),
   ...Object.values(Spans),
+  ...Object.values(Field),
 ] as GenTypes[];
 
 const types = typeModules

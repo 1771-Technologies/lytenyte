@@ -5,7 +5,6 @@ import { TreePanel } from "../panel/panel.js";
 import { TreeLeaf } from "../leaf.js";
 import { TreeBranch } from "../branch/branch.js";
 import { useTreeViewPaths } from "../hooks/use-tree-view-paths.js";
-import type { PathBranch, PathLeaf } from "@1771technologies/lytenyte-path";
 import { useVirtualizedTree } from "../virtualized/use-virtualized-tree.js";
 import { figmaData } from "./data.js";
 import type { TreeVirtualItem } from "../virtualized/make-virtual-tree.js";
@@ -13,6 +12,7 @@ import { useState } from "react";
 import { ForceSyncScrolling } from "../virtualized/force-sync-scrolling.js";
 import { expect, userEvent } from "@storybook/test";
 import { sleep } from "@1771technologies/lytenyte-js-utils";
+import type { PathBranch, PathLeaf } from "@1771technologies/lytenyte-shared";
 
 const meta: Meta = {
   title: "Components/TreeView",

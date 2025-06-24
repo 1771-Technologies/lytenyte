@@ -1,6 +1,5 @@
-import type { PathTableItem } from "@1771technologies/lytenyte-path";
+import type { PathTableItem, SpanLayout } from "@1771technologies/lytenyte-shared";
 import type { Column, ColumnGroupMeta, HeaderLayoutCell } from "../../+types";
-import type { SpanLayout } from "@1771technologies/lytenyte-shared";
 
 export function makeColumnLayout<T>(
   combinedView: PathTableItem<Column<T>>[][],

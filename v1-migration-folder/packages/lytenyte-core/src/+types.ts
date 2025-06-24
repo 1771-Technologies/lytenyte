@@ -620,6 +620,11 @@ export interface Column<T> {
   /**
    *
    */
+  readonly name?: string;
+
+  /**
+   *
+   */
   readonly hide?: boolean;
 
   /**
@@ -666,6 +671,11 @@ export interface Column<T> {
    *
    */
   readonly rowSpan?: number | CellSpanFn<T>;
+
+  /**
+   *
+   */
+  readonly field?: Field<T>;
 }
 
 /**
@@ -1011,3 +1021,53 @@ export interface CellSpanFnParams<T> {
    */
   readonly row: RowNode<T>;
 }
+
+/**
+ *
+ */
+export type FieldFn<T> = (
+  /**
+   *
+   */
+  params: FieldFnParams<T>,
+) => unknown;
+
+/**
+ *
+ */
+export interface FieldFnParams<T> {
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly column: Column<T>;
+
+  /**
+   *
+   */
+  readonly data: T;
+}
+
+/**
+ *
+ */
+export interface FieldPath {
+  /**
+   *
+   */
+  readonly kind: "path";
+
+  /**
+   *
+   */
+  readonly path: string;
+}
+
+/**
+ *
+ */
+export type Field<T> = number | string | FieldPath | FieldFn<T>;

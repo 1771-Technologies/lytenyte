@@ -35,3 +35,21 @@ export const RowNodeProp: PropertyType = {
   tsDoc: ``,
   optional: false,
 };
+
+export const ColumnProp: PropertyType = {
+  kind: "property",
+  name: "column",
+  value: "Column<T>",
+  doc: { en: `` },
+  tsDoc: ``,
+  optional: false,
+};
+
+export const DataProp: PropertyType = {
+  kind: "property",
+  name: "data",
+  doc: { en: `` },
+  tsDoc: ``,
+  optional: false,
+  value: "T",
+};

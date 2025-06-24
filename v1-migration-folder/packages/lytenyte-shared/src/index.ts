@@ -21,3 +21,21 @@ export { sizeFromCoord } from "./utils/size-from-coord.js";
 
 export { makeGridAtom } from "./grid-atom/make-grid-atom.js";
 export { makeRowDataStore } from "./row-data-store/make-row-data-store.js";
+
+export { computePathTree } from "./path/compute-path-tree.js";
+export { computePathTable } from "./path/compute-path-table.js";
+export { computePathMatrix } from "./path/compute-path-matrix.js";
+export { transposePathMatrix } from "./path/transpose-path-table.js";
+export type {
+  PathRoot,
+  PathBranch,
+  PathLeaf,
+  PathMatrix,
+  PathMatrixItem,
+  PathProvidedItem,
+  PathProvidedItemObject,
+  PathTable,
+  PathTableGroup,
+  PathTableItem,
+  PathTableLeaf,
+} from "./path/+types.path-table.js";
