@@ -2,16 +2,16 @@ import type { PathTableItem } from "@1771technologies/lytenyte-path";
 import type { Column, ColumnGroupMeta, HeaderLayoutCell } from "../../+types";
 import type { SpanLayout } from "@1771technologies/lytenyte-shared";
 
-export function makeColumnLayout(
-  combinedView: PathTableItem<Column>[][],
+export function makeColumnLayout<T>(
+  combinedView: PathTableItem<Column<T>>[][],
   groupMeta: ColumnGroupMeta,
   b: SpanLayout,
 ) {
-  const layout: HeaderLayoutCell[][] = [];
+  const layout: HeaderLayoutCell<T>[][] = [];
   for (let r = 0; r < combinedView.length; r++) {
     const row = combinedView[r];
 
-    const rowLayout: HeaderLayoutCell[] = [];
+    const rowLayout: HeaderLayoutCell<T>[] = [];
     for (let i = 0; i < row.length; i++) {
       const c = row[i];
       const col = c.colStart;

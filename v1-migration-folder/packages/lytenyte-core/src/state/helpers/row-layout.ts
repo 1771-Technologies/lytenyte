@@ -27,12 +27,13 @@ export function makeRowLayout({ layout: n, layoutMap }: MakeRowViewArgs) {
       const v = row.get(c);
 
       if (!v || v.length === 3) continue;
+
       cellLayout.push({
         kind: "cell",
         colIndex: c,
         rowIndex: r,
         rowSpan: v[0],
-        colSpan: v[0],
+        colSpan: v[1],
         rowPin: "top",
         colPin: "start",
       });
@@ -40,12 +41,13 @@ export function makeRowLayout({ layout: n, layoutMap }: MakeRowViewArgs) {
     for (let c = n.colCenterStart; c < n.colCenterEnd; c++) {
       const v = row.get(c);
       if (!v || v.length === 3) continue;
+
       cellLayout.push({
         kind: "cell",
         colIndex: c,
         rowIndex: r,
         rowSpan: v[0],
-        colSpan: v[0],
+        colSpan: v[1],
         rowPin: "top",
         colPin: null,
       });
@@ -53,12 +55,13 @@ export function makeRowLayout({ layout: n, layoutMap }: MakeRowViewArgs) {
     for (let c = n.colEndStart; c < n.colEndEnd; c++) {
       const v = row.get(c);
       if (!v || v.length === 3) continue;
+
       cellLayout.push({
         kind: "cell",
         colIndex: c,
         rowIndex: r,
         rowSpan: v[0],
-        colSpan: v[0],
+        colSpan: v[1],
         rowPin: "top",
         colPin: "end",
       });
@@ -84,12 +87,13 @@ export function makeRowLayout({ layout: n, layoutMap }: MakeRowViewArgs) {
       const v = row.get(c);
 
       if (!v || v.length === 3) continue;
+
       cellLayout.push({
         kind: "cell",
         colIndex: c,
         rowIndex: r,
         rowSpan: v[0],
-        colSpan: v[0],
+        colSpan: v[1],
         rowPin: null,
         colPin: "start",
       });
@@ -97,12 +101,13 @@ export function makeRowLayout({ layout: n, layoutMap }: MakeRowViewArgs) {
     for (let c = n.colCenterStart; c < n.colCenterEnd; c++) {
       const v = row.get(c);
       if (!v || v.length === 3) continue;
+
       cellLayout.push({
         kind: "cell",
         colIndex: c,
         rowIndex: r,
         rowSpan: v[0],
-        colSpan: v[0],
+        colSpan: v[1],
         rowPin: null,
         colPin: null,
       });
@@ -110,12 +115,13 @@ export function makeRowLayout({ layout: n, layoutMap }: MakeRowViewArgs) {
     for (let c = n.colEndStart; c < n.colEndEnd; c++) {
       const v = row.get(c);
       if (!v || v.length === 3) continue;
+
       cellLayout.push({
         kind: "cell",
         colIndex: c,
         rowIndex: r,
         rowSpan: v[0],
-        colSpan: v[0],
+        colSpan: v[1],
         rowPin: null,
         colPin: "end",
       });
@@ -141,12 +147,13 @@ export function makeRowLayout({ layout: n, layoutMap }: MakeRowViewArgs) {
       const v = row.get(c);
 
       if (!v || v.length === 3) continue;
+
       cellLayout.push({
         kind: "cell",
         colIndex: c,
         rowIndex: r,
         rowSpan: v[0],
-        colSpan: v[0],
+        colSpan: v[1],
         rowPin: "bottom",
         colPin: "start",
       });
@@ -154,12 +161,13 @@ export function makeRowLayout({ layout: n, layoutMap }: MakeRowViewArgs) {
     for (let c = n.colCenterStart; c < n.colCenterEnd; c++) {
       const v = row.get(c);
       if (!v || v.length === 3) continue;
+
       cellLayout.push({
         kind: "cell",
         colIndex: c,
         rowIndex: r,
         rowSpan: v[0],
-        colSpan: v[0],
+        colSpan: v[1],
         rowPin: "bottom",
         colPin: null,
       });
@@ -167,12 +175,13 @@ export function makeRowLayout({ layout: n, layoutMap }: MakeRowViewArgs) {
     for (let c = n.colEndStart; c < n.colEndEnd; c++) {
       const v = row.get(c);
       if (!v || v.length === 3) continue;
+
       cellLayout.push({
         kind: "cell",
         colIndex: c,
         rowIndex: r,
         rowSpan: v[0],
-        colSpan: v[0],
+        colSpan: v[1],
         rowPin: "bottom",
         colPin: "end",
       });

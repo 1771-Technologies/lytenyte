@@ -23,10 +23,10 @@ const meta: Meta = {
 
 export default meta;
 
-const columns: Column[] = [
-  { id: "age" },
+const columns: Column<any>[] = [
+  { id: "age", colSpan: 2 },
   { id: "job", groupPath: ["Alpha"] },
-  { id: "balance" },
+  { id: "balance", rowSpan: 3 },
   { id: "education", pin: "start" },
   { id: "marital", groupPath: ["Alpha", "Beta"], pin: "start" },
   { id: "default", groupPath: ["Alpha", "Beta"] },

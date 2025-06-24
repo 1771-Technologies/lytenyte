@@ -13,6 +13,7 @@ import * as ClientDataSource from "./definitions/rds-client.js";
 import * as RDS from "./definitions/rds.js";
 import * as GridAtom from "./definitions/grid-atom.js";
 import * as Row from "./definitions/row.js";
+import * as Spans from "./definitions/col-and-row-span.js";
 
 const typeModules = [
   ...Object.values(UseLng),
@@ -25,6 +26,7 @@ const typeModules = [
   ...Object.values(RDS),
   ...Object.values(GridAtom),
   ...Object.values(Row),
+  ...Object.values(Spans),
 ] as GenTypes[];
 
 const types = typeModules

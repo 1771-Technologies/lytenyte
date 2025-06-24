@@ -8,8 +8,8 @@ import {
 import type { Column, ColumnBase } from "../../+types";
 import { computePathTable, type PathTableItem } from "@1771technologies/lytenyte-path";
 
-export interface MakeColumnViewArgs {
-  readonly columns: Column[];
+export interface MakeColumnViewArgs<T> {
+  readonly columns: Column<T>[];
   readonly base: ColumnBase;
 
   readonly groupExpansions: Record<string, boolean>;
@@ -17,13 +17,13 @@ export interface MakeColumnViewArgs {
   readonly groupExpansionDefault: boolean;
 }
 
-export function makeColumnView({
+export function makeColumnView<T>({
   columns,
   base,
   groupExpansions,
   groupJoinDelimiter,
   groupExpansionDefault,
-}: MakeColumnViewArgs) {
+}: MakeColumnViewArgs<T>) {
   const lookup = new Map(columns.map((c) => [c.id, c]));
 
   const columnsNotHidden = getVisibleColumns(columns, base);
@@ -53,9 +53,9 @@ export function makeColumnView({
   ).table;
   const endTable = computePathTable(end, maxDepth, seenMap, groupJoinDelimiter, endOffset).table;
 
-  const combinedView: PathTableItem<Column>[][] = [];
+  const combinedView: PathTableItem<Column<T>>[][] = [];
   for (let i = 0; i <= maxDepth; i++) {
-    const row: PathTableItem<Column>[] = [];
+    const row: PathTableItem<Column<T>>[] = [];
 
     row.push(...(startTable[i] ?? []));
     row.push(...(centerTable[i] ?? []));

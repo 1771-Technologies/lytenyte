@@ -5,7 +5,7 @@ export interface UseLyteNyteProps<T> {
   /**
    *
    */
-  readonly columns?: Column[];
+  readonly columns?: Column<T>[];
 
   /**
    *
@@ -110,12 +110,12 @@ export interface GridState<T> {
   /**
    *
    */
-  readonly columns: GridAtom<Column[]>;
+  readonly columns: GridAtom<Column<T>[]>;
 
   /**
    *
    */
-  readonly columnMeta: GridAtomReadonly<ColumnMeta>;
+  readonly columnMeta: GridAtomReadonly<ColumnMeta<T>>;
 
   /**
    *
@@ -280,17 +280,17 @@ export interface Grid<T> {
   /**
    *
    */
-  readonly view: GridAtomReadonly<GridView>;
+  readonly view: GridAtomReadonly<GridView<T>>;
 }
 
 /**
  *
  */
-export interface GridView {
+export interface GridView<T> {
   /**
    *
    */
-  readonly header: HeaderLayout;
+  readonly header: HeaderLayout<T>;
 
   /**
    *
@@ -301,7 +301,7 @@ export interface GridView {
 /**
  *
  */
-export interface HeaderCellLayout {
+export interface HeaderCellLayout<T> {
   /**
    *
    */
@@ -345,7 +345,7 @@ export interface HeaderCellLayout {
   /**
    *
    */
-  readonly column: Column;
+  readonly column: Column<T>;
 }
 
 /**
@@ -431,7 +431,7 @@ export interface HeaderGroupCellLayout {
 /**
  *
  */
-export interface HeaderLayout {
+export interface HeaderLayout<T> {
   /**
    *
    */
@@ -445,13 +445,13 @@ export interface HeaderLayout {
   /**
    *
    */
-  readonly layout: HeaderLayoutCell[][];
+  readonly layout: HeaderLayoutCell<T>[][];
 }
 
 /**
  *
  */
-export type HeaderLayoutCell = HeaderCellLayout | HeaderGroupCellLayout;
+export type HeaderLayoutCell<T> = HeaderCellLayout<T> | HeaderGroupCellLayout;
 
 /**
  *
@@ -611,7 +611,7 @@ export interface ColumnBase {
 /**
  *
  */
-export interface Column {
+export interface Column<T> {
   /**
    *
    */
@@ -656,21 +656,31 @@ export interface Column {
    *
    */
   readonly groupPath?: string[];
+
+  /**
+   *
+   */
+  readonly colSpan?: number | CellSpanFn<T>;
+
+  /**
+   *
+   */
+  readonly rowSpan?: number | CellSpanFn<T>;
 }
 
 /**
  *
  */
-export interface ColumnMeta {
+export interface ColumnMeta<T> {
   /**
    *
    */
-  readonly columnsVisible: Column[];
+  readonly columnsVisible: Column<T>[];
 
   /**
    *
    */
-  readonly columnLookup: Map<string, Column>;
+  readonly columnLookup: Map<string, Column<T>>;
 }
 
 /**
@@ -835,6 +845,11 @@ export interface RowFullWidthPredicateParams<T> {
   /**
    *
    */
+  readonly rowIndex: number;
+
+  /**
+   *
+   */
   readonly row: RowNode<T>;
 }
 
@@ -892,11 +907,7 @@ export interface RowGroup {
 /**
  *
  */
-export type RowHeight =
-  | number
-  | "auto"
-  | `fill:${number}`
-  | ((i: number) => number);
+export type RowHeight = number | "auto" | `fill:${number}` | ((i: number) => number);
 
 /**
  * The leaf row type. As the name suggests, leaf rows do not have any further children rows
@@ -965,3 +976,38 @@ export type RowNode<T> = RowLeaf<T> | RowGroup;
  * - [Column Pinning](TODO): The opposite of pinning rows, is pinning columns. They can be used together.
  */
 export type RowPin = "top" | "bottom" | null;
+
+/**
+ *
+ */
+export type CellSpanFn<T> = (
+  /**
+   *
+   */
+  params: CellSpanFnParams<T>,
+) => number;
+
+/**
+ *
+ */
+export interface CellSpanFnParams<T> {
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly rowIndex: number;
+
+  /**
+   *
+   */
+  readonly colIndex: number;
+
+  /**
+   *
+   */
+  readonly row: RowNode<T>;
+}

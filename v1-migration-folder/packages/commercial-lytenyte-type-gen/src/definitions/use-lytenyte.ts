@@ -4,7 +4,7 @@ const Columns: PropertyType = {
   kind: "property",
   name: "columns",
   optional: true,
-  value: "Column[]",
+  value: "Column<T>[]",
   tsDoc: ``,
   doc: { en: `` },
 };

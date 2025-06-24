@@ -11,7 +11,7 @@ export const ColumnPin: UnionType = {
 
 export const ColumnMeta: InterfaceType = {
   kind: "interface",
-  name: "ColumnMeta",
+  name: "ColumnMeta<T>",
   export: true,
   tsDoc: ``,
   doc: { en: `` },
@@ -19,7 +19,7 @@ export const ColumnMeta: InterfaceType = {
     {
       kind: "property",
       name: "columnsVisible",
-      value: "Column[]",
+      value: "Column<T>[]",
       optional: false,
       tsDoc: ``,
       doc: { en: `` },
@@ -27,7 +27,7 @@ export const ColumnMeta: InterfaceType = {
     {
       kind: "property",
       name: "columnLookup",
-      value: "Map<string, Column>",
+      value: "Map<string, Column<T>>",
       optional: false,
       tsDoc: ``,
       doc: { en: `` },
@@ -39,7 +39,7 @@ export const ColumnMeta: InterfaceType = {
  * COLUMN DEFINITION
  */
 
-const hide: PropertyType = {
+const Hide: PropertyType = {
   kind: "property",
   name: "hide",
   value: "boolean",
@@ -48,7 +48,7 @@ const hide: PropertyType = {
   optional: true,
 };
 
-const id: PropertyType = {
+const Id: PropertyType = {
   kind: "property",
   name: "id",
   value: "string",
@@ -56,7 +56,7 @@ const id: PropertyType = {
   doc: { en: `` },
   optional: false,
 };
-const width: PropertyType = {
+const Width: PropertyType = {
   kind: "property",
   name: "width",
   value: "number",
@@ -64,7 +64,7 @@ const width: PropertyType = {
   doc: { en: `` },
   optional: true,
 };
-const widthMax: PropertyType = {
+const WidthMax: PropertyType = {
   kind: "property",
   name: "widthMax",
   value: "number",
@@ -72,7 +72,7 @@ const widthMax: PropertyType = {
   doc: { en: `` },
   optional: true,
 };
-const widthMin: PropertyType = {
+const WidthMin: PropertyType = {
   kind: "property",
   name: "widthMin",
   value: "number",
@@ -80,7 +80,7 @@ const widthMin: PropertyType = {
   doc: { en: `` },
   optional: true,
 };
-const widthFlex: PropertyType = {
+const WidthFlex: PropertyType = {
   kind: "property",
   name: "widthFlex",
   value: "number",
@@ -88,7 +88,7 @@ const widthFlex: PropertyType = {
   doc: { en: `` },
   optional: true,
 };
-const columnPin: PropertyType = {
+const ColumnPinProp: PropertyType = {
   kind: "property",
   name: "pin",
   value: "ColumnPin",
@@ -96,7 +96,7 @@ const columnPin: PropertyType = {
   tsDoc: ``,
   doc: { en: `` },
 };
-const columnGroupVisibility: PropertyType = {
+const ColumnGroupVisibilityProp: PropertyType = {
   kind: "property",
   name: "groupVisibility",
   value: "ColumnGroupVisibility",
@@ -104,7 +104,7 @@ const columnGroupVisibility: PropertyType = {
   tsDoc: ``,
   doc: { en: `` },
 };
-export const columnGroupPath: PropertyType = {
+export const ColumnGroupPath: PropertyType = {
   kind: "property",
   name: "groupPath",
   value: "string[]",
@@ -112,26 +112,45 @@ export const columnGroupPath: PropertyType = {
   tsDoc: ``,
   doc: { en: `` },
 };
+export const ColumnSpan: PropertyType = {
+  kind: "property",
+  name: "colSpan",
+  optional: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  value: `number | CellSpanFn<T>`,
+};
+export const RowSpan: PropertyType = {
+  kind: "property",
+  name: "rowSpan",
+  optional: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  value: `number | CellSpanFn<T>`,
+};
 
 export const ColumnCore: InterfaceType = {
   kind: "interface",
   export: true,
-  name: "Column",
+  name: "Column<T>",
   tag: "core",
   tsDoc: ``,
   doc: {
     en: ``,
   },
   properties: [
-    id,
-    hide,
-    width,
-    widthMax,
-    widthMin,
-    widthFlex,
-    columnPin,
-    columnGroupVisibility,
-    columnGroupPath,
+    Id,
+    Hide,
+    Width,
+    WidthMax,
+    WidthMin,
+    WidthFlex,
+    ColumnPinProp,
+    ColumnGroupVisibilityProp,
+    ColumnGroupPath,
+
+    ColumnSpan,
+    RowSpan,
   ],
 };
 
@@ -140,7 +159,7 @@ export const ColumnBaseCore: InterfaceType = {
   export: true,
   name: "ColumnBase",
   tag: "core",
-  properties: [hide, width, widthMax, widthMin, widthFlex],
+  properties: [Hide, Width, WidthMax, WidthMin, WidthFlex],
   tsDoc: ``,
   doc: { en: `` },
 };

@@ -1,4 +1,5 @@
 import type { FunctionType, InterfaceType, InterfaceTypePartial, UnionType } from "../+types.js";
+import { GridProp, RowIndexProp, RowNodeProp } from "./shared-properties.js";
 
 export const RowBase: InterfaceTypePartial = {
   kind: "interface-partial",
@@ -247,24 +248,7 @@ export const RowFullWidthPredicateParams: InterfaceType = {
   tsDoc: ``,
   doc: { en: `` },
   export: true,
-  properties: [
-    {
-      kind: "property",
-      name: "grid",
-      value: "Grid<T>",
-      doc: { en: `` },
-      tsDoc: ``,
-      optional: false,
-    },
-    {
-      kind: "property",
-      name: "row",
-      value: "RowNode<T>",
-      doc: { en: `` },
-      tsDoc: ``,
-      optional: false,
-    },
-  ],
+  properties: [GridProp, RowIndexProp, RowNodeProp],
 };
 
 export const RowFullWidthPredicate: FunctionType = {

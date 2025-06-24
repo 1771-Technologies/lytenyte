@@ -19,7 +19,7 @@ export const GridCore: InterfaceType = {
     {
       kind: "property",
       name: "view",
-      value: "GridAtomReadonly<GridView>",
+      value: "GridAtomReadonly<GridView<T>>",
       tsDoc: ``,
       doc: { en: `` },
       optional: false,

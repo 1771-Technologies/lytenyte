@@ -64,7 +64,7 @@ const HeaderBase: InterfaceTypePartial = {
 
 export const HeaderCell: InterfaceType = {
   kind: "interface",
-  name: "HeaderCellLayout",
+  name: "HeaderCellLayout<T>",
   export: true,
   extends: HeaderBase,
   tsDoc: ``,
@@ -81,7 +81,7 @@ export const HeaderCell: InterfaceType = {
     {
       kind: "property",
       name: "column",
-      value: "Column",
+      value: "Column<T>",
       tsDoc: ``,
       doc: { en: `` },
       optional: false,
@@ -166,16 +166,16 @@ export const HeaderGroupCell: InterfaceType = {
 
 export const HeaderLayoutCell: UnionType = {
   kind: "union",
-  name: "HeaderLayoutCell",
+  name: "HeaderLayoutCell<T>",
   export: true,
   tsDoc: ``,
   doc: { en: `` },
-  types: ["HeaderCellLayout", "HeaderGroupCellLayout"],
+  types: ["HeaderCellLayout<T>", "HeaderGroupCellLayout"],
 };
 
 export const HeaderLayout: InterfaceType = {
   kind: "interface",
-  name: "HeaderLayout",
+  name: "HeaderLayout<T>",
   export: true,
   doc: { en: `` },
   tsDoc: ``,
@@ -202,7 +202,7 @@ export const HeaderLayout: InterfaceType = {
       tsDoc: ``,
       doc: { en: `` },
       optional: false,
-      value: "HeaderLayoutCell[][]",
+      value: "HeaderLayoutCell<T>[][]",
     },
   ],
 };
@@ -407,7 +407,7 @@ export const RowSectionLayouts: InterfaceType = {
 
 export const GridView: InterfaceType = {
   kind: "interface",
-  name: "GridView",
+  name: "GridView<T>",
   export: true,
   doc: { en: `` },
   tsDoc: ``,
@@ -418,7 +418,7 @@ export const GridView: InterfaceType = {
       doc: { en: `` },
       tsDoc: ``,
       optional: false,
-      value: "HeaderLayout",
+      value: "HeaderLayout<T>",
     },
     {
       kind: "property",

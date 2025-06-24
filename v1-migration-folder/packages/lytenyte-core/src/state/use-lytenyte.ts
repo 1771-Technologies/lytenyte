@@ -19,6 +19,8 @@ import { makeRowLayout } from "./helpers/row-layout.js";
 import { equal } from "@1771technologies/lytenyte-js-utils";
 import { makeColumnLayout } from "./helpers/column-layout.js";
 import { emptyRowDataSource } from "./helpers/empty-row-data-source.js";
+import { getFullWidthCallback } from "./helpers/get-full-width-callback.js";
+import { getSpanFn } from "./helpers/get-span-callback.js";
 
 const DEFAULT_HEADER_HEIGHT = 40;
 const COLUMN_GROUP_JOIN_DELIMITER = "-->";
@@ -126,7 +128,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
    * COMPUTE ATOMS
    */
 
-  const headerLayout = atom<GridView["header"]>((g) => {
+  const headerLayout = atom<GridView<T>["header"]>((g) => {
     const view = g(columnView);
     const layout = makeColumnLayout(view.combinedView, view.meta, g(bounds));
 
@@ -134,7 +136,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   });
 
   const columnGroupMeta = atom((g) => g(columnView).meta);
-  const columnMeta = atom<ColumnMeta>((g) => {
+  const columnMeta = atom<ColumnMeta<T>>((g) => {
     const view = g(columnView);
     return { columnLookup: view.lookup, columnsVisible: view.visibleColumns };
   });
@@ -181,28 +183,25 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const heightTotal = atom((g) => g(yPositions).at(-1)!);
 
   let prevLayout: SpanLayout = DEFAULT_PREVIOUS_LAYOUT;
-  const rowView = atom<GridView["rows"]>((g) => {
+  const rowView = atom<GridView<T>["rows"]>((g) => {
     const n = g(bounds);
     const rowScan = g(rowScanDistance);
     const colScan = g(colScanDistance);
 
+    const columns = g(columnMeta).columnsVisible;
     const rds = g(rowDataSource);
-    const predicate = g(rowFullWidthPredicate).fn;
-    const isFullWidth = (r: number) => {
-      const rowNode = rds.rowByIndex(r);
-      if (!rowNode) return false;
-
-      return predicate({ grid, row: rowNode });
-    };
 
     applyLayoutUpdate({
-      computeColSpan: () => 1,
-      computeRowSpan: () => 1,
+      computeColSpan: getSpanFn(rds, grid, columns, "col"),
+      computeRowSpan: getSpanFn(rds, grid, columns, "row"),
       colScanDistance: colScan,
       rowScanDistance: rowScan,
       invalidated: false, // TODO,
-      isFullWidth,
-      isRowCutoff: () => false,
+      isFullWidth: getFullWidthCallback(rds, g(rowFullWidthPredicate).fn, grid),
+      isRowCutoff: (r) => {
+        const row = rds.rowByIndex(r);
+        return !row || row.kind === "branch";
+      },
       layoutMap,
       nextLayout: n,
       prevLayout,
@@ -234,7 +233,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
    * STATE VIEW AND API
    */
 
-  const gridView = atom<GridView>((g) => {
+  const gridView = atom<GridView<T>>((g) => {
     return {
       header: g(headerLayout),
       rows: g(rowView),

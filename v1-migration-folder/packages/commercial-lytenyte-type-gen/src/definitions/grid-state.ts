@@ -7,7 +7,7 @@ const Columns: PropertyType = {
   kind: "property",
   name: "columns",
   optional: false,
-  value: "GridAtom<Column[]>",
+  value: "GridAtom<Column<T>[]>",
   tsDoc: ``,
   doc: { en: `` },
 };
@@ -154,7 +154,7 @@ const ColumnMeta: PropertyType = {
   kind: "property",
   name: "columnMeta",
   optional: false,
-  value: "GridAtomReadonly<ColumnMeta>",
+  value: "GridAtomReadonly<ColumnMeta<T>>",
   tsDoc: ``,
   doc: { en: `` },
 };
