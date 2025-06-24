@@ -69,9 +69,10 @@ export function computePathTree<T extends PathProvidedItem>(
   paths: T[],
   mutableSeenMap: Record<string, number> = {},
   nonAdjacentAreDistinct: boolean = false,
+  pathDelimiter = "#",
 ): PathRoot<T> {
   // Generate the path matrix (MxN structure) using the existing utility
-  const matrix = computePathMatrix(paths, undefined, mutableSeenMap);
+  const matrix = computePathMatrix(paths, undefined, mutableSeenMap, pathDelimiter);
 
   // Initialize the root node of our tree
   const tree: PathRoot<T> = { kind: "root", children: new Map() };

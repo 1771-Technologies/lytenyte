@@ -1,5 +1,7 @@
 export { isReactVersionAtLeast } from "./react-version.js";
 
+export { fastMemo, fastDeepMemo } from "./fast-memo.js";
+
 export type { UseSlotProps, SlotComponent } from "./use-slot/index.js";
 export { useSlot } from "./use-slot/index.js";
 export { getElementRef } from "./use-slot/get-element-ref.js";

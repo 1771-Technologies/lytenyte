@@ -34,9 +34,10 @@
   },
   "devDependencies": {
     "@types/hyperscript": "^0.0.7",
+    "@types/react": "^19.1.6",
+    "@types/react-dom": "^19.1.5",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "@types/react": "^19.1.6",
-    "@types/react-dom": "^19.1.5"
+    "tsx": "^4.20.3"
   }
 }

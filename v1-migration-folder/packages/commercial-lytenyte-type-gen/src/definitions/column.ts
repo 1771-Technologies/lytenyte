@@ -1,0 +1,165 @@
+import type { InterfaceType, PropertyType, UnionType } from "../+types.js";
+
+export const ColumnPin: UnionType = {
+  kind: "union",
+  name: "ColumnPin",
+  export: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  types: ['"start"', '"end"', "null"],
+};
+
+export const ColumnMeta: InterfaceType = {
+  kind: "interface",
+  name: "ColumnMeta<T>",
+  export: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  properties: [
+    {
+      kind: "property",
+      name: "columnsVisible",
+      value: "Column<T>[]",
+      optional: false,
+      tsDoc: ``,
+      doc: { en: `` },
+    },
+    {
+      kind: "property",
+      name: "columnLookup",
+      value: "Map<string, Column<T>>",
+      optional: false,
+      tsDoc: ``,
+      doc: { en: `` },
+    },
+  ],
+};
+
+/**
+ * COLUMN DEFINITION
+ */
+
+const Hide: PropertyType = {
+  kind: "property",
+  name: "hide",
+  value: "boolean",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+};
+
+const Id: PropertyType = {
+  kind: "property",
+  name: "id",
+  value: "string",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+};
+const Width: PropertyType = {
+  kind: "property",
+  name: "width",
+  value: "number",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+};
+const WidthMax: PropertyType = {
+  kind: "property",
+  name: "widthMax",
+  value: "number",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+};
+const WidthMin: PropertyType = {
+  kind: "property",
+  name: "widthMin",
+  value: "number",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+};
+const WidthFlex: PropertyType = {
+  kind: "property",
+  name: "widthFlex",
+  value: "number",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+};
+const ColumnPinProp: PropertyType = {
+  kind: "property",
+  name: "pin",
+  value: "ColumnPin",
+  optional: true,
+  tsDoc: ``,
+  doc: { en: `` },
+};
+const ColumnGroupVisibilityProp: PropertyType = {
+  kind: "property",
+  name: "groupVisibility",
+  value: "ColumnGroupVisibility",
+  optional: true,
+  tsDoc: ``,
+  doc: { en: `` },
+};
+export const ColumnGroupPath: PropertyType = {
+  kind: "property",
+  name: "groupPath",
+  value: "string[]",
+  optional: true,
+  tsDoc: ``,
+  doc: { en: `` },
+};
+export const ColumnSpan: PropertyType = {
+  kind: "property",
+  name: "colSpan",
+  optional: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  value: `number | CellSpanFn<T>`,
+};
+export const RowSpan: PropertyType = {
+  kind: "property",
+  name: "rowSpan",
+  optional: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  value: `number | CellSpanFn<T>`,
+};
+
+export const ColumnCore: InterfaceType = {
+  kind: "interface",
+  export: true,
+  name: "Column<T>",
+  tag: "core",
+  tsDoc: ``,
+  doc: {
+    en: ``,
+  },
+  properties: [
+    Id,
+    Hide,
+    Width,
+    WidthMax,
+    WidthMin,
+    WidthFlex,
+    ColumnPinProp,
+    ColumnGroupVisibilityProp,
+    ColumnGroupPath,
+
+    ColumnSpan,
+    RowSpan,
+  ],
+};
+
+export const ColumnBaseCore: InterfaceType = {
+  kind: "interface",
+  export: true,
+  name: "ColumnBase",
+  tag: "core",
+  properties: [Hide, Width, WidthMax, WidthMin, WidthFlex],
+  tsDoc: ``,
+  doc: { en: `` },
+};
