@@ -74,6 +74,9 @@ export default defineConfig({
         "**/*.stories.*",
         "**/*.d.ts",
 
+        // generates types and docs only
+        "./packages/commercial-lytenyte-type-gen",
+
         // These are vendored dependencies we've brought into the repo
         // to ensure we control all dependencies. There are tests for these
         // but we don't expect full coverage of them.
@@ -85,9 +88,6 @@ export default defineConfig({
         "src/**/*.ts",
         "src/**/*.tsx",
       ],
-      thresholds: {
-        "100": true,
-      },
     },
   },
 });

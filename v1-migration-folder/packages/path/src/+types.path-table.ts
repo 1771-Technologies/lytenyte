@@ -49,7 +49,7 @@ export interface PathMatrixItem {
    * It is the joined path relation plus an additional occurrence count.
    * The id is joined using "#" characters.
    */
-  readonly idOccurrence: `${string}#${number}`;
+  readonly idOccurrence: `${string}${string}${number}`;
   /**
    * The identifier used for joining the columns into a matrix item.
    * This id will be the `joinPath` elements joined by "#" characters.

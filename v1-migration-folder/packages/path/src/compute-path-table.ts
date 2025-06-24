@@ -62,6 +62,8 @@ export function computePathTable<T extends PathProvidedItem>(
   paths: T[],
   maxDepth?: number,
   mutableSeenMap: Record<string, number> = {},
+  pathDelimiter = "#",
+  startOffset: number = 0,
 ): PathTable<T> {
   // Return an empty table structure if no paths are provided
   // This is an optimization that avoids unnecessary computation
@@ -70,7 +72,9 @@ export function computePathTable<T extends PathProvidedItem>(
   // First compute the path matrix and transpose it
   // Transposition transforms the matrix from column-major to row-major order,
   // making it easier to process row by row
-  const matrix = transposePathMatrix(computePathMatrix(paths, maxDepth, mutableSeenMap));
+  const matrix = transposePathMatrix(
+    computePathMatrix(paths, maxDepth, mutableSeenMap, pathDelimiter),
+  );
 
   // Calculate the maximum row span
   // We add 1 because the matrix doesn't include the leaf nodes row,
@@ -115,7 +119,7 @@ export function computePathTable<T extends PathProvidedItem>(
           kind: "leaf",
           data: paths[ci], // Use the original path data
           rowStart: ri, // Start from the current row
-          colStart: ci, // Start from the current column
+          colStart: ci + startOffset, // Start from the current column
           colSpan, // Span exactly one column
           rowSpan, // Span all remaining rows
         });
@@ -137,7 +141,7 @@ export function computePathTable<T extends PathProvidedItem>(
           kind: "group",
           data: item, // Use the group item data
           rowStart: ri, // Start from the current row
-          colStart: ci, // Start from the current column
+          colStart: ci + startOffset, // Start from the current column
           colSpan, // Span multiple columns as defined by the group
           rowSpan: 1, // Group nodes always span exactly one row
         });

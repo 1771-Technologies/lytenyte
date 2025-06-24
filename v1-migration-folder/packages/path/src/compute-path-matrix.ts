@@ -82,6 +82,7 @@ export function computePathMatrix<T extends PathProvidedItem>(
   paths: T[],
   maxDepth?: number,
   mutMatrixSeenMap: Record<string, number> = {},
+  pathDelimiter = "#",
 ): PathMatrix {
   // Early return for empty input - nothing to process
   if (!paths.length) return [];
@@ -121,8 +122,8 @@ export function computePathMatrix<T extends PathProvidedItem>(
     joinPath.push(joinPart);
 
     // Create composite IDs by joining the path segments with "#"
-    const id = idPath.join("#");
-    const joinId = joinPath.join("#");
+    const id = idPath.join(pathDelimiter);
+    const joinId = joinPath.join(pathDelimiter);
 
     // Track occurrences of this ID to make it globally unique
     // Initialize to -1 if not seen before (will be incremented to 0)
@@ -132,7 +133,7 @@ export function computePathMatrix<T extends PathProvidedItem>(
     // Create the path matrix item with all necessary metadata
     firstRow.push({
       id, // Unique identifier for this node
-      idOccurrence: `${id}#${mutMatrixSeenMap[id]}`, // ID with occurrence count appended
+      idOccurrence: `${id}${pathDelimiter}${mutMatrixSeenMap[id]}`, // ID with occurrence count appended
       groupPath: [...idPath], // Full path to this node (for identification)
       joinPath: [...joinPath], // Path used for determining joins
       joinId, // ID used for joining with other nodes
@@ -172,8 +173,8 @@ export function computePathMatrix<T extends PathProvidedItem>(
       idPath.push(idPart);
       joinPath.push(joinPart);
 
-      const joinId = joinPath.join("#");
-      const id = idPath.join("#");
+      const joinId = joinPath.join(pathDelimiter);
+      const id = idPath.join(pathDelimiter);
 
       // Check if this node should be merged with the previous node at the same level
       // This happens when they share the same joinId, indicating they're part of the same group
@@ -193,7 +194,7 @@ export function computePathMatrix<T extends PathProvidedItem>(
         // Create a new path matrix item
         row.push({
           id,
-          idOccurrence: `${id}#${mutMatrixSeenMap[id]}`,
+          idOccurrence: `${id}${pathDelimiter}${mutMatrixSeenMap[id]}`,
           joinId,
           groupPath: [...idPath],
           joinPath: [...joinPath],
