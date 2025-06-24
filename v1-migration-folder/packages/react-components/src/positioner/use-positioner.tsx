@@ -91,7 +91,6 @@ export function usePositioner({
         : null;
 
       const arrowDim = resolveArrowOffset(arrowEl, side);
-
       middleware.push(
         offset({ mainAxis: (sideOffset ?? 0) + arrowDim, alignmentAxis: alignOffset }),
       );
@@ -162,19 +161,22 @@ export function usePositioner({
         const arrowData = pos.middlewareData.arrow!;
         const arrowBB = arrowEl.getBoundingClientRect();
 
-        const offsetTop = placement.startsWith("top")
-          ? `${floatBB.height}px`
-          : `-${arrowBB.height}px`;
-        const offsetLeft = placement.startsWith("left")
-          ? `${floatBB.width}px`
-          : `-${arrowBB.width}px`;
-
         Object.assign(arrowEl.style, {
           position: "absolute",
           /* v8 ignore next 1 */
           visibility: hidden ? "hidden" : "visible",
-          top: arrowData.y ? `${arrowData.y}px` : offsetTop,
-          left: arrowData.x ? `${arrowData.x}px` : offsetLeft,
+          bottom: placement.startsWith("top") ? -arrowBB.height : undefined,
+          top: arrowData.y
+            ? `${arrowData.y}px`
+            : placement.startsWith("bottom")
+              ? -arrowBB.height
+              : undefined,
+          right: placement.startsWith("left") ? `${-arrowBB.width}px` : undefined,
+          left: arrowData.x
+            ? `${arrowData.x}`
+            : placement.startsWith("right")
+              ? `${-arrowBB.width}px`
+              : undefined,
         });
       }
 

@@ -9,6 +9,9 @@ export interface TooltipRootProps {
   readonly showDelay?: number;
   readonly hideDelay?: number;
 
+  readonly mountTime?: number;
+  readonly unmountTime?: number;
+
   readonly interactive?: boolean;
 }
 
@@ -17,6 +20,8 @@ export const TooltipRoot = ({
   interactive,
   open: userOpen,
   onOpenChange: userOnOpenChange,
+  mountTime = 0,
+  unmountTime = 0,
   ...p
 }: PropsWithChildren<TooltipRootProps>) => {
   const group = useTooltipGroup();
@@ -104,6 +109,8 @@ export const TooltipRoot = ({
 
     beginOpen,
     beginClose,
+    mountTime,
+    unmountTime,
 
     interactive: interactive ?? false,
   };

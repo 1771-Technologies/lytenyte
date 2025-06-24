@@ -30,6 +30,9 @@ export interface TooltipRootContext {
   readonly beginOpen: () => void;
   readonly beginClose: () => void;
 
+  readonly mountTime: number;
+  readonly unmountTime: number;
+
   readonly interactive: boolean;
 }
 
