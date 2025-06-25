@@ -55,7 +55,9 @@ export interface RowDataStore<T> {
   /**
    *
    */
-  readonly rowForIndex: (row: number) => GridAtomReadonly<RowNode<T> | null>;
+  readonly rowForIndex: (
+    row: number,
+  ) => GridAtomReadonlyUnwatchable<RowNode<T> | null>;
 
   /**
    *
@@ -106,6 +108,21 @@ export interface GridAtomReadonly<T> {
    *
    */
   readonly watch: (fn: () => void) => () => void;
+
+  /**
+   *
+   */
+  readonly useValue: () => T;
+}
+
+/**
+ *
+ */
+export interface GridAtomReadonlyUnwatchable<T> {
+  /**
+   *
+   */
+  readonly get: () => T;
 
   /**
    *

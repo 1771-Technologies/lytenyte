@@ -19,12 +19,15 @@ const CellImpl = forwardRef<
   const xPositions = cx.xPositions.useValue();
   const yPositions = cx.yPositions.useValue();
 
+  grid.internal.refreshKey.useValue();
+
   const viewport = cx.viewportWidthInner.useValue();
   const width = sizeFromCoord(cell.colIndex, xPositions, cell.colSpan);
   const height = sizeFromCoord(cell.rowIndex, yPositions, cell.rowSpan);
 
   const isSticky = !!cell.colPin;
   const isRowPinned = !!cell.rowPin;
+  const rtl = cx.rtl.useValue();
 
   const styles = useMemo(() => {
     const styles: CSSProperties = {
@@ -40,16 +43,20 @@ const CellImpl = forwardRef<
     };
     if (isSticky) {
       styles.position = "sticky";
-      styles.left = 0;
+
+      if (rtl) styles.right = 0;
+      else styles.left = 0;
 
       styles.zIndex = isRowPinned ? 5 : 2;
     }
 
     if (cell.colPin === "end") {
       const spaceLeft = xPositions.at(-1)! - xPositions[cell.colIndex];
-      styles.transform = getTranslate(viewport - spaceLeft, 0);
+      const x = viewport - spaceLeft;
+      styles.transform = getTranslate(rtl ? -x : x, 0);
     } else {
-      styles.transform = getTranslate(xPositions[cell.colIndex], 0);
+      const x = xPositions[cell.colIndex];
+      styles.transform = getTranslate(rtl ? -x : x, 0);
     }
 
     return { ...props.style, ...styles };
@@ -60,6 +67,7 @@ const CellImpl = forwardRef<
     isRowPinned,
     isSticky,
     props.style,
+    rtl,
     viewport,
     width,
     xPositions,
@@ -74,13 +82,18 @@ const CellImpl = forwardRef<
       : providedRenderer
     : CellDefault;
 
-  const r = cx.rowDataStore.rowForIndex(cell.rowIndex);
-  const row = r.useValue();
-
+  const row = cell.row.useValue();
   if (!row) return null;
 
   return (
-    <div {...props} ref={forwarded} style={styles}>
+    <div
+      {...props}
+      ref={forwarded}
+      style={styles}
+      role="gridcell"
+      data-rowindex={cell.rowIndex}
+      data-colindex={cell.colIndex}
+    >
       {typeof Renderer === "function" ? (
         <Renderer column={cell.column} row={row} grid={grid} />
       ) : (

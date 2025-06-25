@@ -6,4 +6,5 @@ export interface InternalAtoms {
   readonly headerHeightTotal: GridAtomReadonly<number>;
   readonly xScroll: GridAtom<number>;
   readonly yScroll: GridAtom<number>;
+  readonly refreshKey: GridAtom<number>;
 }

@@ -22,6 +22,7 @@ import { emptyRowDataSource } from "./helpers/empty-row-data-source.js";
 import { getFullWidthCallback } from "./helpers/get-full-width-callback.js";
 import { getSpanFn } from "./helpers/get-span-callback.js";
 import { makeFieldForColumn } from "./api/field-for-column.js";
+import { makeSortForColumn } from "./api/sort-for-column.js";
 
 const DEFAULT_HEADER_HEIGHT = 40;
 const COLUMN_GROUP_JOIN_DELIMITER = "-->";
@@ -32,6 +33,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   /**
    * Primitive ATOMS and State
    */
+  const rtl = atom(p.rtl ?? false);
   const columns = atom(p.columns ?? []);
   const base = atom(p.columnBase ?? {});
   const gridId = atom(p.gridId);
@@ -58,8 +60,8 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
   const rowOverscanTop = atom(p.rowOverscanTop ?? 20);
   const rowOverscanBottom = atom(p.rowOverscanBottom ?? 20);
-  const colOverScanStart = atom(p.colOverscanStart ?? 10);
-  const colOverscanEnd = atom(p.colOverscanEnd ?? 10);
+  const colOverScanStart = atom(p.colOverscanStart ?? 2);
+  const colOverscanEnd = atom(p.colOverscanEnd ?? 2);
 
   const xScroll = atom(0);
   const yScroll = atom(0);
@@ -224,7 +226,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
     const botStart = rowCount - botCount;
 
-    const view = makeRowLayout({ layout: n, layoutMap, rds, columns });
+    const view = makeRowLayout({ layout: n, layoutMap, rds: rowDataStore, columns });
     const topHeight = yPos[topCount];
     const botHeight = yPos.at(-1)! - yPos[botStart];
     const centerHeight = yPos.at(-1)! - topHeight - botHeight;
@@ -249,6 +251,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   });
 
   const state: Grid<T>["state"] = {
+    rtl: makeGridAtom(rtl, store),
     columns: makeGridAtom(columns, store),
     columnMeta: makeGridAtom(columnMeta, store),
     columnBase: makeGridAtom(base, store),
@@ -299,6 +302,9 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
   Object.assign(api, {
     fieldForColumn: makeFieldForColumn(grid),
+    sortForColumn: makeSortForColumn(grid),
+
+    // Get current sort | { sort and index }
   } satisfies GridApi<T>);
 
   Object.assign(grid, {
@@ -314,6 +320,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       headerHeightTotal: makeGridAtom(headerHeightTotal, store),
       xScroll: makeGridAtom(xScroll, store),
       yScroll: makeGridAtom(yScroll, store),
+      refreshKey: makeGridAtom(rdsAtoms.snapshotKey, store),
     } satisfies InternalAtoms,
   });
 

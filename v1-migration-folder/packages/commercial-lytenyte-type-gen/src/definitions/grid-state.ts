@@ -296,6 +296,15 @@ const SortModel: PropertyType = {
   value: "GridAtom<SortModelItem<T>[]>",
 };
 
+const Rtl: PropertyType = {
+  kind: "property",
+  name: "rtl",
+  optional: false,
+  tsDoc: ``,
+  doc: { en: `` },
+  value: "GridAtom<boolean>",
+};
+
 export const GridStateCore: InterfaceType = {
   kind: "interface",
   export: true,
@@ -339,6 +348,8 @@ export const GridStateCore: InterfaceType = {
 
     RowFullWidthPredicate,
     CellRenderers,
+
+    Rtl,
 
     SortModel,
   ],

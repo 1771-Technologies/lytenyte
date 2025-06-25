@@ -4,7 +4,7 @@ import {
   ColumnIndexProp,
   ColumnProp,
   RowIndexProp,
-  RowNodeProp,
+  RowNodeAtomProp,
   RowPinProp,
 } from "./shared-properties";
 
@@ -231,7 +231,7 @@ export const RowFullWidthRowLayout: InterfaceType = {
       optional: false,
     },
     RowIndexProp,
-    RowNodeProp,
+    RowNodeAtomProp,
     RowPinProp,
   ],
 };
@@ -269,7 +269,7 @@ export const RowCellLayout: InterfaceType = {
     },
     RowIndexProp,
     ColumnIndexProp,
-    RowNodeProp,
+    RowNodeAtomProp,
     ColumnProp,
     ColPinProp,
     RowPinProp,
@@ -292,7 +292,7 @@ export const RowNormalRowLayout: InterfaceType = {
       optional: false,
     },
     RowIndexProp,
-    RowNodeProp,
+    RowNodeAtomProp,
     RowPinProp,
     {
       kind: "property",

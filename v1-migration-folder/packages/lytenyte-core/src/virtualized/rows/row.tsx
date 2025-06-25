@@ -11,7 +11,16 @@ const RowImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & RowPro
   { row, ...props },
   forwarded,
 ) {
-  return <div {...props} ref={forwarded} style={useRowStyle(row, props.style)} />;
+  return (
+    <div
+      {...props}
+      role="row"
+      data-rowindex={row.rowIndex}
+      data-rowtype="normal-row"
+      ref={forwarded}
+      style={useRowStyle(row, props.style)}
+    />
+  );
 });
 
 export const Row = fastDeepMemo(RowImpl);

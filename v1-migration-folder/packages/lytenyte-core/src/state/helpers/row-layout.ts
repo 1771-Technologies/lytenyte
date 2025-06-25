@@ -1,10 +1,10 @@
 import { isFullWidthMap, type LayoutMap, type SpanLayout } from "@1771technologies/lytenyte-shared";
-import type { Column, RowCellLayout, RowDataSource, RowSectionLayouts } from "../../+types";
+import type { Column, RowCellLayout, RowDataStore, RowSectionLayouts } from "../../+types";
 
 interface MakeRowViewArgs<T> {
   layout: SpanLayout;
   layoutMap: LayoutMap;
-  rds: RowDataSource<T>;
+  rds: RowDataStore<T>;
   columns: Column<T>[];
 }
 export function makeRowLayout<T>({ layout: n, layoutMap, rds, columns }: MakeRowViewArgs<T>) {
@@ -19,7 +19,7 @@ export function makeRowLayout<T>({ layout: n, layoutMap, rds, columns }: MakeRow
       continue;
     }
 
-    const node = rds.rowByIndex(r);
+    const node = rds.rowForIndex(r);
     if (!node) {
       console.error(`Row data source did not return a row for a valid row position at index: ${r}`);
       break;
@@ -94,7 +94,7 @@ export function makeRowLayout<T>({ layout: n, layoutMap, rds, columns }: MakeRow
       continue;
     }
 
-    const node = rds.rowByIndex(r);
+    const node = rds.rowForIndex(r);
     if (!node) {
       console.error(`Row data source did not return a row for a valid row position at index: ${r}`);
       break;
@@ -169,7 +169,7 @@ export function makeRowLayout<T>({ layout: n, layoutMap, rds, columns }: MakeRow
       continue;
     }
 
-    const node = rds.rowByIndex(r);
+    const node = rds.rowForIndex(r);
     if (!node) {
       console.error(`Row data source did not return a row for a valid row position at index: ${r}`);
       break;

@@ -188,6 +188,15 @@ const SortModel: PropertyType = {
   value: "SortModelItem<T>[]",
 };
 
+const Rtl: PropertyType = {
+  kind: "property",
+  name: "rtl",
+  optional: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  value: "boolean",
+};
+
 export const UseLyteNytePropsCore: InterfaceType = {
   kind: "interface",
   name: "UseLyteNyteProps<T>",
@@ -218,6 +227,8 @@ export const UseLyteNytePropsCore: InterfaceType = {
 
     RowFullWidthPredicate,
     CellRenderers,
+
+    Rtl,
 
     SortModel,
   ],

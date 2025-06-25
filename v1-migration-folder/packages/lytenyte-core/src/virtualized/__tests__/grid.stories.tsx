@@ -7,15 +7,12 @@ import { Viewport } from "../viewport/viewport";
 import { useLyteNyte } from "../../state/use-lytenyte";
 import { useId } from "react";
 import { HeaderCell } from "../header/header-cell";
-import type { Column, RowLayout } from "../../+types";
+import type { Column } from "../../+types";
 import { HeaderGroupCell } from "../header/header-group-cell";
 import { useClientRowDataSource } from "../../row-data-source/use-client-data-source";
 import { bankDataSmall } from "./sample-data/bank-data-smaller";
-import { Row } from "../rows/row";
-import { RowFullWidth } from "../rows/row-full-width";
-import { Cell } from "../cells/cell";
 import { RowsBottom, RowsCenter, RowsTop } from "../rows/rows-sections";
-import { RowScrollForcePassive } from "../rows/row-scroll-force-passive";
+import { RowHandler } from "./sample-data/row-handler";
 
 const meta: Meta = {
   title: "Grid/Virtualized",
@@ -43,32 +40,6 @@ const columns: Column<any>[] = [
   { id: "y" },
 ];
 
-function RowHandler(props: { rows: RowLayout<any>[] }) {
-  return props.rows.map((row) => {
-    if (row.kind === "full-width") return <RowFullWidth row={row} key={row.rowIndex} />;
-
-    return (
-      <Row key={row.rowIndex} row={row}>
-        {row.cells.map((cell) => {
-          return (
-            <Cell
-              cell={cell}
-              key={cell.colIndex}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                background: "white",
-                border: "1px solid black",
-              }}
-            ></Cell>
-          );
-        })}
-      </Row>
-    );
-  });
-}
-
 function MainComp() {
   const ds = useClientRowDataSource({
     data: bankDataSmall,
@@ -81,9 +52,9 @@ function MainComp() {
 
     sortModel: [
       {
+        columnId: "education",
         sort: {
           kind: "string",
-          columnId: "education",
         },
       },
     ],
@@ -126,11 +97,9 @@ function MainComp() {
             <RowsTop>
               <RowHandler rows={view.rows.top} />
             </RowsTop>
-            <RowScrollForcePassive>
-              <RowsCenter>
-                <RowHandler rows={view.rows.center} />
-              </RowsCenter>
-            </RowScrollForcePassive>
+            <RowsCenter>
+              <RowHandler rows={view.rows.center} />
+            </RowsCenter>
             <RowsBottom>
               <RowHandler rows={view.rows.bottom} />
             </RowsBottom>

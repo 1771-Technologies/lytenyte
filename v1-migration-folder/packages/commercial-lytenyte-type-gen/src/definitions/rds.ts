@@ -45,7 +45,7 @@ export const RowDataStore: InterfaceType = {
       tsDoc: ``,
       doc: { en: `` },
       optional: false,
-      value: "(row: number) => GridAtomReadonly<RowNode<T> | null>",
+      value: "(row: number) => GridAtomReadonlyUnwatchable<RowNode<T> | null>",
     },
     {
       kind: "property",

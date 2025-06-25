@@ -35,6 +35,14 @@ export const RowNodeProp: PropertyType = {
   tsDoc: ``,
   optional: false,
 };
+export const RowNodeAtomProp: PropertyType = {
+  kind: "property",
+  name: "row",
+  value: "GridAtomReadonlyUnwatchable<RowNode<T> | null>",
+  doc: { en: `` },
+  tsDoc: ``,
+  optional: false,
+};
 
 export const ColumnProp: PropertyType = {
   kind: "property",
