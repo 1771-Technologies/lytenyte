@@ -11,7 +11,6 @@ export const columnFieldComputer = <D, E>(
   api: ApiCore<D, E> | ApiPro<D, E>,
   row: RowNodeCore<D>,
   column: ColumnCore<D, E> | ColumnPro<D, E>,
-  cacheId: "group" | "column" | "pivot" | "quick-search",
   field: FieldCore<D, E> | FieldPro<D, E>,
 ) => {
   api = api as ApiCore<D, E>;
@@ -20,15 +19,7 @@ export const columnFieldComputer = <D, E>(
 
   if (!api.rowIsLeaf(row)) return row.data[column.id];
 
-  const s = api.getState();
-  const cache = s.internal.fieldCacheRef[cacheId];
-  cache[row.id] ??= {};
-  const valueCache = cache[row.id];
-
-  if (valueCache[column.id] !== undefined) return valueCache[column.id];
-
   const value = columnGetField(row.data, field, column, api);
-  valueCache[column.id] = value;
 
   return value;
 };
