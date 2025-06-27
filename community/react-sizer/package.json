@@ -1,7 +1,7 @@
 {
   "name": "@1771technologies/react-sizer",
   "description": "A component for creating a sized div the will fill the available space",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "license": "Apache-2.0",
   "type": "module",
   "files": [
