@@ -7,5 +7,5 @@ export const columnField = <D, E>(
   row: RowNodeCore<D>,
   column: ColumnCore<D, E> | ColumnPro<D, E>,
 ) => {
-  return columnFieldComputer(api, row, column, "column", column.field ?? column.id);
+  return columnFieldComputer(api, row, column, column.field ?? column.id);
 };

@@ -7,5 +7,5 @@ export const columnFieldGroup = <D, E>(
   row: RowNodeCore<D>,
   column: ColumnCore<D, E> | ColumnPro<D, E>,
 ) => {
-  return columnFieldComputer(api, row, column, "group", column.rowGroupField ?? column.id);
+  return columnFieldComputer(api, row, column, column.rowGroupField ?? column.id);
 };
