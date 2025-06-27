@@ -53,8 +53,8 @@
   color: var(--lng1771-gray-80);
   padding-inline: 8px;
 
-  &::hover,
-  &::focus {
+  &:hover,
+  &:focus {
     background-color: var(--lng1771-gray-20);
     outline: none;
   }
