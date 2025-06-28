@@ -1,0 +1,130 @@
+name: "‼️ Priority Bug Report"
+description: Report a reproducible defect or regression requiring priority handling within 16 working hours.
+labels: ["bug", "priority", "status: triage"]
+type: "Bug"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to fill out this bug report. Please provide a clear, informative, and searchable summary title above.  
+
+        If you have questions about using or implementing LyteNyte Grid, please submit a “General Question” issue rather than a bug report.
+
+  - type: input
+    attributes:
+      label: Search Keywords
+      description: |
+        Before submitting your issue, please review our [existing issues](https://github.com/1771-Technologies/lytenyte/issues) 
+        to ensure there are no duplicates. If no match is found, list the keywords you used to improve future discoverability.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: edition
+    attributes:
+      label: LyteNyte Edition
+      description: Select the LyteNyte edition where this issue occurs.
+      multiple: false
+      options:
+        - Core
+        - PRO
+    validations:
+      required: true
+
+  - type: checkboxes
+    attributes:
+      label: Latest Version
+      description: We integrate bug fixes, performance enhancements, and other improvements in each new release.
+      options:
+        - label: I have tested the latest version
+          required: true
+
+  - type: dropdown
+    id: plan
+    attributes:
+      label: License Plan
+      description: Choose your current license plan.
+      multiple: false
+      options:
+        - LyteNyte Organization PRO
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: Provide a clear and concise description of the issue you're experiencing.
+    validations:
+      required: true
+
+  - type: input
+    id: link
+    attributes:
+      label: Minimal Reproduction
+      description: |
+        Please provide a link to a minimal reproduction of the issue you ran into. 
+
+        Tips:
+        - Issues with reproducible examples are resolved much faster. 
+        - Use StackBlitz (https://stackblitz.com) for shareable web examples. 
+        - Ensure the example is complete and runnable without local dependencies. 
+        - You can fork our official examples (e.g. [getting started stackblitz](https://stackblitz.com/fork/github/1771technologies/lytenyte/tree/main/examples/introduction/getting-started-final-demo)).
+        - **IMPORTANT**: Do not include any confidential information.
+
+  - type: textarea
+    attributes:
+      label: Reproduction Steps
+      description: |
+        **⚠️ Issues we cannot reproduce cannot be fixed.**
+      value: |
+        Steps:
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll down to '...'
+        4. See error
+
+        Please describe a clear set of steps needed to reproduce the issue you're experiencing.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Expected Behavior
+      description: Describe what you expected to happen.
+    validations:
+      required: true
+
+  - type: dropdown
+    attributes:
+      label: Issue Frequency
+      description: |
+        How consistently can you reproduce this issue?
+      options:
+        - Every time
+        - Often
+        - Sometimes
+        - Rarely
+        - Only once
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Environment Details
+      description: Describe which browser, operating system, and LyteNyte Grid version you use.
+      value: |
+        Browser: 
+        Operating System: 
+        LyteNyte Version:
+    validations:
+      required: true
+
+  - type: input
+    id: contact
+    attributes:
+      label: Customer ID
+      description: If you have an Organization PRO license and want your issue to be responded to within 16 working hours, please enter your customer ID.
+      placeholder: "e.g. JANE-1221"
+    validations:
+      required: true

@@ -1,0 +1,38 @@
+import type { InterfaceType, PropertyType } from "../+types";
+
+const Data: PropertyType = {
+  kind: "property",
+  name: "data",
+  optional: false,
+  value: "T[]",
+  tsDoc: ``,
+  doc: { en: `` },
+};
+
+const TopData: PropertyType = {
+  kind: "property",
+  name: "topData",
+  optional: true,
+  value: "T[]",
+  tsDoc: ``,
+  doc: { en: `` },
+};
+
+const BottomData: PropertyType = {
+  kind: "property",
+  name: "bottomData",
+  optional: true,
+  value: "T[]",
+  tsDoc: ``,
+  doc: { en: `` },
+};
+
+export const ClientRowDataSource: InterfaceType = {
+  kind: "interface",
+  export: true,
+  name: "ClientRowDataSourceParams<T>",
+  tag: "core",
+  tsDoc: ``,
+  doc: { en: `` },
+  properties: [Data, TopData, BottomData],
+};
