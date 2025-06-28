@@ -14,6 +14,12 @@ import * as RDS from "./definitions/rds.js";
 import * as GridAtom from "./definitions/grid-atom.js";
 import * as Row from "./definitions/row.js";
 import * as Spans from "./definitions/col-and-row-span.js";
+import * as Field from "./definitions/field.js";
+import * as CellRenderer from "./definitions/cell-renderer.js";
+import * as GridApi from "./definitions/grid-api.js";
+import * as Sort from "./definitions/sort.js";
+import * as Filters from "./definitions/filter.js";
+import * as Prelude from "./definitions/prelude.js";
 
 const typeModules = [
   ...Object.values(UseLng),
@@ -27,6 +33,12 @@ const typeModules = [
   ...Object.values(GridAtom),
   ...Object.values(Row),
   ...Object.values(Spans),
+  ...Object.values(Field),
+  ...Object.values(CellRenderer),
+  ...Object.values(GridApi),
+  ...Object.values(Prelude),
+  ...Object.values(Sort),
+  ...Object.values(Filters),
 ] as GenTypes[];
 
 const types = typeModules

@@ -1,4 +1,4 @@
-import type { PathBranch, PathLeaf, PathProvidedItem } from "@1771technologies/lytenyte-path";
+import type { PathBranch, PathLeaf, PathProvidedItem } from "@1771technologies/lytenyte-shared";
 import type { CSSProperties } from "react";
 
 export interface TreeVirtualBranch<T extends PathProvidedItem> {

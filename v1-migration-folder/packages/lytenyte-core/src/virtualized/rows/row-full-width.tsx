@@ -5,7 +5,7 @@ import { useRowStyle } from "./use-row-style";
 import { VIEWPORT_WIDTH_VARIABLE_USE } from "../+constants";
 
 export interface RowFullWidthProps {
-  readonly row: RowFullWidthRowLayout;
+  readonly row: RowFullWidthRowLayout<any>;
   readonly space?: "viewport" | "scroll-width";
 }
 
@@ -16,6 +16,9 @@ const RowFullWidthImpl = forwardRef<
   return (
     <div
       {...props}
+      role="none"
+      data-rowindex={row.rowIndex}
+      data-rowtype="full-width"
       ref={forwarded}
       style={useRowStyle(row, props.style, {
         left: "0px",

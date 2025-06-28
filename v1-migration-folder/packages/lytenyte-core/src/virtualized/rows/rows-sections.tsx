@@ -10,10 +10,13 @@ export const RowsTop = fastDeepMemo(
 
     const top = cx.internal.headerHeightTotal.useValue();
 
+    if (height <= 0) return null;
+
     return (
       <div
         {...props}
         ref={forwarded}
+        role="rowgroup"
         style={
           {
             ...props.style,
@@ -36,14 +39,18 @@ export const RowsCenter = fastDeepMemo(
     const view = cx.view.useValue().rows;
     const height = view.rowCenterTotalHeight;
 
+    if (height <= 0) return <div style={{ flex: "1" }} role="none" />;
+
     return (
       <div
         {...props}
         ref={forwarded}
+        role="rowgroup"
         style={
           {
             ...props.style,
             height,
+            minHeight: height,
             flex: 1,
             minWidth: "100%",
             display: "grid",
@@ -64,10 +71,12 @@ export const RowsBottom = fastDeepMemo(
     const view = cx.view.useValue().rows;
     const height = view.rowBottomTotalHeight;
 
+    if (height <= 0) return null;
     return (
       <div
         {...props}
         ref={forwarded}
+        role="rowgroup"
         style={
           {
             ...props.style,

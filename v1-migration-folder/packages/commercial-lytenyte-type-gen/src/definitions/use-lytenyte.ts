@@ -170,6 +170,41 @@ const RowFullWidthPredicate: PropertyType = {
   tsDoc: ``,
   doc: { en: `` },
 };
+const CellRenderers: PropertyType = {
+  kind: "property",
+  name: "cellRenderers",
+  optional: true,
+  value: "Record<string, CellRendererFn<T>>",
+  tsDoc: ``,
+  doc: { en: `` },
+};
+
+const SortModel: PropertyType = {
+  kind: "property",
+  name: "sortModel",
+  optional: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  value: "SortModelItem<T>[]",
+};
+
+const Rtl: PropertyType = {
+  kind: "property",
+  name: "rtl",
+  optional: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  value: "boolean",
+};
+
+const FilterModel: PropertyType = {
+  kind: "property",
+  name: "filterModel",
+  optional: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  value: "FilterModelItem<T>[]",
+};
 
 export const UseLyteNytePropsCore: InterfaceType = {
   kind: "interface",
@@ -200,5 +235,11 @@ export const UseLyteNytePropsCore: InterfaceType = {
     ColOverscanEnd,
 
     RowFullWidthPredicate,
+    CellRenderers,
+
+    Rtl,
+
+    SortModel,
+    FilterModel,
   ],
 };

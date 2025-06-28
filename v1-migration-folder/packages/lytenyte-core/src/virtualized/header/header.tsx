@@ -24,6 +24,7 @@ const HeaderImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(
       <div
         {...props}
         ref={forwarded}
+        role="rowgroup"
         style={{
           ...props.style,
           width,

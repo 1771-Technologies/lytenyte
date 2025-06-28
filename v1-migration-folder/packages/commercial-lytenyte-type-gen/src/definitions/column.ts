@@ -35,6 +35,24 @@ export const ColumnMeta: InterfaceType = {
   ],
 };
 
+export const ColumnUIHints: InterfaceType = {
+  kind: "interface",
+  name: "ColumnUIHints",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  properties: [
+    {
+      kind: "property",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: true,
+      value: "boolean",
+      name: "sortable",
+    },
+  ],
+};
+
 /**
  * COLUMN DEFINITION
  */
@@ -129,6 +147,41 @@ export const RowSpan: PropertyType = {
   value: `number | CellSpanFn<T>`,
 };
 
+export const Name: PropertyType = {
+  kind: "property",
+  name: "name",
+  optional: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  value: "string",
+};
+
+export const Field: PropertyType = {
+  kind: "property",
+  name: "field",
+  optional: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  value: "Field<T>",
+};
+export const CellRenderer: PropertyType = {
+  kind: "property",
+  name: "cellRenderer",
+  optional: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  value: "string | CellRendererFn<T>",
+};
+
+export const ColumnHintsProp: PropertyType = {
+  kind: "property",
+  name: "uiHints",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "ColumnUIHints",
+};
+
 export const ColumnCore: InterfaceType = {
   kind: "interface",
   export: true,
@@ -140,6 +193,7 @@ export const ColumnCore: InterfaceType = {
   },
   properties: [
     Id,
+    Name,
     Hide,
     Width,
     WidthMax,
@@ -151,6 +205,11 @@ export const ColumnCore: InterfaceType = {
 
     ColumnSpan,
     RowSpan,
+
+    Field,
+    CellRenderer,
+
+    ColumnHintsProp,
   ],
 };
 
@@ -159,7 +218,7 @@ export const ColumnBaseCore: InterfaceType = {
   export: true,
   name: "ColumnBase",
   tag: "core",
-  properties: [Hide, Width, WidthMax, WidthMin, WidthFlex],
+  properties: [Hide, Width, WidthMax, WidthMin, WidthFlex, ColumnHintsProp],
   tsDoc: ``,
   doc: { en: `` },
 };

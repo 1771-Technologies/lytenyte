@@ -1,4 +1,4 @@
-import type { PathBranch, PathLeaf, PathProvidedItem } from "@1771technologies/lytenyte-path";
+import type { PathBranch, PathLeaf, PathProvidedItem } from "@1771technologies/lytenyte-shared";
 
 export function buildVirtualTreePartial<T extends PathProvidedItem>(
   items: (PathBranch<T> | PathLeaf<T>)[],

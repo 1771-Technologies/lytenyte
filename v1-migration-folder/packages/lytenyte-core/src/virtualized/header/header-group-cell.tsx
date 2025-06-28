@@ -45,6 +45,7 @@ const HeaderGroupCellImpl = forwardRef<
     <div
       {...props}
       ref={forwarded}
+      role="columnheader"
       style={{
         ...props.style,
         ...styles,

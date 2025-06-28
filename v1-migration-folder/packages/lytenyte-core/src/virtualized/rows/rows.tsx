@@ -19,6 +19,7 @@ export const RowsContainer = fastDeepMemo(
     return (
       <div
         {...props}
+        role="none"
         ref={forwarded}
         style={
           {
@@ -26,6 +27,7 @@ export const RowsContainer = fastDeepMemo(
             height,
             width,
             minWidth: "100%",
+            flex: "1",
             display: "flex",
             flexDirection: "column",
             [SCROLL_WIDTH_VARIABLE]: `${width}px`,

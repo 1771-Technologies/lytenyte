@@ -1,4 +1,4 @@
-import { type PathProvidedItem } from "@1771technologies/lytenyte-path";
+import { type PathProvidedItem } from "@1771technologies/lytenyte-shared";
 import { useEvent, useMeasure } from "@1771technologies/lytenyte-react-hooks";
 import { useMemo, useState } from "react";
 import { buildVirtualTreePartial } from "./get-virtual-tree-paths.js";

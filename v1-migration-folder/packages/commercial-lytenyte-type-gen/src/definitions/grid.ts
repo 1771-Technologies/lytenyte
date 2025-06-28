@@ -24,5 +24,13 @@ export const GridCore: InterfaceType = {
       doc: { en: `` },
       optional: false,
     },
+    {
+      kind: "property",
+      name: "api",
+      value: "GridApi<T>",
+      doc: { en: `` },
+      tsDoc: ``,
+      optional: false,
+    },
   ],
 };

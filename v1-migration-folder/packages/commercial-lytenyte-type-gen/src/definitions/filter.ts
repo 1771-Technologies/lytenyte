@@ -1,4 +1,5 @@
-import type { InterfaceType, PropertyType, UnionType } from "../+types.js";
+import type { FunctionType, InterfaceType, PropertyType, UnionType } from "../+types.js";
+import { DataProp, GridProp } from "./shared-properties.js";
 
 const nullHandling: PropertyType = {
   kind: "property",
@@ -603,6 +604,60 @@ export const FilterCombinationPro: InterfaceType = {
   tag: "pro",
 };
 
+export const FilterFnParams: InterfaceType = {
+  kind: "interface",
+  name: "FilterFnParams<T>",
+  export: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  properties: [DataProp, GridProp],
+};
+
+export const FilterFn: FunctionType = {
+  kind: "function",
+  name: "FilterFn<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  return: "boolean",
+  properties: [
+    {
+      kind: "property",
+      name: "params",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "FilterFnParams<T>",
+    },
+  ],
+};
+
+export const FilterDynamic: InterfaceType = {
+  kind: "interface",
+  name: "FilterDynamic<T>",
+  export: true,
+  properties: [
+    {
+      kind: "property",
+      tsDoc: ``,
+      doc: { en: `` },
+      name: "kind",
+      value: '"func"',
+      optional: false,
+    },
+    {
+      kind: "property",
+      tsDoc: ``,
+      doc: { en: `` },
+      name: "func",
+      value: "FilterFn<T>",
+      optional: false,
+    },
+  ],
+  tsDoc: ``,
+  doc: { en: `` },
+};
+
 export const Locale: UnionType = {
   kind: "union",
   name: "Locale",
@@ -652,4 +707,14 @@ export const Locale: UnionType = {
   ],
   tsDoc: ``,
   doc: { en: `` },
+};
+
+export const FilterModelItem: UnionType = {
+  kind: "union",
+  export: true,
+  name: "FilterModelItem<T>",
+  types: ["FilterNumber", "FilterString", "FilterDate", "FilterCombination", "FilterDynamic<T>"],
+  tsDoc: ``,
+  doc: { en: `` },
+  tag: "core",
 };

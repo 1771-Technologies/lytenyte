@@ -177,9 +177,6 @@ importers:
       '@1771technologies/lytenyte-js-utils':
         specifier: workspace:*
         version: link:../js-utils
-      '@1771technologies/lytenyte-path':
-        specifier: workspace:*
-        version: link:../path
       '@1771technologies/lytenyte-react-hooks':
         specifier: workspace:^
         version: link:../react-hooks
@@ -202,8 +199,6 @@ importers:
         specifier: workspace:*
         version: link:../js-utils
 
-  packages/path: {}
-
   packages/react-components:
     dependencies:
       '@1771technologies/atom':
@@ -224,9 +219,6 @@ importers:
       '@1771technologies/lytenyte-js-utils':
         specifier: workspace:*
         version: link:../js-utils
-      '@1771technologies/lytenyte-path':
-        specifier: workspace:*
-        version: link:../path
       '@1771technologies/lytenyte-react-autocomplete':
         specifier: workspace:*
         version: link:../fork-react-autocomplete
@@ -236,6 +228,9 @@ importers:
       '@1771technologies/lytenyte-scroll-lock':
         specifier: workspace:*
         version: link:../fork-scroll-lock
+      '@1771technologies/lytenyte-shared':
+        specifier: workspace:*
+        version: link:../lytenyte-shared
       react:
         specifier: ^18.0.0 || ^19.0.0
         version: 19.1.0

@@ -34,7 +34,6 @@
   "dependencies": {
     "@1771technologies/atom": "^1.0.1",
     "@1771technologies/lytenyte-shared": "workspace:*",
-    "@1771technologies/lytenyte-path": "workspace:*",
     "@1771technologies/lytenyte-dom-utils": "workspace:*",
     "@1771technologies/lytenyte-js-utils": "workspace:*",
     "@1771technologies/lytenyte-react-hooks": "workspace:^"

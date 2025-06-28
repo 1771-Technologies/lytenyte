@@ -21,28 +21,36 @@ const HeaderCellImpl = forwardRef<
 
   const isSticky = !!cell.colPin;
   const viewport = ctx.viewportWidthInner.useValue();
+  const rtl = ctx.rtl.useValue();
 
   const styles = useMemo(() => {
     const styles: CSSProperties = {};
     if (isSticky) {
       styles.position = "sticky";
-      styles.left = 0;
+
+      if (rtl) styles.right = 0;
+      else styles.left = 0;
+
       styles.zIndex = 11;
     }
 
     if (cell.colPin === "end") {
       const spaceLeft = xPositions.at(-1)! - xPositions[cell.colStart];
-      styles.transform = getTranslate(viewport - spaceLeft, 0);
+
+      const x = viewport - spaceLeft;
+      styles.transform = getTranslate(rtl ? -x : x, 0);
     } else {
-      styles.transform = getTranslate(xPositions[cell.colStart], 0);
+      const x = xPositions[cell.colStart];
+      styles.transform = getTranslate(rtl ? -x : x, 0);
     }
     return styles;
-  }, [cell.colPin, cell.colStart, isSticky, viewport, xPositions]);
+  }, [cell.colPin, cell.colStart, isSticky, rtl, viewport, xPositions]);
 
   return (
     <div
       {...props}
       ref={forwarded}
+      role="columnheader"
       style={{
         ...props.style,
         ...styles,
