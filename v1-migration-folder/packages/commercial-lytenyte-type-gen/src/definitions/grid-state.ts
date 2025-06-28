@@ -305,6 +305,15 @@ const Rtl: PropertyType = {
   value: "GridAtom<boolean>",
 };
 
+const FilterModel: PropertyType = {
+  kind: "property",
+  name: "filterModel",
+  optional: false,
+  tsDoc: ``,
+  doc: { en: `` },
+  value: "GridAtom<FilterModelItem<T>[]>",
+};
+
 export const GridStateCore: InterfaceType = {
   kind: "interface",
   export: true,
@@ -352,5 +361,6 @@ export const GridStateCore: InterfaceType = {
     Rtl,
 
     SortModel,
+    FilterModel,
   ],
 };

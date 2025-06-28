@@ -1,5 +1,5 @@
-import { LEAF } from "./+constants";
-import type { Root, TreeNode } from "./+types";
+import { LEAF } from "../+constants";
+import type { Root, TreeNode } from "../+types";
 
 export function traverse<Data>(
   root: Root<Data>,

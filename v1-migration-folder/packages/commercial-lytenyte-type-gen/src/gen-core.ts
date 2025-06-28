@@ -18,6 +18,7 @@ import * as Field from "./definitions/field.js";
 import * as CellRenderer from "./definitions/cell-renderer.js";
 import * as GridApi from "./definitions/grid-api.js";
 import * as Sort from "./definitions/sort.js";
+import * as Filters from "./definitions/filter.js";
 import * as Prelude from "./definitions/prelude.js";
 
 const typeModules = [
@@ -37,6 +38,7 @@ const typeModules = [
   ...Object.values(GridApi),
   ...Object.values(Prelude),
   ...Object.values(Sort),
+  ...Object.values(Filters),
 ] as GenTypes[];
 
 const types = typeModules

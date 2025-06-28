@@ -32,8 +32,11 @@ export function makeRowDataStore<T>(
     return time < currentTime;
   });
 
+  const watchAtoms = new Map<number, GridAtomReadonlyUnwatchable<RowNode<T> | null>>();
   const rowForIndex = (r: number): GridAtomReadonlyUnwatchable<RowNode<T> | null> => {
-    return {
+    if (watchAtoms.has(r)) return watchAtoms.get(r)!;
+
+    const gridAtom = {
       get: () => {
         const row = family(r);
         return store.get(row);
@@ -43,6 +46,9 @@ export function makeRowDataStore<T>(
         return useAtomValue(row);
       },
     };
+
+    watchAtoms.set(r, gridAtom);
+    return gridAtom;
   };
   const rowInvalidateIndex = (r: number) => {
     family.remove(r);

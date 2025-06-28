@@ -1,4 +1,4 @@
-import type { GridAtom, RowLeaf, SortModelItem } from "../+types";
+import type { GridAtom, RowLeaf, SortModelItem, FilterModelItem } from "../+types";
 import {
   type ClientRowDataSourceParams,
   type Grid,
@@ -6,10 +6,8 @@ import {
   type RowNode,
 } from "../+types";
 import { useRef } from "react";
-import type { ClientData } from "./client-tree";
-import { makeClientTree } from "./client-tree";
 import { atom, createStore } from "@1771technologies/atom";
-import { traverse } from "./traverse";
+import { traverse } from "./tree/traverse";
 import type { TreeNode } from "./+types";
 import {
   dateComparator,
@@ -18,6 +16,8 @@ import {
   stringComparator,
 } from "@1771technologies/lytenyte-shared";
 import { equal } from "@1771technologies/lytenyte-js-utils";
+import { makeClientTree, type ClientData } from "./tree/client-tree";
+import { computeFilteredRows } from "./filter/compute-filtered-rows";
 
 interface DataAtoms<T> {
   readonly top: GridAtom<T[]>;
@@ -43,15 +43,20 @@ export function makeClientDataSource<T>(
 
   const pinnedIdMap = atom((g) => {
     const combined = new Map([...g(topNodes), ...g(botNodes)].map((c) => [c.id, c]));
-
     return combined;
   });
 
-  const tree = atom<ClientData<T>>((g) =>
-    makeClientTree({ rowData: g(data), rowAggModel: [], rowBranchModel: [] }),
-  );
+  const filterModel = atom<FilterModelItem<T>[]>([]);
 
   const grid$ = atom<Grid<T> | null>(null);
+  const tree = atom<ClientData<T>>((g) => {
+    const rows = g(data);
+    const model = g(filterModel);
+
+    const filtered = computeFilteredRows(rows, g(grid$), model);
+
+    return makeClientTree({ rowData: filtered, rowAggModel: [], rowBranchModel: [] });
+  });
 
   const sortModel = atom<SortModelItem<T>[]>([]);
   const sortComparator = atom((g) => {
@@ -172,6 +177,15 @@ export function makeClientDataSource<T>(
       grid.state.sortModel.watch(() => {
         grid.state.rowDataStore.rowClearCache();
         rdsStore.set(sortModel, grid.state.sortModel.get());
+      }),
+    );
+
+    // Filter model monitoring
+    rdsStore.set(filterModel, grid.state.filterModel.get());
+    cleanup.push(
+      grid.state.filterModel.watch(() => {
+        grid.state.rowDataStore.rowClearCache();
+        rdsStore.set(filterModel, grid.state.filterModel.get());
       }),
     );
   };

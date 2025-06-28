@@ -3,10 +3,14 @@ import { makeRowDataStore } from "../make-row-data-store";
 import { atom, createStore } from "@1771technologies/atom";
 import type { RowLeaf } from "../../+types";
 import { makeGridAtom } from "../../grid-atom/make-grid-atom";
+import { renderHook } from "@testing-library/react";
 
 describe("makeRowDataStore", () => {
   test("should return the correct store", () => {
-    expect(makeRowDataStore(createStore(), (() => {}) as any)).toMatchInlineSnapshot(`
+    const d = makeRowDataStore(createStore(), (() => {}) as any);
+    delete (d as any).atoms.snapshotKey;
+
+    expect(d).toMatchInlineSnapshot(`
       {
         "atoms": {
           "bottomCount": {
@@ -85,7 +89,7 @@ describe("makeRowDataStore", () => {
       }
     `);
 
-    expect(dataStore.store.rowForIndex(11)).toBe(d);
+    expect(dataStore.store.rowForIndex(11).get()).toBe(d.get());
 
     dataStore.store.rowInvalidateIndex(11);
     const rowB = dataStore.store.rowForIndex(11).get();
@@ -93,5 +97,18 @@ describe("makeRowDataStore", () => {
     expect(rowB).not.toBe(rowA);
 
     dataStore.store.rowClearCache();
+
+    const res = renderHook(() => {
+      return d.useValue();
+    });
+    expect(res.result).toMatchInlineSnapshot(`
+      {
+        "current": {
+          "data": 11,
+          "id": "11",
+          "kind": "leaf",
+        },
+      }
+    `);
   });
 });

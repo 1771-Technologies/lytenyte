@@ -1,19 +1,13 @@
 import {
+  computePathTable,
   getMaxHeaderDepth,
   getVisibleColumns,
   getVisibleColumnsWithGroups,
   makeColumnGroupMetadata,
   partitionColumnsByPinState,
-<<<<<<< HEAD
-} from "@1771technologies/lytenyte-shared";
-import type { Column, ColumnBase } from "../../+types";
-import { computePathTable, type PathTableItem } from "@1771technologies/lytenyte-path";
-=======
-  computePathTable,
   type PathTableItem,
 } from "@1771technologies/lytenyte-shared";
 import type { Column, ColumnBase } from "../../+types";
->>>>>>> bcbc94e1 (Initial headless setup (#144))
 
 export interface MakeColumnViewArgs<T> {
   readonly columns: Column<T>[];

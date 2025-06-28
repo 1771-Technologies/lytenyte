@@ -14,6 +14,20 @@ import {
 } from "./definitions/sort.js";
 import { ColumnPin } from "./definitions/column.js";
 
+import {
+  FilterDate,
+  FilterDateOperator,
+  FilterDateOptions,
+  FilterNumber,
+  FilterNumberOperator,
+  FilterNumberOptions,
+  FilterString,
+  FilterStringCollation,
+  FilterStringOperator,
+  FilterStringOptions,
+  Locale,
+} from "./definitions/filter.js";
+
 const typeModules = [
   ...Object.values(ColumnGroup),
   ColumnPin,
@@ -25,6 +39,17 @@ const typeModules = [
   SortDateComparatorOptions,
   SortNumberComparatorOptions,
   SortStringComparatorOptions,
+  FilterDate,
+  FilterDateOperator,
+  FilterDateOptions,
+  FilterNumber,
+  FilterNumberOperator,
+  FilterNumberOptions,
+  FilterString,
+  FilterStringCollation,
+  FilterStringOperator,
+  FilterStringOptions,
+  Locale,
 ] as GenTypes[];
 
 const types = typeModules

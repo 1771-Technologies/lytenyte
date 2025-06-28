@@ -197,6 +197,15 @@ const Rtl: PropertyType = {
   value: "boolean",
 };
 
+const FilterModel: PropertyType = {
+  kind: "property",
+  name: "filterModel",
+  optional: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  value: "FilterModelItem<T>[]",
+};
+
 export const UseLyteNytePropsCore: InterfaceType = {
   kind: "interface",
   name: "UseLyteNyteProps<T>",
@@ -231,5 +240,6 @@ export const UseLyteNytePropsCore: InterfaceType = {
     Rtl,
 
     SortModel,
+    FilterModel,
   ],
 };

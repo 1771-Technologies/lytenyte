@@ -1,4 +1,4 @@
-import type { GroupItem } from "./+types";
+import type { GroupItem } from "../+types";
 
 export function groupEvaluator<Data>(g: GroupItem<Data>[], d: Data) {
   const v: (string | null | undefined)[] = [];

@@ -1,5 +1,11 @@
 import { atom, createStore } from "@1771technologies/atom";
-import type { ColumnMeta, GridApi, RowDataSource, SortModelItem } from "../+types.js";
+import type {
+  ColumnMeta,
+  GridApi,
+  RowDataSource,
+  SortModelItem,
+  FilterModelItem,
+} from "../+types.js";
 import { type Grid, type GridView, type UseLyteNyteProps } from "../+types.js";
 import { useRef } from "react";
 import { makeColumnView } from "./helpers/column-view.js";
@@ -58,8 +64,8 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const rowScanDistance = atom(p.rowScanDistance ?? 100);
   const colScanDistance = atom(p.colScanDistance ?? 100);
 
-  const rowOverscanTop = atom(p.rowOverscanTop ?? 20);
-  const rowOverscanBottom = atom(p.rowOverscanBottom ?? 20);
+  const rowOverscanTop = atom(p.rowOverscanTop ?? 10);
+  const rowOverscanBottom = atom(p.rowOverscanBottom ?? 10);
   const colOverScanStart = atom(p.colOverscanStart ?? 2);
   const colOverscanEnd = atom(p.colOverscanEnd ?? 2);
 
@@ -70,6 +76,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const rowFullWidthPredicate = atom({ fn: p.rowFullWidthPredicate ?? (() => false) });
 
   const sortModel = atom<SortModelItem<T>[]>(p.sortModel ?? []);
+  const filterModel = atom<FilterModelItem<T>[]>(p.filterModel ?? []);
 
   const layoutMap: LayoutMap = new Map();
 
@@ -294,6 +301,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     cellRenderers: makeGridAtom(cellRenderers, store),
 
     sortModel: makeGridAtom(sortModel, store),
+    filterModel: makeGridAtom(filterModel, store),
   };
 
   const api = {} as GridApi<T>;

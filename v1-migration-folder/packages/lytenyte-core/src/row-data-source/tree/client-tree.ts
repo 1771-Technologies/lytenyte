@@ -1,8 +1,8 @@
-import { BRANCH, LEAF } from "./+constants";
-import type { AggregationItem, BranchNode, GroupItem, LeafNode, Root } from "./+types";
-import { aggregationEvaluator } from "./evaluator-aggregation";
-import { groupEvaluator } from "./evaluator-group";
-import { traverse } from "./traverse";
+import { BRANCH, LEAF } from "../+constants.js";
+import type { AggregationItem, BranchNode, GroupItem, LeafNode, Root } from "../+types.js";
+import { traverse } from "./traverse.js";
+import { aggregationEvaluator } from "./evaluator-aggregation.js";
+import { groupEvaluator } from "./evaluator-group.js";
 
 export interface ClientData<Data> {
   readonly root: Root<Data>;
