@@ -1,6 +1,6 @@
 import type { Column } from "../../../+types";
 
-export const columns: Column[] = [
+export const columns: Column<any>[] = [
   { id: "age" },
   { id: "job" },
   { id: "balance" },

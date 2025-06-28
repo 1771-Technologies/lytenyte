@@ -1,12 +1,13 @@
 import {
+  computePathTable,
   getMaxHeaderDepth,
   getVisibleColumns,
   getVisibleColumnsWithGroups,
   makeColumnGroupMetadata,
   partitionColumnsByPinState,
+  type PathTableItem,
 } from "@1771technologies/lytenyte-shared";
 import type { Column, ColumnBase } from "../../+types";
-import { computePathTable, type PathTableItem } from "@1771technologies/lytenyte-path";
 
 export interface MakeColumnViewArgs<T> {
   readonly columns: Column<T>[];

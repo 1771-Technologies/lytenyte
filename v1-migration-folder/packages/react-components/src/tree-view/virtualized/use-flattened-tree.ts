@@ -3,7 +3,7 @@ import {
   type PathBranch,
   type PathLeaf,
   type PathProvidedItem,
-} from "@1771technologies/lytenyte-path";
+} from "@1771technologies/lytenyte-shared";
 import { useMemo } from "react";
 
 export function useFlattenedTree<T extends PathProvidedItem>(

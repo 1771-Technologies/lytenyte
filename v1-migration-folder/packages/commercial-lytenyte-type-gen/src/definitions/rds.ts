@@ -2,7 +2,7 @@ import type { InterfaceType } from "../+types";
 
 export const RowDataStore: InterfaceType = {
   kind: "interface",
-  name: "RowDataStore",
+  name: "RowDataStore<T>",
   export: true,
   tsDoc: ``,
   doc: { en: `` },
@@ -38,6 +38,30 @@ export const RowDataStore: InterfaceType = {
       doc: { en: `` },
       value: "GridAtom<number>",
       optional: false,
+    },
+    {
+      kind: "property",
+      name: "rowForIndex",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "(row: number) => GridAtomReadonlyUnwatchable<RowNode<T> | null>",
+    },
+    {
+      kind: "property",
+      name: "rowClearCache",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "() => void",
+    },
+    {
+      kind: "property",
+      name: "rowInvalidateIndex",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "(row: number) => void",
     },
   ],
 };

@@ -3,6 +3,7 @@ export { debounce } from "./debounce.js";
 export { distance } from "./distance.js";
 export { equal } from "./equal.js";
 export { fastShallowCompare } from "./fast-shallow-compare.js";
+export { get } from "./get.js";
 export { hasUpperCaseLetter } from "./has-uppercase-letter.js";
 export { isFunction } from "./is-function.js";
 export { sleep } from "./sleep.js";

@@ -4,16 +4,52 @@ import { format } from "prettier";
 import type { GenTypes } from "./+types.js";
 
 import * as RDS from "./definitions/rds.js";
+import * as Row from "./definitions/row.js";
 import * as ColumnGroup from "./definitions/column-group.js";
 import * as GridAtom from "./definitions/grid-atom.js";
+import {
+  SortDateComparatorOptions,
+  SortNumberComparatorOptions,
+  SortStringComparatorOptions,
+} from "./definitions/sort.js";
 import { ColumnPin } from "./definitions/column.js";
+
+import {
+  FilterDate,
+  FilterDateOperator,
+  FilterDateOptions,
+  FilterNumber,
+  FilterNumberOperator,
+  FilterNumberOptions,
+  FilterString,
+  FilterStringCollation,
+  FilterStringOperator,
+  FilterStringOptions,
+  Locale,
+} from "./definitions/filter.js";
 
 const typeModules = [
   ...Object.values(ColumnGroup),
   ColumnPin,
   RDS.RowDataStore,
-
   ...Object.values(GridAtom),
+  Row.RowNode,
+  Row.RowLeaf,
+  Row.RowGroup,
+  SortDateComparatorOptions,
+  SortNumberComparatorOptions,
+  SortStringComparatorOptions,
+  FilterDate,
+  FilterDateOperator,
+  FilterDateOptions,
+  FilterNumber,
+  FilterNumberOperator,
+  FilterNumberOptions,
+  FilterString,
+  FilterStringCollation,
+  FilterStringOperator,
+  FilterStringOptions,
+  Locale,
 ] as GenTypes[];
 
 const types = typeModules

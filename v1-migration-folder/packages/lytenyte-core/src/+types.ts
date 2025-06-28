@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 /**
  *
  */
@@ -101,6 +103,26 @@ export interface UseLyteNyteProps<T> {
    *
    */
   readonly rowFullWidthPredicate?: RowFullWidthPredicate<T>;
+
+  /**
+   *
+   */
+  readonly cellRenderers?: Record<string, CellRendererFn<T>>;
+
+  /**
+   *
+   */
+  readonly rtl?: boolean;
+
+  /**
+   *
+   */
+  readonly sortModel?: SortModelItem<T>[];
+
+  /**
+   *
+   */
+  readonly filterModel?: FilterModelItem<T>[];
 }
 
 /**
@@ -210,7 +232,7 @@ export interface GridState<T> {
   /**
    *
    */
-  readonly rowDataStore: RowDataStore;
+  readonly rowDataStore: RowDataStore<T>;
 
   /**
    *
@@ -266,6 +288,26 @@ export interface GridState<T> {
    *
    */
   readonly rowFullWidthPredicate: GridAtom<{ fn: RowFullWidthPredicate<T> }>;
+
+  /**
+   *
+   */
+  readonly cellRenderers: GridAtom<Record<string, CellRendererFn<T>>>;
+
+  /**
+   *
+   */
+  readonly rtl: GridAtom<boolean>;
+
+  /**
+   *
+   */
+  readonly sortModel: GridAtom<SortModelItem<T>[]>;
+
+  /**
+   *
+   */
+  readonly filterModel: GridAtom<FilterModelItem<T>[]>;
 }
 
 /**
@@ -281,6 +323,11 @@ export interface Grid<T> {
    *
    */
   readonly view: GridAtomReadonly<GridView<T>>;
+
+  /**
+   *
+   */
+  readonly api: GridApi<T>;
 }
 
 /**
@@ -295,7 +342,7 @@ export interface GridView<T> {
   /**
    *
    */
-  readonly rows: RowSectionLayouts;
+  readonly rows: RowSectionLayouts<T>;
 }
 
 /**
@@ -456,21 +503,11 @@ export type HeaderLayoutCell<T> = HeaderCellLayout<T> | HeaderGroupCellLayout;
 /**
  *
  */
-export interface RowCellLayout {
+export interface RowCellLayout<T> {
   /**
    *
    */
   readonly kind: "cell";
-
-  /**
-   *
-   */
-  readonly rowIndex: number;
-
-  /**
-   *
-   */
-  readonly colIndex: number;
 
   /**
    *
@@ -485,23 +522,38 @@ export interface RowCellLayout {
   /**
    *
    */
-  readonly rowPin: RowPin;
+  readonly rowIndex: number;
+
+  /**
+   *
+   */
+  readonly colIndex: number;
+
+  /**
+   *
+   */
+  readonly row: GridAtomReadonlyUnwatchable<RowNode<T> | null>;
+
+  /**
+   *
+   */
+  readonly column: Column<T>;
 
   /**
    *
    */
   readonly colPin: ColumnPin;
+
+  /**
+   *
+   */
+  readonly rowPin: RowPin;
 }
 
 /**
  *
  */
-export interface RowFullWidthRowLayout {
-  /**
-   *
-   */
-  readonly rowIndex: number;
-
+export interface RowFullWidthRowLayout<T> {
   /**
    *
    */
@@ -510,23 +562,28 @@ export interface RowFullWidthRowLayout {
   /**
    *
    */
+  readonly rowIndex: number;
+
+  /**
+   *
+   */
+  readonly row: GridAtomReadonlyUnwatchable<RowNode<T> | null>;
+
+  /**
+   *
+   */
   readonly rowPin: RowPin;
 }
 
 /**
  *
  */
-export type RowLayout = RowNormalRowLayout | RowFullWidthRowLayout;
+export type RowLayout<T> = RowNormalRowLayout<T> | RowFullWidthRowLayout<T>;
 
 /**
  *
  */
-export interface RowNormalRowLayout {
-  /**
-   *
-   */
-  readonly rowIndex: number;
-
+export interface RowNormalRowLayout<T> {
   /**
    *
    */
@@ -535,32 +592,42 @@ export interface RowNormalRowLayout {
   /**
    *
    */
-  readonly cells: RowCellLayout[];
+  readonly rowIndex: number;
+
+  /**
+   *
+   */
+  readonly row: GridAtomReadonlyUnwatchable<RowNode<T> | null>;
 
   /**
    *
    */
   readonly rowPin: RowPin;
+
+  /**
+   *
+   */
+  readonly cells: RowCellLayout<T>[];
 }
 
 /**
  *
  */
-export interface RowSectionLayouts {
+export interface RowSectionLayouts<T> {
   /**
    *
    */
-  readonly top: RowLayout[];
+  readonly top: RowLayout<T>[];
 
   /**
    *
    */
-  readonly center: RowLayout[];
+  readonly center: RowLayout<T>[];
 
   /**
    *
    */
-  readonly bottom: RowLayout[];
+  readonly bottom: RowLayout<T>[];
 
   /**
    *
@@ -606,6 +673,11 @@ export interface ColumnBase {
    *
    */
   readonly widthFlex?: number;
+
+  /**
+   *
+   */
+  readonly uiHints?: ColumnUIHints;
 }
 
 /**
@@ -616,6 +688,11 @@ export interface Column<T> {
    *
    */
   readonly id: string;
+
+  /**
+   *
+   */
+  readonly name?: string;
 
   /**
    *
@@ -666,6 +743,21 @@ export interface Column<T> {
    *
    */
   readonly rowSpan?: number | CellSpanFn<T>;
+
+  /**
+   *
+   */
+  readonly field?: Field<T>;
+
+  /**
+   *
+   */
+  readonly cellRenderer?: string | CellRendererFn<T>;
+
+  /**
+   *
+   */
+  readonly uiHints?: ColumnUIHints;
 }
 
 /**
@@ -687,6 +779,16 @@ export interface ColumnMeta<T> {
  *
  */
 export type ColumnPin = "start" | "end" | null;
+
+/**
+ *
+ */
+export interface ColumnUIHints {
+  /**
+   *
+   */
+  readonly sortable?: boolean;
+}
 
 /**
  *
@@ -756,7 +858,7 @@ export interface RowDataSource<T> {
 /**
  *
  */
-export interface RowDataStore {
+export interface RowDataStore<T> {
   /**
    *
    */
@@ -776,6 +878,23 @@ export interface RowDataStore {
    *
    */
   readonly rowBottomCount: GridAtom<number>;
+
+  /**
+   *
+   */
+  readonly rowForIndex: (
+    row: number,
+  ) => GridAtomReadonlyUnwatchable<RowNode<T> | null>;
+
+  /**
+   *
+   */
+  readonly rowClearCache: () => void;
+
+  /**
+   *
+   */
+  readonly rowInvalidateIndex: (row: number) => void;
 }
 
 /**
@@ -816,6 +935,21 @@ export interface GridAtomReadonly<T> {
    *
    */
   readonly watch: (fn: () => void) => () => void;
+
+  /**
+   *
+   */
+  readonly useValue: () => T;
+}
+
+/**
+ *
+ */
+export interface GridAtomReadonlyUnwatchable<T> {
+  /**
+   *
+   */
+  readonly get: () => T;
 
   /**
    *
@@ -907,7 +1041,11 @@ export interface RowGroup {
 /**
  *
  */
-export type RowHeight = number | "auto" | `fill:${number}` | ((i: number) => number);
+export type RowHeight =
+  | number
+  | "auto"
+  | `fill:${number}`
+  | ((i: number) => number);
 
 /**
  * The leaf row type. As the name suggests, leaf rows do not have any further children rows
@@ -1011,3 +1149,743 @@ export interface CellSpanFnParams<T> {
    */
   readonly row: RowNode<T>;
 }
+
+/**
+ *
+ */
+export type FieldFn<T> = (
+  /**
+   *
+   */
+  params: FieldFnParams<T>,
+) => unknown;
+
+/**
+ *
+ */
+export interface FieldFnParams<T> {
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly column: Column<T>;
+
+  /**
+   *
+   */
+  readonly data: T;
+}
+
+/**
+ *
+ */
+export interface FieldPath {
+  /**
+   *
+   */
+  readonly kind: "path";
+
+  /**
+   *
+   */
+  readonly path: string;
+}
+
+/**
+ *
+ */
+export type Field<T> = number | string | FieldPath | FieldFn<T>;
+
+/**
+ *
+ */
+export type CellRendererFn<T> = (
+  /**
+   *
+   */
+  params: CellRendererParams<T>,
+) => ReactNode;
+
+/**
+ *
+ */
+export interface CellRendererParams<T> {
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly column: Column<T>;
+
+  /**
+   *
+   */
+  readonly row: RowNode<T>;
+}
+
+/**
+ *
+ */
+export interface GridApi<T> {
+  /**
+   *
+   */
+  readonly fieldForColumn: (
+    columnOrId: string | Column<T>,
+    data: T | Record<string, unknown>,
+  ) => unknown;
+
+  /**
+   *
+   */
+  readonly sortForColumn: (
+    columnOrId: string,
+  ) => { sort: SortModelItem<T>; index: number } | null;
+}
+
+/**
+ *
+ */
+export type SortComparatorFn<T> = (
+  /**
+   *
+   */
+  left: T | Record<string, unknown>,
+  /**
+   *
+   */
+  right: T | Record<string, unknown>,
+  /**
+   *
+   */
+  options: any,
+) => number;
+
+/**
+ *
+ */
+export type SortComparators = "string" | "number" | "date" | (string & {});
+
+/**
+ *
+ */
+export interface SortCustomSort<T> {
+  /**
+   *
+   */
+  readonly columnId: string | null;
+
+  /**
+   *
+   */
+  readonly kind: "custom";
+
+  /**
+   *
+   */
+  readonly comparator: SortComparatorFn<T>;
+
+  /**
+   *
+   */
+  readonly options?: any;
+}
+
+/**
+ *
+ */
+export interface SortDateColumnSort {
+  /**
+   *
+   */
+  readonly kind: "date";
+
+  /**
+   *
+   */
+  readonly options?: SortDateComparatorOptions;
+}
+
+/**
+ *
+ */
+export interface SortDateComparatorOptions {
+  /**
+   *
+   */
+  readonly nullsFirst?: boolean;
+
+  /**
+   *
+   */
+  readonly toIsoDateString?: (v: unknown) => string;
+
+  /**
+   *
+   */
+  readonly includeTime?: boolean;
+}
+
+/**
+ *
+ */
+export type SortGridSorts<T> =
+  | SortCustomSort<T>
+  | SortDateColumnSort
+  | SortNumberColumnSort
+  | SortStringColumnSort;
+
+/**
+ *
+ */
+export interface SortModelItem<T> {
+  /**
+   *
+   */
+  readonly sort: SortGridSorts<T>;
+
+  /**
+   *
+   */
+  readonly columnId: string | null;
+
+  /**
+   *
+   */
+  readonly isDescending?: boolean;
+}
+
+/**
+ *
+ */
+export interface SortNumberColumnSort {
+  /**
+   *
+   */
+  readonly kind: "number";
+
+  /**
+   *
+   */
+  readonly options?: SortNumberComparatorOptions;
+}
+
+/**
+ *
+ */
+export interface SortNumberComparatorOptions {
+  /**
+   *
+   */
+  readonly nullsFirst?: boolean;
+
+  /**
+   *
+   */
+  readonly absoluteValue?: boolean;
+}
+
+/**
+ *
+ */
+export interface SortStringColumnSort {
+  /**
+   *
+   */
+  readonly kind: "string";
+
+  /**
+   *
+   */
+  readonly options?: SortStringComparatorOptions;
+}
+
+/**
+ *
+ */
+export interface SortStringComparatorOptions {
+  /**
+   *
+   */
+  readonly caseInsensitive?: boolean;
+
+  /**
+   *
+   */
+  readonly trimWhitespace?: boolean;
+
+  /**
+   *
+   */
+  readonly ignorePunctuation?: boolean;
+
+  /**
+   *
+   */
+  readonly locale?: string;
+
+  /**
+   *
+   */
+  readonly collator?: Intl.Collator;
+
+  /**
+   *
+   */
+  readonly nullsFirst?: boolean;
+}
+
+/**
+ *
+ */
+export interface FilterCombination {
+  /**
+   *
+   */
+  readonly kind: "combination";
+
+  /**
+   *
+   */
+  readonly operator: FilterCombinationOperator;
+
+  /**
+   *
+   */
+  readonly filters: Array<
+    FilterNumber | FilterString | FilterDate | FilterCombination
+  >;
+}
+
+/**
+ *
+ */
+export type FilterCombinationOperator = "AND" | "OR";
+
+/**
+ *
+ */
+export interface FilterDate {
+  /**
+   *
+   */
+  readonly kind: "date";
+
+  /**
+   *
+   */
+  readonly field: string;
+
+  /**
+   *
+   */
+  readonly operator: FilterDateOperator;
+
+  /**
+   *
+   */
+  readonly value: string | number | null;
+
+  /**
+   *
+   */
+  readonly options?: FilterDateOptions;
+}
+
+/**
+ * The operators available for the date filter. The operator used determines the type of
+ * value that should be used.
+ */
+export type FilterDateOperator =
+  | "equals"
+  | "not_equals"
+  | "before"
+  | "before_or_equals"
+  | "after"
+  | "after_or_equals"
+  | "year_to_date"
+  | "this_week"
+  | "this_month"
+  | "this_year"
+  | "last_week"
+  | "last_month"
+  | "last_year"
+  | "next_week"
+  | "next_month"
+  | "next_year"
+  | "today"
+  | "tomorrow"
+  | "yesterday"
+  | "week_of_year"
+  | "quarter_of_year"
+  | "is_weekend"
+  | "is_weekday"
+  | "n_days_ago"
+  | "n_days_ahead"
+  | "n_weeks_ago"
+  | "n_weeks_ahead"
+  | "n_months_ago"
+  | "n_months_ahead"
+  | "n_years_ago"
+  | "n_years_ahead";
+
+/**
+ *
+ */
+export interface FilterDateOptions {
+  /**
+   * When filtering `null` values represent the absence of a value. Since there is not value
+   * to compare the filter on - there are two choices; keep the value, or filter it out. The
+   * `nullHandling` property determines which option to take, where `"ignore"` will filter
+   * out null values and `"include"` will keep them.
+   *
+   * It's important to note that filtering is performed by the row data source attached to the
+   * grid, hence the actual behavior depends on the source. A properly behaving data source will
+   * filter `null` values accordingly but not all sources may choose to do this. Furthermore,
+   * depending on the operator used for the filter, the `nullHandling` property may be ignored.
+   * For example, when comparing for equality ('===') the filter implementation should check that
+   * the current value is equal to the filter value - including the absence of a value. Intuitively
+   * this makes sense as it allows the equality operator to be used to check for `null` values
+   * themselves.
+   */
+  readonly nullHandling?: "ignore" | "include";
+
+  /**
+   * If the time should be used for date filter evaluations. By default only the date is
+   * considered. Setting the `includeTime` to `true` will make the comparisons time aware.
+   */
+  readonly includeTime?: boolean;
+}
+
+/**
+ *
+ */
+export interface FilterDynamic<T> {
+  /**
+   *
+   */
+  readonly kind: "func";
+
+  /**
+   *
+   */
+  readonly func: FilterFn<T>;
+}
+
+/**
+ *
+ */
+export type FilterFn<T> = (
+  /**
+   *
+   */
+  params: FilterFnParams<T>,
+) => boolean;
+
+/**
+ *
+ */
+export interface FilterFnParams<T> {
+  /**
+   *
+   */
+  readonly data: T;
+
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+}
+
+/**
+ *
+ */
+export type FilterModelItem<T> =
+  | FilterNumber
+  | FilterString
+  | FilterDate
+  | FilterCombination
+  | FilterDynamic<T>;
+
+/**
+ * The number filter is used to filter out rows based on a column that contains number values.
+ * Most useful for numerical datasets.
+ *
+ * See:
+ * - [Filters](TODO): Overview of the filters
+ */
+export interface FilterNumber {
+  /**
+   * A type discriminant for the {@link FilterNumber} type, which may be used to narrow the
+   * the type when given a set of filters. Mainly used in the evaluation of filters, for example
+   * a {@link FilterCombination} accepts filters of different types.
+   */
+  readonly kind: "number";
+
+  /**
+   * The column reference the filter should use. This is used to extract a field value for the
+   * filter for a given row. This should be the `id` of a column.
+   */
+  readonly field: string;
+
+  /**
+   * The number filter operator to use when evaluating the filter. This value should be the string
+   * name of the operator, for example "equals" and not "==".
+   */
+  readonly operator: FilterNumberOperator;
+
+  /**
+   * The filter value to compare with. The actual filter evaluation outcome is determined by the
+   * operator applied.
+   */
+  readonly value: number | null;
+
+  /**
+   * The filter number options to apply to the filter. Filter options alter the evaluation result
+   * of a filter, for example using the absolute value of a number when performing the operator
+   * calculation.
+   */
+  readonly options?: FilterNumberOptions;
+}
+
+/**
+ * The operators that may be used for the a number filter. These correspond to the standard expected
+ * logical operators, like >, and <.
+ */
+export type FilterNumberOperator =
+  | "greater_than"
+  | "greater_than_or_equals"
+  | "less_than"
+  | "less_than_or_equals"
+  | "equals"
+  | "not_equals";
+
+/**
+ * The filter options that may be provided to a number filter. The filter options will adjust
+ * how the number filter behaves providing more flexibility to less effort.
+ */
+export interface FilterNumberOptions {
+  /**
+   * Makes the number filter only consider the magnitude of a number value ignoring its sign.
+   * Useful when the size of the number is the main consideration.
+   */
+  readonly absolute?: boolean;
+
+  /**
+   * The epsilon value to use when comparing numbers. Mostly useful when comparing floats. By
+   * default the value is 0.0001 however it may be adjusted for higher or lower precision.
+   */
+  readonly epsilon?: number;
+
+  /**
+   * When filtering `null` values represent the absence of a value. Since there is not value
+   * to compare the filter on - there are two choices; keep the value, or filter it out. The
+   * `nullHandling` property determines which option to take, where `"ignore"` will filter
+   * out null values and `"include"` will keep them.
+   *
+   * It's important to note that filtering is performed by the row data source attached to the
+   * grid, hence the actual behavior depends on the source. A properly behaving data source will
+   * filter `null` values accordingly but not all sources may choose to do this. Furthermore,
+   * depending on the operator used for the filter, the `nullHandling` property may be ignored.
+   * For example, when comparing for equality ('===') the filter implementation should check that
+   * the current value is equal to the filter value - including the absence of a value. Intuitively
+   * this makes sense as it allows the equality operator to be used to check for `null` values
+   * themselves.
+   */
+  readonly nullHandling?: "ignore" | "include";
+}
+
+/**
+ * The string filter used to evaluate values that are string based. Used to filter out rows based
+ * on the string values of a particular column.
+ */
+export interface FilterString {
+  /**
+   * A type discriminant for the {@link FilterString} type, which may be used to narrow the
+   * the type when given a set of filters. Mainly used in the evaluation of filters, for example
+   * a {@link FilterCombination} accepts filters of different types.
+   */
+  readonly kind: "string";
+
+  /**
+   * The column reference the filter should use. This is used to extract a field value for the
+   * filter for a given row. This should be the `id` of a column.
+   */
+  readonly field: string;
+
+  /**
+   * The string filter operator to use when evaluating the filter. This value should be the string
+   * name of the operator, for example "equals" and not "==".
+   */
+  readonly operator: FilterStringOperator;
+
+  /**
+   * The string filter evaluation value. For some filter operators a `number` value makes
+   * sense, for example, when comparing the lengths of strings. It is an undefined error to
+   * use a `number` value where a filter operator expects a `string`.
+   */
+  readonly value: string | number | null;
+
+  /**
+   * The options to apply for the string filter evaluation. The string options may be used to
+   * alter the behavior of filter evaluation, for example to make comparisons case insensitive.
+   */
+  readonly options?: FilterStringOptions;
+}
+
+/**
+ * The string collation options used to create an Intl.Collator object that will be used for
+ * string comparisons.
+ */
+export interface FilterStringCollation {
+  /**
+   * The locale to use for string comparisons and operators. It should be one of the predefined
+   * types. If not provided the default locale on the system is used.
+   */
+  readonly locale: Locale;
+
+  /**
+   * The locale sensitivity - used to construct an Intl.Collator object. Refer to the
+   * [MDN docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator)
+   * for more information.
+   */
+  readonly sensitivity?: Intl.CollatorOptions["sensitivity"];
+}
+
+/**
+ * The filter operator for strings. Some operators expect the value provided to be a number,
+ * for example when comparing the length of strings.
+ */
+export type FilterStringOperator =
+  | "equals"
+  | "not_equals"
+  | "less_than"
+  | "less_than_or_equals"
+  | "greater_than"
+  | "greater_than_or_equals"
+  | "begins_with"
+  | "not_begins_with"
+  | "ends_with"
+  | "not_ends_with"
+  | "contains"
+  | "not_contains"
+  | "length"
+  | "not_length"
+  | "matches"
+  | "length_less_than"
+  | "length_less_than_or_equals"
+  | "length_greater_than"
+  | "length_greater_than_or_equals";
+
+/**
+ * The options to use for filter string evaluation. The options allow filter evaluation behavior
+ * to be altered in specific ways, such as ignoring letter casing, trimming whitespace, and
+ * ignoring punctuation. The filter string options additionally allow a locale to be used for
+ * string filtering.
+ */
+export interface FilterStringOptions {
+  /**
+   * The regex opts to use for the construction of a regex object to use for the `matches`
+   * string filter operator. See the [MDN docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions#advanced_searching_with_flags)
+   * for information on the different flags.
+   */
+  readonly regexOpts?: string;
+
+  /**
+   * A flag to determine if whitespace should be stripped before string comparisons. This will
+   * result in leading and trailing whitespace to be ignored when performing string comparisons.
+   */
+  readonly trimWhitespace?: boolean;
+
+  /**
+   * A flag indicating if the comparison should be case insensitive. By default comparisons
+   * are case insensitive if the filter value does not contain an upper case letter. However,
+   * depending on the collator sensitivity the default value may
+   * actually be case insensitive. For example a collator sensitivity of `"base"` or
+   * `"accent"` result in case case insensitive comparisons.
+   */
+  readonly caseInsensitive?: boolean;
+
+  /**
+   * If punctuation characters should be ignored when performing string comparisons. By default
+   * punctuation is considered.
+   */
+  readonly ignorePunctuation?: boolean;
+
+  /**
+   * When filtering `null` values represent the absence of a value. Since there is not value
+   * to compare the filter on - there are two choices; keep the value, or filter it out. The
+   * `nullHandling` property determines which option to take, where `"ignore"` will filter
+   * out null values and `"include"` will keep them.
+   *
+   * It's important to note that filtering is performed by the row data source attached to the
+   * grid, hence the actual behavior depends on the source. A properly behaving data source will
+   * filter `null` values accordingly but not all sources may choose to do this. Furthermore,
+   * depending on the operator used for the filter, the `nullHandling` property may be ignored.
+   * For example, when comparing for equality ('===') the filter implementation should check that
+   * the current value is equal to the filter value - including the absence of a value. Intuitively
+   * this makes sense as it allows the equality operator to be used to check for `null` values
+   * themselves.
+   */
+  readonly nullHandling?: "ignore" | "include";
+
+  /**
+   * The collation parameters to use for the filter evaluation. If provided these parameters will
+   * be used to create an `Intl.Collator` object that is then used in the comparison operator
+   * for filter evaluation.
+   */
+  readonly collation?: FilterStringCollation;
+}
+
+/**
+ *
+ */
+export type Locale =
+  | "en-US"
+  | "en-GB"
+  | "en-CA"
+  | "en-AU"
+  | "en-IN"
+  | "fr-FR"
+  | "fr-CA"
+  | "fr-BE"
+  | "fr-CH"
+  | "es-ES"
+  | "es-MX"
+  | "es-AR"
+  | "es-CO"
+  | "zh-CN"
+  | "zh-TW"
+  | "zh-HK"
+  | "zh-Hant"
+  | "zh-Hans"
+  | "ar-SA"
+  | "ar-EG"
+  | "ar-AE"
+  | "de-DE"
+  | "de-AT"
+  | "de-CH"
+  | "ja-JP"
+  | "ko-KR"
+  | "hi-IN"
+  | "pt-BR"
+  | "pt-PT"
+  | "ru-RU"
+  | "uk-UA"
+  | "pl-PL"
+  | "it-IT"
+  | "nl-NL"
+  | "sv-SE"
+  | "tr-TR"
+  | "th-TH"
+  | "vi-VN"
+  | "he-IL"
+  | "fa-IR"
+  | "el-GR";
