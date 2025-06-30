@@ -1,0 +1,21 @@
+.diagonal-bg {
+  background-size: 10px 10px;
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--color-gray-200) 0,
+    var(--color-gray-200) 1px,
+    transparent 0,
+    transparent 50%
+  );
+}
+
+.diagonal-bg-alt {
+  background-size: 10px 10px;
+  background-image: repeating-linear-gradient(
+    135deg,
+    var(--color-gray-200) 0,
+    var(--color-gray-200) 1px,
+    transparent 0,
+    transparent 50%
+  );
+}

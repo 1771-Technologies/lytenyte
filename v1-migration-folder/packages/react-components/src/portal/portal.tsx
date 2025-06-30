@@ -9,6 +9,8 @@ export function Portal({ target, children }: PropsWithChildren<PortalProps>) {
   // Will be null if we are not inside of a dialog.
   const inDialog = useDialog();
 
+  if (typeof window === "undefined") return null;
+
   const el = target ?? inDialog?.dialog ?? document.body;
 
   return createPortal(children, el);

@@ -5,6 +5,7 @@ import { TooltipPositioner } from "./positioner.js";
 import { TooltipRoot } from "./root.js";
 import { TooltipGroup } from "./group.js";
 import { TooltipTrigger } from "./trigger.js";
+import { ArrowSvg } from "../popover/arrow.js";
 
 export const Tooltip = {
   Group: TooltipGroup,
@@ -13,6 +14,7 @@ export const Tooltip = {
   Panel: TooltipPanel,
   Portal: Portal,
   Positioner: TooltipPositioner,
+  Arrow: ArrowSvg,
 };
 
 export type { TooltipRootProps } from "./root.js";

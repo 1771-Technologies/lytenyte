@@ -6,6 +6,7 @@ import { DialogRoot, type DialogRootProps } from "../dialog/root.js";
 import { DialogTitle, type DialogTitleProps } from "../dialog/title.js";
 import { DialogTrigger, type DialogTriggerProps } from "../dialog/trigger.js";
 import type { PositionerProps } from "../positioner/positioner.js";
+import { ArrowSvg } from "./arrow.js";
 import { PopoverPositioner } from "./popover-positioner.js";
 
 export const Popover = {
@@ -17,6 +18,7 @@ export const Popover = {
   Panel: DialogPanel,
   Close: DialogClose,
   Positioner: PopoverPositioner,
+  Arrow: ArrowSvg,
 };
 
 export type PopoverRootProps = DialogRootProps;
