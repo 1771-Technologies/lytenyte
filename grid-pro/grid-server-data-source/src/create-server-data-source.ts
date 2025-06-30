@@ -20,6 +20,7 @@ import type {
   RowNodePro,
 } from "@1771technologies/grid-types/pro";
 import { loadRowGroups } from "./utils/load-row-groups";
+import { equal } from "@1771technologies/js-utils";
 
 export interface ServerDataSourceInitial<D, E> {
   readonly rowDataFetcher: DataFetcher<D, E>;
@@ -169,16 +170,28 @@ export function createServerDataSource<D, E>(
 
       const sx = a.getState();
 
-      watchers.push(sx.filterQuickSearch.watch(reset));
-      watchers.push(sx.rowGroupModel.watch(reset));
-      watchers.push(sx.columnPivotModeIsOn.watch(reset));
-      watchers.push(sx.sortModel.watch(reset));
-      watchers.push(sx.filterModel.watch(reset));
+      const resetIfDiff = <T>(signal: ReadonlySignal<T>, resetFn = reset) => {
+        let prev = signal.peek();
 
-      watchers.push(sx.internal.columnPivotSortModel.watch(pivotReset));
-      watchers.push(sx.internal.columnPivotFilterModel.watch(pivotReset));
-      watchers.push(sx.columnPivotModel.watch(pivotReset));
-      watchers.push(sx.measureModel.watch(pivotReset));
+        return () => {
+          const current = signal.peek();
+          if (!equal(prev, current)) resetFn();
+          prev = current;
+        };
+      };
+
+      watchers.push(sx.filterQuickSearch.watch(resetIfDiff(sx.filterQuickSearch)));
+      watchers.push(sx.rowGroupModel.watch(resetIfDiff(sx.rowGroupModel)));
+      watchers.push(sx.columnPivotModeIsOn.watch(resetIfDiff(sx.columnPivotModeIsOn)));
+      watchers.push(sx.sortModel.watch(resetIfDiff(sx.sortModel)));
+      watchers.push(sx.filterModel.watch(resetIfDiff(sx.filterModel)));
+
+      const pivotSortModel = sx.internal.columnPivotSortModel;
+      const pivotFilterModel = sx.internal.columnPivotFilterModel;
+      watchers.push(pivotSortModel.watch(resetIfDiff(pivotSortModel)));
+      watchers.push(pivotFilterModel.watch(resetIfDiff(pivotFilterModel)));
+      watchers.push(sx.columnPivotModel.watch(resetIfDiff(sx.columnPivotModel, pivotReset)));
+      watchers.push(sx.measureModel.watch(resetIfDiff(sx.measureModel, pivotReset)));
 
       watchers.push(
         sx.rowGroupExpansions.watch(() => {
