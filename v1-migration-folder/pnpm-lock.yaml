@@ -172,8 +172,8 @@ importers:
   packages/lytenyte-core:
     dependencies:
       '@1771technologies/atom':
-        specifier: ^1.0.1
-        version: 1.0.1(@types/react@19.1.8)(react@19.1.0)
+        specifier: ^1.0.2
+        version: 1.0.2(@types/react@19.1.8)(react@19.1.0)
       '@1771technologies/lytenyte-dom-utils':
         specifier: workspace:*
         version: link:../dom-utils
@@ -196,8 +196,8 @@ importers:
   packages/lytenyte-shared:
     dependencies:
       '@1771technologies/atom':
-        specifier: ^1.0.1
-        version: 1.0.1(@types/react@19.1.8)(react@19.1.0)
+        specifier: ^1.0.2
+        version: 1.0.2(@types/react@19.1.8)(react@19.1.0)
       '@1771technologies/lytenyte-js-utils':
         specifier: workspace:*
         version: link:../js-utils
@@ -205,8 +205,8 @@ importers:
   packages/react-components:
     dependencies:
       '@1771technologies/atom':
-        specifier: 1.0.1
-        version: 1.0.1(@types/react@19.1.8)(react@19.1.0)
+        specifier: 1.0.2
+        version: 1.0.2(@types/react@19.1.8)(react@19.1.0)
       '@1771technologies/lytenyte-dom-utils':
         specifier: workspace:*
         version: link:../dom-utils
@@ -244,8 +244,8 @@ importers:
   packages/react-dragon:
     dependencies:
       '@1771technologies/atom':
-        specifier: ^1.0.1
-        version: 1.0.1(@types/react@19.1.8)(react@19.1.0)
+        specifier: ^1.0.2
+        version: 1.0.2(@types/react@19.1.8)(react@19.1.0)
       '@1771technologies/lytenyte-dom-utils':
         specifier: workspace:*
         version: link:../dom-utils
@@ -367,8 +367,8 @@ importers:
 
 packages:
 
-  '@1771technologies/atom@1.0.1':
-    resolution: {integrity: sha512-r96vcpnowyaMzx3HQzvPWvddwwcgOkI/3177Q7WYZO4UCpT7KGujSZi6zwED0sScKQo3nLcgIVpCwqQltJcTnw==}
+  '@1771technologies/atom@1.0.2':
+    resolution: {integrity: sha512-t7HoSPpp6qA8OFFvTEdKDEzHkZtzo9HzEvUlPA+/YEcbuh1kyHoQYuYDU25oZGBXREBkJgmJNe0I+PTx+tH8vg==}
     engines: {node: '>=12.20.0'}
     peerDependencies:
       '@types/react': '>=17.0.0'
@@ -4684,7 +4684,7 @@ packages:
 
 snapshots:
 
-  '@1771technologies/atom@1.0.1(@types/react@19.1.8)(react@19.1.0)':
+  '@1771technologies/atom@1.0.2(@types/react@19.1.8)(react@19.1.0)':
     optionalDependencies:
       '@types/react': 19.1.8
       react: 19.1.0
