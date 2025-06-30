@@ -129,7 +129,7 @@ export const SortComparatorFn: FunctionType = {
       doc: { en: `` },
       tsDoc: ``,
       optional: false,
-      value: "T | Record<string, unknown>",
+      value: "FieldDataParam<T>",
     },
     {
       kind: "property",
@@ -137,7 +137,7 @@ export const SortComparatorFn: FunctionType = {
       doc: { en: `` },
       tsDoc: ``,
       optional: false,
-      value: "T | Record<string, unknown>",
+      value: "FieldDataParam<T>",
     },
     {
       kind: "property",

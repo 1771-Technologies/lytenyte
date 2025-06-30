@@ -236,6 +236,11 @@ export interface RowGroup {
    * the children rows of a branch node, but this is not strictly enforced.
    */
   readonly data: Record<string, unknown>;
+
+  /**
+   *
+   */
+  readonly depth: number;
 }
 
 /**

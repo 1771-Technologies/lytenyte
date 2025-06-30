@@ -1,6 +1,6 @@
 import { getBoundEnd } from "./get-bound-end.js";
 import { getBoundStart } from "./get-bound-start.js";
-import { COL_OVERSCAN, ROW_OVERSCAN_END, ROW_OVERSCAN_START } from "../+constants.layout.js";
+import { COL_OVERSCAN, ROW_OVERSCAN_END, ROW_OVERSCAN_START } from "../+constants.js";
 import type { SpanLayout } from "../+types.layout.js";
 
 /**
