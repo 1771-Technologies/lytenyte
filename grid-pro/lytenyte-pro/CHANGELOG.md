@@ -1,5 +1,12 @@
 # @1771technologies/lytenyte-pro
 
+## 0.9.4
+
+### Patch Changes
+
+[Commit: 2a42db707175](https://github.com/1771-Technologies/lytenyte/commit/2a42db70717501ce93444011862aca325e68a2a5)
+Fixed server data source reset on column definition update
+
 ## 0.9.3
 
 ### Patch Changes
