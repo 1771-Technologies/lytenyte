@@ -33,6 +33,6 @@
   },
   "dependencies": {
     "@1771technologies/lytenyte-js-utils": "workspace:*",
-    "@1771technologies/atom": "^1.0.1"
+    "@1771technologies/atom": "^1.0.2"
   }
 }

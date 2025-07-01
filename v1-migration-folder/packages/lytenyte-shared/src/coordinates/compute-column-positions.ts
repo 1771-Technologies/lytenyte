@@ -2,7 +2,7 @@ import {
   DEFAULT_COLUMN_WIDTH,
   DEFAULT_COLUMN_WIDTH_MAX,
   DEFAULT_COLUMN_WIDTH_MIN,
-} from "../+constants.layout.js";
+} from "../+constants.js";
 import { makeUint32PositionArray } from "./make-uint32-position-array.js";
 import type { ColumnWidthItem } from "../+types.layout.js";
 import { clamp } from "@1771technologies/lytenyte-js-utils";

@@ -179,6 +179,16 @@ export const RowGroup: InterfaceType = {
         en: ``,
       },
     },
+    {
+      kind: "property",
+      name: "depth",
+      value: "number",
+      optional: false,
+      tsDoc: ``,
+      doc: {
+        en: ``,
+      },
+    },
   ],
 };
 

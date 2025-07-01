@@ -314,6 +314,60 @@ const FilterModel: PropertyType = {
   value: "GridAtom<FilterModelItem<T>[]>",
 };
 
+const RowGroupModel: PropertyType = {
+  kind: "property",
+  name: "rowGroupModel",
+  optional: false,
+  tsDoc: ``,
+  doc: { en: `` },
+  value: "GridAtom<RowGroupModelItem<T>[]>",
+};
+
+const RowGroupDisplayMode: PropertyType = {
+  kind: "property",
+  name: "rowGroupDisplayMode",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<RowGroupDisplayMode>",
+};
+
+const RowGroupDefaultExpansion: PropertyType = {
+  kind: "property",
+  name: "rowGroupDefaultExpansion",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<boolean | number>",
+};
+
+const RowGroupExpansions: PropertyType = {
+  kind: "property",
+  name: "rowGroupExpansions",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<{ [rowId: string]: boolean | undefined }>",
+};
+
+const RowGroupColumn: PropertyType = {
+  kind: "property",
+  name: "rowGroupColumn",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<RowGroupColumn<T>>",
+};
+
+const AggModel: PropertyType = {
+  kind: "property",
+  name: "aggModel",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<{ [columnId: string]: { fn: AggModelFn<T> } }>",
+};
+
 export const GridStateCore: InterfaceType = {
   kind: "interface",
   export: true,
@@ -362,5 +416,12 @@ export const GridStateCore: InterfaceType = {
 
     SortModel,
     FilterModel,
+
+    AggModel,
+    RowGroupModel,
+    RowGroupColumn,
+    RowGroupDisplayMode,
+    RowGroupDefaultExpansion,
+    RowGroupExpansions,
   ],
 };

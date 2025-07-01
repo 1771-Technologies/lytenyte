@@ -1,5 +1,5 @@
 import { clamp } from "@1771technologies/lytenyte-js-utils";
-import { FULL_WIDTH_MAP, NORMAL_CELL } from "../+constants.layout.js";
+import { FULL_WIDTH_MAP, NORMAL_CELL } from "../+constants.js";
 import type { Column, LayoutMap, Row, RowColTuple, SpanFn } from "../+types.layout.js";
 
 export interface ApplyCellLayoutForRowParams {

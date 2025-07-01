@@ -20,6 +20,8 @@ import * as GridApi from "./definitions/grid-api.js";
 import * as Sort from "./definitions/sort.js";
 import * as Filters from "./definitions/filter.js";
 import * as Prelude from "./definitions/prelude.js";
+import * as RowGroup from "./definitions/row-group.js";
+import * as Events from "./definitions/events.js";
 
 const typeModules = [
   ...Object.values(UseLng),
@@ -39,6 +41,8 @@ const typeModules = [
   ...Object.values(Prelude),
   ...Object.values(Sort),
   ...Object.values(Filters),
+  ...Object.values(RowGroup),
+  ...Object.values(Events),
 ] as GenTypes[];
 
 const types = typeModules

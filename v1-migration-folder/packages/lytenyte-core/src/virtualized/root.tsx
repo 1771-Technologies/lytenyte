@@ -2,14 +2,14 @@ import { useEffect, useLayoutEffect, useMemo, type PropsWithChildren } from "rea
 import { useEvent, useMeasure, type RectReadOnly } from "@1771technologies/lytenyte-react-hooks";
 import type { GridRootContext } from "./context";
 import { RootProvider } from "./context";
-import type { Grid } from "../+types";
+import type { Grid, GridEvents } from "../+types";
 import type { InternalAtoms } from "../state/+types";
 
-export interface RootProps {
-  readonly grid: Grid<any>;
-}
+export type RootProps<T> = { readonly grid: Grid<T> } & {
+  [k in keyof GridEvents<T> as `on${Capitalize<k>}`]: GridEvents<T>[k];
+};
 
-export function Root({ grid, children }: PropsWithChildren<RootProps>) {
+export function Root<T = any>({ grid, children, ...events }: PropsWithChildren<RootProps<T>>) {
   const onViewportChange = useEvent((bounds: RectReadOnly) => {
     grid.state.viewport.set((element as HTMLElement) ?? null);
     grid.state.viewportHeightOuter.set(bounds.height);
@@ -17,6 +17,17 @@ export function Root({ grid, children }: PropsWithChildren<RootProps>) {
     grid.state.viewportWidthInner.set(element?.clientWidth ?? 0);
     grid.state.viewportHeightInner.set(element?.clientHeight ?? 0);
   });
+
+  useEffect(() => {
+    const ev = Object.entries(events).map(([onName, fn]) => {
+      if (!onName.startsWith("on")) return;
+      const name = onName[2].toLowerCase() + onName.slice(3);
+      return grid.api.eventAddListener(name as any, fn as any);
+    });
+
+    return () => ev.forEach((c) => c?.());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [Object.values(events)]);
 
   const [ref, bounds, , element] = useMeasure({
     onChange: onViewportChange,

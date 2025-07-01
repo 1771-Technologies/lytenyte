@@ -123,6 +123,36 @@ export interface UseLyteNyteProps<T> {
    *
    */
   readonly filterModel?: FilterModelItem<T>[];
+
+  /**
+   *
+   */
+  readonly aggModel?: { [columnId: string]: { fn: AggModelFn<T> } };
+
+  /**
+   *
+   */
+  readonly rowGroupColumn?: RowGroupColumn<T>;
+
+  /**
+   *
+   */
+  readonly rowGroupModel?: RowGroupModelItem<T>[];
+
+  /**
+   *
+   */
+  readonly rowGroupDisplayMode?: RowGroupDisplayMode;
+
+  /**
+   *
+   */
+  readonly rowGroupDefaultExpansion?: boolean | number;
+
+  /**
+   *
+   */
+  readonly rowGroupExpansions?: { [rowId: string]: boolean | undefined };
 }
 
 /**
@@ -308,6 +338,38 @@ export interface GridState<T> {
    *
    */
   readonly filterModel: GridAtom<FilterModelItem<T>[]>;
+
+  /**
+   *
+   */
+  readonly aggModel: GridAtom<{ [columnId: string]: { fn: AggModelFn<T> } }>;
+
+  /**
+   *
+   */
+  readonly rowGroupModel: GridAtom<RowGroupModelItem<T>[]>;
+
+  /**
+   *
+   */
+  readonly rowGroupColumn: GridAtom<RowGroupColumn<T>>;
+
+  /**
+   *
+   */
+  readonly rowGroupDisplayMode: GridAtom<RowGroupDisplayMode>;
+
+  /**
+   *
+   */
+  readonly rowGroupDefaultExpansion: GridAtom<boolean | number>;
+
+  /**
+   *
+   */
+  readonly rowGroupExpansions: GridAtom<{
+    [rowId: string]: boolean | undefined;
+  }>;
 }
 
 /**
@@ -783,11 +845,71 @@ export type ColumnPin = "start" | "end" | null;
 /**
  *
  */
+export interface RowGroupColumn<T> {
+  /**
+   *
+   */
+  readonly name?: string;
+
+  /**
+   *
+   */
+  readonly hide?: boolean;
+
+  /**
+   *
+   */
+  readonly width?: number;
+
+  /**
+   *
+   */
+  readonly widthMax?: number;
+
+  /**
+   *
+   */
+  readonly widthMin?: number;
+
+  /**
+   *
+   */
+  readonly widthFlex?: number;
+
+  /**
+   *
+   */
+  readonly pin?: ColumnPin;
+
+  /**
+   *
+   */
+  readonly field?: Field<T>;
+
+  /**
+   *
+   */
+  readonly cellRenderer?: string | CellRendererFn<T>;
+
+  /**
+   *
+   */
+  readonly uiHints?: ColumnUIHints;
+}
+
+/**
+ *
+ */
 export interface ColumnUIHints {
   /**
    *
    */
   readonly sortable?: boolean;
+
+  /**
+   *
+   */
+  readonly rowGroupable?: boolean;
 }
 
 /**
@@ -853,6 +975,13 @@ export interface RowDataSource<T> {
    *
    */
   readonly rowByIndex: (index: number) => RowNode<T> | null;
+
+  /**
+   *
+   */
+  readonly rowExpand: (
+    expansion: Record<string, boolean>,
+  ) => Promise<void> | void;
 }
 
 /**
@@ -1036,6 +1165,11 @@ export interface RowGroup {
    * the children rows of a branch node, but this is not strictly enforced.
    */
   readonly data: Record<string, unknown>;
+
+  /**
+   *
+   */
+  readonly depth: number;
 }
 
 /**
@@ -1153,6 +1287,13 @@ export interface CellSpanFnParams<T> {
 /**
  *
  */
+export type FieldDataParam<T> =
+  | { kind: "leaf"; data: T }
+  | { kind: "branch"; data: Record<string, unknown> };
+
+/**
+ *
+ */
 export type FieldFn<T> = (
   /**
    *
@@ -1177,7 +1318,7 @@ export interface FieldFnParams<T> {
   /**
    *
    */
-  readonly data: T;
+  readonly data: FieldDataParam<T>;
 }
 
 /**
@@ -1194,6 +1335,36 @@ export interface FieldPath {
    */
   readonly path: string;
 }
+
+/**
+ *
+ */
+export type FieldRowGroupFn<T> = (
+  /**
+   *
+   */
+  params: FieldRowGroupParamsFn<T>,
+) => unknown;
+
+/**
+ *
+ */
+export interface FieldRowGroupParamsFn<T> {
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly data: T;
+}
+
+/**
+ *
+ */
+export type FieldRowGroup<T> = number | string | FieldPath | FieldRowGroupFn<T>;
 
 /**
  *
@@ -1239,7 +1410,7 @@ export interface GridApi<T> {
    */
   readonly fieldForColumn: (
     columnOrId: string | Column<T>,
-    data: T | Record<string, unknown>,
+    row: FieldDataParam<T>,
   ) => unknown;
 
   /**
@@ -1248,6 +1419,62 @@ export interface GridApi<T> {
   readonly sortForColumn: (
     columnOrId: string,
   ) => { sort: SortModelItem<T>; index: number } | null;
+
+  /**
+   *
+   */
+  readonly rowIsLeaf: (row: RowNode<T>) => row is RowLeaf<T>;
+
+  /**
+   *
+   */
+  readonly rowIsGroup: (row: RowNode<T>) => row is RowGroup;
+
+  /**
+   *
+   */
+  readonly rowGroupColumnIndex: (c: Column<T>) => number;
+
+  /**
+   *
+   */
+  readonly rowGroupToggle: (row: RowGroup, state?: boolean) => void;
+
+  /**
+   *
+   */
+  readonly rowGroupApplyExpansions: (
+    expansions: Record<string, boolean>,
+  ) => void;
+
+  /**
+   *
+   */
+  readonly rowGroupIsExpanded: (row: RowGroup) => boolean;
+
+  /**
+   *
+   */
+  readonly eventAddListener: <K extends keyof GridEvents<T>>(
+    event: K,
+    fn: (event: Parameters<Required<GridEvents<T>>[K]>[0]) => void,
+  ) => () => void;
+
+  /**
+   *
+   */
+  readonly eventRemoveListener: <K extends keyof GridEvents<T>>(
+    event: K,
+    fn: (event: Parameters<Required<GridEvents<T>>[K]>[0]) => void,
+  ) => void;
+
+  /**
+   *
+   */
+  readonly eventFire: <K extends keyof GridEvents<T>>(
+    name: K,
+    event: Parameters<Required<GridEvents<T>>[K]>[0],
+  ) => void;
 }
 
 /**
@@ -1257,11 +1484,11 @@ export type SortComparatorFn<T> = (
   /**
    *
    */
-  left: T | Record<string, unknown>,
+  left: FieldDataParam<T>,
   /**
    *
    */
-  right: T | Record<string, unknown>,
+  right: FieldDataParam<T>,
   /**
    *
    */
@@ -1889,3 +2116,162 @@ export type Locale =
   | "he-IL"
   | "fa-IR"
   | "el-GR";
+
+/**
+ *
+ */
+export type AggFn<T> = (
+  /**
+   *
+   */
+  data: T[],
+  /**
+   *
+   */
+  grid: Grid<T>,
+) => unknown;
+
+/**
+ *
+ */
+export type AggModelFn<T> = string | AggFn<T>;
+
+/**
+ *
+ */
+export type RowGroupDisplayMode = "single-column" | "multi-column" | "custom";
+
+/**
+ *
+ */
+export interface RowGroupField<T> {
+  /**
+   *
+   */
+  readonly kind: "field";
+
+  /**
+   *
+   */
+  readonly id: string;
+
+  /**
+   *
+   */
+  readonly field: FieldRowGroup<T>;
+
+  /**
+   *
+   */
+  readonly name?: string;
+}
+
+/**
+ *
+ */
+export type RowGroupModelItem<T> = string | RowGroupField<T>;
+
+/**
+ *
+ */
+export interface GridEvents<T> {
+  /**
+   *
+   */
+  readonly rowExpandBegin?: RowExpandBeginFn<T>;
+
+  /**
+   *
+   */
+  readonly rowExpand?: RowExpandFn<T>;
+
+  /**
+   *
+   */
+  readonly rowExpandError?: RowExpandErrorFn<T>;
+}
+
+/**
+ *
+ */
+export type RowExpandFn<T> = (
+  /**
+   *
+   */
+  params: RowExpandParams<T>,
+) => void;
+
+/**
+ *
+ */
+export type RowExpandBeginFn<T> = (
+  /**
+   *
+   */
+  params: RowExpandBeginParams<T>,
+) => void;
+
+/**
+ *
+ */
+export interface RowExpandBeginParams<T> {
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly expansions: { [rowId: string]: boolean };
+
+  /**
+   *
+   */
+  readonly preventNext: () => void;
+}
+
+/**
+ *
+ */
+export type RowExpandErrorFn<T> = (
+  /**
+   *
+   */
+  params: RowExpandErrorParams<T>,
+) => void;
+
+/**
+ *
+ */
+export interface RowExpandErrorParams<T> {
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly expansions: { [rowId: string]: boolean };
+
+  /**
+   *
+   */
+  readonly error: unknown;
+}
+
+/**
+ *
+ */
+export interface RowExpandParams<T> {
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly expansions: { [rowId: string]: boolean };
+}

@@ -15,6 +15,9 @@ import {
   computeColumnPositions,
   computeRowPositions,
   DEFAULT_PREVIOUS_LAYOUT,
+  GROUP_COLUMN_PREFIX,
+  GROUP_COLUMN_SINGLE_ID,
+  GROUP_COLUMN_TREE_DATA,
   makeGridAtom,
   makeRowDataStore,
   type LayoutMap,
@@ -29,6 +32,8 @@ import { getFullWidthCallback } from "./helpers/get-full-width-callback.js";
 import { getSpanFn } from "./helpers/get-span-callback.js";
 import { makeFieldForColumn } from "./api/field-for-column.js";
 import { makeSortForColumn } from "./api/sort-for-column.js";
+import { columnAddRowGroup } from "./helpers/column-add-row-group.js";
+import { makeEventListeners } from "./api/event-listeners.js";
 
 const DEFAULT_HEADER_HEIGHT = 40;
 const COLUMN_GROUP_JOIN_DELIMITER = "-->";
@@ -77,6 +82,13 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
   const sortModel = atom<SortModelItem<T>[]>(p.sortModel ?? []);
   const filterModel = atom<FilterModelItem<T>[]>(p.filterModel ?? []);
+  const rowGroupModel = atom(p.rowGroupModel ?? []);
+  const aggModel = atom(p.aggModel ?? {});
+
+  const rowGroupDisplayMode = atom(p.rowGroupDisplayMode ?? "single-column");
+  const rowGroupDefaultExpansion = atom(p.rowGroupDefaultExpansion ?? false);
+  const rowGroupExpansions = atom(p.rowGroupExpansions ?? {});
+  const rowGroupColumn = atom(p.rowGroupColumn ?? {});
 
   const layoutMap: LayoutMap = new Map();
 
@@ -126,8 +138,15 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
    * is impacted by the column definitions, the group expansions, the row group display mode.
    */
   const columnView = atom((g) => {
-    const view = makeColumnView({
+    const cols = columnAddRowGroup({
       columns: g(columns),
+      rowGroupDisplayMode: g(rowGroupDisplayMode),
+      rowGroupModel: g(rowGroupModel),
+      rowGroupTemplate: g(rowGroupColumn),
+    });
+
+    const view = makeColumnView({
+      columns: cols,
       base: g(base),
       groupExpansionDefault: g(columnGroupDefaultExpansion),
       groupExpansions: g(columnGroupExpansions),
@@ -143,6 +162,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
   const headerLayout = atom<GridView<T>["header"]>((g) => {
     const view = g(columnView);
+
     const layout = makeColumnLayout(view.combinedView, view.meta, g(bounds));
 
     return { maxCol: view.maxCol, maxRow: view.maxRow, layout: layout };
@@ -302,6 +322,13 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
     sortModel: makeGridAtom(sortModel, store),
     filterModel: makeGridAtom(filterModel, store),
+    rowGroupModel: makeGridAtom(rowGroupModel, store),
+    aggModel: makeGridAtom(aggModel, store),
+
+    rowGroupColumn: makeGridAtom(rowGroupColumn, store),
+    rowGroupDefaultExpansion: makeGridAtom(rowGroupDefaultExpansion, store),
+    rowGroupDisplayMode: makeGridAtom(rowGroupDisplayMode, store),
+    rowGroupExpansions: makeGridAtom(rowGroupExpansions, store),
   };
 
   const api = {} as GridApi<T>;
@@ -312,7 +339,60 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     fieldForColumn: makeFieldForColumn(grid),
     sortForColumn: makeSortForColumn(grid),
 
-    // Get current sort | { sort and index }
+    rowIsGroup: (r) => r.kind === "branch",
+    rowIsLeaf: (r) => r.kind === "leaf",
+
+    ...makeEventListeners<T>(),
+
+    rowGroupColumnIndex: (c) => {
+      if (!grid.state.rowGroupModel.get().length || !c.id.startsWith(GROUP_COLUMN_PREFIX)) {
+        return -1;
+      }
+      if (c.id === GROUP_COLUMN_SINGLE_ID || c.id === GROUP_COLUMN_TREE_DATA) return 0;
+
+      const n = c.id.split(":").at(-1);
+      if (n == null) return -1;
+
+      return Number.parseInt(n);
+    },
+
+    rowGroupIsExpanded: (row) => {
+      const expanded = grid.state.rowGroupExpansions.get()[row.id];
+      if (typeof expanded === "boolean") return expanded;
+
+      const defaultExpansion = grid.state.rowGroupDefaultExpansion.get();
+      if (typeof defaultExpansion === "boolean") return defaultExpansion;
+
+      return row.depth <= defaultExpansion;
+    },
+    rowGroupToggle: (row, state) => {
+      const next = state == null ? !api.rowGroupIsExpanded(row) : state;
+
+      api.rowGroupApplyExpansions({ [row.id]: next });
+    },
+    rowGroupApplyExpansions: async (expansions) => {
+      let prevented = false;
+      const preventNext = () => {
+        prevented = true;
+      };
+
+      try {
+        api.eventFire("rowExpandBegin", { expansions, grid, preventNext });
+
+        if (prevented) return;
+
+        const rds = grid.state.rowDataSource.get();
+        const result = rds.rowExpand(expansions);
+        if (!result || !("then" in result)) {
+          api.eventFire("rowExpand", { expansions, grid });
+        } else {
+          await result;
+          api.eventFire("rowExpand", { expansions, grid });
+        }
+      } catch (error: unknown) {
+        api.eventFire("rowExpandError", { expansions, grid, error });
+      }
+    },
   } satisfies GridApi<T>);
 
   Object.assign(grid, {

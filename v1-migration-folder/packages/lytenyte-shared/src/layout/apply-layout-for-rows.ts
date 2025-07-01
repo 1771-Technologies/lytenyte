@@ -1,4 +1,4 @@
-import { FULL_WIDTH_MAP } from "../+constants.layout.js";
+import { FULL_WIDTH_MAP } from "../+constants.js";
 import type { Row, SpanLayout, LayoutMap, SpanFn } from "../+types.layout.js";
 import { applyCellLayoutForRow } from "./apply-cell-layout-for-row.js";
 

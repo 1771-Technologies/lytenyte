@@ -14,7 +14,13 @@ export { isFullWidthMap } from "./layout/is-full-width-map.js";
 export type { LayoutMap, SpanFn, RowPredicate, SpanLayout } from "./+types.layout.js";
 
 export { computeBounds } from "./virtual-bounds/compute-bounds.js";
-export { DEFAULT_PREVIOUS_LAYOUT } from "./+constants.layout.js";
+export {
+  DEFAULT_PREVIOUS_LAYOUT,
+  GROUP_COLUMN_MULTI_PREFIX,
+  GROUP_COLUMN_PREFIX,
+  GROUP_COLUMN_SINGLE_ID,
+  GROUP_COLUMN_TREE_DATA,
+} from "./+constants.js";
 
 export { getTranslate } from "./utils/get-translate.js";
 export { sizeFromCoord } from "./utils/size-from-coord.js";

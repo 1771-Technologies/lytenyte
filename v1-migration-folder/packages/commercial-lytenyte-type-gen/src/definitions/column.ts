@@ -50,6 +50,14 @@ export const ColumnUIHints: InterfaceType = {
       value: "boolean",
       name: "sortable",
     },
+    {
+      kind: "property",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: true,
+      value: "boolean",
+      name: "rowGroupable",
+    },
   ],
 };
 
@@ -122,7 +130,7 @@ const ColumnGroupVisibilityProp: PropertyType = {
   tsDoc: ``,
   doc: { en: `` },
 };
-export const ColumnGroupPath: PropertyType = {
+const ColumnGroupPath: PropertyType = {
   kind: "property",
   name: "groupPath",
   value: "string[]",
@@ -130,7 +138,7 @@ export const ColumnGroupPath: PropertyType = {
   tsDoc: ``,
   doc: { en: `` },
 };
-export const ColumnSpan: PropertyType = {
+const ColumnSpan: PropertyType = {
   kind: "property",
   name: "colSpan",
   optional: true,
@@ -138,7 +146,7 @@ export const ColumnSpan: PropertyType = {
   doc: { en: `` },
   value: `number | CellSpanFn<T>`,
 };
-export const RowSpan: PropertyType = {
+const RowSpan: PropertyType = {
   kind: "property",
   name: "rowSpan",
   optional: true,
@@ -147,7 +155,7 @@ export const RowSpan: PropertyType = {
   value: `number | CellSpanFn<T>`,
 };
 
-export const Name: PropertyType = {
+const Name: PropertyType = {
   kind: "property",
   name: "name",
   optional: true,
@@ -156,7 +164,7 @@ export const Name: PropertyType = {
   value: "string",
 };
 
-export const Field: PropertyType = {
+const Field: PropertyType = {
   kind: "property",
   name: "field",
   optional: true,
@@ -164,7 +172,7 @@ export const Field: PropertyType = {
   doc: { en: `` },
   value: "Field<T>",
 };
-export const CellRenderer: PropertyType = {
+const CellRenderer: PropertyType = {
   kind: "property",
   name: "cellRenderer",
   optional: true,
@@ -173,7 +181,7 @@ export const CellRenderer: PropertyType = {
   value: "string | CellRendererFn<T>",
 };
 
-export const ColumnHintsProp: PropertyType = {
+const ColumnHintsProp: PropertyType = {
   kind: "property",
   name: "uiHints",
   tsDoc: ``,
@@ -221,4 +229,26 @@ export const ColumnBaseCore: InterfaceType = {
   properties: [Hide, Width, WidthMax, WidthMin, WidthFlex, ColumnHintsProp],
   tsDoc: ``,
   doc: { en: `` },
+};
+
+export const ColumnRowGroup: InterfaceType = {
+  kind: "interface",
+  export: true,
+  name: "RowGroupColumn<T>",
+  doc: { en: `` },
+  tsDoc: ``,
+  tag: "core",
+  properties: [
+    Name,
+    Hide,
+    Width,
+    WidthMax,
+    WidthMin,
+    WidthFlex,
+    ColumnPinProp,
+
+    Field,
+    CellRenderer,
+    ColumnHintsProp,
+  ],
 };
