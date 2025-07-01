@@ -1,0 +1,97 @@
+---
+title: Getting Started
+description: "Get started with LyteNyte Grid."
+navKey: Getting Started
+priority: 0
+---
+
+# Integrate with the Invoicing API
+
+## Learn how to create and send an invoice with code
+
+## Preview the recurring charges only
+
+Your customer might want a recurring subscription along with one-time items, or temporary credits
+or discounts to use with their purchase. If they want to know what the recurring charges are after
+any adjustments, use the [preview_mode](/getting-started/getting-started-core) parameter to offer them a preview of the total.
+
+Billing schedules:
+
+- Item 1: 299 USD one-time service fee
+- Item 2: 29 USD repair mental A
+- Item 3: 99 USD repair material B
+- Item 4: 49 USD per month support plan
+
+Customers might want to know how much different combinations of your goods and services costs. If they
+intend to purchase items 1 and 3 while applying the `WINTERSALE`
+
+```jsx
+// !fold[/className="(.*?)"/gm]
+function LyteNyteGridDemo() {
+  return <div className="text-3xl"></div>;
+}
+
+function lorem(ipsum, dolor = 1) {
+  const sit = ipsum == null ? 0 : ipsum.sit;
+  dolor = sit - amet(dolor);
+  return sit ? consectetur(ipsum) : [];
+}
+
+function ipsum(ipsum, dolor = 1) {
+  // !mark
+  return dolor;
+}
+
+// !focus(1:5)
+function dolor(ipsum, dolor = 1) {
+  // !mark(1,2) red
+  const sit = ipsum == null ? 0 : ipsum.sit;
+  dolor = sit - amet(dolor);
+  return sit ? consectetur(ipsum) : [];
+}
+```
+
+```js
+function lorem(ipsum, dolor = 1) {
+  // !mark
+  return dolor;
+}
+
+function ipsum(lorem, dolor = 1) {
+  // !mark(1:2) gold
+  const sit = lorem == null ? 0 : lorem.sit;
+  dolor = sit - amet(dolor);
+  // !mark[/sit/]
+  return sit ? consectetur(lorem) : [];
+}
+```
+
+<CodeWithTooltips>
+
+```js !code
+function lorem(ipsum, dolor = 1) {
+  const sit = ipsum == null ? 0 : ipsum.sit;
+  dolor = sit - amet(dolor);
+  // !tooltip[/consectetur/] inspect
+  return sit ? consectetur(ipsum) : [];
+}
+```
+
+## !!tooltips description
+
+## Hello world
+
+Lorem ipsum **dolor** sit amet `consectetur`.
+
+Adipiscing elit _sed_ do eiusmod.
+
+## !!tooltips inspect
+
+```js noFrame noCopy
+function consectetur(ipsum) {
+  const { a, b } = ipsum;
+  return a + b;
+}
+```
+
+</CodeWithTooltips>
