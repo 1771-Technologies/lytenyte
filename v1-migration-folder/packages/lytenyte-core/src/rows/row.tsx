@@ -17,6 +17,7 @@ const RowImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & RowPro
       role="row"
       data-rowindex={row.rowIndex}
       data-rowtype="normal-row"
+      data-ln-row
       ref={forwarded}
       style={useRowStyle(row, props.style)}
     />

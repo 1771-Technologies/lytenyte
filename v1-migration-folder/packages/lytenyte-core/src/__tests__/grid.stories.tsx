@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Header } from "../header/header";
 import { HeaderRow } from "../header/header-row";
 import { Root } from "../root/root";
-import { RowsContainer } from "../rows/rows";
+import { RowsContainer } from "../rows/rows-container";
 import { Viewport } from "../viewport/viewport";
 import { useLyteNyte } from "../state/use-lytenyte";
 import { useId } from "react";

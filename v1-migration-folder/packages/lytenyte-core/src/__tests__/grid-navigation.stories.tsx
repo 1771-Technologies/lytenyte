@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Header } from "../header/header";
 import { HeaderRow } from "../header/header-row";
 import { Root } from "../root/root";
-import { RowsContainer } from "../rows/rows";
+import { RowsContainer } from "../rows/rows-container";
 import { Viewport } from "../viewport/viewport";
 import { useLyteNyte } from "../state/use-lytenyte";
 import { useId } from "react";
@@ -22,7 +22,17 @@ const meta: Meta = {
 export default meta;
 
 const columns: Column<any>[] = [
-  { id: "age" },
+  {
+    id: "age",
+    cellRenderer: () => {
+      return (
+        <>
+          <button>A</button>
+          <button>B</button>
+        </>
+      );
+    },
+  },
   { id: "job" },
   { id: "balance" },
   { id: "education" },
@@ -61,7 +71,7 @@ function Component({ data = bankData }: { data?: any[] }) {
         </button>
       </div>
 
-      <div style={{ width: "100%", height: "95vh", border: "1px solid black" }}>
+      <div style={{ width: "100%", height: "80vh", border: "1px solid black" }}>
         <Root grid={g}>
           <Viewport>
             <Header>
@@ -105,6 +115,8 @@ function Component({ data = bankData }: { data?: any[] }) {
           </Viewport>
         </Root>
       </div>
+      <button>After</button>
+      <button>After</button>
     </div>
   );
 }

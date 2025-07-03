@@ -9,6 +9,7 @@ export const RowsTop = fastDeepMemo(
     const height = view.rowTopTotalHeight;
 
     const top = cx.internal.headerHeightTotal.useValue();
+    const topCount = cx.state.rowDataStore.rowTopCount.useValue();
 
     if (height <= 0) return null;
 
@@ -17,6 +18,9 @@ export const RowsTop = fastDeepMemo(
         {...props}
         ref={forwarded}
         role="rowgroup"
+        data-ln-rows-top
+        data-ln-row-first={0}
+        data-ln-row-last={topCount}
         style={
           {
             ...props.style,
@@ -39,6 +43,9 @@ export const RowsCenter = fastDeepMemo(
     const view = cx.view.useValue().rows;
     const height = view.rowCenterTotalHeight;
 
+    const rowCenterCount = cx.state.rowDataStore.rowCenterCount.useValue();
+    const rowTopCount = cx.state.rowDataStore.rowTopCount.useValue();
+
     if (height <= 0) return <div style={{ flex: "1" }} role="none" />;
 
     return (
@@ -46,6 +53,9 @@ export const RowsCenter = fastDeepMemo(
         {...props}
         ref={forwarded}
         role="rowgroup"
+        data-ln-rows-center
+        data-ln-row-first={rowTopCount}
+        data-ln-row-last={rowCenterCount + rowTopCount}
         style={
           {
             ...props.style,
@@ -71,12 +81,19 @@ export const RowsBottom = fastDeepMemo(
     const view = cx.view.useValue().rows;
     const height = view.rowBottomTotalHeight;
 
+    const rowCenterCount = cx.state.rowDataStore.rowCenterCount.useValue();
+    const rowTopCount = cx.state.rowDataStore.rowTopCount.useValue();
+    const rowBottomCount = cx.state.rowDataStore.rowBottomCount.useValue();
+
     if (height <= 0) return null;
     return (
       <div
         {...props}
         ref={forwarded}
         role="rowgroup"
+        data-ln-rows-bottom
+        data-ln-row-first={rowCenterCount + rowTopCount}
+        data-ln-row-last={rowCenterCount + rowBottomCount + rowTopCount}
         style={
           {
             ...props.style,

@@ -93,6 +93,8 @@ const CellImpl = forwardRef<
       role="gridcell"
       data-rowindex={cell.rowIndex}
       data-colindex={cell.colIndex}
+      data-ln-cell
+      tabIndex={-1}
     >
       {typeof Renderer === "function" ? (
         <Renderer column={cell.column} row={row} grid={grid} />

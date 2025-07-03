@@ -19,6 +19,7 @@ const RowFullWidthImpl = forwardRef<
       role="none"
       data-rowindex={row.rowIndex}
       data-rowtype="full-width"
+      data-ln-row
       ref={forwarded}
       style={useRowStyle(row, props.style, {
         left: "0px",

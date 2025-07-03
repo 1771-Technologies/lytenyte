@@ -15,6 +15,7 @@ const HeaderRowImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & 
         {...props}
         ref={forwarded}
         role="row"
+        data-ln-header-row
         style={{
           boxSizing: "border-box",
           display: "grid",

@@ -51,6 +51,7 @@ const HeaderCellImpl = forwardRef<
       {...props}
       ref={forwarded}
       role="columnheader"
+      data-ln-header-cell
       style={{
         ...props.style,
         ...styles,

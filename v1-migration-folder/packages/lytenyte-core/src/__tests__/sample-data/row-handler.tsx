@@ -1,5 +1,5 @@
 import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
-import type { RowLayout } from "../../../+types";
+import type { RowLayout } from "../../+types";
 import { Cell } from "../../cells/cell";
 import { Row } from "../../rows/row";
 import { RowFullWidth } from "../../rows/row-full-width";
