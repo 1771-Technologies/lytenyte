@@ -1,34 +1,34 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Header } from "../header/header";
 import { HeaderRow } from "../header/header-row";
-import { Root } from "../root";
+import { Root } from "../root/root";
 import { RowsContainer } from "../rows/rows";
 import { Viewport } from "../viewport/viewport";
-import { useLyteNyte } from "../../state/use-lytenyte";
+import { useLyteNyte } from "../state/use-lytenyte";
 import { useId, useState } from "react";
 import { HeaderCell } from "../header/header-cell";
-import type { Column } from "../../+types";
+import type { Column } from "../+types";
 import { HeaderGroupCell } from "../header/header-group-cell";
-import { useClientRowDataSource } from "../../row-data-source/use-client-data-source";
+import { useClientRowDataSource } from "../row-data-source/use-client-data-source";
 import { RowsBottom, RowsCenter, RowsTop } from "../rows/rows-sections";
 import { RowHandler } from "./sample-data/row-handler";
 import { bankData } from "./sample-data/bank-data";
 
 const meta: Meta = {
-  title: "Grid/Spanning",
+  title: "Grid/Pinned Rows",
 };
 
 export default meta;
 
 const columns: Column<any>[] = [
-  { id: "age", rowSpan: 2, colSpan: 3 },
+  { id: "age" },
   { id: "job" },
   { id: "balance" },
   { id: "education" },
   { id: "marital" },
   { id: "default" },
-  { id: "housing", colSpan: (r) => (r.colIndex % 2 ? 3 : 1), pin: "end" },
-  { id: "loan", pin: "end", width: 100 },
+  { id: "housing" },
+  { id: "loan" },
   { id: "contact" },
   { id: "day" },
   { id: "month" },
@@ -124,6 +124,6 @@ function Component({ data = bankData }: { data?: any[] }) {
   );
 }
 
-export const Spanning: StoryObj = {
+export const PinnedRows: StoryObj = {
   render: Component,
 };

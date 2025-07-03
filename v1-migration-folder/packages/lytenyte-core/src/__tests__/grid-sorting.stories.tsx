@@ -1,21 +1,21 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Header } from "../header/header";
 import { HeaderRow } from "../header/header-row";
-import { Root } from "../root";
+import { Root } from "../root/root";
 import { RowsContainer } from "../rows/rows";
 import { Viewport } from "../viewport/viewport";
-import { useLyteNyte } from "../../state/use-lytenyte";
+import { useLyteNyte } from "../state/use-lytenyte";
 import { useId } from "react";
 import { HeaderCell } from "../header/header-cell";
-import type { Column } from "../../+types";
+import type { Column } from "../+types";
 import { HeaderGroupCell } from "../header/header-group-cell";
-import { useClientRowDataSource } from "../../row-data-source/use-client-data-source";
-import { bankDataSmall } from "./sample-data/bank-data-smaller";
+import { useClientRowDataSource } from "../row-data-source/use-client-data-source";
 import { RowsBottom, RowsCenter, RowsTop } from "../rows/rows-sections";
+import { bankData } from "./sample-data/bank-data";
 import { RowHandler } from "./sample-data/row-handler";
 
 const meta: Meta = {
-  title: "Grid/Row Grouping",
+  title: "Grid/Sorting",
 };
 
 export default meta;
@@ -40,22 +40,15 @@ const columns: Column<any>[] = [
   { id: "y" },
 ];
 
-function MainComp() {
+function Component({ data = bankData }: { data?: any[] }) {
   const ds = useClientRowDataSource({
-    data: bankDataSmall,
+    data: data,
   });
+
   const g = useLyteNyte({
     gridId: useId(),
     columns,
     rowDataSource: ds,
-    rowGroupModel: ["job"],
-    rowGroupDisplayMode: "multi-column",
-
-    aggModel: {
-      job: { fn: "first" },
-      balance: { fn: "sum" },
-      education: { fn: () => 1 },
-    },
   });
 
   const view = g.view.useValue();
@@ -67,39 +60,7 @@ function MainComp() {
           RTL: {g.state.rtl.get() ? "Yes" : "No"}
         </button>
       </div>
-      <div>
-        <button onClick={() => g.state.rowGroupDisplayMode.set("single-column")}>
-          Single Group
-        </button>
-        <button onClick={() => g.state.rowGroupDisplayMode.set("multi-column")}>Multi Group</button>
-        <button onClick={() => g.state.rowGroupDisplayMode.set("custom")}>Custom</button>
-        <button
-          onClick={() =>
-            g.state.columns.set(
-              g.state.columnMeta.get().columnsVisible.toSorted(() => Math.random() - 0.5),
-            )
-          }
-        >
-          Shuffle
-        </button>
-
-        <button onClick={() => g.state.rowGroupModel.set(["job"])}>Group on Job</button>
-        <button onClick={() => g.state.rowGroupModel.set(["job", "education"])}>
-          Group on Job & Education
-        </button>
-        <button onClick={() => g.state.rowGroupModel.set([])}>No Group</button>
-
-        <button
-          onClick={() => g.state.aggModel.set((prev) => ({ ...prev, balance: { fn: "sum" } }))}
-        >
-          Sum
-        </button>
-        <button
-          onClick={() => g.state.aggModel.set((prev) => ({ ...prev, balance: { fn: "avg" } }))}
-        >
-          Avg
-        </button>
-      </div>
+      <div></div>
 
       <div style={{ width: "100%", height: "90vh", border: "1px solid black" }}>
         <Root grid={g}>
@@ -121,6 +82,25 @@ function MainComp() {
                       return (
                         <HeaderCell
                           cell={c}
+                          onClick={() => {
+                            const current = g.api.sortForColumn(c.column.id);
+
+                            if (current == null) {
+                              g.state.sortModel.set([
+                                {
+                                  columnId: c.column.id,
+                                  sort: { kind: "string" },
+                                  isDescending: false,
+                                },
+                              ]);
+                              return;
+                            }
+                            if (!current.sort.isDescending) {
+                              g.state.sortModel.set([{ ...current.sort, isDescending: true }]);
+                            } else {
+                              g.state.sortModel.set([]);
+                            }
+                          }}
                           key={c.column.id}
                           style={{ border: "1px solid black", background: "lightgray" }}
                         />
@@ -149,6 +129,6 @@ function MainComp() {
   );
 }
 
-export const RowGrouping: StoryObj = {
-  render: MainComp,
+export const Sorting: StoryObj = {
+  render: Component,
 };

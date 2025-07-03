@@ -1,6 +1,6 @@
 import { forwardRef, type JSX } from "react";
 import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
-import type { RowNormalRowLayout } from "../../+types";
+import type { RowNormalRowLayout } from "../+types";
 import { useRowStyle } from "./use-row-style";
 
 export interface RowProps {

@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo, type PropsWithChildren } from "react";
 import { useEvent, useMeasure, type RectReadOnly } from "@1771technologies/lytenyte-react-hooks";
-import type { GridRootContext } from "./context";
-import { RootProvider } from "./context";
+import type { GridRootContext } from "../context";
+import { RootProvider } from "../context";
 import type { Grid, GridEvents } from "../+types";
 import type { InternalAtoms } from "../state/+types";
 

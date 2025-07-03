@@ -1,6 +1,6 @@
 import { forwardRef, useMemo, type CSSProperties, type JSX, type ReactNode } from "react";
 import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
-import type { CellRendererFn, RowCellLayout } from "../../+types";
+import type { CellRendererFn, RowCellLayout } from "../+types";
 import { useGridRoot } from "../context";
 import { getTranslate, sizeFromCoord } from "@1771technologies/lytenyte-shared";
 import { CellDefault } from "./cell-default";

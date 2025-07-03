@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
-import type { Grid } from "../+types";
-import type { InternalAtoms } from "../state/+types";
+import type { Grid } from "./+types";
+import type { InternalAtoms } from "./state/+types";
 
 export interface GridRootContext {
   readonly ref: (el: HTMLElement | SVGElement | null) => void;

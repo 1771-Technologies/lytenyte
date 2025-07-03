@@ -67,13 +67,19 @@ function createFilter<T>(filter: FilterModelItem<T>): FilterWithSettings<T> {
 
 function evaluateFilter<T>(row: T, grid: Grid<T>, filter: FilterWithSettings<T>): boolean {
   if (filter.kind === "date") {
-    const fieldValue = grid.api.fieldForColumn(filter.field, row) as string | null;
+    const fieldValue = grid.api.fieldForColumn(filter.field, { data: row, kind: "leaf" }) as
+      | string
+      | null;
     return evaluateDateFilter(filter, fieldValue, filter.settings);
   } else if (filter.kind === "string") {
-    const fieldValue = grid.api.fieldForColumn(filter.field, row) as string | null;
+    const fieldValue = grid.api.fieldForColumn(filter.field, { data: row, kind: "leaf" }) as
+      | string
+      | null;
     return evaluateStringFilter(filter, fieldValue, filter.settings);
   } else if (filter.kind === "number") {
-    const fieldValue = grid.api.fieldForColumn(filter.field, row) as number | null;
+    const fieldValue = grid.api.fieldForColumn(filter.field, { data: row, kind: "leaf" }) as
+      | number
+      | null;
     return evaluateNumberFilter(filter, fieldValue, filter.settings);
   } else if (filter.kind === "func") {
     return filter.func({ data: row, grid });

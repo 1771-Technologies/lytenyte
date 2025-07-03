@@ -1,6 +1,6 @@
 import { forwardRef, type JSX } from "react";
 import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
-import type { RowFullWidthRowLayout } from "../../+types";
+import type { RowFullWidthRowLayout } from "../+types";
 import { useRowStyle } from "./use-row-style";
 import { VIEWPORT_WIDTH_VARIABLE_USE } from "../+constants";
 

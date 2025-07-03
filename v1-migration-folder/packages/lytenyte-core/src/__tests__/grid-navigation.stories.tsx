@@ -1,21 +1,22 @@
+import "./grid-navigation.css";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Header } from "../header/header";
 import { HeaderRow } from "../header/header-row";
-import { Root } from "../root";
+import { Root } from "../root/root";
 import { RowsContainer } from "../rows/rows";
 import { Viewport } from "../viewport/viewport";
-import { useLyteNyte } from "../../state/use-lytenyte";
+import { useLyteNyte } from "../state/use-lytenyte";
 import { useId } from "react";
 import { HeaderCell } from "../header/header-cell";
-import type { Column } from "../../+types";
+import type { Column } from "../+types";
 import { HeaderGroupCell } from "../header/header-group-cell";
-import { useClientRowDataSource } from "../../row-data-source/use-client-data-source";
+import { useClientRowDataSource } from "../row-data-source/use-client-data-source";
 import { RowsBottom, RowsCenter, RowsTop } from "../rows/rows-sections";
-import { bankData } from "./sample-data/bank-data";
 import { RowHandler } from "./sample-data/row-handler";
+import { bankData } from "./sample-data/bank-data";
 
 const meta: Meta = {
-  title: "Grid/Sorting",
+  title: "Grid/Navigation",
 };
 
 export default meta;
@@ -44,7 +45,6 @@ function Component({ data = bankData }: { data?: any[] }) {
   const ds = useClientRowDataSource({
     data: data,
   });
-
   const g = useLyteNyte({
     gridId: useId(),
     columns,
@@ -60,9 +60,8 @@ function Component({ data = bankData }: { data?: any[] }) {
           RTL: {g.state.rtl.get() ? "Yes" : "No"}
         </button>
       </div>
-      <div></div>
 
-      <div style={{ width: "100%", height: "90vh", border: "1px solid black" }}>
+      <div style={{ width: "100%", height: "95vh", border: "1px solid black" }}>
         <Root grid={g}>
           <Viewport>
             <Header>
@@ -82,25 +81,6 @@ function Component({ data = bankData }: { data?: any[] }) {
                       return (
                         <HeaderCell
                           cell={c}
-                          onClick={() => {
-                            const current = g.api.sortForColumn(c.column.id);
-
-                            if (current == null) {
-                              g.state.sortModel.set([
-                                {
-                                  columnId: c.column.id,
-                                  sort: { kind: "string" },
-                                  isDescending: false,
-                                },
-                              ]);
-                              return;
-                            }
-                            if (!current.sort.isDescending) {
-                              g.state.sortModel.set([{ ...current.sort, isDescending: true }]);
-                            } else {
-                              g.state.sortModel.set([]);
-                            }
-                          }}
                           key={c.column.id}
                           style={{ border: "1px solid black", background: "lightgray" }}
                         />
@@ -129,6 +109,6 @@ function Component({ data = bankData }: { data?: any[] }) {
   );
 }
 
-export const Sorting: StoryObj = {
+export const Navigation: StoryObj = {
   render: Component,
 };

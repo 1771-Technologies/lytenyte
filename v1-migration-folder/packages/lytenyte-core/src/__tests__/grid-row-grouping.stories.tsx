@@ -1,21 +1,21 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Header } from "../header/header";
 import { HeaderRow } from "../header/header-row";
-import { Root } from "../root";
+import { Root } from "../root/root";
 import { RowsContainer } from "../rows/rows";
 import { Viewport } from "../viewport/viewport";
-import { useLyteNyte } from "../../state/use-lytenyte";
-import { useId, useState } from "react";
+import { useLyteNyte } from "../state/use-lytenyte";
+import { useId } from "react";
 import { HeaderCell } from "../header/header-cell";
-import type { Column } from "../../+types";
+import type { Column } from "../+types";
 import { HeaderGroupCell } from "../header/header-group-cell";
-import { useClientRowDataSource } from "../../row-data-source/use-client-data-source";
+import { useClientRowDataSource } from "../row-data-source/use-client-data-source";
+import { bankDataSmall } from "./sample-data/bank-data-smaller";
 import { RowsBottom, RowsCenter, RowsTop } from "../rows/rows-sections";
 import { RowHandler } from "./sample-data/row-handler";
-import { bankData } from "./sample-data/bank-data";
 
 const meta: Meta = {
-  title: "Grid/Pinned Rows",
+  title: "Grid/Row Grouping",
 };
 
 export default meta;
@@ -40,21 +40,22 @@ const columns: Column<any>[] = [
   { id: "y" },
 ];
 
-function Component({ data = bankData }: { data?: any[] }) {
-  const [d, setData] = useState(() => data);
-  const [pt, setPt] = useState<any[]>(() => []);
-  const [bt, setBt] = useState<any[]>(() => []);
-
+function MainComp() {
   const ds = useClientRowDataSource({
-    data: d,
-    topData: pt,
-    bottomData: bt,
+    data: bankDataSmall,
   });
-
   const g = useLyteNyte({
     gridId: useId(),
     columns,
     rowDataSource: ds,
+    rowGroupModel: ["job"],
+    rowGroupDisplayMode: "multi-column",
+
+    aggModel: {
+      job: { fn: "first" },
+      balance: { fn: "sum" },
+      education: { fn: () => 1 },
+    },
   });
 
   const view = g.view.useValue();
@@ -67,13 +68,37 @@ function Component({ data = bankData }: { data?: any[] }) {
         </button>
       </div>
       <div>
-        <button onClick={() => setData(data)}>Large</button>
-        <button onClick={() => setData([])}>Empty</button>
-        <button onClick={() => setData(data.slice(3, 5))}>Tiny</button>
-        <button onClick={() => setPt(data.slice(0, 2))}>Pin Two Top</button>
-        <button onClick={() => setPt([])}>Remove Two Top</button>
-        <button onClick={() => setBt(data.slice(8, 10))}>Pin Two Bot</button>
-        <button onClick={() => setBt([])}>Remove Two Bot</button>
+        <button onClick={() => g.state.rowGroupDisplayMode.set("single-column")}>
+          Single Group
+        </button>
+        <button onClick={() => g.state.rowGroupDisplayMode.set("multi-column")}>Multi Group</button>
+        <button onClick={() => g.state.rowGroupDisplayMode.set("custom")}>Custom</button>
+        <button
+          onClick={() =>
+            g.state.columns.set(
+              g.state.columnMeta.get().columnsVisible.toSorted(() => Math.random() - 0.5),
+            )
+          }
+        >
+          Shuffle
+        </button>
+
+        <button onClick={() => g.state.rowGroupModel.set(["job"])}>Group on Job</button>
+        <button onClick={() => g.state.rowGroupModel.set(["job", "education"])}>
+          Group on Job & Education
+        </button>
+        <button onClick={() => g.state.rowGroupModel.set([])}>No Group</button>
+
+        <button
+          onClick={() => g.state.aggModel.set((prev) => ({ ...prev, balance: { fn: "sum" } }))}
+        >
+          Sum
+        </button>
+        <button
+          onClick={() => g.state.aggModel.set((prev) => ({ ...prev, balance: { fn: "avg" } }))}
+        >
+          Avg
+        </button>
       </div>
 
       <div style={{ width: "100%", height: "90vh", border: "1px solid black" }}>
@@ -124,6 +149,6 @@ function Component({ data = bankData }: { data?: any[] }) {
   );
 }
 
-export const PinnedRows: StoryObj = {
-  render: Component,
+export const RowGrouping: StoryObj = {
+  render: MainComp,
 };

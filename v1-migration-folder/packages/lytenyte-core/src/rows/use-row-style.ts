@@ -1,6 +1,6 @@
 import { useMemo, type CSSProperties } from "react";
 import { SCROLL_WIDTH_VARIABLE_USE, VIEWPORT_WIDTH_VARIABLE_USE } from "../+constants";
-import type { RowFullWidthRowLayout, RowNormalRowLayout } from "../../+types";
+import type { RowFullWidthRowLayout, RowNormalRowLayout } from "../+types";
 import { useGridRoot } from "../context";
 import { getTranslate } from "@1771technologies/lytenyte-shared";
 

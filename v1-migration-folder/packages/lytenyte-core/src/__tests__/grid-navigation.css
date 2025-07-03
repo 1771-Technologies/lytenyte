@@ -1,0 +1,4 @@
+*:focus {
+  background-color: gainsboro;
+  border: 2px solid blue;
+}
