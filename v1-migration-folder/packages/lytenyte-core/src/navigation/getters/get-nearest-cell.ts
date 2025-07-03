@@ -1,5 +1,5 @@
-import { isCell } from "./predicates/is-cell";
-import { isRowsContainer } from "./predicates/is-row-container";
+import { isCell } from "../predicates/is-cell";
+import { isViewport } from "../predicates/is-viewport";
 
 export function getNearestCell(el?: HTMLElement) {
   if (el === undefined) el = document.activeElement as HTMLElement;
@@ -7,7 +7,7 @@ export function getNearestCell(el?: HTMLElement) {
   if (!el) return null;
 
   let current: HTMLElement | null = el;
-  while (current && !isRowsContainer(current)) {
+  while (current && !isViewport(current)) {
     if (isCell(current)) return current;
     current = current.parentElement;
   }

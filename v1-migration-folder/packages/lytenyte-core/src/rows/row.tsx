@@ -15,7 +15,7 @@ const RowImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & RowPro
     <div
       {...props}
       role="row"
-      data-rowindex={row.rowIndex}
+      data-ln-rowindex={row.rowIndex}
       data-rowtype="normal-row"
       data-ln-row
       ref={forwarded}

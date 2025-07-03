@@ -96,6 +96,49 @@ const EventFire: PropertyType = {
     "<K extends keyof GridEvents<T>>(name: K, event: Parameters<Required<GridEvents<T>>[K]>[0]) => void",
 };
 
+export const ScrollIntoViewOptions: InterfaceType = {
+  kind: "interface",
+  name: "ScrollIntoViewOptions<T>",
+  doc: { en: `` },
+  tsDoc: ``,
+  export: true,
+  properties: [
+    {
+      kind: "property",
+      name: "column",
+      value: "number | string | Column<T>",
+      doc: { en: `` },
+      optional: true,
+      tsDoc: ``,
+    },
+    {
+      kind: "property",
+      name: "row",
+      value: "number",
+      doc: { en: `` },
+      optional: true,
+      tsDoc: ``,
+    },
+    {
+      kind: "property",
+      name: "behavior",
+      value: '"smooth" | "auto" | "instant"',
+      doc: { en: `` },
+      tsDoc: ``,
+      optional: true,
+    },
+  ],
+};
+
+const ScrollIntoView: PropertyType = {
+  kind: "property",
+  name: "scrollIntoView",
+  doc: { en: `` },
+  tsDoc: ``,
+  optional: false,
+  value: "(options: ScrollIntoViewOptions<T>) => void",
+};
+
 export const GridApi: InterfaceType = {
   kind: "interface",
   name: "GridApi<T>",
@@ -115,5 +158,7 @@ export const GridApi: InterfaceType = {
     EventAddListener,
     EventRemoveListener,
     EventFire,
+
+    ScrollIntoView,
   ],
 };

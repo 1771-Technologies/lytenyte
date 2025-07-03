@@ -1399,6 +1399,16 @@ export interface CellRendererParams<T> {
    *
    */
   readonly row: RowNode<T>;
+
+  /**
+   *
+   */
+  readonly rowIndex: number;
+
+  /**
+   *
+   */
+  readonly colIndex: number;
 }
 
 /**
@@ -1475,6 +1485,31 @@ export interface GridApi<T> {
     name: K,
     event: Parameters<Required<GridEvents<T>>[K]>[0],
   ) => void;
+
+  /**
+   *
+   */
+  readonly scrollIntoView: (options: ScrollIntoViewOptions<T>) => void;
+}
+
+/**
+ *
+ */
+export interface ScrollIntoViewOptions<T> {
+  /**
+   *
+   */
+  readonly column?: number | string | Column<T>;
+
+  /**
+   *
+   */
+  readonly row?: number;
+
+  /**
+   *
+   */
+  readonly behavior?: "smooth" | "auto" | "instant";
 }
 
 /**

@@ -34,6 +34,7 @@ import { makeFieldForColumn } from "./api/field-for-column.js";
 import { makeSortForColumn } from "./api/sort-for-column.js";
 import { columnAddRowGroup } from "./helpers/column-add-row-group.js";
 import { makeEventListeners } from "./api/event-listeners.js";
+import { makeScrollIntoView } from "./api/scroll-into-view.js";
 
 const DEFAULT_HEADER_HEIGHT = 40;
 const COLUMN_GROUP_JOIN_DELIMITER = "-->";
@@ -335,6 +336,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
   const grid: Grid<T> = { state, view: makeGridAtom(gridView, store), api };
 
+  const listeners = makeEventListeners<T>();
   Object.assign(api, {
     fieldForColumn: makeFieldForColumn(grid),
     sortForColumn: makeSortForColumn(grid),
@@ -342,7 +344,9 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     rowIsGroup: (r) => r.kind === "branch",
     rowIsLeaf: (r) => r.kind === "leaf",
 
-    ...makeEventListeners<T>(),
+    eventAddListener: listeners.eventAddListener,
+    eventRemoveListener: listeners.eventRemoveListener,
+    eventFire: listeners.eventFire,
 
     rowGroupColumnIndex: (c) => {
       if (!grid.state.rowGroupModel.get().length || !c.id.startsWith(GROUP_COLUMN_PREFIX)) {
@@ -393,6 +397,8 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
         api.eventFire("rowExpandError", { expansions, grid, error });
       }
     },
+
+    scrollIntoView: makeScrollIntoView(grid as any),
   } satisfies GridApi<T>);
 
   Object.assign(grid, {

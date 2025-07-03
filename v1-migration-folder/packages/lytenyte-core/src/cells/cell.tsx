@@ -91,13 +91,20 @@ const CellImpl = forwardRef<
       ref={forwarded}
       style={styles}
       role="gridcell"
-      data-rowindex={cell.rowIndex}
-      data-colindex={cell.colIndex}
-      data-ln-cell
+      data-ln-rowindex={cell.rowIndex}
+      data-ln-colindex={cell.colIndex}
+      data-ln-colspan={cell.colSpan}
+      data-ln-rowspan={cell.rowSpan}
       tabIndex={-1}
     >
       {typeof Renderer === "function" ? (
-        <Renderer column={cell.column} row={row} grid={grid} />
+        <Renderer
+          column={cell.column}
+          row={row}
+          grid={grid}
+          rowIndex={cell.rowIndex}
+          colIndex={cell.colIndex}
+        />
       ) : (
         Renderer
       )}

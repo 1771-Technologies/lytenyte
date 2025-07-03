@@ -24,9 +24,12 @@ export default meta;
 const columns: Column<any>[] = [
   {
     id: "age",
-    cellRenderer: () => {
+    cellRenderer: ({ rowIndex, colIndex }) => {
       return (
         <>
+          <>
+            ({rowIndex},{colIndex})
+          </>
           <button>A</button>
           <button>B</button>
         </>
@@ -45,8 +48,8 @@ const columns: Column<any>[] = [
   { id: "month" },
   { id: "duration" },
   { id: "campaign" },
-  { id: "pdays" },
-  { id: "previous" },
+  { id: "pdays", pin: "start" },
+  { id: "previous", pin: "end" },
   { id: "poutcome" },
   { id: "y" },
 ];
@@ -68,6 +71,27 @@ function Component({ data = bankData }: { data?: any[] }) {
       <div>
         <button onClick={() => g.state.rtl.set((prev) => !prev)}>
           RTL: {g.state.rtl.get() ? "Yes" : "No"}
+        </button>
+        <button
+          onClick={() => {
+            g.api.scrollIntoView({ row: 100, behavior: "smooth" });
+          }}
+        >
+          Scroll Row 100 Into View
+        </button>
+        <button
+          onClick={() => {
+            g.api.scrollIntoView({ column: "poutcome", behavior: "smooth" });
+          }}
+        >
+          Scroll to poutcome
+        </button>
+        <button
+          onClick={() => {
+            g.api.scrollIntoView({ column: "age", behavior: "smooth" });
+          }}
+        >
+          Scroll to age
         </button>
       </div>
 

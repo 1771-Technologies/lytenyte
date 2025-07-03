@@ -1,6 +1,6 @@
-import { isRowsContainer } from "./predicates/is-row-container";
-import { isRowsBottom } from "./predicates/is-rows-bottom";
-import { isRowsTop } from "./predicates/is-rows-top";
+import { isRowsContainer } from "../predicates/is-row-container";
+import { isRowsBottom } from "../predicates/is-rows-bottom";
+import { isRowsTop } from "../predicates/is-rows-top";
 
 export function getNearestRowSection(el?: HTMLElement) {
   if (el === undefined) el = document.activeElement as HTMLElement;

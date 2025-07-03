@@ -1,5 +1,5 @@
-import { isRow } from "./predicates/is-row";
-import { isRowsContainer } from "./predicates/is-row-container";
+import { isRow } from "../predicates/is-row";
+import { isRowsContainer } from "../predicates/is-row-container";
 
 export function getNearestRow(el?: HTMLElement) {
   if (el === undefined) el = document.activeElement as HTMLElement;
