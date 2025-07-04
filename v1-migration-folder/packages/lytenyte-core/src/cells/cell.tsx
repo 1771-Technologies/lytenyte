@@ -40,6 +40,7 @@ const CellImpl = forwardRef<
       gridColumnEnd: "2",
       gridRowStart: "1",
       gridRowEnd: "2",
+      pointerEvents: "all",
     };
     if (isSticky) {
       styles.position = "sticky";
@@ -91,11 +92,19 @@ const CellImpl = forwardRef<
       ref={forwarded}
       style={styles}
       role="gridcell"
+      /** Data attributes */
       data-ln-rowindex={cell.rowIndex}
       data-ln-colindex={cell.colIndex}
       data-ln-colspan={cell.colSpan}
       data-ln-rowspan={cell.rowSpan}
-      tabIndex={-1}
+      data-ln-cell
+      data-ln-last-top-pin={cell.rowLastPinTop}
+      data-ln-first-bottom-pin={cell.rowFirstPinBottom}
+      data-ln-last-start-pin={cell.colLastStartPin}
+      data-ln-first-end-pin={cell.colFirstEndPin}
+      /** Data attributes */
+
+      tabIndex={0}
     >
       {typeof Renderer === "function" ? (
         <Renderer

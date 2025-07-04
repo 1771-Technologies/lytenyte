@@ -14,7 +14,13 @@ export function getSpanFn<T>(
     const spanFn = span === "col" ? column.colSpan : column.rowSpan;
 
     if (!spanFn) return 1;
-    if (typeof spanFn === "number") return spanFn;
+    if (typeof spanFn === "number") {
+      if (span === "col") {
+        return c % spanFn === 0 ? spanFn : 1;
+      } else {
+        return r % spanFn === 0 ? spanFn : 1;
+      }
+    }
 
     return spanFn({ grid, rowIndex: r, colIndex: c, row });
   };

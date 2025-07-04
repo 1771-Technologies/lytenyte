@@ -1,29 +1,36 @@
 import type { PathTableItem, SpanLayout } from "@1771technologies/lytenyte-shared";
 import type { Column, ColumnGroupMeta, HeaderLayoutCell } from "../../+types";
+import { rangesOverlap } from "@1771technologies/lytenyte-js-utils";
+import type { PositionUnion } from "../+types";
 
 export function makeColumnLayout<T>(
   combinedView: PathTableItem<Column<T>>[][],
   groupMeta: ColumnGroupMeta,
   b: SpanLayout,
+  focus: PositionUnion | null,
 ) {
   const layout: HeaderLayoutCell<T>[][] = [];
+
   for (let r = 0; r < combinedView.length; r++) {
     const row = combinedView[r];
 
     const rowLayout: HeaderLayoutCell<T>[] = [];
     for (let i = 0; i < row.length; i++) {
       const c = row[i];
-      const col = c.colStart;
+
+      const colS = c.colStart;
+      const colE = c.colStart + c.colSpan;
 
       if (
-        !(col >= b.colStartStart && col < b.colStartEnd) && // not in start area
-        !(col >= b.colCenterStart && col < b.colCenterEnd) && // not in center area
-        !(col >= b.colEndStart && col < b.colEndEnd) // not in end area
+        !rangesOverlap(colS, colE, b.colStartStart, b.colStartEnd) && // not in start area
+        !rangesOverlap(colS, colE, b.colCenterStart, b.colCenterEnd) && // not in center area
+        !rangesOverlap(colS, colE, b.colEndStart, b.colEndEnd) && // not in end area
+        !(focus && rangesOverlap(colS, colE, focus.columnIndex, focus.columnIndex + 1)) // not if a cell in the column is focused
       ) {
         continue;
       }
 
-      const colPin = col < b.colStartEnd ? "start" : col >= b.colEndStart ? "end" : null;
+      const colPin = colS < b.colStartEnd ? "start" : colS >= b.colEndStart ? "end" : null;
 
       if (c.kind === "leaf") {
         rowLayout.push({
@@ -36,6 +43,8 @@ export function makeColumnLayout<T>(
           colStart: c.colStart,
           colEnd: c.colStart + c.colSpan,
           colSpan: c.colSpan,
+          colFirstEndPin: c.colStart === b.colCenterLast ? true : undefined,
+          colLastStartPin: c.colStart + c.colSpan === b.colStartEnd ? true : undefined,
         });
         continue;
       }
@@ -56,6 +65,8 @@ export function makeColumnLayout<T>(
         groupPath: c.data.groupPath,
         start: c.data.start,
         end: c.data.end,
+        colFirstEndPin: c.colStart === b.colCenterLast ? true : undefined,
+        colLastStartPin: c.colStart + c.colSpan === b.colStartEnd ? true : undefined,
       });
     }
 

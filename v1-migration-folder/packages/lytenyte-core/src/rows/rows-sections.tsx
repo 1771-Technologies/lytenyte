@@ -20,7 +20,7 @@ export const RowsTop = fastDeepMemo(
         role="rowgroup"
         data-ln-rows-top
         data-ln-row-first={0}
-        data-ln-row-last={topCount}
+        data-ln-row-last={topCount - 1}
         style={
           {
             ...props.style,
@@ -55,7 +55,7 @@ export const RowsCenter = fastDeepMemo(
         role="rowgroup"
         data-ln-rows-center
         data-ln-row-first={rowTopCount}
-        data-ln-row-last={rowCenterCount + rowTopCount}
+        data-ln-row-last={rowCenterCount + rowTopCount - 1}
         style={
           {
             ...props.style,
@@ -93,7 +93,7 @@ export const RowsBottom = fastDeepMemo(
         role="rowgroup"
         data-ln-rows-bottom
         data-ln-row-first={rowCenterCount + rowTopCount}
-        data-ln-row-last={rowCenterCount + rowBottomCount + rowTopCount}
+        data-ln-row-last={rowCenterCount + rowBottomCount + rowTopCount - 1}
         style={
           {
             ...props.style,

@@ -9,6 +9,7 @@ import type {
 import { type Grid, type GridView, type UseLyteNyteProps } from "../+types.js";
 import { useRef } from "react";
 import { makeColumnView } from "./helpers/column-view.js";
+import type { LayoutMap } from "@1771technologies/lytenyte-shared";
 import {
   applyLayoutUpdate,
   computeBounds,
@@ -20,11 +21,10 @@ import {
   GROUP_COLUMN_TREE_DATA,
   makeGridAtom,
   makeRowDataStore,
-  type LayoutMap,
   type SpanLayout,
 } from "@1771technologies/lytenyte-shared";
-import type { InternalAtoms } from "./+types.js";
-import { makeRowLayout } from "./helpers/row-layout.js";
+import type { InternalAtoms, PositionUnion } from "./+types.js";
+import { makeRowLayout } from "./helpers/row-layout/row-layout.js";
 import { equal } from "@1771technologies/lytenyte-js-utils";
 import { makeColumnLayout } from "./helpers/column-layout.js";
 import { emptyRowDataSource } from "./helpers/empty-row-data-source.js";
@@ -91,7 +91,23 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const rowGroupExpansions = atom(p.rowGroupExpansions ?? {});
   const rowGroupColumn = atom(p.rowGroupColumn ?? {});
 
-  const layoutMap: LayoutMap = new Map();
+  const internal_focusActive = atom<PositionUnion | null>(null);
+  const internal_focusPrevCol = atom<number | null>(null);
+  const internal_focusPrevRow = atom<number | null>(null);
+
+  const layoutMap = atom<LayoutMap>((g) => {
+    g(rdsAtoms.bottomCount);
+    g(rdsAtoms.rowCenterCount);
+    g(rdsAtoms.topCount);
+    g(rdsAtoms.snapshotKey);
+    g(rowDataSource);
+    g(rowGroupModel);
+    g(sortModel);
+    g(filterModel);
+    g(aggModel);
+
+    return new Map();
+  });
 
   /**
    * VIEW BOUNDS
@@ -164,7 +180,12 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const headerLayout = atom<GridView<T>["header"]>((g) => {
     const view = g(columnView);
 
-    const layout = makeColumnLayout(view.combinedView, view.meta, g(bounds));
+    const layout = makeColumnLayout(
+      view.combinedView,
+      view.meta,
+      g(bounds),
+      g(internal_focusActive),
+    );
 
     return { maxCol: view.maxCol, maxRow: view.maxRow, layout: layout };
   });
@@ -234,13 +255,13 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       computeRowSpan: getSpanFn(rds, grid, columns, "row"),
       colScanDistance: colScan,
       rowScanDistance: rowScan,
-      invalidated: false, // TODO,
+      invalidated: true,
       isFullWidth: getFullWidthCallback(rds, g(rowFullWidthPredicate).fn, grid),
       isRowCutoff: (r) => {
         const row = rds.rowByIndex(r);
         return !row || row.kind === "branch";
       },
-      layoutMap,
+      layoutMap: g(layoutMap),
       nextLayout: n,
       prevLayout,
     });
@@ -254,7 +275,14 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
     const botStart = rowCount - botCount;
 
-    const view = makeRowLayout({ layout: n, layoutMap, rds: rowDataStore, columns });
+    const view = makeRowLayout({
+      layout: n,
+      layoutMap: g(layoutMap),
+      rds: rowDataStore,
+      columns,
+      focus: g(internal_focusActive),
+    });
+
     const topHeight = yPos[topCount];
     const botHeight = yPos.at(-1)! - yPos[botStart];
     const centerHeight = yPos.at(-1)! - topHeight - botHeight;
@@ -415,6 +443,11 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       xScroll: makeGridAtom(xScroll, store),
       yScroll: makeGridAtom(yScroll, store),
       refreshKey: makeGridAtom(rdsAtoms.snapshotKey, store),
+
+      layout: makeGridAtom(layoutMap, store),
+      focusActive: makeGridAtom(internal_focusActive, store),
+      focusPrevColIndex: makeGridAtom(internal_focusPrevCol, store),
+      focusPrevRowIndex: makeGridAtom(internal_focusPrevRow, store),
     } satisfies InternalAtoms,
   });
 

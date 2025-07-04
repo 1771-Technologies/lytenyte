@@ -51,3 +51,18 @@ export { makeLongTouchPressHandler } from "./make-long-touch-press-handler.js";
 export { matches } from "./matches.js";
 export { testPlatform } from "./test-platform.js";
 export { testUserAgent } from "./test-user-agent.js";
+
+// tabbable
+
+export {
+  getFirstFocusable,
+  getFirstTabbable,
+  getFocusables,
+  getLastTabbable,
+  getNextTabbable,
+  getTabbableEdges,
+  getTabbables,
+  isFocusable,
+  isTabbable,
+  trapFocus,
+} from "./tabbable/index.js";

@@ -449,6 +449,16 @@ export interface HeaderCellLayout<T> {
   /**
    *
    */
+  readonly colFirstEndPin?: boolean;
+
+  /**
+   *
+   */
+  readonly colLastStartPin?: boolean;
+
+  /**
+   *
+   */
   readonly kind: "cell";
 
   /**
@@ -495,6 +505,16 @@ export interface HeaderGroupCellLayout {
    *
    */
   readonly colPin: ColumnPin;
+
+  /**
+   *
+   */
+  readonly colFirstEndPin?: boolean;
+
+  /**
+   *
+   */
+  readonly colLastStartPin?: boolean;
 
   /**
    *
@@ -610,6 +630,26 @@ export interface RowCellLayout<T> {
    *
    */
   readonly rowPin: RowPin;
+
+  /**
+   *
+   */
+  readonly colFirstEndPin?: boolean;
+
+  /**
+   *
+   */
+  readonly colLastStartPin?: boolean;
+
+  /**
+   *
+   */
+  readonly rowLastPinTop?: boolean;
+
+  /**
+   *
+   */
+  readonly rowFirstPinBottom?: boolean;
 }
 
 /**
@@ -635,6 +675,16 @@ export interface RowFullWidthRowLayout<T> {
    *
    */
   readonly rowPin: RowPin;
+
+  /**
+   *
+   */
+  readonly rowLastPinTop?: boolean;
+
+  /**
+   *
+   */
+  readonly rowFirstPinBottom?: boolean;
 }
 
 /**
@@ -665,6 +715,16 @@ export interface RowNormalRowLayout<T> {
    *
    */
   readonly rowPin: RowPin;
+
+  /**
+   *
+   */
+  readonly rowLastPinTop?: boolean;
+
+  /**
+   *
+   */
+  readonly rowFirstPinBottom?: boolean;
 
   /**
    *

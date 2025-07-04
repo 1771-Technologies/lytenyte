@@ -1,7 +1,13 @@
-import { forwardRef, useState, type JSX } from "react";
+import { forwardRef, type JSX } from "react";
 import { useForkRef } from "@1771technologies/lytenyte-react-hooks";
 import { useGridRoot } from "../context";
 import { handleSkipInner } from "../navigation/handle-skip-inner";
+import { useFocusTracking } from "./use-focus-tracking";
+import { handleHorizontalArrow } from "./handle-horizontal-arrow";
+import { handleVerticalArrow } from "./handle-vertical-arrow";
+import { getFirstTabbable } from "@1771technologies/lytenyte-dom-utils";
+import { ensureVisible } from "../navigation/ensure-visible";
+import { handleHomeEnd } from "./handle-home-end";
 
 export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function Viewport(
   { children, style, ...props },
@@ -16,21 +22,74 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
   const height = ctx.grid.state.heightTotal.useValue();
   const rtl = ctx.grid.state.rtl.useValue();
 
-  const [focused, setFocused] = useState(false);
+  const focused = useFocusTracking(vp, ctx);
+
+  const i = ctx.grid.internal;
   return (
     <>
       <div
         tabIndex={0}
         {...props}
-        onKeyDownCapture={(e) => {
+        onKeyDown={(e) => {
           handleSkipInner(e);
-          props.onKeyDownCapture?.(e);
-        }}
-        onFocus={() => {
-          setFocused(true);
-        }}
-        onBlur={() => {
-          setFocused(false);
+          props.onKeyDown?.(e);
+
+          const keys = ["ArrowRight", "ArrowLeft", "ArrowDown", "ArrowUp", "Home", "End"];
+
+          if (!keys.includes(e.key)) return;
+          e.preventDefault();
+          e.stopPropagation();
+
+          const pos = i.focusActive.get();
+          if (!pos) {
+            if (e.key === "ArrowDown" || e.key === "ArrowRight") {
+              const first = getFirstTabbable(vp!);
+              if (first) {
+                ensureVisible(first, ctx.grid.api.scrollIntoView);
+                first.focus();
+              }
+            }
+
+            return;
+          }
+
+          ctx.grid.api.scrollIntoView({
+            column: pos.columnIndex,
+            row: (pos as any).rowIndex,
+            behavior: "instant",
+          });
+
+          setTimeout(() => {
+            switch (e.key) {
+              case "Home": {
+                handleHomeEnd(ctx, pos, e.ctrlKey || e.metaKey, true);
+                break;
+              }
+              case "End": {
+                handleHomeEnd(ctx, pos, e.ctrlKey || e.metaKey, false);
+                break;
+              }
+              case "ArrowRight": {
+                handleHorizontalArrow(ctx, pos, true);
+                break;
+              }
+              case "ArrowLeft": {
+                handleHorizontalArrow(ctx, pos, false);
+                break;
+              }
+              case "ArrowDown": {
+                handleVerticalArrow(ctx, pos, true);
+                break;
+              }
+              case "ArrowUp": {
+                handleVerticalArrow(ctx, pos, false);
+                break;
+              }
+              default: {
+                return;
+              }
+            }
+          }, 4);
         }}
         role="grid"
         ref={ref}
@@ -42,7 +101,7 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
           flexDirection: "column",
           width: "100%",
           height: "100%",
-          overflow: "auto",
+          overflow: style?.overflow ?? "auto",
           direction: rtl ? "rtl" : "ltr",
         }}
       >

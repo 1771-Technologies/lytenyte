@@ -44,9 +44,19 @@ const HeaderGroupCellImpl = forwardRef<
   return (
     <div
       {...props}
+      tabIndex={0}
       ref={forwarded}
       role="columnheader"
-      data-ln-header-cell
+      // Data attributes start
+      data-ln-header-group
+      data-ln-header-id={cell.id}
+      data-ln-header-range={`${cell.colStart},${cell.colStart + cell.colSpan}`}
+      data-ln-rowindex={cell.rowStart}
+      data-ln-colindex={cell.colStart}
+      data-ln-header-pin={cell.colPin ?? "center"}
+      data-ln-last-start-pin={cell.colLastStartPin}
+      data-ln-first-end-pin={cell.colFirstEndPin}
+      // Data attributes end
       style={{
         ...props.style,
         ...styles,

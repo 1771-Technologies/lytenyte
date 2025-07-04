@@ -23,6 +23,7 @@ export function useRowStyle(
       display: "grid",
       gridTemplateColumns: "0px",
       gridTemplateRows: "0px",
+      pointerEvents: "none",
     };
 
     if (!row.rowPin) {

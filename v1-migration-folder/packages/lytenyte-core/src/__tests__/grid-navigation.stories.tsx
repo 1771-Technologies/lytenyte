@@ -6,14 +6,15 @@ import { Root } from "../root/root";
 import { RowsContainer } from "../rows/rows-container";
 import { Viewport } from "../viewport/viewport";
 import { useLyteNyte } from "../state/use-lytenyte";
-import { useId } from "react";
+import { useId, useState } from "react";
 import { HeaderCell } from "../header/header-cell";
-import type { Column } from "../+types";
+import type { Column, Grid } from "../+types";
 import { HeaderGroupCell } from "../header/header-group-cell";
 import { useClientRowDataSource } from "../row-data-source/use-client-data-source";
 import { RowsBottom, RowsCenter, RowsTop } from "../rows/rows-sections";
 import { RowHandler } from "./sample-data/row-handler";
 import { bankData } from "./sample-data/bank-data";
+import type { InternalAtoms } from "../state/+types";
 
 const meta: Meta = {
   title: "Grid/Navigation",
@@ -36,39 +37,48 @@ const columns: Column<any>[] = [
       );
     },
   },
-  { id: "job" },
-  { id: "balance" },
-  { id: "education" },
+  { id: "job", rowSpan: 3 },
+  { id: "balance", pin: "start" },
+  { id: "education", colSpan: 2, rowSpan: 2 },
   { id: "marital" },
   { id: "default" },
-  { id: "housing" },
-  { id: "loan" },
-  { id: "contact" },
-  { id: "day" },
+  { id: "housing", pin: "end", width: 140, rowSpan: 2 },
+  { id: "loan", groupPath: ["A", "B"] },
+  { id: "contact", groupPath: ["A"] },
+  { id: "day", groupPath: ["A"] },
   { id: "month" },
   { id: "duration" },
   { id: "campaign" },
-  { id: "pdays", pin: "start" },
-  { id: "previous", pin: "end" },
+  { id: "pdays" },
+  { id: "previous" },
   { id: "poutcome" },
   { id: "y" },
 ];
 
-function Component({ data = bankData }: { data?: any[] }) {
+function Component({ data = bankData.slice(0, 200) }: { data?: any[] }) {
+  const [d, setd] = useState(data);
   const ds = useClientRowDataSource({
-    data: data,
+    data: d,
+    topData: d.slice(4, 6),
+    bottomData: d.slice(0, 2),
   });
   const g = useLyteNyte({
     gridId: useId(),
     columns,
     rowDataSource: ds,
+    rowFullWidthPredicate: (p) => p.rowIndex === 12 || p.rowIndex === 15 || p.rowIndex === 16,
   });
 
   const view = g.view.useValue();
 
+  const grid = g as Grid<any> & { internal: InternalAtoms };
+
+  const focused = grid.internal.focusActive.useValue();
+
   return (
     <div>
       <div>
+        <div>{JSON.stringify(focused)}</div>
         <button onClick={() => g.state.rtl.set((prev) => !prev)}>
           RTL: {g.state.rtl.get() ? "Yes" : "No"}
         </button>
@@ -78,6 +88,13 @@ function Component({ data = bankData }: { data?: any[] }) {
           }}
         >
           Scroll Row 100 Into View
+        </button>
+        <button
+          onClick={() => {
+            g.api.scrollIntoView({ column: "job", behavior: "smooth" });
+          }}
+        >
+          Scroll to job
         </button>
         <button
           onClick={() => {
@@ -93,6 +110,8 @@ function Component({ data = bankData }: { data?: any[] }) {
         >
           Scroll to age
         </button>
+        <button onClick={() => setd(data.slice(0, 2))}>Small Data</button>
+        <button onClick={() => setd(data)}>All Data</button>
       </div>
 
       <div style={{ width: "100%", height: "80vh", border: "1px solid black" }}>
