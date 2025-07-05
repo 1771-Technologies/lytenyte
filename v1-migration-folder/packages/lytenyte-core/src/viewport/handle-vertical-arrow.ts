@@ -1,18 +1,19 @@
 import { isFullWidthMap } from "@1771technologies/lytenyte-shared";
 import type { GridRootContext } from "../context";
-import type {
-  PositionFullWidthRow,
-  PositionGridCell,
-  PositionHeaderCell,
-  PositionUnion,
-} from "../state/+types";
+import type { PositionFullWidthRow, PositionHeaderCell, PositionUnion } from "../state/+types";
 import { ensureVisible } from "../navigation/ensure-visible";
 import { getRowQuery } from "../navigation/get-row-query";
 import { getCellQuery } from "../navigation/get-cell-query";
 import { getHeaderRows } from "../navigation/getters/get-header-rows";
 import { getColIndexFromEl } from "../navigation/getters/get-col-index-from-el";
+import { focusCellVertically } from "./focus-cell-vertically";
 
-export function handleVerticalArrow(ctx: GridRootContext, pos: PositionUnion, isDown: boolean) {
+export function handleVerticalArrow(
+  ctx: GridRootContext,
+  pos: PositionUnion,
+  isDown: boolean,
+  isMeta: boolean,
+) {
   const vp = ctx.grid.state.viewport.get();
   const i = ctx.grid.internal;
 
@@ -24,6 +25,9 @@ export function handleVerticalArrow(ctx: GridRootContext, pos: PositionUnion, is
       if (isDown) nextRow = (pos.root?.rowIndex ?? pos.rowIndex + 1) + (pos.root?.rowSpan ?? 0);
       else nextRow = (pos.root?.rowIndex ?? pos.rowIndex) - 1;
     }
+
+    if (isMeta && isDown) nextRow = ctx.grid.state.rowDataStore.rowCount.get() - 1;
+    if (isMeta && !isDown) nextRow = 0;
 
     // This means we are at the top of the view. Hence we should move up to the header level
     if (nextRow < 0) {
@@ -44,41 +48,34 @@ export function handleVerticalArrow(ctx: GridRootContext, pos: PositionUnion, is
       return;
     }
 
-    const row = layout.get(nextRow);
+    ctx.grid.api.scrollIntoView({ row: nextRow });
 
-    if (!row) return;
+    // We try focus to begin - since it's likely the cell is already visible. If it isn't then we wait
+    // for it to be visible and then try focus it.
+    const res = focusCellVertically({
+      focusActive: ctx.grid.internal.focusActive,
+      id: ctx.grid.state.gridId.get(),
+      layout,
+      nextRow,
+      pos,
+      scrollIntoView: ctx.grid.api.scrollIntoView,
+      vp,
+    });
 
-    const id = ctx.grid.state.gridId.get();
-    if (isFullWidthMap(row)) {
-      // Just focus the next
-      const el = vp?.querySelector(getRowQuery(id, nextRow)) as HTMLElement;
-      if (!el) return;
-
-      ensureVisible(el, ctx.grid.api.scrollIntoView);
-      el.focus();
-
-      i.focusActive.set((p) => ({ ...p, columnIndex: pos.columnIndex }) as PositionFullWidthRow);
-
-      return;
-    }
-
-    const cell = row.get(pos.columnIndex)!;
-    let rootRow: number;
-    let rootCol: number;
-    if (cell.length === 2) {
-      rootRow = nextRow;
-      rootCol = pos.columnIndex;
-    } else {
-      rootRow = cell[1];
-      rootCol = cell[2];
-    }
-
-    const el = vp?.querySelector(getCellQuery(id, rootRow, rootCol)) as HTMLElement;
-    if (!el) return;
-
-    ensureVisible(el, ctx.grid.api.scrollIntoView);
-    el.focus();
-    i.focusActive.set((p) => ({ ...p, columnIndex: pos.columnIndex }) as PositionGridCell);
+    if (!res)
+      setTimeout(
+        () =>
+          focusCellVertically({
+            focusActive: ctx.grid.internal.focusActive,
+            id: ctx.grid.state.gridId.get(),
+            layout,
+            nextRow,
+            pos,
+            scrollIntoView: ctx.grid.api.scrollIntoView,
+            vp,
+          }),
+        30,
+      );
   } else {
     if (isDown) {
       const rows = getHeaderRows(vp!);

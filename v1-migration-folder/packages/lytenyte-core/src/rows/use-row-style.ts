@@ -2,7 +2,6 @@ import { useMemo, type CSSProperties } from "react";
 import { SCROLL_WIDTH_VARIABLE_USE, VIEWPORT_WIDTH_VARIABLE_USE } from "../+constants";
 import type { RowFullWidthRowLayout, RowNormalRowLayout } from "../+types";
 import { useGridRoot } from "../context";
-import { getTranslate } from "@1771technologies/lytenyte-shared";
 
 export function useRowStyle(
   row: RowNormalRowLayout<any> | RowFullWidthRowLayout<any>,
@@ -21,23 +20,13 @@ export function useRowStyle(
       width: SCROLL_WIDTH_VARIABLE_USE,
       minWidth: VIEWPORT_WIDTH_VARIABLE_USE,
       display: "grid",
-      gridTemplateColumns: "0px",
-      gridTemplateRows: "0px",
+      gridTemplateColumns: "100%",
+      gridTemplateRows: `${height}px`,
       pointerEvents: "none",
     };
 
-    if (!row.rowPin) {
-      Object.assign(styles, {
-        gridColumnStart: "1",
-        gridColumnEnd: "2",
-        gridRowStart: "1",
-        gridRowEnd: "2",
-        transform: getTranslate(0, yPositions[row.rowIndex]),
-      });
-    }
-
     return { ...propStyles, ...styles, ...additional };
-  }, [additional, height, propStyles, row.rowIndex, row.rowPin, yPositions]);
+  }, [additional, height, propStyles]);
 
   return styles;
 }

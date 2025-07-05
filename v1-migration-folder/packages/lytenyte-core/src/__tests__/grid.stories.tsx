@@ -97,9 +97,11 @@ function MainComp() {
             <RowsTop>
               <RowHandler rows={view.rows.top} />
             </RowsTop>
+
             <RowsCenter>
               <RowHandler rows={view.rows.center} />
             </RowsCenter>
+
             <RowsBottom>
               <RowHandler rows={view.rows.bottom} />
             </RowsBottom>

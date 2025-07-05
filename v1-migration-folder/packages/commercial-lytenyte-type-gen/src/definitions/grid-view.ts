@@ -414,6 +414,14 @@ export const RowSectionLayouts: InterfaceType = {
       tsDoc: ``,
       optional: false,
     },
+    {
+      kind: "property",
+      name: "rowFirstCenter",
+      value: "number",
+      doc: { en: `` },
+      tsDoc: ``,
+      optional: false,
+    },
   ],
 };
 

@@ -292,6 +292,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       rowTopTotalHeight: topHeight,
       rowBottomTotalHeight: botHeight,
       rowCenterTotalHeight: centerHeight,
+      rowFirstCenter: n.rowCenterStart,
     };
   });
 
@@ -445,6 +446,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       refreshKey: makeGridAtom(rdsAtoms.snapshotKey, store),
 
       layout: makeGridAtom(layoutMap, store),
+
       focusActive: makeGridAtom(internal_focusActive, store),
       focusPrevColIndex: makeGridAtom(internal_focusPrevCol, store),
       focusPrevRowIndex: makeGridAtom(internal_focusPrevRow, store),

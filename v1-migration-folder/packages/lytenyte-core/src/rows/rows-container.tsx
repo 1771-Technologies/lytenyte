@@ -20,7 +20,7 @@ export const RowsContainer = fastDeepMemo(
     return (
       <div
         {...props}
-        role="none"
+        role="presentation"
         ref={forwarded}
         data-ln-rows-container
         style={

@@ -13,12 +13,12 @@ export interface RowFullWidthProps {
 const RowFullWidthImpl = forwardRef<
   HTMLDivElement,
   JSX.IntrinsicElements["div"] & RowFullWidthProps
->(function RowFullWidth({ row, space, ...props }, forwarded) {
+>(function RowFullWidth({ row, space, children, ...props }, forwarded) {
   const gridId = useGridRoot().grid.state.gridId.useValue();
   return (
     <div
       {...props}
-      role="none"
+      role="row"
       /** Data attributes start */
       data-ln-gridid={gridId}
       data-ln-rowindex={row.rowIndex}
@@ -34,9 +34,14 @@ const RowFullWidthImpl = forwardRef<
         border: "1px solid black",
         position: "sticky",
         width: space === "scroll-width" ? undefined : VIEWPORT_WIDTH_VARIABLE_USE,
+        gridTemplateColumns: `${space === "scroll-width" ? "100%" : VIEWPORT_WIDTH_VARIABLE_USE}`,
         pointerEvents: "all",
       })}
-    />
+    >
+      <div role="gridcell" style={{ width: "100%", height: "100%" }}>
+        {children}
+      </div>
+    </div>
   );
 });
 

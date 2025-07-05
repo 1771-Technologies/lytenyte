@@ -1,3 +1,4 @@
+import "./grid-navigation.css";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Header } from "../header/header";
 import { HeaderRow } from "../header/header-row";
@@ -128,7 +129,7 @@ export const Spanning: StoryObj = {
   render: Component,
 };
 
-function SpanZIndices({ data = bankData.slice(0, 2) }: { data?: any[] }) {
+function SpanZIndices({ data = bankData }: { data?: any[] }) {
   const ds = useClientRowDataSource({ data });
 
   const g = useLyteNyte({
@@ -153,7 +154,7 @@ function SpanZIndices({ data = bankData.slice(0, 2) }: { data?: any[] }) {
 
       <div style={{ width: "100%", height: "90vh", border: "1px solid black" }}>
         <Root grid={g}>
-          <Viewport style={{ overflow: "hidden" }}>
+          <Viewport>
             <Header>
               {view.header.layout.map((row, i) => {
                 return (

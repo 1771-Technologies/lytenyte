@@ -1,4 +1,4 @@
-import type { LayoutMap } from "@1771technologies/lytenyte-shared";
+import type { LayoutMap, SpanLayout } from "@1771technologies/lytenyte-shared";
 import type { GridAtom, GridAtomReadonly } from "../+types";
 
 export type PositionGridCellKind = "cell";

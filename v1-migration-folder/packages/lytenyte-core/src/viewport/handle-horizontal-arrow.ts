@@ -11,6 +11,7 @@ export function handleHorizontalArrow(
   ctx: GridRootContext,
   pos: PositionUnion,
   isForward: boolean,
+  isMeta: boolean,
 ) {
   const vp = ctx.grid.state.viewport.get();
   const i = ctx.grid.internal;
@@ -28,10 +29,11 @@ export function handleHorizontalArrow(
   }
 
   if (pos.kind === "full-width") return;
+
   if (pos.kind === "cell") {
     const layout = i.layout.get();
 
-    const nextIndex = isForward
+    let nextIndex = isForward
       ? pos.root
         ? pos.root.columnIndex + pos.root.colSpan
         : pos.columnIndex + 1
@@ -39,80 +41,104 @@ export function handleHorizontalArrow(
         ? pos.root.columnIndex - 1
         : pos.columnIndex - 1;
 
-    const row = layout.get(pos.rowIndex);
-    const cell = row?.get(nextIndex);
-
-    if (!cell) return;
-
-    let rootRow: number;
-    let rootCol: number;
-    if (cell.length === 2) {
-      rootRow = pos.rowIndex;
-      rootCol = nextIndex;
-    } else {
-      rootRow = cell[1];
-      rootCol = cell[2];
+    if (isMeta) {
+      nextIndex = isForward ? ctx.grid.state.columnMeta.get().columnsVisible.length - 1 : 0;
     }
 
-    const id = ctx.grid.state.gridId.get();
-    const el = vp?.querySelector(getCellQuery(id, rootRow, rootCol)) as HTMLElement;
+    ctx.grid.api.scrollIntoView({ column: nextIndex });
 
-    if (!el) return;
+    const run = () => {
+      const row = layout.get(pos.rowIndex);
+      const cell = row?.get(nextIndex);
 
-    ensureVisible(el, ctx.grid.api.scrollIntoView);
+      if (!cell) return false;
 
-    if (isForward) el.focus();
-    else {
-      const last = getLastTabbable(el, "if-empty");
-      last?.focus();
-    }
+      let rootRow: number;
+      let rootCol: number;
+      if (cell.length === 2) {
+        rootRow = pos.rowIndex;
+        rootCol = nextIndex;
+      } else {
+        rootRow = cell[1];
+        rootCol = cell[2];
+      }
 
-    i.focusActive.set((p) => ({ ...p, rowIndex: pos.rowIndex }) as PositionGridCell);
+      ctx.grid.api.scrollIntoView({ row: rootRow, column: rootCol });
+      const id = ctx.grid.state.gridId.get();
+      const el = vp?.querySelector(getCellQuery(id, rootRow, rootCol)) as HTMLElement;
+
+      if (!el) return false;
+
+      ensureVisible(el, ctx.grid.api.scrollIntoView);
+
+      if (isForward) el.focus();
+      else {
+        const last = getLastTabbable(el, "if-empty");
+        last!.focus();
+      }
+      i.focusActive.set((p) => ({ ...p, rowIndex: pos.rowIndex }) as PositionGridCell);
+      return true;
+    };
+
+    const res = run();
+    if (!res) setTimeout(() => run(), 16);
   } else {
     const headerRow = getNearestHeaderRow();
     if (!headerRow) return;
 
-    const tabbables = getTabbables(headerRow);
-    const index = tabbables.indexOf(document.activeElement as HTMLElement);
+    let nextIndex = pos.columnIndex;
+    if (pos.kind === "header-group-cell") nextIndex = pos.columnStartIndex;
 
-    const el = isForward ? tabbables[index + 1] : tabbables[index - 1];
+    nextIndex += isForward ? 1 : -1;
+    ctx.grid.api.scrollIntoView({ column: nextIndex });
 
-    if (!el) {
-      const rows = getHeaderRows(vp!)!;
+    const run = () => {
+      const tabbables = getTabbables(headerRow);
+      const index = tabbables.indexOf(document.activeElement as HTMLElement);
 
-      const index = rows.indexOf(headerRow);
+      const el = isForward ? tabbables[index + 1] : tabbables[index - 1];
 
-      let nextIndex = index - 1;
-      let alt: HTMLElement | null | undefined;
-      while (nextIndex >= 0) {
-        const headers = Array.from(
-          rows[nextIndex].querySelectorAll("[data-ln-header-range]"),
-        ) as HTMLElement[];
+      if (!el) {
+        const rows = getHeaderRows(vp!)!;
+        const index = rows.indexOf(headerRow);
 
-        const match = headers.find((c) => {
-          const [colStartStr, colEndStr] = c.getAttribute("data-ln-header-range")!.split(",");
-          const colStart = Number.parseInt(colStartStr);
-          const colEnd = Number.parseInt(colEndStr);
+        let nextIndex = index - 1;
+        let alt: HTMLElement | null | undefined;
+        while (nextIndex >= 0) {
+          const headers = Array.from(
+            rows[nextIndex].querySelectorAll("[data-ln-header-range]"),
+          ) as HTMLElement[];
 
-          return colStart <= pos.columnIndex && pos.columnIndex < colEnd;
-        });
+          const match = headers.find((c) => {
+            const [colStartStr, colEndStr] = c.getAttribute("data-ln-header-range")!.split(",");
+            const colStart = Number.parseInt(colStartStr);
+            const colEnd = Number.parseInt(colEndStr);
 
-        if (match) {
-          const tabbables = getTabbables(rows[nextIndex]);
-          const matchIndex = tabbables.indexOf(match);
-          alt = isForward ? tabbables[matchIndex + 1] : tabbables[matchIndex - 1];
+            return colStart <= pos.columnIndex && pos.columnIndex < colEnd;
+          });
+
+          if (match) {
+            const tabbables = getTabbables(rows[nextIndex]);
+            const matchIndex = tabbables.indexOf(match);
+            alt = isForward ? tabbables[matchIndex + 1] : tabbables[matchIndex - 1];
+          }
+
+          if (alt) break;
+          nextIndex--;
         }
 
-        if (alt) break;
-        nextIndex--;
+        if (!alt) return false;
+        ensureVisible(alt, ctx.grid.api.scrollIntoView);
+        alt.focus();
+      } else {
+        ensureVisible(el, ctx.grid.api.scrollIntoView);
+        el.focus();
       }
 
-      if (!alt) return;
-      ensureVisible(alt, ctx.grid.api.scrollIntoView);
-      alt.focus();
-    } else {
-      ensureVisible(el, ctx.grid.api.scrollIntoView);
-      el.focus();
-    }
+      return true;
+    };
+
+    const res = run();
+    if (!res) setTimeout(() => run(), 16);
   }
 }

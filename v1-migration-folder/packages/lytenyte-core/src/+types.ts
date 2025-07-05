@@ -765,6 +765,11 @@ export interface RowSectionLayouts<T> {
    *
    */
   readonly rowBottomTotalHeight: number;
+
+  /**
+   *
+   */
+  readonly rowFirstCenter: number;
 }
 
 /**

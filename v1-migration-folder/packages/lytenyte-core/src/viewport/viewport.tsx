@@ -8,6 +8,7 @@ import { handleVerticalArrow } from "./handle-vertical-arrow";
 import { getFirstTabbable } from "@1771technologies/lytenyte-dom-utils";
 import { ensureVisible } from "../navigation/ensure-visible";
 import { handleHomeEnd } from "./handle-home-end";
+import { handlePageUpDown } from "./handle-page-up-down";
 
 export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function Viewport(
   { children, style, ...props },
@@ -34,7 +35,16 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
           handleSkipInner(e);
           props.onKeyDown?.(e);
 
-          const keys = ["ArrowRight", "ArrowLeft", "ArrowDown", "ArrowUp", "Home", "End"];
+          const keys = [
+            "ArrowRight",
+            "ArrowLeft",
+            "ArrowDown",
+            "ArrowUp",
+            "Home",
+            "End",
+            "PageUp",
+            "PageDown",
+          ];
 
           if (!keys.includes(e.key)) return;
           e.preventDefault();
@@ -61,28 +71,24 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
 
           setTimeout(() => {
             switch (e.key) {
+              case "PageDown":
+              case "PageUp": {
+                handlePageUpDown(ctx, pos, e.key === "PageUp");
+                break;
+              }
+              case "End":
               case "Home": {
-                handleHomeEnd(ctx, pos, e.ctrlKey || e.metaKey, true);
+                handleHomeEnd(ctx, pos, e.ctrlKey || e.metaKey, e.key === "Home");
                 break;
               }
-              case "End": {
-                handleHomeEnd(ctx, pos, e.ctrlKey || e.metaKey, false);
-                break;
-              }
+              case "ArrowLeft":
               case "ArrowRight": {
-                handleHorizontalArrow(ctx, pos, true);
+                handleHorizontalArrow(ctx, pos, e.key === "ArrowRight", e.ctrlKey || e.metaKey);
                 break;
               }
-              case "ArrowLeft": {
-                handleHorizontalArrow(ctx, pos, false);
-                break;
-              }
+              case "ArrowUp":
               case "ArrowDown": {
-                handleVerticalArrow(ctx, pos, true);
-                break;
-              }
-              case "ArrowUp": {
-                handleVerticalArrow(ctx, pos, false);
+                handleVerticalArrow(ctx, pos, e.key === "ArrowDown", e.ctrlKey || e.metaKey);
                 break;
               }
               default: {
