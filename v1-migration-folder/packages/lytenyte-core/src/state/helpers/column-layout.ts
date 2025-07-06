@@ -1,5 +1,11 @@
 import type { PathTableItem, SpanLayout } from "@1771technologies/lytenyte-shared";
-import type { Column, ColumnGroupMeta, HeaderLayoutCell } from "../../+types";
+import type {
+  Column,
+  ColumnGroupMeta,
+  HeaderCellFloating,
+  HeaderCellLayout,
+  HeaderLayoutCell,
+} from "../../+types";
 import { rangesOverlap } from "@1771technologies/lytenyte-js-utils";
 import type { PositionUnion } from "../+types";
 
@@ -8,9 +14,11 @@ export function makeColumnLayout<T>(
   groupMeta: ColumnGroupMeta,
   b: SpanLayout,
   focus: PositionUnion | null,
+  floatingRowEnabled: boolean,
 ) {
   const layout: HeaderLayoutCell<T>[][] = [];
 
+  const floatingRow: HeaderCellFloating<T>[] = [];
   for (let r = 0; r < combinedView.length; r++) {
     const row = combinedView[r];
 
@@ -33,8 +41,7 @@ export function makeColumnLayout<T>(
       const colPin = colS < b.colStartEnd ? "start" : colS >= b.colEndStart ? "end" : null;
 
       if (c.kind === "leaf") {
-        rowLayout.push({
-          kind: "cell",
+        const vals: Omit<HeaderCellLayout<T>, "kind"> = {
           colPin,
           column: c.data,
           rowStart: c.rowStart,
@@ -45,7 +52,13 @@ export function makeColumnLayout<T>(
           colSpan: c.colSpan,
           colFirstEndPin: c.colStart === b.colCenterLast ? true : undefined,
           colLastStartPin: c.colStart + c.colSpan === b.colStartEnd ? true : undefined,
-        });
+        };
+        rowLayout.push({ kind: "cell", ...vals });
+
+        if (floatingRowEnabled) {
+          floatingRow.push({ kind: "floating", ...vals });
+        }
+
         continue;
       }
 
@@ -72,6 +85,8 @@ export function makeColumnLayout<T>(
 
     layout.push(rowLayout);
   }
+
+  if (floatingRowEnabled) layout.push(floatingRow);
 
   return layout;
 }

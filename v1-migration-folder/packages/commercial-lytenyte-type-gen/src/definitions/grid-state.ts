@@ -16,7 +16,7 @@ const ColumnBase: PropertyType = {
   kind: "property",
   name: "columnBase",
   optional: false,
-  value: "GridAtom<ColumnBase>",
+  value: "GridAtom<ColumnBase<T>>",
   tsDoc: ``,
   doc: { en: `` },
 };
@@ -368,6 +368,39 @@ const AggModel: PropertyType = {
   value: "GridAtom<{ [columnId: string]: { fn: AggModelFn<T> } }>",
 };
 
+const FloatingRowEnabled: PropertyType = {
+  kind: "property",
+  name: "floatingRowEnabled",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<boolean>",
+};
+const FloatingRowHeight: PropertyType = {
+  kind: "property",
+  name: "floatingRowHeight",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<number>",
+};
+const FloatingCellRenderers: PropertyType = {
+  kind: "property",
+  name: "floatingCellRenderers",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<Record<string, HeaderFloatingCellRendererFn<T>>>",
+};
+const HeaderCellRenderers: PropertyType = {
+  kind: "property",
+  name: "headerCellRenderers",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<Record<string, HeaderCellRendererFn<T>>>",
+};
+
 export const GridStateCore: InterfaceType = {
   kind: "interface",
   export: true,
@@ -423,5 +456,10 @@ export const GridStateCore: InterfaceType = {
     RowGroupDisplayMode,
     RowGroupDefaultExpansion,
     RowGroupExpansions,
+
+    FloatingRowEnabled,
+    FloatingRowHeight,
+    FloatingCellRenderers,
+    HeaderCellRenderers,
   ],
 };

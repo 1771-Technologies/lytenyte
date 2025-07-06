@@ -181,6 +181,24 @@ const CellRenderer: PropertyType = {
   value: "string | CellRendererFn<T>",
 };
 
+const HeaderRenderer: PropertyType = {
+  kind: "property",
+  name: "headerRenderer",
+  optional: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  value: "HeaderCellRenderer<T>",
+};
+
+const FloatingRenderer: PropertyType = {
+  kind: "property",
+  name: "floatingRenderer",
+  optional: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  value: "HeaderFloatingCellRenderer<T>",
+};
+
 const ColumnHintsProp: PropertyType = {
   kind: "property",
   name: "uiHints",
@@ -215,6 +233,9 @@ export const ColumnCore: InterfaceType = {
     RowSpan,
 
     Field,
+
+    HeaderRenderer,
+    FloatingRenderer,
     CellRenderer,
 
     ColumnHintsProp,
@@ -224,9 +245,20 @@ export const ColumnCore: InterfaceType = {
 export const ColumnBaseCore: InterfaceType = {
   kind: "interface",
   export: true,
-  name: "ColumnBase",
+  name: "ColumnBase<T>",
   tag: "core",
-  properties: [Hide, Width, WidthMax, WidthMin, WidthFlex, ColumnHintsProp],
+  properties: [
+    Hide,
+    Width,
+    WidthMax,
+    WidthMin,
+    WidthFlex,
+
+    HeaderRenderer,
+    FloatingRenderer,
+    CellRenderer,
+    ColumnHintsProp,
+  ],
   tsDoc: ``,
   doc: { en: `` },
 };
@@ -248,7 +280,11 @@ export const ColumnRowGroup: InterfaceType = {
     ColumnPinProp,
 
     Field,
+
     CellRenderer,
+    HeaderRenderer,
+    FloatingRenderer,
+
     ColumnHintsProp,
   ],
 };

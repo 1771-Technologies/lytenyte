@@ -91,6 +91,11 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const rowGroupExpansions = atom(p.rowGroupExpansions ?? {});
   const rowGroupColumn = atom(p.rowGroupColumn ?? {});
 
+  const headerCellRenderers = atom(p.headerCellRenderers ?? {});
+  const floatingCellRenderers = atom(p.floatingCellRenderers ?? {});
+  const floatingRowEnabled = atom(p.floatingRowEnabled ?? false);
+  const floatingRowHeight = atom(p.floatingRowHeight ?? 40);
+
   const internal_focusActive = atom<PositionUnion | null>(null);
   const internal_focusPrevCol = atom<number | null>(null);
   const internal_focusPrevRow = atom<number | null>(null);
@@ -185,6 +190,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       view.meta,
       g(bounds),
       g(internal_focusActive),
+      g(floatingRowEnabled),
     );
 
     return { maxCol: view.maxCol, maxRow: view.maxRow, layout: layout };
@@ -208,11 +214,13 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const widthTotal = atom((get) => get(xPositions).at(-1)!);
 
   const headerHeightTotal = atom((g) => {
-    const ghh = g(headerGroupHeight);
-    const hh = g(headerHeight);
+    const groupHHeight = g(headerGroupHeight);
+    const hHeight = g(headerHeight);
     const view = g(columnView);
+    const floating = g(floatingRowEnabled);
+    const floatingHeight = g(floatingRowHeight);
 
-    return (view.maxRow - 1) * ghh + hh;
+    return (view.maxRow - 1) * groupHHeight + hHeight + (floating ? floatingHeight : 0);
   });
 
   const startCount = atom((g) => g(columnView).startCount);
@@ -359,6 +367,11 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     rowGroupDefaultExpansion: makeGridAtom(rowGroupDefaultExpansion, store),
     rowGroupDisplayMode: makeGridAtom(rowGroupDisplayMode, store),
     rowGroupExpansions: makeGridAtom(rowGroupExpansions, store),
+
+    headerCellRenderers: makeGridAtom(headerCellRenderers, store),
+    floatingCellRenderers: makeGridAtom(floatingCellRenderers, store),
+    floatingRowEnabled: makeGridAtom(floatingRowEnabled, store),
+    floatingRowHeight: makeGridAtom(floatingRowHeight, store),
   };
 
   const api = {} as GridApi<T>;

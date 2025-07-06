@@ -1,18 +1,20 @@
 import { forwardRef, useMemo, type CSSProperties, type JSX } from "react";
-import type { HeaderCellLayout } from "../+types";
+import type { HeaderCellFloating, HeaderCellLayout } from "../+types";
 import { useGridRoot } from "../context";
 import { getTranslate, sizeFromCoord } from "@1771technologies/lytenyte-shared";
 import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
+import { useHeaderCellRenderer } from "./use-header-cell-renderer";
 
 export interface HeaderCellProps<T> {
-  readonly cell: HeaderCellLayout<T>;
+  readonly cell: HeaderCellLayout<T> | HeaderCellFloating<T>;
 }
 
 const HeaderCellImpl = forwardRef<
   HTMLDivElement,
   JSX.IntrinsicElements["div"] & HeaderCellProps<any>
 >(function HeaderCell({ cell, children, ...props }, forwarded) {
-  const ctx = useGridRoot().grid.state;
+  const grid = useGridRoot().grid;
+  const ctx = grid.state;
 
   const xPositions = ctx.xPositions.useValue();
 
@@ -46,6 +48,8 @@ const HeaderCellImpl = forwardRef<
     return styles;
   }, [cell.colPin, cell.colStart, isSticky, rtl, viewport, xPositions]);
 
+  const Renderer = useHeaderCellRenderer(cell);
+
   return (
     <div
       {...props}
@@ -73,7 +77,7 @@ const HeaderCellImpl = forwardRef<
         boxSizing: "border-box",
       }}
     >
-      {children == undefined ? cell.column.id : children}
+      {children == undefined ? <Renderer column={cell.column} grid={grid} /> : children}
     </div>
   );
 });
