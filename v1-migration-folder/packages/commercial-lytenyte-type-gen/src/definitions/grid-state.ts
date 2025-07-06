@@ -278,6 +278,15 @@ const RowFullWidthPredicate: PropertyType = {
   doc: { en: `` },
 };
 
+const RowFullWidthRenderer: PropertyType = {
+  kind: "property",
+  doc: { en: `` },
+  tsDoc: ``,
+  name: "rowFullWidthRenderer",
+  optional: false,
+  value: "GridAtom<{ fn: RowFullWidthRendererFn<T>}>",
+};
+
 const CellRenderers: PropertyType = {
   kind: "property",
   name: "cellRenderers",
@@ -443,6 +452,7 @@ export const GridStateCore: InterfaceType = {
     ColOverscanEnd,
 
     RowFullWidthPredicate,
+    RowFullWidthRenderer,
     CellRenderers,
 
     Rtl,

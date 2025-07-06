@@ -14,7 +14,14 @@ const RowFullWidthImpl = forwardRef<
   HTMLDivElement,
   JSX.IntrinsicElements["div"] & RowFullWidthProps
 >(function RowFullWidth({ row, space, children, ...props }, forwarded) {
-  const gridId = useGridRoot().grid.state.gridId.useValue();
+  const grid = useGridRoot().grid;
+  const gridId = grid.state.gridId.useValue();
+  const rtl = grid.state.rtl.useValue();
+
+  const Renderer = grid.state.rowFullWidthRenderer.useValue().fn;
+
+  const r = row.row.useValue();
+
   return (
     <div
       {...props}
@@ -30,7 +37,8 @@ const RowFullWidthImpl = forwardRef<
       tabIndex={-1}
       ref={forwarded}
       style={useRowStyle(row, props.style, {
-        left: "0px",
+        right: rtl ? "0px" : undefined,
+        left: rtl ? undefined : "0px",
         border: "1px solid black",
         position: "sticky",
         width: space === "scroll-width" ? undefined : VIEWPORT_WIDTH_VARIABLE_USE,
@@ -39,7 +47,7 @@ const RowFullWidthImpl = forwardRef<
       })}
     >
       <div role="gridcell" style={{ width: "100%", height: "100%" }}>
-        {children}
+        {children ?? (r ? <Renderer grid={grid} row={r} rowIndex={row.rowIndex} /> : null)}
       </div>
     </div>
   );

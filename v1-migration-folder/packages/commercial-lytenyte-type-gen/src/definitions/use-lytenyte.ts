@@ -170,6 +170,16 @@ const RowFullWidthPredicate: PropertyType = {
   tsDoc: ``,
   doc: { en: `` },
 };
+
+const RowFullWidthRenderer: PropertyType = {
+  kind: "property",
+  doc: { en: `` },
+  tsDoc: ``,
+  name: "rowFullWidthRenderer",
+  optional: true,
+  value: "RowFullWidthRendererFn<T>",
+};
+
 const CellRenderers: PropertyType = {
   kind: "property",
   name: "cellRenderers",
@@ -322,6 +332,7 @@ export const UseLyteNytePropsCore: InterfaceType = {
     ColOverscanEnd,
 
     RowFullWidthPredicate,
+    RowFullWidthRenderer,
     CellRenderers,
 
     Rtl,

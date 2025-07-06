@@ -279,3 +279,31 @@ export const RowFullWidthPredicate: FunctionType = {
   ],
   return: "boolean",
 };
+
+export const RowFullWidthRendererParams: InterfaceType = {
+  kind: "interface",
+  name: "RowFullWidthRendererParams<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  properties: [RowIndexProp, RowNodeProp, GridProp],
+  export: true,
+};
+
+export const RowFullWidthRendererFn: FunctionType = {
+  kind: "function",
+  name: "RowFullWidthRendererFn<T>",
+  export: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  properties: [
+    {
+      kind: "property",
+      name: "params",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "RowFullWidthRendererParams<T>",
+    },
+  ],
+  return: "ReactNode",
+};

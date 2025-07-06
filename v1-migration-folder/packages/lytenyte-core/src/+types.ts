@@ -107,6 +107,11 @@ export interface UseLyteNyteProps<T> {
   /**
    *
    */
+  readonly rowFullWidthRenderer?: RowFullWidthRendererFn<T>;
+
+  /**
+   *
+   */
   readonly cellRenderers?: Record<string, CellRendererFn<T>>;
 
   /**
@@ -341,6 +346,11 @@ export interface GridState<T> {
    *
    */
   readonly rowFullWidthPredicate: GridAtom<{ fn: RowFullWidthPredicate<T> }>;
+
+  /**
+   *
+   */
+  readonly rowFullWidthRenderer: GridAtom<{ fn: RowFullWidthRendererFn<T> }>;
 
   /**
    *
@@ -1324,6 +1334,36 @@ export interface RowFullWidthPredicateParams<T> {
    *
    */
   readonly row: RowNode<T>;
+}
+
+/**
+ *
+ */
+export type RowFullWidthRendererFn<T> = (
+  /**
+   *
+   */
+  params: RowFullWidthRendererParams<T>,
+) => ReactNode;
+
+/**
+ *
+ */
+export interface RowFullWidthRendererParams<T> {
+  /**
+   *
+   */
+  readonly rowIndex: number;
+
+  /**
+   *
+   */
+  readonly row: RowNode<T>;
+
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
 }
 
 /**
