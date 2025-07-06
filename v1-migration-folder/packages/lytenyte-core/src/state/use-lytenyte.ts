@@ -80,6 +80,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
   const cellRenderers = atom(p.cellRenderers ?? {});
   const rowFullWidthPredicate = atom({ fn: p.rowFullWidthPredicate ?? (() => false) });
+  const rowFullWidthRenderer = atom({ fn: p.rowFullWidthRenderer ?? (() => "Not defined") });
 
   const sortModel = atom<SortModelItem<T>[]>(p.sortModel ?? []);
   const filterModel = atom<FilterModelItem<T>[]>(p.filterModel ?? []);
@@ -356,6 +357,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     rowOverscanBottom: makeGridAtom(rowOverscanBottom, store),
 
     rowFullWidthPredicate: makeGridAtom(rowFullWidthPredicate, store),
+    rowFullWidthRenderer: makeGridAtom(rowFullWidthRenderer, store),
     cellRenderers: makeGridAtom(cellRenderers, store),
 
     sortModel: makeGridAtom(sortModel, store),

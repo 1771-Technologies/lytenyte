@@ -74,7 +74,7 @@ export function handleVerticalArrow(
             scrollIntoView: ctx.grid.api.scrollIntoView,
             vp,
           }),
-        30,
+        20,
       );
   } else {
     if (isDown) {
@@ -198,5 +198,5 @@ function focusFirstRowCell(ctx: GridRootContext, pos: PositionUnion) {
 
     i.focusActive.set((p) => ({ ...p, columnIndex: pos.columnIndex }) as PositionFullWidthRow);
     return;
-  }, 4);
+  }, 20);
 }

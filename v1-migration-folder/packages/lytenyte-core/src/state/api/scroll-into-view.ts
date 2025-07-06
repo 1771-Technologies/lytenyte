@@ -49,6 +49,11 @@ export const makeScrollIntoView = (
       });
     }
 
-    vp.scrollTo({ left: x, top: y, behavior: opts.behavior ?? "auto" });
+    const rtl = grid.state.rtl.get();
+    vp.scrollTo({
+      left: x != null ? x * (rtl ? -1 : 1) : undefined,
+      top: y,
+      behavior: opts.behavior ?? "auto",
+    });
   };
 };

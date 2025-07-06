@@ -6,7 +6,8 @@ import { RowFullWidth } from "../../rows/row-full-width";
 
 export const RowHandler = fastDeepMemo((props: { rows: RowLayout<any>[] }) => {
   return props.rows.map((row) => {
-    if (row.kind === "full-width") return <RowFullWidth row={row} key={row.rowIndex} />;
+    if (row.kind === "full-width")
+      return <RowFullWidth row={row} key={row.rowIndex} style={{ background: "white" }} />;
 
     return (
       <Row key={row.rowIndex} row={row}>
