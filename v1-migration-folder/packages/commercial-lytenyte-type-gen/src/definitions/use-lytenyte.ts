@@ -260,6 +260,39 @@ const AggModel: PropertyType = {
   value: "{ [columnId: string]: { fn: AggModelFn<T> } }",
 };
 
+const FloatingRowEnabled: PropertyType = {
+  kind: "property",
+  name: "floatingRowEnabled",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "boolean",
+};
+const FloatingRowHeight: PropertyType = {
+  kind: "property",
+  name: "floatingRowHeight",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "number",
+};
+const FloatingCellRenderers: PropertyType = {
+  kind: "property",
+  name: "floatingCellRenderers",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "Record<string, HeaderFloatingCellRendererFn<T>>",
+};
+const HeaderCellRenderers: PropertyType = {
+  kind: "property",
+  name: "headerCellRenderers",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "Record<string, HeaderCellRendererFn<T>>",
+};
+
 export const UseLyteNytePropsCore: InterfaceType = {
   kind: "interface",
   name: "UseLyteNyteProps<T>",
@@ -302,5 +335,10 @@ export const UseLyteNytePropsCore: InterfaceType = {
     RowGroupDisplayMode,
     RowGroupDefaultExpansion,
     RowGroupExpansions,
+
+    FloatingRowHeight,
+    FloatingRowEnabled,
+    FloatingCellRenderers,
+    HeaderCellRenderers,
   ],
 };

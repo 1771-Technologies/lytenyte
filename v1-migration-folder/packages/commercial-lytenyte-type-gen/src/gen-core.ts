@@ -22,6 +22,7 @@ import * as Filters from "./definitions/filter.js";
 import * as Prelude from "./definitions/prelude.js";
 import * as RowGroup from "./definitions/row-group.js";
 import * as Events from "./definitions/events.js";
+import * as Header from "./definitions/header.js";
 
 const typeModules = [
   ...Object.values(UseLng),
@@ -43,6 +44,7 @@ const typeModules = [
   ...Object.values(Filters),
   ...Object.values(RowGroup),
   ...Object.values(Events),
+  ...Object.values(Header),
 ] as GenTypes[];
 
 const types = typeModules

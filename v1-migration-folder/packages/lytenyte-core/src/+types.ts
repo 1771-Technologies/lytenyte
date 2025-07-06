@@ -153,6 +153,29 @@ export interface UseLyteNyteProps<T> {
    *
    */
   readonly rowGroupExpansions?: { [rowId: string]: boolean | undefined };
+
+  /**
+   *
+   */
+  readonly floatingRowHeight?: number;
+
+  /**
+   *
+   */
+  readonly floatingRowEnabled?: boolean;
+
+  /**
+   *
+   */
+  readonly floatingCellRenderers?: Record<
+    string,
+    HeaderFloatingCellRendererFn<T>
+  >;
+
+  /**
+   *
+   */
+  readonly headerCellRenderers?: Record<string, HeaderCellRendererFn<T>>;
 }
 
 /**
@@ -370,6 +393,30 @@ export interface GridState<T> {
   readonly rowGroupExpansions: GridAtom<{
     [rowId: string]: boolean | undefined;
   }>;
+
+  /**
+   *
+   */
+  readonly floatingRowEnabled: GridAtom<boolean>;
+
+  /**
+   *
+   */
+  readonly floatingRowHeight: GridAtom<number>;
+
+  /**
+   *
+   */
+  readonly floatingCellRenderers: GridAtom<
+    Record<string, HeaderFloatingCellRendererFn<T>>
+  >;
+
+  /**
+   *
+   */
+  readonly headerCellRenderers: GridAtom<
+    Record<string, HeaderCellRendererFn<T>>
+  >;
 }
 
 /**
@@ -955,6 +1002,16 @@ export interface RowGroupColumn<T> {
    *
    */
   readonly cellRenderer?: string | CellRendererFn<T>;
+
+  /**
+   *
+   */
+  readonly headerRenderer?: HeaderCellRenderer<T>;
+
+  /**
+   *
+   */
+  readonly floatingRenderer?: HeaderFloatingCellRenderer<T>;
 
   /**
    *
@@ -2375,3 +2432,65 @@ export interface RowExpandParams<T> {
    */
   readonly expansions: { [rowId: string]: boolean };
 }
+
+/**
+ *
+ */
+export type HeaderCellRendererFn<T> = (
+  /**
+   *
+   */
+  params: HeaderCellRendererParams<T>,
+) => ReactNode;
+
+/**
+ *
+ */
+export interface HeaderCellRendererParams<T> {
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly column: Column<T>;
+}
+
+/**
+ *
+ */
+export type HeaderFloatingCellRendererFn<T> = (
+  /**
+   *
+   */
+  params: HeaderFloatingCellRendererParams<T>,
+) => ReactNode;
+
+/**
+ *
+ */
+export interface HeaderFloatingCellRendererParams<T> {
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly column: Column<T>;
+}
+
+/**
+ *
+ */
+export type HeaderFloatingCellRenderer<T> =
+  | string
+  | HeaderFloatingCellRendererFn<T>;
+
+/**
+ *
+ */
+export type HeaderCellRenderer<T> = string | HeaderCellRendererFn<T>;
