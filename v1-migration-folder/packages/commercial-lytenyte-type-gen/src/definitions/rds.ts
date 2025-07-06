@@ -100,7 +100,7 @@ export const RowDataSourceCore: InterfaceType = {
     {
       kind: "property",
       name: "rowExpand",
-      value: "(expansion: Record<string, boolean>) => Promise<void> | void",
+      value: "(expansion: Record<string, boolean>) => void",
       doc: { en: `` },
       tsDoc: ``,
       optional: false,

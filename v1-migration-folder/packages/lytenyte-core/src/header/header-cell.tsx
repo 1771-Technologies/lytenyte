@@ -58,6 +58,7 @@ const HeaderCellImpl = forwardRef<
       role="columnheader"
       // DATA Attributes Start
       data-ln-header-cell
+      data-ln-header-floating={cell.kind === "floating" ? "true" : undefined}
       data-ln-header-id={cell.column.id}
       data-ln-header-range={`${cell.colStart},${cell.colStart + cell.colSpan}`}
       data-ln-rowindex={cell.rowStart}

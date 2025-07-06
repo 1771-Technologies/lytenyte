@@ -181,6 +181,26 @@ export interface UseLyteNyteProps<T> {
    *
    */
   readonly headerCellRenderers?: Record<string, HeaderCellRendererFn<T>>;
+
+  /**
+   *
+   */
+  readonly editRenderers?: Record<string, EditRendererFn<T>>;
+
+  /**
+   *
+   */
+  readonly editRowValidatorFn?: EditRowValidatorFn<T>;
+
+  /**
+   *
+   */
+  readonly editClickActivator?: EditClickActivator;
+
+  /**
+   *
+   */
+  readonly editCellMode?: EditCellMode;
 }
 
 /**
@@ -427,6 +447,31 @@ export interface GridState<T> {
   readonly headerCellRenderers: GridAtom<
     Record<string, HeaderCellRendererFn<T>>
   >;
+
+  /**
+   *
+   */
+  readonly editRenderers: GridAtom<Record<string, EditRendererFn<T>>>;
+
+  /**
+   *
+   */
+  readonly editRowValidatorFn: GridAtom<{ fn: EditRowValidatorFn<T> }>;
+
+  /**
+   *
+   */
+  readonly editClickActivator: GridAtom<EditClickActivator>;
+
+  /**
+   *
+   */
+  readonly editCellMode: GridAtom<EditCellMode>;
+
+  /**
+   *
+   */
+  readonly editActivePosition: GridAtomReadonly<EditActivePosition<T> | null>;
 }
 
 /**
@@ -940,6 +985,21 @@ export interface ColumnBase<T> {
    *
    */
   readonly uiHints?: ColumnUIHints;
+
+  /**
+   *
+   */
+  readonly editable?: Editable<T>;
+
+  /**
+   *
+   */
+  readonly editRenderer?: EditRenderer<T>;
+
+  /**
+   *
+   */
+  readonly editSetterProp?: EditSetterFn<T>;
 }
 
 /**
@@ -955,6 +1015,11 @@ export interface Column<T> {
    *
    */
   readonly name?: string;
+
+  /**
+   *
+   */
+  readonly type?: "string" | "number" | "date" | "datetime" | ({} & string);
 
   /**
    *
@@ -1030,6 +1095,21 @@ export interface Column<T> {
    *
    */
   readonly uiHints?: ColumnUIHints;
+
+  /**
+   *
+   */
+  readonly editable?: Editable<T>;
+
+  /**
+   *
+   */
+  readonly editRenderer?: EditRenderer<T>;
+
+  /**
+   *
+   */
+  readonly editSetterProp?: EditSetterFn<T>;
 }
 
 /**
@@ -1175,6 +1255,11 @@ export interface ClientRowDataSourceParams<T> {
    *
    */
   readonly bottomData?: T[];
+
+  /**
+   *
+   */
+  readonly reflectData?: boolean;
 }
 
 /**
@@ -1199,9 +1284,7 @@ export interface RowDataSource<T> {
   /**
    *
    */
-  readonly rowExpand: (
-    expansion: Record<string, boolean>,
-  ) => Promise<void> | void;
+  readonly rowExpand: (expansion: Record<string, boolean>) => void;
 }
 
 /**
@@ -1664,14 +1747,36 @@ export interface CellRendererParams<T> {
 /**
  *
  */
+export type FocusCellParams<T> =
+  | { row: number; column: string | number | Column<T> }
+  | PositionHeaderCell
+  | Omit<PositionHeaderGroupCell, "columnStartIndex" | "columnEndIndex">
+  | "next"
+  | "prev"
+  | "up"
+  | "down";
+
+/**
+ *
+ */
 export interface GridApi<T> {
   /**
    *
    */
-  readonly fieldForColumn: (
+  readonly columnField: (
     columnOrId: string | Column<T>,
     row: FieldDataParam<T>,
   ) => unknown;
+
+  /**
+   *
+   */
+  readonly columnFromIndex: (columnIndex: number) => Column<T> | null;
+
+  /**
+   *
+   */
+  readonly columnIndex: (columnOrId: string | Column<T>) => number;
 
   /**
    *
@@ -1740,6 +1845,26 @@ export interface GridApi<T> {
    *
    */
   readonly scrollIntoView: (options: ScrollIntoViewOptions<T>) => void;
+
+  /**
+   *
+   */
+  readonly focusCell: (position: FocusCellParams<T>) => void;
+
+  /**
+   *
+   */
+  readonly editBegin: (params: EditBeginParams<T>) => void;
+
+  /**
+   *
+   */
+  readonly editEnd: (cancel?: boolean) => void;
+
+  /**
+   *
+   */
+  readonly editIsCellActive: (params: EditBeginParams<T>) => boolean;
 }
 
 /**
@@ -2622,3 +2747,348 @@ export type HeaderFloatingCellRenderer<T> =
  *
  */
 export type HeaderCellRenderer<T> = string | HeaderCellRendererFn<T>;
+
+/**
+ *
+ */
+export interface EditActivePosition<T> {
+  /**
+   *
+   */
+  readonly rowIndex: number;
+
+  /**
+   *
+   */
+  readonly column: Column<T>;
+}
+
+/**
+ *
+ */
+export interface EditBeginParams<T> {
+  /**
+   *
+   */
+  readonly column: string | number | Column<T>;
+
+  /**
+   *
+   */
+  readonly rowIndex: number;
+}
+
+/**
+ *
+ */
+export type EditCellMode = "cell" | "row" | "readonly";
+
+/**
+ *
+ */
+export type EditClickActivator = "single" | "dbl-click" | "none";
+
+/**
+ *
+ */
+export type EditRenderer<T> = string | EditRendererFn<T>;
+
+/**
+ *
+ */
+export type EditRendererFn<T> = (
+  /**
+   *
+   */
+  params: EditRendererFnParams<T>,
+) => ReactNode;
+
+/**
+ *
+ */
+export interface EditRendererFnParams<T> {
+  /**
+   *
+   */
+  readonly rowIndex: number;
+
+  /**
+   *
+   */
+  readonly row: RowNode<T>;
+
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly column: Column<T>;
+
+  /**
+   *
+   */
+  readonly rowValidationState: Record<string, any> | boolean | null;
+
+  /**
+   *
+   */
+  readonly value: any;
+
+  /**
+   *
+   */
+  readonly onChange: (c: any) => void;
+}
+
+/**
+ *
+ */
+export type EditRowValidatorFn<T> = (
+  /**
+   *
+   */
+  params: EditRowValidatorFnParams<T>,
+) => Record<string, any> | boolean;
+
+/**
+ *
+ */
+export interface EditRowValidatorFnParams<T> {
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly row: RowNode<T>;
+
+  /**
+   *
+   */
+  readonly rowIndex: number;
+
+  /**
+   *
+   */
+  readonly data: any;
+}
+
+/**
+ *
+ */
+export type EditSetterFn<T> = (
+  /**
+   *
+   */
+  params: EditSetterParams<T>,
+) => any;
+
+/**
+ *
+ */
+export interface EditSetterParams<T> {
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly row: RowNode<T>;
+
+  /**
+   *
+   */
+  readonly rowIndex: number;
+
+  /**
+   *
+   */
+  readonly column: Column<T>;
+}
+
+/**
+ *
+ */
+export type Editable<T> = boolean | EditableFn<T>;
+
+/**
+ *
+ */
+export type EditableFn<T> = (
+  /**
+   *
+   */
+  params: EditableFnParams<T>,
+) => boolean;
+
+/**
+ *
+ */
+export interface EditableFnParams<T> {
+  /**
+   *
+   */
+  readonly rowIndex: number;
+
+  /**
+   *
+   */
+  readonly row: RowNode<T>;
+
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly column: Column<T>;
+}
+
+/**
+ *
+ */
+export interface PositionFloatingCell {
+  /**
+   *
+   */
+  readonly kind: "floating-cell";
+
+  /**
+   *
+   */
+  readonly colIndex: number;
+}
+
+/**
+ *
+ */
+export interface PositionFullWidthRow {
+  /**
+   *
+   */
+  readonly kind: "full-width";
+
+  /**
+   *
+   */
+  readonly rowIndex: number;
+
+  /**
+   *
+   */
+  readonly colIndex: number;
+}
+
+/**
+ *
+ */
+export interface PositionGridCell {
+  /**
+   *
+   */
+  readonly kind: "cell";
+
+  /**
+   *
+   */
+  readonly rowIndex: number;
+
+  /**
+   *
+   */
+  readonly colIndex: number;
+
+  /**
+   *
+   */
+  readonly root: PositionGridCellRoot | null;
+}
+
+/**
+ *
+ */
+export interface PositionGridCellRoot {
+  /**
+   *
+   */
+  readonly colIndex: number;
+
+  /**
+   *
+   */
+  readonly rowIndex: number;
+
+  /**
+   *
+   */
+  readonly rowSpan: number;
+
+  /**
+   *
+   */
+  readonly colSpan: number;
+}
+
+/**
+ *
+ */
+export interface PositionHeaderCell {
+  /**
+   *
+   */
+  readonly kind: "header-cell";
+
+  /**
+   *
+   */
+  readonly colIndex: number;
+}
+
+/**
+ *
+ */
+export interface PositionHeaderGroupCell {
+  /**
+   *
+   */
+  readonly kind: "header-group-cell";
+
+  /**
+   *
+   */
+  readonly columnStartIndex: number;
+
+  /**
+   *
+   */
+  readonly columnEndIndex: number;
+
+  /**
+   *
+   */
+  readonly hierarchyRowIndex: number;
+
+  /**
+   *
+   */
+  readonly colIndex: number;
+}
+
+/**
+ *
+ */
+export type PositionUnion =
+  | PositionGridCell
+  | PositionFloatingCell
+  | PositionHeaderCell
+  | PositionFullWidthRow
+  | PositionHeaderGroupCell;

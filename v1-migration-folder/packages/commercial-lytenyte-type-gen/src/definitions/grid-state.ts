@@ -410,6 +410,51 @@ const HeaderCellRenderers: PropertyType = {
   value: "GridAtom<Record<string, HeaderCellRendererFn<T>>>",
 };
 
+const EditRenderers: PropertyType = {
+  kind: "property",
+  name: "editRenderers",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<Record<string, EditRendererFn<T>>>",
+};
+
+const EditRowValidatorFn: PropertyType = {
+  kind: "property",
+  name: "editRowValidatorFn",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<{ fn: EditRowValidatorFn<T> }>",
+};
+
+const EditClickActivator: PropertyType = {
+  kind: "property",
+  name: "editClickActivator",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<EditClickActivator>",
+};
+
+const EditCellMode: PropertyType = {
+  kind: "property",
+  name: "editCellMode",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<EditCellMode>",
+};
+
+const EditActivePosition: PropertyType = {
+  kind: "property",
+  name: "editActivePosition",
+  value: "GridAtomReadonly<EditActivePosition<T> | null>",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+};
+
 export const GridStateCore: InterfaceType = {
   kind: "interface",
   export: true,
@@ -471,5 +516,11 @@ export const GridStateCore: InterfaceType = {
     FloatingRowHeight,
     FloatingCellRenderers,
     HeaderCellRenderers,
+
+    EditRenderers,
+    EditRowValidatorFn,
+    EditClickActivator,
+    EditCellMode,
+    EditActivePosition,
   ],
 };

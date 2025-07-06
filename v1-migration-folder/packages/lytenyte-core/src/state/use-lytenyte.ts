@@ -5,6 +5,8 @@ import type {
   RowDataSource,
   SortModelItem,
   FilterModelItem,
+  EditActivePosition,
+  PositionUnion,
 } from "../+types.js";
 import { type Grid, type GridView, type UseLyteNyteProps } from "../+types.js";
 import { useRef } from "react";
@@ -16,25 +18,32 @@ import {
   computeColumnPositions,
   computeRowPositions,
   DEFAULT_PREVIOUS_LAYOUT,
-  GROUP_COLUMN_PREFIX,
-  GROUP_COLUMN_SINGLE_ID,
-  GROUP_COLUMN_TREE_DATA,
   makeGridAtom,
   makeRowDataStore,
   type SpanLayout,
 } from "@1771technologies/lytenyte-shared";
-import type { InternalAtoms, PositionUnion } from "./+types.js";
+import type { InternalAtoms } from "./+types.js";
 import { makeRowLayout } from "./helpers/row-layout/row-layout.js";
 import { equal } from "@1771technologies/lytenyte-js-utils";
 import { makeColumnLayout } from "./helpers/column-layout.js";
 import { emptyRowDataSource } from "./helpers/empty-row-data-source.js";
 import { getFullWidthCallback } from "./helpers/get-full-width-callback.js";
 import { getSpanFn } from "./helpers/get-span-callback.js";
-import { makeFieldForColumn } from "./api/field-for-column.js";
+import { makeColumnField } from "./api/column-field.js";
 import { makeSortForColumn } from "./api/sort-for-column.js";
 import { columnAddRowGroup } from "./helpers/column-add-row-group.js";
 import { makeEventListeners } from "./api/event-listeners.js";
 import { makeScrollIntoView } from "./api/scroll-into-view.js";
+import { makeColumnFromIndex } from "./api/column-from-index.js";
+import { makeColumnIndex } from "./api/column-index.js";
+import { makeRowGroupColumnIndex } from "./api/row-group-column-index.js";
+import { makeRowGroupIsExpanded } from "./api/row-group-is-expanded.js";
+import { makeRowGroupToggle } from "./api/row-group-toggle.js";
+import { makeRowGroupApplyExpansions } from "./api/make-row-group-apply-expansions.js";
+import { makeFocusCell } from "./api/focus-cell.js";
+import { makeEditBegin } from "./api/edit-begin.js";
+import { makeEditIsCellActive } from "./api/edit-is-cell-active.js";
+import { makeEditEnd } from "./api/edit-end.js";
 
 const DEFAULT_HEADER_HEIGHT = 40;
 const COLUMN_GROUP_JOIN_DELIMITER = "-->";
@@ -97,6 +106,12 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const floatingRowEnabled = atom(p.floatingRowEnabled ?? false);
   const floatingRowHeight = atom(p.floatingRowHeight ?? 40);
 
+  const editRenderers = atom(p.editRenderers ?? {});
+  const editRowValidatorFn = atom({ fn: p.editRowValidatorFn ?? (() => true) });
+  const editClickActivator = atom(p.editClickActivator ?? "single");
+  const editCellMode = atom(p.editCellMode ?? "readonly");
+
+  const internal_editActivePosition = atom<EditActivePosition<T> | null>(null);
   const internal_focusActive = atom<PositionUnion | null>(null);
   const internal_focusPrevCol = atom<number | null>(null);
   const internal_focusPrevRow = atom<number | null>(null);
@@ -374,6 +389,15 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     floatingCellRenderers: makeGridAtom(floatingCellRenderers, store),
     floatingRowEnabled: makeGridAtom(floatingRowEnabled, store),
     floatingRowHeight: makeGridAtom(floatingRowHeight, store),
+
+    editRenderers: makeGridAtom(editRenderers, store),
+    editCellMode: makeGridAtom(editCellMode, store),
+    editClickActivator: makeGridAtom(editClickActivator, store),
+    editRowValidatorFn: makeGridAtom(editRowValidatorFn, store),
+    editActivePosition: makeGridAtom(
+      atom((g) => g(internal_editActivePosition)),
+      store,
+    ),
   };
 
   const api = {} as GridApi<T>;
@@ -382,7 +406,9 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
   const listeners = makeEventListeners<T>();
   Object.assign(api, {
-    fieldForColumn: makeFieldForColumn(grid),
+    columnField: makeColumnField(grid),
+    columnFromIndex: makeColumnFromIndex(grid),
+    columnIndex: makeColumnIndex(grid),
     sortForColumn: makeSortForColumn(grid),
 
     rowIsGroup: (r) => r.kind === "branch",
@@ -392,57 +418,17 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     eventRemoveListener: listeners.eventRemoveListener,
     eventFire: listeners.eventFire,
 
-    rowGroupColumnIndex: (c) => {
-      if (!grid.state.rowGroupModel.get().length || !c.id.startsWith(GROUP_COLUMN_PREFIX)) {
-        return -1;
-      }
-      if (c.id === GROUP_COLUMN_SINGLE_ID || c.id === GROUP_COLUMN_TREE_DATA) return 0;
-
-      const n = c.id.split(":").at(-1);
-      if (n == null) return -1;
-
-      return Number.parseInt(n);
-    },
-
-    rowGroupIsExpanded: (row) => {
-      const expanded = grid.state.rowGroupExpansions.get()[row.id];
-      if (typeof expanded === "boolean") return expanded;
-
-      const defaultExpansion = grid.state.rowGroupDefaultExpansion.get();
-      if (typeof defaultExpansion === "boolean") return defaultExpansion;
-
-      return row.depth <= defaultExpansion;
-    },
-    rowGroupToggle: (row, state) => {
-      const next = state == null ? !api.rowGroupIsExpanded(row) : state;
-
-      api.rowGroupApplyExpansions({ [row.id]: next });
-    },
-    rowGroupApplyExpansions: async (expansions) => {
-      let prevented = false;
-      const preventNext = () => {
-        prevented = true;
-      };
-
-      try {
-        api.eventFire("rowExpandBegin", { expansions, grid, preventNext });
-
-        if (prevented) return;
-
-        const rds = grid.state.rowDataSource.get();
-        const result = rds.rowExpand(expansions);
-        if (!result || !("then" in result)) {
-          api.eventFire("rowExpand", { expansions, grid });
-        } else {
-          await result;
-          api.eventFire("rowExpand", { expansions, grid });
-        }
-      } catch (error: unknown) {
-        api.eventFire("rowExpandError", { expansions, grid, error });
-      }
-    },
+    rowGroupColumnIndex: makeRowGroupColumnIndex(grid),
+    rowGroupIsExpanded: makeRowGroupIsExpanded(grid),
+    rowGroupToggle: makeRowGroupToggle(grid),
+    rowGroupApplyExpansions: makeRowGroupApplyExpansions(grid),
 
     scrollIntoView: makeScrollIntoView(grid as any),
+
+    editBegin: makeEditBegin(grid as any),
+    editEnd: makeEditEnd(grid as any),
+    editIsCellActive: makeEditIsCellActive(grid as any),
+    focusCell: makeFocusCell(grid as any),
   } satisfies GridApi<T>);
 
   Object.assign(grid, {
@@ -465,6 +451,8 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       focusActive: makeGridAtom(internal_focusActive, store),
       focusPrevColIndex: makeGridAtom(internal_focusPrevCol, store),
       focusPrevRowIndex: makeGridAtom(internal_focusPrevRow, store),
+
+      editActivePos: makeGridAtom(internal_editActivePosition, store),
     } satisfies InternalAtoms,
   });
 

@@ -1,9 +1,18 @@
-import { forwardRef, useMemo, type CSSProperties, type JSX, type ReactNode } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useMemo,
+  useState,
+  type CSSProperties,
+  type JSX,
+  type ReactNode,
+} from "react";
 import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
 import type { CellRendererFn, RowCellLayout } from "../+types";
 import { useGridRoot } from "../context";
 import { getTranslate, sizeFromCoord } from "@1771technologies/lytenyte-shared";
 import { CellDefault } from "./cell-default";
+import { CellEditor } from "./cell-editor";
 
 export interface CellProps {
   readonly cell: RowCellLayout<any>;
@@ -84,8 +93,22 @@ const CellImpl = forwardRef<
     : CellDefault;
 
   const row = cell.row.useValue();
-  if (!row) return null;
 
+  const [isEditing, setIsEditing] = useState(false);
+  useEffect(() => {
+    return grid.internal.editActivePos.watch(() => {
+      const pos = grid.internal.editActivePos.get();
+      if (!pos) return setIsEditing(false);
+
+      setIsEditing(
+        pos.column === cell.column &&
+          pos.rowIndex >= cell.rowIndex &&
+          pos.rowIndex < cell.rowIndex + cell.rowSpan,
+      );
+    });
+  }, [cell.column, cell.rowIndex, cell.rowSpan, grid.internal.editActivePos]);
+
+  if (!row) return null;
   return (
     <div
       {...props}
@@ -103,19 +126,23 @@ const CellImpl = forwardRef<
       data-ln-last-start-pin={cell.colLastStartPin}
       data-ln-first-end-pin={cell.colFirstEndPin}
       /** Data attributes */
-
-      tabIndex={0}
+      tabIndex={isEditing ? -1 : 0}
     >
-      {typeof Renderer === "function" ? (
-        <Renderer
-          column={cell.column}
-          row={row}
-          grid={grid}
-          rowIndex={cell.rowIndex}
-          colIndex={cell.colIndex}
-        />
-      ) : (
-        Renderer
+      {isEditing && <CellEditor cell={cell} />}
+      {!isEditing && (
+        <>
+          {typeof Renderer === "function" ? (
+            <Renderer
+              column={cell.column}
+              row={row}
+              grid={grid}
+              rowIndex={cell.rowIndex}
+              colIndex={cell.colIndex}
+            />
+          ) : (
+            Renderer
+          )}
+        </>
       )}
     </div>
   );

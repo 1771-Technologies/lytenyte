@@ -26,6 +26,14 @@ const BottomData: PropertyType = {
   tsDoc: ``,
   doc: { en: `` },
 };
+const ReflectData: PropertyType = {
+  kind: "property",
+  name: "reflectData",
+  optional: true,
+  value: "boolean",
+  tsDoc: ``,
+  doc: { en: `` },
+};
 
 export const ClientRowDataSource: InterfaceType = {
   kind: "interface",
@@ -34,5 +42,5 @@ export const ClientRowDataSource: InterfaceType = {
   tag: "core",
   tsDoc: ``,
   doc: { en: `` },
-  properties: [Data, TopData, BottomData],
+  properties: [Data, TopData, BottomData, ReflectData],
 };

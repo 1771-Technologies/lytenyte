@@ -5,9 +5,9 @@ import type {
   HeaderCellFloating,
   HeaderCellLayout,
   HeaderLayoutCell,
+  PositionUnion,
 } from "../../+types";
 import { rangesOverlap } from "@1771technologies/lytenyte-js-utils";
-import type { PositionUnion } from "../+types";
 
 export function makeColumnLayout<T>(
   combinedView: PathTableItem<Column<T>>[][],
@@ -33,7 +33,7 @@ export function makeColumnLayout<T>(
         !rangesOverlap(colS, colE, b.colStartStart, b.colStartEnd) && // not in start area
         !rangesOverlap(colS, colE, b.colCenterStart, b.colCenterEnd) && // not in center area
         !rangesOverlap(colS, colE, b.colEndStart, b.colEndEnd) && // not in end area
-        !(focus && rangesOverlap(colS, colE, focus.columnIndex, focus.columnIndex + 1)) // not if a cell in the column is focused
+        !(focus && rangesOverlap(colS, colE, focus.colIndex, focus.colIndex + 1)) // not if a cell in the column is focused
       ) {
         continue;
       }

@@ -1,5 +1,5 @@
+import { FULL_WIDTH_MAP } from "../../+constants.js";
 import type { LayoutMap } from "../../../../lytenyte-shared/src/+types.layout.js";
-import { FULL_WIDTH_MAP } from "../../+constants.layout.js";
 import { Table } from "@1771technologies/cli-table";
 
 export function printLayoutMap(l: LayoutMap) {

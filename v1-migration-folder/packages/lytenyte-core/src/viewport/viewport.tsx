@@ -1,14 +1,11 @@
 import { forwardRef, type JSX } from "react";
 import { useForkRef } from "@1771technologies/lytenyte-react-hooks";
 import { useGridRoot } from "../context";
-import { handleSkipInner } from "../navigation/handle-skip-inner";
-import { useFocusTracking } from "./use-focus-tracking";
-import { handleHorizontalArrow } from "./handle-horizontal-arrow";
-import { handleVerticalArrow } from "./handle-vertical-arrow";
-import { getFirstTabbable } from "@1771technologies/lytenyte-dom-utils";
-import { ensureVisible } from "../navigation/ensure-visible";
-import { handleHomeEnd } from "./handle-home-end";
-import { handlePageUpDown } from "./handle-page-up-down";
+import {
+  handleNavigationKeys,
+  handleSkipInner,
+  useFocusTracking,
+} from "@1771technologies/lytenyte-shared";
 
 export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function Viewport(
   { children, style, ...props },
@@ -23,9 +20,8 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
   const height = ctx.grid.state.heightTotal.useValue();
   const rtl = ctx.grid.state.rtl.useValue();
 
-  const focused = useFocusTracking(vp, ctx);
+  const focused = useFocusTracking(vp, ctx.grid.internal.focusActive);
 
-  const i = ctx.grid.internal;
   return (
     <>
       <div
@@ -35,75 +31,36 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
           handleSkipInner(e);
           props.onKeyDown?.(e);
 
-          const keys = [
-            "ArrowRight",
-            "ArrowLeft",
-            "ArrowDown",
-            "ArrowUp",
-            "Home",
-            "End",
-            "PageUp",
-            "PageDown",
-          ];
+          if (e.defaultPrevented) return;
 
-          if (!keys.includes(e.key)) return;
-          e.preventDefault();
-          e.stopPropagation();
+          const ds = ctx.grid.state.rowDataStore;
 
-          const pos = i.focusActive.get();
-          if (!pos) {
-            const rtl = ctx.grid.state.rtl.get();
-
-            const condition =
-              e.key === "ArrowDown" || (rtl ? e.key === "ArrowLeft" : e.key === "ArrowRight");
-
-            if (condition) {
-              const first = getFirstTabbable(vp!);
-              if (first) {
-                ensureVisible(first, ctx.grid.api.scrollIntoView);
-                first.focus();
-              }
-            }
-
-            return;
-          }
-
-          ctx.grid.api.scrollIntoView({
-            column: pos.columnIndex,
-            row: (pos as any).rowIndex,
-            behavior: "instant",
+          handleNavigationKeys(e, {
+            vp: ctx.grid.state.viewport.get(),
+            rowCount: ds.rowCount.get(),
+            topCount: ds.rowTopCount.get(),
+            centerCount: ds.rowCenterCount.get(),
+            columnCount: ctx.grid.state.columnMeta.get().columnsVisible.length,
+            focusActive: ctx.grid.internal.focusActive,
+            id: ctx.grid.state.gridId.get(),
+            layout: ctx.grid.internal.layout.get(),
+            rtl: ctx.grid.state.rtl.get(),
+            scrollIntoView: ctx.grid.api.scrollIntoView,
           });
+        }}
+        onClick={() => {
+          const focusPos = ctx.grid.internal.focusActive.get();
+          const editMode = ctx.grid.state.editCellMode.get();
+          const editActivator = ctx.grid.state.editClickActivator.get();
 
-          setTimeout(() => {
-            switch (e.key) {
-              case "PageDown":
-              case "PageUp": {
-                handlePageUpDown(ctx, pos, e.key === "PageUp");
-                break;
-              }
-              case "End":
-              case "Home": {
-                handleHomeEnd(ctx, pos, e.ctrlKey || e.metaKey, e.key === "Home");
-                break;
-              }
-              case "ArrowLeft":
-              case "ArrowRight": {
-                const isForward = ctx.grid.state.rtl.get()
-                  ? e.key === "ArrowLeft"
-                  : e.key === "ArrowRight";
-                handleHorizontalArrow(ctx, pos, isForward, e.ctrlKey || e.metaKey);
-                break;
-              }
-              case "ArrowUp":
-              case "ArrowDown": {
-                handleVerticalArrow(ctx, pos, e.key === "ArrowDown", e.ctrlKey || e.metaKey);
-                break;
-              }
-              default: {
-                return;
-              }
-            }
-          }, 4);
+          if (focusPos?.kind !== "cell" || editMode === "readonly" || editActivator !== "single")
+            return;
+
+          const column = ctx.grid.api.columnFromIndex(focusPos.colIndex);
+          if (!column) return;
+          if (ctx.grid.api.editIsCellActive({ column, rowIndex: focusPos.rowIndex })) return;
+
+          ctx.grid.api.editBegin({ column, rowIndex: focusPos.rowIndex });
         }}
         role="grid"
         ref={ref}

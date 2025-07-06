@@ -198,6 +198,9 @@ importers:
       '@1771technologies/atom':
         specifier: ^1.0.2
         version: 1.0.2(@types/react@19.1.8)(react@19.1.0)
+      '@1771technologies/lytenyte-dom-utils':
+        specifier: workspace:*
+        version: link:../dom-utils
       '@1771technologies/lytenyte-js-utils':
         specifier: workspace:*
         version: link:../js-utils

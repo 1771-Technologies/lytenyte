@@ -70,7 +70,7 @@ export function makeClientDataSource<T>(
     const rowGroups = g(rowGroupModel)
       .map((c) => {
         if (typeof c === "string")
-          return (d: T) => grid!.api.fieldForColumn(c, { kind: "leaf", data: d });
+          return (d: T) => grid!.api.columnField(c, { kind: "leaf", data: d });
 
         if (typeof c.field === "string" || typeof c.field === "number")
           return (d: T) => (d as any)[c.field as any];
@@ -92,9 +92,7 @@ export function makeClientDataSource<T>(
 
       const key = agg.fn;
       const fn = (data: T[]) => {
-        const fieldData = data.map((d) =>
-          grid?.api.fieldForColumn(name, { kind: "leaf", data: d }),
-        );
+        const fieldData = data.map((d) => grid?.api.columnField(name, { kind: "leaf", data: d }));
         return builtIns[key as keyof typeof builtIns](fieldData as any);
       };
 
@@ -128,16 +126,16 @@ export function makeClientDataSource<T>(
         if (sort.kind === "custom") {
           res = sort.comparator(ld, rd, sort.options ?? {});
         } else if (sort.kind === "number") {
-          const left = grid.api.fieldForColumn(columnId!, ld);
-          const right = grid.api.fieldForColumn(columnId!, rd);
+          const left = grid.api.columnField(columnId!, ld);
+          const right = grid.api.columnField(columnId!, rd);
           res = numberComparator(left as number, right as number, sort.options ?? {});
         } else if (sort.kind === "date") {
-          const left = grid.api.fieldForColumn(columnId!, ld);
-          const right = grid.api.fieldForColumn(columnId!, rd);
+          const left = grid.api.columnField(columnId!, ld);
+          const right = grid.api.columnField(columnId!, rd);
           res = dateComparator(left as string, right as string, sort.options ?? {});
         } else if (sort.kind === "string") {
-          const left = grid.api.fieldForColumn(columnId!, ld);
-          const right = grid.api.fieldForColumn(columnId!, rd);
+          const left = grid.api.columnField(columnId!, ld);
+          const right = grid.api.columnField(columnId!, rd);
           res = stringComparator(left as string, right as string, sort.options ?? {});
         } else {
           res = 0;
@@ -336,13 +334,15 @@ export function useClientRowDataSource<T>(p: ClientRowDataSourceParams<T>) {
   if (!ds.current) [ds.current, dataAtomRef.current] = makeClientDataSource(p);
 
   const da = dataAtomRef.current;
-  // Need to queue the microtask since it we cannot update state during render.
-  if (p.data !== da.center.get()) queueMicrotask(() => da.center.set(p.data));
-  if (!equal(p.topData ?? [], da.top.get())) {
-    queueMicrotask(() => da.top.set(p.topData ?? []));
+  if (p.reflectData) {
+    // Need to queue the microtask since it we cannot update state during render.
+    if (p.data !== da.center.get()) queueMicrotask(() => da.center.set(p.data));
+    if (!equal(p.topData ?? [], da.top.get())) {
+      queueMicrotask(() => da.top.set(p.topData ?? []));
+    }
+    if (!equal(p.bottomData ?? [], da.bottom.get()))
+      queueMicrotask(() => da.bottom.set(p.bottomData ?? []));
   }
-  if (!equal(p.bottomData ?? [], da.bottom.get()))
-    queueMicrotask(() => da.bottom.set(p.bottomData ?? []));
 
   return ds.current;
 }

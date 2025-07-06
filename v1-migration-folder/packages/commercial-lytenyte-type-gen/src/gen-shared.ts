@@ -7,6 +7,7 @@ import * as RDS from "./definitions/rds.js";
 import * as Row from "./definitions/row.js";
 import * as ColumnGroup from "./definitions/column-group.js";
 import * as GridAtom from "./definitions/grid-atom.js";
+import * as Navigation from "./definitions/navigation.js";
 import {
   SortDateComparatorOptions,
   SortNumberComparatorOptions,
@@ -50,6 +51,7 @@ const typeModules = [
   FilterStringOperator,
   FilterStringOptions,
   Locale,
+  ...Object.values(Navigation),
 ] as GenTypes[];
 
 const types = typeModules
