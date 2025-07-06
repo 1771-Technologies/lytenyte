@@ -1,5 +1,11 @@
 import type { FunctionType, InterfaceType } from "../+types";
-import { ColumnProp, GridProp, RowNodeProp } from "./shared-properties";
+import {
+  ColumnIndexProp,
+  ColumnProp,
+  GridProp,
+  RowIndexProp,
+  RowNodeProp,
+} from "./shared-properties";
 
 export const CellRendererParams: InterfaceType = {
   kind: "interface",
@@ -7,7 +13,7 @@ export const CellRendererParams: InterfaceType = {
   export: true,
   tsDoc: ``,
   doc: { en: `` },
-  properties: [GridProp, ColumnProp, RowNodeProp],
+  properties: [GridProp, ColumnProp, RowNodeProp, RowIndexProp, ColumnIndexProp],
 };
 
 export const CellRendererFn: FunctionType = {

@@ -59,3 +59,6 @@ export type { FilterNumberSettings } from "./filters/get-number-filter-settings.
 export { getNumberFilterSettings } from "./filters/get-number-filter-settings.js";
 export type { FilterStringSettings } from "./filters/get-string-filter-settings.js";
 export { getStringFilterSettings } from "./filters/get-string-filter-settings.js";
+
+export { columnScrollIntoViewValue } from "./scroll/scroll-column-into-view.js";
+export { rowScrollIntoViewValue } from "./scroll/scroll-row-into-view.js";

@@ -1,4 +1,4 @@
-import type { InterfaceType, InterfaceTypePartial, UnionType } from "../+types";
+import type { InterfaceType, InterfaceTypePartial, PropertyType, UnionType } from "../+types";
 import {
   ColPinProp,
   ColumnIndexProp,
@@ -7,6 +7,40 @@ import {
   RowNodeAtomProp,
   RowPinProp,
 } from "./shared-properties";
+
+const CellLastStartPinProp: PropertyType = {
+  kind: "property",
+  name: "colLastStartPin",
+  optional: true,
+  value: "boolean",
+  tsDoc: ``,
+  doc: { en: `` },
+};
+const CellFirstEndPinProp: PropertyType = {
+  kind: "property",
+  name: "colFirstEndPin",
+  optional: true,
+  value: "boolean",
+  tsDoc: ``,
+  doc: { en: `` },
+};
+
+const RowLastPinTopProp: PropertyType = {
+  kind: "property",
+  name: "rowLastPinTop",
+  optional: true,
+  value: "boolean",
+  tsDoc: ``,
+  doc: { en: `` },
+};
+const RowFirstPinBottomProp: PropertyType = {
+  kind: "property",
+  name: "rowFirstPinBottom",
+  optional: true,
+  value: "boolean",
+  tsDoc: ``,
+  doc: { en: `` },
+};
 
 const HeaderBase: InterfaceTypePartial = {
   kind: "interface-partial",
@@ -67,6 +101,8 @@ const HeaderBase: InterfaceTypePartial = {
       tsDoc: ``,
       doc: { en: `` },
     },
+    CellFirstEndPinProp,
+    CellLastStartPinProp,
   ],
 };
 
@@ -233,6 +269,8 @@ export const RowFullWidthRowLayout: InterfaceType = {
     RowIndexProp,
     RowNodeAtomProp,
     RowPinProp,
+    RowLastPinTopProp,
+    RowFirstPinBottomProp,
   ],
 };
 
@@ -273,6 +311,10 @@ export const RowCellLayout: InterfaceType = {
     ColumnProp,
     ColPinProp,
     RowPinProp,
+    CellFirstEndPinProp,
+    CellLastStartPinProp,
+    RowLastPinTopProp,
+    RowFirstPinBottomProp,
   ],
 };
 
@@ -294,6 +336,8 @@ export const RowNormalRowLayout: InterfaceType = {
     RowIndexProp,
     RowNodeAtomProp,
     RowPinProp,
+    RowLastPinTopProp,
+    RowFirstPinBottomProp,
     {
       kind: "property",
       name: "cells",
@@ -365,6 +409,14 @@ export const RowSectionLayouts: InterfaceType = {
     {
       kind: "property",
       name: "rowBottomTotalHeight",
+      value: "number",
+      doc: { en: `` },
+      tsDoc: ``,
+      optional: false,
+    },
+    {
+      kind: "property",
+      name: "rowFirstCenter",
       value: "number",
       doc: { en: `` },
       tsDoc: ``,

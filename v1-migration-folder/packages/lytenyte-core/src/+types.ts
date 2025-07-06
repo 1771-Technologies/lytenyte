@@ -449,6 +449,16 @@ export interface HeaderCellLayout<T> {
   /**
    *
    */
+  readonly colFirstEndPin?: boolean;
+
+  /**
+   *
+   */
+  readonly colLastStartPin?: boolean;
+
+  /**
+   *
+   */
   readonly kind: "cell";
 
   /**
@@ -495,6 +505,16 @@ export interface HeaderGroupCellLayout {
    *
    */
   readonly colPin: ColumnPin;
+
+  /**
+   *
+   */
+  readonly colFirstEndPin?: boolean;
+
+  /**
+   *
+   */
+  readonly colLastStartPin?: boolean;
 
   /**
    *
@@ -610,6 +630,26 @@ export interface RowCellLayout<T> {
    *
    */
   readonly rowPin: RowPin;
+
+  /**
+   *
+   */
+  readonly colFirstEndPin?: boolean;
+
+  /**
+   *
+   */
+  readonly colLastStartPin?: boolean;
+
+  /**
+   *
+   */
+  readonly rowLastPinTop?: boolean;
+
+  /**
+   *
+   */
+  readonly rowFirstPinBottom?: boolean;
 }
 
 /**
@@ -635,6 +675,16 @@ export interface RowFullWidthRowLayout<T> {
    *
    */
   readonly rowPin: RowPin;
+
+  /**
+   *
+   */
+  readonly rowLastPinTop?: boolean;
+
+  /**
+   *
+   */
+  readonly rowFirstPinBottom?: boolean;
 }
 
 /**
@@ -665,6 +715,16 @@ export interface RowNormalRowLayout<T> {
    *
    */
   readonly rowPin: RowPin;
+
+  /**
+   *
+   */
+  readonly rowLastPinTop?: boolean;
+
+  /**
+   *
+   */
+  readonly rowFirstPinBottom?: boolean;
 
   /**
    *
@@ -705,6 +765,11 @@ export interface RowSectionLayouts<T> {
    *
    */
   readonly rowBottomTotalHeight: number;
+
+  /**
+   *
+   */
+  readonly rowFirstCenter: number;
 }
 
 /**
@@ -1399,6 +1464,16 @@ export interface CellRendererParams<T> {
    *
    */
   readonly row: RowNode<T>;
+
+  /**
+   *
+   */
+  readonly rowIndex: number;
+
+  /**
+   *
+   */
+  readonly colIndex: number;
 }
 
 /**
@@ -1475,6 +1550,31 @@ export interface GridApi<T> {
     name: K,
     event: Parameters<Required<GridEvents<T>>[K]>[0],
   ) => void;
+
+  /**
+   *
+   */
+  readonly scrollIntoView: (options: ScrollIntoViewOptions<T>) => void;
+}
+
+/**
+ *
+ */
+export interface ScrollIntoViewOptions<T> {
+  /**
+   *
+   */
+  readonly column?: number | string | Column<T>;
+
+  /**
+   *
+   */
+  readonly row?: number;
+
+  /**
+   *
+   */
+  readonly behavior?: "smooth" | "auto" | "instant";
 }
 
 /**
