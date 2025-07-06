@@ -67,6 +67,15 @@ function Component({ data = bankData.slice(0, 200) }: { data?: any[] }) {
     columns,
     rowDataSource: ds,
     rowFullWidthPredicate: (p) => p.rowIndex % 2 === 0,
+
+    rowFullWidthRenderer: () => (
+      <>
+        <button>A</button>
+        <button>A</button>
+        <button>A</button>
+        <button>A</button>
+      </>
+    ),
   });
 
   const view = g.view.useValue();

@@ -52,7 +52,12 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
 
           const pos = i.focusActive.get();
           if (!pos) {
-            if (e.key === "ArrowDown" || e.key === "ArrowRight") {
+            const rtl = ctx.grid.state.rtl.get();
+
+            const condition =
+              e.key === "ArrowDown" || (rtl ? e.key === "ArrowLeft" : e.key === "ArrowRight");
+
+            if (condition) {
               const first = getFirstTabbable(vp!);
               if (first) {
                 ensureVisible(first, ctx.grid.api.scrollIntoView);
@@ -83,7 +88,10 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
               }
               case "ArrowLeft":
               case "ArrowRight": {
-                handleHorizontalArrow(ctx, pos, e.key === "ArrowRight", e.ctrlKey || e.metaKey);
+                const isForward = ctx.grid.state.rtl.get()
+                  ? e.key === "ArrowLeft"
+                  : e.key === "ArrowRight";
+                handleHorizontalArrow(ctx, pos, isForward, e.ctrlKey || e.metaKey);
                 break;
               }
               case "ArrowUp":

@@ -64,5 +64,5 @@ export function handleHomeEnd(
       (p) => ({ ...p, columnIndex: targetColumn, rowIndex: targetRow }) as PositionGridCell,
     );
     return;
-  }, 4);
+  }, 20);
 }

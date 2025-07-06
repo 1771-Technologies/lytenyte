@@ -81,7 +81,7 @@ export function handleHorizontalArrow(
     };
 
     const res = run();
-    if (!res) setTimeout(() => run(), 16);
+    if (!res) setTimeout(() => run(), 20);
   } else {
     const headerRow = getNearestHeaderRow();
     if (!headerRow) return;
@@ -138,7 +138,12 @@ export function handleHorizontalArrow(
       return true;
     };
 
+    // Try 3 times without backoff
     const res = run();
-    if (!res) setTimeout(() => run(), 16);
+    if (!res)
+      setTimeout(() => {
+        const res = run();
+        if (!res) setTimeout(() => run(), 20);
+      }, 8);
   }
 }
