@@ -1,6 +1,7 @@
 import { forwardRef, type CSSProperties, type JSX } from "react";
 import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
 import { useGridRoot } from "../context";
+import { NativeScroller } from "./scrollers/native-scroller";
 
 export const RowsTop = fastDeepMemo(
   forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function RowsTop(props, forwarded) {
@@ -48,11 +49,9 @@ export const RowsCenter = fastDeepMemo(
 
     const rowCenterCount = cx.state.rowDataStore.rowCenterCount.useValue();
     const rowTopCount = cx.state.rowDataStore.rowTopCount.useValue();
-    const yPos = cx.state.yPositions.useValue();
 
     if (height <= 0) return <div style={{ flex: "1" }} role="presentation" />;
 
-    const offset = yPos[view.rowFirstCenter] - view.rowTopTotalHeight;
     return (
       <div
         {...props}
@@ -70,9 +69,7 @@ export const RowsCenter = fastDeepMemo(
           } as CSSProperties
         }
       >
-        <div role="rowgroup" style={{ transform: `translate3d(0px, ${offset}px, 0px)` }}>
-          {children}
-        </div>
+        <NativeScroller>{children}</NativeScroller>
       </div>
     );
   }),
