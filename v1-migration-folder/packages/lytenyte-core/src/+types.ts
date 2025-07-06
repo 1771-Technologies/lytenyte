@@ -12,7 +12,7 @@ export interface UseLyteNyteProps<T> {
   /**
    *
    */
-  readonly columnBase?: ColumnBase;
+  readonly columnBase?: ColumnBase<T>;
 
   /**
    *
@@ -195,7 +195,7 @@ export interface GridState<T> {
   /**
    *
    */
-  readonly columnBase: GridAtom<ColumnBase>;
+  readonly columnBase: GridAtom<ColumnBase<T>>;
 
   /**
    *
@@ -517,6 +517,66 @@ export interface HeaderCellLayout<T> {
 /**
  *
  */
+export interface HeaderCellFloating<T> {
+  /**
+   *
+   */
+  readonly rowStart: number;
+
+  /**
+   *
+   */
+  readonly rowEnd: number;
+
+  /**
+   *
+   */
+  readonly rowSpan: number;
+
+  /**
+   *
+   */
+  readonly colStart: number;
+
+  /**
+   *
+   */
+  readonly colEnd: number;
+
+  /**
+   *
+   */
+  readonly colSpan: number;
+
+  /**
+   *
+   */
+  readonly colPin: ColumnPin;
+
+  /**
+   *
+   */
+  readonly colFirstEndPin?: boolean;
+
+  /**
+   *
+   */
+  readonly colLastStartPin?: boolean;
+
+  /**
+   *
+   */
+  readonly kind: "floating";
+
+  /**
+   *
+   */
+  readonly column: Column<T>;
+}
+
+/**
+ *
+ */
 export interface HeaderGroupCellLayout {
   /**
    *
@@ -627,7 +687,10 @@ export interface HeaderLayout<T> {
 /**
  *
  */
-export type HeaderLayoutCell<T> = HeaderCellLayout<T> | HeaderGroupCellLayout;
+export type HeaderLayoutCell<T> =
+  | HeaderCellLayout<T>
+  | HeaderCellFloating<T>
+  | HeaderGroupCellLayout;
 
 /**
  *
@@ -822,7 +885,7 @@ export interface RowSectionLayouts<T> {
 /**
  *
  */
-export interface ColumnBase {
+export interface ColumnBase<T> {
   /**
    *
    */
@@ -847,6 +910,21 @@ export interface ColumnBase {
    *
    */
   readonly widthFlex?: number;
+
+  /**
+   *
+   */
+  readonly headerRenderer?: HeaderCellRenderer<T>;
+
+  /**
+   *
+   */
+  readonly floatingRenderer?: HeaderFloatingCellRenderer<T>;
+
+  /**
+   *
+   */
+  readonly cellRenderer?: string | CellRendererFn<T>;
 
   /**
    *
@@ -922,6 +1000,16 @@ export interface Column<T> {
    *
    */
   readonly field?: Field<T>;
+
+  /**
+   *
+   */
+  readonly headerRenderer?: HeaderCellRenderer<T>;
+
+  /**
+   *
+   */
+  readonly floatingRenderer?: HeaderFloatingCellRenderer<T>;
 
   /**
    *

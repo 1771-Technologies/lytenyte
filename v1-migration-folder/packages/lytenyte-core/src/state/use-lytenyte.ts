@@ -190,6 +190,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       view.meta,
       g(bounds),
       g(internal_focusActive),
+      g(floatingRowEnabled),
     );
 
     return { maxCol: view.maxCol, maxRow: view.maxRow, layout: layout };

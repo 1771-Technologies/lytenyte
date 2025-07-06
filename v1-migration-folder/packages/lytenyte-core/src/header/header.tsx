@@ -11,14 +11,17 @@ const HeaderImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(
     const rows = grid.internal.headerRows.useValue();
     const headerHeight = grid.state.headerHeight.useValue();
     const headerGroupHeight = grid.state.headerGroupHeight.useValue();
+    const floatingRowHeight = grid.state.floatingRowHeight.useValue();
+    const floatingRowEnabled = grid.state.floatingRowEnabled.useValue();
 
     const gridRowTemplate = useMemo(() => {
       const template = [];
       for (let i = 0; i < rows - 1; i++) template.push(`${headerGroupHeight}px`);
       template.push(`${headerHeight}px`);
+      if (floatingRowEnabled) template.push(`${floatingRowHeight}px`);
 
       return template.join(" ");
-    }, [headerGroupHeight, headerHeight, rows]);
+    }, [floatingRowEnabled, floatingRowHeight, headerGroupHeight, headerHeight, rows]);
 
     return (
       <div

@@ -122,14 +122,27 @@ export const HeaderCell: InterfaceType = {
       tsDoc: ``,
       doc: { en: `` },
     },
+    ColumnProp,
+  ],
+};
+
+export const HeaderCellFloating: InterfaceType = {
+  kind: "interface",
+  name: "HeaderCellFloating<T>",
+  export: true,
+  extends: HeaderBase,
+  tsDoc: ``,
+  doc: { en: `` },
+  properties: [
     {
       kind: "property",
-      name: "column",
-      value: "Column<T>",
+      name: "kind",
+      value: '"floating"',
+      optional: false,
       tsDoc: ``,
       doc: { en: `` },
-      optional: false,
     },
+    ColumnProp,
   ],
 };
 
@@ -214,7 +227,7 @@ export const HeaderLayoutCell: UnionType = {
   export: true,
   tsDoc: ``,
   doc: { en: `` },
-  types: ["HeaderCellLayout<T>", "HeaderGroupCellLayout"],
+  types: ["HeaderCellLayout<T>", "HeaderCellFloating<T>", "HeaderGroupCellLayout"],
 };
 
 export const HeaderLayout: InterfaceType = {

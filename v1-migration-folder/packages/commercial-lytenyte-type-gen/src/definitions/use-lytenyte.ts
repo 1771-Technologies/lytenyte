@@ -13,7 +13,7 @@ const ColumnBase: PropertyType = {
   kind: "property",
   name: "columnBase",
   optional: true,
-  value: "ColumnBase",
+  value: "ColumnBase<T>",
   tsDoc: ``,
   doc: { en: `` },
 };

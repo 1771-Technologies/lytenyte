@@ -16,7 +16,7 @@ const ColumnBase: PropertyType = {
   kind: "property",
   name: "columnBase",
   optional: false,
-  value: "GridAtom<ColumnBase>",
+  value: "GridAtom<ColumnBase<T>>",
   tsDoc: ``,
   doc: { en: `` },
 };
