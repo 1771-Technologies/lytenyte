@@ -44,6 +44,7 @@ import { makeFocusCell } from "./api/focus-cell.js";
 import { makeEditBegin } from "./api/edit-begin.js";
 import { makeEditIsCellActive } from "./api/edit-is-cell-active.js";
 import { makeEditEnd } from "./api/edit-end.js";
+import { makeEditUpdate } from "./api/edit-update.js";
 
 const DEFAULT_HEADER_HEIGHT = 40;
 const COLUMN_GROUP_JOIN_DELIMITER = "-->";
@@ -111,10 +112,12 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const editClickActivator = atom(p.editClickActivator ?? "single");
   const editCellMode = atom(p.editCellMode ?? "readonly");
 
-  const internal_editActivePosition = atom<EditActivePosition<T> | null>(null);
   const internal_focusActive = atom<PositionUnion | null>(null);
   const internal_focusPrevCol = atom<number | null>(null);
   const internal_focusPrevRow = atom<number | null>(null);
+  const internal_editActivePosition = atom<EditActivePosition<T> | null>(null);
+  const internal_editData = atom<any>(null);
+  const internal_editValidation = atom<Record<string, any> | boolean>(true);
 
   const layoutMap = atom<LayoutMap>((g) => {
     g(rdsAtoms.bottomCount);
@@ -428,6 +431,8 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     editBegin: makeEditBegin(grid as any),
     editEnd: makeEditEnd(grid as any),
     editIsCellActive: makeEditIsCellActive(grid as any),
+    editUpdate: makeEditUpdate(grid as any),
+
     focusCell: makeFocusCell(grid as any),
   } satisfies GridApi<T>);
 
@@ -453,6 +458,8 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       focusPrevRowIndex: makeGridAtom(internal_focusPrevRow, store),
 
       editActivePos: makeGridAtom(internal_editActivePosition, store),
+      editData: makeGridAtom(internal_editData, store),
+      editValidation: makeGridAtom(internal_editValidation, store),
     } satisfies InternalAtoms,
   });
 

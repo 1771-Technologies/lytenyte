@@ -1,5 +1,11 @@
 import type { FunctionType, InterfaceType, PropertyType, UnionType } from "../+types";
-import { ColumnProp, GridProp, RowIndexProp, RowNodeProp } from "./shared-properties";
+import {
+  ColumnProp,
+  ColumnSynonymProp,
+  GridProp,
+  RowIndexProp,
+  RowNodeProp,
+} from "./shared-properties";
 
 export const EditableFnParams: InterfaceType = {
   kind: "interface",
@@ -114,7 +120,20 @@ export const EditSetterParams: InterfaceType = {
   doc: { en: `` },
   tsDoc: ``,
   export: true,
-  properties: [GridProp, RowNodeProp, RowIndexProp, ColumnProp],
+  properties: [
+    GridProp,
+    RowNodeProp,
+    RowIndexProp,
+    ColumnProp,
+    {
+      kind: "property",
+      name: "data",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "any",
+    },
+  ],
 };
 
 export const EditSetterFn: FunctionType = {
@@ -191,7 +210,7 @@ export const EditCellMode: UnionType = {
   tsDoc: ``,
   doc: { en: `` },
   export: true,
-  types: ['"cell"', '"row"', '"readonly"'],
+  types: ['"cell"', '"readonly"'],
 };
 
 export const EditActivePosition: InterfaceType = {
@@ -212,12 +231,113 @@ export const EditBeginParams: InterfaceType = {
   properties: [
     {
       kind: "property",
-      name: "column",
+      name: "init",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: true,
+      value: "any",
+    },
+    ColumnSynonymProp,
+    RowIndexProp,
+  ],
+};
+
+export const EditUpdateParams: InterfaceType = {
+  kind: "interface",
+  name: "EditUpdateParams<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  properties: [
+    {
+      kind: "property",
+      name: "value",
       tsDoc: ``,
       doc: { en: `` },
       optional: false,
-      value: "string | number | Column<T>",
+      value: "any",
     },
+    ColumnSynonymProp,
     RowIndexProp,
+  ],
+};
+
+/**
+ * EDIT EVENTS
+ */
+
+export const EditDataProp: PropertyType = {
+  kind: "property",
+  name: "data",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "any",
+};
+
+export const OnEditBeginParams: InterfaceType = {
+  kind: "interface",
+  name: "OnEditBeginParams<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  properties: [
+    ColumnProp,
+    RowIndexProp,
+    {
+      kind: "property",
+      tsDoc: ``,
+      doc: { en: `` },
+      name: "preventDefault",
+      optional: false,
+      value: "() => void",
+    },
+  ],
+};
+
+export const OnEditEndParams: InterfaceType = {
+  kind: "interface",
+  name: "OnEditEndParams<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  properties: [ColumnProp, RowIndexProp, EditDataProp],
+};
+
+export const OnEditCancelParams: InterfaceType = {
+  kind: "interface",
+  name: "OnEditCancelParams<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  properties: [ColumnProp, RowIndexProp, EditDataProp],
+};
+
+export const OnEditErrorParams: InterfaceType = {
+  kind: "interface",
+  name: "OnEditErrorParams<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  properties: [
+    ColumnProp,
+    RowIndexProp,
+    EditDataProp,
+    {
+      kind: "property",
+      name: "validation",
+      doc: { en: `` },
+      tsDoc: ``,
+      optional: false,
+      value: "Record<string, any> | boolean",
+    },
+    {
+      kind: "property",
+      name: "error",
+      doc: { en: `` },
+      tsDoc: ``,
+      optional: true,
+      value: "unknown",
+    },
   ],
 };

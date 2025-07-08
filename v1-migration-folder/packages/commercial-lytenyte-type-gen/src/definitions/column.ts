@@ -228,7 +228,7 @@ const EditRenderProp: PropertyType = {
 
 const EditSetterProp: PropertyType = {
   kind: "property",
-  name: "editSetterProp",
+  name: "editSetter",
   tsDoc: ``,
   doc: { en: `` },
   optional: true,

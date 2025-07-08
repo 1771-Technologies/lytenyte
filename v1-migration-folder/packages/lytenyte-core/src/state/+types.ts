@@ -18,4 +18,6 @@ export interface InternalAtoms {
 
   // For Cell Editing
   readonly editActivePos: GridAtom<EditActivePosition<any> | null>;
+  readonly editData: GridAtom<any>;
+  readonly editValidation: GridAtom<Record<string, any> | boolean>;
 }

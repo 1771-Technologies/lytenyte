@@ -999,7 +999,7 @@ export interface ColumnBase<T> {
   /**
    *
    */
-  readonly editSetterProp?: EditSetterFn<T>;
+  readonly editSetter?: EditSetterFn<T>;
 }
 
 /**
@@ -1109,7 +1109,7 @@ export interface Column<T> {
   /**
    *
    */
-  readonly editSetterProp?: EditSetterFn<T>;
+  readonly editSetter?: EditSetterFn<T>;
 }
 
 /**
@@ -1284,6 +1284,11 @@ export interface RowDataSource<T> {
   /**
    *
    */
+  readonly rowUpdate: (params: RowUpdateParams) => void;
+
+  /**
+   *
+   */
   readonly rowExpand: (expansion: Record<string, boolean>) => void;
 }
 
@@ -1327,6 +1332,21 @@ export interface RowDataStore<T> {
    *
    */
   readonly rowInvalidateIndex: (row: number) => void;
+}
+
+/**
+ *
+ */
+export interface RowUpdateParams {
+  /**
+   *
+   */
+  readonly rowIndex: number;
+
+  /**
+   *
+   */
+  readonly data: any;
 }
 
 /**
@@ -1865,6 +1885,11 @@ export interface GridApi<T> {
    *
    */
   readonly editIsCellActive: (params: EditBeginParams<T>) => boolean;
+
+  /**
+   *
+   */
+  readonly editUpdate: (params: EditUpdateParams<T>) => void;
 }
 
 /**
@@ -2584,6 +2609,46 @@ export type RowGroupModelItem<T> = string | RowGroupField<T>;
 /**
  *
  */
+export type EditBegin<T> = (
+  /**
+   *
+   */
+  params: OnEditBeginParams<T>,
+) => void;
+
+/**
+ *
+ */
+export type EditCancel<T> = (
+  /**
+   *
+   */
+  params: OnEditCancelParams<T>,
+) => void;
+
+/**
+ *
+ */
+export type EditEnd<T> = (
+  /**
+   *
+   */
+  params: OnEditEndParams<T>,
+) => void;
+
+/**
+ *
+ */
+export type EditError<T> = (
+  /**
+   *
+   */
+  params: OnEditErrorParams<T>,
+) => void;
+
+/**
+ *
+ */
 export interface GridEvents<T> {
   /**
    *
@@ -2599,6 +2664,26 @@ export interface GridEvents<T> {
    *
    */
   readonly rowExpandError?: RowExpandErrorFn<T>;
+
+  /**
+   *
+   */
+  readonly editBegin?: EditBegin<T>;
+
+  /**
+   *
+   */
+  readonly editEnd?: EditEnd<T>;
+
+  /**
+   *
+   */
+  readonly editCancel?: EditCancel<T>;
+
+  /**
+   *
+   */
+  readonly editError?: EditError<T>;
 }
 
 /**
@@ -2770,7 +2855,12 @@ export interface EditBeginParams<T> {
   /**
    *
    */
-  readonly column: string | number | Column<T>;
+  readonly init?: any;
+
+  /**
+   *
+   */
+  readonly column: Column<T> | string | number;
 
   /**
    *
@@ -2781,7 +2871,7 @@ export interface EditBeginParams<T> {
 /**
  *
  */
-export type EditCellMode = "cell" | "row" | "readonly";
+export type EditCellMode = "cell" | "readonly";
 
 /**
  *
@@ -2911,6 +3001,31 @@ export interface EditSetterParams<T> {
    *
    */
   readonly column: Column<T>;
+
+  /**
+   *
+   */
+  readonly data: any;
+}
+
+/**
+ *
+ */
+export interface EditUpdateParams<T> {
+  /**
+   *
+   */
+  readonly value: any;
+
+  /**
+   *
+   */
+  readonly column: Column<T> | string | number;
+
+  /**
+   *
+   */
+  readonly rowIndex: number;
 }
 
 /**
@@ -2951,6 +3066,96 @@ export interface EditableFnParams<T> {
    *
    */
   readonly column: Column<T>;
+}
+
+/**
+ *
+ */
+export interface OnEditBeginParams<T> {
+  /**
+   *
+   */
+  readonly column: Column<T>;
+
+  /**
+   *
+   */
+  readonly rowIndex: number;
+
+  /**
+   *
+   */
+  readonly preventDefault: () => void;
+}
+
+/**
+ *
+ */
+export interface OnEditCancelParams<T> {
+  /**
+   *
+   */
+  readonly column: Column<T>;
+
+  /**
+   *
+   */
+  readonly rowIndex: number;
+
+  /**
+   *
+   */
+  readonly data: any;
+}
+
+/**
+ *
+ */
+export interface OnEditEndParams<T> {
+  /**
+   *
+   */
+  readonly column: Column<T>;
+
+  /**
+   *
+   */
+  readonly rowIndex: number;
+
+  /**
+   *
+   */
+  readonly data: any;
+}
+
+/**
+ *
+ */
+export interface OnEditErrorParams<T> {
+  /**
+   *
+   */
+  readonly column: Column<T>;
+
+  /**
+   *
+   */
+  readonly rowIndex: number;
+
+  /**
+   *
+   */
+  readonly data: any;
+
+  /**
+   *
+   */
+  readonly validation: Record<string, any> | boolean;
+
+  /**
+   *
+   */
+  readonly error?: unknown;
 }
 
 /**

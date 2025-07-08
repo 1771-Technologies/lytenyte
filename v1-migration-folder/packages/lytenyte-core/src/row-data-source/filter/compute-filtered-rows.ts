@@ -6,11 +6,11 @@ import {
   getNumberFilterSettings,
   getStringFilterSettings,
 } from "@1771technologies/lytenyte-shared";
-import type { FilterModelItem, Grid } from "../../+types";
+import type { FilterModelItem, Grid, RowLeaf } from "../../+types";
 import type { FilterWithSettings } from "./+types";
 
 export function computeFilteredRows<T>(
-  rows: T[],
+  rows: RowLeaf<T>[],
   grid: Grid<T> | null,
   filterModel: FilterModelItem<T>[],
 ) {
@@ -18,11 +18,11 @@ export function computeFilteredRows<T>(
 
   const filters = filterModel.map(createFilter);
 
-  const filtered: T[] = [];
+  const filtered: RowLeaf<T>[] = [];
   for (let r = 0; r < rows.length; r++) {
     const row = rows[r];
 
-    if (filters.every((filter) => evaluateFilter(row, grid, filter))) filtered.push(row);
+    if (filters.every((filter) => evaluateFilter(row.data, grid, filter))) filtered.push(row);
   }
 
   return filtered;

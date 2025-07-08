@@ -6,7 +6,7 @@ import { Root } from "../root/root";
 import { RowsContainer } from "../rows/rows-container";
 import { Viewport } from "../viewport/viewport";
 import { useLyteNyte } from "../state/use-lytenyte";
-import { useId } from "react";
+import { useEffect, useId } from "react";
 import { HeaderCell } from "../header/header-cell";
 import type { Column } from "../+types";
 import { HeaderGroupCell } from "../header/header-group-cell";
@@ -57,12 +57,22 @@ function Component({ data = bankData }: { data?: any[] }) {
 
   const view = g.view.useValue();
 
+  useEffect(() => {
+    setTimeout(() => {
+      g.api.editUpdate({ column: 0, rowIndex: 0, value: "Lee" });
+    }, 100);
+  }, [g.api]);
+
   return (
     <div>
       <div>
         <button onClick={() => g.state.rtl.set((prev) => !prev)}>
           RTL: {g.state.rtl.get() ? "Yes" : "No"}
         </button>
+        <button onClick={() => g.state.editClickActivator.set("dbl-click")}>
+          Double Click Edit
+        </button>
+        <button onClick={() => g.state.editClickActivator.set("single")}>Single Click Edit</button>
         <button
           onClick={() => {
             g.api.focusCell({ row: 2, column: 2 });
@@ -95,19 +105,7 @@ function Component({ data = bankData }: { data?: any[] }) {
 
       <div style={{ width: "100%", height: "90vh", border: "1px solid black" }}>
         <Root grid={g}>
-          <Viewport
-            onKeyDown={(e) => {
-              if (e.key === "h") {
-                g.api.focusCell("prev");
-              } else if (e.key === "l") {
-                g.api.focusCell("next");
-              } else if (e.key === "j") {
-                g.api.focusCell("down");
-              } else if (e.key === "k") {
-                g.api.focusCell("up");
-              }
-            }}
-          >
+          <Viewport>
             <Header>
               {view.header.layout.map((row, i) => {
                 return (

@@ -209,6 +209,15 @@ const EditIsCellActive: PropertyType = {
   value: `(params: EditBeginParams<T>) => boolean`,
 };
 
+const EditUpdate: PropertyType = {
+  kind: "property",
+  name: "editUpdate",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: `(params: EditUpdateParams<T>) => void`,
+};
+
 export const GridApi: InterfaceType = {
   kind: "interface",
   name: "GridApi<T>",
@@ -238,5 +247,6 @@ export const GridApi: InterfaceType = {
     EditBegin,
     EditEnd,
     EditIsCellActive,
+    EditUpdate,
   ],
 };
