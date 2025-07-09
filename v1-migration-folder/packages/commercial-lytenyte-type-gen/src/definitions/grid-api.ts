@@ -1,10 +1,28 @@
-import type { InterfaceType, PropertyType } from "../+types";
+import type { InterfaceType, PropertyType, UnionType } from "../+types";
 
-const FieldForColumn: PropertyType = {
+const ColumnField: PropertyType = {
   kind: "property",
-  name: "fieldForColumn",
+  name: "columnField",
   tsDoc: ``,
   value: "(columnOrId: string | Column<T>, row: FieldDataParam<T>) => unknown",
+  doc: { en: `` },
+  optional: false,
+};
+
+const ColumnFromIndex: PropertyType = {
+  kind: "property",
+  name: "columnFromIndex",
+  value: "(columnIndex: number) => Column<T> | null",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+};
+
+const ColumnIndex: PropertyType = {
+  kind: "property",
+  name: "columnIndex",
+  value: "(columnOrId: string | Column<T>) => number",
+  tsDoc: ``,
   doc: { en: `` },
   optional: false,
 };
@@ -139,6 +157,67 @@ const ScrollIntoView: PropertyType = {
   value: "(options: ScrollIntoViewOptions<T>) => void",
 };
 
+export const FocusCellParams: UnionType = {
+  kind: "union",
+  doc: { en: `` },
+  export: true,
+  name: "FocusCellParams<T>",
+  tsDoc: ``,
+  types: [
+    "{ row: number, column: string | number | Column<T> }",
+    "PositionHeaderCell",
+    'Omit<PositionHeaderGroupCell, "columnStartIndex" | "columnEndIndex">',
+    '"next"',
+    '"prev"',
+    '"up"',
+    '"down"',
+  ],
+};
+
+const FocusCell: PropertyType = {
+  kind: "property",
+  name: "focusCell",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: `(position: FocusCellParams<T>) => void`,
+};
+
+const EditBegin: PropertyType = {
+  kind: "property",
+  name: "editBegin",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: `(params: EditBeginParams<T>) => void`,
+};
+const EditEnd: PropertyType = {
+  kind: "property",
+  name: "editEnd",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: `(cancel?: boolean) => void`,
+};
+
+const EditIsCellActive: PropertyType = {
+  kind: "property",
+  name: "editIsCellActive",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: `(params: EditBeginParams<T>) => boolean`,
+};
+
+const EditUpdate: PropertyType = {
+  kind: "property",
+  name: "editUpdate",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: `(params: EditUpdateParams<T>) => void`,
+};
+
 export const GridApi: InterfaceType = {
   kind: "interface",
   name: "GridApi<T>",
@@ -146,7 +225,10 @@ export const GridApi: InterfaceType = {
   doc: { en: `` },
   export: true,
   properties: [
-    FieldForColumn,
+    ColumnField,
+    ColumnFromIndex,
+    ColumnIndex,
+
     SortForColumn,
     RowIsLeaf,
     RowIsGroup,
@@ -160,5 +242,11 @@ export const GridApi: InterfaceType = {
     EventFire,
 
     ScrollIntoView,
+
+    FocusCell,
+    EditBegin,
+    EditEnd,
+    EditIsCellActive,
+    EditUpdate,
   ],
 };

@@ -1,13 +1,13 @@
 import { isFullWidthMap, type LayoutMap, type SpanLayout } from "@1771technologies/lytenyte-shared";
 import type {
   Column,
+  PositionUnion,
   RowCellLayout,
   RowDataStore,
   RowLayout,
   RowSectionLayouts,
 } from "../../../+types";
 import { getFocusCriteria } from "./get-focus-criteria";
-import type { PositionUnion } from "../../+types";
 
 interface MakeRowViewArgs<T> {
   layout: SpanLayout;

@@ -1,9 +1,4 @@
-import type {
-  LayoutMap,
-  RowPredicate,
-  SpanFn,
-  SpanLayout,
-} from "../../../lytenyte-shared/src/+types.layout.js";
+import type { LayoutMap, RowPredicate, SpanFn, SpanLayout } from "../+types.non-gen.js";
 import { applyLayoutForRows } from "./apply-layout-for-rows.js";
 import { areLayoutsEqual } from "./are-layouts-equal.js";
 

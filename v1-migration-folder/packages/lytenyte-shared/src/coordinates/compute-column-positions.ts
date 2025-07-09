@@ -4,7 +4,7 @@ import {
   DEFAULT_COLUMN_WIDTH_MIN,
 } from "../+constants.js";
 import { makeUint32PositionArray } from "./make-uint32-position-array.js";
-import type { ColumnWidthItem } from "../+types.layout.js";
+import type { ColumnWidthItem } from "../+types.non-gen.js";
 import { clamp } from "@1771technologies/lytenyte-js-utils";
 
 type ComputedWidth = number;

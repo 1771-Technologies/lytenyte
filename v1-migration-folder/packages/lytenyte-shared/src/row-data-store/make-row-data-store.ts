@@ -5,7 +5,7 @@ import type {
   RowNode,
 } from "../+types";
 import { atomFamily } from "@1771technologies/atom/utils";
-import { atom, useAtomValue, type createStore } from "@1771technologies/atom";
+import { atom, useAtomValue, type createStore, type PrimitiveAtom } from "@1771technologies/atom";
 import { makeGridAtom } from "../grid-atom/make-grid-atom";
 
 export type Store = ReturnType<typeof createStore>;
@@ -24,7 +24,6 @@ export function makeRowDataStore<T>(
   const family = atomFamily((i: number) => {
     const row = rowByIndex.get()(i);
     const rowAtom = atom(row);
-
     return rowAtom;
   });
   family.setShouldRemove((time) => {
@@ -33,8 +32,13 @@ export function makeRowDataStore<T>(
   });
 
   const watchAtoms = new Map<number, GridAtomReadonlyUnwatchable<RowNode<T> | null>>();
+  const rTimeSnap = new Map<number, PrimitiveAtom<number>>();
+
   const rowForIndex = (r: number): GridAtomReadonlyUnwatchable<RowNode<T> | null> => {
     if (watchAtoms.has(r)) return watchAtoms.get(r)!;
+
+    const rAtom = atom(0);
+    rTimeSnap.set(r, rAtom);
 
     const gridAtom = {
       get: () => {
@@ -42,8 +46,10 @@ export function makeRowDataStore<T>(
         return store.get(row);
       },
       useValue: () => {
+        useAtomValue(rTimeSnap.get(r)!, { store });
+
         const row = family(r);
-        return useAtomValue(row);
+        return useAtomValue(row, { store: store });
       },
     };
 
@@ -51,7 +57,11 @@ export function makeRowDataStore<T>(
     return gridAtom;
   };
   const rowInvalidateIndex = (r: number) => {
+    const rSnap = rTimeSnap.get(r);
+    if (!rSnap) return;
     family.remove(r);
+
+    store.set(rSnap, (prev) => prev + 1);
   };
 
   return {

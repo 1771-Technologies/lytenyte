@@ -1,5 +1,5 @@
 import type { SpanLayout } from "@1771technologies/lytenyte-shared";
-import type { PositionUnion } from "../../+types";
+import type { PositionUnion } from "../../../+types";
 
 interface FocusLayoutCriteria {
   readonly kind: "cell" | "full-width";
@@ -55,7 +55,7 @@ export function getFocusCriteria(n: SpanLayout, f: PositionUnion | null): FocusL
     };
   }
   const rowIndex = f.root?.rowIndex ?? f.rowIndex;
-  const colIndex = f.root?.columnIndex ?? f.columnIndex;
+  const colIndex = f.root?.colIndex ?? f.colIndex;
 
   const isTop = rowIndex < n.rowTopEnd;
   const isBot = rowIndex >= n.rowBotStart;
@@ -78,6 +78,6 @@ export function getFocusCriteria(n: SpanLayout, f: PositionUnion | null): FocusL
     isColCenterAfter,
     isColCenterBefore,
     rowIndex: f.rowIndex,
-    colIndex: f.columnIndex,
+    colIndex: f.colIndex,
   };
 }

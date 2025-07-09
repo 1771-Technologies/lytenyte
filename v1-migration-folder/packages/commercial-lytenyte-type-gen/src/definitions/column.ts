@@ -208,6 +208,42 @@ const ColumnHintsProp: PropertyType = {
   value: "ColumnUIHints",
 };
 
+const EditableProp: PropertyType = {
+  kind: "property",
+  name: "editable",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "Editable<T>",
+};
+
+const EditRenderProp: PropertyType = {
+  kind: "property",
+  name: "editRenderer",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "EditRenderer<T>",
+};
+
+const EditSetterProp: PropertyType = {
+  kind: "property",
+  name: "editSetter",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "EditSetterFn<T>",
+};
+
+const ColumnType: PropertyType = {
+  kind: "property",
+  name: "type",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: '"string" | "number" | "date" | "datetime" | ({} & string)',
+};
+
 export const ColumnCore: InterfaceType = {
   kind: "interface",
   export: true,
@@ -220,6 +256,7 @@ export const ColumnCore: InterfaceType = {
   properties: [
     Id,
     Name,
+    ColumnType,
     Hide,
     Width,
     WidthMax,
@@ -239,6 +276,10 @@ export const ColumnCore: InterfaceType = {
     CellRenderer,
 
     ColumnHintsProp,
+
+    EditableProp,
+    EditRenderProp,
+    EditSetterProp,
   ],
 };
 
@@ -258,6 +299,10 @@ export const ColumnBaseCore: InterfaceType = {
     FloatingRenderer,
     CellRenderer,
     ColumnHintsProp,
+
+    EditableProp,
+    EditRenderProp,
+    EditSetterProp,
   ],
   tsDoc: ``,
   doc: { en: `` },

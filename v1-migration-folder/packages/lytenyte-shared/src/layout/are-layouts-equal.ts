@@ -1,4 +1,4 @@
-import type { SpanLayout } from "../../../lytenyte-shared/src/+types.layout.js";
+import type { SpanLayout } from "../+types.non-gen.js";
 
 /**
  * Compares two SpanLayout objects for equality.

@@ -79,3 +79,12 @@ export const RowPinProp: PropertyType = {
   optional: false,
   value: "RowPin",
 };
+
+export const ColumnSynonymProp: PropertyType = {
+  kind: "property",
+  name: "column",
+  value: "Column<T> | string | number",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+};

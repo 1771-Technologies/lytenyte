@@ -1,4 +1,24 @@
 import type { InterfaceType } from "../+types";
+import { RowIndexProp } from "./shared-properties";
+
+export const RowUpdateParams: InterfaceType = {
+  kind: "interface",
+  name: "RowUpdateParams",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  properties: [
+    RowIndexProp,
+    {
+      kind: "property",
+      name: "data",
+      doc: { en: `` },
+      tsDoc: ``,
+      optional: false,
+      value: "any",
+    },
+  ],
+};
 
 export const RowDataStore: InterfaceType = {
   kind: "interface",
@@ -99,8 +119,16 @@ export const RowDataSourceCore: InterfaceType = {
     },
     {
       kind: "property",
+      name: "rowUpdate",
+      value: "(params: RowUpdateParams) => void",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+    },
+    {
+      kind: "property",
       name: "rowExpand",
-      value: "(expansion: Record<string, boolean>) => Promise<void> | void",
+      value: "(expansion: Record<string, boolean>) => void",
       doc: { en: `` },
       tsDoc: ``,
       optional: false,

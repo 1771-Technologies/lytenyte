@@ -21,12 +21,12 @@ export function columnScrollIntoViewValue({
   if (c < startCount || c >= startCount + centerCount) return;
 
   const startWidth = columnPositions[startCount];
-  const endWidth = sizeFromCoord(startCount + centerCount, columnPositions, endCount);
+  let endWidth = sizeFromCoord(startCount + centerCount, columnPositions, endCount);
+  if (Number.isNaN(endWidth)) endWidth = 0;
 
   const scrollX = Math.abs(viewport.scrollLeft);
 
   const start = scrollX + startWidth;
-  const end = start + (viewport.clientWidth - startWidth - endWidth);
 
   const colWidth = sizeFromCoord(c, columnPositions);
   const position = columnPositions[c];
@@ -36,8 +36,6 @@ export function columnScrollIntoViewValue({
 
   // We have some overlap so we move just enough for it to be in view
   if (posStart < start && posEnd > start) return position - colWidth;
-
-  if (position + colWidth > start && position + colWidth < end) return;
 
   if (position + colWidth <= start) {
     return position - startWidth;

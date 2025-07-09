@@ -302,6 +302,39 @@ const HeaderCellRenderers: PropertyType = {
   optional: true,
   value: "Record<string, HeaderCellRendererFn<T>>",
 };
+const EditRenderers: PropertyType = {
+  kind: "property",
+  name: "editRenderers",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "Record<string, EditRendererFn<T>>",
+};
+
+const EditRowValidatorFn: PropertyType = {
+  kind: "property",
+  name: "editRowValidatorFn",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "EditRowValidatorFn<T>",
+};
+const EditClickActivator: PropertyType = {
+  kind: "property",
+  name: "editClickActivator",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "EditClickActivator",
+};
+const EditCellMode: PropertyType = {
+  kind: "property",
+  name: "editCellMode",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "EditCellMode",
+};
 
 export const UseLyteNytePropsCore: InterfaceType = {
   kind: "interface",
@@ -351,5 +384,10 @@ export const UseLyteNytePropsCore: InterfaceType = {
     FloatingRowEnabled,
     FloatingCellRenderers,
     HeaderCellRenderers,
+
+    EditRenderers,
+    EditRowValidatorFn,
+    EditClickActivator,
+    EditCellMode,
   ],
 };

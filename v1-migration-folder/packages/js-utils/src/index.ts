@@ -8,5 +8,6 @@ export { hasUpperCaseLetter } from "./has-uppercase-letter.js";
 export { isFunction } from "./is-function.js";
 export { itemsWithIdToMap } from "./items-with-id-to-map.js";
 export { rangesOverlap } from "./ranges-overlap.js";
+export { runWithBackoff } from "./run-with-backoff.js";
 export { sleep } from "./sleep.js";
 export { smartStringIncludes } from "./smart-string-includes.js";

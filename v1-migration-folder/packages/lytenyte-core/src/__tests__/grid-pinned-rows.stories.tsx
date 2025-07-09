@@ -49,6 +49,7 @@ function Component({ data = bankData }: { data?: any[] }) {
     data: d,
     topData: pt,
     bottomData: bt,
+    reflectData: true,
   });
 
   const g = useLyteNyte({

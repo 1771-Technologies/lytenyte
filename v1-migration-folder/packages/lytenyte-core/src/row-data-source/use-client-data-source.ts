@@ -8,6 +8,7 @@ import type {
   FieldPath,
   FieldDataParam,
   AggModelFn,
+  RowUpdateParams,
 } from "../+types";
 import {
   type ClientRowDataSourceParams,
@@ -45,6 +46,19 @@ export function makeClientDataSource<T>(
   const topData = atom(p.topData ?? []);
   const bottomData = atom(p.bottomData ?? []);
 
+  const centerNodes = atom((g) => {
+    const nodes: RowLeaf<T>[] = [];
+    const d = g(data);
+    for (let i = 0; i < d.length; i++) {
+      nodes.push({
+        id: "",
+        kind: "leaf",
+        data: d[i],
+      });
+    }
+    return nodes;
+  });
+
   const topNodes = atom((g) => {
     return g(topData).map<RowLeaf<T>>((c) => ({ data: c, id: `top-${c}`, kind: "leaf" }));
   });
@@ -57,43 +71,70 @@ export function makeClientDataSource<T>(
     return combined;
   });
 
-  const filterModel = atom<FilterModelItem<T>[]>([]);
-  const rowGroupModel = atom<RowGroupModelItem<T>[]>([]);
-  const rowGroupExpansions = atom<{ [rowId: string]: boolean | undefined }>({});
-  const aggModel = atom<Record<string, { fn: AggModelFn<T> }>>({});
+  const models = atom<{
+    filter: FilterModelItem<T>[];
+    group: RowGroupModelItem<T>[];
+    groupExpansions: { [rowId: string]: boolean | undefined };
+    agg: Record<string, { fn: AggModelFn<T> }>;
+    sort: SortModelItem<T>[];
+  }>({
+    sort: [],
+    filter: [],
+    agg: {},
+    group: [],
+    groupExpansions: {},
+  });
+
+  const sortModel = atom<SortModelItem<T>[]>((g) => g(models).sort);
+  const filterModel = atom<FilterModelItem<T>[]>((g) => g(models).filter);
+  const rowGroupModel = atom<RowGroupModelItem<T>[]>((g) => g(models).group);
+  const groupExpansions = atom<{ [rowId: string]: boolean | undefined }>(
+    (g) => g(models).groupExpansions,
+  );
+  const aggModel = atom<Record<string, { fn: AggModelFn<T> }>>((g) => g(models).agg);
 
   const grid$ = atom<Grid<T> | null>(null);
-  const tree = atom<ClientData<T>>((g) => {
+  const snapshot = atom<number>(0);
+  const tree = atom<ClientData<RowLeaf<T>>>((g) => {
+    g(snapshot);
+
     const grid = g(grid$);
-    const rows = g(data);
-    const filters = g(filterModel);
+
+    const rows = g(centerNodes);
+    const filtered = computeFilteredRows(rows, grid, g(filterModel));
+
     const rowGroups = g(rowGroupModel)
       .map((c) => {
         if (typeof c === "string")
-          return (d: T) => grid!.api.fieldForColumn(c, { kind: "leaf", data: d });
+          return (r: RowLeaf<T>) => grid!.api.columnField(c, { kind: "leaf", data: r.data });
 
         if (typeof c.field === "string" || typeof c.field === "number")
-          return (d: T) => (d as any)[c.field as any];
+          return (r: RowLeaf<T>) => (r.data as any)[c.field as any];
 
         if (typeof c.field === "function")
-          return (d: T) => (c.field as FieldRowGroupFn<T>)({ data: d, grid: grid! });
+          return (r: RowLeaf<T>) => (c.field as FieldRowGroupFn<T>)({ data: r.data, grid: grid! });
 
-        return (d: T) => get(d, (c.field as FieldPath).path as string);
+        return (r: RowLeaf<T>) => get(r.data, (c.field as FieldPath).path as string);
       })
       .map((c) => ({ fn: c }));
-
-    const filtered = computeFilteredRows(rows, grid, filters);
 
     const rowAggModel = Object.entries(g(aggModel)).map(([name, agg]) => {
       if (typeof agg.fn === "function") {
         const fn = agg.fn;
-        return { name, fn: (data: T[]) => fn(data, grid!) };
+        return {
+          name,
+          fn: (rows: RowLeaf<T>[]) =>
+            fn(
+              rows.map((c) => c.data),
+              grid!,
+            ),
+        };
       }
 
       const key = agg.fn;
-      const fn = (data: T[]) => {
-        const fieldData = data.map((d) =>
-          grid?.api.fieldForColumn(name, { kind: "leaf", data: d }),
+      const fn = (data: RowLeaf<T>[]) => {
+        const fieldData = data.map((r) =>
+          grid?.api.columnField(name, { kind: "leaf", data: r.data }),
         );
         return builtIns[key as keyof typeof builtIns](fieldData as any);
       };
@@ -108,36 +149,35 @@ export function makeClientDataSource<T>(
     });
   });
 
-  const sortModel = atom<SortModelItem<T>[]>([]);
   const sortComparator = atom((g) => {
     const model = g(sortModel);
     const grid = g(grid$);
     if (!model.length || !grid) return () => 0;
 
-    const comparator = (l: TreeNode<T>, r: TreeNode<T>) => {
+    const comparator = (l: TreeNode<RowLeaf<T>>, r: TreeNode<RowLeaf<T>>) => {
       let res = 0;
       for (const sortSpec of model) {
         const sort = sortSpec.sort;
         const columnId = sortSpec.columnId;
 
         const ld: FieldDataParam<T> =
-          l.kind === 2 ? { kind: "branch", data: l.data } : { kind: "leaf", data: l.data };
+          l.kind === 2 ? { kind: "branch", data: l.data } : { kind: "leaf", data: l.data.data };
         const rd: FieldDataParam<T> =
-          r.kind === 2 ? { kind: "branch", data: r.data } : { kind: "leaf", data: r.data };
+          r.kind === 2 ? { kind: "branch", data: r.data } : { kind: "leaf", data: r.data.data };
 
         if (sort.kind === "custom") {
           res = sort.comparator(ld, rd, sort.options ?? {});
         } else if (sort.kind === "number") {
-          const left = grid.api.fieldForColumn(columnId!, ld);
-          const right = grid.api.fieldForColumn(columnId!, rd);
+          const left = grid.api.columnField(columnId!, ld);
+          const right = grid.api.columnField(columnId!, rd);
           res = numberComparator(left as number, right as number, sort.options ?? {});
         } else if (sort.kind === "date") {
-          const left = grid.api.fieldForColumn(columnId!, ld);
-          const right = grid.api.fieldForColumn(columnId!, rd);
+          const left = grid.api.columnField(columnId!, ld);
+          const right = grid.api.columnField(columnId!, rd);
           res = dateComparator(left as string, right as string, sort.options ?? {});
         } else if (sort.kind === "string") {
-          const left = grid.api.fieldForColumn(columnId!, ld);
-          const right = grid.api.fieldForColumn(columnId!, rd);
+          const left = grid.api.columnField(columnId!, ld);
+          const right = grid.api.columnField(columnId!, rd);
           res = stringComparator(left as string, right as string, sort.options ?? {});
         } else {
           res = 0;
@@ -153,23 +193,23 @@ export function makeClientDataSource<T>(
     return comparator;
   });
 
+  const initialized = atom(false);
   const flat = atom((g) => {
+    if (!g(initialized)) return { flat: [], idMap: new Map() };
+
     const idMap = new Map<string, RowNode<T>>();
     const flattened: RowNode<T>[] = [];
     const comparator = g(sortComparator);
 
-    const expansions = g(rowGroupExpansions);
+    const expansions = g(groupExpansions);
     const defaultExpansion = g(grid$)?.state.rowGroupDefaultExpansion.get() ?? false;
 
     traverse(
       g(tree).root,
       (node) => {
         if (node.kind === 1) {
-          flattened.push({
-            kind: "leaf",
-            data: node.data,
-            id: node.id,
-          });
+          (node.data as any).id = node.id;
+          flattened.push(node.data);
         } else {
           flattened.push({
             kind: "branch",
@@ -240,48 +280,55 @@ export function makeClientDataSource<T>(
       }),
     );
 
+    const sort = grid.state.sortModel.get();
+    const filter = grid.state.filterModel.get();
+    const group = grid.state.rowGroupModel.get();
+    const groupExpansions = grid.state.rowGroupExpansions.get();
+    const agg = grid.state.aggModel.get();
+
+    rdsStore.set(models, { agg, filter, group, groupExpansions, sort });
+    rdsStore.set(initialized, true);
+
     // Sort model monitoring
-    rdsStore.set(sortModel, grid.state.sortModel.get());
     cleanup.push(
       grid.state.sortModel.watch(() => {
         grid.state.rowDataStore.rowClearCache();
-        rdsStore.set(sortModel, grid.state.sortModel.get());
+        rdsStore.set(models, (prev) => ({ ...prev, sort: grid.state.sortModel.get() }));
       }),
     );
 
     // Filter model monitoring
-    rdsStore.set(filterModel, grid.state.filterModel.get());
     cleanup.push(
       grid.state.filterModel.watch(() => {
         grid.state.rowDataStore.rowClearCache();
-        rdsStore.set(filterModel, grid.state.filterModel.get());
+        rdsStore.set(models, (prev) => ({ ...prev, filter: grid.state.filterModel.get() }));
       }),
     );
 
     // Row group model monitoring
-    rdsStore.set(rowGroupModel, grid.state.rowGroupModel.get());
     cleanup.push(
       grid.state.rowGroupModel.watch(() => {
         grid.state.rowDataStore.rowClearCache();
-        rdsStore.set(rowGroupModel, grid.state.rowGroupModel.get());
+        rdsStore.set(models, (prev) => ({ ...prev, group: grid.state.rowGroupModel.get() }));
       }),
     );
 
     // Row group expansions monitoring
-    rdsStore.set(rowGroupExpansions, grid.state.rowGroupExpansions.get());
     cleanup.push(
       grid.state.rowGroupExpansions.watch(() => {
         grid.state.rowDataStore.rowClearCache();
-        rdsStore.set(rowGroupExpansions, grid.state.rowGroupExpansions.get());
+        rdsStore.set(models, (prev) => ({
+          ...prev,
+          groupExpansions: grid.state.rowGroupExpansions.get(),
+        }));
       }),
     );
 
     // Agg model monitoring
-    rdsStore.set(aggModel, grid.state.aggModel.get());
     cleanup.push(
       grid.state.aggModel.watch(() => {
         grid.state.rowDataStore.rowClearCache();
-        rdsStore.set(aggModel, grid.state.aggModel.get());
+        rdsStore.set(models, (prev) => ({ ...prev, agg: grid.state.aggModel.get() }));
       }),
     );
   };
@@ -309,11 +356,27 @@ export function makeClientDataSource<T>(
     return null;
   };
 
+  const rowUpdate = ({ rowIndex, data }: RowUpdateParams) => {
+    const grid = rdsStore.get(grid$)!;
+    const row = rowByIndex(rowIndex);
+    if (!row || !grid) {
+      console.error(`Failed to find the row at index ${rowIndex} which is being updated.`);
+      return;
+    }
+
+    (row as any).data = data;
+
+    grid.state.rowDataStore.rowInvalidateIndex(rowIndex);
+
+    rdsStore.set(snapshot, (prev) => prev + 1);
+  };
+
   return [
     {
       init,
       rowById,
       rowByIndex,
+      rowUpdate,
       rowExpand: (expansions) => {
         const grid = rdsStore.get(grid$);
         if (!grid) return;
@@ -336,13 +399,15 @@ export function useClientRowDataSource<T>(p: ClientRowDataSourceParams<T>) {
   if (!ds.current) [ds.current, dataAtomRef.current] = makeClientDataSource(p);
 
   const da = dataAtomRef.current;
-  // Need to queue the microtask since it we cannot update state during render.
-  if (p.data !== da.center.get()) queueMicrotask(() => da.center.set(p.data));
-  if (!equal(p.topData ?? [], da.top.get())) {
-    queueMicrotask(() => da.top.set(p.topData ?? []));
+  if (p.reflectData) {
+    // Need to queue the microtask since it we cannot update state during render.
+    if (p.data !== da.center.get()) queueMicrotask(() => da.center.set(p.data));
+    if (!equal(p.topData ?? [], da.top.get())) {
+      queueMicrotask(() => da.top.set(p.topData ?? []));
+    }
+    if (!equal(p.bottomData ?? [], da.bottom.get()))
+      queueMicrotask(() => da.bottom.set(p.bottomData ?? []));
   }
-  if (!equal(p.bottomData ?? [], da.bottom.get()))
-    queueMicrotask(() => da.bottom.set(p.bottomData ?? []));
 
   return ds.current;
 }

@@ -18,6 +18,7 @@ export function Root<T = any>({ grid, children, ...events }: PropsWithChildren<R
     grid.state.viewportHeightInner.set(element?.clientHeight ?? 0);
   });
 
+  // Add event listeners in the standard react way
   useEffect(() => {
     const ev = Object.entries(events).map(([onName, fn]) => {
       if (!onName.startsWith("on")) return;
@@ -33,6 +34,7 @@ export function Root<T = any>({ grid, children, ...events }: PropsWithChildren<R
     onChange: onViewportChange,
   });
 
+  // Add css variables so that we can avoid re-renders
   useEffect(() => {
     return grid.state.widthTotal.watch(() => {
       const vp = grid.state.viewport.get();
@@ -43,6 +45,7 @@ export function Root<T = any>({ grid, children, ...events }: PropsWithChildren<R
     });
   }, [grid]);
 
+  // Listen to size changes of the window
   useLayoutEffect(() => {
     if (!element) return;
 
@@ -68,6 +71,7 @@ export function Root<T = any>({ grid, children, ...events }: PropsWithChildren<R
     grid.state.viewportWidthOuter,
   ]);
 
+  // Handle scroll events for viewport updates
   const internal = (grid as Grid<any> & { internal: InternalAtoms }).internal;
   useEffect(() => {
     if (!element) return;
@@ -84,6 +88,21 @@ export function Root<T = any>({ grid, children, ...events }: PropsWithChildren<R
 
     return () => controller.abort();
   }, [element, internal.xScroll, internal.yScroll]);
+
+  useEffect(() => {
+    return internal.focusActive.watch(() => {
+      const editActive = internal.editActivePos.get();
+      if (!editActive) return;
+
+      const focus = internal.focusActive.get();
+      if (focus?.kind !== "cell") {
+        grid.api.editEnd();
+      } else {
+        if (grid.api.editIsCellActive({ rowIndex: focus.rowIndex, column: focus.colIndex })) return;
+        grid.api.editEnd();
+      }
+    });
+  }, [grid.api, internal.editActivePos, internal.focusActive]);
 
   const value = useMemo<GridRootContext>(() => {
     return {

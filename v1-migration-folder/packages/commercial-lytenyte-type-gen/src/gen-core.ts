@@ -23,6 +23,8 @@ import * as Prelude from "./definitions/prelude.js";
 import * as RowGroup from "./definitions/row-group.js";
 import * as Events from "./definitions/events.js";
 import * as Header from "./definitions/header.js";
+import * as Editable from "./definitions/cell-edit.js";
+import * as Navigation from "./definitions/navigation.js";
 
 const typeModules = [
   ...Object.values(UseLng),
@@ -45,6 +47,8 @@ const typeModules = [
   ...Object.values(RowGroup),
   ...Object.values(Events),
   ...Object.values(Header),
+  ...Object.values(Editable),
+  ...Object.values(Navigation),
 ] as GenTypes[];
 
 const types = typeModules

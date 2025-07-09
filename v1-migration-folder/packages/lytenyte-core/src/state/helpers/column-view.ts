@@ -11,7 +11,7 @@ import type { Column, ColumnBase } from "../../+types";
 
 export interface MakeColumnViewArgs<T> {
   readonly columns: Column<T>[];
-  readonly base: ColumnBase;
+  readonly base: ColumnBase<T>;
 
   readonly groupExpansions: Record<string, boolean>;
   readonly groupJoinDelimiter: string;
