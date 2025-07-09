@@ -172,10 +172,7 @@ export interface UseLyteNyteProps<T> {
   /**
    *
    */
-  readonly floatingCellRenderers?: Record<
-    string,
-    HeaderFloatingCellRendererFn<T>
-  >;
+  readonly floatingCellRenderers?: Record<string, HeaderFloatingCellRendererFn<T>>;
 
   /**
    *
@@ -201,6 +198,36 @@ export interface UseLyteNyteProps<T> {
    *
    */
   readonly editCellMode?: EditCellMode;
+
+  /**
+   *
+   */
+  readonly columnMarker?: ColumnMarker<T>;
+
+  /**
+   *
+   */
+  readonly rowDetailEnabled?: boolean;
+
+  /**
+   *
+   */
+  readonly rowDetailMarker?: boolean;
+
+  /**
+   *
+   */
+  readonly rowDetailRenderer?: RowDetailRendererFn<T>;
+
+  /**
+   *
+   */
+  readonly rowDetailHeight?: RowDetailHeight;
+
+  /**
+   *
+   */
+  readonly rowDetailExpansions?: Set<string>;
 }
 
 /**
@@ -437,16 +464,12 @@ export interface GridState<T> {
   /**
    *
    */
-  readonly floatingCellRenderers: GridAtom<
-    Record<string, HeaderFloatingCellRendererFn<T>>
-  >;
+  readonly floatingCellRenderers: GridAtom<Record<string, HeaderFloatingCellRendererFn<T>>>;
 
   /**
    *
    */
-  readonly headerCellRenderers: GridAtom<
-    Record<string, HeaderCellRendererFn<T>>
-  >;
+  readonly headerCellRenderers: GridAtom<Record<string, HeaderCellRendererFn<T>>>;
 
   /**
    *
@@ -472,6 +495,36 @@ export interface GridState<T> {
    *
    */
   readonly editActivePosition: GridAtomReadonly<EditActivePosition<T> | null>;
+
+  /**
+   *
+   */
+  readonly columnMarker: GridAtom<ColumnMarker<T>>;
+
+  /**
+   *
+   */
+  readonly rowDetailEnabled: GridAtom<boolean>;
+
+  /**
+   *
+   */
+  readonly rowDetailMarker: GridAtom<boolean>;
+
+  /**
+   *
+   */
+  readonly rowDetailRenderer: GridAtom<{ fn: RowDetailRendererFn<T> }>;
+
+  /**
+   *
+   */
+  readonly rowDetailHeight: GridAtom<RowDetailHeight>;
+
+  /**
+   *
+   */
+  readonly rowDetailExpansions: GridAtom<Set<string>>;
 }
 
 /**
@@ -1115,6 +1168,26 @@ export interface Column<T> {
 /**
  *
  */
+export interface ColumnMarker<T> {
+  /**
+   *
+   */
+  readonly cellRenderer?: string | CellRendererFn<T>;
+
+  /**
+   *
+   */
+  readonly headerRenderer?: HeaderCellRenderer<T>;
+
+  /**
+   *
+   */
+  readonly floatingRenderer?: HeaderFloatingCellRenderer<T>;
+}
+
+/**
+ *
+ */
 export interface ColumnMeta<T> {
   /**
    *
@@ -1319,9 +1392,7 @@ export interface RowDataStore<T> {
   /**
    *
    */
-  readonly rowForIndex: (
-    row: number,
-  ) => GridAtomReadonlyUnwatchable<RowNode<T> | null>;
+  readonly rowForIndex: (row: number) => GridAtomReadonlyUnwatchable<RowNode<T> | null>;
 
   /**
    *
@@ -1528,11 +1599,7 @@ export interface RowGroup {
 /**
  *
  */
-export type RowHeight =
-  | number
-  | "auto"
-  | `fill:${number}`
-  | ((i: number) => number);
+export type RowHeight = number | "auto" | `fill:${number}` | ((i: number) => number);
 
 /**
  * The leaf row type. As the name suggests, leaf rows do not have any further children rows
@@ -1783,10 +1850,7 @@ export interface GridApi<T> {
   /**
    *
    */
-  readonly columnField: (
-    columnOrId: string | Column<T>,
-    row: FieldDataParam<T>,
-  ) => unknown;
+  readonly columnField: (columnOrId: string | Column<T>, row: FieldDataParam<T>) => unknown;
 
   /**
    *
@@ -1801,9 +1865,7 @@ export interface GridApi<T> {
   /**
    *
    */
-  readonly sortForColumn: (
-    columnOrId: string,
-  ) => { sort: SortModelItem<T>; index: number } | null;
+  readonly sortForColumn: (columnOrId: string) => { sort: SortModelItem<T>; index: number } | null;
 
   /**
    *
@@ -1828,9 +1890,7 @@ export interface GridApi<T> {
   /**
    *
    */
-  readonly rowGroupApplyExpansions: (
-    expansions: Record<string, boolean>,
-  ) => void;
+  readonly rowGroupApplyExpansions: (expansions: Record<string, boolean>) => void;
 
   /**
    *
@@ -2121,9 +2181,7 @@ export interface FilterCombination {
   /**
    *
    */
-  readonly filters: Array<
-    FilterNumber | FilterString | FilterDate | FilterCombination
-  >;
+  readonly filters: Array<FilterNumber | FilterString | FilterDate | FilterCombination>;
 }
 
 /**
@@ -2824,9 +2882,7 @@ export interface HeaderFloatingCellRendererParams<T> {
 /**
  *
  */
-export type HeaderFloatingCellRenderer<T> =
-  | string
-  | HeaderFloatingCellRendererFn<T>;
+export type HeaderFloatingCellRenderer<T> = string | HeaderFloatingCellRendererFn<T>;
 
 /**
  *
@@ -3297,3 +3353,58 @@ export type PositionUnion =
   | PositionHeaderCell
   | PositionFullWidthRow
   | PositionHeaderGroupCell;
+
+/**
+ *
+ */
+export interface RowDetailEnabledParams<T> {
+  /**
+   *
+   */
+  readonly rowIndex: number;
+
+  /**
+   *
+   */
+  readonly row: RowNode<T>;
+
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+}
+
+/**
+ *
+ */
+export type RowDetailHeight = number | "auto";
+
+/**
+ *
+ */
+export type RowDetailRendererFn<T> = (
+  /**
+   *
+   */
+  params: RowDetailRendererParams<T>,
+) => ReactNode;
+
+/**
+ *
+ */
+export interface RowDetailRendererParams<T> {
+  /**
+   *
+   */
+  readonly rowIndex: number;
+
+  /**
+   *
+   */
+  readonly row: RowNode<T>;
+
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+}

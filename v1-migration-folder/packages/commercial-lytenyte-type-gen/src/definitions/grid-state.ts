@@ -455,6 +455,56 @@ const EditActivePosition: PropertyType = {
   optional: false,
 };
 
+const ColumnMarker: PropertyType = {
+  kind: "property",
+  name: "columnMarker",
+  value: "GridAtom<ColumnMarker<T>>",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+};
+
+const RowDetailMarker: PropertyType = {
+  kind: "property",
+  name: "rowDetailMarker",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<boolean>",
+};
+const RowDetailEnabled: PropertyType = {
+  kind: "property",
+  name: "rowDetailEnabled",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<boolean>",
+};
+const RowDetailRenderer: PropertyType = {
+  kind: "property",
+  name: "rowDetailRenderer",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<{ fn: RowDetailRendererFn<T> }>",
+};
+const RowDetailHeight: PropertyType = {
+  kind: "property",
+  name: "rowDetailHeight",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<RowDetailHeight>",
+};
+const RowDetailExpansions: PropertyType = {
+  kind: "property",
+  name: "rowDetailExpansions",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<Set<string>>",
+};
+
 export const GridStateCore: InterfaceType = {
   kind: "interface",
   export: true,
@@ -522,5 +572,12 @@ export const GridStateCore: InterfaceType = {
     EditClickActivator,
     EditCellMode,
     EditActivePosition,
+
+    ColumnMarker,
+    RowDetailEnabled,
+    RowDetailMarker,
+    RowDetailRenderer,
+    RowDetailHeight,
+    RowDetailExpansions,
   ],
 };

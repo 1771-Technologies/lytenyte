@@ -136,7 +136,7 @@ function Component({ data = bankData }: { data?: any[] }) {
         <button onClick={() => g.state.columns.set(columnsPinStartOnly)}>Pin Start Only</button>
       </div>
 
-      <div style={{ width: "100%", height: "95vh", border: "1px solid black" }}>
+      <div style={{ width: "100%", height: "92vh", border: "1px solid black" }}>
         <Root grid={g}>
           <Viewport>
             <Header>

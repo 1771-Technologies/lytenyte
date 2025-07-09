@@ -6,8 +6,7 @@ import {
   handleSkipInner,
   useFocusTracking,
 } from "@1771technologies/lytenyte-shared";
-import type { Grid } from "../+types";
-import type { InternalAtoms } from "../state/+types";
+import { beginEditing } from "./begin-editing";
 
 export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function Viewport(
   { children, style, ...props },
@@ -70,13 +69,11 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
         onClick={(e) => {
           props.onClick?.(e);
           if (e.defaultPrevented) return;
-
           beginEditing(ctx.grid, "single");
         }}
         onDoubleClick={(e) => {
           props.onDoubleClick?.(e);
           if (e.defaultPrevented) return;
-
           beginEditing(ctx.grid, "dbl-click");
         }}
         role="grid"
@@ -114,21 +111,3 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
     </>
   );
 });
-
-function beginEditing<T>(
-  grid: Grid<T> & { internal: InternalAtoms },
-  activator?: "single" | "dbl-click",
-  init?: any,
-) {
-  const focusPos = grid.internal.focusActive.get();
-  const editMode = grid.state.editCellMode.get();
-  const editActivator = grid.state.editClickActivator.get();
-  if (focusPos?.kind !== "cell" || editMode === "readonly") return;
-  if (activator && editActivator !== activator) return;
-
-  const column = grid.api.columnFromIndex(focusPos.colIndex);
-  if (!column) return;
-  if (grid.api.editIsCellActive({ column, rowIndex: focusPos.rowIndex })) return;
-
-  grid.api.editBegin({ column, rowIndex: focusPos.rowIndex, init });
-}
