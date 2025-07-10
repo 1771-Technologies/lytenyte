@@ -32,7 +32,11 @@ const CellImpl = forwardRef<
 
   const viewport = cx.viewportWidthInner.useValue();
   const width = sizeFromCoord(cell.colIndex, xPositions, cell.colSpan);
-  const height = sizeFromCoord(cell.rowIndex, yPositions, cell.rowSpan);
+
+  const row = cell.row.useValue();
+
+  const detail = grid.api.rowDetailRenderedHeight(row ?? "");
+  const height = sizeFromCoord(cell.rowIndex, yPositions, cell.rowSpan) - detail;
 
   const isSticky = !!cell.colPin;
   const isRowPinned = !!cell.rowPin;
@@ -91,8 +95,6 @@ const CellImpl = forwardRef<
       ? (renderers[providedRenderer] ?? CellDefault)
       : providedRenderer
     : CellDefault;
-
-  const row = cell.row.useValue();
 
   const [isEditing, setIsEditing] = useState(false);
   useEffect(() => {

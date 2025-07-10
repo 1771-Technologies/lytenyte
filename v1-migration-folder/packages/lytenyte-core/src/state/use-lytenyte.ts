@@ -45,6 +45,13 @@ import { makeEditBegin } from "./api/edit-begin.js";
 import { makeEditIsCellActive } from "./api/edit-is-cell-active.js";
 import { makeEditEnd } from "./api/edit-end.js";
 import { makeEditUpdate } from "./api/edit-update.js";
+import { makeRowById } from "./api/row-by-id.js";
+import { makeRowByIndex } from "./api/row-by-index.js";
+import { makeRowDetailIsEnabledForRow } from "./api/row-detail-is-enabled-for-row.js";
+import { makeRowDetailIsExpanded } from "./api/row-detail-is-expanded.js";
+import { makeRowDetailToggle } from "./api/row-detail-toggle.js";
+import { makeRowDetailRenderedHeight } from "./api/row-detail-rendered-height.js";
+import { columnHandleMarker } from "./helpers/colunmn-marker.js";
 
 const DEFAULT_HEADER_HEIGHT = 40;
 const COLUMN_GROUP_JOIN_DELIMITER = "-->";
@@ -74,7 +81,6 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const rowDataSource = atom<RowDataSource<T>>(emptyRowDataSource);
 
   const rowHeight = atom(p.rowHeight ?? 40);
-  const rowAutoHeightCache = atom(p.rowAutoHeightCache ?? {});
   const rowAutoHeightGuess = atom(p.rowAutoHeightGuess ?? 40);
 
   const rowScanDistance = atom(p.rowScanDistance ?? 100);
@@ -112,6 +118,22 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const editClickActivator = atom(p.editClickActivator ?? "single");
   const editCellMode = atom(p.editCellMode ?? "readonly");
 
+  const columnMarker = atom(p.columnMarker ?? {});
+
+  const rowDetailEnabledProvidedVal = p.rowDetailEnabled ?? false;
+  const rowDetailEnabled = atom(
+    typeof rowDetailEnabledProvidedVal === "boolean"
+      ? rowDetailEnabledProvidedVal
+      : { fn: rowDetailEnabledProvidedVal },
+  );
+  const rowDetailHeight = atom(p.rowDetailHeight ?? 300);
+  const rowDetailAutoHeightGuess = atom(p.rowDetailAutoHeightGuess ?? 300);
+  const rowDetailExpansions = atom(p.rowDetailExpansions ?? new Set<string>());
+  const rowDetailMarker = atom(p.rowDetailMarker ?? true);
+  const rowDetailRenderer = atom({ fn: p.rowDetailRenderer ?? (() => "Not defined") });
+
+  const internal_rowAutoHeightCache = atom<Record<number, number>>({});
+  const internal_rowDetailHeightCache = atom<Record<number, number>>({});
   const internal_focusActive = atom<PositionUnion | null>(null);
   const internal_focusPrevCol = atom<number | null>(null);
   const internal_focusPrevRow = atom<number | null>(null);
@@ -186,8 +208,18 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       rowGroupTemplate: g(rowGroupColumn),
     });
 
-    const view = makeColumnView({
+    const colsWithMarker = columnHandleMarker({
       columns: cols,
+      rowDetailEnabled: !!g(rowDetailEnabled),
+      rowDetailMarker: g(rowDetailMarker),
+      marker: g(columnMarker),
+      rowDragEnabled: false,
+      rowSelectionCheckbox: "normal",
+      rowSelectionMode: "none",
+    });
+
+    const view = makeColumnView({
+      columns: colsWithMarker,
       base: g(base),
       groupExpansionDefault: g(columnGroupDefaultExpansion),
       groupExpansions: g(columnGroupExpansions),
@@ -256,12 +288,22 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     const rowCount = g(rdsAtoms.rowCount);
     const innerHeight = g(viewportHeightInner);
 
+    g(rowDetailExpansions);
+    g(internal_rowDetailHeightCache);
+
+    const detailEnabled = g(rowDetailEnabled);
+
     return computeRowPositions(
       rowCount,
       g(rowHeight),
       g(rowAutoHeightGuess),
-      g(rowAutoHeightCache),
-      () => 0,
+      g(internal_rowAutoHeightCache),
+      (i: number) => {
+        const row = api.rowByIndex(i);
+        if (!detailEnabled || !row || !api.rowDetailIsExpanded(row)) return 0;
+
+        return api.rowDetailRenderedHeight(row);
+      },
       innerHeight,
     );
   });
@@ -302,6 +344,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
     const botStart = rowCount - botCount;
 
+    const focus = g(internal_focusActive);
     const view = makeRowLayout({
       layout: n,
       layoutMap: g(layoutMap),
@@ -316,6 +359,12 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
     return {
       ...view,
+      rowFocusedIndex:
+        focus?.kind === "cell" || focus?.kind === "full-width"
+          ? focus.rowIndex < topCount || focus.rowIndex >= rowCount - botCount
+            ? null
+            : focus.rowIndex
+          : null,
       rowTopTotalHeight: topHeight,
       rowBottomTotalHeight: botHeight,
       rowCenterTotalHeight: centerHeight,
@@ -362,7 +411,6 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
     rowDataStore,
     rowDataSource: makeGridAtom(rowDataSource, store),
-    rowAutoHeightCache: makeGridAtom(rowAutoHeightCache, store),
     rowAutoHeightGuess: makeGridAtom(rowAutoHeightGuess, store),
     rowHeight: makeGridAtom(rowHeight, store),
 
@@ -401,6 +449,33 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       atom((g) => g(internal_editActivePosition)),
       store,
     ),
+
+    columnMarker: makeGridAtom(columnMarker, store),
+    rowDetailEnabled: makeGridAtom(rowDetailEnabled, store),
+    rowDetailExpansions: makeGridAtom(rowDetailExpansions, store, (v) => {
+      let stop = false;
+      api.eventFire("rowDetailExpansionBegin", {
+        expansions: store.get(rowDetailExpansions),
+        grid,
+        preventDefault: () => {
+          stop = true;
+        },
+      });
+      if (stop) return store.get(rowDetailExpansions);
+
+      queueMicrotask(() =>
+        api.eventFire("rowDetailExpansionEnd", {
+          expansions: store.get(rowDetailExpansions),
+          grid,
+        }),
+      );
+
+      return v;
+    }),
+    rowDetailHeight: makeGridAtom(rowDetailHeight, store),
+    rowDetailMarker: makeGridAtom(rowDetailMarker, store),
+    rowDetailRenderer: makeGridAtom(rowDetailRenderer, store),
+    rowDetailAutoHeightGuess: makeGridAtom(rowDetailAutoHeightGuess, store),
   };
 
   const api = {} as GridApi<T>;
@@ -434,6 +509,14 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     editUpdate: makeEditUpdate(grid as any),
 
     focusCell: makeFocusCell(grid as any),
+
+    rowById: makeRowById(grid),
+    rowByIndex: makeRowByIndex(grid),
+
+    rowDetailIsEnabledForRow: makeRowDetailIsEnabledForRow(grid),
+    rowDetailIsExpanded: makeRowDetailIsExpanded(grid),
+    rowDetailRenderedHeight: makeRowDetailRenderedHeight(grid as any),
+    rowDetailToggle: makeRowDetailToggle(grid),
   } satisfies GridApi<T>);
 
   Object.assign(grid, {
@@ -460,6 +543,9 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       editActivePos: makeGridAtom(internal_editActivePosition, store),
       editData: makeGridAtom(internal_editData, store),
       editValidation: makeGridAtom(internal_editValidation, store),
+
+      rowAutoHeightCache: makeGridAtom(internal_rowAutoHeightCache, store),
+      rowDetailAutoHeightCache: makeGridAtom(internal_rowDetailHeightCache, store),
     } satisfies InternalAtoms,
   });
 

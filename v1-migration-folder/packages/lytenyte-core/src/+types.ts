@@ -57,11 +57,6 @@ export interface UseLyteNyteProps<T> {
   /**
    *
    */
-  readonly rowAutoHeightCache?: Record<number, number>;
-
-  /**
-   *
-   */
   readonly rowAutoHeightGuess?: number;
 
   /**
@@ -172,7 +167,10 @@ export interface UseLyteNyteProps<T> {
   /**
    *
    */
-  readonly floatingCellRenderers?: Record<string, HeaderFloatingCellRendererFn<T>>;
+  readonly floatingCellRenderers?: Record<
+    string,
+    HeaderFloatingCellRendererFn<T>
+  >;
 
   /**
    *
@@ -207,7 +205,7 @@ export interface UseLyteNyteProps<T> {
   /**
    *
    */
-  readonly rowDetailEnabled?: boolean;
+  readonly rowDetailEnabled?: boolean | RowDetailEnabledFn<T>;
 
   /**
    *
@@ -228,6 +226,11 @@ export interface UseLyteNyteProps<T> {
    *
    */
   readonly rowDetailExpansions?: Set<string>;
+
+  /**
+   *
+   */
+  readonly rowDetailAutoHeightGuess?: number;
 }
 
 /**
@@ -347,11 +350,6 @@ export interface GridState<T> {
   /**
    *
    */
-  readonly rowAutoHeightCache: GridAtom<Record<number, number>>;
-
-  /**
-   *
-   */
   readonly rowAutoHeightGuess: GridAtom<number>;
 
   /**
@@ -464,12 +462,16 @@ export interface GridState<T> {
   /**
    *
    */
-  readonly floatingCellRenderers: GridAtom<Record<string, HeaderFloatingCellRendererFn<T>>>;
+  readonly floatingCellRenderers: GridAtom<
+    Record<string, HeaderFloatingCellRendererFn<T>>
+  >;
 
   /**
    *
    */
-  readonly headerCellRenderers: GridAtom<Record<string, HeaderCellRendererFn<T>>>;
+  readonly headerCellRenderers: GridAtom<
+    Record<string, HeaderCellRendererFn<T>>
+  >;
 
   /**
    *
@@ -504,7 +506,7 @@ export interface GridState<T> {
   /**
    *
    */
-  readonly rowDetailEnabled: GridAtom<boolean>;
+  readonly rowDetailEnabled: GridAtom<boolean | { fn: RowDetailEnabledFn<T> }>;
 
   /**
    *
@@ -520,6 +522,11 @@ export interface GridState<T> {
    *
    */
   readonly rowDetailHeight: GridAtom<RowDetailHeight>;
+
+  /**
+   *
+   */
+  readonly rowDetailAutoHeightGuess: GridAtom<number>;
 
   /**
    *
@@ -868,6 +875,11 @@ export interface RowCellLayout<T> {
    *
    */
   readonly rowFirstPinBottom?: boolean;
+
+  /**
+   *
+   */
+  readonly rowIsFocusRow?: boolean;
 }
 
 /**
@@ -903,6 +915,11 @@ export interface RowFullWidthRowLayout<T> {
    *
    */
   readonly rowFirstPinBottom?: boolean;
+
+  /**
+   *
+   */
+  readonly rowIsFocusRow?: boolean;
 }
 
 /**
@@ -947,6 +964,11 @@ export interface RowNormalRowLayout<T> {
   /**
    *
    */
+  readonly rowIsFocusRow?: boolean;
+
+  /**
+   *
+   */
   readonly cells: RowCellLayout<T>[];
 }
 
@@ -983,6 +1005,11 @@ export interface RowSectionLayouts<T> {
    *
    */
   readonly rowBottomTotalHeight: number;
+
+  /**
+   *
+   */
+  readonly rowFocusedIndex: number | null;
 
   /**
    *
@@ -1357,6 +1384,11 @@ export interface RowDataSource<T> {
   /**
    *
    */
+  readonly rowToIndex: (rowId: string) => number | null;
+
+  /**
+   *
+   */
   readonly rowUpdate: (params: RowUpdateParams) => void;
 
   /**
@@ -1392,7 +1424,9 @@ export interface RowDataStore<T> {
   /**
    *
    */
-  readonly rowForIndex: (row: number) => GridAtomReadonlyUnwatchable<RowNode<T> | null>;
+  readonly rowForIndex: (
+    row: number,
+  ) => GridAtomReadonlyUnwatchable<RowNode<T> | null>;
 
   /**
    *
@@ -1599,7 +1633,7 @@ export interface RowGroup {
 /**
  *
  */
-export type RowHeight = number | "auto" | `fill:${number}` | ((i: number) => number);
+export type RowHeight = number | `fill:${number}` | ((i: number) => number);
 
 /**
  * The leaf row type. As the name suggests, leaf rows do not have any further children rows
@@ -1668,6 +1702,11 @@ export type RowNode<T> = RowLeaf<T> | RowGroup;
  * - [Column Pinning](TODO): The opposite of pinning rows, is pinning columns. They can be used together.
  */
 export type RowPin = "top" | "bottom" | null;
+
+/**
+ *
+ */
+export type RowSection = "top" | "bottom" | "center" | "flat";
 
 /**
  *
@@ -1850,7 +1889,10 @@ export interface GridApi<T> {
   /**
    *
    */
-  readonly columnField: (columnOrId: string | Column<T>, row: FieldDataParam<T>) => unknown;
+  readonly columnField: (
+    columnOrId: string | Column<T>,
+    row: FieldDataParam<T>,
+  ) => unknown;
 
   /**
    *
@@ -1865,7 +1907,9 @@ export interface GridApi<T> {
   /**
    *
    */
-  readonly sortForColumn: (columnOrId: string) => { sort: SortModelItem<T>; index: number } | null;
+  readonly sortForColumn: (
+    columnOrId: string,
+  ) => { sort: SortModelItem<T>; index: number } | null;
 
   /**
    *
@@ -1890,7 +1934,9 @@ export interface GridApi<T> {
   /**
    *
    */
-  readonly rowGroupApplyExpansions: (expansions: Record<string, boolean>) => void;
+  readonly rowGroupApplyExpansions: (
+    expansions: Record<string, boolean>,
+  ) => void;
 
   /**
    *
@@ -1950,6 +1996,42 @@ export interface GridApi<T> {
    *
    */
   readonly editUpdate: (params: EditUpdateParams<T>) => void;
+
+  /**
+   *
+   */
+  readonly rowDetailIsExpanded: (rowOrId: string | RowNode<T>) => boolean;
+
+  /**
+   *
+   */
+  readonly rowDetailToggle: (
+    rowOrId: string | RowNode<T>,
+    state?: boolean,
+  ) => void;
+
+  /**
+   *
+   */
+  readonly rowDetailRenderedHeight: (rowOrId: string | RowNode<T>) => number;
+
+  /**
+   *
+   */
+  readonly rowDetailIsEnabledForRow: (rowOrId: string | RowNode<T>) => boolean;
+
+  /**
+   *
+   */
+  readonly rowById: (id: string) => RowNode<T> | null | undefined;
+
+  /**
+   *
+   */
+  readonly rowByIndex: (
+    index: number,
+    section?: RowSection,
+  ) => RowNode<T> | null | undefined;
 }
 
 /**
@@ -2181,7 +2263,9 @@ export interface FilterCombination {
   /**
    *
    */
-  readonly filters: Array<FilterNumber | FilterString | FilterDate | FilterCombination>;
+  readonly filters: Array<
+    FilterNumber | FilterString | FilterDate | FilterCombination
+  >;
 }
 
 /**
@@ -2742,6 +2826,71 @@ export interface GridEvents<T> {
    *
    */
   readonly editError?: EditError<T>;
+
+  /**
+   *
+   */
+  readonly rowDetailExpansionBegin?: RowDetailExpansionBegin<T>;
+
+  /**
+   *
+   */
+  readonly rowDetailExpansionEnd?: RowDetailExpansionEnd<T>;
+}
+
+/**
+ *
+ */
+export type RowDetailExpansionBegin<T> = (
+  /**
+   *
+   */
+  params: RowDetailExpansionBeginParams<T>,
+) => void;
+
+/**
+ *
+ */
+export interface RowDetailExpansionBeginParams<T> {
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly expansions: Set<string>;
+
+  /**
+   *
+   */
+  readonly preventDefault: () => void;
+}
+
+/**
+ *
+ */
+export type RowDetailExpansionEnd<T> = (
+  /**
+   *
+   */
+  params: RowDetailExpansionEndParams<T>,
+) => void;
+
+/**
+ *
+ */
+export interface RowDetailExpansionEndParams<T> {
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly expansions: Set<string>;
 }
 
 /**
@@ -2882,7 +3031,9 @@ export interface HeaderFloatingCellRendererParams<T> {
 /**
  *
  */
-export type HeaderFloatingCellRenderer<T> = string | HeaderFloatingCellRendererFn<T>;
+export type HeaderFloatingCellRenderer<T> =
+  | string
+  | HeaderFloatingCellRendererFn<T>;
 
 /**
  *
@@ -3357,12 +3508,17 @@ export type PositionUnion =
 /**
  *
  */
-export interface RowDetailEnabledParams<T> {
+export type RowDetailEnabledFn<T> = (
   /**
    *
    */
-  readonly rowIndex: number;
+  params: RowDetailEnabledParams<T>,
+) => boolean;
 
+/**
+ *
+ */
+export interface RowDetailEnabledParams<T> {
   /**
    *
    */
@@ -3408,3 +3564,18 @@ export interface RowDetailRendererParams<T> {
    */
   readonly grid: Grid<T>;
 }
+
+/**
+ *
+ */
+export type RowSelectionPointerActivator = "single" | "dbl-click" | "none";
+
+/**
+ *
+ */
+export type RowSelectionCheckbox = "normal" | "hide";
+
+/**
+ *
+ */
+export type RowSelectionMode = "single" | "multiple" | "none";

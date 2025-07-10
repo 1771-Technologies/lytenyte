@@ -195,14 +195,18 @@ export function makeClientDataSource<T>(
 
   const initialized = atom(false);
   const flat = atom((g) => {
-    if (!g(initialized)) return { flat: [], idMap: new Map() };
+    if (!g(initialized)) return { flat: [], idMap: new Map(), idToIndexMap: new Map() };
 
     const idMap = new Map<string, RowNode<T>>();
+    const idToIndexMap = new Map<string, number>();
+
     const flattened: RowNode<T>[] = [];
     const comparator = g(sortComparator);
 
     const expansions = g(groupExpansions);
     const defaultExpansion = g(grid$)?.state.rowGroupDefaultExpansion.get() ?? false;
+
+    let index = g(topNodes).length;
 
     traverse(
       g(tree).root,
@@ -220,6 +224,8 @@ export function makeClientDataSource<T>(
           });
         }
         idMap.set(node.id, flattened.at(-1)!);
+        idToIndexMap.set(node.id, index);
+        index++;
 
         if (node.kind === 2) {
           const expanded =
@@ -234,7 +240,7 @@ export function makeClientDataSource<T>(
       comparator,
     );
 
-    return { flat: flattened, idMap };
+    return { flat: flattened, idMap, idToIndexMap };
   });
   const flatLength = atom((g) => g(flat).flat.length);
 
@@ -382,6 +388,28 @@ export function makeClientDataSource<T>(
         if (!grid) return;
 
         grid.state.rowGroupExpansions.set((prev) => ({ ...prev, ...expansions }));
+      },
+      rowToIndex: (rowId: string) => {
+        const f = rdsStore.get(flat);
+
+        const top = rdsStore.get(topNodes);
+        const bot = rdsStore.get(botNodes);
+
+        const topCount = top.length;
+        const center = f.flat.length;
+
+        const rowIndex = f.idToIndexMap.get(rowId);
+        if (rowIndex != null) return rowIndex;
+
+        if (rowIndex == null) {
+          const foundTop = top.findIndex((row) => row.id === rowId);
+          if (foundTop !== -1) return foundTop;
+
+          const foundBot = bot.findIndex((row) => row.id === rowId);
+          if (foundBot !== -1) return foundBot + topCount + center;
+        }
+
+        return null;
       },
     },
     {

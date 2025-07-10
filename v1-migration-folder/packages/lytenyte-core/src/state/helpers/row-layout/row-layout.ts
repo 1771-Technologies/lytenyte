@@ -280,7 +280,13 @@ export function makeRowLayout<T>({
 
     if (row && node) {
       if (isFullWidthMap(row)) {
-        center.push({ rowIndex: f.rowIndex, kind: "full-width", rowPin: null, row: node });
+        center.push({
+          rowIndex: f.rowIndex,
+          kind: "full-width",
+          rowPin: null,
+          row: node,
+          rowIsFocusRow: true,
+        });
       } else {
         const cellLayout: RowCellLayout<T>[] = [];
 
@@ -295,6 +301,8 @@ export function makeRowLayout<T>({
             rowPin: null,
             colPin: f.isStart ? "start" : f.isEnd ? "end" : null,
 
+            rowIsFocusRow: true,
+
             row: node,
             column: columns[f.colIndex],
           });
@@ -306,6 +314,7 @@ export function makeRowLayout<T>({
           cells: cellLayout,
           rowPin: null,
           row: node,
+          rowIsFocusRow: true,
         };
 
         if (f.isRowCenterAfter) center.push(rowLayout);

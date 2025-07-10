@@ -6,4 +6,5 @@ export const emptyRowDataSource: RowDataSource<any> = {
   rowByIndex: () => null,
   rowExpand: () => {},
   rowUpdate: () => {},
+  rowToIndex: () => null,
 };

@@ -95,14 +95,6 @@ const RowAutoHeightGuess: PropertyType = {
   tsDoc: ``,
   doc: { en: `` },
 };
-const RowAutoHeightCache: PropertyType = {
-  kind: "property",
-  name: "rowAutoHeightCache",
-  optional: true,
-  value: "Record<number, number>",
-  tsDoc: ``,
-  doc: { en: `` },
-};
 const RowHeight: PropertyType = {
   kind: "property",
   name: "rowHeight",
@@ -358,7 +350,7 @@ const RowDetailEnabled: PropertyType = {
   tsDoc: ``,
   doc: { en: `` },
   optional: true,
-  value: "boolean",
+  value: "boolean | RowDetailEnabledFn<T>",
 };
 const RowDetailRenderer: PropertyType = {
   kind: "property",
@@ -375,6 +367,14 @@ const RowDetailHeight: PropertyType = {
   doc: { en: `` },
   optional: true,
   value: "RowDetailHeight",
+};
+const RowDetailAutoHeightGuess: PropertyType = {
+  kind: "property",
+  name: "rowDetailAutoHeightGuess",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "number",
 };
 const RowDetailExpansions: PropertyType = {
   kind: "property",
@@ -403,7 +403,6 @@ export const UseLyteNytePropsCore: InterfaceType = {
     HeaderGroupHeight,
     GridId,
     RowDataSource,
-    RowAutoHeightCache,
     RowAutoHeightGuess,
     RowHeight,
     ColScanDistance,
@@ -445,5 +444,6 @@ export const UseLyteNytePropsCore: InterfaceType = {
     RowDetailRenderer,
     RowDetailHeight,
     RowDetailExpansions,
+    RowDetailAutoHeightGuess,
   ],
 };

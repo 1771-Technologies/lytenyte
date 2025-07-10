@@ -119,6 +119,14 @@ export const RowDataSourceCore: InterfaceType = {
     },
     {
       kind: "property",
+      name: "rowToIndex",
+      doc: { en: `` },
+      optional: false,
+      tsDoc: ``,
+      value: "(rowId: string) => number | null",
+    },
+    {
+      kind: "property",
       name: "rowUpdate",
       value: "(params: RowUpdateParams) => void",
       tsDoc: ``,

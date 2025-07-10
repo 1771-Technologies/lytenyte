@@ -11,6 +11,7 @@ export function useRowStyle(
   const cx = useGridRoot().grid;
 
   const yPositions = cx.state.yPositions.useValue();
+
   const height = yPositions[row.rowIndex + 1] - yPositions[row.rowIndex];
 
   const styles = useMemo(() => {
@@ -23,10 +24,11 @@ export function useRowStyle(
       gridTemplateColumns: "100%",
       gridTemplateRows: `${height}px`,
       pointerEvents: "none",
+      visibility: row.rowIsFocusRow ? "hidden" : undefined,
     };
 
     return { ...propStyles, ...styles, ...additional };
-  }, [additional, height, propStyles]);
+  }, [additional, height, propStyles, row.rowIsFocusRow]);
 
   return styles;
 }

@@ -201,14 +201,6 @@ const RowAutoHeightGuess: PropertyType = {
   tsDoc: ``,
   doc: { en: `` },
 };
-const RowAutoHeightCache: PropertyType = {
-  kind: "property",
-  name: "rowAutoHeightCache",
-  optional: false,
-  value: "GridAtom<Record<number, number>>",
-  tsDoc: ``,
-  doc: { en: `` },
-};
 const RowHeight: PropertyType = {
   kind: "property",
   name: "rowHeight",
@@ -284,7 +276,7 @@ const RowFullWidthRenderer: PropertyType = {
   tsDoc: ``,
   name: "rowFullWidthRenderer",
   optional: false,
-  value: "GridAtom<{ fn: RowFullWidthRendererFn<T>}>",
+  value: "GridAtom<{ fn: RowFullWidthRendererFn<T> }>",
 };
 
 const CellRenderers: PropertyType = {
@@ -478,7 +470,7 @@ const RowDetailEnabled: PropertyType = {
   tsDoc: ``,
   doc: { en: `` },
   optional: false,
-  value: "GridAtom<boolean>",
+  value: "GridAtom<boolean | { fn: RowDetailEnabledFn<T> }>",
 };
 const RowDetailRenderer: PropertyType = {
   kind: "property",
@@ -495,6 +487,14 @@ const RowDetailHeight: PropertyType = {
   doc: { en: `` },
   optional: false,
   value: "GridAtom<RowDetailHeight>",
+};
+const RowDetailAutoHeightGuess: PropertyType = {
+  kind: "property",
+  name: "rowDetailAutoHeightGuess",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<number>",
 };
 const RowDetailExpansions: PropertyType = {
   kind: "property",
@@ -535,7 +535,6 @@ export const GridStateCore: InterfaceType = {
     HeaderGroupHeight,
     RowDataStore,
     RowDataSource,
-    RowAutoHeightCache,
     RowAutoHeightGuess,
     RowHeight,
     RowScanDistance,
@@ -578,6 +577,7 @@ export const GridStateCore: InterfaceType = {
     RowDetailMarker,
     RowDetailRenderer,
     RowDetailHeight,
+    RowDetailAutoHeightGuess,
     RowDetailExpansions,
   ],
 };
