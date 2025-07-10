@@ -95,14 +95,6 @@ const RowAutoHeightGuess: PropertyType = {
   tsDoc: ``,
   doc: { en: `` },
 };
-const RowAutoHeightCache: PropertyType = {
-  kind: "property",
-  name: "rowAutoHeightCache",
-  optional: true,
-  value: "Record<number, number>",
-  tsDoc: ``,
-  doc: { en: `` },
-};
 const RowHeight: PropertyType = {
   kind: "property",
   name: "rowHeight",
@@ -335,6 +327,63 @@ const EditCellMode: PropertyType = {
   optional: true,
   value: "EditCellMode",
 };
+const ColumnMarkerProp: PropertyType = {
+  kind: "property",
+  name: "columnMarker",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "ColumnMarker<T>",
+};
+
+const RowDetailMarker: PropertyType = {
+  kind: "property",
+  name: "rowDetailMarker",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "boolean",
+};
+const RowDetailEnabled: PropertyType = {
+  kind: "property",
+  name: "rowDetailEnabled",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "boolean | RowDetailEnabledFn<T>",
+};
+const RowDetailRenderer: PropertyType = {
+  kind: "property",
+  name: "rowDetailRenderer",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "RowDetailRendererFn<T>",
+};
+const RowDetailHeight: PropertyType = {
+  kind: "property",
+  name: "rowDetailHeight",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "RowDetailHeight",
+};
+const RowDetailAutoHeightGuess: PropertyType = {
+  kind: "property",
+  name: "rowDetailAutoHeightGuess",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "number",
+};
+const RowDetailExpansions: PropertyType = {
+  kind: "property",
+  name: "rowDetailExpansions",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "Set<string>",
+};
 
 export const UseLyteNytePropsCore: InterfaceType = {
   kind: "interface",
@@ -354,7 +403,6 @@ export const UseLyteNytePropsCore: InterfaceType = {
     HeaderGroupHeight,
     GridId,
     RowDataSource,
-    RowAutoHeightCache,
     RowAutoHeightGuess,
     RowHeight,
     ColScanDistance,
@@ -389,5 +437,13 @@ export const UseLyteNytePropsCore: InterfaceType = {
     EditRowValidatorFn,
     EditClickActivator,
     EditCellMode,
+
+    ColumnMarkerProp,
+    RowDetailEnabled,
+    RowDetailMarker,
+    RowDetailRenderer,
+    RowDetailHeight,
+    RowDetailExpansions,
+    RowDetailAutoHeightGuess,
   ],
 };

@@ -1,5 +1,5 @@
-import { LEAF } from "../+constants";
-import type { Root } from "../+types";
+import { LEAF } from "../../+constants";
+import type { Root } from "../../+types";
 import { traverse } from "../traverse";
 
 export function printTree(root: Root<any>) {

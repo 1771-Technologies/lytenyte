@@ -201,14 +201,6 @@ const RowAutoHeightGuess: PropertyType = {
   tsDoc: ``,
   doc: { en: `` },
 };
-const RowAutoHeightCache: PropertyType = {
-  kind: "property",
-  name: "rowAutoHeightCache",
-  optional: false,
-  value: "GridAtom<Record<number, number>>",
-  tsDoc: ``,
-  doc: { en: `` },
-};
 const RowHeight: PropertyType = {
   kind: "property",
   name: "rowHeight",
@@ -284,7 +276,7 @@ const RowFullWidthRenderer: PropertyType = {
   tsDoc: ``,
   name: "rowFullWidthRenderer",
   optional: false,
-  value: "GridAtom<{ fn: RowFullWidthRendererFn<T>}>",
+  value: "GridAtom<{ fn: RowFullWidthRendererFn<T> }>",
 };
 
 const CellRenderers: PropertyType = {
@@ -455,6 +447,64 @@ const EditActivePosition: PropertyType = {
   optional: false,
 };
 
+const ColumnMarker: PropertyType = {
+  kind: "property",
+  name: "columnMarker",
+  value: "GridAtom<ColumnMarker<T>>",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+};
+
+const RowDetailMarker: PropertyType = {
+  kind: "property",
+  name: "rowDetailMarker",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<boolean>",
+};
+const RowDetailEnabled: PropertyType = {
+  kind: "property",
+  name: "rowDetailEnabled",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<boolean | { fn: RowDetailEnabledFn<T> }>",
+};
+const RowDetailRenderer: PropertyType = {
+  kind: "property",
+  name: "rowDetailRenderer",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<{ fn: RowDetailRendererFn<T> }>",
+};
+const RowDetailHeight: PropertyType = {
+  kind: "property",
+  name: "rowDetailHeight",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<RowDetailHeight>",
+};
+const RowDetailAutoHeightGuess: PropertyType = {
+  kind: "property",
+  name: "rowDetailAutoHeightGuess",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<number>",
+};
+const RowDetailExpansions: PropertyType = {
+  kind: "property",
+  name: "rowDetailExpansions",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<Set<string>>",
+};
+
 export const GridStateCore: InterfaceType = {
   kind: "interface",
   export: true,
@@ -485,7 +535,6 @@ export const GridStateCore: InterfaceType = {
     HeaderGroupHeight,
     RowDataStore,
     RowDataSource,
-    RowAutoHeightCache,
     RowAutoHeightGuess,
     RowHeight,
     RowScanDistance,
@@ -522,5 +571,13 @@ export const GridStateCore: InterfaceType = {
     EditClickActivator,
     EditCellMode,
     EditActivePosition,
+
+    ColumnMarker,
+    RowDetailEnabled,
+    RowDetailMarker,
+    RowDetailRenderer,
+    RowDetailHeight,
+    RowDetailAutoHeightGuess,
+    RowDetailExpansions,
   ],
 };

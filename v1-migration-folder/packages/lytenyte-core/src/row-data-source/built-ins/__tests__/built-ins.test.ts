@@ -7,6 +7,7 @@ import { last } from "../last.js";
 import { max } from "../max.js";
 import { min } from "../min.js";
 import { sum } from "../sum.js";
+import { group } from "../group.js";
 
 describe("builtIns", () => {
   test("should export all utility functions", () => {
@@ -14,6 +15,7 @@ describe("builtIns", () => {
       sum,
       count,
       avg,
+      group,
       first,
       last,
       min,
@@ -32,7 +34,7 @@ describe("builtIns", () => {
   });
 
   test("validBuiltIns should contain all function names", () => {
-    const expectedNames = ["sum", "count", "avg", "first", "last", "min", "max"];
+    const expectedNames = ["sum", "count", "avg", "first", "last", "min", "max", "group"];
     expect(validBuiltIns.size).toBe(expectedNames.length);
     expectedNames.forEach((name) => {
       expect(validBuiltIns.has(name)).toBe(true);

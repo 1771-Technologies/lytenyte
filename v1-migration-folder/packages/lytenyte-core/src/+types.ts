@@ -57,11 +57,6 @@ export interface UseLyteNyteProps<T> {
   /**
    *
    */
-  readonly rowAutoHeightCache?: Record<number, number>;
-
-  /**
-   *
-   */
   readonly rowAutoHeightGuess?: number;
 
   /**
@@ -201,6 +196,41 @@ export interface UseLyteNyteProps<T> {
    *
    */
   readonly editCellMode?: EditCellMode;
+
+  /**
+   *
+   */
+  readonly columnMarker?: ColumnMarker<T>;
+
+  /**
+   *
+   */
+  readonly rowDetailEnabled?: boolean | RowDetailEnabledFn<T>;
+
+  /**
+   *
+   */
+  readonly rowDetailMarker?: boolean;
+
+  /**
+   *
+   */
+  readonly rowDetailRenderer?: RowDetailRendererFn<T>;
+
+  /**
+   *
+   */
+  readonly rowDetailHeight?: RowDetailHeight;
+
+  /**
+   *
+   */
+  readonly rowDetailExpansions?: Set<string>;
+
+  /**
+   *
+   */
+  readonly rowDetailAutoHeightGuess?: number;
 }
 
 /**
@@ -316,11 +346,6 @@ export interface GridState<T> {
    *
    */
   readonly rowDataSource: GridAtom<RowDataSource<T>>;
-
-  /**
-   *
-   */
-  readonly rowAutoHeightCache: GridAtom<Record<number, number>>;
 
   /**
    *
@@ -472,6 +497,41 @@ export interface GridState<T> {
    *
    */
   readonly editActivePosition: GridAtomReadonly<EditActivePosition<T> | null>;
+
+  /**
+   *
+   */
+  readonly columnMarker: GridAtom<ColumnMarker<T>>;
+
+  /**
+   *
+   */
+  readonly rowDetailEnabled: GridAtom<boolean | { fn: RowDetailEnabledFn<T> }>;
+
+  /**
+   *
+   */
+  readonly rowDetailMarker: GridAtom<boolean>;
+
+  /**
+   *
+   */
+  readonly rowDetailRenderer: GridAtom<{ fn: RowDetailRendererFn<T> }>;
+
+  /**
+   *
+   */
+  readonly rowDetailHeight: GridAtom<RowDetailHeight>;
+
+  /**
+   *
+   */
+  readonly rowDetailAutoHeightGuess: GridAtom<number>;
+
+  /**
+   *
+   */
+  readonly rowDetailExpansions: GridAtom<Set<string>>;
 }
 
 /**
@@ -815,6 +875,11 @@ export interface RowCellLayout<T> {
    *
    */
   readonly rowFirstPinBottom?: boolean;
+
+  /**
+   *
+   */
+  readonly rowIsFocusRow?: boolean;
 }
 
 /**
@@ -850,6 +915,11 @@ export interface RowFullWidthRowLayout<T> {
    *
    */
   readonly rowFirstPinBottom?: boolean;
+
+  /**
+   *
+   */
+  readonly rowIsFocusRow?: boolean;
 }
 
 /**
@@ -894,6 +964,11 @@ export interface RowNormalRowLayout<T> {
   /**
    *
    */
+  readonly rowIsFocusRow?: boolean;
+
+  /**
+   *
+   */
   readonly cells: RowCellLayout<T>[];
 }
 
@@ -930,6 +1005,11 @@ export interface RowSectionLayouts<T> {
    *
    */
   readonly rowBottomTotalHeight: number;
+
+  /**
+   *
+   */
+  readonly rowFocusedIndex: number | null;
 
   /**
    *
@@ -1115,6 +1195,26 @@ export interface Column<T> {
 /**
  *
  */
+export interface ColumnMarker<T> {
+  /**
+   *
+   */
+  readonly cellRenderer?: string | CellRendererFn<T>;
+
+  /**
+   *
+   */
+  readonly headerRenderer?: HeaderCellRenderer<T>;
+
+  /**
+   *
+   */
+  readonly floatingRenderer?: HeaderFloatingCellRenderer<T>;
+}
+
+/**
+ *
+ */
 export interface ColumnMeta<T> {
   /**
    *
@@ -1280,6 +1380,11 @@ export interface RowDataSource<T> {
    *
    */
   readonly rowByIndex: (index: number) => RowNode<T> | null;
+
+  /**
+   *
+   */
+  readonly rowToIndex: (rowId: string) => number | null;
 
   /**
    *
@@ -1528,11 +1633,7 @@ export interface RowGroup {
 /**
  *
  */
-export type RowHeight =
-  | number
-  | "auto"
-  | `fill:${number}`
-  | ((i: number) => number);
+export type RowHeight = number | `fill:${number}` | ((i: number) => number);
 
 /**
  * The leaf row type. As the name suggests, leaf rows do not have any further children rows
@@ -1601,6 +1702,11 @@ export type RowNode<T> = RowLeaf<T> | RowGroup;
  * - [Column Pinning](TODO): The opposite of pinning rows, is pinning columns. They can be used together.
  */
 export type RowPin = "top" | "bottom" | null;
+
+/**
+ *
+ */
+export type RowSection = "top" | "bottom" | "center" | "flat";
 
 /**
  *
@@ -1890,6 +1996,42 @@ export interface GridApi<T> {
    *
    */
   readonly editUpdate: (params: EditUpdateParams<T>) => void;
+
+  /**
+   *
+   */
+  readonly rowDetailIsExpanded: (rowOrId: string | RowNode<T>) => boolean;
+
+  /**
+   *
+   */
+  readonly rowDetailToggle: (
+    rowOrId: string | RowNode<T>,
+    state?: boolean,
+  ) => void;
+
+  /**
+   *
+   */
+  readonly rowDetailRenderedHeight: (rowOrId: string | RowNode<T>) => number;
+
+  /**
+   *
+   */
+  readonly rowDetailIsEnabledForRow: (rowOrId: string | RowNode<T>) => boolean;
+
+  /**
+   *
+   */
+  readonly rowById: (id: string) => RowNode<T> | null | undefined;
+
+  /**
+   *
+   */
+  readonly rowByIndex: (
+    index: number,
+    section?: RowSection,
+  ) => RowNode<T> | null | undefined;
 }
 
 /**
@@ -2684,6 +2826,71 @@ export interface GridEvents<T> {
    *
    */
   readonly editError?: EditError<T>;
+
+  /**
+   *
+   */
+  readonly rowDetailExpansionBegin?: RowDetailExpansionBegin<T>;
+
+  /**
+   *
+   */
+  readonly rowDetailExpansionEnd?: RowDetailExpansionEnd<T>;
+}
+
+/**
+ *
+ */
+export type RowDetailExpansionBegin<T> = (
+  /**
+   *
+   */
+  params: RowDetailExpansionBeginParams<T>,
+) => void;
+
+/**
+ *
+ */
+export interface RowDetailExpansionBeginParams<T> {
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly expansions: Set<string>;
+
+  /**
+   *
+   */
+  readonly preventDefault: () => void;
+}
+
+/**
+ *
+ */
+export type RowDetailExpansionEnd<T> = (
+  /**
+   *
+   */
+  params: RowDetailExpansionEndParams<T>,
+) => void;
+
+/**
+ *
+ */
+export interface RowDetailExpansionEndParams<T> {
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly expansions: Set<string>;
 }
 
 /**
@@ -3297,3 +3504,78 @@ export type PositionUnion =
   | PositionHeaderCell
   | PositionFullWidthRow
   | PositionHeaderGroupCell;
+
+/**
+ *
+ */
+export type RowDetailEnabledFn<T> = (
+  /**
+   *
+   */
+  params: RowDetailEnabledParams<T>,
+) => boolean;
+
+/**
+ *
+ */
+export interface RowDetailEnabledParams<T> {
+  /**
+   *
+   */
+  readonly row: RowNode<T>;
+
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+}
+
+/**
+ *
+ */
+export type RowDetailHeight = number | "auto";
+
+/**
+ *
+ */
+export type RowDetailRendererFn<T> = (
+  /**
+   *
+   */
+  params: RowDetailRendererParams<T>,
+) => ReactNode;
+
+/**
+ *
+ */
+export interface RowDetailRendererParams<T> {
+  /**
+   *
+   */
+  readonly rowIndex: number;
+
+  /**
+   *
+   */
+  readonly row: RowNode<T>;
+
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+}
+
+/**
+ *
+ */
+export type RowSelectionPointerActivator = "single" | "dbl-click" | "none";
+
+/**
+ *
+ */
+export type RowSelectionCheckbox = "normal" | "hide";
+
+/**
+ *
+ */
+export type RowSelectionMode = "single" | "multiple" | "none";

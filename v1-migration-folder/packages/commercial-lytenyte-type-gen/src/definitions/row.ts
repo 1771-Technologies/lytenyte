@@ -243,11 +243,20 @@ export const RowPin: UnionType = {
   },
 };
 
+export const RowSection: UnionType = {
+  kind: "union",
+  name: "RowSection",
+  doc: { en: `` },
+  export: true,
+  tsDoc: ``,
+  types: ['"top"', '"bottom"', '"center"', '"flat"'],
+};
+
 export const RowHeight: UnionType = {
   kind: "union",
   name: "RowHeight",
   export: true,
-  types: ["number", '"auto"', "`fill:${number}`", "((i: number) => number)"],
+  types: ["number", "`fill:${number}`", "((i: number) => number)"],
   tsDoc: ``,
   doc: { en: `` },
 };

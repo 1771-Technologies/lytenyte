@@ -42,6 +42,15 @@ const RowFirstPinBottomProp: PropertyType = {
   doc: { en: `` },
 };
 
+const RowIsFocusRow: PropertyType = {
+  kind: "property",
+  name: "rowIsFocusRow",
+  optional: true,
+  value: "boolean",
+  tsDoc: ``,
+  doc: { en: `` },
+};
+
 const HeaderBase: InterfaceTypePartial = {
   kind: "interface-partial",
   properties: [
@@ -284,6 +293,7 @@ export const RowFullWidthRowLayout: InterfaceType = {
     RowPinProp,
     RowLastPinTopProp,
     RowFirstPinBottomProp,
+    RowIsFocusRow,
   ],
 };
 
@@ -328,6 +338,7 @@ export const RowCellLayout: InterfaceType = {
     CellLastStartPinProp,
     RowLastPinTopProp,
     RowFirstPinBottomProp,
+    RowIsFocusRow,
   ],
 };
 
@@ -351,6 +362,7 @@ export const RowNormalRowLayout: InterfaceType = {
     RowPinProp,
     RowLastPinTopProp,
     RowFirstPinBottomProp,
+    RowIsFocusRow,
     {
       kind: "property",
       name: "cells",
@@ -423,6 +435,14 @@ export const RowSectionLayouts: InterfaceType = {
       kind: "property",
       name: "rowBottomTotalHeight",
       value: "number",
+      doc: { en: `` },
+      tsDoc: ``,
+      optional: false,
+    },
+    {
+      kind: "property",
+      name: "rowFocusedIndex",
+      value: "number | null",
       doc: { en: `` },
       tsDoc: ``,
       optional: false,

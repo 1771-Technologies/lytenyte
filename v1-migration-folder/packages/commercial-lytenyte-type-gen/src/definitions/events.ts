@@ -187,6 +187,89 @@ export const EditError: FunctionType = {
   return: "void",
 };
 
+export const RowDetailExpansionBeginParams: InterfaceType = {
+  tsDoc: ``,
+  name: "RowDetailExpansionBeginParams<T>",
+  doc: { en: `` },
+  export: true,
+  kind: "interface",
+  properties: [
+    GridProp,
+    {
+      kind: "property",
+      name: "expansions",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "Set<string>",
+    },
+    {
+      kind: "property",
+      name: "preventDefault",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "() => void",
+    },
+  ],
+};
+
+export const RowDetailExpansionEndParams: InterfaceType = {
+  tsDoc: ``,
+  name: "RowDetailExpansionEndParams<T>",
+  doc: { en: `` },
+  export: true,
+  kind: "interface",
+  properties: [
+    GridProp,
+    {
+      kind: "property",
+      name: "expansions",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "Set<string>",
+    },
+  ],
+};
+
+export const RowDetailExpansionBegin: FunctionType = {
+  kind: "function",
+  name: "RowDetailExpansionBegin<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  properties: [
+    {
+      kind: "property",
+      name: "params",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "RowDetailExpansionBeginParams<T>",
+    },
+  ],
+  return: "void",
+};
+export const RowDetailExpansionEnd: FunctionType = {
+  kind: "function",
+  name: "RowDetailExpansionEnd<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  properties: [
+    {
+      kind: "property",
+      name: "params",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "RowDetailExpansionEndParams<T>",
+    },
+  ],
+  return: "void",
+};
+
 /**
  *  Events object
  */
@@ -248,6 +331,24 @@ const EditErrorProp: PropertyType = {
   value: "EditError<T>",
 };
 
+const RowDetailExpansionBeginProp: PropertyType = {
+  kind: "property",
+  name: "rowDetailExpansionBegin",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "RowDetailExpansionBegin<T>",
+};
+
+const RowDetailExpansionEndProp: PropertyType = {
+  kind: "property",
+  name: "rowDetailExpansionEnd",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "RowDetailExpansionEnd<T>",
+};
+
 export const Events: InterfaceType = {
   kind: "interface",
   name: "GridEvents<T>",
@@ -258,9 +359,13 @@ export const Events: InterfaceType = {
     RowExpandBeginProp,
     RowExpandProp,
     RowExpandEnd,
+
     EditBeginProp,
     EditEndProp,
     EditCancelProp,
     EditErrorProp,
+
+    RowDetailExpansionBeginProp,
+    RowDetailExpansionEndProp,
   ],
 };

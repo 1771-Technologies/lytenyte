@@ -1,3 +1,4 @@
+import "./grid-navigation.css";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Header } from "../header/header";
 import { HeaderRow } from "../header/header-row";
@@ -15,7 +16,7 @@ import { RowHandler } from "./sample-data/row-handler";
 import { bankData } from "./sample-data/bank-data";
 
 const meta: Meta = {
-  title: "Grid/Pinned Columns",
+  title: "Grid/Row Detail",
 };
 
 export default meta;
@@ -40,74 +41,6 @@ const columns: Column<any>[] = [
   { id: "y" },
 ];
 
-const columnsPinStart: Column<any>[] = [
-  { id: "age" },
-  { id: "job", pin: "start" },
-  { id: "balance", pin: "start" },
-  { id: "education" },
-  { id: "marital" },
-  { id: "default" },
-  { id: "housing" },
-  { id: "loan" },
-  { id: "contact" },
-  { id: "day" },
-  { id: "month" },
-  { id: "duration" },
-  { id: "campaign" },
-  { id: "pdays" },
-  { id: "previous" },
-  { id: "poutcome" },
-  { id: "y" },
-];
-const columnsPinEnd: Column<any>[] = [
-  { id: "age" },
-  { id: "job", pin: "end" },
-  { id: "balance", pin: "end" },
-  { id: "education" },
-  { id: "marital" },
-  { id: "default" },
-  { id: "housing" },
-  { id: "loan" },
-  { id: "contact" },
-  { id: "day" },
-  { id: "month" },
-  { id: "duration" },
-  { id: "campaign" },
-  { id: "pdays" },
-  { id: "previous" },
-  { id: "poutcome" },
-  { id: "y" },
-];
-
-const columnsPinBoth: Column<any>[] = [
-  { id: "age" },
-  { id: "job", pin: "end" },
-  { id: "balance", pin: "end" },
-  { id: "education" },
-  { id: "marital" },
-  { id: "default" },
-  { id: "housing" },
-  { id: "loan" },
-  { id: "contact" },
-  { id: "day" },
-  { id: "month" },
-  { id: "duration", pin: "start" },
-  { id: "campaign", pin: "start" },
-  { id: "pdays" },
-  { id: "previous" },
-  { id: "poutcome" },
-  { id: "y" },
-];
-
-const columnsPinEndOnly: Column<any>[] = [
-  { id: "job", pin: "end" },
-  { id: "balance", pin: "end" },
-];
-const columnsPinStartOnly: Column<any>[] = [
-  { id: "job", pin: "start" },
-  { id: "balance", pin: "start" },
-];
-
 function Component({ data = bankData }: { data?: any[] }) {
   const ds = useClientRowDataSource({
     data: data,
@@ -116,6 +49,30 @@ function Component({ data = bankData }: { data?: any[] }) {
     gridId: useId(),
     columns,
     rowDataSource: ds,
+    rowDetailEnabled: true,
+
+    rowFullWidthPredicate: (p) => p.rowIndex === 3,
+
+    rowDetailExpansions: new Set("3"),
+
+    rowDetailRenderer: () => {
+      return (
+        <>
+          <button>First</button>
+          <button>Second</button>
+          <button>Third</button>
+          <button>Fourth</button>
+        </>
+      );
+    },
+    columnMarker: {
+      cellRenderer: (p) => {
+        const rowDetail = p.grid.api.rowDetailIsEnabledForRow(p.row);
+        if (!rowDetail) return;
+
+        return <button onClick={() => p.grid.api.rowDetailToggle(p.row)}>+</button>;
+      },
+    },
   });
 
   const view = g.view.useValue();
@@ -126,17 +83,15 @@ function Component({ data = bankData }: { data?: any[] }) {
         <button onClick={() => g.state.rtl.set((prev) => !prev)}>
           RTL: {g.state.rtl.get() ? "Yes" : "No"}
         </button>
-      </div>
-      <div>
-        <button onClick={() => g.state.columns.set(columnsPinStart)}>Pin Start</button>
-        <button onClick={() => g.state.columns.set(columnsPinEnd)}>Pin End</button>
-        <button onClick={() => g.state.columns.set(columnsPinBoth)}>Pin Both</button>
-        <button onClick={() => g.state.columns.set(columns)}>No Pin</button>
-        <button onClick={() => g.state.columns.set(columnsPinEndOnly)}>Pin End Only</button>
-        <button onClick={() => g.state.columns.set(columnsPinStartOnly)}>Pin Start Only</button>
+        <button
+          onClick={() => g.state.rowDetailHeight.set((prev) => (prev === "auto" ? 300 : "auto"))}
+        >
+          Toggle Height
+        </button>
+        <button onClick={() => g.state.rowDetailEnabled.set((prev) => !prev)}>Toggle Detail</button>
       </div>
 
-      <div style={{ width: "100%", height: "92vh", border: "1px solid black" }}>
+      <div style={{ width: "100%", height: "90vh", border: "1px solid black" }}>
         <Root grid={g}>
           <Viewport>
             <Header>
@@ -184,6 +139,6 @@ function Component({ data = bankData }: { data?: any[] }) {
   );
 }
 
-export const PinnedColumns: StoryObj = {
+export const RowDetail: StoryObj = {
   render: Component,
 };

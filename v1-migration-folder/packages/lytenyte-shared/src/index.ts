@@ -20,6 +20,7 @@ export {
   GROUP_COLUMN_PREFIX,
   GROUP_COLUMN_SINGLE_ID,
   GROUP_COLUMN_TREE_DATA,
+  COLUMN_MARKER_ID,
 } from "./+constants.js";
 
 export { getTranslate } from "./utils/get-translate.js";
@@ -90,3 +91,6 @@ export { isViewport } from "./navigation/predicates/is-viewport.js";
 export { focusCell } from "./navigation/position-movers/focus-cell.js";
 export { useFocusTracking } from "./navigation/use-focus-tracking.js";
 export { handleNavigationKeys } from "./navigation/position-movers/handle-navigation-key.js";
+export { getNearestRow } from "./navigation/getters/get-nearest-row.js";
+
+export { rowIndexForSection } from "./row/row-index-for-section.js";

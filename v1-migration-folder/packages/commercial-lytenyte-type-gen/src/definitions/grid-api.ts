@@ -218,6 +218,56 @@ const EditUpdate: PropertyType = {
   value: `(params: EditUpdateParams<T>) => void`,
 };
 
+const RowDetailIsExpanded: PropertyType = {
+  kind: "property",
+  name: "rowDetailIsExpanded",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "(rowOrId: string | RowNode<T>) => boolean",
+};
+const RowDetailToggle: PropertyType = {
+  kind: "property",
+  name: "rowDetailToggle",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "(rowOrId: string | RowNode<T>, state?: boolean) => void",
+};
+const RowDetailIsEnabledForRow: PropertyType = {
+  kind: "property",
+  name: "rowDetailIsEnabledForRow",
+  doc: { en: `` },
+  tsDoc: ``,
+  optional: false,
+  value: "(rowOrId: string | RowNode<T>) => boolean",
+};
+const RowDetailRenderedHeight: PropertyType = {
+  kind: "property",
+  name: "rowDetailRenderedHeight",
+  doc: { en: `` },
+  tsDoc: ``,
+  optional: false,
+  value: "(rowOrId: string | RowNode<T>) => number",
+};
+
+const RowById: PropertyType = {
+  kind: "property",
+  name: "rowById",
+  doc: { en: `` },
+  tsDoc: ``,
+  optional: false,
+  value: "(id: string) => RowNode<T> | null | undefined",
+};
+const RowByIndex: PropertyType = {
+  kind: "property",
+  name: "rowByIndex",
+  doc: { en: `` },
+  tsDoc: ``,
+  optional: false,
+  value: "(index: number, section?: RowSection) => RowNode<T> | null | undefined",
+};
+
 export const GridApi: InterfaceType = {
   kind: "interface",
   name: "GridApi<T>",
@@ -248,5 +298,13 @@ export const GridApi: InterfaceType = {
     EditEnd,
     EditIsCellActive,
     EditUpdate,
+
+    RowDetailIsExpanded,
+    RowDetailToggle,
+    RowDetailRenderedHeight,
+    RowDetailIsEnabledForRow,
+
+    RowById,
+    RowByIndex,
   ],
 };

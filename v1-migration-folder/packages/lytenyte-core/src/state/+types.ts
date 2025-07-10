@@ -20,4 +20,8 @@ export interface InternalAtoms {
   readonly editActivePos: GridAtom<EditActivePosition<any> | null>;
   readonly editData: GridAtom<any>;
   readonly editValidation: GridAtom<Record<string, any> | boolean>;
+
+  // Row Height management
+  readonly rowAutoHeightCache: GridAtom<Record<number, number>>;
+  readonly rowDetailAutoHeightCache: GridAtom<Record<number, number>>;
 }

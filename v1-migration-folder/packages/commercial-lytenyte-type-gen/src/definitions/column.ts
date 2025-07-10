@@ -308,6 +308,15 @@ export const ColumnBaseCore: InterfaceType = {
   doc: { en: `` },
 };
 
+export const ColumnMarker: InterfaceType = {
+  kind: "interface",
+  export: true,
+  name: "ColumnMarker<T>",
+  doc: { en: `` },
+  tsDoc: ``,
+  properties: [CellRenderer, HeaderRenderer, FloatingRenderer],
+};
+
 export const ColumnRowGroup: InterfaceType = {
   kind: "interface",
   export: true,

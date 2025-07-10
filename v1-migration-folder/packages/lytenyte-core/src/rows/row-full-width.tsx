@@ -4,6 +4,8 @@ import type { RowFullWidthRowLayout } from "../+types";
 import { useRowStyle } from "./use-row-style";
 import { VIEWPORT_WIDTH_VARIABLE_USE } from "../+constants";
 import { useGridRoot } from "../context";
+import { sizeFromCoord } from "@1771technologies/lytenyte-shared";
+import { RowDetailRow } from "./row-detail-row";
 
 export interface RowFullWidthProps {
   readonly row: RowFullWidthRowLayout<any>;
@@ -21,6 +23,10 @@ const RowFullWidthImpl = forwardRef<
   const Renderer = grid.state.rowFullWidthRenderer.useValue().fn;
 
   const r = row.row.useValue();
+
+  const yPositions = grid.state.yPositions.useValue();
+  const detail = grid.api.rowDetailRenderedHeight(r ?? "");
+  const height = sizeFromCoord(row.rowIndex, yPositions) - detail;
 
   return (
     <div
@@ -46,9 +52,20 @@ const RowFullWidthImpl = forwardRef<
         pointerEvents: "all",
       })}
     >
-      <div role="gridcell" style={{ width: "100%", height: "100%" }}>
+      <div
+        role="gridcell"
+        style={{
+          width: "100%",
+          height,
+          gridColumnStart: "1",
+          gridColumnEnd: "2",
+          gridRowStart: "1",
+          gridRowEnd: "2",
+        }}
+      >
         {children ?? (r ? <Renderer grid={grid} row={r} rowIndex={row.rowIndex} /> : null)}
       </div>
+      <RowDetailRow layout={row} />
     </div>
   );
 });
