@@ -139,6 +139,8 @@ function EditRenderer<T>({ cell }: CellEditorParams<T>) {
 
   const Renderer = typeof editRenderer === "string" ? editFuncs[editRenderer] : editRenderer;
 
+  const validation = ctx.grid.internal.editValidation.useValue();
+
   if (!Renderer) return null;
 
   return (
@@ -149,7 +151,7 @@ function EditRenderer<T>({ cell }: CellEditorParams<T>) {
       row={cell.row.get()!}
       rowIndex={cell.rowIndex}
       value={value}
-      rowValidationState={{}}
+      rowValidationState={validation}
     />
   );
 }

@@ -1,5 +1,9 @@
-import { getNearestRow, getRowIndexFromEl, sizeFromCoord } from "@1771technologies/lytenyte-shared";
-import { VIEWPORT_WIDTH_VARIABLE_USE } from "../+constants";
+import {
+  getNearestRow,
+  getRowIndexFromEl,
+  sizeFromCoord,
+  VIEWPORT_WIDTH_VARIABLE_USE,
+} from "@1771technologies/lytenyte-shared";
 import type { RowFullWidthRowLayout, RowNode, RowNormalRowLayout } from "../+types";
 import { useGridRoot } from "../context";
 import { useEffect, useState } from "react";

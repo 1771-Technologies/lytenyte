@@ -1,18 +1,15 @@
 import { useMemo, type CSSProperties } from "react";
+import { sizeFromCoord } from "../utils/size-from-coord";
 import { SCROLL_WIDTH_VARIABLE_USE, VIEWPORT_WIDTH_VARIABLE_USE } from "../+constants";
-import type { RowFullWidthRowLayout, RowNormalRowLayout } from "../+types";
-import { useGridRoot } from "../context";
 
 export function useRowStyle(
-  row: RowNormalRowLayout<any> | RowFullWidthRowLayout<any>,
+  yPositions: Uint32Array,
+  rowIndex: number,
+  rowIsFocusRow: boolean,
   propStyles: CSSProperties | undefined,
-  additional?: CSSProperties | undefined,
+  overrideStyles: CSSProperties | undefined,
 ) {
-  const cx = useGridRoot().grid;
-
-  const yPositions = cx.state.yPositions.useValue();
-
-  const height = yPositions[row.rowIndex + 1] - yPositions[row.rowIndex];
+  const height = sizeFromCoord(rowIndex, yPositions);
 
   const styles = useMemo(() => {
     const styles: CSSProperties = {
@@ -24,11 +21,11 @@ export function useRowStyle(
       gridTemplateColumns: "100%",
       gridTemplateRows: `${height}px`,
       pointerEvents: "none",
-      visibility: row.rowIsFocusRow ? "hidden" : undefined,
+      visibility: rowIsFocusRow ? "hidden" : undefined,
     };
 
-    return { ...propStyles, ...styles, ...additional };
-  }, [additional, height, propStyles, row.rowIsFocusRow]);
+    return { ...propStyles, ...styles, ...overrideStyles };
+  }, [height, overrideStyles, propStyles, rowIsFocusRow]);
 
   return styles;
 }

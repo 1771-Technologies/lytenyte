@@ -452,26 +452,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
     columnMarker: makeGridAtom(columnMarker, store),
     rowDetailEnabled: makeGridAtom(rowDetailEnabled, store),
-    rowDetailExpansions: makeGridAtom(rowDetailExpansions, store, (v) => {
-      let stop = false;
-      api.eventFire("rowDetailExpansionBegin", {
-        expansions: store.get(rowDetailExpansions),
-        grid,
-        preventDefault: () => {
-          stop = true;
-        },
-      });
-      if (stop) return store.get(rowDetailExpansions);
-
-      queueMicrotask(() =>
-        api.eventFire("rowDetailExpansionEnd", {
-          expansions: store.get(rowDetailExpansions),
-          grid,
-        }),
-      );
-
-      return v;
-    }),
+    rowDetailExpansions: makeGridAtom(rowDetailExpansions, store),
     rowDetailHeight: makeGridAtom(rowDetailHeight, store),
     rowDetailMarker: makeGridAtom(rowDetailMarker, store),
     rowDetailRenderer: makeGridAtom(rowDetailRenderer, store),

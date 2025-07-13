@@ -60,6 +60,7 @@ export function makeRowDataStore<T>(
     const rSnap = rTimeSnap.get(r);
     if (!rSnap) return;
     family.remove(r);
+    watchAtoms.delete(r);
 
     store.set(rSnap, (prev) => prev + 1);
   };

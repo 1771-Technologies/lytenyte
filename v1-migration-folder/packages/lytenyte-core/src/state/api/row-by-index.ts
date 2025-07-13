@@ -11,6 +11,8 @@ export const makeRowByIndex = (grid: Grid<any>): GridApi<any>["rowByIndex"] => {
       grid.state.rowDataStore.rowCount.get(),
     );
 
+    if (rowIndex == null) return null;
+
     return grid.state.rowDataSource.get().rowByIndex(rowIndex);
   };
 };

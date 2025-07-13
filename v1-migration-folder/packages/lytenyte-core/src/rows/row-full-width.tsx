@@ -1,10 +1,8 @@
 import { forwardRef, type JSX } from "react";
 import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
 import type { RowFullWidthRowLayout } from "../+types";
-import { useRowStyle } from "./use-row-style";
-import { VIEWPORT_WIDTH_VARIABLE_USE } from "../+constants";
 import { useGridRoot } from "../context";
-import { sizeFromCoord } from "@1771technologies/lytenyte-shared";
+import { RowFullWidthReact } from "@1771technologies/lytenyte-shared";
 import { RowDetailRow } from "./row-detail-row";
 
 export interface RowFullWidthProps {
@@ -15,58 +13,28 @@ export interface RowFullWidthProps {
 const RowFullWidthImpl = forwardRef<
   HTMLDivElement,
   JSX.IntrinsicElements["div"] & RowFullWidthProps
->(function RowFullWidth({ row, space, children, ...props }, forwarded) {
+>(function RowFullWidth({ row: layout, space, children, ...props }, forwarded) {
   const grid = useGridRoot().grid;
-  const gridId = grid.state.gridId.useValue();
-  const rtl = grid.state.rtl.useValue();
-
   const Renderer = grid.state.rowFullWidthRenderer.useValue().fn;
-
-  const r = row.row.useValue();
-
-  const yPositions = grid.state.yPositions.useValue();
-  const detail = grid.api.rowDetailRenderedHeight(r ?? "");
-  const height = sizeFromCoord(row.rowIndex, yPositions) - detail;
+  const row = layout.row.useValue();
 
   return (
-    <div
+    <RowFullWidthReact
       {...props}
-      role="row"
-      /** Data attributes start */
-      data-ln-gridid={gridId}
-      data-ln-rowindex={row.rowIndex}
-      data-ln-row
-      data-ln-last-top-pin={row.rowLastPinTop}
-      data-ln-first-bottom-pin={row.rowFirstPinBottom}
-      data-ln-rowtype="full-width"
-      /** Data attributes end */
-      tabIndex={-1}
       ref={forwarded}
-      style={useRowStyle(row, props.style, {
-        right: rtl ? "0px" : undefined,
-        left: rtl ? undefined : "0px",
-        border: "1px solid black",
-        position: "sticky",
-        width: space === "scroll-width" ? undefined : VIEWPORT_WIDTH_VARIABLE_USE,
-        gridTemplateColumns: `${space === "scroll-width" ? "100%" : VIEWPORT_WIDTH_VARIABLE_USE}`,
-        pointerEvents: "all",
-      })}
+      detail={<RowDetailRow layout={layout} />}
+      detailHeight={grid.api.rowDetailRenderedHeight(row ?? "")}
+      gridId={grid.state.gridId.useValue()}
+      rtl={grid.state.rtl.useValue()}
+      rowFirstPinBottom={layout.rowFirstPinBottom}
+      rowLastPinTop={layout.rowLastPinTop}
+      rowIndex={layout.rowIndex}
+      rowIsFocusRow={layout.rowIsFocusRow ?? false}
+      yPositions={grid.state.yPositions.useValue()}
+      space={space}
     >
-      <div
-        role="gridcell"
-        style={{
-          width: "100%",
-          height,
-          gridColumnStart: "1",
-          gridColumnEnd: "2",
-          gridRowStart: "1",
-          gridRowEnd: "2",
-        }}
-      >
-        {children ?? (r ? <Renderer grid={grid} row={r} rowIndex={row.rowIndex} /> : null)}
-      </div>
-      <RowDetailRow layout={row} />
-    </div>
+      {children ?? (row ? <Renderer grid={grid} row={row} rowIndex={layout.rowIndex} /> : null)}
+    </RowFullWidthReact>
   );
 });
 

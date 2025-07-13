@@ -18,7 +18,11 @@ export function useFocusTracking(
         setFocused(true);
 
         const el = getNearestFocusable(ev.target as HTMLElement);
-        if (!el) return;
+        if (!el) {
+          setFocused(false);
+          focusActive.set(null);
+          return;
+        }
 
         const position = getPositionFromFocusable(el);
         focusActive.set(position);

@@ -1,45 +1,23 @@
-import { forwardRef, useMemo, type JSX } from "react";
+import { forwardRef, type JSX } from "react";
 import { useGridRoot } from "../context";
 import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
+import { HeaderReact } from "@1771technologies/lytenyte-shared";
 
 const HeaderImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(
   function Header(props, forwarded) {
     const grid = useGridRoot().grid;
 
-    const width = grid.state.widthTotal.useValue();
-
-    const rows = grid.internal.headerRows.useValue();
-    const headerHeight = grid.state.headerHeight.useValue();
-    const headerGroupHeight = grid.state.headerGroupHeight.useValue();
-    const floatingRowHeight = grid.state.floatingRowHeight.useValue();
-    const floatingRowEnabled = grid.state.floatingRowEnabled.useValue();
-
-    const gridRowTemplate = useMemo(() => {
-      const template = [];
-      for (let i = 0; i < rows - 1; i++) template.push(`${headerGroupHeight}px`);
-      template.push(`${headerHeight}px`);
-      if (floatingRowEnabled) template.push(`${floatingRowHeight}px`);
-
-      return template.join(" ");
-    }, [floatingRowEnabled, floatingRowHeight, headerGroupHeight, headerHeight, rows]);
-
     return (
-      <div
+      <HeaderReact
         {...props}
         ref={forwarded}
-        role="rowgroup"
-        data-ln-header
-        style={{
-          ...props.style,
-          width,
-          boxSizing: "border-box",
-          position: "sticky",
-          top: 0,
-          zIndex: 10,
-          display: "grid",
-          gridTemplateRows: gridRowTemplate,
-        }}
-      ></div>
+        floatingRowEnabled={grid.state.floatingRowEnabled.useValue()}
+        floatingRowHeight={grid.state.floatingRowHeight.useValue()}
+        headerGroupHeight={grid.state.headerGroupHeight.useValue()}
+        headerHeight={grid.state.headerHeight.useValue()}
+        rows={grid.internal.headerRows.useValue()}
+        width={grid.state.widthTotal.useValue()}
+      />
     );
   },
 );
