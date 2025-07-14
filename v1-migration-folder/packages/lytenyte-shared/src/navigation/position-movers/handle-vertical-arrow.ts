@@ -15,6 +15,8 @@ import type {
   PositionUnion,
 } from "../../+types";
 import type { ScrollIntoViewFn } from "../../+types.non-gen";
+import { runWithBackoff } from "@1771technologies/lytenyte-js-utils";
+import { getCellRootRowAndColIndex } from "./get-cell-root-row-and-col-index";
 
 interface HandleVerticalArrowArgs {
   readonly vp: HTMLElement | null;
@@ -62,32 +64,19 @@ export function handleVerticalArrow(args: HandleVerticalArrowArgs) {
 
     scrollIntoView({ row: nextRow, behavior: "instant" });
 
-    // We try focus to begin - since it's likely the cell is already visible. If it isn't then we wait
-    // for it to be visible and then try focus it.
-    const res = focusCellVertically({
-      focusActive,
-      id,
-      layout,
-      nextRow,
-      pos,
-      scrollIntoView,
-      vp,
-    });
+    const run = () => {
+      return focusCellVertically({
+        focusActive,
+        id,
+        layout,
+        nextRow,
+        pos,
+        scrollIntoView,
+        vp,
+      });
+    };
 
-    if (!res)
-      setTimeout(
-        () =>
-          focusCellVertically({
-            focusActive,
-            id,
-            layout,
-            nextRow,
-            pos,
-            scrollIntoView,
-            vp,
-          }),
-        20,
-      );
+    runWithBackoff(run, [8, 20]);
   } else {
     if (isDown) {
       const rows = getHeaderRows(vp!);
@@ -176,39 +165,36 @@ function focusFirstRowCell({
   // If there is a full width row we focus it and maintain the column index
   // If there is a cell with spans we need to ensure we focus the correct position
   // If there is a normal cell we focus that.
-  setTimeout(() => {
+
+  const run = () => {
     const row = layout.get(0);
 
-    if (!row) return;
+    if (!row) return false;
 
-    let maybeFocus: HTMLElement | null | undefined = undefined;
+    let el: HTMLElement | null | undefined = undefined;
     if (isFullWidthMap(row)) {
-      maybeFocus = vp?.querySelector(getRowQuery(id, 0));
+      el = vp?.querySelector(getRowQuery(id, 0));
 
-      ensureVisible(maybeFocus as HTMLElement, scrollIntoView);
-      (maybeFocus as HTMLElement).focus();
+      ensureVisible(el as HTMLElement, scrollIntoView);
+      if (!el) return false;
+
+      (el as HTMLElement).focus();
 
       focusActive.set((p) => ({ ...p, colIndex: pos.colIndex }) as PositionFullWidthRow);
-      return;
+      return true;
     }
 
     const cell = row.get(pos.colIndex)!;
-    let rootRow: number;
-    let rootCol: number;
-    if (cell.length === 2) {
-      rootRow = 0;
-      rootCol = pos.colIndex;
-    } else {
-      rootRow = cell[1];
-      rootCol = cell[2];
-    }
+    const [rootRow, rootCol] = getCellRootRowAndColIndex(cell, 0, pos.colIndex);
 
-    maybeFocus = vp?.querySelector(getCellQuery(id, rootRow, rootCol));
-    if (!maybeFocus) if (!maybeFocus) return;
+    el = vp?.querySelector(getCellQuery(id, rootRow, rootCol));
+    if (!el) return false;
 
-    ensureVisible(maybeFocus as HTMLElement, scrollIntoView);
-    (maybeFocus as HTMLElement).focus();
+    ensureVisible(el as HTMLElement, scrollIntoView);
+    (el as HTMLElement).focus();
     focusActive.set((p) => ({ ...p, colIndex: pos.colIndex }) as PositionFullWidthRow);
-    return;
-  }, 20);
+    return true;
+  };
+
+  runWithBackoff(run, [8, 20]);
 }

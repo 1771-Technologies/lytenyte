@@ -101,9 +101,6 @@ export function handleNavigationKeys(e: Event, args: Args) {
         });
         break;
       }
-      default: {
-        return;
-      }
     }
   }, 4);
 }

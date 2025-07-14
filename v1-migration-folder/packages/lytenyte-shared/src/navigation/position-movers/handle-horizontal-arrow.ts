@@ -8,6 +8,8 @@ import {
   getHeaderRows,
 } from "@1771technologies/lytenyte-shared";
 import type { LayoutMap, ScrollIntoViewFn } from "../../+types.non-gen";
+import { getCellRootRowAndColIndex } from "./get-cell-root-row-and-col-index";
+import { runWithBackoff } from "@1771technologies/lytenyte-js-utils";
 
 interface HandleHorizontalArrowArgs {
   readonly vp: HTMLElement | null;
@@ -32,6 +34,7 @@ export function handleHorizontalArrow({
   focusActive,
   id,
 }: HandleHorizontalArrowArgs) {
+  // Start by getting the nearest focusable element that is known to the grid.
   const nearest = getNearestFocusable();
   const tabbables = getTabbables(nearest!, "if-empty");
 
@@ -67,15 +70,7 @@ export function handleHorizontalArrow({
 
       if (!cell) return false;
 
-      let rootRow: number;
-      let rootCol: number;
-      if (cell.length === 2) {
-        rootRow = pos.rowIndex;
-        rootCol = nextIndex;
-      } else {
-        rootRow = cell[1];
-        rootCol = cell[2];
-      }
+      const [rootRow, rootCol] = getCellRootRowAndColIndex(cell, pos.rowIndex, nextIndex);
 
       scrollIntoView({ row: rootRow, column: rootCol, behavior: "instant" });
       const el = vp?.querySelector(getCellQuery(id, rootRow, rootCol)) as HTMLElement;
@@ -93,8 +88,7 @@ export function handleHorizontalArrow({
       return true;
     };
 
-    const res = run();
-    if (!res) setTimeout(() => run(), 20);
+    runWithBackoff(run, [8, 20]);
   } else {
     const headerRow = getNearestHeaderRow();
     if (!headerRow) return;
@@ -151,12 +145,6 @@ export function handleHorizontalArrow({
       return true;
     };
 
-    // Try 3 times without backoff
-    const res = run();
-    if (!res)
-      setTimeout(() => {
-        const res = run();
-        if (!res) setTimeout(() => run(), 20);
-      }, 8);
+    runWithBackoff(run, [8, 20]);
   }
 }

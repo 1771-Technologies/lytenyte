@@ -1,4 +1,6 @@
 export function runWithBackoff(run: () => boolean, times: number[]) {
+  if (!times.length) return;
+
   const res = run();
 
   const time = times.shift();
