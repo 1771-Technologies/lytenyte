@@ -119,6 +119,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const editCellMode = atom(p.editCellMode ?? "readonly");
 
   const columnMarker = atom(p.columnMarker ?? {});
+  const columnMarkerEnabled = atom(p.columnMarkerEnabled ?? false);
 
   const rowDetailEnabledProvidedVal = p.rowDetailEnabled ?? false;
   const rowDetailEnabled = atom(
@@ -129,7 +130,6 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const rowDetailHeight = atom(p.rowDetailHeight ?? 300);
   const rowDetailAutoHeightGuess = atom(p.rowDetailAutoHeightGuess ?? 300);
   const rowDetailExpansions = atom(p.rowDetailExpansions ?? new Set<string>());
-  const rowDetailMarker = atom(p.rowDetailMarker ?? true);
   const rowDetailRenderer = atom({ fn: p.rowDetailRenderer ?? (() => "Not defined") });
 
   const internal_rowAutoHeightCache = atom<Record<number, number>>({});
@@ -210,12 +210,8 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
     const colsWithMarker = columnHandleMarker({
       columns: cols,
-      rowDetailEnabled: !!g(rowDetailEnabled),
-      rowDetailMarker: g(rowDetailMarker),
       marker: g(columnMarker),
-      rowDragEnabled: false,
-      rowSelectionCheckbox: "normal",
-      rowSelectionMode: "none",
+      markerEnabled: g(columnMarkerEnabled),
     });
 
     const view = makeColumnView({
@@ -451,10 +447,10 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     ),
 
     columnMarker: makeGridAtom(columnMarker, store),
+    columnMarkerEnabled: makeGridAtom(columnMarkerEnabled, store),
     rowDetailEnabled: makeGridAtom(rowDetailEnabled, store),
     rowDetailExpansions: makeGridAtom(rowDetailExpansions, store),
     rowDetailHeight: makeGridAtom(rowDetailHeight, store),
-    rowDetailMarker: makeGridAtom(rowDetailMarker, store),
     rowDetailRenderer: makeGridAtom(rowDetailRenderer, store),
     rowDetailAutoHeightGuess: makeGridAtom(rowDetailAutoHeightGuess, store),
   };

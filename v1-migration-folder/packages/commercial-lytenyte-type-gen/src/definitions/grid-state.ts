@@ -456,14 +456,15 @@ const ColumnMarker: PropertyType = {
   optional: false,
 };
 
-const RowDetailMarker: PropertyType = {
+const ColumnMarkerEnabled: PropertyType = {
   kind: "property",
-  name: "rowDetailMarker",
+  name: "columnMarkerEnabled",
+  value: "GridAtom<boolean>",
   tsDoc: ``,
   doc: { en: `` },
   optional: false,
-  value: "GridAtom<boolean>",
 };
+
 const RowDetailEnabled: PropertyType = {
   kind: "property",
   name: "rowDetailEnabled",
@@ -573,8 +574,9 @@ export const GridStateCore: InterfaceType = {
     EditActivePosition,
 
     ColumnMarker,
+    ColumnMarkerEnabled,
+
     RowDetailEnabled,
-    RowDetailMarker,
     RowDetailRenderer,
     RowDetailHeight,
     RowDetailAutoHeightGuess,

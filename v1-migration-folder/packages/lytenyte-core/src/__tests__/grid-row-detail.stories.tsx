@@ -89,6 +89,9 @@ function Component({ data = bankData }: { data?: any[] }) {
           Toggle Height
         </button>
         <button onClick={() => g.state.rowDetailEnabled.set((prev) => !prev)}>Toggle Detail</button>
+        <button onClick={() => g.state.columnMarkerEnabled.set((prev) => !prev)}>
+          Toggle Marker
+        </button>
       </div>
 
       <div style={{ width: "100%", height: "90vh", border: "1px solid black" }}>

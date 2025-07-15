@@ -336,9 +336,9 @@ const ColumnMarkerProp: PropertyType = {
   value: "ColumnMarker<T>",
 };
 
-const RowDetailMarker: PropertyType = {
+const ColumnMarkerEnabled: PropertyType = {
   kind: "property",
-  name: "rowDetailMarker",
+  name: "columnMarkerEnabled",
   tsDoc: ``,
   doc: { en: `` },
   optional: true,
@@ -439,8 +439,8 @@ export const UseLyteNytePropsCore: InterfaceType = {
     EditCellMode,
 
     ColumnMarkerProp,
+    ColumnMarkerEnabled,
     RowDetailEnabled,
-    RowDetailMarker,
     RowDetailRenderer,
     RowDetailHeight,
     RowDetailExpansions,

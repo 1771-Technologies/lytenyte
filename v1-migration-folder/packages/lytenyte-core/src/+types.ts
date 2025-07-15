@@ -205,12 +205,12 @@ export interface UseLyteNyteProps<T> {
   /**
    *
    */
-  readonly rowDetailEnabled?: boolean | RowDetailEnabledFn<T>;
+  readonly columnMarkerEnabled?: boolean;
 
   /**
    *
    */
-  readonly rowDetailMarker?: boolean;
+  readonly rowDetailEnabled?: boolean | RowDetailEnabledFn<T>;
 
   /**
    *
@@ -506,12 +506,12 @@ export interface GridState<T> {
   /**
    *
    */
-  readonly rowDetailEnabled: GridAtom<boolean | { fn: RowDetailEnabledFn<T> }>;
+  readonly columnMarkerEnabled: GridAtom<boolean>;
 
   /**
    *
    */
-  readonly rowDetailMarker: GridAtom<boolean>;
+  readonly rowDetailEnabled: GridAtom<boolean | { fn: RowDetailEnabledFn<T> }>;
 
   /**
    *
@@ -1210,6 +1210,16 @@ export interface ColumnMarker<T> {
    *
    */
   readonly floatingRenderer?: HeaderFloatingCellRenderer<T>;
+
+  /**
+   *
+   */
+  readonly width?: number;
+
+  /**
+   *
+   */
+  readonly uiHints?: ColumnUIHints;
 }
 
 /**
