@@ -21,6 +21,22 @@ export {
   GROUP_COLUMN_SINGLE_ID,
   GROUP_COLUMN_TREE_DATA,
   COLUMN_MARKER_ID,
+  //
+  COL_OVERSCAN,
+  DEFAULT_COLUMN_WIDTH,
+  DEFAULT_COLUMN_WIDTH_MAX,
+  DEFAULT_COLUMN_WIDTH_MIN,
+  FULL_WIDTH_MAP,
+  NORMAL_CELL,
+  ROW_OVERSCAN_END,
+  ROW_OVERSCAN_START,
+  // CSS variables
+  VIEWPORT_HEIGHT_VARIABLE,
+  VIEWPORT_HEIGHT_VARIABLE_USE,
+  VIEWPORT_WIDTH_VARIABLE,
+  VIEWPORT_WIDTH_VARIABLE_USE,
+  SCROLL_WIDTH_VARIABLE,
+  SCROLL_WIDTH_VARIABLE_USE,
 } from "./+constants.js";
 
 export { getTranslate } from "./utils/get-translate.js";
@@ -94,3 +110,13 @@ export { handleNavigationKeys } from "./navigation/position-movers/handle-naviga
 export { getNearestRow } from "./navigation/getters/get-nearest-row.js";
 
 export { rowIndexForSection } from "./row/row-index-for-section.js";
+
+export { CellReact } from "./renderer-react/cell.js";
+export { RowReact } from "./renderer-react/row.js";
+export { RowsContainerReact } from "./renderer-react/rows-container.js";
+export { RowsBottomReact, RowsCenterReact, RowsTopReact } from "./renderer-react/rows-sections.js";
+export { RowFullWidthReact } from "./renderer-react/row-full-width.js";
+export { HeaderReact } from "./renderer-react/header.js";
+export { HeaderRowReact } from "./renderer-react/header-row.js";
+export { HeaderCellReact } from "./renderer-react/header-cell.js";
+export { HeaderGroupCellReact } from "./renderer-react/header-group-cell.js";

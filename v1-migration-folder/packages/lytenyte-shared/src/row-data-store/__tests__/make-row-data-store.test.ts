@@ -68,6 +68,35 @@ describe("makeRowDataStore", () => {
     `);
   });
 
+  test("should be able to invalidate a single row", () => {
+    const rowByIndex = atom(() => {
+      return (r: number): RowLeaf<number> => ({ id: `${r}`, data: r, kind: "leaf" });
+    });
+
+    const store = createStore();
+    const gridAtom = makeGridAtom(rowByIndex, store);
+
+    const dataStore = makeRowDataStore(store, gridAtom);
+    const r = dataStore.store.rowForIndex(0);
+
+    expect(r.get()).toMatchInlineSnapshot(`
+      {
+        "data": 0,
+        "id": "0",
+        "kind": "leaf",
+      }
+    `);
+
+    const r1 = dataStore.store.rowForIndex(0);
+    expect(r).toBe(r1);
+
+    dataStore.store.rowInvalidateIndex(0);
+    expect(dataStore.store.rowForIndex(0)).not.toBe(r1);
+
+    // Should be able to invalidate a row that we haven't actually loaded before
+    dataStore.store.rowInvalidateIndex(22);
+  });
+
   test("should handle row updates", () => {
     const rowByIndex = atom(() => {
       return (r: number): RowLeaf<number> => ({ id: `${r}`, data: r, kind: "leaf" });

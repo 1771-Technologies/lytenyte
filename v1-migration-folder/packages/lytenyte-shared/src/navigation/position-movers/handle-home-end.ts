@@ -1,9 +1,11 @@
+import { runWithBackoff } from "@1771technologies/lytenyte-js-utils";
 import type { GridAtom, PositionGridCell, PositionUnion } from "../../+types";
 import type { LayoutMap, ScrollIntoViewFn } from "../../+types.non-gen";
 import { isFullWidthMap } from "../../layout/is-full-width-map";
 import { ensureVisible } from "../ensure-visible";
 import { getCellQuery } from "../getters/get-cell-query";
 import { getRowQuery } from "../getters/get-row-query";
+import { getCellRootRowAndColIndex } from "./get-cell-root-row-and-col-index";
 
 interface HandleHomeEndArgs {
   readonly rowCount: number;
@@ -41,33 +43,25 @@ export function handleHomeEnd({
   // calculations are performed and that we can safely focus the cell.
   scrollIntoView({ row: targetRow, column: targetColumn, behavior: "instant" });
 
-  // We put this in a timeout since we need to wait for the scrollIntoView to resolve.
-  setTimeout(() => {
+  const run = () => {
     const row = layout.get(targetRow);
     // No header and no rows - the grid is empty, nothing to focus
-    if (!row) return;
+    if (!row) return false;
 
     if (isFullWidthMap(row)) {
       const c = vp?.querySelector(getRowQuery(id, targetRow)) as HTMLElement;
-      if (!c) return;
+      if (!c) return false;
 
       ensureVisible(c, scrollIntoView);
       c.focus();
-      return;
+      return true;
     }
 
     const cell = row.get(targetColumn)!;
-    let rootRow: number;
-    let rootCol: number;
-    if (cell.length === 2) {
-      rootRow = targetRow;
-      rootCol = targetColumn;
-    } else {
-      rootRow = cell[1];
-      rootCol = cell[2];
-    }
+    const [rootRow, rootCol] = getCellRootRowAndColIndex(cell, targetRow, targetColumn);
+
     const el = vp?.querySelector(getCellQuery(id, rootRow, rootCol)) as HTMLElement;
-    if (!el) return;
+    if (!el) return false;
 
     ensureVisible(el, scrollIntoView);
     el.focus();
@@ -75,6 +69,8 @@ export function handleHomeEnd({
     focusActive.set(
       (p) => ({ ...p, colIndex: targetColumn, rowIndex: targetRow }) as PositionGridCell,
     );
-    return;
-  }, 20);
+    return true;
+  };
+
+  runWithBackoff(run, [8, 20]);
 }

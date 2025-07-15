@@ -1,5 +1,12 @@
 import { BRANCH, LEAF } from "../+constants.js";
-import type { AggregationItem, BranchNode, GroupItem, LeafNode, Root } from "../+types.js";
+import type {
+  AggregationItem,
+  BranchNode,
+  GroupItem,
+  LeafNode,
+  Root,
+  TreeNode,
+} from "../+types.js";
 import { traverse } from "./traverse.js";
 import { aggregationEvaluator } from "./evaluator-aggregation.js";
 import { groupEvaluator } from "./evaluator-group.js";
@@ -10,6 +17,7 @@ export interface ClientData<Data> {
   readonly idsLeaf: Set<string>;
   readonly idsBranch: Set<string>;
   readonly idsAll: Set<string>;
+  readonly idToNode: Map<string, TreeNode<Data>>;
 }
 
 export interface MakeClientDataArgs<Data> {
@@ -32,6 +40,7 @@ export function makeClientTree<Data>({
   const idsLeaf = new Set<string>();
   const idsBranch = new Set<string>();
   const idsAll = new Set<string>();
+  const idToNode = new Map<string, TreeNode<Data>>();
 
   for (let i = 0; i < rowData.length; i++) {
     const d = rowData[i];
@@ -51,7 +60,7 @@ export function makeClientTree<Data>({
 
       // We need to create a branch node.
       if (!lookup.has(pathKey)) {
-        const id = rowIdGroup?.(runningPath) ?? runningPath.join("/");
+        const id = rowIdGroup?.(runningPath) ?? "+.+" + runningPath.join("/");
         idsBranch.add(id);
         idsAll.add(id);
 
@@ -67,6 +76,7 @@ export function makeClientTree<Data>({
           leafData: [],
         };
         lookup.set(pathKey, branch);
+        idToNode.set(id, branch);
       }
 
       const branch = lookup.get(pathKey)! as BranchNode<Data>;
@@ -83,6 +93,7 @@ export function makeClientTree<Data>({
       data: d,
       parent: current === root ? null : (current as unknown as BranchNode<Data>),
     };
+    idToNode.set(id, leaf);
 
     if (rowBranchModel.length === 0) (current as Root<Data>).set(id, leaf);
     else (current as BranchNode<Data>).children.set(id, leaf);
@@ -99,15 +110,6 @@ export function makeClientTree<Data>({
     idsLeaf: idsLeaf,
     idsBranch: idsBranch,
     idsAll: idsAll,
+    idToNode,
   };
 }
-
-/**
- * Pipeline:
- *  - Filter
- *  - Group and Aggregate
- *  - Sort
- *  - Flatten
- *       - Having Filter
- *       - Expanded Filter
- */

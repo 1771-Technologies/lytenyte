@@ -10,34 +10,6 @@ export const RowDetailRendererParams: InterfaceType = {
   properties: [RowIndexProp, RowNodeProp, GridProp],
 };
 
-export const RowDetailEnabledParams: InterfaceType = {
-  kind: "interface",
-  tsDoc: ``,
-  doc: { en: `` },
-  export: true,
-  name: "RowDetailEnabledParams<T>",
-  properties: [RowNodeProp, GridProp],
-};
-
-export const RowDetailEnabledFn: FunctionType = {
-  kind: "function",
-  tsDoc: ``,
-  doc: { en: `` },
-  export: true,
-  name: "RowDetailEnabledFn<T>",
-  properties: [
-    {
-      kind: "property",
-      name: "params",
-      tsDoc: ``,
-      doc: { en: `` },
-      optional: false,
-      value: "RowDetailEnabledParams<T>",
-    },
-  ],
-  return: "boolean",
-};
-
 export const RowDetailHeight: UnionType = {
   kind: "union",
   tsDoc: ``,

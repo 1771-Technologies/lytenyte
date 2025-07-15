@@ -33,3 +33,10 @@ export const GROUP_COLUMN_SINGLE_ID = `${GROUP_COLUMN_PREFIX}:single`;
 export const GROUP_COLUMN_TREE_DATA = `${GROUP_COLUMN_PREFIX}:tree`;
 
 export const COLUMN_MARKER_ID = "lytenyte-marker-column";
+
+export const SCROLL_WIDTH_VARIABLE = "--lng-scroll-container-width";
+export const SCROLL_WIDTH_VARIABLE_USE = `var(${SCROLL_WIDTH_VARIABLE})`;
+export const VIEWPORT_WIDTH_VARIABLE = "--lng-viewport-width";
+export const VIEWPORT_WIDTH_VARIABLE_USE = `var(${VIEWPORT_WIDTH_VARIABLE})`;
+export const VIEWPORT_HEIGHT_VARIABLE = "--lng-viewport-height";
+export const VIEWPORT_HEIGHT_VARIABLE_USE = `var(${VIEWPORT_HEIGHT_VARIABLE})`;

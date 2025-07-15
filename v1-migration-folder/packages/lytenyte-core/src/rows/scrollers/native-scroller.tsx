@@ -15,7 +15,7 @@ export function NativeScroller(props: PropsWithChildren) {
   }
 
   return (
-    <div role="rowgroup" style={{ transform: `translate3d(0px, ${offset}px, 0px)` }}>
+    <div role="presentation" style={{ transform: `translate3d(0px, ${offset}px, 0px)` }}>
       {props.children}
     </div>
   );

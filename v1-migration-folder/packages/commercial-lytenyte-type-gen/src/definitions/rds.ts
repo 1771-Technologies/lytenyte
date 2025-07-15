@@ -20,6 +20,56 @@ export const RowUpdateParams: InterfaceType = {
   ],
 };
 
+export const RowSelectParams: InterfaceType = {
+  kind: "interface",
+  name: "RdsRowSelectParams",
+  doc: { en: `` },
+  export: true,
+  tsDoc: ``,
+  properties: [
+    {
+      kind: "property",
+      name: "startId",
+      doc: { en: `` },
+      optional: false,
+      tsDoc: ``,
+      value: "string",
+    },
+    {
+      kind: "property",
+      name: "endId",
+      doc: { en: `` },
+      optional: false,
+      tsDoc: ``,
+      value: "string",
+    },
+    {
+      kind: "property",
+      name: "selectChildren",
+      doc: { en: `` },
+      optional: false,
+      tsDoc: ``,
+      value: "boolean",
+    },
+    {
+      kind: "property",
+      name: "deselect",
+      doc: { en: `` },
+      optional: false,
+      tsDoc: ``,
+      value: "boolean",
+    },
+    {
+      kind: "property",
+      name: "mode",
+      doc: { en: `` },
+      optional: false,
+      tsDoc: ``,
+      value: "RowSelectionMode",
+    },
+  ],
+};
+
 export const RowDataStore: InterfaceType = {
   kind: "interface",
   name: "RowDataStore<T>",
@@ -140,6 +190,30 @@ export const RowDataSourceCore: InterfaceType = {
       doc: { en: `` },
       tsDoc: ``,
       optional: false,
+    },
+    {
+      kind: "property",
+      name: "rowSelect",
+      value: "(params: RdsRowSelectParams) => void",
+      doc: { en: `` },
+      optional: false,
+      tsDoc: ``,
+    },
+    {
+      kind: "property",
+      name: "rowSelectAll",
+      value: "(params: RowSelectAllOptions) => void",
+      doc: { en: `` },
+      optional: false,
+      tsDoc: ``,
+    },
+    {
+      kind: "property",
+      name: "rowAllChildIds",
+      value: "(rowId: string) => string[]",
+      doc: { en: `` },
+      optional: false,
+      tsDoc: ``,
     },
   ],
   tag: "core",

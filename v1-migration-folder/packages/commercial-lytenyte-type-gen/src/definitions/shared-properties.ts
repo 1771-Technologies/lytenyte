@@ -9,6 +9,32 @@ export const GridProp: PropertyType = {
   optional: false,
 };
 
+export const RowSelectedProp: PropertyType = {
+  kind: "property",
+  name: "rowSelected",
+  value: "boolean",
+  doc: { en: `` },
+  tsDoc: ``,
+  optional: false,
+};
+export const RowIndeterminateProp: PropertyType = {
+  kind: "property",
+  name: "rowIndeterminate",
+  value: "boolean",
+  doc: { en: `` },
+  tsDoc: ``,
+  optional: false,
+};
+
+export const IdProp: PropertyType = {
+  kind: "property",
+  name: "id",
+  value: "string",
+  doc: { en: `` },
+  tsDoc: ``,
+  optional: false,
+};
+
 export const RowIndexProp: PropertyType = {
   kind: "property",
   name: "rowIndex",

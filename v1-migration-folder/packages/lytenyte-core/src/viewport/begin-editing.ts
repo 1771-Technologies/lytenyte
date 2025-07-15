@@ -3,7 +3,7 @@ import type { InternalAtoms } from "../state/+types";
 
 export function beginEditing<T>(
   grid: Grid<T> & { internal: InternalAtoms },
-  activator?: "single" | "dbl-click",
+  activator?: "single" | "double-click",
   init?: any,
 ) {
   const focusPos = grid.internal.focusActive.get();

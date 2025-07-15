@@ -37,7 +37,22 @@ const columns: Column<any>[] = [
       );
     },
   },
-  { id: "job", rowSpan: 3 },
+  {
+    id: "job",
+    rowSpan: 3,
+
+    cellRenderer: ({ rowIndex, colIndex }) => {
+      return (
+        <>
+          <>
+            ({rowIndex},{colIndex})
+          </>
+          <button>A</button>
+          <button>B</button>
+        </>
+      );
+    },
+  },
   { id: "balance", pin: "start" },
   { id: "education", colSpan: 2, rowSpan: 2 },
   { id: "marital" },

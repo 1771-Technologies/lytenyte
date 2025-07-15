@@ -70,11 +70,17 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
           props.onClick?.(e);
           if (e.defaultPrevented) return;
           beginEditing(ctx.grid, "single");
+
+          if (ctx.grid.state.rowSelectionActivator.get() === "single-click")
+            ctx.grid.api.rowHandleSelect(e);
         }}
         onDoubleClick={(e) => {
           props.onDoubleClick?.(e);
           if (e.defaultPrevented) return;
-          beginEditing(ctx.grid, "dbl-click");
+          beginEditing(ctx.grid, "double-click");
+
+          if (ctx.grid.state.rowSelectionActivator.get() === "double-click")
+            ctx.grid.api.rowHandleSelect(e);
         }}
         role="grid"
         ref={ref}

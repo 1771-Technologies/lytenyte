@@ -377,11 +377,50 @@ export function makeClientDataSource<T>(
     rdsStore.set(snapshot, (prev) => prev + 1);
   };
 
+  const rowToIndex = (rowId: string) => {
+    const f = rdsStore.get(flat);
+
+    const top = rdsStore.get(topNodes);
+    const bot = rdsStore.get(botNodes);
+
+    const topCount = top.length;
+    const center = f.flat.length;
+
+    const rowIndex = f.idToIndexMap.get(rowId);
+    if (rowIndex != null) return rowIndex;
+
+    if (rowIndex == null) {
+      const foundTop = top.findIndex((row) => row.id === rowId);
+      if (foundTop !== -1) return foundTop;
+
+      const foundBot = bot.findIndex((row) => row.id === rowId);
+      if (foundBot !== -1) return foundBot + topCount + center;
+    }
+
+    return null;
+  };
+
+  const rowAllChildIds = (rowId: string) => {
+    const t = rdsStore.get(tree);
+
+    const ids: string[] = [];
+    const node = t.idToNode.get(rowId);
+
+    if (node?.kind === 2) {
+      traverse(node, (n) => {
+        ids.push(n.id);
+      });
+    }
+
+    return ids;
+  };
+
   return [
     {
       init,
       rowById,
       rowByIndex,
+      rowAllChildIds,
       rowUpdate,
       rowExpand: (expansions) => {
         const grid = rdsStore.get(grid$);
@@ -389,27 +428,69 @@ export function makeClientDataSource<T>(
 
         grid.state.rowGroupExpansions.set((prev) => ({ ...prev, ...expansions }));
       },
-      rowToIndex: (rowId: string) => {
-        const f = rdsStore.get(flat);
+      rowToIndex,
 
-        const top = rdsStore.get(topNodes);
-        const bot = rdsStore.get(botNodes);
+      rowSelect: (params) => {
+        const grid = rdsStore.get(grid$);
+        if (!grid) return;
 
-        const topCount = top.length;
-        const center = f.flat.length;
+        if (params.mode === "none") return;
+        if (params.mode === "single") {
+          if (params.deselect) {
+            grid.state.rowSelectedIds.set(new Set());
+          } else {
+            grid.state.rowSelectedIds.set(new Set([params.startId]));
+          }
 
-        const rowIndex = f.idToIndexMap.get(rowId);
-        if (rowIndex != null) return rowIndex;
-
-        if (rowIndex == null) {
-          const foundTop = top.findIndex((row) => row.id === rowId);
-          if (foundTop !== -1) return foundTop;
-
-          const foundBot = bot.findIndex((row) => row.id === rowId);
-          if (foundBot !== -1) return foundBot + topCount + center;
+          return;
         }
 
-        return null;
+        const ids = new Set<string>();
+        if (params.startId === params.endId) {
+          ids.add(params.startId);
+          if (params.selectChildren) {
+            rowAllChildIds(params.startId).forEach((c) => ids.add(c));
+          }
+        } else {
+          const first = rowToIndex(params.startId);
+          const last = rowToIndex(params.endId);
+          if (first == null || last == null) return;
+
+          const start = Math.min(first, last);
+          const end = Math.max(first, last);
+
+          for (let i = start; i <= end; i++) {
+            const row = rowByIndex(i);
+
+            if (!row) continue;
+
+            if (params.selectChildren) {
+              rowAllChildIds(row.id).forEach((c) => ids.add(c));
+            }
+            if (row?.id) ids.add(row.id);
+          }
+        }
+
+        if (params.deselect) {
+          const current = grid.state.rowSelectedIds.get();
+          const next = current.difference(ids);
+          grid.state.rowSelectedIds.set(next);
+        } else {
+          const current = grid.state.rowSelectedIds.get();
+          const next = current.union(ids);
+          grid.state.rowSelectedIds.set(next);
+        }
+      },
+      rowSelectAll: (params) => {
+        const grid = rdsStore.get(grid$);
+        if (!grid) return;
+        if (params.deselect) {
+          grid.state.rowSelectedIds.set(new Set());
+          return;
+        }
+
+        const t = rdsStore.get(tree);
+        grid.state.rowSelectedIds.set(new Set(t.idsAll));
       },
     },
     {

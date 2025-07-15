@@ -3,6 +3,7 @@ import {
   ColPinProp,
   ColumnIndexProp,
   ColumnProp,
+  IdProp,
   RowIndexProp,
   RowNodeAtomProp,
   RowPinProp,
@@ -123,6 +124,7 @@ export const HeaderCell: InterfaceType = {
   tsDoc: ``,
   doc: { en: `` },
   properties: [
+    IdProp,
     {
       kind: "property",
       name: "kind",
@@ -143,6 +145,7 @@ export const HeaderCellFloating: InterfaceType = {
   tsDoc: ``,
   doc: { en: `` },
   properties: [
+    IdProp,
     {
       kind: "property",
       name: "kind",
@@ -179,14 +182,7 @@ export const HeaderGroupCell: InterfaceType = {
       doc: { en: `` },
       optional: false,
     },
-    {
-      kind: "property",
-      name: "id",
-      value: "string",
-      tsDoc: ``,
-      doc: { en: `` },
-      optional: false,
-    },
+    IdProp,
     {
       kind: "property",
       name: "idOccurrence",
@@ -288,6 +284,7 @@ export const RowFullWidthRowLayout: InterfaceType = {
       doc: { en: `` },
       optional: false,
     },
+    IdProp,
     RowIndexProp,
     RowNodeAtomProp,
     RowPinProp,
@@ -328,6 +325,7 @@ export const RowCellLayout: InterfaceType = {
       doc: { en: `` },
       optional: false,
     },
+    IdProp,
     RowIndexProp,
     ColumnIndexProp,
     RowNodeAtomProp,
@@ -363,6 +361,7 @@ export const RowNormalRowLayout: InterfaceType = {
     RowLastPinTopProp,
     RowFirstPinBottomProp,
     RowIsFocusRow,
+    IdProp,
     {
       kind: "property",
       name: "cells",

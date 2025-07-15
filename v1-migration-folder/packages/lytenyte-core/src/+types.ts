@@ -205,12 +205,7 @@ export interface UseLyteNyteProps<T> {
   /**
    *
    */
-  readonly rowDetailEnabled?: boolean | RowDetailEnabledFn<T>;
-
-  /**
-   *
-   */
-  readonly rowDetailMarker?: boolean;
+  readonly columnMarkerEnabled?: boolean;
 
   /**
    *
@@ -231,6 +226,26 @@ export interface UseLyteNyteProps<T> {
    *
    */
   readonly rowDetailAutoHeightGuess?: number;
+
+  /**
+   *
+   */
+  readonly rowSelectedIds?: Set<string>;
+
+  /**
+   *
+   */
+  readonly rowSelectionMode?: RowSelectionMode;
+
+  /**
+   *
+   */
+  readonly rowSelectionActivator?: RowSelectionActivator;
+
+  /**
+   *
+   */
+  readonly rowSelectChildren?: boolean;
 }
 
 /**
@@ -506,12 +521,7 @@ export interface GridState<T> {
   /**
    *
    */
-  readonly rowDetailEnabled: GridAtom<boolean | { fn: RowDetailEnabledFn<T> }>;
-
-  /**
-   *
-   */
-  readonly rowDetailMarker: GridAtom<boolean>;
+  readonly columnMarkerEnabled: GridAtom<boolean>;
 
   /**
    *
@@ -532,6 +542,31 @@ export interface GridState<T> {
    *
    */
   readonly rowDetailExpansions: GridAtom<Set<string>>;
+
+  /**
+   *
+   */
+  readonly rowSelectedIds: GridAtom<Set<string>>;
+
+  /**
+   *
+   */
+  readonly rowSelectionMode: GridAtom<RowSelectionMode>;
+
+  /**
+   *
+   */
+  readonly rowSelectionPivot: GridAtom<string | null>;
+
+  /**
+   *
+   */
+  readonly rowSelectionActivator: GridAtom<RowSelectionActivator>;
+
+  /**
+   *
+   */
+  readonly rowSelectChildren: GridAtom<boolean>;
 }
 
 /**
@@ -621,6 +656,11 @@ export interface HeaderCellLayout<T> {
   /**
    *
    */
+  readonly id: string;
+
+  /**
+   *
+   */
   readonly kind: "cell";
 
   /**
@@ -677,6 +717,11 @@ export interface HeaderCellFloating<T> {
    *
    */
   readonly colLastStartPin?: boolean;
+
+  /**
+   *
+   */
+  readonly id: string;
 
   /**
    *
@@ -829,6 +874,11 @@ export interface RowCellLayout<T> {
   /**
    *
    */
+  readonly id: string;
+
+  /**
+   *
+   */
   readonly rowIndex: number;
 
   /**
@@ -890,6 +940,11 @@ export interface RowFullWidthRowLayout<T> {
    *
    */
   readonly kind: "full-width";
+
+  /**
+   *
+   */
+  readonly id: string;
 
   /**
    *
@@ -965,6 +1020,11 @@ export interface RowNormalRowLayout<T> {
    *
    */
   readonly rowIsFocusRow?: boolean;
+
+  /**
+   *
+   */
+  readonly id: string;
 
   /**
    *
@@ -1210,6 +1270,16 @@ export interface ColumnMarker<T> {
    *
    */
   readonly floatingRenderer?: HeaderFloatingCellRenderer<T>;
+
+  /**
+   *
+   */
+  readonly width?: number;
+
+  /**
+   *
+   */
+  readonly uiHints?: ColumnUIHints;
 }
 
 /**
@@ -1395,6 +1465,21 @@ export interface RowDataSource<T> {
    *
    */
   readonly rowExpand: (expansion: Record<string, boolean>) => void;
+
+  /**
+   *
+   */
+  readonly rowSelect: (params: RdsRowSelectParams) => void;
+
+  /**
+   *
+   */
+  readonly rowSelectAll: (params: RowSelectAllOptions) => void;
+
+  /**
+   *
+   */
+  readonly rowAllChildIds: (rowId: string) => string[];
 }
 
 /**
@@ -1437,6 +1522,36 @@ export interface RowDataStore<T> {
    *
    */
   readonly rowInvalidateIndex: (row: number) => void;
+}
+
+/**
+ *
+ */
+export interface RdsRowSelectParams {
+  /**
+   *
+   */
+  readonly startId: string;
+
+  /**
+   *
+   */
+  readonly endId: string;
+
+  /**
+   *
+   */
+  readonly selectChildren: boolean;
+
+  /**
+   *
+   */
+  readonly deselect: boolean;
+
+  /**
+   *
+   */
+  readonly mode: RowSelectionMode;
 }
 
 /**
@@ -1572,6 +1687,16 @@ export interface RowFullWidthRendererParams<T> {
    *
    */
   readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly rowSelected: boolean;
+
+  /**
+   *
+   */
+  readonly rowIndeterminate: boolean;
 }
 
 /**
@@ -1868,6 +1993,16 @@ export interface CellRendererParams<T> {
    *
    */
   readonly colIndex: number;
+
+  /**
+   *
+   */
+  readonly rowSelected: boolean;
+
+  /**
+   *
+   */
+  readonly rowIndeterminate: boolean;
 }
 
 /**
@@ -2018,11 +2153,6 @@ export interface GridApi<T> {
   /**
    *
    */
-  readonly rowDetailIsEnabledForRow: (rowOrId: string | RowNode<T>) => boolean;
-
-  /**
-   *
-   */
   readonly rowById: (id: string) => RowNode<T> | null | undefined;
 
   /**
@@ -2032,6 +2162,41 @@ export interface GridApi<T> {
     index: number,
     section?: RowSection,
   ) => RowNode<T> | null | undefined;
+
+  /**
+   *
+   */
+  readonly rowSelect: (params: RowSelectOptions) => void;
+
+  /**
+   *
+   */
+  readonly rowSelectAll: (params?: RowSelectAllOptions) => void;
+
+  /**
+   *
+   */
+  readonly rowSelected: () => RowNode<T>[];
+
+  /**
+   *
+   */
+  readonly rowHandleSelect: (params: RowHandleSelect) => void;
+}
+
+/**
+ *
+ */
+export interface HandleSelectionParams {
+  /**
+   *
+   */
+  readonly target: EventTarget;
+
+  /**
+   *
+   */
+  readonly shiftKey: boolean;
 }
 
 /**
@@ -2836,6 +3001,26 @@ export interface GridEvents<T> {
    *
    */
   readonly rowDetailExpansionEnd?: RowDetailExpansionEnd<T>;
+
+  /**
+   *
+   */
+  readonly rowSelectBegin?: RowSelectBegin<T>;
+
+  /**
+   *
+   */
+  readonly rowSelectEnd?: RowSelectEnd<T>;
+
+  /**
+   *
+   */
+  readonly rowSelectAllBegin?: RowSelectAllBegin<T>;
+
+  /**
+   *
+   */
+  readonly rowSelectAllEnd?: RowSelectAllEnd<T>;
 }
 
 /**
@@ -2981,6 +3166,126 @@ export interface RowExpandParams<T> {
 /**
  *
  */
+export type RowSelectAllBegin<T> = (
+  /**
+   *
+   */
+  params: RowSelectAllBeginParams<T>,
+) => void;
+
+/**
+ *
+ */
+export interface RowSelectAllBeginParams<T> {
+  /**
+   *
+   */
+  readonly deselect: boolean;
+
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly preventDefault: () => void;
+}
+
+/**
+ *
+ */
+export type RowSelectAllEnd<T> = (
+  /**
+   *
+   */
+  params: RowSelectAllEndParams<T>,
+) => void;
+
+/**
+ *
+ */
+export interface RowSelectAllEndParams<T> {
+  /**
+   *
+   */
+  readonly deselect: boolean;
+
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+}
+
+/**
+ *
+ */
+export type RowSelectBegin<T> = (
+  /**
+   *
+   */
+  params: RowSelectBeginParams<T>,
+) => void;
+
+/**
+ *
+ */
+export interface RowSelectBeginParams<T> {
+  /**
+   *
+   */
+  readonly selected: string;
+
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly deselect: boolean;
+
+  /**
+   *
+   */
+  readonly preventDefault: () => void;
+}
+
+/**
+ *
+ */
+export type RowSelectEnd<T> = (
+  /**
+   *
+   */
+  params: RowSelectEndParams<T>,
+) => void;
+
+/**
+ *
+ */
+export interface RowSelectEndParams<T> {
+  /**
+   *
+   */
+  readonly selected: string;
+
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly deselect: boolean;
+}
+
+/**
+ *
+ */
 export type HeaderCellRendererFn<T> = (
   /**
    *
@@ -3083,7 +3388,7 @@ export type EditCellMode = "cell" | "readonly";
 /**
  *
  */
-export type EditClickActivator = "single" | "dbl-click" | "none";
+export type EditClickActivator = "single" | "double-click" | "none";
 
 /**
  *
@@ -3508,31 +3813,6 @@ export type PositionUnion =
 /**
  *
  */
-export type RowDetailEnabledFn<T> = (
-  /**
-   *
-   */
-  params: RowDetailEnabledParams<T>,
-) => boolean;
-
-/**
- *
- */
-export interface RowDetailEnabledParams<T> {
-  /**
-   *
-   */
-  readonly row: RowNode<T>;
-
-  /**
-   *
-   */
-  readonly grid: Grid<T>;
-}
-
-/**
- *
- */
 export type RowDetailHeight = number | "auto";
 
 /**
@@ -3568,12 +3848,47 @@ export interface RowDetailRendererParams<T> {
 /**
  *
  */
-export type RowSelectionPointerActivator = "single" | "dbl-click" | "none";
+export interface RowSelectAllOptions {
+  /**
+   *
+   */
+  readonly deselect?: boolean;
+}
 
 /**
  *
  */
-export type RowSelectionCheckbox = "normal" | "hide";
+export interface RowSelectOptions {
+  /**
+   *
+   */
+  readonly selected: string;
+
+  /**
+   *
+   */
+  readonly pivot?: string;
+
+  /**
+   *
+   */
+  readonly selectBetweenPivot?: boolean;
+
+  /**
+   *
+   */
+  readonly deselect?: boolean;
+
+  /**
+   *
+   */
+  readonly selectChildren?: boolean;
+}
+
+/**
+ *
+ */
+export type RowSelectionActivator = "single-click" | "double-click" | "none";
 
 /**
  *

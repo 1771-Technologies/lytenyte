@@ -1,38 +1,23 @@
-import { forwardRef, type CSSProperties, type JSX } from "react";
+import { forwardRef, type JSX } from "react";
 import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
 import { useGridRoot } from "../context";
 import { NativeScroller } from "./scrollers/native-scroller";
+import { RowsBottomReact, RowsCenterReact, RowsTopReact } from "@1771technologies/lytenyte-shared";
 
 export const RowsTop = fastDeepMemo(
   forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function RowsTop(props, forwarded) {
     const cx = useGridRoot().grid;
     const view = cx.view.useValue().rows;
-    const height = view.rowTopTotalHeight;
 
-    const top = cx.internal.headerHeightTotal.useValue();
     const topCount = cx.state.rowDataStore.rowTopCount.useValue();
-
-    if (height <= 0) return null;
-
     return (
-      <div
+      <RowsTopReact
         {...props}
+        rowFirst={topCount || -1}
+        rowLast={topCount}
         ref={forwarded}
-        role="rowgroup"
-        data-ln-rows-top
-        data-ln-row-first={0}
-        data-ln-row-last={topCount - 1}
-        style={
-          {
-            ...props.style,
-
-            height,
-            position: "sticky",
-            top,
-            zIndex: 3,
-            minWidth: "100%",
-          } as CSSProperties
-        }
+        top={cx.internal.headerHeightTotal.useValue()}
+        height={view.rowTopTotalHeight}
       />
     );
   }),
@@ -45,32 +30,19 @@ export const RowsCenter = fastDeepMemo(
   ) {
     const cx = useGridRoot().grid;
     const view = cx.view.useValue().rows;
-    const height = view.rowCenterTotalHeight;
 
     const rowCenterCount = cx.state.rowDataStore.rowCenterCount.useValue();
-    const rowTopCount = cx.state.rowDataStore.rowTopCount.useValue();
-
-    if (height <= 0) return <div style={{ flex: "1" }} role="presentation" />;
 
     return (
-      <div
+      <RowsCenterReact
         {...props}
         ref={forwarded}
-        data-ln-rows-center
-        data-ln-row-first={rowTopCount}
-        data-ln-row-last={rowCenterCount + rowTopCount - 1}
-        style={
-          {
-            ...props.style,
-            height,
-            minHeight: height,
-            flex: 1,
-            minWidth: "100%",
-          } as CSSProperties
-        }
+        rowFirst={cx.state.rowDataStore.rowTopCount.useValue()}
+        rowLast={rowCenterCount + cx.state.rowDataStore.rowTopCount.useValue()}
+        height={view.rowCenterTotalHeight}
       >
         <NativeScroller>{children}</NativeScroller>
-      </div>
+      </RowsCenterReact>
     );
   }),
 );
@@ -79,33 +51,19 @@ export const RowsBottom = fastDeepMemo(
   forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function RowsBottom(props, forwarded) {
     const cx = useGridRoot().grid;
     const view = cx.view.useValue().rows;
-    const height = view.rowBottomTotalHeight;
 
     const rowCenterCount = cx.state.rowDataStore.rowCenterCount.useValue();
     const rowTopCount = cx.state.rowDataStore.rowTopCount.useValue();
     const rowBottomCount = cx.state.rowDataStore.rowBottomCount.useValue();
 
-    if (height <= 0) return null;
     return (
-      <div
+      <RowsBottomReact
         {...props}
         ref={forwarded}
-        role="rowgroup"
-        data-ln-rows-bottom
-        data-ln-row-first={rowCenterCount + rowTopCount}
-        data-ln-row-last={rowCenterCount + rowBottomCount + rowTopCount - 1}
-        style={
-          {
-            ...props.style,
-
-            height,
-            position: "sticky",
-            bottom: 0,
-            zIndex: 3,
-            minWidth: "100%",
-          } as CSSProperties
-        }
-      ></div>
+        rowFirst={rowCenterCount + rowTopCount}
+        rowLast={rowCenterCount + rowBottomCount + rowTopCount}
+        height={view.rowBottomTotalHeight}
+      />
     );
   }),
 );

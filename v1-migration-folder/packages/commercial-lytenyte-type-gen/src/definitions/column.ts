@@ -314,7 +314,7 @@ export const ColumnMarker: InterfaceType = {
   name: "ColumnMarker<T>",
   doc: { en: `` },
   tsDoc: ``,
-  properties: [CellRenderer, HeaderRenderer, FloatingRenderer],
+  properties: [CellRenderer, HeaderRenderer, FloatingRenderer, Width, ColumnHintsProp],
 };
 
 export const ColumnRowGroup: InterfaceType = {

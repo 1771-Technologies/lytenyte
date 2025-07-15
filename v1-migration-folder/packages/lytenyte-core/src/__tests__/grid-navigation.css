@@ -2,3 +2,7 @@
   outline: 2px solid blue;
   outline-offset: -3px;
 }
+
+[data-ln-row-selected="true"] [data-ln-cell] {
+  background-color: green !important;
+}

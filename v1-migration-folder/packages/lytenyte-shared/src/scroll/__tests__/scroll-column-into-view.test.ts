@@ -146,4 +146,22 @@ describe("columnScrollIntoViewValue", () => {
 
     expect(result).toEqual(-400);
   });
+
+  test("return undefined if the column is full in view", () => {
+    const customColumnPositions = new Uint32Array([0, 200, 400, 600, 800]);
+
+    const result = columnScrollIntoViewValue({
+      startCount: 0,
+      centerCount: 5,
+      endCount: 0,
+      columnIndex: 1,
+      columnPositions: customColumnPositions,
+      viewport: {
+        scrollLeft: 0,
+        clientWidth: 600,
+      } as HTMLElement,
+    });
+
+    expect(result).toEqual(undefined);
+  });
 });

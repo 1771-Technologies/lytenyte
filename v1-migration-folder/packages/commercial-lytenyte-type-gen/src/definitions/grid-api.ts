@@ -234,14 +234,6 @@ const RowDetailToggle: PropertyType = {
   optional: false,
   value: "(rowOrId: string | RowNode<T>, state?: boolean) => void",
 };
-const RowDetailIsEnabledForRow: PropertyType = {
-  kind: "property",
-  name: "rowDetailIsEnabledForRow",
-  doc: { en: `` },
-  tsDoc: ``,
-  optional: false,
-  value: "(rowOrId: string | RowNode<T>) => boolean",
-};
 const RowDetailRenderedHeight: PropertyType = {
   kind: "property",
   name: "rowDetailRenderedHeight",
@@ -266,6 +258,66 @@ const RowByIndex: PropertyType = {
   tsDoc: ``,
   optional: false,
   value: "(index: number, section?: RowSection) => RowNode<T> | null | undefined",
+};
+
+const RowSelect: PropertyType = {
+  kind: "property",
+  name: "rowSelect",
+  doc: { en: `` },
+  tsDoc: ``,
+  optional: false,
+  value: "(params: RowSelectOptions) => void",
+};
+const RowSelectAll: PropertyType = {
+  kind: "property",
+  name: "rowSelectAll",
+  doc: { en: `` },
+  tsDoc: ``,
+  optional: false,
+  value: "(params?: RowSelectAllOptions) => void",
+};
+const RowSelected: PropertyType = {
+  kind: "property",
+  name: "rowSelected",
+  doc: { en: `` },
+  tsDoc: ``,
+  optional: false,
+  value: "() => RowNode<T>[]",
+};
+
+export const HandleSelectionParams: InterfaceType = {
+  kind: "interface",
+  name: "HandleSelectionParams",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  properties: [
+    {
+      kind: "property",
+      name: "target",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "EventTarget",
+    },
+    {
+      kind: "property",
+      name: "shiftKey",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "boolean",
+    },
+  ],
+};
+
+const RowHandleSelect: PropertyType = {
+  kind: "property",
+  name: "rowHandleSelect",
+  value: "(params: RowHandleSelect) => void",
+  doc: { en: `` },
+  optional: false,
+  tsDoc: ``,
 };
 
 export const GridApi: InterfaceType = {
@@ -302,9 +354,13 @@ export const GridApi: InterfaceType = {
     RowDetailIsExpanded,
     RowDetailToggle,
     RowDetailRenderedHeight,
-    RowDetailIsEnabledForRow,
 
     RowById,
     RowByIndex,
+
+    RowSelect,
+    RowSelectAll,
+    RowSelected,
+    RowHandleSelect,
   ],
 };

@@ -270,6 +270,155 @@ export const RowDetailExpansionEnd: FunctionType = {
   return: "void",
 };
 
+const RowSelectedProp: PropertyType = {
+  kind: "property",
+  name: "selected",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "string",
+};
+const DeselectProp: PropertyType = {
+  kind: "property",
+  name: "deselect",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "boolean",
+};
+
+export const RowSelectBeginParams: InterfaceType = {
+  kind: "interface",
+  name: "RowSelectBeginParams<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  properties: [
+    RowSelectedProp,
+    GridProp,
+    DeselectProp,
+    {
+      kind: "property",
+      name: "preventDefault",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "() => void",
+    },
+  ],
+};
+export const RowSelectBegin: FunctionType = {
+  kind: "function",
+  name: "RowSelectBegin<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  properties: [
+    {
+      kind: "property",
+      name: "params",
+      doc: { en: `` },
+      optional: false,
+      tsDoc: ``,
+      value: "RowSelectBeginParams<T>",
+    },
+  ],
+  return: "void",
+};
+
+export const RowSelectEndParams: InterfaceType = {
+  kind: "interface",
+  name: "RowSelectEndParams<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  properties: [RowSelectedProp, GridProp, DeselectProp],
+};
+
+export const RowSelectEnd: FunctionType = {
+  kind: "function",
+  name: "RowSelectEnd<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  properties: [
+    {
+      kind: "property",
+      name: "params",
+      doc: { en: `` },
+      optional: false,
+      tsDoc: ``,
+      value: "RowSelectEndParams<T>",
+    },
+  ],
+  return: "void",
+};
+
+export const RowSelectAllBeginParams: InterfaceType = {
+  kind: "interface",
+  name: "RowSelectAllBeginParams<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  properties: [
+    DeselectProp,
+    GridProp,
+    {
+      kind: "property",
+      name: "preventDefault",
+      doc: { en: `` },
+      optional: false,
+      tsDoc: ``,
+      value: "() => void",
+    },
+  ],
+};
+export const RowSelectAllEndParams: InterfaceType = {
+  kind: "interface",
+  name: "RowSelectAllEndParams<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  properties: [DeselectProp, GridProp],
+};
+
+export const RowSelectAllBegin: FunctionType = {
+  kind: "function",
+  name: "RowSelectAllBegin<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  properties: [
+    {
+      kind: "property",
+      name: "params",
+      doc: { en: `` },
+      tsDoc: ``,
+      optional: false,
+      value: "RowSelectAllBeginParams<T>",
+    },
+  ],
+  return: "void",
+};
+
+export const RowSelectAllEnd: FunctionType = {
+  kind: "function",
+  name: "RowSelectAllEnd<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  properties: [
+    {
+      kind: "property",
+      name: "params",
+      doc: { en: `` },
+      tsDoc: ``,
+      optional: false,
+      value: "RowSelectAllEndParams<T>",
+    },
+  ],
+  return: "void",
+};
 /**
  *  Events object
  */
@@ -349,6 +498,41 @@ const RowDetailExpansionEndProp: PropertyType = {
   value: "RowDetailExpansionEnd<T>",
 };
 
+const RowSelectBeginProp: PropertyType = {
+  kind: "property",
+  name: "rowSelectBegin",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "RowSelectBegin<T>",
+};
+
+const RowSelectEndProp: PropertyType = {
+  kind: "property",
+  name: "rowSelectEnd",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "RowSelectEnd<T>",
+};
+
+const RowSelectAllBeginProp: PropertyType = {
+  kind: "property",
+  name: "rowSelectAllBegin",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "RowSelectAllBegin<T>",
+};
+const RowSelectAllEndProp: PropertyType = {
+  kind: "property",
+  name: "rowSelectAllEnd",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "RowSelectAllEnd<T>",
+};
+
 export const Events: InterfaceType = {
   kind: "interface",
   name: "GridEvents<T>",
@@ -367,5 +551,10 @@ export const Events: InterfaceType = {
 
     RowDetailExpansionBeginProp,
     RowDetailExpansionEndProp,
+
+    RowSelectBeginProp,
+    RowSelectEndProp,
+    RowSelectAllBeginProp,
+    RowSelectAllEndProp,
   ],
 };

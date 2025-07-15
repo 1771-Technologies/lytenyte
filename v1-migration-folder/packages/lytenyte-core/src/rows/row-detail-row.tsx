@@ -1,5 +1,9 @@
-import { getNearestRow, getRowIndexFromEl, sizeFromCoord } from "@1771technologies/lytenyte-shared";
-import { VIEWPORT_WIDTH_VARIABLE_USE } from "../+constants";
+import {
+  getNearestRow,
+  getRowIndexFromEl,
+  sizeFromCoord,
+  VIEWPORT_WIDTH_VARIABLE_USE,
+} from "@1771technologies/lytenyte-shared";
 import type { RowFullWidthRowLayout, RowNode, RowNormalRowLayout } from "../+types";
 import { useGridRoot } from "../context";
 import { useEffect, useState } from "react";
@@ -160,6 +164,7 @@ function RowDetailImpl<T>({ row, rowIndex }: { row: RowNode<T>; rowIndex: number
   return (
     <div
       ref={setRef}
+      role="gridcell"
       style={{
         gridColumnStart: "1",
         gridColumnEnd: "2",
@@ -172,7 +177,6 @@ function RowDetailImpl<T>({ row, rowIndex }: { row: RowNode<T>; rowIndex: number
       <div
         tabIndex={-1}
         data-ln-row-detail
-        role="gridcell"
         style={{
           position: "sticky",
           right: rtl ? "0px" : undefined,

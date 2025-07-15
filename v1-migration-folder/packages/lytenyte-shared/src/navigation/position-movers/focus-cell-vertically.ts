@@ -4,6 +4,7 @@ import { isFullWidthMap } from "../../layout/is-full-width-map";
 import { ensureVisible } from "../ensure-visible";
 import { getCellQuery } from "../getters/get-cell-query";
 import { getRowQuery } from "../getters/get-row-query";
+import { getCellRootRowAndColIndex } from "./get-cell-root-row-and-col-index";
 
 interface FocusCellVerticallyArgs {
   readonly id: string;
@@ -42,16 +43,11 @@ export function focusCellVertically({
     return true;
   }
 
-  const cell = row.get(pos.colIndex)!;
-  let rootRow: number;
-  let rootCol: number;
-  if (cell.length === 2) {
-    rootRow = nextRow;
-    rootCol = pos.colIndex;
-  } else {
-    rootRow = cell[1];
-    rootCol = cell[2];
-  }
+  const [rootRow, rootCol] = getCellRootRowAndColIndex(
+    row.get(pos.colIndex)!,
+    nextRow,
+    pos.colIndex,
+  );
 
   const el = vp?.querySelector(getCellQuery(id, rootRow, rootCol)) as HTMLElement;
   if (!el) return false;
