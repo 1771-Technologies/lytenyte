@@ -287,7 +287,7 @@ const RowSelected: PropertyType = {
 
 export const HandleSelectionParams: InterfaceType = {
   kind: "interface",
-  name: "HandleSelectionParams",
+  name: "RowHandleSelect",
   tsDoc: ``,
   doc: { en: `` },
   export: true,
@@ -318,6 +318,15 @@ const RowHandleSelect: PropertyType = {
   doc: { en: `` },
   optional: false,
   tsDoc: ``,
+};
+
+const UseRowDragProps: PropertyType = {
+  kind: "property",
+  name: "useRowDrag",
+  doc: { en: `` },
+  tsDoc: ``,
+  value: "(params: UseRowDragParams<T>) => { dragProps: any, isDragging: boolean }",
+  optional: false,
 };
 
 export const GridApi: InterfaceType = {
@@ -362,5 +371,7 @@ export const GridApi: InterfaceType = {
     RowSelectAll,
     RowSelected,
     RowHandleSelect,
+
+    UseRowDragProps,
   ],
 };

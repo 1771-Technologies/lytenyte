@@ -2,15 +2,17 @@ import { forwardRef, type JSX } from "react";
 import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
 import type { RowFullWidthRowLayout } from "../+types";
 import { useGridRoot } from "../context";
-import { RowFullWidthReact } from "@1771technologies/lytenyte-shared";
+import { RowFullWidthReact, type DropWrapProps } from "@1771technologies/lytenyte-shared";
 import { RowDetailRow } from "./row-detail-row";
 import { useRowContextValue } from "./row/use-row-context-value";
 
-export interface RowFullWidthProps {
+export interface RowFullWidthProps extends Omit<DropWrapProps, "accepted"> {
   readonly row: RowFullWidthRowLayout<any>;
   readonly space?: "viewport" | "scroll-width";
+  readonly accepted?: string[];
 }
 
+const empty: string[] = [];
 const RowFullWidthImpl = forwardRef<
   HTMLDivElement,
   JSX.IntrinsicElements["div"] & RowFullWidthProps
@@ -25,6 +27,7 @@ const RowFullWidthImpl = forwardRef<
     <RowFullWidthReact
       {...props}
       ref={forwarded}
+      accepted={props.accepted ?? empty}
       detail={<RowDetailRow layout={layout} />}
       detailHeight={grid.api.rowDetailRenderedHeight(row ?? "")}
       gridId={grid.state.gridId.useValue()}

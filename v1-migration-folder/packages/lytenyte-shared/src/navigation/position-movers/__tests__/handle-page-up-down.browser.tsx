@@ -21,6 +21,7 @@ describe("handlePageUpDown", () => {
             rowIsFocusRow={false}
             rowLastPinTop={false}
             yPositions={new Uint32Array([0, 100, 200, 300])}
+            accepted={[]}
           >
             <CellReact
               cell={{
@@ -44,6 +45,7 @@ describe("handlePageUpDown", () => {
 
           <RowReact
             gridId="x"
+            accepted={[]}
             rowFirstPinBottom={false}
             rowIndex={1}
             rowIsFocusRow={false}

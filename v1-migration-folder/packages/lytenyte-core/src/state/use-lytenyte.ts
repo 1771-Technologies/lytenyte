@@ -51,11 +51,12 @@ import { makeRowByIndex } from "./api/row-by-index.js";
 import { makeRowDetailIsExpanded } from "./api/row-detail-is-expanded.js";
 import { makeRowDetailToggle } from "./api/row-detail-toggle.js";
 import { makeRowDetailRenderedHeight } from "./api/row-detail-rendered-height.js";
-import { columnHandleMarker } from "./helpers/colunmn-marker.js";
+import { columnHandleMarker } from "./helpers/column-marker.js";
 import { makeRowSelect } from "./api/row-select.js";
 import { makeRowSelectAll } from "./api/row-select-all.js";
 import { makeRowSelected } from "./api/row-selected.js";
 import { makeRowHandleSelect } from "./api/row-handle-select.js";
+import { makeUseRowDrag } from "./api/use-row-drag.js";
 
 const DEFAULT_HEADER_HEIGHT = 40;
 const COLUMN_GROUP_JOIN_DELIMITER = "-->";
@@ -510,6 +511,8 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     rowSelectAll: makeRowSelectAll(grid as any),
     rowSelected: makeRowSelected(grid),
     rowHandleSelect: makeRowHandleSelect(grid as any),
+
+    useRowDrag: makeUseRowDrag(grid),
   } satisfies GridApi<T>);
 
   Object.assign(grid, {

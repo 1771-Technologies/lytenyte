@@ -120,6 +120,7 @@ describe("focusCellVertically", () => {
           rowIndex={0}
           rowIsFocusRow={false}
           rowLastPinTop={false}
+          accepted={[]}
           yPositions={new Uint32Array([0, 100, 200, 300])}
         >
           <CellReact
@@ -139,6 +140,7 @@ describe("focusCellVertically", () => {
           />
         </RowReact>
         <RowFullWidthReact
+          accepted={[]}
           detail={<></>}
           data-testid="second"
           detailHeight={0}

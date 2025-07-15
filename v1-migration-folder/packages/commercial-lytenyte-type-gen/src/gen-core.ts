@@ -27,6 +27,7 @@ import * as Editable from "./definitions/cell-edit.js";
 import * as Navigation from "./definitions/navigation.js";
 import * as RowDetail from "./definitions/row-detail.js";
 import * as RowSelection from "./definitions/row-selection.js";
+import * as RowDrag from "./definitions/row-drag.js";
 
 const typeModules = [
   ...Object.values(UseLng),
@@ -53,6 +54,7 @@ const typeModules = [
   ...Object.values(Navigation),
   ...Object.values(RowDetail),
   ...Object.values(RowSelection),
+  ...Object.values(RowDrag),
 ] as GenTypes[];
 
 const types = typeModules
