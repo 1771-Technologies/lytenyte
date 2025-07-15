@@ -21,6 +21,7 @@ describe("handleHorizontalArrow", () => {
           gridId="x"
           rowFirstPinBottom={false}
           rowIndex={0}
+          accepted={[]}
           rowIsFocusRow={false}
           rowLastPinTop={false}
           yPositions={new Uint32Array([0, 100, 200, 300])}

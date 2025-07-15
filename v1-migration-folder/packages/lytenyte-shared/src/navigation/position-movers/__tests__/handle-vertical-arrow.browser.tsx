@@ -108,6 +108,7 @@ describe("handleVerticalArrow", () => {
             rowIsFocusRow={false}
             rowLastPinTop={false}
             yPositions={new Uint32Array([0, 100, 200, 300])}
+            accepted={[]}
           >
             <CellReact
               cell={{
@@ -136,6 +137,7 @@ describe("handleVerticalArrow", () => {
             rowIsFocusRow={false}
             rowLastPinTop={false}
             yPositions={new Uint32Array([0, 100, 200, 300])}
+            accepted={[]}
           >
             <CellReact
               cell={{

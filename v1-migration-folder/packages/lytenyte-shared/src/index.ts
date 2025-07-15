@@ -120,3 +120,18 @@ export { HeaderReact } from "./renderer-react/header.js";
 export { HeaderRowReact } from "./renderer-react/header-row.js";
 export { HeaderCellReact } from "./renderer-react/header-cell.js";
 export { HeaderGroupCellReact } from "./renderer-react/header-group-cell.js";
+
+// Drag support
+export type {
+  DragData,
+  DragItems,
+  DragMoveState,
+  DragPosition,
+  DragProps,
+  DropWrapProps,
+  DropWrapState,
+  OnDragEvent,
+  SiteLocalDragData,
+  UseDraggableProps,
+} from "@1771technologies/lytenyte-dragon";
+export { DropWrap, dragState, useDraggable } from "@1771technologies/lytenyte-dragon";

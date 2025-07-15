@@ -2,8 +2,9 @@ import { forwardRef, type JSX, type ReactNode } from "react";
 import { useRowStyle } from "./use-row-style";
 import { sizeFromCoord } from "../utils/size-from-coord";
 import { VIEWPORT_WIDTH_VARIABLE_USE } from "../+constants";
+import { DropWrap, type DropWrapProps } from "@1771technologies/lytenyte-dragon";
 
-interface RowFullWidthProps {
+interface RowFullWidthProps extends DropWrapProps {
   readonly space?: "viewport" | "scroll-width";
   readonly rowIndex: number;
   readonly rowLastPinTop: boolean | undefined;
@@ -21,7 +22,7 @@ interface RowFullWidthProps {
 
 export const RowFullWidthReact = forwardRef<
   HTMLDivElement,
-  JSX.IntrinsicElements["div"] & RowFullWidthProps
+  Omit<JSX.IntrinsicElements["div"], "onDrag"> & RowFullWidthProps
 >(function RowFullWidth(
   {
     children,
@@ -42,7 +43,7 @@ export const RowFullWidthReact = forwardRef<
   const height = sizeFromCoord(rowIndex, yPositions) - detailHeight;
 
   return (
-    <div
+    <DropWrap
       {...props}
       role="row"
       /** Data attributes start */
@@ -79,6 +80,6 @@ export const RowFullWidthReact = forwardRef<
         {children}
       </div>
       {detail}
-    </div>
+    </DropWrap>
   );
 });

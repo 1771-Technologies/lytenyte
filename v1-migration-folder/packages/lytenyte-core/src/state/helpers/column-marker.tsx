@@ -30,7 +30,6 @@ export function columnHandleMarker<T>({
       },
       ...columns,
     ];
-    console.log(columns);
     lookup.set(COLUMN_MARKER_ID, columns[0]);
   } else if (!markerEnabled && lookup.has(COLUMN_MARKER_ID)) {
     const index = columns.findIndex((c) => c.id === COLUMN_MARKER_ID);

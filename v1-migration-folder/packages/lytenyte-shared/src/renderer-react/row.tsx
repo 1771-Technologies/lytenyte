@@ -1,7 +1,8 @@
 import { forwardRef, type JSX } from "react";
+import { DropWrap, type DropWrapProps } from "@1771technologies/lytenyte-dragon";
 import { useRowStyle } from "./use-row-style";
 
-interface RowProps {
+interface RowProps extends DropWrapProps {
   readonly rowIndex: number;
   readonly rowLastPinTop: boolean | undefined;
   readonly rowFirstPinBottom: boolean | undefined;
@@ -11,26 +12,28 @@ interface RowProps {
   readonly rowIsFocusRow: boolean;
 }
 
-export const RowReact = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & RowProps>(
-  function Row(
-    { gridId, rowFirstPinBottom, rowIndex, rowLastPinTop, yPositions, rowIsFocusRow, ...props },
-    forwarded,
-  ) {
-    const styles = useRowStyle(yPositions, rowIndex, rowIsFocusRow, props.style, undefined);
-    return (
-      <div
-        {...props}
-        role="row"
-        ref={forwarded}
-        // Data Attributes
-        data-ln-gridid={gridId}
-        data-ln-rowindex={rowIndex}
-        data-ln-rowtype="normal-row"
-        data-ln-last-top-pin={rowLastPinTop}
-        data-ln-first-bottom-pin={rowFirstPinBottom}
-        data-ln-row
-        style={styles}
-      />
-    );
-  },
-);
+export const RowReact = forwardRef<
+  HTMLDivElement,
+  Omit<JSX.IntrinsicElements["div"], "onDrop"> & RowProps
+>(function Row(
+  { gridId, rowFirstPinBottom, rowIndex, rowLastPinTop, yPositions, rowIsFocusRow, ...props },
+  forwarded,
+) {
+  const styles = useRowStyle(yPositions, rowIndex, rowIsFocusRow, props.style, undefined);
+
+  return (
+    <DropWrap
+      {...props}
+      role="row"
+      ref={forwarded}
+      // Data Attributes
+      data-ln-gridid={gridId}
+      data-ln-rowindex={rowIndex}
+      data-ln-rowtype="normal-row"
+      data-ln-last-top-pin={rowLastPinTop}
+      data-ln-first-bottom-pin={rowFirstPinBottom}
+      data-ln-row
+      style={styles}
+    />
+  );
+});

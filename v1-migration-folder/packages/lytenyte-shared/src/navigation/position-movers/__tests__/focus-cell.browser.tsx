@@ -28,6 +28,7 @@ describe("focusCell", () => {
           rowFirstPinBottom={false}
           rowIsFocusRow={false}
           rowLastPinTop={false}
+          accepted={[]}
           yPositions={new Uint32Array([0, 100, 200, 300, 400])}
         >
           <CellReact
@@ -113,6 +114,7 @@ describe("focusCell", () => {
     const s = render(
       <div data-testid="vp">
         <RowFullWidthReact
+          accepted={[]}
           detail={<></>}
           detailHeight={0}
           gridId="x"

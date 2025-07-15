@@ -2182,12 +2182,20 @@ export interface GridApi<T> {
    *
    */
   readonly rowHandleSelect: (params: RowHandleSelect) => void;
+
+  /**
+   *
+   */
+  readonly useRowDrag: (params: UseRowDragParams<T>) => {
+    dragProps: any;
+    isDragging: boolean;
+  };
 }
 
 /**
  *
  */
-export interface HandleSelectionParams {
+export interface RowHandleSelect {
   /**
    *
    */
@@ -3894,3 +3902,268 @@ export type RowSelectionActivator = "single-click" | "double-click" | "none";
  *
  */
 export type RowSelectionMode = "single" | "multiple" | "none";
+
+/**
+ *
+ */
+export interface DragData {
+  /**
+   *
+   */
+  readonly siteLocalData?: Record<string, any>;
+
+  /**
+   *
+   */
+  readonly dataTransfer?: Record<string, string>;
+}
+
+/**
+ *
+ */
+export type DragEventFn = (
+  /**
+   *
+   */
+  params: DragEventParams,
+) => void;
+
+/**
+ *
+ */
+export interface DragEventParams {
+  /**
+   *
+   */
+  readonly state: DragData;
+
+  /**
+   *
+   */
+  readonly position: DragPosition;
+
+  /**
+   *
+   */
+  readonly dragElement: HTMLElement;
+}
+
+/**
+ *
+ */
+export type DragPlaceholderFn<T> = (
+  /**
+   *
+   */
+  params: DragPlaceholderParams<T>,
+) => ReactNode;
+
+/**
+ *
+ */
+export interface DragPlaceholderParams<T> {
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly dragData: DragData;
+}
+
+/**
+ *
+ */
+export interface DragPosition {
+  /**
+   *
+   */
+  readonly x: number;
+
+  /**
+   *
+   */
+  readonly y: number;
+}
+
+/**
+ *
+ */
+export type DropEventFn = (
+  /**
+   *
+   */
+  params: DropEventParams,
+) => void;
+
+/**
+ *
+ */
+export interface DropEventParams {
+  /**
+   *
+   */
+  readonly state: DragData;
+
+  /**
+   *
+   */
+  readonly moveState: DragMoveState;
+
+  /**
+   *
+   */
+  readonly dropElement: HTMLElement;
+
+  /**
+   *
+   */
+  readonly dragElement: HTMLElement;
+}
+
+/**
+ *
+ */
+export interface DragMoveState {
+  /**
+   *
+   */
+  readonly isKeyboard: boolean;
+
+  /**
+   *
+   */
+  readonly x: number;
+
+  /**
+   *
+   */
+  readonly y: number;
+
+  /**
+   *
+   */
+  readonly dropElement: HTMLElement;
+
+  /**
+   *
+   */
+  readonly dragElement: HTMLElement;
+
+  /**
+   *
+   */
+  readonly rect: DOMRect;
+
+  /**
+   *
+   */
+  readonly topHalf: boolean;
+
+  /**
+   *
+   */
+  readonly leftHalf: boolean;
+}
+
+/**
+ *
+ */
+export type GetDragDataFn<T> = (
+  /**
+   *
+   */
+  params: GetDragDataParams<T>,
+) => DragData;
+
+/**
+ *
+ */
+export interface GetDragDataParams<T> {
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly row: RowNode<T>;
+}
+
+/**
+ *
+ */
+export interface UseRowDragParams<T> {
+  /**
+   *
+   */
+  readonly getDragData: GetDragDataFn<T>;
+
+  /**
+   *
+   */
+  readonly onDragMove?: DragEventFn;
+
+  /**
+   *
+   */
+  readonly onDragStart?: DragEventFn;
+
+  /**
+   *
+   */
+  readonly onDragEnd?: DragEventFn;
+
+  /**
+   *
+   */
+  readonly onDrop?: DropEventFn;
+
+  /**
+   *
+   */
+  readonly placeholder?: DragPlaceholderFn<T>;
+
+  /**
+   *
+   */
+  readonly placeholderOffset?: [number, number];
+
+  /**
+   *
+   */
+  readonly keyActivate?: string;
+
+  /**
+   *
+   */
+  readonly keyNext?: string;
+
+  /**
+   *
+   */
+  readonly keyPrev?: string;
+
+  /**
+   *
+   */
+  readonly keyDrop?: string;
+
+  /**
+   *
+   */
+  readonly dragInstructions?: string;
+
+  /**
+   *
+   */
+  readonly announceDragStart?: string;
+
+  /**
+   *
+   */
+  readonly announceDragEnd?: string;
+}

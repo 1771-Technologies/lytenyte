@@ -66,7 +66,11 @@ export function useDragEventHandler(
       }
 
       const styleEl = document.createElement("style");
-      styleEl.innerHTML = `[data-drop-zone="true"] :not([data-drop-zone="true"]) { pointer-events: none; }`;
+
+      // We need to delay this in the event that the drag target is also in a drop target.
+      setTimeout(() => {
+        styleEl.innerHTML = `[data-drop-zone="true"] :not([data-drop-zone="true"]) { pointer-events: none; }`;
+      }, 4);
 
       document.head.appendChild(styleEl);
 
