@@ -400,11 +400,27 @@ export function makeClientDataSource<T>(
     return null;
   };
 
+  const rowAllChildIds = (rowId: string) => {
+    const t = rdsStore.get(tree);
+
+    const ids: string[] = [];
+    const node = t.idToNode.get(rowId);
+
+    if (node?.kind === 2) {
+      traverse(node, (n) => {
+        ids.push(n.id);
+      });
+    }
+
+    return ids;
+  };
+
   return [
     {
       init,
       rowById,
       rowByIndex,
+      rowAllChildIds,
       rowUpdate,
       rowExpand: (expansions) => {
         const grid = rdsStore.get(grid$);
@@ -430,16 +446,10 @@ export function makeClientDataSource<T>(
         }
 
         const ids = new Set<string>();
-        const t = rdsStore.get(tree);
         if (params.startId === params.endId) {
           ids.add(params.startId);
           if (params.selectChildren) {
-            const node = t.idToNode.get(params.startId);
-            if (node?.kind === 2) {
-              traverse(node, (n) => {
-                ids.add(n.id);
-              });
-            }
+            rowAllChildIds(params.startId).forEach((c) => ids.add(c));
           }
         } else {
           const first = rowToIndex(params.startId);
@@ -455,12 +465,7 @@ export function makeClientDataSource<T>(
             if (!row) continue;
 
             if (params.selectChildren) {
-              const node = t.idToNode.get(row.id);
-              if (node?.kind === 2) {
-                traverse(node, (n) => {
-                  ids.add(n.id);
-                });
-              }
+              rowAllChildIds(row.id).forEach((c) => ids.add(c));
             }
             if (row?.id) ids.add(row.id);
           }

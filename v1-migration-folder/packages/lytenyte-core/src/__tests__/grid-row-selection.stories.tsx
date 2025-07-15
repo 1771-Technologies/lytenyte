@@ -54,13 +54,16 @@ function Component({ data = bankData }: { data?: any[] }) {
     columnMarker: {
       cellRenderer: (p) => {
         return (
-          <input
-            type="checkbox"
-            checked={false}
-            onChange={(e) => {
-              p.grid.api.rowHandleSelect(e);
-            }}
-          />
+          <>
+            {p.rowIndeterminate ? "I" : null}
+            <input
+              type="checkbox"
+              checked={p.rowSelected}
+              onChange={(e) => {
+                p.grid.api.rowHandleSelect(e);
+              }}
+            />
+          </>
         );
       },
     },

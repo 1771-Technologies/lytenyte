@@ -1,5 +1,11 @@
 import type { FunctionType, InterfaceType, InterfaceTypePartial, UnionType } from "../+types.js";
-import { GridProp, RowIndexProp, RowNodeProp } from "./shared-properties.js";
+import {
+  GridProp,
+  RowIndeterminateProp,
+  RowIndexProp,
+  RowNodeProp,
+  RowSelectedProp,
+} from "./shared-properties.js";
 
 export const RowBase: InterfaceTypePartial = {
   kind: "interface-partial",
@@ -294,7 +300,7 @@ export const RowFullWidthRendererParams: InterfaceType = {
   name: "RowFullWidthRendererParams<T>",
   tsDoc: ``,
   doc: { en: `` },
-  properties: [RowIndexProp, RowNodeProp, GridProp],
+  properties: [RowIndexProp, RowNodeProp, GridProp, RowSelectedProp, RowIndeterminateProp],
   export: true,
 };
 

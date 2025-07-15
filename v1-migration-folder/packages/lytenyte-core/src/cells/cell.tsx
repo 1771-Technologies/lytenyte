@@ -5,6 +5,7 @@ import { useGridRoot } from "../context";
 import { CellReact } from "@1771technologies/lytenyte-shared";
 import { CellDefault } from "./cell-default";
 import { CellEditor } from "./cell-editor";
+import { useRowMeta } from "../rows/row/context";
 
 export interface CellProps {
   readonly cell: RowCellLayout<any>;
@@ -45,6 +46,7 @@ const CellImpl = forwardRef<
     });
   }, [cell.column, cell.rowIndex, cell.rowSpan, grid.internal.editActivePos]);
 
+  const rowMeta = useRowMeta();
   if (!row) return null;
 
   return (
@@ -65,6 +67,8 @@ const CellImpl = forwardRef<
           {typeof Renderer === "function" ? (
             <Renderer
               column={cell.column}
+              rowSelected={rowMeta.selected}
+              rowIndeterminate={rowMeta.indeterminate}
               row={row}
               grid={grid}
               rowIndex={cell.rowIndex}

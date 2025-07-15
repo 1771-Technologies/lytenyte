@@ -656,6 +656,11 @@ export interface HeaderCellLayout<T> {
   /**
    *
    */
+  readonly id: string;
+
+  /**
+   *
+   */
   readonly kind: "cell";
 
   /**
@@ -712,6 +717,11 @@ export interface HeaderCellFloating<T> {
    *
    */
   readonly colLastStartPin?: boolean;
+
+  /**
+   *
+   */
+  readonly id: string;
 
   /**
    *
@@ -864,6 +874,11 @@ export interface RowCellLayout<T> {
   /**
    *
    */
+  readonly id: string;
+
+  /**
+   *
+   */
   readonly rowIndex: number;
 
   /**
@@ -925,6 +940,11 @@ export interface RowFullWidthRowLayout<T> {
    *
    */
   readonly kind: "full-width";
+
+  /**
+   *
+   */
+  readonly id: string;
 
   /**
    *
@@ -1000,6 +1020,11 @@ export interface RowNormalRowLayout<T> {
    *
    */
   readonly rowIsFocusRow?: boolean;
+
+  /**
+   *
+   */
+  readonly id: string;
 
   /**
    *
@@ -1450,6 +1475,11 @@ export interface RowDataSource<T> {
    *
    */
   readonly rowSelectAll: (params: RowSelectAllOptions) => void;
+
+  /**
+   *
+   */
+  readonly rowAllChildIds: (rowId: string) => string[];
 }
 
 /**
@@ -1657,6 +1687,16 @@ export interface RowFullWidthRendererParams<T> {
    *
    */
   readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly rowSelected: boolean;
+
+  /**
+   *
+   */
+  readonly rowIndeterminate: boolean;
 }
 
 /**
@@ -1953,6 +1993,16 @@ export interface CellRendererParams<T> {
    *
    */
   readonly colIndex: number;
+
+  /**
+   *
+   */
+  readonly rowSelected: boolean;
+
+  /**
+   *
+   */
+  readonly rowIndeterminate: boolean;
 }
 
 /**

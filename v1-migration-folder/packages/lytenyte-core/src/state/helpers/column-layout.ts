@@ -42,6 +42,7 @@ export function makeColumnLayout<T>(
 
       if (c.kind === "leaf") {
         const vals: Omit<HeaderCellLayout<T>, "kind"> = {
+          id: c.data.id,
           colPin,
           column: c.data,
           rowStart: c.rowStart,

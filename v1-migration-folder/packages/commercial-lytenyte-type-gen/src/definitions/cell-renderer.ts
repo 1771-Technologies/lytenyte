@@ -3,8 +3,10 @@ import {
   ColumnIndexProp,
   ColumnProp,
   GridProp,
+  RowIndeterminateProp,
   RowIndexProp,
   RowNodeProp,
+  RowSelectedProp,
 } from "./shared-properties";
 
 export const CellRendererParams: InterfaceType = {
@@ -13,7 +15,15 @@ export const CellRendererParams: InterfaceType = {
   export: true,
   tsDoc: ``,
   doc: { en: `` },
-  properties: [GridProp, ColumnProp, RowNodeProp, RowIndexProp, ColumnIndexProp],
+  properties: [
+    GridProp,
+    ColumnProp,
+    RowNodeProp,
+    RowIndexProp,
+    ColumnIndexProp,
+    RowSelectedProp,
+    RowIndeterminateProp,
+  ],
 };
 
 export const CellRendererFn: FunctionType = {

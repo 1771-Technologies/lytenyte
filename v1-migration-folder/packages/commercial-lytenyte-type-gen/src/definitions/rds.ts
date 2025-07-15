@@ -207,6 +207,14 @@ export const RowDataSourceCore: InterfaceType = {
       optional: false,
       tsDoc: ``,
     },
+    {
+      kind: "property",
+      name: "rowAllChildIds",
+      value: "(rowId: string) => string[]",
+      doc: { en: `` },
+      optional: false,
+      tsDoc: ``,
+    },
   ],
   tag: "core",
 };
