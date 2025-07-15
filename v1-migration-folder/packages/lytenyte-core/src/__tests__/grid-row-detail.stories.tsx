@@ -49,7 +49,6 @@ function Component({ data = bankData }: { data?: any[] }) {
     gridId: useId(),
     columns,
     rowDataSource: ds,
-    rowDetailEnabled: true,
 
     rowFullWidthPredicate: (p) => p.rowIndex === 3,
 
@@ -67,9 +66,6 @@ function Component({ data = bankData }: { data?: any[] }) {
     },
     columnMarker: {
       cellRenderer: (p) => {
-        const rowDetail = p.grid.api.rowDetailIsEnabledForRow(p.row);
-        if (!rowDetail) return;
-
         return <button onClick={() => p.grid.api.rowDetailToggle(p.row)}>+</button>;
       },
     },
@@ -88,7 +84,6 @@ function Component({ data = bankData }: { data?: any[] }) {
         >
           Toggle Height
         </button>
-        <button onClick={() => g.state.rowDetailEnabled.set((prev) => !prev)}>Toggle Detail</button>
         <button onClick={() => g.state.columnMarkerEnabled.set((prev) => !prev)}>
           Toggle Marker
         </button>

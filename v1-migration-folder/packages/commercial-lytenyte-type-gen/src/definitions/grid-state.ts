@@ -465,14 +465,6 @@ const ColumnMarkerEnabled: PropertyType = {
   optional: false,
 };
 
-const RowDetailEnabled: PropertyType = {
-  kind: "property",
-  name: "rowDetailEnabled",
-  tsDoc: ``,
-  doc: { en: `` },
-  optional: false,
-  value: "GridAtom<boolean | { fn: RowDetailEnabledFn<T> }>",
-};
 const RowDetailRenderer: PropertyType = {
   kind: "property",
   name: "rowDetailRenderer",
@@ -504,6 +496,41 @@ const RowDetailExpansions: PropertyType = {
   doc: { en: `` },
   optional: false,
   value: "GridAtom<Set<string>>",
+};
+
+const RowSelectedIds: PropertyType = {
+  kind: "property",
+  name: "rowSelectedIds",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<Set<string>>",
+};
+
+const RowSelectionMode: PropertyType = {
+  kind: "property",
+  name: "rowSelectionMode",
+  doc: { en: `` },
+  optional: false,
+  tsDoc: ``,
+  value: "GridAtom<RowSelectionMode>",
+};
+const RowSelectionPivot: PropertyType = {
+  kind: "property",
+  name: "rowSelectionPivot",
+  doc: { en: `` },
+  optional: false,
+  tsDoc: ``,
+  value: "GridAtom<string | null>",
+};
+
+const RowSelectionActivator: PropertyType = {
+  kind: "property",
+  name: "rowSelectionActivator",
+  doc: { en: `` },
+  optional: false,
+  tsDoc: ``,
+  value: "GridAtom<RowSelectionActivator>",
 };
 
 export const GridStateCore: InterfaceType = {
@@ -576,10 +603,14 @@ export const GridStateCore: InterfaceType = {
     ColumnMarker,
     ColumnMarkerEnabled,
 
-    RowDetailEnabled,
     RowDetailRenderer,
     RowDetailHeight,
     RowDetailAutoHeightGuess,
     RowDetailExpansions,
+
+    RowSelectedIds,
+    RowSelectionMode,
+    RowSelectionPivot,
+    RowSelectionActivator,
   ],
 };

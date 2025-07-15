@@ -47,11 +47,11 @@ import { makeEditEnd } from "./api/edit-end.js";
 import { makeEditUpdate } from "./api/edit-update.js";
 import { makeRowById } from "./api/row-by-id.js";
 import { makeRowByIndex } from "./api/row-by-index.js";
-import { makeRowDetailIsEnabledForRow } from "./api/row-detail-is-enabled-for-row.js";
 import { makeRowDetailIsExpanded } from "./api/row-detail-is-expanded.js";
 import { makeRowDetailToggle } from "./api/row-detail-toggle.js";
 import { makeRowDetailRenderedHeight } from "./api/row-detail-rendered-height.js";
 import { columnHandleMarker } from "./helpers/colunmn-marker.js";
+import { makeRowSelect } from "./api/row-select.js";
 
 const DEFAULT_HEADER_HEIGHT = 40;
 const COLUMN_GROUP_JOIN_DELIMITER = "-->";
@@ -121,16 +121,15 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const columnMarker = atom(p.columnMarker ?? {});
   const columnMarkerEnabled = atom(p.columnMarkerEnabled ?? false);
 
-  const rowDetailEnabledProvidedVal = p.rowDetailEnabled ?? false;
-  const rowDetailEnabled = atom(
-    typeof rowDetailEnabledProvidedVal === "boolean"
-      ? rowDetailEnabledProvidedVal
-      : { fn: rowDetailEnabledProvidedVal },
-  );
   const rowDetailHeight = atom(p.rowDetailHeight ?? 300);
   const rowDetailAutoHeightGuess = atom(p.rowDetailAutoHeightGuess ?? 300);
   const rowDetailExpansions = atom(p.rowDetailExpansions ?? new Set<string>());
   const rowDetailRenderer = atom({ fn: p.rowDetailRenderer ?? (() => "Not defined") });
+
+  const rowSelectedIds = atom(p.rowSelectedIds ?? new Set<string>());
+  const rowSelectionMode = atom(p.rowSelectionMode ?? "none");
+  const internal_rowSelectionPivot = atom<string | null>(null);
+  const rowSelectionPivot = atom((g) => g(internal_rowSelectionPivot));
 
   const internal_rowAutoHeightCache = atom<Record<number, number>>({});
   const internal_rowDetailHeightCache = atom<Record<number, number>>({});
@@ -287,8 +286,6 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     g(rowDetailExpansions);
     g(internal_rowDetailHeightCache);
 
-    const detailEnabled = g(rowDetailEnabled);
-
     return computeRowPositions(
       rowCount,
       g(rowHeight),
@@ -296,7 +293,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       g(internal_rowAutoHeightCache),
       (i: number) => {
         const row = api.rowByIndex(i);
-        if (!detailEnabled || !row || !api.rowDetailIsExpanded(row)) return 0;
+        if (!row || !api.rowDetailIsExpanded(row)) return 0;
 
         return api.rowDetailRenderedHeight(row);
       },
@@ -448,11 +445,14 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
     columnMarker: makeGridAtom(columnMarker, store),
     columnMarkerEnabled: makeGridAtom(columnMarkerEnabled, store),
-    rowDetailEnabled: makeGridAtom(rowDetailEnabled, store),
     rowDetailExpansions: makeGridAtom(rowDetailExpansions, store),
     rowDetailHeight: makeGridAtom(rowDetailHeight, store),
     rowDetailRenderer: makeGridAtom(rowDetailRenderer, store),
     rowDetailAutoHeightGuess: makeGridAtom(rowDetailAutoHeightGuess, store),
+
+    rowSelectedIds: makeGridAtom(rowSelectedIds, store),
+    rowSelectionMode: makeGridAtom(rowSelectionMode, store),
+    rowSelectionPivot: makeGridAtom(rowSelectionPivot, store),
   };
 
   const api = {} as GridApi<T>;
@@ -490,10 +490,13 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     rowById: makeRowById(grid),
     rowByIndex: makeRowByIndex(grid),
 
-    rowDetailIsEnabledForRow: makeRowDetailIsEnabledForRow(grid),
     rowDetailIsExpanded: makeRowDetailIsExpanded(grid),
     rowDetailRenderedHeight: makeRowDetailRenderedHeight(grid as any),
     rowDetailToggle: makeRowDetailToggle(grid),
+
+    rowSelect: makeRowSelect(grid as any),
+    rowSelectAll: () => {},
+    rowSelected: () => [],
   } satisfies GridApi<T>);
 
   Object.assign(grid, {
@@ -523,6 +526,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
       rowAutoHeightCache: makeGridAtom(internal_rowAutoHeightCache, store),
       rowDetailAutoHeightCache: makeGridAtom(internal_rowDetailHeightCache, store),
+      rowSelectionPivot: makeGridAtom(internal_rowSelectionPivot, store),
     } satisfies InternalAtoms,
   });
 

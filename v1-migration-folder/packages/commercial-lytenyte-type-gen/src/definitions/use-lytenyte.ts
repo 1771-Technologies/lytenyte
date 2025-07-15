@@ -344,14 +344,7 @@ const ColumnMarkerEnabled: PropertyType = {
   optional: true,
   value: "boolean",
 };
-const RowDetailEnabled: PropertyType = {
-  kind: "property",
-  name: "rowDetailEnabled",
-  tsDoc: ``,
-  doc: { en: `` },
-  optional: true,
-  value: "boolean | RowDetailEnabledFn<T>",
-};
+
 const RowDetailRenderer: PropertyType = {
   kind: "property",
   name: "rowDetailRenderer",
@@ -383,6 +376,31 @@ const RowDetailExpansions: PropertyType = {
   doc: { en: `` },
   optional: true,
   value: "Set<string>",
+};
+
+const RowSelectedIds: PropertyType = {
+  kind: "property",
+  name: "rowSelectedIds",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "Set<string>",
+};
+const RowSelectionMode: PropertyType = {
+  kind: "property",
+  name: "rowSelectionMode",
+  doc: { en: `` },
+  optional: true,
+  tsDoc: ``,
+  value: "RowSelectionMode",
+};
+const RowSelectionActivator: PropertyType = {
+  kind: "property",
+  name: "rowSelectionActivator",
+  doc: { en: `` },
+  optional: true,
+  tsDoc: ``,
+  value: "RowSelectionActivator",
 };
 
 export const UseLyteNytePropsCore: InterfaceType = {
@@ -440,10 +458,13 @@ export const UseLyteNytePropsCore: InterfaceType = {
 
     ColumnMarkerProp,
     ColumnMarkerEnabled,
-    RowDetailEnabled,
     RowDetailRenderer,
     RowDetailHeight,
     RowDetailExpansions,
     RowDetailAutoHeightGuess,
+
+    RowSelectedIds,
+    RowSelectionMode,
+    RowSelectionActivator,
   ],
 };

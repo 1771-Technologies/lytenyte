@@ -24,4 +24,7 @@ export interface InternalAtoms {
   // Row Height management
   readonly rowAutoHeightCache: GridAtom<Record<number, number>>;
   readonly rowDetailAutoHeightCache: GridAtom<Record<number, number>>;
+
+  // Row selection
+  readonly rowSelectionPivot: GridAtom<string | null>;
 }

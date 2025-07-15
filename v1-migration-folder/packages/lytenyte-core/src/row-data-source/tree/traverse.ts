@@ -1,12 +1,13 @@
 import { LEAF } from "../+constants";
-import type { Root, TreeNode } from "../+types";
+import type { BranchNode, Root, TreeNode } from "../+types";
 
 export function traverse<Data>(
-  root: Root<Data>,
+  root: Root<Data> | BranchNode<Data>,
   fn: (node: TreeNode<Data>, lookupKey: string | null) => boolean | void,
   comparator?: (l: TreeNode<Data>, r: TreeNode<Data>) => number,
 ) {
-  const stack = [...root.entries()];
+  const entries = root instanceof Map ? root.entries() : root.children.entries();
+  const stack = [...entries];
   if (comparator) stack.sort((l, r) => comparator(l[1], r[1]));
 
   while (stack.length) {
