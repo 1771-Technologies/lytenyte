@@ -201,7 +201,7 @@ export const EditClickActivator: UnionType = {
   tsDoc: ``,
   doc: { en: `` },
   export: true,
-  types: ['"single"', '"dbl-click"', '"none"'],
+  types: ['"single"', '"double-click"', '"none"'],
 };
 
 export const EditCellMode: UnionType = {

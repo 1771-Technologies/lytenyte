@@ -532,6 +532,14 @@ const RowSelectionActivator: PropertyType = {
   tsDoc: ``,
   value: "GridAtom<RowSelectionActivator>",
 };
+const RowSelectChildren: PropertyType = {
+  kind: "property",
+  name: "rowSelectChildren",
+  doc: { en: `` },
+  optional: false,
+  tsDoc: ``,
+  value: "GridAtom<boolean>",
+};
 
 export const GridStateCore: InterfaceType = {
   kind: "interface",
@@ -612,5 +620,6 @@ export const GridStateCore: InterfaceType = {
     RowSelectionMode,
     RowSelectionPivot,
     RowSelectionActivator,
+    RowSelectChildren,
   ],
 };

@@ -27,7 +27,11 @@ export const makeRowSelect = (
       startId: params.selected,
       endId: params.selectBetweenPivot ? pivot : params.selected,
       selectChildren: !!params.selectChildren,
+      mode: grid.state.rowSelectionMode.get(),
     });
+
+    if (!params.selectBetweenPivot)
+      grid.internal.rowSelectionLastWasDeselect.set(!!params.deselect);
 
     grid.api.eventFire("rowSelectEnd", {
       grid,

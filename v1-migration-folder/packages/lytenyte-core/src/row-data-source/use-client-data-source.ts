@@ -418,10 +418,30 @@ export function makeClientDataSource<T>(
         const grid = rdsStore.get(grid$);
         if (!grid) return;
 
+        if (params.mode === "none") return;
+        if (params.mode === "single") {
+          if (params.deselect) {
+            grid.state.rowSelectedIds.set(new Set());
+          } else {
+            grid.state.rowSelectedIds.set(new Set([params.startId]));
+          }
+
+          return;
+        }
+
         const ids = new Set<string>();
         const t = rdsStore.get(tree);
-        if (params.startId === params.endId) ids.add(params.startId);
-        else {
+        if (params.startId === params.endId) {
+          ids.add(params.startId);
+          if (params.selectChildren) {
+            const node = t.idToNode.get(params.startId);
+            if (node?.kind === 2) {
+              traverse(node, (n) => {
+                ids.add(n.id);
+              });
+            }
+          }
+        } else {
           const first = rowToIndex(params.startId);
           const last = rowToIndex(params.endId);
           if (first == null || last == null) return;

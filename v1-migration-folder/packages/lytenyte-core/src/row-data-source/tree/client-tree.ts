@@ -60,7 +60,7 @@ export function makeClientTree<Data>({
 
       // We need to create a branch node.
       if (!lookup.has(pathKey)) {
-        const id = rowIdGroup?.(runningPath) ?? runningPath.join("/");
+        const id = rowIdGroup?.(runningPath) ?? "+.+" + runningPath.join("/");
         idsBranch.add(id);
         idsAll.add(id);
 

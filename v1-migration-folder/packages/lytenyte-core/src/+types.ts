@@ -236,6 +236,16 @@ export interface UseLyteNyteProps<T> {
    *
    */
   readonly rowSelectionMode?: RowSelectionMode;
+
+  /**
+   *
+   */
+  readonly rowSelectionActivator?: RowSelectionActivator;
+
+  /**
+   *
+   */
+  readonly rowSelectChildren?: boolean;
 }
 
 /**
@@ -547,6 +557,16 @@ export interface GridState<T> {
    *
    */
   readonly rowSelectionPivot: GridAtom<string | null>;
+
+  /**
+   *
+   */
+  readonly rowSelectionActivator: GridAtom<RowSelectionActivator>;
+
+  /**
+   *
+   */
+  readonly rowSelectChildren: GridAtom<boolean>;
 }
 
 /**
@@ -1497,6 +1517,11 @@ export interface RdsRowSelectParams {
    *
    */
   readonly deselect: boolean;
+
+  /**
+   *
+   */
+  readonly mode: RowSelectionMode;
 }
 
 /**
@@ -2102,6 +2127,26 @@ export interface GridApi<T> {
    *
    */
   readonly rowSelected: () => RowNode<T>[];
+
+  /**
+   *
+   */
+  readonly rowHandleSelect: (params: RowHandleSelect) => void;
+}
+
+/**
+ *
+ */
+export interface HandleSelectionParams {
+  /**
+   *
+   */
+  readonly target: EventTarget;
+
+  /**
+   *
+   */
+  readonly shiftKey: boolean;
 }
 
 /**
@@ -3293,7 +3338,7 @@ export type EditCellMode = "cell" | "readonly";
 /**
  *
  */
-export type EditClickActivator = "single" | "dbl-click" | "none";
+export type EditClickActivator = "single" | "double-click" | "none";
 
 /**
  *
@@ -3789,6 +3834,11 @@ export interface RowSelectOptions {
    */
   readonly selectChildren?: boolean;
 }
+
+/**
+ *
+ */
+export type RowSelectionActivator = "single-click" | "double-click" | "none";
 
 /**
  *

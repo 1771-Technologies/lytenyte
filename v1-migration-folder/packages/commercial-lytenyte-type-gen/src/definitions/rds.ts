@@ -59,6 +59,14 @@ export const RowSelectParams: InterfaceType = {
       tsDoc: ``,
       value: "boolean",
     },
+    {
+      kind: "property",
+      name: "mode",
+      doc: { en: `` },
+      optional: false,
+      tsDoc: ``,
+      value: "RowSelectionMode",
+    },
   ],
 };
 

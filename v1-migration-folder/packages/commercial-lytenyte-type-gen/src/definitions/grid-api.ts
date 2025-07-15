@@ -285,6 +285,41 @@ const RowSelected: PropertyType = {
   value: "() => RowNode<T>[]",
 };
 
+export const HandleSelectionParams: InterfaceType = {
+  kind: "interface",
+  name: "HandleSelectionParams",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  properties: [
+    {
+      kind: "property",
+      name: "target",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "EventTarget",
+    },
+    {
+      kind: "property",
+      name: "shiftKey",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "boolean",
+    },
+  ],
+};
+
+const RowHandleSelect: PropertyType = {
+  kind: "property",
+  name: "rowHandleSelect",
+  value: "(params: RowHandleSelect) => void",
+  doc: { en: `` },
+  optional: false,
+  tsDoc: ``,
+};
+
 export const GridApi: InterfaceType = {
   kind: "interface",
   name: "GridApi<T>",
@@ -326,5 +361,6 @@ export const GridApi: InterfaceType = {
     RowSelect,
     RowSelectAll,
     RowSelected,
+    RowHandleSelect,
   ],
 };

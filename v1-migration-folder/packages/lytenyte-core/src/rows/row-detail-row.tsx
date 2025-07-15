@@ -164,6 +164,7 @@ function RowDetailImpl<T>({ row, rowIndex }: { row: RowNode<T>; rowIndex: number
   return (
     <div
       ref={setRef}
+      role="gridcell"
       style={{
         gridColumnStart: "1",
         gridColumnEnd: "2",
@@ -176,7 +177,6 @@ function RowDetailImpl<T>({ row, rowIndex }: { row: RowNode<T>; rowIndex: number
       <div
         tabIndex={-1}
         data-ln-row-detail
-        role="gridcell"
         style={{
           position: "sticky",
           right: rtl ? "0px" : undefined,

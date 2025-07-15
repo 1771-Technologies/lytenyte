@@ -402,6 +402,14 @@ const RowSelectionActivator: PropertyType = {
   tsDoc: ``,
   value: "RowSelectionActivator",
 };
+const RowSelectChildren: PropertyType = {
+  kind: "property",
+  name: "rowSelectChildren",
+  doc: { en: `` },
+  optional: true,
+  tsDoc: ``,
+  value: "boolean",
+};
 
 export const UseLyteNytePropsCore: InterfaceType = {
   kind: "interface",
@@ -466,5 +474,6 @@ export const UseLyteNytePropsCore: InterfaceType = {
     RowSelectedIds,
     RowSelectionMode,
     RowSelectionActivator,
+    RowSelectChildren,
   ],
 };

@@ -7,6 +7,7 @@ import type {
   FilterModelItem,
   EditActivePosition,
   PositionUnion,
+  RowSelectionActivator,
 } from "../+types.js";
 import { type Grid, type GridView, type UseLyteNyteProps } from "../+types.js";
 import { useRef } from "react";
@@ -52,6 +53,9 @@ import { makeRowDetailToggle } from "./api/row-detail-toggle.js";
 import { makeRowDetailRenderedHeight } from "./api/row-detail-rendered-height.js";
 import { columnHandleMarker } from "./helpers/colunmn-marker.js";
 import { makeRowSelect } from "./api/row-select.js";
+import { makeRowSelectAll } from "./api/row-select-all.js";
+import { makeRowSelected } from "./api/row-selected.js";
+import { makeRowHandleSelect } from "./api/row-handle-select.js";
 
 const DEFAULT_HEADER_HEIGHT = 40;
 const COLUMN_GROUP_JOIN_DELIMITER = "-->";
@@ -128,7 +132,13 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
   const rowSelectedIds = atom(p.rowSelectedIds ?? new Set<string>());
   const rowSelectionMode = atom(p.rowSelectionMode ?? "none");
+  const rowSelectChildren = atom(p.rowSelectChildren ?? false);
+  const rowSelectionActivator = atom<RowSelectionActivator>(
+    p.rowSelectionActivator ?? "single-click",
+  );
+
   const internal_rowSelectionPivot = atom<string | null>(null);
+  const internal_rowSelectionLastWasDeselect = atom<boolean>(false);
   const rowSelectionPivot = atom((g) => g(internal_rowSelectionPivot));
 
   const internal_rowAutoHeightCache = atom<Record<number, number>>({});
@@ -453,6 +463,8 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     rowSelectedIds: makeGridAtom(rowSelectedIds, store),
     rowSelectionMode: makeGridAtom(rowSelectionMode, store),
     rowSelectionPivot: makeGridAtom(rowSelectionPivot, store),
+    rowSelectionActivator: makeGridAtom(rowSelectionActivator, store),
+    rowSelectChildren: makeGridAtom(rowSelectChildren, store),
   };
 
   const api = {} as GridApi<T>;
@@ -495,8 +507,9 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     rowDetailToggle: makeRowDetailToggle(grid),
 
     rowSelect: makeRowSelect(grid as any),
-    rowSelectAll: () => {},
-    rowSelected: () => [],
+    rowSelectAll: makeRowSelectAll(grid as any),
+    rowSelected: makeRowSelected(grid),
+    rowHandleSelect: makeRowHandleSelect(grid as any),
   } satisfies GridApi<T>);
 
   Object.assign(grid, {
@@ -526,7 +539,12 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
       rowAutoHeightCache: makeGridAtom(internal_rowAutoHeightCache, store),
       rowDetailAutoHeightCache: makeGridAtom(internal_rowDetailHeightCache, store),
+
+      rowSelectedIds: rowSelectedIds,
       rowSelectionPivot: makeGridAtom(internal_rowSelectionPivot, store),
+      rowSelectionLastWasDeselect: makeGridAtom(internal_rowSelectionLastWasDeselect, store),
+
+      store: store,
     } satisfies InternalAtoms,
   });
 
