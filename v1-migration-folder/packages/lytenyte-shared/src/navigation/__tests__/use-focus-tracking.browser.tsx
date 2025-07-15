@@ -70,7 +70,7 @@ describe("useFocusTracking", () => {
     await expect.element(screen.getByText("Group")).toHaveFocus();
     expect(focusActive.get()).toMatchInlineSnapshot(`
       {
-        "colIndex": 3,
+        "colIndex": 1,
         "columnEndIndex": 5,
         "columnStartIndex": 3,
         "hierarchyRowIndex": 2,
@@ -98,7 +98,7 @@ describe("useFocusTracking", () => {
     await expect.element(screen.getByText("Full Width")).toHaveFocus();
     expect(focusActive.get()).toMatchInlineSnapshot(`
       {
-        "colIndex": 0,
+        "colIndex": 3,
         "kind": "full-width",
         "rowIndex": 2,
       }
@@ -128,5 +128,17 @@ describe("useFocusTracking", () => {
     `);
 
     vi.clearAllMocks();
+
+    focusActive.set(null);
+
+    (screen.getByText("Full Width").element() as HTMLElement).focus();
+    await expect.element(screen.getByText("Full Width")).toHaveFocus();
+    expect(focusActive.get()).toMatchInlineSnapshot(`
+      {
+        "colIndex": 0,
+        "kind": "full-width",
+        "rowIndex": 2,
+      }
+    `);
   });
 });

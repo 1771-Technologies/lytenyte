@@ -25,6 +25,12 @@ export function useFocusTracking(
         }
 
         const position = getPositionFromFocusable(el);
+
+        // Maintain the current column index. This can happen when we are navigating via the keyboard and
+        // there are multiple focusables in the cell.
+        if (position.kind === "full-width" || position.kind === "header-group-cell")
+          (position.colIndex as any) = focusActive.get()?.colIndex ?? 0;
+
         focusActive.set(position);
       },
       { signal: controller.signal },
