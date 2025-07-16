@@ -1385,6 +1385,11 @@ export interface ColumnUIHints {
    *
    */
   readonly resizable?: boolean;
+
+  /**
+   *
+   */
+  readonly movable?: boolean;
 }
 
 /**
@@ -2013,6 +2018,31 @@ export interface CellRendererParams<T> {
 /**
  *
  */
+export interface ColumnMoveParams<T> {
+  /**
+   *
+   */
+  readonly moveColumns: (string | Column<T>)[];
+
+  /**
+   *
+   */
+  readonly moveTarget: string | number | Column<T>;
+
+  /**
+   *
+   */
+  readonly before?: boolean;
+
+  /**
+   *
+   */
+  readonly updatePinState?: boolean;
+}
+
+/**
+ *
+ */
 export type FocusCellParams<T> =
   | { row: number; column: string | number | Column<T> }
   | PositionHeaderCell
@@ -2212,6 +2242,11 @@ export interface GridApi<T> {
   readonly columnUpdate: (
     updates: Record<string, Omit<Column<T>, "id">>,
   ) => void;
+
+  /**
+   *
+   */
+  readonly columnMove: (params: ColumnMoveParams<T>) => void;
 }
 
 /**
@@ -2946,6 +2981,91 @@ export type RowGroupModelItem<T> = string | RowGroupField<T>;
 /**
  *
  */
+export type ColumnMoveBeginFn<T> = (
+  /**
+   *
+   */
+  params: ColumnMoveBeginParams<T>,
+) => void;
+
+/**
+ *
+ */
+export interface ColumnMoveBeginParams<T> {
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly preventDefault: () => void;
+
+  /**
+   *
+   */
+  readonly moveColumns: Column<T>[];
+
+  /**
+   *
+   */
+  readonly moveTarget: Column<T>;
+
+  /**
+   *
+   */
+  readonly before: boolean;
+
+  /**
+   *
+   */
+  readonly updatePinState: boolean;
+}
+
+/**
+ *
+ */
+export type ColumnMoveEndFn<T> = (
+  /**
+   *
+   */
+  params: ColumnMoveEndParams<T>,
+) => void;
+
+/**
+ *
+ */
+export interface ColumnMoveEndParams<T> {
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly moveColumns: Column<T>[];
+
+  /**
+   *
+   */
+  readonly moveTarget: Column<T>;
+
+  /**
+   *
+   */
+  readonly before: boolean;
+
+  /**
+   *
+   */
+  readonly updatePinState: boolean;
+}
+
+/**
+ *
+ */
 export type EditBegin<T> = (
   /**
    *
@@ -3051,6 +3171,26 @@ export interface GridEvents<T> {
    *
    */
   readonly rowSelectAllEnd?: RowSelectAllEnd<T>;
+
+  /**
+   *
+   */
+  readonly columnMoveDragBegin: ColumnMoveBeginFn<T>;
+
+  /**
+   *
+   */
+  readonly columnMoveDragEnd: ColumnMoveEndFn<T>;
+
+  /**
+   *
+   */
+  readonly columnMoveBegin: ColumnMoveBeginFn<T>;
+
+  /**
+   *
+   */
+  readonly columnMoveEnd: ColumnMoveEndFn<T>;
 }
 
 /**

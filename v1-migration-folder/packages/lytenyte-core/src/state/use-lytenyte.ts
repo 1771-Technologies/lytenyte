@@ -60,6 +60,7 @@ import { makeUseRowDrag } from "./api/use-row-drag.js";
 import { makeColumnById } from "./api/column-by-id.js";
 import { makeColumnResize } from "./api/column-resize.js";
 import { makeColumnUpdate } from "./api/column-update.js";
+import { makeColumnMove } from "./api/column-move.js";
 
 const DEFAULT_HEADER_HEIGHT = 40;
 const COLUMN_GROUP_JOIN_DELIMITER = "-->";
@@ -483,6 +484,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     columnById: makeColumnById(grid),
     columnResize: makeColumnResize(grid),
     columnUpdate: makeColumnUpdate(grid),
+    columnMove: makeColumnMove(grid),
     sortForColumn: makeSortForColumn(grid),
 
     rowIsGroup: (r) => r.kind === "branch",

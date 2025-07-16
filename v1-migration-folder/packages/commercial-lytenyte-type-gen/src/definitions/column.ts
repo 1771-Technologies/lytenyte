@@ -66,6 +66,14 @@ export const ColumnUIHints: InterfaceType = {
       value: "boolean",
       name: "resizable",
     },
+    {
+      kind: "property",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: true,
+      value: "boolean",
+      name: "movable",
+    },
   ],
 };
 

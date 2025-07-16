@@ -419,6 +419,139 @@ export const RowSelectAllEnd: FunctionType = {
   ],
   return: "void",
 };
+
+export const ColumnMoveBeginParams: InterfaceType = {
+  kind: "interface",
+  doc: { en: `` },
+  tsDoc: ``,
+  export: true,
+  name: "ColumnMoveBeginParams<T>",
+  properties: [
+    GridProp,
+    {
+      kind: "property",
+      name: "preventDefault",
+      tsDoc: ``,
+      doc: { en: `` },
+      value: "() => void",
+      optional: false,
+    },
+    {
+      kind: "property",
+      tsDoc: ``,
+      doc: { en: `` },
+      name: "moveColumns",
+      value: "Column<T>[]",
+      optional: false,
+    },
+    {
+      kind: "property",
+      tsDoc: ``,
+      doc: { en: `` },
+      name: "moveTarget",
+      optional: false,
+      value: "Column<T>",
+    },
+    {
+      kind: "property",
+      tsDoc: ``,
+      doc: { en: `` },
+      name: "before",
+      optional: false,
+      value: "boolean",
+    },
+    {
+      kind: "property",
+      tsDoc: ``,
+      doc: { en: `` },
+      name: "updatePinState",
+      optional: false,
+      value: "boolean",
+    },
+  ],
+};
+
+export const ColumnMoveEndParams: InterfaceType = {
+  kind: "interface",
+  doc: { en: `` },
+  tsDoc: ``,
+  export: true,
+  name: "ColumnMoveEndParams<T>",
+  properties: [
+    GridProp,
+    {
+      kind: "property",
+      tsDoc: ``,
+      doc: { en: `` },
+      name: "moveColumns",
+      value: "Column<T>[]",
+      optional: false,
+    },
+    {
+      kind: "property",
+      tsDoc: ``,
+      doc: { en: `` },
+      name: "moveTarget",
+      optional: false,
+      value: "Column<T>",
+    },
+    {
+      kind: "property",
+      tsDoc: ``,
+      doc: { en: `` },
+      name: "before",
+      optional: false,
+      value: "boolean",
+    },
+    {
+      kind: "property",
+      tsDoc: ``,
+      doc: { en: `` },
+      name: "updatePinState",
+      optional: false,
+      value: "boolean",
+    },
+  ],
+};
+
+export const ColumnMoveBeginFn: FunctionType = {
+  kind: "function",
+  name: "ColumnMoveBeginFn<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  properties: [
+    {
+      kind: "property",
+      tsDoc: ``,
+      doc: { en: `` },
+      name: "params",
+      optional: true,
+      value: "ColumnMoveBeginParams<T>",
+    },
+  ],
+  return: "void",
+};
+
+export const ColumnMoveEndFn: FunctionType = {
+  kind: "function",
+  name: "ColumnMoveEndFn<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  properties: [
+    {
+      kind: "property",
+      tsDoc: ``,
+      doc: { en: `` },
+      name: "params",
+      optional: true,
+      value: "ColumnMoveEndParams<T>",
+    },
+  ],
+  return: "void",
+};
+
 /**
  *  Events object
  */
@@ -533,6 +666,42 @@ const RowSelectAllEndProp: PropertyType = {
   value: "RowSelectAllEnd<T>",
 };
 
+const ColumnMoveDragBeginProp: PropertyType = {
+  kind: "property",
+  name: "columnMoveDragBegin",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "ColumnMoveBeginFn<T>",
+};
+
+const ColumnMoveDragEndProp: PropertyType = {
+  kind: "property",
+  name: "columnMoveDragEnd",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "ColumnMoveEndFn<T>",
+};
+
+const ColumnMoveBeginProp: PropertyType = {
+  kind: "property",
+  name: "columnMoveBegin",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "ColumnMoveBeginFn<T>",
+};
+
+const ColumnMoveEndProp: PropertyType = {
+  kind: "property",
+  name: "columnMoveEnd",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "ColumnMoveEndFn<T>",
+};
+
 export const Events: InterfaceType = {
   kind: "interface",
   name: "GridEvents<T>",
@@ -556,5 +725,10 @@ export const Events: InterfaceType = {
     RowSelectEndProp,
     RowSelectAllBeginProp,
     RowSelectAllEndProp,
+
+    ColumnMoveDragBeginProp,
+    ColumnMoveDragEndProp,
+    ColumnMoveBeginProp,
+    ColumnMoveEndProp,
   ],
 };
