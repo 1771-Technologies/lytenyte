@@ -3175,22 +3175,22 @@ export interface GridEvents<T> {
   /**
    *
    */
-  readonly columnMoveDragBegin: ColumnMoveBeginFn<T>;
+  readonly columnMoveDragBegin?: ColumnMoveBeginFn<T>;
 
   /**
    *
    */
-  readonly columnMoveDragEnd: ColumnMoveEndFn<T>;
+  readonly columnMoveDragEnd?: ColumnMoveEndFn<T>;
 
   /**
    *
    */
-  readonly columnMoveBegin: ColumnMoveBeginFn<T>;
+  readonly columnMoveBegin?: ColumnMoveBeginFn<T>;
 
   /**
    *
    */
-  readonly columnMoveEnd: ColumnMoveEndFn<T>;
+  readonly columnMoveEnd?: ColumnMoveEndFn<T>;
 }
 
 /**

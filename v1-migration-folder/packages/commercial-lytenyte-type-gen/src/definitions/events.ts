@@ -671,7 +671,7 @@ const ColumnMoveDragBeginProp: PropertyType = {
   name: "columnMoveDragBegin",
   tsDoc: ``,
   doc: { en: `` },
-  optional: false,
+  optional: true,
   value: "ColumnMoveBeginFn<T>",
 };
 
@@ -680,7 +680,7 @@ const ColumnMoveDragEndProp: PropertyType = {
   name: "columnMoveDragEnd",
   tsDoc: ``,
   doc: { en: `` },
-  optional: false,
+  optional: true,
   value: "ColumnMoveEndFn<T>",
 };
 
@@ -689,7 +689,7 @@ const ColumnMoveBeginProp: PropertyType = {
   name: "columnMoveBegin",
   tsDoc: ``,
   doc: { en: `` },
-  optional: false,
+  optional: true,
   value: "ColumnMoveBeginFn<T>",
 };
 
@@ -698,7 +698,7 @@ const ColumnMoveEndProp: PropertyType = {
   name: "columnMoveEnd",
   tsDoc: ``,
   doc: { en: `` },
-  optional: false,
+  optional: true,
   value: "ColumnMoveEndFn<T>",
 };
 
