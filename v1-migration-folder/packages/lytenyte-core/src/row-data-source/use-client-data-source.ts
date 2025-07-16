@@ -60,10 +60,10 @@ export function makeClientDataSource<T>(
   });
 
   const topNodes = atom((g) => {
-    return g(topData).map<RowLeaf<T>>((c) => ({ data: c, id: `top-${c}`, kind: "leaf" }));
+    return g(topData).map<RowLeaf<T>>((c, i) => ({ data: c, id: `top-${i}`, kind: "leaf" }));
   });
   const botNodes = atom((g) => {
-    return g(bottomData).map<RowLeaf<T>>((c) => ({ data: c, id: `bottom-${c}`, kind: "leaf" }));
+    return g(bottomData).map<RowLeaf<T>>((c, i) => ({ data: c, id: `bottom-${i}`, kind: "leaf" }));
   });
 
   const pinnedIdMap = atom((g) => {

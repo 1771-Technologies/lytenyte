@@ -33,7 +33,7 @@ describe("HeaderCellReact", () => {
     await expect.element(header).toHaveAttribute("data-ln-header-range", "1,2");
     await expect.element(header).toHaveAttribute("data-ln-rowindex", "0");
     await expect.element(header).toHaveAttribute("data-ln-colindex", "1");
-    await expect.element(header).toHaveAttribute("data-ln-header-pin", "center");
+    await expect.element(header).toHaveAttribute("data-ln-pin", "center");
     await expect.element(header).not.toHaveAttribute("data-ln-last-start-pin");
     await expect.element(header).not.toHaveAttribute("data-ln-first-end-pin");
   });
@@ -70,7 +70,7 @@ describe("HeaderCellReact", () => {
     await expect.element(header).toHaveAttribute("data-ln-header-range", "1,2");
     await expect.element(header).toHaveAttribute("data-ln-rowindex", "0");
     await expect.element(header).toHaveAttribute("data-ln-colindex", "1");
-    await expect.element(header).toHaveAttribute("data-ln-header-pin", "start");
+    await expect.element(header).toHaveAttribute("data-ln-pin", "start");
     await expect.element(header).toHaveAttribute("data-ln-last-start-pin");
     await expect.element(header).toHaveAttribute("data-ln-first-end-pin");
   });

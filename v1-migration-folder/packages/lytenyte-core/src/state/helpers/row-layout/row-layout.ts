@@ -56,8 +56,8 @@ export function makeRowLayout<T>({
 
     if (isFullWidthMap(row)) {
       top.push({
-        rowIndex: r,
         id: node.get()?.id ?? `${r}`,
+        rowIndex: r,
         kind: "full-width",
         rowPin: "top",
         row: node,
@@ -74,8 +74,8 @@ export function makeRowLayout<T>({
       if (!v || v.length === 3) continue;
 
       cellLayout.push({
-        kind: "cell",
         id: columns[c].id,
+        kind: "cell",
         colIndex: c,
         rowIndex: r,
         rowSpan: v[0],
@@ -95,8 +95,8 @@ export function makeRowLayout<T>({
       if (!v || v.length === 3) continue;
 
       cellLayout.push({
-        kind: "cell",
         id: columns[c].id,
+        kind: "cell",
         colIndex: c,
         rowIndex: r,
         rowSpan: v[0],
@@ -114,11 +114,10 @@ export function makeRowLayout<T>({
     // center cells (if they are in the center cells we will be rendering them anyway).
     if (f.isTop && (f.isColCenterBefore || f.isColCenterAfter)) {
       const v = row.get(f.colIndex);
-
       if (v && v.length !== 3) {
         const cell: RowCellLayout<T> = {
-          kind: "cell",
           id: columns[f.colIndex].id,
+          kind: "cell",
           colIndex: f.colIndex,
           rowIndex: f.rowIndex,
           rowSpan: v[0],
@@ -141,8 +140,8 @@ export function makeRowLayout<T>({
       if (!v || v.length === 3) continue;
 
       cellLayout.push({
-        kind: "cell",
         id: columns[c].id,
+        kind: "cell",
         colIndex: c,
         rowIndex: r,
         rowSpan: v[0],
@@ -158,8 +157,8 @@ export function makeRowLayout<T>({
     }
 
     top.push({
-      rowIndex: r,
       id: node.get()?.id ?? `${r}`,
+      rowIndex: r,
       kind: "row",
       cells: cellLayout,
       rowPin: "top",
@@ -189,11 +188,11 @@ export function makeRowLayout<T>({
 
     if (isFullWidthMap(row)) {
       center.push({
+        id: node.get()?.id ?? `${r}`,
         rowIndex: r,
         kind: "full-width",
         rowPin: null,
         row: node,
-        id: node.get()?.id ?? `${r}`,
       });
       continue;
     }
@@ -205,8 +204,8 @@ export function makeRowLayout<T>({
       if (!v || v.length === 3) continue;
 
       cellLayout.push({
-        kind: "cell",
         id: columns[c].id,
+        kind: "cell",
         colIndex: c,
         rowIndex: r,
         rowSpan: v[0],
@@ -225,8 +224,8 @@ export function makeRowLayout<T>({
       if (!v || v.length === 3) continue;
 
       cellLayout.push({
-        kind: "cell",
         id: columns[c].id,
+        kind: "cell",
         colIndex: c,
         rowIndex: r,
         rowSpan: v[0],
@@ -250,8 +249,8 @@ export function makeRowLayout<T>({
 
       if (v && v.length !== 3) {
         const cell: RowCellLayout<T> = {
-          kind: "cell",
           id: columns[f.colIndex].id,
+          kind: "cell",
           colIndex: f.colIndex,
           rowIndex: f.rowIndex,
           rowSpan: v[0],
@@ -272,6 +271,7 @@ export function makeRowLayout<T>({
       if (!v || v.length === 3) continue;
 
       cellLayout.push({
+        id: columns[c].id,
         kind: "cell",
         colIndex: c,
         rowIndex: r,
@@ -279,7 +279,6 @@ export function makeRowLayout<T>({
         colSpan: v[1],
         rowPin: null,
         colPin: "end",
-        id: node.get()?.id ?? `${r}`,
 
         colFirstEndPin: c === n.colCenterLast ? true : undefined,
         row: node,
@@ -288,12 +287,12 @@ export function makeRowLayout<T>({
     }
 
     center.push({
+      id: node.get()?.id ?? `${r}`,
       rowIndex: r,
       kind: "row",
       cells: cellLayout,
       rowPin: null,
       row: node,
-      id: node.get()?.id ?? `${r}`,
     });
   }
 
@@ -304,12 +303,12 @@ export function makeRowLayout<T>({
     if (row && node) {
       if (isFullWidthMap(row)) {
         center.push({
+          id: node.get()?.id ?? `${f.rowIndex}`,
           rowIndex: f.rowIndex,
           kind: "full-width",
           rowPin: null,
           row: node,
           rowIsFocusRow: true,
-          id: node.get()?.id ?? `${f.rowIndex}`,
         });
       } else {
         const cellLayout: RowCellLayout<T>[] = [];
@@ -317,6 +316,7 @@ export function makeRowLayout<T>({
         const v = row.get(f.colIndex);
         if (v && v.length !== 3) {
           cellLayout.push({
+            id: columns[f.colIndex].id,
             kind: "cell",
             colIndex: f.colIndex,
             rowIndex: f.rowIndex,
@@ -329,18 +329,17 @@ export function makeRowLayout<T>({
 
             row: node,
             column: columns[f.colIndex],
-            id: columns[f.colIndex].id,
           });
         }
 
         const rowLayout: RowLayout<T> = {
+          id: node.get()?.id ?? `${f.rowIndex}`,
           rowIndex: f.rowIndex,
           kind: "row",
           cells: cellLayout,
           rowPin: null,
           row: node,
           rowIsFocusRow: true,
-          id: node.get()?.id ?? `${f.rowIndex}`,
         };
 
         if (f.isRowCenterAfter) center.push(rowLayout);
@@ -370,12 +369,12 @@ export function makeRowLayout<T>({
     const rowFirstPinBottom = r === n.rowBotStart ? true : undefined;
     if (isFullWidthMap(row)) {
       bottom.push({
+        id: node.get()?.id ?? `${r}`,
         rowIndex: r,
         kind: "full-width",
         rowPin: "bottom",
         row: node,
         rowFirstPinBottom,
-        id: node.get()?.id ?? `${r}`,
       });
       continue;
     }
@@ -387,8 +386,8 @@ export function makeRowLayout<T>({
       if (!v || v.length === 3) continue;
 
       cellLayout.push({
-        kind: "cell",
         id: columns[c].id,
+        kind: "cell",
         colIndex: c,
         rowIndex: r,
         rowSpan: v[0],
@@ -408,8 +407,8 @@ export function makeRowLayout<T>({
       if (!v || v.length === 3) continue;
 
       cellLayout.push({
-        kind: "cell",
         id: columns[c].id,
+        kind: "cell",
         colIndex: c,
         rowIndex: r,
         rowSpan: v[0],
@@ -428,8 +427,8 @@ export function makeRowLayout<T>({
 
       if (v && v.length !== 3) {
         const cell: RowCellLayout<T> = {
-          kind: "cell",
           id: columns[f.colIndex].id,
+          kind: "cell",
           colIndex: f.colIndex,
           rowIndex: f.rowIndex,
           rowSpan: v[0],
@@ -450,8 +449,8 @@ export function makeRowLayout<T>({
       if (!v || v.length === 3) continue;
 
       cellLayout.push({
-        kind: "cell",
         id: columns[c].id,
+        kind: "cell",
         colIndex: c,
         rowIndex: r,
         rowSpan: v[0],
@@ -467,19 +466,19 @@ export function makeRowLayout<T>({
     }
 
     bottom.push({
+      id: node.get()?.id ?? `${r}`,
       rowIndex: r,
       kind: "row",
       cells: cellLayout,
       rowPin: "bottom",
       row: node,
       rowFirstPinBottom,
-      id: node.get()?.id ?? `${r}`,
     });
   }
+
   /**
    * BOTTOM ROW LAYOUT END
    */
-
   return {
     top,
     center,

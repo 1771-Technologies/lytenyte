@@ -11,7 +11,9 @@ export function useHeaderCellStyle(
   const isSticky = !!cell.colPin;
 
   const styles = useMemo(() => {
-    const styles: CSSProperties = {};
+    const styles: CSSProperties = {
+      position: "relative",
+    };
     if (isSticky) {
       styles.position = "sticky";
 

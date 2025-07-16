@@ -57,6 +57,9 @@ import { makeRowSelectAll } from "./api/row-select-all.js";
 import { makeRowSelected } from "./api/row-selected.js";
 import { makeRowHandleSelect } from "./api/row-handle-select.js";
 import { makeUseRowDrag } from "./api/use-row-drag.js";
+import { makeColumnById } from "./api/column-by-id.js";
+import { makeColumnResize } from "./api/column-resize.js";
+import { makeColumnUpdate } from "./api/column-update.js";
 
 const DEFAULT_HEADER_HEIGHT = 40;
 const COLUMN_GROUP_JOIN_DELIMITER = "-->";
@@ -477,6 +480,9 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     columnField: makeColumnField(grid),
     columnFromIndex: makeColumnFromIndex(grid),
     columnIndex: makeColumnIndex(grid),
+    columnById: makeColumnById(grid),
+    columnResize: makeColumnResize(grid),
+    columnUpdate: makeColumnUpdate(grid),
     sortForColumn: makeSortForColumn(grid),
 
     rowIsGroup: (r) => r.kind === "branch",

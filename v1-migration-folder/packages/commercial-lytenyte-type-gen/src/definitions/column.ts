@@ -58,6 +58,14 @@ export const ColumnUIHints: InterfaceType = {
       value: "boolean",
       name: "rowGroupable",
     },
+    {
+      kind: "property",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: true,
+      value: "boolean",
+      name: "resizable",
+    },
   ],
 };
 

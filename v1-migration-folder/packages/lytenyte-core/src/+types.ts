@@ -1380,6 +1380,11 @@ export interface ColumnUIHints {
    *
    */
   readonly rowGroupable?: boolean;
+
+  /**
+   *
+   */
+  readonly resizable?: boolean;
 }
 
 /**
@@ -2190,6 +2195,23 @@ export interface GridApi<T> {
     dragProps: any;
     isDragging: boolean;
   };
+
+  /**
+   *
+   */
+  readonly columnResize: (columns: Record<string, number>) => void;
+
+  /**
+   *
+   */
+  readonly columnById: (id: string) => Column<T> | undefined;
+
+  /**
+   *
+   */
+  readonly columnUpdate: (
+    updates: Record<string, Omit<Column<T>, "id">>,
+  ) => void;
 }
 
 /**

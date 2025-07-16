@@ -59,7 +59,12 @@ export function getFocusCriteria(n: SpanLayout, f: PositionUnion | null): FocusL
 
   const isTop = rowIndex < n.rowTopEnd;
   const isBot = rowIndex >= n.rowBotStart;
-  const isRowCenterBefore = rowIndex >= n.rowTopEnd && rowIndex < n.rowCenterStart;
+
+  const isRowCenterBefore =
+    n.rowTopEnd === 0
+      ? rowIndex < n.rowCenterStart
+      : rowIndex >= n.rowTopEnd && rowIndex < n.rowCenterStart;
+
   const isRowCenterAfter = rowIndex >= n.rowCenterEnd && rowIndex < n.rowCenterLast;
 
   const isStart = colIndex < n.colStartEnd;

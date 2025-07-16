@@ -35,7 +35,7 @@ export const HeaderCellReact = forwardRef<
       data-ln-header-range={`${cell.colStart},${cell.colStart + cell.colSpan}`}
       data-ln-rowindex={cell.rowStart}
       data-ln-colindex={cell.colStart}
-      data-ln-header-pin={cell.colPin ?? "center"}
+      data-ln-pin={cell.colPin ?? "center"}
       data-ln-last-start-pin={cell.colLastStartPin}
       data-ln-first-end-pin={cell.colFirstEndPin}
       // Data attributes end
@@ -49,6 +49,8 @@ export const HeaderCellReact = forwardRef<
         height: "100%",
         boxSizing: "border-box",
       }}
-    />
+    >
+      {props.children}
+    </div>
   );
 });
