@@ -36,6 +36,7 @@ export const CellReact = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]
         data-ln-colindex={cell.colIndex}
         data-ln-colspan={cell.colSpan}
         data-ln-rowspan={cell.rowSpan}
+        data-ln-pin={cell.colPin ?? "center"}
         data-ln-cell
         data-ln-last-top-pin={cell.rowLastPinTop}
         data-ln-first-bottom-pin={cell.rowFirstPinBottom}

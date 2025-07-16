@@ -329,6 +329,32 @@ const UseRowDragProps: PropertyType = {
   optional: false,
 };
 
+const ResizeColumn: PropertyType = {
+  kind: "property",
+  name: "columnResize",
+  doc: { en: `` },
+  tsDoc: ``,
+  value: "(columns: Record<string, number>) => void",
+  optional: false,
+};
+
+const ColumnById: PropertyType = {
+  kind: "property",
+  name: "columnById",
+  doc: { en: `` },
+  tsDoc: ``,
+  value: "(id: string) => Column<T> | undefined",
+  optional: false,
+};
+const ColumnUpdates: PropertyType = {
+  kind: "property",
+  name: "columnUpdate",
+  doc: { en: `` },
+  tsDoc: ``,
+  value: "(updates: Record<string, Omit<Column<T>, 'id'>>) => void",
+  optional: false,
+};
+
 export const GridApi: InterfaceType = {
   kind: "interface",
   name: "GridApi<T>",
@@ -373,5 +399,8 @@ export const GridApi: InterfaceType = {
     RowHandleSelect,
 
     UseRowDragProps,
+    ResizeColumn,
+    ColumnById,
+    ColumnUpdates,
   ],
 };

@@ -21,7 +21,7 @@ export function useRowStyle(
       gridTemplateColumns: "100%",
       gridTemplateRows: `${height}px`,
       pointerEvents: "none",
-      visibility: rowIsFocusRow ? "hidden" : undefined,
+      opacity: rowIsFocusRow ? "0" : undefined,
     };
 
     return { ...propStyles, ...styles, ...overrideStyles };
