@@ -822,6 +822,11 @@ export interface HeaderGroupCellLayout {
    *
    */
   readonly end: number;
+
+  /**
+   *
+   */
+  readonly isHiddenMove?: boolean;
 }
 
 /**
@@ -1295,6 +1300,21 @@ export interface ColumnMeta<T> {
    *
    */
   readonly columnLookup: Map<string, Column<T>>;
+
+  /**
+   *
+   */
+  readonly columnVisibleStartCount: number;
+
+  /**
+   *
+   */
+  readonly columnVisibleCenterCount: number;
+
+  /**
+   *
+   */
+  readonly columnVisibleEndCount: number;
 }
 
 /**

@@ -1,14 +1,15 @@
 import { forwardRef, type CSSProperties, type JSX } from "react";
 import type { HeaderCellFloating, HeaderCellLayout } from "../+types";
 import { useGridRoot } from "../context";
-import { COLUMN_MARKER_ID, HeaderCellReact, useDraggable } from "@1771technologies/lytenyte-shared";
+import { COLUMN_MARKER_ID, HeaderCellReact } from "@1771technologies/lytenyte-shared";
 import {
   fastDeepMemo,
-  useForkRef,
+  useCombinedRefs,
   type SlotComponent,
 } from "@1771technologies/lytenyte-react-hooks";
 import { useHeaderCellRenderer } from "./use-header-cell-renderer";
 import { ResizeHandler } from "./resize-handler";
+import { useDragMove } from "./use-drag-move";
 
 export interface HeaderCellProps<T> {
   readonly cell: HeaderCellLayout<T> | HeaderCellFloating<T>;
@@ -40,40 +41,15 @@ const HeaderCellImpl = forwardRef<
       ? false
       : (cell.column.uiHints?.resizable ?? base.uiHints?.resizable ?? false);
 
-  const movable =
-    cell.id === COLUMN_MARKER_ID
-      ? false
-      : (cell.column.uiHints?.movable ?? base.uiHints?.movable ?? false);
-
-  const { dragProps } = useDraggable({
-    getItems: () => {
-      const gridId = grid.state.gridId.get();
-      return {
-        siteLocalData: {
-          [`column-move-${gridId}`]: {
-            columns: [cell.column],
-          },
-        },
-      };
-    },
-  });
-
-  const ref = useForkRef(forwarded, dragProps.ref);
+  const { ref, ...dragProps } = useDragMove(grid, cell, props.onDragStart);
+  const combined = useCombinedRefs(forwarded, ref);
 
   return (
     <HeaderCellReact
       {...props}
-      ref={ref}
+      {...dragProps}
+      ref={combined}
       cell={cell}
-      draggable={movable ? dragProps.draggable : undefined}
-      onDragStart={
-        movable
-          ? (ev) => {
-              props.onDragStart?.(ev);
-              dragProps.onDragStart(ev);
-            }
-          : undefined
-      }
       columnId={cell.column.id}
       viewportWidth={viewport}
       isFloating={cell.kind === "floating"}

@@ -32,6 +32,30 @@ export const ColumnMeta: InterfaceType = {
       tsDoc: ``,
       doc: { en: `` },
     },
+    {
+      kind: "property",
+      name: "columnVisibleStartCount",
+      value: "number",
+      optional: false,
+      doc: { en: `` },
+      tsDoc: ``,
+    },
+    {
+      kind: "property",
+      name: "columnVisibleCenterCount",
+      value: "number",
+      optional: false,
+      doc: { en: `` },
+      tsDoc: ``,
+    },
+    {
+      kind: "property",
+      name: "columnVisibleEndCount",
+      value: "number",
+      optional: false,
+      doc: { en: `` },
+      tsDoc: ``,
+    },
   ],
 };
 

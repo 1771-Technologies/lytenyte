@@ -23,3 +23,4 @@ export { useEvent } from "./use-event.js";
 export { useIsoEffect } from "./use-iso-effect.js";
 export { usePrevious } from "./use-previous.js";
 export { useOnWindowResize } from "./use-on-window-resize.js";
+export { useCombinedRefs } from "./use-combine-refs.js";

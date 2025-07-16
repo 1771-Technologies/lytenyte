@@ -22,9 +22,9 @@ const meta: Meta = {
 export default meta;
 
 const columns: Column<any>[] = [
-  { id: "age" },
-  { id: "job" },
-  { id: "balance" },
+  { id: "age", groupPath: ["A"] },
+  { id: "job", width: 100, groupPath: ["A"] },
+  { id: "balance", pin: "end" },
   { id: "education" },
   { id: "marital" },
   { id: "default" },
@@ -54,6 +54,7 @@ function Component({ data = bankData }: { data?: any[] }) {
     columnBase: {
       uiHints: {
         movable: true,
+        resizable: true,
       },
     },
   });
@@ -88,11 +89,15 @@ function Component({ data = bankData }: { data?: any[] }) {
                           />
                         );
                       }
+
                       return (
                         <HeaderCell
                           cell={c}
-                          key={c.column.id}
-                          style={{ border: "1px solid black", background: "lightgray" }}
+                          key={c.id}
+                          style={{
+                            border: "1px solid black",
+                            background: "lightgray",
+                          }}
                         />
                       );
                     })}

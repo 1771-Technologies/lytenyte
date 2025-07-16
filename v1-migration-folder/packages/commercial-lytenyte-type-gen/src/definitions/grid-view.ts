@@ -223,6 +223,14 @@ export const HeaderGroupCell: InterfaceType = {
       doc: { en: `` },
       optional: false,
     },
+    {
+      kind: "property",
+      name: "isHiddenMove",
+      value: "boolean",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: true,
+    },
   ],
 };
 
