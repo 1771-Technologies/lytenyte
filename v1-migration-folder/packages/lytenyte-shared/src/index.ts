@@ -42,6 +42,7 @@ export {
 export { getTranslate } from "./utils/get-translate.js";
 export { sizeFromCoord } from "./utils/size-from-coord.js";
 export { getHoveredColumnIndex } from "./utils/get-hovered-column-index.js";
+export { measureText } from "./utils/measure-text.js";
 
 export { makeGridAtom } from "./grid-atom/make-grid-atom.js";
 export { makeRowDataStore } from "./row-data-store/make-row-data-store.js";

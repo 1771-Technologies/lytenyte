@@ -498,6 +498,8 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     rowSelectionPivot: makeGridAtom(rowSelectionPivot, store),
     rowSelectionActivator: makeGridAtom(rowSelectionActivator, store),
     rowSelectChildren: makeGridAtom(rowSelectChildren, store),
+
+    viewBounds: makeGridAtom(bounds, store),
   };
 
   const api = {} as GridApi<T>;
@@ -549,7 +551,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     rowHandleSelect: makeRowHandleSelect(grid as any),
 
     columnToggleGroup: makeColumnGroupToggle(grid),
-    columnAutosize: makeColumnAutosize(grid),
+    columnAutosize: makeColumnAutosize(grid as any),
 
     useRowDrag: makeUseRowDrag(grid),
   } satisfies GridApi<T>);

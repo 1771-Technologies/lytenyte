@@ -8,7 +8,7 @@ export function resolveColumn(
   if (typeof c === "string") {
     if (!meta.columnLookup.has(c)) {
       errorRef.current = true;
-      console.error(`Attempt to move invalid column ${c}`);
+      console.error(`Invalid column ${c}`);
     }
     return c;
   }
@@ -16,14 +16,14 @@ export function resolveColumn(
     const col = meta.columnsVisible.at(c);
     if (!col) {
       errorRef.current = true;
-      console.error(`Attempt to move invalid column at index ${c}`);
+      console.error(`Invalid column at index ${c}`);
     }
     return col?.id;
   }
 
   if (!meta.columnLookup.has(c.id)) {
     errorRef.current = true;
-    console.error(`Attempt to move invalid column ${c.id}`);
+    console.error(`Invalid column ${c.id}`);
   }
   return c.id;
 }

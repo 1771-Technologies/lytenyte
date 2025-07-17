@@ -1,5 +1,127 @@
 import type { InterfaceType, PropertyType } from "../+types.js";
 
+export const ViewBounds: InterfaceType = {
+  kind: "interface",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  name: "ViewBounds",
+  properties: [
+    {
+      kind: "property",
+      name: "rowTopStart",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "number",
+    },
+    {
+      kind: "property",
+      name: "rowTopEnd",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "number",
+    },
+    {
+      kind: "property",
+      name: "rowCenterStart",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "number",
+    },
+    {
+      kind: "property",
+      name: "rowCenterEnd",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "number",
+    },
+    {
+      kind: "property",
+      name: "rowCenterLast",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "number",
+    },
+    {
+      kind: "property",
+      name: "rowBotStart",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "number",
+    },
+    {
+      kind: "property",
+      name: "rowBotEnd",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "number",
+    },
+    {
+      kind: "property",
+      name: "colStartStart",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "number",
+    },
+    {
+      kind: "property",
+      name: "colStartEnd",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "number",
+    },
+    {
+      kind: "property",
+      name: "colCenterStart",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "number",
+    },
+    {
+      kind: "property",
+      name: "colCenterEnd",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "number",
+    },
+    {
+      kind: "property",
+      name: "colCenterLast",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "number",
+    },
+    {
+      kind: "property",
+      name: "colEndStart",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "number",
+    },
+    {
+      kind: "property",
+      name: "colEndEnd",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+      value: "number",
+    },
+  ],
+};
+
 /**
  * Grid State
  */
@@ -541,6 +663,15 @@ const RowSelectChildren: PropertyType = {
   value: "GridAtom<boolean>",
 };
 
+const ViewBoundsProp: PropertyType = {
+  kind: "property",
+  name: "viewBounds",
+  doc: { en: `` },
+  optional: false,
+  tsDoc: ``,
+  value: "GridAtomReadonly<ViewBounds>",
+};
+
 export const GridStateCore: InterfaceType = {
   kind: "interface",
   export: true,
@@ -621,5 +752,7 @@ export const GridStateCore: InterfaceType = {
     RowSelectionPivot,
     RowSelectionActivator,
     RowSelectChildren,
+
+    ViewBoundsProp,
   ],
 };
