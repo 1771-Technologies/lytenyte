@@ -251,6 +251,16 @@ export interface UseLyteNyteProps<T> {
    *
    */
   readonly rowSelectChildren?: boolean;
+
+  /**
+   *
+   */
+  readonly virtualizeCols?: boolean;
+
+  /**
+   *
+   */
+  readonly virtualizeRows?: boolean;
 }
 
 /**
@@ -582,6 +592,16 @@ export interface GridState<T> {
    *
    */
   readonly viewBounds: GridAtomReadonly<ViewBounds>;
+
+  /**
+   *
+   */
+  readonly virtualizeCols: GridAtom<boolean>;
+
+  /**
+   *
+   */
+  readonly virtualizeRows: GridAtom<boolean>;
 }
 
 /**
@@ -1635,6 +1655,131 @@ export interface ClientRowDataSourceParams<T> {
    *
    */
   readonly reflectData?: boolean;
+}
+
+/**
+ *
+ */
+export interface RowDataSourceClient<T> {
+  /**
+   *
+   */
+  readonly init: (grid: Grid<T>) => void;
+
+  /**
+   *
+   */
+  readonly rowById: (id: string) => RowNode<T> | null;
+
+  /**
+   *
+   */
+  readonly rowByIndex: (index: number) => RowNode<T> | null;
+
+  /**
+   *
+   */
+  readonly rowToIndex: (rowId: string) => number | null;
+
+  /**
+   *
+   */
+  readonly rowUpdate: (params: RowUpdateParams) => void;
+
+  /**
+   *
+   */
+  readonly rowExpand: (expansion: Record<string, boolean>) => void;
+
+  /**
+   *
+   */
+  readonly rowSelect: (params: RdsRowSelectParams) => void;
+
+  /**
+   *
+   */
+  readonly rowSelectAll: (params: RowSelectAllOptions) => void;
+
+  /**
+   *
+   */
+  readonly rowAllChildIds: (rowId: string) => string[];
+}
+
+/**
+ *
+ */
+export interface RowDataSourceClientPaginated<T> {
+  /**
+   *
+   */
+  readonly init: (grid: Grid<T>) => void;
+
+  /**
+   *
+   */
+  readonly rowById: (id: string) => RowNode<T> | null;
+
+  /**
+   *
+   */
+  readonly rowByIndex: (index: number) => RowNode<T> | null;
+
+  /**
+   *
+   */
+  readonly rowToIndex: (rowId: string) => number | null;
+
+  /**
+   *
+   */
+  readonly rowUpdate: (params: RowUpdateParams) => void;
+
+  /**
+   *
+   */
+  readonly rowExpand: (expansion: Record<string, boolean>) => void;
+
+  /**
+   *
+   */
+  readonly rowSelect: (params: RdsRowSelectParams) => void;
+
+  /**
+   *
+   */
+  readonly rowSelectAll: (params: RowSelectAllOptions) => void;
+
+  /**
+   *
+   */
+  readonly rowAllChildIds: (rowId: string) => string[];
+
+  /**
+   *
+   */
+  readonly page: RowDataSourceClientPageState;
+}
+
+/**
+ *
+ */
+export interface RowDataSourceClientPageState {
+  /**
+   *
+   */
+  readonly current: GridAtom<number>;
+
+  /**
+   *
+   */
+  readonly perPage: GridAtom<number>;
+
+  /**
+   *
+   */
+  readonly pageCount: GridAtomReadonly<number>;
 }
 
 /**

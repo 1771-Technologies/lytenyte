@@ -146,6 +146,9 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     p.rowSelectionActivator ?? "single-click",
   );
 
+  const virtualizeRows = atom(p.virtualizeRows ?? true);
+  const virtualizeCols = atom(p.virtualizeCols ?? true);
+
   const internal_rowSelectionPivot = atom<string | null>(null);
   const internal_rowSelectionLastWasDeselect = atom<boolean>(false);
   const rowSelectionPivot = atom((g) => g(internal_rowSelectionPivot));
@@ -349,7 +352,15 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
   let prevLayout: SpanLayout = DEFAULT_PREVIOUS_LAYOUT;
   const rowView = atom<GridView<T>["rows"]>((g) => {
-    const n = g(bounds);
+    let n = g(bounds);
+
+    if (!g(virtualizeRows)) {
+      n = { ...n, rowCenterStart: n.rowTopEnd, rowCenterEnd: n.rowCenterLast };
+    }
+    if (!g(virtualizeCols)) {
+      n = { ...n, colCenterStart: n.colStartEnd, colCenterEnd: n.colCenterLast };
+    }
+
     const rowScan = g(rowScanDistance);
     const colScan = g(colScanDistance);
 
@@ -502,6 +513,8 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     rowSelectChildren: makeGridAtom(rowSelectChildren, store),
 
     viewBounds: makeGridAtom(bounds, store),
+    virtualizeRows: makeGridAtom(virtualizeRows, store),
+    virtualizeCols: makeGridAtom(virtualizeCols, store),
   };
 
   const api = {} as GridApi<T>;

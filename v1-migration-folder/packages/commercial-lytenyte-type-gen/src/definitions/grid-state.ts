@@ -681,6 +681,23 @@ const ColumnDoubleClickToAutosize: PropertyType = {
   value: "GridAtom<boolean>",
 };
 
+const VirtualizeRows: PropertyType = {
+  kind: "property",
+  name: "virtualizeRows",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<boolean>",
+};
+const VirtualizeColumns: PropertyType = {
+  kind: "property",
+  name: "virtualizeCols",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<boolean>",
+};
+
 export const GridStateCore: InterfaceType = {
   kind: "interface",
   export: true,
@@ -764,5 +781,8 @@ export const GridStateCore: InterfaceType = {
     RowSelectChildren,
 
     ViewBoundsProp,
+
+    VirtualizeColumns,
+    VirtualizeRows,
   ],
 };

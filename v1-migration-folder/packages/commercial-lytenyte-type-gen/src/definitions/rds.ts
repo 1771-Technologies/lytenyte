@@ -1,4 +1,4 @@
-import type { InterfaceType } from "../+types";
+import type { InterfaceType, InterfaceTypePartial } from "../+types";
 import { RowIndexProp } from "./shared-properties";
 
 export const RowUpdateParams: InterfaceType = {
@@ -136,12 +136,8 @@ export const RowDataStore: InterfaceType = {
   ],
 };
 
-export const RowDataSourceCore: InterfaceType = {
-  kind: "interface",
-  name: "RowDataSource<T>",
-  export: true,
-  tsDoc: ``,
-  doc: { en: `` },
+export const RowDataSourcePartial: InterfaceTypePartial = {
+  kind: "interface-partial",
   properties: [
     {
       kind: "property",
@@ -216,5 +212,78 @@ export const RowDataSourceCore: InterfaceType = {
       tsDoc: ``,
     },
   ],
+};
+
+export const RowDataSourceCore: InterfaceType = {
+  kind: "interface",
+  name: "RowDataSource<T>",
+  export: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  properties: [],
+  extends: RowDataSourcePartial,
   tag: "core",
+};
+
+export const RowDataSourceClient: InterfaceType = {
+  kind: "interface",
+  name: "RowDataSourceClient<T>",
+  export: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  properties: [],
+  extends: RowDataSourcePartial,
+};
+
+export const RowDataSourceClientPageState: InterfaceType = {
+  kind: "interface",
+  name: "RowDataSourceClientPageState",
+  export: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  properties: [
+    {
+      kind: "property",
+      doc: { en: `` },
+      tsDoc: ``,
+      name: "current",
+      optional: false,
+      value: "GridAtom<number>",
+    },
+    {
+      kind: "property",
+      doc: { en: `` },
+      tsDoc: ``,
+      name: "perPage",
+      optional: false,
+      value: "GridAtom<number>",
+    },
+    {
+      kind: "property",
+      doc: { en: `` },
+      tsDoc: ``,
+      name: "pageCount",
+      optional: false,
+      value: "GridAtomReadonly<number>",
+    },
+  ],
+};
+
+export const RowDataSourceClientClientPaginated: InterfaceType = {
+  kind: "interface",
+  name: "RowDataSourceClientPaginated<T>",
+  export: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  extends: RowDataSourcePartial,
+  properties: [
+    {
+      kind: "property",
+      doc: { en: `` },
+      tsDoc: ``,
+      name: "page",
+      optional: false,
+      value: "RowDataSourceClientPageState",
+    },
+  ],
 };

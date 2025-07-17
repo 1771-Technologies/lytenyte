@@ -35,7 +35,7 @@ const ReflectData: PropertyType = {
   doc: { en: `` },
 };
 
-export const ClientRowDataSource: InterfaceType = {
+export const ClientRowDataSourceParams: InterfaceType = {
   kind: "interface",
   export: true,
   name: "ClientRowDataSourceParams<T>",

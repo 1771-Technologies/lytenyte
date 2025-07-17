@@ -420,6 +420,23 @@ const ColumnDoubleClickToAutosize: PropertyType = {
   value: "boolean",
 };
 
+const VirtualizeRows: PropertyType = {
+  kind: "property",
+  name: "virtualizeRows",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "boolean",
+};
+const VirtualizeColumns: PropertyType = {
+  kind: "property",
+  name: "virtualizeCols",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "boolean",
+};
+
 export const UseLyteNytePropsCore: InterfaceType = {
   kind: "interface",
   name: "UseLyteNyteProps<T>",
@@ -486,5 +503,8 @@ export const UseLyteNytePropsCore: InterfaceType = {
     RowSelectionMode,
     RowSelectionActivator,
     RowSelectChildren,
+
+    VirtualizeColumns,
+    VirtualizeRows,
   ],
 };
