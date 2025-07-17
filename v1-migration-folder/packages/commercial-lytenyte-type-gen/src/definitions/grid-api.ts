@@ -458,6 +458,31 @@ const ColumnAutosize: PropertyType = {
   value: "(params: ColumnAutosizeParams<T>) => Record<string, number>",
 };
 
+export const ExportDataRect: PropertyType = {
+  kind: "property",
+  doc: { en: `` },
+  name: "exportDataRect",
+  optional: false,
+  tsDoc: ``,
+  value: "(params?: ExportDataRectParams) => ExportDataRectResult<T>",
+};
+export const ExportCsv: PropertyType = {
+  kind: "property",
+  doc: { en: `` },
+  name: "exportCsv",
+  optional: false,
+  tsDoc: ``,
+  value: "(params?: ExportCsvParams) => Promise<string>",
+};
+export const ExportCsvFile: PropertyType = {
+  kind: "property",
+  doc: { en: `` },
+  name: "exportCsvFile",
+  optional: false,
+  tsDoc: ``,
+  value: "(params?: ExportCsvParams) => Promise<Blob>",
+};
+
 export const GridApi: InterfaceType = {
   kind: "interface",
   name: "GridApi<T>",
@@ -509,5 +534,9 @@ export const GridApi: InterfaceType = {
 
     HeaderGroupToggle,
     ColumnAutosize,
+
+    ExportDataRect,
+    ExportCsv,
+    ExportCsvFile,
   ],
 };

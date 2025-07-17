@@ -28,6 +28,7 @@ import * as Navigation from "./definitions/navigation.js";
 import * as RowDetail from "./definitions/row-detail.js";
 import * as RowSelection from "./definitions/row-selection.js";
 import * as RowDrag from "./definitions/row-drag.js";
+import * as ExportDataRect from "./definitions/data-export.js";
 
 const typeModules = [
   ...Object.values(UseLng),
@@ -55,6 +56,7 @@ const typeModules = [
   ...Object.values(RowDetail),
   ...Object.values(RowSelection),
   ...Object.values(RowDrag),
+  ...Object.values(ExportDataRect),
 ] as GenTypes[];
 
 const types = typeModules

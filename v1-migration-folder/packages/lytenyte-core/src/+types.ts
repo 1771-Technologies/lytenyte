@@ -2622,6 +2622,23 @@ export interface GridApi<T> {
   readonly columnAutosize: (
     params: ColumnAutosizeParams<T>,
   ) => Record<string, number>;
+
+  /**
+   *
+   */
+  readonly exportDataRect: (
+    params?: ExportDataRectParams,
+  ) => ExportDataRectResult<T>;
+
+  /**
+   *
+   */
+  readonly exportCsv: (params?: ExportCsvParams) => Promise<string>;
+
+  /**
+   *
+   */
+  readonly exportCsvFile: (params?: ExportCsvParams) => Promise<Blob>;
 }
 
 /**
@@ -4703,4 +4720,109 @@ export interface UseRowDragParams<T> {
    *
    */
   readonly announceDragEnd?: string;
+}
+
+/**
+ *
+ */
+export interface DataRect {
+  /**
+   *
+   */
+  readonly rowStart: number;
+
+  /**
+   *
+   */
+  readonly rowEnd: number;
+
+  /**
+   *
+   */
+  readonly columnStart: number;
+
+  /**
+   *
+   */
+  readonly columnEnd: number;
+}
+
+/**
+ *
+ */
+export interface ExportCsvParams {
+  /**
+   *
+   */
+  readonly includeHeader?: boolean;
+
+  /**
+   *
+   */
+  readonly includeGroupHeaders?: boolean;
+
+  /**
+   *
+   */
+  readonly uniformGroupHeaders?: boolean;
+
+  /**
+   *
+   */
+  readonly delimiter?: string;
+
+  /**
+   *
+   */
+  readonly dataRect?: DataRect;
+}
+
+/**
+ *
+ */
+export type ExportDataRectFn<T> = (
+  /**
+   *
+   */
+  params: ExportDataRectParams,
+) => ExportDataRectResult<T>;
+
+/**
+ *
+ */
+export interface ExportDataRectParams {
+  /**
+   *
+   */
+  readonly dataRect?: DataRect;
+
+  /**
+   *
+   */
+  readonly uniformGroupHeaders?: boolean;
+}
+
+/**
+ *
+ */
+export interface ExportDataRectResult<T> {
+  /**
+   *
+   */
+  readonly headers: string[];
+
+  /**
+   *
+   */
+  readonly groupHeaders: (string | null)[][];
+
+  /**
+   *
+   */
+  readonly data: unknown[][];
+
+  /**
+   *
+   */
+  readonly columns: Column<T>[];
 }
