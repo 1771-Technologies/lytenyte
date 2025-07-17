@@ -21,14 +21,26 @@
       "types": "./src/index.ts",
       "import": "./src/index.ts",
       "require": "./src/index.ts"
+    },
+    "./types": {
+      "types": "./src/types/types.ts",
+      "import": "./src/types/types.ts",
+      "require": "./src/types/types.ts"
     }
   },
   "publishConfig": {
     "access": "public",
     "exports": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.js"
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "require": "./dist/index.js"
+      },
+      "./types": {
+        "types": "./dist/types/index.d.ts",
+        "import": "./dist/types/index.js",
+        "require": "./dist/types/index.js"
+      }
     }
   },
   "dependencies": {

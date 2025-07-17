@@ -64,6 +64,8 @@ import { makeColumnUpdate } from "./api/column-update.js";
 import { makeColumnMove } from "./api/column-move.js";
 import { makeColumnGroupToggle } from "./api/column-group-toggle.js";
 import { makeColumnAutosize } from "./api/column-autosize.js";
+import { makeExportCsv, makeExportCsvFile } from "./api/export-csv.js";
+import { makeExportDataRect } from "./api/export-data-rect.js";
 
 const DEFAULT_HEADER_HEIGHT = 40;
 const COLUMN_GROUP_JOIN_DELIMITER = "-->";
@@ -569,6 +571,10 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     columnAutosize: makeColumnAutosize(grid as any),
 
     useRowDrag: makeUseRowDrag(grid),
+
+    exportCsv: makeExportCsv(grid),
+    exportCsvFile: makeExportCsvFile(grid),
+    exportDataRect: makeExportDataRect(grid),
   } satisfies GridApi<T>);
 
   Object.assign(grid, {

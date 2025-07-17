@@ -70,6 +70,7 @@ function Component({ data = bankData }: { data?: any[] }) {
         <button onClick={() => g.state.columnMarkerEnabled.set((prev) => !prev)}>
           Toggle Marker
         </button>
+        <button onClick={() => g.api.exportCsv().then((c) => console.log(c))}>Export CSV</button>
       </div>
 
       <div style={{ width: "100%", height: "90vh", border: "1px solid black" }}>

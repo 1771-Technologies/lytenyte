@@ -7,4 +7,7 @@ export const emptyRowDataSource: RowDataSource<any> = {
   rowExpand: () => {},
   rowUpdate: () => {},
   rowToIndex: () => null,
+  rowAllChildIds: () => [],
+  rowSelect: () => {},
+  rowSelectAll: () => {},
 };
