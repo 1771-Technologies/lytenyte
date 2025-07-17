@@ -210,6 +210,11 @@ export interface UseLyteNyteProps<T> {
   /**
    *
    */
+  readonly columnDoubleClickToAutosize?: boolean;
+
+  /**
+   *
+   */
   readonly rowDetailRenderer?: RowDetailRendererFn<T>;
 
   /**
@@ -526,6 +531,11 @@ export interface GridState<T> {
   /**
    *
    */
+  readonly columnDoubleClickToAutosize: GridAtom<boolean>;
+
+  /**
+   *
+   */
   readonly rowDetailRenderer: GridAtom<{ fn: RowDetailRendererFn<T> }>;
 
   /**
@@ -567,6 +577,86 @@ export interface GridState<T> {
    *
    */
   readonly rowSelectChildren: GridAtom<boolean>;
+
+  /**
+   *
+   */
+  readonly viewBounds: GridAtomReadonly<ViewBounds>;
+}
+
+/**
+ *
+ */
+export interface ViewBounds {
+  /**
+   *
+   */
+  readonly rowTopStart: number;
+
+  /**
+   *
+   */
+  readonly rowTopEnd: number;
+
+  /**
+   *
+   */
+  readonly rowCenterStart: number;
+
+  /**
+   *
+   */
+  readonly rowCenterEnd: number;
+
+  /**
+   *
+   */
+  readonly rowCenterLast: number;
+
+  /**
+   *
+   */
+  readonly rowBotStart: number;
+
+  /**
+   *
+   */
+  readonly rowBotEnd: number;
+
+  /**
+   *
+   */
+  readonly colStartStart: number;
+
+  /**
+   *
+   */
+  readonly colStartEnd: number;
+
+  /**
+   *
+   */
+  readonly colCenterStart: number;
+
+  /**
+   *
+   */
+  readonly colCenterEnd: number;
+
+  /**
+   *
+   */
+  readonly colCenterLast: number;
+
+  /**
+   *
+   */
+  readonly colEndStart: number;
+
+  /**
+   *
+   */
+  readonly colEndEnd: number;
 }
 
 /**
@@ -1085,6 +1175,61 @@ export interface RowSectionLayouts<T> {
 /**
  *
  */
+export type AutosizeCellFn<T> = (
+  /**
+   *
+   */
+  params: AutosizeCellParams<T>,
+) => number | null;
+
+/**
+ *
+ */
+export interface AutosizeCellParams<T> {
+  /**
+   *
+   */
+  readonly column: Column<T>;
+
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly row: RowNode<T>;
+}
+
+/**
+ *
+ */
+export type AutosizeHeaderFn<T> = (
+  /**
+   *
+   */
+  params: AutosizeHeaderParams<T>,
+) => number | null;
+
+/**
+ *
+ */
+export interface AutosizeHeaderParams<T> {
+  /**
+   *
+   */
+  readonly column: Column<T>;
+
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+}
+
+/**
+ *
+ */
 export interface ColumnBase<T> {
   /**
    *
@@ -1145,6 +1290,16 @@ export interface ColumnBase<T> {
    *
    */
   readonly editSetter?: EditSetterFn<T>;
+
+  /**
+   *
+   */
+  readonly autosizeCellFn?: AutosizeCellFn<T>;
+
+  /**
+   *
+   */
+  readonly autosizeHeaderFn?: AutosizeHeaderFn<T>;
 }
 
 /**
@@ -1255,6 +1410,16 @@ export interface Column<T> {
    *
    */
   readonly editSetter?: EditSetterFn<T>;
+
+  /**
+   *
+   */
+  readonly autosizeCellFn?: AutosizeCellFn<T>;
+
+  /**
+   *
+   */
+  readonly autosizeHeaderFn?: AutosizeHeaderFn<T>;
 }
 
 /**
@@ -1385,6 +1550,16 @@ export interface RowGroupColumn<T> {
    *
    */
   readonly uiHints?: ColumnUIHints;
+
+  /**
+   *
+   */
+  readonly autosizeCellFn?: AutosizeCellFn<T>;
+
+  /**
+   *
+   */
+  readonly autosizeHeaderFn?: AutosizeHeaderFn<T>;
 }
 
 /**
@@ -2038,6 +2213,26 @@ export interface CellRendererParams<T> {
 /**
  *
  */
+export interface ColumnAutosizeParams<T> {
+  /**
+   *
+   */
+  readonly dryRun?: boolean;
+
+  /**
+   *
+   */
+  readonly includeHeader?: boolean;
+
+  /**
+   *
+   */
+  readonly columns?: (string | number | Column<T>)[];
+}
+
+/**
+ *
+ */
 export interface ColumnMoveParams<T> {
   /**
    *
@@ -2267,6 +2462,21 @@ export interface GridApi<T> {
    *
    */
   readonly columnMove: (params: ColumnMoveParams<T>) => void;
+
+  /**
+   *
+   */
+  readonly columnToggleGroup: (
+    group: string | string[],
+    state?: boolean,
+  ) => void;
+
+  /**
+   *
+   */
+  readonly columnAutosize: (
+    params: ColumnAutosizeParams<T>,
+  ) => Record<string, number>;
 }
 
 /**

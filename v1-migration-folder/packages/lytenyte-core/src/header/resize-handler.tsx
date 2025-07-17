@@ -1,6 +1,6 @@
 import { useSlot, type SlotComponent } from "@1771technologies/lytenyte-react-hooks";
 import type { HeaderCellLayout } from "../+types";
-import type { CSSProperties, JSX } from "react";
+import { type CSSProperties, type JSX } from "react";
 import {
   DEFAULT_COLUMN_WIDTH_MAX,
   DEFAULT_COLUMN_WIDTH_MIN,
@@ -30,12 +30,23 @@ export function ResizeHandler<T>({
   const width = sizeFromCoord(cell.colStart, xPositions, cell.colSpan);
   const sx = useGridRoot().grid;
 
+  const double = sx.state.columnDoubleClickToAutosize.useValue();
+
   const defaultProps: JSX.IntrinsicElements["div"] = {
     role: "button",
     tabIndex: -1,
+    onDoubleClick: () => {
+      if (!double) return;
+
+      sx.api.columnAutosize({
+        columns: [cell.column],
+        includeHeader: true,
+      });
+    },
     onPointerDown: (ev) => {
       const vp = sx.state.viewport.get();
       if (!vp) return;
+      if (ev.pointerType === "mouse" && ev.button !== 0) return;
 
       ev.preventDefault();
       ev.stopPropagation();
@@ -153,7 +164,7 @@ export function ResizeHandler<T>({
     className,
     style: {
       height: "100%",
-      width: "4px",
+      width: "8px",
       ...style,
       top: "0px",
       insetInlineEnd: cell.colPin !== "end" ? "0px" : undefined,

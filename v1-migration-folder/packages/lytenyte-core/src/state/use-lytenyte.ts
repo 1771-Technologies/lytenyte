@@ -62,6 +62,8 @@ import { makeColumnById } from "./api/column-by-id.js";
 import { makeColumnResize } from "./api/column-resize.js";
 import { makeColumnUpdate } from "./api/column-update.js";
 import { makeColumnMove } from "./api/column-move.js";
+import { makeColumnGroupToggle } from "./api/column-group-toggle.js";
+import { makeColumnAutosize } from "./api/column-autosize.js";
 
 const DEFAULT_HEADER_HEIGHT = 40;
 const COLUMN_GROUP_JOIN_DELIMITER = "-->";
@@ -130,6 +132,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
   const columnMarker = atom(p.columnMarker ?? {});
   const columnMarkerEnabled = atom(p.columnMarkerEnabled ?? false);
+  const columnDoubleClickToAutosize = atom(p.columnDoubleClickToAutosize ?? true);
 
   const rowDetailHeight = atom(p.rowDetailHeight ?? 300);
   const rowDetailAutoHeightGuess = atom(p.rowDetailAutoHeightGuess ?? 300);
@@ -486,6 +489,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
     columnMarker: makeGridAtom(columnMarker, store),
     columnMarkerEnabled: makeGridAtom(columnMarkerEnabled, store),
+    columnDoubleClickToAutosize: makeGridAtom(columnDoubleClickToAutosize, store),
     rowDetailExpansions: makeGridAtom(rowDetailExpansions, store),
     rowDetailHeight: makeGridAtom(rowDetailHeight, store),
     rowDetailRenderer: makeGridAtom(rowDetailRenderer, store),
@@ -496,6 +500,8 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     rowSelectionPivot: makeGridAtom(rowSelectionPivot, store),
     rowSelectionActivator: makeGridAtom(rowSelectionActivator, store),
     rowSelectChildren: makeGridAtom(rowSelectChildren, store),
+
+    viewBounds: makeGridAtom(bounds, store),
   };
 
   const api = {} as GridApi<T>;
@@ -545,6 +551,9 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     rowSelectAll: makeRowSelectAll(grid as any),
     rowSelected: makeRowSelected(grid),
     rowHandleSelect: makeRowHandleSelect(grid as any),
+
+    columnToggleGroup: makeColumnGroupToggle(grid),
+    columnAutosize: makeColumnAutosize(grid as any),
 
     useRowDrag: makeUseRowDrag(grid),
   } satisfies GridApi<T>);

@@ -406,6 +406,58 @@ const ColumnMove: PropertyType = {
   value: "(params: ColumnMoveParams<T>) => void",
 };
 
+const HeaderGroupToggle: PropertyType = {
+  kind: "property",
+  name: "columnToggleGroup",
+  doc: { en: `` },
+  optional: false,
+  tsDoc: ``,
+  value: "(group: string | string[], state?: boolean) => void",
+};
+
+export const ColumnAutosizeParams: InterfaceType = {
+  kind: "interface",
+  name: "ColumnAutosizeParams<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  properties: [
+    {
+      kind: "property",
+      name: "dryRun",
+      value: "boolean",
+      optional: true,
+      doc: { en: `` },
+      tsDoc: ``,
+    },
+    {
+      kind: "property",
+      name: "includeHeader",
+      value: "boolean",
+      optional: true,
+      doc: { en: `` },
+      tsDoc: ``,
+    },
+    {
+      kind: "property",
+      doc: { en: `` },
+      name: "columns",
+      optional: true,
+      tsDoc: ``,
+      value: "(string | number | Column<T>)[]",
+    },
+  ],
+};
+
+const ColumnAutosize: PropertyType = {
+  kind: "property",
+  name: "columnAutosize",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "(params: ColumnAutosizeParams<T>) => Record<string, number>",
+};
+
 export const GridApi: InterfaceType = {
   kind: "interface",
   name: "GridApi<T>",
@@ -454,5 +506,8 @@ export const GridApi: InterfaceType = {
     ColumnById,
     ColumnUpdates,
     ColumnMove,
+
+    HeaderGroupToggle,
+    ColumnAutosize,
   ],
 };

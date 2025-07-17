@@ -52,6 +52,7 @@ function Component({ data = bankData }: { data?: any[] }) {
     rowDataSource: ds,
 
     columnBase: {
+      widthMin: 0,
       uiHints: {
         resizable: true,
       },
@@ -68,6 +69,10 @@ function Component({ data = bankData }: { data?: any[] }) {
         </button>
         <button onClick={() => g.state.columnMarkerEnabled.set((prev) => !prev)}>
           Toggle Marker
+        </button>
+        <button onClick={() => g.api.columnAutosize({})}>Autosize</button>
+        <button onClick={() => g.api.columnAutosize({ includeHeader: true })}>
+          Autosize With Header
         </button>
       </div>
 
