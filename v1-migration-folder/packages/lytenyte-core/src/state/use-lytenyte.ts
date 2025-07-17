@@ -63,6 +63,7 @@ import { makeColumnResize } from "./api/column-resize.js";
 import { makeColumnUpdate } from "./api/column-update.js";
 import { makeColumnMove } from "./api/column-move.js";
 import { makeColumnGroupToggle } from "./api/column-group-toggle.js";
+import { makeColumnAutosize } from "./api/column-autosize.js";
 
 const DEFAULT_HEADER_HEIGHT = 40;
 const COLUMN_GROUP_JOIN_DELIMITER = "-->";
@@ -548,6 +549,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     rowHandleSelect: makeRowHandleSelect(grid as any),
 
     columnToggleGroup: makeColumnGroupToggle(grid),
+    columnAutosize: makeColumnAutosize(grid),
 
     useRowDrag: makeUseRowDrag(grid),
   } satisfies GridApi<T>);

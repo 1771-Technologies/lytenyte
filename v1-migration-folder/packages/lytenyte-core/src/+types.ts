@@ -2038,6 +2038,26 @@ export interface CellRendererParams<T> {
 /**
  *
  */
+export interface ColumnAutosizeParams<T> {
+  /**
+   *
+   */
+  readonly dryRun?: boolean;
+
+  /**
+   *
+   */
+  readonly includeHeader?: boolean;
+
+  /**
+   *
+   */
+  readonly columns?: (string | number | Column<T>)[];
+}
+
+/**
+ *
+ */
 export interface ColumnMoveParams<T> {
   /**
    *
@@ -2275,6 +2295,13 @@ export interface GridApi<T> {
     group: string | string[],
     state?: boolean,
   ) => void;
+
+  /**
+   *
+   */
+  readonly columnAutosize: (
+    params: ColumnAutosizeParams<T>,
+  ) => Record<string, number>;
 }
 
 /**

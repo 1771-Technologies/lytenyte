@@ -1,4 +1,5 @@
-import type { InterfaceType, PropertyType, UnionType } from "../+types.js";
+import type { FunctionType, InterfaceType, PropertyType, UnionType } from "../+types.js";
+import { ColumnProp, GridProp, RowNodeProp } from "./shared-properties.js";
 
 export const ColumnPin: UnionType = {
   kind: "union",
@@ -99,6 +100,62 @@ export const ColumnUIHints: InterfaceType = {
       name: "movable",
     },
   ],
+};
+
+export const AutosizeCellParams: InterfaceType = {
+  kind: "interface",
+  name: "AutosizeCellParams<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  properties: [ColumnProp, GridProp, RowNodeProp],
+};
+
+export const AutosizeHeaderParams: InterfaceType = {
+  kind: "interface",
+  name: "AutosizeHeaderParams<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  properties: [ColumnProp, GridProp],
+};
+
+export const AutosizeCellFn: FunctionType = {
+  kind: "function",
+  name: "AutosizeCellFn<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  properties: [
+    {
+      kind: "property",
+      tsDoc: ``,
+      doc: { en: `` },
+      name: "params",
+      optional: false,
+      value: "AutosizeCellParams<T>",
+    },
+  ],
+  return: "number | null",
+};
+
+export const AutosizeHeaderFn: FunctionType = {
+  kind: "function",
+  name: "AutosizeHeaderFn<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  properties: [
+    {
+      kind: "property",
+      tsDoc: ``,
+      doc: { en: `` },
+      name: "params",
+      optional: false,
+      value: "AutosizeHeaderParams<T>",
+    },
+  ],
+  return: "number | null",
 };
 
 /**
@@ -284,6 +341,23 @@ const ColumnType: PropertyType = {
   value: '"string" | "number" | "date" | "datetime" | ({} & string)',
 };
 
+const AutosizeCellFnProp: PropertyType = {
+  kind: "property",
+  name: "autosizeCellFn",
+  doc: { en: `` },
+  tsDoc: ``,
+  value: "AutosizeCellFn<T>",
+  optional: true,
+};
+const AutosizeHeaderFnProp: PropertyType = {
+  kind: "property",
+  name: "autosizeHeaderFn",
+  doc: { en: `` },
+  tsDoc: ``,
+  value: "AutosizeHeaderFn<T>",
+  optional: true,
+};
+
 export const ColumnCore: InterfaceType = {
   kind: "interface",
   export: true,
@@ -320,6 +394,9 @@ export const ColumnCore: InterfaceType = {
     EditableProp,
     EditRenderProp,
     EditSetterProp,
+
+    AutosizeCellFnProp,
+    AutosizeHeaderFnProp,
   ],
 };
 
@@ -343,6 +420,9 @@ export const ColumnBaseCore: InterfaceType = {
     EditableProp,
     EditRenderProp,
     EditSetterProp,
+
+    AutosizeCellFnProp,
+    AutosizeHeaderFnProp,
   ],
   tsDoc: ``,
   doc: { en: `` },
@@ -380,5 +460,8 @@ export const ColumnRowGroup: InterfaceType = {
     FloatingRenderer,
 
     ColumnHintsProp,
+
+    AutosizeCellFnProp,
+    AutosizeHeaderFnProp,
   ],
 };
