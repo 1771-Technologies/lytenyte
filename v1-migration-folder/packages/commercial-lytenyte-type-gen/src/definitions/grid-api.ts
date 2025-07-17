@@ -406,6 +406,15 @@ const ColumnMove: PropertyType = {
   value: "(params: ColumnMoveParams<T>) => void",
 };
 
+const HeaderGroupToggle: PropertyType = {
+  kind: "property",
+  name: "columnToggleGroup",
+  doc: { en: `` },
+  optional: false,
+  tsDoc: ``,
+  value: "(group: string | string[], state?: boolean) => void",
+};
+
 export const GridApi: InterfaceType = {
   kind: "interface",
   name: "GridApi<T>",
@@ -454,5 +463,7 @@ export const GridApi: InterfaceType = {
     ColumnById,
     ColumnUpdates,
     ColumnMove,
+
+    HeaderGroupToggle,
   ],
 };

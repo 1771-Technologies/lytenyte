@@ -2267,6 +2267,14 @@ export interface GridApi<T> {
    *
    */
   readonly columnMove: (params: ColumnMoveParams<T>) => void;
+
+  /**
+   *
+   */
+  readonly columnToggleGroup: (
+    group: string | string[],
+    state?: boolean,
+  ) => void;
 }
 
 /**
