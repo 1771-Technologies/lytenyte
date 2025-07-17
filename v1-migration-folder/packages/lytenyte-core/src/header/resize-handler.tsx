@@ -30,9 +30,19 @@ export function ResizeHandler<T>({
   const width = sizeFromCoord(cell.colStart, xPositions, cell.colSpan);
   const sx = useGridRoot().grid;
 
+  const double = sx.state.columnDoubleClickToAutosize.useValue();
+
   const defaultProps: JSX.IntrinsicElements["div"] = {
     role: "button",
     tabIndex: -1,
+    onDoubleClick: () => {
+      if (!double) return;
+
+      sx.api.columnAutosize({
+        columns: [cell.column],
+        includeHeader: true,
+      });
+    },
     onPointerDown: (ev) => {
       const vp = sx.state.viewport.get();
       if (!vp) return;

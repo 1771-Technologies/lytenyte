@@ -411,6 +411,15 @@ const RowSelectChildren: PropertyType = {
   value: "boolean",
 };
 
+const ColumnDoubleClickToAutosize: PropertyType = {
+  kind: "property",
+  name: "columnDoubleClickToAutosize",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "boolean",
+};
+
 export const UseLyteNytePropsCore: InterfaceType = {
   kind: "interface",
   name: "UseLyteNyteProps<T>",
@@ -466,6 +475,8 @@ export const UseLyteNytePropsCore: InterfaceType = {
 
     ColumnMarkerProp,
     ColumnMarkerEnabled,
+    ColumnDoubleClickToAutosize,
+
     RowDetailRenderer,
     RowDetailHeight,
     RowDetailExpansions,

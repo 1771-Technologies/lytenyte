@@ -132,6 +132,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
   const columnMarker = atom(p.columnMarker ?? {});
   const columnMarkerEnabled = atom(p.columnMarkerEnabled ?? false);
+  const columnDoubleClickToAutosize = atom(p.columnDoubleClickToAutosize ?? true);
 
   const rowDetailHeight = atom(p.rowDetailHeight ?? 300);
   const rowDetailAutoHeightGuess = atom(p.rowDetailAutoHeightGuess ?? 300);
@@ -488,6 +489,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
     columnMarker: makeGridAtom(columnMarker, store),
     columnMarkerEnabled: makeGridAtom(columnMarkerEnabled, store),
+    columnDoubleClickToAutosize: makeGridAtom(columnDoubleClickToAutosize, store),
     rowDetailExpansions: makeGridAtom(rowDetailExpansions, store),
     rowDetailHeight: makeGridAtom(rowDetailHeight, store),
     rowDetailRenderer: makeGridAtom(rowDetailRenderer, store),

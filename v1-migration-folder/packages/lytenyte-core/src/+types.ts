@@ -210,6 +210,11 @@ export interface UseLyteNyteProps<T> {
   /**
    *
    */
+  readonly columnDoubleClickToAutosize?: boolean;
+
+  /**
+   *
+   */
   readonly rowDetailRenderer?: RowDetailRendererFn<T>;
 
   /**
@@ -522,6 +527,11 @@ export interface GridState<T> {
    *
    */
   readonly columnMarkerEnabled: GridAtom<boolean>;
+
+  /**
+   *
+   */
+  readonly columnDoubleClickToAutosize: GridAtom<boolean>;
 
   /**
    *

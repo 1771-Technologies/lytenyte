@@ -672,6 +672,15 @@ const ViewBoundsProp: PropertyType = {
   value: "GridAtomReadonly<ViewBounds>",
 };
 
+const ColumnDoubleClickToAutosize: PropertyType = {
+  kind: "property",
+  name: "columnDoubleClickToAutosize",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "GridAtom<boolean>",
+};
+
 export const GridStateCore: InterfaceType = {
   kind: "interface",
   export: true,
@@ -741,6 +750,7 @@ export const GridStateCore: InterfaceType = {
 
     ColumnMarker,
     ColumnMarkerEnabled,
+    ColumnDoubleClickToAutosize,
 
     RowDetailRenderer,
     RowDetailHeight,
