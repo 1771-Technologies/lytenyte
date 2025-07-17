@@ -9,7 +9,7 @@ import type {
   FieldDataParam,
   AggModelFn,
   RowUpdateParams,
-  RowDataSourceClient,
+  RowDataSourceClientPaginated,
 } from "../+types";
 import { type ClientRowDataSourceParams, type Grid, type RowNode } from "../+types";
 import { useRef } from "react";
@@ -22,7 +22,7 @@ import {
   numberComparator,
   stringComparator,
 } from "@1771technologies/lytenyte-shared";
-import { equal, get } from "@1771technologies/lytenyte-js-utils";
+import { clamp, equal, get } from "@1771technologies/lytenyte-js-utils";
 import { makeClientTree, type ClientData } from "./tree/client-tree";
 import { computeFilteredRows } from "./filter/compute-filtered-rows";
 import { builtIns } from "./built-ins/built-ins";
@@ -33,10 +33,22 @@ interface DataAtoms<T> {
   readonly bottom: GridAtom<T[]>;
 }
 
-export function makeClientDataSource<T>(
+export function makeClientDataSourcePaginated<T>(
   p: ClientRowDataSourceParams<T>,
-): [RowDataSourceClient<T>, DataAtoms<T>] {
+): [RowDataSourceClientPaginated<T>, DataAtoms<T>] {
   const rdsStore = createStore();
+
+  const pageInternal = atom(0);
+  const rowsPerPage = atom(50);
+  const pageCount = atom((g) => Math.max(Math.ceil(g(flatLength) / g(rowsPerPage)), 1));
+  const page = atom(
+    (g) => clamp(0, g(pageInternal), g(pageCount) - 1),
+    (g, s, n: number | ((x: number) => number)) => {
+      const res = typeof n === "function" ? n(g(pageInternal)) : n;
+
+      s(pageInternal, clamp(0, res, g(pageCount) - 1));
+    },
+  );
 
   const data = atom(p.data);
   const topData = atom(p.topData ?? []);
@@ -249,14 +261,27 @@ export function makeClientDataSource<T>(
     const store = grid.state.rowDataStore;
 
     // Monitor row count changes
-    const centerCount = rdsStore.get(flatLength);
-    store.rowCenterCount.set(centerCount);
+    const rowCount = rdsStore.get(flatLength);
+    const perPage = rdsStore.get(rowsPerPage);
+    const currentPage = rdsStore.get(pageInternal);
+    const center = clamp(0, rowCount - currentPage * perPage, perPage);
+
+    store.rowCenterCount.set(center);
     cleanup.push(
       rdsStore.sub(flatLength, () => {
         grid.state.rowDataStore.rowClearCache();
 
-        const centerCount = rdsStore.get(flatLength);
-        store.rowCenterCount.set(centerCount);
+        const rowCount = rdsStore.get(flatLength);
+        const perPage = rdsStore.get(rowsPerPage);
+        const currentPage = rdsStore.get(pageInternal);
+        const center = clamp(0, rowCount - currentPage * perPage, perPage);
+        store.rowCenterCount.set(center);
+      }),
+    );
+
+    cleanup.push(
+      rdsStore.sub(pageInternal, () => {
+        grid.state.rowDataStore.rowClearCache();
       }),
     );
 
@@ -352,7 +377,10 @@ export function makeClientDataSource<T>(
     const botOffset = centerOffset + bot.length;
 
     if (index < topOffset) return top[index];
-    if (index < centerOffset) return center[index - topOffset];
+    if (index < centerOffset) {
+      const pageOffset = index + rdsStore.get(rowsPerPage) * rdsStore.get(pageInternal);
+      return center[pageOffset - topOffset];
+    }
     if (index < botOffset) return bot[index - centerOffset];
 
     return null;
@@ -413,6 +441,11 @@ export function makeClientDataSource<T>(
 
   return [
     {
+      page: {
+        current: makeGridAtom(page, rdsStore),
+        pageCount: makeGridAtom(pageCount, rdsStore),
+        perPage: makeGridAtom(rowsPerPage, rdsStore),
+      },
       init,
       rowById,
       rowByIndex,
@@ -497,11 +530,11 @@ export function makeClientDataSource<T>(
   ];
 }
 
-export function useClientRowDataSource<T>(p: ClientRowDataSourceParams<T>) {
-  const ds = useRef<RowDataSourceClient<T>>(null as any);
+export function useClientRowDataSourcePaginated<T>(p: ClientRowDataSourceParams<T>) {
+  const ds = useRef<RowDataSourceClientPaginated<T>>(null as any);
   const dataAtomRef = useRef<DataAtoms<T>>(null as any);
 
-  if (!ds.current) [ds.current, dataAtomRef.current] = makeClientDataSource(p);
+  if (!ds.current) [ds.current, dataAtomRef.current] = makeClientDataSourcePaginated(p);
 
   const da = dataAtomRef.current;
   if (p.reflectData) {
