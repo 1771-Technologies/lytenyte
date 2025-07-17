@@ -355,6 +355,57 @@ const ColumnUpdates: PropertyType = {
   optional: false,
 };
 
+export const ColumnMoveParams: InterfaceType = {
+  kind: "interface",
+  doc: { en: `` },
+  tsDoc: ``,
+  export: true,
+  name: "ColumnMoveParams<T>",
+  properties: [
+    {
+      kind: "property",
+      tsDoc: ``,
+      doc: { en: `` },
+      name: "moveColumns",
+      value: "(string | Column<T>)[]",
+      optional: false,
+    },
+    {
+      kind: "property",
+      tsDoc: ``,
+      doc: { en: `` },
+      name: "moveTarget",
+      optional: false,
+      value: "string | number | Column<T>",
+    },
+    {
+      kind: "property",
+      tsDoc: ``,
+      doc: { en: `` },
+      name: "before",
+      optional: true,
+      value: "boolean",
+    },
+    {
+      kind: "property",
+      tsDoc: ``,
+      doc: { en: `` },
+      name: "updatePinState",
+      optional: true,
+      value: "boolean",
+    },
+  ],
+};
+
+const ColumnMove: PropertyType = {
+  kind: "property",
+  name: "columnMove",
+  doc: { en: `` },
+  optional: false,
+  tsDoc: ``,
+  value: "(params: ColumnMoveParams<T>) => void",
+};
+
 export const GridApi: InterfaceType = {
   kind: "interface",
   name: "GridApi<T>",
@@ -402,5 +453,6 @@ export const GridApi: InterfaceType = {
     ResizeColumn,
     ColumnById,
     ColumnUpdates,
+    ColumnMove,
   ],
 };

@@ -74,5 +74,6 @@ export function makeColumnView<T>({
     lookup,
     startCount: start.length,
     endCount: end.length,
+    centerCount: center.length,
   };
 }

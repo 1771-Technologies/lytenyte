@@ -2,9 +2,14 @@ import { forwardRef, type CSSProperties, type JSX } from "react";
 import type { HeaderCellFloating, HeaderCellLayout } from "../+types";
 import { useGridRoot } from "../context";
 import { COLUMN_MARKER_ID, HeaderCellReact } from "@1771technologies/lytenyte-shared";
-import { fastDeepMemo, type SlotComponent } from "@1771technologies/lytenyte-react-hooks";
+import {
+  fastDeepMemo,
+  useCombinedRefs,
+  type SlotComponent,
+} from "@1771technologies/lytenyte-react-hooks";
 import { useHeaderCellRenderer } from "./use-header-cell-renderer";
 import { ResizeHandler } from "./resize-handler";
+import { useDragMove } from "./use-drag-move";
 
 export interface HeaderCellProps<T> {
   readonly cell: HeaderCellLayout<T> | HeaderCellFloating<T>;
@@ -36,10 +41,14 @@ const HeaderCellImpl = forwardRef<
       ? false
       : (cell.column.uiHints?.resizable ?? base.uiHints?.resizable ?? false);
 
+  const { ref, ...dragProps } = useDragMove(grid, cell, props.onDragStart);
+  const combined = useCombinedRefs(forwarded, ref);
+
   return (
     <HeaderCellReact
       {...props}
-      ref={forwarded}
+      {...dragProps}
+      ref={combined}
       cell={cell}
       columnId={cell.column.id}
       viewportWidth={viewport}

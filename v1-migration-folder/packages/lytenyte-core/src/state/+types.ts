@@ -1,5 +1,11 @@
 import type { LayoutMap } from "@1771technologies/lytenyte-shared";
-import type { EditActivePosition, GridAtom, GridAtomReadonly, PositionUnion } from "../+types";
+import type {
+  EditActivePosition,
+  GridAtom,
+  GridAtomReadonly,
+  HeaderGroupCellLayout,
+  PositionUnion,
+} from "../+types";
 import type { Atom, createStore } from "@1771technologies/atom";
 
 export interface InternalAtoms {
@@ -30,6 +36,9 @@ export interface InternalAtoms {
   readonly rowSelectedIds: Atom<Set<string>>;
   readonly rowSelectionPivot: GridAtom<string | null>;
   readonly rowSelectionLastWasDeselect: GridAtom<boolean>;
+
+  // Column Moving
+  readonly draggingHeader: GridAtom<HeaderGroupCellLayout | null>;
 
   readonly store: ReturnType<typeof createStore>;
 }

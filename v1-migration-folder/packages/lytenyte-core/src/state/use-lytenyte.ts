@@ -8,6 +8,7 @@ import type {
   EditActivePosition,
   PositionUnion,
   RowSelectionActivator,
+  HeaderGroupCellLayout,
 } from "../+types.js";
 import { type Grid, type GridView, type UseLyteNyteProps } from "../+types.js";
 import { useRef } from "react";
@@ -60,6 +61,7 @@ import { makeUseRowDrag } from "./api/use-row-drag.js";
 import { makeColumnById } from "./api/column-by-id.js";
 import { makeColumnResize } from "./api/column-resize.js";
 import { makeColumnUpdate } from "./api/column-update.js";
+import { makeColumnMove } from "./api/column-move.js";
 
 const DEFAULT_HEADER_HEIGHT = 40;
 const COLUMN_GROUP_JOIN_DELIMITER = "-->";
@@ -145,6 +147,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const internal_rowSelectionLastWasDeselect = atom<boolean>(false);
   const rowSelectionPivot = atom((g) => g(internal_rowSelectionPivot));
 
+  const internal_draggingHeader = atom<HeaderGroupCellLayout | null>(null);
   const internal_rowAutoHeightCache = atom<Record<number, number>>({});
   const internal_rowDetailHeightCache = atom<Record<number, number>>({});
   const internal_focusActive = atom<PositionUnion | null>(null);
@@ -253,13 +256,37 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       g(floatingRowEnabled),
     );
 
+    const dragged = g(internal_draggingHeader);
+
+    // When dragging a group column, we may end up removing that group column when joining
+    // the group with other columns in the same group (if they are separated). We want to ensure
+    // the group remains mounted until after the drag. Hence we check if there would've been a merge
+    // and add the dragged element to the layout. Once the drag ends the element will be removed. The
+    // isHiddenMove is important for this.
+    if (dragged) {
+      const row = dragged.rowStart;
+      const has = layout[row].findIndex(
+        (c) => c.kind === "group" && c.idOccurrence === dragged.idOccurrence,
+      );
+      if (has === -1) {
+        layout[row].push({ ...dragged, isHiddenMove: true });
+      }
+    }
+
     return { maxCol: view.maxCol, maxRow: view.maxRow, layout: layout };
   });
 
   const columnGroupMeta = atom((g) => g(columnView).meta);
   const columnMeta = atom<ColumnMeta<T>>((g) => {
     const view = g(columnView);
-    return { columnLookup: view.lookup, columnsVisible: view.visibleColumns };
+
+    return {
+      columnLookup: view.lookup,
+      columnsVisible: view.visibleColumns,
+      columnVisibleCenterCount: view.centerCount,
+      columnVisibleEndCount: view.endCount,
+      columnVisibleStartCount: view.startCount,
+    };
   });
 
   const xPositions = atom((g) => {
@@ -483,6 +510,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     columnById: makeColumnById(grid),
     columnResize: makeColumnResize(grid),
     columnUpdate: makeColumnUpdate(grid),
+    columnMove: makeColumnMove(grid),
     sortForColumn: makeSortForColumn(grid),
 
     rowIsGroup: (r) => r.kind === "branch",
@@ -552,6 +580,8 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       rowSelectedIds: rowSelectedIds,
       rowSelectionPivot: makeGridAtom(internal_rowSelectionPivot, store),
       rowSelectionLastWasDeselect: makeGridAtom(internal_rowSelectionLastWasDeselect, store),
+
+      draggingHeader: makeGridAtom(internal_draggingHeader, store),
 
       store: store,
     } satisfies InternalAtoms,

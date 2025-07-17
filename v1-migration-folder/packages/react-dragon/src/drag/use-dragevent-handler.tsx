@@ -8,6 +8,7 @@ import type { UseDraggableProps } from "../use-draggable";
 import { activeDragElement, dragDataAtom, dragPositionAtom, dropAtom, store } from "../+globals";
 import { createRoot } from "react-dom/client";
 import { resetDragState } from "../utils/reset-drag-state";
+import { getFrameElement } from "@1771technologies/lytenyte-dom-utils";
 
 export function useDragEventHandler(
   {
@@ -37,6 +38,8 @@ export function useDragEventHandler(
       let [y, y1] = [ev.clientY, ev.clientY];
       let prevX = ev.clientX;
       let prevY = ev.clientY;
+
+      const frameEl = getFrameElement(window);
 
       setDragging(true);
       onDragStart?.({ dragElement, position: { x, y }, state: data });
@@ -88,8 +91,20 @@ export function useDragEventHandler(
             prevX = ev.clientX;
             prevY = ev.clientY;
 
-            onDragMove?.({ dragElement, position: { x, y }, state: data });
-            store.set(dragPositionAtom, { x, y });
+            let xOffset = 0;
+            let yOffset = 0;
+            if (frameEl && ev.view !== window) {
+              const bb = frameEl.getBoundingClientRect();
+              xOffset = bb.x;
+              yOffset = bb.y;
+            }
+
+            onDragMove?.({
+              dragElement,
+              position: { x: x - xOffset, y: y - yOffset },
+              state: data,
+            });
+            store.set(dragPositionAtom, { x: x - xOffset, y: y - yOffset });
 
             frame = null;
           });
