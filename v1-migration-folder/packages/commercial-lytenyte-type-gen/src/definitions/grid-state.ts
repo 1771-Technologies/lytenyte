@@ -815,6 +815,33 @@ const QuickSearchSensitivity: PropertyType = {
   value: "GridAtom<FilterQuickSearchSensitivity>",
 };
 
+export const ColumnPivotModel: PropertyType = {
+  kind: "property",
+  doc: { en: `` },
+  name: "columnPivotModel",
+  optional: false,
+  tsDoc: ``,
+  value: "GridAtom<ColumnPivotModel<T>>",
+};
+
+export const ColumnPivotMode: PropertyType = {
+  kind: "property",
+  doc: { en: `` },
+  name: "columnPivotMode",
+  optional: false,
+  tsDoc: ``,
+  value: "GridAtom<ColumnPivotMode>",
+};
+
+export const ColumnPivotColumns: PropertyType = {
+  kind: "property",
+  tsDoc: ``,
+  doc: { en: `` },
+  name: "columnPivotColumns",
+  optional: false,
+  value: "GridAtom<Column<T>[]>",
+};
+
 export const GridStatePro: InterfaceType = {
   kind: "interface",
   export: true,
@@ -822,6 +849,12 @@ export const GridStatePro: InterfaceType = {
   tsDoc: ``,
   doc: { en: `` },
   tag: "pro",
-  properties: [QuickSearch, QuickSearchSensitivity],
+  properties: [
+    QuickSearch,
+    QuickSearchSensitivity,
+    ColumnPivotModel,
+    ColumnPivotMode,
+    ColumnPivotColumns,
+  ],
   extends: GridStatePartial,
 };

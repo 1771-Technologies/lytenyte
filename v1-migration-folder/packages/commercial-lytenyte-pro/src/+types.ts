@@ -1415,6 +1415,26 @@ export type ColumnPin = "start" | "end" | null;
 /**
  *
  */
+export interface ColumnPivotUIHints {
+  /**
+   *
+   */
+  readonly value?: boolean;
+
+  /**
+   *
+   */
+  readonly rows?: boolean;
+
+  /**
+   *
+   */
+  readonly columns?: boolean;
+}
+
+/**
+ *
+ */
 export interface Column<T> {
   /**
    *
@@ -1635,6 +1655,56 @@ export interface ColumnUIHints {
    *
    */
   readonly movable?: boolean;
+
+  /**
+   *
+   */
+  readonly aggDefault?: string;
+
+  /**
+   *
+   */
+  readonly aggsAllowed?: string[];
+}
+
+/**
+ *
+ */
+export interface ColumnUIHints {
+  /**
+   *
+   */
+  readonly sortable?: boolean;
+
+  /**
+   *
+   */
+  readonly rowGroupable?: boolean;
+
+  /**
+   *
+   */
+  readonly resizable?: boolean;
+
+  /**
+   *
+   */
+  readonly movable?: boolean;
+
+  /**
+   *
+   */
+  readonly aggDefault?: string;
+
+  /**
+   *
+   */
+  readonly aggsAllowed?: string[];
+
+  /**
+   *
+   */
+  readonly columnPivot?: ColumnPivotUIHints;
 }
 
 /**
@@ -4893,4 +4963,84 @@ export interface ExportDataRectResult<T> {
    *
    */
   readonly columns: Column<T>[];
+}
+
+/**
+ *
+ */
+export interface ColumnPivotColumnItem {
+  /**
+   *
+   */
+  readonly field: string;
+
+  /**
+   *
+   */
+  readonly active?: boolean;
+}
+
+/**
+ *
+ */
+export interface ColumnPivotModel<T> {
+  /**
+   *
+   */
+  readonly rows: ColumnPivotRowItem[];
+
+  /**
+   *
+   */
+  readonly columns: ColumnPivotColumnItem[];
+
+  /**
+   *
+   */
+  readonly values: ColumnPivotValueItem<T>[];
+
+  /**
+   *
+   */
+  readonly sorts: SortModelItem<T>[];
+
+  /**
+   *
+   */
+  readonly filters: FilterModelItem<T>[];
+}
+
+/**
+ *
+ */
+export interface ColumnPivotRowItem {
+  /**
+   *
+   */
+  readonly field: string;
+
+  /**
+   *
+   */
+  readonly active?: boolean;
+}
+
+/**
+ *
+ */
+export interface ColumnPivotValueItem<T> {
+  /**
+   *
+   */
+  readonly field?: string;
+
+  /**
+   *
+   */
+  readonly aggFn: AggModelFn<T>;
+
+  /**
+   *
+   */
+  readonly active?: boolean;
 }

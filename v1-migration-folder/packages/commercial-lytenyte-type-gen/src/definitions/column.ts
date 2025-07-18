@@ -98,6 +98,22 @@ const MovableHint: PropertyType = {
   value: "boolean",
   name: "movable",
 };
+const AggregationHint: PropertyType = {
+  kind: "property",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "string",
+  name: "aggDefault",
+};
+const AggregationAllowed: PropertyType = {
+  kind: "property",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "string[]",
+  name: "aggsAllowed",
+};
 
 export const ColumnUIHints: InterfaceType = {
   kind: "interface",
@@ -105,7 +121,76 @@ export const ColumnUIHints: InterfaceType = {
   tsDoc: ``,
   doc: { en: `` },
   export: true,
-  properties: [SortableHint, RowGroupableHint, ResizableHint, MovableHint],
+  properties: [
+    SortableHint,
+    RowGroupableHint,
+    ResizableHint,
+    MovableHint,
+    AggregationHint,
+    AggregationAllowed,
+  ],
+};
+
+export const ColumnPivotUIHints: InterfaceType = {
+  kind: "interface",
+  doc: { en: `` },
+  tsDoc: ``,
+  export: true,
+  name: "ColumnPivotUIHints",
+  tag: "pro",
+  properties: [
+    {
+      kind: "property",
+      name: "value",
+      doc: { en: `` },
+      optional: true,
+      tsDoc: ``,
+      value: "boolean",
+    },
+    {
+      kind: "property",
+      name: "rows",
+      doc: { en: `` },
+      optional: true,
+      tsDoc: ``,
+      value: "boolean",
+    },
+    {
+      kind: "property",
+      name: "columns",
+      doc: { en: `` },
+      optional: true,
+      tsDoc: ``,
+      value: "boolean",
+    },
+  ],
+};
+
+const ColumnPivotUIHint: PropertyType = {
+  kind: "property",
+  tsDoc: ``,
+  doc: { en: `` },
+  name: "columnPivot",
+  optional: true,
+  value: "ColumnPivotUIHints",
+};
+
+export const ColumnUIHintsPro: InterfaceType = {
+  kind: "interface",
+  name: "ColumnUIHints",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  tag: "pro",
+  properties: [
+    SortableHint,
+    RowGroupableHint,
+    ResizableHint,
+    MovableHint,
+    AggregationHint,
+    AggregationAllowed,
+    ColumnPivotUIHint,
+  ],
 };
 
 export const AutosizeCellParams: InterfaceType = {
