@@ -115,6 +115,33 @@ importers:
         specifier: ^4.20.3
         version: 4.20.3
 
+  packages/commercial-lytenyte-pro:
+    dependencies:
+      '@1771technologies/atom':
+        specifier: ^1.0.2
+        version: 1.0.2(@types/react@19.1.8)(react@19.1.0)
+      '@1771technologies/lytenyte-dom-utils':
+        specifier: workspace:*
+        version: link:../dom-utils
+      '@1771technologies/lytenyte-dragon':
+        specifier: workspace:*
+        version: link:../react-dragon
+      '@1771technologies/lytenyte-js-utils':
+        specifier: workspace:*
+        version: link:../js-utils
+      '@1771technologies/lytenyte-react-hooks':
+        specifier: workspace:^
+        version: link:../react-hooks
+      '@1771technologies/lytenyte-shared':
+        specifier: workspace:*
+        version: link:../lytenyte-shared
+      react:
+        specifier: ^18.0.0 || ^19.0.0
+        version: 19.1.0
+      react-dom:
+        specifier: ^18.0.0 || ^19.0.0
+        version: 19.1.0(react@19.1.0)
+
   packages/commercial-lytenyte-type-gen:
     dependencies:
       react:

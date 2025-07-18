@@ -716,5 +716,4 @@ export const FilterModelItem: UnionType = {
   types: ["FilterNumber", "FilterString", "FilterDate", "FilterCombination", "FilterDynamic<T>"],
   tsDoc: ``,
   doc: { en: `` },
-  tag: "core",
 };

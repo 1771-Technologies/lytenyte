@@ -437,13 +437,12 @@ const VirtualizeColumns: PropertyType = {
   value: "boolean",
 };
 
-export const UseLyteNytePropsCore: InterfaceType = {
+export const UseLyteNyteProps: InterfaceType = {
   kind: "interface",
   name: "UseLyteNyteProps<T>",
   export: true,
   tsDoc: ``,
   doc: { en: `` },
-  tag: "core",
   properties: [
     Columns,
     ColumnBase,

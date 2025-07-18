@@ -60,46 +60,46 @@ export const ColumnMeta: InterfaceType = {
   ],
 };
 
+const SortableHint: PropertyType = {
+  kind: "property",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "boolean",
+  name: "sortable",
+};
+const RowGroupableHint: PropertyType = {
+  kind: "property",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "boolean",
+  name: "rowGroupable",
+};
+const ResizableHint: PropertyType = {
+  kind: "property",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "boolean",
+  name: "resizable",
+};
+const MovableHint: PropertyType = {
+  kind: "property",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "boolean",
+  name: "movable",
+};
+
 export const ColumnUIHints: InterfaceType = {
   kind: "interface",
   name: "ColumnUIHints",
   tsDoc: ``,
   doc: { en: `` },
   export: true,
-  properties: [
-    {
-      kind: "property",
-      tsDoc: ``,
-      doc: { en: `` },
-      optional: true,
-      value: "boolean",
-      name: "sortable",
-    },
-    {
-      kind: "property",
-      tsDoc: ``,
-      doc: { en: `` },
-      optional: true,
-      value: "boolean",
-      name: "rowGroupable",
-    },
-    {
-      kind: "property",
-      tsDoc: ``,
-      doc: { en: `` },
-      optional: true,
-      value: "boolean",
-      name: "resizable",
-    },
-    {
-      kind: "property",
-      tsDoc: ``,
-      doc: { en: `` },
-      optional: true,
-      value: "boolean",
-      name: "movable",
-    },
-  ],
+  properties: [SortableHint, RowGroupableHint, ResizableHint, MovableHint],
 };
 
 export const AutosizeCellParams: InterfaceType = {
@@ -358,11 +358,10 @@ const AutosizeHeaderFnProp: PropertyType = {
   optional: true,
 };
 
-export const ColumnCore: InterfaceType = {
+export const Column: InterfaceType = {
   kind: "interface",
   export: true,
   name: "Column<T>",
-  tag: "core",
   tsDoc: ``,
   doc: {
     en: ``,
@@ -400,11 +399,10 @@ export const ColumnCore: InterfaceType = {
   ],
 };
 
-export const ColumnBaseCore: InterfaceType = {
+export const ColumnBase: InterfaceType = {
   kind: "interface",
   export: true,
   name: "ColumnBase<T>",
-  tag: "core",
   properties: [
     Hide,
     Width,
@@ -443,7 +441,6 @@ export const ColumnRowGroup: InterfaceType = {
   name: "RowGroupColumn<T>",
   doc: { en: `` },
   tsDoc: ``,
-  tag: "core",
   properties: [
     Name,
     Hide,

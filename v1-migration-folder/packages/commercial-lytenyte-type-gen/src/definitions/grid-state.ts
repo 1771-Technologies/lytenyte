@@ -698,11 +698,10 @@ const VirtualizeColumns: PropertyType = {
   value: "GridAtom<boolean>",
 };
 
-export const GridStateCore: InterfaceType = {
+export const GridState: InterfaceType = {
   kind: "interface",
   export: true,
   name: "GridState<T>",
-  tag: "core",
   tsDoc: ``,
   doc: { en: `` },
   properties: [

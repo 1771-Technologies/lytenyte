@@ -1,10 +1,9 @@
 import type { InterfaceType } from "../+types";
 
-export const GridCore: InterfaceType = {
+export const Grid: InterfaceType = {
   kind: "interface",
   name: "Grid<T>",
   export: true,
-  tag: "core",
   tsDoc: ``,
   doc: { en: `` },
   properties: [

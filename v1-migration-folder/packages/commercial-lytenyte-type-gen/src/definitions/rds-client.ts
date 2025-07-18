@@ -39,7 +39,6 @@ export const ClientRowDataSourceParams: InterfaceType = {
   kind: "interface",
   export: true,
   name: "ClientRowDataSourceParams<T>",
-  tag: "core",
   tsDoc: ``,
   doc: { en: `` },
   properties: [Data, TopData, BottomData, ReflectData],

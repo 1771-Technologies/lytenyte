@@ -18,7 +18,7 @@
     "url": "https://github.com/1771-technologies/lytenyte/issues"
   },
   "scripts": {
-    "start": "tsx ./src/gen-core.ts && tsx ./src/gen-shared.ts"
+    "start": "tsx ./src/gen-core.ts && tsx ./src/gen-shared.ts && tsx ./src/gen-pro.ts"
   },
   "exports": {
     ".": {

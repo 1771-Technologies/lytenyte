@@ -1250,81 +1250,6 @@ export interface AutosizeHeaderParams<T> {
 /**
  *
  */
-export interface ColumnBase<T> {
-  /**
-   *
-   */
-  readonly hide?: boolean;
-
-  /**
-   *
-   */
-  readonly width?: number;
-
-  /**
-   *
-   */
-  readonly widthMax?: number;
-
-  /**
-   *
-   */
-  readonly widthMin?: number;
-
-  /**
-   *
-   */
-  readonly widthFlex?: number;
-
-  /**
-   *
-   */
-  readonly headerRenderer?: HeaderCellRenderer<T>;
-
-  /**
-   *
-   */
-  readonly floatingRenderer?: HeaderFloatingCellRenderer<T>;
-
-  /**
-   *
-   */
-  readonly cellRenderer?: string | CellRendererFn<T>;
-
-  /**
-   *
-   */
-  readonly uiHints?: ColumnUIHints;
-
-  /**
-   *
-   */
-  readonly editable?: Editable<T>;
-
-  /**
-   *
-   */
-  readonly editRenderer?: EditRenderer<T>;
-
-  /**
-   *
-   */
-  readonly editSetter?: EditSetterFn<T>;
-
-  /**
-   *
-   */
-  readonly autosizeCellFn?: AutosizeCellFn<T>;
-
-  /**
-   *
-   */
-  readonly autosizeHeaderFn?: AutosizeHeaderFn<T>;
-}
-
-/**
- *
- */
 export interface Column<T> {
   /**
    *
@@ -1395,6 +1320,81 @@ export interface Column<T> {
    *
    */
   readonly field?: Field<T>;
+
+  /**
+   *
+   */
+  readonly headerRenderer?: HeaderCellRenderer<T>;
+
+  /**
+   *
+   */
+  readonly floatingRenderer?: HeaderFloatingCellRenderer<T>;
+
+  /**
+   *
+   */
+  readonly cellRenderer?: string | CellRendererFn<T>;
+
+  /**
+   *
+   */
+  readonly uiHints?: ColumnUIHints;
+
+  /**
+   *
+   */
+  readonly editable?: Editable<T>;
+
+  /**
+   *
+   */
+  readonly editRenderer?: EditRenderer<T>;
+
+  /**
+   *
+   */
+  readonly editSetter?: EditSetterFn<T>;
+
+  /**
+   *
+   */
+  readonly autosizeCellFn?: AutosizeCellFn<T>;
+
+  /**
+   *
+   */
+  readonly autosizeHeaderFn?: AutosizeHeaderFn<T>;
+}
+
+/**
+ *
+ */
+export interface ColumnBase<T> {
+  /**
+   *
+   */
+  readonly hide?: boolean;
+
+  /**
+   *
+   */
+  readonly width?: number;
+
+  /**
+   *
+   */
+  readonly widthMax?: number;
+
+  /**
+   *
+   */
+  readonly widthMin?: number;
+
+  /**
+   *
+   */
+  readonly widthFlex?: number;
 
   /**
    *
@@ -1660,6 +1660,56 @@ export interface ClientRowDataSourceParams<T> {
 /**
  *
  */
+export interface RowDataSource<T> {
+  /**
+   *
+   */
+  readonly init: (grid: Grid<T>) => void;
+
+  /**
+   *
+   */
+  readonly rowById: (id: string) => RowNode<T> | null;
+
+  /**
+   *
+   */
+  readonly rowByIndex: (index: number) => RowNode<T> | null;
+
+  /**
+   *
+   */
+  readonly rowToIndex: (rowId: string) => number | null;
+
+  /**
+   *
+   */
+  readonly rowUpdate: (params: RowUpdateParams) => void;
+
+  /**
+   *
+   */
+  readonly rowExpand: (expansion: Record<string, boolean>) => void;
+
+  /**
+   *
+   */
+  readonly rowSelect: (params: RdsRowSelectParams) => void;
+
+  /**
+   *
+   */
+  readonly rowSelectAll: (params: RowSelectAllOptions) => void;
+
+  /**
+   *
+   */
+  readonly rowAllChildIds: (rowId: string) => string[];
+}
+
+/**
+ *
+ */
 export interface RowDataSourceClient<T> {
   /**
    *
@@ -1780,56 +1830,6 @@ export interface RowDataSourceClientPageState {
    *
    */
   readonly pageCount: GridAtomReadonly<number>;
-}
-
-/**
- *
- */
-export interface RowDataSource<T> {
-  /**
-   *
-   */
-  readonly init: (grid: Grid<T>) => void;
-
-  /**
-   *
-   */
-  readonly rowById: (id: string) => RowNode<T> | null;
-
-  /**
-   *
-   */
-  readonly rowByIndex: (index: number) => RowNode<T> | null;
-
-  /**
-   *
-   */
-  readonly rowToIndex: (rowId: string) => number | null;
-
-  /**
-   *
-   */
-  readonly rowUpdate: (params: RowUpdateParams) => void;
-
-  /**
-   *
-   */
-  readonly rowExpand: (expansion: Record<string, boolean>) => void;
-
-  /**
-   *
-   */
-  readonly rowSelect: (params: RdsRowSelectParams) => void;
-
-  /**
-   *
-   */
-  readonly rowSelectAll: (params: RowSelectAllOptions) => void;
-
-  /**
-   *
-   */
-  readonly rowAllChildIds: (rowId: string) => string[];
 }
 
 /**
