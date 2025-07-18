@@ -23,7 +23,7 @@ export default meta;
 
 const columns: Column<any>[] = [
   { id: "age", groupPath: ["A"] },
-  { id: "job", width: 100, groupPath: ["A"], groupVisibility: "close" },
+  { id: "job", width: 100, groupPath: ["A"] },
   { id: "balance", pin: "end" },
   { id: "education" },
   { id: "marital" },

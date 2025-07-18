@@ -1,4 +1,4 @@
-import type { InterfaceType, PropertyType } from "../+types.js";
+import type { InterfaceType, InterfaceTypePartial, PropertyType } from "../+types.js";
 
 const Columns: PropertyType = {
   kind: "property",
@@ -437,12 +437,8 @@ const VirtualizeColumns: PropertyType = {
   value: "boolean",
 };
 
-export const UseLyteNyteProps: InterfaceType = {
-  kind: "interface",
-  name: "UseLyteNyteProps<T>",
-  export: true,
-  tsDoc: ``,
-  doc: { en: `` },
+const UseLyteNytePropsPartial: InterfaceTypePartial = {
+  kind: "interface-partial",
   properties: [
     Columns,
     ColumnBase,
@@ -506,4 +502,48 @@ export const UseLyteNyteProps: InterfaceType = {
     VirtualizeColumns,
     VirtualizeRows,
   ],
+};
+
+export const UseLyteNyteProps: InterfaceType = {
+  kind: "interface",
+  name: "UseLyteNyteProps<T>",
+  export: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  extends: UseLyteNytePropsPartial,
+  tag: "core",
+  properties: [],
+};
+
+/**
+ * PRO
+ */
+
+const QuickSearch: PropertyType = {
+  kind: "property",
+  doc: { en: `` },
+  name: "quickSearch",
+  optional: true,
+  tsDoc: ``,
+  value: "string | null",
+};
+
+const QuickSearchSensitivity: PropertyType = {
+  kind: "property",
+  doc: { en: `` },
+  name: "quickSearchSensitivity",
+  optional: true,
+  tsDoc: ``,
+  value: "FilterQuickSearchSensitivity",
+};
+
+export const UseLyteNytePropsPro: InterfaceType = {
+  kind: "interface",
+  name: "UseLyteNyteProps<T>",
+  export: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  extends: UseLyteNytePropsPartial,
+  tag: "pro",
+  properties: [QuickSearch, QuickSearchSensitivity],
 };

@@ -735,3 +735,13 @@ export const FilterModelItemPro: UnionType = {
   doc: { en: `` },
   tag: "pro",
 };
+
+export const FilterQuickSearchSensitivity: UnionType = {
+  kind: "union",
+  name: "FilterQuickSearchSensitivity",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  types: ['"case-sensitive"', '"case-insensitive"'],
+  tag: "pro",
+};

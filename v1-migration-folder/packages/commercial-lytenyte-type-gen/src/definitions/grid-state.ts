@@ -1,4 +1,4 @@
-import type { InterfaceType, PropertyType } from "../+types.js";
+import type { InterfaceType, InterfaceTypePartial, PropertyType } from "../+types.js";
 
 export const ViewBounds: InterfaceType = {
   kind: "interface",
@@ -698,12 +698,8 @@ const VirtualizeColumns: PropertyType = {
   value: "GridAtom<boolean>",
 };
 
-export const GridState: InterfaceType = {
-  kind: "interface",
-  export: true,
-  name: "GridState<T>",
-  tsDoc: ``,
-  doc: { en: `` },
+const GridStatePartial: InterfaceTypePartial = {
+  kind: "interface-partial",
   properties: [
     Columns,
     ColumnMeta,
@@ -784,4 +780,48 @@ export const GridState: InterfaceType = {
     VirtualizeColumns,
     VirtualizeRows,
   ],
+};
+
+export const GridState: InterfaceType = {
+  kind: "interface",
+  export: true,
+  name: "GridState<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  tag: "core",
+  properties: [],
+  extends: GridStatePartial,
+};
+
+/**
+ * PRO
+ */
+
+const QuickSearch: PropertyType = {
+  kind: "property",
+  doc: { en: `` },
+  name: "quickSearch",
+  optional: false,
+  tsDoc: ``,
+  value: "GridAtom<string | null>",
+};
+
+const QuickSearchSensitivity: PropertyType = {
+  kind: "property",
+  doc: { en: `` },
+  name: "quickSearchSensitivity",
+  optional: false,
+  tsDoc: ``,
+  value: "GridAtom<FilterQuickSearchSensitivity>",
+};
+
+export const GridStatePro: InterfaceType = {
+  kind: "interface",
+  export: true,
+  name: "GridState<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  tag: "pro",
+  properties: [QuickSearch, QuickSearchSensitivity],
+  extends: GridStatePartial,
 };

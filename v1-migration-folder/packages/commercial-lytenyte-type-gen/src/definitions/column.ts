@@ -1,4 +1,10 @@
-import type { FunctionType, InterfaceType, PropertyType, UnionType } from "../+types.js";
+import type {
+  FunctionType,
+  InterfaceType,
+  InterfaceTypePartial,
+  PropertyType,
+  UnionType,
+} from "../+types.js";
 import { ColumnProp, GridProp, RowNodeProp } from "./shared-properties.js";
 
 export const ColumnPin: UnionType = {
@@ -358,14 +364,17 @@ const AutosizeHeaderFnProp: PropertyType = {
   optional: true,
 };
 
-export const Column: InterfaceType = {
+export const ColumnMarker: InterfaceType = {
   kind: "interface",
   export: true,
-  name: "Column<T>",
+  name: "ColumnMarker<T>",
+  doc: { en: `` },
   tsDoc: ``,
-  doc: {
-    en: ``,
-  },
+  properties: [CellRenderer, HeaderRenderer, FloatingRenderer, Width, ColumnHintsProp],
+};
+
+const ColumnPartial: InterfaceTypePartial = {
+  kind: "interface-partial",
   properties: [
     Id,
     Name,
@@ -399,10 +408,21 @@ export const Column: InterfaceType = {
   ],
 };
 
-export const ColumnBase: InterfaceType = {
+export const Column: InterfaceType = {
   kind: "interface",
   export: true,
-  name: "ColumnBase<T>",
+  name: "Column<T>",
+  tsDoc: ``,
+  doc: {
+    en: ``,
+  },
+  properties: [],
+  extends: ColumnPartial,
+  tag: "core",
+};
+
+const ColumnBasePartial: InterfaceTypePartial = {
+  kind: "interface-partial",
   properties: [
     Hide,
     Width,
@@ -422,17 +442,17 @@ export const ColumnBase: InterfaceType = {
     AutosizeCellFnProp,
     AutosizeHeaderFnProp,
   ],
-  tsDoc: ``,
-  doc: { en: `` },
 };
 
-export const ColumnMarker: InterfaceType = {
+export const ColumnBase: InterfaceType = {
   kind: "interface",
   export: true,
-  name: "ColumnMarker<T>",
-  doc: { en: `` },
+  name: "ColumnBase<T>",
+  properties: [],
   tsDoc: ``,
-  properties: [CellRenderer, HeaderRenderer, FloatingRenderer, Width, ColumnHintsProp],
+  doc: { en: `` },
+  extends: ColumnBasePartial,
+  tag: "core",
 };
 
 export const ColumnRowGroup: InterfaceType = {
@@ -461,4 +481,40 @@ export const ColumnRowGroup: InterfaceType = {
     AutosizeCellFnProp,
     AutosizeHeaderFnProp,
   ],
+};
+
+/**
+ * PRO
+ */
+const QuickSearchIgnore: PropertyType = {
+  kind: "property",
+  tsDoc: ``,
+  doc: { en: `` },
+  name: "quickSearchIgnore",
+  optional: true,
+  value: "boolean",
+};
+
+export const ColumnPro: InterfaceType = {
+  kind: "interface",
+  export: true,
+  name: "Column<T>",
+  tsDoc: ``,
+  doc: {
+    en: ``,
+  },
+  properties: [QuickSearchIgnore],
+  extends: ColumnPartial,
+  tag: "pro",
+};
+
+export const ColumnBasePro: InterfaceType = {
+  kind: "interface",
+  export: true,
+  name: "ColumnBase<T>",
+  properties: [QuickSearchIgnore],
+  tsDoc: ``,
+  doc: { en: `` },
+  extends: ColumnBasePartial,
+  tag: "pro",
 };

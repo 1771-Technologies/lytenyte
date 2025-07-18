@@ -261,6 +261,16 @@ export interface UseLyteNyteProps<T> {
    *
    */
   readonly virtualizeRows?: boolean;
+
+  /**
+   *
+   */
+  readonly quickSearch?: string | null;
+
+  /**
+   *
+   */
+  readonly quickSearchSensitivity?: FilterQuickSearchSensitivity;
 }
 
 /**
@@ -602,6 +612,16 @@ export interface GridState<T> {
    *
    */
   readonly virtualizeRows: GridAtom<boolean>;
+
+  /**
+   *
+   */
+  readonly quickSearch: GridAtom<string | null>;
+
+  /**
+   *
+   */
+  readonly quickSearchSensitivity: GridAtom<FilterQuickSearchSensitivity>;
 }
 
 /**
@@ -1250,6 +1270,151 @@ export interface AutosizeHeaderParams<T> {
 /**
  *
  */
+export interface ColumnBase<T> {
+  /**
+   *
+   */
+  readonly hide?: boolean;
+
+  /**
+   *
+   */
+  readonly width?: number;
+
+  /**
+   *
+   */
+  readonly widthMax?: number;
+
+  /**
+   *
+   */
+  readonly widthMin?: number;
+
+  /**
+   *
+   */
+  readonly widthFlex?: number;
+
+  /**
+   *
+   */
+  readonly headerRenderer?: HeaderCellRenderer<T>;
+
+  /**
+   *
+   */
+  readonly floatingRenderer?: HeaderFloatingCellRenderer<T>;
+
+  /**
+   *
+   */
+  readonly cellRenderer?: string | CellRendererFn<T>;
+
+  /**
+   *
+   */
+  readonly uiHints?: ColumnUIHints;
+
+  /**
+   *
+   */
+  readonly editable?: Editable<T>;
+
+  /**
+   *
+   */
+  readonly editRenderer?: EditRenderer<T>;
+
+  /**
+   *
+   */
+  readonly editSetter?: EditSetterFn<T>;
+
+  /**
+   *
+   */
+  readonly autosizeCellFn?: AutosizeCellFn<T>;
+
+  /**
+   *
+   */
+  readonly autosizeHeaderFn?: AutosizeHeaderFn<T>;
+
+  /**
+   *
+   */
+  readonly quickSearchIgnore?: boolean;
+}
+
+/**
+ *
+ */
+export interface ColumnMarker<T> {
+  /**
+   *
+   */
+  readonly cellRenderer?: string | CellRendererFn<T>;
+
+  /**
+   *
+   */
+  readonly headerRenderer?: HeaderCellRenderer<T>;
+
+  /**
+   *
+   */
+  readonly floatingRenderer?: HeaderFloatingCellRenderer<T>;
+
+  /**
+   *
+   */
+  readonly width?: number;
+
+  /**
+   *
+   */
+  readonly uiHints?: ColumnUIHints;
+}
+
+/**
+ *
+ */
+export interface ColumnMeta<T> {
+  /**
+   *
+   */
+  readonly columnsVisible: Column<T>[];
+
+  /**
+   *
+   */
+  readonly columnLookup: Map<string, Column<T>>;
+
+  /**
+   *
+   */
+  readonly columnVisibleStartCount: number;
+
+  /**
+   *
+   */
+  readonly columnVisibleCenterCount: number;
+
+  /**
+   *
+   */
+  readonly columnVisibleEndCount: number;
+}
+
+/**
+ *
+ */
+export type ColumnPin = "start" | "end" | null;
+
+/**
+ *
+ */
 export interface Column<T> {
   /**
    *
@@ -1365,147 +1530,12 @@ export interface Column<T> {
    *
    */
   readonly autosizeHeaderFn?: AutosizeHeaderFn<T>;
+
+  /**
+   *
+   */
+  readonly quickSearchIgnore?: boolean;
 }
-
-/**
- *
- */
-export interface ColumnBase<T> {
-  /**
-   *
-   */
-  readonly hide?: boolean;
-
-  /**
-   *
-   */
-  readonly width?: number;
-
-  /**
-   *
-   */
-  readonly widthMax?: number;
-
-  /**
-   *
-   */
-  readonly widthMin?: number;
-
-  /**
-   *
-   */
-  readonly widthFlex?: number;
-
-  /**
-   *
-   */
-  readonly headerRenderer?: HeaderCellRenderer<T>;
-
-  /**
-   *
-   */
-  readonly floatingRenderer?: HeaderFloatingCellRenderer<T>;
-
-  /**
-   *
-   */
-  readonly cellRenderer?: string | CellRendererFn<T>;
-
-  /**
-   *
-   */
-  readonly uiHints?: ColumnUIHints;
-
-  /**
-   *
-   */
-  readonly editable?: Editable<T>;
-
-  /**
-   *
-   */
-  readonly editRenderer?: EditRenderer<T>;
-
-  /**
-   *
-   */
-  readonly editSetter?: EditSetterFn<T>;
-
-  /**
-   *
-   */
-  readonly autosizeCellFn?: AutosizeCellFn<T>;
-
-  /**
-   *
-   */
-  readonly autosizeHeaderFn?: AutosizeHeaderFn<T>;
-}
-
-/**
- *
- */
-export interface ColumnMarker<T> {
-  /**
-   *
-   */
-  readonly cellRenderer?: string | CellRendererFn<T>;
-
-  /**
-   *
-   */
-  readonly headerRenderer?: HeaderCellRenderer<T>;
-
-  /**
-   *
-   */
-  readonly floatingRenderer?: HeaderFloatingCellRenderer<T>;
-
-  /**
-   *
-   */
-  readonly width?: number;
-
-  /**
-   *
-   */
-  readonly uiHints?: ColumnUIHints;
-}
-
-/**
- *
- */
-export interface ColumnMeta<T> {
-  /**
-   *
-   */
-  readonly columnsVisible: Column<T>[];
-
-  /**
-   *
-   */
-  readonly columnLookup: Map<string, Column<T>>;
-
-  /**
-   *
-   */
-  readonly columnVisibleStartCount: number;
-
-  /**
-   *
-   */
-  readonly columnVisibleCenterCount: number;
-
-  /**
-   *
-   */
-  readonly columnVisibleEndCount: number;
-}
-
-/**
- *
- */
-export type ColumnPin = "start" | "end" | null;
 
 /**
  *
@@ -3158,6 +3188,13 @@ export interface FilterNumberOptions {
    */
   readonly nullHandling?: "ignore" | "include";
 }
+
+/**
+ *
+ */
+export type FilterQuickSearchSensitivity =
+  | "case-sensitive"
+  | "case-insensitive";
 
 /**
  * The string filter used to evaluate values that are string based. Used to filter out rows based

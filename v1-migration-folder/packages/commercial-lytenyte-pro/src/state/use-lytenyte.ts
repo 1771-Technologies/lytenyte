@@ -151,6 +151,9 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const virtualizeRows = atom(p.virtualizeRows ?? true);
   const virtualizeCols = atom(p.virtualizeCols ?? true);
 
+  const quickSearch = atom(p.quickSearch ?? null);
+  const quickSearchSensitivity = atom(p.quickSearchSensitivity ?? "case-insensitive");
+
   const internal_rowSelectionPivot = atom<string | null>(null);
   const internal_rowSelectionLastWasDeselect = atom<boolean>(false);
   const rowSelectionPivot = atom((g) => g(internal_rowSelectionPivot));
@@ -517,6 +520,9 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     viewBounds: makeGridAtom(bounds, store),
     virtualizeRows: makeGridAtom(virtualizeRows, store),
     virtualizeCols: makeGridAtom(virtualizeCols, store),
+
+    quickSearch: makeGridAtom(quickSearch, store),
+    quickSearchSensitivity: makeGridAtom(quickSearchSensitivity, store),
   };
 
   const api = {} as GridApi<T>;
