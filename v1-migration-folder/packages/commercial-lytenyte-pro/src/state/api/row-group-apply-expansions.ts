@@ -17,6 +17,7 @@ export const makeRowGroupApplyExpansions = (
 
       const rds = grid.state.rowDataSource.get();
       rds.rowExpand(expansions);
+
       api.eventFire("rowExpand", { expansions, grid });
     } catch (error: unknown) {
       api.eventFire("rowExpandError", { expansions, grid, error });

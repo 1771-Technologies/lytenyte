@@ -4,3 +4,9 @@ export const ReactNode: PreludeType = {
   kind: "prelude",
   line: 'import type { ReactNode } from "react"',
 };
+
+export const MaybePromise: PreludeType = {
+  kind: "prelude",
+  line: "type MaybePromise<T> = T | Promise<T>",
+  tag: "pro",
+};

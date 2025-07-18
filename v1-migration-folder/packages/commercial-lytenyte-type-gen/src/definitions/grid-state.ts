@@ -815,6 +815,49 @@ const QuickSearchSensitivity: PropertyType = {
   value: "GridAtom<FilterQuickSearchSensitivity>",
 };
 
+export const ColumnPivotModel: PropertyType = {
+  kind: "property",
+  doc: { en: `` },
+  name: "columnPivotModel",
+  optional: false,
+  tsDoc: ``,
+  value: "GridAtom<ColumnPivotModel<T>>",
+};
+
+export const ColumnPivotMode: PropertyType = {
+  kind: "property",
+  doc: { en: `` },
+  name: "columnPivotMode",
+  optional: false,
+  tsDoc: ``,
+  value: "GridAtom<boolean>",
+};
+
+export const ColumnPivotColumns: PropertyType = {
+  kind: "property",
+  tsDoc: ``,
+  doc: { en: `` },
+  name: "columnPivotColumns",
+  optional: false,
+  value: "GridAtom<Column<T>[]>",
+};
+export const ColumnPivotColumnGroupExpansions: PropertyType = {
+  kind: "property",
+  tsDoc: ``,
+  doc: { en: `` },
+  name: "columnPivotColumnGroupExpansions",
+  optional: false,
+  value: "GridAtom<Record<string, boolean | undefined>>",
+};
+export const ColumnPivotRowGroupExpansions: PropertyType = {
+  kind: "property",
+  tsDoc: ``,
+  doc: { en: `` },
+  name: "columnPivotRowGroupExpansions",
+  optional: false,
+  value: "GridAtom<{ [rowId: string]: boolean | undefined }>",
+};
+
 export const GridStatePro: InterfaceType = {
   kind: "interface",
   export: true,
@@ -822,6 +865,14 @@ export const GridStatePro: InterfaceType = {
   tsDoc: ``,
   doc: { en: `` },
   tag: "pro",
-  properties: [QuickSearch, QuickSearchSensitivity],
+  properties: [
+    QuickSearch,
+    QuickSearchSensitivity,
+    ColumnPivotModel,
+    ColumnPivotMode,
+    ColumnPivotColumns,
+    ColumnPivotRowGroupExpansions,
+    ColumnPivotColumnGroupExpansions,
+  ],
   extends: GridStatePartial,
 };

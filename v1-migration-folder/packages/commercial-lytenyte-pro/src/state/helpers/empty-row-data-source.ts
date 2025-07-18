@@ -10,4 +10,5 @@ export const emptyRowDataSource: RowDataSource<any> = {
   rowAllChildIds: () => [],
   rowSelect: () => {},
   rowSelectAll: () => {},
+  columnPivots: () => [],
 };

@@ -1605,6 +1605,16 @@ export interface ColumnUIHints {
    *
    */
   readonly movable?: boolean;
+
+  /**
+   *
+   */
+  readonly aggDefault?: string;
+
+  /**
+   *
+   */
+  readonly aggsAllowed?: string[];
 }
 
 /**

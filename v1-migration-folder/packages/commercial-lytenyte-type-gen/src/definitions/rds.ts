@@ -1,4 +1,4 @@
-import type { InterfaceType, InterfaceTypePartial } from "../+types";
+import type { InterfaceType, InterfaceTypePartial, PropertyType } from "../+types";
 import { RowIndexProp } from "./shared-properties";
 
 export const RowUpdateParams: InterfaceType = {
@@ -221,6 +221,18 @@ export const RowDataSource: InterfaceType = {
   tsDoc: ``,
   doc: { en: `` },
   properties: [],
+  tag: "core",
+  extends: RowDataSourcePartial,
+};
+
+export const RowDataSourcePro: InterfaceType = {
+  kind: "interface",
+  name: "RowDataSource<T>",
+  export: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  properties: [],
+  tag: "pro",
   extends: RowDataSourcePartial,
 };
 
@@ -230,6 +242,18 @@ export const RowDataSourceClient: InterfaceType = {
   export: true,
   tsDoc: ``,
   doc: { en: `` },
+  properties: [],
+  tag: "core",
+  extends: RowDataSourcePartial,
+};
+
+export const RowDataSourceClientPro: InterfaceType = {
+  kind: "interface",
+  name: "RowDataSourceClient<T>",
+  export: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  tag: "pro",
   properties: [],
   extends: RowDataSourcePartial,
 };
@@ -268,6 +292,15 @@ export const RowDataSourceClientPageState: InterfaceType = {
   ],
 };
 
+const PageProp: PropertyType = {
+  kind: "property",
+  doc: { en: `` },
+  tsDoc: ``,
+  name: "page",
+  optional: false,
+  value: "RowDataSourceClientPageState",
+};
+
 export const RowDataSourceClientClientPaginated: InterfaceType = {
   kind: "interface",
   name: "RowDataSourceClientPaginated<T>",
@@ -275,14 +308,17 @@ export const RowDataSourceClientClientPaginated: InterfaceType = {
   tsDoc: ``,
   doc: { en: `` },
   extends: RowDataSourcePartial,
-  properties: [
-    {
-      kind: "property",
-      doc: { en: `` },
-      tsDoc: ``,
-      name: "page",
-      optional: false,
-      value: "RowDataSourceClientPageState",
-    },
-  ],
+  tag: "core",
+  properties: [PageProp],
+};
+
+export const RowDataSourceClientClientPaginatedPro: InterfaceType = {
+  kind: "interface",
+  name: "RowDataSourceClientPaginated<T>",
+  export: true,
+  tsDoc: ``,
+  doc: { en: `` },
+  extends: RowDataSourcePartial,
+  tag: "pro",
+  properties: [PageProp],
 };

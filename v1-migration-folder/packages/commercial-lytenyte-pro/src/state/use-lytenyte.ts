@@ -9,6 +9,8 @@ import type {
   PositionUnion,
   RowSelectionActivator,
   HeaderGroupCellLayout,
+  ColumnPivotModel,
+  Column,
 } from "../+types.js";
 import { type Grid, type GridView, type UseLyteNyteProps } from "../+types.js";
 import { useRef } from "react";
@@ -41,7 +43,7 @@ import { makeColumnIndex } from "./api/column-index.js";
 import { makeRowGroupColumnIndex } from "./api/row-group-column-index.js";
 import { makeRowGroupIsExpanded } from "./api/row-group-is-expanded.js";
 import { makeRowGroupToggle } from "./api/row-group-toggle.js";
-import { makeRowGroupApplyExpansions } from "./api/make-row-group-apply-expansions.js";
+import { makeRowGroupApplyExpansions } from "./api/row-group-apply-expansions.js";
 import { makeFocusCell } from "./api/focus-cell.js";
 import { makeEditBegin } from "./api/edit-begin.js";
 import { makeEditIsCellActive } from "./api/edit-is-cell-active.js";
@@ -154,6 +156,15 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const quickSearch = atom(p.quickSearch ?? null);
   const quickSearchSensitivity = atom(p.quickSearchSensitivity ?? "case-insensitive");
 
+  const columnPivotMode = atom(p.columnPivotMode ?? false);
+  const columnPivotModel = atom(
+    p.columnPivotModel ??
+      ({ columns: [], filters: [], rows: [], sorts: [], values: [] } satisfies ColumnPivotModel<T>),
+  );
+  const columnPivotColumns = atom<Column<T>[]>([]);
+  const columnPivotColumnGroupExpansions = atom<Record<string, boolean | undefined>>({});
+  const columnPivotRowGroupExpansions = atom<Record<string, boolean | undefined>>({});
+
   const internal_rowSelectionPivot = atom<string | null>(null);
   const internal_rowSelectionLastWasDeselect = atom<boolean>(false);
   const rowSelectionPivot = atom((g) => g(internal_rowSelectionPivot));
@@ -228,12 +239,25 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
    * is impacted by the column definitions, the group expansions, the row group display mode.
    */
   const columnView = atom((g) => {
-    const cols = columnAddRowGroup({
-      columns: g(columns),
-      rowGroupDisplayMode: g(rowGroupDisplayMode),
-      rowGroupModel: g(rowGroupModel),
-      rowGroupTemplate: g(rowGroupColumn),
-    });
+    const pivotMode = g(columnPivotMode);
+
+    let cols: Column<T>[];
+    if (pivotMode) {
+      const model = g(columnPivotModel);
+      cols = columnAddRowGroup({
+        columns: g(columnPivotColumns),
+        rowGroupDisplayMode: "single-column",
+        rowGroupModel: model.rows.filter((c) => c.active ?? true).map((c) => c.field),
+        rowGroupTemplate: g(rowGroupColumn),
+      });
+    } else {
+      cols = columnAddRowGroup({
+        columns: g(columns),
+        rowGroupDisplayMode: g(rowGroupDisplayMode),
+        rowGroupModel: g(rowGroupModel),
+        rowGroupTemplate: g(rowGroupColumn),
+      });
+    }
 
     const colsWithMarker = columnHandleMarker({
       columns: cols,
@@ -523,6 +547,12 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
     quickSearch: makeGridAtom(quickSearch, store),
     quickSearchSensitivity: makeGridAtom(quickSearchSensitivity, store),
+
+    columnPivotMode: makeGridAtom(columnPivotMode, store),
+    columnPivotColumns: makeGridAtom(columnPivotColumns, store),
+    columnPivotModel: makeGridAtom(columnPivotModel, store),
+    columnPivotColumnGroupExpansions: makeGridAtom(columnPivotColumnGroupExpansions, store),
+    columnPivotRowGroupExpansions: makeGridAtom(columnPivotRowGroupExpansions, store),
   };
 
   const api = {} as GridApi<T>;

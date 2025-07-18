@@ -537,6 +537,23 @@ const QuickSearchSensitivity: PropertyType = {
   value: "FilterQuickSearchSensitivity",
 };
 
+const ColumnPivotModel: PropertyType = {
+  kind: "property",
+  doc: { en: `` },
+  name: "columnPivotModel",
+  optional: true,
+  tsDoc: ``,
+  value: "ColumnPivotModel<T>",
+};
+const ColumnPivotMode: PropertyType = {
+  kind: "property",
+  doc: { en: `` },
+  name: "columnPivotMode",
+  optional: true,
+  tsDoc: ``,
+  value: "boolean",
+};
+
 export const UseLyteNytePropsPro: InterfaceType = {
   kind: "interface",
   name: "UseLyteNyteProps<T>",
@@ -545,5 +562,5 @@ export const UseLyteNytePropsPro: InterfaceType = {
   doc: { en: `` },
   extends: UseLyteNytePropsPartial,
   tag: "pro",
-  properties: [QuickSearch, QuickSearchSensitivity],
+  properties: [QuickSearch, QuickSearchSensitivity, ColumnPivotMode, ColumnPivotModel],
 };

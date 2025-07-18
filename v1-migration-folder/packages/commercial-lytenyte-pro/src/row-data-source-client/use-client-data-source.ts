@@ -10,6 +10,7 @@ import type {
   AggModelFn,
   RowUpdateParams,
   RowDataSourceClient,
+  ColumnPivotModel,
 } from "../+types";
 import { type ClientRowDataSourceParams, type Grid, type RowNode } from "../+types";
 import { useRef } from "react";
@@ -22,10 +23,12 @@ import {
   numberComparator,
   stringComparator,
 } from "@1771technologies/lytenyte-shared";
-import { equal, get } from "@1771technologies/lytenyte-js-utils";
+import { equal, get, itemsWithIdToMap } from "@1771technologies/lytenyte-js-utils";
 import { makeClientTree, type ClientData } from "./tree/client-tree";
 import { computeFilteredRows } from "./filter/compute-filtered-rows";
 import { builtIns } from "./built-ins/built-ins";
+import { createPivotColumns } from "./pivots/create-pivot-columns";
+import { createAggModel } from "./pivots/create-agg-model";
 
 interface DataAtoms<T> {
   readonly top: GridAtom<T[]>;
@@ -72,8 +75,11 @@ export function makeClientDataSource<T>(
     quickSearch: string | null;
     group: RowGroupModelItem<T>[];
     groupExpansions: { [rowId: string]: boolean | undefined };
+    columnPivotGroupExpansions: { [rowId: string]: boolean | undefined };
     agg: Record<string, { fn: AggModelFn<T> }>;
     sort: SortModelItem<T>[];
+    pivotMode: boolean;
+    pivotModel: ColumnPivotModel<T>;
   }>({
     sort: [],
     filter: [],
@@ -81,6 +87,15 @@ export function makeClientDataSource<T>(
     agg: {},
     group: [],
     groupExpansions: {},
+    columnPivotGroupExpansions: {},
+    pivotMode: false,
+    pivotModel: {
+      columns: [],
+      filters: [],
+      rows: [],
+      sorts: [],
+      values: [],
+    } satisfies ColumnPivotModel<T>,
   });
 
   const sortModel = atom<SortModelItem<T>[]>((g) => g(models).sort);
@@ -92,9 +107,77 @@ export function makeClientDataSource<T>(
   const aggModel = atom<Record<string, { fn: AggModelFn<T> }>>((g) => g(models).agg);
   const quickSearch = atom((g) => g(models).quickSearch);
 
+  const columnPivotGroupExpansions = atom<{ [rowId: string]: boolean | undefined }>(
+    (g) => g(models).columnPivotGroupExpansions,
+  );
+  const columnPivotMode = atom((g) => g(models).pivotMode);
+  const columnPivotModel = atom((g) => g(models).pivotModel);
+
   const grid$ = atom<Grid<T> | null>(null);
   const snapshot = atom<number>(0);
-  const tree = atom<ClientData<RowLeaf<T>>>((g) => {
+
+  const pivotTree = atom<ClientData<RowLeaf<T>>>((g) => {
+    g(snapshot);
+
+    const grid = g(grid$);
+    const model = g(columnPivotModel);
+
+    const lookup = new Map(grid!.state.columns.get().map((c) => [c.id, c]));
+
+    const activeRows = model.rows.filter((c) => c.active ?? true);
+
+    const rowGroups = activeRows.length
+      ? activeRows.map((c) => {
+          const column = lookup.get(c.field)!;
+          return {
+            fn: (r: RowLeaf<T>) => {
+              const res = grid!.api.columnField(column, r);
+              return res == null ? null : `${res}`;
+            },
+          };
+        })
+      : [{ fn: () => null }];
+
+    const filtered = computeFilteredRows(g(centerNodes), grid, model.filters, "", "case-sensitive");
+
+    const aggModel = createAggModel(
+      model,
+      grid!.state.columnPivotColumns.get(),
+      grid!.state.columnGroupJoinDelimiter.get(),
+    );
+
+    const rowAggModel = Object.entries(aggModel).map(([name, agg]) => {
+      if (typeof agg.fn === "function") {
+        const fn = agg.fn;
+        return {
+          name,
+          fn: (rows: RowLeaf<T>[]) =>
+            fn(
+              rows.map((c) => c.data),
+              grid!,
+            ),
+        };
+      }
+
+      const key = agg.fn;
+      const fn = (data: RowLeaf<T>[]) => {
+        const fieldData = data.map((r) =>
+          grid?.api.columnField(name, { kind: "leaf", data: r.data }),
+        );
+        return builtIns[key as keyof typeof builtIns](fieldData as any);
+      };
+
+      return { name, fn };
+    });
+
+    return makeClientTree({
+      rowData: filtered,
+      rowAggModel: rowAggModel,
+      rowBranchModel: rowGroups,
+    });
+  });
+
+  const normalTree = atom<ClientData<RowLeaf<T>>>((g) => {
     g(snapshot);
 
     const grid = g(grid$);
@@ -110,8 +193,7 @@ export function makeClientDataSource<T>(
 
     const rowGroups = g(rowGroupModel)
       .map((c) => {
-        if (typeof c === "string")
-          return (r: RowLeaf<T>) => grid!.api.columnField(c, { kind: "leaf", data: r.data });
+        if (typeof c === "string") return (r: RowLeaf<T>) => grid!.api.columnField(c, r);
 
         if (typeof c.field === "string" || typeof c.field === "number")
           return (r: RowLeaf<T>) => (r.data as any)[c.field as any];
@@ -155,7 +237,8 @@ export function makeClientDataSource<T>(
   });
 
   const sortComparator = atom((g) => {
-    const model = g(sortModel);
+    const model = g(columnPivotMode) ? g(columnPivotModel).sorts : g(sortModel);
+
     const grid = g(grid$);
     if (!model.length || !grid) return () => 0;
 
@@ -198,8 +281,59 @@ export function makeClientDataSource<T>(
     return comparator;
   });
 
+  const tree = atom((g) => (g(columnPivotMode) ? g(pivotTree) : g(normalTree)));
+
   const initialized = atom(false);
-  const flat = atom((g) => {
+
+  const flatPivot = atom((g) => {
+    if (!g(initialized)) return { flat: [], idMap: new Map(), idToIndexMap: new Map() };
+
+    const idMap = new Map<string, RowNode<T>>();
+    const idToIndexMap = new Map<string, number>();
+
+    const flattened: RowNode<T>[] = [];
+    const comparator = g(sortComparator);
+
+    const expansions = g(columnPivotGroupExpansions);
+    const defaultExpansion = g(grid$)?.state.rowGroupDefaultExpansion.get() ?? false;
+
+    let index = 0;
+
+    traverse(
+      g(tree).root,
+      (node) => {
+        if (node.kind === 1) {
+          return;
+        } else {
+          flattened.push({
+            kind: "branch",
+            data: node.data,
+            id: node.id,
+            key: node.key,
+            depth: node.depth,
+          });
+        }
+        idMap.set(node.id, flattened.at(-1)!);
+        idToIndexMap.set(node.id, index);
+        index++;
+
+        if (node.kind === 2) {
+          const expanded =
+            expansions[node.id] ??
+            (typeof defaultExpansion === "number"
+              ? node.depth <= defaultExpansion
+              : defaultExpansion);
+
+          return expanded;
+        }
+      },
+      comparator,
+    );
+
+    return { flat: flattened, idMap, idToIndexMap };
+  });
+
+  const flatNormal = atom((g) => {
     if (!g(initialized)) return { flat: [], idMap: new Map(), idToIndexMap: new Map() };
 
     const idMap = new Map<string, RowNode<T>>();
@@ -247,6 +381,9 @@ export function makeClientDataSource<T>(
 
     return { flat: flattened, idMap, idToIndexMap };
   });
+
+  const flat = atom((g) => (g(columnPivotMode) ? g(flatPivot) : g(flatNormal)));
+
   const flatLength = atom((g) => g(flat).flat.length);
 
   const cleanup: (() => void)[] = [];
@@ -262,10 +399,10 @@ export function makeClientDataSource<T>(
     store.rowCenterCount.set(centerCount);
     cleanup.push(
       rdsStore.sub(flatLength, () => {
-        grid.state.rowDataStore.rowClearCache();
-
         const centerCount = rdsStore.get(flatLength);
         store.rowCenterCount.set(centerCount);
+
+        grid.state.rowDataStore.rowClearCache();
       }),
     );
 
@@ -273,10 +410,10 @@ export function makeClientDataSource<T>(
     store.rowTopCount.set(top);
     cleanup.push(
       rdsStore.sub(topData, () => {
-        grid.state.rowDataStore.rowClearCache();
-
         const top = rdsStore.get(topData).length;
         store.rowTopCount.set(top);
+
+        grid.state.rowDataStore.rowClearCache();
       }),
     );
 
@@ -284,10 +421,10 @@ export function makeClientDataSource<T>(
     store.rowBottomCount.set(bottom);
     cleanup.push(
       rdsStore.sub(bottomData, () => {
-        grid.state.rowDataStore.rowClearCache();
-
         const bot = rdsStore.get(bottomData).length;
         store.rowBottomCount.set(bot);
+
+        grid.state.rowDataStore.rowClearCache();
       }),
     );
 
@@ -297,56 +434,124 @@ export function makeClientDataSource<T>(
     const groupExpansions = grid.state.rowGroupExpansions.get();
     const agg = grid.state.aggModel.get();
     const quickSearch = grid.state.quickSearch.get();
+    const pivotMode = grid.state.columnPivotMode.get();
+    const pivotModel = grid.state.columnPivotModel.get();
+    const columnPivotGroupExpansions = grid.state.columnPivotRowGroupExpansions.get();
 
-    rdsStore.set(models, { agg, filter, group, quickSearch, groupExpansions, sort });
+    let prevPivotColumnModel = pivotModel.columns;
+    let prevPivotColumnValues = pivotModel.values;
+    const updatePivotColumns = (model: ColumnPivotModel<T>, ignoreEqualCheck: boolean = false) => {
+      if (
+        !ignoreEqualCheck &&
+        equal(prevPivotColumnModel, model.columns) &&
+        equal(prevPivotColumnValues, model.values)
+      )
+        return;
+
+      const lookup = itemsWithIdToMap(grid.state.columns.get());
+      const pivotColumns = createPivotColumns(model, lookup, grid, rdsStore.get(centerNodes));
+      grid.state.columnPivotColumns.set(pivotColumns);
+
+      prevPivotColumnModel = model.columns;
+      prevPivotColumnValues = model.values;
+    };
+
+    if (pivotMode) updatePivotColumns(pivotModel);
+
+    rdsStore.set(models, {
+      agg,
+      filter,
+      group,
+      quickSearch,
+      groupExpansions,
+      sort,
+      pivotMode,
+      pivotModel,
+      columnPivotGroupExpansions,
+    });
     rdsStore.set(initialized, true);
+
+    rdsStore.sub(centerNodes, () => {
+      updatePivotColumns(grid.state.columnPivotModel.get(), true);
+    });
+
+    // Pivot model monitoring
+    cleanup.push(
+      grid.state.columnPivotMode.watch(() => {
+        const model = grid.state.columnPivotModel.get();
+        updatePivotColumns(model);
+
+        rdsStore.set(models, (prev) => ({ ...prev, pivotMode: grid.state.columnPivotMode.get() }));
+        grid.state.rowDataStore.rowClearCache();
+      }),
+    );
+    cleanup.push(
+      grid.state.columnPivotModel.watch(() => {
+        const model = grid.state.columnPivotModel.get();
+        updatePivotColumns(model);
+
+        rdsStore.set(models, (prev) => ({
+          ...prev,
+          pivotModel: model,
+        }));
+
+        grid.state.rowDataStore.rowClearCache();
+      }),
+    );
+    grid.state.columnPivotRowGroupExpansions.watch(() => {
+      rdsStore.set(models, (prev) => ({
+        ...prev,
+        columnPivotGroupExpansions: grid.state.columnPivotRowGroupExpansions.get(),
+      }));
+      grid.state.rowDataStore.rowClearCache();
+    });
 
     // Sort model monitoring
     cleanup.push(
       grid.state.sortModel.watch(() => {
-        grid.state.rowDataStore.rowClearCache();
         rdsStore.set(models, (prev) => ({ ...prev, sort: grid.state.sortModel.get() }));
+        grid.state.rowDataStore.rowClearCache();
       }),
     );
 
     // Filter model monitoring
     cleanup.push(
       grid.state.filterModel.watch(() => {
-        grid.state.rowDataStore.rowClearCache();
         rdsStore.set(models, (prev) => ({ ...prev, filter: grid.state.filterModel.get() }));
+        grid.state.rowDataStore.rowClearCache();
       }),
     );
     cleanup.push(
       grid.state.quickSearch.watch(() => {
-        grid.state.rowDataStore.rowClearCache();
         rdsStore.set(models, (prev) => ({ ...prev, quickSearch: grid.state.quickSearch.get() }));
+        grid.state.rowDataStore.rowClearCache();
       }),
     );
 
     // Row group model monitoring
     cleanup.push(
       grid.state.rowGroupModel.watch(() => {
-        grid.state.rowDataStore.rowClearCache();
         rdsStore.set(models, (prev) => ({ ...prev, group: grid.state.rowGroupModel.get() }));
+        grid.state.rowDataStore.rowClearCache();
       }),
     );
 
     // Row group expansions monitoring
     cleanup.push(
       grid.state.rowGroupExpansions.watch(() => {
-        grid.state.rowDataStore.rowClearCache();
         rdsStore.set(models, (prev) => ({
           ...prev,
           groupExpansions: grid.state.rowGroupExpansions.get(),
         }));
+        grid.state.rowDataStore.rowClearCache();
       }),
     );
 
     // Agg model monitoring
     cleanup.push(
       grid.state.aggModel.watch(() => {
-        grid.state.rowDataStore.rowClearCache();
         rdsStore.set(models, (prev) => ({ ...prev, agg: grid.state.aggModel.get() }));
+        grid.state.rowDataStore.rowClearCache();
       }),
     );
   };
@@ -434,11 +639,16 @@ export function makeClientDataSource<T>(
       rowByIndex,
       rowAllChildIds,
       rowUpdate,
+
       rowExpand: (expansions) => {
         const grid = rdsStore.get(grid$);
         if (!grid) return;
 
-        grid.state.rowGroupExpansions.set((prev) => ({ ...prev, ...expansions }));
+        const mode = grid.state.columnPivotMode.get();
+
+        if (mode)
+          grid.state.columnPivotRowGroupExpansions.set((prev) => ({ ...prev, ...expansions }));
+        else grid.state.rowGroupExpansions.set((prev) => ({ ...prev, ...expansions }));
       },
       rowToIndex,
 

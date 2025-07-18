@@ -13,6 +13,7 @@ export const makeColumnField = (grid: Grid<any>): GridApi<any>["columnField"] =>
     const field = column.field ?? column.id;
     if (d.kind === "branch") {
       if (typeof field === "function") return field({ column, data: d, grid });
+
       return d.data[column.id];
     }
 
