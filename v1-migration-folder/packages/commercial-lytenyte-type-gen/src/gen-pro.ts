@@ -30,6 +30,7 @@ import * as RowSelection from "./definitions/row-selection.js";
 import * as RowDrag from "./definitions/row-drag.js";
 import * as ExportDataRect from "./definitions/data-export.js";
 import * as Pivot from "./definitions/column-pivot.js";
+import * as Frame from "./definitions/frames.js";
 
 const typeModules = [
   ...Object.values(UseLng),
@@ -59,6 +60,7 @@ const typeModules = [
   ...Object.values(RowDrag),
   ...Object.values(ExportDataRect),
   ...Object.values(Pivot),
+  ...Object.values(Frame),
 ] as GenTypes[];
 
 const types = typeModules

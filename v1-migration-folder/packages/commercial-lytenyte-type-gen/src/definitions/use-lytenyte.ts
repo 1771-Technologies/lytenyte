@@ -553,6 +553,22 @@ const ColumnPivotMode: PropertyType = {
   tsDoc: ``,
   value: "boolean",
 };
+const DialogFrame: PropertyType = {
+  kind: "property",
+  doc: { en: `` },
+  name: "dialogFrames",
+  optional: true,
+  tsDoc: ``,
+  value: "Record<string, DialogFrame<T>>",
+};
+const PopoverFrame: PropertyType = {
+  kind: "property",
+  doc: { en: `` },
+  name: "popoverFrames",
+  optional: true,
+  tsDoc: ``,
+  value: "Record<string, PopoverFrame<T>>",
+};
 
 export const UseLyteNytePropsPro: InterfaceType = {
   kind: "interface",
@@ -562,5 +578,12 @@ export const UseLyteNytePropsPro: InterfaceType = {
   doc: { en: `` },
   extends: UseLyteNytePropsPartial,
   tag: "pro",
-  properties: [QuickSearch, QuickSearchSensitivity, ColumnPivotMode, ColumnPivotModel],
+  properties: [
+    QuickSearch,
+    QuickSearchSensitivity,
+    ColumnPivotMode,
+    ColumnPivotModel,
+    DialogFrame,
+    PopoverFrame,
+  ],
 };
