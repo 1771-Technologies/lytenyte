@@ -81,6 +81,7 @@ export function makeClientDataSourcePaginated<T>(
 
   const models = atom<{
     filter: FilterModelItem<T>[];
+    quickSearch: string | null;
     group: RowGroupModelItem<T>[];
     groupExpansions: { [rowId: string]: boolean | undefined };
     agg: Record<string, { fn: AggModelFn<T> }>;
@@ -88,6 +89,7 @@ export function makeClientDataSourcePaginated<T>(
   }>({
     sort: [],
     filter: [],
+    quickSearch: null,
     agg: {},
     group: [],
     groupExpansions: {},
@@ -100,6 +102,7 @@ export function makeClientDataSourcePaginated<T>(
     (g) => g(models).groupExpansions,
   );
   const aggModel = atom<Record<string, { fn: AggModelFn<T> }>>((g) => g(models).agg);
+  const quickSearch = atom((g) => g(models).quickSearch);
 
   const grid$ = atom<Grid<T> | null>(null);
   const snapshot = atom<number>(0);
@@ -109,7 +112,13 @@ export function makeClientDataSourcePaginated<T>(
     const grid = g(grid$);
 
     const rows = g(centerNodes);
-    const filtered = computeFilteredRows(rows, grid, g(filterModel));
+    const filtered = computeFilteredRows(
+      rows,
+      grid,
+      g(filterModel),
+      g(quickSearch),
+      grid?.state.quickSearchSensitivity.get() ?? "case-sensitive",
+    );
 
     const rowGroups = g(rowGroupModel)
       .map((c) => {
@@ -312,8 +321,9 @@ export function makeClientDataSourcePaginated<T>(
     const group = grid.state.rowGroupModel.get();
     const groupExpansions = grid.state.rowGroupExpansions.get();
     const agg = grid.state.aggModel.get();
+    const quickSearch = grid.state.quickSearch.get();
 
-    rdsStore.set(models, { agg, filter, group, groupExpansions, sort });
+    rdsStore.set(models, { agg, filter, group, groupExpansions, sort, quickSearch });
     rdsStore.set(initialized, true);
 
     // Sort model monitoring
@@ -329,6 +339,12 @@ export function makeClientDataSourcePaginated<T>(
       grid.state.filterModel.watch(() => {
         grid.state.rowDataStore.rowClearCache();
         rdsStore.set(models, (prev) => ({ ...prev, filter: grid.state.filterModel.get() }));
+      }),
+    );
+    cleanup.push(
+      grid.state.quickSearch.watch(() => {
+        grid.state.rowDataStore.rowClearCache();
+        rdsStore.set(models, (prev) => ({ ...prev, quickSearch: grid.state.quickSearch.get() }));
       }),
     );
 

@@ -13,7 +13,7 @@ import { HeaderGroupCell } from "../header/header-group-cell";
 import { RowsBottom, RowsCenter, RowsTop } from "../rows/rows-sections";
 import { RowHandler } from "./sample-data/row-handler";
 import { bankData } from "./sample-data/bank-data";
-import { useClientRowDataSourcePaginated } from "../row-data-source/use-client-data-source-paginated";
+import { useClientRowDataSourcePaginated } from "../row-data-source-client/use-client-data-source-paginated";
 
 const meta: Meta = {
   title: "Grid/Row Paging",

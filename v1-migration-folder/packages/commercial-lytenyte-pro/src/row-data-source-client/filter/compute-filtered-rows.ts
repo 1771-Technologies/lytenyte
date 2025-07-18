@@ -6,23 +6,45 @@ import {
   getNumberFilterSettings,
   getStringFilterSettings,
 } from "@1771technologies/lytenyte-shared";
-import type { FilterModelItem, Grid, RowLeaf } from "../../+types";
+import type { FilterModelItem, FilterQuickSearchSensitivity, Grid, RowLeaf } from "../../+types";
 import type { FilterWithSettings } from "./+types";
 
 export function computeFilteredRows<T>(
   rows: RowLeaf<T>[],
   grid: Grid<T> | null,
   filterModel: FilterModelItem<T>[],
+  quickSearch: string | null,
+  sensitivity: FilterQuickSearchSensitivity,
 ) {
-  if (!filterModel.length || !grid) return rows;
+  if (!(filterModel.length || quickSearch) || !grid) return rows;
 
   const filters = filterModel.map(createFilter);
 
   const filtered: RowLeaf<T>[] = [];
+
+  const base = grid.state.columnBase.get();
+  const columns = grid.state.columns.get();
+
+  const nonIgnored = columns.filter((c) => !(c.quickSearchIgnore ?? base.quickSearchIgnore));
+
   for (let r = 0; r < rows.length; r++) {
     const row = rows[r];
 
-    if (filters.every((filter) => evaluateFilter(row.data, grid, filter))) filtered.push(row);
+    if (!filters.every((filter) => evaluateFilter(row.data, grid, filter))) continue;
+
+    if (quickSearch) {
+      const pass = nonIgnored.some((c) => {
+        const field = `${grid.api.columnField(c, { data: row.data, kind: "leaf" })}`;
+
+        if (sensitivity === "case-insensitive")
+          field.toLowerCase().includes(quickSearch.toLowerCase());
+        return field.includes(quickSearch);
+      });
+
+      if (!pass) continue;
+    }
+
+    filtered.push(row);
   }
 
   return filtered;

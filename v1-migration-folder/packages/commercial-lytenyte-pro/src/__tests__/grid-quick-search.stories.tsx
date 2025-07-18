@@ -16,16 +16,16 @@ import { RowHandler } from "./sample-data/row-handler";
 import { bankData } from "./sample-data/bank-data";
 
 const meta: Meta = {
-  title: "Grid/Column Resizing",
+  title: "Grid/Quick Search",
 };
 
 export default meta;
 
 const columns: Column<any>[] = [
-  { id: "age" },
-  { id: "job", pin: "end" },
-  { id: "balance" },
-  { id: "education", pin: "end" },
+  { id: "age", groupPath: ["A"] },
+  { id: "job", width: 100, groupPath: ["A"] },
+  { id: "balance", pin: "end" },
+  { id: "education" },
   { id: "marital" },
   { id: "default" },
   { id: "housing" },
@@ -52,8 +52,8 @@ function Component({ data = bankData }: { data?: any[] }) {
     rowDataSource: ds,
 
     columnBase: {
-      widthMin: 0,
       uiHints: {
+        movable: true,
         resizable: true,
       },
     },
@@ -70,10 +70,10 @@ function Component({ data = bankData }: { data?: any[] }) {
         <button onClick={() => g.state.columnMarkerEnabled.set((prev) => !prev)}>
           Toggle Marker
         </button>
-        <button onClick={() => g.api.columnAutosize({})}>Autosize</button>
-        <button onClick={() => g.api.columnAutosize({ includeHeader: true })}>
-          Autosize With Header
-        </button>
+        <input
+          value={g.state.quickSearch.useValue() ?? ""}
+          onChange={(e) => g.state.quickSearch.set(e.target.value || null)}
+        />
       </div>
 
       <div style={{ width: "100%", height: "90vh", border: "1px solid black" }}>
@@ -93,11 +93,15 @@ function Component({ data = bankData }: { data?: any[] }) {
                           />
                         );
                       }
+
                       return (
                         <HeaderCell
                           cell={c}
-                          key={c.column.id}
-                          style={{ border: "1px solid black", background: "lightgray" }}
+                          key={c.id}
+                          style={{
+                            border: "1px solid black",
+                            background: "lightgray",
+                          }}
                         />
                       );
                     })}
@@ -124,6 +128,6 @@ function Component({ data = bankData }: { data?: any[] }) {
   );
 }
 
-export const ColumnResizing: StoryObj = {
+export const QuickSearch: StoryObj = {
   render: Component,
 };
