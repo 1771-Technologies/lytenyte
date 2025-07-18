@@ -7,6 +7,7 @@ import type {
   FilterCombinationOperator,
   FilterDate,
   FilterDynamic,
+  FilterIn,
   FilterNumber,
   FilterString,
 } from "../../+types";
@@ -39,4 +40,5 @@ export type FilterWithSettings<T> =
   | FilterStringWithSettings
   | FilterNumberWithSettings
   | FilterCombinationWithSettings
+  | FilterIn
   | FilterDynamic<T>;

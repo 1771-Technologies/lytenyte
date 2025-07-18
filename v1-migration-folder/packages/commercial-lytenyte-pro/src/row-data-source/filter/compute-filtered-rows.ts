@@ -52,6 +52,8 @@ function createFilter<T>(filter: FilterModelItem<T>): FilterWithSettings<T> {
       kind: "string",
       settings,
     };
+  } else if (filter.kind === "in") {
+    return filter;
   } else if (filter.kind === "combination") {
     return {
       ...filter,
@@ -83,6 +85,10 @@ function evaluateFilter<T>(row: T, grid: Grid<T>, filter: FilterWithSettings<T>)
     return evaluateNumberFilter(filter, fieldValue, filter.settings);
   } else if (filter.kind === "func") {
     return filter.func({ data: row, grid });
+  } else if (filter.kind === "in") {
+    const fieldValue = grid.api.columnField(filter.field, { data: row, kind: "leaf" }) as any;
+
+    return filter.operator === "in" ? filter.value.has(fieldValue) : !filter.value.has(fieldValue);
   } else {
     if (filter.operator === "AND") return filter.filters.every((f) => evaluateFilter(row, grid, f));
     else return filter.filters.some((f) => evaluateFilter(row, grid, f));

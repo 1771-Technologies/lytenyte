@@ -716,4 +716,22 @@ export const FilterModelItem: UnionType = {
   types: ["FilterNumber", "FilterString", "FilterDate", "FilterCombination", "FilterDynamic<T>"],
   tsDoc: ``,
   doc: { en: `` },
+  tag: "core",
+};
+
+export const FilterModelItemPro: UnionType = {
+  kind: "union",
+  export: true,
+  name: "FilterModelItem<T>",
+  types: [
+    "FilterNumber",
+    "FilterString",
+    "FilterDate",
+    "FilterIn",
+    "FilterCombination",
+    "FilterDynamic<T>",
+  ],
+  tsDoc: ``,
+  doc: { en: `` },
+  tag: "pro",
 };

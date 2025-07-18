@@ -3067,6 +3067,7 @@ export type FilterModelItem<T> =
   | FilterNumber
   | FilterString
   | FilterDate
+  | FilterIn
   | FilterCombination
   | FilterDynamic<T>;
 
