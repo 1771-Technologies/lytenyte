@@ -1,4 +1,10 @@
-import type { FunctionType, InterfaceType, PropertyType, UnionType } from "../+types.js";
+import type {
+  FunctionType,
+  InterfaceType,
+  InterfaceTypePartial,
+  PropertyType,
+  UnionType,
+} from "../+types.js";
 import { ColumnProp, GridProp, RowNodeProp } from "./shared-properties.js";
 
 export const ColumnPin: UnionType = {
@@ -60,46 +66,46 @@ export const ColumnMeta: InterfaceType = {
   ],
 };
 
+const SortableHint: PropertyType = {
+  kind: "property",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "boolean",
+  name: "sortable",
+};
+const RowGroupableHint: PropertyType = {
+  kind: "property",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "boolean",
+  name: "rowGroupable",
+};
+const ResizableHint: PropertyType = {
+  kind: "property",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "boolean",
+  name: "resizable",
+};
+const MovableHint: PropertyType = {
+  kind: "property",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: true,
+  value: "boolean",
+  name: "movable",
+};
+
 export const ColumnUIHints: InterfaceType = {
   kind: "interface",
   name: "ColumnUIHints",
   tsDoc: ``,
   doc: { en: `` },
   export: true,
-  properties: [
-    {
-      kind: "property",
-      tsDoc: ``,
-      doc: { en: `` },
-      optional: true,
-      value: "boolean",
-      name: "sortable",
-    },
-    {
-      kind: "property",
-      tsDoc: ``,
-      doc: { en: `` },
-      optional: true,
-      value: "boolean",
-      name: "rowGroupable",
-    },
-    {
-      kind: "property",
-      tsDoc: ``,
-      doc: { en: `` },
-      optional: true,
-      value: "boolean",
-      name: "resizable",
-    },
-    {
-      kind: "property",
-      tsDoc: ``,
-      doc: { en: `` },
-      optional: true,
-      value: "boolean",
-      name: "movable",
-    },
-  ],
+  properties: [SortableHint, RowGroupableHint, ResizableHint, MovableHint],
 };
 
 export const AutosizeCellParams: InterfaceType = {
@@ -358,15 +364,17 @@ const AutosizeHeaderFnProp: PropertyType = {
   optional: true,
 };
 
-export const ColumnCore: InterfaceType = {
+export const ColumnMarker: InterfaceType = {
   kind: "interface",
   export: true,
-  name: "Column<T>",
-  tag: "core",
+  name: "ColumnMarker<T>",
+  doc: { en: `` },
   tsDoc: ``,
-  doc: {
-    en: ``,
-  },
+  properties: [CellRenderer, HeaderRenderer, FloatingRenderer, Width, ColumnHintsProp],
+};
+
+const ColumnPartial: InterfaceTypePartial = {
+  kind: "interface-partial",
   properties: [
     Id,
     Name,
@@ -400,11 +408,21 @@ export const ColumnCore: InterfaceType = {
   ],
 };
 
-export const ColumnBaseCore: InterfaceType = {
+export const Column: InterfaceType = {
   kind: "interface",
   export: true,
-  name: "ColumnBase<T>",
+  name: "Column<T>",
+  tsDoc: ``,
+  doc: {
+    en: ``,
+  },
+  properties: [],
+  extends: ColumnPartial,
   tag: "core",
+};
+
+const ColumnBasePartial: InterfaceTypePartial = {
+  kind: "interface-partial",
   properties: [
     Hide,
     Width,
@@ -424,17 +442,17 @@ export const ColumnBaseCore: InterfaceType = {
     AutosizeCellFnProp,
     AutosizeHeaderFnProp,
   ],
-  tsDoc: ``,
-  doc: { en: `` },
 };
 
-export const ColumnMarker: InterfaceType = {
+export const ColumnBase: InterfaceType = {
   kind: "interface",
   export: true,
-  name: "ColumnMarker<T>",
-  doc: { en: `` },
+  name: "ColumnBase<T>",
+  properties: [],
   tsDoc: ``,
-  properties: [CellRenderer, HeaderRenderer, FloatingRenderer, Width, ColumnHintsProp],
+  doc: { en: `` },
+  extends: ColumnBasePartial,
+  tag: "core",
 };
 
 export const ColumnRowGroup: InterfaceType = {
@@ -443,7 +461,6 @@ export const ColumnRowGroup: InterfaceType = {
   name: "RowGroupColumn<T>",
   doc: { en: `` },
   tsDoc: ``,
-  tag: "core",
   properties: [
     Name,
     Hide,
@@ -464,4 +481,40 @@ export const ColumnRowGroup: InterfaceType = {
     AutosizeCellFnProp,
     AutosizeHeaderFnProp,
   ],
+};
+
+/**
+ * PRO
+ */
+const QuickSearchIgnore: PropertyType = {
+  kind: "property",
+  tsDoc: ``,
+  doc: { en: `` },
+  name: "quickSearchIgnore",
+  optional: true,
+  value: "boolean",
+};
+
+export const ColumnPro: InterfaceType = {
+  kind: "interface",
+  export: true,
+  name: "Column<T>",
+  tsDoc: ``,
+  doc: {
+    en: ``,
+  },
+  properties: [QuickSearchIgnore],
+  extends: ColumnPartial,
+  tag: "pro",
+};
+
+export const ColumnBasePro: InterfaceType = {
+  kind: "interface",
+  export: true,
+  name: "ColumnBase<T>",
+  properties: [QuickSearchIgnore],
+  tsDoc: ``,
+  doc: { en: `` },
+  extends: ColumnBasePartial,
+  tag: "pro",
 };

@@ -214,7 +214,7 @@ export const RowDataSourcePartial: InterfaceTypePartial = {
   ],
 };
 
-export const RowDataSourceCore: InterfaceType = {
+export const RowDataSource: InterfaceType = {
   kind: "interface",
   name: "RowDataSource<T>",
   export: true,
@@ -222,7 +222,6 @@ export const RowDataSourceCore: InterfaceType = {
   doc: { en: `` },
   properties: [],
   extends: RowDataSourcePartial,
-  tag: "core",
 };
 
 export const RowDataSourceClient: InterfaceType = {

@@ -718,3 +718,30 @@ export const FilterModelItem: UnionType = {
   doc: { en: `` },
   tag: "core",
 };
+
+export const FilterModelItemPro: UnionType = {
+  kind: "union",
+  export: true,
+  name: "FilterModelItem<T>",
+  types: [
+    "FilterNumber",
+    "FilterString",
+    "FilterDate",
+    "FilterIn",
+    "FilterCombination",
+    "FilterDynamic<T>",
+  ],
+  tsDoc: ``,
+  doc: { en: `` },
+  tag: "pro",
+};
+
+export const FilterQuickSearchSensitivity: UnionType = {
+  kind: "union",
+  name: "FilterQuickSearchSensitivity",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  types: ['"case-sensitive"', '"case-insensitive"'],
+  tag: "pro",
+};
