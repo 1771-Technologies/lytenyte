@@ -63,7 +63,7 @@ export const ColumnPivotValueItem: InterfaceType = {
       kind: "property",
       name: "field",
       doc: { en: `` },
-      optional: true,
+      optional: false,
       tsDoc: ``,
       value: "string",
     },

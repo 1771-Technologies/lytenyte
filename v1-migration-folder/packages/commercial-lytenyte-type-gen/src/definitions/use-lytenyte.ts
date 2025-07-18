@@ -551,7 +551,7 @@ const ColumnPivotMode: PropertyType = {
   name: "columnPivotMode",
   optional: true,
   tsDoc: ``,
-  value: "ColumnPivotMode",
+  value: "boolean",
 };
 
 export const UseLyteNytePropsPro: InterfaceType = {

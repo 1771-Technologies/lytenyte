@@ -830,7 +830,7 @@ export const ColumnPivotMode: PropertyType = {
   name: "columnPivotMode",
   optional: false,
   tsDoc: ``,
-  value: "GridAtom<ColumnPivotMode>",
+  value: "GridAtom<boolean>",
 };
 
 export const ColumnPivotColumns: PropertyType = {
@@ -840,6 +840,22 @@ export const ColumnPivotColumns: PropertyType = {
   name: "columnPivotColumns",
   optional: false,
   value: "GridAtom<Column<T>[]>",
+};
+export const ColumnPivotColumnGroupExpansions: PropertyType = {
+  kind: "property",
+  tsDoc: ``,
+  doc: { en: `` },
+  name: "columnPivotColumnGroupExpansions",
+  optional: false,
+  value: "GridAtom<Record<string, boolean | undefined>>",
+};
+export const ColumnPivotRowGroupExpansions: PropertyType = {
+  kind: "property",
+  tsDoc: ``,
+  doc: { en: `` },
+  name: "columnPivotRowGroupExpansions",
+  optional: false,
+  value: "GridAtom<{ [rowId: string]: boolean | undefined }>",
 };
 
 export const GridStatePro: InterfaceType = {
@@ -855,6 +871,8 @@ export const GridStatePro: InterfaceType = {
     ColumnPivotModel,
     ColumnPivotMode,
     ColumnPivotColumns,
+    ColumnPivotRowGroupExpansions,
+    ColumnPivotColumnGroupExpansions,
   ],
   extends: GridStatePartial,
 };

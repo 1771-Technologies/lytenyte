@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 
+type MaybePromise<T> = T | Promise<T>;
+
 /**
  *
  */
@@ -271,6 +273,16 @@ export interface UseLyteNyteProps<T> {
    *
    */
   readonly quickSearchSensitivity?: FilterQuickSearchSensitivity;
+
+  /**
+   *
+   */
+  readonly columnPivotMode?: boolean;
+
+  /**
+   *
+   */
+  readonly columnPivotModel?: ColumnPivotModel<T>;
 }
 
 /**
@@ -622,6 +634,35 @@ export interface GridState<T> {
    *
    */
   readonly quickSearchSensitivity: GridAtom<FilterQuickSearchSensitivity>;
+
+  /**
+   *
+   */
+  readonly columnPivotModel: GridAtom<ColumnPivotModel<T>>;
+
+  /**
+   *
+   */
+  readonly columnPivotMode: GridAtom<boolean>;
+
+  /**
+   *
+   */
+  readonly columnPivotColumns: GridAtom<Column<T>[]>;
+
+  /**
+   *
+   */
+  readonly columnPivotRowGroupExpansions: GridAtom<{
+    [rowId: string]: boolean | undefined;
+  }>;
+
+  /**
+   *
+   */
+  readonly columnPivotColumnGroupExpansions: GridAtom<
+    Record<string, boolean | undefined>
+  >;
 }
 
 /**
@@ -1760,106 +1801,6 @@ export interface ClientRowDataSourceParams<T> {
 /**
  *
  */
-export interface RowDataSource<T> {
-  /**
-   *
-   */
-  readonly init: (grid: Grid<T>) => void;
-
-  /**
-   *
-   */
-  readonly rowById: (id: string) => RowNode<T> | null;
-
-  /**
-   *
-   */
-  readonly rowByIndex: (index: number) => RowNode<T> | null;
-
-  /**
-   *
-   */
-  readonly rowToIndex: (rowId: string) => number | null;
-
-  /**
-   *
-   */
-  readonly rowUpdate: (params: RowUpdateParams) => void;
-
-  /**
-   *
-   */
-  readonly rowExpand: (expansion: Record<string, boolean>) => void;
-
-  /**
-   *
-   */
-  readonly rowSelect: (params: RdsRowSelectParams) => void;
-
-  /**
-   *
-   */
-  readonly rowSelectAll: (params: RowSelectAllOptions) => void;
-
-  /**
-   *
-   */
-  readonly rowAllChildIds: (rowId: string) => string[];
-}
-
-/**
- *
- */
-export interface RowDataSourceClient<T> {
-  /**
-   *
-   */
-  readonly init: (grid: Grid<T>) => void;
-
-  /**
-   *
-   */
-  readonly rowById: (id: string) => RowNode<T> | null;
-
-  /**
-   *
-   */
-  readonly rowByIndex: (index: number) => RowNode<T> | null;
-
-  /**
-   *
-   */
-  readonly rowToIndex: (rowId: string) => number | null;
-
-  /**
-   *
-   */
-  readonly rowUpdate: (params: RowUpdateParams) => void;
-
-  /**
-   *
-   */
-  readonly rowExpand: (expansion: Record<string, boolean>) => void;
-
-  /**
-   *
-   */
-  readonly rowSelect: (params: RdsRowSelectParams) => void;
-
-  /**
-   *
-   */
-  readonly rowSelectAll: (params: RowSelectAllOptions) => void;
-
-  /**
-   *
-   */
-  readonly rowAllChildIds: (rowId: string) => string[];
-}
-
-/**
- *
- */
 export interface RowDataSourceClientPaginated<T> {
   /**
    *
@@ -1930,6 +1871,106 @@ export interface RowDataSourceClientPageState {
    *
    */
   readonly pageCount: GridAtomReadonly<number>;
+}
+
+/**
+ *
+ */
+export interface RowDataSourceClient<T> {
+  /**
+   *
+   */
+  readonly init: (grid: Grid<T>) => void;
+
+  /**
+   *
+   */
+  readonly rowById: (id: string) => RowNode<T> | null;
+
+  /**
+   *
+   */
+  readonly rowByIndex: (index: number) => RowNode<T> | null;
+
+  /**
+   *
+   */
+  readonly rowToIndex: (rowId: string) => number | null;
+
+  /**
+   *
+   */
+  readonly rowUpdate: (params: RowUpdateParams) => void;
+
+  /**
+   *
+   */
+  readonly rowExpand: (expansion: Record<string, boolean>) => void;
+
+  /**
+   *
+   */
+  readonly rowSelect: (params: RdsRowSelectParams) => void;
+
+  /**
+   *
+   */
+  readonly rowSelectAll: (params: RowSelectAllOptions) => void;
+
+  /**
+   *
+   */
+  readonly rowAllChildIds: (rowId: string) => string[];
+}
+
+/**
+ *
+ */
+export interface RowDataSource<T> {
+  /**
+   *
+   */
+  readonly init: (grid: Grid<T>) => void;
+
+  /**
+   *
+   */
+  readonly rowById: (id: string) => RowNode<T> | null;
+
+  /**
+   *
+   */
+  readonly rowByIndex: (index: number) => RowNode<T> | null;
+
+  /**
+   *
+   */
+  readonly rowToIndex: (rowId: string) => number | null;
+
+  /**
+   *
+   */
+  readonly rowUpdate: (params: RowUpdateParams) => void;
+
+  /**
+   *
+   */
+  readonly rowExpand: (expansion: Record<string, boolean>) => void;
+
+  /**
+   *
+   */
+  readonly rowSelect: (params: RdsRowSelectParams) => void;
+
+  /**
+   *
+   */
+  readonly rowSelectAll: (params: RowSelectAllOptions) => void;
+
+  /**
+   *
+   */
+  readonly rowAllChildIds: (rowId: string) => string[];
 }
 
 /**
@@ -5032,7 +5073,7 @@ export interface ColumnPivotValueItem<T> {
   /**
    *
    */
-  readonly field?: string;
+  readonly field: string;
 
   /**
    *
