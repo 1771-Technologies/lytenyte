@@ -876,6 +876,24 @@ const PopoverFrame: PropertyType = {
   value: "GridAtom<Record<string, PopoverFrame<T>>>",
 };
 
+const CellSelections: PropertyType = {
+  kind: "property",
+  doc: { en: `` },
+  tsDoc: ``,
+  name: "cellSelections",
+  optional: false,
+  value: "GridAtom<DataRect[]>",
+};
+
+const CellSelectionMode: PropertyType = {
+  kind: "property",
+  doc: { en: `` },
+  tsDoc: ``,
+  name: "cellSelectionMode",
+  optional: false,
+  value: "GridAtom<CellSelectionMode>",
+};
+
 export const GridStatePro: InterfaceType = {
   kind: "interface",
   export: true,
@@ -893,6 +911,8 @@ export const GridStatePro: InterfaceType = {
     ColumnPivotColumnGroupExpansions,
     DialogFrame,
     PopoverFrame,
+    CellSelections,
+    CellSelectionMode,
   ],
   extends: GridStatePartial,
 };

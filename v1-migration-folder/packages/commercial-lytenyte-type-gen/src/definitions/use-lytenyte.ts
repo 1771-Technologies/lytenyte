@@ -569,6 +569,23 @@ const PopoverFrame: PropertyType = {
   tsDoc: ``,
   value: "Record<string, PopoverFrame<T>>",
 };
+const CellSelections: PropertyType = {
+  kind: "property",
+  doc: { en: `` },
+  tsDoc: ``,
+  name: "cellSelections",
+  optional: true,
+  value: "DataRect[]",
+};
+
+const CellSelectionMode: PropertyType = {
+  kind: "property",
+  doc: { en: `` },
+  tsDoc: ``,
+  name: "cellSelectionMode",
+  optional: true,
+  value: "CellSelectionMode",
+};
 
 export const UseLyteNytePropsPro: InterfaceType = {
   kind: "interface",
@@ -585,5 +602,7 @@ export const UseLyteNytePropsPro: InterfaceType = {
     ColumnPivotModel,
     DialogFrame,
     PopoverFrame,
+    CellSelections,
+    CellSelectionMode,
   ],
 };

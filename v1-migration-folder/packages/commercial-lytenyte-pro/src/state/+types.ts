@@ -1,5 +1,6 @@
 import type { LayoutMap } from "@1771technologies/lytenyte-shared";
 import type {
+  DataRect,
   EditActivePosition,
   GridAtom,
   GridAtomReadonly,
@@ -46,6 +47,10 @@ export interface InternalAtoms {
   readonly popoverFrames: GridAtom<
     Record<string, { target: HTMLElement | VirtualTarget; context: any }>
   >;
+
+  // Cell Selection
+  readonly cellSelectionPivot: GridAtom<DataRect | null>;
+  readonly cellSelectionAdditiveRects: GridAtom<DataRect[] | null>;
 
   readonly store: ReturnType<typeof createStore>;
 }

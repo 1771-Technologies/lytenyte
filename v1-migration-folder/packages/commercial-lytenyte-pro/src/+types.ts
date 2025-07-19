@@ -293,6 +293,16 @@ export interface UseLyteNyteProps<T> {
    *
    */
   readonly popoverFrames?: Record<string, PopoverFrame<T>>;
+
+  /**
+   *
+   */
+  readonly cellSelections?: DataRect[];
+
+  /**
+   *
+   */
+  readonly cellSelectionMode?: CellSelectionMode;
 }
 
 /**
@@ -683,6 +693,16 @@ export interface GridState<T> {
    *
    */
   readonly popoverFrames: GridAtom<Record<string, PopoverFrame<T>>>;
+
+  /**
+   *
+   */
+  readonly cellSelections: GridAtom<DataRect[]>;
+
+  /**
+   *
+   */
+  readonly cellSelectionMode: GridAtom<CellSelectionMode>;
 }
 
 /**

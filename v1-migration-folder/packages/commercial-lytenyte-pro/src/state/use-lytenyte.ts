@@ -12,6 +12,7 @@ import type {
   ColumnPivotModel,
   Column,
   VirtualTarget,
+  DataRect,
 } from "../+types.js";
 import { type Grid, type GridView, type UseLyteNyteProps } from "../+types.js";
 import { useRef } from "react";
@@ -168,6 +169,12 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const columnPivotColumns = atom<Column<T>[]>([]);
   const columnPivotColumnGroupExpansions = atom<Record<string, boolean | undefined>>({});
   const columnPivotRowGroupExpansions = atom<Record<string, boolean | undefined>>({});
+
+  const cellSelections = atom<DataRect[]>(p.cellSelections ?? []);
+  const cellSelectionMode = atom(p.cellSelectionMode ?? "none");
+
+  const internal_cellSelectionPivot = atom<DataRect | null>(null);
+  const internal_cellSelectionAdditive = atom<DataRect[] | null>(null);
 
   const dialogFrame = atom(p.dialogFrames ?? {});
   const popoverFrame = atom(p.popoverFrames ?? {});
@@ -567,6 +574,9 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
     dialogFrames: makeGridAtom(dialogFrame, store),
     popoverFrames: makeGridAtom(popoverFrame, store),
+
+    cellSelections: makeGridAtom(cellSelections, store),
+    cellSelectionMode: makeGridAtom(cellSelectionMode, store),
   };
 
   const api = {} as GridApi<T>;
@@ -671,6 +681,9 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
       dialogFrames: makeGridAtom(internal_dialogFrames, store),
       popoverFrames: makeGridAtom(internal_popoverFrames, store),
+
+      cellSelectionPivot: makeGridAtom(internal_cellSelectionPivot, store),
+      cellSelectionAdditiveRects: makeGridAtom(internal_cellSelectionAdditive, store),
 
       store: store,
     } satisfies InternalAtoms,
