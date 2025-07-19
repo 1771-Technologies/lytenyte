@@ -858,6 +858,24 @@ export const ColumnPivotRowGroupExpansions: PropertyType = {
   value: "GridAtom<{ [rowId: string]: boolean | undefined }>",
 };
 
+const DialogFrame: PropertyType = {
+  kind: "property",
+  doc: { en: `` },
+  name: "dialogFrames",
+  optional: false,
+  tsDoc: ``,
+  value: "GridAtom<Record<string, DialogFrame<T>>>",
+};
+
+const PopoverFrame: PropertyType = {
+  kind: "property",
+  doc: { en: `` },
+  name: "popoverFrames",
+  optional: false,
+  tsDoc: ``,
+  value: "GridAtom<Record<string, PopoverFrame<T>>>",
+};
+
 export const GridStatePro: InterfaceType = {
   kind: "interface",
   export: true,
@@ -873,6 +891,8 @@ export const GridStatePro: InterfaceType = {
     ColumnPivotColumns,
     ColumnPivotRowGroupExpansions,
     ColumnPivotColumnGroupExpansions,
+    DialogFrame,
+    PopoverFrame,
   ],
   extends: GridStatePartial,
 };

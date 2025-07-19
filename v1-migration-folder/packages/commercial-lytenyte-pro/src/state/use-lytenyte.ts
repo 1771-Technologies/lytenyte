@@ -11,6 +11,7 @@ import type {
   HeaderGroupCellLayout,
   ColumnPivotModel,
   Column,
+  VirtualTarget,
 } from "../+types.js";
 import { type Grid, type GridView, type UseLyteNyteProps } from "../+types.js";
 import { useRef } from "react";
@@ -68,6 +69,9 @@ import { makeColumnGroupToggle } from "./api/column-group-toggle.js";
 import { makeColumnAutosize } from "./api/column-autosize.js";
 import { makeExportCsv, makeExportCsvFile } from "./api/export-csv.js";
 import { makeExportDataRect } from "./api/export-data-rect.js";
+import { makeDialogFrameClose, makeDialogFrameOpen } from "./api/dialog-frame.js";
+import { makePopoverFrameClose, makePopoverFrameOpen } from "./api/popover-frame.js";
+import { makePositionFromElement } from "./api/position-from-element.js";
 
 const DEFAULT_HEADER_HEIGHT = 40;
 const COLUMN_GROUP_JOIN_DELIMITER = "-->";
@@ -165,6 +169,9 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const columnPivotColumnGroupExpansions = atom<Record<string, boolean | undefined>>({});
   const columnPivotRowGroupExpansions = atom<Record<string, boolean | undefined>>({});
 
+  const dialogFrame = atom(p.dialogFrames ?? {});
+  const popoverFrame = atom(p.popoverFrames ?? {});
+
   const internal_rowSelectionPivot = atom<string | null>(null);
   const internal_rowSelectionLastWasDeselect = atom<boolean>(false);
   const rowSelectionPivot = atom((g) => g(internal_rowSelectionPivot));
@@ -178,6 +185,10 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const internal_editActivePosition = atom<EditActivePosition<T> | null>(null);
   const internal_editData = atom<any>(null);
   const internal_editValidation = atom<Record<string, any> | boolean>(true);
+  const internal_dialogFrames = atom<Record<string, any>>({});
+  const internal_popoverFrames = atom<
+    Record<string, { target: HTMLElement | VirtualTarget; context: any }>
+  >({});
 
   const layoutMap = atom<LayoutMap>((g) => {
     g(rdsAtoms.bottomCount);
@@ -553,6 +564,9 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     columnPivotModel: makeGridAtom(columnPivotModel, store),
     columnPivotColumnGroupExpansions: makeGridAtom(columnPivotColumnGroupExpansions, store),
     columnPivotRowGroupExpansions: makeGridAtom(columnPivotRowGroupExpansions, store),
+
+    dialogFrames: makeGridAtom(dialogFrame, store),
+    popoverFrames: makeGridAtom(popoverFrame, store),
   };
 
   const api = {} as GridApi<T>;
@@ -611,6 +625,14 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     exportCsv: makeExportCsv(grid),
     exportCsvFile: makeExportCsvFile(grid),
     exportDataRect: makeExportDataRect(grid),
+
+    dialogFrameClose: makeDialogFrameClose(grid as any),
+    dialogFrameOpen: makeDialogFrameOpen(grid as any),
+
+    popoverFrameClose: makePopoverFrameClose(grid as any),
+    popoverFrameOpen: makePopoverFrameOpen(grid as any),
+
+    positionFromElement: makePositionFromElement(),
   } satisfies GridApi<T>);
 
   Object.assign(grid, {
@@ -646,6 +668,9 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       rowSelectionLastWasDeselect: makeGridAtom(internal_rowSelectionLastWasDeselect, store),
 
       draggingHeader: makeGridAtom(internal_draggingHeader, store),
+
+      dialogFrames: makeGridAtom(internal_dialogFrames, store),
+      popoverFrames: makeGridAtom(internal_popoverFrames, store),
 
       store: store,
     } satisfies InternalAtoms,

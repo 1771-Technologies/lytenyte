@@ -5,6 +5,7 @@ import type {
   GridAtomReadonly,
   HeaderGroupCellLayout,
   PositionUnion,
+  VirtualTarget,
 } from "../+types";
 import type { Atom, createStore } from "@1771technologies/atom";
 
@@ -39,6 +40,12 @@ export interface InternalAtoms {
 
   // Column Moving
   readonly draggingHeader: GridAtom<HeaderGroupCellLayout | null>;
+
+  // Dialog & Popover frames
+  readonly dialogFrames: GridAtom<Record<string, any>>;
+  readonly popoverFrames: GridAtom<
+    Record<string, { target: HTMLElement | VirtualTarget; context: any }>
+  >;
 
   readonly store: ReturnType<typeof createStore>;
 }

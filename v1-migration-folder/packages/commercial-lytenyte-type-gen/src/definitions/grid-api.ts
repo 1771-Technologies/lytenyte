@@ -1,4 +1,4 @@
-import type { InterfaceType, PropertyType, UnionType } from "../+types";
+import type { InterfaceType, InterfaceTypePartial, PropertyType, UnionType } from "../+types";
 
 const ColumnField: PropertyType = {
   kind: "property",
@@ -483,12 +483,8 @@ export const ExportCsvFile: PropertyType = {
   value: "(params?: ExportCsvParams) => Promise<Blob>",
 };
 
-export const GridApi: InterfaceType = {
-  kind: "interface",
-  name: "GridApi<T>",
-  tsDoc: ``,
-  doc: { en: `` },
-  export: true,
+const GridApiPartial: InterfaceTypePartial = {
+  kind: "interface-partial",
   properties: [
     ColumnField,
     ColumnFromIndex,
@@ -538,5 +534,103 @@ export const GridApi: InterfaceType = {
     ExportDataRect,
     ExportCsv,
     ExportCsvFile,
+  ],
+};
+
+export const GridApi: InterfaceType = {
+  kind: "interface",
+  name: "GridApi<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  properties: [],
+  tag: "core",
+  extends: GridApiPartial,
+};
+
+export const VirtualTarget: InterfaceType = {
+  kind: "interface",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  name: "VirtualTarget",
+  tag: "pro",
+  properties: [
+    {
+      kind: "property",
+      doc: { en: `` },
+      tsDoc: ``,
+      name: "getBoundingClientRect",
+      optional: false,
+      value: '() => Omit<DOMRect, "toJSON">',
+    },
+    {
+      kind: "property",
+      doc: { en: `` },
+      tsDoc: ``,
+      name: "getClientRects",
+      optional: true,
+      value: '() => Omit<DOMRect, "toJSON">[]',
+    },
+    {
+      kind: "property",
+      doc: { en: `` },
+      tsDoc: ``,
+      name: "contextElement",
+      optional: true,
+      value: "HTMLElement",
+    },
+  ],
+};
+
+export const GridApiPro: InterfaceType = {
+  kind: "interface",
+  name: "GridApi<T>",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  extends: GridApiPartial,
+  tag: "pro",
+  properties: [
+    {
+      kind: "property",
+      doc: { en: `` },
+      name: "dialogFrameOpen",
+      optional: false,
+      tsDoc: ``,
+      value: "(id: string, context?: any) => void",
+    },
+    {
+      kind: "property",
+      doc: { en: `` },
+      name: "dialogFrameClose",
+      optional: false,
+      tsDoc: ``,
+      value: "(id?: string) => void",
+    },
+    {
+      kind: "property",
+      doc: { en: `` },
+      name: "popoverFrameOpen",
+      optional: false,
+      tsDoc: ``,
+      value: "(id: string, target: HTMLElement | VirtualTarget, context?: any) => void",
+    },
+    {
+      kind: "property",
+      doc: { en: `` },
+      name: "popoverFrameClose",
+      optional: false,
+      tsDoc: ``,
+      value: "(id?: string) => void",
+    },
+    {
+      kind: "property",
+      doc: { en: `` },
+      name: "positionFromElement",
+      optional: false,
+      tsDoc: ``,
+      value: "(el: HTMLElement) => PositionUnion | null",
+    },
   ],
 };
