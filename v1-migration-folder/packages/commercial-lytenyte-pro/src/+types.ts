@@ -283,6 +283,16 @@ export interface UseLyteNyteProps<T> {
    *
    */
   readonly columnPivotModel?: ColumnPivotModel<T>;
+
+  /**
+   *
+   */
+  readonly dialogFrames?: Record<string, DialogFrame<T>>;
+
+  /**
+   *
+   */
+  readonly popoverFrames?: Record<string, PopoverFrame<T>>;
 }
 
 /**
@@ -663,6 +673,16 @@ export interface GridState<T> {
   readonly columnPivotColumnGroupExpansions: GridAtom<
     Record<string, boolean | undefined>
   >;
+
+  /**
+   *
+   */
+  readonly dialogFrames: GridAtom<Record<string, DialogFrame<T>>>;
+
+  /**
+   *
+   */
+  readonly popoverFrames: GridAtom<Record<string, PopoverFrame<T>>>;
 }
 
 /**
@@ -2780,6 +2800,26 @@ export interface GridApi<T> {
    *
    */
   readonly exportCsvFile: (params?: ExportCsvParams) => Promise<Blob>;
+
+  /**
+   *
+   */
+  readonly dialogFrameOpen: (id: string, context?: any) => void;
+
+  /**
+   *
+   */
+  readonly dialogFrameClose: (id?: string) => void;
+
+  /**
+   *
+   */
+  readonly popoverFrameOpen: (id: string, context?: any) => void;
+
+  /**
+   *
+   */
+  readonly popoverFrameClose: (id?: string) => void;
 }
 
 /**
@@ -5084,4 +5124,84 @@ export interface ColumnPivotValueItem<T> {
    *
    */
   readonly active?: boolean;
+}
+
+/**
+ *
+ */
+export interface DialogFrame<T> {
+  /**
+   *
+   */
+  readonly component: DialogFrameRenderer<T>;
+}
+
+/**
+ *
+ */
+export type DialogFrameRenderer<T> = (
+  /**
+   *
+   */
+  params: DialogFrameRendererParams<T>,
+) => ReactNode;
+
+/**
+ *
+ */
+export interface DialogFrameRendererParams<T> {
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly context?: any;
+
+  /**
+   *
+   */
+  readonly frame: DialogFrame<T>;
+}
+
+/**
+ *
+ */
+export interface PopoverFrame<T> {
+  /**
+   *
+   */
+  readonly component: PopoverFrameRenderer<T>;
+}
+
+/**
+ *
+ */
+export type PopoverFrameRenderer<T> = (
+  /**
+   *
+   */
+  params: PopoverFrameRendererParams<T>,
+) => ReactNode;
+
+/**
+ *
+ */
+export interface PopoverFrameRendererParams<T> {
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly context?: any;
+
+  /**
+   *
+   */
+  readonly frame: PopoverFrame<T>;
 }

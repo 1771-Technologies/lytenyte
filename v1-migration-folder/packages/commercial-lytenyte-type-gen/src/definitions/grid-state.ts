@@ -862,7 +862,7 @@ const DialogFrame: PropertyType = {
   kind: "property",
   doc: { en: `` },
   name: "dialogFrames",
-  optional: true,
+  optional: false,
   tsDoc: ``,
   value: "GridAtom<Record<string, DialogFrame<T>>>",
 };
@@ -871,7 +871,7 @@ const PopoverFrame: PropertyType = {
   kind: "property",
   doc: { en: `` },
   name: "popoverFrames",
-  optional: true,
+  optional: false,
   tsDoc: ``,
   value: "GridAtom<Record<string, PopoverFrame<T>>>",
 };

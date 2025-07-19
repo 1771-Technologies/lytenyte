@@ -40,5 +40,9 @@ export interface InternalAtoms {
   // Column Moving
   readonly draggingHeader: GridAtom<HeaderGroupCellLayout | null>;
 
+  // Dialog & Popover frames
+  readonly dialogFrames: GridAtom<Record<string, any>>;
+  readonly popoverFrames: GridAtom<Record<string, any>>;
+
   readonly store: ReturnType<typeof createStore>;
 }
