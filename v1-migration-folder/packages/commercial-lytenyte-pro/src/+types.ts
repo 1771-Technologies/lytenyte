@@ -2814,12 +2814,21 @@ export interface GridApi<T> {
   /**
    *
    */
-  readonly popoverFrameOpen: (id: string, context?: any) => void;
+  readonly popoverFrameOpen: (
+    id: string,
+    target: HTMLElement | VirtualTarget,
+    context?: any,
+  ) => void;
 
   /**
    *
    */
   readonly popoverFrameClose: (id?: string) => void;
+
+  /**
+   *
+   */
+  readonly positionFromElement: (el: HTMLElement) => PositionUnion | null;
 }
 
 /**
@@ -2855,6 +2864,26 @@ export interface ScrollIntoViewOptions<T> {
    *
    */
   readonly behavior?: "smooth" | "auto" | "instant";
+}
+
+/**
+ *
+ */
+export interface VirtualTarget {
+  /**
+   *
+   */
+  readonly getBoundingClientRect: () => Omit<DOMRect, "toJSON">;
+
+  /**
+   *
+   */
+  readonly getClientRects?: () => Omit<DOMRect, "toJSON">[];
+
+  /**
+   *
+   */
+  readonly contextElement?: HTMLElement;
 }
 
 /**
@@ -5204,4 +5233,9 @@ export interface PopoverFrameRendererParams<T> {
    *
    */
   readonly frame: PopoverFrame<T>;
+
+  /**
+   *
+   */
+  readonly target: HTMLElement | VirtualTarget;
 }

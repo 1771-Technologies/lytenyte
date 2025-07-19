@@ -88,6 +88,14 @@ export const PopoverFrameRendererParams: InterfaceType = {
       optional: false,
       value: "PopoverFrame<T>",
     },
+    {
+      kind: "property",
+      tsDoc: ``,
+      doc: { en: `` },
+      name: "target",
+      optional: false,
+      value: "HTMLElement | VirtualTarget",
+    },
   ],
 };
 

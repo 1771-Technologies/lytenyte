@@ -548,6 +548,41 @@ export const GridApi: InterfaceType = {
   extends: GridApiPartial,
 };
 
+export const VirtualTarget: InterfaceType = {
+  kind: "interface",
+  tsDoc: ``,
+  doc: { en: `` },
+  export: true,
+  name: "VirtualTarget",
+  tag: "pro",
+  properties: [
+    {
+      kind: "property",
+      doc: { en: `` },
+      tsDoc: ``,
+      name: "getBoundingClientRect",
+      optional: false,
+      value: '() => Omit<DOMRect, "toJSON">',
+    },
+    {
+      kind: "property",
+      doc: { en: `` },
+      tsDoc: ``,
+      name: "getClientRects",
+      optional: true,
+      value: '() => Omit<DOMRect, "toJSON">[]',
+    },
+    {
+      kind: "property",
+      doc: { en: `` },
+      tsDoc: ``,
+      name: "contextElement",
+      optional: true,
+      value: "HTMLElement",
+    },
+  ],
+};
+
 export const GridApiPro: InterfaceType = {
   kind: "interface",
   name: "GridApi<T>",
@@ -579,7 +614,7 @@ export const GridApiPro: InterfaceType = {
       name: "popoverFrameOpen",
       optional: false,
       tsDoc: ``,
-      value: "(id: string, context?: any) => void",
+      value: "(id: string, target: HTMLElement | VirtualTarget, context?: any) => void",
     },
     {
       kind: "property",
@@ -588,6 +623,14 @@ export const GridApiPro: InterfaceType = {
       optional: false,
       tsDoc: ``,
       value: "(id?: string) => void",
+    },
+    {
+      kind: "property",
+      doc: { en: `` },
+      name: "positionFromElement",
+      optional: false,
+      tsDoc: ``,
+      value: "(el: HTMLElement) => PositionUnion | null",
     },
   ],
 };

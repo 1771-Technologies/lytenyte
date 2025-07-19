@@ -1,6 +1,7 @@
 import "./grid-navigation.css";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Dialog } from "@base-ui-components/react/dialog";
+import { Menu } from "@base-ui-components/react/menu";
 import { Header } from "../header/header";
 import { HeaderRow } from "../header/header-row";
 import { Root } from "../root/root";
@@ -77,6 +78,36 @@ function Component({ data = bankData }: { data?: any[] }) {
       },
     },
 
+    popoverFrames: {
+      test: {
+        component: (p) => {
+          console.log(p.target);
+          return (
+            <Menu.Root
+              defaultOpen
+              onOpenChangeComplete={(c) => {
+                if (c) return;
+
+                p.grid.api.popoverFrameClose("test");
+              }}
+            >
+              <Menu.Portal>
+                <Menu.Backdrop />
+                <Menu.Positioner anchor={p.target}>
+                  <Menu.Popup>
+                    <Menu.Item>Run once</Menu.Item>
+                    <Menu.Item>Run once</Menu.Item>
+                    <Menu.Item>Run once</Menu.Item>
+                    <Menu.Item>Run once</Menu.Item>
+                  </Menu.Popup>
+                </Menu.Positioner>
+              </Menu.Portal>
+            </Menu.Root>
+          );
+        },
+      },
+    },
+
     columnBase: {
       uiHints: {
         movable: true,
@@ -97,6 +128,9 @@ function Component({ data = bankData }: { data?: any[] }) {
           Toggle Marker
         </button>
         <button onClick={() => g.api.dialogFrameOpen("test")}>Open Dialog</button>
+        <button onClick={(ev) => g.api.popoverFrameOpen("test", ev.currentTarget)}>
+          Open Popover
+        </button>
       </div>
 
       <div style={{ width: "100%", height: "90vh", border: "1px solid black" }}>
