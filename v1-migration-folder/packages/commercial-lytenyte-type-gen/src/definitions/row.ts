@@ -160,7 +160,7 @@ export const RowGroup: InterfaceType = {
     {
       kind: "property",
       name: "key",
-      value: "string",
+      value: "string | null",
       optional: false,
       tsDoc: `
         A path key associated with the branch node. The view of the grid is a flattened tree. A 

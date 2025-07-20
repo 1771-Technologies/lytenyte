@@ -332,8 +332,17 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     const rowCount = g(rdsAtoms.rowCount);
     const innerHeight = g(viewportHeightInner);
 
-    g(rowDetailExpansions);
+    const detailExpansions = g(rowDetailExpansions);
     g(internal_rowDetailHeightCache);
+
+    const rds = g(rowDataSource);
+
+    const rows = Object.fromEntries(
+      [...detailExpansions]
+        .map((x) => rds.rowToIndex(x))
+        .filter((x) => x != null)
+        .map((x) => [x, api.rowByIndex(x)]),
+    );
 
     return computeRowPositions(
       rowCount,
@@ -341,7 +350,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       g(rowAutoHeightGuess),
       g(internal_rowAutoHeightCache),
       (i: number) => {
-        const row = api.rowByIndex(i);
+        const row = rows[i];
         if (!row || !api.rowDetailIsExpanded(row)) return 0;
 
         return api.rowDetailRenderedHeight(row);

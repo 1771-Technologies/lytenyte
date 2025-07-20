@@ -34,7 +34,8 @@ export const dataFetcher: ServerDataSourceInitial<any, ReactNode>["rowDataFetche
     // We have a row grouping so we need to group by item, offset and get count.
     if (groupKey) {
       const data = sql<{ childCnt: number; pathKey: string }[]>(
-        `SELECT *, ${groupKey} AS pathKey, count(*) AS childCnt FROM banks GROUP BY ${groupKey} LIMIT ${blockSize} OFFSET ${blockSize * b.blockKey}`,
+        `SELECT *, ${groupKey} AS pathKey, count(*) AS childCnt 
+        FROM banks GROUP BY ${groupKey} LIMIT ${blockSize} OFFSET ${blockSize * b.blockKey}`,
       );
       const cnt = sql<{ cnt: number }[]>(
         `SELECT count(*) AS cnt FROM banks GROUP BY ${groupKey}`,

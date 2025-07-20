@@ -577,6 +577,7 @@ export function makeClientDataSource<T>(
     const t = rdsStore.get(flat);
     return t.idMap.get(id) ?? null;
   };
+
   const rowByIndex = (index: number) => {
     const top = rdsStore.get(topNodes);
     const bot = rdsStore.get(botNodes);

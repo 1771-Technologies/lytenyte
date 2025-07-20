@@ -228,7 +228,7 @@ export interface RowGroup {
    * branch represents a fork in the tree, and the key is the path value associated with that
    * fork.
    */
-  readonly key: string;
+  readonly key: string | null;
 
   /**
    * The data associated with the branch node. This must be a JavaScript object with string values
