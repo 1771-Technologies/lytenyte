@@ -47,6 +47,7 @@ export const RowsCenterReact = forwardRef<
         minHeight: height,
         flex: 1,
         minWidth: "100%",
+        position: "relative",
       }}
     />
   );

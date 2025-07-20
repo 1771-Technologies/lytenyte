@@ -31,6 +31,8 @@ export const RowsContainerReact = forwardRef<
           flex: "1",
           display: "flex",
           flexDirection: "column",
+          userSelect: "none",
+          msUserSelect: "none",
           [SCROLL_WIDTH_VARIABLE]: `${width}px`,
           [VIEWPORT_WIDTH_VARIABLE]: `${viewportWidth}px`,
           [VIEWPORT_HEIGHT_VARIABLE]: `${viewportHeight}px`,

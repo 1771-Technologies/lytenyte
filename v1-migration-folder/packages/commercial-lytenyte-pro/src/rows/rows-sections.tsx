@@ -3,6 +3,11 @@ import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
 import { useGridRoot } from "../context";
 import { NativeScroller } from "./scrollers/native-scroller";
 import { RowsBottomReact, RowsCenterReact, RowsTopReact } from "@1771technologies/lytenyte-shared";
+import {
+  CellSelectionBottom,
+  CellSelectionCenter,
+  CellSelectionTop,
+} from "../cell-selection/cell-selection-containers";
 
 export const RowsTop = fastDeepMemo(
   forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function RowsTop(props, forwarded) {
@@ -18,7 +23,10 @@ export const RowsTop = fastDeepMemo(
         ref={forwarded}
         top={cx.internal.headerHeightTotal.useValue()}
         height={view.rowTopTotalHeight}
-      />
+      >
+        {props.children}
+        <CellSelectionTop />
+      </RowsTopReact>
     );
   }),
 );
@@ -41,7 +49,10 @@ export const RowsCenter = fastDeepMemo(
         rowLast={rowCenterCount + cx.state.rowDataStore.rowTopCount.useValue()}
         height={view.rowCenterTotalHeight}
       >
-        <NativeScroller>{children}</NativeScroller>
+        <NativeScroller>
+          <CellSelectionCenter />
+          {children}
+        </NativeScroller>
       </RowsCenterReact>
     );
   }),
@@ -63,7 +74,10 @@ export const RowsBottom = fastDeepMemo(
         rowFirst={rowCenterCount + rowTopCount}
         rowLast={rowCenterCount + rowBottomCount + rowTopCount}
         height={view.rowBottomTotalHeight}
-      />
+      >
+        <CellSelectionBottom />
+        {props.children}
+      </RowsBottomReact>
     );
   }),
 );

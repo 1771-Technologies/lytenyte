@@ -32,7 +32,7 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
           handleSkipInner(e);
           props.onKeyDown?.(e);
 
-          if (e.defaultPrevented) return;
+          if (e.defaultPrevented || e.shiftKey) return;
 
           const ds = ctx.grid.state.rowDataStore;
 

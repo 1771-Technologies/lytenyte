@@ -6,3 +6,10 @@
 [data-ln-row-selected="true"] [data-ln-cell] {
   background-color: green !important;
 }
+
+[data-ln-cell-selection-rect] {
+  background-color: rgba(0, 0, 255, 0.2);
+}
+[data-ln-cell-selection-is-deselect="true"] {
+  background-color: rgba(255, 0, 0, 0.2);
+}

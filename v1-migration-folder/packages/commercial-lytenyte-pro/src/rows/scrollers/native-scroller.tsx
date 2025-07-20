@@ -1,4 +1,4 @@
-import type { PropsWithChildren } from "react";
+import type { CSSProperties, PropsWithChildren } from "react";
 import { useGridRoot } from "../../context";
 import { sizeFromCoord } from "@1771technologies/lytenyte-shared";
 
@@ -14,8 +14,17 @@ export function NativeScroller(props: PropsWithChildren) {
     offset -= size;
   }
 
+  const offsetPx = `${offset}px`;
   return (
-    <div role="presentation" style={{ transform: `translate3d(0px, ${offset}px, 0px)` }}>
+    <div
+      role="presentation"
+      style={
+        {
+          transform: `translate3d(0px, ${offset}px, 0px)`,
+          "--ln-y-offset": offsetPx,
+        } as CSSProperties
+      }
+    >
       {props.children}
     </div>
   );
