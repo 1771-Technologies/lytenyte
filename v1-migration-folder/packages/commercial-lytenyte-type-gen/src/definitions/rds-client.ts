@@ -26,6 +26,7 @@ const BottomData: PropertyType = {
   tsDoc: ``,
   doc: { en: `` },
 };
+
 const ReflectData: PropertyType = {
   kind: "property",
   name: "reflectData",
