@@ -6,6 +6,7 @@ import type { Grid, GridEvents } from "../+types";
 import type { InternalAtoms } from "../state/+types";
 import { DialogDriver } from "./dialog-driver";
 import { PopoverDriver } from "./popover-driver";
+import { CellSelectionDriver } from "../cell-selection/cell-selection-driver";
 
 export type RootProps<T> = { readonly grid: Grid<T> } & {
   [k in keyof GridEvents<T> as `on${Capitalize<k>}`]: GridEvents<T>[k];
@@ -117,6 +118,7 @@ export function Root<T = any>({ grid, children, ...events }: PropsWithChildren<R
     <RootProvider value={value}>
       <DialogDriver />
       <PopoverDriver />
+      <CellSelectionDriver />
       {children}
     </RootProvider>
   );

@@ -73,6 +73,8 @@ import { makeExportDataRect } from "./api/export-data-rect.js";
 import { makeDialogFrameClose, makeDialogFrameOpen } from "./api/dialog-frame.js";
 import { makePopoverFrameClose, makePopoverFrameOpen } from "./api/popover-frame.js";
 import { makePositionFromElement } from "./api/position-from-element.js";
+import { splitCellSelectionRect } from "../cell-selection/split-cell-selection-rect.js";
+import { boundSelectionRect } from "../cell-selection/bound-selection-rect.js";
 
 const DEFAULT_HEADER_HEIGHT = 40;
 const COLUMN_GROUP_JOIN_DELIMITER = "-->";
@@ -175,6 +177,23 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
   const internal_cellSelectionPivot = atom<DataRect | null>(null);
   const internal_cellSelectionAdditive = atom<DataRect[] | null>(null);
+
+  const internal_cellSelectionSplits = atom((g) => {
+    const selections = g(cellSelections);
+    const topCount = g(rdsAtoms.topCount);
+    const centerCount = g(rdsAtoms.rowCenterCount);
+    const meta = g(columnMeta);
+
+    return selections.flatMap((rect) => {
+      return splitCellSelectionRect({
+        rect,
+        rowTopCount: topCount,
+        rowCenterCount: centerCount,
+        colStartCount: meta.columnVisibleStartCount,
+        colCenterCount: meta.columnVisibleCenterCount,
+      });
+    });
+  });
 
   const dialogFrame = atom(p.dialogFrames ?? {});
   const popoverFrame = atom(p.popoverFrames ?? {});
@@ -684,6 +703,8 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
       cellSelectionPivot: makeGridAtom(internal_cellSelectionPivot, store),
       cellSelectionAdditiveRects: makeGridAtom(internal_cellSelectionAdditive, store),
+      cellSelectionIsDeselect: makeGridAtom(atom(false), store),
+      cellSelectionSplits: makeGridAtom(internal_cellSelectionSplits, store),
 
       store: store,
     } satisfies InternalAtoms,
@@ -693,6 +714,28 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     store.get(rowDataSource).init(grid);
   });
   store.set(rowDataSource, p.rowDataSource ?? emptyRowDataSource);
+
+  // Ensure cell selections are bounded.
+  store.sub(cellSelections, () => {
+    const selections = store.get(cellSelections);
+    const safeSelections = selections.map((c) => boundSelectionRect(grid, c));
+
+    if (equal(selections, safeSelections)) return;
+
+    store.set(cellSelections, safeSelections);
+  });
+  store.sub(rdsAtoms.rowCount, () => {
+    const selections = store.get(cellSelections);
+
+    const safeSelections = selections.map((c) => boundSelectionRect(grid, c));
+    store.set(cellSelections, safeSelections);
+  });
+  store.sub(columnMeta, () => {
+    const selections = store.get(cellSelections);
+
+    const safeSelections = selections.map((c) => boundSelectionRect(grid, c));
+    store.set(cellSelections, safeSelections);
+  });
 
   return grid;
 }

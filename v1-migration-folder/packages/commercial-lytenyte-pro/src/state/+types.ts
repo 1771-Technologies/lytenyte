@@ -51,6 +51,8 @@ export interface InternalAtoms {
   // Cell Selection
   readonly cellSelectionPivot: GridAtom<DataRect | null>;
   readonly cellSelectionAdditiveRects: GridAtom<DataRect[] | null>;
+  readonly cellSelectionIsDeselect: GridAtom<boolean>;
+  readonly cellSelectionSplits: GridAtomReadonly<DataRect[]>;
 
   readonly store: ReturnType<typeof createStore>;
 }

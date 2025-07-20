@@ -12,19 +12,23 @@ export function updateAdditiveCellSelection(
   const s = grid.state.columnMeta.get();
   const ds = grid.state.rowDataStore;
 
-  const rowCount = ds.rowCount.get();
-  const rowBottomCount = ds.rowBottomCount.get();
   const rowTopCount = ds.rowTopCount.get();
 
+  const adjustedRect = adjustRectForRowAndCellSpan(grid, rect);
+
+  console.log(adjustedRect);
+
   const rects = splitCellSelectionRect({
-    rect: boundSelectionRect(grid, adjustRectForRowAndCellSpan(grid, rect)),
+    rect: boundSelectionRect(grid, adjustedRect),
 
     colCenterCount: s.columnVisibleCenterCount,
     colStartCount: s.columnVisibleStartCount,
 
-    rowCenterCount: rowCount - rowTopCount - rowBottomCount,
+    rowCenterCount: ds.rowCenterCount.get(),
     rowTopCount: rowTopCount,
   });
+
+  console.log(rects);
 
   const current = grid.internal.cellSelectionAdditiveRects.get();
   if (current && current.length === rects.length) {

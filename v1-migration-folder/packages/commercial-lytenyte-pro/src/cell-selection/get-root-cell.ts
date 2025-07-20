@@ -85,12 +85,13 @@ export const getRootCell = (
 
   if (cell?.length === 2)
     return {
-      colIndex: cell[1],
+      colIndex: columnIndex,
       colSpan: 1,
-      rowIndex: cell[0],
+      rowIndex: rowIndex,
       rowSpan: 1,
     };
 
+  // Otherwise this is a spanning cell hence we need to find the spans layout.
   const root = layoutMap.get(cell[1]);
   const rootCell = root?.get(cell[2]);
   if (!rootCell) return null;

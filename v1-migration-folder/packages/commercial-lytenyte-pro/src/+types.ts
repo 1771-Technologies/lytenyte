@@ -5259,3 +5259,8 @@ export interface PopoverFrameRendererParams<T> {
    */
   readonly target: HTMLElement | VirtualTarget;
 }
+
+/**
+ *
+ */
+export type CellSelectionMode = "range" | "multi-range" | "none";

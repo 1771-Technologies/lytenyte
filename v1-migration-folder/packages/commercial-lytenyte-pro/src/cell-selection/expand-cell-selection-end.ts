@@ -4,18 +4,30 @@ import { getRootCell } from "./get-root-cell";
 
 export function expandCellSelectionEnd(
   grid: Grid<any> & { internal: InternalAtoms },
-  ref?: DataRect,
-  p?: DataRect,
+  meta: boolean,
 ) {
   const selections = grid.state.cellSelections.get();
   const cellSelectionPivot = grid.internal.cellSelectionPivot.get();
 
-  const rect = ref ?? selections.at(-1);
-  const pivot = p ?? cellSelectionPivot;
+  const rect = selections.at(-1);
+  const pivot = cellSelectionPivot;
 
   if (!rect || !pivot) return;
 
+  if (meta) {
+    const colCount = grid.state.columnMeta.get().columnsVisible.length;
+    if (pivot.columnStart === colCount - 1) return;
+
+    const next = { ...rect, columnStart: pivot.columnStart, columnEnd: colCount };
+    const nextSelections = [...selections];
+    nextSelections[nextSelections.length - 1] = next;
+
+    grid.state.cellSelections.set(nextSelections);
+    return;
+  }
+
   let next: DataRect;
+  let focusColumn;
   if (rect.columnStart < pivot.columnStart) {
     let colOffset = 1;
     for (let i = rect.rowStart; i < rect.rowEnd; i++) {
@@ -23,10 +35,15 @@ export function expandCellSelectionEnd(
       if (cell) colOffset = Math.max(colOffset, cell.colSpan);
     }
 
-    next = { ...rect, columnStart: rect.columnStart + colOffset };
+    focusColumn = rect.columnStart + colOffset;
+    next = { ...rect, columnStart: focusColumn };
   } else {
-    next = { ...rect, columnEnd: rect.columnEnd + 1 };
+    focusColumn = rect.columnEnd + 1;
+    next = { ...rect, columnEnd: focusColumn };
+    focusColumn -= 1;
   }
+
+  grid.api.scrollIntoView({ column: focusColumn });
 
   const nextSelections = [...selections];
   nextSelections[nextSelections.length - 1] = next;

@@ -7,6 +7,7 @@ export function adjustRectForRowAndCellSpan<T>(grid: Grid<T>, rect: DataRect): D
   // Check the top row of the rect.
   for (let i = columnStart; i < columnEnd; i++) {
     let cell = getRootCell(grid, rowStart, i);
+
     if (cell) {
       columnStart = Math.min(columnStart, cell.colIndex);
       columnEnd = Math.max(columnEnd, cell.colIndex + cell.colSpan);

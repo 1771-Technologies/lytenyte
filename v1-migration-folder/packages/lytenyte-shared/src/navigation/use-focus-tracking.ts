@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getNearestFocusable, getPositionFromFocusable } from "@1771technologies/lytenyte-shared";
 import type { GridAtom, PositionUnion } from "../+types";
+import { equal } from "@1771technologies/lytenyte-js-utils";
 
 export function useFocusTracking(
   vp: HTMLElement | null,
@@ -31,7 +32,11 @@ export function useFocusTracking(
         if (position.kind === "full-width" || position.kind === "header-group-cell")
           (position.colIndex as any) = focusActive.get()?.colIndex ?? 0;
 
-        focusActive.set(position);
+        focusActive.set((prev) => {
+          if (equal(prev, position)) return prev;
+
+          return position;
+        });
       },
       { signal: controller.signal },
     );

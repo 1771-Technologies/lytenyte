@@ -5,7 +5,7 @@ export const CellSelectionMode: UnionType = {
   tsDoc: ``,
   doc: { en: `` },
   export: true,
-  name: "CellSelectMode",
+  name: "CellSelectionMode",
   types: ['"range"', '"multi-range"', '"none"'],
   tag: "pro",
 };
