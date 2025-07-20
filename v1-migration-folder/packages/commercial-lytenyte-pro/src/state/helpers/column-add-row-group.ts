@@ -23,6 +23,10 @@ interface ColumnHandleGroupColumnArgs<T> {
 const baseGroup: RowGroupColumn<any> = {
   name: "Group",
   cellRenderer: CellRowGroup,
+  field: (d) => {
+    if (d.data.kind === "leaf") return null;
+    return d.data.key;
+  },
 };
 
 export function columnAddRowGroup<T>({

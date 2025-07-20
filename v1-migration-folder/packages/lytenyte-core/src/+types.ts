@@ -1665,6 +1665,16 @@ export interface ClientRowDataSourceParams<T> {
    *
    */
   readonly reflectData?: boolean;
+
+  /**
+   *
+   */
+  readonly rowIdBranch?: (path: string[]) => string;
+
+  /**
+   *
+   */
+  readonly rowIdLeaf?: (d: RowLeaf<T>, i: number) => string;
 }
 
 /**
@@ -1694,11 +1704,6 @@ export interface RowDataSource<T> {
   /**
    *
    */
-  readonly rowUpdate: (params: RowUpdateParams) => void;
-
-  /**
-   *
-   */
   readonly rowExpand: (expansion: Record<string, boolean>) => void;
 
   /**
@@ -1715,6 +1720,34 @@ export interface RowDataSource<T> {
    *
    */
   readonly rowAllChildIds: (rowId: string) => string[];
+
+  /**
+   *
+   */
+  readonly rowUpdate: (updates: Map<string | number, any>) => void;
+
+  /**
+   *
+   */
+  readonly rowDelete: (deletions: (string | number)[]) => void;
+
+  /**
+   *
+   */
+  readonly rowAdd: (
+    newRows: any[],
+    atIndex?: number | "beginning" | "end",
+  ) => void;
+
+  /**
+   *
+   */
+  readonly rowSetTopData: (data: any[]) => void;
+
+  /**
+   *
+   */
+  readonly rowSetBotData: (data: any[]) => void;
 }
 
 /**
@@ -1744,11 +1777,6 @@ export interface RowDataSourceClient<T> {
   /**
    *
    */
-  readonly rowUpdate: (params: RowUpdateParams) => void;
-
-  /**
-   *
-   */
   readonly rowExpand: (expansion: Record<string, boolean>) => void;
 
   /**
@@ -1765,6 +1793,34 @@ export interface RowDataSourceClient<T> {
    *
    */
   readonly rowAllChildIds: (rowId: string) => string[];
+
+  /**
+   *
+   */
+  readonly rowUpdate: (updates: Map<string | number, any>) => void;
+
+  /**
+   *
+   */
+  readonly rowDelete: (deletions: (string | number)[]) => void;
+
+  /**
+   *
+   */
+  readonly rowAdd: (
+    newRows: any[],
+    atIndex?: number | "beginning" | "end",
+  ) => void;
+
+  /**
+   *
+   */
+  readonly rowSetTopData: (data: any[]) => void;
+
+  /**
+   *
+   */
+  readonly rowSetBotData: (data: any[]) => void;
 }
 
 /**
@@ -1794,11 +1850,6 @@ export interface RowDataSourceClientPaginated<T> {
   /**
    *
    */
-  readonly rowUpdate: (params: RowUpdateParams) => void;
-
-  /**
-   *
-   */
   readonly rowExpand: (expansion: Record<string, boolean>) => void;
 
   /**
@@ -1815,6 +1866,34 @@ export interface RowDataSourceClientPaginated<T> {
    *
    */
   readonly rowAllChildIds: (rowId: string) => string[];
+
+  /**
+   *
+   */
+  readonly rowUpdate: (updates: Map<string | number, any>) => void;
+
+  /**
+   *
+   */
+  readonly rowDelete: (deletions: (string | number)[]) => void;
+
+  /**
+   *
+   */
+  readonly rowAdd: (
+    newRows: any[],
+    atIndex?: number | "beginning" | "end",
+  ) => void;
+
+  /**
+   *
+   */
+  readonly rowSetTopData: (data: any[]) => void;
+
+  /**
+   *
+   */
+  readonly rowSetBotData: (data: any[]) => void;
 
   /**
    *
@@ -1912,21 +1991,6 @@ export interface RdsRowSelectParams {
    *
    */
   readonly mode: RowSelectionMode;
-}
-
-/**
- *
- */
-export interface RowUpdateParams {
-  /**
-   *
-   */
-  readonly rowIndex: number;
-
-  /**
-   *
-   */
-  readonly data: any;
 }
 
 /**
@@ -2233,7 +2297,7 @@ export interface CellSpanFnParams<T> {
  */
 export type FieldDataParam<T> =
   | { kind: "leaf"; data: T }
-  | { kind: "branch"; data: Record<string, unknown> };
+  | { kind: "branch"; data: Record<string, unknown>; key: string };
 
 /**
  *

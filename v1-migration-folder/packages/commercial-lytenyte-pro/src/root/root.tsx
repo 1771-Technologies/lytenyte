@@ -114,11 +114,13 @@ export function Root<T = any>({ grid, children, ...events }: PropsWithChildren<R
     };
   }, [grid, ref]);
 
+  const cellSelectionMode = grid.state.cellSelectionMode.useValue();
+
   return (
     <RootProvider value={value}>
       <DialogDriver />
       <PopoverDriver />
-      <CellSelectionDriver />
+      {cellSelectionMode !== "none" && <CellSelectionDriver />}
       {children}
     </RootProvider>
   );

@@ -1,24 +1,4 @@
 import type { InterfaceType, InterfaceTypePartial, PropertyType } from "../+types";
-import { RowIndexProp } from "./shared-properties";
-
-export const RowUpdateParams: InterfaceType = {
-  kind: "interface",
-  name: "RowUpdateParams",
-  tsDoc: ``,
-  doc: { en: `` },
-  export: true,
-  properties: [
-    RowIndexProp,
-    {
-      kind: "property",
-      name: "data",
-      doc: { en: `` },
-      tsDoc: ``,
-      optional: false,
-      value: "any",
-    },
-  ],
-};
 
 export const RowSelectParams: InterfaceType = {
   kind: "interface",
@@ -173,14 +153,6 @@ export const RowDataSourcePartial: InterfaceTypePartial = {
     },
     {
       kind: "property",
-      name: "rowUpdate",
-      value: "(params: RowUpdateParams) => void",
-      tsDoc: ``,
-      doc: { en: `` },
-      optional: false,
-    },
-    {
-      kind: "property",
       name: "rowExpand",
       value: "(expansion: Record<string, boolean>) => void",
       doc: { en: `` },
@@ -210,6 +182,48 @@ export const RowDataSourcePartial: InterfaceTypePartial = {
       doc: { en: `` },
       optional: false,
       tsDoc: ``,
+    },
+
+    // Crud ops
+    {
+      kind: "property",
+      name: "rowUpdate",
+      value: "(updates: Map<string | number, any>) => void",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+    },
+    {
+      kind: "property",
+      name: "rowDelete",
+      value: "(deletions: (string | number)[]) => void",
+      tsDoc: ``,
+      doc: { en: `` },
+      optional: false,
+    },
+    {
+      kind: "property",
+      name: "rowAdd",
+      value: '(newRows: any[], atIndex?: number | "beginning" | "end") => void',
+      doc: { en: `` },
+      tsDoc: ``,
+      optional: false,
+    },
+    {
+      kind: "property",
+      name: "rowSetTopData",
+      doc: { en: `` },
+      tsDoc: ``,
+      optional: false,
+      value: "(data: any[]) => void",
+    },
+    {
+      kind: "property",
+      doc: { en: `` },
+      tsDoc: ``,
+      name: "rowSetBotData",
+      optional: false,
+      value: "(data: any[]) => void",
     },
   ],
 };

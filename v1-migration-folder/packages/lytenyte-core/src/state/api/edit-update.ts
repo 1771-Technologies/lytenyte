@@ -73,7 +73,7 @@ export const makeEditUpdate = (
 
     try {
       const ds = grid.state.rowDataSource.get();
-      ds.rowUpdate({ data: updatedData, rowIndex: params.rowIndex! });
+      ds.rowUpdate(new Map([[params.rowIndex!, updatedData]]));
       grid.api.eventFire("editEnd", {
         column: column,
         rowIndex: params.rowIndex,

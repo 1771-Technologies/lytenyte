@@ -26,6 +26,7 @@ const BottomData: PropertyType = {
   tsDoc: ``,
   doc: { en: `` },
 };
+
 const ReflectData: PropertyType = {
   kind: "property",
   name: "reflectData",
@@ -35,11 +36,28 @@ const ReflectData: PropertyType = {
   doc: { en: `` },
 };
 
+const RowIdLeaf: PropertyType = {
+  kind: "property",
+  name: "rowIdLeaf",
+  doc: { en: `` },
+  tsDoc: ``,
+  optional: true,
+  value: "(d: RowLeaf<T>, i: number) => string",
+};
+const RowIdBranch: PropertyType = {
+  kind: "property",
+  name: "rowIdBranch",
+  doc: { en: `` },
+  tsDoc: ``,
+  optional: true,
+  value: "(path: string[]) => string",
+};
+
 export const ClientRowDataSourceParams: InterfaceType = {
   kind: "interface",
   export: true,
   name: "ClientRowDataSourceParams<T>",
   tsDoc: ``,
   doc: { en: `` },
-  properties: [Data, TopData, BottomData, ReflectData],
+  properties: [Data, TopData, BottomData, ReflectData, RowIdBranch, RowIdLeaf],
 };

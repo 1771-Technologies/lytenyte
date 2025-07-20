@@ -18,6 +18,7 @@ export interface ClientData<Data> {
   readonly idsBranch: Set<string>;
   readonly idsAll: Set<string>;
   readonly idToNode: Map<string, TreeNode<Data>>;
+  readonly idToSourceIndex: Map<string, number>;
 }
 
 export interface MakeClientDataArgs<Data> {
@@ -41,6 +42,7 @@ export function makeClientTree<Data>({
   const idsBranch = new Set<string>();
   const idsAll = new Set<string>();
   const idToNode = new Map<string, TreeNode<Data>>();
+  const idToSourceIndex = new Map<string, number>();
 
   for (let i = 0; i < rowData.length; i++) {
     const d = rowData[i];
@@ -94,6 +96,7 @@ export function makeClientTree<Data>({
       parent: current === root ? null : (current as unknown as BranchNode<Data>),
     };
     idToNode.set(id, leaf);
+    idToSourceIndex.set(id, i);
 
     if (rowBranchModel.length === 0) (current as Root<Data>).set(id, leaf);
     else (current as BranchNode<Data>).children.set(id, leaf);
@@ -111,5 +114,6 @@ export function makeClientTree<Data>({
     idsBranch: idsBranch,
     idsAll: idsAll,
     idToNode,
+    idToSourceIndex,
   };
 }

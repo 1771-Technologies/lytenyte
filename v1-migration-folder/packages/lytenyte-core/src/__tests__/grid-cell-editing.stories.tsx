@@ -69,7 +69,7 @@ function Component({ data = bankData }: { data?: any[] }) {
         <button onClick={() => g.state.rtl.set((prev) => !prev)}>
           RTL: {g.state.rtl.get() ? "Yes" : "No"}
         </button>
-        <button onClick={() => g.state.editClickActivator.set("dbl-click")}>
+        <button onClick={() => g.state.editClickActivator.set("double-click")}>
           Double Click Edit
         </button>
         <button onClick={() => g.state.editClickActivator.set("single")}>Single Click Edit</button>
@@ -100,6 +100,20 @@ function Component({ data = bankData }: { data?: any[] }) {
           }}
         >
           Focus AB
+        </button>
+        <button
+          onClick={() => {
+            ds.rowDelete([0]);
+          }}
+        >
+          Delete First
+        </button>
+        <button
+          onClick={() => {
+            ds.rowAdd([{}], "beginning");
+          }}
+        >
+          Add
         </button>
       </div>
 
