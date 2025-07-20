@@ -8,7 +8,7 @@ export const makeEditBegin = (
   grid: Grid<any> & { internal: InternalAtoms },
 ): GridApi<any>["editBegin"] => {
   return (params) => {
-    if (grid.state.editCellMode.get() === "readonly") return;
+    if (grid.state.editCellMode.get() === "readonly" || grid.state.columnPivotMode.get()) return;
     // Start by canceling existing edits
     grid.api.editEnd();
 

@@ -8,7 +8,6 @@ import type {
   FieldPath,
   FieldDataParam,
   AggModelFn,
-  RowUpdateParams,
   RowDataSourceClientPaginated,
 } from "../+types";
 import { type ClientRowDataSourceParams, type Grid, type RowNode } from "../+types";
@@ -54,15 +53,22 @@ export function makeClientDataSourcePaginated<T>(
   const topData = atom(p.topData ?? []);
   const bottomData = atom(p.bottomData ?? []);
 
+  const cache = new Map<number, RowLeaf<T>>();
   const centerNodes = atom((g) => {
     const nodes: RowLeaf<T>[] = [];
     const d = g(data);
     for (let i = 0; i < d.length; i++) {
-      nodes.push({
-        id: "",
-        kind: "leaf",
-        data: d[i],
-      });
+      if (!cache.has(i)) {
+        cache.set(i, {
+          id: "",
+          kind: "leaf",
+          data: d[i],
+        });
+      }
+      const node = cache.get(i)!;
+      (node as any).data = d[i];
+
+      nodes.push(node);
     }
     return nodes;
   });
@@ -154,6 +160,8 @@ export function makeClientDataSourcePaginated<T>(
       rowData: filtered,
       rowAggModel: grid ? rowAggModel : [],
       rowBranchModel: grid ? rowGroups : [],
+      rowIdGroup: p.rowIdBranch,
+      rowIdLeaf: p.rowIdLeaf,
     });
   });
 
@@ -169,9 +177,13 @@ export function makeClientDataSourcePaginated<T>(
         const columnId = sortSpec.columnId;
 
         const ld: FieldDataParam<T> =
-          l.kind === 2 ? { kind: "branch", data: l.data } : { kind: "leaf", data: l.data.data };
+          l.kind === 2
+            ? { kind: "branch", data: l.data, key: l.key }
+            : { kind: "leaf", data: l.data.data };
         const rd: FieldDataParam<T> =
-          r.kind === 2 ? { kind: "branch", data: r.data } : { kind: "leaf", data: r.data.data };
+          r.kind === 2
+            ? { kind: "branch", data: r.data, key: r.key }
+            : { kind: "leaf", data: r.data.data };
 
         if (sort.kind === "custom") {
           res = sort.comparator(ld, rd, sort.options ?? {});
@@ -386,18 +398,36 @@ export function makeClientDataSourcePaginated<T>(
     return null;
   };
 
-  const rowUpdate = ({ rowIndex, data }: RowUpdateParams) => {
+  const rowUpdate = (updates: Map<string | number, any>) => {
     const grid = rdsStore.get(grid$)!;
-    const row = rowByIndex(rowIndex);
-    if (!row || !grid) {
-      console.error(`Failed to find the row at index ${rowIndex} which is being updated.`);
-      return;
+    const t = rdsStore.get(tree);
+
+    const d = rdsStore.get(data);
+    for (const [key, data] of updates.entries()) {
+      const rowIndex = typeof key === "number" ? key : rowToIndex(key);
+
+      const row = rowByIndex(rowIndex);
+      if (!row || !grid) {
+        console.error(`Failed to find the row at index ${rowIndex} which is being updated.`);
+        continue;
+      }
+
+      if (row.kind === "branch") {
+        (row as any).data = data;
+      } else {
+        const source = t.idToSourceIndex.get(row.id);
+        if (source == null) {
+          console.error(`Failed to find the row at index ${rowIndex} which is being updated.`);
+          continue;
+        }
+
+        d[source] = data;
+      }
+
+      grid.state.rowDataStore.rowInvalidateIndex(rowIndex);
     }
 
-    (row as any).data = data;
-
-    grid.state.rowDataStore.rowInvalidateIndex(rowIndex);
-
+    rdsStore.set(data, [...d]);
     rdsStore.set(snapshot, (prev) => prev + 1);
   };
 
@@ -451,6 +481,53 @@ export function makeClientDataSourcePaginated<T>(
       rowByIndex,
       rowAllChildIds,
       rowUpdate,
+      rowAdd: (newRows, place = "end") => {
+        rdsStore.set(data, (prev) => {
+          if (!newRows.length) return prev;
+
+          let next: any[];
+          if (place === "beginning") next = [...newRows, ...prev];
+          else if (place === "end") next = [...prev, ...newRows];
+          else {
+            next = [...prev];
+            next.splice(place, 0, ...newRows);
+          }
+
+          return next;
+        });
+
+        const grid = rdsStore.get(grid$);
+        grid?.state.rowDataStore.rowClearCache();
+      },
+
+      rowDelete: (rows) => {
+        const rowData = new Set(
+          rows
+            .map((c) => {
+              if (typeof c === "number") return rowByIndex(c)?.data;
+              else return rowById(c)?.data;
+            })
+            .filter((c) => !!c),
+        );
+
+        rdsStore.set(data, (prev) => {
+          if (!rowData.size) return prev;
+          return prev.filter((d) => !rowData.has(d));
+        });
+
+        const grid = rdsStore.get(grid$);
+        grid?.state.rowDataStore.rowClearCache();
+      },
+      rowSetBotData: (data: any[]) => {
+        rdsStore.set(bottomData, data);
+        const grid = rdsStore.get(grid$);
+        grid?.state.rowDataStore.rowClearCache();
+      },
+      rowSetTopData: (data: any[]) => {
+        rdsStore.set(topData, data);
+        const grid = rdsStore.get(grid$);
+        grid?.state.rowDataStore.rowClearCache();
+      },
       rowExpand: (expansions) => {
         const grid = rdsStore.get(grid$);
         if (!grid) return;

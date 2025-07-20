@@ -30,7 +30,7 @@ export const makeEditEnd = (
 
     try {
       const ds = grid.state.rowDataSource.get();
-      ds.rowUpdate({ data, rowIndex: active.rowIndex! });
+      ds.rowUpdate(new Map([[active.rowIndex!, data]]));
 
       grid.api.eventFire("editEnd", { column: active.column, rowIndex: active.rowIndex, data });
     } catch (e: unknown) {

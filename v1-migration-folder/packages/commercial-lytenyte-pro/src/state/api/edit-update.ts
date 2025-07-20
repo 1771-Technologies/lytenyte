@@ -6,7 +6,7 @@ export const makeEditUpdate = (
   grid: Grid<any> & { internal: InternalAtoms },
 ): GridApi<any>["editUpdate"] => {
   return (params) => {
-    if (grid.state.editCellMode.get() === "readonly") return;
+    if (grid.state.editCellMode.get() === "readonly" || grid.state.columnPivotMode.get()) return;
     // We must be editing a valid cell location
     const rowCount = grid.state.rowDataStore.rowCount.get();
     if (params.rowIndex < 0 || params.rowIndex >= rowCount) return;
@@ -73,7 +73,7 @@ export const makeEditUpdate = (
 
     try {
       const ds = grid.state.rowDataSource.get();
-      ds.rowUpdate({ data: updatedData, rowIndex: params.rowIndex! });
+      ds.rowUpdate(new Map([[params.rowIndex!, updatedData]]));
       grid.api.eventFire("editEnd", {
         column: column,
         rowIndex: params.rowIndex,

@@ -38,6 +38,7 @@ export const HeaderGroupCellReact = forwardRef<
       data-ln-header-range={`${cell.colStart},${cell.colStart + cell.colSpan}`}
       data-ln-rowindex={cell.rowStart}
       data-ln-colindex={cell.colStart}
+      data-ln-colspan={cell.colEnd - cell.colStart}
       data-ln-pin={cell.colPin ?? "center"}
       data-ln-last-start-pin={cell.colLastStartPin}
       data-ln-first-end-pin={cell.colFirstEndPin}

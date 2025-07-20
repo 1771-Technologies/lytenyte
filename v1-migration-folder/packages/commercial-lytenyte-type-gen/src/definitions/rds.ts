@@ -215,7 +215,7 @@ export const RowDataSourcePartial: InterfaceTypePartial = {
       doc: { en: `` },
       tsDoc: ``,
       optional: false,
-      value: "any[]",
+      value: "(data: any[]) => void",
     },
     {
       kind: "property",
@@ -223,7 +223,7 @@ export const RowDataSourcePartial: InterfaceTypePartial = {
       tsDoc: ``,
       name: "rowSetBotData",
       optional: false,
-      value: "any[]",
+      value: "(data: any[]) => void",
     },
   ],
 };

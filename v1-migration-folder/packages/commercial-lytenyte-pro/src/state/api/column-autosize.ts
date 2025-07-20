@@ -84,7 +84,7 @@ function defaultAutosize(c: AutosizeCellParams<any>) {
     c.column,
     c.row.kind === "leaf"
       ? { kind: "leaf", data: c.row.data }
-      : { kind: "branch", data: c.row.data },
+      : { kind: "branch", data: c.row.data, key: c.row.key },
   );
 
   return measureText(`${field}`, c.grid.state.viewport.get() ?? undefined).width + 8;

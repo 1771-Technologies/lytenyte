@@ -10,4 +10,8 @@ export const emptyRowDataSource: RowDataSource<any> = {
   rowAllChildIds: () => [],
   rowSelect: () => {},
   rowSelectAll: () => {},
+  rowAdd: () => {},
+  rowDelete: () => {},
+  rowSetBotData: () => {},
+  rowSetTopData: () => {},
 };

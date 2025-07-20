@@ -98,7 +98,7 @@ function EditRenderer<T>({ cell }: CellEditorParams<T>) {
   const value = ctx.grid.api.columnField(
     column,
     row.kind === "branch"
-      ? { kind: "branch", data: activeData }
+      ? { kind: "branch", data: activeData, key: row.key }
       : { kind: "leaf", data: activeData },
   ) as any;
 

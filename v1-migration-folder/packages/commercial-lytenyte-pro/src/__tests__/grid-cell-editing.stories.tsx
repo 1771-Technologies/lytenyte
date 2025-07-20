@@ -10,10 +10,10 @@ import { useEffect, useId } from "react";
 import { HeaderCell } from "../header/header-cell";
 import type { Column } from "../+types";
 import { HeaderGroupCell } from "../header/header-group-cell";
-import { useClientRowDataSource } from "../row-data-source-client/use-client-data-source";
 import { RowsBottom, RowsCenter, RowsTop } from "../rows/rows-sections";
 import { RowHandler } from "./sample-data/row-handler";
 import { bankData } from "./sample-data/bank-data";
+import { useClientRowDataSource } from "../row-data-source-client/use-client-data-source";
 
 const meta: Meta = {
   title: "Grid/Cell Editing",
@@ -100,6 +100,20 @@ function Component({ data = bankData }: { data?: any[] }) {
           }}
         >
           Focus AB
+        </button>
+        <button
+          onClick={() => {
+            ds.rowDelete([0]);
+          }}
+        >
+          Delete First
+        </button>
+        <button
+          onClick={() => {
+            ds.rowAdd([{}], "beginning");
+          }}
+        >
+          Add
         </button>
       </div>
 

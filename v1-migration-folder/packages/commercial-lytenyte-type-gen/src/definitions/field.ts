@@ -7,7 +7,10 @@ export const FieldDataParam: UnionType = {
   tsDoc: ``,
   doc: { en: `` },
   export: true,
-  types: ['{ kind: "leaf", data: T }', '{ kind: "branch", data: Record<string, unknown> }'],
+  types: [
+    '{ kind: "leaf", data: T }',
+    '{ kind: "branch", data: Record<string, unknown>, key: string }',
+  ],
 };
 
 export const FieldDataParamProperty: PropertyType = {
