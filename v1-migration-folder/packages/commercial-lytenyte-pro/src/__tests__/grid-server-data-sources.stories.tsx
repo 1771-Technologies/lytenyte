@@ -76,6 +76,14 @@ function Component() {
         <button onClick={() => g.state.rtl.set((prev) => !prev)}>
           RTL: {g.state.rtl.get() ? "Yes" : "No"}
         </button>
+        <button onClick={() => g.state.columnPivotMode.set((prev) => !prev)}>
+          Pivot Mode {g.state.columnPivotMode.useValue() ? "Yes" : "No"}
+        </button>
+        <button onClick={() => g.state.rowGroupModel.set(["job"])}>Group By Job</button>
+        <button onClick={() => g.state.rowGroupModel.set(["job", "education"])}>
+          Group By Job and Education
+        </button>
+        <button onClick={() => g.state.rowGroupModel.set([])}>No Group</button>
         <button
           onClick={() => {
             if (g.state.filterModel.get().length) g.state.filterModel.set([]);

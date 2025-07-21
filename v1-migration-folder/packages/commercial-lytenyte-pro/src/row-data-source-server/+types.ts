@@ -1,5 +1,6 @@
 import type {
   AggModelFn,
+  Column,
   ColumnPivotModel,
   FilterModelItem,
   Grid,
@@ -71,6 +72,14 @@ export interface DataFetcherParams<T> {
 }
 
 export type DataFetcher<T> = (p: DataFetcherParams<T>) => Promise<DataResponse[]>;
+
+export interface DataColumnPivotFetchParams<T> {
+  readonly grid: Grid<T>;
+  readonly reqTime: number;
+  readonly model: DataRequestModel<T>;
+}
+
+export type DataColumnPivotFetcher<T> = (p: DataColumnPivotFetchParams<T>) => Promise<Column<T>[]>;
 
 export interface ServerRowDataSource<T> extends RowDataSource<T> {
   readonly isLoading: GridAtomReadonly<boolean>;

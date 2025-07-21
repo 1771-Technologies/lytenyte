@@ -3,6 +3,7 @@ import type { ColumnPivotModel, Grid, RowDataSource } from "../+types";
 import { useRef } from "react";
 import { makeAsyncTree } from "./async-tree/make-async-tree";
 import type {
+  DataColumnPivotFetcher,
   DataFetcher,
   DataRequest,
   DataRequestModel,
@@ -20,14 +21,19 @@ import type {
 import { getNodeDepth } from "./utils/get-node-depth";
 import { getRequestId } from "./utils/get-request-id";
 import { RangeTree, type FlattenedRange } from "./range-tree/range-tree";
+import { getNodePath } from "./utils/get-node-path";
+import { equal } from "@1771technologies/lytenyte-js-utils";
 
 export interface ServerDataSourceParams<T> {
   readonly dataFetcher: DataFetcher<T>;
+  readonly dataColumnPivotFetcher?: DataColumnPivotFetcher<T>;
+
   readonly pageSize?: number;
 }
 
 export function makeServerDataSource<T>({
   dataFetcher,
+  dataColumnPivotFetcher,
   pageSize = 200,
 }: ServerDataSourceParams<T>): ServerRowDataSource<T> {
   let grid: Grid<T> | null = null;
@@ -63,16 +69,21 @@ export function makeServerDataSource<T>({
   } satisfies DataRequestModel<T>);
   const model = makeGridAtom(model$, rdsStore);
 
+  const rowGroupExpansions = atom((g) => g(model$).groupExpansions);
+
   const seenRequests = new Set<string>();
 
-  const dataRequestHandler = async (p: DataRequest[], force = false) => {
+  const dataRequestHandler = async (p: DataRequest[], force = false, onSuccess?: () => void) => {
     if (!grid) return;
 
     const unseen = p.filter((x) => force || !seenRequests.has(x.id));
 
     unseen.forEach((x) => seenRequests.add(x.id));
 
-    if (unseen.length === 0) return;
+    if (unseen.length === 0) {
+      onSuccess?.();
+      return;
+    }
 
     const t = tree.get();
 
@@ -108,15 +119,82 @@ export function makeServerDataSource<T>({
           size: r.size,
         });
       });
+
+      onSuccess?.();
     } catch (e) {
       // Mark them as unseen since the request failed.
       unseen.forEach((x) => seenRequests.delete(x.id));
 
-      console.log(e);
+      console.error(e);
     } finally {
       rdsStore.set(snapshot$, Date.now());
       grid.state.rowDataStore.rowClearCache();
     }
+  };
+
+  const viewChange = () => {
+    if (!grid) return;
+
+    const bounds = grid.state.viewBounds.get();
+    const f = flat.get();
+
+    const te = bounds.rowTopEnd;
+
+    const seen = new Set();
+
+    const requests: DataRequest[] = [];
+
+    for (let i = bounds.rowCenterStart - te; i < bounds.rowCenterEnd - te; i++) {
+      const ranges = f.rangeTree.findRangesForRowIndex(i);
+      ranges.forEach((c) => {
+        if (c.parent.kind === "root") {
+          const blockIndex = Math.floor(i / pageSize);
+
+          const start = blockIndex * pageSize;
+          const end = Math.min(start + pageSize, c.parent.size);
+
+          const reqId = getRequestId([], start, end);
+
+          if (seen.has(reqId)) return;
+          seen.add(reqId);
+
+          const size = start + pageSize > c.parent.size ? c.parent.size - start : pageSize;
+
+          requests.push({
+            id: reqId,
+            path: [],
+            start,
+            end,
+            rowStartIndex: i,
+            rowEndIndex: i + size,
+          });
+        } else {
+          const blockIndex = Math.floor(c.parent.relIndex / pageSize);
+
+          const start = blockIndex * pageSize;
+          const end = Math.min(start + pageSize, c.parent.size);
+
+          const path = getNodePath(c.parent);
+          const reqId = getRequestId(path, start, end);
+
+          if (seen.has(reqId)) return;
+          seen.add(reqId);
+
+          const size = start + pageSize > c.parent.size ? c.parent.size - start : pageSize;
+
+          requests.push({
+            id: reqId,
+            path,
+            start,
+            end,
+            rowStartIndex: i,
+            rowEndIndex: i + size,
+          });
+        }
+      });
+    }
+
+    dataRequestHandler(requests);
   };
 
   const resetRequest = async () => {
@@ -140,6 +218,7 @@ export function makeServerDataSource<T>({
 
   const flat$ = atom((g) => {
     g(snapshot$);
+    const expansions = g(rowGroupExpansions);
     const t = g(tree$);
 
     type RowItem = LeafOrParent<DataResponseBranchItem, DataResponseLeafItem>;
@@ -169,7 +248,7 @@ export function makeServerDataSource<T>({
         rowIdToRowIndex.set(row.data.id, rowIndex);
         rowIdToRow.set(row.data.id, row);
 
-        if (row.kind === "parent") {
+        if (row.kind === "parent" && expansions[row.data.id]) {
           offset += processParent(row, rowIndex + 1);
         }
       }
@@ -226,109 +305,81 @@ export function makeServerDataSource<T>({
 
     // Handle row count changes
     rdsStore.sub(flat$, () => {
-      const f = rdsStore.get(flat$);
+      const f = flat.get();
       g.state.rowDataStore.rowCenterCount.set(f.size);
+      viewChange();
     });
 
     resetRequest();
 
     // Watch the view bound changes.
     g.state.viewBounds.watch(() => {
-      const bounds = g.state.viewBounds.get();
-      const f = flat.get();
-
-      const te = bounds.rowTopEnd;
-
-      const seen = new Set();
-
-      const requests: DataRequest[] = [];
-
-      for (let i = bounds.rowCenterStart - te; i < bounds.rowCenterEnd - te; i++) {
-        const ranges = f.rangeTree.findRangesForRowIndex(i);
-        ranges.forEach((c) => {
-          if (c.parent.kind === "root") {
-            const blockIndex = Math.floor(i / pageSize);
-
-            const start = blockIndex * pageSize;
-            const end = Math.min(start + pageSize, c.parent.size);
-
-            const reqId = getRequestId([], start, end);
-
-            if (seen.has(reqId)) return;
-            seen.add(reqId);
-
-            const size = start + pageSize > c.parent.size ? c.parent.size - start : pageSize;
-
-            requests.push({
-              id: reqId,
-              path: [],
-              start,
-              end,
-              rowStartIndex: i,
-              rowEndIndex: i + size,
-            });
-          } else {
-            // TODO:
-          }
-        });
-      }
-
-      dataRequestHandler(requests);
+      viewChange();
     });
 
-    // let prevPivotColumnModel = pivotModel.columns;
-    // let prevPivotColumnValues = pivotModel.values;
-    // const updatePivotColumns = (model: ColumnPivotModel<T>, ignoreEqualCheck: boolean = false) => {
-    //   if (
-    //     !ignoreEqualCheck &&
-    //     equal(prevPivotColumnModel, model.columns) &&
-    //     equal(prevPivotColumnValues, model.values)
-    //   )
-    //     return;
+    let prevPivotColumnModel = pivotModel.columns;
+    let prevPivotColumnValues = pivotModel.values;
+    const updatePivotColumns = async (
+      mdl: ColumnPivotModel<T>,
+      ignoreEqualCheck: boolean = false,
+    ) => {
+      if (
+        !ignoreEqualCheck &&
+        equal(prevPivotColumnModel, mdl.columns) &&
+        equal(prevPivotColumnValues, mdl.values)
+      )
+        return;
 
-    //   // Request new pivot columns here
+      const cols = await dataColumnPivotFetcher?.({
+        grid: grid!,
+        model: model.get(),
+        reqTime: Date.now(),
+      });
+      if (cols) grid?.state.columnPivotColumns.set(cols);
 
-    //   prevPivotColumnModel = model.columns;
-    //   prevPivotColumnValues = model.values;
-    // };
+      resetRequest();
 
-    // if (pivotMode) updatePivotColumns(pivotModel);
+      prevPivotColumnModel = mdl.columns;
+      prevPivotColumnValues = mdl.values;
+    };
 
-    // // Make these deep equality checks
-    // cleanup.push(
-    //   g.state.columnPivotMode.watch(() => {
-    //     const model = g.state.columnPivotModel.get();
-    //     updatePivotColumns(model);
+    if (pivotMode) updatePivotColumns(pivotModel);
 
-    //     rdsStore.set(model$, (prev) => ({ ...prev, pivotMode: g.state.columnPivotMode.get() }));
-    //     g.state.rowDataStore.rowClearCache();
-    //   }),
-    // );
-    // cleanup.push(
-    //   g.state.columnPivotModel.watch(() => {
-    //     const model = g.state.columnPivotModel.get();
-    //     updatePivotColumns(model);
+    // Make these deep equality checks
+    cleanup.push(
+      g.state.columnPivotMode.watch(() => {
+        const model = g.state.columnPivotModel.get();
+        updatePivotColumns(model, true);
 
-    //     rdsStore.set(model$, (prev) => ({
-    //       ...prev,
-    //       pivotModel: model,
-    //     }));
+        rdsStore.set(model$, (prev) => ({ ...prev, pivotMode: g.state.columnPivotMode.get() }));
+        g.state.rowDataStore.rowClearCache();
+      }),
+    );
+    cleanup.push(
+      g.state.columnPivotModel.watch(() => {
+        const model = g.state.columnPivotModel.get();
+        updatePivotColumns(model);
 
-    //     g.state.rowDataStore.rowClearCache();
-    //   }),
-    // );
-    // g.state.columnPivotRowGroupExpansions.watch(() => {
-    //   rdsStore.set(model$, (prev) => ({
-    //     ...prev,
-    //     columnPivotGroupExpansions: g.state.columnPivotRowGroupExpansions.get(),
-    //   }));
-    // });
+        rdsStore.set(model$, (prev) => ({
+          ...prev,
+          pivotModel: model,
+        }));
+
+        g.state.rowDataStore.rowClearCache();
+      }),
+    );
+    g.state.columnPivotRowGroupExpansions.watch(() => {
+      rdsStore.set(model$, (prev) => ({
+        ...prev,
+        columnPivotGroupExpansions: g.state.columnPivotRowGroupExpansions.get(),
+      }));
+      grid?.state.rowDataStore.rowClearCache();
+    });
 
     // Sort model monitoring
     cleanup.push(
       g.state.sortModel.watch(() => {
         rdsStore.set(model$, (prev) => ({ ...prev, sorts: g.state.sortModel.get() }));
-
         resetRequest();
       }),
     );
@@ -337,47 +388,65 @@ export function makeServerDataSource<T>({
     cleanup.push(
       g.state.filterModel.watch(() => {
         rdsStore.set(model$, (prev) => ({ ...prev, filters: g.state.filterModel.get() }));
-
         resetRequest();
       }),
     );
     cleanup.push(
       g.state.quickSearch.watch(() => {
         rdsStore.set(model$, (prev) => ({ ...prev, quickSearch: g.state.quickSearch.get() }));
-
         resetRequest();
       }),
     );
 
     // Row group model monitoring
-    // cleanup.push(
-    //   g.state.rowGroupModel.watch(() => {
-    //     rdsStore.set(model$, (prev) => ({ ...prev, group: g.state.rowGroupModel.get() }));
-    //     resetRequest();
-    //   }),
-    // );
+    cleanup.push(
+      g.state.rowGroupModel.watch(() => {
+        rdsStore.set(model$, (prev) => ({ ...prev, group: g.state.rowGroupModel.get() }));
+        resetRequest();
+      }),
+    );
 
-    // // Row group expansions monitoring
-    // cleanup.push(
-    //   g.state.rowGroupExpansions.watch(() => {
-    //     rdsStore.set(model$, (prev) => ({
-    //       ...prev,
-    //       groupExpansions: g.state.rowGroupExpansions.get(),
-    //     }));
-    //   }),
-    // );
+    // Row group expansions monitoring
+    cleanup.push(
+      g.state.rowGroupExpansions.watch(() => {
+        rdsStore.set(model$, (prev) => ({
+          ...prev,
+          groupExpansions: g.state.rowGroupExpansions.get(),
+        }));
+        grid?.state.rowDataStore.rowClearCache();
+      }),
+    );
 
-    // // Agg model monitoring
-    // cleanup.push(
-    //   g.state.aggModel.watch(() => {
-    //     rdsStore.set(model$, (prev) => ({ ...prev, agg: g.state.aggModel.get() }));
-    //     resetRequest();
-    //   }),
-    // );
+    // Agg model monitoring
+    cleanup.push(
+      g.state.aggModel.watch(() => {
+        rdsStore.set(model$, (prev) => ({ ...prev, agg: g.state.aggModel.get() }));
+        resetRequest();
+      }),
+    );
   };
 
-  const rowById: RowDataSource<T>["rowById"] = () => {
-    return null;
+  const rowById: RowDataSource<T>["rowById"] = (id) => {
+    const f = flat.get();
+
+    const node = f.rowIdToRow.get(id);
+    if (!node) return null;
+
+    if (node.kind === "parent") {
+      return {
+        kind: "branch",
+        data: node.data.data,
+        id: node.data.id,
+        key: node.path,
+        depth: getNodeDepth(node),
+      };
+    }
+
+    return {
+      kind: "leaf",
+      data: node.data.data as T,
+      id: node.data.id,
+    };
   };
   const rowAllChildIds: RowDataSource<T>["rowAllChildIds"] = () => {
     return [];
@@ -408,14 +477,45 @@ export function makeServerDataSource<T>({
     };
   };
 
-  const rowExpand: RowDataSource<T>["rowExpand"] = () => {};
+  const rowExpand: RowDataSource<T>["rowExpand"] = (p) => {
+    const f = flat.get();
+    const requests = Object.entries(p)
+      .map<DataRequest | null>(([rowId, state]) => {
+        if (!state) return null;
+
+        const rowIndex = rowToIndex(rowId);
+
+        if (rowIndex == null) return null;
+        const row = f.rowIndexToRow.get(rowIndex);
+        if (!row || row.kind === "leaf") return null;
+
+        const path = getNodePath(row);
+
+        return {
+          id: getRequestId(path, 0, Math.min(pageSize, row.size)),
+          start: 0,
+          end: Math.min(pageSize, row.size),
+          path,
+          rowStartIndex: rowIndex + 1,
+          rowEndIndex: Math.min(row.size, rowIndex + pageSize + 1),
+        };
+      })
+      .filter((c) => !!c);
+
+    dataRequestHandler(requests, false, () => {
+      grid?.state.rowGroupExpansions.set((prev) => ({ ...prev, ...p }));
+    });
+  };
+
+  const rowToIndex: RowDataSource<T>["rowToIndex"] = (rowId) => {
+    const f = flat.get();
+    return f.rowIdToRowIndex.get(rowId) ?? null;
+  };
+
   const rowSelect: RowDataSource<T>["rowSelect"] = () => {};
   const rowSelectAll: RowDataSource<T>["rowSelectAll"] = () => {};
   const rowSetBotData: RowDataSource<T>["rowSetBotData"] = () => {};
   const rowSetTopData: RowDataSource<T>["rowSetTopData"] = () => {};
-  const rowToIndex: RowDataSource<T>["rowToIndex"] = () => {
-    return null;
-  };
 
   // CRUD ops
   const rowAdd: RowDataSource<T>["rowAdd"] = () => {};
