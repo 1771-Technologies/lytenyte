@@ -65,7 +65,7 @@ function createFilter<T>(filter: FilterModelItem<T>): FilterWithSettings<T> {
   }
 }
 
-function evaluateFilter<T>(row: T, grid: Grid<T>, filter: FilterWithSettings<T>): boolean {
+function evaluateFilter<T>(row: T | null, grid: Grid<T>, filter: FilterWithSettings<T>): boolean {
   if (filter.kind === "date") {
     const fieldValue = grid.api.columnField(filter.field, { data: row, kind: "leaf" }) as
       | string

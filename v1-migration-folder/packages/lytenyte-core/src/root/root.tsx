@@ -45,6 +45,7 @@ export function Root<T = any>({ grid, children, ...events }: PropsWithChildren<R
     });
   }, [grid]);
 
+  const internal = (grid as Grid<any> & { internal: InternalAtoms }).internal;
   // Listen to size changes of the window
   useLayoutEffect(() => {
     if (!element) return;
@@ -59,23 +60,6 @@ export function Root<T = any>({ grid, children, ...events }: PropsWithChildren<R
 
     obs.observe(element);
 
-    return () => obs.disconnect();
-  }, [
-    bounds.height,
-    bounds.width,
-    element,
-    grid.state.viewport,
-    grid.state.viewportHeightInner,
-    grid.state.viewportHeightOuter,
-    grid.state.viewportWidthInner,
-    grid.state.viewportWidthOuter,
-  ]);
-
-  // Handle scroll events for viewport updates
-  const internal = (grid as Grid<any> & { internal: InternalAtoms }).internal;
-  useEffect(() => {
-    if (!element) return;
-
     const controller = new AbortController();
     (element as HTMLElement).addEventListener(
       "scroll",
@@ -86,8 +70,22 @@ export function Root<T = any>({ grid, children, ...events }: PropsWithChildren<R
       { signal: controller.signal },
     );
 
-    return () => controller.abort();
-  }, [element, internal.xScroll, internal.yScroll]);
+    return () => {
+      obs.disconnect();
+      controller.abort();
+    };
+  }, [
+    bounds.height,
+    bounds.width,
+    element,
+    grid.state.viewport,
+    grid.state.viewportHeightInner,
+    grid.state.viewportHeightOuter,
+    grid.state.viewportWidthInner,
+    grid.state.viewportWidthOuter,
+    internal.xScroll,
+    internal.yScroll,
+  ]);
 
   useEffect(() => {
     return internal.focusActive.watch(() => {

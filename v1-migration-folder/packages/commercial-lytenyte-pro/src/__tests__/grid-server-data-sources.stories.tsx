@@ -6,7 +6,7 @@ import { Root } from "../root/root";
 import { RowsContainer } from "../rows/rows-container";
 import { Viewport } from "../viewport/viewport";
 import { useLyteNyte } from "../state/use-lytenyte";
-import { useId } from "react";
+import { useEffect, useId, useState } from "react";
 import { HeaderCell } from "../header/header-cell";
 import type { Column } from "../+types";
 import { HeaderGroupCell } from "../header/header-group-cell";
@@ -14,6 +14,7 @@ import { RowsBottom, RowsCenter, RowsTop } from "../rows/rows-sections";
 import { RowHandler } from "./sample-data/row-handler";
 import { useServerDataSource } from "../row-data-source-server/use-server-data-source";
 import { handleRequest } from "./db/server";
+import { cycleSorts } from "../utils/cycle-sorts";
 
 const meta: Meta = {
   title: "Grid/Server Side Source",
@@ -44,7 +45,7 @@ const columns: Column<any>[] = [
 function Component() {
   const ds = useServerDataSource({
     dataFetcher: async (p) => {
-      const res = await handleRequest(p.requests);
+      const res = await handleRequest(p.requests, p.model);
       return res;
     },
   });
@@ -57,12 +58,36 @@ function Component() {
 
   const view = g.view.useValue();
 
+  const [qsLocal, setQsLocal] = useState(g.state.quickSearch.get() ?? "");
+
+  useEffect(() => {
+    const t = setTimeout(() => {
+      g.state.quickSearch.set(qsLocal);
+    }, 500);
+
+    return () => {
+      clearTimeout(t);
+    };
+  }, [g.state.quickSearch, qsLocal]);
+
   return (
     <div>
       <div>
         <button onClick={() => g.state.rtl.set((prev) => !prev)}>
           RTL: {g.state.rtl.get() ? "Yes" : "No"}
         </button>
+        <button
+          onClick={() => {
+            if (g.state.filterModel.get().length) g.state.filterModel.set([]);
+            else
+              g.state.filterModel.set([
+                { kind: "in", field: "job", operator: "in", value: new Set(["unemployed"]) },
+              ]);
+          }}
+        >
+          Toggle In Filter
+        </button>
+        <input value={qsLocal} onChange={(e) => setQsLocal(e.target.value)} />
       </div>
 
       <div style={{ width: "100%", height: "90vh", border: "1px solid black" }}>
@@ -87,6 +112,9 @@ function Component() {
                           cell={c}
                           key={c.column.id}
                           style={{ border: "1px solid black", background: "lightgray" }}
+                          onClick={() => {
+                            cycleSorts(g, c.column);
+                          }}
                         />
                       );
                     })}

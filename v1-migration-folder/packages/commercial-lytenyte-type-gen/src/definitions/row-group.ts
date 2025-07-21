@@ -68,7 +68,14 @@ export const AggFn: FunctionType = {
   doc: { en: `` },
   export: true,
   properties: [
-    { kind: "property", doc: { en: `` }, tsDoc: ``, name: "data", value: "T[]", optional: false },
+    {
+      kind: "property",
+      doc: { en: `` },
+      tsDoc: ``,
+      name: "data",
+      value: "(T | null)[]",
+      optional: false,
+    },
     GridProp,
   ],
   return: "unknown",

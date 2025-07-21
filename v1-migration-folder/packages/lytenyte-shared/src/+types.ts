@@ -184,7 +184,7 @@ export interface RowLeaf<T = any> {
    * - {@link ColumnField}: The column field determines how a cell's value is calculated.
    * - [Column Field](TODO): See the full guide on column fields and learn how cell values are determined.
    */
-  readonly data: T;
+  readonly data: T | null;
 }
 
 /**

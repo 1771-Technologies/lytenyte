@@ -10,7 +10,13 @@ import { applySetActionToTree } from "./apply-set-action-to-tree";
 import { getParentNodeByPath } from "./get-parent-node-by-path";
 
 export function makeAsyncTree<K = any, D = any>(): TreeRootAndApi<K, D> {
-  const tree: TreeRoot<K, D> = { kind: "root", byIndex: new Map(), byPath: new Map(), size: 0 };
+  const tree: TreeRoot<K, D> = {
+    kind: "root",
+    byIndex: new Map(),
+    byPath: new Map(),
+    size: 0,
+    asOf: Date.now(),
+  };
 
   const api = {
     set: (p: SetDataAction<K, D>) => applySetActionToTree(p, tree),

@@ -3,12 +3,13 @@ import type { SetDataAction, TreeLeaf, TreeParent, TreeRoot } from "./+types.asy
 
 export function maybeApplySetActionItems<K, D>(
   p: SetDataAction<K, D>,
-  pathNode: TreeParent<K, D> | TreeRoot<K, D>
+  pathNode: TreeParent<K, D> | TreeRoot<K, D>,
 ) {
   if (!p.items?.length) {
     return false;
   }
 
+  const asOf = p.asOf ?? Date.now();
   for (let i = 0; i < p.items.length; i++) {
     const item = p.items[i];
 
@@ -29,10 +30,13 @@ export function maybeApplySetActionItems<K, D>(
 
     // We always replace when making a leaf
     if (item.kind === "leaf") {
-      const node: TreeLeaf<K, D> = { ...item, parent: pathNode, path: path! };
+      const node: TreeLeaf<K, D> = { ...item, parent: pathNode, path: path!, asOf };
 
-      pathNode.byIndex.set(item.relIndex, node);
-      pathNode.byPath.set(path, node);
+      const currentI = pathNode.byIndex.get(item.relIndex);
+      const currentP = pathNode.byPath.get(path);
+
+      if (!currentI || currentI.asOf < asOf) pathNode.byIndex.set(item.relIndex, node);
+      if (!currentP || currentP.asOf < asOf) pathNode.byPath.set(path, node);
     } else {
       const node: TreeParent<K, D> = {
         byIndex: existing?.kind === "parent" ? existing.byIndex : new Map(),
@@ -43,10 +47,14 @@ export function maybeApplySetActionItems<K, D>(
         parent: pathNode,
         path,
         size: item.size,
+        asOf,
       };
 
-      pathNode.byIndex.set(item.relIndex, node);
-      pathNode.byPath.set(path, node);
+      const currentI = pathNode.byIndex.get(item.relIndex);
+      const currentP = pathNode.byPath.get(path);
+
+      if (!currentI || currentI.asOf < asOf) pathNode.byIndex.set(item.relIndex, node);
+      if (!currentP || currentP.asOf < asOf) pathNode.byPath.set(path, node);
     }
   }
 

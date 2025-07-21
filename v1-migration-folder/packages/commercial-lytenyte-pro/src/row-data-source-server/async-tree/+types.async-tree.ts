@@ -6,12 +6,14 @@ export type TreeRoot<K, D> = {
   readonly byPath: Map<string | null, LeafOrParent<K, D>>;
   readonly byIndex: Map<number, LeafOrParent<K, D>>;
   readonly size: number;
+  readonly asOf: number;
 };
 
 export type TreeParent<K, D> = {
   readonly kind: "parent";
   readonly relIndex: number;
   readonly data: K;
+  readonly asOf: number;
 
   readonly byPath: Map<string | null, LeafOrParent<K, D>>;
   readonly byIndex: Map<number, LeafOrParent<K, D>>;
@@ -26,6 +28,7 @@ export type TreeLeaf<K, D> = {
   readonly kind: "leaf";
   readonly relIndex: number;
   readonly data: D;
+  readonly asOf: number;
 
   readonly parent: TreeParent<K, D> | TreeRoot<K, D>;
   readonly path: string;
@@ -41,6 +44,7 @@ export type TreeRootAndApi<K, D> = TreeRoot<K, D> & {
 
 export interface SetDataAction<K = any, D = any> {
   readonly path: (string | null)[];
+  readonly asOf?: number;
   readonly size?: number;
   readonly items?: (
     | { kind: "parent"; path: string | null; data: K; relIndex: number; size: number }

@@ -97,7 +97,7 @@ export const RowLeaf: InterfaceType = {
     {
       kind: "property",
       name: "data",
-      value: "T",
+      value: "T | null",
       optional: false,
       tsDoc: `
         The data associated with the row. The data may be any type but is normally a plain 

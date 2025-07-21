@@ -85,7 +85,7 @@ export const DataProp: PropertyType = {
   doc: { en: `` },
   tsDoc: ``,
   optional: false,
-  value: "T",
+  value: "T | null",
 };
 
 export const ColPinProp: PropertyType = {

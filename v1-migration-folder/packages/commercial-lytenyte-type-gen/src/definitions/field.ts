@@ -8,8 +8,8 @@ export const FieldDataParam: UnionType = {
   doc: { en: `` },
   export: true,
   types: [
-    '{ kind: "leaf", data: T }',
-    '{ kind: "branch", data: Record<string, unknown>, key: string }',
+    '{ kind: "leaf", data: T | null }',
+    '{ kind: "branch", data: Record<string, unknown>, key: string | null }',
   ],
 };
 
