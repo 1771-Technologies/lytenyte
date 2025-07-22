@@ -81,6 +81,22 @@ export interface DataColumnPivotFetchParams<T> {
 
 export type DataColumnPivotFetcher<T> = (p: DataColumnPivotFetchParams<T>) => Promise<Column<T>[]>;
 
+export interface DataInFilterItemFetcherParams<T> {
+  readonly grid: Grid<T>;
+  readonly reqTime: number;
+  readonly column: Column<T>;
+}
+
+export interface FilterInFilterItem {
+  readonly label: string;
+  readonly value: unknown;
+  readonly group?: string[];
+}
+
+export type DataInFilterItemFetcher<T> = (
+  p: DataInFilterItemFetcherParams<T>,
+) => Promise<FilterInFilterItem> | FilterInFilterItem;
+
 export interface ServerRowDataSource<T> extends RowDataSource<T> {
   readonly isLoading: GridAtomReadonly<boolean>;
 }

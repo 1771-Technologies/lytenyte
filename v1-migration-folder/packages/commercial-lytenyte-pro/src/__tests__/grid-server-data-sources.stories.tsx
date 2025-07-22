@@ -48,12 +48,18 @@ function Component() {
       const res = await handleRequest(p.requests, p.model);
       return res;
     },
+    dataColumnPivotFetcher: async () => {
+      return [{ id: "x" }, { id: "y" }];
+    },
   });
 
   const g = useLyteNyte({
     gridId: useId(),
     columns,
     rowDataSource: ds,
+
+    rowSelectionMode: "multiple",
+    rowSelectionActivator: "single-click",
   });
 
   const view = g.view.useValue();

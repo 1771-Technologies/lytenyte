@@ -5,6 +5,7 @@ import { makeAsyncTree } from "./async-tree/make-async-tree";
 import type {
   DataColumnPivotFetcher,
   DataFetcher,
+  DataInFilterItemFetcher,
   DataRequest,
   DataRequestModel,
   DataResponseBranchItem,
@@ -27,6 +28,7 @@ import { equal } from "@1771technologies/lytenyte-js-utils";
 export interface ServerDataSourceParams<T> {
   readonly dataFetcher: DataFetcher<T>;
   readonly dataColumnPivotFetcher?: DataColumnPivotFetcher<T>;
+  readonly dataInFilterItemFetcher?: DataInFilterItemFetcher<T>;
 
   readonly pageSize?: number;
 }
@@ -69,7 +71,9 @@ export function makeServerDataSource<T>({
   } satisfies DataRequestModel<T>);
   const model = makeGridAtom(model$, rdsStore);
 
+  const pivotGroupExpansions = atom((g) => g(model$).pivotGroupExpansions);
   const rowGroupExpansions = atom((g) => g(model$).groupExpansions);
+  const pivotMode = atom((g) => g(model$).pivotMode);
 
   const seenRequests = new Set<string>();
 
@@ -218,7 +222,8 @@ export function makeServerDataSource<T>({
 
   const flat$ = atom((g) => {
     g(snapshot$);
-    const expansions = g(rowGroupExpansions);
+    const mode = rdsStore.get(pivotMode);
+    const expansions = mode ? g(pivotGroupExpansions) : g(rowGroupExpansions);
     const t = g(tree$);
 
     type RowItem = LeafOrParent<DataResponseBranchItem, DataResponseLeafItem>;
@@ -448,8 +453,24 @@ export function makeServerDataSource<T>({
       id: node.data.id,
     };
   };
-  const rowAllChildIds: RowDataSource<T>["rowAllChildIds"] = () => {
-    return [];
+  const rowAllChildIds: RowDataSource<T>["rowAllChildIds"] = (rowId) => {
+    const f = flat.get();
+    const row = f.rowIdToRow.get(rowId);
+    if (!row || row.kind === "leaf") return [];
+
+    const ids: Set<string> = new Set();
+    const stack = [...row.byPath.values()];
+    while (stack.length) {
+      const item = stack.pop()!;
+
+      if (item.kind === "leaf") {
+        ids.add(item.data.id);
+      } else {
+        stack.push(...item.byPath.values());
+        ids.add(item.data.id);
+      }
+    }
+    return [...ids];
   };
 
   const rowByIndex: RowDataSource<T>["rowByIndex"] = (ri) => {
@@ -502,8 +523,10 @@ export function makeServerDataSource<T>({
       })
       .filter((c) => !!c);
 
+    const mode = rdsStore.get(pivotMode);
     dataRequestHandler(requests, false, () => {
-      grid?.state.rowGroupExpansions.set((prev) => ({ ...prev, ...p }));
+      if (mode) grid?.state.columnPivotColumnGroupExpansions.set((prev) => ({ ...prev, ...p }));
+      else grid?.state.rowGroupExpansions.set((prev) => ({ ...prev, ...p }));
     });
   };
 
@@ -512,8 +535,65 @@ export function makeServerDataSource<T>({
     return f.rowIdToRowIndex.get(rowId) ?? null;
   };
 
-  const rowSelect: RowDataSource<T>["rowSelect"] = () => {};
-  const rowSelectAll: RowDataSource<T>["rowSelectAll"] = () => {};
+  const rowSelect: RowDataSource<T>["rowSelect"] = (params) => {
+    if (!grid || params.mode === "none") return;
+    if (params.mode === "single") {
+      if (params.deselect) {
+        grid.state.rowSelectedIds.set(new Set());
+      } else {
+        grid.state.rowSelectedIds.set(new Set([params.startId]));
+      }
+
+      return;
+    }
+
+    const ids = new Set<string>();
+    if (params.startId === params.endId) {
+      ids.add(params.startId);
+      if (params.selectChildren) {
+        rowAllChildIds(params.startId).forEach((c) => ids.add(c));
+      }
+    } else {
+      const first = rowToIndex(params.startId);
+      const last = rowToIndex(params.endId);
+      if (first == null || last == null) return;
+
+      const start = Math.min(first, last);
+      const end = Math.max(first, last);
+
+      for (let i = start; i <= end; i++) {
+        const row = rowByIndex(i);
+
+        if (!row) continue;
+
+        if (params.selectChildren) {
+          rowAllChildIds(row.id).forEach((c) => ids.add(c));
+        }
+        if (row?.id) ids.add(row.id);
+      }
+    }
+
+    if (params.deselect) {
+      const current = grid.state.rowSelectedIds.get();
+      const next = current.difference(ids);
+      grid.state.rowSelectedIds.set(next);
+    } else {
+      const current = grid.state.rowSelectedIds.get();
+      const next = current.union(ids);
+      grid.state.rowSelectedIds.set(next);
+    }
+  };
+  const rowSelectAll: RowDataSource<T>["rowSelectAll"] = (params) => {
+    if (!grid) return;
+    if (params.deselect) {
+      grid.state.rowSelectedIds.set(new Set());
+      return;
+    }
+
+    const t = flat.get();
+    grid.state.rowSelectedIds.set(new Set(t.rowIdToRow.keys()));
+  };
+
   const rowSetBotData: RowDataSource<T>["rowSetBotData"] = () => {};
   const rowSetTopData: RowDataSource<T>["rowSetTopData"] = () => {};
 

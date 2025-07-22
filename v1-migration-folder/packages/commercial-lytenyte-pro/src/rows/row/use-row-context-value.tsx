@@ -13,9 +13,9 @@ export function useRowContextValue(
   const [selected, setSelected] = useState(false);
 
   useEffect(() => {
-    if (!r) return;
+    function handleSelection() {
+      if (!r) return;
 
-    return grid.state.rowSelectedIds.watch(() => {
       const selectedIds = grid.state.rowSelectedIds.get();
 
       if (selectedIds.has(r.id)) setSelected(true);
@@ -27,7 +27,10 @@ export function useRowContextValue(
           childIds.some((c) => selectedIds.has(c)) && childIds.some((c) => !selectedIds.has(c)),
         );
       } else setIndeterminate(false);
-    });
+    }
+
+    handleSelection();
+    return grid.state.rowSelectedIds.watch(() => handleSelection());
   }, [grid.state.rowDataSource, grid.state.rowSelectedIds, r]);
 
   const value = useMemo<RowMetaData>(() => {
