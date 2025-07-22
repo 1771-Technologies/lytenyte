@@ -102,12 +102,16 @@ export interface ServerRowDataSource<T> extends RowDataSource<T> {
   readonly isLoading: GridAtomReadonly<boolean>;
   readonly pushResponses: (res: (DataResponse | DataResponsePinned)[]) => void;
   readonly pushRequests: (req: DataRequest[], onSuccess?: () => void) => void;
+  readonly reset: () => void;
 }
 
 export interface ServerDataSourceParams<T> {
   readonly dataFetcher: DataFetcher<T>;
   readonly dataColumnPivotFetcher?: DataColumnPivotFetcher<T>;
   readonly dataInFilterItemFetcher?: DataInFilterItemFetcher<T>;
+
+  readonly cellUpdateHandler?: (updates: Map<string, any>) => void;
+  readonly cellUpdateOptimistically?: boolean;
 
   readonly pageSize?: number;
 }

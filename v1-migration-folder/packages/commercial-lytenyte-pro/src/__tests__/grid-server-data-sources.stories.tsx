@@ -60,6 +60,10 @@ function Component() {
 
     rowSelectionMode: "multiple",
     rowSelectionActivator: "single-click",
+    editCellMode: "cell",
+    columnBase: {
+      editable: true,
+    },
   });
 
   const view = g.view.useValue();
@@ -75,6 +79,12 @@ function Component() {
       clearTimeout(t);
     };
   }, [g.state.quickSearch, qsLocal]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      g.api.editUpdate({ column: 0, rowIndex: 2, value: "Lee" });
+    }, 3000);
+  }, [g.api]);
 
   return (
     <div>

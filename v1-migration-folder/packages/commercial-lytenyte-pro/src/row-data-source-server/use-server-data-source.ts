@@ -28,6 +28,9 @@ import { equal } from "@1771technologies/lytenyte-js-utils";
 export function makeServerDataSource<T>({
   dataFetcher,
   dataColumnPivotFetcher,
+
+  cellUpdateHandler,
+  cellUpdateOptimistically = true,
   pageSize = 200,
 }: ServerDataSourceParams<T>): ServerRowDataSource<T> {
   let grid: Grid<T> | null = null;
@@ -462,7 +465,21 @@ export function makeServerDataSource<T>({
     const f = flat.get();
 
     const node = f.rowIdToRow.get(id);
-    if (!node) return null;
+    if (!node) {
+      {
+        const top = rdsStore.get(topData);
+        const node = top.find((c) => c.id === id);
+        if (node) return { kind: "leaf", data: node.data, id: node.id };
+      }
+
+      {
+        const bot = rdsStore.get(topData);
+        const node = bot.find((c) => c.id === id);
+        if (node) return { kind: "leaf", data: node.data, id: node.id };
+      }
+
+      return null;
+    }
 
     if (node.kind === "parent") {
       return {
@@ -506,7 +523,7 @@ export function makeServerDataSource<T>({
     const top = rdsStore.get(topData);
     const bot = rdsStore.get(botData);
 
-    if (ri < 0 || ri >= f.size + top.length + bot.length) return null;
+    if (ri == null || ri < 0 || ri >= f.size + top.length + bot.length) return null;
 
     // Top node
     if (ri < top.length) {
@@ -650,10 +667,62 @@ export function makeServerDataSource<T>({
   };
 
   // CRUD ops
-  const rowAdd: RowDataSource<T>["rowAdd"] = () => {};
-  const rowDelete: RowDataSource<T>["rowDelete"] = () => {};
-  const rowUpdate: RowDataSource<T>["rowUpdate"] = () => {
-    return;
+  const rowAdd: RowDataSource<T>["rowAdd"] = () => {
+    throw new Error(
+      `Server data source does not support adding rows directly. Instead push updates via the pushResponses or pushRequests method`,
+    );
+  };
+  const rowDelete: RowDataSource<T>["rowDelete"] = () => {
+    throw new Error(
+      `Server data source does not support deleting rows directly. Instead push updates via the pushResponses or pushRequests method`,
+    );
+  };
+
+  const rowUpdate: RowDataSource<T>["rowUpdate"] = (updates) => {
+    const f = flat.get();
+
+    const top = rdsStore.get(topData);
+    const bot = rdsStore.get(botData);
+
+    const firstBot = f.size + top.length;
+
+    const idMap = new Map(
+      [...updates.entries()]
+        .map(([key, data]) => {
+          if (typeof key === "string") return [key, data];
+
+          const row = rowByIndex(key);
+          if (!row) return null;
+
+          return [row.id, data];
+        })
+        .filter((n) => n != null) as [string, any][],
+    );
+
+    cellUpdateHandler?.(idMap);
+
+    if (!cellUpdateOptimistically) return;
+
+    for (const [key, data] of updates.entries()) {
+      const rowIndex = typeof key === "number" ? key : (rowToIndex(key) as number);
+
+      const row = rowByIndex(rowIndex!);
+      if (!row || !grid) {
+        console.error(`Failed to find the row at index ${rowIndex} which is being updated.`);
+        continue;
+      }
+
+      if (rowIndex < top.length) {
+        (top[rowIndex] as any).data = data;
+      } else if (rowIndex >= firstBot) {
+        (bot[rowIndex] as any).data = data;
+      } else {
+        const node = f.rowIndexToRow.get(rowIndex - top.length);
+        if (node) (node.data as any).data = data;
+      }
+
+      grid.state.rowDataStore.rowInvalidateIndex(rowIndex);
+    }
   };
 
   return {
@@ -678,6 +747,7 @@ export function makeServerDataSource<T>({
     pushRequests: (req, onSuccess) => {
       dataRequestHandler(req, true, onSuccess);
     },
+    reset: resetRequest,
   };
 }
 
