@@ -49,8 +49,7 @@ export interface DataResponseBranchItem {
 
 export interface DataResponsePinned {
   readonly kind: "top" | "bottom";
-  readonly data: any[];
-  readonly ids: string[];
+  readonly data: DataResponseLeafItem[];
   readonly asOfTime: number;
 }
 
@@ -71,7 +70,9 @@ export interface DataFetcherParams<T> {
   readonly model: DataRequestModel<T>;
 }
 
-export type DataFetcher<T> = (p: DataFetcherParams<T>) => Promise<DataResponse[]>;
+export type DataFetcher<T> = (
+  p: DataFetcherParams<T>,
+) => Promise<(DataResponse | DataResponsePinned)[]>;
 
 export interface DataColumnPivotFetchParams<T> {
   readonly grid: Grid<T>;
@@ -99,4 +100,14 @@ export type DataInFilterItemFetcher<T> = (
 
 export interface ServerRowDataSource<T> extends RowDataSource<T> {
   readonly isLoading: GridAtomReadonly<boolean>;
+  readonly pushResponses: (res: (DataResponse | DataResponsePinned)[]) => void;
+  readonly pushRequests: (req: DataRequest[], onSuccess?: () => void) => void;
+}
+
+export interface ServerDataSourceParams<T> {
+  readonly dataFetcher: DataFetcher<T>;
+  readonly dataColumnPivotFetcher?: DataColumnPivotFetcher<T>;
+  readonly dataInFilterItemFetcher?: DataInFilterItemFetcher<T>;
+
+  readonly pageSize?: number;
 }

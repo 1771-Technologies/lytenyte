@@ -5,11 +5,15 @@ import type {
   DataResponse,
   DataResponseBranchItem,
   DataResponseLeafItem,
+  DataResponsePinned,
 } from "../../row-data-source-server/+types";
 import { sql } from "./db";
 import type { FilterModelItem } from "../../+types";
 
-export async function handleRequest(request: DataRequest[], model: DataRequestModel<any>) {
+export async function handleRequest(
+  request: DataRequest[],
+  model: DataRequestModel<any>,
+): Promise<(DataResponsePinned | DataResponse)[]> {
   await sleep(200);
 
   const responses = request.map<DataResponse>((c) => {
@@ -97,7 +101,25 @@ export async function handleRequest(request: DataRequest[], model: DataRequestMo
     };
   });
 
-  return responses;
+  return [
+    ...responses,
+    {
+      kind: "top",
+      asOfTime: Date.now(),
+      data: [
+        { kind: "leaf", data: {}, id: "t-1" },
+        { kind: "leaf", data: {}, id: "t-2" },
+      ],
+    },
+    {
+      kind: "bottom",
+      asOfTime: Date.now(),
+      data: [
+        { kind: "leaf", data: {}, id: "b-1" },
+        { kind: "leaf", data: {}, id: "b-2" },
+      ],
+    },
+  ];
 }
 
 function getOrderByClauseForSorts(sorts: DataRequestModel<any>["sorts"]) {

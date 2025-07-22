@@ -3,13 +3,13 @@ import type { ColumnPivotModel, Grid, RowDataSource } from "../+types";
 import { useRef } from "react";
 import { makeAsyncTree } from "./async-tree/make-async-tree";
 import type {
-  DataColumnPivotFetcher,
-  DataFetcher,
-  DataInFilterItemFetcher,
   DataRequest,
   DataRequestModel,
+  DataResponse,
   DataResponseBranchItem,
   DataResponseLeafItem,
+  DataResponsePinned,
+  ServerDataSourceParams,
   ServerRowDataSource,
 } from "./+types";
 import { makeGridAtom } from "@1771technologies/lytenyte-shared";
@@ -24,14 +24,6 @@ import { getRequestId } from "./utils/get-request-id";
 import { RangeTree, type FlattenedRange } from "./range-tree/range-tree";
 import { getNodePath } from "./utils/get-node-path";
 import { equal } from "@1771technologies/lytenyte-js-utils";
-
-export interface ServerDataSourceParams<T> {
-  readonly dataFetcher: DataFetcher<T>;
-  readonly dataColumnPivotFetcher?: DataColumnPivotFetcher<T>;
-  readonly dataInFilterItemFetcher?: DataInFilterItemFetcher<T>;
-
-  readonly pageSize?: number;
-}
 
 export function makeServerDataSource<T>({
   dataFetcher,
@@ -75,7 +67,54 @@ export function makeServerDataSource<T>({
   const rowGroupExpansions = atom((g) => g(model$).groupExpansions);
   const pivotMode = atom((g) => g(model$).pivotMode);
 
+  const topData = atom<DataResponseLeafItem[]>([]);
+  const botData = atom<DataResponseLeafItem[]>([]);
+
   const seenRequests = new Set<string>();
+
+  const dataResponseHandler = (res: (DataResponse | DataResponsePinned)[]) => {
+    const t = tree.get();
+    const dataResponses = res.filter((r) => {
+      return !("kind" in r && (r.kind === "top" || r.kind === "bottom"));
+    }) as DataResponse[];
+    dataResponses.sort((l, r) => l.path.length - r.path.length);
+
+    const pinResponses = res.filter((r) => {
+      return "kind" in r && (r.kind === "top" || r.kind === "bottom");
+    }) as DataResponsePinned[];
+
+    pinResponses.forEach((p) => {
+      if (p.kind === "top") {
+        rdsStore.set(topData, p.data);
+      } else {
+        rdsStore.set(botData, p.data);
+      }
+    });
+
+    dataResponses.forEach((r) => {
+      t.set({
+        path: r.path,
+        items: r.data.map<Required<SetDataAction>["items"][number]>((c, i) => {
+          if (c.kind === "leaf") {
+            return {
+              kind: "leaf",
+              data: c,
+              relIndex: r.start + i,
+            };
+          } else {
+            return {
+              kind: "parent",
+              data: c,
+              path: c.key,
+              relIndex: r.start + i,
+              size: c.childCount,
+            };
+          }
+        }),
+        size: r.size,
+      });
+    });
+  };
 
   const dataRequestHandler = async (p: DataRequest[], force = false, onSuccess?: () => void) => {
     if (!grid) return;
@@ -89,8 +128,6 @@ export function makeServerDataSource<T>({
       return;
     }
 
-    const t = tree.get();
-
     try {
       const res = await dataFetcher({
         grid: grid,
@@ -98,31 +135,8 @@ export function makeServerDataSource<T>({
         reqTime: Date.now(),
         requests: p,
       });
-      res.sort((l, r) => l.path.length - r.path.length);
 
-      res.forEach((r) => {
-        t.set({
-          path: r.path,
-          items: r.data.map<Required<SetDataAction>["items"][number]>((c, i) => {
-            if (c.kind === "leaf") {
-              return {
-                kind: "leaf",
-                data: c,
-                relIndex: r.start + i,
-              };
-            } else {
-              return {
-                kind: "parent",
-                data: c,
-                path: c.key,
-                relIndex: r.start + i,
-                size: c.childCount,
-              };
-            }
-          }),
-          size: r.size,
-        });
-      });
+      dataResponseHandler(res);
 
       onSuccess?.();
     } catch (e) {
@@ -309,10 +323,23 @@ export function makeServerDataSource<T>({
     rdsStore.set(initialized, true);
 
     // Handle row count changes
+    const f = flat.get();
+    g.state.rowDataStore.rowCenterCount.set(f.size);
+    g.state.rowDataStore.rowBottomCount.set(rdsStore.get(botData).length);
+    g.state.rowDataStore.rowTopCount.set(rdsStore.get(topData).length);
+
     rdsStore.sub(flat$, () => {
       const f = flat.get();
       g.state.rowDataStore.rowCenterCount.set(f.size);
       viewChange();
+    });
+    rdsStore.sub(topData, () => {
+      g.state.rowDataStore.rowTopCount.set(rdsStore.get(topData).length);
+      g.state.rowDataStore.rowClearCache();
+    });
+    rdsStore.sub(botData, () => {
+      g.state.rowDataStore.rowBottomCount.set(rdsStore.get(botData).length);
+      g.state.rowDataStore.rowClearCache();
     });
 
     resetRequest();
@@ -475,11 +502,28 @@ export function makeServerDataSource<T>({
 
   const rowByIndex: RowDataSource<T>["rowByIndex"] = (ri) => {
     const f = flat.get();
-    const node = f.rowIndexToRow.get(ri);
 
-    if (!node) {
-      return { kind: "leaf", data: null, id: `loading-${ri}`, loading: true, error: null };
+    const top = rdsStore.get(topData);
+    const bot = rdsStore.get(botData);
+
+    if (ri < 0 || ri >= f.size + top.length + bot.length) return null;
+
+    // Top node
+    if (ri < top.length) {
+      const row = top[ri];
+      if (!row) return null;
+      return { kind: "leaf", data: row.data, id: row.id };
     }
+
+    if (ri >= f.size + top.length) {
+      const i = ri - f.size - top.length;
+      const row = bot[i];
+      if (!row) return null;
+      return { kind: "leaf", data: row.data, id: row.id };
+    }
+
+    const node = f.rowIndexToRow.get(ri - top.length);
+    if (!node) return { kind: "leaf", data: null, id: `loading-${ri}`, loading: true, error: null };
 
     if (node.kind === "parent") {
       return {
@@ -594,8 +638,16 @@ export function makeServerDataSource<T>({
     grid.state.rowSelectedIds.set(new Set(t.rowIdToRow.keys()));
   };
 
-  const rowSetBotData: RowDataSource<T>["rowSetBotData"] = () => {};
-  const rowSetTopData: RowDataSource<T>["rowSetTopData"] = () => {};
+  const rowSetBotData: RowDataSource<T>["rowSetBotData"] = () => {
+    throw new Error(
+      `Server data source does not support directly setting pinned rows. Instead send a DataResponsePinned object via the pushData method`,
+    );
+  };
+  const rowSetTopData: RowDataSource<T>["rowSetTopData"] = () => {
+    throw new Error(
+      `Server data source does not support directly setting pinned rows. Instead send a DataResponsePinned object via the pushData method`,
+    );
+  };
 
   // CRUD ops
   const rowAdd: RowDataSource<T>["rowAdd"] = () => {};
@@ -620,6 +672,12 @@ export function makeServerDataSource<T>({
     rowUpdate,
 
     isLoading,
+    pushResponses: (res) => {
+      dataResponseHandler(res);
+    },
+    pushRequests: (req, onSuccess) => {
+      dataRequestHandler(req, true, onSuccess);
+    },
   };
 }
 
