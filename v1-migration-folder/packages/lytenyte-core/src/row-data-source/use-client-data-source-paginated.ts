@@ -536,6 +536,23 @@ export function makeClientDataSourcePaginated<T>(
       },
       rowToIndex,
 
+      rowAreAllSelected: (rowId) => {
+        const g = rdsStore.get(grid$);
+        if (!g) return false;
+
+        const selected = g.state.rowSelectedIds.get();
+
+        if (rowId) {
+          const row = rowById(rowId);
+          if (!row) return false;
+          const childIds = new Set(rowAllChildIds(rowId));
+          return childIds.isSubsetOf(selected);
+        }
+
+        const f = rdsStore.get(tree);
+        return f.idsAll.isSubsetOf(selected);
+      },
+
       rowSelect: (params) => {
         const grid = rdsStore.get(grid$);
         if (!grid) return;

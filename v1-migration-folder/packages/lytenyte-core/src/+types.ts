@@ -1719,6 +1719,11 @@ export interface RowDataSource<T> {
   /**
    *
    */
+  readonly rowAreAllSelected: (rowId?: string) => void;
+
+  /**
+   *
+   */
   readonly rowAllChildIds: (rowId: string) => string[];
 
   /**
@@ -1792,6 +1797,11 @@ export interface RowDataSourceClient<T> {
   /**
    *
    */
+  readonly rowAreAllSelected: (rowId?: string) => void;
+
+  /**
+   *
+   */
   readonly rowAllChildIds: (rowId: string) => string[];
 
   /**
@@ -1861,6 +1871,11 @@ export interface RowDataSourceClientPaginated<T> {
    *
    */
   readonly rowSelectAll: (params: RowSelectAllOptions) => void;
+
+  /**
+   *
+   */
+  readonly rowAreAllSelected: (rowId?: string) => void;
 
   /**
    *

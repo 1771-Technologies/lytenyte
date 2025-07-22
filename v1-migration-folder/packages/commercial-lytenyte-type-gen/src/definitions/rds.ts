@@ -177,6 +177,14 @@ export const RowDataSourcePartial: InterfaceTypePartial = {
     },
     {
       kind: "property",
+      name: "rowAreAllSelected",
+      value: "(rowId?: string) => boolean",
+      doc: { en: `` },
+      optional: false,
+      tsDoc: ``,
+    },
+    {
+      kind: "property",
       name: "rowAllChildIds",
       value: "(rowId: string) => string[]",
       doc: { en: `` },
@@ -238,6 +246,14 @@ export const RowDataSource: InterfaceType = {
   tag: "core",
   extends: RowDataSourcePartial,
 };
+const InFilterItemsProps: PropertyType = {
+  kind: "property",
+  name: "inFilterItems",
+  tsDoc: ``,
+  doc: { en: `` },
+  optional: false,
+  value: "(column: Column<T>) => Promise<FilterInFilterItem[]> | FilterInFilterItem[]",
+};
 
 export const RowDataSourcePro: InterfaceType = {
   kind: "interface",
@@ -245,7 +261,7 @@ export const RowDataSourcePro: InterfaceType = {
   export: true,
   tsDoc: ``,
   doc: { en: `` },
-  properties: [],
+  properties: [InFilterItemsProps],
   tag: "pro",
   extends: RowDataSourcePartial,
 };
@@ -268,7 +284,7 @@ export const RowDataSourceClientPro: InterfaceType = {
   tsDoc: ``,
   doc: { en: `` },
   tag: "pro",
-  properties: [],
+  properties: [InFilterItemsProps],
   extends: RowDataSourcePartial,
 };
 
@@ -334,5 +350,50 @@ export const RowDataSourceClientClientPaginatedPro: InterfaceType = {
   doc: { en: `` },
   extends: RowDataSourcePartial,
   tag: "pro",
-  properties: [PageProp],
+  properties: [PageProp, InFilterItemsProps],
+};
+
+export const RowDataSourceServerPro: InterfaceType = {
+  kind: "interface",
+  name: "RowDataSourceServer<T>",
+  doc: { en: `` },
+  tsDoc: ``,
+  export: true,
+  extends: RowDataSourcePartial,
+  tag: "pro",
+  properties: [
+    InFilterItemsProps,
+    {
+      kind: "property",
+      doc: { en: `` },
+      tsDoc: ``,
+      name: "isLoading",
+      optional: false,
+      value: "GridAtomReadonly<boolean>",
+    },
+    {
+      kind: "property",
+      doc: { en: `` },
+      tsDoc: ``,
+      name: "pushResponses",
+      optional: false,
+      value: "(req: (DataResponse | DataResponsePinned)[]) => void",
+    },
+    {
+      kind: "property",
+      doc: { en: `` },
+      tsDoc: ``,
+      name: "pushRequests",
+      optional: false,
+      value: "(req: DataRequest[], onSuccess?: () => void) => void",
+    },
+    {
+      kind: "property",
+      doc: { en: `` },
+      tsDoc: ``,
+      name: "reset",
+      optional: false,
+      value: "() => void",
+    },
+  ],
 };

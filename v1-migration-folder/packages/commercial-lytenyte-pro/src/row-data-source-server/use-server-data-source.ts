@@ -1,17 +1,19 @@
 import { atom, createStore } from "@1771technologies/atom";
-import type { ColumnPivotModel, Grid, RowDataSource } from "../+types";
-import { useRef } from "react";
-import { makeAsyncTree } from "./async-tree/make-async-tree";
 import type {
+  ColumnPivotModel,
   DataRequest,
   DataRequestModel,
   DataResponse,
   DataResponseBranchItem,
   DataResponseLeafItem,
   DataResponsePinned,
-  ServerDataSourceParams,
-  ServerRowDataSource,
-} from "./+types";
+  Grid,
+  RowDataSource,
+  RowDataSourceServer,
+  RowDataSourceServerParams,
+} from "../+types";
+import { useRef } from "react";
+import { makeAsyncTree } from "./async-tree/make-async-tree";
 import { makeGridAtom } from "@1771technologies/lytenyte-shared";
 import type {
   LeafOrParent,
@@ -28,11 +30,12 @@ import { equal } from "@1771technologies/lytenyte-js-utils";
 export function makeServerDataSource<T>({
   dataFetcher,
   dataColumnPivotFetcher,
+  dataInFilterItemFetcher,
 
   cellUpdateHandler,
   cellUpdateOptimistically = true,
   pageSize = 200,
-}: ServerDataSourceParams<T>): ServerRowDataSource<T> {
+}: RowDataSourceServerParams<T>): RowDataSourceServer<T> {
   let grid: Grid<T> | null = null;
 
   const snapshot$ = atom(Date.now());
@@ -725,6 +728,16 @@ export function makeServerDataSource<T>({
     }
   };
 
+  const inFilterItems: RowDataSource<T>["inFilterItems"] = (c) => {
+    if (!dataInFilterItemFetcher || !grid) return [];
+
+    return dataInFilterItemFetcher({ column: c, grid, reqTime: Date.now() });
+  };
+
+  const rowAreAllSelected: RowDataSource<T>["rowAreAllSelected"] = () => {
+    return false;
+  };
+
   return {
     init,
     rowAdd,
@@ -740,6 +753,9 @@ export function makeServerDataSource<T>({
     rowToIndex,
     rowUpdate,
 
+    inFilterItems,
+    rowAreAllSelected,
+
     isLoading,
     pushResponses: (res) => {
       dataResponseHandler(res);
@@ -751,8 +767,8 @@ export function makeServerDataSource<T>({
   };
 }
 
-export function useServerDataSource<T>(p: ServerDataSourceParams<T>) {
-  const ds = useRef<ServerRowDataSource<T>>(null as any);
+export function useServerDataSource<T>(p: RowDataSourceServerParams<T>) {
+  const ds = useRef<RowDataSourceServer<T>>(null as any);
 
   if (!ds.current) {
     ds.current = makeServerDataSource(p);

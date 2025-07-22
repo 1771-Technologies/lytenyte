@@ -745,3 +745,38 @@ export const FilterQuickSearchSensitivity: UnionType = {
   types: ['"case-sensitive"', '"case-insensitive"'],
   tag: "pro",
 };
+
+export const FilterInFilterItem: InterfaceType = {
+  kind: "interface",
+  name: "FilterInFilterItem",
+  doc: { en: `` },
+  tsDoc: ``,
+  export: true,
+  tag: "pro",
+  properties: [
+    {
+      kind: "property",
+      tsDoc: ``,
+      doc: { en: `` },
+      name: "label",
+      value: "string",
+      optional: false,
+    },
+    {
+      kind: "property",
+      tsDoc: ``,
+      doc: { en: `` },
+      name: "value",
+      value: "unknown",
+      optional: false,
+    },
+    {
+      kind: "property",
+      tsDoc: ``,
+      doc: { en: `` },
+      name: "group",
+      value: "string[]",
+      optional: true,
+    },
+  ],
+};

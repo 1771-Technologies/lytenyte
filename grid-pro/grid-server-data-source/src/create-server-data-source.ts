@@ -212,7 +212,6 @@ export function createServerDataSource<D, E>(
       return state.graph.rowById(id) ?? baseLoadingRow;
     },
     rowByIndex: (r) => {
-      console.log(r);
       const row = state.graph.rowByIndex(r);
 
       if (state.requestedFails.has(r)) return baseErrorRow;
