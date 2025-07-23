@@ -14,4 +14,5 @@ export const emptyRowDataSource: RowDataSource<any> = {
   rowDelete: () => {},
   rowSetBotData: () => {},
   rowSetTopData: () => {},
+  rowAreAllSelected: () => false,
 };

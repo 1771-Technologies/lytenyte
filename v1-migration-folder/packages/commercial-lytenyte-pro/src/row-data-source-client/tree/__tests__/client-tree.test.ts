@@ -46,43 +46,43 @@ describe("makeClientTree", () => {
 
     expect(printTree(tree.root)).toMatchInlineSnapshot(`
       "
-      ├── unemployed |BRANCH| P:root | 0 | {}
-        ├── 0 |LEAF| P:unemployed |1 | {"age":30,"j...
-      ├── services |BRANCH| P:root | 0 | {}
-        ├── 1 |LEAF| P:services |1 | {"age":33,"j...
-        ├── 9 |LEAF| P:services |1 | {"age":43,"j...
-        ├── 10 |LEAF| P:services |1 | {"age":39,"j...
-      ├── management |BRANCH| P:root | 0 | {}
-        ├── 2 |LEAF| P:management |1 | {"age":35,"j...
-        ├── 3 |LEAF| P:management |1 | {"age":30,"j...
-        ├── 5 |LEAF| P:management |1 | {"age":35,"j...
-      ├── blue-collar |BRANCH| P:root | 0 | {}
-        ├── 4 |LEAF| P:blue-collar |1 | {"age":59,"j...
-        ├── 14 |LEAF| P:blue-collar |1 | {"age":31,"j...
-      ├── self-employed |BRANCH| P:root | 0 | {}
-        ├── 6 |LEAF| P:self-employed |1 | {"age":36,"j...
-      ├── technician |BRANCH| P:root | 0 | {}
-        ├── 7 |LEAF| P:technician |1 | {"age":39,"j...
-        ├── 12 |LEAF| P:technician |1 | {"age":36,"j...
-      ├── entrepreneur |BRANCH| P:root | 0 | {}
-        ├── 8 |LEAF| P:entrepreneur |1 | {"age":41,"j...
-      ├── admin. |BRANCH| P:root | 0 | {}
-        ├── 11 |LEAF| P:admin. |1 | {"age":43,"j...
-      ├── student |BRANCH| P:root | 0 | {}
-        ├── 13 |LEAF| P:student |1 | {"age":20,"j..."
+      ├── +.+unemployed |BRANCH| P:root | 0 | {}
+        ├── 0 |LEAF| P:+.+unemployed |1 | {"age":30,"j...
+      ├── +.+services |BRANCH| P:root | 0 | {}
+        ├── 1 |LEAF| P:+.+services |1 | {"age":33,"j...
+        ├── 9 |LEAF| P:+.+services |1 | {"age":43,"j...
+        ├── 10 |LEAF| P:+.+services |1 | {"age":39,"j...
+      ├── +.+management |BRANCH| P:root | 0 | {}
+        ├── 2 |LEAF| P:+.+management |1 | {"age":35,"j...
+        ├── 3 |LEAF| P:+.+management |1 | {"age":30,"j...
+        ├── 5 |LEAF| P:+.+management |1 | {"age":35,"j...
+      ├── +.+blue-collar |BRANCH| P:root | 0 | {}
+        ├── 4 |LEAF| P:+.+blue-collar |1 | {"age":59,"j...
+        ├── 14 |LEAF| P:+.+blue-collar |1 | {"age":31,"j...
+      ├── +.+self-employed |BRANCH| P:root | 0 | {}
+        ├── 6 |LEAF| P:+.+self-employed |1 | {"age":36,"j...
+      ├── +.+technician |BRANCH| P:root | 0 | {}
+        ├── 7 |LEAF| P:+.+technician |1 | {"age":39,"j...
+        ├── 12 |LEAF| P:+.+technician |1 | {"age":36,"j...
+      ├── +.+entrepreneur |BRANCH| P:root | 0 | {}
+        ├── 8 |LEAF| P:+.+entrepreneur |1 | {"age":41,"j...
+      ├── +.+admin. |BRANCH| P:root | 0 | {}
+        ├── 11 |LEAF| P:+.+admin. |1 | {"age":43,"j...
+      ├── +.+student |BRANCH| P:root | 0 | {}
+        ├── 13 |LEAF| P:+.+student |1 | {"age":20,"j..."
     `);
 
     expect(tree.idsBranch).toMatchInlineSnapshot(`
       Set {
-        "unemployed",
-        "services",
-        "management",
-        "blue-collar",
-        "self-employed",
-        "technician",
-        "entrepreneur",
-        "admin.",
-        "student",
+        "+.+unemployed",
+        "+.+services",
+        "+.+management",
+        "+.+blue-collar",
+        "+.+self-employed",
+        "+.+technician",
+        "+.+entrepreneur",
+        "+.+admin.",
+        "+.+student",
       }
     `);
   });
@@ -96,30 +96,30 @@ describe("makeClientTree", () => {
 
     expect(printTree(tree.root)).toMatchInlineSnapshot(`
       "
-      ├── unemployed |BRANCH| P:root | 0 | {"age":30}
-        ├── 0 |LEAF| P:unemployed |1 | {"age":30,"j...
-      ├── services |BRANCH| P:root | 0 | {"age":115}
-        ├── 1 |LEAF| P:services |1 | {"age":33,"j...
-        ├── 9 |LEAF| P:services |1 | {"age":43,"j...
-        ├── 10 |LEAF| P:services |1 | {"age":39,"j...
-      ├── management |BRANCH| P:root | 0 | {"age":100}
-        ├── 2 |LEAF| P:management |1 | {"age":35,"j...
-        ├── 3 |LEAF| P:management |1 | {"age":30,"j...
-        ├── 5 |LEAF| P:management |1 | {"age":35,"j...
-      ├── blue-collar |BRANCH| P:root | 0 | {"age":90}
-        ├── 4 |LEAF| P:blue-collar |1 | {"age":59,"j...
-        ├── 14 |LEAF| P:blue-collar |1 | {"age":31,"j...
-      ├── self-employed |BRANCH| P:root | 0 | {"age":36}
-        ├── 6 |LEAF| P:self-employed |1 | {"age":36,"j...
-      ├── technician |BRANCH| P:root | 0 | {"age":75}
-        ├── 7 |LEAF| P:technician |1 | {"age":39,"j...
-        ├── 12 |LEAF| P:technician |1 | {"age":36,"j...
-      ├── entrepreneur |BRANCH| P:root | 0 | {"age":41}
-        ├── 8 |LEAF| P:entrepreneur |1 | {"age":41,"j...
-      ├── admin. |BRANCH| P:root | 0 | {"age":43}
-        ├── 11 |LEAF| P:admin. |1 | {"age":43,"j...
-      ├── student |BRANCH| P:root | 0 | {"age":20}
-        ├── 13 |LEAF| P:student |1 | {"age":20,"j..."
+      ├── +.+unemployed |BRANCH| P:root | 0 | {"age":30}
+        ├── 0 |LEAF| P:+.+unemployed |1 | {"age":30,"j...
+      ├── +.+services |BRANCH| P:root | 0 | {"age":115}
+        ├── 1 |LEAF| P:+.+services |1 | {"age":33,"j...
+        ├── 9 |LEAF| P:+.+services |1 | {"age":43,"j...
+        ├── 10 |LEAF| P:+.+services |1 | {"age":39,"j...
+      ├── +.+management |BRANCH| P:root | 0 | {"age":100}
+        ├── 2 |LEAF| P:+.+management |1 | {"age":35,"j...
+        ├── 3 |LEAF| P:+.+management |1 | {"age":30,"j...
+        ├── 5 |LEAF| P:+.+management |1 | {"age":35,"j...
+      ├── +.+blue-collar |BRANCH| P:root | 0 | {"age":90}
+        ├── 4 |LEAF| P:+.+blue-collar |1 | {"age":59,"j...
+        ├── 14 |LEAF| P:+.+blue-collar |1 | {"age":31,"j...
+      ├── +.+self-employed |BRANCH| P:root | 0 | {"age":36}
+        ├── 6 |LEAF| P:+.+self-employed |1 | {"age":36,"j...
+      ├── +.+technician |BRANCH| P:root | 0 | {"age":75}
+        ├── 7 |LEAF| P:+.+technician |1 | {"age":39,"j...
+        ├── 12 |LEAF| P:+.+technician |1 | {"age":36,"j...
+      ├── +.+entrepreneur |BRANCH| P:root | 0 | {"age":41}
+        ├── 8 |LEAF| P:+.+entrepreneur |1 | {"age":41,"j...
+      ├── +.+admin. |BRANCH| P:root | 0 | {"age":43}
+        ├── 11 |LEAF| P:+.+admin. |1 | {"age":43,"j...
+      ├── +.+student |BRANCH| P:root | 0 | {"age":20}
+        ├── 13 |LEAF| P:+.+student |1 | {"age":20,"j..."
     `);
   });
 
@@ -179,79 +179,79 @@ describe("makeClientTree", () => {
 
     expect(printTree(tree.root)).toMatchInlineSnapshot(`
       "
-      ├── unemployed |BRANCH| P:root | 0 | {"age":30}
-        ├── unemployed/no |BRANCH| P:unemployed | 1 | {"age":30}
-          ├── unemployed/no/<__null__> |BRANCH| P:unemployed/no | 2 | {"age":30}
-            ├── 0 |LEAF| P:unemployed/no/<__null__> |3 | {"age":30,"j...
-      ├── services |BRANCH| P:root | 0 | {"age":115}
-        ├── services/no |BRANCH| P:services | 1 | {"age":115}
-          ├── services/no/<__null__> |BRANCH| P:services/no | 2 | {"age":115}
-            ├── 1 |LEAF| P:services/no/<__null__> |3 | {"age":33,"j...
-            ├── 9 |LEAF| P:services/no/<__null__> |3 | {"age":43,"j...
-            ├── 10 |LEAF| P:services/no/<__null__> |3 | {"age":39,"j...
-      ├── management |BRANCH| P:root | 0 | {"age":100}
-        ├── management/no |BRANCH| P:management | 1 | {"age":100}
-          ├── management/no/<__null__> |BRANCH| P:management/no | 2 | {"age":100}
-            ├── 2 |LEAF| P:management/no/<__null__> |3 | {"age":35,"j...
-            ├── 3 |LEAF| P:management/no/<__null__> |3 | {"age":30,"j...
-            ├── 5 |LEAF| P:management/no/<__null__> |3 | {"age":35,"j...
-      ├── blue-collar |BRANCH| P:root | 0 | {"age":90}
-        ├── blue-collar/no |BRANCH| P:blue-collar | 1 | {"age":90}
-          ├── blue-collar/no/<__null__> |BRANCH| P:blue-collar/no | 2 | {"age":90}
-            ├── 4 |LEAF| P:blue-collar/no/<__null__> |3 | {"age":59,"j...
-            ├── 14 |LEAF| P:blue-collar/no/<__null__> |3 | {"age":31,"j...
-      ├── self-employed |BRANCH| P:root | 0 | {"age":36}
-        ├── self-employed/no |BRANCH| P:self-employed | 1 | {"age":36}
-          ├── self-employed/no/<__null__> |BRANCH| P:self-employed/no | 2 | {"age":36}
-            ├── 6 |LEAF| P:self-employed/no/<__null__> |3 | {"age":36,"j...
-      ├── technician |BRANCH| P:root | 0 | {"age":75}
-        ├── technician/no |BRANCH| P:technician | 1 | {"age":75}
-          ├── technician/no/<__null__> |BRANCH| P:technician/no | 2 | {"age":75}
-            ├── 7 |LEAF| P:technician/no/<__null__> |3 | {"age":39,"j...
-            ├── 12 |LEAF| P:technician/no/<__null__> |3 | {"age":36,"j...
-      ├── entrepreneur |BRANCH| P:root | 0 | {"age":41}
-        ├── entrepreneur/no |BRANCH| P:entrepreneur | 1 | {"age":41}
-          ├── entrepreneur/no/<__null__> |BRANCH| P:entrepreneur/no | 2 | {"age":41}
-            ├── 8 |LEAF| P:entrepreneur/no/<__null__> |3 | {"age":41,"j...
-      ├── admin. |BRANCH| P:root | 0 | {"age":43}
-        ├── admin./no |BRANCH| P:admin. | 1 | {"age":43}
-          ├── admin./no/<__null__> |BRANCH| P:admin./no | 2 | {"age":43}
-            ├── 11 |LEAF| P:admin./no/<__null__> |3 | {"age":43,"j...
-      ├── student |BRANCH| P:root | 0 | {"age":20}
-        ├── student/no |BRANCH| P:student | 1 | {"age":20}
-          ├── student/no/<__null__> |BRANCH| P:student/no | 2 | {"age":20}
-            ├── 13 |LEAF| P:student/no/<__null__> |3 | {"age":20,"j..."
+      ├── +.+unemployed |BRANCH| P:root | 0 | {"age":30}
+        ├── +.+unemployed/no |BRANCH| P:+.+unemployed | 1 | {"age":30}
+          ├── +.+unemployed/no/<__null__> |BRANCH| P:+.+unemployed/no | 2 | {"age":30}
+            ├── 0 |LEAF| P:+.+unemployed/no/<__null__> |3 | {"age":30,"j...
+      ├── +.+services |BRANCH| P:root | 0 | {"age":115}
+        ├── +.+services/no |BRANCH| P:+.+services | 1 | {"age":115}
+          ├── +.+services/no/<__null__> |BRANCH| P:+.+services/no | 2 | {"age":115}
+            ├── 1 |LEAF| P:+.+services/no/<__null__> |3 | {"age":33,"j...
+            ├── 9 |LEAF| P:+.+services/no/<__null__> |3 | {"age":43,"j...
+            ├── 10 |LEAF| P:+.+services/no/<__null__> |3 | {"age":39,"j...
+      ├── +.+management |BRANCH| P:root | 0 | {"age":100}
+        ├── +.+management/no |BRANCH| P:+.+management | 1 | {"age":100}
+          ├── +.+management/no/<__null__> |BRANCH| P:+.+management/no | 2 | {"age":100}
+            ├── 2 |LEAF| P:+.+management/no/<__null__> |3 | {"age":35,"j...
+            ├── 3 |LEAF| P:+.+management/no/<__null__> |3 | {"age":30,"j...
+            ├── 5 |LEAF| P:+.+management/no/<__null__> |3 | {"age":35,"j...
+      ├── +.+blue-collar |BRANCH| P:root | 0 | {"age":90}
+        ├── +.+blue-collar/no |BRANCH| P:+.+blue-collar | 1 | {"age":90}
+          ├── +.+blue-collar/no/<__null__> |BRANCH| P:+.+blue-collar/no | 2 | {"age":90}
+            ├── 4 |LEAF| P:+.+blue-collar/no/<__null__> |3 | {"age":59,"j...
+            ├── 14 |LEAF| P:+.+blue-collar/no/<__null__> |3 | {"age":31,"j...
+      ├── +.+self-employed |BRANCH| P:root | 0 | {"age":36}
+        ├── +.+self-employed/no |BRANCH| P:+.+self-employed | 1 | {"age":36}
+          ├── +.+self-employed/no/<__null__> |BRANCH| P:+.+self-employed/no | 2 | {"age":36}
+            ├── 6 |LEAF| P:+.+self-employed/no/<__null__> |3 | {"age":36,"j...
+      ├── +.+technician |BRANCH| P:root | 0 | {"age":75}
+        ├── +.+technician/no |BRANCH| P:+.+technician | 1 | {"age":75}
+          ├── +.+technician/no/<__null__> |BRANCH| P:+.+technician/no | 2 | {"age":75}
+            ├── 7 |LEAF| P:+.+technician/no/<__null__> |3 | {"age":39,"j...
+            ├── 12 |LEAF| P:+.+technician/no/<__null__> |3 | {"age":36,"j...
+      ├── +.+entrepreneur |BRANCH| P:root | 0 | {"age":41}
+        ├── +.+entrepreneur/no |BRANCH| P:+.+entrepreneur | 1 | {"age":41}
+          ├── +.+entrepreneur/no/<__null__> |BRANCH| P:+.+entrepreneur/no | 2 | {"age":41}
+            ├── 8 |LEAF| P:+.+entrepreneur/no/<__null__> |3 | {"age":41,"j...
+      ├── +.+admin. |BRANCH| P:root | 0 | {"age":43}
+        ├── +.+admin./no |BRANCH| P:+.+admin. | 1 | {"age":43}
+          ├── +.+admin./no/<__null__> |BRANCH| P:+.+admin./no | 2 | {"age":43}
+            ├── 11 |LEAF| P:+.+admin./no/<__null__> |3 | {"age":43,"j...
+      ├── +.+student |BRANCH| P:root | 0 | {"age":20}
+        ├── +.+student/no |BRANCH| P:+.+student | 1 | {"age":20}
+          ├── +.+student/no/<__null__> |BRANCH| P:+.+student/no | 2 | {"age":20}
+            ├── 13 |LEAF| P:+.+student/no/<__null__> |3 | {"age":20,"j..."
     `);
 
     expect(tree.idsBranch).toMatchInlineSnapshot(`
       Set {
-        "unemployed",
-        "unemployed/no",
-        "unemployed/no/<__null__>",
-        "services",
-        "services/no",
-        "services/no/<__null__>",
-        "management",
-        "management/no",
-        "management/no/<__null__>",
-        "blue-collar",
-        "blue-collar/no",
-        "blue-collar/no/<__null__>",
-        "self-employed",
-        "self-employed/no",
-        "self-employed/no/<__null__>",
-        "technician",
-        "technician/no",
-        "technician/no/<__null__>",
-        "entrepreneur",
-        "entrepreneur/no",
-        "entrepreneur/no/<__null__>",
-        "admin.",
-        "admin./no",
-        "admin./no/<__null__>",
-        "student",
-        "student/no",
-        "student/no/<__null__>",
+        "+.+unemployed",
+        "+.+unemployed/no",
+        "+.+unemployed/no/<__null__>",
+        "+.+services",
+        "+.+services/no",
+        "+.+services/no/<__null__>",
+        "+.+management",
+        "+.+management/no",
+        "+.+management/no/<__null__>",
+        "+.+blue-collar",
+        "+.+blue-collar/no",
+        "+.+blue-collar/no/<__null__>",
+        "+.+self-employed",
+        "+.+self-employed/no",
+        "+.+self-employed/no/<__null__>",
+        "+.+technician",
+        "+.+technician/no",
+        "+.+technician/no/<__null__>",
+        "+.+entrepreneur",
+        "+.+entrepreneur/no",
+        "+.+entrepreneur/no/<__null__>",
+        "+.+admin.",
+        "+.+admin./no",
+        "+.+admin./no/<__null__>",
+        "+.+student",
+        "+.+student/no",
+        "+.+student/no/<__null__>",
       }
     `);
   });

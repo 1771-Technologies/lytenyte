@@ -23,8 +23,8 @@ describe("useRowStyle", () => {
         "gridTemplateRows": "100px",
         "height": 100,
         "minWidth": "var(--lng-viewport-width)",
+        "opacity": undefined,
         "pointerEvents": "none",
-        "visibility": undefined,
         "width": "var(--lng-scroll-container-width)",
       }
     `);
@@ -50,8 +50,8 @@ describe("useRowStyle", () => {
         "gridTemplateRows": "100px",
         "height": 100,
         "minWidth": "var(--lng-viewport-width)",
+        "opacity": "0",
         "pointerEvents": "none",
-        "visibility": "hidden",
         "width": "2px",
       }
     `);
