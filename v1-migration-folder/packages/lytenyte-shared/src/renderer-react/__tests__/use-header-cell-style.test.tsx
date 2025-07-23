@@ -15,6 +15,7 @@ describe("useHeaderCellStyle", () => {
 
     expect(result.result.current).toMatchInlineSnapshot(`
       {
+        "position": "relative",
         "transform": "translate3d(0px, 0px, 0px)",
       }
     `);
@@ -72,6 +73,7 @@ describe("useHeaderCellStyle", () => {
 
     expect(result.result.current).toMatchInlineSnapshot(`
       {
+        "position": "relative",
         "transform": "translate3d(0px, 0px, 0px)",
       }
     `);

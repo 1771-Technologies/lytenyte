@@ -23,7 +23,7 @@ export interface ClientData<Data> {
 
 export interface MakeClientDataArgs<Data> {
   readonly rowData: Data[];
-  readonly rowBranchModel: GroupItem<Data>[];
+  readonly rowBranchModel: GroupItem<Data>[] | ((d: Data) => (string | null | undefined)[]);
   readonly rowAggModel: AggregationItem<Data>[];
   readonly rowIdLeaf?: (d: Data, i: number) => string;
   readonly rowIdGroup?: (path: string[]) => string;

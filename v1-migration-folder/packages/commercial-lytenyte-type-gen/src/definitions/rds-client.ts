@@ -63,6 +63,15 @@ export const ClientRowDataSourceParams: InterfaceType = {
   properties: [Data, TopData, BottomData, ReflectData, RowIdBranch, RowIdLeaf],
 };
 
+const TransformInFilterProp: PropertyType = {
+  kind: "property",
+  doc: { en: `` },
+  name: "transformInFilterItem",
+  optional: true,
+  tsDoc: ``,
+  value: "(params: { field: unknown, column: Column<T> }) => FilterInFilterItem",
+};
+
 export const ClientRowDataSourceParamsPro: InterfaceType = {
   kind: "interface",
   export: true,
@@ -77,13 +86,32 @@ export const ClientRowDataSourceParamsPro: InterfaceType = {
     ReflectData,
     RowIdBranch,
     RowIdLeaf,
+    TransformInFilterProp,
+  ],
+};
+
+export const ClientTreeDataSourceParamsPro: InterfaceType = {
+  kind: "interface",
+  export: true,
+  name: "ClientTreeDataSourceParams<T>",
+  tsDoc: ``,
+  tag: "pro",
+  doc: { en: `` },
+  properties: [
+    Data,
+    TopData,
+    BottomData,
+    ReflectData,
+    RowIdBranch,
+    RowIdLeaf,
+    TransformInFilterProp,
     {
       kind: "property",
       doc: { en: `` },
-      name: "transformInFilterItem",
-      optional: true,
+      name: "getPathFromData",
+      optional: false,
       tsDoc: ``,
-      value: "(params: { field: unknown, column: Column<T> }) => FilterInFilterItem",
+      value: "(data: RowLeaf<T>) => (string | null | undefined)[]",
     },
   ],
 };

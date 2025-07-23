@@ -1857,6 +1857,54 @@ export interface ClientRowDataSourceParams<T> {
 /**
  *
  */
+export interface ClientTreeDataSourceParams<T> {
+  /**
+   *
+   */
+  readonly data: T[];
+
+  /**
+   *
+   */
+  readonly topData?: T[];
+
+  /**
+   *
+   */
+  readonly bottomData?: T[];
+
+  /**
+   *
+   */
+  readonly reflectData?: boolean;
+
+  /**
+   *
+   */
+  readonly rowIdBranch?: (path: string[]) => string;
+
+  /**
+   *
+   */
+  readonly rowIdLeaf?: (d: RowLeaf<T>, i: number) => string;
+
+  /**
+   *
+   */
+  readonly transformInFilterItem?: (params: {
+    field: unknown;
+    column: Column<T>;
+  }) => FilterInFilterItem;
+
+  /**
+   *
+   */
+  readonly getPathFromData: (data: RowLeaf<T>) => (string | null | undefined)[];
+}
+
+/**
+ *
+ */
 export interface RowDataSourceClientPaginated<T> {
   /**
    *
@@ -1896,7 +1944,7 @@ export interface RowDataSourceClientPaginated<T> {
   /**
    *
    */
-  readonly rowAreAllSelected: (rowId?: string) => void;
+  readonly rowAreAllSelected: (rowId?: string) => boolean;
 
   /**
    *
@@ -2006,7 +2054,7 @@ export interface RowDataSourceClient<T> {
   /**
    *
    */
-  readonly rowAreAllSelected: (rowId?: string) => void;
+  readonly rowAreAllSelected: (rowId?: string) => boolean;
 
   /**
    *
@@ -2091,7 +2139,7 @@ export interface RowDataSource<T> {
   /**
    *
    */
-  readonly rowAreAllSelected: (rowId?: string) => void;
+  readonly rowAreAllSelected: (rowId?: string) => boolean;
 
   /**
    *
@@ -2176,7 +2224,7 @@ export interface RowDataSourceServer<T> {
   /**
    *
    */
-  readonly rowAreAllSelected: (rowId?: string) => void;
+  readonly rowAreAllSelected: (rowId?: string) => boolean;
 
   /**
    *

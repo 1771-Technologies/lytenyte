@@ -1719,7 +1719,7 @@ export interface RowDataSource<T> {
   /**
    *
    */
-  readonly rowAreAllSelected: (rowId?: string) => void;
+  readonly rowAreAllSelected: (rowId?: string) => boolean;
 
   /**
    *
@@ -1797,7 +1797,7 @@ export interface RowDataSourceClient<T> {
   /**
    *
    */
-  readonly rowAreAllSelected: (rowId?: string) => void;
+  readonly rowAreAllSelected: (rowId?: string) => boolean;
 
   /**
    *
@@ -1875,7 +1875,7 @@ export interface RowDataSourceClientPaginated<T> {
   /**
    *
    */
-  readonly rowAreAllSelected: (rowId?: string) => void;
+  readonly rowAreAllSelected: (rowId?: string) => boolean;
 
   /**
    *
