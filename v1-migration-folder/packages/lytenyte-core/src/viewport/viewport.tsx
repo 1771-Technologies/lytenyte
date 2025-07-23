@@ -1,5 +1,5 @@
 import { forwardRef, type JSX } from "react";
-import { useForkRef } from "@1771technologies/lytenyte-react-hooks";
+import { useCombinedRefs } from "@1771technologies/lytenyte-react-hooks";
 import { useGridRoot } from "../context";
 import {
   handleNavigationKeys,
@@ -14,7 +14,7 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
 ) {
   const ctx = useGridRoot();
 
-  const ref = useForkRef(ctx.ref, forwarded);
+  const ref = useCombinedRefs(ctx.ref, forwarded);
 
   const vp = ctx.grid.state.viewport.useValue();
   const width = ctx.grid.state.widthTotal.useValue();

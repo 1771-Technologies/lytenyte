@@ -184,7 +184,7 @@ export interface RowLeaf<T = any> {
    * - {@link ColumnField}: The column field determines how a cell's value is calculated.
    * - [Column Field](TODO): See the full guide on column fields and learn how cell values are determined.
    */
-  readonly data: T;
+  readonly data: T | null;
 }
 
 /**
@@ -228,7 +228,7 @@ export interface RowGroup {
    * branch represents a fork in the tree, and the key is the path value associated with that
    * fork.
    */
-  readonly key: string;
+  readonly key: string | null;
 
   /**
    * The data associated with the branch node. This must be a JavaScript object with string values

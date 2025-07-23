@@ -9,6 +9,7 @@ import type {
   FieldDataParam,
   AggModelFn,
   RowDataSourceClientPaginated,
+  FilterInFilterItem,
 } from "../+types";
 import { type ClientRowDataSourceParams, type Grid, type RowNode } from "../+types";
 import { useRef } from "react";
@@ -497,6 +498,44 @@ export function makeClientDataSourcePaginated<T>(
       rowByIndex,
       rowAllChildIds,
       rowUpdate,
+
+      inFilterItems: (c) => {
+        const grid = rdsStore.get(grid$);
+
+        if (!grid) return [];
+
+        const data = rdsStore.get(centerNodes);
+
+        const values = new Set(
+          data.map((row) => {
+            const field = grid.api.columnField(c, row);
+            return field;
+          }),
+        );
+
+        return [...values].map<FilterInFilterItem>((x) => {
+          if (!p.transformInFilterItem) return { label: `${x}`, value: x };
+
+          return p.transformInFilterItem({ field: x, column: c });
+        });
+      },
+
+      rowAreAllSelected: (rowId) => {
+        const g = rdsStore.get(grid$);
+        if (!g) return false;
+
+        const selected = g.state.rowSelectedIds.get();
+
+        if (rowId) {
+          const row = rowById(rowId);
+          if (!row) return false;
+          const childIds = new Set(rowAllChildIds(rowId));
+          return childIds.isSubsetOf(selected);
+        }
+
+        const f = rdsStore.get(tree);
+        return f.idsAll.isSubsetOf(selected);
+      },
 
       rowAdd: (newRows, place = "end") => {
         rdsStore.set(data, (prev) => {

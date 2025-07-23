@@ -1719,6 +1719,11 @@ export interface RowDataSource<T> {
   /**
    *
    */
+  readonly rowAreAllSelected: (rowId?: string) => void;
+
+  /**
+   *
+   */
   readonly rowAllChildIds: (rowId: string) => string[];
 
   /**
@@ -1792,6 +1797,11 @@ export interface RowDataSourceClient<T> {
   /**
    *
    */
+  readonly rowAreAllSelected: (rowId?: string) => void;
+
+  /**
+   *
+   */
   readonly rowAllChildIds: (rowId: string) => string[];
 
   /**
@@ -1861,6 +1871,11 @@ export interface RowDataSourceClientPaginated<T> {
    *
    */
   readonly rowSelectAll: (params: RowSelectAllOptions) => void;
+
+  /**
+   *
+   */
+  readonly rowAreAllSelected: (rowId?: string) => void;
 
   /**
    *
@@ -2164,7 +2179,7 @@ export interface RowGroup {
    * branch represents a fork in the tree, and the key is the path value associated with that
    * fork.
    */
-  readonly key: string;
+  readonly key: string | null;
 
   /**
    * The data associated with the branch node. This must be a JavaScript object with string values
@@ -2229,7 +2244,7 @@ export interface RowLeaf<T = any> {
    * - {@link ColumnField}: The column field determines how a cell's value is calculated.
    * - [Column Field](TODO): See the full guide on column fields and learn how cell values are determined.
    */
-  readonly data: T;
+  readonly data: T | null;
 }
 
 /**
@@ -2296,8 +2311,8 @@ export interface CellSpanFnParams<T> {
  *
  */
 export type FieldDataParam<T> =
-  | { kind: "leaf"; data: T }
-  | { kind: "branch"; data: Record<string, unknown>; key: string };
+  | { kind: "leaf"; data: T | null }
+  | { kind: "branch"; data: Record<string, unknown>; key: string | null };
 
 /**
  *
@@ -2366,7 +2381,7 @@ export interface FieldRowGroupParamsFn<T> {
   /**
    *
    */
-  readonly data: T;
+  readonly data: T | null;
 }
 
 /**
@@ -3096,7 +3111,7 @@ export interface FilterFnParams<T> {
   /**
    *
    */
-  readonly data: T;
+  readonly data: T | null;
 
   /**
    *
@@ -3397,7 +3412,7 @@ export type AggFn<T> = (
   /**
    *
    */
-  data: T[],
+  data: (T | null)[],
   /**
    *
    */

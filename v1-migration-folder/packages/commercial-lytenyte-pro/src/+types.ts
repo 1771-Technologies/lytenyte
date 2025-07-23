@@ -1844,6 +1844,14 @@ export interface ClientRowDataSourceParams<T> {
    *
    */
   readonly rowIdLeaf?: (d: RowLeaf<T>, i: number) => string;
+
+  /**
+   *
+   */
+  readonly transformInFilterItem?: (params: {
+    field: unknown;
+    column: Column<T>;
+  }) => FilterInFilterItem;
 }
 
 /**
@@ -1888,6 +1896,11 @@ export interface RowDataSourceClientPaginated<T> {
   /**
    *
    */
+  readonly rowAreAllSelected: (rowId?: string) => void;
+
+  /**
+   *
+   */
   readonly rowAllChildIds: (rowId: string) => string[];
 
   /**
@@ -1922,6 +1935,13 @@ export interface RowDataSourceClientPaginated<T> {
    *
    */
   readonly page: RowDataSourceClientPageState;
+
+  /**
+   *
+   */
+  readonly inFilterItems: (
+    column: Column<T>,
+  ) => Promise<FilterInFilterItem[]> | FilterInFilterItem[];
 }
 
 /**
@@ -1986,6 +2006,11 @@ export interface RowDataSourceClient<T> {
   /**
    *
    */
+  readonly rowAreAllSelected: (rowId?: string) => void;
+
+  /**
+   *
+   */
   readonly rowAllChildIds: (rowId: string) => string[];
 
   /**
@@ -2015,6 +2040,13 @@ export interface RowDataSourceClient<T> {
    *
    */
   readonly rowSetBotData: (data: any[]) => void;
+
+  /**
+   *
+   */
+  readonly inFilterItems: (
+    column: Column<T>,
+  ) => Promise<FilterInFilterItem[]> | FilterInFilterItem[];
 }
 
 /**
@@ -2059,6 +2091,11 @@ export interface RowDataSource<T> {
   /**
    *
    */
+  readonly rowAreAllSelected: (rowId?: string) => void;
+
+  /**
+   *
+   */
   readonly rowAllChildIds: (rowId: string) => string[];
 
   /**
@@ -2088,6 +2125,118 @@ export interface RowDataSource<T> {
    *
    */
   readonly rowSetBotData: (data: any[]) => void;
+
+  /**
+   *
+   */
+  readonly inFilterItems: (
+    column: Column<T>,
+  ) => Promise<FilterInFilterItem[]> | FilterInFilterItem[];
+}
+
+/**
+ *
+ */
+export interface RowDataSourceServer<T> {
+  /**
+   *
+   */
+  readonly init: (grid: Grid<T>) => void;
+
+  /**
+   *
+   */
+  readonly rowById: (id: string) => RowNode<T> | null;
+
+  /**
+   *
+   */
+  readonly rowByIndex: (index: number) => RowNode<T> | null;
+
+  /**
+   *
+   */
+  readonly rowToIndex: (rowId: string) => number | null;
+
+  /**
+   *
+   */
+  readonly rowExpand: (expansion: Record<string, boolean>) => void;
+
+  /**
+   *
+   */
+  readonly rowSelect: (params: RdsRowSelectParams) => void;
+
+  /**
+   *
+   */
+  readonly rowSelectAll: (params: RowSelectAllOptions) => void;
+
+  /**
+   *
+   */
+  readonly rowAreAllSelected: (rowId?: string) => void;
+
+  /**
+   *
+   */
+  readonly rowAllChildIds: (rowId: string) => string[];
+
+  /**
+   *
+   */
+  readonly rowUpdate: (updates: Map<string | number, any>) => void;
+
+  /**
+   *
+   */
+  readonly rowDelete: (deletions: (string | number)[]) => void;
+
+  /**
+   *
+   */
+  readonly rowAdd: (
+    newRows: any[],
+    atIndex?: number | "beginning" | "end",
+  ) => void;
+
+  /**
+   *
+   */
+  readonly rowSetTopData: (data: any[]) => void;
+
+  /**
+   *
+   */
+  readonly rowSetBotData: (data: any[]) => void;
+
+  /**
+   *
+   */
+  readonly inFilterItems: (
+    column: Column<T>,
+  ) => Promise<FilterInFilterItem[]> | FilterInFilterItem[];
+
+  /**
+   *
+   */
+  readonly isLoading: GridAtomReadonly<boolean>;
+
+  /**
+   *
+   */
+  readonly pushResponses: (req: (DataResponse | DataResponsePinned)[]) => void;
+
+  /**
+   *
+   */
+  readonly pushRequests: (req: DataRequest[], onSuccess?: () => void) => void;
+
+  /**
+   *
+   */
+  readonly reset: () => void;
 }
 
 /**
@@ -2333,7 +2482,7 @@ export interface RowGroup {
    * branch represents a fork in the tree, and the key is the path value associated with that
    * fork.
    */
-  readonly key: string;
+  readonly key: string | null;
 
   /**
    * The data associated with the branch node. This must be a JavaScript object with string values
@@ -2398,7 +2547,7 @@ export interface RowLeaf<T = any> {
    * - {@link ColumnField}: The column field determines how a cell's value is calculated.
    * - [Column Field](TODO): See the full guide on column fields and learn how cell values are determined.
    */
-  readonly data: T;
+  readonly data: T | null;
 }
 
 /**
@@ -2465,8 +2614,8 @@ export interface CellSpanFnParams<T> {
  *
  */
 export type FieldDataParam<T> =
-  | { kind: "leaf"; data: T }
-  | { kind: "branch"; data: Record<string, unknown>; key: string };
+  | { kind: "leaf"; data: T | null }
+  | { kind: "branch"; data: Record<string, unknown>; key: string | null };
 
 /**
  *
@@ -2535,7 +2684,7 @@ export interface FieldRowGroupParamsFn<T> {
   /**
    *
    */
-  readonly data: T;
+  readonly data: T | null;
 }
 
 /**
@@ -3314,7 +3463,7 @@ export interface FilterFnParams<T> {
   /**
    *
    */
-  readonly data: T;
+  readonly data: T | null;
 
   /**
    *
@@ -3345,6 +3494,26 @@ export interface FilterIn {
    *
    */
   readonly value: Set<string | number | null>;
+}
+
+/**
+ *
+ */
+export interface FilterInFilterItem {
+  /**
+   *
+   */
+  readonly label: string;
+
+  /**
+   *
+   */
+  readonly value: unknown;
+
+  /**
+   *
+   */
+  readonly group?: string[];
 }
 
 /**
@@ -3653,7 +3822,7 @@ export type AggFn<T> = (
   /**
    *
    */
-  data: T[],
+  data: (T | null)[],
   /**
    *
    */
@@ -5326,3 +5495,328 @@ export interface PopoverFrameRendererParams<T> {
  *
  */
 export type CellSelectionMode = "range" | "multi-range" | "none";
+
+/**
+ *
+ */
+export type DataColumnPivotFetcherFn<T> = (
+  /**
+   *
+   */
+  params: DataColumnPivotFetcherParams<T>,
+) => Promise<Column<T>[]>;
+
+/**
+ *
+ */
+export interface DataColumnPivotFetcherParams<T> {
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly reqTime: number;
+
+  /**
+   *
+   */
+  readonly model: DataRequestModel<T>;
+}
+
+/**
+ *
+ */
+export type DataFetcherFn<T> = (
+  /**
+   *
+   */
+  params: DataFetcherParams<T>,
+) => Promise<(DataResponse | DataResponsePinned)[]>;
+
+/**
+ *
+ */
+export interface DataFetcherParams<T> {
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly requests: DataRequest[];
+
+  /**
+   *
+   */
+  readonly reqTime: number;
+
+  /**
+   *
+   */
+  readonly model: DataRequestModel<T>;
+}
+
+/**
+ *
+ */
+export type DataInFilterItemFetcherFn<T> = (
+  /**
+   *
+   */
+  params: DataInFilterItemFetcherParams<T>,
+) => Promise<FilterInFilterItem[]> | FilterInFilterItem[];
+
+/**
+ *
+ */
+export interface DataInFilterItemFetcherParams<T> {
+  /**
+   *
+   */
+  readonly grid: Grid<T>;
+
+  /**
+   *
+   */
+  readonly reqTime: number;
+
+  /**
+   *
+   */
+  readonly column: Column<T>;
+}
+
+/**
+ *
+ */
+export interface DataRequest {
+  /**
+   *
+   */
+  readonly id: string;
+
+  /**
+   *
+   */
+  readonly path: (string | null)[];
+
+  /**
+   *
+   */
+  readonly start: number;
+
+  /**
+   *
+   */
+  readonly end: number;
+
+  /**
+   *
+   */
+  readonly rowStartIndex: number;
+
+  /**
+   *
+   */
+  readonly rowEndIndex: number;
+}
+
+/**
+ *
+ */
+export interface DataRequestModel<T> {
+  /**
+   *
+   */
+  readonly sorts: SortModelItem<T>[];
+
+  /**
+   *
+   */
+  readonly filters: FilterModelItem<T>[];
+
+  /**
+   *
+   */
+  readonly quickSearch: string | null;
+
+  /**
+   *
+   */
+  readonly group: RowGroupModelItem<T>[];
+
+  /**
+   *
+   */
+  readonly groupExpansions: Record<string, boolean | undefined>;
+
+  /**
+   *
+   */
+  readonly aggregations: Record<string, { fn: AggModelFn<T> }>;
+
+  /**
+   *
+   */
+  readonly pivotGroupExpansions: Record<string, boolean | undefined>;
+
+  /**
+   *
+   */
+  readonly pivotMode: boolean;
+
+  /**
+   *
+   */
+  readonly pivotModel: ColumnPivotModel<T>;
+}
+
+/**
+ *
+ */
+export interface DataResponse {
+  /**
+   *
+   */
+  readonly kind: "center";
+
+  /**
+   *
+   */
+  readonly data: (DataResponseLeafItem | DataResponseBranchItem)[];
+
+  /**
+   *
+   */
+  readonly size: number;
+
+  /**
+   *
+   */
+  readonly asOfTime: number;
+
+  /**
+   *
+   */
+  readonly path: (string | null)[];
+
+  /**
+   *
+   */
+  readonly start: number;
+
+  /**
+   *
+   */
+  readonly end: number;
+}
+
+/**
+ *
+ */
+export interface DataResponseBranchItem {
+  /**
+   *
+   */
+  readonly kind: "branch";
+
+  /**
+   *
+   */
+  readonly id: string;
+
+  /**
+   *
+   */
+  readonly data: any;
+
+  /**
+   *
+   */
+  readonly key: string | null;
+
+  /**
+   *
+   */
+  readonly childCount: number;
+}
+
+/**
+ *
+ */
+export interface DataResponseLeafItem {
+  /**
+   *
+   */
+  readonly kind: "leaf";
+
+  /**
+   *
+   */
+  readonly id: string;
+
+  /**
+   *
+   */
+  readonly data: any;
+}
+
+/**
+ *
+ */
+export interface DataResponsePinned {
+  /**
+   *
+   */
+  readonly kind: "top" | "bottom";
+
+  /**
+   *
+   */
+  readonly data: DataResponseLeafItem[];
+
+  /**
+   *
+   */
+  readonly asOfTime: number;
+}
+
+/**
+ *
+ */
+export interface RowDataSourceServerParams<T> {
+  /**
+   *
+   */
+  readonly dataFetcher: DataFetcherFn<T>;
+
+  /**
+   *
+   */
+  readonly dataColumnPivotFetcher?: DataColumnPivotFetcherFn<T>;
+
+  /**
+   *
+   */
+  readonly dataInFilterItemFetcher?: DataInFilterItemFetcherFn<T>;
+
+  /**
+   *
+   */
+  readonly cellUpdateHandler?: (updates: Map<string, any>) => void;
+
+  /**
+   *
+   */
+  readonly cellUpdateOptimistically?: boolean;
+
+  /**
+   *
+   */
+  readonly pageSize?: number;
+}
