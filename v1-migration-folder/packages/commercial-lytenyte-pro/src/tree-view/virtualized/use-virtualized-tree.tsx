@@ -12,12 +12,14 @@ export interface VirtualizedTreeViewPathsArgs<T extends PathProvidedItem> {
   readonly expansions: Record<string, boolean>;
   readonly expansionDefault?: boolean;
   readonly paths: T[];
+  readonly nonAdjacentPathTrees?: boolean;
 }
 
 export function useVirtualizedTree<T extends PathProvidedItem>({
   itemHeight,
   expansions,
   expansionDefault = false,
+  nonAdjacentPathTrees,
   paths,
 }: VirtualizedTreeViewPathsArgs<T>) {
   const [ref, bounds, _, panel] = useMeasure({ scroll: true });
@@ -26,7 +28,9 @@ export function useVirtualizedTree<T extends PathProvidedItem>({
     paths,
     expansions,
     expansionDefault,
+    nonAdjacentPathTrees,
   );
+
   const size = useMemo(() => flat.length, [flat.length]);
 
   const [rowStart, rowEnd] = useRowStartAndEnd(panel as HTMLElement, itemHeight, bounds, size);
@@ -81,10 +85,25 @@ export function useVirtualizedTree<T extends PathProvidedItem>({
     }
 
     const subtreePaths = buildVirtualTreePartial(items);
-    const subtree = makeVirtualTree(subtreePaths, nodeToIndex, itemHeight);
+    const subtree = makeVirtualTree(
+      subtreePaths,
+      nodeToIndex,
+      itemHeight,
+      nonAdjacentPathTrees ?? false,
+    );
 
     return subtree;
-  }, [flat, focused, idToNode, indexToId, itemHeight, nodeToIndex, rowEnd, rowStart]);
+  }, [
+    flat,
+    focused,
+    idToNode,
+    indexToId,
+    itemHeight,
+    nodeToIndex,
+    nonAdjacentPathTrees,
+    rowEnd,
+    rowStart,
+  ]);
 
   const spacer = <div style={{ height: size * itemHeight, width: 0 }} />;
 

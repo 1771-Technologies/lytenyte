@@ -7,7 +7,7 @@ import { isBranchNode } from "../utils/is-branch-node.js";
 import { getTreeNodeId } from "../utils/get-tree-node-id.js";
 import { getParentNode } from "../utils/get-parent-node.js";
 import { getSiblingBranches } from "../utils/get-sibling-branches.js";
-import { focusable } from "@1771technologies/lytenyte-focus";
+import { getFocusables } from "@1771technologies/lytenyte-dom-utils";
 
 const accepted = ["ArrowRight", "ArrowLeft", "Enter", "*"];
 
@@ -62,7 +62,7 @@ export function useBranchKeys(
         return;
       }
 
-      const childNodes = focusable(branch.firstElementChild!) as HTMLElement[];
+      const childNodes = getFocusables(branch.firstElementChild!) as HTMLElement[];
       if (childNodes.length > 1 && childNodes.at(-1) !== document.activeElement) {
         const current = childNodes.indexOf(document.activeElement as HTMLElement);
 
