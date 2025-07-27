@@ -33,6 +33,8 @@ export const Leaf = forwardRef<HTMLLIElement, ColumnManagerLeafProps & JSX.Intri
               ref={forwarded}
               {...item.attrs}
               style={{ ...props.style, ...item.attrs.style }}
+              data-ln-column-manager-leaf
+              data-ln-column-id={item.leaf.data.id}
             />
           }
         />

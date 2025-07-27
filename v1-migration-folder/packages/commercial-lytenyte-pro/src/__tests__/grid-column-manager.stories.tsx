@@ -145,6 +145,7 @@ function RenderNode<T>({ item }: { item: TreeVirtualItem<Column<T>> }) {
   if (item.kind === "leaf") {
     return (
       <CM.Leaf item={item} style={{ display: "flex", gap: "2px" }}>
+        <CM.MoveHandle>O</CM.MoveHandle>
         <CM.VisibilityCheckbox />
         <CM.Label />
       </CM.Leaf>

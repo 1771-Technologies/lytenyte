@@ -24,7 +24,7 @@ export function useVirtualizedTree<T extends PathProvidedItem>({
 }: VirtualizedTreeViewPathsArgs<T>) {
   const [ref, bounds, _, panel] = useMeasure({ scroll: true });
 
-  const { flat, nodeToIndex, indexToId, allIds, idToNode } = useFlattenedTree(
+  const { flat, nodeToIndex, indexToId, allIds, idToNode, root } = useFlattenedTree(
     paths,
     expansions,
     expansionDefault,
@@ -132,10 +132,12 @@ export function useVirtualizedTree<T extends PathProvidedItem>({
     ref,
     virtualTree,
     spacer,
+
     rootProps: {
       getAllIds,
       getIdsBetweenNodes,
       onFocusChange,
+      root,
     },
   };
 }

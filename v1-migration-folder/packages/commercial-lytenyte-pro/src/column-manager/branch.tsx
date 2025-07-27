@@ -17,7 +17,7 @@ export interface ColumnManagerBranchProps {
 export const Branch = forwardRef<
   HTMLLIElement,
   ColumnManagerBranchProps & JSX.IntrinsicElements["li"]
->(function ColumnManagerLeaf({ item, label, ...props }, forwarded) {
+>(function Branch({ item, label, ...props }, forwarded) {
   const grid = useGrid();
   const id = grid.state.gridId.useValue();
 
@@ -27,10 +27,17 @@ export const Branch = forwardRef<
     <ColumnItemContext value={useMemo(() => ({ item }), [item])}>
       <TreeBranch
         {...props}
-        itemId={item.branch.id}
+        itemId={item.branch.data.idOccurrence}
         ref={forwarded}
         {...item.attrs}
-        label={<DropWrap accepted={[accepted]} as={label}></DropWrap>}
+        label={
+          <DropWrap
+            data-ln-column-manager-branch
+            data-ln-column-id={item.branch.data.idOccurrence}
+            accepted={[accepted]}
+            as={label}
+          />
+        }
       ></TreeBranch>
     </ColumnItemContext>
   );

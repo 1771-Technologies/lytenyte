@@ -46,7 +46,25 @@ export const MoveHandle = forwardRef<
     },
 
     onDrop: (p) => {
-      console.log(p);
+      const move = p.dropElement.getAttribute("data-ln-column-id");
+
+      if (!move) return null;
+
+      if (columns.some((c) => c.id === move)) return;
+
+      const allColumns = grid.state.columns.get();
+      const moveIndex = allColumns.findIndex((c) => c.id === move);
+      if (moveIndex === -1) return;
+
+      const thisIndex = allColumns.findIndex((c) => c.id === columns[0].id);
+
+      const isBefore = thisIndex > moveIndex;
+
+      grid.api.columnMove({
+        moveColumns: columns,
+        moveTarget: move,
+        before: isBefore,
+      });
     },
 
     placeholder: () => {
