@@ -47,7 +47,6 @@ export const MoveHandle = forwardRef<
 
     onDrop: (p) => {
       const move = p.dropElement.getAttribute("data-ln-column-id");
-
       if (!move) return null;
 
       if (columns.some((c) => c.id === move)) return;
@@ -84,7 +83,7 @@ export const MoveHandle = forwardRef<
   const additionalProps = isMovable ? otherProps : {};
 
   const renderer = useSlot({
-    props: [additionalProps, props],
+    props: [{ "aria-label": "Drag to move column" }, additionalProps, props],
     ref: isMovable ? combined : forwarded,
     slot: slot ?? <div />,
   });

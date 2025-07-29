@@ -46,6 +46,7 @@ export const VisibilityCheckbox = forwardRef<
       <input
         type="checkbox"
         checked={isVisible}
+        aria-label="visibility toggle"
         onChange={() => {
           toggle();
         }}

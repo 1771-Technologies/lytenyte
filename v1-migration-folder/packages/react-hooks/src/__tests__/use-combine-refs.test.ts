@@ -1,4 +1,4 @@
-import { renderHook } from "@1771technologies/aio/vitest";
+import { renderHook } from "@testing-library/react";
 import { useCombinedRefs } from "../use-combine-refs.js";
 import { expect, test, vi } from "vitest";
 

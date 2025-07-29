@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { DragMoveState } from "../+types.js";
 import { activeDragElement, dragState, store } from "../+globals.js";
 import { computeMoveState } from "../utils/compute-move-state.js";
@@ -11,6 +11,9 @@ export function useOnDragMove(
 ) {
   const dragMove = useEvent(onDragMove ?? (() => {}));
 
+  const [isTopHalf, setIsTopHalf] = useState(false);
+  const [isLeftHalf, setIsLeftHalf] = useState(false);
+
   useEffect(() => {
     if (!over) return;
 
@@ -19,10 +22,16 @@ export function useOnDragMove(
       const dragEl = store.get(activeDragElement);
 
       if (!dropEl || !pos || !dragEl) return;
+      const s = computeMoveState(dropEl, dragEl, pos);
 
-      dragMove(computeMoveState(dropEl, dragEl, pos));
+      setIsTopHalf(s.topHalf);
+      setIsLeftHalf(s.leftHalf);
+
+      dragMove(s);
     });
 
     return () => remove();
   }, [over, dropEl, dragMove]);
+
+  return { isTopHalf, isLeftHalf };
 }

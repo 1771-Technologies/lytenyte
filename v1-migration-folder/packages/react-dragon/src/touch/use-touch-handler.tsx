@@ -83,7 +83,7 @@ export function useTouchHandler(
               if (dropZone && active !== el) {
                 // We definitely want to leave our current active, since we have a new active one.
                 /* v8 ignore next 1 */
-                if (active) dropZonesAtom.get(active)?.leave();
+                if (active) dropZonesAtom.get(active)?.leave(active);
 
                 let j = 0;
                 while (j < i) {
@@ -97,7 +97,7 @@ export function useTouchHandler(
                 }
 
                 store.set(activeDropAtom, el);
-                dropZone.enter();
+                dropZone.enter(el);
 
                 return;
                 /* v8 ignore next 18 */
@@ -109,7 +109,7 @@ export function useTouchHandler(
                   // covered by another element. In this case we need to actually remove the drop
                   // zone.
                   if (!active.contains(potentialChild)) {
-                    dropZonesAtom.get(active)?.leave();
+                    dropZonesAtom.get(active)?.leave(active);
                     store.set(activeDropAtom, null);
                     return;
                   }
@@ -123,7 +123,7 @@ export function useTouchHandler(
             // If we reach this point, that means we are no longer over a drop zone that we have
             // registered. So we need to remove our active node if we have one.
             if (active) {
-              dropZonesAtom.get(active)?.leave();
+              dropZonesAtom.get(active)?.leave(active);
               store.set(activeDropAtom, null);
             }
           });

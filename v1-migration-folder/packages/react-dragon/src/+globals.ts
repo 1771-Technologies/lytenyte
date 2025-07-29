@@ -18,6 +18,11 @@ export const isTouchDragAtom = atom(false);
 export const dropZonesAtom = new Map<HTMLElement, DropZone>();
 
 export const dragState = {
+  active: {
+    get: () => store.get(activeDragElement),
+    watch: (fn: () => void) => store.sub(activeDragElement, fn),
+    use: () => useAtomValue(activeDragElement, { store }),
+  },
   over: {
     get: () => store.get(activeDropAtom),
     watch: (fn: () => void) => store.sub(activeDropAtom, fn),

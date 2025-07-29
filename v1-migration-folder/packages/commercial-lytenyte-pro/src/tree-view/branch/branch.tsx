@@ -12,6 +12,7 @@ import { useBranchKeys } from "./use-branch-keys.js";
 export interface TreeBranchProps {
   readonly itemId: string;
 
+  readonly labelWrap?: SlotComponent;
   readonly label?: SlotComponent;
   readonly expander?: SlotComponent;
 
@@ -22,7 +23,16 @@ export interface TreeBranchProps {
 
 export const TreeBranch = forwardRef<HTMLLIElement, JSX.IntrinsicElements["li"] & TreeBranchProps>(
   function TreeBranch(
-    { itemId, label, expander, transitionEnterMs, transitionExitMs, gridWrapped, ...props },
+    {
+      itemId,
+      label,
+      expander,
+      transitionEnterMs,
+      transitionExitMs,
+      gridWrapped,
+      labelWrap,
+      ...props
+    },
     forwarded,
   ) {
     const depth = useDepth();
@@ -68,6 +78,21 @@ export const TreeBranch = forwardRef<HTMLLIElement, JSX.IntrinsicElements["li"] 
 
     const wrapped = gridWrapped ?? root.gridWrappedBranches;
 
+    const labelWrapSlot = useSlot({
+      props: [
+        {
+          "data-tree-branch-label": true,
+          children: (
+            <>
+              {expanderRendered}
+              {labelRendered}
+            </>
+          ),
+        },
+      ],
+      slot: labelWrap ?? <div />,
+    });
+
     return (
       <depthContext.Provider value={depth + 1}>
         <li
@@ -90,10 +115,7 @@ export const TreeBranch = forwardRef<HTMLLIElement, JSX.IntrinsicElements["li"] 
             } as CSSProperties
           }
         >
-          <div data-tree-branch-label>
-            {expanderRendered}
-            {labelRendered}
-          </div>
+          {labelWrapSlot}
           <div>
             <Wrapped wrapped={wrapped} expanded={open}>
               {shouldMount && (

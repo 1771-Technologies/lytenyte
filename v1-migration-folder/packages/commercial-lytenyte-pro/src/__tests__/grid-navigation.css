@@ -57,3 +57,21 @@ ul {
 [data-tree-branch-grid-wrapped-content] {
   overflow: hidden;
 }
+
+[data-ln-drag-over="true"][data-ln-can-drop="true"][data-ln-is-after="true"]::before {
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  height: 2px;
+  background-color: blue;
+  content: "";
+}
+
+[data-ln-drag-over="true"][data-ln-can-drop="true"][data-ln-is-before="true"]::after {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  height: 2px;
+  background-color: blue;
+  content: "";
+}
