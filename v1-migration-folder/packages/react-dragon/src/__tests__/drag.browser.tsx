@@ -59,7 +59,7 @@ describe("drag", () => {
 
     await userEvent.dragAndDrop(draggable, screen.getByText("Target For Drop: 0"));
     await wait(80);
-    const lo = document.querySelector('[data-drop-zone="true"]');
+    const lo = document.querySelector('[data-ln-drop-zone="true"]');
     expect(lo?.textContent).toEqual("Target For Drop: 1");
   });
 
@@ -119,7 +119,7 @@ describe("drag", () => {
     dragHandler.touchend(el, { x: bb.x + 2, y: bb.y + 2 });
 
     await wait(80);
-    const lo = document.querySelector('[data-drop-zone="true"]');
+    const lo = document.querySelector('[data-ln-drop-zone="true"]');
     expect(lo?.textContent).toEqual("Target For Drop: 1");
   });
 

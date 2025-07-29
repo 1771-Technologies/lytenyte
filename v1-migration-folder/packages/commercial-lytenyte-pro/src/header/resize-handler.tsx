@@ -34,6 +34,7 @@ export function ResizeHandler<T>({
 
   const defaultProps: JSX.IntrinsicElements["div"] = {
     role: "button",
+    "aria-label": `Resize ${cell.column.name ?? cell.column.id}`,
     tabIndex: -1,
     onDoubleClick: () => {
       if (!double) return;

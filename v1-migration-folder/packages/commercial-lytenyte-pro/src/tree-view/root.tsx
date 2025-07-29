@@ -1,6 +1,6 @@
 import { forwardRef, useMemo, useRef, useState, type PropsWithChildren, type Ref } from "react";
 import { context, type TreeViewRootContext } from "./context";
-import { useEvent, useForkRef } from "@1771technologies/lytenyte-react-hooks";
+import { useCombinedRefs, useEvent } from "@1771technologies/lytenyte-react-hooks";
 import { getAllIds } from "./navigation/get-all-ids.js";
 import { getIdsBetweenNodes } from "./utils/get-ids-between-nodes.js";
 
@@ -34,7 +34,7 @@ export const TreeRoot = forwardRef<HTMLElement, PropsWithChildren<TreeRootProps>
     const [expansions, onExpansionChange] = useState<Record<string, boolean>>({});
     const [selection, setSelections] = useState<Set<string>>(() => new Set());
 
-    const ref = useForkRef(setPanel, forwarded as any);
+    const ref = useCombinedRefs(setPanel, forwarded as any);
     const selectionPivotRef = useRef<string | null>(null);
 
     const allIds = useEvent((el) => {

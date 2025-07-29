@@ -10,9 +10,10 @@ export function useFlattenedTree<T extends PathProvidedItem>(
   paths: T[],
   expansions: Record<string, boolean>,
   expansionDefault: boolean,
+  nonAdjacentPathTrees?: boolean,
 ) {
-  const { flat, nodeToIndex, indexToId, allIds, idToNode } = useMemo(() => {
-    const root = computePathTree(paths);
+  const { flat, nodeToIndex, indexToId, allIds, idToNode, root } = useMemo(() => {
+    const root = computePathTree(paths, undefined, nonAdjacentPathTrees);
 
     const flat: (PathBranch<T> | PathLeaf<T>)[] = [];
 
@@ -39,7 +40,7 @@ export function useFlattenedTree<T extends PathProvidedItem>(
         }
       }
 
-      const id = item.kind === "branch" ? item.id : item.data.id;
+      const id = item.kind === "branch" ? item.data.idOccurrence : item.data.id;
       allIds.add(id);
       indexToId.set(index, id);
       nodeToIndex.set(item, index);
@@ -47,8 +48,8 @@ export function useFlattenedTree<T extends PathProvidedItem>(
       index++;
     }
 
-    return { flat, nodeToIndex, indexToId, allIds, idToNode };
-  }, [expansionDefault, expansions, paths]);
+    return { flat, nodeToIndex, indexToId, allIds, idToNode, root };
+  }, [expansionDefault, expansions, nonAdjacentPathTrees, paths]);
 
-  return { flat, nodeToIndex, indexToId, allIds, idToNode };
+  return { flat, nodeToIndex, indexToId, allIds, idToNode, root };
 }

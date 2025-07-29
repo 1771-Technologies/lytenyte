@@ -1,7 +1,7 @@
 import { forwardRef, type CSSProperties, type JSX } from "react";
 import { useDepth } from "./depth-provider.js";
 import { useTreeRoot } from "./context.js";
-import { focusable } from "@1771technologies/lytenyte-focus";
+import { getFocusables } from "@1771technologies/lytenyte-dom-utils";
 
 export interface TreeLeafProps {
   readonly itemId: string;
@@ -29,7 +29,7 @@ export const TreeLeaf = forwardRef<HTMLLIElement, JSX.IntrinsicElements["li"] & 
           )
             return;
 
-          const nodes = focusable(e.currentTarget) as HTMLElement[];
+          const nodes = getFocusables(e.currentTarget) as HTMLElement[];
           const index = nodes.indexOf(document.activeElement! as HTMLElement);
           if (index === -1) {
             nodes.at(0)?.focus();

@@ -16,8 +16,8 @@ import { announce } from "@1771technologies/lytenyte-dom-utils";
 export type DropWrapProps = Omit<JSX.IntrinsicElements["div"], "onDrop"> & {
   onDrop?: (params: OnDropParams) => void;
   onDragMove?: (drag: DragMoveState) => void;
-  onEnter?: () => void;
-  onLeave?: () => void;
+  onEnter?: (el: HTMLElement) => void;
+  onLeave?: (el: HTMLElement) => void;
 
   moveEffect?: "move" | "link" | "copy" | "none";
   accepted: string[];
@@ -49,7 +49,7 @@ export const DropWrap = forwardRef<HTMLDivElement, DropWrapProps>(function DropW
 
   const { over, canDrop, ...ons } = useDropZone({ dropEl, accepted, onDrop, onEnter, onLeave });
 
-  useOnDragMove(over, dropEl, onDragMove);
+  const { isLeftHalf, isTopHalf } = useOnDragMove(over, dropEl, onDragMove);
   useRegisteredDropZone({ dropEl, ...ons });
 
   useEffect(() => {
@@ -69,17 +69,17 @@ export const DropWrap = forwardRef<HTMLDivElement, DropWrapProps>(function DropW
       (ev: DragEventReact) => {
         ev.preventDefault();
         ev.stopPropagation();
-        ons.enter();
+        ons.enter(dropEl!);
       },
-      [ons],
+      [dropEl, ons],
     ),
     onDragLeave: useCallback(
       (ev: DragEventReact) => {
         ev.preventDefault();
         ev.stopPropagation();
-        ons.leave();
+        ons.leave(dropEl!);
       },
-      [ons],
+      [dropEl, ons],
     ),
     onDragOver: useCallback(
       (ev: DragEventReact) => {
@@ -95,9 +95,11 @@ export const DropWrap = forwardRef<HTMLDivElement, DropWrapProps>(function DropW
 
   // Data properties for css targeting.
   Object.assign(defaultProps, {
-    "data-drag-over": over,
-    "data-drag-can-drop": canDrop,
-    "data-drop-zone": "true",
+    "data-ln-drag-over": over,
+    "data-ln-can-drop": canDrop,
+    "data-ln-drop-zone": "true",
+    "data-ln-over-top-half": isTopHalf,
+    "data-ln-over-left-half": isLeftHalf,
   });
 
   const combined = useForkRef(setRef, forwarded);

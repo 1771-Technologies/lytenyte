@@ -2,7 +2,7 @@ import { cloneElement, type ReactElement } from "react";
 import type { AnyProps, AnyRef } from "./+types.use-slot.js";
 import { mergeProps } from "./merge-props.js";
 import { getElementRef } from "./get-element-ref.js";
-import { useForkRef } from "../use-fork-ref.js";
+import { useCombinedRefs } from "../use-combine-refs.js";
 
 export interface UseSlotProps {
   readonly ref?: AnyRef;
@@ -26,7 +26,14 @@ export function useSlot({ props = {}, slot = <div />, state, ref: forwardedRef }
 
   const mergedProps = mergeProps(merged, el.props as any);
   const ref = getElementRef(el);
-  mergedProps.ref = useForkRef(forwardedRef, ref);
+
+  const mergedRefs = useCombinedRefs(forwardedRef, ref);
+
+  // One of the refs should be fined. We have to check for this since
+  // not all elements accept a ref (e.g. Fragments)
+  if (ref || forwardedRef) {
+    mergedProps.ref = mergedRefs;
+  }
 
   return cloneElement(el, mergedProps);
 }

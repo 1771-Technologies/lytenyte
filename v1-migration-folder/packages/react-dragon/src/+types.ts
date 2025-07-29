@@ -45,8 +45,8 @@ export interface DragPosition {
 }
 
 export interface DropZone {
-  readonly enter: () => void;
-  readonly leave: () => void;
+  readonly enter: (el: HTMLElement) => void;
+  readonly leave: (el: HTMLElement) => void;
   readonly drop: () => void;
 }
 

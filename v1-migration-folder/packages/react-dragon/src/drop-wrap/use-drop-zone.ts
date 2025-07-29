@@ -7,8 +7,8 @@ import { computeMoveState } from "../utils/compute-move-state.js";
 export interface UseDropZoneArgs {
   readonly dropEl: HTMLElement | null;
   readonly accepted: string[];
-  readonly onLeave?: () => void;
-  readonly onEnter?: () => void;
+  readonly onLeave?: (el: HTMLElement) => void;
+  readonly onEnter?: (el: HTMLElement) => void;
   readonly onDrop?: (params: OnDropParams) => void;
 }
 
@@ -16,20 +16,20 @@ export function useDropZone({ dropEl, accepted, onLeave, onDrop, onEnter }: UseD
   const [over, setOver] = useState(false);
   const [canDrop, setCanDrop] = useState(false);
 
-  const handleLeave = useEvent(() => {
+  const handleLeave = useEvent((el: HTMLElement) => {
     setCanDrop(false);
     setOver(false);
-    onLeave?.();
+    onLeave?.(el);
   });
 
-  const handleEnter = useEvent(() => {
+  const handleEnter = useEvent((el: HTMLElement) => {
     const data = dragState.data.get();
     /* v8 ignore next 1 */
     if (!data) return;
 
     const keys = new Set(Object.keys({ ...data.dataTransfer, ...data.siteLocalData }));
 
-    onEnter?.();
+    onEnter?.(el);
     setCanDrop(accepted.some((c) => keys.has(c)));
     setOver(true);
   });

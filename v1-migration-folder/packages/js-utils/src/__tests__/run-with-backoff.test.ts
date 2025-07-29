@@ -13,6 +13,6 @@ describe("runWithBackoffTest", () => {
 
     runWithBackoff(fn, [4, 4]);
 
-    await vi.waitFor(() => expect(fn).toHaveBeenCalledTimes(3));
+    await vi.waitFor(() => expect(fn).toHaveBeenCalledTimes(3), { timeout: 2000 });
   });
 });

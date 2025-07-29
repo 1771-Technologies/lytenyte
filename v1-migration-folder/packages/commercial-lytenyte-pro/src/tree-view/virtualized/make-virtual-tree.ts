@@ -35,12 +35,14 @@ export function makeVirtualTree<T extends PathProvidedItem>(
   paths: PathEntry<T>[],
   nodeToIndex: Map<PathBranch<T> | PathLeaf<T>, number>,
   itemHeight: number,
+  nonAdjacentPathTrees: boolean,
 ): TreeVirtualItem<T>[] {
   const root: TreeVirtualItem<T>[] = [];
   const lookup = new Map<string, TreeVirtualBranch<T>>();
 
   for (const [rawPath, node] of paths) {
     const path = typeof rawPath === "string" ? [] : rawPath;
+    if (nonAdjacentPathTrees) path.pop();
     const joinPath = path.join("#");
 
     if (node.kind === "branch") {

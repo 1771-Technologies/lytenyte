@@ -5,7 +5,7 @@ import { makeHandleTypeahead } from "./make-handle-typeahead.js";
 import { makeHandleNavigation } from "./make-handle-navigation.js";
 import { makeHandleSelection } from "./make-handle-selection.js";
 import { getTreeNodeId } from "../utils/get-tree-node-id.js";
-import { tabbable } from "@1771technologies/lytenyte-focus";
+import { getTabbables } from "@1771technologies/lytenyte-dom-utils";
 
 export function useTreeNavigation() {
   const ctx = useTreeRoot();
@@ -62,7 +62,7 @@ export function useTreeNavigation() {
         handleSelection(ev);
 
         if (ev.key === "Tab") {
-          const els = tabbable(panel as any) as HTMLElement[];
+          const els = getTabbables(panel as any) as HTMLElement[];
           if (!els.length) return;
 
           const original = els.map((el) => {

@@ -39,9 +39,9 @@ export function useKeyboard(
     const controller = new AbortController();
     const endDrag = () => {
       const current = store.get(dragKeyboardDropZone);
-      current?.removeAttribute("data-drag-keyboard-focus");
+      current?.removeAttribute("data-ln-drag-keyboard-focus");
 
-      dropZonesAtom.get(current!)?.leave();
+      dropZonesAtom.get(current!)?.leave(current!);
       setIsDragging(false);
       resetDragState();
       controller.abort();
@@ -89,11 +89,11 @@ export function useKeyboard(
         next?.scrollIntoView();
         store.set(activeDropAtom, next);
 
-        current?.removeAttribute("data-drag-keyboard-focus");
-        next?.setAttribute("data-drag-keyboard-focus", "true");
+        current?.removeAttribute("data-ln-drag-keyboard-focus");
+        next?.setAttribute("data-ln-drag-keyboard-focus", "true");
 
-        dropZonesAtom.get(current!)?.leave();
-        dropZonesAtom.get(next!)?.enter();
+        dropZonesAtom.get(current!)?.leave(current!);
+        dropZonesAtom.get(next!)?.enter(next!);
       }
 
       if (e.key === keyPrev) {
@@ -112,11 +112,11 @@ export function useKeyboard(
         next?.scrollIntoView();
         store.set(activeDropAtom, next);
 
-        current?.removeAttribute("data-drag-keyboard-focus");
-        next?.setAttribute("data-drag-keyboard-focus", "true");
+        current?.removeAttribute("data-ln-drag-keyboard-focus");
+        next?.setAttribute("data-ln-drag-keyboard-focus", "true");
 
-        dropZonesAtom.get(current!)?.leave();
-        dropZonesAtom.get(next!)?.enter();
+        dropZonesAtom.get(current!)?.leave(current!);
+        dropZonesAtom.get(next!)?.enter(next!);
       }
     }
 

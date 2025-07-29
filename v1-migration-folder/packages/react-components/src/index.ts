@@ -44,14 +44,6 @@ export type {
 export { Tooltip } from "./tooltip/index.js";
 
 export type {
-  TreeBranchProps,
-  TreeLeafProps,
-  TreeRootProps,
-  VirtualizedTreeViewPathsArgs,
-} from "./tree-view/index.js";
-export { Tree } from "./tree-view/index.js";
-
-export type {
   SelectClearProps,
   SelectItem,
   SelectOptionProps,
