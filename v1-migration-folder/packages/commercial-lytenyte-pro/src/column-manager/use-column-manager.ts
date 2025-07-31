@@ -2,6 +2,7 @@ import { useState, type Dispatch, type JSX, type SetStateAction } from "react";
 import type { Column, Grid } from "../+types";
 import { useVirtualizedTree } from "../tree-view/virtualized/use-virtualized-tree";
 import type { TreeVirtualItem } from "../tree-view/virtualized/make-virtual-tree";
+import type { PathRoot } from "@1771technologies/lytenyte-shared";
 
 export interface UseColumnManagerReturn<T> {
   readonly rootProps: {
@@ -12,6 +13,7 @@ export interface UseColumnManagerReturn<T> {
     readonly getAllIds: () => Set<string>;
     readonly getIdsBetweenNodes: (left: HTMLElement, right: HTMLElement) => string[];
     readonly onFocusChange: (el: HTMLElement | null) => void;
+    readonly root: PathRoot<Column<T>>;
   };
 
   readonly tree: TreeVirtualItem<Column<T>>[];
