@@ -3,7 +3,10 @@ import type { InterfaceType, UnionType } from "../+types";
 export const RowSelectionMode: UnionType = {
   kind: "union",
   name: "RowSelectionMode",
-  tsDoc: ``,
+  tsDoc: `Specifies the available row selection modes supported by LyteNyte Grid. 
+  - "single" allows only one row to be selected at a time.
+  - "multiple" allows multiple row selections.
+  - "none" disables row selection entirely.`,
   doc: { en: `` },
   export: true,
   types: ['"single"', '"multiple"', '"none"'],
@@ -12,7 +15,10 @@ export const RowSelectionMode: UnionType = {
 export const RowSelectionActivator: UnionType = {
   kind: "union",
   name: "RowSelectionActivator",
-  tsDoc: ``,
+  tsDoc: `Defines the interaction behavior that activates row selection.
+  - "single-click" selects a row with a single mouse click.
+  - "double-click" requires a double-click to select.
+  - "none" disables interaction-based row selection.`,
   doc: { en: `` },
   export: true,
   types: ['"single-click"', '"double-click"', '"none"'],
@@ -21,14 +27,14 @@ export const RowSelectionActivator: UnionType = {
 export const RowSelectOptions: InterfaceType = {
   kind: "interface",
   name: "RowSelectOptions",
-  tsDoc: ``,
+  tsDoc: `Configuration options used when performing row selection operations.`,
   doc: { en: `` },
   export: true,
   properties: [
     {
       kind: "property",
       name: "selected",
-      tsDoc: ``,
+      tsDoc: `The unique identifier of the row to be selected.`,
       doc: { en: `` },
       value: "string",
       optional: false,
@@ -36,7 +42,7 @@ export const RowSelectOptions: InterfaceType = {
     {
       kind: "property",
       name: "pivot",
-      tsDoc: ``,
+      tsDoc: `Sets the pivot row for range selections. Useful for extending selection ranges.`,
       doc: { en: `` },
       value: "string",
       optional: true,
@@ -46,13 +52,13 @@ export const RowSelectOptions: InterfaceType = {
       name: "selectBetweenPivot",
       doc: { en: `` },
       optional: true,
-      tsDoc: ``,
+      tsDoc: `When true, selects the range of rows between the pivot and the selected row.`,
       value: "boolean",
     },
     {
       kind: "property",
       name: "deselect",
-      tsDoc: ``,
+      tsDoc: `If true, the specified row will be deselected instead of selected.`,
       doc: { en: `` },
       optional: true,
       value: "boolean",
@@ -62,7 +68,7 @@ export const RowSelectOptions: InterfaceType = {
       name: "selectChildren",
       doc: { en: `` },
       optional: true,
-      tsDoc: ``,
+      tsDoc: `If true, any child rows associated with the selected row will also be selected.`,
       value: "boolean",
     },
   ],
@@ -71,13 +77,13 @@ export const RowSelectOptions: InterfaceType = {
 export const RowSelectAllOptions: InterfaceType = {
   kind: "interface",
   name: "RowSelectAllOptions",
-  tsDoc: ``,
+  tsDoc: `Options for performing bulk selection or deselection of all rows.`,
   doc: { en: `` },
   export: true,
   properties: [
     {
       kind: "property",
-      tsDoc: ``,
+      tsDoc: `If true, all rows will be deselected rather than selected.`,
       doc: { en: `` },
       name: "deselect",
       optional: true,

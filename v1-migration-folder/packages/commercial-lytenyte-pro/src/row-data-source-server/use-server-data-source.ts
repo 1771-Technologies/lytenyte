@@ -34,7 +34,7 @@ export function makeServerDataSource<T>({
 
   cellUpdateHandler,
   cellUpdateOptimistically = true,
-  pageSize = 200,
+  blockSize = 200,
 }: RowDataSourceServerParams<T>): RowDataSourceServer<T> {
   let grid: Grid<T> | null = null;
 
@@ -172,17 +172,17 @@ export function makeServerDataSource<T>({
       const ranges = f.rangeTree.findRangesForRowIndex(i);
       ranges.forEach((c) => {
         if (c.parent.kind === "root") {
-          const blockIndex = Math.floor(i / pageSize);
+          const blockIndex = Math.floor(i / blockSize);
 
-          const start = blockIndex * pageSize;
-          const end = Math.min(start + pageSize, c.parent.size);
+          const start = blockIndex * blockSize;
+          const end = Math.min(start + blockSize, c.parent.size);
 
           const reqId = getRequestId([], start, end);
 
           if (seen.has(reqId)) return;
           seen.add(reqId);
 
-          const size = start + pageSize > c.parent.size ? c.parent.size - start : pageSize;
+          const size = start + blockSize > c.parent.size ? c.parent.size - start : blockSize;
 
           requests.push({
             id: reqId,
@@ -193,10 +193,10 @@ export function makeServerDataSource<T>({
             rowEndIndex: i + size,
           });
         } else {
-          const blockIndex = Math.floor(c.parent.relIndex / pageSize);
+          const blockIndex = Math.floor(c.parent.relIndex / blockSize);
 
-          const start = blockIndex * pageSize;
-          const end = Math.min(start + pageSize, c.parent.size);
+          const start = blockIndex * blockSize;
+          const end = Math.min(start + blockSize, c.parent.size);
 
           const path = getNodePath(c.parent);
           const reqId = getRequestId(path, start, end);
@@ -204,7 +204,7 @@ export function makeServerDataSource<T>({
           if (seen.has(reqId)) return;
           seen.add(reqId);
 
-          const size = start + pageSize > c.parent.size ? c.parent.size - start : pageSize;
+          const size = start + blockSize > c.parent.size ? c.parent.size - start : blockSize;
 
           requests.push({
             id: reqId,
@@ -228,11 +228,11 @@ export function makeServerDataSource<T>({
     // Initialize the grid.
     const initialDataRequest: DataRequest = {
       path: [],
-      id: getRequestId([], 0, pageSize),
+      id: getRequestId([], 0, blockSize),
       rowStartIndex: 0,
-      rowEndIndex: pageSize,
+      rowEndIndex: blockSize,
       start: 0,
-      end: pageSize,
+      end: blockSize,
     };
 
     isLoading.set(true);
@@ -577,12 +577,12 @@ export function makeServerDataSource<T>({
         const path = getNodePath(row);
 
         return {
-          id: getRequestId(path, 0, Math.min(pageSize, row.size)),
+          id: getRequestId(path, 0, Math.min(blockSize, row.size)),
           start: 0,
-          end: Math.min(pageSize, row.size),
+          end: Math.min(blockSize, row.size),
           path,
           rowStartIndex: rowIndex + 1,
-          rowEndIndex: Math.min(row.size, rowIndex + pageSize + 1),
+          rowEndIndex: Math.min(row.size, rowIndex + blockSize + 1),
         };
       })
       .filter((c) => !!c);

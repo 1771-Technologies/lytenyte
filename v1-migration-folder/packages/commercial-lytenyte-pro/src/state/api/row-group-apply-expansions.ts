@@ -11,7 +11,7 @@ export const makeRowGroupApplyExpansions = (
     };
 
     try {
-      api.eventFire("rowExpandBegin", { expansions, grid, preventNext });
+      api.eventFire("rowExpandBegin", { expansions, grid, preventDefault: preventNext });
 
       if (prevented) return;
 

@@ -3,7 +3,9 @@ import { GridProp, RowIndexProp, RowNodeProp } from "./shared-properties";
 
 export const RowDetailRendererParams: InterfaceType = {
   kind: "interface",
-  tsDoc: ``,
+  tsDoc: `Defines the parameters passed to a row detail renderer. These parameters 
+  include the row index, the row node metadata, 
+  and a reference to the grid instance.`,
   doc: { en: `` },
   export: true,
   name: "RowDetailRendererParams<T>",
@@ -12,7 +14,8 @@ export const RowDetailRendererParams: InterfaceType = {
 
 export const RowDetailHeight: UnionType = {
   kind: "union",
-  tsDoc: ``,
+  tsDoc: `Specifies the height of the row detail section. 
+  Can be a fixed number of pixels or "auto" to size based on content.`,
   doc: { en: `` },
   export: true,
   name: "RowDetailHeight",
@@ -21,14 +24,16 @@ export const RowDetailHeight: UnionType = {
 
 export const RowDetailRendererFn: FunctionType = {
   kind: "function",
-  tsDoc: ``,
+  tsDoc: `A function used to render custom row detail content. 
+  It should return a ReactNode to be displayed in the row's 
+  expanded detail area.`,
   doc: { en: `` },
   export: true,
   name: "RowDetailRendererFn<T>",
   properties: [
     {
       kind: "property",
-      tsDoc: ``,
+      tsDoc: `The parameters passed into the row detail renderer function.`,
       doc: { en: `` },
       value: "RowDetailRendererParams<T>",
       optional: true,

@@ -5,7 +5,7 @@ const Data: PropertyType = {
   name: "data",
   optional: false,
   value: "T[]",
-  tsDoc: ``,
+  tsDoc: `The primary dataset passed to LyteNyte Grid for display.`,
   doc: { en: `` },
 };
 
@@ -14,7 +14,7 @@ const TopData: PropertyType = {
   name: "topData",
   optional: true,
   value: "T[]",
-  tsDoc: ``,
+  tsDoc: `Rows to pin to the top of the grid, rendered above all scrollable rows.`,
   doc: { en: `` },
 };
 
@@ -23,7 +23,7 @@ const BottomData: PropertyType = {
   name: "bottomData",
   optional: true,
   value: "T[]",
-  tsDoc: ``,
+  tsDoc: `Rows to pin to the bottom of the grid, rendered below all scrollable rows.`,
   doc: { en: `` },
 };
 
@@ -32,7 +32,7 @@ const ReflectData: PropertyType = {
   name: "reflectData",
   optional: true,
   value: "boolean",
-  tsDoc: ``,
+  tsDoc: `If true, the data source will reflect external mutations to the original data array.`,
   doc: { en: `` },
 };
 
@@ -40,15 +40,16 @@ const RowIdLeaf: PropertyType = {
   kind: "property",
   name: "rowIdLeaf",
   doc: { en: `` },
-  tsDoc: ``,
+  tsDoc: `Callback to derive a unique id for each leaf row. Receives the row data and index.`,
   optional: true,
   value: "(d: RowLeaf<T>, i: number) => string",
 };
+
 const RowIdBranch: PropertyType = {
   kind: "property",
   name: "rowIdBranch",
   doc: { en: `` },
-  tsDoc: ``,
+  tsDoc: `Callback to derive a unique id for grouped (branch) rows based on group value path.`,
   optional: true,
   value: "(path: string[]) => string",
 };
@@ -57,7 +58,7 @@ export const ClientRowDataSourceParams: InterfaceType = {
   kind: "interface",
   export: true,
   name: "ClientRowDataSourceParams<T>",
-  tsDoc: ``,
+  tsDoc: `Parameters required to initialize a client-side row data source.`,
   tag: "core",
   doc: { en: `` },
   properties: [Data, TopData, BottomData, ReflectData, RowIdBranch, RowIdLeaf],
@@ -68,7 +69,7 @@ const TransformInFilterProp: PropertyType = {
   doc: { en: `` },
   name: "transformInFilterItem",
   optional: true,
-  tsDoc: ``,
+  tsDoc: `Callback that transforms a column in-filter item before it's applied.`,
   value: "(params: { field: unknown, column: Column<T> }) => FilterInFilterItem",
 };
 
@@ -76,7 +77,7 @@ export const ClientRowDataSourceParamsPro: InterfaceType = {
   kind: "interface",
   export: true,
   name: "ClientRowDataSourceParams<T>",
-  tsDoc: ``,
+  tsDoc: `Enhanced parameters for a client-side row data source with additional filtering support.`,
   tag: "pro",
   doc: { en: `` },
   properties: [
@@ -94,7 +95,7 @@ export const ClientTreeDataSourceParamsPro: InterfaceType = {
   kind: "interface",
   export: true,
   name: "ClientTreeDataSourceParams<T>",
-  tsDoc: ``,
+  tsDoc: `Parameters for initializing a tree-structured data source in LyteNyte Grid.`,
   tag: "pro",
   doc: { en: `` },
   properties: [
@@ -110,7 +111,7 @@ export const ClientTreeDataSourceParamsPro: InterfaceType = {
       doc: { en: `` },
       name: "getPathFromData",
       optional: false,
-      tsDoc: ``,
+      tsDoc: `Returns the hierarchical path to group a given data row in tree mode.`,
       value: "(data: RowLeaf<T>) => (string | null | undefined)[]",
     },
   ],

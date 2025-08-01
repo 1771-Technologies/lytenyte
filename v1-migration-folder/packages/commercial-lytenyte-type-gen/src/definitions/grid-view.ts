@@ -14,15 +14,16 @@ const CellLastStartPinProp: PropertyType = {
   name: "colLastStartPin",
   optional: true,
   value: "boolean",
-  tsDoc: ``,
+  tsDoc: `True if this column is the last column in the set of columns pinned to the start.`,
   doc: { en: `` },
 };
+
 const CellFirstEndPinProp: PropertyType = {
   kind: "property",
   name: "colFirstEndPin",
   optional: true,
   value: "boolean",
-  tsDoc: ``,
+  tsDoc: `True if this column is the first column in the set of columns pinned to the end.`,
   doc: { en: `` },
 };
 
@@ -31,15 +32,16 @@ const RowLastPinTopProp: PropertyType = {
   name: "rowLastPinTop",
   optional: true,
   value: "boolean",
-  tsDoc: ``,
+  tsDoc: `True if this row is the last row pinned to the top of the grid.`,
   doc: { en: `` },
 };
+
 const RowFirstPinBottomProp: PropertyType = {
   kind: "property",
   name: "rowFirstPinBottom",
   optional: true,
   value: "boolean",
-  tsDoc: ``,
+  tsDoc: `True if this row is the first row pinned to the bottom of the grid.`,
   doc: { en: `` },
 };
 
@@ -48,7 +50,7 @@ const RowIsFocusRow: PropertyType = {
   name: "rowIsFocusRow",
   optional: true,
   value: "boolean",
-  tsDoc: ``,
+  tsDoc: `True if this row contains the currently focused cell and should be included in layout calculation.`,
   doc: { en: `` },
 };
 
@@ -60,7 +62,7 @@ const HeaderBase: InterfaceTypePartial = {
       name: "rowStart",
       value: "number",
       optional: false,
-      tsDoc: ``,
+      tsDoc: `The starting row index in the header hierarchy for this cell.`,
       doc: { en: `` },
     },
     {
@@ -68,7 +70,7 @@ const HeaderBase: InterfaceTypePartial = {
       name: "rowEnd",
       value: "number",
       optional: false,
-      tsDoc: ``,
+      tsDoc: `The exclusive ending row index in the header hierarchy for this cell.`,
       doc: { en: `` },
     },
     {
@@ -76,7 +78,7 @@ const HeaderBase: InterfaceTypePartial = {
       name: "rowSpan",
       value: "number",
       optional: false,
-      tsDoc: ``,
+      tsDoc: `The number of header rows this header spans vertically.`,
       doc: { en: `` },
     },
     {
@@ -84,7 +86,7 @@ const HeaderBase: InterfaceTypePartial = {
       name: "colStart",
       value: "number",
       optional: false,
-      tsDoc: ``,
+      tsDoc: `The starting column index in the visible layout this header covers.`,
       doc: { en: `` },
     },
     {
@@ -92,7 +94,7 @@ const HeaderBase: InterfaceTypePartial = {
       name: "colEnd",
       value: "number",
       optional: false,
-      tsDoc: ``,
+      tsDoc: `The exclusive ending column index in the visible layout this header covers.`,
       doc: { en: `` },
     },
     {
@@ -100,7 +102,7 @@ const HeaderBase: InterfaceTypePartial = {
       name: "colSpan",
       value: "number",
       optional: false,
-      tsDoc: ``,
+      tsDoc: `The number of columns this header spans horizontally.`,
       doc: { en: `` },
     },
     {
@@ -108,7 +110,7 @@ const HeaderBase: InterfaceTypePartial = {
       name: "colPin",
       optional: false,
       value: "ColumnPin",
-      tsDoc: ``,
+      tsDoc: `Indicates which pin section this column belongs to: 'start', 'end', or 'center'.`,
       doc: { en: `` },
     },
     CellFirstEndPinProp,
@@ -121,7 +123,7 @@ export const HeaderCell: InterfaceType = {
   name: "HeaderCellLayout<T>",
   export: true,
   extends: HeaderBase,
-  tsDoc: ``,
+  tsDoc: `Describes a standard header cell layout in the grid, used to position and render individual column headers.`,
   doc: { en: `` },
   properties: [
     IdProp,
@@ -130,7 +132,7 @@ export const HeaderCell: InterfaceType = {
       name: "kind",
       value: '"cell"',
       optional: false,
-      tsDoc: ``,
+      tsDoc: `A discriminator indicating this is a standard header cell.`,
       doc: { en: `` },
     },
     ColumnProp,
@@ -142,7 +144,7 @@ export const HeaderCellFloating: InterfaceType = {
   name: "HeaderCellFloating<T>",
   export: true,
   extends: HeaderBase,
-  tsDoc: ``,
+  tsDoc: `Describes a floating header cell layout, which remains fixed during scroll operations.`,
   doc: { en: `` },
   properties: [
     IdProp,
@@ -151,7 +153,7 @@ export const HeaderCellFloating: InterfaceType = {
       name: "kind",
       value: '"floating"',
       optional: false,
-      tsDoc: ``,
+      tsDoc: `A discriminator indicating this is a floating (sticky) header cell.`,
       doc: { en: `` },
     },
     ColumnProp,
@@ -163,14 +165,15 @@ export const HeaderGroupCell: InterfaceType = {
   name: "HeaderGroupCellLayout",
   export: true,
   extends: HeaderBase,
-  tsDoc: ``,
+  tsDoc: `Describes a group of columns within the header. Used by LyteNyte 
+  Grid to render grouped column headers with optional collapsibility and structural metadata.`,
   doc: { en: `` },
   properties: [
     {
       kind: "property",
       name: "kind",
       value: '"group"',
-      tsDoc: ``,
+      tsDoc: `Discriminant indicating this layout item is a header group.`,
       doc: { en: `` },
       optional: false,
     },
@@ -178,7 +181,7 @@ export const HeaderGroupCell: InterfaceType = {
       kind: "property",
       name: "isCollapsible",
       value: "boolean",
-      tsDoc: ``,
+      tsDoc: `Indicates whether this column group can be collapsed in the UI.`,
       doc: { en: `` },
       optional: false,
     },
@@ -187,7 +190,7 @@ export const HeaderGroupCell: InterfaceType = {
       kind: "property",
       name: "idOccurrence",
       value: "string",
-      tsDoc: ``,
+      tsDoc: `Unique identifier that includes header split occurrence information.`,
       doc: { en: `` },
       optional: false,
     },
@@ -195,7 +198,7 @@ export const HeaderGroupCell: InterfaceType = {
       kind: "property",
       name: "groupPath",
       value: "string[]",
-      tsDoc: ``,
+      tsDoc: `Hierarchy path representing this column group's position and ancestry.`,
       doc: { en: `` },
       optional: false,
     },
@@ -203,7 +206,7 @@ export const HeaderGroupCell: InterfaceType = {
       kind: "property",
       name: "columnIds",
       value: "string[]",
-      tsDoc: ``,
+      tsDoc: `Column ids that are included within this header group.`,
       doc: { en: `` },
       optional: false,
     },
@@ -211,7 +214,7 @@ export const HeaderGroupCell: InterfaceType = {
       kind: "property",
       name: "start",
       value: "number",
-      tsDoc: ``,
+      tsDoc: `Start index of the group in the column layout.`,
       doc: { en: `` },
       optional: false,
     },
@@ -219,7 +222,7 @@ export const HeaderGroupCell: InterfaceType = {
       kind: "property",
       name: "end",
       value: "number",
-      tsDoc: ``,
+      tsDoc: `Exclusive end index of the group in the column layout.`,
       doc: { en: `` },
       optional: false,
     },
@@ -227,7 +230,8 @@ export const HeaderGroupCell: InterfaceType = {
       kind: "property",
       name: "isHiddenMove",
       value: "boolean",
-      tsDoc: ``,
+      tsDoc: `Indicates that this is a temporary placeholder group for drag-and-drop movement. 
+      Should be ignored for typical rendering.`,
       doc: { en: `` },
       optional: true,
     },
@@ -238,7 +242,8 @@ export const HeaderLayoutCell: UnionType = {
   kind: "union",
   name: "HeaderLayoutCell<T>",
   export: true,
-  tsDoc: ``,
+  tsDoc: `Represents a union of all possible header layout cell types: 
+  normal header, floating header, or header group.`,
   doc: { en: `` },
   types: ["HeaderCellLayout<T>", "HeaderCellFloating<T>", "HeaderGroupCellLayout"],
 };
@@ -248,12 +253,13 @@ export const HeaderLayout: InterfaceType = {
   name: "HeaderLayout<T>",
   export: true,
   doc: { en: `` },
-  tsDoc: ``,
+  tsDoc: `Defines the overall structure of header rows in the grid. 
+  This layout is recalculated based on viewport changes and virtualized rendering.`,
   properties: [
     {
       kind: "property",
       name: "maxRow",
-      tsDoc: ``,
+      tsDoc: `Total number of header rows rendered, including groups and nested headers.`,
       doc: { en: `` },
       optional: false,
       value: "number",
@@ -261,7 +267,7 @@ export const HeaderLayout: InterfaceType = {
     {
       kind: "property",
       name: "maxCol",
-      tsDoc: ``,
+      tsDoc: `Total number of columns involved in the header layout.`,
       doc: { en: `` },
       optional: false,
       value: "number",
@@ -269,7 +275,7 @@ export const HeaderLayout: InterfaceType = {
     {
       kind: "property",
       name: "layout",
-      tsDoc: ``,
+      tsDoc: `Two-dimensional array of header layout cells organized by row hierarchy.`,
       doc: { en: `` },
       optional: false,
       value: "HeaderLayoutCell<T>[][]",
@@ -280,7 +286,8 @@ export const HeaderLayout: InterfaceType = {
 export const RowFullWidthRowLayout: InterfaceType = {
   kind: "interface",
   name: "RowFullWidthRowLayout<T>",
-  tsDoc: ``,
+  tsDoc: `Describes the layout of a full-width row which spans all columns. 
+  These are typically used for summary or group rows.`,
   doc: { en: `` },
   export: true,
   properties: [
@@ -288,7 +295,7 @@ export const RowFullWidthRowLayout: InterfaceType = {
       kind: "property",
       name: "kind",
       value: '"full-width"',
-      tsDoc: ``,
+      tsDoc: `Discriminator for identifying full-width row layout objects.`,
       doc: { en: `` },
       optional: false,
     },
@@ -305,7 +312,7 @@ export const RowFullWidthRowLayout: InterfaceType = {
 export const RowCellLayout: InterfaceType = {
   kind: "interface",
   name: "RowCellLayout<T>",
-  tsDoc: ``,
+  tsDoc: `Represents the layout metadata for a single cell within a row, including span and contextual info.`,
   doc: { en: `` },
   export: true,
   properties: [
@@ -313,7 +320,7 @@ export const RowCellLayout: InterfaceType = {
       kind: "property",
       name: "kind",
       value: '"cell"',
-      tsDoc: ``,
+      tsDoc: `Discriminator to identify a standard cell layout object.`,
       doc: { en: `` },
       optional: false,
     },
@@ -321,7 +328,7 @@ export const RowCellLayout: InterfaceType = {
       kind: "property",
       name: "colSpan",
       value: "number",
-      tsDoc: ``,
+      tsDoc: `Number of columns this cell spans across.`,
       doc: { en: `` },
       optional: false,
     },
@@ -329,7 +336,7 @@ export const RowCellLayout: InterfaceType = {
       kind: "property",
       name: "rowSpan",
       value: "number",
-      tsDoc: ``,
+      tsDoc: `Number of rows this cell spans across.`,
       doc: { en: `` },
       optional: false,
     },
@@ -351,7 +358,8 @@ export const RowCellLayout: InterfaceType = {
 export const RowNormalRowLayout: InterfaceType = {
   kind: "interface",
   name: "RowNormalRowLayout<T>",
-  tsDoc: ``,
+  tsDoc: `Describes the layout of a standard row in LyteNyte Grid, 
+  including cell arrangement and row-level metadata.`,
   doc: { en: `` },
   export: true,
   properties: [
@@ -359,7 +367,7 @@ export const RowNormalRowLayout: InterfaceType = {
       kind: "property",
       name: "kind",
       value: '"row"',
-      tsDoc: ``,
+      tsDoc: `Discriminator identifying this layout as a normal row.`,
       doc: { en: `` },
       optional: false,
     },
@@ -374,7 +382,7 @@ export const RowNormalRowLayout: InterfaceType = {
       kind: "property",
       name: "cells",
       value: "RowCellLayout<T>[]",
-      tsDoc: ``,
+      tsDoc: `List of cell layout metadata for this row.`,
       doc: { en: `` },
       optional: false,
     },
@@ -385,7 +393,7 @@ export const RowLayout: UnionType = {
   kind: "union",
   name: "RowLayout<T>",
   export: true,
-  tsDoc: ``,
+  tsDoc: `A row layout is either a standard row or a full-width row, depending on its content and configuration.`,
   doc: { en: `` },
   types: ["RowNormalRowLayout<T>", "RowFullWidthRowLayout<T>"],
 };
@@ -394,13 +402,14 @@ export const RowSectionLayouts: InterfaceType = {
   kind: "interface",
   name: "RowSectionLayouts<T>",
   export: true,
-  tsDoc: ``,
+  tsDoc: `Organizes the rows into three separate sections: top (pinned), center (scrollable), 
+  and bottom (pinned). Used to optimize row virtualization and rendering.`,
   doc: { en: `` },
   properties: [
     {
       kind: "property",
       name: "top",
-      tsDoc: ``,
+      tsDoc: `Layout information for pinned rows at the top of the grid.`,
       doc: { en: `` },
       optional: false,
       value: "RowLayout<T>[]",
@@ -408,7 +417,7 @@ export const RowSectionLayouts: InterfaceType = {
     {
       kind: "property",
       name: "center",
-      tsDoc: ``,
+      tsDoc: `Layout information for scrollable rows in the grid.`,
       doc: { en: `` },
       optional: false,
       value: "RowLayout<T>[]",
@@ -416,18 +425,17 @@ export const RowSectionLayouts: InterfaceType = {
     {
       kind: "property",
       name: "bottom",
-      tsDoc: ``,
+      tsDoc: `Layout information for pinned rows at the bottom of the grid.`,
       doc: { en: `` },
       optional: false,
       value: "RowLayout<T>[]",
     },
-
     {
       kind: "property",
       name: "rowTopTotalHeight",
       value: "number",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `Cumulative height of all top-pinned rows in pixels.`,
       optional: false,
     },
     {
@@ -435,7 +443,7 @@ export const RowSectionLayouts: InterfaceType = {
       name: "rowCenterTotalHeight",
       value: "number",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `Cumulative height of all scrollable center rows in pixels.`,
       optional: false,
     },
     {
@@ -443,7 +451,7 @@ export const RowSectionLayouts: InterfaceType = {
       name: "rowBottomTotalHeight",
       value: "number",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `Cumulative height of all bottom-pinned rows in pixels.`,
       optional: false,
     },
     {
@@ -451,7 +459,8 @@ export const RowSectionLayouts: InterfaceType = {
       name: "rowFocusedIndex",
       value: "number | null",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `Index of the currently focused row, if it exists. Focused rows may 
+      appear in the layout even if not otherwise visible.`,
       optional: false,
     },
     {
@@ -459,7 +468,7 @@ export const RowSectionLayouts: InterfaceType = {
       name: "rowFirstCenter",
       value: "number",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `Index of the first center (scrollable) row.`,
       optional: false,
     },
   ],
@@ -470,20 +479,22 @@ export const GridView: InterfaceType = {
   name: "GridView<T>",
   export: true,
   doc: { en: `` },
-  tsDoc: ``,
+  tsDoc: `Represents the current visual layout of the grid including headers and rows. 
+  This structure is used by LyteNyte Grid headless components 
+  or for building custom visualizations.`,
   properties: [
     {
       kind: "property",
       name: "header",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `Header layout structure currently being rendered in the viewport.`,
       optional: false,
       value: "HeaderLayout<T>",
     },
     {
       kind: "property",
       name: "rows",
-      tsDoc: ``,
+      tsDoc: `Row layout sections (top, center, bottom) rendered in the viewport.`,
       doc: { en: `` },
       optional: false,
       value: "RowSectionLayouts<T>",
