@@ -4,7 +4,8 @@ import { ColumnIndexProp, RowIndexProp } from "./shared-properties";
 export const PositionGridCellRoot: InterfaceType = {
   kind: "interface",
   name: "PositionGridCellRoot",
-  tsDoc: ``,
+  tsDoc: `The root reference of a grid cell. If a cell is obscured by a rowspan 
+  or colspan, it points to the actual root cell containing the data.`,
   doc: { en: `` },
   export: true,
   properties: [
@@ -15,7 +16,7 @@ export const PositionGridCellRoot: InterfaceType = {
       name: "rowSpan",
       doc: { en: `` },
       optional: false,
-      tsDoc: ``,
+      tsDoc: `The number of rows spanned by the root cell.`,
       value: "number",
     },
     {
@@ -23,7 +24,7 @@ export const PositionGridCellRoot: InterfaceType = {
       name: "colSpan",
       doc: { en: `` },
       optional: false,
-      tsDoc: ``,
+      tsDoc: `The number of columns spanned by the root cell.`,
       value: "number",
     },
   ],
@@ -32,14 +33,14 @@ export const PositionGridCellRoot: InterfaceType = {
 export const PositionGridCell: InterfaceType = {
   kind: "interface",
   name: "PositionGridCell",
-  tsDoc: ``,
+  tsDoc: `Represents the current focus position of a regular cell in the grid.`,
   doc: { en: `` },
   export: true,
   properties: [
     {
       kind: "property",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `Discriminant for identifying this as a regular grid cell position.`,
       name: "kind",
       value: '"cell"',
       optional: false,
@@ -51,7 +52,7 @@ export const PositionGridCell: InterfaceType = {
       doc: { en: `` },
       name: "root",
       optional: false,
-      tsDoc: ``,
+      tsDoc: `Reference to the root cell. If \`null\`, this cell is not hidden by spanning and is its own root.`,
       value: "PositionGridCellRoot | null",
     },
   ],
@@ -60,14 +61,14 @@ export const PositionGridCell: InterfaceType = {
 export const PositionFullWidthRow: InterfaceType = {
   kind: "interface",
   name: "PositionFullWidthRow",
-  tsDoc: ``,
+  tsDoc: `Describes the focus position when a full width row is active.`,
   doc: { en: `` },
   export: true,
   properties: [
     {
       kind: "property",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `Discriminant indicating this position refers to a full width row.`,
       name: "kind",
       value: '"full-width"',
       optional: false,
@@ -80,13 +81,13 @@ export const PositionFullWidthRow: InterfaceType = {
 export const PositionHeaderCell: InterfaceType = {
   kind: "interface",
   name: "PositionHeaderCell",
-  tsDoc: ``,
+  tsDoc: `Describes the focus position of a standard header cell.`,
   doc: { en: `` },
   export: true,
   properties: [
     {
       kind: "property",
-      tsDoc: ``,
+      tsDoc: `Discriminant for identifying this as a header cell position.`,
       doc: { en: `` },
       name: "kind",
       optional: false,
@@ -99,13 +100,13 @@ export const PositionHeaderCell: InterfaceType = {
 export const PositionFloatingCell: InterfaceType = {
   kind: "interface",
   name: "PositionFloatingCell",
-  tsDoc: ``,
+  tsDoc: `Describes the focus position of a floating header cell.`,
   doc: { en: `` },
   export: true,
   properties: [
     {
       kind: "property",
-      tsDoc: ``,
+      tsDoc: `Discriminant for identifying this as a floating header cell.`,
       doc: { en: `` },
       name: "kind",
       optional: false,
@@ -118,13 +119,13 @@ export const PositionFloatingCell: InterfaceType = {
 export const PositionHeaderGroupCell: InterfaceType = {
   kind: "interface",
   name: "PositionHeaderGroupCell",
-  tsDoc: ``,
+  tsDoc: `Describes the focus position of a header group cell in the column hierarchy.`,
   doc: { en: `` },
   export: true,
   properties: [
     {
       kind: "property",
-      tsDoc: ``,
+      tsDoc: `Discriminant indicating this is a header group cell.`,
       doc: { en: `` },
       name: "kind",
       optional: false,
@@ -132,7 +133,7 @@ export const PositionHeaderGroupCell: InterfaceType = {
     },
     {
       kind: "property",
-      tsDoc: ``,
+      tsDoc: `The inclusive start index of the group column range.`,
       doc: { en: `` },
       name: "columnStartIndex",
       optional: false,
@@ -140,7 +141,7 @@ export const PositionHeaderGroupCell: InterfaceType = {
     },
     {
       kind: "property",
-      tsDoc: ``,
+      tsDoc: `The exclusive end index of the group column range.`,
       doc: { en: `` },
       name: "columnEndIndex",
       optional: false,
@@ -148,7 +149,7 @@ export const PositionHeaderGroupCell: InterfaceType = {
     },
     {
       kind: "property",
-      tsDoc: ``,
+      tsDoc: `The header hierarchy row index of the group.`,
       doc: { en: `` },
       name: "hierarchyRowIndex",
       optional: false,
@@ -161,7 +162,7 @@ export const PositionHeaderGroupCell: InterfaceType = {
 export const PositionUnion: UnionType = {
   kind: "union",
   name: "PositionUnion",
-  tsDoc: ``,
+  tsDoc: `Union of all valid focusable positions in the grid: cells, headers, full width rows, etc.`,
   doc: { en: `` },
   export: true,
   types: [

@@ -7,19 +7,15 @@ const nullHandling: PropertyType = {
   value: '"ignore" | "include"',
   optional: true,
   tsDoc: `
-    When filtering \`null\` values represent the absence of a value. Since there is not value 
-    to compare the filter on - there are two choices; keep the value, or filter it out. The 
-    \`nullHandling\` property determines which option to take, where \`"ignore"\` will filter 
-    out null values and \`"include"\` will keep them.
+    Controls how \`null\` values are treated when applying the filter.
 
-    It's important to note that filtering is performed by the row data source attached to the
-    grid, hence the actual behavior depends on the source. A properly behaving data source will
-    filter \`null\` values accordingly but not all sources may choose to do this. Furthermore,
-    depending on the operator used for the filter, the \`nullHandling\` property may be ignored.
-    For example, when comparing for equality ('===') the filter implementation should check that 
-    the current value is equal to the filter value - including the absence of a value. Intuitively
-    this makes sense as it allows the equality operator to be used to check for \`null\` values 
-    themselves.
+    - \`"ignore"\`: Excludes rows where the value is \`null\`
+    - \`"include"\`: Retains rows with \`null\` values
+
+    **Note:** Actual behavior depends on the row data source. Properly implemented sources will
+    respect this setting, but others may not. Additionally, this setting may be ignored by some
+    filter operators. For instance, equality checks may treat \`null\` as a valid match if it's
+    explicitly passed as the filter value.
   `,
   doc: { en: `` },
 };
@@ -36,20 +32,26 @@ export const FilterNumberOperator: UnionType = {
     '"equals"',
     '"not_equals"',
   ],
-  seeAlso: [],
   tsDoc: `
-    The operators that may be used for the a number filter. These correspond to the standard expected
-    logical operators, like >, and <.
+    Logical operators available for number-based filtering.
+    
+    These correspond to traditional comparison operators:
+    - \`greater_than\` → \`>\`
+    - \`less_than_or_equals\` → \`<=\`
+    etc.
   `,
-  doc: {
-    en: ``,
-  },
+  doc: { en: `` },
 };
 
 export const FilterNumberOptions: InterfaceType = {
   kind: "interface",
   name: "FilterNumberOptions",
   export: true,
+  tsDoc: `
+    Optional configuration values for number filters. These options allow fine-tuning of filter behavior,
+    especially in cases involving precision or null handling.
+  `,
+  doc: { en: `` },
   properties: [
     {
       kind: "property",
@@ -57,8 +59,9 @@ export const FilterNumberOptions: InterfaceType = {
       value: "boolean",
       optional: true,
       tsDoc: `
-        Makes the number filter only consider the magnitude of a number value ignoring its sign.
-        Useful when the size of the number is the main consideration.
+        If set to \`true\`, the filter will compare absolute values instead of signed numbers.
+        
+        Useful for scenarios where magnitude is more relevant than direction (e.g., distance, deviation).
       `,
       doc: { en: `` },
     },
@@ -68,35 +71,30 @@ export const FilterNumberOptions: InterfaceType = {
       value: "number",
       optional: true,
       tsDoc: `
-        The epsilon value to use when comparing numbers. Mostly useful when comparing floats. By
-        default the value is 0.0001 however it may be adjusted for higher or lower precision.
+        Floating-point precision buffer when evaluating comparisons.
+        
+        For example, a comparison using \`epsilon = 0.0001\` allows for minor rounding differences
+        when dealing with decimal values.
       `,
       doc: { en: `` },
     },
     nullHandling,
   ],
-  tsDoc: `
-    The filter options that may be provided to a number filter. The filter options will adjust 
-    how the number filter behaves providing more flexibility to less effort.
-  `,
-  doc: { en: `` },
 };
 
 export const FilterNumber: InterfaceType = {
   kind: "interface",
   name: "FilterNumber",
+  export: true,
   tsDoc: `
-    The number filter is used to filter out rows based on a column that contains number values.
-    Most useful for numerical datasets.
-  `,
-  doc: {
-    en: ``,
-  },
+    Defines a filter for numeric columns.
 
+    Applies common comparison logic to include or exclude rows based on numerical values in a specified column.
+  `,
+  doc: { en: `` },
   seeAlso: [
     { kind: "link", name: "Filters", link: "TODO", description: "Overview of the filters" },
   ],
-  export: true,
   properties: [
     {
       kind: "property",
@@ -104,9 +102,8 @@ export const FilterNumber: InterfaceType = {
       value: '"number"',
       optional: false,
       tsDoc: `
-        A type discriminant for the {@link FilterNumber} type, which may be used to narrow the 
-        the type when given a set of filters. Mainly used in the evaluation of filters, for example
-        a {@link FilterCombination} accepts filters of different types.
+        Discriminant property used for type narrowing and filter dispatching.
+        Identifies this object as a number-based filter.
       `,
       doc: { en: `` },
     },
@@ -116,8 +113,10 @@ export const FilterNumber: InterfaceType = {
       optional: false,
       value: "string",
       tsDoc: `
-        The column reference the filter should use. This is used to extract a field value for the 
-        filter for a given row. This should be the \`id\` of a column.
+        Column \`id\` this filter targets.
+
+        This string should match the \`id\` field defined in a column schema and is used to retrieve
+        the relevant value from each row.
       `,
       doc: { en: `` },
     },
@@ -127,8 +126,9 @@ export const FilterNumber: InterfaceType = {
       value: "FilterNumberOperator",
       optional: false,
       tsDoc: `
-        The number filter operator to use when evaluating the filter. This value should be the string
-        name of the operator, for example "equals" and not "==".
+        Operator to apply in the filter condition (e.g., \`greater_than\`, \`equals\`).
+        
+        Determines how the row value is compared to the provided \`value\`.
       `,
       doc: { en: `` },
     },
@@ -137,8 +137,10 @@ export const FilterNumber: InterfaceType = {
       name: "value",
       value: "number | null",
       tsDoc: `
-        The filter value to compare with. The actual filter evaluation outcome is determined by the
-        operator applied.
+        Target value for the filter.
+
+        This will be used as the right-hand operand when applying the operator to each row's value.
+        May be \`null\` if specifically filtering for nulls.
       `,
       doc: { en: `` },
       optional: false,
@@ -149,9 +151,9 @@ export const FilterNumber: InterfaceType = {
       value: "FilterNumberOptions",
       optional: true,
       tsDoc: `
-        The filter number options to apply to the filter. Filter options alter the evaluation result
-        of a filter, for example using the absolute value of a number when performing the operator
-        calculation.
+        Optional behavior modifiers for the filter such as absolute value comparison and null handling.
+
+        These settings enhance precision and flexibility when filtering numerical data.
       `,
       doc: { en: `` },
     },
@@ -184,8 +186,11 @@ export const FilterStringOperator: UnionType = {
     '"length_greater_than_or_equals"',
   ],
   tsDoc: `
-    The filter operator for strings. Some operators expect the value provided to be a number,
-    for example when comparing the length of strings.
+    List of operators available for string filtering.
+
+    These include comparison operators (e.g., "equals"), substring checks (e.g., "contains"), and
+    length-based checks (e.g., "length_less_than"). Some operators require a numeric \`value\`
+    (e.g., those dealing with string length).
   `,
   doc: { en: `` },
   seeAlso: [],
@@ -195,6 +200,12 @@ export const FilterStringCollation: InterfaceType = {
   kind: "interface",
   name: "FilterStringCollation",
   export: true,
+  tsDoc: `
+    Collation configuration for locale-sensitive string comparisons.
+
+    Used to construct an \`Intl.Collator\` instance, which enables proper handling of language and region-specific rules.
+  `,
+  doc: { en: `` },
   properties: [
     {
       kind: "property",
@@ -202,8 +213,8 @@ export const FilterStringCollation: InterfaceType = {
       name: "locale",
       value: "Locale",
       tsDoc: `
-        The locale to use for string comparisons and operators. It should be one of the predefined
-        types. If not provided the default locale on the system is used.
+        The locale string to apply during comparisons (e.g., "en", "de", "zh-CN").
+        This determines how values are interpreted for culturally appropriate sorting.
       `,
       doc: { en: `` },
     },
@@ -213,24 +224,27 @@ export const FilterStringCollation: InterfaceType = {
       name: "sensitivity",
       value: 'Intl.CollatorOptions["sensitivity"]',
       tsDoc: `
-        The locale sensitivity - used to construct an Intl.Collator object. Refer to the 
-        [MDN docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator)
-        for more information.
+        Specifies the sensitivity of character comparisons (e.g., case vs. accent differences).
+
+        See the [Intl.Collator documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator)
+        for details on supported sensitivity levels.
       `,
       doc: { en: `` },
     },
   ],
-  tsDoc: `
-    The string collation options used to create an Intl.Collator object that will be used for 
-    string comparisons. 
-  `,
-  doc: { en: `` },
 };
 
 export const FilterStringOptions: InterfaceType = {
   kind: "interface",
   name: "FilterStringOptions",
   export: true,
+  tsDoc: `
+    Optional settings to modify the behavior of string filter evaluation.
+
+    These provide control over how string values are matched, such as case sensitivity, whitespace trimming,
+    regular expression flags, and locale-based collation.
+  `,
+  doc: { en: `` },
   properties: [
     {
       kind: "property",
@@ -238,9 +252,10 @@ export const FilterStringOptions: InterfaceType = {
       value: "string",
       optional: true,
       tsDoc: `
-        The regex opts to use for the construction of a regex object to use for the \`matches\` 
-        string filter operator. See the [MDN docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions#advanced_searching_with_flags)
-        for information on the different flags.
+        Flags to apply when using the \`matches\` operator (e.g., "i" for case-insensitive, "g" for global).
+
+        See the [MDN RegExp flags guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions#advanced_searching_with_flags)
+        for details.
       `,
       doc: { en: `` },
     },
@@ -250,8 +265,7 @@ export const FilterStringOptions: InterfaceType = {
       value: "boolean",
       optional: true,
       tsDoc: `
-        A flag to determine if whitespace should be stripped before string comparisons. This will
-        result in leading and trailing whitespace to be ignored when performing string comparisons.
+        If true, trims leading and trailing whitespace from both the value and target before comparing.
       `,
       doc: { en: `` },
     },
@@ -261,11 +275,9 @@ export const FilterStringOptions: InterfaceType = {
       value: "boolean",
       optional: true,
       tsDoc: `
-        A flag indicating if the comparison should be case insensitive. By default comparisons 
-        are case insensitive if the filter value does not contain an upper case letter. However,
-        depending on the collator sensitivity the default value may 
-        actually be case insensitive. For example a collator sensitivity of \`"base"\` or 
-        \`"accent"\` result in case case insensitive comparisons.
+        If true, string comparisons are case-insensitive.
+
+        Note: Some locales may implicitly perform case-insensitive comparisons depending on \`sensitivity\`.
       `,
       doc: { en: `` },
     },
@@ -275,8 +287,7 @@ export const FilterStringOptions: InterfaceType = {
       value: "boolean",
       optional: true,
       tsDoc: `
-        If punctuation characters should be ignored when performing string comparisons. By default
-        punctuation is considered.
+        If true, removes punctuation from strings before evaluating the comparison.
       `,
       doc: { en: `` },
     },
@@ -287,33 +298,23 @@ export const FilterStringOptions: InterfaceType = {
       value: "FilterStringCollation",
       optional: true,
       tsDoc: `
-        The collation parameters to use for the filter evaluation. If provided these parameters will
-        be used to create an \`Intl.Collator\` object that is then used in the comparison operator
-        for filter evaluation.
+        Collation options to apply locale-sensitive sorting and comparison behavior using \`Intl.Collator\`.
       `,
       doc: { en: `` },
     },
   ],
-  tsDoc: `
-    The options to use for filter string evaluation. The options allow filter evaluation behavior
-    to be altered in specific ways, such as ignoring letter casing, trimming whitespace, and 
-    ignoring punctuation. The filter string options additionally allow a locale to be used for 
-    string filtering.
-  `,
-  doc: { en: `` },
 };
 
 export const FilterString: InterfaceType = {
   kind: "interface",
   name: "FilterString",
-  tsDoc: `
-    The string filter used to evaluate values that are string based. Used to filter out rows based
-    on the string values of a particular column.
-  `,
-  doc: {
-    en: ``,
-  },
   export: true,
+  tsDoc: `
+    Filter configuration for string-based column data.
+
+    Supports a wide range of operators such as exact match, substring containment, regex matching, and string length comparisons.
+  `,
+  doc: { en: `` },
   properties: [
     {
       kind: "property",
@@ -321,20 +322,20 @@ export const FilterString: InterfaceType = {
       value: '"string"',
       optional: false,
       tsDoc: `
-        A type discriminant for the {@link FilterString} type, which may be used to narrow the 
-        the type when given a set of filters. Mainly used in the evaluation of filters, for example
-        a {@link FilterCombination} accepts filters of different types.
+        Type discriminant used internally to identify this as a string filter.
+        Useful when filters are stored in a mixed array.
       `,
       doc: { en: `` },
     },
     {
       kind: "property",
       name: "field",
-      optional: false,
       value: "string",
+      optional: false,
       tsDoc: `
-        The column reference the filter should use. This is used to extract a field value for the 
-        filter for a given row. This should be the \`id\` of a column.
+        The column \`id\` the filter applies to.
+
+        The value will be used to retrieve the corresponding field from each row.
       `,
       doc: { en: `` },
     },
@@ -344,8 +345,7 @@ export const FilterString: InterfaceType = {
       value: "FilterStringOperator",
       optional: false,
       tsDoc: `
-        The string filter operator to use when evaluating the filter. This value should be the string
-        name of the operator, for example "equals" and not "==".
+        The filtering operator (e.g., "contains", "equals", "length_greater_than").
       `,
       doc: { en: `` },
     },
@@ -353,13 +353,16 @@ export const FilterString: InterfaceType = {
       kind: "property",
       name: "value",
       value: "string | number | null",
+      optional: false,
       tsDoc: `
-        The string filter evaluation value. For some filter operators a \`number\` value makes
-        sense, for example, when comparing the lengths of strings. It is an undefined error to
-        use a \`number\` value where a filter operator expects a \`string\`.
+        The value to compare against.
+
+        May be:
+        - \`string\`: for most text comparisons
+        - \`number\`: for length-based operators
+        - \`null\`: when matching absence of value
       `,
       doc: { en: `` },
-      optional: false,
     },
     {
       kind: "property",
@@ -367,8 +370,8 @@ export const FilterString: InterfaceType = {
       value: "FilterStringOptions",
       optional: true,
       tsDoc: `
-        The options to apply for the string filter evaluation. The string options may be used to
-        alter the behavior of filter evaluation, for example to make comparisons case insensitive.
+        Optional modifiers to control filter behavior including case sensitivity, whitespace, punctuation,
+        and locale-sensitive matching.
       `,
       doc: { en: `` },
     },
@@ -413,8 +416,12 @@ export const FilterDateOperator: UnionType = {
     '"n_years_ahead"',
   ],
   tsDoc: `
-    The operators available for the date filter. The operator used determines the type of 
-    value that should be used.
+    Set of valid comparison operators for evaluating date-based filters.
+
+    These operators support both fixed comparisons (e.g., "equals", "before") and dynamic
+    relative date expressions (e.g., "n_days_ago", "last_week", "is_weekend").
+    
+    The required type of the \`value\` field depends on the selected operator.
   `,
   doc: { en: `` },
   seeAlso: [],
@@ -432,13 +439,20 @@ export const FilterDateOptions: InterfaceType = {
       optional: true,
       value: "boolean",
       tsDoc: `
-        If the time should be used for date filter evaluations. By default only the date is 
-        considered. Setting the \`includeTime\` to \`true\` will make the comparisons time aware.
+        If true, includes time components (hours, minutes, seconds) when comparing date values.
+
+        By default, only the calendar date is compared. Enabling this flag allows for high-precision
+        filtering, which is useful for timestamp-based data (e.g., log entries or event schedules).
       `,
       doc: { en: `` },
     },
   ],
-  tsDoc: ``,
+  tsDoc: `
+    Optional modifiers to customize date filter evaluation behavior.
+
+    Includes options like null handling and whether time values should be considered
+    during comparisons.
+  `,
   doc: { en: `` },
 };
 
@@ -452,7 +466,11 @@ export const FilterDate: InterfaceType = {
       name: "kind",
       optional: false,
       value: '"date"',
-      tsDoc: ``,
+      tsDoc: `
+        Type discriminator used to identify this filter as a date-based filter.
+
+        Helps distinguish between multiple filter types when working with compound filters.
+      `,
       doc: { en: `` },
     },
     {
@@ -460,7 +478,11 @@ export const FilterDate: InterfaceType = {
       name: "field",
       optional: false,
       value: "string",
-      tsDoc: ``,
+      tsDoc: `
+        The identifier of the column this filter applies to.
+
+        This should match the \`id\` of a column whose value represents a date in ISO string format.
+      `,
       doc: { en: `` },
     },
     {
@@ -468,7 +490,12 @@ export const FilterDate: InterfaceType = {
       name: "operator",
       optional: false,
       value: "FilterDateOperator",
-      tsDoc: ``,
+      tsDoc: `
+        The comparison operator to apply. Determines how the field value is matched
+        against the provided filter \`value\`.
+
+        Refer to {@link FilterDateOperator} for the complete set of options.
+      `,
       doc: { en: `` },
     },
     {
@@ -476,7 +503,16 @@ export const FilterDate: InterfaceType = {
       name: "value",
       optional: false,
       value: "string | number | null",
-      tsDoc: ``,
+      tsDoc: `
+        The comparison value used by the filter.
+
+        This may be:
+        - A date string (e.g., "2025-01-01") for direct comparisons
+        - A number (e.g., 7) for relative filters like "n_days_ago"
+        - Null, for special null-matching semantics
+
+        The exact type depends on the operator in use.
+      `,
       doc: { en: `` },
     },
     {
@@ -484,11 +520,24 @@ export const FilterDate: InterfaceType = {
       name: "options",
       optional: true,
       value: "FilterDateOptions",
-      tsDoc: ``,
+      tsDoc: `
+        Optional configuration to control how the date is parsed and compared.
+
+        For example, setting \`includeTime\` enables precise comparisons down to milliseconds.
+      `,
       doc: { en: `` },
     },
   ],
-  tsDoc: ``,
+  tsDoc: `
+    A filter type for evaluating date fields in a grid dataset.
+
+    Date filters enable both exact and relative comparisons of date values and are essential
+    for time-series or event-driven data. LyteNyte Grid expects date values to follow a standard
+    ISO string format like \`"2025-02-01 12:00:11-02:00"\`.
+
+    If filtering on timestamps or partial dates, be mindful of timezone offsets and whether
+    time components are relevant to your comparison.
+  `,
   doc: { en: `` },
 };
 
@@ -497,42 +546,75 @@ export const FilterInOperation: UnionType = {
   name: "FilterInOperator",
   export: true,
   types: ['"in"', '"not_in"'],
-  tsDoc: ``,
+  tsDoc: `
+    The valid operators for an \`in\` filter.
+
+    - \`"in"\`: Tests for inclusion in the set.
+    - \`"not_in"\`: Tests for exclusion from the set.
+  `,
   doc: { en: `` },
   tag: "pro",
 };
+
 export const FilterIn: InterfaceType = {
   kind: "interface",
   name: "FilterIn",
   export: true,
   properties: [
-    { kind: "property", name: "kind", value: '"in"', tsDoc: ``, doc: { en: `` }, optional: false },
+    {
+      kind: "property",
+      name: "kind",
+      value: '"in"',
+      optional: false,
+      tsDoc: `
+        Type discriminator used to identify this filter as an \`in\` filter.
+        Ensures correct handling within the filter model.
+      `,
+      doc: { en: `` },
+    },
     {
       kind: "property",
       name: "field",
       value: "string",
-      tsDoc: ``,
-      doc: { en: `` },
       optional: false,
+      tsDoc: `
+        The \`id\` of the column whose values are to be filtered.
+        This identifies the source field for filter evaluation.
+      `,
+      doc: { en: `` },
     },
     {
       kind: "property",
       name: "operator",
       value: "FilterInOperator",
-      tsDoc: ``,
-      doc: { en: `` },
       optional: false,
+      tsDoc: `
+        Specifies whether to include or exclude the values in the set.
+        See {@link FilterInOperator}.
+      `,
+      doc: { en: `` },
     },
     {
       kind: "property",
       name: "value",
       value: "Set<string | number | null>",
-      tsDoc: ``,
-      doc: { en: `` },
       optional: false,
+      tsDoc: `
+        The set of allowed or disallowed values to filter against.
+
+        Values may include strings, numbers, or nulls. The operator
+        determines how this set is interpreted.
+      `,
+      doc: { en: `` },
     },
   ],
-  tsDoc: ``,
+  tsDoc: `
+    Represents a set-based filter that checks whether a value is included
+    in (or excluded from) a set of values.
+
+    Often referred to as a "Set Filter", this is a PRO-only feature in
+    LyteNyte Grid and cannot be nested in combination filters.
+  `,
   doc: { en: `` },
   tag: "pro",
 };
@@ -542,7 +624,9 @@ export const FilterCombinationOperator: UnionType = {
   name: "FilterCombinationOperator",
   export: true,
   types: ['"AND"', '"OR"'],
-  tsDoc: ``,
+  tsDoc: `
+    Logical operators used to join multiple filters inside a combination filter.
+  `,
   doc: { en: `` },
 };
 
@@ -551,39 +635,26 @@ const FilterCombinationKind: PropertyType = {
   name: "kind",
   value: '"combination"',
   optional: false,
-  tsDoc: ``,
+  tsDoc: `
+    Type discriminator for a combination filter.
+    Identifies this object as a logical combination of sub-filters.
+  `,
   doc: { en: `` },
 };
+
 const FilterCombinationOperatorProp: PropertyType = {
   kind: "property",
   name: "operator",
   value: "FilterCombinationOperator",
   optional: false,
-  tsDoc: ``,
+  tsDoc: `
+    The logical operator to apply when evaluating the list of filters
+    (e.g., AND, OR).
+  `,
   doc: { en: `` },
-};
-export const FilterCombinationCore: InterfaceType = {
-  kind: "interface",
-  name: "FilterCombination",
-  export: true,
-  properties: [
-    FilterCombinationKind,
-    FilterCombinationOperatorProp,
-    {
-      kind: "property",
-      name: "filters",
-      optional: false,
-      value: "Array<FilterNumber | FilterString | FilterDate | FilterCombination>",
-      tsDoc: ``,
-      doc: { en: `` },
-    },
-  ],
-  tsDoc: ``,
-  doc: { en: `` },
-  tag: "core",
 };
 
-export const FilterCombinationPro: InterfaceType = {
+export const FilterCombination: InterfaceType = {
   kind: "interface",
   name: "FilterCombination",
   export: true,
@@ -593,22 +664,36 @@ export const FilterCombinationPro: InterfaceType = {
     {
       kind: "property",
       name: "filters",
+      value: "Array<FilterNumber | FilterString | FilterDate | FilterCombination>",
       optional: false,
-      value: "Array<FilterNumber | FilterString | FilterDate | FilterCombination | FilterIn>",
-      tsDoc: ``,
+      tsDoc: `
+        The list of filters to combine using the specified operator.
+
+        This list may contain any combination of core filter types,
+        including nested combination filters.
+      `,
       doc: { en: `` },
     },
   ],
-  tsDoc: ``,
+  tsDoc: `
+    A logical grouping filter used to apply multiple filters together
+    using AND or OR logic.
+
+    Combination filters enable complex conditional logic by nesting
+    different filters into a tree structure.
+  `,
   doc: { en: `` },
-  tag: "pro",
 };
 
 export const FilterFnParams: InterfaceType = {
   kind: "interface",
   name: "FilterFnParams<T>",
   export: true,
-  tsDoc: ``,
+  tsDoc: `
+    The parameters passed to a custom function filter.
+
+    Includes both the current row's data and the overall grid configuration.
+  `,
   doc: { en: `` },
   properties: [DataProp, GridProp],
 };
@@ -616,45 +701,62 @@ export const FilterFnParams: InterfaceType = {
 export const FilterFn: FunctionType = {
   kind: "function",
   name: "FilterFn<T>",
-  tsDoc: ``,
-  doc: { en: `` },
   export: true,
   return: "boolean",
   properties: [
     {
       kind: "property",
       name: "params",
-      tsDoc: ``,
-      doc: { en: `` },
-      optional: false,
       value: "FilterFnParams<T>",
+      optional: false,
+      tsDoc: `
+        The parameters passed to the function filter, providing row data
+        and grid context.
+      `,
+      doc: { en: `` },
     },
   ],
+  tsDoc: `
+    A function-based filter used for advanced filtering logic that cannot
+    be represented using built-in filter types.
+
+    The function should return \`true\` to keep a row or \`false\` to filter it out.
+  `,
+  doc: { en: `` },
 };
 
-export const FilterDynamic: InterfaceType = {
+export const FilterFunc: InterfaceType = {
   kind: "interface",
-  name: "FilterDynamic<T>",
+  name: "FilterFunc<T>",
   export: true,
   properties: [
     {
       kind: "property",
-      tsDoc: ``,
-      doc: { en: `` },
       name: "kind",
       value: '"func"',
       optional: false,
+      tsDoc: `
+        Type discriminator used to identify this as a function filter.
+      `,
+      doc: { en: `` },
     },
     {
       kind: "property",
-      tsDoc: ``,
-      doc: { en: `` },
       name: "func",
       value: "FilterFn<T>",
       optional: false,
+      tsDoc: `
+        The filter function to evaluate for each row.
+      `,
+      doc: { en: `` },
     },
   ],
-  tsDoc: ``,
+  tsDoc: `
+    A functional filter definition. It provides ultimate flexibility
+    for filtering scenarios that don't conform to basic models.
+
+    Should be used selectively and optimized for performance.
+  `,
   doc: { en: `` },
 };
 
@@ -705,33 +807,43 @@ export const Locale: UnionType = {
     '"fa-IR"',
     '"el-GR"',
   ],
-  tsDoc: ``,
+  tsDoc: `
+    The supported locale identifiers for string filtering and collation.
+
+    Used to configure internationalized string comparison behavior.
+  `,
   doc: { en: `` },
 };
 
 export const FilterModelItem: UnionType = {
   kind: "union",
-  export: true,
   name: "FilterModelItem<T>",
-  types: ["FilterNumber", "FilterString", "FilterDate", "FilterCombination", "FilterDynamic<T>"],
-  tsDoc: ``,
+  export: true,
+  types: ["FilterNumber", "FilterString", "FilterDate", "FilterCombination", "FilterFunc<T>"],
+  tsDoc: `
+    The full set of filter types available in the LyteNyte Grid core edition.
+  `,
   doc: { en: `` },
   tag: "core",
 };
 
 export const FilterModelItemPro: UnionType = {
   kind: "union",
-  export: true,
   name: "FilterModelItem<T>",
+  export: true,
   types: [
     "FilterNumber",
     "FilterString",
     "FilterDate",
     "FilterIn",
     "FilterCombination",
-    "FilterDynamic<T>",
+    "FilterFunc<T>",
   ],
-  tsDoc: ``,
+  tsDoc: `
+    The full set of filter types supported in the PRO edition of LyteNyte Grid.
+
+    Includes advanced set-based filtering with the \`FilterIn\` type.
+  `,
   doc: { en: `` },
   tag: "pro",
 };
@@ -739,44 +851,63 @@ export const FilterModelItemPro: UnionType = {
 export const FilterQuickSearchSensitivity: UnionType = {
   kind: "union",
   name: "FilterQuickSearchSensitivity",
-  tsDoc: ``,
-  doc: { en: `` },
   export: true,
   types: ['"case-sensitive"', '"case-insensitive"'],
+  tsDoc: `
+    Sensitivity mode for the quick search functionality.
+
+    - \`"case-sensitive"\`: Exact matches required.
+    - \`"case-insensitive"\`: Case differences are ignored.
+  `,
+  doc: { en: `` },
   tag: "pro",
 };
 
 export const FilterInFilterItem: InterfaceType = {
   kind: "interface",
   name: "FilterInFilterItem",
-  doc: { en: `` },
-  tsDoc: ``,
   export: true,
   tag: "pro",
   properties: [
     {
       kind: "property",
-      tsDoc: ``,
-      doc: { en: `` },
       name: "label",
       value: "string",
       optional: false,
+      tsDoc: `
+        The display label for the item in the UI. Should be human-readable
+        even when the value itself is raw or technical.
+      `,
+      doc: { en: `` },
     },
     {
       kind: "property",
-      tsDoc: ``,
-      doc: { en: `` },
       name: "value",
       value: "unknown",
       optional: false,
+      tsDoc: `
+        The value to be matched in the in-filter set. Typically a string or number.
+      `,
+      doc: { en: `` },
     },
     {
       kind: "property",
-      tsDoc: ``,
-      doc: { en: `` },
       name: "group",
       value: "string[]",
       optional: true,
+      tsDoc: `
+        Grouping path to organize filter values into nested structures.
+
+        This is useful for tree-based UIs where items belong to categories
+        (e.g., year > month > day).
+      `,
+      doc: { en: `` },
     },
   ],
+  tsDoc: `
+    Represents a displayable filter option for use with the \`in\` filter UI component.
+
+    Supports grouping and human-friendly labeling for raw filter values.
+  `,
+  doc: { en: `` },
 };

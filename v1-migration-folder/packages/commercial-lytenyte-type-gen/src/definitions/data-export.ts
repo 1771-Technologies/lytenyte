@@ -2,7 +2,14 @@ import type { FunctionType, InterfaceType } from "../+types";
 
 export const DataRect: InterfaceType = {
   kind: "interface",
-  tsDoc: ``,
+  tsDoc: `
+  Represents a rectangular selection of cells in LyteNyte Grid.
+
+  A DataRect defines its range by numerical row and column indices. It is used to extract 
+  or operate on a subset of the grid's data regardless of row or column reordering. However, 
+  if the number of rows or columns changes, the rect may be invalidated if it extends 
+  beyond the new bounds.
+  `,
   doc: { en: `` },
   export: true,
   name: "DataRect",
@@ -12,7 +19,7 @@ export const DataRect: InterfaceType = {
       name: "rowStart",
       optional: false,
       value: "number",
-      tsDoc: ``,
+      tsDoc: `The starting row index (inclusive).`,
       doc: { en: `` },
     },
     {
@@ -20,7 +27,7 @@ export const DataRect: InterfaceType = {
       name: "rowEnd",
       optional: false,
       value: "number",
-      tsDoc: ``,
+      tsDoc: `The ending row index (exclusive).`,
       doc: { en: `` },
     },
     {
@@ -28,7 +35,7 @@ export const DataRect: InterfaceType = {
       name: "columnStart",
       optional: false,
       value: "number",
-      tsDoc: ``,
+      tsDoc: `The starting column index (inclusive).`,
       doc: { en: `` },
     },
     {
@@ -36,7 +43,7 @@ export const DataRect: InterfaceType = {
       name: "columnEnd",
       optional: false,
       value: "number",
-      tsDoc: ``,
+      tsDoc: `The ending column index (exclusive).`,
       doc: { en: `` },
     },
   ],
@@ -47,30 +54,38 @@ export const ExportDataRectParams: InterfaceType = {
   export: true,
   name: "ExportDataRectParams",
   doc: { en: `` },
-  tsDoc: ``,
+  tsDoc: `
+  Parameters for exporting a specific rectangular region of the grid using a DataRect.
+  `,
   properties: [
     {
       kind: "property",
-      doc: { en: `` },
       name: "dataRect",
       optional: true,
-      tsDoc: ``,
       value: "DataRect",
+      tsDoc: `The specific DataRect to export. If omitted, the grid may default to a visible range.`,
+      doc: { en: `` },
     },
     {
       kind: "property",
-      tsDoc: ``,
-      doc: { en: `` },
       name: "uniformGroupHeaders",
       optional: true,
       value: "boolean",
+      tsDoc: `
+      Whether group headers should be returned as symmetrical arrays (i.e., uniform across rows).
+
+      Useful when dealing with column groups that span multiple columns.
+      `,
+      doc: { en: `` },
     },
   ],
 };
 
 export const ExportDataRectResult: InterfaceType = {
   kind: "interface",
-  tsDoc: ``,
+  tsDoc: `
+  The result structure returned after exporting a DataRect from LyteNyte Grid.
+  `,
   doc: { en: `` },
   export: true,
   name: "ExportDataRectResult<T>",
@@ -80,7 +95,7 @@ export const ExportDataRectResult: InterfaceType = {
       name: "headers",
       value: "string[]",
       optional: false,
-      tsDoc: ``,
+      tsDoc: `An array of header ids for the exported columns.`,
       doc: { en: `` },
     },
     {
@@ -88,7 +103,7 @@ export const ExportDataRectResult: InterfaceType = {
       name: "groupHeaders",
       value: "(string | null)[][]",
       optional: false,
-      tsDoc: ``,
+      tsDoc: `A matrix of group header labels corresponding to the exported columns.`,
       doc: { en: `` },
     },
     {
@@ -96,7 +111,7 @@ export const ExportDataRectResult: InterfaceType = {
       name: "data",
       value: "unknown[][]",
       optional: false,
-      tsDoc: ``,
+      tsDoc: `The 2D data matrix for the selected cells. Row and column spans are not applied.`,
       doc: { en: `` },
     },
     {
@@ -104,7 +119,7 @@ export const ExportDataRectResult: InterfaceType = {
       name: "columns",
       value: "Column<T>[]",
       optional: false,
-      tsDoc: ``,
+      tsDoc: `The column definitions associated with the exported data.`,
       doc: { en: `` },
     },
   ],
@@ -113,68 +128,86 @@ export const ExportDataRectResult: InterfaceType = {
 export const ExportDataRectFn: FunctionType = {
   kind: "function",
   doc: { en: `` },
-  tsDoc: ``,
+  tsDoc: `
+  Signature for the function that exports a DataRect from the grid.
+
+  Called via the LyteNyte Grid API when exporting a selection of cells.
+  `,
   export: true,
   name: "ExportDataRectFn<T>",
   return: "ExportDataRectResult<T>",
   properties: [
     {
       kind: "property",
-      doc: { en: `` },
       name: "params",
       optional: true,
-      tsDoc: ``,
       value: "ExportDataRectParams",
+      tsDoc: `Optional parameters for exporting a DataRect.`,
+      doc: { en: `` },
     },
   ],
 };
 
 export const ExportCsvParams: InterfaceType = {
   kind: "interface",
-  tsDoc: ``,
+  tsDoc: `
+  Parameters for exporting a CSV file from LyteNyte Grid.
+  `,
   doc: { en: `` },
   export: true,
   name: "ExportCsvParams",
   properties: [
     {
       kind: "property",
-      doc: { en: `` },
-      tsDoc: ``,
       name: "includeHeader",
       optional: true,
       value: "boolean",
+      tsDoc: `Whether to include column headers in the CSV output.`,
+      doc: { en: `` },
     },
     {
       kind: "property",
-      doc: { en: `` },
-      tsDoc: ``,
       name: "includeGroupHeaders",
       optional: true,
       value: "boolean",
+      tsDoc: `Whether to include column group headers in the CSV output.`,
+      doc: {
+        en: `A boolean indicating if the group headers should be included in the CSV result.`,
+      },
     },
     {
       kind: "property",
-      doc: { en: `` },
-      tsDoc: ``,
       name: "uniformGroupHeaders",
       optional: true,
       value: "boolean",
+      tsDoc: `Whether group headers should be rendered as uniform-length arrays.`,
+      doc: {
+        en: `A boolean indicating if the group headers should be a symmetrical array in the CSV result.`,
+      },
     },
     {
       kind: "property",
-      doc: { en: `` },
-      tsDoc: ``,
       name: "delimiter",
       optional: true,
       value: "string",
+      tsDoc: `Delimiter character to use for separating values in the CSV output.`,
+      doc: {
+        en: `A delimiter to use for the CSV separator`,
+      },
     },
     {
       kind: "property",
-      doc: { en: `` },
-      tsDoc: ``,
       name: "dataRect",
       optional: true,
       value: "DataRect",
+      tsDoc: `
+      Optional DataRect specifying the area to export.
+
+      If not provided, the grid exports the currently visible data range.
+      `,
+      doc: {
+        en: `The data rect to export to CSV. If not provided a rect that encompasses the current grid view will be used instead.`,
+      },
     },
   ],
 };

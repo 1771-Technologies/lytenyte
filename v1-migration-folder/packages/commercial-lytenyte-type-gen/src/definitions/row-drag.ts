@@ -7,7 +7,8 @@ export const GetDragDataParams: InterfaceType = {
   export: true,
   name: "GetDragDataParams<T>",
   properties: [GridProp, RowNodeProp],
-  tsDoc: ``,
+  tsDoc: `Defines the input parameters for the function 
+  that provides data during a drag operation.`,
 };
 
 export const DragData: InterfaceType = {
@@ -18,28 +19,30 @@ export const DragData: InterfaceType = {
   properties: [
     {
       kind: "property",
-      doc: { en: `` },
       name: "siteLocalData",
       value: "Record<string, any>",
       optional: true,
-      tsDoc: ``,
+      tsDoc: `Data that remains local to the site and is 
+      not transferred via the drag event's DataTransfer object.`,
+      doc: { en: `` },
     },
     {
       kind: "property",
-      doc: { en: `` },
       name: "dataTransfer",
       optional: true,
-      tsDoc: ``,
+      tsDoc: `String-based key-value pairs to be transferred with the drag event.`,
+      doc: { en: `` },
       value: "Record<string, string>",
     },
   ],
-  tsDoc: ``,
+  tsDoc: `Contains data associated with a drag operation, 
+  including transferable and site-local information.`,
 };
 
 export const GetDragDataFn: FunctionType = {
   kind: "function",
   doc: { en: `` },
-  tsDoc: ``,
+  tsDoc: `Function used to provide the data that will be associated with a drag operation.`,
   export: true,
   name: "GetDragDataFn<T>",
   properties: [
@@ -48,7 +51,7 @@ export const GetDragDataFn: FunctionType = {
       name: "params",
       doc: { en: `` },
       optional: false,
-      tsDoc: ``,
+      tsDoc: `Parameters passed to the function that generates drag data.`,
       value: "GetDragDataParams<T>",
     },
   ],
@@ -59,25 +62,40 @@ export const DragPosition: InterfaceType = {
   kind: "interface",
   name: "DragPosition",
   doc: { en: `` },
-  tsDoc: ``,
+  tsDoc: `Represents the current pointer position during a drag operation.`,
   export: true,
   properties: [
-    { kind: "property", name: "x", doc: { en: `` }, optional: false, tsDoc: ``, value: "number" },
-    { kind: "property", name: "y", doc: { en: `` }, optional: false, tsDoc: ``, value: "number" },
+    {
+      kind: "property",
+      name: "x",
+      doc: { en: `` },
+      optional: false,
+      tsDoc: `Client X coordinate.`,
+      value: "number",
+    },
+    {
+      kind: "property",
+      name: "y",
+      doc: { en: `` },
+      optional: false,
+      tsDoc: `Client Y coordinate.`,
+      value: "number",
+    },
   ],
 };
+
 export const DragEventParams: InterfaceType = {
   kind: "interface",
   name: "DragEventParams",
   doc: { en: `` },
-  tsDoc: ``,
+  tsDoc: `Arguments passed during a drag event lifecycle.`,
   export: true,
   properties: [
     {
       kind: "property",
       name: "state",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `Current drag state data.`,
       optional: false,
       value: "DragData",
     },
@@ -85,7 +103,7 @@ export const DragEventParams: InterfaceType = {
       kind: "property",
       name: "position",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `Current cursor position during the drag.`,
       optional: false,
       value: "DragPosition",
     },
@@ -93,7 +111,7 @@ export const DragEventParams: InterfaceType = {
       kind: "property",
       name: "dragElement",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `The HTML element currently being dragged.`,
       optional: false,
       value: "HTMLElement",
     },
@@ -105,7 +123,7 @@ export const DragEventFn: FunctionType = {
   name: "DragEventFn",
   export: true,
   doc: { en: `` },
-  tsDoc: ``,
+  tsDoc: `Callback function executed during a drag event.`,
   return: "void",
   properties: [
     {
@@ -113,7 +131,7 @@ export const DragEventFn: FunctionType = {
       name: "params",
       doc: { en: `` },
       optional: false,
-      tsDoc: ``,
+      tsDoc: `Arguments received during the drag event.`,
       value: "DragEventParams",
     },
   ],
@@ -122,14 +140,14 @@ export const DragEventFn: FunctionType = {
 export const DropMoveState: InterfaceType = {
   kind: "interface",
   doc: { en: `` },
-  tsDoc: ``,
+  tsDoc: `Describes the final state of a drag-and-drop move operation.`,
   export: true,
   name: "DragMoveState",
   properties: [
     {
       kind: "property",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `Indicates if the drag was initiated via keyboard.`,
       name: "isKeyboard",
       value: "boolean",
       optional: false,
@@ -137,7 +155,7 @@ export const DropMoveState: InterfaceType = {
     {
       kind: "property",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `X coordinate of the drop.`,
       name: "x",
       value: "number",
       optional: false,
@@ -145,16 +163,15 @@ export const DropMoveState: InterfaceType = {
     {
       kind: "property",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `Y coordinate of the drop.`,
       name: "y",
       value: "number",
       optional: false,
     },
-
     {
       kind: "property",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `Element into which the drag was dropped.`,
       name: "dropElement",
       value: "HTMLElement",
       optional: false,
@@ -162,16 +179,15 @@ export const DropMoveState: InterfaceType = {
     {
       kind: "property",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `Element that was being dragged.`,
       name: "dragElement",
       value: "HTMLElement",
       optional: false,
     },
-
     {
       kind: "property",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `Bounding rectangle of the drop target.`,
       name: "rect",
       value: "DOMRect",
       optional: false,
@@ -179,7 +195,7 @@ export const DropMoveState: InterfaceType = {
     {
       kind: "property",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `True if the drop occurred in the top half of the element.`,
       name: "topHalf",
       value: "boolean",
       optional: false,
@@ -187,7 +203,7 @@ export const DropMoveState: InterfaceType = {
     {
       kind: "property",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `True if the drop occurred in the left half of the element.`,
       name: "leftHalf",
       value: "boolean",
       optional: false,
@@ -199,14 +215,14 @@ export const DropEventParams: InterfaceType = {
   kind: "interface",
   name: "DropEventParams",
   doc: { en: `` },
-  tsDoc: ``,
+  tsDoc: `Represents the full context passed to the drop event handler.`,
   export: true,
   properties: [
     {
       kind: "property",
       name: "state",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `The drag data at the time of drop.`,
       optional: false,
       value: "DragData",
     },
@@ -214,15 +230,14 @@ export const DropEventParams: InterfaceType = {
       kind: "property",
       name: "moveState",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `Details the last-known drag position and target info before drop.`,
       optional: false,
       value: "DragMoveState",
     },
-
     {
       kind: "property",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `The HTML element onto which the drop occurred.`,
       name: "dropElement",
       value: "HTMLElement",
       optional: false,
@@ -230,7 +245,7 @@ export const DropEventParams: InterfaceType = {
     {
       kind: "property",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `The HTML element that was dragged.`,
       name: "dragElement",
       value: "HTMLElement",
       optional: false,
@@ -240,7 +255,7 @@ export const DropEventParams: InterfaceType = {
 
 export const DropEventFn: FunctionType = {
   kind: "function",
-  tsDoc: ``,
+  tsDoc: `Fired when a drop action is finalized and the dragged element is released over a drop zone.`,
   doc: { en: `` },
   export: true,
   name: "DropEventFn",
@@ -250,7 +265,7 @@ export const DropEventFn: FunctionType = {
       doc: { en: `` },
       name: "params",
       optional: false,
-      tsDoc: ``,
+      tsDoc: `The parameters passed to the drop event function.`,
       value: "DropEventParams",
     },
   ],
@@ -260,7 +275,7 @@ export const DropEventFn: FunctionType = {
 export const DragPlaceholderParams: InterfaceType = {
   kind: "interface",
   doc: { en: `` },
-  tsDoc: ``,
+  tsDoc: `Parameters passed when rendering the drag placeholder content.`,
   export: true,
   name: "DragPlaceholderParams<T>",
   properties: [
@@ -268,24 +283,26 @@ export const DragPlaceholderParams: InterfaceType = {
     {
       kind: "property",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `The data associated with the current drag session.`,
       name: "dragData",
       optional: false,
       value: "DragData",
     },
   ],
 };
+
 export const DragPlaceholderFn: FunctionType = {
   kind: "function",
   doc: { en: `` },
-  tsDoc: ``,
+  tsDoc: `Function to render the drag placeholder UI. This UI 
+  is rendered in isolation and does not respond to app state changes.`,
   export: true,
   name: "DragPlaceholderFn<T>",
   properties: [
     {
       kind: "property",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `Parameters for rendering the placeholder.`,
       name: "params",
       optional: false,
       value: "DragPlaceholderParams<T>",
@@ -297,7 +314,7 @@ export const DragPlaceholderFn: FunctionType = {
 export const UseRowDragParams: InterfaceType = {
   kind: "interface",
   doc: { en: `` },
-  tsDoc: ``,
+  tsDoc: `Parameters for configuring drag behavior using a React hook.`,
   export: true,
   name: "UseRowDragParams<T>",
   properties: [
@@ -306,15 +323,14 @@ export const UseRowDragParams: InterfaceType = {
       doc: { en: `` },
       name: "getDragData",
       optional: false,
-      tsDoc: ``,
+      tsDoc: `Function to compute the drag payload when dragging begins.`,
       value: "GetDragDataFn<T>",
     },
-
     {
       kind: "property",
       name: "onDragMove",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `Invoked frequently as the drag position updates.`,
       optional: true,
       value: "DragEventFn",
     },
@@ -322,7 +338,7 @@ export const UseRowDragParams: InterfaceType = {
       kind: "property",
       name: "onDragStart",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `Called at the beginning of a drag operation.`,
       optional: true,
       value: "DragEventFn",
     },
@@ -330,7 +346,7 @@ export const UseRowDragParams: InterfaceType = {
       kind: "property",
       name: "onDragEnd",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `Called at the end of a drag operation, regardless of drop.`,
       optional: true,
       value: "DragEventFn",
     },
@@ -338,14 +354,13 @@ export const UseRowDragParams: InterfaceType = {
       kind: "property",
       name: "onDrop",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `Triggered when the drag results in a drop.`,
       optional: true,
       value: "DropEventFn",
     },
-
     {
       kind: "property",
-      tsDoc: ``,
+      tsDoc: `Function to generate placeholder content for the drag preview.`,
       doc: { en: `` },
       name: "placeholder",
       optional: true,
@@ -354,16 +369,15 @@ export const UseRowDragParams: InterfaceType = {
     {
       kind: "property",
       doc: { en: `` },
-      tsDoc: ``,
+      tsDoc: `Offset [x, y] in pixels from the cursor position for rendering the drag placeholder.`,
       value: "[number, number]",
       optional: true,
       name: "placeholderOffset",
     },
-
     {
       kind: "property",
       name: "keyActivate",
-      tsDoc: ``,
+      tsDoc: `Keyboard key used to initiate drag mode.`,
       doc: { en: `` },
       optional: true,
       value: "string",
@@ -371,7 +385,7 @@ export const UseRowDragParams: InterfaceType = {
     {
       kind: "property",
       name: "keyNext",
-      tsDoc: ``,
+      tsDoc: `Keyboard key used to move to the next drop zone.`,
       doc: { en: `` },
       optional: true,
       value: "string",
@@ -379,7 +393,7 @@ export const UseRowDragParams: InterfaceType = {
     {
       kind: "property",
       name: "keyPrev",
-      tsDoc: ``,
+      tsDoc: `Keyboard key used to move to the previous drop zone.`,
       doc: { en: `` },
       optional: true,
       value: "string",
@@ -387,7 +401,7 @@ export const UseRowDragParams: InterfaceType = {
     {
       kind: "property",
       name: "keyDrop",
-      tsDoc: ``,
+      tsDoc: `Keyboard key used to execute the drop.`,
       doc: { en: `` },
       optional: true,
       value: "string",
@@ -395,7 +409,7 @@ export const UseRowDragParams: InterfaceType = {
     {
       kind: "property",
       name: "dragInstructions",
-      tsDoc: ``,
+      tsDoc: `Accessible label describing how to perform the drag operation.`,
       doc: { en: `` },
       optional: true,
       value: "string",
@@ -403,7 +417,7 @@ export const UseRowDragParams: InterfaceType = {
     {
       kind: "property",
       name: "announceDragStart",
-      tsDoc: ``,
+      tsDoc: `Screen reader message to announce drag start.`,
       doc: { en: `` },
       optional: true,
       value: "string",
@@ -411,7 +425,7 @@ export const UseRowDragParams: InterfaceType = {
     {
       kind: "property",
       name: "announceDragEnd",
-      tsDoc: ``,
+      tsDoc: `Screen reader message to announce drag end.`,
       doc: { en: `` },
       optional: true,
       value: "string",
