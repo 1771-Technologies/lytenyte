@@ -3924,6 +3924,11 @@ export interface FilterIn {
  */
 export interface FilterInFilterItem {
   /**
+   * A unique id for the in filter item.
+   */
+  readonly id: string;
+
+  /**
    * The display label for the item in the UI. Should be human-readable
    * even when the value itself is raw or technical.
    */
@@ -3940,7 +3945,7 @@ export interface FilterInFilterItem {
    * This is useful for tree-based UIs where items belong to categories
    * (e.g., year > month > day).
    */
-  readonly group?: string[];
+  readonly groupPath?: string[];
 }
 
 /**

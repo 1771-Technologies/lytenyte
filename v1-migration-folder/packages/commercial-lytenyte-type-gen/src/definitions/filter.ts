@@ -871,6 +871,14 @@ export const FilterInFilterItem: InterfaceType = {
   properties: [
     {
       kind: "property",
+      name: "id",
+      doc: { en: `` },
+      optional: false,
+      tsDoc: `A unique id for the in filter item.`,
+      value: "string",
+    },
+    {
+      kind: "property",
       name: "label",
       value: "string",
       optional: false,
@@ -892,7 +900,7 @@ export const FilterInFilterItem: InterfaceType = {
     },
     {
       kind: "property",
-      name: "group",
+      name: "groupPath",
       value: "string[]",
       optional: true,
       tsDoc: `
