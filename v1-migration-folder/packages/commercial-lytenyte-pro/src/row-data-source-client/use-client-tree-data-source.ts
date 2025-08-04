@@ -475,7 +475,7 @@ export function makeClientTreeDataSource<T>(
         );
 
         return [...values].map<FilterInFilterItem>((x) => {
-          if (!p.transformInFilterItem) return { label: `${x}`, value: x };
+          if (!p.transformInFilterItem) return { id: `${x}`, label: `${x}`, value: x };
 
           return p.transformInFilterItem({ field: x, column: c });
         });
