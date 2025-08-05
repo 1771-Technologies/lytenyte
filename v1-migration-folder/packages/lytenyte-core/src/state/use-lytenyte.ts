@@ -113,7 +113,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const rowFullWidthRenderer = atom({ fn: p.rowFullWidthRenderer ?? (() => "Not defined") });
 
   const sortModel = atom<SortModelItem<T>[]>(p.sortModel ?? []);
-  const filterModel = atom<FilterModelItem<T>[]>(p.filterModel ?? []);
+  const filterModel = atom<Record<string, FilterModelItem<T>>>(p.filterModel ?? {});
   const rowGroupModel = atom(p.rowGroupModel ?? []);
   const aggModel = atom(p.aggModel ?? {});
 

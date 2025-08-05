@@ -155,7 +155,7 @@ export const ColumnPivotModel: InterfaceType = {
       kind: "property",
       name: "sorts",
       tsDoc: `
-      Sorting configuration for the pivot result view.
+      Sort configuration for the pivot result view.
 
       The sort keys must match dynamically generated pivot column ids.
       `,
@@ -167,13 +167,25 @@ export const ColumnPivotModel: InterfaceType = {
       kind: "property",
       name: "filters",
       tsDoc: `
-      Filtering configuration for the pivot view.
+      Filter configuration for the pivot view.
 
       Like the sort model, filters apply to the dynamically generated pivot columns.
       `,
       doc: { en: `` },
       optional: false,
-      value: "FilterModelItem<T>[]",
+      value: "Record<string, FilterModelItem<T>>",
+    },
+    {
+      kind: "property",
+      name: "filtersIn",
+      tsDoc: `
+      In Filter configuration for the pivot view.
+
+      Like the sort model, in filters apply to the dynamically generated pivot columns.
+      `,
+      doc: { en: `` },
+      optional: false,
+      value: "Record<string, FilterIn>",
     },
   ],
 };

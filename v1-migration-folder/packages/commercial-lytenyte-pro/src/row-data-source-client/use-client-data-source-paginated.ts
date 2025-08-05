@@ -10,6 +10,7 @@ import type {
   AggModelFn,
   RowDataSourceClientPaginated,
   FilterInFilterItem,
+  FilterIn,
 } from "../+types";
 import { type ClientRowDataSourceParams, type Grid, type RowNode } from "../+types";
 import { useRef } from "react";
@@ -87,7 +88,8 @@ export function makeClientDataSourcePaginated<T>(
   });
 
   const models = atom<{
-    filter: FilterModelItem<T>[];
+    filter: Record<string, FilterModelItem<T>>;
+    filterIn: Record<string, FilterIn>;
     quickSearch: string | null;
     group: RowGroupModelItem<T>[];
     groupExpansions: { [rowId: string]: boolean | undefined };
@@ -95,7 +97,8 @@ export function makeClientDataSourcePaginated<T>(
     sort: SortModelItem<T>[];
   }>({
     sort: [],
-    filter: [],
+    filter: {},
+    filterIn: {},
     quickSearch: null,
     agg: {},
     group: [],
@@ -103,7 +106,8 @@ export function makeClientDataSourcePaginated<T>(
   });
 
   const sortModel = atom<SortModelItem<T>[]>((g) => g(models).sort);
-  const filterModel = atom<FilterModelItem<T>[]>((g) => g(models).filter);
+  const filterModel = atom<Record<string, FilterModelItem<T>>>((g) => g(models).filter);
+  const filterInModel = atom<Record<string, FilterIn>>((g) => g(models).filterIn);
   const rowGroupModel = atom<RowGroupModelItem<T>[]>((g) => g(models).group);
   const groupExpansions = atom<{ [rowId: string]: boolean | undefined }>(
     (g) => g(models).groupExpansions,
@@ -123,8 +127,10 @@ export function makeClientDataSourcePaginated<T>(
       rows,
       grid,
       g(filterModel),
+      g(filterInModel),
       g(quickSearch),
       grid?.state.quickSearchSensitivity.get() ?? "case-sensitive",
+      false,
     );
 
     const rowGroups = g(rowGroupModel)
@@ -331,12 +337,13 @@ export function makeClientDataSourcePaginated<T>(
 
     const sort = grid.state.sortModel.get();
     const filter = grid.state.filterModel.get();
+    const filterIn = grid.state.filterInModel.get();
     const group = grid.state.rowGroupModel.get();
     const groupExpansions = grid.state.rowGroupExpansions.get();
     const agg = grid.state.aggModel.get();
     const quickSearch = grid.state.quickSearch.get();
 
-    rdsStore.set(models, { agg, filter, group, groupExpansions, sort, quickSearch });
+    rdsStore.set(models, { agg, filter, filterIn, group, groupExpansions, sort, quickSearch });
     rdsStore.set(initialized, true);
 
     // Sort model monitoring
@@ -350,41 +357,49 @@ export function makeClientDataSourcePaginated<T>(
     // Filter model monitoring
     cleanup.push(
       grid.state.filterModel.watch(() => {
-        grid.state.rowDataStore.rowClearCache();
         rdsStore.set(models, (prev) => ({ ...prev, filter: grid.state.filterModel.get() }));
+        grid.state.rowDataStore.rowClearCache();
       }),
     );
     cleanup.push(
       grid.state.quickSearch.watch(() => {
-        grid.state.rowDataStore.rowClearCache();
         rdsStore.set(models, (prev) => ({ ...prev, quickSearch: grid.state.quickSearch.get() }));
+        grid.state.rowDataStore.rowClearCache();
+      }),
+    );
+    cleanup.push(
+      grid.state.filterInModel.watch(() => {
+        grid.state.filterInModel.watch(() => {
+          rdsStore.set(models, (prev) => ({ ...prev, filterIn: grid.state.filterInModel.get() }));
+          grid.state.rowDataStore.rowClearCache();
+        });
       }),
     );
 
     // Row group model monitoring
     cleanup.push(
       grid.state.rowGroupModel.watch(() => {
-        grid.state.rowDataStore.rowClearCache();
         rdsStore.set(models, (prev) => ({ ...prev, group: grid.state.rowGroupModel.get() }));
+        grid.state.rowDataStore.rowClearCache();
       }),
     );
 
     // Row group expansions monitoring
     cleanup.push(
       grid.state.rowGroupExpansions.watch(() => {
-        grid.state.rowDataStore.rowClearCache();
         rdsStore.set(models, (prev) => ({
           ...prev,
           groupExpansions: grid.state.rowGroupExpansions.get(),
         }));
+        grid.state.rowDataStore.rowClearCache();
       }),
     );
 
     // Agg model monitoring
     cleanup.push(
       grid.state.aggModel.watch(() => {
-        grid.state.rowDataStore.rowClearCache();
         rdsStore.set(models, (prev) => ({ ...prev, agg: grid.state.aggModel.get() }));
+        grid.state.rowDataStore.rowClearCache();
       }),
     );
   };

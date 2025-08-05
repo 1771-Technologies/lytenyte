@@ -13,15 +13,21 @@ import type {
 } from "../../+types";
 
 export interface FilterDateWithSettings extends FilterDate {
+  readonly field: string;
   readonly settings: FilterDateSetting;
 }
 
 export interface FilterStringWithSettings extends FilterString {
+  readonly field: string;
   readonly settings: FilterStringSettings;
 }
 
 export interface FilterNumberWithSettings extends FilterNumber {
+  readonly field: string;
   readonly settings: FilterNumberSettings;
+}
+export interface FilterInWithField extends FilterIn {
+  readonly field: string;
 }
 
 export interface FilterCombinationWithSettings {
@@ -40,5 +46,5 @@ export type FilterWithSettings<T> =
   | FilterStringWithSettings
   | FilterNumberWithSettings
   | FilterCombinationWithSettings
-  | FilterIn
+  | FilterInWithField
   | FilterFunc<T>;

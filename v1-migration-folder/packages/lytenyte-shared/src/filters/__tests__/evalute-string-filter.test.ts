@@ -20,7 +20,6 @@ describe("evaluateStringFilter", () => {
 
   test("equals", () => {
     const f: FilterString = {
-      field: "x",
       kind: "string",
       operator: "equals",
       value: "test",
@@ -56,7 +55,6 @@ describe("evaluateStringFilter", () => {
 
   test("not_equals", () => {
     const f: FilterString = {
-      field: "x",
       kind: "string",
       operator: "not_equals",
       value: "test",
@@ -93,7 +91,6 @@ describe("evaluateStringFilter", () => {
 
   test("length", () => {
     const f: FilterString = {
-      field: "x",
       kind: "string",
       operator: "length",
       value: "test",
@@ -117,7 +114,6 @@ describe("evaluateStringFilter", () => {
 
   test("length_greater_than", () => {
     const f: FilterString = {
-      field: "x",
       kind: "string",
       operator: "length_greater_than",
       value: "test",
@@ -141,7 +137,6 @@ describe("evaluateStringFilter", () => {
 
   test("length_greater_than_or_equals", () => {
     const f: FilterString = {
-      field: "x",
       kind: "string",
       operator: "length_greater_than_or_equals",
       value: "test",
@@ -160,7 +155,6 @@ describe("evaluateStringFilter", () => {
 
   test("length_less_than", () => {
     const f: FilterString = {
-      field: "x",
       kind: "string",
       operator: "length_less_than",
       value: "test",
@@ -179,7 +173,6 @@ describe("evaluateStringFilter", () => {
 
   test("length_less_than_or_equals", () => {
     const f: FilterString = {
-      field: "x",
       kind: "string",
       operator: "length_less_than_or_equals",
       value: "test",
@@ -198,7 +191,6 @@ describe("evaluateStringFilter", () => {
 
   test("not_length", () => {
     const f: FilterString = {
-      field: "x",
       kind: "string",
       operator: "not_length",
       value: "test",
@@ -217,7 +209,6 @@ describe("evaluateStringFilter", () => {
 
   test("begins_with", () => {
     const f: FilterString = {
-      field: "x",
       kind: "string",
       operator: "begins_with",
       value: "test",
@@ -237,7 +228,6 @@ describe("evaluateStringFilter", () => {
 
   test("not_begins_with", () => {
     const f: FilterString = {
-      field: "x",
       kind: "string",
       operator: "not_begins_with",
       value: "test",
@@ -258,7 +248,6 @@ describe("evaluateStringFilter", () => {
 
   test("contains", () => {
     const f: FilterString = {
-      field: "x",
       kind: "string",
       operator: "contains",
       value: "test",
@@ -277,7 +266,6 @@ describe("evaluateStringFilter", () => {
 
   test("not_contains", () => {
     const f: FilterString = {
-      field: "x",
       kind: "string",
       operator: "not_contains",
       value: "test",
@@ -296,7 +284,6 @@ describe("evaluateStringFilter", () => {
 
   test("ends_with", () => {
     const f: FilterString = {
-      field: "x",
       kind: "string",
       operator: "ends_with",
       value: "test",
@@ -315,7 +302,6 @@ describe("evaluateStringFilter", () => {
 
   test("not_ends_with", () => {
     const f: FilterString = {
-      field: "x",
       kind: "string",
       operator: "not_ends_with",
       value: "test",
@@ -334,7 +320,6 @@ describe("evaluateStringFilter", () => {
 
   test("greater_than", () => {
     const f: FilterString = {
-      field: "x",
       kind: "string",
       operator: "greater_than",
       value: "beta",
@@ -366,7 +351,6 @@ describe("evaluateStringFilter", () => {
 
   test("greater_than_or_equals", () => {
     const f: FilterString = {
-      field: "x",
       kind: "string",
       operator: "greater_than_or_equals",
       value: "beta",
@@ -398,7 +382,6 @@ describe("evaluateStringFilter", () => {
 
   test("less_than", () => {
     const f: FilterString = {
-      field: "x",
       kind: "string",
       operator: "less_than",
       value: "beta",
@@ -430,7 +413,6 @@ describe("evaluateStringFilter", () => {
 
   test("less_than_or_equals", () => {
     const f: FilterString = {
-      field: "x",
       kind: "string",
       operator: "less_than_or_equals",
       value: "beta",
@@ -462,7 +444,6 @@ describe("evaluateStringFilter", () => {
 
   test("matches", () => {
     const f: FilterString = {
-      field: "x",
       kind: "string",
       operator: "matches",
       value: "beta",
@@ -476,7 +457,6 @@ describe("evaluateStringFilter", () => {
 
   test("invalid data handling", () => {
     const f: FilterString = {
-      field: "x",
       kind: "string",
       operator: "matches",
       value: "beta",
@@ -491,7 +471,6 @@ describe("evaluateStringFilter", () => {
 
   test("unknown", () => {
     const f: FilterString = {
-      field: "x",
       kind: "string",
       operator: "xx" as any,
       value: "beta",

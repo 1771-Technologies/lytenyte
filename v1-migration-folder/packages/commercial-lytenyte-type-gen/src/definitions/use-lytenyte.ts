@@ -211,7 +211,7 @@ export const FilterModel: PropertyType = {
   kind: "property",
   name: "filterModel",
   optional: true,
-  value: "FilterModelItem<T>[]",
+  value: "Record<string, FilterModelItem<T>>",
   tsDoc: `The initial filter model to apply to the grid.`,
   doc: { en: `` },
 };
@@ -547,6 +547,15 @@ const QuickSearch: PropertyType = {
   doc: { en: `` },
 };
 
+const FilterInModel: PropertyType = {
+  kind: "property",
+  name: "filterInModel",
+  optional: true,
+  value: "Record<string, FilterIn>",
+  tsDoc: `The in (set) filter model to apply to LyteNyte Grid.`,
+  doc: { en: `` },
+};
+
 const QuickSearchSensitivity: PropertyType = {
   kind: "property",
   name: "quickSearchSensitivity",
@@ -626,6 +635,7 @@ export const UseLyteNytePropsPro: InterfaceType = {
     ColumnPivotModel,
     DialogFrame,
     PopoverFrame,
+    FilterInModel,
     CellSelections,
     CellSelectionMode,
   ],

@@ -13,6 +13,7 @@ import type {
   Column,
   VirtualTarget,
   DataRect,
+  FilterIn,
 } from "../+types.js";
 import { type Grid, type GridView, type UseLyteNyteProps } from "../+types.js";
 import { useRef } from "react";
@@ -122,7 +123,8 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const rowFullWidthRenderer = atom({ fn: p.rowFullWidthRenderer ?? (() => "Not defined") });
 
   const sortModel = atom<SortModelItem<T>[]>(p.sortModel ?? []);
-  const filterModel = atom<FilterModelItem<T>[]>(p.filterModel ?? []);
+  const filterModel = atom<Record<string, FilterModelItem<T>>>(p.filterModel ?? {});
+  const filterInModel = atom<Record<string, FilterIn>>(p.filterInModel ?? {});
   const rowGroupModel = atom(p.rowGroupModel ?? []);
   const aggModel = atom(p.aggModel ?? {});
 
@@ -166,7 +168,14 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const columnPivotMode = atom(p.columnPivotMode ?? false);
   const columnPivotModel = atom(
     p.columnPivotModel ??
-      ({ columns: [], filters: [], rows: [], sorts: [], values: [] } satisfies ColumnPivotModel<T>),
+      ({
+        columns: [],
+        filters: {},
+        filtersIn: {},
+        rows: [],
+        sorts: [],
+        values: [],
+      } satisfies ColumnPivotModel<T>),
   );
   const columnPivotColumns = atom<Column<T>[]>([]);
   const columnPivotColumnGroupExpansions = atom<Record<string, boolean | undefined>>({});
@@ -225,6 +234,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     g(rowGroupModel);
     g(sortModel);
     g(filterModel);
+    g(filterInModel);
     g(aggModel);
 
     return new Map();
@@ -551,6 +561,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
     sortModel: makeGridAtom(sortModel, store),
     filterModel: makeGridAtom(filterModel, store),
+    filterInModel: makeGridAtom(filterInModel, store),
     rowGroupModel: makeGridAtom(rowGroupModel, store),
     aggModel: makeGridAtom(aggModel, store),
 

@@ -11,7 +11,7 @@ export interface TreeItemContextValue {
 
 export const FilterTreeContext = createContext<{
   items: FilterInFilterItem[];
-  filter: FilterIn | null;
+  filter: FilterIn;
   pivotMode: boolean;
   columnId: string;
 }>(null as any);

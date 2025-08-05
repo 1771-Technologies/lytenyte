@@ -4,7 +4,6 @@ import type { FilterNumber } from "../../+types.js";
 
 describe("getNumberFilterSettings", () => {
   const base: FilterNumber = {
-    field: "x",
     kind: "number",
     value: null,
     operator: "equals",

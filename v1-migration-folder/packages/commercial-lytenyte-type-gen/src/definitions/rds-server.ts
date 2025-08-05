@@ -20,9 +20,19 @@ export const DataRequestModel: InterfaceType = {
       kind: "property",
       doc: { en: `` },
       optional: false,
-      tsDoc: `Array of filter definitions applied to columns.`,
+      tsDoc: `The simple filters currently applied to columns. The key of the record is the column 
+      id. It is not guaranteed that the column id in the filters is present in the columns in the grid.`,
       name: "filters",
-      value: "FilterModelItem<T>[]",
+      value: "Record<string, FilterModelItem<T>>",
+    },
+    {
+      kind: "property",
+      doc: { en: `` },
+      tsDoc: `The in (set) filters currently applied to the columns. The key of the record is the column
+      id. It is not guaranteed that the column id in the in filters is present in the columns in the grid.`,
+      optional: false,
+      name: "filtersIn",
+      value: "Record<string, FilterIn>",
     },
     {
       kind: "property",

@@ -466,7 +466,7 @@ const FilterModel: PropertyType = {
   optional: false,
   tsDoc: `An array of filters currently applied to the grid. If empty, no filters are active.`,
   doc: { en: `` },
-  value: "GridAtom<FilterModelItem<T>[]>",
+  value: "GridAtom<Record<string, FilterModelItem<T>>>",
 };
 
 const RowGroupModel: PropertyType = {
@@ -872,6 +872,15 @@ const QuickSearch: PropertyType = {
   value: "GridAtom<string | null>",
 };
 
+const FilterInModel: PropertyType = {
+  kind: "property",
+  name: "filterInModel",
+  optional: false,
+  value: "GridAtom<Record<string, FilterIn>>",
+  tsDoc: `The in (set) filter model to apply to LyteNyte Grid.`,
+  doc: { en: `` },
+};
+
 const QuickSearchSensitivity: PropertyType = {
   kind: "property",
   doc: { en: `` },
@@ -990,6 +999,7 @@ export const GridStatePro: InterfaceType = {
     ColumnPivotColumns,
     ColumnPivotRowGroupExpansions,
     ColumnPivotColumnGroupExpansions,
+    FilterInModel,
     DialogFrame,
     PopoverFrame,
     CellSelections,

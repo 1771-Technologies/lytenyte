@@ -19,7 +19,7 @@ export interface UseTreeFilterReturn<T> {
     readonly getIdsBetweenNodes: (left: HTMLElement, right: HTMLElement) => string[];
     readonly onFocusChange: (el: HTMLElement | null) => void;
     readonly root: PathRoot<FilterInFilterItem>;
-    readonly filterIn: FilterIn | null;
+    readonly filterIn: FilterIn;
     readonly columnId: string;
     readonly items: FilterInFilterItem[];
   };
@@ -49,16 +49,16 @@ export function useFilterTree<T>({
 
   const rds = grid.state.rowDataSource.useValue();
 
-  const filterModel = grid.state.filterModel.useValue();
-  const pivotModel = grid.state.columnPivotModel.useValue().filters;
+  const filterModel = grid.state.filterInModel.useValue();
+  const pivotModel = grid.state.columnPivotModel.useValue().filtersIn;
 
   const currentPivotMode = grid.state.columnPivotMode.useValue();
+
   const model = (pivotMode ?? currentPivotMode) ? pivotModel : filterModel;
 
   const existingFilter = useMemo(() => {
-    return model.find(
-      (c) => c.kind === "in" && c.operator === "not_in" && c.field === column.id,
-    ) as FilterIn;
+    const filter = model[column.id];
+    return filter ?? { kind: "in", operator: "not_in", value: new Set() };
   }, [column.id, model]);
 
   const fetchItems = useEvent(() => {

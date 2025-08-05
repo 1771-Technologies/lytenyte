@@ -345,13 +345,6 @@ export interface FilterDate {
   readonly kind: "date";
 
   /**
-   * The identifier of the column this filter applies to.
-   *
-   * This should match the `id` of a column whose value represents a date in ISO string format.
-   */
-  readonly field: string;
-
-  /**
    * The comparison operator to apply. Determines how the field value is matched
    * against the provided filter `value`.
    *
@@ -465,14 +458,6 @@ export interface FilterNumber {
   readonly kind: "number";
 
   /**
-   * Column `id` this filter targets.
-   *
-   * This string should match the `id` field defined in a column schema and is used to retrieve
-   * the relevant value from each row.
-   */
-  readonly field: string;
-
-  /**
    * Operator to apply in the filter condition (e.g., `greater_than`, `equals`).
    *
    * Determines how the row value is compared to the provided `value`.
@@ -556,13 +541,6 @@ export interface FilterString {
    * Useful when filters are stored in a mixed array.
    */
   readonly kind: "string";
-
-  /**
-   * The column `id` the filter applies to.
-   *
-   * The value will be used to retrieve the corresponding field from each row.
-   */
-  readonly field: string;
 
   /**
    * The filtering operator (e.g., "contains", "equals", "length_greater_than").

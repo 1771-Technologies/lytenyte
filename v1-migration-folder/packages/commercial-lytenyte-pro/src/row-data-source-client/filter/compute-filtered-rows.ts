@@ -6,24 +6,43 @@ import {
   getNumberFilterSettings,
   getStringFilterSettings,
 } from "@1771technologies/lytenyte-shared";
-import type { FilterModelItem, FilterQuickSearchSensitivity, Grid, RowLeaf } from "../../+types";
+import type {
+  FilterIn,
+  FilterModelItem,
+  FilterQuickSearchSensitivity,
+  Grid,
+  RowLeaf,
+} from "../../+types";
 import type { FilterWithSettings } from "./+types";
+import { itemsWithIdToMap } from "@1771technologies/lytenyte-js-utils";
 
 export function computeFilteredRows<T>(
   rows: RowLeaf<T>[],
   grid: Grid<T> | null,
-  filterModel: FilterModelItem<T>[],
+  filterModel: Record<string, FilterModelItem<T>>,
+  filterInModel: Record<string, FilterIn>,
   quickSearch: string | null,
   sensitivity: FilterQuickSearchSensitivity,
+  isPivot: boolean,
 ) {
-  if (!(filterModel.length || quickSearch) || !grid) return rows;
+  if (!grid) return rows;
 
-  const filters = filterModel.map(createFilter);
+  const columns = isPivot ? grid.state.columnPivotColumns.get() : grid.state.columns.get();
+  const lookup = itemsWithIdToMap(columns);
+
+  const filterEntries = [...Object.entries(filterModel), ...Object.entries(filterInModel)].filter(
+    ([key]) => {
+      return lookup.has(key);
+    },
+  );
+
+  if (!(filterEntries.length || quickSearch) || !grid) return rows;
+
+  const filters = filterEntries.map(([key, f]) => createFilter(key, f));
 
   const filtered: RowLeaf<T>[] = [];
 
   const base = grid.state.columnBase.get();
-  const columns = grid.state.columns.get();
 
   const nonIgnored = columns.filter((c) => !(c.quickSearchIgnore ?? base.quickSearchIgnore));
 
@@ -50,12 +69,13 @@ export function computeFilteredRows<T>(
   return filtered;
 }
 
-function createFilter<T>(filter: FilterModelItem<T>): FilterWithSettings<T> {
+function createFilter<T>(id: string, filter: FilterModelItem<T> | FilterIn): FilterWithSettings<T> {
   if (filter.kind === "date") {
     const settings = getDateFilterSettings(filter);
 
     return {
       ...filter,
+      field: id,
       kind: "date",
       settings,
     };
@@ -63,6 +83,7 @@ function createFilter<T>(filter: FilterModelItem<T>): FilterWithSettings<T> {
     const settings = getNumberFilterSettings(filter);
     return {
       ...filter,
+      field: id,
       kind: "number",
       settings,
     };
@@ -71,16 +92,20 @@ function createFilter<T>(filter: FilterModelItem<T>): FilterWithSettings<T> {
 
     return {
       ...filter,
+      field: id,
       kind: "string",
       settings,
     };
   } else if (filter.kind === "in") {
-    return filter;
+    return {
+      ...filter,
+      field: id,
+    };
   } else if (filter.kind === "combination") {
     return {
       ...filter,
       kind: "combination",
-      filters: filter.filters.map(createFilter) as any,
+      filters: filter.filters.map((f) => createFilter(id, f)) as any,
     };
   } else if (filter.kind === "func") {
     return filter;
