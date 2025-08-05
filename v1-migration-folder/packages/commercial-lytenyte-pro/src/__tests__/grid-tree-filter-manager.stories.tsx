@@ -24,32 +24,11 @@ const meta: Meta = {
 
 export default meta;
 
-const columns: Column<any>[] = [
-  { id: "age", type: "number" },
-  { id: "job" },
-  { id: "balance", type: "number" },
-  { id: "education" },
-  { id: "marital" },
-  { id: "default" },
-  { id: "housing" },
-  { id: "loan" },
-  { id: "contact" },
-  { id: "day" },
-  { id: "month" },
-  { id: "duration" },
-  { id: "campaign" },
-  { id: "pdays" },
-  { id: "previous" },
-  { id: "poutcome" },
-  { id: "y" },
-];
+const columns: Column<any>[] = [{ id: "job" }, { id: "education" }, { id: "marital" }];
 
 function Component({ data = bankData }: { data?: any[] }) {
   const ds = useClientRowDataSource({
     data: data,
-    topData: data.slice(0, 2),
-    bottomData: data.slice(0, 2),
-
     transformInFilterItem: ({ field }) => {
       if (field === "unknown")
         return { label: `${field}`, id: `${field}`, value: field, groupPath: ["Alpha"] };
@@ -62,13 +41,9 @@ function Component({ data = bankData }: { data?: any[] }) {
     gridId: useId(),
     columns,
     rowDataSource: ds,
-
-    cellSelectionMode: "range",
-
-    sortModel: [
-      { columnId: "age", sort: { kind: "number" } },
-      { columnId: "balance", sort: { kind: "custom", comparator: () => 1, columnId: "balance" } },
-    ],
+    filterInModel: {
+      education: { kind: "in", operator: "in", value: new Set(["primary"]) },
+    },
 
     columnBase: {
       uiHints: {
@@ -82,8 +57,13 @@ function Component({ data = bankData }: { data?: any[] }) {
   const view = g.view.useValue();
 
   const filterProps = FM.useFilterTree({
+    column: columns[0],
+    grid: g,
+  });
+  const filterProps2 = FM.useFilterTree({
     column: columns[1],
     grid: g,
+    applyChangesImmediately: true,
   });
 
   return (
@@ -95,21 +75,46 @@ function Component({ data = bankData }: { data?: any[] }) {
       </div>
 
       <div style={{ display: "flex" }}>
-        <div style={{ width: "30%", height: "90vh", border: "1px solid black" }}>
-          <FM.Root {...filterProps.rootProps}>
-            <FM.Panel>
-              <FM.PassiveScroll>
-                {filterProps.tree.map((c) => {
-                  return (
-                    <RenderNode item={c} key={c.kind === "branch" ? c.branch.id : c.leaf.data.id} />
-                  );
-                })}
-              </FM.PassiveScroll>
-              {filterProps.spacer}
-            </FM.Panel>
-          </FM.Root>
+        <div style={{ width: "50%", height: "90vh", border: "1px solid black", display: "flex" }}>
+          <div style={{ flex: 1 }}>
+            <FM.Root {...filterProps.rootProps}>
+              <FM.Panel>
+                <FM.PassiveScroll>
+                  {filterProps.tree.map((c) => {
+                    return (
+                      <RenderNode
+                        item={c}
+                        key={c.kind === "branch" ? c.branch.id : c.leaf.data.id}
+                      />
+                    );
+                  })}
+                </FM.PassiveScroll>
+                {filterProps.spacer}
+              </FM.Panel>
+
+              <button onClick={filterProps.apply}>Apply</button>
+              <button onClick={filterProps.reset}>Reset</button>
+            </FM.Root>
+          </div>
+          <div style={{ flex: 1 }}>
+            <FM.Root {...filterProps2.rootProps}>
+              <FM.Panel>
+                <FM.PassiveScroll>
+                  {filterProps2.tree.map((c) => {
+                    return (
+                      <RenderNode
+                        item={c}
+                        key={c.kind === "branch" ? c.branch.id : c.leaf.data.id}
+                      />
+                    );
+                  })}
+                </FM.PassiveScroll>
+                {filterProps2.spacer}
+              </FM.Panel>
+            </FM.Root>
+          </div>
         </div>
-        <div style={{ width: "70%", height: "90vh", border: "1px solid black" }}>
+        <div style={{ width: "50%", height: "90vh", border: "1px solid black" }}>
           <Root grid={g}>
             <Viewport>
               <Header>

@@ -21,6 +21,7 @@ export const TreeLeaf = forwardRef<HTMLLIElement, JSX.IntrinsicElements["li"] & 
         data-ln-selected={root.selection.has(itemId)}
         data-ln-tree-id={itemId}
         onKeyDown={(e) => {
+          props.onKeyDown?.(e);
           if (
             (e.key !== "ArrowLeft" && e.key !== "ArrowRight") ||
             e.metaKey ||

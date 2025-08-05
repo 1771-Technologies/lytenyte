@@ -4,7 +4,7 @@ import type { TreeVirtualLeaf } from "../tree-view/virtualized/make-virtual-tree
 import { TreeLeaf } from "../tree-view/leaf";
 import type { FilterInFilterItem } from "../+types";
 import { FilterTreeItemContext } from "./context";
-import { useTreeItem } from "./use-tree-item";
+import { useTreeItem } from "./hooks/use-tree-item";
 
 export interface FilterTreeLeafProps {
   readonly item: TreeVirtualLeaf<FilterInFilterItem>;
@@ -22,6 +22,10 @@ export const Leaf = forwardRef<HTMLLIElement, FilterTreeLeafProps & JSX.Intrinsi
           ref={forwarded}
           {...item.attrs}
           style={{ ...props.style, ...item.attrs.style }}
+          onClick={() => value.onCheckChange()}
+          onKeyDown={(ev) => {
+            if (ev.key === " ") value.onCheckChange();
+          }}
         />
       </FilterTreeItemContext.Provider>
     );

@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState, type Dispatch, type JSX, type SetStateAction } from "react";
-import type { Column, FilterIn, FilterInFilterItem, Grid } from "../+types";
-import { useVirtualizedTree } from "../tree-view/virtualized/use-virtualized-tree";
+import type { Column, FilterIn, FilterInFilterItem, Grid } from "../../+types";
+import { useVirtualizedTree } from "../../tree-view/virtualized/use-virtualized-tree";
 import type { PathRoot } from "@1771technologies/lytenyte-shared";
-import type { TreeVirtualItem } from "../tree-view/virtualized/make-virtual-tree";
+import type { TreeVirtualItem } from "../../tree-view/virtualized/make-virtual-tree";
 import { useEvent } from "@1771technologies/lytenyte-react-hooks";
 
 export interface UseTreeFilterReturn<T> {
@@ -19,13 +19,19 @@ export interface UseTreeFilterReturn<T> {
     readonly getIdsBetweenNodes: (left: HTMLElement, right: HTMLElement) => string[];
     readonly onFocusChange: (el: HTMLElement | null) => void;
     readonly root: PathRoot<FilterInFilterItem>;
-    readonly filterIn: FilterIn;
     readonly columnId: string;
     readonly items: FilterInFilterItem[];
+    readonly applyChangesImmediately: boolean;
+
+    readonly filterIn: FilterIn;
+    readonly filterInChange: Dispatch<SetStateAction<FilterIn>>;
   };
 
   readonly tree: TreeVirtualItem<FilterInFilterItem>[];
   readonly spacer: JSX.Element;
+
+  readonly apply: () => void;
+  readonly reset: () => void;
 }
 
 export interface UseFilterTreeArgs<T> {
@@ -33,6 +39,7 @@ export interface UseFilterTreeArgs<T> {
   column: Column<T>;
   treeItemHeight?: number;
   pivotMode?: boolean;
+  applyChangesImmediately?: boolean;
 }
 
 export function useFilterTree<T>({
@@ -40,6 +47,7 @@ export function useFilterTree<T>({
   column,
   treeItemHeight = 24,
   pivotMode,
+  applyChangesImmediately = false,
 }: UseFilterTreeArgs<T>) {
   const [items, setItems] = useState<FilterInFilterItem[]>([]);
   const [expansions, onExpansionChange] = useState({});
@@ -60,6 +68,13 @@ export function useFilterTree<T>({
     const filter = model[column.id];
     return filter ?? { kind: "in", operator: "not_in", value: new Set() };
   }, [column.id, model]);
+
+  const [changes, setChanges] = useState(() => existingFilter);
+
+  // Keep in sync with any external changes.
+  useEffect(() => {
+    setChanges(existingFilter);
+  }, [existingFilter]);
 
   const fetchItems = useEvent(() => {
     const items = rds.inFilterItems(column);
@@ -95,6 +110,26 @@ export function useFilterTree<T>({
     nonAdjacentPathTrees: false,
   });
 
+  const apply = useEvent(() => {
+    if (applyChangesImmediately) return;
+
+    if (pivotMode) {
+      grid.state.columnPivotModel.set((prev) => {
+        return {
+          ...prev,
+          filtersIn: { ...prev.filtersIn, [column.id]: changes },
+        };
+      });
+    } else {
+      grid.state.filterInModel.set((prev) => ({ ...prev, [column.id]: changes }));
+    }
+  });
+  const reset = useEvent(() => {
+    if (applyChangesImmediately) return;
+
+    setChanges(existingFilter);
+  });
+
   return {
     rootProps: {
       fetchItems,
@@ -107,10 +142,14 @@ export function useFilterTree<T>({
       treeRef: virt.ref,
       loading,
       error,
-      filterIn: existingFilter ?? null,
+      filterIn: changes,
+      filterInChange: setChanges,
+      applyChangesImmediately,
       ...virt.rootProps,
     },
     spacer: virt.spacer,
     tree: virt.virtualTree,
+    apply,
+    reset,
   } satisfies UseTreeFilterReturn<T>;
 }
