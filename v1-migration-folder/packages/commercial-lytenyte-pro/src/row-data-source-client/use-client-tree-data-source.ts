@@ -8,6 +8,7 @@ import type {
   RowDataSourceClient,
   FilterInFilterItem,
   ClientTreeDataSourceParams,
+  FilterIn,
 } from "../+types";
 import { type Grid, type RowNode } from "../+types";
 import { useRef } from "react";
@@ -73,7 +74,8 @@ export function makeClientTreeDataSource<T>(
   });
 
   const models = atom<{
-    filter: FilterModelItem<T>[];
+    filter: Record<string, FilterModelItem<T>>;
+    filterIn: Record<string, FilterIn>;
     quickSearch: string | null;
     groupExpansions: { [rowId: string]: boolean | undefined };
     columnPivotGroupExpansions: { [rowId: string]: boolean | undefined };
@@ -81,7 +83,8 @@ export function makeClientTreeDataSource<T>(
     sort: SortModelItem<T>[];
   }>({
     sort: [],
-    filter: [],
+    filter: {},
+    filterIn: {},
     quickSearch: null,
     agg: {},
     groupExpansions: {},
@@ -89,7 +92,8 @@ export function makeClientTreeDataSource<T>(
   });
 
   const sortModel = atom<SortModelItem<T>[]>((g) => g(models).sort);
-  const filterModel = atom<FilterModelItem<T>[]>((g) => g(models).filter);
+  const filterModel = atom<Record<string, FilterModelItem<T>>>((g) => g(models).filter);
+  const filterInModel = atom<Record<string, FilterIn>>((g) => g(models).filterIn);
   const groupExpansions = atom<{ [rowId: string]: boolean | undefined }>(
     (g) => g(models).groupExpansions,
   );
@@ -109,8 +113,10 @@ export function makeClientTreeDataSource<T>(
       rows,
       grid,
       g(filterModel),
+      g(filterInModel),
       g(quickSearch),
       grid?.state.quickSearchSensitivity.get() ?? "case-sensitive",
+      false,
     );
 
     const rowAggModel = Object.entries(g(aggModel)).map(([name, agg]) => {
@@ -292,6 +298,7 @@ export function makeClientTreeDataSource<T>(
 
     const sort = grid.state.sortModel.get();
     const filter = grid.state.filterModel.get();
+    const filterIn = grid.state.filterInModel.get();
     const groupExpansions = grid.state.rowGroupExpansions.get();
     const agg = grid.state.aggModel.get();
     const quickSearch = grid.state.quickSearch.get();
@@ -300,6 +307,7 @@ export function makeClientTreeDataSource<T>(
     rdsStore.set(models, {
       agg,
       filter,
+      filterIn,
       quickSearch,
       groupExpansions,
       sort,
@@ -325,6 +333,12 @@ export function makeClientTreeDataSource<T>(
     cleanup.push(
       grid.state.quickSearch.watch(() => {
         rdsStore.set(models, (prev) => ({ ...prev, quickSearch: grid.state.quickSearch.get() }));
+        grid.state.rowDataStore.rowClearCache();
+      }),
+    );
+    cleanup.push(
+      grid.state.filterInModel.watch(() => {
+        rdsStore.set(models, (prev) => ({ ...prev, filterIn: grid.state.filterInModel.get() }));
         grid.state.rowDataStore.rowClearCache();
       }),
     );

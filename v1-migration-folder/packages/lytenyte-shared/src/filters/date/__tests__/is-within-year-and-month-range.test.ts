@@ -1,7 +1,12 @@
-import { describe, test, expect } from "vitest";
+import { describe, test, expect, afterEach, beforeEach, vi } from "vitest";
 import { isWithinYearAndMonthRange } from "../is-within-year-and-month-range.js";
-
 describe("isWithinYearAndMonthRange", () => {
+  beforeEach(() => {
+    vi.stubEnv("TZ", "UTC");
+  });
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
   test("should return true if the date is exactly within the range", () => {
     const startDate = new Date("2025-03-01");
     const endDate = new Date("2025-07-31");

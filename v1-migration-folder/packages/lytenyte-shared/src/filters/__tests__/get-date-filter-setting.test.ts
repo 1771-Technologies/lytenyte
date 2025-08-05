@@ -4,7 +4,6 @@ import type { FilterDate } from "../../+types.js";
 
 describe("getDateFilterSettings", () => {
   const base: FilterDate = {
-    field: "x",
     kind: "date",
     operator: "after",
     value: "2025-01-01",

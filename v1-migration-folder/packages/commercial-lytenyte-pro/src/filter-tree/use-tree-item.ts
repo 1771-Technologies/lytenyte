@@ -57,48 +57,48 @@ export function useTreeItem(item: TreeVirtualItem<FilterInFilterItem>) {
           grid.state.columnPivotModel.set((prev) => {
             return {
               ...prev,
-              filters: [
-                ...prev.filters,
-                { kind: "in", field: columnId, operator: "not_in", value: nextValue },
-              ],
+              filtersIn: {
+                ...prev.filtersIn,
+                [columnId]: { kind: "in", operator: "not_in", value: nextValue },
+              },
             };
           });
         } else {
-          grid.state.filterModel.set((prev) => {
-            return [...prev, { kind: "in", field: columnId, operator: "not_in", value: nextValue }];
+          grid.state.filterInModel.set((prev) => {
+            return { ...prev, [columnId]: { kind: "in", operator: "not_in", value: nextValue } };
           });
         }
       } else {
         const model = pivotMode
-          ? grid.state.columnPivotModel.get().filters
-          : grid.state.filterModel.get();
+          ? grid.state.columnPivotModel.get().filtersIn
+          : grid.state.filterInModel.get();
 
-        const item = model.findIndex((c) => c === filter)!;
-        const next = [...model];
-        next[item] = { kind: "in", field: columnId, operator: "not_in", value: nextValue };
+        const next = { ...model };
+
+        next[columnId] = { kind: "in", operator: "not_in", value: nextValue };
 
         if (pivotMode) {
           grid.state.columnPivotModel.set((prev) => {
             return {
               ...prev,
-              filters: next,
+              filtersIn: next,
             };
           });
         } else {
-          grid.state.filterModel.set(next);
+          grid.state.filterInModel.set(next);
         }
       }
     },
     [
-      items,
-      columnId,
-      filter,
-      grid.state.columnPivotModel,
-      grid.state.filterModel,
       isChecked,
       item,
+      filter,
+      items,
       itemValues,
       pivotMode,
+      grid.state.columnPivotModel,
+      grid.state.filterInModel,
+      columnId,
     ],
   );
 

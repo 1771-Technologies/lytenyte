@@ -1,12 +1,18 @@
-import { describe, expect, test, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { evaluateDateFilter } from "../evaluate-date-filter.js";
 import type { FilterDateSetting } from "../get-date-filter-settings.js";
 import type { FilterDate } from "../../+types.js";
 
 describe("evaluateDateFilter", () => {
+  beforeEach(() => {
+    vi.stubEnv("TZ", "UTC");
+  });
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
   test("should handle nulls correctly", () => {
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "equals",
       value: null,
@@ -57,7 +63,6 @@ describe("evaluateDateFilter", () => {
 
   test("should return false for invalid data types", () => {
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "equals",
       value: new Date() as any,
@@ -71,7 +76,6 @@ describe("evaluateDateFilter", () => {
 
   test("equals", () => {
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "equals",
       value: "2025-02-01T02:30:00",
@@ -92,7 +96,6 @@ describe("evaluateDateFilter", () => {
 
   test("not_equals", () => {
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "not_equals",
       value: "2025-02-01T02:30:00",
@@ -113,7 +116,6 @@ describe("evaluateDateFilter", () => {
 
   test("after", () => {
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "after",
       value: "2025-02-01T02:30:00",
@@ -132,7 +134,6 @@ describe("evaluateDateFilter", () => {
 
   test("after_or_equals", () => {
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "after_or_equals",
       value: "2025-02-01T02:30:00",
@@ -151,7 +152,6 @@ describe("evaluateDateFilter", () => {
 
   test("before", () => {
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "before",
       value: "2025-02-02T02:30:00",
@@ -171,7 +171,6 @@ describe("evaluateDateFilter", () => {
 
   test("before_or_equals", () => {
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "before_or_equals",
       value: "2025-02-02T02:30:00",
@@ -190,7 +189,6 @@ describe("evaluateDateFilter", () => {
 
   test("is_weekday", () => {
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "is_weekday",
       value: "",
@@ -206,7 +204,6 @@ describe("evaluateDateFilter", () => {
 
   test("is_weekend", () => {
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "is_weekend",
       value: "",
@@ -222,7 +219,6 @@ describe("evaluateDateFilter", () => {
 
   test("last_month", () => {
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "last_month",
       value: "2025-01-03",
@@ -236,7 +232,6 @@ describe("evaluateDateFilter", () => {
 
   test("this_month", () => {
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "this_month",
       value: "2025-01-03",
@@ -250,7 +245,6 @@ describe("evaluateDateFilter", () => {
 
   test("next_month", () => {
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "next_month",
       value: "2025-01-03",
@@ -264,7 +258,6 @@ describe("evaluateDateFilter", () => {
 
   test("last_week", () => {
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "last_week",
       value: "2025-01-03",
@@ -278,7 +271,6 @@ describe("evaluateDateFilter", () => {
 
   test("this_week", () => {
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "this_week",
       value: "2025-01-03",
@@ -292,7 +284,6 @@ describe("evaluateDateFilter", () => {
 
   test("next_week", () => {
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "next_week",
       value: "2025-01-03",
@@ -306,7 +297,6 @@ describe("evaluateDateFilter", () => {
 
   test("last_year", () => {
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "last_year",
       value: "2025-01-03",
@@ -320,7 +310,6 @@ describe("evaluateDateFilter", () => {
 
   test("this_year", () => {
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "this_year",
       value: "2025-01-03",
@@ -334,7 +323,6 @@ describe("evaluateDateFilter", () => {
 
   test("next_year", () => {
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "next_year",
       value: "2025-01-03",
@@ -349,7 +337,6 @@ describe("evaluateDateFilter", () => {
 
   test("today", () => {
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "today",
       value: "2025-01-02",
@@ -366,7 +353,6 @@ describe("evaluateDateFilter", () => {
 
   test("yesterday", () => {
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "yesterday",
       value: "2025-01-02",
@@ -383,7 +369,6 @@ describe("evaluateDateFilter", () => {
 
   test("yesterday", () => {
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "tomorrow",
       value: "2025-01-02",
@@ -403,7 +388,6 @@ describe("evaluateDateFilter", () => {
     vi.setSystemTime(new Date("2025-06-05"));
 
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "year_to_date",
       value: "",
@@ -420,7 +404,6 @@ describe("evaluateDateFilter", () => {
 
   test("quarter_of_year", () => {
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "quarter_of_year",
       value: 1,
@@ -443,7 +426,6 @@ describe("evaluateDateFilter", () => {
     vi.setSystemTime(new Date("2025-06-05"));
 
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "n_days_ago",
       value: 3,
@@ -464,7 +446,6 @@ describe("evaluateDateFilter", () => {
     vi.setSystemTime(new Date("2025-06-05"));
 
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "n_days_ahead",
       value: 3,
@@ -485,7 +466,6 @@ describe("evaluateDateFilter", () => {
     vi.setSystemTime(new Date("2025-06-05"));
 
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "n_months_ago",
       value: 2,
@@ -507,7 +487,6 @@ describe("evaluateDateFilter", () => {
     vi.setSystemTime(new Date("2025-06-05"));
 
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "n_months_ahead",
       value: 2,
@@ -529,7 +508,6 @@ describe("evaluateDateFilter", () => {
     vi.setSystemTime(new Date("2025-06-05"));
 
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "n_weeks_ago",
       value: 2,
@@ -550,7 +528,6 @@ describe("evaluateDateFilter", () => {
     vi.setSystemTime(new Date("2025-06-05"));
 
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "n_weeks_ahead",
       value: 2,
@@ -572,7 +549,6 @@ describe("evaluateDateFilter", () => {
     vi.setSystemTime(new Date("2025-06-05"));
 
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "n_years_ago",
       value: 2,
@@ -593,7 +569,6 @@ describe("evaluateDateFilter", () => {
     vi.setSystemTime(new Date("2025-06-05"));
 
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "n_years_ahead",
       value: 2,
@@ -615,7 +590,6 @@ describe("evaluateDateFilter", () => {
     vi.setSystemTime(new Date("2025-06-05"));
 
     const base: FilterDate = {
-      field: "x",
       kind: "date",
       operator: "n_years_ahead",
       value: "2",

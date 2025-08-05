@@ -74,21 +74,21 @@ export function makeClientDataSource<T>(
   });
 
   const models = atom<{
-    filter: FilterModelItem<T>[];
+    filter: Record<string, FilterModelItem<T>>;
     group: RowGroupModelItem<T>[];
     groupExpansions: { [rowId: string]: boolean | undefined };
     agg: Record<string, { fn: AggModelFn<T> }>;
     sort: SortModelItem<T>[];
   }>({
     sort: [],
-    filter: [],
+    filter: {},
     agg: {},
     group: [],
     groupExpansions: {},
   });
 
   const sortModel = atom<SortModelItem<T>[]>((g) => g(models).sort);
-  const filterModel = atom<FilterModelItem<T>[]>((g) => g(models).filter);
+  const filterModel = atom<Record<string, FilterModelItem<T>>>((g) => g(models).filter);
   const rowGroupModel = atom<RowGroupModelItem<T>[]>((g) => g(models).group);
   const groupExpansions = atom<{ [rowId: string]: boolean | undefined }>(
     (g) => g(models).groupExpansions,

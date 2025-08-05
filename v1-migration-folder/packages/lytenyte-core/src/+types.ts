@@ -123,7 +123,7 @@ export interface UseLyteNyteProps<T> {
   /**
    * The initial filter model to apply to the grid.
    */
-  readonly filterModel?: FilterModelItem<T>[];
+  readonly filterModel?: Record<string, FilterModelItem<T>>;
 
   /**
    * The initial aggregation model to apply to LyteNyte Grid.
@@ -468,7 +468,7 @@ export interface GridState<T> {
   /**
    * An array of filters currently applied to the grid. If empty, no filters are active.
    */
-  readonly filterModel: GridAtom<FilterModelItem<T>[]>;
+  readonly filterModel: GridAtom<Record<string, FilterModelItem<T>>>;
 
   /**
    * The aggregation model configuration for the grid. Each entry maps a column id to its associated
@@ -3272,13 +3272,6 @@ export interface FilterDate {
   readonly kind: "date";
 
   /**
-   * The identifier of the column this filter applies to.
-   *
-   * This should match the `id` of a column whose value represents a date in ISO string format.
-   */
-  readonly field: string;
-
-  /**
    * The comparison operator to apply. Determines how the field value is matched
    * against the provided filter `value`.
    *
@@ -3426,7 +3419,7 @@ export interface FilterFunc<T> {
 }
 
 /**
- * The full set of filter types available in the LyteNyte Grid core edition.
+ * The full set of filter types available in the LyteNyte Grid.
  */
 export type FilterModelItem<T> =
   | FilterNumber
@@ -3449,14 +3442,6 @@ export interface FilterNumber {
    * Identifies this object as a number-based filter.
    */
   readonly kind: "number";
-
-  /**
-   * Column `id` this filter targets.
-   *
-   * This string should match the `id` field defined in a column schema and is used to retrieve
-   * the relevant value from each row.
-   */
-  readonly field: string;
 
   /**
    * Operator to apply in the filter condition (e.g., `greater_than`, `equals`).
@@ -3542,13 +3527,6 @@ export interface FilterString {
    * Useful when filters are stored in a mixed array.
    */
   readonly kind: "string";
-
-  /**
-   * The column `id` the filter applies to.
-   *
-   * The value will be used to retrieve the corresponding field from each row.
-   */
-  readonly field: string;
 
   /**
    * The filtering operator (e.g., "contains", "equals", "length_greater_than").

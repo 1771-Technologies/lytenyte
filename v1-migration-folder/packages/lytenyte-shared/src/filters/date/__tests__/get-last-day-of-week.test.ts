@@ -1,7 +1,13 @@
-import { describe, expect, test } from "vitest";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { getLastDayOfWeek } from "../get-last-day-of-week.js";
 
 describe("getLastDayOfWeek", () => {
+  beforeEach(() => {
+    vi.stubEnv("TZ", "UTC");
+  });
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
   test("should return the correct result", () => {
     expect(getLastDayOfWeek(new Date("2025-01-06"))).toMatchInlineSnapshot(
       `2025-01-12T00:00:00.000Z`,

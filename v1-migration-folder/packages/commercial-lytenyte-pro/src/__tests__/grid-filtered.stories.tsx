@@ -61,16 +61,16 @@ function Component({ data = bankData }: { data?: any[] }) {
         </button>
         <button
           onClick={() => {
-            g.state.filterModel.set([
-              { field: "job", kind: "string", value: "unemployed", operator: "equals" },
-            ]);
+            g.state.filterModel.set({
+              job: { kind: "string", value: "unemployed", operator: "equals" },
+            });
           }}
         >
           Filtered
         </button>
         <button
           onClick={() => {
-            g.state.filterModel.set([]);
+            g.state.filterModel.set({});
           }}
         >
           No Filtered

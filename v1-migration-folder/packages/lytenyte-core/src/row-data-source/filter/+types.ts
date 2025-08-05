@@ -13,14 +13,17 @@ import type {
 
 export interface FilterDateWithSettings extends FilterDate {
   readonly settings: FilterDateSetting;
+  readonly field: string;
 }
 
 export interface FilterStringWithSettings extends FilterString {
   readonly settings: FilterStringSettings;
+  readonly field: string;
 }
 
 export interface FilterNumberWithSettings extends FilterNumber {
   readonly settings: FilterNumberSettings;
+  readonly field: string;
 }
 
 export interface FilterCombinationWithSettings {

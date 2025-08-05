@@ -50,7 +50,8 @@ export function makeServerDataSource<T>({
   const initialized = atom(false);
   const model$ = atom<DataRequestModel<T>>({
     sorts: [],
-    filters: [],
+    filters: {},
+    filtersIn: {},
     quickSearch: null,
 
     group: [],
@@ -61,7 +62,8 @@ export function makeServerDataSource<T>({
     pivotMode: false,
     pivotModel: {
       columns: [],
-      filters: [],
+      filters: {},
+      filtersIn: {},
       rows: [],
       sorts: [],
       values: [],
@@ -303,6 +305,7 @@ export function makeServerDataSource<T>({
     const sorts = g.state.sortModel.get();
 
     const filters = g.state.filterModel.get();
+    const filtersIn = g.state.filterInModel.get();
     const quickSearch = g.state.quickSearch.get();
 
     const group = g.state.rowGroupModel.get();
@@ -316,6 +319,7 @@ export function makeServerDataSource<T>({
     rdsStore.set(model$, {
       sorts,
       filters,
+      filtersIn,
       quickSearch,
 
       aggregations,
@@ -432,6 +436,12 @@ export function makeServerDataSource<T>({
     cleanup.push(
       g.state.quickSearch.watch(() => {
         rdsStore.set(model$, (prev) => ({ ...prev, quickSearch: g.state.quickSearch.get() }));
+        resetRequest();
+      }),
+    );
+    cleanup.push(
+      g.state.filterInModel.watch(() => {
+        rdsStore.set(model$, (prev) => ({ ...prev, filtersIn: g.state.filterInModel.get() }));
         resetRequest();
       }),
     );

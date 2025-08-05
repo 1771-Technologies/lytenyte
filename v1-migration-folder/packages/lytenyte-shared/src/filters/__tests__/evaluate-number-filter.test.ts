@@ -7,7 +7,6 @@ describe("evaluateNumberFilter", () => {
   test("equals", () => {
     const f: FilterNumber = {
       kind: "number",
-      field: "x",
       operator: "equals",
       value: 11,
       options: {},
@@ -30,7 +29,6 @@ describe("evaluateNumberFilter", () => {
   test("not_equals", () => {
     const f: FilterNumber = {
       kind: "number",
-      field: "x",
       operator: "not_equals",
       value: 11,
       options: {},
@@ -52,7 +50,6 @@ describe("evaluateNumberFilter", () => {
   test("greater_than", () => {
     const f: FilterNumber = {
       kind: "number",
-      field: "x",
       operator: "greater_than",
       value: 11,
       options: {},
@@ -75,7 +72,6 @@ describe("evaluateNumberFilter", () => {
   test("greater_than_or_equals", () => {
     const f: FilterNumber = {
       kind: "number",
-      field: "x",
       operator: "greater_than_or_equals",
       value: 11,
       options: {},
@@ -98,7 +94,6 @@ describe("evaluateNumberFilter", () => {
   test("less_than", () => {
     const f: FilterNumber = {
       kind: "number",
-      field: "x",
       operator: "less_than",
       value: 11,
       options: {},
@@ -121,7 +116,6 @@ describe("evaluateNumberFilter", () => {
   test("less_than_or_equals", () => {
     const f: FilterNumber = {
       kind: "number",
-      field: "x",
       operator: "less_than_or_equals",
       value: 11,
       options: {},
@@ -144,7 +138,6 @@ describe("evaluateNumberFilter", () => {
   test("bad data values", () => {
     const base: FilterNumber = {
       kind: "number",
-      field: "x",
       operator: "less_than_or_equals",
       value: 11,
       options: {},

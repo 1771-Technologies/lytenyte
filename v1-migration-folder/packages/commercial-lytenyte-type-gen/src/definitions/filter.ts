@@ -109,19 +109,6 @@ export const FilterNumber: InterfaceType = {
     },
     {
       kind: "property",
-      name: "field",
-      optional: false,
-      value: "string",
-      tsDoc: `
-        Column \`id\` this filter targets.
-
-        This string should match the \`id\` field defined in a column schema and is used to retrieve
-        the relevant value from each row.
-      `,
-      doc: { en: `` },
-    },
-    {
-      kind: "property",
       name: "operator",
       value: "FilterNumberOperator",
       optional: false,
@@ -329,18 +316,6 @@ export const FilterString: InterfaceType = {
     },
     {
       kind: "property",
-      name: "field",
-      value: "string",
-      optional: false,
-      tsDoc: `
-        The column \`id\` the filter applies to.
-
-        The value will be used to retrieve the corresponding field from each row.
-      `,
-      doc: { en: `` },
-    },
-    {
-      kind: "property",
       name: "operator",
       value: "FilterStringOperator",
       optional: false,
@@ -475,18 +450,6 @@ export const FilterDate: InterfaceType = {
     },
     {
       kind: "property",
-      name: "field",
-      optional: false,
-      value: "string",
-      tsDoc: `
-        The identifier of the column this filter applies to.
-
-        This should match the \`id\` of a column whose value represents a date in ISO string format.
-      `,
-      doc: { en: `` },
-    },
-    {
-      kind: "property",
       name: "operator",
       optional: false,
       value: "FilterDateOperator",
@@ -569,17 +532,6 @@ export const FilterIn: InterfaceType = {
       tsDoc: `
         Type discriminator used to identify this filter as an \`in\` filter.
         Ensures correct handling within the filter model.
-      `,
-      doc: { en: `` },
-    },
-    {
-      kind: "property",
-      name: "field",
-      value: "string",
-      optional: false,
-      tsDoc: `
-        The \`id\` of the column whose values are to be filtered.
-        This identifies the source field for filter evaluation.
       `,
       doc: { en: `` },
     },
@@ -821,31 +773,9 @@ export const FilterModelItem: UnionType = {
   export: true,
   types: ["FilterNumber", "FilterString", "FilterDate", "FilterCombination", "FilterFunc<T>"],
   tsDoc: `
-    The full set of filter types available in the LyteNyte Grid core edition.
+    The full set of filter types available in the LyteNyte Grid.
   `,
   doc: { en: `` },
-  tag: "core",
-};
-
-export const FilterModelItemPro: UnionType = {
-  kind: "union",
-  name: "FilterModelItem<T>",
-  export: true,
-  types: [
-    "FilterNumber",
-    "FilterString",
-    "FilterDate",
-    "FilterIn",
-    "FilterCombination",
-    "FilterFunc<T>",
-  ],
-  tsDoc: `
-    The full set of filter types supported in the PRO edition of LyteNyte Grid.
-
-    Includes advanced set-based filtering with the \`FilterIn\` type.
-  `,
-  doc: { en: `` },
-  tag: "pro",
 };
 
 export const FilterQuickSearchSensitivity: UnionType = {

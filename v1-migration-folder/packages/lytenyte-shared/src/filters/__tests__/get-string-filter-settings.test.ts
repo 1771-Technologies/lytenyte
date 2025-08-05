@@ -4,7 +4,6 @@ import type { FilterString } from "../../+types.js";
 
 describe("getStringFilterSettings", () => {
   const base: FilterString = {
-    field: "x",
     kind: "string",
     operator: "equals",
     value: "",

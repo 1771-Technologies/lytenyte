@@ -12,11 +12,23 @@ import type { FilterWithSettings } from "./+types";
 export function computeFilteredRows<T>(
   rows: RowLeaf<T>[],
   grid: Grid<T> | null,
-  filterModel: FilterModelItem<T>[],
+  filterModel: Record<string, FilterModelItem<T>>,
 ) {
-  if (!filterModel.length || !grid) return rows;
+  if (!grid) return rows;
 
-  const filters = filterModel.map(createFilter);
+  const lookup = grid.state.columnMeta.get().columnLookup;
+  const filterEntries = Object.entries(filterModel).filter(([key]) => {
+    return lookup.has(key);
+  });
+  if (!filterEntries.length) return rows;
+
+  const filters = filterEntries
+    .map(([id, filter]) => {
+      if (!lookup.has(id)) return null;
+
+      return createFilter(id, filter);
+    })
+    .filter((c) => c != null);
 
   const filtered: RowLeaf<T>[] = [];
   for (let r = 0; r < rows.length; r++) {
@@ -28,12 +40,13 @@ export function computeFilteredRows<T>(
   return filtered;
 }
 
-function createFilter<T>(filter: FilterModelItem<T>): FilterWithSettings<T> {
+function createFilter<T>(id: string, filter: FilterModelItem<T>): FilterWithSettings<T> {
   if (filter.kind === "date") {
     const settings = getDateFilterSettings(filter);
 
     return {
       ...filter,
+      field: id,
       kind: "date",
       settings,
     };
@@ -41,6 +54,7 @@ function createFilter<T>(filter: FilterModelItem<T>): FilterWithSettings<T> {
     const settings = getNumberFilterSettings(filter);
     return {
       ...filter,
+      field: id,
       kind: "number",
       settings,
     };
@@ -49,6 +63,7 @@ function createFilter<T>(filter: FilterModelItem<T>): FilterWithSettings<T> {
 
     return {
       ...filter,
+      field: id,
       kind: "string",
       settings,
     };
@@ -56,7 +71,7 @@ function createFilter<T>(filter: FilterModelItem<T>): FilterWithSettings<T> {
     return {
       ...filter,
       kind: "combination",
-      filters: filter.filters.map(createFilter) as any,
+      filters: filter.filters.map((f) => createFilter(id, f)) as any,
     };
   } else if (filter.kind === "func") {
     return filter;

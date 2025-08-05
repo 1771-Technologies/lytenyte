@@ -1,7 +1,13 @@
-import { describe, expect, test, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { isNMonthsAhead } from "../is-n-months-ahead.js";
 
 describe("isNMonthAgo", () => {
+  beforeEach(() => {
+    vi.stubEnv("TZ", "UTC");
+  });
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
   test("should return the correct result", () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2025-01-05"));
