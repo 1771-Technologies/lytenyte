@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, type Dispatch, type SetStateAction } from "react";
 import type { TreeVirtualItem } from "../tree-view/virtualized/make-virtual-tree";
 import type { FilterIn, FilterInFilterItem } from "../+types";
 
@@ -11,9 +11,11 @@ export interface TreeItemContextValue {
 
 export const FilterTreeContext = createContext<{
   items: FilterInFilterItem[];
-  filter: FilterIn;
   pivotMode: boolean;
   columnId: string;
+  filter: FilterIn;
+  filterChange: Dispatch<SetStateAction<FilterIn>>;
+  applyChangesImmediately: boolean;
 }>(null as any);
 export const useTreeContext = () => useContext(FilterTreeContext);
 
