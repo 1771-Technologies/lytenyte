@@ -1,0 +1,28 @@
+.grid-box {
+  [data-ln-drag-over="true"][data-ln-can-drop="true"] {
+    position: relative;
+    outline: none;
+
+    &[data-ln-over-top-half="true"] {
+      &::before {
+        position: absolute;
+        content: "";
+        top: -1px;
+        height: 3px;
+        background-color: blue;
+        width: 100%;
+      }
+    }
+
+    &[data-ln-over-top-half="false"] {
+      &::before {
+        position: absolute;
+        content: "";
+        height: 3px;
+        background-color: blue;
+        bottom: -1px;
+        width: 100%;
+      }
+    }
+  }
+}
