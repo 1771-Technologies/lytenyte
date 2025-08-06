@@ -10,4 +10,5 @@ export interface GridBoxItem {
 
   readonly onDrop: (p: DropEventParams) => void;
   readonly onAction: () => void;
+  readonly onDelete: () => void;
 }

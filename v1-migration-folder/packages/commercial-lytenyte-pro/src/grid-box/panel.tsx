@@ -14,6 +14,7 @@ export const GridBoxPanel = forwardRef<
       {...props}
       accepted={ctx.accepted}
       data-ln-orientation={ctx.orientation}
+      onDrop={ctx.onRootDrop}
       ref={forwarded}
       as={<Panel />}
     />

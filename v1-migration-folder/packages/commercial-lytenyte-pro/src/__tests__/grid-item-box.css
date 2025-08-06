@@ -1,4 +1,12 @@
 .grid-box {
+  &[data-ln-drag-over="true"][data-ln-can-drop="true"]::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: blue;
+  }
+
   [data-ln-drag-over="true"][data-ln-can-drop="true"] {
     position: relative;
     outline: none;

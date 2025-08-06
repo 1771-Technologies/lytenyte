@@ -1,11 +1,15 @@
 import { useMemo, type ReactNode } from "react";
-import type { Column, Grid } from "../+types";
+import type { Column, DropEventParams, Grid } from "../+types";
 import type { GridBoxItem } from "./+types";
+import { useEvent } from "@1771technologies/lytenyte-react-hooks";
 
 export interface OnDropParams<T> {
   readonly target: Column<T>;
   readonly src: Column<T>;
   readonly isBefore: boolean;
+}
+export interface OnRootDropParams<T> {
+  readonly column: Column<T>;
 }
 
 export interface UseColumnBoxItemArgs<T> {
@@ -14,14 +18,18 @@ export interface UseColumnBoxItemArgs<T> {
   readonly draggable?: boolean;
   readonly itemFilter?: (c: Column<T>) => boolean;
 
+  readonly onRootDrop?: (p: OnRootDropParams<T>) => void;
   readonly onDrop?: (p: OnDropParams<T>) => void;
   readonly onAction?: (c: Column<T>) => void;
+  readonly onDelete?: (c: Column<T>) => void;
   readonly dragPlaceholder?: (c: Column<T>) => ReactNode;
 }
 
 export function useColumnBoxItems<T>({
   grid,
+  onRootDrop,
   onDrop,
+  onDelete,
   onAction,
   orientation,
   draggable = true,
@@ -52,7 +60,7 @@ export function useColumnBoxItems<T>({
         const data: Record<string, any> = {
           [columnId]: c,
         };
-        if (canGroup) data[groupId] = c;
+        if (canGroup) data[groupId] = c.id;
         if (canAgg) data[aggId] = c;
 
         return {
@@ -61,6 +69,7 @@ export function useColumnBoxItems<T>({
           draggable,
           dragPlaceholder: dragPlaceholder ? () => dragPlaceholder?.(c) : undefined,
           onAction: () => onAction?.(c),
+          onDelete: () => onDelete?.(c),
           onDrop: (p) => {
             const target = c;
             const src = p.state.siteLocalData?.[columnId];
@@ -90,16 +99,28 @@ export function useColumnBoxItems<T>({
     gridId,
     itemFilter,
     onAction,
+    onDelete,
     onDrop,
     orientation,
   ]);
 
-  return {
-    rootProps: {
-      accepted: useMemo(() => [`${gridId}-column`], [gridId]),
-      orientation,
-      grid,
-    },
-    items,
-  };
+  const onRootDropEv = useEvent((p: DropEventParams) => {
+    const columnId = `${gridId}-column`;
+    const src = p.state.siteLocalData?.[columnId];
+
+    onRootDrop?.(src);
+  });
+
+  return useMemo(
+    () => ({
+      rootProps: {
+        accepted: [`${gridId}-column`],
+        orientation: orientation,
+        onRootDrop: onRootDropEv,
+        grid,
+      },
+      items,
+    }),
+    [grid, gridId, items, onRootDropEv, orientation],
+  );
 }

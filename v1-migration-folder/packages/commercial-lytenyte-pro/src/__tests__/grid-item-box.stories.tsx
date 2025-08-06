@@ -23,7 +23,15 @@ const meta: Meta = {
 
 export default meta;
 
-const columns: Column<any>[] = [{ id: "job" }, { id: "education" }, { id: "marital" }];
+const columns: Column<any>[] = [
+  { id: "job" },
+  { id: "education" },
+  { id: "balance" },
+  { id: "marital" },
+  { id: "default" },
+  { id: "housing" },
+  { id: "loan" },
+];
 
 function Component({ data = bankData }: { data?: any[] }) {
   const ds = useClientRowDataSource({
@@ -44,11 +52,14 @@ function Component({ data = bankData }: { data?: any[] }) {
       education: { kind: "in", operator: "in", value: new Set(["primary"]) },
     },
 
+    rowGroupModel: ["marital"],
+
     columnBase: {
       uiHints: {
         movable: true,
         resizable: true,
         sortable: true,
+        rowGroupable: true,
       },
     },
   });
@@ -64,6 +75,12 @@ function Component({ data = bankData }: { data?: any[] }) {
     onAction: (c) => {
       console.log(c);
     },
+    onDelete: (c) => {
+      console.log("delete", c);
+    },
+  });
+  const groupBox = GB.useRowGroupBoxItems({
+    grid: g,
   });
 
   return (
@@ -81,7 +98,35 @@ function Component({ data = bankData }: { data?: any[] }) {
               <GB.Panel className="grid-box">
                 {box.items.map((c) => {
                   return (
-                    <GB.Item style={{ height: 40 }} item={c} key={c.id}>
+                    <GB.Item
+                      style={{ display: "flex", flexDirection: "column", height: 24 }}
+                      item={c}
+                      key={c.id}
+                    >
+                      {c.label}
+                    </GB.Item>
+                  );
+                })}
+              </GB.Panel>
+            </GB.Root>
+          </div>
+
+          <div style={{ flex: 1 }}>
+            <GB.Root {...groupBox.rootProps}>
+              <GB.Panel
+                className="grid-box"
+                style={{
+                  height: "200px",
+                  border: "1px solid black",
+                }}
+              >
+                {groupBox.items.map((c) => {
+                  return (
+                    <GB.Item
+                      style={{ display: "flex", flexDirection: "column", height: 24 }}
+                      item={c}
+                      key={c.id}
+                    >
                       {c.label}
                     </GB.Item>
                   );

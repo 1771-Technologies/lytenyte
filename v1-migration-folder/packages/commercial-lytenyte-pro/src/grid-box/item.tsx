@@ -40,6 +40,7 @@ export const BoxItem = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] &
               {...extraProps}
               onKeyDown={(ev) => {
                 if (ev.key === " ") item.onAction?.();
+                if (ev.key === "Backspace" || ev.key === "Delete") item.onDelete?.();
               }}
               onClick={() => item.onAction()}
             />
