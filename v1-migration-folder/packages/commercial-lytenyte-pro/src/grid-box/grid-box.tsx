@@ -1,6 +1,7 @@
 import { BoxItem } from "./item";
 import { GridBoxPanel } from "./panel";
 import { GridBoxRoot } from "./root";
+import { useAggregationBoxItems } from "./use-aggregation-box-items";
 import { useColumnBoxItems } from "./use-column-box-items";
 import { useRowGroupBoxItems } from "./use-row-group-box-items";
 
@@ -11,4 +12,5 @@ export const GridBox = {
 
   useColumnBoxItems,
   useRowGroupBoxItems,
+  useAggregationBoxItems,
 };

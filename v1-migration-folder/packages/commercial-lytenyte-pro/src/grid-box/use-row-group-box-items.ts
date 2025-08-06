@@ -19,7 +19,7 @@ export function useRowGroupBoxItems<T>({
   const rowGroupModel = grid.state.rowGroupModel.useValue();
   const gridId = grid.state.gridId.useValue();
 
-  const items = useMemo(() => {
+  const items = useMemo<GridBoxItem<RowGroupModelItem<T>>[]>(() => {
     const groupId = `${gridId}-group`;
 
     return rowGroupModel
@@ -80,7 +80,8 @@ export function useRowGroupBoxItems<T>({
           if (!column) return null;
 
           return {
-            data: { [groupId]: c },
+            dragData: { [groupId]: c },
+            data: c,
             draggable: true,
             id: c,
             label: column.name ?? column.id,
@@ -91,7 +92,8 @@ export function useRowGroupBoxItems<T>({
           };
         } else {
           return {
-            data: { [groupId]: c },
+            dragData: { [groupId]: c },
+            data: c,
             draggable: true,
             id: c.id,
             label: c.name ?? c.id,
@@ -145,14 +147,16 @@ export function useRowGroupBoxItems<T>({
     }
   });
 
-  return {
-    rootProps: {
-      accepted: useMemo(() => [`${gridId}-group`], [gridId]),
-      onRootDrop,
-      orientation,
-      grid,
-    },
+  return useMemo(() => {
+    return {
+      rootProps: {
+        accepted: [`${gridId}-group`],
+        onRootDrop,
+        orientation,
+        grid,
+      },
 
-    items,
-  };
+      items,
+    };
+  }, [grid, gridId, items, onRootDrop, orientation]);
 }

@@ -21,7 +21,7 @@ export const BoxItem = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] &
     const { dragProps } = useDraggable({
       getItems: () => {
         return {
-          siteLocalData: item.data,
+          siteLocalData: item.dragData,
         };
       },
       placeholder: item.dragPlaceholder,

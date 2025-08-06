@@ -52,10 +52,14 @@ function Component({ data = bankData }: { data?: any[] }) {
       education: { kind: "in", operator: "in", value: new Set(["primary"]) },
     },
 
-    rowGroupModel: ["marital"],
+    rowGroupModel: ["marital", { field: "education", name: "All in", kind: "field", id: "xx" }],
+    aggModel: {
+      balance: { fn: "sum" },
+    },
 
     columnBase: {
       uiHints: {
+        aggDefault: "first",
         movable: true,
         resizable: true,
         sortable: true,
@@ -82,6 +86,9 @@ function Component({ data = bankData }: { data?: any[] }) {
   const groupBox = GB.useRowGroupBoxItems({
     grid: g,
   });
+  const aggBox = GB.useAggregationBoxItems({
+    grid: g,
+  });
 
   return (
     <div>
@@ -95,7 +102,13 @@ function Component({ data = bankData }: { data?: any[] }) {
         <div style={{ width: "50%", height: "90vh", border: "1px solid black", display: "flex" }}>
           <div style={{ flex: 1 }}>
             <GB.Root {...box.rootProps}>
-              <GB.Panel className="grid-box">
+              <GB.Panel
+                className="grid-box"
+                style={{
+                  height: "200px",
+                  border: "1px solid black",
+                }}
+              >
                 {box.items.map((c) => {
                   return (
                     <GB.Item
@@ -121,6 +134,30 @@ function Component({ data = bankData }: { data?: any[] }) {
                 }}
               >
                 {groupBox.items.map((c) => {
+                  return (
+                    <GB.Item
+                      style={{ display: "flex", flexDirection: "column", height: 24 }}
+                      item={c}
+                      key={c.id}
+                    >
+                      {c.label}
+                    </GB.Item>
+                  );
+                })}
+              </GB.Panel>
+            </GB.Root>
+          </div>
+
+          <div style={{ flex: 1 }}>
+            <GB.Root {...aggBox.rootProps}>
+              <GB.Panel
+                className="grid-box"
+                style={{
+                  height: "200px",
+                  border: "1px solid black",
+                }}
+              >
+                {aggBox.items.map((c) => {
                   return (
                     <GB.Item
                       style={{ display: "flex", flexDirection: "column", height: 24 }}

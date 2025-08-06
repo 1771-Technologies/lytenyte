@@ -48,7 +48,7 @@ export function useColumnBoxItems<T>({
       .filter((c) => {
         return itemFilter ? itemFilter(c) : true;
       })
-      .map<GridBoxItem>((c) => {
+      .map<GridBoxItem<Column<T>>>((c) => {
         const canGroup = c.uiHints?.rowGroupable ?? base.uiHints?.rowGroupable ?? false;
         const canAgg = Boolean(
           c.uiHints?.aggDefault ??
@@ -67,6 +67,8 @@ export function useColumnBoxItems<T>({
           label: c.name ?? c.id,
           id: c.id,
           draggable,
+          data: c,
+          dragData: data,
           dragPlaceholder: dragPlaceholder ? () => dragPlaceholder?.(c) : undefined,
           onAction: () => onAction?.(c),
           onDelete: () => onDelete?.(c),
@@ -85,7 +87,6 @@ export function useColumnBoxItems<T>({
 
             onDrop?.({ src, target, isBefore });
           },
-          data,
         };
       });
   }, [
