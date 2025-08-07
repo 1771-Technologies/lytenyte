@@ -36,6 +36,9 @@ jobs:
       - name: Install Dependencies
         run: op np i
 
+      - name: Install Playwright Binaries
+        run: npx playwright install --with-deps
+
       - name: Lint All Packages
         run: op np --filter './packages/*' exec op lint
 
