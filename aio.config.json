@@ -1,4 +1,0 @@
-{
-  "packagePrefixes": ["@1771technologies"],
-  "packages": ["community/**", "grid-core/**", "grid-pro/**"]
-}

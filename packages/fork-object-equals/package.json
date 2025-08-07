@@ -1,0 +1,34 @@
+{
+  "name": "@1771technologies/lytenyte-object-equals",
+  "version": "0.9.4",
+  "type": "module",
+  "homepage": "https://1771technologies.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/1771-technologies/lytenyte.git",
+    "directory": "packages/fork-object-equals"
+  },
+  "bugs": {
+    "url": "https://github.com/1771-technologies/lytenyte/issues"
+  },
+  "files": [
+    "src",
+    "LICENSE",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./src/object-equals.d.ts",
+      "import": "./src/object-equals.js",
+      "require": "./src/object-equals.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      "types": "./src/object-equals.d.ts",
+      "import": "./src/object-equals.js",
+      "require": "./src/object-equals.js"
+    }
+  }
+}

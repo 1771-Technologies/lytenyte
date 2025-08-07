@@ -1,0 +1,42 @@
+{
+  "name": "@1771technologies/lytenyte-focus-trap",
+  "version": "0.9.4",
+  "type": "module",
+  "homepage": "https://1771technologies.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/1771-technologies/lytenyte.git",
+    "directory": "packages/dependency-forks/focus-trap"
+  },
+  "bugs": {
+    "url": "https://github.com/1771-technologies/lytenyte/issues"
+  },
+  "files": [
+    "src",
+    "LICENSE",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./src/focus-trap.d.ts",
+      "import": "./src/focus-trap.js",
+      "require": "./src/focus-trap.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      "types": "./src/focus-trap.d.ts",
+      "import": "./src/focus-trap.js",
+      "require": "./src/focus-trap.js"
+    }
+  },
+  "dependencies": {
+    "@1771technologies/lytenyte-dom-utils": "workspace:*",
+    "@1771technologies/lytenyte-focus": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  }
+}

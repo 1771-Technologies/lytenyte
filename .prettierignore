@@ -1,20 +1,21 @@
-
 # Build
-/dist
+**/dist
 /lib
 /lib-types
 /server
 dist-mpa
+(snap-diff)
 
-pnpm-lock.yaml
+certificates
 
+!**/packages/graphite-grid/dist
+!**/packages/graphite-grid-react/dist
 
 scratch.txt
 
 auto-imports.d.ts
 
 certs/
-.vite-react-ssg-temp
 .env
 .temp
 .branches
@@ -26,10 +27,14 @@ certs/
 
 .dev.vars
 
+__screenshots__/
+
 .turbo
 
 **/_vitest-coverage
 .vscode
+
+env.d.ts
 
 # Build
 docs/lib
@@ -48,7 +53,6 @@ docs/server
 
 # Mac OS
 .DS_Store
-
 # Vite Js
 .vite
 **/coverage/
@@ -144,3 +148,9 @@ next-env.d.ts
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+*storybook.log
