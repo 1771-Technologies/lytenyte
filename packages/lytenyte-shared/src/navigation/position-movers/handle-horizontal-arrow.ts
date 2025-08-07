@@ -1,15 +1,13 @@
 import { getLastTabbable, getTabbables } from "@1771technologies/lytenyte-dom-utils";
-import type { GridAtom, PositionGridCell, PositionUnion } from "../../+types";
-import {
-  getNearestFocusable,
-  getCellQuery,
-  ensureVisible,
-  getNearestHeaderRow,
-  getHeaderRows,
-} from "@1771technologies/lytenyte-shared";
-import type { LayoutMap, ScrollIntoViewFn } from "../../+types.non-gen";
-import { getCellRootRowAndColIndex } from "./get-cell-root-row-and-col-index";
+import type { GridAtom, PositionGridCell, PositionUnion } from "../../+types.js";
+import type { LayoutMap, ScrollIntoViewFn } from "../../+types.non-gen.js";
+import { getCellRootRowAndColIndex } from "./get-cell-root-row-and-col-index.js";
 import { runWithBackoff } from "@1771technologies/lytenyte-js-utils";
+import { getNearestFocusable } from "../getters/get-nearest-focusable.js";
+import { getNearestHeaderRow } from "../getters/get-nearest-header-row.js";
+import { getCellQuery } from "../getters/get-cell-query.js";
+import { ensureVisible } from "../ensure-visible.js";
+import { getHeaderRows } from "../getters/get-header-rows.js";
 
 interface HandleHorizontalArrowArgs {
   readonly vp: HTMLElement | null;

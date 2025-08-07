@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { columnScrollIntoViewValue } from "../scroll-column-into-view";
+import { columnScrollIntoViewValue } from "../scroll-column-into-view.js";
 
 function createViewport({
   scrollLeft = 0,

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
-import type { SpanLayout } from "../../../../lytenyte-shared/src/+types.layout.js";
 import { areLayoutsEqual } from "../are-layouts-equal.js";
+import type { SpanLayout } from "../../+types.non-gen.js";
 
 // Create a base layout for testing
 const baseLayout: SpanLayout = {

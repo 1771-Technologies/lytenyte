@@ -44,7 +44,7 @@ test("getParentNodeByPath: should return the correct node", () => {
 
   expect(getParentNodeByPath(root, ["x", "b"])?.kind).toMatchInlineSnapshot(`"parent"`);
   expect(
-    (getParentNodeByPath(root, ["x", "b"]) as TreeParent<any, any>).data
+    (getParentNodeByPath(root, ["x", "b"]) as TreeParent<any, any>).data,
   ).toMatchInlineSnapshot(`"Path B"`);
 });
 
@@ -96,20 +96,20 @@ test("getParentNodeByPath: should handle invalid paths", () => {
 
   expect(fn).toHaveBeenCalledTimes(1);
   expect(fn.mock.calls.at(0)?.at(0)).toMatchInlineSnapshot(
-    `"Invalid path specified. Paths must be built up incrementally."`
+    `"Invalid path specified. Paths must be built up incrementally."`,
   );
 
   expect(getParentNodeByPath(root, ["x", "b", "x"])).toMatchInlineSnapshot(`null`);
   expect(fn).toHaveBeenCalledTimes(2);
   expect(fn.mock.calls.at(1)?.at(0)).toMatchInlineSnapshot(
-    `"Invalid path specified. Leaf nodes can have children."`
+    `"Invalid path specified. Leaf nodes can have children."`,
   );
 
   parentA.byPath.set("x", leaf);
   expect(getParentNodeByPath(root, ["x", "x", "b"])).toMatchInlineSnapshot(`null`);
   expect(fn).toHaveBeenCalledTimes(3);
   expect(fn.mock.calls.at(1)?.at(0)).toMatchInlineSnapshot(
-    `"Invalid path specified. Leaf nodes can have children."`
+    `"Invalid path specified. Leaf nodes can have children."`,
   );
 
   console.error = err;
@@ -160,6 +160,6 @@ test("getParentNodeByPath: should handle null paths", () => {
 
   expect(getParentNodeByPath(root, [null, "B", null])?.kind).toMatchInlineSnapshot(`"parent"`);
   expect(
-    (getParentNodeByPath(root, [null, "B", null]) as TreeParent<any, any>).data
+    (getParentNodeByPath(root, [null, "B", null]) as TreeParent<any, any>).data,
   ).toMatchInlineSnapshot(`"Path C"`);
 });

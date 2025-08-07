@@ -1,4 +1,4 @@
-import type { RowColTuple } from "../../+types.non-gen";
+import type { RowColTuple } from "../../+types.non-gen.js";
 
 export function getCellRootRowAndColIndex(
   cell: RowColTuple,

@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
-import { ensureVisible } from "../ensure-visible";
+import { ensureVisible } from "../ensure-visible.js";
 
 describe("ensureVisible", () => {
   test("should perform the correct result", () => {

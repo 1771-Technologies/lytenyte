@@ -20,7 +20,7 @@ test("applySetActionToTree: adding items to the root", () => {
         { kind: "leaf", data: 2, relIndex: 2 },
       ],
     },
-    root
+    root,
   );
 
   expect(printTreeByIndex(root)).toMatchInlineSnapshot(`
@@ -49,7 +49,7 @@ test("applySetActionToTree: adding parent items to the root", () => {
         { kind: "parent", data: 11, relIndex: 4, path: "C", size: 2 },
       ],
     },
-    root
+    root,
   );
 
   expect(printTreeByIndex(root)).toMatchInlineSnapshot(`
@@ -80,7 +80,7 @@ test("applySetActionToTree: adding parent items to the root", () => {
         { kind: "leaf", data: 1, relIndex: 6 },
       ],
     },
-    root
+    root,
   );
 
   expect(printTreeByIndex(root)).toMatchInlineSnapshot(`
@@ -113,7 +113,7 @@ test("applySetActionToTree: re-ordering items on the root should work", () => {
         { kind: "leaf", data: 1, relIndex: 6 },
       ],
     },
-    root
+    root,
   );
 
   applySetActionToTree(
@@ -127,7 +127,7 @@ test("applySetActionToTree: re-ordering items on the root should work", () => {
         { kind: "leaf", data: 1, relIndex: 9 },
       ],
     },
-    root
+    root,
   );
 
   expect(printTreeByIndex(root)).toMatchInlineSnapshot(`
@@ -162,7 +162,7 @@ test("applySetActionToTree: should be able to overwrite items", () => {
         { kind: "leaf", data: 1, relIndex: 6 },
       ],
     },
-    root
+    root,
   );
 
   applySetActionToTree(
@@ -176,7 +176,7 @@ test("applySetActionToTree: should be able to overwrite items", () => {
         { kind: "leaf", data: 1, relIndex: 6 },
       ],
     },
-    root
+    root,
   );
 
   expect(printTreeByIndex(root)).toMatchInlineSnapshot(`
@@ -209,7 +209,7 @@ test("applySetActionToTree: should be able to resize the root", () => {
         { kind: "leaf", data: 1, relIndex: 6 },
       ],
     },
-    root
+    root,
   );
 
   applySetActionToTree(
@@ -217,7 +217,7 @@ test("applySetActionToTree: should be able to resize the root", () => {
       path: [],
       size: 3,
     },
-    root
+    root,
   );
 
   expect(printTreeByIndex(root)).toMatchInlineSnapshot(`
@@ -246,7 +246,7 @@ test("applySetActionToTree: should be able to resize the root", () => {
         { kind: "leaf", data: 1, relIndex: 6 },
       ],
     },
-    root
+    root,
   );
 
   applySetActionToTree(
@@ -259,7 +259,7 @@ test("applySetActionToTree: should be able to resize the root", () => {
         { kind: "parent", data: 11, relIndex: 5, path: "AA", size: 10 },
       ],
     },
-    root
+    root,
   );
 
   expect(printTreeByIndex(root)).toMatchInlineSnapshot(`
@@ -285,7 +285,7 @@ test("applySetActionToTree: should be able to resize the root", () => {
         { kind: "leaf", data: "l", relIndex: 4 },
       ],
     },
-    root
+    root,
   );
 
   expect(printTreeByIndex(root)).toMatchInlineSnapshot(`
@@ -314,7 +314,7 @@ test("applySetActionToTree: should be able to resize the root", () => {
         { kind: "parent", data: "z", relIndex: 4, path: "CB", size: 10 },
       ],
     },
-    root
+    root,
   );
 
   expect(printTreeByIndex(root)).toMatchInlineSnapshot(`
@@ -350,7 +350,7 @@ test("applySetActionToTree: should be able to resize the root", () => {
         },
       ],
     },
-    root
+    root,
   );
 
   expect(printTreeByIndex(root)).toMatchInlineSnapshot(`
@@ -377,7 +377,7 @@ test("applySetActionToTree: should be able to resize the root", () => {
       path: ["A", "AA"],
       size: 2,
     },
-    root
+    root,
   );
 
   expect(printTreeByIndex(root)).toMatchInlineSnapshot(`
@@ -402,7 +402,7 @@ test("applySetActionToTree: should be able to resize the root", () => {
       path: ["A"],
       items: [{ kind: "leaf", relIndex: 0, data: "c" }],
     },
-    root
+    root,
   );
 
   expect(printTreeByIndex(root)).toMatchInlineSnapshot(`
@@ -426,7 +426,7 @@ test("applySetActionToTree: should be able to resize the root", () => {
       path: ["A"],
       items: [{ kind: "parent", relIndex: 0, data: "c", path: "AA", size: 10 }],
     },
-    root
+    root,
   );
 
   expect(printTreeByIndex(root)).toMatchInlineSnapshot(`
@@ -453,7 +453,7 @@ test("applySetActionToTree: should be able to resize the root", () => {
         { kind: "parent", relIndex: 3, data: "z", path: "AAB", size: 10 },
       ],
     },
-    root
+    root,
   );
   applySetActionToTree(
     {
@@ -463,7 +463,7 @@ test("applySetActionToTree: should be able to resize the root", () => {
         { kind: "leaf", relIndex: 3, data: "z" },
       ],
     },
-    root
+    root,
   );
 
   expect(printTreeByIndex(root)).toMatchInlineSnapshot(`
@@ -494,7 +494,7 @@ test("applySetActionToTree: should be able to resize the root", () => {
         { kind: "leaf", relIndex: 3, data: "z" },
       ],
     },
-    root
+    root,
   );
 
   expect(printTreeByIndex(root)).toMatchInlineSnapshot(`
@@ -537,8 +537,8 @@ test("applySetActionToTree: should correctly handle error checks", () => {
           { kind: "leaf", relIndex: 0, data: 2 },
         ],
       },
-      root
-    )
+      root,
+    ),
   ).toEqual(false);
   expect(
     applySetActionToTree(
@@ -549,8 +549,8 @@ test("applySetActionToTree: should correctly handle error checks", () => {
           { kind: "leaf", relIndex: 0, data: 2 },
         ],
       },
-      root
-    )
+      root,
+    ),
   ).toEqual(false);
 
   expect(
@@ -562,8 +562,8 @@ test("applySetActionToTree: should correctly handle error checks", () => {
           { kind: "leaf", relIndex: 0, data: 2 },
         ],
       },
-      root
-    )
+      root,
+    ),
   ).toEqual(false);
 
   expect(
@@ -575,8 +575,8 @@ test("applySetActionToTree: should correctly handle error checks", () => {
           { kind: "leaf", relIndex: 0, data: 2 },
         ],
       },
-      root
-    )
+      root,
+    ),
   ).toEqual(false);
 
   expect(
@@ -588,8 +588,8 @@ test("applySetActionToTree: should correctly handle error checks", () => {
           { kind: "leaf", relIndex: 0, data: 2 },
         ],
       },
-      root
-    )
+      root,
+    ),
   ).toEqual(false);
 
   expect(
@@ -598,13 +598,13 @@ test("applySetActionToTree: should correctly handle error checks", () => {
         path: [],
         size: 10,
       },
-      root
-    )
+      root,
+    ),
   ).toEqual(false);
 
   applySetActionToTree(
     { path: [], items: [{ kind: "parent", data: 11, relIndex: 0, path: "A", size: 10 }] },
-    root
+    root,
   );
 
   expect(printTreeByIndex(root)).toMatchInlineSnapshot(`
@@ -619,8 +619,8 @@ test("applySetActionToTree: should correctly handle error checks", () => {
         path: ["A"],
         size: 0,
       },
-      root
-    )
+      root,
+    ),
   ).toEqual(true);
 
   expect(printTreeByIndex(root)).toMatchInlineSnapshot(`
@@ -633,8 +633,8 @@ test("applySetActionToTree: should correctly handle error checks", () => {
       {
         path: [],
       },
-      root
-    )
+      root,
+    ),
   ).toEqual(false);
 
   console.error = err;

@@ -1,6 +1,6 @@
 import { forwardRef, type JSX } from "react";
-import type { Cell } from "./+types.renderer-react";
-import { useCellStyle } from "./use-cell-style";
+import type { Cell } from "./+types.renderer-react.js";
+import { useCellStyle } from "./use-cell-style.js";
 
 interface CellProps {
   readonly xPosition: Uint32Array;

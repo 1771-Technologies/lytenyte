@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { getRowQuery } from "../get-row-query";
+import { getRowQuery } from "../get-row-query.js";
 
 describe("getRowQuery", () => {
   test("should return the correct result", () => {

@@ -7,7 +7,7 @@ import {
   partitionColumnsByPinState,
   type PathTableItem,
 } from "@1771technologies/lytenyte-shared";
-import type { Column, ColumnBase } from "../../+types";
+import type { Column, ColumnBase, ColumnGroupMeta } from "../../+types";
 
 export interface MakeColumnViewArgs<T> {
   readonly columns: Column<T>[];
@@ -18,13 +18,25 @@ export interface MakeColumnViewArgs<T> {
   readonly groupExpansionDefault: boolean;
 }
 
+export interface MakeColumnViewReturn<T> {
+  meta: ColumnGroupMeta;
+  maxRow: number;
+  maxCol: number;
+  combinedView: PathTableItem<Column<T>>[][];
+  visibleColumns: Column<T>[];
+  lookup: Map<string, Column<T>>;
+  startCount: number;
+  endCount: number;
+  centerCount: number;
+}
+
 export function makeColumnView<T>({
   columns,
   base,
   groupExpansions,
   groupJoinDelimiter,
   groupExpansionDefault,
-}: MakeColumnViewArgs<T>) {
+}: MakeColumnViewArgs<T>): MakeColumnViewReturn<T> {
   const lookup = new Map(columns.map((c) => [c.id, c]));
 
   const columnsNotHidden = getVisibleColumns(columns, base);

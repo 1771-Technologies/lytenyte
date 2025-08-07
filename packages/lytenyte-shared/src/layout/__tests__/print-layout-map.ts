@@ -1,6 +1,6 @@
 import { FULL_WIDTH_MAP } from "../../+constants.js";
-import type { LayoutMap } from "../../../../lytenyte-shared/src/+types.layout.js";
 import { Table } from "@1771technologies/cli-table";
+import type { LayoutMap } from "../../+types.non-gen.js";
 
 export function printLayoutMap(l: LayoutMap) {
   const rows = [...l.entries()].sort((l, r) => l[0] - r[0]);

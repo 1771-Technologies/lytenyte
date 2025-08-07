@@ -3,10 +3,10 @@ import type {
   GridAtomReadonlyUnwatchable,
   RowDataStore,
   RowNode,
-} from "../+types";
+} from "../+types.js";
 import { atomFamily } from "@1771technologies/atom/utils";
 import { atom, useAtomValue, type createStore, type PrimitiveAtom } from "@1771technologies/atom";
-import { makeGridAtom } from "../grid-atom/make-grid-atom";
+import { makeGridAtom } from "../grid-atom/make-grid-atom.js";
 
 export type Store = ReturnType<typeof createStore>;
 

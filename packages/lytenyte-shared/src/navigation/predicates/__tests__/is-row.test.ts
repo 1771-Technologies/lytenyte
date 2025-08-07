@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { isRow } from "../is-row";
+import { isRow } from "../is-row.js";
 
 describe("isRow", () => {
   test("should return the correct result", () => {

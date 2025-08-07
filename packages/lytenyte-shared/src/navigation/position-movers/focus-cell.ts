@@ -1,9 +1,9 @@
 import { runWithBackoff } from "@1771technologies/lytenyte-js-utils";
-import type { GridAtom, PositionFullWidthRow, PositionUnion } from "../../+types";
-import type { LayoutMap, ScrollIntoViewFn } from "../../+types.non-gen";
-import { isFullWidthMap } from "../../layout/is-full-width-map";
-import { getCellQuery } from "../getters/get-cell-query";
-import { getRowQuery } from "../getters/get-row-query";
+import type { GridAtom, PositionFullWidthRow, PositionUnion } from "../../+types.js";
+import type { LayoutMap, ScrollIntoViewFn } from "../../+types.non-gen.js";
+import { isFullWidthMap } from "../../layout/is-full-width-map.js";
+import { getCellQuery } from "../getters/get-cell-query.js";
+import { getRowQuery } from "../getters/get-row-query.js";
 
 interface FocusCellArgs {
   readonly rowIndex: number;

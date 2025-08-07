@@ -4,7 +4,7 @@ import { forwardRef, useCallback, useMemo, type JSX } from "react";
 import { useGrid } from "../grid-provider/use-grid";
 import { useColumnsFromContext } from "./use-columns-from-context";
 
-interface VisibilityCheckbox {
+export interface VisibilityCheckbox {
   readonly slot?: SlotComponent<{
     visible: boolean;
     indeterminate: boolean;

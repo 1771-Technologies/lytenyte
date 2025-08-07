@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
-import { isFullWidthMap } from "../is-full-width-map";
-import { FULL_WIDTH_MAP } from "../../+constants";
+import { isFullWidthMap } from "../is-full-width-map.js";
+import { FULL_WIDTH_MAP } from "../../+constants.js";
 
 describe("isFullWidthMap", () => {
   test("should return the correct result", () => {

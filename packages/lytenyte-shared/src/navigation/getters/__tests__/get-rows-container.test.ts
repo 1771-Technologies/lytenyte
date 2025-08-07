@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { getRowsContainer } from "../get-rows-container";
+import { getRowsContainer } from "../get-rows-container.js";
 
 describe("getRowsContainer", () => {
   test("should return the correct result", () => {

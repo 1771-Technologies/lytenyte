@@ -22,7 +22,7 @@ test("maybeApplyResize: should only apply resize when necessary", () => {
         { data: 2, relIndex: 3, kind: "leaf" },
       ],
     },
-    root
+    root,
   );
 
   expect(maybeApplyResize(root, 10)).toEqual(false);
@@ -47,7 +47,7 @@ test("maybeApplyResize: should only apply resize when necessary on parent", () =
       size: 10,
       items: [{ kind: "parent", path: "A", data: null, relIndex: 0, size: 10 }],
     },
-    root
+    root,
   );
 
   applySetActionToTree(
@@ -60,7 +60,7 @@ test("maybeApplyResize: should only apply resize when necessary on parent", () =
         { data: 2, relIndex: 3, kind: "leaf" },
       ],
     },
-    root
+    root,
   );
 
   const node = root.byPath.get("A")! as TreeParent<any, any>;

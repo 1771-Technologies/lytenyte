@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
-import { useHeaderCellStyle } from "../use-header-cell-style";
+import { useHeaderCellStyle } from "../use-header-cell-style.js";
 
 describe("useHeaderCellStyle", () => {
   test("returns the correct styles for the given cells", () => {

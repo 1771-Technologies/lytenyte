@@ -1,4 +1,4 @@
-import type { ColumnPin } from "../+types";
+import type { ColumnPin } from "../+types.js";
 
 export function ResizeHandle({ pin }: { pin: ColumnPin }) {
   return (

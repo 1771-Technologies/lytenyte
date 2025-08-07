@@ -1,6 +1,6 @@
 import { atom, createStore } from "@1771technologies/atom";
 import { describe, expect, test, vi } from "vitest";
-import { makeGridAtom } from "../make-grid-atom";
+import { makeGridAtom } from "../make-grid-atom.js";
 import { renderHook } from "@testing-library/react";
 import { act } from "react";
 

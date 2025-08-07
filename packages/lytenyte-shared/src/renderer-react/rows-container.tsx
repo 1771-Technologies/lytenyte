@@ -3,7 +3,7 @@ import {
   SCROLL_WIDTH_VARIABLE,
   VIEWPORT_HEIGHT_VARIABLE,
   VIEWPORT_WIDTH_VARIABLE,
-} from "../+constants";
+} from "../+constants.js";
 
 interface RowsContainerProps {
   readonly height: number;

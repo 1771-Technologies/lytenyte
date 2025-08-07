@@ -1,6 +1,6 @@
 {
-  "name": "@1771technologies/lytenyte-core2",
-  "version": "0.0.1",
+  "name": "@1771technologies/lytenyte-core",
+  "version": "0.9.4",
   "type": "module",
   "files": [
     "dist",

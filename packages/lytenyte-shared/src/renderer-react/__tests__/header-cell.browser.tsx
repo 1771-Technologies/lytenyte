@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { render } from "vitest-browser-react";
-import { HeaderCellReact } from "../header-cell";
+import { HeaderCellReact } from "../header-cell.js";
 
 describe("HeaderCellReact", () => {
   test("should render the header cell with the correct attributes", async () => {

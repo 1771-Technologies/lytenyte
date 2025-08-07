@@ -1,5 +1,5 @@
-import { isHeaderRow } from "../predicates/is-header-row";
-import { isViewport } from "../predicates/is-viewport";
+import { isHeaderRow } from "../predicates/is-header-row.js";
+import { isViewport } from "../predicates/is-viewport.js";
 
 export function getNearestHeaderRow(el?: HTMLElement) {
   if (!el) el = document.activeElement as HTMLElement;

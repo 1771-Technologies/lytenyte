@@ -1,8 +1,8 @@
 import { atom, createStore } from "@1771technologies/atom";
 import { describe, expect, test, vi } from "vitest";
-import { makeGridAtom } from "../../../grid-atom/make-grid-atom";
-import type { PositionGridCell, PositionUnion } from "../../../+types";
-import { handleNavigationKeys } from "../handle-navigation-key";
+import { makeGridAtom } from "../../../grid-atom/make-grid-atom.js";
+import type { PositionGridCell, PositionUnion } from "../../../+types.js";
+import { handleNavigationKeys } from "../handle-navigation-key.js";
 import { sleep } from "@1771technologies/lytenyte-js-utils";
 
 describe("handleNavigationKeys", () => {

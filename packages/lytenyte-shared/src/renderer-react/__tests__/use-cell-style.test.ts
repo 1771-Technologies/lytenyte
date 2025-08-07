@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
-import { useCellStyle } from "../use-cell-style";
+import { useCellStyle } from "../use-cell-style.js";
 
 describe("useCellStyle", () => {
   test("should return the correct result", () => {

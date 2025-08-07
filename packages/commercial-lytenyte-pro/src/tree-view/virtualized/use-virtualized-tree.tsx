@@ -1,8 +1,8 @@
-import { type PathProvidedItem } from "@1771technologies/lytenyte-shared";
+import { type PathProvidedItem, type PathRoot } from "@1771technologies/lytenyte-shared";
 import { useEvent, useMeasure } from "@1771technologies/lytenyte-react-hooks";
-import { useMemo, useState } from "react";
+import { useMemo, useState, type JSX } from "react";
 import { buildVirtualTreePartial } from "./get-virtual-tree-paths.js";
-import { makeVirtualTree } from "./make-virtual-tree.js";
+import { makeVirtualTree, type TreeVirtualItem } from "./make-virtual-tree.js";
 import { useFlattenedTree } from "./use-flattened-tree.js";
 import { useRowStartAndEnd } from "./use-row-start-and-end.js";
 import { getTreeNodeId } from "../utils/get-tree-node-id.js";
@@ -15,13 +15,25 @@ export interface VirtualizedTreeViewPathsArgs<T extends PathProvidedItem> {
   readonly nonAdjacentPathTrees?: boolean;
 }
 
+export interface TreeReturn<T extends PathProvidedItem> {
+  readonly ref: (h: HTMLElement | null) => void;
+  readonly virtualTree: TreeVirtualItem<T>[];
+  readonly spacer: JSX.Element;
+  readonly rootProps: {
+    readonly getAllIds: () => Set<string>;
+    readonly getIdsBetweenNodes: (h: HTMLElement, r: HTMLElement) => string[];
+    readonly onFocusChange: (h: HTMLElement | null) => void;
+    readonly root: PathRoot<T>;
+  };
+}
+
 export function useVirtualizedTree<T extends PathProvidedItem>({
   itemHeight,
   expansions,
   expansionDefault = false,
   nonAdjacentPathTrees,
   paths,
-}: VirtualizedTreeViewPathsArgs<T>) {
+}: VirtualizedTreeViewPathsArgs<T>): TreeReturn<T> {
   const [ref, bounds, _, panel] = useMeasure({ scroll: true });
 
   const { flat, nodeToIndex, indexToId, allIds, idToNode, root } = useFlattenedTree(

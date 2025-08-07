@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
-import { useGridRowTemplate } from "../use-grid-row-template";
+import { useGridRowTemplate } from "../use-grid-row-template.js";
 
 describe("useGridRowTemplate", () => {
   test("returns the correct template string when floating rows are not enabled", () => {

@@ -1,11 +1,12 @@
 import { describe, expect, test } from "vitest";
 import { render } from "vitest-browser-react";
-import { RowReact } from "../row";
+import { RowReact } from "../row.js";
 
 describe("RowReact", () => {
   test("should renderer the correct attributes", async () => {
     const screen = render(
       <RowReact
+        accepted={[]}
         gridId="x"
         rowFirstPinBottom={undefined}
         rowLastPinTop={undefined}
@@ -30,6 +31,7 @@ describe("RowReact", () => {
   test("should renderer the correct attributes with pins", async () => {
     const screen = render(
       <RowReact
+        accepted={[]}
         gridId="x"
         rowFirstPinBottom
         rowLastPinTop

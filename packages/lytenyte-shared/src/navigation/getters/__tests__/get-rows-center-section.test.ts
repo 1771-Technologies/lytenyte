@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { getRowsCenterSection } from "../get-rows-center-section";
+import { getRowsCenterSection } from "../get-rows-center-section.js";
 
 describe("getRowsCenterSection", () => {
   test("should return the correct result", () => {

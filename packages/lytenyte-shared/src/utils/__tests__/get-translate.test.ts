@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { getTranslate } from "../get-translate";
+import { getTranslate } from "../get-translate.js";
 
 describe("getTranslate", () => {
   test("should return the correct value", () => {

@@ -1,7 +1,7 @@
 import { forwardRef, type JSX, type ReactNode } from "react";
-import { useRowStyle } from "./use-row-style";
-import { sizeFromCoord } from "../utils/size-from-coord";
-import { VIEWPORT_WIDTH_VARIABLE_USE } from "../+constants";
+import { useRowStyle } from "./use-row-style.js";
+import { sizeFromCoord } from "../utils/size-from-coord.js";
+import { VIEWPORT_WIDTH_VARIABLE_USE } from "../+constants.js";
 import { DropWrap, type DropWrapProps } from "@1771technologies/lytenyte-dragon";
 
 interface RowFullWidthProps extends DropWrapProps {

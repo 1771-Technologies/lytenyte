@@ -1,14 +1,14 @@
 import { describe, expect, test, vi } from "vitest";
 import { render } from "vitest-browser-react";
-import { CellReact } from "../../../renderer-react/cell";
-import { RowReact } from "../../../renderer-react/row";
-import { focusCell } from "../focus-cell";
-import type { PositionFullWidthRow, PositionUnion } from "../../../+types";
-import { makeGridAtom } from "../../../grid-atom/make-grid-atom";
+import { CellReact } from "../../../renderer-react/cell.js";
+import { RowReact } from "../../../renderer-react/row.js";
+import { focusCell } from "../focus-cell.js";
+import type { PositionFullWidthRow, PositionUnion } from "../../../+types.js";
+import { makeGridAtom } from "../../../grid-atom/make-grid-atom.js";
 import { atom, createStore } from "@1771technologies/atom";
-import type { LayoutMap } from "../../../+types.non-gen";
-import { FULL_WIDTH_MAP } from "../../../+constants";
-import { RowFullWidthReact } from "../../../renderer-react/row-full-width";
+import type { LayoutMap } from "../../../+types.non-gen.js";
+import { FULL_WIDTH_MAP } from "../../../+constants.js";
+import { RowFullWidthReact } from "../../../renderer-react/row-full-width.js";
 
 describe("focusCell", () => {
   test("should correctly focus a cell", async () => {

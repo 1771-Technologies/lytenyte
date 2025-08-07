@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { getRowIndexFromEl } from "../get-row-index-from-el";
+import { getRowIndexFromEl } from "../get-row-index-from-el.js";
 
 describe("getRowIndexFromEl", () => {
   test("should return the correct result", () => {

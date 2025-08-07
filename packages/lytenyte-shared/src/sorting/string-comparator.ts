@@ -1,4 +1,4 @@
-import type { SortStringComparatorOptions } from "../+types";
+import type { SortStringComparatorOptions } from "../+types.js";
 
 const defaultCollator = new Intl.Collator();
 

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
-import { getNearestHeaderRow } from "../get-nearest-header-row";
+import { getNearestHeaderRow } from "../get-nearest-header-row.js";
 
 describe("getNearestHeaderRow", () => {
   afterEach(() => {

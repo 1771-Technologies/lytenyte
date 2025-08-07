@@ -1,11 +1,11 @@
-import type { PositionUnion } from "../../+types";
-import { isCell } from "../predicates/is-cell";
-import { isColumnHeader } from "../predicates/is-column-header";
-import { isFullWidthRow } from "../predicates/is-full-width-row";
-import { getColIndexFromEl } from "./get-col-index-from-el";
-import { getColSpanFromEl } from "./get-col-span-from-el";
-import { getRowIndexFromEl } from "./get-row-index-from-el";
-import { getRowSpanFromEl } from "./get-row-span-from-el";
+import type { PositionUnion } from "../../+types.js";
+import { isCell } from "../predicates/is-cell.js";
+import { isColumnHeader } from "../predicates/is-column-header.js";
+import { isFullWidthRow } from "../predicates/is-full-width-row.js";
+import { getColIndexFromEl } from "./get-col-index-from-el.js";
+import { getColSpanFromEl } from "./get-col-span-from-el.js";
+import { getRowIndexFromEl } from "./get-row-index-from-el.js";
+import { getRowSpanFromEl } from "./get-row-span-from-el.js";
 
 export function getPositionFromFocusable(el: HTMLElement): PositionUnion {
   if (isCell(el)) {

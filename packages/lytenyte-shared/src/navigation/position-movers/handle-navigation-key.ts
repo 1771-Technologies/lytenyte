@@ -1,11 +1,11 @@
 import { getFirstTabbable } from "@1771technologies/lytenyte-dom-utils";
-import { handlePageUpDown } from "./handle-page-up-down";
-import { handleHomeEnd } from "./handle-home-end";
-import { handleHorizontalArrow } from "./handle-horizontal-arrow";
-import { handleVerticalArrow } from "./handle-vertical-arrow";
-import { ensureVisible } from "@1771technologies/lytenyte-shared";
-import type { GridAtom, PositionUnion } from "../../+types";
-import type { LayoutMap, ScrollIntoViewFn } from "../../+types.non-gen";
+import { handlePageUpDown } from "./handle-page-up-down.js";
+import { handleHomeEnd } from "./handle-home-end.js";
+import { handleHorizontalArrow } from "./handle-horizontal-arrow.js";
+import { handleVerticalArrow } from "./handle-vertical-arrow.js";
+import type { GridAtom, PositionUnion } from "../../+types.js";
+import type { LayoutMap, ScrollIntoViewFn } from "../../+types.non-gen.js";
+import { ensureVisible } from "../ensure-visible.js";
 
 interface Args {
   readonly vp: HTMLElement | null;

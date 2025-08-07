@@ -1,11 +1,11 @@
 import { describe, expect, test } from "vitest";
 import { render } from "vitest-browser-react";
-import { RowsContainerReact } from "../rows-container";
+import { RowsContainerReact } from "../rows-container.js";
 import {
   SCROLL_WIDTH_VARIABLE,
   VIEWPORT_HEIGHT_VARIABLE,
   VIEWPORT_WIDTH_VARIABLE,
-} from "../../+constants";
+} from "../../+constants.js";
 
 describe("RowsContainerReact", () => {
   test("should render the correct attributes", async () => {

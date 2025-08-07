@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { isColumnFloatingHeader } from "../is-column-floating-header";
+import { isColumnFloatingHeader } from "../is-column-floating-header.js";
 
 describe("isColumnFloatingHeader", () => {
   test("should return the correct result", () => {

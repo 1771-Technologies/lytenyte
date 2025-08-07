@@ -24,7 +24,7 @@ describe("applyDeleteActionToTree", () => {
           { kind: "leaf", data: 1, relIndex: 6 },
         ],
       },
-      root
+      root,
     );
 
     applySetActionToTree(
@@ -37,7 +37,7 @@ describe("applyDeleteActionToTree", () => {
           { kind: "parent", data: 11, relIndex: 5, path: "AA", size: 10 },
         ],
       },
-      root
+      root,
     );
 
     expect(printTreeByIndex(root)).toMatchInlineSnapshot(`
@@ -59,7 +59,7 @@ describe("applyDeleteActionToTree", () => {
         relIndices: [5, 6],
         path: [],
       },
-      root
+      root,
     );
     expect(printTreeByIndex(root)).toMatchInlineSnapshot(`
       "
@@ -78,7 +78,7 @@ describe("applyDeleteActionToTree", () => {
         paths: ["A"],
         path: [],
       },
-      root
+      root,
     );
 
     expect(printTreeByIndex(root)).toMatchInlineSnapshot(`
@@ -108,7 +108,7 @@ describe("applyDeleteActionToTree", () => {
           { kind: "leaf", data: 1, relIndex: 6 },
         ],
       },
-      root
+      root,
     );
 
     applySetActionToTree(
@@ -121,7 +121,7 @@ describe("applyDeleteActionToTree", () => {
           { kind: "parent", data: 11, relIndex: 5, path: "AA", size: 10 },
         ],
       },
-      root
+      root,
     );
 
     expect(printTreeByIndex(root)).toMatchInlineSnapshot(`
@@ -143,7 +143,7 @@ describe("applyDeleteActionToTree", () => {
         relIndices: [5, 6],
         path: ["A"],
       },
-      root
+      root,
     );
 
     expect(printTreeByIndex(root)).toMatchInlineSnapshot(`
@@ -179,7 +179,7 @@ describe("applyDeleteActionToTree", () => {
           { kind: "leaf", data: 1, relIndex: 6 },
         ],
       },
-      root
+      root,
     );
 
     applySetActionToTree(
@@ -192,7 +192,7 @@ describe("applyDeleteActionToTree", () => {
           { kind: "parent", data: 11, relIndex: 5, path: "AA", size: 10 },
         ],
       },
-      root
+      root,
     );
 
     applyDeleteActionToTree({ path: [] }, root);

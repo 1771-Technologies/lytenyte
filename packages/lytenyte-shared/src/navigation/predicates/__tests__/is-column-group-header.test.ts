@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { isColumnGroupHeader } from "../is-column-group-header";
+import { isColumnGroupHeader } from "../is-column-group-header.js";
 
 describe("isColumnGroupHeader", () => {
   test("should return the correct result", () => {

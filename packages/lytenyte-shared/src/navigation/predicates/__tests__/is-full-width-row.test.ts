@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { isFullWidthRow } from "../is-full-width-row";
+import { isFullWidthRow } from "../is-full-width-row.js";
 
 describe("isFullWidthRow", () => {
   test("should return the correct result", () => {

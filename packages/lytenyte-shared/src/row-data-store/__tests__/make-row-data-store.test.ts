@@ -1,8 +1,8 @@
 import { describe, expect, test } from "vitest";
-import { makeRowDataStore } from "../make-row-data-store";
+import { makeRowDataStore } from "../make-row-data-store.js";
 import { atom, createStore } from "@1771technologies/atom";
-import type { RowLeaf } from "../../+types";
-import { makeGridAtom } from "../../grid-atom/make-grid-atom";
+import type { RowLeaf } from "../../+types.js";
+import { makeGridAtom } from "../../grid-atom/make-grid-atom.js";
 import { renderHook } from "@testing-library/react";
 
 describe("makeRowDataStore", () => {

@@ -1,4 +1,4 @@
-import type { SortNumberComparatorOptions } from "../+types";
+import type { SortNumberComparatorOptions } from "../+types.js";
 
 export function numberComparator(
   left: number | null,

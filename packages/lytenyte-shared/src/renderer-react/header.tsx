@@ -1,5 +1,5 @@
 import { forwardRef, type JSX } from "react";
-import { useGridRowTemplate } from "./use-grid-row-template";
+import { useGridRowTemplate } from "./use-grid-row-template.js";
 
 interface HeaderProps {
   readonly width: number;

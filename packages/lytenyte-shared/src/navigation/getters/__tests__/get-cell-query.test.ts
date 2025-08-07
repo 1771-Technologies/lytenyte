@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { getCellQuery } from "../get-cell-query";
+import { getCellQuery } from "../get-cell-query.js";
 
 describe("getCellQuery", () => {
   test("should return the correct result", () => {

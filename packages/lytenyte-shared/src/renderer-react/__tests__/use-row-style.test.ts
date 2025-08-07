@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
-import { useRowStyle } from "../use-row-style";
+import { useRowStyle } from "../use-row-style.js";
 
 describe("useRowStyle", () => {
   test("should return the correct styles", () => {

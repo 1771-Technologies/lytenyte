@@ -1,6 +1,6 @@
 import { userEvent } from "@vitest/browser/context";
 import { describe, expect, test } from "vitest";
-import { handleSkipInner } from "../handle-skip-inner";
+import { handleSkipInner } from "../handle-skip-inner.js";
 import { render } from "vitest-browser-react";
 
 describe("handleSkipInner", () => {

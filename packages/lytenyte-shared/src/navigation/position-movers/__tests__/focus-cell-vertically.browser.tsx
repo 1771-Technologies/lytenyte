@@ -1,13 +1,13 @@
 import { describe, expect, test, vi } from "vitest";
-import { focusCellVertically } from "../focus-cell-vertically";
-import { makeGridAtom } from "../../../grid-atom/make-grid-atom";
+import { focusCellVertically } from "../focus-cell-vertically.js";
+import { makeGridAtom } from "../../../grid-atom/make-grid-atom.js";
 import { atom, createStore } from "@1771technologies/atom";
-import type { PositionFullWidthRow, PositionUnion } from "../../../+types";
+import type { PositionFullWidthRow, PositionUnion } from "../../../+types.js";
 import { render } from "vitest-browser-react";
-import { RowFullWidthReact } from "../../../renderer-react/row-full-width";
-import { FULL_WIDTH_MAP } from "../../../+constants";
-import { RowReact } from "../../../renderer-react/row";
-import { CellReact } from "../../../renderer-react/cell";
+import { RowFullWidthReact } from "../../../renderer-react/row-full-width.js";
+import { FULL_WIDTH_MAP } from "../../../+constants.js";
+import { RowReact } from "../../../renderer-react/row.js";
+import { CellReact } from "../../../renderer-react/cell.js";
 
 describe("focusCellVertically", () => {
   test("should handle vertical focusing when the layout is not present", () => {
@@ -40,6 +40,7 @@ describe("focusCellVertically", () => {
     const s = render(
       <div data-testid="test">
         <RowFullWidthReact
+          accepted={[]}
           detail={<></>}
           detailHeight={0}
           gridId="x"
@@ -51,6 +52,7 @@ describe("focusCellVertically", () => {
           yPositions={new Uint32Array([0, 100, 200, 300])}
         />
         <RowFullWidthReact
+          accepted={[]}
           detail={<></>}
           data-testid="second"
           detailHeight={0}

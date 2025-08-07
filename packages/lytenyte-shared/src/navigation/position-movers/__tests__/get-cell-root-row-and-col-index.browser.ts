@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { getCellRootRowAndColIndex } from "../get-cell-root-row-and-col-index";
+import { getCellRootRowAndColIndex } from "../get-cell-root-row-and-col-index.js";
 
 describe("getCellRootRowAndColIndex", () => {
   test("should return the correct result", () => {

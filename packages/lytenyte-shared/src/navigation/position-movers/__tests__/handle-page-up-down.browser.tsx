@@ -1,13 +1,13 @@
 import { describe, expect, test, vi } from "vitest";
 import { render } from "vitest-browser-react";
-import { RowReact } from "../../../renderer-react/row";
-import { CellReact } from "../../../renderer-react/cell";
+import { RowReact } from "../../../renderer-react/row.js";
+import { CellReact } from "../../../renderer-react/cell.js";
 import { atom, createStore } from "@1771technologies/atom";
-import { makeGridAtom } from "../../../grid-atom/make-grid-atom";
-import type { PositionGridCell, PositionUnion } from "../../../+types";
+import { makeGridAtom } from "../../../grid-atom/make-grid-atom.js";
+import type { PositionGridCell, PositionUnion } from "../../../+types.js";
 import { handlePageUpDown } from "../handle-page-up-down";
 import { userEvent } from "@vitest/browser/context";
-import { RowsCenterReact } from "../../../renderer-react/rows-sections";
+import { RowsCenterReact } from "../../../renderer-react/rows-sections.js";
 
 describe("handlePageUpDown", () => {
   test("should correctly focus positions", async () => {

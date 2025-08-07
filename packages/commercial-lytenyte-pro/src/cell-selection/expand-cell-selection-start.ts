@@ -1,6 +1,5 @@
-import type { CellSelectionRectPro } from "@1771technologies/grid-types/pro";
 import type { InternalAtoms } from "../state/+types";
-import type { Grid } from "../+types";
+import type { DataRect, Grid } from "../+types";
 import { getRootCell } from "./get-root-cell";
 
 export function expandCellSelectionStart(
@@ -26,7 +25,7 @@ export function expandCellSelectionStart(
     return;
   }
 
-  let next: CellSelectionRectPro;
+  let next: DataRect;
   let focusColumn;
   if (rect.columnEnd > pivot.columnEnd) {
     let colOffset = 1;

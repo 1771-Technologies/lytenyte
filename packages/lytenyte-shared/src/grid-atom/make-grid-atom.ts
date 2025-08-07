@@ -4,7 +4,7 @@ import {
   type PrimitiveAtom,
   type createStore,
 } from "@1771technologies/atom";
-import type { GridAtom, GridAtomReadonly } from "../+types";
+import type { GridAtom, GridAtomReadonly } from "../+types.js";
 
 type Store = ReturnType<typeof createStore>;
 

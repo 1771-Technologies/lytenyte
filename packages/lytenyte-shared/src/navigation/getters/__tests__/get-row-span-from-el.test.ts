@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { getRowSpanFromEl } from "../get-row-span-from-el";
+import { getRowSpanFromEl } from "../get-row-span-from-el.js";
 
 describe("getRowSpanFromEl", () => {
   test("should return the correct result", () => {

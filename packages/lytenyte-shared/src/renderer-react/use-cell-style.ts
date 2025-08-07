@@ -1,7 +1,7 @@
 import { useMemo, type CSSProperties } from "react";
-import type { Cell } from "./+types.renderer-react";
-import { sizeFromCoord } from "../utils/size-from-coord";
-import { getTranslate } from "../utils/get-translate";
+import type { Cell } from "./+types.renderer-react.js";
+import { sizeFromCoord } from "../utils/size-from-coord.js";
+import { getTranslate } from "../utils/get-translate.js";
 
 export function useCellStyle(
   xPositions: Uint32Array,
@@ -11,7 +11,7 @@ export function useCellStyle(
   detailHeight: number,
   viewportWidth: number,
   additional: CSSProperties | undefined,
-) {
+): CSSProperties {
   const width = sizeFromCoord(cell.colIndex, xPositions, cell.colSpan);
   const height = sizeFromCoord(cell.rowIndex, yPositions, cell.rowSpan) - detailHeight;
   const isSticky = !!cell.colPin;

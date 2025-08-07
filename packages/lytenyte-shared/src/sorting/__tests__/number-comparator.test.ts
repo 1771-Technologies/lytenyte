@@ -1,8 +1,9 @@
 import { describe, test, expect } from "vitest";
-import { numberComparator, type NumberComparatorOptions } from "../number-comparator";
+import type { SortNumberComparatorOptions } from "../../+types.js";
+import { numberComparator } from "../number-comparator.js";
 
 describe("numberComparator", () => {
-  const defaultOptions: NumberComparatorOptions = {
+  const defaultOptions: SortNumberComparatorOptions = {
     nullsFirst: true,
     absoluteValue: false,
   };

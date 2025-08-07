@@ -1,11 +1,12 @@
 import { describe, expect, test } from "vitest";
 import { render } from "vitest-browser-react";
-import { HeaderGroupCellReact } from "../header-group-cell";
+import { HeaderGroupCellReact } from "../header-group-cell.js";
 
 describe("HeaderGroupCellReact", () => {
   test("should render the header group cell with the correct attributes", async () => {
     const screen = render(
       <HeaderGroupCellReact
+        isHiddenMove={false}
         cell={{
           colStart: 1,
           colEnd: 2,
@@ -40,6 +41,7 @@ describe("HeaderGroupCellReact", () => {
   test("should render the header group cell with the correct attributes with full pins", async () => {
     const screen = render(
       <HeaderGroupCellReact
+        isHiddenMove={false}
         cell={{
           colStart: 1,
           colEnd: 2,

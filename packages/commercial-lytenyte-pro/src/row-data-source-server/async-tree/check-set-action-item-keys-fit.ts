@@ -4,7 +4,7 @@ const invalidItemKeySize = "Invalid set action items, 'relIndex' must be less th
 
 export function checkSetActionItemKeysFit<K, D>(
   p: SetDataAction<K, D>,
-  pathNode: TreeParent<K, D> | TreeRoot<K, D>
+  pathNode: TreeParent<K, D> | TreeRoot<K, D>,
 ) {
   // If we are not adding any items, then the items definitely fit - since 0 fits in 0.
   if (!p.items?.length) return true;

@@ -1,11 +1,12 @@
 import { describe, expect, test } from "vitest";
 import { render } from "vitest-browser-react";
-import { RowFullWidthReact } from "../row-full-width";
+import { RowFullWidthReact } from "../row-full-width.js";
 
 describe("RowFullWidthReact", () => {
   test("should render the correct attributes and styles", async () => {
     const screen = render(
       <RowFullWidthReact
+        accepted={[]}
         detail={<div>Detail</div>}
         detailHeight={40}
         gridId="x"
@@ -41,6 +42,7 @@ describe("RowFullWidthReact", () => {
   test("should render the correct attributes and styles with scroll-width", async () => {
     const screen = render(
       <RowFullWidthReact
+        accepted={[]}
         detail={<div>Detail</div>}
         detailHeight={40}
         gridId="x"

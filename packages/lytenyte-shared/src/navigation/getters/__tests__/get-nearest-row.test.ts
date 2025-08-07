@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
-import { getNearestRow } from "../get-nearest-row";
+import { getNearestRow } from "../get-nearest-row.js";
 
 describe("getNearestRow", () => {
   afterEach(() => {

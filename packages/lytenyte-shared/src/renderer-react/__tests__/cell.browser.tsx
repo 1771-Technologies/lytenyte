@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { render } from "vitest-browser-react";
-import { CellReact } from "../cell";
+import { CellReact } from "../cell.js";
 
 describe("CellReact", () => {
   test("should create a cell with the correct data attributes", async () => {

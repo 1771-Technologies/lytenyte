@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { isViewport } from "../is-viewport";
+import { isViewport } from "../is-viewport.js";
 
 describe("isViewport", () => {
   test("should return the correct result", () => {

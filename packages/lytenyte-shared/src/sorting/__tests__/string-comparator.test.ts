@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { stringComparator } from "../string-comparator";
+import { stringComparator } from "../string-comparator.js";
 
 // Helper function to create a collator
 function createCollator(locale: string, caseInsensitive: boolean) {

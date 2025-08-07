@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { rowIndexForSection } from "../row-index-for-section";
+import { rowIndexForSection } from "../row-index-for-section.js";
 
 describe("rowIndexForSection", () => {
   test("should return the correct value when there are no pinned rows", () => {

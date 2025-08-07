@@ -1,14 +1,14 @@
 import { atom, createStore } from "@1771technologies/atom";
 import { describe, expect, test, vi } from "vitest";
 import { render } from "vitest-browser-react";
-import { makeGridAtom } from "../../../grid-atom/make-grid-atom";
-import type { PositionFullWidthRow, PositionGridCell, PositionUnion } from "../../../+types";
-import { RowReact } from "../../../renderer-react/row";
-import { CellReact } from "../../../renderer-react/cell";
-import { handleHomeEnd } from "../handle-home-end";
-import type { LayoutMap } from "../../../+types.non-gen";
-import { RowFullWidthReact } from "../../../renderer-react/row-full-width";
-import { FULL_WIDTH_MAP } from "../../../+constants";
+import { makeGridAtom } from "../../../grid-atom/make-grid-atom.js";
+import type { PositionFullWidthRow, PositionGridCell, PositionUnion } from "../../../+types.js";
+import { RowReact } from "../../../renderer-react/row.js";
+import { CellReact } from "../../../renderer-react/cell.js";
+import { handleHomeEnd } from "../handle-home-end.js";
+import type { LayoutMap } from "../../../+types.non-gen.js";
+import { RowFullWidthReact } from "../../../renderer-react/row-full-width.js";
+import { FULL_WIDTH_MAP } from "../../../+constants.js";
 
 describe("handleHomeEnd", () => {
   test("should focus the correct cells", async () => {

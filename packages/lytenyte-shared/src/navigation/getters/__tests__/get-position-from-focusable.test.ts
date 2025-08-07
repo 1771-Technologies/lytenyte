@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { getPositionFromFocusable } from "../get-position-from-focusable";
+import { getPositionFromFocusable } from "../get-position-from-focusable.js";
 
 describe("getPositionFromFocusable", () => {
   test("should return the correct result for cells", () => {

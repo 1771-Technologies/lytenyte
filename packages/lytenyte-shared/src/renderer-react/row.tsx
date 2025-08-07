@@ -1,6 +1,6 @@
 import { forwardRef, type JSX } from "react";
 import { DropWrap, type DropWrapProps } from "@1771technologies/lytenyte-dragon";
-import { useRowStyle } from "./use-row-style";
+import { useRowStyle } from "./use-row-style.js";
 
 interface RowProps extends DropWrapProps {
   readonly rowIndex: number;

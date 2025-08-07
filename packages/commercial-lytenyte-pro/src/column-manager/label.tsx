@@ -2,7 +2,7 @@ import { useSlot, type SlotComponent } from "@1771technologies/lytenyte-react-ho
 import { useColumnItemContext } from "./context";
 import { forwardRef, useMemo, type JSX } from "react";
 
-interface LabelProps {
+export interface LabelProps {
   readonly slot?: SlotComponent;
 }
 

@@ -24,7 +24,7 @@ test("applySetActionToTree: should apply items when possible", () => {
         { data: 2, relIndex: 3, kind: "leaf" },
       ],
     },
-    root
+    root,
   );
 
   expect([...root.byIndex.keys()]).toMatchInlineSnapshot(`
@@ -58,7 +58,7 @@ test("applySetActionToTree: should not apply when items are empty", () => {
       path: [],
       size: 10,
     },
-    root
+    root,
   );
 
   expect([...root.byIndex.keys()]).toMatchInlineSnapshot(`[]`);
@@ -84,7 +84,7 @@ test("applySetActionToTree: can perform overriding applies", () => {
         { data: 2, relIndex: 3, kind: "leaf" },
       ],
     },
-    root
+    root,
   );
 
   maybeApplySetActionItems(
@@ -99,7 +99,7 @@ test("applySetActionToTree: can perform overriding applies", () => {
         { data: 2, relIndex: 4, kind: "leaf" },
       ],
     },
-    root
+    root,
   );
 
   expect([...root.byIndex.keys()]).toMatchInlineSnapshot(`
@@ -141,7 +141,7 @@ test("applySetActionToTree: can perform apply with gaps", () => {
         { data: 2, relIndex: 3, kind: "leaf" },
       ],
     },
-    root
+    root,
   );
 
   maybeApplySetActionItems(
@@ -156,7 +156,7 @@ test("applySetActionToTree: can perform apply with gaps", () => {
         { data: 2, relIndex: 4, kind: "leaf" },
       ],
     },
-    root
+    root,
   );
 
   maybeApplySetActionItems(
@@ -169,7 +169,7 @@ test("applySetActionToTree: can perform apply with gaps", () => {
         { data: 2, relIndex: 10, kind: "leaf" },
       ],
     },
-    root
+    root,
   );
 
   expect([...root.byIndex.keys()]).toMatchInlineSnapshot(`

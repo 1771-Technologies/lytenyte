@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { isCell } from "../is-cell";
+import { isCell } from "../is-cell.js";
 
 describe("isCell", () => {
   test("should return the correct result", () => {

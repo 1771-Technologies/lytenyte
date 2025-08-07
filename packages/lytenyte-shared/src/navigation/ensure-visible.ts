@@ -1,5 +1,5 @@
-import { getNearestFocusable } from "./getters/get-nearest-focusable";
-import { getPositionFromFocusable } from "./getters/get-position-from-focusable";
+import { getNearestFocusable } from "./getters/get-nearest-focusable.js";
+import { getPositionFromFocusable } from "./getters/get-position-from-focusable.js";
 
 export function ensureVisible(
   el: HTMLElement,

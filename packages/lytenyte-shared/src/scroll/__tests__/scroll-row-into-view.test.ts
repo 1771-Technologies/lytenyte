@@ -1,5 +1,5 @@
 import { test, expect, describe } from "vitest";
-import { rowScrollIntoViewValue } from "../scroll-row-into-view";
+import { rowScrollIntoViewValue } from "../scroll-row-into-view.js";
 
 function createViewport({
   scrollTop = 0,

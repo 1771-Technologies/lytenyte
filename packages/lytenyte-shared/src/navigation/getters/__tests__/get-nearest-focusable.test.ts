@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test, vi } from "vitest";
-import { getNearestFocusable } from "../get-nearest-focusable";
+import { getNearestFocusable } from "../get-nearest-focusable.js";
 
 describe("getNearestFocusable", () => {
   afterEach(() => {

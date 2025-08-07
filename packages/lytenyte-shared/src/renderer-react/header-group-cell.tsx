@@ -1,6 +1,6 @@
 import { forwardRef, type JSX } from "react";
-import type { CellHeader } from "./+types.renderer-react";
-import { useHeaderCellStyle } from "./use-header-cell-style";
+import type { CellHeader } from "./+types.renderer-react.js";
+import { useHeaderCellStyle } from "./use-header-cell-style.js";
 
 interface HeaderGroupCellProps {
   readonly cell: CellHeader;

@@ -1,9 +1,10 @@
 import { describe, test, expect } from "vitest";
-import { dateComparator, type DateComparatorOptions } from "../date-comparator";
+import type { SortDateComparatorOptions } from "../../+types.js";
+import { dateComparator } from "../date-comparator.js";
 
 describe("dateComparator", () => {
-  const includeTimeTrue: DateComparatorOptions = { includeTime: true, nullsFirst: true };
-  const includeTimeFalse: DateComparatorOptions = { includeTime: false, nullsFirst: true };
+  const includeTimeTrue: SortDateComparatorOptions = { includeTime: true, nullsFirst: true };
+  const includeTimeFalse: SortDateComparatorOptions = { includeTime: false, nullsFirst: true };
 
   test("should return 0 for two null values", () => {
     expect(dateComparator(null, null, includeTimeTrue)).toBe(0);
@@ -18,12 +19,12 @@ describe("dateComparator", () => {
   });
 
   test("should return -1 when left is not null and right is null (nullsFirst: false)", () => {
-    const options: DateComparatorOptions = { includeTime: true, nullsFirst: false };
+    const options: SortDateComparatorOptions = { includeTime: true, nullsFirst: false };
     expect(dateComparator("2025-06-10", null, options)).toBe(-1);
   });
 
   test("should return 1 when left is null and right is not null (nullsFirst: false)", () => {
-    const options: DateComparatorOptions = { includeTime: true, nullsFirst: false };
+    const options: SortDateComparatorOptions = { includeTime: true, nullsFirst: false };
     expect(dateComparator(null, "2025-06-10", options)).toBe(1);
   });
 

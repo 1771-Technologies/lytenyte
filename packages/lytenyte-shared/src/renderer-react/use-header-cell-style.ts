@@ -1,6 +1,6 @@
 import { useMemo, type CSSProperties } from "react";
-import type { CellHeader } from "./+types.renderer-react";
-import { getTranslate } from "../utils/get-translate";
+import type { CellHeader } from "./+types.renderer-react.js";
+import { getTranslate } from "../utils/get-translate.js";
 
 export function useHeaderCellStyle(
   cell: CellHeader,

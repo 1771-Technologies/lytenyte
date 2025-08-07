@@ -1,7 +1,7 @@
 import { forwardRef, type JSX } from "react";
-import type { CellHeader } from "./+types.renderer-react";
-import { sizeFromCoord } from "../utils/size-from-coord";
-import { useHeaderCellStyle } from "./use-header-cell-style";
+import type { CellHeader } from "./+types.renderer-react.js";
+import { sizeFromCoord } from "../utils/size-from-coord.js";
+import { useHeaderCellStyle } from "./use-header-cell-style.js";
 
 interface HeaderCellProps {
   readonly cell: CellHeader;

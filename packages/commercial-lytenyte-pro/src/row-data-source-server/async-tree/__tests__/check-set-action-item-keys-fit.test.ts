@@ -23,14 +23,14 @@ test("checkSetActionItemKeysFit: should return the correct result", () => {
   expect(checkSetActionItemKeysFit(p, pathNode)).toEqual(false);
   expect(fn).toHaveBeenCalledOnce();
   expect(fn.mock.calls.at(0)?.at(0)).toMatchInlineSnapshot(
-    `"Invalid set action items, 'relIndex' must be less than parent size"`
+    `"Invalid set action items, 'relIndex' must be less than parent size"`,
   );
 
   expect(
     checkSetActionItemKeysFit(
       { path: [], items: [{ relIndex: 2, kind: "leaf", data: 1 }] },
-      pathNode
-    )
+      pathNode,
+    ),
   ).toEqual(true);
 
   console.error = err;
@@ -51,14 +51,14 @@ test("checkSetActionItemKeysFit: should respect the payload size when it is bein
   expect(checkSetActionItemKeysFit(p, pathNode)).toEqual(false);
   expect(fn).toHaveBeenCalledOnce();
   expect(fn.mock.calls.at(0)?.at(0)).toMatchInlineSnapshot(
-    `"Invalid set action items, 'relIndex' must be less than parent size"`
+    `"Invalid set action items, 'relIndex' must be less than parent size"`,
   );
 
   expect(
     checkSetActionItemKeysFit(
       { path: [], size: 15, items: [{ relIndex: 13, kind: "leaf", data: 1 }] },
-      pathNode
-    )
+      pathNode,
+    ),
   ).toEqual(true);
 
   console.error = err;

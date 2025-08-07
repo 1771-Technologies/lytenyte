@@ -18,7 +18,7 @@ test("checkSetActionItemKeysAreUnique: should return the correct result", () => 
   expect(checkSetActionItemKeysAreUnique(p)).toEqual(false);
   expect(fn).toHaveBeenCalledOnce();
   expect(fn.mock.calls.at(0)?.at(0)).toMatchInlineSnapshot(
-    `"Invalid set action items, the same 'key' appears more than once"`
+    `"Invalid set action items, the same 'key' appears more than once"`,
   );
 
   const pFine: SetDataAction = {
@@ -53,7 +53,7 @@ test("checkSetActionItemKeysAreUnique: should return the correct result with a m
   expect(checkSetActionItemKeysAreUnique(p)).toEqual(false);
   expect(fn).toHaveBeenCalledOnce();
   expect(fn.mock.calls.at(0)?.at(0)).toMatchInlineSnapshot(
-    `"Invalid set action items, the same 'key' appears more than once"`
+    `"Invalid set action items, the same 'key' appears more than once"`,
   );
 
   const pFine: SetDataAction = {
@@ -89,7 +89,7 @@ test("checkSetActionItemKeysAreUnique: should return the correct result with a m
   expect(checkSetActionItemKeysAreUnique(p)).toEqual(false);
   expect(fn).toHaveBeenCalledOnce();
   expect(fn.mock.calls.at(0)?.at(0)).toMatchInlineSnapshot(
-    `"Invalid set action items, the same 'path' appears more than once"`
+    `"Invalid set action items, the same 'path' appears more than once"`,
   );
 
   const pFine: SetDataAction = {

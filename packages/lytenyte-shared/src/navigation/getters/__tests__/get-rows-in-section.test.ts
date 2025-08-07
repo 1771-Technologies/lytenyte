@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { getRowsInSection } from "../get-rows-in-section";
+import { getRowsInSection } from "../get-rows-in-section.js";
 
 describe("getRowsInSection", () => {
   test("should return the correct result", () => {

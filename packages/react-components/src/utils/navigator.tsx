@@ -1,5 +1,5 @@
+import { getFocusables, getTabbables } from "@1771technologies/lytenyte-dom-utils";
 import { type FocusEvent, type KeyboardEvent } from "react";
-import { focusable, tabbable } from "tabbable";
 
 export interface MakeNavigateArgs {
   readonly nextKey?: string;
@@ -32,8 +32,8 @@ export const makeNavigate = ({
     const isNext = ev.key === nextKey;
 
     const allElements = includeFocusables
-      ? focusable(ev.currentTarget)
-      : tabbable(ev.currentTarget);
+      ? getFocusables(ev.currentTarget)
+      : getTabbables(ev.currentTarget);
 
     const elements = allElements.filter((c) => elementFilter(c as HTMLElement, ev.currentTarget));
 
@@ -77,7 +77,7 @@ export const makeNavigate = ({
 const handleTab = (ev: KeyboardEvent<HTMLElement>) => {
   if (ev.key !== "Tab" || ev.ctrlKey || ev.metaKey) return;
 
-  const elements = tabbable(ev.currentTarget);
+  const elements = getTabbables(ev.currentTarget);
   const reset = elements.map((el) => {
     const c = el.getAttribute("tabindex");
     el.tabIndex = -1;

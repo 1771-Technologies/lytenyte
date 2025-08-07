@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { render } from "vitest-browser-react";
-import { RowsBottomReact, RowsCenterReact, RowsTopReact } from "../rows-sections";
+import { RowsBottomReact, RowsCenterReact, RowsTopReact } from "../rows-sections.js";
 
 describe("RowsTopReact", () => {
   test("should render with the correct attributes", async () => {

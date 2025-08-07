@@ -1,4 +1,4 @@
-import type { SortDateComparatorOptions } from "../+types";
+import type { SortDateComparatorOptions } from "../+types.js";
 
 export function dateComparator(
   left: string | null,

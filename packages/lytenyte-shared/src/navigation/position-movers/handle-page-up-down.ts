@@ -1,11 +1,9 @@
-import {
-  getRowsCenterSection,
-  getRowsInSection,
-  getRowIndexFromEl,
-} from "@1771technologies/lytenyte-shared";
-import type { GridAtom, PositionUnion } from "../../+types";
-import { focusCellVertically } from "./focus-cell-vertically";
-import type { LayoutMap, ScrollIntoViewFn } from "../../+types.non-gen";
+import type { GridAtom, PositionUnion } from "../../+types.js";
+import { focusCellVertically } from "./focus-cell-vertically.js";
+import type { LayoutMap, ScrollIntoViewFn } from "../../+types.non-gen.js";
+import { getRowsCenterSection } from "../getters/get-rows-center-section.js";
+import { getRowsInSection } from "../getters/get-rows-in-section.js";
+import { getRowIndexFromEl } from "../getters/get-row-index-from-el.js";
 
 interface HandleHomeEndArgs {
   readonly vp: HTMLElement | null;

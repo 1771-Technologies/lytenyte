@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { getHeaderRows } from "../get-header-rows";
+import { getHeaderRows } from "../get-header-rows.js";
 
 describe("getHeaderRows", () => {
   test("should return the correct result", () => {

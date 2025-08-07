@@ -18,7 +18,7 @@ test("checkSetActionItemKinds: should return the correct result", () => {
   expect(checkSetActionItemKinds(p)).toEqual(false);
   expect(fn).toHaveBeenCalledOnce();
   expect(fn.mock.calls.at(0)?.at(0)).toMatchInlineSnapshot(
-    `"Invalid set action items, 'kind' must be 'leaf' or 'parent'"`
+    `"Invalid set action items, 'kind' must be 'leaf' or 'parent'"`,
   );
 
   p = {
@@ -33,7 +33,7 @@ test("checkSetActionItemKinds: should return the correct result", () => {
   expect(checkSetActionItemKinds(p)).toEqual(false);
   expect(fn).toHaveBeenCalledTimes(2);
   expect(fn.mock.calls.at(1)?.at(0)).toMatchInlineSnapshot(
-    `"Invalid set action items, 'kind' must be 'leaf' or 'parent'"`
+    `"Invalid set action items, 'kind' must be 'leaf' or 'parent'"`,
   );
 
   const pFine: SetDataAction = {

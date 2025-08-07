@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { getColIndexFromEl } from "../get-col-index-from-el";
+import { getColIndexFromEl } from "../get-col-index-from-el.js";
 
 describe("getColIndexFromEl", () => {
   test("should return the correct result", () => {

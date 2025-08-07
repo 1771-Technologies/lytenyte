@@ -48,7 +48,7 @@ export function useFilterTree<T>({
   treeItemHeight = 24,
   pivotMode,
   applyChangesImmediately = false,
-}: UseFilterTreeArgs<T>) {
+}: UseFilterTreeArgs<T>): UseTreeFilterReturn<T> {
   const [items, setItems] = useState<FilterInFilterItem[]>([]);
   const [expansions, onExpansionChange] = useState({});
 

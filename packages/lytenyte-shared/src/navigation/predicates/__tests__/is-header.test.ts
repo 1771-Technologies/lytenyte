@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { isHeader } from "../is-header";
+import { isHeader } from "../is-header.js";
 
 describe("isHeader", () => {
   test("should return the correct result", () => {

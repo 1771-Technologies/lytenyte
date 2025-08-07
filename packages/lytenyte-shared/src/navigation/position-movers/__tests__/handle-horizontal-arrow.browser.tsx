@@ -1,17 +1,17 @@
 import { describe, expect, test, vi } from "vitest";
 import { render } from "vitest-browser-react";
-import { RowReact } from "../../../renderer-react/row";
-import { CellReact } from "../../../renderer-react/cell";
+import { RowReact } from "../../../renderer-react/row.js";
+import { CellReact } from "../../../renderer-react/cell.js";
 import { atom, createStore } from "@1771technologies/atom";
-import { makeGridAtom } from "../../../grid-atom/make-grid-atom";
-import type { PositionGridCell, PositionHeaderCell, PositionUnion } from "../../../+types";
+import { makeGridAtom } from "../../../grid-atom/make-grid-atom.js";
+import type { PositionGridCell, PositionHeaderCell, PositionUnion } from "../../../+types.js";
 import { userEvent } from "@vitest/browser/context";
-import { handleHorizontalArrow } from "../handle-horizontal-arrow";
-import type { LayoutMap } from "../../../+types.non-gen";
-import { HeaderRowReact } from "../../../renderer-react/header-row";
-import { HeaderCellReact } from "../../../renderer-react/header-cell";
-import { HeaderReact } from "../../../renderer-react/header";
-import { HeaderGroupCellReact } from "../../../renderer-react/header-group-cell";
+import { handleHorizontalArrow } from "../handle-horizontal-arrow.js";
+import type { LayoutMap } from "../../../+types.non-gen.js";
+import { HeaderRowReact } from "../../../renderer-react/header-row.js";
+import { HeaderCellReact } from "../../../renderer-react/header-cell.js";
+import { HeaderReact } from "../../../renderer-react/header.js";
+import { HeaderGroupCellReact } from "../../../renderer-react/header-group-cell.js";
 
 describe("handleHorizontalArrow", () => {
   test("should focus positions correctly", async () => {
@@ -351,6 +351,7 @@ describe("handleHorizontalArrow", () => {
         >
           <HeaderRowReact headerRowIndex={0} maxRow={1}>
             <HeaderGroupCellReact
+              isHiddenMove={false}
               cell={{
                 colStart: 0,
                 colEnd: 1,
