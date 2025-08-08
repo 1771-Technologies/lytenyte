@@ -1,3 +1,4 @@
+import "../../main.css";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Header } from "../header/header";
 import { HeaderRow } from "../header/header-row";
@@ -77,7 +78,10 @@ function Component({ data = bankData }: { data?: any[] }) {
         <button onClick={() => setBt([])}>Remove Two Bot</button>
       </div>
 
-      <div style={{ width: "100%", height: "90vh", border: "1px solid black" }}>
+      <div
+        className="lng-grid"
+        style={{ width: "100%", height: "90vh", border: "1px solid black" }}
+      >
         <Root grid={g}>
           <Viewport>
             <Header>
@@ -86,21 +90,9 @@ function Component({ data = bankData }: { data?: any[] }) {
                   <HeaderRow headerRowIndex={i} key={i}>
                     {row.map((c) => {
                       if (c.kind === "group") {
-                        return (
-                          <HeaderGroupCell
-                            cell={c}
-                            key={c.idOccurrence}
-                            style={{ border: "1px solid black", background: "lightgray" }}
-                          />
-                        );
+                        return <HeaderGroupCell cell={c} key={c.idOccurrence} />;
                       }
-                      return (
-                        <HeaderCell
-                          cell={c}
-                          key={c.column.id}
-                          style={{ border: "1px solid black", background: "lightgray" }}
-                        />
-                      );
+                      return <HeaderCell cell={c} key={c.column.id} />;
                     })}
                   </HeaderRow>
                 );

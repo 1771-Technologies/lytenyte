@@ -49,6 +49,7 @@ export const RowFullWidthReact = forwardRef<
       /** Data attributes start */
       data-ln-gridid={gridId}
       data-ln-rowindex={rowIndex}
+      data-ln-alternate={rowIndex % 2 === 1}
       data-ln-row
       data-ln-last-top-pin={rowLastPinTop}
       data-ln-first-bottom-pin={rowFirstPinBottom}
@@ -59,7 +60,6 @@ export const RowFullWidthReact = forwardRef<
       style={useRowStyle(yPositions, rowIndex, rowIsFocusRow, props.style, {
         right: rtl ? "0px" : undefined,
         left: rtl ? undefined : "0px",
-        border: "1px solid black",
         position: "sticky",
         width: space === "scroll-width" ? undefined : VIEWPORT_WIDTH_VARIABLE_USE,
         gridTemplateColumns: `${space === "scroll-width" ? "100%" : VIEWPORT_WIDTH_VARIABLE_USE}`,
