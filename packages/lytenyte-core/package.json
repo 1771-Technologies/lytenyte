@@ -4,6 +4,7 @@
   "type": "module",
   "files": [
     "dist",
+    "main.css",
     "LICENSE",
     "README.md"
   ],
@@ -26,7 +27,8 @@
       "types": "./src/types/types.ts",
       "import": "./src/types/types.ts",
       "require": "./src/types/types.ts"
-    }
+    },
+    "./grid.css": "./main.css"
   },
   "publishConfig": {
     "access": "public",
@@ -40,7 +42,8 @@
         "types": "./dist/types/index.d.ts",
         "import": "./dist/types/index.js",
         "require": "./dist/types/index.js"
-      }
+      },
+      "./grid.css": "./main.css"
     }
   },
   "dependencies": {

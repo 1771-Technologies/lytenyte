@@ -32,9 +32,10 @@ export function ResizeHandler<T>({
 
   const double = sx.state.columnDoubleClickToAutosize.useValue();
 
-  const defaultProps: JSX.IntrinsicElements["div"] = {
+  const defaultProps: JSX.IntrinsicElements["div"] & { "data-ln-header-resizer": "true" } = {
     role: "button",
     "aria-label": `Resize column ${cell.column.name ?? cell.column.id}`,
+    "data-ln-header-resizer": "true",
     tabIndex: -1,
     onDoubleClick: () => {
       if (!double) return;
@@ -165,7 +166,7 @@ export function ResizeHandler<T>({
     className,
     style: {
       height: "100%",
-      width: "8px",
+      width: "6px",
       ...style,
       top: "0px",
       insetInlineEnd: cell.colPin !== "end" ? "0px" : undefined,

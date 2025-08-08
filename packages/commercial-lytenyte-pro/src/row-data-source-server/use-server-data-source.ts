@@ -46,6 +46,10 @@ export function makeServerDataSource<T>({
 
   const isLoading$ = atom(false);
   const isLoading = makeGridAtom(isLoading$, rdsStore);
+  const error$ = atom<unknown>();
+  const loadError = makeGridAtom(error$, rdsStore);
+
+  const nodesWithError = atom<Map<number, unknown>>(new Map());
 
   const initialized = atom(false);
   const model$ = atom<DataRequestModel<T>>({
@@ -124,7 +128,12 @@ export function makeServerDataSource<T>({
     });
   };
 
-  const dataRequestHandler = async (p: DataRequest[], force = false, onSuccess?: () => void) => {
+  const dataRequestHandler = async (
+    p: DataRequest[],
+    force = false,
+    onSuccess?: () => void,
+    onFailure?: (e: unknown) => void,
+  ) => {
     if (!grid) return;
 
     const unseen = p.filter((x) => force || !seenRequests.has(x.id));
@@ -135,6 +144,17 @@ export function makeServerDataSource<T>({
       onSuccess?.();
       return;
     }
+
+    rdsStore.set(nodesWithError, (prev) => {
+      const next = new Map(prev);
+      p.forEach((r) => {
+        for (let i = r.rowStartIndex; i < r.rowEndIndex; i++) {
+          next.delete(i);
+        }
+      });
+
+      return prev;
+    });
 
     try {
       const res = await dataFetcher({
@@ -151,6 +171,7 @@ export function makeServerDataSource<T>({
       // Mark them as unseen since the request failed.
       unseen.forEach((x) => seenRequests.delete(x.id));
 
+      onFailure?.(e);
       console.error(e);
     } finally {
       rdsStore.set(snapshot$, Date.now());
@@ -220,12 +241,29 @@ export function makeServerDataSource<T>({
       });
     }
 
-    dataRequestHandler(requests);
+    dataRequestHandler(
+      requests,
+      false,
+      () => {},
+      (e) => {
+        rdsStore.set(nodesWithError, (prev) => {
+          const next = new Map(prev);
+          requests.forEach((r) => {
+            for (let i = r.rowStartIndex; i < r.rowEndIndex; i++) {
+              next.set(i, e);
+            }
+          });
+
+          return prev;
+        });
+      },
+    );
   };
 
   const resetRequest = async () => {
     seenRequests.clear();
     tree.set(makeAsyncTree<DataResponseBranchItem, DataResponseLeafItem>());
+    rdsStore.set(nodesWithError, new Map());
 
     // Initialize the grid.
     const initialDataRequest: DataRequest = {
@@ -237,8 +275,16 @@ export function makeServerDataSource<T>({
       end: blockSize,
     };
 
+    loadError.set(null);
     isLoading.set(true);
-    await dataRequestHandler([initialDataRequest]);
+    await dataRequestHandler(
+      [initialDataRequest],
+      false,
+      () => {},
+      (e) => {
+        loadError.set(e);
+      },
+    );
     isLoading.set(false);
   };
 
@@ -536,23 +582,28 @@ export function makeServerDataSource<T>({
     const top = rdsStore.get(topData);
     const bot = rdsStore.get(botData);
 
+    const errors = rdsStore.get(nodesWithError);
+    const error = errors.get(ri);
+
     if (ri == null || ri < 0 || ri >= f.size + top.length + bot.length) return null;
 
     // Top node
     if (ri < top.length) {
       const row = top[ri];
       if (!row) return null;
-      return { kind: "leaf", data: row.data, id: row.id };
+      return { kind: "leaf", data: row.data, id: row.id, error };
     }
 
     if (ri >= f.size + top.length) {
       const i = ri - f.size - top.length;
       const row = bot[i];
       if (!row) return null;
-      return { kind: "leaf", data: row.data, id: row.id };
+      return { kind: "leaf", data: row.data, id: row.id, error };
     }
 
     const node = f.rowIndexToRow.get(ri - top.length);
+    if (!node && error)
+      return { kind: "leaf", data: null, id: `error-${ri}`, loading: false, error };
     if (!node) return { kind: "leaf", data: null, id: `loading-${ri}`, loading: true, error: null };
 
     if (node.kind === "parent") {
@@ -562,6 +613,7 @@ export function makeServerDataSource<T>({
         id: node.data.id,
         key: node.path,
         depth: getNodeDepth(node),
+        error,
       };
     }
 
@@ -569,11 +621,14 @@ export function makeServerDataSource<T>({
       kind: "leaf",
       data: node.data.data as T,
       id: node.data.id,
+      error,
     };
   };
 
   const rowExpand: RowDataSource<T>["rowExpand"] = (p) => {
     const f = flat.get();
+
+    const rowIndices: number[] = [];
     const requests = Object.entries(p)
       .map<DataRequest | null>(([rowId, state]) => {
         if (!state) return null;
@@ -585,6 +640,8 @@ export function makeServerDataSource<T>({
         if (!row || row.kind === "leaf") return null;
 
         const path = getNodePath(row);
+
+        rowIndices.push(rowIndex);
 
         return {
           id: getRequestId(path, 0, Math.min(blockSize, row.size)),
@@ -598,10 +655,33 @@ export function makeServerDataSource<T>({
       .filter((c) => !!c);
 
     const mode = rdsStore.get(pivotMode);
-    dataRequestHandler(requests, false, () => {
-      if (mode) grid?.state.columnPivotColumnGroupExpansions.set((prev) => ({ ...prev, ...p }));
-      else grid?.state.rowGroupExpansions.set((prev) => ({ ...prev, ...p }));
-    });
+
+    // Remove the errors before requesting.
+    const errorRows = rdsStore.get(nodesWithError);
+    if (rowIndices.some((c) => errorRows.has(c))) {
+      rdsStore.set(nodesWithError, (prev) => {
+        const n = new Map(prev);
+        rowIndices.forEach((c) => n.delete(c));
+
+        return prev;
+      });
+    }
+
+    dataRequestHandler(
+      requests,
+      false,
+      () => {
+        if (mode) grid?.state.columnPivotColumnGroupExpansions.set((prev) => ({ ...prev, ...p }));
+        else grid?.state.rowGroupExpansions.set((prev) => ({ ...prev, ...p }));
+      },
+      (error) => {
+        rdsStore.set(nodesWithError, (prev) => {
+          const n = new Map(prev);
+          rowIndices.forEach((c) => n.set(c, error));
+          return prev;
+        });
+      },
+    );
   };
 
   const rowToIndex: RowDataSource<T>["rowToIndex"] = (rowId) => {
@@ -767,13 +847,17 @@ export function makeServerDataSource<T>({
     rowAreAllSelected,
 
     isLoading,
+    loadError,
     pushResponses: (res) => {
       dataResponseHandler(res);
     },
-    pushRequests: (req, onSuccess) => {
-      dataRequestHandler(req, true, onSuccess);
+    pushRequests: (req, onSuccess, onFailure) => {
+      dataRequestHandler(req, true, onSuccess, onFailure);
     },
     reset: resetRequest,
+    retry: () => {
+      viewChange();
+    },
   };
 }
 

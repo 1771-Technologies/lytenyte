@@ -2469,6 +2469,17 @@ export interface RowDataSourceServer<T> {
   readonly isLoading: GridAtomReadonly<boolean>;
 
   /**
+   * If the initial data load for the server data fails, the loadError will be set with the
+   *       error value. This is only set if the initial load failed.
+   */
+  readonly loadError: GridAtomReadonly<unknown>;
+
+  /**
+   * Retries the failed data load requests.
+   */
+  readonly retry: () => void;
+
+  /**
    * Pushes data responses directly into the data source. Useful for
    *       preloading, live updates, or streaming responses.
    */
@@ -2478,7 +2489,11 @@ export interface RowDataSourceServer<T> {
    * Triggers the data fetching pipeline with a set of requests. Can
    *       optionally invoke a callback upon successful completion.
    */
-  readonly pushRequests: (req: DataRequest[], onSuccess?: () => void) => void;
+  readonly pushRequests: (
+    req: DataRequest[],
+    onSuccess?: () => void,
+    onError?: (e: unknown) => void,
+  ) => void;
 
   /**
    * Resets the internal state and clears all server data previously fetched by the grid.

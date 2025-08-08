@@ -32,6 +32,7 @@ export const RowReact = forwardRef<
       data-ln-rowtype="normal-row"
       data-ln-last-top-pin={rowLastPinTop}
       data-ln-first-bottom-pin={rowFirstPinBottom}
+      data-ln-alternate={rowIndex % 2 === 1}
       data-ln-row
       style={styles}
     />

@@ -1,7 +1,13 @@
-import { describe, expect, test, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { isNDaysAgo } from "../is-n-days-ago.js";
 
 describe("isNDaysAgo", () => {
+  beforeEach(() => {
+    vi.stubEnv("TZ", "UTC");
+  });
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
   test("should return the correct result", () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2025-01-05"));
