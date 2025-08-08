@@ -47,7 +47,7 @@ jobs:
         run: op np --filter './packages/*' exec op typecheck
 
       - name: Test All Packages
-        run: op test --coverage
+        run: op test
 
       - name: Build All Packages
         run: op np --filter './packages/*' exec op compile

@@ -2,11 +2,12 @@
   "name": "@1771technologies/lytenyte-focus",
   "version": "0.9.4",
   "type": "module",
+  "license": "Apache-2.0",
   "homepage": "https://1771technologies.com",
   "repository": {
     "type": "git",
     "url": "https://github.com/1771-technologies/lytenyte.git",
-    "directory": "packages/dependency-forks/focus"
+    "directory": "packages/fork-focus"
   },
   "bugs": {
     "url": "https://github.com/1771-technologies/lytenyte/issues"

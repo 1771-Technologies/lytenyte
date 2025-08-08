@@ -2,6 +2,7 @@
   "name": "@1771technologies/lytenyte-dragon",
   "version": "0.9.4",
   "type": "module",
+  "license": "Apache-2.0",
   "files": [
     "dist",
     "LICENSE",

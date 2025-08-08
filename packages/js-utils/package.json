@@ -3,6 +3,7 @@
   "version": "0.9.4",
   "type": "module",
   "homepage": "https://1771technologies.com",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/1771-technologies/lytenyte.git",

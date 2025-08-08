@@ -136,7 +136,7 @@ importers:
         specifier: workspace:*
         version: link:../js-utils
       '@1771technologies/lytenyte-react-hooks':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../react-hooks
       '@1771technologies/lytenyte-shared':
         specifier: workspace:*

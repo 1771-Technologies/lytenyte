@@ -1,5 +1,14 @@
 {
   "name": "@1771technologies/lytenyte-core",
+  "description": "Blazingly fast headless React data grid with 100s of features.",
+  "license": "Apache-2.0",
+  "keywords": [
+    "react",
+    "data-grid",
+    "react-table",
+    "headless",
+    "virtualized"
+  ],
   "version": "0.9.4",
   "type": "module",
   "files": [
