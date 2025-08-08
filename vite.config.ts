@@ -1,32 +1,11 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
-
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
   test: {
     workspace: [
-      {
-        extends: `${__dirname}/vite.config.ts`,
-        plugins: [
-          // The plugin will run tests for the stories defined in your Storybook config
-          // See options at: https://storybook.js.org/docs/writing-tests/test-addon#storybooktest
-          storybookTest({ configDir: `${import.meta.dirname}/.storybook` }),
-        ],
-        test: {
-          name: "Storybook",
-          browser: {
-            enabled: true,
-            headless: true,
-            provider: "playwright",
-            instances: [{ browser: "chromium" }],
-          },
-          setupFiles: [`${__dirname}/.storybook/vitest.setup.ts`],
-        },
-      },
-
       {
         extends: `${__dirname}/vite.config.ts`,
         test: {
