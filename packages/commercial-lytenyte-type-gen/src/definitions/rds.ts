@@ -401,6 +401,23 @@ export const RowDataSourceServerPro: InterfaceType = {
     {
       kind: "property",
       doc: { en: `` },
+      tsDoc: `If the initial data load for the server data fails, the loadError will be set with the 
+      error value. This is only set if the initial load failed.`,
+      name: "loadError",
+      optional: false,
+      value: "GridAtomReadonly<unknown>",
+    },
+    {
+      kind: "property",
+      doc: { en: `` },
+      tsDoc: `Retries the failed data load requests.`,
+      name: "retry",
+      optional: false,
+      value: "() => void",
+    },
+    {
+      kind: "property",
+      doc: { en: `` },
       tsDoc: `Pushes data responses directly into the data source. Useful for 
       preloading, live updates, or streaming responses.`,
       name: "pushResponses",
@@ -414,7 +431,7 @@ export const RowDataSourceServerPro: InterfaceType = {
       optionally invoke a callback upon successful completion.`,
       name: "pushRequests",
       optional: false,
-      value: "(req: DataRequest[], onSuccess?: () => void) => void",
+      value: "(req: DataRequest[], onSuccess?: () => void, onError?: (e: unknown) => void) => void",
     },
     {
       kind: "property",

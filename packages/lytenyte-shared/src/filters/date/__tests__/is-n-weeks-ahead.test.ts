@@ -8,7 +8,8 @@ describe("isNWeeksAhead", () => {
   afterEach(() => {
     vi.unstubAllEnvs();
   });
-  test.only("should return the correct result", () => {
+
+  test("should return the correct result", () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2025-01-05"));
 

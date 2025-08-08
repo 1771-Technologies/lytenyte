@@ -1,7 +1,13 @@
-import { describe, expect, test } from "vitest";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { isInQuarter } from "../is-in-quarter.js";
 
 describe("isInQuarter", () => {
+  beforeEach(() => {
+    vi.stubEnv("TZ", "UTC");
+  });
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
   test("should return the correct result", () => {
     expect(isInQuarter(1, new Date("2025-01-02"))).toEqual(true);
     expect(isInQuarter(1, new Date("2025-03-02"))).toEqual(true);
