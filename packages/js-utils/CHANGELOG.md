@@ -1,5 +1,11 @@
 # @1771technologies/lytenyte-js-utils
 
+## 1.0.0-beta.5
+
+### Patch Changes
+
+- Version
+
 ## 1.0.0-beta.4
 
 ### Patch Changes

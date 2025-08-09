@@ -1,5 +1,13 @@
 # @1771technologies/lytenyte-scroll-lock
 
+## 1.0.0-beta.5
+
+### Patch Changes
+
+- Version
+- Updated dependencies
+  - @1771technologies/lytenyte-dom-utils@1.0.0-beta.5
+
 ## 1.0.0-beta.4
 
 ### Patch Changes
