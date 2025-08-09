@@ -20,6 +20,8 @@
     "@1771technologies/lytenyte-react-hooks": "0.9.4"
   },
   "changesets": [
+    "all-jobs-shout",
+    "fruity-ravens-pull",
     "witty-birds-wait"
   ]
 }
