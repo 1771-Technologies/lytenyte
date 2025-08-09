@@ -1,5 +1,11 @@
 # @1771technologies/lytenyte-core
 
+## 1.0.0-beta.1
+
+### Patch Changes
+
+- Fixed type imports
+
 ## 1.0.0-beta.0
 
 ### Major Changes
