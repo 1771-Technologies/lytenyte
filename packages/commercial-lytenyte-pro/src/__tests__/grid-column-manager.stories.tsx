@@ -5,8 +5,7 @@ import { useId } from "react";
 import type { Column } from "../+types";
 import { useClientRowDataSource } from "../row-data-source-client/use-client-data-source";
 import { bankData } from "./sample-data/bank-data";
-import { ColumnManager as CM } from "../column-manager/column-manager.js";
-import type { TreeVirtualItem } from "../tree-view/virtualized/make-virtual-tree";
+import { ColumnManager as CM2 } from "../column-manager/column-manager";
 import { Root } from "../root/root";
 import { Viewport } from "../viewport/viewport";
 import { Header } from "../header/header";
@@ -65,7 +64,7 @@ function Component({ data = bankData }: { data?: any[] }) {
     },
   });
 
-  const { rootProps, spacer, tree } = CM.useColumnManager(g);
+  const { items, lookup } = CM2.useColumnManager({ grid: g });
 
   const view = g.view.useValue();
 
@@ -78,21 +77,46 @@ function Component({ data = bankData }: { data?: any[] }) {
       </div>
 
       <div style={{ display: "flex" }}>
+        <div style={{ width: "30%", height: "90vh", border: "1px solid black" }}></div>
         <div style={{ width: "30%", height: "90vh", border: "1px solid black" }}>
-          <CM.Root {...rootProps}>
-            <CM.Panel>
-              <CM.PassiveScroll>
-                {tree.map((c) => {
+          <CM2.Root grid={g} lookup={lookup}>
+            <CM2.Panel>
+              {items.map(function Render(item) {
+                if (item.kind === "leaf")
                   return (
-                    <RenderNode item={c} key={c.kind === "branch" ? c.branch.id : c.leaf.data.id} />
+                    <CM2.Leaf key={item.data.id} item={item} style={{ display: "flex" }}>
+                      <CM2.MoveHandle>O</CM2.MoveHandle>
+                      <CM2.VisibilityCheckbox />
+                      <CM2.Label />
+                    </CM2.Leaf>
                   );
-                })}
-              </CM.PassiveScroll>
-              {spacer}
-            </CM.Panel>
-          </CM.Root>
+
+                const children = [...item.children.values()];
+
+                return (
+                  <CM2.Branch
+                    key={item.id}
+                    item={item}
+                    label={
+                      <div style={{ display: "flex", gap: "2px" }}>
+                        <CM2.MoveHandle>O</CM2.MoveHandle>
+                        <CM2.VisibilityCheckbox />
+                        <CM2.Label />
+                      </div>
+                    }
+                    labelWrapStyle={{
+                      display: "flex",
+                      paddingLeft: "calc(--ln-tree-depth * 16px)",
+                    }}
+                  >
+                    {children.map(Render)}
+                  </CM2.Branch>
+                );
+              })}
+            </CM2.Panel>
+          </CM2.Root>
         </div>
-        <div style={{ width: "70%", height: "90vh", border: "1px solid black" }}>
+        <div style={{ width: "40%", height: "90vh", border: "1px solid black" }}>
           <Root grid={g}>
             <Viewport>
               <Header>
@@ -138,37 +162,6 @@ function Component({ data = bankData }: { data?: any[] }) {
         </div>
       </div>
     </div>
-  );
-}
-
-function RenderNode<T>({ item }: { item: TreeVirtualItem<Column<T>> }) {
-  if (item.kind === "leaf") {
-    return (
-      <CM.Leaf item={item} style={{ display: "flex", gap: "2px" }}>
-        <CM.MoveHandle>O</CM.MoveHandle>
-        <CM.VisibilityCheckbox />
-        <CM.Label />
-      </CM.Leaf>
-    );
-  }
-
-  const values = [...item.children.values()];
-
-  return (
-    <CM.Branch
-      item={item}
-      label={
-        <div style={{ display: "flex", gap: "2px" }}>
-          <CM.MoveHandle>O</CM.MoveHandle>
-          <CM.VisibilityCheckbox />
-          <CM.Label />
-        </div>
-      }
-    >
-      {values.map((c) => {
-        return <RenderNode item={c} key={c.kind === "branch" ? c.branch.id : c.leaf.data.id} />;
-      })}
-    </CM.Branch>
   );
 }
 

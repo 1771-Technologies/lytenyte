@@ -51,6 +51,16 @@ function Component({ data = bankData }: { data?: any[] }) {
     columns,
     rowDataSource: ds,
 
+    columnPivotMode: true,
+    columnPivotModel: {
+      columns: [{ field: "education" }],
+      values: [{ field: "balance", aggFn: "sum" }],
+      rows: [{ field: "job" }],
+      sorts: [],
+      filtersIn: {},
+      filters: {},
+    },
+
     columnBase: {
       uiHints: {
         movable: true,

@@ -12,7 +12,7 @@ export function beginEditing<T>(
   if (focusPos?.kind !== "cell" || editMode === "readonly") return;
   if (activator && editActivator !== activator) return;
 
-  const column = grid.api.columnFromIndex(focusPos.colIndex);
+  const column = grid.api.columnByIndex(focusPos.colIndex);
   if (!column) return;
   if (grid.api.editIsCellActive({ column, rowIndex: focusPos.rowIndex })) return;
 

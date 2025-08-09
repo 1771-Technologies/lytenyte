@@ -14,6 +14,8 @@ export const CellSpanFnParams: InterfaceType = {
   - The row node representing the full row data
 
   Used to compute dynamic row or column spans for advanced layout use cases.
+
+  @group Row And Column Spanning
   `,
   doc: { en: `` },
   properties: [GridProp, RowIndexProp, ColumnIndexProp, RowNodeProp],
@@ -53,6 +55,8 @@ export const CellSpanFn: FunctionType = {
 
   Cells that are spanned over (i.e. covered by another cell's span) will not be rendered and
   are excluded from the layout and DOM. Ensure your span logic accounts for this behavior.
+
+  @group Row And Column Spanning
   `,
   properties: [
     {

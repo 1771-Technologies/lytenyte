@@ -4,7 +4,11 @@ const NullsFirstProp: PropertyType = {
   kind: "property",
   name: "nullsFirst",
   optional: true,
-  tsDoc: `A boolean indicating if null values should appear first in the sort order.`,
+  tsDoc: `
+  A boolean indicating if null values should appear first in the sort order.
+  
+  @group Sort
+  `,
   doc: { en: `` },
   value: "boolean",
 };
@@ -13,7 +17,11 @@ export const SortStringComparatorOptions: InterfaceType = {
   kind: "interface",
   name: "SortStringComparatorOptions",
   export: true,
-  tsDoc: `Options used when sorting string values.`,
+  tsDoc: `
+  Options used when sorting string values.
+  
+  @group Sort
+  `,
   doc: { en: `` },
   properties: [
     {
@@ -64,7 +72,11 @@ export const SortNumberComparatorOptions: InterfaceType = {
   kind: "interface",
   name: "SortNumberComparatorOptions",
   export: true,
-  tsDoc: `Options for number-based sorting.`,
+  tsDoc: `
+  Options for number-based sorting.
+  
+  @group Sort
+  `,
   doc: { en: `` },
   properties: [
     NullsFirstProp,
@@ -83,7 +95,11 @@ export const SortDateComparatorOptions: InterfaceType = {
   kind: "interface",
   name: "SortDateComparatorOptions",
   export: true,
-  tsDoc: `Options used for date-based sorting.`,
+  tsDoc: `
+  Options used for date-based sorting.
+  
+  @group Sort
+  `,
   doc: { en: `` },
   properties: [
     NullsFirstProp,
@@ -110,7 +126,11 @@ export const SortComparators: UnionType = {
   kind: "union",
   name: "SortComparators",
   export: true,
-  tsDoc: `Predefined sort comparator types supported by LyteNyte Grid.`,
+  tsDoc: `
+  Predefined sort comparator types supported by LyteNyte Grid.
+  
+  @group Sort
+  `,
   doc: { en: `` },
   types: ['"string"', '"number"', '"date"', "(string & {})"],
 };
@@ -118,7 +138,11 @@ export const SortComparators: UnionType = {
 export const SortComparatorFn: FunctionType = {
   kind: "function",
   name: "SortComparatorFn<T>",
-  tsDoc: `Function signature for custom sort comparators.`,
+  tsDoc: `
+  Function signature for custom sort comparators.
+  
+  @group Sort
+  `,
   doc: { en: `` },
   export: true,
   return: "number",
@@ -155,14 +179,22 @@ const ColumnIdProp: PropertyType = {
   name: "columnId",
   value: "string | null",
   optional: false,
-  tsDoc: `The column identifier associated with the sort. May be null if not defined.`,
+  tsDoc: `
+  The column identifier associated with the sort. May be null if not defined.
+  
+  @group Sort
+  `,
   doc: { en: `` },
 };
 
 export const SortStringColumnSort: InterfaceType = {
   kind: "interface",
   name: "SortStringColumnSort",
-  tsDoc: `A built-in string sort model definition.`,
+  tsDoc: `
+  A built-in string sort model definition.
+  
+  @group Sort
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -188,7 +220,11 @@ export const SortStringColumnSort: InterfaceType = {
 export const SortNumberColumnSort: InterfaceType = {
   kind: "interface",
   name: "SortNumberColumnSort",
-  tsDoc: `A built-in numeric sort model definition.`,
+  tsDoc: `
+  A built-in numeric sort model definition.
+  
+  @group Sort
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -214,7 +250,11 @@ export const SortNumberColumnSort: InterfaceType = {
 export const SortDateColumnSort: InterfaceType = {
   kind: "interface",
   name: "SortDateColumnSort",
-  tsDoc: `A built-in date sort model definition.`,
+  tsDoc: `
+  A built-in date sort model definition.
+  
+  @group Sort
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -240,7 +280,11 @@ export const SortDateColumnSort: InterfaceType = {
 export const SortCustomSort: InterfaceType = {
   kind: "interface",
   name: "SortCustomSort<T>",
-  tsDoc: `Definition for a user-defined custom sort comparator.`,
+  tsDoc: `
+  Definition for a user-defined custom sort comparator.
+  
+  @group Sort
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -275,7 +319,11 @@ export const SortCustomSort: InterfaceType = {
 export const SortGridSorts: UnionType = {
   kind: "union",
   name: "SortGridSorts<T>",
-  tsDoc: `Union of all supported grid sort types.`,
+  tsDoc: `
+  Union of all supported grid sort types.
+  
+  @group Sort
+  `,
   doc: { en: `` },
   export: true,
   types: [
@@ -289,7 +337,11 @@ export const SortGridSorts: UnionType = {
 export const SortModelItem: InterfaceType = {
   kind: "interface",
   name: "SortModelItem<T>",
-  tsDoc: `A model item representing an active sort applied to the grid.`,
+  tsDoc: `
+  A model item representing an active sort applied to the grid.
+  
+  @group Sort
+  `,
   doc: { en: `` },
   export: true,
   properties: [

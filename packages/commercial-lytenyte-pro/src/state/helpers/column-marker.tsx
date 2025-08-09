@@ -25,7 +25,7 @@ export function columnHandleMarker<T>({
         widthMin: 24,
         cellRenderer: marker.cellRenderer,
         headerRenderer: marker.headerRenderer ?? HeaderRenderer,
-        floatingRenderer: marker.floatingRenderer ?? FloatingRenderer,
+        floatingCellRenderer: marker.floatingCellRenderer ?? FloatingRenderer,
         uiHints: marker.uiHints,
       },
       ...columns,

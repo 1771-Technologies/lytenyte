@@ -1,25 +1,25 @@
 import { useSlot, type SlotComponent } from "@1771technologies/lytenyte-react-hooks";
-import { useColumnItemContext } from "./context";
 import { forwardRef, useMemo, type JSX } from "react";
+import { useColumnItemContext } from "./context";
 
 export interface LabelProps {
-  readonly slot?: SlotComponent;
+  readonly as?: SlotComponent;
 }
 
 export const Label = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & LabelProps>(
-  function Label({ slot, ...props }, forwarded) {
+  function Label({ as, ...props }, forwarded) {
     const { item } = useColumnItemContext();
 
     const label = useMemo(() => {
-      if (item.kind == "branch") return item.branch.id.split("#").at(-2);
+      if (item.kind == "branch") return item.id.split("#").at(-2);
 
-      return item.leaf.data.name ?? item.leaf.data.id;
+      return item.data.name ?? item.data.id;
     }, [item]);
 
     const rendered = useSlot({
       props: [{ children: label }, props],
       ref: forwarded,
-      slot: slot ?? <div />,
+      slot: as ?? <div />,
     });
 
     return rendered;

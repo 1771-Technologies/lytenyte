@@ -9,10 +9,11 @@ export const makeColumnAutosize = (
   return (params) => {
     const errorRef = { current: false };
     const meta = grid.state.columnMeta.get();
+
     const columns =
       (params.columns
         ?.map((c) => resolveColumn(c, errorRef, meta))
-        .map((c) => c && grid.api.columnById(c))
+        .map((c) => c && (typeof c === "string" ? grid.api.columnById(c) : c))
         .filter(Boolean) as Column<any>[]) ?? grid.state.columnMeta.get().columnsVisible;
 
     if (errorRef.current) {

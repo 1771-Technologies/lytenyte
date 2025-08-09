@@ -58,9 +58,24 @@ function Component() {
     columns,
     rowDataSource: ds,
 
+    rowGroupModel: ["job"],
     rowSelectionMode: "multiple",
     rowSelectionActivator: "single-click",
     editCellMode: "cell",
+
+    rowGroupColumn: {
+      cellRenderer: ({ grid, row }) => {
+        if (!grid.api.rowIsGroup(row)) return null;
+
+        return (
+          <div>
+            Group
+            <button onClick={() => grid.api.rowGroupToggle(row)}>T</button>
+            {row.loading && <div>Loading</div>}
+          </div>
+        );
+      },
+    },
   });
 
   const view = g.view.useValue();

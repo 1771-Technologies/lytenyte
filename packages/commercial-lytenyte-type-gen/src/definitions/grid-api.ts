@@ -11,9 +11,9 @@ const ColumnField: PropertyType = {
   optional: false,
 };
 
-const ColumnFromIndex: PropertyType = {
+const ColumnByIndex: PropertyType = {
   kind: "property",
-  name: "columnFromIndex",
+  name: "columnByIndex",
   value: "(columnIndex: number) => Column<T> | null",
   tsDoc: `Returns the column at the specified visible index. If the index is out of bounds or 
   the column is hidden (due to visibility rules or collapsed groups), this will return null.`,
@@ -136,7 +136,10 @@ export const ScrollIntoViewOptions: InterfaceType = {
   name: "ScrollIntoViewOptions<T>",
   doc: { en: `` },
   tsDoc: `Options for the \`scrollIntoView\` API. Allows you to scroll a specific row and/or column into view, 
-    ensuring they are visible in the viewport.`,
+    ensuring they are visible in the viewport.
+    
+    @group Grid API
+    `,
   export: true,
   properties: [
     {
@@ -186,7 +189,9 @@ Supports various formats:
 
 - A row/column pair to focus a specific cell.
 - A header or group header cell position.
-- A directional alias ("next", "prev", "up", "down") relative to the current focus (only when the grid is focused).`,
+- A directional alias ("next", "prev", "up", "down") relative to the current focus (only when the grid is focused).
+
+@group Grid API`,
   types: [
     "{ row: number, column: string | number | Column<T> }",
     "PositionHeaderCell",
@@ -325,7 +330,10 @@ Note that some returned rows may not be part of the visible grid, depending on t
 export const HandleSelectionParams: InterfaceType = {
   kind: "interface",
   name: "RowHandleSelectParams",
-  tsDoc: `The parameters used for the \`rowHandleSelect\` API method of LyteNyte Grid.`,
+  tsDoc: `The parameters used for the \`rowHandleSelect\` API method of LyteNyte Grid.
+  
+  @group Grid API
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -399,7 +407,10 @@ const ColumnUpdates: PropertyType = {
 export const ColumnMoveParams: InterfaceType = {
   kind: "interface",
   doc: { en: `` },
-  tsDoc: `The parameters that may be provided to the \`columnMove\` API method.`,
+  tsDoc: `The parameters that may be provided to the \`columnMove\` API method.
+  
+  @group Grid API
+  `,
   export: true,
   name: "ColumnMoveParams<T>",
   properties: [
@@ -463,7 +474,10 @@ const HeaderGroupToggle: PropertyType = {
 export const ColumnAutosizeParams: InterfaceType = {
   kind: "interface",
   name: "ColumnAutosizeParams<T>",
-  tsDoc: `The parameters the \`columnAutosize\` method accepts.`,
+  tsDoc: `The parameters the \`columnAutosize\` method accepts.
+  
+  @group Grid API
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -509,8 +523,11 @@ export const ExportDataRect: PropertyType = {
   name: "exportDataRect",
   optional: false,
   tsDoc: `Returns the raw cell data within a rectangular selection of the grid. 
-  This can be useful for custom data processing or exporting workflows.`,
-  value: "(params?: ExportDataRectParams) => ExportDataRectResult<T>",
+  This can be useful for custom data processing or exporting workflows.
+  
+  @group Grid API
+  `,
+  value: "(params?: ExportDataRectParams) => Promise<ExportDataRectResult<T>>",
 };
 
 export const ExportCsv: PropertyType = {
@@ -519,7 +536,10 @@ export const ExportCsv: PropertyType = {
   name: "exportCsv",
   optional: false,
   tsDoc: `Exports the cell data for a given rectangle of the grid as a CSV-formatted string. 
-  The rectangle can be customized through parameters such as selected rows, columns, or cell ranges.`,
+  The rectangle can be customized through parameters such as selected rows, columns, or cell ranges.
+  
+  @group Grid API
+  `,
   value: "(params?: ExportCsvParams) => Promise<string>",
 };
 
@@ -529,7 +549,10 @@ export const ExportCsvFile: PropertyType = {
   name: "exportCsvFile",
   optional: false,
   tsDoc: `Generates a downloadable CSV \`Blob\` from the selected rectangular area of grid cell data. 
-  Can be used to trigger a file download in the browser.`,
+  Can be used to trigger a file download in the browser.
+  
+  @group Grid API
+  `,
   value: "(params?: ExportCsvParams) => Promise<Blob>",
 };
 
@@ -537,7 +560,7 @@ const GridApiPartial: InterfaceTypePartial = {
   kind: "interface-partial",
   properties: [
     ColumnField,
-    ColumnFromIndex,
+    ColumnByIndex,
     ColumnIndex,
 
     SortForColumn,
@@ -591,7 +614,10 @@ export const GridApi: InterfaceType = {
   kind: "interface",
   name: "GridApi<T>",
   tsDoc: `The LyteNyte Grid API provides a comprehensive set of methods that allow developers 
-  to programmatically query, update, and manipulate grid state and data.`,
+  to programmatically query, update, and manipulate grid state and data.
+  
+  @group Grid API
+  `,
   doc: { en: `` },
   export: true,
   properties: [],
@@ -603,7 +629,10 @@ export const VirtualTarget: InterfaceType = {
   kind: "interface",
   tsDoc: `Represents a virtual DOM target with bounding information, used in situations 
   where a physical DOM element does not exist. Commonly used for positioning popovers 
-  or overlays within LyteNyte Grid.`,
+  or overlays within LyteNyte Grid.
+  
+  @group Frames
+  `,
   doc: { en: `` },
   export: true,
   name: "VirtualTarget",
@@ -643,7 +672,10 @@ export const GridApiPro: InterfaceType = {
   kind: "interface",
   name: "GridApi<T>",
   tsDoc: `The LyteNyte Grid API provides a comprehensive set of methods that allow developers 
-  to programmatically query, update, and manipulate grid state and data.`,
+  to programmatically query, update, and manipulate grid state and data.
+  
+  @group Grid API
+  `,
   doc: { en: `` },
   export: true,
   extends: GridApiPartial,

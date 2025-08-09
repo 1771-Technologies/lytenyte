@@ -9,8 +9,9 @@ import type {
   FieldDataParam,
   AggModelFn,
   RowDataSourceClientPaginated,
+  ClientRowDataSourcePaginatedParams,
 } from "../+types";
-import { type ClientRowDataSourceParams, type Grid, type RowNode } from "../+types";
+import { type Grid, type RowNode } from "../+types";
 import { useRef } from "react";
 import { atom, createStore } from "@1771technologies/atom";
 import { traverse } from "./tree/traverse";
@@ -33,12 +34,12 @@ interface DataAtoms<T> {
 }
 
 export function makeClientDataSourcePaginated<T>(
-  p: ClientRowDataSourceParams<T>,
+  p: ClientRowDataSourcePaginatedParams<T>,
 ): [RowDataSourceClientPaginated<T>, DataAtoms<T>] {
   const rdsStore = createStore();
 
   const pageInternal = atom(0);
-  const rowsPerPage = atom(50);
+  const rowsPerPage = atom(p.rowsPerPage ?? 50);
   const pageCount = atom((g) => Math.max(Math.ceil(g(flatLength) / g(rowsPerPage)), 1));
   const page = atom(
     (g) => clamp(0, g(pageInternal), g(pageCount) - 1),
@@ -52,6 +53,10 @@ export function makeClientDataSourcePaginated<T>(
   const data = atom(p.data);
   const topData = atom(p.topData ?? []);
   const bottomData = atom(p.bottomData ?? []);
+
+  const dataToSrc$ = atom((g) => {
+    return new Map(g(data).map((c, i) => [c, i]));
+  });
 
   const cache = new Map<number, RowLeaf<T>>();
   const centerNodes = atom((g) => {
@@ -213,6 +218,15 @@ export function makeClientDataSourcePaginated<T>(
     return comparator;
   });
 
+  const idToNode = atom((g) => {
+    const map = new Map<string, TreeNode<RowLeaf<T>>>();
+    traverse(g(tree).root, (node) => {
+      map.set(node.id, node);
+    });
+
+    return map;
+  });
+
   const initialized = atom(false);
   const flat = atom((g) => {
     if (!g(initialized)) return { flat: [], idMap: new Map(), idToIndexMap: new Map() };
@@ -279,17 +293,33 @@ export function makeClientDataSourcePaginated<T>(
     const center = clamp(0, rowCount - currentPage * perPage, perPage);
 
     store.rowCenterCount.set(center);
-    cleanup.push(
-      rdsStore.sub(flatLength, () => {
-        grid.state.rowDataStore.rowClearCache();
+    const updateCounts = () => {
+      const rowCount = rdsStore.get(flatLength);
+      const perPage = rdsStore.get(rowsPerPage);
+      const currentPage = rdsStore.get(pageInternal);
 
-        const rowCount = rdsStore.get(flatLength);
-        const perPage = rdsStore.get(rowsPerPage);
-        const currentPage = rdsStore.get(pageInternal);
+      const center = clamp(0, rowCount - currentPage * perPage, perPage);
+
+      // Move to the last page if we are past the boundary
+      if (center === 0 && currentPage !== 0) {
+        const currentPage = rdsStore.get(pageCount) - 1;
+        rdsStore.set(page, currentPage);
+        rdsStore.set(snapshot, (prev) => prev + 1);
+
         const center = clamp(0, rowCount - currentPage * perPage, perPage);
         store.rowCenterCount.set(center);
-      }),
-    );
+
+        grid.state.rowDataStore.rowClearCache();
+        return;
+      }
+      store.rowCenterCount.set(center);
+
+      grid.state.rowDataStore.rowClearCache();
+    };
+
+    cleanup.push(rdsStore.sub(flatLength, updateCounts));
+    cleanup.push(rdsStore.sub(page, updateCounts));
+    cleanup.push(rdsStore.sub(rowsPerPage, updateCounts));
 
     cleanup.push(
       rdsStore.sub(pageInternal, () => {
@@ -372,7 +402,7 @@ export function makeClientDataSourcePaginated<T>(
     );
   };
 
-  const rowById = (id: string) => {
+  const rowById = (id: string): RowNode<T> | null => {
     const pinned = rdsStore.get(pinnedIdMap);
     if (pinned.has(id)) return pinned.get(id)!;
 
@@ -400,35 +430,37 @@ export function makeClientDataSourcePaginated<T>(
 
   const rowUpdate = (updates: Map<string | number, any>) => {
     const grid = rdsStore.get(grid$)!;
-    const t = rdsStore.get(tree);
-
     const d = rdsStore.get(data);
-    for (const [key, data] of updates.entries()) {
-      const rowIndex = typeof key === "number" ? key : rowToIndex(key);
+    const idMap = rdsStore.get(idToNode);
+    const dataToSrc = rdsStore.get(dataToSrc$);
 
-      const row = rowByIndex(rowIndex);
-      if (!row || !grid) {
-        console.error(`Failed to find the row at index ${rowIndex} which is being updated.`);
+    for (const [key, next] of updates.entries()) {
+      const row = typeof key === "string" ? rowById(key) : rowByIndex(key);
+      const treeNode = typeof key === "string" ? idMap.get(key) : null;
+
+      if ((!row && !treeNode) || !grid) {
+        console.error(`Failed to find the row with identifier ${key} which is being updated.`);
         continue;
       }
 
-      if (row.kind === "branch") {
-        (row as any).data = data;
+      if (row?.kind === "branch") {
+        (row as any).data = next;
       } else {
-        const source = t.idToSourceIndex.get(row.id);
+        const data = row?.kind === "leaf" ? row.data : treeNode?.data.data;
+
+        const source = dataToSrc.get(data as T);
         if (source == null) {
-          console.error(`Failed to find the row at index ${rowIndex} which is being updated.`);
+          console.error(`Failed to find the row with identifier ${key} which is being updated.`);
           continue;
         }
 
-        d[source] = data;
+        d[source] = next as any;
       }
-
-      grid.state.rowDataStore.rowInvalidateIndex(rowIndex);
     }
 
     rdsStore.set(data, [...d]);
     rdsStore.set(snapshot, (prev) => prev + 1);
+    grid.state.rowDataStore.rowClearCache();
   };
 
   const rowToIndex = (rowId: string) => {
@@ -481,6 +513,12 @@ export function makeClientDataSourcePaginated<T>(
       rowByIndex,
       rowAllChildIds,
       rowUpdate,
+
+      rowSetCenterData: (d: any[]) => {
+        rdsStore.set(data, d);
+        const grid = rdsStore.get(grid$);
+        grid?.state.rowDataStore.rowClearCache();
+      },
       rowAdd: (newRows, place = "end") => {
         rdsStore.set(data, (prev) => {
           if (!newRows.length) return prev;
@@ -604,6 +642,21 @@ export function makeClientDataSourcePaginated<T>(
           grid.state.rowSelectedIds.set(next);
         }
       },
+
+      rowData: (section) => {
+        const d: T[] = [];
+        if (section === "top" || section === "flat") {
+          d.push(...rdsStore.get(topData));
+        }
+        if (section === "center" || section === "flat") {
+          d.push(...rdsStore.get(data));
+        }
+        if (section === "bottom" || section === "flat") {
+          d.push(...rdsStore.get(bottomData));
+        }
+
+        return d;
+      },
       rowSelectAll: (params) => {
         const grid = rdsStore.get(grid$);
         if (!grid) return;
@@ -624,7 +677,7 @@ export function makeClientDataSourcePaginated<T>(
   ];
 }
 
-export function useClientRowDataSourcePaginated<T>(p: ClientRowDataSourceParams<T>) {
+export function useClientRowDataSourcePaginated<T>(p: ClientRowDataSourcePaginatedParams<T>) {
   const ds = useRef<RowDataSourceClientPaginated<T>>(null as any);
   const dataAtomRef = useRef<DataAtoms<T>>(null as any);
 
@@ -633,12 +686,12 @@ export function useClientRowDataSourcePaginated<T>(p: ClientRowDataSourceParams<
   const da = dataAtomRef.current;
   if (p.reflectData) {
     // Need to queue the microtask since it we cannot update state during render.
-    if (p.data !== da.center.get()) queueMicrotask(() => da.center.set(p.data));
+    if (p.data !== da.center.get()) queueMicrotask(() => ds.current.rowSetCenterData(p.data));
     if (!equal(p.topData ?? [], da.top.get())) {
-      queueMicrotask(() => da.top.set(p.topData ?? []));
+      queueMicrotask(() => ds.current.rowSetTopData(p.topData ?? []));
     }
     if (!equal(p.bottomData ?? [], da.bottom.get()))
-      queueMicrotask(() => da.bottom.set(p.bottomData ?? []));
+      queueMicrotask(() => ds.current.rowSetBotData(p.bottomData ?? []));
   }
 
   return ds.current;

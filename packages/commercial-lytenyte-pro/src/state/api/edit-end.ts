@@ -18,7 +18,7 @@ export const makeEditEnd = (
     }
 
     const validation = grid.internal.editValidation.get();
-    if (!validation || Object.keys(validation).length > 1) {
+    if (!validation || Object.keys(validation).length >= 1) {
       grid.api.eventFire("editError", {
         column: active.column,
         rowIndex: active.rowIndex,

@@ -23,9 +23,9 @@ export default meta;
 
 const columns: Column<any>[] = [
   { id: "age" },
-  { id: "job", pin: "end" },
+  { id: "job" },
   { id: "balance" },
-  { id: "education", pin: "end" },
+  { id: "education" },
   { id: "marital" },
   { id: "default" },
   { id: "housing" },
@@ -50,6 +50,10 @@ function Component({ data = bankData }: { data?: any[] }) {
     gridId: useId(),
     columns,
     rowDataSource: ds,
+    rowGroupModel: ["housing"],
+    rowGroupColumn: {
+      pin: "start",
+    },
 
     columnBase: {
       widthMin: 0,

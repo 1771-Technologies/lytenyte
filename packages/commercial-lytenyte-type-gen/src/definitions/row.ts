@@ -7,7 +7,7 @@ import {
   RowSelectedProp,
 } from "./shared-properties.js";
 
-export const RowBase: InterfaceTypePartial = {
+const RowBase: InterfaceTypePartial = {
   kind: "interface-partial",
   properties: [
     {
@@ -54,6 +54,8 @@ export const RowLeaf: InterfaceType = {
   tsDoc: `
     Represents a leaf row in the grid. A leaf row is a terminal node that has no children.
     These rows typically represent the raw dataset and are used for aggregations and visual representation.
+
+    @group Row
   `,
   doc: { en: `` },
   properties: [
@@ -87,6 +89,8 @@ export const RowGroup: InterfaceType = {
   tsDoc: `
     Represents a group (branch) row which may contain children rows (leaf or other groups).
     Group rows are used in hierarchical views and support expansion/collapse behavior.
+
+    @group Row
   `,
   doc: { en: `` },
   properties: [
@@ -138,6 +142,8 @@ export const RowNode: UnionType = {
   tsDoc: `
     A union of {@link RowLeaf} and {@link RowGroup}. Represents any row that may appear in the grid view.
     Used generically when the row type is not known ahead of time.
+
+    @group Row
   `,
   doc: { en: `` },
 };
@@ -153,6 +159,8 @@ export const RowPin: UnionType = {
     - "bottom": pinned to bottom,
     - null: not pinned.
     Pinned rows remain visible during scrolling.
+
+    @group Row
   `,
   doc: { en: `` },
 };
@@ -168,6 +176,8 @@ export const RowSection: UnionType = {
     - "bottom": pinned to the bottom area,
     - "center": scrollable middle area,
     - "flat": single flattened section.
+
+    @group Row
   `,
   types: ['"top"', '"bottom"', '"center"', '"flat"'],
 };
@@ -182,6 +192,8 @@ export const RowHeight: UnionType = {
     - A fixed number (e.g. 30),
     - A fill value (e.g. \`fill:1\`),
     - A function that returns dynamic row height based on index.
+
+    @group Row
   `,
   doc: { en: `` },
 };
@@ -192,6 +204,8 @@ export const RowFullWidthPredicateParams: InterfaceType = {
   tsDoc: `
     Parameters provided to the {@link RowFullWidthPredicate} function to determine
     if a row should span full width of the grid.
+
+    @group Row
   `,
   doc: { en: `` },
   export: true,
@@ -206,6 +220,8 @@ export const RowFullWidthPredicate: FunctionType = {
   tsDoc: `
     Predicate function to determine if a row should render in full-width mode.
     Commonly used for custom summary or grouped views.
+
+    @group Row
   `,
   properties: [
     {
@@ -226,6 +242,8 @@ export const RowFullWidthRendererParams: InterfaceType = {
   tsDoc: `
     Parameters provided to the full-width row renderer.
     Includes row metadata and selection state.
+
+    @group Row
   `,
   doc: { en: `` },
   properties: [RowIndexProp, RowNodeProp, GridProp, RowSelectedProp, RowIndeterminateProp],
@@ -238,6 +256,8 @@ export const RowFullWidthRendererFn: FunctionType = {
   export: true,
   tsDoc: `
     Function to render the full-width row content. Returns a ReactNode to be rendered as the row.
+
+    @group Row
   `,
   doc: { en: `` },
   properties: [

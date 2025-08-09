@@ -1,7 +1,6 @@
 import { useEffect, useId, useMemo, useState, type DragEventHandler, type ReactNode } from "react";
 import type { DragData, OnDragEvent, OnDropParams } from "./+types.js";
 import { useDragEventHandler } from "./drag/use-dragevent-handler.js";
-import { useTouchHandler } from "./touch/use-touch-handler.js";
 import { useKeyboard } from "./keyboard/use-keyboard.js";
 import { announce } from "@1771technologies/lytenyte-dom-utils";
 
@@ -68,7 +67,7 @@ export function useDraggable(p: UseDraggableProps): { dragProps: DragProps; isDr
     };
   }, [isDragging, p.announceDragEnd, p.announceDragStart]);
 
-  useTouchHandler(p, setDragging, draggable);
+  // useTouchHandler(p, setDragging, draggable);
 
   const onKeyDown = useKeyboard(setDragging, p);
 

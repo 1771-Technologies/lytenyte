@@ -6,7 +6,10 @@ export const RowSelectionMode: UnionType = {
   tsDoc: `Specifies the available row selection modes supported by LyteNyte Grid. 
   - "single" allows only one row to be selected at a time.
   - "multiple" allows multiple row selections.
-  - "none" disables row selection entirely.`,
+  - "none" disables row selection entirely.
+  
+  @group Row Selection
+  `,
   doc: { en: `` },
   export: true,
   types: ['"single"', '"multiple"', '"none"'],
@@ -18,7 +21,10 @@ export const RowSelectionActivator: UnionType = {
   tsDoc: `Defines the interaction behavior that activates row selection.
   - "single-click" selects a row with a single mouse click.
   - "double-click" requires a double-click to select.
-  - "none" disables interaction-based row selection.`,
+  - "none" disables interaction-based row selection.
+  
+  @group Row Selection
+  `,
   doc: { en: `` },
   export: true,
   types: ['"single-click"', '"double-click"', '"none"'],
@@ -27,7 +33,11 @@ export const RowSelectionActivator: UnionType = {
 export const RowSelectOptions: InterfaceType = {
   kind: "interface",
   name: "RowSelectOptions",
-  tsDoc: `Configuration options used when performing row selection operations.`,
+  tsDoc: `
+  Configuration options used when performing row selection operations.
+  
+  @group Row Selection
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -77,7 +87,11 @@ export const RowSelectOptions: InterfaceType = {
 export const RowSelectAllOptions: InterfaceType = {
   kind: "interface",
   name: "RowSelectAllOptions",
-  tsDoc: `Options for performing bulk selection or deselection of all rows.`,
+  tsDoc: `
+  Options for performing bulk selection or deselection of all rows.
+  
+  @group Row Selection
+  `,
   doc: { en: `` },
   export: true,
   properties: [

@@ -1,15 +1,15 @@
 import { useMemo } from "react";
-import type { TreeVirtualItem } from "../tree-view/virtualized/make-virtual-tree.js";
 import type { Column } from "../+types.js";
 import { useBranchLookup } from "./branch-lookup-context.js";
+import type { PathBranch, PathLeaf } from "@1771technologies/lytenyte-shared";
 
-export function useColumnsFromContext(item: TreeVirtualItem<Column<any>>) {
+export function useColumnsFromContext<T>(item: PathBranch<Column<T>> | PathLeaf<Column<T>>) {
   const lookup = useBranchLookup();
 
   const columns = useMemo(() => {
     if (item.kind === "branch") {
       const allChildren: Column<any>[] = [];
-      const branch = lookup[item.branch.data.idOccurrence];
+      const branch = lookup[item.data.idOccurrence];
 
       const stack = [...branch.children.values()];
       while (stack.length) {
@@ -25,7 +25,7 @@ export function useColumnsFromContext(item: TreeVirtualItem<Column<any>>) {
       return allChildren;
     }
 
-    return [item.leaf.data];
+    return [item.data];
   }, [item, lookup]);
 
   return columns;

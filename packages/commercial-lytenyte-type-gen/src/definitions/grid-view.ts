@@ -123,7 +123,10 @@ export const HeaderCell: InterfaceType = {
   name: "HeaderCellLayout<T>",
   export: true,
   extends: HeaderBase,
-  tsDoc: `Describes a standard header cell layout in the grid, used to position and render individual column headers.`,
+  tsDoc: `Describes a standard header cell layout in the grid, used to position and render individual column headers.
+  
+  @group Grid View
+  `,
   doc: { en: `` },
   properties: [
     IdProp,
@@ -144,7 +147,10 @@ export const HeaderCellFloating: InterfaceType = {
   name: "HeaderCellFloating<T>",
   export: true,
   extends: HeaderBase,
-  tsDoc: `Describes a floating header cell layout, which remains fixed during scroll operations.`,
+  tsDoc: `Describes a floating header cell layout, which remains fixed during scroll operations.
+  
+  @group Grid View
+  `,
   doc: { en: `` },
   properties: [
     IdProp,
@@ -166,7 +172,10 @@ export const HeaderGroupCell: InterfaceType = {
   export: true,
   extends: HeaderBase,
   tsDoc: `Describes a group of columns within the header. Used by LyteNyte 
-  Grid to render grouped column headers with optional collapsibility and structural metadata.`,
+  Grid to render grouped column headers with optional collapsibility and structural metadata.
+  
+  @group Grid View
+  `,
   doc: { en: `` },
   properties: [
     {
@@ -185,7 +194,11 @@ export const HeaderGroupCell: InterfaceType = {
       doc: { en: `` },
       optional: false,
     },
-    IdProp,
+    {
+      ...IdProp,
+      tsDoc: `The id for the header group. Note this is not unique across all header groups. In particular
+      split header groups with the same path will share the same id. Prefer \`idOccurrence\` for unique keys.`,
+    },
     {
       kind: "property",
       name: "idOccurrence",
@@ -243,7 +256,10 @@ export const HeaderLayoutCell: UnionType = {
   name: "HeaderLayoutCell<T>",
   export: true,
   tsDoc: `Represents a union of all possible header layout cell types: 
-  normal header, floating header, or header group.`,
+  normal header, floating header, or header group.
+  
+  @group Grid View
+  `,
   doc: { en: `` },
   types: ["HeaderCellLayout<T>", "HeaderCellFloating<T>", "HeaderGroupCellLayout"],
 };
@@ -254,7 +270,10 @@ export const HeaderLayout: InterfaceType = {
   export: true,
   doc: { en: `` },
   tsDoc: `Defines the overall structure of header rows in the grid. 
-  This layout is recalculated based on viewport changes and virtualized rendering.`,
+  This layout is recalculated based on viewport changes and virtualized rendering.
+  
+  @group Grid View
+  `,
   properties: [
     {
       kind: "property",
@@ -287,7 +306,10 @@ export const RowFullWidthRowLayout: InterfaceType = {
   kind: "interface",
   name: "RowFullWidthRowLayout<T>",
   tsDoc: `Describes the layout of a full-width row which spans all columns. 
-  These are typically used for summary or group rows.`,
+  These are typically used for summary or group rows.
+  
+  @group Grid View
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -312,7 +334,10 @@ export const RowFullWidthRowLayout: InterfaceType = {
 export const RowCellLayout: InterfaceType = {
   kind: "interface",
   name: "RowCellLayout<T>",
-  tsDoc: `Represents the layout metadata for a single cell within a row, including span and contextual info.`,
+  tsDoc: `Represents the layout metadata for a single cell within a row, including span and contextual info.
+  
+  @group Grid View
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -359,7 +384,10 @@ export const RowNormalRowLayout: InterfaceType = {
   kind: "interface",
   name: "RowNormalRowLayout<T>",
   tsDoc: `Describes the layout of a standard row in LyteNyte Grid, 
-  including cell arrangement and row-level metadata.`,
+  including cell arrangement and row-level metadata.
+  
+  @group Grid View
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -393,7 +421,10 @@ export const RowLayout: UnionType = {
   kind: "union",
   name: "RowLayout<T>",
   export: true,
-  tsDoc: `A row layout is either a standard row or a full-width row, depending on its content and configuration.`,
+  tsDoc: `A row layout is either a standard row or a full-width row, depending on its content and configuration.
+  
+  @group Grid View
+  `,
   doc: { en: `` },
   types: ["RowNormalRowLayout<T>", "RowFullWidthRowLayout<T>"],
 };
@@ -403,7 +434,10 @@ export const RowSectionLayouts: InterfaceType = {
   name: "RowSectionLayouts<T>",
   export: true,
   tsDoc: `Organizes the rows into three separate sections: top (pinned), center (scrollable), 
-  and bottom (pinned). Used to optimize row virtualization and rendering.`,
+  and bottom (pinned). Used to optimize row virtualization and rendering.
+  
+  @group Grid View
+  `,
   doc: { en: `` },
   properties: [
     {
@@ -481,7 +515,10 @@ export const GridView: InterfaceType = {
   doc: { en: `` },
   tsDoc: `Represents the current visual layout of the grid including headers and rows. 
   This structure is used by LyteNyte Grid headless components 
-  or for building custom visualizations.`,
+  or for building custom visualizations.
+  
+  @group Grid View
+  `,
   properties: [
     {
       kind: "property",

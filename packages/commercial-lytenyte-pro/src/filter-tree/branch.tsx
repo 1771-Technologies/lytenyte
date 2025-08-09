@@ -11,7 +11,7 @@ export interface FilterTreeBranch {
   readonly item: TreeVirtualBranch<FilterInFilterItem>;
   readonly label: SlotComponent;
   readonly labelWrap?: SlotComponent;
-  readonly expander?: SlotComponent;
+  readonly expander?: SlotComponent<{ expanded: boolean; toggle: () => void }>;
 }
 
 export const Branch = forwardRef<HTMLLIElement, FilterTreeBranch & JSX.IntrinsicElements["li"]>(
@@ -31,7 +31,7 @@ export const Branch = forwardRef<HTMLLIElement, FilterTreeBranch & JSX.Intrinsic
       <FilterTreeItemContext.Provider value={value}>
         <TreeBranch
           {...props}
-          itemId={item.branch.data.idOccurrence}
+          itemId={item.branch.data.id}
           ref={forwarded}
           {...item.attrs}
           onKeyDown={(ev) => {

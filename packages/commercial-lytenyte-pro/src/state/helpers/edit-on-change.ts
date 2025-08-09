@@ -38,6 +38,7 @@ export function editOnChange<T>({
       column,
       data: next,
       grid: grid,
+      value: c,
       row,
       rowIndex,
     });

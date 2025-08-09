@@ -13,7 +13,11 @@ const ExpansionProp: PropertyType = {
 export const RowExpandBeginParams: InterfaceType = {
   kind: "interface",
   name: "RowExpandBeginParams<T>",
-  tsDoc: `Describes the parameters passed to the \`rowExpandBegin\` event. This event is triggered before row group expansion occurs and provides a way to cancel the action.`,
+  tsDoc: `
+  Describes the parameters passed to the \`rowExpandBegin\` event. This event is triggered before row group expansion occurs and provides a way to cancel the action.
+  
+  @group Events
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -33,7 +37,10 @@ export const RowExpandBeginParams: InterfaceType = {
 export const RowExpandParams: InterfaceType = {
   kind: "interface",
   name: "RowExpandParams<T>",
-  tsDoc: `Describes the parameters passed to the \`rowExpand\` event. This event is emitted after a row group has been successfully expanded.`,
+  tsDoc: `Describes the parameters passed to the \`rowExpand\` event. This event is emitted after a row group has been successfully expanded.
+  
+  @group Events
+  `,
   doc: { en: `` },
   export: true,
   properties: [GridProp, ExpansionProp],
@@ -42,7 +49,10 @@ export const RowExpandParams: InterfaceType = {
 export const RowExpandErrorParams: InterfaceType = {
   kind: "interface",
   name: "RowExpandErrorParams<T>",
-  tsDoc: `Describes the parameters passed to the \`rowExpandError\` event. This event is emitted when an error occurs during row group expansion.`,
+  tsDoc: `Describes the parameters passed to the \`rowExpandError\` event. This event is emitted when an error occurs during row group expansion.
+  
+  @group Events
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -62,7 +72,10 @@ export const RowExpandErrorParams: InterfaceType = {
 export const RowExpandBegin: FunctionType = {
   kind: "function",
   name: "RowExpandBeginFn<T>",
-  tsDoc: `Event handler function type for the \`rowExpandBegin\` event. Triggered before row group expansion, allowing you to cancel the operation.`,
+  tsDoc: `Event handler function type for the \`rowExpandBegin\` event. Triggered before row group expansion, allowing you to cancel the operation.
+  
+  @group Events
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -81,7 +94,10 @@ export const RowExpandBegin: FunctionType = {
 export const RowExpand: FunctionType = {
   kind: "function",
   name: "RowExpandFn<T>",
-  tsDoc: `Event handler function type for the \`rowExpand\` event. Called when row group expansion is successfully completed.`,
+  tsDoc: `Event handler function type for the \`rowExpand\` event. Called when row group expansion is successfully completed.
+  
+  @group Events
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -100,7 +116,10 @@ export const RowExpand: FunctionType = {
 export const RowExpandError: FunctionType = {
   kind: "function",
   name: "RowExpandErrorFn<T>",
-  tsDoc: `Event handler function type for the \`rowExpandError\` event. Called when row group expansion fails due to an error.`,
+  tsDoc: `Event handler function type for the \`rowExpandError\` event. Called when row group expansion fails due to an error.
+  
+  @group Events
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -119,7 +138,10 @@ export const RowExpandError: FunctionType = {
 export const EditBegin: FunctionType = {
   kind: "function",
   name: "EditBegin<T>",
-  tsDoc: `An event fired when a cell begins editing. This provides an opportunity to cancel the edit before any changes are made.`,
+  tsDoc: `An event fired when a cell begins editing. This provides an opportunity to cancel the edit before any changes are made.
+  
+  @group Events
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -138,7 +160,10 @@ export const EditBegin: FunctionType = {
 export const EditEnd: FunctionType = {
   kind: "function",
   name: "EditEnd<T>",
-  tsDoc: `An event fired when a cell finishes editing successfully (i.e., without error or cancellation).`,
+  tsDoc: `An event fired when a cell finishes editing successfully (i.e., without error or cancellation).
+  
+  @group Events
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -157,7 +182,10 @@ export const EditEnd: FunctionType = {
 export const EditCancel: FunctionType = {
   kind: "function",
   name: "EditCancel<T>",
-  tsDoc: `An event fired when an in-progress cell edit is canceled. Most commonly triggered by user interaction, such as pressing the Escape key.`,
+  tsDoc: `An event fired when an in-progress cell edit is canceled. Most commonly triggered by user interaction, such as pressing the Escape key.
+  
+  @group Events
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -176,7 +204,10 @@ export const EditCancel: FunctionType = {
 export const EditError: FunctionType = {
   kind: "function",
   name: "EditError<T>",
-  tsDoc: `An event fired when an error occurs during cell editing—either due to validation failure or runtime exception.`,
+  tsDoc: `An event fired when an error occurs during cell editing—either due to validation failure or runtime exception.
+  
+  @group Events
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -193,7 +224,11 @@ export const EditError: FunctionType = {
 };
 
 export const RowDetailExpansionBeginParams: InterfaceType = {
-  tsDoc: `The parameters for the \`rowDetailExpansionBegin\` event. This event allows preventing expansion of row detail sections by calling \`preventDefault()\`.`,
+  tsDoc: `The parameters for the \`rowDetailExpansionBegin\` event. This event allows preventing expansion of row detail sections by calling \`preventDefault()\`.
+  
+  
+  @group Events
+  `,
   name: "RowDetailExpansionBeginParams<T>",
   doc: { en: `` },
   export: true,
@@ -220,7 +255,11 @@ export const RowDetailExpansionBeginParams: InterfaceType = {
 };
 
 export const RowDetailExpansionEndParams: InterfaceType = {
-  tsDoc: `The parameters for the \`rowDetailExpansionEnd\` event, fired once a row detail expansion operation is complete.`,
+  tsDoc: `The parameters for the \`rowDetailExpansionEnd\` event, fired once a row detail expansion operation is complete.
+  
+  
+  @group Events
+  `,
   name: "RowDetailExpansionEndParams<T>",
   doc: { en: `` },
   export: true,
@@ -241,7 +280,10 @@ export const RowDetailExpansionEndParams: InterfaceType = {
 export const RowDetailExpansionBegin: FunctionType = {
   kind: "function",
   name: "RowDetailExpansionBegin<T>",
-  tsDoc: `An event fired when the row detail expansion process begins. This provides an opportunity to cancel expansion before it takes effect.`,
+  tsDoc: `An event fired when the row detail expansion process begins. This provides an opportunity to cancel expansion before it takes effect.
+  
+  @group Events
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -260,7 +302,10 @@ export const RowDetailExpansionBegin: FunctionType = {
 export const RowDetailExpansionEnd: FunctionType = {
   kind: "function",
   name: "RowDetailExpansionEnd<T>",
-  tsDoc: `An event fired after the row detail expansion completes successfully.`,
+  tsDoc: `An event fired after the row detail expansion completes successfully.
+  
+  @group Events
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -298,8 +343,12 @@ If \`true\`, the row was deselected; otherwise, it was selected.`,
 export const RowSelectBeginParams: InterfaceType = {
   kind: "interface",
   name: "RowSelectBeginParams<T>",
-  tsDoc: `The parameters provided when a row selection begins. This event occurs before the selection change takes effect, 
-giving the caller an opportunity to prevent it.`,
+  tsDoc: `
+  The parameters provided when a row selection begins. This event occurs before the selection change takes effect, 
+  giving the caller an opportunity to prevent it.
+
+  @group Events
+`,
   doc: { en: `` },
   export: true,
   properties: [
@@ -320,7 +369,11 @@ giving the caller an opportunity to prevent it.`,
 export const RowSelectBegin: FunctionType = {
   kind: "function",
   name: "RowSelectBegin<T>",
-  tsDoc: `An event triggered when a row selection starts. This event allows cancellation before the selection is finalized.`,
+  tsDoc: `
+  An event triggered when a row selection starts. This event allows cancellation before the selection is finalized.
+  
+  @group Events
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -339,7 +392,11 @@ export const RowSelectBegin: FunctionType = {
 export const RowSelectEndParams: InterfaceType = {
   kind: "interface",
   name: "RowSelectEndParams<T>",
-  tsDoc: `The parameters passed when a row selection has completed.`,
+  tsDoc: `
+  The parameters passed when a row selection has completed.
+  
+  @group Events
+  `,
   doc: { en: `` },
   export: true,
   properties: [RowSelectedProp, GridProp, DeselectProp],
@@ -348,7 +405,11 @@ export const RowSelectEndParams: InterfaceType = {
 export const RowSelectEnd: FunctionType = {
   kind: "function",
   name: "RowSelectEnd<T>",
-  tsDoc: `An event triggered once the row selection is finalized.`,
+  tsDoc: `
+  An event triggered once the row selection is finalized.
+  
+  @group Events
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -367,7 +428,11 @@ export const RowSelectEnd: FunctionType = {
 export const RowSelectAllBeginParams: InterfaceType = {
   kind: "interface",
   name: "RowSelectAllBeginParams<T>",
-  tsDoc: `The parameters provided when a "select all" operation starts. This event allows the operation to be canceled.`,
+  tsDoc: `
+  The parameters provided when a "select all" operation starts. This event allows the operation to be canceled.
+  
+  @group Events
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -387,7 +452,11 @@ export const RowSelectAllBeginParams: InterfaceType = {
 export const RowSelectAllEndParams: InterfaceType = {
   kind: "interface",
   name: "RowSelectAllEndParams<T>",
-  tsDoc: `The parameters passed when a "select all" operation completes.`,
+  tsDoc: `
+  The parameters passed when a "select all" operation completes.
+  
+  @group Events
+  `,
   doc: { en: `` },
   export: true,
   properties: [DeselectProp, GridProp],
@@ -396,7 +465,11 @@ export const RowSelectAllEndParams: InterfaceType = {
 export const RowSelectAllBegin: FunctionType = {
   kind: "function",
   name: "RowSelectAllBegin<T>",
-  tsDoc: `An event triggered when the "select all" operation begins. It provides an opportunity to cancel the selection.`,
+  tsDoc: `
+  An event triggered when the "select all" operation begins. It provides an opportunity to cancel the selection.
+  
+  @group Events
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -415,7 +488,11 @@ export const RowSelectAllBegin: FunctionType = {
 export const RowSelectAllEnd: FunctionType = {
   kind: "function",
   name: "RowSelectAllEnd<T>",
-  tsDoc: `An event triggered once the "select all" operation is complete.`,
+  tsDoc: `
+  An event triggered once the "select all" operation is complete.
+  
+  @group Events
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -472,7 +549,11 @@ const ColumnMoveParamsPartial: InterfaceTypePartial = {
 export const ColumnMoveBeginParams: InterfaceType = {
   kind: "interface",
   doc: { en: `` },
-  tsDoc: `The parameters provided when a column move operation begins. This event allows the move action to be canceled.`,
+  tsDoc: `
+  The parameters provided when a column move operation begins. This event allows the move action to be canceled.
+  
+  @group Events
+  `,
   export: true,
   name: "ColumnMoveBeginParams<T>",
   extends: ColumnMoveParamsPartial,
@@ -492,7 +573,11 @@ export const ColumnMoveBeginParams: InterfaceType = {
 export const ColumnMoveEndParams: InterfaceType = {
   kind: "interface",
   doc: { en: `` },
-  tsDoc: `The parameters emitted when a column move operation has completed.`,
+  tsDoc: `
+  The parameters emitted when a column move operation has completed.
+  
+  @group Events
+  `,
   export: true,
   name: "ColumnMoveEndParams<T>",
   extends: ColumnMoveParamsPartial,
@@ -502,7 +587,11 @@ export const ColumnMoveEndParams: InterfaceType = {
 export const ColumnMoveBeginFn: FunctionType = {
   kind: "function",
   name: "ColumnMoveBeginFn<T>",
-  tsDoc: `A callback function type for the columnMoveBegin event, fired when a column move starts.`,
+  tsDoc: `
+  A callback function type for the columnMoveBegin event, fired when a column move starts.
+  
+  @group Events
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -521,7 +610,11 @@ export const ColumnMoveBeginFn: FunctionType = {
 export const ColumnMoveEndFn: FunctionType = {
   kind: "function",
   name: "ColumnMoveEndFn<T>",
-  tsDoc: `A callback function type for the columnMoveEnd event, fired when a column move completes.`,
+  tsDoc: `
+  A callback function type for the columnMoveEnd event, fired when a column move completes.
+  
+  @group Events
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -544,7 +637,9 @@ export const ColumnMoveEndFn: FunctionType = {
 const RowExpandBeginProp: PropertyType = {
   kind: "property",
   name: "rowExpandBegin",
-  tsDoc: `Event fired when a row group expansion is about to begin. This allows canceling the expansion via preventDefault.`,
+  tsDoc: `
+  Event fired when a row group expansion is about to begin. This allows canceling the expansion via preventDefault.
+  `,
   doc: { en: `` },
   optional: true,
   value: "RowExpandBeginFn<T>",
@@ -697,7 +792,11 @@ const ColumnMoveEndProp: PropertyType = {
 export const Events: InterfaceType = {
   kind: "interface",
   name: "GridEvents<T>",
-  tsDoc: `A comprehensive map of all possible events that LyteNyte Grid may emit during its lifecycle.`,
+  tsDoc: `
+    A comprehensive map of all possible events that LyteNyte Grid may emit during its lifecycle.
+
+    @group Events
+  `,
   doc: { en: ` ` },
   export: true,
   properties: [

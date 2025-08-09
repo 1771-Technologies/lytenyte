@@ -1,5 +1,6 @@
 import type { LayoutMap } from "@1771technologies/lytenyte-shared";
 import type {
+  Column,
   EditActivePosition,
   GridAtom,
   GridAtomReadonly,
@@ -31,6 +32,8 @@ export interface InternalAtoms {
   // Row Height management
   readonly rowAutoHeightCache: GridAtom<Record<number, number>>;
   readonly rowDetailAutoHeightCache: GridAtom<Record<number, number>>;
+
+  readonly rowGroupColumnState: GridAtom<Record<string, Partial<Column<any>>>>;
 
   // Row selection
   readonly rowSelectedIds: Atom<Set<string>>;

@@ -5,7 +5,10 @@ export const PositionGridCellRoot: InterfaceType = {
   kind: "interface",
   name: "PositionGridCellRoot",
   tsDoc: `The root reference of a grid cell. If a cell is obscured by a rowspan 
-  or colspan, it points to the actual root cell containing the data.`,
+  or colspan, it points to the actual root cell containing the data.
+  
+  @group Navigation
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -33,7 +36,10 @@ export const PositionGridCellRoot: InterfaceType = {
 export const PositionGridCell: InterfaceType = {
   kind: "interface",
   name: "PositionGridCell",
-  tsDoc: `Represents the current focus position of a regular cell in the grid.`,
+  tsDoc: `Represents the current focus position of a regular cell in the grid.
+  
+  @group Navigation
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -61,7 +67,10 @@ export const PositionGridCell: InterfaceType = {
 export const PositionFullWidthRow: InterfaceType = {
   kind: "interface",
   name: "PositionFullWidthRow",
-  tsDoc: `Describes the focus position when a full width row is active.`,
+  tsDoc: `Describes the focus position when a full width row is active.
+  
+  @group Navigation
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -81,7 +90,10 @@ export const PositionFullWidthRow: InterfaceType = {
 export const PositionHeaderCell: InterfaceType = {
   kind: "interface",
   name: "PositionHeaderCell",
-  tsDoc: `Describes the focus position of a standard header cell.`,
+  tsDoc: `Describes the focus position of a standard header cell.
+  
+  @group Navigation
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -100,7 +112,10 @@ export const PositionHeaderCell: InterfaceType = {
 export const PositionFloatingCell: InterfaceType = {
   kind: "interface",
   name: "PositionFloatingCell",
-  tsDoc: `Describes the focus position of a floating header cell.`,
+  tsDoc: `Describes the focus position of a floating header cell.
+  
+  @group Navigation
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -119,7 +134,10 @@ export const PositionFloatingCell: InterfaceType = {
 export const PositionHeaderGroupCell: InterfaceType = {
   kind: "interface",
   name: "PositionHeaderGroupCell",
-  tsDoc: `Describes the focus position of a header group cell in the column hierarchy.`,
+  tsDoc: `Describes the focus position of a header group cell in the column hierarchy.
+  
+  @group Navigation
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -162,7 +180,10 @@ export const PositionHeaderGroupCell: InterfaceType = {
 export const PositionUnion: UnionType = {
   kind: "union",
   name: "PositionUnion",
-  tsDoc: `Union of all valid focusable positions in the grid: cells, headers, full width rows, etc.`,
+  tsDoc: `Union of all valid focusable positions in the grid: cells, headers, full width rows, etc.
+  
+  @group Navigation
+  `,
   doc: { en: `` },
   export: true,
   types: [

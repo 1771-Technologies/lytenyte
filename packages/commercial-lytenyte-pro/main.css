@@ -182,7 +182,7 @@
         inset-inline-end: 0px;
         width: 1px;
         height: 100%;
-        background-color: var(--lng1771-gray-50);
+        background-color: var(--lng1771-gray-20);
       }
     }
     &[data-ln-first-end-pin="true"] {
@@ -194,7 +194,7 @@
         inset-inline-start: 0px;
         width: 1px;
         height: 100%;
-        background-color: var(--lng1771-gray-50);
+        background-color: var(--lng1771-gray-20);
       }
     }
   }
@@ -279,10 +279,10 @@
 
     &[data-ln-last-start-pin]::after {
       inset-inline-end: 1px;
-      background-color: var(--lng1771-gray-50);
+      background-color: var(--lng1771-gray-20);
     }
     &[data-ln-first-end-pin]::after {
-      background-color: var(--lng1771-gray-50);
+      background-color: var(--lng1771-gray-20);
     }
   }
 
@@ -311,5 +311,9 @@
     &[data-ln-over-top-half="false"] [data-ln-cell="true"] {
       border-bottom: 1px solid var(--lng1771-primary-50);
     }
+  }
+
+  [data-ln-cell-selection-rect] {
+    background-color: var(--lng1771-primary-30);
   }
 }

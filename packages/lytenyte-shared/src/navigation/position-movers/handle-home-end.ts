@@ -58,6 +58,7 @@ export function handleHomeEnd({
     }
 
     const cell = row.get(targetColumn)!;
+    if (!cell) return false;
     const [rootRow, rootCol] = getCellRootRowAndColIndex(cell, targetRow, targetColumn);
 
     const el = vp?.querySelector(getCellQuery(id, rootRow, rootCol)) as HTMLElement;

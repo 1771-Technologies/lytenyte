@@ -16,6 +16,8 @@ export const EditableFnParams: InterfaceType = {
 
   These include the row index, the row node object, the grid instance, and the column
   definition.
+
+  @group Cell Edit
   `,
   doc: { en: `` },
   export: true,
@@ -30,6 +32,8 @@ export const EditableFn: FunctionType = {
 
   If cell editing is enabled in LyteNyte Grid, this function is evaluated per cell. Use
   \`true\` for globally editable columns or {@link EditableFn} for row-specific logic.
+
+  @group Cell Edit
   `,
   doc: { en: `` },
   export: true,
@@ -55,6 +59,8 @@ export const Editable: UnionType = {
 
   - Use \`true\` to enable editing for all rows.
   - Use {@link EditableFn} for conditional, row-specific editability.
+
+  @group Cell Edit
   `,
   doc: { en: `` },
   export: true,
@@ -72,6 +78,8 @@ const RowValidationStateProp: PropertyType = {
   - \`false\`: validation failed
   - \`true\` or \`null\`: validation passed or hasn't run
   - \`Record<string, any>\`: failed with details per column
+
+  @group Cell Edit
   `,
   doc: { en: `` },
   optional: false,
@@ -85,6 +93,8 @@ const EditValueProps: PropertyType = {
 
   Managed internally by the grid, but should be aligned with the expected shape of your
   application's data model.
+
+  @group Cell Edit
   `,
   doc: { en: `` },
   optional: false,
@@ -99,6 +109,8 @@ export const EditRendererFnParams: InterfaceType = {
 
   These include positional and contextual data such as row, column, value, and grid
   instance, along with row validation status and change handlers.
+
+  @group Cell Edit
   `,
   doc: { en: `` },
   export: true,
@@ -131,6 +143,8 @@ export const EditRendererFn: FunctionType = {
   A function that returns a React component to be rendered in edit mode for a given cell.
 
   Used for customizing editing UI. If omitted, a default HTML input will be used.
+
+  @group Cell Edit
   `,
   doc: { en: `` },
   export: true,
@@ -159,6 +173,8 @@ export const EditRenderer: UnionType = {
   Can be either:
   - A string key referencing a registered editor component
   - A function of type {@link EditRendererFn} for custom rendering logic
+
+  @group Cell Edit
   `,
   doc: { en: `` },
   types: ["string", "EditRendererFn<T>"],
@@ -172,6 +188,8 @@ export const EditSetterParams: InterfaceType = {
   Input parameters passed to an {@link EditSetterFn}.
 
   Provides the context needed to compute and apply new row data based on edit input.
+
+  @group Cell Edit
   `,
   export: true,
   properties: [
@@ -179,6 +197,17 @@ export const EditSetterParams: InterfaceType = {
     RowNodeProp,
     RowIndexProp,
     ColumnProp,
+    {
+      kind: "property",
+      name: "value",
+      value: "any",
+      tsDoc: `
+      The current edit value of the cell being edited. Useful when the cell is derived from data and not 
+      actually present in the row data.
+      `,
+      doc: { en: `` },
+      optional: false,
+    },
     {
       kind: "property",
       name: "data",
@@ -201,6 +230,8 @@ export const EditSetterFn: FunctionType = {
 
   Required when dealing with nested, computed, or non-primitive values that the grid
   cannot update automatically.
+
+  @group Cell Edit
   `,
   doc: { en: `` },
   export: true,
@@ -224,6 +255,8 @@ export const EditRowValidatorFnParams: InterfaceType = {
   Input arguments passed to {@link EditRowValidatorFn}.
 
   Used to perform validation on the entire row during or after edit submission.
+
+  @group Cell Edit
   `,
   doc: { en: `` },
   export: true,
@@ -252,6 +285,8 @@ export const EditRowValidatorFn: FunctionType = {
 
   - \`true\` or \`null\` if the row is valid
   - \`false\` or a \`Record<string, any>\` describing errors if invalid
+
+  @group Cell Edit
   `,
   doc: { en: `` },
   export: true,
@@ -277,6 +312,9 @@ export const EditClickActivator: UnionType = {
   - \`"single"\`: Single click
   - \`"double-click"\`: Double click
   - \`"none"\`: Editing must be started via API or programmatically
+
+
+  @group Cell Edit
   `,
   doc: { en: `` },
   export: true,
@@ -291,6 +329,8 @@ export const EditCellMode: UnionType = {
 
   - \`"cell"\`: Editing is active and inline
   - \`"readonly"\`: Editing is disabled entirely
+
+  @group Cell Edit
   `,
   doc: { en: `` },
   export: true,
@@ -304,6 +344,8 @@ export const EditActivePosition: InterfaceType = {
   Describes the currently active cell position if editing is in progress.
 
   When no edit is active, this will be \`undefined\`.
+
+  @group Cell Edit
   `,
   doc: { en: `` },
   export: true,
@@ -315,6 +357,8 @@ export const EditBeginParams: InterfaceType = {
   name: "EditBeginParams<T>",
   tsDoc: `
   Parameters accepted by the \`editBegin\` method to start editing a specific cell.
+
+  @group Cell Edit
   `,
   doc: { en: `` },
   export: true,
@@ -340,6 +384,8 @@ export const EditUpdateParams: InterfaceType = {
   name: "EditUpdateParams<T>",
   tsDoc: `
   Parameters passed to the \`editUpdate\` method, used to submit a value change.
+
+  @group Cell Edit
   `,
   doc: { en: `` },
   export: true,
@@ -367,6 +413,8 @@ export const EditDataProp: PropertyType = {
   name: "data",
   tsDoc: `
   The current value of the cell during an edit interaction.
+
+  @group Events
   `,
   doc: { en: `` },
   optional: false,
@@ -378,6 +426,8 @@ export const OnEditBeginParams: InterfaceType = {
   name: "OnEditBeginParams<T>",
   tsDoc: `
   Parameters dispatched with the \`onEditBegin\` event, triggered when editing starts.
+
+  @group Events
   `,
   doc: { en: `` },
   export: true,
@@ -402,6 +452,8 @@ export const OnEditEndParams: InterfaceType = {
   name: "OnEditEndParams<T>",
   tsDoc: `
   Parameters passed to the \`onEditEnd\` event, triggered when editing successfully completes.
+
+  @group Events
   `,
   doc: { en: `` },
   export: true,
@@ -413,6 +465,8 @@ export const OnEditCancelParams: InterfaceType = {
   name: "OnEditCancelParams<T>",
   tsDoc: `
   Parameters passed to the \`onEditCancel\` event, triggered when editing is aborted (e.g., Escape key).
+
+  @group Events
   `,
   doc: { en: `` },
   export: true,
@@ -424,6 +478,8 @@ export const OnEditErrorParams: InterfaceType = {
   name: "OnEditErrorParams<T>",
   tsDoc: `
   Parameters passed to the \`onEditError\` event, triggered when validation or logic errors occur during editing.
+
+  @group Events
   `,
   doc: { en: `` },
   export: true,

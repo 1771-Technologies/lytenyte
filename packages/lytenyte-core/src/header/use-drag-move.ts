@@ -1,7 +1,9 @@
 import type { DragProps } from "@1771technologies/lytenyte-dragon";
 import {
+  COLUMN_MARKER_ID,
   getHoveredColumnIndex,
   getNearestFocusable,
+  GROUP_COLUMN_PREFIX,
   useDraggable,
 } from "@1771technologies/lytenyte-shared";
 import type {
@@ -34,7 +36,12 @@ export function useDragMove<T>(
   }, [cell.colEnd, cell.colStart, meta.columnsVisible]);
 
   const isMovable = useMemo(() => {
-    return columns.every((c) => c.uiHints?.movable ?? base.uiHints?.movable ?? false);
+    return columns.every(
+      (c) =>
+        !c.id.startsWith(GROUP_COLUMN_PREFIX) &&
+        c.id !== COLUMN_MARKER_ID &&
+        (c.uiHints?.movable ?? base.uiHints?.movable ?? false),
+    );
   }, [base.uiHints?.movable, columns]);
 
   const swapDirection = useRef<null | boolean>(null);
@@ -77,6 +84,11 @@ export function useDragMove<T>(
       });
 
       if (index == null) return;
+      const columnTarget = grid.api.columnByIndex(index);
+      if (columnTarget) {
+        if (columnTarget.id === COLUMN_MARKER_ID || columnTarget.id.startsWith(GROUP_COLUMN_PREFIX))
+          return;
+      }
 
       const first = columns[0];
 

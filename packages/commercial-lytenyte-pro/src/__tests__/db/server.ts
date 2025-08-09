@@ -13,7 +13,7 @@ export async function handleRequest(
   request: DataRequest[],
   model: DataRequestModel<any>,
 ): Promise<(DataResponsePinned | DataResponse)[]> {
-  await sleep(1000);
+  await sleep(request[0].path.length > 0 ? 400 : 400);
 
   const responses = request.map<DataResponse>((c) => {
     // This is a root request

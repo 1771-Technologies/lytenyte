@@ -24,16 +24,41 @@ const meta: Meta = {
 
 export default meta;
 
-const columns: Column<any>[] = [{ id: "job" }, { id: "education" }, { id: "marital" }];
+const columns: Column<any>[] = [
+  { id: "age" },
+  { id: "job" },
+  { id: "education" },
+  { id: "marital" },
+];
 
 function Component({ data = bankData }: { data?: any[] }) {
   const ds = useClientRowDataSource({
     data: data,
-    transformInFilterItem: ({ field }) => {
-      if (field === "unknown")
-        return { label: `${field}`, id: `${field}`, value: field, groupPath: ["Alpha"] };
+    transformInFilterItem: (params) => {
+      if (params.column.id === "age") {
+        return params.values.map((c) => {
+          const v = c as number;
+          let group;
 
-      return { label: `${field}`, id: `${field}`, value: field };
+          if (v < 20) group = "0 < 20";
+          else if (v < 40) group = "20 < 40";
+          else if (v < 60) group = "40 < 60";
+          else group = "60+";
+
+          return {
+            id: `${v}`,
+            label: `${v} years`,
+            value: v,
+            groupPath: [group],
+          };
+        });
+      }
+
+      return params.values.map((c) => ({
+        id: `${c}`,
+        label: `${c}`,
+        value: c,
+      }));
     },
   });
 
@@ -78,17 +103,12 @@ function Component({ data = bankData }: { data?: any[] }) {
         <div style={{ width: "50%", height: "90vh", border: "1px solid black", display: "flex" }}>
           <div style={{ flex: 1 }}>
             <FM.Root {...filterProps.rootProps}>
-              <FM.Panel>
-                <FM.PassiveScroll>
-                  {filterProps.tree.map((c) => {
-                    return (
-                      <RenderNode
-                        item={c}
-                        key={c.kind === "branch" ? c.branch.id : c.leaf.data.id}
-                      />
-                    );
-                  })}
-                </FM.PassiveScroll>
+              <FM.Panel style={{ height: 300, width: 300, overflow: "auto", position: "relative" }}>
+                {filterProps.tree.map((c) => {
+                  return (
+                    <RenderNode item={c} key={c.kind === "branch" ? c.branch.id : c.leaf.data.id} />
+                  );
+                })}
                 {filterProps.spacer}
               </FM.Panel>
 
@@ -178,6 +198,7 @@ function RenderNode({ item }: { item: TreeVirtualItem<FilterInFilterItem> }) {
   return (
     <FM.Branch
       item={item}
+      labelWrap={<div style={{ display: "flex", alignItems: "center", gap: "2px" }} />}
       label={
         <div style={{ display: "flex", gap: "2px" }}>
           <InclusionCheckbox />

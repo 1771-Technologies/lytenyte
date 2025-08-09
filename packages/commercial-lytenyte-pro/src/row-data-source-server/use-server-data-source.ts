@@ -606,6 +606,8 @@ export function makeServerDataSource<T>({
       return { kind: "leaf", data: null, id: `error-${ri}`, loading: false, error };
     if (!node) return { kind: "leaf", data: null, id: `loading-${ri}`, loading: true, error: null };
 
+    const isLoading = rdsStore.get(loadingGroups$);
+
     if (node.kind === "parent") {
       return {
         kind: "branch",
@@ -614,6 +616,7 @@ export function makeServerDataSource<T>({
         key: node.path,
         depth: getNodeDepth(node),
         error,
+        loading: isLoading.has(node.data.id),
       };
     }
 
@@ -625,13 +628,22 @@ export function makeServerDataSource<T>({
     };
   };
 
+  const loadingGroups$ = atom<Set<string>>(new Set<string>());
+
   const rowExpand: RowDataSource<T>["rowExpand"] = (p) => {
     const f = flat.get();
+
+    const loadingRows = new Set(rdsStore.get(loadingGroups$));
+    const rowsForThis = new Set<string>();
 
     const rowIndices: number[] = [];
     const requests = Object.entries(p)
       .map<DataRequest | null>(([rowId, state]) => {
         if (!state) return null;
+
+        // Mark as loading
+        loadingRows.add(rowId);
+        rowsForThis.add(rowId);
 
         const rowIndex = rowToIndex(rowId);
 
@@ -667,18 +679,37 @@ export function makeServerDataSource<T>({
       });
     }
 
+    // Mark these groups as loading
+    rdsStore.set(loadingGroups$, loadingRows);
+    grid?.state.rowDataStore.rowClearCache();
+
     dataRequestHandler(
       requests,
       false,
       () => {
         if (mode) grid?.state.columnPivotColumnGroupExpansions.set((prev) => ({ ...prev, ...p }));
         else grid?.state.rowGroupExpansions.set((prev) => ({ ...prev, ...p }));
+
+        const next = new Set(rdsStore.get(loadingGroups$));
+        rowsForThis.forEach((c) => next.delete(c));
+
+        rdsStore.set(loadingGroups$, next);
+        setTimeout(() => {
+          grid?.state.rowDataStore.rowClearCache();
+        });
       },
       (error) => {
         rdsStore.set(nodesWithError, (prev) => {
           const n = new Map(prev);
           rowIndices.forEach((c) => n.set(c, error));
           return prev;
+        });
+
+        const next = new Set(rdsStore.get(loadingGroups$));
+        rowsForThis.forEach((c) => next.delete(c));
+        rdsStore.set(loadingGroups$, next);
+        setTimeout(() => {
+          grid?.state.rowDataStore.rowClearCache();
         });
       },
     );
@@ -839,6 +870,9 @@ export function makeServerDataSource<T>({
     rowSelect,
     rowSelectAll,
     rowSetBotData,
+    rowSetCenterData: () => {
+      throw new Error("Server side data source does not support full row updates");
+    },
     rowSetTopData,
     rowToIndex,
     rowUpdate,

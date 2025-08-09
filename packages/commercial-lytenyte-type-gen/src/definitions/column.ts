@@ -19,6 +19,8 @@ export const ColumnPin: UnionType = {
   - In right-to-left (RTL) mode, this behavior is reversed.
 
   This approach aligns with CSS logical properties for layout direction.
+
+  @group Column
   `,
   doc: { en: `` },
   types: ['"start"', '"end"', "null"],
@@ -35,6 +37,8 @@ export const ColumnMeta: InterfaceType = {
   are derived from the grid's internal column state and may change depending on modes 
   like pivoting. For example, when pivot mode is enabled, \`columnsVisible\` refers to 
   visible pivot columns instead of the regular ones.
+
+  @group Column
   `,
   doc: { en: `` },
   properties: [
@@ -177,8 +181,11 @@ export const ColumnUIHints: InterfaceType = {
   These hints inform the rendering of column headers (e.g. showing resize handles, 
   drag handles, sort indicators), but are not enforced. Developers can still override 
   behaviors via the grid state API directly.
+
+  @group Column
   `,
   doc: { en: `` },
+  tag: "core",
   export: true,
   properties: [
     SortableHint,
@@ -199,6 +206,8 @@ export const ColumnPivotUIHints: InterfaceType = {
   These hints indicate whether a column is eligible to act as a value, row group, or 
   column pivot in a pivot table configuration. External components can use these values 
   to determine pivot-related capabilities.
+
+  @group Column
   `,
   export: true,
   name: "ColumnPivotUIHints",
@@ -245,6 +254,7 @@ const ColumnPivotUIHint: PropertyType = {
   tsDoc: `
   UI hints for pivot-related behaviors, specifying whether a column can act as a value, 
   row, or column pivot.
+
   `,
   doc: { en: `` },
 };
@@ -260,6 +270,8 @@ export const ColumnUIHintsPro: InterfaceType = {
   and can be bypassed by modifying grid state directly.
 
   Includes support for pivot-specific behaviors via {@link ColumnPivotUIHints}.
+
+  @group Column
   `,
   doc: { en: `` },
   export: true,
@@ -283,6 +295,8 @@ export const AutosizeCellParams: InterfaceType = {
 
   These provide context about the cell and grid configuration so that the function 
   can determine the optimal column width based on cell content.
+
+  @group Column
   `,
   doc: { en: `` },
   export: true,
@@ -297,6 +311,8 @@ export const AutosizeHeaderParams: InterfaceType = {
 
   These are used by LyteNyte Grid to calculate the ideal column width based on the 
   header content.
+
+  @group Column
   `,
   doc: { en: `` },
   export: true,
@@ -312,6 +328,8 @@ export const AutosizeCellFn: FunctionType = {
 
   This is called when autosize is triggered via the grid's API. Returning \`null\` 
   disables sizing behavior.
+
+  @group Column
   `,
   doc: { en: `` },
   export: true,
@@ -339,6 +357,8 @@ export const AutosizeHeaderFn: FunctionType = {
   based on the header's rendered content.
 
   This is called as part of the grid's autosize process.
+
+  @group Column
   `,
   doc: { en: `` },
   export: true,
@@ -500,9 +520,9 @@ const HeaderRenderer: PropertyType = {
   value: "HeaderCellRenderer<T>",
 };
 
-const FloatingRenderer: PropertyType = {
+const FloatingCellRenderer: PropertyType = {
   kind: "property",
-  name: "floatingRenderer",
+  name: "floatingCellRenderer",
   optional: true,
   tsDoc: `Function used to render a floating row cell. Only called when floating rows are enabled. Must return a React node.`,
   doc: { en: `` },
@@ -581,8 +601,11 @@ export const ColumnMarker: InterfaceType = {
   doc: { en: `` },
   tsDoc: `Defines the structure of a marker column.
 
-  The marker column is a grid managed column used to support features like selection checkboxes or row drag handles.`,
-  properties: [CellRenderer, HeaderRenderer, FloatingRenderer, Width, ColumnHintsProp],
+  The marker column is a grid managed column used to support features like selection checkboxes or row drag handles.
+  
+  @group Column
+  `,
+  properties: [CellRenderer, HeaderRenderer, FloatingCellRenderer, Width, ColumnHintsProp],
 };
 
 const ColumnPartial: InterfaceTypePartial = {
@@ -606,7 +629,7 @@ const ColumnPartial: InterfaceTypePartial = {
     Field,
 
     HeaderRenderer,
-    FloatingRenderer,
+    FloatingCellRenderer,
     CellRenderer,
 
     ColumnHintsProp,
@@ -636,6 +659,8 @@ export const Column: InterfaceType = {
   - What each cell renders
   - How rows are grouped and sorted
   - How filters are evaluated
+
+  @group Column
   `,
   doc: { en: `` },
   properties: [],
@@ -653,7 +678,7 @@ const ColumnBasePartial: InterfaceTypePartial = {
     WidthFlex,
 
     HeaderRenderer,
-    FloatingRenderer,
+    FloatingCellRenderer,
     CellRenderer,
     ColumnHintsProp,
 
@@ -680,6 +705,8 @@ export const ColumnBase: InterfaceType = {
 
   This allows you to set column-wide defaults that apply retroactively to all applicable columns 
   without rewriting each one.
+
+  @group Column
   `,
   doc: { en: `` },
   extends: ColumnBasePartial,
@@ -697,6 +724,8 @@ export const ColumnRowGroup: InterfaceType = {
 
   These columns are created behind the scenes to represent group headers and aggregations 
   and can be configured via this interface.
+
+  @group Column
   `,
   properties: [
     Name,
@@ -711,7 +740,7 @@ export const ColumnRowGroup: InterfaceType = {
 
     CellRenderer,
     HeaderRenderer,
-    FloatingRenderer,
+    FloatingCellRenderer,
 
     ColumnHintsProp,
 
@@ -752,6 +781,8 @@ export const ColumnPro: InterfaceType = {
   - What each cell renders
   - How rows are grouped and sorted
   - How filters are evaluated
+
+  @group Column
   `,
   doc: { en: `` },
   properties: [QuickSearchIgnore],
@@ -773,6 +804,8 @@ export const ColumnBasePro: InterfaceType = {
 
   This allows you to set column-wide defaults that apply retroactively to all applicable columns 
   without rewriting each one.
+
+  @group Column
   `,
   doc: { en: `` },
   extends: ColumnBasePartial,

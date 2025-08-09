@@ -4,7 +4,10 @@ import { GridProp } from "./shared-properties";
 export const RowGroupField: InterfaceType = {
   kind: "interface",
   name: "RowGroupField<T>",
-  tsDoc: `Defines a field-based grouping configuration used to compute row group keys in the grid.`,
+  tsDoc: `Defines a field-based grouping configuration used to compute row group keys in the grid.
+  
+  @group Row Grouping
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -46,7 +49,10 @@ export const RowGroupField: InterfaceType = {
 export const RowGroupModelItem: UnionType = {
   kind: "union",
   name: "RowGroupModelItem<T>",
-  tsDoc: `An item in the row group model. This can either be a column identifier (string) or a row group field definition.`,
+  tsDoc: `An item in the row group model. This can either be a column identifier (string) or a row group field definition.
+  
+  @group Row Grouping
+  `,
   doc: { en: `` },
   export: true,
   types: ["string", "RowGroupField<T>"],
@@ -56,7 +62,10 @@ export const RowGroupDisplayMode: UnionType = {
   kind: "union",
   name: "RowGroupDisplayMode",
   tsDoc: `Enumerates the display modes available for 
-  row groups in LyteNyte Grid.`,
+  row groups in LyteNyte Grid.
+  
+  @group Row Grouping
+  `,
   doc: { en: `` },
   export: true,
   types: ['"single-column"', '"multi-column"', '"custom"'],
@@ -66,7 +75,10 @@ export const AggFn: FunctionType = {
   kind: "function",
   name: "AggFn<T>",
   tsDoc: `Defines the function signature for custom 
-  aggregation logic that computes a result based on grid data.`,
+  aggregation logic that computes a result based on grid data.
+  
+  @group Row Grouping
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -88,7 +100,10 @@ export const AggModelFn: UnionType = {
   name: "AggModelFn<T>",
   tsDoc: `Describes the aggregation model configuration. 
   This can be either a string referencing a built-in 
-  aggregation or a custom function.`,
+  aggregation or a custom function.
+  
+  @group Row Grouping
+  `,
   doc: { en: `` },
   export: true,
   types: ["string", "AggFn<T>"],

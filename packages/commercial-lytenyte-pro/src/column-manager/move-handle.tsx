@@ -9,21 +9,21 @@ import { useColumnItemContext } from "./context";
 import { useColumnsFromContext } from "./use-columns-from-context";
 import { useGrid } from "../grid-provider/use-grid";
 import type { Column } from "../+types";
-import type { TreeVirtualItem } from "../tree-view/virtualized/make-virtual-tree";
+import type { PathBranch, PathLeaf } from "@1771technologies/lytenyte-shared";
 
 export interface MoveHandleProps {
-  readonly slot?: SlotComponent;
+  readonly as?: SlotComponent;
 
   readonly placeholder?: (p: {
     columns: Column<any>[];
-    item: TreeVirtualItem<Column<any>>;
+    item: PathBranch<Column<any>> | PathLeaf<Column<any>>;
   }) => ReactNode;
 }
 
 export const MoveHandle = forwardRef<
   HTMLDivElement,
   JSX.IntrinsicElements["div"] & MoveHandleProps
->(function MoveHandle({ slot, placeholder: Placeholder, ...props }, forwarded) {
+>(function MoveHandle({ as, placeholder: Placeholder, ...props }, forwarded) {
   const item = useColumnItemContext().item;
   const grid = useGrid();
 
@@ -71,9 +71,7 @@ export const MoveHandle = forwardRef<
 
       return (
         <div>
-          {item.kind === "branch"
-            ? item.branch.data.joinPath.at(-1)!
-            : (item.leaf.data.name ?? item.leaf.data.id)}
+          {item.kind === "branch" ? item.data.joinPath.at(-1)! : (item.data.name ?? item.data.id)}
         </div>
       );
     },
@@ -85,7 +83,7 @@ export const MoveHandle = forwardRef<
   const renderer = useSlot({
     props: [{ "aria-label": "Drag to move column" }, additionalProps, props],
     ref: isMovable ? combined : forwarded,
-    slot: slot ?? <div />,
+    slot: as ?? <div />,
   });
 
   return renderer;

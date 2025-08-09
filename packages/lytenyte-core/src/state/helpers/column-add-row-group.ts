@@ -18,6 +18,7 @@ interface ColumnHandleGroupColumnArgs<T> {
   readonly rowGroupTemplate: RowGroupColumn<T>;
   readonly rowGroupModel: RowGroupModelItem<T>[];
   readonly rowGroupDisplayMode: RowGroupDisplayMode;
+  readonly rowGroupColumnState: Record<string, Partial<Column<T>>>;
 }
 
 const baseGroup: RowGroupColumn<any> = {
@@ -34,6 +35,7 @@ export function columnAddRowGroup<T>({
   rowGroupModel,
   rowGroupDisplayMode,
   rowGroupTemplate,
+  rowGroupColumnState,
 }: ColumnHandleGroupColumnArgs<T>) {
   const lookup = itemsWithIdToMap(columns) as Map<string, Column<T> | RowGroupField<T>>;
 
@@ -99,6 +101,15 @@ export function columnAddRowGroup<T>({
   }
 
   if (!hasGroupColumn) columns = columns.filter((c) => !c.id.startsWith(GROUP_COLUMN_PREFIX));
+
+  // TODO: this can be improved - what if the columns are really large?
+  const keys = Object.keys(rowGroupColumnState);
+  for (let i = 0; i < keys.length; i++) {
+    const column = columns.find((c) => c.id === keys[i]);
+    if (!column) continue;
+
+    Object.assign(column, rowGroupColumnState[keys[i]]);
+  }
 
   return columns;
 }

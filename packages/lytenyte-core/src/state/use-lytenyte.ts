@@ -9,6 +9,8 @@ import type {
   PositionUnion,
   RowSelectionActivator,
   HeaderGroupCellLayout,
+  Column,
+  RowHeight,
 } from "../+types.js";
 import { type Grid, type GridView, type UseLyteNyteProps } from "../+types.js";
 import { useRef } from "react";
@@ -36,7 +38,7 @@ import { makeSortForColumn } from "./api/sort-for-column.js";
 import { columnAddRowGroup } from "./helpers/column-add-row-group.js";
 import { makeEventListeners } from "./api/event-listeners.js";
 import { makeScrollIntoView } from "./api/scroll-into-view.js";
-import { makeColumnFromIndex } from "./api/column-from-index.js";
+import { makeColumnByIndex } from "./api/column-from-index.js";
 import { makeColumnIndex } from "./api/column-index.js";
 import { makeRowGroupColumnIndex } from "./api/row-group-column-index.js";
 import { makeRowGroupIsExpanded } from "./api/row-group-is-expanded.js";
@@ -94,7 +96,13 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
   const rowDataSource = atom<RowDataSource<T>>(emptyRowDataSource);
 
-  const rowHeight = atom(p.rowHeight ?? 40);
+  const rowHeight = atom<RowHeight>(40);
+  if (typeof p.rowHeight === "function") {
+    store.set(rowHeight, () => p.rowHeight as any);
+  } else {
+    store.set(rowHeight, p.rowHeight ?? 40);
+  }
+
   const rowAutoHeightGuess = atom(p.rowAutoHeightGuess ?? 40);
 
   const rowScanDistance = atom(p.rowScanDistance ?? 100);
@@ -150,6 +158,8 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
   const virtualizeRows = atom(p.virtualizeRows ?? true);
   const virtualizeCols = atom(p.virtualizeCols ?? true);
+
+  const internal__rowGroupColumnState = atom<Record<string, Partial<Column<T>>>>({});
 
   const internal_rowSelectionPivot = atom<string | null>(null);
   const internal_rowSelectionLastWasDeselect = atom<boolean>(false);
@@ -225,11 +235,14 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
    * is impacted by the column definitions, the group expansions, the row group display mode.
    */
   const columnView = atom((g) => {
+    const groupState = g(internal__rowGroupColumnState);
+
     const cols = columnAddRowGroup({
       columns: g(columns),
       rowGroupDisplayMode: g(rowGroupDisplayMode),
       rowGroupModel: g(rowGroupModel),
       rowGroupTemplate: g(rowGroupColumn),
+      rowGroupColumnState: groupState,
     });
 
     const colsWithMarker = columnHandleMarker({
@@ -344,6 +357,8 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
         .map((x) => [x, api.rowByIndex(x)]),
     );
 
+    const headerHeight = g(headerHeightTotal);
+
     return computeRowPositions(
       rowCount,
       g(rowHeight),
@@ -355,7 +370,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
         return api.rowDetailRenderedHeight(row);
       },
-      innerHeight,
+      innerHeight - headerHeight,
     );
   });
 
@@ -535,11 +550,11 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const listeners = makeEventListeners<T>();
   Object.assign(api, {
     columnField: makeColumnField(grid),
-    columnFromIndex: makeColumnFromIndex(grid),
+    columnByIndex: makeColumnByIndex(grid),
     columnIndex: makeColumnIndex(grid),
     columnById: makeColumnById(grid),
     columnResize: makeColumnResize(grid),
-    columnUpdate: makeColumnUpdate(grid),
+    columnUpdate: makeColumnUpdate(grid as any),
     columnMove: makeColumnMove(grid),
     sortForColumn: makeSortForColumn(grid),
 
@@ -620,6 +635,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
       draggingHeader: makeGridAtom(internal_draggingHeader, store),
 
+      rowGroupColumnState: makeGridAtom(internal__rowGroupColumnState, store),
       store: store,
     } satisfies InternalAtoms,
   });

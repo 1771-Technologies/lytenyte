@@ -6,6 +6,7 @@ import {
   RowIndeterminateProp,
   RowIndexProp,
   RowNodeProp,
+  RowPinProp,
   RowSelectedProp,
 } from "./shared-properties";
 
@@ -19,6 +20,8 @@ export const CellRendererParams: InterfaceType = {
 
   Includes metadata and context such as the grid instance, row and column positions, selection state,
   and the full row node data.
+
+  @group Cell Rendering
   `,
   doc: { en: `` },
   properties: [
@@ -29,6 +32,7 @@ export const CellRendererParams: InterfaceType = {
     ColumnIndexProp,
     RowSelectedProp,
     RowIndeterminateProp,
+    RowPinProp,
   ],
 };
 
@@ -44,6 +48,8 @@ export const CellRendererFn: FunctionType = {
   optimized for performance, as slow renderers may degrade the overall responsiveness of the grid.
 
   Avoid unnecessary re-renders or expensive calculations inside this function.
+
+  @group Cell Rendering
   `,
   return: "ReactNode",
   properties: [

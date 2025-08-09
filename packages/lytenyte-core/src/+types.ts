@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 /**
  * The initial props that may be passed to the `useLyteNyte` hook. The hook
  *   returns the state representation of LyteNyte Grid.
+ *
+ *   @group Grid State
  */
 export interface UseLyteNyteProps<T> {
   /**
@@ -266,6 +268,8 @@ export interface UseLyteNyteProps<T> {
  *   grid properties that affect layout, data, selection, and rendering. Updating any of these atoms will trigger
  *   corresponding changes in the grid UI. These state values can also be used to create and synchronize external
  *   components such as toolbars, panels, or widgets.
+ *
+ *   @group Grid State
  */
 export interface GridState<T> {
   /**
@@ -644,6 +648,8 @@ export interface GridState<T> {
 /**
  * Defines the viewport boundaries for rendering rows and columns in LyteNyte Grid.
  *   These bounds are calculated based on the scroll position and the visible area of the grid.
+ *
+ *   @group Grid View
  */
 export interface ViewBounds {
   /**
@@ -720,6 +726,8 @@ export interface ViewBounds {
 /**
  * The grid object encapsulates the full LyteNyte Grid instance, including its state, view, and imperative API.
  *   It is returned by the `useLyteNyte` hook and serves as the primary interface for interacting with the grid programmatically.
+ *
+ *   @group Grid State
  */
 export interface Grid<T> {
   /**
@@ -745,6 +753,8 @@ export interface Grid<T> {
  * Represents the current visual layout of the grid including headers and rows.
  *   This structure is used by LyteNyte Grid headless components
  *   or for building custom visualizations.
+ *
+ *   @group Grid View
  */
 export interface GridView<T> {
   /**
@@ -760,6 +770,8 @@ export interface GridView<T> {
 
 /**
  * Describes a standard header cell layout in the grid, used to position and render individual column headers.
+ *
+ *   @group Grid View
  */
 export interface HeaderCellLayout<T> {
   /**
@@ -825,6 +837,8 @@ export interface HeaderCellLayout<T> {
 
 /**
  * Describes a floating header cell layout, which remains fixed during scroll operations.
+ *
+ *   @group Grid View
  */
 export interface HeaderCellFloating<T> {
   /**
@@ -891,6 +905,8 @@ export interface HeaderCellFloating<T> {
 /**
  * Describes a group of columns within the header. Used by LyteNyte
  *   Grid to render grouped column headers with optional collapsibility and structural metadata.
+ *
+ *   @group Grid View
  */
 export interface HeaderGroupCellLayout {
   /**
@@ -949,7 +965,8 @@ export interface HeaderGroupCellLayout {
   readonly isCollapsible: boolean;
 
   /**
-   * A unique identifier that can be used for rendering keys or tracking elements.
+   * The id for the header group. Note this is not unique across all header groups. In particular
+   *       split header groups with the same path will share the same id. Prefer `idOccurrence` for unique keys.
    */
   readonly id: string;
 
@@ -988,6 +1005,8 @@ export interface HeaderGroupCellLayout {
 /**
  * Defines the overall structure of header rows in the grid.
  *   This layout is recalculated based on viewport changes and virtualized rendering.
+ *
+ *   @group Grid View
  */
 export interface HeaderLayout<T> {
   /**
@@ -1009,6 +1028,8 @@ export interface HeaderLayout<T> {
 /**
  * Represents a union of all possible header layout cell types:
  *   normal header, floating header, or header group.
+ *
+ *   @group Grid View
  */
 export type HeaderLayoutCell<T> =
   | HeaderCellLayout<T>
@@ -1017,6 +1038,8 @@ export type HeaderLayoutCell<T> =
 
 /**
  * Represents the layout metadata for a single cell within a row, including span and contextual info.
+ *
+ *   @group Grid View
  */
 export interface RowCellLayout<T> {
   /**
@@ -1098,6 +1121,8 @@ export interface RowCellLayout<T> {
 /**
  * Describes the layout of a full-width row which spans all columns.
  *   These are typically used for summary or group rows.
+ *
+ *   @group Grid View
  */
 export interface RowFullWidthRowLayout<T> {
   /**
@@ -1143,12 +1168,16 @@ export interface RowFullWidthRowLayout<T> {
 
 /**
  * A row layout is either a standard row or a full-width row, depending on its content and configuration.
+ *
+ *   @group Grid View
  */
 export type RowLayout<T> = RowNormalRowLayout<T> | RowFullWidthRowLayout<T>;
 
 /**
  * Describes the layout of a standard row in LyteNyte Grid,
  *   including cell arrangement and row-level metadata.
+ *
+ *   @group Grid View
  */
 export interface RowNormalRowLayout<T> {
   /**
@@ -1200,6 +1229,8 @@ export interface RowNormalRowLayout<T> {
 /**
  * Organizes the rows into three separate sections: top (pinned), center (scrollable),
  *   and bottom (pinned). Used to optimize row virtualization and rendering.
+ *
+ *   @group Grid View
  */
 export interface RowSectionLayouts<T> {
   /**
@@ -1250,6 +1281,8 @@ export interface RowSectionLayouts<T> {
  *
  * This is called when autosize is triggered via the grid's API. Returning `null`
  * disables sizing behavior.
+ *
+ * @group Column
  */
 export type AutosizeCellFn<T> = (
   /**
@@ -1264,6 +1297,8 @@ export type AutosizeCellFn<T> = (
  *
  * These provide context about the cell and grid configuration so that the function
  * can determine the optimal column width based on cell content.
+ *
+ * @group Column
  */
 export interface AutosizeCellParams<T> {
   /**
@@ -1287,6 +1322,8 @@ export interface AutosizeCellParams<T> {
  * based on the header's rendered content.
  *
  * This is called as part of the grid's autosize process.
+ *
+ * @group Column
  */
 export type AutosizeHeaderFn<T> = (
   /**
@@ -1300,6 +1337,8 @@ export type AutosizeHeaderFn<T> = (
  *
  * These are used by LyteNyte Grid to calculate the ideal column width based on the
  * header content.
+ *
+ * @group Column
  */
 export interface AutosizeHeaderParams<T> {
   /**
@@ -1325,6 +1364,8 @@ export interface AutosizeHeaderParams<T> {
  * - What each cell renders
  * - How rows are grouped and sorted
  * - How filters are evaluated
+ *
+ * @group Column
  */
 export interface Column<T> {
   /**
@@ -1409,7 +1450,7 @@ export interface Column<T> {
   /**
    * Function used to render a floating row cell. Only called when floating rows are enabled. Must return a React node.
    */
-  readonly floatingRenderer?: HeaderFloatingCellRenderer<T>;
+  readonly floatingCellRenderer?: HeaderFloatingCellRenderer<T>;
 
   /**
    * Defines how to render the cell content. Accepts a renderer function or a string referencing a registered renderer.
@@ -1458,6 +1499,8 @@ export interface Column<T> {
  *
  * This allows you to set column-wide defaults that apply retroactively to all applicable columns
  * without rewriting each one.
+ *
+ * @group Column
  */
 export interface ColumnBase<T> {
   /**
@@ -1495,7 +1538,7 @@ export interface ColumnBase<T> {
   /**
    * Function used to render a floating row cell. Only called when floating rows are enabled. Must return a React node.
    */
-  readonly floatingRenderer?: HeaderFloatingCellRenderer<T>;
+  readonly floatingCellRenderer?: HeaderFloatingCellRenderer<T>;
 
   /**
    * Defines how to render the cell content. Accepts a renderer function or a string referencing a registered renderer.
@@ -1539,6 +1582,8 @@ export interface ColumnBase<T> {
  * Defines the structure of a marker column.
  *
  *   The marker column is a grid managed column used to support features like selection checkboxes or row drag handles.
+ *
+ *   @group Column
  */
 export interface ColumnMarker<T> {
   /**
@@ -1554,7 +1599,7 @@ export interface ColumnMarker<T> {
   /**
    * Function used to render a floating row cell. Only called when floating rows are enabled. Must return a React node.
    */
-  readonly floatingRenderer?: HeaderFloatingCellRenderer<T>;
+  readonly floatingCellRenderer?: HeaderFloatingCellRenderer<T>;
 
   /**
    * Specifies the preferred width of the column. This value is ignored if flex sizing is used, or if it violates the column's min/max bounds.
@@ -1574,6 +1619,8 @@ export interface ColumnMarker<T> {
  * are derived from the grid's internal column state and may change depending on modes
  * like pivoting. For example, when pivot mode is enabled, `columnsVisible` refers to
  * visible pivot columns instead of the regular ones.
+ *
+ * @group Column
  */
 export interface ColumnMeta<T> {
   /**
@@ -1612,6 +1659,8 @@ export interface ColumnMeta<T> {
  * - In right-to-left (RTL) mode, this behavior is reversed.
  *
  * This approach aligns with CSS logical properties for layout direction.
+ *
+ * @group Column
  */
 export type ColumnPin = "start" | "end" | null;
 
@@ -1621,6 +1670,8 @@ export type ColumnPin = "start" | "end" | null;
  *
  * These columns are created behind the scenes to represent group headers and aggregations
  * and can be configured via this interface.
+ *
+ * @group Column
  */
 export interface RowGroupColumn<T> {
   /**
@@ -1678,7 +1729,7 @@ export interface RowGroupColumn<T> {
   /**
    * Function used to render a floating row cell. Only called when floating rows are enabled. Must return a React node.
    */
-  readonly floatingRenderer?: HeaderFloatingCellRenderer<T>;
+  readonly floatingCellRenderer?: HeaderFloatingCellRenderer<T>;
 
   /**
    * Describes the capabilities and intended UI behavior of the column. These hints are used by external UI components.
@@ -1703,6 +1754,8 @@ export interface RowGroupColumn<T> {
  * These hints inform the rendering of column headers (e.g. showing resize handles,
  * drag handles, sort indicators), but are not enforced. Developers can still override
  * behaviors via the grid state API directly.
+ *
+ * @group Column
  */
 export interface ColumnUIHints {
   /**
@@ -1748,6 +1801,8 @@ export interface ColumnUIHints {
  * This metadata is auto-generated by the grid based on the configured column definitions.
  * It is used internally to manage layout and grouping behavior, but is also exposed for
  * advanced use cases where programmatic interaction with group structures is needed.
+ *
+ * @group Column Groups
  */
 export interface ColumnGroupMeta {
   /**
@@ -1786,11 +1841,57 @@ export interface ColumnGroupMeta {
  * - `"open"`: The column is visible only when the group is **expanded**.
  *
  * Used to build dynamic, collapsible column group layouts in LyteNyte Grid.
+ *
+ * @group Column Groups
  */
 export type ColumnGroupVisibility = "always" | "close" | "open";
 
 /**
  * Parameters required to initialize a client-side row data source.
+ *
+ * @group Row Data Source
+ */
+export interface ClientRowDataSourcePaginatedParams<T> {
+  /**
+   * The primary dataset passed to LyteNyte Grid for display.
+   */
+  readonly data: T[];
+
+  /**
+   * Rows to pin to the top of the grid, rendered above all scrollable rows.
+   */
+  readonly topData?: T[];
+
+  /**
+   * Rows to pin to the bottom of the grid, rendered below all scrollable rows.
+   */
+  readonly bottomData?: T[];
+
+  /**
+   * If true, the data source will reflect external mutations to the original data array.
+   */
+  readonly reflectData?: boolean;
+
+  /**
+   * Callback to derive a unique id for grouped (branch) rows based on group value path.
+   */
+  readonly rowIdBranch?: (path: string[]) => string;
+
+  /**
+   * Callback to derive a unique id for each leaf row. Receives the row data and index.
+   */
+  readonly rowIdLeaf?: (d: RowLeaf<T>, i: number) => string;
+
+  /**
+   * The number of rows to have per page. This will impact the total page count.
+   */
+  readonly rowsPerPage?: number;
+}
+
+/**
+ * Parameters required to initialize a client-side row data source.
+ *
+ * @group Row Data Source
  */
 export interface ClientRowDataSourceParams<T> {
   /**
@@ -1827,6 +1928,8 @@ export interface ClientRowDataSourceParams<T> {
 /**
  * The row data source interface used by LyteNyte Grid to retrieve and manage row data.
  *   This includes functionality for row expansion, selection, and CRUD operations.
+ *
+ *   @group Row Data Source
  */
 export interface RowDataSource<T> {
   /**
@@ -1890,6 +1993,11 @@ export interface RowDataSource<T> {
   readonly rowAdd: (newRows: any[], atIndex?: number | "beginning" | "end") => void;
 
   /**
+   * Sets the data for the center rows (scrollable rows) of the grid. Effectively replacing the current row data.
+   */
+  readonly rowSetCenterData: (newRows: any[]) => void;
+
+  /**
    * Sets the data for rows pinned to the top section.
    */
   readonly rowSetTopData: (data: any[]) => void;
@@ -1907,6 +2015,8 @@ export interface RowDataSource<T> {
  *   This implementation is suitable for small to moderately sized datasets. For large-scale datasets, such as those
  *   exceeding hundreds of thousands of rows, a server-based data source
  *   is recommended for performance and memory efficiency.
+ *
+ *   @group Row Data Source
  */
 export interface RowDataSourceClient<T> {
   /**
@@ -1970,6 +2080,11 @@ export interface RowDataSourceClient<T> {
   readonly rowAdd: (newRows: any[], atIndex?: number | "beginning" | "end") => void;
 
   /**
+   * Sets the data for the center rows (scrollable rows) of the grid. Effectively replacing the current row data.
+   */
+  readonly rowSetCenterData: (newRows: any[]) => void;
+
+  /**
    * Sets the data for rows pinned to the top section.
    */
   readonly rowSetTopData: (data: any[]) => void;
@@ -1978,6 +2093,11 @@ export interface RowDataSourceClient<T> {
    * Sets the data for rows pinned to the bottom section.
    */
   readonly rowSetBotData: (data: any[]) => void;
+
+  /**
+   * A client data source method to retrieve the raw data passed to the data source.
+   */
+  readonly rowData: (section: RowSection) => T[];
 }
 
 /**
@@ -1985,6 +2105,8 @@ export interface RowDataSourceClient<T> {
  *   It divides the full dataset into pages based on the configured page
  *   size, reducing the number of rows rendered at any one time to
  *   improve UI responsiveness and performance.
+ *
+ *   @group Row Data Source
  */
 export interface RowDataSourceClientPaginated<T> {
   /**
@@ -2048,6 +2170,11 @@ export interface RowDataSourceClientPaginated<T> {
   readonly rowAdd: (newRows: any[], atIndex?: number | "beginning" | "end") => void;
 
   /**
+   * Sets the data for the center rows (scrollable rows) of the grid. Effectively replacing the current row data.
+   */
+  readonly rowSetCenterData: (newRows: any[]) => void;
+
+  /**
    * Sets the data for rows pinned to the top section.
    */
   readonly rowSetTopData: (data: any[]) => void;
@@ -2061,11 +2188,18 @@ export interface RowDataSourceClientPaginated<T> {
    * The properties of the current pagination state.
    */
   readonly page: RowDataSourceClientPageState;
+
+  /**
+   * A client data source method to retrieve the raw data passed to the data source.
+   */
+  readonly rowData: (section: RowSection) => T[];
 }
 
 /**
  * Represents pagination-related state for the client row data source in
  *   LyteNyte Grid. These values enable pagination logic within the grid's UI and interactions.
+ *
+ *   @group Row Data Source
  */
 export interface RowDataSourceClientPageState {
   /**
@@ -2086,6 +2220,8 @@ export interface RowDataSourceClientPageState {
 
 /**
  * The internal row data store used by LyteNyte Grid to manage row metadata, counts, and access functions.
+ *
+ * @group Row Data Source
  */
 export interface RowDataStore<T> {
   /**
@@ -2126,6 +2262,8 @@ export interface RowDataStore<T> {
 
 /**
  * Parameters passed to the row selection handler within the row data source.
+ *
+ * @group Row Data Source
  */
 export interface RdsRowSelectParams {
   /**
@@ -2157,29 +2295,39 @@ export interface RdsRowSelectParams {
 /**
  * Represents a mutable piece of reactive grid state. This atom allows reading,
  *   updating, watching, and consuming its value reactively within React components.
+ *
+ *   @group Grid Atom
  */
 export interface GridAtom<T> {
   /**
    * Retrieves the current value stored in the atom. This method provides read access
    *   to the state managed by the atom.
+   *
+   *   @group Grid Atom
    */
   readonly get: () => T;
 
   /**
    * Updates the atom's value. Accepts either a new value or a function that receives
    *   the current value and returns the updated value.
+   *
+   *   @group Grid Atom
    */
   readonly set: (v: T | ((p: T) => T)) => void;
 
   /**
    * Registers a listener function to be invoked whenever the atom's value changes.
    *   Returns a cleanup function to remove the listener.
+   *
+   *   @group Grid Atom
    */
   readonly watch: (fn: () => void) => () => void;
 
   /**
    * A React hook that subscribes to the atom's value and causes the component to re-render
    *   whenever the atom changes.
+   *
+   *   @group Grid Atom
    */
   readonly useValue: () => T;
 }
@@ -2187,23 +2335,31 @@ export interface GridAtom<T> {
 /**
  * Represents an immutable version of a grid atom that supports read, watch, and reactive
  *   usage but does not allow updates.
+ *
+ *   @group Grid Atom
  */
 export interface GridAtomReadonly<T> {
   /**
    * Retrieves the current value stored in the atom. This method provides read access
    *   to the state managed by the atom.
+   *
+   *   @group Grid Atom
    */
   readonly get: () => T;
 
   /**
    * Registers a listener function to be invoked whenever the atom's value changes.
    *   Returns a cleanup function to remove the listener.
+   *
+   *   @group Grid Atom
    */
   readonly watch: (fn: () => void) => () => void;
 
   /**
    * A React hook that subscribes to the atom's value and causes the component to re-render
    *   whenever the atom changes.
+   *
+   *   @group Grid Atom
    */
   readonly useValue: () => T;
 }
@@ -2211,17 +2367,23 @@ export interface GridAtomReadonly<T> {
 /**
  * Represents the most minimal read-only version of a grid atom. It supports value
  *   retrieval and reactive consumption, but not watching or updates.
+ *
+ *   @group Grid Atom
  */
 export interface GridAtomReadonlyUnwatchable<T> {
   /**
    * Retrieves the current value stored in the atom. This method provides read access
    *   to the state managed by the atom.
+   *
+   *   @group Grid Atom
    */
   readonly get: () => T;
 
   /**
    * A React hook that subscribes to the atom's value and causes the component to re-render
    *   whenever the atom changes.
+   *
+   *   @group Grid Atom
    */
   readonly useValue: () => T;
 }
@@ -2229,6 +2391,8 @@ export interface GridAtomReadonlyUnwatchable<T> {
 /**
  * Predicate function to determine if a row should render in full-width mode.
  * Commonly used for custom summary or grouped views.
+ *
+ * @group Row
  */
 export type RowFullWidthPredicate<T> = (
   /**
@@ -2240,6 +2404,8 @@ export type RowFullWidthPredicate<T> = (
 /**
  * Parameters provided to the {@link RowFullWidthPredicate} function to determine
  * if a row should span full width of the grid.
+ *
+ * @group Row
  */
 export interface RowFullWidthPredicateParams<T> {
   /**
@@ -2260,6 +2426,8 @@ export interface RowFullWidthPredicateParams<T> {
 
 /**
  * Function to render the full-width row content. Returns a ReactNode to be rendered as the row.
+ *
+ * @group Row
  */
 export type RowFullWidthRendererFn<T> = (
   /**
@@ -2271,6 +2439,8 @@ export type RowFullWidthRendererFn<T> = (
 /**
  * Parameters provided to the full-width row renderer.
  * Includes row metadata and selection state.
+ *
+ * @group Row
  */
 export interface RowFullWidthRendererParams<T> {
   /**
@@ -2302,6 +2472,8 @@ export interface RowFullWidthRendererParams<T> {
 /**
  * Represents a group (branch) row which may contain children rows (leaf or other groups).
  * Group rows are used in hierarchical views and support expansion/collapse behavior.
+ *
+ * @group Row
  */
 export interface RowGroup {
   /**
@@ -2349,12 +2521,16 @@ export interface RowGroup {
  * - A fixed number (e.g. 30),
  * - A fill value (e.g. `fill:1`),
  * - A function that returns dynamic row height based on index.
+ *
+ * @group Row
  */
 export type RowHeight = number | `fill:${number}` | ((i: number) => number);
 
 /**
  * Represents a leaf row in the grid. A leaf row is a terminal node that has no children.
  * These rows typically represent the raw dataset and are used for aggregations and visual representation.
+ *
+ * @group Row
  */
 export interface RowLeaf<T = any> {
   /**
@@ -2390,6 +2566,8 @@ export interface RowLeaf<T = any> {
 /**
  * A union of {@link RowLeaf} and {@link RowGroup}. Represents any row that may appear in the grid view.
  * Used generically when the row type is not known ahead of time.
+ *
+ * @group Row
  */
 export type RowNode<T> = RowLeaf<T> | RowGroup;
 
@@ -2399,6 +2577,8 @@ export type RowNode<T> = RowLeaf<T> | RowGroup;
  * - "bottom": pinned to bottom,
  * - null: not pinned.
  * Pinned rows remain visible during scrolling.
+ *
+ * @group Row
  */
 export type RowPin = "top" | "bottom" | null;
 
@@ -2408,6 +2588,8 @@ export type RowPin = "top" | "bottom" | null;
  * - "bottom": pinned to the bottom area,
  * - "center": scrollable middle area,
  * - "flat": single flattened section.
+ *
+ * @group Row
  */
 export type RowSection = "top" | "bottom" | "center" | "flat";
 
@@ -2440,6 +2622,8 @@ export type RowSection = "top" | "bottom" | "center" | "flat";
  *
  * Cells that are spanned over (i.e. covered by another cell's span) will not be rendered and
  * are excluded from the layout and DOM. Ensure your span logic accounts for this behavior.
+ *
+ * @group Row And Column Spanning
  */
 export type CellSpanFn<T> = (
   /**
@@ -2459,6 +2643,8 @@ export type CellSpanFn<T> = (
  * - The row node representing the full row data
  *
  * Used to compute dynamic row or column spans for advanced layout use cases.
+ *
+ * @group Row And Column Spanning
  */
 export interface CellSpanFnParams<T> {
   /**
@@ -2490,6 +2676,8 @@ export interface CellSpanFnParams<T> {
  *   - A `branch` form, representing nested row structures with a key lookup
  *
  *   Note: These do not include attributes like `rowId` or `rowIndex` as those may not be available yet.
+ *
+ *   @group Field
  */
 export type FieldDataParam<T> =
   | { kind: "leaf"; data: T | null }
@@ -2499,6 +2687,8 @@ export type FieldDataParam<T> =
  * A dynamic field function used to derive values for a column.
  *
  *   This function may be invoked repeatedly, once per cell per column, so it must be optimized for efficiency.
+ *
+ *   @group Field
  */
 export type FieldFn<T> = (
   /**
@@ -2512,6 +2702,8 @@ export type FieldFn<T> = (
  *
  *   LyteNyte Grid calls these functions dynamically during rendering or computation.
  *   These calls can occur frequently (e.g., for every cell in a column), so implementations should prioritize performance.
+ *
+ *   @group Field
  */
 export interface FieldFnParams<T> {
   /**
@@ -2526,6 +2718,8 @@ export interface FieldFnParams<T> {
 
   /**
    * A representation of the row data, used in computing custom fields or sorting logic.
+   *
+   * @group Field
    */
   readonly data: FieldDataParam<T>;
 }
@@ -2534,6 +2728,8 @@ export interface FieldFnParams<T> {
  * Specifies a string-based path used to extract values from a nested data structure, similar to `lodash.get`.
  *
  *   Example: `"point.x"` will return `data.point.x`. Useful for deeply nested row data.
+ *
+ *   @group field
  */
 export interface FieldPath {
   /**
@@ -2551,6 +2747,8 @@ export interface FieldPath {
  * A function used to derive row grouping values distinct from cell display values.
  *
  *   Ideal for customizing how rows are grouped in the UI or logic layer.
+ *
+ *   @group Field
  */
 export type FieldRowGroupFn<T> = (
   /**
@@ -2563,6 +2761,8 @@ export type FieldRowGroupFn<T> = (
  * Defines the parameters used for custom row group field functions.
  *
  *   Enables grouping logic to be decoupled from the data's displayed value.
+ *
+ *   @group Field
  */
 export interface FieldRowGroupParamsFn<T> {
   /**
@@ -2579,6 +2779,8 @@ export interface FieldRowGroupParamsFn<T> {
 /**
  * Defines the acceptable formats for row group fields.
  *   Includes primitives, path-based accessors, or a custom function for grouping behavior.
+ *
+ *   @group Field
  */
 export type FieldRowGroup<T> = number | string | FieldPath | FieldRowGroupFn<T>;
 
@@ -2588,6 +2790,8 @@ export type FieldRowGroup<T> = number | string | FieldPath | FieldRowGroupFn<T>;
  * - A primitive value (`string` or `number`)
  * - A path-based accessor
  * - A custom function for dynamic computation
+ *
+ * @group Field
  */
 export type Field<T> = number | string | FieldPath | FieldFn<T>;
 
@@ -2598,6 +2802,8 @@ export type Field<T> = number | string | FieldPath | FieldFn<T>;
  * optimized for performance, as slow renderers may degrade the overall responsiveness of the grid.
  *
  * Avoid unnecessary re-renders or expensive calculations inside this function.
+ *
+ * @group Cell Rendering
  */
 export type CellRendererFn<T> = (
   /**
@@ -2612,6 +2818,8 @@ export type CellRendererFn<T> = (
  *
  * Includes metadata and context such as the grid instance, row and column positions, selection state,
  * and the full row node data.
+ *
+ * @group Cell Rendering
  */
 export interface CellRendererParams<T> {
   /**
@@ -2648,10 +2856,17 @@ export interface CellRendererParams<T> {
    * Indicates whether the row is in an indeterminate selection state.
    */
   readonly rowIndeterminate: boolean;
+
+  /**
+   * The pinning state of a row, used to fix it to the top or bottom of the grid.
+   */
+  readonly rowPin: RowPin;
 }
 
 /**
  * The parameters the `columnAutosize` method accepts.
+ *
+ *   @group Grid API
  */
 export interface ColumnAutosizeParams<T> {
   /**
@@ -2672,6 +2887,8 @@ export interface ColumnAutosizeParams<T> {
 
 /**
  * The parameters that may be provided to the `columnMove` API method.
+ *
+ *   @group Grid API
  */
 export interface ColumnMoveParams<T> {
   /**
@@ -2704,6 +2921,8 @@ export interface ColumnMoveParams<T> {
  * - A row/column pair to focus a specific cell.
  * - A header or group header cell position.
  * - A directional alias ("next", "prev", "up", "down") relative to the current focus (only when the grid is focused).
+ *
+ * @group Grid API
  */
 export type FocusCellParams<T> =
   | { row: number; column: string | number | Column<T> }
@@ -2717,6 +2936,8 @@ export type FocusCellParams<T> =
 /**
  * The LyteNyte Grid API provides a comprehensive set of methods that allow developers
  *   to programmatically query, update, and manipulate grid state and data.
+ *
+ *   @group Grid API
  */
 export interface GridApi<T> {
   /**
@@ -2730,7 +2951,7 @@ export interface GridApi<T> {
    * Returns the column at the specified visible index. If the index is out of bounds or
    *   the column is hidden (due to visibility rules or collapsed groups), this will return null.
    */
-  readonly columnFromIndex: (columnIndex: number) => Column<T> | null;
+  readonly columnByIndex: (columnIndex: number) => Column<T> | null;
 
   /**
    * Returns the index of a visible column based on its id or column object.
@@ -2933,24 +3154,32 @@ export interface GridApi<T> {
   /**
    * Returns the raw cell data within a rectangular selection of the grid.
    *   This can be useful for custom data processing or exporting workflows.
+   *
+   *   @group Grid API
    */
-  readonly exportDataRect: (params?: ExportDataRectParams) => ExportDataRectResult<T>;
+  readonly exportDataRect: (params?: ExportDataRectParams) => Promise<ExportDataRectResult<T>>;
 
   /**
    * Exports the cell data for a given rectangle of the grid as a CSV-formatted string.
    *   The rectangle can be customized through parameters such as selected rows, columns, or cell ranges.
+   *
+   *   @group Grid API
    */
   readonly exportCsv: (params?: ExportCsvParams) => Promise<string>;
 
   /**
    * Generates a downloadable CSV `Blob` from the selected rectangular area of grid cell data.
    *   Can be used to trigger a file download in the browser.
+   *
+   *   @group Grid API
    */
   readonly exportCsvFile: (params?: ExportCsvParams) => Promise<Blob>;
 }
 
 /**
  * The parameters used for the `rowHandleSelect` API method of LyteNyte Grid.
+ *
+ *   @group Grid API
  */
 export interface RowHandleSelectParams {
   /**
@@ -2967,6 +3196,8 @@ export interface RowHandleSelectParams {
 /**
  * Options for the `scrollIntoView` API. Allows you to scroll a specific row and/or column into view,
  *     ensuring they are visible in the viewport.
+ *
+ *     @group Grid API
  */
 export interface ScrollIntoViewOptions<T> {
   /**
@@ -2987,6 +3218,8 @@ export interface ScrollIntoViewOptions<T> {
 
 /**
  * Function signature for custom sort comparators.
+ *
+ * @group Sort
  */
 export type SortComparatorFn<T> = (
   /**
@@ -3005,15 +3238,21 @@ export type SortComparatorFn<T> = (
 
 /**
  * Predefined sort comparator types supported by LyteNyte Grid.
+ *
+ * @group Sort
  */
 export type SortComparators = "string" | "number" | "date" | (string & {});
 
 /**
  * Definition for a user-defined custom sort comparator.
+ *
+ * @group Sort
  */
 export interface SortCustomSort<T> {
   /**
    * The column identifier associated with the sort. May be null if not defined.
+   *
+   * @group Sort
    */
   readonly columnId: string | null;
 
@@ -3035,6 +3274,8 @@ export interface SortCustomSort<T> {
 
 /**
  * A built-in date sort model definition.
+ *
+ * @group Sort
  */
 export interface SortDateColumnSort {
   /**
@@ -3050,10 +3291,14 @@ export interface SortDateColumnSort {
 
 /**
  * Options used for date-based sorting.
+ *
+ * @group Sort
  */
 export interface SortDateComparatorOptions {
   /**
    * A boolean indicating if null values should appear first in the sort order.
+   *
+   * @group Sort
    */
   readonly nullsFirst?: boolean;
 
@@ -3070,6 +3315,8 @@ export interface SortDateComparatorOptions {
 
 /**
  * Union of all supported grid sort types.
+ *
+ * @group Sort
  */
 export type SortGridSorts<T> =
   | SortCustomSort<T>
@@ -3079,6 +3326,8 @@ export type SortGridSorts<T> =
 
 /**
  * A model item representing an active sort applied to the grid.
+ *
+ * @group Sort
  */
 export interface SortModelItem<T> {
   /**
@@ -3088,6 +3337,8 @@ export interface SortModelItem<T> {
 
   /**
    * The column identifier associated with the sort. May be null if not defined.
+   *
+   * @group Sort
    */
   readonly columnId: string | null;
 
@@ -3099,6 +3350,8 @@ export interface SortModelItem<T> {
 
 /**
  * A built-in numeric sort model definition.
+ *
+ * @group Sort
  */
 export interface SortNumberColumnSort {
   /**
@@ -3114,10 +3367,14 @@ export interface SortNumberColumnSort {
 
 /**
  * Options for number-based sorting.
+ *
+ * @group Sort
  */
 export interface SortNumberComparatorOptions {
   /**
    * A boolean indicating if null values should appear first in the sort order.
+   *
+   * @group Sort
    */
   readonly nullsFirst?: boolean;
 
@@ -3129,6 +3386,8 @@ export interface SortNumberComparatorOptions {
 
 /**
  * A built-in string sort model definition.
+ *
+ * @group Sort
  */
 export interface SortStringColumnSort {
   /**
@@ -3144,6 +3403,8 @@ export interface SortStringColumnSort {
 
 /**
  * Options used when sorting string values.
+ *
+ * @group Sort
  */
 export interface SortStringComparatorOptions {
   /**
@@ -3173,6 +3434,8 @@ export interface SortStringComparatorOptions {
 
   /**
    * A boolean indicating if null values should appear first in the sort order.
+   *
+   * @group Sort
    */
   readonly nullsFirst?: boolean;
 }
@@ -3183,6 +3446,8 @@ export interface SortStringComparatorOptions {
  *
  * Combination filters enable complex conditional logic by nesting
  * different filters into a tree structure.
+ *
+ * @group Filters
  */
 export interface FilterCombination {
   /**
@@ -3208,6 +3473,8 @@ export interface FilterCombination {
 
 /**
  * Logical operators used to join multiple filters inside a combination filter.
+ *
+ * @group Filters
  */
 export type FilterCombinationOperator = "AND" | "OR";
 
@@ -3220,6 +3487,8 @@ export type FilterCombinationOperator = "AND" | "OR";
  *
  * If filtering on timestamps or partial dates, be mindful of timezone offsets and whether
  * time components are relevant to your comparison.
+ *
+ * @group Filters
  */
 export interface FilterDate {
   /**
@@ -3264,6 +3533,8 @@ export interface FilterDate {
  * relative date expressions (e.g., "n_days_ago", "last_week", "is_weekend").
  *
  * The required type of the `value` field depends on the selected operator.
+ *
+ * @group Filters
  */
 export type FilterDateOperator =
   | "equals"
@@ -3303,6 +3574,8 @@ export type FilterDateOperator =
  *
  * Includes options like null handling and whether time values should be considered
  * during comparisons.
+ *
+ * @group Filters
  */
 export interface FilterDateOptions {
   /**
@@ -3332,6 +3605,8 @@ export interface FilterDateOptions {
  * be represented using built-in filter types.
  *
  * The function should return `true` to keep a row or `false` to filter it out.
+ *
+ * @group Filters
  */
 export type FilterFn<T> = (
   /**
@@ -3345,6 +3620,8 @@ export type FilterFn<T> = (
  * The parameters passed to a custom function filter.
  *
  * Includes both the current row's data and the overall grid configuration.
+ *
+ * @group Filters
  */
 export interface FilterFnParams<T> {
   /**
@@ -3363,6 +3640,8 @@ export interface FilterFnParams<T> {
  * for filtering scenarios that don't conform to basic models.
  *
  * Should be used selectively and optimized for performance.
+ *
+ * @group Filters
  */
 export interface FilterFunc<T> {
   /**
@@ -3378,6 +3657,8 @@ export interface FilterFunc<T> {
 
 /**
  * The full set of filter types available in the LyteNyte Grid.
+ *
+ * @group Filters
  */
 export type FilterModelItem<T> =
   | FilterNumber
@@ -3391,8 +3672,7 @@ export type FilterModelItem<T> =
  *
  * Applies common comparison logic to include or exclude rows based on numerical values in a specified column.
  *
- * See:
- * - [Filters](TODO): Overview of the filters
+ * @group Filters
  */
 export interface FilterNumber {
   /**
@@ -3411,8 +3691,7 @@ export interface FilterNumber {
   /**
    * Target value for the filter.
    *
-   * This will be used as the right-hand operand when applying the operator to each row's value.
-   * May be `null` if specifically filtering for nulls.
+   * This will be used as the right-hand operand when applying the operator to each row's value. May be `null` if specifically filtering for nulls.
    */
   readonly value: number | null;
 
@@ -3426,11 +3705,10 @@ export interface FilterNumber {
 
 /**
  * Logical operators available for number-based filtering.
+ * These correspond to the traditional comparison operators, `>, <=`, etc.
  *
- * These correspond to traditional comparison operators:
- * - `greater_than` → `>`
- * - `less_than_or_equals` → `<=`
- * etc.
+ *
+ * @group Filters
  */
 export type FilterNumberOperator =
   | "greater_than"
@@ -3443,6 +3721,8 @@ export type FilterNumberOperator =
 /**
  * Optional configuration values for number filters. These options allow fine-tuning of filter behavior,
  * especially in cases involving precision or null handling.
+ *
+ * @group Filters
  */
 export interface FilterNumberOptions {
   /**
@@ -3478,6 +3758,8 @@ export interface FilterNumberOptions {
  * Filter configuration for string-based column data.
  *
  * Supports a wide range of operators such as exact match, substring containment, regex matching, and string length comparisons.
+ *
+ * @group Filters
  */
 export interface FilterString {
   /**
@@ -3512,6 +3794,8 @@ export interface FilterString {
  * Collation configuration for locale-sensitive string comparisons.
  *
  * Used to construct an `Intl.Collator` instance, which enables proper handling of language and region-specific rules.
+ *
+ * @group Filters
  */
 export interface FilterStringCollation {
   /**
@@ -3535,6 +3819,8 @@ export interface FilterStringCollation {
  * These include comparison operators (e.g., "equals"), substring checks (e.g., "contains"), and
  * length-based checks (e.g., "length_less_than"). Some operators require a numeric `value`
  * (e.g., those dealing with string length).
+ *
+ * @group Filters
  */
 export type FilterStringOperator =
   | "equals"
@@ -3562,6 +3848,8 @@ export type FilterStringOperator =
  *
  * These provide control over how string values are matched, such as case sensitivity, whitespace trimming,
  * regular expression flags, and locale-based collation.
+ *
+ * @group Filters
  */
 export interface FilterStringOptions {
   /**
@@ -3612,6 +3900,8 @@ export interface FilterStringOptions {
  * The supported locale identifiers for string filtering and collation.
  *
  * Used to configure internationalized string comparison behavior.
+ *
+ * @group Filters
  */
 export type Locale =
   | "en-US"
@@ -3659,6 +3949,8 @@ export type Locale =
 /**
  * Defines the function signature for custom
  *   aggregation logic that computes a result based on grid data.
+ *
+ *   @group Row Grouping
  */
 export type AggFn<T> = (
   /**
@@ -3675,17 +3967,23 @@ export type AggFn<T> = (
  * Describes the aggregation model configuration.
  *   This can be either a string referencing a built-in
  *   aggregation or a custom function.
+ *
+ *   @group Row Grouping
  */
 export type AggModelFn<T> = string | AggFn<T>;
 
 /**
  * Enumerates the display modes available for
  *   row groups in LyteNyte Grid.
+ *
+ *   @group Row Grouping
  */
 export type RowGroupDisplayMode = "single-column" | "multi-column" | "custom";
 
 /**
  * Defines a field-based grouping configuration used to compute row group keys in the grid.
+ *
+ *   @group Row Grouping
  */
 export interface RowGroupField<T> {
   /**
@@ -3711,11 +4009,15 @@ export interface RowGroupField<T> {
 
 /**
  * An item in the row group model. This can either be a column identifier (string) or a row group field definition.
+ *
+ *   @group Row Grouping
  */
 export type RowGroupModelItem<T> = string | RowGroupField<T>;
 
 /**
  * A callback function type for the columnMoveBegin event, fired when a column move starts.
+ *
+ * @group Events
  */
 export type ColumnMoveBeginFn<T> = (
   /**
@@ -3726,6 +4028,8 @@ export type ColumnMoveBeginFn<T> = (
 
 /**
  * The parameters provided when a column move operation begins. This event allows the move action to be canceled.
+ *
+ * @group Events
  */
 export interface ColumnMoveBeginParams<T> {
   /**
@@ -3761,6 +4065,8 @@ export interface ColumnMoveBeginParams<T> {
 
 /**
  * A callback function type for the columnMoveEnd event, fired when a column move completes.
+ *
+ * @group Events
  */
 export type ColumnMoveEndFn<T> = (
   /**
@@ -3771,6 +4077,8 @@ export type ColumnMoveEndFn<T> = (
 
 /**
  * The parameters emitted when a column move operation has completed.
+ *
+ * @group Events
  */
 export interface ColumnMoveEndParams<T> {
   /**
@@ -3801,6 +4109,8 @@ export interface ColumnMoveEndParams<T> {
 
 /**
  * An event fired when a cell begins editing. This provides an opportunity to cancel the edit before any changes are made.
+ *
+ *   @group Events
  */
 export type EditBegin<T> = (
   /**
@@ -3811,6 +4121,8 @@ export type EditBegin<T> = (
 
 /**
  * An event fired when an in-progress cell edit is canceled. Most commonly triggered by user interaction, such as pressing the Escape key.
+ *
+ *   @group Events
  */
 export type EditCancel<T> = (
   /**
@@ -3821,6 +4133,8 @@ export type EditCancel<T> = (
 
 /**
  * An event fired when a cell finishes editing successfully (i.e., without error or cancellation).
+ *
+ *   @group Events
  */
 export type EditEnd<T> = (
   /**
@@ -3831,6 +4145,8 @@ export type EditEnd<T> = (
 
 /**
  * An event fired when an error occurs during cell editing—either due to validation failure or runtime exception.
+ *
+ *   @group Events
  */
 export type EditError<T> = (
   /**
@@ -3841,6 +4157,8 @@ export type EditError<T> = (
 
 /**
  * A comprehensive map of all possible events that LyteNyte Grid may emit during its lifecycle.
+ *
+ * @group Events
  */
 export interface GridEvents<T> {
   /**
@@ -3931,6 +4249,8 @@ export interface GridEvents<T> {
 
 /**
  * An event fired when the row detail expansion process begins. This provides an opportunity to cancel expansion before it takes effect.
+ *
+ *   @group Events
  */
 export type RowDetailExpansionBegin<T> = (
   /**
@@ -3941,6 +4261,9 @@ export type RowDetailExpansionBegin<T> = (
 
 /**
  * The parameters for the `rowDetailExpansionBegin` event. This event allows preventing expansion of row detail sections by calling `preventDefault()`.
+ *
+ *
+ *   @group Events
  */
 export interface RowDetailExpansionBeginParams<T> {
   /**
@@ -3961,6 +4284,8 @@ export interface RowDetailExpansionBeginParams<T> {
 
 /**
  * An event fired after the row detail expansion completes successfully.
+ *
+ *   @group Events
  */
 export type RowDetailExpansionEnd<T> = (
   /**
@@ -3971,6 +4296,9 @@ export type RowDetailExpansionEnd<T> = (
 
 /**
  * The parameters for the `rowDetailExpansionEnd` event, fired once a row detail expansion operation is complete.
+ *
+ *
+ *   @group Events
  */
 export interface RowDetailExpansionEndParams<T> {
   /**
@@ -3986,6 +4314,8 @@ export interface RowDetailExpansionEndParams<T> {
 
 /**
  * Event handler function type for the `rowExpand` event. Called when row group expansion is successfully completed.
+ *
+ *   @group Events
  */
 export type RowExpandFn<T> = (
   /**
@@ -3996,6 +4326,8 @@ export type RowExpandFn<T> = (
 
 /**
  * Event handler function type for the `rowExpandBegin` event. Triggered before row group expansion, allowing you to cancel the operation.
+ *
+ *   @group Events
  */
 export type RowExpandBeginFn<T> = (
   /**
@@ -4006,6 +4338,8 @@ export type RowExpandBeginFn<T> = (
 
 /**
  * Describes the parameters passed to the `rowExpandBegin` event. This event is triggered before row group expansion occurs and provides a way to cancel the action.
+ *
+ * @group Events
  */
 export interface RowExpandBeginParams<T> {
   /**
@@ -4026,6 +4360,8 @@ export interface RowExpandBeginParams<T> {
 
 /**
  * Event handler function type for the `rowExpandError` event. Called when row group expansion fails due to an error.
+ *
+ *   @group Events
  */
 export type RowExpandErrorFn<T> = (
   /**
@@ -4036,6 +4372,8 @@ export type RowExpandErrorFn<T> = (
 
 /**
  * Describes the parameters passed to the `rowExpandError` event. This event is emitted when an error occurs during row group expansion.
+ *
+ *   @group Events
  */
 export interface RowExpandErrorParams<T> {
   /**
@@ -4056,6 +4394,8 @@ export interface RowExpandErrorParams<T> {
 
 /**
  * Describes the parameters passed to the `rowExpand` event. This event is emitted after a row group has been successfully expanded.
+ *
+ *   @group Events
  */
 export interface RowExpandParams<T> {
   /**
@@ -4071,6 +4411,8 @@ export interface RowExpandParams<T> {
 
 /**
  * An event triggered when the "select all" operation begins. It provides an opportunity to cancel the selection.
+ *
+ * @group Events
  */
 export type RowSelectAllBegin<T> = (
   /**
@@ -4081,6 +4423,8 @@ export type RowSelectAllBegin<T> = (
 
 /**
  * The parameters provided when a "select all" operation starts. This event allows the operation to be canceled.
+ *
+ * @group Events
  */
 export interface RowSelectAllBeginParams<T> {
   /**
@@ -4102,6 +4446,8 @@ export interface RowSelectAllBeginParams<T> {
 
 /**
  * An event triggered once the "select all" operation is complete.
+ *
+ * @group Events
  */
 export type RowSelectAllEnd<T> = (
   /**
@@ -4112,6 +4458,8 @@ export type RowSelectAllEnd<T> = (
 
 /**
  * The parameters passed when a "select all" operation completes.
+ *
+ * @group Events
  */
 export interface RowSelectAllEndParams<T> {
   /**
@@ -4128,6 +4476,8 @@ export interface RowSelectAllEndParams<T> {
 
 /**
  * An event triggered when a row selection starts. This event allows cancellation before the selection is finalized.
+ *
+ * @group Events
  */
 export type RowSelectBegin<T> = (
   /**
@@ -4139,6 +4489,8 @@ export type RowSelectBegin<T> = (
 /**
  * The parameters provided when a row selection begins. This event occurs before the selection change takes effect,
  * giving the caller an opportunity to prevent it.
+ *
+ * @group Events
  */
 export interface RowSelectBeginParams<T> {
   /**
@@ -4165,6 +4517,8 @@ export interface RowSelectBeginParams<T> {
 
 /**
  * An event triggered once the row selection is finalized.
+ *
+ * @group Events
  */
 export type RowSelectEnd<T> = (
   /**
@@ -4175,6 +4529,8 @@ export type RowSelectEnd<T> = (
 
 /**
  * The parameters passed when a row selection has completed.
+ *
+ * @group Events
  */
 export interface RowSelectEndParams<T> {
   /**
@@ -4197,6 +4553,8 @@ export interface RowSelectEndParams<T> {
 /**
  * A function used to render the content of a header cell.
  *   It receives renderer parameters and returns a ReactNode to render.
+ *
+ *   @group Column Header
  */
 export type HeaderCellRendererFn<T> = (
   /**
@@ -4208,6 +4566,8 @@ export type HeaderCellRendererFn<T> = (
 /**
  * Parameters passed to the header cell renderer function. This
  *   provides access to the grid and column for rendering context.
+ *
+ *   @group Column Header
  */
 export interface HeaderCellRendererParams<T> {
   /**
@@ -4224,6 +4584,8 @@ export interface HeaderCellRendererParams<T> {
 /**
  * Renderer function for floating header cells. Returns the visual
  *   contents for floating headers using provided parameters.
+ *
+ *   @group Column Header
  */
 export type HeaderFloatingCellRendererFn<T> = (
   /**
@@ -4235,6 +4597,8 @@ export type HeaderFloatingCellRendererFn<T> = (
 /**
  * Parameters passed to the floating cell renderer. Provides grid
  *   and column context to determine what should be rendered.
+ *
+ *   @group Column Header
  */
 export interface HeaderFloatingCellRendererParams<T> {
   /**
@@ -4251,12 +4615,16 @@ export interface HeaderFloatingCellRendererParams<T> {
 /**
  * Floating header cell renderer reference. Can be a string
  *   referencing a registered floating renderer or a function used directly by the column.
+ *
+ *   @group Column Header
  */
 export type HeaderFloatingCellRenderer<T> = string | HeaderFloatingCellRendererFn<T>;
 
 /**
  * Header cell renderer reference. This may be a registered renderer
  *   name (string) or a renderer function. If a string is used, it should match a renderer registered in the grid state.
+ *
+ *   @group Column Header
  */
 export type HeaderCellRenderer<T> = string | HeaderCellRendererFn<T>;
 
@@ -4264,6 +4632,8 @@ export type HeaderCellRenderer<T> = string | HeaderCellRendererFn<T>;
  * Describes the currently active cell position if editing is in progress.
  *
  * When no edit is active, this will be `undefined`.
+ *
+ * @group Cell Edit
  */
 export interface EditActivePosition<T> {
   /**
@@ -4279,6 +4649,8 @@ export interface EditActivePosition<T> {
 
 /**
  * Parameters accepted by the `editBegin` method to start editing a specific cell.
+ *
+ * @group Cell Edit
  */
 export interface EditBeginParams<T> {
   /**
@@ -4303,6 +4675,8 @@ export interface EditBeginParams<T> {
  *
  * - `"cell"`: Editing is active and inline
  * - `"readonly"`: Editing is disabled entirely
+ *
+ * @group Cell Edit
  */
 export type EditCellMode = "cell" | "readonly";
 
@@ -4312,6 +4686,9 @@ export type EditCellMode = "cell" | "readonly";
  * - `"single"`: Single click
  * - `"double-click"`: Double click
  * - `"none"`: Editing must be started via API or programmatically
+ *
+ *
+ * @group Cell Edit
  */
 export type EditClickActivator = "single" | "double-click" | "none";
 
@@ -4321,6 +4698,8 @@ export type EditClickActivator = "single" | "double-click" | "none";
  * Can be either:
  * - A string key referencing a registered editor component
  * - A function of type {@link EditRendererFn} for custom rendering logic
+ *
+ * @group Cell Edit
  */
 export type EditRenderer<T> = string | EditRendererFn<T>;
 
@@ -4328,6 +4707,8 @@ export type EditRenderer<T> = string | EditRendererFn<T>;
  * A function that returns a React component to be rendered in edit mode for a given cell.
  *
  * Used for customizing editing UI. If omitted, a default HTML input will be used.
+ *
+ * @group Cell Edit
  */
 export type EditRendererFn<T> = (
   /**
@@ -4341,6 +4722,8 @@ export type EditRendererFn<T> = (
  *
  * These include positional and contextual data such as row, column, value, and grid
  * instance, along with row validation status and change handlers.
+ *
+ * @group Cell Edit
  */
 export interface EditRendererFnParams<T> {
   /**
@@ -4369,6 +4752,8 @@ export interface EditRendererFnParams<T> {
    * - `false`: validation failed
    * - `true` or `null`: validation passed or hasn't run
    * - `Record<string, any>`: failed with details per column
+   *
+   * @group Cell Edit
    */
   readonly rowValidationState: Record<string, any> | boolean | null;
 
@@ -4377,6 +4762,8 @@ export interface EditRendererFnParams<T> {
    *
    * Managed internally by the grid, but should be aligned with the expected shape of your
    * application's data model.
+   *
+   * @group Cell Edit
    */
   readonly value: any;
 
@@ -4395,6 +4782,8 @@ export interface EditRendererFnParams<T> {
  *
  * - `true` or `null` if the row is valid
  * - `false` or a `Record<string, any>` describing errors if invalid
+ *
+ * @group Cell Edit
  */
 export type EditRowValidatorFn<T> = (
   /**
@@ -4407,6 +4796,8 @@ export type EditRowValidatorFn<T> = (
  * Input arguments passed to {@link EditRowValidatorFn}.
  *
  * Used to perform validation on the entire row during or after edit submission.
+ *
+ * @group Cell Edit
  */
 export interface EditRowValidatorFnParams<T> {
   /**
@@ -4435,6 +4826,8 @@ export interface EditRowValidatorFnParams<T> {
  *
  * Required when dealing with nested, computed, or non-primitive values that the grid
  * cannot update automatically.
+ *
+ * @group Cell Edit
  */
 export type EditSetterFn<T> = (
   /**
@@ -4447,6 +4840,8 @@ export type EditSetterFn<T> = (
  * Input parameters passed to an {@link EditSetterFn}.
  *
  * Provides the context needed to compute and apply new row data based on edit input.
+ *
+ * @group Cell Edit
  */
 export interface EditSetterParams<T> {
   /**
@@ -4470,6 +4865,12 @@ export interface EditSetterParams<T> {
   readonly column: Column<T>;
 
   /**
+   * The current edit value of the cell being edited. Useful when the cell is derived from data and not
+   * actually present in the row data.
+   */
+  readonly value: any;
+
+  /**
    * The new row data after applying edits. This is an intermediate representation,
    * not yet committed to the grid.
    */
@@ -4478,6 +4879,8 @@ export interface EditSetterParams<T> {
 
 /**
  * Parameters passed to the `editUpdate` method, used to submit a value change.
+ *
+ * @group Cell Edit
  */
 export interface EditUpdateParams<T> {
   /**
@@ -4502,6 +4905,8 @@ export interface EditUpdateParams<T> {
  *
  * - Use `true` to enable editing for all rows.
  * - Use {@link EditableFn} for conditional, row-specific editability.
+ *
+ * @group Cell Edit
  */
 export type Editable<T> = boolean | EditableFn<T>;
 
@@ -4510,6 +4915,8 @@ export type Editable<T> = boolean | EditableFn<T>;
  *
  * If cell editing is enabled in LyteNyte Grid, this function is evaluated per cell. Use
  * `true` for globally editable columns or {@link EditableFn} for row-specific logic.
+ *
+ * @group Cell Edit
  */
 export type EditableFn<T> = (
   /**
@@ -4524,6 +4931,8 @@ export type EditableFn<T> = (
  *
  * These include the row index, the row node object, the grid instance, and the column
  * definition.
+ *
+ * @group Cell Edit
  */
 export interface EditableFnParams<T> {
   /**
@@ -4549,6 +4958,8 @@ export interface EditableFnParams<T> {
 
 /**
  * Parameters dispatched with the `onEditBegin` event, triggered when editing starts.
+ *
+ * @group Events
  */
 export interface OnEditBeginParams<T> {
   /**
@@ -4569,6 +4980,8 @@ export interface OnEditBeginParams<T> {
 
 /**
  * Parameters passed to the `onEditCancel` event, triggered when editing is aborted (e.g., Escape key).
+ *
+ * @group Events
  */
 export interface OnEditCancelParams<T> {
   /**
@@ -4583,12 +4996,16 @@ export interface OnEditCancelParams<T> {
 
   /**
    * The current value of the cell during an edit interaction.
+   *
+   * @group Events
    */
   readonly data: any;
 }
 
 /**
  * Parameters passed to the `onEditEnd` event, triggered when editing successfully completes.
+ *
+ * @group Events
  */
 export interface OnEditEndParams<T> {
   /**
@@ -4603,12 +5020,16 @@ export interface OnEditEndParams<T> {
 
   /**
    * The current value of the cell during an edit interaction.
+   *
+   * @group Events
    */
   readonly data: any;
 }
 
 /**
  * Parameters passed to the `onEditError` event, triggered when validation or logic errors occur during editing.
+ *
+ * @group Events
  */
 export interface OnEditErrorParams<T> {
   /**
@@ -4623,6 +5044,8 @@ export interface OnEditErrorParams<T> {
 
   /**
    * The current value of the cell during an edit interaction.
+   *
+   * @group Events
    */
   readonly data: any;
 
@@ -4640,6 +5063,8 @@ export interface OnEditErrorParams<T> {
 
 /**
  * Describes the focus position of a floating header cell.
+ *
+ *   @group Navigation
  */
 export interface PositionFloatingCell {
   /**
@@ -4655,6 +5080,8 @@ export interface PositionFloatingCell {
 
 /**
  * Describes the focus position when a full width row is active.
+ *
+ *   @group Navigation
  */
 export interface PositionFullWidthRow {
   /**
@@ -4675,6 +5102,8 @@ export interface PositionFullWidthRow {
 
 /**
  * Represents the current focus position of a regular cell in the grid.
+ *
+ *   @group Navigation
  */
 export interface PositionGridCell {
   /**
@@ -4701,6 +5130,8 @@ export interface PositionGridCell {
 /**
  * The root reference of a grid cell. If a cell is obscured by a rowspan
  *   or colspan, it points to the actual root cell containing the data.
+ *
+ *   @group Navigation
  */
 export interface PositionGridCellRoot {
   /**
@@ -4726,6 +5157,8 @@ export interface PositionGridCellRoot {
 
 /**
  * Describes the focus position of a standard header cell.
+ *
+ *   @group Navigation
  */
 export interface PositionHeaderCell {
   /**
@@ -4741,6 +5174,8 @@ export interface PositionHeaderCell {
 
 /**
  * Describes the focus position of a header group cell in the column hierarchy.
+ *
+ *   @group Navigation
  */
 export interface PositionHeaderGroupCell {
   /**
@@ -4771,6 +5206,8 @@ export interface PositionHeaderGroupCell {
 
 /**
  * Union of all valid focusable positions in the grid: cells, headers, full width rows, etc.
+ *
+ *   @group Navigation
  */
 export type PositionUnion =
   | PositionGridCell
@@ -4782,6 +5219,8 @@ export type PositionUnion =
 /**
  * Specifies the height of the row detail section.
  *   Can be a fixed number of pixels or "auto" to size based on content.
+ *
+ *   @group Row Data Source
  */
 export type RowDetailHeight = number | "auto";
 
@@ -4789,6 +5228,8 @@ export type RowDetailHeight = number | "auto";
  * A function used to render custom row detail content.
  *   It should return a ReactNode to be displayed in the row's
  *   expanded detail area.
+ *
+ *   @group Row Data Source
  */
 export type RowDetailRendererFn<T> = (
   /**
@@ -4801,6 +5242,8 @@ export type RowDetailRendererFn<T> = (
  * Defines the parameters passed to a row detail renderer. These parameters
  *   include the row index, the row node metadata,
  *   and a reference to the grid instance.
+ *
+ *   @group Row Data Source
  */
 export interface RowDetailRendererParams<T> {
   /**
@@ -4821,6 +5264,8 @@ export interface RowDetailRendererParams<T> {
 
 /**
  * Options for performing bulk selection or deselection of all rows.
+ *
+ * @group Row Selection
  */
 export interface RowSelectAllOptions {
   /**
@@ -4831,6 +5276,8 @@ export interface RowSelectAllOptions {
 
 /**
  * Configuration options used when performing row selection operations.
+ *
+ * @group Row Selection
  */
 export interface RowSelectOptions {
   /**
@@ -4864,6 +5311,8 @@ export interface RowSelectOptions {
  *   - "single-click" selects a row with a single mouse click.
  *   - "double-click" requires a double-click to select.
  *   - "none" disables interaction-based row selection.
+ *
+ *   @group Row Selection
  */
 export type RowSelectionActivator = "single-click" | "double-click" | "none";
 
@@ -4872,12 +5321,16 @@ export type RowSelectionActivator = "single-click" | "double-click" | "none";
  *   - "single" allows only one row to be selected at a time.
  *   - "multiple" allows multiple row selections.
  *   - "none" disables row selection entirely.
+ *
+ *   @group Row Selection
  */
 export type RowSelectionMode = "single" | "multiple" | "none";
 
 /**
  * Contains data associated with a drag operation,
  *   including transferable and site-local information.
+ *
+ *   @group Row Drag
  */
 export interface DragData {
   /**
@@ -4894,6 +5347,8 @@ export interface DragData {
 
 /**
  * Callback function executed during a drag event.
+ *
+ *   @group Row Drag
  */
 export type DragEventFn = (
   /**
@@ -4904,6 +5359,8 @@ export type DragEventFn = (
 
 /**
  * Arguments passed during a drag event lifecycle.
+ *
+ *   @group Row Drag
  */
 export interface DragEventParams {
   /**
@@ -4925,6 +5382,8 @@ export interface DragEventParams {
 /**
  * Function to render the drag placeholder UI. This UI
  *   is rendered in isolation and does not respond to app state changes.
+ *
+ *   @group Row Drag
  */
 export type DragPlaceholderFn<T> = (
   /**
@@ -4935,6 +5394,8 @@ export type DragPlaceholderFn<T> = (
 
 /**
  * Parameters passed when rendering the drag placeholder content.
+ *
+ * @group Row Drag
  */
 export interface DragPlaceholderParams<T> {
   /**
@@ -4950,6 +5411,8 @@ export interface DragPlaceholderParams<T> {
 
 /**
  * Represents the current pointer position during a drag operation.
+ *
+ *   @group Row Drag
  */
 export interface DragPosition {
   /**
@@ -4965,6 +5428,8 @@ export interface DragPosition {
 
 /**
  * Fired when a drop action is finalized and the dragged element is released over a drop zone.
+ *
+ * @group Row Drag
  */
 export type DropEventFn = (
   /**
@@ -4975,6 +5440,8 @@ export type DropEventFn = (
 
 /**
  * Represents the full context passed to the drop event handler.
+ *
+ * @group Row Drag
  */
 export interface DropEventParams {
   /**
@@ -5000,6 +5467,8 @@ export interface DropEventParams {
 
 /**
  * Describes the final state of a drag-and-drop move operation.
+ *
+ *   @group Row Drag
  */
 export interface DragMoveState {
   /**
@@ -5045,6 +5514,8 @@ export interface DragMoveState {
 
 /**
  * Function used to provide the data that will be associated with a drag operation.
+ *
+ *   @group Row Drag
  */
 export type GetDragDataFn<T> = (
   /**
@@ -5056,6 +5527,8 @@ export type GetDragDataFn<T> = (
 /**
  * Defines the input parameters for the function
  *   that provides data during a drag operation.
+ *
+ *   @group Row Drag
  */
 export interface GetDragDataParams<T> {
   /**
@@ -5071,6 +5544,8 @@ export interface GetDragDataParams<T> {
 
 /**
  * Parameters for configuring drag behavior using a React hook.
+ *
+ * @group Row Drag
  */
 export interface UseRowDragParams<T> {
   /**
@@ -5151,6 +5626,8 @@ export interface UseRowDragParams<T> {
  * or operate on a subset of the grid's data regardless of row or column reordering. However,
  * if the number of rows or columns changes, the rect may be invalidated if it extends
  * beyond the new bounds.
+ *
+ * @group Export
  */
 export interface DataRect {
   /**
@@ -5176,6 +5653,8 @@ export interface DataRect {
 
 /**
  * Parameters for exporting a CSV file from LyteNyte Grid.
+ *
+ * @group Export
  */
 export interface ExportCsvParams {
   /**
@@ -5210,16 +5689,20 @@ export interface ExportCsvParams {
  * Signature for the function that exports a DataRect from the grid.
  *
  * Called via the LyteNyte Grid API when exporting a selection of cells.
+ *
+ * @group Export
  */
 export type ExportDataRectFn<T> = (
   /**
    * Optional parameters for exporting a DataRect.
    */
   params: ExportDataRectParams,
-) => ExportDataRectResult<T>;
+) => Promise<ExportDataRectResult<T>>;
 
 /**
  * Parameters for exporting a specific rectangular region of the grid using a DataRect.
+ *
+ * @group Export
  */
 export interface ExportDataRectParams {
   /**
@@ -5237,6 +5720,8 @@ export interface ExportDataRectParams {
 
 /**
  * The result structure returned after exporting a DataRect from LyteNyte Grid.
+ *
+ * @group Export
  */
 export interface ExportDataRectResult<T> {
   /**

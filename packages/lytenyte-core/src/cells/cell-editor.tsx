@@ -51,6 +51,16 @@ export function CellEditor<T>({ cell }: CellEditorParams<T>) {
         if (e.key === "Enter") {
           const ds = grid.state.rowDataStore;
 
+          // Don't move if the there are validation errors.
+          const editValidation = grid.internal.editValidation.get();
+          if (
+            typeof editValidation === "boolean"
+              ? editValidation === false
+              : Object.keys(editValidation).length >= 1
+          ) {
+            return;
+          }
+
           handleNavigationKeys(
             {
               ctrlKey: false,
@@ -123,18 +133,22 @@ function EditRenderer<T>({ cell }: CellEditorParams<T>) {
       return (
         <input
           type="number"
-          value={value}
-          onChange={(e) => onChange(Number.parseFloat(e.target.value))}
+          value={value ?? ""}
+          onChange={(e) => (e.target.value ? onChange(Number.parseFloat(e.target.value)) : 0)}
         />
       );
     if (type === "date")
-      return <input type="date" value={value} onChange={(e) => onChange(e.target.value)} />;
+      return <input type="date" value={value ?? ""} onChange={(e) => onChange(e.target.value)} />;
     if (type === "datetime")
       return (
-        <input type="datetime-local" value={value} onChange={(e) => onChange(e.target.value)} />
+        <input
+          type="datetime-local"
+          value={value ?? ""}
+          onChange={(e) => onChange(e.target.value)}
+        />
       );
 
-    return <input value={value} onChange={(e) => onChange(e.target.value)} />;
+    return <input value={value ?? ""} onChange={(e) => onChange(e.target.value)} />;
   }
 
   const Renderer = typeof editRenderer === "string" ? editFuncs[editRenderer] : editRenderer;

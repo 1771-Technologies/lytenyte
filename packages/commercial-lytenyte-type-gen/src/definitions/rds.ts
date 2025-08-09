@@ -5,7 +5,11 @@ export const RowSelectParams: InterfaceType = {
   name: "RdsRowSelectParams",
   doc: { en: `` },
   export: true,
-  tsDoc: `Parameters passed to the row selection handler within the row data source.`,
+  tsDoc: `
+  Parameters passed to the row selection handler within the row data source.
+
+  @group Row Data Source
+  `,
   properties: [
     {
       kind: "property",
@@ -54,7 +58,11 @@ export const RowDataStore: InterfaceType = {
   kind: "interface",
   name: "RowDataStore<T>",
   export: true,
-  tsDoc: `The internal row data store used by LyteNyte Grid to manage row metadata, counts, and access functions.`,
+  tsDoc: `
+  The internal row data store used by LyteNyte Grid to manage row metadata, counts, and access functions.
+  
+  @group Row Data Source
+  `,
   doc: { en: `` },
   properties: [
     {
@@ -116,7 +124,7 @@ export const RowDataStore: InterfaceType = {
   ],
 };
 
-export const RowDataSourcePartial: InterfaceTypePartial = {
+const RowDataSourcePartial: InterfaceTypePartial = {
   kind: "interface-partial",
   properties: [
     {
@@ -217,6 +225,14 @@ export const RowDataSourcePartial: InterfaceTypePartial = {
     },
     {
       kind: "property",
+      name: "rowSetCenterData",
+      value: "(newRows: any[]) => void",
+      doc: { en: `` },
+      tsDoc: `Sets the data for the center rows (scrollable rows) of the grid. Effectively replacing the current row data.`,
+      optional: false,
+    },
+    {
+      kind: "property",
       name: "rowSetTopData",
       doc: { en: `` },
       tsDoc: `Sets the data for rows pinned to the top section.`,
@@ -239,18 +255,24 @@ export const RowDataSource: InterfaceType = {
   name: "RowDataSource<T>",
   export: true,
   tsDoc: `The row data source interface used by LyteNyte Grid to retrieve and manage row data. 
-  This includes functionality for row expansion, selection, and CRUD operations.`,
+  This includes functionality for row expansion, selection, and CRUD operations.
+  
+  @group Row Data Source
+  `,
   doc: { en: `` },
   properties: [],
   tag: "core",
   extends: RowDataSourcePartial,
 };
 
-const InFilterItemsProps: PropertyType = {
+const InFilterItemsProp: PropertyType = {
   kind: "property",
   name: "inFilterItems",
   tsDoc: `Returns the available in-filter items for the specified column. 
-  May return items synchronously or as a Promise.`,
+  May return items synchronously or as a Promise.
+  
+  @group Row Data Source
+  `,
   doc: { en: `` },
   optional: false,
   value: "(column: Column<T>) => Promise<FilterInFilterItem[]> | FilterInFilterItem[]",
@@ -261,11 +283,23 @@ export const RowDataSourcePro: InterfaceType = {
   name: "RowDataSource<T>",
   export: true,
   tsDoc: `The row data source interface used by LyteNyte Grid to retrieve and manage row data. 
-  This includes functionality for row expansion, selection, and CRUD operations.`,
+  This includes functionality for row expansion, selection, and CRUD operations.
+  
+  @group Row Data Source
+  `,
   doc: { en: `` },
-  properties: [InFilterItemsProps],
+  properties: [InFilterItemsProp],
   tag: "pro",
   extends: RowDataSourcePartial,
+};
+
+const ClientGetDataProp: PropertyType = {
+  kind: "property",
+  tsDoc: `A client data source method to retrieve the raw data passed to the data source.`,
+  doc: { en: `` },
+  name: "rowData",
+  optional: false,
+  value: "(section: RowSection) => T[]",
 };
 
 export const RowDataSourceClient: InterfaceType = {
@@ -277,9 +311,12 @@ export const RowDataSourceClient: InterfaceType = {
 
   This implementation is suitable for small to moderately sized datasets. For large-scale datasets, such as those 
   exceeding hundreds of thousands of rows, a server-based data source 
-  is recommended for performance and memory efficiency.`,
+  is recommended for performance and memory efficiency.
+  
+  @group Row Data Source
+  `,
   doc: { en: `` },
-  properties: [],
+  properties: [ClientGetDataProp],
   tag: "core",
   extends: RowDataSourcePartial,
 };
@@ -293,10 +330,13 @@ export const RowDataSourceClientPro: InterfaceType = {
 
   This implementation is suitable for small to moderately sized datasets. For large-scale datasets, such as those 
   exceeding hundreds of thousands of rows, a server-based data source 
-  is recommended for performance and memory efficiency.`,
+  is recommended for performance and memory efficiency.
+  
+  @group Row Data Source
+  `,
   doc: { en: `` },
   tag: "pro",
-  properties: [InFilterItemsProps],
+  properties: [InFilterItemsProp, ClientGetDataProp],
   extends: RowDataSourcePartial,
 };
 
@@ -305,7 +345,10 @@ export const RowDataSourceClientPageState: InterfaceType = {
   name: "RowDataSourceClientPageState",
   export: true,
   tsDoc: `Represents pagination-related state for the client row data source in 
-  LyteNyte Grid. These values enable pagination logic within the grid's UI and interactions.`,
+  LyteNyte Grid. These values enable pagination logic within the grid's UI and interactions.
+  
+  @group Row Data Source
+  `,
   doc: { en: `` },
   properties: [
     {
@@ -351,11 +394,14 @@ export const RowDataSourceClientClientPaginated: InterfaceType = {
   tsDoc: `A paginated client-side row data source for LyteNyte Grid. 
   It divides the full dataset into pages based on the configured page 
   size, reducing the number of rows rendered at any one time to 
-  improve UI responsiveness and performance.`,
+  improve UI responsiveness and performance.
+  
+  @group Row Data Source
+  `,
   doc: { en: `` },
   extends: RowDataSourcePartial,
   tag: "core",
-  properties: [PageProp],
+  properties: [PageProp, ClientGetDataProp],
 };
 
 export const RowDataSourceClientClientPaginatedPro: InterfaceType = {
@@ -365,11 +411,14 @@ export const RowDataSourceClientClientPaginatedPro: InterfaceType = {
   tsDoc: `A paginated client-side row data source for LyteNyte Grid. 
   It divides the full dataset into pages based on the configured page 
   size, reducing the number of rows rendered at any one time to 
-  improve UI responsiveness and performance.`,
+  improve UI responsiveness and performance.
+  
+  @group Row Data Source
+  `,
   doc: { en: `` },
   extends: RowDataSourcePartial,
   tag: "pro",
-  properties: [PageProp, InFilterItemsProps],
+  properties: [PageProp, InFilterItemsProp, ClientGetDataProp],
 };
 
 export const RowDataSourceServerPro: InterfaceType = {
@@ -383,12 +432,15 @@ export const RowDataSourceServerPro: InterfaceType = {
   Unlike client-side data sources, all row operations—including filtering, sorting, 
   grouping, and pagination—must be handled on the server. This design provides 
   maximum flexibility and scalability, including support for server-driven trees 
-  and pagination, but requires a more complex implementation on the backend.`,
+  and pagination, but requires a more complex implementation on the backend.
+  
+  @group Row Data Source
+  `,
   export: true,
   extends: RowDataSourcePartial,
   tag: "pro",
   properties: [
-    InFilterItemsProps,
+    InFilterItemsProp,
     {
       kind: "property",
       doc: { en: `` },

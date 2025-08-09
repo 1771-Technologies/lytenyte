@@ -30,6 +30,7 @@ export const TreeLeaf = forwardRef<HTMLLIElement, JSX.IntrinsicElements["li"] & 
           )
             return;
 
+          e.preventDefault();
           const nodes = getFocusables(e.currentTarget) as HTMLElement[];
           const index = nodes.indexOf(document.activeElement! as HTMLElement);
           if (index === -1) {

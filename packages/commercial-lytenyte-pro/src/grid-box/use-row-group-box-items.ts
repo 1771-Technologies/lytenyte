@@ -6,14 +6,14 @@ import { useEvent } from "@1771technologies/lytenyte-react-hooks";
 export interface UseRowGroupBoxItems<T> {
   readonly grid: Grid<T>;
   readonly orientation?: "horizontal" | "vertical";
-  readonly placeholder?: (c: RowGroupModelItem<T>) => ReactNode;
+  readonly dragPlaceholder?: (c: RowGroupModelItem<T>) => ReactNode;
   readonly hideColumnOnGroup?: boolean;
 }
 
 export function useRowGroupBoxItems<T>({
   grid,
   orientation,
-  placeholder,
+  dragPlaceholder,
   hideColumnOnGroup = true,
 }: UseRowGroupBoxItems<T>) {
   const rowGroupModel = grid.state.rowGroupModel.useValue();
@@ -23,7 +23,7 @@ export function useRowGroupBoxItems<T>({
     const groupId = `${gridId}-group`;
 
     return rowGroupModel
-      .map<GridBoxItem | null>((c) => {
+      .map<GridBoxItem | null>((c, i) => {
         const onDelete = () => {
           grid.state.rowGroupModel.set((prev) => prev.filter((x) => x !== c));
         };
@@ -32,14 +32,12 @@ export function useRowGroupBoxItems<T>({
           const target = c;
           const src = p.state.siteLocalData?.[groupId] as RowGroupModelItem<T>;
 
-          const isRtl = grid.state.rtl.get();
+          const overIndex = rowGroupModel.findIndex((x) => x === c);
+          const dragIndex = rowGroupModel.findIndex((x) => x === src);
 
-          let isBefore: boolean;
-          if (orientation === "horizontal") {
-            isBefore = isRtl ? !p.moveState.leftHalf : p.moveState.leftHalf;
-          } else {
-            isBefore = p.moveState.topHalf;
-          }
+          const isBefore = overIndex < dragIndex;
+
+          if (overIndex === dragIndex) return;
 
           const srcIndex = rowGroupModel.findIndex((x) => {
             if (typeof src !== typeof x) return;
@@ -83,12 +81,14 @@ export function useRowGroupBoxItems<T>({
             dragData: { [groupId]: c },
             data: c,
             draggable: true,
+            source: "groups",
             id: c,
+            index: i,
             label: column.name ?? column.id,
             onAction: () => {},
             onDelete: onDelete,
             onDrop: onDrop,
-            dragPlaceholder: placeholder ? () => placeholder(c) : undefined,
+            dragPlaceholder: dragPlaceholder ? () => dragPlaceholder(c) : undefined,
           };
         } else {
           return {
@@ -96,11 +96,13 @@ export function useRowGroupBoxItems<T>({
             data: c,
             draggable: true,
             id: c.id,
+            source: "groups",
+            index: i,
             label: c.name ?? c.id,
             onAction: () => {},
             onDelete: onDelete,
             onDrop,
-            dragPlaceholder: placeholder ? () => placeholder(c) : undefined,
+            dragPlaceholder: dragPlaceholder ? () => dragPlaceholder(c) : undefined,
           };
         }
       })
@@ -108,11 +110,9 @@ export function useRowGroupBoxItems<T>({
   }, [
     grid.api,
     grid.state.rowGroupModel,
-    grid.state.rtl,
     gridId,
     hideColumnOnGroup,
-    orientation,
-    placeholder,
+    dragPlaceholder,
     rowGroupModel,
   ]);
 

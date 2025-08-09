@@ -3,21 +3,17 @@ import { forwardRef, type JSX } from "react";
 import { useSortRowCtx } from "./context";
 
 export interface SortAddProps {
-  readonly slot?: SlotComponent<{ onAdd: () => void; disabled: boolean }>;
+  readonly as?: SlotComponent<{ onAdd: () => void; disabled: boolean }>;
 }
 
 export const SortAdd = forwardRef<HTMLDivElement, JSX.IntrinsicElements["button"] & SortAddProps>(
-  function SortAdd({ slot, ...props }, forwarded) {
+  function SortAdd({ as: as, ...props }, forwarded) {
     const row = useSortRowCtx();
 
     const renderer = useSlot({
-      props: [props],
+      props: [typeof as !== "function" ? { onClick: row.onAdd, disabled: !row.canAdd } : {}, props],
       ref: forwarded,
-      slot: slot ?? (
-        <button onClick={row.onAdd} disabled={!row.canAdd}>
-          +
-        </button>
-      ),
+      slot: as ?? <button>+</button>,
       state: { onAdd: row.onAdd, disabled: !row.canAdd },
     });
 

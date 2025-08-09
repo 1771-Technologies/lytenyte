@@ -3,7 +3,7 @@ import type { HeaderCellFloating, HeaderCellLayout, HeaderCellRendererParams } f
 import { useGridRoot } from "../context";
 
 function DefaultRenderer(p: HeaderCellRendererParams<any>) {
-  return <>{p.column.id}</>;
+  return <>{p.column.name ?? p.column.id}</>;
 }
 
 export function useHeaderCellRenderer<T>(cell: HeaderCellLayout<T> | HeaderCellFloating<T>) {
@@ -20,14 +20,15 @@ export function useHeaderCellRenderer<T>(cell: HeaderCellLayout<T> | HeaderCellF
       if (typeof renderer === "string") return headerRenderers[renderer] ?? DefaultRenderer;
       else return renderer;
     } else {
-      const renderer = cell.column.floatingRenderer ?? base.floatingRenderer ?? DefaultRenderer;
+      const renderer =
+        cell.column.floatingCellRenderer ?? base.floatingCellRenderer ?? DefaultRenderer;
       if (typeof renderer === "string") return floatingRenderers[renderer] ?? DefaultRenderer;
       else return renderer;
     }
   }, [
-    base.floatingRenderer,
+    base.floatingCellRenderer,
     base.headerRenderer,
-    cell.column.floatingRenderer,
+    cell.column.floatingCellRenderer,
     cell.column.headerRenderer,
     cell.kind,
     floatingRenderers,

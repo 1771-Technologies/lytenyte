@@ -5,7 +5,10 @@ export const Grid: InterfaceType = {
   name: "Grid<T>",
   export: true,
   tsDoc: `The grid object encapsulates the full LyteNyte Grid instance, including its state, view, and imperative API.
-  It is returned by the \`useLyteNyte\` hook and serves as the primary interface for interacting with the grid programmatically.`,
+  It is returned by the \`useLyteNyte\` hook and serves as the primary interface for interacting with the grid programmatically.
+  
+  @group Grid State
+  `,
   doc: { en: `` },
   properties: [
     {

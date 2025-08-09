@@ -12,6 +12,8 @@ export const CellSelectionMode: UnionType = {
   - \`"none"\`: Disables all cell selection interactions.
 
   Useful for enabling features like copy-paste, cell highlighting, and keyboard navigation.
+
+  @group Cell Selection
   `,
   doc: { en: `` },
   export: true,

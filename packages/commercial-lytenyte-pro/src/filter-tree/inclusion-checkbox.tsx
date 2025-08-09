@@ -3,7 +3,7 @@ import { forwardRef, type JSX } from "react";
 import { useTreeItemContext } from "./context";
 
 export interface InclusionCheckbox {
-  readonly slot?: SlotComponent<{
+  readonly as?: SlotComponent<{
     checked: boolean;
     indeterminate: boolean;
     toggle: (s?: boolean) => void;
@@ -13,14 +13,14 @@ export interface InclusionCheckbox {
 export const InclusionCheckbox = forwardRef<
   HTMLDivElement,
   JSX.IntrinsicElements["div"] & InclusionCheckbox
->(function InclusionCheckbox({ slot, ...props }, forwarded) {
+>(function InclusionCheckbox({ as, ...props }, forwarded) {
   const { isChecked, onCheckChange, isIndeterminate } = useTreeItemContext();
 
   const rendered = useSlot({
     props: [props],
     ref: forwarded,
     state: { checked: isChecked, toggle: onCheckChange, indeterminate: isIndeterminate },
-    slot: slot ?? (
+    slot: as ?? (
       <input
         type="checkbox"
         checked={isChecked}

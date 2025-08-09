@@ -10,7 +10,10 @@ export const FieldDataParam: UnionType = {
   - A \`leaf\` form, representing actual row-level data (\`T | null\`)
   - A \`branch\` form, representing nested row structures with a key lookup
 
-  Note: These do not include attributes like \`rowId\` or \`rowIndex\` as those may not be available yet.`,
+  Note: These do not include attributes like \`rowId\` or \`rowIndex\` as those may not be available yet.
+  
+  @group Field
+  `,
   doc: { en: `` },
   export: true,
   types: [
@@ -23,7 +26,11 @@ export const FieldDataParamProperty: PropertyType = {
   kind: "property",
   name: "data",
   doc: { en: `` },
-  tsDoc: `A representation of the row data, used in computing custom fields or sorting logic.`,
+  tsDoc: `
+  A representation of the row data, used in computing custom fields or sorting logic.
+  
+  @group Field
+  `,
   optional: false,
   value: "FieldDataParam<T>",
 };
@@ -35,7 +42,10 @@ export const FieldFnParams: InterfaceType = {
   tsDoc: `The parameters passed to functional column fields.
   
   LyteNyte Grid calls these functions dynamically during rendering or computation.
-  These calls can occur frequently (e.g., for every cell in a column), so implementations should prioritize performance.`,
+  These calls can occur frequently (e.g., for every cell in a column), so implementations should prioritize performance.
+  
+  @group Field
+  `,
   doc: { en: `` },
   properties: [GridProp, ColumnProp, FieldDataParamProperty],
 };
@@ -58,7 +68,10 @@ export const FieldFn: FunctionType = {
   doc: { en: `` },
   tsDoc: `A dynamic field function used to derive values for a column.
 
-  This function may be invoked repeatedly, once per cell per column, so it must be optimized for efficiency.`,
+  This function may be invoked repeatedly, once per cell per column, so it must be optimized for efficiency.
+  
+  @group Field
+  `,
 };
 
 export const FieldPath: InterfaceType = {
@@ -67,7 +80,10 @@ export const FieldPath: InterfaceType = {
   doc: { en: `` },
   tsDoc: `Specifies a string-based path used to extract values from a nested data structure, similar to \`lodash.get\`.
 
-  Example: \`"point.x"\` will return \`data.point.x\`. Useful for deeply nested row data.`,
+  Example: \`"point.x"\` will return \`data.point.x\`. Useful for deeply nested row data.
+  
+  @group field
+  `,
   export: true,
   properties: [
     {
@@ -95,7 +111,10 @@ export const FieldRowGroupParamsFn: InterfaceType = {
   export: true,
   tsDoc: `Defines the parameters used for custom row group field functions.
 
-  Enables grouping logic to be decoupled from the data's displayed value.`,
+  Enables grouping logic to be decoupled from the data's displayed value.
+  
+  @group Field
+  `,
   doc: { en: `` },
   properties: [GridProp, DataProp],
 };
@@ -117,7 +136,10 @@ export const FieldRowGroupFn: FunctionType = {
   return: "unknown",
   tsDoc: `A function used to derive row grouping values distinct from cell display values.
 
-  Ideal for customizing how rows are grouped in the UI or logic layer.`,
+  Ideal for customizing how rows are grouped in the UI or logic layer.
+  
+  @group Field
+  `,
   doc: { en: `` },
 };
 
@@ -129,7 +151,10 @@ export const FieldUnion: UnionType = {
 
 - A primitive value (\`string\` or \`number\`)
 - A path-based accessor
-- A custom function for dynamic computation`,
+- A custom function for dynamic computation
+
+@group Field
+`,
   doc: { en: `` },
   types: ["number", "string", "FieldPath", "FieldFn<T>"],
 };
@@ -139,7 +164,10 @@ export const FieldRowGroupUnion: UnionType = {
   export: true,
   name: "FieldRowGroup<T>",
   tsDoc: `Defines the acceptable formats for row group fields.
-  Includes primitives, path-based accessors, or a custom function for grouping behavior.`,
+  Includes primitives, path-based accessors, or a custom function for grouping behavior.
+  
+  @group Field
+  `,
   doc: { en: `` },
   types: ["number", "string", "FieldPath", "FieldRowGroupFn<T>"],
 };

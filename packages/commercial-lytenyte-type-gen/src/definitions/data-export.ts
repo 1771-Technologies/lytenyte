@@ -9,6 +9,8 @@ export const DataRect: InterfaceType = {
   or operate on a subset of the grid's data regardless of row or column reordering. However, 
   if the number of rows or columns changes, the rect may be invalidated if it extends 
   beyond the new bounds.
+
+  @group Export
   `,
   doc: { en: `` },
   export: true,
@@ -56,6 +58,8 @@ export const ExportDataRectParams: InterfaceType = {
   doc: { en: `` },
   tsDoc: `
   Parameters for exporting a specific rectangular region of the grid using a DataRect.
+
+  @group Export
   `,
   properties: [
     {
@@ -85,6 +89,8 @@ export const ExportDataRectResult: InterfaceType = {
   kind: "interface",
   tsDoc: `
   The result structure returned after exporting a DataRect from LyteNyte Grid.
+
+  @group Export
   `,
   doc: { en: `` },
   export: true,
@@ -132,10 +138,12 @@ export const ExportDataRectFn: FunctionType = {
   Signature for the function that exports a DataRect from the grid.
 
   Called via the LyteNyte Grid API when exporting a selection of cells.
+
+  @group Export
   `,
   export: true,
   name: "ExportDataRectFn<T>",
-  return: "ExportDataRectResult<T>",
+  return: "Promise<ExportDataRectResult<T>>",
   properties: [
     {
       kind: "property",
@@ -152,6 +160,8 @@ export const ExportCsvParams: InterfaceType = {
   kind: "interface",
   tsDoc: `
   Parameters for exporting a CSV file from LyteNyte Grid.
+
+  @group Export
   `,
   doc: { en: `` },
   export: true,

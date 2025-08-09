@@ -13,7 +13,7 @@ import { useDragMove } from "./use-drag-move";
 
 export interface HeaderCellProps<T> {
   readonly cell: HeaderCellLayout<T> | HeaderCellFloating<T>;
-  readonly resizerSlot?: SlotComponent;
+  readonly resizerAs?: SlotComponent;
   readonly resizerClassName?: string;
   readonly resizerStyle?: CSSProperties;
 }
@@ -22,7 +22,7 @@ const HeaderCellImpl = forwardRef<
   HTMLDivElement,
   JSX.IntrinsicElements["div"] & HeaderCellProps<any>
 >(function HeaderCell(
-  { cell, resizerSlot, resizerStyle, resizerClassName, children, ...props },
+  { cell, resizerAs, resizerStyle, resizerClassName, children, ...props },
   forwarded,
 ) {
   const grid = useGridRoot().grid;
@@ -61,7 +61,7 @@ const HeaderCellImpl = forwardRef<
         <ResizeHandler
           cell={cell}
           xPositions={xPositions}
-          slot={resizerSlot}
+          as={resizerAs}
           className={resizerClassName}
           style={resizerStyle}
         />

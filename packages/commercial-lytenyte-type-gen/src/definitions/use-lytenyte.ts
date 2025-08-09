@@ -1,6 +1,6 @@
 import type { InterfaceType, InterfaceTypePartial, PropertyType } from "../+types.js";
 
-export const Columns: PropertyType = {
+const Columns: PropertyType = {
   kind: "property",
   name: "columns",
   optional: true,
@@ -9,7 +9,7 @@ export const Columns: PropertyType = {
   doc: { en: `` },
 };
 
-export const ColumnBase: PropertyType = {
+const ColumnBase: PropertyType = {
   kind: "property",
   name: "columnBase",
   optional: true,
@@ -18,7 +18,7 @@ export const ColumnBase: PropertyType = {
   doc: { en: `` },
 };
 
-export const HeaderHeight: PropertyType = {
+const HeaderHeight: PropertyType = {
   kind: "property",
   name: "headerHeight",
   optional: true,
@@ -27,7 +27,7 @@ export const HeaderHeight: PropertyType = {
   doc: { en: `` },
 };
 
-export const HeaderGroupHeight: PropertyType = {
+const HeaderGroupHeight: PropertyType = {
   kind: "property",
   name: "headerGroupHeight",
   optional: true,
@@ -36,7 +36,7 @@ export const HeaderGroupHeight: PropertyType = {
   doc: { en: `` },
 };
 
-export const GridId: PropertyType = {
+const GridId: PropertyType = {
   kind: "property",
   name: "gridId",
   optional: false,
@@ -45,7 +45,7 @@ export const GridId: PropertyType = {
   doc: { en: `` },
 };
 
-export const ColumnSizeToFit: PropertyType = {
+const ColumnSizeToFit: PropertyType = {
   kind: "property",
   name: "columnSizeToFit",
   optional: true,
@@ -54,7 +54,7 @@ export const ColumnSizeToFit: PropertyType = {
   doc: { en: `` },
 };
 
-export const ColumnGroupExpansions: PropertyType = {
+const ColumnGroupExpansions: PropertyType = {
   kind: "property",
   name: "columnGroupExpansions",
   optional: true,
@@ -63,7 +63,7 @@ export const ColumnGroupExpansions: PropertyType = {
   doc: { en: `` },
 };
 
-export const ColumnGroupDefaultExpansion: PropertyType = {
+const ColumnGroupDefaultExpansion: PropertyType = {
   kind: "property",
   name: "columnGroupDefaultExpansion",
   optional: true,
@@ -72,7 +72,7 @@ export const ColumnGroupDefaultExpansion: PropertyType = {
   doc: { en: `` },
 };
 
-export const ColumnGroupJoinDelimiter: PropertyType = {
+const ColumnGroupJoinDelimiter: PropertyType = {
   kind: "property",
   name: "columnGroupJoinDelimiter",
   optional: true,
@@ -81,7 +81,7 @@ export const ColumnGroupJoinDelimiter: PropertyType = {
   doc: { en: `` },
 };
 
-export const RowDataSource: PropertyType = {
+const RowDataSource: PropertyType = {
   kind: "property",
   name: "rowDataSource",
   optional: true,
@@ -90,7 +90,7 @@ export const RowDataSource: PropertyType = {
   doc: { en: `` },
 };
 
-export const RowAutoHeightGuess: PropertyType = {
+const RowAutoHeightGuess: PropertyType = {
   kind: "property",
   name: "rowAutoHeightGuess",
   optional: true,
@@ -99,7 +99,7 @@ export const RowAutoHeightGuess: PropertyType = {
   doc: { en: `` },
 };
 
-export const RowHeight: PropertyType = {
+const RowHeight: PropertyType = {
   kind: "property",
   name: "rowHeight",
   optional: true,
@@ -108,7 +108,7 @@ export const RowHeight: PropertyType = {
   doc: { en: `` },
 };
 
-export const RowScanDistance: PropertyType = {
+const RowScanDistance: PropertyType = {
   kind: "property",
   name: "rowScanDistance",
   optional: true,
@@ -117,7 +117,7 @@ export const RowScanDistance: PropertyType = {
   doc: { en: `` },
 };
 
-export const ColScanDistance: PropertyType = {
+const ColScanDistance: PropertyType = {
   kind: "property",
   name: "colScanDistance",
   optional: true,
@@ -126,7 +126,7 @@ export const ColScanDistance: PropertyType = {
   doc: { en: `` },
 };
 
-export const RowOverscanTop: PropertyType = {
+const RowOverscanTop: PropertyType = {
   kind: "property",
   name: "rowOverscanTop",
   optional: true,
@@ -135,7 +135,7 @@ export const RowOverscanTop: PropertyType = {
   doc: { en: `` },
 };
 
-export const RowOverscanBottom: PropertyType = {
+const RowOverscanBottom: PropertyType = {
   kind: "property",
   name: "rowOverscanBottom",
   optional: true,
@@ -144,7 +144,7 @@ export const RowOverscanBottom: PropertyType = {
   doc: { en: `` },
 };
 
-export const ColOverscanStart: PropertyType = {
+const ColOverscanStart: PropertyType = {
   kind: "property",
   name: "colOverscanStart",
   optional: true,
@@ -153,7 +153,7 @@ export const ColOverscanStart: PropertyType = {
   doc: { en: `` },
 };
 
-export const ColOverscanEnd: PropertyType = {
+const ColOverscanEnd: PropertyType = {
   kind: "property",
   name: "colOverscanEnd",
   optional: true,
@@ -162,7 +162,7 @@ export const ColOverscanEnd: PropertyType = {
   doc: { en: `` },
 };
 
-export const RowFullWidthPredicate: PropertyType = {
+const RowFullWidthPredicate: PropertyType = {
   kind: "property",
   name: "rowFullWidthPredicate",
   optional: true,
@@ -171,7 +171,7 @@ export const RowFullWidthPredicate: PropertyType = {
   doc: { en: `` },
 };
 
-export const RowFullWidthRenderer: PropertyType = {
+const RowFullWidthRenderer: PropertyType = {
   kind: "property",
   name: "rowFullWidthRenderer",
   optional: true,
@@ -180,7 +180,7 @@ export const RowFullWidthRenderer: PropertyType = {
   doc: { en: `` },
 };
 
-export const CellRenderers: PropertyType = {
+const CellRenderers: PropertyType = {
   kind: "property",
   name: "cellRenderers",
   optional: true,
@@ -189,7 +189,7 @@ export const CellRenderers: PropertyType = {
   doc: { en: `` },
 };
 
-export const SortModel: PropertyType = {
+const SortModel: PropertyType = {
   kind: "property",
   name: "sortModel",
   optional: true,
@@ -198,7 +198,7 @@ export const SortModel: PropertyType = {
   doc: { en: `` },
 };
 
-export const Rtl: PropertyType = {
+const Rtl: PropertyType = {
   kind: "property",
   name: "rtl",
   optional: true,
@@ -207,7 +207,7 @@ export const Rtl: PropertyType = {
   doc: { en: `` },
 };
 
-export const FilterModel: PropertyType = {
+const FilterModel: PropertyType = {
   kind: "property",
   name: "filterModel",
   optional: true,
@@ -216,7 +216,7 @@ export const FilterModel: PropertyType = {
   doc: { en: `` },
 };
 
-export const RowGroupModel: PropertyType = {
+const RowGroupModel: PropertyType = {
   kind: "property",
   name: "rowGroupModel",
   optional: true,
@@ -225,7 +225,7 @@ export const RowGroupModel: PropertyType = {
   doc: { en: `` },
 };
 
-export const RowGroupDisplayMode: PropertyType = {
+const RowGroupDisplayMode: PropertyType = {
   kind: "property",
   name: "rowGroupDisplayMode",
   optional: true,
@@ -234,7 +234,7 @@ export const RowGroupDisplayMode: PropertyType = {
   doc: { en: `` },
 };
 
-export const RowGroupDefaultExpansion: PropertyType = {
+const RowGroupDefaultExpansion: PropertyType = {
   kind: "property",
   name: "rowGroupDefaultExpansion",
   optional: true,
@@ -243,7 +243,7 @@ export const RowGroupDefaultExpansion: PropertyType = {
   doc: { en: `` },
 };
 
-export const RowGroupExpansions: PropertyType = {
+const RowGroupExpansions: PropertyType = {
   kind: "property",
   name: "rowGroupExpansions",
   optional: true,
@@ -252,7 +252,7 @@ export const RowGroupExpansions: PropertyType = {
   doc: { en: `` },
 };
 
-export const RowGroupColumn: PropertyType = {
+const RowGroupColumn: PropertyType = {
   kind: "property",
   name: "rowGroupColumn",
   optional: true,
@@ -261,7 +261,7 @@ export const RowGroupColumn: PropertyType = {
   doc: { en: `` },
 };
 
-export const AggModel: PropertyType = {
+const AggModel: PropertyType = {
   kind: "property",
   name: "aggModel",
   optional: true,
@@ -270,7 +270,7 @@ export const AggModel: PropertyType = {
   doc: { en: `` },
 };
 
-export const FloatingRowEnabled: PropertyType = {
+const FloatingRowEnabled: PropertyType = {
   kind: "property",
   name: "floatingRowEnabled",
   optional: true,
@@ -279,7 +279,7 @@ export const FloatingRowEnabled: PropertyType = {
   doc: { en: `` },
 };
 
-export const FloatingRowHeight: PropertyType = {
+const FloatingRowHeight: PropertyType = {
   kind: "property",
   name: "floatingRowHeight",
   optional: true,
@@ -288,7 +288,7 @@ export const FloatingRowHeight: PropertyType = {
   doc: { en: `` },
 };
 
-export const FloatingCellRenderers: PropertyType = {
+const FloatingCellRenderers: PropertyType = {
   kind: "property",
   name: "floatingCellRenderers",
   optional: true,
@@ -297,7 +297,7 @@ export const FloatingCellRenderers: PropertyType = {
   doc: { en: `` },
 };
 
-export const HeaderCellRenderers: PropertyType = {
+const HeaderCellRenderers: PropertyType = {
   kind: "property",
   name: "headerCellRenderers",
   optional: true,
@@ -306,7 +306,7 @@ export const HeaderCellRenderers: PropertyType = {
   doc: { en: `` },
 };
 
-export const EditRenderers: PropertyType = {
+const EditRenderers: PropertyType = {
   kind: "property",
   name: "editRenderers",
   optional: true,
@@ -315,7 +315,7 @@ export const EditRenderers: PropertyType = {
   doc: { en: `` },
 };
 
-export const EditRowValidatorFn: PropertyType = {
+const EditRowValidatorFn: PropertyType = {
   kind: "property",
   name: "editRowValidatorFn",
   optional: true,
@@ -324,7 +324,7 @@ export const EditRowValidatorFn: PropertyType = {
   doc: { en: `` },
 };
 
-export const EditClickActivator: PropertyType = {
+const EditClickActivator: PropertyType = {
   kind: "property",
   name: "editClickActivator",
   optional: true,
@@ -333,7 +333,7 @@ export const EditClickActivator: PropertyType = {
   doc: { en: `` },
 };
 
-export const EditCellMode: PropertyType = {
+const EditCellMode: PropertyType = {
   kind: "property",
   name: "editCellMode",
   optional: true,
@@ -342,7 +342,7 @@ export const EditCellMode: PropertyType = {
   doc: { en: `` },
 };
 
-export const ColumnMarkerProp: PropertyType = {
+const ColumnMarkerProp: PropertyType = {
   kind: "property",
   name: "columnMarker",
   optional: true,
@@ -351,7 +351,7 @@ export const ColumnMarkerProp: PropertyType = {
   doc: { en: `` },
 };
 
-export const ColumnMarkerEnabled: PropertyType = {
+const ColumnMarkerEnabled: PropertyType = {
   kind: "property",
   name: "columnMarkerEnabled",
   optional: true,
@@ -360,7 +360,7 @@ export const ColumnMarkerEnabled: PropertyType = {
   doc: { en: `` },
 };
 
-export const RowDetailRenderer: PropertyType = {
+const RowDetailRenderer: PropertyType = {
   kind: "property",
   name: "rowDetailRenderer",
   optional: true,
@@ -369,7 +369,7 @@ export const RowDetailRenderer: PropertyType = {
   doc: { en: `` },
 };
 
-export const RowDetailHeight: PropertyType = {
+const RowDetailHeight: PropertyType = {
   kind: "property",
   name: "rowDetailHeight",
   optional: true,
@@ -378,7 +378,7 @@ export const RowDetailHeight: PropertyType = {
   doc: { en: `` },
 };
 
-export const RowDetailAutoHeightGuess: PropertyType = {
+const RowDetailAutoHeightGuess: PropertyType = {
   kind: "property",
   name: "rowDetailAutoHeightGuess",
   optional: true,
@@ -387,7 +387,7 @@ export const RowDetailAutoHeightGuess: PropertyType = {
   doc: { en: `` },
 };
 
-export const RowDetailExpansions: PropertyType = {
+const RowDetailExpansions: PropertyType = {
   kind: "property",
   name: "rowDetailExpansions",
   optional: true,
@@ -396,7 +396,7 @@ export const RowDetailExpansions: PropertyType = {
   doc: { en: `` },
 };
 
-export const RowSelectedIds: PropertyType = {
+const RowSelectedIds: PropertyType = {
   kind: "property",
   name: "rowSelectedIds",
   optional: true,
@@ -405,7 +405,7 @@ export const RowSelectedIds: PropertyType = {
   doc: { en: `` },
 };
 
-export const RowSelectionMode: PropertyType = {
+const RowSelectionMode: PropertyType = {
   kind: "property",
   name: "rowSelectionMode",
   optional: true,
@@ -414,7 +414,7 @@ export const RowSelectionMode: PropertyType = {
   doc: { en: `` },
 };
 
-export const RowSelectionActivator: PropertyType = {
+const RowSelectionActivator: PropertyType = {
   kind: "property",
   name: "rowSelectionActivator",
   optional: true,
@@ -423,7 +423,7 @@ export const RowSelectionActivator: PropertyType = {
   doc: { en: `` },
 };
 
-export const RowSelectChildren: PropertyType = {
+const RowSelectChildren: PropertyType = {
   kind: "property",
   name: "rowSelectChildren",
   optional: true,
@@ -432,7 +432,7 @@ export const RowSelectChildren: PropertyType = {
   doc: { en: `` },
 };
 
-export const ColumnDoubleClickToAutosize: PropertyType = {
+const ColumnDoubleClickToAutosize: PropertyType = {
   kind: "property",
   name: "columnDoubleClickToAutosize",
   optional: true,
@@ -441,7 +441,7 @@ export const ColumnDoubleClickToAutosize: PropertyType = {
   doc: { en: `` },
 };
 
-export const VirtualizeRows: PropertyType = {
+const VirtualizeRows: PropertyType = {
   kind: "property",
   name: "virtualizeRows",
   optional: true,
@@ -450,7 +450,7 @@ export const VirtualizeRows: PropertyType = {
   doc: { en: `` },
 };
 
-export const VirtualizeColumns: PropertyType = {
+const VirtualizeColumns: PropertyType = {
   kind: "property",
   name: "virtualizeCols",
   optional: true,
@@ -531,7 +531,10 @@ export const UseLyteNyteProps: InterfaceType = {
   name: "UseLyteNyteProps<T>",
   export: true,
   tsDoc: `The initial props that may be passed to the \`useLyteNyte\` hook. The hook
-  returns the state representation of LyteNyte Grid.`,
+  returns the state representation of LyteNyte Grid.
+  
+  @group Grid State
+  `,
   doc: { en: `` },
   extends: UseLyteNytePropsPartial,
   tag: "core",
@@ -624,7 +627,10 @@ export const UseLyteNytePropsPro: InterfaceType = {
   name: "UseLyteNyteProps<T>",
   export: true,
   tsDoc: `The initial props that may be passed to the \`useLyteNyte\` hook. The hook
-    returns the state representation of LyteNyte Grid.`,
+    returns the state representation of LyteNyte Grid.
+    
+  @group Grid State
+  `,
   doc: { en: `` },
   extends: UseLyteNytePropsPartial,
   tag: "pro",

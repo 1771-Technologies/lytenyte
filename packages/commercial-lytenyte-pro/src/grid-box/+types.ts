@@ -10,6 +10,9 @@ export interface GridBoxItem<T = any> {
   readonly dragPlaceholder?: () => ReactNode;
 
   readonly onDrop: (p: DropEventParams) => void;
-  readonly onAction: () => void;
-  readonly onDelete: () => void;
+  readonly onAction: (el: HTMLElement) => void;
+  readonly onDelete: (el: HTMLElement) => void;
+
+  readonly index: number;
+  readonly source: string;
 }

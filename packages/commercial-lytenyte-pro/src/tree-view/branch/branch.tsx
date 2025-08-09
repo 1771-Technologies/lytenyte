@@ -14,7 +14,7 @@ export interface TreeBranchProps {
 
   readonly labelWrap?: SlotComponent;
   readonly label?: SlotComponent;
-  readonly expander?: SlotComponent;
+  readonly expander?: SlotComponent<{ expanded: boolean; toggle: () => void }>;
 
   readonly transitionEnterMs?: number;
   readonly transitionExitMs?: number;
@@ -66,7 +66,8 @@ export const TreeBranch = forwardRef<HTMLLIElement, JSX.IntrinsicElements["li"] 
     });
 
     const expandedProps: JSX.IntrinsicElements["div"] = {
-      onClick: () => {
+      onClick: (e) => {
+        e.stopPropagation();
         onExpansionChange(!expanded);
       },
     };
@@ -74,6 +75,7 @@ export const TreeBranch = forwardRef<HTMLLIElement, JSX.IntrinsicElements["li"] 
     const expanderRendered = useSlot({
       props: [expandedProps],
       slot: expander ?? <button>{">"}</button>,
+      state: { toggle, expanded },
     });
 
     const wrapped = gridWrapped ?? root.gridWrappedBranches;
@@ -111,7 +113,7 @@ export const TreeBranch = forwardRef<HTMLLIElement, JSX.IntrinsicElements["li"] 
           style={
             {
               ...props.style,
-              "--tree-depth": depth,
+              "--ln-tree-depth": depth,
             } as CSSProperties
           }
         >

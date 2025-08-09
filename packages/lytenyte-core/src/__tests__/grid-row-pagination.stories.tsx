@@ -43,7 +43,8 @@ const columns: Column<any>[] = [
 
 function Component({ data = bankData }: { data?: any[] }) {
   const ds = useClientRowDataSourcePaginated({
-    data: data,
+    data: data.slice(0, 249),
+    rowsPerPage: 20,
   });
 
   const g = useLyteNyte({
@@ -76,6 +77,11 @@ function Component({ data = bankData }: { data?: any[] }) {
           <div>{ds.page.current.useValue() + 1}</div>/<div>{ds.page.pageCount.useValue()}</div>
           <button onClick={() => ds.page.current.set((prev) => prev + 1)}>+</button>
         </div>
+        <button onClick={() => ds.page.current.set(12)}>Jump to end</button>
+        <button onClick={() => ds.page.current.set(4)}>Jump to 5</button>
+        <button onClick={() => ds.page.current.set(0)}>Jump to 1</button>
+        <button onClick={() => ds.page.perPage.set(50)}>50 Per page</button>
+        <button onClick={() => ds.page.perPage.set(20)}>20 Per page</button>
       </div>
 
       <div style={{ width: "100%", height: "90vh", border: "1px solid black" }}>

@@ -55,6 +55,7 @@ function Component({ data = bankData }: { data?: any[] }) {
     gridId: useId(),
     columns,
     rowDataSource: ds,
+    rowHeight: (i) => [20, 30, 40][i % 3],
   });
 
   const view = g.view.useValue();

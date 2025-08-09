@@ -14,7 +14,7 @@ export function useAggregationBoxItems<T>({ grid, orientation }: UseAggregationB
 
   const items = useMemo(() => {
     const items = Object.entries(model).map<GridBoxItem<{ id: string; agg: AggModelFn<T> }>>(
-      ([id, agg]) => {
+      ([id, agg], i) => {
         const column = grid.api.columnById(id);
 
         const name = column?.name ?? column?.id ?? id;
@@ -23,6 +23,8 @@ export function useAggregationBoxItems<T>({ grid, orientation }: UseAggregationB
         return {
           draggable: false,
           id,
+          index: i,
+          source: "aggregation",
           data: { id, agg } as any,
           dragData: {},
           label: `${name} ${fn}`,

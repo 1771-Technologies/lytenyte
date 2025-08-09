@@ -8,7 +8,10 @@ export const GetDragDataParams: InterfaceType = {
   name: "GetDragDataParams<T>",
   properties: [GridProp, RowNodeProp],
   tsDoc: `Defines the input parameters for the function 
-  that provides data during a drag operation.`,
+  that provides data during a drag operation.
+  
+  @group Row Drag
+  `,
 };
 
 export const DragData: InterfaceType = {
@@ -36,13 +39,19 @@ export const DragData: InterfaceType = {
     },
   ],
   tsDoc: `Contains data associated with a drag operation, 
-  including transferable and site-local information.`,
+  including transferable and site-local information.
+  
+  @group Row Drag
+  `,
 };
 
 export const GetDragDataFn: FunctionType = {
   kind: "function",
   doc: { en: `` },
-  tsDoc: `Function used to provide the data that will be associated with a drag operation.`,
+  tsDoc: `Function used to provide the data that will be associated with a drag operation.
+  
+  @group Row Drag
+  `,
   export: true,
   name: "GetDragDataFn<T>",
   properties: [
@@ -62,7 +71,10 @@ export const DragPosition: InterfaceType = {
   kind: "interface",
   name: "DragPosition",
   doc: { en: `` },
-  tsDoc: `Represents the current pointer position during a drag operation.`,
+  tsDoc: `Represents the current pointer position during a drag operation.
+  
+  @group Row Drag
+  `,
   export: true,
   properties: [
     {
@@ -88,7 +100,10 @@ export const DragEventParams: InterfaceType = {
   kind: "interface",
   name: "DragEventParams",
   doc: { en: `` },
-  tsDoc: `Arguments passed during a drag event lifecycle.`,
+  tsDoc: `Arguments passed during a drag event lifecycle.
+  
+  @group Row Drag
+  `,
   export: true,
   properties: [
     {
@@ -123,7 +138,10 @@ export const DragEventFn: FunctionType = {
   name: "DragEventFn",
   export: true,
   doc: { en: `` },
-  tsDoc: `Callback function executed during a drag event.`,
+  tsDoc: `Callback function executed during a drag event.
+  
+  @group Row Drag
+  `,
   return: "void",
   properties: [
     {
@@ -140,7 +158,10 @@ export const DragEventFn: FunctionType = {
 export const DropMoveState: InterfaceType = {
   kind: "interface",
   doc: { en: `` },
-  tsDoc: `Describes the final state of a drag-and-drop move operation.`,
+  tsDoc: `Describes the final state of a drag-and-drop move operation.
+  
+  @group Row Drag
+  `,
   export: true,
   name: "DragMoveState",
   properties: [
@@ -215,7 +236,11 @@ export const DropEventParams: InterfaceType = {
   kind: "interface",
   name: "DropEventParams",
   doc: { en: `` },
-  tsDoc: `Represents the full context passed to the drop event handler.`,
+  tsDoc: `
+  Represents the full context passed to the drop event handler.
+
+  @group Row Drag
+  `,
   export: true,
   properties: [
     {
@@ -255,7 +280,11 @@ export const DropEventParams: InterfaceType = {
 
 export const DropEventFn: FunctionType = {
   kind: "function",
-  tsDoc: `Fired when a drop action is finalized and the dragged element is released over a drop zone.`,
+  tsDoc: `
+  Fired when a drop action is finalized and the dragged element is released over a drop zone.
+  
+  @group Row Drag
+  `,
   doc: { en: `` },
   export: true,
   name: "DropEventFn",
@@ -275,7 +304,11 @@ export const DropEventFn: FunctionType = {
 export const DragPlaceholderParams: InterfaceType = {
   kind: "interface",
   doc: { en: `` },
-  tsDoc: `Parameters passed when rendering the drag placeholder content.`,
+  tsDoc: `
+  Parameters passed when rendering the drag placeholder content.
+  
+  @group Row Drag
+  `,
   export: true,
   name: "DragPlaceholderParams<T>",
   properties: [
@@ -295,7 +328,10 @@ export const DragPlaceholderFn: FunctionType = {
   kind: "function",
   doc: { en: `` },
   tsDoc: `Function to render the drag placeholder UI. This UI 
-  is rendered in isolation and does not respond to app state changes.`,
+  is rendered in isolation and does not respond to app state changes.
+  
+  @group Row Drag
+  `,
   export: true,
   name: "DragPlaceholderFn<T>",
   properties: [
@@ -314,7 +350,11 @@ export const DragPlaceholderFn: FunctionType = {
 export const UseRowDragParams: InterfaceType = {
   kind: "interface",
   doc: { en: `` },
-  tsDoc: `Parameters for configuring drag behavior using a React hook.`,
+  tsDoc: `
+  Parameters for configuring drag behavior using a React hook.
+  
+  @group Row Drag
+  `,
   export: true,
   name: "UseRowDragParams<T>",
   properties: [

@@ -1,5 +1,209 @@
 # @1771technologies/lytenyte-react-autocomplete
 
+## 1.0.0-beta.38
+
+### Patch Changes
+
+- version
+
+## 1.0.0-beta.37
+
+### Patch Changes
+
+- version
+
+## 1.0.0-beta.36
+
+### Patch Changes
+
+- c015fa7: version
+
+## 1.0.0-beta.35
+
+### Patch Changes
+
+- version
+
+## 1.0.0-beta.34
+
+### Patch Changes
+
+- a7e891e: version
+
+## 1.0.0-beta.33
+
+### Patch Changes
+
+- verison
+
+## 1.0.0-beta.32
+
+### Patch Changes
+
+- version
+
+## 1.0.0-beta.31
+
+### Patch Changes
+
+- version
+
+## 1.0.0-beta.30
+
+### Patch Changes
+
+- version
+
+## 1.0.0-beta.29
+
+### Patch Changes
+
+- version
+
+## 1.0.0-beta.28
+
+### Patch Changes
+
+- version
+
+## 1.0.0-beta.27
+
+### Patch Changes
+
+- version
+
+## 1.0.0-beta.26
+
+### Patch Changes
+
+- verison
+
+## 1.0.0-beta.25
+
+### Patch Changes
+
+- version
+
+## 1.0.0-beta.24
+
+### Patch Changes
+
+- d5f2850: version
+
+## 1.0.0-beta.23
+
+### Patch Changes
+
+- 333c0ef: Version
+
+## 1.0.0-beta.22
+
+### Patch Changes
+
+- version
+
+## 1.0.0-beta.21
+
+### Patch Changes
+
+- version
+
+## 1.0.0-beta.20
+
+### Patch Changes
+
+- Versioning
+
+## 1.0.0-beta.19
+
+### Patch Changes
+
+- version
+
+## 1.0.0-beta.18
+
+### Patch Changes
+
+- 7228750: version
+
+## 1.0.0-beta.17
+
+### Patch Changes
+
+- version
+
+## 1.0.0-beta.16
+
+### Patch Changes
+
+- version
+
+## 1.0.0-beta.15
+
+### Patch Changes
+
+- version"
+
+## 1.0.0-beta.14
+
+### Patch Changes
+
+- version
+
+## 1.0.0-beta.13
+
+### Patch Changes
+
+- version
+
+## 1.0.0-beta.12
+
+### Patch Changes
+
+- version
+
+## 1.0.0-beta.11
+
+### Patch Changes
+
+- version
+
+## 1.0.0-beta.10
+
+### Patch Changes
+
+- Version
+
+## 1.0.0-beta.9
+
+### Patch Changes
+
+- Version
+
+## 1.0.0-beta.8
+
+### Patch Changes
+
+- Version
+
+## 1.0.0-beta.7
+
+### Patch Changes
+
+- Fixes
+
+## 1.0.0-beta.6
+
+### Patch Changes
+
+- Version
+
+## 1.0.0-beta.5
+
+### Patch Changes
+
+- Version
+
 ## 1.0.0-beta.4
 
 ### Patch Changes

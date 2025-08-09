@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { useGridRoot } from "../context";
 import { useEdgeScroll } from "./use-edge-scroll";
-import type { DataRect } from "../+types";
+import type { DataRect, PositionUnion } from "../+types";
 import {
+  equal,
   getClientX,
   getClientY,
   getRelativeXPosition,
@@ -285,8 +286,18 @@ export function CellSelectionDriver() {
   }, [cancelX, cancelY, edgeScrollX, edgeScrollY, grid, mode, viewport]);
 
   useEffect(() => {
+    let prev: PositionUnion | null = null;
     return grid.internal.focusActive.watch(() => {
       const focus = grid.internal.focusActive.get();
+
+      // If the focus is null, then we should just return. This keeps the existing selection
+      // in place - for things like copy and paste.
+      if (!focus) return;
+
+      if (equal(prev, focus)) return;
+
+      prev = focus;
+
       if (focus?.kind !== "cell" && focus?.kind !== "full-width") {
         grid.state.cellSelections.set([]);
         grid.internal.cellSelectionPivot.set(null);

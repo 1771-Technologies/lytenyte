@@ -54,14 +54,41 @@ const RowIdBranch: PropertyType = {
   value: "(path: string[]) => string",
 };
 
+const RowsPerPage: PropertyType = {
+  kind: "property",
+  name: "rowsPerPage",
+  doc: { en: `` },
+  tsDoc: `The number of rows to have per page. This will impact the total page count.`,
+  optional: true,
+  value: "number",
+};
+
 export const ClientRowDataSourceParams: InterfaceType = {
   kind: "interface",
   export: true,
   name: "ClientRowDataSourceParams<T>",
-  tsDoc: `Parameters required to initialize a client-side row data source.`,
+  tsDoc: `
+  Parameters required to initialize a client-side row data source.
+  
+  @group Row Data Source
+  `,
   tag: "core",
   doc: { en: `` },
   properties: [Data, TopData, BottomData, ReflectData, RowIdBranch, RowIdLeaf],
+};
+
+export const ClientRowDataSourcePaginatedParams: InterfaceType = {
+  kind: "interface",
+  export: true,
+  name: "ClientRowDataSourcePaginatedParams<T>",
+  tsDoc: `
+  Parameters required to initialize a client-side row data source.
+  
+  @group Row Data Source
+  `,
+  tag: "core",
+  doc: { en: `` },
+  properties: [Data, TopData, BottomData, ReflectData, RowIdBranch, RowIdLeaf, RowsPerPage],
 };
 
 const TransformInFilterProp: PropertyType = {
@@ -69,15 +96,19 @@ const TransformInFilterProp: PropertyType = {
   doc: { en: `` },
   name: "transformInFilterItem",
   optional: true,
-  tsDoc: `Callback that transforms a column in-filter item before it's applied.`,
-  value: "(params: { field: unknown, column: Column<T> }) => FilterInFilterItem",
+  tsDoc: `Callback that transforms a set of values for a given column into the in filter items LyteNyte Grid should use.`,
+  value: "(params: { column: Column<T>, values: unknown[] }) => FilterInFilterItem[]",
 };
 
 export const ClientRowDataSourceParamsPro: InterfaceType = {
   kind: "interface",
   export: true,
   name: "ClientRowDataSourceParams<T>",
-  tsDoc: `Enhanced parameters for a client-side row data source with additional filtering support.`,
+  tsDoc: `
+  Enhanced parameters for a client-side row data source with additional filtering support.
+  
+  @group Row Data Source
+  `,
   tag: "pro",
   doc: { en: `` },
   properties: [
@@ -91,11 +122,38 @@ export const ClientRowDataSourceParamsPro: InterfaceType = {
   ],
 };
 
+export const ClientRowDataSourcePaginatedParamsPro: InterfaceType = {
+  kind: "interface",
+  export: true,
+  name: "ClientRowDataSourcePaginatedParams<T>",
+  tsDoc: `
+  Parameters required to initialize a client-side row data source.
+  
+  @group Row Data Source
+  `,
+  tag: "pro",
+  doc: { en: `` },
+  properties: [
+    Data,
+    TopData,
+    BottomData,
+    ReflectData,
+    RowIdBranch,
+    RowIdLeaf,
+    TransformInFilterProp,
+    RowsPerPage,
+  ],
+};
+
 export const ClientTreeDataSourceParamsPro: InterfaceType = {
   kind: "interface",
   export: true,
   name: "ClientTreeDataSourceParams<T>",
-  tsDoc: `Parameters for initializing a tree-structured data source in LyteNyte Grid.`,
+  tsDoc: `
+  Parameters for initializing a tree-structured data source in LyteNyte Grid.
+  
+  @group Row Data Source
+  `,
   tag: "pro",
   doc: { en: `` },
   properties: [

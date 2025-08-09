@@ -34,11 +34,10 @@ export const FilterNumberOperator: UnionType = {
   ],
   tsDoc: `
     Logical operators available for number-based filtering.
+    These correspond to the traditional comparison operators, \`>, <=\`, etc.
     
-    These correspond to traditional comparison operators:
-    - \`greater_than\` → \`>\`
-    - \`less_than_or_equals\` → \`<=\`
-    etc.
+
+    @group Filters
   `,
   doc: { en: `` },
 };
@@ -50,6 +49,8 @@ export const FilterNumberOptions: InterfaceType = {
   tsDoc: `
     Optional configuration values for number filters. These options allow fine-tuning of filter behavior,
     especially in cases involving precision or null handling.
+
+    @group Filters
   `,
   doc: { en: `` },
   properties: [
@@ -90,11 +91,10 @@ export const FilterNumber: InterfaceType = {
     Defines a filter for numeric columns.
 
     Applies common comparison logic to include or exclude rows based on numerical values in a specified column.
+
+    @group Filters
   `,
   doc: { en: `` },
-  seeAlso: [
-    { kind: "link", name: "Filters", link: "TODO", description: "Overview of the filters" },
-  ],
   properties: [
     {
       kind: "property",
@@ -126,8 +126,7 @@ export const FilterNumber: InterfaceType = {
       tsDoc: `
         Target value for the filter.
 
-        This will be used as the right-hand operand when applying the operator to each row's value.
-        May be \`null\` if specifically filtering for nulls.
+        This will be used as the right-hand operand when applying the operator to each row's value. May be \`null\` if specifically filtering for nulls.
       `,
       doc: { en: `` },
       optional: false,
@@ -178,6 +177,8 @@ export const FilterStringOperator: UnionType = {
     These include comparison operators (e.g., "equals"), substring checks (e.g., "contains"), and
     length-based checks (e.g., "length_less_than"). Some operators require a numeric \`value\`
     (e.g., those dealing with string length).
+
+    @group Filters
   `,
   doc: { en: `` },
   seeAlso: [],
@@ -191,6 +192,8 @@ export const FilterStringCollation: InterfaceType = {
     Collation configuration for locale-sensitive string comparisons.
 
     Used to construct an \`Intl.Collator\` instance, which enables proper handling of language and region-specific rules.
+
+    @group Filters
   `,
   doc: { en: `` },
   properties: [
@@ -230,6 +233,8 @@ export const FilterStringOptions: InterfaceType = {
 
     These provide control over how string values are matched, such as case sensitivity, whitespace trimming,
     regular expression flags, and locale-based collation.
+
+    @group Filters
   `,
   doc: { en: `` },
   properties: [
@@ -300,6 +305,8 @@ export const FilterString: InterfaceType = {
     Filter configuration for string-based column data.
 
     Supports a wide range of operators such as exact match, substring containment, regex matching, and string length comparisons.
+
+    @group Filters
   `,
   doc: { en: `` },
   properties: [
@@ -397,6 +404,8 @@ export const FilterDateOperator: UnionType = {
     relative date expressions (e.g., "n_days_ago", "last_week", "is_weekend").
     
     The required type of the \`value\` field depends on the selected operator.
+
+    @group Filters
   `,
   doc: { en: `` },
   seeAlso: [],
@@ -427,6 +436,8 @@ export const FilterDateOptions: InterfaceType = {
 
     Includes options like null handling and whether time values should be considered
     during comparisons.
+
+    @group Filters
   `,
   doc: { en: `` },
 };
@@ -500,6 +511,8 @@ export const FilterDate: InterfaceType = {
 
     If filtering on timestamps or partial dates, be mindful of timezone offsets and whether
     time components are relevant to your comparison.
+
+    @group Filters
   `,
   doc: { en: `` },
 };
@@ -514,6 +527,8 @@ export const FilterInOperation: UnionType = {
 
     - \`"in"\`: Tests for inclusion in the set.
     - \`"not_in"\`: Tests for exclusion from the set.
+
+    @group Filters
   `,
   doc: { en: `` },
   tag: "pro",
@@ -566,6 +581,8 @@ export const FilterIn: InterfaceType = {
 
     Often referred to as a "Set Filter", this is a PRO-only feature in
     LyteNyte Grid and cannot be nested in combination filters.
+
+    @group Filters
   `,
   doc: { en: `` },
   tag: "pro",
@@ -578,6 +595,8 @@ export const FilterCombinationOperator: UnionType = {
   types: ['"AND"', '"OR"'],
   tsDoc: `
     Logical operators used to join multiple filters inside a combination filter.
+    
+    @group Filters
   `,
   doc: { en: `` },
 };
@@ -633,6 +652,8 @@ export const FilterCombination: InterfaceType = {
 
     Combination filters enable complex conditional logic by nesting
     different filters into a tree structure.
+
+    @group Filters
   `,
   doc: { en: `` },
 };
@@ -645,6 +666,8 @@ export const FilterFnParams: InterfaceType = {
     The parameters passed to a custom function filter.
 
     Includes both the current row's data and the overall grid configuration.
+
+    @group Filters
   `,
   doc: { en: `` },
   properties: [DataProp, GridProp],
@@ -673,6 +696,8 @@ export const FilterFn: FunctionType = {
     be represented using built-in filter types.
 
     The function should return \`true\` to keep a row or \`false\` to filter it out.
+
+    @group Filters
   `,
   doc: { en: `` },
 };
@@ -708,6 +733,8 @@ export const FilterFunc: InterfaceType = {
     for filtering scenarios that don't conform to basic models.
 
     Should be used selectively and optimized for performance.
+
+    @group Filters
   `,
   doc: { en: `` },
 };
@@ -763,6 +790,8 @@ export const Locale: UnionType = {
     The supported locale identifiers for string filtering and collation.
 
     Used to configure internationalized string comparison behavior.
+
+    @group Filters
   `,
   doc: { en: `` },
 };
@@ -774,6 +803,8 @@ export const FilterModelItem: UnionType = {
   types: ["FilterNumber", "FilterString", "FilterDate", "FilterCombination", "FilterFunc<T>"],
   tsDoc: `
     The full set of filter types available in the LyteNyte Grid.
+
+    @group Filters
   `,
   doc: { en: `` },
 };
@@ -788,6 +819,8 @@ export const FilterQuickSearchSensitivity: UnionType = {
 
     - \`"case-sensitive"\`: Exact matches required.
     - \`"case-insensitive"\`: Case differences are ignored.
+
+    @group Filters
   `,
   doc: { en: `` },
   tag: "pro",
@@ -846,6 +879,8 @@ export const FilterInFilterItem: InterfaceType = {
     Represents a displayable filter option for use with the \`in\` filter UI component.
 
     Supports grouping and human-friendly labeling for raw filter values.
+
+    @group Filters
   `,
   doc: { en: `` },
 };

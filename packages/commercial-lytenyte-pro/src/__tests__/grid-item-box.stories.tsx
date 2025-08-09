@@ -1,4 +1,4 @@
-import "./grid-navigation.css";
+// import "./grid-navigation.css";
 import "./grid-item-box.css";
 import type { Meta, StoryObj } from "@storybook/react";
 import { GridBox as GB } from "../grid-box/grid-box.js";
@@ -7,15 +7,6 @@ import { useId } from "react";
 import type { Column } from "../+types";
 import { useClientRowDataSource } from "../row-data-source-client/use-client-data-source";
 import { bankData } from "./sample-data/bank-data";
-import { Root } from "../root/root";
-import { Viewport } from "../viewport/viewport";
-import { Header } from "../header/header";
-import { HeaderRow } from "../header/header-row";
-import { HeaderGroupCell } from "../header/header-group-cell";
-import { HeaderCell } from "../header/header-cell";
-import { RowsContainer } from "../rows/rows-container";
-import { RowsBottom, RowsCenter, RowsTop } from "../rows/rows-sections";
-import { RowHandler } from "./sample-data/row-handler";
 
 const meta: Meta = {
   title: "Grid/Grid Item Box",
@@ -36,12 +27,6 @@ const columns: Column<any>[] = [
 function Component({ data = bankData }: { data?: any[] }) {
   const ds = useClientRowDataSource({
     data: data,
-    transformInFilterItem: ({ field }) => {
-      if (field === "unknown")
-        return { label: `${field}`, id: `${field}`, value: field, groupPath: ["Alpha"] };
-
-      return { label: `${field}`, id: `${field}`, value: field };
-    },
   });
 
   const g = useLyteNyte({
@@ -67,8 +52,6 @@ function Component({ data = bankData }: { data?: any[] }) {
       },
     },
   });
-
-  const view = g.view.useValue();
 
   const box = GB.useColumnBoxItems({
     grid: g,
@@ -171,50 +154,6 @@ function Component({ data = bankData }: { data?: any[] }) {
               </GB.Panel>
             </GB.Root>
           </div>
-        </div>
-        <div style={{ width: "50%", height: "90vh", border: "1px solid black" }}>
-          <Root grid={g}>
-            <Viewport>
-              <Header>
-                {view.header.layout.map((row, i) => {
-                  return (
-                    <HeaderRow headerRowIndex={i} key={i}>
-                      {row.map((c) => {
-                        if (c.kind === "group") {
-                          return (
-                            <HeaderGroupCell
-                              cell={c}
-                              key={c.idOccurrence}
-                              style={{ border: "1px solid black", background: "lightgray" }}
-                            />
-                          );
-                        }
-                        return (
-                          <HeaderCell
-                            cell={c}
-                            key={c.column.id}
-                            style={{ border: "1px solid black", background: "lightgray" }}
-                          />
-                        );
-                      })}
-                    </HeaderRow>
-                  );
-                })}
-              </Header>
-
-              <RowsContainer>
-                <RowsTop>
-                  <RowHandler rows={view.rows.top} />
-                </RowsTop>
-                <RowsCenter>
-                  <RowHandler rows={view.rows.center} />
-                </RowsCenter>
-                <RowsBottom>
-                  <RowHandler rows={view.rows.bottom} />
-                </RowsBottom>
-              </RowsContainer>
-            </Viewport>
-          </Root>
         </div>
       </div>
     </div>

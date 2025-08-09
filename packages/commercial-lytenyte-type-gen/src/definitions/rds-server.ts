@@ -6,7 +6,11 @@ export const DataRequestModel: InterfaceType = {
   doc: { en: `` },
   export: true,
   name: "DataRequestModel<T>",
-  tsDoc: `Describes the current grid state used to construct a request for external data.`,
+  tsDoc: `
+  Describes the current grid state used to construct a request for external data.
+  
+  @group Row Data Source
+  `,
   properties: [
     {
       kind: "property",
@@ -98,7 +102,11 @@ export const DataRequest: InterfaceType = {
   name: "DataRequest",
   doc: { en: `` },
   export: true,
-  tsDoc: `Represents a specific request for data to an external data source.`,
+  tsDoc: `
+  Represents a specific request for data to an external data source.
+  
+  @group Row Data Source
+  `,
   properties: [
     {
       kind: "property",
@@ -154,7 +162,11 @@ export const DataRequest: InterfaceType = {
 export const DataResponseLeafItem: InterfaceType = {
   kind: "interface",
   name: "DataResponseLeafItem",
-  tsDoc: `Represents a row of data (a leaf node) returned in a server response.`,
+  tsDoc: `
+  Represents a row of data (a leaf node) returned in a server response.
+  
+  @group Row Data Source
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -188,7 +200,11 @@ export const DataResponseLeafItem: InterfaceType = {
 export const DataResponseBranchItem: InterfaceType = {
   kind: "interface",
   name: "DataResponseBranchItem",
-  tsDoc: `Represents a group (branch) row returned from a data request.`,
+  tsDoc: `
+  Represents a group (branch) row returned from a data request.
+  
+  @group Row Data Source
+  `,
   doc: { en: `` },
   export: true,
   properties: [
@@ -240,14 +256,20 @@ const asOfTimeProp: PropertyType = {
   doc: { en: `` },
   name: "asOfTime",
   optional: false,
-  tsDoc: `Unix timestamp indicating when the data is valid from. Used to resolve response conflicts.`,
+  tsDoc: `
+  Unix timestamp indicating when the data is valid from. Used to resolve response conflicts.
+  `,
   value: "number",
 };
 
 export const DataResponsePinned: InterfaceType = {
   kind: "interface",
   doc: { en: `` },
-  tsDoc: `Response object for setting pinned row data (top or bottom).`,
+  tsDoc: `
+  Response object for setting pinned row data (top or bottom).
+  
+  @group Row Data Source
+  `,
   export: true,
   name: "DataResponsePinned",
   properties: [
@@ -274,7 +296,11 @@ export const DataResponsePinned: InterfaceType = {
 export const DataResponse: InterfaceType = {
   kind: "interface",
   doc: { en: `` },
-  tsDoc: `Response object for row data from a center section request.`,
+  tsDoc: `
+  Response object for row data from a center section request.
+  
+  @group Row Data Source
+  `,
   export: true,
   name: "DataResponse",
   properties: [
@@ -335,7 +361,11 @@ export const DataFetcherParams: InterfaceType = {
   name: "DataFetcherParams<T>",
   doc: { en: `` },
   export: true,
-  tsDoc: `Input parameters provided to a grid data fetcher function.`,
+  tsDoc: `
+  Input parameters provided to a grid data fetcher function.
+  
+  @group Row Data Source
+  `,
   properties: [
     GridProp,
     {
@@ -369,7 +399,11 @@ export const DataFetcherFn: FunctionType = {
   kind: "function",
   name: "DataFetcherFn<T>",
   doc: { en: `` },
-  tsDoc: `Fetches grid row data asynchronously for the LyteNyte Server Data Source.`,
+  tsDoc: `
+  Fetches grid row data asynchronously for the LyteNyte Server Data Source.
+  
+  @group Row Data Source
+  `,
   export: true,
   properties: [
     {
@@ -388,7 +422,11 @@ export const DataColumnPivotFetcherParams: InterfaceType = {
   kind: "interface",
   name: "DataColumnPivotFetcherParams<T>",
   doc: { en: `` },
-  tsDoc: `Parameters passed to the column pivot fetcher function.`,
+  tsDoc: `
+  Parameters passed to the column pivot fetcher function.
+  
+  @group Row Data Source
+  `,
   export: true,
   properties: [
     GridProp,
@@ -414,7 +452,11 @@ export const DataColumnPivotFetcherParams: InterfaceType = {
 export const DataColumnPivotFetcherFn: FunctionType = {
   kind: "function",
   doc: { en: `` },
-  tsDoc: `Fetches pivoted columns for the grid's current pivot configuration.`,
+  tsDoc: `
+  Fetches pivoted columns for the grid's current pivot configuration.
+  
+  @group Row Data Source
+  `,
   export: true,
   name: "DataColumnPivotFetcherFn<T>",
   properties: [
@@ -434,7 +476,11 @@ export const DataInFilterItemFetcherParams: InterfaceType = {
   kind: "interface",
   name: "DataInFilterItemFetcherParams<T>",
   doc: { en: `` },
-  tsDoc: `Parameters passed to the in-filter fetcher function.`,
+  tsDoc: `
+  Parameters passed to the in-filter fetcher function.
+  
+  @group Row Data Source
+  `,
   export: true,
   properties: [
     GridProp,
@@ -453,7 +499,11 @@ export const DataInFilterItemFetcherParams: InterfaceType = {
 export const DataInFilterItemFetcherFn: FunctionType = {
   kind: "function",
   doc: { en: `` },
-  tsDoc: `Fetches items used in "in" filters from a server-side source.`,
+  tsDoc: `
+  Fetches items used in "in" filters from a server-side source.
+  
+  @group Row Data Source
+  `,
   export: true,
   name: "DataInFilterItemFetcherFn<T>",
   properties: [
@@ -472,7 +522,11 @@ export const DataInFilterItemFetcherFn: FunctionType = {
 export const RowDataSourceServerParams: InterfaceType = {
   kind: "interface",
   doc: { en: `` },
-  tsDoc: `Parameters for configuring the server row data source.`,
+  tsDoc: `
+  Parameters for configuring the server row data source.
+  
+  @group Row Data Source
+  `,
   export: true,
   name: "RowDataSourceServerParams<T>",
   properties: [

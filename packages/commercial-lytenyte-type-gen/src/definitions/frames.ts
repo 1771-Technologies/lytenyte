@@ -9,7 +9,11 @@ const FrameContext: PropertyType = {
   tsDoc: `Custom context data passed to the frame being rendered.
 
   This context is supplied programmatically at the point of invoking the frame.
-  It can contain any arbitrary information required for rendering behavior.`,
+  It can contain any arbitrary information required for rendering behavior.
+  
+  @group Frames
+  `,
+
   value: "any",
 };
 
@@ -21,7 +25,10 @@ export const DialogFrameRendererParams: InterfaceType = {
   tsDoc: `Parameters provided to the dialog frame renderer function.
 
   These include the grid context, the frame being rendered, and any additional
-  user-provided context.`,
+  user-provided context.
+  
+  @group Frames
+  `,
   tag: "pro",
   properties: [
     GridProp,
@@ -45,7 +52,10 @@ export const DialogFrameRenderer: FunctionType = {
   developers to use their preferred dialog libraries. This renderer function receives
   control parameters and should return a valid ReactNode to render as a dialog.
 
-  Note: The dialog component used should support controlled open/close behavior.`,
+  Note: The dialog component used should support controlled open/close behavior.
+  
+  @group Frames
+  `,
   doc: { en: `` },
   export: true,
   name: "DialogFrameRenderer<T>",
@@ -68,7 +78,10 @@ export const DialogFrame: InterfaceType = {
   tsDoc: `Defines a dialog frame configuration used by LyteNyte Grid.
 
   This structure is passed to grid internals to associate a rendering component
-  for dialogs triggered by grid interactions.`,
+  for dialogs triggered by grid interactions.
+  
+  @group Frames
+  `,
   doc: { en: `` },
   export: true,
   name: "DialogFrame<T>",
@@ -90,7 +103,10 @@ export const PopoverFrameRendererParams: InterfaceType = {
   tsDoc: `Parameters passed to the popover frame renderer function.
 
   Includes information about the grid, the target HTML element or virtual
-  target to anchor the popover, and the frame being rendered.`,
+  target to anchor the popover, and the frame being rendered.
+  
+  @group Frames
+  `,
   doc: { en: `` },
   export: true,
   name: "PopoverFrameRendererParams<T>",
@@ -124,7 +140,10 @@ export const PopoverFrameRenderer: FunctionType = {
   tsDoc: `Function that renders a popover component for a given context.
 
   LyteNyte Grid does not include a built-in popover renderer. Developers must use their
-  own popover UI libraries and integrate them by implementing this renderer interface.`,
+  own popover UI libraries and integrate them by implementing this renderer interface.
+  
+  @group Frames
+  `,
   export: true,
   return: "ReactNode",
   tag: "pro",
@@ -146,7 +165,10 @@ export const PopoverFrame: InterfaceType = {
   tsDoc: `Describes a popover frame and the component renderer used to display it.
 
   The popover frame is triggered by LyteNyte Grid interactions and used to display
-  contextual information, editors, or auxiliary UI near a cell or element.`,
+  contextual information, editors, or auxiliary UI near a cell or element.
+  
+  @group Frames
+  `,
   export: true,
   name: "PopoverFrame<T>",
   tag: "pro",

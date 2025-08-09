@@ -8,6 +8,8 @@ export const ColumnPivotRowItem: InterfaceType = {
   Configuration for row-level grouping in a column pivot model.
 
   These items define which fields should be used to group rows before creating pivot columns.
+
+  @group Column Pivots
   `,
   export: true,
   properties: [
@@ -41,6 +43,8 @@ export const ColumnPivotColumnItem: InterfaceType = {
   Configuration for the column dimension of a pivot.
 
   Each item defines a field whose values will be used to generate dynamic columns in the pivot view.
+
+  @group Column Pivots
   `,
   doc: { en: `` },
   export: true,
@@ -77,6 +81,8 @@ export const ColumnPivotValueItem: InterfaceType = {
   Configuration for value fields in a pivot (also known as measures).
 
   These values define what numeric or aggregate data should be shown for each cell in the pivot result.
+
+  @group Column Pivots
   `,
   properties: [
     {
@@ -120,6 +126,8 @@ export const ColumnPivotModel: InterfaceType = {
 
   This includes row grouping, column generation, value aggregation, and sort/filter
   configuration for the pivoted result.
+
+  @group Column Pivots
   `,
   properties: [
     {

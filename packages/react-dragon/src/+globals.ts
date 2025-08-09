@@ -17,6 +17,27 @@ export const activeDropAtom = atom<HTMLElement | null>(null);
 export const isTouchDragAtom = atom(false);
 export const dropZonesAtom = new Map<HTMLElement, DropZone>();
 
+export const dragStyleEl = atom<HTMLStyleElement | null>(null);
+export const placeholderEle = atom<HTMLElement | null>(null);
+
+export const placeholderHandler = {
+  clean: () => {
+    store.get(placeholderEle)?.remove();
+  },
+  set: (el: HTMLElement | null) => {
+    store.set(placeholderEle, el);
+  },
+};
+
+export const dragStyleHandler = {
+  clean: () => {
+    store.get(dragStyleEl)?.remove();
+  },
+  set: (el: HTMLStyleElement | null) => {
+    store.set(dragStyleEl, el);
+  },
+};
+
 export const dragState = {
   active: {
     get: () => store.get(activeDragElement),

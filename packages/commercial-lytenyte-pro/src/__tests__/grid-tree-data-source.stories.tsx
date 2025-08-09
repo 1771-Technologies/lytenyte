@@ -9,10 +9,11 @@ import { useId } from "react";
 import { HeaderCell } from "../header/header-cell";
 import type { Column } from "../+types";
 import { HeaderGroupCell } from "../header/header-group-cell";
-import { bankDataSmall } from "./sample-data/bank-data-smaller";
 import { RowsBottom, RowsCenter, RowsTop } from "../rows/rows-sections";
 import { RowHandler } from "./sample-data/row-handler";
 import { useClientTreeDataSource } from "../row-data-source-client/use-client-tree-data-source";
+import { ChevronDownIcon, ChevronRightIcon } from "../icons";
+import { fileData } from "./db/file-data";
 
 const meta: Meta = {
   title: "Grid/Tree Data Source",
@@ -21,36 +22,62 @@ const meta: Meta = {
 export default meta;
 
 const columns: Column<any>[] = [
-  { id: "age" },
-  { id: "job" },
-  { id: "balance" },
-  { id: "education" },
-  { id: "marital" },
-  { id: "default" },
-  { id: "housing" },
-  { id: "loan" },
-  { id: "contact" },
-  { id: "day" },
-  { id: "month" },
-  { id: "duration" },
-  { id: "campaign" },
-  { id: "pdays" },
-  { id: "previous" },
-  { id: "poutcome" },
-  { id: "y" },
+  {
+    id: "path",
+    cellRenderer: ({ grid, row }) => {
+      if (!row.data) return null;
+
+      if (grid.api.rowIsLeaf(row)) {
+        const field = row.data.path;
+
+        return <div className="flex items-center px-2">{field}</div>;
+      }
+      const field = row.key;
+      const isExpanded = grid.api.rowGroupIsExpanded(row);
+
+      return (
+        <div
+          className="flex h-full w-full items-center gap-2"
+          style={{ paddingLeft: row.depth * 16 }}
+        >
+          <button
+            className="flex items-center justify-center"
+            onClick={(e) => {
+              e.stopPropagation();
+              grid.api.rowGroupToggle(row);
+            }}
+          >
+            {!isExpanded && <ChevronRightIcon />}
+            {isExpanded && <ChevronDownIcon />}
+          </button>
+
+          <div>{`${field}`}</div>
+        </div>
+      );
+    },
+  },
+  { id: "size" },
+  { id: "lastModified" },
+  { id: "type" },
+  { id: "owner" },
+  { id: "permissions" },
+  { id: "isHidden" },
 ];
 
 function MainComp() {
-  const ds = useClientTreeDataSource({
-    data: bankDataSmall,
-    getPathFromData: (d) => [d.data?.education, `${d.data?.age}`],
+  const ds = useClientTreeDataSource<any>({
+    data: fileData.filter((c) => c.type !== "directory"),
+    getPathFromData: ({ data }) => {
+      const path = data ? data.path.split("/").filter((c: any) => !!c) : [];
+
+      return path;
+    },
   });
+
   const g = useLyteNyte({
     gridId: useId(),
     columns,
     rowDataSource: ds,
-
-    rowGroupDefaultExpansion: true,
 
     aggModel: {
       job: { fn: "first" },

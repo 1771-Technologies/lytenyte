@@ -3,19 +3,19 @@ import { forwardRef, type JSX } from "react";
 import { useSortRowCtx } from "./context";
 
 export interface SortRemoveProps {
-  readonly slot?: SlotComponent<{ onRemove: () => void }>;
+  readonly as?: SlotComponent<{ onRemove: () => void }>;
 }
 
 export const SortRemove = forwardRef<
   HTMLDivElement,
   JSX.IntrinsicElements["button"] & SortRemoveProps
->(function SortRemove({ slot, ...props }, forwarded) {
+>(function SortRemove({ as, ...props }, forwarded) {
   const row = useSortRowCtx();
 
   const renderer = useSlot({
-    props: [props],
+    props: [typeof as !== "function" ? { onClick: row.onDelete } : {}, props],
     ref: forwarded,
-    slot: slot ?? <button onClick={row.onDelete}>x</button>,
+    slot: as ?? <button>x</button>,
     state: { onAdd: row.onDelete },
   });
 
