@@ -6,6 +6,7 @@ import {
   RowIndeterminateProp,
   RowIndexProp,
   RowNodeProp,
+  RowPinProp,
   RowSelectedProp,
 } from "./shared-properties";
 
@@ -29,6 +30,7 @@ export const CellRendererParams: InterfaceType = {
     ColumnIndexProp,
     RowSelectedProp,
     RowIndeterminateProp,
+    RowPinProp,
   ],
 };
 

@@ -949,7 +949,8 @@ export interface HeaderGroupCellLayout {
   readonly isCollapsible: boolean;
 
   /**
-   * A unique identifier that can be used for rendering keys or tracking elements.
+   * The id for the header group. Note this is not unique across all header groups. In particular
+   *       split header groups with the same path will share the same id. Prefer `idOccurrence` for unique keys.
    */
   readonly id: string;
 
@@ -1890,6 +1891,11 @@ export interface RowDataSource<T> {
   readonly rowAdd: (newRows: any[], atIndex?: number | "beginning" | "end") => void;
 
   /**
+   * Sets the data for the center rows (scrollable rows) of the grid. Effectively replacing the current row data.
+   */
+  readonly rowSetCenterData: (newRows: any[]) => void;
+
+  /**
    * Sets the data for rows pinned to the top section.
    */
   readonly rowSetTopData: (data: any[]) => void;
@@ -1970,6 +1976,11 @@ export interface RowDataSourceClient<T> {
   readonly rowAdd: (newRows: any[], atIndex?: number | "beginning" | "end") => void;
 
   /**
+   * Sets the data for the center rows (scrollable rows) of the grid. Effectively replacing the current row data.
+   */
+  readonly rowSetCenterData: (newRows: any[]) => void;
+
+  /**
    * Sets the data for rows pinned to the top section.
    */
   readonly rowSetTopData: (data: any[]) => void;
@@ -1978,6 +1989,11 @@ export interface RowDataSourceClient<T> {
    * Sets the data for rows pinned to the bottom section.
    */
   readonly rowSetBotData: (data: any[]) => void;
+
+  /**
+   * A client data source method to retrieve the raw data passed to the data source.
+   */
+  readonly rowData: (section: RowSection) => T[];
 }
 
 /**
@@ -2048,6 +2064,11 @@ export interface RowDataSourceClientPaginated<T> {
   readonly rowAdd: (newRows: any[], atIndex?: number | "beginning" | "end") => void;
 
   /**
+   * Sets the data for the center rows (scrollable rows) of the grid. Effectively replacing the current row data.
+   */
+  readonly rowSetCenterData: (newRows: any[]) => void;
+
+  /**
    * Sets the data for rows pinned to the top section.
    */
   readonly rowSetTopData: (data: any[]) => void;
@@ -2061,6 +2082,11 @@ export interface RowDataSourceClientPaginated<T> {
    * The properties of the current pagination state.
    */
   readonly page: RowDataSourceClientPageState;
+
+  /**
+   * A client data source method to retrieve the raw data passed to the data source.
+   */
+  readonly rowData: (section: RowSection) => T[];
 }
 
 /**
@@ -2648,6 +2674,11 @@ export interface CellRendererParams<T> {
    * Indicates whether the row is in an indeterminate selection state.
    */
   readonly rowIndeterminate: boolean;
+
+  /**
+   * The pinning state of a row, used to fix it to the top or bottom of the grid.
+   */
+  readonly rowPin: RowPin;
 }
 
 /**

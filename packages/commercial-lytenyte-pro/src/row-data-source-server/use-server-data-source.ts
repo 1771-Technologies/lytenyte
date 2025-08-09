@@ -839,6 +839,9 @@ export function makeServerDataSource<T>({
     rowSelect,
     rowSelectAll,
     rowSetBotData,
+    rowSetCenterData: () => {
+      throw new Error("Server side data source does not support full row updates");
+    },
     rowSetTopData,
     rowToIndex,
     rowUpdate,

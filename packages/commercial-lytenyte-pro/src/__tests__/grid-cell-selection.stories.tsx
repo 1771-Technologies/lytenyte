@@ -25,7 +25,7 @@ const columns: Column<any>[] = [
   { id: "age" },
   { id: "job" },
   { id: "balance", pin: "start" },
-  { id: "education", pin: "end" },
+  { id: "education" },
   { id: "marital" },
   { id: "default" },
   { id: "housing" },
