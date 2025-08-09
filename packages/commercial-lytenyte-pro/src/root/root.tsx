@@ -7,12 +7,39 @@ import type { InternalAtoms } from "../state/+types";
 import { DialogDriver } from "./dialog-driver";
 import { PopoverDriver } from "./popover-driver";
 import { CellSelectionDriver } from "../cell-selection/cell-selection-driver";
+import { hasAValidLicense } from "../license";
 
 export type RootProps<T> = { readonly grid: Grid<T> } & {
   [k in keyof GridEvents<T> as `on${Capitalize<k>}`]: GridEvents<T>[k];
 };
 
 export function Root<T = any>({ grid, children, ...events }: PropsWithChildren<RootProps<T>>) {
+  useEffect(() => {
+    if (hasAValidLicense) return;
+
+    const existing = document.getElementById("lng1771-watermark");
+    if (existing) return;
+
+    const invalidLicenseWatermark = document.createElement("div");
+
+    invalidLicenseWatermark.style.position = "fixed";
+    invalidLicenseWatermark.style.bottom = "0px";
+    invalidLicenseWatermark.style.insetInlineEnd = "0px";
+    invalidLicenseWatermark.style.background = "rgb(255, 167, 167)";
+    invalidLicenseWatermark.style.color = "black";
+    invalidLicenseWatermark.style.fontSize = "1.2rem";
+    invalidLicenseWatermark.style.fontWeight = "bold";
+    invalidLicenseWatermark.style.border = "1px solid black";
+    invalidLicenseWatermark.style.padding = "16px";
+
+    invalidLicenseWatermark.innerHTML = `LyteNyte Grid PRO is being used for evaluation. 
+      <a href="https://1771Technologies.com/pricing">Click here</a> to secure your license.`;
+
+    document.body.appendChild(invalidLicenseWatermark);
+
+    return () => invalidLicenseWatermark.remove();
+  }, []);
+
   const onViewportChange = useEvent((bounds: RectReadOnly) => {
     grid.state.viewport.set((element as HTMLElement) ?? null);
     grid.state.viewportHeightOuter.set(bounds.height);
