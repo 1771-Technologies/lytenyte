@@ -1,5 +1,6 @@
 ---
 "@1771technologies/lytenyte-typegen": major
+"@1771technologies/lng-license": major
 "@1771technologies/lytenyte-pro": major
 "@1771technologies/lytenyte-react-autocomplete": major
 "@1771technologies/lytenyte-object-equals": major
@@ -16,4 +17,4 @@
 "@1771technologies/lytenyte-js-utils": major
 ---
 
-V1 Beta Release
+LyteNyte Grid v1 Beta

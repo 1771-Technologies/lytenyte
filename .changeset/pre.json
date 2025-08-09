@@ -1,0 +1,25 @@
+{
+  "mode": "pre",
+  "tag": "beta",
+  "initialVersions": {
+    "@1771technologies/lng-license": "0.9.4",
+    "@1771technologies/lytenyte-pro": "0.9.4",
+    "@1771technologies/lytenyte-typegen": "0.9.4",
+    "@1771technologies/lytenyte-dom-utils": "0.9.4",
+    "@1771technologies/lytenyte-floating": "0.9.4",
+    "@1771technologies/lytenyte-focus": "0.9.4",
+    "@1771technologies/lytenyte-focus-trap": "0.9.4",
+    "@1771technologies/lytenyte-object-equals": "0.9.4",
+    "@1771technologies/lytenyte-react-autocomplete": "0.9.4",
+    "@1771technologies/lytenyte-scroll-lock": "0.9.4",
+    "@1771technologies/lytenyte-js-utils": "0.9.4",
+    "@1771technologies/lytenyte-core": "0.9.4",
+    "@1771technologies/lytenyte-shared": "0.9.4",
+    "@1771technologies/lytenyte-react-components": "0.9.4",
+    "@1771technologies/lytenyte-dragon": "0.9.4",
+    "@1771technologies/lytenyte-react-hooks": "0.9.4"
+  },
+  "changesets": [
+    "witty-birds-wait"
+  ]
+}
