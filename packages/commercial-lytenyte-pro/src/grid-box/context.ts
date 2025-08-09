@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import type { DropEventParams } from "../+types";
+import type { DropEventParams } from "../+types.js";
 
 interface GridBoxContextValue {
   readonly accepted: string[];

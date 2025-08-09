@@ -1,5 +1,5 @@
-import type { DataRect, Grid } from "../+types";
-import { getRootCell } from "./get-root-cell";
+import type { DataRect, Grid } from "../+types.js";
+import { getRootCell } from "./get-root-cell.js";
 
 export function adjustRectForRowAndCellSpan<T>(grid: Grid<T>, rect: DataRect): DataRect {
   let { rowStart, rowEnd, columnStart, columnEnd } = rect;

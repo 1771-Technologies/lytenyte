@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { min } from "../min";
+import { min } from "../min.js";
 
 describe("min", () => {
   test("should return 0 for an empty array", () => {

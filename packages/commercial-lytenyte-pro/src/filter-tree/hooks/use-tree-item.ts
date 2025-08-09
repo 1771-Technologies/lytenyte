@@ -1,11 +1,11 @@
 import { useCallback, useMemo } from "react";
-import type { FilterInFilterItem } from "../../+types";
-import { useGrid } from "../../grid-provider/use-grid";
+import type { FilterInFilterItem } from "../../+types.js";
+import { useGrid } from "../../grid-provider/use-grid.js";
 import type {
   TreeVirtualItem,
   TreeVirtualLeaf,
-} from "../../tree-view/virtualized/make-virtual-tree";
-import { useTreeContext } from "../context";
+} from "../../tree-view/virtualized/make-virtual-tree.js";
+import { useTreeContext } from "../context.js";
 
 function isSelectAll(
   item: TreeVirtualItem<FilterInFilterItem>,

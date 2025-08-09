@@ -1,4 +1,4 @@
-import type { DataRect, Grid } from "../+types";
+import type { DataRect, Grid } from "../+types.js";
 
 export function isBottomRect(grid: Grid<any>, rect: DataRect) {
   const s = grid.state.rowDataStore;

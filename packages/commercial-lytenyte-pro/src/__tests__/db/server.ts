@@ -1,5 +1,5 @@
 import { sleep } from "@1771technologies/lytenyte-js-utils";
-import { sql } from "./db";
+import { sql } from "./db.js";
 import type {
   DataRequest,
   DataRequestModel,

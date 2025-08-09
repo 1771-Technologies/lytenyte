@@ -1,4 +1,4 @@
-import { focusCellVertically } from "./focus-cell-vertically";
+import { focusCellVertically } from "./focus-cell-vertically.js";
 import type {
   GridAtom,
   PositionFullWidthRow,
@@ -8,12 +8,12 @@ import type {
 import type { LayoutMap, ScrollIntoViewFn } from "../../+types.non-gen.js";
 import { runWithBackoff } from "@1771technologies/lytenyte-js-utils";
 import { getCellRootRowAndColIndex } from "./get-cell-root-row-and-col-index.js";
-import { getHeaderRows } from "../getters/get-header-rows";
-import { getColIndexFromEl } from "../getters/get-col-index-from-el";
-import { ensureVisible } from "../ensure-visible";
+import { getHeaderRows } from "../getters/get-header-rows.js";
+import { getColIndexFromEl } from "../getters/get-col-index-from-el.js";
+import { ensureVisible } from "../ensure-visible.js";
 import { isFullWidthMap } from "../../layout/is-full-width-map";
-import { getRowQuery } from "../getters/get-row-query";
-import { getCellQuery } from "../getters/get-cell-query";
+import { getRowQuery } from "../getters/get-row-query.js";
+import { getCellQuery } from "../getters/get-cell-query.js";
 
 interface HandleVerticalArrowArgs {
   readonly vp: HTMLElement | null;

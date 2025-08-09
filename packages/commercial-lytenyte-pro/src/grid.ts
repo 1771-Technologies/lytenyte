@@ -21,6 +21,7 @@ import {
   useServerDataSource,
 } from "./row-data-source-server/use-server-data-source";
 import { RowFullWidth } from "./rows/row-full-width";
+import { Row } from "./rows/row/row";
 import { RowsContainer } from "./rows/rows-container";
 import { RowsBottom, RowsCenter, RowsTop } from "./rows/rows-sections";
 import { useLyteNyte } from "./state/use-lytenyte";
@@ -39,6 +40,7 @@ export const Grid = {
   RowsContainer,
   RowsBottom,
   RowsTop,
+  Row,
   RowsCenter,
   Viewport,
 

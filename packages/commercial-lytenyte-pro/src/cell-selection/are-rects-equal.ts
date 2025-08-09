@@ -1,4 +1,4 @@
-import type { DataRect } from "../+types";
+import type { DataRect } from "../+types.js";
 
 export function areRectsEqual(left: DataRect, right: DataRect): boolean {
   return (

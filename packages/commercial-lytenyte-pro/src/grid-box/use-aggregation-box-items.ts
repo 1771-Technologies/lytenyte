@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import type { AggModelFn, Column, DropEventParams, Grid } from "../+types";
-import type { GridBoxItem } from "./+types";
+import type { AggModelFn, Column, DropEventParams, Grid } from "../+types.js";
+import type { GridBoxItem } from "./+types.js";
 import { useEvent } from "@1771technologies/lytenyte-react-hooks";
 
 export interface UseAggregationBoxItemsProps<T> {

@@ -11,7 +11,7 @@ import { sum } from "./sum.js";
  * Collection of built-in array utility functions for numerical and statistical operations.
  * Each function handles null and undefined values gracefully.
  * @example
- * import { builtIns } from './builtIns';
+ * import { builtIns } from './builtIns.js';
  *
  * const data = [1, null, 3, 2];
  * builtIns.sum(data);  // Returns 6

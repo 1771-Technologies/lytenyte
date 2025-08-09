@@ -1,5 +1,5 @@
 import { isFullWidthMap } from "@1771technologies/lytenyte-shared";
-import type { InternalAtoms } from "../+types";
+import type { InternalAtoms } from "../+types.js";
 import type { Column, Grid, GridApi } from "../../+types";
 
 export const makeEditIsCellActive = (

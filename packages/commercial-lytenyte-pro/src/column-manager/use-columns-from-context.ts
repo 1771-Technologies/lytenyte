@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import type { TreeVirtualItem } from "../tree-view/virtualized/make-virtual-tree";
-import type { Column } from "../+types";
-import { useBranchLookup } from "./branch-lookup-context";
+import type { TreeVirtualItem } from "../tree-view/virtualized/make-virtual-tree.js";
+import type { Column } from "../+types.js";
+import { useBranchLookup } from "./branch-lookup-context.js";
 
 export function useColumnsFromContext(item: TreeVirtualItem<Column<any>>) {
   const lookup = useBranchLookup();

@@ -1,5 +1,5 @@
 import type { DeleteDataAction, TreeRoot } from "./+types.async-tree";
-import { getParentNodeByPath } from "./get-parent-node-by-path";
+import { getParentNodeByPath } from "./get-parent-node-by-path.js";
 
 export function applyDeleteActionToTree<K, D>(p: DeleteDataAction, tree: TreeRoot<K, D>) {
   // No op. We aren't deleting keys or indices

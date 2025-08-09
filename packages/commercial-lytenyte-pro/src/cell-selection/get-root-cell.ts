@@ -1,6 +1,6 @@
-import type { Grid, PositionGridCell } from "../+types";
-import { getSpanFn } from "../state/helpers/get-span-callback";
-import { getFullWidthCallback } from "../state/helpers/get-full-width-callback";
+import type { Grid, PositionGridCell } from "../+types.js";
+import { getSpanFn } from "../state/helpers/get-span-callback.js";
+import { getFullWidthCallback } from "../state/helpers/get-full-width-callback.js";
 import { applyLayoutUpdate, type LayoutMap } from "@1771technologies/lytenyte-shared";
 
 export const getRootCell = (

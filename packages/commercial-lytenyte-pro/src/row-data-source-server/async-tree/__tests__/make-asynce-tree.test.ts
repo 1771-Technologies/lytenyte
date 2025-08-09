@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
-import { makeAsyncTree } from "../make-async-tree";
-import { printTreeByIndex } from "./print-tree";
+import { makeAsyncTree } from "../make-async-tree.js";
+import { printTreeByIndex } from "./print-tree.js";
 
 test("makeAsyncTree: should make a tree with and api the sets the correct values", () => {
   const t = makeAsyncTree();

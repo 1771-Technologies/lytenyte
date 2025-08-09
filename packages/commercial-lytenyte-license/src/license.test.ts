@@ -1,4 +1,4 @@
-import { activateLicense } from "./license";
+import { activateLicense } from "./license.js";
 
 describe("activateLicense", () => {
   test("valid license", () => {

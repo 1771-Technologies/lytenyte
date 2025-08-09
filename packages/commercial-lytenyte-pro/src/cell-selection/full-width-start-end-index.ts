@@ -1,4 +1,4 @@
-import type { Grid } from "../+types";
+import type { Grid } from "../+types.js";
 
 export function fullWidthStartEndIndex(grid: Grid<any>) {
   const meta = grid.state.columnMeta.get();

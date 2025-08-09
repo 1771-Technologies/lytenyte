@@ -1,7 +1,7 @@
 import { useState, type Dispatch, type JSX, type SetStateAction } from "react";
-import type { Column, Grid } from "../+types";
-import { useVirtualizedTree } from "../tree-view/virtualized/use-virtualized-tree";
-import type { TreeVirtualItem } from "../tree-view/virtualized/make-virtual-tree";
+import type { Column, Grid } from "../+types.js";
+import { useVirtualizedTree } from "../tree-view/virtualized/use-virtualized-tree.js";
+import type { TreeVirtualItem } from "../tree-view/virtualized/make-virtual-tree.js";
 import type { PathRoot } from "@1771technologies/lytenyte-shared";
 
 export interface UseColumnManagerReturn<T> {

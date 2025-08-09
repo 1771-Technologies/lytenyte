@@ -1,6 +1,6 @@
-import type { InternalAtoms } from "../state/+types";
-import type { DataRect, Grid } from "../+types";
-import { getRootCell } from "./get-root-cell";
+import type { InternalAtoms } from "../state/+types.js";
+import type { DataRect, Grid } from "../+types.js";
+import { getRootCell } from "./get-root-cell.js";
 
 export function expandCellSelectionUp(
   grid: Grid<any> & { internal: InternalAtoms },

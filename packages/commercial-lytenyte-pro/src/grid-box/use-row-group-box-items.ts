@@ -1,6 +1,6 @@
 import { useMemo, type ReactNode } from "react";
-import type { DropEventParams, Grid, RowGroupModelItem } from "../+types";
-import type { GridBoxItem } from "./+types";
+import type { DropEventParams, Grid, RowGroupModelItem } from "../+types.js";
+import type { GridBoxItem } from "./+types.js";
 import { useEvent } from "@1771technologies/lytenyte-react-hooks";
 
 export interface UseRowGroupBoxItems<T> {

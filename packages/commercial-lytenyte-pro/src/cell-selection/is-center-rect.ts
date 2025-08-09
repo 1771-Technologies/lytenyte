@@ -1,4 +1,4 @@
-import type { DataRect, Grid } from "../+types";
+import type { DataRect, Grid } from "../+types.js";
 
 export function isCenterRect(grid: Grid<any>, rect: DataRect) {
   const ds = grid.state.rowDataStore;

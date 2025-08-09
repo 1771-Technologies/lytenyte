@@ -11,9 +11,9 @@ import type {
   RowDataSource,
   RowDataSourceServer,
   RowDataSourceServerParams,
-} from "../+types";
+} from "../+types.js";
 import { useRef } from "react";
-import { makeAsyncTree } from "./async-tree/make-async-tree";
+import { makeAsyncTree } from "./async-tree/make-async-tree.js";
 import { makeGridAtom } from "@1771technologies/lytenyte-shared";
 import type {
   LeafOrParent,
@@ -21,10 +21,10 @@ import type {
   TreeParent,
   TreeRoot,
 } from "./async-tree/+types.async-tree";
-import { getNodeDepth } from "./utils/get-node-depth";
-import { getRequestId } from "./utils/get-request-id";
-import { RangeTree, type FlattenedRange } from "./range-tree/range-tree";
-import { getNodePath } from "./utils/get-node-path";
+import { getNodeDepth } from "./utils/get-node-depth.js";
+import { getRequestId } from "./utils/get-request-id.js";
+import { RangeTree, type FlattenedRange } from "./range-tree/range-tree.js";
+import { getNodePath } from "./utils/get-node-path.js";
 import { equal } from "@1771technologies/lytenyte-js-utils";
 
 export function makeServerDataSource<T>({

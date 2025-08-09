@@ -1,12 +1,13 @@
 import { describe, expect, test } from "vitest";
 import type { TreeRoot } from "../+types.async-tree";
-import { applySetActionToTree } from "../apply-set-action-to-tree";
-import { printTreeByIndex } from "./print-tree";
-import { applyDeleteActionToTree } from "../apply-delete-action-to-tree";
+import { applySetActionToTree } from "../apply-set-action-to-tree.js";
+import { printTreeByIndex } from "./print-tree.js";
+import { applyDeleteActionToTree } from "../apply-delete-action-to-tree.js";
 
 describe("applyDeleteActionToTree", () => {
   test("should correctly delete tree parts", () => {
     const root: TreeRoot<any, any> = {
+      asOf: Date.now(),
       byIndex: new Map(),
       byPath: new Map(),
       kind: "root",
@@ -91,6 +92,7 @@ describe("applyDeleteActionToTree", () => {
 
   test("should handle nested deletions", () => {
     const root: TreeRoot<any, any> = {
+      asOf: Date.now(),
       byIndex: new Map(),
       byPath: new Map(),
       kind: "root",
@@ -162,6 +164,7 @@ describe("applyDeleteActionToTree", () => {
 
   test("should no-op on invalid inputs", () => {
     const root: TreeRoot<any, any> = {
+      asOf: Date.now(),
       byIndex: new Map(),
       byPath: new Map(),
       kind: "root",

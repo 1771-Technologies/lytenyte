@@ -1,6 +1,6 @@
 import type { Column, ColumnPivotModel, Grid, RowLeaf } from "../../+types";
-import { createColumnPivotsFromPaths } from "./create-pivot-columns-from-paths";
-import { createPivotTree } from "./create-pivot-tree";
+import { createColumnPivotsFromPaths } from "./create-pivot-columns-from-paths.js";
+import { createPivotTree } from "./create-pivot-tree.js";
 
 export function createPivotColumns<T>(
   model: ColumnPivotModel<T>,
