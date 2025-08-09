@@ -9,8 +9,8 @@ import { useSlot, type SlotComponent } from "@1771technologies/lytenyte-react-ho
 export type FilterTreeRootProps<T> = UseTreeFilterReturn<T>["rootProps"] & {
   readonly grid: Grid<T>;
 
-  readonly slotLoading?: SlotComponent;
-  readonly slotError?: SlotComponent<{ error: any; refetch: () => void }>;
+  readonly loadingAs?: SlotComponent;
+  readonly errorAs?: SlotComponent<{ error: any; refetch: () => void }>;
 };
 
 export function Root<T>({
@@ -22,8 +22,8 @@ export function Root<T>({
   children,
   error,
   loading,
-  slotError,
-  slotLoading,
+  errorAs,
+  loadingAs,
   fetchItems,
   items,
   applyChangesImmediately,
@@ -42,10 +42,10 @@ export function Root<T>({
   }, [applyChangesImmediately, columnId, filterIn, filterInChange, items, pivotMode]);
 
   const loadingSlot = useSlot({
-    slot: slotLoading ?? <div>Loading...</div>,
+    slot: loadingAs ?? <div>Loading...</div>,
   });
   const errorSlot = useSlot({
-    slot: slotError ?? <div>Error Occurred Fetching</div>,
+    slot: errorAs ?? <div>Error Occurred Fetching</div>,
     state: { error, refetch: fetchItems },
   });
 

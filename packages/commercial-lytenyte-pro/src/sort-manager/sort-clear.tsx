@@ -3,13 +3,13 @@ import { forwardRef, type JSX } from "react";
 import { useSortManagerCtx } from "./context";
 
 export interface SortClearProps {
-  readonly slot?: SlotComponent<{ onClear: () => void }>;
+  readonly as?: SlotComponent<{ onClear: () => void }>;
 }
 
 export const SortClear = forwardRef<
   HTMLDivElement,
   JSX.IntrinsicElements["button"] & SortClearProps
->(function SortClear({ slot, ...props }, forwarded) {
+>(function SortClear({ as, ...props }, forwarded) {
   const ctx = useSortManagerCtx();
 
   const onClear = useEvent(() => {
@@ -21,9 +21,9 @@ export const SortClear = forwardRef<
   });
 
   const renderer = useSlot({
-    props: [props],
+    props: [typeof as !== "function" ? { onClick: onClear } : {}, props],
     ref: forwarded,
-    slot: slot ?? <button onClick={onClear} />,
+    slot: as ?? <button />,
     state: { onClear },
   });
 

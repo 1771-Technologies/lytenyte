@@ -36,7 +36,7 @@ export function Root<T>({
     <branchLookupContext.Provider value={branchLookup}>
       <GridProvider value={grid as any}>
         <TreeRoot
-          selectMode="multiple"
+          selectMode="none"
           transitionEnter={200}
           transitionExit={200}
           expansionDefault

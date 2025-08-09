@@ -6,14 +6,14 @@ import { useEvent } from "@1771technologies/lytenyte-react-hooks";
 export interface UseRowGroupBoxItems<T> {
   readonly grid: Grid<T>;
   readonly orientation?: "horizontal" | "vertical";
-  readonly placeholder?: (c: RowGroupModelItem<T>) => ReactNode;
+  readonly dragPlaceholder?: (c: RowGroupModelItem<T>) => ReactNode;
   readonly hideColumnOnGroup?: boolean;
 }
 
 export function useRowGroupBoxItems<T>({
   grid,
   orientation,
-  placeholder,
+  dragPlaceholder,
   hideColumnOnGroup = true,
 }: UseRowGroupBoxItems<T>) {
   const rowGroupModel = grid.state.rowGroupModel.useValue();
@@ -23,7 +23,7 @@ export function useRowGroupBoxItems<T>({
     const groupId = `${gridId}-group`;
 
     return rowGroupModel
-      .map<GridBoxItem | null>((c) => {
+      .map<GridBoxItem | null>((c, i) => {
         const onDelete = () => {
           grid.state.rowGroupModel.set((prev) => prev.filter((x) => x !== c));
         };
@@ -83,12 +83,14 @@ export function useRowGroupBoxItems<T>({
             dragData: { [groupId]: c },
             data: c,
             draggable: true,
+            source: "groups",
             id: c,
+            index: i,
             label: column.name ?? column.id,
             onAction: () => {},
             onDelete: onDelete,
             onDrop: onDrop,
-            dragPlaceholder: placeholder ? () => placeholder(c) : undefined,
+            dragPlaceholder: dragPlaceholder ? () => dragPlaceholder(c) : undefined,
           };
         } else {
           return {
@@ -96,11 +98,13 @@ export function useRowGroupBoxItems<T>({
             data: c,
             draggable: true,
             id: c.id,
+            source: "groups",
+            index: i,
             label: c.name ?? c.id,
             onAction: () => {},
             onDelete: onDelete,
             onDrop,
-            dragPlaceholder: placeholder ? () => placeholder(c) : undefined,
+            dragPlaceholder: dragPlaceholder ? () => dragPlaceholder(c) : undefined,
           };
         }
       })
@@ -112,7 +116,7 @@ export function useRowGroupBoxItems<T>({
     gridId,
     hideColumnOnGroup,
     orientation,
-    placeholder,
+    dragPlaceholder,
     rowGroupModel,
   ]);
 

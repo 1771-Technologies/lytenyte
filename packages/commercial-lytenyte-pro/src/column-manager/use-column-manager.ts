@@ -20,14 +20,22 @@ export interface UseColumnManagerReturn<T> {
   readonly spacer: JSX.Element;
 }
 
-export function useColumnManager<T>(grid: Grid<T>): UseColumnManagerReturn<T> {
+export interface UseColumnManagerArgs<T> {
+  readonly grid: Grid<T>;
+  readonly itemHeight?: number;
+}
+
+export function useColumnManager<T>({
+  grid,
+  itemHeight = 24,
+}: UseColumnManagerArgs<T>): UseColumnManagerReturn<T> {
   const [expansions, onExpansionChange] = useState<Record<string, boolean>>({});
   const columns = grid.state.columns.useValue();
 
   const virt = useVirtualizedTree({
     paths: columns,
     expansions,
-    itemHeight: 24,
+    itemHeight,
     expansionDefault: true,
     nonAdjacentPathTrees: true,
   });

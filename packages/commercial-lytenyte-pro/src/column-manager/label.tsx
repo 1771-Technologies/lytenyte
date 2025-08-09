@@ -3,11 +3,11 @@ import { useColumnItemContext } from "./context";
 import { forwardRef, useMemo, type JSX } from "react";
 
 export interface LabelProps {
-  readonly slot?: SlotComponent;
+  readonly as?: SlotComponent;
 }
 
 export const Label = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & LabelProps>(
-  function Label({ slot, ...props }, forwarded) {
+  function Label({ as, ...props }, forwarded) {
     const { item } = useColumnItemContext();
 
     const label = useMemo(() => {
@@ -19,7 +19,7 @@ export const Label = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & L
     const rendered = useSlot({
       props: [{ children: label }, props],
       ref: forwarded,
-      slot: slot ?? <div />,
+      slot: as ?? <div />,
     });
 
     return rendered;

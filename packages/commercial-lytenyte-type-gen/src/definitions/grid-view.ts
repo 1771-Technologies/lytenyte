@@ -185,7 +185,11 @@ export const HeaderGroupCell: InterfaceType = {
       doc: { en: `` },
       optional: false,
     },
-    IdProp,
+    {
+      ...IdProp,
+      tsDoc: `The id for the header group. Note this is not unique across all header groups. In particular
+      split header groups with the same path will share the same id. Prefer \`idOccurrence\` for unique keys.`,
+    },
     {
       kind: "property",
       name: "idOccurrence",

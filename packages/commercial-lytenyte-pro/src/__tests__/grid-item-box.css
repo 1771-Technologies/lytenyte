@@ -11,7 +11,7 @@
     position: relative;
     outline: none;
 
-    &[data-ln-over-top-half="true"] {
+    &[data-ln-is-before="true"] {
       &::before {
         position: absolute;
         content: "";
@@ -22,7 +22,7 @@
       }
     }
 
-    &[data-ln-over-top-half="false"] {
+    &[data-ln-is-after="true"] {
       &::before {
         position: absolute;
         content: "";

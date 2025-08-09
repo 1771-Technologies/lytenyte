@@ -1,5 +1,5 @@
 import type { JSX } from "react";
-import { forwardRef, useMemo } from "react";
+import { forwardRef, useCallback, useMemo } from "react";
 import type { TreeVirtualBranch } from "../tree-view/virtualized/make-virtual-tree";
 import type { Column } from "../+types";
 import { TreeBranch } from "../tree-view/branch/branch";
@@ -24,7 +24,21 @@ export const Branch = forwardRef<
 
   const accepted = `${id}/columns`;
 
+  const base = grid.state.columnBase.useValue();
   const columns = useColumnsFromContext(item);
+  const isVisible = useMemo(() => {
+    const allVisible = columns.every((c) => !(c.hide ?? base.hide));
+
+    return allVisible;
+  }, [base.hide, columns]);
+
+  const toggle = useCallback(
+    (s?: boolean) => {
+      const next = s ?? isVisible;
+      grid.api.columnUpdate(Object.fromEntries(columns.map((c) => [c.id, { hide: next }])));
+    },
+    [columns, grid.api, isVisible],
+  );
 
   return (
     <ColumnItemContext value={useMemo(() => ({ item }), [item])}>
@@ -33,6 +47,10 @@ export const Branch = forwardRef<
         itemId={item.branch.data.idOccurrence}
         ref={forwarded}
         {...item.attrs}
+        onKeyDown={(ev) => {
+          props.onKeyDown?.(ev);
+          if (ev.key === " ") toggle();
+        }}
         labelWrap={
           <DropWrap
             data-ln-column-manager-branch

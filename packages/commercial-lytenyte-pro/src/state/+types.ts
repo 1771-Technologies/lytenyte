@@ -1,5 +1,6 @@
 import type { LayoutMap } from "@1771technologies/lytenyte-shared";
 import type {
+  Column,
   DataRect,
   EditActivePosition,
   GridAtom,
@@ -38,6 +39,8 @@ export interface InternalAtoms {
   readonly rowSelectedIds: Atom<Set<string>>;
   readonly rowSelectionPivot: GridAtom<string | null>;
   readonly rowSelectionLastWasDeselect: GridAtom<boolean>;
+
+  readonly rowGroupColumnState: GridAtom<Record<string, Partial<Column<any>>>>;
 
   // Column Moving
   readonly draggingHeader: GridAtom<HeaderGroupCellLayout | null>;

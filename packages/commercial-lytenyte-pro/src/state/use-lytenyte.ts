@@ -184,6 +184,8 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const cellSelections = atom<DataRect[]>(p.cellSelections ?? []);
   const cellSelectionMode = atom(p.cellSelectionMode ?? "none");
 
+  const internal__rowGroupColumnState = atom<Record<string, Partial<Column<T>>>>({});
+
   const internal_cellSelectionPivot = atom<DataRect | null>(null);
   const internal_cellSelectionAdditive = atom<DataRect[] | null>(null);
 
@@ -286,6 +288,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
    * is impacted by the column definitions, the group expansions, the row group display mode.
    */
   const columnView = atom((g) => {
+    const groupState = g(internal__rowGroupColumnState);
     const pivotMode = g(columnPivotMode);
 
     let cols: Column<T>[];
@@ -296,6 +299,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
         rowGroupDisplayMode: "single-column",
         rowGroupModel: model.rows.filter((c) => c.active ?? true).map((c) => c.field),
         rowGroupTemplate: g(rowGroupColumn),
+        rowGroupColumnState: groupState,
       });
     } else {
       cols = columnAddRowGroup({
@@ -303,6 +307,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
         rowGroupDisplayMode: g(rowGroupDisplayMode),
         rowGroupModel: g(rowGroupModel),
         rowGroupTemplate: g(rowGroupColumn),
+        rowGroupColumnState: groupState,
       });
     }
 
@@ -629,7 +634,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     columnIndex: makeColumnIndex(grid),
     columnById: makeColumnById(grid),
     columnResize: makeColumnResize(grid),
-    columnUpdate: makeColumnUpdate(grid),
+    columnUpdate: makeColumnUpdate(grid as any),
     columnMove: makeColumnMove(grid),
     sortForColumn: makeSortForColumn(grid),
 
@@ -726,6 +731,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       cellSelectionIsDeselect: makeGridAtom(atom(false), store),
       cellSelectionSplits: makeGridAtom(internal_cellSelectionSplits, store),
 
+      rowGroupColumnState: makeGridAtom(internal__rowGroupColumnState, store),
       store: store,
     } satisfies InternalAtoms,
   });

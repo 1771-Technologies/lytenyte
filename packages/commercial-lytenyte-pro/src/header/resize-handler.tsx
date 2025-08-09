@@ -13,7 +13,7 @@ import { getComputedStyle, isHTMLElement } from "@1771technologies/lytenyte-dom-
 import { clamp, getClientX } from "@1771technologies/lytenyte-js-utils";
 
 interface ResizeHandlerProps<T> {
-  readonly slot?: SlotComponent;
+  readonly as?: SlotComponent;
   readonly cell: HeaderCellLayout<T>;
   readonly xPositions: Uint32Array;
   readonly className?: string;
@@ -21,7 +21,7 @@ interface ResizeHandlerProps<T> {
 }
 
 export function ResizeHandler<T>({
-  slot,
+  as,
   cell,
   xPositions,
   style,
@@ -93,8 +93,11 @@ export function ResizeHandler<T>({
             const id = sx.state.gridId.get();
             const query = `[data-ln-row][data-ln-gridid="${id}"] [data-ln-cell="true"][data-ln-colindex="${cell.colStart}"]`;
             const headerQuery = `[data-ln-header-row] [data-ln-header-cell="true"][data-ln-header-id="${cell.id}"]`;
+            const floatingQuery = `[data-ln-header-row] [data-ln-header-cell="true"][data-ln-header-id="${cell.id}"][data-ln-header-floating="true"]`;
 
             const header = vp.querySelector(headerQuery) as HTMLElement;
+            const floating = vp.querySelector(floatingQuery) as HTMLElement | undefined;
+
             if (!header) return;
             const pin = header.getAttribute("data-ln-pin");
 
@@ -112,6 +115,7 @@ export function ResizeHandler<T>({
 
             const q = Array.from(vp.querySelectorAll(query)) as HTMLElement[];
             q.push(header);
+            if (floating) q.push(floating);
 
             q.forEach((c) => {
               if (!isHTMLElement(c)) return;
@@ -166,7 +170,7 @@ export function ResizeHandler<T>({
     className,
     style: {
       height: "100%",
-      width: "8px",
+      width: "6px",
       ...style,
       top: "0px",
       insetInlineEnd: cell.colPin !== "end" ? "0px" : undefined,
@@ -177,7 +181,7 @@ export function ResizeHandler<T>({
 
   const edge = useSlot({
     props: [defaultProps],
-    slot: slot ?? <div />,
+    slot: as ?? <div />,
   });
 
   return edge;

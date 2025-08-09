@@ -1,7 +1,7 @@
 {
   "name": "@1771technologies/lytenyte-pro",
   "description": "Blazingly fast headless React data grid with 100s of features.",
-  "version": "1.0.0-beta.4",
+  "version": "1.0.0-beta.14",
   "type": "module",
   "license": "COMMERCIAL",
   "files": [
@@ -32,6 +32,11 @@
       "import": "./src/index.ts",
       "require": "./src/index.ts"
     },
+    "./icons": {
+      "types": "./src/icons/index.ts",
+      "import": "./src/icons/index.ts",
+      "require": "./src/icons/index.ts"
+    },
     "./types": {
       "types": "./src/+types.ts",
       "import": "./src/+types.ts",
@@ -47,6 +52,11 @@
         "import": "./dist/index.js",
         "require": "./dist/index.js"
       },
+      "./icons": {
+        "types": "./dist/icons/index.d.ts",
+        "import": "./dist/icons/index.js",
+        "require": "./dist/icons/index.js"
+      },
       "./types": {
         "types": "./dist/+types.d.ts",
         "import": "./dist/+types.js",
@@ -57,6 +67,7 @@
   },
   "dependencies": {
     "@1771technologies/atom": "^1.0.2",
+    "@1771technologies/lytenyte-core": "workspace:*",
     "@1771technologies/lytenyte-dragon": "workspace:*",
     "@1771technologies/lytenyte-shared": "workspace:*",
     "@1771technologies/lytenyte-dom-utils": "workspace:*",

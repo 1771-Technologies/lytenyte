@@ -13,6 +13,7 @@ export const emptyRowDataSource: RowDataSource<any> = {
   rowAdd: () => {},
   rowDelete: () => {},
   rowSetBotData: () => {},
+  rowSetCenterData: () => {},
   rowSetTopData: () => {},
   rowAreAllSelected: () => false,
   inFilterItems: () => [],

@@ -12,6 +12,11 @@ export interface OnRootDropParams<T> {
   readonly column: Column<T>;
 }
 
+export interface OnActionParams<T> {
+  readonly column: Column<T>;
+  readonly el: HTMLElement;
+}
+
 export interface UseColumnBoxItemArgs<T> {
   readonly grid: Grid<T>;
   readonly orientation?: "horizontal" | "vertical";
@@ -20,8 +25,8 @@ export interface UseColumnBoxItemArgs<T> {
 
   readonly onRootDrop?: (p: OnRootDropParams<T>) => void;
   readonly onDrop?: (p: OnDropParams<T>) => void;
-  readonly onAction?: (c: Column<T>) => void;
-  readonly onDelete?: (c: Column<T>) => void;
+  readonly onAction?: (c: OnActionParams<T>) => void;
+  readonly onDelete?: (c: OnActionParams<T>) => void;
   readonly dragPlaceholder?: (c: Column<T>) => ReactNode;
 }
 
@@ -48,7 +53,7 @@ export function useColumnBoxItems<T>({
       .filter((c) => {
         return itemFilter ? itemFilter(c) : true;
       })
-      .map<GridBoxItem<Column<T>>>((c) => {
+      .map<GridBoxItem<Column<T>>>((c, i) => {
         const canGroup = c.uiHints?.rowGroupable ?? base.uiHints?.rowGroupable ?? false;
         const canAgg = Boolean(
           c.uiHints?.aggDefault ??
@@ -66,12 +71,14 @@ export function useColumnBoxItems<T>({
         return {
           label: c.name ?? c.id,
           id: c.id,
+          index: i,
+          source: "columns",
           draggable,
           data: c,
           dragData: data,
           dragPlaceholder: dragPlaceholder ? () => dragPlaceholder?.(c) : undefined,
-          onAction: () => onAction?.(c),
-          onDelete: () => onDelete?.(c),
+          onAction: (el) => onAction?.({ column: c, el }),
+          onDelete: (el) => onDelete?.({ column: c, el }),
           onDrop: (p) => {
             const target = c;
             const src = p.state.siteLocalData?.[columnId];

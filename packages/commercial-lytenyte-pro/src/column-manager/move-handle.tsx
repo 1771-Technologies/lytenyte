@@ -12,7 +12,7 @@ import type { Column } from "../+types";
 import type { TreeVirtualItem } from "../tree-view/virtualized/make-virtual-tree";
 
 export interface MoveHandleProps {
-  readonly slot?: SlotComponent;
+  readonly as?: SlotComponent;
 
   readonly placeholder?: (p: {
     columns: Column<any>[];
@@ -23,7 +23,7 @@ export interface MoveHandleProps {
 export const MoveHandle = forwardRef<
   HTMLDivElement,
   JSX.IntrinsicElements["div"] & MoveHandleProps
->(function MoveHandle({ slot, placeholder: Placeholder, ...props }, forwarded) {
+>(function MoveHandle({ as, placeholder: Placeholder, ...props }, forwarded) {
   const item = useColumnItemContext().item;
   const grid = useGrid();
 
@@ -85,7 +85,7 @@ export const MoveHandle = forwardRef<
   const renderer = useSlot({
     props: [{ "aria-label": "Drag to move column" }, additionalProps, props],
     ref: isMovable ? combined : forwarded,
-    slot: slot ?? <div />,
+    slot: as ?? <div />,
   });
 
   return renderer;

@@ -5,7 +5,7 @@ import { useGrid } from "../grid-provider/use-grid";
 import { useColumnsFromContext } from "./use-columns-from-context";
 
 export interface VisibilityCheckbox {
-  readonly slot?: SlotComponent<{
+  readonly as?: SlotComponent<{
     visible: boolean;
     indeterminate: boolean;
     toggle: (s?: boolean) => void;
@@ -15,7 +15,7 @@ export interface VisibilityCheckbox {
 export const VisibilityCheckbox = forwardRef<
   HTMLDivElement,
   JSX.IntrinsicElements["div"] & VisibilityCheckbox
->(function VisibilityCheckbox({ slot, ...props }, forwarded) {
+>(function VisibilityCheckbox({ as, ...props }, forwarded) {
   const { item } = useColumnItemContext();
 
   const grid = useGrid();
@@ -42,7 +42,7 @@ export const VisibilityCheckbox = forwardRef<
   const rendered = useSlot({
     props: [props],
     ref: forwarded,
-    slot: slot ?? (
+    slot: as ?? (
       <input
         type="checkbox"
         checked={isVisible}

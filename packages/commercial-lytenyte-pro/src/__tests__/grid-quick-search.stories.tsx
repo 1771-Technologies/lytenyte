@@ -51,12 +51,7 @@ function Component({ data = bankData }: { data?: any[] }) {
     columns,
     rowDataSource: ds,
 
-    columnBase: {
-      uiHints: {
-        movable: true,
-        resizable: true,
-      },
-    },
+    quickSearchSensitivity: "case-insensitive",
   });
 
   const view = g.view.useValue();

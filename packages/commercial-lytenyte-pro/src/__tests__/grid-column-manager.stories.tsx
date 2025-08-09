@@ -65,7 +65,7 @@ function Component({ data = bankData }: { data?: any[] }) {
     },
   });
 
-  const { rootProps, spacer, tree } = CM.useColumnManager(g);
+  const { rootProps, spacer, tree } = CM.useColumnManager({ grid: g });
 
   const view = g.view.useValue();
 
