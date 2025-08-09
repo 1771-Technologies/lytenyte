@@ -51,6 +51,7 @@ function Component({ data = bankData }: { data?: any[] }) {
     columns,
     rowDataSource: ds,
 
+    rowGroupModel: ["education"],
     columnBase: {
       uiHints: {
         movable: true,

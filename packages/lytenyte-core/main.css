@@ -312,4 +312,8 @@
       border-bottom: 1px solid var(--lng1771-primary-50);
     }
   }
+
+  [data-ln-cell-selection-rect] {
+    background-color: var(--lng1771-primary-30);
+  }
 }

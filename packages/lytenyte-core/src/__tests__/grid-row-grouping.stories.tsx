@@ -51,10 +51,20 @@ function MainComp() {
     rowGroupModel: ["job"],
     rowGroupDisplayMode: "multi-column",
 
+    rowGroupColumn: {
+      pin: "start",
+    },
+
     aggModel: {
       job: { fn: "first" },
       balance: { fn: "sum" },
       education: { fn: () => 1 },
+    },
+
+    columnBase: {
+      uiHints: {
+        resizable: true,
+      },
     },
   });
 

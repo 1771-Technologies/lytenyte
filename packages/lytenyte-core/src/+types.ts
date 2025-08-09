@@ -949,7 +949,8 @@ export interface HeaderGroupCellLayout {
   readonly isCollapsible: boolean;
 
   /**
-   * A unique identifier that can be used for rendering keys or tracking elements.
+   * The id for the header group. Note this is not unique across all header groups. In particular
+   *       split header groups with the same path will share the same id. Prefer `idOccurrence` for unique keys.
    */
   readonly id: string;
 
@@ -1409,7 +1410,7 @@ export interface Column<T> {
   /**
    * Function used to render a floating row cell. Only called when floating rows are enabled. Must return a React node.
    */
-  readonly floatingRenderer?: HeaderFloatingCellRenderer<T>;
+  readonly floatingCellRenderer?: HeaderFloatingCellRenderer<T>;
 
   /**
    * Defines how to render the cell content. Accepts a renderer function or a string referencing a registered renderer.
@@ -1495,7 +1496,7 @@ export interface ColumnBase<T> {
   /**
    * Function used to render a floating row cell. Only called when floating rows are enabled. Must return a React node.
    */
-  readonly floatingRenderer?: HeaderFloatingCellRenderer<T>;
+  readonly floatingCellRenderer?: HeaderFloatingCellRenderer<T>;
 
   /**
    * Defines how to render the cell content. Accepts a renderer function or a string referencing a registered renderer.
@@ -1554,7 +1555,7 @@ export interface ColumnMarker<T> {
   /**
    * Function used to render a floating row cell. Only called when floating rows are enabled. Must return a React node.
    */
-  readonly floatingRenderer?: HeaderFloatingCellRenderer<T>;
+  readonly floatingCellRenderer?: HeaderFloatingCellRenderer<T>;
 
   /**
    * Specifies the preferred width of the column. This value is ignored if flex sizing is used, or if it violates the column's min/max bounds.
@@ -1678,7 +1679,7 @@ export interface RowGroupColumn<T> {
   /**
    * Function used to render a floating row cell. Only called when floating rows are enabled. Must return a React node.
    */
-  readonly floatingRenderer?: HeaderFloatingCellRenderer<T>;
+  readonly floatingCellRenderer?: HeaderFloatingCellRenderer<T>;
 
   /**
    * Describes the capabilities and intended UI behavior of the column. These hints are used by external UI components.
@@ -1792,6 +1793,46 @@ export type ColumnGroupVisibility = "always" | "close" | "open";
 /**
  * Parameters required to initialize a client-side row data source.
  */
+export interface ClientRowDataSourcePaginatedParams<T> {
+  /**
+   * The primary dataset passed to LyteNyte Grid for display.
+   */
+  readonly data: T[];
+
+  /**
+   * Rows to pin to the top of the grid, rendered above all scrollable rows.
+   */
+  readonly topData?: T[];
+
+  /**
+   * Rows to pin to the bottom of the grid, rendered below all scrollable rows.
+   */
+  readonly bottomData?: T[];
+
+  /**
+   * If true, the data source will reflect external mutations to the original data array.
+   */
+  readonly reflectData?: boolean;
+
+  /**
+   * Callback to derive a unique id for grouped (branch) rows based on group value path.
+   */
+  readonly rowIdBranch?: (path: string[]) => string;
+
+  /**
+   * Callback to derive a unique id for each leaf row. Receives the row data and index.
+   */
+  readonly rowIdLeaf?: (d: RowLeaf<T>, i: number) => string;
+
+  /**
+   * The number of rows to have per page. This will impact the total page count.
+   */
+  readonly rowsPerPage?: number;
+}
+
+/**
+ * Parameters required to initialize a client-side row data source.
+ */
 export interface ClientRowDataSourceParams<T> {
   /**
    * The primary dataset passed to LyteNyte Grid for display.
@@ -1890,6 +1931,11 @@ export interface RowDataSource<T> {
   readonly rowAdd: (newRows: any[], atIndex?: number | "beginning" | "end") => void;
 
   /**
+   * Sets the data for the center rows (scrollable rows) of the grid. Effectively replacing the current row data.
+   */
+  readonly rowSetCenterData: (newRows: any[]) => void;
+
+  /**
    * Sets the data for rows pinned to the top section.
    */
   readonly rowSetTopData: (data: any[]) => void;
@@ -1970,6 +2016,11 @@ export interface RowDataSourceClient<T> {
   readonly rowAdd: (newRows: any[], atIndex?: number | "beginning" | "end") => void;
 
   /**
+   * Sets the data for the center rows (scrollable rows) of the grid. Effectively replacing the current row data.
+   */
+  readonly rowSetCenterData: (newRows: any[]) => void;
+
+  /**
    * Sets the data for rows pinned to the top section.
    */
   readonly rowSetTopData: (data: any[]) => void;
@@ -1978,6 +2029,11 @@ export interface RowDataSourceClient<T> {
    * Sets the data for rows pinned to the bottom section.
    */
   readonly rowSetBotData: (data: any[]) => void;
+
+  /**
+   * A client data source method to retrieve the raw data passed to the data source.
+   */
+  readonly rowData: (section: RowSection) => T[];
 }
 
 /**
@@ -2048,6 +2104,11 @@ export interface RowDataSourceClientPaginated<T> {
   readonly rowAdd: (newRows: any[], atIndex?: number | "beginning" | "end") => void;
 
   /**
+   * Sets the data for the center rows (scrollable rows) of the grid. Effectively replacing the current row data.
+   */
+  readonly rowSetCenterData: (newRows: any[]) => void;
+
+  /**
    * Sets the data for rows pinned to the top section.
    */
   readonly rowSetTopData: (data: any[]) => void;
@@ -2061,6 +2122,11 @@ export interface RowDataSourceClientPaginated<T> {
    * The properties of the current pagination state.
    */
   readonly page: RowDataSourceClientPageState;
+
+  /**
+   * A client data source method to retrieve the raw data passed to the data source.
+   */
+  readonly rowData: (section: RowSection) => T[];
 }
 
 /**
@@ -2648,6 +2714,11 @@ export interface CellRendererParams<T> {
    * Indicates whether the row is in an indeterminate selection state.
    */
   readonly rowIndeterminate: boolean;
+
+  /**
+   * The pinning state of a row, used to fix it to the top or bottom of the grid.
+   */
+  readonly rowPin: RowPin;
 }
 
 /**
@@ -2934,7 +3005,7 @@ export interface GridApi<T> {
    * Returns the raw cell data within a rectangular selection of the grid.
    *   This can be useful for custom data processing or exporting workflows.
    */
-  readonly exportDataRect: (params?: ExportDataRectParams) => ExportDataRectResult<T>;
+  readonly exportDataRect: (params?: ExportDataRectParams) => Promise<ExportDataRectResult<T>>;
 
   /**
    * Exports the cell data for a given rectangle of the grid as a CSV-formatted string.
@@ -5216,7 +5287,7 @@ export type ExportDataRectFn<T> = (
    * Optional parameters for exporting a DataRect.
    */
   params: ExportDataRectParams,
-) => ExportDataRectResult<T>;
+) => Promise<ExportDataRectResult<T>>;
 
 /**
  * Parameters for exporting a specific rectangular region of the grid using a DataRect.

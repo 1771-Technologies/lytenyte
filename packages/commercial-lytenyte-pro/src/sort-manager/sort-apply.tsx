@@ -5,13 +5,13 @@ import { itemsWithIdToMap } from "@1771technologies/lytenyte-js-utils";
 import { sortItemsToSortModel } from "./utils/sort-item-to-sort-model";
 
 export interface SortApplyProps {
-  readonly slot?: SlotComponent<{ onApply: () => void }>;
+  readonly as?: SlotComponent<{ onApply: () => void }>;
 }
 
 export const SortApply = forwardRef<
   HTMLDivElement,
   JSX.IntrinsicElements["button"] & SortApplyProps
->(function SortApply({ slot, ...props }, forwarded) {
+>(function SortApply({ as, ...props }, forwarded) {
   const ctx = useSortManagerCtx();
 
   const onApply = useEvent(() => {
@@ -26,9 +26,9 @@ export const SortApply = forwardRef<
   });
 
   const renderer = useSlot({
-    props: [props],
+    props: [typeof as !== "function" ? { onClick: onApply } : {}, props],
     ref: forwarded,
-    slot: slot ?? <button onClick={onApply} />,
+    slot: as ?? <button />,
     state: { onApply },
   });
 

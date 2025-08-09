@@ -5,7 +5,15 @@ import {
   type SetStateAction,
 } from "react";
 import type { UseDraggableProps } from "../use-draggable";
-import { activeDragElement, dragDataAtom, dragPositionAtom, dropAtom, store } from "../+globals";
+import {
+  activeDragElement,
+  dragDataAtom,
+  dragPositionAtom,
+  dragStyleHandler,
+  dropAtom,
+  placeholderHandler,
+  store,
+} from "../+globals";
 import { createRoot } from "react-dom/client";
 import { resetDragState } from "../utils/reset-drag-state";
 import { getFrameElement } from "@1771technologies/lytenyte-dom-utils";
@@ -49,7 +57,7 @@ export function useDragEventHandler(
       store.set(dragPositionAtom, { x, y });
       store.set(activeDragElement, dragElement);
 
-      let placeholderElement: HTMLElement | null;
+      let placeholderElement: HTMLElement | null = null;
       if (placeholder) {
         const cr = document.createElement("div");
         cr.style.position = "fixed";
@@ -69,6 +77,9 @@ export function useDragEventHandler(
       }
 
       const styleEl = document.createElement("style");
+
+      dragStyleHandler.set(styleEl);
+      placeholderHandler.set(placeholderElement);
 
       // We need to delay this in the event that the drag target is also in a drop target.
       setTimeout(() => {
@@ -125,9 +136,13 @@ export function useDragEventHandler(
         "drop",
         (e) => {
           e.preventDefault();
+          placeholderHandler.clean();
+          dragStyleHandler.clean();
         },
         { signal: controller.signal },
       );
+
+      document.addEventListener("dragend", () => {}, { capture: true, signal: controller.signal });
 
       document.addEventListener(
         "dragend",
@@ -138,9 +153,8 @@ export function useDragEventHandler(
           setDragging(false);
           resetDragState();
 
-          // Remove the elements that were added for drag purposes
-          styleEl.remove();
-          placeholderElement?.remove();
+          placeholderHandler.clean();
+          dragStyleHandler.clean();
         },
         { signal: controller.signal },
       );

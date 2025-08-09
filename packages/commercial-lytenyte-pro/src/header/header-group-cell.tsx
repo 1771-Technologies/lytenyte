@@ -20,6 +20,10 @@ const HeaderGroupCellImpl = forwardRef<
 
   const combined = useCombinedRefs(ref, forwarded);
 
+  const isExpanded =
+    grid.state.columnGroupExpansions.useValue()[cell.id] ??
+    grid.state.columnGroupDefaultExpansion.get();
+
   return (
     <HeaderGroupCellReact
       {...props}
@@ -32,6 +36,8 @@ const HeaderGroupCellImpl = forwardRef<
       viewportWidth={ctx.viewportWidthInner.useValue()}
       xPositions={ctx.xPositions.useValue()}
       isHiddenMove={cell.isHiddenMove ?? false}
+      data-ln-collapsible={cell.isCollapsible}
+      data-ln-collapsed={!isExpanded}
     >
       {children == undefined ? cell.id : children}
     </HeaderGroupCellReact>

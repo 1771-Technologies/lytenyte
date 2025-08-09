@@ -5,13 +5,13 @@ import { sortModelToSortItems } from "./utils/sort-model-to-sort-items";
 import { itemsWithIdToMap } from "@1771technologies/lytenyte-js-utils";
 
 export interface SortCancelProps {
-  readonly slot?: SlotComponent<{ onCancel: () => void }>;
+  readonly as?: SlotComponent<{ onCancel: () => void }>;
 }
 
 export const SortCancel = forwardRef<
   HTMLDivElement,
   JSX.IntrinsicElements["button"] & SortCancelProps
->(function SortCancel({ slot, ...props }, forwarded) {
+>(function SortCancel({ as, ...props }, forwarded) {
   const ctx = useSortManagerCtx();
 
   const onCancel = useEvent(() => {
@@ -30,9 +30,9 @@ export const SortCancel = forwardRef<
   });
 
   const renderer = useSlot({
-    props: [props],
+    props: [typeof as !== "function" ? { onClick: onCancel } : {}, props],
     ref: forwarded,
-    slot: slot ?? <button onClick={onCancel} />,
+    slot: as ?? <button />,
     state: { onCancel },
   });
 

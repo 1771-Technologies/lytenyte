@@ -12,6 +12,7 @@ import { useOnDragMove } from "./use-on-drag-move.js";
 import { useDropZone } from "./use-drop-zone.js";
 import { useRegisteredDropZone } from "./use-registered-drop-zone.js";
 import { announce } from "@1771technologies/lytenyte-dom-utils";
+import { dragStyleHandler, placeholderHandler } from "../+globals.js";
 
 export type DropWrapProps = Omit<JSX.IntrinsicElements["div"], "onDrop"> & {
   onDrop?: (params: OnDropParams) => void;
@@ -90,6 +91,8 @@ export const DropWrap = forwardRef<HTMLDivElement, DropWrapProps>(function DropW
     ),
     onDrop: useCallback(() => {
       ons.drop();
+      placeholderHandler.clean();
+      dragStyleHandler.clean();
     }, [ons]),
   };
 

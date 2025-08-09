@@ -217,6 +217,14 @@ export const RowDataSourcePartial: InterfaceTypePartial = {
     },
     {
       kind: "property",
+      name: "rowSetCenterData",
+      value: "(newRows: any[]) => void",
+      doc: { en: `` },
+      tsDoc: `Sets the data for the center rows (scrollable rows) of the grid. Effectively replacing the current row data.`,
+      optional: false,
+    },
+    {
+      kind: "property",
       name: "rowSetTopData",
       doc: { en: `` },
       tsDoc: `Sets the data for rows pinned to the top section.`,
@@ -246,7 +254,7 @@ export const RowDataSource: InterfaceType = {
   extends: RowDataSourcePartial,
 };
 
-const InFilterItemsProps: PropertyType = {
+const InFilterItemsProp: PropertyType = {
   kind: "property",
   name: "inFilterItems",
   tsDoc: `Returns the available in-filter items for the specified column. 
@@ -263,9 +271,18 @@ export const RowDataSourcePro: InterfaceType = {
   tsDoc: `The row data source interface used by LyteNyte Grid to retrieve and manage row data. 
   This includes functionality for row expansion, selection, and CRUD operations.`,
   doc: { en: `` },
-  properties: [InFilterItemsProps],
+  properties: [InFilterItemsProp],
   tag: "pro",
   extends: RowDataSourcePartial,
+};
+
+const ClientGetDataProp: PropertyType = {
+  kind: "property",
+  tsDoc: `A client data source method to retrieve the raw data passed to the data source.`,
+  doc: { en: `` },
+  name: "rowData",
+  optional: false,
+  value: "(section: RowSection) => T[]",
 };
 
 export const RowDataSourceClient: InterfaceType = {
@@ -279,7 +296,7 @@ export const RowDataSourceClient: InterfaceType = {
   exceeding hundreds of thousands of rows, a server-based data source 
   is recommended for performance and memory efficiency.`,
   doc: { en: `` },
-  properties: [],
+  properties: [ClientGetDataProp],
   tag: "core",
   extends: RowDataSourcePartial,
 };
@@ -296,7 +313,7 @@ export const RowDataSourceClientPro: InterfaceType = {
   is recommended for performance and memory efficiency.`,
   doc: { en: `` },
   tag: "pro",
-  properties: [InFilterItemsProps],
+  properties: [InFilterItemsProp, ClientGetDataProp],
   extends: RowDataSourcePartial,
 };
 
@@ -355,7 +372,7 @@ export const RowDataSourceClientClientPaginated: InterfaceType = {
   doc: { en: `` },
   extends: RowDataSourcePartial,
   tag: "core",
-  properties: [PageProp],
+  properties: [PageProp, ClientGetDataProp],
 };
 
 export const RowDataSourceClientClientPaginatedPro: InterfaceType = {
@@ -369,7 +386,7 @@ export const RowDataSourceClientClientPaginatedPro: InterfaceType = {
   doc: { en: `` },
   extends: RowDataSourcePartial,
   tag: "pro",
-  properties: [PageProp, InFilterItemsProps],
+  properties: [PageProp, InFilterItemsProp, ClientGetDataProp],
 };
 
 export const RowDataSourceServerPro: InterfaceType = {
@@ -388,7 +405,7 @@ export const RowDataSourceServerPro: InterfaceType = {
   extends: RowDataSourcePartial,
   tag: "pro",
   properties: [
-    InFilterItemsProps,
+    InFilterItemsProp,
     {
       kind: "property",
       doc: { en: `` },

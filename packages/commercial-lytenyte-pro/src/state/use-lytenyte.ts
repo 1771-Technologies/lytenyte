@@ -14,6 +14,7 @@ import type {
   VirtualTarget,
   DataRect,
   FilterIn,
+  RowHeight,
 } from "../+types.js";
 import { type Grid, type GridView, type UseLyteNyteProps } from "../+types.js";
 import { useRef } from "react";
@@ -104,7 +105,13 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
   const rowDataSource = atom<RowDataSource<T>>(emptyRowDataSource);
 
-  const rowHeight = atom(p.rowHeight ?? 40);
+  const rowHeight = atom<RowHeight>(40);
+  if (typeof p.rowHeight === "function") {
+    store.set(rowHeight, () => p.rowHeight as any);
+  } else {
+    store.set(rowHeight, p.rowHeight ?? 40);
+  }
+
   const rowAutoHeightGuess = atom(p.rowAutoHeightGuess ?? 40);
 
   const rowScanDistance = atom(p.rowScanDistance ?? 100);
@@ -183,6 +190,8 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
   const cellSelections = atom<DataRect[]>(p.cellSelections ?? []);
   const cellSelectionMode = atom(p.cellSelectionMode ?? "none");
+
+  const internal__rowGroupColumnState = atom<Record<string, Partial<Column<T>>>>({});
 
   const internal_cellSelectionPivot = atom<DataRect | null>(null);
   const internal_cellSelectionAdditive = atom<DataRect[] | null>(null);
@@ -286,6 +295,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
    * is impacted by the column definitions, the group expansions, the row group display mode.
    */
   const columnView = atom((g) => {
+    const groupState = g(internal__rowGroupColumnState);
     const pivotMode = g(columnPivotMode);
 
     let cols: Column<T>[];
@@ -296,6 +306,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
         rowGroupDisplayMode: "single-column",
         rowGroupModel: model.rows.filter((c) => c.active ?? true).map((c) => c.field),
         rowGroupTemplate: g(rowGroupColumn),
+        rowGroupColumnState: groupState,
       });
     } else {
       cols = columnAddRowGroup({
@@ -303,6 +314,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
         rowGroupDisplayMode: g(rowGroupDisplayMode),
         rowGroupModel: g(rowGroupModel),
         rowGroupTemplate: g(rowGroupColumn),
+        rowGroupColumnState: groupState,
       });
     }
 
@@ -418,6 +430,8 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
         .map((x) => [x, api.rowByIndex(x)]),
     );
 
+    const headerHeight = g(headerHeightTotal);
+
     return computeRowPositions(
       rowCount,
       g(rowHeight),
@@ -429,7 +443,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
         return api.rowDetailRenderedHeight(row);
       },
-      innerHeight,
+      innerHeight - headerHeight,
     );
   });
 
@@ -629,7 +643,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     columnIndex: makeColumnIndex(grid),
     columnById: makeColumnById(grid),
     columnResize: makeColumnResize(grid),
-    columnUpdate: makeColumnUpdate(grid),
+    columnUpdate: makeColumnUpdate(grid as any),
     columnMove: makeColumnMove(grid),
     sortForColumn: makeSortForColumn(grid),
 
@@ -726,6 +740,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       cellSelectionIsDeselect: makeGridAtom(atom(false), store),
       cellSelectionSplits: makeGridAtom(internal_cellSelectionSplits, store),
 
+      rowGroupColumnState: makeGridAtom(internal__rowGroupColumnState, store),
       store: store,
     } satisfies InternalAtoms,
   });

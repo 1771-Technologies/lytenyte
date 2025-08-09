@@ -54,6 +54,15 @@ const RowIdBranch: PropertyType = {
   value: "(path: string[]) => string",
 };
 
+const RowsPerPage: PropertyType = {
+  kind: "property",
+  name: "rowsPerPage",
+  doc: { en: `` },
+  tsDoc: `The number of rows to have per page. This will impact the total page count.`,
+  optional: true,
+  value: "number",
+};
+
 export const ClientRowDataSourceParams: InterfaceType = {
   kind: "interface",
   export: true,
@@ -64,13 +73,23 @@ export const ClientRowDataSourceParams: InterfaceType = {
   properties: [Data, TopData, BottomData, ReflectData, RowIdBranch, RowIdLeaf],
 };
 
+export const ClientRowDataSourcePaginatedParams: InterfaceType = {
+  kind: "interface",
+  export: true,
+  name: "ClientRowDataSourcePaginatedParams<T>",
+  tsDoc: `Parameters required to initialize a client-side row data source.`,
+  tag: "core",
+  doc: { en: `` },
+  properties: [Data, TopData, BottomData, ReflectData, RowIdBranch, RowIdLeaf, RowsPerPage],
+};
+
 const TransformInFilterProp: PropertyType = {
   kind: "property",
   doc: { en: `` },
   name: "transformInFilterItem",
   optional: true,
-  tsDoc: `Callback that transforms a column in-filter item before it's applied.`,
-  value: "(params: { field: unknown, column: Column<T> }) => FilterInFilterItem",
+  tsDoc: `Callback that transforms a set of values for a given column into the in filter items LyteNyte Grid should use.`,
+  value: "(params: { column: Column<T>, values: unknown[] }) => FilterInFilterItem[]",
 };
 
 export const ClientRowDataSourceParamsPro: InterfaceType = {
@@ -88,6 +107,25 @@ export const ClientRowDataSourceParamsPro: InterfaceType = {
     RowIdBranch,
     RowIdLeaf,
     TransformInFilterProp,
+  ],
+};
+
+export const ClientRowDataSourcePaginatedParamsPro: InterfaceType = {
+  kind: "interface",
+  export: true,
+  name: "ClientRowDataSourcePaginatedParams<T>",
+  tsDoc: `Parameters required to initialize a client-side row data source.`,
+  tag: "pro",
+  doc: { en: `` },
+  properties: [
+    Data,
+    TopData,
+    BottomData,
+    ReflectData,
+    RowIdBranch,
+    RowIdLeaf,
+    TransformInFilterProp,
+    RowsPerPage,
   ],
 };
 

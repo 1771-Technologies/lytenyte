@@ -4,7 +4,7 @@ import { useSortRowCtx } from "./context";
 import type { Option } from "./+types";
 
 export interface SortColumnSelectProps {
-  readonly slot?: SlotComponent<{
+  readonly as?: SlotComponent<{
     options: Option[];
     onSelect: (v: Option | null) => void;
     value: Option | null;
@@ -14,7 +14,7 @@ export interface SortColumnSelectProps {
 export const SortColumnSelect = forwardRef<
   HTMLSelectElement,
   JSX.IntrinsicElements["div"] & SortColumnSelectProps
->(function SortColumnSelect({ slot, ...props }, forwarded) {
+>(function SortColumnSelect({ as, ...props }, forwarded) {
   const row = useSortRowCtx();
 
   const el = (
@@ -41,7 +41,7 @@ export const SortColumnSelect = forwardRef<
   const renderer = useSlot({
     props: [props],
     ref: forwarded,
-    slot: slot ?? el,
+    slot: as ?? el,
     state: { options: row.columnOptions, onSelect: row.columnOnSelect, value: row.columnSelected },
   });
 

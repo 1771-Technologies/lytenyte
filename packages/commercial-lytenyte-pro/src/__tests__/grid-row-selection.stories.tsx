@@ -6,7 +6,7 @@ import { Root } from "../root/root";
 import { RowsContainer } from "../rows/rows-container";
 import { Viewport } from "../viewport/viewport";
 import { useLyteNyte } from "../state/use-lytenyte";
-import { useId } from "react";
+import { useEffect, useId } from "react";
 import { HeaderCell } from "../header/header-cell";
 import type { Column } from "../+types";
 import { HeaderGroupCell } from "../header/header-group-cell";
@@ -45,6 +45,7 @@ function Component({ data = bankData }: { data?: any[] }) {
   const ds = useClientRowDataSource({
     data: data,
   });
+
   const g = useLyteNyte({
     gridId: useId(),
     columns,
@@ -58,10 +59,12 @@ function Component({ data = bankData }: { data?: any[] }) {
             {p.rowIndeterminate ? "I" : null}
             <input
               type="checkbox"
-              checked={p.rowSelected}
-              onChange={(e) => {
-                p.grid.api.rowHandleSelect(e);
+              onClick={(e) => {
+                e.stopPropagation();
+                p.grid.api.rowHandleSelect({ target: e.currentTarget, shiftKey: e.shiftKey });
               }}
+              checked={p.rowSelected}
+              onChange={() => {}}
             />
           </>
         );
@@ -69,6 +72,11 @@ function Component({ data = bankData }: { data?: any[] }) {
     },
   });
 
+  useEffect(() => {
+    return g.api.eventAddListener("rowSelectBegin", () => {
+      console.log(" iran");
+    });
+  }, [g.api, g.state.rowSelectedIds]);
   const view = g.view.useValue();
 
   return (

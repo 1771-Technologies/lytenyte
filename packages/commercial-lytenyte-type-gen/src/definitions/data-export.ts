@@ -135,7 +135,7 @@ export const ExportDataRectFn: FunctionType = {
   `,
   export: true,
   name: "ExportDataRectFn<T>",
-  return: "ExportDataRectResult<T>",
+  return: "Promise<ExportDataRectResult<T>>",
   properties: [
     {
       kind: "property",

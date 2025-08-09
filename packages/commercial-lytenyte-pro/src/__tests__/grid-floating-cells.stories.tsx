@@ -51,7 +51,20 @@ function Component({ data = bankData }: { data?: any[] }) {
     rowDataSource: ds,
 
     floatingRowEnabled: true,
-    floatingCellRenderers: { alpha: () => <div>R</div> },
+    floatingCellRenderers: {
+      alpha: () => (
+        <div style={{ padding: 4, boxSizing: "border-box", width: "100%", height: "100%" }}>
+          <div style={{ width: "100%", height: "100%", background: "green" }}></div>
+        </div>
+      ),
+    },
+
+    columnBase: {
+      floatingRenderer: "alpha",
+      uiHints: {
+        resizable: true,
+      },
+    },
   });
 
   const view = g.view.useValue();

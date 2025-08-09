@@ -510,7 +510,7 @@ export const ExportDataRect: PropertyType = {
   optional: false,
   tsDoc: `Returns the raw cell data within a rectangular selection of the grid. 
   This can be useful for custom data processing or exporting workflows.`,
-  value: "(params?: ExportDataRectParams) => ExportDataRectResult<T>",
+  value: "(params?: ExportDataRectParams) => Promise<ExportDataRectResult<T>>",
 };
 
 export const ExportCsv: PropertyType = {

@@ -3,11 +3,11 @@ import { forwardRef, useMemo, type JSX } from "react";
 import { useTreeItemContext } from "./context";
 
 export interface LabelProps {
-  readonly slot?: SlotComponent;
+  readonly as?: SlotComponent;
 }
 
 export const Label = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & LabelProps>(
-  function Label({ slot, ...props }, forwarded) {
+  function Label({ as, ...props }, forwarded) {
     const { item } = useTreeItemContext();
 
     const label = useMemo(() => {
@@ -19,7 +19,7 @@ export const Label = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & L
     const rendered = useSlot({
       props: [{ children: label }, props],
       ref: forwarded,
-      slot: slot ?? <div />,
+      slot: as ?? <div />,
     });
 
     return rendered;

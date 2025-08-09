@@ -1,11 +1,12 @@
 import type { JSX } from "react";
-import { forwardRef, useMemo } from "react";
+import { forwardRef, useCallback, useMemo } from "react";
 import type { TreeVirtualLeaf } from "../tree-view/virtualized/make-virtual-tree";
 import { ColumnItemContext } from "./context";
 import { TreeLeaf } from "../tree-view/leaf";
 import type { Column } from "../+types";
 import { dragState, DropWrap } from "@1771technologies/lytenyte-dragon";
 import { useGrid } from "../grid-provider/use-grid";
+import { useColumnsFromContext } from "./use-columns-from-context";
 
 export interface ColumnManagerLeafProps {
   readonly item: TreeVirtualLeaf<Column<any>>;
@@ -21,6 +22,22 @@ export const Leaf = forwardRef<HTMLLIElement, ColumnManagerLeafProps & JSX.Intri
     const id = grid.state.gridId.useValue();
 
     const accepted = `${id}/columns`;
+
+    const base = grid.state.columnBase.useValue();
+    const columns = useColumnsFromContext(item);
+    const isVisible = useMemo(() => {
+      const allVisible = columns.every((c) => !(c.hide ?? base.hide));
+
+      return allVisible;
+    }, [base.hide, columns]);
+
+    const toggle = useCallback(
+      (s?: boolean) => {
+        const next = s ?? isVisible;
+        grid.api.columnUpdate(Object.fromEntries(columns.map((c) => [c.id, { hide: next }])));
+      },
+      [columns, grid.api, isVisible],
+    );
 
     return (
       <ColumnItemContext.Provider value={context}>
@@ -46,7 +63,8 @@ export const Leaf = forwardRef<HTMLLIElement, ColumnManagerLeafProps & JSX.Intri
 
             const isBefore = thisIndex > moveIndex;
 
-            if (isBefore) {
+            // Flipped since our source is the one moving
+            if (!isBefore) {
               el.setAttribute("data-ln-is-before", "true");
             } else {
               el.setAttribute("data-ln-is-after", "true");
@@ -63,6 +81,13 @@ export const Leaf = forwardRef<HTMLLIElement, ColumnManagerLeafProps & JSX.Intri
               ref={forwarded}
               {...item.attrs}
               style={{ ...props.style, ...item.attrs.style }}
+              onKeyDown={(ev) => {
+                props.onKeyDown?.(ev);
+                if (ev.key === " ") {
+                  toggle();
+                  ev.preventDefault();
+                }
+              }}
               data-ln-column-manager-leaf
               data-ln-column-id={item.leaf.data.id}
             />

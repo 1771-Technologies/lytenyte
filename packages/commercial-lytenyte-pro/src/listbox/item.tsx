@@ -16,6 +16,7 @@ export const Item = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(
 
           if (ev.key !== next && ev.key !== prev) return;
 
+          ev.preventDefault();
           const items = getTabbables(ev.currentTarget);
           if (!items.length) return;
 
@@ -28,7 +29,6 @@ export const Item = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(
 
           if (!itemToFocus) return;
 
-          ev.preventDefault();
           ev.stopPropagation();
           itemToFocus.focus();
         }}

@@ -1,36 +1,30 @@
 .grid-box {
-  &[data-ln-drag-over="true"][data-ln-can-drop="true"]::after {
-    content: "";
-    display: block;
-    width: 100%;
-    height: 3px;
-    background-color: blue;
-  }
-
-  [data-ln-drag-over="true"][data-ln-can-drop="true"] {
+  [data-ln-drag-over="true"][data-ln-can-drop="true"][data-ln-is-after="true"] {
     position: relative;
-    outline: none;
 
-    &[data-ln-over-top-half="true"] {
-      &::before {
-        position: absolute;
-        content: "";
-        top: -1px;
-        height: 3px;
-        background-color: blue;
-        width: 100%;
-      }
+    &::after {
+      position: absolute;
+      display: block;
+      content: "";
+      width: 100%;
+      height: 2px;
+      background-color: blue;
+      bottom: 0px;
+      left: 0px;
     }
+  }
+  [data-ln-drag-over="true"][data-ln-can-drop="true"][data-ln-is-before="true"] {
+    position: relative;
 
-    &[data-ln-over-top-half="false"] {
-      &::before {
-        position: absolute;
-        content: "";
-        height: 3px;
-        background-color: blue;
-        bottom: -1px;
-        width: 100%;
-      }
+    &::before {
+      position: absolute;
+      display: block;
+      content: "";
+      width: 100%;
+      height: 2px;
+      background-color: blue;
+      top: 0px;
+      left: 0px;
     }
   }
 }

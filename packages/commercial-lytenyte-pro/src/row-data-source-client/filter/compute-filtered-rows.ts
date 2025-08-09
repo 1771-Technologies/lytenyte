@@ -56,7 +56,8 @@ export function computeFilteredRows<T>(
         const field = `${grid.api.columnField(c, { data: row.data, kind: "leaf" })}`;
 
         if (sensitivity === "case-insensitive")
-          field.toLowerCase().includes(quickSearch.toLowerCase());
+          return field.toLowerCase().includes(quickSearch.toLowerCase());
+
         return field.includes(quickSearch);
       });
 

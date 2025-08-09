@@ -56,6 +56,12 @@ function MainComp() {
       balance: { fn: "sum" },
       education: { fn: () => 1 },
     },
+
+    columnBase: {
+      uiHints: {
+        resizable: true,
+      },
+    },
   });
 
   const view = g.view.useValue();

@@ -500,9 +500,9 @@ const HeaderRenderer: PropertyType = {
   value: "HeaderCellRenderer<T>",
 };
 
-const FloatingRenderer: PropertyType = {
+const FloatingCellRenderer: PropertyType = {
   kind: "property",
-  name: "floatingRenderer",
+  name: "floatingCellRenderer",
   optional: true,
   tsDoc: `Function used to render a floating row cell. Only called when floating rows are enabled. Must return a React node.`,
   doc: { en: `` },
@@ -582,7 +582,7 @@ export const ColumnMarker: InterfaceType = {
   tsDoc: `Defines the structure of a marker column.
 
   The marker column is a grid managed column used to support features like selection checkboxes or row drag handles.`,
-  properties: [CellRenderer, HeaderRenderer, FloatingRenderer, Width, ColumnHintsProp],
+  properties: [CellRenderer, HeaderRenderer, FloatingCellRenderer, Width, ColumnHintsProp],
 };
 
 const ColumnPartial: InterfaceTypePartial = {
@@ -606,7 +606,7 @@ const ColumnPartial: InterfaceTypePartial = {
     Field,
 
     HeaderRenderer,
-    FloatingRenderer,
+    FloatingCellRenderer,
     CellRenderer,
 
     ColumnHintsProp,
@@ -653,7 +653,7 @@ const ColumnBasePartial: InterfaceTypePartial = {
     WidthFlex,
 
     HeaderRenderer,
-    FloatingRenderer,
+    FloatingCellRenderer,
     CellRenderer,
     ColumnHintsProp,
 
@@ -711,7 +711,7 @@ export const ColumnRowGroup: InterfaceType = {
 
     CellRenderer,
     HeaderRenderer,
-    FloatingRenderer,
+    FloatingCellRenderer,
 
     ColumnHintsProp,
 

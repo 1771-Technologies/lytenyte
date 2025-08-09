@@ -16,8 +16,6 @@ export function updateAdditiveCellSelection(
 
   const adjustedRect = adjustRectForRowAndCellSpan(grid, rect);
 
-  console.log(adjustedRect);
-
   const rects = splitCellSelectionRect({
     rect: boundSelectionRect(grid, adjustedRect),
 
@@ -27,8 +25,6 @@ export function updateAdditiveCellSelection(
     rowCenterCount: ds.rowCenterCount.get(),
     rowTopCount: rowTopCount,
   });
-
-  console.log(rects);
 
   const current = grid.internal.cellSelectionAdditiveRects.get();
   if (current && current.length === rects.length) {
