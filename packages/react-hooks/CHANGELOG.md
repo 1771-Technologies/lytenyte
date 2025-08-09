@@ -1,5 +1,25 @@
 # @1771technologies/lytenyte-react-hooks
 
+## 1.0.0-beta.6
+
+### Patch Changes
+
+- Version
+- Updated dependencies
+  - @1771technologies/lytenyte-object-equals@1.0.0-beta.6
+  - @1771technologies/lytenyte-dom-utils@1.0.0-beta.6
+  - @1771technologies/lytenyte-js-utils@1.0.0-beta.6
+
+## 1.0.0-beta.5
+
+### Patch Changes
+
+- Version
+- Updated dependencies
+  - @1771technologies/lytenyte-object-equals@1.0.0-beta.5
+  - @1771technologies/lytenyte-dom-utils@1.0.0-beta.5
+  - @1771technologies/lytenyte-js-utils@1.0.0-beta.5
+
 ## 1.0.0-beta.4
 
 ### Patch Changes
