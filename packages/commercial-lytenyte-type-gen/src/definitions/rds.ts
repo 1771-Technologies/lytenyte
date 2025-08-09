@@ -217,6 +217,14 @@ export const RowDataSourcePartial: InterfaceTypePartial = {
     },
     {
       kind: "property",
+      name: "rowSetCenterData",
+      value: "(newRows: any[]) => void",
+      doc: { en: `` },
+      tsDoc: `Sets the data for the center rows (scrollable rows) of the grid. Effectively replacing the current row data.`,
+      optional: false,
+    },
+    {
+      kind: "property",
       name: "rowSetTopData",
       doc: { en: `` },
       tsDoc: `Sets the data for rows pinned to the top section.`,

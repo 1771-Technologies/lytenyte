@@ -6,7 +6,6 @@ import type {
   FieldDataParam,
   AggModelFn,
   RowDataSourceClient,
-  FilterInFilterItem,
   ClientTreeDataSourceParams,
   FilterIn,
 } from "../+types.js";
@@ -40,6 +39,10 @@ export function makeClientTreeDataSource<T>(
   const data = atom(p.data);
   const topData = atom(p.topData ?? []);
   const bottomData = atom(p.bottomData ?? []);
+
+  const dataToSrc$ = atom((g) => {
+    return new Map(g(data).map((c, i) => [c, i]));
+  });
 
   const cache = new Map<number, RowLeaf<T>>();
   const centerNodes = atom((g) => {
@@ -199,6 +202,15 @@ export function makeClientTreeDataSource<T>(
     };
 
     return comparator;
+  });
+
+  const idToNode = atom((g) => {
+    const map = new Map<string, TreeNode<RowLeaf<T>>>();
+    traverse(g(tree).root, (node) => {
+      map.set(node.id, node);
+    });
+
+    return map;
   });
 
   const initialized = atom(false);
@@ -371,7 +383,7 @@ export function makeClientTreeDataSource<T>(
     );
   };
 
-  const rowById = (id: string) => {
+  const rowById = (id: string): RowNode<T> | null => {
     const pinned = rdsStore.get(pinnedIdMap);
     if (pinned.has(id)) return pinned.get(id)!;
 
@@ -397,35 +409,38 @@ export function makeClientTreeDataSource<T>(
 
   const rowUpdate = (updates: Map<string | number, any>) => {
     const grid = rdsStore.get(grid$)!;
-    const t = rdsStore.get(tree);
 
     const d = rdsStore.get(data);
-    for (const [key, data] of updates.entries()) {
-      const rowIndex = typeof key === "number" ? key : rowToIndex(key);
+    const idMap = rdsStore.get(idToNode);
+    const dataToSrc = rdsStore.get(dataToSrc$);
 
-      const row = rowByIndex(rowIndex);
-      if (!row || !grid) {
-        console.error(`Failed to find the row at index ${rowIndex} which is being updated.`);
+    for (const [key, next] of updates.entries()) {
+      const row = typeof key === "string" ? rowById(key) : rowByIndex(key);
+      const treeNode = typeof key === "string" ? idMap.get(key) : null;
+
+      if ((!row && !treeNode) || !grid) {
+        console.error(`Failed to find the row with identifier ${key} which is being updated.`);
         continue;
       }
 
-      if (row.kind === "branch") {
-        (row as any).data = data;
+      if (row?.kind === "branch") {
+        (row as any).data = next;
       } else {
-        const source = t.idToSourceIndex.get(row.id);
+        const data = row?.kind === "leaf" ? row.data : treeNode?.data.data;
+
+        const source = dataToSrc.get(data as T);
         if (source == null) {
-          console.error(`Failed to find the row at index ${rowIndex} which is being updated.`);
+          console.error(`Failed to find the row with identifier ${key} which is being updated.`);
           continue;
         }
 
-        d[source] = data;
+        d[source] = next as any;
       }
-
-      grid.state.rowDataStore.rowInvalidateIndex(rowIndex);
     }
 
     rdsStore.set(data, [...d]);
     rdsStore.set(snapshot, (prev) => prev + 1);
+    grid.state.rowDataStore.rowClearCache();
   };
 
   const rowToIndex = (rowId: string) => {
@@ -488,11 +503,11 @@ export function makeClientTreeDataSource<T>(
           }),
         );
 
-        return [...values].map<FilterInFilterItem>((x) => {
-          if (!p.transformInFilterItem) return { id: `${x}`, label: `${x}`, value: x };
+        if (p.transformInFilterItem) {
+          return p.transformInFilterItem({ column: c, values: [...values] });
+        }
 
-          return p.transformInFilterItem({ field: x, column: c });
-        });
+        return [...values].map((x) => ({ id: `${x}`, label: `${x}`, value: x }));
       },
 
       rowAdd: (newRows, place = "end") => {
@@ -534,6 +549,11 @@ export function makeClientTreeDataSource<T>(
       },
       rowSetBotData: (data: any[]) => {
         rdsStore.set(bottomData, data);
+        const grid = rdsStore.get(grid$);
+        grid?.state.rowDataStore.rowClearCache();
+      },
+      rowSetCenterData: (d: any[]) => {
+        rdsStore.set(data, d);
         const grid = rdsStore.get(grid$);
         grid?.state.rowDataStore.rowClearCache();
       },
@@ -652,12 +672,12 @@ export function useClientTreeDataSource<T>(p: ClientTreeDataSourceParams<T>) {
   const da = dataAtomRef.current;
   if (p.reflectData) {
     // Need to queue the microtask since it we cannot update state during render.
-    if (p.data !== da.center.get()) queueMicrotask(() => da.center.set(p.data));
+    if (p.data !== da.center.get()) queueMicrotask(() => ds.current.rowSetCenterData(p.data));
     if (!equal(p.topData ?? [], da.top.get())) {
-      queueMicrotask(() => da.top.set(p.topData ?? []));
+      queueMicrotask(() => ds.current.rowSetTopData(p.topData ?? []));
     }
     if (!equal(p.bottomData ?? [], da.bottom.get()))
-      queueMicrotask(() => da.bottom.set(p.bottomData ?? []));
+      queueMicrotask(() => ds.current.rowSetBotData(p.bottomData ?? []));
   }
 
   return ds.current;

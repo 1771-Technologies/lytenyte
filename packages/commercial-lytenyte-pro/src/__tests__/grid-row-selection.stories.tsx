@@ -60,7 +60,10 @@ function Component({ data = bankData }: { data?: any[] }) {
               type="checkbox"
               checked={p.rowSelected}
               onChange={(e) => {
-                p.grid.api.rowHandleSelect(e);
+                p.grid.api.rowHandleSelect({
+                  shiftKey: false,
+                  target: e.target as HTMLElement,
+                });
               }}
             />
           </>
