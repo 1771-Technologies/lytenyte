@@ -1,6 +1,6 @@
 {
   "name": "@1771technologies/lytenyte-object-equals",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0-beta.3",
   "type": "module",
   "license": "Apache-2.0",
   "homepage": "https://1771technologies.com",
@@ -13,23 +13,25 @@
     "url": "https://github.com/1771-technologies/lytenyte/issues"
   },
   "files": [
-    "src",
+    "dist",
     "LICENSE",
     "README.md"
   ],
   "exports": {
     ".": {
-      "types": "./src/object-equals.d.ts",
-      "import": "./src/object-equals.js",
-      "require": "./src/object-equals.js"
+      "types": "./src/object-equals.ts",
+      "import": "./src/object-equals.ts",
+      "require": "./src/object-equals.ts"
     }
   },
   "publishConfig": {
     "access": "public",
     "exports": {
-      "types": "./src/object-equals.d.ts",
-      "import": "./src/object-equals.js",
-      "require": "./src/object-equals.js"
+      ".": {
+        "types": "./dist/object-equals.d.ts",
+        "import": "./dist/object-equals.js",
+        "require": "./dist/object-equals.js"
+      }
     }
   }
 }

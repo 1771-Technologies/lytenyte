@@ -1,5 +1,5 @@
-import type { DataRect } from "../+types";
-import { isOverlappingRect } from "./is-overlapping-rect";
+import type { DataRect } from "../+types.js";
+import { isOverlappingRect } from "./is-overlapping-rect.js";
 
 export function deselectRectRange(rect: DataRect, deselectRect: DataRect): DataRect[] {
   if (!isOverlappingRect(rect, deselectRect)) return [rect];

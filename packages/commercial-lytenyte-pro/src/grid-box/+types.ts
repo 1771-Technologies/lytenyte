@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { DropEventParams } from "../+types";
+import type { DropEventParams } from "../+types.js";
 
 export interface GridBoxItem<T = any> {
   readonly id: string;

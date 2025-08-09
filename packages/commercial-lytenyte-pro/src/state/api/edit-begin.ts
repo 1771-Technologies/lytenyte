@@ -1,8 +1,8 @@
 import { focusCell, isFullWidthMap } from "@1771technologies/lytenyte-shared";
-import type { InternalAtoms } from "../+types";
+import type { InternalAtoms } from "../+types.js";
 import type { Column, Grid, GridApi } from "../../+types";
 import { runWithBackoff } from "@1771technologies/lytenyte-js-utils";
-import { editOnChange } from "../helpers/edit-on-change";
+import { editOnChange } from "../helpers/edit-on-change.js";
 
 export const makeEditBegin = (
   grid: Grid<any> & { internal: InternalAtoms },

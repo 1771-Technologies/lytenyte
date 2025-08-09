@@ -1,4 +1,4 @@
-import type { AggregationItem } from "../+types";
+import type { AggregationItem } from "../+types.js";
 
 export function aggregationEvaluator<Data>(agg: AggregationItem<Data>[], data: Data[]) {
   const result: Record<string, unknown> = {};

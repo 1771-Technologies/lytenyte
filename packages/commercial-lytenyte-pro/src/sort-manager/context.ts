@@ -1,7 +1,7 @@
 import { createContext, useContext, type Dispatch, type SetStateAction } from "react";
-import type { SortItem } from "./+types";
-import type { SortRowItem } from "./hooks/use-sort-row-item";
-import type { Grid } from "../+types";
+import type { SortItem } from "./+types.js";
+import type { SortRowItem } from "./hooks/use-sort-row-item.js";
+import type { Grid } from "../+types.js";
 
 export interface SortManagerContext {
   readonly grid: Grid<any>;

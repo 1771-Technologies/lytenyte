@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { last } from "../last";
+import { last } from "../last.js";
 
 describe("last", () => {
   test("should return undefined for an empty array", () => {

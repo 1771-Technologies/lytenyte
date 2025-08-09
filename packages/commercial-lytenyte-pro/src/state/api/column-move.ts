@@ -1,5 +1,5 @@
 import type { Grid, GridApi } from "../../+types";
-import { resolveColumn } from "../helpers/resolve-column";
+import { resolveColumn } from "../helpers/resolve-column.js";
 
 export const makeColumnMove = (grid: Grid<any>): GridApi<any>["columnMove"] => {
   return (params) => {

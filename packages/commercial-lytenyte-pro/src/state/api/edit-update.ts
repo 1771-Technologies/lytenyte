@@ -1,6 +1,6 @@
-import type { InternalAtoms } from "../+types";
+import type { InternalAtoms } from "../+types.js";
 import type { Column, Grid, GridApi } from "../../+types";
-import { editOnChange } from "../helpers/edit-on-change";
+import { editOnChange } from "../helpers/edit-on-change.js";
 
 export const makeEditUpdate = (
   grid: Grid<any> & { internal: InternalAtoms },

@@ -1,4 +1,4 @@
-import type { DataRect } from "../+types";
+import type { DataRect } from "../+types.js";
 
 interface SplitCellSelectionRectArgs {
   readonly rect: DataRect;

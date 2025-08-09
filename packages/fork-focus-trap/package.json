@@ -1,6 +1,6 @@
 {
   "name": "@1771technologies/lytenyte-focus-trap",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0-beta.3",
   "type": "module",
   "license": "Apache-2.0",
   "homepage": "https://1771technologies.com",
@@ -13,7 +13,7 @@
     "url": "https://github.com/1771-technologies/lytenyte/issues"
   },
   "files": [
-    "src",
+    "dist",
     "LICENSE",
     "README.md"
   ],
@@ -27,9 +27,11 @@
   "publishConfig": {
     "access": "public",
     "exports": {
-      "types": "./src/focus-trap.d.ts",
-      "import": "./src/focus-trap.js",
-      "require": "./src/focus-trap.js"
+      ".": {
+        "types": "./dist/focus-trap.d.ts",
+        "import": "./dist/focus-trap.js",
+        "require": "./dist/focus-trap.js"
+      }
     }
   },
   "dependencies": {

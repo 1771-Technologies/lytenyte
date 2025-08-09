@@ -1,6 +1,6 @@
 import { useCallback, useRef } from "react";
-import type { Grid } from "../+types";
-import type { InternalAtoms } from "../state/+types";
+import type { Grid } from "../+types.js";
+import type { InternalAtoms } from "../state/+types.js";
 
 export function useEdgeScroll(grid: Grid<any> & { internal: InternalAtoms }) {
   const intervalIdX = useRef<ReturnType<typeof setInterval> | null>(null);

@@ -1,7 +1,7 @@
 import { useMemo, type Dispatch, type SetStateAction } from "react";
-import type { Option, SortItem } from "../+types";
+import type { Option, SortItem } from "../+types.js";
 import type { Grid } from "../../+types";
-import { useSortableColumnItems } from "./use-sortable-column-items";
+import { useSortableColumnItems } from "./use-sortable-column-items.js";
 import { itemsWithIdToMap } from "@1771technologies/lytenyte-js-utils";
 
 export interface SortRowItem {

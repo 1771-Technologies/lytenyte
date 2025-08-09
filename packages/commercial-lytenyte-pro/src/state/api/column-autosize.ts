@@ -1,7 +1,7 @@
 import { measureText } from "@1771technologies/lytenyte-shared";
-import type { InternalAtoms } from "../+types";
+import type { InternalAtoms } from "../+types.js";
 import type { AutosizeCellParams, AutosizeHeaderParams, Column, Grid, GridApi } from "../../+types";
-import { resolveColumn } from "../helpers/resolve-column";
+import { resolveColumn } from "../helpers/resolve-column.js";
 
 export const makeColumnAutosize = (
   grid: Grid<any> & { internal: InternalAtoms },

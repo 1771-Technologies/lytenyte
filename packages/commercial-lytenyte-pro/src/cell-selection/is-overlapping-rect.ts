@@ -1,4 +1,4 @@
-import type { DataRect } from "../+types";
+import type { DataRect } from "../+types.js";
 
 export function isOverlappingRect(rect1: DataRect, rect2: DataRect) {
   return !(

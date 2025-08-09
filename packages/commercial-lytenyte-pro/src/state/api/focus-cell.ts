@@ -5,7 +5,7 @@ import {
   isColumnFloatingHeader,
 } from "@1771technologies/lytenyte-shared";
 import type { Grid, GridApi, PositionHeaderGroupCell } from "../../+types";
-import type { InternalAtoms } from "../+types";
+import type { InternalAtoms } from "../+types.js";
 import { clamp } from "@1771technologies/lytenyte-js-utils";
 
 export const makeFocusCell = (

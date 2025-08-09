@@ -1,5 +1,5 @@
 import sql from "alasql";
-import { bankData } from "../sample-data/bank-data";
+import { bankData } from "../sample-data/bank-data.js";
 
 sql(`
 CREATE TABLE IF NOT EXISTS banks

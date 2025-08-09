@@ -5,9 +5,9 @@ import type {
   TreeRoot,
   TreeRootAndApi,
 } from "./+types.async-tree";
-import { applyDeleteActionToTree } from "./apply-delete-action-to-tree";
-import { applySetActionToTree } from "./apply-set-action-to-tree";
-import { getParentNodeByPath } from "./get-parent-node-by-path";
+import { applyDeleteActionToTree } from "./apply-delete-action-to-tree.js";
+import { applySetActionToTree } from "./apply-set-action-to-tree.js";
+import { getParentNodeByPath } from "./get-parent-node-by-path.js";
 
 export function makeAsyncTree<K = any, D = any>(): TreeRootAndApi<K, D> {
   const tree: TreeRoot<K, D> = {

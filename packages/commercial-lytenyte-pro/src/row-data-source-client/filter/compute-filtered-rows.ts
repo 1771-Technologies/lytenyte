@@ -13,7 +13,7 @@ import type {
   Grid,
   RowLeaf,
 } from "../../+types";
-import type { FilterWithSettings } from "./+types";
+import type { FilterWithSettings } from "./+types.js";
 import { itemsWithIdToMap } from "@1771technologies/lytenyte-js-utils";
 
 export function computeFilteredRows<T>(

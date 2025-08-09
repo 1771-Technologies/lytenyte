@@ -1,7 +1,7 @@
 {
   "name": "@1771technologies/lytenyte-pro",
   "description": "Blazingly fast headless React data grid with 100s of features.",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0-beta.3",
   "type": "module",
   "license": "COMMERCIAL",
   "files": [
@@ -33,9 +33,9 @@
       "require": "./src/index.ts"
     },
     "./types": {
-      "types": "./src/types/types.ts",
-      "import": "./src/types/types.ts",
-      "require": "./src/types/types.ts"
+      "types": "./src/+types.ts",
+      "import": "./src/+types.ts",
+      "require": "./src/+types.ts"
     },
     "./grid.css": "./main.css"
   },
@@ -48,9 +48,9 @@
         "require": "./dist/index.js"
       },
       "./types": {
-        "types": "./dist/types/index.d.ts",
-        "import": "./dist/types/index.js",
-        "require": "./dist/types/index.js"
+        "types": "./dist/+types.d.ts",
+        "import": "./dist/+types.js",
+        "require": "./dist/+types.js"
       },
       "./grid.css": "./main.css"
     }

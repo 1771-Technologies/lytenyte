@@ -1,4 +1,4 @@
-import type { SortItem } from "../+types";
+import type { SortItem } from "../+types.js";
 import type { Column, SortModelItem } from "../../+types";
 
 export function sortItemsToSortModel(

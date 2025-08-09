@@ -1,5 +1,5 @@
 import type { Grid, GridApi, RowNode } from "../../+types";
-import { getDataRect } from "../helpers/get-data-rect";
+import { getDataRect } from "../helpers/get-data-rect.js";
 
 export const makeExportCsv = (grid: Grid<any>): GridApi<any>["exportCsv"] => {
   return async (p) => {

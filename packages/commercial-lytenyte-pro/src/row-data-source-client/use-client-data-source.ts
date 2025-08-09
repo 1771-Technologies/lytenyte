@@ -12,12 +12,12 @@ import type {
   ColumnPivotModel,
   FilterInFilterItem,
   FilterIn,
-} from "../+types";
-import { type ClientRowDataSourceParams, type Grid, type RowNode } from "../+types";
+} from "../+types.js";
+import { type ClientRowDataSourceParams, type Grid, type RowNode } from "../+types.js";
 import { useRef } from "react";
 import { atom, createStore } from "@1771technologies/atom";
-import { traverse } from "./tree/traverse";
-import type { TreeNode } from "./+types";
+import { traverse } from "./tree/traverse.js";
+import type { TreeNode } from "./+types.js";
 import {
   dateComparator,
   makeGridAtom,
@@ -25,11 +25,12 @@ import {
   stringComparator,
 } from "@1771technologies/lytenyte-shared";
 import { equal, get, itemsWithIdToMap } from "@1771technologies/lytenyte-js-utils";
-import { makeClientTree, type ClientData } from "./tree/client-tree";
-import { computeFilteredRows } from "./filter/compute-filtered-rows";
-import { builtIns } from "./built-ins/built-ins";
-import { createPivotColumns } from "./pivots/create-pivot-columns";
-import { createAggModel } from "./pivots/create-agg-model";
+
+import { computeFilteredRows } from "./filter/compute-filtered-rows.js";
+import { builtIns } from "./built-ins/built-ins.js";
+import { createPivotColumns } from "./pivots/create-pivot-columns.js";
+import { createAggModel } from "./pivots/create-agg-model.js";
+import { makeClientTree, type ClientData } from "./tree/client-tree.js";
 
 interface DataAtoms<T> {
   readonly top: GridAtom<T[]>;

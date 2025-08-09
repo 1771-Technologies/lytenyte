@@ -1,9 +1,9 @@
-import { boundSelectionRect } from "./bound-selection-rect";
-import { adjustRectForRowAndCellSpan } from "./adjust-rect-for-row-and-cell-span";
-import { areRectsEqual } from "./are-rects-equal";
-import { splitCellSelectionRect } from "./split-cell-selection-rect";
-import type { DataRect, Grid } from "../+types";
-import type { InternalAtoms } from "../state/+types";
+import { boundSelectionRect } from "./bound-selection-rect.js";
+import { adjustRectForRowAndCellSpan } from "./adjust-rect-for-row-and-cell-span.js";
+import { areRectsEqual } from "./are-rects-equal.js";
+import { splitCellSelectionRect } from "./split-cell-selection-rect.js";
+import type { DataRect, Grid } from "../+types.js";
+import type { InternalAtoms } from "../state/+types.js";
 
 export function updateAdditiveCellSelection(
   grid: Grid<any> & { internal: InternalAtoms },

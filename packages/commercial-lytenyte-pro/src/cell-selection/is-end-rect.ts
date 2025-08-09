@@ -1,4 +1,4 @@
-import type { Grid } from "../+types";
+import type { Grid } from "../+types.js";
 
 export function isEndRect(grid: Grid<any>, rect: { columnStart: number; columnEnd: number }) {
   const meta = grid.state.columnMeta.get();

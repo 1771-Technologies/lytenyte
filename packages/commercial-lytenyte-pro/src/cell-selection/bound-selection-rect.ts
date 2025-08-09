@@ -1,5 +1,5 @@
 import { clamp } from "@1771technologies/lytenyte-js-utils";
-import type { DataRect, Grid } from "../+types";
+import type { DataRect, Grid } from "../+types.js";
 
 export function boundSelectionRect(grid: Grid<any>, rect: DataRect): DataRect {
   const rowCount = grid.state.rowDataStore.rowCount.get();
