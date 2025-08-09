@@ -20,11 +20,12 @@ const CellImpl = forwardRef<
   const cx = grid.state;
 
   grid.internal.refreshKey.useValue();
+  const base = grid.state.columnBase.useValue();
 
   const row = cell.row.useValue();
 
   const renderers = cx.cellRenderers.useValue();
-  const providedRenderer = children ?? cell.column.cellRenderer;
+  const providedRenderer = children ?? cell.column.cellRenderer ?? base.cellRenderer;
 
   const Renderer = providedRenderer
     ? typeof providedRenderer === "string"
@@ -73,6 +74,7 @@ const CellImpl = forwardRef<
               grid={grid}
               rowIndex={cell.rowIndex}
               colIndex={cell.colIndex}
+              rowPin={cell.rowPin}
             />
           ) : (
             Renderer
