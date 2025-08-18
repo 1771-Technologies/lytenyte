@@ -1,0 +1,54 @@
+@layer ln-components {
+  [data-ln-dialog] {
+    overflow: unset;
+    border: unset;
+    max-width: unset;
+    max-height: unset;
+    visibility: unset;
+    padding: unset;
+    margin: unset;
+    outline: none;
+
+    &::backdrop {
+      background-color: transparent;
+    }
+  }
+
+  [data-ln-drawer-side="start"] {
+    height: calc(
+      100% - var(--drawer-offset-block-start, 0px) - var(--drawer-offset-block-end, 0px)
+    );
+
+    inset-inline-start: var(--drawer-offset-inline-start, 0px);
+    inset-block-start: var(--drawer-offset-block-start, 0px);
+  }
+
+  [data-ln-drawer-side="end"] {
+    height: calc(
+      100% - var(--drawer-offset-block-start, 0px) - var(--drawer-offset-block-end, 0px)
+    );
+
+    inset-inline-start: unset;
+    inset-inline-end: var(--drawer-offset-inline-end, 0px);
+    inset-block-start: var(--drawer-offset-block-end, 0px);
+  }
+
+  [data-ln-drawer-side="top"] {
+    width: calc(
+      100% - var(--drawer-offset-inline-start, 0px) - var(--drawer-offset-inline-end, 0px)
+    );
+
+    inset-inline-start: var(--drawer-offset-inline-start, 0px);
+    inset-block-start: var(--drawer-offset-block-start, 0px);
+  }
+
+  [data-ln-drawer-side="bottom"] {
+    width: calc(
+      100% - var(--drawer-offset-inline-start, 0px) - var(--drawer-offset-inline-end, 0px)
+    );
+
+    inset-block-start: unset;
+    inset-inline-start: var(--drawer-offset-inline-start, 0px);
+    inset-block-end: var(--drawer-offset-block-end, 0px);
+  }
+}

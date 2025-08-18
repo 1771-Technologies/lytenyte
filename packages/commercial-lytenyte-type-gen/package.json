@@ -1,0 +1,29 @@
+{
+  "name": "@1771technologies/lytenyte-typegen",
+  "version": "1.0.0",
+  "type": "module",
+  "license": "COMMERCIAL",
+  "files": [
+    "LICENSE",
+    "README.md"
+  ],
+  "homepage": "https://1771technologies.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/1771-technologies/lytenyte.git",
+    "directory": "packages/commercial-lytenyte-type-gen"
+  },
+  "bugs": {
+    "url": "https://github.com/1771-technologies/lytenyte/issues"
+  },
+  "scripts": {
+    "start": "tsx ./src/gen-core.ts && tsx ./src/gen-shared.ts && tsx ./src/gen-pro.ts"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  }
+}

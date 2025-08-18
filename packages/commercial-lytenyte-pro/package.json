@@ -1,0 +1,81 @@
+{
+  "name": "@1771technologies/lytenyte-pro",
+  "description": "Blazingly fast headless React data grid with 100s of features.",
+  "version": "1.0.0",
+  "type": "module",
+  "license": "COMMERCIAL",
+  "files": [
+    "dist",
+    "main.css",
+    "LICENSE",
+    "README.md"
+  ],
+  "keywords": [
+    "react",
+    "data-grid",
+    "react-table",
+    "headless",
+    "virtualized"
+  ],
+  "homepage": "https://1771technologies.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/1771-technologies/lytenyte.git",
+    "directory": "packages/commercial-lytenyte-pro"
+  },
+  "bugs": {
+    "url": "https://github.com/1771-technologies/lytenyte/issues"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "require": "./src/index.ts"
+    },
+    "./icons": {
+      "types": "./src/icons/index.ts",
+      "import": "./src/icons/index.ts",
+      "require": "./src/icons/index.ts"
+    },
+    "./types": {
+      "types": "./src/+types.ts",
+      "import": "./src/+types.ts",
+      "require": "./src/+types.ts"
+    },
+    "./grid.css": "./main.css"
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "require": "./dist/index.js"
+      },
+      "./icons": {
+        "types": "./dist/icons/index.d.ts",
+        "import": "./dist/icons/index.js",
+        "require": "./dist/icons/index.js"
+      },
+      "./types": {
+        "types": "./dist/+types.d.ts",
+        "import": "./dist/+types.js",
+        "require": "./dist/+types.js"
+      },
+      "./grid.css": "./main.css"
+    }
+  },
+  "dependencies": {
+    "@1771technologies/atom": "^1.0.2",
+    "@1771technologies/lytenyte-core": "workspace:*",
+    "@1771technologies/lytenyte-dragon": "workspace:*",
+    "@1771technologies/lytenyte-shared": "workspace:*",
+    "@1771technologies/lytenyte-dom-utils": "workspace:*",
+    "@1771technologies/lytenyte-js-utils": "workspace:*",
+    "@1771technologies/lytenyte-react-hooks": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  }
+}

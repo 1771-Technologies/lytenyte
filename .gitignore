@@ -4,6 +4,9 @@
 /lib-types
 /server
 dist-mpa
+(snap-diff)
+
+certificates
 
 !**/packages/graphite-grid/dist
 !**/packages/graphite-grid-react/dist
@@ -11,6 +14,8 @@ dist-mpa
 scratch.txt
 
 auto-imports.d.ts
+
+.content-collections/
 
 certs/
 .env
@@ -27,8 +32,6 @@ certs/
 __screenshots__/
 
 .turbo
-
-.source/
 
 **/_vitest-coverage
 .vscode

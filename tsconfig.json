@@ -22,7 +22,6 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
-
-    "types": ["@1771technologies/aio/vitest-types"]
+    "types": ["@vitest/browser/providers/playwright"]
   }
 }

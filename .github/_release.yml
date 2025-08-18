@@ -1,0 +1,79 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: latest
+          run_install: true
+
+      - name: Install One Play
+        run: pnpm install -g @1771technologies/oneplay
+
+      - name: Install Dependencies
+        run: op np i
+
+      - name: Lint All Packages
+        run: op np --filter './packages/*' exec op lint
+      - name: Check all packages format
+        run: op np --filter './packages/*' exec op fmt
+      - name: Typecheck all packages
+        run: op np --filter './packages/*' exec op typecheck
+      - name: Test All packages
+        run: op test --coverage
+      # Enable once the testing strategy has been finalized.
+      # - name: Generate Coverage Badge
+      #   run: op codecov
+      - name: Build All Packages
+        run: op np --filter './packages/*' exec op compile
+
+      - name: Check for Changes
+        id: git_status
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "changes_detected=true" >> $GITHUB_OUTPUT
+          else
+            echo "changes_detected=false" >> $GITHUB_OUTPUT
+          fi
+
+      # - name: Create Pull Request
+      #   if: steps.git_status.outputs.changes_detected == 'true'
+      #   uses: peter-evans/create-pull-request@v6
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     commit-message: "Update coverage badge"
+      #     branch: "coverage-badge-update"
+      #     title: "Update Coverage Badge"
+      #     body: "This PR updates the coverage badge with the latest coverage percentage."
+
+      - name: Create Release Pull Request or Publish
+        uses: changesets/action@v1
+        with:
+          publish: op change publish --access public
+          version: op change version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
