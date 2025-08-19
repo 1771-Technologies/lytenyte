@@ -1835,10 +1835,9 @@ export interface ColumnGroupMeta {
 
 /**
  * Controls the visibility behavior of a column within a column group.
- *
- * - `"always"`: The column is always visible regardless of the group's state.
- * - `"close"`: The column is visible only when the group is **collapsed**.
- * - `"open"`: The column is visible only when the group is **expanded**.
+ *   - `"always"`: The column is always visible regardless of the group's state.
+ *   - `"close"`: The column is visible only when the group is **collapsed**.
+ *   - `"open"`: The column is visible only when the group is **expanded**.
  *
  * Used to build dynamic, collapsible column group layouts in LyteNyte Grid.
  *

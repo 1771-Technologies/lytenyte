@@ -42,7 +42,7 @@ export const CellRendererFn: FunctionType = {
   export: true,
   doc: { en: `` },
   tsDoc: `
-  A function that returns a {@link ReactNode} representing the rendered content of a cell.
+  A function that returns a ReactNode representing the rendered content of a cell.
 
   This function is called once per cell for the associated column. Cell renderers should be
   optimized for performance, as slow renderers may degrade the overall responsiveness of the grid.
