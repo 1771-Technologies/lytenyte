@@ -2,6 +2,9 @@ name: PR Checks
 
 on:
   pull_request:
+  push:
+    branches:
+      - main
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
