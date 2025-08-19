@@ -9,6 +9,7 @@ import { RowsContainer } from "./rows/rows-container.js";
 import { RowsBottom, RowsCenter, RowsTop } from "./rows/rows-sections.js";
 import { useLyteNyte } from "./state/use-lytenyte.js";
 import { Viewport } from "./viewport/viewport.js";
+import { Cell } from "./cells/cell.js";
 
 export const Grid = {
   Root,
@@ -24,6 +25,7 @@ export const Grid = {
   RowsTop,
   Row,
   Viewport,
+  Cell,
 
   useLyteNyte,
 };
