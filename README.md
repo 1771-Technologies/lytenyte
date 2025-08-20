@@ -110,11 +110,6 @@ information on available support channels and response options.
 
 ## Contributing
 
-> [!IMPORTANT]
-> We are not currently accepting external pull requests while we finalize our code
-> architecture and development tooling. We appreciate your patience
-> and interest in contributing to LyteNyte Grid.
-
 Please review our [contributing guide](./CONTRIBUTING.md) to learn about our development
 process, bug reporting procedures, and codebase maintenance practices.
 
