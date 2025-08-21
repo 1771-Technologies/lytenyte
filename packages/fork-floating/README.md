@@ -36,7 +36,7 @@ Meticulously engineered to redefine what your enterprise expects from a React da
 
 [![NPM Version](https://img.shields.io/npm/v/%401771technologies%2Flytenyte-pro?label=PRO)](https://www.npmjs.com/package/@1771technologies/lytenyte-pro)
 [![NPM Version](https://img.shields.io/npm/v/%401771technologies%2Flytenyte-core?label=Core)](https://www.npmjs.com/package/@1771technologies/lytenyte-core)
-[![GitHub branch status](https://img.shields.io/github/checks-status/1771-Technologies/lytenyte/HEAD)](https://github.com/1771-Technologies/lytenyte/HEAD/)
+[![GitHub branch status](https://img.shields.io/github/checks-status/1771-Technologies/lytenyte/main)](https://github.com/1771-Technologies/lytenyte/tree/main)
 [![Follow on X](https://img.shields.io/twitter/follow/1771tech.svg?label=follow+1771tech)](https://x.com/1771tech)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](code_of_conduct.md)
 
