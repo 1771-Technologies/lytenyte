@@ -33,7 +33,7 @@ export function Main() {
       height: undefined,
       width: undefined,
     },
-    { deserializer: JSON.parse, serializer: JSON.stringify }
+    { deserializer: JSON.parse, serializer: JSON.stringify },
   );
   const { resolvedTheme, setTheme } = useTheme();
 

@@ -25,7 +25,7 @@ if (isFrame || url.searchParams.get("full")) {
       <Container>
         <Render />
       </Container>
-    </ThemeProvider>
+    </ThemeProvider>,
     // </StrictMode>
   );
 } else {
@@ -34,7 +34,7 @@ if (isFrame || url.searchParams.get("full")) {
     // <StrictMode>
     <ThemeProvider attribute="class">
       <shell.Main />
-    </ThemeProvider>
+    </ThemeProvider>,
     // </StrictMode>
   );
 }

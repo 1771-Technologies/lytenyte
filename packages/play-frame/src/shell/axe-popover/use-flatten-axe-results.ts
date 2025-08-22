@@ -3,7 +3,7 @@ import { useMemo } from "react";
 
 export function useFlattenedAxeResults(
   results: AxeResults | null,
-  key: "violations" | "passes" | "incomplete"
+  key: "violations" | "passes" | "incomplete",
 ) {
   return useMemo(() => {
     const frame = document.querySelector("iframe") as HTMLIFrameElement;
