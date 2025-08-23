@@ -1,3 +1,5 @@
+import type { PositionFullWidthRow, PositionGridCell } from "./+types";
+
 export interface ColumnWidthItem {
   readonly width?: number;
   readonly widthMin?: number;
@@ -52,3 +54,4 @@ export type RowPredicate = (r: Row) => boolean;
 export type LayoutMap = Map<Row, Map<Column, RowColTuple>>;
 
 export type ScrollIntoViewFn = (p: { row?: number; column?: number; behavior: "instant" }) => void;
+export type RootCellFn = (r: number, c: number) => PositionGridCell | PositionFullWidthRow | null;

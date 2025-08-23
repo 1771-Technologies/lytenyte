@@ -13,6 +13,18 @@ export { applyLayoutUpdate } from "./layout/apply-layout-update.js";
 export { isFullWidthMap } from "./layout/is-full-width-map.js";
 export type { LayoutMap, SpanFn, RowPredicate, SpanLayout } from "./+types.non-gen.js";
 
+export type { LayoutState } from "./layout-2/make-layout-state.js";
+export { makeLayoutState } from "./layout-2/make-layout-state.js";
+export { updateFull } from "./layout-2/update-full.js";
+export type {
+  Computed,
+  DeadCells,
+  LayoutDiffers,
+  RootCellLookup as RootCellSpanLookup,
+  UpdateLayoutArgs,
+} from "./layout-2/update-layout.js";
+export { updateLayout, FULL_WIDTH, CONTAINS_DEAD_CELLS } from "./layout-2/update-layout.js";
+
 export { computeBounds } from "./virtual-bounds/compute-bounds.js";
 export {
   DEFAULT_PREVIOUS_LAYOUT,

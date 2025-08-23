@@ -556,6 +556,25 @@ export const ExportCsvFile: PropertyType = {
   value: "(params?: ExportCsvParams) => Promise<Blob>",
 };
 
+const GetRootCell: PropertyType = {
+  kind: "property",
+  doc: { en: `` },
+  name: `cellRoot`,
+  value: "(row: number, column: number) => PositionGridCell | PositionFullWidthRow | null",
+  optional: false,
+  tsDoc: `
+    Returns the root cell for the provided row and column index. This may be:
+
+    - A cell that is not covered by the row or column span of another cell, in this case the root cell 
+      is the cell itself
+    - A cell that is covered by the row or column span of another cell, in this case the root cell is the 
+      spanning cell
+    - A full width row, in this case the root cell is the row itself. Note that full width rows cannot be 
+      spanned over, so it is not possible for a spanning cell to continue past a full width row, even if the 
+      span amount would allow it
+  `,
+};
+
 const GridApiPartial: InterfaceTypePartial = {
   kind: "interface-partial",
   properties: [
@@ -600,6 +619,8 @@ const GridApiPartial: InterfaceTypePartial = {
     ColumnById,
     ColumnUpdates,
     ColumnMove,
+
+    GetRootCell,
 
     HeaderGroupToggle,
     ColumnAutosize,

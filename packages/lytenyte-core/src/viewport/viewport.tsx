@@ -44,8 +44,8 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
             columnCount: ctx.grid.state.columnMeta.get().columnsVisible.length,
             focusActive: ctx.grid.internal.focusActive,
             id: ctx.grid.state.gridId.get(),
-            layout: ctx.grid.internal.layout.get(),
             rtl: ctx.grid.state.rtl.get(),
+            getRootCell: ctx.grid.api.cellRoot,
             scrollIntoView: ctx.grid.api.scrollIntoView,
           });
 

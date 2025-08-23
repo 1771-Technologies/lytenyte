@@ -5,13 +5,12 @@ import type {
   PositionHeaderCell,
   PositionUnion,
 } from "../../+types.js";
-import type { LayoutMap, ScrollIntoViewFn } from "../../+types.non-gen.js";
+import type { RootCellFn, ScrollIntoViewFn } from "../../+types.non-gen.js";
 import { runWithBackoff } from "@1771technologies/lytenyte-js-utils";
 import { getCellRootRowAndColIndex } from "./get-cell-root-row-and-col-index.js";
 import { getHeaderRows } from "../getters/get-header-rows.js";
 import { getColIndexFromEl } from "../getters/get-col-index-from-el.js";
 import { ensureVisible } from "../ensure-visible.js";
-import { isFullWidthMap } from "../../layout/is-full-width-map";
 import { getRowQuery } from "../getters/get-row-query.js";
 import { getCellQuery } from "../getters/get-cell-query.js";
 
@@ -22,13 +21,13 @@ interface HandleVerticalArrowArgs {
   readonly isMeta: boolean;
   readonly isDown: boolean;
   readonly scrollIntoView: ScrollIntoViewFn;
+  readonly getRootCell: RootCellFn;
   readonly focusActive: GridAtom<PositionUnion | null>;
   readonly id: string;
-  readonly layout: LayoutMap;
 }
 
 export function handleVerticalArrow(args: HandleVerticalArrowArgs) {
-  const { vp, pos, layout, isDown, isMeta, rowCount, scrollIntoView, focusActive, id } = args;
+  const { vp, pos, getRootCell, isDown, isMeta, rowCount, scrollIntoView, focusActive, id } = args;
 
   if (pos.kind === "full-width" || pos.kind === "cell") {
     let nextRow = pos.rowIndex + (isDown ? 1 : -1);
@@ -65,7 +64,7 @@ export function handleVerticalArrow(args: HandleVerticalArrowArgs) {
       return focusCellVertically({
         focusActive,
         id,
-        layout,
+        getRootCell,
         nextRow,
         pos,
         scrollIntoView,
@@ -150,7 +149,7 @@ function focusFirstRowCell({
   pos,
   vp,
   id,
-  layout,
+  getRootCell,
   scrollIntoView,
   focusActive,
 }: HandleVerticalArrowArgs) {
@@ -164,12 +163,12 @@ function focusFirstRowCell({
   // If there is a normal cell we focus that.
 
   const run = () => {
-    const row = layout.get(0);
+    const cell = getRootCell(0, pos.colIndex);
 
-    if (!row) return false;
+    if (!cell) return false;
 
     let el: HTMLElement | null | undefined = undefined;
-    if (isFullWidthMap(row)) {
+    if (cell.kind === "full-width") {
       el = vp?.querySelector(getRowQuery(id, 0));
 
       ensureVisible(el as HTMLElement, scrollIntoView);
@@ -181,8 +180,7 @@ function focusFirstRowCell({
       return true;
     }
 
-    const cell = row.get(pos.colIndex)!;
-    const [rootRow, rootCol] = getCellRootRowAndColIndex(cell, 0, pos.colIndex);
+    const [rootRow, rootCol] = getCellRootRowAndColIndex(cell);
 
     el = vp?.querySelector(getCellQuery(id, rootRow, rootCol));
     if (!el) return false;
