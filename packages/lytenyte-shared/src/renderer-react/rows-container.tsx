@@ -26,6 +26,7 @@ export const RowsContainerReact = forwardRef<
         {
           ...props.style,
           height,
+          minHeight: height,
           width,
           minWidth: "100%",
           flex: "1",

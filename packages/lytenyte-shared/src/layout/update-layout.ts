@@ -45,7 +45,10 @@ export interface UpdateLayoutArgs {
 export function updateLayout(p: UpdateLayoutArgs): void {
   // If there are no row spans, or column spans, or full width rows then the layout is standard and there
   // is no work to do. We can skip it all.
-  if (p.computeColSpan == null && p.computeRowSpan == null && p.isFullWidth == null) return;
+  if (p.computeColSpan == null && p.computeRowSpan == null && p.isFullWidth == null) {
+    p.computed.fill(1);
+    return;
+  }
 
   const centerEnd = p.startCount + p.centerCount;
   const end = p.startCount + p.centerCount + p.endCount;

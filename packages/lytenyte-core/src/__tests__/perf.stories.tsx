@@ -63,7 +63,7 @@ function Component() {
       >
         <Root grid={g}>
           <Viewport>
-            <Header>
+            {/* <Header>
               {view.header.layout.map((row, i) => {
                 return (
                   <HeaderRow headerRowIndex={i} key={i}>
@@ -106,7 +106,7 @@ function Component() {
               <RowsCenter>
                 <RowHandler rows={view.rows.center} />
               </RowsCenter>
-            </RowsContainer>
+            </RowsContainer> */}
           </Viewport>
         </Root>
       </div>

@@ -22,6 +22,23 @@ export type {
 } from "./layout/update-layout.js";
 export { updateLayout, FULL_WIDTH, CONTAINS_DEAD_CELLS } from "./layout/update-layout.js";
 
+export { makeRowStore } from "./row-store/make-row-store.js";
+export { useSignalState } from "./signal/react/use-signal-state.js";
+export { makeAtom } from "./signal/react/make-atom.js";
+export { useSignalValue } from "./signal/react/use-signal-value.js";
+export {
+  computed,
+  computedKeyedMap,
+  computedMap,
+  effect,
+  peek,
+  readonly,
+  root,
+  signal,
+  tick,
+} from "./signal/index.js";
+export type { WriteSignal, ReadSignal } from "./signal/+types.js";
+
 export { computeBounds } from "./virtual-bounds/compute-bounds.js";
 export {
   DEFAULT_PREVIOUS_LAYOUT,

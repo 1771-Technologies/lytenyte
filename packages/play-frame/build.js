@@ -27,7 +27,7 @@ try {
           }
 
           if (id === "@play-entry") {
-            return `import "@playframe/line/entry"`;
+            return `import "@1771technologies/play-frame/entry"`;
           }
         },
       },

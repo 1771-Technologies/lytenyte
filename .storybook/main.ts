@@ -8,6 +8,6 @@ const stories = process.env.STORY_PATH?.split(",") ?? [
 const config: StorybookConfig = {
   stories: stories,
   addons: ["@storybook/addon-docs", "@storybook/addon-a11y", "@storybook/addon-vitest"],
-  framework: { name: "@storybook/react-vite", options: {} },
+  framework: { name: "@storybook/react-vite", options: { strictMode: false } },
 };
 export default config;

@@ -174,7 +174,6 @@ export function makeRowLayout<T>({ view: n, layout, rds, columns, focus }: MakeR
   /**
    * CENTER ROW LAYOUT START
    */
-
   for (let r = n.rowCenterStart; r < n.rowCenterEnd; r++) {
     const status = layout.special[r];
     const computed = layout.computed[r];

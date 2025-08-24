@@ -441,7 +441,7 @@ export interface GridState<T> {
    * A predicate function used to determine whether a given row should be rendered as a
    *   full-width row. Full-width rows span across all columns and bypass standard cell layout.
    */
-  readonly rowFullWidthPredicate: GridAtom<{ fn: RowFullWidthPredicate<T> }>;
+  readonly rowFullWidthPredicate: GridAtom<{ fn: RowFullWidthPredicate<T> | null }>;
 
   /**
    * The component function that renders full-width rows in the grid. This renderer is called

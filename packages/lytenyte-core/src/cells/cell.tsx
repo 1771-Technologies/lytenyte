@@ -1,6 +1,5 @@
-import { forwardRef, useEffect, useState, type JSX, type ReactNode } from "react";
-import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
-import type { CellRendererFn, RowCellLayout } from "../+types";
+import { forwardRef, useEffect, useState, type JSX } from "react";
+import type { RowCellLayout } from "../+types";
 import { useGridRoot } from "../context";
 import { CellReact } from "@1771technologies/lytenyte-shared";
 import { CellDefault } from "./cell-default";
@@ -9,23 +8,21 @@ import { useRowMeta } from "../rows/row/context";
 
 export interface CellProps {
   readonly cell: RowCellLayout<any>;
-  readonly children?: ReactNode | CellRendererFn<any>;
 }
 
-const CellImpl = forwardRef<
+export const Cell = forwardRef<
   HTMLDivElement,
   Omit<JSX.IntrinsicElements["div"], "children"> & CellProps
->(function Cell({ cell, children, ...props }, forwarded) {
+>(function Cell({ cell, ...props }, forwarded) {
   const grid = useGridRoot().grid;
   const cx = grid.state;
 
-  grid.internal.refreshKey.useValue();
   const base = grid.state.columnBase.useValue();
 
   const row = cell.row.useValue();
 
   const renderers = cx.cellRenderers.useValue();
-  const providedRenderer = children ?? cell.column.cellRenderer ?? base.cellRenderer;
+  const providedRenderer = cell.column.cellRenderer ?? base.cellRenderer;
 
   const Renderer = providedRenderer
     ? typeof providedRenderer === "string"
@@ -84,5 +81,3 @@ const CellImpl = forwardRef<
     </CellReact>
   );
 });
-
-export const Cell = fastDeepMemo(CellImpl);

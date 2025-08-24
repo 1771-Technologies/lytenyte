@@ -1,4 +1,3 @@
-import { atom, createStore } from "@1771technologies/atom";
 import type {
   ColumnMeta,
   GridApi,
@@ -18,16 +17,18 @@ import { makeColumnView } from "./helpers/column-view.js";
 import {
   computeBounds,
   computeColumnPositions,
+  computed,
   computeRowPositions,
-  makeGridAtom,
+  effect,
+  makeAtom,
   makeLayoutState,
-  makeRowDataStore,
+  makeRowStore,
+  signal,
   updateFull,
-  type SpanLayout,
 } from "@1771technologies/lytenyte-shared";
 import type { InternalAtoms } from "./+types.js";
 import { makeRowLayout } from "./helpers/row-layout/row-layout.js";
-import { equal } from "@1771technologies/lytenyte-js-utils";
+import { equal, rangesOverlap } from "@1771technologies/lytenyte-js-utils";
 import { makeColumnLayout } from "./helpers/column-layout.js";
 import { emptyRowDataSource } from "./helpers/empty-row-data-source.js";
 import { getFullWidthCallback } from "./helpers/get-full-width-callback.js";
@@ -72,168 +73,198 @@ import { makeCellRoot } from "./api/cell-root.js";
 const DEFAULT_HEADER_HEIGHT = 40;
 const COLUMN_GROUP_JOIN_DELIMITER = "-->";
 
-export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
-  const store = createStore();
+const EMPTY_POSITION_ARRAY = new Uint32Array();
 
+export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   /**
    * Primitive ATOMS and State
    */
-  const rtl = atom(p.rtl ?? false);
-  const columns = atom(p.columns ?? []);
-  const base = atom(p.columnBase ?? {});
-  const gridId = atom(p.gridId);
-  const headerHeight = atom(p.headerHeight ?? DEFAULT_HEADER_HEIGHT);
-  const headerGroupHeight = atom(p.headerGroupHeight ?? DEFAULT_HEADER_HEIGHT);
-  const columnSizeToFit = atom(p.columnSizeToFit ?? false);
-  const viewport = atom<HTMLElement | null>(null);
-  const viewportHeightInner = atom(0);
-  const viewportHeightOuter = atom(0);
-  const viewportWidthInner = atom(0);
-  const viewportWidthOuter = atom(0);
-  const columnGroupJoinDelimiter = atom(p.columnGroupJoinDelimiter ?? COLUMN_GROUP_JOIN_DELIMITER);
-  const columnGroupExpansions = atom(p.columnGroupExpansions ?? {});
-  const columnGroupDefaultExpansion = atom(p.columnGroupDefaultExpansion ?? true);
+  const rtl = signal(p.rtl ?? false);
+  const columns = signal(p.columns ?? []);
+  const base = signal(p.columnBase ?? {});
+  const gridId = signal(p.gridId);
+  const headerHeight = signal(p.headerHeight ?? DEFAULT_HEADER_HEIGHT);
+  const headerGroupHeight = signal(p.headerGroupHeight ?? DEFAULT_HEADER_HEIGHT);
+  const columnSizeToFit = signal(p.columnSizeToFit ?? false);
+  const viewport = signal<HTMLElement | null>(null);
+  const viewportHeightInner = signal(0);
+  const viewportHeightOuter = signal(0);
+  const viewportWidthInner = signal(0);
+  const viewportWidthOuter = signal(0);
+  const columnGroupJoinDelimiter = signal(
+    p.columnGroupJoinDelimiter ?? COLUMN_GROUP_JOIN_DELIMITER,
+  );
+  const columnGroupExpansions = signal(p.columnGroupExpansions ?? {});
+  const columnGroupDefaultExpansion = signal(p.columnGroupDefaultExpansion ?? true);
 
-  const rowDataSource = atom<RowDataSource<T>>(emptyRowDataSource);
+  const rowDataSource = signal<RowDataSource<T>>(emptyRowDataSource);
 
-  const rowHeight = atom<RowHeight>(40);
-  if (typeof p.rowHeight === "function") {
-    store.set(rowHeight, () => p.rowHeight as any);
-  } else {
-    store.set(rowHeight, p.rowHeight ?? 40);
-  }
+  const rowHeight = signal<RowHeight>(40);
 
-  const rowAutoHeightGuess = atom(p.rowAutoHeightGuess ?? 40);
+  if (typeof p.rowHeight === "function") rowHeight.set(() => p.rowHeight as any);
+  else rowHeight.set(p.rowHeight ?? 40);
 
-  const rowScanDistance = atom(p.rowScanDistance ?? 100);
-  const colScanDistance = atom(p.colScanDistance ?? 100);
+  const rowAutoHeightGuess = signal(p.rowAutoHeightGuess ?? 40);
 
-  const rowOverscanTop = atom(p.rowOverscanTop ?? 10);
-  const rowOverscanBottom = atom(p.rowOverscanBottom ?? 10);
-  const colOverScanStart = atom(p.colOverscanStart ?? 2);
-  const colOverscanEnd = atom(p.colOverscanEnd ?? 2);
+  const rowScanDistance = signal(p.rowScanDistance ?? 100);
+  const colScanDistance = signal(p.colScanDistance ?? 100);
 
-  const xScroll = atom(0);
-  const yScroll = atom(0);
+  const rowOverscanTop = signal(p.rowOverscanTop ?? 10);
+  const rowOverscanBottom = signal(p.rowOverscanBottom ?? 10);
+  const colOverScanStart = signal(p.colOverscanStart ?? 2);
+  const colOverscanEnd = signal(p.colOverscanEnd ?? 2);
 
-  const cellRenderers = atom(p.cellRenderers ?? {});
-  const rowFullWidthPredicate = atom({ fn: p.rowFullWidthPredicate ?? (() => false) });
-  const rowFullWidthRenderer = atom({ fn: p.rowFullWidthRenderer ?? (() => "Not defined") });
+  const xScroll = signal(0);
+  const yScroll = signal(0);
 
-  const sortModel = atom<SortModelItem<T>[]>(p.sortModel ?? []);
-  const filterModel = atom<Record<string, FilterModelItem<T>>>(p.filterModel ?? {});
-  const rowGroupModel = atom(p.rowGroupModel ?? []);
-  const aggModel = atom(p.aggModel ?? {});
+  const cellRenderers = signal(p.cellRenderers ?? {});
+  const rowFullWidthPredicate = signal({ fn: p.rowFullWidthPredicate ?? null });
+  const rowFullWidthRenderer = signal({ fn: p.rowFullWidthRenderer ?? (() => "Not defined") });
 
-  const rowGroupDisplayMode = atom(p.rowGroupDisplayMode ?? "single-column");
-  const rowGroupDefaultExpansion = atom(p.rowGroupDefaultExpansion ?? false);
-  const rowGroupExpansions = atom(p.rowGroupExpansions ?? {});
-  const rowGroupColumn = atom(p.rowGroupColumn ?? {});
+  const sortModel = signal<SortModelItem<T>[]>(p.sortModel ?? []);
+  const filterModel = signal<Record<string, FilterModelItem<T>>>(p.filterModel ?? {});
+  const rowGroupModel = signal(p.rowGroupModel ?? []);
+  const aggModel = signal(p.aggModel ?? {});
 
-  const headerCellRenderers = atom(p.headerCellRenderers ?? {});
-  const floatingCellRenderers = atom(p.floatingCellRenderers ?? {});
-  const floatingRowEnabled = atom(p.floatingRowEnabled ?? false);
-  const floatingRowHeight = atom(p.floatingRowHeight ?? 40);
+  const rowGroupDisplayMode = signal(p.rowGroupDisplayMode ?? "single-column");
+  const rowGroupDefaultExpansion = signal(p.rowGroupDefaultExpansion ?? false);
+  const rowGroupExpansions = signal(p.rowGroupExpansions ?? {});
+  const rowGroupColumn = signal(p.rowGroupColumn ?? {});
 
-  const editRenderers = atom(p.editRenderers ?? {});
-  const editRowValidatorFn = atom({ fn: p.editRowValidatorFn ?? (() => true) });
-  const editClickActivator = atom(p.editClickActivator ?? "single");
-  const editCellMode = atom(p.editCellMode ?? "readonly");
+  const headerCellRenderers = signal(p.headerCellRenderers ?? {});
+  const floatingCellRenderers = signal(p.floatingCellRenderers ?? {});
+  const floatingRowEnabled = signal(p.floatingRowEnabled ?? false);
+  const floatingRowHeight = signal(p.floatingRowHeight ?? 40);
 
-  const columnMarker = atom(p.columnMarker ?? {});
-  const columnMarkerEnabled = atom(p.columnMarkerEnabled ?? false);
-  const columnDoubleClickToAutosize = atom(p.columnDoubleClickToAutosize ?? true);
+  const editRenderers = signal(p.editRenderers ?? {});
+  const editRowValidatorFn = signal({ fn: p.editRowValidatorFn ?? (() => true) });
+  const editClickActivator = signal(p.editClickActivator ?? "single");
+  const editCellMode = signal(p.editCellMode ?? "readonly");
 
-  const rowDetailHeight = atom(p.rowDetailHeight ?? 300);
-  const rowDetailAutoHeightGuess = atom(p.rowDetailAutoHeightGuess ?? 300);
-  const rowDetailExpansions = atom(p.rowDetailExpansions ?? new Set<string>());
-  const rowDetailRenderer = atom({ fn: p.rowDetailRenderer ?? (() => "Not defined") });
+  const columnMarker = signal(p.columnMarker ?? {});
+  const columnMarkerEnabled = signal(p.columnMarkerEnabled ?? false);
+  const columnDoubleClickToAutosize = signal(p.columnDoubleClickToAutosize ?? true);
 
-  const rowSelectedIds = atom(p.rowSelectedIds ?? new Set<string>());
-  const rowSelectionMode = atom(p.rowSelectionMode ?? "none");
-  const rowSelectChildren = atom(p.rowSelectChildren ?? false);
-  const rowSelectionActivator = atom<RowSelectionActivator>(
+  const rowDetailHeight = signal(p.rowDetailHeight ?? 300);
+  const rowDetailAutoHeightGuess = signal(p.rowDetailAutoHeightGuess ?? 300);
+  const rowDetailExpansions = signal(p.rowDetailExpansions ?? new Set<string>());
+  const rowDetailRenderer = signal({ fn: p.rowDetailRenderer ?? (() => "Not defined") });
+
+  const rowSelectedIds = signal(p.rowSelectedIds ?? new Set<string>());
+  const rowSelectionMode = signal(p.rowSelectionMode ?? "none");
+  const rowSelectChildren = signal(p.rowSelectChildren ?? false);
+  const rowSelectionActivator = signal<RowSelectionActivator>(
     p.rowSelectionActivator ?? "single-click",
   );
 
-  const virtualizeRows = atom(p.virtualizeRows ?? true);
-  const virtualizeCols = atom(p.virtualizeCols ?? true);
+  const virtualizeRows = signal(p.virtualizeRows ?? true);
+  const virtualizeCols = signal(p.virtualizeCols ?? true);
 
-  const internal__rowGroupColumnState = atom<Record<string, Partial<Column<T>>>>({});
+  const internal__rowGroupColumnState = signal<Record<string, Partial<Column<T>>>>({});
 
-  const internal_rowSelectionPivot = atom<string | null>(null);
-  const internal_rowSelectionLastWasDeselect = atom<boolean>(false);
-  const rowSelectionPivot = atom((g) => g(internal_rowSelectionPivot));
+  const internal_rowSelectionPivot = signal<string | null>(null);
+  const internal_rowSelectionLastWasDeselect = signal<boolean>(false);
 
-  const internal_draggingHeader = atom<HeaderGroupCellLayout | null>(null);
-  const internal_rowAutoHeightCache = atom<Record<number, number>>({});
-  const internal_rowDetailHeightCache = atom<Record<number, number>>({});
-  const internal_focusActive = atom<PositionUnion | null>(null);
-  const internal_focusPrevCol = atom<number | null>(null);
-  const internal_focusPrevRow = atom<number | null>(null);
-  const internal_editActivePosition = atom<EditActivePosition<T> | null>(null);
-  const internal_editData = atom<any>(null);
-  const internal_editValidation = atom<Record<string, any> | boolean>(true);
+  const internal_draggingHeader = signal<HeaderGroupCellLayout | null>(null);
+  const internal_rowAutoHeightCache = signal<Record<number, number>>({});
+  const internal_rowDetailHeightCache = signal<Record<number, number>>({});
+  const internal_focusActive = signal<PositionUnion | null>(null);
+  const internal_focusPrevCol = signal<number | null>(null);
+  const internal_focusPrevRow = signal<number | null>(null);
+  const internal_editActivePosition = signal<EditActivePosition<T> | null>(null);
+  const internal_editData = signal<any>(null);
+  const internal_editValidation = signal<Record<string, any> | boolean>(true);
+
+  /**
+   * COLUMN VIEW
+   * Compute the column layout. This impacts both the row layout and header layout. Column layout
+   * is impacted by the column definitions, the group expansions, the row group display mode.
+   */
+  const columnView = computed(() => {
+    const groupState = internal__rowGroupColumnState();
+
+    const cols = columnAddRowGroup({
+      columns: columns(),
+      rowGroupDisplayMode: rowGroupDisplayMode(),
+      rowGroupModel: rowGroupModel(),
+      rowGroupTemplate: rowGroupColumn(),
+      rowGroupColumnState: groupState,
+    });
+
+    const colsWithMarker = columnHandleMarker({
+      columns: cols,
+      marker: columnMarker(),
+      markerEnabled: columnMarkerEnabled(),
+    });
+
+    const view = makeColumnView({
+      columns: colsWithMarker,
+      base: base(),
+      groupExpansionDefault: columnGroupDefaultExpansion(),
+      groupExpansions: columnGroupExpansions(),
+      groupJoinDelimiter: columnGroupJoinDelimiter(),
+    });
+
+    return view;
+  });
 
   /**
    * VIEW BOUNDS
    */
-  let prevBounds: SpanLayout | null = null;
-  const bounds = atom((g) => {
-    const vpWidth = g(viewportWidthInner);
-    const vpHeight = g(viewportHeightInner);
-    const scrollTop = g(yScroll);
-    const scrollLeft = g(xScroll);
-    const xPos = g(xPositions);
-    const yPos = g(yPositions);
-    const topCount = g(rdsAtoms.topCount);
-    const bottomCount = g(rdsAtoms.bottomCount);
-    const start = g(startCount);
-    const end = g(endCount);
+  const bounds = computed(
+    () => {
+      const vpWidth = viewportWidthInner();
+      const vpHeight = viewportHeightInner();
+      const scrollTop = yScroll();
+      const scrollLeft = xScroll();
+      const xPos = xPositions();
+      const yPos = yPositions();
+      const topCount = rowDataStore.rowTopCount.get();
+      const bottomCount = rowDataStore.rowBottomCount.get();
+      const start = startCount();
+      const end = endCount();
 
-    const bounds = computeBounds({
-      viewportWidth: vpWidth,
-      viewportHeight: vpHeight,
-      scrollTop,
-      scrollLeft,
-      xPositions: xPos,
-      yPositions: yPos,
-      topCount,
-      bottomCount,
-      startCount: start,
-      endCount: end,
+      const bounds = computeBounds({
+        viewportWidth: vpWidth,
+        viewportHeight: vpHeight,
+        scrollTop,
+        scrollLeft,
+        xPositions: xPos,
+        yPositions: yPos,
+        topCount,
+        bottomCount,
+        startCount: start,
+        endCount: end,
 
-      rowOverscanTop: g(rowOverscanTop),
-      rowOverscanBottom: g(rowOverscanBottom),
-      colOverscanStart: g(colOverScanStart),
-      colOverscanEnd: g(colOverscanEnd),
-    });
+        rowOverscanTop: rowOverscanTop(),
+        rowOverscanBottom: rowOverscanBottom(),
+        colOverscanStart: colOverScanStart(),
+        colOverscanEnd: colOverscanEnd(),
+      });
 
-    if (equal(prevBounds, bounds)) return prevBounds!;
+      return bounds;
+    },
+    { dirty: (prev, next) => !equal(prev, next) },
+  );
 
-    prevBounds = bounds;
-    return bounds;
-  });
-
-  const columnCount$ = atom((g) => {
-    const bound = g(bounds);
-    return bound.colEndEnd;
+  const columnCount$ = computed(() => {
+    const view = columnView();
+    return view.visibleColumns.length;
   });
 
   const layoutState = makeLayoutState(0);
-  const layoutState$ = atom((g) => {
-    g(rdsAtoms.bottomCount);
-    g(rdsAtoms.rowCenterCount);
-    g(rdsAtoms.topCount);
-    g(rdsAtoms.snapshotKey); // Not sure why we need this?
-    g(rowDataSource);
-    g(rowGroupModel);
-    g(sortModel);
-    g(filterModel);
-    g(aggModel);
+  const layoutState$ = computed(() => {
+    rowDataStore.rowBottomCount.get();
+    rowDataStore.rowCenterCount.get();
+    rowDataStore.rowTopCount.get();
+    rowDataSource();
+    rowGroupModel();
+    sortModel();
+    filterModel();
+    aggModel();
 
-    const rowCount = g(rdsAtoms.rowCount);
-    const columnCount = g(columnCount$);
+    const rowCount = rowDataStore.rowCount.get();
+    const columnCount = columnCount$();
 
     if (rowCount > layoutState.computed.length || columnCount != layoutState.base.length) {
       Object.assign(layoutState, makeLayoutState(columnCount, rowCount + 2000));
@@ -247,54 +278,47 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   });
 
   /**
-   * COLUMN VIEW
-   * Compute the column layout. This impacts both the row layout and header layout. Column layout
-   * is impacted by the column definitions, the group expansions, the row group display mode.
-   */
-  const columnView = atom((g) => {
-    const groupState = g(internal__rowGroupColumnState);
-
-    const cols = columnAddRowGroup({
-      columns: g(columns),
-      rowGroupDisplayMode: g(rowGroupDisplayMode),
-      rowGroupModel: g(rowGroupModel),
-      rowGroupTemplate: g(rowGroupColumn),
-      rowGroupColumnState: groupState,
-    });
-
-    const colsWithMarker = columnHandleMarker({
-      columns: cols,
-      marker: g(columnMarker),
-      markerEnabled: g(columnMarkerEnabled),
-    });
-
-    const view = makeColumnView({
-      columns: colsWithMarker,
-      base: g(base),
-      groupExpansionDefault: g(columnGroupDefaultExpansion),
-      groupExpansions: g(columnGroupExpansions),
-      groupJoinDelimiter: g(columnGroupJoinDelimiter),
-    });
-
-    return view;
-  });
-
-  /**
    * COMPUTE ATOMS
    */
 
-  const headerLayout = atom<GridView<T>["header"]>((g) => {
-    const view = g(columnView);
+  const headerLayoutFull = computed<GridView<T>["header"]>(() => {
+    const view = columnView();
+    const layout = makeColumnLayout(view, floatingRowEnabled());
 
-    const layout = makeColumnLayout(
-      view.combinedView,
-      view.meta,
-      g(bounds),
-      g(internal_focusActive),
-      g(floatingRowEnabled),
-    );
+    return { maxCol: view.maxCol, maxRow: view.maxRow, layout };
+  });
 
-    const dragged = g(internal_draggingHeader);
+  const headerPosition$ = computed(() => {
+    const focus = internal_focusActive();
+
+    return focus?.kind === "header-cell" ||
+      focus?.kind === "floating-cell" ||
+      focus?.kind === "header-group-cell"
+      ? focus
+      : null;
+  });
+
+  const headerLayout = computed<GridView<T>["header"]>(() => {
+    const view = columnView();
+
+    const layout = headerLayoutFull();
+
+    const spanBounds = bounds();
+    const headerPos = headerPosition$();
+    const filtered = layout.layout.map((row) => {
+      return row.filter((col) => {
+        if (col.colPin) return true;
+
+        if (headerPos) {
+          if (rangesOverlap(col.colStart, col.colEnd, headerPos.colIndex, headerPos.colIndex + 1))
+            return true;
+        }
+
+        return col.colStart >= spanBounds.colCenterStart && col.colStart < spanBounds.colCenterEnd;
+      });
+    });
+
+    const dragged = internal_draggingHeader();
 
     // When dragging a group column, we may end up removing that group column when joining
     // the group with other columns in the same group (if they are separated). We want to ensure
@@ -303,20 +327,20 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     // isHiddenMove is important for this.
     if (dragged) {
       const row = dragged.rowStart;
-      const has = layout[row].findIndex(
+      const has = filtered[row].findIndex(
         (c) => c.kind === "group" && c.idOccurrence === dragged.idOccurrence,
       );
       if (has === -1) {
-        layout[row].push({ ...dragged, isHiddenMove: true });
+        filtered[row].push({ ...dragged, isHiddenMove: true });
       }
     }
 
-    return { maxCol: view.maxCol, maxRow: view.maxRow, layout: layout };
+    return { maxCol: view.maxCol, maxRow: view.maxRow, layout: filtered };
   });
 
-  const columnGroupMeta = atom((g) => g(columnView).meta);
-  const columnMeta = atom<ColumnMeta<T>>((g) => {
-    const view = g(columnView);
+  const columnGroupMeta = computed(() => columnView().meta);
+  const columnMeta = computed<ColumnMeta<T>>(() => {
+    const view = columnView();
 
     return {
       columnLookup: view.lookup,
@@ -327,45 +351,50 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     };
   });
 
-  const xPositions = atom((g) => {
-    const view = g(columnView);
+  const xPositions = computed(() => {
+    if (!viewport()) return EMPTY_POSITION_ARRAY;
+
+    const view = columnView();
     return computeColumnPositions(
       view.visibleColumns,
-      g(base),
-      g(viewportWidthInner),
-      g(columnSizeToFit),
+      base(),
+      viewportWidthInner(),
+      columnSizeToFit(),
     );
   });
-  const widthTotal = atom((get) => get(xPositions).at(-1)!);
+  const widthTotal = computed(() => xPositions().at(-1)!);
 
-  const headerHeightTotal = atom((g) => {
-    const groupHHeight = g(headerGroupHeight);
-    const hHeight = g(headerHeight);
-    const view = g(columnView);
-    const floating = g(floatingRowEnabled);
-    const floatingHeight = g(floatingRowHeight);
+  const headerHeightTotal = computed(() => {
+    const groupHHeight = headerGroupHeight();
+    const hHeight = headerHeight();
+    const view = columnView();
+    const floating = floatingRowEnabled();
+    const floatingHeight = floatingRowHeight();
 
     return (view.maxRow - 1) * groupHHeight + hHeight + (floating ? floatingHeight : 0);
   });
 
-  const startCount = atom((g) => g(columnView).startCount);
-  const endCount = atom((g) => g(columnView).endCount);
+  const startCount = computed(() => columnView().startCount);
+  const endCount = computed(() => columnView().endCount);
 
   /** ROWS */
 
-  const rowByIndex = makeGridAtom(
-    atom((g) => g(rowDataSource).rowByIndex),
-    store,
-  );
-  const { store: rowDataStore, atoms: rdsAtoms } = makeRowDataStore(store, rowByIndex);
-  const yPositions = atom((g) => {
-    const rowCount = g(rdsAtoms.rowCount);
-    const innerHeight = g(viewportHeightInner);
+  const rowDataStore = makeRowStore({
+    getRow: (r) => {
+      return rowDataSource().rowByIndex(r);
+    },
+  });
 
-    const detailExpansions = g(rowDetailExpansions);
-    g(internal_rowDetailHeightCache);
+  const yPositions = computed(() => {
+    if (!viewport()) return EMPTY_POSITION_ARRAY;
 
-    const rds = g(rowDataSource);
+    const rowCount = rowDataStore.rowCount.get();
+    const innerHeight = viewportHeightInner();
+
+    const detailExpansions = rowDetailExpansions();
+    internal_rowDetailHeightCache();
+
+    const rds = rowDataSource();
 
     const rows = Object.fromEntries(
       [...detailExpansions]
@@ -374,13 +403,13 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
         .map((x) => [x, api.rowByIndex(x)]),
     );
 
-    const headerHeight = g(headerHeightTotal);
+    const headerHeight = headerHeightTotal();
 
     return computeRowPositions(
       rowCount,
-      g(rowHeight),
-      g(rowAutoHeightGuess),
-      g(internal_rowAutoHeightCache),
+      rowHeight(),
+      rowAutoHeightGuess(),
+      internal_rowAutoHeightCache(),
       (i: number) => {
         const row = rows[i];
         if (!row || !api.rowDetailIsExpanded(row)) return 0;
@@ -391,29 +420,41 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     );
   });
 
-  const heightTotal = atom((g) => g(yPositions).at(-1)!);
+  const heightTotal = computed(() => yPositions().at(-1)!);
 
-  const rowView = atom<GridView<T>["rows"]>((g) => {
-    let n = g(bounds);
+  const rowView = computed<GridView<T>["rows"]>(() => {
+    if (!viewport())
+      return {
+        bottom: [],
+        center: [],
+        rowBottomTotalHeight: 0,
+        rowCenterTotalHeight: 0,
+        rowFirstCenter: 0,
+        rowFocusedIndex: 0,
+        rowTopTotalHeight: 0,
+        top: [],
+      };
+    let n = bounds();
 
-    if (!g(virtualizeRows)) {
+    if (!virtualizeRows()) {
       n = { ...n, rowCenterStart: n.rowTopEnd, rowCenterEnd: n.rowCenterLast };
     }
-    if (!g(virtualizeCols)) {
+    if (!virtualizeCols()) {
       n = { ...n, colCenterStart: n.colStartEnd, colCenterEnd: n.colCenterLast };
     }
 
-    const rowScan = g(rowScanDistance);
+    const rowScan = rowScanDistance();
+    const columns = columnMeta().columnsVisible;
 
-    const columns = g(columnMeta).columnsVisible;
-    const rds = g(rowDataSource);
+    const rds = rowDataSource();
 
-    const layout = g(layoutState$);
+    const layout = layoutState$();
 
-    const topCount = g(rdsAtoms.topCount);
-    const botCount = g(rdsAtoms.bottomCount);
-    const rowCount = g(rdsAtoms.rowCount);
+    const topCount = rowDataStore.rowTopCount.get();
+    const botCount = rowDataStore.rowBottomCount.get();
+    const rowCount = rowDataStore.rowCount.get();
 
+    const fullWidthPredicate = rowFullWidthPredicate().fn;
     updateFull({
       topCount,
       botCount,
@@ -425,7 +466,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       computeColSpan: getSpanFn(rds, grid, columns, "col"),
       computeRowSpan: getSpanFn(rds, grid, columns, "row"),
 
-      isFullWidth: getFullWidthCallback(rds, g(rowFullWidthPredicate).fn, grid),
+      isFullWidth: fullWidthPredicate ? getFullWidthCallback(rds, fullWidthPredicate, grid) : null,
       isRowCutoff: (r) => {
         const row = rds.rowByIndex(r);
         return !row || row.kind === "branch";
@@ -439,17 +480,17 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       ...layout,
     });
 
-    const yPos = g(yPositions);
+    const yPos = yPositions();
 
     const botStart = rowCount - botCount;
 
-    const focus = g(internal_focusActive);
+    const focus = internal_focusActive();
     const view = makeRowLayout({
       view: n,
       layout,
       rds: rowDataStore,
       columns,
-      focus: g(internal_focusActive),
+      focus: internal_focusActive(),
     });
 
     const topHeight = yPos[topCount];
@@ -475,102 +516,99 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
    * STATE VIEW AND API
    */
 
-  const gridView = atom<GridView<T>>((g) => {
+  const gridView = computed<GridView<T>>(() => {
     return {
-      header: g(headerLayout),
-      rows: g(rowView),
+      header: headerLayout(),
+      rows: rowView(),
     };
   });
 
   const state: Grid<T>["state"] = {
-    rtl: makeGridAtom(rtl, store),
-    columns: makeGridAtom(columns, store),
-    columnMeta: makeGridAtom(columnMeta, store),
-    columnBase: makeGridAtom(base, store),
-    columnGroupExpansions: makeGridAtom(columnGroupExpansions, store),
-    columnGroupDefaultExpansion: makeGridAtom(columnGroupDefaultExpansion, store),
-    columnGroupJoinDelimiter: makeGridAtom(columnGroupJoinDelimiter, store),
-    columnGroupMeta: makeGridAtom(columnGroupMeta, store),
-    columnSizeToFit: makeGridAtom(columnSizeToFit, store),
-    gridId: makeGridAtom(gridId, store),
+    rtl: makeAtom(rtl),
+    columns: makeAtom(columns),
+    columnMeta: makeAtom(columnMeta),
+    columnBase: makeAtom(base),
+    columnGroupExpansions: makeAtom(columnGroupExpansions),
+    columnGroupDefaultExpansion: makeAtom(columnGroupDefaultExpansion),
+    columnGroupJoinDelimiter: makeAtom(columnGroupJoinDelimiter),
+    columnGroupMeta: makeAtom(columnGroupMeta),
+    columnSizeToFit: makeAtom(columnSizeToFit),
+    gridId: makeAtom(gridId),
 
-    widthTotal: makeGridAtom(widthTotal, store),
-    heightTotal: makeGridAtom(heightTotal, store),
+    widthTotal: makeAtom(widthTotal),
+    heightTotal: makeAtom(heightTotal),
 
-    headerHeight: makeGridAtom(headerHeight, store),
-    headerGroupHeight: makeGridAtom(headerGroupHeight, store),
-    viewport: makeGridAtom(viewport, store),
-    viewportHeightInner: makeGridAtom(viewportHeightInner, store),
-    viewportHeightOuter: makeGridAtom(viewportHeightOuter, store),
-    viewportWidthInner: makeGridAtom(viewportWidthInner, store),
-    viewportWidthOuter: makeGridAtom(viewportWidthOuter, store),
+    headerHeight: makeAtom(headerHeight),
+    headerGroupHeight: makeAtom(headerGroupHeight),
+    viewport: makeAtom(viewport),
+    viewportHeightInner: makeAtom(viewportHeightInner),
+    viewportHeightOuter: makeAtom(viewportHeightOuter),
+    viewportWidthInner: makeAtom(viewportWidthInner),
+    viewportWidthOuter: makeAtom(viewportWidthOuter),
 
-    xPositions: makeGridAtom(xPositions, store),
-    yPositions: makeGridAtom(yPositions, store),
+    xPositions: makeAtom(xPositions),
+    yPositions: makeAtom(yPositions),
 
     rowDataStore,
-    rowDataSource: makeGridAtom(rowDataSource, store),
-    rowAutoHeightGuess: makeGridAtom(rowAutoHeightGuess, store),
-    rowHeight: makeGridAtom(rowHeight, store),
+    rowDataSource: makeAtom(rowDataSource),
+    rowAutoHeightGuess: makeAtom(rowAutoHeightGuess),
+    rowHeight: makeAtom(rowHeight),
 
-    rowScanDistance: makeGridAtom(rowScanDistance, store),
-    colScanDistance: makeGridAtom(colScanDistance, store),
+    rowScanDistance: makeAtom(rowScanDistance),
+    colScanDistance: makeAtom(colScanDistance),
 
-    colOverscanStart: makeGridAtom(colOverScanStart, store),
-    colOverscanEnd: makeGridAtom(colOverscanEnd, store),
-    rowOverscanTop: makeGridAtom(rowOverscanTop, store),
-    rowOverscanBottom: makeGridAtom(rowOverscanBottom, store),
+    colOverscanStart: makeAtom(colOverScanStart),
+    colOverscanEnd: makeAtom(colOverscanEnd),
+    rowOverscanTop: makeAtom(rowOverscanTop),
+    rowOverscanBottom: makeAtom(rowOverscanBottom),
 
-    rowFullWidthPredicate: makeGridAtom(rowFullWidthPredicate, store),
-    rowFullWidthRenderer: makeGridAtom(rowFullWidthRenderer, store),
-    cellRenderers: makeGridAtom(cellRenderers, store),
+    rowFullWidthPredicate: makeAtom(rowFullWidthPredicate),
+    rowFullWidthRenderer: makeAtom(rowFullWidthRenderer),
+    cellRenderers: makeAtom(cellRenderers),
 
-    sortModel: makeGridAtom(sortModel, store),
-    filterModel: makeGridAtom(filterModel, store),
-    rowGroupModel: makeGridAtom(rowGroupModel, store),
-    aggModel: makeGridAtom(aggModel, store),
+    sortModel: makeAtom(sortModel),
+    filterModel: makeAtom(filterModel),
+    rowGroupModel: makeAtom(rowGroupModel),
+    aggModel: makeAtom(aggModel),
 
-    rowGroupColumn: makeGridAtom(rowGroupColumn, store),
-    rowGroupDefaultExpansion: makeGridAtom(rowGroupDefaultExpansion, store),
-    rowGroupDisplayMode: makeGridAtom(rowGroupDisplayMode, store),
-    rowGroupExpansions: makeGridAtom(rowGroupExpansions, store),
+    rowGroupColumn: makeAtom(rowGroupColumn),
+    rowGroupDefaultExpansion: makeAtom(rowGroupDefaultExpansion),
+    rowGroupDisplayMode: makeAtom(rowGroupDisplayMode),
+    rowGroupExpansions: makeAtom(rowGroupExpansions),
 
-    headerCellRenderers: makeGridAtom(headerCellRenderers, store),
-    floatingCellRenderers: makeGridAtom(floatingCellRenderers, store),
-    floatingRowEnabled: makeGridAtom(floatingRowEnabled, store),
-    floatingRowHeight: makeGridAtom(floatingRowHeight, store),
+    headerCellRenderers: makeAtom(headerCellRenderers),
+    floatingCellRenderers: makeAtom(floatingCellRenderers),
+    floatingRowEnabled: makeAtom(floatingRowEnabled),
+    floatingRowHeight: makeAtom(floatingRowHeight),
 
-    editRenderers: makeGridAtom(editRenderers, store),
-    editCellMode: makeGridAtom(editCellMode, store),
-    editClickActivator: makeGridAtom(editClickActivator, store),
-    editRowValidatorFn: makeGridAtom(editRowValidatorFn, store),
-    editActivePosition: makeGridAtom(
-      atom((g) => g(internal_editActivePosition)),
-      store,
-    ),
+    editRenderers: makeAtom(editRenderers),
+    editCellMode: makeAtom(editCellMode),
+    editClickActivator: makeAtom(editClickActivator),
+    editRowValidatorFn: makeAtom(editRowValidatorFn),
+    editActivePosition: makeAtom(computed(() => internal_editActivePosition())),
 
-    columnMarker: makeGridAtom(columnMarker, store),
-    columnMarkerEnabled: makeGridAtom(columnMarkerEnabled, store),
-    columnDoubleClickToAutosize: makeGridAtom(columnDoubleClickToAutosize, store),
-    rowDetailExpansions: makeGridAtom(rowDetailExpansions, store),
-    rowDetailHeight: makeGridAtom(rowDetailHeight, store),
-    rowDetailRenderer: makeGridAtom(rowDetailRenderer, store),
-    rowDetailAutoHeightGuess: makeGridAtom(rowDetailAutoHeightGuess, store),
+    columnMarker: makeAtom(columnMarker),
+    columnMarkerEnabled: makeAtom(columnMarkerEnabled),
+    columnDoubleClickToAutosize: makeAtom(columnDoubleClickToAutosize),
+    rowDetailExpansions: makeAtom(rowDetailExpansions),
+    rowDetailHeight: makeAtom(rowDetailHeight),
+    rowDetailRenderer: makeAtom(rowDetailRenderer),
+    rowDetailAutoHeightGuess: makeAtom(rowDetailAutoHeightGuess),
 
-    rowSelectedIds: makeGridAtom(rowSelectedIds, store),
-    rowSelectionMode: makeGridAtom(rowSelectionMode, store),
-    rowSelectionPivot: makeGridAtom(rowSelectionPivot, store),
-    rowSelectionActivator: makeGridAtom(rowSelectionActivator, store),
-    rowSelectChildren: makeGridAtom(rowSelectChildren, store),
+    rowSelectedIds: makeAtom(rowSelectedIds),
+    rowSelectionMode: makeAtom(rowSelectionMode),
+    rowSelectionPivot: makeAtom(internal_rowSelectionPivot),
+    rowSelectionActivator: makeAtom(rowSelectionActivator),
+    rowSelectChildren: makeAtom(rowSelectChildren),
 
-    viewBounds: makeGridAtom(bounds, store),
-    virtualizeRows: makeGridAtom(virtualizeRows, store),
-    virtualizeCols: makeGridAtom(virtualizeCols, store),
+    viewBounds: makeAtom(bounds),
+    virtualizeRows: makeAtom(virtualizeRows),
+    virtualizeCols: makeAtom(virtualizeCols),
   };
 
   const api = {} as GridApi<T>;
 
-  const grid: Grid<T> = { state, view: makeGridAtom(gridView, store), api };
+  const grid: Grid<T> = { state, view: makeAtom(gridView), api };
 
   const listeners = makeEventListeners<T>();
   Object.assign(api, {
@@ -630,47 +668,39 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
   Object.assign(grid, {
     internal: {
-      headerCols: makeGridAtom(
-        atom((g) => g(columnView).maxCol),
-        store,
-      ),
-      headerRows: makeGridAtom(
-        atom((g) => g(columnView).maxRow),
-        store,
-      ),
-      headerHeightTotal: makeGridAtom(headerHeightTotal, store),
-      xScroll: makeGridAtom(xScroll, store),
-      yScroll: makeGridAtom(yScroll, store),
-      refreshKey: makeGridAtom(rdsAtoms.snapshotKey, store),
+      headerCols: makeAtom(computed(() => columnView().maxCol)),
+      headerRows: makeAtom(computed(() => columnView().maxRow)),
+      headerHeightTotal: makeAtom(headerHeightTotal),
+      xScroll: makeAtom(xScroll),
+      yScroll: makeAtom(yScroll),
 
       layout: layoutState,
 
-      focusActive: makeGridAtom(internal_focusActive, store),
-      focusPrevColIndex: makeGridAtom(internal_focusPrevCol, store),
-      focusPrevRowIndex: makeGridAtom(internal_focusPrevRow, store),
+      focusActive: makeAtom(internal_focusActive),
+      focusPrevColIndex: makeAtom(internal_focusPrevCol),
+      focusPrevRowIndex: makeAtom(internal_focusPrevRow),
 
-      editActivePos: makeGridAtom(internal_editActivePosition, store),
-      editData: makeGridAtom(internal_editData, store),
-      editValidation: makeGridAtom(internal_editValidation, store),
+      editActivePos: makeAtom(internal_editActivePosition),
+      editData: makeAtom(internal_editData),
+      editValidation: makeAtom(internal_editValidation),
 
-      rowAutoHeightCache: makeGridAtom(internal_rowAutoHeightCache, store),
-      rowDetailAutoHeightCache: makeGridAtom(internal_rowDetailHeightCache, store),
+      rowAutoHeightCache: makeAtom(internal_rowAutoHeightCache),
+      rowDetailAutoHeightCache: makeAtom(internal_rowDetailHeightCache),
 
       rowSelectedIds: rowSelectedIds,
-      rowSelectionPivot: makeGridAtom(internal_rowSelectionPivot, store),
-      rowSelectionLastWasDeselect: makeGridAtom(internal_rowSelectionLastWasDeselect, store),
+      rowSelectionPivot: makeAtom(internal_rowSelectionPivot),
+      rowSelectionLastWasDeselect: makeAtom(internal_rowSelectionLastWasDeselect),
 
-      draggingHeader: makeGridAtom(internal_draggingHeader, store),
+      draggingHeader: makeAtom(internal_draggingHeader),
 
-      rowGroupColumnState: makeGridAtom(internal__rowGroupColumnState, store),
-      store: store,
+      rowGroupColumnState: makeAtom(internal__rowGroupColumnState),
     } satisfies InternalAtoms,
   });
 
-  store.sub(rowDataSource, () => {
-    store.get(rowDataSource).init(grid);
+  effect(() => {
+    rowDataSource().init(grid);
   });
-  store.set(rowDataSource, p.rowDataSource ?? emptyRowDataSource);
+  rowDataSource.set(p.rowDataSource ?? emptyRowDataSource);
 
   return grid;
 }
