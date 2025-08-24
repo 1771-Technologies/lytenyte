@@ -19,15 +19,14 @@ import type {
 import { type Grid, type GridView, type UseLyteNyteProps } from "../+types.js";
 import { useRef } from "react";
 import { makeColumnView } from "./helpers/column-view.js";
-import type { LayoutMap } from "@1771technologies/lytenyte-shared";
 import {
-  applyLayoutUpdate,
   computeBounds,
   computeColumnPositions,
   computeRowPositions,
-  DEFAULT_PREVIOUS_LAYOUT,
   makeGridAtom,
+  makeLayoutState,
   makeRowDataStore,
+  updateFull,
   type SpanLayout,
 } from "@1771technologies/lytenyte-shared";
 import type { InternalAtoms } from "./+types.js";
@@ -77,6 +76,7 @@ import { makePopoverFrameClose, makePopoverFrameOpen } from "./api/popover-frame
 import { makePositionFromElement } from "./api/position-from-element.js";
 import { splitCellSelectionRect } from "../cell-selection/split-cell-selection-rect.js";
 import { boundSelectionRect } from "../cell-selection/bound-selection-rect.js";
+import { makeCellRoot } from "./api/cell-root.js";
 
 const DEFAULT_HEADER_HEIGHT = 40;
 const COLUMN_GROUP_JOIN_DELIMITER = "-->";
@@ -234,19 +234,35 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     Record<string, { target: HTMLElement | VirtualTarget; context: any }>
   >({});
 
-  const layoutMap = atom<LayoutMap>((g) => {
+  const columnCount$ = atom((g) => {
+    const bound = g(bounds);
+    return bound.colEndEnd;
+  });
+
+  const layoutState = makeLayoutState(0);
+  const layoutState$ = atom((g) => {
     g(rdsAtoms.bottomCount);
     g(rdsAtoms.rowCenterCount);
     g(rdsAtoms.topCount);
-    g(rdsAtoms.snapshotKey);
+    g(rdsAtoms.snapshotKey); // Not sure why we need this?
     g(rowDataSource);
     g(rowGroupModel);
     g(sortModel);
     g(filterModel);
-    g(filterInModel);
     g(aggModel);
 
-    return new Map();
+    const rowCount = g(rdsAtoms.rowCount);
+    const columnCount = g(columnCount$);
+
+    if (rowCount > layoutState.computed.length || columnCount != layoutState.base.length) {
+      Object.assign(layoutState, makeLayoutState(columnCount, rowCount + 2000));
+    } else {
+      layoutState.computed.fill(0);
+      layoutState.special.fill(0);
+      layoutState.lookup.clear();
+    }
+
+    return layoutState;
   });
 
   /**
@@ -449,7 +465,6 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
   const heightTotal = atom((g) => g(yPositions).at(-1)!);
 
-  let prevLayout: SpanLayout = DEFAULT_PREVIOUS_LAYOUT;
   const rowView = atom<GridView<T>["rows"]>((g) => {
     let n = g(bounds);
 
@@ -461,40 +476,49 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     }
 
     const rowScan = g(rowScanDistance);
-    const colScan = g(colScanDistance);
 
     const columns = g(columnMeta).columnsVisible;
     const rds = g(rowDataSource);
 
-    applyLayoutUpdate({
+    const layout = g(layoutState$);
+
+    const topCount = g(rdsAtoms.topCount);
+    const botCount = g(rdsAtoms.bottomCount);
+    const rowCount = g(rdsAtoms.rowCount);
+
+    updateFull({
+      topCount,
+      botCount,
+
+      startCount: n.colStartEnd,
+      endCount: n.colEndEnd - n.colEndStart,
+      centerCount: n.colCenterLast - n.colStartEnd,
+
       computeColSpan: getSpanFn(rds, grid, columns, "col"),
       computeRowSpan: getSpanFn(rds, grid, columns, "row"),
-      colScanDistance: colScan,
-      rowScanDistance: rowScan,
-      invalidated: true,
+
       isFullWidth: getFullWidthCallback(rds, g(rowFullWidthPredicate).fn, grid),
       isRowCutoff: (r) => {
         const row = rds.rowByIndex(r);
         return !row || row.kind === "branch";
       },
-      layoutMap: g(layoutMap),
-      nextLayout: n,
-      prevLayout,
+
+      rowScanDistance: rowScan,
+      rowStart: n.rowCenterStart,
+      rowEnd: n.rowCenterEnd,
+      rowMax: n.rowCenterEnd,
+
+      ...layout,
     });
 
-    prevLayout = n;
-
-    const topCount = g(rdsAtoms.topCount);
-    const botCount = g(rdsAtoms.bottomCount);
-    const rowCount = g(rdsAtoms.rowCount);
     const yPos = g(yPositions);
 
     const botStart = rowCount - botCount;
 
     const focus = g(internal_focusActive);
     const view = makeRowLayout({
-      layout: n,
-      layoutMap: g(layoutMap),
+      view: n,
+      layout,
       rds: rowDataStore,
       columns,
       focus: g(internal_focusActive),
@@ -638,6 +662,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
   const listeners = makeEventListeners<T>();
   Object.assign(api, {
+    cellRoot: makeCellRoot(grid as any),
     columnField: makeColumnField(grid),
     columnByIndex: makeColumnByIndex(grid),
     columnIndex: makeColumnIndex(grid),
@@ -713,7 +738,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       yScroll: makeGridAtom(yScroll, store),
       refreshKey: makeGridAtom(rdsAtoms.snapshotKey, store),
 
-      layout: makeGridAtom(layoutMap, store),
+      layout: layoutState,
 
       focusActive: makeGridAtom(internal_focusActive, store),
       focusPrevColIndex: makeGridAtom(internal_focusPrevCol, store),

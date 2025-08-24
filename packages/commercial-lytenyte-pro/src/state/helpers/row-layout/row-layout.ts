@@ -1,4 +1,9 @@
-import { isFullWidthMap, type LayoutMap, type SpanLayout } from "@1771technologies/lytenyte-shared";
+import {
+  CONTAINS_DEAD_CELLS,
+  FULL_WIDTH,
+  type LayoutState,
+  type SpanLayout,
+} from "@1771technologies/lytenyte-shared";
 import type {
   Column,
   PositionUnion,
@@ -10,8 +15,8 @@ import type {
 import { getFocusCriteria } from "./get-focus-criteria";
 
 interface MakeRowViewArgs<T> {
-  layout: SpanLayout;
-  layoutMap: LayoutMap;
+  view: SpanLayout;
+  layout: LayoutState;
   rds: RowDataStore<T>;
   columns: Column<T>[];
   focus: PositionUnion | null;
@@ -20,13 +25,7 @@ interface MakeRowViewArgs<T> {
 /**
  * This is quite a complex function so read each part carefully.
  */
-export function makeRowLayout<T>({
-  layout: n,
-  layoutMap,
-  rds,
-  columns,
-  focus,
-}: MakeRowViewArgs<T>) {
+export function makeRowLayout<T>({ view: n, layout, rds, columns, focus }: MakeRowViewArgs<T>) {
   // Initializes the layout sections for the view.
   const top: RowSectionLayouts<T>["top"] = [];
   const center: RowSectionLayouts<T>["center"] = [];
@@ -41,10 +40,9 @@ export function makeRowLayout<T>({
    * TOP ROW LAYOUT START
    */
   for (let r = n.rowTopStart; r < n.rowTopEnd; r++) {
-    const row = layoutMap.get(r);
-    if (!row) {
-      continue;
-    }
+    const status = layout.special[r];
+    const computed = layout.computed[r];
+    if (!computed) continue;
 
     const node = rds.rowForIndex(r);
     if (!node) {
@@ -54,7 +52,7 @@ export function makeRowLayout<T>({
 
     const rowLastPinTop = n.rowTopEnd - 1 === r ? true : undefined;
 
-    if (isFullWidthMap(row)) {
+    if (status === FULL_WIDTH) {
       top.push({
         id: node.get()?.id ?? `${r}`,
         rowIndex: r,
@@ -66,24 +64,25 @@ export function makeRowLayout<T>({
       continue;
     }
 
+    const cellSpec = layout.lookup.get(r);
     const cellLayout: RowCellLayout<T>[] = [];
+    const hasDead = status === CONTAINS_DEAD_CELLS;
 
     for (let c = n.colStartStart; c < n.colStartEnd; c++) {
-      const v = row.get(c);
+      if (hasDead && cellSpec?.[c * 4] === 0) continue;
 
-      if (!v || v.length === 3) continue;
-
+      const colSpan = cellSpec?.[c * 4 + 1] || 1;
       cellLayout.push({
         id: columns[c].id,
         kind: "cell",
         colIndex: c,
         rowIndex: r,
-        rowSpan: v[0],
-        colSpan: v[1],
+        rowSpan: cellSpec?.[c * 4] || 1,
+        colSpan,
         rowPin: "top",
         colPin: "start",
 
-        colLastStartPin: c + v[1] === n.colStartEnd ? true : undefined,
+        colLastStartPin: c + colSpan === n.colStartEnd ? true : undefined,
         rowLastPinTop,
         row: node,
         column: columns[c],
@@ -91,16 +90,16 @@ export function makeRowLayout<T>({
     }
 
     for (let c = n.colCenterStart; c < n.colCenterEnd; c++) {
-      const v = row.get(c);
-      if (!v || v.length === 3) continue;
+      if (hasDead && cellSpec?.[c * 4] === 0) continue;
 
+      const colSpan = cellSpec?.[c * 4 + 1] || 1;
       cellLayout.push({
         id: columns[c].id,
         kind: "cell",
         colIndex: c,
         rowIndex: r,
-        rowSpan: v[0],
-        colSpan: v[1],
+        rowSpan: cellSpec?.[c * 4] || 1,
+        colSpan,
         rowPin: "top",
         colPin: null,
 
@@ -113,15 +112,18 @@ export function makeRowLayout<T>({
     // For the top section, only the center cells may be out of view. The focused cell may be before or after the
     // center cells (if they are in the center cells we will be rendering them anyway).
     if (f.isTop && (f.isColCenterBefore || f.isColCenterAfter)) {
-      const v = row.get(f.colIndex);
-      if (v && v.length !== 3) {
+      const isEmpty = hasDead && cellSpec?.[f.colIndex * 4] === 0;
+      if (!isEmpty) {
+        const rowSpan = cellSpec?.[f.colIndex * 4] || 1;
+        const colSpan = cellSpec?.[f.colIndex * 4 + 1] || 1;
+
         const cell: RowCellLayout<T> = {
           id: columns[f.colIndex].id,
           kind: "cell",
           colIndex: f.colIndex,
           rowIndex: f.rowIndex,
-          rowSpan: v[0],
-          colSpan: v[1],
+          rowSpan,
+          colSpan,
           rowPin: "top",
           colPin: null,
 
@@ -136,16 +138,15 @@ export function makeRowLayout<T>({
     }
 
     for (let c = n.colEndStart; c < n.colEndEnd; c++) {
-      const v = row.get(c);
-      if (!v || v.length === 3) continue;
+      if (hasDead && cellSpec?.[c * 4] === 0) continue;
 
       cellLayout.push({
         id: columns[c].id,
         kind: "cell",
         colIndex: c,
         rowIndex: r,
-        rowSpan: v[0],
-        colSpan: v[1],
+        rowSpan: cellSpec?.[c * 4] || 1,
+        colSpan: cellSpec?.[c * 4 + 1] || 1,
         rowPin: "top",
         colPin: "end",
 
@@ -175,10 +176,9 @@ export function makeRowLayout<T>({
    */
 
   for (let r = n.rowCenterStart; r < n.rowCenterEnd; r++) {
-    const row = layoutMap.get(r);
-    if (!row) {
-      continue;
-    }
+    const status = layout.special[r];
+    const computed = layout.computed[r];
+    if (!computed) continue;
 
     const node = rds.rowForIndex(r);
     if (!node) {
@@ -186,7 +186,7 @@ export function makeRowLayout<T>({
       break;
     }
 
-    if (isFullWidthMap(row)) {
+    if (status === FULL_WIDTH) {
       center.push({
         id: node.get()?.id ?? `${r}`,
         rowIndex: r,
@@ -197,39 +197,40 @@ export function makeRowLayout<T>({
       continue;
     }
 
+    const cellSpec = layout.lookup.get(r);
     const cellLayout: RowCellLayout<T>[] = [];
+    const hasDead = status === CONTAINS_DEAD_CELLS;
+
     for (let c = n.colStartStart; c < n.colStartEnd; c++) {
-      const v = row.get(c);
+      if (hasDead && cellSpec?.[c * 4] === 0) continue;
 
-      if (!v || v.length === 3) continue;
-
+      const colSpan = cellSpec?.[c * 4 + 1] || 1;
       cellLayout.push({
         id: columns[c].id,
         kind: "cell",
         colIndex: c,
         rowIndex: r,
-        rowSpan: v[0],
-        colSpan: v[1],
+        rowSpan: cellSpec?.[c * 4] || 1,
+        colSpan: colSpan,
         rowPin: null,
         colPin: "start",
 
-        colLastStartPin: c + v[1] === n.colStartEnd ? true : undefined,
+        colLastStartPin: c + colSpan === n.colStartEnd ? true : undefined,
         row: node,
         column: columns[c],
       });
     }
 
     for (let c = n.colCenterStart; c < n.colCenterEnd; c++) {
-      const v = row.get(c);
-      if (!v || v.length === 3) continue;
+      if (hasDead && cellSpec?.[c * 4] === 0) continue;
 
       cellLayout.push({
         id: columns[c].id,
         kind: "cell",
         colIndex: c,
         rowIndex: r,
-        rowSpan: v[0],
-        colSpan: v[1],
+        rowSpan: cellSpec?.[c * 4] || 1,
+        colSpan: cellSpec?.[c * 4 + 1] || 1,
         rowPin: null,
         colPin: null,
 
@@ -245,16 +246,17 @@ export function makeRowLayout<T>({
       !f.isRowCenterAfter &&
       (f.isColCenterAfter || f.isColCenterBefore)
     ) {
-      const v = row.get(f.colIndex);
+      const ci = f.colIndex * 4;
+      const isEmpty = hasDead && cellSpec?.[ci] === 0;
 
-      if (v && v.length !== 3) {
+      if (isEmpty) {
         const cell: RowCellLayout<T> = {
           id: columns[f.colIndex].id,
           kind: "cell",
           colIndex: f.colIndex,
           rowIndex: f.rowIndex,
-          rowSpan: v[0],
-          colSpan: v[1],
+          rowSpan: cellSpec?.[ci] || 1,
+          colSpan: cellSpec?.[ci + 1] || 1,
           rowPin: null,
           colPin: null,
 
@@ -267,16 +269,15 @@ export function makeRowLayout<T>({
     }
 
     for (let c = n.colEndStart; c < n.colEndEnd; c++) {
-      const v = row.get(c);
-      if (!v || v.length === 3) continue;
+      if (hasDead && cellSpec?.[c * 4] === 0) continue;
 
       cellLayout.push({
         id: columns[c].id,
         kind: "cell",
         colIndex: c,
         rowIndex: r,
-        rowSpan: v[0],
-        colSpan: v[1],
+        rowSpan: cellSpec?.[c * 4] || 1,
+        colSpan: cellSpec?.[c * 4 + 1] || 1,
         rowPin: null,
         colPin: "end",
 
@@ -297,11 +298,13 @@ export function makeRowLayout<T>({
   }
 
   if (f.isRowCenterBefore || f.isRowCenterAfter) {
-    const row = layoutMap.get(f.rowIndex);
     const node = rds.rowForIndex(f.rowIndex);
 
-    if (row && node) {
-      if (isFullWidthMap(row)) {
+    const status = layout.special[f.rowIndex];
+    const computed = layout.computed[f.rowIndex];
+
+    if (computed && node) {
+      if (status === FULL_WIDTH) {
         center.push({
           id: node.get()?.id ?? `${f.rowIndex}`,
           rowIndex: f.rowIndex,
@@ -312,16 +315,18 @@ export function makeRowLayout<T>({
         });
       } else {
         const cellLayout: RowCellLayout<T>[] = [];
+        const cellSpec = layout.lookup.get(f.rowIndex);
+        const ci = f.colIndex * 4;
+        const isEmpty = status === CONTAINS_DEAD_CELLS && cellSpec?.[ci] === 0;
 
-        const v = row.get(f.colIndex);
-        if (v && v.length !== 3) {
+        if (!isEmpty) {
           cellLayout.push({
             id: columns[f.colIndex].id,
             kind: "cell",
             colIndex: f.colIndex,
             rowIndex: f.rowIndex,
-            rowSpan: v[0],
-            colSpan: v[1],
+            rowSpan: cellSpec?.[ci] || 1,
+            colSpan: cellSpec?.[ci + 1] || 1,
             rowPin: null,
             colPin: f.isStart ? "start" : f.isEnd ? "end" : null,
 
@@ -355,10 +360,9 @@ export function makeRowLayout<T>({
    * BOTTOM ROW LAYOUT START
    */
   for (let r = n.rowBotStart; r < n.rowBotEnd; r++) {
-    const row = layoutMap.get(r);
-    if (!row) {
-      continue;
-    }
+    const status = layout.special[r];
+    const computed = layout.computed[r];
+    if (!computed) continue;
 
     const node = rds.rowForIndex(r);
     if (!node) {
@@ -367,7 +371,7 @@ export function makeRowLayout<T>({
     }
 
     const rowFirstPinBottom = r === n.rowBotStart ? true : undefined;
-    if (isFullWidthMap(row)) {
+    if (status === FULL_WIDTH) {
       bottom.push({
         id: node.get()?.id ?? `${r}`,
         rowIndex: r,
@@ -379,23 +383,25 @@ export function makeRowLayout<T>({
       continue;
     }
 
+    const cellSpec = layout.lookup.get(r);
     const cellLayout: RowCellLayout<T>[] = [];
+    const hasDead = status === CONTAINS_DEAD_CELLS;
+
     for (let c = n.colStartStart; c < n.colStartEnd; c++) {
-      const v = row.get(c);
+      if (hasDead && cellSpec?.[c * 4] === 0) continue;
 
-      if (!v || v.length === 3) continue;
-
+      const colSpan = cellSpec?.[c * 4 + 1] || 1;
       cellLayout.push({
         id: columns[c].id,
         kind: "cell",
         colIndex: c,
         rowIndex: r,
-        rowSpan: v[0],
-        colSpan: v[1],
+        rowSpan: cellSpec?.[c * 4] || 1,
+        colSpan: colSpan,
         rowPin: "bottom",
         colPin: "start",
 
-        colLastStartPin: c + v[1] === n.colStartEnd ? true : undefined,
+        colLastStartPin: c + colSpan === n.colStartEnd ? true : undefined,
         rowFirstPinBottom,
         row: node,
         column: columns[c],
@@ -403,16 +409,15 @@ export function makeRowLayout<T>({
     }
 
     for (let c = n.colCenterStart; c < n.colCenterEnd; c++) {
-      const v = row.get(c);
-      if (!v || v.length === 3) continue;
+      if (hasDead && cellSpec?.[c * 4] === 0) continue;
 
       cellLayout.push({
         id: columns[c].id,
         kind: "cell",
         colIndex: c,
         rowIndex: r,
-        rowSpan: v[0],
-        colSpan: v[1],
+        rowSpan: cellSpec?.[c * 4] || 1,
+        colSpan: cellSpec?.[c * 4 + 1] || 1,
         rowPin: "bottom",
         colPin: null,
 
@@ -423,16 +428,17 @@ export function makeRowLayout<T>({
     }
 
     if (f.isBot && (f.isColCenterAfter || f.isColCenterBefore)) {
-      const v = row.get(f.colIndex);
+      const ci = f.colIndex * 4;
+      const isEmpty = hasDead && cellSpec?.[ci] === 0;
 
-      if (v && v.length !== 3) {
+      if (!isEmpty) {
         const cell: RowCellLayout<T> = {
           id: columns[f.colIndex].id,
           kind: "cell",
           colIndex: f.colIndex,
           rowIndex: f.rowIndex,
-          rowSpan: v[0],
-          colSpan: v[1],
+          rowSpan: cellSpec?.[ci] || 1,
+          colSpan: cellSpec?.[ci + 1] || 1,
           rowPin: "bottom",
           colPin: null,
 
@@ -445,16 +451,15 @@ export function makeRowLayout<T>({
     }
 
     for (let c = n.colEndStart; c < n.colEndEnd; c++) {
-      const v = row.get(c);
-      if (!v || v.length === 3) continue;
+      if (hasDead && cellSpec?.[c * 4] === 0) continue;
 
       cellLayout.push({
         id: columns[c].id,
         kind: "cell",
         colIndex: c,
         rowIndex: r,
-        rowSpan: v[0],
-        colSpan: v[1],
+        rowSpan: cellSpec?.[c * 4] || 1,
+        colSpan: cellSpec?.[c * 4 + 1] || 1,
         rowPin: "bottom",
         colPin: "end",
 

@@ -1,4 +1,5 @@
 import "./grid-navigation.css";
+import "../../main.css";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Header } from "../header/header";
 import { HeaderRow } from "../header/header-row";
@@ -67,7 +68,7 @@ function Component({ data = bankData }: { data?: any[] }) {
 
   const selections = g.state.cellSelections.useValue();
   return (
-    <div>
+    <div className="lng-grid">
       <div>
         <button onClick={() => g.state.rtl.set((prev) => !prev)}>
           RTL: {g.state.rtl.get() ? "Yes" : "No"}
