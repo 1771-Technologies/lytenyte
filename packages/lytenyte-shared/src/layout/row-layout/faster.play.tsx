@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { makeLayoutState } from "../make-layout-state";
 import { updateLayout } from "../update-layout";
-import { makeRowLayout } from "./row-layout";
+import { makeRowLayout2 } from "./row-layout-2";
 
 export default function RowLayoutPlay() {
   const [currentTs, setCurrentTs] = useState(0);
@@ -34,11 +34,11 @@ export default function RowLayoutPlay() {
 
     const columns = Array.from({ length: 100 }, (_, i) => ({ id: `${i}` }));
 
-    const views = [];
+    const fasterViews = [];
 
-    const start = performance.now();
-    for (let i = 0; i < 999; i++) {
-      const view = makeRowLayout({
+    const fasterStart = performance.now();
+    for (let i = 0; i < 1; i++) {
+      const view = makeRowLayout2({
         layout: state,
         columns,
         focus: null,
@@ -53,18 +53,18 @@ export default function RowLayoutPlay() {
           colEndEnd: 100,
           rowTopStart: 0,
           rowTopEnd: 3,
-          rowCenterStart: i * 100 + 3,
-          rowCenterEnd: i * 100 + 153,
+          rowCenterStart: i,
+          rowCenterEnd: 1000,
           rowCenterLast: 99997,
           rowBotStart: 99_997,
           rowBotEnd: 100_000,
         },
       });
-      views.push(view);
+      fasterViews.push(view);
     }
-    const end = performance.now();
+    const fasterEnd = performance.now();
 
-    setCurrentTs(end - start);
+    setCurrentTs(fasterEnd - fasterStart);
   }, [re]);
 
   return (
