@@ -37,6 +37,7 @@ const typeModules = [
   Row.RowNode,
   Row.RowLeaf,
   Row.RowGroup,
+  Row.RowPin,
   SortDateComparatorOptions,
   SortNumberComparatorOptions,
   SortStringComparatorOptions,

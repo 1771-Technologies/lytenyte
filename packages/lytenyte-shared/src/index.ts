@@ -21,6 +21,7 @@ export type {
   UpdateLayoutArgs,
 } from "./layout/update-layout.js";
 export { updateLayout, FULL_WIDTH, CONTAINS_DEAD_CELLS } from "./layout/update-layout.js";
+export { makeRowLayout } from "./layout/row-layout/row-layout.js";
 
 export { computeBounds } from "./virtual-bounds/compute-bounds.js";
 export {

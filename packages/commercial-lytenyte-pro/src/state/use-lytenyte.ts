@@ -26,11 +26,11 @@ import {
   makeGridAtom,
   makeLayoutState,
   makeRowDataStore,
+  makeRowLayout,
   updateFull,
   type SpanLayout,
 } from "@1771technologies/lytenyte-shared";
 import type { InternalAtoms } from "./+types.js";
-import { makeRowLayout } from "./helpers/row-layout/row-layout.js";
 import { equal } from "@1771technologies/lytenyte-js-utils";
 import { makeColumnLayout } from "./helpers/column-layout.js";
 import { emptyRowDataSource } from "./helpers/empty-row-data-source.js";
@@ -430,6 +430,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     store,
   );
   const { store: rowDataStore, atoms: rdsAtoms } = makeRowDataStore(store, rowByIndex);
+
   const yPositions = atom((g) => {
     const rowCount = g(rdsAtoms.rowCount);
     const innerHeight = g(viewportHeightInner);
@@ -519,7 +520,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     const view = makeRowLayout({
       view: n,
       layout,
-      rds: rowDataStore,
+      rowForIndex: rowDataStore.rowForIndex,
       columns,
       focus: g(internal_focusActive),
     });

@@ -4,32 +4,32 @@ import {
   type LayoutState,
   type SpanLayout,
 } from "@1771technologies/lytenyte-shared";
-import type {
-  Column,
-  PositionUnion,
-  RowCellLayout,
-  RowDataStore,
-  RowLayout,
-  RowSectionLayouts,
-} from "../../../+types";
 import { getFocusCriteria } from "./get-focus-criteria";
+import type { GridAtomReadonlyUnwatchable, PositionUnion, RowNode } from "../../+types";
+import type { RowCellLayout, RowLayout } from "./+types.row-layout";
 
-interface MakeRowViewArgs<T> {
+interface MakeRowViewArgs<T, C extends { id: string }> {
   view: SpanLayout;
   layout: LayoutState;
-  rds: RowDataStore<T>;
-  columns: Column<T>[];
+  rowForIndex: (r: number) => GridAtomReadonlyUnwatchable<RowNode<T> | null>;
+  columns: C[];
   focus: PositionUnion | null;
 }
 
 /**
  * This is quite a complex function so read each part carefully.
  */
-export function makeRowLayout<T>({ view: n, layout, rds, columns, focus }: MakeRowViewArgs<T>) {
+export function makeRowLayout<T, C extends { id: string }>({
+  view: n,
+  layout,
+  rowForIndex,
+  columns,
+  focus,
+}: MakeRowViewArgs<T, C>) {
   // Initializes the layout sections for the view.
-  const top: RowSectionLayouts<T>["top"] = [];
-  const center: RowSectionLayouts<T>["center"] = [];
-  const bottom: RowSectionLayouts<T>["bottom"] = [];
+  const top: RowLayout<T, C>[] = [];
+  const center: RowLayout<T, C>[] = [];
+  const bottom: RowLayout<T, C>[] = [];
 
   // Compute the focus setup for the view. The cell that is currently focused must always be mounted.
   // However things get tricky since the cell may be scrolled out of view. Additionally it may be in any
@@ -44,7 +44,7 @@ export function makeRowLayout<T>({ view: n, layout, rds, columns, focus }: MakeR
     const computed = layout.computed[r];
     if (!computed) continue;
 
-    const node = rds.rowForIndex(r);
+    const node = rowForIndex(r);
     if (!node) {
       console.error(`Row data source did not return a row for a valid row position at index: ${r}`);
       break;
@@ -65,7 +65,7 @@ export function makeRowLayout<T>({ view: n, layout, rds, columns, focus }: MakeR
     }
 
     const cellSpec = layout.lookup.get(r);
-    const cellLayout: RowCellLayout<T>[] = [];
+    const cellLayout: RowCellLayout<T, C>[] = [];
     const hasDead = status === CONTAINS_DEAD_CELLS;
 
     for (let c = n.colStartStart; c < n.colStartEnd; c++) {
@@ -117,7 +117,7 @@ export function makeRowLayout<T>({ view: n, layout, rds, columns, focus }: MakeR
         const rowSpan = cellSpec?.[f.colIndex * 4] || 1;
         const colSpan = cellSpec?.[f.colIndex * 4 + 1] || 1;
 
-        const cell: RowCellLayout<T> = {
+        const cell: RowCellLayout<T, C> = {
           id: columns[f.colIndex].id,
           kind: "cell",
           colIndex: f.colIndex,
@@ -180,7 +180,7 @@ export function makeRowLayout<T>({ view: n, layout, rds, columns, focus }: MakeR
     const computed = layout.computed[r];
     if (!computed) continue;
 
-    const node = rds.rowForIndex(r);
+    const node = rowForIndex(r);
     if (!node) {
       console.error(`Row data source did not return a row for a valid row position at index: ${r}`);
       break;
@@ -198,7 +198,7 @@ export function makeRowLayout<T>({ view: n, layout, rds, columns, focus }: MakeR
     }
 
     const cellSpec = layout.lookup.get(r);
-    const cellLayout: RowCellLayout<T>[] = [];
+    const cellLayout: RowCellLayout<T, C>[] = [];
     const hasDead = status === CONTAINS_DEAD_CELLS;
 
     for (let c = n.colStartStart; c < n.colStartEnd; c++) {
@@ -250,7 +250,7 @@ export function makeRowLayout<T>({ view: n, layout, rds, columns, focus }: MakeR
       const isEmpty = hasDead && cellSpec?.[ci] === 0;
 
       if (isEmpty) {
-        const cell: RowCellLayout<T> = {
+        const cell: RowCellLayout<T, C> = {
           id: columns[f.colIndex].id,
           kind: "cell",
           colIndex: f.colIndex,
@@ -298,7 +298,7 @@ export function makeRowLayout<T>({ view: n, layout, rds, columns, focus }: MakeR
   }
 
   if (f.isRowCenterBefore || f.isRowCenterAfter) {
-    const node = rds.rowForIndex(f.rowIndex);
+    const node = rowForIndex(f.rowIndex);
 
     const status = layout.special[f.rowIndex];
     const computed = layout.computed[f.rowIndex];
@@ -314,7 +314,7 @@ export function makeRowLayout<T>({ view: n, layout, rds, columns, focus }: MakeR
           rowIsFocusRow: true,
         });
       } else {
-        const cellLayout: RowCellLayout<T>[] = [];
+        const cellLayout: RowCellLayout<T, C>[] = [];
         const cellSpec = layout.lookup.get(f.rowIndex);
         const ci = f.colIndex * 4;
         const isEmpty = status === CONTAINS_DEAD_CELLS && cellSpec?.[ci] === 0;
@@ -337,7 +337,7 @@ export function makeRowLayout<T>({ view: n, layout, rds, columns, focus }: MakeR
           });
         }
 
-        const rowLayout: RowLayout<T> = {
+        const rowLayout: RowLayout<T, C> = {
           id: node.get()?.id ?? `${f.rowIndex}`,
           rowIndex: f.rowIndex,
           kind: "row",
@@ -364,7 +364,7 @@ export function makeRowLayout<T>({ view: n, layout, rds, columns, focus }: MakeR
     const computed = layout.computed[r];
     if (!computed) continue;
 
-    const node = rds.rowForIndex(r);
+    const node = rowForIndex(r);
     if (!node) {
       console.error(`Row data source did not return a row for a valid row position at index: ${r}`);
       break;
@@ -384,7 +384,7 @@ export function makeRowLayout<T>({ view: n, layout, rds, columns, focus }: MakeR
     }
 
     const cellSpec = layout.lookup.get(r);
-    const cellLayout: RowCellLayout<T>[] = [];
+    const cellLayout: RowCellLayout<T, C>[] = [];
     const hasDead = status === CONTAINS_DEAD_CELLS;
 
     for (let c = n.colStartStart; c < n.colStartEnd; c++) {
@@ -432,7 +432,7 @@ export function makeRowLayout<T>({ view: n, layout, rds, columns, focus }: MakeR
       const isEmpty = hasDead && cellSpec?.[ci] === 0;
 
       if (!isEmpty) {
-        const cell: RowCellLayout<T> = {
+        const cell: RowCellLayout<T, C> = {
           id: columns[f.colIndex].id,
           kind: "cell",
           colIndex: f.colIndex,

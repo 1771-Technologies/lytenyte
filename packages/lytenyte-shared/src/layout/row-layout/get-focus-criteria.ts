@@ -1,5 +1,5 @@
 import type { SpanLayout } from "@1771technologies/lytenyte-shared";
-import type { PositionUnion } from "../../../+types";
+import type { PositionUnion } from "../../+types";
 
 interface FocusLayoutCriteria {
   readonly kind: "cell" | "full-width";
