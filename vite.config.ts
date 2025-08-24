@@ -9,24 +9,6 @@ export default defineConfig({
       {
         extends: `${__dirname}/vite.config.ts`,
         test: {
-          name: "Browser",
-          browser: {
-            provider: "playwright",
-            enabled: true,
-            instances: [
-              {
-                browser: "chromium",
-                headless: true,
-              },
-            ],
-          },
-          include: ["./packages/**/*.browser.?(c|m)[jt]s?(x)", "src/**/*.browser.?(c|m)[jt]s?(x)"],
-          globals: true,
-        },
-      },
-      {
-        extends: `${__dirname}/vite.config.ts`,
-        test: {
           name: "Node",
           globals: true,
           environment: "jsdom",

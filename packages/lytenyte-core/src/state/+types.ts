@@ -1,4 +1,4 @@
-import type { LayoutMap } from "@1771technologies/lytenyte-shared";
+import type { LayoutState } from "@1771technologies/lytenyte-shared";
 import type {
   Column,
   EditActivePosition,
@@ -17,7 +17,7 @@ export interface InternalAtoms {
   readonly yScroll: GridAtom<number>;
   readonly refreshKey: GridAtom<number>;
 
-  readonly layout: GridAtomReadonly<LayoutMap>;
+  readonly layout: LayoutState;
 
   // For focus management
   readonly focusActive: GridAtom<PositionUnion | null>;

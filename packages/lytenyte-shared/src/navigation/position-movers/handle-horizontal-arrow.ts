@@ -1,6 +1,6 @@
 import { getLastTabbable, getTabbables } from "@1771technologies/lytenyte-dom-utils";
 import type { GridAtom, PositionGridCell, PositionUnion } from "../../+types.js";
-import type { LayoutMap, ScrollIntoViewFn } from "../../+types.non-gen.js";
+import type { RootCellFn, ScrollIntoViewFn } from "../../+types.non-gen.js";
 import { getCellRootRowAndColIndex } from "./get-cell-root-row-and-col-index.js";
 import { runWithBackoff } from "@1771technologies/lytenyte-js-utils";
 import { getNearestFocusable } from "../getters/get-nearest-focusable.js";
@@ -16,9 +16,9 @@ interface HandleHorizontalArrowArgs {
   readonly isMeta: boolean;
   readonly isForward: boolean;
   readonly scrollIntoView: ScrollIntoViewFn;
+  readonly getRootCell: RootCellFn;
   readonly focusActive: GridAtom<PositionUnion | null>;
   readonly id: string;
-  readonly layout: LayoutMap;
 }
 
 export function handleHorizontalArrow({
@@ -27,8 +27,8 @@ export function handleHorizontalArrow({
   isForward,
   isMeta,
   pos,
-  layout,
   scrollIntoView,
+  getRootCell,
   focusActive,
   id,
 }: HandleHorizontalArrowArgs) {
@@ -63,12 +63,12 @@ export function handleHorizontalArrow({
     scrollIntoView({ column: nextIndex, behavior: "instant" });
 
     const run = () => {
-      const row = layout.get(pos.rowIndex);
-      const cell = row?.get(nextIndex);
+      const cell = getRootCell(pos.rowIndex, nextIndex);
 
       if (!cell) return false;
 
-      const [rootRow, rootCol] = getCellRootRowAndColIndex(cell, pos.rowIndex, nextIndex);
+      const [rootRow, rootCol] =
+        cell.kind === "full-width" ? [pos.rowIndex, pos.colIndex] : getCellRootRowAndColIndex(cell);
 
       scrollIntoView({ row: rootRow, column: rootCol, behavior: "instant" });
       const el = vp?.querySelector(getCellQuery(id, rootRow, rootCol)) as HTMLElement;

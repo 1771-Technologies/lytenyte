@@ -1,7 +1,6 @@
 import { runWithBackoff } from "@1771technologies/lytenyte-js-utils";
 import type { GridAtom, PositionGridCell, PositionUnion } from "../../+types.js";
-import type { LayoutMap, ScrollIntoViewFn } from "../../+types.non-gen.js";
-import { isFullWidthMap } from "../../layout/is-full-width-map.js";
+import type { RootCellFn, ScrollIntoViewFn } from "../../+types.non-gen.js";
 import { ensureVisible } from "../ensure-visible.js";
 import { getCellQuery } from "../getters/get-cell-query.js";
 import { getRowQuery } from "../getters/get-row-query.js";
@@ -15,9 +14,9 @@ interface HandleHomeEndArgs {
   readonly isMeta: boolean;
   readonly isStart: boolean;
   readonly scrollIntoView: ScrollIntoViewFn;
+  readonly getRootCell: RootCellFn;
   readonly focusActive: GridAtom<PositionUnion | null>;
   readonly id: string;
-  readonly layout: LayoutMap;
 }
 
 export function handleHomeEnd({
@@ -28,9 +27,9 @@ export function handleHomeEnd({
   rowCount,
   columnCount,
   scrollIntoView,
+  getRootCell,
   id,
   focusActive,
-  layout,
 }: HandleHomeEndArgs) {
   if ((pos.kind !== "cell" && pos.kind !== "full-width") || rowCount === 0 || columnCount === 0) {
     return;
@@ -44,11 +43,11 @@ export function handleHomeEnd({
   scrollIntoView({ row: targetRow, column: targetColumn, behavior: "instant" });
 
   const run = () => {
-    const row = layout.get(targetRow);
+    const cell = getRootCell(targetRow, targetColumn);
     // No header and no rows - the grid is empty, nothing to focus
-    if (!row) return false;
+    if (!cell) return false;
 
-    if (isFullWidthMap(row)) {
+    if (cell.kind === "full-width") {
       const c = vp?.querySelector(getRowQuery(id, targetRow)) as HTMLElement;
       if (!c) return false;
 
@@ -57,9 +56,8 @@ export function handleHomeEnd({
       return true;
     }
 
-    const cell = row.get(targetColumn)!;
     if (!cell) return false;
-    const [rootRow, rootCol] = getCellRootRowAndColIndex(cell, targetRow, targetColumn);
+    const [rootRow, rootCol] = getCellRootRowAndColIndex(cell);
 
     const el = vp?.querySelector(getCellQuery(id, rootRow, rootCol)) as HTMLElement;
     if (!el) return false;

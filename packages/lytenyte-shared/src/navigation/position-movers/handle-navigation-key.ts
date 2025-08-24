@@ -4,17 +4,17 @@ import { handleHomeEnd } from "./handle-home-end.js";
 import { handleHorizontalArrow } from "./handle-horizontal-arrow.js";
 import { handleVerticalArrow } from "./handle-vertical-arrow.js";
 import type { GridAtom, PositionUnion } from "../../+types.js";
-import type { LayoutMap, ScrollIntoViewFn } from "../../+types.non-gen.js";
+import type { RootCellFn, ScrollIntoViewFn } from "../../+types.non-gen.js";
 import { ensureVisible } from "../ensure-visible.js";
 
-interface Args {
+interface HandleNavigationKeyArgs {
   readonly vp: HTMLElement | null;
   readonly rowCount: number;
   readonly columnCount: number;
   readonly scrollIntoView: ScrollIntoViewFn;
+  readonly getRootCell: RootCellFn;
   readonly focusActive: GridAtom<PositionUnion | null>;
   readonly id: string;
-  readonly layout: LayoutMap;
   readonly rtl: boolean;
   readonly topCount: number;
   readonly centerCount: number;
@@ -28,7 +28,7 @@ interface Event {
   readonly metaKey: boolean;
 }
 
-export function handleNavigationKeys(e: Event, args: Args) {
+export function handleNavigationKeys(e: Event, args: HandleNavigationKeyArgs) {
   const keys = [
     "ArrowRight",
     "ArrowLeft",

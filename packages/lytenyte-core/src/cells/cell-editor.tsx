@@ -77,7 +77,7 @@ export function CellEditor<T>({ cell }: CellEditorParams<T>) {
               columnCount: grid.state.columnMeta.get().columnsVisible.length,
               focusActive: grid.internal.focusActive,
               id: grid.state.gridId.get(),
-              layout: grid.internal.layout.get(),
+              getRootCell: grid.api.cellRoot,
               rtl: grid.state.rtl.get(),
               scrollIntoView: grid.api.scrollIntoView,
             },

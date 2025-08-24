@@ -1,16 +1,15 @@
 import { runWithBackoff } from "@1771technologies/lytenyte-js-utils";
 import type { GridAtom, PositionFullWidthRow, PositionUnion } from "../../+types.js";
-import type { LayoutMap, ScrollIntoViewFn } from "../../+types.non-gen.js";
-import { isFullWidthMap } from "../../layout/is-full-width-map.js";
+import type { RootCellFn, ScrollIntoViewFn } from "../../+types.non-gen.js";
 import { getCellQuery } from "../getters/get-cell-query.js";
 import { getRowQuery } from "../getters/get-row-query.js";
 
 interface FocusCellArgs {
   readonly rowIndex: number;
   readonly colIndex: number;
+  readonly getRootCell: RootCellFn;
   readonly scrollIntoView: ScrollIntoViewFn;
   readonly vp: HTMLElement | null;
-  readonly layout: LayoutMap;
   readonly id: string;
   readonly focusActive: GridAtom<PositionUnion | null>;
 
@@ -18,12 +17,12 @@ interface FocusCellArgs {
 }
 
 export function focusCell({
-  layout,
   focusActive,
   id,
   vp,
   rowIndex,
   colIndex,
+  getRootCell,
   scrollIntoView,
   postFocus,
 }: FocusCellArgs) {
@@ -32,10 +31,10 @@ export function focusCell({
   if (!vp) return false;
 
   const run = () => {
-    const row = layout.get(rowIndex);
-    if (!row) return false;
+    const cell = getRootCell(rowIndex, colIndex);
+    if (!cell) return false;
 
-    if (isFullWidthMap(row)) {
+    if (cell.kind === "full-width") {
       const query = getRowQuery(id, rowIndex);
 
       const el = vp.querySelector(query) as HTMLElement;

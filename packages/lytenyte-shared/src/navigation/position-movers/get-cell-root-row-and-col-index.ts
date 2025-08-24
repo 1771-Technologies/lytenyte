@@ -1,11 +1,8 @@
-import type { RowColTuple } from "../../+types.non-gen.js";
+import type { PositionGridCell } from "../../+types.js";
 
-export function getCellRootRowAndColIndex(
-  cell: RowColTuple,
-  fallbackRow: number,
-  fallbackCol: number,
-) {
-  if (cell.length === 2) return [fallbackRow, fallbackCol];
+export function getCellRootRowAndColIndex(cell: PositionGridCell) {
+  const rootRow = cell.root?.rowIndex ?? cell.rowIndex;
+  const rootCol = cell.root?.colIndex ?? cell.colIndex;
 
-  return [cell[1], cell[2]];
+  return [rootRow, rootCol];
 }

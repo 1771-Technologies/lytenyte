@@ -2795,7 +2795,7 @@ export type FieldRowGroup<T> = number | string | FieldPath | FieldRowGroupFn<T>;
 export type Field<T> = number | string | FieldPath | FieldFn<T>;
 
 /**
- * A function that returns a {@link ReactNode} representing the rendered content of a cell.
+ * A function that returns a ReactNode representing the rendered content of a cell.
  *
  * This function is called once per cell for the associated column. Cell renderers should be
  * optimized for performance, as slow renderers may degrade the overall responsiveness of the grid.
@@ -3138,6 +3138,22 @@ export interface GridApi<T> {
    *   This operation respects column group visibility and layout rules.
    */
   readonly columnMove: (params: ColumnMoveParams<T>) => void;
+
+  /**
+   * Returns the root cell for the provided row and column index. This may be:
+   *
+   * - A cell that is not covered by the row or column span of another cell, in this case the root cell
+   *   is the cell itself
+   * - A cell that is covered by the row or column span of another cell, in this case the root cell is the
+   *   spanning cell
+   * - A full width row, in this case the root cell is the row itself. Note that full width rows cannot be
+   *   spanned over, so it is not possible for a spanning cell to continue past a full width row, even if the
+   *   span amount would allow it
+   */
+  readonly cellRoot: (
+    row: number,
+    column: number,
+  ) => PositionGridCell | PositionFullWidthRow | null;
 
   /**
    * Toggles the expansion state of one or more column groups.
