@@ -1,4 +1,4 @@
-import { focusCell, isFullWidthMap } from "@1771technologies/lytenyte-shared";
+import { focusCell } from "@1771technologies/lytenyte-shared";
 import type { InternalAtoms } from "../+types.js";
 import type { Column, Grid, GridApi } from "../../+types";
 import { runWithBackoff } from "@1771technologies/lytenyte-js-utils";
@@ -41,18 +41,13 @@ export const makeEditBegin = (
 
     // Let's try begin the cell edit.
     const run = () => {
-      const layout = i.layout.get();
-
-      const row = layout.get(params.rowIndex);
-      if (!row) return false;
-      if (isFullWidthMap(row)) return true;
-
       const columnIndex = meta.columnsVisible.indexOf(column);
-      const cell = layout.get(columnIndex);
+      const cell = grid.api.cellRoot(params.rowIndex, columnIndex);
       if (!cell) return false;
+      if (cell.kind === "full-width") return true;
 
       focusCell({
-        layout,
+        getRootCell: grid.api.cellRoot,
         focusActive: i.focusActive,
         id: grid.state.gridId.get(),
         colIndex: columnIndex,

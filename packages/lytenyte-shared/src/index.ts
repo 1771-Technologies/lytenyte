@@ -8,22 +8,19 @@ export { partitionColumnsByPinState } from "./header-view/partition-columns-by-p
 export { computeColumnPositions } from "./coordinates/compute-column-positions.js";
 export { computeRowPositions } from "./coordinates/compute-row-positions.js";
 
-export { applyCellLayoutForRow } from "./layout/apply-cell-layout-for-row.js";
-export { applyLayoutUpdate } from "./layout/apply-layout-update.js";
-export { isFullWidthMap } from "./layout/is-full-width-map.js";
-export type { LayoutMap, SpanFn, RowPredicate, SpanLayout } from "./+types.non-gen.js";
+export type { SpanFn, RowPredicate, SpanLayout } from "./+types.non-gen.js";
 
-export type { LayoutState } from "./layout-2/make-layout-state.js";
-export { makeLayoutState } from "./layout-2/make-layout-state.js";
-export { updateFull } from "./layout-2/update-full.js";
+export type { LayoutState } from "./layout/make-layout-state.js";
+export { makeLayoutState } from "./layout/make-layout-state.js";
+export { updateFull } from "./layout/update-full.js";
 export type {
   Computed,
   DeadCells,
   LayoutDiffers,
   RootCellLookup as RootCellSpanLookup,
   UpdateLayoutArgs,
-} from "./layout-2/update-layout.js";
-export { updateLayout, FULL_WIDTH, CONTAINS_DEAD_CELLS } from "./layout-2/update-layout.js";
+} from "./layout/update-layout.js";
+export { updateLayout, FULL_WIDTH, CONTAINS_DEAD_CELLS } from "./layout/update-layout.js";
 
 export { computeBounds } from "./virtual-bounds/compute-bounds.js";
 export {

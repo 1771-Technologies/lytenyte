@@ -1,4 +1,4 @@
-import type { LayoutMap, LayoutState } from "@1771technologies/lytenyte-shared";
+import type { LayoutState } from "@1771technologies/lytenyte-shared";
 import type {
   Column,
   DataRect,

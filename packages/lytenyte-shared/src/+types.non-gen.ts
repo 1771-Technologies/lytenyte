@@ -37,21 +37,5 @@ export interface SpanLayout {
 export type SpanFn = (r: Row, c: Column) => number;
 export type RowPredicate = (r: Row) => boolean;
 
-/**
- * The layout map represents the current computed layout of the rows and columns
- * in the grid. It primarily identifies full width rows, and cells that span more
- * than a single column.
- *
- * Reading the data of the map can be a bit tricky but it works as follows:
- * - The root map is a key value lookup. The key is the row index and the value is the layout
- *   for that row.
- * - The layout for the row is another map. The map can be one of two types:
- *     - A full width map (we should test for this by testing the map === FULL_WIDTH_MAP)
- *     - Or a tuple of 2-3 numbers. If the tuple has 2 numbers it contains the span of the column.
- *       If the tuple has 3 numbers, it contains an empty cell, and the second and third index is the root
- *       row and column index of that cell.
- */
-export type LayoutMap = Map<Row, Map<Column, RowColTuple>>;
-
 export type ScrollIntoViewFn = (p: { row?: number; column?: number; behavior: "instant" }) => void;
 export type RootCellFn = (r: number, c: number) => PositionGridCell | PositionFullWidthRow | null;

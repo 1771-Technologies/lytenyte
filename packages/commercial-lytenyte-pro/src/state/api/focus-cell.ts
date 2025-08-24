@@ -41,7 +41,7 @@ export const makeFocusCell = (
           columnCount: grid.state.columnMeta.get().columnsVisible.length,
           focusActive: grid.internal.focusActive,
           id: grid.state.gridId.get(),
-          layout: grid.internal.layout.get(),
+          getRootCell: grid.api.cellRoot,
           rtl: grid.state.rtl.get(),
           scrollIntoView: grid.api.scrollIntoView,
         },
@@ -138,7 +138,7 @@ export const makeFocusCell = (
       rowIndex: position.row,
       focusActive: grid.internal.focusActive,
       id: grid.state.gridId.get(),
-      layout: grid.internal.layout.get(),
+      getRootCell: grid.api.cellRoot,
       scrollIntoView: grid.api.scrollIntoView,
       vp,
     });
