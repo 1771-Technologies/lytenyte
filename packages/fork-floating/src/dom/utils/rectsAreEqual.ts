@@ -1,5 +1,0 @@
-import type { ClientRectObject } from "../../core/index.js";
-
-export function rectsAreEqual(a: ClientRectObject, b: ClientRectObject) {
-  return a.x === b.x && a.y === b.y && a.width === b.width && a.height === b.height;
-}
