@@ -6,6 +6,7 @@ import { RowReact, type DropWrapProps } from "@1771technologies/lytenyte-shared"
 import { useRowContextValue } from "./use-row-context-value";
 import { RowContext } from "./context";
 import { equal } from "@1771technologies/lytenyte-js-utils";
+import { CellSpacerNoPin } from "../../cells/cell-spacer";
 
 export interface RowProps extends Omit<DropWrapProps, "accepted"> {
   readonly row: RowNormalRowLayout<any>;
@@ -35,6 +36,7 @@ const RowImpl = forwardRef<HTMLDivElement, Omit<JSX.IntrinsicElements["div"], "o
           yPositions={ctx.state.yPositions.useValue()}
           data-ln-row-selected={rowMeta.selected}
         >
+          <CellSpacerNoPin />
           {props.children}
           <RowDetailRow layout={row} />
         </RowReact>

@@ -14,9 +14,8 @@ import { RowHandler } from "./sample-data/row-handler";
 
 const columns = Array.from({ length: 50 }, (_, i) => ({
   id: `${i}`,
-  pin: i === 0 ? "start" : null,
-  width: 120,
-  widthMin: 120,
+  width: 30,
+  widthMin: 30,
   field: i,
 }));
 
@@ -26,17 +25,7 @@ const data = Array.from({ length: 30_000 }, (_, r) => {
 
 export default function Component() {
   const ds = useClientRowDataSource({
-    data,
-    topData: data.slice(0, 2).map((c) => {
-      const d = [...c];
-      d[0] = d[0] - 2;
-      return d;
-    }),
-    bottomData: data.slice(0, 2).map((c) => {
-      const d = [...c];
-      d[0] = d[0] - 2;
-      return d;
-    }),
+    data: data,
   });
 
   const g = useLyteNyte({

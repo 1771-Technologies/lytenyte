@@ -8,7 +8,7 @@ export const RowHandler = fastDeepMemo((props: { rows: RowLayout<any>[] }) => {
   return props.rows.map((row) => {
     if (row.kind === "full-width") return <RowFullWidth row={row} key={row.id} />;
 
-    return <RowFor row={row} key={row.id} />;
+    return <Memo row={row} key={row.id} />;
   });
 });
 
@@ -21,3 +21,4 @@ function RowFor<T>({ row }: { row: RowNormalRowLayout<T> }) {
     </Row>
   );
 }
+const Memo = fastDeepMemo(RowFor);

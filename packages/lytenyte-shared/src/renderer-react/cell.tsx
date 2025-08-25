@@ -7,25 +7,13 @@ interface CellProps {
   readonly yPosition: Uint32Array;
   readonly cell: Cell;
   readonly detailHeight: number;
-  readonly viewportWidth: number;
   readonly rtl: boolean;
   readonly isEditing: boolean;
 }
 
 export const CellReact = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & CellProps>(
-  function Cell(
-    { cell, xPosition, yPosition, rtl, detailHeight, viewportWidth, isEditing, ...props },
-    forwarded,
-  ) {
-    const style = useCellStyle(
-      xPosition,
-      yPosition,
-      cell,
-      rtl,
-      detailHeight,
-      viewportWidth,
-      props.style,
-    );
+  function Cell({ cell, xPosition, yPosition, rtl, detailHeight, isEditing, ...props }, forwarded) {
+    const style = useCellStyle(xPosition, yPosition, cell, rtl, detailHeight, props.style);
 
     return (
       <div

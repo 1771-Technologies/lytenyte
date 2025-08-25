@@ -14,7 +14,7 @@ if (isFrame || url.searchParams.get("full")) {
   const frame = url.searchParams.get("frame")!;
   const component = frames[frame];
 
-  const Render = (await component())?.default ?? NoDefault;
+  const Render = component?.default ?? NoDefault;
 
   const element = document.getElementById("root")!;
   element.id = "play-root";

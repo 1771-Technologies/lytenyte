@@ -23,7 +23,7 @@ async function createServer() {
         load: (id) => {
           if (id === "playframe") {
             return `
-              const files = import.meta.glob("/src/**/*.*play.tsx");
+              const files = import.meta.glob("/src/**/*.*play.tsx", { eager: true });
 
               export default files
             `;

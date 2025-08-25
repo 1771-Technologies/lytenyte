@@ -5,6 +5,7 @@ import { CellReact } from "@1771technologies/lytenyte-shared";
 import { CellDefault } from "./cell-default";
 import { CellEditor } from "./cell-editor";
 import { useRowMeta } from "../rows/row/context";
+import { CellSpacePinStart, CellSpacerPinEnd } from "./cell-spacer";
 
 export interface CellProps {
   readonly cell: RowCellLayout<any>;
@@ -48,36 +49,39 @@ export const Cell = forwardRef<
   if (!row) return null;
 
   return (
-    <CellReact
-      {...props}
-      ref={forwarded}
-      cell={cell}
-      isEditing={isEditing}
-      viewportWidth={cx.viewportWidthInner.useValue()}
-      detailHeight={grid.api.rowDetailRenderedHeight(row ?? "")}
-      rtl={cx.rtl.useValue()}
-      xPosition={cx.xPositions.useValue()}
-      yPosition={cx.yPositions.useValue()}
-    >
-      {isEditing && <CellEditor cell={cell} />}
-      {!isEditing && (
-        <>
-          {typeof Renderer === "function" ? (
-            <Renderer
-              column={cell.column}
-              rowSelected={rowMeta.selected}
-              rowIndeterminate={rowMeta.indeterminate}
-              row={row}
-              grid={grid}
-              rowIndex={cell.rowIndex}
-              colIndex={cell.colIndex}
-              rowPin={cell.rowPin}
-            />
-          ) : (
-            Renderer
-          )}
-        </>
-      )}
-    </CellReact>
+    <>
+      {cell.colFirstEndPin && <CellSpacerPinEnd />}
+      <CellReact
+        {...props}
+        ref={forwarded}
+        cell={cell}
+        isEditing={isEditing}
+        detailHeight={grid.api.rowDetailRenderedHeight(row ?? "")}
+        rtl={cx.rtl.useValue()}
+        xPosition={cx.xPositions.useValue()}
+        yPosition={cx.yPositions.useValue()}
+      >
+        {isEditing && <CellEditor cell={cell} />}
+        {!isEditing && (
+          <>
+            {typeof Renderer === "function" ? (
+              <Renderer
+                column={cell.column}
+                rowSelected={rowMeta.selected}
+                rowIndeterminate={rowMeta.indeterminate}
+                row={row}
+                grid={grid}
+                rowIndex={cell.rowIndex}
+                colIndex={cell.colIndex}
+                rowPin={cell.rowPin}
+              />
+            ) : (
+              Renderer
+            )}
+          </>
+        )}
+      </CellReact>
+      {cell.colLastStartPin && <CellSpacePinStart />}
+    </>
   );
 });

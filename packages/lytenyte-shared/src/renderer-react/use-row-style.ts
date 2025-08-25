@@ -17,9 +17,6 @@ export function useRowStyle(
       height,
       width: SCROLL_WIDTH_VARIABLE_USE,
       minWidth: VIEWPORT_WIDTH_VARIABLE_USE,
-      display: "grid",
-      gridTemplateColumns: "100%",
-      gridTemplateRows: `${height}px`,
       pointerEvents: "none",
       opacity: rowIsFocusRow ? "0" : undefined,
     };

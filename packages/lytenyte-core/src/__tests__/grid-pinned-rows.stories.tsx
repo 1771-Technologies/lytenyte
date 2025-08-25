@@ -43,8 +43,8 @@ const columns: Column<any>[] = [
 
 function Component({ data = bankData }: { data?: any[] }) {
   const [d, setData] = useState(() => data);
-  const [pt, setPt] = useState<any[]>(() => []);
-  const [bt, setBt] = useState<any[]>(() => []);
+  const [pt, setPt] = useState<any[]>(() => data.slice(0, 2));
+  const [bt, setBt] = useState<any[]>(() => data.slice(0, 2));
 
   const ds = useClientRowDataSource({
     data: d,
