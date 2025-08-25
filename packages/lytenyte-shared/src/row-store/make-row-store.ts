@@ -59,23 +59,20 @@ export function makeRowStore<T>({ getRow }: MakeRowStore<T>): RowDataStore<T> {
       const currentAtom = signalCache.get(i);
       if (!currentAtom) {
         const localSnapshot = signal(Date.now());
-        const row$ = signal(getRow(i));
-
-        const row$$ = computed<[data: RowNode<T> | null, local: number, global: number]>(() => {
-          return [row$(), localSnapshot(), globalSnapshot()];
-        });
 
         const newAtom: AtomReadonly<RowNode<T> | null> & { __invalidate: () => void } = {
-          get: () => row$$()[0],
-          watch: (fn) => {
-            return effect(() => {
-              row$();
-              fn();
-            });
+          $: () => getRow(i),
+          get: () => getRow(i),
+          watch: () => () => {},
+          useValue: () => {
+            useSignalValue(globalSnapshot);
+            useSignalValue(localSnapshot);
+
+            const row = getRow(i);
+
+            return row;
           },
-          useValue: () => useSignalValue(row$$)[0],
           __invalidate: () => {
-            row$.set(getRow(i));
             localSnapshot.set(Date.now());
           },
         };

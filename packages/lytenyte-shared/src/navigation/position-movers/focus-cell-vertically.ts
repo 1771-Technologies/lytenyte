@@ -16,7 +16,7 @@ interface FocusCellVerticallyArgs {
 
   readonly vp: HTMLElement | null;
   readonly pos: PositionUnion;
-  readonly focusActive: GridAtom<PositionUnion | null>;
+  readonly focusActive: Omit<GridAtom<PositionUnion | null>, "$">;
   readonly getRootCell: RootCellFn;
   readonly scrollIntoView: ScrollIntoViewFn;
 }

@@ -1,5 +1,5 @@
 import type { ReadSignal, WriteSignal } from "../+types";
-import { effect, isWriteSignal } from "../vanilla";
+import { effect, isWriteSignal, peek } from "../vanilla";
 import { useSignalValue } from "./use-signal-value";
 
 export interface Atom<T> {
@@ -7,11 +7,13 @@ export interface Atom<T> {
   readonly set: (v: T | ((v: T) => T)) => void;
   readonly watch: (fn: () => void) => () => void;
   readonly useValue: () => T;
+  readonly $: () => T;
 }
 export interface AtomReadonly<T> {
   readonly get: () => T;
   readonly watch: (fn: () => void) => () => void;
   readonly useValue: () => T;
+  readonly $: () => T;
 }
 
 export function makeAtom<T>(sig: WriteSignal<T>): Atom<T>;
@@ -19,7 +21,8 @@ export function makeAtom<T>(sig: ReadSignal<T>): AtomReadonly<T>;
 export function makeAtom<T>(sig: WriteSignal<T> | ReadSignal<T>) {
   if (isWriteSignal(sig)) {
     return {
-      get: () => sig(),
+      $: () => sig(),
+      get: () => peek(sig),
       useValue: () => {
         return useSignalValue(sig);
       },
@@ -33,7 +36,8 @@ export function makeAtom<T>(sig: WriteSignal<T> | ReadSignal<T>) {
     } satisfies Atom<T>;
   } else {
     return {
-      get: () => sig(),
+      $: () => sig(),
+      get: () => peek(sig),
       useValue: () => {
         return useSignalValue(sig);
       },

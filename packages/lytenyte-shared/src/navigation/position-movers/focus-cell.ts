@@ -11,7 +11,7 @@ interface FocusCellArgs {
   readonly scrollIntoView: ScrollIntoViewFn;
   readonly vp: HTMLElement | null;
   readonly id: string;
-  readonly focusActive: GridAtom<PositionUnion | null>;
+  readonly focusActive: Omit<GridAtom<PositionUnion | null>, "$">;
 
   readonly postFocus?: () => void;
 }

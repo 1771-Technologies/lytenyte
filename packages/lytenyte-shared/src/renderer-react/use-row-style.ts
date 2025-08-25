@@ -19,6 +19,8 @@ export function useRowStyle(
       minWidth: VIEWPORT_WIDTH_VARIABLE_USE,
       pointerEvents: "none",
       opacity: rowIsFocusRow ? "0" : undefined,
+      whiteSpace: "nowrap",
+      display: "flex",
     };
 
     return { ...propStyles, ...styles, ...overrideStyles };

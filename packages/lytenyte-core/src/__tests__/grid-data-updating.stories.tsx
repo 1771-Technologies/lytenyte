@@ -21,7 +21,7 @@ const meta: Meta = {
 
 export default meta;
 
-const columns: Column<any>[] = [{ id: "x" }, { id: "y" }, { id: "v" }];
+const columns: Column<any>[] = [{ id: "x" }, { id: "y", widthFlex: 1 }, { id: "v" }];
 
 function Component() {
   const [d, setD] = useState([
@@ -31,14 +31,12 @@ function Component() {
   const ds = useClientRowDataSource({
     rowIdLeaf: (_, i) => `${i}`,
     data: d,
-    reflectData: true,
   });
+
   const g = useLyteNyte({
     gridId: useId(),
     columns,
     rowDataSource: ds,
-    rowSelectionMode: "multiple",
-    rowSelectionActivator: "single-click",
     aggModel: {
       x: { fn: "sum" },
       y: { fn: "sum" },

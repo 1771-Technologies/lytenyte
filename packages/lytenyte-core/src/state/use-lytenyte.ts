@@ -10,6 +10,7 @@ import type {
   HeaderGroupCellLayout,
   Column,
   RowHeight,
+  RowLayout,
 } from "../+types.js";
 import { type Grid, type GridView, type UseLyteNyteProps } from "../+types.js";
 import { useRef } from "react";
@@ -219,8 +220,8 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       const scrollLeft = xScroll();
       const xPos = xPositions();
       const yPos = yPositions();
-      const topCount = rowDataStore.rowTopCount.get();
-      const bottomCount = rowDataStore.rowBottomCount.get();
+      const topCount = rowDataStore.rowTopCount.$();
+      const bottomCount = rowDataStore.rowBottomCount.$();
       const start = startCount();
       const end = endCount();
 
@@ -254,16 +255,16 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
   const layoutState = makeLayoutState(0);
   const layoutState$ = computed(() => {
-    rowDataStore.rowBottomCount.get();
-    rowDataStore.rowCenterCount.get();
-    rowDataStore.rowTopCount.get();
+    rowDataStore.rowBottomCount.$();
+    rowDataStore.rowCenterCount.$();
+    rowDataStore.rowTopCount.$();
     rowDataSource();
     rowGroupModel();
     sortModel();
     filterModel();
     aggModel();
 
-    const rowCount = rowDataStore.rowCount.get();
+    const rowCount = rowDataStore.rowCount.$();
     const columnCount = columnCount$();
 
     if (rowCount > layoutState.computed.length || columnCount != layoutState.base.length) {
@@ -274,7 +275,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       layoutState.lookup.clear();
     }
 
-    return layoutState;
+    return { layout: { ...layoutState }, cache: new Map<number, RowLayout<T>>() };
   });
 
   /**
@@ -388,7 +389,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const yPositions = computed(() => {
     if (!viewport()) return EMPTY_POSITION_ARRAY;
 
-    const rowCount = rowDataStore.rowCount.get();
+    const rowCount = rowDataStore.rowCount.$();
     const innerHeight = viewportHeightInner();
 
     const detailExpansions = rowDetailExpansions();
@@ -448,11 +449,11 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
     const rds = rowDataSource();
 
-    const layout = layoutState$();
+    const { layout, cache } = layoutState$();
 
-    const topCount = rowDataStore.rowTopCount.get();
-    const botCount = rowDataStore.rowBottomCount.get();
-    const rowCount = rowDataStore.rowCount.get();
+    const topCount = rowDataStore.rowTopCount.$();
+    const botCount = rowDataStore.rowBottomCount.$();
+    const rowCount = rowDataStore.rowCount.$();
 
     const fullWidthPredicate = rowFullWidthPredicate().fn;
     updateFull({
@@ -475,7 +476,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       rowScanDistance: rowScan,
       rowStart: n.rowCenterStart,
       rowEnd: n.rowCenterEnd,
-      rowMax: n.rowCenterEnd,
+      rowMax: n.rowCenterLast,
 
       ...layout,
     });
@@ -487,6 +488,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     const focus = internal_focusActive();
     const view = makeRowLayout({
       view: n,
+      viewCache: cache,
       layout,
       rds: rowDataStore,
       columns,

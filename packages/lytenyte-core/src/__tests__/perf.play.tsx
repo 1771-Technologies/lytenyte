@@ -14,9 +14,14 @@ import { RowHandler } from "./sample-data/row-handler";
 
 const columns = Array.from({ length: 50 }, (_, i) => ({
   id: `${i}`,
+  // rowSpan: i === 1 ? 3 : undefined,
   width: 30,
   widthMin: 30,
   field: i,
+
+  uiHints: {
+    resizable: true,
+  },
 }));
 
 const data = Array.from({ length: 30_000 }, (_, r) => {

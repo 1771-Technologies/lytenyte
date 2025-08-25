@@ -100,7 +100,7 @@ export interface UseLyteNyteProps<T> {
   /**
    * The function predicate used to determine if a row should be rendered as full width.
    */
-  readonly rowFullWidthPredicate?: RowFullWidthPredicate<T>;
+  readonly rowFullWidthPredicate?: RowFullWidthPredicate<T> | null;
 
   /**
    * The renderer used to render the content of a full width row.
@@ -170,7 +170,10 @@ export interface UseLyteNyteProps<T> {
   /**
    * The floating cell renderers that may be referenced by name.
    */
-  readonly floatingCellRenderers?: Record<string, HeaderFloatingCellRendererFn<T>>;
+  readonly floatingCellRenderers?: Record<
+    string,
+    HeaderFloatingCellRendererFn<T>
+  >;
 
   /**
    * The header cell renderers that may be referenced by name.
@@ -441,7 +444,9 @@ export interface GridState<T> {
    * A predicate function used to determine whether a given row should be rendered as a
    *   full-width row. Full-width rows span across all columns and bypass standard cell layout.
    */
-  readonly rowFullWidthPredicate: GridAtom<{ fn: RowFullWidthPredicate<T> | null }>;
+  readonly rowFullWidthPredicate: GridAtom<{
+    fn: RowFullWidthPredicate<T> | null;
+  }>;
 
   /**
    * The component function that renders full-width rows in the grid. This renderer is called
@@ -524,13 +529,17 @@ export interface GridState<T> {
    * A map of named floating row cell renderers. These renderers can be assigned by name
    *   in the floating row column configurations.
    */
-  readonly floatingCellRenderers: GridAtom<Record<string, HeaderFloatingCellRendererFn<T>>>;
+  readonly floatingCellRenderers: GridAtom<
+    Record<string, HeaderFloatingCellRendererFn<T>>
+  >;
 
   /**
    * A map of named header cell renderers. These can be referenced in column definitions to
    *   customize how column headers are displayed.
    */
-  readonly headerCellRenderers: GridAtom<Record<string, HeaderCellRendererFn<T>>>;
+  readonly headerCellRenderers: GridAtom<
+    Record<string, HeaderCellRendererFn<T>>
+  >;
 
   /**
    * A map of named edit renderers. These renderers are used to customize the editing
@@ -1056,6 +1065,16 @@ export interface RowCellLayout<T> {
    * Number of rows this cell spans across.
    */
   readonly rowSpan: number;
+
+  /**
+   * Indicates if this cell is row spanned over and will not be rendered
+   */
+  readonly isDeadRow: boolean;
+
+  /**
+   * Indicates if this cell is column spanned over and will not be rendered
+   */
+  readonly isDeadCol: boolean;
 
   /**
    * A unique identifier that can be used for rendering keys or tracking elements.
@@ -1989,7 +2008,10 @@ export interface RowDataSource<T> {
   /**
    * Adds new rows to the grid optionally at a specific index, beginning, or end.
    */
-  readonly rowAdd: (newRows: any[], atIndex?: number | "beginning" | "end") => void;
+  readonly rowAdd: (
+    newRows: any[],
+    atIndex?: number | "beginning" | "end",
+  ) => void;
 
   /**
    * Sets the data for the center rows (scrollable rows) of the grid. Effectively replacing the current row data.
@@ -2076,7 +2098,10 @@ export interface RowDataSourceClient<T> {
   /**
    * Adds new rows to the grid optionally at a specific index, beginning, or end.
    */
-  readonly rowAdd: (newRows: any[], atIndex?: number | "beginning" | "end") => void;
+  readonly rowAdd: (
+    newRows: any[],
+    atIndex?: number | "beginning" | "end",
+  ) => void;
 
   /**
    * Sets the data for the center rows (scrollable rows) of the grid. Effectively replacing the current row data.
@@ -2166,7 +2191,10 @@ export interface RowDataSourceClientPaginated<T> {
   /**
    * Adds new rows to the grid optionally at a specific index, beginning, or end.
    */
-  readonly rowAdd: (newRows: any[], atIndex?: number | "beginning" | "end") => void;
+  readonly rowAdd: (
+    newRows: any[],
+    atIndex?: number | "beginning" | "end",
+  ) => void;
 
   /**
    * Sets the data for the center rows (scrollable rows) of the grid. Effectively replacing the current row data.
@@ -2246,7 +2274,9 @@ export interface RowDataStore<T> {
   /**
    * Retrieves the row node for the given row index.
    */
-  readonly rowForIndex: (row: number) => GridAtomReadonlyUnwatchable<RowNode<T> | null>;
+  readonly rowForIndex: (
+    row: number,
+  ) => GridAtomReadonlyUnwatchable<RowNode<T> | null>;
 
   /**
    * Clears the cached row node data in the store.
@@ -2944,7 +2974,10 @@ export interface GridApi<T> {
    *   field is not a direct path, or when additional logic is involved in determining cell values.
    *   It provides access to LyteNyte Grid's internal field evaluation pipeline.
    */
-  readonly columnField: (columnOrId: string | Column<T>, row: FieldDataParam<T>) => unknown;
+  readonly columnField: (
+    columnOrId: string | Column<T>,
+    row: FieldDataParam<T>,
+  ) => unknown;
 
   /**
    * Returns the column at the specified visible index. If the index is out of bounds or
@@ -2962,7 +2995,9 @@ export interface GridApi<T> {
    * Retrieves the current sort object and its index from the sort model for a given column.
    *   If no sort applies to the column, returns null.
    */
-  readonly sortForColumn: (columnOrId: string) => { sort: SortModelItem<T>; index: number } | null;
+  readonly sortForColumn: (
+    columnOrId: string,
+  ) => { sort: SortModelItem<T>; index: number } | null;
 
   /**
    * Type guard that determines whether a row node is a leaf node (i.e., not a group).
@@ -2991,7 +3026,9 @@ export interface GridApi<T> {
    * Applies multiple group row expansion states using a mapping of row ids to expansion booleans.
    *   Useful when restoring or syncing expansion state.
    */
-  readonly rowGroupApplyExpansions: (expansions: Record<string, boolean>) => void;
+  readonly rowGroupApplyExpansions: (
+    expansions: Record<string, boolean>,
+  ) => void;
 
   /**
    * Returns a boolean indicating if the specified group row is currently expanded.
@@ -3065,7 +3102,10 @@ export interface GridApi<T> {
   /**
    * Toggles the detail expansion for the specified row. Optionally provide a boolean to explicitly set the expansion state.
    */
-  readonly rowDetailToggle: (rowOrId: string | RowNode<T>, state?: boolean) => void;
+  readonly rowDetailToggle: (
+    rowOrId: string | RowNode<T>,
+    state?: boolean,
+  ) => void;
 
   /**
    * Returns the rendered height of the row's detail section only. Does not include the standard row height.
@@ -3082,7 +3122,10 @@ export interface GridApi<T> {
    * Retrieves a row based on its index and optional section (body, pinned top, or pinned bottom).
    * Returns `null` or `undefined` if the index is out of range.
    */
-  readonly rowByIndex: (index: number, section?: RowSection) => RowNode<T> | null | undefined;
+  readonly rowByIndex: (
+    index: number,
+    section?: RowSection,
+  ) => RowNode<T> | null | undefined;
 
   /**
    * Selects a specific set of rows based on the provided {@link RowSelectOptions}.
@@ -3131,7 +3174,9 @@ export interface GridApi<T> {
   /**
    * Applies updates to one or more columns. Each key in the object is a column id, and each value is the set of updates to apply.
    */
-  readonly columnUpdate: (updates: Record<string, Omit<Column<T>, "id">>) => void;
+  readonly columnUpdate: (
+    updates: Record<string, Omit<Column<T>, "id">>,
+  ) => void;
 
   /**
    * Moves one or more columns before or after a specified target column.
@@ -3159,12 +3204,17 @@ export interface GridApi<T> {
    * Toggles the expansion state of one or more column groups.
    *   You can also pass a boolean to directly set the expansion state.
    */
-  readonly columnToggleGroup: (group: string | string[], state?: boolean) => void;
+  readonly columnToggleGroup: (
+    group: string | string[],
+    state?: boolean,
+  ) => void;
 
   /**
    * Automatically adjusts the widths of columns based on their content. Accepts optional parameters to control the behavior.
    */
-  readonly columnAutosize: (params: ColumnAutosizeParams<T>) => Record<string, number>;
+  readonly columnAutosize: (
+    params: ColumnAutosizeParams<T>,
+  ) => Record<string, number>;
 
   /**
    * Returns the raw cell data within a rectangular selection of the grid.
@@ -3172,7 +3222,9 @@ export interface GridApi<T> {
    *
    *   @group Grid API
    */
-  readonly exportDataRect: (params?: ExportDataRectParams) => Promise<ExportDataRectResult<T>>;
+  readonly exportDataRect: (
+    params?: ExportDataRectParams,
+  ) => Promise<ExportDataRectResult<T>>;
 
   /**
    * Exports the cell data for a given rectangle of the grid as a CSV-formatted string.
@@ -3483,7 +3535,9 @@ export interface FilterCombination {
    * This list may contain any combination of core filter types,
    * including nested combination filters.
    */
-  readonly filters: Array<FilterNumber | FilterString | FilterDate | FilterCombination>;
+  readonly filters: Array<
+    FilterNumber | FilterString | FilterDate | FilterCombination
+  >;
 }
 
 /**
@@ -4633,7 +4687,9 @@ export interface HeaderFloatingCellRendererParams<T> {
  *
  *   @group Column Header
  */
-export type HeaderFloatingCellRenderer<T> = string | HeaderFloatingCellRendererFn<T>;
+export type HeaderFloatingCellRenderer<T> =
+  | string
+  | HeaderFloatingCellRendererFn<T>;
 
 /**
  * Header cell renderer reference. This may be a registered renderer

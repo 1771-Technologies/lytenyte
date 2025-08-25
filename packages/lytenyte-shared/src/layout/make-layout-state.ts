@@ -3,7 +3,7 @@ import type { Computed, LayoutDiffers } from "./update-layout";
 export interface LayoutState {
   readonly computed: Computed;
   readonly special: LayoutDiffers;
-  readonly lookup: Map<number, Uint32Array>;
+  readonly lookup: Map<number, Int32Array>;
   readonly base: Uint32Array;
 }
 

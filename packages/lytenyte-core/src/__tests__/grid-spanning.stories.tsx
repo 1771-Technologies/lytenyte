@@ -1,4 +1,5 @@
 import "./grid-navigation.css";
+import "../../main.css";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Header } from "../header/header";
 import { HeaderRow } from "../header/header-row";
@@ -22,13 +23,13 @@ const meta: Meta = {
 export default meta;
 
 const columns: Column<any>[] = [
-  { id: "age", rowSpan: 2, colSpan: 3 },
+  { id: "age", rowSpan: (r) => (r.rowIndex % 3 === 0 ? 3 : 1), colSpan: 2 },
   { id: "job" },
   { id: "balance" },
   { id: "education" },
   { id: "marital" },
   { id: "default" },
-  { id: "housing", colSpan: (r) => (r.colIndex % 2 ? 3 : 1), pin: "end" },
+  { id: "housing" },
   { id: "loan", pin: "end", width: 100 },
   { id: "contact" },
   { id: "day" },
@@ -61,7 +62,7 @@ function Component({ data = bankData }: { data?: any[] }) {
   const view = g.view.useValue();
 
   return (
-    <div>
+    <div className="lng-grid">
       <div>
         <button onClick={() => g.state.rtl.set((prev) => !prev)}>
           RTL: {g.state.rtl.get() ? "Yes" : "No"}

@@ -90,7 +90,9 @@ export interface RowDataStore<T> {
   /**
    * Retrieves the row node for the given row index.
    */
-  readonly rowForIndex: (row: number) => GridAtomReadonlyUnwatchable<RowNode<T> | null>;
+  readonly rowForIndex: (
+    row: number,
+  ) => GridAtomReadonlyUnwatchable<RowNode<T> | null>;
 
   /**
    * Clears the cached row node data in the store.
@@ -141,6 +143,11 @@ export interface GridAtom<T> {
    *   @group Grid Atom
    */
   readonly useValue: () => T;
+
+  /**
+   * Reactive retrieve actual signal
+   */
+  readonly $: () => T;
 }
 
 /**
@@ -173,6 +180,11 @@ export interface GridAtomReadonly<T> {
    *   @group Grid Atom
    */
   readonly useValue: () => T;
+
+  /**
+   * Reactive retrieve actual signal
+   */
+  readonly $: () => T;
 }
 
 /**
@@ -197,6 +209,11 @@ export interface GridAtomReadonlyUnwatchable<T> {
    *   @group Grid Atom
    */
   readonly useValue: () => T;
+
+  /**
+   * Reactive retrieve actual signal
+   */
+  readonly $: () => T;
 }
 
 /**

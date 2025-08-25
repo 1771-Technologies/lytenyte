@@ -304,11 +304,16 @@ export function makeClientDataSource<T>(
     cleanup.push(
       effect(() => {
         models.set({
-          sort: grid.state.sortModel.get(),
-          agg: grid.state.aggModel.get(),
-          filter: grid.state.filterModel.get(),
-          group: grid.state.rowGroupModel.get(),
-          groupExpansions: grid.state.rowGroupExpansions.get(),
+          // @ts-expect-error The $ is defined, but only internally
+          sort: grid.state.sortModel.$(),
+          // @ts-expect-error The $ is defined, but only internally
+          agg: grid.state.aggModel.$(),
+          // @ts-expect-error The $ is defined, but only internally
+          filter: grid.state.filterModel.$(),
+          // @ts-expect-error The $ is defined, but only internally
+          group: grid.state.rowGroupModel.$(),
+          // @ts-expect-error The $ is defined, but only internally
+          groupExpansions: grid.state.rowGroupExpansions.$(),
         });
       }),
     );

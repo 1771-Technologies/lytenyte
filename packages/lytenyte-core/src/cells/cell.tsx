@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useState, type JSX } from "react";
 import type { RowCellLayout } from "../+types";
 import { useGridRoot } from "../context";
-import { CellReact } from "@1771technologies/lytenyte-shared";
+import { CellReact, sizeFromCoord } from "@1771technologies/lytenyte-shared";
 import { CellDefault } from "./cell-default";
 import { CellEditor } from "./cell-editor";
 import { useRowMeta } from "../rows/row/context";
@@ -45,8 +45,13 @@ export const Cell = forwardRef<
     });
   }, [cell.column, cell.rowIndex, cell.rowSpan, grid.internal.editActivePos]);
 
+  const xPositions = cx.xPositions.useValue();
+  const yPositions = cx.yPositions.useValue();
+
   const rowMeta = useRowMeta();
-  if (!row) return null;
+  if (cell.isDeadRow) return <div style={{ width: sizeFromCoord(cell.colIndex, xPositions) }} />;
+
+  if (!row || cell.isDeadCol) return null;
 
   return (
     <>
@@ -58,8 +63,8 @@ export const Cell = forwardRef<
         isEditing={isEditing}
         detailHeight={grid.api.rowDetailRenderedHeight(row ?? "")}
         rtl={cx.rtl.useValue()}
-        xPosition={cx.xPositions.useValue()}
-        yPosition={cx.yPositions.useValue()}
+        xPosition={xPositions}
+        yPosition={yPositions}
       >
         {isEditing && <CellEditor cell={cell} />}
         {!isEditing && (

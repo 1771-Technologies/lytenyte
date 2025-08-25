@@ -18,10 +18,14 @@ export function CellSpacerPinEnd() {
   const bounds = ctx.state.viewBounds.useValue();
 
   const startOffset = xPos[bounds.colCenterEnd];
-  const offset = xPos[bounds.colEndStart] - startOffset;
+  let offset = xPos[bounds.colEndStart] - startOffset;
+
+  const viewWidth = ctx.state.viewportWidthInner.useValue();
+  if (xPos.at(-1)! < viewWidth) {
+    offset = viewWidth - xPos.at(-1)!;
+  }
 
   const meta = ctx.state.columnMeta.useValue();
-  console.log(startOffset, offset, xPos[bounds.colEndStart - 0]);
   if (meta.columnVisibleEndCount === 0) return null;
 
   return <div style={{ display: "inline-block", width: offset, height: 0 }} />;
