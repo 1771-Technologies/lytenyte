@@ -44,7 +44,7 @@ const ComputeNode = function Computation(
   this: Computation,
   initialValue: any,
   compute: any,
-  options?: ComputedSignalOptions<any, any>
+  options?: ComputedSignalOptions<any, any>,
 ) {
   ScopeNode.call(this);
 
@@ -67,7 +67,7 @@ ComputeProto.call = read;
 export function createComputation<T>(
   initialValue: T,
   compute: (() => T) | null,
-  options?: ComputedSignalOptions<T>
+  options?: ComputedSignalOptions<T>,
 ): Computation<T> {
   return new (ComputeNode as any)(initialValue, compute, options);
 }

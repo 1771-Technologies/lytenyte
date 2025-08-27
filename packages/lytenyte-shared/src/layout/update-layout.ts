@@ -64,7 +64,7 @@ export function updateLayout(p: UpdateLayoutArgs): void {
     if (p.computed[row]) continue;
     computeSpans(p, row, p.startCount, centerEnd, 0);
     computeSpans(p, row, centerEnd, p.rowMax - p.botCount, p.startCount);
-    computeSpans(p, row, end, centerEnd, centerEnd);
+    computeSpans(p, row, end, p.rowMax + p.botCount, centerEnd);
   }
   const botMax = p.rowMax + p.botCount;
   for (let row = p.rowMax; row < botMax; row++) {

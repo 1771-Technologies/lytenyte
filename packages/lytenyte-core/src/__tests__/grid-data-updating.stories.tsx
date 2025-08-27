@@ -27,6 +27,7 @@ function Component() {
   const [d, setD] = useState([
     { v: "A", x: 1, y: 2 },
     { v: "A", x: 2, y: 3 },
+    { v: "C", x: 2, y: 3 },
   ]);
   const ds = useClientRowDataSource({
     rowIdLeaf: (_, i) => `${i}`,
@@ -63,7 +64,12 @@ function Component() {
         <button
           onClick={() => {
             ds.rowUpdate(
-              new Map(d.map((_, i) => [`${i}`, { v: "A", x: Math.random(), y: Math.random() }])),
+              new Map(
+                d.map((_, i) => [
+                  `${i}`,
+                  { v: i === 2 ? "C" : "A", x: Math.random(), y: Math.random() },
+                ]),
+              ),
             );
           }}
         >

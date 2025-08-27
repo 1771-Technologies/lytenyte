@@ -23,13 +23,13 @@ const meta: Meta = {
 export default meta;
 
 const columns: Column<any>[] = [
-  { id: "age", rowSpan: (r) => (r.rowIndex % 3 === 0 ? 3 : 1), colSpan: 2 },
+  { id: "age", rowSpan: 2, colSpan: 3 },
   { id: "job" },
   { id: "balance" },
   { id: "education" },
   { id: "marital" },
   { id: "default" },
-  { id: "housing" },
+  { id: "housing", colSpan: (r) => (r.colIndex % 2 ? 3 : 1), pin: "end" },
   { id: "loan", pin: "end", width: 100 },
   { id: "contact" },
   { id: "day" },

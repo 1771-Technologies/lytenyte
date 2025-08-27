@@ -68,22 +68,16 @@ export const Cell = forwardRef<
       >
         {isEditing && <CellEditor cell={cell} />}
         {!isEditing && (
-          <>
-            {typeof Renderer === "function" ? (
-              <Renderer
-                column={cell.column}
-                rowSelected={rowMeta.selected}
-                rowIndeterminate={rowMeta.indeterminate}
-                row={row}
-                grid={grid}
-                rowIndex={cell.rowIndex}
-                colIndex={cell.colIndex}
-                rowPin={cell.rowPin}
-              />
-            ) : (
-              Renderer
-            )}
-          </>
+          <Renderer
+            column={cell.column}
+            rowSelected={rowMeta.selected}
+            rowIndeterminate={rowMeta.indeterminate}
+            row={row}
+            grid={grid}
+            rowIndex={cell.rowIndex}
+            colIndex={cell.colIndex}
+            rowPin={cell.rowPin}
+          />
         )}
       </CellReact>
       {cell.colLastStartPin && <CellSpacePinStart />}

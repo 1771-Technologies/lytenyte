@@ -4,26 +4,19 @@ import {
   useSlot,
   type SlotComponent,
 } from "@1771technologies/lytenyte-react-hooks";
-import { forwardRef, useMemo, type JSX, type ReactNode } from "react";
+import { forwardRef, useMemo, type JSX } from "react";
 import { useColumnItemContext } from "./context";
 import { useColumnsFromContext } from "./use-columns-from-context";
 import { useGrid } from "../grid-provider/use-grid";
-import type { Column } from "../+types";
-import type { PathBranch, PathLeaf } from "@1771technologies/lytenyte-shared";
 
 export interface MoveHandleProps {
   readonly as?: SlotComponent;
-
-  readonly placeholder?: (p: {
-    columns: Column<any>[];
-    item: PathBranch<Column<any>> | PathLeaf<Column<any>>;
-  }) => ReactNode;
 }
 
 export const MoveHandle = forwardRef<
   HTMLDivElement,
   JSX.IntrinsicElements["div"] & MoveHandleProps
->(function MoveHandle({ as, placeholder: Placeholder, ...props }, forwarded) {
+>(function MoveHandle({ as, ...props }, forwarded) {
   const item = useColumnItemContext().item;
   const grid = useGrid();
 
@@ -38,9 +31,22 @@ export const MoveHandle = forwardRef<
     dragProps: { ref, ...otherProps },
   } = useDraggable({
     getItems: () => {
+      const gridId = grid.state.gridId.get();
+      const isGroupable =
+        columns.length === 1 && (columns[0].uiHints?.rowGroupable ?? base.uiHints?.rowGroupable);
+
+      if (isGroupable) {
+        return {
+          siteLocalData: {
+            [`${gridId}-columns`]: columns,
+            [`${gridId}-group`]: columns[0].id,
+          },
+        };
+      }
+
       return {
         siteLocalData: {
-          [`${grid.state.gridId.get()}/columns`]: columns,
+          [`${gridId}-columns`]: columns,
         },
       };
     },
@@ -66,14 +72,18 @@ export const MoveHandle = forwardRef<
       });
     },
 
-    placeholder: () => {
-      if (Placeholder) return <Placeholder columns={columns} item={item} />;
+    placeholder: (_, el) => {
+      let current = el;
+      while (
+        current &&
+        !current.getAttribute("data-ln-column-manager-leaf") &&
+        !current.getAttribute("data-ln-tree-branch")
+      ) {
+        current = current.parentElement as HTMLElement;
+      }
 
-      return (
-        <div>
-          {item.kind === "branch" ? item.data.joinPath.at(-1)! : (item.data.name ?? item.data.id)}
-        </div>
-      );
+      if (current) return current;
+      else return el;
     },
   });
 

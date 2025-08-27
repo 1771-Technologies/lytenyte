@@ -4,7 +4,6 @@ export { boundSelectionRect } from "./bound-selection-rect.js";
 export { fullWidthStartEndIndex } from "./full-width-start-end-index.js";
 export { areRectsEqual } from "./are-rects-equal.js";
 export { deselectRectRange } from "./deselect-rect-range.js";
-export { isOverlappingRect } from "./is-overlapping-rect.js";
 export { adjustRectForRowAndCellSpan } from "./adjust-rect-for-row-and-cell-span.js";
 export { updateAdditiveCellSelection } from "./update-additive-cell-selection.js";
 

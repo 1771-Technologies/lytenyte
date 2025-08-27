@@ -161,7 +161,7 @@ export function makeClientDataSource<T>(
   const sortComparator = computed(() => {
     const model = sortModel();
     const grid = grid$();
-    if (!model.length || !grid) return () => 0;
+    if (!model.length || !grid) return { fn: () => 0 };
 
     const comparator = (l: TreeNode<RowLeaf<T>>, r: TreeNode<RowLeaf<T>>) => {
       let res = 0;
@@ -203,7 +203,7 @@ export function makeClientDataSource<T>(
       return res;
     };
 
-    return comparator;
+    return { fn: comparator };
   });
 
   const idToNode = computed(() => {
@@ -259,7 +259,7 @@ export function makeClientDataSource<T>(
           return expanded;
         }
       },
-      comparator,
+      comparator.fn,
     );
 
     return { flat: flattened, idMap, idToIndexMap };
@@ -315,6 +315,8 @@ export function makeClientDataSource<T>(
           // @ts-expect-error The $ is defined, but only internally
           groupExpansions: grid.state.rowGroupExpansions.$(),
         });
+
+        grid.state.rowDataStore.rowClearCache();
       }),
     );
   };

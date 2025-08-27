@@ -12,19 +12,7 @@ export const RowHandler = fastDeepMemo((props: { rows: RowLayout<any>[] }) => {
     return (
       <Row key={row.id} row={row} accepted={["row"]}>
         {row.cells.map((cell) => {
-          return (
-            <Cell
-              cell={cell}
-              key={cell.id}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                background: "white",
-                border: "1px solid black",
-              }}
-            ></Cell>
-          );
+          return <Cell cell={cell} key={cell.id}></Cell>;
         })}
       </Row>
     );

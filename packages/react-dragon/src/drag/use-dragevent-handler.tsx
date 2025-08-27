@@ -14,7 +14,6 @@ import {
   placeholderHandler,
   store,
 } from "../+globals";
-import { createRoot } from "react-dom/client";
 import { resetDragState } from "../utils/reset-drag-state";
 import { getFrameElement } from "@1771technologies/lytenyte-dom-utils";
 
@@ -57,17 +56,8 @@ export function useDragEventHandler(
       store.set(dragPositionAtom, { x, y });
       store.set(activeDragElement, dragElement);
 
-      let placeholderElement: HTMLElement | null = null;
       if (placeholder) {
-        const cr = document.createElement("div");
-        cr.style.position = "fixed";
-        cr.style.top = "-9999px";
-
-        const root = createRoot(cr);
-        root.render(<>{placeholder(data)}</>);
-
-        placeholderElement = cr;
-        document.body.append(placeholderElement);
+        const placeholderElement = placeholder(data, dragElement);
 
         ev.dataTransfer.setDragImage(
           placeholderElement,
@@ -79,7 +69,6 @@ export function useDragEventHandler(
       const styleEl = document.createElement("style");
 
       dragStyleHandler.set(styleEl);
-      placeholderHandler.set(placeholderElement);
 
       // We need to delay this in the event that the drag target is also in a drop target.
       setTimeout(() => {

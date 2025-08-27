@@ -101,7 +101,6 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const rowDataSource = signal<RowDataSource<T>>(emptyRowDataSource);
 
   const rowHeight = signal<RowHeight>(40);
-
   if (typeof p.rowHeight === "function") rowHeight.set(() => p.rowHeight as any);
   else rowHeight.set(p.rowHeight ?? 40);
 
@@ -263,6 +262,8 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     sortModel();
     filterModel();
     aggModel();
+
+    columns();
 
     const rowCount = rowDataStore.rowCount.$();
     const columnCount = columnCount$();

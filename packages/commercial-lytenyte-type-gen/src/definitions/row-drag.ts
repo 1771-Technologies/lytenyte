@@ -344,7 +344,7 @@ export const DragPlaceholderFn: FunctionType = {
       value: "DragPlaceholderParams<T>",
     },
   ],
-  return: "ReactNode",
+  return: "HTMLElement",
 };
 
 export const UseRowDragParams: InterfaceType = {

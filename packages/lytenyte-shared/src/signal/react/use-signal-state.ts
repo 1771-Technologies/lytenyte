@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-function-type */
 import { useRef } from "react";
 import type { ReadSignal } from "../+types.js";
 import { signal } from "../vanilla/signal.js";

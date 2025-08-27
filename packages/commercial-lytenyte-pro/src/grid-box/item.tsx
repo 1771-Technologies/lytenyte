@@ -26,7 +26,7 @@ export const BoxItem = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] &
           siteLocalData: item.dragData,
         };
       },
-      placeholder: item.dragPlaceholder,
+      placeholder: item.dragPlaceholder ? (_, el) => item.dragPlaceholder!(el) : undefined,
     });
 
     const ref = useCombinedRefs(forwarded, dragProps.ref);
@@ -64,6 +64,7 @@ export const BoxItem = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] &
     return (
       <DropWrap
         {...props}
+        active={item.active}
         onEnter={(e) => {
           const data = dragState.active.get();
 
@@ -93,7 +94,7 @@ export const BoxItem = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] &
         }}
         data-ln-source={item.source}
         data-ln-index={item.index}
-        accepted={accepted}
+        accepted={item.active === false ? [] : accepted}
         onDrop={(e) => {
           const el = e.dropElement;
 

@@ -11,13 +11,16 @@ import type {
 } from "../+types.js";
 import { type Grid, type RowNode } from "../+types.js";
 import { useRef } from "react";
-import { atom, createStore } from "@1771technologies/atom";
 import { traverse } from "./tree/traverse.js";
 import type { TreeNode } from "./+types.js";
 import {
+  computed,
   dateComparator,
-  makeGridAtom,
+  effect,
+  makeAtom,
   numberComparator,
+  peek,
+  signal,
   stringComparator,
 } from "@1771technologies/lytenyte-shared";
 import { equal } from "@1771technologies/lytenyte-js-utils";
@@ -34,20 +37,18 @@ interface DataAtoms<T> {
 export function makeClientTreeDataSource<T>(
   p: ClientTreeDataSourceParams<T>,
 ): [RowDataSourceClient<T>, DataAtoms<T>] {
-  const rdsStore = createStore();
+  const data = signal(p.data);
+  const topData = signal(p.topData ?? []);
+  const bottomData = signal(p.bottomData ?? []);
 
-  const data = atom(p.data);
-  const topData = atom(p.topData ?? []);
-  const bottomData = atom(p.bottomData ?? []);
-
-  const dataToSrc$ = atom((g) => {
-    return new Map(g(data).map((c, i) => [c, i]));
+  const dataToSrc$ = computed(() => {
+    return new Map(data().map((c, i) => [c, i]));
   });
 
   const cache = new Map<number, RowLeaf<T>>();
-  const centerNodes = atom((g) => {
+  const centerNodes = computed(() => {
     const nodes: RowLeaf<T>[] = [];
-    const d = g(data);
+    const d = data();
     for (let i = 0; i < d.length; i++) {
       if (!cache.has(i)) {
         cache.set(i, {
@@ -64,24 +65,23 @@ export function makeClientTreeDataSource<T>(
     return nodes;
   });
 
-  const topNodes = atom((g) => {
-    return g(topData).map<RowLeaf<T>>((c, i) => ({ data: c, id: `top-${i}`, kind: "leaf" }));
+  const topNodes = computed(() => {
+    return topData().map<RowLeaf<T>>((c, i) => ({ data: c, id: `top-${i}`, kind: "leaf" }));
   });
-  const botNodes = atom((g) => {
-    return g(bottomData).map<RowLeaf<T>>((c, i) => ({ data: c, id: `bottom-${i}`, kind: "leaf" }));
+  const botNodes = computed(() => {
+    return bottomData().map<RowLeaf<T>>((c, i) => ({ data: c, id: `bottom-${i}`, kind: "leaf" }));
   });
 
-  const pinnedIdMap = atom((g) => {
-    const combined = new Map([...g(topNodes), ...g(botNodes)].map((c) => [c.id, c]));
+  const pinnedIdMap = computed(() => {
+    const combined = new Map([...topNodes(), ...botNodes()].map((c) => [c.id, c]));
     return combined;
   });
 
-  const models = atom<{
+  const models = signal<{
     filter: Record<string, FilterModelItem<T>>;
     filterIn: Record<string, FilterIn>;
     quickSearch: string | null;
     groupExpansions: { [rowId: string]: boolean | undefined };
-    columnPivotGroupExpansions: { [rowId: string]: boolean | undefined };
     agg: Record<string, { fn: AggModelFn<T> }>;
     sort: SortModelItem<T>[];
   }>({
@@ -91,38 +91,37 @@ export function makeClientTreeDataSource<T>(
     quickSearch: null,
     agg: {},
     groupExpansions: {},
-    columnPivotGroupExpansions: {},
   });
 
-  const sortModel = atom<SortModelItem<T>[]>((g) => g(models).sort);
-  const filterModel = atom<Record<string, FilterModelItem<T>>>((g) => g(models).filter);
-  const filterInModel = atom<Record<string, FilterIn>>((g) => g(models).filterIn);
-  const groupExpansions = atom<{ [rowId: string]: boolean | undefined }>(
-    (g) => g(models).groupExpansions,
+  const sortModel = computed<SortModelItem<T>[]>(() => models().sort);
+  const filterModel = computed<Record<string, FilterModelItem<T>>>(() => models().filter);
+  const filterInModel = computed<Record<string, FilterIn>>(() => models().filterIn);
+  const groupExpansions = computed<{ [rowId: string]: boolean | undefined }>(
+    () => models().groupExpansions,
   );
-  const aggModel = atom<Record<string, { fn: AggModelFn<T> }>>((g) => g(models).agg);
-  const quickSearch = atom((g) => g(models).quickSearch);
+  const aggModel = computed<Record<string, { fn: AggModelFn<T> }>>(() => models().agg);
+  const quickSearch = computed(() => models().quickSearch);
 
-  const grid$ = atom<Grid<T> | null>(null);
-  const snapshot = atom<number>(0);
+  const grid$ = signal<Grid<T> | null>(null);
+  const snapshot = signal<number>(0);
 
-  const tree = atom<ClientData<RowLeaf<T>>>((g) => {
-    g(snapshot);
+  const tree = computed<ClientData<RowLeaf<T>>>(() => {
+    snapshot();
 
-    const grid = g(grid$);
+    const grid = grid$();
 
-    const rows = g(centerNodes);
+    const rows = centerNodes();
     const filtered = computeFilteredRows(
       rows,
       grid,
-      g(filterModel),
-      g(filterInModel),
-      g(quickSearch),
+      filterModel(),
+      filterInModel(),
+      quickSearch(),
       grid?.state.quickSearchSensitivity.get() ?? "case-sensitive",
       false,
     );
 
-    const rowAggModel = Object.entries(g(aggModel)).map(([name, agg]) => {
+    const rowAggModel = Object.entries(aggModel()).map(([name, agg]) => {
       if (typeof agg.fn === "function") {
         const fn = agg.fn;
         return {
@@ -155,11 +154,10 @@ export function makeClientTreeDataSource<T>(
     });
   });
 
-  const sortComparator = atom((g) => {
-    const model = g(sortModel);
-
-    const grid = g(grid$);
-    if (!model.length || !grid) return () => 0;
+  const sortComparator = computed(() => {
+    const model = sortModel();
+    const grid = grid$();
+    if (!model.length || !grid) return { fn: () => 0 };
 
     const comparator = (l: TreeNode<RowLeaf<T>>, r: TreeNode<RowLeaf<T>>) => {
       let res = 0;
@@ -201,36 +199,36 @@ export function makeClientTreeDataSource<T>(
       return res;
     };
 
-    return comparator;
+    return { fn: comparator };
   });
 
-  const idToNode = atom((g) => {
+  const idToNode = computed(() => {
     const map = new Map<string, TreeNode<RowLeaf<T>>>();
-    traverse(g(tree).root, (node) => {
+    traverse(tree().root, (node) => {
       map.set(node.id, node);
     });
 
     return map;
   });
 
-  const initialized = atom(false);
+  const initialized = signal(false);
 
-  const flat = atom((g) => {
-    if (!g(initialized)) return { flat: [], idMap: new Map(), idToIndexMap: new Map() };
+  const flat = computed(() => {
+    if (!initialized()) return { flat: [], idMap: new Map(), idToIndexMap: new Map() };
 
     const idMap = new Map<string, RowNode<T>>();
     const idToIndexMap = new Map<string, number>();
 
     const flattened: RowNode<T>[] = [];
-    const comparator = g(sortComparator);
+    const comparator = sortComparator();
 
-    const expansions = g(groupExpansions);
-    const defaultExpansion = g(grid$)?.state.rowGroupDefaultExpansion.get() ?? false;
+    const expansions = groupExpansions();
+    const defaultExpansion = grid$()?.state.rowGroupDefaultExpansion.get() ?? false;
 
-    let index = g(topNodes).length;
+    let index = topNodes().length;
 
     traverse(
-      g(tree).root,
+      tree().root,
       (node) => {
         if (node.kind === 1) {
           (node.data as any).id = node.id;
@@ -258,52 +256,36 @@ export function makeClientTreeDataSource<T>(
           return expanded;
         }
       },
-      comparator,
+      comparator.fn,
     );
 
     return { flat: flattened, idMap, idToIndexMap };
   });
 
-  const flatLength = atom((g) => g(flat).flat.length);
+  const flatLength = computed(() => flat().flat.length);
 
   const cleanup: (() => void)[] = [];
   const init = (grid: Grid<T>) => {
     while (cleanup.length) cleanup.pop()?.();
 
-    rdsStore.set(grid$, grid);
+    grid$.set(grid);
 
     const store = grid.state.rowDataStore;
 
     // Monitor row count changes
-    const centerCount = rdsStore.get(flatLength);
+    const centerCount = flatLength();
+    const top = topData().length;
+    const bottom = bottomData().length;
+
     store.rowCenterCount.set(centerCount);
-    cleanup.push(
-      rdsStore.sub(flatLength, () => {
-        const centerCount = rdsStore.get(flatLength);
-        store.rowCenterCount.set(centerCount);
-
-        grid.state.rowDataStore.rowClearCache();
-      }),
-    );
-
-    const top = rdsStore.get(topData).length;
     store.rowTopCount.set(top);
-    cleanup.push(
-      rdsStore.sub(topData, () => {
-        const top = rdsStore.get(topData).length;
-        store.rowTopCount.set(top);
-
-        grid.state.rowDataStore.rowClearCache();
-      }),
-    );
-
-    const bottom = rdsStore.get(bottomData).length;
     store.rowBottomCount.set(bottom);
-    cleanup.push(
-      rdsStore.sub(bottomData, () => {
-        const bot = rdsStore.get(bottomData).length;
-        store.rowBottomCount.set(bot);
 
+    cleanup.push(
+      effect(() => {
+        store.rowCenterCount.set(flatLength());
+        store.rowTopCount.set(topData().length);
+        store.rowBottomCount.set(bottomData().length);
         grid.state.rowDataStore.rowClearCache();
       }),
     );
@@ -311,90 +293,58 @@ export function makeClientTreeDataSource<T>(
     const sort = grid.state.sortModel.get();
     const filter = grid.state.filterModel.get();
     const filterIn = grid.state.filterInModel.get();
-    const groupExpansions = grid.state.rowGroupExpansions.get();
     const agg = grid.state.aggModel.get();
     const quickSearch = grid.state.quickSearch.get();
-    const columnPivotGroupExpansions = grid.state.columnPivotRowGroupExpansions.get();
+    const groupExpansions = grid.state.rowGroupExpansions.get();
 
-    rdsStore.set(models, {
+    models.set({
       agg,
       filter,
       filterIn,
-      quickSearch,
       groupExpansions,
+      quickSearch,
       sort,
-      columnPivotGroupExpansions,
     });
-    rdsStore.set(initialized, true);
+    initialized.set(true);
 
-    // Sort model monitoring
     cleanup.push(
-      grid.state.sortModel.watch(() => {
-        rdsStore.set(models, (prev) => ({ ...prev, sort: grid.state.sortModel.get() }));
-        grid.state.rowDataStore.rowClearCache();
-      }),
-    );
+      effect(() => {
+        models.set({
+          // @ts-expect-error The $ is defined, but only internally
+          sort: grid.state.sortModel.$(),
+          // @ts-expect-error The $ is defined, but only internally
+          agg: grid.state.aggModel.$(),
+          // @ts-expect-error The $ is defined, but only internally
+          filter: grid.state.filterModel.$(),
+          // @ts-expect-error The $ is defined, but only internally
+          group: grid.state.rowGroupModel.$(),
+          // @ts-expect-error The $ is defined, but only internally
+          groupExpansions: grid.state.rowGroupExpansions.$(),
+          // @ts-expect-error The $ is defined, but only internally
+          columnPivotGroupExpansions: grid.state.columnPivotColumnGroupExpansions.$(),
+          // @ts-expect-error The $ is defined, but only internally
+          filterIn: grid.state.filterInModel.$(),
+          // @ts-expect-error The $ is defined, but only internally
+          quickSearch: grid.state.quickSearch.$(),
+        });
 
-    // Filter model monitoring
-    cleanup.push(
-      grid.state.filterModel.watch(() => {
-        rdsStore.set(models, (prev) => ({ ...prev, filter: grid.state.filterModel.get() }));
-        grid.state.rowDataStore.rowClearCache();
-      }),
-    );
-    cleanup.push(
-      grid.state.quickSearch.watch(() => {
-        rdsStore.set(models, (prev) => ({ ...prev, quickSearch: grid.state.quickSearch.get() }));
-        grid.state.rowDataStore.rowClearCache();
-      }),
-    );
-    cleanup.push(
-      grid.state.filterInModel.watch(() => {
-        rdsStore.set(models, (prev) => ({ ...prev, filterIn: grid.state.filterInModel.get() }));
-        grid.state.rowDataStore.rowClearCache();
-      }),
-    );
-
-    // Row group model monitoring
-    cleanup.push(
-      grid.state.rowGroupModel.watch(() => {
-        rdsStore.set(models, (prev) => ({ ...prev, group: grid.state.rowGroupModel.get() }));
-        grid.state.rowDataStore.rowClearCache();
-      }),
-    );
-
-    // Row group expansions monitoring
-    cleanup.push(
-      grid.state.rowGroupExpansions.watch(() => {
-        rdsStore.set(models, (prev) => ({
-          ...prev,
-          groupExpansions: grid.state.rowGroupExpansions.get(),
-        }));
-        grid.state.rowDataStore.rowClearCache();
-      }),
-    );
-
-    // Agg model monitoring
-    cleanup.push(
-      grid.state.aggModel.watch(() => {
-        rdsStore.set(models, (prev) => ({ ...prev, agg: grid.state.aggModel.get() }));
         grid.state.rowDataStore.rowClearCache();
       }),
     );
   };
 
   const rowById = (id: string): RowNode<T> | null => {
-    const pinned = rdsStore.get(pinnedIdMap);
+    const pinned = peek(pinnedIdMap);
     if (pinned.has(id)) return pinned.get(id)!;
 
-    const t = rdsStore.get(flat);
+    const t = peek(flat);
     return t.idMap.get(id) ?? null;
   };
 
   const rowByIndex = (index: number) => {
-    const top = rdsStore.get(topNodes);
-    const bot = rdsStore.get(botNodes);
-    const center = rdsStore.get(flat).flat;
+    const top = peek(topNodes);
+    const bot = peek(botNodes);
+    const center = peek(flat).flat;
 
     const topOffset = top.length;
     const centerOffset = topOffset + center.length;
@@ -408,11 +358,10 @@ export function makeClientTreeDataSource<T>(
   };
 
   const rowUpdate = (updates: Map<string | number, any>) => {
-    const grid = rdsStore.get(grid$)!;
-
-    const d = rdsStore.get(data);
-    const idMap = rdsStore.get(idToNode);
-    const dataToSrc = rdsStore.get(dataToSrc$);
+    const grid = peek(grid$)!;
+    const d = peek(data);
+    const idMap = peek(idToNode);
+    const dataToSrc = peek(dataToSrc$);
 
     for (const [key, next] of updates.entries()) {
       const row = typeof key === "string" ? rowById(key) : rowByIndex(key);
@@ -438,16 +387,15 @@ export function makeClientTreeDataSource<T>(
       }
     }
 
-    rdsStore.set(data, [...d]);
-    rdsStore.set(snapshot, (prev) => prev + 1);
+    data.set([...d]);
+    snapshot.set((prev) => prev + 1);
     grid.state.rowDataStore.rowClearCache();
   };
 
   const rowToIndex = (rowId: string) => {
-    const f = rdsStore.get(flat);
-
-    const top = rdsStore.get(topNodes);
-    const bot = rdsStore.get(botNodes);
+    const f = peek(flat);
+    const top = peek(topNodes);
+    const bot = peek(botNodes);
 
     const topCount = top.length;
     const center = f.flat.length;
@@ -467,7 +415,7 @@ export function makeClientTreeDataSource<T>(
   };
 
   const rowAllChildIds = (rowId: string) => {
-    const t = rdsStore.get(tree);
+    const t = peek(tree);
 
     const ids: string[] = [];
     const node = t.idToNode.get(rowId);
@@ -490,11 +438,11 @@ export function makeClientTreeDataSource<T>(
       rowUpdate,
 
       inFilterItems: (c) => {
-        const grid = rdsStore.get(grid$);
+        const grid = peek(grid$);
 
         if (!grid) return [];
 
-        const data = rdsStore.get(centerNodes);
+        const data = peek(centerNodes);
 
         const values = new Set(
           data.map((row) => {
@@ -511,7 +459,7 @@ export function makeClientTreeDataSource<T>(
       },
 
       rowAdd: (newRows, place = "end") => {
-        rdsStore.set(data, (prev) => {
+        data.set((prev) => {
           if (!newRows.length) return prev;
 
           let next: any[];
@@ -525,7 +473,7 @@ export function makeClientTreeDataSource<T>(
           return next;
         });
 
-        const grid = rdsStore.get(grid$);
+        const grid = peek(grid$);
         grid?.state.rowDataStore.rowClearCache();
       },
 
@@ -539,44 +487,40 @@ export function makeClientTreeDataSource<T>(
             .filter((c) => !!c),
         );
 
-        rdsStore.set(data, (prev) => {
+        data.set((prev) => {
           if (!rowData.size) return prev;
           return prev.filter((d) => !rowData.has(d));
         });
 
-        const grid = rdsStore.get(grid$);
+        const grid = peek(grid$);
         grid?.state.rowDataStore.rowClearCache();
       },
       rowSetBotData: (data: any[]) => {
-        rdsStore.set(bottomData, data);
-        const grid = rdsStore.get(grid$);
-        grid?.state.rowDataStore.rowClearCache();
-      },
-      rowSetCenterData: (d: any[]) => {
-        rdsStore.set(data, d);
-        const grid = rdsStore.get(grid$);
+        bottomData.set(data);
+        const grid = peek(grid$);
         grid?.state.rowDataStore.rowClearCache();
       },
       rowSetTopData: (data: any[]) => {
-        rdsStore.set(topData, data);
-        const grid = rdsStore.get(grid$);
+        topData.set(data);
+        const grid = peek(grid$);
+        grid?.state.rowDataStore.rowClearCache();
+      },
+      rowSetCenterData: (d: any[]) => {
+        data.set(d);
+        const grid = peek(grid$);
         grid?.state.rowDataStore.rowClearCache();
       },
 
       rowExpand: (expansions) => {
-        const grid = rdsStore.get(grid$);
+        const grid = peek(grid$);
         if (!grid) return;
 
-        const mode = grid.state.columnPivotMode.get();
-
-        if (mode)
-          grid.state.columnPivotRowGroupExpansions.set((prev) => ({ ...prev, ...expansions }));
-        else grid.state.rowGroupExpansions.set((prev) => ({ ...prev, ...expansions }));
+        grid.state.rowGroupExpansions.set((prev) => ({ ...prev, ...expansions }));
       },
       rowToIndex,
 
       rowSelect: (params) => {
-        const grid = rdsStore.get(grid$);
+        const grid = peek(grid$);
         if (!grid) return;
 
         if (params.mode === "none") return;
@@ -627,34 +571,34 @@ export function makeClientTreeDataSource<T>(
         }
       },
       rowSelectAll: (params) => {
-        const grid = rdsStore.get(grid$);
+        const grid = peek(grid$);
         if (!grid) return;
         if (params.deselect) {
           grid.state.rowSelectedIds.set(new Set());
           return;
         }
 
-        const t = rdsStore.get(tree);
+        const t = peek(tree);
         grid.state.rowSelectedIds.set(new Set(t.idsAll));
       },
 
       rowData: (section) => {
         const d: T[] = [];
         if (section === "top" || section === "flat") {
-          d.push(...rdsStore.get(topData));
+          d.push(...peek(topData));
         }
         if (section === "center" || section === "flat") {
-          d.push(...rdsStore.get(data));
+          d.push(...peek(data));
         }
         if (section === "bottom" || section === "flat") {
-          d.push(...rdsStore.get(bottomData));
+          d.push(...peek(bottomData));
         }
 
         return d;
       },
 
       rowAreAllSelected: (rowId) => {
-        const g = rdsStore.get(grid$);
+        const g = grid$();
         if (!g) return false;
 
         const selected = g.state.rowSelectedIds.get();
@@ -666,14 +610,14 @@ export function makeClientTreeDataSource<T>(
           return childIds.isSubsetOf(selected);
         }
 
-        const f = rdsStore.get(tree);
+        const f = tree();
         return f.idsAll.isSubsetOf(selected);
       },
     },
     {
-      top: makeGridAtom(topData, rdsStore),
-      center: makeGridAtom(data, rdsStore),
-      bottom: makeGridAtom(bottomData, rdsStore),
+      top: makeAtom(topData),
+      center: makeAtom(data),
+      bottom: makeAtom(bottomData),
     },
   ];
 }

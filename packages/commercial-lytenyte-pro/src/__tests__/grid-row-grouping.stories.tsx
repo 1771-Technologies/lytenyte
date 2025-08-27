@@ -53,7 +53,7 @@ function MainComp() {
 
     aggModel: {
       job: { fn: "first" },
-      balance: { fn: "sum" },
+      balance: { fn: "avg" },
       education: { fn: () => 1 },
     },
 

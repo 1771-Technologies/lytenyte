@@ -28,7 +28,7 @@ export function useCellStyle(
     };
     if (cell.colPin === "end") {
       styles.position = "sticky";
-      const x = xPositions.at(-1)! - xPositions[cell.colIndex + 1];
+      const x = xPositions.at(-1)! - xPositions[cell.colIndex + cell.colSpan];
 
       if (rtl) styles.left = x;
       else styles.right = x;
@@ -50,6 +50,7 @@ export function useCellStyle(
     additional,
     cell.colIndex,
     cell.colPin,
+    cell.colSpan,
     height,
     isRowPinned,
     isSticky,

@@ -1,4 +1,3 @@
-import { createRoot } from "react-dom/client";
 import type { DragData } from "../+types";
 import type { UseDraggableProps } from "../use-draggable";
 
@@ -20,10 +19,7 @@ export function makePlaceholder(
     cr.style.top = `${y + offY}px`;
     cr.style.left = `${x + offX}px`;
 
-    const root = createRoot(cr);
-    root.render(<>{placeholder(data)}</>);
-
-    placeholderElement = cr;
+    placeholderElement = placeholder(data, dragElement);
     document.body.append(placeholderElement);
   } else {
     const cr = dragElement.cloneNode(true) as HTMLElement;

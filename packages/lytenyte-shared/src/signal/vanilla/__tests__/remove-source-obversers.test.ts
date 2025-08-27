@@ -3,7 +3,7 @@ import { effect, signal } from "../signal";
 import { getScope, root, tick } from "../primitives";
 import { removeSourceObservers } from "../remove-source-observers";
 
-test.only("removeSourceObservers should do noting if the computation has no source observers", () => {
+test("removeSourceObservers should do noting if the computation has no source observers", () => {
   const s = signal(23);
 
   const source = root(() => {

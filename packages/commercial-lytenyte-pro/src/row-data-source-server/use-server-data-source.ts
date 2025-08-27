@@ -1,4 +1,3 @@
-import { atom, createStore } from "@1771technologies/atom";
 import type {
   ColumnPivotModel,
   DataRequest,
@@ -14,7 +13,6 @@ import type {
 } from "../+types.js";
 import { useRef } from "react";
 import { makeAsyncTree } from "./async-tree/make-async-tree.js";
-import { makeGridAtom } from "@1771technologies/lytenyte-shared";
 import type {
   LeafOrParent,
   SetDataAction,
@@ -26,6 +24,7 @@ import { getRequestId } from "./utils/get-request-id.js";
 import { RangeTree, type FlattenedRange } from "./range-tree/range-tree.js";
 import { getNodePath } from "./utils/get-node-path.js";
 import { equal } from "@1771technologies/lytenyte-js-utils";
+import { computed, effect, makeAtom, peek, signal } from "@1771technologies/lytenyte-shared";
 
 export function makeServerDataSource<T>({
   dataFetcher,
@@ -38,21 +37,20 @@ export function makeServerDataSource<T>({
 }: RowDataSourceServerParams<T>): RowDataSourceServer<T> {
   let grid: Grid<T> | null = null;
 
-  const snapshot$ = atom(Date.now());
+  const snapshot$ = signal(Date.now());
 
-  const rdsStore = createStore();
-  const tree$ = atom(makeAsyncTree<DataResponseBranchItem, DataResponseLeafItem>());
-  const tree = makeGridAtom(tree$, rdsStore);
+  const tree$ = signal(makeAsyncTree<DataResponseBranchItem, DataResponseLeafItem>());
+  const tree = makeAtom(tree$);
 
-  const isLoading$ = atom(false);
-  const isLoading = makeGridAtom(isLoading$, rdsStore);
-  const error$ = atom<unknown>();
-  const loadError = makeGridAtom(error$, rdsStore);
+  const isLoading$ = signal(false);
+  const isLoading = makeAtom(isLoading$);
+  const error$ = signal<unknown>(null);
+  const loadError = makeAtom(error$);
 
-  const nodesWithError = atom<Map<number, unknown>>(new Map());
+  const nodesWithError = signal<Map<number, unknown>>(new Map());
 
-  const initialized = atom(false);
-  const model$ = atom<DataRequestModel<T>>({
+  const initialized = signal(false);
+  const model$ = signal<DataRequestModel<T>>({
     sorts: [],
     filters: {},
     filtersIn: {},
@@ -73,14 +71,14 @@ export function makeServerDataSource<T>({
       values: [],
     } satisfies ColumnPivotModel<T>,
   } satisfies DataRequestModel<T>);
-  const model = makeGridAtom(model$, rdsStore);
+  const model = makeAtom(model$);
 
-  const pivotGroupExpansions = atom((g) => g(model$).pivotGroupExpansions);
-  const rowGroupExpansions = atom((g) => g(model$).groupExpansions);
-  const pivotMode = atom((g) => g(model$).pivotMode);
+  const pivotGroupExpansions = computed(() => model$().pivotGroupExpansions);
+  const rowGroupExpansions = computed(() => model$().groupExpansions);
+  const pivotMode = computed(() => model$().pivotMode);
 
-  const topData = atom<DataResponseLeafItem[]>([]);
-  const botData = atom<DataResponseLeafItem[]>([]);
+  const topData = signal<DataResponseLeafItem[]>([]);
+  const botData = signal<DataResponseLeafItem[]>([]);
 
   const seenRequests = new Set<string>();
 
@@ -97,9 +95,9 @@ export function makeServerDataSource<T>({
 
     pinResponses.forEach((p) => {
       if (p.kind === "top") {
-        rdsStore.set(topData, p.data);
+        topData.set(p.data);
       } else {
-        rdsStore.set(botData, p.data);
+        botData.set(p.data);
       }
     });
 
@@ -137,7 +135,6 @@ export function makeServerDataSource<T>({
     if (!grid) return;
 
     const unseen = p.filter((x) => force || !seenRequests.has(x.id));
-
     unseen.forEach((x) => seenRequests.add(x.id));
 
     if (unseen.length === 0) {
@@ -145,7 +142,7 @@ export function makeServerDataSource<T>({
       return;
     }
 
-    rdsStore.set(nodesWithError, (prev) => {
+    nodesWithError.set((prev) => {
       const next = new Map(prev);
       p.forEach((r) => {
         for (let i = r.rowStartIndex; i < r.rowEndIndex; i++) {
@@ -174,7 +171,7 @@ export function makeServerDataSource<T>({
       onFailure?.(e);
       console.error(e);
     } finally {
-      rdsStore.set(snapshot$, Date.now());
+      snapshot$.set(Date.now());
       grid.state.rowDataStore.rowClearCache();
     }
   };
@@ -183,6 +180,7 @@ export function makeServerDataSource<T>({
     if (!grid) return;
 
     const bounds = grid.state.viewBounds.get();
+
     const f = flat.get();
 
     const te = bounds.rowTopEnd;
@@ -246,7 +244,7 @@ export function makeServerDataSource<T>({
       false,
       () => {},
       (e) => {
-        rdsStore.set(nodesWithError, (prev) => {
+        nodesWithError.set((prev) => {
           const next = new Map(prev);
           requests.forEach((r) => {
             for (let i = r.rowStartIndex; i < r.rowEndIndex; i++) {
@@ -263,7 +261,7 @@ export function makeServerDataSource<T>({
   const resetRequest = async () => {
     seenRequests.clear();
     tree.set(makeAsyncTree<DataResponseBranchItem, DataResponseLeafItem>());
-    rdsStore.set(nodesWithError, new Map());
+    nodesWithError.set(new Map());
 
     // Initialize the grid.
     const initialDataRequest: DataRequest = {
@@ -288,11 +286,11 @@ export function makeServerDataSource<T>({
     isLoading.set(false);
   };
 
-  const flat$ = atom((g) => {
-    g(snapshot$);
-    const mode = rdsStore.get(pivotMode);
-    const expansions = mode ? g(pivotGroupExpansions) : g(rowGroupExpansions);
-    const t = g(tree$);
+  const flat$ = computed(() => {
+    snapshot$();
+    const mode = pivotMode();
+    const expansions = mode ? pivotGroupExpansions() : rowGroupExpansions();
+    const t = tree$();
 
     type RowItem = LeafOrParent<DataResponseBranchItem, DataResponseLeafItem>;
 
@@ -342,7 +340,11 @@ export function makeServerDataSource<T>({
       rangeTree,
     };
   });
-  const flat = makeGridAtom(flat$, rdsStore);
+  const flat = makeAtom(flat$);
+
+  const topLength = computed(() => topData().length);
+  const botLength = computed(() => botData().length);
+  const flatLength = computed(() => flat.$().size);
 
   const cleanup: (() => void)[] = [];
   const init: RowDataSource<T>["init"] = (g) => {
@@ -362,7 +364,7 @@ export function makeServerDataSource<T>({
     const pivotModel = g.state.columnPivotModel.get();
     const pivotGroupExpansions = g.state.columnPivotRowGroupExpansions.get();
 
-    rdsStore.set(model$, {
+    model$.set({
       sorts,
       filters,
       filtersIn,
@@ -376,27 +378,33 @@ export function makeServerDataSource<T>({
       pivotModel,
       pivotGroupExpansions,
     });
-    rdsStore.set(initialized, true);
+    initialized.set(true);
 
     // Handle row count changes
     const f = flat.get();
     g.state.rowDataStore.rowCenterCount.set(f.size);
-    g.state.rowDataStore.rowBottomCount.set(rdsStore.get(botData).length);
-    g.state.rowDataStore.rowTopCount.set(rdsStore.get(topData).length);
+    g.state.rowDataStore.rowBottomCount.set(peek(botData).length);
+    g.state.rowDataStore.rowTopCount.set(peek(topData).length);
 
-    rdsStore.sub(flat$, () => {
-      const f = flat.get();
-      g.state.rowDataStore.rowCenterCount.set(f.size);
-      viewChange();
-    });
-    rdsStore.sub(topData, () => {
-      g.state.rowDataStore.rowTopCount.set(rdsStore.get(topData).length);
-      g.state.rowDataStore.rowClearCache();
-    });
-    rdsStore.sub(botData, () => {
-      g.state.rowDataStore.rowBottomCount.set(rdsStore.get(botData).length);
-      g.state.rowDataStore.rowClearCache();
-    });
+    cleanup.push(
+      effect(() => {
+        g.state.rowDataStore.rowCenterCount.set(flatLength());
+        viewChange();
+      }),
+    );
+
+    cleanup.push(
+      effect(() => {
+        g.state.rowDataStore.rowTopCount.set(topLength());
+        g.state.rowDataStore.rowClearCache();
+      }),
+    );
+    cleanup.push(
+      effect(() => {
+        g.state.rowDataStore.rowBottomCount.set(botLength);
+        g.state.rowDataStore.rowClearCache();
+      }),
+    );
 
     resetRequest();
 
@@ -433,91 +441,51 @@ export function makeServerDataSource<T>({
 
     if (pivotMode) updatePivotColumns(pivotModel);
 
-    // Make these deep equality checks
-    cleanup.push(
-      g.state.columnPivotMode.watch(() => {
-        const model = g.state.columnPivotModel.get();
-        updatePivotColumns(model, true);
+    let prevModel = peek(model$);
+    effect(() => {
+      // @ts-expect-error this is fine
+      const rowGroupModel = g.state.rowGroupModel.$();
+      // @ts-expect-error this is fine
+      const rowGroupExpansions = g.state.rowGroupExpansions.$();
+      // @ts-expect-error this is fine
+      const aggModel = g.state.aggModel.$();
+      // @ts-expect-error this is fine
+      const filterModelIn = g.state.filterInModel.$();
+      // @ts-expect-error this is fine
+      const quickSearch = g.state.quickSearch.$();
+      // @ts-expect-error this is fine
+      const filterModel = g.state.filterModel.$();
+      // @ts-expect-error this is fine
+      const sortModel = g.state.sortModel.$();
+      // @ts-expect-error this is fine
+      const columnPivotExpansions = g.state.columnPivotColumnGroupExpansions.$();
 
-        rdsStore.set(model$, (prev) => ({ ...prev, pivotMode: g.state.columnPivotMode.get() }));
-        g.state.rowDataStore.rowClearCache();
-      }),
-    );
-    cleanup.push(
-      g.state.columnPivotModel.watch(() => {
-        const model = g.state.columnPivotModel.get();
-        updatePivotColumns(model);
+      // @ts-expect-error this is fine
+      const model = g.state.columnPivotModel.$();
+      // @ts-expect-error this is fine
+      const mode = g.state.columnPivotMode.$();
+      updatePivotColumns(model);
 
-        rdsStore.set(model$, (prev) => ({
-          ...prev,
-          pivotModel: model,
-        }));
+      const newModel = {
+        aggregations: aggModel,
+        filters: filterModel,
+        filtersIn: filterModelIn,
+        group: rowGroupModel,
+        groupExpansions: rowGroupExpansions,
+        quickSearch,
+        pivotGroupExpansions: columnPivotExpansions,
+        pivotMode: mode,
+        pivotModel: model,
+        sorts: sortModel,
+      };
 
-        g.state.rowDataStore.rowClearCache();
-      }),
-    );
-    g.state.columnPivotRowGroupExpansions.watch(() => {
-      rdsStore.set(model$, (prev) => ({
-        ...prev,
-        columnPivotGroupExpansions: g.state.columnPivotRowGroupExpansions.get(),
-      }));
-      grid?.state.rowDataStore.rowClearCache();
+      if (equal(newModel, prevModel)) return;
+      prevModel = newModel;
+
+      model$.set(newModel);
+
+      resetRequest();
     });
-
-    // Sort model monitoring
-    cleanup.push(
-      g.state.sortModel.watch(() => {
-        rdsStore.set(model$, (prev) => ({ ...prev, sorts: g.state.sortModel.get() }));
-        resetRequest();
-      }),
-    );
-
-    // Filter model monitoring
-    cleanup.push(
-      g.state.filterModel.watch(() => {
-        rdsStore.set(model$, (prev) => ({ ...prev, filters: g.state.filterModel.get() }));
-        resetRequest();
-      }),
-    );
-    cleanup.push(
-      g.state.quickSearch.watch(() => {
-        rdsStore.set(model$, (prev) => ({ ...prev, quickSearch: g.state.quickSearch.get() }));
-        resetRequest();
-      }),
-    );
-    cleanup.push(
-      g.state.filterInModel.watch(() => {
-        rdsStore.set(model$, (prev) => ({ ...prev, filtersIn: g.state.filterInModel.get() }));
-        resetRequest();
-      }),
-    );
-
-    // Row group model monitoring
-    cleanup.push(
-      g.state.rowGroupModel.watch(() => {
-        rdsStore.set(model$, (prev) => ({ ...prev, group: g.state.rowGroupModel.get() }));
-        resetRequest();
-      }),
-    );
-
-    // Row group expansions monitoring
-    cleanup.push(
-      g.state.rowGroupExpansions.watch(() => {
-        rdsStore.set(model$, (prev) => ({
-          ...prev,
-          groupExpansions: g.state.rowGroupExpansions.get(),
-        }));
-        grid?.state.rowDataStore.rowClearCache();
-      }),
-    );
-
-    // Agg model monitoring
-    cleanup.push(
-      g.state.aggModel.watch(() => {
-        rdsStore.set(model$, (prev) => ({ ...prev, agg: g.state.aggModel.get() }));
-        resetRequest();
-      }),
-    );
   };
 
   const rowById: RowDataSource<T>["rowById"] = (id) => {
@@ -526,13 +494,13 @@ export function makeServerDataSource<T>({
     const node = f.rowIdToRow.get(id);
     if (!node) {
       {
-        const top = rdsStore.get(topData);
+        const top = peek(topData);
         const node = top.find((c) => c.id === id);
         if (node) return { kind: "leaf", data: node.data, id: node.id };
       }
 
       {
-        const bot = rdsStore.get(topData);
+        const bot = peek(topData);
         const node = bot.find((c) => c.id === id);
         if (node) return { kind: "leaf", data: node.data, id: node.id };
       }
@@ -579,10 +547,10 @@ export function makeServerDataSource<T>({
   const rowByIndex: RowDataSource<T>["rowByIndex"] = (ri) => {
     const f = flat.get();
 
-    const top = rdsStore.get(topData);
-    const bot = rdsStore.get(botData);
+    const top = peek(topData);
+    const bot = peek(botData);
 
-    const errors = rdsStore.get(nodesWithError);
+    const errors = peek(nodesWithError);
     const error = errors.get(ri);
 
     if (ri == null || ri < 0 || ri >= f.size + top.length + bot.length) return null;
@@ -606,7 +574,7 @@ export function makeServerDataSource<T>({
       return { kind: "leaf", data: null, id: `error-${ri}`, loading: false, error };
     if (!node) return { kind: "leaf", data: null, id: `loading-${ri}`, loading: true, error: null };
 
-    const isLoading = rdsStore.get(loadingGroups$);
+    const isLoading = peek(loadingGroups$);
 
     if (node.kind === "parent") {
       return {
@@ -628,12 +596,12 @@ export function makeServerDataSource<T>({
     };
   };
 
-  const loadingGroups$ = atom<Set<string>>(new Set<string>());
+  const loadingGroups$ = signal<Set<string>>(new Set<string>());
 
   const rowExpand: RowDataSource<T>["rowExpand"] = (p) => {
     const f = flat.get();
 
-    const loadingRows = new Set(rdsStore.get(loadingGroups$));
+    const loadingRows = new Set(peek(loadingGroups$));
     const rowsForThis = new Set<string>();
 
     const rowIndices: number[] = [];
@@ -666,12 +634,12 @@ export function makeServerDataSource<T>({
       })
       .filter((c) => !!c);
 
-    const mode = rdsStore.get(pivotMode);
+    const mode = peek(pivotMode);
 
     // Remove the errors before requesting.
-    const errorRows = rdsStore.get(nodesWithError);
+    const errorRows = peek(nodesWithError);
     if (rowIndices.some((c) => errorRows.has(c))) {
-      rdsStore.set(nodesWithError, (prev) => {
+      nodesWithError.set((prev) => {
         const n = new Map(prev);
         rowIndices.forEach((c) => n.delete(c));
 
@@ -680,7 +648,7 @@ export function makeServerDataSource<T>({
     }
 
     // Mark these groups as loading
-    rdsStore.set(loadingGroups$, loadingRows);
+    loadingGroups$.set(loadingRows);
     grid?.state.rowDataStore.rowClearCache();
 
     dataRequestHandler(
@@ -690,24 +658,24 @@ export function makeServerDataSource<T>({
         if (mode) grid?.state.columnPivotColumnGroupExpansions.set((prev) => ({ ...prev, ...p }));
         else grid?.state.rowGroupExpansions.set((prev) => ({ ...prev, ...p }));
 
-        const next = new Set(rdsStore.get(loadingGroups$));
+        const next = new Set(peek(loadingGroups$));
         rowsForThis.forEach((c) => next.delete(c));
 
-        rdsStore.set(loadingGroups$, next);
+        loadingGroups$.set(next);
         setTimeout(() => {
           grid?.state.rowDataStore.rowClearCache();
         });
       },
       (error) => {
-        rdsStore.set(nodesWithError, (prev) => {
+        nodesWithError.set((prev) => {
           const n = new Map(prev);
           rowIndices.forEach((c) => n.set(c, error));
           return prev;
         });
 
-        const next = new Set(rdsStore.get(loadingGroups$));
+        const next = new Set(peek(loadingGroups$));
         rowsForThis.forEach((c) => next.delete(c));
-        rdsStore.set(loadingGroups$, next);
+        loadingGroups$.set(next);
         setTimeout(() => {
           grid?.state.rowDataStore.rowClearCache();
         });
@@ -805,8 +773,8 @@ export function makeServerDataSource<T>({
   const rowUpdate: RowDataSource<T>["rowUpdate"] = (updates) => {
     const f = flat.get();
 
-    const top = rdsStore.get(topData);
-    const bot = rdsStore.get(botData);
+    const top = peek(topData);
+    const bot = peek(botData);
 
     const firstBot = f.size + top.length;
 

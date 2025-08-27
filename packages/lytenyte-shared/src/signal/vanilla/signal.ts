@@ -23,7 +23,8 @@ export function signal<T>(initialValue: T, options?: SignalOptions<T>): WriteSig
   const node = createComputation(initialValue, null, options),
     signal = read.bind(node) as WriteSignal<T>;
 
-  (signal as any)[SCOPE] = true;
+  // @ts-expect-error this is fine, but fixing with a cast breaks NextJs in dev mode for some reason.
+  signal[SCOPE] = true;
   signal.set = write.bind(node) as WriteSignal<T>["set"];
 
   return signal;
@@ -52,7 +53,8 @@ export function computed<T, R = never>(
     ),
     signal = read.bind(node) as ReadSignal<T | R>;
 
-  (signal as any)[SCOPE] = true;
+  // @ts-expect-error this is fine, but fixing with a cast breaks NextJs in dev mode for some reason.
+  signal[SCOPE] = true;
   return signal;
 }
 
@@ -79,7 +81,8 @@ export function effect(effect: () => void): () => void {
  */
 export function readonly<T>(signal: ReadSignal<T>): ReadSignal<T> {
   const readonly = (() => signal()) as ReadSignal<T>;
-  (readonly as any)[SCOPE] = true;
+  // @ts-expect-error this is fine, but fixing with a cast breaks NextJs in dev mode for some reason.
+  readonly[SCOPE] = true;
   return readonly;
 }
 

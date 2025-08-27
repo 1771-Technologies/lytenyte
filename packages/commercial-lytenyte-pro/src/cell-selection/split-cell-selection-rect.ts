@@ -8,6 +8,15 @@ interface SplitCellSelectionRectArgs {
   readonly rowCenterCount: number;
 }
 
+export interface DataRectSplit extends DataRect {
+  readonly isUnit: boolean;
+
+  readonly borderTop?: boolean;
+  readonly borderBottom?: boolean;
+  readonly borderStart?: boolean;
+  readonly borderEnd?: boolean;
+}
+
 /**
  * Splits a cell selection rectangle into multiple rectangles when it crosses specified boundary regions.
  * This is useful for handling selections that span across different grid sections (e.g., fixed columns/rows,
@@ -43,19 +52,22 @@ export function splitCellSelectionRect({
   colCenterCount,
   rowTopCount,
   rowCenterCount,
-}: SplitCellSelectionRectArgs): DataRect[] {
+}: SplitCellSelectionRectArgs): DataRectSplit[] {
   // Calculate the boundary positions for columns
   const colStartBound = colStartCount;
   const colEndBound = colStartCount + colCenterCount;
 
-  const colSplits: DataRect[] = [];
+  const isUnit = rect.rowEnd - rect.rowStart === 1 && rect.columnEnd - rect.columnStart === 1;
+
+  const colSplits: DataRectSplit[] = [];
 
   // Handle column splits first
   // Case 1: Selection starts before the fixed columns and extends into the scrollable area
   if (rect.columnStart < colStartBound && rect.columnEnd > colStartBound) {
-    const startSplit: DataRect = {
+    const startSplit: DataRectSplit = {
       ...rect,
       columnEnd: colStartBound,
+      isUnit,
     };
     colSplits.push(startSplit);
     rect = { ...rect, columnStart: colStartBound };
@@ -63,41 +75,48 @@ export function splitCellSelectionRect({
 
   // Case 2: Selection starts in the scrollable area and extends into the end section
   if (rect.columnStart < colEndBound && rect.columnEnd > colEndBound) {
-    const endSplit: DataRect = {
+    const endSplit: DataRectSplit = {
       ...rect,
       columnStart: colEndBound,
+      isUnit,
     };
     rect = { ...rect, columnEnd: colEndBound };
     colSplits.push(endSplit);
   }
 
   // Add the remaining rectangle after column splits
-  colSplits.push(rect);
+  colSplits.push({ ...rect, isUnit });
 
   // Calculate the boundary positions for rows
   const topBound = rowTopCount;
   const bottomBound = rowTopCount + rowCenterCount;
 
   // Process row splits for each column-split rectangle
-  const rowSplits: DataRect[] = [];
+  const rowSplits: DataRectSplit[] = [];
   for (let split of colSplits) {
     // Case 1: Selection spans from top section into center section
     if (split.rowStart < topBound && split.rowEnd > topBound) {
-      const topSplit: DataRect = { ...split, rowEnd: topBound };
+      const topSplit: DataRectSplit = { ...split, rowEnd: topBound, isUnit };
       split = { ...split, rowStart: topBound };
       rowSplits.push(topSplit);
     }
 
     // Case 2: Selection spans from center section into bottom section
     if (split.rowStart < bottomBound && split.rowEnd > bottomBound) {
-      const bottomSplit: DataRect = { ...split, rowStart: bottomBound };
+      const bottomSplit: DataRectSplit = {
+        ...split,
+        rowStart: bottomBound,
+        isUnit,
+      };
       split = { ...split, rowEnd: bottomBound };
       rowSplits.push(bottomSplit);
     }
     rowSplits.push(split);
   }
 
-  return rowSplits.sort((l, r) => {
-    return l.rowStart - r.rowStart || l.columnStart - r.columnStart;
-  });
+  return rowSplits
+    .map((c) => ({ ...c, borderTop: true, borderBottom: true, borderEnd: true, borderStart: true }))
+    .sort((l, r) => {
+      return l.rowStart - r.rowStart || l.columnStart - r.columnStart;
+    });
 }
