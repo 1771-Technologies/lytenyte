@@ -1,5 +1,11 @@
 # @1771technologies/play-frame
 
+## 0.0.4
+
+### Patch Changes
+
+- Disable row cache
+
 ## 0.0.3
 
 ### Patch Changes
