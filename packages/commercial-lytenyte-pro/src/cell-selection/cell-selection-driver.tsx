@@ -45,7 +45,7 @@ export function CellSelectionDriver() {
     let lastRect: DataRect | null = null;
     let animFrame: number | null = null;
 
-    const pointerMove = (event: PointerEvent) => {
+    const pointerMove = (event: MouseEvent) => {
       if (animFrame) cancelAnimationFrame(animFrame);
 
       animFrame = requestAnimationFrame(() => {
@@ -221,7 +221,7 @@ export function CellSelectionDriver() {
       }
 
       lastRect = startSelection;
-      document.addEventListener("pointermove", pointerMove);
+      document.addEventListener("mousemove", pointerMove);
       document.addEventListener("contextmenu", pointerUp);
       document.addEventListener("pointerup", pointerUp);
     };
