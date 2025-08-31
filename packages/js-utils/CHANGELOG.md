@@ -1,5 +1,11 @@
 # @1771technologies/lytenyte-js-utils
 
+## 1.0.2
+
+### Patch Changes
+
+- Version to v1.0.3
+
 ## 1.0.1
 
 ### Patch Changes
