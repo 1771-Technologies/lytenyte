@@ -53,7 +53,6 @@ function Component({ data = bankData }: { data?: any[] }) {
     rowDataSource: ds,
 
     columnBase: {
-      widthMin: 0,
       uiHints: {
         resizable: true,
       },

@@ -43,5 +43,3 @@ demoOptions.forEach((c, i) => {
 });
 
 export const trees = [...tree.children.values()];
-
-console.log(trees);

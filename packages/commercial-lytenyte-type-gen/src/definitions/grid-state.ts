@@ -418,7 +418,7 @@ const RowFullWidthPredicate: PropertyType = {
   kind: "property",
   name: "rowFullWidthPredicate",
   optional: false,
-  value: "GridAtom<{ fn: RowFullWidthPredicate<T>}>",
+  value: "GridAtom<{ fn: RowFullWidthPredicate<T> | null}>",
   tsDoc: `A predicate function used to determine whether a given row should be rendered as a 
   full-width row. Full-width rows span across all columns and bypass standard cell layout.`,
   doc: { en: `` },

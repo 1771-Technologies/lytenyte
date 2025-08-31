@@ -1,4 +1,4 @@
-import { useEffect, useId, useMemo, useState, type DragEventHandler, type ReactNode } from "react";
+import { useEffect, useId, useMemo, useState, type DragEventHandler } from "react";
 import type { DragData, OnDragEvent, OnDropParams } from "./+types.js";
 import { useDragEventHandler } from "./drag/use-dragevent-handler.js";
 import { useKeyboard } from "./keyboard/use-keyboard.js";
@@ -12,7 +12,7 @@ export interface UseDraggableProps {
   readonly onDragEnd?: (params: OnDragEvent) => void;
   readonly onDrop?: (params: OnDropParams) => void;
 
-  readonly placeholder?: (d: DragData) => ReactNode;
+  readonly placeholder?: (d: DragData, el: HTMLElement) => HTMLElement;
   readonly placeholderOffset?: [number, number];
 
   readonly keyActivate?: string;

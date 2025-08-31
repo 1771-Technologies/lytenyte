@@ -6,7 +6,7 @@ import { getPositionFromFocusable } from "./getters/get-position-from-focusable.
 
 export function useFocusTracking(
   vp: HTMLElement | null,
-  focusActive: GridAtom<PositionUnion | null>,
+  focusActive: Omit<GridAtom<PositionUnion | null>, "$">,
 ) {
   const [focused, setFocused] = useState(false);
 

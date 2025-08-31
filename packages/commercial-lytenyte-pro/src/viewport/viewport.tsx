@@ -21,6 +21,8 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
   const height = ctx.grid.state.heightTotal.useValue();
   const rtl = ctx.grid.state.rtl.useValue();
 
+  const cellSelectionMode = ctx.grid.state.cellSelectionMode.useValue();
+
   const focused = useFocusTracking(vp, ctx.grid.internal.focusActive);
 
   return (
@@ -28,6 +30,7 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
       <div
         tabIndex={0}
         {...props}
+        data-ln-has-cell-selection={cellSelectionMode !== "none"}
         onKeyDown={(e) => {
           handleSkipInner(e);
           props.onKeyDown?.(e);

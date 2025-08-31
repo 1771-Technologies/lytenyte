@@ -53,6 +53,7 @@ function Component({ data = bankData }: { data?: any[] }) {
 
   const view = g.view.useValue();
 
+  console.log(g.state.sortModel.useValue());
   return (
     <div>
       <div>

@@ -13,7 +13,7 @@ interface HandleNavigationKeyArgs {
   readonly columnCount: number;
   readonly scrollIntoView: ScrollIntoViewFn;
   readonly getRootCell: RootCellFn;
-  readonly focusActive: GridAtom<PositionUnion | null>;
+  readonly focusActive: Omit<GridAtom<PositionUnion | null>, "$">;
   readonly id: string;
   readonly rtl: boolean;
   readonly topCount: number;

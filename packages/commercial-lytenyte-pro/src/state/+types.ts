@@ -1,7 +1,6 @@
-import type { LayoutState } from "@1771technologies/lytenyte-shared";
+import type { LayoutState, WriteSignal } from "@1771technologies/lytenyte-shared";
 import type {
   Column,
-  DataRect,
   EditActivePosition,
   GridAtom,
   GridAtomReadonly,
@@ -9,7 +8,7 @@ import type {
   PositionUnion,
   VirtualTarget,
 } from "../+types";
-import type { Atom, createStore } from "@1771technologies/atom";
+import type { DataRectSplit } from "../cell-selection/split-cell-selection-rect";
 
 export interface InternalAtoms {
   readonly headerRows: GridAtomReadonly<number>;
@@ -17,7 +16,6 @@ export interface InternalAtoms {
   readonly headerHeightTotal: GridAtomReadonly<number>;
   readonly xScroll: GridAtom<number>;
   readonly yScroll: GridAtom<number>;
-  readonly refreshKey: GridAtom<number>;
 
   readonly layout: LayoutState;
 
@@ -36,7 +34,7 @@ export interface InternalAtoms {
   readonly rowDetailAutoHeightCache: GridAtom<Record<number, number>>;
 
   // Row selection
-  readonly rowSelectedIds: Atom<Set<string>>;
+  readonly rowSelectedIds: WriteSignal<Set<string>>;
   readonly rowSelectionPivot: GridAtom<string | null>;
   readonly rowSelectionLastWasDeselect: GridAtom<boolean>;
 
@@ -52,10 +50,8 @@ export interface InternalAtoms {
   >;
 
   // Cell Selection
-  readonly cellSelectionPivot: GridAtom<DataRect | null>;
-  readonly cellSelectionAdditiveRects: GridAtom<DataRect[] | null>;
+  readonly cellSelectionPivot: GridAtom<DataRectSplit | null>;
+  readonly cellSelectionAdditiveRects: GridAtom<DataRectSplit[] | null>;
   readonly cellSelectionIsDeselect: GridAtom<boolean>;
-  readonly cellSelectionSplits: GridAtomReadonly<DataRect[]>;
-
-  readonly store: ReturnType<typeof createStore>;
+  readonly cellSelectionSplits: GridAtomReadonly<DataRectSplit[]>;
 }

@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import type { DropEventParams } from "../+types.js";
 
 export interface GridBoxItem<T = any> {
@@ -7,7 +6,7 @@ export interface GridBoxItem<T = any> {
   readonly data: T;
   readonly dragData: Record<string, any>;
   readonly draggable: boolean;
-  readonly dragPlaceholder?: () => ReactNode;
+  readonly dragPlaceholder?: (el: HTMLElement) => HTMLElement;
 
   readonly onDrop: (p: DropEventParams) => void;
   readonly onAction: (el: HTMLElement) => void;
@@ -15,4 +14,6 @@ export interface GridBoxItem<T = any> {
 
   readonly index: number;
   readonly source: string;
+
+  readonly active?: boolean;
 }

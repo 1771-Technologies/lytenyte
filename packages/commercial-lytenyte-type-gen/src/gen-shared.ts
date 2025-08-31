@@ -33,7 +33,22 @@ const typeModules = [
   ...Object.values(ColumnGroup),
   ColumnPin,
   RDS.RowDataStore,
-  ...Object.values(GridAtom),
+  ...Object.values(GridAtom).map((c) => {
+    return {
+      ...c,
+      properties: [
+        ...c.properties,
+        {
+          kind: "property",
+          name: "$",
+          optional: false,
+          value: "() => T",
+          tsDoc: `Reactive retrieve actual signal`,
+          doc: { en: `` },
+        },
+      ],
+    };
+  }),
   Row.RowNode,
   Row.RowLeaf,
   Row.RowGroup,

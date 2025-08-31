@@ -17,7 +17,7 @@ interface HandleHorizontalArrowArgs {
   readonly isForward: boolean;
   readonly scrollIntoView: ScrollIntoViewFn;
   readonly getRootCell: RootCellFn;
-  readonly focusActive: GridAtom<PositionUnion | null>;
+  readonly focusActive: Omit<GridAtom<PositionUnion | null>, "$">;
   readonly id: string;
 }
 

@@ -25,7 +25,7 @@ export const Branch = forwardRef<
   const grid = useGrid();
   const id = grid.state.gridId.useValue();
 
-  const accepted = `${id}/columns`;
+  const accepted = `${id}-columns`;
 
   const base = grid.state.columnBase.useValue();
   const columns = useColumnsFromContext(item);

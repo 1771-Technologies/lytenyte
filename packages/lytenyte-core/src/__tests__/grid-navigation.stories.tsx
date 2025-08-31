@@ -91,7 +91,7 @@ function Component({ data = bankData.slice(0, 200) }: { data?: any[] }) {
   const focused = grid.internal.focusActive.useValue();
 
   return (
-    <div>
+    <div className="lng-grid">
       <div>
         <div>{JSON.stringify(focused)}</div>
         <button onClick={() => g.state.rtl.set((prev) => !prev)}>

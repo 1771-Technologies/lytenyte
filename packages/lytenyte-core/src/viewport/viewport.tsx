@@ -90,6 +90,7 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
           position: "relative",
           display: "flex",
           flexDirection: "column",
+          contain: "strict",
           width: "100%",
           height: "100%",
           overflow: style?.overflow ?? "auto",

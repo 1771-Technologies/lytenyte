@@ -100,7 +100,7 @@ export interface UseLyteNyteProps<T> {
   /**
    * The function predicate used to determine if a row should be rendered as full width.
    */
-  readonly rowFullWidthPredicate?: RowFullWidthPredicate<T>;
+  readonly rowFullWidthPredicate?: RowFullWidthPredicate<T> | null;
 
   /**
    * The renderer used to render the content of a full width row.
@@ -441,7 +441,9 @@ export interface GridState<T> {
    * A predicate function used to determine whether a given row should be rendered as a
    *   full-width row. Full-width rows span across all columns and bypass standard cell layout.
    */
-  readonly rowFullWidthPredicate: GridAtom<{ fn: RowFullWidthPredicate<T> }>;
+  readonly rowFullWidthPredicate: GridAtom<{
+    fn: RowFullWidthPredicate<T> | null;
+  }>;
 
   /**
    * The component function that renders full-width rows in the grid. This renderer is called
@@ -1056,6 +1058,16 @@ export interface RowCellLayout<T> {
    * Number of rows this cell spans across.
    */
   readonly rowSpan: number;
+
+  /**
+   * Indicates if this cell is row spanned over and will not be rendered
+   */
+  readonly isDeadRow: boolean;
+
+  /**
+   * Indicates if this cell is column spanned over and will not be rendered
+   */
+  readonly isDeadCol: boolean;
 
   /**
    * A unique identifier that can be used for rendering keys or tracking elements.
@@ -5405,7 +5417,7 @@ export type DragPlaceholderFn<T> = (
    * Parameters for rendering the placeholder.
    */
   params: DragPlaceholderParams<T>,
-) => ReactNode;
+) => HTMLElement;
 
 /**
  * Parameters passed when rendering the drag placeholder content.

@@ -1,31 +1,29 @@
-import { forwardRef, useEffect, useState, type JSX, type ReactNode } from "react";
-import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
-import type { CellRendererFn, RowCellLayout } from "../+types";
+import { forwardRef, useEffect, useState, type JSX } from "react";
+import type { RowCellLayout } from "../+types";
 import { useGridRoot } from "../context";
-import { CellReact } from "@1771technologies/lytenyte-shared";
+import { CellReact, sizeFromCoord } from "@1771technologies/lytenyte-shared";
 import { CellDefault } from "./cell-default";
 import { CellEditor } from "./cell-editor";
 import { useRowMeta } from "../rows/row/context";
+import { CellSpacePinStart, CellSpacerPinEnd } from "./cell-spacer";
 
 export interface CellProps {
   readonly cell: RowCellLayout<any>;
-  readonly children?: ReactNode | CellRendererFn<any>;
 }
 
-const CellImpl = forwardRef<
+export const Cell = forwardRef<
   HTMLDivElement,
   Omit<JSX.IntrinsicElements["div"], "children"> & CellProps
->(function Cell({ cell, children, ...props }, forwarded) {
+>(function Cell({ cell, ...props }, forwarded) {
   const grid = useGridRoot().grid;
   const cx = grid.state;
 
-  grid.internal.refreshKey.useValue();
   const base = grid.state.columnBase.useValue();
 
   const row = cell.row.useValue();
 
   const renderers = cx.cellRenderers.useValue();
-  const providedRenderer = children ?? cell.column.cellRenderer ?? base.cellRenderer;
+  const providedRenderer = cell.column.cellRenderer ?? base.cellRenderer;
 
   const Renderer = providedRenderer
     ? typeof providedRenderer === "string"
@@ -47,42 +45,42 @@ const CellImpl = forwardRef<
     });
   }, [cell.column, cell.rowIndex, cell.rowSpan, grid.internal.editActivePos]);
 
+  const xPositions = cx.xPositions.useValue();
+  const yPositions = cx.yPositions.useValue();
+
   const rowMeta = useRowMeta();
-  if (!row) return null;
+  if (cell.isDeadRow) return <div style={{ width: sizeFromCoord(cell.colIndex, xPositions) }} />;
+
+  if (!row || cell.isDeadCol) return null;
 
   return (
-    <CellReact
-      {...props}
-      ref={forwarded}
-      cell={cell}
-      isEditing={isEditing}
-      viewportWidth={cx.viewportWidthInner.useValue()}
-      detailHeight={grid.api.rowDetailRenderedHeight(row ?? "")}
-      rtl={cx.rtl.useValue()}
-      xPosition={cx.xPositions.useValue()}
-      yPosition={cx.yPositions.useValue()}
-    >
-      {isEditing && <CellEditor cell={cell} />}
-      {!isEditing && (
-        <>
-          {typeof Renderer === "function" ? (
-            <Renderer
-              column={cell.column}
-              rowSelected={rowMeta.selected}
-              rowIndeterminate={rowMeta.indeterminate}
-              row={row}
-              grid={grid}
-              rowIndex={cell.rowIndex}
-              colIndex={cell.colIndex}
-              rowPin={cell.rowPin}
-            />
-          ) : (
-            Renderer
-          )}
-        </>
-      )}
-    </CellReact>
+    <>
+      {cell.colFirstEndPin && <CellSpacerPinEnd />}
+      <CellReact
+        {...props}
+        ref={forwarded}
+        cell={cell}
+        isEditing={isEditing}
+        detailHeight={grid.api.rowDetailRenderedHeight(row ?? "")}
+        rtl={cx.rtl.useValue()}
+        xPosition={xPositions}
+        yPosition={yPositions}
+      >
+        {isEditing && <CellEditor cell={cell} />}
+        {!isEditing && (
+          <Renderer
+            column={cell.column}
+            rowSelected={rowMeta.selected}
+            rowIndeterminate={rowMeta.indeterminate}
+            row={row}
+            grid={grid}
+            rowIndex={cell.rowIndex}
+            colIndex={cell.colIndex}
+            rowPin={cell.rowPin}
+          />
+        )}
+      </CellReact>
+      {cell.colLastStartPin && <CellSpacePinStart />}
+    </>
   );
 });
-
-export const Cell = fastDeepMemo(CellImpl);
