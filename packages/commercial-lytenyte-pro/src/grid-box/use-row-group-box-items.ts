@@ -1,4 +1,4 @@
-import { useMemo, type ReactNode } from "react";
+import { useMemo } from "react";
 import type { DropEventParams, Grid, RowGroupModelItem } from "../+types.js";
 import type { GridBoxItem } from "./+types.js";
 import { useEvent } from "@1771technologies/lytenyte-react-hooks";
@@ -6,26 +6,61 @@ import { useEvent } from "@1771technologies/lytenyte-react-hooks";
 export interface UseRowGroupBoxItems<T> {
   readonly grid: Grid<T>;
   readonly orientation?: "horizontal" | "vertical";
-  readonly dragPlaceholder?: (c: RowGroupModelItem<T>) => ReactNode;
   readonly hideColumnOnGroup?: boolean;
+  readonly includeGroupables?: boolean;
+  readonly placeholder?: (el: HTMLElement) => HTMLElement;
 }
 
 export function useRowGroupBoxItems<T>({
   grid,
   orientation,
-  dragPlaceholder,
   hideColumnOnGroup = true,
+  includeGroupables = false,
+  placeholder,
 }: UseRowGroupBoxItems<T>) {
   const rowGroupModel = grid.state.rowGroupModel.useValue();
   const gridId = grid.state.gridId.useValue();
 
+  const columns = grid.state.columns.useValue();
+  const base = grid.state.columnBase.useValue();
+
   const items = useMemo<GridBoxItem<RowGroupModelItem<T>>[]>(() => {
     const groupId = `${gridId}-group`;
+
+    const groupables = (
+      includeGroupables
+        ? columns.map((c) => {
+            const canGroup = c.uiHints?.rowGroupable ?? base.uiHints?.rowGroupable;
+            if (!canGroup) return null;
+
+            if (rowGroupModel.find((x) => typeof x === "string" && x === c.id)) return null;
+
+            return c;
+          })
+        : []
+    )
+      .filter((c) => c != null)
+      .map((c, i) => {
+        return {
+          data: c.id,
+          dragData: { [groupId]: c.id },
+          draggable: false,
+          source: "groups",
+          id: c.id,
+          index: i + rowGroupModel.length,
+          label: c.name ?? c.id,
+          onAction: () => {},
+          onDelete: () => {},
+          onDrop: () => {},
+          active: false,
+        } satisfies GridBoxItem<RowGroupModelItem<T>>;
+      });
 
     return rowGroupModel
       .map<GridBoxItem | null>((c, i) => {
         const onDelete = () => {
           grid.state.rowGroupModel.set((prev) => prev.filter((x) => x !== c));
+          if (typeof c === "string") grid.api.columnUpdate({ [c]: { hide: false } });
         };
 
         const onDrop = (p: DropEventParams) => {
@@ -88,7 +123,9 @@ export function useRowGroupBoxItems<T>({
             onAction: () => {},
             onDelete: onDelete,
             onDrop: onDrop,
-            dragPlaceholder: dragPlaceholder ? () => dragPlaceholder(c) : undefined,
+            dragPlaceholder: placeholder,
+
+            active: true,
           };
         } else {
           return {
@@ -102,17 +139,22 @@ export function useRowGroupBoxItems<T>({
             onAction: () => {},
             onDelete: onDelete,
             onDrop,
-            dragPlaceholder: dragPlaceholder ? () => dragPlaceholder(c) : undefined,
+            active: true,
+            dragPlaceholder: placeholder,
           };
         }
       })
-      .filter((c) => c !== null);
+      .filter((c) => c !== null)
+      .concat(groupables);
   }, [
+    base.uiHints?.rowGroupable,
+    columns,
     grid.api,
     grid.state.rowGroupModel,
     gridId,
     hideColumnOnGroup,
-    dragPlaceholder,
+    includeGroupables,
+    placeholder,
     rowGroupModel,
   ]);
 

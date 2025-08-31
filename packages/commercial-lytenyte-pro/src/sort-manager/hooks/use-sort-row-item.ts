@@ -169,12 +169,12 @@ const sortValuesString = [
   { label: "Values", value: "values" },
 
   { label: "Insensitive", value: "values_insensitive" },
-  { label: "Insensitive, Ignore Punctuation", value: "value_insensitive_ignore" },
-  { label: "Insensitive, Trim", value: "value_insensitive_trim" },
-  { label: "Insensitive, Ignore Punctuation, Trim", value: "value_insensitive_ignore_trim" },
+  { label: "Insensitive, Ignore Punctuation", value: "values_insensitive_ignore" },
+  { label: "Insensitive, Trim", value: "values_insensitive_trim" },
+  { label: "Insensitive, Ignore Punctuation, Trim", value: "values_insensitive_ignore_trim" },
 
-  { label: "Ignore Punctuation", value: "values_ignore_punctuation" },
-  { label: "Ignore Punctuation, Trim", value: "values_ignore_punctuation_trim" },
+  { label: "Ignore Punctuation", value: "values_ignore" },
+  { label: "Ignore Punctuation, Trim", value: "values_ignore_trim" },
 
   { label: "Trim Whitespace", value: "values_trim" },
   { label: "Nulls First", value: "values_nulls_first" },
@@ -184,7 +184,7 @@ const sortValuesString = [
   { label: "Nulls First, Insensitive, Trim", value: "values_nulls_first_insensitive_trim" },
   {
     label: "Nulls First, Insensitive, Ignore Punctuation",
-    value: "values_nulls_insensitive_first_ignore",
+    value: "values_nulls_first_insensitive_ignore",
   },
   {
     label: "Nulls First, Insensitive, Ignore Punctuation, Trim",

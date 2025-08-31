@@ -21,24 +21,23 @@ const meta: Meta = {
 
 export default meta;
 
-const columns: Column<any>[] = [{ id: "x" }, { id: "y" }, { id: "v" }];
+const columns: Column<any>[] = [{ id: "x" }, { id: "y", widthFlex: 1 }, { id: "v" }];
 
 function Component() {
   const [d, setD] = useState([
     { v: "A", x: 1, y: 2 },
     { v: "A", x: 2, y: 3 },
+    { v: "C", x: 2, y: 3 },
   ]);
   const ds = useClientRowDataSource({
     rowIdLeaf: (_, i) => `${i}`,
     data: d,
-    reflectData: true,
   });
+
   const g = useLyteNyte({
     gridId: useId(),
     columns,
     rowDataSource: ds,
-    rowSelectionMode: "multiple",
-    rowSelectionActivator: "single-click",
     aggModel: {
       x: { fn: "sum" },
       y: { fn: "sum" },
@@ -65,7 +64,12 @@ function Component() {
         <button
           onClick={() => {
             ds.rowUpdate(
-              new Map(d.map((_, i) => [`${i}`, { v: "A", x: Math.random(), y: Math.random() }])),
+              new Map(
+                d.map((_, i) => [
+                  `${i}`,
+                  { v: i === 2 ? "C" : "A", x: Math.random(), y: Math.random() },
+                ]),
+              ),
             );
           }}
         >

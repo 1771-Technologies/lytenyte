@@ -22,6 +22,23 @@ export type {
 } from "./layout/update-layout.js";
 export { updateLayout, FULL_WIDTH, CONTAINS_DEAD_CELLS } from "./layout/update-layout.js";
 
+export { makeRowStore } from "./row-store/make-row-store.js";
+export { useSignalState } from "./signal/react/use-signal-state.js";
+export { makeAtom } from "./signal/react/make-atom.js";
+export { useSignalValue } from "./signal/react/use-signal-value.js";
+export {
+  computed,
+  computedKeyedMap,
+  computedMap,
+  effect,
+  peek,
+  readonly,
+  root,
+  signal,
+  tick,
+} from "./signal/index.js";
+export type { WriteSignal, ReadSignal } from "./signal/+types.js";
+
 export { computeBounds } from "./virtual-bounds/compute-bounds.js";
 export {
   DEFAULT_PREVIOUS_LAYOUT,
@@ -52,9 +69,6 @@ export { getTranslate } from "./utils/get-translate.js";
 export { sizeFromCoord } from "./utils/size-from-coord.js";
 export { getHoveredColumnIndex } from "./utils/get-hovered-column-index.js";
 export { measureText } from "./utils/measure-text.js";
-
-export { makeGridAtom } from "./grid-atom/make-grid-atom.js";
-export { makeRowDataStore } from "./row-data-store/make-row-data-store.js";
 
 export { stringComparator } from "./sorting/string-comparator.js";
 export { dateComparator } from "./sorting/date-comparator.js";

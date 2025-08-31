@@ -1,5 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, type PropsWithChildren } from "react";
-import { useEvent, useMeasure, type RectReadOnly } from "@1771technologies/lytenyte-react-hooks";
+import { useEffect, useMemo, useState, type PropsWithChildren } from "react";
 import type { GridRootContext } from "../context";
 import { RootProvider } from "../context";
 import type { Grid, GridEvents } from "../+types";
@@ -10,14 +9,6 @@ export type RootProps<T> = { readonly grid: Grid<T> } & {
 };
 
 export function Root<T = any>({ grid, children, ...events }: PropsWithChildren<RootProps<T>>) {
-  const onViewportChange = useEvent((bounds: RectReadOnly) => {
-    grid.state.viewport.set((element as HTMLElement) ?? null);
-    grid.state.viewportHeightOuter.set(bounds.height);
-    grid.state.viewportWidthOuter.set(bounds.width);
-    grid.state.viewportWidthInner.set(element?.clientWidth ?? 0);
-    grid.state.viewportHeightInner.set(element?.clientHeight ?? 0);
-  });
-
   // Add event listeners in the standard react way
   useEffect(() => {
     const ev = Object.entries(events).map(([onName, fn]) => {
@@ -30,62 +21,7 @@ export function Root<T = any>({ grid, children, ...events }: PropsWithChildren<R
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [Object.values(events)]);
 
-  const [ref, bounds, , element] = useMeasure({
-    onChange: onViewportChange,
-  });
-
-  // Add css variables so that we can avoid re-renders
-  useEffect(() => {
-    return grid.state.widthTotal.watch(() => {
-      const vp = grid.state.viewport.get();
-      const width = grid.state.widthTotal.get();
-      if (!vp) return;
-
-      vp.style.setProperty("--lng-vp-total-width", `${width}px`);
-    });
-  }, [grid]);
-
   const internal = (grid as Grid<any> & { internal: InternalAtoms }).internal;
-  // Listen to size changes of the window
-  useLayoutEffect(() => {
-    if (!element) return;
-
-    const obs = new ResizeObserver(() => {
-      grid.state.viewport.set((element as HTMLElement) ?? null);
-      grid.state.viewportHeightOuter.set(bounds.height);
-      grid.state.viewportWidthOuter.set(bounds.width);
-      grid.state.viewportWidthInner.set(element?.clientWidth ?? 0);
-      grid.state.viewportHeightInner.set(element?.clientHeight ?? 0);
-    });
-
-    obs.observe(element);
-
-    const controller = new AbortController();
-    (element as HTMLElement).addEventListener(
-      "scroll",
-      () => {
-        internal.xScroll.set(Math.abs(element.scrollLeft));
-        internal.yScroll.set(element.scrollTop);
-      },
-      { signal: controller.signal },
-    );
-
-    return () => {
-      obs.disconnect();
-      controller.abort();
-    };
-  }, [
-    bounds.height,
-    bounds.width,
-    element,
-    grid.state.viewport,
-    grid.state.viewportHeightInner,
-    grid.state.viewportHeightOuter,
-    grid.state.viewportWidthInner,
-    grid.state.viewportWidthOuter,
-    internal.xScroll,
-    internal.yScroll,
-  ]);
 
   useEffect(() => {
     return internal.focusActive.watch(() => {
@@ -102,12 +38,65 @@ export function Root<T = any>({ grid, children, ...events }: PropsWithChildren<R
     });
   }, [grid.api, internal.editActivePos, internal.focusActive]);
 
+  const [vp, ref] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!vp) return;
+
+    const controller = new AbortController();
+    vp.addEventListener(
+      "scroll",
+      () => {
+        internal.xScroll.set(Math.abs(vp.scrollLeft));
+        internal.yScroll.set(vp.scrollTop);
+      },
+      { signal: controller.signal },
+    );
+
+    return () => controller.abort();
+  }, [internal.xScroll, internal.yScroll, vp]);
+
+  useEffect(() => {
+    grid.state.viewport.set(vp);
+
+    if (!vp) return;
+    let observed = false;
+
+    const obs = new ResizeObserver(() => {
+      if (!observed) {
+        observed = true;
+        return;
+      }
+
+      grid.state.viewportHeightOuter.set(vp.offsetHeight);
+      grid.state.viewportWidthOuter.set(vp.offsetWidth);
+      grid.state.viewportWidthInner.set(vp.clientWidth);
+      grid.state.viewportHeightInner.set(vp.clientHeight);
+    });
+
+    grid.state.viewportHeightOuter.set(vp.offsetHeight);
+    grid.state.viewportWidthOuter.set(vp.offsetWidth);
+    grid.state.viewportWidthInner.set(vp.clientWidth);
+    grid.state.viewportHeightInner.set(vp.clientHeight);
+
+    obs.observe(vp);
+
+    return () => obs.disconnect();
+  }, [
+    grid.state.viewport,
+    grid.state.viewportHeightInner,
+    grid.state.viewportHeightOuter,
+    grid.state.viewportWidthInner,
+    grid.state.viewportWidthOuter,
+    vp,
+  ]);
+
   const value = useMemo<GridRootContext>(() => {
     return {
       ref,
       grid: grid as any,
     };
-  }, [grid, ref]);
+  }, [grid]);
 
   return <RootProvider value={value}>{children}</RootProvider>;
 }

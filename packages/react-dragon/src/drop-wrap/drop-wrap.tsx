@@ -28,6 +28,8 @@ export type DropWrapProps = Omit<JSX.IntrinsicElements["div"], "onDrop"> & {
   announceOverNoDrop?: string;
   announceOverCanDrop?: string;
   announceOverLeave?: string;
+
+  active?: boolean;
 };
 
 export const DropWrap = forwardRef<HTMLDivElement, DropWrapProps>(function DropWrap(
@@ -42,6 +44,7 @@ export const DropWrap = forwardRef<HTMLDivElement, DropWrapProps>(function DropW
     announceOverCanDrop,
     announceOverLeave,
     announceOverNoDrop,
+    active,
     ...otherProps
   },
   forwarded,
@@ -108,7 +111,7 @@ export const DropWrap = forwardRef<HTMLDivElement, DropWrapProps>(function DropW
   const combined = useForkRef(setRef, forwarded);
   const render = useSlot({
     slot: as ?? <div />,
-    props: [defaultProps, otherProps],
+    props: [active === false ? {} : defaultProps, otherProps],
     ref: combined,
     state: { canDrop, over },
   });

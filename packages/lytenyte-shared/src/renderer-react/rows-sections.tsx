@@ -31,9 +31,14 @@ export const RowsTopReact = forwardRef<
 
 export const RowsCenterReact = forwardRef<
   HTMLDivElement,
-  JSX.IntrinsicElements["div"] & RowSectionProps & { readonly height: number }
->(function RowsCenter({ height, ...props }, forwarded) {
-  if (height <= 0) return <div style={{ flex: "1" }} role="presentation" />;
+  JSX.IntrinsicElements["div"] &
+    RowSectionProps & { readonly height: number; pinSectionHeights: number }
+>(function RowsCenter({ height, pinSectionHeights, ...props }, forwarded) {
+  if (height <= 0) {
+    return (
+      <div role="presentation" style={{ height: `calc(100% - ${pinSectionHeights}px - 4px)` }} />
+    );
+  }
 
   return (
     <RowsSection
@@ -44,8 +49,7 @@ export const RowsCenterReact = forwardRef<
       style={{
         ...props.style,
         height,
-        minHeight: height,
-        flex: 1,
+        minHeight: `calc(100% - ${pinSectionHeights}px - 4px)`,
         minWidth: "100%",
         position: "relative",
       }}
@@ -69,6 +73,7 @@ export const RowsBottomReact = forwardRef<
         ...props.style,
 
         height,
+        boxSizing: "border-box",
         position: "sticky",
         bottom: 0,
         zIndex: 3,

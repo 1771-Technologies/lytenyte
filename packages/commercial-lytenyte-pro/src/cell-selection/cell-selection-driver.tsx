@@ -210,7 +210,7 @@ export function CellSelectionDriver() {
       }
 
       if (!isDeselect && grid.state.cellSelections.get().length <= 1)
-        grid.internal.cellSelectionPivot.set(startSelection);
+        grid.internal.cellSelectionPivot.set({ ...startSelection, isUnit: true });
 
       grid.internal.cellSelectionIsDeselect.set(isDeselect);
 
@@ -316,6 +316,7 @@ export function CellSelectionDriver() {
           rowEnd: focus.rowIndex + 1,
           columnStart: focus.colIndex,
           columnEnd: focus.colIndex + 1,
+          isUnit: true,
         });
       }
     });

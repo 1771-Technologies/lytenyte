@@ -7,6 +7,7 @@ export function sortItemsToSortModel(
 ): SortModelItem<any>[] {
   return sortItems
     .filter((c) => {
+      if (c.isCustom) return true;
       if (!c.columnId) return false;
       if (!c.sortOn) return false;
       if (!lookup.has(c.columnId)) return false;
@@ -15,6 +16,9 @@ export function sortItemsToSortModel(
     })
     .map<SortModelItem<any>>((c) => {
       const col = lookup.get(c.columnId!)!;
+      if (c.isCustom) {
+        return c.originalSort!;
+      }
 
       if (col.type === "number") {
         return {

@@ -40,6 +40,7 @@ export const RowsCenter = fastDeepMemo(
         rowFirst={cx.state.rowDataStore.rowTopCount.useValue()}
         rowLast={rowCenterCount + cx.state.rowDataStore.rowTopCount.useValue()}
         height={view.rowCenterTotalHeight}
+        pinSectionHeights={view.rowBottomTotalHeight + view.rowTopTotalHeight}
       >
         <NativeScroller>{children}</NativeScroller>
       </RowsCenterReact>

@@ -71,6 +71,7 @@ export function ResizeHandler<T>({
 
       const deltaRef = { current: 0 };
       const controller = new AbortController();
+
       document.addEventListener(
         "pointermove",
         (ev) => {
@@ -101,23 +102,12 @@ export function ResizeHandler<T>({
             if (!header) return;
             const pin = header.getAttribute("data-ln-pin");
 
-            const queryAfter = `${query} ~ [data-ln-cell="true"]`;
-            const headerAfterQuery = `${headerQuery} ~ [data-ln-header-cell="true"]`;
+            const cells = Array.from(vp.querySelectorAll(query)) as HTMLElement[];
 
-            let after: HTMLElement[];
-            if (pin !== "end") {
-              after = Array.from(vp.querySelectorAll(queryAfter)).concat(
-                Array.from(vp.querySelectorAll(headerAfterQuery)),
-              ) as HTMLElement[];
-            } else {
-              after = [];
-            }
+            const headers = [header];
+            if (floating) headers.push(floating);
 
-            const q = Array.from(vp.querySelectorAll(query)) as HTMLElement[];
-            q.push(header);
-            if (floating) q.push(floating);
-
-            q.forEach((c) => {
+            headers.forEach((c) => {
               if (!isHTMLElement(c)) return;
               c.style.removeProperty("min-width");
               c.style.removeProperty("max-width");
@@ -131,14 +121,28 @@ export function ResizeHandler<T>({
               }
             });
 
+            const widthPx = `${width + deltaRef.current}px`;
+
+            cells.forEach((c) => {
+              if (!isHTMLElement(c)) return;
+              c.style.minWidth = widthPx;
+              c.style.maxWidth = widthPx;
+              c.style.width = widthPx;
+            });
+
+            const headerAfterQuery = `${headerQuery} ~ [data-ln-header-cell="true"]`;
+            let after: HTMLElement[];
+            if (pin !== "end") {
+              after = Array.from(vp.querySelectorAll(headerAfterQuery)) as HTMLElement[];
+            } else {
+              after = [];
+            }
+
             after.forEach((c) => {
               if (!isHTMLElement(c)) return;
               const thisPin = c.getAttribute("data-ln-pin");
 
-              if (pin === "end" && thisPin === "end") {
-                return;
-              }
-
+              if (pin === "end" && thisPin === "end") return;
               if (pin !== "end" && thisPin === "end") return;
 
               const colindex = getColIndexFromEl(c);

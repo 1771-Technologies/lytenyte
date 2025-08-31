@@ -6,6 +6,8 @@ export function getSpanFn<T>(
   visibleColumns: Column<T>[],
   span: "row" | "col",
 ) {
+  if (visibleColumns.every((c) => !(span === "col" ? c.colSpan : c.rowSpan))) return null;
+
   return (r: number, c: number) => {
     const row = rds.rowByIndex(r);
     const column = visibleColumns[c];

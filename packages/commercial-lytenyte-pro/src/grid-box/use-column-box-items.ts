@@ -1,4 +1,4 @@
-import { useMemo, type ReactNode } from "react";
+import { useMemo } from "react";
 import type { Column, DropEventParams, Grid } from "../+types.js";
 import type { GridBoxItem } from "./+types.js";
 import { useEvent } from "@1771technologies/lytenyte-react-hooks";
@@ -23,11 +23,11 @@ export interface UseColumnBoxItemArgs<T> {
   readonly draggable?: boolean;
   readonly itemFilter?: (c: Column<T>) => boolean;
 
+  readonly placeholder?: (el: HTMLElement) => HTMLElement;
   readonly onRootDrop?: (p: OnRootDropParams<T>) => void;
   readonly onDrop?: (p: OnDropParams<T>) => void;
   readonly onAction?: (c: OnActionParams<T>) => void;
   readonly onDelete?: (c: OnActionParams<T>) => void;
-  readonly dragPlaceholder?: (c: Column<T>) => ReactNode;
 }
 
 export function useColumnBoxItems<T>({
@@ -38,8 +38,8 @@ export function useColumnBoxItems<T>({
   onAction,
   orientation,
   draggable = true,
-  dragPlaceholder,
   itemFilter,
+  placeholder,
 }: UseColumnBoxItemArgs<T>) {
   const columns = grid.state.columns.useValue();
   const base = grid.state.columnBase.useValue();
@@ -75,8 +75,8 @@ export function useColumnBoxItems<T>({
           source: "columns",
           draggable,
           data: c,
+          dragPlaceholder: placeholder,
           dragData: data,
-          dragPlaceholder: dragPlaceholder ? () => dragPlaceholder?.(c) : undefined,
           onAction: (el) => onAction?.({ column: c, el }),
           onDelete: (el) => onDelete?.({ column: c, el }),
           onDrop: (p) => {
@@ -98,13 +98,13 @@ export function useColumnBoxItems<T>({
     base.uiHints?.aggsAllowed?.length,
     base.uiHints?.rowGroupable,
     columns,
-    dragPlaceholder,
     draggable,
     gridId,
     itemFilter,
     onAction,
     onDelete,
     onDrop,
+    placeholder,
   ]);
 
   const onRootDropEv = useEvent((p: DropEventParams) => {

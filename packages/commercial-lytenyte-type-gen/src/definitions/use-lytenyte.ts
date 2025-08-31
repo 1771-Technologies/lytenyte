@@ -166,7 +166,7 @@ const RowFullWidthPredicate: PropertyType = {
   kind: "property",
   name: "rowFullWidthPredicate",
   optional: true,
-  value: "RowFullWidthPredicate<T>",
+  value: "RowFullWidthPredicate<T> | null",
   tsDoc: `The function predicate used to determine if a row should be rendered as full width.`,
   doc: { en: `` },
 };

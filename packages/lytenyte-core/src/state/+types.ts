@@ -1,4 +1,4 @@
-import type { LayoutState } from "@1771technologies/lytenyte-shared";
+import type { LayoutState, WriteSignal } from "@1771technologies/lytenyte-shared";
 import type {
   Column,
   EditActivePosition,
@@ -7,7 +7,6 @@ import type {
   HeaderGroupCellLayout,
   PositionUnion,
 } from "../+types";
-import type { Atom, createStore } from "@1771technologies/atom";
 
 export interface InternalAtoms {
   readonly headerRows: GridAtomReadonly<number>;
@@ -15,7 +14,6 @@ export interface InternalAtoms {
   readonly headerHeightTotal: GridAtomReadonly<number>;
   readonly xScroll: GridAtom<number>;
   readonly yScroll: GridAtom<number>;
-  readonly refreshKey: GridAtom<number>;
 
   readonly layout: LayoutState;
 
@@ -36,12 +34,10 @@ export interface InternalAtoms {
   readonly rowGroupColumnState: GridAtom<Record<string, Partial<Column<any>>>>;
 
   // Row selection
-  readonly rowSelectedIds: Atom<Set<string>>;
+  readonly rowSelectedIds: WriteSignal<Set<string>>;
   readonly rowSelectionPivot: GridAtom<string | null>;
   readonly rowSelectionLastWasDeselect: GridAtom<boolean>;
 
   // Column Moving
   readonly draggingHeader: GridAtom<HeaderGroupCellLayout | null>;
-
-  readonly store: ReturnType<typeof createStore>;
 }

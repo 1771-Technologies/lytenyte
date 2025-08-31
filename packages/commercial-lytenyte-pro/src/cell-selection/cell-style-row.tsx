@@ -1,7 +1,7 @@
 import { useMemo, type CSSProperties } from "react";
-import type { DataRect } from "../+types";
 import { useGridRoot } from "../context";
 import { getTranslate, sizeFromCoord } from "@1771technologies/lytenyte-shared";
+import type { DataRectSplit } from "./split-cell-selection-rect";
 
 export function CellStyleRow({
   rect,
@@ -10,7 +10,7 @@ export function CellStyleRow({
   isRowPinnedBottom,
   isPivot,
 }: {
-  rect: DataRect;
+  rect: DataRectSplit;
   isRowPinnedTop?: boolean;
   isDeselect?: boolean;
   isRowPinnedBottom?: boolean;
@@ -115,6 +115,11 @@ export function CellStyleRow({
       data-ln-cell-selection-rect
       data-ln-cell-selection-is-deselect={isDeselect}
       data-ln-cell-selection-is-pivot={isPivot}
+      data-ln-cell-selection-is-unit={rect.isUnit}
+      data-ln-cell-selection-border-top={rect.borderTop}
+      data-ln-cell-selection-border-bottom={rect.borderBottom}
+      data-ln-cell-selection-border-start={rect.borderStart}
+      data-ln-cell-selection-border-end={rect.borderEnd}
     />
   );
 }

@@ -141,6 +141,11 @@ export interface GridAtom<T> {
    *   @group Grid Atom
    */
   readonly useValue: () => T;
+
+  /**
+   * Reactive retrieve actual signal
+   */
+  readonly $: () => T;
 }
 
 /**
@@ -173,6 +178,11 @@ export interface GridAtomReadonly<T> {
    *   @group Grid Atom
    */
   readonly useValue: () => T;
+
+  /**
+   * Reactive retrieve actual signal
+   */
+  readonly $: () => T;
 }
 
 /**
@@ -197,6 +207,11 @@ export interface GridAtomReadonlyUnwatchable<T> {
    *   @group Grid Atom
    */
   readonly useValue: () => T;
+
+  /**
+   * Reactive retrieve actual signal
+   */
+  readonly $: () => T;
 }
 
 /**

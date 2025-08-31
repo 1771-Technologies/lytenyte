@@ -68,6 +68,7 @@ function Component({ data = bankData }: { data?: any[] }) {
   });
   const groupBox = GB.useRowGroupBoxItems({
     grid: g,
+    includeGroupables: true,
   });
   const aggBox = GB.useAggregationBoxItems({
     grid: g,

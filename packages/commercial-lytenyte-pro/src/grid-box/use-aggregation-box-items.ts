@@ -18,7 +18,6 @@ export function useAggregationBoxItems<T>({ grid, orientation }: UseAggregationB
         const column = grid.api.columnById(id);
 
         const name = column?.name ?? column?.id ?? id;
-        const fn = typeof agg.fn === "string" ? agg.fn : "Fn(x)";
 
         return {
           draggable: false,
@@ -27,7 +26,7 @@ export function useAggregationBoxItems<T>({ grid, orientation }: UseAggregationB
           source: "aggregation",
           data: { id, agg } as any,
           dragData: {},
-          label: `${name} ${fn}`,
+          label: name,
           onAction: () => {},
           onDelete: () => {
             grid.state.aggModel.set((prev) => {

@@ -15,6 +15,7 @@ export function sortModelToSortItems<T>(
           isCustom: true,
           sortDirection,
           columnId: c.columnId ?? undefined,
+          originalSort: c,
         } satisfies SortItem;
       }
 
@@ -27,7 +28,7 @@ export function sortModelToSortItems<T>(
         if (opts?.nullsFirst) value += "_nulls_first";
         if (opts?.caseInsensitive) value += "_insensitive";
         if (opts?.ignorePunctuation) value += "_ignore";
-        if (opts?.trimWhitespace) value += "trim";
+        if (opts?.trimWhitespace) value += "_trim";
       }
       if (c.sort.kind === "number") {
         const opts = c.sort.options;

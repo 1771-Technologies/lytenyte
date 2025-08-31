@@ -24,7 +24,10 @@ export const Leaf = forwardRef<HTMLLIElement, FilterTreeLeafProps & JSX.Intrinsi
           style={{ ...props.style, ...item.attrs.style }}
           onClick={() => value.onCheckChange()}
           onKeyDown={(ev) => {
-            if (ev.key === " ") value.onCheckChange();
+            if (ev.key === " ") {
+              ev.preventDefault();
+              value.onCheckChange();
+            }
           }}
         />
       </FilterTreeItemContext.Provider>
