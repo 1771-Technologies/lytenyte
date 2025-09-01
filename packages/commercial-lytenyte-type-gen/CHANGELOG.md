@@ -1,5 +1,11 @@
 # @1771technologies/lytenyte-typegen
 
+## 1.0.5
+
+### Patch Changes
+
+- Disable row cache
+
 ## 1.0.4
 
 ### Patch Changes

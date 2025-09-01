@@ -551,7 +551,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
     const rds = rowDataSource();
 
-    const { layout, cache } = layoutState$();
+    const { layout } = layoutState$();
 
     const topCount = rowDataStore.rowTopCount.$();
     const botCount = rowDataStore.rowBottomCount.$();
@@ -590,7 +590,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     const focus = internal_focusActive();
     const view = makeRowLayout({
       view: n,
-      viewCache: cache,
+      viewCache: new Map(),
       layout,
       rds: rowDataStore,
       columns,
