@@ -1,8 +1,8 @@
 import {
   getNearestRow,
   getRowIndexFromEl,
+  SCROLL_WIDTH_VARIABLE_USE,
   sizeFromCoord,
-  VIEWPORT_WIDTH_VARIABLE_USE,
 } from "@1771technologies/lytenyte-shared";
 import type { RowFullWidthRowLayout, RowNode, RowNormalRowLayout } from "../+types";
 import { useGridRoot } from "../context";
@@ -166,12 +166,10 @@ function RowDetailImpl<T>({ row, rowIndex }: { row: RowNode<T>; rowIndex: number
       ref={setRef}
       role="gridcell"
       style={{
-        gridColumnStart: "1",
-        gridColumnEnd: "2",
-        gridRowStart: "1",
-        gridRowEnd: "2",
-        marginTop: rowHeight,
         pointerEvents: "all",
+        position: "absolute",
+        left: 0,
+        width: SCROLL_WIDTH_VARIABLE_USE,
       }}
     >
       <div
@@ -181,7 +179,8 @@ function RowDetailImpl<T>({ row, rowIndex }: { row: RowNode<T>; rowIndex: number
           position: "sticky",
           right: rtl ? "0px" : undefined,
           left: rtl ? undefined : "0px",
-          width: VIEWPORT_WIDTH_VARIABLE_USE,
+          marginTop: rowHeight,
+          width: cx.grid.state.viewportWidthInner.useValue(),
           height: isAuto ? "auto" : height,
         }}
       >

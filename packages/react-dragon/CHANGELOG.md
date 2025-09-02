@@ -1,5 +1,15 @@
 # @1771technologies/lytenyte-dragon
 
+## 1.0.6
+
+### Patch Changes
+
+- Version
+- Updated dependencies
+  - @1771technologies/lytenyte-dom-utils@1.0.6
+  - @1771technologies/lytenyte-js-utils@1.0.6
+  - @1771technologies/lytenyte-react-hooks@1.0.6
+
 ## 1.0.5
 
 ### Patch Changes

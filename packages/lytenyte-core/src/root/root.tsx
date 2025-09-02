@@ -72,6 +72,7 @@ export function Root<T = any>({ grid, children, ...events }: PropsWithChildren<R
       grid.state.viewportWidthOuter.set(vp.offsetWidth);
       grid.state.viewportWidthInner.set(vp.clientWidth);
       grid.state.viewportHeightInner.set(vp.clientHeight);
+      console.log(vp.clientWidth);
     });
 
     grid.state.viewportHeightOuter.set(vp.offsetHeight);
