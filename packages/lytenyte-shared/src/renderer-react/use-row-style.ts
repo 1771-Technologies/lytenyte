@@ -21,6 +21,7 @@ export function useRowStyle(
       opacity: rowIsFocusRow ? "0" : undefined,
       whiteSpace: "nowrap",
       display: "flex",
+      flexWrap: "wrap",
     };
 
     return { ...propStyles, ...styles, ...overrideStyles };

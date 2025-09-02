@@ -51,8 +51,6 @@ function Component({ data = bankData }: { data?: any[] }) {
     columns,
     rowDataSource: ds,
 
-    rowFullWidthPredicate: (p) => p.rowIndex === 3,
-
     rowDetailExpansions: new Set("3"),
 
     rowDetailRenderer: () => {
