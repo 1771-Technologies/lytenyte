@@ -40,6 +40,7 @@ export interface UseFilterTreeArgs<T> {
   treeItemHeight?: number;
   pivotMode?: boolean;
   applyChangesImmediately?: boolean;
+  query?: string;
 }
 
 export function useFilterTree<T>({
@@ -48,6 +49,7 @@ export function useFilterTree<T>({
   treeItemHeight = 24,
   pivotMode,
   applyChangesImmediately = false,
+  query,
 }: UseFilterTreeArgs<T>): UseTreeFilterReturn<T> {
   const [items, setItems] = useState<FilterInFilterItem[]>([]);
   const [expansions, onExpansionChange] = useState({});
@@ -98,9 +100,14 @@ export function useFilterTree<T>({
     fetchItems();
   }, [column, fetchItems, rds]);
 
+  const filteredItems = useMemo<FilterInFilterItem[]>(() => {
+    if (!query) return items;
+    return items.filter((c) => c.label.toLowerCase().includes(query.toLowerCase()));
+  }, [items, query]);
+
   const itemsWithSelectAll = useMemo<FilterInFilterItem[]>(() => {
-    return [{ id: "__LNG__SELECT_ALL", label: "(Select All)", value: "" }, ...items];
-  }, [items]);
+    return [{ id: "__LNG__SELECT_ALL", label: "(Select All)", value: "" }, ...filteredItems];
+  }, [filteredItems]);
 
   const virt = useVirtualizedTree({
     itemHeight: treeItemHeight,

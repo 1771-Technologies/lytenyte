@@ -22,7 +22,7 @@ const HeaderCellImpl = forwardRef<
   HTMLDivElement,
   JSX.IntrinsicElements["div"] & HeaderCellProps<any>
 >(function HeaderCell(
-  { cell, resizerAs: resizerAs, resizerStyle, resizerClassName, children, ...props },
+  { cell, resizerAs, resizerStyle, resizerClassName, children, ...props },
   forwarded,
 ) {
   const grid = useGridRoot().grid;

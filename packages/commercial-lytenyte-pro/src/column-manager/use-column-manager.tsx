@@ -13,7 +13,7 @@ export function useColumnManager<T>({ grid, query }: UseColumnManagerProps<T>) {
   const filteredColumns = useMemo(() => {
     if (!query) return columns;
 
-    return columns.filter((c) => (c.name ?? c.id).toLowerCase().includes(query));
+    return columns.filter((c) => (c.name ?? c.id).toLowerCase().includes(query.toLowerCase()));
   }, [columns, query]);
 
   const items = useTreeViewPaths(filteredColumns, true);
