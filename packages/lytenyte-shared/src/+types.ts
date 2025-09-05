@@ -90,7 +90,9 @@ export interface RowDataStore<T> {
   /**
    * Retrieves the row node for the given row index.
    */
-  readonly rowForIndex: (row: number) => GridAtomReadonlyUnwatchable<RowNode<T> | null>;
+  readonly rowForIndex: (
+    row: number,
+  ) => GridAtomReadonlyUnwatchable<RowNode<T> | null>;
 
   /**
    * Clears the cached row node data in the store.
@@ -305,6 +307,17 @@ export interface RowGroup {
    */
   readonly depth: number;
 }
+
+/**
+ * Indicates the pinning position of a row:
+ * - "top": pinned to top,
+ * - "bottom": pinned to bottom,
+ * - null: not pinned.
+ * Pinned rows remain visible during scrolling.
+ *
+ * @group Row
+ */
+export type RowPin = "top" | "bottom" | null;
 
 /**
  * Options used for date-based sorting.

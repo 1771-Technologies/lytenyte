@@ -40,8 +40,8 @@
     "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.5",
     "alasql": "^4.6.6",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
     "tsx": "^4.20.3",
     "typedoc": "^0.28.10",
     "typedoc-plugin-markdown": "^4.8.1"

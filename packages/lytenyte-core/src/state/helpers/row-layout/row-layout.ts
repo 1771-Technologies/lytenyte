@@ -75,29 +75,11 @@ export function makeRowLayout<T>({ view: n, viewCache, layout, rds, columns }: M
    * BOTTOM ROW LAYOUT END
    */
   return {
-    top: top.map((t) => partition(n, t)),
-    center: center.map((t) => partition(n, t)),
-    bottom: bottom.map((t) => partition(n, t)),
+    top: top,
+    center: center,
+    bottom: bottom,
   };
 }
-const partition = <T>(n: SpanLayout, row: RowLayout<T>): RowLayout<T> => {
-  if (row.kind === "full-width") return row;
-  let found = false;
-  const cells = [
-    ...row.cells.slice(0, n.colStartEnd),
-    ...row.cells.slice(n.colCenterStart, n.colCenterEnd).map((c) => {
-      if (!found && c.isDeadCol && !c.isDeadRow) return { ...c, isDeadCol: false, isDeadRow: true };
-      found = true;
-      return c;
-    }),
-    ...row.cells.slice(n.colEndStart, n.colEndEnd),
-  ];
-
-  return {
-    ...row,
-    cells,
-  };
-};
 
 interface HandleViewLayoutArgs<T> {
   readonly columns: Column<T>[];
@@ -223,7 +205,7 @@ function handleViewLayout<T>({
         rowIndex: r,
         rowSpan: cellSpec?.[c * 4] || 1,
         colSpan: cellSpec?.[c * 4 + 1] || 1,
-        rowPin: "top",
+        rowPin,
         colPin: "end",
         isDeadCol,
         isDeadRow,
@@ -240,7 +222,7 @@ function handleViewLayout<T>({
       rowIndex: r,
       kind: "row",
       cells: cellLayout,
-      rowPin: "top",
+      rowPin,
       row: node,
       rowLastPinTop,
     };

@@ -247,6 +247,14 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     { dirty: (prev, next) => !equal(prev, next) },
   );
 
+  const internal_colBounds = computed<[number, number]>(
+    () => {
+      const b = bounds();
+      return [b.colCenterStart, b.colCenterEnd];
+    },
+    { dirty: (l, r) => !equal(l, r) },
+  );
+
   const columnCount$ = computed(() => {
     const view = columnView();
     return view.visibleColumns.length;
@@ -423,6 +431,11 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   });
 
   const heightTotal = computed(() => yPositions().at(-1)!);
+
+  const hasSpans = computed(() => {
+    const visible = columnMeta().columnsVisible;
+    return !visible.every((c) => !(c.colSpan || c.rowSpan));
+  });
 
   const rowView = computed<GridView<T>["rows"]>(() => {
     if (!viewport())
@@ -678,6 +691,8 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       yScroll: makeAtom(yScroll),
 
       layout: layoutState,
+      colBounds: makeAtom(internal_colBounds),
+      hasSpans: makeAtom(hasSpans),
 
       focusActive: makeAtom(internal_focusActive),
       focusPrevColIndex: makeAtom(internal_focusPrevCol),

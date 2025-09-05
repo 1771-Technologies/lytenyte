@@ -18,7 +18,9 @@ const RowImpl = forwardRef<HTMLDivElement, Omit<JSX.IntrinsicElements["div"], "o
   function Rows({ row, ...props }, forwarded) {
     const ctx = useGridRoot().grid;
 
-    const rowMeta = useRowContextValue(ctx, row.row);
+    const yPos = ctx.state.yPositions.useValue();
+    const rowMeta = useRowContextValue(ctx, row.row, yPos);
+    const hasSpans = ctx.internal.hasSpans.useValue();
 
     const accepted = props.accepted ?? empty;
 
@@ -33,10 +35,13 @@ const RowImpl = forwardRef<HTMLDivElement, Omit<JSX.IntrinsicElements["div"], "o
           rowFirstPinBottom={row.rowFirstPinBottom}
           rowLastPinTop={row.rowLastPinTop}
           rowIsFocusRow={row.rowIsFocusRow ?? false}
-          yPositions={ctx.state.yPositions.useValue()}
+          rowPin={row.rowPin}
+          topOffset={ctx.view.useValue().rows.rowTopTotalHeight}
+          yPositions={yPos}
+          hasSpans={hasSpans}
           data-ln-row-selected={rowMeta.selected}
         >
-          <CellSpacerNoPin />
+          <CellSpacerNoPin xPositions={rowMeta.xPositions} />
           {props.children}
           <RowDetailRow layout={row} />
         </RowReact>

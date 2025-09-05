@@ -223,7 +223,7 @@ function handleViewLayout<T>({
         rowIndex: r,
         rowSpan: cellSpec?.[c * 4] || 1,
         colSpan: cellSpec?.[c * 4 + 1] || 1,
-        rowPin: "top",
+        rowPin,
         colPin: "end",
         isDeadCol,
         isDeadRow,
@@ -240,7 +240,7 @@ function handleViewLayout<T>({
       rowIndex: r,
       kind: "row",
       cells: cellLayout,
-      rowPin: "top",
+      rowPin,
       row: node,
       rowLastPinTop,
     };

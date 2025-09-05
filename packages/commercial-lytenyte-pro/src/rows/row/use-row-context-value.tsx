@@ -6,11 +6,18 @@ import type { RowMetaData } from "./context";
 export function useRowContextValue(
   grid: Grid<any> & { internal: InternalAtoms },
   row: GridAtomReadonlyUnwatchable<RowNode<any> | null>,
+  yPositions: Uint32Array,
 ) {
   const r = row.useValue();
 
+  const xPositions = grid.state.xPositions.useValue();
+
   const [indeterminate, setIndeterminate] = useState(false);
   const [selected, setSelected] = useState(false);
+  const colBounds = grid.internal.colBounds.useValue();
+  const rtl = grid.state.rtl.useValue();
+  const base = grid.state.columnBase.useValue();
+  const renderers = grid.state.cellRenderers.useValue();
 
   useEffect(() => {
     function handleSelection() {
@@ -34,8 +41,18 @@ export function useRowContextValue(
   }, [grid.state.rowDataSource, grid.state.rowSelectedIds, r]);
 
   const value = useMemo<RowMetaData>(() => {
-    return { selected, indeterminate };
-  }, [indeterminate, selected]);
+    return {
+      selected,
+      indeterminate,
+      colBounds,
+      row: r,
+      xPositions,
+      yPositions,
+      rtl,
+      base,
+      renderers,
+    };
+  }, [base, colBounds, indeterminate, r, renderers, rtl, selected, xPositions, yPositions]);
 
   return value;
 }
