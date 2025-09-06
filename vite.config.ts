@@ -1,11 +1,32 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import { playwright } from "@vitest/browser/providers/playwright";
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
   test: {
-    workspace: [
+    projects: [
+      {
+        extends: `${__dirname}/vite.config.ts`,
+        test: {
+          name: "Browser",
+          include: ["./packages/**/*.pt.?(c|m)[jt]s?(x)", "src/**/*.pt.?(c|m)[jt]s?(x)"],
+          exclude: ["./packages/**/*.test.?(c|m)[jt]s?(x)", "src/**/*.test.?(c|m)[jt]s?(x)"],
+          testTimeout: 3000,
+          browser: {
+            provider: playwright(),
+            enabled: true,
+            ui: false,
+            headless: true,
+            instances: [{ browser: "chromium" }],
+            viewport: {
+              height: 1280,
+              width: 1960,
+            },
+          },
+        },
+      },
       {
         extends: `${__dirname}/vite.config.ts`,
         test: {
