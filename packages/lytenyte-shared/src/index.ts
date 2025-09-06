@@ -136,7 +136,6 @@ export { getNearestRow } from "./navigation/getters/get-nearest-row.js";
 
 export { rowIndexForSection } from "./row/row-index-for-section.js";
 
-export { CellReact } from "./renderer-react/cell.js";
 export { RowReact } from "./renderer-react/row.js";
 export { RowsContainerReact } from "./renderer-react/rows-container.js";
 export { RowsBottomReact, RowsCenterReact, RowsTopReact } from "./renderer-react/rows-sections.js";
