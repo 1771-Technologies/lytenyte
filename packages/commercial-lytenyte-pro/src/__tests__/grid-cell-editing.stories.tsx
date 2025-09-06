@@ -50,6 +50,7 @@ function Component({ data = bankData }: { data?: any[] }) {
     gridId: useId(),
     columns,
     rowDataSource: ds,
+    columnMarkerEnabled: true,
 
     editCellMode: "cell",
     editClickActivator: "single",

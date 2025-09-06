@@ -334,6 +334,14 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     { dirty: (prev, next) => !equal(prev, next) },
   );
 
+  const internal_colBounds = computed<[number, number]>(
+    () => {
+      const b = bounds();
+      return [b.colCenterStart, b.colCenterEnd];
+    },
+    { dirty: (l, r) => !equal(l, r) },
+  );
+
   /**
    * COLUMN VIEW
    * Compute the column layout. This impacts both the row layout and header layout. Column layout
@@ -525,6 +533,11 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
   const heightTotal = computed(() => yPositions().at(-1)!);
 
+  const hasSpans = computed(() => {
+    const visible = columnMeta().columnsVisible;
+    return cellSelectionMode() !== "none" || !visible.every((c) => !(c.colSpan || c.rowSpan));
+  });
+
   const rowView = computed<GridView<T>["rows"]>(() => {
     if (!viewport())
       return {
@@ -551,7 +564,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
     const rds = rowDataSource();
 
-    const { layout } = layoutState$();
+    const { layout, cache } = layoutState$();
 
     const topCount = rowDataStore.rowTopCount.$();
     const botCount = rowDataStore.rowBottomCount.$();
@@ -590,7 +603,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     const focus = internal_focusActive();
     const view = makeRowLayout({
       view: n,
-      viewCache: new Map(),
+      viewCache: cache,
       layout,
       rds: rowDataStore,
       columns,
@@ -801,6 +814,8 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       yScroll: makeAtom(yScroll),
 
       layout: layoutState,
+      colBounds: makeAtom(internal_colBounds),
+      hasSpans: makeAtom(hasSpans),
 
       focusActive: makeAtom(internal_focusActive),
       focusPrevColIndex: makeAtom(internal_focusPrevCol),

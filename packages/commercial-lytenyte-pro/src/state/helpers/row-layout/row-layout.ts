@@ -122,9 +122,6 @@ function handleViewLayout<T>({
   container,
   rowForIndex,
 }: HandleViewLayoutArgs<T>) {
-  /**
-   * TOP ROW LAYOUT START
-   */
   for (let r = rowStart; r < rowEnd; r++) {
     const status = layout.special[r];
     const computed = layout.computed[r];
@@ -142,7 +139,9 @@ function handleViewLayout<T>({
 
     if (status === FULL_WIDTH) {
       const row: RowLayout<T> = {
-        id: node.get()?.id ?? `${r}`,
+        get id() {
+          return node.get()?.id ?? `${r}`;
+        },
         rowIndex: r,
         kind: "full-width",
         rowPin,
@@ -223,7 +222,7 @@ function handleViewLayout<T>({
         rowIndex: r,
         rowSpan: cellSpec?.[c * 4] || 1,
         colSpan: cellSpec?.[c * 4 + 1] || 1,
-        rowPin: "top",
+        rowPin,
         colPin: "end",
         isDeadCol,
         isDeadRow,
@@ -236,11 +235,13 @@ function handleViewLayout<T>({
     }
 
     const row: RowLayout<T> = {
-      id: node.get()?.id ?? `${r}`,
+      get id() {
+        return node.get()?.id ?? `${r}`;
+      },
       rowIndex: r,
       kind: "row",
       cells: cellLayout,
-      rowPin: "top",
+      rowPin,
       row: node,
       rowLastPinTop,
     };

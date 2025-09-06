@@ -22,7 +22,7 @@ export const RowsTopReact = forwardRef<
         height,
         position: "sticky",
         top,
-        zIndex: 3,
+        zIndex: 4,
         minWidth: "100%",
       }}
     />

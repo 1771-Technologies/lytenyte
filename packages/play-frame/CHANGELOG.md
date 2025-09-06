@@ -1,5 +1,11 @@
 # @1771technologies/play-frame
 
+## 0.0.7
+
+### Patch Changes
+
+- Version - efficient render calculation
+
 ## 0.0.6
 
 ### Patch Changes

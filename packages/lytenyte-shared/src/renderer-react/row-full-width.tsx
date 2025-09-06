@@ -3,16 +3,20 @@ import { useRowStyle } from "./use-row-style.js";
 import { sizeFromCoord } from "../utils/size-from-coord.js";
 import { VIEWPORT_WIDTH_VARIABLE_USE } from "../+constants.js";
 import { DropWrap, type DropWrapProps } from "@1771technologies/lytenyte-dragon";
+import type { RowPin } from "../+types.js";
 
 interface RowFullWidthProps extends DropWrapProps {
   readonly space?: "viewport" | "scroll-width";
   readonly rowIndex: number;
+  readonly rowPin: RowPin;
+  readonly topOffset: number;
   readonly rowLastPinTop: boolean | undefined;
   readonly rowFirstPinBottom: boolean | undefined;
   readonly gridId: string;
 
   readonly yPositions: Uint32Array;
   readonly rowIsFocusRow: boolean;
+  readonly hasSpans: boolean;
 
   readonly detail: ReactNode;
   readonly detailHeight: number;
@@ -28,6 +32,9 @@ export const RowFullWidthReact = forwardRef<
     children,
     detail,
     rowIndex,
+    rowPin,
+    topOffset,
+    hasSpans,
     rowFirstPinBottom,
     rowIsFocusRow,
     rowLastPinTop,
@@ -57,14 +64,23 @@ export const RowFullWidthReact = forwardRef<
       /** Data attributes end */
       tabIndex={-1}
       ref={forwarded}
-      style={useRowStyle(yPositions, rowIndex, rowIsFocusRow, props.style, {
-        right: rtl ? "0px" : undefined,
-        left: rtl ? undefined : "0px",
-        position: "sticky",
-        width: space === "scroll-width" ? undefined : VIEWPORT_WIDTH_VARIABLE_USE,
-        gridTemplateColumns: `${space === "scroll-width" ? "100%" : VIEWPORT_WIDTH_VARIABLE_USE}`,
-        pointerEvents: "all",
-      })}
+      style={useRowStyle(
+        yPositions,
+        rowIndex,
+        rowPin,
+        topOffset,
+        rowIsFocusRow,
+        hasSpans,
+        props.style,
+        {
+          right: rtl ? "0px" : undefined,
+          left: rtl ? undefined : "0px",
+          position: "sticky",
+          width: space === "scroll-width" ? undefined : VIEWPORT_WIDTH_VARIABLE_USE,
+          gridTemplateColumns: `${space === "scroll-width" ? "100%" : VIEWPORT_WIDTH_VARIABLE_USE}`,
+          pointerEvents: "all",
+        },
+      )}
     >
       <div
         role="gridcell"

@@ -18,6 +18,8 @@ export interface InternalAtoms {
   readonly yScroll: GridAtom<number>;
 
   readonly layout: LayoutState;
+  readonly hasSpans: GridAtomReadonly<boolean>;
+  readonly colBounds: GridAtomReadonly<[number, number]>;
 
   // For focus management
   readonly focusActive: GridAtom<PositionUnion | null>;

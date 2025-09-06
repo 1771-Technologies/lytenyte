@@ -384,6 +384,7 @@ export function makeClientTreeDataSource<T>(
         }
 
         d[source] = next as any;
+        cache.delete(source);
       }
     }
 
@@ -509,6 +510,7 @@ export function makeClientTreeDataSource<T>(
         data.set(d);
         const grid = peek(grid$);
         grid?.state.rowDataStore.rowClearCache();
+        cache.clear();
       },
 
       rowExpand: (expansions) => {

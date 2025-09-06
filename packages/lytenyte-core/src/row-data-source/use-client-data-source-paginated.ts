@@ -429,6 +429,7 @@ export function makeClientDataSourcePaginated<T>(
         }
 
         d[source] = next as any;
+        cache.delete(source);
       }
     }
 
@@ -492,6 +493,7 @@ export function makeClientDataSourcePaginated<T>(
         data.set(d);
         const grid = peek(grid$);
         grid?.state.rowDataStore.rowClearCache();
+        cache.clear();
       },
       rowAdd: (newRows, place = "end") => {
         data.set((prev) => {

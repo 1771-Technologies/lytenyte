@@ -1,5 +1,11 @@
 # @1771technologies/lytenyte-typegen
 
+## 1.0.8
+
+### Patch Changes
+
+- Version - efficient render calculation
+
 ## 1.0.7
 
 ### Patch Changes

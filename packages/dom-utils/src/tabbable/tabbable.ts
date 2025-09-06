@@ -8,7 +8,7 @@ const isFrame = (el: any): el is HTMLIFrameElement => isHTMLElement(el) && el.ta
 const hasNegativeTabIndex = (el: Element) => parseInt(el.getAttribute("tabindex") || "0", 10) < 0;
 
 const focusableSelector =
-  /*#__PURE__*/ "input:not([type='hidden']):not([disabled]), select:not([disabled]), " +
+  "input:not([type='hidden']):not([disabled]), select:not([disabled]), " +
   "textarea:not([disabled]), a[href], button:not([disabled]), [tabindex], " +
   "iframe, object, embed, area[href], audio[controls], video[controls], " +
   "[contenteditable]:not([contenteditable='false']), details > summary:first-of-type";

@@ -307,6 +307,17 @@ export interface RowGroup {
 }
 
 /**
+ * Indicates the pinning position of a row:
+ * - "top": pinned to top,
+ * - "bottom": pinned to bottom,
+ * - null: not pinned.
+ * Pinned rows remain visible during scrolling.
+ *
+ * @group Row
+ */
+export type RowPin = "top" | "bottom" | null;
+
+/**
  * Options used for date-based sorting.
  *
  * @group Sort

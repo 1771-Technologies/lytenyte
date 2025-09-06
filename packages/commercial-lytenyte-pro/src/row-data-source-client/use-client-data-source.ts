@@ -607,6 +607,7 @@ export function makeClientDataSource<T>(
         }
 
         d[source] = next as any;
+        cache.delete(source);
       }
     }
 
@@ -732,6 +733,7 @@ export function makeClientDataSource<T>(
         data.set(d);
         const grid = peek(grid$);
         grid?.state.rowDataStore.rowClearCache();
+        cache.clear();
       },
 
       rowData: (section) => {

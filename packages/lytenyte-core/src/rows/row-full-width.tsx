@@ -20,8 +20,10 @@ const RowFullWidthImpl = forwardRef<
   const grid = useGridRoot().grid;
   const Renderer = grid.state.rowFullWidthRenderer.useValue().fn;
   const row = layout.row.useValue();
+  const yPositions = grid.state.yPositions.useValue();
+  const hasSpans = grid.internal.hasSpans.useValue();
 
-  const meta = useRowContextValue(grid, layout.row);
+  const meta = useRowContextValue(grid, layout.row, yPositions);
 
   return (
     <RowFullWidthReact
@@ -31,12 +33,15 @@ const RowFullWidthImpl = forwardRef<
       detail={<RowDetailRow layout={layout} />}
       detailHeight={grid.api.rowDetailRenderedHeight(row ?? "")}
       gridId={grid.state.gridId.useValue()}
-      rtl={grid.state.rtl.useValue()}
+      rtl={meta.rtl}
+      hasSpans={hasSpans}
       rowFirstPinBottom={layout.rowFirstPinBottom}
       rowLastPinTop={layout.rowLastPinTop}
       rowIndex={layout.rowIndex}
       rowIsFocusRow={layout.rowIsFocusRow ?? false}
-      yPositions={grid.state.yPositions.useValue()}
+      rowPin={layout.rowPin}
+      topOffset={grid.view.useValue().rows.rowTopTotalHeight}
+      yPositions={yPositions}
       space={space}
       data-ln-row-selected={meta.selected}
     >

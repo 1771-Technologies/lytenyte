@@ -371,6 +371,7 @@ export function makeClientDataSource<T>(
         }
 
         d[source] = next as any;
+        cache.delete(source);
       }
     }
 
@@ -471,6 +472,7 @@ export function makeClientDataSource<T>(
         grid?.state.rowDataStore.rowClearCache();
       },
       rowSetCenterData: (d: any[]) => {
+        cache.clear();
         data.set(d);
         const grid = peek(grid$);
         grid?.state.rowDataStore.rowClearCache();
