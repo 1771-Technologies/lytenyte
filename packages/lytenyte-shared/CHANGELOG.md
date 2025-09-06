@@ -1,5 +1,16 @@
 # @1771technologies/lytenyte-shared
 
+## 1.0.8
+
+### Patch Changes
+
+- Version - efficient render calculation
+- Updated dependencies
+  - @1771technologies/lytenyte-dom-utils@1.0.8
+  - @1771technologies/lytenyte-js-utils@1.0.8
+  - @1771technologies/lytenyte-dragon@1.0.8
+  - @1771technologies/lytenyte-react-hooks@1.0.8
+
 ## 1.0.7
 
 ### Patch Changes

@@ -3,7 +3,7 @@ import { useGridRoot } from "../context";
 export function CellSpacePinStart({ xPositions: x }: { xPositions: Uint32Array }) {
   const ctx = useGridRoot().grid;
   const bounds = ctx.state.viewBounds.useValue();
-  const offset = x[bounds.colCenterStart - bounds.colStartEnd];
+  const offset = x[bounds.colCenterStart] - x[bounds.colStartEnd];
 
   const meta = ctx.state.columnMeta.useValue();
   if (meta.columnVisibleStartCount === 0) return null;
