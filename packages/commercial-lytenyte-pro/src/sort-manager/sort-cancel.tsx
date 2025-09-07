@@ -1,7 +1,7 @@
 import { useEvent, useSlot, type SlotComponent } from "@1771technologies/lytenyte-react-hooks";
 import { forwardRef, type JSX } from "react";
-import { useSortManagerCtx } from "./context";
-import { sortModelToSortItems } from "./utils/sort-model-to-sort-items";
+import { useSortManagerCtx } from "./context.js";
+import { sortModelToSortItems } from "./utils/sort-model-to-sort-items.js";
 import { itemsWithIdToMap } from "@1771technologies/lytenyte-js-utils";
 
 export interface SortCancelProps {

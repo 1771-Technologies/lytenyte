@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from "vitest";
-import { runWithBackoff } from "../run-with-backoff";
+import { runWithBackoff } from "../run-with-backoff.js";
 
 describe("runWithBackoffTest", () => {
   test("should run correctly", async () => {

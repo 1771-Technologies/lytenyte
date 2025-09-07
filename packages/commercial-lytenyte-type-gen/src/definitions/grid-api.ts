@@ -1,4 +1,4 @@
-import type { InterfaceType, InterfaceTypePartial, PropertyType, UnionType } from "../+types";
+import type { InterfaceType, InterfaceTypePartial, PropertyType, UnionType } from "../+types.js";
 
 const ColumnField: PropertyType = {
   kind: "property",

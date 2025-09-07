@@ -1,13 +1,13 @@
 import { useEffect, useLayoutEffect, useMemo, type PropsWithChildren } from "react";
 import { useEvent, useMeasure, type RectReadOnly } from "@1771technologies/lytenyte-react-hooks";
-import type { GridRootContext } from "../context";
-import { RootProvider } from "../context";
+import type { GridRootContext } from "../context.js";
+import { RootProvider } from "../context.js";
 import type { Grid, GridEvents } from "../+types";
 import type { InternalAtoms } from "../state/+types";
-import { DialogDriver } from "./dialog-driver";
-import { PopoverDriver } from "./popover-driver";
-import { CellSelectionDriver } from "../cell-selection/cell-selection-driver";
-import { hasAValidLicense } from "../license";
+import { DialogDriver } from "./dialog-driver.js";
+import { PopoverDriver } from "./popover-driver.js";
+import { CellSelectionDriver } from "../cell-selection/cell-selection-driver.js";
+import { hasAValidLicense } from "../license.js";
 
 export type RootProps<T> = { readonly grid: Grid<T> } & {
   [k in keyof GridEvents<T> as `on${Capitalize<k>}`]: GridEvents<T>[k];

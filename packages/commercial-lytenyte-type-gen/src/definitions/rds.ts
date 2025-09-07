@@ -1,4 +1,4 @@
-import type { InterfaceType, InterfaceTypePartial, PropertyType } from "../+types";
+import type { InterfaceType, InterfaceTypePartial, PropertyType } from "../+types.js";
 
 export const RowSelectParams: InterfaceType = {
   kind: "interface",

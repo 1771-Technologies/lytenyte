@@ -1,5 +1,5 @@
 import { describe, test } from "vitest";
-import { fastDeepMemo, fastMemo } from "../fast-memo";
+import { fastDeepMemo, fastMemo } from "../fast-memo.js";
 
 describe("fastMemo", () => {
   test("smoke test for fast memo", () => {

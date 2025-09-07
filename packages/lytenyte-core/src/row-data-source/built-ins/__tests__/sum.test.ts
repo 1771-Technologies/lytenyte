@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { sum } from "../sum";
+import { sum } from "../sum.js";
 
 describe("sum", () => {
   test("should return 0 for an empty array", () => {

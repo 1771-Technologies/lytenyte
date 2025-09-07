@@ -8,7 +8,7 @@ import {
   getTranslate,
   sizeFromCoord,
 } from "@1771technologies/lytenyte-shared";
-import { useGridRoot } from "../context";
+import { useGridRoot } from "../context.js";
 import { getComputedStyle, isHTMLElement } from "@1771technologies/lytenyte-dom-utils";
 import { clamp, getClientX } from "@1771technologies/lytenyte-js-utils";
 

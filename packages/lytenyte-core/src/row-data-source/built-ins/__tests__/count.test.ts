@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { count } from "../count";
+import { count } from "../count.js";
 
 describe("count", () => {
   test("should return 0 for an empty array", () => {

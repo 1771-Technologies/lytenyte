@@ -6,7 +6,7 @@ import type {
   SomeType,
 } from "typedoc";
 import { type JSONOutput } from "typedoc";
-import { generateMDX } from "./mdx-generator";
+import { generateMDX } from "./mdx-generator.js";
 import { writeFileSync } from "fs";
 
 const definition = await readFile("./out.json", "utf-8");

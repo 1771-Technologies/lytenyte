@@ -5,7 +5,7 @@ import {
   sizeFromCoord,
 } from "@1771technologies/lytenyte-shared";
 import type { RowFullWidthRowLayout, RowNode, RowNormalRowLayout } from "../+types";
-import { useGridRoot } from "../context";
+import { useGridRoot } from "../context.js";
 import { useEffect, useState } from "react";
 import { getTabbables, isHTMLElement } from "@1771technologies/lytenyte-dom-utils";
 

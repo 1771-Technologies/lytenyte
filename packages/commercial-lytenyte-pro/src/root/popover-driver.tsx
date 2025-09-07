@@ -1,5 +1,5 @@
 import type { PopoverFrame } from "../+types";
-import { useGridRoot } from "../context";
+import { useGridRoot } from "../context.js";
 
 export function PopoverDriver() {
   const grid = useGridRoot().grid;

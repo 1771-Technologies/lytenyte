@@ -1,15 +1,15 @@
-import { Root } from "./root";
-import { SortRow } from "./sort-row";
-import { SortRows } from "./sort-rows";
-import { useSortManager } from "./hooks/use-sort-manager";
-import { SortColumnSelect } from "./sort-column-select";
-import { SortValueSelect } from "./sort-value-select";
-import { SortDirectionSelect } from "./sort-direction-select";
-import { SortAdd } from "./sort-add";
-import { SortRemove } from "./sort-remove";
-import { SortCancel } from "./sort-cancel";
-import { SortClear } from "./sort-clear";
-import { SortApply } from "./sort-apply";
+import { Root } from "./root.js";
+import { SortRow } from "./sort-row.js";
+import { SortRows } from "./sort-rows.js";
+import { useSortManager } from "./hooks/use-sort-manager.js";
+import { SortColumnSelect } from "./sort-column-select.js";
+import { SortValueSelect } from "./sort-value-select.js";
+import { SortDirectionSelect } from "./sort-direction-select.js";
+import { SortAdd } from "./sort-add.js";
+import { SortRemove } from "./sort-remove.js";
+import { SortCancel } from "./sort-cancel.js";
+import { SortClear } from "./sort-clear.js";
+import { SortApply } from "./sort-apply.js";
 
 export const SortManager = {
   Root,

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import type { HeaderCellFloating, HeaderCellLayout, HeaderCellRendererParams } from "../+types";
-import { useGridRoot } from "../context";
+import { useGridRoot } from "../context.js";
 
 function DefaultRenderer(p: HeaderCellRendererParams<any>) {
   return <>{p.column.name ?? p.column.id}</>;

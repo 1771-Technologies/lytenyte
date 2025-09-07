@@ -1,7 +1,7 @@
 import { forwardRef, type JSX } from "react";
 import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
-import { useGridRoot } from "../context";
-import { NativeScroller } from "./scrollers/native-scroller";
+import { useGridRoot } from "../context.js";
+import { NativeScroller } from "./scrollers/native-scroller.js";
 import { RowsBottomReact, RowsCenterReact, RowsTopReact } from "@1771technologies/lytenyte-shared";
 
 export const RowsTop = fastDeepMemo(

@@ -1,5 +1,5 @@
-import type { InternalAtoms } from "../+types";
-import type { Grid, GridApi } from "../../+types";
+import type { InternalAtoms } from "../+types.js";
+import type { Grid, GridApi } from "../../+types.js";
 
 export const makeEditEnd = (
   grid: Grid<any> & { internal: InternalAtoms },

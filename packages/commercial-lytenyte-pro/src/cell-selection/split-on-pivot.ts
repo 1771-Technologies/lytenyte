@@ -1,6 +1,6 @@
 import type { DataRect } from "../+types";
 import type { DataRectSplit } from "./split-cell-selection-rect";
-import { areRectsEqual } from "./are-rects-equal";
+import { areRectsEqual } from "./are-rects-equal.js";
 
 export function splitOnPivot(rect: DataRectSplit, pivot: DataRect) {
   if (rect.isUnit || areRectsEqual(rect, pivot)) return null;

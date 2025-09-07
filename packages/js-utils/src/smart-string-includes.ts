@@ -1,4 +1,4 @@
-import { hasUpperCaseLetter } from "./has-uppercase-letter";
+import { hasUpperCaseLetter } from "./has-uppercase-letter.js";
 
 export function smartStringIncludes(src: string, query: string) {
   const left = src.trim();

@@ -10,9 +10,9 @@ import type {
   RowDataSourceClient,
   GridAtom,
 } from "../+types";
-import { type ClientRowDataSourceParams, type Grid, type RowNode } from "../+types";
+import { type ClientRowDataSourceParams, type Grid, type RowNode } from "../+types.js";
 import { useRef } from "react";
-import { traverse } from "./tree/traverse";
+import { traverse } from "./tree/traverse.js";
 import type { TreeNode } from "./+types";
 import {
   computed,
@@ -25,9 +25,9 @@ import {
   stringComparator,
 } from "@1771technologies/lytenyte-shared";
 import { equal, get } from "@1771technologies/lytenyte-js-utils";
-import { makeClientTree, type ClientData } from "./tree/client-tree";
-import { computeFilteredRows } from "./filter/compute-filtered-rows";
-import { builtIns } from "./built-ins/built-ins";
+import { makeClientTree, type ClientData } from "./tree/client-tree.js";
+import { computeFilteredRows } from "./filter/compute-filtered-rows.js";
+import { builtIns } from "./built-ins/built-ins.js";
 
 interface DataAtoms<T> {
   readonly top: GridAtom<T[]>;

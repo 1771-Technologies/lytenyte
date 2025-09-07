@@ -1,5 +1,5 @@
 import { useMemo, type PropsWithChildren } from "react";
-import { context, type SortManagerContext } from "./context";
+import { context, type SortManagerContext } from "./context.js";
 
 export function Root({
   sortItems,

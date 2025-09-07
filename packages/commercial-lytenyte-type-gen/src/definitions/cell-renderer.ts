@@ -8,7 +8,7 @@ import {
   RowNodeProp,
   RowPinProp,
   RowSelectedProp,
-} from "./shared-properties";
+} from "./shared-properties.js";
 
 export const CellRendererParams: InterfaceType = {
   kind: "interface",

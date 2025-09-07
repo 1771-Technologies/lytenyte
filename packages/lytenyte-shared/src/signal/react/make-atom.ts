@@ -1,6 +1,6 @@
-import type { ReadSignal, WriteSignal } from "../+types";
-import { effect, isWriteSignal, peek } from "../vanilla";
-import { useSignalValue } from "./use-signal-value";
+import type { ReadSignal, WriteSignal } from "../+types.js";
+import { effect, isWriteSignal, peek } from "../vanilla/index.js";
+import { useSignalValue } from "./use-signal-value.js";
 
 export interface Atom<T> {
   readonly get: () => T;

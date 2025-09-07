@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { rangesOverlap } from "../ranges-overlap";
+import { rangesOverlap } from "../ranges-overlap.js";
 
 describe("rangeOverlaps", () => {
   test("should return the correct result", () => {

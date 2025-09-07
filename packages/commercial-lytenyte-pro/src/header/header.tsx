@@ -1,5 +1,5 @@
 import { forwardRef, type JSX } from "react";
-import { useGridRoot } from "../context";
+import { useGridRoot } from "../context.js";
 import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
 import { HeaderReact } from "@1771technologies/lytenyte-shared";
 

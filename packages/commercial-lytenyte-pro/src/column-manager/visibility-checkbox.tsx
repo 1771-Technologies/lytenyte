@@ -1,8 +1,8 @@
 import { useSlot, type SlotComponent } from "@1771technologies/lytenyte-react-hooks";
-import { useColumnItemContext } from "./context";
+import { useColumnItemContext } from "./context.js";
 import { forwardRef, useCallback, useMemo, type JSX } from "react";
-import { useGrid } from "../grid-provider/use-grid";
-import { useColumnsFromContext } from "./use-columns-from-context";
+import { useGrid } from "../grid-provider/use-grid.js";
+import { useColumnsFromContext } from "./use-columns-from-context.js";
 
 export interface VisibilityCheckbox {
   readonly as?: SlotComponent<{

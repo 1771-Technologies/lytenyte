@@ -1,11 +1,11 @@
-import type { FunctionType, InterfaceType, PropertyType, UnionType } from "../+types";
+import type { FunctionType, InterfaceType, PropertyType, UnionType } from "../+types.js";
 import {
   ColumnProp,
   ColumnSynonymProp,
   GridProp,
   RowIndexProp,
   RowNodeProp,
-} from "./shared-properties";
+} from "./shared-properties.js";
 
 export const EditableFnParams: InterfaceType = {
   kind: "interface",

@@ -1,11 +1,11 @@
-import { Branch } from "./branch";
-import { Label } from "./label";
-import { Leaf } from "./leaf";
-import { MoveHandle } from "./move-handle";
-import { Panel } from "./panel";
-import { Root } from "./root";
-import { useColumnManager } from "./use-column-manager";
-import { VisibilityCheckbox } from "./visibility-checkbox";
+import { Branch } from "./branch.js";
+import { Label } from "./label.js";
+import { Leaf } from "./leaf.js";
+import { MoveHandle } from "./move-handle.js";
+import { Panel } from "./panel.js";
+import { Root } from "./root.js";
+import { useColumnManager } from "./use-column-manager.js";
+import { VisibilityCheckbox } from "./visibility-checkbox.js";
 
 export const ColumnManager = {
   Root,

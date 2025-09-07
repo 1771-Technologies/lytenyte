@@ -1,9 +1,9 @@
 import { memo, useMemo } from "react";
-import { CellStyleRow } from "./cell-style-row";
-import { useGridRoot } from "../context";
-import { isTopRect } from "./is-top-rect";
-import { isCenterRect } from "./is-center-rect";
-import { isBottomRect } from "./is-bottom-rect";
+import { CellStyleRow } from "./cell-style-row.js";
+import { useGridRoot } from "../context.js";
+import { isTopRect } from "./is-top-rect.js";
+import { isCenterRect } from "./is-center-rect.js";
+import { isBottomRect } from "./is-bottom-rect.js";
 
 export const CellSelectionTop = memo(function CellSelectionTop() {
   const cx = useGridRoot();

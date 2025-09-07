@@ -1,5 +1,5 @@
 import type { FunctionType, InterfaceType, UnionType } from "../+types";
-import { GridProp, RowIndexProp, RowNodeProp } from "./shared-properties";
+import { GridProp, RowIndexProp, RowNodeProp } from "./shared-properties.js";
 
 export const RowDetailRendererParams: InterfaceType = {
   kind: "interface",

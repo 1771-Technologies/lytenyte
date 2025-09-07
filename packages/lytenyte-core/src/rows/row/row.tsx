@@ -1,12 +1,12 @@
 import { forwardRef, memo, type JSX } from "react";
 import type { RowNormalRowLayout } from "../../+types";
-import { useGridRoot } from "../../context";
-import { RowDetailRow } from "../row-detail-row";
+import { useGridRoot } from "../../context.js";
+import { RowDetailRow } from "../row-detail-row.js";
 import { RowReact, type DropWrapProps } from "@1771technologies/lytenyte-shared";
-import { useRowContextValue } from "./use-row-context-value";
-import { RowContext } from "./context";
+import { useRowContextValue } from "./use-row-context-value.js";
+import { RowContext } from "./context.js";
 import { equal } from "@1771technologies/lytenyte-js-utils";
-import { CellSpacerNoPin } from "../../cells/cell-spacer";
+import { CellSpacerNoPin } from "../../cells/cell-spacer.js";
 
 export interface RowProps extends Omit<DropWrapProps, "accepted"> {
   readonly row: RowNormalRowLayout<any>;

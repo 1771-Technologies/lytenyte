@@ -1,4 +1,4 @@
-import type { PropertyType } from "../+types";
+import type { PropertyType } from "../+types.js";
 
 export const GridProp: PropertyType = {
   kind: "property",

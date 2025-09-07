@@ -1,5 +1,5 @@
 import type { DialogFrame } from "../+types";
-import { useGridRoot } from "../context";
+import { useGridRoot } from "../context.js";
 
 export function DialogDriver() {
   const grid = useGridRoot().grid;

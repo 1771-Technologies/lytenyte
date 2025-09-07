@@ -1,5 +1,5 @@
-import { isHTMLElement } from "./is-html-element";
-import { isInput } from "./is-input";
+import { isHTMLElement } from "./is-html-element.js";
+import { isInput } from "./is-input.js";
 
 const TEXTAREA_SELECT_REGEX = /(textarea|select)/;
 

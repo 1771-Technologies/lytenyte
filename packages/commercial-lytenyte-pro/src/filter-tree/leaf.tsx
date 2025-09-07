@@ -1,10 +1,10 @@
 import type { JSX } from "react";
 import { forwardRef } from "react";
 import type { TreeVirtualLeaf } from "../tree-view/virtualized/make-virtual-tree";
-import { TreeLeaf } from "../tree-view/leaf";
+import { TreeLeaf } from "../tree-view/leaf.js";
 import type { FilterInFilterItem } from "../+types";
-import { FilterTreeItemContext } from "./context";
-import { useTreeItem } from "./hooks/use-tree-item";
+import { FilterTreeItemContext } from "./context.js";
+import { useTreeItem } from "./hooks/use-tree-item.js";
 
 export interface FilterTreeLeafProps {
   readonly item: TreeVirtualLeaf<FilterInFilterItem>;

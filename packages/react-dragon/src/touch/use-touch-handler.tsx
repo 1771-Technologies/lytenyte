@@ -10,10 +10,10 @@ import {
   dropZonesAtom,
   isTouchDragAtom,
   store,
-} from "../+globals";
-import { useAutoScroll } from "../auto-scroll/use-autoscroll";
-import { makePlaceholder } from "./make-placeholder";
-import { resetDragState } from "../utils/reset-drag-state";
+} from "../+globals.js";
+import { useAutoScroll } from "../auto-scroll/use-autoscroll.js";
+import { makePlaceholder } from "./make-placeholder.js";
+import { resetDragState } from "../utils/reset-drag-state.js";
 
 export function useTouchHandler(
   {

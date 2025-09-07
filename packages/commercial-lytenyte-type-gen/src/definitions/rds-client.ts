@@ -1,4 +1,4 @@
-import type { InterfaceType, PropertyType } from "../+types";
+import type { InterfaceType, PropertyType } from "../+types.js";
 
 const Data: PropertyType = {
   kind: "property",

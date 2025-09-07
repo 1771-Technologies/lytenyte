@@ -2,11 +2,11 @@
 import "./grid-item-box.css";
 import type { Meta, StoryObj } from "@storybook/react";
 import { GridBox as GB } from "../grid-box/grid-box.js";
-import { useLyteNyte } from "../state/use-lytenyte";
+import { useLyteNyte } from "../state/use-lytenyte.js";
 import { useId } from "react";
 import type { Column } from "../+types";
-import { useClientRowDataSource } from "../row-data-source-client/use-client-data-source";
-import { bankData } from "./sample-data/bank-data";
+import { useClientRowDataSource } from "../row-data-source-client/use-client-data-source.js";
+import { bankData } from "./sample-data/bank-data.js";
 
 const meta: Meta = {
   title: "Grid/Grid Item Box",

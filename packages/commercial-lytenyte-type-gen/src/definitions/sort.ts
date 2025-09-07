@@ -1,4 +1,4 @@
-import type { FunctionType, InterfaceType, PropertyType, UnionType } from "../+types";
+import type { FunctionType, InterfaceType, PropertyType, UnionType } from "../+types.js";
 
 const NullsFirstProp: PropertyType = {
   kind: "property",

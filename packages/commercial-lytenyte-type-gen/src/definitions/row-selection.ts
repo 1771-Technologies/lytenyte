@@ -1,4 +1,4 @@
-import type { InterfaceType, UnionType } from "../+types";
+import type { InterfaceType, UnionType } from "../+types.js";
 
 export const RowSelectionMode: UnionType = {
   kind: "union",

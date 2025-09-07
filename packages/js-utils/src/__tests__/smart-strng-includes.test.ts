@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { smartStringIncludes } from "../smart-string-includes";
+import { smartStringIncludes } from "../smart-string-includes.js";
 
 describe("smartStringIncludes", () => {
   test("should return the correct result", () => {

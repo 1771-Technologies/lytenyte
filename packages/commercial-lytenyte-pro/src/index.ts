@@ -18,16 +18,16 @@ export { measureText } from "@1771technologies/lytenyte-shared";
 export {
   makeClientDataSource,
   useClientRowDataSource,
-} from "./row-data-source-client/use-client-data-source";
+} from "./row-data-source-client/use-client-data-source.js";
 export {
   makeClientDataSourcePaginated,
   useClientRowDataSourcePaginated,
-} from "./row-data-source-client/use-client-data-source-paginated";
+} from "./row-data-source-client/use-client-data-source-paginated.js";
 export {
   makeClientTreeDataSource,
   useClientTreeDataSource,
-} from "./row-data-source-client/use-client-tree-data-source";
+} from "./row-data-source-client/use-client-tree-data-source.js";
 export {
   makeServerDataSource,
   useServerDataSource,
-} from "./row-data-source-server/use-server-data-source";
+} from "./row-data-source-server/use-server-data-source.js";

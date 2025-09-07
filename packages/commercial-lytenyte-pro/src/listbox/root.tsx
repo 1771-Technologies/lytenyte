@@ -1,5 +1,5 @@
 import { useMemo, type PropsWithChildren } from "react";
-import { context, type ListboxContext } from "./context";
+import { context, type ListboxContext } from "./context.js";
 
 export interface RootProps {
   readonly orientation?: "horizontal" | "vertical";

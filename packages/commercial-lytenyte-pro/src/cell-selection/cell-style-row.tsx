@@ -1,5 +1,5 @@
 import { useMemo, type CSSProperties } from "react";
-import { useGridRoot } from "../context";
+import { useGridRoot } from "../context.js";
 import { getTranslate, sizeFromCoord } from "@1771technologies/lytenyte-shared";
 import type { DataRectSplit } from "./split-cell-selection-rect";
 

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { avg } from "../avg";
+import { avg } from "../avg.js";
 
 describe("avg", () => {
   test("should return 0 for an empty array", () => {

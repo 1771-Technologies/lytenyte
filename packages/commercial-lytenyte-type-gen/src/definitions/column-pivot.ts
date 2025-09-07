@@ -1,4 +1,4 @@
-import type { InterfaceType } from "../+types";
+import type { InterfaceType } from "../+types.js";
 
 export const ColumnPivotRowItem: InterfaceType = {
   kind: "interface",

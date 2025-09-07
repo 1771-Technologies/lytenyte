@@ -1,4 +1,4 @@
-import type { InterfaceType, InterfaceTypePartial, PropertyType, UnionType } from "../+types";
+import type { InterfaceType, InterfaceTypePartial, PropertyType, UnionType } from "../+types.js";
 import {
   ColPinProp,
   ColumnIndexProp,
@@ -7,7 +7,7 @@ import {
   RowIndexProp,
   RowNodeAtomProp,
   RowPinProp,
-} from "./shared-properties";
+} from "./shared-properties.js";
 
 const CellLastStartPinProp: PropertyType = {
   kind: "property",

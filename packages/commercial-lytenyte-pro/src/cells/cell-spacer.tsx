@@ -1,4 +1,4 @@
-import { useGridRoot } from "../context";
+import { useGridRoot } from "../context.js";
 
 export function CellSpacePinStart({ xPositions: x }: { xPositions: Uint32Array }) {
   const ctx = useGridRoot().grid;

@@ -1,15 +1,15 @@
-import { Cell } from "./cells/cell";
-import { Header } from "./header/header";
-import { HeaderCell } from "./header/header-cell";
-import { HeaderGroupCell } from "./header/header-group-cell";
-import { HeaderRow } from "./header/header-row";
-import { Root } from "./root/root";
-import { RowFullWidth } from "./rows/row-full-width";
-import { Row } from "./rows/row/row";
-import { RowsContainer } from "./rows/rows-container";
-import { RowsBottom, RowsCenter, RowsTop } from "./rows/rows-sections";
-import { useLyteNyte } from "./state/use-lytenyte";
-import { Viewport } from "./viewport/viewport";
+import { Cell } from "./cells/cell.js";
+import { Header } from "./header/header.js";
+import { HeaderCell } from "./header/header-cell.js";
+import { HeaderGroupCell } from "./header/header-group-cell.js";
+import { HeaderRow } from "./header/header-row.js";
+import { Root } from "./root/root.js";
+import { RowFullWidth } from "./rows/row-full-width.js";
+import { Row } from "./rows/row/row.js";
+import { RowsContainer } from "./rows/rows-container.js";
+import { RowsBottom, RowsCenter, RowsTop } from "./rows/rows-sections.js";
+import { useLyteNyte } from "./state/use-lytenyte.js";
+import { Viewport } from "./viewport/viewport.js";
 
 export const Grid = {
   Root,

@@ -1,13 +1,13 @@
 import { forwardRef, type JSX } from "react";
 import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
-import { useGridRoot } from "../context";
-import { NativeScroller } from "./scrollers/native-scroller";
+import { useGridRoot } from "../context.js";
+import { NativeScroller } from "./scrollers/native-scroller.js";
 import { RowsBottomReact, RowsCenterReact, RowsTopReact } from "@1771technologies/lytenyte-shared";
 import {
   CellSelectionBottom,
   CellSelectionCenter,
   CellSelectionTop,
-} from "../cell-selection/cell-selection-containers";
+} from "../cell-selection/cell-selection-containers.js";
 
 export const RowsTop = fastDeepMemo(
   forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function RowsTop(props, forwarded) {

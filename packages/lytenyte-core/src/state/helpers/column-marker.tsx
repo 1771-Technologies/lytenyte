@@ -1,5 +1,5 @@
 import { COLUMN_MARKER_ID } from "@1771technologies/lytenyte-shared";
-import type { Column, ColumnMarker } from "../../+types";
+import type { Column, ColumnMarker } from "../../+types.js";
 import { itemsWithIdToMap } from "@1771technologies/lytenyte-js-utils";
 
 interface ColumnHandleMarkerArgs<T> {

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
-import { append, html } from "./test-utils";
-import { getFocusableNodes } from "../get-focusable-nodes";
+import { append, html } from "./test-utils.js";
+import { getFocusableNodes } from "../get-focusable-nodes.js";
 
 describe("getFocusableNodes", () => {
   test("should return the correct nodes", () => {

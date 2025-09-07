@@ -5,9 +5,9 @@ import {
   type SlotComponent,
 } from "@1771technologies/lytenyte-react-hooks";
 import { forwardRef, useMemo, type JSX } from "react";
-import { useColumnItemContext } from "./context";
-import { useColumnsFromContext } from "./use-columns-from-context";
-import { useGrid } from "../grid-provider/use-grid";
+import { useColumnItemContext } from "./context.js";
+import { useColumnsFromContext } from "./use-columns-from-context.js";
+import { useGrid } from "../grid-provider/use-grid.js";
 
 export interface MoveHandleProps {
   readonly as?: SlotComponent;

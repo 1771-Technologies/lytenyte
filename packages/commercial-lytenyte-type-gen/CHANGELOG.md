@@ -1,5 +1,11 @@
 # @1771technologies/lytenyte-typegen
 
+## 1.0.9
+
+### Patch Changes
+
+- Fixed js extensions
+
 ## 1.0.8
 
 ### Patch Changes
