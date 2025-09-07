@@ -75,7 +75,6 @@ export const debounce = <F extends (...args: Parameters<F>) => ReturnType<F>>(
 
   const debounced = (...args: Parameters<F>): void => {
     lastArgs = args;
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
     lastThis = this;
 
     const shouldCallLeading = leading && !isLeadingCalled;

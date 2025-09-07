@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/extensions
 import { userEvent } from "@vitest/browser/context";
 import { describe, expect, test } from "vitest";
 import { handleSkipInner } from "../handle-skip-inner.js";

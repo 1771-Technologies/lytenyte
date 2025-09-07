@@ -1,8 +1,8 @@
 import { expect, test } from "vitest";
 import { render } from "vitest-browser-react";
-import RowPinning from "./row-pinning.play";
+import RowPinning from "./row-pinning.play.js";
 import { userEvent } from "@vitest/browser/context";
-import { scrollGrid } from "./utils";
+import { scrollGrid } from "./utils.js";
 
 test("Should be able to add row pins at will", async () => {
   const screen = render(<RowPinning />);
