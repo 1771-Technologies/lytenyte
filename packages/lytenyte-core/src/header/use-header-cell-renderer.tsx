@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import type { HeaderCellFloating, HeaderCellLayout, HeaderCellRendererParams } from "../+types";
 import { useGridRoot } from "../context.js";
 
+// eslint-disable-next-line react-refresh/only-export-components
 function DefaultRenderer(p: HeaderCellRendererParams<any>) {
   return <>{p.column.name ?? p.column.id}</>;
 }

@@ -1,8 +1,5 @@
 import "./grid-navigation.css";
-import type { Meta, StoryObj } from "@storybook/react";
-// eslint-disable-next-line import/extensions
 import { Dialog } from "@base-ui-components/react/dialog";
-// eslint-disable-next-line import/extensions
 import { Menu } from "@base-ui-components/react/menu";
 import { Header } from "../header/header.js";
 import { HeaderRow } from "../header/header-row.js";
@@ -18,12 +15,6 @@ import { useClientRowDataSource } from "../row-data-source-client/use-client-dat
 import { RowsBottom, RowsCenter, RowsTop } from "../rows/rows-sections.js";
 import { RowHandler } from "./sample-data/row-handler.js";
 import { bankData } from "./sample-data/bank-data.js";
-
-const meta: Meta = {
-  title: "Grid/Frames",
-};
-
-export default meta;
 
 const columns: Column<any>[] = [
   { id: "age" },
@@ -187,6 +178,6 @@ function Component({ data = bankData }: { data?: any[] }) {
   );
 }
 
-export const Frames: StoryObj = {
+export const Frames = {
   render: Component,
 };

@@ -89,5 +89,4 @@ export {
   UploadIcon,
   UserIcon,
   ViewIcon,
-  // eslint-disable-next-line import/extensions
 } from "@1771technologies/lytenyte-core/icons";

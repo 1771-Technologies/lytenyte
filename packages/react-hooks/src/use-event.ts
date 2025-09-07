@@ -73,10 +73,10 @@ export function useEvent<TCallback extends AnyFunction>(callback: TCallback): TC
   // Uses useRef instead of useCallback to avoid array allocation on every render
   const stableRef = React.useRef<TCallback>(null as any);
   if (!stableRef.current) {
-    stableRef.current = function (this: any) {
+    stableRef.current = function (arg: any) {
       // Preserve 'this' context and forward all arguments to the latest callback
       // eslint-disable-next-line prefer-rest-params
-      return latestRef.current.apply(this, arguments as any);
+      return latestRef.current.apply(arg, arguments as any);
     } as TCallback;
   }
 

@@ -1,0 +1,30 @@
+{
+  "name": "@1771technologies/eslint-preset",
+  "version": "0.0.5",
+  "type": "module",
+  "files": [
+    "dist",
+    "src",
+    "LICENSE",
+    "README.md"
+  ],
+  "main": "./src/index.mjs",
+  "exports": {
+    ".": {
+      "require": "./src/index.mjs",
+      "import": "./src/index.mjs",
+      "types": "./src/index.d.mts"
+    }
+  },
+  "dependencies": {
+    "@eslint/js": "^9.35.0",
+    "@manypkg/find-root": "^3.1.0",
+    "eslint": "9.35.0",
+    "eslint-plugin-import": "2.32.0",
+    "eslint-plugin-react-hooks": "6.0.0-rc.2",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.4.0",
+    "typescript": "5.9.2",
+    "typescript-eslint": "^8.44.0"
+  }
+}
