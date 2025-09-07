@@ -1,20 +1,20 @@
 import "./grid-navigation.css";
 import type { Meta, StoryObj } from "@storybook/react";
-import { useLyteNyte } from "../state/use-lytenyte";
+import { useLyteNyte } from "../state/use-lytenyte.js";
 import { useId } from "react";
 import type { Column } from "../+types";
-import { useClientRowDataSource } from "../row-data-source-client/use-client-data-source";
-import { bankData } from "./sample-data/bank-data";
-import { ColumnManager as CM2 } from "../column-manager/column-manager";
-import { Root } from "../root/root";
-import { Viewport } from "../viewport/viewport";
-import { Header } from "../header/header";
-import { HeaderRow } from "../header/header-row";
-import { HeaderGroupCell } from "../header/header-group-cell";
-import { HeaderCell } from "../header/header-cell";
-import { RowsContainer } from "../rows/rows-container";
-import { RowsBottom, RowsCenter, RowsTop } from "../rows/rows-sections";
-import { RowHandler } from "./sample-data/row-handler";
+import { useClientRowDataSource } from "../row-data-source-client/use-client-data-source.js";
+import { bankData } from "./sample-data/bank-data.js";
+import { ColumnManager as CM2 } from "../column-manager/column-manager.js";
+import { Root } from "../root/root.js";
+import { Viewport } from "../viewport/viewport.js";
+import { Header } from "../header/header.js";
+import { HeaderRow } from "../header/header-row.js";
+import { HeaderGroupCell } from "../header/header-group-cell.js";
+import { HeaderCell } from "../header/header-cell.js";
+import { RowsContainer } from "../rows/rows-container.js";
+import { RowsBottom, RowsCenter, RowsTop } from "../rows/rows-sections.js";
+import { RowHandler } from "./sample-data/row-handler.js";
 
 const meta: Meta = {
   title: "Grid/Column Manager",

@@ -1,4 +1,4 @@
-import type { UnionType } from "../+types";
+import type { UnionType } from "../+types.js";
 
 export const CellSelectionMode: UnionType = {
   kind: "union",

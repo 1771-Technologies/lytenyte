@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
-import type { Grid, GridAtomReadonlyUnwatchable, RowNode } from "../../+types";
-import type { InternalAtoms } from "../../state/+types";
-import type { RowMetaData } from "./context";
+import type { Grid, GridAtomReadonlyUnwatchable, RowNode } from "../../+types.js";
+import type { InternalAtoms } from "../../state/+types.js";
+import type { RowMetaData } from "./context.js";
 
 export function useRowContextValue(
   grid: Grid<any> & { internal: InternalAtoms },

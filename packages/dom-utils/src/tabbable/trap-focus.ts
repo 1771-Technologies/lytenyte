@@ -1,6 +1,6 @@
 import type { FocusTrapOptions } from "./+types";
-import { FocusTrap } from "./focus-trap";
-import { getDocument } from "./node";
+import { FocusTrap } from "./focus-trap.js";
+import { getDocument } from "./node.js";
 
 type ElementOrGetter = HTMLElement | null | (() => HTMLElement | null);
 

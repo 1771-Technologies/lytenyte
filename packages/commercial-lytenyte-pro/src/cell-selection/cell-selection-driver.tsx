@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { useGridRoot } from "../context";
-import { useEdgeScroll } from "./use-edge-scroll";
+import { useGridRoot } from "../context.js";
+import { useEdgeScroll } from "./use-edge-scroll.js";
 import type { DataRect, PositionUnion } from "../+types";
 import {
   equal,
@@ -11,13 +11,13 @@ import {
 } from "@1771technologies/lytenyte-js-utils";
 import { getNearestFocusable, getPositionFromFocusable } from "@1771technologies/lytenyte-shared";
 import { isHTMLElement } from "@1771technologies/lytenyte-dom-utils";
-import { updateAdditiveCellSelection } from "./update-additive-cell-selection";
-import { deselectRectRange } from "./deselect-rect-range";
-import { isWithinSelectionRect } from "./is-within-selection-rect";
-import { expandCellSelectionStart } from "./expand-cell-selection-start";
-import { expandCellSelectionEnd } from "./expand-cell-selection-end";
-import { expandCellSelectionDown } from "./expand-cell-selection-down";
-import { expandCellSelectionUp } from "./expand-cell-selection-up";
+import { updateAdditiveCellSelection } from "./update-additive-cell-selection.js";
+import { deselectRectRange } from "./deselect-rect-range.js";
+import { isWithinSelectionRect } from "./is-within-selection-rect.js";
+import { expandCellSelectionStart } from "./expand-cell-selection-start.js";
+import { expandCellSelectionEnd } from "./expand-cell-selection-end.js";
+import { expandCellSelectionDown } from "./expand-cell-selection-down.js";
+import { expandCellSelectionUp } from "./expand-cell-selection-up.js";
 
 function isNormalClick(event: MouseEvent) {
   return event.button === 0 && !event.altKey;

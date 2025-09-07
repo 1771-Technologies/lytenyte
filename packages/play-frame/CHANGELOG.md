@@ -1,5 +1,11 @@
 # @1771technologies/play-frame
 
+## 0.0.8
+
+### Patch Changes
+
+- Fixed js extensions
+
 ## 0.0.7
 
 ### Patch Changes

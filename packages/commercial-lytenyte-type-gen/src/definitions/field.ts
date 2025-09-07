@@ -1,5 +1,5 @@
 import type { FunctionType, InterfaceType, PropertyType, UnionType } from "../+types";
-import { ColumnProp, DataProp, GridProp } from "./shared-properties";
+import { ColumnProp, DataProp, GridProp } from "./shared-properties.js";
 
 export const FieldDataParam: UnionType = {
   kind: "union",

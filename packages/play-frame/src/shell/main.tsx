@@ -4,16 +4,16 @@ import "../index.css";
 import { useCallback, useRef, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
 import { Box, Flex, IconButton, Separator, Theme } from "@radix-ui/themes";
-import { FrameDropdown } from "./frame-dropdown";
-import { type Frame } from "./+types";
-import { DemoDropdown } from "./demo-dropdown";
+import { FrameDropdown } from "./frame-dropdown.js";
+import { type Frame } from "./+types.js";
+import { DemoDropdown } from "./demo-dropdown.js";
 import { ExternalLinkIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { useTheme } from "next-themes";
 import axe from "axe-core";
 import { useAtom } from "jotai";
-import { axeLoading$, axeResults$ } from "./atoms";
-import { AxePopover } from "./axe-popover/axe-popover";
-import { demoOptions, type Demo } from "./demo-tree";
+import { axeLoading$, axeResults$ } from "./atoms.js";
+import { AxePopover } from "./axe-popover/axe-popover.js";
+import { demoOptions, type Demo } from "./demo-tree.js";
 
 export function Main() {
   const [demoA, setDemoA] = useState<Demo | null>(demoOptions[0]);

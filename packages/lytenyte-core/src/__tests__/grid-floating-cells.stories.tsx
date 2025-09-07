@@ -1,20 +1,20 @@
 import "../../main.css";
 import "./grid-navigation.css";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Header } from "../header/header";
-import { HeaderRow } from "../header/header-row";
-import { Root } from "../root/root";
-import { RowsContainer } from "../rows/rows-container";
-import { Viewport } from "../viewport/viewport";
-import { useLyteNyte } from "../state/use-lytenyte";
+import { Header } from "../header/header.js";
+import { HeaderRow } from "../header/header-row.js";
+import { Root } from "../root/root.js";
+import { RowsContainer } from "../rows/rows-container.js";
+import { Viewport } from "../viewport/viewport.js";
+import { useLyteNyte } from "../state/use-lytenyte.js";
 import { useId } from "react";
-import { HeaderCell } from "../header/header-cell";
+import { HeaderCell } from "../header/header-cell.js";
 import type { Column } from "../+types";
-import { HeaderGroupCell } from "../header/header-group-cell";
-import { useClientRowDataSource } from "../row-data-source/use-client-data-source";
-import { RowsBottom, RowsCenter, RowsTop } from "../rows/rows-sections";
-import { RowHandler } from "./sample-data/row-handler";
-import { bankData } from "./sample-data/bank-data";
+import { HeaderGroupCell } from "../header/header-group-cell.js";
+import { useClientRowDataSource } from "../row-data-source/use-client-data-source.js";
+import { RowsBottom, RowsCenter, RowsTop } from "../rows/rows-sections.js";
+import { RowHandler } from "./sample-data/row-handler.js";
+import { bankData } from "./sample-data/bank-data.js";
 
 const meta: Meta = {
   title: "Grid/Floating Cell",
@@ -23,12 +23,12 @@ const meta: Meta = {
 export default meta;
 
 const columns: Column<any>[] = [
-  { id: "age", floatingRenderer: () => <div>Lee this worked</div> },
+  { id: "age", floatingCellRenderer: () => <div>Lee this worked</div> },
   { id: "job" },
   { id: "balance" },
   { id: "education" },
   { id: "marital" },
-  { id: "default", floatingRenderer: "alpha" },
+  { id: "default", floatingCellRenderer: "alpha" },
   { id: "housing" },
   { id: "loan" },
   { id: "contact" },

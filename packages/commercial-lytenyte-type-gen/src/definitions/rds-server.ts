@@ -1,5 +1,5 @@
 import type { FunctionType, InterfaceType, PropertyType } from "../+types";
-import { ColumnProp, GridProp } from "./shared-properties";
+import { ColumnProp, GridProp } from "./shared-properties.js";
 
 export const DataRequestModel: InterfaceType = {
   kind: "interface",

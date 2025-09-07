@@ -1,5 +1,5 @@
 import type { FunctionType, InterfaceType } from "../+types";
-import { GridProp, RowNodeProp } from "./shared-properties";
+import { GridProp, RowNodeProp } from "./shared-properties.js";
 
 export const GetDragDataParams: InterfaceType = {
   kind: "interface",

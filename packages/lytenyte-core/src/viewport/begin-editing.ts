@@ -1,5 +1,5 @@
-import type { Grid } from "../+types";
-import type { InternalAtoms } from "../state/+types";
+import type { Grid } from "../+types.js";
+import type { InternalAtoms } from "../state/+types.js";
 
 export function beginEditing<T>(
   grid: Grid<T> & { internal: InternalAtoms },

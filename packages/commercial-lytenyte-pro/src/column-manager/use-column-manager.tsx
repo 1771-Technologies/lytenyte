@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import type { Column, Grid } from "../+types";
-import { useTreeViewPaths } from "../tree-view/hooks/use-tree-view-paths";
+import { useTreeViewPaths } from "../tree-view/hooks/use-tree-view-paths.js";
 import type { PathBranch } from "@1771technologies/lytenyte-shared";
 
 export interface UseColumnManagerProps<T> {

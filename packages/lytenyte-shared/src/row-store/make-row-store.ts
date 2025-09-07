@@ -1,6 +1,6 @@
 import type { RowDataStore, RowNode } from "../+types";
-import { computed, effect, signal, useSignalValue } from "../signal";
-import { makeAtom, type AtomReadonly } from "../signal/react/make-atom";
+import { computed, effect, signal, useSignalValue } from "../signal/index.js";
+import { makeAtom, type AtomReadonly } from "../signal/react/make-atom.js";
 
 export interface MakeRowStore<T> {
   readonly getRow: (i: number) => RowNode<T> | null;

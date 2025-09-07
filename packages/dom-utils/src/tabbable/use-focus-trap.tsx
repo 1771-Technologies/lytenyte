@@ -1,4 +1,4 @@
-import type { FocusTrapOptions } from "./+types";
+import type { FocusTrapOptions } from "./+types.js";
 
 export interface TrapOptions
   extends Pick<

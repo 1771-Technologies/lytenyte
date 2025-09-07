@@ -1,5 +1,5 @@
-import type { FunctionType, InterfaceType, PropertyType } from "../+types";
-import { GridProp } from "./shared-properties";
+import type { FunctionType, InterfaceType, PropertyType } from "../+types.js";
+import { GridProp } from "./shared-properties.js";
 
 const FrameContext: PropertyType = {
   kind: "property",

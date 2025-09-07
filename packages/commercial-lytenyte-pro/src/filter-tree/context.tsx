@@ -1,6 +1,6 @@
 import { createContext, useContext, type Dispatch, type SetStateAction } from "react";
-import type { TreeVirtualItem } from "../tree-view/virtualized/make-virtual-tree";
-import type { FilterIn, FilterInFilterItem } from "../+types";
+import type { TreeVirtualItem } from "../tree-view/virtualized/make-virtual-tree.js";
+import type { FilterIn, FilterInFilterItem } from "../+types.js";
 
 export interface TreeItemContextValue {
   readonly item: TreeVirtualItem<FilterInFilterItem>;

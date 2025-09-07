@@ -1,9 +1,9 @@
 import { forwardRef, type JSX } from "react";
 import type { HeaderGroupCellLayout } from "../+types";
-import { useGridRoot } from "../context";
+import { useGridRoot } from "../context.js";
 import { HeaderGroupCellReact } from "@1771technologies/lytenyte-shared";
 import { fastDeepMemo, useCombinedRefs } from "@1771technologies/lytenyte-react-hooks";
-import { useDragMove } from "./use-drag-move";
+import { useDragMove } from "./use-drag-move.js";
 
 export interface HeaderGroupCellProps {
   readonly cell: HeaderGroupCellLayout;

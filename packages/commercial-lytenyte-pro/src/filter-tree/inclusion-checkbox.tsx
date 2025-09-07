@@ -1,6 +1,6 @@
 import { useSlot, type SlotComponent } from "@1771technologies/lytenyte-react-hooks";
 import { forwardRef, type JSX } from "react";
-import { useTreeItemContext } from "./context";
+import { useTreeItemContext } from "./context.js";
 
 export interface InclusionCheckbox {
   readonly as?: SlotComponent<{

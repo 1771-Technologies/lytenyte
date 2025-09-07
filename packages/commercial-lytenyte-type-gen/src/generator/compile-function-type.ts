@@ -1,5 +1,5 @@
 import type { FunctionType } from "../+types";
-import { compileTsDoc } from "./compile-ts-doc";
+import { compileTsDoc } from "./compile-ts-doc.js";
 
 export function compileFunctionType(t: FunctionType) {
   const output: string[] = [];

@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { max } from "../max";
+import { max } from "../max.js";
 
 describe("max", () => {
   test("should return 0 for an empty array", () => {

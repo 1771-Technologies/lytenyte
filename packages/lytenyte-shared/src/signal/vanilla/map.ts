@@ -1,12 +1,12 @@
 // Adapted from: https://github.com/solidjs/solid/blob/main/packages/solid/src/reactive/array.ts#L153
 
 import type { ReadSignal, Maybe, Computation, Scope } from "../+types";
-import { compute } from "./compute";
-import { createComputation, createScope } from "./create-computation";
-import { dispose } from "./dispose";
-import { scoped } from "./primitives";
-import { read } from "./read";
-import { write } from "./write";
+import { compute } from "./compute.js";
+import { createComputation, createScope } from "./create-computation.js";
+import { dispose } from "./dispose.js";
+import { scoped } from "./primitives.js";
+import { read } from "./read.js";
+import { write } from "./write.js";
 
 /**
  * Reactive map helper that caches each item by index to reduce unnecessary mapping on updates.

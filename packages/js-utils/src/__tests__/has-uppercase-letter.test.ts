@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { hasUpperCaseLetter } from "../has-uppercase-letter";
+import { hasUpperCaseLetter } from "../has-uppercase-letter.js";
 
 describe("hasUppercaseLetter", () => {
   test("should return the correct result", () => {

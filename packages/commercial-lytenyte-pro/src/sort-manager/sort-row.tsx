@@ -1,7 +1,7 @@
 import { forwardRef, type JSX } from "react";
-import { Item } from "../listbox/item";
-import type { SortRowItem } from "./hooks/use-sort-row-item";
-import { rowContext } from "./context";
+import { Item } from "../listbox/item.js";
+import type { SortRowItem } from "./hooks/use-sort-row-item.js";
+import { rowContext } from "./context.js";
 
 export interface SortRowProps {
   readonly row: SortRowItem;

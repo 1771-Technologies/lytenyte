@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { getWindow } from "../get-window";
+import { getWindow } from "../get-window.js";
 
 describe("getWindow", () => {
   it("should return the defaultView from node's ownerDocument", () => {

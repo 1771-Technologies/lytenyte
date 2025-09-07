@@ -1,8 +1,8 @@
 import { useMemo, type PropsWithChildren } from "react";
-import { Root } from "../listbox/root";
-import type { DropEventParams, Grid } from "../+types";
-import { GridProvider } from "../grid-provider/provider";
-import { GridBoxContext } from "./context";
+import { Root } from "../listbox/root.js";
+import type { DropEventParams, Grid } from "../+types.js";
+import { GridProvider } from "../grid-provider/provider.js";
+import { GridBoxContext } from "./context.js";
 
 export interface GridBoxRootProps<T> {
   readonly orientation?: "vertical" | "horizontal";

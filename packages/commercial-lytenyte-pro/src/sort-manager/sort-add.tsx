@@ -1,6 +1,6 @@
 import { useSlot, type SlotComponent } from "@1771technologies/lytenyte-react-hooks";
 import { forwardRef, type JSX } from "react";
-import { useSortRowCtx } from "./context";
+import { useSortRowCtx } from "./context.js";
 
 export interface SortAddProps {
   readonly as?: SlotComponent<{ onAdd: () => void; disabled: boolean }>;

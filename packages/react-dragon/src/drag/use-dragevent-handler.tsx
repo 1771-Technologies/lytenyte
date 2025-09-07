@@ -13,8 +13,8 @@ import {
   dropAtom,
   placeholderHandler,
   store,
-} from "../+globals";
-import { resetDragState } from "../utils/reset-drag-state";
+} from "../+globals.js";
+import { resetDragState } from "../utils/reset-drag-state.js";
 import { getFrameElement } from "@1771technologies/lytenyte-dom-utils";
 
 export function useDragEventHandler(

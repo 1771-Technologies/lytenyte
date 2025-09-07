@@ -1,5 +1,5 @@
-import type { FunctionType, InterfaceType, InterfaceTypePartial, PropertyType } from "../+types";
-import { GridProp } from "./shared-properties";
+import type { FunctionType, InterfaceType, InterfaceTypePartial, PropertyType } from "../+types.js";
+import { GridProp } from "./shared-properties.js";
 
 const ExpansionProp: PropertyType = {
   kind: "property",

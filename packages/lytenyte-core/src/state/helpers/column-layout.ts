@@ -1,5 +1,5 @@
 import type { HeaderCellFloating, HeaderCellLayout, HeaderLayoutCell } from "../../+types";
-import type { MakeColumnViewReturn } from "./column-view";
+import type { MakeColumnViewReturn } from "./column-view.js";
 
 export function makeColumnLayout<T>(view: MakeColumnViewReturn<T>, floatingRowEnabled: boolean) {
   const combinedView = view.combinedView;

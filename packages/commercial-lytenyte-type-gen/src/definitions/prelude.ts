@@ -1,4 +1,4 @@
-import type { PreludeType } from "../+types";
+import type { PreludeType } from "../+types.js";
 
 export const ReactNode: PreludeType = {
   kind: "prelude",

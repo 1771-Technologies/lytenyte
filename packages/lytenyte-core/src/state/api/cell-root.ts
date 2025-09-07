@@ -1,8 +1,8 @@
 import { CONTAINS_DEAD_CELLS, FULL_WIDTH, updateLayout } from "@1771technologies/lytenyte-shared";
 import type { InternalAtoms } from "../+types";
 import type { Grid, GridApi } from "../../+types";
-import { getSpanFn } from "../helpers/get-span-callback";
-import { getFullWidthCallback } from "../helpers/get-full-width-callback";
+import { getSpanFn } from "../helpers/get-span-callback.js";
+import { getFullWidthCallback } from "../helpers/get-full-width-callback.js";
 
 export const makeCellRoot = (
   grid: Grid<any> & { internal: InternalAtoms },

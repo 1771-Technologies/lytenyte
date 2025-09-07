@@ -1,12 +1,12 @@
 import { forwardRef, memo, useEffect, useState, type JSX } from "react";
 import type { RowCellLayout } from "../+types";
-import { useGridRoot } from "../context";
+import { useGridRoot } from "../context.js";
 import { sizeFromCoord } from "@1771technologies/lytenyte-shared";
-import { CellDefault } from "./cell-default";
-import { CellEditor } from "./cell-editor";
-import { useRowMeta, type RowMetaData } from "../rows/row/context";
-import { CellSpacePinStart, CellSpacerPinEnd } from "./cell-spacer";
-import { useCellStyle } from "./use-cell-style";
+import { CellDefault } from "./cell-default.js";
+import { CellEditor } from "./cell-editor.js";
+import { useRowMeta, type RowMetaData } from "../rows/row/context.js";
+import { CellSpacePinStart, CellSpacerPinEnd } from "./cell-spacer.js";
+import { useCellStyle } from "./use-cell-style.js";
 
 export interface CellProps {
   readonly cell: RowCellLayout<any>;

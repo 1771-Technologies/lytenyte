@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
-import type { RowCellLayout } from "../+types";
+import type { RowCellLayout } from "../+types.js";
 import { getTabbables } from "@1771technologies/lytenyte-dom-utils";
-import { useGridRoot } from "../context";
-import { editOnChange } from "../state/helpers/edit-on-change";
+import { useGridRoot } from "../context.js";
+import { editOnChange } from "../state/helpers/edit-on-change.js";
 import { handleNavigationKeys } from "@1771technologies/lytenyte-shared";
 
 interface CellEditorParams<T> {

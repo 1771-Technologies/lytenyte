@@ -1,8 +1,8 @@
 import { useMemo, type PropsWithChildren } from "react";
 import type { Grid } from "../+types";
-import { GridProvider } from "../grid-provider/provider";
-import { TreeRoot } from "../tree-view/root";
-import { FilterTreeContext } from "./context";
+import { GridProvider } from "../grid-provider/provider.js";
+import { TreeRoot } from "../tree-view/root.js";
+import { FilterTreeContext } from "./context.js";
 import type { UseTreeFilterReturn } from "./hooks/use-filter-tree";
 import { useSlot, type SlotComponent } from "@1771technologies/lytenyte-react-hooks";
 

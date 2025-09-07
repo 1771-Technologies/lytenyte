@@ -1,4 +1,4 @@
-import type { FunctionType, InterfaceType } from "../+types";
+import type { FunctionType, InterfaceType } from "../+types.js";
 
 export const DataRect: InterfaceType = {
   kind: "interface",

@@ -1,12 +1,12 @@
 import { forwardRef, type JSX } from "react";
 import { useCombinedRefs } from "@1771technologies/lytenyte-react-hooks";
-import { useGridRoot } from "../context";
+import { useGridRoot } from "../context.js";
 import {
   handleNavigationKeys,
   handleSkipInner,
   useFocusTracking,
 } from "@1771technologies/lytenyte-shared";
-import { beginEditing } from "./begin-editing";
+import { beginEditing } from "./begin-editing.js";
 
 export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function Viewport(
   { children, style, ...props },

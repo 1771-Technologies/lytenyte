@@ -1,5 +1,5 @@
 import type { InterfaceType, UnionType } from "../+types";
-import { ColumnIndexProp, RowIndexProp } from "./shared-properties";
+import { ColumnIndexProp, RowIndexProp } from "./shared-properties.js";
 
 export const PositionGridCellRoot: InterfaceType = {
   kind: "interface",

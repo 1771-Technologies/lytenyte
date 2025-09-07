@@ -1,4 +1,4 @@
-import { updateLayout, type UpdateLayoutArgs } from "./update-layout";
+import { updateLayout, type UpdateLayoutArgs } from "./update-layout.js";
 
 export function updateFull(args: UpdateLayoutArgs): {
   current: ReturnType<typeof setTimeout> | null;

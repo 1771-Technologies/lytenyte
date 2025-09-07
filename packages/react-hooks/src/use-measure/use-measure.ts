@@ -7,9 +7,9 @@ import type {
   UseMeasureOptions,
 } from "./+types";
 import { debounce as createDebounce, equal } from "@1771technologies/lytenyte-js-utils";
-import { useOnWindowResize } from "../use-on-window-resize";
-import { useOnWindowScroll } from "../use-on-window-scroll";
-import { useEvent } from "../use-event";
+import { useOnWindowResize } from "../use-on-window-resize.js";
+import { useOnWindowScroll } from "../use-on-window-scroll.js";
+import { useEvent } from "../use-event.js";
 
 // Fork off: https://www.npmjs.com/package/react-use-measure
 /* v8 ignore next 9999 */

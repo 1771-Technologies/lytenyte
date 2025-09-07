@@ -19,7 +19,7 @@ describe("matches", () => {
    * This ensures we get the correct fallback logic evaluated at import time.
    */
   async function reloadMatches() {
-    const mod = await import("../matches");
+    const mod = await import("../matches.js");
     matches = mod.matches;
   }
 

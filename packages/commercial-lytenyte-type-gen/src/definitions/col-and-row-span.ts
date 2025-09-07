@@ -1,5 +1,5 @@
-import type { FunctionType, InterfaceType } from "../+types";
-import { ColumnIndexProp, GridProp, RowIndexProp, RowNodeProp } from "./shared-properties";
+import type { FunctionType, InterfaceType } from "../+types.js";
+import { ColumnIndexProp, GridProp, RowIndexProp, RowNodeProp } from "./shared-properties.js";
 
 export const CellSpanFnParams: InterfaceType = {
   kind: "interface",

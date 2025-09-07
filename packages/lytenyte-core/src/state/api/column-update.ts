@@ -1,6 +1,6 @@
 import { GROUP_COLUMN_PREFIX } from "@1771technologies/lytenyte-shared";
-import type { Grid, GridApi } from "../../+types";
-import type { InternalAtoms } from "../+types";
+import type { Grid, GridApi } from "../../+types.js";
+import type { InternalAtoms } from "../+types.js";
 
 export const makeColumnUpdate = (
   grid: Grid<any> & { internal: InternalAtoms },

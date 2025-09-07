@@ -1,11 +1,11 @@
 import type { JSX } from "react";
 import { forwardRef, useCallback, useMemo } from "react";
-import { ColumnItemContext } from "./context";
-import { TreeLeaf } from "../tree-view/leaf";
+import { ColumnItemContext } from "./context.js";
+import { TreeLeaf } from "../tree-view/leaf.js";
 import type { Column } from "../+types";
 import { dragState, DropWrap } from "@1771technologies/lytenyte-dragon";
-import { useGrid } from "../grid-provider/use-grid";
-import { useColumnsFromContext } from "./use-columns-from-context";
+import { useGrid } from "../grid-provider/use-grid.js";
+import { useColumnsFromContext } from "./use-columns-from-context.js";
 import type { PathLeaf } from "@1771technologies/lytenyte-shared";
 
 export interface ColumnManagerLeafProps {

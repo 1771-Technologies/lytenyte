@@ -1,5 +1,5 @@
 import { Button, DropdownMenu } from "@radix-ui/themes";
-import { trees, type Demo } from "./demo-tree";
+import { trees, type Demo } from "./demo-tree.js";
 
 export interface DemoDropdownProps {
   readonly demo: Demo;

@@ -1,7 +1,7 @@
 import { Table } from "@1771technologies/cli-table";
 import type { GridView } from "../../../+types";
 
-export function printView(v: GridView["header"]) {
+export function printView(v: GridView<any>["header"]) {
   const table = new Table();
 
   const data: string[][] = Array.from({ length: v.maxRow }, () => {

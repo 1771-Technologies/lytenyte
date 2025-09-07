@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, type PropsWithChildren } from "react";
 import type { GridRootContext } from "../context";
-import { RootProvider } from "../context";
+import { RootProvider } from "../context.js";
 import type { Grid, GridEvents } from "../+types";
 import type { InternalAtoms } from "../state/+types";
 

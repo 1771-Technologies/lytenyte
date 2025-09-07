@@ -1,4 +1,4 @@
-import { isHTMLElement } from "./is-html-element";
+import { isHTMLElement } from "./is-html-element.js";
 
 export const isElementVisible = (el: Node) => {
   if (!isHTMLElement(el)) return false;

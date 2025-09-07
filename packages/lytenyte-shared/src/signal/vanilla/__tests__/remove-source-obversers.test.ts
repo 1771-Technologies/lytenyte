@@ -1,7 +1,7 @@
 import { test } from "vitest";
-import { effect, signal } from "../signal";
-import { getScope, root, tick } from "../primitives";
-import { removeSourceObservers } from "../remove-source-observers";
+import { effect, signal } from "../signal.js";
+import { getScope, root, tick } from "../primitives.js";
+import { removeSourceObservers } from "../remove-source-observers.js";
 
 test("removeSourceObservers should do noting if the computation has no source observers", () => {
   const s = signal(23);

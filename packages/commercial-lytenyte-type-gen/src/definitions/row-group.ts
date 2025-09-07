@@ -1,5 +1,5 @@
 import type { FunctionType, InterfaceType, UnionType } from "../+types";
-import { GridProp } from "./shared-properties";
+import { GridProp } from "./shared-properties.js";
 
 export const RowGroupField: InterfaceType = {
   kind: "interface",

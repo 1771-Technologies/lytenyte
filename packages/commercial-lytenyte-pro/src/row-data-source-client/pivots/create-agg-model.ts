@@ -1,4 +1,4 @@
-import { type Column, type ColumnPivotModel } from "../../+types";
+import { type Column, type ColumnPivotModel } from "../../+types.js";
 
 export function createAggModel<T>(
   model: ColumnPivotModel<T>,

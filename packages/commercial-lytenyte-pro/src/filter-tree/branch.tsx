@@ -2,10 +2,10 @@ import type { JSX } from "react";
 import { forwardRef } from "react";
 import type { TreeVirtualBranch } from "../tree-view/virtualized/make-virtual-tree";
 import type { FilterInFilterItem } from "../+types";
-import { TreeBranch } from "../tree-view/branch/branch";
+import { TreeBranch } from "../tree-view/branch/branch.js";
 import { useSlot, type SlotComponent } from "@1771technologies/lytenyte-react-hooks";
-import { FilterTreeItemContext } from "./context";
-import { useTreeItem } from "./hooks/use-tree-item";
+import { FilterTreeItemContext } from "./context.js";
+import { useTreeItem } from "./hooks/use-tree-item.js";
 
 export interface FilterTreeBranch {
   readonly item: TreeVirtualBranch<FilterInFilterItem>;
