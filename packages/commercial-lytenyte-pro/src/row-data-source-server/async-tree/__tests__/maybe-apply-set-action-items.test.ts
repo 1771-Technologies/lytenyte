@@ -8,6 +8,7 @@ test("applySetActionToTree: should apply items when possible", () => {
     byPath: new Map(),
     size: 10,
     kind: "root",
+    asOf: Date.now(),
   };
 
   maybeApplySetActionItems({ path: [], items: [] }, root);
@@ -51,6 +52,7 @@ test("applySetActionToTree: should not apply when items are empty", () => {
     byPath: new Map(),
     size: 10,
     kind: "root",
+    asOf: Date.now(),
   };
 
   maybeApplySetActionItems(
@@ -71,6 +73,7 @@ test("applySetActionToTree: can perform overriding applies", () => {
     byPath: new Map(),
     size: 10,
     kind: "root",
+    asOf: Date.now(),
   };
 
   maybeApplySetActionItems(
@@ -128,6 +131,7 @@ test("applySetActionToTree: can perform apply with gaps", () => {
     byPath: new Map(),
     size: 10,
     kind: "root",
+    asOf: Date.now(),
   };
 
   maybeApplySetActionItems(

@@ -1,4 +1,4 @@
-import type { TreeParent, TreeRoot } from "../async-tree/+types.async-tree";
+import type { TreeParent, TreeRoot } from "../async-tree/+types.async-tree.js";
 
 /**
  * Represents a flattened range with start/end row indices and an associated path.

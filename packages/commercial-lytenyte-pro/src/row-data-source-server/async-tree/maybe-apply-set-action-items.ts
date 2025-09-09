@@ -17,16 +17,19 @@ export function maybeApplySetActionItems<K, D>(
       item.kind === "leaf" ? `${p.path.at(-1) ?? ROOT_LEAF_PREFIX}#${item.relIndex}` : item.path;
 
     const existingIndex = pathNode.byIndex.get(item.relIndex);
+
     if (existingIndex) {
       pathNode.byPath.delete(existingIndex.path);
       pathNode.byIndex.delete(item.relIndex);
     }
 
-    const existing = pathNode.byPath.get(path);
-    if (existing) {
-      pathNode.byPath.delete(existing.path);
-      pathNode.byIndex.delete(existing.relIndex);
+    const existingByPath = pathNode.byPath.get(path);
+    if (existingByPath) {
+      pathNode.byPath.delete(existingByPath.path);
+      pathNode.byIndex.delete(existingByPath.relIndex);
     }
+
+    const existing = existingByPath ?? existingIndex;
 
     // We always replace when making a leaf
     if (item.kind === "leaf") {

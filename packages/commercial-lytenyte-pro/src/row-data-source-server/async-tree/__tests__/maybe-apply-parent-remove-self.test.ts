@@ -8,6 +8,7 @@ test("maybeApplyParentRemoveSelf: should only remove self if size is 0", () => {
     byPath: new Map(),
     size: 10,
     kind: "root",
+    asOf: Date.now(),
   };
 
   const parentA: TreeParent<any, any> = {
@@ -19,6 +20,7 @@ test("maybeApplyParentRemoveSelf: should only remove self if size is 0", () => {
     parent: root,
     path: "A",
     size: 10,
+    asOf: Date.now(),
   };
   const parentB: TreeParent<any, any> = {
     byIndex: new Map(),
@@ -29,6 +31,7 @@ test("maybeApplyParentRemoveSelf: should only remove self if size is 0", () => {
     parent: parentA,
     path: "B",
     size: 0,
+    asOf: Date.now(),
   };
 
   root.byPath.set("A", parentA);

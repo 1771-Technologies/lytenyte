@@ -26,10 +26,9 @@ export function applySetActionToTree<K, D>(p: SetDataAction<K, D>, root: TreeRoo
   if (!checkSetActionItemKeysAreUnique(p)) return false;
 
   if (isSetActionANoOpOnNode(p, pathNode)) return false;
-
   maybeApplyResize(pathNode, p.size, p.asOf ?? Date.now());
-  if (maybeApplyParentRemoveSelf(pathNode)) return true;
 
+  if (maybeApplyParentRemoveSelf(pathNode)) return true;
   maybeApplySetActionItems(p, pathNode);
 
   return true;

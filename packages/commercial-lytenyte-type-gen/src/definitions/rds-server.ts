@@ -51,7 +51,7 @@ export const DataRequestModel: InterfaceType = {
       doc: { en: `` },
       optional: false,
       tsDoc: `Group model defining how rows are grouped.`,
-      name: "group",
+      name: "groups",
       value: "RowGroupModelItem<T>[]",
     },
     {
