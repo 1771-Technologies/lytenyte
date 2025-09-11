@@ -1,4 +1,5 @@
 declare let hasAValidLicense: boolean;
+declare let licenseState: "invalid" | "expired" | null;
 
 /**
  * Activates a valid license for Graphite Grid and removes the displayed watermark.
@@ -6,4 +7,4 @@ declare let hasAValidLicense: boolean;
  */
 declare function activateLicense(license: string): boolean;
 
-export { activateLicense, hasAValidLicense };
+export { activateLicense, hasAValidLicense, licenseState };

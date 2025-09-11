@@ -1,5 +1,5 @@
 const hashSalt = "faec0f3c45281b1fe12d87e64a6c3271";
-const issueDate = new Date("2025-09-01");
+const issueDate = new Date("2025-09-11");
 function getHostname() {
   const win = globalThis?.document?.defaultView || (typeof window !== "undefined" ? window : null);
   const loc = win?.location;
@@ -15,6 +15,7 @@ function isLocalhost() {
   return hostname.match(/^(?:127\.0\.0\.1|localhost)$/) !== null;
 }
 export let hasAValidLicense = isWebsiteUrl() || isLocalhost();
+export let licenseState = null;
 export function activateLicense(license) {
   const parts = license.split("|");
   const details = parts[0];
@@ -23,16 +24,14 @@ export function activateLicense(license) {
   if (detailHash !== hash) {
     console.error(`
 ********************************************************************************
-  INVALID LICENSE KEY SUPPLIED
+  LyteNyte Grid PRO
 
-  The license key you provided is not a valid LyteNyte Grid license key. If you
-  purchased a valid license from 1771 Technologies, please reach out to
-  our dedicated support email support@1771technologies.com.
+  Invalid license key. Please verify the key and try again.
 
-  If you are interested in purchasing a valid license, please
-  visit https://1771technolgies.com
+  Visit https://1771technolgies.com for more information.
 ********************************************************************************
 `);
+    licenseState = "invalid";
     return false;
   }
   const detailParts = details.split(" ");
@@ -40,16 +39,14 @@ export function activateLicense(license) {
   if (issueDate > endDate) {
     console.error(`
 ********************************************************************************
-    LICENSE EXPIRED
+  LyteNyte Grid PRO
 
-    The license provided is a valid LyteNyte license, however it is not valid for the
-    current version of LyteNyte Grid being used. Please renew your license or use
-    the fallback version valid under your license.
+  License key expired. Your license covers earlier versions only.
 
-    To purchase a new license or learn more about which versions your license is valid
-    for please visit https://1771technologies.com.
+  Visit https://1771technolgies.com for more information.
 ********************************************************************************
 `);
+    licenseState = "expired";
     return false;
   }
   hasAValidLicense = true;
