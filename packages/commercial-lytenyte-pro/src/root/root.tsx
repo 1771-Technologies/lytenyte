@@ -7,7 +7,7 @@ import type { InternalAtoms } from "../state/+types";
 import { DialogDriver } from "./dialog-driver.js";
 import { PopoverDriver } from "./popover-driver.js";
 import { CellSelectionDriver } from "../cell-selection/cell-selection-driver.js";
-import { hasAValidLicense } from "../license.js";
+import { hasAValidLicense, licenseState } from "../license.js";
 
 export type RootProps<T> = { readonly grid: Grid<T> } & {
   [k in keyof GridEvents<T> as `on${Capitalize<k>}`]: GridEvents<T>[k];
@@ -32,7 +32,12 @@ export function Root<T = any>({ grid, children, ...events }: PropsWithChildren<R
     invalidLicenseWatermark.style.border = "1px solid black";
     invalidLicenseWatermark.style.padding = "16px";
 
-    invalidLicenseWatermark.innerHTML = `LyteNyte Grid PRO is being used for evaluation. 
+    if (licenseState === "expired")
+      invalidLicenseWatermark.innerHTML = `LyteNyte Grid: License key expired. Your license covers earlier versions only.`;
+    else if (licenseState === "invalid")
+      invalidLicenseWatermark.innerHTML = `LyteNyte Grid: Invalid license key. Please verify the key and try again.`;
+    else
+      invalidLicenseWatermark.innerHTML = `LyteNyte Grid PRO is being used for evaluation. 
       <a href="https://1771Technologies.com/pricing">Click here</a> to secure your license.`;
 
     document.body.appendChild(invalidLicenseWatermark);

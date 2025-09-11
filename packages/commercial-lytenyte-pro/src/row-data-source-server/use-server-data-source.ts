@@ -1,695 +1,266 @@
+import { effect, makeAtom, signal } from "@1771technologies/lytenyte-shared";
 import type {
   ColumnPivotModel,
-  DataRequest,
   DataRequestModel,
-  DataResponse,
-  DataResponseBranchItem,
-  DataResponseLeafItem,
-  DataResponsePinned,
   Grid,
   RowDataSource,
   RowDataSourceServer,
   RowDataSourceServerParams,
 } from "../+types.js";
 import { useRef } from "react";
-import { makeAsyncTree } from "./async-tree/make-async-tree.js";
-import type {
-  LeafOrParent,
-  SetDataAction,
-  TreeParent,
-  TreeRoot,
-} from "./async-tree/+types.async-tree";
-import { getNodeDepth } from "./utils/get-node-depth.js";
-import { getRequestId } from "./utils/get-request-id.js";
-import { RangeTree, type FlattenedRange } from "./range-tree/range-tree.js";
-import { getNodePath } from "./utils/get-node-path.js";
+import { ServerData, type FlatView } from "./server-data.js";
 import { equal } from "@1771technologies/lytenyte-js-utils";
-import { computed, effect, makeAtom, peek, signal } from "@1771technologies/lytenyte-shared";
 
 export function makeServerDataSource<T>({
   dataFetcher,
-  dataColumnPivotFetcher,
   dataInFilterItemFetcher,
 
+  dataColumnPivotFetcher,
   cellUpdateHandler,
-  cellUpdateOptimistically = true,
+  cellUpdateOptimistically,
+
   blockSize = 200,
 }: RowDataSourceServerParams<T>): RowDataSourceServer<T> {
   let grid: Grid<T> | null = null;
+  let flat!: FlatView;
+  let source!: ServerData;
+  void grid;
 
-  const snapshot$ = signal(Date.now());
-
-  const tree$ = signal(makeAsyncTree<DataResponseBranchItem, DataResponseLeafItem>());
-  const tree = makeAtom(tree$);
-
-  const isLoading$ = signal(false);
-  const isLoading = makeAtom(isLoading$);
-  const error$ = signal<unknown>(null);
-  const loadError = makeAtom(error$);
-
-  const nodesWithError = signal<Map<number, unknown>>(new Map());
-
-  const initialized = signal(false);
-  const model$ = signal<DataRequestModel<T>>({
-    sorts: [],
-    filters: {},
-    filtersIn: {},
-    quickSearch: null,
-
-    group: [],
-    groupExpansions: {},
-    aggregations: {},
-
-    pivotGroupExpansions: {},
-    pivotMode: false,
-    pivotModel: {
-      columns: [],
-      filters: {},
-      filtersIn: {},
-      rows: [],
-      sorts: [],
-      values: [],
-    } satisfies ColumnPivotModel<T>,
-  } satisfies DataRequestModel<T>);
-  const model = makeAtom(model$);
-
-  const pivotGroupExpansions = computed(() => model$().pivotGroupExpansions);
-  const rowGroupExpansions = computed(() => model$().groupExpansions);
-  const pivotMode = computed(() => model$().pivotMode);
-
-  const topData = signal<DataResponseLeafItem[]>([]);
-  const botData = signal<DataResponseLeafItem[]>([]);
-
-  const seenRequests = new Set<string>();
-
-  const dataResponseHandler = (res: (DataResponse | DataResponsePinned)[]) => {
-    const t = tree.get();
-    const dataResponses = res.filter((r) => {
-      return !("kind" in r && (r.kind === "top" || r.kind === "bottom"));
-    }) as DataResponse[];
-    dataResponses.sort((l, r) => l.path.length - r.path.length);
-
-    const pinResponses = res.filter((r) => {
-      return "kind" in r && (r.kind === "top" || r.kind === "bottom");
-    }) as DataResponsePinned[];
-
-    pinResponses.forEach((p) => {
-      if (p.kind === "top") {
-        topData.set(p.data);
-      } else {
-        botData.set(p.data);
-      }
-    });
-
-    dataResponses.forEach((r) => {
-      t.set({
-        path: r.path,
-        items: r.data.map<Required<SetDataAction>["items"][number]>((c, i) => {
-          if (c.kind === "leaf") {
-            return {
-              kind: "leaf",
-              data: c,
-              relIndex: r.start + i,
-            };
-          } else {
-            return {
-              kind: "parent",
-              data: c,
-              path: c.key,
-              relIndex: r.start + i,
-              size: c.childCount,
-            };
-          }
-        }),
-        size: r.size,
-      });
-    });
-  };
-
-  const dataRequestHandler = async (
-    p: DataRequest[],
-    force = false,
-    onSuccess?: () => void,
-    onFailure?: (e: unknown) => void,
-  ) => {
-    if (!grid) return;
-
-    const unseen = p.filter((x) => force || !seenRequests.has(x.id));
-    unseen.forEach((x) => seenRequests.add(x.id));
-
-    if (unseen.length === 0) {
-      onSuccess?.();
-      return;
-    }
-
-    nodesWithError.set((prev) => {
-      const next = new Map(prev);
-      p.forEach((r) => {
-        for (let i = r.rowStartIndex; i < r.rowEndIndex; i++) {
-          next.delete(i);
-        }
-      });
-
-      return prev;
-    });
-
-    try {
-      const res = await dataFetcher({
-        grid: grid,
-        model: model.get(),
-        reqTime: Date.now(),
-        requests: p,
-      });
-
-      dataResponseHandler(res);
-
-      onSuccess?.();
-    } catch (e) {
-      // Mark them as unseen since the request failed.
-      unseen.forEach((x) => seenRequests.delete(x.id));
-
-      onFailure?.(e);
-      console.error(e);
-    } finally {
-      snapshot$.set(Date.now());
-      grid.state.rowDataStore.rowClearCache();
-    }
-  };
-
-  const viewChange = () => {
-    if (!grid) return;
-
-    const bounds = grid.state.viewBounds.get();
-
-    const f = flat.get();
-
-    const te = bounds.rowTopEnd;
-
-    const seen = new Set();
-
-    const requests: DataRequest[] = [];
-
-    for (let i = bounds.rowCenterStart - te; i < bounds.rowCenterEnd - te; i++) {
-      const ranges = f.rangeTree.findRangesForRowIndex(i);
-      ranges.forEach((c) => {
-        if (c.parent.kind === "root") {
-          const blockIndex = Math.floor(i / blockSize);
-
-          const start = blockIndex * blockSize;
-          const end = Math.min(start + blockSize, c.parent.size);
-
-          const reqId = getRequestId([], start, end);
-
-          if (seen.has(reqId)) return;
-          seen.add(reqId);
-
-          const size = start + blockSize > c.parent.size ? c.parent.size - start : blockSize;
-
-          requests.push({
-            id: reqId,
-            path: [],
-            start,
-            end,
-            rowStartIndex: i,
-            rowEndIndex: i + size,
-          });
-        } else {
-          const blockIndex = Math.floor(c.parent.relIndex / blockSize);
-
-          const start = blockIndex * blockSize;
-          const end = Math.min(start + blockSize, c.parent.size);
-
-          const path = getNodePath(c.parent);
-          const reqId = getRequestId(path, start, end);
-
-          if (seen.has(reqId)) return;
-          seen.add(reqId);
-
-          const size = start + blockSize > c.parent.size ? c.parent.size - start : blockSize;
-
-          requests.push({
-            id: reqId,
-            path,
-            start,
-            end,
-            rowStartIndex: i,
-            rowEndIndex: i + size,
-          });
-        }
-      });
-    }
-
-    dataRequestHandler(
-      requests,
-      false,
-      () => {},
-      (e) => {
-        nodesWithError.set((prev) => {
-          const next = new Map(prev);
-          requests.forEach((r) => {
-            for (let i = r.rowStartIndex; i < r.rowEndIndex; i++) {
-              next.set(i, e);
-            }
-          });
-
-          return prev;
-        });
-      },
-    );
-  };
-
-  const resetRequest = async () => {
-    seenRequests.clear();
-    tree.set(makeAsyncTree<DataResponseBranchItem, DataResponseLeafItem>());
-    nodesWithError.set(new Map());
-
-    // Initialize the grid.
-    const initialDataRequest: DataRequest = {
-      path: [],
-      id: getRequestId([], 0, blockSize),
-      rowStartIndex: 0,
-      rowEndIndex: blockSize,
-      start: 0,
-      end: blockSize,
-    };
-
-    loadError.set(null);
-    isLoading.set(true);
-    await dataRequestHandler(
-      [initialDataRequest],
-      false,
-      () => {},
-      (e) => {
-        loadError.set(e);
-      },
-    );
-    isLoading.set(false);
-  };
-
-  const flat$ = computed(() => {
-    snapshot$();
-    const mode = pivotMode();
-    const expansions = mode ? pivotGroupExpansions() : rowGroupExpansions();
-    const t = tree$();
-
-    type RowItem = LeafOrParent<DataResponseBranchItem, DataResponseLeafItem>;
-
-    const rowIdToRow = new Map<string, RowItem>();
-    const rowIndexToRow = new Map<number, RowItem>();
-    const rowIdToRowIndex = new Map<string, number>();
-
-    const ranges: FlattenedRange[] = [];
-
-    function processParent(
-      node:
-        | TreeRoot<DataResponseBranchItem, DataResponseLeafItem>
-        | TreeParent<DataResponseBranchItem, DataResponseLeafItem>,
-      start: number,
-    ) {
-      const rows = [...node.byIndex.values()].sort((l, r) => l.relIndex - r.relIndex);
-
-      // Track the additional rows added by expanded groups
-      let offset = 0;
-
-      for (let i = 0; i < rows.length; i++) {
-        const row = rows[i];
-        const rowIndex = row.relIndex + start + offset;
-
-        rowIndexToRow.set(rowIndex, row);
-        rowIdToRowIndex.set(row.data.id, rowIndex);
-        rowIdToRow.set(row.data.id, row);
-
-        if (row.kind === "parent" && expansions[row.data.id]) {
-          offset += processParent(row, rowIndex + 1);
-        }
-      }
-
-      ranges.push({ rowStart: start, rowEnd: offset + node.size + start, parent: node });
-
-      return offset + node.size;
-    }
-
-    const size = processParent(t, 0);
-    const rangeTree = new RangeTree(ranges);
-
-    return {
-      size,
-      rowIndexToRow,
-      rowIdToRow,
-      rowIdToRowIndex,
-      rangeTree,
-    };
-  });
-  const flat = makeAtom(flat$);
-
-  const topLength = computed(() => topData().length);
-  const botLength = computed(() => botData().length);
-  const flatLength = computed(() => flat.$().size);
+  const isLoading = makeAtom(signal(false));
+  const loadError = makeAtom(signal<unknown>(null));
 
   const cleanup: (() => void)[] = [];
   const init: RowDataSource<T>["init"] = (g) => {
     grid = g;
 
-    const sorts = g.state.sortModel.get();
+    source = new ServerData({
+      defaultExpansion: g.state.rowGroupDefaultExpansion.get(),
+      blocksize: blockSize,
+      expansions: g.state.rowGroupExpansions.get(),
+      pivotExpansions: g.state.columnPivotRowGroupExpansions.get(),
+      pivotMode: g.state.columnPivotMode.get(),
+      onResetLoadBegin: () => {
+        isLoading.set(true);
+        loadError.set(null);
+      },
+      onResetLoadEnd: () => isLoading.set(false),
+      onResetLoadError: (e) => loadError.set(e),
+      onFlatten: (f) => {
+        const store = g.state.rowDataStore;
+        flat = f;
 
-    const filters = g.state.filterModel.get();
-    const filtersIn = g.state.filterInModel.get();
-    const quickSearch = g.state.quickSearch.get();
+        store.rowTopCount.set(f.top);
+        store.rowCenterCount.set(f.center);
+        store.rowBottomCount.set(f.bottom);
 
-    const group = g.state.rowGroupModel.get();
-    const groupExpansions = g.state.rowGroupExpansions.get();
-    const aggregations = g.state.aggModel.get();
+        store.rowClearCache();
+      },
+    });
 
-    const pivotMode = g.state.columnPivotMode.get();
+    let prevModel: Omit<DataRequestModel<any>, "pivotGroupExpansions" | "groupExpansions"> = {
+      sorts: g.state.sortModel.get(),
+      groups: g.state.rowGroupModel.get(),
+      filters: g.state.filterModel.get(),
+      filtersIn: g.state.filterInModel.get(),
+      quickSearch: g.state.quickSearch.get(),
+      aggregations: g.state.aggModel.get(),
+      pivotMode: g.state.columnPivotMode.get(),
+      pivotModel: g.state.columnPivotModel.get(),
+    };
+
+    cleanup.push(
+      effect(() => {
+        const newModel: Omit<DataRequestModel<any>, "pivotGroupExpansions" | "groupExpansions"> = {
+          // @ts-expect-error this is fine - just a hidden type
+          sorts: g.state.sortModel.$(),
+          // @ts-expect-error this is fine - just a hidden type
+          groups: g.state.rowGroupModel.$(),
+          // @ts-expect-error this is fine - just a hidden type
+          filters: g.state.filterModel.$(),
+          // @ts-expect-error this is fine - just a hidden type
+          filtersIn: g.state.filterInModel.$(),
+          // @ts-expect-error this is fine - just a hidden type
+          quickSearch: g.state.quickSearch.$(),
+          // @ts-expect-error this is fine - just a hidden type
+          aggregations: g.state.aggModel.$(),
+          // @ts-expect-error this is fine - just a hidden type
+          pivotMode: g.state.columnPivotMode.$(),
+          // @ts-expect-error this is fine - just a hidden type
+          pivotModel: g.state.columnPivotModel.$(),
+        };
+
+        if (equal(newModel, prevModel)) return;
+
+        source.dataFetcher = (req, expansions, pivotExpansions) => {
+          return dataFetcher({
+            grid: g,
+            model: {
+              ...newModel,
+              groupExpansions: expansions,
+              pivotGroupExpansions: pivotExpansions,
+            },
+            reqTime: Date.now(),
+            requests: req,
+          });
+        };
+
+        prevModel = newModel;
+      }),
+    );
+
     const pivotModel = g.state.columnPivotModel.get();
-    const pivotGroupExpansions = g.state.columnPivotRowGroupExpansions.get();
-
-    model$.set({
-      sorts,
-      filters,
-      filtersIn,
-      quickSearch,
-
-      aggregations,
-      group,
-      groupExpansions,
-
-      pivotMode,
-      pivotModel,
-      pivotGroupExpansions,
-    });
-    initialized.set(true);
-
-    // Handle row count changes
-    const f = flat.get();
-    g.state.rowDataStore.rowCenterCount.set(f.size);
-    g.state.rowDataStore.rowBottomCount.set(peek(botData).length);
-    g.state.rowDataStore.rowTopCount.set(peek(topData).length);
-
-    cleanup.push(
-      effect(() => {
-        g.state.rowDataStore.rowCenterCount.set(flatLength());
-        viewChange();
-      }),
-    );
-
-    cleanup.push(
-      effect(() => {
-        g.state.rowDataStore.rowTopCount.set(topLength());
-        g.state.rowDataStore.rowClearCache();
-      }),
-    );
-    cleanup.push(
-      effect(() => {
-        g.state.rowDataStore.rowBottomCount.set(botLength);
-        g.state.rowDataStore.rowClearCache();
-      }),
-    );
-
-    resetRequest();
-
-    // Watch the view bound changes.
-    g.state.viewBounds.watch(() => {
-      viewChange();
-    });
-
     let prevPivotColumnModel = pivotModel.columns;
     let prevPivotColumnValues = pivotModel.values;
     const updatePivotColumns = async (
-      mdl: ColumnPivotModel<T>,
+      model: ColumnPivotModel<T>,
       ignoreEqualCheck: boolean = false,
     ) => {
       if (
         !ignoreEqualCheck &&
-        equal(prevPivotColumnModel, mdl.columns) &&
-        equal(prevPivotColumnValues, mdl.values)
+        equal(prevPivotColumnModel, model.columns) &&
+        equal(prevPivotColumnValues, model.values)
       )
         return;
 
-      const cols = await dataColumnPivotFetcher?.({
-        grid: grid!,
-        model: model.get(),
+      const pivotColumns = await dataColumnPivotFetcher?.({
+        grid: g,
+        model: {
+          ...prevModel,
+          pivotMode: g.state.columnPivotMode.get(),
+          pivotModel: model,
+          groupExpansions: g.state.rowGroupExpansions.get(),
+          pivotGroupExpansions: g.state.columnPivotColumnGroupExpansions.get(),
+        },
         reqTime: Date.now(),
       });
-      if (cols) grid?.state.columnPivotColumns.set(cols);
 
-      resetRequest();
+      g.state.columnPivotColumns.set(pivotColumns ?? []);
+      g.state.rowDataStore.rowClearCache();
 
-      prevPivotColumnModel = mdl.columns;
-      prevPivotColumnValues = mdl.values;
+      prevPivotColumnModel = model.columns;
+      prevPivotColumnValues = model.values;
     };
 
-    if (pivotMode) updatePivotColumns(pivotModel);
+    if (g.state.columnPivotMode.get()) updatePivotColumns(pivotModel);
 
-    let prevModel = peek(model$);
-    effect(() => {
-      // @ts-expect-error this is fine
-      const rowGroupModel = g.state.rowGroupModel.$();
-      // @ts-expect-error this is fine
-      const rowGroupExpansions = g.state.rowGroupExpansions.$();
-      // @ts-expect-error this is fine
-      const aggModel = g.state.aggModel.$();
-      // @ts-expect-error this is fine
-      const filterModelIn = g.state.filterInModel.$();
-      // @ts-expect-error this is fine
-      const quickSearch = g.state.quickSearch.$();
-      // @ts-expect-error this is fine
-      const filterModel = g.state.filterModel.$();
-      // @ts-expect-error this is fine
-      const sortModel = g.state.sortModel.$();
-      // @ts-expect-error this is fine
-      const columnPivotExpansions = g.state.columnPivotColumnGroupExpansions.$();
+    // Pivot model monitoring
+    cleanup.push(
+      grid.state.columnPivotMode.watch(() => {
+        const model = g.state.columnPivotModel.get();
+        updatePivotColumns(model);
+      }),
+    );
+    cleanup.push(
+      grid.state.columnPivotModel.watch(() => {
+        const model = g.state.columnPivotModel.get();
+        updatePivotColumns(model);
+      }),
+    );
 
-      // @ts-expect-error this is fine
-      const model = g.state.columnPivotModel.$();
-      // @ts-expect-error this is fine
-      const mode = g.state.columnPivotMode.$();
-      updatePivotColumns(model);
+    cleanup.push(
+      g.state.rowGroupDefaultExpansion.watch(() => {
+        source.defaultExpansion = g.state.rowGroupDefaultExpansion.get();
+      }),
+    );
 
-      const newModel = {
-        aggregations: aggModel,
-        filters: filterModel,
-        filtersIn: filterModelIn,
-        group: rowGroupModel,
-        groupExpansions: rowGroupExpansions,
-        quickSearch,
-        pivotGroupExpansions: columnPivotExpansions,
-        pivotMode: mode,
-        pivotModel: model,
-        sorts: sortModel,
-      };
+    cleanup.push(
+      g.state.viewBounds.watch(() => {
+        const bounds = g.state.viewBounds.get();
+        source.rowViewBounds = [bounds.rowCenterStart, bounds.rowCenterEnd];
+      }),
+    );
 
-      if (equal(newModel, prevModel)) return;
-      prevModel = newModel;
-
-      model$.set(newModel);
-
-      resetRequest();
-    });
+    source.dataFetcher = (req, expansions, pivotExpansions) => {
+      return dataFetcher({
+        grid: g,
+        model: {
+          ...prevModel,
+          groupExpansions: expansions,
+          pivotGroupExpansions: pivotExpansions,
+        },
+        reqTime: Date.now(),
+        requests: req,
+      });
+    };
   };
 
   const rowById: RowDataSource<T>["rowById"] = (id) => {
-    const f = flat.get();
-
-    const node = f.rowIdToRow.get(id);
-    if (!node) {
-      {
-        const top = peek(topData);
-        const node = top.find((c) => c.id === id);
-        if (node) return { kind: "leaf", data: node.data, id: node.id };
-      }
-
-      {
-        const bot = peek(topData);
-        const node = bot.find((c) => c.id === id);
-        if (node) return { kind: "leaf", data: node.data, id: node.id };
-      }
-
-      return null;
-    }
-
-    if (node.kind === "parent") {
-      return {
-        kind: "branch",
-        data: node.data.data,
-        id: node.data.id,
-        key: node.path,
-        depth: getNodeDepth(node),
-      };
-    }
-
-    return {
-      kind: "leaf",
-      data: node.data.data as T,
-      id: node.data.id,
-    };
+    return flat.rowIdToRow.get(id) ?? null;
   };
+
   const rowAllChildIds: RowDataSource<T>["rowAllChildIds"] = (rowId) => {
-    const f = flat.get();
+    const f = flat;
     const row = f.rowIdToRow.get(rowId);
     if (!row || row.kind === "leaf") return [];
 
     const ids: Set<string> = new Set();
-    const stack = [...row.byPath.values()];
+    const node = f.rowIdToTreeNode.get(row.id);
+    if (!node || node.kind === "leaf") return [];
+
+    const stack = [...node.byPath.values()];
     while (stack.length) {
       const item = stack.pop()!;
-
-      if (item.kind === "leaf") {
+      if (item?.kind === "leaf") {
         ids.add(item.data.id);
       } else {
         stack.push(...item.byPath.values());
         ids.add(item.data.id);
       }
     }
+
     return [...ids];
   };
 
-  const rowByIndex: RowDataSource<T>["rowByIndex"] = (ri) => {
-    const f = flat.get();
+  const rowByIndex: RowDataSource<T>["rowByIndex"] = (i) => {
+    const row = flat.rowIndexToRow.get(i);
+    const isLoading = flat.loading.has(i);
+    const error = flat.errored.get(i);
 
-    const top = peek(topData);
-    const bot = peek(botData);
-
-    const errors = peek(nodesWithError);
-    const error = errors.get(ri);
-
-    if (ri == null || ri < 0 || ri >= f.size + top.length + bot.length) return null;
-
-    // Top node
-    if (ri < top.length) {
-      const row = top[ri];
-      if (!row) return null;
-      return { kind: "leaf", data: row.data, id: row.id, error };
-    }
-
-    if (ri >= f.size + top.length) {
-      const i = ri - f.size - top.length;
-      const row = bot[i];
-      if (!row) return null;
-      return { kind: "leaf", data: row.data, id: row.id, error };
-    }
-
-    const node = f.rowIndexToRow.get(ri - top.length);
-    if (!node && error)
-      return { kind: "leaf", data: null, id: `error-${ri}`, loading: false, error };
-    if (!node) return { kind: "leaf", data: null, id: `loading-${ri}`, loading: true, error: null };
-
-    const isLoading = peek(loadingGroups$);
-
-    if (node.kind === "parent") {
+    // If we haven't loaded a row yet.
+    if (!row)
       return {
-        kind: "branch",
-        data: node.data.data,
-        id: node.data.id,
-        key: node.path,
-        depth: getNodeDepth(node),
-        error,
-        loading: isLoading.has(node.data.id),
+        id: `__loading__placeholder__${i}`,
+        data: null,
+        kind: "leaf",
+        loading: isLoading,
+        error: error,
       };
+
+    if (error) {
+      return { ...row, error };
+    }
+    if (isLoading) {
+      return { ...row, loading: isLoading };
     }
 
-    return {
-      kind: "leaf",
-      data: node.data.data as T,
-      id: node.data.id,
-      error,
-    };
+    return flat.rowIndexToRow.get(i) ?? null;
   };
 
-  const loadingGroups$ = signal<Set<string>>(new Set<string>());
+  const rowExpand: RowDataSource<T>["rowExpand"] = (expansions) => {
+    if (!grid) return;
 
-  const rowExpand: RowDataSource<T>["rowExpand"] = (p) => {
-    const f = flat.get();
+    const mode = grid.state.columnPivotMode.get();
 
-    const loadingRows = new Set(peek(loadingGroups$));
-    const rowsForThis = new Set<string>();
-
-    const rowIndices: number[] = [];
-    const requests = Object.entries(p)
-      .map<DataRequest | null>(([rowId, state]) => {
-        if (!state) return null;
-
-        // Mark as loading
-        loadingRows.add(rowId);
-        rowsForThis.add(rowId);
-
-        const rowIndex = rowToIndex(rowId);
-
-        if (rowIndex == null) return null;
-        const row = f.rowIndexToRow.get(rowIndex);
-        if (!row || row.kind === "leaf") return null;
-
-        const path = getNodePath(row);
-
-        rowIndices.push(rowIndex);
-
-        return {
-          id: getRequestId(path, 0, Math.min(blockSize, row.size)),
-          start: 0,
-          end: Math.min(blockSize, row.size),
-          path,
-          rowStartIndex: rowIndex + 1,
-          rowEndIndex: Math.min(row.size, rowIndex + blockSize + 1),
-        };
-      })
-      .filter((c) => !!c);
-
-    const mode = peek(pivotMode);
-
-    // Remove the errors before requesting.
-    const errorRows = peek(nodesWithError);
-    if (rowIndices.some((c) => errorRows.has(c))) {
-      nodesWithError.set((prev) => {
-        const n = new Map(prev);
-        rowIndices.forEach((c) => n.delete(c));
-
-        return prev;
-      });
+    if (mode) {
+      const current = grid.state.columnPivotColumnGroupExpansions.get();
+      const next = { ...current, ...expansions };
+      source.pivotExpansions = next;
+      grid.state.columnPivotRowGroupExpansions.set(next);
+    } else {
+      const current = grid.state.rowGroupExpansions.get();
+      const next = { ...current, ...expansions };
+      source.expansions = next;
+      grid.state.rowGroupExpansions.set(next);
     }
-
-    // Mark these groups as loading
-    loadingGroups$.set(loadingRows);
-    grid?.state.rowDataStore.rowClearCache();
-
-    dataRequestHandler(
-      requests,
-      false,
-      () => {
-        if (mode) grid?.state.columnPivotColumnGroupExpansions.set((prev) => ({ ...prev, ...p }));
-        else grid?.state.rowGroupExpansions.set((prev) => ({ ...prev, ...p }));
-
-        const next = new Set(peek(loadingGroups$));
-        rowsForThis.forEach((c) => next.delete(c));
-
-        loadingGroups$.set(next);
-        setTimeout(() => {
-          grid?.state.rowDataStore.rowClearCache();
-        });
-      },
-      (error) => {
-        nodesWithError.set((prev) => {
-          const n = new Map(prev);
-          rowIndices.forEach((c) => n.set(c, error));
-          return prev;
-        });
-
-        const next = new Set(peek(loadingGroups$));
-        rowsForThis.forEach((c) => next.delete(c));
-        loadingGroups$.set(next);
-        setTimeout(() => {
-          grid?.state.rowDataStore.rowClearCache();
-        });
-      },
-    );
   };
 
   const rowToIndex: RowDataSource<T>["rowToIndex"] = (rowId) => {
-    const f = flat.get();
-    return f.rowIdToRowIndex.get(rowId) ?? null;
+    return flat.rowIdToRowIndex.get(rowId) ?? null;
   };
 
   const rowSelect: RowDataSource<T>["rowSelect"] = (params) => {
     if (!grid || params.mode === "none") return;
+
     if (params.mode === "single") {
       if (params.deselect) {
         grid.state.rowSelectedIds.set(new Set());
@@ -743,19 +314,18 @@ export function makeServerDataSource<T>({
       return;
     }
 
-    const t = flat.get();
+    const t = flat;
     grid.state.rowSelectedIds.set(new Set(t.rowIdToRow.keys()));
   };
 
   const rowSetBotData: RowDataSource<T>["rowSetBotData"] = () => {
-    throw new Error(
-      `Server data source does not support directly setting pinned rows. Instead send a DataResponsePinned object via the pushData method`,
-    );
+    console.error("Directly setting bottom data in the server data model is not supported.");
   };
   const rowSetTopData: RowDataSource<T>["rowSetTopData"] = () => {
-    throw new Error(
-      `Server data source does not support directly setting pinned rows. Instead send a DataResponsePinned object via the pushData method`,
-    );
+    console.error("Directly setting top data in the server data model is not supported.");
+  };
+  const rowSetCenterData: RowDataSource<T>["rowSetCenterData"] = () => {
+    console.error("Directly setting center data in the server data model is not supported.");
   };
 
   // CRUD ops
@@ -771,13 +341,6 @@ export function makeServerDataSource<T>({
   };
 
   const rowUpdate: RowDataSource<T>["rowUpdate"] = (updates) => {
-    const f = flat.get();
-
-    const top = peek(topData);
-    const bot = peek(botData);
-
-    const firstBot = f.size + top.length;
-
     const idMap = new Map(
       [...updates.entries()]
         .map(([key, data]) => {
@@ -795,26 +358,11 @@ export function makeServerDataSource<T>({
 
     if (!cellUpdateOptimistically) return;
 
-    for (const [key, data] of updates.entries()) {
-      const rowIndex = typeof key === "number" ? key : (rowToIndex(key) as number);
+    idMap.forEach((data, id) => {
+      source.updateRow(id, data);
+    });
 
-      const row = rowByIndex(rowIndex!);
-      if (!row || !grid) {
-        console.error(`Failed to find the row at index ${rowIndex} which is being updated.`);
-        continue;
-      }
-
-      if (rowIndex < top.length) {
-        (top[rowIndex] as any).data = data;
-      } else if (rowIndex >= firstBot) {
-        (bot[rowIndex] as any).data = data;
-      } else {
-        const node = f.rowIndexToRow.get(rowIndex - top.length);
-        if (node) (node.data as any).data = data;
-      }
-
-      grid.state.rowDataStore.rowInvalidateIndex(rowIndex);
-    }
+    grid?.state.rowDataStore.rowClearCache();
   };
 
   const inFilterItems: RowDataSource<T>["inFilterItems"] = (c) => {
@@ -827,6 +375,18 @@ export function makeServerDataSource<T>({
     return false;
   };
 
+  const reset: RowDataSourceServer<T>["reset"] = () => {
+    source.reset();
+  };
+  const pushResponses: RowDataSourceServer<T>["pushResponses"] = (responses) => {
+    source.handleResponses(responses);
+  };
+  const pushRequests: RowDataSourceServer<T>["pushRequests"] = (requests) => {
+    source.handleRequests(requests);
+  };
+
+  const retry: RowDataSourceServer<T>["retry"] = () => {};
+
   return {
     init,
     rowAdd,
@@ -838,10 +398,9 @@ export function makeServerDataSource<T>({
     rowSelect,
     rowSelectAll,
     rowSetBotData,
-    rowSetCenterData: () => {
-      throw new Error("Server side data source does not support full row updates");
-    },
+    rowSetCenterData,
     rowSetTopData,
+
     rowToIndex,
     rowUpdate,
 
@@ -850,16 +409,10 @@ export function makeServerDataSource<T>({
 
     isLoading,
     loadError,
-    pushResponses: (res) => {
-      dataResponseHandler(res);
-    },
-    pushRequests: (req, onSuccess, onFailure) => {
-      dataRequestHandler(req, true, onSuccess, onFailure);
-    },
-    reset: resetRequest,
-    retry: () => {
-      viewChange();
-    },
+    pushResponses,
+    pushRequests,
+    reset,
+    retry,
   };
 }
 

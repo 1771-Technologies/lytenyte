@@ -8,6 +8,7 @@ test("getParentNodeByPath: should return the correct node", () => {
     byPath: new Map(),
     size: 10,
     kind: "root",
+    asOf: Date.now(),
   };
 
   const parentA: TreeParent<any, any> = {
@@ -19,6 +20,7 @@ test("getParentNodeByPath: should return the correct node", () => {
     parent: root,
     path: "x",
     size: 10,
+    asOf: Date.now(),
   };
   const parentB: TreeParent<any, any> = {
     byIndex: new Map(),
@@ -29,6 +31,7 @@ test("getParentNodeByPath: should return the correct node", () => {
     parent: parentA,
     path: "b",
     size: 10,
+    asOf: Date.now(),
   };
   const leaf: TreeLeaf<any, any> = {
     data: null,
@@ -36,6 +39,7 @@ test("getParentNodeByPath: should return the correct node", () => {
     kind: "leaf",
     parent: parentB,
     path: "x",
+    asOf: Date.now(),
   };
 
   root.byPath.set("x", parentA);
@@ -54,6 +58,7 @@ test("getParentNodeByPath: should handle invalid paths", () => {
     byPath: new Map(),
     size: 10,
     kind: "root",
+    asOf: Date.now(),
   };
 
   const parentA: TreeParent<any, any> = {
@@ -65,6 +70,7 @@ test("getParentNodeByPath: should handle invalid paths", () => {
     parent: root,
     path: "x",
     size: 10,
+    asOf: Date.now(),
   };
   const parentB: TreeParent<any, any> = {
     byIndex: new Map(),
@@ -75,6 +81,7 @@ test("getParentNodeByPath: should handle invalid paths", () => {
     parent: parentA,
     path: "b",
     size: 10,
+    asOf: Date.now(),
   };
   const leaf: TreeLeaf<any, any> = {
     data: null,
@@ -82,6 +89,7 @@ test("getParentNodeByPath: should handle invalid paths", () => {
     kind: "leaf",
     parent: parentB,
     path: "x",
+    asOf: Date.now(),
   };
 
   root.byPath.set("x", parentA);
@@ -121,6 +129,7 @@ test("getParentNodeByPath: should handle null paths", () => {
     byPath: new Map(),
     size: 10,
     kind: "root",
+    asOf: Date.now(),
   };
 
   const parentA: TreeParent<any, any> = {
@@ -132,6 +141,7 @@ test("getParentNodeByPath: should handle null paths", () => {
     parent: root,
     path: "x",
     size: 10,
+    asOf: Date.now(),
   };
   const parentB: TreeParent<any, any> = {
     byIndex: new Map(),
@@ -142,6 +152,7 @@ test("getParentNodeByPath: should handle null paths", () => {
     parent: parentA,
     path: "b",
     size: 10,
+    asOf: Date.now(),
   };
   const parentC: TreeParent<any, any> = {
     byIndex: new Map(),
@@ -152,6 +163,7 @@ test("getParentNodeByPath: should handle null paths", () => {
     parent: parentA,
     path: "b",
     size: 10,
+    asOf: Date.now(),
   };
 
   root.byPath.set(null, parentA);

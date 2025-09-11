@@ -1,65 +1,9 @@
 # @1771technologies/lytenyte-dom-utils
 
-## 1.0.9
-
-### Patch Changes
-
-- Fixed js extensions
-- Updated dependencies
-  - @1771technologies/lytenyte-js-utils@1.0.9
-
-## 1.0.8
-
-### Patch Changes
-
-- Version - efficient render calculation
-- Updated dependencies
-  - @1771technologies/lytenyte-js-utils@1.0.8
-
-## 1.0.7
+## 1.0.10
 
 ### Patch Changes
 
 - Version
 - Updated dependencies
-  - @1771technologies/lytenyte-js-utils@1.0.7
-
-## 1.0.6
-
-### Patch Changes
-
-- Version
-- Updated dependencies
-  - @1771technologies/lytenyte-js-utils@1.0.6
-
-## 1.0.5
-
-### Patch Changes
-
-- Disable row cache
-- Updated dependencies
-  - @1771technologies/lytenyte-js-utils@1.0.5
-
-## 1.0.4
-
-### Patch Changes
-
-- v1.0.4
-- Updated dependencies
-  - @1771technologies/lytenyte-js-utils@1.0.4
-
-## 1.0.2
-
-### Patch Changes
-
-- Version to v1.0.3
-- Updated dependencies
-  - @1771technologies/lytenyte-js-utils@1.0.2
-
-## 1.0.1
-
-### Patch Changes
-
-- Update readmes
-- Updated dependencies
-  - @1771technologies/lytenyte-js-utils@1.0.1
+  - @1771technologies/lytenyte-js-utils@1.0.10

@@ -6751,7 +6751,7 @@ export interface DataRequestModel<T> {
   /**
    * Group model defining how rows are grouped.
    */
-  readonly group: RowGroupModelItem<T>[];
+  readonly groups: RowGroupModelItem<T>[];
 
   /**
    * Expansion state of row groups by group key.

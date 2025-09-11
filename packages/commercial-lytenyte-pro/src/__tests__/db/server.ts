@@ -21,12 +21,12 @@ export async function handleRequest(
 
     const hasWhere = model.quickSearch || model.filters.length;
 
-    const groupKey = model.group[c.path.length];
+    const groupKey = model.groups[c.path.length];
     if (groupKey) {
       const data = sql<{ childCnt: number; pathKey: string }[]>(
         `SELECT *, ${groupKey} AS pathKey, count(*) AS childCnt 
-        FROM banks GROUP BY ${groupKey} LIMIT ${limit} OFFSET ${c.start}`,
-      );
+        FROM banks GROUP BY ${groupKey}`,
+      ).slice(c.start, c.start + limit);
       const cnt = sql<{ cnt: number }[]>(
         `SELECT count(*) AS cnt FROM banks GROUP BY ${groupKey}`,
       ).length;
@@ -50,6 +50,15 @@ export async function handleRequest(
       };
     }
 
+    const groupFilter = [];
+    for (let i = 0; i < c.path.length; i++) {
+      const group = model.groups[i];
+      const groupKey = typeof group === "string" ? group : group.id;
+      groupFilter.push(
+        `${groupKey} = ${typeof c.path[i] === "string" ? `'${c.path[i]}'` : c.path[i]}`,
+      );
+    }
+
     const data = sql<any[]>(`
         WITH
           flat AS (
@@ -59,12 +68,12 @@ export async function handleRequest(
               banks
             ${hasWhere ? "WHERE" : ""}
             ${getQuickSearchFilter(model.quickSearch)}
+            ${!hasWhere && groupFilter.length ? " WHERE " + groupFilter.join("\n AND ") : groupFilter.length ? " AND " + groupFilter.join("\n AND") : ""}
             ${model.quickSearch && model.filters.length ? "AND" : ""}
             ${getOrderByClauseForSorts(model.sorts)}
-            LIMIT ${limit} OFFSET ${c.start}
           )
           SELECT * FROM flat
-      `);
+      `).slice(c.start, c.start + limit);
 
     const count = sql<{ cnt: number }[]>(`
         WITH
@@ -75,6 +84,7 @@ export async function handleRequest(
               banks
             ${hasWhere ? "WHERE" : ""}
             ${getQuickSearchFilter(model.quickSearch)}
+            ${!hasWhere && groupFilter.length ? " WHERE " + groupFilter.join("\n AND ") : groupFilter.length ? " AND " + groupFilter.join("\n AND") : ""}
             ${model.quickSearch && model.filters.length ? "AND" : ""}
             ${getOrderByClauseForSorts(model.sorts)}
           )
@@ -104,16 +114,16 @@ export async function handleRequest(
       kind: "top",
       asOfTime: Date.now(),
       data: [
-        { kind: "leaf", data: {}, id: "t-1" },
-        { kind: "leaf", data: {}, id: "t-2" },
+        { kind: "leaf", data: {}, id: "top-1" },
+        { kind: "leaf", data: {}, id: "top-2" },
       ],
     },
     {
       kind: "bottom",
       asOfTime: Date.now(),
       data: [
-        { kind: "leaf", data: {}, id: "b-1" },
-        { kind: "leaf", data: {}, id: "b-2" },
+        { kind: "leaf", data: {}, id: "bottom-1" },
+        { kind: "leaf", data: {}, id: "bottom-2" },
       ],
     },
   ];

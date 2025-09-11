@@ -1,4 +1,5 @@
 import "./grid-navigation.css";
+import "../../main.css";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Header } from "../header/header.js";
 import { HeaderRow } from "../header/header-row.js";
@@ -28,7 +29,6 @@ const columns: Column<any>[] = [
   { id: "balance" },
   { id: "education" },
   { id: "marital" },
-  { id: "default" },
   { id: "housing" },
   { id: "loan" },
   { id: "contact" },
@@ -62,6 +62,7 @@ function Component() {
     rowSelectionMode: "multiple",
     rowSelectionActivator: "single-click",
     editCellMode: "cell",
+    rowGroupDefaultExpansion: true,
 
     rowGroupColumn: {
       cellRenderer: ({ grid, row }) => {
@@ -83,7 +84,7 @@ function Component() {
   const [qsLocal, setQsLocal] = useState(g.state.quickSearch.get() ?? "");
 
   return (
-    <div>
+    <div className="lng-grid">
       <div>
         <button onClick={() => g.state.rtl.set((prev) => !prev)}>
           RTL: {g.state.rtl.get() ? "Yes" : "No"}
@@ -99,7 +100,26 @@ function Component() {
         <input value={qsLocal} onChange={(e) => setQsLocal(e.target.value)} />
       </div>
 
-      <div style={{ width: "100%", height: "90vh", border: "1px solid black" }}>
+      <div
+        style={{ width: "100%", height: "90vh", border: "1px solid black", position: "relative" }}
+      >
+        {ds.isLoading.useValue() && (
+          <div
+            style={{
+              position: "absolute",
+              zIndex: 20,
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            Loading...
+          </div>
+        )}
         <Root grid={g}>
           <Viewport>
             <Header>

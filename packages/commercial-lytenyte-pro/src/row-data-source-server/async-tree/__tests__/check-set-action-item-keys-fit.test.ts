@@ -11,6 +11,7 @@ const pathNode: TreeParent<any, any> = {
   parent: null as unknown as TreeRoot<any, any>,
   path: null,
   size: 10,
+  asOf: Date.now(),
 };
 
 test("checkSetActionItemKeysFit: should return the correct result", () => {

@@ -9,6 +9,7 @@ test("applySetActionToTree: adding items to the root", () => {
     byPath: new Map(),
     kind: "root",
     size: 10,
+    asOf: Date.now(),
   };
 
   applySetActionToTree(
@@ -38,6 +39,7 @@ test("applySetActionToTree: adding parent items to the root", () => {
     byPath: new Map(),
     kind: "root",
     size: 10,
+    asOf: Date.now(),
   };
 
   applySetActionToTree(
@@ -67,6 +69,7 @@ test("applySetActionToTree: adding parent items to the root", () => {
     byPath: new Map(),
     kind: "root",
     size: 10,
+    asOf: Date.now(),
   };
 
   applySetActionToTree(
@@ -100,6 +103,7 @@ test("applySetActionToTree: re-ordering items on the root should work", () => {
     byPath: new Map(),
     kind: "root",
     size: 10,
+    asOf: Date.now(),
   };
 
   applySetActionToTree(
@@ -149,6 +153,7 @@ test("applySetActionToTree: should be able to overwrite items", () => {
     byPath: new Map(),
     kind: "root",
     size: 10,
+    asOf: Date.now(),
   };
 
   applySetActionToTree(
@@ -196,6 +201,7 @@ test("applySetActionToTree: should be able to resize the root", () => {
     byPath: new Map(),
     kind: "root",
     size: 10,
+    asOf: Date.now(),
   };
 
   applySetActionToTree(
@@ -233,6 +239,7 @@ test("applySetActionToTree: should be able to resize the root", () => {
     byPath: new Map(),
     kind: "root",
     size: 10,
+    asOf: Date.now(),
   };
 
   applySetActionToTree(
@@ -516,12 +523,82 @@ test("applySetActionToTree: should be able to resize the root", () => {
   `);
 });
 
+test("applySetActionToTree: should not clear children when setting parents again", () => {
+  const tree: TreeRoot<any, any> = {
+    byIndex: new Map(),
+    byPath: new Map(),
+    kind: "root",
+    size: 10,
+    asOf: Date.now(),
+  };
+
+  applySetActionToTree(
+    {
+      path: [],
+      items: [
+        { kind: "parent", data: "A", path: "A", relIndex: 0, size: 5 },
+        { kind: "parent", data: "B", path: "B", relIndex: 1, size: 5 },
+        { kind: "parent", data: "C", path: "C", relIndex: 2, size: 5 },
+      ],
+      size: 5,
+    },
+    tree,
+  );
+  applySetActionToTree(
+    {
+      path: ["A"],
+      items: [
+        { kind: "leaf", data: "C", relIndex: 0 },
+        { kind: "leaf", data: "D", relIndex: 1 },
+        { kind: "leaf", data: "E", relIndex: 2 },
+      ],
+    },
+    tree,
+  );
+
+  expect(printTreeByIndex(tree)).toMatchInlineSnapshot(`
+    "
+    #
+    ├─ 0 / P / A / $ / SIZE: 5 / DATA: A
+       ├─ 0 / L / A#0 / 0 / DATA: "C"
+       ├─ 1 / L / A#1 / 0 / DATA: "D"
+       ├─ 2 / L / A#2 / 0 / DATA: "E"
+    ├─ 1 / P / B / $ / SIZE: 5 / DATA: B
+    ├─ 2 / P / C / $ / SIZE: 5 / DATA: C"
+  `);
+
+  applySetActionToTree(
+    {
+      path: [],
+      items: [
+        { kind: "parent", data: "A", path: "A", relIndex: 0, size: 5 },
+        { kind: "parent", data: "B", path: "B", relIndex: 1, size: 5 },
+        { kind: "parent", data: "C", path: "C", relIndex: 2, size: 5 },
+      ],
+      size: 5,
+    },
+    tree,
+  );
+
+  expect(printTreeByIndex(tree)).toMatchInlineSnapshot(`
+    "
+    #
+    ├─ 0 / P / A / $ / SIZE: 5 / DATA: A
+       ├─ 0 / L / A#0 / 0 / DATA: "C"
+       ├─ 1 / L / A#1 / 0 / DATA: "D"
+       ├─ 2 / L / A#2 / 0 / DATA: "E"
+    ├─ 1 / P / B / $ / SIZE: 5 / DATA: B
+    ├─ 2 / P / C / $ / SIZE: 5 / DATA: C"
+  `);
+});
+
 test("applySetActionToTree: should correctly handle error checks", () => {
   const root: TreeRoot<any, any> = {
     byIndex: new Map(),
     byPath: new Map(),
     kind: "root",
     size: 10,
+    asOf: Date.now(),
   };
 
   const err = console.error;

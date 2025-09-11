@@ -20,6 +20,8 @@ function isLocalhost(): boolean {
 }
 
 export let hasAValidLicense = isWebsiteUrl() || isLocalhost();
+
+export let licenseState: "invalid" | "expired" | null = null;
 export function activateLicense(license: string) {
   const parts = license.split("|");
   const details = parts[0];
@@ -30,17 +32,15 @@ export function activateLicense(license: string) {
     console.error(
       `
 ********************************************************************************
-  INVALID LICENSE KEY SUPPLIED
+  LyteNyte Grid PRO
 
-  The license key you provided is not a valid LyteNyte Grid license key. If you
-  purchased a valid license from 1771 Technologies, please reach out to
-  our dedicated support email support@1771technologies.com.
-
-  If you are interested in purchasing a valid license, please 
-  visit https://1771technolgies.com
+  Invalid license key. Please verify the key and try again.
+   
+  Visit https://1771technolgies.com for more information.
 ********************************************************************************
 `,
     );
+    licenseState = "invalid";
     return false;
   }
   const detailParts = details.split(" ");
@@ -49,16 +49,14 @@ export function activateLicense(license: string) {
   if (issueDate > endDate) {
     console.error(`
 ********************************************************************************
-    LICENSE EXPIRED
+  LyteNyte Grid PRO
 
-    The license provided is a valid LyteNyte license, however it is not valid for the
-    current version of LyteNyte Grid being used. Please renew your license or use
-    the fallback version valid under your license.
+  License key expired. Your license covers earlier versions only.
 
-    To purchase a new license or learn more about which versions your license is valid
-    for please visit https://1771technologies.com.
+  Visit https://1771technolgies.com for more information.
 ********************************************************************************
 `);
+    licenseState = "expired";
     return false;
   }
 
