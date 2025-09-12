@@ -1,4 +1,5 @@
 import "./grid-navigation.css";
+import "../../main.css";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Header } from "../header/header.js";
 import { HeaderRow } from "../header/header-row.js";
@@ -50,8 +51,6 @@ function Component({ data = bankData }: { data?: any[] }) {
     columns,
     rowDataSource: ds,
 
-    rowFullWidthPredicate: (p) => p.rowIndex === 3,
-
     rowDetailExpansions: new Set("3"),
 
     rowDetailRenderer: () => {
@@ -74,7 +73,7 @@ function Component({ data = bankData }: { data?: any[] }) {
   const view = g.view.useValue();
 
   return (
-    <div>
+    <div className="lng-grid">
       <div>
         <button onClick={() => g.state.rtl.set((prev) => !prev)}>
           RTL: {g.state.rtl.get() ? "Yes" : "No"}
@@ -109,8 +108,26 @@ function Component({ data = bankData }: { data?: any[] }) {
                       return (
                         <HeaderCell
                           cell={c}
+                          onClick={() => {
+                            const current = g.api.sortForColumn(c.column.id);
+
+                            if (current == null) {
+                              g.state.sortModel.set([
+                                {
+                                  columnId: c.column.id,
+                                  sort: { kind: "string" },
+                                  isDescending: false,
+                                },
+                              ]);
+                              return;
+                            }
+                            if (!current.sort.isDescending) {
+                              g.state.sortModel.set([{ ...current.sort, isDescending: true }]);
+                            } else {
+                              g.state.sortModel.set([]);
+                            }
+                          }}
                           key={c.column.id}
-                          style={{ border: "1px solid black", background: "lightgray" }}
                         />
                       );
                     })}
