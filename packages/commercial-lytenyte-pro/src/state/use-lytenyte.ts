@@ -499,6 +499,12 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const yPositions = computed(() => {
     if (!viewport()) return EMPTY_POSITION_ARRAY;
 
+    // These can change the positions
+    sortModel();
+    filterModel();
+    rowGroupModel();
+    columnPivotModel();
+
     const rowCount = rowDataStore.rowCount.$();
     const innerHeight = viewportHeightInner();
 
@@ -515,8 +521,9 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     );
 
     const headerHeight = headerHeightTotal();
+    const t = performance.now();
 
-    return computeRowPositions(
+    const x = computeRowPositions(
       rowCount,
       rowHeight(),
       rowAutoHeightGuess(),
@@ -529,6 +536,9 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       },
       innerHeight - headerHeight,
     );
+    console.log(performance.now() - t);
+
+    return x;
   });
 
   const heightTotal = computed(() => yPositions().at(-1)!);

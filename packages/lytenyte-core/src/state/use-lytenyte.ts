@@ -398,6 +398,11 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const yPositions = computed(() => {
     if (!viewport()) return EMPTY_POSITION_ARRAY;
 
+    // These can change the positions
+    sortModel();
+    filterModel();
+    rowGroupModel();
+
     const rowCount = rowDataStore.rowCount.$();
     const innerHeight = viewportHeightInner();
 
