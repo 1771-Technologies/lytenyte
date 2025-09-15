@@ -1,10 +1,10 @@
 "use client";
 
-import { isTabActive } from "@/docs-layout/is-active";
+import { isTabActive } from "@/components/is-active";
 import { usePathname } from "fumadocs-core/framework";
 import { ComponentProps, useMemo } from "react";
 import { LayoutTab } from "./layout-tab";
-import { cn } from "@/docs-layout/cn";
+import { cn } from "@/components/cn";
 import { SidebarTab } from "fumadocs-ui/utils/get-sidebar-tabs";
 
 export interface Option extends SidebarTab {
@@ -29,8 +29,8 @@ export function LayoutTabs({
       {...props}
       className={cn(
         "flex flex-row items-end gap-6 overflow-auto",
-        vertical && "flex-col gap-4 items-start",
-        props.className
+        vertical && "flex-col items-start gap-4",
+        props.className,
       )}
     >
       {options.map((option) => (

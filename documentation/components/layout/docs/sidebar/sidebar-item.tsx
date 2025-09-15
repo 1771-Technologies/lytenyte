@@ -3,9 +3,9 @@ import { usePathname } from "fumadocs-core/framework";
 import Link, { LinkProps } from "fumadocs-core/link";
 import { ReactNode } from "react";
 import { useInternalContext } from "./internal-context";
-import { isActive } from "@/docs-layout/is-active";
+import { isActive } from "@/components/is-active";
 import { itemVariants } from "./item-variants";
-import { cn } from "@/docs-layout/cn";
+import { cn } from "@/components/cn";
 import { ExternalLink } from "lucide-react";
 
 export function SidebarItem({

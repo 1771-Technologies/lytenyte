@@ -1,5 +1,5 @@
 "use client";
-import { cn } from "@/docs-layout/cn";
+import { cn } from "@/components/cn";
 import { ComponentProps } from "react";
 
 export function SidebarFooter(props: ComponentProps<"div">) {

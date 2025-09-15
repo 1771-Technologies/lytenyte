@@ -2,9 +2,9 @@
 
 import { Collapsible } from "radix-ui";
 import { Context, useInternalContext } from "./internal-context";
-import { CollapsibleContent } from "@/docs-layout/ui/collapsible";
+import { CollapsibleContent } from "@/components/ui/collapsible";
 import { useMemo } from "react";
-import { cn } from "@/docs-layout/cn";
+import { cn } from "@/components/cn";
 
 export function SidebarFolderContent(props: Collapsible.CollapsibleContentProps) {
   const { level, ...ctx } = useInternalContext();

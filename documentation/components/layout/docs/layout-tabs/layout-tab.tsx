@@ -1,9 +1,9 @@
-import { cn } from "@/docs-layout/cn";
-import { Option } from "@/docs-layout/root-toggle";
+import { cn } from "@/components/cn";
+import { Option } from "@/components/root-toggle";
 import Link from "fumadocs-core/link";
 
 export function LayoutTab({
-  option: { title, url, unlisted, props },
+  option: { title, url, unlisted, props, icon },
   vertical,
   selected = false,
 }: {
@@ -19,12 +19,14 @@ export function LayoutTab({
         !vertical && "border-b-2 pb-1.5",
         vertical && "border-s-2 ps-1.5",
         "inline-flex items-center border-transparent transition-colors",
-        "text-fd-muted-foreground hover:text-fd-accent-foreground gap-2 text-nowrap text-sm font-medium",
+        "text-fd-muted-foreground hover:text-fd-accent-foreground gap-2 text-nowrap px-2 text-sm font-medium",
         unlisted && !selected && "hidden",
         selected && "border-fd-primary text-fd-primary",
+        icon && "pl-1",
         props?.className,
       )}
     >
+      {icon}
       {title}
     </Link>
   );

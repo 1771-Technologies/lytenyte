@@ -5,7 +5,7 @@ import { FC, Fragment, ReactNode, useMemo } from "react";
 import { SidebarSeparator } from "./sidebar-separator";
 import { SidebarItem } from "./sidebar-item";
 import { PageTreeFolder } from "./sidebar-page-tree-folder";
-import { cn } from "@/docs-layout/cn";
+import { cn } from "@/components/cn";
 
 export interface SidebarComponents {
   Item: FC<{ item: PageTree.Item }>;

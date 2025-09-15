@@ -3,9 +3,9 @@
 import { usePathname } from "fumadocs-core/framework";
 import { useFolderContext } from "./folder-context";
 import { useInternalContext } from "./internal-context";
-import { isActive } from "@/docs-layout/is-active";
+import { isActive } from "@/components/is-active";
 import Link, { LinkProps } from "fumadocs-core/link";
-import { cn } from "@/docs-layout/cn";
+import { cn } from "@/components/cn";
 import { ChevronDown } from "lucide-react";
 import { itemVariants } from "./item-variants";
 

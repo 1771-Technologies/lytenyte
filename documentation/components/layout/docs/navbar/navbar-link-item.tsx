@@ -1,8 +1,8 @@
 import { Fragment, HTMLAttributes } from "react";
 import { BaseLinkItem, BaseLinkType, LinkItemType } from "../../shared";
-import { Popover, PopoverContent, PopoverTrigger } from "@/docs-layout/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ChevronDown } from "lucide-react";
-import { cn } from "@/docs-layout/cn";
+import { cn } from "@/components/cn";
 
 export function NavbarLinkItem({
   item,
@@ -14,8 +14,8 @@ export function NavbarLinkItem({
         <PopoverTrigger
           {...props}
           className={cn(
-            "inline-flex items-center gap-1.5 has-data-[active=true]:text-fd-primary",
-            props.className
+            "has-data-[active=true]:text-fd-primary inline-flex items-center gap-1.5",
+            props.className,
           )}
         >
           {item.url ? (
@@ -33,7 +33,7 @@ export function NavbarLinkItem({
               <BaseLinkItem
                 key={i}
                 item={child}
-                className="inline-flex items-center gap-2 rounded-md p-2 text-start hover:bg-fd-accent hover:text-fd-accent-foreground data-[active=true]:text-fd-primary [&_svg]:size-4"
+                className="hover:bg-fd-accent hover:text-fd-accent-foreground data-[active=true]:text-fd-primary inline-flex items-center gap-2 rounded-md p-2 text-start [&_svg]:size-4"
               >
                 {child.icon}
                 {child.text}

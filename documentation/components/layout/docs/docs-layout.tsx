@@ -110,13 +110,13 @@ export function DocsLayout(props: DocsLayoutProps) {
         className={cn(
           "pt-4",
           navMode === "top" ? "border-e-0 bg-transparent" : "[--fd-nav-height:0px]",
-          rest.className
+          rest.className,
         )}
       >
         {viewport}
         <HideIfEmpty
           as={SidebarFooter}
-          className="flex flex-row text-fd-muted-foreground items-center border-transparent"
+          className="text-fd-muted-foreground flex flex-row items-center border-transparent"
         >
           {iconLinks.map((item, i) => (
             <BaseLinkItem
@@ -127,7 +127,7 @@ export function DocsLayout(props: DocsLayoutProps) {
                   size: "icon-sm",
                   color: "ghost",
                   className: "lg:hidden",
-                })
+                }),
               )}
               aria-label={item.label}
             >
@@ -142,15 +142,15 @@ export function DocsLayout(props: DocsLayoutProps) {
     const mobile = (
       <SidebarContentMobile {...rest}>
         <SidebarHeader>
-          <div className="flex justify-between items-center pb-2">
+          <div className="flex items-center justify-between pb-2">
             {nav.title}
             <SidebarTrigger
               className={cn(
                 buttonVariants({
                   size: "icon-sm",
                   color: "ghost",
-                  className: "ms-auto text-fd-muted-foreground",
-                })
+                  className: "text-fd-muted-foreground ms-auto",
+                }),
               )}
             >
               <X />
@@ -170,7 +170,7 @@ export function DocsLayout(props: DocsLayoutProps) {
                   color: "ghost",
                 }),
                 "text-fd-muted-foreground lg:hidden",
-                i === iconLinks.length - 1 && "me-auto"
+                i === iconLinks.length - 1 && "me-auto",
               )}
               aria-label={item.label}
             >
@@ -208,7 +208,7 @@ export function DocsLayout(props: DocsLayoutProps) {
           {...props.containerProps}
           className={cn(
             "lg:[--fd-sidebar-width:286px] xl:[--fd-toc-width:286px]",
-            props.containerProps?.className
+            props.containerProps?.className,
           )}
         >
           {sidebar()}

@@ -2,9 +2,9 @@
 
 import { Collapsible } from "radix-ui";
 import { useFolderContext } from "./folder-context";
-import { CollapsibleTrigger } from "@/docs-layout/ui/collapsible";
+import { CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown } from "lucide-react";
-import { cn } from "@/docs-layout/cn";
+import { cn } from "@/components/cn";
 import { itemVariants } from "./item-variants";
 
 export function SidebarFolderTrigger({ className, ...props }: Collapsible.CollapsibleTriggerProps) {

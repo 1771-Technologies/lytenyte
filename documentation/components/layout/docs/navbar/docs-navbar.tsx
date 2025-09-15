@@ -1,14 +1,14 @@
-import { Option } from "@/docs-layout/root-toggle";
+import { Option } from "@/components/root-toggle";
 import { BaseLinkItem, LinkItemType } from "../../shared";
 import { DocsLayoutProps, Navbar, NavbarSidebarTrigger } from "../docs-layout";
-import { cn } from "@/docs-layout/cn";
+import { cn } from "@/components/cn";
 import { Languages } from "lucide-react";
 import Link from "fumadocs-core/link";
-import { LargeSearchToggle, SearchToggle } from "@/docs-layout/search-toggle";
+import { LargeSearchToggle, SearchToggle } from "@/components/search-toggle";
 import { NavbarLinkItem } from "./navbar-link-item";
-import { buttonVariants } from "@/docs-layout/ui/button";
-import { LanguageToggle } from "@/docs-layout/language-toggle";
-import { ThemeToggle } from "@/docs-layout/theme-toggle";
+import { buttonVariants } from "@/components/ui/button";
+import { LanguageToggle } from "@/components/language-toggle";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { LayoutTabs } from "../layout-tabs/layout-tabs";
 
 export function DocsNavbar({

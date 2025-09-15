@@ -1,7 +1,7 @@
 "use client";
 import { type ComponentProps } from "react";
 import { useSidebar } from "fumadocs-ui/contexts/sidebar";
-import { cn } from "@/docs-layout/cn";
+import { cn } from "@/components/cn";
 
 export function LayoutBody(props: ComponentProps<"main">) {
   const { collapsed } = useSidebar();

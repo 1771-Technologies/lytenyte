@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/docs-layout/cn";
+import { cn } from "@/components/cn";
 import { Presence } from "@radix-ui/react-presence";
 import { useSidebar } from "fumadocs-ui/contexts/sidebar";
 import { ComponentProps } from "react";

@@ -1,6 +1,6 @@
 "use client";
 
-import { Collapsible } from "@/docs-layout/ui/collapsible";
+import { Collapsible } from "@/components/ui/collapsible";
 import { useOnChange } from "fumadocs-core/utils/use-on-change";
 import { ComponentProps, useMemo, useState } from "react";
 import { FolderContext } from "./folder-context";

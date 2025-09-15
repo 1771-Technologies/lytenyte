@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/docs-layout/cn";
+import { cn } from "@/components/cn";
 import { useOnChange } from "fumadocs-core/utils/use-on-change";
 import { useSidebar } from "fumadocs-ui/contexts/sidebar";
 import { ComponentProps, useRef, useState } from "react";
@@ -22,13 +22,13 @@ export function SidebarContent(props: ComponentProps<"aside">) {
       {...props}
       data-collapsed={collapsed}
       className={cn(
-        "fixed left-0 rtl:left-auto rtl:right-(--removed-body-scroll-bar-size,0) flex flex-col items-end top-(--fd-sidebar-top)",
-        "bottom-(--fd-sidebar-margin) z-20 bg-fd-card text-sm border-e duration-0 max-lg:hidden *:w-(--fd-sidebar-width)",
+        "rtl:right-(--removed-body-scroll-bar-size,0) top-(--fd-sidebar-top) fixed left-0 flex flex-col items-end rtl:left-auto",
+        "bottom-(--fd-sidebar-margin) bg-fd-card *:w-(--fd-sidebar-width) z-20 border-e text-sm duration-0 max-lg:hidden",
         collapsed && [
-          "rounded-xl border translate-x-(--fd-sidebar-offset) rtl:-translate-x-(--fd-sidebar-offset)",
+          "translate-x-(--fd-sidebar-offset) rtl:-translate-x-(--fd-sidebar-offset) rounded-xl border",
           hover ? "z-50 shadow-lg" : "opacity-0",
         ],
-        props.className
+        props.className,
       )}
       style={
         {
@@ -55,7 +55,7 @@ export function SidebarContent(props: ComponentProps<"aside">) {
             setHover(false);
             closeTimeRef.current = Date.now() + 150;
           },
-          Math.min(e.clientX, document.body.clientWidth - e.clientX) > 100 ? 0 : 500
+          Math.min(e.clientX, document.body.clientWidth - e.clientX) > 100 ? 0 : 500,
         );
       }}
     >
