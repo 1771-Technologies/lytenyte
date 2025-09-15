@@ -1,0 +1,55 @@
+import { Fragment, HTMLAttributes } from "react";
+import { BaseLinkItem, BaseLinkType, LinkItemType } from "../../shared";
+import { Popover, PopoverContent, PopoverTrigger } from "@/docs-layout/ui/popover";
+import { ChevronDown } from "lucide-react";
+import { cn } from "@/docs-layout/cn";
+
+export function NavbarLinkItem({
+  item,
+  ...props
+}: { item: LinkItemType } & HTMLAttributes<HTMLElement>) {
+  if (item.type === "menu") {
+    return (
+      <Popover>
+        <PopoverTrigger
+          {...props}
+          className={cn(
+            "inline-flex items-center gap-1.5 has-data-[active=true]:text-fd-primary",
+            props.className
+          )}
+        >
+          {item.url ? (
+            <BaseLinkItem item={item as BaseLinkType}>{item.text}</BaseLinkItem>
+          ) : (
+            item.text
+          )}
+          <ChevronDown className="size-3" />
+        </PopoverTrigger>
+        <PopoverContent className="flex flex-col">
+          {item.items.map((child, i) => {
+            if (child.type === "custom") return <Fragment key={i}>{child.children}</Fragment>;
+
+            return (
+              <BaseLinkItem
+                key={i}
+                item={child}
+                className="inline-flex items-center gap-2 rounded-md p-2 text-start hover:bg-fd-accent hover:text-fd-accent-foreground data-[active=true]:text-fd-primary [&_svg]:size-4"
+              >
+                {child.icon}
+                {child.text}
+              </BaseLinkItem>
+            );
+          })}
+        </PopoverContent>
+      </Popover>
+    );
+  }
+
+  if (item.type === "custom") return item.children;
+
+  return (
+    <BaseLinkItem item={item} {...props}>
+      {item.text}
+    </BaseLinkItem>
+  );
+}
