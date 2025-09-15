@@ -18,6 +18,18 @@ auto-imports.d.ts
 
 .content-collections/
 
+# generated content
+.contentlayer
+.content-collections
+.source
+
+
+/coverage
+/.next/
+/out/
+/build
+*.tsbuildinfo
+
 certs/
 .env
 .temp
@@ -30,6 +42,10 @@ certs/
 
 .dev.vars
 
+# others
+.env*.local
+.vercel
+next-env.d.ts
 
 .turbo
 
