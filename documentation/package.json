@@ -12,6 +12,7 @@
   "dependencies": {
     "@radix-ui/react-presence": "^1.1.5",
     "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "fumadocs-core": "15.7.12",
     "fumadocs-mdx": "11.10.0",
     "fumadocs-ui": "15.7.12",
@@ -21,6 +22,10 @@
     "radix-ui": "^1.4.3",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "remark": "^15.0.1",
+    "remark-gfm": "^4.0.1",
+    "remark-mdx": "^3.1.1",
+    "shiki": "^3.12.2",
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
