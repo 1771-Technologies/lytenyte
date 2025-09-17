@@ -30,8 +30,6 @@ const HeaderCellImpl = forwardRef<
 
   const xPositions = ctx.xPositions.useValue();
 
-  const viewport = ctx.viewportWidthInner.useValue();
-  const rtl = ctx.rtl.useValue();
   const base = ctx.columnBase.useValue();
 
   const Renderer = useHeaderCellRenderer(cell);
@@ -51,9 +49,7 @@ const HeaderCellImpl = forwardRef<
       ref={combined}
       cell={cell}
       columnId={cell.column.id}
-      viewportWidth={viewport}
       isFloating={cell.kind === "floating"}
-      rtl={rtl}
       xPositions={xPositions}
     >
       {children == undefined ? <Renderer column={cell.column} grid={grid} /> : children}

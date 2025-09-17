@@ -4,12 +4,10 @@ import { type CSSProperties, type JSX } from "react";
 import {
   DEFAULT_COLUMN_WIDTH_MAX,
   DEFAULT_COLUMN_WIDTH_MIN,
-  getColIndexFromEl,
-  getTranslate,
   sizeFromCoord,
 } from "@1771technologies/lytenyte-shared";
 import { useGridRoot } from "../context.js";
-import { getComputedStyle, isHTMLElement } from "@1771technologies/lytenyte-dom-utils";
+import { getComputedStyle } from "@1771technologies/lytenyte-dom-utils";
 import { clamp, getClientX } from "@1771technologies/lytenyte-js-utils";
 
 interface ResizeHandlerProps<T> {
@@ -91,64 +89,72 @@ export function ResizeHandler<T>({
 
           if (anim) return;
           anim = requestAnimationFrame(() => {
-            const id = sx.state.gridId.get();
-            const query = `[data-ln-row][data-ln-gridid="${id}"] [data-ln-cell="true"][data-ln-colindex="${cell.colStart}"]`;
-            const headerQuery = `[data-ln-header-row] [data-ln-header-cell="true"][data-ln-header-id="${cell.id}"]`;
-            const floatingQuery = `[data-ln-header-row] [data-ln-header-cell="true"][data-ln-header-id="${cell.id}"][data-ln-header-floating="true"]`;
+            const newWidth = width + deltaRef.current;
 
-            const header = vp.querySelector(headerQuery) as HTMLElement;
-            const floating = vp.querySelector(floatingQuery) as HTMLElement | undefined;
+            sx.api.columnResize({ [cell.id]: newWidth });
 
-            if (!header) return;
-            const pin = header.getAttribute("data-ln-pin");
+            // TODO @Mike: the below method is a much faster, but potentially much tricky way to get resizing done. We should investigate
+            // the best approach to lever this. The main issues are around resizing group headers and ensuring column cells pinned to the
+            // end of the grid do not get shifted.
 
-            const cells = Array.from(vp.querySelectorAll(query)) as HTMLElement[];
+            // const id = sx.state.gridId.get();
+            // const query = `[data-ln-row][data-ln-gridid="${id}"] [data-ln-cell="true"][data-ln-colindex="${cell.colStart}"]`;
+            // const headerQuery = `[data-ln-header-row] [data-ln-header-cell="true"][data-ln-header-id="${cell.id}"]`;
+            // const floatingQuery = `[data-ln-header-row] [data-ln-header-cell="true"][data-ln-header-id="${cell.id}"][data-ln-header-floating="true"]`;
 
-            const headers = [header];
-            if (floating) headers.push(floating);
+            // const header = vp.querySelector(headerQuery) as HTMLElement;
+            // const floating = vp.querySelector(floatingQuery) as HTMLElement | undefined;
 
-            headers.forEach((c) => {
-              if (!isHTMLElement(c)) return;
-              c.style.removeProperty("min-width");
-              c.style.removeProperty("max-width");
-              c.style.width = `${width + deltaRef.current}px`;
+            // if (!header) return;
+            // const pin = header.getAttribute("data-ln-pin");
 
-              if (pin === "end") {
-                const viewportWidth = sx.state.viewportWidthInner.get();
-                const spaceLeft = xPositions.at(-1)! - xPositions[cell.colStart];
-                const x = viewportWidth - spaceLeft - deltaRef.current;
-                c.style.transform = getTranslate(isRtl ? -x : x, 0);
-              }
-            });
+            // const cells = Array.from(vp.querySelectorAll(query)) as HTMLElement[];
 
-            const widthPx = `${width + deltaRef.current}px`;
+            // const headers = [header];
+            // if (floating) headers.push(floating);
 
-            cells.forEach((c) => {
-              if (!isHTMLElement(c)) return;
-              c.style.minWidth = widthPx;
-              c.style.maxWidth = widthPx;
-              c.style.width = widthPx;
-            });
+            // headers.forEach((c) => {
+            //   if (!isHTMLElement(c)) return;
+            //   c.style.removeProperty("min-width");
+            //   c.style.removeProperty("max-width");
+            //   c.style.width = `${width + deltaRef.current}px`;
 
-            const headerAfterQuery = `${headerQuery} ~ [data-ln-header-cell="true"]`;
-            let after: HTMLElement[];
-            if (pin !== "end") {
-              after = Array.from(vp.querySelectorAll(headerAfterQuery)) as HTMLElement[];
-            } else {
-              after = [];
-            }
+            //   if (pin === "end") {
+            //     const viewportWidth = sx.state.viewportWidthInner.get();
+            //     const spaceLeft = xPositions.at(-1)! - xPositions[cell.colStart];
+            //     const x = viewportWidth - spaceLeft - deltaRef.current;
+            //     c.style.transform = getTranslate(isRtl ? -x : x, 0);
+            //   }
+            // });
 
-            after.forEach((c) => {
-              if (!isHTMLElement(c)) return;
-              const thisPin = c.getAttribute("data-ln-pin");
+            // const widthPx = `${width + deltaRef.current}px`;
 
-              if (pin === "end" && thisPin === "end") return;
-              if (pin !== "end" && thisPin === "end") return;
+            // cells.forEach((c) => {
+            //   if (!isHTMLElement(c)) return;
+            //   c.style.minWidth = widthPx;
+            //   c.style.maxWidth = widthPx;
+            //   c.style.width = widthPx;
+            // });
 
-              const colindex = getColIndexFromEl(c);
-              const transform = xPositions[colindex] + deltaRef.current;
-              c.style.transform = getTranslate(transform * (isRtl ? -1 : 1), 0);
-            });
+            // const headerAfterQuery = `${headerQuery} ~ [data-ln-header-cell="true"]`;
+            // let after: HTMLElement[];
+            // if (pin !== "end") {
+            //   after = Array.from(vp.querySelectorAll(headerAfterQuery)) as HTMLElement[];
+            // } else {
+            //   after = [];
+            // }
+
+            // after.forEach((c) => {
+            //   if (!isHTMLElement(c)) return;
+            //   const thisPin = c.getAttribute("data-ln-pin");
+
+            //   if (pin === "end" && thisPin === "end") return;
+            //   if (pin !== "end" && thisPin === "end") return;
+
+            //   const colindex = getColIndexFromEl(c);
+            //   const transform = xPositions[colindex] + deltaRef.current;
+            //   c.style.transform = getTranslate(transform * (isRtl ? -1 : 1), 0);
+            // });
 
             anim = null;
           });

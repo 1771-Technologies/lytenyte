@@ -6,8 +6,6 @@ interface HeaderGroupCellProps {
   readonly cell: CellHeader;
   readonly cellId: string;
   readonly xPositions: Uint32Array;
-  readonly rtl: boolean;
-  readonly viewportWidth: number;
 
   readonly isHiddenMove: boolean;
 

@@ -15,9 +15,9 @@ describe("useHeaderCellStyle", () => {
 
     expect(result.result.current).toMatchInlineSnapshot(`
       {
+        "gridColumnStart": "1",
         "overflow": "hidden",
         "position": "relative",
-        "transform": "translate3d(0px, 0px, 0px)",
       }
     `);
   });
@@ -34,10 +34,10 @@ describe("useHeaderCellStyle", () => {
 
     expect(result.result.current).toMatchInlineSnapshot(`
       {
-        "left": 0,
+        "gridColumnStart": "1",
+        "insetInlineStart": "0px",
         "overflow": "hidden",
         "position": "sticky",
-        "transform": "translate3d(0px, 0px, 0px)",
         "zIndex": 11,
       }
     `);
@@ -55,10 +55,10 @@ describe("useHeaderCellStyle", () => {
 
     expect(result.result.current).toMatchInlineSnapshot(`
       {
-        "left": 0,
+        "gridColumnStart": "2",
+        "insetInlineEnd": "200px",
         "overflow": "hidden",
         "position": "sticky",
-        "transform": "translate3d(700px, 0px, 0px)",
         "zIndex": 11,
       }
     `);
@@ -76,9 +76,9 @@ describe("useHeaderCellStyle", () => {
 
     expect(result.result.current).toMatchInlineSnapshot(`
       {
+        "gridColumnStart": "1",
         "overflow": "hidden",
         "position": "relative",
-        "transform": "translate3d(0px, 0px, 0px)",
       }
     `);
   });
@@ -95,10 +95,10 @@ describe("useHeaderCellStyle", () => {
 
     expect(result.result.current).toMatchInlineSnapshot(`
       {
+        "gridColumnStart": "1",
+        "insetInlineStart": "0px",
         "overflow": "hidden",
         "position": "sticky",
-        "right": 0,
-        "transform": "translate3d(0px, 0px, 0px)",
         "zIndex": 11,
       }
     `);
@@ -116,10 +116,10 @@ describe("useHeaderCellStyle", () => {
 
     expect(result.result.current).toMatchInlineSnapshot(`
       {
+        "gridColumnStart": "2",
+        "insetInlineEnd": "200px",
         "overflow": "hidden",
         "position": "sticky",
-        "right": 0,
-        "transform": "translate3d(-700px, 0px, 0px)",
         "zIndex": 11,
       }
     `);

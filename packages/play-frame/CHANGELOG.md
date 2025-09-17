@@ -1,5 +1,17 @@
 # @1771technologies/play-frame
 
+## 0.0.11-dev.2
+
+### Patch Changes
+
+- Fix bad compile
+
+## 0.0.11-dev.1
+
+### Patch Changes
+
+- Column fixes
+
 ## 0.0.11-dev.0
 
 ### Patch Changes
