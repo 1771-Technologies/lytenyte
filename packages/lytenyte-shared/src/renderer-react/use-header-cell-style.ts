@@ -1,40 +1,35 @@
 import { useMemo, type CSSProperties } from "react";
 import type { CellHeader } from "./+types.renderer-react.js";
-import { getTranslate } from "../utils/get-translate.js";
+import { sizeFromCoord } from "../utils/size-from-coord.js";
 
-export function useHeaderCellStyle(
-  cell: CellHeader,
-  xPositions: Uint32Array,
-  rtl: boolean,
-  viewport: number,
-) {
-  const isSticky = !!cell.colPin;
-
+export function useHeaderCellStyle(cell: CellHeader, xPositions: Uint32Array) {
   const styles = useMemo(() => {
     const styles: CSSProperties = {
       position: "relative",
       overflow: "hidden",
+      gridColumnStart: `${cell.colStart + 1}`,
     };
-    if (isSticky) {
+
+    if (cell.colPin === "start") {
       styles.position = "sticky";
-
-      if (rtl) styles.right = 0;
-      else styles.left = 0;
-
+      styles.insetInlineStart = `${xPositions[cell.colStart]}px`;
+      styles.gridColumnStart = `${cell.colStart + 1}`;
       styles.zIndex = 11;
-    }
-
-    if (cell.colPin === "end") {
-      const spaceLeft = xPositions.at(-1)! - xPositions[cell.colStart];
-
-      const x = viewport - spaceLeft;
-      styles.transform = getTranslate(rtl ? -x : x, 0);
+    } else if (cell.colPin === "end") {
+      styles.position = "sticky";
+      const x =
+        xPositions.at(-1)! -
+        sizeFromCoord(cell.colStart, xPositions, cell.colSpan) -
+        xPositions[cell.colStart];
+      styles.gridColumnStart = `${cell.colStart + 2}`;
+      styles.insetInlineEnd = `${x}px`;
+      styles.zIndex = 11;
     } else {
-      const x = xPositions[cell.colStart];
-      styles.transform = getTranslate(rtl ? -x : x, 0);
+      styles.gridColumnStart = `${cell.colStart + 1}`;
     }
+
     return styles;
-  }, [cell.colPin, cell.colStart, isSticky, rtl, viewport, xPositions]);
+  }, [cell.colPin, cell.colSpan, cell.colStart, xPositions]);
 
   return styles;
 }

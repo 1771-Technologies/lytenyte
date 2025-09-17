@@ -8,17 +8,12 @@ interface HeaderCellProps {
   readonly isFloating: boolean;
   readonly columnId: string;
   readonly xPositions: Uint32Array;
-  readonly viewportWidth: number;
-  readonly rtl: boolean;
 }
 
 export const HeaderCellReact = forwardRef<
   HTMLDivElement,
   JSX.IntrinsicElements["div"] & HeaderCellProps
->(function HeaderCell(
-  { cell, isFloating, xPositions, columnId, viewportWidth, rtl, ...props },
-  forwarded,
-) {
+>(function HeaderCell({ cell, isFloating, xPositions, columnId, ...props }, forwarded) {
   const width = sizeFromCoord(cell.colStart, xPositions, cell.colSpan);
   const rowSpan = cell.rowEnd - cell.rowStart;
 
@@ -41,10 +36,9 @@ export const HeaderCellReact = forwardRef<
       // Data attributes end
       style={{
         ...props.style,
-        ...useHeaderCellStyle(cell, xPositions, rtl, viewportWidth),
+        ...useHeaderCellStyle(cell, xPositions),
         gridRowStart: 1,
         gridRowEnd: rowSpan + 1,
-        gridColumn: "1 / 2",
         width,
         height: "100%",
         boxSizing: "border-box",

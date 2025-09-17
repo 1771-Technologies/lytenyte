@@ -1,5 +1,6 @@
-import { forwardRef, type JSX } from "react";
+import { forwardRef, useMemo, type JSX } from "react";
 import { useGridRowTemplate } from "./use-grid-row-template.js";
+import { sizeFromCoord } from "../utils/size-from-coord.js";
 
 interface HeaderProps {
   readonly width: number;
@@ -7,6 +8,8 @@ interface HeaderProps {
   readonly headerGroupHeight: number;
   readonly floatingRowHeight: number;
   readonly floatingRowEnabled: boolean;
+  readonly countBeforeEnd: number;
+  readonly xPositions: Uint32Array;
   readonly rows: number;
 }
 
@@ -19,6 +22,8 @@ export const HeaderReact = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div
       rows,
       floatingRowEnabled,
       floatingRowHeight,
+      xPositions,
+      countBeforeEnd,
       ...props
     },
     forwarded,
@@ -31,6 +36,22 @@ export const HeaderReact = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div
       floatingRowEnabled,
     );
 
+    const gridTemplateColumns = useMemo(() => {
+      const items: string[] = [];
+      for (let i = 0; i < countBeforeEnd; i++) {
+        items.push(`${sizeFromCoord(i, xPositions)}px`);
+      }
+
+      items.push("1fr");
+
+      const endCount = xPositions.length - countBeforeEnd - 1;
+      for (let i = 0; i < endCount; i++) {
+        items.push(`${sizeFromCoord(i + countBeforeEnd, xPositions)}px`);
+      }
+
+      return items.join(" ");
+    }, [countBeforeEnd, xPositions]);
+
     return (
       <div
         {...props}
@@ -40,12 +61,14 @@ export const HeaderReact = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div
         style={{
           ...props.style,
           width,
+          minWidth: "100%",
           boxSizing: "border-box",
           position: "sticky",
           top: 0,
           zIndex: 10,
           display: "grid",
           gridTemplateRows: gridRowTemplate,
+          gridTemplateColumns: gridTemplateColumns,
         }}
       ></div>
     );

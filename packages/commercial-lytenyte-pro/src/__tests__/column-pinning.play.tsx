@@ -14,26 +14,6 @@ import { RowsContainer } from "../rows/rows-container.js";
 import { RowsBottom, RowsCenter, RowsTop } from "../rows/rows-sections.js";
 import { RowHandler } from "./sample-data/row-handler.js";
 
-const columns: Column<any>[] = [
-  { id: "age" },
-  { id: "job", pin: "end", width: 110 },
-  { id: "balance" },
-  { id: "education", width: 120 },
-  { id: "marital", width: 160 },
-  { id: "default", width: 220 },
-  { id: "housing", width: 110 },
-  { id: "loan", width: 220 },
-  { id: "contact", width: 100 },
-  { id: "day", width: 400 },
-  { id: "month" },
-  { id: "duration", width: 111 },
-  { id: "campaign", width: 222 },
-  { id: "pdays", width: 180 },
-  { id: "previous", width: 190 },
-  { id: "poutcome", width: 70 },
-  { id: "y", width: 110 },
-];
-
 const sets: Record<string, Column<any>[]> = {
   "One Start": [{ id: "age", pin: "start" }],
   "Two Start": [
@@ -136,7 +116,56 @@ const sets: Record<string, Column<any>[]> = {
       ];
     }).flat(),
 
+    { id: "age1", field: "age", pin: "end" },
     { id: "job1", field: "job", pin: "end", width: 110 },
+  ],
+
+  "Two Start (with groups), Two End, and Scrollable": [
+    { id: "age", pin: "start", groupPath: ["A", "Beta"] },
+    { id: "job", pin: "start", width: 110, groupPath: ["A"] },
+
+    { id: "default", width: 220 },
+    { id: "housing", width: 110 },
+    { id: "loan", width: 220 },
+    { id: "contact", width: 100 },
+    { id: "day", width: 400 },
+    { id: "month" },
+    { id: "duration", width: 111 },
+
+    { id: "age1", field: "age", pin: "end" },
+    { id: "job1", field: "job", pin: "end", width: 110 },
+  ],
+
+  "Two Start, Two End (with groups), and Scrollable": [
+    { id: "age", pin: "start", groupPath: ["A", "Beta"] },
+    { id: "job", pin: "start", width: 110, groupPath: ["A"] },
+
+    { id: "default", width: 220 },
+    { id: "housing", width: 110 },
+    { id: "loan", width: 220 },
+    { id: "contact", width: 100 },
+    { id: "day", width: 400 },
+    { id: "month" },
+    { id: "duration", width: 111 },
+
+    { id: "age1", field: "age", pin: "end", groupPath: ["A", "Beta"] },
+    { id: "job1", field: "job", pin: "end", width: 110, groupPath: ["A"] },
+  ],
+
+  "Two Start, Two End, and Scrollable (with groups)": [
+    { id: "age", pin: "start", groupPath: ["A", "Beta"] },
+    { id: "job", pin: "start", width: 110, groupPath: ["A"] },
+
+    { id: "default", width: 220 },
+    { id: "housing", width: 110, groupPath: ["A"] },
+    { id: "loan", width: 220, groupPath: ["A"] },
+    { id: "contact", width: 100 },
+    { id: "day", width: 400, groupPath: ["Beta", "Right", "Fight"] },
+    { id: "month" },
+    { id: "duration", width: 111 },
+
+    { id: "age1", field: "age", pin: "end", groupPath: ["A", "Beta"] },
+    { id: "job1", field: "job", pin: "end", width: 110, groupPath: ["A"] },
   ],
 };
 
@@ -187,7 +216,7 @@ export default function ColumnPinning() {
   const view = g.view.useValue();
 
   const values = Object.keys(sets);
-  const [colSet, setColSet] = useState(values[0]);
+  const [colSet, setColSet] = useState("Two Start, Two End and Scrollable");
 
   useEffect(() => {
     g.state.columns.set(sets[colSet]);

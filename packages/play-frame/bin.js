@@ -2,6 +2,7 @@ import express from "express";
 import react from "@vitejs/plugin-react";
 import { createServer as createViteServer } from "vite";
 import { HTML_TEMPLATE } from "./constants.js";
+import os from "os";
 
 async function createServer() {
   const app = express();
@@ -49,8 +50,25 @@ async function createServer() {
     res.status(200).set({ "Content-Type": "text/html" }).end(template);
   });
 
-  app.listen(4000, () => {
-    console.log("Server running on http://localhost:4000");
+  const PORT = 4000;
+  app.listen(PORT, () => {
+    // Get network interfaces
+    const interfaces = os.networkInterfaces();
+    const addresses = [];
+
+    for (const name of Object.keys(interfaces)) {
+      for (const iface of interfaces[name]) {
+        if (iface.family === "IPv4" && !iface.internal) {
+          addresses.push(iface.address);
+        }
+      }
+    }
+
+    console.log(`Server is running:`);
+    console.log(`- Local:   http://localhost:${PORT}`);
+    addresses.forEach((addr) => {
+      console.log(`- Network: http://${addr}:${PORT}`);
+    });
   });
 }
 

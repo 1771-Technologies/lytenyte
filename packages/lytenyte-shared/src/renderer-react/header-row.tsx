@@ -18,10 +18,11 @@ export const HeaderRowReact = forwardRef<
       style={{
         boxSizing: "border-box",
         display: "grid",
-        gridTemplateColumns: "0px",
+        width: "100%",
+        gridTemplateColumns: "subgrid",
         gridTemplateRows: "100%",
         gridRow: `${headerRowIndex + 1} / ${maxRow + 1}`,
-        gridColumn: "1 / 2",
+        gridColumn: "1 / -1",
       }}
     />
   );
