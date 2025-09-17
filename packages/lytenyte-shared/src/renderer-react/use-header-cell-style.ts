@@ -13,6 +13,7 @@ export function useHeaderCellStyle(
   const styles = useMemo(() => {
     const styles: CSSProperties = {
       position: "relative",
+      overflow: "hidden",
     };
     if (isSticky) {
       styles.position = "sticky";

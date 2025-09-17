@@ -1,5 +1,16 @@
 # @1771technologies/lytenyte-shared
 
+## 1.0.12-dev.0
+
+### Patch Changes
+
+- Dev version
+- Updated dependencies
+  - @1771technologies/lytenyte-dom-utils@1.0.12-dev.0
+  - @1771technologies/lytenyte-js-utils@1.0.12-dev.0
+  - @1771technologies/lytenyte-dragon@1.0.12-dev.0
+  - @1771technologies/lytenyte-react-hooks@1.0.12-dev.0
+
 ## 1.0.11
 
 ### Patch Changes

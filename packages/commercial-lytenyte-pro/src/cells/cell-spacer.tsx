@@ -24,6 +24,7 @@ export function CellSpacerPinEnd({ xPositions: x }: { xPositions: Uint32Array })
   }
 
   const meta = ctx.state.columnMeta.useValue();
+
   if (meta.columnVisibleEndCount === 0) return null;
 
   return <div style={{ display: "inline-block", width: offset, height: 0 }} />;
