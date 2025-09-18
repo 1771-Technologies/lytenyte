@@ -7,6 +7,9 @@ const HeaderImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(
   function Header(props, forwarded) {
     const grid = useGridRoot().grid;
 
+    const xPositions = grid.state.xPositions.useValue();
+    const columnVisible = grid.state.columnMeta.useValue();
+
     return (
       <HeaderReact
         {...props}
@@ -16,6 +19,10 @@ const HeaderImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(
         headerGroupHeight={grid.state.headerGroupHeight.useValue()}
         headerHeight={grid.state.headerHeight.useValue()}
         rows={grid.internal.headerRows.useValue()}
+        xPositions={xPositions}
+        countBeforeEnd={
+          columnVisible.columnVisibleCenterCount + columnVisible.columnVisibleStartCount
+        }
         width={grid.state.widthTotal.useValue()}
       />
     );

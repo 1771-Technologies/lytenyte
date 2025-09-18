@@ -6,8 +6,6 @@ interface HeaderGroupCellProps {
   readonly cell: CellHeader;
   readonly cellId: string;
   readonly xPositions: Uint32Array;
-  readonly rtl: boolean;
-  readonly viewportWidth: number;
 
   readonly isHiddenMove: boolean;
 
@@ -18,13 +16,13 @@ export const HeaderGroupCellReact = forwardRef<
   HTMLDivElement,
   JSX.IntrinsicElements["div"] & HeaderGroupCellProps
 >(function HeaderGroupCell(
-  { cell, cellId, xPositions, rtl, viewportWidth, height, isHiddenMove, ...props },
+  { cell, cellId, xPositions, height, isHiddenMove, ...props },
   forwarded,
 ) {
   const x = xPositions[cell.colStart];
   const width = xPositions[cell.colEnd] - x;
 
-  const styles = useHeaderCellStyle(cell, xPositions, rtl, viewportWidth);
+  const styles = useHeaderCellStyle(cell, xPositions);
 
   return (
     <div
@@ -47,7 +45,6 @@ export const HeaderGroupCellReact = forwardRef<
         ...props.style,
         ...styles,
         gridRow: "1 / 2",
-        gridColumn: "1 / 2",
         width,
         height,
         boxSizing: "border-box",

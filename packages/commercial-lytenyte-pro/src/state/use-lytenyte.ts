@@ -521,8 +521,6 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     );
 
     const headerHeight = headerHeightTotal();
-    const t = performance.now();
-
     const x = computeRowPositions(
       rowCount,
       rowHeight(),
@@ -536,7 +534,6 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       },
       innerHeight - headerHeight,
     );
-    console.log(performance.now() - t);
 
     return x;
   });

@@ -145,7 +145,9 @@ export function CellSelectionDriver() {
     const pointerDown = (event: PointerEvent) => {
       if (!isNormalClick(event)) {
         document.removeEventListener("pointermove", pointerMove);
-        event.preventDefault();
+
+        // Prevent the default for the context menu, otherwise the cell right clicked will be focused,
+        // resulting in the cell selection changing.        if (event.button == 2) event.preventDefault();
         return;
       }
 
@@ -201,6 +203,10 @@ export function CellSelectionDriver() {
         // We need to prevent the default otherwise the cell to go to will be
         // focused. This leads to awkward behavior around the cell selection pivot
         event.preventDefault();
+
+        document.addEventListener("mousemove", pointerMove);
+        document.addEventListener("contextmenu", pointerUp);
+        document.addEventListener("pointerup", pointerUp);
         return;
       }
 

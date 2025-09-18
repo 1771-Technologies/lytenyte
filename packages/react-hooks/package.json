@@ -1,6 +1,6 @@
 {
   "name": "@1771technologies/lytenyte-react-hooks",
-  "version": "1.0.11",
+  "version": "1.0.12-dev.2",
   "type": "module",
   "license": "Apache-2.0",
   "files": [

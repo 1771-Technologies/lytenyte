@@ -1,0 +1,22 @@
+{
+  "mode": "pre",
+  "tag": "dev",
+  "initialVersions": {
+    "@1771technologies/lng-license": "1.0.11",
+    "@1771technologies/lytenyte-pro": "1.0.11",
+    "@1771technologies/lytenyte-typegen": "1.0.11",
+    "@1771technologies/lytenyte-dom-utils": "1.0.11",
+    "@1771technologies/lytenyte-object-equals": "1.0.11",
+    "@1771technologies/lytenyte-js-utils": "1.0.11",
+    "@1771technologies/lytenyte-core": "1.0.11",
+    "@1771technologies/lytenyte-shared": "1.0.11",
+    "@1771technologies/play-frame": "0.0.10",
+    "@1771technologies/lytenyte-dragon": "1.0.11",
+    "@1771technologies/lytenyte-react-hooks": "1.0.11"
+  },
+  "changesets": [
+    "empty-ties-happen",
+    "flat-clowns-push",
+    "itchy-queens-shave"
+  ]
+}
