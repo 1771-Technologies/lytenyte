@@ -34,6 +34,10 @@
       }
     }
   },
+  "devDependencies": {
+    "react": "19.1.1",
+    "react-dom": "19.1.1"
+  },
   "dependencies": {
     "@1771technologies/lytenyte-js-utils": "workspace:*",
     "@1771technologies/lytenyte-dom-utils": "workspace:*",
