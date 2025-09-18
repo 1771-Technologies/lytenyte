@@ -1,5 +1,11 @@
 # @1771technologies/play-frame
 
+## 0.0.11-dev.3
+
+### Patch Changes
+
+- 18aada2: Firefox drag
+
 ## 0.0.11-dev.2
 
 ### Patch Changes

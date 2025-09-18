@@ -14,7 +14,7 @@ import {
   placeholderHandler,
 } from "../+globals.js";
 import { resetDragState } from "../utils/reset-drag-state.js";
-import { getFrameElement } from "@1771technologies/lytenyte-dom-utils";
+import { getFrameElement, isFirefox } from "@1771technologies/lytenyte-dom-utils";
 import { peek } from "@1771technologies/lytenyte-signal";
 
 export function useDragEventHandler(
@@ -30,22 +30,24 @@ export function useDragEventHandler(
   setDragging: Dispatch<SetStateAction<boolean>>,
 ) {
   const handleDragStart = useCallback(
-    (ev: ReactDragEvent) => {
-      const dragElement = ev.currentTarget as HTMLElement;
+    (sEv: ReactDragEvent) => {
+      const dragElement = sEv.currentTarget as HTMLElement;
       const data = getItems(dragElement);
 
-      ev.dataTransfer.setData("text", "");
+      const ff = isFirefox();
+
+      sEv.dataTransfer.setData("__ignore__", "");
       if (data.dataTransfer) {
         Object.entries(data.dataTransfer).forEach((c) => {
-          ev.dataTransfer.setData(c[0], c[1]);
+          sEv.dataTransfer.setData(c[0], c[1]);
         });
       }
 
       let frame: number | null = null;
-      let [x, x1] = [ev.clientX, ev.clientX];
-      let [y, y1] = [ev.clientY, ev.clientY];
-      let prevX = ev.clientX;
-      let prevY = ev.clientY;
+      let [x, x1] = [sEv.clientX, sEv.clientX];
+      let [y, y1] = [sEv.clientY, sEv.clientY];
+      let prevX = sEv.clientX;
+      let prevY = sEv.clientY;
 
       const frameEl = getFrameElement(window);
 
@@ -60,7 +62,7 @@ export function useDragEventHandler(
       if (placeholder) {
         const placeholderElement = placeholder(data, dragElement);
 
-        ev.dataTransfer.setDragImage(
+        sEv.dataTransfer.setDragImage(
           placeholderElement,
           placeholderOffset?.[0] ?? -10,
           placeholderOffset?.[1] ?? 10,
@@ -73,55 +75,57 @@ export function useDragEventHandler(
 
       // We need to delay this in the event that the drag target is also in a drop target.
       setTimeout(() => {
-        // styleEl.innerHTML = `[data-ln-drop-zone="true"] :not([data-ln-drop-zone="true"]) { pointer-events: none; }`;
+        styleEl.innerHTML = `[data-ln-drop-zone="true"] :not([data-ln-drop-zone="true"]) { pointer-events: none; }`;
       }, 4);
 
       document.head.appendChild(styleEl);
+
+      const handleDrag = (ev: DragEvent) => {
+        // We have queued an animation frame or the cursor pointer has not moved, then we can just return.
+        if (frame || (prevX === ev.clientX && prevY === ev.clientY)) return;
+
+        frame = requestAnimationFrame(() => {
+          [x, x1] = [x1, ev.clientX];
+          [y, y1] = [y1, ev.clientY];
+
+          prevX = ev.clientX;
+          prevY = ev.clientY;
+
+          let xOffset = 0;
+          let yOffset = 0;
+          if (frameEl && ev.view !== window) {
+            const bb = frameEl.getBoundingClientRect();
+            xOffset = bb.x;
+            yOffset = bb.y;
+          }
+
+          onDragMove?.({
+            dragElement,
+            position: { x: x - xOffset, y: y - yOffset },
+            state: data,
+          });
+          dragPositionAtom.set({ x: x - xOffset, y: y - yOffset });
+
+          frame = null;
+        });
+      };
 
       const controller = new AbortController();
       document.addEventListener(
         "drag",
         (ev) => {
-          // We have queued an animation frame or the cursor pointer has not moved, then we can just return.
-          if (frame || (prevX === ev.clientX && prevY === ev.clientY)) return;
-
-          frame = requestAnimationFrame(() => {
-            [x, x1] = [x1, ev.clientX];
-            [y, y1] = [y1, ev.clientY];
-
-            prevX = ev.clientX;
-            prevY = ev.clientY;
-
-            let xOffset = 0;
-            let yOffset = 0;
-            if (frameEl && ev.view !== window) {
-              const bb = frameEl.getBoundingClientRect();
-              xOffset = bb.x;
-              yOffset = bb.y;
-            }
-
-            onDragMove?.({
-              dragElement,
-              position: { x: x - xOffset, y: y - yOffset },
-              state: data,
-            });
-            dragPositionAtom.set({ x: x - xOffset, y: y - yOffset });
-
-            frame = null;
-          });
+          if (ff) return;
+          handleDrag(ev);
         },
         { signal: controller.signal },
       );
-
-      window.addEventListener("mousemove", () => {
-        console.log(" e");
-      });
 
       document.addEventListener(
         "dragover",
         (e) => {
           e.preventDefault();
           if (e.dataTransfer) e.dataTransfer.dropEffect = "move";
+          if (ff) handleDrag(e);
         },
         { signal: controller.signal },
       );
