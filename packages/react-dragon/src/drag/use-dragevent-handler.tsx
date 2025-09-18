@@ -12,10 +12,10 @@ import {
   dragStyleHandler,
   dropAtom,
   placeholderHandler,
-  store,
 } from "../+globals.js";
 import { resetDragState } from "../utils/reset-drag-state.js";
 import { getFrameElement } from "@1771technologies/lytenyte-dom-utils";
+import { peek } from "@1771technologies/lytenyte-signal";
 
 export function useDragEventHandler(
   {
@@ -34,6 +34,7 @@ export function useDragEventHandler(
       const dragElement = ev.currentTarget as HTMLElement;
       const data = getItems(dragElement);
 
+      ev.dataTransfer.setData("text", "");
       if (data.dataTransfer) {
         Object.entries(data.dataTransfer).forEach((c) => {
           ev.dataTransfer.setData(c[0], c[1]);
@@ -51,10 +52,10 @@ export function useDragEventHandler(
       setDragging(true);
       onDragStart?.({ dragElement, position: { x, y }, state: data });
 
-      store.set(dragDataAtom, data);
-      store.set(dropAtom, { current: onDrop ?? null });
-      store.set(dragPositionAtom, { x, y });
-      store.set(activeDragElement, dragElement);
+      dragDataAtom.set(data);
+      dropAtom.set({ current: onDrop ?? null });
+      dragPositionAtom.set({ x, y });
+      activeDragElement.set(dragElement);
 
       if (placeholder) {
         const placeholderElement = placeholder(data, dragElement);
@@ -72,7 +73,7 @@ export function useDragEventHandler(
 
       // We need to delay this in the event that the drag target is also in a drop target.
       setTimeout(() => {
-        styleEl.innerHTML = `[data-ln-drop-zone="true"] :not([data-ln-drop-zone="true"]) { pointer-events: none; }`;
+        // styleEl.innerHTML = `[data-ln-drop-zone="true"] :not([data-ln-drop-zone="true"]) { pointer-events: none; }`;
       }, 4);
 
       document.head.appendChild(styleEl);
@@ -104,13 +105,17 @@ export function useDragEventHandler(
               position: { x: x - xOffset, y: y - yOffset },
               state: data,
             });
-            store.set(dragPositionAtom, { x: x - xOffset, y: y - yOffset });
+            dragPositionAtom.set({ x: x - xOffset, y: y - yOffset });
 
             frame = null;
           });
         },
         { signal: controller.signal },
       );
+
+      window.addEventListener("mousemove", () => {
+        console.log(" e");
+      });
 
       document.addEventListener(
         "dragover",
@@ -137,7 +142,7 @@ export function useDragEventHandler(
         "dragend",
         () => {
           controller.abort();
-          onDragEnd?.({ dragElement, position: store.get(dragPositionAtom)!, state: data });
+          onDragEnd?.({ dragElement, position: peek(dragPositionAtom)!, state: data });
 
           setDragging(false);
           resetDragState();

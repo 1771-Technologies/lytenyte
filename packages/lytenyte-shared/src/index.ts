@@ -23,21 +23,21 @@ export type {
 export { updateLayout, FULL_WIDTH, CONTAINS_DEAD_CELLS } from "./layout/update-layout.js";
 
 export { makeRowStore } from "./row-store/make-row-store.js";
-export { useSignalState } from "./signal/react/use-signal-state.js";
-export { makeAtom } from "./signal/react/make-atom.js";
-export { useSignalValue } from "./signal/react/use-signal-value.js";
 export {
+  useSignalState,
   computed,
   computedKeyedMap,
   computedMap,
   effect,
+  makeAtom,
   peek,
   readonly,
   root,
   signal,
   tick,
-} from "./signal/index.js";
-export type { WriteSignal, ReadSignal } from "./signal/+types.js";
+  useSignalValue,
+} from "@1771technologies/lytenyte-signal";
+export type { WriteSignal, ReadSignal } from "@1771technologies/lytenyte-signal";
 
 export { computeBounds } from "./virtual-bounds/compute-bounds.js";
 export {

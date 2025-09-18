@@ -66,7 +66,6 @@
     }
   },
   "dependencies": {
-    "@1771technologies/atom": "^1.0.2",
     "@1771technologies/lytenyte-dragon": "workspace:*",
     "@1771technologies/lytenyte-shared": "workspace:*",
     "@1771technologies/lytenyte-dom-utils": "workspace:*",

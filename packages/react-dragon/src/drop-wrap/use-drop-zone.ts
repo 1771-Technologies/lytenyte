@@ -1,8 +1,9 @@
 import { useEvent } from "@1771technologies/lytenyte-react-hooks";
 import { useState } from "react";
 import type { OnDropParams } from "../+types.js";
-import { activeDragElement, dragState, dropAtom, store } from "../+globals.js";
+import { activeDragElement, dragState, dropAtom } from "../+globals.js";
 import { computeMoveState } from "../utils/compute-move-state.js";
+import { peek } from "@1771technologies/lytenyte-signal";
 
 export interface UseDropZoneArgs {
   readonly dropEl: HTMLElement | null;
@@ -42,7 +43,7 @@ export function useDropZone({ dropEl, accepted, onLeave, onDrop, onEnter }: UseD
 
     if (!canDrop || !data || !dropEl || !pos) return;
 
-    const dragEl = store.get(activeDragElement);
+    const dragEl = peek(activeDragElement);
 
     const args: OnDropParams = {
       dragElement: dragEl!,
@@ -52,7 +53,7 @@ export function useDropZone({ dropEl, accepted, onLeave, onDrop, onEnter }: UseD
     };
 
     onDrop?.(args);
-    store.get(dropAtom).current?.(args);
+    peek(dropAtom).current?.(args);
   });
 
   return { over, canDrop, leave: handleLeave, enter: handleEnter, drop: handleDrop };

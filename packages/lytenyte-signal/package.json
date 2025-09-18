@@ -1,22 +1,22 @@
 {
-  "name": "@1771technologies/lytenyte-dragon",
+  "name": "@1771technologies/lytenyte-signal",
   "version": "1.0.12-dev.2",
   "type": "module",
+  "homepage": "https://1771technologies.com",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/1771-technologies/lytenyte.git",
+    "directory": "packages/lytenyte-signal"
+  },
+  "bugs": {
+    "url": "https://github.com/1771-technologies/lytenyte/issues"
+  },
   "files": [
     "dist",
     "LICENSE",
     "README.md"
   ],
-  "homepage": "https://1771technologies.com",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/1771-technologies/lytenyte.git",
-    "directory": "packages/react-dragon"
-  },
-  "bugs": {
-    "url": "https://github.com/1771-technologies/lytenyte/issues"
-  },
   "exports": {
     ".": {
       "types": "./src/index.ts",
@@ -33,15 +33,5 @@
         "require": "./dist/index.js"
       }
     }
-  },
-  "dependencies": {
-    "@1771technologies/lytenyte-signal": "workspace:*",
-    "@1771technologies/lytenyte-dom-utils": "workspace:*",
-    "@1771technologies/lytenyte-react-hooks": "workspace:*",
-    "@1771technologies/lytenyte-js-utils": "workspace:*"
-  },
-  "peerDependencies": {
-    "react": "^18.0.0 || ^19.0.0",
-    "react-dom": "^18.0.0 || ^19.0.0"
   }
 }
