@@ -306,12 +306,13 @@ importers:
       '@1771technologies/lytenyte-object-equals':
         specifier: workspace:*
         version: link:../fork-object-equals
+    devDependencies:
       react:
-        specifier: ^18.0.0 || ^19.0.0
-        version: 19.1.0
+        specifier: 19.1.1
+        version: 19.1.1
       react-dom:
-        specifier: ^18.0.0 || ^19.0.0
-        version: 19.1.0(react@19.1.0)
+        specifier: 19.1.1
+        version: 19.1.1(react@19.1.1)
 
 packages:
 
