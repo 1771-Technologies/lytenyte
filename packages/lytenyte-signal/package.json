@@ -1,13 +1,13 @@
 {
-  "name": "@1771technologies/lytenyte-object-equals",
+  "name": "@1771technologies/lytenyte-signal",
   "version": "1.0.12-dev.3",
   "type": "module",
-  "license": "Apache-2.0",
   "homepage": "https://1771technologies.com",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/1771-technologies/lytenyte.git",
-    "directory": "packages/fork-object-equals"
+    "directory": "packages/lytenyte-signal"
   },
   "bugs": {
     "url": "https://github.com/1771-technologies/lytenyte/issues"
@@ -19,18 +19,18 @@
   ],
   "exports": {
     ".": {
-      "types": "./src/object-equals.d.ts",
-      "import": "./src/object-equals.js",
-      "require": "./src/object-equals.js"
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "require": "./src/index.ts"
     }
   },
   "publishConfig": {
     "access": "public",
     "exports": {
       ".": {
-        "types": "./dist/object-equals.d.ts",
-        "import": "./dist/object-equals.js",
-        "require": "./dist/object-equals.js"
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "require": "./dist/index.js"
       }
     }
   }

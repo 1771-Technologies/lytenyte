@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import type { DragMoveState } from "../+types.js";
-import { activeDragElement, dragState, store } from "../+globals.js";
+import { activeDragElement, dragState } from "../+globals.js";
 import { computeMoveState } from "../utils/compute-move-state.js";
 import { useEvent } from "@1771technologies/lytenyte-react-hooks";
+import { peek } from "@1771technologies/lytenyte-signal";
 
 export function useOnDragMove(
   over: boolean,
@@ -19,7 +20,7 @@ export function useOnDragMove(
 
     const remove = dragState.position.watch(() => {
       const pos = dragState.position.get();
-      const dragEl = store.get(activeDragElement);
+      const dragEl = peek(activeDragElement);
 
       if (!dropEl || !pos || !dragEl) return;
       const s = computeMoveState(dropEl, dragEl, pos);

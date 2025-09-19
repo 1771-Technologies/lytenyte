@@ -137,9 +137,6 @@ importers:
 
   packages/commercial-lytenyte-pro:
     dependencies:
-      '@1771technologies/atom':
-        specifier: ^1.0.2
-        version: 1.0.2(@types/react@19.1.12)(react@19.1.0)
       '@1771technologies/lytenyte-core':
         specifier: workspace:*
         version: link:../lytenyte-core
@@ -186,9 +183,6 @@ importers:
 
   packages/lytenyte-core:
     dependencies:
-      '@1771technologies/atom':
-        specifier: ^1.0.2
-        version: 1.0.2(@types/react@19.1.12)(react@19.1.0)
       '@1771technologies/lytenyte-dom-utils':
         specifier: workspace:*
         version: link:../dom-utils
@@ -213,9 +207,6 @@ importers:
 
   packages/lytenyte-shared:
     dependencies:
-      '@1771technologies/atom':
-        specifier: ^1.0.2
-        version: 1.0.2(@types/react@19.1.12)(react@19.1.1)
       '@1771technologies/lytenyte-dom-utils':
         specifier: workspace:*
         version: link:../dom-utils
@@ -228,6 +219,11 @@ importers:
       '@1771technologies/lytenyte-react-hooks':
         specifier: workspace:^
         version: link:../react-hooks
+      '@1771technologies/lytenyte-signal':
+        specifier: workspace:*
+        version: link:../lytenyte-signal
+
+  packages/lytenyte-signal: {}
 
   packages/play-frame:
     dependencies:
@@ -280,9 +276,6 @@ importers:
 
   packages/react-dragon:
     dependencies:
-      '@1771technologies/atom':
-        specifier: ^1.0.2
-        version: 1.0.2(@types/react@19.1.12)(react@19.1.0)
       '@1771technologies/lytenyte-dom-utils':
         specifier: workspace:*
         version: link:../dom-utils
@@ -292,6 +285,9 @@ importers:
       '@1771technologies/lytenyte-react-hooks':
         specifier: workspace:*
         version: link:../react-hooks
+      '@1771technologies/lytenyte-signal':
+        specifier: workspace:*
+        version: link:../lytenyte-signal
       react:
         specifier: ^18.0.0 || ^19.0.0
         version: 19.1.0
@@ -318,18 +314,6 @@ importers:
         version: 19.1.0(react@19.1.0)
 
 packages:
-
-  '@1771technologies/atom@1.0.2':
-    resolution: {integrity: sha512-t7HoSPpp6qA8OFFvTEdKDEzHkZtzo9HzEvUlPA+/YEcbuh1kyHoQYuYDU25oZGBXREBkJgmJNe0I+PTx+tH8vg==}
-    engines: {node: '>=12.20.0'}
-    peerDependencies:
-      '@types/react': '>=17.0.0'
-      react: '>=17.0.0'
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-      react:
-        optional: true
 
   '@1771technologies/cli-table@1.0.1':
     resolution: {integrity: sha512-hrT5Dg0hLbz3+skubTuHaPnUs/WASEZXuLhqXb9kuo06fJGViZZqaMlO1VCDkozh4ff0cddnMemh3QC9MEUWng==}
@@ -2220,9 +2204,6 @@ packages:
     resolution: {integrity: sha512-4hOiT/dwO8Ko0gV1m/TJZYk3y0KBnY9vzDh7W+DH17b2HFSOGgdj33dhihPeuy3l0q23+4e+hoXHV6hCC4dCXw==}
     peerDependencies:
       '@types/react': ^19.0.0
-
-  '@types/react@19.1.12':
-    resolution: {integrity: sha512-cMoR+FoAf/Jyq6+Df2/Z41jISvGZZ2eTlnsaJRptmZ76Caldwy1odD4xTr/gNV9VLj0AWgg/nmkevIyUfIIq5w==}
 
   '@types/react@19.1.8':
     resolution: {integrity: sha512-AwAfQ2Wa5bCx9WP8nZL2uMZWod7J7/JSplxbTmBQ5ms6QpqNYm672H0Vu9ZVKVngQ+ii4R/byguVEUZQyeg44g==}
@@ -4893,16 +4874,6 @@ packages:
 
 snapshots:
 
-  '@1771technologies/atom@1.0.2(@types/react@19.1.12)(react@19.1.0)':
-    optionalDependencies:
-      '@types/react': 19.1.12
-      react: 19.1.0
-
-  '@1771technologies/atom@1.0.2(@types/react@19.1.12)(react@19.1.1)':
-    optionalDependencies:
-      '@types/react': 19.1.12
-      react: 19.1.1
-
   '@1771technologies/cli-table@1.0.1':
     dependencies:
       cli-table3: 0.6.5
@@ -6863,11 +6834,6 @@ snapshots:
   '@types/react-dom@19.1.6(@types/react@19.1.8)':
     dependencies:
       '@types/react': 19.1.8
-
-  '@types/react@19.1.12':
-    dependencies:
-      csstype: 3.1.3
-    optional: true
 
   '@types/react@19.1.8':
     dependencies:

@@ -6043,11 +6043,6 @@ export interface DropEventParams {
  */
 export interface DragMoveState {
   /**
-   * Indicates if the drag was initiated via keyboard.
-   */
-  readonly isKeyboard: boolean;
-
-  /**
    * X coordinate of the drop.
    */
   readonly x: number;
@@ -6143,51 +6138,6 @@ export interface UseRowDragParams<T> {
    * Triggered when the drag results in a drop.
    */
   readonly onDrop?: DropEventFn;
-
-  /**
-   * Function to generate placeholder content for the drag preview.
-   */
-  readonly placeholder?: DragPlaceholderFn<T>;
-
-  /**
-   * Offset [x, y] in pixels from the cursor position for rendering the drag placeholder.
-   */
-  readonly placeholderOffset?: [number, number];
-
-  /**
-   * Keyboard key used to initiate drag mode.
-   */
-  readonly keyActivate?: string;
-
-  /**
-   * Keyboard key used to move to the next drop zone.
-   */
-  readonly keyNext?: string;
-
-  /**
-   * Keyboard key used to move to the previous drop zone.
-   */
-  readonly keyPrev?: string;
-
-  /**
-   * Keyboard key used to execute the drop.
-   */
-  readonly keyDrop?: string;
-
-  /**
-   * Accessible label describing how to perform the drag operation.
-   */
-  readonly dragInstructions?: string;
-
-  /**
-   * Screen reader message to announce drag start.
-   */
-  readonly announceDragStart?: string;
-
-  /**
-   * Screen reader message to announce drag end.
-   */
-  readonly announceDragEnd?: string;
 }
 
 /**

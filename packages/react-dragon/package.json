@@ -1,6 +1,6 @@
 {
   "name": "@1771technologies/lytenyte-dragon",
-  "version": "1.0.12-dev.2",
+  "version": "1.0.12-dev.3",
   "type": "module",
   "license": "Apache-2.0",
   "files": [
@@ -35,7 +35,7 @@
     }
   },
   "dependencies": {
-    "@1771technologies/atom": "^1.0.2",
+    "@1771technologies/lytenyte-signal": "workspace:*",
     "@1771technologies/lytenyte-dom-utils": "workspace:*",
     "@1771technologies/lytenyte-react-hooks": "workspace:*",
     "@1771technologies/lytenyte-js-utils": "workspace:*"

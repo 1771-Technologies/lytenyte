@@ -5,14 +5,6 @@ export const makeUseRowDrag = (grid: Grid<any>): GridApi<any>["useRowDrag"] => {
   return (params) => {
     const c = useDraggable({
       ...params,
-      placeholder: params.placeholder
-        ? (d) => {
-            return params.placeholder!({
-              grid,
-              dragData: d,
-            });
-          }
-        : undefined,
       getItems: (el) => {
         const nearestRow = getNearestRow(el);
         if (!nearestRow) return {};

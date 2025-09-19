@@ -1,5 +1,11 @@
 # @1771technologies/lytenyte-typegen
 
+## 1.0.12-dev.3
+
+### Patch Changes
+
+- 18aada2: Firefox drag
+
 ## 1.0.12-dev.2
 
 ### Patch Changes

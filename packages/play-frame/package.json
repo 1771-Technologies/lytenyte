@@ -4,7 +4,7 @@
     "play": "./bin.js",
     "play-build": "./build.js"
   },
-  "version": "0.0.11-dev.2",
+  "version": "0.0.11-dev.3",
   "description": "",
   "main": "index.js",
   "type": "module",
