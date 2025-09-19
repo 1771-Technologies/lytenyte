@@ -1,34 +1,34 @@
 import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
-// import { playwright } from "@vitest/browser/providers/playwright";
+import { playwright } from "@vitest/browser/providers/playwright";
 
 export default defineConfig({
   plugins: [react()],
   test: {
     passWithNoTests: true,
     projects: [
-      // {
-      //   extends: `${__dirname}/vite.config.ts`,
-      //   test: {
-      //     name: "Browser",
-      //     include: ["./packages/**/*.pt.?(c|m)[jt]s?(x)", "src/**/*.pt.?(c|m)[jt]s?(x)"],
-      //     exclude: ["./packages/**/*.test.?(c|m)[jt]s?(x)", "src/**/*.test.?(c|m)[jt]s?(x)"],
-      //     testTimeout: 3000,
-      //     browser: {
-      //       provider: playwright({
-      //         actionTimeout: 5_000,
-      //       }),
-      //       enabled: true,
-      //       ui: false,
-      //       headless: true,
-      //       instances: [{ browser: "chromium" }],
-      //       viewport: {
-      //         height: 1280,
-      //         width: 1960,
-      //       },
-      //     },
-      //   },
-      // },
+      {
+        extends: `${__dirname}/vitest.config.ts`,
+        test: {
+          name: "Browser",
+          include: ["./packages/**/*.pt.?(c|m)[jt]s?(x)", "src/**/*.pt.?(c|m)[jt]s?(x)"],
+          exclude: ["./packages/**/*.test.?(c|m)[jt]s?(x)", "src/**/*.test.?(c|m)[jt]s?(x)"],
+          testTimeout: 3000,
+          browser: {
+            provider: playwright({
+              actionTimeout: 5_000,
+            }),
+            enabled: true,
+            ui: false,
+            headless: true,
+            instances: [{ browser: "chromium" }],
+            viewport: {
+              height: 1280,
+              width: 1960,
+            },
+          },
+        },
+      },
       {
         extends: `${__dirname}/vitest.config.ts`,
         test: {
