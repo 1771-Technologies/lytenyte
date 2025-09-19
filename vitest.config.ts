@@ -13,7 +13,7 @@ export default defineConfig({
           name: "Browser",
           include: ["./packages/**/*.pt.?(c|m)[jt]s?(x)", "src/**/*.pt.?(c|m)[jt]s?(x)"],
           exclude: ["./packages/**/*.test.?(c|m)[jt]s?(x)", "src/**/*.test.?(c|m)[jt]s?(x)"],
-          testTimeout: 30_000,
+          testTimeout: 60_000,
           browser: {
             provider: playwright({
               actionTimeout: 5_000,

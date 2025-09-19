@@ -15,7 +15,8 @@ permissions:
 jobs:
   pr-checks:
     name: PR Validation
-    runs-on: macos-latest
+    runs-on: ubuntu-24.04
+
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
