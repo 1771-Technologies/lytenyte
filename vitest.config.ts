@@ -14,10 +14,21 @@ export default defineConfig({
           include: ["./packages/**/*.pt.?(c|m)[jt]s?(x)", "src/**/*.pt.?(c|m)[jt]s?(x)"],
           exclude: ["./packages/**/*.test.?(c|m)[jt]s?(x)", "src/**/*.test.?(c|m)[jt]s?(x)"],
           testTimeout: 60_000,
+
           browser: {
             provider: playwright({
               actionTimeout: 5_000,
             }),
+
+            expect: {
+              toMatchScreenshot: {
+                comparatorName: "pixelmatch",
+                comparatorOptions: {
+                  threshold: 0.2,
+                  allowedMismatchedPixelRatio: 0.12, // Generous mismatch - as the grid is text heavy.
+                },
+              },
+            },
             enabled: true,
             ui: false,
             headless: true,
