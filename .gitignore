@@ -11,6 +11,8 @@ certificates
 !**/packages/graphite-grid/dist
 !**/packages/graphite-grid-react/dist
 
+.vitest-attachments
+
 scratch.txt
 auto-imports.d.ts
 
