@@ -1,5 +1,14 @@
 # @1771technologies/play-frame
 
+## 0.0.11
+
+### Patch Changes
+
+- b3e3c5b: Fix bad compile
+- af8f60a: Dev version
+- b3e3c5b: Column fixes
+- c6b9524: Firefox drag
+
 ## 0.0.11-dev.3
 
 ### Patch Changes

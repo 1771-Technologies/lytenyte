@@ -1,5 +1,23 @@
 # @1771technologies/lytenyte-core
 
+## 1.0.12
+
+### Patch Changes
+
+- b3e3c5b: Fix bad compile
+- af8f60a: Dev version
+- b3e3c5b: Column fixes
+- c6b9524: Firefox drag
+- Updated dependencies [b3e3c5b]
+- Updated dependencies [af8f60a]
+- Updated dependencies [b3e3c5b]
+- Updated dependencies [c6b9524]
+  - @1771technologies/lytenyte-shared@1.0.12
+  - @1771technologies/lytenyte-dragon@1.0.12
+  - @1771technologies/lytenyte-react-hooks@1.0.12
+  - @1771technologies/lytenyte-dom-utils@1.0.12
+  - @1771technologies/lytenyte-js-utils@1.0.12
+
 ## 1.0.12-dev.3
 
 ### Patch Changes
