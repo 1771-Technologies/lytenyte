@@ -1,4 +1,3 @@
-import "../../main.css";
 import { useId } from "react";
 import type { Column } from "../+types";
 import { useClientRowDataSource } from "../row-data-source/use-client-data-source.js";
@@ -55,7 +54,7 @@ export default function BasicRendering() {
   const view = g.view.useValue();
 
   return (
-    <div className="lng-grid" style={{ width: "100%", height: "95vh", border: "1px solid black" }}>
+    <div style={{ width: "100%", height: "95vh", border: "1px solid black" }}>
       <Root grid={g}>
         <Viewport>
           <Header>
@@ -66,7 +65,18 @@ export default function BasicRendering() {
                     if (c.kind === "group") {
                       return <HeaderGroupCell cell={c} key={c.idOccurrence} />;
                     }
-                    return <HeaderCell cell={c} key={c.column.id} />;
+                    return (
+                      <HeaderCell
+                        cell={c}
+                        key={c.column.id}
+                        style={{
+                          background: "black",
+                          color: "white",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      />
+                    );
                   })}
                 </HeaderRow>
               );
@@ -75,15 +85,15 @@ export default function BasicRendering() {
 
           <RowsContainer>
             <RowsTop>
-              <RowHandler rows={view.rows.top} />
+              <RowHandler rows={view.rows.top} withStyles pinned />
             </RowsTop>
 
             <RowsCenter>
-              <RowHandler rows={view.rows.center} />
+              <RowHandler rows={view.rows.center} withStyles />
             </RowsCenter>
 
             <RowsBottom>
-              <RowHandler rows={view.rows.bottom} />
+              <RowHandler rows={view.rows.bottom} withStyles pinned />
             </RowsBottom>
           </RowsContainer>
         </Viewport>
