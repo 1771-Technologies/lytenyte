@@ -1,4 +1,3 @@
-import "../../main.css";
 import { useId } from "react";
 import type { Column } from "../+types";
 import { useClientRowDataSource } from "../row-data-source/use-client-data-source.js";
@@ -57,7 +56,7 @@ export default function RowPinning({ pin }: { pin?: boolean }) {
   const view = g.view.useValue();
 
   return (
-    <div className="lng-grid" style={{ width: "100%", height: "95vh", border: "1px solid black" }}>
+    <div style={{ width: "100%", height: "95vh", border: "1px solid black" }}>
       <div>
         <button onClick={() => ds.rowSetTopData(bankDataSmall.slice(0, 2))}>Pin Top</button>
         <button onClick={() => ds.rowSetBotData(bankDataSmall.slice(0, 2))}>Pin Bottom</button>
@@ -77,7 +76,18 @@ export default function RowPinning({ pin }: { pin?: boolean }) {
                     if (c.kind === "group") {
                       return <HeaderGroupCell cell={c} key={c.idOccurrence} />;
                     }
-                    return <HeaderCell cell={c} key={c.column.id} />;
+                    return (
+                      <HeaderCell
+                        cell={c}
+                        key={c.column.id}
+                        style={{
+                          background: "black",
+                          color: "white",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      />
+                    );
                   })}
                 </HeaderRow>
               );
@@ -86,15 +96,15 @@ export default function RowPinning({ pin }: { pin?: boolean }) {
 
           <RowsContainer>
             <RowsTop>
-              <RowHandler rows={view.rows.top} />
+              <RowHandler rows={view.rows.top} withStyles pinned />
             </RowsTop>
 
             <RowsCenter>
-              <RowHandler rows={view.rows.center} />
+              <RowHandler rows={view.rows.center} withStyles />
             </RowsCenter>
 
             <RowsBottom>
-              <RowHandler rows={view.rows.bottom} />
+              <RowHandler rows={view.rows.bottom} withStyles pinned />
             </RowsBottom>
           </RowsContainer>
         </Viewport>

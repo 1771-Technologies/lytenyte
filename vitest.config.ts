@@ -13,7 +13,7 @@ export default defineConfig({
           name: "Browser",
           include: ["./packages/**/*.pt.?(c|m)[jt]s?(x)", "src/**/*.pt.?(c|m)[jt]s?(x)"],
           exclude: ["./packages/**/*.test.?(c|m)[jt]s?(x)", "src/**/*.test.?(c|m)[jt]s?(x)"],
-          testTimeout: 3000,
+          testTimeout: 30_000,
           browser: {
             provider: playwright({
               actionTimeout: 5_000,
@@ -21,7 +21,7 @@ export default defineConfig({
             enabled: true,
             ui: false,
             headless: true,
-            instances: [{ browser: "chromium" }],
+            instances: [{ browser: "chromium" }, { browser: "firefox" }, { browser: "webkit" }],
             viewport: {
               height: 1280,
               width: 1960,
