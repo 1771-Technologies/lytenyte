@@ -1,5 +1,11 @@
 # @1771technologies/lytenyte-signal
 
+## 1.0.12
+
+### Patch Changes
+
+- c6b9524: Firefox drag
+
 ## 1.0.12-dev.3
 
 ### Patch Changes
