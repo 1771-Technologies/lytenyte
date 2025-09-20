@@ -12,6 +12,7 @@
     "@1771technologies/lytenyte-pro": "^1.0.12",
     "@1771technologies/remark-code-demo": "workspace:*",
     "@1771technologies/sample-data": "^0.9.4",
+    "@ark-ui/react": "^5.25.0",
     "@radix-ui/react-presence": "^1.1.5",
     "@types/react": "19.1.8",
     "@types/react-dom": "19.1.6",

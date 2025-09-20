@@ -1,0 +1,29 @@
+---
+title: Row Full Width
+description:
+  Create rows that span the entire grid viewport width in LyteNyte Grid, ideal for section
+  headers, summary rows, or special content areas.
+---
+
+LyteNyte Grid lets you create rows that span the grid's
+entire viewport width. These rows contain a single cell
+instead of the standard one cell per column.
+
+## Create Full Width Rows
+
+Decide which rows should appear full width by setting
+the `rowFullWidthPredicate` property in the grid state. Pass
+a function to this property to determine which rows span the full width.
+
+Because full width rows don't belong to any column, provide a
+React component through the `rowFullWidthRenderer` property to render their content.
+
+In the example below, note the use of the `Grid.RowFullWidth`
+component to render full width rows. This component is required because
+full width rows are a special row type.
+
+!demo:Row Full Width="./demos/row-full-width"
+
+Full width rows always span the grid's viewport width
+and remain visible during horizontal scrolling. Use them for
+section headers, summary rows, or specialized content areas within your grid.
