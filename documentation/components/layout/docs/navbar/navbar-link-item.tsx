@@ -1,5 +1,7 @@
-import { Fragment, HTMLAttributes } from "react";
-import { BaseLinkItem, BaseLinkType, LinkItemType } from "../../shared";
+import type { HTMLAttributes } from "react";
+import { Fragment } from "react";
+import type { BaseLinkType, LinkItemType } from "../../shared";
+import { BaseLinkItem } from "../../shared";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/components/cn";

@@ -9,6 +9,8 @@
     "@changesets/cli": "2.29.4",
     "@testing-library/react": "16.3.0",
     "@types/node": "24.5.2",
+    "@types/react": "19.1.8",
+    "@types/react-dom": "19.1.6",
     "@vitejs/plugin-react": "4.6.0",
     "@vitest/browser": "4.0.0-beta.11",
     "@vitest/coverage-v8": "4.0.0-beta.11",
@@ -28,8 +30,6 @@
   "devDependencies": {
     "@base-ui-components/react": "1.0.0-beta.1",
     "@types/hyperscript": "0.0.7",
-    "@types/react": "19.1.6",
-    "@types/react-dom": "19.1.5",
     "alasql": "4.6.6",
     "react": "19.1.1",
     "react-dom": "19.1.1",

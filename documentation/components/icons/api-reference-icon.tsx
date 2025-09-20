@@ -1,4 +1,4 @@
-import { JSX } from "react";
+import type { JSX } from "react";
 
 export function ApiReferenceIcon(props: JSX.IntrinsicElements["svg"]) {
   return (

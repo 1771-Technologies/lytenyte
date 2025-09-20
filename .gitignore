@@ -16,6 +16,8 @@ certificates
 scratch.txt
 auto-imports.d.ts
 
+source.generated.ts
+
 .content-collections/
 
 # generated content

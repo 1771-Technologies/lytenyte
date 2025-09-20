@@ -1,4 +1,4 @@
-import { JSX } from "react";
+import type { JSX } from "react";
 
 export function ChangelogIcon(props: JSX.IntrinsicElements["svg"]) {
   return (
