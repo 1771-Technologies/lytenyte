@@ -1,5 +1,14 @@
 {
   "title": "Guides",
-  "pages": ["(introduction)", "(prodready)", "(grid)", "(column)", "(row-data-source)", "(row)"],
+  "pages": [
+    "(introduction)",
+    "(prodready)",
+    "(grid)",
+    "(column)",
+    "(row-data-source)",
+    "(row)",
+    "(cell)",
+    "(pivoting)"
+  ],
   "root": true
 }
