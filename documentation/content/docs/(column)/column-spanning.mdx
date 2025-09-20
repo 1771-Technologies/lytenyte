@@ -1,0 +1,36 @@
+---
+title: Column Spanning
+description: Guide to implementing column spans in LyteNyte Grid for merged cell
+  layouts
+---
+
+Use the `colSpan` property to make cells span multiple columns in
+LyteNyte Grid. For example, setting `colSpan` to `2` makes a cell extend
+across two columns. The grid skips rendering cells covered by the span.
+
+The `colSpan` property can be a `number` or a function that returns the
+number of columns a cell should span.
+
+!demo:Column Spanning="./demos/column-spanning"
+
+## Column Span Scan Distance
+
+For performance, LyteNyte Grid does not calculate all spans in advance.
+Instead, it scans back from the first visible column, based on the
+scroll position. Control this lookback with the `colScanDistance`
+property.
+
+`colScanDistance` must be at least the maximum possible span in your
+grid. Make sure no span exceeds this value to ensure proper rendering.
+
+<Callout>
+
+LyteNyte Grid uses a scan distance for correctness and performance.
+Other grids may pre-calculate spans (hurting scalability) or render
+incorrectly based on scroll position. This approach requires you to
+specify a max span, but it preserves both performance and accuracy.
+
+In most real-world cases, a scan distance of `100` is more than enough,
+since it's rare for a column to span more than 100 columns.
+
+</Callout>

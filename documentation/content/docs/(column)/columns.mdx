@@ -1,0 +1,122 @@
+---
+title: Columns
+description: LyteNyte Grid uses columns to power core features like sorting,
+  filtering, moving, and resizing. When you call the `useLyteNyte` hook,
+  you provide an array of column definitions. This guide explains how to
+  define columns and describes each property.
+---
+
+## Basic Column Definition
+
+At minimum, a column requires an `id` property:
+
+```ts
+const column = { id: "my-column" };
+```
+
+Each column must have a unique `id`. Ensure uniqueness across all
+columns in your grid.
+
+### The Column Base
+
+LyteNyte Grid provides defaults for properties you omit. Use
+`columnBase` to set defaults for all columns. For example, instead of
+configuring every column for moving and resizing, set it once in
+`columnBase`.
+
+<Callout>
+
+To move a column, click and drag the header. To resize the header, hover your
+mouse cursor near the right edge of the header and an indicator will appear. You
+may then click and drag to resize.
+
+</Callout>
+
+!demo:Column Base="./demos/column-base"
+
+## Column Properties Overview
+
+### Column Type
+
+Use the `type` field to hint at the data type. Defaults to `string`.
+Options include `number`, `date`, `datetime`, or any custom string.
+Providing the correct type ensures proper sorting and filtering.
+
+### Header Rendering
+
+The `name` property sets display text for a column. If omitted, the
+`id` is used. You can pass a custom `headerRenderer` returning a
+ReactNode.
+
+### Header Autosizing
+
+`autosizeHeaderFn` calculates width for custom header components. It
+applies only to headers. Use `autosizeCellFn` for cell widths.
+
+### Pinning
+
+The `pin` property freezes columns at the start or end of the grid so
+they stay visible during horizontal scrolling.
+
+### Column Visibility
+
+Use the `hide` property to control visibility. Defaults to `false`.
+
+### Cell Editing
+
+- `editable`: whether the cell is editable
+- `editRenderer`: the editing component
+- `editSetter`: updates row data after editing
+
+### Cell Autosizing
+
+`autosizeCellFn` customizes how cell widths are calculated.
+
+### Floating Cell
+
+`floatingCellRenderer` sets content for floating header cells when
+`floatingRowEnabled` is true.
+
+### Field
+
+`field` defines how to extract cell values from your data. Defaults to
+the column `id`.
+
+### Column Grouping
+
+`groupPath` is an ordered set of strings that define the group
+hierarchy. Groups form implicitly from all `groupPath` values.
+
+`groupVisibility` controls when a column appears:
+
+- `open`: Only when the group is expanded
+- `closed`: Only when the group is collapsed
+- `always`: Always visible
+
+### Column Width
+
+- `width`: desired column width
+- `widthMin` / `widthMax`: width bounds
+- `widthFlex`: share of extra viewport space
+
+### Cell Rendering
+
+`cellRenderer` provides a custom React component for cells.
+
+### Row and Column Spanning
+
+`rowSpan` / `colSpan` let cells span multiple rows or columns.
+
+### UI Hints
+
+`uiHints` inform UI components about column capabilities. They do not
+affect core grid behavior or API methods.
+
+### Quick Search
+
+PRO only: `quickSearchIgnore` excludes the column from quick search.
+
+## Summary
+
+You now know the available column properties in LyteNyte Grid. See
+individual guides for deeper details on each property.

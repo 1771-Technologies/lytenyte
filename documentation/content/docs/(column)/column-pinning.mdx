@@ -1,0 +1,40 @@
+---
+title: Column Pinning
+description: Guide to pinning columns at the start or end of the LyteNyte Grid
+  viewport
+---
+
+LyteNyte Grid lets you pin columns to the start or end of the viewport.
+Pinned columns stay visible as users scroll horizontally. For best
+usability, pin only one or two columns at a time.
+
+<Callout>
+
+We use `start` and `end` instead of `right` or `left` to indicate
+pinning positions for both RTL and LTR modes.
+
+</Callout>
+
+## Pinning Columns to Start
+
+Set a column's `pin` property to `"start"` to pin it to the start. In
+LTR mode, start-pinned columns stay on the left; in RTL mode, they stay
+on the right.
+
+!demo:Column Pinning Start="./demos/column-pinning-start"
+
+## Pinning Columns to End
+
+Set a column's `pin` property to `"end"` to pin it to the end. In LTR
+mode, end-pinned columns stay on the right; in RTL mode, they stay on
+the left.
+
+import ColumnPinningEnd from "./demos/column-pinning-end/demo";
+
+!demo:Column Pinning End="./demos/column-pinning-end"
+
+## Column Pinning Considerations
+
+When using both start-pinned and end-pinned columns, ensure enough space
+remains to display them while still scrolling unpinned columns in the
+middle.

@@ -1,0 +1,62 @@
+---
+title: Column Field
+description: The field property in LyteNyte Grid determines the cell value for a
+  given row in a specific column.
+---
+
+LyteNyte Grid supports four types of values for `field`:
+
+- **String**: When row data is an object. The string acts as a key to
+  look up the value.
+- **Number**: When row data is an array. The number acts as the index in
+  the array.
+- **Function**: A callback for custom calculations of a column's value.
+- **Path object**: `{ kind: "path"; path: string }` to access nested
+  values. `kind` must be `"path"`, and `path` must specify the lookup.
+
+`field` is optional. If omitted, LyteNyte Grid uses the column's `id` as
+a fallback.
+
+## Key Lookup Fields
+
+When `field` is a string, the grid uses it as a key to access the value
+in object row data.
+
+!demo:Key Lookup Fields="./demos/column-field-key"
+
+If no `field` is set, the grid uses the column `id`. Because `id` must
+be a string, this fallback behaves like a key lookup.
+
+## Number Index Fields
+
+When `field` is a number, row data should be an array. The number acts
+as the index for retrieving the value.
+
+!demo:Number Index Fields="./demos/column-field-number-index"
+
+## Function Fields
+
+Set `field` to a function for maximum flexibility. The function can
+compute values using other columns.
+
+!demo:Function Fields="./demos/column-field-function"
+
+## Path Fields
+
+Set `field` to `{ kind: "path", path: string }` to access nested object
+values.
+
+!demo:Path Fields="./demos/column-field-path-fields"
+
+The `path` syntax matches [Lodash's get](https://lodash.com/docs/#get):
+
+```ts
+{ kind: 1, path: "alpha.beta[0]" };
+{ kind: 1, path: "beta[0].alpha" };
+```
+
+## Which Field Type to Use
+
+Prefer `string` or `number` fields for simplicity. Number fields are
+compact and efficient. Function and path fields add complexity and may
+prevent serialization of column definitions.

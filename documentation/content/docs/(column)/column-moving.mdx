@@ -1,0 +1,33 @@
+---
+title: Column Moving
+description: Guide to reordering columns and column groups in LyteNyte Grid
+---
+
+LyteNyte Grid lets you reorder columns. Users can drag and drop columns
+or use UI components provided by the grid.
+
+To reorder a column, click and drag its header to a new position. While
+dragging, the grid shows a drag indicator and placeholder to indicate
+the potential new position.
+
+Set the movable UI hint on a column to allow header dragging:
+
+```ts
+uiHints: {
+  movable: true,
+}
+```
+
+!demo:Column Moving="./demos/column-moving"
+
+Dragging a non-pinned column over a pinned column pins it. Dragging a
+pinned column over a non-pinned column unpins it.
+
+## Moving Column Groups
+
+A column group is movable only when all columns in it are movable. If
+any column in the group is not movable, the entire group becomes
+unmovable. You can still move any individual movable columns inside the
+group.
+
+!demo:Moving Column Groups="./demos/column-moving-group"

@@ -1,0 +1,62 @@
+---
+title: Column Autosizing
+description: LyteNyte Grid can automatically size columns to fit their content.
+  Columns do not need to be visible to be autosized. The grid uses custom
+  heuristic functions to determine optimal widths based on content.
+---
+
+Autosizing can consider header width, cell content width, or both. For
+each column, you can define `autosizeHeaderFn` and `autosizeCellFn` to
+control width calculations. If you omit these, LyteNyte Grid uses a
+default text measurement function.
+
+Because LyteNyte Grid emphasizes custom header and cell renderers for
+highlighting key content, we recommend providing matching autosize
+functions when using custom renderers to ensure accurate sizing.
+
+## Autosizing API
+
+Use the `api.autosizeColumns` method to autosize all columns or a
+selected subset.
+
+!demo:Autosizing Api="./demos/column-autosizing"
+
+The autosize method returns an `AutosizeResult` object with key-value
+pairs where keys are column `id`s and values are the new sizes. It also
+supports a "dry run" mode that calculates widths without applying them.
+For details, see the [API Reference](/docs/reference/overview).
+
+## Header Autosizing
+
+Use `autosizeHeaderFn` on a column to define a custom header autosizing
+function. This is helpful when you want headers included in width
+calculations.
+
+!demo:Header Autosizing="./demos/column-autosizing-header"
+
+## Cell Autosizing
+
+`autosizeCellFn` controls how LyteNyte Grid calculates optimal cell
+width. Each column can define its own function. If you use custom cell
+renderers, provide a matching `autosizeCellFn` for accuracy.
+
+In the example below, we set the base autosize function to autosize
+columns to a width of `150px` fixed. This makes all the columns take the
+same width.
+
+!demo:Cell Autosizing="./demos/column-autosizing-cell"
+
+### Virtualization Considerations
+
+LyteNyte Grid uses row virtualization for performance. Only visible rows
+are considered in autosizing. If the viewport is not yet initialized,
+the grid uses about 50 rows for calculations.
+
+For columns with a known set of possible values, consider an autosize
+function that returns the maximum width for those values, regardless of
+the visible rows.
+
+## Measure Text Helper
+
+LyteNyte Grid (Core and PRO) exports a `measureText` helper. Use it to
+estimate text width when building custom autosize functions.

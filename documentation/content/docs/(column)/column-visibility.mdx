@@ -1,0 +1,36 @@
+---
+title: Column Visibility
+description: Learn how to control, check, and update column visibility in LyteNyte
+  Grid, including interaction with column groups.
+---
+
+Control column visibility in LyteNyte Grid with the column's `hide`
+property. A column may also be visually omitted when it belongs to a
+group that is collapsed (or expanded, for columns meant to show only
+when the group is closed). This guide explains how to configure column
+visibility and the nuances of showing and hiding columns.
+
+## Hiding Columns
+
+Set a column's `hide` property to `true` to hide it. Users typically
+toggle visibility with LyteNyte Grid components like the
+[Column Manager](/docs/component-column-manager).
+
+!demo:Hiding Columns="./demos/column-visibility"
+
+### Hiding Columns and Column Groups
+
+When a column belongs to a group, its visibility can change based on
+the group's state.
+
+LyteNyte Grid does not treat these temporarily hidden columns as fully
+hidden. It considers them part of a temporary view state caused by user
+interaction, not a permanent visibility setting. While most use cases
+are unaffected, keep this in mind when managing column visibility in
+code.
+
+The example below shows this difference. The `job` column is hidden when the
+group is collapsed but is still considered a visible column since it's `hide`
+property is not `true`.
+
+!demo:Column Visibility and Hiding="./demos/column-visibility-with-groups"
