@@ -42,6 +42,8 @@ Please note: opening a pull request does not guarantee acceptance or merging.
 
 ## Step-by-Step: Creating a Pull Request for LyteNyte Grid
 
+**Note**: we use `git-lfs` for managing test screenshots. Ensure you have it installed.
+
 1. **Fork the repository**
 
    ```sh
@@ -53,8 +55,9 @@ Please note: opening a pull request does not guarantee acceptance or merging.
 2. **Sync your local branch** with the upstream repository
 
    ```sh
-   git checkout master
-   git pull upstream master
+   git checkout main
+   git pull upstream main
+   git lfs pull # If the files have not already been cloned.
    ```
 
 3. **Install dependencies** we use `pnpm`

@@ -34,7 +34,6 @@ export function objectEqualsCore(
   if (typeof target === "object" && typeof source === "object") {
     if (!crossrealm) {
       if (target == null || source == null) return target === source;
-      // eslint-disable-next-line no-var
       var tor = target.constructor;
       if (
         tor !== source.constructor &&
@@ -298,7 +297,6 @@ export function objectEqualsCore(
           );
       }
       if (tag === undefined) {
-        // eslint-disable-next-line no-var
         var tag = toString.call(target);
         if (tag !== toString.call(source)) return false;
         tor =

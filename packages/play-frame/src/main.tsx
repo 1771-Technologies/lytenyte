@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/extensions
 import { createRoot } from "react-dom/client";
 import frames from "playframe";
 import { Container } from "./play-area/container.js";

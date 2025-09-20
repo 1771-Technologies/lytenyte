@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - name: Checkout selected branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.ref_name }}
 
@@ -59,7 +59,7 @@ jobs:
 
       # the magic happens below 🪄
       - name: Update Visual Regression Screenshots
-        run: op run test --project Browser --update
+        run: op test --project Browser --update
 
       # check what changed
       - name: Check for changes

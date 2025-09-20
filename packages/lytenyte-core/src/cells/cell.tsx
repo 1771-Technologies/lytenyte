@@ -92,7 +92,7 @@ const CellImpl = memo(
           data-ln-last-start-pin={cell.colLastStartPin}
           data-ln-first-end-pin={cell.colFirstEndPin}
           tabIndex={isEditing ? -1 : 0}
-          style={style}
+          style={{ ...style, ...props.style }}
         >
           {isEditing && <CellEditor cell={cell} />}
           {!isEditing && (

@@ -1,13 +1,47 @@
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
+import { playwright } from "@vitest/browser/providers/playwright";
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
   test: {
-    workspace: [
+    passWithNoTests: true,
+    projects: [
       {
-        extends: `${__dirname}/vite.config.ts`,
+        extends: `${__dirname}/vitest.config.ts`,
+        test: {
+          name: "Browser",
+          include: ["./packages/**/*.pt.?(c|m)[jt]s?(x)", "src/**/*.pt.?(c|m)[jt]s?(x)"],
+          exclude: ["./packages/**/*.test.?(c|m)[jt]s?(x)", "src/**/*.test.?(c|m)[jt]s?(x)"],
+          testTimeout: 60_000,
+
+          browser: {
+            provider: playwright({
+              actionTimeout: 5_000,
+            }),
+
+            expect: {
+              toMatchScreenshot: {
+                comparatorName: "pixelmatch",
+                comparatorOptions: {
+                  threshold: 0.2,
+                  allowedMismatchedPixelRatio: 0.12, // Generous mismatch - as the grid is text heavy.
+                },
+              },
+            },
+            enabled: true,
+            ui: false,
+            headless: true,
+            instances: [{ browser: "chromium" }, { browser: "firefox" }, { browser: "webkit" }],
+            viewport: {
+              height: 1280,
+              width: 1960,
+            },
+          },
+        },
+      },
+      {
+        extends: `${__dirname}/vitest.config.ts`,
         test: {
           name: "Node",
           globals: true,

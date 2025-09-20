@@ -50,6 +50,7 @@ export function columnHandleMarker<T>({
   return columns;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 function HeaderRenderer() {
   return (
     <>
@@ -59,6 +60,7 @@ function HeaderRenderer() {
     </>
   );
 }
+// eslint-disable-next-line react-refresh/only-export-components
 function FloatingRenderer() {
   return <></>;
 }

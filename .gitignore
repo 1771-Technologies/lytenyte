@@ -11,8 +11,9 @@ certificates
 !**/packages/graphite-grid/dist
 !**/packages/graphite-grid-react/dist
 
-scratch.txt
+.vitest-attachments
 
+scratch.txt
 auto-imports.d.ts
 
 .content-collections/
@@ -29,7 +30,6 @@ certs/
 
 .dev.vars
 
-__screenshots__/
 
 .turbo
 

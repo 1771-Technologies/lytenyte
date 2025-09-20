@@ -15,10 +15,13 @@ permissions:
 jobs:
   pr-checks:
     name: PR Validation
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+        with:
+          lfs: true
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -51,6 +54,17 @@ jobs:
 
       - name: Test All Packages
         run: op test
+
+      - name: Upload screenshots (on failure)
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: failed-screenshots-${{ github.run_number }}
+          # grab screenshots from ANY package/test folder:
+          path: |
+            **/__screenshots__/**
+          if-no-files-found: ignore
+          retention-days: 1
 
       - name: Build All Packages
         run: op np --filter './packages/*' exec op compile
