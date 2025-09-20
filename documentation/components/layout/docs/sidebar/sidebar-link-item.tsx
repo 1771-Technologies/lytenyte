@@ -1,5 +1,5 @@
 "use client";
-import { LinkItemType } from "../../shared";
+import type { LinkItemType } from "../../shared";
 import { SidebarFolder } from "./sidebar-folder";
 import { SidebarFolderContent } from "./sidebar-folder-content";
 import { SidebarFolderLink } from "./sidebar-folder-link";

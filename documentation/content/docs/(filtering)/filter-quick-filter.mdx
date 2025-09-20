@@ -1,0 +1,27 @@
+---
+title: Column Quick Filter
+description: Use quick filters in LyteNyte Grid to search multiple columns at once with a single text input.
+---
+
+A quick filter lets users search across multiple columns with a single text value. LyteNyte Grid
+keeps rows where any eligible column matches the search term and hides all others.
+
+## Apply a Quick Filter
+
+Set the `quickSearch` value on the grid state to enable quick filtering. LyteNyte Grid will search
+across all eligible columns using this value.
+
+By default, every column is included in the search. This can be useful, but in grids with many
+numeric columns, it may lead to unwanted matches. To exclude a column, set its `quickSearchIgnore`
+property to `true`.
+
+A common pattern is to set `quickSearchIgnore` in the base column definition, then selectively
+enable quick search for specific columns. In the example below, only the `Job` and `Education`
+columns are searchable.
+
+!demo:Quick Filter="./demos/filter-quick"
+
+## Control Case Sensitivity
+
+Use the `quickSearchSensitivity` property on the grid to specify case sensitivity for quick search.
+Set it to match your application's requirements-case sensitive or case insensitive.

@@ -8,7 +8,11 @@
     "(row-data-source)",
     "(row)",
     "(cell)",
-    "(pivoting)"
+    "(pivoting)",
+    "(filtering)",
+    "(components)",
+    "(export)",
+    "(misc)"
   ],
   "root": true
 }

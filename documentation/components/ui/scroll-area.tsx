@@ -28,6 +28,7 @@ const ScrollViewport = React.forwardRef<
     ref={ref}
     className={cn("size-full rounded-[inherit]", className)}
     {...props}
+    style={{ ...props.style, overflow: "auto", paddingBlockEnd: 250 }}
   >
     {children}
   </ScrollAreaPrimitive.Viewport>

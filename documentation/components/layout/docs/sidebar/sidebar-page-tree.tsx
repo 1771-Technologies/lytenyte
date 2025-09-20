@@ -1,7 +1,8 @@
 "use client";
-import { PageTree } from "fumadocs-core/server";
+import type { PageTree } from "fumadocs-core/server";
 import { useTreeContext } from "fumadocs-ui/contexts/tree";
-import { FC, Fragment, ReactNode, useMemo } from "react";
+import type { FC, ReactNode } from "react";
+import { Fragment, useMemo } from "react";
 import { SidebarSeparator } from "./sidebar-separator";
 import { SidebarItem } from "./sidebar-item";
 import { PageTreeFolder } from "./sidebar-page-tree-folder";
@@ -49,7 +50,13 @@ export function SidebarPageTree(props: { components?: Partial<SidebarComponents>
 
         if (Item) return <Item key={item.url} item={item} />;
         return (
-          <SidebarItem key={item.url} href={item.url} external={item.external} icon={item.icon}>
+          <SidebarItem
+            key={item.url}
+            href={item.url}
+            external={item.external}
+            icon={item.icon}
+            className="text-[12px] font-semibold tracking-wide"
+          >
             {item.name}
           </SidebarItem>
         );

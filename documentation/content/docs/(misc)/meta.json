@@ -1,0 +1,5 @@
+{
+  "title": "Keyboard and Accessibility",
+  "pages": ["keyboard", "accessibility", "rtl-support"],
+  "defaultOpen": true
+}

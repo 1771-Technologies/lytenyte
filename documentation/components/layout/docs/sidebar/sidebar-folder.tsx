@@ -2,7 +2,8 @@
 
 import { Collapsible } from "@/components/ui/collapsible";
 import { useOnChange } from "fumadocs-core/utils/use-on-change";
-import { ComponentProps, useMemo, useState } from "react";
+import type { ComponentProps } from "react";
+import { useMemo, useState } from "react";
 import { FolderContext } from "./folder-context";
 
 export function SidebarFolder({
@@ -18,7 +19,7 @@ export function SidebarFolder({
   });
 
   return (
-    <Collapsible open={open} onOpenChange={setOpen} {...props}>
+    <Collapsible open={open} onOpenChange={setOpen} {...props} className="pb-4">
       <FolderContext.Provider value={useMemo(() => ({ open, setOpen }), [open])}>
         {props.children}
       </FolderContext.Provider>

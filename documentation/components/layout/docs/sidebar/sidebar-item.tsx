@@ -1,7 +1,8 @@
 "use client";
 import { usePathname } from "fumadocs-core/framework";
-import Link, { LinkProps } from "fumadocs-core/link";
-import { ReactNode } from "react";
+import type { LinkProps } from "fumadocs-core/link";
+import Link from "fumadocs-core/link";
+import type { ReactNode } from "react";
 import { useInternalContext } from "./internal-context";
 import { isActive } from "@/components/is-active";
 import { itemVariants } from "./item-variants";
