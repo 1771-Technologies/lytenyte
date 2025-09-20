@@ -1,6 +1,6 @@
 "use client";
 
-import { Collapsible } from "radix-ui";
+import type { Collapsible } from "radix-ui";
 import { useFolderContext } from "./folder-context";
 import { CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown } from "lucide-react";
@@ -12,7 +12,11 @@ export function SidebarFolderTrigger({ className, ...props }: Collapsible.Collap
 
   return (
     <CollapsibleTrigger
-      className={cn(itemVariants({ active: false }), "w-full", className)}
+      className={cn(
+        itemVariants({ active: false }),
+        "text-gray-954 w-full font-semibold",
+        className,
+      )}
       {...props}
     >
       {props.children}

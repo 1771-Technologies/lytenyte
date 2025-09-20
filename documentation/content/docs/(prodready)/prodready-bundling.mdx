@@ -1,0 +1,53 @@
+---
+title: Bundling and Tree Shaking
+description:
+  LyteNyte Grid is engineered for optimal bundling and tree shaking, ensuring your final bundle
+  includes only the components you actually use. This guide explains how to leverage these features to
+  create smaller, more efficient applications.
+---
+
+## Tree Shaking
+
+Tree shaking is a technique that eliminates unused JavaScript code from your final bundle. LyteNyte
+Grid fully supports tree shaking across all its exported names.
+
+LyteNyte Grid is available in two editions:
+
+- **Core**: Free functionality with essential features (Apache 2.0 License)
+- **PRO**: Enhanced version with comprehensive enterprise-grade features
+
+Both editions fully support tree shaking and are built as modern ESM packages adhering to current
+JavaScript standards.
+
+## Choosing a Bundler
+
+LyteNyte Grid works seamlessly with any standards-compliant bundler. Modern web development offers
+several excellent options, including:
+
+- [Vite](https://vitejs.dev/)
+- [Rollup](https://rollupjs.org/)
+- [Rspack](https://rspack.dev/)
+
+### Best Practices
+
+Follow these guidelines to ensure optimal bundling when using LyteNyte Grid:
+
+1. **Use ES Modules**: Prefer ES module syntax (`import` and `export` statements) over CommonJS
+   modules (`require` statements)
+
+2. **Enable Tree Shaking**: Verify that tree shaking is enabled in your bundler configuration
+
+3. **Avoid Side Effects**: Ensure your code doesn't introduce side effects that could prevent
+   tree shaking, such as modifying imported modules or using imported functions in ways that can't
+   be statically analyzed
+
+4. **Use Specific Imports**: Avoid `import * as All from "<package-name>"` syntax
+   as these wildcard imports can prevent most bundlers from effectively tree shaking
+
+By following these guidelines and leveraging LyteNyte Grid's optimized architecture, you can create
+efficient applications with minimal bundle size while maintaining full functionality.
+
+If you're using a modern front-end framework like Next.js, Remix, or Vite, you don't need to
+worry about manually applying these best practices. These frameworks implement
+these optimizations by default, allowing you to simply add LyteNyte Grid as
+a dependency and immediately begin using the grid.
