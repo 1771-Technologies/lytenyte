@@ -111,6 +111,9 @@ importers:
       '@1771technologies/remark-code-demo':
         specifier: workspace:*
         version: link:../packages/remark-code-demo
+      '@1771technologies/sample-data':
+        specifier: ^0.9.4
+        version: 0.9.4
       '@radix-ui/react-presence':
         specifier: ^1.1.5
         version: 1.1.5(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
@@ -475,6 +478,9 @@ packages:
 
   '@1771technologies/lytenyte-signal@1.0.12':
     resolution: {integrity: sha512-FLwQUUYBdLkICtGviO/EspVY0Xs2LuN2dZcWL5HKGXeBjkviT+ePniNQPntw4VuUinKc0FLFr/O3UMNoST4pFg==}
+
+  '@1771technologies/sample-data@0.9.4':
+    resolution: {integrity: sha512-Inn65VuN2vEqaReEKU1IgEi/ty8MN9LCQCuK+ngQCxBHUm7b9u3wJW/X4nSbBPTQCL3gu/AJDT10H7bvcHPJaA==}
 
   '@alloc/quick-lru@5.2.0':
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
@@ -5600,6 +5606,8 @@ snapshots:
       - react-dom
 
   '@1771technologies/lytenyte-signal@1.0.12': {}
+
+  '@1771technologies/sample-data@0.9.4': {}
 
   '@alloc/quick-lru@5.2.0': {}
 

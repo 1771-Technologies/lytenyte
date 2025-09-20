@@ -1,5 +1,5 @@
 {
   "title": "Guides",
-  "pages": ["(introduction)", "(prodready)"],
+  "pages": ["(introduction)", "(prodready)", "(grid)"],
   "root": true
 }

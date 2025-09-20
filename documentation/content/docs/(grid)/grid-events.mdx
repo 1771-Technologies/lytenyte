@@ -1,0 +1,45 @@
+---
+title: Grid Events
+description: LyteNyte Grid fires events in response to specific user interactions or
+  when imperative API methods run. For example, when a cell enters edit
+  mode, the grid fires the editBegin event.
+---
+
+This guide explains how to respond to events from LyteNyte Grid and
+shows methods to trigger events imperatively when needed.
+
+For a complete list of available events and their triggers, see the
+[Events API Reference Page](/docs/reference/events).
+
+## Listening to Events
+
+The `Grid.Root` component accepts event listeners for all events LyteNyte
+Grid may fire. Add listeners as you would any other props in React. This
+familiar approach is the recommended way to add event listeners.
+
+Furthermore, like native events, some events have a `preventDefault` property
+that will stop the default action of that event from happening. For example,
+we can prevent odd rows from being selected by listening to the `rowSelectBegin`
+event and calling `preventDefault` when it fires.
+
+!demo:Event Listener="./demos/grid-use-event-hook"
+
+### The `api.eventAddListener` Method
+
+Sometimes you may need to add an event listener to LyteNyte Grid outside
+a render function. Use the `api.eventAddListener` method in such cases.
+This method adds a listener for the specified event and returns a
+function to remove it. You can also call `api.eventRemoveListener` to
+remove a listener explicitly.
+
+When using `api.eventAddListener`, you must handle cleanup yourself. The
+example below demonstrates correct usage with proper cleanup.
+
+!demo:Imperative Event Listeners="./demos/grid-add-event-listener"
+
+## Triggering Events
+
+The LyteNyte Grid API provides the `eventFire` method, which lets you
+manually trigger an event as if it originated from the grid. This is
+useful when building custom functionality that mimics grid event
+behavior, but you should avoid it unless necessary.
