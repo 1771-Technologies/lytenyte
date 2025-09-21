@@ -87,8 +87,7 @@ export default function Clipboard() {
 
         for (let colI = rect.columnStart; colI < rect.columnEnd; colI++) {
           // Our selection has more columns than we are updating so we can skip.
-          if (colI - rect.columnStart >= updates[rowI - rect.rowStart].length)
-            break;
+          if (colI - rect.columnStart >= updates[rowI - rect.rowStart].length) break;
 
           grid.api.editUpdate({
             column: colI,
@@ -98,14 +97,14 @@ export default function Clipboard() {
         }
       }
     },
-    [grid, getFirstSelection]
+    [grid, getFirstSelection],
   );
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
-      <div className="flex gap-8 py-2 px-2">
+      <div className="flex gap-8 px-2 py-2">
         <button
-          className="bg-gray-900 text-white border border-gray-600 rounded px-2"
+          className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
           onClick={async () => {
             await handleCopy();
             alert("Text copied to clipboard");
@@ -114,7 +113,7 @@ export default function Clipboard() {
           Copy
         </button>
         <button
-          className="bg-gray-900 text-white border border-gray-600 rounded px-2"
+          className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
           onClick={async () => {
             const rect = getFirstSelection();
             if (!rect) return;
@@ -125,8 +124,7 @@ export default function Clipboard() {
             for (let i = rect.rowStart; i < rect.rowEnd; i++) {
               const row: any[] = [];
 
-              for (let j = rect.columnStart; j < rect.columnEnd; j++)
-                row.push(null);
+              for (let j = rect.columnStart; j < rect.columnEnd; j++) row.push(null);
               updates.push(row);
             }
 
@@ -138,7 +136,7 @@ export default function Clipboard() {
           Cut
         </button>
         <button
-          className="bg-gray-900 text-white border border-gray-600 rounded px-2"
+          className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
           onClick={async () => {
             const content = await navigator.clipboard.readText();
 
@@ -172,7 +170,7 @@ export default function Clipboard() {
                         <Grid.HeaderCell
                           key={c.id}
                           cell={c}
-                          className="flex w-full h-full capitalize px-2 items-center"
+                          className="flex h-full w-full items-center px-2 capitalize"
                         />
                       );
                     })}
@@ -192,7 +190,7 @@ export default function Clipboard() {
                           <Grid.Cell
                             key={c.id}
                             cell={c}
-                            className="text-sm flex items-center px-2 h-full w-full"
+                            className="flex h-full w-full items-center px-2 text-sm"
                           />
                         );
                       })}

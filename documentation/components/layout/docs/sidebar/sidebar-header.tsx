@@ -1,6 +1,6 @@
 "use client";
 import { cn } from "@/components/cn";
-import { ComponentProps } from "react";
+import type { ComponentProps } from "react";
 
 export function SidebarHeader(props: ComponentProps<"div">) {
   return (

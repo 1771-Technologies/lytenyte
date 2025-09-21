@@ -52,13 +52,6 @@ export default function RowDraggingExternalDropZone() {
               },
             };
           },
-          placeholder: () => {
-            return (
-              <div className="flex rounded bg-black p-2 text-white">
-                Dragging row at index: {p.rowIndex}
-              </div>
-            );
-          },
           onDrop: (p) => {
             setDropped((prev) => [...prev, p.state.siteLocalData?.row as number]);
           },

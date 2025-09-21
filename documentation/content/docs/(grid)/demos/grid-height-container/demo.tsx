@@ -40,10 +40,7 @@ export default function GridHeightContainer() {
   const view = grid.view.useValue();
 
   return (
-    <div
-      className="lng-grid"
-      style={{ display: "grid", gridTemplateRows: "500px" }}
-    >
+    <div className="lng-grid" style={{ display: "grid", gridTemplateRows: "500px" }}>
       <Grid.Root grid={grid}>
         <Grid.Viewport>
           <Grid.Header>
@@ -57,7 +54,7 @@ export default function GridHeightContainer() {
                       <Grid.HeaderCell
                         key={c.id}
                         cell={c}
-                        className="flex w-full h-full capitalize px-2 items-center"
+                        className="flex h-full w-full items-center px-2 capitalize"
                       />
                     );
                   })}
@@ -77,7 +74,7 @@ export default function GridHeightContainer() {
                         <Grid.Cell
                           key={c.id}
                           cell={c}
-                          className="text-sm flex items-center px-2 h-full w-full"
+                          className="flex h-full w-full items-center px-2 text-sm"
                         />
                       );
                     })}

@@ -8,7 +8,6 @@ export interface CodeDemoProvider {
   readonly setShowCode: Dispatch<SetStateAction<boolean>>;
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const Context = createContext<CodeDemoProvider>({ showCode: false, setShowCode: () => {} });
 
 export const CodeDemoProvider = (props: PropsWithChildren) => {

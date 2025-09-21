@@ -1,6 +1,8 @@
-import { Option } from "@/components/root-toggle";
-import { BaseLinkItem, LinkItemType } from "../../shared";
-import { DocsLayoutProps, Navbar, NavbarSidebarTrigger } from "../docs-layout";
+import type { Option } from "@/components/root-toggle";
+import type { LinkItemType } from "../../shared";
+import { BaseLinkItem } from "../../shared";
+import type { DocsLayoutProps } from "../docs-layout";
+import { Navbar, NavbarSidebarTrigger } from "../docs-layout";
 import { cn } from "@/components/cn";
 import { Languages } from "lucide-react";
 import Link from "fumadocs-core/link";

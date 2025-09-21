@@ -2,10 +2,7 @@
 
 import { Grid, useClientTreeDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
-import {
-  ChevronDownIcon,
-  ChevronRightIcon,
-} from "@1771technologies/lytenyte-pro/icons";
+import { ChevronDownIcon, ChevronRightIcon } from "@1771technologies/lytenyte-pro/icons";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { fileData } from "@1771technologies/sample-data/file-data";
 import { useId } from "react";
@@ -28,7 +25,7 @@ const columns: Column<FileData>[] = [
 
       return (
         <div
-          className="flex items-center gap-2 w-full h-full"
+          className="flex h-full w-full items-center gap-2"
           style={{ paddingLeft: row.depth * 16 }}
         >
           <button
@@ -89,7 +86,7 @@ export default function RowTreeDataSource() {
                       <Grid.HeaderCell
                         key={c.id}
                         cell={c}
-                        className="flex w-full h-full capitalize px-2 items-center"
+                        className="flex h-full w-full items-center px-2 capitalize"
                       />
                     );
                   })}
@@ -109,7 +106,7 @@ export default function RowTreeDataSource() {
                         <Grid.Cell
                           key={c.id}
                           cell={c}
-                          className="text-sm flex items-center px-2 h-full w-full text-nowrap overflow-hidden"
+                          className="flex h-full w-full items-center overflow-hidden text-nowrap px-2 text-sm"
                         />
                       );
                     })}

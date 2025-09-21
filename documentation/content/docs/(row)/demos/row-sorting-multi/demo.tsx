@@ -2,10 +2,7 @@
 
 import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
-import {
-  ArrowDownIcon,
-  ArrowUpIcon,
-} from "@1771technologies/lytenyte-pro/icons";
+import { ArrowDownIcon, ArrowUpIcon } from "@1771technologies/lytenyte-pro/icons";
 import type {
   Column,
   HeaderCellRendererParams,
@@ -73,7 +70,7 @@ export default function RowSortingMulti() {
                       <Grid.HeaderCell
                         key={c.id}
                         cell={c}
-                        className="flex w-full h-full capitalize px-2 items-center"
+                        className="flex h-full w-full items-center px-2 capitalize"
                       />
                     );
                   })}
@@ -93,7 +90,7 @@ export default function RowSortingMulti() {
                         <Grid.Cell
                           key={c.id}
                           cell={c}
-                          className="text-sm flex items-center px-2 h-full w-full"
+                          className="flex h-full w-full items-center px-2 text-sm"
                         />
                       );
                     })}
@@ -119,7 +116,7 @@ function Header({ column, grid }: HeaderCellRendererParams<BankData>) {
 
   return (
     <div
-      className="flex items-center px-2 w-full h-full text-sm hover:bg-ln-gray-10 transition-all"
+      className="hover:bg-ln-gray-10 flex h-full w-full items-center px-2 text-sm transition-all"
       onClick={(ev) => {
         const current = grid.api.sortForColumn(column.id);
 
@@ -174,7 +171,7 @@ function Header({ column, grid }: HeaderCellRendererParams<BankData>) {
             <ArrowDownIcon className="size-4" />
           )}
           {sortIndex >= 0 && sortModel.length > 1 && (
-            <div className="absolute top-[-2px] right-[-2px] text-xs text-ln-primary-5">
+            <div className="text-ln-primary-5 absolute right-[-2px] top-[-2px] text-xs">
               {sortIndex + 1}
             </div>
           )}

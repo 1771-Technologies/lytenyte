@@ -82,7 +82,7 @@ export const FieldPath: InterfaceType = {
 
   Example: \`"point.x"\` will return \`data.point.x\`. Useful for deeply nested row data.
   
-  @group field
+  @group Field
   `,
   export: true,
   properties: [

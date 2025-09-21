@@ -1,7 +1,9 @@
 "use client";
 import { useMediaQuery } from "fumadocs-core/utils/use-media-query";
-import { ReactNode, useMemo } from "react";
-import { Context, InternalContext } from "./internal-context";
+import type { ReactNode } from "react";
+import { useMemo } from "react";
+import type { InternalContext } from "./internal-context";
+import { Context } from "./internal-context";
 
 export interface SidebarProps {
   /**

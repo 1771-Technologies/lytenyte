@@ -37,7 +37,7 @@ export default function ColumnHeaderNameUpdate() {
     <div style={{ display: "flex", flexDirection: "column" }}>
       <div className="flex gap-2">
         <input
-          className="text-sm px-2 h-full border rounded-xs bg-gray-900 text-white p-1"
+          className="rounded-xs h-full border bg-gray-900 p-1 px-2 text-sm text-white"
           aria-label="update-age"
           style={{ width: 150, boxSizing: "border-box" }}
           value={cols[0].name ?? ""}
@@ -47,7 +47,7 @@ export default function ColumnHeaderNameUpdate() {
         />
         <input
           aria-label="update-job"
-          className="text-sm px-2 h-full border rounded-xs bg-gray-900 text-white p-1"
+          className="rounded-xs h-full border bg-gray-900 p-1 px-2 text-sm text-white"
           style={{ width: 150, boxSizing: "border-box" }}
           value={cols[1].name ?? ""}
           onChange={(e) => {
@@ -56,7 +56,7 @@ export default function ColumnHeaderNameUpdate() {
         />
         <input
           aria-label="update-balance"
-          className="text-sm px-2 h-full border rounded-xs bg-gray-900 text-white p-1"
+          className="rounded-xs h-full border bg-gray-900 p-1 px-2 text-sm text-white"
           style={{ width: 150, boxSizing: "border-box" }}
           value={cols[2].name ?? ""}
           onChange={(e) => {
@@ -65,7 +65,7 @@ export default function ColumnHeaderNameUpdate() {
         />
         <input
           aria-label="update-education"
-          className="text-sm px-2 h-full border rounded-xs bg-gray-900 text-white p-1"
+          className="rounded-xs h-full border bg-gray-900 p-1 px-2 text-sm text-white"
           style={{ width: 150, boxSizing: "border-box" }}
           value={cols[3].name ?? ""}
           onChange={(e) => {
@@ -74,7 +74,7 @@ export default function ColumnHeaderNameUpdate() {
         />
         <input
           aria-label="update-marital"
-          className="text-sm px-2 h-full border rounded-xs bg-gray-900 text-white p-1"
+          className="rounded-xs h-full border bg-gray-900 p-1 px-2 text-sm text-white"
           style={{ width: 150, boxSizing: "border-box" }}
           value={cols[4].name ?? ""}
           onChange={(e) => {
@@ -97,7 +97,7 @@ export default function ColumnHeaderNameUpdate() {
                         <Grid.HeaderCell
                           key={c.id}
                           cell={c}
-                          className="flex w-full h-full capitalize px-2 items-center"
+                          className="flex h-full w-full items-center px-2 capitalize"
                         />
                       );
                     })}
@@ -117,7 +117,7 @@ export default function ColumnHeaderNameUpdate() {
                           <Grid.Cell
                             key={c.id}
                             cell={c}
-                            className="text-sm flex items-center px-2 h-full w-full"
+                            className="flex h-full w-full items-center px-2 text-sm"
                           />
                         );
                       })}

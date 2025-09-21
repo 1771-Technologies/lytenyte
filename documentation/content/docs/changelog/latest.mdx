@@ -1,0 +1,167 @@
+---
+title: Latest
+description: The latest changelog for LyteNyte Grid. Track new features,
+  improvements, and changes with each release.
+---
+
+import { V1Image } from "./components/release";
+import { DateTag } from "./components/date-tag";
+
+## v1.0.0
+
+<DateTag>v1.0.0 - Aug 19, 2025</DateTag>
+
+<V1Image />
+
+LyteNyte Grid v1.0.0 marks the official stabilization of the LyteNyte Grid API. This release incorporates lessons learned from earlier
+iterations and developer feedback, with a strong focus on flexibility.
+
+At a glance, v1.0.0 delivers:
+
+- **Stabilized public interfaces**, going forward, only minor changes are expected.
+- **Headless rendering interfaces**, prior versions used a “black-box” component, which made extensions difficult.
+  The new headless API is intuitive for React developers and makes future improvements easier without breaking changes.
+- **Improvements across the board**, better memory usage, higher performance, and reduced bundle size.
+
+---
+
+### Migration from v0.9.x
+
+#### Column Definition Changes
+
+- `headerName` → `name`
+- `headerAutosizeFn` → `autosizeHeaderFn`
+- `cellAutosizeFn` → `autosizeCellFn`
+- `cellAutosizeFn` removed. Instead, define only the columns you want to autosize in the API.
+- `type` now accepts arbitrary strings and includes support for `datetime`. The `complex` type has been removed.
+- `aggFnsAllowed` and `aggFnDefault` moved to `uiHints`. Any column can now be aggregated without explicit configuration.
+- `hidable` removed. All columns are now hidable.
+- Editing props consolidated. `cellEditPredicate`, `cellEditParser`, `cellEditUnparser`, `cellEditProvider`, `cellEditParams`, and `cellEditRowUpdater`
+  are replaced by `editRenderer`, `editSetter`, and `editable`. See our [cell editing guide](/docs/cell-editing).
+- `sortable` moved to `uiHints`. All columns are sortable when added to the sort model.
+- `sortCycle` and `sortComparator` removed. Define custom logic in your own code as needed.
+- `inFilterLabelFormatter` removed. Now handled at the row data source level.
+- `inFilterField` removed. no longer needed.
+- `quickSearchField` removed. no longer needed.
+- `groupVisibility` simplified to `always`, `open`, or `closed`.
+- `rowGroupable` moved to `uiHints`. Any column can now be grouped when added to the group model.
+- `rowGroupField` removed. The row group model now accepts a `field` object directly, making it more flexible.
+- `measureFnsAllowed` and `measureFnDefault` removed. The pivot model now accepts an aggregation model.
+- `resizable` and `movable` moved to `uiHints`.
+
+#### LyteNyte State
+
+- `aggFns` removed. Aggregations are now defined at the row data source level.
+- `autosizeDoubleClickHeader` → `columnDoubleClickToAutosize`
+- `cellEditPointerActivator` → `editClickActivator`
+- `cellEditProviders` → `editRenderers`
+- `columnHeaderHeight` → `headerHeight`
+- `columnHeaderRenderers` removed. unnecessary in headless mode.
+- `columnGroupHeaderHeight` → `headerGroupHeight`
+- `columnGroupHeaderRenderer` removed. unnecessary in headless mode.
+- `columnGroupStickHeaders` removed. unnecessary in headless mode.
+- `columnGroupIdDelimiter` → `columnGroupJoinDelimiter` (clearer naming).
+- `columnGroupExpansionState` → `columnGroupExpansions`
+- `columnSpanScanDistance` → `colScanDistance`
+- `rowDetailMarker` removed. unnecessary.
+- `rowDetailEnabled` removed. Row detail is always available via detail expansion state.
+- Row dragging properties (`rowDragEnabled`, `rowDragMultiRow`, `rowDragExternalGrid`, `rowDragPredicate`) removed. Use `grid.api.useRowDrag` instead.
+- `rowGroupAutoApplyAggDefault` removed. unnecessary.
+- `rowGroupColumnTemplate` → `rowGroupColumn`
+- Pagination properties (`paginate`, `paginatePageSize`, `paginateCurrentPage`) removed. Controlled by row data source.
+- `rowSelectionCheckbox` removed. unnecessary.
+- `rowSelectionPointerActivator` → `rowSelectionActivator`
+- `rowSelectionPredicate` removed. Row selection can now be prevented via the `rowSelectBegin` event.
+- `rowSelectionSelectChildren` → `rowSelectChildren`
+- `rowSelectionMultiSelectOnClick` removed. unnecessary.
+- `sortComparatorFns` removed. Use custom comparators directly in `sortModel`.
+- Overlay and menu-related properties (`overlayToShow`, `overlays`, `columnMenuRenderer`, `contextMenuRenderer`,
+  `contextMenuPredicate`, `panelFrames`, `panelFrameButtons`, `menuFrames`) removed. unnecessary in headless mode.
+- Pivot-related properties refactored. `columnPivotModel` now holds the complete pivot configuration. See the [column pivoting guide](/docs/column-pivoting).
+- `filterQuickSearch` → `quickSearch`
+- `filterModel` split into `FilterModel` (simple filters) and `FilterInModel` (set filters).
+- `measureModel` removed. Now defined in `columnPivotModel`.
+- `treeData` removed. unnecessary.
+
+#### Grid API
+
+- `autosizeMeasure` removed. Use the new `measureText` function exported by LyteNyte Grid packages.
+- Cell editing events:
+  - `cellEditBegin` → `editBegin`
+  - `cellEditEnd` → `editEnd`
+  - `cellEditIsActive` → `editIsCellActive`
+- Most `cellEdit*` APIs removed. Use events (`editBegin`, `editEnd`) instead.
+- `columnField` now takes `(column, row)` instead of `(row, column)`.
+- `columnGroupToggle` → `columnToggleGroup`
+- `columnUpdate` now handles both single and multiple updates.  
+  Replaces `columnUpdateMany`, `columnResize`, and `columnResizeMany`.
+- Column movement APIs simplified into `columnMove`.
+- Numerous `columnIs*` and `columnSort*` helpers removed. No longer necessary.
+- Navigation APIs consolidated. Use `focusCell` instead of `navigate*`.
+- `navigateScrollIntoView` → `scrollIntoView`
+- Row refresh, reload, and data replacement APIs removed. Handled by row data source.
+- Selection APIs simplified:
+  - `rowSelectionGetSelected` → `rowSelected`
+  - `rowSelectionSelect` → `rowSelect`
+  - `rowSelectionSelectAll` → `rowSelectAll`
+- Undo/redo and legacy menu/frame APIs removed.
+- Pivot APIs consolidated into the `columnPivotModel`.
+
+---
+
+#### Migrating to Headless Components
+
+Replace:
+
+```tsx
+function MyGrid() {
+  const grid = useLyteNytePro(...); // or core
+
+  return <LyteNyteGrid grid={grid} />;
+}
+```
+
+With:
+
+```tsx
+import { Grid } from "@1771technologies/lytenyte-pro";
+
+function MyGrid() {
+  const grid = Grid.useLyteNyte(...);
+
+  return (
+    <Grid.Root grid={grid}>
+      <Grid.Viewport>
+        <Grid.Header>
+          {view.header.layout.map((row, i) => (
+            <Grid.HeaderRow key={i} headerRowIndex={i}>
+              {row.map((c) =>
+                c.kind === "group" ? (
+                  <Grid.HeaderGroupCell key={c.idOccurrence} cell={c} />
+                ) : (
+                  <Grid.HeaderCell key={c.id} cell={c} />
+                )
+              )}
+            </Grid.HeaderRow>
+          ))}
+        </Grid.Header>
+        <Grid.RowsContainer>
+          <Grid.RowsCenter>
+            {view.rows.center.map((row) =>
+              row.kind === "full-width" ? (
+                <Grid.RowFullWidth key={row.id} row={row} />
+              ) : (
+                <Grid.Row key={row.id} row={row}>
+                  {row.cells.map((c) => (
+                    <Grid.Cell key={c.id} cell={c} />
+                  ))}
+                </Grid.Row>
+              )
+            )}
+          </Grid.RowsCenter>
+        </Grid.RowsContainer>
+      </Grid.Viewport>
+    </Grid.Root>
+  );
+}
+```

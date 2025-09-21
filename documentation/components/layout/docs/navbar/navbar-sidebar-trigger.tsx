@@ -3,7 +3,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/components/cn";
 import { useSidebar } from "fumadocs-ui/contexts/sidebar";
 import { SidebarIcon } from "lucide-react";
-import { ComponentProps } from "react";
+import type { ComponentProps } from "react";
 
 export function NavbarSidebarTrigger({ className, ...props }: ComponentProps<"button">) {
   const { setOpen } = useSidebar();

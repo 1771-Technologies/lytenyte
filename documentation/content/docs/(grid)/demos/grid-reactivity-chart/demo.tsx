@@ -1,20 +1,10 @@
 "use client";
 
 import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
-import type {
-  Column,
-  Grid as GridType,
-} from "@1771technologies/lytenyte-pro/types";
+import type { Column, Grid as GridType } from "@1771technologies/lytenyte-pro/types";
 import { companiesWithPricePerf } from "@1771technologies/sample-data/companies-with-price-performance";
 import { useId, useMemo } from "react";
-import {
-  Area,
-  AreaChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  XAxis,
-  YAxis,
-} from "recharts";
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from "recharts";
 
 type RowData = (typeof companiesWithPricePerf)[number];
 
@@ -42,10 +32,7 @@ export default function GridReactivityChart() {
   const view = grid.view.useValue();
 
   return (
-    <div
-      className="lng-grid"
-      style={{ display: "flex", flexDirection: "column" }}
-    >
+    <div className="lng-grid" style={{ display: "flex", flexDirection: "column" }}>
       <div style={{ height: 500 }}>
         <Grid.Root grid={grid}>
           <Grid.Viewport>
@@ -60,7 +47,7 @@ export default function GridReactivityChart() {
                         <Grid.HeaderCell
                           key={c.id}
                           cell={c}
-                          className="flex w-full h-full capitalize px-2 items-center"
+                          className="flex h-full w-full items-center px-2 capitalize"
                         />
                       );
                     })}
@@ -80,7 +67,7 @@ export default function GridReactivityChart() {
                           <Grid.Cell
                             key={c.id}
                             cell={c}
-                            className="text-sm flex items-center px-2 h-full w-full"
+                            className="flex h-full w-full items-center px-2 text-sm"
                           />
                         );
                       })}
@@ -112,10 +99,9 @@ function PriceChart({ grid }: { grid: GridType<RowData> }) {
   }, [grid.api, selected]);
 
   const data = useMemo(() => {
-    const weeks: Record<string, { week: number; [key: string]: number }> =
-      Object.fromEntries(
-        Array.from({ length: 52 }, (_, i) => [i + 1, { week: i + 1 }])
-      );
+    const weeks: Record<string, { week: number; [key: string]: number }> = Object.fromEntries(
+      Array.from({ length: 52 }, (_, i) => [i + 1, { week: i + 1 }]),
+    );
 
     rows.forEach((row) => {
       if (!row?.data || !grid.api.rowIsLeaf(row)) return;
@@ -138,14 +124,7 @@ function PriceChart({ grid }: { grid: GridType<RowData> }) {
             const color = colors[i];
 
             return (
-              <linearGradient
-                key={row.id}
-                id={row.id}
-                x1="0"
-                y1="0"
-                x2="0"
-                y2="1"
-              >
+              <linearGradient key={row.id} id={row.id} x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor={color.stop5} stopOpacity={0.8} />
                 <stop offset="95%" stopColor={color.stop95} stopOpacity={0} />
               </linearGradient>

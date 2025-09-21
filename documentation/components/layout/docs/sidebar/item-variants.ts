@@ -12,5 +12,5 @@ export const itemVariants = cva(
           "transition-colors hover:bg-fd-accent/50 hover:text-fd-accent-foreground/80 hover:transition-none",
       },
     },
-  }
+  },
 );

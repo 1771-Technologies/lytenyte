@@ -2,10 +2,7 @@
 
 import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
-import {
-  ChevronDownIcon,
-  ChevronRightIcon,
-} from "@1771technologies/lytenyte-pro/icons";
+import { ChevronDownIcon, ChevronRightIcon } from "@1771technologies/lytenyte-pro/icons";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { bankDataSmall } from "@1771technologies/sample-data/bank-data-smaller";
 import { useId } from "react";
@@ -50,14 +47,11 @@ export default function RowGroupingMultiColumns() {
         const index = grid.api.rowGroupColumnIndex(column);
         const group = grid.state.rowGroupModel.useValue()[index];
 
-        const def =
-          typeof group === "string" ? grid.api.columnById(group)! : group;
+        const def = typeof group === "string" ? grid.api.columnById(group)! : group;
 
         const name = def.name ?? def.id;
 
-        return (
-          <div className="flex items-center w-full h-full px-2">{name}</div>
-        );
+        return <div className="flex h-full w-full items-center px-2">{name}</div>;
       },
       cellRenderer: ({ grid, row, column }) => {
         if (!grid.api.rowIsGroup(row)) return null;
@@ -70,7 +64,7 @@ export default function RowGroupingMultiColumns() {
 
         return (
           <div
-            className="flex items-center gap-2 w-full h-full"
+            className="flex h-full w-full items-center gap-2"
             style={{ paddingLeft: row.depth * 16 }}
           >
             <button
@@ -108,7 +102,7 @@ export default function RowGroupingMultiColumns() {
                       <Grid.HeaderCell
                         key={c.id}
                         cell={c}
-                        className="flex w-full h-full capitalize px-2 items-center"
+                        className="flex h-full w-full items-center px-2 capitalize"
                       />
                     );
                   })}
@@ -128,7 +122,7 @@ export default function RowGroupingMultiColumns() {
                         <Grid.Cell
                           key={c.id}
                           cell={c}
-                          className="text-sm flex items-center px-2 h-full w-full"
+                          className="flex h-full w-full items-center px-2 text-sm"
                         />
                       );
                     })}

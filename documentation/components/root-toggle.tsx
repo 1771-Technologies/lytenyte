@@ -11,6 +11,7 @@ import type { SidebarTab } from "fumadocs-ui/utils/get-sidebar-tabs";
 
 export interface Option extends SidebarTab {
   props?: ComponentProps<"a">;
+  matchSelected?: { match: string[]; ignore: string[] };
 }
 
 export function RootToggle({

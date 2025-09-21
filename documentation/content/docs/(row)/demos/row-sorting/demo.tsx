@@ -2,10 +2,7 @@
 
 import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
-import {
-  ArrowDownIcon,
-  ArrowUpIcon,
-} from "@1771technologies/lytenyte-pro/icons";
+import { ArrowDownIcon, ArrowUpIcon } from "@1771technologies/lytenyte-pro/icons";
 import type {
   Column,
   HeaderCellRendererParams,
@@ -49,9 +46,7 @@ export default function RowSorting() {
     columnBase: {
       headerRenderer: Header,
     },
-    sortModel: [
-      { columnId: "age", sort: { kind: "number" }, isDescending: false },
-    ],
+    sortModel: [{ columnId: "age", sort: { kind: "number" }, isDescending: false }],
   });
 
   const view = grid.view.useValue();
@@ -71,7 +66,7 @@ export default function RowSorting() {
                       <Grid.HeaderCell
                         key={c.id}
                         cell={c}
-                        className="flex w-full h-full capitalize px-2 items-center"
+                        className="flex h-full w-full items-center px-2 capitalize"
                       />
                     );
                   })}
@@ -91,7 +86,7 @@ export default function RowSorting() {
                         <Grid.Cell
                           key={c.id}
                           cell={c}
-                          className="text-sm flex items-center px-2 h-full w-full"
+                          className="flex h-full w-full items-center px-2 text-sm"
                         />
                       );
                     })}
@@ -107,15 +102,13 @@ export default function RowSorting() {
 }
 
 function Header({ column, grid }: HeaderCellRendererParams<BankData>) {
-  const sort = grid.state.sortModel
-    .useValue()
-    .find((c) => c.columnId === column.id);
+  const sort = grid.state.sortModel.useValue().find((c) => c.columnId === column.id);
 
   const isDescending = sort?.isDescending ?? false;
 
   return (
     <div
-      className="flex items-center px-2 w-full h-full text-sm hover:bg-ln-gray-10 transition-all"
+      className="hover:bg-ln-gray-10 flex h-full w-full items-center px-2 text-sm transition-all"
       onClick={() => {
         const current = grid.api.sortForColumn(column.id);
 

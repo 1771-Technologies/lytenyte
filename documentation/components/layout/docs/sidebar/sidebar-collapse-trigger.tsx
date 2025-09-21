@@ -1,7 +1,7 @@
 "use client";
 
 import { useSidebar } from "fumadocs-ui/contexts/sidebar";
-import { ComponentProps } from "react";
+import type { ComponentProps } from "react";
 
 export function SidebarCollapseTrigger(props: ComponentProps<"button">) {
   const { collapsed, setCollapsed } = useSidebar();

@@ -1,6 +1,7 @@
 "use client";
 
-import { PropsWithChildren, useState } from "react";
+import type { PropsWithChildren } from "react";
+import { useState } from "react";
 
 export function CodeFold(props: PropsWithChildren) {
   const [show, setShow] = useState(false);

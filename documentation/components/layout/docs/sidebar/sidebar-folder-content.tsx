@@ -1,6 +1,6 @@
 "use client";
 
-import { Collapsible } from "radix-ui";
+import type { Collapsible } from "radix-ui";
 import { Context, useInternalContext } from "./internal-context";
 import { CollapsibleContent } from "@/components/ui/collapsible";
 import { useMemo } from "react";

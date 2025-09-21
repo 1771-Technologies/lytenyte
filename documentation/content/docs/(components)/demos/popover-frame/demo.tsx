@@ -48,10 +48,9 @@ export default function PopoverFrame() {
             >
               <Popover.Portal>
                 <Popover.Positioner anchor={params.target}>
-                  <Popover.Popup className="z-50 border-ln-gray-50 border fixed px-4 rounded bg-ln-gray-10 w-[200px]">
-                    This is my popover frame content. This popover is for for
-                    the cell at row {params.context.rowIndex} with column id{" "}
-                    {params.context.columnId}.
+                  <Popover.Popup className="border-ln-gray-50 bg-ln-gray-10 fixed z-50 w-[200px] rounded border px-4">
+                    This is my popover frame content. This popover is for for the cell at row{" "}
+                    {params.context.rowIndex} with column id {params.context.columnId}.
                   </Popover.Popup>
                 </Popover.Positioner>
               </Popover.Portal>
@@ -80,7 +79,7 @@ export default function PopoverFrame() {
                         <Grid.HeaderCell
                           key={c.id}
                           cell={c}
-                          className="flex w-full h-full capitalize px-2 items-center"
+                          className="flex h-full w-full items-center px-2 capitalize"
                         />
                       );
                     })}
@@ -100,17 +99,13 @@ export default function PopoverFrame() {
                           <Grid.Cell
                             key={c.id}
                             cell={c}
-                            className="text-sm flex items-center px-2 h-full w-full"
+                            className="flex h-full w-full items-center px-2 text-sm"
                             onClick={(e) => {
                               grid.api.popoverFrameClose();
-                              grid.api.popoverFrameOpen(
-                                "myFrame",
-                                e.currentTarget,
-                                {
-                                  rowIndex: c.rowIndex,
-                                  columnId: c.column.id,
-                                }
-                              );
+                              grid.api.popoverFrameOpen("myFrame", e.currentTarget, {
+                                rowIndex: c.rowIndex,
+                                columnId: c.column.id,
+                              });
                             }}
                           />
                         );

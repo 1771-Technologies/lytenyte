@@ -42,7 +42,7 @@ export default function RowSelectionCheckbox() {
     columnMarker: {
       cellRenderer: ({ rowSelected, grid }) => {
         return (
-          <div className="flex w-full h-full items-center justify-center">
+          <div className="flex h-full w-full items-center justify-center">
             <input
               type="checkbox"
               checked={rowSelected}
@@ -80,7 +80,7 @@ export default function RowSelectionCheckbox() {
                       <Grid.HeaderCell
                         key={c.id}
                         cell={c}
-                        className="flex w-full h-full capitalize px-2 items-center"
+                        className="flex h-full w-full items-center px-2 capitalize"
                       />
                     );
                   })}
@@ -100,7 +100,7 @@ export default function RowSelectionCheckbox() {
                         <Grid.Cell
                           key={c.id}
                           cell={c}
-                          className="text-sm flex items-center px-2 h-full w-full"
+                          className="flex h-full w-full items-center px-2 text-sm"
                         />
                       );
                     })}

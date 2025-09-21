@@ -42,27 +42,24 @@ export default function RowHeightFill() {
 
   return (
     <div style={{ height: 500, display: "flex", flexDirection: "column" }}>
-      <div
-        style={{ display: "flex", gap: 8, alignItems: "center" }}
-        className="py-2"
-      >
+      <div style={{ display: "flex", gap: 8, alignItems: "center" }} className="py-2">
         <div>Change Row Height: </div>
 
         <button
-          className="bg-gray-900 text-white border border-gray-600 rounded px-2"
+          className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
           onClick={() => grid.state.rowHeight.set(30)}
         >
           Small
         </button>
 
         <button
-          className="bg-gray-900 text-white border border-gray-600 rounded px-2"
+          className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
           onClick={() => grid.state.rowHeight.set(50)}
         >
           Medium
         </button>
         <button
-          className="bg-gray-900 text-white border border-gray-600 rounded px-2"
+          className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
           onClick={() => grid.state.rowHeight.set(80)}
         >
           Large
@@ -82,7 +79,7 @@ export default function RowHeightFill() {
                         <Grid.HeaderCell
                           key={c.id}
                           cell={c}
-                          className="flex w-full h-full capitalize px-2 items-center"
+                          className="flex h-full w-full items-center px-2 capitalize"
                         />
                       );
                     })}
@@ -102,7 +99,7 @@ export default function RowHeightFill() {
                           <Grid.Cell
                             key={c.id}
                             cell={c}
-                            className="text-sm flex items-center px-2 h-full w-full"
+                            className="flex h-full w-full items-center px-2 text-sm"
                           />
                         );
                       })}

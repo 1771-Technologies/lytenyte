@@ -59,7 +59,7 @@ export default function App() {
                       <Grid.HeaderCell
                         key={c.id}
                         cell={c}
-                        className="flex w-full h-full capitalize px-2 items-center"
+                        className="flex h-full w-full items-center px-2 capitalize"
                       />
                     );
                   })}
@@ -79,7 +79,7 @@ export default function App() {
                         <Grid.Cell
                           key={c.id}
                           cell={c}
-                          className="text-sm flex items-center px-2 h-full w-full"
+                          className="flex h-full w-full items-center px-2 text-sm"
                         />
                       );
                     })}
@@ -123,7 +123,7 @@ sql.tables.banks.data = bankData;
 
 export async function handleRequest(
   request: DataRequest[],
-  model: DataRequestModel<any>
+  model: DataRequestModel<any>,
 ): Promise<(DataResponsePinned | DataResponse)[]> {
   // simulate wait
   await new Promise((res) => setTimeout(res, 400));
@@ -138,10 +138,10 @@ export async function handleRequest(
     if (groupKey) {
       const data = sql<{ childCnt: number; pathKey: string }[]>(
         `SELECT *, ${groupKey} AS pathKey, count(*) AS childCnt 
-        FROM banks GROUP BY ${groupKey}`
+        FROM banks GROUP BY ${groupKey}`,
       ).slice(c.start, c.start + limit);
       const cnt = sql<{ cnt: number }[]>(
-        `SELECT count(*) AS cnt FROM banks GROUP BY ${groupKey}`
+        `SELECT count(*) AS cnt FROM banks GROUP BY ${groupKey}`,
       ).length;
 
       return {
@@ -168,9 +168,7 @@ export async function handleRequest(
       const group = model.groups[i];
       const groupKey = typeof group === "string" ? group : group.id;
       groupFilter.push(
-        `${groupKey} = ${
-          typeof c.path[i] === "string" ? `'${c.path[i]}'` : c.path[i]
-        }`
+        `${groupKey} = ${typeof c.path[i] === "string" ? `'${c.path[i]}'` : c.path[i]}`,
       );
     }
 
@@ -187,8 +185,8 @@ export async function handleRequest(
               !hasWhere && groupFilter.length
                 ? " WHERE " + groupFilter.join("\n AND ")
                 : groupFilter.length
-                ? " AND " + groupFilter.join("\n AND")
-                : ""
+                  ? " AND " + groupFilter.join("\n AND")
+                  : ""
             }
             ${model.quickSearch && model.filters.length ? "AND" : ""}
             ${getOrderByClauseForSorts(model.sorts)}
@@ -209,8 +207,8 @@ export async function handleRequest(
               !hasWhere && groupFilter.length
                 ? " WHERE " + groupFilter.join("\n AND ")
                 : groupFilter.length
-                ? " AND " + groupFilter.join("\n AND")
-                : ""
+                  ? " AND " + groupFilter.join("\n AND")
+                  : ""
             }
             ${model.quickSearch && model.filters.length ? "AND" : ""}
             ${getOrderByClauseForSorts(model.sorts)}
@@ -241,9 +239,7 @@ export async function handleRequest(
 function getOrderByClauseForSorts(sorts: DataRequestModel<any>["sorts"]) {
   if (sorts.length === 0) return "";
 
-  const orderByStrings = sorts.map(
-    (c) => `${c.columnId} ${c.isDescending ? "DESC" : "ASC"}`
-  );
+  const orderByStrings = sorts.map((c) => `${c.columnId} ${c.isDescending ? "DESC" : "ASC"}`);
 
   return `
   ORDER BY
@@ -251,9 +247,7 @@ function getOrderByClauseForSorts(sorts: DataRequestModel<any>["sorts"]) {
   `;
 }
 
-function getQuickSearchFilter(
-  quickSearch: DataRequestModel<any>["quickSearch"]
-) {
+function getQuickSearchFilter(quickSearch: DataRequestModel<any>["quickSearch"]) {
   if (!quickSearch) return "";
 
   const qs = `'%${quickSearch}%'`;

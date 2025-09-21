@@ -1,4 +1,4 @@
-import { AnnotationHandler } from "codehike/code";
+import type { AnnotationHandler } from "codehike/code";
 
 export const className: AnnotationHandler = {
   name: "sx",

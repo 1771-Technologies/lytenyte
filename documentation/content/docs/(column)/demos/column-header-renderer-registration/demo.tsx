@@ -2,18 +2,12 @@
 
 import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
-import type {
-  Column,
-  HeaderCellRendererParams,
-} from "@1771technologies/lytenyte-pro/types";
+import type { Column, HeaderCellRendererParams } from "@1771technologies/lytenyte-pro/types";
 import { bankDataSmall } from "@1771technologies/sample-data/bank-data-smaller";
 import { useId } from "react";
 
 type BankData = (typeof bankDataSmall)[number];
-function HeaderRendererExample({
-  grid,
-  column,
-}: HeaderCellRendererParams<BankData>) {
+function HeaderRendererExample({ grid, column }: HeaderCellRendererParams<BankData>) {
   const name = column.name ?? column.id;
   const index = grid.api.columnIndex(column);
 
@@ -75,7 +69,7 @@ export default function ColumnHeaderRendererRegistration() {
                       <Grid.HeaderCell
                         key={c.id}
                         cell={c}
-                        className="flex w-full h-full capitalize px-2 items-center"
+                        className="flex h-full w-full items-center px-2 capitalize"
                       />
                     );
                   })}
@@ -95,7 +89,7 @@ export default function ColumnHeaderRendererRegistration() {
                         <Grid.Cell
                           key={c.id}
                           cell={c}
-                          className="text-sm flex items-center px-2 h-full w-full"
+                          className="flex h-full w-full items-center px-2 text-sm"
                         />
                       );
                     })}

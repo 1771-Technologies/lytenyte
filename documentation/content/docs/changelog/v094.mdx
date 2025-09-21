@@ -1,0 +1,76 @@
+---
+title: v0.9.4
+description: The changelog of the LyteNyte Grid version v0.9.4.
+---
+
+import { Release } from "./components/release";
+import { DateTag } from "./components/date-tag";
+
+## v0.9.4 Server Data Source Reset
+
+<DateTag>v0.9.4 - June 30, 2025</DateTag>
+
+v0.9.4 addresses an issue where changes to column definitions incorrectly triggered a reset of the loaded
+row data in the server-side data source. This behavior stemmed from LyteNyte Grid validating the sort
+and filter models during column updates, which led the server data source to mistakenly interpret these validations as
+model changes. As a result, it unnecessarily reloaded the row data. v0.9.4 fixes the issue,
+row data will now only be reset when the sort or filter models have actually changed.
+
+---
+
+## v0.9.3 Turbopack CSS fix
+
+<DateTag>v0.9.3 - June 27, 2025</DateTag>
+
+v0.9.3 resolves CSS selector compatibility issues to enable proper bundling
+with Turbopack, ensuring seamless integration with Next.js applications.
+
+---
+
+## v0.9.2 Minor Performance Enhancement
+
+<DateTag>v0.9.2 - June 26, 2025</DateTag>
+
+v0.9.2 improves internal caching optimizations for grid field calculations.
+While these improvements aren't visible to users, they make LyteNyte
+Grid more responsive and efficient under the hood.
+
+---
+
+## v0.9.1 Fixing Safari
+
+<DateTag>v0.9.1 - June 19, 2025</DateTag>
+
+v0.9.1 resolves a browser-specific repaint issue that occurred only in the Safari browser on macOS.
+Previously, when hovering over rows in the LyteNyte Grid, the highlight effect was applied by
+modifying a `<style/>` element.
+
+In Safari, this caused the entire grid to repaint instead of just the affected rows.
+This has now been corrected: the hover highlight is applied directly to each cell's
+style attribute and removed when the hover ends, preventing unnecessary full-grid repaints.
+
+---
+
+## Introducing LyteNyte Grid!
+
+<DateTag>v0.9.0 - May 18, 2025</DateTag>
+
+<Release />
+
+Version `0.9.0` marks the initial public release of **LyteNyte Grid**, a lightning-fast JavaScript data grid tailored to meet your enterprise-level data management needs.
+
+LyteNyte Grid is available in two editions: **Core** and **PRO**. Today's release introduces both editions to the public for the first time.
+
+- **LyteNyte Grid Core** includes essential features you'd expect from a powerful JavaScript data grid, such as column moving and resizing, row grouping and aggregation, and row selection.
+- **LyteNyte Grid PRO** extends the Core edition with enterprise-grade features like column pivoting and server-side data loading, providing robust support for complex data scenarios.
+
+A full working demo is available on our [demo page](/demo).
+To view a detailed feature comparison, visit our [pricing page](/pricing).
+For quick setup and usage, check out our [Getting Started Guide](/docs/intro-getting-started).
+
+We've also published a series of articles to help you better understand LyteNyte Grid and our licensing approach:
+
+- [Introducing LyteNyte Grid](https://medium.com/1771-technologies/introducing-lytenyte-grid-5ddd5cd0d861): Comprehensive overview of LyteNyte Grid.
+- [Understanding LyteNyte Grid PRO Redistribution](https://medium.com/1771-technologies/understanding-lytenyte-grid-pro-redistribution-9ea2fbeccb94): Clear explanation of LyteNyte Grid PRO’s redistribution policy.
+- [Support the 1771 Technologies Way](https://medium.com/1771-technologies/support-the-1771-technologies-way-36303a531f06): Insight into our support philosophy and what to expect when purchasing a license.
+- [Who's in Scope with LyteNyte Grid PRO](https://medium.com/1771-technologies/whos-in-scope-with-lytenyte-grid-pro-9c727cbf6218): Details about licensing requirements and who needs a LyteNyte Grid PRO license.

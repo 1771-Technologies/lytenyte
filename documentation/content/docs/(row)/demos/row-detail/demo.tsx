@@ -5,14 +5,7 @@ import "@1771technologies/lytenyte-pro/grid.css";
 import type { Column, RowLeaf } from "@1771technologies/lytenyte-pro/types";
 import { companiesWithPricePerf } from "@1771technologies/sample-data/companies-with-price-performance";
 import { useId, useMemo } from "react";
-import {
-  Area,
-  AreaChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  XAxis,
-  YAxis,
-} from "recharts";
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from "recharts";
 
 type PerformanceData = (typeof companiesWithPricePerf)[number];
 
@@ -69,7 +62,7 @@ export default function RowDetail() {
                       <Grid.HeaderCell
                         key={c.id}
                         cell={c}
-                        className="flex w-full h-full capitalize px-2 items-center"
+                        className="flex h-full w-full items-center px-2 capitalize"
                       />
                     );
                   })}
@@ -89,7 +82,7 @@ export default function RowDetail() {
                         <Grid.Cell
                           key={c.id}
                           cell={c}
-                          className="text-sm flex items-center px-2 h-full w-full"
+                          className="flex h-full w-full items-center px-2 text-sm"
                         />
                       );
                     })}
@@ -107,10 +100,9 @@ export default function RowDetail() {
 function PriceChart({ row }: { row: RowLeaf<PerformanceData> }) {
   const data = useMemo(() => {
     if (!row.data) return [];
-    const weeks: Record<string, { week: number; [key: string]: number }> =
-      Object.fromEntries(
-        Array.from({ length: 52 }, (_, i) => [i + 1, { week: i + 1 }])
-      );
+    const weeks: Record<string, { week: number; [key: string]: number }> = Object.fromEntries(
+      Array.from({ length: 52 }, (_, i) => [i + 1, { week: i + 1 }]),
+    );
 
     const data = row.data["1 Year Perf"];
 

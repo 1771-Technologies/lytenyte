@@ -1,4 +1,4 @@
-import { AnnotationHandler, BlockAnnotation } from "codehike/code";
+import type { AnnotationHandler, BlockAnnotation } from "codehike/code";
 import { CodeFold } from "./code-fold";
 
 export const collapse: AnnotationHandler = {

@@ -1,4 +1,5 @@
-import { AnnotationHandler, InnerLine, BlockAnnotation } from "codehike/code";
+import type { AnnotationHandler, BlockAnnotation } from "codehike/code";
+import { InnerLine } from "codehike/code";
 
 export const diff: AnnotationHandler = {
   name: "diff",
@@ -9,7 +10,7 @@ export const diff: AnnotationHandler = {
   },
   Line: ({ annotation, ...props }) => (
     <div className="relative">
-      <div className="min-w-[1ch] absolute box-content opacity-70 pl-2 select-none">
+      <div className="absolute box-content min-w-[1ch] select-none pl-2 opacity-70">
         {annotation?.query}
       </div>
       <InnerLine merge={props} />

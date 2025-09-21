@@ -24,7 +24,7 @@ const columns: Column<Stock>[] = [
       const field = p.grid.api.columnField(p.column, p.row);
 
       return (
-        <div className="w-full h-full flex items-center justify-end px-2 tabular-nums">
+        <div className="flex h-full w-full items-center justify-end px-2 tabular-nums">
           {`${field}`} USD
         </div>
       );
@@ -43,7 +43,7 @@ const columns: Column<Stock>[] = [
       const field = p.grid.api.columnField(p.column, p.row) as number;
 
       return (
-        <div className="w-full h-full flex items-center justify-end px-2 tabular-nums">
+        <div className="flex h-full w-full items-center justify-end px-2 tabular-nums">
           {`${field.toFixed(2)}`} GBP
         </div>
       );
@@ -91,7 +91,7 @@ export default function CellEditingEditSetter() {
                       <Grid.HeaderCell
                         key={c.id}
                         cell={c}
-                        className="flex w-full h-full capitalize px-2 items-center"
+                        className="flex h-full w-full items-center px-2 capitalize"
                       />
                     );
                   })}
@@ -111,7 +111,7 @@ export default function CellEditingEditSetter() {
                         <Grid.Cell
                           key={c.id}
                           cell={c}
-                          className="text-sm flex items-center px-2 h-full w-full text-nowrap overflow-hidden text-ellipsis"
+                          className="flex h-full w-full items-center overflow-hidden text-ellipsis text-nowrap px-2 text-sm"
                         />
                       );
                     })}

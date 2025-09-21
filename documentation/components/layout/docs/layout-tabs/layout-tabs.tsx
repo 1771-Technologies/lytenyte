@@ -2,14 +2,11 @@
 
 import { isTabActive } from "@/components/is-active";
 import { usePathname } from "fumadocs-core/framework";
-import { ComponentProps, useMemo } from "react";
+import type { ComponentProps } from "react";
+import { useMemo } from "react";
 import { LayoutTab } from "./layout-tab";
 import { cn } from "@/components/cn";
-import { SidebarTab } from "fumadocs-ui/utils/get-sidebar-tabs";
-
-export interface Option extends SidebarTab {
-  props?: ComponentProps<"a">;
-}
+import type { Option } from "@/components/root-toggle";
 
 export function LayoutTabs({
   options,
@@ -20,8 +17,18 @@ export function LayoutTabs({
   vertical?: boolean;
 }) {
   const pathname = usePathname();
+
   const selected = useMemo(() => {
-    return options.findLast((option) => isTabActive(option, pathname));
+    return options.findLast((option) => {
+      if (option.matchSelected) {
+        return (
+          option.matchSelected.match.some((c) => pathname.startsWith(c)) &&
+          !option.matchSelected.ignore.some((c) => pathname.startsWith(c))
+        );
+      }
+
+      return isTabActive(option, pathname);
+    });
   }, [options, pathname]);
 
   return (

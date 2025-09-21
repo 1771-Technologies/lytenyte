@@ -1,5 +1,5 @@
 import { cn } from "@/components/cn";
-import { Option } from "@/components/root-toggle";
+import type { Option } from "@/components/root-toggle";
 import Link from "fumadocs-core/link";
 
 export function LayoutTab({

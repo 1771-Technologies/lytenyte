@@ -3,7 +3,7 @@
 import { cn } from "@/components/cn";
 import { Presence } from "@radix-ui/react-presence";
 import { useSidebar } from "fumadocs-ui/contexts/sidebar";
-import { ComponentProps } from "react";
+import type { ComponentProps } from "react";
 
 export function SidebarContentMobile({ className, children, ...props }: ComponentProps<"aside">) {
   const { open, setOpen } = useSidebar();

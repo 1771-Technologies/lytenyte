@@ -3,7 +3,8 @@
 import { cn } from "@/components/cn";
 import { useOnChange } from "fumadocs-core/utils/use-on-change";
 import { useSidebar } from "fumadocs-ui/contexts/sidebar";
-import { ComponentProps, useRef, useState } from "react";
+import type { ComponentProps } from "react";
+import { useRef, useState } from "react";
 
 export function SidebarContent(props: ComponentProps<"aside">) {
   const { collapsed } = useSidebar();

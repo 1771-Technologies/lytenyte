@@ -2,10 +2,7 @@
 
 import { useClientRowDataSource, Grid } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from "@1771technologies/lytenyte-pro/icons";
+import { ChevronLeftIcon, ChevronRightIcon } from "@1771technologies/lytenyte-pro/icons";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { bankDataSmall } from "@1771technologies/sample-data/bank-data-smaller";
 import { useId } from "react";
@@ -58,11 +55,11 @@ export default function ColumnGroupExpansions() {
                         <Grid.HeaderGroupCell
                           key={c.idOccurrence}
                           cell={c}
-                          className="flex items-center gap-2 px-2 group"
+                          className="group flex items-center gap-2 px-2"
                         >
                           <div>{c.groupPath.at(-1)}</div>
                           <button
-                            className="flex items-center justify-center text-ln-gray-90"
+                            className="text-ln-gray-90 flex items-center justify-center"
                             onClick={() => grid.api.columnToggleGroup(c.id)}
                           >
                             <ChevronLeftIcon className="hidden group-data-[ln-collapsed=false]:block" />
@@ -76,7 +73,7 @@ export default function ColumnGroupExpansions() {
                       <Grid.HeaderCell
                         key={c.id}
                         cell={c}
-                        className="flex w-full h-full capitalize px-2 items-center"
+                        className="flex h-full w-full items-center px-2 capitalize"
                       />
                     );
                   })}
@@ -96,7 +93,7 @@ export default function ColumnGroupExpansions() {
                         <Grid.Cell
                           key={c.id}
                           cell={c}
-                          className="text-sm flex items-center px-2 h-full w-full"
+                          className="flex h-full w-full items-center px-2 text-sm"
                         />
                       );
                     })}

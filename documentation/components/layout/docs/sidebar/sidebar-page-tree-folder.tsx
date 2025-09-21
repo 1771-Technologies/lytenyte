@@ -1,7 +1,7 @@
 "use client";
-import { PageTree } from "fumadocs-core/server";
+import type { PageTree } from "fumadocs-core/server";
 import { useInternalContext } from "./internal-context";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { useTreePath } from "fumadocs-ui/contexts/tree";
 import { SidebarFolder } from "./sidebar-folder";
 import { SidebarFolderLink } from "./sidebar-folder-link";

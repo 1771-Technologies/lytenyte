@@ -23,7 +23,7 @@ export async function Code({
       style={{ scrollbarWidth: "thin" }}
       className={cn(
         "bg-fd-secondary relative overflow-auto rounded-xl py-[14px]",
-        !frame && "border border-gray-400 shadow-sm dark:border-gray-100",
+        !frame && "shadow-xs border border-gray-300 dark:border-gray-100",
         className,
       )}
     >

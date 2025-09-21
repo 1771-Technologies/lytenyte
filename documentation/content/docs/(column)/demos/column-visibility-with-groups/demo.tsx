@@ -2,10 +2,7 @@
 
 import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from "@1771technologies/lytenyte-pro/icons";
+import { ChevronLeftIcon, ChevronRightIcon } from "@1771technologies/lytenyte-pro/icons";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { bankDataSmall } from "@1771technologies/sample-data/bank-data-smaller";
 import { useId } from "react";
@@ -39,7 +36,7 @@ export default function ColumnVisibilityWithGroups() {
     <div style={{ display: "flex", flexDirection: "column" }}>
       <div className="flex gap-2 py-2">
         <button
-          className="bg-gray-900 text-white border border-gray-600 rounded px-2"
+          className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
           onClick={() =>
             grid.api.columnUpdate({
               education: { hide: false },
@@ -50,17 +47,15 @@ export default function ColumnVisibilityWithGroups() {
           Show Education
         </button>
         <button
-          className="bg-gray-900 text-white border border-gray-600 rounded px-2"
+          className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
           onClick={() =>
-            grid.api.columnUpdate(
-              Object.fromEntries(columns.map((c) => [c.id, { hide: true }]))
-            )
+            grid.api.columnUpdate(Object.fromEntries(columns.map((c) => [c.id, { hide: true }])))
           }
         >
           Hide All
         </button>
         <button
-          className="bg-gray-900 text-white border border-gray-600 rounded px-2"
+          className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
           onClick={() => grid.state.columns.set(columns)}
         >
           Reset
@@ -79,11 +74,11 @@ export default function ColumnVisibilityWithGroups() {
                           <Grid.HeaderGroupCell
                             cell={c}
                             key={c.idOccurrence}
-                            className="flex items-center group"
+                            className="group flex items-center"
                           >
                             <div>{c.groupPath.at(-1)}</div>
                             <button
-                              className="flex items-center justify-center text-ln-gray-90"
+                              className="text-ln-gray-90 flex items-center justify-center"
                               onClick={() => grid.api.columnToggleGroup(c.id)}
                             >
                               <ChevronLeftIcon className="hidden group-data-[ln-collapsed=false]:block" />
@@ -96,7 +91,7 @@ export default function ColumnVisibilityWithGroups() {
                         <Grid.HeaderCell
                           key={c.id}
                           cell={c}
-                          className="flex w-full h-full capitalize px-2 items-center"
+                          className="flex h-full w-full items-center px-2 capitalize"
                         />
                       );
                     })}
@@ -116,7 +111,7 @@ export default function ColumnVisibilityWithGroups() {
                           <Grid.Cell
                             key={c.id}
                             cell={c}
-                            className="text-sm flex items-center px-2 h-full w-full"
+                            className="flex h-full w-full items-center px-2 text-sm"
                           />
                         );
                       })}

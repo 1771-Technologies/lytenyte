@@ -1,13 +1,14 @@
 import { readFile } from "fs/promises";
+import fs from "fs-extra";
 import type {
   CommentDisplayPart,
   DeclarationReflection,
   ReferenceReflection,
   SomeType,
 } from "typedoc";
-import { type JSONOutput } from "typedoc";
-import { generateMDX } from "./mdx-generator.js";
-import { writeFileSync } from "fs";
+import type { JSONOutput } from "typedoc";
+import { writeFileSync, rmdirSync } from "fs";
+import { renderTypeExpr } from "./mdx-generator.js";
 
 const definition = await readFile("./out.json", "utf-8");
 
@@ -255,18 +256,170 @@ const byGroup = Object.groupBy(properties, (p) => {
   return rootGroupLookup.get(p.name) ?? "Misc";
 }) as Record<string, Property[]>;
 
-const entries = Object.entries(byGroup).map(([name, properties]) => {
-  const sortedProps = properties.sort((l, r) => l.name.localeCompare(r.name));
+const groupToFolder: Record<string, string> = {
+  "Grid API": "(foundational)",
+  "Grid State": "(foundational)",
+  Events: "(foundational)",
+  "Grid View": "(foundational)",
+  "Grid Atom": "(foundational)",
+  "Cell Edit": "(cell)",
+  "Cell Rendering": "(cell)",
+  "Cell Selection": "(cell)",
+  "Column Groups": "(columns)",
+  "Column Header": "(columns)",
+  "Column Pivots": "(columns)",
+  Column: "(columns)",
+  Field: "(columns)",
+  Filters: "(functionality)",
+  Sort: "(functionality)",
+  Export: "(functionality)",
+  Frames: "(functionality)",
+  Navigation: "(functionality)",
+  Row: "(row)",
+  "Row Selection": "(row)",
+  "Row Grouping": "(row)",
+  "Row Drag": "(row)",
+  "Row Data Source": "(row)",
+  "Row And Column Spanning": "(functionality)",
+};
+
+const group = Object.entries(byGroup).map(([group, prop]) => {
+  const folder = groupToFolder[group] ?? "(misc)";
 
   return {
-    groupName: name,
-    fileName: `${name.toLowerCase().replaceAll(" ", "-")}.mdx`,
-    contents: sortedProps.map((c) => generateMDX(c)).join("\n\n"),
+    file: `${folder}/${group.toLowerCase().replaceAll(" ", "-")}.mdx`,
+    groupName: group,
+    content: prop
+      .sort((l, r) => l.name.localeCompare(r.name))
+      .map((l) => {
+        if (l.name === "AggFn") {
+          const type = `export interface ${l.name}<T> {
+          /** 
+           * ${l.description.replaceAll("`", "'").split("\n").join("\n * ")}
+           */
+          AggFn: <T>(data: (T | null)[], grid: Grid<T>) => unknown
+          }`;
+
+          return `## \`${l.name}\`<span className="type-tag" style={{ '--type-content': "'${l.kind}'" }} />\n\n<AutoTypeTable type={\`${type}\`} />\n`;
+        }
+
+        if (l.name === "SortComparatorFn") {
+          const type = `export interface ${l.name}<T> {
+          /** 
+           * ${l.description.replaceAll("`", "'").split("\n").join("\n * ")}
+           */
+          SortComparatorFn<T>: <T>(l: FieldDataParam<T>, r: FieldDataParam<T>, opts: any) => number
+          }`;
+
+          return `## \`${l.name}\`<span className="type-tag" style={{ '--type-content': "'${l.kind}'" }} />\n\n<AutoTypeTable type={\`${type}\`} />\n`;
+        }
+        if (l.name === "SortComparators") {
+          const type = `export interface ${l.name}<T> {
+          /** 
+           * ${l.description.replaceAll("`", "'").split("\n").join("\n * ")}
+           */
+          SortComparators: string
+          }`;
+
+          return `## \`${l.name}\`<span className="type-tag" style={{ '--type-content': "'${l.kind}'" }} />\n\n<AutoTypeTable type={\`${type}\`} />\n`;
+        }
+
+        if (l.kind === "function") {
+          const returnType = renderTypeExpr(l.return.type);
+          const params = renderTypeExpr(l.params);
+
+          const type = `export interface ${l.name} {
+
+          /** 
+           * ${l.description.replaceAll("`", "'").split("\n").join("\n * ")}
+           */
+          ${l.name}: (${l.params.map((c) => {
+            return `${c.name}: (${params}) => ${returnType}`;
+          })})
+          }`;
+
+          return `## \`${l.name}\`<span className="type-tag" style={{ '--type-content': "'${l.kind}'" }} />\n\n<AutoTypeTable type={\`${type}\`} />\n`;
+        }
+
+        if (l.kind === "union") {
+          const params = l.properties.map((c) => renderTypeExpr(c.type)).join(" | ");
+
+          const type = {
+            [l.name]: {
+              description: l.description.replaceAll("`", "\\`"),
+              type: l.name === "FocusCellParams" ? "PositionParams" : params,
+            },
+          };
+
+          return `## \`${l.name}\`<span className="type-tag" style={{ '--type-content': "'${l.kind}'" }} />\n\n<TypeTable type={${JSON.stringify(type)}} />\n`;
+        }
+
+        return `## \`${l.name}\`<span className="type-tag" style={{ '--type-content': "'${l.kind}'" }} />\n\n${l.description}\n<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="${l.name}" />\n`;
+      })
+      .join("\n"),
   };
 });
 
-entries.forEach((f) => {
-  const frontMatter = `---\ntitle: ${f.groupName} | 1771 Technologies\ndescription: The API reference for the ${f.groupName.toLowerCase()} functionality in LyteNyte Grid.\n---`;
+const typeLinks = Object.entries(byGroup)
+  .map(([group, prop]) => {
+    const base = `docs/reference/${group.toLowerCase().replaceAll(" ", "-")}`;
 
-  writeFileSync(`./generated-docs/${f.fileName}`, frontMatter + "\n" + f.contents);
+    return Object.fromEntries(prop.map((c) => [c.name, `${base}#${c.name.toLocaleLowerCase()}`]));
+  })
+  .reduce((acc, o) => ({ ...acc, ...o }), {});
+
+fs.ensureFileSync(`../../documentation/components/auto-type-table/type-links.ts`);
+writeFileSync(
+  `../../documentation/components/auto-type-table/type-links.ts`,
+  `export const typeLinks: Record<string, string> = ${JSON.stringify(typeLinks)}`,
+);
+
+const folders = new Set(Object.values(groupToFolder));
+
+folders.forEach((c) => {
+  if (fs.pathExistsSync(`../../documentation/content/docs/reference/${c}`))
+    rmdirSync(`../../documentation/content/docs/reference/${c}`, { recursive: true });
+});
+
+group.forEach((f) => {
+  const frontMatter = `---\ntitle: ${f.groupName}\ndescription: The API reference for the ${f.groupName.toLowerCase()} functionality in LyteNyte Grid.\n---`;
+
+  fs.ensureFileSync(`../../documentation/content/docs/reference/${f.file}`);
+  writeFileSync(
+    `../../documentation/content/docs/reference/${f.file}`,
+    frontMatter + "\n" + f.content,
+  );
+});
+
+const folderMeta = {
+  "(foundational)": JSON.stringify({
+    title: "Foundational",
+    pages: ["grid-state", "grid-api", "grid-view", "grid-atom", "events", "..."],
+    defaultOpen: true,
+  }),
+  "(cell)": JSON.stringify({
+    title: "Cells",
+    pages: ["cell-rendering", "cell-edit", "cell-selection", "..."],
+    defaultOpen: true,
+  }),
+  "(columns)": JSON.stringify({
+    title: "Columns",
+    pages: ["column", "column-groups", "column-header", "column-pivots", "field", "..."],
+    defaultOpen: true,
+  }),
+  "(functionality)": JSON.stringify({
+    title: "Functionality",
+    page: ["filters", "sort", "navigation", "row-and-column-spanning", "frames", "export", "..."],
+    defaultOpen: true,
+  }),
+  "(row)": JSON.stringify({
+    title: "Rows",
+    pages: ["row", "row-data-source", "row-selection", "row-grouping", "row-drag", "..."],
+    defaultOpen: true,
+  }),
+};
+
+Object.entries(folderMeta).map(([folder, content]) => {
+  fs.ensureFileSync(`../../documentation/content/docs/reference/${folder}/meta.json`);
+  writeFileSync(`../../documentation/content/docs/reference/${folder}/meta.json`, content);
 });

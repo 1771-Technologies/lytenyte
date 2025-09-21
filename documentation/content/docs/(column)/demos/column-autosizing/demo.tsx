@@ -41,7 +41,7 @@ export default function ColumnAutosizing() {
     <div style={{ display: "flex", flexDirection: "column" }}>
       <div className="flex gap-2 py-2">
         <button
-          className="bg-gray-900 text-white border border-gray-600 rounded px-2"
+          className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
           onClick={() => {
             grid.api.columnAutosize({});
           }}
@@ -49,7 +49,7 @@ export default function ColumnAutosizing() {
           Autosize Columns
         </button>
         <button
-          className="bg-gray-900 text-white border border-gray-600 rounded px-2"
+          className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
           onClick={() => grid.state.columns.set(columns)}
         >
           Reset Columns
@@ -69,7 +69,7 @@ export default function ColumnAutosizing() {
                         <Grid.HeaderCell
                           key={c.id}
                           cell={c}
-                          className="flex w-full h-full capitalize px-2 items-center"
+                          className="flex h-full w-full items-center px-2 capitalize"
                         />
                       );
                     })}
@@ -89,7 +89,7 @@ export default function ColumnAutosizing() {
                           <Grid.Cell
                             key={c.id}
                             cell={c}
-                            className="text-sm flex items-center px-2 h-full w-full"
+                            className="flex h-full w-full items-center px-2 text-sm"
                           />
                         );
                       })}

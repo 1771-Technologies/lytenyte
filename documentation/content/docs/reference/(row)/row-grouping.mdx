@@ -1,0 +1,30 @@
+---
+title: Row Grouping
+description: The API reference for the row grouping functionality in LyteNyte Grid.
+---
+## `AggFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
+
+<AutoTypeTable type={`export interface AggFn<T> {
+          /** 
+           * Defines the function signature for custom
+ *   aggregation logic that computes a result based on grid data.
+           */
+          AggFn: <T>(data: (T | null)[], grid: Grid<T>) => unknown
+          }`} />
+
+## `AggModelFn`<span className="type-tag" style={{ '--type-content': "'union'" }} />
+
+<TypeTable type={{"AggModelFn":{"description":"Describes the aggregation model configuration.\n  This can be either a string referencing a built-in\n  aggregation or a custom function.","type":"string | AggFn"}}} />
+
+## `RowGroupDisplayMode`<span className="type-tag" style={{ '--type-content': "'union'" }} />
+
+<TypeTable type={{"RowGroupDisplayMode":{"description":"Enumerates the display modes available for\n  row groups in LyteNyte Grid.","type":"\"single-column\" | \"multi-column\" | \"custom\""}}} />
+
+## `RowGroupField`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+Defines a field-based grouping configuration used to compute row group keys in the grid.
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowGroupField" />
+
+## `RowGroupModelItem`<span className="type-tag" style={{ '--type-content': "'union'" }} />
+
+<TypeTable type={{"RowGroupModelItem":{"description":"An item in the row group model. This can either be a column identifier (string) or a row group field definition.","type":"string | RowGroupField"}}} />

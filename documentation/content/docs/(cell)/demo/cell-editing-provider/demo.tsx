@@ -50,17 +50,16 @@ export default function CellEditingProvider() {
           column.type === "datetime" || column.type === "date"
             ? "date"
             : column.type === "number"
-            ? "number"
-            : undefined;
+              ? "number"
+              : undefined;
 
         return (
           <input
-            className="w-full h-full text-sm bg-black text-white px-2"
+            className="h-full w-full bg-black px-2 text-sm text-white"
             type={type}
             value={`${value}`}
             onChange={(ev) => {
-              if (type === "number")
-                onChange(Number.parseFloat(ev.target.value));
+              if (type === "number") onChange(Number.parseFloat(ev.target.value));
               else onChange(ev.target.value);
             }}
           />
@@ -89,7 +88,7 @@ export default function CellEditingProvider() {
                       <Grid.HeaderCell
                         key={c.id}
                         cell={c}
-                        className="flex w-full h-full capitalize px-2 items-center"
+                        className="flex h-full w-full items-center px-2 capitalize"
                       />
                     );
                   })}
@@ -109,7 +108,7 @@ export default function CellEditingProvider() {
                         <Grid.Cell
                           key={c.id}
                           cell={c}
-                          className="text-sm flex items-center px-2 h-full w-full"
+                          className="flex h-full w-full items-center px-2 text-sm"
                         />
                       );
                     })}

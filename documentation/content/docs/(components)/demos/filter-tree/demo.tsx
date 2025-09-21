@@ -1,15 +1,8 @@
 "use client";
 
-import {
-  useClientRowDataSource,
-  Grid,
-  FilterTree as Tree,
-} from "@1771technologies/lytenyte-pro";
+import { useClientRowDataSource, Grid, FilterTree as Tree } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
-import {
-  ChevronDownIcon,
-  ChevronRightIcon,
-} from "@1771technologies/lytenyte-pro/icons";
+import { ChevronDownIcon, ChevronRightIcon } from "@1771technologies/lytenyte-pro/icons";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { bankDataSmall } from "@1771technologies/sample-data/bank-data-smaller";
 import { useId } from "react";
@@ -81,12 +74,12 @@ export default function FilterTree() {
 
   return (
     <div>
-      <div className="flex gap-8 py-2 px-4">
+      <div className="flex gap-8 px-4 py-2">
         <div>
           <div className="px-2">Age Filter</div>
           <Tree.Root {...inFilterAge.rootProps}>
             <Tree.Panel
-              className="bg-ln-gray-05 border-ln-gray-30 border z-50 rounded"
+              className="bg-ln-gray-05 border-ln-gray-30 z-50 rounded border"
               style={{
                 height: 250,
                 width: 200,
@@ -97,10 +90,7 @@ export default function FilterTree() {
             >
               {inFilterAge.tree.map((c) => {
                 return (
-                  <RenderNode
-                    item={c}
-                    key={c.kind === "branch" ? c.branch.id : c.leaf.data.id}
-                  />
+                  <RenderNode item={c} key={c.kind === "branch" ? c.branch.id : c.leaf.data.id} />
                 );
               })}
             </Tree.Panel>
@@ -111,7 +101,7 @@ export default function FilterTree() {
                   onClick={() => {
                     inFilterAge.reset();
                   }}
-                  className="text-sm px-2 text-ln-gray-90 hover:bg-red-500/30"
+                  className="text-ln-gray-90 px-2 text-sm hover:bg-red-500/30"
                 >
                   Reset
                 </button>
@@ -119,7 +109,7 @@ export default function FilterTree() {
                   onClick={() => {
                     inFilterAge.apply();
                   }}
-                  className="text-sm  border border-[var(--lng1771-gray-30)] bg-brandButton text-black hover:bg-brandButton/80 border-solid px-2"
+                  className="bg-brandButton hover:bg-brandButton/80 border border-solid border-[var(--lng1771-gray-30)] px-2 text-sm text-black"
                 >
                   Apply
                 </button>
@@ -132,7 +122,7 @@ export default function FilterTree() {
           <div className="px-2">Job Filter</div>
           <Tree.Root {...inFilterJob.rootProps}>
             <Tree.Panel
-              className="bg-ln-gray-05 border-ln-gray-30 border z-50 rounded"
+              className="bg-ln-gray-05 border-ln-gray-30 z-50 rounded border"
               style={{
                 height: 250,
                 width: 200,
@@ -143,10 +133,7 @@ export default function FilterTree() {
             >
               {inFilterJob.tree.map((c) => {
                 return (
-                  <RenderNode
-                    item={c}
-                    key={c.kind === "branch" ? c.branch.id : c.leaf.data.id}
-                  />
+                  <RenderNode item={c} key={c.kind === "branch" ? c.branch.id : c.leaf.data.id} />
                 );
               })}
             </Tree.Panel>
@@ -157,7 +144,7 @@ export default function FilterTree() {
                   onClick={() => {
                     inFilterJob.reset();
                   }}
-                  className="text-sm px-2 text-ln-gray-90 hover:bg-red-500/30"
+                  className="text-ln-gray-90 px-2 text-sm hover:bg-red-500/30"
                 >
                   Reset
                 </button>
@@ -165,7 +152,7 @@ export default function FilterTree() {
                   onClick={() => {
                     inFilterJob.apply();
                   }}
-                  className="text-sm  border border-[var(--lng1771-gray-30)] bg-brandButton text-black hover:bg-brandButton/80 border-solid px-2"
+                  className="bg-brandButton hover:bg-brandButton/80 border border-solid border-[var(--lng1771-gray-30)] px-2 text-sm text-black"
                 >
                   Apply
                 </button>
@@ -189,7 +176,7 @@ export default function FilterTree() {
                           <Grid.HeaderCell
                             key={c.id}
                             cell={c}
-                            className="flex w-full h-full capitalize px-2 items-center"
+                            className="flex h-full w-full items-center px-2 capitalize"
                           />
                         );
                       })}
@@ -210,7 +197,7 @@ export default function FilterTree() {
                             <Grid.Cell
                               key={c.id}
                               cell={c}
-                              className="text-sm flex items-center px-2 h-full w-full"
+                              className="flex h-full w-full items-center px-2 text-sm"
                             />
                           );
                         })}
@@ -233,7 +220,7 @@ function RenderNode({ item }: { item: TreeItem }) {
       <Tree.Leaf
         item={item}
         style={{ paddingLeft: (item.leaf.data.groupPath?.length ?? 0) * 20 }}
-        className="hover:bg-ln-gray-20 transition-colors cursor-pointer text-ln-gray-80 text-xs flex items-center gap-2 px-2"
+        className="hover:bg-ln-gray-20 text-ln-gray-80 flex cursor-pointer items-center gap-2 px-2 text-xs transition-colors"
       >
         <Tree.Checkbox />
         <Tree.Label />
@@ -255,7 +242,7 @@ function RenderNode({ item }: { item: TreeItem }) {
         );
       }}
       className="px-0"
-      labelWrap={<div className="flex items-enter gap-1" />}
+      labelWrap={<div className="items-enter flex gap-1" />}
       label={
         <div className="flex items-center">
           <Tree.Checkbox />
@@ -264,12 +251,7 @@ function RenderNode({ item }: { item: TreeItem }) {
       }
     >
       {values.map((c) => {
-        return (
-          <RenderNode
-            item={c}
-            key={c.kind === "branch" ? c.branch.id : c.leaf.data.id}
-          />
-        );
+        return <RenderNode item={c} key={c.kind === "branch" ? c.branch.id : c.leaf.data.id} />;
       })}
     </Tree.Branch>
   );

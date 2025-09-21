@@ -195,7 +195,7 @@ function renderProperty(node: Property, isRoot?: boolean): string {
  * If `preferPlain` is true, links are NOT inlined into the code span;
  * instead we emit a trailing small docs link where appropriate.
  */
-function renderTypeExpr(
+export function renderTypeExpr(
   t: string | ObjectDeclaration | FunctionDeclaration | FunctionReturn[],
   _ = false,
 ): string {

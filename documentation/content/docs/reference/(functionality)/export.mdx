@@ -1,0 +1,40 @@
+---
+title: Export
+description: The API reference for the export functionality in LyteNyte Grid.
+---
+## `DataRect`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+Represents a rectangular selection of cells in LyteNyte Grid.
+
+A DataRect defines its range by numerical row and column indices. It is used to extract
+or operate on a subset of the grid's data regardless of row or column reordering. However,
+if the number of rows or columns changes, the rect may be invalidated if it extends
+beyond the new bounds.
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="DataRect" />
+
+## `ExportCsvParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+Parameters for exporting a CSV file from LyteNyte Grid.
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="ExportCsvParams" />
+
+## `ExportDataRectFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
+
+<AutoTypeTable type={`export interface ExportDataRectFn {
+
+          /** 
+           * Signature for the function that exports a DataRect from the grid.
+ * 
+ * Called via the LyteNyte Grid API when exporting a selection of cells.
+           */
+          ExportDataRectFn: (params: (ExportDataRectParams) => Promise)
+          }`} />
+
+## `ExportDataRectParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+Parameters for exporting a specific rectangular region of the grid using a DataRect.
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="ExportDataRectParams" />
+
+## `ExportDataRectResult`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+The result structure returned after exporting a DataRect from LyteNyte Grid.
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="ExportDataRectResult" />

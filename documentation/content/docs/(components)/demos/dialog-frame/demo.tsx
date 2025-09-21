@@ -41,18 +41,14 @@ export default function DialogFrame() {
       myFrame: {
         component: (params) => {
           return (
-            <Dialog.Root
-              defaultOpen
-              onOpenChange={(b) => !b && params.grid.api.dialogFrameClose()}
-            >
+            <Dialog.Root defaultOpen onOpenChange={(b) => !b && params.grid.api.dialogFrameClose()}>
               <Dialog.Portal>
-                <Dialog.Content className="z-50 top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] border-ln-gray-50 border fixed px-4 rounded bg-ln-gray-10">
-                  <Dialog.Title className="py-2 text-ln-gray-70">
+                <Dialog.Content className="border-ln-gray-50 bg-ln-gray-10 fixed left-[50%] top-[50%] z-50 translate-x-[-50%] translate-y-[-50%] rounded border px-4">
+                  <Dialog.Title className="text-ln-gray-70 py-2">
                     Example Grid Dialog Frame
                   </Dialog.Title>
                   <Dialog.Description>
-                    You have opened this dialog frame {params.context.count}{" "}
-                    time(s).
+                    You have opened this dialog frame {params.context.count} time(s).
                   </Dialog.Description>
                 </Dialog.Content>
               </Dialog.Portal>
@@ -69,7 +65,7 @@ export default function DialogFrame() {
   return (
     <div>
       <button
-        className="bg-gray-900 text-white border border-gray-600 rounded px-2"
+        className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
         onClick={() => {
           grid.api.dialogFrameOpen("myFrame", { count: openCount });
           setOpenCount((prev) => prev + 1);
@@ -92,7 +88,7 @@ export default function DialogFrame() {
                         <Grid.HeaderCell
                           key={c.id}
                           cell={c}
-                          className="flex w-full h-full capitalize px-2 items-center"
+                          className="flex h-full w-full items-center px-2 capitalize"
                         />
                       );
                     })}
@@ -112,7 +108,7 @@ export default function DialogFrame() {
                           <Grid.Cell
                             key={c.id}
                             cell={c}
-                            className="text-sm flex items-center px-2 h-full w-full"
+                            className="flex h-full w-full items-center px-2 text-sm"
                           />
                         );
                       })}

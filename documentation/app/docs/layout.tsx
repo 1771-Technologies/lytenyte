@@ -5,8 +5,9 @@ import { ChangelogIcon } from "@/components/icons/changelog-icon";
 import { GuidesIcon } from "@/components/icons/guides-icon";
 import { DocsLayout } from "@/components/layout/docs/docs-layout";
 import { source } from "@/lib/source";
+import type { PropsWithChildren } from "react";
 
-export default function Layout({ children }: LayoutProps<"/docs">) {
+export default function Layout({ children }: PropsWithChildren) {
   return (
     <DocsLayout
       tree={source.pageTree}
@@ -30,7 +31,11 @@ export default function Layout({ children }: LayoutProps<"/docs">) {
         tabs: [
           {
             title: "Guides",
-            url: "/docs",
+            url: "/docs/intro-getting-started",
+            matchSelected: {
+              match: ["/docs"],
+              ignore: ["/docs/reference", "/docs/changelog"],
+            },
             description:
               "Tutorials and quick walkthroughs of LyteNyte Grid. These docs are more user friendly and description than the API reference.",
             icon: <GuidesIcon className="size-4" />,
@@ -38,13 +43,21 @@ export default function Layout({ children }: LayoutProps<"/docs">) {
           {
             title: "API Reference",
             url: "/docs/reference",
+            matchSelected: {
+              match: ["/docs/reference"],
+              ignore: [],
+            },
             description:
               "In depth references to all the different parts of the LyteNyte Grid components, apis, and interfaces.",
             icon: <ApiReferenceIcon className="size-4" />,
           },
           {
             title: "Changelog",
-            url: "/docs/changelog",
+            url: "/docs/changelog/latest",
+            matchSelected: {
+              match: ["/docs/changelog"],
+              ignore: [],
+            },
             description: "A log of all the changes introduced between LyteNyte Grid versions.",
             icon: <ChangelogIcon className="size-4" />,
           },

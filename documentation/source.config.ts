@@ -19,6 +19,7 @@ export const docs = defineDocs({
 const chConfig: CodeHikeConfig = {
   components: {
     code: "Code",
+    inlineCode: "InlineCode",
   },
   ignoreCode: (codeblock) => codeblock.lang === "package-install",
 };

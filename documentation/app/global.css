@@ -3,6 +3,7 @@
 @import "fumadocs-ui/css/preset.css";
 
 :root {
+  overflow-y: scroll;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -316,5 +317,16 @@
     --ch-24: #6e7681;
     --ch-25: #6e768166;
     --ch-26: #0d1117e6;
+  }
+}
+
+h2 {
+  .type-tag::after {
+    position: relative;
+    top: -2px;
+    display: inline-block;
+    content: var(--type-content);
+    margin-left: 8px;
+    @apply bg-accent-300/20 border-accent-500/60 w-fit rounded border px-1 py-0.5 text-xs;
   }
 }

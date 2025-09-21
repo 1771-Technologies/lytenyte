@@ -42,9 +42,9 @@ export default function CSVExport() {
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
-      <div className="flex gap-8 py-2 px-2">
+      <div className="flex gap-8 px-2 py-2">
         <button
-          className="bg-gray-900 text-white border border-gray-600 rounded px-2"
+          className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
           onClick={async () => {
             downloadBlob(await grid.api.exportCsvFile(), "data.csv");
           }}
@@ -52,23 +52,17 @@ export default function CSVExport() {
           CSV
         </button>
         <button
-          className="bg-gray-900 text-white border border-gray-600 rounded px-2"
+          className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
           onClick={async () => {
-            downloadBlob(
-              await grid.api.exportCsvFile({ includeHeader: true }),
-              "data.csv"
-            );
+            downloadBlob(await grid.api.exportCsvFile({ includeHeader: true }), "data.csv");
           }}
         >
           CSV (with headers)
         </button>
         <button
-          className="bg-gray-900 text-white border border-gray-600 rounded px-2"
+          className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
           onClick={async () => {
-            downloadBlob(
-              await grid.api.exportCsvFile({ delimiter: ";" }),
-              "data.csv"
-            );
+            downloadBlob(await grid.api.exportCsvFile({ delimiter: ";" }), "data.csv");
           }}
         >
           CSV (colon delimited)
@@ -88,7 +82,7 @@ export default function CSVExport() {
                         <Grid.HeaderCell
                           key={c.id}
                           cell={c}
-                          className="flex w-full h-full capitalize px-2 items-center"
+                          className="flex h-full w-full items-center px-2 capitalize"
                         />
                       );
                     })}
@@ -108,7 +102,7 @@ export default function CSVExport() {
                           <Grid.Cell
                             key={c.id}
                             cell={c}
-                            className="text-sm flex items-center px-2 h-full w-full"
+                            className="flex h-full w-full items-center px-2 text-sm"
                           />
                         );
                       })}
@@ -145,7 +139,7 @@ function downloadBlob(blob: Blob, name: string) {
       bubbles: true,
       cancelable: true,
       view: window,
-    })
+    }),
   );
 
   // Remove link from body

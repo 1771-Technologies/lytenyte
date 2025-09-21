@@ -35,7 +35,7 @@ export default function ColumnVisibility() {
     <div style={{ display: "flex", flexDirection: "column" }}>
       <div className="flex gap-2 py-2">
         <button
-          className="bg-gray-900 text-white border border-gray-600 rounded px-2"
+          className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
           onClick={() =>
             grid.api.columnUpdate({
               education: { hide: false },
@@ -46,18 +46,16 @@ export default function ColumnVisibility() {
           Show Education and Marital
         </button>
         <button
-          className="bg-gray-900 text-white border border-gray-600 rounded px-2"
+          className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
           onClick={() =>
-            grid.api.columnUpdate(
-              Object.fromEntries(columns.map((c) => [c.id, { hide: true }]))
-            )
+            grid.api.columnUpdate(Object.fromEntries(columns.map((c) => [c.id, { hide: true }])))
           }
         >
           Hide All
         </button>
 
         <button
-          className="bg-gray-900 text-white border border-gray-600 rounded px-2"
+          className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
           onClick={() => grid.state.columns.set(columns)}
         >
           Reset
@@ -77,7 +75,7 @@ export default function ColumnVisibility() {
                         <Grid.HeaderCell
                           key={c.id}
                           cell={c}
-                          className="flex w-full h-full capitalize px-2 items-center"
+                          className="flex h-full w-full items-center px-2 capitalize"
                         />
                       );
                     })}
@@ -97,7 +95,7 @@ export default function ColumnVisibility() {
                           <Grid.Cell
                             key={c.id}
                             cell={c}
-                            className="text-sm flex items-center px-2 h-full w-full"
+                            className="flex h-full w-full items-center px-2 text-sm"
                           />
                         );
                       })}

@@ -2,7 +2,7 @@
 import { cn } from "@/components/cn";
 import { useNav } from "fumadocs-ui/contexts/layout";
 import { useSidebar } from "fumadocs-ui/contexts/sidebar";
-import { ComponentProps } from "react";
+import type { ComponentProps } from "react";
 
 export function Navbar({ mode, ...props }: ComponentProps<"header"> & { mode: "top" | "auto" }) {
   const { open, collapsed } = useSidebar();

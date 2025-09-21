@@ -50,20 +50,17 @@ export default function GridReactivitySignal() {
   const view = grid.view.useValue();
 
   return (
-    <div
-      className="lng-grid"
-      style={{ display: "flex", flexDirection: "column" }}
-    >
+    <div className="lng-grid" style={{ display: "flex", flexDirection: "column" }}>
       <div className="p-2">
         <button
-          className="bg-gray-900 text-white border border-gray-600 rounded px-2"
+          className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
           onClick={() => grid.state.rowSelectedIds.set(new Set())}
         >
           Clear Row Selection
         </button>
       </div>
       <div
-        className="font-bold max-w-full max-h-[200px] overflow-auto"
+        className="max-h-[200px] max-w-full overflow-auto font-bold"
         style={{ padding: 8, display: "flex", gap: 8, scrollbarWidth: "thin" }}
       >
         {selectedRow && `Currently selected rows: ${selectedRow}`}

@@ -1,10 +1,6 @@
 "use client";
 
-import {
-  useClientRowDataSource,
-  Grid,
-  GridBox,
-} from "@1771technologies/lytenyte-pro";
+import { useClientRowDataSource, Grid, GridBox } from "@1771technologies/lytenyte-pro";
 import { Popover as P } from "radix-ui";
 import "@1771technologies/lytenyte-pro/grid.css";
 import {
@@ -15,10 +11,7 @@ import {
   DragDotsSmallIcon,
   GroupByColIcon,
 } from "@1771technologies/lytenyte-pro/icons";
-import type {
-  Column,
-  Grid as GridType,
-} from "@1771technologies/lytenyte-pro/types";
+import type { Column, Grid as GridType } from "@1771technologies/lytenyte-pro/types";
 import { bankDataSmall } from "@1771technologies/sample-data/bank-data-smaller";
 import { useId } from "react";
 
@@ -63,7 +56,7 @@ export default function GridBoxApp() {
 
         return (
           <div
-            className="flex items-center gap-2 w-full h-full"
+            className="flex h-full w-full items-center gap-2"
             style={{ paddingLeft: row.depth * 16 }}
           >
             <button
@@ -110,7 +103,7 @@ export default function GridBoxApp() {
                         <Grid.HeaderCell
                           key={c.id}
                           cell={c}
-                          className="flex w-full h-full capitalize px-2 items-center"
+                          className="flex h-full w-full items-center px-2 capitalize"
                         />
                       );
                     })}
@@ -130,7 +123,7 @@ export default function GridBoxApp() {
                           <Grid.Cell
                             key={c.id}
                             cell={c}
-                            className="text-sm flex items-center px-2 h-full w-full"
+                            className="flex h-full w-full items-center px-2 text-sm"
                           />
                         );
                       })}
@@ -154,28 +147,26 @@ export function GroupPills({ grid }: { grid: GridType<any> }) {
   });
 
   return (
-    <div className="h-12 w-full bg-ln-gray-20 border-y border-y-ln-gray-30 grid grid-cols-[32px_calc(100%-32px-30px)_30px] md:grid-cols-[112px_calc(100%-112px-30px)_30px]">
-      <div className="grid grid-cols-[32px] md:grid-cols-[32px_80px] items-center h-full border-r border-r-ln-gray-30">
-        <div className="flex w-full h-full items-center justify-center text-ln-gray-70">
+    <div className="bg-ln-gray-20 border-y-ln-gray-30 grid h-12 w-full grid-cols-[32px_calc(100%-32px-30px)_30px] border-y md:grid-cols-[112px_calc(100%-112px-30px)_30px]">
+      <div className="border-r-ln-gray-30 grid h-full grid-cols-[32px] items-center border-r md:grid-cols-[32px_80px]">
+        <div className="text-ln-gray-70 flex h-full w-full items-center justify-center">
           <GroupByColIcon />
         </div>
-        <div className="hidden md:block text-ln-gray-80">Groups</div>
+        <div className="text-ln-gray-80 hidden md:block">Groups</div>
       </div>
 
       <div>
         <GridBox.Root {...rootProps}>
-          <GridBox.Panel className="pills flex items-center h-full overflow-x-auto flex-1 no-scrollbar bg-ln-gray-05 text-ln-gray-80">
+          <GridBox.Panel className="pills no-scrollbar bg-ln-gray-05 text-ln-gray-80 flex h-full flex-1 items-center overflow-x-auto">
             {items.map((c) => {
               return (
                 <GridBox.Item
                   key={c.id}
                   item={c}
                   className="h-full"
-                  itemClassName={
-                    "px-2 py-1 h-full cursor-grab flex items-center"
-                  }
+                  itemClassName={"px-2 py-1 h-full cursor-grab flex items-center"}
                 >
-                  <div className="flex text-sm items-center gap-2 text-nowrap bg-ln-pill-group-fill border border-ln-pill-group-stroke rounded p-1 pr-2">
+                  <div className="bg-ln-pill-group-fill border-ln-pill-group-stroke flex items-center gap-2 text-nowrap rounded border p-1 pr-2 text-sm">
                     <DragDotsSmallIcon />
                     <div>{c.label}</div>
 
@@ -193,7 +184,7 @@ export function GroupPills({ grid }: { grid: GridType<any> }) {
         </GridBox.Root>
       </div>
 
-      <div className="flex items-center justify-between border-l border-ln-gray-30">
+      <div className="border-ln-gray-30 flex items-center justify-between border-l">
         <ColumnPicker grid={grid} />
       </div>
     </div>
@@ -217,10 +208,7 @@ function ColumnPicker({ grid }: { grid: GridType<any> }) {
       }
     },
     itemFilter: (c) => {
-      return !!(
-        c.uiHints?.rowGroupable ??
-        grid.state.columnBase.get().uiHints?.rowGroupable
-      );
+      return !!(c.uiHints?.rowGroupable ?? grid.state.columnBase.get().uiHints?.rowGroupable);
     },
     orientation: "vertical",
   });
@@ -229,17 +217,17 @@ function ColumnPicker({ grid }: { grid: GridType<any> }) {
 
   return (
     <P.Root>
-      <P.Trigger className="w-full h-full flex items-center justify-center hover:bg-[var(--lng1771-gray-20)] border-[var(--lng1771-gray-30)] border-x transition-all disabled:text-[var(--lng1771-gray-40)] disabled:bg-[var(--lng1771-gray-10)] text-ln-gray-70">
+      <P.Trigger className="text-ln-gray-70 flex h-full w-full items-center justify-center border-x border-[var(--lng1771-gray-30)] transition-all hover:bg-[var(--lng1771-gray-20)] disabled:bg-[var(--lng1771-gray-10)] disabled:text-[var(--lng1771-gray-40)]">
         <AddIcon />
       </P.Trigger>
       <P.Portal>
-        <P.Content className="bg-ln-gray-05 border-ln-gray-30 border z-50 rounded h-[200px] w-[200px] overflow-auto">
+        <P.Content className="bg-ln-gray-05 border-ln-gray-30 z-50 h-[200px] w-[200px] overflow-auto rounded border">
           <GridBox.Root {...rootProps}>
             <GridBox.Panel>
               {items.map((c) => {
                 return (
                   <GridBox.Item key={c.id} item={c}>
-                    <div className="flex items-center px-2 text-sm text-ln-gray-70 gap-2 py-1 hover:bg-ln-gray-30">
+                    <div className="text-ln-gray-70 hover:bg-ln-gray-30 flex items-center gap-2 px-2 py-1 text-sm">
                       <input
                         type="checkbox"
                         onChange={() => {}}

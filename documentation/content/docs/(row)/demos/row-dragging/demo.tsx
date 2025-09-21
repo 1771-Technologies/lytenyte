@@ -50,18 +50,11 @@ export default function RowDragging() {
               },
             };
           },
-          placeholder: () => {
-            return (
-              <div className="flex p-2 rounded bg-black text-white">
-                Dragging row at index: {p.rowIndex}
-              </div>
-            );
-          },
           onDrop: (p) => {
             alert(
               `Dropped row at ${p.state.siteLocalData?.row ?? ""} ${
                 p.moveState.topHalf ? "before" : "after"
-              } row ${p.dropElement.getAttribute("data-ln-rowindex")}`
+              } row ${p.dropElement.getAttribute("data-ln-rowindex")}`,
             );
           },
         });
@@ -92,7 +85,7 @@ export default function RowDragging() {
                       <Grid.HeaderCell
                         key={c.id}
                         cell={c}
-                        className="flex w-full h-full capitalize px-2 items-center"
+                        className="flex h-full w-full items-center px-2 capitalize"
                       />
                     );
                   })}
@@ -112,7 +105,7 @@ export default function RowDragging() {
                         <Grid.Cell
                           key={c.id}
                           cell={c}
-                          className="text-sm flex items-center px-2 h-full w-full"
+                          className="flex h-full w-full items-center px-2 text-sm"
                         />
                       );
                     })}
