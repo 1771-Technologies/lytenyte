@@ -21,7 +21,8 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
   const height = ctx.grid.state.heightTotal.useValue();
   const rtl = ctx.grid.state.rtl.useValue();
 
-  const focused = useFocusTracking(vp, ctx.grid.internal.focusActive);
+  const [focused, vpFocused] = useFocusTracking(vp, ctx.grid.internal.focusActive);
+  const shouldCapture = !focused && !vpFocused;
 
   return (
     <>
@@ -29,10 +30,10 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
         tabIndex={0}
         {...props}
         onKeyDown={(e) => {
-          handleSkipInner(e);
           props.onKeyDown?.(e);
 
           if (e.defaultPrevented) return;
+          handleSkipInner(e);
 
           const ds = ctx.grid.state.rowDataStore;
 
@@ -102,7 +103,7 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
         {!vp && <div style={{ width, height }} />}
       </div>
 
-      {!focused && (
+      {shouldCapture && (
         <div
           role="none"
           data-ln-focus-capture

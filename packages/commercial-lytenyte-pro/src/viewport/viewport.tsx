@@ -23,7 +23,8 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
 
   const cellSelectionMode = ctx.grid.state.cellSelectionMode.useValue();
 
-  const focused = useFocusTracking(vp, ctx.grid.internal.focusActive);
+  const [focused, vpFocused] = useFocusTracking(vp, ctx.grid.internal.focusActive);
+  const shouldCapture = !focused && !vpFocused;
 
   return (
     <>
@@ -104,7 +105,7 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
         {!vp && <div style={{ width, height }} />}
       </div>
 
-      {!focused && (
+      {!shouldCapture && (
         <div
           role="none"
           data-ln-focus-capture

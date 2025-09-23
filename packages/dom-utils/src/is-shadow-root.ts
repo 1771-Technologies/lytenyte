@@ -1,10 +1,6 @@
-import { getWindow } from "./get-window.js";
-import { hasWindow } from "./has-window.js";
+import { isNode } from "./is-node.js";
 
-export function isShadowRoot(value: unknown): value is ShadowRoot {
-  if (!hasWindow() || typeof ShadowRoot === "undefined") {
-    return false;
-  }
+const DOCUMENT_FRAGMENT_NODE: typeof Node.DOCUMENT_FRAGMENT_NODE = 11;
 
-  return value instanceof ShadowRoot || value instanceof getWindow(value).ShadowRoot;
-}
+export const isShadowRoot = (el: any): el is ShadowRoot =>
+  isNode(el) && el.nodeType === DOCUMENT_FRAGMENT_NODE && "host" in el;

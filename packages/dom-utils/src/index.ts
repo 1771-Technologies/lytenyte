@@ -1,66 +1,25 @@
-export { containsPoint } from "./contains-point.js";
-export { getCheckedRadio } from "./get-checked-radio.js";
 export { getComputedStyle } from "./get-computed-style.js";
-export { getContainingBlock } from "./get-containing-block.js";
 export { getFrameElement } from "./get-frame-element.js";
-export { getDocumentElement } from "./get-document-element.js";
-export { getNearestOverflowAncestor } from "./get-nearest-overflow-ancestor.js";
-export { getNodeName } from "./get-node-name.js";
-export { getNodeScroll } from "./get-node-scroll.js";
-export { getOverflowAncestors } from "./get-overflow-ancestors.js";
-export { getParentNode } from "./get-parent-node.js";
-export { getRootNode } from "./get-root-node.js";
-export { getTabIndex } from "./get-tab-index.js";
-export { getWindow } from "./get-window.js";
-export { hasTabIndex } from "./has-tab-index.js";
-export { hasWindow } from "./has-window.js";
 export { isAppleDevice } from "./is-apple-device.js";
 export { isChrome } from "./is-chrome.js";
-export { isContainingBlock } from "./is-containing-block.js";
-export { isContentEditable } from "./is-content-editable.js";
-export { isDetailsWithSummary } from "./is-detail-with-summary.js";
-export { isDisabledFromFieldset } from "./is-disabled-from-fieldset.js";
-export { isElementTotallyScrolled } from "./is-element-totally-scrolled.js";
-export { isElement } from "./is-element.js";
 export { isFirefox } from "./is-firefox.js";
-export { isHiddenInput } from "./is-hidden-input.js";
-export { isHTMLElement } from "./is-html-element.js";
-export { isInView } from "./is-in-view.js";
-export { isInert } from "./is-inert.js";
-export { isInput } from "./is-input.js";
 export { isIOS } from "./is-ios.js";
 export { isIPad } from "./is-ipad.js";
 export { isIPhone } from "./is-iphone.js";
-export { isLastTraversableNode } from "./is-last-traversable-node.js";
 export { isMac } from "./is-mac.js";
-export { isNodeAttached } from "./is-node-attached.js";
-export { isNode } from "./is-node.js";
-export { isNonTabbableRadio } from "./is-non-tabbable-radio.js";
-export { isOverflowElement } from "./is-overflow-element.js";
-export { isRadio } from "./is-radio.js";
-export { isShadowRoot } from "./is-shadow-root.js";
-export { isTabbableRadio } from "./is-tabbable-radio.js";
-export { isTableElement } from "./is-table-element.js";
-export { isTopLayer } from "./is-top-layer.js";
 export { isWebKit } from "./is-webkit.js";
-export { isZeroArea } from "./is-zero-area.js";
-export { announce } from "./live-announcer.js";
-export { makeLongTouchPressHandler } from "./make-long-touch-press-handler.js";
-export { matches } from "./matches.js";
 export { testPlatform } from "./test-platform.js";
 export { testUserAgent } from "./test-user-agent.js";
+export { isHTMLElement } from "./is-html-element.js";
+export { isInView } from "./is-in-view.js";
+export { isLastTraversableNode } from "./is-last-traversable-node.js";
 
-// tabbable
-
-export {
-  getFirstFocusable,
-  getFirstTabbable,
-  getFocusables,
-  getLastTabbable,
-  getNextTabbable,
-  getTabbableEdges,
-  getTabbables,
-  isFocusable,
-  isTabbable,
-  trapFocus,
-} from "./tabbable/index.js";
+export { FocusTrap } from "./focus/focus-trap.js";
+export { getFirstFocusable } from "./focus/get-first-focusable.js";
+export { getFirstTabbable } from "./focus/get-first-tabbable.js";
+export { getFocusables } from "./focus/get-focusables.js";
+export { getLastTabbable } from "./focus/get-last-tabbable.js";
+export { getNextTabbable } from "./focus/get-next-tabbable.js";
+export { getTabIndex } from "./focus/get-tab-index.js";
+export { getTabbables } from "./focus/get-tabbables.js";
+export { isFocusable } from "./focus/is-focusable.js";

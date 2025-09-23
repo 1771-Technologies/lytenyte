@@ -1,49 +1,13 @@
-import { describe, test, expect, vi, afterEach } from "vitest";
-import * as isNodeModule from "../is-node.js";
+import { describe, expect, test } from "vitest";
 import { getDocumentElement } from "../get-document-element.js";
+import { wait } from "@1771technologies/lytenyte-js-utils";
 
 describe("getDocumentElement", () => {
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
+  test("should be able to retrieve the document element", async () => {
+    const el = document.createElement("div");
+    document.body.appendChild(el);
 
-  test("should return node.ownerDocument.documentElement when input is a Node", () => {
-    const mockDocumentElement = {} as HTMLElement;
-    const mockOwnerDocument = {
-      documentElement: mockDocumentElement,
-    };
-    const mockNode = {
-      ownerDocument: mockOwnerDocument,
-    };
-
-    vi.spyOn(isNodeModule, "isNode").mockReturnValue(true);
-
-    const result = getDocumentElement(mockNode as unknown as Node);
-    expect(result).toBe(mockDocumentElement);
-  });
-
-  test("should return node.document.documentElement when input is a Window", () => {
-    const mockDocumentElement = {} as HTMLElement;
-    const mockWindow = {
-      document: {
-        documentElement: mockDocumentElement,
-      },
-    };
-
-    vi.spyOn(isNodeModule, "isNode").mockReturnValue(false);
-
-    const result = getDocumentElement(mockWindow as unknown as Window);
-    expect(result).toBe(mockDocumentElement);
-  });
-
-  test("should fall back to window.document.documentElement if everything else fails", () => {
-    vi.spyOn(isNodeModule, "isNode").mockReturnValue(false);
-
-    const brokenWindow = {
-      document: null,
-    };
-
-    const result = getDocumentElement(brokenWindow as unknown as Window);
-    expect(result).toBe(window.document.documentElement);
+    await wait();
+    expect(getDocumentElement(el)).toBe(document.documentElement);
   });
 });

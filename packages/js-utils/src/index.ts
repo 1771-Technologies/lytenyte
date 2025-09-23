@@ -13,6 +13,6 @@ export { itemsWithIdToMap } from "./items-with-id-to-map.js";
 export { rangedBinarySearch } from "./ranged-binary-search.js";
 export { rangesOverlap } from "./ranges-overlap.js";
 export { runWithBackoff } from "./run-with-backoff.js";
-export { sleep } from "./sleep.js";
+export { sleep, wait } from "./sleep.js";
 export { smartStringIncludes } from "./smart-string-includes.js";
 export { upperCaseFirstLetter } from "./upper-case-first-letter.js";

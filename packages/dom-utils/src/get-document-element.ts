@@ -1,5 +1,7 @@
-import { isNode } from "./is-node.js";
+import { getDocument } from "./get-document.js";
 
-export function getDocumentElement(node: Node | Window): HTMLElement {
-  return ((isNode(node) ? node.ownerDocument : node.document) || window.document)?.documentElement;
+export function getDocumentElement(
+  el: Element | Node | Window | Document | null | undefined,
+): HTMLElement {
+  return getDocument(el).documentElement;
 }

@@ -9,6 +9,7 @@ export function useFocusTracking(
   focusActive: Omit<GridAtom<PositionUnion | null>, "$">,
 ) {
   const [focused, setFocused] = useState(false);
+  const [vpFocused, setVpFocused] = useState(false);
 
   useEffect(() => {
     if (!vp) return;
@@ -64,5 +65,16 @@ export function useFocusTracking(
     return () => controller.abort();
   }, [focusActive, vp]);
 
-  return focused;
+  useEffect(() => {
+    if (!vp) return;
+
+    const controller = new AbortController();
+
+    vp.addEventListener("focus", () => setVpFocused(true), { signal: controller.signal });
+    vp.addEventListener("blur", () => setVpFocused(false), { signal: controller.signal });
+
+    return () => controller.abort();
+  }, [vp]);
+
+  return [focused, vpFocused];
 }
