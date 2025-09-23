@@ -8,13 +8,16 @@ import type { Root, Paragraph, Text } from "mdast";
 
 const getStackBlitzUrl = (path: string, org: string, repo: string, branch: string) => {
   const final = path.startsWith("/") ? path.slice(1) : path;
-  return `https://stackblitz.com/fork/github/${org}/${repo}/tree/${branch}/${final}`;
+
+  const url = final.replace("/content/docs/", "/examples/").replace("demos/", "");
+  return `https://stackblitz.com/fork/github/${org}/${repo}/tree/${branch}/${url}?file=src/demo.tsx`;
 };
 
 const getCodeSandboxUrl = (path: string, org: string, repo: string, branch: string) => {
   const final = path.startsWith("/") ? path.slice(1) : path;
+  const url = final.replace("/content/docs/", "/examples/").replace("demos/", "");
 
-  return `https://codesandbox.io/s/github/${org}/${repo}/tree/${branch}/${final}`;
+  return `https://codesandbox.io/s/github/${org}/${repo}/tree/${branch}/${url}?file=%2Fsrc%2Fdemo.tsx`;
 };
 
 export interface CodeDemoOptions {

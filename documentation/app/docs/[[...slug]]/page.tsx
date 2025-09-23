@@ -24,8 +24,7 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
         <LLMCopyButton markdownUrl={`${page.url}.mdx`} />
         <ViewOptions
           markdownUrl={`${page.url}.mdx`}
-          // TODO fix this path.
-          githubUrl={`https://github.com/${owner}/${repo}/blob/dev/apps/docs/content/docs/${page.path}`}
+          githubUrl={`https://github.com/${owner}/${repo}/blob/docs-lets-goooooo/documentation/content/docs/${page.path}`}
         />
       </div>
       <DocsBody>

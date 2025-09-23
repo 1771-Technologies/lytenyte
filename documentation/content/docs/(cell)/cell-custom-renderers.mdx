@@ -18,7 +18,7 @@ The `cellRenderer` property accepts either:
 Pass a React function component directly to `cellRenderer` to define how each cell in that column is
 rendered.
 
-!demo:Direct Cell Renderer="./demo/cell-renderers"
+!demo:Direct Cell Renderer="./demos/cell-renderers"
 
 ## Registering Cell Renderers
 
@@ -26,7 +26,7 @@ For reusability and cleaner column definitions, register cell renderers and refe
 Pass a string to `cellRenderer` that matches a key in your registered renderers. Register renderers
 through the `cellRenderers` property in grid state.
 
-!demo:Registered Cell Renderer="./demo/cell-renderers-registered"
+!demo:Registered Cell Renderer="./demos/cell-renderers-registered"
 
 This pattern keeps column definitions serializable and makes renderers easier to reuse.
 

@@ -28,7 +28,14 @@ export default defineConfig({
   mdxOptions: {
     remarkPlugins: (v) => {
       return [
-        [codeDemo, { githubOrg: "1771-Technologies", repo: "lytenyte" }],
+        [
+          codeDemo,
+          {
+            githubOrg: "1771-Technologies",
+            githubRepo: "lytenyte",
+            githubBranch: "docs-lets-goooooo",
+          },
+        ],
         codeImport,
         [remarkCodeHike, chConfig],
         ...v,

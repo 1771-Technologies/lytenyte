@@ -20,7 +20,7 @@ Control how editing starts with `editClickActivator`. Supported values:
 
 The example below shows a basic setup where `columnBase: { editable: true }` makes all columns editable.
 
-!demo:Cell Edit Predicate="./demo/cell-editing"
+!demo:Cell Edit Predicate="./demos/cell-editing"
 
 ## Edit Renderer
 
@@ -31,7 +31,7 @@ Set the `editRenderer` property on a column to define its cell editor. This can 
 
 Register edit providers with the `editRenderers` property in grid state.
 
-!demo:Cell Edit Renderers="./demo/cell-editing-provider"
+!demo:Cell Edit Renderers="./demos/cell-editing-provider"
 
 When using a custom editor, LyteNyte Grid passes:
 
@@ -49,7 +49,7 @@ Editing is controlled: **Enter** accepts changes, **Escape** cancels.
 
 Example: In the `Job` column, only `"management"` values are editable.
 
-!demo:Cell Editing Selectively="./demo/cell-editing-selectively"
+!demo:Cell Editing Selectively="./demos/cell-editing-selectively"
 
 ## Edit Setter
 
@@ -63,7 +63,7 @@ When editing:
 2. A copy of the row's data is created.
 3. The updated value is applied via `editSetter` (or via `field` for `string`/`number` fields).
 
-!demo:Cell Editing Edit Setter="./demo/cell-editing-edit-setter"
+!demo:Cell Editing Edit Setter="./demos/cell-editing-edit-setter"
 
 ## Row Edit Validation
 
@@ -79,7 +79,7 @@ If validation fails, the `editError` event is fired. Use this event to inform th
 
 Example: Prevent negative values in the `Age` column.
 
-!demo:Cell Editing Validation="./demo/cell-editing-validation"
+!demo:Cell Editing Validation="./demos/cell-editing-validation"
 
 ## Programmatic Edit Update
 

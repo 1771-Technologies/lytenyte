@@ -3,7 +3,6 @@
 @import "fumadocs-ui/css/preset.css";
 
 :root {
-  overflow-y: scroll;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
