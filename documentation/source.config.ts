@@ -33,7 +33,7 @@ export default defineConfig({
           {
             githubOrg: "1771-Technologies",
             githubRepo: "lytenyte",
-            githubBranch: "docs-lets-goooooo",
+            githubBranch: "main",
           },
         ],
         codeImport,
