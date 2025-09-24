@@ -104,7 +104,7 @@ export default function Clipboard() {
     <div style={{ display: "flex", flexDirection: "column" }}>
       <div className="flex gap-8 px-2 py-2">
         <button
-          className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
+          className="rounded border border-gray-600 bg-gray-900 px-2 text-white dark:text-black"
           onClick={async () => {
             await handleCopy();
             alert("Text copied to clipboard");
@@ -113,7 +113,7 @@ export default function Clipboard() {
           Copy
         </button>
         <button
-          className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
+          className="rounded border border-gray-600 bg-gray-900 px-2 text-white dark:text-black"
           onClick={async () => {
             const rect = getFirstSelection();
             if (!rect) return;
@@ -136,7 +136,7 @@ export default function Clipboard() {
           Cut
         </button>
         <button
-          className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
+          className="rounded border border-gray-600 bg-gray-900 px-2 text-white dark:text-black"
           onClick={async () => {
             const content = await navigator.clipboard.readText();
 
