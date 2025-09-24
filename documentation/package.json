@@ -23,6 +23,7 @@
     "@types/react": "19.1.8",
     "@types/react-dom": "19.1.6",
     "@types/react-sparklines": "^1.7.5",
+    "@vercel/analytics": "^1.5.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "codehike": "^1.0.7",
