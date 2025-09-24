@@ -14,7 +14,7 @@ export default function Layout({ children }: PropsWithChildren) {
       nav={{
         mode: "top",
         title: <LogoLyteNyte />,
-        url: "docs/",
+        url: "/docs/intro-getting-started",
       }}
       githubUrl="https://github.com/1771-Technologies/lytenyte"
       themeSwitch={{ mode: "light-dark" }}

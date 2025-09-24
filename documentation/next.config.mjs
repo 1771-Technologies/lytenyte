@@ -19,6 +19,7 @@ const config = {
     return config;
   },
 
+  assetPrefix: "/docs",
   async rewrites() {
     return [
       {
