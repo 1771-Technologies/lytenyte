@@ -15,9 +15,11 @@ description: The API reference for the row functionality in LyteNyte Grid.
 
 ## `RowFullWidthPredicateParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
-Parameters provided to the  [RowFullWidthPredicate](/docs/reference/row#RowFullWidthPredicate)  function to determine
+Parameters provided to the  [RowFullWidthPredicate](/docs/reference/row#rowfullwidthpredicate)  function to determine
 if a row should span full width of the grid.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowFullWidthPredicateParams" />
+
 
 ## `RowFullWidthRendererFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
 
@@ -33,13 +35,17 @@ if a row should span full width of the grid.
 
 Parameters provided to the full-width row renderer.
 Includes row metadata and selection state.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowFullWidthRendererParams" />
+
 
 ## `RowGroup`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Represents a group (branch) row which may contain children rows (leaf or other groups).
 Group rows are used in hierarchical views and support expansion/collapse behavior.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowGroup" />
+
 
 ## `RowHeight`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 
@@ -49,11 +55,13 @@ Group rows are used in hierarchical views and support expansion/collapse behavio
 
 Represents a leaf row in the grid. A leaf row is a terminal node that has no children.
 These rows typically represent the raw dataset and are used for aggregations and visual representation.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowLeaf" />
+
 
 ## `RowNode`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 
-<TypeTable type={{"RowNode":{"description":"A union of  [RowLeaf](/docs/reference/row#RowLeaf)  and  [RowGroup](/docs/reference/row#RowGroup) . Represents any row that may appear in the grid view.\nUsed generically when the row type is not known ahead of time.","type":"RowLeaf | RowGroup"}}} />
+<TypeTable type={{"RowNode":{"description":"A union of  [RowLeaf](/docs/reference/row#rowleaf)  and  [RowGroup](/docs/reference/row#rowgroup) . Represents any row that may appear in the grid view.\nUsed generically when the row type is not known ahead of time.","type":"RowLeaf | RowGroup"}}} />
 
 ## `RowPin`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 

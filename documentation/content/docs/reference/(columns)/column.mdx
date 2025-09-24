@@ -18,11 +18,13 @@ description: The API reference for the column functionality in LyteNyte Grid.
 
 ## `AutosizeCellParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
-Parameters passed to the  [AutosizeCellFn](/docs/reference/column#AutosizeCellFn)  function.
+Parameters passed to the  [AutosizeCellFn](/docs/reference/column#autosizecellfn)  function.
 
 These provide context about the cell and grid configuration so that the function
 can determine the optimal column width based on cell content.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="AutosizeCellParams" />
+
 
 ## `AutosizeHeaderFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
 
@@ -39,11 +41,13 @@ can determine the optimal column width based on cell content.
 
 ## `AutosizeHeaderParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
-Parameters passed to the  [AutosizeHeaderFn](/docs/reference/column#AutosizeHeaderFn)  function.
+Parameters passed to the  [AutosizeHeaderFn](/docs/reference/column#autosizeheaderfn)  function.
 
 These are used by LyteNyte Grid to calculate the ideal column width based on the
 header content.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="AutosizeHeaderParams" />
+
 
 ## `Column`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
@@ -58,7 +62,9 @@ for determining:
 - What each cell renders
 - How rows are grouped and sorted
 - How filters are evaluated
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="Column" />
+
 
 ## `ColumnBase`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
@@ -70,14 +76,18 @@ then on the default.
 
 This allows you to set column-wide defaults that apply retroactively to all applicable columns
 without rewriting each one.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="ColumnBase" />
+
 
 ## `ColumnMarker`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Defines the structure of a marker column.
 
   The marker column is a grid managed column used to support features like selection checkboxes or row drag handles.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="ColumnMarker" />
+
 
 ## `ColumnMeta`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
@@ -87,7 +97,9 @@ This metadata is primarily useful for programmatic interaction with the grid. Th
 are derived from the grid's internal column state and may change depending on modes
 like pivoting. For example, when pivot mode is enabled,  ``columnsVisible``  refers to
 visible pivot columns instead of the regular ones.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="ColumnMeta" />
+
 
 ## `ColumnPin`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 
@@ -100,7 +112,9 @@ Describes UI hints related to column pivot functionality.
 These hints indicate whether a column is eligible to act as a value, row group, or
 column pivot in a pivot table configuration. External components can use these values
 to determine pivot-related capabilities.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="ColumnPivotUIHints" />
+
 
 ## `ColumnUIHints`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
@@ -110,8 +124,10 @@ These hints can be used by external components to drive UI decisions (e.g.
 enabling/disabling sort or resize handles). They are not enforced by LyteNyte Grid
 and can be bypassed by modifying grid state directly.
 
-Includes support for pivot-specific behaviors via  [ColumnPivotUIHints](/docs/reference/column#ColumnPivotUIHints) .
+Includes support for pivot-specific behaviors via  [ColumnPivotUIHints](/docs/reference/column#columnpivotuihints) .
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="ColumnUIHints" />
+
 
 ## `RowGroupColumn`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
@@ -120,4 +136,6 @@ when row grouping is enabled.
 
 These columns are created behind the scenes to represent group headers and aggregations
 and can be configured via this interface.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowGroupColumn" />
+

@@ -5,17 +5,23 @@ description: The API reference for the row data source functionality in LyteNyte
 ## `ClientRowDataSourcePaginatedParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Parameters required to initialize a client-side row data source.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="ClientRowDataSourcePaginatedParams" />
+
 
 ## `ClientRowDataSourceParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Enhanced parameters for a client-side row data source with additional filtering support.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="ClientRowDataSourceParams" />
+
 
 ## `ClientTreeDataSourceParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Parameters for initializing a tree-structured data source in LyteNyte Grid.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="ClientTreeDataSourceParams" />
+
 
 ## `DataColumnPivotFetcherFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
 
@@ -30,7 +36,9 @@ Parameters for initializing a tree-structured data source in LyteNyte Grid.
 ## `DataColumnPivotFetcherParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Parameters passed to the column pivot fetcher function.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="DataColumnPivotFetcherParams" />
+
 
 ## `DataFetcherFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
 
@@ -45,7 +53,9 @@ Parameters passed to the column pivot fetcher function.
 ## `DataFetcherParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Input parameters provided to a grid data fetcher function.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="DataFetcherParams" />
+
 
 ## `DataInFilterItemFetcherFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
 
@@ -60,48 +70,66 @@ Input parameters provided to a grid data fetcher function.
 ## `DataInFilterItemFetcherParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Parameters passed to the in-filter fetcher function.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="DataInFilterItemFetcherParams" />
+
 
 ## `DataRequest`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Represents a specific request for data to an external data source.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="DataRequest" />
+
 
 ## `DataRequestModel`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Describes the current grid state used to construct a request for external data.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="DataRequestModel" />
+
 
 ## `DataResponse`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Response object for row data from a center section request.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="DataResponse" />
+
 
 ## `DataResponseBranchItem`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Represents a group (branch) row returned from a data request.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="DataResponseBranchItem" />
+
 
 ## `DataResponseLeafItem`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Represents a row of data (a leaf node) returned in a server response.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="DataResponseLeafItem" />
+
 
 ## `DataResponsePinned`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Response object for setting pinned row data (top or bottom).
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="DataResponsePinned" />
+
 
 ## `RdsRowSelectParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Parameters passed to the row selection handler within the row data source.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RdsRowSelectParams" />
+
 
 ## `RowDataSource`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 The row data source interface used by LyteNyte Grid to retrieve and manage row data.
   This includes functionality for row expansion, selection, and CRUD operations.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowDataSource" />
+
 
 ## `RowDataSourceClient`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
@@ -111,13 +139,17 @@ A client-side row data source used by LyteNyte Grid. All operations
   This implementation is suitable for small to moderately sized datasets. For large-scale datasets, such as those
   exceeding hundreds of thousands of rows, a server-based data source
   is recommended for performance and memory efficiency.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowDataSourceClient" />
+
 
 ## `RowDataSourceClientPageState`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Represents pagination-related state for the client row data source in
   LyteNyte Grid. These values enable pagination logic within the grid's UI and interactions.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowDataSourceClientPageState" />
+
 
 ## `RowDataSourceClientPaginated`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
@@ -125,7 +157,9 @@ A paginated client-side row data source for LyteNyte Grid.
   It divides the full dataset into pages based on the configured page
   size, reducing the number of rows rendered at any one time to
   improve UI responsiveness and performance.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowDataSourceClientPaginated" />
+
 
 ## `RowDataSourceServer`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
@@ -137,17 +171,23 @@ A high-performance row data source for LyteNyte Grid that enables
   grouping, and pagination—must be handled on the server. This design provides
   maximum flexibility and scalability, including support for server-driven trees
   and pagination, but requires a more complex implementation on the backend.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowDataSourceServer" />
+
 
 ## `RowDataSourceServerParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Parameters for configuring the server row data source.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowDataSourceServerParams" />
+
 
 ## `RowDataStore`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 The internal row data store used by LyteNyte Grid to manage row metadata, counts, and access functions.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowDataStore" />
+
 
 ## `RowDetailHeight`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 
@@ -170,4 +210,6 @@ The internal row data store used by LyteNyte Grid to manage row metadata, counts
 Defines the parameters passed to a row detail renderer. These parameters
   include the row index, the row node metadata,
   and a reference to the grid instance.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowDetailRendererParams" />
+

@@ -34,7 +34,10 @@ const rootLinkLookup = Object.fromEntries(
 
     const groupName = groupTag.content[0].text;
 
-    return [c.name, `${rootPath}/${groupName.toLowerCase().replaceAll(" ", "-")}#${c.name}`];
+    return [
+      c.name,
+      `${rootPath}/${groupName.toLowerCase().replaceAll(" ", "-")}#${c.name}`.toLowerCase(),
+    ];
   }),
 );
 
@@ -354,7 +357,7 @@ const group = Object.entries(byGroup).map(([group, prop]) => {
           return `## \`${l.name}\`<span className="type-tag" style={{ '--type-content': "'${l.kind}'" }} />\n\n<TypeTable type={${JSON.stringify(type)}} />\n`;
         }
 
-        return `## \`${l.name}\`<span className="type-tag" style={{ '--type-content': "'${l.kind}'" }} />\n\n${l.description}\n<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="${l.name}" />\n`;
+        return `## \`${l.name}\`<span className="type-tag" style={{ '--type-content': "'${l.kind}'" }} />\n\n${l.description}\n\n<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="${l.name}" />\n\n`;
       })
       .join("\n"),
   };
@@ -364,7 +367,9 @@ const typeLinks = Object.entries(byGroup)
   .map(([group, prop]) => {
     const base = `docs/reference/${group.toLowerCase().replaceAll(" ", "-")}`;
 
-    return Object.fromEntries(prop.map((c) => [c.name, `${base}#${c.name.toLocaleLowerCase()}`]));
+    return Object.fromEntries(
+      prop.map((c) => [c.name, `${base}#${c.name.toLocaleLowerCase()}`.toLowerCase()]),
+    );
   })
   .reduce((acc, o) => ({ ...acc, ...o }), {});
 
