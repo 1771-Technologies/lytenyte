@@ -28,14 +28,18 @@ The parameters passed to functional column fields.
 
   LyteNyte Grid calls these functions dynamically during rendering or computation.
   These calls can occur frequently (e.g., for every cell in a column), so implementations should prioritize performance.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="FieldFnParams" />
+
 
 ## `FieldPath`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Specifies a string-based path used to extract values from a nested data structure, similar to  ``lodash.get`` .
 
   Example:  ``"point.x"``  will return  ``data.point.x`` . Useful for deeply nested row data.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="FieldPath" />
+
 
 ## `FieldRowGroup`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 
@@ -58,4 +62,6 @@ Specifies a string-based path used to extract values from a nested data structur
 Defines the parameters used for custom row group field functions.
 
   Enables grouping logic to be decoupled from the data's displayed value.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="FieldRowGroupParamsFn" />
+

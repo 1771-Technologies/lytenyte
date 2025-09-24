@@ -9,7 +9,9 @@ using AND or OR logic.
 
 Combination filters enable complex conditional logic by nesting
 different filters into a tree structure.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="FilterCombination" />
+
 
 ## `FilterCombinationOperator`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 
@@ -25,7 +27,9 @@ ISO string format like  ``"2025-02-01 12:00:11-02:00"`` .
 
 If filtering on timestamps or partial dates, be mindful of timezone offsets and whether
 time components are relevant to your comparison.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="FilterDate" />
+
 
 ## `FilterDateOperator`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 
@@ -37,7 +41,9 @@ Optional modifiers to customize date filter evaluation behavior.
 
 Includes options like null handling and whether time values should be considered
 during comparisons.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="FilterDateOptions" />
+
 
 ## `FilterFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
 
@@ -57,7 +63,9 @@ during comparisons.
 The parameters passed to a custom function filter.
 
 Includes both the current row's data and the overall grid configuration.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="FilterFnParams" />
+
 
 ## `FilterFunc`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
@@ -65,7 +73,9 @@ A functional filter definition. It provides ultimate flexibility
 for filtering scenarios that don't conform to basic models.
 
 Should be used selectively and optimized for performance.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="FilterFunc" />
+
 
 ## `FilterIn`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
@@ -74,14 +84,18 @@ in (or excluded from) a set of values.
 
 Often referred to as a "Set Filter", this is a PRO-only feature in
 LyteNyte Grid and cannot be nested in combination filters.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="FilterIn" />
+
 
 ## `FilterInFilterItem`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Represents a displayable filter option for use with the  ``in``  filter UI component.
 
 Supports grouping and human-friendly labeling for raw filter values.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="FilterInFilterItem" />
+
 
 ## `FilterInOperator`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 
@@ -96,7 +110,9 @@ Supports grouping and human-friendly labeling for raw filter values.
 Defines a filter for numeric columns.
 
 Applies common comparison logic to include or exclude rows based on numerical values in a specified column.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="FilterNumber" />
+
 
 ## `FilterNumberOperator`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 
@@ -106,7 +122,9 @@ Applies common comparison logic to include or exclude rows based on numerical va
 
 Optional configuration values for number filters. These options allow fine-tuning of filter behavior,
 especially in cases involving precision or null handling.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="FilterNumberOptions" />
+
 
 ## `FilterQuickSearchSensitivity`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 
@@ -117,14 +135,18 @@ especially in cases involving precision or null handling.
 Filter configuration for string-based column data.
 
 Supports a wide range of operators such as exact match, substring containment, regex matching, and string length comparisons.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="FilterString" />
+
 
 ## `FilterStringCollation`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Collation configuration for locale-sensitive string comparisons.
 
 Used to construct an  ``Intl.Collator``  instance, which enables proper handling of language and region-specific rules.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="FilterStringCollation" />
+
 
 ## `FilterStringOperator`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 
@@ -136,7 +158,9 @@ Optional settings to modify the behavior of string filter evaluation.
 
 These provide control over how string values are matched, such as case sensitivity, whitespace trimming,
 regular expression flags, and locale-based collation.
+
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="FilterStringOptions" />
+
 
 ## `Locale`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 

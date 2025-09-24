@@ -102,7 +102,7 @@ export default function SortManager() {
           <div className="flex items-center gap-2 pb-2">
             <div className="flex-1">
               <SM.Clear
-                className="border border-red-500 bg-red-500/50 px-2 text-sm text-white hover:bg-red-500/70"
+                className="border border-red-500 bg-red-500/50 px-2 text-sm text-black hover:bg-red-500/70 dark:text-white"
                 onClick={() => grid.api.dialogFrameClose()}
               >
                 Clear

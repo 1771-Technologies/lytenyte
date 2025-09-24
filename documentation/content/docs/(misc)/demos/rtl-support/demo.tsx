@@ -44,7 +44,7 @@ export default function RTLMode() {
     <div>
       <div className="px-2 py-2">
         <button
-          className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
+          className="rounded border border-gray-600 bg-gray-900 px-2 text-white dark:text-black"
           onClick={() => grid.state.rtl.set((prev) => !prev)}
         >
           Toggle RTL

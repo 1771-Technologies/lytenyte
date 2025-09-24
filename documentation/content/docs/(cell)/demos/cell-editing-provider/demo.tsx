@@ -55,7 +55,7 @@ export default function CellEditingProvider() {
 
         return (
           <input
-            className="h-full w-full bg-black px-2 text-sm text-white"
+            className="h-full w-full bg-black px-2 text-sm text-white dark:text-black"
             type={type}
             value={`${value}`}
             onChange={(ev) => {
