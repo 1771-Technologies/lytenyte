@@ -18,7 +18,6 @@ const config = {
     config.resolve.alias["react-native-fetch-blob"] = false; // Ignore react-native-fetch-blob
     return config;
   },
-  basePath: "/",
 
   async rewrites() {
     return [
