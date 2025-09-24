@@ -1,0 +1,83 @@
+---
+title: Column Groups
+description: LyteNyte Grid lets you organize columns into groups to create visual
+  relationships between related columns. Each column belongs to only one
+  group. Groups can contain nested groups to form hierarchies.
+---
+
+## Creating a Column Group
+
+Create column groups in LyteNyte Grid by setting the `groupPath`
+property on columns. The grid builds a hierarchy based on all
+`groupPath` values in your columns.
+
+!demo:Column Groups="./demos/column-groups"
+
+The longest path in your hierarchy determines the number of group rows.
+If a column is not part of any group, or belongs to a group with a
+shorter path, its header spans the empty group rows.
+
+### Split Column Groups
+
+LyteNyte Grid identifies column groups by the `groupPath` property.
+Groups appear split if columns from other groups appear between group
+members. This creates multiple visual instances of the same logical
+group. When you move separated group columns next to each other, the
+grid merges them automatically. Pinned columns always appear visually
+separate from non-pinned columns, even within the same group.
+
+!demo:Column Groups Split="./demos/column-groups-split"
+
+<Callout>
+
+Visually split groups still function as a single logical group in grid
+state. Expanding or collapsing one affects all visual instances.
+
+</Callout>
+
+## Column Group Expansions
+
+You can expand or collapse column groups. The `groupVisibility`
+property controls column visibility:
+
+- `"open"`: Show the column only when the group is expanded.
+- `"closed"`: Show the column only when the group is collapsed.
+- `"always"`: Show the column regardless of the group's state.
+
+If all columns in a group use `"always"`, you cannot collapse the group.
+To make a group collapsible, include at least one column hidden when
+expanded and one visible when expanded.
+
+!demo:Column Group Expansion="./demos/column-groups-expansions"
+
+### Initial Group State
+
+Configure the initial expansion state of column groups by understanding
+how LyteNyte Grid generates group `id`s.
+
+The `groupPath` array defines the hierarchy. The grid joins the array
+using a delimiter (set via `columnGroupJoinDelimiter`) to form the group
+`id`.
+
+The `columnGroupExpansions` property controls the initial expansion
+state. Keys are group `id`s and values are booleans. Groups without an
+explicit value use `columnGroupDefaultExpansion` (defaults to `true`).
+
+!demo:Column Group Initial State="./demos/column-groups-initial-state"
+
+Because `columnGroupExpansions`, `columnGroupDefaultExpansion`, and
+`columnGroupJoinDelimiter` are part of grid state, you can update them
+at runtime:
+
+```ts
+// Reset all groups to their default expansion state
+grid.state.columnGroupExpansions.set({});
+```
+
+Avoid changing `columnGroupJoinDelimiter` after setup, since the grid
+won't update existing group ids automatically.
+
+## Programmatically Toggle Groups
+
+Call the `columnToggleGroup` API method to toggle a group's expansion
+state programmatically.

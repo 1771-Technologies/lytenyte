@@ -1,9 +1,8 @@
 {
   "name": "@1771technologies/eslint-preset",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "type": "module",
   "files": [
-    "dist",
     "src",
     "LICENSE",
     "README.md"

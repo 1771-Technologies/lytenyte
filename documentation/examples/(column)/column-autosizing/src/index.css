@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@theme {
+  --ln-gray-00: var(--lng1771-gray-00);
+  --ln-gray-02: var(--lng1771-gray-02);
+  --ln-gray-05: var(--lng1771-gray-05);
+  --ln-gray-10: var(--lng1771-gray-10);
+  --ln-gray-20: var(--lng1771-gray-20);
+  --ln-gray-30: var(--lng1771-gray-30);
+  --ln-gray-40: var(--lng1771-gray-40);
+  --ln-gray-50: var(--lng1771-gray-50);
+  --ln-gray-60: var(--lng1771-gray-60);
+  --ln-gray-70: var(--lng1771-gray-70);
+  --ln-gray-80: var(--lng1771-gray-80);
+  --ln-gray-90: var(--lng1771-gray-90);
+  --ln-gray-100: var(--lng1771-gray-100);
+
+  --ln-primary-05: var(--lng1771-primary-05);
+  --ln-primary-10: var(--lng1771-primary-10);
+  --ln-primary-30: var(--lng1771-primary-30);
+  --ln-primary-50: var(--lng1771-primary-50);
+  --ln-primary-70: var(--lng1771-primary-70);
+  --ln-primary-90: var(--lng1771-primary-90);
+  --ln-focus-outline: var(--lng1771-focus-outline);
+
+  --ln-pill-plain-fill: var(--lng1771-pill-plain-fill);
+  --ln-pill-column-fill: var(--lng1771-pill-column-fill);
+  --ln-pill-column-stroke: var(--lng1771-pill-column-stroke);
+  --ln-pill-pivot-fill: var(--lng1771-pill-pivot-fill);
+  --ln-pill-pivot-stroke: var(--lng1771-pill-pivot-stroke);
+  --ln-pill-group-fill: var(--lng1771-pill-group-fill);
+  --ln-pill-group-stroke: var(--lng1771-pill-group-stroke);
+  --ln-pill-icon-color: var(--lng1771-pill-icon-color);
+
+  --gray-950: hsla(180, 33%, 4%, 1);
+  --gray-900: hsla(190, 32%, 10%, 1);
+  --gray-800: hsla(177, 19%, 21%, 1);
+  --gray-700: hsla(175, 6%, 38%, 1);
+  --gray-600: hsla(175, 6%, 53%, 1);
+  --gray-500: hsla(175, 7%, 68%, 1);
+  --gray-400: hsla(175, 9%, 79%, 1);
+  --gray-300: hsla(175, 10%, 86%, 1);
+  --gray-200: hsla(175, 12%, 92%, 1);
+  --gray-100: hsla(175, 20%, 95%, 1);
+  --gray-50: hsla(175, 23%, 97%, 1);
+  --gray-01: hsla(175, 25%, 98%, 1);
+}

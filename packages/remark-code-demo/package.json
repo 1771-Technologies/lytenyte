@@ -1,0 +1,45 @@
+{
+  "name": "@1771technologies/remark-code-demo",
+  "version": "1.0.12",
+  "type": "module",
+  "license": "Apache-2.0",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "homepage": "https://1771technologies.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/1771-technologies/lytenyte.git",
+    "directory": "packages/remark-code-demo"
+  },
+  "bugs": {
+    "url": "https://github.com/1771-technologies/lytenyte/issues"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "require": "./src/index.ts"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "require": "./dist/index.js"
+      }
+    }
+  },
+  "dependencies": {
+    "@manypkg/find-root": "3.1.0",
+    "@types/mdast": "^4.0.4",
+    "acorn": "^8.15.0",
+    "mdast": "^3.0.0",
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.0.0"
+  }
+}

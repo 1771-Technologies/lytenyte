@@ -1,0 +1,42 @@
+---
+title: CSV Data Export
+description:
+  Export grid data to CSV format with customizable headers, delimiters, and transformations in
+  LyteNyte Grid.
+---
+
+LyteNyte Grid can export grid data directly to CSV, letting you capture a selection or the entire
+dataset in a standard format.
+
+## Export to CSV
+
+Use the `exportCsv` API method to export selected data or the entire rendered dataset. To download a
+CSV file directly, use the convenience method `exportCsvFile`, which runs `exportCsv` and returns a
+downloadable file blob.
+
+!demo:Export CSV="./demos/csv-export"
+
+`exportCsv` returns a `Promise<string>` containing the CSV content. When exporting a selection, you
+can specify any rectangular area, not just the current selection.
+
+```ts
+grid.api.exportCsv({
+  dataRect: { rowStart: 2, rowEnd: 4, columnStart: 4, columnEnd: 2 },
+});
+```
+
+## CSV Delimiter
+
+Set the `delimiter` option to control the character separating CSV fields. The default is a comma
+(`,`).
+
+## Include Headers and Group Headers
+
+By default, `exportCsv` exports only cell data.
+
+- Set `includeHeaders: true` to include column headers.
+- Set `includeGroupHeaders: true` to include group headers.
+
+Group headers often span multiple columns. By default, only the first spanned column contains the
+header value, leaving the rest blank. To repeat the header across all spanned columns, set
+`uniformGroupHeaders: true`. This produces a perfectly rectangular CSV output.

@@ -1,0 +1,58 @@
+---
+title: Column Header Renderer
+description: Learn how to create, implement, and register custom header renderers for
+  columns in LyteNyte Grid.
+---
+
+Add a custom React component to a column's header by setting the
+`headerRenderer` property. Custom header renderers let you show
+specialized content in LyteNyte Grid headers.
+
+LyteNyte Grid renders your custom header inside a managed container. The
+grid maintains the container structure, while your renderer controls the
+content inside it.
+
+import Image from "next/image";
+import Header from "./components/header-renderer.png";
+
+<div className="flex items-center justify-center">
+  <Image src={Header} alt="header renders in custom container" />
+</div>
+
+## Creating a Header Renderer
+
+A header renderer is a React component that receives the LyteNyte Grid
+API and the column as props. Your header renderer must return a
+`ReactNode`.
+
+!demo:Creating A Header Renderer="./demos/column-header-renderer"
+
+## Header Renderer Registration System
+
+You can also pass a `string` value to `headerRenderer`. In this case,
+LyteNyte Grid treats it as a key for a registered header renderer.
+
+Register header renderers and reference them by name when you want to:
+
+- Reuse the same renderer across columns
+- Keep columns serializable
+- Define columns on the server and renderers on the client
+
+Register a header renderer by setting `headerCellRenderers` in the
+initial value for `useLyteNyte`. You can then reference it by name.
+
+!demo:Registering A Header Renderer="./demos/column-header-renderer-registration"
+
+### Registering a Header Renderer vs Direct Component
+
+**Direct React component:**
+
+- Quick for simple use cases
+- Less flexible because the column is not serializable
+- Logs for the column won't show a readable property value
+
+**Registered header renderer:**
+
+- Keeps the column serializable for data transfer
+- Produces readable values when logging columns
+- Separates column definitions from rendering logic

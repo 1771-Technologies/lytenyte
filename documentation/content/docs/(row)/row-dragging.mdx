@@ -1,0 +1,53 @@
+---
+title: Row Dragging
+description:
+  Learn about row dragging in LyteNyte Grid, with support for external drop zones and multiple row
+  dragging.
+---
+
+LyteNyte Grid provides flexible row dragging that lets users move data through intuitive
+drag-and-drop interactions. You can drag single or multiple rows within a grid, across multiple
+grids, or into external drop zones. The grid supplies the mechanics without enforcing default
+behavior, so you control how drag interactions are handled.
+
+## Single Row Dragging
+
+Use the `grid.api.useRowDrag` hook to add row dragging. This hook returns drag props that you attach
+to a drag handle component. It expects a `getDragData` callback, which must return the drag data in
+the following shape:
+
+```tsx
+export interface DragData {
+  readonly siteLocalData?: Record<string, any>;
+  readonly dataTransfer?: Record<string, string>;
+}
+```
+
+Drop zones must declare which drag data keys they accept. For example, the `Row` component is a
+dropzone. Set its `accepted` property to specify what it will accept.
+
+The example below shows a basic setup. Pay attention to the marker column's `cellRenderer` and the
+`accepted` prop on `Grid.Row`.
+
+!demo:Row Dragging="./demos/row-dragging"
+
+## Dragging Multiple Rows
+
+Extend row dragging to multiple rows by combining it with Row Selection. Instead of dragging a single
+row, you query the selection state in `getDragData` to include all selected rows.
+
+!demo:Row Dragging Multiple="./demos/row-dragging-multi"
+
+## Dragging Between Grids
+
+To drag between grids, use a shared `accepted` value. For example, setting `accepted=["row"]` on both
+grids allows any drag data with a `row` property to be dropped onto rows in either grid.
+
+!demo:Row Dragging Between Grids="./demos/row-dragging-between-grids"
+
+## External Drop Zones
+
+LyteNyte Grid provides a `DropWrap` component for external drop zones. `DropWrap` is a simple `div`
+that handles all the necessary drag events and can accept any drag data produced by the grid.
+
+!demo:Row Dragging External Drop Zone="./demos/row-dragging-external-dropzone"

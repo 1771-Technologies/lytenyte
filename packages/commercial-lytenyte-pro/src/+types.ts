@@ -3138,7 +3138,7 @@ export interface FieldFnParams<T> {
  *
  *   Example: `"point.x"` will return `data.point.x`. Useful for deeply nested row data.
  *
- *   @group field
+ *   @group Field
  */
 export interface FieldPath {
   /**

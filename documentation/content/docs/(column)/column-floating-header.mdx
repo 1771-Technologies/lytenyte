@@ -1,0 +1,38 @@
+---
+title: Column Floating Header
+description: LyteNyte Grid's floating row is a specialized header row that appears
+  below the main column headers. It lets you render custom components for
+  each column. While often used for filtering interfaces, you can use it
+  for any component type.
+---
+
+# Column Floating Header
+
+Enable the floating header row by setting `floatingRowEnabled` to `true`
+in the grid configuration. Once enabled, a row appears below the column
+headers with cells for each column. Each floating cell's content comes
+from the column's `floatingCellRenderer` property.
+
+!demo:Column Floating Cell="./demos/column-floating"
+
+## Floating Cell Components
+
+Set a column's `floatingCellRenderer` to a React component or a string.
+If you provide a string, it acts as a lookup key for components
+registered in the grid's state. Use the grid's
+`floatingCellRenderers` property to register these components.
+
+!demo:Floating Cell Registered="./demos/column-floating-registered"
+
+We recommend registering floating cell renderers and referencing them
+from columns instead of providing React components directly. This
+practice keeps columns serializable and simplifies debugging.
+
+## Toggling the Floating Row Visibility
+
+Toggle the floating row by updating the grid's
+`floatingRowEnabled` state:
+
+```ts
+const toggleFloatingFilter = () => grid.state.floatingRowEnabled.set((prev) => !prev);
+```

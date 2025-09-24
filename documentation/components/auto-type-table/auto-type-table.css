@@ -1,0 +1,31 @@
+.att > div {
+  & > div {
+    & > p:first-child {
+      width: 40%;
+    }
+    & > button {
+      & > code {
+        width: 40%;
+        font-size: 12px;
+      }
+
+      & > span:first-of-type {
+        display: none;
+      }
+    }
+
+    & > button + div > div {
+      grid-template-columns: 30% 1fr;
+    }
+  }
+}
+
+@media screen and (min-width: 680px) {
+  .att > div > div > button > span:first-of-type {
+    display: block;
+  }
+
+  .att > div > div > button + div > div {
+    grid-template-columns: 40% 1fr;
+  }
+}

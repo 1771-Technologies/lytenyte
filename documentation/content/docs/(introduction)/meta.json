@@ -1,0 +1,9 @@
+{
+  "pages": [
+    "intro-getting-started",
+    "intro-installation",
+    "intro-license-activation",
+    "intro-getting-support"
+  ],
+  "defaultOpen": true
+}

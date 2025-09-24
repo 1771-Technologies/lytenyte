@@ -1,0 +1,34 @@
+---
+title: Context Menu
+description:
+  Implement customized context menus to enable interactive functionality for specific grid elements
+  in LyteNyte Grid.
+---
+
+LyteNyte Grid provides the `grid.api.positionFromElement` method to help implement context menu
+functionality. The context menu component itself must come from your preferred UI library.
+
+The example below demonstrates integration with the
+[Radix UI Context Menu](https://www.radix-ui.com/primitives/docs/components/context-menu).
+
+!demo:Context Menu="./demos/context-menu"
+
+## Integration
+
+In the example, grid rows are wrapped in Radix UI's `ContextMenu.Root`. This illustrates one of the
+advantages of a headless grid: you can integrate third-party UI components easily and decide where
+and how to attach them.
+
+## Position Resolution
+
+The `grid.api.positionFromElement` method returns either a `PositionUnion` object or `null`.  
+A `PositionUnion` represents the resolved grid position of an element and can identify:
+
+- Cell
+- Floating cell
+- Header cell
+- Full-width row
+- Header group cell
+
+The element you pass does not have to be the direct grid element-it can be a child element. LyteNyte
+Grid resolves it to the correct grid position automatically.

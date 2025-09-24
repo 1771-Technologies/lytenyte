@@ -1,0 +1,21 @@
+---
+title: Column Header Name
+description: Learn how to set, display, and update column header names in LyteNyte Grid.
+---
+
+Set the `name` property to give any column a user-friendly display name.
+The grid's default header renderer shows this value in the column header.
+
+Other LyteNyte Grid components also use the `name` property when showing
+column-related information. For example, the
+[Column Manager](/docs/component-column-manager) uses `name` values as
+row labels.
+
+!demo:Header Name Usage="./demos/column-header-name"
+
+## Updating the Header Name
+
+Use the `columnUpdate` API method to change a column's header name. This
+method lets you update any column property, including the header name.
+
+!demo:Header Name Update="./demos/column-header-name-update"

@@ -1,0 +1,48 @@
+---
+title: Row Sorting
+description:
+  Configure and control row sorting in LyteNyte Grid using sort models, column configurations, and
+  programmatic API methods.
+---
+
+LyteNyte Grid sorts rows based on the `sortModel` property in grid state. The row data source you set
+on the grid performs the actual sorting.
+
+## Sort Model
+
+The `sortModel` is an array of sort configurations. LyteNyte Grid supports three standard sort types and
+one custom type.
+
+Example:
+
+```tsx
+{ columnId: "age", sort: { kind: "number" }, isDescending: false },
+```
+
+Each sort configuration includes:
+
+- **`columnId`** - The column to sort.
+- **`sort.kind`** - The sort type:
+  - `"number"`
+  - `"string"`
+  - `"date"`
+  - `"custom"` - Requires a custom comparator function.
+- **`isDescending`** - Boolean indicating sort direction.
+
+!demo:Row Sort Model="./demos/row-sorting"
+
+## Multi-Column Sort
+
+Because `sortModel` is an array, you can define multiple sort rules. This creates a multi-way sort:
+
+1. The first item in the array takes priority.
+2. If values are equal, the next sort rule is applied, and so on.
+
+In the example below hold **Ctrl** (Windows/Linux) or **Command** (macOS) when clicking a header
+to add it to the sorting list. See the `Header` component in the
+example for one way to implement this.
+
+If header clicks are reserved for another action or feel unintuitive, use the
+[Sort Manager](/docs/component-sort-manager) component for a dedicated multi-sort UI.
+
+!demo:Row Sort Model Multi="./demos/row-sorting-multi"

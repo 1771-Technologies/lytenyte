@@ -1,0 +1,20 @@
+---
+title: Marker Column
+description: Understanding the automatically generated marker column and its
+  functionality in LyteNyte Grid
+---
+
+The marker column is a special column you can enable in the grid state.
+LyteNyte Grid creates and manages it automatically. It is not part of
+your column definitions and is always frozen to the start of the grid.
+
+The marker column provides auxiliary row functionality, such as a
+selection checkbox or an expand icon for master-detail features.
+
+## Marker Column Usage
+
+Enable the marker column by setting `markerColumnEnabled` to `true` on
+the grid. You can define it with the `markerColumn` property. The
+example below shows a marker column with checkbox selection.
+
+!demo:Marker Column="./demos/column-marker"

@@ -1,0 +1,56 @@
+---
+title: Grid Versioning
+description: Understand LyteNyte Grid's versioning system, release strategy, and how to ensure
+  you're using the appropriate version for your enterprise license.
+---
+
+# Grid Versioning
+
+All LyteNyte Grid packages follow [semver](https://semver.org/) versioning. A LyteNyte Grid version
+consists of three numbers separated by periods, such as `1.2.0`.
+
+Each number in a version corresponds to a specific type of release (major.minor.patch):
+
+- **Major**: Indicates incompatible changes that break backward compatibility. Adopting a new major
+  version may require code changes in your application.
+
+- **Minor**: Represents compatible changes and new features that maintain backward compatibility.
+  These versions work with your existing code without requiring modifications.
+
+- **Patch**: Denotes releases containing bug fixes and minor improvements.
+
+We commonly refer to minor and patch releases as **updates**, while **major** releases are
+considered **upgrades**.
+
+## Release Cadence
+
+LyteNyte Grid does not follow a fixed release schedule. Bug fixes are released as soon as they
+pass all internal checks and testing procedures.
+
+While major releases with new capabilities may seem desirable, we recognize that developers prefer
+stability and minimal code changes. With this in mind, 1771 Technologies strives to minimize or
+completely eliminate breaking changes. Most feature improvements are delivered as compatible minor
+updates.
+
+When adding significant features to LyteNyte Grid, we may advance to a new major version even without
+breaking changes - primarily to highlight substantial new functionality. Breaking changes
+will always be clearly documented in our [changelog](/docs/changelog/latest). While not every
+major release contains breaking changes, any breaking change will trigger a major version
+increment. This ensures your code remains stable when updating minor versions only.
+
+## Checking for the Latest Version
+
+You can verify the latest published version on the
+[NPM Registry](https://www.npmjs.com/package/@1771technologies/lytenyte-pro).
+
+### Version Date
+
+For license holders, your license covers all versions released within your license term
+(typically one year from purchase date). If you use a version of LyteNyte Grid outside your license
+term, a watermark will appear in your application.
+
+LyteNyte Grid exports both the version number and version date for reference:
+
+```ts
+import { versionDate, version } from "@1771technologies/lytenyte-pro";
+```

@@ -1,0 +1,51 @@
+---
+title: Row Detail
+description: Create expandable detail sections beneath rows in LyteNyte Grid with customizable React
+  components, expansion controls, and programmatic API methods.
+---
+
+LyteNyte Grid lets you add expandable detail sections beneath individual rows.
+This feature, called **Row Detail** (also known as Master Detail),
+lets you render any React component in the expanded area.
+
+## Enable Row Detail
+
+Expand a row's detail area by adding its `id` to the `rowDetailExpansions`
+state in LyteNyte Grid. This enables expansion for specific rows.
+Provide a React component through the `rowDetailRenderer` property
+to define the content in each row's detail section.
+
+!demo:Row Detail="./demos/row-detail"
+
+### Set Row Detail Height
+
+Control the detail area's height with the `rowDetailHeight`
+property. Specify a fixed pixel value or use the
+string `"auto"` to return a calculated pixel height.
+
+!demo:Row Detail Height="./demos/row-detail-height"
+
+### Add a Row Detail Marker
+
+By default, LyteNyte Grid does not include a built-in component
+for expanding or collapsing a row's detail area. Use the
+`api.rowDetailToggle` method to toggle or set a row's expansion state.
+A common approach is to use LyteNyte Grid's marker column as the toggle control.
+
+Example:
+
+!demo:Row Detail Marker="./demos/row-detail-marker"
+
+## Manage Row Detail Expansions
+
+The `rowDetailExpansions` property in grid state stores
+the ids of expanded rows. Update this value programmatically
+to change which rows show their detail sections.
+
+Use these LyteNyte Grid API methods to control row detail programmatically:
+
+- `rowDetailIsExpanded` - Returns `true` if a row is expanded.
+- `rowDetailToggle` - Switches a row's expansion state.
+- `rowDetailRenderedHeight` - Returns the current visible height (in pixels) of a row's detail section.
+
+See the [API Reference](/docs/reference/overview) for complete details.

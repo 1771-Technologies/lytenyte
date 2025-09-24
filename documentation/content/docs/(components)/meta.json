@@ -1,0 +1,13 @@
+{
+  "title": "Components",
+  "pages": [
+    "component-column-manager",
+    "component-filter-tree",
+    "component-context-menu",
+    "component-dialog-frame",
+    "component-popover-frame",
+    "component-sort-manager",
+    "component-grid-box"
+  ],
+  "defaultOpen": true
+}

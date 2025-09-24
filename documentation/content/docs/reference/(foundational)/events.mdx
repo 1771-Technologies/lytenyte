@@ -1,0 +1,234 @@
+---
+title: Events
+description: The API reference for the events functionality in LyteNyte Grid.
+---
+## `ColumnMoveBeginFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
+
+<AutoTypeTable type={`export interface ColumnMoveBeginFn {
+
+          /** 
+           * A callback function type for the columnMoveBegin event, fired when a column move starts.
+           */
+          ColumnMoveBeginFn: (params: (ColumnMoveBeginParams) => void)
+          }`} />
+
+## `ColumnMoveBeginParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+The parameters provided when a column move operation begins. This event allows the move action to be canceled.
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="ColumnMoveBeginParams" />
+
+## `ColumnMoveEndFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
+
+<AutoTypeTable type={`export interface ColumnMoveEndFn {
+
+          /** 
+           * A callback function type for the columnMoveEnd event, fired when a column move completes.
+           */
+          ColumnMoveEndFn: (params: (ColumnMoveEndParams) => void)
+          }`} />
+
+## `ColumnMoveEndParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+The parameters emitted when a column move operation has completed.
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="ColumnMoveEndParams" />
+
+## `EditBegin`<span className="type-tag" style={{ '--type-content': "'function'" }} />
+
+<AutoTypeTable type={`export interface EditBegin {
+
+          /** 
+           * An event fired when a cell begins editing. This provides an opportunity to cancel the edit before any changes are made.
+           */
+          EditBegin: (params: (OnEditBeginParams) => void)
+          }`} />
+
+## `EditCancel`<span className="type-tag" style={{ '--type-content': "'function'" }} />
+
+<AutoTypeTable type={`export interface EditCancel {
+
+          /** 
+           * An event fired when an in-progress cell edit is canceled. Most commonly triggered by user interaction, such as pressing the Escape key.
+           */
+          EditCancel: (params: (OnEditCancelParams) => void)
+          }`} />
+
+## `EditEnd`<span className="type-tag" style={{ '--type-content': "'function'" }} />
+
+<AutoTypeTable type={`export interface EditEnd {
+
+          /** 
+           * An event fired when a cell finishes editing successfully (i.e., without error or cancellation).
+           */
+          EditEnd: (params: (OnEditEndParams) => void)
+          }`} />
+
+## `EditError`<span className="type-tag" style={{ '--type-content': "'function'" }} />
+
+<AutoTypeTable type={`export interface EditError {
+
+          /** 
+           * An event fired when an error occurs during cell editing—either due to validation failure or runtime exception.
+           */
+          EditError: (params: (OnEditErrorParams) => void)
+          }`} />
+
+## `GridEvents`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+A comprehensive map of all possible events that LyteNyte Grid may emit during its lifecycle.
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="GridEvents" />
+
+## `OnEditBeginParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+Parameters dispatched with the  ``onEditBegin``  event, triggered when editing starts.
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="OnEditBeginParams" />
+
+## `OnEditCancelParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+Parameters passed to the  ``onEditCancel``  event, triggered when editing is aborted (e.g., Escape key).
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="OnEditCancelParams" />
+
+## `OnEditEndParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+Parameters passed to the  ``onEditEnd``  event, triggered when editing successfully completes.
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="OnEditEndParams" />
+
+## `OnEditErrorParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+Parameters passed to the  ``onEditError``  event, triggered when validation or logic errors occur during editing.
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="OnEditErrorParams" />
+
+## `RowDetailExpansionBegin`<span className="type-tag" style={{ '--type-content': "'function'" }} />
+
+<AutoTypeTable type={`export interface RowDetailExpansionBegin {
+
+          /** 
+           * An event fired when the row detail expansion process begins. This provides an opportunity to cancel expansion before it takes effect.
+           */
+          RowDetailExpansionBegin: (params: (RowDetailExpansionBeginParams) => void)
+          }`} />
+
+## `RowDetailExpansionBeginParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+The parameters for the  ``rowDetailExpansionBegin``  event. This event allows preventing expansion of row detail sections by calling  ``preventDefault()`` .
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowDetailExpansionBeginParams" />
+
+## `RowDetailExpansionEnd`<span className="type-tag" style={{ '--type-content': "'function'" }} />
+
+<AutoTypeTable type={`export interface RowDetailExpansionEnd {
+
+          /** 
+           * An event fired after the row detail expansion completes successfully.
+           */
+          RowDetailExpansionEnd: (params: (RowDetailExpansionEndParams) => void)
+          }`} />
+
+## `RowDetailExpansionEndParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+The parameters for the  ``rowDetailExpansionEnd``  event, fired once a row detail expansion operation is complete.
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowDetailExpansionEndParams" />
+
+## `RowExpandBeginFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
+
+<AutoTypeTable type={`export interface RowExpandBeginFn {
+
+          /** 
+           * Event handler function type for the  ''rowExpandBegin''  event. Triggered before row group expansion, allowing you to cancel the operation.
+           */
+          RowExpandBeginFn: (params: (RowExpandBeginParams) => void)
+          }`} />
+
+## `RowExpandBeginParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+Describes the parameters passed to the  ``rowExpandBegin``  event. This event is triggered before row group expansion occurs and provides a way to cancel the action.
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowExpandBeginParams" />
+
+## `RowExpandErrorFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
+
+<AutoTypeTable type={`export interface RowExpandErrorFn {
+
+          /** 
+           * Event handler function type for the  ''rowExpandError''  event. Called when row group expansion fails due to an error.
+           */
+          RowExpandErrorFn: (params: (RowExpandErrorParams) => void)
+          }`} />
+
+## `RowExpandErrorParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+Describes the parameters passed to the  ``rowExpandError``  event. This event is emitted when an error occurs during row group expansion.
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowExpandErrorParams" />
+
+## `RowExpandFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
+
+<AutoTypeTable type={`export interface RowExpandFn {
+
+          /** 
+           * Event handler function type for the  ''rowExpand''  event. Called when row group expansion is successfully completed.
+           */
+          RowExpandFn: (params: (RowExpandParams) => void)
+          }`} />
+
+## `RowExpandParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+Describes the parameters passed to the  ``rowExpand``  event. This event is emitted after a row group has been successfully expanded.
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowExpandParams" />
+
+## `RowSelectAllBegin`<span className="type-tag" style={{ '--type-content': "'function'" }} />
+
+<AutoTypeTable type={`export interface RowSelectAllBegin {
+
+          /** 
+           * An event triggered when the "select all" operation begins. It provides an opportunity to cancel the selection.
+           */
+          RowSelectAllBegin: (params: (RowSelectAllBeginParams) => void)
+          }`} />
+
+## `RowSelectAllBeginParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+The parameters provided when a "select all" operation starts. This event allows the operation to be canceled.
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowSelectAllBeginParams" />
+
+## `RowSelectAllEnd`<span className="type-tag" style={{ '--type-content': "'function'" }} />
+
+<AutoTypeTable type={`export interface RowSelectAllEnd {
+
+          /** 
+           * An event triggered once the "select all" operation is complete.
+           */
+          RowSelectAllEnd: (params: (RowSelectAllEndParams) => void)
+          }`} />
+
+## `RowSelectAllEndParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+The parameters passed when a "select all" operation completes.
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowSelectAllEndParams" />
+
+## `RowSelectBegin`<span className="type-tag" style={{ '--type-content': "'function'" }} />
+
+<AutoTypeTable type={`export interface RowSelectBegin {
+
+          /** 
+           * An event triggered when a row selection starts. This event allows cancellation before the selection is finalized.
+           */
+          RowSelectBegin: (params: (RowSelectBeginParams) => void)
+          }`} />
+
+## `RowSelectBeginParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+The parameters provided when a row selection begins. This event occurs before the selection change takes effect,
+giving the caller an opportunity to prevent it.
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowSelectBeginParams" />
+
+## `RowSelectEnd`<span className="type-tag" style={{ '--type-content': "'function'" }} />
+
+<AutoTypeTable type={`export interface RowSelectEnd {
+
+          /** 
+           * An event triggered once the row selection is finalized.
+           */
+          RowSelectEnd: (params: (RowSelectEndParams) => void)
+          }`} />
+
+## `RowSelectEndParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+The parameters passed when a row selection has completed.
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowSelectEndParams" />

@@ -1,0 +1,62 @@
+---
+title: Grid Theming
+description: LyteNyte Grid ships unstyled by default, so you can apply any CSS
+  approach you prefer. This guide offers tips on the best styling
+  practices and shows different ways to style LyteNyte Grid components.
+---
+
+## Applying Styles
+
+LyteNyte Grid is headless. Most components expose props for styling,
+but some such as cell selection overlay rectangles -are not directly
+accessible. These must be styled with CSS selectors.
+
+For exposed components, simply add your CSS classes or inline styles.
+For example, with
+[Tailwind](https://tailwindcss.com/), styling a cell is as easy as:
+
+```tsx
+<Grid.Cell className="flex items-center text-sm" />
+```
+
+This familiar approach means you can style the grid with your existing
+design system, without reinventing a new approach to styling a grid.
+
+### Styling Considerations
+
+While unstyled, LyteNyte Grid applies essential inline styles for
+`position`, `width`, `height`, and `box-sizing`. Avoid overriding these
+as they are necessary for correct grid behavior.
+
+Pinned (frozen) elements are transparent. Always give each cell and
+header cell its own background color. Styling only the row is not
+enough because pinned elements share the same row.
+
+An easy method is to target the grid's data attributes:
+
+```css
+[data-ln-header-cell="true"],
+[data-ln-header-group="true"],
+[data-ln-cell="true"],
+[data-ln-row="true"][data-ln-rowtype="full-width"] {
+  background-color: black;
+  color: white;
+}
+```
+
+You can style each selector individually. For reference, check the
+LyteNyte themes in our
+[GitHub repository](https://github.com/1771-Technologies/lytenyte/blob/main/packages/lytenyte-core/main.css).
+
+## Provided Themes
+
+LyteNyte Grid includes four ready-to-use themes. Apply them by adding
+the theme's class name to a parent element (typically `html` or `body`)
+along with the `lng-grid` class.
+
+- `lng1771-teal`: teal accent theme.
+- `lng1771-term256`: terminal color theme.
+- `dark`: standard dark theme.
+- `light`: standard light theme.
+
+!demo:Pre-made LyteNyte Grid Themes="./demos/grid-theming"

@@ -1,0 +1,66 @@
+---
+title: Row Selection
+description:
+  Configure and manage single and multiple row selection in LyteNyte Grid with checkboxes, click
+  interactions, and programmatic control.
+---
+
+LyteNyte Grid supports flexible row selection, including single and multiple selection modes. Users
+can select rows through clicks, checkboxes, or both.
+
+## Enable Row Selection
+
+Set the `rowSelectionMode` property to `"single"` or `"multiple"`. To enable click-based selection,
+set `rowSelectionActivator` to `"single-click"` or `"double-click"`.
+
+!demo:Enabling Row Selection="./demos/row-selection"
+
+### Multiple Row Selection
+
+Set `rowSelectionMode` to `"multiple"` to allow selecting multiple rows. Clicking a row toggles its
+selection. Hold **Shift** and click another row to select the range between it and the last selected
+row.
+
+!demo:Multiple Row Selection="./demos/row-selection-multi"
+
+## Row Selection with Group Rows
+
+Group rows create hierarchical relationships with their child rows. Control whether selecting a
+group row also selects its children with the `rowSelectChildren` property.
+
+!demo:Row Selection Group Selection="./demos/row-selection-groups"
+
+## Checkbox Selection
+
+When combining selection with group toggle buttons, stop event propagation to avoid triggering both
+actions. Alternatively, set selection to `"double-click"` or implement your own checkbox selection
+logic.
+
+!demo:Row Selection Checkbox="./demos/row-selection-checkbox"
+
+Use `grid.api.rowHandleSelect` to simplify selection handling in components. This method supports
+shift-based range selection out of the box.
+
+```tsx
+<input
+  type="checkbox"
+  checked={rowSelected}
+  onChange={() => {}}
+  onClick={(e) => {
+    grid.api.rowHandleSelect({
+      target: e.currentTarget,
+      shiftKey: e.shiftKey,
+    });
+  }}
+/>
+```
+
+Attach the selection logic to the `onClick` event to easily detect **Shift** key presses.
+
+## Prevent Row Selection
+
+To block selection for certain rows, listen for the `rowSelectBegin` event and call
+`preventDefault()`. In the example below, odd-numbered rows cannot be selected.  
+See the [event guide](/docs/grid-events) for more on handling grid events.
+
+!demo:Prevent Row Selection="./demos/row-selection-preventing"

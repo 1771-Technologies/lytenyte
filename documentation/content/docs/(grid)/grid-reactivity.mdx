@@ -1,0 +1,105 @@
+---
+title: Grid Reactivity
+description: LyteNyte Grid follows declarative principles. Its state system stays
+  fully reactive, automatically keeping the view synchronized with state
+  changes. This aligns with React's core philosophy that "view is a
+  function of state."
+---
+
+You can naturally leverage this reactivity in your React code, allowing
+smooth integration with other components. LyteNyte Grid achieves this
+by using standard React primitives, enabling seamless interaction
+throughout your application.
+
+## The Grid State Object
+
+The grid state object serves as your interface to LyteNyte Grid. The
+`Grid.useLyteNyte` hook returns it, and it contains a `state` property.
+Most keys in this object match those in the initial state you pass to
+`useLyteNyte`. This is intentional. LyteNyte Grid also adds several
+helpful fields.
+
+While the keys match, the values differ. State values are grid atoms
+(observable values) designed for LyteNyte Grid's needs.
+
+Each atom provides `watch`, `get`, `set`, and `useValue` methods. To
+integrate an atom with React, call its `useValue` method. This hook
+retrieves the current value and triggers re-renders when the value
+changes. The `set` method updates the atom's value. Not all fields are
+settable, but most props you provide can also be changed reactively
+later.
+
+Here's an example:
+
+!demo:Grid Atoms="./demos/grid-reactivity-signal"
+
+The power of `useValue` extends beyond simple reactivity. Because the
+grid state comes from `useLyteNyte`, you can lift it to higher
+components and share it throughout your app.
+
+For example, you can display a line chart based on the selected row by
+passing the grid state to a chart component. Inside the chart, call
+`grid.state.rowSelectedIds.useValue` to re-render whenever the selection
+set changes:
+
+!demo:Draw Line On Row Selection="./demos/grid-reactivity-chart"
+
+This approach maintains React's one-way data flow without complex
+synchronization.
+
+## The Other Atom Methods
+
+Atoms also offer methods for specific scenarios.
+
+### The `get` Method
+
+`get` returns the atom's current value without hook rules, so you can
+call it anywhere.
+
+### The `set` Method
+
+`set` updates the atom's value. Like `useState`, it accepts a value or a
+function:
+
+```ts
+const grid = Grid.useLyteNyte({ gridId: "x" });
+
+grid.state.rowHeight.set(22);
+grid.state.rowHeight.set((prev) => prev + 10);
+```
+
+Avoid reading immediately after `set`, capture the value first:
+
+```ts
+const current = grid.state.rowHeight.get();
+grid.state.rowHeight.set(24);
+```
+
+### The `watch` Method
+
+`watch` monitors changes. Use it in `useEffect` or handlers, not during
+render. It notifies you of changes but doesn't pass the new value
+directly:
+
+```ts
+const rowHeightAtom = grid.state.rowHeight;
+
+useEffect(() => {
+  const remove = rowHeightAtom.watch(() => {
+    console.log(rowHeightAtom.peek());
+  });
+
+  return remove;
+}, [rowHeightAtom]);
+```
+
+LyteNyte Grid batches multiple changes into a single `watch` call:
+
+```ts
+rowHeightAtom.set(24);
+rowHeightAtom.set(32);
+rowHeightAtom.set(18);
+```
+
+This triggers only one `watch` call. Callbacks run in the microtask
+queue.

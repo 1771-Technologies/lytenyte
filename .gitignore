@@ -16,7 +16,21 @@ certificates
 scratch.txt
 auto-imports.d.ts
 
+source.generated.ts
+
 .content-collections/
+
+# generated content
+.contentlayer
+.content-collections
+.source
+
+
+/coverage
+/.next/
+/out/
+/build
+*.tsbuildinfo
 
 certs/
 .env
@@ -30,6 +44,10 @@ certs/
 
 .dev.vars
 
+# others
+.env*.local
+.vercel
+next-env.d.ts
 
 .turbo
 

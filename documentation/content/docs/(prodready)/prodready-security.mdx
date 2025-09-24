@@ -1,0 +1,71 @@
+---
+title: Security
+description:
+  1771 Technologies implements comprehensive security measures to ensure the safe integration of
+  LyteNyte Grid within your web applications.
+---
+
+This guide outlines key security considerations when
+implementing LyteNyte Grid in your projects. These guidelines
+apply to both the free `Core` edition and the `PRO` edition.
+
+## Content Security Policy
+
+LyteNyte Grid may require specific Content Security Policy (CSP) configurations for optimal
+operation. If you need background information on CSP, refer to the
+[MDN article on Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP).
+
+### Setting `style-src`
+
+To utilize LyteNyte Grid's full capabilities, your CSP's `style-src` directive must include
+`unsafe-inline`. This requirement supports the grid's advanced layout and virtualization features.
+Add the following to your HTML to implement this requirement:
+
+<Callout>
+
+You only need to add this meta tag if you are using a bespoke meta framework. All the
+popular frameworks such as Vite, React Router, TanStack Start, Next JS, etc, already
+have the necessary meta tags provided.
+
+</Callout>
+
+```html
+<meta
+  http-equiv="Content-Security-Policy"
+  content="default-src 'self'; style-src 'self' 'unsafe-inline';"
+/>
+```
+
+While the `unsafe-inline` directive is necessary, LyteNyte Grid's implementation of inline styles is
+carefully engineered to mitigate security vulnerabilities commonly associated with dynamic UI
+components. Using `unsafe-inline` could potentially expose a site to cross-site scripting (XSS)
+attacks by allowing malicious inline scripts and styles. However, LyteNyte Grid addresses these
+concerns through:
+
+- **Sanitization**: LyteNyte Grid thoroughly sanitizes and validates all style definitions before
+  application, ensuring they are free from harmful code or malicious content.
+
+- **Controlled Execution Context**: LyteNyte Grid restricts the dynamic generation of inline styles
+  to a controlled execution context, significantly reducing the potential for malicious code
+  execution.
+
+- **Content Isolation**: The grid operates in a manner that isolates dynamically generated content
+  from sensitive DOM elements and prevents script execution, providing protection against XSS attacks.
+
+- **Framework Compatibility**: Modern JavaScript frameworks and libraries commonly used with
+  LyteNyte Grid, incorporate built-in mechanisms to safely handle inline styles and
+  mitigate related risks. These frameworks provide additional security layers that complement
+  LyteNyte Grid's protective measures.
+
+Through these combined approaches, LyteNyte Grid ensures that the use of `unsafe-inline` styles does
+not compromise your web application's security. This architecture allows you to leverage LyteNyte
+Grid's powerful features while maintaining a strong security posture.
+
+It's worth noting that many modern web frameworks and development environments typically configure
+`unsafe-inline` in their default CSP due to similar requirements and established security practices.
+
+## Secure Data Transportation
+
+LyteNyte Grid is a client-side grid library that functions entirely within the browser without
+server communication. All data processed by LyteNyte Grid is supplied by the host web application,
+which bears responsibility for securing this data before transferring it to the grid.

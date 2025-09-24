@@ -1,0 +1,19 @@
+{
+  "title": "Columns",
+  "pages": [
+    "columns",
+    "column-header-name",
+    "column-header-renderer",
+    "column-visibility",
+    "column-field",
+    "column-groups",
+    "column-header-height",
+    "column-autosizing",
+    "column-moving",
+    "column-pinning",
+    "column-spanning",
+    "column-floating-header",
+    "marker-column"
+  ],
+  "defaultOpen": true
+}

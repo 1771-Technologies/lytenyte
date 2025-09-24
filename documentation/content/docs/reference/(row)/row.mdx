@@ -1,0 +1,64 @@
+---
+title: Row
+description: The API reference for the row functionality in LyteNyte Grid.
+---
+## `RowFullWidthPredicate`<span className="type-tag" style={{ '--type-content': "'function'" }} />
+
+<AutoTypeTable type={`export interface RowFullWidthPredicate {
+
+          /** 
+           * Predicate function to determine if a row should render in full-width mode.
+ * Commonly used for custom summary or grouped views.
+           */
+          RowFullWidthPredicate: (params: (RowFullWidthPredicateParams) => boolean)
+          }`} />
+
+## `RowFullWidthPredicateParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+Parameters provided to the  [RowFullWidthPredicate](/docs/reference/row#RowFullWidthPredicate)  function to determine
+if a row should span full width of the grid.
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowFullWidthPredicateParams" />
+
+## `RowFullWidthRendererFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
+
+<AutoTypeTable type={`export interface RowFullWidthRendererFn {
+
+          /** 
+           * Function to render the full-width row content. Returns a ReactNode to be rendered as the row.
+           */
+          RowFullWidthRendererFn: (params: (RowFullWidthRendererParams) => ReactNode)
+          }`} />
+
+## `RowFullWidthRendererParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+Parameters provided to the full-width row renderer.
+Includes row metadata and selection state.
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowFullWidthRendererParams" />
+
+## `RowGroup`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+Represents a group (branch) row which may contain children rows (leaf or other groups).
+Group rows are used in hierarchical views and support expansion/collapse behavior.
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowGroup" />
+
+## `RowHeight`<span className="type-tag" style={{ '--type-content': "'union'" }} />
+
+<TypeTable type={{"RowHeight":{"description":"A height configuration for rows. May be:\n- A fixed number (e.g. 30),\n- A fill value (e.g.  \\`\\`fill:1\\`\\` ),\n- A function that returns dynamic row height based on index.","type":"number |  | (i: ) => number"}}} />
+
+## `RowLeaf`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+Represents a leaf row in the grid. A leaf row is a terminal node that has no children.
+These rows typically represent the raw dataset and are used for aggregations and visual representation.
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowLeaf" />
+
+## `RowNode`<span className="type-tag" style={{ '--type-content': "'union'" }} />
+
+<TypeTable type={{"RowNode":{"description":"A union of  [RowLeaf](/docs/reference/row#RowLeaf)  and  [RowGroup](/docs/reference/row#RowGroup) . Represents any row that may appear in the grid view.\nUsed generically when the row type is not known ahead of time.","type":"RowLeaf | RowGroup"}}} />
+
+## `RowPin`<span className="type-tag" style={{ '--type-content': "'union'" }} />
+
+<TypeTable type={{"RowPin":{"description":"Indicates the pinning position of a row:\n- \"top\": pinned to top,\n- \"bottom\": pinned to bottom,\n- null: not pinned.\nPinned rows remain visible during scrolling.","type":"\"top\" | \"bottom\" | null"}}} />
+
+## `RowSection`<span className="type-tag" style={{ '--type-content': "'union'" }} />
+
+<TypeTable type={{"RowSection":{"description":"Specifies which section of the grid a row belongs to:\n- \"top\": pinned to the top area,\n- \"bottom\": pinned to the bottom area,\n- \"center\": scrollable middle area,\n- \"flat\": single flattened section.","type":"\"top\" | \"bottom\" | \"center\" | \"flat\""}}} />
