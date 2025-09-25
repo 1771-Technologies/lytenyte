@@ -4,7 +4,7 @@ import { cn } from "@/components/cn";
 import { Check, ClipboardIcon } from "lucide-react";
 import { useState } from "react";
 
-export function CopyButton({ text, className }: { text: string; className?: string }) {
+export function CopyButton({ text, className, ...props }: { text: string; className?: string }) {
   const [copied, setCopied] = useState(false);
 
   return (
@@ -15,6 +15,7 @@ export function CopyButton({ text, className }: { text: string; className?: stri
         className,
       )}
       aria-label="Copy to clipboard"
+      {...props}
       onClick={() => {
         navigator.clipboard.writeText(text);
         setCopied(true);

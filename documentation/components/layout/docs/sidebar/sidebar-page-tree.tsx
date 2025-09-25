@@ -7,6 +7,7 @@ import { SidebarSeparator } from "./sidebar-separator";
 import { SidebarItem } from "./sidebar-item";
 import { PageTreeFolder } from "./sidebar-page-tree-folder";
 import { cn } from "@/components/cn";
+import { ProTag } from "@/components/company/pro-tag";
 
 export interface SidebarComponents {
   Item: FC<{ item: PageTree.Item }>;
@@ -49,6 +50,8 @@ export function SidebarPageTree(props: { components?: Partial<SidebarComponents>
         }
 
         if (Item) return <Item key={item.url} item={item} />;
+
+        const isPro = ProMap[item.name as string];
         return (
           <SidebarItem
             key={item.url}
@@ -58,6 +61,11 @@ export function SidebarPageTree(props: { components?: Partial<SidebarComponents>
             className="text-[12px] font-semibold tracking-wide"
           >
             {item.name}
+            {isPro && (
+              <span className="scale-[0.8]">
+                <ProTag />
+              </span>
+            )}
           </SidebarItem>
         );
       });
@@ -66,3 +74,20 @@ export function SidebarPageTree(props: { components?: Partial<SidebarComponents>
     return <Fragment key={root.$id}>{renderSidebarList(root.children, 1)}</Fragment>;
   }, [props.components, root]);
 }
+
+const ProMap: Record<string, boolean> = {
+  "Server Row Data Source": true,
+  "Tree Row Data Source": true,
+  "Cell Selection": true,
+  "Column Pivoting": true,
+  "Column In Filter": true,
+  "Column Quick Filter": true,
+  "Column Manager": true,
+  "Filter Tree": true,
+  "Context Menu": true,
+  "Dialog Frame": true,
+  "Popover Frame": true,
+  "Sort Manager": true,
+  "Grid Box": true,
+  Clipboard: true,
+};

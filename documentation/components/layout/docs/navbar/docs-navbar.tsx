@@ -71,7 +71,7 @@ export function DocsNavbar({
               )}
             />
           ))}
-        <div className="flex flex-1 items-center justify-end md:gap-2">
+        <div className="flex flex-1 items-center justify-end gap-2 md:gap-2">
           <div className="flex items-center gap-6 empty:hidden max-lg:hidden">
             {links
               .filter((item) => item.type !== "icon")
@@ -84,29 +84,12 @@ export function DocsNavbar({
               ))}
           </div>
           {nav.children}
-          {links
-            .filter((item) => item.type === "icon")
-            .map((item, i) => (
-              <BaseLinkItem
-                key={i}
-                item={item}
-                className={cn(
-                  buttonVariants({ size: "icon-sm", color: "ghost" }),
-                  "text-fd-muted-foreground max-lg:hidden",
-                )}
-                aria-label={item.label}
-              >
-                {item.icon}
-              </BaseLinkItem>
-            ))}
 
           <div className="flex items-center lg:hidden">
             {searchToggle.enabled !== false &&
               (searchToggle.components?.sm ?? <SearchToggle hideIfDisabled className="p-2" />)}
-            <NavbarSidebarTrigger className="-me-1.5 p-2" />
           </div>
-
-          <div className="flex items-center gap-2 max-lg:hidden">
+          <div className="flex items-center gap-2">
             {props.i18n ? (
               <LanguageToggle>
                 <Languages className="size-4.5 text-fd-muted-foreground" />
@@ -116,6 +99,25 @@ export function DocsNavbar({
               (themeSwitch.component ?? (
                 <ThemeToggle mode={themeSwitch.mode ?? "light-dark-system"} />
               ))}
+          </div>
+          {links
+            .filter((item) => item.type === "icon")
+            .map((item, i) => (
+              <BaseLinkItem
+                key={i}
+                item={item}
+                className={cn(
+                  buttonVariants({ size: "icon-sm", color: "ghost" }),
+                  "text-fd-muted-foreground",
+                )}
+                aria-label={item.label}
+              >
+                {item.icon}
+              </BaseLinkItem>
+            ))}
+
+          <div className="flex items-center lg:hidden">
+            <NavbarSidebarTrigger className="-me-1.5 p-2" />
           </div>
         </div>
       </div>

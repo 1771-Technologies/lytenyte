@@ -4,7 +4,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getMDXComponents } from "@/mdx-components";
 import { LLMCopyButton, ViewOptions } from "@/components/page-actions";
-import { createRelativeLink } from "./create-relative-link";
 
 const owner = "1771-Technologies";
 const repo = "lytenyte";
@@ -18,22 +17,20 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
 
   return (
     <DocsPage toc={page.data.toc} full={page.data.full}>
-      <DocsTitle>{page.data.title}</DocsTitle>
+      <DocsTitle className="relative flex w-full items-center">
+        {page.data.title}
+
+        <div className="absolute right-0 flex flex-row items-center">
+          <LLMCopyButton markdownUrl={`${page.url}.mdx`} />
+          <ViewOptions
+            markdownUrl={`${page.url}.mdx`}
+            githubUrl={`https://github.com/${owner}/${repo}/blob/main/documentation/content/docs/${page.path}`}
+          />
+        </div>
+      </DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
-      <div className="flex flex-row items-center gap-2 border-b pb-6 pt-2">
-        <LLMCopyButton markdownUrl={`${page.url}.mdx`} />
-        <ViewOptions
-          markdownUrl={`${page.url}.mdx`}
-          githubUrl={`https://github.com/${owner}/${repo}/blob/main/documentation/content/docs/${page.path}`}
-        />
-      </div>
       <DocsBody>
-        <MDXContent
-          components={getMDXComponents({
-            // this allows you to link to other pages with relative file paths
-            a: createRelativeLink(source, page),
-          })}
-        />
+        <MDXContent components={getMDXComponents({})} />
       </DocsBody>
     </DocsPage>
   );
