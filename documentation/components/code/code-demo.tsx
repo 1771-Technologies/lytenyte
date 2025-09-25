@@ -6,10 +6,13 @@ import { CodeAccordion } from "./code-accordion";
 import { LinkButton } from "../ui/button";
 import { StackBlitzIcon } from "../icons/stackblitz-icon";
 import { CodeSandboxIcon } from "../icons/codesandbox-icon";
-import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+import { Tab } from "fumadocs-ui/components/tabs";
 import path from "path";
 import { highlight } from "codehike/code";
 import { CopyButton } from "./annotations/copy-button";
+import { CodeExpandButton } from "./code-expand-button";
+import { CodeTabs } from "./code-tabs";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 export interface CodeDemoProps {
   readonly title: string | null;
   readonly absolute: string;
@@ -43,31 +46,12 @@ export async function CodeDemo(props: PropsWithChildren<CodeDemoProps>) {
             </h3>
           )}
           <div className="flex-1" />
-
-          <LinkButton
-            href={props.stackBlitz}
-            size="icon-xs"
-            color="ghost"
-            target="_blank"
-            className="text-gray-800 dark:text-gray-600"
-          >
-            <StackBlitzIcon />
-          </LinkButton>
-          <LinkButton
-            href={props.codeSandbox}
-            size="icon-xs"
-            color="ghost"
-            target="_blank"
-            className="text-gray-800 dark:text-gray-600"
-          >
-            <CodeSandboxIcon />
-          </LinkButton>
         </div>
         <div className="text-gray border-y border-gray-400 dark:border-gray-100">
           {props.children}
         </div>
         <div className="relative">
-          <Tabs items={tabs} className="bg-fd-card group my-0 rounded-none border-transparent">
+          <CodeTabs tabs={tabs}>
             <CodeAccordion copySlot>
               {files.map((c, i) => {
                 return (
@@ -77,7 +61,47 @@ export async function CodeDemo(props: PropsWithChildren<CodeDemoProps>) {
                     style={{ padding: 0 }}
                     className="rounded-none bg-gray-50"
                   >
-                    <CopyButton className="top-[-32px]" text={copyContent[i]} />
+                    <TooltipProvider disableHoverableContent>
+                      <div className="absolute right-[42px] top-[-34px] flex items-center gap-2">
+                        <CodeExpandButton />
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <LinkButton
+                              href={props.stackBlitz}
+                              size="icon-xs"
+                              color="ghost"
+                              target="_blank"
+                              className="text-gray-800 dark:text-gray-600"
+                            >
+                              <StackBlitzIcon />
+                            </LinkButton>
+                          </TooltipTrigger>
+                          <TooltipContent>Fork this demo in StackBlitz</TooltipContent>
+                        </Tooltip>
+
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <LinkButton
+                              href={props.codeSandbox}
+                              size="icon-xs"
+                              color="ghost"
+                              target="_blank"
+                              className="text-gray-800 dark:text-gray-600"
+                            >
+                              <CodeSandboxIcon />
+                            </LinkButton>
+                          </TooltipTrigger>
+                          <TooltipContent>Fork this demo in Code Sandbox</TooltipContent>
+                        </Tooltip>
+                      </div>
+
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <CopyButton className="top-[-32px]" text={copyContent[i]} />
+                        </TooltipTrigger>
+                        <TooltipContent>Copy code content</TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
 
                     <Code
                       frame
@@ -88,7 +112,7 @@ export async function CodeDemo(props: PropsWithChildren<CodeDemoProps>) {
                 );
               })}
             </CodeAccordion>
-          </Tabs>
+          </CodeTabs>
         </div>
       </div>
     </CodeDemoProvider>

@@ -151,7 +151,6 @@ export function getLinks(links: LinkItemType[] = [], githubUrl?: string): LinkIt
 
   if (githubUrl)
     result = [
-      ...result,
       {
         type: "icon",
         url: githubUrl,
@@ -164,6 +163,8 @@ export function getLinks(links: LinkItemType[] = [], githubUrl?: string): LinkIt
         ),
         external: true,
       },
+
+      ...result,
     ];
 
   return result;

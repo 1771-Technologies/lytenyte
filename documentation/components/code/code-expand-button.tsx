@@ -11,7 +11,7 @@ export function CodeExpandButton() {
     <Button
       variant="ghost"
       size="sm"
-      className="gap-2 bg-gray-200 dark:bg-gray-100/60"
+      className="gap-2"
       onClick={() => {
         c.setShowCode((prev) => !prev);
       }}

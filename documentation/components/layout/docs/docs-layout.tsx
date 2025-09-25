@@ -101,7 +101,6 @@ export function DocsLayout(props: DocsLayoutProps) {
               className={cn("lg:hidden", i === arr.length - 1 && "mb-4")}
             />
           ))}
-
         <SidebarPageTree components={components} />
       </SidebarViewport>
     );

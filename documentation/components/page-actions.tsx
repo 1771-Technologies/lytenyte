@@ -6,6 +6,7 @@ import { buttonVariants } from "./ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "fumadocs-ui/components/ui/popover";
 import { cva } from "class-variance-authority";
 import { cn } from "./cn";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 
 const cache = new Map<string, string>();
 
@@ -41,20 +42,28 @@ export function LLMCopyButton({
   });
 
   return (
-    <button
-      disabled={isLoading}
-      className={cn(
-        buttonVariants({
-          color: "secondary",
-          size: "sm",
-          className: "[&_svg]:text-fd-muted-foreground gap-2 [&_svg]:size-3.5",
-        }),
-      )}
-      onClick={onClick}
-    >
-      {checked ? <Check /> : <Copy />}
-      Copy Markdown
-    </button>
+    <TooltipProvider delayDuration={200}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            disabled={isLoading}
+            className={cn(
+              buttonVariants({
+                color: "secondary",
+                size: "sm",
+                className:
+                  "[&_svg]:text-fd-muted-foreground h-[30px] gap-2 rounded-r-none border-r-transparent [&_svg]:size-3.5",
+              }),
+            )}
+            onClick={onClick}
+          >
+            {checked ? <Check /> : <Copy />}
+            <span className="hidden md:inline">Copy Page</span>
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>Copy page as markdown</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }
 
@@ -191,13 +200,6 @@ export function ViewOptions({
           </svg>
         ),
       },
-      // {
-      //   title: "Open in T3 Chat",
-      //   href: `https://t3.chat/new?${new URLSearchParams({
-      //     q,
-      //   })}`,
-      //   icon: <MessageCircleIcon />,
-      // },
     ];
   }, [githubUrl, markdownUrl]);
 
@@ -208,11 +210,10 @@ export function ViewOptions({
           buttonVariants({
             color: "secondary",
             size: "sm",
-            className: "gap-2",
+            className: "h-[30px] gap-2 rounded-l-none",
           }),
         )}
       >
-        Open
         <ChevronDown className="text-fd-muted-foreground size-3.5" />
       </PopoverTrigger>
       <PopoverContent className="flex flex-col overflow-auto">
