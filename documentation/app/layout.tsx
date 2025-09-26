@@ -9,6 +9,7 @@ import Script from "next/script";
 
 const inter = Inter({
   subsets: ["latin"],
+  style: ["italic", "normal"],
 });
 
 const archivo = Archivo({

@@ -348,8 +348,16 @@ h2 {
   --color-fd-ring: hsl(0, 0%, 63.9%);
 }
 
+.prose ul,
 .prose p {
   font-size: 14px;
+}
+
+.prose h3 {
+  font-size: 17px;
+}
+.prose em {
+  @apply italic;
 }
 
 .dark {
@@ -386,7 +394,7 @@ a {
   font-weight: 600;
 }
 
-#nd-page article > p:first-of-type {
+#nd-page article div + h1 + p {
   font-size: 16px;
   margin-bottom: 0px;
 }
