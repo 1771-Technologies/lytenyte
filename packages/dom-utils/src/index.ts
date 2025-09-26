@@ -13,6 +13,8 @@ export { testUserAgent } from "./test-user-agent.js";
 export { isHTMLElement } from "./is-html-element.js";
 export { isInView } from "./is-in-view.js";
 export { isLastTraversableNode } from "./is-last-traversable-node.js";
+export { getActiveElement } from "./get-active-element.js";
+export { getNearestMatching } from "./get-nearest-matching.js";
 
 export { FocusTrap } from "./focus/focus-trap.js";
 export { getFirstFocusable } from "./focus/get-first-focusable.js";
@@ -23,3 +25,4 @@ export { getNextTabbable } from "./focus/get-next-tabbable.js";
 export { getTabIndex } from "./focus/get-tab-index.js";
 export { getTabbables } from "./focus/get-tabbables.js";
 export { isFocusable } from "./focus/is-focusable.js";
+export { isTabbable } from "./focus/is-tabbable.js";

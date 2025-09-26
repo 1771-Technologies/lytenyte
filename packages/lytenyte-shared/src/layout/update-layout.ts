@@ -62,6 +62,7 @@ export function updateLayout(p: UpdateLayoutArgs): void {
   }
   for (let row = Math.max(p.rowStart - p.rowScanDistance, p.topCount); row < p.rowEnd; row++) {
     if (p.computed[row]) continue;
+
     computeSpans(p, row, p.startCount, centerEnd, 0);
     computeSpans(p, row, centerEnd, p.rowMax - p.botCount, p.startCount);
     computeSpans(p, row, end, p.rowMax + p.botCount, centerEnd);
@@ -69,6 +70,7 @@ export function updateLayout(p: UpdateLayoutArgs): void {
   const botMax = p.rowMax + p.botCount;
   for (let row = p.rowMax; row < botMax; row++) {
     if (p.computed[row]) continue;
+
     computeSpans(p, row, p.startCount, botMax, 0);
     computeSpans(p, row, centerEnd, botMax, p.startCount);
     computeSpans(p, row, end, botMax, centerEnd);
@@ -101,11 +103,11 @@ function computeSpans(
     return;
   }
 
-  const hasDead = special[row] === CONTAINS_DEAD_CELLS;
   const isCutOff = isRowCutoff(row);
 
   let base = lookup.get(row);
   for (let col = start; col < maxColBound; col++) {
+    const hasDead = special[row] === CONTAINS_DEAD_CELLS;
     const colSIndex = col * 4;
 
     // The cell is dead. It won't be rendered

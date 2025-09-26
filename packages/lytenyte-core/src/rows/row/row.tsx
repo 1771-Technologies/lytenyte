@@ -19,7 +19,7 @@ const RowImpl = forwardRef<HTMLDivElement, Omit<JSX.IntrinsicElements["div"], "o
     const ctx = useGridRoot().grid;
 
     const yPos = ctx.state.yPositions.useValue();
-    const rowMeta = useRowContextValue(ctx, row.row, yPos);
+    const rowMeta = useRowContextValue(ctx, row, yPos);
     const hasSpans = ctx.internal.hasSpans.useValue();
 
     const accepted = props.accepted ?? empty;

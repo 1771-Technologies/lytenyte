@@ -1,11 +1,7 @@
 import { forwardRef, type JSX } from "react";
 import { useCombinedRefs } from "@1771technologies/lytenyte-react-hooks";
 import { useGridRoot } from "../context.js";
-import {
-  handleNavigationKeys,
-  handleSkipInner,
-  useFocusTracking,
-} from "@1771technologies/lytenyte-shared";
+import { handleNavigation, useFocusTracking } from "@1771technologies/lytenyte-shared";
 import { beginEditing } from "./begin-editing.js";
 
 export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function Viewport(
@@ -31,41 +27,52 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
         {...props}
         onKeyDown={(e) => {
           props.onKeyDown?.(e);
+          if (e.defaultPrevented || e.isPropagationStopped() || !vp) return;
 
-          if (e.defaultPrevented) return;
-          handleSkipInner(e);
-
-          const ds = ctx.grid.state.rowDataStore;
-
-          handleNavigationKeys(e, {
-            vp: ctx.grid.state.viewport.get(),
-            rowCount: ds.rowCount.get(),
-            topCount: ds.rowTopCount.get(),
-            centerCount: ds.rowCenterCount.get(),
-            columnCount: ctx.grid.state.columnMeta.get().columnsVisible.length,
-            focusActive: ctx.grid.internal.focusActive,
-            id: ctx.grid.state.gridId.get(),
-            rtl: ctx.grid.state.rtl.get(),
+          handleNavigation({
+            gridId: ctx.grid.state.gridId.get(),
+            rtl,
+            event: e,
+            viewport: vp,
             getRootCell: ctx.grid.api.cellRoot,
             scrollIntoView: ctx.grid.api.scrollIntoView,
+            focusActive: ctx.grid.internal.focusActive,
+            columnCount: ctx.grid.state.columnMeta.get().columnsVisible.length,
           });
 
-          if (e.key === "Enter" || e.key.length === 1) {
-            // We use a timeout to avoid setting the value on clicks. This can happen when a user types
-            // a non-printable key.
-            setTimeout(() => {
-              beginEditing(ctx.grid, undefined, e.key === "Enter" ? undefined : e.key);
-            });
-          }
-          if (e.key === "Backspace" || e.key === "Delete") {
-            const focusPos = ctx.grid.internal.focusActive.get();
-            if (focusPos?.kind === "cell")
-              ctx.grid.api.editUpdate({
-                column: focusPos.colIndex,
-                rowIndex: focusPos.rowIndex,
-                value: null,
-              });
-          }
+          // handleSkipInner(e);
+
+          // const ds = ctx.grid.state.rowDataStore;
+
+          // handleNavigationKeys(e, {
+          //   vp: ctx.grid.state.viewport.get(),
+          //   rowCount: ds.rowCount.get(),
+          //   topCount: ds.rowTopCount.get(),
+          //   centerCount: ds.rowCenterCount.get(),
+          //   columnCount: ctx.grid.state.columnMeta.get().columnsVisible.length,
+          //   focusActive: ctx.grid.internal.focusActive,
+          //   id: ctx.grid.state.gridId.get(),
+          //   rtl: ctx.grid.state.rtl.get(),
+          //   getRootCell: ctx.grid.api.cellRoot,
+          //   scrollIntoView: ctx.grid.api.scrollIntoView,
+          // });
+
+          // if (e.key === "Enter" || e.key.length === 1) {
+          //   // We use a timeout to avoid setting the value on clicks. This can happen when a user types
+          //   // a non-printable key.
+          //   setTimeout(() => {
+          //     beginEditing(ctx.grid, undefined, e.key === "Enter" ? undefined : e.key);
+          //   });
+          // }
+          // if (e.key === "Backspace" || e.key === "Delete") {
+          //   const focusPos = ctx.grid.internal.focusActive.get();
+          //   if (focusPos?.kind === "cell")
+          //     ctx.grid.api.editUpdate({
+          //       column: focusPos.colIndex,
+          //       rowIndex: focusPos.rowIndex,
+          //       value: null,
+          //     });
+          // }
         }}
         onClick={(e) => {
           props.onClick?.(e);

@@ -11,8 +11,14 @@ export default defineConfig({
         extends: `${__dirname}/vitest.config.ts`,
         test: {
           name: "chrome",
-          include: ["./packages/**/*.test.?(c|m)[jt]s?(x)", "src/**/*.test.?(c|m)[jt]s?(x)"],
-          testTimeout: 60_000,
+          include: [
+            "./packages/**/*.test.?(c|m)[jt]s?(x)",
+            "src/**/*.test.?(c|m)[jt]s?(x)",
+            "./packages/**/*.pt.?(c|m)[jt]s?(x)",
+            "src/**/*.pt.?(c|m)[jt]s?(x)",
+          ],
+          // Tests can take quite long in CI
+          testTimeout: 120_000,
 
           setupFiles: `${__dirname}/test-setup.ts`,
           browser: {
@@ -46,8 +52,13 @@ export default defineConfig({
         extends: `${__dirname}/vitest.config.ts`,
         test: {
           name: "firefox and safari",
-          include: ["./packages/**/*.test.?(c|m)[jt]s?(x)", "src/**/*.test.?(c|m)[jt]s?(x)"],
-          testTimeout: 60_000,
+          include: [
+            "./packages/**/*.test.?(c|m)[jt]s?(x)",
+            "src/**/*.test.?(c|m)[jt]s?(x)",
+            "./packages/**/*.pt.?(c|m)[jt]s?(x)",
+            "src/**/*.pt.?(c|m)[jt]s?(x)",
+          ],
+          testTimeout: 120_000,
 
           setupFiles: `${__dirname}/test-setup.ts`,
           browser: {

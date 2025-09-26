@@ -1,5 +1,4 @@
 import "./navigation.css";
-import { useId } from "react";
 import type { Column } from "../../+types.js";
 import { useClientRowDataSource } from "../../row-data-source/use-client-data-source.js";
 import { useLyteNyte } from "../../state/use-lytenyte.js";
@@ -14,7 +13,7 @@ import { RowsContainer } from "../../rows/rows-container.js";
 import { RowsBottom, RowsCenter, RowsTop } from "../../rows/rows-sections.js";
 import { RowHandler } from "../test-utils/row-handler.js";
 
-const columns: Column<any>[] = [
+const baseColumns: Column<any>[] = [
   { id: "age" },
   { id: "job" },
   { id: "balance" },
@@ -33,23 +32,21 @@ const columns: Column<any>[] = [
   { id: "poutcome" },
   { id: "y" },
 ];
-export default function BasicRendering() {
+export default function BasicRendering({
+  rtl,
+  columns,
+}: {
+  rtl?: boolean;
+  columns?: Column<any>[];
+}) {
   const ds = useClientRowDataSource({
     data: bankDataSmall,
   });
   const g = useLyteNyte({
-    gridId: useId(),
-    columns,
+    gridId: "x",
+    columns: columns ?? baseColumns,
     rowDataSource: ds,
-
-    sortModel: [
-      {
-        columnId: "education",
-        sort: {
-          kind: "string",
-        },
-      },
-    ],
+    rtl: rtl,
   });
 
   const view = g.view.useValue();
