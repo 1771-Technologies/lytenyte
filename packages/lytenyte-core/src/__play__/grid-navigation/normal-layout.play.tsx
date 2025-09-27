@@ -35,12 +35,20 @@ const baseColumns: Column<any>[] = [
 export default function BasicRendering({
   rtl,
   columns,
+  pinTop,
+  center,
+  pinBot,
 }: {
   rtl?: boolean;
   columns?: Column<any>[];
+  center?: number;
+  pinTop?: number;
+  pinBot?: number;
 }) {
   const ds = useClientRowDataSource({
-    data: bankDataSmall,
+    data: center ? bankDataSmall.slice(0, center) : bankDataSmall,
+    topData: pinTop ? bankDataSmall.slice(0, pinTop) : [],
+    bottomData: pinBot ? bankDataSmall.slice(0, pinBot) : [],
   });
   const g = useLyteNyte({
     gridId: "x",

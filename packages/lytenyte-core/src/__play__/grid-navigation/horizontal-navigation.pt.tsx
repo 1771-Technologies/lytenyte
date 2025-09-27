@@ -91,6 +91,7 @@ test("when a cell is focused, we can navigate to the start and end in rtl", asyn
   await wait(); // Give the grid a moment to render
 
   const ourFirstCell = document.querySelector(getCellQuery("x", 2, 0)) as HTMLElement;
+  await wait(100);
   ourFirstCell.focus();
 
   await expect.element(ourFirstCell).toHaveFocus();
@@ -387,7 +388,7 @@ test("when there are column spans the grid should be able to navigate across the
   const grid = screen.getByRole("grid");
 
   await expect.element(grid).toBeVisible();
-  await wait(); // Give the grid a moment to render
+  await wait(100); // Give the grid a moment to render
 
   (document.querySelector(getCellQuery("x", 0, 0)) as HTMLElement).focus();
   await wait();
@@ -560,8 +561,8 @@ test("when there are column spans the grid should be able to navigate across the
   await verify();
 
   await userEvent.keyboard("{Control>}{ArrowLeft}{/Control}");
-  await expect.element(document.activeElement).toHaveTextContent("unknown");
   await wait(100);
+  await expect.element(document.activeElement).toHaveTextContent("unknown");
   await userEvent.keyboard("{Control>}{ArrowRight}{/Control}");
   await wait(100);
   await expect.element(document.activeElement).toHaveTextContent("39");
@@ -805,7 +806,7 @@ test("when a column span is large navigation should still work", async () => {
   await wait(); // Give the grid a moment to render
 
   (document.querySelector(getCellQuery("x", 0, 0)) as HTMLElement).focus();
-  await wait();
+  await wait(100);
 
   await expect.element(document.activeElement).toHaveTextContent("30");
   await userEvent.keyboard("{ArrowRight}");

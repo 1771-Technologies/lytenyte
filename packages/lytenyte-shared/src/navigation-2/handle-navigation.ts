@@ -12,6 +12,7 @@ import { getCellQuery } from "./getters/get-cell-query.js";
 import type { GridAtom, PositionGridCell, PositionUnion } from "../+types.js";
 import { isFullWidthRow } from "./predicates/is-full-width-row.js";
 import { getRowQuery } from "./getters/get-row-query.js";
+import { getRowSpanFromEl } from "./getters/get-row-span-from-el.js";
 
 interface Event {
   readonly key: string;
@@ -28,6 +29,7 @@ interface HandleNavigationArgs {
   readonly rtl: boolean;
 
   readonly columnCount: number;
+  readonly rowCount: number;
 
   readonly getRootCell: RootCellFn;
   readonly scrollIntoView: ScrollIntoViewFn;
@@ -40,6 +42,7 @@ export function handleNavigation({
   viewport,
   rtl,
   columnCount,
+  rowCount,
 
   getRootCell,
   scrollIntoView,
@@ -157,7 +160,14 @@ export function handleNavigation({
 
     if (position.kind === "full-width" || position.kind === "cell") {
       // We want to move up one cell
-      const next = isUp ? position.rowIndex - 1 : position.rowIndex + 1;
+      const next = isUp
+        ? isModified
+          ? 0
+          : position.rowIndex - 1
+        : isModified
+          ? rowCount - 1
+          : position.rowIndex + (position.kind === "full-width" ? 1 : getRowSpanFromEl(nearest));
+
       const root = getRootCell(next, position.colIndex);
       if (!root) return;
       const { rowIndex, colIndex } = root.kind === "cell" ? (root.root ?? root) : root;
@@ -173,7 +183,12 @@ export function handleNavigation({
 
         if (element) {
           if (root.kind === "full-width") (element.firstElementChild as HTMLElement).focus();
-          else element.focus();
+          else {
+            element.focus();
+            focusActive.set(
+              (prev) => ({ ...prev, colIndex: position.colIndex }) as PositionGridCell,
+            );
+          }
           return true;
         }
         return false;
