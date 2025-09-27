@@ -31,7 +31,7 @@ export function useFocusTracking(
 
         // Maintain the current column index. This can happen when we are navigating via the keyboard and
         // there are multiple focusables in the cell.
-        if (position.kind === "full-width")
+        if (position.kind === "full-width" || position.kind === "detail")
           (position.colIndex as any) = focusActive.get()?.colIndex ?? position.colIndex ?? 0;
         else if (position.kind === "header-group-cell") {
           (position.colIndex as any) = clamp(

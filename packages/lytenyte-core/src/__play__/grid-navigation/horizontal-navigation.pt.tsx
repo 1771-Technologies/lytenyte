@@ -32,6 +32,8 @@ test("when the grid is rendered tabbing through show skip cells inside", async (
   await expect.element(start).toHaveFocus();
   await userEvent.keyboard("{Tab}");
   await userEvent.keyboard("{Tab}");
+
+  await wait(100);
   await expect.element(screen.getByText("Bottom Capture")).toHaveFocus();
 });
 

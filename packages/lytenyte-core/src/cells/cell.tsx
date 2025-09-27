@@ -36,7 +36,19 @@ const CellImpl = memo(
     HTMLDivElement,
     Omit<JSX.IntrinsicElements["div"], "children"> & CellProps & Omit<RowMetaData, "colBounds">
   >(function Cell(
-    { cell, row, selected, indeterminate, xPositions, yPositions, base, renderers, rtl, ...props },
+    {
+      cell,
+      row,
+      selected,
+      indeterminate,
+      xPositions,
+      yPositions,
+      base,
+      renderers,
+      rtl,
+      layout: _,
+      ...props
+    },
     forwarded,
   ) {
     const grid = useGridRoot().grid;

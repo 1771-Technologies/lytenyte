@@ -11,9 +11,9 @@ export function CellSpacePinStart({ xPositions: x }: { xPositions: Uint32Array }
   if (meta.columnVisibleStartCount === 0 || layout.kind === "full-width") return null;
 
   const colOffset = layout.cells.findIndex(
-    (c) => c.colIndex + c.colSpan - 1 >= colBounds[0] && !c.isDeadCol,
+    (c) => !c.colPin && c.colIndex + c.colSpan - 1 >= colBounds[0] && !c.isDeadCol,
   );
-  const offset = x[colOffset - bounds.colStartEnd];
+  const offset = x[colOffset] - x[bounds.colStartEnd];
 
   return <div style={{ display: "inline-block", width: offset, height: 0 }} />;
 }

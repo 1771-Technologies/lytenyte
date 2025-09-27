@@ -39,6 +39,11 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
             focusActive: ctx.grid.internal.focusActive,
             columnCount: ctx.grid.state.columnMeta.get().columnsVisible.length,
             rowCount: ctx.grid.state.rowDataStore.rowCount.get(),
+            isRowDetailExpanded: (r) => {
+              const row = ctx.grid.api.rowByIndex(r);
+              if (!row) return false;
+              return ctx.grid.api.rowDetailIsExpanded(row);
+            },
           });
 
           // handleSkipInner(e);

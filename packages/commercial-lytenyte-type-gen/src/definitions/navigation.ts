@@ -87,6 +87,29 @@ export const PositionFullWidthRow: InterfaceType = {
   ],
 };
 
+export const PositionDetailCell: InterfaceType = {
+  kind: "interface",
+  name: "PositionDetailCell",
+  tsDoc: `The position value type when the current focus position of the grid is within a detail cell.
+ 
+  @group Navigation
+  `,
+  export: true,
+  properties: [
+    {
+      kind: "property",
+      doc: { en: `` },
+      tsDoc: `Discriminant indicating this position refers to a detail cell.`,
+      name: "kind",
+      value: '"detail"',
+      optional: false,
+    },
+    RowIndexProp,
+    ColumnIndexProp,
+  ],
+  doc: { en: `` },
+};
+
 export const PositionHeaderCell: InterfaceType = {
   kind: "interface",
   name: "PositionHeaderCell",
@@ -190,6 +213,7 @@ export const PositionUnion: UnionType = {
     "PositionGridCell",
     "PositionFloatingCell",
     "PositionHeaderCell",
+    "PositionDetailCell",
     "PositionFullWidthRow",
     "PositionHeaderGroupCell",
   ],

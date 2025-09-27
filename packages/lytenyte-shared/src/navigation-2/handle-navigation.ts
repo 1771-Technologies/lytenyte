@@ -13,6 +13,7 @@ import type { GridAtom, PositionGridCell, PositionUnion } from "../+types.js";
 import { isFullWidthRow } from "./predicates/is-full-width-row.js";
 import { getRowQuery } from "./getters/get-row-query.js";
 import { getRowSpanFromEl } from "./getters/get-row-span-from-el.js";
+import { isDetailCell } from "./predicates/is-detail-cell.js";
 
 interface Event {
   readonly key: string;
@@ -33,6 +34,7 @@ interface HandleNavigationArgs {
 
   readonly getRootCell: RootCellFn;
   readonly scrollIntoView: ScrollIntoViewFn;
+  readonly isRowDetailExpanded: (rowIndex: number) => boolean;
   readonly focusActive: Omit<GridAtom<PositionUnion | null>, "$">;
 }
 
@@ -47,6 +49,7 @@ export function handleNavigation({
   getRootCell,
   scrollIntoView,
   focusActive,
+  isRowDetailExpanded,
 }: HandleNavigationArgs) {
   // If the user is pressing tab, then we should skip the remaining cells and move to the next
   // element. This is slightly different than what may be expected, but makes the most sense.
@@ -72,7 +75,10 @@ export function handleNavigation({
   // We need to know what our current focus position. There will definitely be an active element,
   // otherwise how is this event listener being called.
   const active = getActiveElement(document)!;
-  const nearest = getNearestMatching(active, (el) => isCell(el) || isFullWidthRow(el));
+  const nearest = getNearestMatching(
+    active,
+    (el) => isCell(el) || isFullWidthRow(el) || isDetailCell(el),
+  );
 
   // If we don't find a matching position, then we should just return and let the event happen as normal.
   // The developer must've placed a special div in some part of the grid that is not within a grid row/header
@@ -84,7 +90,7 @@ export function handleNavigation({
   e.preventDefault();
   e.stopPropagation();
 
-  const position = focusActive.get()!;
+  const pos = focusActive.get()!;
 
   const isHorizontal = key === startKey || key === endKey;
   const isModified = e.ctrlKey || e.metaKey;
@@ -92,7 +98,7 @@ export function handleNavigation({
   if (isHorizontal) {
     const isBackward = key === startKey;
     // Handle the horizontal navigation of cells.
-    if (position.kind === "cell") {
+    if (pos.kind === "cell") {
       if (!isModified) {
         // We need to determine the direction we are navigating. There are few horizontal navigation scenarios to  handle.
         // If the cell that has focus has tabbable items, we navigate these before moving onto the next cell.
@@ -104,13 +110,13 @@ export function handleNavigation({
       const nextIndex = isBackward
         ? isModified
           ? 0
-          : position.colIndex - 1
+          : pos.colIndex - 1
         : isModified
           ? columnCount - 1
-          : position.colIndex + getColSpanFromEl(nearest);
+          : pos.colIndex + getColSpanFromEl(nearest);
 
       // The root cell will definitely not be a full width cell, but we can check anyway to satisfy TypeScript.
-      const root = getRootCell(position.rowIndex, nextIndex);
+      const root = getRootCell(pos.rowIndex, nextIndex);
       if (!root || root.kind === "full-width") return;
 
       const { colIndex, rowIndex } = root.root ?? root;
@@ -129,15 +135,11 @@ export function handleNavigation({
               last.focus();
             } else {
               cell.focus();
-              focusActive.set(
-                (prev) => ({ ...prev, rowIndex: position.rowIndex }) as PositionGridCell,
-              );
+              focusActive.set((prev) => ({ ...prev, rowIndex: pos.rowIndex }) as PositionGridCell);
             }
           } else {
             cell.focus();
-            focusActive.set(
-              (prev) => ({ ...prev, rowIndex: position.rowIndex }) as PositionGridCell,
-            );
+            focusActive.set((prev) => ({ ...prev, rowIndex: pos.rowIndex }) as PositionGridCell);
           }
 
           return true;
@@ -149,45 +151,62 @@ export function handleNavigation({
     }
 
     // Handle the full width row position
-    if (position.kind === "full-width") {
-      // Just try cycle through the items.
-      cycleInner(nearest.firstElementChild as HTMLElement, active, isBackward, true);
+    if (pos.kind === "full-width" || pos.kind === "detail") {
+      cycleInner(
+        pos.kind === "detail" ? nearest : (nearest.firstElementChild as HTMLElement),
+        active,
+        isBackward,
+        true,
+      );
       return;
     }
   } else {
     // We must be moving vertically at this point.
     const isUp = key === upKey;
 
-    if (position.kind === "full-width" || position.kind === "cell") {
+    if (pos.kind === "full-width" || pos.kind === "cell" || pos.kind === "detail") {
       // We want to move up one cell
-      const next = isUp
-        ? isModified
-          ? 0
-          : position.rowIndex - 1
-        : isModified
-          ? rowCount - 1
-          : position.rowIndex + (position.kind === "full-width" ? 1 : getRowSpanFromEl(nearest));
+      let next!: number;
 
-      const root = getRootCell(next, position.colIndex);
+      let nextIsDetail = false;
+      if (isUp) {
+        if (isModified) next = 0;
+        else if (pos.kind === "detail") next = pos.rowIndex;
+        else {
+          next = pos.rowIndex - 1;
+          nextIsDetail = isRowDetailExpanded(next);
+        }
+      } else {
+        if (isModified) next = rowCount - 1;
+        else if (pos.kind === "detail") next = pos.rowIndex + 1;
+        else {
+          nextIsDetail = isRowDetailExpanded(pos.rowIndex);
+          if (nextIsDetail) next = pos.rowIndex;
+          else next = pos.rowIndex + (pos.kind === "full-width" ? 1 : getRowSpanFromEl(nearest));
+        }
+      }
+
+      const root = getRootCell(next, pos.colIndex);
       if (!root) return;
       const { rowIndex, colIndex } = root.kind === "cell" ? (root.root ?? root) : root;
 
       scrollIntoView({ row: next, column: colIndex, behavior: "instant" });
       runWithBackoff(() => {
         // Our root is either a full width row or its a cell.
-        const query =
-          root.kind === "full-width"
+        const query = nextIsDetail
+          ? `[data-ln-gridid="${gridId}"][data-ln-rowindex="${next}"][data-ln-row-detail="true"]`
+          : root.kind === "full-width"
             ? getRowQuery(gridId, rowIndex)
             : getCellQuery(gridId, rowIndex, colIndex);
         const element = viewport.querySelector(query) as HTMLElement;
 
         if (element) {
-          if (root.kind === "full-width") (element.firstElementChild as HTMLElement).focus();
-          else {
+          if (root.kind === "full-width") {
+            if (nextIsDetail) element.focus();
+            else (element.firstElementChild as HTMLElement).focus();
+          } else {
             element.focus();
-            focusActive.set(
-              (prev) => ({ ...prev, colIndex: position.colIndex }) as PositionGridCell,
-            );
+            focusActive.set((prev) => ({ ...prev, colIndex: pos.colIndex }) as PositionGridCell);
           }
           return true;
         }

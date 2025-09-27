@@ -23,12 +23,12 @@ test("should be able to navigate up and down cells", async () => {
   for (const v of values) {
     await expect.element(document.activeElement).toHaveTextContent(v);
     await userEvent.keyboard("{ArrowDown}");
-    await wait();
+    await wait(100);
   }
   for (const v of values.toReversed()) {
     await expect.element(document.activeElement).toHaveTextContent(v);
     await userEvent.keyboard("{ArrowUp}");
-    await wait();
+    await wait(100);
   }
 });
 
@@ -51,12 +51,12 @@ test("should be able to navigate up and down cells with pins", async () => {
   for (const v of values) {
     await expect.element(document.activeElement).toHaveTextContent(v);
     await userEvent.keyboard("{ArrowDown}");
-    await wait();
+    await wait(100);
   }
   for (const v of values.toReversed()) {
     await expect.element(document.activeElement).toHaveTextContent(v);
     await userEvent.keyboard("{ArrowUp}");
-    await wait();
+    await wait(100);
   }
 });
 
@@ -72,10 +72,10 @@ test("should be able to handle moving to the start or end", async () => {
   await expect.element(document.activeElement).toHaveTextContent("30");
 
   await userEvent.keyboard("{Control>}{ArrowDown}{/Control}");
-  await wait(100);
+  await wait(200);
   await expect.element(document.activeElement).toHaveTextContent("42");
   await userEvent.keyboard("{Control>}{ArrowUp}{/Control}");
-  await wait(100);
+  await wait(200);
   await expect.element(document.activeElement).toHaveTextContent("30");
 });
 

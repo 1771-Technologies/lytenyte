@@ -114,7 +114,16 @@ function computeSpans(
     if (hasDead && (base?.[colSIndex] === 0 || base?.[colSIndex] === -1)) continue;
 
     const colSpan = computeColSpan ? clamp(1, computeColSpan(row, col), maxColBound - col) : 1;
-    const rowSpan = computeRowSpan ? clamp(1, computeRowSpan(row, col), maxRowBound - row) : 1;
+    let rowSpan = computeRowSpan ? clamp(1, computeRowSpan(row, col), maxRowBound - row) : 1;
+
+    // Determine if the span is cutoff
+    if (rowSpan > 1) {
+      for (let ri = row; ri < row + rowSpan; ri++) {
+        if (isRowCutoff(ri)) {
+          rowSpan = ri - row;
+        }
+      }
+    }
 
     if (colSpan <= 1 && rowSpan <= 1) continue;
 
