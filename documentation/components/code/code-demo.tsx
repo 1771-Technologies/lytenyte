@@ -13,6 +13,8 @@ import { CopyButton } from "./annotations/copy-button";
 import { CodeExpandButton } from "./code-expand-button";
 import { CodeTabs } from "./code-tabs";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
+import { Resettable } from "./resettable";
+import { ResetButton } from "./reset-button";
 export interface CodeDemoProps {
   readonly title: string | null;
   readonly absolute: string;
@@ -48,7 +50,7 @@ export async function CodeDemo(props: PropsWithChildren<CodeDemoProps>) {
           <div className="flex-1" />
         </div>
         <div className="text-gray border-y border-gray-400 dark:border-gray-100">
-          {props.children}
+          <Resettable>{props.children}</Resettable>
         </div>
         <div className="relative">
           <CodeTabs tabs={tabs}>
@@ -64,6 +66,14 @@ export async function CodeDemo(props: PropsWithChildren<CodeDemoProps>) {
                     <TooltipProvider disableHoverableContent>
                       <div className="absolute right-[42px] top-[-34px] flex items-center gap-2">
                         <CodeExpandButton />
+
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <ResetButton />
+                          </TooltipTrigger>
+                          <TooltipContent>Reset Demo</TooltipContent>
+                        </Tooltip>
+
                         <Tooltip>
                           <TooltipTrigger asChild>
                             <LinkButton
@@ -76,7 +86,7 @@ export async function CodeDemo(props: PropsWithChildren<CodeDemoProps>) {
                               <StackBlitzIcon />
                             </LinkButton>
                           </TooltipTrigger>
-                          <TooltipContent>Fork this demo in StackBlitz</TooltipContent>
+                          <TooltipContent>Edit in StackBlitz</TooltipContent>
                         </Tooltip>
 
                         <Tooltip>
@@ -91,7 +101,7 @@ export async function CodeDemo(props: PropsWithChildren<CodeDemoProps>) {
                               <CodeSandboxIcon />
                             </LinkButton>
                           </TooltipTrigger>
-                          <TooltipContent>Fork this demo in Code Sandbox</TooltipContent>
+                          <TooltipContent>Edit in CodeSandbox</TooltipContent>
                         </Tooltip>
                       </div>
 
@@ -99,7 +109,7 @@ export async function CodeDemo(props: PropsWithChildren<CodeDemoProps>) {
                         <TooltipTrigger asChild>
                           <CopyButton className="top-[-32px]" text={copyContent[i]} />
                         </TooltipTrigger>
-                        <TooltipContent>Copy code content</TooltipContent>
+                        <TooltipContent>Copy Code Content</TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
 
