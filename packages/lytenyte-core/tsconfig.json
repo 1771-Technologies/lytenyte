@@ -24,5 +24,5 @@
     "noPropertyAccessFromIndexSignature": false
   },
   "exclude": ["**/__tests__/**", "**/*.stories*", "**/*.spec*", "**/*.test*"],
-  "include": ["src"]
+  "include": ["src", "../lytenyte-shared/src/navigation-2/handle-navigation.ts"]
 }

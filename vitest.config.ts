@@ -10,15 +10,22 @@ export default defineConfig({
       {
         extends: `${__dirname}/vitest.config.ts`,
         test: {
-          name: "Browser",
-          include: ["./packages/**/*.pt.?(c|m)[jt]s?(x)", "src/**/*.pt.?(c|m)[jt]s?(x)"],
-          exclude: ["./packages/**/*.test.?(c|m)[jt]s?(x)", "src/**/*.test.?(c|m)[jt]s?(x)"],
-          testTimeout: 60_000,
+          name: "chrome",
+          include: [
+            "./packages/**/*.test.?(c|m)[jt]s?(x)",
+            "src/**/*.test.?(c|m)[jt]s?(x)",
+            "./packages/**/*.pt.?(c|m)[jt]s?(x)",
+            "src/**/*.pt.?(c|m)[jt]s?(x)",
+          ],
+          // Tests can take quite long in CI
+          testTimeout: 120_000,
 
+          setupFiles: `${__dirname}/test-setup.ts`,
           browser: {
             provider: playwright({
               actionTimeout: 5_000,
             }),
+            screenshotFailures: false,
 
             expect: {
               toMatchScreenshot: {
@@ -32,7 +39,7 @@ export default defineConfig({
             enabled: true,
             ui: false,
             headless: true,
-            instances: [{ browser: "chromium" }, { browser: "firefox" }, { browser: "webkit" }],
+            instances: [{ browser: "chromium" }],
             viewport: {
               height: 1280,
               width: 1960,
@@ -40,13 +47,44 @@ export default defineConfig({
           },
         },
       },
+
       {
         extends: `${__dirname}/vitest.config.ts`,
         test: {
-          name: "Node",
-          globals: true,
-          environment: "jsdom",
-          include: ["./packages/**/*.test.?(c|m)[jt]s?(x)", "src/**/*.test.?(c|m)[jt]s?(x)"],
+          name: "firefox and safari",
+          include: [
+            "./packages/**/*.test.?(c|m)[jt]s?(x)",
+            "src/**/*.test.?(c|m)[jt]s?(x)",
+            "./packages/**/*.pt.?(c|m)[jt]s?(x)",
+            "src/**/*.pt.?(c|m)[jt]s?(x)",
+          ],
+          testTimeout: 120_000,
+
+          setupFiles: `${__dirname}/test-setup.ts`,
+          browser: {
+            provider: playwright({
+              actionTimeout: 5_000,
+            }),
+            screenshotFailures: false,
+
+            expect: {
+              toMatchScreenshot: {
+                comparatorName: "pixelmatch",
+                comparatorOptions: {
+                  threshold: 0.2,
+                  allowedMismatchedPixelRatio: 0.12, // Generous mismatch - as the grid is text heavy.
+                },
+              },
+            },
+            enabled: true,
+            ui: false,
+            headless: true,
+            instances: [{ browser: "firefox" }, { browser: "webkit" }],
+            viewport: {
+              height: 1280,
+              width: 1960,
+            },
+          },
         },
       },
     ],

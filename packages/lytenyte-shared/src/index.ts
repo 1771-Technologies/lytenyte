@@ -130,9 +130,11 @@ export { isHeader } from "./navigation/predicates/is-header.js";
 export { isRow } from "./navigation/predicates/is-row.js";
 export { isViewport } from "./navigation/predicates/is-viewport.js";
 export { focusCell } from "./navigation/position-movers/focus-cell.js";
-export { useFocusTracking } from "./navigation/use-focus-tracking.js";
 export { handleNavigationKeys } from "./navigation/position-movers/handle-navigation-key.js";
-export { getNearestRow } from "./navigation/getters/get-nearest-row.js";
+
+export { handleNavigation } from "./navigation-2/handle-navigation.js";
+export { useFocusTracking } from "./navigation-2/use-focus-tracking.js";
+export { getNearestRow } from "./navigation-2/getters/get-nearest-row.js";
 
 export { rowIndexForSection } from "./row/row-index-for-section.js";
 

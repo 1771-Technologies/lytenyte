@@ -21,7 +21,10 @@ export const Cell = forwardRef<
     ...rowMeta
   } = useRowMeta();
   // This enforces our column virtualization.
-  if (props.cell.colPin == null && (props.cell.colIndex >= end || props.cell.colIndex < start)) {
+  if (
+    props.cell.colPin == null &&
+    (props.cell.colIndex >= end || props.cell.colIndex + props.cell.colSpan - 1 < start)
+  ) {
     return null;
   }
 

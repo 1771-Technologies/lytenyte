@@ -1,3 +1,4 @@
+import { describe, expect, test } from "vitest";
 import { getHash } from "./md5-hash.js";
 
 describe("activateLicense", () => {

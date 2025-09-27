@@ -18,7 +18,7 @@ export function getSpanFn<T>(
     if (!spanFn) return 1;
     if (typeof spanFn === "number") {
       if (span === "col") {
-        return c % spanFn === 0 ? spanFn : 1;
+        return spanFn;
       } else {
         return r % spanFn === 0 ? spanFn : 1;
       }

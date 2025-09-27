@@ -1,93 +1,52 @@
-import { describe, test, expect, vi, afterEach } from "vitest";
-
-import * as getNodeNameModule from "../get-node-name.js";
-import * as isShadowRootModule from "../is-shadow-root.js";
-import * as getDocumentElementModule from "../get-document-element.js";
+import { describe, expect, test, vi } from "vitest";
 import { getParentNode } from "../get-parent-node.js";
+import { getDocumentElement } from "../get-document-element.js";
 
 describe("getParentNode", () => {
-  afterEach(() => {
-    vi.restoreAllMocks();
+  test("when the element has an assigned slot it should be returned", () => {
+    const d = document.createElement("div");
+    const slot = document.createElement("slot");
+    vi.spyOn(d, "assignedSlot", "get").mockImplementation(() => slot);
+
+    expect(getParentNode(d)).toBe(slot);
   });
 
-  test('returns node itself if nodeName is "html"', () => {
-    const mockNode = {} as Node;
-    vi.spyOn(getNodeNameModule, "getNodeName").mockReturnValue("html");
+  test("when the element has a parent node that should be returned", () => {
+    const parent = document.createElement("div");
+    const child = document.createElement("div");
+    parent.appendChild(child);
 
-    const result = getParentNode(mockNode);
-    expect(result).toBe(mockNode);
+    expect(getParentNode(child)).toBe(parent);
   });
 
-  test("returns assignedSlot if present", () => {
-    const assignedSlot = {} as Node;
-    const mockNode = { assignedSlot } as unknown as Node;
-
-    vi.spyOn(getNodeNameModule, "getNodeName").mockReturnValue("div");
-
-    const result = getParentNode(mockNode);
-    expect(result).toBe(assignedSlot);
+  test("when the <html/> element is provided it should return the <html/> element", () => {
+    const el = document.querySelector("html")!;
+    expect(getParentNode(el)).toBe(el);
   });
 
-  test("returns parentNode if no assignedSlot and no ShadowRoot", () => {
-    const parentNode = {} as Node;
-    const mockNode = { parentNode } as unknown as Node;
+  test("when the node is a shadow root, its host value should be returned", () => {
+    const node = document.createElement("div");
+    const root = node.attachShadow({ mode: "open" });
 
-    vi.spyOn(getNodeNameModule, "getNodeName").mockReturnValue("div");
-    vi.spyOn(isShadowRootModule, "isShadowRoot").mockReturnValue(false);
-
-    const result = getParentNode(mockNode);
-    expect(result).toBe(parentNode);
+    expect(getParentNode(root)).toBe(node);
   });
 
-  test("returns node.host if node is a ShadowRoot", () => {
-    const host = {} as Node;
-    const shadowRootNode = {} as Node;
+  test("when the node is does not have a parent the document element should be returned", () => {
+    const node = document.createElement("div");
 
-    const mockNode = {
-      parentNode: null,
-    } as unknown as Node;
-
-    vi.spyOn(getNodeNameModule, "getNodeName").mockReturnValue("div");
-    vi.spyOn(isShadowRootModule, "isShadowRoot").mockImplementation(
-      (value) => value === shadowRootNode,
-    );
-    vi.spyOn(getDocumentElementModule, "getDocumentElement").mockReturnValue(shadowRootNode as any);
-
-    (shadowRootNode as any).host = host;
-
-    const result = getParentNode(mockNode);
-    expect(result).toBe(host);
+    expect(getParentNode(node)).toBe(getDocumentElement(document));
   });
 
-  test("returns getDocumentElement fallback if no parent or shadow info", () => {
-    const fallback = {} as any;
-    const mockNode = {
-      parentNode: null,
-    } as unknown as Node;
+  test("when the hosted node is itself a shadow root the host should be returned", () => {
+    const node = document.createElement("div");
+    const outer = node.attachShadow({ mode: "open" });
+    const element = document.createElement("span");
+    outer.appendChild(element);
+    const inner = element.attachShadow({ mode: "open" });
 
-    vi.spyOn(getNodeNameModule, "getNodeName").mockReturnValue("div");
-    vi.spyOn(isShadowRootModule, "isShadowRoot").mockReturnValue(false);
-    vi.spyOn(getDocumentElementModule, "getDocumentElement").mockReturnValue(fallback);
+    (element as any).host = node;
+    vi.spyOn(element, "nodeType", "get").mockImplementation(() => 11);
 
-    const result = getParentNode(mockNode);
-    expect(result).toBe(fallback);
-  });
-
-  test("unwraps ShadowRoot from fallback result", () => {
-    const host = {} as Node;
-    const shadowRoot = {} as any;
-
-    const mockNode = {
-      parentNode: null,
-    } as unknown as Node;
-
-    vi.spyOn(getNodeNameModule, "getNodeName").mockReturnValue("div");
-    vi.spyOn(isShadowRootModule, "isShadowRoot").mockImplementation((v) => v === shadowRoot);
-    vi.spyOn(getDocumentElementModule, "getDocumentElement").mockReturnValue(shadowRoot);
-
-    (shadowRoot as any).host = host;
-
-    const result = getParentNode(mockNode);
-    expect(result).toBe(host);
+    expect(getParentNode(inner)).toBe(node);
   });
 });

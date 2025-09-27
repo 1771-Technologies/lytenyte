@@ -1,10 +1,5 @@
-import { getWindow } from "./get-window.js";
-import { hasWindow } from "./has-window.js";
-
-export function isHTMLElement(value: unknown): value is HTMLElement {
-  if (!hasWindow()) {
-    return false;
-  }
-
-  return value instanceof HTMLElement || value instanceof getWindow(value).HTMLElement;
+export function isHTMLElement(el: any): el is HTMLElement {
+  return (
+    typeof el === "object" && el != null && el.nodeType === 1 && typeof el.nodeName === "string"
+  );
 }

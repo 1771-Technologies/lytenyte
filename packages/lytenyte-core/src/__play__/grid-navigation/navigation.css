@@ -1,0 +1,4 @@
+*:focus {
+  outline: 1px solid blue;
+  outline-offset: -2px;
+}

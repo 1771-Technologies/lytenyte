@@ -59,14 +59,16 @@ export const makeCellRoot = (
       const spec = l.lookup.get(row);
 
       // This cell is not covered
-      if (!spec || spec[column * 4] !== 0) {
+      if (!spec || spec[column * 4] > 0) {
         return { kind: "cell", rowIndex: row, colIndex: column, root: null };
       }
 
-      const rowSpan = spec[column * 4];
-      const colSpan = spec[column * 4 + 1];
       const rowIndex = spec[column * 4 + 2];
       const colIndex = spec[column * 4 + 3];
+
+      const rootSpec = l.lookup.get(rowIndex)!;
+      const rowSpan = rootSpec[colIndex * 4];
+      const colSpan = rootSpec[colIndex * 4 + 1];
 
       return {
         kind: "cell",

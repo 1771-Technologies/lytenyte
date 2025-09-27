@@ -6,14 +6,14 @@ function gc() {
   return new Promise((resolve) =>
     setTimeout(async () => {
       tick(); // flush call stack (holds a reference)
-      global.gc!();
+      globalThis.gc!();
       resolve(void 0);
     }, 0),
   );
 }
 
 describe("gc", () => {
-  if (global.gc) {
+  if (globalThis.gc) {
     test("should gc computed if there are no observers", async () => {
       const $a = signal(0),
         ref = new WeakRef(computed(() => $a()));

@@ -1,8 +1,11 @@
-import { describe, expect, test } from "vitest";
+import { expect, test, vi } from "vitest";
 import { isIOS } from "../is-ios.js";
 
-describe("isIOS", () => {
-  test("should return false because the window is not present", () => {
-    expect(isIOS()).toEqual(false);
-  });
+test("if the platform is IOS should return true", () => {
+  expect(isIOS()).toEqual(false);
+
+  vi.stubGlobal("navigator", { platform: "MacIntel", maxTouchPoints: 2 });
+  expect(isIOS()).toEqual(true);
+
+  vi.unstubAllGlobals();
 });
