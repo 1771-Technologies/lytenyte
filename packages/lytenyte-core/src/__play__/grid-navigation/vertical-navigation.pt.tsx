@@ -163,3 +163,43 @@ test("should be able to navigate across column and row spans", async () => {
   await userEvent.keyboard("{ArrowUp}");
   await expect.element(document.activeElement).toHaveTextContent("management");
 });
+
+test("page up and down should focus the correct cells", async () => {
+  const screen = render(<CellSpans />);
+  const grid = screen.getByRole("grid");
+
+  await expect.element(grid).toBeVisible();
+  await wait(); // Give the grid a moment to render
+
+  const ourFirstCell = document.querySelector(getCellQuery("x", 0, 3)) as HTMLElement;
+  ourFirstCell.focus();
+
+  await userEvent.keyboard("{PageDown}");
+  await expect.element(document.activeElement).toHaveTextContent("secondary");
+  await userEvent.keyboard("{PageUp}");
+  await expect.element(document.activeElement).toHaveTextContent("management");
+});
+
+test("home and end should work as expected", async () => {
+  const screen = render(<CellSpans />);
+  const grid = screen.getByRole("grid");
+
+  await expect.element(grid).toBeVisible();
+  await wait(); // Give the grid a moment to render
+  const ourFirstCell = document.querySelector(getCellQuery("x", 0, 3)) as HTMLElement;
+  ourFirstCell.focus();
+
+  await expect.element(document.activeElement).toHaveTextContent("primary");
+  await userEvent.keyboard("{End}");
+  await wait(100);
+  await expect.element(document.activeElement).toHaveTextContent("unknown");
+  await userEvent.keyboard("{Home}");
+  await wait(100);
+  await expect.element(document.activeElement).toHaveTextContent("30");
+  await userEvent.keyboard("{Control>}{End}{/Control}");
+  await wait(100);
+  await expect.element(document.activeElement).toHaveTextContent("unknown");
+  await userEvent.keyboard("{Control>}{Home}{/Control}");
+  await wait(100);
+  await expect.element(document.activeElement).toHaveTextContent("30");
+});

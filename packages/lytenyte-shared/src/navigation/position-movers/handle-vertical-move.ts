@@ -6,7 +6,7 @@ import type {
   PositionHeaderCell,
   PositionUnion,
 } from "../../+types.js";
-import type { RootCellFn, ScrollIntoViewFn } from "../../+types.non-gen";
+import type { RootCellFn, ScrollIntoViewFn } from "../../+types.non-gen.js";
 import { getColIndexFromEl } from "../getters/get-col-index-from-el.js";
 import { getHeaderRows } from "../getters/get-header-rows.js";
 import { getRowSpanFromEl } from "../getters/get-row-span-from-el.js";
@@ -265,7 +265,7 @@ function focusFirstRowCell({
   runWithBackoff(run, [8, 20]);
 }
 
-function getCellRootRowAndColIndex(cell: PositionGridCell) {
+export function getCellRootRowAndColIndex(cell: PositionGridCell) {
   const rootRow = cell.root?.rowIndex ?? cell.rowIndex;
   const rootCol = cell.root?.colIndex ?? cell.colIndex;
 

@@ -3,7 +3,7 @@ import type { RowCellLayout } from "../+types";
 import { getTabbables } from "@1771technologies/lytenyte-dom-utils";
 import { useGridRoot } from "../context.js";
 import { editOnChange } from "../state/helpers/edit-on-change.js";
-import { handleNavigationKeys } from "@1771technologies/lytenyte-shared";
+import { handleNavigation } from "@1771technologies/lytenyte-shared";
 
 interface CellEditorParams<T> {
   readonly cell: RowCellLayout<T>;
@@ -61,27 +61,30 @@ export function CellEditor<T>({ cell }: CellEditorParams<T>) {
             return;
           }
 
-          handleNavigationKeys(
-            {
+          handleNavigation({
+            event: {
+              key: "ArrowDown",
               ctrlKey: false,
               metaKey: false,
-              key: "ArrowDown",
               preventDefault: () => {},
               stopPropagation: () => {},
             },
-            {
-              vp: grid.state.viewport.get(),
-              rowCount: ds.rowCount.get(),
-              topCount: ds.rowTopCount.get(),
-              centerCount: ds.rowCenterCount.get(),
-              columnCount: grid.state.columnMeta.get().columnsVisible.length,
-              focusActive: grid.internal.focusActive,
-              id: grid.state.gridId.get(),
-              getRootCell: grid.api.cellRoot,
-              rtl: grid.state.rtl.get(),
-              scrollIntoView: grid.api.scrollIntoView,
+            topCount: grid.state.rowDataStore.rowTopCount.get(),
+            centerCount: grid.state.rowDataStore.rowCenterCount.get(),
+            isRowDetailExpanded: (r) => {
+              const row = grid.api.rowByIndex(r);
+              if (!row) return false;
+              return grid.api.rowDetailIsExpanded(row);
             },
-          );
+            viewport: grid.state.viewport.get()!,
+            rowCount: ds.rowCount.get(),
+            columnCount: grid.state.columnMeta.get().columnsVisible.length,
+            focusActive: grid.internal.focusActive,
+            gridId: grid.state.gridId.get(),
+            getRootCell: grid.api.cellRoot,
+            rtl: grid.state.rtl.get(),
+            scrollIntoView: grid.api.scrollIntoView,
+          });
         }
 
         e.stopPropagation();

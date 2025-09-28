@@ -105,36 +105,16 @@ export { getStringFilterSettings } from "./filters/get-string-filter-settings.js
 export { columnScrollIntoViewValue } from "./scroll/scroll-column-into-view.js";
 export { rowScrollIntoViewValue } from "./scroll/scroll-row-into-view.js";
 
-export { ensureVisible } from "./navigation/ensure-visible.js";
-export { handleSkipInner } from "./navigation/handle-skip-inner.js";
-export { getCellQuery } from "./navigation/getters/get-cell-query.js";
-export { getColIndexFromEl } from "./navigation/getters/get-col-index-from-el.js";
-export { getColSpanFromEl } from "./navigation/getters/get-col-span-from-el.js";
-export { getHeaderRows } from "./navigation/getters/get-header-rows.js";
-export { getNearestFocusable } from "./navigation/getters/get-nearest-focusable.js";
-export { getNearestHeaderRow } from "./navigation/getters/get-nearest-header-row.js";
 export { getPositionFromFocusable } from "./navigation/getters/get-position-from-focusable.js";
+export { getCellQuery } from "./navigation/getters/get-cell-query.js";
 export { getRowIndexFromEl } from "./navigation/getters/get-row-index-from-el.js";
-export { getRowQuery } from "./navigation/getters/get-row-query.js";
-export { getRowSpanFromEl } from "./navigation/getters/get-row-span-from-el.js";
-export { getRowsCenterSection } from "./navigation/getters/get-rows-center-section.js";
-export { getRowsContainer } from "./navigation/getters/get-rows-container.js";
-export { getRowsInSection } from "./navigation/getters/get-rows-in-section.js";
-export { isCell } from "./navigation/predicates/is-cell.js";
-export { isColumnGroupHeader } from "./navigation/predicates/is-column-group-header.js";
 export { isColumnFloatingHeader } from "./navigation/predicates/is-column-floating-header.js";
-export { isColumnHeader } from "./navigation/predicates/is-column-header.js";
-export { isFullWidthRow } from "./navigation/predicates/is-full-width-row.js";
-export { isHeaderRow } from "./navigation/predicates/is-header-row.js";
-export { isHeader } from "./navigation/predicates/is-header.js";
-export { isRow } from "./navigation/predicates/is-row.js";
-export { isViewport } from "./navigation/predicates/is-viewport.js";
 export { focusCell } from "./navigation/position-movers/focus-cell.js";
-export { handleNavigationKeys } from "./navigation/position-movers/handle-navigation-key.js";
-
-export { handleNavigation } from "./navigation-2/handle-navigation.js";
-export { useFocusTracking } from "./navigation-2/use-focus-tracking.js";
-export { getNearestRow } from "./navigation-2/getters/get-nearest-row.js";
+export { getNearestFocusable } from "./navigation/getters/get-nearest-focusable.js";
+export { getHeaderRows } from "./navigation/getters/get-header-rows.js";
+export { handleNavigation } from "./navigation/handle-navigation.js";
+export { useFocusTracking } from "./navigation/use-focus-tracking.js";
+export { getNearestRow } from "./navigation/getters/get-nearest-row.js";
 
 export { rowIndexForSection } from "./row/row-index-for-section.js";
 

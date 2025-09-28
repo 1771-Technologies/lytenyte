@@ -60,14 +60,8 @@ export function Root<T = any>({ grid, children, ...events }: PropsWithChildren<R
     grid.state.viewport.set(vp);
 
     if (!vp) return;
-    let observed = false;
 
     const obs = new ResizeObserver(() => {
-      if (!observed) {
-        observed = true;
-        return;
-      }
-
       grid.state.viewportHeightOuter.set(vp.offsetHeight);
       grid.state.viewportWidthOuter.set(vp.offsetWidth);
       grid.state.viewportWidthInner.set(vp.clientWidth);

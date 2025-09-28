@@ -8,6 +8,8 @@ import { isColumnHeader } from "./predicates/is-column-header.js";
 import { isColumnGroupHeader } from "./predicates/is-column-group-header.js";
 import { handleHorizontalMove } from "./position-movers/handle-horizontal-move.js";
 import { handleVerticalMove } from "./position-movers/handle-vertical-move.js";
+import { handleHomeEnd } from "./position-movers/handle-home-end.js";
+import { handlePageUpDown } from "./position-movers/handle-page-up-down.js";
 
 interface Event {
   readonly key: string;
@@ -26,6 +28,9 @@ interface HandleNavigationArgs {
   readonly columnCount: number;
   readonly rowCount: number;
 
+  readonly centerCount: number;
+  readonly topCount: number;
+
   readonly getRootCell: RootCellFn;
   readonly scrollIntoView: ScrollIntoViewFn;
   readonly isRowDetailExpanded: (rowIndex: number) => boolean;
@@ -39,6 +44,8 @@ export function handleNavigation({
   rtl,
   columnCount,
   rowCount,
+  topCount,
+  centerCount,
 
   getRootCell,
   scrollIntoView,
@@ -59,7 +66,7 @@ export function handleNavigation({
   const upKey = "ArrowUp";
   const downKey = "ArrowDown";
 
-  const keys = [startKey, endKey, upKey, downKey];
+  const keys = [startKey, endKey, upKey, downKey, "Home", "End", "PageDown", "PageUp"];
   const key = e.key;
 
   // If pressed key is not in the included navigation keys, then we can simply ignore the
@@ -93,6 +100,36 @@ export function handleNavigation({
 
   const isHorizontal = key === startKey || key === endKey;
   const isModified = e.ctrlKey || e.metaKey;
+
+  if (key === "PageDown" || key === "PageUp") {
+    handlePageUpDown({
+      pos,
+      centerCount,
+      topCount,
+      focusActive: focusActive,
+      getRootCell,
+      id: gridId,
+      isUp: key === "PageUp",
+      scrollIntoView,
+      vp: viewport,
+    });
+  }
+
+  if (key === "Home" || key === "End") {
+    handleHomeEnd({
+      columnCount,
+      focusActive,
+      getRootCell,
+      id: gridId,
+      isMeta: isModified,
+      isStart: key === "Home",
+      pos,
+      rowCount,
+      scrollIntoView,
+      vp: viewport,
+    });
+    return;
+  }
 
   if (isHorizontal) {
     handleHorizontalMove({

@@ -10,6 +10,7 @@ import CellWithTabbables from "./cell-with-tabbables.play.js";
 import FullWidthRows from "./full-width-rows.play.js";
 import CellSpansLarge from "./cell-spans-large.play.js";
 import CellSpansWithPins from "./cell-spans-with-pins.play.js";
+import ColumnGroups from "./column-groups.play.js";
 
 test("when the grid is rendered tabbing through show skip cells inside", async () => {
   const screen = render(<NormalLayout />);
@@ -911,4 +912,87 @@ test("when the columns are pinned should be navigate across them", async () => {
   await userEvent.keyboard("{Control>}{ArrowRight}{/Control}");
   await wait(100);
   await expect.element(document.activeElement).toHaveTextContent("30");
+});
+
+test("when the floating cell is focused should be to navigate through it", async () => {
+  const screen = render(<ColumnGroups />);
+  const grid = screen.getByRole("grid");
+
+  await expect.element(grid).toBeVisible();
+  await wait(); // Give the grid a moment to render
+
+  (document.querySelector(getCellQuery("x", 0, 0)) as HTMLElement).focus();
+  await wait();
+
+  await userEvent.keyboard("{ArrowUp}");
+  await expect.element(document.activeElement).toHaveTextContent("age");
+  await userEvent.keyboard("{ArrowRight}");
+  await expect.element(document.activeElement).toHaveTextContent("marital");
+  await userEvent.keyboard("{ArrowRight}");
+  await expect.element(document.activeElement).toHaveTextContent("default");
+  await userEvent.keyboard("{ArrowRight}");
+  await expect.element(document.activeElement).toHaveTextContent("housing");
+  await userEvent.keyboard("{ArrowLeft}");
+  await expect.element(document.activeElement).toHaveTextContent("default");
+  await userEvent.keyboard("{ArrowLeft}");
+  await expect.element(document.activeElement).toHaveTextContent("marital");
+});
+
+test("when the header is focused should be to navigate through it", async () => {
+  const screen = render(<ColumnGroups />);
+  const grid = screen.getByRole("grid");
+
+  await expect.element(grid).toBeVisible();
+  await wait(); // Give the grid a moment to render
+
+  (document.querySelector(getCellQuery("x", 0, 0)) as HTMLElement).focus();
+  await wait();
+
+  await userEvent.keyboard("{ArrowUp}");
+  await wait();
+  await userEvent.keyboard("{ArrowUp}");
+  await expect.element(document.activeElement).toHaveTextContent("age");
+  await userEvent.keyboard("{ArrowRight}");
+  await expect.element(document.activeElement).toHaveTextContent("marital");
+  await userEvent.keyboard("{ArrowRight}");
+  await expect.element(document.activeElement).toHaveTextContent("default");
+  await userEvent.keyboard("{ArrowRight}");
+  await expect.element(document.activeElement).toHaveTextContent("housing");
+  await userEvent.keyboard("{ArrowLeft}");
+  await expect.element(document.activeElement).toHaveTextContent("default");
+  await userEvent.keyboard("{ArrowLeft}");
+  await expect.element(document.activeElement).toHaveTextContent("marital");
+});
+
+test("when the header group is focused should be able to navigate through", async () => {
+  const screen = render(<ColumnGroups />);
+  const grid = screen.getByRole("grid");
+
+  await expect.element(grid).toBeVisible();
+  await wait(); // Give the grid a moment to render
+
+  (document.querySelector(getCellQuery("x", 0, 0)) as HTMLElement).focus();
+  await wait();
+
+  await userEvent.keyboard("{ArrowUp}");
+  await userEvent.keyboard("{ArrowUp}");
+  await userEvent.keyboard("{ArrowUp}");
+  await expect.element(document.activeElement).toHaveTextContent("A-->B");
+  await userEvent.keyboard("{ArrowUp}");
+  await expect.element(document.activeElement).toHaveTextContent("A");
+  await userEvent.keyboard("{ArrowRight}");
+  await expect.element(document.activeElement).toHaveTextContent("T");
+  await userEvent.keyboard("{ArrowDown}");
+  await expect.element(document.activeElement).toHaveTextContent("default");
+  await userEvent.keyboard("{ArrowLeft}");
+  await expect.element(document.activeElement).toHaveTextContent("marital");
+  await userEvent.keyboard("{ArrowRight}");
+  await userEvent.keyboard("{ArrowRight}");
+  await userEvent.keyboard("{ArrowRight}");
+  await userEvent.keyboard("{ArrowRight}");
+  await expect.element(document.activeElement).toHaveTextContent("contact");
+  await userEvent.keyboard("{ArrowUp}");
+  await expect.element(document.activeElement).toHaveTextContent("A-->B-->C");
+  await userEvent.keyboard("{ArrowRight}");
+  await expect.element(document.activeElement).toHaveTextContent("day");
 });
