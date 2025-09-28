@@ -10,9 +10,9 @@
   "main": "./src/index.mjs",
   "exports": {
     ".": {
+      "types": "./src/index.d.mts",
       "require": "./src/index.mjs",
-      "import": "./src/index.mjs",
-      "types": "./src/index.d.mts"
+      "import": "./src/index.mjs"
     }
   },
   "dependencies": {
