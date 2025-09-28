@@ -1,5 +1,6 @@
 import type { PositionUnion } from "../../+types.js";
 import { isCell } from "../predicates/is-cell.js";
+import { isColumnFloatingHeader } from "../predicates/is-column-floating-header.js";
 import { isColumnHeader } from "../predicates/is-column-header.js";
 import { isDetailCell } from "../predicates/is-detail-cell.js";
 import { isFullWidthRow } from "../predicates/is-full-width-row.js";
@@ -40,7 +41,7 @@ export function getPositionFromFocusable(el: HTMLElement): PositionUnion {
 
   if (isColumnHeader(el)) {
     return {
-      kind: "header-cell",
+      kind: isColumnFloatingHeader(el) ? "floating-cell" : "header-cell",
       colIndex: getColIndexFromEl(el),
     };
   }

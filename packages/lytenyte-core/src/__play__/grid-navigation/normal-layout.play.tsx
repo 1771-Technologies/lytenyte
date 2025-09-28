@@ -38,12 +38,14 @@ export default function BasicRendering({
   pinTop,
   center,
   pinBot,
+  floatingRow,
 }: {
   rtl?: boolean;
   columns?: Column<any>[];
   center?: number;
   pinTop?: number;
   pinBot?: number;
+  floatingRow?: boolean;
 }) {
   const ds = useClientRowDataSource({
     data: center ? bankDataSmall.slice(0, center) : bankDataSmall,
@@ -55,6 +57,7 @@ export default function BasicRendering({
     columns: columns ?? baseColumns,
     rowDataSource: ds,
     rtl: rtl,
+    floatingRowEnabled: floatingRow,
   });
 
   const view = g.view.useValue();
@@ -73,7 +76,21 @@ export default function BasicRendering({
                   <HeaderRow headerRowIndex={i} key={i}>
                     {row.map((c) => {
                       if (c.kind === "group") {
-                        return <HeaderGroupCell cell={c} key={c.idOccurrence} />;
+                        return (
+                          <HeaderGroupCell
+                            cell={c}
+                            key={c.idOccurrence}
+                            style={{
+                              paddingInline: "16px",
+                              background: "light-dark(rgb(200,200,200),rgb(57, 39, 39))",
+                              color: "light-dark(black,white)",
+                              display: "flex",
+                              alignItems: "center",
+                              borderBottom: "1px solid light-dark(gray, #444242)",
+                              borderRight: "1px solid light-dark(gray, #444242)",
+                            }}
+                          />
+                        );
                       }
                       return (
                         <HeaderCell
