@@ -1,13 +1,7 @@
-import {
-  getNearestRow,
-  getRowIndexFromEl,
-  SCROLL_WIDTH_VARIABLE_USE,
-  sizeFromCoord,
-} from "@1771technologies/lytenyte-shared";
+import { SCROLL_WIDTH_VARIABLE_USE, sizeFromCoord } from "@1771technologies/lytenyte-shared";
 import type { RowFullWidthRowLayout, RowNode, RowNormalRowLayout } from "../+types";
 import { useGridRoot } from "../context.js";
 import { useEffect, useState } from "react";
-import { getTabbables, isHTMLElement } from "@1771technologies/lytenyte-dom-utils";
 
 export function RowDetailRow<T>({
   layout,
@@ -33,118 +27,6 @@ function RowDetailImpl<T>({ row, rowIndex }: { row: RowNode<T>; rowIndex: number
   const [ref, setRef] = useState<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const parent = ref?.parentElement;
-    const first = ref?.firstElementChild as HTMLElement;
-
-    if (!parent || !first) return;
-
-    const controller = new AbortController();
-
-    let focusTime = false;
-
-    const vp = cx.grid.state.viewport.get();
-    vp?.addEventListener(
-      "keydown",
-      () => {
-        focusTime = true;
-        setTimeout(() => {
-          focusTime = false;
-        }, 20);
-      },
-      { capture: true, signal: controller.signal },
-    );
-
-    parent.addEventListener(
-      "focusin",
-      (e) => {
-        if (focusTime && e.relatedTarget && isHTMLElement(e.relatedTarget)) {
-          const row = getNearestRow(e.relatedTarget);
-
-          const gridId = cx.grid.state.gridId.get();
-          if (gridId !== row?.getAttribute("data-ln-gridid")) return;
-
-          const prevIndex = getRowIndexFromEl(row);
-          if (prevIndex - 1 === rowIndex) {
-            first.focus();
-          }
-        }
-      },
-      { signal: controller.signal },
-    );
-
-    parent.addEventListener(
-      "keydown",
-      (e) => {
-        if (e.key === "ArrowDown" && document.activeElement !== first) {
-          e.stopPropagation();
-          e.preventDefault();
-
-          first.focus();
-        }
-      },
-      { signal: controller.signal },
-    );
-
-    first.addEventListener(
-      "keydown",
-      (e) => {
-        const next = rtl ? "ArrowLeft" : "ArrowRight";
-        const prev = rtl ? "ArrowRight" : "ArrowLeft";
-
-        if (e.key === "Escape") {
-          first.focus();
-          return;
-        }
-
-        if (e.key === "ArrowUp") {
-          e.stopPropagation();
-          e.preventDefault();
-
-          cx.grid.api.focusCell({
-            row: rowIndex,
-            column: cx.grid.internal.focusActive.get()?.colIndex ?? 0,
-          });
-        }
-
-        if (e.key === next) {
-          e.preventDefault();
-          e.stopPropagation();
-
-          const focusables = getTabbables(first);
-          const index = focusables.indexOf(document.activeElement as HTMLElement);
-          if (index === -1) focusables.at(0)?.focus();
-          else focusables.at(index + 1)?.focus();
-        }
-
-        if (e.key === prev) {
-          e.preventDefault();
-          e.stopPropagation();
-
-          const focusables = getTabbables(first);
-          const index = focusables.indexOf(document.activeElement as HTMLElement);
-          if (index === -1) focusables.at(-1)?.focus();
-          else focusables[index - 1]?.focus();
-        }
-      },
-      { signal: controller.signal },
-    );
-
-    return () => {
-      controller.abort();
-    };
-  }, [
-    cx.grid.api,
-    cx.grid.internal.focusActive,
-    cx.grid.internal.focusPrevRowIndex,
-    cx.grid.state.gridId,
-    cx.grid.state.rtl,
-    cx.grid.state.viewport,
-    ref,
-    rowIndex,
-    rtl,
-  ]);
-
-  useEffect(() => {
     const first = ref?.firstElementChild as HTMLElement;
     if (!first) return;
 
@@ -166,17 +48,20 @@ function RowDetailImpl<T>({ row, rowIndex }: { row: RowNode<T>; rowIndex: number
       ref={setRef}
       role="gridcell"
       style={{
-        pointerEvents: "all",
+        pointerEvents: "none",
         position: "absolute",
         left: 0,
         width: SCROLL_WIDTH_VARIABLE_USE,
       }}
     >
       <div
-        tabIndex={-1}
+        tabIndex={0}
+        data-ln-gridid={cx.grid.state.gridId.get()}
         data-ln-row-detail
+        data-ln-rowindex={rowIndex}
         style={{
           position: "sticky",
+          pointerEvents: "all",
           right: rtl ? "0px" : undefined,
           left: rtl ? undefined : "0px",
           marginTop: rowHeight,

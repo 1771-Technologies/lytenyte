@@ -6,6 +6,7 @@ import type { RootCellFn, ScrollIntoViewFn } from "../../+types.non-gen.js";
 import { getCellQuery } from "../getters/get-cell-query.js";
 import { getLastTabbable } from "@1771technologies/lytenyte-dom-utils";
 import { getHeaderRows } from "../getters/get-header-rows.js";
+import { getColIndexFromEl } from "../getters/get-col-index-from-el.js";
 
 export interface HandleHorizontalMoveParams {
   readonly gridId: string;
@@ -60,10 +61,10 @@ export function handleHorizontalMove({
     const nextIndex = isBackward
       ? isModified
         ? 0
-        : pos.colIndex - 1
+        : getColIndexFromEl(nearest) - 1
       : isModified
         ? columnCount - 1
-        : pos.colIndex + getColSpanFromEl(nearest);
+        : getColIndexFromEl(nearest) + getColSpanFromEl(nearest);
 
     // The root cell will definitely not be a full width cell since we focusing a normal cell.
     const root = getRootCell(pos.rowIndex, nextIndex) as PositionGridCell | null;

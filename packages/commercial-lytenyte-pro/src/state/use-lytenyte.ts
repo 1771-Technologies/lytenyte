@@ -270,6 +270,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     rowDataStore.rowTopCount.$();
 
     rowDataSource();
+    rowDetailExpansions();
     rowGroupModel();
     sortModel();
     filterModel();
@@ -576,6 +577,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     const topCount = rowDataStore.rowTopCount.$();
     const botCount = rowDataStore.rowBottomCount.$();
     const rowCount = rowDataStore.rowCount.$();
+    const expansions = rowDetailExpansions();
 
     const fullWidthPredicate = rowFullWidthPredicate().fn;
     updateFull({
@@ -592,7 +594,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       isFullWidth: fullWidthPredicate ? getFullWidthCallback(rds, fullWidthPredicate, grid) : null,
       isRowCutoff: (r) => {
         const row = rds.rowByIndex(r);
-        return !row || row.kind === "branch";
+        return !row || row.kind === "branch" || expansions.has(row.id);
       },
 
       rowScanDistance: rowScan,

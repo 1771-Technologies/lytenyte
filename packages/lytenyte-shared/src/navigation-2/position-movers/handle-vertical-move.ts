@@ -13,6 +13,7 @@ import { getRowSpanFromEl } from "../getters/get-row-span-from-el.js";
 import { getRowQuery } from "../getters/get-row-query.js";
 import { getCellQuery } from "../getters/get-cell-query.js";
 import { ensureVisible } from "../ensure-visible.js";
+import { getRowIndexFromEl } from "../getters/get-row-index-from-el.js";
 
 export interface HandleVerticalMoveArgs {
   readonly gridId: string;
@@ -54,17 +55,24 @@ export function handleVerticalMove({
     if (isUp) {
       if (isModified) next = 0;
       else if (pos.kind === "detail") next = pos.rowIndex;
-      else {
+      else if (pos.kind === "full-width") {
         next = pos.rowIndex - 1;
+        nextIsDetail = isRowDetailExpanded(next);
+      } else {
+        next = getRowIndexFromEl(nearest) - 1;
         nextIsDetail = isRowDetailExpanded(next);
       }
     } else {
       if (isModified) next = rowCount - 1;
       else if (pos.kind === "detail") next = pos.rowIndex + 1;
-      else {
+      else if (pos.kind === "full-width") {
         nextIsDetail = isRowDetailExpanded(pos.rowIndex);
         if (nextIsDetail) next = pos.rowIndex;
-        else next = pos.rowIndex + (pos.kind === "full-width" ? 1 : getRowSpanFromEl(nearest));
+        else next = pos.rowIndex + 1;
+      } else {
+        nextIsDetail = isRowDetailExpanded(pos.rowIndex);
+        if (nextIsDetail) next = pos.rowIndex;
+        else next = getRowIndexFromEl(nearest) + getRowSpanFromEl(nearest);
       }
     }
 

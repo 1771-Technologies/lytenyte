@@ -1,5 +1,5 @@
 import { forwardRef, memo, type JSX } from "react";
-import type { RowNormalRowLayout } from "../../+types.js";
+import type { RowNormalRowLayout } from "../../+types";
 import { useGridRoot } from "../../context.js";
 import { RowDetailRow } from "../row-detail-row.js";
 import { RowReact, type DropWrapProps } from "@1771technologies/lytenyte-shared";
@@ -19,7 +19,7 @@ const RowImpl = forwardRef<HTMLDivElement, Omit<JSX.IntrinsicElements["div"], "o
     const ctx = useGridRoot().grid;
 
     const yPos = ctx.state.yPositions.useValue();
-    const rowMeta = useRowContextValue(ctx, row.row, yPos);
+    const rowMeta = useRowContextValue(ctx, row, yPos);
     const hasSpans = ctx.internal.hasSpans.useValue();
 
     const accepted = props.accepted ?? empty;

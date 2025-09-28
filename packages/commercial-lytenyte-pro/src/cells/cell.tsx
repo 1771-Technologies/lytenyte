@@ -21,7 +21,10 @@ export const Cell = forwardRef<
     ...rowMeta
   } = useRowMeta();
   // This enforces our column virtualization.
-  if (props.cell.colPin == null && (props.cell.colIndex >= end || props.cell.colIndex < start)) {
+  if (
+    props.cell.colPin == null &&
+    (props.cell.colIndex >= end || props.cell.colIndex + props.cell.colSpan - 1 < start)
+  ) {
     return null;
   }
 
@@ -33,7 +36,19 @@ const CellImpl = memo(
     HTMLDivElement,
     Omit<JSX.IntrinsicElements["div"], "children"> & CellProps & Omit<RowMetaData, "colBounds">
   >(function Cell(
-    { cell, row, selected, indeterminate, xPositions, yPositions, base, renderers, rtl, ...props },
+    {
+      cell,
+      row,
+      selected,
+      indeterminate,
+      xPositions,
+      yPositions,
+      base,
+      renderers,
+      rtl,
+      layout: _,
+      ...props
+    },
     forwarded,
   ) {
     const grid = useGridRoot().grid;
@@ -92,7 +107,7 @@ const CellImpl = memo(
           data-ln-last-start-pin={cell.colLastStartPin}
           data-ln-first-end-pin={cell.colFirstEndPin}
           tabIndex={isEditing ? -1 : 0}
-          style={style}
+          style={{ ...style, ...props.style }}
         >
           {isEditing && <CellEditor cell={cell} />}
           {!isEditing && (
