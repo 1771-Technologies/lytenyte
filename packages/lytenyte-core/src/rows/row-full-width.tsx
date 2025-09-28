@@ -23,7 +23,7 @@ const RowFullWidthImpl = forwardRef<
   const yPositions = grid.state.yPositions.useValue();
   const hasSpans = grid.internal.hasSpans.useValue();
 
-  const meta = useRowContextValue(grid, layout.row, yPositions);
+  const meta = useRowContextValue(grid, layout, yPositions);
 
   return (
     <RowFullWidthReact

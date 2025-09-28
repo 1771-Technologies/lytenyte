@@ -1,6 +1,7 @@
 import { isCell } from "../predicates/is-cell.js";
 import { isColumnGroupHeader } from "../predicates/is-column-group-header.js";
 import { isColumnHeader } from "../predicates/is-column-header.js";
+import { isDetailCell } from "../predicates/is-detail-cell.js";
 import { isRow } from "../predicates/is-row.js";
 import { isViewport } from "../predicates/is-viewport.js";
 
@@ -15,6 +16,7 @@ export function getNearestFocusable(el?: HTMLElement) {
       isColumnHeader(current) ||
       isColumnGroupHeader(current) ||
       isCell(current) ||
+      isDetailCell(current) ||
       (isRow(current) && current.getAttribute("data-ln-rowtype") === "full-width")
     ) {
       return current;

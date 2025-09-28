@@ -1,6 +1,8 @@
 import type { PositionUnion } from "../../+types.js";
 import { isCell } from "../predicates/is-cell.js";
+import { isColumnFloatingHeader } from "../predicates/is-column-floating-header.js";
 import { isColumnHeader } from "../predicates/is-column-header.js";
+import { isDetailCell } from "../predicates/is-detail-cell.js";
 import { isFullWidthRow } from "../predicates/is-full-width-row.js";
 import { getColIndexFromEl } from "./get-col-index-from-el.js";
 import { getColSpanFromEl } from "./get-col-span-from-el.js";
@@ -27,6 +29,11 @@ export function getPositionFromFocusable(el: HTMLElement): PositionUnion {
     };
   }
 
+  if (isDetailCell(el)) {
+    const rowIndex = getRowIndexFromEl(el);
+    return { kind: "detail", rowIndex, colIndex: 0 };
+  }
+
   if (isFullWidthRow(el)) {
     const rowIndex = getRowIndexFromEl(el);
     return { kind: "full-width", rowIndex, colIndex: 0 };
@@ -34,7 +41,7 @@ export function getPositionFromFocusable(el: HTMLElement): PositionUnion {
 
   if (isColumnHeader(el)) {
     return {
-      kind: "header-cell",
+      kind: isColumnFloatingHeader(el) ? "floating-cell" : "header-cell",
       colIndex: getColIndexFromEl(el),
     };
   }

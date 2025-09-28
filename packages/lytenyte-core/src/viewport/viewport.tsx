@@ -1,11 +1,7 @@
 import { forwardRef, type JSX } from "react";
 import { useCombinedRefs } from "@1771technologies/lytenyte-react-hooks";
 import { useGridRoot } from "../context.js";
-import {
-  handleNavigationKeys,
-  handleSkipInner,
-  useFocusTracking,
-} from "@1771technologies/lytenyte-shared";
+import { handleNavigation, useFocusTracking } from "@1771technologies/lytenyte-shared";
 import { beginEditing } from "./begin-editing.js";
 
 export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function Viewport(
@@ -21,7 +17,8 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
   const height = ctx.grid.state.heightTotal.useValue();
   const rtl = ctx.grid.state.rtl.useValue();
 
-  const focused = useFocusTracking(vp, ctx.grid.internal.focusActive);
+  const [focused, vpFocused] = useFocusTracking(vp, ctx.grid.internal.focusActive);
+  const shouldCapture = !focused && !vpFocused;
 
   return (
     <>
@@ -29,24 +26,26 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
         tabIndex={0}
         {...props}
         onKeyDown={(e) => {
-          handleSkipInner(e);
           props.onKeyDown?.(e);
+          if (e.defaultPrevented || e.isPropagationStopped() || !vp) return;
 
-          if (e.defaultPrevented) return;
-
-          const ds = ctx.grid.state.rowDataStore;
-
-          handleNavigationKeys(e, {
-            vp: ctx.grid.state.viewport.get(),
-            rowCount: ds.rowCount.get(),
-            topCount: ds.rowTopCount.get(),
-            centerCount: ds.rowCenterCount.get(),
-            columnCount: ctx.grid.state.columnMeta.get().columnsVisible.length,
-            focusActive: ctx.grid.internal.focusActive,
-            id: ctx.grid.state.gridId.get(),
-            rtl: ctx.grid.state.rtl.get(),
+          handleNavigation({
+            gridId: ctx.grid.state.gridId.get(),
+            rtl,
+            event: e,
+            viewport: vp,
+            topCount: ctx.grid.state.rowDataStore.rowTopCount.get(),
+            centerCount: ctx.grid.state.rowDataStore.rowCenterCount.get(),
             getRootCell: ctx.grid.api.cellRoot,
             scrollIntoView: ctx.grid.api.scrollIntoView,
+            focusActive: ctx.grid.internal.focusActive,
+            columnCount: ctx.grid.state.columnMeta.get().columnsVisible.length,
+            rowCount: ctx.grid.state.rowDataStore.rowCount.get(),
+            isRowDetailExpanded: (r) => {
+              const row = ctx.grid.api.rowByIndex(r);
+              if (!row) return false;
+              return ctx.grid.api.rowDetailIsExpanded(row);
+            },
           });
 
           if (e.key === "Enter" || e.key.length === 1) {
@@ -102,7 +101,7 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
         {!vp && <div style={{ width, height }} />}
       </div>
 
-      {!focused && (
+      {shouldCapture && (
         <div
           role="none"
           data-ln-focus-capture

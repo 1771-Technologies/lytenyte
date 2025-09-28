@@ -8,7 +8,7 @@ import type { RootCellFn, ScrollIntoViewFn } from "../../+types.non-gen.js";
 import { ensureVisible } from "../ensure-visible.js";
 import { getCellQuery } from "../getters/get-cell-query.js";
 import { getRowQuery } from "../getters/get-row-query.js";
-import { getCellRootRowAndColIndex } from "./get-cell-root-row-and-col-index.js";
+import { getCellRootRowAndColIndex } from "./handle-vertical-move.js";
 
 interface FocusCellVerticallyArgs {
   readonly id: string;

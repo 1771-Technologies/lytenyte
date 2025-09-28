@@ -5089,6 +5089,28 @@ export interface OnEditErrorParams<T> {
 }
 
 /**
+ * The position value type when the current focus position of the grid is within a detail cell.
+ *
+ *   @group Navigation
+ */
+export interface PositionDetailCell {
+  /**
+   * Discriminant indicating this position refers to a detail cell.
+   */
+  readonly kind: "detail";
+
+  /**
+   * The zero-based index of the row.
+   */
+  readonly rowIndex: number;
+
+  /**
+   * The zero-based index of the column.
+   */
+  readonly colIndex: number;
+}
+
+/**
  * Describes the focus position of a floating header cell.
  *
  *   @group Navigation
@@ -5240,6 +5262,7 @@ export type PositionUnion =
   | PositionGridCell
   | PositionFloatingCell
   | PositionHeaderCell
+  | PositionDetailCell
   | PositionFullWidthRow
   | PositionHeaderGroupCell;
 

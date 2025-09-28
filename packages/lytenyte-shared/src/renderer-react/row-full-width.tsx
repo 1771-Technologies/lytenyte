@@ -62,7 +62,6 @@ export const RowFullWidthReact = forwardRef<
       data-ln-first-bottom-pin={rowFirstPinBottom}
       data-ln-rowtype="full-width"
       /** Data attributes end */
-      tabIndex={-1}
       ref={forwarded}
       style={useRowStyle(
         yPositions,
@@ -84,6 +83,7 @@ export const RowFullWidthReact = forwardRef<
     >
       <div
         role="gridcell"
+        tabIndex={0}
         style={{
           width: "100%",
           height,

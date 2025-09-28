@@ -9,6 +9,7 @@ export function useFocusTracking(
   focusActive: Omit<GridAtom<PositionUnion | null>, "$">,
 ) {
   const [focused, setFocused] = useState(false);
+  const [vpFocused, setVpFocused] = useState(false);
 
   useEffect(() => {
     if (!vp) return;
@@ -30,7 +31,7 @@ export function useFocusTracking(
 
         // Maintain the current column index. This can happen when we are navigating via the keyboard and
         // there are multiple focusables in the cell.
-        if (position.kind === "full-width")
+        if (position.kind === "full-width" || position.kind === "detail")
           (position.colIndex as any) = focusActive.get()?.colIndex ?? position.colIndex ?? 0;
         else if (position.kind === "header-group-cell") {
           (position.colIndex as any) = clamp(
@@ -64,5 +65,16 @@ export function useFocusTracking(
     return () => controller.abort();
   }, [focusActive, vp]);
 
-  return focused;
+  useEffect(() => {
+    if (!vp) return;
+
+    const controller = new AbortController();
+
+    vp.addEventListener("focus", () => setVpFocused(true), { signal: controller.signal });
+    vp.addEventListener("blur", () => setVpFocused(false), { signal: controller.signal });
+
+    return () => controller.abort();
+  }, [vp]);
+
+  return [focused, vpFocused];
 }

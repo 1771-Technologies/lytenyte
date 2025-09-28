@@ -32,7 +32,6 @@ export default function CellEditingValidation() {
 
     editRowValidatorFn: (p) => {
       const data = p.data;
-      console.log("i ran", p, data.age < 0);
       if (data.age < 0) return { reason: "Age cannot be less than 0." };
 
       return true;

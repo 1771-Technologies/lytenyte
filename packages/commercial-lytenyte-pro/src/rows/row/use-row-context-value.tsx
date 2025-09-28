@@ -1,14 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
-import type { Grid, GridAtomReadonlyUnwatchable, RowNode } from "../../+types.js";
+import type { Grid, RowLayout } from "../../+types.js";
 import type { InternalAtoms } from "../../state/+types.js";
 import type { RowMetaData } from "./context.js";
 
 export function useRowContextValue(
   grid: Grid<any> & { internal: InternalAtoms },
-  row: GridAtomReadonlyUnwatchable<RowNode<any> | null>,
+  row: RowLayout<any>,
   yPositions: Uint32Array,
 ) {
-  const r = row.useValue();
+  const r = row.row.useValue();
 
   const xPositions = grid.state.xPositions.useValue();
 
@@ -46,13 +46,14 @@ export function useRowContextValue(
       indeterminate,
       colBounds,
       row: r,
+      layout: row,
       xPositions,
       yPositions,
       rtl,
       base,
       renderers,
     };
-  }, [base, colBounds, indeterminate, r, renderers, rtl, selected, xPositions, yPositions]);
+  }, [base, colBounds, indeterminate, r, renderers, row, rtl, selected, xPositions, yPositions]);
 
   return value;
 }

@@ -1,11 +1,11 @@
 import {
   focusCell,
   getHeaderRows,
-  handleNavigationKeys,
+  handleNavigation,
   isColumnFloatingHeader,
 } from "@1771technologies/lytenyte-shared";
 import type { Grid, GridApi, PositionHeaderGroupCell } from "../../+types";
-import type { InternalAtoms } from "../+types.js";
+import type { InternalAtoms } from "../+types";
 import { clamp } from "@1771technologies/lytenyte-js-utils";
 
 export const makeFocusCell = (
@@ -25,27 +25,30 @@ export const makeFocusCell = (
       if (!key) return false;
 
       const ds = grid.state.rowDataStore;
-      handleNavigationKeys(
-        {
+      handleNavigation({
+        event: {
           key,
           ctrlKey: false,
           metaKey: false,
           preventDefault: () => {},
           stopPropagation: () => {},
         },
-        {
-          vp,
-          rowCount: ds.rowCount.get(),
-          topCount: ds.rowTopCount.get(),
-          centerCount: ds.rowCenterCount.get(),
-          columnCount: grid.state.columnMeta.get().columnsVisible.length,
-          focusActive: grid.internal.focusActive,
-          id: grid.state.gridId.get(),
-          getRootCell: grid.api.cellRoot,
-          rtl: grid.state.rtl.get(),
-          scrollIntoView: grid.api.scrollIntoView,
+        topCount: grid.state.rowDataStore.rowTopCount.get(),
+        centerCount: grid.state.rowDataStore.rowCenterCount.get(),
+        isRowDetailExpanded: (r) => {
+          const row = grid.api.rowByIndex(r);
+          if (!row) return false;
+          return grid.api.rowDetailIsExpanded(row);
         },
-      );
+        viewport: vp,
+        rowCount: ds.rowCount.get(),
+        columnCount: grid.state.columnMeta.get().columnsVisible.length,
+        focusActive: grid.internal.focusActive,
+        gridId: grid.state.gridId.get(),
+        getRootCell: grid.api.cellRoot,
+        rtl: grid.state.rtl.get(),
+        scrollIntoView: grid.api.scrollIntoView,
+      });
       return true;
     }
 

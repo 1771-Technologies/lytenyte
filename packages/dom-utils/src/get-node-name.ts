@@ -1,11 +1,6 @@
-import { isNode } from "./is-node.js";
+import { isHTMLElement } from "./is-html-element.js";
 
 export function getNodeName(node: Node | Window): string {
-  if (isNode(node)) {
-    return (node.nodeName || "").toLowerCase();
-  }
-  // Mocked nodes in testing environments may not be instances of Node. By
-  // returning `#document` an infinite loop won't occur.
-  // https://github.com/floating-ui/floating-ui/issues/2317
+  if (isHTMLElement(node)) return node.localName || "";
   return "#document";
 }

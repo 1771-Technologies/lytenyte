@@ -1,9 +1,9 @@
 import type { GridAtom, PositionUnion } from "../../+types.js";
-import { focusCellVertically } from "./focus-cell-vertically.js";
 import type { RootCellFn, ScrollIntoViewFn } from "../../+types.non-gen.js";
 import { getRowsCenterSection } from "../getters/get-rows-center-section.js";
 import { getRowsInSection } from "../getters/get-rows-in-section.js";
 import { getRowIndexFromEl } from "../getters/get-row-index-from-el.js";
+import { focusCellVertically } from "./focus-cell-vertically.js";
 
 interface HandleHomeEndArgs {
   readonly vp: HTMLElement | null;
