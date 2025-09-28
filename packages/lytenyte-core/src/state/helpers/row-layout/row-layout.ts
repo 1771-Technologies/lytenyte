@@ -124,7 +124,9 @@ function handleViewLayout<T>({
 
     if (status === FULL_WIDTH) {
       const row: RowLayout<T> = {
-        id: node.get()?.id ?? `${r}`,
+        get id() {
+          return node.get()?.id ?? `${r}`;
+        },
         rowIndex: r,
         kind: "full-width",
         rowPin,
@@ -218,7 +220,9 @@ function handleViewLayout<T>({
     }
 
     const row: RowLayout<T> = {
-      id: node.get()?.id ?? `${r}`,
+      get id() {
+        return node.get()?.id ?? `${r}`;
+      },
       rowIndex: r,
       kind: "row",
       cells: cellLayout,

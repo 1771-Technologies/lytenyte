@@ -10,7 +10,7 @@
     "update-examples": "pnpm tsx ./make-examples.ts"
   },
   "dependencies": {
-    "@1771technologies/lytenyte-pro": "^1.0.12",
+    "@1771technologies/lytenyte-pro": "^1.0.13",
     "@1771technologies/remark-code-demo": "workspace:*",
     "@1771technologies/sample-data": "^0.9.4",
     "@ark-ui/react": "^5.25.0",
