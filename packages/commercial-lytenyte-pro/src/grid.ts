@@ -5,7 +5,7 @@ import { HeaderGroupCell } from "./header/header-group-cell.js";
 import { HeaderRow } from "./header/header-row.js";
 import { Root } from "./root/root.js";
 import { RowFullWidth } from "./rows/row-full-width.js";
-import { Row } from "./rows/row/row.js";
+import { Row } from "./rows/row.js";
 import { RowsContainer } from "./rows/rows-container.js";
 import { RowsBottom, RowsCenter, RowsTop } from "./rows/rows-sections.js";
 import { useLyteNyte } from "./state/use-lytenyte.js";
