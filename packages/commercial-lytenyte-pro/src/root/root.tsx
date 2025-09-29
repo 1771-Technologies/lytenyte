@@ -1,18 +1,16 @@
-import { useEffect, useMemo, useState, type PropsWithChildren } from "react";
-import type { GridRootContext } from "../context.js";
-import { RootProvider } from "../context.js";
+import { useEffect, type PropsWithChildren } from "react";
 import type { Grid, GridEvents } from "../+types";
-import type { InternalAtoms } from "../state/+types";
 import { DialogDriver } from "./dialog-driver.js";
 import { PopoverDriver } from "./popover-driver.js";
 import { CellSelectionDriver } from "../cell-selection/cell-selection-driver.js";
 import { hasAValidLicense, licenseState } from "../license.js";
+import { Root as RootCore } from "@1771technologies/lytenyte-core/yinternal";
 
 export type RootProps<T> = { readonly grid: Grid<T> } & {
   [k in keyof GridEvents<T> as `on${Capitalize<k>}`]: GridEvents<T>[k];
 };
 
-export function Root<T = any>({ grid, children, ...events }: PropsWithChildren<RootProps<T>>) {
+export function Root<T = any>({ children, grid, ...props }: PropsWithChildren<RootProps<T>>) {
   useEffect(() => {
     if (hasAValidLicense) return;
 
@@ -44,98 +42,14 @@ export function Root<T = any>({ grid, children, ...events }: PropsWithChildren<R
     return () => invalidLicenseWatermark.remove();
   }, []);
 
-  // Add event listeners in the standard react way
-  useEffect(() => {
-    const ev = Object.entries(events).map(([onName, fn]) => {
-      if (!onName.startsWith("on")) return;
-      const name = onName[2].toLowerCase() + onName.slice(3);
-      return grid.api.eventAddListener(name as any, fn as any);
-    });
-
-    return () => ev.forEach((c) => c?.());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [Object.values(events)]);
-
-  const internal = (grid as Grid<any> & { internal: InternalAtoms }).internal;
-
-  useEffect(() => {
-    return internal.focusActive.watch(() => {
-      const editActive = internal.editActivePos.get();
-      if (!editActive) return;
-
-      const focus = internal.focusActive.get();
-      if (focus?.kind !== "cell") {
-        grid.api.editEnd();
-      } else {
-        if (grid.api.editIsCellActive({ rowIndex: focus.rowIndex, column: focus.colIndex })) return;
-        grid.api.editEnd();
-      }
-    });
-  }, [grid.api, internal.editActivePos, internal.focusActive]);
-
-  const [vp, ref] = useState<HTMLElement | null>(null);
-
-  useEffect(() => {
-    if (!vp) return;
-
-    const controller = new AbortController();
-    vp.addEventListener(
-      "scroll",
-      () => {
-        internal.xScroll.set(Math.abs(vp.scrollLeft));
-        internal.yScroll.set(vp.scrollTop);
-      },
-      { signal: controller.signal },
-    );
-
-    return () => controller.abort();
-  }, [internal.xScroll, internal.yScroll, vp]);
-
-  useEffect(() => {
-    grid.state.viewport.set(vp);
-
-    if (!vp) return;
-
-    const obs = new ResizeObserver(() => {
-      grid.state.viewportHeightOuter.set(vp.offsetHeight);
-      grid.state.viewportWidthOuter.set(vp.offsetWidth);
-      grid.state.viewportWidthInner.set(vp.clientWidth);
-      grid.state.viewportHeightInner.set(vp.clientHeight);
-    });
-
-    grid.state.viewportHeightOuter.set(vp.offsetHeight);
-    grid.state.viewportWidthOuter.set(vp.offsetWidth);
-    grid.state.viewportWidthInner.set(vp.clientWidth);
-    grid.state.viewportHeightInner.set(vp.clientHeight);
-
-    obs.observe(vp);
-    return () => {
-      obs.disconnect();
-    };
-  }, [
-    grid.state.viewport,
-    grid.state.viewportHeightInner,
-    grid.state.viewportHeightOuter,
-    grid.state.viewportWidthInner,
-    grid.state.viewportWidthOuter,
-    vp,
-  ]);
-
-  const value = useMemo<GridRootContext>(() => {
-    return {
-      ref,
-      grid: grid as any,
-    };
-  }, [grid]);
-
   const cellSelectionMode = grid.state.cellSelectionMode.useValue();
 
   return (
-    <RootProvider value={value}>
+    <RootCore {...(props as any)} grid={grid as any}>
       <DialogDriver />
       <PopoverDriver />
       {cellSelectionMode !== "none" && <CellSelectionDriver />}
       {children}
-    </RootProvider>
+    </RootCore>
   );
 }
