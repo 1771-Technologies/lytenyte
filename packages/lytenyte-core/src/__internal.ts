@@ -1,4 +1,6 @@
+// ROOT
 export { RootProvider, useGridRoot } from "./context.js";
+export { Viewport } from "./viewport/viewport.js";
 
 // HEADERS
 export { HeaderCell } from "./header/header-cell.js";
