@@ -2,9 +2,15 @@ import { forwardRef, type JSX } from "react";
 import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
 import type { RowFullWidthRowLayout } from "../+types";
 import { useGridRoot } from "../context.js";
-import { RowFullWidthReact, type DropWrapProps } from "@1771technologies/lytenyte-shared";
+import {
+  DropWrap,
+  sizeFromCoord,
+  VIEWPORT_WIDTH_VARIABLE_USE,
+  type DropWrapProps,
+} from "@1771technologies/lytenyte-shared";
 import { RowDetailRow } from "./row-detail-row.js";
 import { useRowContextValue } from "./row/use-row-context-value.js";
+import { useRowStyle } from "./use-row-style.js";
 
 export interface RowFullWidthProps extends Omit<DropWrapProps, "accepted"> {
   readonly row: RowFullWidthRowLayout<any>;
@@ -24,38 +30,73 @@ const RowFullWidthImpl = forwardRef<
   const hasSpans = grid.internal.hasSpans.useValue();
 
   const meta = useRowContextValue(grid, layout, yPositions);
+  const rowIndex = layout.rowIndex;
+  const rowPin = layout.rowPin;
+
+  const rtl = meta.rtl;
+
+  const topOffset = grid.view.useValue().rows.rowTopTotalHeight;
+  const rowIsFocusRow = !!layout.rowIsFocusRow;
+  const height = sizeFromCoord(rowIndex, yPositions) - grid.api.rowDetailRenderedHeight(row ?? "");
 
   return (
-    <RowFullWidthReact
+    <DropWrap
       {...props}
-      ref={forwarded}
+      role="row"
       accepted={props.accepted ?? empty}
-      detail={<RowDetailRow layout={layout} />}
-      detailHeight={grid.api.rowDetailRenderedHeight(row ?? "")}
-      gridId={grid.state.gridId.useValue()}
-      rtl={meta.rtl}
-      hasSpans={hasSpans}
-      rowFirstPinBottom={layout.rowFirstPinBottom}
-      rowLastPinTop={layout.rowLastPinTop}
-      rowIndex={layout.rowIndex}
-      rowIsFocusRow={layout.rowIsFocusRow ?? false}
-      rowPin={layout.rowPin}
-      topOffset={grid.view.useValue().rows.rowTopTotalHeight}
-      yPositions={yPositions}
-      space={space}
-      data-ln-row-selected={meta.selected}
+      /** Data attributes start */
+      data-ln-gridid={grid.state.gridId.get()}
+      data-ln-rowindex={rowIndex}
+      data-ln-alternate={rowIndex % 2 === 1}
+      data-ln-row
+      data-ln-last-top-pin={layout.rowLastPinTop}
+      data-ln-first-bottom-pin={layout.rowFirstPinBottom}
+      data-ln-rowtype="full-width"
+      /** Data attributes end */
+      ref={forwarded}
+      style={useRowStyle(
+        yPositions,
+        rowIndex,
+        rowPin,
+        topOffset,
+        rowIsFocusRow,
+        hasSpans,
+        props.style,
+        {
+          right: rtl ? "0px" : undefined,
+          left: rtl ? undefined : "0px",
+          position: "sticky",
+          width: space === "scroll-width" ? undefined : VIEWPORT_WIDTH_VARIABLE_USE,
+          gridTemplateColumns: `${space === "scroll-width" ? "100%" : VIEWPORT_WIDTH_VARIABLE_USE}`,
+          pointerEvents: "all",
+        },
+      )}
     >
-      {children ??
-        (row ? (
-          <Renderer
-            grid={grid}
-            row={row}
-            rowIndex={layout.rowIndex}
-            rowSelected={meta.selected}
-            rowIndeterminate={meta.indeterminate}
-          />
-        ) : null)}
-    </RowFullWidthReact>
+      <div
+        role="gridcell"
+        tabIndex={0}
+        style={{
+          width: "100%",
+          height,
+          gridColumnStart: "1",
+          gridColumnEnd: "2",
+          gridRowStart: "1",
+          gridRowEnd: "2",
+        }}
+      >
+        {children ??
+          (row ? (
+            <Renderer
+              grid={grid}
+              row={row}
+              rowIndex={layout.rowIndex}
+              rowSelected={meta.selected}
+              rowIndeterminate={meta.indeterminate}
+            />
+          ) : null)}
+      </div>
+      <RowDetailRow layout={layout} />
+    </DropWrap>
   );
 });
 

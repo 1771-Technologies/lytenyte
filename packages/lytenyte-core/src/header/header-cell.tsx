@@ -1,7 +1,7 @@
 import { forwardRef, type CSSProperties, type JSX } from "react";
 import type { HeaderCellFloating, HeaderCellLayout } from "../+types";
 import { useGridRoot } from "../context.js";
-import { COLUMN_MARKER_ID, HeaderCellReact } from "@1771technologies/lytenyte-shared";
+import { COLUMN_MARKER_ID, sizeFromCoord } from "@1771technologies/lytenyte-shared";
 import {
   fastDeepMemo,
   useCombinedRefs,
@@ -10,6 +10,7 @@ import {
 import { useHeaderCellRenderer } from "./use-header-cell-renderer.js";
 import { ResizeHandler } from "./resize-handler.js";
 import { useDragMove } from "./use-drag-move.js";
+import { useHeaderCellStyle } from "./use-header-cell-style.js";
 
 export interface HeaderCellProps<T> {
   readonly cell: HeaderCellLayout<T> | HeaderCellFloating<T>;
@@ -42,15 +43,36 @@ const HeaderCellImpl = forwardRef<
   const { ref, ...dragProps } = useDragMove(grid, cell, props.onDragStart);
   const combined = useCombinedRefs(forwarded, ref);
 
+  const width = sizeFromCoord(cell.colStart, xPositions, cell.colSpan);
+  const rowSpan = cell.rowEnd - cell.rowStart;
+
   return (
-    <HeaderCellReact
+    <div
       {...props}
       {...dragProps}
+      tabIndex={0}
       ref={combined}
-      cell={cell}
-      columnId={cell.column.id}
-      isFloating={cell.kind === "floating"}
-      xPositions={xPositions}
+      role="columnheader"
+      // DATA Attributes Start
+      data-ln-header-cell
+      data-ln-header-floating={cell.kind === "floating" ? "true" : undefined}
+      data-ln-header-id={cell.column.id}
+      data-ln-header-range={`${cell.colStart},${cell.colStart + cell.colSpan}`}
+      data-ln-rowindex={cell.rowStart}
+      data-ln-colindex={cell.colStart}
+      data-ln-pin={cell.colPin ?? "center"}
+      data-ln-last-start-pin={cell.colLastStartPin}
+      data-ln-first-end-pin={cell.colFirstEndPin}
+      // Data attributes end
+      style={{
+        ...props.style,
+        ...useHeaderCellStyle(cell, xPositions),
+        gridRowStart: 1,
+        gridRowEnd: rowSpan + 1,
+        width,
+        height: "100%",
+        boxSizing: "border-box",
+      }}
     >
       {children == undefined ? <Renderer column={cell.column} grid={grid} /> : children}
       {resizable && cell.kind === "cell" && (
@@ -62,7 +84,7 @@ const HeaderCellImpl = forwardRef<
           style={resizerStyle}
         />
       )}
-    </HeaderCellReact>
+    </div>
   );
 });
 

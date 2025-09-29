@@ -1,9 +1,12 @@
 import { useMemo, type CSSProperties } from "react";
-import { sizeFromCoord } from "../utils/size-from-coord.js";
-import { SCROLL_WIDTH_VARIABLE_USE, VIEWPORT_WIDTH_VARIABLE_USE } from "../+constants.js";
 import type { RowPin } from "../+types.js";
-import { getTranslate } from "../utils/get-translate.js";
 import { isFirefox } from "@1771technologies/lytenyte-dom-utils";
+import {
+  getTranslate,
+  SCROLL_WIDTH_VARIABLE_USE,
+  sizeFromCoord,
+  VIEWPORT_WIDTH_VARIABLE_USE,
+} from "@1771technologies/lytenyte-shared";
 
 const isFF = typeof window === "undefined" ? false : isFirefox();
 

@@ -2,11 +2,12 @@ import { forwardRef, memo, type JSX } from "react";
 import type { RowNormalRowLayout } from "../../+types";
 import { useGridRoot } from "../../context.js";
 import { RowDetailRow } from "../row-detail-row.js";
-import { RowReact, type DropWrapProps } from "@1771technologies/lytenyte-shared";
+import { DropWrap, type DropWrapProps } from "@1771technologies/lytenyte-shared";
 import { useRowContextValue } from "./use-row-context-value.js";
-import { RowContext } from "./context.js";
 import { equal } from "@1771technologies/lytenyte-js-utils";
 import { CellSpacerNoPin } from "../../cells/cell-spacer.js";
+import { useRowStyle } from "../use-row-style.js";
+import { RowContext } from "./context.js";
 
 export interface RowProps extends Omit<DropWrapProps, "accepted"> {
   readonly row: RowNormalRowLayout<any>;
@@ -23,28 +24,40 @@ const RowImpl = forwardRef<HTMLDivElement, Omit<JSX.IntrinsicElements["div"], "o
     const hasSpans = ctx.internal.hasSpans.useValue();
 
     const accepted = props.accepted ?? empty;
+    const topOffset = ctx.view.useValue().rows.rowTopTotalHeight;
+
+    const styles = useRowStyle(
+      yPos,
+      row.rowIndex,
+      row.rowPin,
+      topOffset,
+      !!row.rowIsFocusRow,
+      hasSpans,
+      props.style,
+      undefined,
+    );
 
     return (
       <RowContext.Provider value={rowMeta}>
-        <RowReact
+        <DropWrap
           {...props}
+          role="row"
           ref={forwarded}
           accepted={accepted}
-          gridId={ctx.state.gridId.useValue()}
-          rowIndex={row.rowIndex}
-          rowFirstPinBottom={row.rowFirstPinBottom}
-          rowLastPinTop={row.rowLastPinTop}
-          rowIsFocusRow={row.rowIsFocusRow ?? false}
-          rowPin={row.rowPin}
-          topOffset={ctx.view.useValue().rows.rowTopTotalHeight}
-          yPositions={yPos}
-          hasSpans={hasSpans}
-          data-ln-row-selected={rowMeta.selected}
+          // Data Attributes
+          data-ln-gridid={ctx.state.gridId.get()}
+          data-ln-rowindex={row.rowIndex}
+          data-ln-rowtype="normal-row"
+          data-ln-last-top-pin={row.rowLastPinTop}
+          data-ln-first-bottom-pin={row.rowFirstPinBottom}
+          data-ln-alternate={row.rowIndex % 2 === 1}
+          data-ln-row
+          style={styles}
         >
           <CellSpacerNoPin xPositions={rowMeta.xPositions} />
           {props.children}
           <RowDetailRow layout={row} />
-        </RowReact>
+        </DropWrap>
       </RowContext.Provider>
     );
   },

@@ -2,7 +2,6 @@ import { forwardRef, type JSX } from "react";
 import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
 import { useGridRoot } from "../context.js";
 import { NativeScroller } from "./scrollers/native-scroller.js";
-import { RowsBottomReact, RowsCenterReact, RowsTopReact } from "@1771technologies/lytenyte-shared";
 
 export const RowsTop = fastDeepMemo(
   forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function RowsTop(props, forwarded) {
@@ -10,14 +9,26 @@ export const RowsTop = fastDeepMemo(
     const view = cx.view.useValue().rows;
 
     const topCount = cx.state.rowDataStore.rowTopCount.useValue();
+    const top = cx.internal.headerHeightTotal.useValue();
+    const height = view.rowTopTotalHeight;
+
+    if (height <= 0) return null;
     return (
-      <RowsTopReact
+      <RowsSection
         {...props}
+        ref={forwarded}
         rowFirst={topCount || -1}
         rowLast={topCount}
-        ref={forwarded}
-        top={cx.internal.headerHeightTotal.useValue()}
-        height={view.rowTopTotalHeight}
+        role="rowgroup"
+        data-ln-rows-top
+        style={{
+          ...props.style,
+          height,
+          position: "sticky",
+          top,
+          zIndex: 4,
+          minWidth: "100%",
+        }}
       />
     );
   }),
@@ -32,18 +43,35 @@ export const RowsCenter = fastDeepMemo(
     const view = cx.view.useValue().rows;
 
     const rowCenterCount = cx.state.rowDataStore.rowCenterCount.useValue();
+    const rowFirst = cx.state.rowDataStore.rowTopCount.useValue();
+    const rowLast = rowCenterCount + cx.state.rowDataStore.rowTopCount.useValue();
+    const height = view.rowCenterTotalHeight;
+    const pinSectionHeights = view.rowBottomTotalHeight + view.rowTopTotalHeight;
+
+    if (height <= 0) {
+      return (
+        <div role="presentation" style={{ height: `calc(100% - ${pinSectionHeights}px - 4px)` }} />
+      );
+    }
 
     return (
-      <RowsCenterReact
+      <RowsSection
         {...props}
+        rowFirst={rowFirst}
+        rowLast={rowLast}
         ref={forwarded}
-        rowFirst={cx.state.rowDataStore.rowTopCount.useValue()}
-        rowLast={rowCenterCount + cx.state.rowDataStore.rowTopCount.useValue()}
-        height={view.rowCenterTotalHeight}
-        pinSectionHeights={view.rowBottomTotalHeight + view.rowTopTotalHeight}
+        role="rowgroup"
+        data-ln-rows-center
+        style={{
+          ...props.style,
+          height,
+          minHeight: `calc(100% - ${pinSectionHeights}px - 4px)`,
+          minWidth: "100%",
+          position: "relative",
+        }}
       >
         <NativeScroller>{children}</NativeScroller>
-      </RowsCenterReact>
+      </RowsSection>
     );
   }),
 );
@@ -56,15 +84,48 @@ export const RowsBottom = fastDeepMemo(
     const rowCenterCount = cx.state.rowDataStore.rowCenterCount.useValue();
     const rowTopCount = cx.state.rowDataStore.rowTopCount.useValue();
     const rowBottomCount = cx.state.rowDataStore.rowBottomCount.useValue();
+    const height = view.rowBottomTotalHeight;
+
+    if (height <= 0) return null;
 
     return (
-      <RowsBottomReact
+      <RowsSection
         {...props}
         ref={forwarded}
         rowFirst={rowCenterCount + rowTopCount}
         rowLast={rowCenterCount + rowBottomCount + rowTopCount}
-        height={view.rowBottomTotalHeight}
+        role="rowgroup"
+        data-ln-rows-bottom
+        style={{
+          ...props.style,
+
+          height,
+          boxSizing: "border-box",
+          position: "sticky",
+          bottom: 0,
+          zIndex: 3,
+          minWidth: "100%",
+        }}
       />
     );
   }),
+);
+
+interface RowSectionProps {
+  readonly rowFirst: number;
+  readonly rowLast: number;
+}
+
+const RowsSection = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & RowSectionProps>(
+  function RowsSection({ rowFirst, rowLast, ...props }, forwarded) {
+    return (
+      <div
+        {...props}
+        ref={forwarded}
+        role="rowgroup"
+        data-ln-row-first={rowFirst}
+        data-ln-row-last={rowLast}
+      />
+    );
+  },
 );

@@ -1,10 +1,10 @@
 export type * from "../+types";
 
-export type { CellProps } from "../cells/cell";
-export type { HeaderCellProps } from "../header/header-cell";
-export type { HeaderGroupCellProps } from "../header/header-group-cell";
-export type { HeaderRowProps } from "../header/header-row";
-export type { RootProps } from "../root/root";
-export type { RowFullWidthProps } from "../rows/row-full-width";
+export type { CellProps } from "../grid/cell";
+export type { HeaderCellProps } from "../grid/header-cell";
+export type { HeaderRowProps } from "../grid/header-row";
+export type { HeaderGroupCellProps } from "../grid/header-group-cell";
+export type { RootProps } from "../grid/root";
+export type { RowFullWidthProps } from "../grid/row-full-width";
 
 export {};

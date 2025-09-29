@@ -118,15 +118,6 @@ export { getNearestRow } from "./navigation/getters/get-nearest-row.js";
 
 export { rowIndexForSection } from "./row/row-index-for-section.js";
 
-export { RowReact } from "./renderer-react/row.js";
-export { RowsContainerReact } from "./renderer-react/rows-container.js";
-export { RowsBottomReact, RowsCenterReact, RowsTopReact } from "./renderer-react/rows-sections.js";
-export { RowFullWidthReact } from "./renderer-react/row-full-width.js";
-export { HeaderReact } from "./renderer-react/header.js";
-export { HeaderRowReact } from "./renderer-react/header-row.js";
-export { HeaderCellReact } from "./renderer-react/header-cell.js";
-export { HeaderGroupCellReact } from "./renderer-react/header-group-cell.js";
-
 // Drag support
 export type {
   DragData,

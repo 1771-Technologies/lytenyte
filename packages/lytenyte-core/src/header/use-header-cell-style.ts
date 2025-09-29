@@ -1,8 +1,11 @@
 import { useMemo, type CSSProperties } from "react";
-import type { CellHeader } from "./+types.renderer-react.js";
-import { sizeFromCoord } from "../utils/size-from-coord.js";
+import type { HeaderCellFloating, HeaderCellLayout, HeaderGroupCellLayout } from "../+types";
+import { sizeFromCoord } from "@1771technologies/lytenyte-shared";
 
-export function useHeaderCellStyle(cell: CellHeader, xPositions: Uint32Array) {
+export function useHeaderCellStyle(
+  cell: HeaderCellLayout<any> | HeaderCellFloating<any> | HeaderGroupCellLayout,
+  xPositions: Uint32Array,
+) {
   const styles = useMemo(() => {
     const styles: CSSProperties = {
       position: "relative",

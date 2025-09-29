@@ -1,8 +1,8 @@
 import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
 import type { RowLayout, RowNormalRowLayout } from "../../+types.js";
-import { Cell } from "../../cells/cell.js";
-import { Row } from "../../rows/row/row.js";
-import { RowFullWidth } from "../../rows/row-full-width.js";
+import { Cell } from "../../grid/cell.js";
+import { Row } from "../../grid/row.js";
+import { RowFullWidth } from "../../grid/row-full-width.js";
 
 export const RowHandler = fastDeepMemo(
   (props: { rows: RowLayout<any>[]; withStyles?: boolean; pinned?: boolean }) => {
