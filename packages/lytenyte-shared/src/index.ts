@@ -118,8 +118,6 @@ export { getNearestRow } from "./navigation/getters/get-nearest-row.js";
 
 export { rowIndexForSection } from "./row/row-index-for-section.js";
 
-export { RowsBottomReact, RowsCenterReact, RowsTopReact } from "./renderer-react/rows-sections.js";
-
 // Drag support
 export type {
   DragData,
