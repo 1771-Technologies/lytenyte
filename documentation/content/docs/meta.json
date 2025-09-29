@@ -5,11 +5,12 @@
     "(prodready)",
     "(grid)",
     "(column)",
-    "(row-data-source)",
     "(row)",
     "(cell)",
+    "(row-data-source)",
     "(pivoting)",
     "(filtering)",
+    "(server-data-loading)",
     "(components)",
     "(export)",
     "(misc)"
