@@ -1,16 +1,7 @@
-import { forwardRef, type CSSProperties, type JSX } from "react";
+import { type CSSProperties, type JSX, type ReactNode } from "react";
 import type { HeaderCellFloating, HeaderCellLayout } from "../+types";
-import { useGridRoot } from "../context.js";
-import { COLUMN_MARKER_ID, HeaderCellReact } from "@1771technologies/lytenyte-shared";
-import {
-  fastDeepMemo,
-  useCombinedRefs,
-  type SlotComponent,
-} from "@1771technologies/lytenyte-react-hooks";
-import { useHeaderCellRenderer } from "./use-header-cell-renderer.js";
-import { ResizeHandler } from "./resize-handler.js";
-import { useDragMove } from "./use-drag-move.js";
-
+import { type SlotComponent } from "@1771technologies/lytenyte-react-hooks";
+import { HeaderCell as HeaderCellCore } from "@1771technologies/lytenyte-core/yinternal";
 export interface HeaderCellProps<T> {
   readonly cell: HeaderCellLayout<T> | HeaderCellFloating<T>;
   readonly resizerAs?: SlotComponent;
@@ -18,52 +9,6 @@ export interface HeaderCellProps<T> {
   readonly resizerStyle?: CSSProperties;
 }
 
-const HeaderCellImpl = forwardRef<
-  HTMLDivElement,
-  JSX.IntrinsicElements["div"] & HeaderCellProps<any>
->(function HeaderCell(
-  { cell, resizerAs, resizerStyle, resizerClassName, children, ...props },
-  forwarded,
-) {
-  const grid = useGridRoot().grid;
-  const ctx = grid.state;
-
-  const xPositions = ctx.xPositions.useValue();
-
-  const base = ctx.columnBase.useValue();
-
-  const Renderer = useHeaderCellRenderer(cell);
-
-  const resizable =
-    cell.id === COLUMN_MARKER_ID
-      ? false
-      : (cell.column.uiHints?.resizable ?? base.uiHints?.resizable ?? false);
-
-  const { ref, ...dragProps } = useDragMove(grid, cell, props.onDragStart);
-  const combined = useCombinedRefs(forwarded, ref);
-
-  return (
-    <HeaderCellReact
-      {...props}
-      {...dragProps}
-      ref={combined}
-      cell={cell}
-      columnId={cell.column.id}
-      isFloating={cell.kind === "floating"}
-      xPositions={xPositions}
-    >
-      {children == undefined ? <Renderer column={cell.column} grid={grid} /> : children}
-      {resizable && cell.kind === "cell" && (
-        <ResizeHandler
-          cell={cell}
-          xPositions={xPositions}
-          as={resizerAs}
-          className={resizerClassName}
-          style={resizerStyle}
-        />
-      )}
-    </HeaderCellReact>
-  );
-});
-
-export const HeaderCell = fastDeepMemo(HeaderCellImpl);
+export const HeaderCell = HeaderCellCore as (
+  props: JSX.IntrinsicElements["div"] & HeaderCellProps<any>,
+) => ReactNode;
