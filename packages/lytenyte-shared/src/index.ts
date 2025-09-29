@@ -121,8 +121,6 @@ export { rowIndexForSection } from "./row/row-index-for-section.js";
 export { RowReact } from "./renderer-react/row.js";
 export { RowsContainerReact } from "./renderer-react/rows-container.js";
 export { RowsBottomReact, RowsCenterReact, RowsTopReact } from "./renderer-react/rows-sections.js";
-export { HeaderReact } from "./renderer-react/header.js";
-export { HeaderRowReact } from "./renderer-react/header-row.js";
 
 // Drag support
 export type {
