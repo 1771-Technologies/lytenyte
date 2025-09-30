@@ -23,7 +23,9 @@ export interface CodeDemoProps {
   readonly stackBlitz: string;
 }
 export async function CodeDemo(props: PropsWithChildren<CodeDemoProps>) {
-  const files = getOrderedFiles(props.absolute).filter((c) => c.name !== "data.ts");
+  const files = getOrderedFiles(props.absolute).filter(
+    (c) => c.name !== "data.ts" && !c.name.endsWith(".json"),
+  );
 
   const tabs = files.map((c) => c.name);
 
