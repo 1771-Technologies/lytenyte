@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import { render } from "vitest-browser-react";
 import BasicRendering from "./basic-rendering.play.js";
-import { scrollGrid } from "./utils.js";
+import { scrollGrid } from "../../__tests__/utils.js";
 
 test("should render without any issues", async () => {
   const screen = render(<BasicRendering />);

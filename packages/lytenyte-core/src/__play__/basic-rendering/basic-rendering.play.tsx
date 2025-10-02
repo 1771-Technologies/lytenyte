@@ -1,17 +1,17 @@
 import { useId } from "react";
-import type { Column } from "../+types";
-import { useClientRowDataSource } from "../row-data-source/use-client-data-source.js";
-import { bankDataSmall } from "./sample-data/bank-data-smaller.js";
-import { useLyteNyte } from "../state/use-lytenyte.js";
-import { Root } from "../root/root.js";
-import { Viewport } from "../viewport/viewport.js";
-import { Header } from "../header/header.js";
-import { HeaderRow } from "../header/header-row.js";
-import { HeaderGroupCell } from "../header/header-group-cell.js";
-import { HeaderCell } from "../header/header-cell.js";
-import { RowsContainer } from "../rows/rows-container.js";
-import { RowsBottom, RowsCenter, RowsTop } from "../rows/rows-sections.js";
-import { RowHandler } from "./sample-data/row-handler.js";
+import type { Column } from "../../+types";
+import { useClientRowDataSource } from "../../row-data-source/use-client-data-source.js";
+import { bankDataSmall } from "../../__tests__/sample-data/bank-data-smaller.js";
+import { useLyteNyte } from "../../state/use-lytenyte.js";
+import { Root } from "../../root/root.js";
+import { Viewport } from "../../viewport/viewport.js";
+import { Header } from "../../header/header.js";
+import { HeaderRow } from "../../header/header-row.js";
+import { HeaderGroupCell } from "../../header/header-group-cell.js";
+import { HeaderCell } from "../../header/header-cell.js";
+import { RowsContainer } from "../../rows/rows-container.js";
+import { RowsBottom, RowsCenter, RowsTop } from "../../rows/rows-sections.js";
+import { RowHandler } from "../../__tests__/sample-data/row-handler.js";
 
 const columns: Column<any>[] = [
   { id: "age" },

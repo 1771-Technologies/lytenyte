@@ -1,20 +1,19 @@
-import "../../main.css";
 import { useEffect, useId, useState } from "react";
-import { bankData } from "./sample-data/bank-data.js";
-import { useLyteNyte } from "../state/use-lytenyte.js";
-import type { Column } from "../+types.js";
-import { Root } from "../root/root.js";
-import { Viewport } from "../viewport/viewport.js";
-import { Header } from "../header/header.js";
-import { HeaderRow } from "../header/header-row.js";
-import { HeaderGroupCell } from "../header/header-group-cell.js";
-import { HeaderCell } from "../header/header-cell.js";
-import { RowsContainer } from "../rows/rows-container.js";
-import { RowsBottom, RowsCenter, RowsTop } from "../rows/rows-sections.js";
-import { RowHandler } from "./sample-data/row-handler.js";
-import { useClientRowDataSource } from "../row-data-source/use-client-data-source.js";
+import { bankData } from "../../__tests__/sample-data/bank-data.js";
+import { useLyteNyte } from "../../state/use-lytenyte.js";
+import { Root } from "../../root/root.js";
+import { Viewport } from "../../viewport/viewport.js";
+import { Header } from "../../header/header.js";
+import { HeaderRow } from "../../header/header-row.js";
+import { HeaderGroupCell } from "../../header/header-group-cell.js";
+import { HeaderCell } from "../../header/header-cell.js";
+import { RowsContainer } from "../../rows/rows-container.js";
+import { RowsBottom, RowsCenter, RowsTop } from "../../rows/rows-sections.js";
+import { RowHandler } from "../../__tests__/sample-data/row-handler.js";
+import { useClientRowDataSource } from "../../row-data-source/use-client-data-source.js";
+import type { Column } from "../../+types";
 
-const sets: Record<string, Column<any>[]> = {
+const setsGlobal = {
   "One Start": [{ id: "age", pin: "start" }],
   "Two Start": [
     { id: "age", pin: "start" },
@@ -56,6 +55,13 @@ const sets: Record<string, Column<any>[]> = {
     { id: "day", width: 400 },
     { id: "month" },
     { id: "duration", width: 111 },
+    { id: "default1", width: 220 },
+    { id: "housing1", width: 110 },
+    { id: "loan1", width: 220 },
+    { id: "contact1", width: 100 },
+    { id: "day1", width: 400 },
+    { id: "month1" },
+    { id: "duration1", width: 111 },
   ],
   "Two Start, Two End and Scrollable": [
     { id: "age", pin: "start" },
@@ -68,6 +74,13 @@ const sets: Record<string, Column<any>[]> = {
     { id: "day", width: 400 },
     { id: "month" },
     { id: "duration", width: 111 },
+    { id: "default1", width: 220 },
+    { id: "housing1", width: 110 },
+    { id: "loan1", width: 220 },
+    { id: "contact1", width: 100 },
+    { id: "day1", width: 400 },
+    { id: "month1" },
+    { id: "duration1", width: 111 },
 
     { id: "age1", field: "age", pin: "end" },
     { id: "job1", field: "job", pin: "end", width: 110 },
@@ -82,6 +95,13 @@ const sets: Record<string, Column<any>[]> = {
     { id: "day", width: 400 },
     { id: "month" },
     { id: "duration", width: 111 },
+    { id: "default1", width: 220 },
+    { id: "housing1", width: 110 },
+    { id: "loan1", width: 220 },
+    { id: "contact1", width: 100 },
+    { id: "day1", width: 400 },
+    { id: "month1" },
+    { id: "duration1", width: 111 },
 
     { id: "age1", field: "age", pin: "end" },
     { id: "job1", field: "job", pin: "end", width: 110 },
@@ -97,6 +117,13 @@ const sets: Record<string, Column<any>[]> = {
     { id: "day", width: 400 },
     { id: "month" },
     { id: "duration", width: 111 },
+    { id: "default1", width: 220 },
+    { id: "housing1", width: 110 },
+    { id: "loan1", width: 220 },
+    { id: "contact1", width: 100 },
+    { id: "day1", width: 400 },
+    { id: "month1" },
+    { id: "duration1", width: 111 },
 
     { id: "job1", field: "job", pin: "end", width: 110 },
   ],
@@ -131,6 +158,13 @@ const sets: Record<string, Column<any>[]> = {
     { id: "day", width: 400 },
     { id: "month" },
     { id: "duration", width: 111 },
+    { id: "default1", width: 220 },
+    { id: "housing1", width: 110 },
+    { id: "loan1", width: 220 },
+    { id: "contact1", width: 100 },
+    { id: "day1", width: 400 },
+    { id: "month1" },
+    { id: "duration1", width: 111 },
 
     { id: "age1", field: "age", pin: "end" },
     { id: "job1", field: "job", pin: "end", width: 110 },
@@ -147,6 +181,13 @@ const sets: Record<string, Column<any>[]> = {
     { id: "day", width: 400 },
     { id: "month" },
     { id: "duration", width: 111 },
+    { id: "default1", width: 220 },
+    { id: "housing1", width: 110 },
+    { id: "loan1", width: 220 },
+    { id: "contact1", width: 100 },
+    { id: "day1", width: 400 },
+    { id: "month1" },
+    { id: "duration1", width: 111 },
 
     { id: "age1", field: "age", pin: "end", groupPath: ["A", "Beta"] },
     { id: "job1", field: "job", pin: "end", width: 110, groupPath: ["A"] },
@@ -163,13 +204,25 @@ const sets: Record<string, Column<any>[]> = {
     { id: "day", width: 400, groupPath: ["Beta", "Right", "Fight"] },
     { id: "month" },
     { id: "duration", width: 111 },
+    { id: "default1", width: 220 },
+    { id: "housing1", width: 110 },
+    { id: "loan1", width: 220 },
+    { id: "contact1", width: 100 },
+    { id: "day1", width: 400 },
+    { id: "month1" },
+    { id: "duration1", width: 111 },
 
     { id: "age1", field: "age", pin: "end", groupPath: ["A", "Beta"] },
     { id: "job1", field: "job", pin: "end", width: 110, groupPath: ["A"] },
   ],
 };
 
-export default function ColumnPinning() {
+export default function ColumnPinning({
+  initial = "Two Start, One End, and Scrollable",
+}: {
+  initial?: keyof typeof setsGlobal;
+}) {
+  const sets = setsGlobal as Record<string, Column<any>[]>;
   const ds = useClientRowDataSource({
     data: bankData,
     topData: bankData.slice(0, 2),
@@ -177,7 +230,7 @@ export default function ColumnPinning() {
   });
   const g = useLyteNyte({
     gridId: useId(),
-    columns: sets["oneStart"],
+    columns: sets["One Start"],
     // rowSelectionMode: "multiple",
     rowDataSource: ds,
     columnMarkerEnabled: false,
@@ -216,11 +269,11 @@ export default function ColumnPinning() {
   const view = g.view.useValue();
 
   const values = Object.keys(sets);
-  const [colSet, setColSet] = useState("Two Start, Two End and Scrollable");
+  const [colSet, setColSet] = useState<string>(initial);
 
   useEffect(() => {
     g.state.columns.set(sets[colSet]);
-  }, [colSet, g.state.columns]);
+  }, [colSet, g.state.columns, sets]);
 
   return (
     <div className="lng-grid">
@@ -253,9 +306,37 @@ export default function ColumnPinning() {
                   <HeaderRow headerRowIndex={i} key={i}>
                     {row.map((c) => {
                       if (c.kind === "group") {
-                        return <HeaderGroupCell cell={c} key={c.idOccurrence} />;
+                        return (
+                          <HeaderGroupCell
+                            cell={c}
+                            key={c.idOccurrence}
+                            style={{
+                              paddingInline: "16px",
+                              background: "light-dark(rgb(200,200,200),rgb(57, 39, 39))",
+                              color: "light-dark(black,white)",
+                              display: "flex",
+                              alignItems: "center",
+                              borderBottom: "1px solid light-dark(gray, #444242)",
+                              borderRight: "1px solid light-dark(gray, #444242)",
+                            }}
+                          />
+                        );
                       }
-                      return <HeaderCell cell={c} key={c.column.id} />;
+                      return (
+                        <HeaderCell
+                          cell={c}
+                          key={c.column.id}
+                          style={{
+                            paddingInline: "16px",
+                            background: "light-dark(rgb(200,200,200),rgb(57, 39, 39))",
+                            color: "light-dark(black,white)",
+                            display: "flex",
+                            alignItems: "center",
+                            borderBottom: "1px solid light-dark(gray, #444242)",
+                            borderRight: "1px solid light-dark(gray, #444242)",
+                          }}
+                        />
+                      );
                     })}
                   </HeaderRow>
                 );
@@ -264,13 +345,15 @@ export default function ColumnPinning() {
 
             <RowsContainer>
               <RowsTop>
-                <RowHandler rows={view.rows.top} />
+                <RowHandler rows={view.rows.top} withStyles pinned />
               </RowsTop>
+
               <RowsCenter>
-                <RowHandler rows={view.rows.center} />
+                <RowHandler rows={view.rows.center} withStyles />
               </RowsCenter>
+
               <RowsBottom>
-                <RowHandler rows={view.rows.bottom} />
+                <RowHandler rows={view.rows.bottom} withStyles pinned />
               </RowsBottom>
             </RowsContainer>
           </Viewport>

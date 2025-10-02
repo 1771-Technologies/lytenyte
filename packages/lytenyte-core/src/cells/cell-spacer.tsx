@@ -15,7 +15,9 @@ export function CellSpacePinStart({ xPositions: x }: { xPositions: Uint32Array }
   );
   const offset = x[colOffset] - x[bounds.colStartEnd];
 
-  return <div style={{ display: "inline-block", width: offset, height: 0 }} />;
+  return (
+    <div style={{ display: "inline-block", width: Number.isNaN(offset) ? 0 : offset, height: 0 }} />
+  );
 }
 
 export function CellSpacerPinEnd({ xPositions: x }: { xPositions: Uint32Array }) {
