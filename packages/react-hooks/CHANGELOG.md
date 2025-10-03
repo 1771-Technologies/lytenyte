@@ -1,5 +1,15 @@
 # @1771technologies/lytenyte-react-hooks
 
+## 1.0.15
+
+### Patch Changes
+
+- f3d2863: Refactors in progress
+- Updated dependencies [f3d2863]
+  - @1771technologies/lytenyte-dom-utils@1.0.15
+  - @1771technologies/lytenyte-object-equals@1.0.15
+  - @1771technologies/lytenyte-js-utils@1.0.15
+
 ## 1.0.14
 
 ### Patch Changes
