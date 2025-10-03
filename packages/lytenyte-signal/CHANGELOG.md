@@ -1,5 +1,11 @@
 # @1771technologies/lytenyte-signal
 
+## 1.0.15
+
+### Patch Changes
+
+- f3d2863: Refactors in progress
+
 ## 1.0.14
 
 ### Patch Changes

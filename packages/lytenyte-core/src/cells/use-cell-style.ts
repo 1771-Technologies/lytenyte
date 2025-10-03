@@ -23,7 +23,6 @@ export function useCellStyle(
       maxWidth: width,
       boxSizing: "border-box",
       pointerEvents: "all",
-      display: "inline-block",
       overflow: "hidden",
     };
     if (cell.colPin === "end") {

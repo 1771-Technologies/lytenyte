@@ -1,5 +1,11 @@
 # @1771technologies/play-frame
 
+## 0.0.14
+
+### Patch Changes
+
+- f3d2863: Refactors in progress
+
 ## 0.0.13
 
 ### Patch Changes

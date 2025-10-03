@@ -43,7 +43,6 @@ export function useRowStyle(
       opacity: rowIsFocusRow ? "0" : undefined,
       whiteSpace: "nowrap",
       display: "flex",
-      flexWrap: "wrap",
       transform: isTranslatedButNotRelative
         ? getTranslate(0, yPositions[rowIndex] - topOffset)
         : undefined,

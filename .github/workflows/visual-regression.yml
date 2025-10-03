@@ -58,8 +58,12 @@ jobs:
         run: npx --no playwright install --with-deps --only-shell
 
       # the magic happens below 🪄
-      - name: Update Visual Regression Screenshots
-        run: op test --project Browser --update
+      - name: Test All Packages (chrome)
+        run: op np --filter './packages/*' exec op test run --project=chrome --update
+      - name: Test All Packages (firefox)
+        run: op np --filter './packages/*' exec op test run --project=firefox --update
+      - name: Test All Packages (safari)
+        run: op np --filter './packages/*' exec op test run --project=safari --update
 
       # check what changed
       - name: Check for changes
