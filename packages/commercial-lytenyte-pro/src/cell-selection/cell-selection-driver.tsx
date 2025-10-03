@@ -146,7 +146,8 @@ export function CellSelectionDriver() {
       if (!isNormalClick(event)) {
         document.removeEventListener("pointermove", pointerMove);
 
-        // Prevent the default for the context menu, otherwise the cell right clicked will be focused,
+        // Prevent the default for the context menu, otherwise the cell
+        // right clicked will be focused,
         // resulting in the cell selection changing.
         if (event.button == 2) event.preventDefault();
         return;
