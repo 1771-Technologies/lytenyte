@@ -3,7 +3,7 @@
 import { Grid, useServerDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
-import { useId } from "react";
+import { useId, useRef } from "react";
 import { Server } from "./server";
 import type { MovieData } from "./data";
 import {
@@ -32,13 +32,17 @@ const columns: Column<MovieData>[] = [
   { id: "imdb_rating", name: "IMDB Rating", width: 120, cellRenderer: RatingRenderer },
 ];
 
-export default function BasicServerData() {
+export default function ServerDataFailFirst() {
+  const shouldFailRef = useRef(true);
   const ds = useServerDataSource<MovieData>({
     dataFetcher: (params) => {
-      return Server(params.requests);
+      const fail = shouldFailRef.current;
+      shouldFailRef.current = false;
+      return Server(params.requests, fail);
     },
     blockSize: 50,
   });
+  const error = ds.loadError.useValue();
 
   const grid = Grid.useLyteNyte({
     gridId: useId(),
@@ -49,7 +53,21 @@ export default function BasicServerData() {
   const view = grid.view.useValue();
 
   return (
-    <div className="lng-grid" style={{ height: 500 }}>
+    <div className="lng-grid relative" style={{ height: 500 }}>
+      {!!error && (
+        <div className="absolute left-0 top-0 z-10 flex h-full w-full flex-col items-center justify-center gap-2 bg-red-500/20">
+          <span>{`${error}`}</span>
+          <button
+            onClick={() => {
+              ds.reset();
+            }}
+            className="border-primary-500 bg-primary-200 text-primary-800 rounded-xs hover:bg-primary-300 cursor-pointer border px-2"
+          >
+            Retry - it will work now
+          </button>
+        </div>
+      )}
+
       <Grid.Root grid={grid}>
         <Grid.Viewport>
           <Grid.Header>
