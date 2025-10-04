@@ -2,40 +2,14 @@
 
 import { Grid, useServerDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
-import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { useId } from "react";
-import { Server } from "./server";
-import type { MovieData } from "./data";
-import {
-  GenreRenderer,
-  LinkRenderer,
-  NameCellRenderer,
-  RatingRenderer,
-  ReleasedRenderer,
-  TypeRenderer,
-} from "./components";
 
-const columns: Column<MovieData>[] = [
-  {
-    id: "#",
-    name: "",
-    width: 30,
-    field: "link",
-    widthMin: 30,
-    widthMax: 30,
-    cellRenderer: LinkRenderer,
-  },
-  { id: "name", name: "Title", width: 250, widthFlex: 1, cellRenderer: NameCellRenderer },
-  { id: "released_at", name: "Released", width: 120, cellRenderer: ReleasedRenderer },
-  { id: "genre", name: "Genre", cellRenderer: GenreRenderer },
-  { id: "type", name: "Type", width: 120, cellRenderer: TypeRenderer },
-  { id: "imdb_rating", name: "IMDB Rating", width: 120, cellRenderer: RatingRenderer },
-];
-
-export default function BasicServerData() {
-  const ds = useServerDataSource<MovieData>({
-    dataFetcher: (params) => {
-      return Server(params.requests);
+export default function AlwaysLoading() {
+  const ds = useServerDataSource({
+    dataFetcher: async () => {
+      return new Promise((res) => {
+        void res;
+      });
     },
     blockSize: 50,
   });
@@ -43,7 +17,7 @@ export default function BasicServerData() {
   const grid = Grid.useLyteNyte({
     gridId: useId(),
     rowDataSource: ds,
-    columns,
+    columns: [],
   });
 
   const view = grid.view.useValue();
