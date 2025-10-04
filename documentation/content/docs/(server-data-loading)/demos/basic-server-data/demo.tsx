@@ -6,13 +6,30 @@ import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { useId } from "react";
 import { Server } from "./server";
 import type { MovieData } from "./data";
+import {
+  GenreRenderer,
+  LinkRenderer,
+  NameCellRenderer,
+  RatingRenderer,
+  ReleasedRenderer,
+  TypeRenderer,
+} from "./components";
 
 const columns: Column<MovieData>[] = [
-  { id: "name", name: "Title", width: 250, widthFlex: 1 },
-  { id: "released_at", name: "Released", width: 120 },
-  { id: "genre", name: "Genre" },
-  { id: "type", name: "Type", width: 120 },
-  { id: "imdb_rating", name: "IMDB Rating", width: 120 },
+  {
+    id: "#",
+    name: "",
+    width: 30,
+    field: "link",
+    widthMin: 30,
+    widthMax: 30,
+    cellRenderer: LinkRenderer,
+  },
+  { id: "name", name: "Title", width: 250, widthFlex: 1, cellRenderer: NameCellRenderer },
+  { id: "released_at", name: "Released", width: 120, cellRenderer: ReleasedRenderer },
+  { id: "genre", name: "Genre", cellRenderer: GenreRenderer },
+  { id: "type", name: "Type", width: 120, cellRenderer: TypeRenderer },
+  { id: "imdb_rating", name: "IMDB Rating", width: 120, cellRenderer: RatingRenderer },
 ];
 
 export default function RowDetail() {
@@ -54,7 +71,9 @@ export default function RowDetail() {
               );
             })}
           </Grid.Header>
-          <Grid.RowsContainer>
+          <Grid.RowsContainer
+            className={ds.isLoading.useValue() ? "animate-pulse bg-gray-100" : ""}
+          >
             <Grid.RowsCenter>
               {view.rows.center.map((row) => {
                 if (row.kind === "full-width") return null;
