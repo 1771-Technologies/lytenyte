@@ -1,4 +1,28 @@
 ---
 title: Row Filtering
-description: Row Filtering
+description: LyteNyte Grid defines various filter models that the server data source may leverage to
+  filter rows on the server. The server may also define a custom filter model it define its own
+  filter functionality and behavior.
 ---
+
+## Different Filter Models Available
+
+LyteNyte Grid defines different filter models that the server may leverage to remove some rows from
+its responses to the client. These are:
+
+- [Filter Model](/docs/reference/filters#filtermodelitem): standard column filters that directly apply
+  a predicate to the value of cells for a given column. These filter test logical operations such as determining
+  greater than or less than values.
+- [Filter In Model](/docs/reference/filters#filterin): a tree set definition that may be used to determine
+  inclusion or exclusion of values.
+- [Quick search](/docs/filter-quick-filter): a string value that may be used to search
+  across rows for any cell that matches the value.
+- Custom: a developer defined model. This will not be present on the LyteNyte Grid state and is instead
+  arbitrarily defined by developers. This model can be anything appropriate for the given application use cases.
+
+## Filter Model Handling on the Server
+
+The `filterModel` state on LyteNyte Grid's state object provides a definition of column filters that servers may
+leverage to perform basic filtering. These models are provide functionality such as only returning the rows that
+have a column whose cells are greater than a specific value. The example below demonstrates this by leveraging
+the column filter component of LyteNyte Grid.
