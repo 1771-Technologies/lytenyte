@@ -23,7 +23,7 @@ import {
   updateFull,
 } from "@1771technologies/lytenyte-shared";
 
-import { computed, effect, makeAtom, signal } from "@1771technologies/lytenyte-signal";
+import { computed, effect, makeAtom, signal } from "../signal/index.js";
 
 import type { InternalAtoms } from "./+types.js";
 import { makeRowLayout } from "./helpers/row-layout/row-layout.js";

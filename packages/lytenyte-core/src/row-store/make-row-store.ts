@@ -5,7 +5,7 @@ import {
   signal,
   useSignalValue,
   type AtomReadonly,
-} from "@1771technologies/lytenyte-signal";
+} from "../signal/index.js";
 import type { RowDataStore, RowNode } from "../+types";
 
 export interface MakeRowStore<T> {

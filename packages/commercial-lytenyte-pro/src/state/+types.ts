@@ -9,7 +9,7 @@ import type {
   VirtualTarget,
 } from "../+types";
 import type { DataRectSplit } from "../cell-selection/split-cell-selection-rect";
-import type { WriteSignal } from "@1771technologies/lytenyte-signal";
+import type { WriteSignal } from "@1771technologies/lytenyte-core/yinternal";
 
 export interface InternalAtoms {
   readonly headerRows: GridAtomReadonly<number>;

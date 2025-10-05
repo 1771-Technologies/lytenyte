@@ -2,8 +2,8 @@ import { useState } from "react";
 import type { OnDropParams } from "../+types.js";
 import { activeDragElement, dragState, dropAtom } from "../+globals.js";
 import { computeMoveState } from "../utils/compute-move-state.js";
-import { peek } from "@1771technologies/lytenyte-signal";
 import { useEvent } from "../../hooks/index.js";
+import { peek } from "../../signal/index.js";
 
 export interface UseDropZoneArgs {
   readonly dropEl: HTMLElement | null;

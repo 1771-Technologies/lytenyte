@@ -18,7 +18,13 @@ import {
   numberComparator,
   stringComparator,
 } from "@1771technologies/lytenyte-shared";
-import { computed, effect, makeAtom, peek, signal } from "@1771technologies/lytenyte-signal";
+import {
+  computed,
+  effect,
+  makeAtom,
+  peek,
+  signal,
+} from "@1771technologies/lytenyte-core/yinternal";
 import { equal } from "@1771technologies/lytenyte-js-utils";
 import { makeClientTree, type ClientData } from "./tree/client-tree.js";
 import { computeFilteredRows } from "./filter/compute-filtered-rows.js";

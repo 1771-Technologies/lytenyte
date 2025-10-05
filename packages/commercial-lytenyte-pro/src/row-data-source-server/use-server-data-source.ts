@@ -1,4 +1,4 @@
-import { effect, makeAtom, signal } from "@1771technologies/lytenyte-signal";
+import { effect, makeAtom, signal } from "@1771technologies/lytenyte-core/yinternal";
 import type {
   ColumnPivotModel,
   DataRequestModel,

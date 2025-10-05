@@ -21,15 +21,7 @@ import {
   stringComparator,
 } from "@1771technologies/lytenyte-shared";
 
-import {
-  computed,
-  effect,
-  makeAtom,
-  peek,
-  signal,
-  type WriteSignal,
-} from "@1771technologies/lytenyte-signal";
-
+import { computed, effect, makeAtom, peek, signal, type WriteSignal } from "../signal/index.js";
 import { clamp, equal, get } from "@1771technologies/lytenyte-js-utils";
 import { makeClientTree, type ClientData } from "./tree/client-tree.js";
 import { computeFilteredRows } from "./filter/compute-filtered-rows.js";

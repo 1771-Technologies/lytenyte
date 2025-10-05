@@ -1,5 +1,5 @@
 import { SCOPE } from "../+constants.js";
-import type { WriteSignal } from "../+types";
+import type { WriteSignal } from "../+types.js";
 import { signal } from "../vanilla/index.js";
 
 type ValueOrSignal<K extends Record<string, any>> = {

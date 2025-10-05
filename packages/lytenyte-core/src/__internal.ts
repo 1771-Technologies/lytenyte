@@ -34,3 +34,6 @@ export {
   useEvent,
   useSlot,
 } from "./hooks/index.js";
+
+export type { AtomReadonly, Atom, WriteSignal, ReadSignal } from "./signal/index.js";
+export { signal, computed, effect, makeAtom, peek } from "./signal/index.js";

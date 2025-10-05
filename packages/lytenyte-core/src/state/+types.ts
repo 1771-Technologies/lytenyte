@@ -7,7 +7,7 @@ import type {
   HeaderGroupCellLayout,
   PositionUnion,
 } from "../+types";
-import type { WriteSignal } from "@1771technologies/lytenyte-signal";
+import type { WriteSignal } from "../signal/index.js";
 
 export interface InternalAtoms {
   readonly headerRows: GridAtomReadonly<number>;

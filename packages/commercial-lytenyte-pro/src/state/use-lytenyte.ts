@@ -27,7 +27,7 @@ import {
   updateFull,
 } from "@1771technologies/lytenyte-shared";
 
-import { computed, effect, makeAtom, signal } from "@1771technologies/lytenyte-signal";
+import { computed, effect, makeAtom, signal } from "@1771technologies/lytenyte-core/yinternal";
 import type { InternalAtoms } from "./+types.js";
 import { makeRowLayout } from "./helpers/row-layout/row-layout.js";
 import { equal, rangesOverlap } from "@1771technologies/lytenyte-js-utils";

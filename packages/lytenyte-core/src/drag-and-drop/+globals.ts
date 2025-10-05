@@ -1,4 +1,4 @@
-import { makeAtom, signal } from "@1771technologies/lytenyte-signal";
+import { makeAtom, signal } from "../signal/index.js";
 import type { DragPosition, InCurrent, OnDropParams } from "./+types.js";
 import { type DragData } from "./+types.js";
 
