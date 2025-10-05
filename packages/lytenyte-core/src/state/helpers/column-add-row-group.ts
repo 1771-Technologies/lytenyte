@@ -10,7 +10,7 @@ import type {
   RowGroupField,
   RowGroupModelItem,
 } from "../../+types.js";
-import { itemsWithIdToMap } from "@1771technologies/lytenyte-js-utils";
+import { itemsWithIdToMap } from "@1771technologies/lytenyte-shared";
 import { CellRowGroup } from "./cell-row-group.js";
 
 interface ColumnHandleGroupColumnArgs<T> {

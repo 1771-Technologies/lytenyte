@@ -4,7 +4,7 @@ import NormalLayout from "./normal-layout.play.js";
 import PinGapped from "./pinned-gap-layout.play.js";
 import { userEvent } from "@vitest/browser/context";
 import { getCellQuery } from "@1771technologies/lytenyte-shared";
-import { wait } from "@1771technologies/lytenyte-js-utils";
+import { wait } from "@1771technologies/lytenyte-shared";
 import CellSpans from "./cell-spans.play.js";
 import CellWithTabbables from "./cell-with-tabbables.play.js";
 import FullWidthRows from "./full-width-rows.play.js";

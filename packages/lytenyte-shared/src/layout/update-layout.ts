@@ -1,4 +1,4 @@
-import { clamp } from "@1771technologies/lytenyte-js-utils";
+import { clamp } from "@1771technologies/lytenyte-shared";
 import type { RowPredicate, SpanFn } from "../+types.non-gen";
 
 type RowIndex = number;

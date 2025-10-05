@@ -1,4 +1,4 @@
-import { getRelativeXPosition, rangedBinarySearch } from "@1771technologies/lytenyte-js-utils";
+import { getRelativeXPosition, rangedBinarySearch } from "@1771technologies/lytenyte-shared";
 
 interface GetHoveredColumnIndexArgs {
   readonly viewport: HTMLElement;

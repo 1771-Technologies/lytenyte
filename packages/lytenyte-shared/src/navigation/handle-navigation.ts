@@ -1,4 +1,4 @@
-import { getActiveElement, getNearestMatching } from "@1771technologies/lytenyte-dom-utils";
+import { getActiveElement, getNearestMatching } from "@1771technologies/lytenyte-shared";
 import type { RootCellFn, ScrollIntoViewFn } from "../+types.non-gen.js";
 import { isCell } from "./predicates/is-cell.js";
 import type { GridAtom, PositionUnion } from "../+types.js";

@@ -1,4 +1,4 @@
-import { isInView } from "@1771technologies/lytenyte-dom-utils";
+import { isInView } from "@1771technologies/lytenyte-shared";
 import type { TreeViewRootContext } from "../context.js";
 import { getFirstNode } from "../navigation/get-first-node.js";
 import { getLastNode } from "../navigation/get-last-node.js";

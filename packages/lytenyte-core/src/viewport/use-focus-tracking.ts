@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { GridAtom, PositionUnion } from "../+types.js";
-import { clamp, equal } from "@1771technologies/lytenyte-js-utils";
+import { clamp, equal } from "@1771technologies/lytenyte-shared";
 import { getNearestFocusable, getPositionFromFocusable } from "@1771technologies/lytenyte-shared";
 
 export function useFocusTracking(

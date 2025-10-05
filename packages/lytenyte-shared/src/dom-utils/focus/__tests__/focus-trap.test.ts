@@ -1,7 +1,7 @@
 import { describe, expect, test, vi } from "vitest";
 import { userEvent } from "@vitest/browser/context";
 import { FocusTrap } from "../focus-trap.js";
-import { wait } from "@1771technologies/lytenyte-js-utils";
+import { wait } from "@1771technologies/lytenyte-shared";
 
 describe("focusTrap", () => {
   test("when the provided container has focusable items it should be possible to trap the items in", async () => {

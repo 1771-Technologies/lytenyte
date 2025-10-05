@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { getFirstTabbable } from "../get-first-tabbable.js";
-import { wait } from "@1771technologies/lytenyte-js-utils";
+import { wait } from "@1771technologies/lytenyte-shared";
 
 describe("getFirstTabbable", () => {
   test("when there are multiple items in a div it should return the first one that is tabbable", async () => {

@@ -30,7 +30,7 @@ import {
 import { computed, effect, makeAtom, signal } from "@1771technologies/lytenyte-core/yinternal";
 import type { InternalAtoms } from "./+types.js";
 import { makeRowLayout } from "./helpers/row-layout/row-layout.js";
-import { equal, rangesOverlap } from "@1771technologies/lytenyte-js-utils";
+import { equal, rangesOverlap } from "@1771technologies/lytenyte-shared";
 import { makeColumnLayout } from "./helpers/column-layout.js";
 import { emptyRowDataSource } from "./helpers/empty-row-data-source.js";
 import { getFullWidthCallback } from "./helpers/get-full-width-callback.js";

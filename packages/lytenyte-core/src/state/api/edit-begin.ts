@@ -1,7 +1,7 @@
 import { focusCell } from "@1771technologies/lytenyte-shared";
 import type { InternalAtoms } from "../+types";
 import type { Column, Grid, GridApi } from "../../+types";
-import { runWithBackoff } from "@1771technologies/lytenyte-js-utils";
+import { runWithBackoff } from "@1771technologies/lytenyte-shared";
 import { editOnChange } from "../helpers/edit-on-change.js";
 
 export const makeEditBegin = (

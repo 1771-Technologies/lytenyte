@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import { render } from "vitest-browser-react";
 import ColumnPinning from "./column-pinning.play.js";
-import { wait } from "@1771technologies/lytenyte-js-utils";
+import { wait } from "@1771technologies/lytenyte-shared";
 import { userEvent } from "@vitest/browser/context";
 
 test("should handle one start", async () => {

@@ -28,7 +28,7 @@ import {
   peek,
   signal,
 } from "@1771technologies/lytenyte-core/yinternal";
-import { equal, get, itemsWithIdToMap } from "@1771technologies/lytenyte-js-utils";
+import { equal, get, itemsWithIdToMap } from "@1771technologies/lytenyte-shared";
 
 import { computeFilteredRows } from "./filter/compute-filtered-rows.js";
 import { builtIns } from "./built-ins/built-ins.js";

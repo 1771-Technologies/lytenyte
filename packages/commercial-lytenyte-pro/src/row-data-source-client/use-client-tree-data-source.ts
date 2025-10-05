@@ -25,7 +25,7 @@ import {
   peek,
   signal,
 } from "@1771technologies/lytenyte-core/yinternal";
-import { equal } from "@1771technologies/lytenyte-js-utils";
+import { equal } from "@1771technologies/lytenyte-shared";
 import { makeClientTree, type ClientData } from "./tree/client-tree.js";
 import { computeFilteredRows } from "./filter/compute-filtered-rows.js";
 import { builtIns } from "./built-ins/built-ins.js";

@@ -6,7 +6,7 @@ import type {
   UseMeasureResult,
   UseMeasureOptions,
 } from "./+types";
-import { debounce as createDebounce, equal } from "@1771technologies/lytenyte-js-utils";
+import { debounce as createDebounce, equal } from "@1771technologies/lytenyte-shared";
 import { useOnWindowResize } from "../use-on-window-resize.js";
 import { useOnWindowScroll } from "../use-on-window-scroll.js";
 import { useEvent } from "../use-event.js";

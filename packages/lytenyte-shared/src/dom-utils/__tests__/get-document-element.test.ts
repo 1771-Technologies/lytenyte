@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { getDocumentElement } from "../get-document-element.js";
-import { wait } from "@1771technologies/lytenyte-js-utils";
+import { wait } from "@1771technologies/lytenyte-shared";
 
 describe("getDocumentElement", () => {
   test("should be able to retrieve the document element", async () => {

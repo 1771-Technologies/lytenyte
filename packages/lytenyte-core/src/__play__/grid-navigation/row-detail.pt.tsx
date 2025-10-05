@@ -1,4 +1,4 @@
-import { wait } from "@1771technologies/lytenyte-js-utils";
+import { wait } from "@1771technologies/lytenyte-shared";
 import { expect, test } from "vitest";
 import { render } from "vitest-browser-react";
 import RowDetail from "./row-detail.play.js";

@@ -1,7 +1,7 @@
 import { page } from "@vitest/browser/context";
 import { describe, expect, test } from "vitest";
 import { getActiveElement } from "../get-active-element.js";
-import { wait } from "@1771technologies/lytenyte-js-utils";
+import { wait } from "@1771technologies/lytenyte-shared";
 
 describe("getActiveElement", () => {
   test("When the active element is in the document it should be returned", async () => {

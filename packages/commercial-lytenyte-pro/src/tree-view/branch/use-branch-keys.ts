@@ -6,7 +6,7 @@ import { isBranchNode } from "../utils/is-branch-node.js";
 import { getTreeNodeId } from "../utils/get-tree-node-id.js";
 import { getParentNode } from "../utils/get-parent-node.js";
 import { getSiblingBranches } from "../utils/get-sibling-branches.js";
-import { getFocusables } from "@1771technologies/lytenyte-dom-utils";
+import { getFocusables } from "@1771technologies/lytenyte-shared";
 import { useEvent } from "@1771technologies/lytenyte-core/yinternal";
 
 const accepted = ["ArrowRight", "ArrowLeft", "Enter", "*"];

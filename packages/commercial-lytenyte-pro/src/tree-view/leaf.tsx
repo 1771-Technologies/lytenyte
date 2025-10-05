@@ -1,7 +1,7 @@
 import { forwardRef, type CSSProperties, type JSX } from "react";
 import { useDepth } from "./depth-provider.js";
 import { useTreeRoot } from "./context.js";
-import { getFocusables } from "@1771technologies/lytenyte-dom-utils";
+import { getFocusables } from "@1771technologies/lytenyte-shared";
 
 export interface TreeLeafProps {
   readonly itemId: string;

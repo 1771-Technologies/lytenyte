@@ -1,6 +1,6 @@
 import { COLUMN_MARKER_ID } from "@1771technologies/lytenyte-shared";
 import type { Column, ColumnMarker } from "../../+types";
-import { itemsWithIdToMap } from "@1771technologies/lytenyte-js-utils";
+import { itemsWithIdToMap } from "@1771technologies/lytenyte-shared";
 
 interface ColumnHandleMarkerArgs<T> {
   readonly columns: Column<T>[];

@@ -14,7 +14,7 @@ import {
   placeholderHandler,
 } from "../+globals.js";
 import { resetDragState } from "../utils/reset-drag-state.js";
-import { getFrameElement, isFirefox } from "@1771technologies/lytenyte-dom-utils";
+import { getFrameElement, isFirefox } from "@1771technologies/lytenyte-shared";
 import { peek } from "../../signal/index.js";
 
 export function useDragEventHandler(

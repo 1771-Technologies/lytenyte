@@ -6,7 +6,7 @@ import {
 } from "@1771technologies/lytenyte-shared";
 import type { Grid, GridApi, PositionHeaderGroupCell } from "../../+types";
 import type { InternalAtoms } from "../+types";
-import { clamp } from "@1771technologies/lytenyte-js-utils";
+import { clamp } from "@1771technologies/lytenyte-shared";
 
 export const makeFocusCell = (
   grid: Grid<any> & { internal: InternalAtoms },

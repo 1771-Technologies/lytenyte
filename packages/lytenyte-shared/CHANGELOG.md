@@ -6,8 +6,8 @@
 
 - f3d2863: Refactors in progress
 - Updated dependencies [f3d2863]
-  - @1771technologies/lytenyte-dom-utils@1.0.15
-  - @1771technologies/lytenyte-js-utils@1.0.15
+  - @1771technologies/lytenyte-shared@1.0.15
+  - @1771technologies/lytenyte-shared@1.0.15
   - @1771technologies/lytenyte-signal@1.0.15
   - @1771technologies/lytenyte-dragon@1.0.15
   - @1771technologies/lytenyte-react-hooks@1.0.15
@@ -18,8 +18,8 @@
 
 - Version
 - Updated dependencies
-  - @1771technologies/lytenyte-dom-utils@1.0.14
-  - @1771technologies/lytenyte-js-utils@1.0.14
+  - @1771technologies/lytenyte-shared@1.0.14
+  - @1771technologies/lytenyte-shared.0.14
   - @1771technologies/lytenyte-signal@1.0.14
   - @1771technologies/lytenyte-dragon@1.0.14
   - @1771technologies/lytenyte-react-hooks@1.0.14
@@ -30,8 +30,8 @@
 
 - Version 1.0.13
 - Updated dependencies
-  - @1771technologies/lytenyte-dom-utils@1.0.13
-  - @1771technologies/lytenyte-js-utils@1.0.13
+  - @1771technologies/lytenyte-shared@1.0.13
+  - @1771technologies/lytenyte-shared.0.13
   - @1771technologies/lytenyte-signal@1.0.13
   - @1771technologies/lytenyte-dragon@1.0.13
   - @1771technologies/lytenyte-react-hooks@1.0.13
@@ -50,8 +50,8 @@
 - Updated dependencies [c6b9524]
   - @1771technologies/lytenyte-dragon@1.0.12
   - @1771technologies/lytenyte-react-hooks@1.0.12
-  - @1771technologies/lytenyte-dom-utils@1.0.12
-  - @1771technologies/lytenyte-js-utils@1.0.12
+  - @1771technologies/lytenyte-shared@1.0.12
+  - @1771technologies/lytenyte-shared.0.12
   - @1771technologies/lytenyte-signal@1.0.12
 
 ## 1.0.12-dev.3
@@ -62,6 +62,6 @@
 - Updated dependencies [18aada2]
   - @1771technologies/lytenyte-signal@1.0.12-dev.3
   - @1771technologies/lytenyte-dragon@1.0.12-dev.3
-  - @1771technologies/lytenyte-dom-utils@1.0.12-dev.3
-  - @1771technologies/lytenyte-js-utils@1.0.12-dev.3
+  - @1771technologies/lytenyte-shared@1.0.12-dev.3
+  - @1771technologies/lytenyte-shared.0.12-dev.3
   - @1771technologies/lytenyte-react-hooks@1.0.12-dev.3

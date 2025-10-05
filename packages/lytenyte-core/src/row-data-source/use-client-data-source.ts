@@ -21,7 +21,7 @@ import {
 } from "@1771technologies/lytenyte-shared";
 
 import { computed, effect, makeAtom, peek, signal } from "../signal/index.js";
-import { equal, get } from "@1771technologies/lytenyte-js-utils";
+import { equal, get } from "@1771technologies/lytenyte-shared";
 import { makeClientTree, type ClientData } from "./tree/client-tree.js";
 import { computeFilteredRows } from "./filter/compute-filtered-rows.js";
 import { builtIns } from "./built-ins/built-ins.js";

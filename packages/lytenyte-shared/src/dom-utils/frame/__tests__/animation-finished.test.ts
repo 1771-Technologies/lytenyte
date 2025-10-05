@@ -1,6 +1,6 @@
 import { expect, test, vi } from "vitest";
 import { onAnimationFinished } from "../animation-finished.js";
-import { wait } from "@1771technologies/lytenyte-js-utils";
+import { wait } from "@1771technologies/lytenyte-shared";
 
 test("when an element is animating the animation finished should only be called once it finishes", async () => {
   const button = document.createElement("button");

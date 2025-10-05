@@ -3,7 +3,7 @@ import type { RowNormalRowLayout } from "../../+types";
 import { useGridRoot } from "../../context.js";
 import { RowDetailRow } from "../row-detail-row.js";
 import { useRowContextValue } from "./use-row-context-value.js";
-import { equal } from "@1771technologies/lytenyte-js-utils";
+import { equal } from "@1771technologies/lytenyte-shared";
 import { CellSpacerNoPin } from "../../cells/cell-spacer.js";
 import { useRowStyle } from "../use-row-style.js";
 import { RowContext } from "./context.js";

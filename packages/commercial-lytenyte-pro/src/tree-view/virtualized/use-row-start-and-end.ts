@@ -1,5 +1,5 @@
 import type { RectReadOnly } from "@1771technologies/lytenyte-core/yinternal";
-import { clamp } from "@1771technologies/lytenyte-js-utils";
+import { clamp } from "@1771technologies/lytenyte-shared";
 import { useEffect, useMemo, useState } from "react";
 
 export function useRowStartAndEnd(

@@ -1,6 +1,6 @@
 import { useMemo, type CSSProperties } from "react";
 import type { RowPin } from "../+types.js";
-import { isFirefox } from "@1771technologies/lytenyte-dom-utils";
+import { isFirefox } from "@1771technologies/lytenyte-shared";
 import {
   getTranslate,
   SCROLL_WIDTH_VARIABLE_USE,

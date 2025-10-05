@@ -76,10 +76,7 @@
     }
   },
   "dependencies": {
-    "@1771technologies/lytenyte-shared": "workspace:*",
-    "@1771technologies/lytenyte-dom-utils": "workspace:*",
-    "@1771technologies/lytenyte-js-utils": "workspace:*",
-    "@1771technologies/lytenyte-signal": "workspace:*"
+    "@1771technologies/lytenyte-shared": "workspace:*"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",

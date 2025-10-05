@@ -3,7 +3,7 @@ import {
   getFocusables,
   getLastTabbable,
   isTabbable,
-} from "@1771technologies/lytenyte-dom-utils";
+} from "@1771technologies/lytenyte-shared";
 
 export function cycleInner(el: HTMLElement, active: HTMLElement, backward: boolean, loop: boolean) {
   // The container and the active are the same, hence we should focus the first tabbable if possible.

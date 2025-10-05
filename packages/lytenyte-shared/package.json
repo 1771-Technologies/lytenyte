@@ -33,9 +33,5 @@
         "require": "./dist/index.js"
       }
     }
-  },
-  "dependencies": {
-    "@1771technologies/lytenyte-js-utils": "workspace:*",
-    "@1771technologies/lytenyte-dom-utils": "workspace:*"
   }
 }

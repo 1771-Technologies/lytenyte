@@ -99,3 +99,58 @@ export { handleNavigation } from "./navigation/handle-navigation.js";
 export { getNearestRow } from "./navigation/getters/get-nearest-row.js";
 
 export { rowIndexForSection } from "./row/row-index-for-section.js";
+
+// JS UTILS
+export {
+  clamp,
+  debounce,
+  distance,
+  equal,
+  fastShallowCompare,
+  get,
+  getClientX,
+  getClientY,
+  getRelativeXPosition,
+  getRelativeYPosition,
+  hasUpperCaseLetter,
+  isFunction,
+  itemsWithIdToMap,
+  rangedBinarySearch,
+  rangesOverlap,
+  runWithBackoff,
+  sleep,
+  smartStringIncludes,
+  upperCaseFirstLetter,
+  wait,
+} from "./js-utils/index.js";
+
+// DOM Utils
+export {
+  FocusTrap,
+  getActiveElement,
+  getComputedStyle,
+  getFirstFocusable,
+  getFirstTabbable,
+  getFocusables,
+  getFrameElement,
+  getLastTabbable,
+  getNearestMatching,
+  getNextTabbable,
+  getTabIndex,
+  getTabbables,
+  isAppleDevice,
+  isChrome,
+  isFirefox,
+  isFocusable,
+  isHTMLElement,
+  isIOS,
+  isIPad,
+  isIPhone,
+  isInView,
+  isLastTraversableNode,
+  isMac,
+  isTabbable,
+  isWebKit,
+  testPlatform,
+  testUserAgent,
+} from "./dom-utils/index.js";
