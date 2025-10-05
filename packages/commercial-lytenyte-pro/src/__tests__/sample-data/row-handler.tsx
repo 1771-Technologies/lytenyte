@@ -1,10 +1,9 @@
-import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
 import type { RowLayout } from "../../+types";
 import { RowFullWidth } from "../../grid/row-full-width.js";
 import { Row } from "../../grid/row.js";
 import { Cell } from "../../grid/cell.js";
 
-export const RowHandler = fastDeepMemo((props: { rows: RowLayout<any>[] }) => {
+export const RowHandler = (props: { rows: RowLayout<any>[] }) => {
   return props.rows.map((row) => {
     if (row.kind === "full-width")
       return <RowFullWidth row={row} key={row.id} style={{ background: "white" }} />;
@@ -17,4 +16,4 @@ export const RowHandler = fastDeepMemo((props: { rows: RowLayout<any>[] }) => {
       </Row>
     );
   });
-});
+};

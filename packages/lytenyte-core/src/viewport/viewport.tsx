@@ -93,7 +93,8 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
           contain: "strict",
           width: "100%",
           height: "100%",
-          overflow: style?.overflow ?? "auto",
+          overflowX: style?.overflowX ?? "auto",
+          overflowY: style?.overflowY ?? "auto",
           direction: rtl ? "rtl" : "ltr",
         }}
       >
