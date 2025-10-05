@@ -1,7 +1,7 @@
 import { describe, expect, test, vi } from "vitest";
 import { addDomEvent } from "../add-dom-event.js";
 import { userEvent } from "@vitest/browser/context";
-import { wait } from "@1771technologies/lytenyte-shared";
+import { wait } from "../../js-utils/index.js";
 
 describe("addDomEvent", () => {
   test("when an event is added it should be possible to for it to be called and removed", async () => {

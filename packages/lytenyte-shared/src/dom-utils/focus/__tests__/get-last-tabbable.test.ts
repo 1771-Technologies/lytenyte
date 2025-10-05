@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { getLastTabbable } from "../get-last-tabbable.js";
-import { wait } from "@1771technologies/lytenyte-shared";
+import { wait } from "../../../js-utils/index.js";
 
 describe("getLastTabbable", () => {
   test("when there are multiple items in a div it should return the last one that is tabbable", async () => {

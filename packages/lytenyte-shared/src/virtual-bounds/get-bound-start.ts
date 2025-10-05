@@ -1,4 +1,4 @@
-import { clamp } from "@1771technologies/lytenyte-shared";
+import { clamp } from "../js-utils/index.js";
 import { rangedBinarySearch } from "./ranged-binary-search.js";
 
 /**

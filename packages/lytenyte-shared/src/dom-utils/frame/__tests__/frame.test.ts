@@ -1,6 +1,6 @@
 import { expect, test, vi } from "vitest";
 import { frame } from "../frame.js";
-import { wait } from "@1771technologies/lytenyte-shared";
+import { wait } from "../../../js-utils/index.js";
 
 test("when a function returns true it should run again", async () => {
   let n = 10;

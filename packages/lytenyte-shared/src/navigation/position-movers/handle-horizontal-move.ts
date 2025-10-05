@@ -1,12 +1,12 @@
-import { runWithBackoff } from "@1771technologies/lytenyte-shared";
 import type { GridAtom, PositionGridCell, PositionUnion } from "../../+types.js";
 import { cycleInner } from "../cycle-inner.js";
 import { getColSpanFromEl } from "../getters/get-col-span-from-el.js";
 import type { RootCellFn, ScrollIntoViewFn } from "../../+types.non-gen.js";
 import { getCellQuery } from "../getters/get-cell-query.js";
-import { getLastTabbable } from "@1771technologies/lytenyte-shared";
 import { getHeaderRows } from "../getters/get-header-rows.js";
 import { getColIndexFromEl } from "../getters/get-col-index-from-el.js";
+import { runWithBackoff } from "../../js-utils/index.js";
+import { getLastTabbable } from "../../dom-utils/index.js";
 
 export interface HandleHorizontalMoveParams {
   readonly gridId: string;

@@ -1,6 +1,6 @@
-import { runWithBackoff } from "@1771technologies/lytenyte-shared";
 import type { GridAtom, PositionFullWidthRow, PositionUnion } from "../../+types.js";
 import type { RootCellFn, ScrollIntoViewFn } from "../../+types.non-gen.js";
+import { runWithBackoff } from "../../js-utils/index.js";
 import { getCellQuery } from "../getters/get-cell-query.js";
 import { getRowQuery } from "../getters/get-row-query.js";
 

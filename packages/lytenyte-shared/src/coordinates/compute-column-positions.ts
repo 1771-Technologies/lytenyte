@@ -5,7 +5,7 @@ import {
 } from "../+constants.js";
 import { makeUint32PositionArray } from "./make-uint32-position-array.js";
 import type { ColumnWidthItem } from "../+types.non-gen.js";
-import { clamp } from "@1771technologies/lytenyte-shared";
+import { clamp } from "../js-utils/index.js";
 
 type ComputedWidth = number;
 type ColumnIndex = number;

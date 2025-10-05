@@ -392,9 +392,6 @@ importers:
       '@1771technologies/lytenyte-core':
         specifier: workspace:*
         version: link:../lytenyte-core
-      '@1771technologies/lytenyte-dom-utils':
-        specifier: workspace:*
-        version: link:../dom-utils
       '@1771technologies/lytenyte-shared':
         specifier: workspace:*
         version: link:../lytenyte-shared
@@ -414,13 +411,8 @@ importers:
         specifier: ^18.0.0 || ^19.0.0
         version: 19.1.0(react@19.1.0)
 
-  packages/dom-utils: {}
-
   packages/lytenyte-core:
     dependencies:
-      '@1771technologies/lytenyte-dom-utils':
-        specifier: workspace:*
-        version: link:../dom-utils
       '@1771technologies/lytenyte-shared':
         specifier: workspace:*
         version: link:../lytenyte-shared
@@ -431,11 +423,7 @@ importers:
         specifier: ^18.0.0 || ^19.0.0
         version: 19.1.0(react@19.1.0)
 
-  packages/lytenyte-shared:
-    dependencies:
-      '@1771technologies/lytenyte-dom-utils':
-        specifier: workspace:*
-        version: link:../dom-utils
+  packages/lytenyte-shared: {}
 
 packages:
 

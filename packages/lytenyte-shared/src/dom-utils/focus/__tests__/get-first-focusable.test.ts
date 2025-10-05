@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { getFirstFocusable } from "../get-first-focusable.js";
-import { wait } from "@1771technologies/lytenyte-shared";
+import { wait } from "../../../js-utils/index.js";
 
 describe("getFirstFocusable", () => {
   test("when there are multiple items in a div it should return the first one that is focusable", async () => {
