@@ -22,3 +22,6 @@ export { Cell } from "./cells/cell.js";
 
 // OTHER
 export { makeRowStore } from "./row-store/make-row-store.js";
+
+export type { DropWrapProps } from "./drag-and-drop/index.js";
+export { DropWrap, dragState, useDraggable } from "./drag-and-drop/index.js";

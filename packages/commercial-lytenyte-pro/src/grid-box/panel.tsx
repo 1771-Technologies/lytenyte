@@ -1,7 +1,7 @@
 import { forwardRef, type JSX } from "react";
 import { Panel } from "../listbox/panel.js";
-import { DropWrap } from "@1771technologies/lytenyte-dragon";
 import { useGridBoxContext } from "./context.js";
+import { DropWrap } from "@1771technologies/lytenyte-core/yinternal";
 
 export const GridBoxPanel = forwardRef<
   HTMLDivElement,

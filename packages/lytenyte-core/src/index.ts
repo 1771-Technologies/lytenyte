@@ -7,7 +7,7 @@ export {
 
 export { Grid } from "./grid.js";
 export { measureText } from "@1771technologies/lytenyte-shared";
-export { DropWrap } from "@1771technologies/lytenyte-dragon";
+export { DropWrap } from "./drag-and-drop/index.js";
 
 export {
   makeClientDataSource,

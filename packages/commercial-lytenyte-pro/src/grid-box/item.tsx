@@ -1,13 +1,13 @@
 import { forwardRef, type CSSProperties, type JSX } from "react";
 import { Item } from "../listbox/item.js";
 import type { GridBoxItem } from "./+types";
-import { dragState, DropWrap, useDraggable } from "@1771technologies/lytenyte-dragon";
 import {
   useCombinedRefs,
   useSlot,
   type SlotComponent,
 } from "@1771technologies/lytenyte-react-hooks";
 import { useGridBoxContext } from "./context.js";
+import { dragState, DropWrap, useDraggable } from "@1771technologies/lytenyte-core/yinternal";
 
 export interface GridBoxItemProps {
   readonly item: GridBoxItem;

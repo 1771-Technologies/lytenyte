@@ -99,18 +99,3 @@ export { handleNavigation } from "./navigation/handle-navigation.js";
 export { getNearestRow } from "./navigation/getters/get-nearest-row.js";
 
 export { rowIndexForSection } from "./row/row-index-for-section.js";
-
-// Drag support
-export type {
-  DragData,
-  DragItems,
-  DragMoveState,
-  DragPosition,
-  DragProps,
-  DropWrapProps,
-  DropWrapState,
-  OnDragEvent,
-  SiteLocalDragData,
-  UseDraggableProps,
-} from "@1771technologies/lytenyte-dragon";
-export { DropWrap, dragState, useDraggable } from "@1771technologies/lytenyte-dragon";

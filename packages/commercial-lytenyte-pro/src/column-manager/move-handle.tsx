@@ -1,4 +1,3 @@
-import { useDraggable } from "@1771technologies/lytenyte-dragon";
 import {
   useCombinedRefs,
   useSlot,
@@ -8,6 +7,7 @@ import { forwardRef, useMemo, type JSX } from "react";
 import { useColumnItemContext } from "./context.js";
 import { useColumnsFromContext } from "./use-columns-from-context.js";
 import { useGrid } from "../grid-provider/use-grid.js";
+import { useDraggable } from "@1771technologies/lytenyte-core/yinternal";
 
 export interface MoveHandleProps {
   readonly as?: SlotComponent;

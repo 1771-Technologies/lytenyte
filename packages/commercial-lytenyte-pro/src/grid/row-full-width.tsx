@@ -1,7 +1,9 @@
 import { type JSX, type ReactNode } from "react";
 import type { RowFullWidthRowLayout } from "../+types";
-import { type DropWrapProps } from "@1771technologies/lytenyte-shared";
-import { RowFullWidth as RowFullWidthCore } from "@1771technologies/lytenyte-core/yinternal";
+import {
+  RowFullWidth as RowFullWidthCore,
+  type DropWrapProps,
+} from "@1771technologies/lytenyte-core/yinternal";
 
 export interface RowFullWidthProps extends Omit<DropWrapProps, "accepted"> {
   readonly row: RowFullWidthRowLayout<any>;

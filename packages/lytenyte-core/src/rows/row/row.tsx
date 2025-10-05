@@ -2,12 +2,12 @@ import { forwardRef, memo, type JSX } from "react";
 import type { RowNormalRowLayout } from "../../+types";
 import { useGridRoot } from "../../context.js";
 import { RowDetailRow } from "../row-detail-row.js";
-import { DropWrap, type DropWrapProps } from "@1771technologies/lytenyte-shared";
 import { useRowContextValue } from "./use-row-context-value.js";
 import { equal } from "@1771technologies/lytenyte-js-utils";
 import { CellSpacerNoPin } from "../../cells/cell-spacer.js";
 import { useRowStyle } from "../use-row-style.js";
 import { RowContext } from "./context.js";
+import { DropWrap, type DropWrapProps } from "../../drag-and-drop/index.js";
 
 export interface RowProps extends Omit<DropWrapProps, "accepted"> {
   readonly row: RowNormalRowLayout<any>;

@@ -67,7 +67,6 @@
   },
   "dependencies": {
     "@1771technologies/lytenyte-core": "workspace:*",
-    "@1771technologies/lytenyte-dragon": "workspace:*",
     "@1771technologies/lytenyte-shared": "workspace:*",
     "@1771technologies/lytenyte-dom-utils": "workspace:*",
     "@1771technologies/lytenyte-js-utils": "workspace:*",
