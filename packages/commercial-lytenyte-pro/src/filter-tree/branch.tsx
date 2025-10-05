@@ -3,9 +3,9 @@ import { forwardRef } from "react";
 import type { TreeVirtualBranch } from "../tree-view/virtualized/make-virtual-tree";
 import type { FilterInFilterItem } from "../+types";
 import { TreeBranch } from "../tree-view/branch/branch.js";
-import { useSlot, type SlotComponent } from "@1771technologies/lytenyte-react-hooks";
 import { FilterTreeItemContext } from "./context.js";
 import { useTreeItem } from "./hooks/use-tree-item.js";
+import { useSlot, type SlotComponent } from "@1771technologies/lytenyte-core/yinternal";
 
 export interface FilterTreeBranch {
   readonly item: TreeVirtualBranch<FilterInFilterItem>;

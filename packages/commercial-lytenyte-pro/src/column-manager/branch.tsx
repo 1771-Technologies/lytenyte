@@ -2,12 +2,11 @@ import type { CSSProperties, JSX } from "react";
 import { forwardRef, useCallback, useMemo } from "react";
 import type { Column } from "../+types";
 import { TreeBranch } from "../tree-view/branch/branch.js";
-import type { SlotComponent } from "@1771technologies/lytenyte-react-hooks";
 import { ColumnItemContext } from "./context.js";
 import { useGrid } from "../grid-provider/use-grid.js";
 import { useColumnsFromContext } from "./use-columns-from-context.js";
 import type { PathBranch } from "@1771technologies/lytenyte-shared";
-import { dragState, DropWrap } from "@1771technologies/lytenyte-core/yinternal";
+import { dragState, DropWrap, type SlotComponent } from "@1771technologies/lytenyte-core/yinternal";
 
 export interface ColumnManagerBranchProps {
   readonly item: PathBranch<Column<any>>;

@@ -1,5 +1,4 @@
-import { forwardRef, type JSX } from "react";
-import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
+import { forwardRef, memo, type JSX } from "react";
 import type { RowFullWidthRowLayout } from "../+types";
 import { useGridRoot } from "../context.js";
 import { sizeFromCoord, VIEWPORT_WIDTH_VARIABLE_USE } from "@1771technologies/lytenyte-shared";
@@ -96,4 +95,4 @@ const RowFullWidthImpl = forwardRef<
   );
 });
 
-export const RowFullWidth = fastDeepMemo(RowFullWidthImpl);
+export const RowFullWidth = memo(RowFullWidthImpl);

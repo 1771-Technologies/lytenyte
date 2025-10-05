@@ -1,6 +1,6 @@
-import { useEvent, useSlot, type SlotComponent } from "@1771technologies/lytenyte-react-hooks";
 import { forwardRef, type JSX } from "react";
 import { useSortManagerCtx } from "./context.js";
+import { useEvent, useSlot, type SlotComponent } from "@1771technologies/lytenyte-core/yinternal";
 
 export interface SortClearProps {
   readonly as?: SlotComponent<{ onClear: () => void }>;

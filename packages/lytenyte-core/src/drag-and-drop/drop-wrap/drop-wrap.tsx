@@ -6,10 +6,10 @@ import {
   type JSX,
 } from "react";
 import type { DragMoveState, DropWrapState, OnDropParams } from "../+types.js";
-import { useForkRef, useSlot, type SlotComponent } from "@1771technologies/lytenyte-react-hooks";
 import { useOnDragMove } from "./use-on-drag-move.js";
 import { useDropZone } from "./use-drop-zone.js";
 import { dragStyleHandler, placeholderHandler } from "../+globals.js";
+import { useCombinedRefs, useSlot, type SlotComponent } from "../../hooks/index.js";
 
 export type DropWrapProps = Omit<JSX.IntrinsicElements["div"], "onDrop"> & {
   onDrop?: (params: OnDropParams) => void;
@@ -75,7 +75,7 @@ export const DropWrap = forwardRef<HTMLDivElement, DropWrapProps>(function DropW
     "data-ln-over-left-half": isLeftHalf,
   });
 
-  const combined = useForkRef(setRef, forwarded);
+  const combined = useCombinedRefs(setRef, forwarded);
   const render = useSlot({
     slot: as ?? <div />,
     props: [active === false ? {} : defaultProps, otherProps],

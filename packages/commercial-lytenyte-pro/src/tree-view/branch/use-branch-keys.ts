@@ -1,4 +1,3 @@
-import { useEvent } from "@1771technologies/lytenyte-react-hooks";
 import type { KeyboardEvent, KeyboardEventHandler } from "react";
 import { useTreeRoot } from "../context.js";
 import { getFocusableNodes } from "../utils/get-focusable-nodes.js";
@@ -8,6 +7,7 @@ import { getTreeNodeId } from "../utils/get-tree-node-id.js";
 import { getParentNode } from "../utils/get-parent-node.js";
 import { getSiblingBranches } from "../utils/get-sibling-branches.js";
 import { getFocusables } from "@1771technologies/lytenyte-dom-utils";
+import { useEvent } from "@1771technologies/lytenyte-core/yinternal";
 
 const accepted = ["ArrowRight", "ArrowLeft", "Enter", "*"];
 

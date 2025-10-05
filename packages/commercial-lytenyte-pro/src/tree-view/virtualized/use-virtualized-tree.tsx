@@ -1,11 +1,11 @@
 import { type PathProvidedItem, type PathRoot } from "@1771technologies/lytenyte-shared";
-import { useEvent, useMeasure } from "@1771technologies/lytenyte-react-hooks";
 import { useMemo, useState, type JSX } from "react";
 import { buildVirtualTreePartial } from "./get-virtual-tree-paths.js";
 import { makeVirtualTree, type TreeVirtualItem } from "./make-virtual-tree.js";
 import { useFlattenedTree } from "./use-flattened-tree.js";
 import { useRowStartAndEnd } from "./use-row-start-and-end.js";
 import { getTreeNodeId } from "../utils/get-tree-node-id.js";
+import { useEvent, useMeasure } from "@1771technologies/lytenyte-core/yinternal";
 
 export interface VirtualizedTreeViewPathsArgs<T extends PathProvidedItem> {
   readonly itemHeight: number;

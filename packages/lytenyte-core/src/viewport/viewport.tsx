@@ -1,9 +1,9 @@
 import { forwardRef, type JSX } from "react";
-import { useCombinedRefs } from "@1771technologies/lytenyte-react-hooks";
 import { useGridRoot } from "../context.js";
 import { handleNavigation } from "@1771technologies/lytenyte-shared";
 import { beginEditing } from "./begin-editing.js";
 import { useFocusTracking } from "./use-focus-tracking.js";
+import { useCombinedRefs } from "../hooks/use-combine-refs.js";
 
 export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function Viewport(
   { children, style, ...props },

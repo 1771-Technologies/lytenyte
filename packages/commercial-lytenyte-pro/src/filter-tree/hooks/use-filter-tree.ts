@@ -3,7 +3,7 @@ import type { Column, FilterIn, FilterInFilterItem, Grid } from "../../+types";
 import { useVirtualizedTree } from "../../tree-view/virtualized/use-virtualized-tree.js";
 import type { PathRoot } from "@1771technologies/lytenyte-shared";
 import type { TreeVirtualItem } from "../../tree-view/virtualized/make-virtual-tree";
-import { useEvent } from "@1771technologies/lytenyte-react-hooks";
+import { useEvent } from "@1771technologies/lytenyte-core/yinternal";
 
 export interface UseTreeFilterReturn<T> {
   readonly rootProps: {

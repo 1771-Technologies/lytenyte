@@ -1,5 +1,4 @@
-import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
-import { forwardRef, type JSX } from "react";
+import { forwardRef, memo, type JSX } from "react";
 import { useGridRoot } from "../context.js";
 
 export interface HeaderRowProps {
@@ -30,4 +29,4 @@ const HeaderRowImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & 
   },
 );
 
-export const HeaderRow = fastDeepMemo(HeaderRowImpl);
+export const HeaderRow = memo(HeaderRowImpl);

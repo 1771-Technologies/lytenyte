@@ -1,16 +1,12 @@
-import { forwardRef, type CSSProperties, type JSX } from "react";
+import { forwardRef, memo, type CSSProperties, type JSX } from "react";
 import type { HeaderCellFloating, HeaderCellLayout } from "../+types";
 import { useGridRoot } from "../context.js";
 import { COLUMN_MARKER_ID, sizeFromCoord } from "@1771technologies/lytenyte-shared";
-import {
-  fastDeepMemo,
-  useCombinedRefs,
-  type SlotComponent,
-} from "@1771technologies/lytenyte-react-hooks";
 import { useHeaderCellRenderer } from "./use-header-cell-renderer.js";
 import { ResizeHandler } from "./resize-handler.js";
 import { useDragMove } from "./use-drag-move.js";
 import { useHeaderCellStyle } from "./use-header-cell-style.js";
+import { useCombinedRefs, type SlotComponent } from "../hooks/index.js";
 
 export interface HeaderCellProps<T> {
   readonly cell: HeaderCellLayout<T> | HeaderCellFloating<T>;
@@ -88,4 +84,4 @@ const HeaderCellImpl = forwardRef<
   );
 });
 
-export const HeaderCell = fastDeepMemo(HeaderCellImpl);
+export const HeaderCell = memo(HeaderCellImpl);
