@@ -22,23 +22,6 @@ export type {
 } from "./layout/update-layout.js";
 export { updateLayout, FULL_WIDTH, CONTAINS_DEAD_CELLS } from "./layout/update-layout.js";
 
-export { makeRowStore } from "./row-store/make-row-store.js";
-export {
-  useSignalState,
-  computed,
-  computedKeyedMap,
-  computedMap,
-  effect,
-  makeAtom,
-  peek,
-  readonly,
-  root,
-  signal,
-  tick,
-  useSignalValue,
-} from "@1771technologies/lytenyte-signal";
-export type { WriteSignal, ReadSignal } from "@1771technologies/lytenyte-signal";
-
 export { computeBounds } from "./virtual-bounds/compute-bounds.js";
 export {
   DEFAULT_PREVIOUS_LAYOUT,
@@ -113,7 +96,6 @@ export { focusCell } from "./navigation/position-movers/focus-cell.js";
 export { getNearestFocusable } from "./navigation/getters/get-nearest-focusable.js";
 export { getHeaderRows } from "./navigation/getters/get-header-rows.js";
 export { handleNavigation } from "./navigation/handle-navigation.js";
-export { useFocusTracking } from "./navigation/use-focus-tracking.js";
 export { getNearestRow } from "./navigation/getters/get-nearest-row.js";
 
 export { rowIndexForSection } from "./row/row-index-for-section.js";

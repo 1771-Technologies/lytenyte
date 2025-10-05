@@ -19,3 +19,6 @@ export { Root } from "./root/root.js";
 
 // CELLS
 export { Cell } from "./cells/cell.js";
+
+// OTHER
+export { makeRowStore } from "./row-store/make-row-store.js";

@@ -315,6 +315,9 @@ importers:
       '@1771technologies/lytenyte-shared':
         specifier: workspace:*
         version: link:../lytenyte-shared
+      '@1771technologies/lytenyte-signal':
+        specifier: workspace:*
+        version: link:../lytenyte-signal
       react:
         specifier: ^18.0.0 || ^19.0.0
         version: 19.1.0
@@ -388,6 +391,9 @@ importers:
       '@1771technologies/lytenyte-shared':
         specifier: workspace:*
         version: link:../lytenyte-shared
+      '@1771technologies/lytenyte-signal':
+        specifier: workspace:*
+        version: link:../lytenyte-signal
       react:
         specifier: ^18.0.0 || ^19.0.0
         version: 19.1.0
@@ -409,9 +415,6 @@ importers:
       '@1771technologies/lytenyte-react-hooks':
         specifier: workspace:^
         version: link:../react-hooks
-      '@1771technologies/lytenyte-signal':
-        specifier: workspace:*
-        version: link:../lytenyte-signal
 
   packages/lytenyte-signal: {}
 

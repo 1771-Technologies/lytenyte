@@ -1,4 +1,4 @@
-import type { LayoutState, WriteSignal } from "@1771technologies/lytenyte-shared";
+import type { LayoutState } from "@1771technologies/lytenyte-shared";
 import type {
   Column,
   EditActivePosition,
@@ -7,6 +7,7 @@ import type {
   HeaderGroupCellLayout,
   PositionUnion,
 } from "../+types";
+import type { WriteSignal } from "@1771technologies/lytenyte-signal";
 
 export interface InternalAtoms {
   readonly headerRows: GridAtomReadonly<number>;

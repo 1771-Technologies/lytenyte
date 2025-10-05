@@ -15,15 +15,12 @@ import { useRef } from "react";
 import { traverse } from "./tree/traverse.js";
 import type { TreeNode } from "./+types";
 import {
-  computed,
   dateComparator,
-  effect,
-  makeAtom,
   numberComparator,
-  peek,
-  signal,
   stringComparator,
 } from "@1771technologies/lytenyte-shared";
+
+import { computed, effect, makeAtom, peek, signal } from "@1771technologies/lytenyte-signal";
 import { equal, get } from "@1771technologies/lytenyte-js-utils";
 import { makeClientTree, type ClientData } from "./tree/client-tree.js";
 import { computeFilteredRows } from "./filter/compute-filtered-rows.js";
