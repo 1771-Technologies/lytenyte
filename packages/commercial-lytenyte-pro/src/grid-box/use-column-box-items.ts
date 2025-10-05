@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import type { Column, DropEventParams, Grid } from "../+types.js";
 import type { GridBoxItem } from "./+types.js";
-import { useEvent } from "@1771technologies/lytenyte-react-hooks";
+import { useEvent } from "@1771technologies/lytenyte-core/yinternal";
 
 export interface OnDropParams<T> {
   readonly target: Column<T>;

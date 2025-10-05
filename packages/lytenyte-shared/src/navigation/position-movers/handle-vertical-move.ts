@@ -1,4 +1,3 @@
-import { runWithBackoff } from "@1771technologies/lytenyte-js-utils";
 import type {
   GridAtom,
   PositionFullWidthRow,
@@ -14,6 +13,7 @@ import { getRowQuery } from "../getters/get-row-query.js";
 import { getCellQuery } from "../getters/get-cell-query.js";
 import { ensureVisible } from "../ensure-visible.js";
 import { getRowIndexFromEl } from "../getters/get-row-index-from-el.js";
+import { runWithBackoff } from "../../js-utils/index.js";
 
 export interface HandleVerticalMoveArgs {
   readonly gridId: string;

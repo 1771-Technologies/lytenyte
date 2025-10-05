@@ -1,4 +1,4 @@
-import { clamp } from "@1771technologies/lytenyte-js-utils";
+import { clamp } from "@1771technologies/lytenyte-shared";
 import type { DataRect, Grid } from "../+types.js";
 
 export function boundSelectionRect(grid: Grid<any>, rect: DataRect): DataRect {

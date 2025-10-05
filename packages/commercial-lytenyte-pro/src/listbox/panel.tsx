@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useState, type JSX } from "react";
 import { useListboxContext } from "./context.js";
-import { useCombinedRefs } from "@1771technologies/lytenyte-react-hooks";
-import { getTabbables } from "@1771technologies/lytenyte-dom-utils";
+import { getTabbables } from "@1771technologies/lytenyte-shared";
+import { useCombinedRefs } from "@1771technologies/lytenyte-core/yinternal";
 
 export const Panel = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(
   function Panel(props, forwarded) {

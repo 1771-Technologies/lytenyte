@@ -19,3 +19,22 @@ export { Root } from "./root/root.js";
 
 // CELLS
 export { Cell } from "./cells/cell.js";
+
+// OTHER
+export { makeRowStore } from "./row-store/make-row-store.js";
+
+export type { DropWrapProps } from "./drag-and-drop/index.js";
+export { DropWrap, dragState, useDraggable } from "./drag-and-drop/index.js";
+
+export type { RectReadOnly, SlotComponent } from "./hooks/index.js";
+export {
+  useMeasure,
+  useTransitionedOpen,
+  useCombinedRefs,
+  useEvent,
+  useSlot,
+  useTwoFlowState,
+} from "./hooks/index.js";
+
+export type { AtomReadonly, Atom, WriteSignal, ReadSignal } from "./signal/index.js";
+export { signal, computed, effect, makeAtom, peek } from "./signal/index.js";

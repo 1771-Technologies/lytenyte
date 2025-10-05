@@ -1,4 +1,3 @@
-import { getActiveElement, getNearestMatching } from "@1771technologies/lytenyte-dom-utils";
 import type { RootCellFn, ScrollIntoViewFn } from "../+types.non-gen.js";
 import { isCell } from "./predicates/is-cell.js";
 import type { GridAtom, PositionUnion } from "../+types.js";
@@ -10,6 +9,7 @@ import { handleHorizontalMove } from "./position-movers/handle-horizontal-move.j
 import { handleVerticalMove } from "./position-movers/handle-vertical-move.js";
 import { handleHomeEnd } from "./position-movers/handle-home-end.js";
 import { handlePageUpDown } from "./position-movers/handle-page-up-down.js";
+import { getActiveElement, getNearestMatching } from "../dom-utils/index.js";
 
 interface Event {
   readonly key: string;

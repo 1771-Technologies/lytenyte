@@ -1,5 +1,5 @@
 const hashSalt = "faec0f3c45281b1fe12d87e64a6c3271";
-const issueDate = new Date("2025-09-11");
+const issueDate = new Date("2025-10-05");
 function getHostname() {
   const win = globalThis?.document?.defaultView || (typeof window !== "undefined" ? window : null);
   const loc = win?.location;

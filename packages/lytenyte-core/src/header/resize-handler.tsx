@@ -1,4 +1,3 @@
-import { useSlot, type SlotComponent } from "@1771technologies/lytenyte-react-hooks";
 import type { HeaderCellLayout } from "../+types";
 import { type CSSProperties, type JSX } from "react";
 import {
@@ -7,8 +6,9 @@ import {
   sizeFromCoord,
 } from "@1771technologies/lytenyte-shared";
 import { useGridRoot } from "../context.js";
-import { getComputedStyle } from "@1771technologies/lytenyte-dom-utils";
-import { clamp, getClientX } from "@1771technologies/lytenyte-js-utils";
+import { getComputedStyle } from "@1771technologies/lytenyte-shared";
+import { clamp, getClientX } from "@1771technologies/lytenyte-shared";
+import { useSlot, type SlotComponent } from "../hooks/index.js";
 
 interface ResizeHandlerProps<T> {
   readonly as?: SlotComponent;

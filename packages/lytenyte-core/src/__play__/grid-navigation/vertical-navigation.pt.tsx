@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import { render } from "vitest-browser-react";
 import NormalLayout from "./normal-layout.play.js";
-import { wait } from "@1771technologies/lytenyte-js-utils";
+import { wait } from "@1771technologies/lytenyte-shared";
 import { getCellQuery } from "@1771technologies/lytenyte-shared";
 import { userEvent } from "@vitest/browser/context";
 import { bankDataSmall } from "../test-utils/bank-data-smaller.js";

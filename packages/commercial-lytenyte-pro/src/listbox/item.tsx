@@ -1,6 +1,6 @@
 import { forwardRef, type JSX } from "react";
 import { useListboxContext } from "./context.js";
-import { getTabbables } from "@1771technologies/lytenyte-dom-utils";
+import { getTabbables } from "@1771technologies/lytenyte-shared";
 
 export const Item = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(
   function Item(props, forwarded) {

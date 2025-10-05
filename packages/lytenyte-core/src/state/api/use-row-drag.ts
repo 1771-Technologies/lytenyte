@@ -1,5 +1,6 @@
-import { getNearestRow, getRowIndexFromEl, useDraggable } from "@1771technologies/lytenyte-shared";
+import { getNearestRow, getRowIndexFromEl } from "@1771technologies/lytenyte-shared";
 import type { Grid, GridApi } from "../../+types";
+import { useDraggable } from "../../drag-and-drop/index.js";
 
 export const makeUseRowDrag = (grid: Grid<any>): GridApi<any>["useRowDrag"] => {
   return (params) => {

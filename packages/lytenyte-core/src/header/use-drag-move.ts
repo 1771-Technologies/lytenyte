@@ -1,10 +1,8 @@
-import type { DragProps } from "@1771technologies/lytenyte-dragon";
 import {
   COLUMN_MARKER_ID,
   getHoveredColumnIndex,
   getNearestFocusable,
   GROUP_COLUMN_PREFIX,
-  useDraggable,
 } from "@1771technologies/lytenyte-shared";
 import type {
   Column,
@@ -15,6 +13,7 @@ import type {
 } from "../+types";
 import { useMemo, useRef, type JSX } from "react";
 import type { InternalAtoms } from "../state/+types";
+import { useDraggable, type DragProps } from "../drag-and-drop/index.js";
 
 export function useDragMove<T>(
   grid: Grid<T> & { internal: InternalAtoms },

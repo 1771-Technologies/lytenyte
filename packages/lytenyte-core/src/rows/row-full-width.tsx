@@ -1,16 +1,11 @@
-import { forwardRef, type JSX } from "react";
-import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
+import { forwardRef, memo, type JSX } from "react";
 import type { RowFullWidthRowLayout } from "../+types";
 import { useGridRoot } from "../context.js";
-import {
-  DropWrap,
-  sizeFromCoord,
-  VIEWPORT_WIDTH_VARIABLE_USE,
-  type DropWrapProps,
-} from "@1771technologies/lytenyte-shared";
+import { sizeFromCoord, VIEWPORT_WIDTH_VARIABLE_USE } from "@1771technologies/lytenyte-shared";
 import { RowDetailRow } from "./row-detail-row.js";
 import { useRowContextValue } from "./row/use-row-context-value.js";
 import { useRowStyle } from "./use-row-style.js";
+import { DropWrap, type DropWrapProps } from "../drag-and-drop/index.js";
 
 export interface RowFullWidthProps extends Omit<DropWrapProps, "accepted"> {
   readonly row: RowFullWidthRowLayout<any>;
@@ -100,4 +95,4 @@ const RowFullWidthImpl = forwardRef<
   );
 });
 
-export const RowFullWidth = fastDeepMemo(RowFullWidthImpl);
+export const RowFullWidth = memo(RowFullWidthImpl);

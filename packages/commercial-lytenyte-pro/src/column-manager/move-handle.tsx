@@ -1,13 +1,13 @@
-import { useDraggable } from "@1771technologies/lytenyte-dragon";
-import {
-  useCombinedRefs,
-  useSlot,
-  type SlotComponent,
-} from "@1771technologies/lytenyte-react-hooks";
 import { forwardRef, useMemo, type JSX } from "react";
 import { useColumnItemContext } from "./context.js";
 import { useColumnsFromContext } from "./use-columns-from-context.js";
 import { useGrid } from "../grid-provider/use-grid.js";
+import {
+  useCombinedRefs,
+  useDraggable,
+  useSlot,
+  type SlotComponent,
+} from "@1771technologies/lytenyte-core/yinternal";
 
 export interface MoveHandleProps {
   readonly as?: SlotComponent;

@@ -22,18 +22,15 @@ import { makeColumnView } from "./helpers/column-view.js";
 import {
   computeBounds,
   computeColumnPositions,
-  computed,
   computeRowPositions,
-  effect,
-  makeAtom,
   makeLayoutState,
-  makeRowStore,
-  signal,
   updateFull,
 } from "@1771technologies/lytenyte-shared";
+
+import { computed, effect, makeAtom, signal } from "@1771technologies/lytenyte-core/yinternal";
 import type { InternalAtoms } from "./+types.js";
 import { makeRowLayout } from "./helpers/row-layout/row-layout.js";
-import { equal, rangesOverlap } from "@1771technologies/lytenyte-js-utils";
+import { equal, rangesOverlap } from "@1771technologies/lytenyte-shared";
 import { makeColumnLayout } from "./helpers/column-layout.js";
 import { emptyRowDataSource } from "./helpers/empty-row-data-source.js";
 import { getFullWidthCallback } from "./helpers/get-full-width-callback.js";
@@ -83,6 +80,7 @@ import {
 import { boundSelectionRect } from "../cell-selection/bound-selection-rect.js";
 import { makeCellRoot } from "./api/cell-root.js";
 import { splitOnPivot } from "../cell-selection/split-on-pivot.js";
+import { makeRowStore } from "@1771technologies/lytenyte-core/yinternal";
 
 const EMPTY_POSITION_ARRAY = new Uint32Array();
 
@@ -203,7 +201,9 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
   const internal_cellSelectionSplits = computed(() => {
     const selections = cellSelections();
+    // @ts-expect-error the $() is defined but not typed.
     const topCount = rowDataStore.rowTopCount.$();
+    // @ts-expect-error the $() is defined but not typed.
     const centerCount = rowDataStore.rowCenterCount.$();
     const meta = columnMeta();
 
@@ -265,8 +265,11 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
   const layoutState = makeLayoutState(0);
   const layoutState$ = computed(() => {
+    // @ts-expect-error the $() is defined but not typed.
     rowDataStore.rowBottomCount.$();
+    // @ts-expect-error the $() is defined but not typed.
     rowDataStore.rowCenterCount.$();
+    // @ts-expect-error the $() is defined but not typed.
     rowDataStore.rowTopCount.$();
 
     rowDataSource();
@@ -281,6 +284,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     columns();
     columnPivotColumns();
 
+    // @ts-expect-error the $() is defined but not typed.
     const rowCount = rowDataStore.rowCount.$();
     const columnCount = columnCount$();
 
@@ -307,7 +311,9 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
       const scrollLeft = xScroll();
       const xPos = xPositions();
       const yPos = yPositions();
+      // @ts-expect-error the $() is defined but not typed.
       const topCount = rowDataStore.rowTopCount.$();
+      // @ts-expect-error the $() is defined but not typed.
       const bottomCount = rowDataStore.rowBottomCount.$();
       const start = startCount();
       const end = endCount();
@@ -506,6 +512,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     rowGroupModel();
     columnPivotModel();
 
+    // @ts-expect-error the $() is defined but not typed.
     const rowCount = rowDataStore.rowCount.$();
     const innerHeight = viewportHeightInner();
 
@@ -574,8 +581,11 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
     const { layout, cache } = layoutState$();
 
+    // @ts-expect-error the $() is defined but not typed.
     const topCount = rowDataStore.rowTopCount.$();
+    // @ts-expect-error the $() is defined but not typed.
     const botCount = rowDataStore.rowBottomCount.$();
+    // @ts-expect-error the $() is defined but not typed.
     const rowCount = rowDataStore.rowCount.$();
     const expansions = rowDetailExpansions();
 
@@ -862,6 +872,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
 
   // Ensure cell selections are bounded.
   effect(() => {
+    // @ts-expect-error the $() is defined but not typed.
     rowDataStore.rowCount.$();
     columnMeta();
 

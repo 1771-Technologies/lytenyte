@@ -1,4 +1,4 @@
-import type { LayoutState, WriteSignal } from "@1771technologies/lytenyte-shared";
+import type { LayoutState } from "@1771technologies/lytenyte-shared";
 import type {
   Column,
   EditActivePosition,
@@ -9,6 +9,7 @@ import type {
   VirtualTarget,
 } from "../+types";
 import type { DataRectSplit } from "../cell-selection/split-cell-selection-rect";
+import type { WriteSignal } from "@1771technologies/lytenyte-core/yinternal";
 
 export interface InternalAtoms {
   readonly headerRows: GridAtomReadonly<number>;

@@ -1,4 +1,4 @@
-import { get } from "@1771technologies/lytenyte-js-utils";
+import { get } from "@1771technologies/lytenyte-shared";
 import type { FieldFn, Grid, GridApi } from "../../+types";
 
 export const makeColumnField = (grid: Grid<any>): GridApi<any>["columnField"] => {

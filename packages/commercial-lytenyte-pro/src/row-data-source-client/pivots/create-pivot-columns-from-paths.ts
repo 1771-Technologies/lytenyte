@@ -1,4 +1,4 @@
-import { upperCaseFirstLetter } from "@1771technologies/lytenyte-js-utils";
+import { upperCaseFirstLetter } from "@1771technologies/lytenyte-shared";
 import type { Column, ColumnPivotModel, Grid } from "../../+types.js";
 
 type Writable<T> = {

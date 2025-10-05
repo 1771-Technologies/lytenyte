@@ -1,6 +1,5 @@
-import { forwardRef, useMemo, type JSX } from "react";
+import { forwardRef, memo, useMemo, type JSX } from "react";
 import { useGridRoot } from "../context.js";
-import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
 import { sizeFromCoord } from "@1771technologies/lytenyte-shared";
 import { useGridRowTemplate } from "./use-grid-row-template.js";
 
@@ -68,4 +67,4 @@ const HeaderImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(
   },
 );
 
-export const Header = fastDeepMemo(HeaderImpl);
+export const Header = memo(HeaderImpl);

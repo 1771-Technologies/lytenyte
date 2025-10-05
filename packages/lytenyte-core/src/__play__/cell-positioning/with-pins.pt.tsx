@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import WithPins from "./with-pins.play.js";
 import { render } from "vitest-browser-react";
-import { wait } from "@1771technologies/lytenyte-js-utils";
+import { wait } from "@1771technologies/lytenyte-shared";
 
 test("The layout should look correct when pins are presents", async () => {
   const screen = render(<WithPins />);

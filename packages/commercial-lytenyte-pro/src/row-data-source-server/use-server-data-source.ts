@@ -1,4 +1,4 @@
-import { effect, makeAtom, signal } from "@1771technologies/lytenyte-shared";
+import { effect, makeAtom, signal } from "@1771technologies/lytenyte-core/yinternal";
 import type {
   ColumnPivotModel,
   DataRequestModel,
@@ -9,7 +9,7 @@ import type {
 } from "../+types.js";
 import { useRef } from "react";
 import { ServerData, type FlatView } from "./server-data.js";
-import { equal } from "@1771technologies/lytenyte-js-utils";
+import { equal } from "@1771technologies/lytenyte-shared";
 
 export function makeServerDataSource<T>({
   dataFetcher,

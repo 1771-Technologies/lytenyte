@@ -4,7 +4,7 @@ import { GridProvider } from "../grid-provider/provider.js";
 import { TreeRoot } from "../tree-view/root.js";
 import { FilterTreeContext } from "./context.js";
 import type { UseTreeFilterReturn } from "./hooks/use-filter-tree";
-import { useSlot, type SlotComponent } from "@1771technologies/lytenyte-react-hooks";
+import { useSlot, type SlotComponent } from "@1771technologies/lytenyte-core/yinternal";
 
 export type FilterTreeRootProps<T> = UseTreeFilterReturn<T>["rootProps"] & {
   readonly grid: Grid<T>;

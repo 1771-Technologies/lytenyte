@@ -1,9 +1,9 @@
-import { forwardRef, type JSX } from "react";
+import { forwardRef, memo, type JSX } from "react";
 import type { HeaderGroupCellLayout } from "../+types";
 import { useGridRoot } from "../context.js";
-import { fastDeepMemo, useCombinedRefs } from "@1771technologies/lytenyte-react-hooks";
 import { useDragMove } from "./use-drag-move.js";
 import { useHeaderCellStyle } from "./use-header-cell-style.js";
+import { useCombinedRefs } from "../hooks/index.js";
 
 export interface HeaderGroupCellProps {
   readonly cell: HeaderGroupCellLayout;
@@ -65,4 +65,4 @@ const HeaderGroupCellImpl = forwardRef<
   );
 });
 
-export const HeaderGroupCell = fastDeepMemo(HeaderGroupCellImpl);
+export const HeaderGroupCell = memo(HeaderGroupCellImpl);

@@ -8,9 +8,9 @@ import {
   getClientY,
   getRelativeXPosition,
   getRelativeYPosition,
-} from "@1771technologies/lytenyte-js-utils";
+} from "@1771technologies/lytenyte-shared";
 import { getNearestFocusable, getPositionFromFocusable } from "@1771technologies/lytenyte-shared";
-import { isHTMLElement } from "@1771technologies/lytenyte-dom-utils";
+import { isHTMLElement } from "@1771technologies/lytenyte-shared";
 import { updateAdditiveCellSelection } from "./update-additive-cell-selection.js";
 import { deselectRectRange } from "./deselect-rect-range.js";
 import { isWithinSelectionRect } from "./is-within-selection-rect.js";

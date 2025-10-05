@@ -1,4 +1,4 @@
-import { equal } from "@1771technologies/lytenyte-js-utils";
+import { equal } from "@1771technologies/lytenyte-shared";
 import type {
   DataRequest,
   DataResponse,

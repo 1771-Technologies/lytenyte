@@ -1,4 +1,4 @@
-import { isHTMLElement } from "@1771technologies/lytenyte-dom-utils";
+import { isHTMLElement } from "../dom-utils/index.js";
 
 let canvas: null | HTMLCanvasElement = null;
 let context: null | CanvasRenderingContext2D = null;

@@ -1,4 +1,4 @@
-import { isHTMLElement } from "@1771technologies/lytenyte-dom-utils";
+import { isHTMLElement } from "@1771technologies/lytenyte-shared";
 import { isBranchNode } from "./is-branch-node.js";
 
 export function getSiblingBranches(el: HTMLElement) {

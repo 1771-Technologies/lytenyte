@@ -10,7 +10,9 @@ export { SortManager } from "./sort-manager/sort-manager.js";
 export { FilterTree } from "./filter-tree/filter-tree.js";
 export { ColumnManager } from "./column-manager/column-manager.js";
 export { GridBox } from "./grid-box/grid-box.js";
-export { DropWrap } from "@1771technologies/lytenyte-dragon";
+export { DropWrap } from "@1771technologies/lytenyte-core/yinternal";
+
+export { FilterSelect } from "./filter-selects/index.js";
 
 export { activateLicense } from "./license.js";
 export { measureText } from "@1771technologies/lytenyte-shared";

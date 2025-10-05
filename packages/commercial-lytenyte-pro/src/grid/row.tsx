@@ -1,7 +1,6 @@
 import { type JSX, type ReactNode } from "react";
 import type { RowNormalRowLayout } from "../+types";
-import { type DropWrapProps } from "@1771technologies/lytenyte-shared";
-import { Row as RowCore } from "@1771technologies/lytenyte-core/yinternal";
+import { Row as RowCore, type DropWrapProps } from "@1771technologies/lytenyte-core/yinternal";
 
 export interface RowProps extends Omit<DropWrapProps, "accepted"> {
   readonly row: RowNormalRowLayout<any>;

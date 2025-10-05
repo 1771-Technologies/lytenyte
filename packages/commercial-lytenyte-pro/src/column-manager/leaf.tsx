@@ -3,10 +3,10 @@ import { forwardRef, useCallback, useMemo } from "react";
 import { ColumnItemContext } from "./context.js";
 import { TreeLeaf } from "../tree-view/leaf.js";
 import type { Column } from "../+types";
-import { dragState, DropWrap } from "@1771technologies/lytenyte-dragon";
 import { useGrid } from "../grid-provider/use-grid.js";
 import { useColumnsFromContext } from "./use-columns-from-context.js";
 import type { PathLeaf } from "@1771technologies/lytenyte-shared";
+import { dragState, DropWrap } from "@1771technologies/lytenyte-core/yinternal";
 
 export interface ColumnManagerLeafProps {
   readonly item: PathLeaf<Column<any>>;

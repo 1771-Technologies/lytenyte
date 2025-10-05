@@ -2,9 +2,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { Grid } from "../../+types";
 import type { SortItem } from "../+types.js";
 import { sortModelToSortItems } from "../utils/sort-model-to-sort-items.js";
-import { itemsWithIdToMap } from "@1771technologies/lytenyte-js-utils";
+import { itemsWithIdToMap } from "@1771technologies/lytenyte-shared";
 import { useSortRowItems } from "./use-sort-row-item.js";
-import { useEvent } from "@1771technologies/lytenyte-react-hooks";
+import { useEvent } from "@1771technologies/lytenyte-core/yinternal";
 
 export interface UseSortManagerArgs<T> {
   readonly grid: Grid<T>;

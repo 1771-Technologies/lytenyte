@@ -5,7 +5,7 @@ import { makeHandleTypeahead } from "./make-handle-typeahead.js";
 import { makeHandleNavigation } from "./make-handle-navigation.js";
 import { makeHandleSelection } from "./make-handle-selection.js";
 import { getTreeNodeId } from "../utils/get-tree-node-id.js";
-import { getTabbables } from "@1771technologies/lytenyte-dom-utils";
+import { getTabbables } from "@1771technologies/lytenyte-shared";
 
 export function useTreeNavigation() {
   const ctx = useTreeRoot();

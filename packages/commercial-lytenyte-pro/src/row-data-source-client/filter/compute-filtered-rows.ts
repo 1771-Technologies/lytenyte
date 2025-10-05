@@ -14,7 +14,7 @@ import type {
   RowLeaf,
 } from "../../+types";
 import type { FilterWithSettings } from "./+types.js";
-import { itemsWithIdToMap } from "@1771technologies/lytenyte-js-utils";
+import { itemsWithIdToMap } from "@1771technologies/lytenyte-shared";
 
 export function computeFilteredRows<T>(
   rows: RowLeaf<T>[],

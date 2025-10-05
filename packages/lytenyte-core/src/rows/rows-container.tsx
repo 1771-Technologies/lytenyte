@@ -1,13 +1,12 @@
-import { forwardRef, type CSSProperties, type JSX } from "react";
+import { forwardRef, memo, type CSSProperties, type JSX } from "react";
 import { useGridRoot } from "../context.js";
-import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
 import {
   SCROLL_WIDTH_VARIABLE,
   VIEWPORT_HEIGHT_VARIABLE,
   VIEWPORT_WIDTH_VARIABLE,
 } from "@1771technologies/lytenyte-shared";
 
-export const RowsContainer = fastDeepMemo(
+export const RowsContainer = memo(
   forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function Rows(props, forwarded) {
     const ctx = useGridRoot().grid;
 

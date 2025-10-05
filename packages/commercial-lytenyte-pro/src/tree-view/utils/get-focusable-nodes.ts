@@ -1,4 +1,4 @@
-import { getFocusables, isHTMLElement } from "@1771technologies/lytenyte-dom-utils";
+import { getFocusables, isHTMLElement } from "@1771technologies/lytenyte-shared";
 
 export function getFocusableNodes(panel: HTMLElement) {
   const focusNodes = getFocusables(panel).filter(

@@ -1,4 +1,4 @@
-import { sleep } from "@1771technologies/lytenyte-js-utils";
+import { sleep } from "@1771technologies/lytenyte-shared";
 import { sql } from "./db.js";
 import type {
   DataRequest,

@@ -1,6 +1,6 @@
-import { useSlot, type SlotComponent } from "@1771technologies/lytenyte-react-hooks";
 import { forwardRef, useMemo, type JSX } from "react";
 import { useTreeItemContext } from "./context.js";
+import { useSlot, type SlotComponent } from "@1771technologies/lytenyte-core/yinternal";
 
 export interface LabelProps {
   readonly as?: SlotComponent;

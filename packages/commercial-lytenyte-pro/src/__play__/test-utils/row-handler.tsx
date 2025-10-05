@@ -1,18 +1,19 @@
-import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
 import type { RowLayout, RowNormalRowLayout } from "../../+types.js";
 import { Row } from "../../grid/row.js";
 import { Cell } from "../../grid/cell.js";
 import { RowFullWidth } from "../../grid/row-full-width.js";
 
-export const RowHandler = fastDeepMemo(
-  (props: { rows: RowLayout<any>[]; withStyles?: boolean; pinned?: boolean }) => {
-    return props.rows.map((row) => {
-      if (row.kind === "full-width") return <RowFullWidth row={row} key={row.id} />;
+export const RowHandler = (props: {
+  rows: RowLayout<any>[];
+  withStyles?: boolean;
+  pinned?: boolean;
+}) => {
+  return props.rows.map((row) => {
+    if (row.kind === "full-width") return <RowFullWidth row={row} key={row.id} />;
 
-      return <Memo row={row} key={row.id} withStyles={props.withStyles} pinned={props.pinned} />;
-    });
-  },
-);
+    return <Memo row={row} key={row.id} withStyles={props.withStyles} pinned={props.pinned} />;
+  });
+};
 
 function RowFor<T>({
   row,
@@ -46,4 +47,4 @@ function RowFor<T>({
     </Row>
   );
 }
-const Memo = fastDeepMemo(RowFor);
+const Memo = RowFor;

@@ -1,4 +1,4 @@
-import { isLastTraversableNode } from "@1771technologies/lytenyte-dom-utils";
+import { isLastTraversableNode } from "@1771technologies/lytenyte-shared";
 
 export function getFocusedNode() {
   if (!document.activeElement) return null;

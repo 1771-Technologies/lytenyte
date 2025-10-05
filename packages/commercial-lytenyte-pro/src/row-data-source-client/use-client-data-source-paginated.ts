@@ -16,17 +16,20 @@ import { useRef } from "react";
 import { traverse } from "./tree/traverse.js";
 import type { TreeNode } from "./+types.js";
 import {
-  computed,
   dateComparator,
+  numberComparator,
+  stringComparator,
+} from "@1771technologies/lytenyte-shared";
+
+import {
+  computed,
   effect,
   makeAtom,
-  numberComparator,
   peek,
   signal,
-  stringComparator,
   type WriteSignal,
-} from "@1771technologies/lytenyte-shared";
-import { clamp, equal, get } from "@1771technologies/lytenyte-js-utils";
+} from "@1771technologies/lytenyte-core/yinternal";
+import { clamp, equal, get } from "@1771technologies/lytenyte-shared";
 import { makeClientTree, type ClientData } from "./tree/client-tree.js";
 import { computeFilteredRows } from "./filter/compute-filtered-rows.js";
 import { builtIns } from "./built-ins/built-ins.js";

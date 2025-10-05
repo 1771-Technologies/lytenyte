@@ -1,9 +1,8 @@
-import { forwardRef, type JSX } from "react";
-import { fastDeepMemo } from "@1771technologies/lytenyte-react-hooks";
+import { forwardRef, memo, type JSX } from "react";
 import { useGridRoot } from "../context.js";
 import { NativeScroller } from "./scrollers/native-scroller.js";
 
-export const RowsTop = fastDeepMemo(
+export const RowsTop = memo(
   forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function RowsTop(props, forwarded) {
     const cx = useGridRoot().grid;
     const view = cx.view.useValue().rows;
@@ -34,7 +33,7 @@ export const RowsTop = fastDeepMemo(
   }),
 );
 
-export const RowsCenter = fastDeepMemo(
+export const RowsCenter = memo(
   forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function RowsCenter(
     { children, ...props },
     forwarded,
@@ -76,7 +75,7 @@ export const RowsCenter = fastDeepMemo(
   }),
 );
 
-export const RowsBottom = fastDeepMemo(
+export const RowsBottom = memo(
   forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function RowsBottom(props, forwarded) {
     const cx = useGridRoot().grid;
     const view = cx.view.useValue().rows;
