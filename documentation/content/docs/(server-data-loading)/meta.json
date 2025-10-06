@@ -6,11 +6,11 @@
     "server-data-loading-row-data",
     "server-data-loading-row-sorting",
     "server-data-loading-row-filtering",
+    "server-data-loading-row-pinning",
     "server-data-loading-row-grouping-and-aggregation",
 
     "server-data-loading-row-adding",
     "server-data-loading-row-deleting",
-    "server-data-loading-row-pinning",
     "server-data-loading-row-updating",
 
     "server-data-loading-pivoting",

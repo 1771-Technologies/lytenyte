@@ -1,12 +1,47 @@
-import type { DataRequest, DataResponse } from "@1771technologies/lytenyte-pro/types";
+import type {
+  DataRequest,
+  DataResponse,
+  FilterModelItem,
+} from "@1771technologies/lytenyte-pro/types";
 
-import { data } from "./data";
+import type { MovieData } from "./data";
+import { data as movieData } from "./data";
 
 const sleep = () => new Promise((res) => setTimeout(res, 600));
 
-export async function Server(reqs: DataRequest[]) {
+export async function Server(
+  reqs: DataRequest[],
+  filterModel: Record<string, FilterModelItem<MovieData>>,
+) {
   // Simulate latency and server work.
   await sleep();
+
+  const filters = Object.entries(filterModel);
+
+  const data =
+    filters.length === 0
+      ? movieData
+      : movieData.filter((row) => {
+          for (const [columnId, filter] of filters) {
+            // Our logic here only handles a small subset of the possible filter functionality
+            // for ease of implementation.
+            if (filter.kind !== "string" && filter.kind !== "date") return false;
+
+            const value = row[columnId as keyof MovieData];
+
+            if (filter.operator === "equals" && value !== filter.value) return false;
+            if (filter.operator === "not_equals" && value === filter.value) return false;
+            if (filter.operator === "less_than" && value >= filter.value!) return false;
+            if (filter.operator === "greater_than" && value <= filter.value!) return false;
+            if (
+              filter.operator === "contains" &&
+              !value.toLowerCase().includes(`${filter.value}`.toLowerCase())
+            )
+              return false;
+          }
+
+          return true;
+        });
 
   return reqs.map((c) => {
     return {

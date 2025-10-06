@@ -5,11 +5,11 @@ import type {
 } from "@1771technologies/lytenyte-pro/types";
 import type { MovieData } from "./data";
 import { format } from "date-fns";
-import { type JSX } from "react";
+import { useState, type JSX } from "react";
 import { Rating, ThinRoundedStar } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
 import { Link1Icon } from "@radix-ui/react-icons";
-import { GridInput, GridSelect, Popover, PopoverContent, PopoverTrigger } from "./ui";
+import { GridInput, GridSelect, Popover, PopoverContent, PopoverTrigger, tw } from "./ui";
 import { FunnelIcon } from "lucide-react";
 import { FilterSelect } from "@1771technologies/lytenyte-pro";
 
@@ -150,18 +150,29 @@ export const LinkRenderer: CellRendererFn<MovieData> = (params) => {
 };
 
 export const HeaderRenderer: HeaderCellRendererFn<MovieData> = ({ grid, column }) => {
+  const model = grid.state.filterModel.useValue();
+  const filter = model[column.id];
+  const [open, setOpen] = useState(false);
   if (column.id === "#") return null;
 
   return (
     <div className="flex h-full w-full items-center justify-between px-2 text-sm capitalize">
       <span>{column.name ?? column.id}</span>
       <span className="flex items-center justify-center">
-        <Popover>
-          <PopoverTrigger className="h-[20px] w-[20px]">
+        <Popover modal open={open} onOpenChange={setOpen}>
+          <PopoverTrigger
+            className={tw(
+              "h-[20px] w-[20px] cursor-pointer",
+              filter ? "relative opacity-100" : "opacity-70",
+            )}
+          >
+            {filter && (
+              <div className="bg-ln-primary-50 absolute top-0 right-0 h-2 w-2 rounded-full" />
+            )}
             <FunnelIcon className="size-3" width={16} height={16} />
           </PopoverTrigger>
           <PopoverContent>
-            <FilterContent column={column} grid={grid} />
+            <FilterContent column={column} grid={grid} onAction={() => setOpen(false)} />
           </PopoverContent>
         </Popover>
       </span>
@@ -169,7 +180,12 @@ export const HeaderRenderer: HeaderCellRendererFn<MovieData> = ({ grid, column }
   );
 };
 
-function FilterContent({ grid, column }: HeaderCellRendererParams<MovieData>) {
+const simplifiedFilterOptions = ["equals", "not_equals", "less_than", "greater_than", "contains"];
+function FilterContent({
+  grid,
+  column,
+  onAction,
+}: HeaderCellRendererParams<MovieData> & { onAction: () => void }) {
   const root = FilterSelect.useFilterSelect({ grid, column, maxCount: 1 });
 
   return (
@@ -180,7 +196,12 @@ function FilterContent({ grid, column }: HeaderCellRendererParams<MovieData>) {
             <div className="flex flex-col gap-1">
               <FilterSelect.OperatorSelect
                 as={(p) => {
-                  return <GridSelect options={p.options} value={p.value} onChange={p.onChange} />;
+                  // Allow a simplified set of options for our filters.
+                  const options = p.options.filter((c) =>
+                    simplifiedFilterOptions.includes(c.value),
+                  );
+
+                  return <GridSelect options={options} value={p.value} onChange={p.onChange} />;
                 }}
               />
               <FilterSelect.ValueInput
@@ -199,9 +220,12 @@ function FilterContent({ grid, column }: HeaderCellRendererParams<MovieData>) {
           </FilterSelect.FilterRow>
         );
       })}
-      <div className="flex gap-2">
-        <FilterSelect.Apply />
-        <FilterSelect.Clear />
+      <div className="my-2 flex justify-end gap-2">
+        <FilterSelect.Clear onClick={onAction} />
+        <FilterSelect.Apply
+          onClick={onAction}
+          className="bg-ln-primary-50 hover:bg-brandButton/80 border-ln-gray-30 rounded border border-solid px-2 py-1 text-xs font-bold text-white"
+        />
       </div>
     </FilterSelect.Root>
   );

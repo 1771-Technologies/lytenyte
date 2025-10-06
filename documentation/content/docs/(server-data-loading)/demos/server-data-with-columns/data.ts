@@ -10353,22 +10353,6 @@ export const data = [
     scraped_at: "02/07/2022 20:42:39",
   },
   {
-    link: "https://tubitv.com/video/614034",
-    name: "Pornstar Pandemic",
-    released_at: "2020-07-28",
-    genre: "Documentary",
-    poster:
-      "https://img.reelgood.com/content/movie/172ea7ab-fba3-4a30-9794-414fd53ddaa4/poster-780.jpg",
-    streaming_on: "Free Services",
-    country: "America",
-    number_of_seasons: "",
-    type: "Movie",
-    content_rating: "",
-    imdb_rating: "3.5/10",
-    uniq_id: "b926d55c-199c-5951-b094-bbf1b9c1d86a",
-    scraped_at: "02/07/2022 20:42:39",
-  },
-  {
     link: "https://www.amazon.com/gp/video/detail/amzn1.dv.gti.aeaa8b57-6b10-6c64-ab49-d29fca228788",
     name: "One Breath: The Story of William Trubridge",
     released_at: "2012-06-14",

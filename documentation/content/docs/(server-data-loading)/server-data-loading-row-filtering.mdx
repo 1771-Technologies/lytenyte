@@ -27,13 +27,62 @@ leverage to perform basic filtering. These models are provide functionality such
 have a column whose cells are greater than a specific value. The example below demonstrates this by leveraging
 the column filter component of LyteNyte Grid.
 
+<Callout type="warn">
+
+The filter implementation below only implements a subset of the full filter model supported by LyteNyte Grid.
+This is done mainly for illustrative purposes. The filter operators of LyteNyte Grid's filter model are usually
+directly support by most databases and developers should not find themselves implementing the complex logic
+themselves.
+
+</Callout>
+
 !demo:Column Filters="./demos/filtered-server-data"
 
 The column filters support a wide variety of filter operators and options. Your server implementation may not need to support
 the full range of filters that may be represented by the LyteNyte Grid `filterModel`. The example above, does not implement
 every single filter possible.
 
+### Filter Options
+
+The individual column filters in the filter model may have some options applied. It is up to the server data source to
+handle these options if necessary. For example, a string filter may be defined as follows:
+
+```ts
+{
+  kind: "string",
+  operator: "contains",
+  value: "Star",
+  options: {
+    trimWhitespace: true
+  }
+}
+```
+
+Notice the `trimWhitespace` option is set to true. A server implementation would read this flag and remove the
+surrounding whitespace from the filter values before determining the result of the filter predicate. LyteNyte Grid
+allows for full flexibility on the server side for the interpretation of the filter options. A server implementation
+may choose to ignore any options. LyteNyte Grid's server data source only expects rows to be returned for a given
+response, hence anything that makes sense for the application use case may be returned from the server.
+
 ## The Filter In Model
+
+The `filterInModel` of LyteNyte Grid allows for inclusion/exclusion testing for a given values in the cell.
+These types of filters are also known as tree set filters, set filters, or in filters. The server has two
+responsibilities when handling in filters:
+
+1. Providing the possible filter values that a column may have. This is a list of unique values for a given
+   column.
+2. Filter rows in response to changes to the `filterInModel` state of the grid. LyteNyte Grid will inform the
+   server when the model changes.
+
+### Filter Values
+
+The server data source accepts the `dataInFilterItemFetcher` callback, which is a function that should return
+a `Promise` of the filter values for a given column. LyteNyte Grid will call this function when the in filter
+values a requested for display.
+
+The `dataInFilterItemFetcher` function will receive a set of params defined by
+the [`DataInFilterItemFetcherParams`](/docs/reference/row-data-source#datainfilteritemfetcherparams) type interface.
 
 ## Quick Search
 

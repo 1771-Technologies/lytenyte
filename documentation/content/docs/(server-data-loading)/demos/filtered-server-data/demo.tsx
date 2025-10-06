@@ -27,7 +27,7 @@ const columns: Column<MovieData>[] = [
     cellRenderer: LinkRenderer,
   },
   { id: "name", name: "Title", width: 250, widthFlex: 1, cellRenderer: NameCellRenderer },
-  { id: "released_at", name: "Released", width: 120, cellRenderer: ReleasedRenderer },
+  { id: "released_at", name: "Released", width: 120, cellRenderer: ReleasedRenderer, type: "date" },
   { id: "genre", name: "Genre", cellRenderer: GenreRenderer },
   { id: "type", name: "Type", width: 120, cellRenderer: TypeRenderer },
   { id: "imdb_rating", name: "Rating", width: 120, cellRenderer: RatingRenderer },
@@ -36,7 +36,7 @@ const columns: Column<MovieData>[] = [
 export default function Filtering() {
   const ds = useServerDataSource<MovieData>({
     dataFetcher: (params) => {
-      return Server(params.requests);
+      return Server(params.requests, params.model.filters);
     },
     blockSize: 50,
   });
@@ -45,6 +45,14 @@ export default function Filtering() {
     gridId: useId(),
     rowDataSource: ds,
     columns,
+
+    filterModel: {
+      name: {
+        kind: "string",
+        operator: "contains",
+        value: "Star",
+      },
+    },
 
     columnBase: {
       headerRenderer: HeaderRenderer,
