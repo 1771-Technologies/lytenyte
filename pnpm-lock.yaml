@@ -112,8 +112,8 @@ importers:
   documentation:
     dependencies:
       '@1771technologies/lytenyte-pro':
-        specifier: ^1.0.15
-        version: 1.0.15(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        specifier: workspace:*
+        version: link:../packages/commercial-lytenyte-pro
       '@1771technologies/remark-code-demo':
         specifier: workspace:*
         version: link:../packages-auxiliary/remark-code-demo
@@ -432,45 +432,6 @@ packages:
 
   '@1771technologies/cli-table@1.0.1':
     resolution: {integrity: sha512-hrT5Dg0hLbz3+skubTuHaPnUs/WASEZXuLhqXb9kuo06fJGViZZqaMlO1VCDkozh4ff0cddnMemh3QC9MEUWng==}
-
-  '@1771technologies/lytenyte-core@1.0.15':
-    resolution: {integrity: sha512-28iOXd3Xs1AcMh/s58ZbtizzfpdWQdq2zdf6pb0Lj9mnHIBk66nLdkTY9Bu1NJqi4/jgqKcC6hIhVNASVTYNcw==}
-    peerDependencies:
-      react: ^18.0.0 || ^19.0.0
-      react-dom: ^18.0.0 || ^19.0.0
-
-  '@1771technologies/lytenyte-dom-utils@1.0.15':
-    resolution: {integrity: sha512-q8MfXuMUkLD9F60xea1sM+Ssh3n2N9E6B4RUP46kEqdBvNDyI3U0j+N5aJxVh6nzFRvY3w6zh8O2BnV5Z4dTMg==}
-
-  '@1771technologies/lytenyte-dragon@1.0.15':
-    resolution: {integrity: sha512-9fc8i+wqi5/jhuAisZgCEb/AUmT8Yp766QQcCaXQgTZGFSmLsZHMkzsPuGQWTIbbShDpiE0SGwYpU4f1dXnayw==}
-    peerDependencies:
-      react: ^18.0.0 || ^19.0.0
-      react-dom: ^18.0.0 || ^19.0.0
-
-  '@1771technologies/lytenyte-js-utils@1.0.15':
-    resolution: {integrity: sha512-/+g7ja05CwChstTFqJNUmdlRdLyi/kQR6nOO84wZM42+wlXI3hqsuTpFj1iKRRsB6uc6rHUORSfMirjJ4N2Afg==}
-
-  '@1771technologies/lytenyte-object-equals@1.0.15':
-    resolution: {integrity: sha512-BP3Wxjr9jCH8NB2RLPPfXXvmoVC8tXsmIF/spziRuy0y+pY132Ie0Bq8lMqvMGmDr3esoX2BZs3BQdh9Cnq/Hw==}
-
-  '@1771technologies/lytenyte-pro@1.0.15':
-    resolution: {integrity: sha512-usnX+Ih/2qBmoDnZO9lV0gLUGpcM0Dv/BLEL0Vh2t9nbv7YulmVbCV2vi5r5wwlT0FVXtsnI6wFSTAhDhvYKPg==}
-    peerDependencies:
-      react: ^18.0.0 || ^19.0.0
-      react-dom: ^18.0.0 || ^19.0.0
-
-  '@1771technologies/lytenyte-react-hooks@1.0.15':
-    resolution: {integrity: sha512-j6Knh7pchEGAM2qawdxgiqk9+THFph4lGArSSMX2zwUazvlyo0oFG6BRVPXX5ET6owLpR6ySBC7QRw/GOGkbWg==}
-    peerDependencies:
-      react: ^18.0.0 || ^19.0.0
-      react-dom: ^18.0.0 || ^19.0.0
-
-  '@1771technologies/lytenyte-shared@1.0.15':
-    resolution: {integrity: sha512-O65ZVnGdu8iCflwcYpKLjKGYQE/muWCkXfAfbRIpOqPGJWFL46dKe5DibgUOYd054sSyON/MhQF3UhWdIc+LgQ==}
-
-  '@1771technologies/lytenyte-signal@1.0.15':
-    resolution: {integrity: sha512-GapMnPiLsNY5DEllvcHFDz1GK0KmTTT0ZcMmJPz6kkiqSQoYKtPeOmZOKn6upm5FcUZY3i+qv2io/Ie8N03vaw==}
 
   '@1771technologies/sample-data@0.9.4':
     resolution: {integrity: sha512-Inn65VuN2vEqaReEKU1IgEi/ty8MN9LCQCuK+ngQCxBHUm7b9u3wJW/X4nSbBPTQCL3gu/AJDT10H7bvcHPJaA==}
@@ -6177,65 +6138,6 @@ snapshots:
   '@1771technologies/cli-table@1.0.1':
     dependencies:
       cli-table3: 0.6.5
-
-  '@1771technologies/lytenyte-core@1.0.15(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
-    dependencies:
-      '@1771technologies/lytenyte-dom-utils': 1.0.15
-      '@1771technologies/lytenyte-dragon': 1.0.15(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      '@1771technologies/lytenyte-js-utils': 1.0.15
-      '@1771technologies/lytenyte-react-hooks': 1.0.15(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      '@1771technologies/lytenyte-shared': 1.0.15(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      react: 19.1.1
-      react-dom: 19.1.1(react@19.1.1)
-
-  '@1771technologies/lytenyte-dom-utils@1.0.15':
-    dependencies:
-      '@1771technologies/lytenyte-js-utils': 1.0.15
-
-  '@1771technologies/lytenyte-dragon@1.0.15(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
-    dependencies:
-      '@1771technologies/lytenyte-dom-utils': 1.0.15
-      '@1771technologies/lytenyte-js-utils': 1.0.15
-      '@1771technologies/lytenyte-react-hooks': 1.0.15(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      '@1771technologies/lytenyte-signal': 1.0.15
-      react: 19.1.1
-      react-dom: 19.1.1(react@19.1.1)
-
-  '@1771technologies/lytenyte-js-utils@1.0.15': {}
-
-  '@1771technologies/lytenyte-object-equals@1.0.15': {}
-
-  '@1771technologies/lytenyte-pro@1.0.15(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
-    dependencies:
-      '@1771technologies/lytenyte-core': 1.0.15(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      '@1771technologies/lytenyte-dom-utils': 1.0.15
-      '@1771technologies/lytenyte-dragon': 1.0.15(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      '@1771technologies/lytenyte-js-utils': 1.0.15
-      '@1771technologies/lytenyte-react-hooks': 1.0.15(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      '@1771technologies/lytenyte-shared': 1.0.15(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      react: 19.1.1
-      react-dom: 19.1.1(react@19.1.1)
-
-  '@1771technologies/lytenyte-react-hooks@1.0.15(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
-    dependencies:
-      '@1771technologies/lytenyte-dom-utils': 1.0.15
-      '@1771technologies/lytenyte-js-utils': 1.0.15
-      '@1771technologies/lytenyte-object-equals': 1.0.15
-      react: 19.1.1
-      react-dom: 19.1.1(react@19.1.1)
-
-  '@1771technologies/lytenyte-shared@1.0.15(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
-    dependencies:
-      '@1771technologies/lytenyte-dom-utils': 1.0.15
-      '@1771technologies/lytenyte-dragon': 1.0.15(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      '@1771technologies/lytenyte-js-utils': 1.0.15
-      '@1771technologies/lytenyte-react-hooks': 1.0.15(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      '@1771technologies/lytenyte-signal': 1.0.15
-    transitivePeerDependencies:
-      - react
-      - react-dom
-
-  '@1771technologies/lytenyte-signal@1.0.15': {}
 
   '@1771technologies/sample-data@0.9.4': {}
 

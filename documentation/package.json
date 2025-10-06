@@ -4,13 +4,13 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": "next dev --turbo",
+    "dev": "next dev",
     "start": "next start",
     "postinstall": "fumadocs-mdx",
     "update-examples": "pnpm tsx ./make-examples.ts"
   },
   "dependencies": {
-    "@1771technologies/lytenyte-pro": "^1.0.15",
+    "@1771technologies/lytenyte-pro": "workspace:*",
     "@1771technologies/remark-code-demo": "workspace:*",
     "@1771technologies/sample-data": "^0.9.4",
     "@ark-ui/react": "^5.25.0",

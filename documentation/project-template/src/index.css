@@ -44,4 +44,21 @@
   --gray-100: hsla(175, 20%, 95%, 1);
   --gray-50: hsla(175, 23%, 97%, 1);
   --gray-01: hsla(175, 25%, 98%, 1);
+
+  --animate-popover-in: popover-in 130ms ease;
+  --animate-popover-out: popover-out 130ms ease;
+}
+
+@keyframes popover-in {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+}
+
+@keyframes popover-out {
+  to {
+    opacity: 0;
+    transform: scale(0.7);
+  }
 }

@@ -184,6 +184,9 @@
   --color-ln-primary-90: var(--lng1771-primary-90);
   --color-ln-focus-outline: var(--lng1771-focus-outline);
 
+  --animate-popover-in: popover-in 130ms ease;
+  --animate-popover-out: popover-out 130ms ease;
+
   --color-gray-950: var(--color-gray-950);
   --color-gray-900: var(--color-gray-900);
   --color-gray-800: var(--color-gray-800);
@@ -415,4 +418,18 @@ strong {
 
 #nd-toc a:hover {
   @apply text-fd-primary transition-colors;
+}
+
+@keyframes popover-in {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+}
+
+@keyframes popover-out {
+  to {
+    opacity: 0;
+    transform: scale(0.7);
+  }
 }

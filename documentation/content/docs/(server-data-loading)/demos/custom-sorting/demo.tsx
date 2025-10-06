@@ -22,7 +22,7 @@ const columns: Column<MovieData>[] = [
   { id: "released_at", name: "Released", width: 120, cellRenderer: ReleasedRenderer },
   { id: "genre", name: "Genre", cellRenderer: GenreRenderer },
   { id: "type", name: "Type", width: 120, cellRenderer: TypeRenderer },
-  { id: "imdb_rating", name: "IMDB Rating", width: 120, cellRenderer: RatingRenderer },
+  { id: "imdb_rating", name: "Rating", width: 120, cellRenderer: RatingRenderer },
 ];
 
 export default function SortingNullsFirst() {
@@ -56,7 +56,7 @@ export default function SortingNullsFirst() {
     <context.Provider value={useMemo(() => ({ sort, setSort }), [sort])}>
       <div className="lng-grid" style={{ height: 500 }}>
         <Grid.Root grid={grid}>
-          <Grid.Viewport>
+          <Grid.Viewport style={{ overflowY: "scroll" }}>
             <Grid.Header>
               {view.header.layout.map((row, i) => {
                 return (

@@ -45,5 +45,5 @@ const columns: Column<MovieData>[] = [
   { id: "released_at", name: "Released", width: 120, cellRenderer: "release" },
   { id: "genre", name: "Genre", cellRenderer: "genre" },
   { id: "type", name: "Type", width: 120, cellRenderer: "type" },
-  { id: "imdb_rating", name: "IMDB Rating", width: 120, cellRenderer: "rating" },
+  { id: "imdb_rating", name: "Rating", width: 120, cellRenderer: "rating" },
 ];

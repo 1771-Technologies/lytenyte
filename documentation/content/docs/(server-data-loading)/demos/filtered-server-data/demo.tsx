@@ -8,6 +8,7 @@ import { Server } from "./server";
 import type { MovieData } from "./data";
 import {
   GenreRenderer,
+  HeaderRenderer,
   LinkRenderer,
   NameCellRenderer,
   RatingRenderer,
@@ -32,7 +33,7 @@ const columns: Column<MovieData>[] = [
   { id: "imdb_rating", name: "Rating", width: 120, cellRenderer: RatingRenderer },
 ];
 
-export default function BasicServerData() {
+export default function Filtering() {
   const ds = useServerDataSource<MovieData>({
     dataFetcher: (params) => {
       return Server(params.requests);
@@ -44,6 +45,10 @@ export default function BasicServerData() {
     gridId: useId(),
     rowDataSource: ds,
     columns,
+
+    columnBase: {
+      headerRenderer: HeaderRenderer,
+    },
   });
 
   const view = grid.view.useValue();
@@ -51,7 +56,7 @@ export default function BasicServerData() {
   return (
     <div className="lng-grid" style={{ height: 500 }}>
       <Grid.Root grid={grid}>
-        <Grid.Viewport>
+        <Grid.Viewport style={{ overflowY: "scroll" }}>
           <Grid.Header>
             {view.header.layout.map((row, i) => {
               return (
@@ -59,13 +64,7 @@ export default function BasicServerData() {
                   {row.map((c) => {
                     if (c.kind === "group") return null;
 
-                    return (
-                      <Grid.HeaderCell
-                        key={c.id}
-                        cell={c}
-                        className="flex h-full w-full items-center px-2 text-sm capitalize"
-                      />
-                    );
+                    return <Grid.HeaderCell key={c.id} cell={c} />;
                   })}
                 </Grid.HeaderRow>
               );

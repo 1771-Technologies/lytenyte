@@ -12,6 +12,9 @@ const config = {
     ignoreDuringBuilds: true,
   },
   webpack: (config) => {
+    config.resolve.extensionAlias = {
+      ".js": [".ts", ".tsx", ".js"],
+    };
     // Esclude react-native from webpack
     config.resolve.alias["react-native"] = false; // Ignore react-native-fs
     config.resolve.alias["react-native-fs"] = false; // Ignore react-native-fs

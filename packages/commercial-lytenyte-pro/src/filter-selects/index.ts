@@ -1,4 +1,5 @@
 import { Apply } from "./apply.js";
+import { Clear } from "./clear.js";
 import { FilterCombinator } from "./filter-combinator.js";
 import { FilterRow } from "./filter-row.js";
 import { OperatorSelect } from "./operator-select.js";
@@ -18,4 +19,5 @@ export const FilterSelect = {
 
   Apply,
   Reset,
+  Clear,
 };

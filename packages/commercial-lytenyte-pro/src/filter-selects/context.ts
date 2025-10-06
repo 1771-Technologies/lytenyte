@@ -8,6 +8,7 @@ export interface FilterSelectRoot {
   readonly maxCount: number;
   readonly apply: () => void;
   readonly reset: () => void;
+  readonly clear: () => void;
 }
 
 export const context = createContext<FilterSelectRoot>({} as any);
