@@ -18,8 +18,6 @@
     "server-data-loading-optimistic-loading",
     "server-data-loading-push-and-pull",
     "server-data-loading-handling-load-failures",
-
-    "server-data-loading-api-configuration",
     "server-data-loading-server-driven-tree-data"
   ],
   "defaultOpen": true

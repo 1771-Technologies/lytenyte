@@ -1,4 +1,32 @@
 ---
 title: Row Grouping and Aggregation
-description: Row Grouping
+description: Group rows on the server to display hierarchical data in the
+  grid's viewport. LyteNyte Grid's server data source requests grouped slices
+  and assembles the view to match the data structure.
 ---
+
+## Grouping Rows
+
+LyteNyte Grid represents row groups using the `rowGroupModel` property on the grid state.
+The presence of row groups results in hierarchical structure of rows with a parent child
+relationship being established.
+
+Whilst LyteNyte Grid maintains the model state, the server is responsible for returning rows for
+the given grouping and hierarchical structure. When row groups are present, LyteNyte Grid's server
+row data source will make requests that have a `path` property that indicates the row group slice that
+is being requested. A simplified example is shown below, but if you are unfamiliar with the
+data request interface read our [dedicated data interface guide](/docs/server-data-loading-interface).
+
+!demo:Row Grouping="./demos/row-grouping-basic"
+
+This basic grouping example does not include aggregations (which will be covered in the next section), so only
+the leaf level rows will have data values. Furthermore, if you inspect the `server.ts` file of the demo (by clicking
+the **Expand Code** button), you will notice that row groups are more complex to compute than flat rows. The extra
+dimension of parent/child relationships means each part of the visual representation of the view becomes
+more complex.
+
+## Applying Aggregations
+
+## Displaying Child Counts
+
+## Next Steps
