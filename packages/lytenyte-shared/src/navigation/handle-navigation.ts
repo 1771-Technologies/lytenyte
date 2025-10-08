@@ -8,8 +8,7 @@ import { isColumnGroupHeader } from "./predicates/is-column-group-header.js";
 import { handleHorizontalMove } from "./position-movers/handle-horizontal-move.js";
 import { handleVerticalMove } from "./position-movers/handle-vertical-move.js";
 import { handleHomeEnd } from "./position-movers/handle-home-end.js";
-import { handlePageUpDown } from "./position-movers/handle-page-up-down.js";
-import { getActiveElement, getNearestMatching } from "../dom-utils/index.js";
+import { getActiveElement, getFirstTabbable, getNearestMatching } from "../dom-utils/index.js";
 
 interface Event {
   readonly key: string;
@@ -44,8 +43,6 @@ export function handleNavigation({
   rtl,
   columnCount,
   rowCount,
-  topCount,
-  centerCount,
 
   getRootCell,
   scrollIntoView,
@@ -58,6 +55,7 @@ export function handleNavigation({
   if (e.key === "Tab") {
     viewport.inert = true;
     setTimeout(() => (viewport.inert = false));
+    e.stopPropagation();
     return;
   }
 
@@ -73,17 +71,31 @@ export function handleNavigation({
   // key being pressed.
   if (!keys.includes(key)) return;
 
+  const active = getActiveElement(document)!;
+  // The viewport element is active, so let`s just return
+  if (active === viewport) {
+    if (e.key === endKey) {
+      const first = getFirstTabbable(viewport);
+      first?.focus();
+      if (first) {
+        e.stopPropagation();
+        e.preventDefault();
+      }
+    }
+
+    return;
+  }
+
   // We need to know what our current focus position. There will definitely be an active element,
   // otherwise how is this event listener being called.
-  const active = getActiveElement(document)!;
   const nearest = getNearestMatching(
     active,
     (el) =>
-      isCell(el) ||
-      isFullWidthRow(el) ||
-      isDetailCell(el) ||
-      isColumnHeader(el) ||
-      isColumnGroupHeader(el),
+      isCell(el, gridId) ||
+      isFullWidthRow(el, gridId) ||
+      isDetailCell(el, gridId) ||
+      isColumnHeader(el, gridId) ||
+      isColumnGroupHeader(el, gridId),
   );
 
   // If we don't find a matching position, then we should just return and let the event happen as normal.
@@ -93,27 +105,11 @@ export function handleNavigation({
   // This key is going to have an action. Since it will have an actions we prevent it
   // and stop the propagation any further. This function should be attached to the viewport,
   // hence it should still allow elements within the grid to handle keys.
-  e.preventDefault();
-  e.stopPropagation();
 
   const pos = focusActive.get()!;
 
   const isHorizontal = key === startKey || key === endKey;
   const isModified = e.ctrlKey || e.metaKey;
-
-  if (key === "PageDown" || key === "PageUp") {
-    handlePageUpDown({
-      pos,
-      centerCount,
-      topCount,
-      focusActive: focusActive,
-      getRootCell,
-      id: gridId,
-      isUp: key === "PageUp",
-      scrollIntoView,
-      vp: viewport,
-    });
-  }
 
   if (key === "Home" || key === "End") {
     handleHomeEnd({
@@ -128,6 +124,9 @@ export function handleNavigation({
       scrollIntoView,
       vp: viewport,
     });
+
+    e.preventDefault();
+    e.stopPropagation();
     return;
   }
 
@@ -146,8 +145,10 @@ export function handleNavigation({
       scrollIntoView,
       viewport,
     });
+    e.preventDefault();
+    e.stopPropagation();
   } else {
-    handleVerticalMove({
+    const result = handleVerticalMove({
       isUp: key === upKey,
       isModified,
       focusActive,
@@ -160,5 +161,10 @@ export function handleNavigation({
       scrollIntoView,
       viewport,
     });
+
+    if (result) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
   }
 }

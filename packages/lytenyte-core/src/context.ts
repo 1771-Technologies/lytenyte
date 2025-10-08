@@ -5,6 +5,7 @@ import type { InternalAtoms } from "./state/+types.js";
 export interface GridRootContext {
   readonly ref: (el: HTMLElement | null) => void;
   readonly grid: Grid<any> & { internal: InternalAtoms };
+  readonly gridId: string;
 }
 
 const context = createContext<GridRootContext>(null as any);

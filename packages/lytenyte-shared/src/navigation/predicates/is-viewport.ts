@@ -1,3 +1,5 @@
-export function isViewport(el: HTMLElement) {
-  return el.getAttribute("data-ln-viewport") === "true";
+export function isViewport(el: HTMLElement, gridId: string) {
+  return (
+    el.getAttribute("data-ln-viewport") === "true" && gridId === el.getAttribute("data-ln-gridid")
+  );
 }

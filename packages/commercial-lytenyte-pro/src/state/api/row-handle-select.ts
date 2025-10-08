@@ -9,7 +9,7 @@ export const makeRowHandleSelect = (
     const mode = grid.state.rowSelectionMode.get();
     if (mode === "none") return;
 
-    const rowEl = getNearestRow(e.target as HTMLElement);
+    const rowEl = getNearestRow(grid.state.gridId.get(), e.target as HTMLElement);
     if (!rowEl) return;
 
     const row = grid.api.rowByIndex(getRowIndexFromEl(rowEl));

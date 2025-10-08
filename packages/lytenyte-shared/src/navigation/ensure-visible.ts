@@ -4,8 +4,9 @@ import { getPositionFromFocusable } from "./getters/get-position-from-focusable.
 export function ensureVisible(
   el: HTMLElement,
   scrollIntoView: (p: { row: number; column: number; behavior: "instant" }) => void,
+  gridId: string,
 ) {
-  const position = getPositionFromFocusable(getNearestFocusable(el)!);
+  const position = getPositionFromFocusable(getNearestFocusable(gridId, el)!, gridId);
   scrollIntoView({
     row: (position as any).rowIndex,
     column: position.colIndex,

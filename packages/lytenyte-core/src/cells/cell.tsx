@@ -51,7 +51,7 @@ const CellImpl = memo(
     },
     forwarded,
   ) {
-    const grid = useGridRoot().grid;
+    const { grid, gridId } = useGridRoot();
 
     const providedRenderer = cell.column.cellRenderer ?? base.cellRenderer;
 
@@ -101,6 +101,7 @@ const CellImpl = memo(
           data-ln-colspan={cell.colSpan}
           data-ln-rowspan={cell.rowSpan}
           data-ln-pin={cell.colPin ?? "center"}
+          data-ln-gridid={gridId}
           data-ln-cell
           data-ln-last-top-pin={cell.rowLastPinTop}
           data-ln-first-bottom-pin={cell.rowFirstPinBottom}

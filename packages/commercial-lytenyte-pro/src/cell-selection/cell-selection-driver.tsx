@@ -45,6 +45,7 @@ export function CellSelectionDriver() {
     let lastRect: DataRect | null = null;
     let animFrame: number | null = null;
 
+    const gridId = grid.state.gridId.get();
     const pointerMove = (event: MouseEvent) => {
       if (animFrame) cancelAnimationFrame(animFrame);
 
@@ -56,9 +57,9 @@ export function CellSelectionDriver() {
 
         const target = event.target;
         if (!isHTMLElement(target)) return;
-        const focusable = getNearestFocusable(target);
+        const focusable = getNearestFocusable(gridId, target);
         if (!focusable) return;
-        const position = getPositionFromFocusable(focusable);
+        const position = getPositionFromFocusable(focusable, gridId);
         if (position.kind !== "cell" && position.kind !== "full-width") return;
         const rowIndex = position.rowIndex;
         const columnIndex = position.colIndex;
@@ -157,9 +158,9 @@ export function CellSelectionDriver() {
 
       const target = event.target;
       if (!isHTMLElement(target)) return;
-      const focusable = getNearestFocusable(target);
+      const focusable = getNearestFocusable(gridId, target);
       if (!focusable) return;
-      const position = getPositionFromFocusable(focusable);
+      const position = getPositionFromFocusable(focusable, gridId);
       if (position.kind !== "cell" && position.kind !== "full-width") return;
       const rowIndex = position.rowIndex;
       const columnIndex = position.colIndex;

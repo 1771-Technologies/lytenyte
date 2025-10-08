@@ -18,7 +18,7 @@ const RowFullWidthImpl = forwardRef<
   HTMLDivElement,
   JSX.IntrinsicElements["div"] & RowFullWidthProps
 >(function RowFullWidth({ row: layout, space, children, ...props }, forwarded) {
-  const grid = useGridRoot().grid;
+  const { grid, gridId } = useGridRoot();
   const Renderer = grid.state.rowFullWidthRenderer.useValue().fn;
   const row = layout.row.useValue();
   const yPositions = grid.state.yPositions.useValue();
@@ -40,7 +40,7 @@ const RowFullWidthImpl = forwardRef<
       role="row"
       accepted={props.accepted ?? empty}
       /** Data attributes start */
-      data-ln-gridid={grid.state.gridId.get()}
+      data-ln-gridid={gridId}
       data-ln-rowindex={rowIndex}
       data-ln-alternate={rowIndex % 2 === 1}
       data-ln-row

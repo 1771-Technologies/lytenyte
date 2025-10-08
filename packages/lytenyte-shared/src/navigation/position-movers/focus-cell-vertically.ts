@@ -29,7 +29,7 @@ export function focusCellVertically({
   focusActive,
   getRootCell,
   scrollIntoView,
-}: FocusCellVerticallyArgs) {
+}: FocusCellVerticallyArgs): boolean {
   const cell = getRootCell(nextRow, pos.colIndex);
   if (!cell) return false;
 
@@ -38,7 +38,7 @@ export function focusCellVertically({
     const el = vp?.querySelector(getRowQuery(id, nextRow)) as HTMLElement;
     if (!el) return false;
 
-    ensureVisible(el, scrollIntoView);
+    ensureVisible(el, scrollIntoView, id);
     el.focus();
 
     focusActive.set((p) => ({ ...p, colIndex: pos.colIndex }) as PositionFullWidthRow);
@@ -51,7 +51,7 @@ export function focusCellVertically({
   const el = vp?.querySelector(getCellQuery(id, rootRow, rootCol)) as HTMLElement;
   if (!el) return false;
 
-  ensureVisible(el, scrollIntoView);
+  ensureVisible(el, scrollIntoView, id);
   el.focus();
   focusActive.set((p) => ({ ...p, colIndex: pos.colIndex }) as PositionGridCell);
 

@@ -30,9 +30,9 @@ export function handleHomeEnd({
   getRootCell,
   id,
   focusActive,
-}: HandleHomeEndArgs) {
+}: HandleHomeEndArgs): boolean {
   if ((pos.kind !== "cell" && pos.kind !== "full-width") || rowCount === 0 || columnCount === 0) {
-    return;
+    return false;
   }
 
   const targetRow = isMeta ? (isStart ? 0 : rowCount - 1) : pos.rowIndex;
@@ -51,7 +51,7 @@ export function handleHomeEnd({
       const c = vp?.querySelector(getRowQuery(id, targetRow)) as HTMLElement;
       if (!c) return false;
 
-      ensureVisible(c, scrollIntoView);
+      ensureVisible(c, scrollIntoView, id);
       c.focus();
       return true;
     }
@@ -62,7 +62,7 @@ export function handleHomeEnd({
     const el = vp?.querySelector(getCellQuery(id, rootRow, rootCol)) as HTMLElement;
     if (!el) return false;
 
-    ensureVisible(el, scrollIntoView);
+    ensureVisible(el, scrollIntoView, id);
     el.focus();
 
     focusActive.set(
@@ -71,5 +71,6 @@ export function handleHomeEnd({
     return true;
   };
 
-  runWithBackoff(run, [8, 20]);
+  runWithBackoff(run, [8, 10, 40, 200]);
+  return true;
 }

@@ -821,7 +821,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     popoverFrameClose: makePopoverFrameClose(grid as any),
     popoverFrameOpen: makePopoverFrameOpen(grid as any),
 
-    positionFromElement: makePositionFromElement(),
+    positionFromElement: makePositionFromElement(grid as any),
   } satisfies GridApi<T>);
 
   Object.assign(grid, {
