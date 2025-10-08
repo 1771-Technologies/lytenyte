@@ -7,7 +7,7 @@ export const makeUseRowDrag = (grid: Grid<any>): GridApi<any>["useRowDrag"] => {
     const c = useDraggable({
       ...params,
       getItems: (el) => {
-        const nearestRow = getNearestRow(el);
+        const nearestRow = getNearestRow(grid.state.gridId.get(), el);
         if (!nearestRow) return {};
         const rowIndex = getRowIndexFromEl(nearestRow);
         const row = grid.api.rowByIndex(rowIndex);

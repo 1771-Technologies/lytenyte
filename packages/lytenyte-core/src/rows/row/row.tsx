@@ -17,7 +17,7 @@ export interface RowProps extends Omit<DropWrapProps, "accepted"> {
 const empty: string[] = [];
 const RowImpl = forwardRef<HTMLDivElement, Omit<JSX.IntrinsicElements["div"], "onDrag"> & RowProps>(
   function Rows({ row, ...props }, forwarded) {
-    const ctx = useGridRoot().grid;
+    const { grid: ctx, gridId } = useGridRoot();
 
     const yPos = ctx.state.yPositions.useValue();
     const rowMeta = useRowContextValue(ctx, row, yPos);
@@ -45,7 +45,7 @@ const RowImpl = forwardRef<HTMLDivElement, Omit<JSX.IntrinsicElements["div"], "o
           ref={forwarded}
           accepted={accepted}
           // Data Attributes
-          data-ln-gridid={ctx.state.gridId.get()}
+          data-ln-gridid={gridId}
           data-ln-rowindex={row.rowIndex}
           data-ln-rowtype="normal-row"
           data-ln-last-top-pin={row.rowLastPinTop}

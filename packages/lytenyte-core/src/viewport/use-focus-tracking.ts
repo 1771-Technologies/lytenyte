@@ -6,6 +6,7 @@ import { getNearestFocusable, getPositionFromFocusable } from "@1771technologies
 export function useFocusTracking(
   vp: HTMLElement | null,
   focusActive: Omit<GridAtom<PositionUnion | null>, "$">,
+  gridId: string,
 ) {
   const [focused, setFocused] = useState(false);
   const [vpFocused, setVpFocused] = useState(false);
@@ -19,14 +20,14 @@ export function useFocusTracking(
       (ev) => {
         setFocused(true);
 
-        const el = getNearestFocusable(ev.target as HTMLElement);
+        const el = getNearestFocusable(gridId, ev.target as HTMLElement);
         if (!el) {
           setFocused(false);
           focusActive.set(null);
           return;
         }
 
-        const position = getPositionFromFocusable(el);
+        const position = getPositionFromFocusable(el, gridId);
 
         // Maintain the current column index. This can happen when we are navigating via the keyboard and
         // there are multiple focusables in the cell.
@@ -62,7 +63,7 @@ export function useFocusTracking(
     );
 
     return () => controller.abort();
-  }, [focusActive, vp]);
+  }, [focusActive, gridId, vp]);
 
   useEffect(() => {
     if (!vp) return;

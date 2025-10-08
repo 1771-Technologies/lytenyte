@@ -89,6 +89,7 @@ export function Root<T = any>({ grid, children, ...events }: PropsWithChildren<R
     return {
       ref,
       grid: grid as any,
+      gridId: grid.state.gridId.get(),
     };
   }, [grid]);
 

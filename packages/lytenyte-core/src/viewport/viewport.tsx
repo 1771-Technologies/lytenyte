@@ -18,7 +18,11 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
   const height = ctx.grid.state.heightTotal.useValue();
   const rtl = ctx.grid.state.rtl.useValue();
 
-  const [focused, vpFocused] = useFocusTracking(vp, ctx.grid.internal.focusActive);
+  const [focused, vpFocused] = useFocusTracking(
+    vp,
+    ctx.grid.internal.focusActive,
+    ctx.grid.state.gridId.get(),
+  );
   const shouldCapture = !focused && !vpFocused;
 
   return (
@@ -85,6 +89,7 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
         role="grid"
         ref={ref}
         data-ln-viewport
+        data-ln-gridid={ctx.grid.state.gridId.get()}
         style={{
           ...style,
           position: "relative",

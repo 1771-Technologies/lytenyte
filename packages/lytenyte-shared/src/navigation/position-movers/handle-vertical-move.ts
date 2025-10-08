@@ -14,6 +14,7 @@ import { getCellQuery } from "../getters/get-cell-query.js";
 import { ensureVisible } from "../ensure-visible.js";
 import { getRowIndexFromEl } from "../getters/get-row-index-from-el.js";
 import { runWithBackoff } from "../../js-utils/index.js";
+import { getFirstTabbable } from "../../dom-utils/index.js";
 
 export interface HandleVerticalMoveArgs {
   readonly gridId: string;
@@ -44,7 +45,7 @@ export function handleVerticalMove({
   nearest,
   rowCount,
   focusActive,
-}: HandleVerticalMoveArgs) {
+}: HandleVerticalMoveArgs): boolean {
   // We must be moving vertically at this point.
 
   if (pos.kind === "full-width" || pos.kind === "cell" || pos.kind === "detail") {
@@ -79,7 +80,7 @@ export function handleVerticalMove({
     // This means we are at the top of the view and hence should move to the header section.
     if (next < 0) {
       const rows = getHeaderRows(viewport);
-      if (!rows) return;
+      if (!rows) return false;
 
       let el: HTMLElement | null = null;
       for (let i = rows.length - 1; i >= 0; i--) {
@@ -92,11 +93,11 @@ export function handleVerticalMove({
       }
 
       if (el) el.focus();
-      return;
+      return !!el;
     }
 
     const root = getRootCell(next, pos.colIndex);
-    if (!root) return;
+    if (!root) return false;
     const { rowIndex, colIndex } = root.kind === "cell" ? (root.root ?? root) : root;
 
     scrollIntoView({ row: next, column: colIndex, behavior: "instant" });
@@ -111,23 +112,35 @@ export function handleVerticalMove({
 
       if (element) {
         if (root.kind === "full-width") {
-          if (nextIsDetail) element.focus();
-          else (element.firstElementChild as HTMLElement).focus();
+          if (nextIsDetail) {
+            const firstTabbable = getFirstTabbable(element);
+            if (firstTabbable) firstTabbable.focus();
+            else element.focus();
+          } else (element.firstElementChild as HTMLElement).focus();
         } else {
-          element.focus();
-          focusActive.set((prev) => ({ ...prev, colIndex: pos.colIndex }) as PositionGridCell);
+          if (nextIsDetail) {
+            const firstTabbable = getFirstTabbable(element);
+            if (firstTabbable) firstTabbable.focus();
+            else {
+              element.focus();
+              focusActive.set((prev) => ({ ...prev, colIndex: pos.colIndex }) as PositionGridCell);
+            }
+          } else {
+            element.focus();
+            focusActive.set((prev) => ({ ...prev, colIndex: pos.colIndex }) as PositionGridCell);
+          }
         }
         return true;
       }
       return false;
     }, [4, 16, 16]);
 
-    return;
+    return true;
   }
 
   if (!isUp) {
     const rows = getHeaderRows(viewport);
-    if (!rows) return;
+    if (!rows) return false;
     const index = rows?.findIndex((r) => r.contains(document.activeElement));
 
     // We are on the last level of our header rows, so we should try focus our first row.
@@ -140,7 +153,7 @@ export function handleVerticalMove({
         scrollIntoView,
         vp: viewport,
       });
-      return;
+      return true;
     }
 
     let nextIndex = index + 1;
@@ -163,7 +176,7 @@ export function handleVerticalMove({
     }
 
     if (match) {
-      ensureVisible(match, scrollIntoView);
+      ensureVisible(match, scrollIntoView, gridId);
       match.focus();
       focusActive.set((p) => ({ ...p, colIndex: pos.colIndex }) as PositionHeaderCell);
     } else {
@@ -178,9 +191,9 @@ export function handleVerticalMove({
     }
   } else {
     const rows = getHeaderRows(viewport);
-    if (!rows) return;
+    if (!rows) return false;
     const index = rows?.findIndex((r) => r.contains(document.activeElement));
-    if (index === 0) return;
+    if (index === 0) return false;
 
     let nextIndex = index - 1;
     let match: HTMLElement | null | undefined;
@@ -202,11 +215,13 @@ export function handleVerticalMove({
     }
 
     if (match) {
-      ensureVisible(match, scrollIntoView);
+      ensureVisible(match, scrollIntoView, gridId);
       match.focus();
       focusActive.set((p) => ({ ...p, colIndex: pos.colIndex }) as PositionHeaderCell);
     }
   }
+
+  return true;
 }
 
 function focusFirstRowCell({
@@ -242,7 +257,7 @@ function focusFirstRowCell({
     if (cell.kind === "full-width") {
       el = vp?.querySelector(getRowQuery(id, 0));
 
-      ensureVisible(el as HTMLElement, scrollIntoView);
+      ensureVisible(el as HTMLElement, scrollIntoView, id);
       if (!el) return false;
 
       (el as HTMLElement).focus();
@@ -256,7 +271,7 @@ function focusFirstRowCell({
     el = vp?.querySelector(getCellQuery(id, rootRow, rootCol));
     if (!el) return false;
 
-    ensureVisible(el as HTMLElement, scrollIntoView);
+    ensureVisible(el as HTMLElement, scrollIntoView, id);
     (el as HTMLElement).focus();
     focusActive.set((p) => ({ ...p, colIndex: pos.colIndex }) as PositionFullWidthRow);
     return true;

@@ -62,7 +62,7 @@ export function useDragMove<T>(
       const vp = grid.state.viewport.get();
       if (!vp?.contains(element)) return;
 
-      const nearest = getNearestFocusable(element as HTMLElement);
+      const nearest = getNearestFocusable(grid.state.gridId.get(), element as HTMLElement);
       if (!nearest) return;
 
       if (prevPos.current < p.position.x) isForward.current = true;

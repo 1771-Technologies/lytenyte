@@ -23,8 +23,11 @@ test("when row details are present it should be possible to navigate across them
   await wait();
   await userEvent.keyboard("{ArrowDown}");
   await wait();
-  await expect.element(document.activeElement).toHaveTextContent("Detail ADetail B");
+  await expect.element(document.activeElement).toHaveTextContent("Detail A");
 
+  await userEvent.keyboard("{ArrowLeft}");
+  await wait();
+  await expect.element(document.activeElement).toHaveTextContent("Detail ADetail B");
   await userEvent.keyboard("{ArrowLeft}");
   await wait();
   await expect.element(document.activeElement).toHaveTextContent("Detail B");
@@ -42,7 +45,7 @@ test("when row details are present it should be possible to navigate across them
   await expect.element(document.activeElement).toHaveTextContent("X");
   await userEvent.keyboard("{ArrowUp}");
   await wait();
-  await expect.element(document.activeElement).toHaveTextContent("Detail ADetail B");
+  await expect.element(document.activeElement).toHaveTextContent("Detail A");
   await userEvent.keyboard("{ArrowDown}");
   await wait();
   await expect.element(document.activeElement).toHaveTextContent("X");
@@ -52,7 +55,7 @@ test("when row details are present it should be possible to navigate across them
   await userEvent.click(document.activeElement!);
   await wait();
   await userEvent.keyboard("{ArrowDown}");
-  await expect.element(document.activeElement).toHaveTextContent("Detail ADetail B");
+  await expect.element(document.activeElement).toHaveTextContent("Detail A");
 });
 
 test("when there are row spans it should be cutoff when the detail is expanded", async () => {
@@ -72,5 +75,5 @@ test("when there are row spans it should be cutoff when the detail is expanded",
   await expect.element(document.activeElement).toHaveTextContent("management");
   await userEvent.keyboard("{ArrowDown}");
   await wait();
-  await expect.element(document.activeElement).toHaveTextContent("Detail ADetail B");
+  await expect.element(document.activeElement).toHaveTextContent("Detail A");
 });

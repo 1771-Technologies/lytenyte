@@ -9,8 +9,8 @@ import { getColSpanFromEl } from "./get-col-span-from-el.js";
 import { getRowIndexFromEl } from "./get-row-index-from-el.js";
 import { getRowSpanFromEl } from "./get-row-span-from-el.js";
 
-export function getPositionFromFocusable(el: HTMLElement): PositionUnion {
-  if (isCell(el)) {
+export function getPositionFromFocusable(el: HTMLElement, gridId: string): PositionUnion {
+  if (isCell(el, gridId)) {
     const rowIndex = getRowIndexFromEl(el);
     const colIndex = getColIndexFromEl(el);
     const rowSpan = getRowSpanFromEl(el);
@@ -29,17 +29,17 @@ export function getPositionFromFocusable(el: HTMLElement): PositionUnion {
     };
   }
 
-  if (isDetailCell(el)) {
+  if (isDetailCell(el, gridId)) {
     const rowIndex = getRowIndexFromEl(el);
     return { kind: "detail", rowIndex, colIndex: 0 };
   }
 
-  if (isFullWidthRow(el)) {
+  if (isFullWidthRow(el, gridId)) {
     const rowIndex = getRowIndexFromEl(el);
     return { kind: "full-width", rowIndex, colIndex: 0 };
   }
 
-  if (isColumnHeader(el)) {
+  if (isColumnHeader(el, gridId)) {
     return {
       kind: isColumnFloatingHeader(el) ? "floating-cell" : "header-cell",
       colIndex: getColIndexFromEl(el),
