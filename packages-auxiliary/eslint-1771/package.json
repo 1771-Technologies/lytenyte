@@ -1,6 +1,6 @@
 {
   "name": "@1771technologies/eslint-preset",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "type": "module",
   "files": [
     "src",
