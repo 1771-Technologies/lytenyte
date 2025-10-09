@@ -293,9 +293,7 @@ export class ServerData {
     this.#flatten(beforeOnFlat);
   };
 
-  async handleViewBoundsChange() {
-    const [start, end] = this.#rowViewBounds;
-
+  requestsForView(start: number, end: number) {
     const seen = new Set();
     const requests: DataRequest[] = [];
 
@@ -338,6 +336,14 @@ export class ServerData {
       });
     }
 
+    return requests;
+  }
+
+  async handleViewBoundsChange() {
+    const [start, end] = this.#rowViewBounds;
+
+    // Track the requests and diff for new ones
+    const requests = this.requestsForView(start, end);
     const newRequests = requests.filter(
       (c) => !this.#prevRequests.find((prev) => prev.id === c.id),
     );
