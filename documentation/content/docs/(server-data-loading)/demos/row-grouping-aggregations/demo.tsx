@@ -9,8 +9,10 @@ import type { SalaryData } from "./data";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
 import {
+  AgeCellRenderer,
   BaseCellRenderer,
   GroupCellRenderer,
+  HeaderCell,
   SalaryRenderer,
   YearsOfExperienceRenderer,
 } from "./components";
@@ -22,23 +24,23 @@ const columns: Column<SalaryData>[] = [
     type: "number",
     width: 100,
     widthFlex: 1,
-    uiHints: { rowGroupable: true },
-    cellRenderer: BaseCellRenderer,
+    uiHints: { rowGroupable: true, aggsAllowed: ["avg", "first", "last"] },
+    cellRenderer: AgeCellRenderer,
   },
   {
     id: "Gender",
     width: 120,
     widthFlex: 1,
-    uiHints: { rowGroupable: true },
+    uiHints: { rowGroupable: true, aggsAllowed: ["first", "last"] },
     cellRenderer: BaseCellRenderer,
   },
   {
     id: "Education Level",
     name: "Education",
     width: 160,
-    hide: true,
     widthFlex: 1,
     uiHints: { rowGroupable: true },
+    hide: true,
     cellRenderer: BaseCellRenderer,
   },
   {
@@ -50,15 +52,25 @@ const columns: Column<SalaryData>[] = [
     cellRenderer: YearsOfExperienceRenderer,
     uiHints: {
       rowGroupable: true,
+      aggsAllowed: ["avg", "max", "min", "sum"],
     },
   },
-  { id: "Salary", type: "number", width: 160, widthFlex: 1, cellRenderer: SalaryRenderer },
+  {
+    id: "Salary",
+    type: "number",
+    width: 160,
+    widthFlex: 1,
+    cellRenderer: SalaryRenderer,
+    uiHints: {
+      aggsAllowed: ["avg", "max", "min", "sum"],
+    },
+  },
 ];
 
-export default function RowGroupingBasic() {
+export default function RowGroupingAggregated() {
   const ds = useServerDataSource<SalaryData>({
     dataFetcher: (params) => {
-      return Server(params.requests, params.model.groups);
+      return Server(params.requests, params.model.groups, params.model.aggregations);
     },
     blockSize: 50,
   });
@@ -67,6 +79,17 @@ export default function RowGroupingBasic() {
     gridId: useId(),
     rowDataSource: ds,
     columns,
+
+    aggModel: {
+      Gender: { fn: "first" },
+      Age: { fn: "avg" },
+      Salary: { fn: "avg" },
+      "Years of Experience": { fn: "max" },
+    },
+
+    columnBase: {
+      headerRenderer: HeaderCell,
+    },
 
     rowGroupColumn: {
       cellRenderer: GroupCellRenderer,

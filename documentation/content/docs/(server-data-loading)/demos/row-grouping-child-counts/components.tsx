@@ -88,7 +88,12 @@ export function GroupCellRenderer({ row, grid }: CellRendererParams<any>) {
           {isExpanded ? <ChevronDownIcon /> : <ChevronRightIcon />}
         </button>
       )}
-      <div className="w-full overflow-hidden text-ellipsis">{row.key || "(none)"}</div>
+      <div className="w-full overflow-hidden text-ellipsis">
+        {row.key || "(none)"}{" "}
+        <span className="text-[11px] font-bold tracking-wide">
+          ({row.data.child_count as number})
+        </span>
+      </div>
     </div>
   );
 }

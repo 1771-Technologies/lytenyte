@@ -96,7 +96,7 @@ export async function Server(reqs: DataRequest[], groupModel: RowGroupModelItem<
         return {
           kind: "branch",
           childCount: childCnt,
-          data: {}, // See aggregations
+          data: { child_count: childCnt },
           id: x[0],
           key: x[0].split(" / ").at(-1)!,
         };

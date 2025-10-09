@@ -1,8 +1,11 @@
-import type { CellRendererParams } from "@1771technologies/lytenyte-pro/types";
+import type {
+  CellRendererParams,
+  HeaderCellRendererFn,
+} from "@1771technologies/lytenyte-pro/types";
 import type { SalaryData } from "./data";
 import type { CSSProperties } from "react";
 import { ChevronDownIcon, ChevronRightIcon } from "@1771technologies/lytenyte-pro/icons";
-import { tw } from "./ui";
+import { AggMenu, tw } from "./ui";
 
 function SkeletonLoading() {
   return (
@@ -37,7 +40,22 @@ export function YearsOfExperienceRenderer({ grid, row, column }: CellRendererPar
 
   return (
     <div className="flex w-full items-baseline justify-end gap-1 tabular-nums">
-      <span className="font-bold">{field}</span>{" "}
+      <span className="font-bold">{formatter.format(field)}</span>{" "}
+      <span className="text-xs">{field <= 1 ? "Year" : "Years"}</span>
+    </div>
+  );
+}
+
+export function AgeCellRenderer({ grid, row, column }: CellRendererParams<SalaryData>) {
+  const field = grid.api.columnField(column, row);
+
+  if (grid.api.rowIsLeaf(row) && row.loading) return <SkeletonLoading />;
+
+  if (typeof field !== "number") return null;
+
+  return (
+    <div className="flex w-full items-baseline justify-end gap-1 tabular-nums">
+      <span className="font-bold">{formatter.format(field)}</span>{" "}
       <span className="text-xs">{field <= 1 ? "Year" : "Years"}</span>
     </div>
   );
@@ -48,7 +66,7 @@ export function BaseCellRenderer({ row, column, grid }: CellRendererParams<any>)
 
   const field = grid.api.columnField(column, row);
 
-  return <div className="flex h-full w-full items-center">{field as string}</div>;
+  return <div className="flex h-full w-full items-center">{(field as string) || "-"}</div>;
 }
 
 export function GroupCellRenderer({ row, grid }: CellRendererParams<any>) {
@@ -116,6 +134,25 @@ const LoadingSpinner = () => {
           d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
         ></path>
       </svg>
+    </div>
+  );
+};
+
+export const HeaderCell: HeaderCellRendererFn<SalaryData> = ({ grid, column }) => {
+  const aggModel = grid.state.aggModel.useValue();
+  const hasGroups = grid.state.rowGroupModel.useValue().length > 0;
+
+  const aggFn = aggModel[column.id]?.fn;
+
+  return (
+    <div
+      className={tw(
+        "flex h-full w-full items-center gap-2 px-3 text-sm text-[var(--lng1771-gray-90)]",
+        column.type === "number" && "flex-row-reverse",
+      )}
+    >
+      <div>{column.name ?? column.id}</div>
+      {aggFn && hasGroups && <AggMenu grid={grid} column={column} />}
     </div>
   );
 };

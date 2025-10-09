@@ -184,6 +184,15 @@
   --color-ln-primary-90: var(--lng1771-primary-90);
   --color-ln-focus-outline: var(--lng1771-focus-outline);
 
+  --color-ln-pill-plain-fill: var(--lng1771-pill-plain-fill);
+  --color-ln-pill-column-fill: var(--lng1771-pill-column-fill);
+  --color-ln-pill-column-stroke: var(--lng1771-pill-column-stroke);
+  --color-ln-pill-pivot-fill: var(--lng1771-pill-pivot-fill);
+  --color-ln-pill-pivot-stroke: var(--lng1771-pill-pivot-stroke);
+  --color-ln-pill-group-fill: var(--lng1771-pill-group-fill);
+  --color-ln-pill-group-stroke: var(--lng1771-pill-group-stroke);
+  --color-ln-pill-icon-color: var(--lng1771-pill-icon-color);
+
   --animate-popover-in: popover-in 130ms ease;
   --animate-popover-out: popover-out 130ms ease;
 

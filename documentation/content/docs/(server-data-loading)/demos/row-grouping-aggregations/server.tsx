@@ -1,4 +1,5 @@
 import type {
+  AggModelFn,
   DataRequest,
   DataResponse,
   RowGroupModelItem,
@@ -9,7 +10,11 @@ import { data } from "./data";
 
 const sleep = () => new Promise((res) => setTimeout(res, 600));
 
-export async function Server(reqs: DataRequest[], groupModel: RowGroupModelItem<SalaryData>[]) {
+export async function Server(
+  reqs: DataRequest[],
+  groupModel: RowGroupModelItem<SalaryData>[],
+  aggModel: { [columnId: string]: { fn: AggModelFn<SalaryData> } },
+) {
   // Simulate latency and server work.
   await sleep();
 
@@ -93,10 +98,40 @@ export async function Server(reqs: DataRequest[], groupModel: RowGroupModelItem<
           ).length;
         }
 
+        const aggData = Object.fromEntries(
+          Object.entries(aggModel)
+            .map(([column, m]) => {
+              if (typeof m.fn !== "string")
+                throw new Error(
+                  "Non-string aggregations are not supported by this dummy implementation",
+                );
+
+              const id = column as keyof SalaryData;
+
+              if (m.fn === "first") return [column, childRows[0][id]];
+              if (m.fn === "last") return [column, childRows.at(-1)![id]];
+
+              if (m.fn === "avg")
+                return [
+                  column,
+                  childRows.reduce((acc, x) => acc + (x[id] as number), 0) / childRows.length,
+                ];
+
+              if (m.fn === "sum")
+                return [column, childRows.reduce((acc, x) => acc + (x[id] as number), 0)];
+
+              if (m.fn === "min")
+                return [column, Math.min(...childRows.map((x) => x[id] as number))];
+              if (m.fn === "max")
+                return [column, Math.max(...childRows.map((x) => x[id] as number))];
+            })
+            .filter(Boolean) as [string, number | string][],
+        );
+
         return {
           kind: "branch",
           childCount: childCnt,
-          data: {}, // See aggregations
+          data: aggData,
           id: x[0],
           key: x[0].split(" / ").at(-1)!,
         };

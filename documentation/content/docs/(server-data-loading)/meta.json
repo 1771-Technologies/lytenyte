@@ -9,16 +9,14 @@
     "server-data-loading-row-pinning",
     "server-data-loading-row-grouping-and-aggregation",
 
+    "server-data-loading-row-updating",
     "server-data-loading-row-adding",
     "server-data-loading-row-deleting",
-    "server-data-loading-row-updating",
 
-    "server-data-loading-pivoting",
     "server-data-loading-unbalanced-rows",
     "server-data-loading-optimistic-loading",
     "server-data-loading-push-and-pull",
-    "server-data-loading-handling-load-failures",
-    "server-data-loading-server-driven-tree-data"
+    "server-data-loading-handling-load-failures"
   ],
   "defaultOpen": true
 }

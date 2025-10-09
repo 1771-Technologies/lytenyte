@@ -22,6 +22,7 @@ const columns: Column<SalaryData>[] = [
     type: "number",
     width: 100,
     widthFlex: 1,
+    hide: true,
     uiHints: { rowGroupable: true },
     cellRenderer: BaseCellRenderer,
   },
@@ -55,7 +56,7 @@ const columns: Column<SalaryData>[] = [
   { id: "Salary", type: "number", width: 160, widthFlex: 1, cellRenderer: SalaryRenderer },
 ];
 
-export default function RowGroupingBasic() {
+export default function RowGroupChildCounts() {
   const ds = useServerDataSource<SalaryData>({
     dataFetcher: (params) => {
       return Server(params.requests, params.model.groups);
@@ -73,7 +74,7 @@ export default function RowGroupingBasic() {
       widthFlex: 1,
     },
 
-    rowGroupModel: ["Education Level"],
+    rowGroupModel: ["Education Level", "Age"],
   });
 
   const view = grid.view.useValue();
