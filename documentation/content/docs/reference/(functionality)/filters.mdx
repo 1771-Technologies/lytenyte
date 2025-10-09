@@ -2,6 +2,7 @@
 title: Filters
 description: The API reference for the filters functionality in LyteNyte Grid.
 ---
+
 ## `FilterCombination`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 A logical grouping filter used to apply multiple filters together
@@ -12,10 +13,16 @@ different filters into a tree structure.
 
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="FilterCombination" />
 
-
 ## `FilterCombinationOperator`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 
-<TypeTable type={{"FilterCombinationOperator":{"description":"Logical operators used to join multiple filters inside a combination filter.","type":"\"AND\" | \"OR\""}}} />
+<TypeTable
+  type={{
+    FilterCombinationOperator: {
+      description: "Logical operators used to join multiple filters inside a combination filter.",
+      type: '"AND" | "OR"',
+    },
+  }}
+/>
 
 ## `FilterDate`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
@@ -23,17 +30,24 @@ A filter type for evaluating date fields in a grid dataset.
 
 Date filters enable both exact and relative comparisons of date values and are essential
 for time-series or event-driven data. LyteNyte Grid expects date values to follow a standard
-ISO string format like  ``"2025-02-01 12:00:11-02:00"`` .
+ISO string format like `"2025-02-01 12:00:11-02:00"` .
 
 If filtering on timestamps or partial dates, be mindful of timezone offsets and whether
 time components are relevant to your comparison.
 
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="FilterDate" />
 
-
 ## `FilterDateOperator`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 
-<TypeTable type={{"FilterDateOperator":{"description":"Set of valid comparison operators for evaluating date-based filters.\n\nThese operators support both fixed comparisons (e.g., \"equals\", \"before\") and dynamic\nrelative date expressions (e.g., \"n_days_ago\", \"last_week\", \"is_weekend\").\n\nThe required type of the  \\`\\`value\\`\\`  field depends on the selected operator.","type":"\"equals\" | \"not_equals\" | \"before\" | \"before_or_equals\" | \"after\" | \"after_or_equals\" | \"year_to_date\" | \"this_week\" | \"this_month\" | \"this_year\" | \"last_week\" | \"last_month\" | \"last_year\" | \"next_week\" | \"next_month\" | \"next_year\" | \"today\" | \"tomorrow\" | \"yesterday\" | \"week_of_year\" | \"quarter_of_year\" | \"is_weekend\" | \"is_weekday\" | \"n_days_ago\" | \"n_days_ahead\" | \"n_weeks_ago\" | \"n_weeks_ahead\" | \"n_months_ago\" | \"n_months_ahead\" | \"n_years_ago\" | \"n_years_ahead\""}}} />
+<TypeTable
+  type={{
+    FilterDateOperator: {
+      description:
+        'Set of valid comparison operators for evaluating date-based filters.\n\nThese operators support both fixed comparisons (e.g., "equals", "before") and dynamic\nrelative date expressions (e.g., "n_days_ago", "last_week", "is_weekend").\n\nThe required type of the  \\`\\`value\\`\\`  field depends on the selected operator.',
+      type: '"equals" | "not_equals" | "before" | "before_or_equals" | "after" | "after_or_equals" | "year_to_date" | "this_week" | "this_month" | "this_year" | "last_week" | "last_month" | "last_year" | "next_week" | "next_month" | "next_year" | "today" | "tomorrow" | "yesterday" | "week_of_year" | "quarter_of_year" | "is_weekend" | "is_weekday" | "n_days_ago" | "n_days_ahead" | "n_weeks_ago" | "n_weeks_ahead" | "n_months_ago" | "n_months_ahead" | "n_years_ago" | "n_years_ahead"',
+    },
+  }}
+/>
 
 ## `FilterDateOptions`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
@@ -44,19 +58,19 @@ during comparisons.
 
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="FilterDateOptions" />
 
-
 ## `FilterFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
 
 <AutoTypeTable type={`export interface FilterFn {
 
-          /** 
+          /**
            * A function-based filter used for advanced filtering logic that cannot
- * be represented using built-in filter types.
- * 
- * The function should return  ''true''  to keep a row or  ''false''  to filter it out.
-           */
-          FilterFn: (params: (FilterFnParams) => boolean)
-          }`} />
+
+- be represented using built-in filter types.
+-
+- The function should return ''true'' to keep a row or ''false'' to filter it out.
+  \*/
+  FilterFn: (params: (FilterFnParams) => boolean)
+  }`} />
 
 ## `FilterFnParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
@@ -66,7 +80,6 @@ Includes both the current row's data and the overall grid configuration.
 
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="FilterFnParams" />
 
-
 ## `FilterFunc`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 A functional filter definition. It provides ultimate flexibility
@@ -75,7 +88,6 @@ for filtering scenarios that don't conform to basic models.
 Should be used selectively and optimized for performance.
 
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="FilterFunc" />
-
 
 ## `FilterIn`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
@@ -87,23 +99,36 @@ LyteNyte Grid and cannot be nested in combination filters.
 
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="FilterIn" />
 
-
 ## `FilterInFilterItem`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
-Represents a displayable filter option for use with the  ``in``  filter UI component.
+Represents a displayable filter option for use with the `in` filter UI component.
 
 Supports grouping and human-friendly labeling for raw filter values.
 
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="FilterInFilterItem" />
 
-
 ## `FilterInOperator`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 
-<TypeTable type={{"FilterInOperator":{"description":"The valid operators for an  \\`\\`in\\`\\`  filter.\n\n-  \\`\\`\"in\"\\`\\` : Tests for inclusion in the set.\n-  \\`\\`\"not_in\"\\`\\` : Tests for exclusion from the set.","type":"\"in\" | \"not_in\""}}} />
+<TypeTable
+  type={{
+    FilterInOperator: {
+      description:
+        'The valid operators for an  \\`\\`in\\`\\`  filter.\n\n-  \\`\\`"in"\\`\\` : Tests for inclusion in the set.\n-  \\`\\`"not_in"\\`\\` : Tests for exclusion from the set.',
+      type: '"in" | "not_in"',
+    },
+  }}
+/>
 
 ## `FilterModelItem`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 
-<TypeTable type={{"FilterModelItem":{"description":"The full set of filter types available in the LyteNyte Grid.","type":"FilterNumber | FilterString | FilterDate | FilterCombination | FilterFunc"}}} />
+<TypeTable
+  type={{
+    FilterModelItem: {
+      description: "The full set of filter types available in the LyteNyte Grid.",
+      type: "FilterNumber | FilterString | FilterDate | FilterCombination | FilterFunc",
+    },
+  }}
+/>
 
 ## `FilterNumber`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
@@ -113,22 +138,39 @@ Applies common comparison logic to include or exclude rows based on numerical va
 
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="FilterNumber" />
 
-
 ## `FilterNumberOperator`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 
-<TypeTable type={{"FilterNumberOperator":{"description":"Logical operators available for number-based filtering.\nThese correspond to the traditional comparison operators,  \\`\\`>, <=\\`\\` , etc.","type":"\"greater_than\" | \"greater_than_or_equals\" | \"less_than\" | \"less_than_or_equals\" | \"equals\" | \"not_equals\""}}} />
+<TypeTable
+  type={{
+    FilterNumberOperator: {
+      description:
+        "Logical operators available for number-based filtering.\nThese correspond to the traditional comparison operators,  \\`\\`>, <=\\`\\` , etc.",
+      type: '"greater_than" | "greater_than_or_equals" | "less_than" | "less_than_or_equals" | "equals" | "not_equals"',
+    },
+  }}
+/>
 
 ## `FilterNumberOptions`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Optional configuration values for number filters. These options allow fine-tuning of filter behavior,
 especially in cases involving precision or null handling.
 
-<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="FilterNumberOptions" />
-
+<AutoTypeTable
+  path="../packages/commercial-lytenyte-pro/src/+types.ts"
+  name="FilterNumberOptions"
+/>
 
 ## `FilterQuickSearchSensitivity`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 
-<TypeTable type={{"FilterQuickSearchSensitivity":{"description":"Sensitivity mode for the quick search functionality.\n\n-  \\`\\`\"case-sensitive\"\\`\\` : Exact matches required.\n-  \\`\\`\"case-insensitive\"\\`\\` : Case differences are ignored.","type":"\"case-sensitive\" | \"case-insensitive\""}}} />
+<TypeTable
+  type={{
+    FilterQuickSearchSensitivity: {
+      description:
+        'Sensitivity mode for the quick search functionality.\n\n-  \\`\\`"case-sensitive"\\`\\` : Exact matches required.\n-  \\`\\`"case-insensitive"\\`\\` : Case differences are ignored.',
+      type: '"case-sensitive" | "case-insensitive"',
+    },
+  }}
+/>
 
 ## `FilterString`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
@@ -138,19 +180,28 @@ Supports a wide range of operators such as exact match, substring containment, r
 
 <AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="FilterString" />
 
-
 ## `FilterStringCollation`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
 Collation configuration for locale-sensitive string comparisons.
 
-Used to construct an  ``Intl.Collator``  instance, which enables proper handling of language and region-specific rules.
+Used to construct an `Intl.Collator` instance, which enables proper handling of language and region-specific rules.
 
-<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="FilterStringCollation" />
-
+<AutoTypeTable
+  path="../packages/commercial-lytenyte-pro/src/+types.ts"
+  name="FilterStringCollation"
+/>
 
 ## `FilterStringOperator`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 
-<TypeTable type={{"FilterStringOperator":{"description":"List of operators available for string filtering.\n\nThese include comparison operators (e.g., \"equals\"), substring checks (e.g., \"contains\"), and\nlength-based checks (e.g., \"length_less_than\"). Some operators require a numeric  \\`\\`value\\`\\` \n(e.g., those dealing with string length).","type":"\"equals\" | \"not_equals\" | \"less_than\" | \"less_than_or_equals\" | \"greater_than\" | \"greater_than_or_equals\" | \"begins_with\" | \"not_begins_with\" | \"ends_with\" | \"not_ends_with\" | \"contains\" | \"not_contains\" | \"length\" | \"not_length\" | \"matches\" | \"length_less_than\" | \"length_less_than_or_equals\" | \"length_greater_than\" | \"length_greater_than_or_equals\""}}} />
+<TypeTable
+  type={{
+    FilterStringOperator: {
+      description:
+        'List of operators available for string filtering.\n\nThese include comparison operators (e.g., "equals"), substring checks (e.g., "contains"), and\nlength-based checks (e.g., "length_less_than"). Some operators require a numeric  \\`\\`value\\`\\` \n(e.g., those dealing with string length).',
+      type: '"equals" | "not_equals" | "less_than" | "less_than_or_equals" | "greater_than" | "greater_than_or_equals" | "begins_with" | "not_begins_with" | "ends_with" | "not_ends_with" | "contains" | "not_contains" | "length" | "not_length" | "matches" | "length_less_than" | "length_less_than_or_equals" | "length_greater_than" | "length_greater_than_or_equals"',
+    },
+  }}
+/>
 
 ## `FilterStringOptions`<span className="type-tag" style={{ '--type-content': "'object'" }} />
 
@@ -159,9 +210,19 @@ Optional settings to modify the behavior of string filter evaluation.
 These provide control over how string values are matched, such as case sensitivity, whitespace trimming,
 regular expression flags, and locale-based collation.
 
-<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="FilterStringOptions" />
-
+<AutoTypeTable
+  path="../packages/commercial-lytenyte-pro/src/+types.ts"
+  name="FilterStringOptions"
+/>
 
 ## `Locale`<span className="type-tag" style={{ '--type-content': "'union'" }} />
 
-<TypeTable type={{"Locale":{"description":"The supported locale identifiers for string filtering and collation.\n\nUsed to configure internationalized string comparison behavior.","type":"\"en-US\" | \"en-GB\" | \"en-CA\" | \"en-AU\" | \"en-IN\" | \"fr-FR\" | \"fr-CA\" | \"fr-BE\" | \"fr-CH\" | \"es-ES\" | \"es-MX\" | \"es-AR\" | \"es-CO\" | \"zh-CN\" | \"zh-TW\" | \"zh-HK\" | \"zh-Hant\" | \"zh-Hans\" | \"ar-SA\" | \"ar-EG\" | \"ar-AE\" | \"de-DE\" | \"de-AT\" | \"de-CH\" | \"ja-JP\" | \"ko-KR\" | \"hi-IN\" | \"pt-BR\" | \"pt-PT\" | \"ru-RU\" | \"uk-UA\" | \"pl-PL\" | \"it-IT\" | \"nl-NL\" | \"sv-SE\" | \"tr-TR\" | \"th-TH\" | \"vi-VN\" | \"he-IL\" | \"fa-IR\" | \"el-GR\""}}} />
+<TypeTable
+  type={{
+    Locale: {
+      description:
+        "The supported locale identifiers for string filtering and collation.\n\nUsed to configure internationalized string comparison behavior.",
+      type: '"en-US" | "en-GB" | "en-CA" | "en-AU" | "en-IN" | "fr-FR" | "fr-CA" | "fr-BE" | "fr-CH" | "es-ES" | "es-MX" | "es-AR" | "es-CO" | "zh-CN" | "zh-TW" | "zh-HK" | "zh-Hant" | "zh-Hans" | "ar-SA" | "ar-EG" | "ar-AE" | "de-DE" | "de-AT" | "de-CH" | "ja-JP" | "ko-KR" | "hi-IN" | "pt-BR" | "pt-PT" | "ru-RU" | "uk-UA" | "pl-PL" | "it-IT" | "nl-NL" | "sv-SE" | "tr-TR" | "th-TH" | "vi-VN" | "he-IL" | "fa-IR" | "el-GR"',
+    },
+  }}
+/>

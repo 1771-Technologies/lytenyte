@@ -10,6 +10,7 @@ export interface RootProps {
 
     readonly apply: () => void;
     readonly reset: () => void;
+    readonly clear: () => void;
     readonly maxCount: number;
   };
 }

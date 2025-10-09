@@ -1,0 +1,97 @@
+---
+title: Row Grouping and Aggregation
+description: Display hierarchical data efficiently with LyteNyte Grid.
+  Use the server data source to request and assemble data slices for grouped grid views.
+---
+
+## Grouping Rows
+
+LyteNyte Grid represents row groups using the `rowGroupModel` property in the grid state.
+When row groups are defined, the grid creates a hierarchical row structure with parent/child relationships.
+
+While LyteNyte Grid manages the model state, the server provides the rows for each grouping level.
+When row groups are active, the grid's server data source includes a `path` property in its requests,
+indicating which row group slice to retrieve.
+
+The simplified example below illustrates this behavior. If you're new to the data request
+interface, see the [dedicated data interface guide](/docs/server-data-loading-interface).
+
+!demo:Row Grouping="./demos/row-grouping-basic"
+
+This basic grouping example does not include aggregations (covered in the next section), so only
+the leaf-level rows contain data values.
+If you inspect the `server.ts` file in the demo (click **Expand Code**), you'll
+see that grouped rows are more complex to compute than flat rows. The added parent/child hierarchy
+increases the complexity of the view's visual representation.
+
+When reviewing the code, pay close attention to the `path` property.
+LyteNyte Grid includes the `path` in each data request to identify
+which part of the grouped rows is being fetched.
+This value must be returned in the response so the grid's server
+data source knows how to store the response rows in its internal data tree.
+
+## Applying Aggregations
+
+The `rowGroupModel` defines the hierarchical relationships of rows created on the server.
+This is only one part of the relationship. The `aggModel` in the grid state specifies how group rows should be aggregated.
+
+The model defines, per column, how child values are combined, for example, by averaging or summing them.
+In essence, the `aggModel` tells the server how to calculate values for each group row.
+
+!demo:Row Grouping With Aggregations="./demos/row-grouping-aggregations"
+
+Aggregations make row grouping valuable. They reveal key insights in your data.
+In the demo above, rows are grouped by `Education`, and both `Age` and `Salary` are aggregated by average.
+From our (fictitious) salary dataset, we can see that the average age of someone with a Bachelor's
+degree is 30 years, with an average salary of $124,768.
+
+To change an aggregation in the demo, click the aggregation name in
+the column header to open the selection menu.
+Changing an aggregation resets the grid and triggers a new data request to the server.
+Like row grouping, the aggregation model is passed to the `dataFetcher` function
+provided to the server data source.
+
+```ts
+const ds = useServerDataSource<SalaryData>({
+  dataFetcher: (params) => {
+    const aggModel = params.model.aggregations;
+    return Server(params.requests, params.model.groups, aggModel);
+  },
+});
+```
+
+Not every column needs an aggregation. For many columns, especially text columns, aggregation doesn't make sense.
+The server is responsible for returning correct aggregation results. LyteNyte Grid does not
+validate the aggregated data; it trusts the server's calculations in the response.
+
+Many aggregation types are supported. In most cases, these correspond to the aggregation
+functions available in your database. Common examples include `sum` and `average`, while advanced
+databases like [ClickHouse](https://clickhouse.com/) provide additional functions
+listed [here](https://clickhouse.com/docs/sql-reference/aggregate-functions/reference).
+
+## Displaying Child Counts
+
+When grouping rows, it is sometimes useful to display the direct child count on each parent row.
+This helps visualize the size of each group.
+
+To support this, the server can include a child count value for each group in the response data.
+The demo below illustrates this by showing child counts in the group cells.
+
+!demo:Row Grouping with Child Counts="./demos/row-grouping-child-counts"
+
+<Callout>
+
+In the example above, the child counts are sent from the server to the client as part of the row data.
+This might seem unexpected since the data response for a group row already includes a child count property.
+However, that property belongs to the server data loading interface, not the LyteNyte Grid row interface.
+
+Including child counts directly in the row data ensures they're accessible to the grid's cell renderers.
+
+</Callout>
+
+## Next Steps
+
+- [Row Adding](/docs/server-data-loading-row-adding): learn how to add new rows from the client.
+- [Unbalanced Rows](/docs/server-data-loading-unbalanced-rows): handle asymmetric row groups of varying depths.
+- [Data Pushing or Pulling](/docs/server-data-loading-push-and-pull): manually request or push data to the server data source from the client.
+- [Optimistic Loading](/docs/server-data-loading-optimistic-loading): use optimistic loading to prefetch data and improve responsiveness.

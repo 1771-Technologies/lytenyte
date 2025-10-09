@@ -1,0 +1,99 @@
+---
+title: Row Pinning
+description: You can pin specific rows to the top or bottom of the grid's viewport.
+  Pinned rows stay visible while the user scrolls. When using a server data
+  source, the server manages pinned rows through a pinned row response.
+---
+
+## Returning Pinned Rows From the Server
+
+LyteNyte Grid's server data source doesn't track viewport changes for
+pinned rows because pinned rows never move. They stay fixed
+at the top or bottom of the grid's viewport.
+
+To supply pinned rows, the server should respond with a
+`DataResponsePinned` object on any viewport request, including the initial
+load. For details on `DataResponsePinned`, see
+the [data interface guide](/docs/server-data-loading-interface) and
+the [API reference](/docs/reference/row-data-source#dataresponsepinned).
+
+This example pins rows to the top or bottom of the grid. The server implementation in the example
+always responds with data for pinned rows along side the data for the scrollable rows. Pinned rows
+will always be leaf rows.
+
+!demo:Row Pinning="./demos/row-pinned"
+
+## Pinned Component Sections
+
+When using pinned rows, the grid view state includes `top` and `bottom` properties.
+Use these properties to access the layout of the pinned rows:
+
+```ts
+const view = grid.view.useValue();
+
+// access the top rows
+view.rows.top;
+
+// access the bottom rows
+view.rows.bottom;
+```
+
+To display pinned rows, use the _ts`Grid.RowsTop`_ and _ts`Grid.RowsBottom`_ components.
+For example, to display the top rows:
+
+```tsx
+<Grid.RowsTop>
+  {view.rows.top.map((row) => {
+    if (row.kind === "full-width") return null;
+
+    return (
+      <Grid.Row row={row} key={row.id}>
+        {row.cells.map((c) => {
+          return <Grid.Cell key={c.id} cell={c} />;
+        })}
+      </Grid.Row>
+    );
+  })}
+</Grid.RowsTop>
+```
+
+See the Row Pinning demo code above for a full example.
+
+## Pushing Pinned Row Updates
+
+Each time the server data source requests more rows, the server can also
+update the grid's pinned rows. Sometimes, pinned rows need updating even when the
+viewport hasn't changed. In those cases, the server data source can push pinned rows
+into the grid programmatically using the `pushResponses` method:
+
+```ts
+const ds = useServerDataSource<MovieData>({
+  dataFetcher: (params) => {
+    return Server(params.requests);
+  },
+});
+
+// Push responses
+ds.pushResponses(...)
+```
+
+This method lets the client push response objects into the server data source
+as if they were returned from the server.
+
+The example below shows its usage. The **Pin One Top** button pins a single row
+to the top, and the **Remove Pinned** button removes it. Both actions are triggered entirely
+from the client without any server response.
+
+!demo:Pushing Pinned Rows="./demos/row-pinned-pushed"
+
+Using the `pushResponses` method is one way to push data into the grid.
+For more information, see the [Data Pushing and Pulling guide](/docs/server-data-loading-push-and-pull).
+
+## Next Steps
+
+- [Row Grouping and Aggregations](/docs/server-data-loading-row-grouping-and-aggregation): learn how
+  to fetch grouped data and handle row expansion and collapse.
+- [Row Sorting](/docs/server-data-loading-row-sorting): implement and display server-side sorting.
+- [Row Adding](/docs/server-data-loading-row-adding): learn how to add new rows from the client.
+- [Optimistic Loading](/docs/server-data-loading-optimistic-loading): use optimistic loading
+  to pre-fetch data and improve responsiveness.

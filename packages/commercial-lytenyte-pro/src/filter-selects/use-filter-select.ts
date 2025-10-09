@@ -222,15 +222,26 @@ export const useFilterSelect = <T>({ grid, column, maxCount = 2 }: UseFilterSele
     [finalFilters, setFilters],
   );
 
+  const clear = useCallback(() => {
+    setF([]);
+
+    grid.state.filterModel.set((prev) => {
+      const filters = { ...prev };
+      delete filters[column.id];
+      return filters;
+    });
+  }, [column.id, grid.state.filterModel, setF]);
+
   return useMemo(
     () => ({
       reset,
       apply,
+      clear,
       defaultFilter,
       filters: finalFilters,
       setFilters: setF,
       maxCount,
     }),
-    [apply, defaultFilter, finalFilters, maxCount, reset, setF],
+    [apply, clear, defaultFilter, finalFilters, maxCount, reset, setF],
   );
 };
