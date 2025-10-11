@@ -1,4 +1,51 @@
 ---
-title: Unbalanced Rows
-description: Loading
+title: Unbalanced Rows (Tree Data)
+description: Hierarchical data may include leaf rows at varying depths, which
+  is especially common in NoSQL databases. LyteNyte Grid supports
+  representing these unbalanced hierarchies and can load them from a server source on demand.
 ---
+
+## Display A Tree of Data
+
+When using LyteNyte Grid's server data source, it's important to understand that the grid
+view reflects the rows received from the server—not the models defined in the grid
+state. For example, if the [row group model](/docs/server-data-loading-row-grouping-and-aggregations)
+defines four grouping levels, LyteNyte Grid does not enforce that each row must be
+expandable four times to reach a leaf node.
+
+This means the server data source can display tree data of any depth, as long as
+the server's data representation is consistent with the responses sent to the client.
+
+The example below demonstrates this by creating a tree with varying branch levels.
+It does so without using row groups, though the same logic and pattern apply.
+
+!demo:Unbalanced Rows="./demos/unbalanced-rows"
+
+In this example, a file viewer is implemented without leveraging LyteNyte Grid's
+`rowGroupModel`. The grid still tracks expansions using the `rowGroupExpansions` state property.
+
+This is just one example of handling unbalanced rows. Another common use case is collapsing row
+groups that contain only a single child. The key takeaway is that LyteNyte Grid respects
+the rows returned by the server over the grid's internal state. The server is responsible
+for interpreting state, and the grid simply renders what the server provides.
+
+### Considerations
+
+LyteNyte Grid's server data source automatically responds to changes in the grid's models.
+When these models change, the data source resets itself. In the example above,
+groups are created without using the row group model, so if the group data
+changes, it's the developer's responsibility to reset the data source.
+This can be done using the `reset` method on the server data source:
+
+```ts
+const ds = useServerDataSource<any>({...});
+
+// In an effect or whenever the view should reset
+ds.reset()
+```
+
+## Next Steps
+
+- [Optimistic Loading](/docs/server-data-loading-optimistic-loading): use optimistic loading to prefetch data and improve responsiveness.
+- [Row Grouping and Aggregation](/docs/server-data-loading-row-grouping-and-aggregation): handle grouped data and load group slices.
+- [Handling Load Failures](/docs/server-data-loading-handling-load-failures): explore how to handle failed data requests.
