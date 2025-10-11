@@ -8,17 +8,18 @@ import {
 
 export const RowsContainer = memo(
   forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function Rows(props, forwarded) {
-    const ctx = useGridRoot().grid;
+    const { grid, gridId } = useGridRoot();
 
-    const height = ctx.state.heightTotal.useValue();
-    const width = ctx.state.widthTotal.useValue();
-    const viewportHeight = ctx.state.viewportHeightInner.useValue();
-    const viewportWidth = ctx.state.viewportWidthInner.useValue();
+    const height = grid.state.heightTotal.useValue();
+    const width = grid.state.widthTotal.useValue();
+    const viewportHeight = grid.state.viewportHeightInner.useValue();
+    const viewportWidth = grid.state.viewportWidthInner.useValue();
     return (
       <div
         {...props}
         ref={forwarded}
         data-ln-rows-container
+        data-ln-gridid={gridId}
         role="presentation"
         style={
           {

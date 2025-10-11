@@ -89,7 +89,7 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
         role="grid"
         ref={ref}
         data-ln-viewport
-        data-ln-gridid={ctx.grid.state.gridId.get()}
+        data-ln-gridid={ctx.gridId}
         style={{
           ...style,
           position: "relative",

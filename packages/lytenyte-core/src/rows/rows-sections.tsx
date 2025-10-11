@@ -4,11 +4,11 @@ import { NativeScroller } from "./scrollers/native-scroller.js";
 
 export const RowsTop = memo(
   forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function RowsTop(props, forwarded) {
-    const cx = useGridRoot().grid;
-    const view = cx.view.useValue().rows;
+    const { grid, gridId } = useGridRoot();
+    const view = grid.view.useValue().rows;
 
-    const topCount = cx.state.rowDataStore.rowTopCount.useValue();
-    const top = cx.internal.headerHeightTotal.useValue();
+    const topCount = grid.state.rowDataStore.rowTopCount.useValue();
+    const top = grid.internal.headerHeightTotal.useValue();
     const height = view.rowTopTotalHeight;
 
     if (height <= 0) return null;
@@ -20,6 +20,7 @@ export const RowsTop = memo(
         rowLast={topCount}
         role="rowgroup"
         data-ln-rows-top
+        data-ln-gridid={gridId}
         style={{
           ...props.style,
           height,
@@ -38,12 +39,12 @@ export const RowsCenter = memo(
     { children, ...props },
     forwarded,
   ) {
-    const cx = useGridRoot().grid;
-    const view = cx.view.useValue().rows;
+    const { grid, gridId } = useGridRoot();
+    const view = grid.view.useValue().rows;
 
-    const rowCenterCount = cx.state.rowDataStore.rowCenterCount.useValue();
-    const rowFirst = cx.state.rowDataStore.rowTopCount.useValue();
-    const rowLast = rowCenterCount + cx.state.rowDataStore.rowTopCount.useValue();
+    const rowCenterCount = grid.state.rowDataStore.rowCenterCount.useValue();
+    const rowFirst = grid.state.rowDataStore.rowTopCount.useValue();
+    const rowLast = rowCenterCount + grid.state.rowDataStore.rowTopCount.useValue();
     const height = view.rowCenterTotalHeight;
     const pinSectionHeights = view.rowBottomTotalHeight + view.rowTopTotalHeight;
 
@@ -61,6 +62,7 @@ export const RowsCenter = memo(
         ref={forwarded}
         role="rowgroup"
         data-ln-rows-center
+        data-ln-gridid={gridId}
         style={{
           ...props.style,
           height,
@@ -69,7 +71,7 @@ export const RowsCenter = memo(
           position: "relative",
         }}
       >
-        <NativeScroller>{children}</NativeScroller>
+        <NativeScroller gridId={gridId}>{children}</NativeScroller>
       </RowsSection>
     );
   }),
@@ -77,12 +79,12 @@ export const RowsCenter = memo(
 
 export const RowsBottom = memo(
   forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function RowsBottom(props, forwarded) {
-    const cx = useGridRoot().grid;
-    const view = cx.view.useValue().rows;
+    const { grid, gridId } = useGridRoot();
+    const view = grid.view.useValue().rows;
 
-    const rowCenterCount = cx.state.rowDataStore.rowCenterCount.useValue();
-    const rowTopCount = cx.state.rowDataStore.rowTopCount.useValue();
-    const rowBottomCount = cx.state.rowDataStore.rowBottomCount.useValue();
+    const rowCenterCount = grid.state.rowDataStore.rowCenterCount.useValue();
+    const rowTopCount = grid.state.rowDataStore.rowTopCount.useValue();
+    const rowBottomCount = grid.state.rowDataStore.rowBottomCount.useValue();
     const height = view.rowBottomTotalHeight;
 
     if (height <= 0) return null;
@@ -95,6 +97,7 @@ export const RowsBottom = memo(
         rowLast={rowCenterCount + rowBottomCount + rowTopCount}
         role="rowgroup"
         data-ln-rows-bottom
+        data-ln-gridid={gridId}
         style={{
           ...props.style,
 
