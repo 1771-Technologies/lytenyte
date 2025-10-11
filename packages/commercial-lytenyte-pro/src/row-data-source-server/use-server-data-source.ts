@@ -214,6 +214,8 @@ export function makeServerDataSource<T>({
   const rowByIndex: RowDataSource<T>["rowByIndex"] = (i) => {
     const row = flat.rowIndexToRow.get(i);
     const isLoading = flat.loading.has(i);
+    const isGroupLoading = flat.loadingGroup.has(i);
+    const errorGroup = flat.erroredGroup.get(i);
     const error = flat.errored.get(i);
 
     // If we haven't loaded a row yet.
@@ -226,14 +228,23 @@ export function makeServerDataSource<T>({
         error: error,
       };
 
-    if (error) {
-      return { ...row, error };
-    }
-    if (isLoading) {
-      return { ...row, loading: isLoading };
+    if (row.kind === "leaf") {
+      if (error || isLoading) {
+        return { ...row, loading: isLoading, error: error?.error };
+      }
+    } else if (row.kind === "branch") {
+      if (error || isLoading || isGroupLoading || errorGroup) {
+        return {
+          ...row,
+          loading: isLoading,
+          error: error?.error,
+          errorGroup: errorGroup?.error,
+          loadingGroup: isGroupLoading,
+        };
+      }
     }
 
-    return flat.rowIndexToRow.get(i) ?? null;
+    return row ?? null;
   };
 
   const rowExpand: RowDataSource<T>["rowExpand"] = (expansions) => {

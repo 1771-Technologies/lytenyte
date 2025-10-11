@@ -90,12 +90,12 @@ export function GroupCellRenderer({ row, grid }: CellRendererParams<any>) {
           "before:border-ln-gray-30 before:absolute before:left-[var(--before-offset)] before:top-0 before:h-full before:border-r before:border-dashed",
       )}
     >
-      {row.loading && (
+      {row.loadingGroup && (
         <div className="w-5">
           <LoadingSpinner />
         </div>
       )}
-      {!row.loading && (
+      {!row.loadingGroup && (
         <button
           className="hover:bg-ln-gray-10 w-5 cursor-pointer rounded transition-colors"
           onClick={() => {

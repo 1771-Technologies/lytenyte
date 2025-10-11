@@ -131,6 +131,28 @@ export const RowGroup: InterfaceType = {
       tsDoc: `Depth level from the root; used to determine visual indenting and structure.`,
       doc: { en: `` },
     },
+    {
+      kind: "property",
+      name: "errorGroup",
+      value: "unknown",
+      doc: { en: `` },
+      optional: true,
+      tsDoc: `
+        An error that applies to the group row. This is usually set when the group fails to load 
+        its children rows.
+      `,
+    },
+    {
+      kind: "property",
+      name: "loadingGroup",
+      value: "boolean",
+      doc: { en: `` },
+      optional: true,
+      tsDoc: `
+        A boolean indicating if the group expansion is loading. This is normally used for server 
+        data loading, which expansions occur only after the group's children data has been fetched.
+      `,
+    },
   ],
 };
 

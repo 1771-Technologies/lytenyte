@@ -39,7 +39,9 @@ export interface FlatView {
   readonly rowIdToRowIndex: Map<string, number>;
   readonly rowIdToTreeNode: Map<string, LeafOrParent<RowGroup, RowLeaf>>;
   readonly loading: Set<number>;
-  readonly errored: Map<number, unknown>;
+  readonly loadingGroup: Set<number>;
+  readonly errored: Map<number, { error: unknown; request?: DataRequest }>;
+  readonly erroredGroup: Map<number, { error: unknown; request: DataRequest }>;
 }
 
 export interface ServerDataConstructorParams {
@@ -82,8 +84,9 @@ export class ServerData {
   #prevRequests: DataRequest[] = [];
 
   #loadingRows: Set<number> = new Set();
+  #loadingGroup: Set<number> = new Set();
   #rowsWithError: Map<number, { error: unknown; request?: DataRequest }> = new Map();
-  #rowsWithGroupError: Map<number, DataRequest> = new Map();
+  #rowsWithGroupError: Map<number, { error: unknown; request: DataRequest }> = new Map();
   #controllers: Set<AbortController> = new Set();
 
   #defaultExpansion: boolean | number;
@@ -144,6 +147,7 @@ export class ServerData {
     if (equal(viewBounds, this.#rowViewBounds)) return;
 
     this.#rowViewBounds = viewBounds;
+
     this.handleViewBoundsChange();
   }
 
@@ -154,6 +158,11 @@ export class ServerData {
 
     this.#tree = makeAsyncTree();
     this.#flatten();
+
+    this.#rowsWithError.clear();
+    this.#rowsWithGroupError.clear();
+    this.#loadingRows.clear();
+    this.#loadingGroup.clear();
 
     try {
       this.#onResetLoadBegin();
@@ -360,79 +369,72 @@ export class ServerData {
   }
 
   retry(rowIds?: string[]) {
-    let requests: DataRequest[] = [];
-    const groupReqs = new Map<string, { index: number; req: DataRequest }>();
-    const seen = new Set();
-    if (!rowIds) {
-      const keys = this.#rowsWithError.keys();
-      for (const rowIndex of keys) {
-        if (this.#rowsWithGroupError.has(rowIndex)) {
-          const req = this.#rowsWithGroupError.get(rowIndex)!;
-          if (!seen.has(req.id)) {
-            seen.add(req.id);
-            groupReqs.set(req.id, { index: rowIndex, req });
-            requests.push(req);
-          }
-        }
-
-        const v = this.#rowsWithError.get(rowIndex)!;
-        if (v.request && !seen.has(v.request.id)) {
-          seen.add(v.request.id);
-          requests.push(v.request);
-        }
-      }
-
-      const [start, end] = this.#rowViewBounds;
-      requests = requests.filter((req) => {
-        return req.rowStartIndex >= start && req.rowStartIndex < end;
-      });
-
-      this.#rowsWithError.clear();
-      this.#rowsWithGroupError.clear();
-    } else {
-      for (const id of rowIds) {
-        const rowIndex = this.#flat.rowIdToRowIndex.get(id);
-        if (rowIndex == null || !this.#rowsWithError.has(rowIndex)) continue;
-
-        const v = this.#rowsWithError.get(rowIndex)!;
-        const groupReq = this.#rowsWithGroupError.get(rowIndex);
-
-        this.#rowsWithError.delete(rowIndex);
-        this.#rowsWithGroupError.delete(rowIndex);
-        if (groupReq && !seen.has(groupReq.id)) {
-          seen.add(groupReq.id);
-          groupReqs.set(groupReq.id, { index: rowIndex, req: groupReq });
-          requests.push(groupReq);
-        }
-        if (v.request && !seen.has(v.request.id)) {
-          seen.add(v.request.id);
-          requests.push(v.request);
-        }
-      }
-    }
-
-    const withLoading = this.#loadingRows;
-    const withError = this.#rowsWithError;
-    const withGroupError = this.#rowsWithGroupError;
-    groupReqs.forEach((v) => {
-      withLoading.add(v.index);
-    });
-    // See these to loading
-
-    this.handleRequests(requests, {
-      onError: (e) => {
-        groupReqs.forEach((c) => {
-          withLoading.delete(c.index);
-          withError.set(c.index, { error: e });
-          withGroupError.set(c.index, c.req);
-        });
-      },
-      onSuccess: () => {
-        groupReqs.forEach((c) => {
-          withLoading.delete(c.index);
-        });
-      },
-    });
+    // let requests: DataRequest[] = [];
+    // const groupReqs = new Map<string, { index: number; req: DataRequest }>();
+    // const seen = new Set();
+    // if (!rowIds) {
+    //   const keys = this.#rowsWithError.keys();
+    //   for (const rowIndex of keys) {
+    //     if (this.#rowsWithGroupError.has(rowIndex)) {
+    //       const req = this.#rowsWithGroupError.get(rowIndex)!;
+    //       if (!seen.has(req.id)) {
+    //         seen.add(req.id);
+    //         groupReqs.set(req.id, { index: rowIndex, req });
+    //         requests.push(req);
+    //       }
+    //     }
+    //     const v = this.#rowsWithError.get(rowIndex)!;
+    //     if (v.request && !seen.has(v.request.id)) {
+    //       seen.add(v.request.id);
+    //       requests.push(v.request);
+    //     }
+    //   }
+    //   const [start, end] = this.#rowViewBounds;
+    //   requests = requests.filter((req) => {
+    //     return req.rowStartIndex >= start && req.rowStartIndex < end;
+    //   });
+    //   this.#rowsWithError.clear();
+    //   this.#rowsWithGroupError.clear();
+    // } else {
+    //   for (const id of rowIds) {
+    //     const rowIndex = this.#flat.rowIdToRowIndex.get(id);
+    //     if (rowIndex == null || !this.#rowsWithError.has(rowIndex)) continue;
+    //     const v = this.#rowsWithError.get(rowIndex)!;
+    //     const groupReq = this.#rowsWithGroupError.get(rowIndex);
+    //     this.#rowsWithError.delete(rowIndex);
+    //     this.#rowsWithGroupError.delete(rowIndex);
+    //     if (groupReq && !seen.has(groupReq.id)) {
+    //       seen.add(groupReq.id);
+    //       groupReqs.set(groupReq.id, { index: rowIndex, req: groupReq });
+    //       requests.push(groupReq);
+    //     }
+    //     if (v.request && !seen.has(v.request.id)) {
+    //       seen.add(v.request.id);
+    //       requests.push(v.request);
+    //     }
+    //   }
+    // }
+    // const withLoading = this.#loadingRows;
+    // const withError = this.#rowsWithError;
+    // const withGroupError = this.#rowsWithGroupError;
+    // groupReqs.forEach((v) => {
+    //   withLoading.add(v.index);
+    // });
+    // // See these to loading
+    // this.handleRequests(requests, {
+    //   onError: (e) => {
+    //     groupReqs.forEach((c) => {
+    //       withLoading.delete(c.index);
+    //       withError.set(c.index, { error: e });
+    //       withGroupError.set(c.index, c.req);
+    //     });
+    //   },
+    //   onSuccess: () => {
+    //     groupReqs.forEach((c) => {
+    //       withLoading.delete(c.index);
+    //     });
+    //   },
+    // });
   }
 
   updateRow(id: string, data: any) {
@@ -475,9 +477,8 @@ export class ServerData {
     const previousRequests = this.#prevRequests;
 
     // Tracks the error and loading state of the rows.
-    const withError = this.#rowsWithError;
     const withGroupError = this.#rowsWithGroupError;
-    const withLoading = this.#loadingRows;
+    const withLoadingGroup = this.#loadingGroup;
 
     const handleRequests = this.handleRequests;
     const defaultExpansion = this.#defaultExpansion;
@@ -570,7 +571,7 @@ export class ServerData {
 
     if (postFlatRequests.length > 0) {
       postFlatRequests.forEach((c) => {
-        withLoading.add(c[0]);
+        withLoadingGroup.add(c[0]);
         previousRequests.push(c[1]);
       });
 
@@ -579,14 +580,16 @@ export class ServerData {
         skipState: true,
         onError: (e) => {
           postFlatRequests.forEach((c) => {
-            withLoading.delete(c[0]);
-            withError.set(c[0], { error: e });
-            withGroupError.set(c[0], c[1]);
+            const rowIndex = c[0];
+            const req = c[1];
+
+            withLoadingGroup.delete(rowIndex);
+            withGroupError.set(rowIndex, { error: e, request: req });
           });
         },
         onSuccess: () => {
           postFlatRequests.forEach((c) => {
-            withLoading.delete(c[0]);
+            withLoadingGroup.delete(c[0]);
           });
         },
       });
@@ -603,7 +606,9 @@ export class ServerData {
       rowIdToRowIndex,
       rowIdToTreeNode,
       errored: this.#rowsWithError,
+      erroredGroup: this.#rowsWithGroupError,
       loading: this.#loadingRows,
+      loadingGroup: this.#loadingGroup,
     };
 
     beforeOnFlat?.();
