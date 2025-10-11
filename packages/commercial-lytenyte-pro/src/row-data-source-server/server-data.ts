@@ -82,7 +82,8 @@ export class ServerData {
   #prevRequests: DataRequest[] = [];
 
   #loadingRows: Set<number> = new Set();
-  #rowsWithError: Map<number, unknown> = new Map();
+  #rowsWithError: Map<number, { error: unknown; request?: DataRequest }> = new Map();
+  #rowsWithGroupError: Map<number, DataRequest> = new Map();
   #controllers: Set<AbortController> = new Set();
 
   #defaultExpansion: boolean | number;
@@ -221,7 +222,8 @@ export class ServerData {
 
       if (!skip)
         requests.forEach((req) => {
-          for (let i = req.rowStartIndex; i < req.rowEndIndex; i++) this.#rowsWithError.set(i, e);
+          for (let i = req.rowStartIndex; i < req.rowEndIndex; i++)
+            this.#rowsWithError.set(i, { error: e, request: req });
           for (let i = req.rowStartIndex; i < req.rowEndIndex; i++) this.#loadingRows.delete(i);
         });
     } finally {
@@ -293,7 +295,12 @@ export class ServerData {
     this.#flatten(beforeOnFlat);
   };
 
-  requestsForView(start: number, end: number) {
+  requestsForView(start?: number, end?: number) {
+    const bounds = this.#rowViewBounds;
+
+    start = start ?? bounds[0];
+    end = end ?? bounds[1];
+
     const seen = new Set();
     const requests: DataRequest[] = [];
 
@@ -340,10 +347,7 @@ export class ServerData {
   }
 
   async handleViewBoundsChange() {
-    const [start, end] = this.#rowViewBounds;
-
-    // Track the requests and diff for new ones
-    const requests = this.requestsForView(start, end);
+    const requests = this.requestsForView();
     const newRequests = requests.filter(
       (c) => !this.#prevRequests.find((prev) => prev.id === c.id),
     );
@@ -353,6 +357,82 @@ export class ServerData {
 
     this.#prevRequests = requests;
     await this.handleRequests(newRequests);
+  }
+
+  retry(rowIds?: string[]) {
+    let requests: DataRequest[] = [];
+    const groupReqs = new Map<string, { index: number; req: DataRequest }>();
+    const seen = new Set();
+    if (!rowIds) {
+      const keys = this.#rowsWithError.keys();
+      for (const rowIndex of keys) {
+        if (this.#rowsWithGroupError.has(rowIndex)) {
+          const req = this.#rowsWithGroupError.get(rowIndex)!;
+          if (!seen.has(req.id)) {
+            seen.add(req.id);
+            groupReqs.set(req.id, { index: rowIndex, req });
+            requests.push(req);
+          }
+        }
+
+        const v = this.#rowsWithError.get(rowIndex)!;
+        if (v.request && !seen.has(v.request.id)) {
+          seen.add(v.request.id);
+          requests.push(v.request);
+        }
+      }
+
+      const [start, end] = this.#rowViewBounds;
+      requests = requests.filter((req) => {
+        return req.rowStartIndex >= start && req.rowStartIndex < end;
+      });
+
+      this.#rowsWithError.clear();
+      this.#rowsWithGroupError.clear();
+    } else {
+      for (const id of rowIds) {
+        const rowIndex = this.#flat.rowIdToRowIndex.get(id);
+        if (rowIndex == null || !this.#rowsWithError.has(rowIndex)) continue;
+
+        const v = this.#rowsWithError.get(rowIndex)!;
+        const groupReq = this.#rowsWithGroupError.get(rowIndex);
+
+        this.#rowsWithError.delete(rowIndex);
+        this.#rowsWithGroupError.delete(rowIndex);
+        if (groupReq && !seen.has(groupReq.id)) {
+          seen.add(groupReq.id);
+          groupReqs.set(groupReq.id, { index: rowIndex, req: groupReq });
+          requests.push(groupReq);
+        }
+        if (v.request && !seen.has(v.request.id)) {
+          seen.add(v.request.id);
+          requests.push(v.request);
+        }
+      }
+    }
+
+    const withLoading = this.#loadingRows;
+    const withError = this.#rowsWithError;
+    const withGroupError = this.#rowsWithGroupError;
+    groupReqs.forEach((v) => {
+      withLoading.add(v.index);
+    });
+    // See these to loading
+
+    this.handleRequests(requests, {
+      onError: (e) => {
+        groupReqs.forEach((c) => {
+          withLoading.delete(c.index);
+          withError.set(c.index, { error: e });
+          withGroupError.set(c.index, c.req);
+        });
+      },
+      onSuccess: () => {
+        groupReqs.forEach((c) => {
+          withLoading.delete(c.index);
+        });
+      },
+    });
   }
 
   updateRow(id: string, data: any) {
@@ -375,21 +455,28 @@ export class ServerData {
   }
 
   #flatten = (beforeOnFlat?: () => void) => {
+    // The mode we are in determines the expansions we will use for the server data.
     const mode = this.#pivotMode;
     const expansions = mode ? this.#pivotExpansions : this.#expansions;
     const t = this.#tree;
 
+    // We use these maps to keep track of the current view. These are helpful for
+    // quick lookup. They are also used to implement many of the data source APIs.
     const rowIdToRow = new Map<string, RowNode<any>>();
     const rowIndexToRow = new Map<number, RowNode<any>>();
     const rowIdToRowIndex = new Map<string, number>();
     const rowIdToTreeNode = new Map<string, LeafOrParent<RowGroup, RowLeaf>>();
 
+    // When flattening the tree we need to keep track of the ranges. The tree itself
+    // will only have some rows loaded, but the ranges will be fully defined.
     const ranges: FlattenedRange[] = [];
 
     const blocksize = this.#blocksize;
     const previousRequests = this.#prevRequests;
 
+    // Tracks the error and loading state of the rows.
     const withError = this.#rowsWithError;
+    const withGroupError = this.#rowsWithGroupError;
     const withLoading = this.#loadingRows;
 
     const handleRequests = this.handleRequests;
@@ -414,6 +501,11 @@ export class ServerData {
         rowIdToRow.set(row.data.id, row.data);
         rowIdToTreeNode.set(row.data.id, row);
 
+        // If this rows is a parent row, we need to check if it is expanded. There are a couple of
+        // situations this to consider.
+        // - the row is not expanded, in which case we only add the row itself to the flat view
+        // - the row is expanded but it has no data loaded. We should then request data, but not add the rows
+        // - the row is expanded and there is add. This is the easy case, we simply add the child rows as we flatten
         if (row.kind === "parent") {
           const expanded =
             expansions[row.data.id] ??
@@ -421,6 +513,7 @@ export class ServerData {
               ? getNodeDepth(row) <= defaultExpansion
               : defaultExpansion);
 
+          // Expanded but no data. Fetch the child data.
           if (expanded && !row.byIndex.size) {
             const path = getNodePath(row);
 
@@ -436,7 +529,7 @@ export class ServerData {
               rowEndIndex: rowIndex + 1 + reqSize,
             };
 
-            // If we haven't already requested this node
+            // If we haven't already requested the children data for this node, let's request it.
             if (!previousRequests.find((c) => c.id === req.id)) {
               postFlatRequests.push([rowIndex, req]);
             }
@@ -464,7 +557,6 @@ export class ServerData {
     }
 
     const size = processParent(t, topCount);
-
     for (let i = 0; i < bottomCount; i++) {
       const row = this.#bottom.rows[i];
       const rowIndex = i + size;
@@ -488,7 +580,8 @@ export class ServerData {
         onError: (e) => {
           postFlatRequests.forEach((c) => {
             withLoading.delete(c[0]);
-            withError.set(c[0], e);
+            withError.set(c[0], { error: e });
+            withGroupError.set(c[0], c[1]);
           });
         },
         onSuccess: () => {

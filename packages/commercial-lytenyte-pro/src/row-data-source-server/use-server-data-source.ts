@@ -385,7 +385,21 @@ export function makeServerDataSource<T>({
     source.handleRequests(requests);
   };
 
-  const retry: RowDataSourceServer<T>["retry"] = () => {};
+  const retry: RowDataSourceServer<T>["retry"] = () => {
+    if (!grid) return;
+    const store = grid.state.rowDataStore;
+
+    store.rowClearCache();
+  };
+
+  const requestsForView: RowDataSourceServer<T>["requestsForView"] = () => {
+    return source.requestsForView();
+  };
+
+  const refresh: RowDataSourceServer<T>["refresh"] = (onSuccess, onError) => {
+    const requests = source.requestsForView();
+    pushRequests(requests, onSuccess, onError);
+  };
 
   return {
     init,
@@ -413,6 +427,8 @@ export function makeServerDataSource<T>({
     pushRequests,
     reset,
     retry,
+    refresh,
+    requestsForView,
   };
 }
 

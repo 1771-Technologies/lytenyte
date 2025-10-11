@@ -462,10 +462,51 @@ export const RowDataSourceServerPro: InterfaceType = {
     {
       kind: "property",
       doc: { en: `` },
-      tsDoc: `Retries the failed data load requests.`,
+      tsDoc: `
+      Retries data loading for errored rows.
+  
+      Behavior depends on whether a set of row IDs is provided:
+ 
+        - **No \`rowId\` provided:**  
+        Clears the error state for all rows that previously failed to load, then 
+        requests new data for those rows that are both errored and currently visible in the viewport.
+  
+        - **\`rowId\` array provided:**  
+        Requests data only for the specified rows that are in an error state. 
+        Error states for other rows remain unchanged.`,
       name: "retry",
       optional: false,
-      value: "() => void",
+      value: "(rowId?: string[]) => void",
+    },
+    {
+      kind: "property",
+      doc: { en: `` },
+      tsDoc: `
+         Returns the data requests that would be sent to the server based on the current
+         state of the view.
+
+         This can be used to implement polling for cell updates, allowing the client
+         to periodically fetch new or changed data without reloading the entire view.
+
+         To execute the generated requests, use the \`pushRequests\` method.
+      `,
+      name: "requestsForView",
+      optional: false,
+      value: "() => DataRequest[]",
+    },
+    {
+      kind: "property",
+      doc: { en: `` },
+      tsDoc: `
+        Refreshes the current view by re-sending the data requests that make up the view to the server.
+        This ensures that any underlying data changes are reflected in the rendered view.
+
+        This is a convenience method that combines the functionality of \`requestsForView\` and \`pushRequests\`, 
+        allowing you to easily re-fetch and re-render data for the current view in a single call.
+      `,
+      name: "refresh",
+      optional: false,
+      value: "(onSuccess?: () => void, onError?: (e: unknown) => void) => void",
     },
     {
       kind: "property",
