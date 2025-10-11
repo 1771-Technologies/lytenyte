@@ -7,7 +7,8 @@ export interface HeaderRowProps {
 
 const HeaderRowImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & HeaderRowProps>(
   function HeaderRow({ headerRowIndex, ...props }, forwarded) {
-    const maxRow = useGridRoot().grid.view.get().header.maxRow;
+    const ctx = useGridRoot();
+    const maxRow = ctx.grid.view.get().header.maxRow;
 
     return (
       <div
@@ -15,6 +16,7 @@ const HeaderRowImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & 
         ref={forwarded}
         role="row"
         data-ln-header-row
+        data-ln-gridid={ctx.gridId}
         style={{
           boxSizing: "border-box",
           display: "grid",
