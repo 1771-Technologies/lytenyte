@@ -2622,30 +2622,52 @@ export interface RowDataSourceServer<T> {
   readonly loadError: GridAtomReadonly<unknown>;
 
   /**
-   * Retries data loading for errored rows.
+   * A set that tracks which requests the server data source has already made. It prevents duplicate
+   * requests to the server. This mutable set can be used to customize how the
+   * grid tracks requests or to inform the data source about optimistically loaded requests.
    *
-   * Behavior depends on whether a set of row IDs is provided:
-   *
-   *   - **No `rowId` provided:**
-   *   Clears the error state for all rows that previously failed to load, then
-   *   requests new data for those rows that are both errored and currently visible in the viewport.
-   *
-   *   - **`rowId` array provided:**
-   *   Requests data only for the specified rows that are in an error state.
-   *   Error states for other rows remain unchanged.
+   * Modifying `seenRequests` is intended for advanced use cases. Ensure you fully understand how
+   * data loading works in LyteNyte Grid's server data source before making
+   * changes. If you're unsure, reach out to the LyteNyte Grid team on GitHub.
    */
-  readonly retry: (rowId?: string[]) => void;
+  readonly seenRequests: Set<string>;
 
   /**
-   * Returns the data requests that would be sent to the server based on the current
-   * state of the view.
+   * `retry` re-requests any failed data loads in the grid.
+   * Calling `retry` clears the error state for all failed requests, and
+   * the grid resends data requests for those currently in view. Failed
+   * requests outside the view are not retried until they come back into view.
+   */
+  readonly retry: () => void;
+
+  /**
+   * A grid atom that returns the data requests that would be
+   * sent to the server based on the current state of the view.
    *
    * This can be used to implement polling for cell updates, allowing the client
    * to periodically fetch new or changed data without reloading the entire view.
    *
    * To execute the generated requests, use the `pushRequests` method.
    */
-  readonly requestsForView: () => DataRequest[];
+  readonly requestsForView: GridAtomReadonly<DataRequest[]>;
+
+  /**
+   * Returns the data request that would be sent to the server to load the row group
+   * of the given row. This may be used to get a request that can be used to optimistically
+   * load the group.
+   *
+   * This method will return null if the group is invalid or if the row is not found.
+   */
+  readonly requestForGroup: (row: RowGroup | number) => DataRequest | null;
+
+  /**
+   * Returns the data request for the next slice of data based on the provided request.
+   * This is useful for preloading the next view of data. Returns `null` if no
+   * next slice exists or if the provided request is invalid for the current view configuration.
+   */
+  readonly requestForNextSlice: (
+    currentRequest: DataRequest,
+  ) => DataRequest | null;
 
   /**
    * Refreshes the current view by re-sending the data requests that make up the view to the server.

@@ -10,6 +10,7 @@ import type {
 import type {
   LeafOrParent,
   SetDataAction,
+  TreeLeaf,
   TreeParent,
   TreeRoot,
   TreeRootAndApi,
@@ -42,6 +43,7 @@ export interface FlatView {
   readonly loadingGroup: Set<number>;
   readonly errored: Map<number, { error: unknown; request?: DataRequest }>;
   readonly erroredGroup: Map<number, { error: unknown; request: DataRequest }>;
+  readonly seenRequests: Set<string>;
 }
 
 export interface ServerDataConstructorParams {
@@ -81,7 +83,7 @@ export class ServerData {
   #onFlatten: (r: FlatView) => void;
 
   #rowViewBounds: [start: number, end: number] = [0, 0];
-  #prevRequests: DataRequest[] = [];
+  #seenRequests: Set<string> = new Set();
 
   #loadingRows: Set<number> = new Set();
   #loadingGroup: Set<number> = new Set();
@@ -167,31 +169,58 @@ export class ServerData {
     try {
       this.#onResetLoadBegin();
 
-      this.#prevRequests = [
-        {
-          rowStartIndex: 0,
-          rowEndIndex: this.#blocksize,
-          id: getRequestId([], 0, this.#blocksize),
-          path: [],
-          start: 0,
-          end: this.#blocksize,
-        },
-      ];
+      this.#seenRequests.clear();
 
-      const res = await this.#dataFetcher(
-        this.#prevRequests,
-        this.#expansions,
-        this.#pivotExpansions,
-      );
+      const req = {
+        rowStartIndex: 0,
+        rowEndIndex: this.#blocksize,
+        id: getRequestId([], 0, this.#blocksize),
+        path: [],
+        start: 0,
+        end: this.#blocksize,
+      };
+
+      this.#seenRequests.add(req.id);
+      const res = await this.#dataFetcher([req], this.#expansions, this.#pivotExpansions);
 
       this.handleResponses(res);
     } catch (e) {
-      console.log(e);
       this.#onResetLoadError(e);
     } finally {
       this.#onResetLoadEnd();
     }
   };
+
+  requestForGroup(i: number) {
+    const ranges = this.#flat.rangeTree.findRangesForRowIndex(i);
+
+    const path = ranges.slice(1).map((c) => (c.parent.kind === "parent" ? c.parent.path : null));
+
+    const row = this.#flat.rowIndexToRow.get(i);
+    if (row?.kind !== "branch") return null;
+
+    path.push(row.key);
+
+    const r = (ranges.at(-1)?.parent as TreeParent<any, any>).byPath.get(row.key) as TreeParent<
+      any,
+      any
+    >;
+    const blocksize = this.#blocksize;
+
+    const start = 0;
+    const end = Math.min(start + blocksize, r.size);
+    const reqSize = end - start;
+    const req: DataRequest = {
+      path,
+      start: start,
+      end: end,
+      id: getRequestId(path, 0, blocksize),
+      rowStartIndex: i + 1,
+      rowEndIndex: i + 1 + reqSize,
+    };
+
+    return req;
+  }
 
   handleRequests = async (
     requests: DataRequest[],
@@ -249,7 +278,7 @@ export class ServerData {
     // handle pinned
     for (let i = 0; i < pinned.length; i++) {
       const r = pinned[i];
-      if (r.kind === "top" && r.asOfTime > this.#top.asOf) {
+      if (r.kind === "top" && -r.asOfTime > this.#top.asOf) {
         this.#top = {
           asOf: r.asOfTime,
           rows: r.data.map<RowLeaf<any>>((c) => ({ id: c.id, data: c.data, kind: "leaf" })),
@@ -304,6 +333,36 @@ export class ServerData {
     this.#flatten(beforeOnFlat);
   };
 
+  requestForNextSlice(req: DataRequest) {
+    let current: TreeRoot<any, any> | TreeParent<any, any> | TreeLeaf<any, any> = this.#tree;
+
+    for (const c of req.path) {
+      if (current.kind === "leaf") return null;
+      const next = current.byPath.get(c);
+      if (!next) return null;
+      current = next;
+    }
+    if (current.kind === "leaf") return null;
+
+    const maxSize = current.size;
+    if (req.end >= maxSize) return null;
+
+    const prevSize = req.end - req.start;
+
+    const start = req.end;
+    const end = Math.min(req.end + this.#blocksize, maxSize);
+
+    const size = end - start;
+    return {
+      id: getRequestId(req.path, start, start + this.#blocksize),
+      path: req.path,
+      start,
+      end,
+      rowStartIndex: req.rowStartIndex + prevSize,
+      rowEndIndex: req.rowStartIndex + prevSize + size,
+    } satisfies DataRequest;
+  }
+
   requestsForView(start?: number, end?: number) {
     const bounds = this.#rowViewBounds;
 
@@ -357,18 +416,18 @@ export class ServerData {
 
   async handleViewBoundsChange() {
     const requests = this.requestsForView();
-    const newRequests = requests.filter(
-      (c) => !this.#prevRequests.find((prev) => prev.id === c.id),
-    );
+
+    const newRequests = requests.filter((c) => !this.#seenRequests.has(c.id));
 
     // We don't have any new requests to make in our view, so we can return
     if (!newRequests.length) return;
 
-    this.#prevRequests = requests;
+    for (const n of newRequests) this.#seenRequests.add(n.id);
     await this.handleRequests(newRequests);
   }
 
   retry(rowIds?: string[]) {
+    void rowIds;
     // let requests: DataRequest[] = [];
     // const groupReqs = new Map<string, { index: number; req: DataRequest }>();
     // const seen = new Set();
@@ -474,7 +533,7 @@ export class ServerData {
     const ranges: FlattenedRange[] = [];
 
     const blocksize = this.#blocksize;
-    const previousRequests = this.#prevRequests;
+    const seen = this.#seenRequests;
 
     // Tracks the error and loading state of the rows.
     const withGroupError = this.#rowsWithGroupError;
@@ -531,7 +590,7 @@ export class ServerData {
             };
 
             // If we haven't already requested the children data for this node, let's request it.
-            if (!previousRequests.find((c) => c.id === req.id)) {
+            if (!seen.has(req.id)) {
               postFlatRequests.push([rowIndex, req]);
             }
           } else if (expanded) {
@@ -572,7 +631,7 @@ export class ServerData {
     if (postFlatRequests.length > 0) {
       postFlatRequests.forEach((c) => {
         withLoadingGroup.add(c[0]);
-        previousRequests.push(c[1]);
+        seen.add(c[1].id);
       });
 
       const reqs = postFlatRequests.map((c) => c[1]);
@@ -609,6 +668,7 @@ export class ServerData {
       erroredGroup: this.#rowsWithGroupError,
       loading: this.#loadingRows,
       loadingGroup: this.#loadingGroup,
+      seenRequests: seen,
     };
 
     beforeOnFlat?.();

@@ -1,6 +1,7 @@
 import { effect, makeAtom, signal } from "@1771technologies/lytenyte-core/yinternal";
 import type {
   ColumnPivotModel,
+  DataRequest,
   DataRequestModel,
   Grid,
   RowDataSource,
@@ -16,6 +17,7 @@ export function makeServerDataSource<T>({
   dataInFilterItemFetcher,
 
   dataColumnPivotFetcher,
+
   cellUpdateHandler,
   cellUpdateOptimistically,
 
@@ -28,6 +30,7 @@ export function makeServerDataSource<T>({
 
   const isLoading = makeAtom(signal(false));
   const loadError = makeAtom(signal<unknown>(null));
+  const requestsForView = makeAtom(signal<DataRequest[]>([]));
 
   const cleanup: (() => void)[] = [];
   const init: RowDataSource<T>["init"] = (g) => {
@@ -167,6 +170,12 @@ export function makeServerDataSource<T>({
       g.state.viewBounds.watch(() => {
         const bounds = g.state.viewBounds.get();
         source.rowViewBounds = [bounds.rowCenterStart, bounds.rowCenterEnd];
+
+        const requests = source.requestsForView();
+        const current = requestsForView.get();
+        if (equal(requests, current)) return;
+
+        requestsForView.set(requests);
       }),
     );
 
@@ -403,13 +412,20 @@ export function makeServerDataSource<T>({
     store.rowClearCache();
   };
 
-  const requestsForView: RowDataSourceServer<T>["requestsForView"] = () => {
-    return source.requestsForView();
-  };
-
   const refresh: RowDataSourceServer<T>["refresh"] = (onSuccess, onError) => {
     const requests = source.requestsForView();
     pushRequests(requests, onSuccess, onError);
+  };
+
+  const requestForGroup: RowDataSourceServer<T>["requestForGroup"] = (row) => {
+    const index = typeof row === "number" ? row : flat.rowIdToRowIndex.get(row.id);
+    if (index == null) return null;
+
+    return source.requestForGroup(index);
+  };
+
+  const requestForNextSlice: RowDataSourceServer<T>["requestForNextSlice"] = (req) => {
+    return source.requestForNextSlice(req);
   };
 
   return {
@@ -439,7 +455,13 @@ export function makeServerDataSource<T>({
     reset,
     retry,
     refresh,
-    requestsForView,
+    requestsForView: requestsForView,
+    requestForGroup,
+    requestForNextSlice,
+
+    get seenRequests() {
+      return flat.seenRequests;
+    },
   };
 }
 
