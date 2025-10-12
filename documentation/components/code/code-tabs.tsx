@@ -13,6 +13,7 @@ export function CodeTabs({ children, tabs }: PropsWithChildren<{ tabs: string[] 
       className={cn(
         "bg-fd-card group my-0 rounded-none border-transparent",
         !c.showCode && "button-hider",
+        c.showCode && "pt-8 md:pt-0",
       )}
     >
       {children}
