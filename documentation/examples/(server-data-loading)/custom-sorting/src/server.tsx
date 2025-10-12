@@ -46,7 +46,7 @@ export async function Server(reqs: DataRequest[], sortModel: CustomSort | null) 
         val = left - right;
       }
 
-      if (val !== 0) return val;
+      if (val !== 0) return sortModel.isDescending ? -val : val;
 
       return val;
     });

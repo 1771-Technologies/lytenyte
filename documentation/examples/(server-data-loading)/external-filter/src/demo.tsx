@@ -63,7 +63,10 @@ export default function Filtering() {
     <>
       <div className="border-b-ln-gray-20 flex items-center gap-1 border-b px-2 py-2.5">
         <div className="flex items-center">
-          <label className="pr-[15px] text-[15px] leading-none text-white" htmlFor="movie-switch">
+          <label
+            className="text-ln-gray-90 pr-[15px] text-[15px] leading-none"
+            htmlFor="movie-switch"
+          >
             Show TV Shows
           </label>
           <Switch.Root
@@ -75,7 +78,7 @@ export default function Filtering() {
             <Switch.Thumb className="shadow-blackA4 block size-[21px] translate-x-0.5 rounded-full bg-white shadow-[0_2px_2px] transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-[19px]" />
           </Switch.Root>
 
-          <span className="pl-[15px] text-[15px] leading-none text-white">Show Movies</span>
+          <span className="text-ln-gray-90 pl-[15px] text-[15px] leading-none">Show Movies</span>
         </div>
       </div>
       <div className="lng-grid" style={{ height: 500 }}>
