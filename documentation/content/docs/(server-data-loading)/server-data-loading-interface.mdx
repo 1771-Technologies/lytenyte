@@ -6,7 +6,7 @@ description: Use LyteNyte Grid's server data loading interfaces
 
 LyteNyte Grid sends requests to the server using a defined request structure and
 expects responses in a specific format. This request/response cycle is the server
-data interface—the protocol LyteNyte Grid uses to exchange data.
+data interface, i.e. the protocol LyteNyte Grid uses to exchange data.
 
 This section introduces the server data interface types and provides a high-level
 overview. For a practical guide, see the [server row data guide](/docs/server-data-loading-row-data).
@@ -67,7 +67,7 @@ server holds the full table in memory (with expansions and groupings). Since thi
 most servers ignore these properties. They are included for completeness; developers should not
 worry if `rowStartIndex` or `rowEndIndex` go unused.
 
-When row groups exist, the requested slice may target a group expansion—that is, the child nodes of
+When row groups exist, the requested slice may target a group expansion, that is, the child nodes of
 a group. For example, consider a grid grouped by two columns: _ts`"Group A"`_ and _ts`"Group B"`_.
 A data request in this scenario may look like the following:
 
@@ -254,8 +254,8 @@ The LyteNyte Grid server data source requires a `dataFetcher` function. This fun
 data loading. The server data source calls it whenever the view changes, passing the data requests
 for the new view.
 
-The function is responsible for fetching responses from the server—either with an HTTP request or a
-WebSocket message—and returning the data. A brief code example is shown below:
+The function is responsible for fetching responses from the server, either with an HTTP request or a
+WebSocket message, and returning the data. A brief code example is shown below:
 
 ```ts
 const ds = useServerDataSource<MyDataType>({

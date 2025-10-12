@@ -40,7 +40,7 @@ A complete example of basic server loading is shown below:
 
 Even when data loads from the server, cell renderers and grid configuration
 remain client-side. This example demonstrates the simplest form of server
-data loading—only the row data is retrieved from the server.
+data loading, only the row data is retrieved from the server.
 
 ## Setting Columns From the Server
 
@@ -117,8 +117,8 @@ export default function RowDataFromServer() {
 }
 ```
 
-The example below shows this in action.  
-**Do not wait for data to appear**—the response from this demo never resolves:
+The example below shows this in action.
+**Do not wait for data to appear**, the response from this demo never resolves:
 
 !demo:Initial Loading State="./demos/always-loading"
 
@@ -130,7 +130,7 @@ Network requests can fail. Failures may occur during:
 - A subsequent data request (for example, when scrolling through rows)
 
 This section covers the first case as an introduction to error handling.
-See the [Handling Load Failures Guide](/docs/server-data-loading-handling-load-failures)
+See the [handling load failures guide](/docs/server-data-loading-handling-load-failures)
 for in-depth coverage and best practices.
 
 !demo:Initial Load Error="./demos/error-loading-initial"

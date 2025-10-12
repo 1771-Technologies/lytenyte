@@ -283,7 +283,7 @@ export class ServerData {
     // handle pinned
     for (let i = 0; i < pinned.length; i++) {
       const r = pinned[i];
-      if (r.kind === "top" && -r.asOfTime > this.#top.asOf) {
+      if (r.kind === "top" && r.asOfTime > this.#top.asOf) {
         this.#top = {
           asOf: r.asOfTime,
           rows: r.data.map<RowLeaf<any>>((c) => ({ id: c.id, data: c.data, kind: "leaf" })),
@@ -434,22 +434,25 @@ export class ServerData {
   retry() {
     const inViewSet = new Set(this.requestsForView().map((c) => c.id));
 
-    const errors = [...this.#rowsWithError.values()]
+    const erroredRequests = [...this.#rowsWithError.values()]
       .map((c) => c.request)
-      .filter(Boolean)
-      .filter((x) => inViewSet.has(x!.id)) as DataRequest[];
+      .filter(Boolean) as DataRequest[];
 
+    const erroredGroups = [...this.#rowsWithGroupError.entries()];
+
+    const errors = erroredRequests.filter((x) => inViewSet.has(x!.id)) as DataRequest[];
     const [start, end] = this.#rowViewBounds;
-    const groupErrors = [...this.#rowsWithGroupError.entries()]
+    const groupErrors = erroredGroups
       .filter(([index]) => {
         return index >= start && index < end;
       })
       .map(([index, c]) => [index, c.request] as const);
 
     const seenRequests = this.#seenRequests;
-    errors.map((x) => seenRequests.delete(x.id));
-    groupErrors.map((x) => seenRequests.delete(x[1].id));
-
+    console.log(structuredClone(seenRequests));
+    erroredRequests.map((x) => seenRequests.delete(x.id));
+    erroredGroups.map((x) => seenRequests.delete(x[1].request.id));
+    console.log(structuredClone(seenRequests));
     this.#rowsWithError.clear();
     this.#rowsWithGroupError.clear();
 

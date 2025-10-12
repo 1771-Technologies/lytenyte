@@ -70,7 +70,7 @@ export default function ServerDataFailFirst() {
       )}
 
       <Grid.Root grid={grid}>
-        <Grid.Viewport>
+        <Grid.Viewport style={{ overflowY: "scroll" }}>
           <Grid.Header>
             {view.header.layout.map((row, i) => {
               return (

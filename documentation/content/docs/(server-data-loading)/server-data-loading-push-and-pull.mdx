@@ -14,7 +14,7 @@ tracking. The grid also manages row data conflict resolution and cancels pending
 if the grid resets before a response is received.
 
 In the example below, clicking the **"Request Data"** button triggers the
-grid to tick—a manual refresh similar to those in many UIs that let users poll for updates.
+grid to tick, a manual refresh similar to those in many UIs that let users poll for updates.
 
 !demo:Data Pulling="./demos/data-pulling"
 
@@ -39,8 +39,9 @@ see the [data interface guide](/docs/server-data-loading-interface) for more det
 
 You can push data into LyteNyte Grid using the `pushResponses` method on the
 server data source. This method accepts complete data responses and sends
-them to the server. It can also be used to generate data ticks on the client,
-as shown in the example below.
+them to the data source. It can also be used to generate data ticks on the client
+and push the result into the data source as though it was the server the sent the rows.
+This is shown in the example below.
 
 !demo:Data Pushing="./demos/data-pushing"
 
