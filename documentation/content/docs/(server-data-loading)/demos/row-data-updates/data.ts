@@ -41,11 +41,11 @@ const symbols = [
   "PG",
   "JNJ",
 ];
-const seedData = symbols.map<DataEntry>((c) => {
+const seedData = symbols.map<DataEntry>((c, i) => {
   const ask = generateRandomInt(20, 1000);
   const bid = generateRandomInt(ask - 2, ask + 2);
   return {
-    id: crypto.randomUUID(),
+    id: `${i}-${Math.random().toFixed(8)}`,
     symbol: c,
     ask: ask,
     bid: bid,
@@ -68,7 +68,7 @@ const data = Object.fromEntries(
       const nextAsk = generateNextDeviation(current.ask);
       const nextBid = generateRandomFloat(-1, 1) + nextAsk;
       data.push({
-        id: crypto.randomUUID(),
+        id: `${i}-${Math.random().toFixed(8)}`,
         ask: nextAsk,
         bid: nextBid,
         spread: nextAsk - nextBid,
@@ -112,7 +112,7 @@ const nextData = () => {
     }
 
     rows.unshift({
-      id: crypto.randomUUID(),
+      id: `${i}-${Math.random().toFixed(8)}`,
       ask: nextAsk,
       bid: nextBid,
       spread: nextAsk - nextBid,

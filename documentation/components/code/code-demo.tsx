@@ -15,6 +15,7 @@ import { CodeTabs } from "./code-tabs";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 import { Resettable } from "./resettable";
 import { ResetButton } from "./reset-button";
+import { CodePlacer } from "./code-placer";
 export interface CodeDemoProps {
   readonly title: string | null;
   readonly absolute: string;
@@ -24,7 +25,7 @@ export interface CodeDemoProps {
 }
 export async function CodeDemo(props: PropsWithChildren<CodeDemoProps>) {
   const files = getOrderedFiles(props.absolute).filter(
-    (c) => c.name !== "data.ts" && !c.name.endsWith(".json"),
+    (c) => c.name !== "data.ts" && !c.name.endsWith(".json") && !c.name.endsWith(".css"),
   );
 
   const tabs = files.map((c) => c.name);
@@ -66,7 +67,7 @@ export async function CodeDemo(props: PropsWithChildren<CodeDemoProps>) {
                     className="rounded-none bg-gray-50"
                   >
                     <TooltipProvider disableHoverableContent>
-                      <div className="absolute right-[42px] top-[-34px] flex items-center gap-2">
+                      <CodePlacer>
                         <CodeExpandButton />
 
                         <Tooltip>
@@ -105,14 +106,14 @@ export async function CodeDemo(props: PropsWithChildren<CodeDemoProps>) {
                           </TooltipTrigger>
                           <TooltipContent>Edit in CodeSandbox</TooltipContent>
                         </Tooltip>
-                      </div>
 
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <CopyButton className="top-[-32px]" text={copyContent[i]} />
-                        </TooltipTrigger>
-                        <TooltipContent>Copy Code Content</TooltipContent>
-                      </Tooltip>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <CopyButton className="static" text={copyContent[i]} />
+                          </TooltipTrigger>
+                          <TooltipContent>Copy Code Content</TooltipContent>
+                        </Tooltip>
+                      </CodePlacer>
                     </TooltipProvider>
 
                     <Code

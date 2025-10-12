@@ -33,7 +33,7 @@ const columns: Column<MovieData>[] = [
 ];
 
 export default function FailedSlices() {
-  const shouldFailRef = useRef(false);
+  const shouldFailRef = useRef<Record<string, boolean>>({});
   const ds = useServerDataSource<MovieData>({
     dataFetcher: (params) => {
       return Server(params.requests, shouldFailRef);
@@ -64,7 +64,7 @@ export default function FailedSlices() {
 
       <div className="lng-grid" style={{ height: 500 }}>
         <Grid.Root grid={grid}>
-          <Grid.Viewport>
+          <Grid.Viewport style={{ overflowY: "scroll" }}>
             <Grid.Header>
               {view.header.layout.map((row, i) => {
                 return (

@@ -24,6 +24,8 @@ export async function Server(reqs: DataRequest[], filterModel: Record<string, Fi
           for (const [columnId, filter] of filters) {
             const value = row[columnId as keyof MovieData];
 
+            if (!value) return false;
+
             const filterSet = new Set([...filter.value].map((x) => `${x}`.toLowerCase()));
 
             if (columnId === "genre") {

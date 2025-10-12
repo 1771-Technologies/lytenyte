@@ -4,18 +4,16 @@ import { data } from "./data";
 
 const sleep = () => new Promise((res) => setTimeout(res, 600));
 
-export async function Server(reqs: DataRequest[], fail: { current: boolean }) {
+export async function Server(reqs: DataRequest[], fail: { current: Record<string, boolean> }) {
   // Simulate latency and server work.
   await sleep();
 
-  if (fail.current) {
-    fail.current = false;
-    throw new Error("Dummy network failure");
-  }
-
-  fail.current = true;
-
   return reqs.map((c) => {
+    if (c.start > 0 && fail.current[c.id] != false) {
+      fail.current[c.id] = false;
+      throw new Error("Simulate failure");
+    }
+
     return {
       asOfTime: Date.now(),
       data: data.slice(c.start, c.end).map((x) => {

@@ -17744,4 +17744,4 @@ export const data = [
     "Years of Experience": 5,
     Salary: 105000,
   },
-].map((x) => ({ ...x, id: crypto.randomUUID() }));
+].map((x, i) => ({ ...x, id: `row-${i}` }));
