@@ -65,7 +65,7 @@ export default function DialogFrame() {
   return (
     <div>
       <button
-        className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
+        className="rounded border border-gray-600 bg-gray-900 px-2 text-white dark:text-black"
         onClick={() => {
           grid.api.dialogFrameOpen("myFrame", { count: openCount });
           setOpenCount((prev) => prev + 1);
