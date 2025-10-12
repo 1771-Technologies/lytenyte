@@ -124,7 +124,7 @@ export const HeaderCell: HeaderCellRendererFn<DataEntry> = ({ grid, column }) =>
     >
       <div>{column.name ?? column.id}</div>
       {aggFn && aggFn !== "group" && (
-        <span className="focus-visible:ring-ln-primary-50 rounded px-1 py-1 text-xs text-[var(--lng1771-primary-50)] hover:bg-[var(--lng1771-primary-30)] focus:outline-none focus-visible:ring-1">
+        <span className="focus-visible:ring-ln-primary-50 rounded px-1 py-1 text-xs text-[var(--lng1771-primary-50)] focus:outline-none focus-visible:ring-1">
           ({aggName as string})
         </span>
       )}

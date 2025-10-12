@@ -28,9 +28,24 @@ export async function Server(
             if (filter.kind !== "string" && filter.kind !== "date") return false;
 
             const value = row[columnId as keyof MovieData];
+            if (!value) return false;
 
-            if (filter.operator === "equals" && value !== filter.value) return false;
-            if (filter.operator === "not_equals" && value === filter.value) return false;
+            if (
+              (filter.operator === "equals" || filter.operator === "not_equals") &&
+              columnId === "genre"
+            ) {
+              const genres = value.split(",").map((x) => x.trim());
+
+              if (filter.operator === "not_equals" && genres.every((x) => x === filter.value))
+                return false;
+              if (filter.operator === "equals" && genres.every((x) => x !== filter.value))
+                return false;
+            }
+
+            if (columnId !== "genre" && filter.operator === "equals" && value !== filter.value)
+              return false;
+            if (columnId !== "genre" && filter.operator === "not_equals" && value === filter.value)
+              return false;
             if (filter.operator === "less_than" && value >= filter.value!) return false;
             if (filter.operator === "greater_than" && value <= filter.value!) return false;
             if (
