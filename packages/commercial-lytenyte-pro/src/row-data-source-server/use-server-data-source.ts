@@ -227,8 +227,6 @@ export function makeServerDataSource<T>({
     const isGroupLoading = flat.loadingGroup.has(i);
     const errorGroup = flat.erroredGroup.get(i);
     const error = flat.errored.get(i);
-
-    // If we haven't loaded a row yet.
     if (!row)
       return {
         id: `__loading__placeholder__${i}`,
@@ -383,7 +381,7 @@ export function makeServerDataSource<T>({
       source.updateRow(id, data);
     });
 
-    grid?.state.rowDataStore.rowClearCache();
+    source.flatten();
   };
 
   const inFilterItems: RowDataSource<T>["inFilterItems"] = (c) => {

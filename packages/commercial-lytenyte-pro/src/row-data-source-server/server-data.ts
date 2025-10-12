@@ -511,6 +511,10 @@ export class ServerData {
     }
   }
 
+  flatten = () => {
+    this.#flatten();
+  };
+
   #flatten = (beforeOnFlat?: () => void) => {
     // The mode we are in determines the expansions we will use for the server data.
     const mode = this.#pivotMode;
