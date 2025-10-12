@@ -71,7 +71,7 @@ export const RowsCenter = memo(
           position: "relative",
         }}
       >
-        <NativeScroller gridId={gridId}>{children}</NativeScroller>
+        <NativeScroller>{children}</NativeScroller>
       </RowsSection>
     );
   }),
