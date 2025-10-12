@@ -386,7 +386,7 @@
       height: calc(100% - 8px);
       background-color: var(--lng1771-gray-20);
     }
-    &[data-ln-pin="end"]::after {
+    &[data-ln-colpin="end"]::after {
       inset-inline-end: unset;
       inset-inline-start: 0px;
     }

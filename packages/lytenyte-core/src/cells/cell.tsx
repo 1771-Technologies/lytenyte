@@ -100,7 +100,8 @@ const CellImpl = memo(
           data-ln-colindex={cell.colIndex}
           data-ln-colspan={cell.colSpan}
           data-ln-rowspan={cell.rowSpan}
-          data-ln-pin={cell.colPin ?? "center"}
+          data-ln-colpin={cell.colPin ?? "center"}
+          data-ln-rowpin={cell.rowPin ?? "center"}
           data-ln-gridid={gridId}
           data-ln-cell
           data-ln-last-top-pin={cell.rowLastPinTop}
