@@ -361,6 +361,7 @@ h2 {
 }
 
 .prose ul,
+.prose li,
 .prose p {
   font-size: 14px;
 }

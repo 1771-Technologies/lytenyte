@@ -37,7 +37,7 @@ export default function ColumnHeaderNameUpdate() {
     <div style={{ display: "flex", flexDirection: "column" }}>
       <div className="flex gap-2">
         <input
-          className="rounded-xs h-full border bg-gray-900 p-1 px-2 text-sm text-white"
+          className="rounded-xs h-full border bg-gray-900 p-1 px-2 text-sm text-white dark:text-black"
           aria-label="update-age"
           style={{ width: 150, boxSizing: "border-box" }}
           value={cols[0].name ?? ""}
@@ -47,7 +47,7 @@ export default function ColumnHeaderNameUpdate() {
         />
         <input
           aria-label="update-job"
-          className="rounded-xs h-full border bg-gray-900 p-1 px-2 text-sm text-white"
+          className="rounded-xs h-full border bg-gray-900 p-1 px-2 text-sm text-white dark:text-black"
           style={{ width: 150, boxSizing: "border-box" }}
           value={cols[1].name ?? ""}
           onChange={(e) => {
@@ -56,7 +56,7 @@ export default function ColumnHeaderNameUpdate() {
         />
         <input
           aria-label="update-balance"
-          className="rounded-xs h-full border bg-gray-900 p-1 px-2 text-sm text-white"
+          className="rounded-xs h-full border bg-gray-900 p-1 px-2 text-sm text-white dark:text-black"
           style={{ width: 150, boxSizing: "border-box" }}
           value={cols[2].name ?? ""}
           onChange={(e) => {
@@ -65,7 +65,7 @@ export default function ColumnHeaderNameUpdate() {
         />
         <input
           aria-label="update-education"
-          className="rounded-xs h-full border bg-gray-900 p-1 px-2 text-sm text-white"
+          className="rounded-xs h-full border bg-gray-900 p-1 px-2 text-sm text-white dark:text-black"
           style={{ width: 150, boxSizing: "border-box" }}
           value={cols[3].name ?? ""}
           onChange={(e) => {
@@ -74,7 +74,7 @@ export default function ColumnHeaderNameUpdate() {
         />
         <input
           aria-label="update-marital"
-          className="rounded-xs h-full border bg-gray-900 p-1 px-2 text-sm text-white"
+          className="rounded-xs h-full border bg-gray-900 p-1 px-2 text-sm text-white dark:text-black"
           style={{ width: 150, boxSizing: "border-box" }}
           value={cols[4].name ?? ""}
           onChange={(e) => {

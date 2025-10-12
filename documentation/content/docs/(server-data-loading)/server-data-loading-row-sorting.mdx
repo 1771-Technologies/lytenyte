@@ -7,7 +7,7 @@ description:
 
 ## Retrieving Sorted Row Data
 
-The LyteNyte Grid [state object](/docs/grid-reativity) maintains a [sort model](/docs/reference/sort#sortmodelitem),
+The LyteNyte Grid [state object](/docs/grid-reactivity) maintains a [sort model](/docs/reference/sort#sortmodelitem),
 which declaratively describes how rows should be sorted. The row data source is responsible for applying
 this sorting. When using a server data source, sorting must occur on the server because only the server
 has access to the complete dataset.
@@ -42,7 +42,7 @@ for (const m of sortModel) {
     // Sort logic - see code example
   }
 
-  if (val !== 0) return val;
+  if (val !== 0) return m.isDescending ? -val : val;
 }
 ```
 
@@ -50,7 +50,7 @@ for (const m of sortModel) {
 
 LyteNyte Grid's sort model supports options such as placing `null` values first. These options can be included
 in the model sent to the server, but the server must interpret and implement them. The following example handles
-the `nullsFirst` option; other or custom options can follow a similar pattern:
+the `nullsFirst` option; other options can follow a similar pattern:
 
 !demo:Nulls First="./demos/basic-sorting-nulls-first"
 
@@ -73,7 +73,7 @@ The `null` value doesn't have to represent JavaScript's `null`. The server in th
 ## Using a Different Sort Model
 
 LyteNyte Grid defines its own sort model, but you may already use a different one in your application or backend.
-The grid doesn't require you to use its model — you can supply a custom sort model to the data fetcher. The example
+The grid doesn't require you to use its model. Developers can supply a custom sort model to the data fetcher. The example
 below demonstrates how:
 
 !demo:Custom Sort Model="./demos/custom-sorting"

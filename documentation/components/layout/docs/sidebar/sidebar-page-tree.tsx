@@ -51,7 +51,7 @@ export function SidebarPageTree(props: { components?: Partial<SidebarComponents>
 
         if (Item) return <Item key={item.url} item={item} />;
 
-        const isPro = ProMap[item.name as string];
+        const isPro = proSet.has(item.url);
         return (
           <SidebarItem
             key={item.url}
@@ -75,19 +75,35 @@ export function SidebarPageTree(props: { components?: Partial<SidebarComponents>
   }, [props.components, root]);
 }
 
-const ProMap: Record<string, boolean> = {
-  "Server Row Data Source": true,
-  "Tree Row Data Source": true,
-  "Cell Selection": true,
-  "Column Pivoting": true,
-  "Column In Filter": true,
-  "Column Quick Filter": true,
-  "Column Manager": true,
-  "Filter Tree": true,
-  "Context Menu": true,
-  "Dialog Frame": true,
-  "Popover Frame": true,
-  "Sort Manager": true,
-  "Grid Box": true,
-  Clipboard: true,
-};
+const proSet = new Set([
+  "/docs/server-data-loading-cell-editing",
+  "/docs/server-data-loading-handling-load-failures",
+  "/docs/server-data-loading-interface",
+  "/docs/server-data-loading-optimistic-loading",
+  "/docs/server-data-loading-overview",
+  "/docs/server-data-loading-push-and-pull",
+  "/docs/server-data-loading-row-data",
+  "/docs/server-data-loading-row-filtering",
+  "/docs/server-data-loading-row-grouping-and-aggregation",
+  "/docs/server-data-loading-row-pinning",
+  "/docs/server-data-loading-row-sorting",
+  "/docs/server-data-loading-row-updating",
+  "/docs/server-data-loading-unbalanced-rows",
+
+  "/docs/row-server-data-source",
+  "/docs/row-tree-data-source",
+  "/docs/cell-selection",
+  "/docs/column-pivoting",
+  "/docs/filter-in-column-filter",
+  "/docs/filter-quick-filter",
+
+  "/docs/component-column-manager",
+  "/docs/component-context-menu",
+  "/docs/component-dialog-frame",
+  "/docs/component-filter-tree",
+  "/docs/component-grid-box",
+  "/docs/component-popover-frame",
+  "/docs/component-sort-manager",
+
+  "/docs/export-clipboard",
+]);

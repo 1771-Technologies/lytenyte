@@ -38,7 +38,7 @@ export default function ColumnAutosizingCell() {
     <div style={{ display: "flex", flexDirection: "column" }}>
       <div className="flex gap-2 py-2">
         <button
-          className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
+          className="rounded border border-gray-600 bg-gray-900 px-2 text-white dark:text-black"
           onClick={() => {
             grid.api.columnAutosize({});
           }}
@@ -46,7 +46,7 @@ export default function ColumnAutosizingCell() {
           Autosize Columns
         </button>
         <button
-          className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
+          className="rounded border border-gray-600 bg-gray-900 px-2 text-white dark:text-black"
           onClick={() => grid.state.columns.set(columns)}
         >
           Reset Columns

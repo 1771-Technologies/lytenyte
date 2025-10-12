@@ -53,7 +53,7 @@ export default function GridReactivitySignal() {
     <div className="lng-grid" style={{ display: "flex", flexDirection: "column" }}>
       <div className="p-2">
         <button
-          className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
+          className="rounded border border-gray-600 bg-gray-900 px-2 text-white dark:text-black"
           onClick={() => grid.state.rowSelectedIds.set(new Set())}
         >
           Clear Row Selection

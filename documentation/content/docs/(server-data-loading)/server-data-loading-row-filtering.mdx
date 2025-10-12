@@ -8,7 +8,7 @@ description:
 ## Available Filter Models
 
 There are three parts of the LyteNyte Filter Model. Additionally a custom filter model may be defined. These
-provides four different ways filters may be applied when using the LyteNyte Grid server data source:
+provide four different ways filters may be applied when using the LyteNyte Grid server data source:
 
 - [Filter Model](/docs/reference/filters#filtermodelitem): standard column filters that
   apply predicates to cell values, such as greater than or less than comparisons.
@@ -52,7 +52,7 @@ For example, a string filter might look like this:
 
 Here, `trimWhitespace` is `true`. The server reads this flag and trims whitespace from the
 filter value before evaluating it. LyteNyte Grid leaves filter interpretation entirely up to
-your backend — the server may ignore options or apply them as needed.
+your backend. The server may ignore options or apply them as needed.
 The grid expects only that the response includes valid rows for the given query.
 
 ## The Filter In Model
@@ -147,7 +147,7 @@ The demo below uses the search term _ts`"movie"`_, which keeps only rows contain
 <Callout type="warn">
 
 The example's _tsx`<input />`_ is not debounced for simplicity. In production, debounce
-the search input to avoid redundant server requests. For a guide,
+the search input to avoid redundant server requests. For a guide on debouncing
 see [this article](https://dev.to/manishkc104/debounce-input-in-react-3726).
 
 </Callout>
@@ -172,6 +172,5 @@ function can access the external filter state.
 - [Row Grouping and Aggregations](/docs/server-data-loading-row-grouping-and-aggregation): learn how
   to fetch grouped data and handle row expansion and collapse.
 - [Row Sorting](/docs/server-data-loading-row-sorting): implement and display server-side sorting.
-- [Row Adding](/docs/server-data-loading-row-adding): learn how to add new rows from the client.
 - [Optimistic Loading](/docs/server-data-loading-optimistic-loading): use optimistic loading
   to pre-fetch data and improve responsiveness.

@@ -37,19 +37,19 @@ export default function ColumnHeaderGroupHeight() {
         <div>Change Header Group Height: </div>
 
         <button
-          className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
+          className="rounded border border-gray-600 bg-gray-900 px-2 text-white dark:text-black"
           onClick={() => grid.state.headerGroupHeight.set(20)}
         >
           Small
         </button>
         <button
-          className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
+          className="rounded border border-gray-600 bg-gray-900 px-2 text-white dark:text-black"
           onClick={() => grid.state.headerGroupHeight.set(50)}
         >
           Medium
         </button>
         <button
-          className="rounded border border-gray-600 bg-gray-900 px-2 text-white"
+          className="rounded border border-gray-600 bg-gray-900 px-2 text-white dark:text-black"
           onClick={() => grid.state.headerGroupHeight.set(80)}
         >
           Large

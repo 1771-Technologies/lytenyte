@@ -56,7 +56,7 @@ export async function Server(reqs: DataRequest[], sortModel: SortModelItem<Movie
           val = left - right;
         }
 
-        if (val !== 0) return val;
+        if (val !== 0) return m.isDescending ? -val : val;
       }
 
       return 0;

@@ -88,7 +88,7 @@ export default function BasicServerData() {
   return (
     <div className="lng-grid" style={{ height: 500 }}>
       <Grid.Root grid={grid}>
-        <Grid.Viewport>
+        <Grid.Viewport style={{ overflowY: "scroll" }}>
           <Grid.Header>
             {view.header.layout.map((row, i) => {
               return (

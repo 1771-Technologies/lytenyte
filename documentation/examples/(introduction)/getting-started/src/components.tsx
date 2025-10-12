@@ -9,7 +9,7 @@ import type { RequestData } from "./data";
 import { format } from "date-fns";
 import { useMemo } from "react";
 import clsx from "clsx";
-import { ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
+import { PieChart } from "react-minimal-pie-chart";
 import { ArrowDownIcon, ArrowUpIcon } from "@1771technologies/lytenyte-pro/icons";
 
 const colors = ["var(--transfer)", "var(--dns)", "var(--connection)", "var(--ttfb)", "var(--tls)"];
@@ -302,7 +302,7 @@ export function RowDetailRenderer({ row, grid }: RowDetailRendererParams<Request
               msValue={row.data["timing-phase.tls"]}
             />
 
-            <div className="col-start-3 row-span-full h-full flex-1">
+            <div className="col-start-3 row-span-full flex h-full flex-1 items-center justify-center">
               <TimingPhasePieChart row={row.data} />
             </div>
           </div>
@@ -346,34 +346,17 @@ function TimingPhaseRow({ color, msValue, msPercentage, label }: TimePhaseRowPro
 function TimingPhasePieChart({ row }: { row: RequestData }) {
   const data = useMemo(() => {
     return [
-      { subject: "Transfer", value: row["timing-phase.transfer"] },
-      { subject: "DNS", value: row["timing-phase.dns"] },
-      { subject: "Connection", value: row["timing-phase.connection"] },
-      { subject: "TTFB", value: row["timing-phase.ttfb"] },
-      { subject: "TLS", value: row["timing-phase.tls"] },
+      { subject: "Transfer", value: row["timing-phase.transfer"], color: colors[0] },
+      { subject: "DNS", value: row["timing-phase.dns"], color: colors[1] },
+      { subject: "Connection", value: row["timing-phase.connection"], color: colors[2] },
+      { subject: "TTFB", value: row["timing-phase.ttfb"], color: colors[3] },
+      { subject: "TLS", value: row["timing-phase.tls"], color: colors[4] },
     ];
   }, [row]);
 
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <PieChart>
-        <Pie
-          animationDuration={0}
-          dataKey="value"
-          outerRadius="100%"
-          startAngle={180}
-          endAngle={0}
-          data={data}
-          strokeWidth={2}
-          fill="#8884d8"
-          cy="80%"
-          cx="50%"
-        >
-          {data.map((d, index) => {
-            return <Cell key={`cell-${d.subject}`} fill={colors[index]} />;
-          })}
-        </Pie>
-      </PieChart>
-    </ResponsiveContainer>
+    <div style={{ height: 100 }}>
+      <PieChart data={data} startAngle={180} lengthAngle={180} center={[50, 75]} paddingAngle={1} />
+    </div>
   );
 }
