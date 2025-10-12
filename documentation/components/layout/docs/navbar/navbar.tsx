@@ -13,7 +13,7 @@ export function Navbar({ mode, ...props }: ComponentProps<"header"> & { mode: "t
       id="nd-subnav"
       {...props}
       className={cn(
-        "top-(--fd-banner-height) right-(--removed-body-scroll-bar-size,0) px-(--fd-layout-offset) h-(--fd-nav-height) fixed left-0 z-10 flex flex-col backdrop-blur-sm transition-colors",
+        "top-(--fd-banner-height) right-(--removed-body-scroll-bar-size,0) px-(--fd-layout-offset) h-(--fd-nav-height) fixed left-0 z-20 flex flex-col backdrop-blur-sm transition-colors",
         (!isTransparent || open) && "bg-fd-background/80",
         mode === "auto" &&
           !collapsed &&

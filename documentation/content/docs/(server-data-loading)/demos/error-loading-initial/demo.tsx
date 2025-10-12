@@ -56,7 +56,7 @@ export default function ServerDataFailFirst() {
   return (
     <div className="lng-grid relative" style={{ height: 500 }}>
       {!!error && (
-        <div className="absolute left-0 top-0 z-10 flex h-full w-full flex-col items-center justify-center gap-2 bg-red-500/20">
+        <div className="absolute left-0 top-0 z-[10] flex h-full w-full flex-col items-center justify-center gap-2 bg-red-500/20">
           <span>{`${error}`}</span>
           <button
             onClick={() => {
