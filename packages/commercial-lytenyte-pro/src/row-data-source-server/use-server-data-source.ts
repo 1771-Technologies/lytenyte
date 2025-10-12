@@ -46,6 +46,7 @@ export function makeServerDataSource<T>({
         isLoading.set(true);
         loadError.set(null);
       },
+      onInvalidate: () => g.state.rowDataStore.rowClearCache(),
       onResetLoadEnd: () => isLoading.set(false),
       onResetLoadError: (e) => loadError.set(e),
       onFlatten: (f) => {
@@ -406,10 +407,9 @@ export function makeServerDataSource<T>({
   };
 
   const retry: RowDataSourceServer<T>["retry"] = () => {
-    if (!grid) return;
-    const store = grid.state.rowDataStore;
+    source.retry();
 
-    store.rowClearCache();
+    grid?.state.rowDataStore.rowClearCache();
   };
 
   const refresh: RowDataSourceServer<T>["refresh"] = (onSuccess, onError) => {

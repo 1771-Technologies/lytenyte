@@ -59,6 +59,7 @@ export interface ServerDataConstructorParams {
   readonly onResetLoadEnd: () => void;
 
   readonly onFlatten: (r: FlatView) => void;
+  readonly onInvalidate: () => void;
 
   readonly defaultExpansion: boolean | number;
 }
@@ -81,6 +82,7 @@ export class ServerData {
   #onResetLoadError: (error: unknown) => void;
   #onResetLoadEnd: () => void;
   #onFlatten: (r: FlatView) => void;
+  #onInvalidate: () => void;
 
   #rowViewBounds: [start: number, end: number] = [0, 0];
   #seenRequests: Set<string> = new Set();
@@ -102,6 +104,7 @@ export class ServerData {
     onResetLoadEnd,
     onResetLoadError,
     onFlatten,
+    onInvalidate,
     defaultExpansion,
   }: ServerDataConstructorParams) {
     this.#tree = makeAsyncTree();
@@ -117,6 +120,7 @@ export class ServerData {
     this.#onResetLoadError = onResetLoadError;
 
     this.#onFlatten = onFlatten;
+    this.#onInvalidate = onInvalidate;
   }
 
   // Properties
@@ -257,6 +261,7 @@ export class ServerData {
       if (controller.signal.aborted) return;
 
       opts?.onError?.(e);
+      this.#onInvalidate();
 
       if (!skip)
         requests.forEach((req) => {
@@ -426,74 +431,65 @@ export class ServerData {
     await this.handleRequests(newRequests);
   }
 
-  retry(rowIds?: string[]) {
-    void rowIds;
-    // let requests: DataRequest[] = [];
-    // const groupReqs = new Map<string, { index: number; req: DataRequest }>();
-    // const seen = new Set();
-    // if (!rowIds) {
-    //   const keys = this.#rowsWithError.keys();
-    //   for (const rowIndex of keys) {
-    //     if (this.#rowsWithGroupError.has(rowIndex)) {
-    //       const req = this.#rowsWithGroupError.get(rowIndex)!;
-    //       if (!seen.has(req.id)) {
-    //         seen.add(req.id);
-    //         groupReqs.set(req.id, { index: rowIndex, req });
-    //         requests.push(req);
-    //       }
-    //     }
-    //     const v = this.#rowsWithError.get(rowIndex)!;
-    //     if (v.request && !seen.has(v.request.id)) {
-    //       seen.add(v.request.id);
-    //       requests.push(v.request);
-    //     }
-    //   }
-    //   const [start, end] = this.#rowViewBounds;
-    //   requests = requests.filter((req) => {
-    //     return req.rowStartIndex >= start && req.rowStartIndex < end;
-    //   });
-    //   this.#rowsWithError.clear();
-    //   this.#rowsWithGroupError.clear();
-    // } else {
-    //   for (const id of rowIds) {
-    //     const rowIndex = this.#flat.rowIdToRowIndex.get(id);
-    //     if (rowIndex == null || !this.#rowsWithError.has(rowIndex)) continue;
-    //     const v = this.#rowsWithError.get(rowIndex)!;
-    //     const groupReq = this.#rowsWithGroupError.get(rowIndex);
-    //     this.#rowsWithError.delete(rowIndex);
-    //     this.#rowsWithGroupError.delete(rowIndex);
-    //     if (groupReq && !seen.has(groupReq.id)) {
-    //       seen.add(groupReq.id);
-    //       groupReqs.set(groupReq.id, { index: rowIndex, req: groupReq });
-    //       requests.push(groupReq);
-    //     }
-    //     if (v.request && !seen.has(v.request.id)) {
-    //       seen.add(v.request.id);
-    //       requests.push(v.request);
-    //     }
-    //   }
-    // }
-    // const withLoading = this.#loadingRows;
-    // const withError = this.#rowsWithError;
-    // const withGroupError = this.#rowsWithGroupError;
-    // groupReqs.forEach((v) => {
-    //   withLoading.add(v.index);
-    // });
-    // // See these to loading
-    // this.handleRequests(requests, {
-    //   onError: (e) => {
-    //     groupReqs.forEach((c) => {
-    //       withLoading.delete(c.index);
-    //       withError.set(c.index, { error: e });
-    //       withGroupError.set(c.index, c.req);
-    //     });
-    //   },
-    //   onSuccess: () => {
-    //     groupReqs.forEach((c) => {
-    //       withLoading.delete(c.index);
-    //     });
-    //   },
-    // });
+  retry() {
+    const inViewSet = new Set(this.requestsForView().map((c) => c.id));
+
+    const errors = [...this.#rowsWithError.values()]
+      .map((c) => c.request)
+      .filter(Boolean)
+      .filter((x) => inViewSet.has(x!.id)) as DataRequest[];
+
+    const [start, end] = this.#rowViewBounds;
+    const groupErrors = [...this.#rowsWithGroupError.entries()]
+      .filter(([index]) => {
+        return index >= start && index < end;
+      })
+      .map(([index, c]) => [index, c.request] as const);
+
+    const seenRequests = this.#seenRequests;
+    errors.map((x) => seenRequests.delete(x.id));
+    groupErrors.map((x) => seenRequests.delete(x[1].id));
+
+    this.#rowsWithError.clear();
+    this.#rowsWithGroupError.clear();
+
+    const requests: DataRequest[] = [];
+    const seen = new Set();
+
+    groupErrors.forEach((x) => {
+      if (seen.has(x[1].id)) return;
+      requests.push(x[1]);
+      seen.add(x[1].id);
+    });
+    errors.forEach((x) => {
+      if (seen.has(x.id)) return;
+      seen.add(x.id);
+      requests.push(x);
+    });
+
+    for (const x of groupErrors) {
+      this.#loadingGroup.add(x[0]);
+    }
+
+    requests.forEach((x) => seenRequests.add(x.id));
+
+    const invalidate = this.#onInvalidate;
+    const withGroupError = this.#rowsWithGroupError;
+    const loadingGroup = this.#loadingGroup;
+    this.handleRequests(requests, {
+      onError: (e) => {
+        invalidate();
+        groupErrors.forEach((c) => {
+          withGroupError.set(c[0], { error: e, request: c[1] });
+          loadingGroup.delete(c[0]);
+        });
+      },
+      onSuccess: () => {
+        groupErrors.forEach((c) => {
+          loadingGroup.delete(c[0]);
+        });
+      },
+    });
   }
 
   updateRow(id: string, data: any) {
@@ -634,10 +630,13 @@ export class ServerData {
         seen.add(c[1].id);
       });
 
+      const invalidate = this.#onInvalidate;
+
       const reqs = postFlatRequests.map((c) => c[1]);
       handleRequests(reqs, {
         skipState: true,
         onError: (e) => {
+          invalidate();
           postFlatRequests.forEach((c) => {
             const rowIndex = c[0];
             const req = c[1];
