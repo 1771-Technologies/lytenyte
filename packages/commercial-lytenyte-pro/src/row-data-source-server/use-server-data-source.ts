@@ -1,6 +1,7 @@
 import { effect, makeAtom, signal } from "@1771technologies/lytenyte-core/yinternal";
 import type {
   ColumnPivotModel,
+  DataRequest,
   DataRequestModel,
   Grid,
   RowDataSource,
@@ -16,6 +17,7 @@ export function makeServerDataSource<T>({
   dataInFilterItemFetcher,
 
   dataColumnPivotFetcher,
+
   cellUpdateHandler,
   cellUpdateOptimistically,
 
@@ -28,6 +30,7 @@ export function makeServerDataSource<T>({
 
   const isLoading = makeAtom(signal(false));
   const loadError = makeAtom(signal<unknown>(null));
+  const requestsForView = makeAtom(signal<DataRequest[]>([]));
 
   const cleanup: (() => void)[] = [];
   const init: RowDataSource<T>["init"] = (g) => {
@@ -43,6 +46,7 @@ export function makeServerDataSource<T>({
         isLoading.set(true);
         loadError.set(null);
       },
+      onInvalidate: () => g.state.rowDataStore.rowClearCache(),
       onResetLoadEnd: () => isLoading.set(false),
       onResetLoadError: (e) => loadError.set(e),
       onFlatten: (f) => {
@@ -167,6 +171,12 @@ export function makeServerDataSource<T>({
       g.state.viewBounds.watch(() => {
         const bounds = g.state.viewBounds.get();
         source.rowViewBounds = [bounds.rowCenterStart, bounds.rowCenterEnd];
+
+        const requests = source.requestsForView();
+        const current = requestsForView.get();
+        if (equal(requests, current)) return;
+
+        requestsForView.set(requests);
       }),
     );
 
@@ -214,9 +224,9 @@ export function makeServerDataSource<T>({
   const rowByIndex: RowDataSource<T>["rowByIndex"] = (i) => {
     const row = flat.rowIndexToRow.get(i);
     const isLoading = flat.loading.has(i);
+    const isGroupLoading = flat.loadingGroup.has(i);
+    const errorGroup = flat.erroredGroup.get(i);
     const error = flat.errored.get(i);
-
-    // If we haven't loaded a row yet.
     if (!row)
       return {
         id: `__loading__placeholder__${i}`,
@@ -226,14 +236,23 @@ export function makeServerDataSource<T>({
         error: error,
       };
 
-    if (error) {
-      return { ...row, error };
-    }
-    if (isLoading) {
-      return { ...row, loading: isLoading };
+    if (row.kind === "leaf") {
+      if (error || isLoading) {
+        return { ...row, loading: isLoading, error: error?.error };
+      }
+    } else if (row.kind === "branch") {
+      if (error || isLoading || isGroupLoading || errorGroup) {
+        return {
+          ...row,
+          loading: isLoading,
+          error: error?.error,
+          errorGroup: errorGroup?.error,
+          loadingGroup: isGroupLoading,
+        };
+      }
     }
 
-    return flat.rowIndexToRow.get(i) ?? null;
+    return row ?? null;
   };
 
   const rowExpand: RowDataSource<T>["rowExpand"] = (expansions) => {
@@ -362,7 +381,7 @@ export function makeServerDataSource<T>({
       source.updateRow(id, data);
     });
 
-    grid?.state.rowDataStore.rowClearCache();
+    source.flatten();
   };
 
   const inFilterItems: RowDataSource<T>["inFilterItems"] = (c) => {
@@ -385,7 +404,27 @@ export function makeServerDataSource<T>({
     source.handleRequests(requests);
   };
 
-  const retry: RowDataSourceServer<T>["retry"] = () => {};
+  const retry: RowDataSourceServer<T>["retry"] = () => {
+    source.retry();
+
+    grid?.state.rowDataStore.rowClearCache();
+  };
+
+  const refresh: RowDataSourceServer<T>["refresh"] = (onSuccess, onError) => {
+    const requests = source.requestsForView();
+    pushRequests(requests, onSuccess, onError);
+  };
+
+  const requestForGroup: RowDataSourceServer<T>["requestForGroup"] = (row) => {
+    const index = typeof row === "number" ? row : flat.rowIdToRowIndex.get(row.id);
+    if (index == null) return null;
+
+    return source.requestForGroup(index);
+  };
+
+  const requestForNextSlice: RowDataSourceServer<T>["requestForNextSlice"] = (req) => {
+    return source.requestForNextSlice(req);
+  };
 
   return {
     init,
@@ -413,6 +452,14 @@ export function makeServerDataSource<T>({
     pushRequests,
     reset,
     retry,
+    refresh,
+    requestsForView: requestsForView,
+    requestForGroup,
+    requestForNextSlice,
+
+    get seenRequests() {
+      return flat.seenRequests;
+    },
   };
 }
 

@@ -9,6 +9,7 @@ test("maybeApplyResize: should only apply resize when necessary", () => {
     byPath: new Map(),
     size: 10,
     kind: "root",
+    asOf: Date.now(),
   };
 
   applySetActionToTree(
@@ -25,11 +26,11 @@ test("maybeApplyResize: should only apply resize when necessary", () => {
     root,
   );
 
-  expect(maybeApplyResize(root, 10)).toEqual(false);
-  expect(maybeApplyResize(root, undefined)).toEqual(false);
-  expect(maybeApplyResize(root, 8)).toEqual(true);
+  expect(maybeApplyResize(root, 10, Date.now())).toEqual(false);
+  expect(maybeApplyResize(root, undefined, Date.now())).toEqual(false);
+  expect(maybeApplyResize(root, 8, Date.now())).toEqual(true);
   expect(root.byIndex.size).toEqual(4);
-  expect(maybeApplyResize(root, 2)).toEqual(true);
+  expect(maybeApplyResize(root, 2, Date.now())).toEqual(true);
   expect(root.byIndex.size).toEqual(2);
 });
 
@@ -39,6 +40,7 @@ test("maybeApplyResize: should only apply resize when necessary on parent", () =
     byPath: new Map(),
     size: 10,
     kind: "root",
+    asOf: Date.now(),
   };
 
   applySetActionToTree(
@@ -65,10 +67,10 @@ test("maybeApplyResize: should only apply resize when necessary on parent", () =
 
   const node = root.byPath.get("A")! as TreeParent<any, any>;
 
-  expect(maybeApplyResize(node, 10)).toEqual(false);
-  expect(maybeApplyResize(node, undefined)).toEqual(false);
-  expect(maybeApplyResize(node, 8)).toEqual(true);
+  expect(maybeApplyResize(node, 10, Date.now())).toEqual(false);
+  expect(maybeApplyResize(node, undefined, Date.now())).toEqual(false);
+  expect(maybeApplyResize(node, 8, Date.now())).toEqual(true);
   expect(node.byIndex.size).toEqual(4);
-  expect(maybeApplyResize(node, 2)).toEqual(true);
+  expect(maybeApplyResize(node, 2, Date.now())).toEqual(true);
   expect(node.byIndex.size).toEqual(2);
 });

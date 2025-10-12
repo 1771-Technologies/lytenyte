@@ -461,11 +461,88 @@ export const RowDataSourceServerPro: InterfaceType = {
     },
     {
       kind: "property",
+      name: "seenRequests",
       doc: { en: `` },
-      tsDoc: `Retries the failed data load requests.`,
+      tsDoc: `
+        A set that tracks which requests the server data source has already made. It prevents duplicate 
+        requests to the server. This mutable set can be used to customize how the 
+        grid tracks requests or to inform the data source about optimistically loaded requests.
+
+        Modifying \`seenRequests\` is intended for advanced use cases. Ensure you fully understand how
+        data loading works in LyteNyte Grid's server data source before making 
+        changes. If you're unsure, reach out to the LyteNyte Grid team on GitHub.
+      `,
+      optional: false,
+      value: "Set<string>",
+    },
+    {
+      kind: "property",
+      doc: { en: `` },
+      tsDoc: `
+          \`retry\` re-requests any failed data loads in the grid. 
+          Calling \`retry\` clears the error state for all failed requests, and 
+          the grid resends data requests for those currently in view. Failed 
+          requests outside the view are not retried until they come back into view.
+      `,
       name: "retry",
       optional: false,
       value: "() => void",
+    },
+    {
+      kind: "property",
+      doc: { en: `` },
+      tsDoc: `
+         A grid atom that returns the data requests that would be 
+         sent to the server based on the current state of the view.
+
+         This can be used to implement polling for cell updates, allowing the client
+         to periodically fetch new or changed data without reloading the entire view.
+
+         To execute the generated requests, use the \`pushRequests\` method.
+      `,
+      name: "requestsForView",
+      optional: false,
+      value: "GridAtomReadonly<DataRequest[]>",
+    },
+    {
+      kind: "property",
+      doc: { en: `` },
+      tsDoc: `
+        Returns the data request that would be sent to the server to load the row group 
+        of the given row. This may be used to get a request that can be used to optimistically 
+        load the group.
+
+        This method will return null if the group is invalid or if the row is not found.
+      `,
+      name: "requestForGroup",
+      optional: false,
+      value: "(row: RowGroup | number) => DataRequest | null",
+    },
+    {
+      kind: "property",
+      doc: { en: `` },
+      tsDoc: `
+        Returns the data request for the next slice of data based on the provided request.
+        This is useful for preloading the next view of data. Returns \`null\` if no 
+        next slice exists or if the provided request is invalid for the current view configuration.
+      `,
+      name: "requestForNextSlice",
+      optional: false,
+      value: "(currentRequest: DataRequest) => DataRequest | null",
+    },
+    {
+      kind: "property",
+      doc: { en: `` },
+      tsDoc: `
+        Refreshes the current view by re-sending the data requests that make up the view to the server.
+        This ensures that any underlying data changes are reflected in the rendered view.
+
+        This is a convenience method that combines the functionality of \`requestsForView\` and \`pushRequests\`, 
+        allowing you to easily re-fetch and re-render data for the current view in a single call.
+      `,
+      name: "refresh",
+      optional: false,
+      value: "(onSuccess?: () => void, onError?: (e: unknown) => void) => void",
     },
     {
       kind: "property",

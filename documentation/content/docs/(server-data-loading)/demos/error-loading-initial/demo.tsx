@@ -33,6 +33,7 @@ const columns: Column<MovieData>[] = [
 ];
 
 export default function ServerDataFailFirst() {
+  // Track a fail ref to simulate network failure but still allow the demo to be reset.
   const shouldFailRef = useRef(true);
   const ds = useServerDataSource<MovieData>({
     dataFetcher: (params) => {

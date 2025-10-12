@@ -2601,9 +2601,59 @@ export interface RowDataSourceServer<T> {
   readonly loadError: GridAtomReadonly<unknown>;
 
   /**
-   * Retries the failed data load requests.
+   * A set that tracks which requests the server data source has already made. It prevents duplicate
+   * requests to the server. This mutable set can be used to customize how the
+   * grid tracks requests or to inform the data source about optimistically loaded requests.
+   *
+   * Modifying `seenRequests` is intended for advanced use cases. Ensure you fully understand how
+   * data loading works in LyteNyte Grid's server data source before making
+   * changes. If you're unsure, reach out to the LyteNyte Grid team on GitHub.
+   */
+  readonly seenRequests: Set<string>;
+
+  /**
+   * `retry` re-requests any failed data loads in the grid.
+   * Calling `retry` clears the error state for all failed requests, and
+   * the grid resends data requests for those currently in view. Failed
+   * requests outside the view are not retried until they come back into view.
    */
   readonly retry: () => void;
+
+  /**
+   * A grid atom that returns the data requests that would be
+   * sent to the server based on the current state of the view.
+   *
+   * This can be used to implement polling for cell updates, allowing the client
+   * to periodically fetch new or changed data without reloading the entire view.
+   *
+   * To execute the generated requests, use the `pushRequests` method.
+   */
+  readonly requestsForView: GridAtomReadonly<DataRequest[]>;
+
+  /**
+   * Returns the data request that would be sent to the server to load the row group
+   * of the given row. This may be used to get a request that can be used to optimistically
+   * load the group.
+   *
+   * This method will return null if the group is invalid or if the row is not found.
+   */
+  readonly requestForGroup: (row: RowGroup | number) => DataRequest | null;
+
+  /**
+   * Returns the data request for the next slice of data based on the provided request.
+   * This is useful for preloading the next view of data. Returns `null` if no
+   * next slice exists or if the provided request is invalid for the current view configuration.
+   */
+  readonly requestForNextSlice: (currentRequest: DataRequest) => DataRequest | null;
+
+  /**
+   * Refreshes the current view by re-sending the data requests that make up the view to the server.
+   * This ensures that any underlying data changes are reflected in the rendered view.
+   *
+   * This is a convenience method that combines the functionality of `requestsForView` and `pushRequests`,
+   * allowing you to easily re-fetch and re-render data for the current view in a single call.
+   */
+  readonly refresh: (onSuccess?: () => void, onError?: (e: unknown) => void) => void;
 
   /**
    * Pushes data responses directly into the data source. Useful for
@@ -2923,6 +2973,18 @@ export interface RowGroup {
    * Depth level from the root; used to determine visual indenting and structure.
    */
   readonly depth: number;
+
+  /**
+   * An error that applies to the group row. This is usually set when the group fails to load
+   * its children rows.
+   */
+  readonly errorGroup?: unknown;
+
+  /**
+   * A boolean indicating if the group expansion is loading. This is normally used for server
+   * data loading, which expansions occur only after the group's children data has been fetched.
+   */
+  readonly loadingGroup?: boolean;
 }
 
 /**

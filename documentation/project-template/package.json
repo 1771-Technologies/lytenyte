@@ -20,6 +20,7 @@
     "@tailwindcss/vite": "^4.1.12",
     "@smastrom/react-rating": "^1.5.0",
     "@types/react-sparklines": "^1.7.5",
+    "@uidotdev/usehooks": "^2.4.1",
     "alasql": "^4.6.6",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
