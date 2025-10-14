@@ -257,7 +257,7 @@ export function InFilterPopoverContent({ column, grid }: HeaderCellRendererParam
                   });
                 }}
                 className={tw(
-                  "border-ln-gray-30 hover:bg-ln-gray-10 bg-ln-gray-00 text-ln-gray-70 rounded border px-3 py-0.5 text-sm",
+                  "border-ln-gray-30 hover:bg-ln-gray-10 bg-ln-gray-00 text-ln-gray-70 cursor-pointer rounded border px-3 py-0.5 text-sm",
                 )}
               >
                 Clear
@@ -268,7 +268,7 @@ export function InFilterPopoverContent({ column, grid }: HeaderCellRendererParam
                 }}
                 style={{ transform: "scale(0.92)" }}
                 className={tw(
-                  "border-ln-primary-30 hover:bg-ln-primary-70 bg-ln-primary-50 text-ln-gray-02 rounded border px-3 py-0.5 text-sm font-semibold",
+                  "border-ln-primary-30 hover:bg-ln-primary-70 bg-ln-primary-50 text-ln-gray-02 cursor-pointer rounded border px-3 py-0.5 text-sm font-semibold",
                 )}
               >
                 Apply
