@@ -102,6 +102,7 @@ export { rowIndexForSection } from "./row/row-index-for-section.js";
 
 // Navigation
 export { trackFocus } from "./navigation-x/track-focus.js";
+export { navigator } from "./navigation-x/navigator.js";
 
 // JS UTILS
 export {
