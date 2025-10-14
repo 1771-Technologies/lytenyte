@@ -84,7 +84,6 @@ export const useFilterSelect = <T>({ grid, column, maxCount = 2 }: UseFilterSele
           }
         }
 
-        console.log(filters);
         return filters;
       }
 
@@ -97,6 +96,7 @@ export const useFilterSelect = <T>({ grid, column, maxCount = 2 }: UseFilterSele
   const [filters, setFilters] = useTwoFlowState(filterValue);
 
   const finalFilters = useMemo(() => {
+    if (!filters.length) return [defaultFilter];
     const last = filters.at(-1)!;
 
     if (last.kind === "function" || filters.length >= maxCount) return filters;
