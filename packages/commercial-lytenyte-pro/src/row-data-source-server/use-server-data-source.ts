@@ -22,7 +22,7 @@ export function makeServerDataSource<T>({
   cellUpdateOptimistically,
 
   blockSize = 200,
-}: RowDataSourceServerParams<T>): RowDataSourceServer<T> {
+}: Omit<RowDataSourceServerParams<T>, "dataFetchExternals">): RowDataSourceServer<T> {
   let grid: Grid<T> | null = null;
   let flat!: FlatView;
   let source!: ServerData;
@@ -466,9 +466,40 @@ export function makeServerDataSource<T>({
 export function useServerDataSource<T>(p: RowDataSourceServerParams<T>) {
   const ds = useRef<RowDataSourceServer<T>>(null as any);
 
+  const fetcherRef = useRef(p.dataFetcher);
+  const prevExternal = useRef(p.dataFetchExternals ?? []);
+  const animRef = useRef(false);
+
+  if (!arrayShallow(prevExternal.current, p.dataFetchExternals ?? [])) {
+    prevExternal.current = p.dataFetchExternals ?? [];
+    fetcherRef.current = p.dataFetcher;
+    if (ds.current && !animRef.current) {
+      animRef.current = true;
+      queueMicrotask(() => {
+        ds.current.reset();
+        animRef.current = false;
+      });
+    }
+  }
+
   if (!ds.current) {
-    ds.current = makeServerDataSource(p);
+    ds.current = makeServerDataSource({
+      ...p,
+      dataFetcher: (params) => {
+        return fetcherRef.current(params);
+      },
+    });
   }
 
   return ds.current;
+}
+
+function arrayShallow(left: any[], right: any[]) {
+  if (left.length !== right.length) return false;
+
+  for (let i = 0; i < left.length; i++) {
+    if (left[i] !== right[i]) return false;
+  }
+
+  return true;
 }

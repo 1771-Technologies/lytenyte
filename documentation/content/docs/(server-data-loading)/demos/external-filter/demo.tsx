@@ -3,7 +3,7 @@
 import { Grid, useServerDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
-import { useEffect, useId, useRef, useState } from "react";
+import { useId, useState } from "react";
 import { Server } from "./server";
 import type { MovieData } from "./data";
 import {
@@ -35,12 +35,12 @@ const columns: Column<MovieData>[] = [
 
 export default function Filtering() {
   const [on, setOn] = useState(true);
-  const showMovies = useRef(on);
 
   const ds = useServerDataSource<MovieData>({
     dataFetcher: (params) => {
-      return Server(params.requests, showMovies.current);
+      return Server(params.requests, on);
     },
+    dataFetchExternals: [on],
     blockSize: 50,
   });
 
@@ -53,11 +53,6 @@ export default function Filtering() {
   });
 
   const view = grid.view.useValue();
-
-  useEffect(() => {
-    showMovies.current = on;
-    ds.reset();
-  }, [ds, on]);
 
   return (
     <>

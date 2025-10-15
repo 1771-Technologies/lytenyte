@@ -916,6 +916,25 @@ export const RowDataSourceServerParams: InterfaceType = {
       kind: "property",
       doc: { en: `` },
       tsDoc: `
+        A list of external dependencies the data source should depend on. If any of these properties
+        change, then the grid will reset and fetch the data from the server again. This is the equivalent
+        of adding watch keys/dependency tracking to the grid. 
+
+        Use this property when you want the grid to reset based on some external piece of data, such as an
+        external search query.
+
+        Note all the items in the list should be referentially stable. LyteNyte Grid will shallow compare the 
+        array, and check equality using the \`!==\` operator. If an item is not stable it may result in an infinite 
+        reset loop.
+      `,
+      optional: true,
+      value: "unknown[]",
+      name: "dataFetchExternals",
+    },
+    {
+      kind: "property",
+      doc: { en: `` },
+      tsDoc: `
         Column pivots produce column definitions derived from the row data. Because the 
         server data source does not have full access to row data, it relies on a 
         \`dataColumnPivotFetcher\` function. The server data source calls this function 
