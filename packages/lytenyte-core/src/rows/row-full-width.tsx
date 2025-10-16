@@ -9,7 +9,6 @@ import { DropWrap, type DropWrapProps } from "../drag-and-drop/index.js";
 
 export interface RowFullWidthProps extends Omit<DropWrapProps, "accepted"> {
   readonly row: RowFullWidthRowLayout<any>;
-  readonly space?: "viewport" | "scroll-width";
   readonly accepted?: string[];
 }
 
@@ -17,7 +16,7 @@ const empty: string[] = [];
 const RowFullWidthImpl = forwardRef<
   HTMLDivElement,
   JSX.IntrinsicElements["div"] & RowFullWidthProps
->(function RowFullWidth({ row: layout, space, children, ...props }, forwarded) {
+>(function RowFullWidth({ row: layout, children, ...props }, forwarded) {
   const { grid, gridId } = useGridRoot();
   const Renderer = grid.state.rowFullWidthRenderer.useValue().fn;
   const row = layout.row.useValue();
@@ -57,26 +56,18 @@ const RowFullWidthImpl = forwardRef<
         rowIsFocusRow,
         hasSpans,
         props.style,
-        {
-          right: rtl ? "0px" : undefined,
-          left: rtl ? undefined : "0px",
-          position: "sticky",
-          width: space === "scroll-width" ? undefined : VIEWPORT_WIDTH_VARIABLE_USE,
-          gridTemplateColumns: `${space === "scroll-width" ? "100%" : VIEWPORT_WIDTH_VARIABLE_USE}`,
-          pointerEvents: "all",
-        },
       )}
     >
       <div
         role="gridcell"
         tabIndex={0}
         style={{
-          width: "100%",
+          width: VIEWPORT_WIDTH_VARIABLE_USE,
           height,
-          gridColumnStart: "1",
-          gridColumnEnd: "2",
-          gridRowStart: "1",
-          gridRowEnd: "2",
+          position: "sticky",
+          right: rtl ? "0px" : undefined,
+          left: rtl ? undefined : "0px",
+          pointerEvents: "all",
         }}
       >
         {children ??

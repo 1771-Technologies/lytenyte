@@ -135,4 +135,12 @@ describe("stringComparator", () => {
     expect(stringComparator("  Hello, World!  ", "hello world", options)).toBe(0);
     expect(stringComparator(" Goodbye, World. ", "goodbye world", options)).toBe(0);
   });
+
+  test("should be able to do basic number sorting when the values are both numbers", () => {
+    const options = {
+      ...defaultOptions,
+    };
+    expect(stringComparator(2 as any, 3 as any, options)).toBe(-1);
+    expect(stringComparator("2", 3 as any, options)).toBe(-1);
+  });
 });

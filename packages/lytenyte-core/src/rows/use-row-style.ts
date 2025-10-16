@@ -18,7 +18,6 @@ export function useRowStyle(
   rowIsFocusRow: boolean,
   hasSpans: boolean,
   propStyles: CSSProperties | undefined,
-  overrideStyles: CSSProperties | undefined,
 ): CSSProperties {
   const height = sizeFromCoord(rowIndex, yPositions);
 
@@ -50,18 +49,8 @@ export function useRowStyle(
       top: shouldBeRelative ? yPositions[rowIndex] - topOffset : undefined,
     };
 
-    return { ...propStyles, ...styles, ...overrideStyles };
-  }, [
-    hasSpans,
-    height,
-    overrideStyles,
-    propStyles,
-    rowIndex,
-    rowIsFocusRow,
-    rowPin,
-    topOffset,
-    yPositions,
-  ]);
+    return { ...propStyles, ...styles };
+  }, [hasSpans, height, propStyles, rowIndex, rowIsFocusRow, rowPin, topOffset, yPositions]);
 
   return styles;
 }

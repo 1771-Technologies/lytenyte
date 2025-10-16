@@ -34,7 +34,6 @@ const RowImpl = forwardRef<HTMLDivElement, Omit<JSX.IntrinsicElements["div"], "o
       !!row.rowIsFocusRow,
       hasSpans,
       props.style,
-      undefined,
     );
 
     return (
