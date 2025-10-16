@@ -18,6 +18,10 @@ export function stringComparator(
   if (left != null && right == null) return nullsFirst ? 1 : -1;
   if (left == null && right != null) return nullsFirst ? -1 : 1;
 
+  // This should technically not happen, but in its possible for a number aggregation to be applied, in which
+  // case we perform a naive sort and just compare the numbers
+  if (typeof left === "number" && typeof right === "number") return left - right;
+
   const leftPrepped = prep(left!, caseInsensitive, ignorePunctuation, trimWhitespace, locale);
   const rightPrepped = prep(right!, caseInsensitive, ignorePunctuation, trimWhitespace, locale);
 
