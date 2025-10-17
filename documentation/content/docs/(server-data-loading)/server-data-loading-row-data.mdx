@@ -1,9 +1,9 @@
 ---
-title: Row Data
+title: Server Row Data
 description: LyteNyte Grid's server data source loads row data in slices and retrieves data on demand.
 ---
 
-## The Server Data Source Hook
+## Server Data Source Hook
 
 To use the server data source in LyteNyte Grid, import
 the `useServerDataSource` hook from the `@1771technologies/lytenyte-pro` package.
@@ -19,7 +19,7 @@ Provide the `useServerDataSource` hook with a `dataFetcher` callback. The callba
 data from the server. LyteNyte Grid passes it parameters describing the current data
 request and expects a promise that resolves to the data response. The full
 interfaces and request/response cycle are described in the
-[Data Interface Guide](/docs/server-data-loading-interface).
+[Data Interface guide](/docs/server-data-loading-interface).
 
 ```ts
 export default function RowDataFromServer() {
@@ -97,7 +97,7 @@ const grid = Grid.useLyteNyte({
 });
 ```
 
-See the [Cell Rendering Guide](/docs/cell-custom-renderers) for
+See the [Cell Rendering guide](/docs/cell-custom-renderers) for
 details on renderer registration and behavior.
 
 ## Initial Data Loading State
@@ -126,11 +126,11 @@ The example below shows this in action.
 
 Network requests can fail. Failures may occur during:
 
-- The initial data request
-- A subsequent data request (for example, when scrolling through rows)
+- The initial data request.
+- A subsequent data request (for example, when scrolling through rows).
 
 This section covers the first case as an introduction to error handling.
-See the [handling load failures guide](/docs/server-data-loading-handling-load-failures)
+See the [Handling Load Failures guide](/docs/server-data-loading-handling-load-failures)
 for in-depth coverage and best practices.
 
 !demo:Initial Load Error="./demos/error-loading-initial"
@@ -170,7 +170,7 @@ const neverFailFetcher = async (params) => {
 
 ## Next Steps
 
-- [Row Sorting](/docs/server-data-loading-row-sorting): explains server-side sorting and client-side display.
-- [Row Filtering](/docs/server-data-loading-row-filtering): covers server-side filtering, including **in filters (tree set filters)** and **quick search filters**.
-- [Row Grouping and Aggregation](/docs/server-data-loading-row-grouping-and-aggregation): handles grouped data and loads group slices.
+- [Server Row Sorting](/docs/server-data-loading-row-sorting): explains server-side sorting and client-side display.
+- [Server Row Filtering](/docs/server-data-loading-row-filtering): covers server-side filtering, including **in filters (tree set filters)** and **quick search filters**.
+- [Server Row Grouping and Aggregation](/docs/server-data-loading-row-grouping-and-aggregation): handles grouped data and loads group slices.
 - [Handling Load Failures](/docs/server-data-loading-handling-load-failures): explores all scenarios where data requests may fail.

@@ -1,5 +1,5 @@
 ---
-title: Row Filtering
+title: Server Row Filtering
 description:
   LyteNyte Grid defines several filter models that the server data source can use to filter rows
   on the server. The server may also define its own custom filter model to implement application-specific filtering logic.
@@ -155,22 +155,23 @@ see [this article](https://dev.to/manishkc104/debounce-input-in-react-3726).
 ## External Filters
 
 Depending on your application, you may need a custom filter model.
-You can integrate external filters into the data-fetching pipeline by injecting them into the `dataFetcher` function of the server data source.
-This can be done using a React `ref` or external state managers
-like [Jotai](https://jotai.org/) or [Zustand](https://zustand.docs.pmnd.rs/getting-started/introduction).
+You can integrate external filters into the data-fetching pipeline by injecting them into the `dataFetcher` function of
+the server data source. This can be done using the `dataFetchExternals` property on the server data source.
+This property accepts an array of dependencies, and will invalidate the `dataFetcher` function and refetch
+data from the server whenever one of the dependencies changes.
 
-The following demo uses a React ref to toggle between `Movies` and `TV Shows`:
+The following demo uses the `dataFetchExternals` property to toggle between `Movies` and `TV Shows`:
 
 !demo:External Filter="./demos/external-filter"
 
 This is one of many ways to use external filters. With the right state
-management tools, you can build more advanced integrations. The key is ensuring your `dataFetcher`
-function can access the external filter state.
+management tools, you can build more advanced integrations. The key is ensuring your `dataFetchExternals`
+dependencies are stable and only change when necessary.
 
 ## Next Steps
 
-- [Row Grouping and Aggregations](/docs/server-data-loading-row-grouping-and-aggregation): learn how
+- [Server Row Grouping and Aggregations](/docs/server-data-loading-row-grouping-and-aggregation): learn how
   to fetch grouped data and handle row expansion and collapse.
-- [Row Sorting](/docs/server-data-loading-row-sorting): implement and display server-side sorting.
+- [Server Row Sorting](/docs/server-data-loading-row-sorting): implement and display server-side sorting.
 - [Optimistic Loading](/docs/server-data-loading-optimistic-loading): use optimistic loading
   to pre-fetch data and improve responsiveness.

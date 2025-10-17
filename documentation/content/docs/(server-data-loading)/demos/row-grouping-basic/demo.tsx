@@ -9,6 +9,7 @@ import type { SalaryData } from "./data";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
 import {
+  AgeCellRenderer,
   BaseCellRenderer,
   GroupCellRenderer,
   SalaryRenderer,
@@ -17,14 +18,6 @@ import {
 import { GroupPills } from "./ui";
 
 const columns: Column<SalaryData>[] = [
-  {
-    id: "Age",
-    type: "number",
-    width: 100,
-    widthFlex: 1,
-    uiHints: { rowGroupable: true },
-    cellRenderer: BaseCellRenderer,
-  },
   {
     id: "Gender",
     width: 120,
@@ -40,6 +33,14 @@ const columns: Column<SalaryData>[] = [
     widthFlex: 1,
     uiHints: { rowGroupable: true },
     cellRenderer: BaseCellRenderer,
+  },
+  {
+    id: "Age",
+    type: "number",
+    width: 100,
+    widthFlex: 1,
+    uiHints: { rowGroupable: true },
+    cellRenderer: AgeCellRenderer,
   },
   {
     id: "Years of Experience",

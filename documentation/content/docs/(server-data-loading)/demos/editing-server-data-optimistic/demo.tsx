@@ -7,22 +7,17 @@ import { useId } from "react";
 import { handleUpdate, Server } from "./server";
 import type { SalaryData } from "./data";
 import {
+  AgeCellRenderer,
   BaseCellRenderer,
   NumberEditor,
+  NumberEditorInteger,
   SalaryRenderer,
   TextEditor,
   YearsOfExperienceRenderer,
 } from "./components";
+import clsx from "clsx";
 
 const columns: Column<SalaryData>[] = [
-  {
-    id: "Age",
-    type: "number",
-    width: 100,
-    widthFlex: 1,
-    cellRenderer: BaseCellRenderer,
-    editRenderer: NumberEditor,
-  },
   {
     id: "Gender",
     width: 120,
@@ -39,13 +34,21 @@ const columns: Column<SalaryData>[] = [
     editRenderer: TextEditor,
   },
   {
+    id: "Age",
+    type: "number",
+    width: 100,
+    widthFlex: 1,
+    cellRenderer: AgeCellRenderer,
+    editRenderer: NumberEditorInteger,
+  },
+  {
     id: "Years of Experience",
     name: "YoE",
     type: "number",
     width: 100,
     widthFlex: 1,
     cellRenderer: YearsOfExperienceRenderer,
-    editRenderer: NumberEditor,
+    editRenderer: NumberEditorInteger,
   },
   {
     id: "Salary",
@@ -58,13 +61,14 @@ const columns: Column<SalaryData>[] = [
 ];
 
 export default function BasicServerData() {
+  const resetKey = useId();
   const ds = useServerDataSource<SalaryData>({
     dataFetcher: (params) => {
-      return Server(params.requests);
+      return Server(params.requests, resetKey);
     },
     cellUpdateHandler: async (updates) => {
       // send update to server
-      await handleUpdate(updates);
+      await handleUpdate(updates, resetKey);
     },
     cellUpdateOptimistically: true,
     blockSize: 50,
@@ -98,7 +102,10 @@ export default function BasicServerData() {
                       <Grid.HeaderCell
                         key={c.id}
                         cell={c}
-                        className="flex h-full w-full items-center px-2 text-sm capitalize"
+                        className={clsx(
+                          "flex h-full w-full items-center px-2 text-sm capitalize",
+                          c.column.type === "number" && "justify-end",
+                        )}
                       />
                     );
                   })}

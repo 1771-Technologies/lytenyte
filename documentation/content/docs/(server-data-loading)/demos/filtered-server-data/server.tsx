@@ -30,6 +30,30 @@ export async function Server(
             const value = row[columnId as keyof MovieData];
             if (!value) return false;
 
+            if (columnId === "imdb_rating") {
+              const rating = value ? Math.round(Number.parseFloat(value.split("/")[0]) / 2) : "";
+              const v = rating as number;
+              const filterV =
+                typeof filter.value === "string"
+                  ? Number.parseInt(filter.value)
+                  : (filter.value as number);
+
+              if (filter.operator === "equals" && v !== filterV) return false;
+              if (filter.operator === "not_equals" && v === filterV) return false;
+              if (filter.operator === "less_than" && v >= filterV) return false;
+              if (filter.operator === "greater_than" && v <= filterV) return false;
+              continue;
+            }
+
+            if (columnId === "released_at") {
+              const v = new Date(value);
+              const filterV = new Date(filter.value as string);
+
+              if (filter.operator === "before" && v >= filterV) return false;
+              if (filter.operator === "after" && v <= filterV) return false;
+              continue;
+            }
+
             if (
               (filter.operator === "equals" || filter.operator === "not_equals") &&
               columnId === "genre"

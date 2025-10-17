@@ -188,6 +188,13 @@ function FilterContent({
 }: HeaderCellRendererParams<MovieData> & { onAction: () => void }) {
   const root = FilterSelect.useFilterSelect({ grid, column, maxCount: 1 });
 
+  let filterOptions = simplifiedFilterOptions;
+  if (column.id === "imdb_rating")
+    filterOptions = ["equals", "not_equals", "less_than", "greater_than"];
+  if (column.id === "type") filterOptions = ["equals", "not_equals"];
+  if (column.id === "genre") filterOptions = ["equals", "not_equals", "contains"];
+  if (column.id === "released_at") filterOptions = ["before", "after"];
+
   return (
     <FilterSelect.Root root={root}>
       {root.filters.map((f, i) => {
@@ -198,14 +205,25 @@ function FilterContent({
                 className="cursor-pointer"
                 as={(p) => {
                   // Allow a simplified set of options for our filters.
-                  const options = p.options.filter((c) =>
-                    simplifiedFilterOptions.includes(c.value),
-                  );
+                  const options = p.options.filter((c) => filterOptions.includes(c.value));
+
+                  // Small hack for date columns since we don't allow equals in our little demo.
+                  if (p.value?.label === "Equals" && column.id === "released_at")
+                    queueMicrotask(() => {
+                      p.onChange(options[0]);
+                    });
 
                   return <GridSelect options={options} value={p.value} onChange={p.onChange} />;
                 }}
               />
               <FilterSelect.ValueInput
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.stopPropagation();
+                    root.apply();
+                    onAction();
+                  }
+                }}
                 as={(p) => {
                   return (
                     <GridInput
@@ -223,10 +241,16 @@ function FilterContent({
       })}
       <div className="my-2 flex justify-end gap-2">
         <FilterSelect.Clear
+          onKeyDown={(e) => {
+            e.stopPropagation();
+          }}
           className="border-ln-gray-30 hover:bg-ln-gray-10 bg-ln-gray-00 text-ln-gray-70 cursor-pointer rounded border px-3 py-0.5 text-sm"
           onClick={onAction}
         />
         <FilterSelect.Apply
+          onKeyDown={(e) => {
+            e.stopPropagation();
+          }}
           onClick={onAction}
           style={{ transform: "scale(0.92)" }}
           className="border-ln-primary-30 hover:bg-ln-primary-70 bg-ln-primary-50 text-ln-gray-02 cursor-pointer rounded border px-3 py-0.5 text-sm font-semibold"

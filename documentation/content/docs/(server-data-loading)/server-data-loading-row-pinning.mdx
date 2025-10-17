@@ -1,5 +1,5 @@
 ---
-title: Row Pinning
+title: Server Row Pinning
 description: You can pin specific rows to the top or bottom of the grid's viewport.
   Pinned rows stay visible while the user scrolls. When using a server data
   source, the server manages pinned rows through a pinned row response.
@@ -14,7 +14,7 @@ at the top or bottom of the grid's viewport.
 To supply pinned rows, the server should respond with a
 `DataResponsePinned` object on any viewport request, including the initial
 load. For details on `DataResponsePinned`, see
-the [data interface guide](/docs/server-data-loading-interface) and
+the [Data Interface guide](/docs/server-data-loading-interface) and
 the [API reference](/docs/reference/row-data-source#dataresponsepinned).
 
 This example pins rows to the top or bottom of the grid. The server implementation in the example
@@ -91,8 +91,8 @@ For more information, see the [Data Pushing and Pulling guide](/docs/server-data
 
 ## Next Steps
 
-- [Row Grouping and Aggregations](/docs/server-data-loading-row-grouping-and-aggregation): learn how
+- [Server Row Grouping and Aggregations](/docs/server-data-loading-row-grouping-and-aggregation): learn how
   to fetch grouped data and handle row expansion and collapse.
-- [Row Sorting](/docs/server-data-loading-row-sorting): implement and display server-side sorting.
+- [Server Row Sorting](/docs/server-data-loading-row-sorting): implement and display server-side sorting.
 - [Optimistic Loading](/docs/server-data-loading-optimistic-loading): use optimistic loading
   to pre-fetch data and improve responsiveness.

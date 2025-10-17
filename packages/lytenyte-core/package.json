@@ -9,7 +9,7 @@
     "headless",
     "virtualized"
   ],
-  "version": "1.0.17-dev.0",
+  "version": "1.0.17",
   "type": "module",
   "files": [
     "dist",
