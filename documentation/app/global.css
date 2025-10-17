@@ -443,3 +443,8 @@ strong {
     transform: scale(0.7);
   }
 }
+
+h4 {
+  font-size: 15px;
+  font-weight: 900;
+}

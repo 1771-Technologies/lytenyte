@@ -149,7 +149,6 @@ export const useFilterSelect = <T>({ grid, column, maxCount = 2 }: UseFilterSele
         next = { kind: "string", value: filter.value! as string, operator: filter.operator! };
 
       if (next) {
-        console.log(next);
         grid.state.filterModel.set((prev) => {
           const filters = { ...prev };
           filters[column.id] = next;

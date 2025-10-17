@@ -33,14 +33,14 @@ the **"Request Data"** button's `onClick` callback:
 
 We use the `requestsForView` atom to fetch requests for the current view, though any
 request set can be used. If you're unfamiliar with the request interface,
-see the [data interface guide](/docs/server-data-loading-interface) for more details.
+see the [Data Interface guide](/docs/server-data-loading-interface) for more details.
 
 ## Pushing Data
 
 You can push data into LyteNyte Grid using the `pushResponses` method on the
 server data source. This method accepts complete data responses and sends
 them to the data source. It can also be used to generate data ticks on the client
-and push the result into the data source as though it was the server the sent the rows.
+and push the result into the data source as though it were the server that sent the rows.
 This is shown in the example below.
 
 !demo:Data Pushing="./demos/data-pushing"
@@ -67,11 +67,11 @@ and provides complete responses.
 
 Pushing responses requires a solid understanding of the LyteNyte Grid server
 data source's response model and how responses form the data tree.
-See the [data interface guide](/docs/server-data-loading-interface) for more information.
+See the [Data Interface guide](/docs/server-data-loading-interface) for more information.
 
 ## Next Steps
 
-- [Row Sorting](/docs/server-data-loading-row-sorting): explains server-side sorting and client-side display.
-- [Row Filtering](/docs/server-data-loading-row-filtering): covers server-side filtering, including **in filters (tree set filters)** and **quick search filters**.
-- [Row Grouping and Aggregation](/docs/server-data-loading-row-grouping-and-aggregation): handles grouped data and loads group slices.
+- [Server Row Sorting](/docs/server-data-loading-row-sorting): explains server-side sorting and client-side display.
+- [Server Row Filtering](/docs/server-data-loading-row-filtering): covers server-side filtering, including **in filters (tree set filters)** and **quick search filters**.
+- [Server Row Grouping and Aggregation](/docs/server-data-loading-row-grouping-and-aggregation): handles grouped data and loads group slices.
 - [Handling Load Failures](/docs/server-data-loading-handling-load-failures): explores all scenarios where data requests may fail.

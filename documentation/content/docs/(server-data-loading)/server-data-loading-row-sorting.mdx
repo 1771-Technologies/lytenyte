@@ -1,5 +1,5 @@
 ---
-title: Row Sorting
+title: Server Row Sorting
 description:
   LyteNyte Grid's server data source requests sorted rows by sending a defined sort model.
   The server applies the sort and returns the corresponding slice of sorted data.
@@ -54,6 +54,8 @@ the `nullsFirst` option; other options can follow a similar pattern:
 
 !demo:Nulls First="./demos/basic-sorting-nulls-first"
 
+<div className="pt-8" />
+
 ```ts
 const isNullsFirst = m.sort.options?.nullsFirst;
 // Check null states before comparing sort values
@@ -78,7 +80,7 @@ below demonstrates how:
 
 !demo:Custom Sort Model="./demos/custom-sorting"
 
-This example defines a sort model outside of the LyteNyte Grid state. It includes four key steps:
+This example defines a sort model outside of the LyteNyte Grid state. It includes three key steps:
 
 <Steps>
 
@@ -86,15 +88,17 @@ This example defines a sort model outside of the LyteNyte Grid state. It include
 
 ### Injecting External Data Into the Data Fetcher
 
-The server data source's `dataFetcher` function doesn't automatically capture updates from React state. To work
-around this, inject external data using a ref:
+The server data source's `dataFetcher` function doesn't automatically capture updates from React state. Instead
+dependencies must be explicitly declared using the `dataFetchExternals` property. When `sort` changes, LyteNyte
+Grid will detect that change in dependencies and refetch row data from the server.
 
 ```ts
-const externalDataRef = useRef<{ sort: CustomSort | null }>({ sort: null });
+const [sort, setSort] = useState<{ sort: CustomSort | null }>(null);
 const ds = useServerDataSource<MovieData>({
   dataFetcher: (params) => {
-    return Server(params.requests, externalDataRef.current.sort);
+    return Server(params.requests, sort);
   },
+  dataFetchExternals: [sort],
 });
 ```
 
@@ -127,21 +131,6 @@ return (
     ... Grid defined here
   </context.Provider>
 );
-```
-
-</Step>
-
-<Step>
-
-### Listening to External Updates
-
-When the external state changes, the server data source must be updated. The example uses a React effect:
-
-```ts
-useEffect(() => {
-  externalDataRef.current.sort = sort;
-  ds.reset();
-}, [ds, sort]);
 ```
 
 </Step>
@@ -188,7 +177,7 @@ These steps represent one approach. External state libraries like
 
 ## Next Steps
 
-- [Row Filtering](/docs/server-data-loading-row-filtering): server-side filtering, including **in filters (tree set filters)** and **quick search filters**.
-- [Row Pinning](/docs/server-data-loading-row-pinning): pin rows to keep specific data visible.
-- [Row Grouping and Aggregation](/docs/server-data-loading-row-grouping-and-aggregation): handle grouped data and load group slices.
+- [Server Row Filtering](/docs/server-data-loading-row-filtering): server-side filtering, including **in filters (tree set filters)** and **quick search filters**.
+- [Server Row Pinning](/docs/server-data-loading-row-pinning): pin rows to keep specific data visible.
+- [Server Row Grouping and Aggregation](/docs/server-data-loading-row-grouping-and-aggregation): handle grouped data and load group slices.
 - [Handling Load Failures](/docs/server-data-loading-handling-load-failures): explore how to handle failed data requests.

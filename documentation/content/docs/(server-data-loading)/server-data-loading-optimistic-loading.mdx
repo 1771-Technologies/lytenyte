@@ -23,7 +23,7 @@ demonstrate how LyteNyte Grid supports optimistic data loading.
 
 The example below demonstrates how to optimistically load slices in a flat data view.
 This works by tracking the current view and preloading the next slice whenever the
-view changes. In this way, the grid “stays ahead of the scroll.” Note that this does
+view changes. This way, the grid “stays ahead of the scroll.” Note that this does
 not guarantee users will never see a loading indicator. Scrolling is fast, and if users
 scroll too quickly, the grid may not have finished fetching rows before they become visible.
 
@@ -31,7 +31,7 @@ scroll too quickly, the grid may not have finished fetching rows before they bec
 
 In the example above, optimistic loading occurs within a single `useEffect`, but it uses several parts of the
 server data source interface. The full effect is shown and explained here, but check out the
-[`RowDataSourceServer reference`](/docs/reference/row-data-source#rowdatasourceserver) for a complete breakdown
+[`RowDataSourceServer` reference](/docs/reference/row-data-source#rowdatasourceserver) for a complete breakdown
 of the methods available on the server data source.
 
 ```ts
@@ -97,9 +97,9 @@ rows of a group, allowing you to preload them in advance.
 
 ## Next Steps
 
-- [Row Data](/docs/server-data-loading-row-data): shows how to fetch server data in slices.
-- [Row Sorting](/docs/server-data-loading-row-sorting): explains server-side sorting and how it is
+- [Server Row Data](/docs/server-data-loading-row-data): shows how to fetch server data in slices.
+- [Server Row Sorting](/docs/server-data-loading-row-sorting): explains server-side sorting and how it is
   displayed client-side.
-- [Row Filtering](/docs/server-data-loading-row-filtering): covers server-side filtering, including
+- [Server Row Filtering](/docs/server-data-loading-row-filtering): covers server-side filtering, including
   advanced features such as **in filters (tree set filters)** and **quick search filters**.
-- [Row Grouping and Aggregation](/docs/server-data-loading-row-grouping-and-aggregation): handles grouped data and loads group slices.
+- [Server Row Grouping and Aggregation](/docs/server-data-loading-row-grouping-and-aggregation): handles grouped data and loads group slices.

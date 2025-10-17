@@ -248,13 +248,6 @@ export function InFilterPopoverContent({ column, grid }: HeaderCellRendererParam
 
                     return next;
                   });
-
-                  grid.state.filterModel.set((prev) => {
-                    const next = { ...prev };
-                    delete next[column.id];
-
-                    return next;
-                  });
                 }}
                 className={tw(
                   "border-ln-gray-30 hover:bg-ln-gray-10 bg-ln-gray-00 text-ln-gray-70 cursor-pointer rounded border px-3 py-0.5 text-sm",
@@ -264,6 +257,22 @@ export function InFilterPopoverContent({ column, grid }: HeaderCellRendererParam
               </PopoverClose>
               <PopoverClose
                 onClick={() => {
+                  const filter = inFilter.rootProps.filterIn;
+                  const isIn = filter.operator === "in";
+                  const items = inFilter.rootProps.getAllIds();
+                  if (
+                    (isIn && filter.value.isSubsetOf(items)) ||
+                    (!isIn && filter.value.size === 0)
+                  ) {
+                    grid.state.filterInModel.set((prev) => {
+                      const next = { ...prev };
+                      delete next[column.id];
+
+                      return next;
+                    });
+                    return;
+                  }
+
                   inFilter.apply();
                 }}
                 style={{ transform: "scale(0.92)" }}

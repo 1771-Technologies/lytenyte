@@ -20,14 +20,6 @@ import { GroupPills } from "./ui";
 
 const columns: Column<SalaryData>[] = [
   {
-    id: "Age",
-    type: "number",
-    width: 100,
-    widthFlex: 1,
-    uiHints: { rowGroupable: true, aggsAllowed: ["avg", "first", "last"] },
-    cellRenderer: AgeCellRenderer,
-  },
-  {
     id: "Gender",
     width: 120,
     widthFlex: 1,
@@ -42,6 +34,14 @@ const columns: Column<SalaryData>[] = [
     uiHints: { rowGroupable: true },
     hide: true,
     cellRenderer: BaseCellRenderer,
+  },
+  {
+    id: "Age",
+    type: "number",
+    width: 100,
+    widthFlex: 1,
+    uiHints: { rowGroupable: true, aggsAllowed: ["avg", "first", "last"] },
+    cellRenderer: AgeCellRenderer,
   },
   {
     id: "Years of Experience",

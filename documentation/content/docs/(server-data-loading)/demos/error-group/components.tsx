@@ -44,6 +44,21 @@ export function YearsOfExperienceRenderer({ grid, row, column }: CellRendererPar
   );
 }
 
+export function AgeCellRenderer({ grid, row, column }: CellRendererParams<SalaryData>) {
+  const field = grid.api.columnField(column, row);
+
+  if (grid.api.rowIsLeaf(row) && row.loading) return <SkeletonLoading />;
+
+  if (typeof field !== "number") return null;
+
+  return (
+    <div className="flex w-full items-baseline justify-end gap-1 tabular-nums">
+      <span className="font-bold">{formatter.format(field)}</span>{" "}
+      <span className="text-xs">{field <= 1 ? "Year" : "Years"}</span>
+    </div>
+  );
+}
+
 export function BaseCellRenderer({ row, column, grid }: CellRendererParams<any>) {
   if (grid.api.rowIsLeaf(row) && row.loading) return <SkeletonLoading />;
 
