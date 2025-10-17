@@ -1,12 +1,14 @@
 import type { DataRequest, DataResponse } from "@1771technologies/lytenyte-pro/types";
 
 import type { SalaryData } from "./data";
-import { data } from "./data";
+import { data as rawData } from "./data";
 
 const sleep = (n = 600) => new Promise((res) => setTimeout(res, n));
 
-export async function handleUpdate(updates: Map<string, SalaryData>) {
+export async function handleUpdate(updates: Map<string, SalaryData>, resetKey: string) {
   await sleep(200);
+
+  const data = dataMaps[resetKey]!;
 
   updates.forEach((x, id) => {
     const row = data.find((c) => c.id === id);
@@ -16,7 +18,13 @@ export async function handleUpdate(updates: Map<string, SalaryData>) {
   });
 }
 
-export async function Server(reqs: DataRequest[]) {
+let dataMaps: Record<string, SalaryData[]> = {};
+
+export async function Server(reqs: DataRequest[], resetKey: string) {
+  if (!dataMaps[resetKey]) {
+    dataMaps = { [resetKey]: structuredClone(rawData) };
+  }
+  const data = dataMaps[resetKey];
   // Simulate latency and server work.
   await sleep();
 

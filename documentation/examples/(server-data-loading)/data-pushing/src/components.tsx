@@ -118,7 +118,7 @@ export const HeaderCell: HeaderCellRendererFn<DataEntry> = ({ grid, column }) =>
   return (
     <div
       className={clsx(
-        "flex h-full w-full items-center gap-2 px-3 text-sm text-[var(--lng1771-gray-90)]",
+        "flex h-full w-full items-center gap-2 text-sm text-[var(--lng1771-gray-80)]",
         column.type === "number" && "flex-row-reverse",
       )}
     >

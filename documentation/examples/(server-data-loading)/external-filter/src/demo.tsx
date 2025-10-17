@@ -3,7 +3,7 @@
 import { Grid, useServerDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
-import { useEffect, useId, useRef, useState } from "react";
+import { useId, useState } from "react";
 import { Server } from "./server";
 import type { MovieData } from "./data";
 import {
@@ -15,6 +15,7 @@ import {
   TypeRenderer,
 } from "./components";
 import { Switch } from "radix-ui";
+import clsx from "clsx";
 
 const columns: Column<MovieData>[] = [
   {
@@ -35,12 +36,12 @@ const columns: Column<MovieData>[] = [
 
 export default function Filtering() {
   const [on, setOn] = useState(true);
-  const showMovies = useRef(on);
 
   const ds = useServerDataSource<MovieData>({
     dataFetcher: (params) => {
-      return Server(params.requests, showMovies.current);
+      return Server(params.requests, on);
     },
+    dataFetchExternals: [on],
     blockSize: 50,
   });
 
@@ -54,17 +55,15 @@ export default function Filtering() {
 
   const view = grid.view.useValue();
 
-  useEffect(() => {
-    showMovies.current = on;
-    ds.reset();
-  }, [ds, on]);
-
   return (
     <>
       <div className="border-b-ln-gray-20 flex items-center gap-1 border-b px-2 py-2.5">
         <div className="flex items-center">
           <label
-            className="text-ln-gray-90 pr-[15px] text-[15px] leading-none"
+            className={clsx(
+              "text-ln-gray-90 mr-[15px] px-[15px] text-[15px] leading-none",
+              !on && "bg-ln-primary-30 rounded-lg py-2",
+            )}
             htmlFor="movie-switch"
           >
             Show TV Shows
@@ -72,13 +71,20 @@ export default function Filtering() {
           <Switch.Root
             checked={on}
             onCheckedChange={setOn}
-            className="bg-ln-gray-30 border-ln-gray-60 data-[state=checked]:bg-ln-primary-50 relative h-[25px] w-[42px] cursor-default rounded-full outline-none"
+            className="border-ln-gray-60 bg-ln-primary-50 relative h-[25px] w-[42px] cursor-default rounded-full outline-none"
             id="movie-switch"
           >
-            <Switch.Thumb className="shadow-blackA4 block size-[21px] translate-x-0.5 rounded-full bg-white shadow-[0_2px_2px] transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-[19px]" />
+            <Switch.Thumb className="block size-[21px] translate-x-0.5 rounded-full bg-white shadow-[0_2px_2px] transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-[19px]" />
           </Switch.Root>
 
-          <span className="text-ln-gray-90 pl-[15px] text-[15px] leading-none">Show Movies</span>
+          <span
+            className={clsx(
+              "text-ln-gray-90 ml-[15px] px-[15px] text-[15px] leading-none",
+              on && "bg-ln-primary-30 rounded-lg py-2",
+            )}
+          >
+            Show Movies
+          </span>
         </div>
       </div>
       <div className="lng-grid" style={{ height: 500 }}>
