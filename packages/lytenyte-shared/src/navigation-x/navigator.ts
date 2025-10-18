@@ -1,11 +1,10 @@
 import { getActiveElement } from "../dom-utils/index.js";
-import { queryFirstFocusable, queryHeader } from "./query.js";
 import type { ScrollIntoViewFn } from "../+types.non-gen.js";
-import { runWithBackoff } from "../js-utils/run-with-backoff.js";
 import type { PositionUnion } from "../+types.js";
+import { handleViewportFocused } from "./key-handler/handle-viewport-focused.js";
 
 export interface NavigatorParams {
-  readonly element: HTMLElement;
+  readonly viewport: HTMLElement;
   readonly gridId: string;
   readonly scrollIntoView: ScrollIntoViewFn;
   readonly position: { get: () => PositionUnion | null; set: (p: PositionUnion | null) => void };
@@ -20,7 +19,7 @@ export interface NavigatorParams {
   readonly pageDownKey: string;
 }
 export function navigator({
-  element,
+  viewport,
   scrollIntoView,
   gridId,
   position: cp,
@@ -53,58 +52,34 @@ export function navigator({
     };
 
     // If the element itself is focused, then only the down key or next key should do something.
+    // The down key and next key do the same thing in this case. They focus the first item in the grid.
     // The element should be focusable. The idea is you tab to it and then use arrow keys to navigate
     // through the elements.
-    if (element === getActiveElement(document)) {
+    if (viewport === getActiveElement(document)) {
       if (key !== nextKey && key !== downKey) return;
-
-      beforeKey();
-      // We need to focus the first element in the grid that can be focused. If the header element
-      // is present, this will be the first header cell. However, it is perfectly reasonable for
-      // a user to omit the header entirely, in which case the first cell should be focused. Hence we
-      // have a three cases to handle:
-      //   - We focus the first header cell if it is present (this could be a floating cell or group cell too)
-      //   - We focus the grid cell if present (this could be a full-width row)
-      //   - The grid is empty so we don't focus anything and just return
-      // The viewport may have other focusable elements but if these aren't the normal elements the grid expects
-      // then they should be ignored.
-      const first = queryFirstFocusable(gridId, element);
-      if (first) {
-        first.focus();
-        afterKey();
-        return;
-      }
-
-      // We didn't find the first focusable element. It might not be in view due to some scroll. So let's
-      // scroll things into view and then see if it becomes visible and try focus it. If it never becomes
-      // focusable in the allotted time, then we just return. We've given ample time, so something else must've
-      // intervened, in which case we should just give up on the focus. This should be relatively rare, if ever,
-      // because it implies the user is performing an action faster than a frame can be displayed.
-      scrollIntoView({
-        row: queryHeader(gridId, element) ? 0 : undefined,
-        column: 0,
-        behavior: "instant",
-      });
-
-      runWithBackoff(() => {
-        const first = queryFirstFocusable(gridId, element);
-        if (first) {
-          first.focus();
-          afterKey();
-          return true;
-        }
-
-        return false;
-      }, [8, 16, 32, 64, 128]);
-
+      handleViewportFocused({ afterKey, beforeKey, gridId, scrollIntoView, viewport });
       return;
     }
 
     // Grab our current position. This must be tracked with the focus tracker.
-    // determine our current position. The current may be null, in which case we do nothing,
-    // the user is assumed to know what they are doing.
-    const current = cp.get();
-    if (!current) return;
+    // The current position may be null. However, this function should be called from the event handler of
+    // the viewport. This means there is something focused in the grid but it is not a grid element, or within
+    // a grid element. This can happen if the user renders something focusable without using the grid components.
+    // If that's the case, we should just ignore it.
+    const pos = cp.get();
+    if (!pos) return;
+
+    // At this point we have our key and a direction. Some keys can only fire for a given position. For example,
+    // pageUp and pageDown must be on a grid cell or full width position.
+
+    // Paging up or down only works on grid cells or full width rows.
+    const isCell = pos.kind === "full-width" || pos.kind === "cell";
+    if ((key === pageUpKey || key === pageDownKey) && !isCell) return;
+
+    // The next and previous values for a full width position can only move in a few ways.
+    if ((key === nextKey || key === prevKey) && pos.kind === "full-width") {
+      //
+    }
 
     // At this point we have ways to handle the navigation depending on the key being pressed.
     if (key === nextKey || key === prevKey) {

@@ -13,7 +13,7 @@ const chromeConfig: TestProjectConfiguration = {
       "src/**/*.pt.?(c|m)[jt]s?(x)",
     ],
     // Tests can take quite long in CI
-    testTimeout: 120_000,
+    testTimeout: process.env.CI ? 120_000 : 4_000,
 
     setupFiles: `${__dirname}/test-setup.ts`,
     browser: {
