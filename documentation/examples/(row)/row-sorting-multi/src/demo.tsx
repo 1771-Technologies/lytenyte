@@ -137,19 +137,8 @@ function Header({ column, grid }: HeaderCellRendererParams<BankData>) {
           } else {
             sort = { columnId, sort: { kind: "string" } };
           }
-        } else {
-          // If additive, we allow the current sort direction to continuously flip direction rather than being removed
-          if (isAdditive) {
-            sort = {
-              ...current.sort,
-              isDescending: !current.sort.isDescending,
-            };
-          } else if (!current.sort.isDescending) {
-            sort = {
-              ...current.sort,
-              isDescending: true,
-            };
-          }
+        } else if (!current.sort.isDescending) {
+          sort = { ...current.sort, isDescending: true };
         }
 
         if (isAdditive) {

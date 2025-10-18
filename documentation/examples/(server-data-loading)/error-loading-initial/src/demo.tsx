@@ -62,7 +62,7 @@ export default function ServerDataFailFirst() {
             onClick={() => {
               ds.reset();
             }}
-            className="border-primary-500 bg-primary-200 text-primary-800 rounded-xs hover:bg-primary-300 cursor-pointer border px-2"
+            className="border-primary-300 hover:bg-primary-600 bg-primary-500 text-ln-gray-02 cursor-pointer rounded border px-3 py-0.5 text-sm font-semibold"
           >
             Retry - it will work now
           </button>

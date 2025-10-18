@@ -26,11 +26,12 @@ const columns: Column<MovieData>[] = [
 ];
 
 export default function SortingNullsFirst() {
-  const externalDataRef = useRef<{ sort: CustomSort | null }>({ sort: null });
+  const [sort, setSort] = useState<CustomSort | null>({ columnId: "name", isDescending: false });
   const ds = useServerDataSource<MovieData>({
     dataFetcher: (params) => {
-      return Server(params.requests, externalDataRef.current.sort);
+      return Server(params.requests, sort);
     },
+    dataFetchExternals: [sort],
     blockSize: 50,
   });
 
@@ -44,13 +45,6 @@ export default function SortingNullsFirst() {
   });
 
   const view = grid.view.useValue();
-
-  const [sort, setSort] = useState<CustomSort | null>({ columnId: "name", isDescending: false });
-
-  useEffect(() => {
-    externalDataRef.current.sort = sort;
-    ds.reset();
-  }, [ds, sort]);
 
   return (
     <context.Provider value={useMemo(() => ({ sort, setSort }), [sort])}>

@@ -22,7 +22,7 @@ const PopoverContent = forwardRef<
       side="bottom"
       {...props}
       className={tw(
-        "bg-ln-gray-10 text-ln-gray-80 data-[state=closed]:animate-popover-out data-[state=open]:animate-popover-in origin-(--radix-popover-content-transform-origin) z-50 min-w-[240px] max-w-[98vw] rounded-xl border p-2 text-sm shadow-lg backdrop-blur-lg focus-visible:outline-none",
+        "bg-ln-gray-05 text-ln-gray-80 data-[state=closed]:animate-popover-out data-[state=open]:animate-popover-in origin-(--radix-popover-content-transform-origin) z-50 min-w-[240px] max-w-[98vw] rounded-xl border px-2 pt-2 text-sm shadow-lg backdrop-blur-lg focus-visible:outline-none",
         props.className,
       )}
     />

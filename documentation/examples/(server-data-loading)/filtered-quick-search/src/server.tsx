@@ -11,7 +11,8 @@ export async function Server(reqs: DataRequest[], quickSearchValue: string | nul
   const data = !quickSearchValue
     ? movieData
     : movieData.filter((row) => {
-        const searchStr = Object.values(row).join(" ").toLowerCase();
+        const values = [row.released_at, row.genre, row.name, row.type];
+        const searchStr = values.join(" ").toLowerCase();
 
         return searchStr.includes(quickSearchValue.toLowerCase());
       });
