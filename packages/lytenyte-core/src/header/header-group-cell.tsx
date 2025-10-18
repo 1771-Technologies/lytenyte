@@ -13,7 +13,7 @@ const HeaderGroupCellImpl = forwardRef<
   HTMLDivElement,
   JSX.IntrinsicElements["div"] & HeaderGroupCellProps
 >(function HeaderCell({ cell, children, ...props }, forwarded) {
-  const grid = useGridRoot().grid;
+  const { grid, gridId } = useGridRoot();
   const ctx = grid.state;
 
   const { ref, ...dragProps } = useDragMove(grid, cell, props.onDragStart);
@@ -44,7 +44,8 @@ const HeaderGroupCellImpl = forwardRef<
       data-ln-rowindex={cell.rowStart}
       data-ln-colindex={cell.colStart}
       data-ln-colspan={cell.colEnd - cell.colStart}
-      data-ln-pin={cell.colPin ?? "center"}
+      data-ln-gridid={gridId}
+      data-ln-colpin={cell.colPin ?? "center"}
       data-ln-last-start-pin={cell.colLastStartPin}
       data-ln-first-end-pin={cell.colFirstEndPin}
       data-ln-collapsible={cell.isCollapsible}

@@ -100,6 +100,10 @@ export { getNearestRow } from "./navigation/getters/get-nearest-row.js";
 
 export { rowIndexForSection } from "./row/row-index-for-section.js";
 
+// Navigation
+export { trackFocus } from "./navigation-x/track-focus.js";
+export { navigator } from "./navigation-x/navigator.js";
+
 // JS UTILS
 export {
   clamp,
