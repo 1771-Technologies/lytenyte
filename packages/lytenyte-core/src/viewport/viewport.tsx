@@ -26,7 +26,7 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
     if (!vp) return () => {};
 
     return navigator({
-      element: vp,
+      viewport: vp,
       gridId: ctx.gridId,
       scrollIntoView: ctx.grid.api.scrollIntoView,
       position: focusActive,
