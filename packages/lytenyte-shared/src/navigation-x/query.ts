@@ -13,3 +13,14 @@ export const queryFirstFocusable = (gridId: string, element: HTMLElement): HTMLE
 
   return element.querySelector(selector) as HTMLElement | null;
 };
+
+export const queryCell = (
+  gridId: string,
+  rowIndex: number,
+  colIndex: number,
+  element: HTMLElement,
+): HTMLElement | null => {
+  return element.querySelector(
+    `[data-ln-gridid="${gridId}"][data-ln-cell="true"][data-ln-rowindex="${rowIndex}"][data-ln-colindex="${colIndex}"]`,
+  );
+};

@@ -1,6 +1,7 @@
 import type { AfterKeyFn, BeforeKeyFn } from "../+types";
 import type { ScrollIntoViewFn } from "../../+types.non-gen";
 import { runWithBackoff } from "../../js-utils/index.js";
+import { BACKOFF_RUNS } from "../constants.js";
 import { queryFirstFocusable, queryHeader } from "../query.js";
 
 export interface HandleViewportFocusedParams {
@@ -55,7 +56,7 @@ export function handleViewportFocused({
     }
 
     return false;
-  }, [8, 16, 32, 64, 128]);
+  }, BACKOFF_RUNS());
 
   return;
 }
