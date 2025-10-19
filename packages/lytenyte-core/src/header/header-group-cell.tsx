@@ -30,6 +30,10 @@ const HeaderGroupCellImpl = forwardRef<
 
   const styles = useHeaderCellStyle(cell, xPositions);
 
+  const attrs = {
+    [`data-ln-header-row-${cell.rowStart}`]: true,
+  };
+
   return (
     <div
       {...props}
@@ -50,6 +54,7 @@ const HeaderGroupCellImpl = forwardRef<
       data-ln-first-end-pin={cell.colFirstEndPin}
       data-ln-collapsible={cell.isCollapsible}
       data-ln-collapsed={!isExpanded}
+      {...attrs}
       // Data attributes end
       style={{
         ...props.style,
