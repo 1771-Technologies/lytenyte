@@ -1,14 +1,9 @@
-import { getActiveElement, getLastTabbable } from "../dom-utils/index.js";
+import { getActiveElement } from "../dom-utils/index.js";
 import type { ScrollIntoViewFn } from "../+types.non-gen.js";
-import type { PositionGridCell } from "../+types.js";
 import { handleViewportFocused } from "./key-handler/handle-viewport-focused.js";
-import { handleInnerItemFocus } from "./key-handler/handle-inner-item-focus.js";
 import { nearestFocusable } from "./nearest-focusable.js";
-import { getColIndex, getColSpan } from "./attributes.js";
 import type { PositionState, RootCellFn } from "./+types.js";
-import { BACKOFF_RUNS } from "./constants.js";
-import { runWithBackoff } from "../js-utils/index.js";
-import { queryCell } from "./query.js";
+import { handleHorizontal } from "./key-handler/handle-horizontal.js";
 
 export interface NavigatorParams {
   readonly viewport: HTMLElement;
@@ -99,73 +94,20 @@ export function navigator({
 
     if (key === nextKey || key == prevKey) {
       const isBack = key === prevKey;
-      if (pos.kind === "full-width") {
-        // Full width rows cycle through their focus items.
-        // -- cycleInnerHook
-        handleInnerItemFocus(posElement, active, isBack, true);
-        done();
-        return;
-      }
-
-      if (pos.kind === "cell") {
-        // Check if we can cycle inner.
-        // -- cycleInnerHook
-        if (!modified) {
-          const result = handleInnerItemFocus(posElement, active, isBack, false);
-          if (result) {
-            done();
-            return;
-          }
-        }
-
-        const elColSpan = Number.parseInt(getColSpan(posElement)!);
-        const elColIndex = Number.parseInt(getColIndex(posElement)!);
-
-        // Nothing to do
-        if ((elColIndex === 0 && isBack) || (elColIndex + elColSpan >= columnCount && !isBack))
-          return;
-
-        const nextIndex = isBack
-          ? modified
-            ? 0
-            : elColIndex - 1
-          : modified
-            ? columnCount - 1
-            : elColIndex + elColSpan;
-
-        const root = getRootCell(pos.rowIndex, nextIndex) as PositionGridCell | null;
-        console.log(pos.rowIndex);
-        if (!root) return;
-
-        const { colIndex, rowIndex } = root.root ?? root;
-        scrollIntoView({ column: nextIndex, behavior: "instant" });
-
-        done();
-
-        // The next cell to focus may be out virtualized out of the view, and hence not mounted to the DOM. We run with
-        // a bit of backoff to give the cell some time to render into view.
-        runWithBackoff(() => {
-          const cell = queryCell(gridId, rowIndex, colIndex, viewport);
-
-          if (!cell) return false;
-
-          // If we are moving backward we focus the last tabbable if present otherwise we focus the cell itself.
-          if (isBack) {
-            // -- cycleInnerHook
-            const last = getLastTabbable(cell);
-            if (last) {
-              last.focus();
-            } else {
-              cell.focus();
-              cp.set((prev) => ({ ...prev, rowIndex: pos.rowIndex }) as PositionGridCell);
-            }
-          } else {
-            cell.focus();
-            cp.set((prev) => ({ ...prev, rowIndex: pos.rowIndex }) as PositionGridCell);
-          }
-          return true;
-        }, BACKOFF_RUNS());
-      }
+      handleHorizontal({
+        isBack,
+        active,
+        columnCount,
+        cp,
+        done,
+        getRootCell,
+        gridId,
+        modified,
+        pos,
+        posElement,
+        scrollIntoView,
+        viewport,
+      });
     }
   };
 

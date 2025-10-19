@@ -24,3 +24,13 @@ export const queryCell = (
     `[data-ln-gridid="${gridId}"][data-ln-cell="true"][data-ln-rowindex="${rowIndex}"][data-ln-colindex="${colIndex}"]`,
   );
 };
+
+export const queryFloatingCell = (
+  gridId: string,
+  colIndex: number,
+  element: HTMLElement,
+): HTMLElement | null => {
+  return element.querySelector(
+    `[data-ln-gridid="${gridId}"][data-ln-header-cell="true"][data-ln-header-floating][data-ln-colindex="${colIndex}"]`,
+  );
+};

@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { queryFirstFocusable, queryHeader } from "../query.js";
+import { queryCell, queryFirstFocusable, queryHeader } from "../query.js";
 
 test("queryHeader should return the correct elements", () => {
   const div = document.createElement("div");
@@ -26,4 +26,19 @@ test("queryFirstFocusable", () => {
   document.body.appendChild(div);
 
   expect(queryFirstFocusable("x", div)).toEqual(x);
+});
+
+test("queryCell", () => {
+  const div = document.createElement("div");
+  const x = document.createElement("div");
+  x.setAttribute("data-ln-gridid", "x");
+  x.setAttribute("data-ln-cell", "true");
+  x.setAttribute("data-ln-colindex", "0");
+  x.setAttribute("data-ln-rowindex", "0");
+
+  document.body.appendChild(div);
+  document.body.appendChild(x);
+
+  expect(queryCell("x", 0, 0, document.body)).toEqual(x);
+  expect(queryCell("y", 0, 0, document.body)).toEqual(null);
 });

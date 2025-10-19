@@ -1,11 +1,13 @@
 import type { PositionUnion } from "../+types";
 import { getWindow } from "../dom-utils/get-window.js";
+import { equal } from "../js-utils/index.js";
+import type { PositionState } from "./+types";
 import { nearestFocusable } from "./nearest-focusable.js";
 import { positionFromElement } from "./position-from-element.js";
 
 export interface TrackFocusParams {
   readonly gridId: string;
-  readonly onFocusChange: (pos: PositionUnion | null) => void;
+  readonly focusActive: PositionState;
   readonly onElementFocused: (has: boolean) => void;
   readonly onHasFocusChange: (has: boolean) => void;
   readonly element: HTMLElement;
@@ -13,12 +15,22 @@ export interface TrackFocusParams {
 
 export function trackFocus({
   gridId,
-  onFocusChange,
+  focusActive,
   onHasFocusChange,
   onElementFocused,
   element,
 }: TrackFocusParams): () => void {
   const controller = new AbortController();
+
+  const onFocusChange = (pos: PositionUnion | null) => {
+    const c = focusActive.get();
+    if (pos?.kind === "cell" && c?.kind === "cell") {
+      if (pos.rowIndex === c.rowIndex && pos.colIndex === c.colIndex) return;
+      if (pos.root && c.root && equal(c.root, pos.root)) return;
+    } else if (equal(pos, focusActive.get())) return;
+
+    focusActive.set(pos);
+  };
 
   element.addEventListener(
     "focusin",
