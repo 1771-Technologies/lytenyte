@@ -73,7 +73,24 @@ export async function Server(reqs: DataRequest[], groupModel: RowGroupModelItem<
       return groupPath.join(" / ");
     });
 
-    const rows = Object.entries(groupedData);
+    // Sort the groups to make them nicer
+    const rows = Object.entries(groupedData).sort((x, y) => {
+      const left = x[0];
+      const right = y[0];
+
+      const asNumberLeft = Number.parseFloat(left);
+      const asNumberRight = Number.parseFloat(right);
+
+      if (Number.isNaN(asNumberLeft) || Number.isNaN(asNumberRight)) {
+        if (!left && !right) return 0;
+        if (!left) return 1;
+        if (!right) return -1;
+
+        return left.localeCompare(right);
+      }
+
+      return asNumberLeft - asNumberRight;
+    });
 
     return {
       kind: "center",

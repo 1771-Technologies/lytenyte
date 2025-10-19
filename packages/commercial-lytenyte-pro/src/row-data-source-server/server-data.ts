@@ -449,10 +449,10 @@ export class ServerData {
       .map(([index, c]) => [index, c.request] as const);
 
     const seenRequests = this.#seenRequests;
-    console.log(structuredClone(seenRequests));
+
     erroredRequests.map((x) => seenRequests.delete(x.id));
     erroredGroups.map((x) => seenRequests.delete(x[1].request.id));
-    console.log(structuredClone(seenRequests));
+
     this.#rowsWithError.clear();
     this.#rowsWithGroupError.clear();
 

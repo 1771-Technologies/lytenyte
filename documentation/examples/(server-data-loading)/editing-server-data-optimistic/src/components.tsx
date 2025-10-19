@@ -149,7 +149,9 @@ export const NumberEditorInteger: EditRenderer<SalaryData> = ({ value, onChange 
     <NumberInput.Root
       className="border-ln-gray-30 flex h-full w-full items-center rounded border"
       value={`${value}`}
-      onValueChange={(d) => onChange(d.valueAsNumber)}
+      onValueChange={(d) => {
+        onChange(Number.isNaN(d.valueAsNumber) ? 0 : d.valueAsNumber);
+      }}
       min={0}
       max={100}
       allowOverflow={false}
@@ -180,7 +182,9 @@ export const NumberEditor: EditRenderer<SalaryData> = ({ value, onChange }) => {
     <NumberInput.Root
       className="border-ln-gray-30 flex h-full w-full items-center rounded border"
       value={`${value}`}
-      onValueChange={(d) => onChange(d.valueAsNumber)}
+      onValueChange={(d) => {
+        onChange(Number.isNaN(d.valueAsNumber) ? 0 : d.valueAsNumber);
+      }}
       onKeyDown={(e) => {
         if (e.key === "," || e.key === "-") {
           e.preventDefault();
