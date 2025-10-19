@@ -29,6 +29,7 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
       viewport: vp,
       gridId: ctx.gridId,
       scrollIntoView: ctx.grid.api.scrollIntoView,
+      getRootCell: ctx.grid.api.cellRoot,
       position: focusActive,
 
       downKey: "ArrowDown",
@@ -39,8 +40,17 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
       homeKey: "Home",
       pageDownKey: "PageDown",
       pageUpKey: "PageUp",
+
+      columnCount: ctx.grid.state.columnMeta.get().columnsVisible.length,
     });
-  }, [ctx.grid.api.scrollIntoView, ctx.gridId, focusActive, vp]);
+  }, [
+    ctx.grid.api.cellRoot,
+    ctx.grid.api.scrollIntoView,
+    ctx.grid.state.columnMeta,
+    ctx.gridId,
+    focusActive,
+    vp,
+  ]);
 
   return (
     <>
