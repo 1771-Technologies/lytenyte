@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { GridAtom, PositionUnion } from "../+types.js";
-import { equal, trackFocus } from "@1771technologies/lytenyte-shared";
+import { trackFocus } from "@1771technologies/lytenyte-shared";
 
 export function useFocusTracking(
   vp: HTMLElement | null,
@@ -17,10 +17,7 @@ export function useFocusTracking(
       gridId,
       element: vp,
       onElementFocused: setVpFocused,
-      onFocusChange: (pos) => {
-        if (equal(pos, focusActive.get())) return;
-        focusActive.set(pos);
-      },
+      focusActive: focusActive,
       onHasFocusChange: setFocused,
     });
   }, [focusActive, gridId, vp]);
