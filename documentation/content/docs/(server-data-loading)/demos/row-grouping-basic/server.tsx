@@ -78,8 +78,8 @@ export async function Server(reqs: DataRequest[], groupModel: RowGroupModelItem<
       const left = x[0];
       const right = y[0];
 
-      const asNumberLeft = Number.parseFloat(left);
-      const asNumberRight = Number.parseFloat(right);
+      const asNumberLeft = Number.parseFloat(left.split("/").at(-1)!.trim());
+      const asNumberRight = Number.parseFloat(right.split("/").at(-1)!.trim());
 
       if (Number.isNaN(asNumberLeft) || Number.isNaN(asNumberRight)) {
         if (!left && !right) return 0;
