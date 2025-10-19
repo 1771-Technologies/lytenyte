@@ -31,6 +31,26 @@ export const queryFloatingCell = (
   element: HTMLElement,
 ): HTMLElement | null => {
   return element.querySelector(
-    `[data-ln-gridid="${gridId}"][data-ln-header-cell="true"][data-ln-header-floating][data-ln-colindex="${colIndex}"]`,
+    `[data-ln-gridid="${gridId}"][data-ln-header-cell="true"][data-ln-header-floating=true][data-ln-colindex="${colIndex}"]`,
+  );
+};
+
+export const queryHeaderCell = (
+  gridId: string,
+  colIndex: number,
+  element: HTMLElement,
+): HTMLElement | null => {
+  return element.querySelector(
+    `[data-ln-gridid="${gridId}"][data-ln-header-cell="true"][data-ln-colindex="${colIndex}"]`,
+  );
+};
+
+export const queryHeaderCellsAtRow = (
+  gridId: string,
+  rowIndex: number,
+  element: HTMLElement,
+): HTMLElement[] => {
+  return Array.from(
+    element.querySelectorAll(`[data-ln-gridid="${gridId}"][data-ln-header-row-${rowIndex}="true"]`),
   );
 };

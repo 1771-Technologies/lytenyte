@@ -1,4 +1,4 @@
-import { forwardRef, memo, type CSSProperties, type JSX } from "react";
+import { forwardRef, memo, useMemo, type CSSProperties, type JSX } from "react";
 import type { HeaderCellFloating, HeaderCellLayout } from "../+types";
 import { useGridRoot } from "../context.js";
 import { COLUMN_MARKER_ID, sizeFromCoord } from "@1771technologies/lytenyte-shared";
@@ -42,6 +42,17 @@ const HeaderCellImpl = forwardRef<
   const width = sizeFromCoord(cell.colStart, xPositions, cell.colSpan);
   const rowSpan = cell.rowEnd - cell.rowStart;
 
+  const dataAttrs = useMemo(() => {
+    const dataAttrs: Record<string, boolean> = {};
+    if (cell.kind !== "floating") {
+      const start = cell.column.groupPath?.length ?? 0;
+      for (let i = start; i < start + rowSpan; i++) {
+        dataAttrs[`data-ln-header-row-${i}`] = true;
+      }
+    }
+    return dataAttrs;
+  }, [cell.column.groupPath?.length, cell.kind, rowSpan]);
+
   return (
     <div
       {...props}
@@ -60,6 +71,7 @@ const HeaderCellImpl = forwardRef<
       data-ln-colpin={cell.colPin ?? "center"}
       data-ln-last-start-pin={cell.colLastStartPin}
       data-ln-first-end-pin={cell.colFirstEndPin}
+      {...dataAttrs}
       // Data attributes end
       style={{
         ...props.style,

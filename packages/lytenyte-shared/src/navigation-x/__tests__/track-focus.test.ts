@@ -39,10 +39,19 @@ test("focus tracker should maintain tracking position", async () => {
   document.body.append(viewport);
   document.body.append(inputB);
 
+  const focus = {
+    get: () => position.current,
+    set: (p: PositionUnion | null | ((p: PositionUnion | null) => PositionUnion | null)) => {
+      const next = typeof p === "function" ? p(position.current) : p;
+
+      position.current = next;
+    },
+  };
+
   const clean = trackFocus({
     gridId: "x",
     element: viewport,
-    onFocusChange: (b) => (position.current = b),
+    focusActive: focus,
     onHasFocusChange: (c) => {
       hasFocus.current = c;
     },
