@@ -14,7 +14,6 @@ import {
   ReleasedRenderer,
   TypeRenderer,
 } from "./components";
-import { Switch } from "radix-ui";
 import clsx from "clsx";
 
 const columns: Column<MovieData>[] = [
@@ -58,33 +57,28 @@ export default function Filtering() {
   return (
     <>
       <div className="border-b-ln-gray-20 flex items-center gap-1 border-b px-2 py-2.5">
-        <div className="flex items-center">
-          <label
+        <div className="border-ln-primary-30 text-ln-gray-90 relative flex items-center overflow-hidden rounded-lg border text-sm">
+          <button
             className={clsx(
-              "text-ln-gray-90 mr-[15px] px-[15px] text-[15px] leading-none",
-              !on && "bg-ln-primary-30 rounded-lg py-2",
+              "flex h-8 cursor-pointer items-center px-2",
+              !on && "bg-ln-primary-30",
+              on && "hover:bg-ln-gray-20 rounded transition-colors",
             )}
-            htmlFor="movie-switch"
+            onClick={() => setOn(false)}
           >
-            Show TV Shows
-          </label>
-          <Switch.Root
-            checked={on}
-            onCheckedChange={setOn}
-            className="border-ln-gray-60 bg-ln-primary-50 relative h-[25px] w-[42px] cursor-default rounded-full outline-none"
-            id="movie-switch"
-          >
-            <Switch.Thumb className="block size-[21px] translate-x-0.5 rounded-full bg-white shadow-[0_2px_2px] transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-[19px]" />
-          </Switch.Root>
-
-          <span
+            TV Shows
+          </button>
+          <div className="bg-ln-gray-30 h-8 w-px" />
+          <button
             className={clsx(
-              "text-ln-gray-90 ml-[15px] px-[15px] text-[15px] leading-none",
-              on && "bg-ln-primary-30 rounded-lg py-2",
+              "flex h-8 cursor-pointer items-center px-2",
+              !on && "hover:bg-ln-gray-20 rounded transition-colors",
+              on && "bg-ln-primary-30",
             )}
+            onClick={() => setOn(true)}
           >
-            Show Movies
-          </span>
+            Movies
+          </button>
         </div>
       </div>
       <div className="lng-grid" style={{ height: 500 }}>

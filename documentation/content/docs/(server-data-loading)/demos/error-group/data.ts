@@ -7539,7 +7539,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Data Analyst",
     "Years of Experience": 5,
     Salary: 135000,
@@ -7547,7 +7547,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Data Scientist",
     "Years of Experience": 3,
     Salary: 180000,
@@ -7555,7 +7555,7 @@ export const data = [
   {
     Age: 40,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Software Engineer",
     "Years of Experience": 12,
     Salary: 195000,
@@ -7563,7 +7563,7 @@ export const data = [
   {
     Age: 35,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Product Manager",
     "Years of Experience": 8,
     Salary: 165000,
@@ -7571,7 +7571,7 @@ export const data = [
   {
     Age: 43,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Data Scientist",
     "Years of Experience": 15,
     Salary: 198000,
@@ -7579,7 +7579,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Software Engineer",
     "Years of Experience": 4,
     Salary: 150000,
@@ -7587,7 +7587,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Data Analyst",
     "Years of Experience": 9,
     Salary: 162000,
@@ -7595,7 +7595,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Data Scientist",
     "Years of Experience": 6,
     Salary: 175000,
@@ -7603,7 +7603,7 @@ export const data = [
   {
     Age: 42,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Software Engineer",
     "Years of Experience": 13,
     Salary: 197000,
@@ -7611,7 +7611,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Data Analyst",
     "Years of Experience": 7,
     Salary: 142000,
@@ -7619,7 +7619,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Data Scientist",
     "Years of Experience": 4,
     Salary: 182000,
@@ -7627,7 +7627,7 @@ export const data = [
   {
     Age: 41,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Software Engineer",
     "Years of Experience": 11,
     Salary: 185000,
@@ -7635,7 +7635,7 @@ export const data = [
   {
     Age: 35,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Product Manager",
     "Years of Experience": 8,
     Salary: 170000,
@@ -9595,7 +9595,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 7,
     Salary: 175000,
@@ -9611,7 +9611,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 5,
     Salary: 110000,
@@ -9627,7 +9627,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 3,
     Salary: 100000,
@@ -9635,7 +9635,7 @@ export const data = [
   {
     Age: 25,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 60000,
@@ -9643,7 +9643,7 @@ export const data = [
   {
     Age: 35,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 8,
     Salary: 155000,
@@ -9659,7 +9659,7 @@ export const data = [
   {
     Age: 46,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 13,
     Salary: 180000,
@@ -9667,7 +9667,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 4,
     Salary: 95000,
@@ -9683,7 +9683,7 @@ export const data = [
   {
     Age: 41,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 11,
     Salary: 165000,
@@ -9691,7 +9691,7 @@ export const data = [
   {
     Age: 37,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 9,
     Salary: 145000,
@@ -9707,7 +9707,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 75000,
@@ -9715,7 +9715,7 @@ export const data = [
   {
     Age: 26,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 90000,
@@ -9723,7 +9723,7 @@ export const data = [
   {
     Age: 37,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 9,
     Salary: 155000,
@@ -9731,7 +9731,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 5,
     Salary: 115000,
@@ -9739,7 +9739,7 @@ export const data = [
   {
     Age: 44,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 12,
     Salary: 170000,
@@ -9755,7 +9755,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 4,
     Salary: 115000,
@@ -9779,7 +9779,7 @@ export const data = [
   {
     Age: 35,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 7,
     Salary: 140000,
@@ -9795,7 +9795,7 @@ export const data = [
   {
     Age: 26,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -9803,7 +9803,7 @@ export const data = [
   {
     Age: 42,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 11,
     Salary: 170000,
@@ -9819,7 +9819,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -9859,7 +9859,7 @@ export const data = [
   {
     Age: 26,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -9867,7 +9867,7 @@ export const data = [
   {
     Age: 24,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 1,
     Salary: 60000,
@@ -9891,7 +9891,7 @@ export const data = [
   {
     Age: 41,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 11,
     Salary: 165000,
@@ -9899,7 +9899,7 @@ export const data = [
   {
     Age: 23,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -9915,7 +9915,7 @@ export const data = [
   {
     Age: 26,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 90000,
@@ -9923,7 +9923,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -9931,7 +9931,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 130000,
@@ -9947,7 +9947,7 @@ export const data = [
   {
     Age: 24,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 1,
     Salary: 60000,
@@ -9963,7 +9963,7 @@ export const data = [
   {
     Age: 24,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 60000,
@@ -9971,7 +9971,7 @@ export const data = [
   {
     Age: 37,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 8,
     Salary: 150000,
@@ -9987,7 +9987,7 @@ export const data = [
   {
     Age: 44,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 12,
     Salary: 170000,
@@ -9995,7 +9995,7 @@ export const data = [
   {
     Age: 34,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 6,
     Salary: 125000,
@@ -10011,7 +10011,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 3,
     Salary: 90000,
@@ -10019,7 +10019,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -10027,7 +10027,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 85000,
@@ -10043,7 +10043,7 @@ export const data = [
   {
     Age: 43,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 11,
     Salary: 160000,
@@ -10083,7 +10083,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 3,
     Salary: 95000,
@@ -10091,7 +10091,7 @@ export const data = [
   {
     Age: 23,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -10107,7 +10107,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 5,
     Salary: 120000,
@@ -10131,7 +10131,7 @@ export const data = [
   {
     Age: 25,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 2,
     Salary: 75000,
@@ -10147,7 +10147,7 @@ export const data = [
   {
     Age: 41,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 12,
     Salary: 160000,
@@ -10163,7 +10163,7 @@ export const data = [
   {
     Age: 26,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -10179,7 +10179,7 @@ export const data = [
   {
     Age: 24,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 1,
     Salary: 60000,
@@ -10195,7 +10195,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 5,
     Salary: 120000,
@@ -10243,7 +10243,7 @@ export const data = [
   {
     Age: 23,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -10251,7 +10251,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 6,
     Salary: 130000,
@@ -10275,7 +10275,7 @@ export const data = [
   {
     Age: 23,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -10283,7 +10283,7 @@ export const data = [
   {
     Age: 37,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 9,
     Salary: 145000,
@@ -10291,7 +10291,7 @@ export const data = [
   {
     Age: 44,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 12,
     Salary: 170000,
@@ -10307,7 +10307,7 @@ export const data = [
   {
     Age: 38,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 10,
     Salary: 155000,
@@ -10315,7 +10315,7 @@ export const data = [
   {
     Age: 34,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 125000,
@@ -10331,7 +10331,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 4,
     Salary: 95000,
@@ -10339,7 +10339,7 @@ export const data = [
   {
     Age: 44,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 11,
     Salary: 170000,
@@ -10347,7 +10347,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 3,
     Salary: 100000,
@@ -10363,7 +10363,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -10379,7 +10379,7 @@ export const data = [
   {
     Age: 38,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 10,
     Salary: 155000,
@@ -10387,7 +10387,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 6,
     Salary: 125000,
@@ -10395,7 +10395,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 4,
     Salary: 110000,
@@ -10403,7 +10403,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 6,
     Salary: 130000,
@@ -10435,7 +10435,7 @@ export const data = [
   {
     Age: 37,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 9,
     Salary: 150000,
@@ -10443,7 +10443,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 7,
     Salary: 140000,
@@ -10467,7 +10467,7 @@ export const data = [
   {
     Age: 23,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -10483,7 +10483,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 5,
     Salary: 120000,
@@ -10499,7 +10499,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 130000,
@@ -10515,7 +10515,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 6,
     Salary: 130000,
@@ -10523,7 +10523,7 @@ export const data = [
   {
     Age: 34,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 140000,
@@ -10531,7 +10531,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -10539,7 +10539,7 @@ export const data = [
   {
     Age: 44,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 11,
     Salary: 170000,
@@ -10555,7 +10555,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -10571,7 +10571,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -10587,7 +10587,7 @@ export const data = [
   {
     Age: 23,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -10595,7 +10595,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -10611,7 +10611,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 6,
     Salary: 130000,
@@ -10627,7 +10627,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 4,
     Salary: 95000,
@@ -10635,7 +10635,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -10643,7 +10643,7 @@ export const data = [
   {
     Age: 43,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 12,
     Salary: 165000,
@@ -10659,7 +10659,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 7,
     Salary: 140000,
@@ -10667,7 +10667,7 @@ export const data = [
   {
     Age: 24,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 60000,
@@ -10675,7 +10675,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -10683,7 +10683,7 @@ export const data = [
   {
     Age: 37,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 9,
     Salary: 150000,
@@ -10699,7 +10699,7 @@ export const data = [
   {
     Age: 26,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -10707,7 +10707,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 90000,
@@ -10739,7 +10739,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -10763,7 +10763,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 3,
     Salary: 100000,
@@ -10771,7 +10771,7 @@ export const data = [
   {
     Age: 37,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 10,
     Salary: 155000,
@@ -10779,7 +10779,7 @@ export const data = [
   {
     Age: 44,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 12,
     Salary: 170000,
@@ -10803,7 +10803,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -10819,7 +10819,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 140000,
@@ -10827,7 +10827,7 @@ export const data = [
   {
     Age: 25,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 60000,
@@ -10851,7 +10851,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 130000,
@@ -10883,7 +10883,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 6,
     Salary: 130000,
@@ -10891,7 +10891,7 @@ export const data = [
   {
     Age: 24,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 60000,
@@ -10899,7 +10899,7 @@ export const data = [
   {
     Age: 44,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 11,
     Salary: 170000,
@@ -10907,7 +10907,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 7,
     Salary: 140000,
@@ -10915,7 +10915,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 4,
     Salary: 110000,
@@ -10923,7 +10923,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -10931,7 +10931,7 @@ export const data = [
   {
     Age: 37,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 9,
     Salary: 145000,
@@ -10955,7 +10955,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -10963,7 +10963,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 4,
     Salary: 95000,
@@ -10971,7 +10971,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 3,
     Salary: 100000,
@@ -10995,7 +10995,7 @@ export const data = [
   {
     Age: 38,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 10,
     Salary: 155000,
@@ -11011,7 +11011,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 6,
     Salary: 125000,
@@ -11027,7 +11027,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 7,
     Salary: 140000,
@@ -11043,7 +11043,7 @@ export const data = [
   {
     Age: 44,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 11,
     Salary: 170000,
@@ -11051,7 +11051,7 @@ export const data = [
   {
     Age: 37,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 9,
     Salary: 150000,
@@ -11059,7 +11059,7 @@ export const data = [
   {
     Age: 24,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 1,
     Salary: 60000,
@@ -11067,7 +11067,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -11083,7 +11083,7 @@ export const data = [
   {
     Age: 24,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -11091,7 +11091,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -11107,7 +11107,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 140000,
@@ -11123,7 +11123,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -11147,7 +11147,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 6,
     Salary: 130000,
@@ -11155,7 +11155,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 4,
     Salary: 110000,
@@ -11171,7 +11171,7 @@ export const data = [
   {
     Age: 37,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 9,
     Salary: 145000,
@@ -11195,7 +11195,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 7,
     Salary: 140000,
@@ -11211,7 +11211,7 @@ export const data = [
   {
     Age: 37,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 10,
     Salary: 155000,
@@ -11235,7 +11235,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 6,
     Salary: 130000,
@@ -11243,7 +11243,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 3,
     Salary: 85000,
@@ -11259,7 +11259,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -11267,7 +11267,7 @@ export const data = [
   {
     Age: 26,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -11283,7 +11283,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 120000,
@@ -11291,7 +11291,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -11299,7 +11299,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 90000,
@@ -11331,7 +11331,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 4,
     Salary: 110000,
@@ -11347,7 +11347,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -11363,7 +11363,7 @@ export const data = [
   {
     Age: 23,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -11371,7 +11371,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 130000,
@@ -11387,7 +11387,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 5,
     Salary: 120000,
@@ -11395,7 +11395,7 @@ export const data = [
   {
     Age: 38,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 10,
     Salary: 155000,
@@ -11411,7 +11411,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 3,
     Salary: 100000,
@@ -11419,7 +11419,7 @@ export const data = [
   {
     Age: 37,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 9,
     Salary: 150000,
@@ -11427,7 +11427,7 @@ export const data = [
   {
     Age: 44,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 12,
     Salary: 170000,
@@ -11435,7 +11435,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -11443,7 +11443,7 @@ export const data = [
   {
     Age: 38,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 10,
     Salary: 155000,
@@ -11467,7 +11467,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -11483,7 +11483,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 140000,
@@ -11491,7 +11491,7 @@ export const data = [
   {
     Age: 25,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -11515,7 +11515,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 130000,
@@ -11547,7 +11547,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 6,
     Salary: 130000,
@@ -11555,7 +11555,7 @@ export const data = [
   {
     Age: 24,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 60000,
@@ -11563,7 +11563,7 @@ export const data = [
   {
     Age: 44,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 11,
     Salary: 170000,
@@ -11571,7 +11571,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 7,
     Salary: 140000,
@@ -11579,7 +11579,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 4,
     Salary: 110000,
@@ -11587,7 +11587,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -11595,7 +11595,7 @@ export const data = [
   {
     Age: 37,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 9,
     Salary: 145000,
@@ -11619,7 +11619,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -11627,7 +11627,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 4,
     Salary: 95000,
@@ -11635,7 +11635,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 3,
     Salary: 100000,
@@ -11659,7 +11659,7 @@ export const data = [
   {
     Age: 38,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 10,
     Salary: 155000,
@@ -11675,7 +11675,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 6,
     Salary: 125000,
@@ -11691,7 +11691,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 7,
     Salary: 140000,
@@ -11707,7 +11707,7 @@ export const data = [
   {
     Age: 44,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 11,
     Salary: 170000,
@@ -11715,7 +11715,7 @@ export const data = [
   {
     Age: 37,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 9,
     Salary: 150000,
@@ -11723,7 +11723,7 @@ export const data = [
   {
     Age: 24,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 1,
     Salary: 60000,
@@ -11731,7 +11731,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -11747,7 +11747,7 @@ export const data = [
   {
     Age: 24,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -11755,7 +11755,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -11771,7 +11771,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 140000,
@@ -11787,7 +11787,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -11811,7 +11811,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 6,
     Salary: 125000,
@@ -11827,7 +11827,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -11843,7 +11843,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -11851,7 +11851,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -11859,7 +11859,7 @@ export const data = [
   {
     Age: 44,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 11,
     Salary: 170000,
@@ -11883,7 +11883,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 6,
     Salary: 130000,
@@ -11891,7 +11891,7 @@ export const data = [
   {
     Age: 38,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 10,
     Salary: 155000,
@@ -11907,7 +11907,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -11923,7 +11923,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 7,
     Salary: 135000,
@@ -11931,7 +11931,7 @@ export const data = [
   {
     Age: 24,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -11947,7 +11947,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -11963,7 +11963,7 @@ export const data = [
   {
     Age: 44,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 11,
     Salary: 170000,
@@ -11971,7 +11971,7 @@ export const data = [
   {
     Age: 37,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 9,
     Salary: 150000,
@@ -11987,7 +11987,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -12003,7 +12003,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 6,
     Salary: 125000,
@@ -12019,7 +12019,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -12027,7 +12027,7 @@ export const data = [
   {
     Age: 38,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 10,
     Salary: 155000,
@@ -12035,7 +12035,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -12059,7 +12059,7 @@ export const data = [
   {
     Age: 44,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 11,
     Salary: 170000,
@@ -12075,7 +12075,7 @@ export const data = [
   {
     Age: 37,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 9,
     Salary: 150000,
@@ -12083,7 +12083,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -12091,7 +12091,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -12107,7 +12107,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 7,
     Salary: 135000,
@@ -12115,7 +12115,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -12131,7 +12131,7 @@ export const data = [
   {
     Age: 38,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 10,
     Salary: 155000,
@@ -12139,7 +12139,7 @@ export const data = [
   {
     Age: 44,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 11,
     Salary: 170000,
@@ -12155,7 +12155,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -12171,7 +12171,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 6,
     Salary: 125000,
@@ -12187,7 +12187,7 @@ export const data = [
   {
     Age: 37,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 9,
     Salary: 150000,
@@ -12195,7 +12195,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -12203,7 +12203,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -12211,7 +12211,7 @@ export const data = [
   {
     Age: 34,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 5,
     Salary: 95000,
@@ -12219,7 +12219,7 @@ export const data = [
   {
     Age: 43,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 12,
     Salary: 170000,
@@ -12227,7 +12227,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 2,
     Salary: 75000,
@@ -12243,7 +12243,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 135000,
@@ -12259,7 +12259,7 @@ export const data = [
   {
     Age: 23,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -12283,7 +12283,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -12291,7 +12291,7 @@ export const data = [
   {
     Age: 34,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 6,
     Salary: 120000,
@@ -12323,7 +12323,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -12331,7 +12331,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 130000,
@@ -12339,7 +12339,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -12347,7 +12347,7 @@ export const data = [
   {
     Age: 44,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 11,
     Salary: 170000,
@@ -12355,7 +12355,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 6,
     Salary: 125000,
@@ -12363,7 +12363,7 @@ export const data = [
   {
     Age: 38,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 10,
     Salary: 155000,
@@ -12371,7 +12371,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -12387,7 +12387,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 7,
     Salary: 140000,
@@ -12395,7 +12395,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 6,
     Salary: 130000,
@@ -12403,7 +12403,7 @@ export const data = [
   {
     Age: 38,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 10,
     Salary: 155000,
@@ -12419,7 +12419,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -12427,7 +12427,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -12443,7 +12443,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 3,
     Salary: 100000,
@@ -12467,7 +12467,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 7,
     Salary: 135000,
@@ -12483,7 +12483,7 @@ export const data = [
   {
     Age: 24,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -12491,7 +12491,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -12507,7 +12507,7 @@ export const data = [
   {
     Age: 24,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -12515,7 +12515,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -12531,7 +12531,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 140000,
@@ -12547,7 +12547,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -12571,7 +12571,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 6,
     Salary: 125000,
@@ -12587,7 +12587,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -12603,7 +12603,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -12611,7 +12611,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -12619,7 +12619,7 @@ export const data = [
   {
     Age: 44,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 11,
     Salary: 170000,
@@ -12643,7 +12643,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 6,
     Salary: 130000,
@@ -12651,7 +12651,7 @@ export const data = [
   {
     Age: 38,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 10,
     Salary: 155000,
@@ -12667,7 +12667,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -12683,7 +12683,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 7,
     Salary: 135000,
@@ -12691,7 +12691,7 @@ export const data = [
   {
     Age: 24,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -12707,7 +12707,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -12723,7 +12723,7 @@ export const data = [
   {
     Age: 44,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 11,
     Salary: 170000,
@@ -12731,7 +12731,7 @@ export const data = [
   {
     Age: 37,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 9,
     Salary: 150000,
@@ -12747,7 +12747,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -12763,7 +12763,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 6,
     Salary: 125000,
@@ -12787,7 +12787,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -12803,7 +12803,7 @@ export const data = [
   {
     Age: 38,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 10,
     Salary: 155000,
@@ -12819,7 +12819,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -12827,7 +12827,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 140000,
@@ -12843,7 +12843,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -12851,7 +12851,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -12875,7 +12875,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 7,
     Salary: 135000,
@@ -12891,7 +12891,7 @@ export const data = [
   {
     Age: 24,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -12899,7 +12899,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -12915,7 +12915,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 3,
     Salary: 100000,
@@ -12939,7 +12939,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 6,
     Salary: 125000,
@@ -12955,7 +12955,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -12971,7 +12971,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -12979,7 +12979,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -12987,7 +12987,7 @@ export const data = [
   {
     Age: 44,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 11,
     Salary: 170000,
@@ -13011,7 +13011,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 6,
     Salary: 130000,
@@ -13019,7 +13019,7 @@ export const data = [
   {
     Age: 38,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 10,
     Salary: 155000,
@@ -13035,7 +13035,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -13051,7 +13051,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 7,
     Salary: 135000,
@@ -13059,7 +13059,7 @@ export const data = [
   {
     Age: 24,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -13075,7 +13075,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -13091,7 +13091,7 @@ export const data = [
   {
     Age: 44,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 11,
     Salary: 170000,
@@ -13099,7 +13099,7 @@ export const data = [
   {
     Age: 37,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 9,
     Salary: 150000,
@@ -13115,7 +13115,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -13131,7 +13131,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Project Engineer",
     "Years of Experience": 6,
     Salary: 125000,
@@ -13155,7 +13155,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -13171,7 +13171,7 @@ export const data = [
   {
     Age: 38,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 10,
     Salary: 155000,
@@ -13179,7 +13179,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 7,
     Salary: 120000,
@@ -13187,7 +13187,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 90000,
@@ -13203,7 +13203,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 130000,
@@ -13219,7 +13219,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 2,
     Salary: 70000,
@@ -13235,7 +13235,7 @@ export const data = [
   {
     Age: 26,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -13259,7 +13259,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -13267,7 +13267,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 11,
     Salary: 160000,
@@ -13275,7 +13275,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 6,
     Salary: 110000,
@@ -13291,7 +13291,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 85000,
@@ -13307,7 +13307,7 @@ export const data = [
   {
     Age: 25,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -13323,7 +13323,7 @@ export const data = [
   {
     Age: 35,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -13331,7 +13331,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 90000,
@@ -13347,7 +13347,7 @@ export const data = [
   {
     Age: 35,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 8,
     Salary: 145000,
@@ -13363,7 +13363,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -13371,7 +13371,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 6,
     Salary: 110000,
@@ -13387,7 +13387,7 @@ export const data = [
   {
     Age: 26,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -13411,7 +13411,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -13419,7 +13419,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 11,
     Salary: 160000,
@@ -13427,7 +13427,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 6,
     Salary: 110000,
@@ -13443,7 +13443,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 85000,
@@ -13459,7 +13459,7 @@ export const data = [
   {
     Age: 25,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -13475,7 +13475,7 @@ export const data = [
   {
     Age: 35,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -13483,7 +13483,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 90000,
@@ -13499,7 +13499,7 @@ export const data = [
   {
     Age: 35,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 8,
     Salary: 145000,
@@ -13515,7 +13515,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -13523,7 +13523,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 6,
     Salary: 110000,
@@ -13539,7 +13539,7 @@ export const data = [
   {
     Age: 26,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -13563,7 +13563,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -13571,7 +13571,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 11,
     Salary: 160000,
@@ -13579,7 +13579,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 6,
     Salary: 110000,
@@ -13595,7 +13595,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 85000,
@@ -13611,7 +13611,7 @@ export const data = [
   {
     Age: 25,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -13627,7 +13627,7 @@ export const data = [
   {
     Age: 35,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -13635,7 +13635,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 90000,
@@ -13651,7 +13651,7 @@ export const data = [
   {
     Age: 35,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 8,
     Salary: 145000,
@@ -13667,7 +13667,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -13675,7 +13675,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 6,
     Salary: 110000,
@@ -13691,7 +13691,7 @@ export const data = [
   {
     Age: 26,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -13715,7 +13715,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -13723,7 +13723,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 11,
     Salary: 160000,
@@ -13731,7 +13731,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 6,
     Salary: 110000,
@@ -13747,7 +13747,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 85000,
@@ -13763,7 +13763,7 @@ export const data = [
   {
     Age: 25,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -13779,7 +13779,7 @@ export const data = [
   {
     Age: 35,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -13787,7 +13787,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 90000,
@@ -13803,7 +13803,7 @@ export const data = [
   {
     Age: 35,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 8,
     Salary: 145000,
@@ -13819,7 +13819,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -13827,7 +13827,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 6,
     Salary: 110000,
@@ -13843,7 +13843,7 @@ export const data = [
   {
     Age: 26,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -13867,7 +13867,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -13875,7 +13875,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 11,
     Salary: 160000,
@@ -13883,7 +13883,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 6,
     Salary: 110000,
@@ -13899,7 +13899,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 85000,
@@ -13915,7 +13915,7 @@ export const data = [
   {
     Age: 25,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -13931,7 +13931,7 @@ export const data = [
   {
     Age: 35,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -13939,7 +13939,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 90000,
@@ -13955,7 +13955,7 @@ export const data = [
   {
     Age: 35,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 8,
     Salary: 145000,
@@ -13971,7 +13971,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -13979,7 +13979,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 6,
     Salary: 110000,
@@ -13995,7 +13995,7 @@ export const data = [
   {
     Age: 26,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -14019,7 +14019,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -14027,7 +14027,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Senior Software Engineer",
     "Years of Experience": 11,
     Salary: 160000,
@@ -14035,7 +14035,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 6,
     Salary: 110000,
@@ -14051,7 +14051,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 85000,
@@ -14067,7 +14067,7 @@ export const data = [
   {
     Age: 25,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -14083,7 +14083,7 @@ export const data = [
   {
     Age: 35,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -14091,7 +14091,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 90000,
@@ -14107,7 +14107,7 @@ export const data = [
   {
     Age: 35,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 8,
     Salary: 145000,
@@ -14123,7 +14123,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -14131,7 +14131,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 6,
     Salary: 110000,
@@ -14147,7 +14147,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -14155,7 +14155,7 @@ export const data = [
   {
     Age: 42,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 13,
     Salary: 170000,
@@ -14163,7 +14163,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -14179,7 +14179,7 @@ export const data = [
   {
     Age: 34,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 130000,
@@ -14187,7 +14187,7 @@ export const data = [
   {
     Age: 38,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 11,
     Salary: 155000,
@@ -14195,7 +14195,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -14211,7 +14211,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -14227,7 +14227,7 @@ export const data = [
   {
     Age: 35,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 8,
     Salary: 145000,
@@ -14235,7 +14235,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Front end Developer",
     "Years of Experience": 4,
     Salary: 90000,
@@ -14251,7 +14251,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 4,
     Salary: 95000,
@@ -14259,7 +14259,7 @@ export const data = [
   {
     Age: 41,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 13,
     Salary: 170000,
@@ -14267,7 +14267,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -14283,7 +14283,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -14291,7 +14291,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 12,
     Salary: 160000,
@@ -14299,7 +14299,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 5,
     Salary: 100000,
@@ -14315,7 +14315,7 @@ export const data = [
   {
     Age: 25,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -14331,7 +14331,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -14347,7 +14347,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 9,
     Salary: 150000,
@@ -14355,7 +14355,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -14371,7 +14371,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -14379,7 +14379,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 12,
     Salary: 160000,
@@ -14387,7 +14387,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 5,
     Salary: 100000,
@@ -14403,7 +14403,7 @@ export const data = [
   {
     Age: 25,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -14419,7 +14419,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -14435,7 +14435,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 9,
     Salary: 150000,
@@ -14443,7 +14443,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -14459,7 +14459,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -14467,7 +14467,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 12,
     Salary: 160000,
@@ -14475,7 +14475,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 5,
     Salary: 100000,
@@ -14491,7 +14491,7 @@ export const data = [
   {
     Age: 25,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -14507,7 +14507,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -14523,7 +14523,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 9,
     Salary: 150000,
@@ -14531,7 +14531,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -14547,7 +14547,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -14555,7 +14555,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 12,
     Salary: 160000,
@@ -14563,7 +14563,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 5,
     Salary: 100000,
@@ -14579,7 +14579,7 @@ export const data = [
   {
     Age: 25,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -14595,7 +14595,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -14611,7 +14611,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 9,
     Salary: 150000,
@@ -14619,7 +14619,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -14635,7 +14635,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -14643,7 +14643,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 12,
     Salary: 160000,
@@ -14651,7 +14651,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 5,
     Salary: 100000,
@@ -14667,7 +14667,7 @@ export const data = [
   {
     Age: 25,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -14683,7 +14683,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -14699,7 +14699,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 9,
     Salary: 150000,
@@ -14707,7 +14707,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -14723,7 +14723,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -14731,7 +14731,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 12,
     Salary: 160000,
@@ -14739,7 +14739,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 5,
     Salary: 100000,
@@ -14755,7 +14755,7 @@ export const data = [
   {
     Age: 25,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -14771,7 +14771,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -14787,7 +14787,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 9,
     Salary: 150000,
@@ -14795,7 +14795,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -14811,7 +14811,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -14819,7 +14819,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 12,
     Salary: 160000,
@@ -14827,7 +14827,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 5,
     Salary: 100000,
@@ -14843,7 +14843,7 @@ export const data = [
   {
     Age: 25,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -14859,7 +14859,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -14875,7 +14875,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 9,
     Salary: 150000,
@@ -14883,7 +14883,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -14899,7 +14899,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -14907,7 +14907,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 12,
     Salary: 160000,
@@ -14915,7 +14915,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 5,
     Salary: 100000,
@@ -14931,7 +14931,7 @@ export const data = [
   {
     Age: 25,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -14947,7 +14947,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -14963,7 +14963,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 9,
     Salary: 150000,
@@ -14971,7 +14971,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -14987,7 +14987,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -14995,7 +14995,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 12,
     Salary: 160000,
@@ -15003,7 +15003,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 5,
     Salary: 100000,
@@ -15019,7 +15019,7 @@ export const data = [
   {
     Age: 25,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 55000,
@@ -15035,7 +15035,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -15051,7 +15051,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 9,
     Salary: 150000,
@@ -15059,7 +15059,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -15075,7 +15075,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -15083,7 +15083,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 12,
     Salary: 160000,
@@ -15091,7 +15091,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 5,
     Salary: 100000,
@@ -15107,7 +15107,7 @@ export const data = [
   {
     Age: 25,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 1,
     Salary: 550,
@@ -15115,7 +15115,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 4,
     Salary: 90000,
@@ -15123,7 +15123,7 @@ export const data = [
   {
     Age: 40,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 12,
     Salary: 160000,
@@ -15131,7 +15131,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -15147,7 +15147,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -15155,7 +15155,7 @@ export const data = [
   {
     Age: 37,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 10,
     Salary: 150000,
@@ -15163,7 +15163,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -15179,7 +15179,7 @@ export const data = [
   {
     Age: 35,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -15195,7 +15195,7 @@ export const data = [
   {
     Age: 34,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 130000,
@@ -15203,7 +15203,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Front end Developer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -15219,7 +15219,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 5,
     Salary: 100000,
@@ -15227,7 +15227,7 @@ export const data = [
   {
     Age: 42,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 13,
     Salary: 170000,
@@ -15235,7 +15235,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -15251,7 +15251,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 4,
     Salary: 90000,
@@ -15259,7 +15259,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 12,
     Salary: 160000,
@@ -15267,7 +15267,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -15283,7 +15283,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -15291,7 +15291,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 8,
     Salary: 135000,
@@ -15299,7 +15299,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -15315,7 +15315,7 @@ export const data = [
   {
     Age: 34,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -15331,7 +15331,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 130000,
@@ -15339,7 +15339,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Front end Developer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -15355,7 +15355,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 5,
     Salary: 100000,
@@ -15363,7 +15363,7 @@ export const data = [
   {
     Age: 42,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 13,
     Salary: 170000,
@@ -15371,7 +15371,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -15387,7 +15387,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 4,
     Salary: 90000,
@@ -15395,7 +15395,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 12,
     Salary: 160000,
@@ -15403,7 +15403,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -15419,7 +15419,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -15427,7 +15427,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 8,
     Salary: 135000,
@@ -15435,7 +15435,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -15451,7 +15451,7 @@ export const data = [
   {
     Age: 34,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -15467,7 +15467,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 130000,
@@ -15475,7 +15475,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Front end Developer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -15491,7 +15491,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 5,
     Salary: 100000,
@@ -15499,7 +15499,7 @@ export const data = [
   {
     Age: 42,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 13,
     Salary: 170000,
@@ -15507,7 +15507,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -15523,7 +15523,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 4,
     Salary: 90000,
@@ -15531,7 +15531,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 12,
     Salary: 160000,
@@ -15539,7 +15539,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -15555,7 +15555,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -15563,7 +15563,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 8,
     Salary: 135000,
@@ -15571,7 +15571,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -15587,7 +15587,7 @@ export const data = [
   {
     Age: 34,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -15603,7 +15603,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 130000,
@@ -15611,7 +15611,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Front end Developer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -15627,7 +15627,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 5,
     Salary: 100000,
@@ -15635,7 +15635,7 @@ export const data = [
   {
     Age: 42,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 13,
     Salary: 170000,
@@ -15643,7 +15643,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -15659,7 +15659,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 4,
     Salary: 90000,
@@ -15667,7 +15667,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 12,
     Salary: 160000,
@@ -15675,7 +15675,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -15691,7 +15691,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -15699,7 +15699,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 8,
     Salary: 135000,
@@ -15707,7 +15707,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -15723,7 +15723,7 @@ export const data = [
   {
     Age: 34,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -15739,7 +15739,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 130000,
@@ -15747,7 +15747,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Front end Developer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -15763,7 +15763,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 5,
     Salary: 100000,
@@ -15771,7 +15771,7 @@ export const data = [
   {
     Age: 42,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 13,
     Salary: 170000,
@@ -15779,7 +15779,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -15795,7 +15795,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 4,
     Salary: 90000,
@@ -15803,7 +15803,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 12,
     Salary: 160000,
@@ -15811,7 +15811,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -15827,7 +15827,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -15835,7 +15835,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 8,
     Salary: 135000,
@@ -15843,7 +15843,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -15859,7 +15859,7 @@ export const data = [
   {
     Age: 34,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -15875,7 +15875,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 130000,
@@ -15883,7 +15883,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Front end Developer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -15899,7 +15899,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 5,
     Salary: 100000,
@@ -15907,7 +15907,7 @@ export const data = [
   {
     Age: 42,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 13,
     Salary: 170000,
@@ -15915,7 +15915,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -15931,7 +15931,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 4,
     Salary: 90000,
@@ -15939,7 +15939,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 12,
     Salary: 160000,
@@ -15947,7 +15947,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -15963,7 +15963,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -15971,7 +15971,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 8,
     Salary: 135000,
@@ -15979,7 +15979,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -15995,7 +15995,7 @@ export const data = [
   {
     Age: 34,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -16011,7 +16011,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 130000,
@@ -16019,7 +16019,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Front end Developer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -16035,7 +16035,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 5,
     Salary: 100000,
@@ -16043,7 +16043,7 @@ export const data = [
   {
     Age: 42,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 13,
     Salary: 170000,
@@ -16051,7 +16051,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -16067,7 +16067,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 4,
     Salary: 90000,
@@ -16083,7 +16083,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 6,
     Salary: 110000,
@@ -16091,7 +16091,7 @@ export const data = [
   {
     Age: 37,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 10,
     Salary: 150000,
@@ -16099,7 +16099,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -16115,7 +16115,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -16123,7 +16123,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 8,
     Salary: 135000,
@@ -16131,7 +16131,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -16147,7 +16147,7 @@ export const data = [
   {
     Age: 34,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -16163,7 +16163,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 130000,
@@ -16171,7 +16171,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Front end Developer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -16187,7 +16187,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 5,
     Salary: 100000,
@@ -16195,7 +16195,7 @@ export const data = [
   {
     Age: 42,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 13,
     Salary: 170000,
@@ -16203,7 +16203,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -16219,7 +16219,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 4,
     Salary: 90000,
@@ -16227,7 +16227,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 12,
     Salary: 160000,
@@ -16235,7 +16235,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -16251,7 +16251,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -16259,7 +16259,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 8,
     Salary: 135000,
@@ -16267,7 +16267,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -16283,7 +16283,7 @@ export const data = [
   {
     Age: 34,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -16299,7 +16299,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 130000,
@@ -16307,7 +16307,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Front end Developer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -16323,7 +16323,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 5,
     Salary: 100000,
@@ -16331,7 +16331,7 @@ export const data = [
   {
     Age: 42,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 13,
     Salary: 170000,
@@ -16339,7 +16339,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -16355,7 +16355,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 4,
     Salary: 90000,
@@ -16363,7 +16363,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 12,
     Salary: 160000,
@@ -16371,7 +16371,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -16387,7 +16387,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -16395,7 +16395,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 8,
     Salary: 135000,
@@ -16403,7 +16403,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -16419,7 +16419,7 @@ export const data = [
   {
     Age: 34,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -16435,7 +16435,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 130000,
@@ -16443,7 +16443,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Front end Developer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -16459,7 +16459,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 5,
     Salary: 100000,
@@ -16467,7 +16467,7 @@ export const data = [
   {
     Age: 42,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 13,
     Salary: 170000,
@@ -16475,7 +16475,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -16491,7 +16491,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 4,
     Salary: 90000,
@@ -16499,7 +16499,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 12,
     Salary: 160000,
@@ -16507,7 +16507,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -16523,7 +16523,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -16531,7 +16531,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 8,
     Salary: 135000,
@@ -16539,7 +16539,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -16555,7 +16555,7 @@ export const data = [
   {
     Age: 34,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -16571,7 +16571,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 130000,
@@ -16579,7 +16579,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Front end Developer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -16595,7 +16595,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 5,
     Salary: 100000,
@@ -16603,7 +16603,7 @@ export const data = [
   {
     Age: 42,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 13,
     Salary: 170000,
@@ -16611,7 +16611,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -16627,7 +16627,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 4,
     Salary: 90000,
@@ -16635,7 +16635,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 12,
     Salary: 160000,
@@ -16643,7 +16643,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -16659,7 +16659,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -16667,7 +16667,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 8,
     Salary: 135000,
@@ -16675,7 +16675,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -16691,7 +16691,7 @@ export const data = [
   {
     Age: 34,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -16707,7 +16707,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 130000,
@@ -16715,7 +16715,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Front end Developer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -16731,7 +16731,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 5,
     Salary: 100000,
@@ -16739,7 +16739,7 @@ export const data = [
   {
     Age: 42,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 13,
     Salary: 170000,
@@ -16747,7 +16747,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -16763,7 +16763,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 4,
     Salary: 90000,
@@ -16771,7 +16771,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 12,
     Salary: 160000,
@@ -16779,7 +16779,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -16795,7 +16795,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -16803,7 +16803,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 8,
     Salary: 135000,
@@ -16811,7 +16811,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -16827,7 +16827,7 @@ export const data = [
   {
     Age: 34,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -16843,7 +16843,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 130000,
@@ -16851,7 +16851,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Front end Developer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -16867,7 +16867,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 5,
     Salary: 100000,
@@ -16875,7 +16875,7 @@ export const data = [
   {
     Age: 42,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 13,
     Salary: 170000,
@@ -16883,7 +16883,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -16899,7 +16899,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 4,
     Salary: 90000,
@@ -16907,7 +16907,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 12,
     Salary: 160000,
@@ -16915,7 +16915,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -16931,7 +16931,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -16939,7 +16939,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 8,
     Salary: 135000,
@@ -16947,7 +16947,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -16963,7 +16963,7 @@ export const data = [
   {
     Age: 34,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -16979,7 +16979,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 130000,
@@ -16987,7 +16987,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Front end Developer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -17003,7 +17003,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 5,
     Salary: 100000,
@@ -17011,7 +17011,7 @@ export const data = [
   {
     Age: 42,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 13,
     Salary: 170000,
@@ -17019,7 +17019,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -17035,7 +17035,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 4,
     Salary: 90000,
@@ -17043,7 +17043,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 8,
     Salary: 130000,
@@ -17051,7 +17051,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -17067,7 +17067,7 @@ export const data = [
   {
     Age: 35,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -17075,7 +17075,7 @@ export const data = [
   {
     Age: 42,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 12,
     Salary: 160000,
@@ -17083,7 +17083,7 @@ export const data = [
   {
     Age: 28,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 55000,
@@ -17099,7 +17099,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 7,
     Salary: 120000,
@@ -17115,7 +17115,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 5,
     Salary: 100000,
@@ -17123,7 +17123,7 @@ export const data = [
   {
     Age: 34,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Front end Developer",
     "Years of Experience": 9,
     Salary: 150000,
@@ -17131,7 +17131,7 @@ export const data = [
   {
     Age: 37,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 11,
     Salary: 170000,
@@ -17139,7 +17139,7 @@ export const data = [
   {
     Age: 26,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -17155,7 +17155,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 4,
     Salary: 90000,
@@ -17163,7 +17163,7 @@ export const data = [
   {
     Age: 41,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 14,
     Salary: 180000,
@@ -17171,7 +17171,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 6,
     Salary: 110000,
@@ -17179,7 +17179,7 @@ export const data = [
   {
     Age: 37,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 10,
     Salary: 150000,
@@ -17187,7 +17187,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -17203,7 +17203,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -17211,7 +17211,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 8,
     Salary: 135000,
@@ -17219,7 +17219,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -17235,7 +17235,7 @@ export const data = [
   {
     Age: 34,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -17251,7 +17251,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 130000,
@@ -17259,7 +17259,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Front end Developer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -17275,7 +17275,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 5,
     Salary: 100000,
@@ -17283,7 +17283,7 @@ export const data = [
   {
     Age: 42,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 13,
     Salary: 170000,
@@ -17291,7 +17291,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -17307,7 +17307,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 4,
     Salary: 90000,
@@ -17315,7 +17315,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 12,
     Salary: 160000,
@@ -17323,7 +17323,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -17339,7 +17339,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -17347,7 +17347,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 8,
     Salary: 135000,
@@ -17355,7 +17355,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -17371,7 +17371,7 @@ export const data = [
   {
     Age: 34,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -17387,7 +17387,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 130000,
@@ -17395,7 +17395,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Front end Developer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -17411,7 +17411,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 5,
     Salary: 100000,
@@ -17419,7 +17419,7 @@ export const data = [
   {
     Age: 42,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 13,
     Salary: 170000,
@@ -17427,7 +17427,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -17443,7 +17443,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 4,
     Salary: 90000,
@@ -17451,7 +17451,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 12,
     Salary: 160000,
@@ -17459,7 +17459,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -17475,7 +17475,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -17483,7 +17483,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 8,
     Salary: 135000,
@@ -17491,7 +17491,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -17507,7 +17507,7 @@ export const data = [
   {
     Age: 34,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -17523,7 +17523,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 130000,
@@ -17531,7 +17531,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Front end Developer",
     "Years of Experience": 5,
     Salary: 105000,
@@ -17547,7 +17547,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 6,
     Salary: 95000,
@@ -17555,7 +17555,7 @@ export const data = [
   {
     Age: 39,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 11,
     Salary: 170000,
@@ -17563,7 +17563,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -17579,7 +17579,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 7,
     Salary: 120000,
@@ -17595,7 +17595,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 5,
     Salary: 100000,
@@ -17603,7 +17603,7 @@ export const data = [
   {
     Age: 34,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Front end Developer",
     "Years of Experience": 9,
     Salary: 150000,
@@ -17611,7 +17611,7 @@ export const data = [
   {
     Age: 37,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 11,
     Salary: 170000,
@@ -17619,7 +17619,7 @@ export const data = [
   {
     Age: 26,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -17635,7 +17635,7 @@ export const data = [
   {
     Age: 29,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 4,
     Salary: 90000,
@@ -17643,7 +17643,7 @@ export const data = [
   {
     Age: 41,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 14,
     Salary: 180000,
@@ -17651,7 +17651,7 @@ export const data = [
   {
     Age: 31,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 6,
     Salary: 110000,
@@ -17659,7 +17659,7 @@ export const data = [
   {
     Age: 37,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 10,
     Salary: 150000,
@@ -17667,7 +17667,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Back end Developer",
     "Years of Experience": 3,
     Salary: 80000,
@@ -17683,7 +17683,7 @@ export const data = [
   {
     Age: 32,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 6,
     Salary: 115000,
@@ -17691,7 +17691,7 @@ export const data = [
   {
     Age: 36,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Software Engineer Manager",
     "Years of Experience": 8,
     Salary: 135000,
@@ -17699,7 +17699,7 @@ export const data = [
   {
     Age: 27,
     Gender: "Male",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Front end Developer",
     "Years of Experience": 2,
     Salary: 65000,
@@ -17715,7 +17715,7 @@ export const data = [
   {
     Age: 34,
     Gender: "Male",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Back end Developer",
     "Years of Experience": 8,
     Salary: 140000,
@@ -17731,7 +17731,7 @@ export const data = [
   {
     Age: 33,
     Gender: "Female",
-    "Education Level": "Bachelor's Degree",
+    "Education Level": "Bachelor's",
     "Job Title": "Full Stack Engineer",
     "Years of Experience": 7,
     Salary: 130000,
@@ -17739,7 +17739,7 @@ export const data = [
   {
     Age: 30,
     Gender: "Female",
-    "Education Level": "Master's Degree",
+    "Education Level": "Master's",
     "Job Title": "Front end Developer",
     "Years of Experience": 5,
     Salary: 105000,
