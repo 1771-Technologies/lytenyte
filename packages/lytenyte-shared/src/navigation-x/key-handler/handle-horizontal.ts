@@ -105,6 +105,7 @@ export function handleHorizontal({
         },
       );
     }, BACKOFF_RUNS());
+
     return;
   }
 

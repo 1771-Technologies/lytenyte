@@ -4,6 +4,12 @@ import { handleViewportFocused } from "./key-handler/handle-viewport-focused.js"
 import { nearestFocusable } from "./nearest-focusable.js";
 import type { PositionState, RootCellFn } from "./+types.js";
 import { handleHorizontal } from "./key-handler/handle-horizontal.js";
+import { runWithBackoff } from "../js-utils/index.js";
+import { handleFocus } from "./key-handler/handle-focus.js";
+import { queryHeaderCellsAtRow } from "./query.js";
+import { BACKOFF_RUNS } from "./constants.js";
+import { getRowIndex } from "./attributes.js";
+import type { PositionHeaderCell } from "../+types.js";
 
 export interface NavigatorParams {
   readonly viewport: HTMLElement;
@@ -108,6 +114,41 @@ export function navigator({
         scrollIntoView,
         viewport,
       });
+    }
+
+    if (key === downKey || key === upKey) {
+      const isUp = key === upKey;
+
+      if (pos.kind === "header-group-cell" || pos.kind === "header-cell") {
+        const index = Number.parseInt(getRowIndex(active)!);
+        const nextIndex = isUp ? index - 1 : index + 1;
+        if (nextIndex < 0) return;
+
+        const colIndex = pos.colIndex;
+        scrollIntoView({ column: pos.colIndex, behavior: "instant" });
+        done();
+
+        runWithBackoff(() => {
+          return handleFocus(
+            false,
+            () => {
+              const cells = queryHeaderCellsAtRow(gridId, nextIndex, viewport);
+
+              return (
+                cells.find((el) => {
+                  const range = el.getAttribute("data-ln-header-range");
+                  if (!range) return;
+                  const [start, end] = range.split(",").map((c) => Number.parseInt(c));
+                  return colIndex >= start && colIndex < end;
+                }) ?? null
+              );
+            },
+            () => {
+              cp.set((p) => ({ ...p, colIndex: pos.colIndex }) as PositionHeaderCell);
+            },
+          );
+        }, BACKOFF_RUNS());
+      }
     }
   };
 
