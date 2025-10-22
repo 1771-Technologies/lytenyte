@@ -21,6 +21,7 @@ export default function Layout({ children }: PropsWithChildren) {
       links={[
         {
           text: "1771 Technologies home page",
+          external: false,
           url: "https://www.1771technologies.com/",
           type: "icon",
           icon: <Logo1771 />,
