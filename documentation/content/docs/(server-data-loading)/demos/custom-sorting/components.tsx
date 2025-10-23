@@ -18,28 +18,28 @@ function SkeletonLoading() {
   );
 }
 
-export const NameCellRenderer: CellRendererFn<MovieData> = (params) => {
-  if (params.row.loading) return <SkeletonLoading />;
+export const NameCellRenderer: CellRendererFn<MovieData> = ({ grid, row, column }) => {
+  if (grid.api.rowIsLeaf(row) && !row.data && row.loading) return <SkeletonLoading />;
 
-  const field = params.grid.api.columnField(params.column, params.row) as string;
+  const field = grid.api.columnField(column, row) as string;
 
   return <div className="overflow-hidden text-ellipsis">{field}</div>;
 };
 
-export const ReleasedRenderer: CellRendererFn<MovieData> = (params) => {
-  if (params.row.loading) return <SkeletonLoading />;
+export const ReleasedRenderer: CellRendererFn<MovieData> = ({ grid, row, column }) => {
+  if (grid.api.rowIsLeaf(row) && !row.data && row.loading) return <SkeletonLoading />;
 
-  const field = params.grid.api.columnField(params.column, params.row) as string;
+  const field = grid.api.columnField(column, row) as string;
 
   const formatted = field ? format(field, "dd MMM yyyy") : "-";
 
   return <div>{formatted}</div>;
 };
 
-export const GenreRenderer: CellRendererFn<MovieData> = (params) => {
-  if (params.row.loading) return <SkeletonLoading />;
+export const GenreRenderer: CellRendererFn<MovieData> = ({ grid, row, column }) => {
+  if (grid.api.rowIsLeaf(row) && !row.data && row.loading) return <SkeletonLoading />;
 
-  const field = params.grid.api.columnField(params.column, params.row) as string;
+  const field = grid.api.columnField(column, row) as string;
 
   const splits = field ? field.split(",") : [];
 
@@ -89,10 +89,10 @@ const MonitorPlayIcon = (props: JSX.IntrinsicElements["svg"]) => {
   );
 };
 
-export const TypeRenderer: CellRendererFn<MovieData> = (params) => {
-  if (params.row.loading) return <SkeletonLoading />;
+export const TypeRenderer: CellRendererFn<MovieData> = ({ grid, row, column }) => {
+  if (grid.api.rowIsLeaf(row) && !row.data && row.loading) return <SkeletonLoading />;
 
-  const field = params.grid.api.columnField(params.column, params.row) as string;
+  const field = grid.api.columnField(column, row) as string;
 
   const isMovie = field === "Movie";
   const Icon = isMovie ? FilmRealIcon : MonitorPlayIcon;
@@ -107,10 +107,10 @@ export const TypeRenderer: CellRendererFn<MovieData> = (params) => {
   );
 };
 
-export const RatingRenderer: CellRendererFn<MovieData> = (params) => {
-  if (params.row.loading) return <SkeletonLoading />;
+export const RatingRenderer: CellRendererFn<MovieData> = ({ grid, row, column }) => {
+  if (grid.api.rowIsLeaf(row) && !row.data && row.loading) return <SkeletonLoading />;
 
-  const field = params.grid.api.columnField(params.column, params.row) as string;
+  const field = grid.api.columnField(column, row) as string;
   const rating = field ? Number.parseFloat(field.split("/")[0]) : null;
   if (rating == null || Number.isNaN(rating)) return "-";
 

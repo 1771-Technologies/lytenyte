@@ -15,7 +15,7 @@ function SkeletonLoading() {
 }
 
 export const NameCellRenderer: CellRendererFn<MovieData> = (params) => {
-  if (params.row.loading) return <SkeletonLoading />;
+  if (params.row.loading && !params.row.data) return <SkeletonLoading />;
 
   const field = params.grid.api.columnField(params.column, params.row) as string;
 
@@ -23,8 +23,7 @@ export const NameCellRenderer: CellRendererFn<MovieData> = (params) => {
 };
 
 export const ReleasedRenderer: CellRendererFn<MovieData> = (params) => {
-  if (params.row.loading) return <SkeletonLoading />;
-
+  if (params.row.loading && !params.row.data) return <SkeletonLoading />;
   const field = params.grid.api.columnField(params.column, params.row) as string;
 
   const formatted = field ? format(field, "dd MMM yyyy") : "-";
@@ -33,8 +32,7 @@ export const ReleasedRenderer: CellRendererFn<MovieData> = (params) => {
 };
 
 export const GenreRenderer: CellRendererFn<MovieData> = (params) => {
-  if (params.row.loading) return <SkeletonLoading />;
-
+  if (params.row.loading && !params.row.data) return <SkeletonLoading />;
   const field = params.grid.api.columnField(params.column, params.row) as string;
 
   const splits = field ? field.split(",") : [];
@@ -86,8 +84,7 @@ const MonitorPlayIcon = (props: JSX.IntrinsicElements["svg"]) => {
 };
 
 export const TypeRenderer: CellRendererFn<MovieData> = (params) => {
-  if (params.row.loading) return <SkeletonLoading />;
-
+  if (params.row.loading && !params.row.data) return <SkeletonLoading />;
   const field = params.grid.api.columnField(params.column, params.row) as string;
 
   const isMovie = field === "Movie";
@@ -104,8 +101,7 @@ export const TypeRenderer: CellRendererFn<MovieData> = (params) => {
 };
 
 export const RatingRenderer: CellRendererFn<MovieData> = (params) => {
-  if (params.row.loading) return <SkeletonLoading />;
-
+  if (params.row.loading && !params.row.data) return <SkeletonLoading />;
   const field = params.grid.api.columnField(params.column, params.row) as string;
   const rating = field ? Number.parseFloat(field.split("/")[0]) : null;
   if (rating == null || Number.isNaN(rating)) return "-";
@@ -131,8 +127,7 @@ export const RatingRenderer: CellRendererFn<MovieData> = (params) => {
 };
 
 export const LinkRenderer: CellRendererFn<MovieData> = (params) => {
-  if (params.row.loading) return <SkeletonLoading />;
-
+  if (params.row.loading && !params.row.data) return <SkeletonLoading />;
   const field = params.grid.api.columnField(params.column, params.row) as string;
 
   return (

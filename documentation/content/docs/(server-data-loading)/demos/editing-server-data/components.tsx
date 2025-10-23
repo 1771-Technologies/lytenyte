@@ -25,7 +25,7 @@ const formatter = new Intl.NumberFormat("en-Us", {
 export function SalaryRenderer({ grid, row, column }: CellRendererParams<SalaryData>) {
   const field = grid.api.columnField(column, row);
 
-  if (grid.api.rowIsLeaf(row) && row.loading) return <SkeletonLoading />;
+  if (grid.api.rowIsLeaf(row) && !row.data && row.loading) return <SkeletonLoading />;
 
   if (typeof field !== "number") return null;
 
@@ -37,7 +37,7 @@ export function SalaryRenderer({ grid, row, column }: CellRendererParams<SalaryD
 export function YearsOfExperienceRenderer({ grid, row, column }: CellRendererParams<SalaryData>) {
   const field = grid.api.columnField(column, row);
 
-  if (grid.api.rowIsLeaf(row) && row.loading) return <SkeletonLoading />;
+  if (grid.api.rowIsLeaf(row) && !row.data && row.loading) return <SkeletonLoading />;
 
   if (typeof field !== "number") return null;
 
@@ -52,7 +52,7 @@ export function YearsOfExperienceRenderer({ grid, row, column }: CellRendererPar
 export function AgeCellRenderer({ grid, row, column }: CellRendererParams<SalaryData>) {
   const field = grid.api.columnField(column, row);
 
-  if (grid.api.rowIsLeaf(row) && row.loading) return <SkeletonLoading />;
+  if (grid.api.rowIsLeaf(row) && !row.data && row.loading) return <SkeletonLoading />;
 
   if (typeof field !== "number") return null;
 
@@ -65,7 +65,7 @@ export function AgeCellRenderer({ grid, row, column }: CellRendererParams<Salary
 }
 
 export function BaseCellRenderer({ row, column, grid }: CellRendererParams<any>) {
-  if (grid.api.rowIsLeaf(row) && row.loading) return <SkeletonLoading />;
+  if (grid.api.rowIsLeaf(row) && !row.data && row.loading) return <SkeletonLoading />;
 
   const field = grid.api.columnField(column, row);
 
@@ -73,7 +73,7 @@ export function BaseCellRenderer({ row, column, grid }: CellRendererParams<any>)
 }
 
 export function GroupCellRenderer({ row, grid }: CellRendererParams<any>) {
-  if (grid.api.rowIsLeaf(row) && row.loading) return <SkeletonLoading />;
+  if (grid.api.rowIsLeaf(row) && !row.data && row.loading) return <SkeletonLoading />;
 
   if (grid.api.rowIsLeaf(row)) return <div />;
 
