@@ -56,7 +56,7 @@ function RowDetailImpl<T>({ row, rowIndex }: { row: RowNode<T>; rowIndex: number
     >
       <div
         tabIndex={0}
-        data-ln-gridid={cx.grid.state.gridId.get()}
+        data-ln-gridid={cx.gridId}
         data-ln-row-detail
         data-ln-rowindex={rowIndex}
         style={{
