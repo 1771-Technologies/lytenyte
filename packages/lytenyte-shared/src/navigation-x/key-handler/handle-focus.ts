@@ -2,7 +2,7 @@ import { getLastTabbable } from "../../dom-utils/index.js";
 
 export function handleFocus(
   isBack: boolean,
-  queryCell: () => HTMLElement | null,
+  queryCell: () => HTMLElement | null | undefined,
   postFocus?: () => void,
 ) {
   const cell = queryCell();

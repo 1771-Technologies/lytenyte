@@ -30,6 +30,11 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
       gridId: ctx.gridId,
       scrollIntoView: ctx.grid.api.scrollIntoView,
       getRootCell: ctx.grid.api.cellRoot,
+      isRowDetailExpanded: (r) => {
+        const row = ctx.grid.api.rowByIndex(r);
+        if (!row) return false;
+        return ctx.grid.api.rowDetailIsExpanded(row);
+      },
       position: focusActive,
 
       downKey: "ArrowDown",
@@ -42,15 +47,9 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
       pageUpKey: "PageUp",
 
       columnCount: ctx.grid.state.columnMeta.get().columnsVisible.length,
+      rowCount: ctx.grid.state.rowDataStore.rowCount.get(),
     });
-  }, [
-    ctx.grid.api.cellRoot,
-    ctx.grid.api.scrollIntoView,
-    ctx.grid.state.columnMeta,
-    ctx.gridId,
-    focusActive,
-    vp,
-  ]);
+  }, [ctx.grid, ctx.gridId, focusActive, vp]);
 
   return (
     <>

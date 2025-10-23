@@ -1,5 +1,12 @@
 import { expect, test } from "vitest";
-import { queryCell, queryFirstFocusable, queryHeader } from "../query.js";
+import {
+  queryCell,
+  queryFirstFocusable,
+  queryFloatingCell,
+  queryHeader,
+  queryHeaderCell,
+  queryHeaderCellsAtRow,
+} from "../query.js";
 
 test("queryHeader should return the correct elements", () => {
   const div = document.createElement("div");
@@ -41,4 +48,40 @@ test("queryCell", () => {
 
   expect(queryCell("x", 0, 0, document.body)).toEqual(x);
   expect(queryCell("y", 0, 0, document.body)).toEqual(null);
+});
+
+test("queryFloatingCell", () => {
+  const div = document.createElement("div");
+  const x = document.createElement("div");
+  x.setAttribute("data-ln-gridid", "x");
+  x.setAttribute("data-ln-header-cell", "true");
+  x.setAttribute("data-ln-header-floating", "true");
+  x.setAttribute("data-ln-colindex", "1");
+  div.appendChild(x);
+
+  document.body.appendChild(div);
+  expect(queryFloatingCell("x", 1, div)).toEqual(x);
+});
+
+test("queryFloatingCell", () => {
+  const div = document.createElement("div");
+  const x = document.createElement("div");
+  x.setAttribute("data-ln-gridid", "x");
+  x.setAttribute("data-ln-header-cell", "true");
+  x.setAttribute("data-ln-colindex", "1");
+  div.appendChild(x);
+
+  document.body.appendChild(div);
+  expect(queryHeaderCell("x", 1, div)).toEqual(x);
+});
+
+test("queryHeaderCellsAtRow", () => {
+  const div = document.createElement("div");
+  const x = document.createElement("div");
+  x.setAttribute("data-ln-gridid", "x");
+  x.setAttribute("data-ln-header-row-1", "true");
+  div.appendChild(x);
+
+  document.body.appendChild(div);
+  expect(queryHeaderCellsAtRow("x", 1, div)).toEqual([x]);
 });

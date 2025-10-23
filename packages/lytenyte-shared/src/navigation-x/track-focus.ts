@@ -2,6 +2,7 @@ import type { PositionUnion } from "../+types";
 import { getWindow } from "../dom-utils/get-window.js";
 import { equal } from "../js-utils/index.js";
 import type { PositionState } from "./+types";
+import { cellEqual } from "./cell-equal.js";
 import { nearestFocusable } from "./nearest-focusable.js";
 import { positionFromElement } from "./position-from-element.js";
 
@@ -24,10 +25,7 @@ export function trackFocus({
 
   const onFocusChange = (pos: PositionUnion | null) => {
     const c = focusActive.get();
-    if (pos?.kind === "cell" && c?.kind === "cell") {
-      if (pos.rowIndex === c.rowIndex && pos.colIndex === c.colIndex) return;
-      if (pos.root && c.root && equal(c.root, pos.root)) return;
-    } else if (equal(pos, focusActive.get())) return;
+    if ((pos?.kind === "cell" && c?.kind === "cell" && cellEqual(pos, c)) || equal(pos, c)) return;
 
     focusActive.set(pos);
   };

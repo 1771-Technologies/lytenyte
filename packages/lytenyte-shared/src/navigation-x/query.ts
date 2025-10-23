@@ -1,4 +1,4 @@
-export const queryHeader = (gridId: string, element: HTMLElement) => {
+export const queryHeader = (gridId: string, element: HTMLElement): HTMLElement | null => {
   return element.querySelector(`[data-ln-gridid="${gridId}"][data-ln-header="true"]`);
 };
 
@@ -22,6 +22,16 @@ export const queryCell = (
 ): HTMLElement | null => {
   return element.querySelector(
     `[data-ln-gridid="${gridId}"][data-ln-cell="true"][data-ln-rowindex="${rowIndex}"][data-ln-colindex="${colIndex}"]`,
+  );
+};
+
+export const queryFullWidthRow = (
+  gridId: string,
+  rowIndex: number,
+  element: HTMLElement,
+): HTMLElement | null => {
+  return element.querySelector(
+    `[data-ln-gridid="${gridId}"][data-ln-row="true"][data-ln-rowtype="full-width"][data-ln-rowindex="${rowIndex}"] > *`,
   );
 };
 
@@ -52,5 +62,15 @@ export const queryHeaderCellsAtRow = (
 ): HTMLElement[] => {
   return Array.from(
     element.querySelectorAll(`[data-ln-gridid="${gridId}"][data-ln-header-row-${rowIndex}="true"]`),
+  );
+};
+
+export const queryDetail = (
+  gridId: string,
+  rowIndex: number,
+  element: HTMLElement,
+): HTMLElement | null => {
+  return element.querySelector(
+    `[data-ln-gridid="${gridId}"][data-ln-rowindex="${rowIndex}"][data-ln-row-detail="true"]`,
   );
 };

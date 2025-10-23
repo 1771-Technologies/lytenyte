@@ -51,6 +51,8 @@ const HeaderImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(
         role="rowgroup"
         data-ln-header
         data-ln-gridid={gridId}
+        data-ln-rowcount={rows}
+        data-ln-floating={floatingRowEnabled ? true : undefined}
         style={{
           ...props.style,
           width,

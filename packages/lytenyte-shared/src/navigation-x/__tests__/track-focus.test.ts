@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import type { PositionUnion } from "../../+types";
 import { trackFocus } from "../track-focus.js";
-import { userEvent } from "@vitest/browser/context";
+import { userEvent } from "vitest/browser";
 import { wait } from "../../js-utils/index.js";
 
 // -- Write tests for this
