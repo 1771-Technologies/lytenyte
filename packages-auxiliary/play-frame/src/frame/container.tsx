@@ -1,4 +1,3 @@
-import "./main.css";
 import type { PropsWithChildren } from "react";
 
 export function Container(props: PropsWithChildren) {

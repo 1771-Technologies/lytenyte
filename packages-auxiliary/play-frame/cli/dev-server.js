@@ -1,43 +1,17 @@
 import express from "express";
-import react from "@vitejs/plugin-react";
+import { viteConfig } from "./vite-config.js";
 import { createServer as createViteServer } from "vite";
 import { HTML_TEMPLATE } from "./constants.js";
 import os from "os";
 
-async function createServer() {
+export async function runDevServer({ port } = {}) {
   const app = express();
 
   const vite = await createViteServer({
     server: { middlewareMode: true },
     appType: "custom",
     resolve: {},
-    plugins: [
-      {
-        name: "playframe",
-        enforce: "pre",
-        resolveId: (id) => {
-          if (id === "/@play-entry" || id === "@play-entry") {
-            return "@play-entry";
-          }
-          if (id === "playframe") return "playframe";
-        },
-        load: (id) => {
-          if (id === "playframe") {
-            return `
-              const files = import.meta.glob("/src/**/*.*play.tsx", { eager: true });
-
-              export default files
-            `;
-          }
-
-          if (id === "@play-entry") {
-            return `import "@1771technologies/play-frame/entry"`;
-          }
-        },
-      },
-
-      react(),
-    ],
+    ...viteConfig,
   });
 
   app.use(vite.middlewares);
@@ -46,11 +20,10 @@ async function createServer() {
     const url = req.originalUrl;
 
     const template = await vite.transformIndexHtml(url, HTML_TEMPLATE);
-
     res.status(200).set({ "Content-Type": "text/html" }).end(template);
   });
 
-  const PORT = 4000;
+  const PORT = port ?? 4000;
   app.listen(PORT, () => {
     // Get network interfaces
     const interfaces = os.networkInterfaces();
@@ -71,5 +44,3 @@ async function createServer() {
     });
   });
 }
-
-createServer();

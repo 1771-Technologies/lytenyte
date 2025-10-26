@@ -1,0 +1,6 @@
+@layer {
+  .dark {
+    color-scheme: dark;
+    color: white;
+  }
+}

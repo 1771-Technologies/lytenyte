@@ -1,6 +1,19 @@
-import { Button, DropdownMenu } from "@radix-ui/themes";
-import type { Frame } from "./+types.js";
-import { FrameIcon } from "@radix-ui/react-icons";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu.js";
+import { Button } from "@/components/ui/button.js";
+import { FrameIcon } from "lucide-react";
+import { Kbd, KbdGroup } from "./ui/kbd.js";
+
+export interface Frame {
+  readonly name: string;
+  readonly width: number | undefined | string;
+  readonly height: number | undefined | string;
+}
 
 export interface FrameDropdownProps {
   readonly frame: Frame;
@@ -9,37 +22,35 @@ export interface FrameDropdownProps {
 
 export function FrameDropdown({ frame, onFrameChange }: FrameDropdownProps) {
   return (
-    <DropdownMenu.Root>
-      <DropdownMenu.Trigger>
-        <Button variant="soft" aria-label="Frame size menu trigger">
-          <FrameIcon />
-          Frame: {frame.name}
-          <DropdownMenu.TriggerIcon />
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button size="sm" variant={"outline"} aria-label="Frame size menu trigger">
+          <FrameIcon /> {frame.name}
         </Button>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content
-        size="1"
-        style={{ minWidth: "var(--radix-dropdown-menu-trigger-width)" }}
-      >
+      </DropdownMenuTrigger>
+      <DropdownMenuContent style={{ minWidth: "var(--radix-dropdown-menu-trigger-width)" }}>
         {frames.map((f, i) => {
-          if (typeof f === "string") return <DropdownMenu.Separator key={i} />;
+          if (typeof f === "string") return <DropdownMenuSeparator key={i} />;
 
           const shortcut = f.label ?? `${f.width}x${f.height}`;
 
           return (
-            <DropdownMenu.Item
+            <DropdownMenuItem
               key={f.name}
-              shortcut={shortcut}
+              className="flex items-center justify-between gap-2"
               onClick={() => {
                 onFrameChange(f);
               }}
             >
               {f.name}
-            </DropdownMenu.Item>
+              <KbdGroup>
+                <Kbd className="px-2 font-mono">{shortcut}</Kbd>
+              </KbdGroup>
+            </DropdownMenuItem>
           );
         })}
-      </DropdownMenu.Content>
-    </DropdownMenu.Root>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
 

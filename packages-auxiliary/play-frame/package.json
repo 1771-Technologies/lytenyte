@@ -1,8 +1,7 @@
 {
   "name": "@1771technologies/play-frame",
   "bin": {
-    "play": "./bin.js",
-    "play-build": "./build.js"
+    "play": "./cli/cli.js"
   },
   "version": "0.0.16",
   "description": "",
@@ -35,14 +34,32 @@
   },
   "keywords": [],
   "dependencies": {
+    "@radix-ui/react-accordion": "^1.2.12",
+    "@radix-ui/react-dialog": "^1.1.15",
+    "@radix-ui/react-dropdown-menu": "^2.1.16",
     "@radix-ui/react-icons": "1.3.2",
+    "@radix-ui/react-select": "^2.2.6",
+    "@radix-ui/react-separator": "^1.1.7",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-toggle": "^1.1.10",
+    "@radix-ui/react-tooltip": "^1.2.8",
     "@radix-ui/themes": "3.2.1",
+    "@tailwindcss/vite": "^4.1.16",
     "axe-core": "4.10.3",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "commander": "^14.0.2",
     "express": "4.21.2",
     "jotai": "2.13.0",
+    "lucide-react": "^0.544.0",
     "next-themes": "0.4.6",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss": "^4.1.13",
     "unique-selector": "0.5.0",
-    "usehooks-ts": "3.1.1"
+    "usehooks-ts": "3.1.1",
+    "vaul": "^1.1.2",
+    "vite-tsconfig-paths": "^5.1.4",
+    "zod": "^4.1.11"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",
@@ -51,6 +68,7 @@
   "devDependencies": {
     "@types/express": "5.0.3",
     "@types/react": "19.1.8",
-    "@types/react-dom": "19.1.6"
+    "@types/react-dom": "19.1.6",
+    "tw-animate-css": "^1.4.0"
   }
 }
