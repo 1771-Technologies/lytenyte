@@ -1,6 +1,6 @@
 import { describe, expect, test, vi } from "vitest";
 import { addDomEvent } from "../add-dom-event.js";
-import { userEvent } from "@vitest/browser/context";
+import { userEvent } from "vitest/browser";
 import { wait } from "../../js-utils/index.js";
 
 describe("addDomEvent", () => {

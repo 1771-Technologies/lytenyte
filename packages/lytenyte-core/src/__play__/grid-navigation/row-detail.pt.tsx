@@ -3,7 +3,7 @@ import { expect, test } from "vitest";
 import { render } from "vitest-browser-react";
 import RowDetail from "./row-detail.play.js";
 import { getCellQuery } from "@1771technologies/lytenyte-shared";
-import { userEvent } from "@vitest/browser/context";
+import { userEvent } from "vitest/browser";
 import RowDetailWithSpans from "./row-detail-with-spans.play.js";
 
 test("when row details are present it should be possible to navigate across them", async () => {
@@ -23,39 +23,39 @@ test("when row details are present it should be possible to navigate across them
   await wait();
   await userEvent.keyboard("{ArrowDown}");
   await wait();
-  await expect.element(document.activeElement).toHaveTextContent("Detail A");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Detail A");
 
   await userEvent.keyboard("{ArrowLeft}");
   await wait();
-  await expect.element(document.activeElement).toHaveTextContent("Detail ADetail B");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Detail ADetail B");
   await userEvent.keyboard("{ArrowLeft}");
   await wait();
-  await expect.element(document.activeElement).toHaveTextContent("Detail B");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Detail B");
   await userEvent.keyboard("{ArrowLeft}");
   await wait();
-  await expect.element(document.activeElement).toHaveTextContent("Detail A");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Detail A");
   await userEvent.keyboard("{ArrowDown}");
   await wait();
-  await expect.element(document.activeElement).toHaveTextContent("X");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("X");
   await userEvent.keyboard("{ArrowDown}");
   await wait();
-  await expect.element(document.activeElement).toHaveTextContent("ABC");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("ABC");
   await userEvent.keyboard("{ArrowUp}");
   await wait();
-  await expect.element(document.activeElement).toHaveTextContent("X");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("X");
   await userEvent.keyboard("{ArrowUp}");
   await wait();
-  await expect.element(document.activeElement).toHaveTextContent("Detail A");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Detail A");
   await userEvent.keyboard("{ArrowDown}");
   await wait();
-  await expect.element(document.activeElement).toHaveTextContent("X");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("X");
   await userEvent.keyboard("{ArrowLeft}");
   await wait();
-  await expect.element(document.activeElement).toHaveTextContent("X");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("X");
   await userEvent.click(document.activeElement!);
   await wait();
   await userEvent.keyboard("{ArrowDown}");
-  await expect.element(document.activeElement).toHaveTextContent("Detail A");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Detail A");
 });
 
 test("when there are row spans it should be cutoff when the detail is expanded", async () => {
@@ -69,11 +69,11 @@ test("when there are row spans it should be cutoff when the detail is expanded",
   ourFirstCell.focus();
   await expect.element(ourFirstCell).toHaveFocus();
 
-  await expect.element(document.activeElement).toHaveTextContent("unemployed");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("unemployed");
   await userEvent.keyboard("{ArrowDown}");
   await wait();
-  await expect.element(document.activeElement).toHaveTextContent("management");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("management");
   await userEvent.keyboard("{ArrowDown}");
   await wait();
-  await expect.element(document.activeElement).toHaveTextContent("Detail A");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Detail A");
 });

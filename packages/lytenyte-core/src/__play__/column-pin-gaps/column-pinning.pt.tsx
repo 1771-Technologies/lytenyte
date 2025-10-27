@@ -2,7 +2,7 @@ import { expect, test } from "vitest";
 import { render } from "vitest-browser-react";
 import ColumnPinning from "./column-pinning.play.js";
 import { wait } from "@1771technologies/lytenyte-shared";
-import { userEvent } from "@vitest/browser/context";
+import { userEvent } from "vitest/browser";
 
 test("should handle one start", async () => {
   const screen = render(<ColumnPinning initial="One Start" />);
