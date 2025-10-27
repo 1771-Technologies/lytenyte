@@ -1,5 +1,11 @@
 # @1771technologies/lytenyte-shared
 
+## 1.0.18
+
+### Patch Changes
+
+- New themes
+
 ## 1.0.17
 
 ### Patch Changes
