@@ -1,4 +1,5 @@
 "use client";
+import "./main.css";
 
 import { useClientRowDataSource, Grid } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
@@ -44,7 +45,7 @@ export default function GridTheming() {
   const view = grid.view.useValue();
 
   return (
-    <div className="lng-grid" style={{ display: "flex", flexDirection: "column" }}>
+    <div className={"lng-grid" + " " + theme} style={{ display: "flex", flexDirection: "column" }}>
       <div style={{ padding: 8, display: "flex", gap: 8 }}>
         <label>Select Theme</label>
         <select
@@ -56,9 +57,12 @@ export default function GridTheming() {
           <option value="lng1771-term256">Term 256</option>
           <option value="dark">Dark</option>
           <option value="light">Light</option>
+          <option value="lng1771-shadcn light">Shadcn Light</option>
+          <option value="lng1771-shadcn dark">Shadcn Dark</option>
+          <option value="lng1771-cotton-candy">Cotton Candy</option>
         </select>
       </div>
-      <div style={{ height: 500 }} className={theme}>
+      <div style={{ height: 500 }}>
         <Grid.Root grid={grid}>
           <Grid.Viewport>
             <Grid.Header>
