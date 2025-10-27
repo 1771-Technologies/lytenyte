@@ -2,7 +2,7 @@ import { expect, test } from "vitest";
 import { render } from "vitest-browser-react";
 import NormalLayout from "./normal-layout.play.js";
 import PinGapped from "./pinned-gap-layout.play.js";
-import { userEvent } from "@vitest/browser/context";
+import { userEvent } from "vitest/browser";
 import { getCellQuery } from "@1771technologies/lytenyte-shared";
 import { wait } from "@1771technologies/lytenyte-shared";
 import CellSpans from "./cell-spans.play.js";
@@ -70,17 +70,17 @@ test("when a cell is focused, we can navigate to the start and end", async () =>
   ];
 
   for (const ex of expected) {
-    await expect.element(document.activeElement).toHaveTextContent(ex);
+    await expect.element(document.activeElement as HTMLElement).toHaveTextContent(ex);
     await userEvent.keyboard("{ArrowRight}");
     await wait();
   }
   // Pressing arrow right again should result in a no op
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent(expected.at(-1)!);
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent(expected.at(-1)!);
 
   // Now go in reverse
   for (const ex of expected.toReversed()) {
-    await expect.element(document.activeElement).toHaveTextContent(ex);
+    await expect.element(document.activeElement as HTMLElement).toHaveTextContent(ex);
     await userEvent.keyboard("{ArrowLeft}");
     await wait();
   }
@@ -119,17 +119,17 @@ test("when a cell is focused, we can navigate to the start and end in rtl", asyn
   ];
 
   for (const ex of expected) {
-    await expect.element(document.activeElement).toHaveTextContent(ex);
+    await expect.element(document.activeElement as HTMLElement).toHaveTextContent(ex);
     await userEvent.keyboard("{ArrowLeft}");
     await wait();
   }
   // Pressing arrow right again should result in a no op
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent(expected.at(-1)!);
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent(expected.at(-1)!);
 
   // Now go in reverse
   for (const ex of expected.toReversed()) {
-    await expect.element(document.activeElement).toHaveTextContent(ex);
+    await expect.element(document.activeElement as HTMLElement).toHaveTextContent(ex);
     await userEvent.keyboard("{ArrowRight}");
     await wait();
   }
@@ -149,17 +149,17 @@ test("when there columns pinned left and right and there is a gap the navigation
   const expected = ["35", "management", "single", "yes"];
 
   for (const ex of expected) {
-    await expect.element(document.activeElement).toHaveTextContent(ex);
+    await expect.element(document.activeElement as HTMLElement).toHaveTextContent(ex);
     await userEvent.keyboard("{ArrowLeft}");
     await wait();
   }
   // Pressing arrow right again should result in a no op
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent(expected.at(-1)!);
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent(expected.at(-1)!);
 
   // Now go in reverse
   for (const ex of expected.toReversed()) {
-    await expect.element(document.activeElement).toHaveTextContent(ex);
+    await expect.element(document.activeElement as HTMLElement).toHaveTextContent(ex);
     await userEvent.keyboard("{ArrowRight}");
     await wait();
   }
@@ -193,13 +193,13 @@ test("when there are column spans the grid should be able to navigate across the
 
   const verify = async () => {
     for (const ex of expected) {
-      await expect.element(document.activeElement).toHaveTextContent(ex);
+      await expect.element(document.activeElement as HTMLElement).toHaveTextContent(ex);
       await userEvent.keyboard("{ArrowRight}");
       await wait(80);
     }
 
     for (const ex of expected.toReversed()) {
-      await expect.element(document.activeElement).toHaveTextContent(ex);
+      await expect.element(document.activeElement as HTMLElement).toHaveTextContent(ex);
       await userEvent.keyboard("{ArrowLeft}");
       await wait(80);
     }
@@ -344,10 +344,10 @@ test("when there are column spans the grid should be able to navigate across the
 
   await userEvent.keyboard("{Control>}{ArrowRight}{/Control}");
   await wait(100);
-  await expect.element(document.activeElement).toHaveTextContent("unknown");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("unknown");
   await userEvent.keyboard("{Control>}{ArrowLeft}{/Control}");
   await wait(100);
-  await expect.element(document.activeElement).toHaveTextContent("39");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("39");
 
   (document.querySelector(getCellQuery("x", 12, 0)) as HTMLElement).focus();
   expected = [
@@ -414,13 +414,13 @@ test("when there are column spans the grid should be able to navigate across the
 
   const verify = async () => {
     for (const ex of expected) {
-      await expect.element(document.activeElement).toHaveTextContent(ex);
+      await expect.element(document.activeElement as HTMLElement).toHaveTextContent(ex);
       await userEvent.keyboard("{ArrowLeft}");
       await wait(80);
     }
 
     for (const ex of expected.toReversed()) {
-      await expect.element(document.activeElement).toHaveTextContent(ex);
+      await expect.element(document.activeElement as HTMLElement).toHaveTextContent(ex);
       await userEvent.keyboard("{ArrowRight}");
       await wait(80);
     }
@@ -565,10 +565,10 @@ test("when there are column spans the grid should be able to navigate across the
 
   await userEvent.keyboard("{Control>}{ArrowLeft}{/Control}");
   await wait(100);
-  await expect.element(document.activeElement).toHaveTextContent("unknown");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("unknown");
   await userEvent.keyboard("{Control>}{ArrowRight}{/Control}");
   await wait(100);
-  await expect.element(document.activeElement).toHaveTextContent("39");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("39");
 
   (document.querySelector(getCellQuery("x", 12, 0)) as HTMLElement).focus();
   expected = [
@@ -618,48 +618,54 @@ test("when cells have interactive elements they should be navigable", async () =
   await wait();
 
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("A");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("A");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("B");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("B");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("C");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("C");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("PrevNot TabbableNext");
+  await expect
+    .element(document.activeElement as HTMLElement)
+    .toHaveTextContent("PrevNot TabbableNext");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("Prev");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Prev");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("Next");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Next");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("married");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("married");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("Next");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Next");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("Prev");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Prev");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("PrevNot TabbableNext");
+  await expect
+    .element(document.activeElement as HTMLElement)
+    .toHaveTextContent("PrevNot TabbableNext");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("C");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("C");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("B");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("B");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("A");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("A");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("ABC");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("ABC");
 
   (document.querySelector(getCellQuery("x", 5, 2)) as HTMLElement).focus();
-  await expect.element(document.activeElement).toHaveTextContent("747");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("747");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("PrevNot TabbableNext");
+  await expect
+    .element(document.activeElement as HTMLElement)
+    .toHaveTextContent("PrevNot TabbableNext");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("Prev");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Prev");
   (document.activeElement!.nextElementSibling as HTMLElement).focus();
-  await expect.element(document.activeElement).toHaveTextContent("Not Tabbable");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Not Tabbable");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("Next");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Next");
   (document.activeElement!.previousElementSibling as HTMLElement).focus();
-  await expect.element(document.activeElement).toHaveTextContent("Not Tabbable");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Not Tabbable");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("Prev");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Prev");
 });
 
 test("when cells have interactive elements they should be navigable rtl", async () => {
@@ -673,48 +679,54 @@ test("when cells have interactive elements they should be navigable rtl", async 
   await wait();
 
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("A");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("A");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("B");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("B");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("C");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("C");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("PrevNot TabbableNext");
+  await expect
+    .element(document.activeElement as HTMLElement)
+    .toHaveTextContent("PrevNot TabbableNext");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("Prev");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Prev");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("Next");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Next");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("married");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("married");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("Next");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Next");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("Prev");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Prev");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("PrevNot TabbableNext");
+  await expect
+    .element(document.activeElement as HTMLElement)
+    .toHaveTextContent("PrevNot TabbableNext");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("C");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("C");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("B");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("B");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("A");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("A");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("ABC");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("ABC");
 
   (document.querySelector(getCellQuery("x", 5, 2)) as HTMLElement).focus();
-  await expect.element(document.activeElement).toHaveTextContent("747");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("747");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("PrevNot TabbableNext");
+  await expect
+    .element(document.activeElement as HTMLElement)
+    .toHaveTextContent("PrevNot TabbableNext");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("Prev");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Prev");
   (document.activeElement!.nextElementSibling as HTMLElement).focus();
-  await expect.element(document.activeElement).toHaveTextContent("Not Tabbable");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Not Tabbable");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("Next");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Next");
   (document.activeElement!.previousElementSibling as HTMLElement).focus();
-  await expect.element(document.activeElement).toHaveTextContent("Not Tabbable");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Not Tabbable");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("Prev");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Prev");
 });
 
 test("full width row navigation should correctly handle the tabbables", async () => {
@@ -730,13 +742,13 @@ test("full width row navigation should correctly handle the tabbables", async ()
     ) as HTMLElement
   ).focus();
   await wait();
-  await expect.element(document.activeElement).toHaveTextContent("Nothing");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Nothing");
   await userEvent.keyboard("{ArrowLeft}");
   await wait();
-  await expect.element(document.activeElement).toHaveTextContent("Nothing");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Nothing");
   await userEvent.keyboard("{ArrowRight}");
   await wait();
-  await expect.element(document.activeElement).toHaveTextContent("Nothing");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Nothing");
 
   (
     document.querySelector(
@@ -744,19 +756,19 @@ test("full width row navigation should correctly handle the tabbables", async ()
     ) as HTMLElement
   ).focus();
   await wait();
-  await expect.element(document.activeElement).toHaveTextContent("ABC");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("ABC");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("A");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("A");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("B");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("B");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("C");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("C");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("A");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("A");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("ABC");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("ABC");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("C");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("C");
 });
 
 test("full width row navigation should correctly handle the tabbables rtl", async () => {
@@ -772,13 +784,13 @@ test("full width row navigation should correctly handle the tabbables rtl", asyn
     ) as HTMLElement
   ).focus();
   await wait();
-  await expect.element(document.activeElement).toHaveTextContent("Nothing");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Nothing");
   await userEvent.keyboard("{ArrowRight}");
   await wait();
-  await expect.element(document.activeElement).toHaveTextContent("Nothing");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Nothing");
   await userEvent.keyboard("{ArrowLeft}");
   await wait();
-  await expect.element(document.activeElement).toHaveTextContent("Nothing");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Nothing");
 
   (
     document.querySelector(
@@ -786,19 +798,19 @@ test("full width row navigation should correctly handle the tabbables rtl", asyn
     ) as HTMLElement
   ).focus();
   await wait();
-  await expect.element(document.activeElement).toHaveTextContent("ABC");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("ABC");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("A");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("A");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("B");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("B");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("C");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("C");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("A");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("A");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("ABC");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("ABC");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("C");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("C");
 });
 
 test("when a column span is large navigation should still work", async () => {
@@ -811,21 +823,21 @@ test("when a column span is large navigation should still work", async () => {
   (document.querySelector(getCellQuery("x", 0, 0)) as HTMLElement).focus();
   await wait(100);
 
-  await expect.element(document.activeElement).toHaveTextContent("30");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("30");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("-1");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("-1");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("0");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("0");
   await userEvent.keyboard("{ArrowRight}");
   await wait(100);
-  await expect.element(document.activeElement).toHaveTextContent("unknown");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("unknown");
   await userEvent.keyboard("{ArrowLeft}");
   await wait(100);
-  await expect.element(document.activeElement).toHaveTextContent("0");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("0");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("-1");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("-1");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("30");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("30");
 });
 
 test("when a column span is large navigation should still work rtl", async () => {
@@ -838,21 +850,21 @@ test("when a column span is large navigation should still work rtl", async () =>
   (document.querySelector(getCellQuery("x", 0, 0)) as HTMLElement).focus();
   await wait();
 
-  await expect.element(document.activeElement).toHaveTextContent("30");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("30");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("-1");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("-1");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("0");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("0");
   await userEvent.keyboard("{ArrowLeft}");
   await wait(100);
-  await expect.element(document.activeElement).toHaveTextContent("unknown");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("unknown");
   await userEvent.keyboard("{ArrowRight}");
   await wait(100);
-  await expect.element(document.activeElement).toHaveTextContent("0");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("0");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("-1");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("-1");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("30");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("30");
 });
 
 test("when the columns are pinned should be navigate across them", async () => {
@@ -867,22 +879,22 @@ test("when the columns are pinned should be navigate across them", async () => {
 
   const expected = ["30", "no", "no", "oct", "79", "1", "-1", "0", "unknown", "cellular", "19"];
   for (const ex of expected) {
-    await expect.element(document.activeElement).toHaveTextContent(ex);
+    await expect.element(document.activeElement as HTMLElement).toHaveTextContent(ex);
     await userEvent.keyboard("{ArrowRight}");
     await wait();
   }
   for (const ex of expected.toReversed()) {
-    await expect.element(document.activeElement).toHaveTextContent(ex);
+    await expect.element(document.activeElement as HTMLElement).toHaveTextContent(ex);
     await userEvent.keyboard("{ArrowLeft}");
     await wait();
   }
 
   await userEvent.keyboard("{Control>}{ArrowRight}{/Control}");
   await wait(100);
-  await expect.element(document.activeElement).toHaveTextContent("19");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("19");
   await userEvent.keyboard("{Control>}{ArrowLeft}{/Control}");
   await wait(100);
-  await expect.element(document.activeElement).toHaveTextContent("30");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("30");
 });
 
 test("when the columns are pinned should be navigate across them", async () => {
@@ -897,21 +909,21 @@ test("when the columns are pinned should be navigate across them", async () => {
 
   const expected = ["30", "no", "no", "oct", "79", "1", "-1", "0", "unknown", "cellular", "19"];
   for (const ex of expected) {
-    await expect.element(document.activeElement).toHaveTextContent(ex);
+    await expect.element(document.activeElement as HTMLElement).toHaveTextContent(ex);
     await userEvent.keyboard("{ArrowLeft}");
     await wait();
   }
   for (const ex of expected.toReversed()) {
-    await expect.element(document.activeElement).toHaveTextContent(ex);
+    await expect.element(document.activeElement as HTMLElement).toHaveTextContent(ex);
     await userEvent.keyboard("{ArrowRight}");
     await wait();
   }
 
   await userEvent.keyboard("{Control>}{ArrowLeft}{/Control}");
-  await expect.element(document.activeElement).toHaveTextContent("19");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("19");
   await userEvent.keyboard("{Control>}{ArrowRight}{/Control}");
   await wait(100);
-  await expect.element(document.activeElement).toHaveTextContent("30");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("30");
 });
 
 test("when the floating cell is focused should be to navigate through it", async () => {
@@ -925,17 +937,17 @@ test("when the floating cell is focused should be to navigate through it", async
   await wait();
 
   await userEvent.keyboard("{ArrowUp}");
-  await expect.element(document.activeElement).toHaveTextContent("age");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("age");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("marital");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("marital");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("default");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("default");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("housing");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("housing");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("default");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("default");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("marital");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("marital");
 });
 
 test("when the header is focused should be to navigate through it", async () => {
@@ -951,17 +963,17 @@ test("when the header is focused should be to navigate through it", async () => 
   await userEvent.keyboard("{ArrowUp}");
   await wait();
   await userEvent.keyboard("{ArrowUp}");
-  await expect.element(document.activeElement).toHaveTextContent("age");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("age");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("marital");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("marital");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("default");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("default");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("housing");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("housing");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("default");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("default");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("marital");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("marital");
 });
 
 test("when the header group is focused should be able to navigate through", async () => {
@@ -977,22 +989,22 @@ test("when the header group is focused should be able to navigate through", asyn
   await userEvent.keyboard("{ArrowUp}");
   await userEvent.keyboard("{ArrowUp}");
   await userEvent.keyboard("{ArrowUp}");
-  await expect.element(document.activeElement).toHaveTextContent("A-->B");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("A-->B");
   await userEvent.keyboard("{ArrowUp}");
-  await expect.element(document.activeElement).toHaveTextContent("A");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("A");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("T");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("T");
   await userEvent.keyboard("{ArrowDown}");
-  await expect.element(document.activeElement).toHaveTextContent("default");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("default");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect.element(document.activeElement).toHaveTextContent("marital");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("marital");
   await userEvent.keyboard("{ArrowRight}");
   await userEvent.keyboard("{ArrowRight}");
   await userEvent.keyboard("{ArrowRight}");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("contact");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("contact");
   await userEvent.keyboard("{ArrowUp}");
-  await expect.element(document.activeElement).toHaveTextContent("A-->B-->C");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("A-->B-->C");
   await userEvent.keyboard("{ArrowRight}");
-  await expect.element(document.activeElement).toHaveTextContent("day");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("day");
 });

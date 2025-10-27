@@ -1,4 +1,4 @@
-import { page } from "@vitest/browser/context";
+import { page } from "vitest/browser";
 import { describe, expect, test } from "vitest";
 import { getActiveElement } from "../get-active-element.js";
 import { wait } from "../../js-utils/index.js";

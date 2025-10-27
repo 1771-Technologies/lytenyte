@@ -1,6 +1,6 @@
 import { defineConfig, type TestProjectConfiguration } from "vitest/config";
 import react from "@vitejs/plugin-react";
-import { playwright } from "@vitest/browser/providers/playwright";
+import { playwright } from "@vitest/browser-playwright";
 
 const chromeConfig: TestProjectConfiguration = {
   extends: `${__dirname}/vitest.config.ts`,
