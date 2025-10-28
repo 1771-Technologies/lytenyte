@@ -1,11 +1,69 @@
 ---
-title: v1.0.0 (Latest)
+title: v1.0.18 (Latest)
 description: The latest changelog for LyteNyte Grid. Track new features,
   improvements, and changes with each release.
 ---
 
 import { V1Image } from "./components/release";
 import { DateTag } from "./components/date-tag";
+
+<Callout>
+
+Minor releases that include only internal code refactors or performance enhancements will not have
+a corresponding changelog entry. Changelog entries are added only for
+externally visible changes, such as bug fixes or new features.
+
+</Callout>
+
+## v1.0.18
+
+<DateTag>v1.0.18 - Oct 27, 2025</DateTag>
+
+Adds LyteNyte Grid to the [shadcn registry](https://ui.shadcn.com/docs/directory). See the
+[installation guide](/docs/intro-installation-shadcn) to get started with LyteNyte Grid in shadcn.
+
+Introduces three new prebuilt themes for LyteNyte Grid: **shadcn light**, **shadcn dark**, and **cotton candy**.
+See the [demo](https://www.1771technologies.com/demo) for live examples, or refer to the
+[theming guide](/docs/grid-theming) for instructions on using the prebuilt themes.
+
+## v1.0.17
+
+<DateTag>v1.0.17 - Oct 17, 2025</DateTag>
+
+Enhanced `useServerDataSource` interfaces. This patch adds several useful server data loading
+methods available from the returned server data source hook:
+
+```ts
+const ds = useServerDataSource({ });
+
+ds.[method_name] // use method here
+```
+
+- `refresh`: Triggers a new data fetch for the current view. Enables easy polling.
+- `requestForGroup`: Returns the [DataRequest](/docs/reference/row-data-source#datarequest) for a given group row.
+- `requestForNextSlice`: Returns the [DataRequest](/docs/reference/row-data-source#datarequest) for the next slice to aid optimistic data fetching.
+- `requestsForView`: Returns the [DataRequests](/docs/reference/row-data-source#datarequest) for the current view.
+- `seenRequests`: A writable set that lets users clear or add request IDs to LyteNyte Grid's seen requests cache.
+
+Additionally, the `useServerDataSource` hook now accepts an optional `dataFetchExternals` dependency array.
+Use this to make the server data source depend on external React state.
+
+See the [server data loading guides](/docs/server-data-loading-overview) for full details on using the server data source
+in LyteNyte Grid.
+
+### Other Fixes
+
+- Fixed `full-width` rows in Firefox not being positioned correctly in the view.
+
+## v1.0.16
+
+<DateTag>v1.0.16 - Oct 08, 2025</DateTag>
+
+**Bug fixes for Firefox**
+
+- Fixed columns pinned to the end of the grid not staying in place while scrolling.
+- Fixed master-detail rows causing overflow.
+- Fixed column header dragging for swapping columns.
 
 ## v1.0.0
 
