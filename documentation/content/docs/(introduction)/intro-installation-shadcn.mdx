@@ -1,0 +1,102 @@
+---
+title: Installation with Shadcn
+description:
+  Install LyteNyte Grid using the shadcn CLI. 1771 Technologies maintains a public registry
+  of preconfigured LyteNyte Grid components styled for shadcn.
+---
+
+## Before You Start
+
+Before adding LyteNyte Grid components, ensure your project is set up with shadcn.
+Follow the [shadcn/ui installation guide](https://ui.shadcn.com/docs/installation) for your framework
+to get started.
+
+## The `@lytenyte` Registry
+
+All the LyteNyte Grid components are available under the `@lytenyte` namespace. The shadcn CLI will
+already know how to locate our public registry. Simply run the command below to get started:
+
+<Tabs items={['pnpm', 'npm', 'yarn', 'bun']} className="bg-fd-card">
+
+<Tab value="pnpm" className="p-0 rounded-t-[0px] [&>div]:rounded-t-[0px]">
+
+```sh
+pnpm dlx shadcn@latest add @lytenyte/lytenyte-pro
+```
+
+</Tab>
+
+<Tab value="npm" className="p-0 rounded-t-[0px] [&>div]:rounded-t-[0px]">
+
+```sh
+npx shadcn@latest add @lytenyte/lytenyte-pro
+```
+
+</Tab>
+
+<Tab value="yarn" className="p-0 rounded-t-[0px] [&>div]:rounded-t-[0px]">
+
+```sh
+yarn shadcn@latest add @lytenyte/lytenyte-pro
+```
+
+</Tab>
+
+<Tab value="bun" className="p-0 rounded-t-[0px] [&>div]:rounded-t-[0px]">
+
+```sh
+bunx --bun shadcn@latest add @lytenyte/lytenyte-pro
+```
+
+</Tab>
+
+</Tabs>
+
+If you're using the Core edition of LyteNyte Grid, run the following instead:
+
+<Tabs items={['pnpm', 'npm', 'yarn', 'bun']} className="bg-fd-card">
+
+<Tab value="pnpm" className="p-0 rounded-t-[0px] [&>div]:rounded-t-[0px]">
+
+```sh
+pnpm dlx shadcn@latest add @lytenyte/lytenyte-core
+```
+
+</Tab>
+
+<Tab value="npm" className="p-0 rounded-t-[0px] [&>div]:rounded-t-[0px]">
+
+```sh
+npx shadcn@latest add @lytenyte/lytenyte-core
+```
+
+</Tab>
+
+<Tab value="yarn" className="p-0 rounded-t-[0px] [&>div]:rounded-t-[0px]">
+
+```sh
+yarn shadcn@latest add @lytenyte/lytenyte-core
+```
+
+</Tab>
+
+<Tab value="bun" className="p-0 rounded-t-[0px] [&>div]:rounded-t-[0px]">
+
+```sh
+bunx --bun shadcn@latest add @lytenyte/lytenyte-core
+```
+
+</Tab>
+
+</Tabs>
+
+After running the command, shadcn adds a `lytenyte-pro.tsx` (or `lytenyte-core.tsx`) component file
+and a `use-lytenyte-pro.tsx` (or `use-lytenyte-core.tsx`) hook file.
+The component file includes the headless LyteNyte Grid parts preconfigured for your project.
+Modify these as needed to fit your application. Depending on your import path configuration,
+importing the components is as simple as:
+
+```ts
+import { LyteNyte } from "@/components/lytenyte-pro";
+import { useLyteNyte } from "@/hooks/use-lytenyte-pro";
+```

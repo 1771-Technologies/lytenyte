@@ -13,7 +13,8 @@
     "server-data-loading-unbalanced-rows",
     "server-data-loading-optimistic-loading",
     "server-data-loading-push-and-pull",
-    "server-data-loading-handling-load-failures"
+    "server-data-loading-handling-load-failures",
+    "server-data-loading-typescript-reference"
   ],
   "defaultOpen": true
 }
