@@ -26,8 +26,8 @@ export function SidebarItem({
       className={cn(itemVariants({ active }), props.className)}
       prefetch={prefetch}
     >
-      {icon ?? (props.external ? <ExternalLink /> : null)}
       {props.children}
+      {icon ?? (props.external ? <ExternalLink /> : null)}
     </Link>
   );
 }

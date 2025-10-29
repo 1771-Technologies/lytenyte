@@ -14,7 +14,8 @@
     "server-data-loading-optimistic-loading",
     "server-data-loading-push-and-pull",
     "server-data-loading-handling-load-failures",
-    "server-data-loading-typescript-reference"
+    "server-data-loading-typescript-reference",
+    "[Demo Showcase: TypeScript](https://github.com/1771-Technologies/one-million-row-typescript)"
   ],
   "defaultOpen": true
 }
