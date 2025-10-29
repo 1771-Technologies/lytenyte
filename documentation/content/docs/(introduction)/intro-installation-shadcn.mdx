@@ -1,5 +1,5 @@
 ---
-title: Installation with Shadcn
+title: Installation With Shadcn
 description:
   Install LyteNyte Grid using the shadcn CLI. 1771 Technologies maintains a public registry
   of preconfigured LyteNyte Grid components styled for shadcn.
@@ -11,50 +11,12 @@ Before adding LyteNyte Grid components, ensure your project is set up with shadc
 Follow the [shadcn/ui installation guide](https://ui.shadcn.com/docs/installation) for your framework
 to get started.
 
-## The `@lytenyte` Registry
+## The LyteNyte Registry
 
-All the LyteNyte Grid components are available under the `@lytenyte` namespace. The shadcn CLI will
-already know how to locate our public registry. Simply run the command below to get started:
+LyteNyte Grid components are available under the `@lytenyte` namespace.
+The shadcn CLI automatically locates the 1771 Technologies public registry. Run the following command to get started:
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']} className="bg-fd-card">
-
-<Tab value="pnpm" className="p-0 rounded-t-[0px] [&>div]:rounded-t-[0px]">
-
-```sh
-pnpm dlx shadcn@latest add @lytenyte/lytenyte-pro
-```
-
-</Tab>
-
-<Tab value="npm" className="p-0 rounded-t-[0px] [&>div]:rounded-t-[0px]">
-
-```sh
-npx shadcn@latest add @lytenyte/lytenyte-pro
-```
-
-</Tab>
-
-<Tab value="yarn" className="p-0 rounded-t-[0px] [&>div]:rounded-t-[0px]">
-
-```sh
-yarn shadcn@latest add @lytenyte/lytenyte-pro
-```
-
-</Tab>
-
-<Tab value="bun" className="p-0 rounded-t-[0px] [&>div]:rounded-t-[0px]">
-
-```sh
-bunx --bun shadcn@latest add @lytenyte/lytenyte-pro
-```
-
-</Tab>
-
-</Tabs>
-
-If you're using the Core edition of LyteNyte Grid, run the following instead:
-
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']} className="bg-fd-card">
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']} className="bg-fd-card">
 
 <Tab value="pnpm" className="p-0 rounded-t-[0px] [&>div]:rounded-t-[0px]">
 
@@ -90,20 +52,81 @@ bunx --bun shadcn@latest add @lytenyte/lytenyte-core
 
 </Tabs>
 
-After running the command, shadcn adds a `lytenyte-pro.tsx` (or `lytenyte-core.tsx`) component file
-and a `use-lytenyte-pro.tsx` (or `use-lytenyte-core.tsx`) hook file.
-The component file includes the headless LyteNyte Grid parts preconfigured for your project.
-Modify these as needed to fit your application. Depending on your import path configuration,
+If you're using the PRO edition of LyteNyte Grid, run the following instead:
+
+<Tabs items={['npm', 'pnpm', 'yarn', 'bun']} className="bg-fd-card">
+
+<Tab value="pnpm" className="p-0 rounded-t-[0px] [&>div]:rounded-t-[0px]">
+
+```sh
+pnpm dlx shadcn@latest add @lytenyte/lytenyte-pro
+```
+
+</Tab>
+
+<Tab value="npm" className="p-0 rounded-t-[0px] [&>div]:rounded-t-[0px]">
+
+```sh
+npx shadcn@latest add @lytenyte/lytenyte-pro
+```
+
+</Tab>
+
+<Tab value="yarn" className="p-0 rounded-t-[0px] [&>div]:rounded-t-[0px]">
+
+```sh
+yarn shadcn@latest add @lytenyte/lytenyte-pro
+```
+
+</Tab>
+
+<Tab value="bun" className="p-0 rounded-t-[0px] [&>div]:rounded-t-[0px]">
+
+```sh
+bunx --bun shadcn@latest add @lytenyte/lytenyte-pro
+```
+
+</Tab>
+
+</Tabs>
+
+After you run the command, shadcn adds a `lytenyte-core.tsx` or `lytenyte-pro.tsx` component file,
+along with a corresponding hook file (`use-lytenyte-core.tsx` or `use-lytenyte-pro.tsx`).
+
+Each component file includes the preconfigured, headless LyteNyte Grid
+parts for your project. Modify these as needed for your
+application. Depending on your import path configuration,
 importing the components is as simple as:
+
+<Tabs items={['Core', 'PRO']} className="bg-fd-card">
+
+<Tab value="Core" className="rounded-t-[0px] p-0 [&>div]:rounded-t-[0px]">
+
+```ts
+import { LyteNyte } from "@/components/lytenyte-core";
+import { useLyteNyte } from "@/hooks/use-lytenyte-core";
+```
+
+</Tab>
+
+<Tab value="PRO" className="rounded-t-[0px] p-0 [&>div]:rounded-t-[0px]">
 
 ```ts
 import { LyteNyte } from "@/components/lytenyte-pro";
 import { useLyteNyte } from "@/hooks/use-lytenyte-pro";
 ```
 
+</Tab>
+
+</Tabs>
+
 ## Manual Installation
 
-Start by adding `@1771technologies/lytenyte-pro` (or `@1771technologies/lytenyte-core`) to your project dependencies:
+Add `@1771technologies/lytenyte-core` or `@1771technologies/lytenyte-pro` to your project dependencies:
+
+```package-install
+@1771technologies/lytenyte-core
+```
 
 ```package-install
 @1771technologies/lytenyte-pro
@@ -277,7 +300,7 @@ const Row = memo(RowImpl) as <T>(props: { row: RowNormalRowLayout<T> }) => React
 
 Then copy and paste the following code into your hooks folder:
 
-<Tabs items={['PRO', 'Core']} className="bg-fd-card">
+<Tabs items={['Core', 'PRO' ]} className="bg-fd-card">
 
 <Tab value="PRO" className="p-0 rounded-t-[0px] [&>div]:rounded-t-[0px]">
 
