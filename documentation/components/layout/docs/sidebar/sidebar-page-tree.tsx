@@ -89,6 +89,7 @@ const proSet = new Set([
   "/docs/server-data-loading-row-sorting",
   "/docs/server-data-loading-row-updating",
   "/docs/server-data-loading-unbalanced-rows",
+  "/docs/server-data-loading-typescript-reference",
 
   "/docs/row-server-data-source",
   "/docs/row-tree-data-source",
