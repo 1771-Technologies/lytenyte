@@ -20,7 +20,7 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
       <DocsTitle className="relative flex w-full items-center">
         {page.data.title}
 
-        <div className="absolute right-0 flex flex-row items-center">
+        <div className="xs:top-[unset] absolute right-0 top-[-42px] flex flex-row items-center">
           <LLMCopyButton markdownUrl={`${page.url}.mdx`} />
           <ViewOptions
             markdownUrl={`${page.url}.mdx`}

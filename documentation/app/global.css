@@ -162,6 +162,7 @@
 }
 
 @theme {
+  --breakpoint-xs: 475px;
   --color-ln-gray-00: var(--lng1771-gray-00);
   --color-ln-gray-02: var(--lng1771-gray-02);
   --color-ln-gray-05: var(--lng1771-gray-05);
