@@ -1,4 +1,4 @@
-import type { InterfaceType, InterfaceTypePartial, PropertyType, UnionType } from "../+types.js";
+import type { InterfaceType, InterfaceTypePartial, PropertyType } from "../+types.js";
 
 const ColumnField: PropertyType = {
   kind: "property",
@@ -177,40 +177,6 @@ const ScrollIntoView: PropertyType = {
 Accepts a configuration object that controls the scroll behavior.`,
   optional: false,
   value: "(options: ScrollIntoViewOptions<T>) => void",
-};
-
-export const FocusCellParams: UnionType = {
-  kind: "union",
-  doc: { en: `` },
-  export: true,
-  name: "FocusCellParams<T>",
-  tsDoc: `The accepted input types for the \`focusCell\` method, which updates the active focus in LyteNyte Grid. 
-Supports various formats:
-
-- A row/column pair to focus a specific cell.
-- A header or group header cell position.
-- A directional alias ("next", "prev", "up", "down") relative to the current focus (only when the grid is focused).
-
-@group Grid API`,
-  types: [
-    "{ row: number, column: string | number | Column<T> }",
-    "PositionHeaderCell",
-    'Omit<PositionHeaderGroupCell, "columnStartIndex" | "columnEndIndex">',
-    '"next"',
-    '"prev"',
-    '"up"',
-    '"down"',
-  ],
-};
-
-const FocusCell: PropertyType = {
-  kind: "property",
-  name: "focusCell",
-  tsDoc: `Sets focus to a specific cell or navigates the focus based on a direction keyword. 
-Useful for keyboard-driven navigation and programmatic focus management.`,
-  doc: { en: `` },
-  optional: false,
-  value: `(position: FocusCellParams<T>) => void`,
 };
 
 const EditBegin: PropertyType = {
@@ -596,7 +562,6 @@ const GridApiPartial: InterfaceTypePartial = {
 
     ScrollIntoView,
 
-    FocusCell,
     EditBegin,
     EditEnd,
     EditIsCellActive,

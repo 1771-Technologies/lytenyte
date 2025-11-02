@@ -1,5 +1,4 @@
-import { isRow } from "../predicates/is-row.js";
-import { isViewport } from "../predicates/is-viewport.js";
+import { isRow, isViewport } from "./predicates.js";
 
 export function getNearestRow(gridId: string, el?: HTMLElement) {
   if (!el) el = document.activeElement as HTMLElement;
@@ -7,8 +6,8 @@ export function getNearestRow(gridId: string, el?: HTMLElement) {
 
   let current: HTMLElement | null = el;
 
-  while (current && !isViewport(current, gridId)) {
-    if (isRow(current, gridId)) {
+  while (current && !isViewport(gridId, current)) {
+    if (isRow(gridId, current)) {
       return current;
     }
 

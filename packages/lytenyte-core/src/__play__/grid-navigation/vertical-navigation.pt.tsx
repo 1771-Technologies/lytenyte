@@ -2,11 +2,11 @@ import { expect, test } from "vitest";
 import { render } from "vitest-browser-react";
 import NormalLayout from "./normal-layout.play.js";
 import { wait } from "@1771technologies/lytenyte-shared";
-import { getCellQuery } from "@1771technologies/lytenyte-shared";
 import { userEvent } from "vitest/browser";
 import { bankDataSmall } from "../test-utils/bank-data-smaller.js";
 import FullWidthRows from "./full-width-rows.play.js";
 import CellSpans from "./cell-spans.play.js";
+import { getCellQuery } from "../test-utils/get-cell-query.js";
 
 test("should be able to navigate up and down cells", async () => {
   const screen = render(<NormalLayout center={50} />);

@@ -59,7 +59,7 @@ export function CellSelectionDriver() {
         if (!isHTMLElement(target)) return;
         const focusable = getNearestFocusable(gridId, target);
         if (!focusable) return;
-        const position = getPositionFromFocusable(focusable, gridId);
+        const position = getPositionFromFocusable(gridId, focusable);
         if (position.kind !== "cell" && position.kind !== "full-width") return;
         const rowIndex = position.rowIndex;
         const columnIndex = position.colIndex;
@@ -160,7 +160,7 @@ export function CellSelectionDriver() {
       if (!isHTMLElement(target)) return;
       const focusable = getNearestFocusable(gridId, target);
       if (!focusable) return;
-      const position = getPositionFromFocusable(focusable, gridId);
+      const position = getPositionFromFocusable(gridId, focusable);
       if (position.kind !== "cell" && position.kind !== "full-width") return;
       const rowIndex = position.rowIndex;
       const columnIndex = position.colIndex;

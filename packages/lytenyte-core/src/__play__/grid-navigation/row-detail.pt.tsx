@@ -2,9 +2,9 @@ import { wait } from "@1771technologies/lytenyte-shared";
 import { expect, test } from "vitest";
 import { render } from "vitest-browser-react";
 import RowDetail from "./row-detail.play.js";
-import { getCellQuery } from "@1771technologies/lytenyte-shared";
 import { userEvent } from "vitest/browser";
 import RowDetailWithSpans from "./row-detail-with-spans.play.js";
+import { getCellQuery } from "../test-utils/get-cell-query.js";
 
 test("when row details are present it should be possible to navigate across them", async () => {
   const screen = render(<RowDetail />);

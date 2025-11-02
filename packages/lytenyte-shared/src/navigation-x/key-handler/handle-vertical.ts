@@ -246,7 +246,6 @@ export function handleVertical(params: HandleVerticalParams) {
             return detail ? (getFirstTabbable(detail) ?? detail) : detail;
           },
           () => {
-            console.log(pos.colIndex);
             cp.set((p) => ({ ...p, colIndex: pos.colIndex }) as PositionHeaderCell);
           },
         );

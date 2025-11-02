@@ -1,8 +1,7 @@
-import type { GridAtom, PositionFullWidthRow, PositionUnion } from "../../+types.js";
-import type { RootCellFn, ScrollIntoViewFn } from "../../+types.non-gen.js";
-import { runWithBackoff } from "../../js-utils/index.js";
-import { getCellQuery } from "../getters/get-cell-query.js";
-import { getRowQuery } from "../getters/get-row-query.js";
+import type { PositionFullWidthRow } from "../+types";
+import { runWithBackoff } from "../js-utils/index.js";
+import type { PositionState, RootCellFn, ScrollIntoViewFn } from "./+types";
+import { queryCell, queryFullWidthRow } from "./query.js";
 
 interface FocusCellArgs {
   readonly rowIndex: number;
@@ -11,7 +10,7 @@ interface FocusCellArgs {
   readonly scrollIntoView: ScrollIntoViewFn;
   readonly vp: HTMLElement | null;
   readonly id: string;
-  readonly focusActive: Omit<GridAtom<PositionUnion | null>, "$">;
+  readonly focusActive: PositionState;
 
   readonly postFocus?: () => void;
 }
@@ -31,13 +30,10 @@ export function focusCell({
   if (!vp) return false;
 
   const run = () => {
-    const cell = getRootCell(rowIndex, colIndex);
-    if (!cell) return false;
-
-    if (cell.kind === "full-width") {
-      const query = getRowQuery(id, rowIndex);
-
-      const el = vp.querySelector(query) as HTMLElement;
+    const root = getRootCell(rowIndex, colIndex);
+    if (!root) return false;
+    if (root.kind === "full-width") {
+      const el = queryFullWidthRow(id, root.rowIndex, vp);
       if (!el) return false;
 
       el.focus();
@@ -48,8 +44,7 @@ export function focusCell({
       return true;
     }
 
-    const cellQuery = getCellQuery(id, rowIndex, colIndex);
-    const el = vp.querySelector(cellQuery) as HTMLElement;
+    const el = queryCell(id, rowIndex, colIndex, vp);
     if (!el) return false;
 
     el.focus();

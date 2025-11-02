@@ -46,7 +46,6 @@ import { makeRowGroupColumnIndex } from "./api/row-group-column-index.js";
 import { makeRowGroupIsExpanded } from "./api/row-group-is-expanded.js";
 import { makeRowGroupToggle } from "./api/row-group-toggle.js";
 import { makeRowGroupApplyExpansions } from "./api/row-group-apply-expansions.js";
-import { makeFocusCell } from "./api/focus-cell.js";
 import { makeEditBegin } from "./api/edit-begin.js";
 import { makeEditIsCellActive } from "./api/edit-is-cell-active.js";
 import { makeEditEnd } from "./api/edit-end.js";
@@ -791,8 +790,6 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     editEnd: makeEditEnd(grid as any),
     editIsCellActive: makeEditIsCellActive(grid as any),
     editUpdate: makeEditUpdate(grid as any),
-
-    focusCell: makeFocusCell(grid as any),
 
     rowById: makeRowById(grid),
     rowByIndex: makeRowByIndex(grid),

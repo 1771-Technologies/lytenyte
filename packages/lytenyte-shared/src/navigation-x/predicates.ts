@@ -30,3 +30,6 @@ export const isDetail = (gridId: string, el: HTMLElement) =>
 
 export const isViewport = (gridId: string, el: HTMLElement) =>
   getViewport(el) === "true" && getGridId(el) === gridId;
+
+export const isRow = (gridId: string, el: HTMLElement): boolean =>
+  el.getAttribute("data-ln-row") === "true" && el.getAttribute("data-ln-gridid") === gridId;
