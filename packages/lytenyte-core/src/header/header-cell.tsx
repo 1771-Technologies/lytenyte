@@ -1,4 +1,4 @@
-import { forwardRef, memo, type CSSProperties, type JSX } from "react";
+import { forwardRef, memo, useMemo, type CSSProperties, type JSX } from "react";
 import type { HeaderCellFloating, HeaderCellLayout } from "../+types";
 import { useGridRoot } from "../context.js";
 import { COLUMN_MARKER_ID, sizeFromCoord } from "@1771technologies/lytenyte-shared";
@@ -22,7 +22,7 @@ const HeaderCellImpl = forwardRef<
   { cell, resizerAs, resizerStyle, resizerClassName, children, ...props },
   forwarded,
 ) {
-  const grid = useGridRoot().grid;
+  const { grid, gridId } = useGridRoot();
   const ctx = grid.state;
 
   const xPositions = ctx.xPositions.useValue();
@@ -42,6 +42,17 @@ const HeaderCellImpl = forwardRef<
   const width = sizeFromCoord(cell.colStart, xPositions, cell.colSpan);
   const rowSpan = cell.rowEnd - cell.rowStart;
 
+  const dataAttrs = useMemo(() => {
+    const dataAttrs: Record<string, boolean> = {};
+    if (cell.kind !== "floating") {
+      const start = cell.column.groupPath?.length ?? 0;
+      for (let i = start; i < start + rowSpan; i++) {
+        dataAttrs[`data-ln-header-row-${i}`] = true;
+      }
+    }
+    return dataAttrs;
+  }, [cell.column.groupPath?.length, cell.kind, rowSpan]);
+
   return (
     <div
       {...props}
@@ -53,12 +64,14 @@ const HeaderCellImpl = forwardRef<
       data-ln-header-cell
       data-ln-header-floating={cell.kind === "floating" ? "true" : undefined}
       data-ln-header-id={cell.column.id}
+      data-ln-gridid={gridId}
       data-ln-header-range={`${cell.colStart},${cell.colStart + cell.colSpan}`}
       data-ln-rowindex={cell.rowStart}
       data-ln-colindex={cell.colStart}
-      data-ln-pin={cell.colPin ?? "center"}
+      data-ln-colpin={cell.colPin ?? "center"}
       data-ln-last-start-pin={cell.colLastStartPin}
       data-ln-first-end-pin={cell.colFirstEndPin}
+      {...dataAttrs}
       // Data attributes end
       style={{
         ...props.style,

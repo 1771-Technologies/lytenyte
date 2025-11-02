@@ -46,6 +46,7 @@ const RowImpl = forwardRef<HTMLDivElement, Omit<JSX.IntrinsicElements["div"], "o
           // Data Attributes
           data-ln-gridid={gridId}
           data-ln-rowindex={row.rowIndex}
+          data-ln-rowpin={row.rowPin ?? "center"}
           data-ln-rowtype="normal-row"
           data-ln-last-top-pin={row.rowLastPinTop}
           data-ln-first-bottom-pin={row.rowFirstPinBottom}

@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import type { RowCellLayout } from "../+types";
-import { getTabbables } from "@1771technologies/lytenyte-shared";
+import { getTabbables, navigator } from "@1771technologies/lytenyte-shared";
 import { useGridRoot } from "../context.js";
 import { editOnChange } from "../state/helpers/edit-on-change.js";
-import { handleNavigation } from "@1771technologies/lytenyte-shared";
 
 interface CellEditorParams<T> {
   readonly cell: RowCellLayout<T>;
@@ -49,8 +48,6 @@ export function CellEditor<T>({ cell }: CellEditorParams<T>) {
           }, 4);
         }
         if (e.key === "Enter") {
-          const ds = grid.state.rowDataStore;
-
           // Don't move if the there are validation errors.
           const editValidation = grid.internal.editValidation.get();
           if (
@@ -61,29 +58,37 @@ export function CellEditor<T>({ cell }: CellEditorParams<T>) {
             return;
           }
 
-          handleNavigation({
-            event: {
-              key: "ArrowDown",
-              ctrlKey: false,
-              metaKey: false,
-              preventDefault: () => {},
-              stopPropagation: () => {},
-            },
+          const rtl = grid.state.rtl.get();
+          const nav = navigator({
+            viewport: grid.state.viewport.get()!,
+            gridId: grid.state.gridId.get(),
+            scrollIntoView: grid.api.scrollIntoView,
+            getRootCell: grid.api.cellRoot,
             isRowDetailExpanded: (r) => {
               const row = grid.api.rowByIndex(r);
               if (!row) return false;
               return grid.api.rowDetailIsExpanded(row);
             },
-            topCount: grid.state.rowDataStore.rowTopCount.get(),
-            centerCount: grid.state.rowDataStore.rowCenterCount.get(),
-            viewport: grid.state.viewport.get()!,
-            rowCount: ds.rowCount.get(),
+            position: grid.internal.focusActive,
             columnCount: grid.state.columnMeta.get().columnsVisible.length,
-            focusActive: grid.internal.focusActive,
-            gridId: grid.state.gridId.get(),
-            getRootCell: grid.api.cellRoot,
-            rtl: grid.state.rtl.get(),
-            scrollIntoView: grid.api.scrollIntoView,
+            rowCount: grid.state.rowDataStore.rowCount.get(),
+
+            downKey: "ArrowDown",
+            upKey: "ArrowUp",
+            nextKey: rtl ? "ArrowLeft" : "ArrowRight",
+            prevKey: rtl ? "ArrowRight" : "ArrowLeft",
+            endKey: "End",
+            homeKey: "Home",
+            pageDownKey: "PageDown",
+            pageUpKey: "PageUp",
+          });
+
+          nav({
+            key: "ArrowDown",
+            ctrlKey: false,
+            metaKey: false,
+            preventDefault: () => {},
+            stopPropagation: () => {},
           });
         }
 

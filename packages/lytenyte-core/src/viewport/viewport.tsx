@@ -1,6 +1,6 @@
-import { forwardRef, type JSX } from "react";
+import { forwardRef, useMemo, type JSX } from "react";
 import { useGridRoot } from "../context.js";
-import { handleNavigation } from "@1771technologies/lytenyte-shared";
+import { navigator } from "@1771technologies/lytenyte-shared";
 import { beginEditing } from "./begin-editing.js";
 import { useFocusTracking } from "./use-focus-tracking.js";
 import { useCombinedRefs } from "../hooks/use-combine-refs.js";
@@ -17,13 +17,39 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
   const width = ctx.grid.state.widthTotal.useValue();
   const height = ctx.grid.state.heightTotal.useValue();
   const rtl = ctx.grid.state.rtl.useValue();
+  const focusActive = ctx.grid.internal.focusActive;
 
-  const [focused, vpFocused] = useFocusTracking(
-    vp,
-    ctx.grid.internal.focusActive,
-    ctx.grid.state.gridId.get(),
-  );
+  const [focused, vpFocused] = useFocusTracking(vp, focusActive, ctx.gridId);
   const shouldCapture = !focused && !vpFocused;
+
+  const handleNavigation = useMemo(() => {
+    if (!vp) return () => {};
+
+    return navigator({
+      viewport: vp,
+      gridId: ctx.gridId,
+      scrollIntoView: ctx.grid.api.scrollIntoView,
+      getRootCell: ctx.grid.api.cellRoot,
+      isRowDetailExpanded: (r) => {
+        const row = ctx.grid.api.rowByIndex(r);
+        if (!row) return false;
+        return ctx.grid.api.rowDetailIsExpanded(row);
+      },
+      position: focusActive,
+
+      downKey: "ArrowDown",
+      upKey: "ArrowUp",
+      nextKey: rtl ? "ArrowLeft" : "ArrowRight",
+      prevKey: rtl ? "ArrowRight" : "ArrowLeft",
+      endKey: "End",
+      homeKey: "Home",
+      pageDownKey: "PageDown",
+      pageUpKey: "PageUp",
+
+      columnCount: ctx.grid.state.columnMeta.get().columnsVisible.length,
+      rowCount: ctx.grid.state.rowDataStore.rowCount.get(),
+    });
+  }, [ctx.grid, ctx.gridId, focusActive, vp, rtl]);
 
   return (
     <>
@@ -32,26 +58,9 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
         {...props}
         onKeyDown={(e) => {
           props.onKeyDown?.(e);
-          if (e.defaultPrevented || e.isPropagationStopped() || !vp) return;
 
-          handleNavigation({
-            gridId: ctx.grid.state.gridId.get(),
-            rtl,
-            event: e,
-            viewport: vp,
-            topCount: ctx.grid.state.rowDataStore.rowTopCount.get(),
-            centerCount: ctx.grid.state.rowDataStore.rowCenterCount.get(),
-            getRootCell: ctx.grid.api.cellRoot,
-            scrollIntoView: ctx.grid.api.scrollIntoView,
-            focusActive: ctx.grid.internal.focusActive,
-            columnCount: ctx.grid.state.columnMeta.get().columnsVisible.length,
-            rowCount: ctx.grid.state.rowDataStore.rowCount.get(),
-            isRowDetailExpanded: (r) => {
-              const row = ctx.grid.api.rowByIndex(r);
-              if (!row) return false;
-              return ctx.grid.api.rowDetailIsExpanded(row);
-            },
-          });
+          if (e.defaultPrevented || e.isPropagationStopped() || !vp) return;
+          handleNavigation(e);
 
           if (e.key === "Enter" || e.key.length === 1) {
             // We use a timeout to avoid setting the value on clicks. This can happen when a user types
@@ -89,7 +98,7 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
         role="grid"
         ref={ref}
         data-ln-viewport
-        data-ln-gridid={ctx.grid.state.gridId.get()}
+        data-ln-gridid={ctx.gridId}
         style={{
           ...style,
           position: "relative",

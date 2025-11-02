@@ -9,6 +9,6 @@ export const makePositionFromElement = (
     const focusable = getNearestFocusable(grid.state.gridId.get(), el);
     if (!focusable) return null;
 
-    return getPositionFromFocusable(focusable, grid.state.gridId.get());
+    return getPositionFromFocusable(grid.state.gridId.get(), focusable);
   };
 };

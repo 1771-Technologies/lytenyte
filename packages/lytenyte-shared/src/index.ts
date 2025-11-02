@@ -85,20 +85,18 @@ export { getNumberFilterSettings } from "./filters/get-number-filter-settings.js
 export type { FilterStringSettings } from "./filters/get-string-filter-settings.js";
 export { getStringFilterSettings } from "./filters/get-string-filter-settings.js";
 
+export { rowIndexForSection } from "./row/row-index-for-section.js";
 export { columnScrollIntoViewValue } from "./scroll/scroll-column-into-view.js";
 export { rowScrollIntoViewValue } from "./scroll/scroll-row-into-view.js";
 
-export { getPositionFromFocusable } from "./navigation/getters/get-position-from-focusable.js";
-export { getCellQuery } from "./navigation/getters/get-cell-query.js";
-export { getRowIndexFromEl } from "./navigation/getters/get-row-index-from-el.js";
-export { isColumnFloatingHeader } from "./navigation/predicates/is-column-floating-header.js";
-export { focusCell } from "./navigation/position-movers/focus-cell.js";
-export { getNearestFocusable } from "./navigation/getters/get-nearest-focusable.js";
-export { getHeaderRows } from "./navigation/getters/get-header-rows.js";
-export { handleNavigation } from "./navigation/handle-navigation.js";
-export { getNearestRow } from "./navigation/getters/get-nearest-row.js";
-
-export { rowIndexForSection } from "./row/row-index-for-section.js";
+// Navigation
+export { focusCell } from "./navigation-x/focus-cell.js";
+export { trackFocus } from "./navigation-x/track-focus.js";
+export { navigator } from "./navigation-x/navigator.js";
+export { nearestFocusable as getNearestFocusable } from "./navigation-x/nearest-focusable.js";
+export { positionFromElement as getPositionFromFocusable } from "./navigation-x/position-from-element.js";
+export { getRowIndexFromEl } from "./navigation-x/get-row-index-from-el.js";
+export { getNearestRow } from "./navigation-x/get-nearest-row.js";
 
 // JS UTILS
 export {

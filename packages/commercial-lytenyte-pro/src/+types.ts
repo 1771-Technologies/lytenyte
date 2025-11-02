@@ -3386,25 +3386,6 @@ export interface ColumnMoveParams<T> {
 }
 
 /**
- * The accepted input types for the `focusCell` method, which updates the active focus in LyteNyte Grid.
- * Supports various formats:
- *
- * - A row/column pair to focus a specific cell.
- * - A header or group header cell position.
- * - A directional alias ("next", "prev", "up", "down") relative to the current focus (only when the grid is focused).
- *
- * @group Grid API
- */
-export type FocusCellParams<T> =
-  | { row: number; column: string | number | Column<T> }
-  | PositionHeaderCell
-  | Omit<PositionHeaderGroupCell, "columnStartIndex" | "columnEndIndex">
-  | "next"
-  | "prev"
-  | "up"
-  | "down";
-
-/**
  * The LyteNyte Grid API provides a comprehensive set of methods that allow developers
  *   to programmatically query, update, and manipulate grid state and data.
  *
@@ -3501,12 +3482,6 @@ export interface GridApi<T> {
    * Accepts a configuration object that controls the scroll behavior.
    */
   readonly scrollIntoView: (options: ScrollIntoViewOptions<T>) => void;
-
-  /**
-   * Sets focus to a specific cell or navigates the focus based on a direction keyword.
-   * Useful for keyboard-driven navigation and programmatic focus management.
-   */
-  readonly focusCell: (position: FocusCellParams<T>) => void;
 
   /**
    * Starts cell editing at a specified location. If the grid is set to read-only mode, this method has no effect.
@@ -7246,6 +7221,10 @@ export interface RowDataSourceServerParams<T> {
    *
    * Use this property when you want the grid to reset based on some external piece of data, such as an
    * external search query.
+   *
+   * Note all the items in the list should be referentially stable. LyteNyte Grid will shallow compare the
+   * array, and check equality using the `!==` operator. If an item is not stable it may result in an infinite
+   * reset loop.
    */
   readonly dataFetchExternals?: unknown[];
 

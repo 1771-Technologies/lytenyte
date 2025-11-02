@@ -3,7 +3,6 @@ import { render } from "vitest-browser-react";
 import NormalLayout from "./normal-layout.play.js";
 import PinGapped from "./pinned-gap-layout.play.js";
 import { userEvent } from "vitest/browser";
-import { getCellQuery } from "@1771technologies/lytenyte-shared";
 import { wait } from "@1771technologies/lytenyte-shared";
 import CellSpans from "./cell-spans.play.js";
 import CellWithTabbables from "./cell-with-tabbables.play.js";
@@ -11,6 +10,7 @@ import FullWidthRows from "./full-width-rows.play.js";
 import CellSpansLarge from "./cell-spans-large.play.js";
 import CellSpansWithPins from "./cell-spans-with-pins.play.js";
 import ColumnGroups from "./column-groups.play.js";
+import { getCellQuery } from "../test-utils/get-cell-query.js";
 
 test("when the grid is rendered tabbing through show skip cells inside", async () => {
   const screen = render(<NormalLayout />);

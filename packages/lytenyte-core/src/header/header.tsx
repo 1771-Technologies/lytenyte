@@ -5,7 +5,7 @@ import { useGridRowTemplate } from "./use-grid-row-template.js";
 
 const HeaderImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(
   function Header(props, forwarded) {
-    const grid = useGridRoot().grid;
+    const { gridId, grid } = useGridRoot();
 
     const xPositions = grid.state.xPositions.useValue();
 
@@ -50,6 +50,9 @@ const HeaderImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(
         ref={forwarded}
         role="rowgroup"
         data-ln-header
+        data-ln-gridid={gridId}
+        data-ln-rowcount={rows}
+        data-ln-floating={floatingRowEnabled ? true : undefined}
         style={{
           ...props.style,
           width,

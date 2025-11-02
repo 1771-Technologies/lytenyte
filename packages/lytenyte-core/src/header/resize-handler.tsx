@@ -106,7 +106,7 @@ export function ResizeHandler<T>({
             // const floating = vp.querySelector(floatingQuery) as HTMLElement | undefined;
 
             // if (!header) return;
-            // const pin = header.getAttribute("data-ln-pin");
+            // const pin = header.getAttribute("data-ln-colpin");
 
             // const cells = Array.from(vp.querySelectorAll(query)) as HTMLElement[];
 
@@ -146,7 +146,7 @@ export function ResizeHandler<T>({
 
             // after.forEach((c) => {
             //   if (!isHTMLElement(c)) return;
-            //   const thisPin = c.getAttribute("data-ln-pin");
+            //   const thisPin = c.getAttribute("data-ln-colpin");
 
             //   if (pin === "end" && thisPin === "end") return;
             //   if (pin !== "end" && thisPin === "end") return;

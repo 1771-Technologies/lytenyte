@@ -2,11 +2,11 @@ import { expect, test } from "vitest";
 import { render } from "vitest-browser-react";
 import NormalLayout from "./normal-layout.play.js";
 import { wait } from "@1771technologies/lytenyte-shared";
-import { getCellQuery } from "@1771technologies/lytenyte-shared";
 import { userEvent } from "vitest/browser";
 import { bankDataSmall } from "../test-utils/bank-data-smaller.js";
 import FullWidthRows from "./full-width-rows.play.js";
 import CellSpans from "./cell-spans.play.js";
+import { getCellQuery } from "../test-utils/get-cell-query.js";
 
 test("should be able to navigate up and down cells", async () => {
   const screen = render(<NormalLayout center={50} />);
@@ -23,12 +23,10 @@ test("should be able to navigate up and down cells", async () => {
   for (const v of values) {
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent(v);
     await userEvent.keyboard("{ArrowDown}");
-    await wait(100);
   }
   for (const v of values.toReversed()) {
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent(v);
     await userEvent.keyboard("{ArrowUp}");
-    await wait(100);
   }
 });
 
@@ -51,12 +49,10 @@ test("should be able to navigate up and down cells with pins", async () => {
   for (const v of values) {
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent(v);
     await userEvent.keyboard("{ArrowDown}");
-    await wait(100);
   }
   for (const v of values.toReversed()) {
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent(v);
     await userEvent.keyboard("{ArrowUp}");
-    await wait(100);
   }
 });
 
@@ -72,10 +68,10 @@ test("should be able to handle moving to the start or end", async () => {
   await expect.element(document.activeElement as HTMLElement).toHaveTextContent("30");
 
   await userEvent.keyboard("{Control>}{ArrowDown}{/Control}");
-  await wait(200);
+  await wait(100);
   await expect.element(document.activeElement as HTMLElement).toHaveTextContent("42");
   await userEvent.keyboard("{Control>}{ArrowUp}{/Control}");
-  await wait(200);
+  await wait(100);
   await expect.element(document.activeElement as HTMLElement).toHaveTextContent("30");
 });
 
@@ -177,7 +173,7 @@ test("page up and down should focus the correct cells", async () => {
   await userEvent.keyboard("{PageDown}");
   await expect.element(document.activeElement as HTMLElement).toHaveTextContent("secondary");
   await userEvent.keyboard("{PageUp}");
-  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("management");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("primary");
 });
 
 test("home and end should work as expected", async () => {
