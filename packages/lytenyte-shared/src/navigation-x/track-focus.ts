@@ -23,11 +23,15 @@ export function trackFocus({
 }: TrackFocusParams): () => void {
   const controller = new AbortController();
 
-  const onFocusChange = (pos: PositionUnion | null) => {
+  const onFocusChange = (p: PositionUnion | null) => {
     const c = focusActive.get();
-    if ((pos?.kind === "cell" && c?.kind === "cell" && cellEqual(pos, c)) || equal(pos, c)) return;
+    if ((p?.kind === "cell" && c?.kind === "cell" && cellEqual(p, c)) || equal(p, c)) return;
+    if (p?.kind === "full-width" && c?.kind === "full-width" && c.rowIndex === p.rowIndex) return;
+    if (p?.kind === "detail" && c?.kind === "detail" && c.rowIndex === p.rowIndex) return;
 
-    focusActive.set(pos);
+    if (equal(p, c)) return;
+
+    focusActive.set(p);
   };
 
   element.addEventListener(
@@ -51,10 +55,10 @@ export function trackFocus({
 
   element.addEventListener(
     "focusout",
-    (e) => {
+    (ev) => {
       if (!getWindow(element).document.hasFocus()) return;
 
-      if (e.relatedTarget && element.contains(e.relatedTarget as HTMLElement)) return;
+      if (ev.relatedTarget && element.contains(ev.relatedTarget as HTMLElement)) return;
 
       onHasFocusChange(false);
       onFocusChange(null);
@@ -65,5 +69,7 @@ export function trackFocus({
   element.addEventListener("focus", () => onElementFocused(true), { signal: controller.signal });
   element.addEventListener("blur", () => onElementFocused(false), { signal: controller.signal });
 
-  return () => controller.abort();
+  return () => {
+    controller.abort();
+  };
 }

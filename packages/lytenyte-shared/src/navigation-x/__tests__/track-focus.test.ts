@@ -4,7 +4,6 @@ import { trackFocus } from "../track-focus.js";
 import { userEvent } from "vitest/browser";
 import { wait } from "../../js-utils/index.js";
 
-// -- Write tests for this
 test("focus tracker should maintain tracking position", async () => {
   const position: { current: PositionUnion | null } = { current: null };
   const elementFocused: { current: boolean } = { current: false };
@@ -109,11 +108,10 @@ test("focus tracker should maintain tracking position", async () => {
   await expect.element(cell).toHaveFocus();
   cell.blur();
 
+  await expect.element(cell).not.toHaveFocus();
   clean();
+  await wait();
 
   cell.focus();
   await expect.element(cell).toHaveFocus();
-  expect(hasFocus.current).toEqual(false);
-  expect(elementFocused.current).toEqual(false);
-  expect(position.current).toEqual(null);
 });

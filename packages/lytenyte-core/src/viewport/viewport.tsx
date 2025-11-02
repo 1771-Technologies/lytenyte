@@ -39,8 +39,8 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
 
       downKey: "ArrowDown",
       upKey: "ArrowUp",
-      nextKey: "ArrowRight",
-      prevKey: "ArrowLeft",
+      nextKey: rtl ? "ArrowLeft" : "ArrowRight",
+      prevKey: rtl ? "ArrowRight" : "ArrowLeft",
       endKey: "End",
       homeKey: "Home",
       pageDownKey: "PageDown",
@@ -49,7 +49,7 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
       columnCount: ctx.grid.state.columnMeta.get().columnsVisible.length,
       rowCount: ctx.grid.state.rowDataStore.rowCount.get(),
     });
-  }, [ctx.grid, ctx.gridId, focusActive, vp]);
+  }, [ctx.grid, ctx.gridId, focusActive, vp, rtl]);
 
   return (
     <>
@@ -57,43 +57,27 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
         tabIndex={0}
         {...props}
         onKeyDown={(e) => {
-          handleNavigation(e.nativeEvent);
-          // props.onKeyDown?.(e);
-          // if (e.defaultPrevented || e.isPropagationStopped() || !vp) return;
-          // handleNavigation({
-          //   gridId: ctx.grid.state.gridId.get(),
-          //   rtl,
-          //   event: e,
-          //   viewport: vp,
-          //   topCount: ctx.grid.state.rowDataStore.rowTopCount.get(),
-          //   centerCount: ctx.grid.state.rowDataStore.rowCenterCount.get(),
-          //   getRootCell: ctx.grid.api.cellRoot,
-          //   scrollIntoView: ctx.grid.api.scrollIntoView,
-          //   focusActive: ctx.grid.internal.focusActive,
-          //   columnCount: ctx.grid.state.columnMeta.get().columnsVisible.length,
-          //   rowCount: ctx.grid.state.rowDataStore.rowCount.get(),
-          //   isRowDetailExpanded: (r) => {
-          //     const row = ctx.grid.api.rowByIndex(r);
-          //     if (!row) return false;
-          //     return ctx.grid.api.rowDetailIsExpanded(row);
-          //   },
-          // });
-          // if (e.key === "Enter" || e.key.length === 1) {
-          //   // We use a timeout to avoid setting the value on clicks. This can happen when a user types
-          //   // a non-printable key.
-          //   setTimeout(() => {
-          //     beginEditing(ctx.grid, undefined, e.key === "Enter" ? undefined : e.key);
-          //   });
-          // }
-          // if (e.key === "Backspace" || e.key === "Delete") {
-          //   const focusPos = ctx.grid.internal.focusActive.get();
-          //   if (focusPos?.kind === "cell")
-          //     ctx.grid.api.editUpdate({
-          //       column: focusPos.colIndex,
-          //       rowIndex: focusPos.rowIndex,
-          //       value: null,
-          //     });
-          // }
+          props.onKeyDown?.(e);
+
+          if (e.defaultPrevented || e.isPropagationStopped() || !vp) return;
+          handleNavigation(e);
+
+          if (e.key === "Enter" || e.key.length === 1) {
+            // We use a timeout to avoid setting the value on clicks. This can happen when a user types
+            // a non-printable key.
+            setTimeout(() => {
+              beginEditing(ctx.grid, undefined, e.key === "Enter" ? undefined : e.key);
+            });
+          }
+          if (e.key === "Backspace" || e.key === "Delete") {
+            const focusPos = ctx.grid.internal.focusActive.get();
+            if (focusPos?.kind === "cell")
+              ctx.grid.api.editUpdate({
+                column: focusPos.colIndex,
+                rowIndex: focusPos.rowIndex,
+                value: null,
+              });
+          }
         }}
         onClick={(e) => {
           props.onClick?.(e);

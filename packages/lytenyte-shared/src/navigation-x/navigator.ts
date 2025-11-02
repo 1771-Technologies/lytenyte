@@ -1,4 +1,4 @@
-import { getActiveElement } from "../dom-utils/index.js";
+import { getActiveElement, getNearestMatching } from "../dom-utils/index.js";
 import type { ScrollIntoViewFn } from "../+types.non-gen.js";
 import { handleViewportFocused } from "./key-handler/handle-viewport-focused.js";
 import { nearestFocusable } from "./nearest-focusable.js";
@@ -51,9 +51,26 @@ export function navigator({
 }: NavigatorParams) {
   const keys = new Set([nextKey, prevKey, endKey, homeKey, upKey, downKey, pageDownKey, pageUpKey]);
 
-  const handleKey = (ev: KeyboardEvent) => {
+  const handleKey = (ev: {
+    key: string;
+    ctrlKey: boolean;
+    metaKey: boolean;
+    preventDefault: () => void;
+    stopPropagation: () => void;
+  }) => {
     const key = ev.key;
     const shouldHandle = () => true; // Temp placeholder for eventual handle hook
+
+    // If the user is pressing tab, then we should skip the remaining cells and move to the next
+    // element. This is slightly different than what may be expected, but makes the most sense.
+    // A grid will have 1000s of cells, tabbing through them is not feasible.
+    if (ev.key === "Tab") {
+      viewport.inert = true;
+      setTimeout(() => (viewport.inert = false));
+      ev.stopPropagation();
+      return;
+    }
+
     const modified = ev.ctrlKey || ev.metaKey;
 
     const done = () => {
@@ -77,6 +94,13 @@ export function navigator({
     // through the elements.
     if (viewport === active) {
       if (key !== nextKey && key !== downKey) return;
+
+      const isNested = getNearestMatching(
+        viewport.parentElement!,
+        (el) => el.getAttribute("data-ln-gridid") != null,
+      );
+      if (isNested && key === downKey) return;
+
       handleViewportFocused({ afterKey, beforeKey, gridId, scrollIntoView, viewport });
 
       done();
