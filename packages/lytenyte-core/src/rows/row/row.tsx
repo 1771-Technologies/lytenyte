@@ -44,6 +44,7 @@ const RowImpl = forwardRef<HTMLDivElement, Omit<JSX.IntrinsicElements["div"], "o
           ref={forwarded}
           accepted={accepted}
           // Data Attributes
+          data-ln-row-selected={rowMeta.selected}
           data-ln-gridid={gridId}
           data-ln-rowindex={row.rowIndex}
           data-ln-rowpin={row.rowPin ?? "center"}
