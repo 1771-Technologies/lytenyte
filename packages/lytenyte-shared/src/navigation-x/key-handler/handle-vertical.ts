@@ -1,10 +1,5 @@
 import type { PositionState, RootCellFn, ScrollIntoViewFn } from "../+types.js";
-import type {
-  PositionFullWidthRow,
-  PositionGridCell,
-  PositionHeaderCell,
-  PositionUnion,
-} from "../../+types.js";
+import type { PositionHeaderCell, PositionUnion } from "../../+types.js";
 import { runWithBackoff } from "../../js-utils/index.js";
 import { getRowIndex } from "../attributes.js";
 import { BACKOFF_RUNS } from "../constants.js";
@@ -16,6 +11,7 @@ import {
   queryHeader,
   queryHeaderCellsAtRow,
 } from "../query.js";
+import { handleFocusCellFromRoot } from "./handle-focus-cell-from-root.js";
 import { handleFocus } from "./handle-focus.js";
 
 export interface HandleVerticalParams {
@@ -47,9 +43,13 @@ export function handleVertical(params: HandleVerticalParams) {
     viewport,
     getRootCell,
     modified,
+    rowCount,
     isRowDetailExpanded,
   } = params;
 
+  // Header cells can move up to a group a cell if it present, or down
+  // to a floating cell or the first row. The header element will have the total header row
+  // count and if floating rows are enabled. Floating rows do not count as part of the row count.
   if (pos.kind === "header-cell") {
     const header = queryHeader(gridId, viewport);
     if (!header) return;
@@ -86,48 +86,50 @@ export function handleVertical(params: HandleVerticalParams) {
           },
         );
       }, BACKOFF_RUNS());
-    } else {
-      const hasFloating = header.getAttribute("data-ln-floating") === "true";
-
-      if (hasFloating) {
-        scrollIntoView({ column: pos.colIndex, behavior: "instant" });
-        done();
-
-        runWithBackoff(() => {
-          return handleFocus(false, () => {
-            return queryFloatingCell(gridId, pos.colIndex, header);
-          });
-        }, BACKOFF_RUNS());
-      } else {
-        const root = getRootCell(0, pos.colIndex);
-        if (!root) return;
-
-        const { colIndex, rowIndex } =
-          root.kind === "full-width"
-            ? { rowIndex: root.rowIndex, colIndex: pos.colIndex }
-            : (root.root ?? root);
-
-        scrollIntoView({
-          column: root.kind === "full-width" ? undefined : colIndex,
-          row: rowIndex,
-          behavior: "instant",
-        });
-        done();
-
-        runWithBackoff(() => {
-          return handleFocus(
-            false,
-            () => {
-              if (root.kind === "full-width") return queryFullWidthRow(gridId, rowIndex, viewport);
-              else return queryCell(gridId, rowIndex, colIndex, viewport);
-            },
-            () => {
-              cp.set((p) => ({ ...p, colIndex: pos.colIndex }) as PositionHeaderCell);
-            },
-          );
-        }, BACKOFF_RUNS());
-      }
+      return;
     }
+
+    const hasFloating = header.getAttribute("data-ln-floating") === "true";
+
+    if (hasFloating) {
+      scrollIntoView({ column: pos.colIndex, behavior: "instant" });
+      done();
+
+      runWithBackoff(() => {
+        return handleFocus(false, () => {
+          return queryFloatingCell(gridId, pos.colIndex, header);
+        });
+      }, BACKOFF_RUNS());
+    } else {
+      const root = getRootCell(0, pos.colIndex);
+      if (!root) return;
+
+      const { colIndex, rowIndex } =
+        root.kind === "full-width"
+          ? { rowIndex: root.rowIndex, colIndex: pos.colIndex }
+          : (root.root ?? root);
+
+      scrollIntoView({
+        column: root.kind === "full-width" ? undefined : colIndex,
+        row: rowIndex,
+        behavior: "instant",
+      });
+      done();
+
+      runWithBackoff(() => {
+        return handleFocus(
+          false,
+          () => {
+            if (root.kind === "full-width") return queryFullWidthRow(gridId, rowIndex, viewport);
+            else return queryCell(gridId, rowIndex, colIndex, viewport);
+          },
+          () => {
+            cp.set((p) => ({ ...p, colIndex: pos.colIndex }) as PositionHeaderCell);
+          },
+        );
+      }, BACKOFF_RUNS());
+    }
+
     return;
   }
 
@@ -215,6 +217,16 @@ export function handleVertical(params: HandleVerticalParams) {
         );
       }, BACKOFF_RUNS());
     }
+    return;
+  }
+
+  if (modified && (pos.kind === "full-width" || pos.kind === "cell" || pos.kind === "detail")) {
+    const nextIndex = isUp ? 0 : rowCount - 1;
+    if (nextIndex === pos.rowIndex) return;
+
+    const root = getRootCell(nextIndex, pos.colIndex);
+    handleFocusCellFromRoot(params, root);
+
     return;
   }
 
@@ -322,34 +334,4 @@ function handleFocusHeaderFromRow({
   }, BACKOFF_RUNS());
 
   return;
-}
-
-function handleFocusCellFromRoot(
-  { scrollIntoView, done, gridId, viewport, cp, pos }: HandleVerticalParams,
-  root: PositionGridCell | PositionFullWidthRow | null,
-) {
-  if (!root) return;
-
-  const nextIndex = root.rowIndex;
-  if (root.kind === "full-width") {
-    scrollIntoView({ row: nextIndex, behavior: "instant" });
-    done();
-
-    runWithBackoff(() => {
-      return handleFocus(
-        false,
-        () => queryFullWidthRow(gridId, nextIndex, viewport),
-        () => {
-          cp.set((prev) => ({ ...prev, colIndex: pos.colIndex }) as PositionFullWidthRow);
-        },
-      );
-    }, BACKOFF_RUNS());
-  } else {
-    const { colIndex, rowIndex } = root.root ?? root;
-    scrollIntoView({ row: rowIndex, column: colIndex, behavior: "instant" });
-    done();
-    runWithBackoff(() => {
-      return handleFocus(false, () => queryCell(gridId, rowIndex, colIndex, viewport));
-    }, BACKOFF_RUNS());
-  }
 }

@@ -5,6 +5,8 @@ import { nearestFocusable } from "./nearest-focusable.js";
 import type { PositionState, RootCellFn } from "./+types.js";
 import { handleHorizontal } from "./key-handler/handle-horizontal.js";
 import { handleVertical } from "./key-handler/handle-vertical.js";
+import { handleHomeEnd } from "./key-handler/handle-home-end.js";
+import { handlePageKeys } from "./key-handler/handle-page-keys.js";
 
 export interface NavigatorParams {
   readonly viewport: HTMLElement;
@@ -132,6 +134,37 @@ export function navigator({
         rowCount,
         getRootCell,
         isRowDetailExpanded,
+      });
+    }
+
+    if (key === endKey || key === homeKey) {
+      handleHomeEnd({
+        isEnd: key === endKey,
+        active,
+        cp,
+        done,
+        gridId,
+        rowCount,
+        pos,
+        posElement,
+        scrollIntoView,
+        columnCount,
+        getRootCell,
+        modified,
+        viewport,
+      });
+    }
+    if (key === pageDownKey || key === pageUpKey) {
+      handlePageKeys({
+        cp,
+        done,
+        getRootCell,
+        gridId,
+        isUp: key === pageUpKey,
+        pos,
+        rowCount,
+        scrollIntoView,
+        viewport,
       });
     }
   };
