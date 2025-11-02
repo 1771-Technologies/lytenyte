@@ -24,7 +24,8 @@ const RowImpl = forwardRef<HTMLDivElement, Omit<JSX.IntrinsicElements["div"], "o
     const hasSpans = ctx.internal.hasSpans.useValue();
 
     const accepted = props.accepted ?? empty;
-    const topOffset = ctx.view.useValue().rows.rowTopTotalHeight;
+
+    const topOffset = yPos[ctx.state.rowDataStore.rowTopCount.useValue()];
 
     const styles = useRowStyle(
       yPos,
