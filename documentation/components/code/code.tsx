@@ -23,11 +23,11 @@ export async function Code({
       style={{ scrollbarWidth: "thin" }}
       className={cn(
         "bg-fd-secondary/40 dark:bg-fd-secondary relative overflow-auto rounded-xl py-[14px]",
-        !frame && "shadow-xs mb-8 border border-gray-300 dark:border-gray-100",
+        !frame && "mb-8 border border-gray-300 shadow-xs dark:border-gray-100",
         className,
       )}
     >
-      {!frame && <CopyButton text={highlighted.code} />}
+      <div className="sticky left-0 w-full">{!frame && <CopyButton text={highlighted.code} />}</div>
       <Pre code={highlighted} handlers={[cls, collapse, diff, mark]} className="text-sm" />
     </div>
   );

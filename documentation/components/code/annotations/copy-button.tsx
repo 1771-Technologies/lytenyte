@@ -10,7 +10,7 @@ export function CopyButton({ text, className, ...props }: { text: string; classN
   return (
     <button
       className={cn(
-        "text-fd-muted-foreground absolute right-2 top-2 rounded p-1 hover:bg-gray-400/20",
+        "text-fd-muted-foreground absolute top-[-3px] right-2 rounded p-1 hover:bg-gray-400/70",
         copied && "text-success-700 dark:text-shadow-fd-accent-foreground",
         className,
       )}
