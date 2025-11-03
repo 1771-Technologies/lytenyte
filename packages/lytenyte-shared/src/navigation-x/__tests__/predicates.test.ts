@@ -6,6 +6,7 @@ import {
   isFullWidth,
   isHeaderCell,
   isHeaderGroup,
+  isRow,
   isViewport,
 } from "../predicates.js";
 
@@ -116,4 +117,17 @@ test("isViewport", () => {
   expect(isViewport("x", el)).toEqual(true);
   expect(isViewport("x", el2)).toEqual(false);
   expect(isViewport("x", document.createElement("div"))).toEqual(false);
+});
+
+test("isRow", () => {
+  const el = document.createElement("div");
+  el.setAttribute("data-ln-row", "true");
+  el.setAttribute("data-ln-gridid", "x");
+
+  const el2 = document.createElement("div");
+  el2.setAttribute("data-ln-row", "true");
+  el2.setAttribute("data-ln-gridid", "y");
+
+  expect(isRow("x", el)).toEqual(true);
+  expect(isRow("x", el2)).toEqual(false);
 });
