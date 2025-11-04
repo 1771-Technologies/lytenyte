@@ -1,0 +1,27 @@
+/* eslint-disable react-refresh/only-export-components */
+import { Dialog as D } from "../components-headless/dialog/dialog.js";
+import { tw } from "./tw.js";
+
+const Container = ((props) => {
+  return (
+    <D.Container
+      {...props}
+      className={tw(
+        "top-1/5 start-1/2 -translate-x-1/2 -translate-y-1/2",
+        "grid w-full max-w-[calc(100%-2rem)] gap-4 rounded-lg border border-gray-300/70 bg-gray-100 p-6 shadow-lg sm:max-w-lg dark:shadow-gray-400/10",
+        // exit and enter animations
+        "ln-opening:opacity-0 ln-closing:opacity-0 ln-opening:scale-95 ln-closing:scale-95 transition-[opacity,scale]",
+        "ln-opening:backdrop:opacity-0 ln-closing:backdrop:opacity-0 backdrop:bg-gray-100/30 backdrop:transition-opacity",
+        props.className,
+      )}
+    />
+  );
+}) as typeof D.Container;
+
+// TODO style the close and trigger buttons
+export const Dialog = {
+  Root: D.Root,
+  Container: Container,
+  Trigger: D.Trigger,
+  Close: D.Close,
+};

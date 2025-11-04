@@ -1,0 +1,27 @@
+import type { FocusTrapOptions } from "@1771technologies/lytenyte-shared";
+import { createContext, useContext } from "react";
+
+export interface DialogContext {
+  readonly open: boolean;
+  readonly onOpenChange: (open: boolean) => void;
+
+  readonly id: string;
+
+  readonly lockScroll?: boolean;
+  readonly modal?: boolean;
+  readonly lightDismiss?: boolean;
+
+  readonly focusTrap?: boolean;
+  readonly focusInitial?: FocusTrapOptions["initialFocus"];
+  readonly focusReturn?: FocusTrapOptions["setReturnFocus"];
+  readonly focusFallback?: FocusTrapOptions["fallbackFocus"];
+  readonly focusCanReturn?: FocusTrapOptions["checkCanReturnFocus"];
+  readonly focusCanTrap?: FocusTrapOptions["checkCanFocusTrap"];
+  readonly focusPreventScroll?: FocusTrapOptions["preventScroll"];
+  readonly focusIsKeyForward?: FocusTrapOptions["isKeyForward"];
+  readonly focusIsKeyBackward?: FocusTrapOptions["isKeyBackward"];
+}
+
+export const context = createContext<DialogContext>(null as unknown as DialogContext);
+
+export const useDialogRoot = () => useContext(context);

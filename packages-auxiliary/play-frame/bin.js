@@ -1,4 +1,5 @@
 import express from "express";
+import tailwind from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { createServer as createViteServer } from "vite";
 import { HTML_TEMPLATE } from "./constants.js";
@@ -12,6 +13,7 @@ async function createServer() {
     appType: "custom",
     resolve: {},
     plugins: [
+      tailwind(),
       {
         name: "playframe",
         enforce: "pre",
