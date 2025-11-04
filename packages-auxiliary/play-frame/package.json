@@ -9,6 +9,11 @@
   "main": "index.js",
   "type": "module",
   "exports": {
+    ".": {
+      "types": "./src/play.ts",
+      "import": "./src/play.ts",
+      "require": "./src/play.ts"
+    },
     "./entry": {
       "types": "./src/entry.ts",
       "import": "./src/entry.ts",
@@ -42,7 +47,9 @@
     "jotai": "2.13.0",
     "next-themes": "0.4.6",
     "unique-selector": "0.5.0",
-    "usehooks-ts": "3.1.1"
+    "usehooks-ts": "3.1.1",
+    "@tailwindcss/vite": "^4.1.16",
+    "tailwindcss": "^4.1.16"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",

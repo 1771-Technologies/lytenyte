@@ -123,6 +123,7 @@ export {
 } from "./js-utils/index.js";
 
 // DOM Utils
+export type { FocusTrapOptions } from "./dom-utils/focus/+types.js";
 export {
   FocusTrap,
   getActiveElement,
@@ -152,3 +153,7 @@ export {
   testPlatform,
   testUserAgent,
 } from "./dom-utils/index.js";
+export type { OnAnimationFinishedParams } from "./dom-utils/frame/animation-finished.js";
+export { onAnimationFinished } from "./dom-utils/frame/animation-finished.js";
+
+export { SCROLL_LOCKER } from "./dom-utils/scroll-lock/scroll-locker.js";
