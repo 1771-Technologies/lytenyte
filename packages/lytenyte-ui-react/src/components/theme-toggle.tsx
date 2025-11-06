@@ -26,7 +26,7 @@ export function ThemeToggle({
     <button
       {...finalProps}
       className={tw(
-        "relative flex cursor-pointer items-center gap-2 rounded-full border border-gray-400 bg-gray-300 px-1 py-1",
+        "relative flex cursor-pointer items-center gap-2 rounded-full border border-gray-300 bg-gray-100 px-1 py-1",
         finalProps.className,
       )}
     >

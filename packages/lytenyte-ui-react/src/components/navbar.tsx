@@ -30,16 +30,17 @@ export function Navbar({
         className={tw(
           "fixed top-0 w-screen",
           large ? "h-15" : "h-12",
-          transparent ? "bg-gray-200/50 backdrop-blur-sm" : "bg-gray-200",
-          floating ? "top-3 bg-[unset] px-4 backdrop-blur-none" : "border-b border-gray-300",
+          transparent ? "bg-gray-50/50 backdrop-blur-sm" : "bg-gray-50",
+          floating ? "top-3 bg-[unset] px-4 backdrop-blur-none" : "border-b border-gray-300/70",
           className,
         )}
       >
         <div
           className={tw(
             "flex h-full items-center gap-4 px-4",
-            floating && "container mx-auto rounded-3xl border border-gray-300/40 bg-gray-200",
-            floating && transparent && "bg-gray-200/50 backdrop-blur-sm",
+            floating &&
+              "container mx-auto rounded-3xl border border-gray-300/60 bg-gray-100 shadow",
+            floating && transparent && "bg-gray-100/50 backdrop-blur-sm",
             contained && "container mx-auto",
           )}
         >
