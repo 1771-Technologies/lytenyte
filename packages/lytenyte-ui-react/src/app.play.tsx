@@ -1,6 +1,7 @@
 import "../index.css";
 import { Button } from "./components/button.js";
 import { Dialog } from "./components/dialog.js";
+import { Drawer } from "./components/drawer.js";
 import { Navbar } from "./components/navbar.js";
 import { ThemeToggle } from "./components/theme-toggle.js";
 import { useTheme } from "@1771technologies/play-frame";
@@ -86,6 +87,32 @@ function App() {
               </Dialog.Close>
             </Dialog.Container>
           </Dialog.Root>
+        </div>
+        <div className="flex gap-2">
+          <Drawer.Root>
+            <Drawer.Trigger>Open Left</Drawer.Trigger>
+            <Drawer.Container className="w-[280px]" side="start">
+              Left Container
+            </Drawer.Container>
+          </Drawer.Root>
+          <Drawer.Root>
+            <Drawer.Trigger>Open Right</Drawer.Trigger>
+            <Drawer.Container className="w-[280px]" side="end">
+              Right Container
+            </Drawer.Container>
+          </Drawer.Root>
+          <Drawer.Root>
+            <Drawer.Trigger>Open Top</Drawer.Trigger>
+            <Drawer.Container className="h-[300px]" side="top">
+              Top Container
+            </Drawer.Container>
+          </Drawer.Root>
+          <Drawer.Root>
+            <Drawer.Trigger>Open Bottom</Drawer.Trigger>
+            <Drawer.Container className="h-[300px]" side="bottom">
+              Bottom Container
+            </Drawer.Container>
+          </Drawer.Root>
         </div>
       </div>
     </div>
