@@ -4,7 +4,7 @@ import { Dialog as D } from "../components-headless/dialog/dialog.js";
 import { tw } from "./tw.js";
 import { buttonStyles, type ButtonProps } from "./button.js";
 
-const Container = ((props) => {
+const Container = (props: ComponentProps<typeof D.Container>) => {
   return (
     <D.Container
       {...props}
@@ -18,7 +18,7 @@ const Container = ((props) => {
       )}
     />
   );
-}) as typeof D.Container;
+};
 
 const Trigger = ({
   kind = "primary",
