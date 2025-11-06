@@ -1,10 +1,9 @@
 import type { PositionUnion } from "../+types";
 import { getWindow } from "../dom-utils/get-window.js";
-import { equal } from "../js-utils/index.js";
 import type { PositionState } from "./+types";
-import { cellEqual } from "./cell-equal.js";
 import { nearestFocusable } from "./nearest-focusable.js";
 import { positionFromElement } from "./position-from-element.js";
+import { positionsEqual } from "./positions-equal.js";
 
 export interface TrackFocusParams {
   readonly gridId: string;
@@ -25,12 +24,7 @@ export function trackFocus({
 
   const onFocusChange = (p: PositionUnion | null) => {
     const c = focusActive.get();
-    if ((p?.kind === "cell" && c?.kind === "cell" && cellEqual(p, c)) || equal(p, c)) return;
-    if (p?.kind === "full-width" && c?.kind === "full-width" && c.rowIndex === p.rowIndex) return;
-    if (p?.kind === "detail" && c?.kind === "detail" && c.rowIndex === p.rowIndex) return;
-
-    if (equal(p, c)) return;
-
+    if (positionsEqual(p, c)) return;
     focusActive.set(p);
   };
 

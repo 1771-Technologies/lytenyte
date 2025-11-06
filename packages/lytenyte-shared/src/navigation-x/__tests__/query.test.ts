@@ -1,8 +1,10 @@
 import { expect, test } from "vitest";
 import {
   queryCell,
+  queryDetail,
   queryFirstFocusable,
   queryFloatingCell,
+  queryFullWidthRow,
   queryHeader,
   queryHeaderCell,
   queryHeaderCellsAtRow,
@@ -84,4 +86,31 @@ test("queryHeaderCellsAtRow", () => {
 
   document.body.appendChild(div);
   expect(queryHeaderCellsAtRow("x", 1, div)).toEqual([x]);
+});
+
+test("queryDetail", () => {
+  const div = document.createElement("div");
+  const x = document.createElement("div");
+  x.setAttribute("data-ln-gridid", "x");
+  x.setAttribute("data-ln-rowindex", "1");
+  x.setAttribute("data-ln-row-detail", "true");
+  div.appendChild(x);
+
+  document.body.appendChild(div);
+  expect(queryDetail("x", 1, div)).toEqual(x);
+});
+
+test("queryFullWidthRow", () => {
+  const div = document.createElement("div");
+  const x = document.createElement("div");
+  x.setAttribute("data-ln-gridid", "x");
+  x.setAttribute("data-ln-rowindex", "1");
+  x.setAttribute("data-ln-row", "true");
+  x.setAttribute("data-ln-rowtype", "full-width");
+  const alpha = document.createElement("div");
+  x.appendChild(alpha);
+  div.appendChild(x);
+
+  document.body.appendChild(div);
+  expect(queryFullWidthRow("x", 1, div)).toEqual(alpha);
 });
