@@ -1,5 +1,6 @@
 import type { FocusTrapOptions } from "@1771technologies/lytenyte-shared";
-import { createContext, useContext } from "react";
+import { createContext, useContext, type Dispatch, type SetStateAction } from "react";
+import type { Placement, ReferenceElement } from "../../external/floating-ui";
 
 export interface DialogContext {
   readonly open: boolean;
@@ -20,6 +21,16 @@ export interface DialogContext {
   readonly focusPreventScroll?: FocusTrapOptions["preventScroll"];
   readonly focusIsKeyForward?: FocusTrapOptions["isKeyForward"];
   readonly focusIsKeyBackward?: FocusTrapOptions["isKeyBackward"];
+
+  readonly anchor: ReferenceElement | string | null;
+  readonly placement: Placement;
+  readonly shiftPadding: number;
+  readonly inline: boolean;
+  readonly sideOffset: number;
+  readonly alignOffset: number;
+
+  readonly arrow: HTMLElement | null;
+  readonly setArrow: Dispatch<SetStateAction<HTMLElement | null>>;
 }
 
 export const context = createContext<DialogContext>(null as unknown as DialogContext);

@@ -1,3 +1,4 @@
+import { Arrow } from "./arrow.js";
 import { Close } from "./close.js";
 import { Container } from "./container.js";
 import { Root } from "./root.js";
@@ -8,4 +9,5 @@ export const Dialog = {
   Container,
   Trigger,
   Close,
+  Arrow,
 };
