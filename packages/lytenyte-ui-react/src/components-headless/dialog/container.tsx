@@ -3,6 +3,7 @@ import { useTransitioned } from "../../hooks/use-transitioned-open.js";
 import { useCombinedRefs } from "../../hooks/use-combined-ref.js";
 import { useDialogRoot } from "./context.js";
 import {
+  arrow,
   autoUpdate,
   computePosition,
   flip,
@@ -10,8 +11,6 @@ import {
   offset,
   shift,
   type Middleware,
-  type Placement,
-  type ReferenceElement,
 } from "../../external/floating-ui.js";
 import { transformOrigin } from "./transform-origin.js";
 import {
@@ -21,25 +20,8 @@ import {
   SCROLL_LOCKER,
 } from "@1771technologies/lytenyte-shared";
 
-export interface ContainerProps {
-  readonly anchor?: ReferenceElement | string | null;
-  readonly placement?: Placement;
-  readonly shiftPadding?: number;
-  readonly inline?: boolean;
-  readonly sideOffset?: number;
-  readonly alignOffset?: number;
-}
-
 function ContainerBase(
-  {
-    anchor,
-    placement = "bottom",
-    shiftPadding = 8,
-    inline: inlineV = false,
-    sideOffset = 8,
-    alignOffset = 0,
-    ...props
-  }: HTMLProps<HTMLDialogElement> & ContainerProps,
+  props: HTMLProps<HTMLDialogElement>,
   ref: JSX.IntrinsicElements["dialog"]["ref"],
 ) {
   const {
@@ -58,6 +40,15 @@ function ContainerBase(
     lockScroll,
     lightDismiss,
     modal = true,
+
+    anchor,
+    alignOffset,
+    inline: inlineV,
+    placement,
+    shiftPadding,
+    sideOffset,
+
+    arrow: arrowEl,
   } = useDialogRoot();
   const [dialog, setDialog] = useState<HTMLDialogElement | null>(null);
 
@@ -95,6 +86,8 @@ function ContainerBase(
 
     middleware.push(transformOrigin({ arrowHeight: 0, arrowWidth: 0 }));
 
+    if (arrowEl) middleware.push(arrow({ element: arrowEl, padding: 0 }));
+
     const clean = autoUpdate(anchorEl, dialog, async () => {
       const pos = await computePosition(anchorEl, dialog, {
         strategy: "fixed",
@@ -105,17 +98,31 @@ function ContainerBase(
       const x = pos.middlewareData.transformOrigin.x;
       const y = pos.middlewareData.transformOrigin.y;
 
-      // Object.assign(dialog.style, { "--ln-transform-origin": `${x} ${y}` });
       dialog.style.transformOrigin = `${x} ${y}`;
 
       dialog.style.top = `${pos.y}px`;
       dialog.style.left = `${pos.x}px`;
+
+      if (arrowEl) {
+        const { x, y } = pos.middlewareData.arrow ?? {};
+
+        const top = y;
+        const left = x;
+
+        arrowEl.setAttribute("data-ln-placement", pos.placement.split("-").at(0) ?? "");
+
+        Object.assign(arrowEl.style, {
+          left: left != null ? `${left}px` : "",
+          top: top != null ? `${top}px` : "",
+        });
+      }
     });
 
     return () => clean();
   }, [
     alignOffset,
     anchor,
+    arrowEl,
     dialog,
     inlineV,
     open,

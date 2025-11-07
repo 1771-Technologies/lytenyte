@@ -1,52 +1,22 @@
-import { getActiveElement, getNearestMatching } from "@1771technologies/lytenyte-shared";
-
-export function getActiveMenuItem() {
-  return getNearestMatching(getActiveElement(document)!, isMenuItem);
+export function dispatchActivate(el: HTMLElement) {
+  return el.dispatchEvent(new Event("ln-activate-mouse", { bubbles: false }));
 }
-export function getActiveMenuTrigger() {
-  const item = getActiveMenuItem();
-  if (!item) return null;
-
-  const parent = getNearestMatching(item, isMenu)?.parentElement;
-  if (!parent) return;
-
-  const trigger = getNearestMatching(parent, isSubmenuTrigger);
-  return trigger;
+export function dispatchDeactivate(el: HTMLElement) {
+  return el.dispatchEvent(new Event("ln-deactivate-mouse", { bubbles: false }));
+}
+export function dispatchClose(el: HTMLElement) {
+  return el.dispatchEvent(new Event("ln-close", { bubbles: false }));
 }
 
-export function getDirectChildMenuItems(el: HTMLElement) {
-  const menuItems = Array.from(
-    el.querySelectorAll(
-      'li[data-ln-menu-item="true"]:not([data-ln-disabled="true"])',
-    ) as unknown as HTMLElement[],
-  ).filter((x) => {
-    const nearestMenu = getNearestMatching(x, isMenu);
-    return nearestMenu === el;
-  }) as HTMLElement[];
+export function getSubmenuRoots(el: HTMLElement) {
+  let current = el;
+  const roots: HTMLElement[] = [];
+  while (current && current.getAttribute("data-ln-terminal-menu") !== "true") {
+    if (current.getAttribute("data-ln-submenu-root") === "true") {
+      roots.push(current);
+    }
+    current = current.parentElement as HTMLElement;
+  }
 
-  return menuItems;
-}
-
-export function isSubmenuTrigger(el: HTMLElement) {
-  return el.getAttribute("data-ln-menu-subtrigger") === "true";
-}
-
-export function isMenu(el: HTMLElement) {
-  return el.getAttribute("data-ln-menu") === "true";
-}
-
-export function isMenuItem(el: HTMLElement) {
-  return el.getAttribute("data-ln-menu-item") === "true";
-}
-
-export function dispatchHoverOpen(el: HTMLElement) {
-  return el.dispatchEvent(new Event("ln-hover-open", { bubbles: false }));
-}
-
-export function dispatchKeyboardOpen(el: HTMLElement) {
-  return el.dispatchEvent(new Event("ln-keyboard-open", { bubbles: false }));
-}
-
-export function dispatchKeyboardClose(el: HTMLElement) {
-  return el.dispatchEvent(new Event("ln-keyboard-close", { bubbles: false }));
+  return roots;
 }

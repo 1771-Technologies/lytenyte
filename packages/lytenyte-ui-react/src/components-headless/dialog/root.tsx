@@ -1,7 +1,8 @@
-import { useId, useMemo, type PropsWithChildren } from "react";
+import { useId, useMemo, useState, type PropsWithChildren } from "react";
 import { context } from "./context.js";
 import { useControlled } from "../../hooks/use-controlled.js";
 import type { FocusTrapOptions } from "@1771technologies/lytenyte-shared";
+import type { Placement, ReferenceElement } from "../../external/floating-ui.js";
 
 export interface RootProps {
   readonly open?: boolean;
@@ -21,6 +22,13 @@ export interface RootProps {
   readonly focusPreventScroll?: FocusTrapOptions["preventScroll"];
   readonly focusIsKeyForward?: FocusTrapOptions["isKeyForward"];
   readonly focusIsKeyBackward?: FocusTrapOptions["isKeyBackward"];
+
+  readonly anchor?: ReferenceElement | string | null;
+  readonly placement?: Placement;
+  readonly shiftPadding?: number;
+  readonly inline?: boolean;
+  readonly sideOffset?: number;
+  readonly alignOffset?: number;
 }
 
 export const Root = ({
@@ -41,8 +49,16 @@ export const Root = ({
   lockScroll,
   lightDismiss,
   modal,
+
+  anchor = null,
+  placement = "bottom",
+  shiftPadding = 8,
+  inline = false,
+  sideOffset = 8,
+  alignOffset = 0,
 }: PropsWithChildren<RootProps>) => {
   const [open, onOpenChange] = useControlled({ controlled: openProp, default: openInitial });
+  const [arrow, setArrow] = useState<HTMLElement | null>(null);
 
   const id = useId();
 
@@ -68,8 +84,21 @@ export const Root = ({
       focusTrap,
       lockScroll,
       modal,
+
+      anchor,
+      placement,
+      shiftPadding,
+      inline,
+      sideOffset,
+      alignOffset,
+
+      arrow,
+      setArrow,
     };
   }, [
+    alignOffset,
+    anchor,
+    arrow,
     focusCanReturn,
     focusCanTrap,
     focusFallback,
@@ -81,12 +110,16 @@ export const Root = ({
     focusTrap,
     id,
     idProvided,
+    inline,
     lightDismiss,
     lockScroll,
     modal,
     onOpenChange,
     onOpenChangeProp,
     open,
+    placement,
+    shiftPadding,
+    sideOffset,
   ]);
 
   return <context.Provider value={value}>{children}</context.Provider>;

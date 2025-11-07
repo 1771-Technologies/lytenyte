@@ -87,6 +87,7 @@
 .dark {
   --base: oklch(0.99 0 0);
 
+
   --gray-50:  oklch(from var(--base) calc(l - 0.950) c h);
   --gray-100: oklch(from var(--base) calc(l - 0.820) c h);
   --gray-200: oklch(from var(--base) calc(l - 0.700) c h);
