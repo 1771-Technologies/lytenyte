@@ -1,9 +1,19 @@
 ---
 title: Grid Theming
-description: LyteNyte Grid ships unstyled by default, so you can apply any CSS
-  approach you prefer. This guide offers tips on the best styling
-  practices and shows different ways to style LyteNyte Grid components.
+description: LyteNyte Grid is a headless data grid. This guide will cover the basic
+  approach to theming LyteNyte Grid and how to use vanilla CSS or one of our pre-built
+  themes to create a visually stunning data grid.
 ---
+
+<Callout>
+
+As a headless data grid, no colors, font styles, borders, or backgrounds are applied to LyteNyte Grid.
+There are however, inline styles that are necessary for the grid layout calculations and row and column
+virtualization. These styles should not be overridden. Fortunately, inline styles are quite specific, so
+you would have to go out your way to create a very specific CSS selector that would override LyteNyte Grid's
+functional styles.
+
+</Callout>
 
 ## Applying Styles
 
