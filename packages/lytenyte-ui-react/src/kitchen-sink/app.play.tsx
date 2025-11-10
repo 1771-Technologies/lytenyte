@@ -7,6 +7,7 @@ import { Colors } from "./colors.js";
 import { Dialogs } from "./dialogs.js";
 import { Drawers } from "./drawers.js";
 import { Menus } from "./menus.js";
+import { Checkboxes } from "./checkboxes.js";
 
 function App() {
   const theme = useTheme();
@@ -29,6 +30,7 @@ function App() {
         <Dialogs />
         <Drawers />
         <Menus />
+        <Checkboxes />
       </div>
     </div>
   );
