@@ -1,12 +1,9 @@
 "use client";
-import "./main.css";
-
+import "./cell-styles.css";
 import { useClientRowDataSource, Grid } from "@1771technologies/lytenyte-pro";
-import "@1771technologies/lytenyte-pro/grid.css";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { bankDataSmall } from "@1771technologies/sample-data/bank-data-smaller";
-import { useId, useState } from "react";
-import { ThemePicker } from "./ui";
+import { useId } from "react";
 
 type BankData = (typeof bankDataSmall)[number];
 
@@ -30,7 +27,7 @@ const columns: Column<BankData>[] = [
   { id: "y" },
 ];
 
-export default function GridTheming() {
+export default function CellSelectionRect() {
   const ds = useClientRowDataSource({ data: bankDataSmall });
 
   const grid = Grid.useLyteNyte({
@@ -38,21 +35,16 @@ export default function GridTheming() {
     rowDataSource: ds,
     columns,
 
-    rowSelectedIds: new Set(["0-center", "1-center"]),
     cellSelections: [{ rowStart: 4, rowEnd: 7, columnStart: 2, columnEnd: 4 }],
   });
-  const [theme, setTheme] = useState("lng1771-teal");
 
   const view = grid.view.useValue();
 
   return (
-    <div className={"lng-grid" + " " + theme} style={{ display: "flex", flexDirection: "column" }}>
-      <div style={{ padding: 8, display: "flex", gap: 8 }}>
-        <ThemePicker theme={theme} setTheme={setTheme} />
-      </div>
+    <div className="cell-styles">
       <div style={{ height: 500 }}>
         <Grid.Root grid={grid}>
-          <Grid.Viewport>
+          <Grid.Viewport style={{ overflowY: "hidden", overflowX: "hidden" }}>
             <Grid.Header>
               {view.header.layout.map((row, i) => {
                 return (
@@ -60,13 +52,7 @@ export default function GridTheming() {
                     {row.map((c) => {
                       if (c.kind === "group") return null;
 
-                      return (
-                        <Grid.HeaderCell
-                          key={c.id}
-                          cell={c}
-                          className="flex h-full w-full items-center px-2 capitalize"
-                        />
-                      );
+                      return <Grid.HeaderCell key={c.id} cell={c} />;
                     })}
                   </Grid.HeaderRow>
                 );
@@ -80,13 +66,7 @@ export default function GridTheming() {
                   return (
                     <Grid.Row row={row} key={row.id}>
                       {row.cells.map((c) => {
-                        return (
-                          <Grid.Cell
-                            key={c.id}
-                            cell={c}
-                            className="flex h-full w-full items-center px-2 text-sm"
-                          />
-                        );
+                        return <Grid.Cell key={c.id} cell={c} />;
                       })}
                     </Grid.Row>
                   );

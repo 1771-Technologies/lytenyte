@@ -1,0 +1,23 @@
+.cell-styles {
+  [data-ln-cell="true"] {
+    display: flex;
+    align-items: center;
+    padding-inline: 8px;
+    background-color: light-dark(white, black);
+    color: gray;
+  }
+
+  [data-ln-header-cell="true"] {
+    display: flex;
+    align-items: center;
+    padding-inline: 8px;
+    background-color: light-dark(cyan, navy);
+    color: light-dark(black, white);
+  }
+
+  [data-ln-cell-selection-rect] {
+    background-color: rgba(0, 255, 0, 0.2);
+    border: 1px solid green;
+    border-radius: 8px;
+  }
+}

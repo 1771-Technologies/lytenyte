@@ -1,12 +1,8 @@
 "use client";
-import "./main.css";
-
 import { useClientRowDataSource, Grid } from "@1771technologies/lytenyte-pro";
-import "@1771technologies/lytenyte-pro/grid.css";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { bankDataSmall } from "@1771technologies/sample-data/bank-data-smaller";
 import { useId, useState } from "react";
-import { ThemePicker } from "./ui";
 
 type BankData = (typeof bankDataSmall)[number];
 
@@ -30,25 +26,47 @@ const columns: Column<BankData>[] = [
   { id: "y" },
 ];
 
-export default function GridTheming() {
+export default function InlineStyles() {
   const ds = useClientRowDataSource({ data: bankDataSmall });
 
   const grid = Grid.useLyteNyte({
     gridId: useId(),
     rowDataSource: ds,
     columns,
-
-    rowSelectedIds: new Set(["0-center", "1-center"]),
-    cellSelections: [{ rowStart: 4, rowEnd: 7, columnStart: 2, columnEnd: 4 }],
   });
-  const [theme, setTheme] = useState("lng1771-teal");
 
   const view = grid.view.useValue();
 
+  const [cellBg, setCellBg] = useState("#000000");
+  const [cellFg, setCellFg] = useState("#ffffff");
+  const [headerBg, setHeaderBg] = useState("navy");
+  const [headerFg, setHeaderFg] = useState("white");
+
   return (
-    <div className={"lng-grid" + " " + theme} style={{ display: "flex", flexDirection: "column" }}>
-      <div style={{ padding: 8, display: "flex", gap: 8 }}>
-        <ThemePicker theme={theme} setTheme={setTheme} />
+    <div>
+      <div style={{ paddingInline: "8px", paddingBlock: "8px" }}>
+        Click the color boxes to edit the style of the cells in the grid
+      </div>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "auto 1fr",
+          gap: "8px",
+          alignItems: "center",
+          paddingInline: "8px",
+        }}
+      >
+        <span>Cell Background</span>
+        <input type="color" value={cellBg} onChange={(e) => setCellBg(e.target.value)} />
+
+        <span>Cell Text</span>
+        <input type="color" value={cellFg} onChange={(e) => setCellFg(e.target.value)} />
+
+        <span>Header Background</span>
+        <input type="color" value={headerBg} onChange={(e) => setHeaderBg(e.target.value)} />
+
+        <span>Header Text</span>
+        <input type="color" value={headerFg} onChange={(e) => setHeaderFg(e.target.value)} />
       </div>
       <div style={{ height: 500 }}>
         <Grid.Root grid={grid}>
@@ -64,7 +82,13 @@ export default function GridTheming() {
                         <Grid.HeaderCell
                           key={c.id}
                           cell={c}
-                          className="flex h-full w-full items-center px-2 capitalize"
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            paddingInline: "8px",
+                            background: headerBg,
+                            color: headerFg,
+                          }}
                         />
                       );
                     })}
@@ -84,7 +108,13 @@ export default function GridTheming() {
                           <Grid.Cell
                             key={c.id}
                             cell={c}
-                            className="flex h-full w-full items-center px-2 text-sm"
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              paddingInline: "8px",
+                              background: cellBg,
+                              color: cellFg,
+                            }}
                           />
                         );
                       })}

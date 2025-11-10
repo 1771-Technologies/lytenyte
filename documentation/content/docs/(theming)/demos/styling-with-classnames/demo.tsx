@@ -1,12 +1,10 @@
 "use client";
-import "./main.css";
-
+import "./css-classes.css";
 import { useClientRowDataSource, Grid } from "@1771technologies/lytenyte-pro";
-import "@1771technologies/lytenyte-pro/grid.css";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { bankDataSmall } from "@1771technologies/sample-data/bank-data-smaller";
-import { useId, useState } from "react";
-import { ThemePicker } from "./ui";
+import clsx from "clsx";
+import { useId } from "react";
 
 type BankData = (typeof bankDataSmall)[number];
 
@@ -37,19 +35,12 @@ export default function GridTheming() {
     gridId: useId(),
     rowDataSource: ds,
     columns,
-
-    rowSelectedIds: new Set(["0-center", "1-center"]),
-    cellSelections: [{ rowStart: 4, rowEnd: 7, columnStart: 2, columnEnd: 4 }],
   });
-  const [theme, setTheme] = useState("lng1771-teal");
 
   const view = grid.view.useValue();
 
   return (
-    <div className={"lng-grid" + " " + theme} style={{ display: "flex", flexDirection: "column" }}>
-      <div style={{ padding: 8, display: "flex", gap: 8 }}>
-        <ThemePicker theme={theme} setTheme={setTheme} />
-      </div>
+    <div className="data-styles">
       <div style={{ height: 500 }}>
         <Grid.Root grid={grid}>
           <Grid.Viewport>
@@ -64,7 +55,10 @@ export default function GridTheming() {
                         <Grid.HeaderCell
                           key={c.id}
                           cell={c}
-                          className="flex h-full w-full items-center px-2 capitalize"
+                          className={clsx(
+                            "header-cell",
+                            c.column.type === "number" && "cell-number",
+                          )}
                         />
                       );
                     })}
@@ -84,7 +78,7 @@ export default function GridTheming() {
                           <Grid.Cell
                             key={c.id}
                             cell={c}
-                            className="flex h-full w-full items-center px-2 text-sm"
+                            className={clsx("cell", c.column.type === "number" && "cell-number")}
                           />
                         );
                       })}
