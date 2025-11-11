@@ -1,12 +1,16 @@
 "use client";
-import "./main.css";
-
 import { useClientRowDataSource, Grid } from "@1771technologies/lytenyte-pro";
-import "@1771technologies/lytenyte-pro/grid.css";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { bankDataSmall } from "@1771technologies/sample-data/bank-data-smaller";
-import { useId, useState } from "react";
-import { ThemePicker } from "./ui";
+import { cva } from "class-variance-authority";
+import { useId } from "react";
+import type { ClassValue } from "clsx";
+import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function tw(...c: ClassValue[]) {
+  return twMerge(clsx(...c));
+}
 
 type BankData = (typeof bankDataSmall)[number];
 
@@ -38,19 +42,12 @@ export default function GridTheming() {
     rowDataSource: ds,
     columns,
     columnBase: { width: 100 },
-
-    rowSelectedIds: new Set(["0-center", "1-center"]),
-    cellSelections: [{ rowStart: 4, rowEnd: 7, columnStart: 2, columnEnd: 4 }],
   });
-  const [theme, setTheme] = useState("lng1771-teal");
 
   const view = grid.view.useValue();
 
   return (
-    <div className={"lng-grid" + " " + theme} style={{ display: "flex", flexDirection: "column" }}>
-      <div style={{ padding: 8, display: "flex", gap: 8 }}>
-        <ThemePicker theme={theme} setTheme={setTheme} />
-      </div>
+    <div>
       <div style={{ height: 500 }}>
         <Grid.Root grid={grid}>
           <Grid.Viewport>
@@ -65,7 +62,9 @@ export default function GridTheming() {
                         <Grid.HeaderCell
                           key={c.id}
                           cell={c}
-                          className="flex h-full w-full items-center px-2 capitalize"
+                          className={tw(
+                            cellStyles({ number: c.column.type === "number", header: true }),
+                          )}
                         />
                       );
                     })}
@@ -85,7 +84,12 @@ export default function GridTheming() {
                           <Grid.Cell
                             key={c.id}
                             cell={c}
-                            className="flex h-full w-full items-center px-2 text-sm"
+                            className={tw(
+                              cellStyles({
+                                number: c.column.type === "number",
+                                row: c.rowIndex % 2 ? "even" : "odd",
+                              }),
+                            )}
                           />
                         );
                       })}
@@ -100,3 +104,18 @@ export default function GridTheming() {
     </div>
   );
 }
+
+const cellStyles = cva("flex items-center bg-gray-50 px-2 text-sm text-gray-800", {
+  variants: {
+    number: {
+      true: "justify-end tabular-nums",
+    },
+    row: {
+      odd: "bg-slate-50 dark:bg-slate-950",
+      even: "bg-slate-100 dark:bg-slate-900",
+    },
+    header: {
+      true: "capitalize bg-gray-100 text-gray-700",
+    },
+  },
+});

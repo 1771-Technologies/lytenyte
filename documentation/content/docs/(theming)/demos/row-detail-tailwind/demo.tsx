@@ -1,5 +1,4 @@
 "use client";
-import "./detail.css";
 
 import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import type { Column, RowLeaf } from "@1771technologies/lytenyte-pro/types";
@@ -49,7 +48,7 @@ export default function RowDetail() {
   const view = grid.view.useValue();
 
   return (
-    <div style={{ height: 500 }} className="detail-styles">
+    <div style={{ height: 500 }}>
       <Grid.Root grid={grid}>
         <Grid.Viewport style={{ overflowY: "hidden", overflowX: "hidden" }}>
           <Grid.Header>
@@ -63,13 +62,7 @@ export default function RowDetail() {
                       <Grid.HeaderCell
                         key={c.id}
                         cell={c}
-                        style={{
-                          background: "light-dark(cyan, #1d1b1b)",
-                          color: "light-dark(black, white)",
-                          display: "flex",
-                          alignItems: "center",
-                          paddingInline: "8px",
-                        }}
+                        className="flex items-center bg-gray-100 px-2 text-gray-900"
                       />
                     );
                   })}
@@ -83,19 +76,17 @@ export default function RowDetail() {
                 if (row.kind === "full-width") return null;
 
                 return (
-                  <Grid.Row row={row} key={row.id}>
+                  <Grid.Row
+                    row={row}
+                    key={row.id}
+                    className='[&_[data-ln-row-detail="true"]>div]:rounded-lg [&_[data-ln-row-detail="true"]>div]:border [&_[data-ln-row-detail="true"]>div]:border-gray-500 [&_[data-ln-row-detail="true"]]:p-7'
+                  >
                     {row.cells.map((c) => {
                       return (
                         <Grid.Cell
                           key={c.id}
                           cell={c}
-                          style={{
-                            background: "light-dark(white, black)",
-                            color: "light-dark(black, white)",
-                            display: "flex",
-                            alignItems: "center",
-                            paddingInline: "8px",
-                          }}
+                          className="flex items-center bg-gray-50 px-2 text-gray-900"
                         />
                       );
                     })}

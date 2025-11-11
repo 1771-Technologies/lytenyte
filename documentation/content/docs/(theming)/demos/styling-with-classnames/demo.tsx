@@ -9,8 +9,8 @@ import { useId } from "react";
 type BankData = (typeof bankDataSmall)[number];
 
 const columns: Column<BankData>[] = [
-  { id: "age", type: "number" },
-  { id: "job" },
+  { id: "job", width: 120 },
+  { id: "age", type: "number", width: 80 },
   { id: "balance", type: "number" },
   { id: "education" },
   { id: "marital" },
@@ -35,6 +35,7 @@ export default function GridTheming() {
     gridId: useId(),
     rowDataSource: ds,
     columns,
+    columnBase: { width: 100 },
   });
 
   const view = grid.view.useValue();

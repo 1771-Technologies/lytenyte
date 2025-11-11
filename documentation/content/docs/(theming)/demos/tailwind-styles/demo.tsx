@@ -1,12 +1,8 @@
 "use client";
-import "./main.css";
-
 import { useClientRowDataSource, Grid } from "@1771technologies/lytenyte-pro";
-import "@1771technologies/lytenyte-pro/grid.css";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { bankDataSmall } from "@1771technologies/sample-data/bank-data-smaller";
-import { useId, useState } from "react";
-import { ThemePicker } from "./ui";
+import { useId } from "react";
 
 type BankData = (typeof bankDataSmall)[number];
 
@@ -38,19 +34,12 @@ export default function GridTheming() {
     rowDataSource: ds,
     columns,
     columnBase: { width: 100 },
-
-    rowSelectedIds: new Set(["0-center", "1-center"]),
-    cellSelections: [{ rowStart: 4, rowEnd: 7, columnStart: 2, columnEnd: 4 }],
   });
-  const [theme, setTheme] = useState("lng1771-teal");
 
   const view = grid.view.useValue();
 
   return (
-    <div className={"lng-grid" + " " + theme} style={{ display: "flex", flexDirection: "column" }}>
-      <div style={{ padding: 8, display: "flex", gap: 8 }}>
-        <ThemePicker theme={theme} setTheme={setTheme} />
-      </div>
+    <div>
       <div style={{ height: 500 }}>
         <Grid.Root grid={grid}>
           <Grid.Viewport>
@@ -65,7 +54,7 @@ export default function GridTheming() {
                         <Grid.HeaderCell
                           key={c.id}
                           cell={c}
-                          className="flex h-full w-full items-center px-2 capitalize"
+                          className="flex items-center bg-gray-100 px-2 text-sm capitalize text-gray-700"
                         />
                       );
                     })}
@@ -85,7 +74,7 @@ export default function GridTheming() {
                           <Grid.Cell
                             key={c.id}
                             cell={c}
-                            className="flex h-full w-full items-center px-2 text-sm"
+                            className="flex items-center bg-gray-50 px-2 text-sm text-gray-800"
                           />
                         );
                       })}

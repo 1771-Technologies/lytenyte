@@ -1,9 +1,11 @@
-[data-ln-row-detail="true"] {
-  padding: 24px;
+.detail-styles {
+  [data-ln-row-detail="true"] {
+    padding: 24px;
 
-  & > div {
-    border: 1px solid gray;
-    border-radius: 8px;
-    background-color: light-dark(cyan, rgb(0, 0, 0));
+    & > div {
+      border: 1px solid gray;
+      border-radius: 8px;
+      background-color: light-dark(cyan, rgb(0, 0, 0));
+    }
   }
 }

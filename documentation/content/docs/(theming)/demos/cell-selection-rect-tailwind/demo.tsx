@@ -1,12 +1,8 @@
 "use client";
-import "./main.css";
-
 import { useClientRowDataSource, Grid } from "@1771technologies/lytenyte-pro";
-import "@1771technologies/lytenyte-pro/grid.css";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { bankDataSmall } from "@1771technologies/sample-data/bank-data-smaller";
-import { useId, useState } from "react";
-import { ThemePicker } from "./ui";
+import { useId } from "react";
 
 type BankData = (typeof bankDataSmall)[number];
 
@@ -30,7 +26,7 @@ const columns: Column<BankData>[] = [
   { id: "y" },
 ];
 
-export default function GridTheming() {
+export default function CellSelectionRect() {
   const ds = useClientRowDataSource({ data: bankDataSmall });
 
   const grid = Grid.useLyteNyte({
@@ -39,21 +35,16 @@ export default function GridTheming() {
     columns,
     columnBase: { width: 100 },
 
-    rowSelectedIds: new Set(["0-center", "1-center"]),
     cellSelections: [{ rowStart: 4, rowEnd: 7, columnStart: 2, columnEnd: 4 }],
   });
-  const [theme, setTheme] = useState("lng1771-teal");
 
   const view = grid.view.useValue();
 
   return (
-    <div className={"lng-grid" + " " + theme} style={{ display: "flex", flexDirection: "column" }}>
-      <div style={{ padding: 8, display: "flex", gap: 8 }}>
-        <ThemePicker theme={theme} setTheme={setTheme} />
-      </div>
+    <div>
       <div style={{ height: 500 }}>
         <Grid.Root grid={grid}>
-          <Grid.Viewport>
+          <Grid.Viewport style={{ overflowY: "hidden", overflowX: "hidden" }}>
             <Grid.Header>
               {view.header.layout.map((row, i) => {
                 return (
@@ -65,7 +56,7 @@ export default function GridTheming() {
                         <Grid.HeaderCell
                           key={c.id}
                           cell={c}
-                          className="flex h-full w-full items-center px-2 capitalize"
+                          className="flex items-center bg-gray-100 px-2 text-gray-900"
                         />
                       );
                     })}
@@ -73,7 +64,7 @@ export default function GridTheming() {
                 );
               })}
             </Grid.Header>
-            <Grid.RowsContainer>
+            <Grid.RowsContainer className="**:data-[ln-cell-selection-rect]:bg-green-500/20 **:data-[ln-cell-selection-rect]:border-green-500 **:data-[ln-cell-selection-rect]:border **:data-[ln-cell-selection-rect]:rounded-lg">
               <Grid.RowsCenter>
                 {view.rows.center.map((row) => {
                   if (row.kind === "full-width") return null;
@@ -85,7 +76,7 @@ export default function GridTheming() {
                           <Grid.Cell
                             key={c.id}
                             cell={c}
-                            className="flex h-full w-full items-center px-2 text-sm"
+                            className="flex items-center bg-gray-50 px-2 text-gray-900"
                           />
                         );
                       })}

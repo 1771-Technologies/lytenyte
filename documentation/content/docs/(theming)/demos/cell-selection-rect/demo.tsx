@@ -8,8 +8,8 @@ import { useId } from "react";
 type BankData = (typeof bankDataSmall)[number];
 
 const columns: Column<BankData>[] = [
-  { id: "age", type: "number" },
-  { id: "job" },
+  { id: "job", width: 120 },
+  { id: "age", type: "number", width: 80 },
   { id: "balance", type: "number" },
   { id: "education" },
   { id: "marital" },
@@ -34,6 +34,7 @@ export default function CellSelectionRect() {
     gridId: useId(),
     rowDataSource: ds,
     columns,
+    columnBase: { width: 100 },
 
     cellSelections: [{ rowStart: 4, rowEnd: 7, columnStart: 2, columnEnd: 4 }],
   });
