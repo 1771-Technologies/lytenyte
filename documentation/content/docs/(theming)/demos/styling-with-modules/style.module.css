@@ -1,0 +1,11 @@
+.cell {
+  display: flex;
+  align-items: center;
+  background-color: light-dark(cyan, navy);
+  color: light-dark(black, white);
+}
+
+.headerCell {
+  background-color: light-dark(white, black);
+  color: gray;
+}
