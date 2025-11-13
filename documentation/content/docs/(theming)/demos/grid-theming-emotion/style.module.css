@@ -1,0 +1,13 @@
+.headerCell {
+  display: flex;
+  align-items: center;
+  padding-inline: 8px;
+  text-transform: capitalize;
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  padding-inline: 8px;
+  font-size: 14px;
+}

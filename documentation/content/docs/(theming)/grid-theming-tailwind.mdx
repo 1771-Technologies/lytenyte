@@ -1,51 +1,49 @@
 ---
 title: Grid Theming With Tailwind
-description: Tailwind may be used to directly style LyteNyte Grid. This guide covers the
-  setup and approach to styling the various grid elements using Tailwind.
+description: Tailwind can be used to style LyteNyte Grid. This guide explains how to set up Tailwind and apply it to grid elements.
 ---
 
-This guide covers uses Tailwind has a an atomic CSS framework for styling LyteNyte Grid as its
-the most popular atomic CSS framework. However, the approach described here is equally applicable to
-other atomic CSS frameworks, such as [UnoCSS](https://unocss.dev/).
+This guide uses Tailwind as an atomic CSS framework for styling LyteNyte Grid because it is
+the most popular option. The approach described here also works with other atomic
+CSS frameworks, such as [UnoCSS](https://unocss.dev/).
 
 <Callout>
 
-It's highly recommend to read the general [Grid Theming Guide](/docs/grid-theming) before going through
-this guide to gain a better understanding of the styling approaches possible with LyteNyte Grid.
+We highly recommend reading the general [Grid Theming Guide](/docs/grid-theming) first to
+understand the styling options available in LyteNyte Grid.
 
-Furthermore, this guide assumes you are using Tailwind V4, although translation back to Tailwind V3
-is relatively straightforward.
+This guide assumes you are using Tailwind v4. Translating
+the examples back to Tailwind v3 is straightforward.
 
 </Callout>
 
 ## Tailwind Theming Setup
 
-The first thing to do when using Tailwind is to get the framework setup. The correct approach depends on your
-React framework of choice. See Tailwind's [installation guide](https://tailwindcss.com/docs/installation/using-vite)
-for specific details.
+Start by setting up Tailwind. The exact steps depend on your React framework.
+See Tailwind's [installation guide](https://tailwindcss.com/docs/installation/using-vite) for framework-specific details.
 
-This guide will assume that you have Tailwind setup with the default configuration. Hence, you will have a CSS
-file with the following content:
+This guide assumes you have Tailwind configured with the default setup, and a CSS file that contains:
 
 ```css
 @import "tailwindcss";
 ```
 
-If you are not sure which framework to use, we recommend starting with [Vite](https://vite.dev/). The project
-setup is simple and the Tailwind configuration is directly supported by an official Tailwind plugin.
+If you are not sure which framework to use, we recommend starting with
+[Vite](https://vite.dev/). The project setup is simple and Tailwind
+is supported by an official plugin.
 
 ## Applying Tailwind Classes
 
-LyteNyte Grid is exposed a set of headless components that are used to form the grid view. These components all
-accept the normal HTML properties you would expect, including the `className` field. This means that styling the
-grid using Tailwind css is as straightforward as applying the atomic CSS classes.
+LyteNyte Grid exposes a set of headless components that you use to build the grid view.
+These components accept standard HTML and React props, including `className`.
+As a result, styling the grid with Tailwind is as simple as applying utility classes.
 
-The example below demonstrates this using the standard Tailwind color palette.
+The example below demonstrates this using the standard Tailwind color palette:
 
 !demo:LyteNyte Grid Styled With Tailwind="./demos/tailwind-styles"
 
-Notice from the code the CSS classes are applied in the normal Tailwind fashion. There is no special configuration
-required. For example, the `Grid.Cell` is styled as follows:
+In the example, Tailwind classes are applied in the usual way.
+No special configuration is required. For example, the `Grid.Cell` component is styled as follows:
 
 ```tsx
 <Grid.Cell
@@ -57,16 +55,15 @@ required. For example, the `Grid.Cell` is styled as follows:
 
 ### Class Variance Authority
 
-Directly applying classes to the element is fine for simple styling uses cases, but it is not enough to
-cover the various styling demands that are sometimes required for feature rich data grids. Luckily there
-are a set of Tailwind utilities that can make applying conditional styles pleasant. The approach described
-here will required three libraries to be installed:
+Directly applying classes to elements works well for simple styling, but it
+does not scale when there is a lot of conditional styling being applied.
+Tailwind utility helpers can make conditional styles easier to manage. The approach here uses three libraries:
 
 - [`tailwind-merge`](https://www.npmjs.com/package/tailwind-merge)
 - [`clsx`](https://www.npmjs.com/package/clsx)
-- [`class-variant-authority`](https://cva.style/docs)
+- [`class-variance-authority`](https://cva.style/docs)
 
-Start by creating a `tw` utility function from `tailwind-merge` and `clsx`:
+Start by creating a `tw` utility function that combines `clsx` and `tailwind-merge`:
 
 ```ts
 import type { ClassValue } from "clsx";
@@ -80,14 +77,12 @@ export function tw(...c: ClassValue[]) {
 
 <Callout>
 
-If you are already using a Tailwind based framework, such as shadcn/ui, the `tw`
-function may already be defined, potentially under a different name, for example
-`cn` in the case of shadcn/ui.
+If you already use a Tailwind-based framework such as shadcn/ui, a similar `tw` function
+may already exist, often named `cn` in shadcn/ui projects.
 
 </Callout>
 
-Next define the variants of grid cells using the `class-variance-authority` library. The
-basic code for this shown below:
+Next, define grid-cell variants using `class-variance-authority`:
 
 ```ts
 const cellStyles = cva("flex items-center bg-gray-50 px-2 text-sm text-gray-800", {
@@ -106,15 +101,15 @@ const cellStyles = cva("flex items-center bg-gray-50 px-2 text-sm text-gray-800"
 });
 ```
 
-Using the `cva` function we now have a function that we can call that provides the base styles and
-variants on the base style that should be applied to the cells in the grid.
+The `cellStyles` function now returns the base classes and applies
+variants on top for different grid-cell states.
 
-The example below puts this all together and shows how simple it is to provide varying grid styles
-using Tailwind and some of the utility libraries available:
+The example below shows how to combine Tailwind, `tw`, and `cva` to provide
+rich, composable grid styles:
 
 !demo:Tailwind Styling With CVA="./demos/tailwind-cva"
 
-Notice how the CSV style is applied to the grid cell now:
+Notice how the CVA-generated style is applied to the grid cell:
 
 ```tsx
 <Grid.Cell
@@ -129,32 +124,30 @@ Notice how the CSV style is applied to the grid cell now:
 />
 ```
 
-This approach ensures that styles are consistently applied, and variants on the base styles are easy
-to maintain.
+This pattern keeps styles consistent and makes it easy to maintain variants over a shared base.
 
 ## Styling Elements Not Directly Exposed
 
-The [Grid Theming guide](/docs/grid-theming) explains that some elements are not directly
-exposed by LyteNyte Grid's public component interface. These elements must be styled using
-data attributes (or some other CSS selector of your choice).
+The [Grid Theming guide](/docs/grid-theming) explains that some elements
+are not directly exposed through LyteNyte Grid's public component interface.
+You must style these elements using data attributes or other selectors.
 
-Using Tailwind it is possible to style these elements, however, it requires using more advanced
-Tailwind syntax for selecting child elements that others may not be familiar with. This section
-will cover how to style the row detail and cell selection ranges using Tailwind.
+You can still target these elements with Tailwind by using more advanced selector
+syntax. This section shows how to style the row-detail element and the cell selection ranges with Tailwind.
 
 ### Styling Row Detail
 
-To style the row detail element using tailwind we need to target the element with `data-ln-row-detail`
-attribute set. Ideally we should do this without creating a separate CSS file. Tailwind allows child
-selectors to be applied.
+To style the row-detail element with Tailwind, target the element that has the
+`data-ln-row-detail` attribute. You can do this without a separate
+CSS file by using Tailwind's arbitrary variant selector syntax.
 
 !demo:Tailwind Styling Row Detail="./demos/row-detail-tailwind"
 
-The selector for the detail row looks complex but it's actually quite straightforward. The code is shown below.
-The first part is the `&` symbol, which tells Tailwind to select the current element, the `[data-ln-row-detail="true"]`
-selects the descendant with the matching data attribute, finally the `>div` selected the `div` that is a direct d
-descendant of the current element. If you are unfamiliar with this Tailwind syntax see the official
-[Tailwind guide](https://tailwindcss.com/docs/hover-focus-and-other-states#using-arbitrary-variants) on arbitrary selectors.
+The selector (shown below) looks complex but it is straightforward. The `&` symbol refers to the current
+element. The `[data-ln-row-detail="true"]` portion selects the descendant that has the matching
+data attribute. Finally, `>div` selects the `div` that is a direct descendant. If you are
+unfamiliar with this syntax, see Tailwind's guide on
+[arbitrary variants](https://tailwindcss.com/docs/hover-focus-and-other-states#using-arbitrary-variants).
 
 ```tsx
 <Grid.Row
@@ -164,26 +157,26 @@ descendant of the current element. If you are unfamiliar with this Tailwind synt
     '[&_[data-ln-row-detail="true"]>div]:rounded-lg',
     '[&_[data-ln-row-detail="true"]>div]:border',
     '[&_[data-ln-row-detail="true"]>div]:border-gray-500',
-    '[&_[data-ln-row-detail="true"]]:p-7`',
+    '[&_[data-ln-row-detail="true"]]:p-7',
   )}
-></Grid.Row>
+/>
 ```
 
-This is one approach that directly styles detail element inline. Another approach is to create a separate CSS file
-and target the row detail element directly in that file. This is possible since Tailwind is nothing more than
-inlined vanilla CSS.
+This example styles the row-detail element inline. You can also move these
+styles into a separate CSS file and target the same data attribute selectors there.
+Tailwind compiles down to vanilla CSS, so both approaches work.
 
 ### Styling Cell Selection Ranges
 
-Like the row detail container, the cell selection rects can be styled using arbitrary Tailwind selectors. The selector
-will be different and will be placed on the rows container as opposed to individual rows, but the overall approach is the
-same. The example below demonstrates this:
+You can style cell-selection rectangles using arbitrary Tailwind selectors in a similar way.
+In this case, you place the selector on the rows container rather than on each row.
+The example below demonstrates this:
 
 !demo:Cell Selection Styling With Tailwind="./demos/cell-selection-rect-tailwind"
 
-In the example we use the all descendants selector to target any and all cell section rects. This is a direct
-inline approach to styling the rects. There is nothing that stops that rects from being styled in a separate
-CSS file.
+Here we use a descendant selector to target every cell selection rectangle.
+This is a direct inline approach, but you can also move these rules
+to a separate CSS file if you prefer.
 
 ```tsx
 <Grid.RowsContainer
@@ -198,22 +191,22 @@ CSS file.
 
 ## Mixing Tailwind and Pre-built Themes
 
-Fully theming LyteNyte Grid from scratch may be require quite a few styles to be applied. Whilst users who
-want their grid to match their design system exactly may prefer to style LyteNyte Grid from scratch, it may
-be better to start from an initial pre-made theme and then adjust styles as necessary.
+Fully theming LyteNyte Grid from scratch can require a significant amount of styling.
+If you want the grid to match your design system exactly, you may choose to define every
+style yourself. However, starting from a pre-built theme and then adjusting
+styles with Tailwind is often more efficient.
 
-Since Tailwind doesn't prevent the inclusion of other CSS libraries or styles, its possible to combine a prebuilt
-theme with Tailwind classes for adjustments. This is actually what we do for most of the demos in the 1771
-Technologies website. The example below demonstrates an example that uses Tailwind with any of the provided
-grid themes.
+Because Tailwind does not restrict other CSS, you can combine a pre-built LyteNyte Grid
+theme with Tailwind utilities. This is how many of the demos on the 1771 Technologies website
+are built. The example below shows Tailwind working alongside the provided grid themes:
 
 !demo:Pre-built Themes With Tailwind="./demos/grid-theming"
 
 ### Theme Variables
 
-When using one of the provided prebuilt themes its useful to define Tailwind theme variables to allow
-the same colors to be used across your application. The CSS code below shows the defined theme variables
-you can use for Tailwind.
+When you use one of the provided pre-built themes, it helps to define Tailwind theme variables so you
+can reuse the same colors across your application. The CSS below shows the theme variables
+you can map into Tailwind:
 
 ```css
 @theme {
@@ -252,16 +245,16 @@ you can use for Tailwind.
 
 ## Shadcn and LyteNyte Grid
 
-[Shadcn/ui](https://ui.shadcn.com/) has become a popular library for quickly
-bootstrapping applications. Whilst shadcn/ui uses Tailwind, it uses a different set of theme
-variables than the standard Tailwind colors. LyteNyte comes with a pre-made shadcn/ui theme
-out the box. Simply add the `lng-grid lng1771-shadcn` classes to an element above the grid.
+[shadcn/ui](https://ui.shadcn.com/) is a popular library for bootstrapping applications.
+shadcn/ui uses Tailwind but defines its own theme tokens instead of relying on the default
+Tailwind color palette. LyteNyte Grid includes a pre-made shadcn/ui theme. To apply
+it, add the `lng-grid lng1771-shadcn` classes to an element above the grid.
 
 !demo:LyteNyte With Shadcn Theme="./demos/grid-theming-shadcn"
 
-The shadcn/ui theme was designed to work with the shadcn/ui tokens. The default set are shown below,
-but these will generally be defined in any shadcn project. See the [shadcn/ui theming](https://ui.shadcn.com/themes)
-page for more on styling your application using shadcn.
+The shadcn/ui theme is designed to work with shadcn/ui tokens. A typical set is shown below.
+These tokens are usually already defined in any shadcn/ui project.
+See the [shadcn/ui theming](https://ui.shadcn.com/themes) page for more details:
 
 ```css
 :root {
@@ -301,10 +294,9 @@ page for more on styling your application using shadcn.
 
 ## Next Steps
 
-This guide covered the basic styling of LyteNyte Grid using Tailwind. From here some next step
-guides to look at are:
+This guide covered the basics of styling LyteNyte Grid with Tailwind. For more details, see:
 
 - [Installation With Shadcn](/docs/intro-installation-shadcn): learn how to use LyteNyte Grid with shadcn/ui.
-- [Grid Theming](/docs/grid-theming): if you haven't already, reading our general grid theming guide will be very beneficial in learning to style LyteNyte Grid.
-- [Columns](/docs/columns): the grid view is largely influenced by what columns are displayed in it. See our columns guide to learn more about controlling what is displayed.
-- [Cell Renderers](/docs/cell-custom-renderers): see how to define custom cell renderers for more customization of what the grid displays in individual cells.
+- [Grid Theming](/docs/grid-theming): review the general theming guide to learn more about styling LyteNyte Grid.
+- [Columns](/docs/columns): see how column configuration affects what the grid displays.
+- [Cell Renderers](/docs/cell-custom-renderers): define custom cell renderers for more control over cell content.

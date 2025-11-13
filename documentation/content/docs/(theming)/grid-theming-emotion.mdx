@@ -1,14 +1,117 @@
 ---
 title: Grid Theming With Emotion
-description: LyteNyte Grid ships unstyled by default, so you can apply any CSS
-  approach you prefer. This guide offers tips on the best styling
-  practices and shows different ways to style LyteNyte Grid components.
+description: LyteNyte Grid can be styled using Emotion CSS (or any other CSS-in-JS library).
+  This guide explains an approach compatible with styled-component style APIs.
 ---
+
+<Callout>
+
+Modern React recommends avoiding runtime CSS-in-JS libraries. We include this guide because many codebases
+still rely on them. LyteNyte Grid does not assume a specific CSS framework, so a
+styled-component approach works as well as a build-time CSS approach.
+
+</Callout>
 
 ## Emotion Setup
 
-## Created Styled Components From Grid Parts
+To start using [Emotion](https://emotion.sh/docs/styled), install the `@emotion/styled` package:
 
-## Mixing Emotion CSS and Pre-built Themes
+```package-install
+@emotion/styled
+```
+
+This package provides Emotion's styled-component API and lets you create pre-styled components:
+
+```tsx
+import styled from "@emotion/styled";
+
+const Button = styled.button`
+  color: turquoise;
+`;
+```
+
+We apply this pattern to style LyteNyte Grid components.
+
+## Creating Styled LyteNyte Grid Components
+
+LyteNyte Grid is headless and exposes root primitives you can style individually.
+Emotion accepts arbitrary components, and the grid primitives align with Emotion's
+API, so creating styled components is straightforward. For example, you can create a styled `Grid.Cell`:
+
+```tsx
+const Cell = styled(Grid.Cell)`
+  display: flex;
+  align-items: center;
+  background-color: light-dark(cyan, navy);
+  color: light-dark(black, white);
+`;
+```
+
+Use the `Cell` component in place of `Grid.Cell` when building the grid view.
+The following example demonstrates this and also defines a styled header.
+
+!demo:Styling With Emotion="./demos/styling-with-emotion"
+
+## Styling Elements Not Directly Exposed
+
+The [Grid Theming guide](/docs/grid-theming) explains that some elements are not directly exposed through
+LyteNyte Grid's public component interface. You must style these elements using data attributes or any
+other selector strategy. When using Emotion, you can target these elements with nested
+CSS selectors inside a styled wrapper.
+
+### Styling Row Detail
+
+To style the row-detail element, wrap the `Grid.Viewport` or `Grid.RowsContainer` components
+in a styled wrapper and target the element with the `data-ln-row-detail` attribute.
+The example below shows this approach.
+
+!demo:Emotion Styling Row Detail="./demos/row-detail-emotion"
+
+Here is the styled wrapper used to target the row-detail container:
+
+```tsx
+const RowsContainer = styled(Grid.RowsContainer)`
+  & [data-ln-row-detail="true"] {
+    padding: 24px;
+  }
+
+  & [data-ln-row-detail="true"] > div {
+    border: 1px solid gray;
+    border-radius: 8px;
+    background-color: light-dark(cyan, rgb(0, 0, 0));
+  }
+`;
+```
+
+### Styling Cell Selection Ranges
+
+Cell-selection rectangles can also be styled using a nested data-attribute
+selector within a styled wrapper. The example below demonstrates this:
+
+!demo:Cell Selection Styling With Emotion="./demos/cell-selection-rect-emotion"
+
+Here is the styled wrapper that targets the cell-selection rect:
+
+```tsx
+const RowsContainer = styled(Grid.RowsContainer)`
+  & [data-ln-cell-selection-rect] {
+    background-color: rgba(0, 255, 0, 0.2);
+    border: 1px solid green;
+    border-radius: 8px;
+  }
+`;
+```
+
+## Emotion And Pre-built Themes
+
+LyteNyte Grid provides pre-styled themes implemented in plain CSS. These themes work with
+any CSS framework, including Emotion. You can include a pre-built theme in your
+application and layer Emotion-based styles on top. The example below demonstrates this:
+
+!demo:Prebuilt Themes and Emotion="./demos/grid-theming-emotion"
 
 ## Next Steps
+
+- [Grid Theming](/docs/grid-t'heming): review the general theming guide to learn more about styling LyteNyte Grid.
+- [Columns](/docs/columns): learn how column configuration influences the grid view.
+- [Cell Renderers](/docs/cell-custom-renderers): define custom cell renderers to further control cell content.

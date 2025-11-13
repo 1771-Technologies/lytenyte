@@ -1,38 +1,36 @@
 ---
 title: Grid Theming With CSS Modules
-description: LyteNyte Grid may be styled using CSS modules. CSS modules are a great way to
-  write CSS styles that are scoped to specific classes.
+description: LyteNyte Grid can be styled using CSS modules.
+  CSS modules provide scoped class names for writing isolated CSS.
 ---
 
 <Callout>
 
-It's recommended that you familiarize yourself with the basic theming approaches in LyteNyte
-Grid by reading our [Grid Theming guide](/docs/grid-theming). The content of this guide assumes
-the developer is already aware of the data attributes used to style various LyteNyte elements.
+Review the basic theming approaches in LyteNyte Grid by reading our [Grid Theming guide](/docs/grid-theming).
+This guide assumes you already understand the data attributes used to style LyteNyte Grid elements.
 
 </Callout>
 
 ## CSS Modules Setup
 
-Depending on your framework CSS modules may work out the box without any configuration necessary.
-For example if you using [Vite](https://vite.dev/guide/features#css-modules), then any CSS file
-ending with `.module.css` wil lbe considered a CSS module. The same approach is taken by
-[NextJS](https://nextjs.org/docs/app/getting-started/css#css-modules).
+Depending on your framework, CSS modules may work without additional configuration. For example,
+when using [Vite](https://vite.dev/guide/features#css-modules), any CSS file ending
+with `.module.css` is treated as a CSS module. [Next.js](https://nextjs.org/docs/app/getting-started/css#css-modules)
+follows the same convention.
 
-If you aren't using NextJS or Vite, consult the documentation of your framework of choice, otherwise
-the next best place to get started is with the [CSS modules](https://github.com/css-modules/css-modules)
-documentation.
+If you are not using Next.js or Vite, consult your framework's documentation. If needed,
+refer to the official [CSS Modules](https://github.com/css-modules/css-modules) documentation.
 
 ## Styling With Scoped Styles
 
-To style LyteNyte Grid using CSS modules, start by creating your module file. In the module file create a
-style for header cells and grid cells by targeting the respective data attributes (`data-ln-header-cell` and `data-ln-cell`).
-The example below demonstrates this:
+To style LyteNyte Grid using CSS modules, create a module file and define classes that
+target grid elements through their data attributes—such as `data-ln-header-cell` and `data-ln-cell`.
+The example below illustrates this:
 
 !demo:Styling With CSS Modules="./demos/styling-with-modules"
 
-In the example, we start by creating our module file (`style.module.css`). Notice the CSS in the file looks
-like normal vanilla CSS, and it is.
+In the example, we create a module file (`style.module.css`).
+The CSS inside the file is standard vanilla CSS:
 
 ```css
 .cell {
@@ -48,32 +46,36 @@ like normal vanilla CSS, and it is.
 }
 ```
 
-Then we can import our CSS module and apply the styles to the various LyteNyte Grid elements.
+Now import the module and attach the styles to the appropriate LyteNyte Grid elements:
 
 ```tsx
 import styles from "./style.module.css";
 
-// In the JSX content
+// In JSX
 <Grid.Cell key={c.id} cell={c} className={styles.cell} />;
 ```
 
-The `styles.cell` will be scoped to the `<Grid.Cell>`. This is the main benefit of CSS modules, styles are
-scoped to their module and will not conflict with other similar styles defined elsewhere.
+The `styles.cell` class applies only to `<Grid.Cell>`. This scoping behavior is
+the primary advantage of CSS modules—styles in one module do not conflict with
+class names defined elsewhere.
 
 ## Styling Elements Not Directly Exposed
 
-The [Grid Theming guide](/docs/grid-theming) explains that some elements are not directly exposed by LyteNyte Grid's
-public component interface. These elements must be styled using data attributes (or with some other CSS selector of
-your choice). When using CSS modules, nested CSS selectors are the recommended approach to style these sort of elements.
+The [Grid Theming guide](/docs/grid-theming) explains that some LyteNyte Grid
+elements are not directly exposed through its public component interface. You must
+style these elements using data attributes or other explicit selectors.
+When using CSS modules, nested selectors are the recommended way to target these elements.
 
 ### Styling Row Detail
 
-To style the row detail element using CSS modules we need to target the element with `data-ln-row-detail` attribute set.
-The example below does this by creating a `rowDetail` class in a CSS module.
+To style the row-detail element with CSS modules, target the element that has
+the `data-ln-row-detail` attribute. The example below demonstrates this by defining a
+`rowDetail` class in a CSS module.
 
 !demo:CSS Modules Styling Row Detail="./demos/row-detail-modules"
 
-The CSS module style itself is a slightly more complex than normal but is still relative simple:
+Here is the associated CSS module. The nested selectors make the rule slightly more
+complex, but still easy to follow:
 
 ```css
 .rowDetail {
@@ -89,7 +91,7 @@ The CSS module style itself is a slightly more complex than normal but is still 
 }
 ```
 
-The `rowDetail` class is then applied to the grid's row element:
+Apply the `rowDetail` class to the grid row:
 
 ```tsx
 <Grid.Row row={row} key={row.id} className={styles.rowDetail} />
@@ -97,12 +99,13 @@ The `rowDetail` class is then applied to the grid's row element:
 
 ### Styling Cell Selection Ranges
 
-Like the row detail container, the cell selection rects can be styled using a nested data attribute selected in a
-class created by a CSS module. The example below demonstrates this using the nested CSS data attribute selector.
+You can style cell-selection rectangles using the same nested selector pattern.
+Create a class that targets the `data-ln-cell-selection-rect` attribute and apply
+it at an appropriate wrapper level. The example below demonstrates this approach:
 
 !demo:Cell Selection Styling With CSS Modules="./demos/cell-selection-rect-modules"
 
-The module is applied higher than the grid and targets any cell selection rect.
+Here is the CSS module used to style the selection rectangle:
 
 ```css
 .cellStyles {
@@ -116,18 +119,18 @@ The module is applied higher than the grid and targets any cell selection rect.
 
 ## CSS Modules and Pre-built Themes
 
-In the example above, LyteNyte Grid is styled from scratch. However, this is not a requirement. We can instead
-use one of the prebuilt LyteNyte Grid themes and then use CSS modules to further enhance the styles applied.
-The example below demonstrates this:
+You can style LyteNyte Grid entirely with CSS modules, but this is not required.
+You may also combine a pre-built LyteNyte Grid theme with custom CSS module classes.
+The example below demonstrates how to enhance an existing theme:
 
 !demo:Prebuilt Themes and CSS Modules="./demos/grid-theming-modules"
 
-In the demo we apply the prebuilt theme, and then additionally apply our CSS module classes to the grid cell.
-This is perfect valid, since the themes provided are normal CSS and CSS modules is just a scoping mechanism for
-vanilla CSS.
+In the demo, the pre-built theme provides the base styling, and CSS modules
+add additional cell-specific styles. This works seamlessly because the pre-built
+themes are plain CSS and CSS modules simply scope class names.
 
 ## Next Steps
 
-- [Grid Theming](/docs/grid-theming): if you haven't already, reading our general grid theming guide will be very beneficial in learning to style LyteNyte Grid.
-- [Columns](/docs/columns): the grid view is largely influenced by what columns are displayed in it. See our columns guide to learn more about controlling what is displayed.
-- [Cell Renderers](/docs/cell-custom-renderers): see how to define custom cell renderers for more customization of what the grid displays in individual cells.
+- [Grid Theming](/docs/grid-theming): review the general theming guide to learn more about styling LyteNyte Grid.
+- [Columns](/docs/columns): understand how column configuration influences the grid view.
+- [Cell Renderers](/docs/cell-custom-renderers): define custom cell renderers for greater control over cell content.
