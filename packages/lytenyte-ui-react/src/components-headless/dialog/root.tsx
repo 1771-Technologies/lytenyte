@@ -9,6 +9,8 @@ export interface RootProps {
   readonly openInitial?: boolean;
   readonly onOpenChange?: (open: boolean) => void;
   readonly id?: string;
+  readonly titleId?: string;
+  readonly descriptionId?: string;
 
   readonly lockScroll?: boolean;
   readonly lightDismiss?: boolean;
@@ -36,6 +38,8 @@ export const Root = ({
   onOpenChange: onOpenChangeProp,
   openInitial,
   id: idProvided,
+  descriptionId: descIdProvider,
+  titleId: titleIdProvided,
   children,
   focusCanReturn,
   focusCanTrap,
@@ -61,6 +65,8 @@ export const Root = ({
   const [arrow, setArrow] = useState<HTMLElement | null>(null);
 
   const id = useId();
+  const descriptionId = useId();
+  const titleId = useId();
 
   const value = useMemo(() => {
     return {
@@ -71,6 +77,8 @@ export const Root = ({
       },
 
       id: idProvided ?? id,
+      descriptionId: descIdProvider ?? descriptionId,
+      titleId: titleIdProvided ?? titleId,
 
       lightDismiss,
       focusCanReturn,
@@ -99,6 +107,8 @@ export const Root = ({
     alignOffset,
     anchor,
     arrow,
+    descIdProvider,
+    descriptionId,
     focusCanReturn,
     focusCanTrap,
     focusFallback,
@@ -120,6 +130,8 @@ export const Root = ({
     placement,
     shiftPadding,
     sideOffset,
+    titleId,
+    titleIdProvided,
   ]);
 
   return <context.Provider value={value}>{children}</context.Provider>;

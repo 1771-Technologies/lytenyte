@@ -12,6 +12,7 @@ const CheckmarkBase = (
       ref={ref}
       data-ln-checked={ctx.checked}
       data-ln-indeterminate={ctx.indeterminate}
+      data-ln-disabled={ctx.disabled}
     />
   );
 };

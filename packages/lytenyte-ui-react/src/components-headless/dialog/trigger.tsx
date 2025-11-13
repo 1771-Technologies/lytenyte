@@ -6,7 +6,6 @@ import { useDialogRoot } from "./context.js";
 export interface TriggerState {
   readonly open: boolean;
   readonly openChange: (b: boolean) => void;
-  readonly id: string;
 }
 
 export interface TriggerProps {
@@ -21,8 +20,9 @@ function TriggerImpl(
 
   const internalProps: JSX.IntrinsicElements["button"] & { "data-dialog-open": boolean } = {
     onClick: () => ctx.onOpenChange(!ctx.open),
-    id: ctx.id,
     "data-dialog-open": ctx.open,
+    "aria-haspopup": "dialog",
+    "aria-controls": ctx.open ? ctx.id : undefined,
   };
 
   const final = useSlot({
@@ -32,7 +32,6 @@ function TriggerImpl(
     state: {
       open: ctx.open,
       openChange: ctx.onOpenChange,
-      id: ctx.id,
     },
   });
 

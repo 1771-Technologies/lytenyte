@@ -19,6 +19,7 @@ function CloseImpl(
   const ctx = useDialogRoot();
 
   const internalProps: JSX.IntrinsicElements["button"] = {
+    "aria-label": "Close dialog",
     onClick: () => ctx.onOpenChange(false),
   };
 

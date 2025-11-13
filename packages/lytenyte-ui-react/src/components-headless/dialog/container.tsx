@@ -27,7 +27,8 @@ function ContainerBase(
   const {
     open,
     onOpenChange,
-    id,
+    titleId,
+    descriptionId,
     focusCanReturn,
     focusCanTrap,
     focusFallback,
@@ -255,8 +256,8 @@ function ContainerBase(
     <dialog
       {...props}
       popover={!modal ? "manual" : undefined}
-      aria-describedby={id}
-      aria-labelledby={id}
+      aria-describedby={descriptionId}
+      aria-labelledby={titleId}
       data-ln-transition={t}
       data-ln-dialog
       ref={combined}

@@ -14,6 +14,8 @@ export function Menus() {
         </Menu.Trigger>
         <Menu.Popover>
           <Menu.Arrow />
+          <Menu.Title className="sr-only">Random items</Menu.Title>
+          <Menu.Description>This is some description</Menu.Description>
           <Menu.Container>
             <Menu.Item onAction={() => {}}>Item A</Menu.Item>
             <Menu.Item onAction={() => {}}>Item B</Menu.Item>

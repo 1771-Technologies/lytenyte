@@ -6,7 +6,8 @@ export function Dialogs() {
       <Dialog.Root>
         <Dialog.Trigger>Open Dialog</Dialog.Trigger>
         <Dialog.Container>
-          This is my dialog. It is nice.
+          <Dialog.Title>Dialog Title</Dialog.Title>
+          <Dialog.Description>This is the description of the dialog</Dialog.Description>
           <Dialog.Close size="icon">
             <span className="iconify ph--x"></span>
           </Dialog.Close>

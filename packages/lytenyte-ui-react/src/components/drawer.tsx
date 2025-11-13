@@ -29,11 +29,11 @@ const drawerStyles = cva(
     variants: {
       side: {
         start:
-          "border-e border-gray-300/50 h-screen ln-opening:-translate-x-full ln-closing:-translate-x-full start-0",
-        end: "border-s border-gray-300/50 h-screen ln-opening:translate-x-full ln-closing:translate-x-full end-0",
-        top: "border-b border-gray-300/50 w-screen ln-opening:-translate-y-full ln-closing:-translate-y-full top-0",
+          "border-e border-gray-300/50 h-screen ln-opening:-translate-x-full ln-closing:-translate-x-full start-0 bottom-0",
+        end: "border-s border-gray-300/50 h-screen ln-opening:translate-x-full ln-closing:translate-x-full end-0 bottom-0",
+        top: "border-b border-gray-300/50 w-screen ln-opening:-translate-y-full ln-closing:-translate-y-full top-0 start-0",
         bottom:
-          "border-t border-gray-300/50 w-screen ln-opening:translate-y-full ln-closing:translate-y-full bottom-0",
+          "border-t border-gray-300/50 w-screen ln-opening:translate-y-full ln-closing:translate-y-full bottom-0 start-0",
       },
     },
   },

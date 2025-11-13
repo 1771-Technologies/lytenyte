@@ -15,7 +15,13 @@ export function useMenuItemEvents(
     el.addEventListener(
       "ln-activate-mouse",
       () => {
-        el.focus();
+        const elementToFocus =
+          el.getAttribute("data-ln-combo") === "true"
+            ? ((el.querySelector('[data-ln-combomenu-input="true"]') as HTMLElement) ?? el)
+            : el;
+
+        if (elementToFocus === document.activeElement) return;
+        elementToFocus.focus();
         onActivate?.();
       },
       { signal },

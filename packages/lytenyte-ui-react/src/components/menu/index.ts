@@ -17,6 +17,9 @@ import { Trigger } from "./trigger.js";
 const { Container, RadioGroup, Root, Submenu, Group } = M;
 
 export const Menu = {
+  Title: M.Title,
+  Description: M.Description,
+
   Root,
   Popover,
   Container,

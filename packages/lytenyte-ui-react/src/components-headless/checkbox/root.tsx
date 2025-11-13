@@ -2,6 +2,7 @@ import { createContext, useCallback, type PropsWithChildren } from "react";
 import { useControlled } from "../../hooks/use-controlled.js";
 
 export interface RootProps {
+  readonly disabled?: boolean;
   readonly indeterminate?: boolean;
   readonly checked?: boolean;
   readonly checkedInitial?: boolean;
@@ -16,6 +17,7 @@ export const Root = ({
   checked,
   onCheckedChange,
   checkedInitial,
+  disabled = false,
   children,
 }: PropsWithChildren<RootProps>) => {
   const [c, onChange] = useControlled({ controlled: checked, default: checkedInitial ?? false });
@@ -29,7 +31,9 @@ export const Root = ({
   );
 
   return (
-    <context.Provider value={{ checked: c, onCheckedChange: checkedChange, indeterminate }}>
+    <context.Provider
+      value={{ checked: c, onCheckedChange: checkedChange, indeterminate, disabled }}
+    >
       {children}
     </context.Provider>
   );
