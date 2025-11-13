@@ -32,6 +32,26 @@ export function Checkboxes() {
           </Checkbox.Container>
         </label>
       </Checkbox.Root>
+
+      <Checkbox.Root checked disabled>
+        <label className="flex items-center gap-2">
+          Checked Disabled
+          <Checkbox.Container>
+            <Checkbox.Input />
+            <Checkbox.Checkmark />
+          </Checkbox.Container>
+        </label>
+      </Checkbox.Root>
+
+      <Checkbox.Root disabled>
+        <label className="flex items-center gap-2">
+          Disabled
+          <Checkbox.Container>
+            <Checkbox.Input />
+            <Checkbox.Checkmark />
+          </Checkbox.Container>
+        </label>
+      </Checkbox.Root>
     </div>
   );
 }

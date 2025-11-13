@@ -9,7 +9,7 @@ const Container = (props: ComponentProps<typeof D.Container>) => {
     <D.Container
       {...props}
       className={tw(
-        "top-1/5 start-1/2 grid -translate-x-1/2 -translate-y-1/2",
+        "top-1/5 start-1/2 -translate-x-1/2 -translate-y-1/2",
         "w-full max-w-[calc(100%-2rem)] gap-4 rounded-lg border border-gray-300/50 bg-gray-100 p-6 shadow-lg sm:max-w-lg dark:shadow-gray-400/10",
 
         // exit and enter animations
@@ -41,6 +41,9 @@ const Close = ({
 export const Dialog = {
   Root: D.Root,
   Container,
+  Title: D.Title,
+  Description: D.Description,
+  Arrow: D.Arrow,
   Trigger,
   Close,
 };

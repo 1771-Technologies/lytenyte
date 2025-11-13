@@ -1,10 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useSubmenuContext } from "./submenu/submenu-context.js";
 import { getNearestMatching } from "@1771technologies/lytenyte-shared";
 import { dispatchActivate, dispatchClose, dispatchDeactivate, getSubmenuRoots } from "./dom.js";
 
 export function useMenu(el: HTMLElement | null) {
   const sub = useSubmenuContext();
+
+  const mouseOutTime = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (!el || sub) return;
@@ -49,6 +51,7 @@ export function useMenu(el: HTMLElement | null) {
           });
         }
 
+        if (mouseOutTime.current) clearTimeout(mouseOutTime.current);
         dispatchActivate(item);
       },
       { signal: controller.signal },
@@ -64,7 +67,10 @@ export function useMenu(el: HTMLElement | null) {
         );
         if (!item) return;
 
-        dispatchDeactivate(item);
+        mouseOutTime.current = setTimeout(() => {
+          dispatchDeactivate(item);
+          mouseOutTime.current = null;
+        });
       },
       { signal: controller.signal },
     );

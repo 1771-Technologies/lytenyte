@@ -7,6 +7,8 @@ export interface DialogContext {
   readonly onOpenChange: (open: boolean) => void;
 
   readonly id: string;
+  readonly titleId: string;
+  readonly descriptionId: string;
 
   readonly lockScroll?: boolean;
   readonly modal?: boolean;

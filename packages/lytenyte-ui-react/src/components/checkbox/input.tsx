@@ -12,7 +12,7 @@ export const Input = forwardRef(
         {...props}
         ref={ref}
         className={tw(
-          "absolute bottom-0 left-0 right-0 top-0 h-full w-full cursor-pointer opacity-0 focus:outline-none",
+          "absolute bottom-0 left-0 right-0 top-0 h-full w-full cursor-pointer opacity-0 focus:outline-none disabled:cursor-not-allowed",
           props.className,
         )}
       />
