@@ -26,6 +26,7 @@ function ComboMenuImpl(
         ref={combinedRefs}
         tabIndex={0}
         data-ln-menu-item
+        data-ln-combo
         data-ln-active={active}
         onFocus={(ev) => {
           props.onFocus?.(ev);

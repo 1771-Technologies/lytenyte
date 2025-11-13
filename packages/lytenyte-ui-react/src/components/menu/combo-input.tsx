@@ -10,7 +10,7 @@ export const ComboInput = forwardRef(
         {...props}
         ref={ref}
         className={tw(
-          "rounded-lg border border-gray-300 bg-gray-50 px-2 py-1 focus-visible:border-gray-300 focus-visible:outline-none",
+          "rounded-lg border border-gray-300 bg-gray-50 px-2 py-1 transition-colors focus:border-gray-400 focus-visible:outline-none",
           props.className,
         )}
       />

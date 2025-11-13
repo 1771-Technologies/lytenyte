@@ -14,6 +14,8 @@ export const Container = forwardRef(
           "focus-within:has-[:focus-visible]:outline-primary-500 focus-within:has-[:focus-visible]:outline focus-within:has-[:focus-visible]:outline-offset-1",
           "data-[ln-checked=true]:bg-primary-500 data-[ln-checked=true]:border-primary-500",
           "data-[ln-indeterminate=true]:bg-primary-500 data-[ln-indeterminate=true]:border-primary-500",
+          "data-[ln-disabled=true]:data-[ln-checked=true]:border-gray-300 data-[ln-disabled=true]:data-[ln-indeterminate=true]:border-gray-300 data-[ln-disabled=true]:bg-gray-300",
+          "data-[ln-disabled=true]:cursor-not-allowed",
           props.className,
         )}
       />

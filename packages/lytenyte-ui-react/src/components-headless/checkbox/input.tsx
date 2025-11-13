@@ -2,7 +2,7 @@ import { forwardRef, useContext, type JSX } from "react";
 import { context } from "./root.js";
 
 const InputBase = (
-  props: JSX.IntrinsicElements["input"],
+  props: Omit<JSX.IntrinsicElements["input"], "disabled" | "value" | "checked">,
   ref: JSX.IntrinsicElements["input"]["ref"],
 ) => {
   const ctx = useContext(context);
@@ -11,6 +11,7 @@ const InputBase = (
     <input
       {...props}
       type="checkbox"
+      disabled={ctx.disabled}
       checked={ctx.checked}
       onChange={(ev) => {
         props.onChange?.(ev);

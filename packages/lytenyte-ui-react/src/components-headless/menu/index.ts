@@ -21,6 +21,9 @@ export const Menu = {
   Popover: Dialog.Container,
   Container,
 
+  Title: Dialog.Title,
+  Description: Dialog.Description,
+
   Item,
   Arrow: Dialog.Arrow,
 
