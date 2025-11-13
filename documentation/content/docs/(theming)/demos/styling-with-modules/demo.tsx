@@ -4,25 +4,23 @@ import { useClientRowDataSource, Grid } from "@1771technologies/lytenyte-pro";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { bankDataSmall } from "@1771technologies/sample-data/bank-data-smaller";
 import { useId } from "react";
+import { BalanceCell, DurationCell, NumberCell } from "./components";
 
 type BankData = (typeof bankDataSmall)[number];
 
 const columns: Column<BankData>[] = [
   { id: "job", width: 120 },
-  { id: "age", type: "number", width: 80 },
-  { id: "balance", type: "number" },
+  { id: "age", type: "number", width: 80, cellRenderer: NumberCell },
+  { id: "balance", type: "number", cellRenderer: BalanceCell },
   { id: "education" },
   { id: "marital" },
   { id: "default" },
   { id: "housing" },
   { id: "loan" },
   { id: "contact" },
-  { id: "day", type: "number" },
+  { id: "day", type: "number", cellRenderer: NumberCell },
   { id: "month" },
-  { id: "duration" },
-  { id: "campaign" },
-  { id: "pdays" },
-  { id: "previous" },
+  { id: "duration", type: "number", cellRenderer: DurationCell },
   { id: "poutcome" },
   { id: "y" },
 ];
@@ -40,7 +38,7 @@ export default function GridTheming() {
   const view = grid.view.useValue();
 
   return (
-    <div className="data-styles">
+    <div>
       <div style={{ height: 500 }}>
         <Grid.Root grid={grid}>
           <Grid.Viewport>
@@ -51,7 +49,16 @@ export default function GridTheming() {
                     {row.map((c) => {
                       if (c.kind === "group") return null;
 
-                      return <Grid.HeaderCell key={c.id} cell={c} className={styles.headerCell} />;
+                      return (
+                        <Grid.HeaderCell
+                          key={c.id}
+                          cell={c}
+                          className={
+                            styles.headerCell +
+                            (c.column.type === "number" ? " " + styles.numberCell : "")
+                          }
+                        />
+                      );
                     })}
                   </Grid.HeaderRow>
                 );
@@ -65,7 +72,16 @@ export default function GridTheming() {
                   return (
                     <Grid.Row row={row} key={row.id}>
                       {row.cells.map((c) => {
-                        return <Grid.Cell key={c.id} cell={c} className={styles.cell} />;
+                        return (
+                          <Grid.Cell
+                            key={c.id}
+                            cell={c}
+                            className={
+                              styles.cell +
+                              (c.column.type === "number" ? " " + styles.numberCell : "")
+                            }
+                          />
+                        );
                       })}
                     </Grid.Row>
                   );

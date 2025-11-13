@@ -90,9 +90,8 @@ const cellStyles = cva("flex items-center bg-gray-50 px-2 text-sm text-gray-800"
     number: {
       true: "justify-end tabular-nums",
     },
-    row: {
-      odd: "bg-slate-50 dark:bg-slate-950",
-      even: "bg-slate-100 dark:bg-slate-900",
+    rowBase: {
+      true: "flex items-center border-b border-gray-200 bg-white px-2 text-sm text-gray-800 group-data-[ln-alternate=true]:bg-gray-100 dark:border-gray-100 dark:bg-gray-50 dark:text-gray-600 dark:group-data-[ln-alternate=true]:bg-gray-100/30",
     },
     header: {
       true: "capitalize bg-gray-100 text-gray-700",
@@ -118,7 +117,7 @@ Notice how the CVA-generated style is applied to the grid cell:
   className={tw(
     cellStyles({
       number: c.column.type === "number",
-      row: c.rowIndex % 2 ? "even" : "odd",
+      rowBase: true,
     }),
   )}
 />
@@ -181,12 +180,14 @@ to a separate CSS file if you prefer.
 ```tsx
 <Grid.RowsContainer
   className={tw(
-    "**:data-[ln-cell-selection-rect]:bg-green-500/10",
-    "**:data-[ln-cell-selection-rect]:border-green-500",
-    "**:data-[ln-cell-selection-rect]:border",
-    "**:data-[ln-cell-selection-rect]:rounded-lg",
+    '**:not-data-[ln-cell-selection-is-unit="true"]:data-[ln-cell-selection-rect]:bg-ln-primary-30 **:data-[ln-cell-selection-rect]:border-ln-primary-50',
+    '**:not-data-[ln-cell-selection-is-unit="true"]:data-[ln-cell-selection-border-top=true]:border-t',
+    '**:not-data-[ln-cell-selection-is-unit="true"]:data-[ln-cell-selection-border-bottom=true]:border-b',
+    '**:not-data-[ln-cell-selection-is-unit="true"]:data-[ln-cell-selection-border-start=true]:border-l',
+    '**:not-data-[ln-cell-selection-is-unit="true"]:data-[ln-cell-selection-border-end=true]:border-r',
+    '**:data-[ln-cell-selection-is-unit="true"]:outline **:data-[ln-cell-selection-is-unit="true"]:outline-ln-primary-50 **:data-[ln-cell-selection-is-unit="true"]:-outline-offset-1',
   )}
-/>
+>
 ```
 
 ## Mixing Tailwind and Pre-built Themes

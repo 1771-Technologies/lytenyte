@@ -5,25 +5,23 @@ import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { bankDataSmall } from "@1771technologies/sample-data/bank-data-smaller";
 import clsx from "clsx";
 import { useId } from "react";
+import { BalanceCell, DurationCell, NumberCell } from "./components";
 
 type BankData = (typeof bankDataSmall)[number];
 
 const columns: Column<BankData>[] = [
   { id: "job", width: 120 },
-  { id: "age", type: "number", width: 80 },
-  { id: "balance", type: "number" },
+  { id: "age", type: "number", width: 80, cellRenderer: NumberCell },
+  { id: "balance", type: "number", cellRenderer: BalanceCell },
   { id: "education" },
   { id: "marital" },
   { id: "default" },
   { id: "housing" },
   { id: "loan" },
   { id: "contact" },
-  { id: "day", type: "number" },
+  { id: "day", type: "number", cellRenderer: NumberCell },
   { id: "month" },
-  { id: "duration" },
-  { id: "campaign" },
-  { id: "pdays" },
-  { id: "previous" },
+  { id: "duration", type: "number", cellRenderer: DurationCell },
   { id: "poutcome" },
   { id: "y" },
 ];
@@ -41,7 +39,7 @@ export default function GridTheming() {
   const view = grid.view.useValue();
 
   return (
-    <div className="data-styles">
+    <div className="classes">
       <div style={{ height: 500 }}>
         <Grid.Root grid={grid}>
           <Grid.Viewport>

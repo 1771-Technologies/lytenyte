@@ -5,15 +5,16 @@ import type { Column, RowLeaf } from "@1771technologies/lytenyte-pro/types";
 import { companiesWithPricePerf } from "@1771technologies/sample-data/companies-with-price-performance";
 import { useId, useMemo } from "react";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import { NumberCell, PriceCell } from "./components";
 
 type PerformanceData = (typeof companiesWithPricePerf)[number];
 
 const columns: Column<PerformanceData>[] = [
-  { id: "Company" },
-  { id: "Founded" },
-  { id: "Employee Cnt" },
-  { id: "Country" },
-  { id: "Price" },
+  { id: "Company", widthFlex: 2 },
+  { id: "Country", widthFlex: 2 },
+  { id: "Founded", type: "number" },
+  { id: "Employee Cnt", type: "number", cellRenderer: NumberCell },
+  { id: "Price", type: "number", cellRenderer: PriceCell },
 ];
 
 export default function RowDetail() {
@@ -50,7 +51,7 @@ export default function RowDetail() {
   return (
     <div style={{ height: 500 }}>
       <Grid.Root grid={grid}>
-        <Grid.Viewport style={{ overflowY: "hidden", overflowX: "hidden" }}>
+        <Grid.Viewport>
           <Grid.Header>
             {view.header.layout.map((row, i) => {
               return (
@@ -62,7 +63,10 @@ export default function RowDetail() {
                       <Grid.HeaderCell
                         key={c.id}
                         cell={c}
-                        className="flex items-center bg-gray-100 px-2 text-gray-900"
+                        className={
+                          "flex items-center bg-gray-300 px-2 text-sm capitalize text-gray-900 dark:bg-gray-100 dark:text-gray-700" +
+                          (c.column.type === "number" ? " justify-end" : "")
+                        }
                       />
                     );
                   })}
@@ -79,14 +83,17 @@ export default function RowDetail() {
                   <Grid.Row
                     row={row}
                     key={row.id}
-                    className='[&_[data-ln-row-detail="true"]>div]:rounded-lg [&_[data-ln-row-detail="true"]>div]:border [&_[data-ln-row-detail="true"]>div]:border-gray-500 [&_[data-ln-row-detail="true"]]:p-7'
+                    className='[&_[data-ln-row-detail="true"]>div]:border-ln-gray-30 group [&_[data-ln-row-detail="true"]>div]:rounded-lg [&_[data-ln-row-detail="true"]>div]:border [&_[data-ln-row-detail="true"]]:p-7'
                   >
                     {row.cells.map((c) => {
                       return (
                         <Grid.Cell
                           key={c.id}
                           cell={c}
-                          className="flex items-center bg-gray-50 px-2 text-gray-900"
+                          className={
+                            "flex items-center border-b border-gray-200 bg-white px-2 text-sm text-gray-800 group-data-[ln-alternate=true]:bg-gray-100 dark:border-gray-100 dark:bg-gray-50 dark:text-gray-600 dark:group-data-[ln-alternate=true]:bg-gray-100/30" +
+                            (c.column.type === "number" ? " justify-end" : "")
+                          }
                         />
                       );
                     })}
@@ -125,14 +132,21 @@ function PriceChart({ row }: { row: RowLeaf<PerformanceData> }) {
             <stop offset="95%" stopColor={color.stop95} stopOpacity={0} />
           </linearGradient>
         </defs>
-        <XAxis dataKey="week" />
-        <YAxis />
-        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis
+          dataKey="week"
+          ticks={[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]}
+          fontSize="14px"
+          tickLine={false}
+        />
+        <YAxis fontFamily="Inter" fontSize="14px" tickLine={false} axisLine={false} />
+        <CartesianGrid vertical={false} stroke="var(--lng1771-gray-10)" />
+
         <Area
           key={row.id}
           type="monotone"
           dataKey={row.id}
           stroke={color.solid}
+          strokeWidth={3}
           fillOpacity={1}
           fill={`url(#${row.id})`}
         />
@@ -142,7 +156,7 @@ function PriceChart({ row }: { row: RowLeaf<PerformanceData> }) {
 }
 const color = {
   name: "Ruby Red",
-  solid: "#2de045",
-  stop5: "#e6fbe6",
-  stop95: "#3ee362",
+  solid: "#CC5500",
+  stop5: "#CC5500",
+  stop95: "transparent",
 };

@@ -40,7 +40,8 @@ export default function GridTheming() {
     columns,
     columnBase: { width: 100 },
 
-    rowSelectedIds: new Set(["0-center", "1-center"]),
+    cellSelectionMode: "range",
+    cellSelections: [{ rowStart: 4, rowEnd: 7, columnStart: 2, columnEnd: 4 }],
   });
   const [theme, setTheme] = useState("lng1771-teal");
 

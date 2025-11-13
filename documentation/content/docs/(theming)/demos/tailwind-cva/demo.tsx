@@ -7,6 +7,7 @@ import { useId } from "react";
 import type { ClassValue } from "clsx";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
+import { BalanceCell, DurationCell, NumberCell } from "./components";
 
 export function tw(...c: ClassValue[]) {
   return twMerge(clsx(...c));
@@ -16,20 +17,17 @@ type BankData = (typeof bankDataSmall)[number];
 
 const columns: Column<BankData>[] = [
   { id: "job", width: 120 },
-  { id: "age", type: "number", width: 80 },
-  { id: "balance", type: "number" },
+  { id: "age", type: "number", width: 80, cellRenderer: NumberCell },
+  { id: "balance", type: "number", cellRenderer: BalanceCell },
   { id: "education" },
   { id: "marital" },
   { id: "default" },
   { id: "housing" },
   { id: "loan" },
   { id: "contact" },
-  { id: "day", type: "number" },
+  { id: "day", type: "number", cellRenderer: NumberCell },
   { id: "month" },
-  { id: "duration" },
-  { id: "campaign" },
-  { id: "pdays" },
-  { id: "previous" },
+  { id: "duration", type: "number", cellRenderer: DurationCell },
   { id: "poutcome" },
   { id: "y" },
 ];
@@ -78,7 +76,7 @@ export default function GridTheming() {
                   if (row.kind === "full-width") return null;
 
                   return (
-                    <Grid.Row row={row} key={row.id}>
+                    <Grid.Row row={row} key={row.id} className="group">
                       {row.cells.map((c) => {
                         return (
                           <Grid.Cell
@@ -87,7 +85,7 @@ export default function GridTheming() {
                             className={tw(
                               cellStyles({
                                 number: c.column.type === "number",
-                                row: c.rowIndex % 2 ? "even" : "odd",
+                                rowBase: true,
                               }),
                             )}
                           />
@@ -110,9 +108,8 @@ const cellStyles = cva("flex items-center bg-gray-50 px-2 text-sm text-gray-800"
     number: {
       true: "justify-end tabular-nums",
     },
-    row: {
-      odd: "bg-slate-50 dark:bg-slate-950",
-      even: "bg-slate-100 dark:bg-slate-900",
+    rowBase: {
+      true: "flex items-center border-b border-gray-200 bg-white px-2 text-sm text-gray-800 group-data-[ln-alternate=true]:bg-gray-100 dark:border-gray-100 dark:bg-gray-50 dark:text-gray-600 dark:group-data-[ln-alternate=true]:bg-gray-100/30",
     },
     header: {
       true: "capitalize bg-gray-100 text-gray-700",

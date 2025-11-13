@@ -9,25 +9,23 @@ import { useId, useState } from "react";
 import { ThemePicker } from "./ui";
 
 import styled from "@emotion/styled";
+import { BalanceCell, DurationCell, NumberCell } from "./components";
 
 type BankData = (typeof bankDataSmall)[number];
 
 const columns: Column<BankData>[] = [
   { id: "job", width: 120 },
-  { id: "age", type: "number", width: 80 },
-  { id: "balance", type: "number" },
+  { id: "age", type: "number", width: 80, cellRenderer: NumberCell },
+  { id: "balance", type: "number", cellRenderer: BalanceCell },
   { id: "education" },
   { id: "marital" },
   { id: "default" },
   { id: "housing" },
   { id: "loan" },
   { id: "contact" },
-  { id: "day", type: "number" },
+  { id: "day", type: "number", cellRenderer: NumberCell },
   { id: "month" },
-  { id: "duration" },
-  { id: "campaign" },
-  { id: "pdays" },
-  { id: "previous" },
+  { id: "duration", type: "number", cellRenderer: DurationCell },
   { id: "poutcome" },
   { id: "y" },
 ];
@@ -41,7 +39,8 @@ export default function GridTheming() {
     columns,
     columnBase: { width: 100 },
 
-    rowSelectedIds: new Set(["0-center", "1-center"]),
+    cellSelectionMode: "range",
+    cellSelections: [{ rowStart: 4, rowEnd: 7, columnStart: 2, columnEnd: 4 }],
   });
   const [theme, setTheme] = useState("lng1771-teal");
 
@@ -62,7 +61,15 @@ export default function GridTheming() {
                     {row.map((c) => {
                       if (c.kind === "group") return null;
 
-                      return <HeaderCell key={c.id} cell={c} />;
+                      return (
+                        <HeaderCell
+                          key={c.id}
+                          cell={c}
+                          style={{
+                            justifyContent: c.column.type === "number" ? "flex-end" : "flex-start",
+                          }}
+                        />
+                      );
                     })}
                   </Grid.HeaderRow>
                 );
@@ -76,7 +83,16 @@ export default function GridTheming() {
                   return (
                     <Grid.Row row={row} key={row.id}>
                       {row.cells.map((c) => {
-                        return <Cell key={c.id} cell={c} />;
+                        return (
+                          <Cell
+                            key={c.id}
+                            cell={c}
+                            style={{
+                              justifyContent:
+                                c.column.type === "number" ? "flex-end" : "flex-start",
+                            }}
+                          />
+                        );
                       })}
                     </Grid.Row>
                   );
@@ -101,4 +117,5 @@ const HeaderCell = styled(Grid.HeaderCell)`
   align-items: center;
   padding-inline: 8px;
   text-transform: capitalize;
+  font-size: 14px;
 `;

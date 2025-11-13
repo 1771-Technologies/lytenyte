@@ -18,10 +18,15 @@ they are unlikely to be affected unless you deliberately create an extremely spe
 
 The fastest way to create a visually polished grid is by using one of the built-in LyteNyte Grid themes.
 To apply a theme, add the `lng-grid` class to any HTML element above the grid, then
-include the class name of the theme you want to use.
+include the class name of the theme you want to use. Ensure you have imported the CSS file
+for the themes:
 
-LyteNyte Grid provides seven ready-to-use themes. Add the theme class, along with the
-`lng-grid` class, to a parent element (typically `html` or `body`):
+```ts
+import "@1771technologies/lytenyte-pro/grid.css";
+```
+
+LyteNyte Grid provides seven ready-to-use themes. Add the theme class, alongside the
+`lng-grid` class, to a parent element of the grid (typically `html` or `body`):
 
 - `lng1771-teal`: Teal-accent theme.
 - `lng1771-term256`: Terminal-style color theme.
@@ -51,9 +56,9 @@ attribute `data-ln-cell="true"`. All LyteNyte Grid data attributes begin with th
 prefix, where `ln` stands for LyteNyte. Using these attributes is an effective
 way to target specific parts of the grid for CSS styling.
 
-In the demo below, every cell is styled with a black background and gray
-text (white background in light mode). Header elements use a navy background with
-white text (cyan background and black text in light mode).
+In the demo below, the header cells and grid cells are styled using HSLA color codes and
+the [`light-dark`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark)
+CSS function, which is useful for specifying theme colors for light and dark color schemes.
 
 !demo:Data Attribute Styling="./demos/data-attributes"
 
@@ -65,16 +70,24 @@ The CSS uses the [attribute selector](https://developer.mozilla.org/en-US/docs/W
     display: flex;
     align-items: center;
     padding-inline: 8px;
-    background-color: light-dark(white, black);
-    color: gray;
+    background-color: light-dark(white, hsla(190, 32%, 6%, 1));
+    color: light-dark(hsla(175, 6%, 38%, 1), hsla(175, 10%, 86%, 1));
+    font-size: 14px;
+    border-bottom: 1px solid light-dark(hsla(175, 20%, 95%, 1), hsla(177, 19%, 17%, 1));
+  }
+
+  [data-ln-alternate="true"] [data-ln-cell="true"] {
+    background-color: light-dark(hsl(0, 27%, 98%), hsl(184, 33%, 8%));
   }
 
   [data-ln-header-cell="true"] {
     display: flex;
     align-items: center;
     padding-inline: 8px;
-    background-color: light-dark(cyan, navy);
-    color: light-dark(black, white);
+    background-color: light-dark(hsla(175, 12%, 92%, 1), hsla(177, 19%, 17%, 1));
+    color: light-dark(hsla(177, 19%, 17%, 1), hsla(175, 12%, 92%, 1));
+    text-transform: capitalize;
+    font-size: 14px;
   }
 }
 ```
@@ -150,8 +163,15 @@ are applied through the `className` property on the components.
 .cell {
   display: flex;
   align-items: center;
-  background-color: light-dark(cyan, navy);
-  color: light-dark(black, white);
+  padding-inline: 8px;
+  background-color: light-dark(hsla(175, 12%, 92%, 1), hsla(177, 19%, 17%, 1));
+  color: light-dark(hsla(177, 19%, 17%, 1), hsla(175, 12%, 92%, 1));
+  text-transform: capitalize;
+  font-size: 14px;
+}
+
+[data-ln-alternate="true"] .cell {
+  background-color: light-dark(hsl(0, 27%, 98%), hsl(184, 33%, 8%));
 }
 
 .cell-number {
@@ -159,8 +179,13 @@ are applied through the `className` property on the components.
 }
 
 .header-cell {
-  background-color: light-dark(white, black);
-  color: gray;
+  display: flex;
+  align-items: center;
+  padding-inline: 8px;
+  background-color: light-dark(white, hsla(190, 32%, 6%, 1));
+  color: light-dark(hsla(175, 6%, 38%, 1), hsla(175, 10%, 86%, 1));
+  font-size: 14px;
+  border-bottom: 1px solid light-dark(hsla(175, 20%, 95%, 1), hsla(177, 19%, 17%, 1));
 }
 ```
 
@@ -173,7 +198,7 @@ theme editor can be built this way, although it is not generally recommended.
 !demo:Inline Styles="./demos/grid-inline-styles"
 
 Inline styles are applied directly to each component. For example, the `Grid.Cell`
-component can use the `style` property as shown below:
+component can use the `style` property as shown below.
 
 ```tsx
 <Grid.Cell
@@ -183,16 +208,19 @@ component can use the `style` property as shown below:
     display: "flex",
     alignItems: "center",
     paddingInline: "8px",
+    justifyContent: c.column.type === "number" ? "flex-end" : "flex-start",
+    fontSize: 14,
     background: cellBg,
     color: cellFg,
+    borderBottom: "1px solid light-dark(hsla(175, 20%, 95%, 1), hsla(177, 19%, 17%, 1))",
   }}
 />
 ```
 
 <Callout>
 
-Use caution when applying inline styles. The same maintainability issues
-common to inline styles also apply in LyteNyte Grid. When used selectively,
+Use caution when applying inline styles. The same maintainability issues and limitations of
+inline styles also apply in LyteNyte Grid. When used selectively,
 inline styles can simplify code, but avoid using them for every grid element.
 
 </Callout>
@@ -216,13 +244,6 @@ The example below shows a grid with a single row detail expanded. Styles
 for the detail container are applied by targeting the row element
 that includes the `data-ln-row-detail` attribute.
 
-<Callout>
-
-In the demo, the grid's overflow is set to `hidden` for illustration only.
-In practice, allowing the grid to scroll is recommended.
-
-</Callout>
-
 !demo:Styling Row Detail="./demos/row-detail-styling"
 
 The applied styles are simple. Padding is added to the detail container, and a border is
@@ -234,9 +255,9 @@ to fit your use case.
   padding: 24px;
 
   & > div {
-    border: 1px solid gray;
+    border: 1px solid var(--lng1771-gray-30);
     border-radius: 8px;
-    background-color: light-dark(cyan, rgb(0, 0, 0));
+    background-color: light-dark(white, transparent);
   }
 }
 ```
@@ -252,13 +273,31 @@ attributes, primarily `data-ln-cell-selection-rect`.
 
 In this example, the cell selection rectangle is styled using the CSS below,
 which targets the selection rectangles generated by LyteNyte Grid
-when selection ranges are active.
+when selection ranges are active. Notice how individual rectangles are selected as
+the selection area is actually a set of split `div`s that are put together to visually
+form the selection rect.
 
 ```css
-[data-ln-cell-selection-rect] {
-  background-color: rgba(0, 255, 0, 0.2);
-  border: 1px solid green;
-  border-radius: 8px;
+[data-ln-cell-selection-rect]:not([data-ln-cell-selection-is-unit="true"]) {
+  background-color: var(--lng1771-primary-30);
+  box-sizing: border-box;
+
+  &[data-ln-cell-selection-border-top="true"] {
+    border-top: 1px solid var(--lng1771-primary-50);
+  }
+  &[data-ln-cell-selection-border-bottom="true"] {
+    border-bottom: 1px solid var(--lng1771-primary-50);
+  }
+  &[data-ln-cell-selection-border-start="true"] {
+    border-inline-start: 1px solid var(--lng1771-primary-50);
+  }
+  &[data-ln-cell-selection-border-end="true"] {
+    border-inline-end: 1px solid var(--lng1771-primary-50);
+  }
+}
+[data-ln-cell-selection-rect][data-ln-cell-selection-is-unit="true"] {
+  outline: 1px solid var(--lng1771-primary-50);
+  outline-offset: -1px;
 }
 ```
 

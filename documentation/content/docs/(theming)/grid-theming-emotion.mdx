@@ -42,8 +42,11 @@ API, so creating styled components is straightforward. For example, you can crea
 const Cell = styled(Grid.Cell)`
   display: flex;
   align-items: center;
-  background-color: light-dark(cyan, navy);
-  color: light-dark(black, white);
+  padding-inline: 8px;
+  background-color: light-dark(white, hsla(190, 32%, 6%, 1));
+  color: light-dark(hsla(175, 6%, 38%, 1), hsla(175, 10%, 86%, 1));
+  font-size: 14px;
+  border-bottom: 1px solid light-dark(hsla(175, 20%, 95%, 1), hsla(177, 19%, 17%, 1));
 `;
 ```
 
@@ -78,7 +81,7 @@ const RowsContainer = styled(Grid.RowsContainer)`
   & [data-ln-row-detail="true"] > div {
     border: 1px solid gray;
     border-radius: 8px;
-    background-color: light-dark(cyan, rgb(0, 0, 0));
+    background-color: light-dark(white, transparent);
   }
 `;
 ```
@@ -94,10 +97,26 @@ Here is the styled wrapper that targets the cell-selection rect:
 
 ```tsx
 const RowsContainer = styled(Grid.RowsContainer)`
-  & [data-ln-cell-selection-rect] {
-    background-color: rgba(0, 255, 0, 0.2);
-    border: 1px solid green;
-    border-radius: 8px;
+  & [data-ln-cell-selection-rect]:not([data-ln-cell-selection-is-unit="true"]) {
+    background-color: var(--lng1771-primary-30);
+    box-sizing: border-box;
+
+    &[data-ln-cell-selection-border-top="true"] {
+      border-top: 1px solid var(--lng1771-primary-50);
+    }
+    &[data-ln-cell-selection-border-bottom="true"] {
+      border-bottom: 1px solid var(--lng1771-primary-50);
+    }
+    &[data-ln-cell-selection-border-start="true"] {
+      border-inline-start: 1px solid var(--lng1771-primary-50);
+    }
+    &[data-ln-cell-selection-border-end="true"] {
+      border-inline-end: 1px solid var(--lng1771-primary-50);
+    }
+  }
+  & [data-ln-cell-selection-rect][data-ln-cell-selection-is-unit="true"] {
+    outline: 1px solid var(--lng1771-primary-50);
+    outline-offset: -1px;
   }
 `;
 ```
@@ -112,6 +131,6 @@ application and layer Emotion-based styles on top. The example below demonstrate
 
 ## Next Steps
 
-- [Grid Theming](/docs/grid-t'heming): review the general theming guide to learn more about styling LyteNyte Grid.
+- [Grid Theming](/docs/grid-theming): review the general theming guide to learn more about styling LyteNyte Grid.
 - [Columns](/docs/columns): learn how column configuration influences the grid view.
 - [Cell Renderers](/docs/cell-custom-renderers): define custom cell renderers to further control cell content.

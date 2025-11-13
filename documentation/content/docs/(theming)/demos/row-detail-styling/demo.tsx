@@ -6,15 +6,16 @@ import type { Column, RowLeaf } from "@1771technologies/lytenyte-pro/types";
 import { companiesWithPricePerf } from "@1771technologies/sample-data/companies-with-price-performance";
 import { useId, useMemo } from "react";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import { NumberCell, PriceCell } from "./components";
 
 type PerformanceData = (typeof companiesWithPricePerf)[number];
 
 const columns: Column<PerformanceData>[] = [
-  { id: "Company" },
-  { id: "Founded" },
-  { id: "Employee Cnt" },
-  { id: "Country" },
-  { id: "Price" },
+  { id: "Company", widthFlex: 2 },
+  { id: "Country", widthFlex: 2 },
+  { id: "Founded", type: "number" },
+  { id: "Employee Cnt", type: "number", cellRenderer: NumberCell },
+  { id: "Price", type: "number", cellRenderer: PriceCell },
 ];
 
 export default function RowDetail() {
@@ -51,7 +52,7 @@ export default function RowDetail() {
   return (
     <div style={{ height: 500 }} className="detail-styles">
       <Grid.Root grid={grid}>
-        <Grid.Viewport style={{ overflowY: "hidden", overflowX: "hidden" }}>
+        <Grid.Viewport>
           <Grid.Header>
             {view.header.layout.map((row, i) => {
               return (
@@ -64,11 +65,7 @@ export default function RowDetail() {
                         key={c.id}
                         cell={c}
                         style={{
-                          background: "light-dark(cyan, #1d1b1b)",
-                          color: "light-dark(black, white)",
-                          display: "flex",
-                          alignItems: "center",
-                          paddingInline: "8px",
+                          justifyContent: c.column.type === "number" ? "flex-end" : "flex-start",
                         }}
                       />
                     );
@@ -90,11 +87,7 @@ export default function RowDetail() {
                           key={c.id}
                           cell={c}
                           style={{
-                            background: "light-dark(white, black)",
-                            color: "light-dark(black, white)",
-                            display: "flex",
-                            alignItems: "center",
-                            paddingInline: "8px",
+                            justifyContent: c.column.type === "number" ? "flex-end" : "flex-start",
                           }}
                         />
                       );
@@ -134,14 +127,21 @@ function PriceChart({ row }: { row: RowLeaf<PerformanceData> }) {
             <stop offset="95%" stopColor={color.stop95} stopOpacity={0} />
           </linearGradient>
         </defs>
-        <XAxis dataKey="week" />
-        <YAxis />
-        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis
+          dataKey="week"
+          ticks={[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]}
+          fontSize="14px"
+          tickLine={false}
+        />
+        <YAxis fontFamily="Inter" fontSize="14px" tickLine={false} axisLine={false} />
+        <CartesianGrid vertical={false} stroke="var(--lng1771-gray-10)" />
+
         <Area
           key={row.id}
           type="monotone"
           dataKey={row.id}
           stroke={color.solid}
+          strokeWidth={3}
           fillOpacity={1}
           fill={`url(#${row.id})`}
         />
@@ -151,7 +151,7 @@ function PriceChart({ row }: { row: RowLeaf<PerformanceData> }) {
 }
 const color = {
   name: "Ruby Red",
-  solid: "#2de045",
-  stop5: "#e6fbe6",
-  stop95: "#3ee362",
+  solid: "#CC5500",
+  stop5: "#CC5500",
+  stop95: "transparent",
 };

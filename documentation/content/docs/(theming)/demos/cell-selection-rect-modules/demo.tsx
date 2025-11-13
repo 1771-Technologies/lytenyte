@@ -36,6 +36,7 @@ export default function CellSelectionRect() {
     columns,
     columnBase: { width: 100 },
 
+    cellSelectionMode: "range",
     cellSelections: [{ rowStart: 4, rowEnd: 7, columnStart: 2, columnEnd: 4 }],
   });
 
@@ -45,7 +46,7 @@ export default function CellSelectionRect() {
     <div className={style.cellStyles}>
       <div style={{ height: 500 }}>
         <Grid.Root grid={grid}>
-          <Grid.Viewport style={{ overflowY: "hidden", overflowX: "hidden" }}>
+          <Grid.Viewport>
             <Grid.Header>
               {view.header.layout.map((row, i) => {
                 return (
@@ -53,7 +54,16 @@ export default function CellSelectionRect() {
                     {row.map((c) => {
                       if (c.kind === "group") return null;
 
-                      return <Grid.HeaderCell key={c.id} cell={c} />;
+                      return (
+                        <Grid.HeaderCell
+                          key={c.id}
+                          cell={c}
+                          className={
+                            style.headerCell +
+                            (c.column.type === "number" ? " " + style.numberCell : "")
+                          }
+                        />
+                      );
                     })}
                   </Grid.HeaderRow>
                 );
@@ -67,7 +77,16 @@ export default function CellSelectionRect() {
                   return (
                     <Grid.Row row={row} key={row.id}>
                       {row.cells.map((c) => {
-                        return <Grid.Cell key={c.id} cell={c} />;
+                        return (
+                          <Grid.Cell
+                            key={c.id}
+                            cell={c}
+                            className={
+                              style.cell +
+                              (c.column.type === "number" ? " " + style.numberCell : "")
+                            }
+                          />
+                        );
                       })}
                     </Grid.Row>
                   );

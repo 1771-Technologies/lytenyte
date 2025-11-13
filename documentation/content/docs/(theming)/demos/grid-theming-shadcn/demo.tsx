@@ -6,28 +6,33 @@ import "@1771technologies/lytenyte-pro/grid.css";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { bankDataSmall } from "@1771technologies/sample-data/bank-data-smaller";
 import { useId } from "react";
+import { BalanceCell, DurationCell, NumberCell } from "./components";
+import type { ClassValue } from "clsx";
+import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 
 type BankData = (typeof bankDataSmall)[number];
 
 const columns: Column<BankData>[] = [
   { id: "job", width: 120 },
-  { id: "age", type: "number", width: 80 },
-  { id: "balance", type: "number" },
+  { id: "age", type: "number", width: 80, cellRenderer: NumberCell },
+  { id: "balance", type: "number", cellRenderer: BalanceCell },
   { id: "education" },
   { id: "marital" },
   { id: "default" },
   { id: "housing" },
   { id: "loan" },
   { id: "contact" },
-  { id: "day", type: "number" },
+  { id: "day", type: "number", cellRenderer: NumberCell },
   { id: "month" },
-  { id: "duration" },
-  { id: "campaign" },
-  { id: "pdays" },
-  { id: "previous" },
+  { id: "duration", type: "number", cellRenderer: DurationCell },
   { id: "poutcome" },
   { id: "y" },
 ];
+
+function tw(...c: ClassValue[]) {
+  return twMerge(clsx(...c));
+}
 
 export default function GridTheming() {
   const ds = useClientRowDataSource({ data: bankDataSmall });
@@ -38,6 +43,7 @@ export default function GridTheming() {
     columns,
     columnBase: { width: 100 },
 
+    cellSelectionMode: "range",
     rowSelectedIds: new Set(["0-center", "1-center"]),
     cellSelections: [{ rowStart: 4, rowEnd: 7, columnStart: 2, columnEnd: 4 }],
   });
@@ -60,7 +66,10 @@ export default function GridTheming() {
                         <Grid.HeaderCell
                           key={c.id}
                           cell={c}
-                          className="flex h-full w-full items-center px-2 capitalize"
+                          className={tw(
+                            "flex items-center px-2 text-sm capitalize",
+                            c.column.type === "number" && "justify-end",
+                          )}
                         />
                       );
                     })}
@@ -80,7 +89,10 @@ export default function GridTheming() {
                           <Grid.Cell
                             key={c.id}
                             cell={c}
-                            className="flex h-full w-full items-center px-2 text-sm"
+                            className={tw(
+                              "flex items-center px-2 text-sm",
+                              c.column.type === "number" && "justify-end tabular-nums",
+                            )}
                           />
                         );
                       })}
