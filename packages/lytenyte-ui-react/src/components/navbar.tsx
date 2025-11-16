@@ -9,6 +9,8 @@ export interface NavbarProps {
   readonly transparent?: boolean;
   readonly contained?: boolean;
   readonly large?: boolean;
+  readonly classNameInner?: string;
+  readonly classNameContainer?: string;
 }
 
 export function Navbar({
@@ -20,6 +22,8 @@ export function Navbar({
   transparent,
   large,
   className,
+  classNameInner,
+  classNameContainer,
   ...props
 }: Omit<JSX.IntrinsicElements["div"], "children"> & NavbarProps) {
   return (
@@ -28,25 +32,26 @@ export function Navbar({
       <div
         {...props}
         className={tw(
-          "fixed top-0 w-screen",
+          "fixed top-0 flex w-screen justify-center",
           large ? "h-15" : "h-12",
           transparent ? "bg-gray-50/50 backdrop-blur-sm" : "bg-gray-50",
-          floating ? "top-3 bg-[unset] px-4 backdrop-blur-none" : "border-b border-gray-300/70",
+          floating ? "top-5 bg-[unset] px-4 backdrop-blur-none" : "border-b border-gray-300/70",
           className,
         )}
       >
-        <div
-          className={tw(
-            "flex h-full items-center gap-4 px-4",
-            floating &&
-              "container mx-auto rounded-3xl border border-gray-300/60 bg-gray-100 shadow",
-            floating && transparent && "bg-gray-100/50 backdrop-blur-sm",
-            contained && "container mx-auto",
-          )}
-        >
-          <div>{start}</div>
-          <div className="flex-1">{center}</div>
-          {end && <div>{end}</div>}
+        <div className={tw(contained && "container", classNameContainer)}>
+          <div
+            className={tw(
+              "flex h-full items-center gap-4 px-4",
+              floating && "w-full rounded-2xl border border-gray-300/60 bg-gray-100 px-8 shadow",
+              floating && transparent && "bg-gray-100/50 backdrop-blur-sm",
+              classNameInner,
+            )}
+          >
+            <div>{start}</div>
+            <div className="flex-1">{center}</div>
+            {end && <div>{end}</div>}
+          </div>
         </div>
       </div>
     </>
