@@ -66,6 +66,29 @@ It's worth noting that many modern web frameworks and development environments t
 
 ## Secure Data Transportation
 
-LyteNyte Grid is a client-side grid library that functions entirely within the browser without
-server communication. All data processed by LyteNyte Grid is supplied by the host web application,
-which bears responsibility for securing this data before transferring it to the grid.
+LyteNyte Grid runs entirely in the browser. It does not perform any server communication.
+Your application is responsible for retrieving and securing all data before passing it to the grid.
+
+## Avoidance of Attack Vectors
+
+LyteNyte Grid avoids JavaScript features commonly associated with security exploits:
+
+- The code base never uses `eval`, and future versions will not introduce it.
+- LyteNyte Grid does not modify the `prototype` chain of any object.
+- The library has no external dependencies, ensuring that no
+  third-party code is downloaded during installation.
+
+While we work to keep the code base free of vulnerabilities, no solution is perfect.
+If you discover a security issue, email [support@1771technologies.com](mailto:support@1771technologies.com).
+Our team will address the issue promptly.
+
+## Telemetry and Remote Checks
+
+LyteNyte Grid does not collect telemetry and performs no remote validation checks.
+The library works entirely offline and supports sandboxed environments. No firewall configuration is required.
+
+## Next Steps
+
+- [Bundling And Tree Shaking](/docs/prodready-bundling): Learn the best way to include LyteNyte Grid in your bundle.
+- [Supported Browsers](/docs/prodready-supported-browsers): Review which browsers LyteNyte Grid supports.
+- [Grid Versioning](/docs/prodready-grid-versioning): Understand LyteNyte Grid's versioning strategy and how to update your package safely.
