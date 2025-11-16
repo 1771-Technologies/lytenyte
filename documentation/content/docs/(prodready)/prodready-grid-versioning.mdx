@@ -1,54 +1,64 @@
 ---
 title: Grid Versioning
-description: Understand LyteNyte Grid's versioning system, release strategy, and how to ensure
-  you're using the appropriate version for your enterprise license.
+description:
+  LyteNyte Grid follows a semver versioning approach. The major version increments on breaking
+  changes, the minor version increments when new non-breaking features are added, and the patch
+  version increments on bug fixes and code improvements.
 ---
 
-All LyteNyte Grid packages follow [semver](https://semver.org/) versioning. A LyteNyte Grid version
-consists of three numbers separated by periods, such as `1.2.0`.
+## LyteNyte and Semver
 
-Each number in a version corresponds to a specific type of release (major.minor.patch):
+All LyteNyte Grid packages follow [semver](https://semver.org/) versioning.
+Each version consists of three numbers (major.minor.patch), such as `1.2.0`.
 
-- **Major**: Indicates incompatible changes that break backward compatibility. Adopting a new major
-  version may require code changes in your application.
+Each number represents a different type of release:
 
-- **Minor**: Represents compatible changes and new features that maintain backward compatibility.
-  These versions work with your existing code without requiring modifications.
+- **Major**: Introduces breaking changes that require updates in your application.
+- **Minor**: Adds new, backward-compatible features and works with your existing code.
+- **Patch**: Includes bug fixes and small improvements.
 
-- **Patch**: Denotes releases containing bug fixes and minor improvements.
-
-We commonly refer to minor and patch releases as **updates**, while **major** releases are
-considered **upgrades**.
+We refer to minor and patch releases as **updates**, while **major** releases are treated as **upgrades**.
 
 ## Release Cadence
 
-LyteNyte Grid does not follow a fixed release schedule. Bug fixes are released as soon as they
-pass all internal checks and testing procedures.
+LyteNyte Grid does not follow a fixed release schedule.
+Bug fixes ship as soon as they pass internal testing.
 
-While major releases with new capabilities may seem desirable, we recognize that developers prefer
-stability and minimal code changes. With this in mind, 1771 Technologies strives to minimize or
-completely eliminate breaking changes. Most feature improvements are delivered as compatible minor
-updates.
+Although major releases may introduce significant new capabilities, we prioritize
+stability and aim to avoid breaking changes. Most enhancements are
+delivered as backward-compatible minor updates.
 
-When adding significant features to LyteNyte Grid, we may advance to a new major version even without
-breaking changes - primarily to highlight substantial new functionality. Breaking changes
-will always be clearly documented in our [changelog](/docs/changelog/latest). While not every
-major release contains breaking changes, any breaking change will trigger a major version
-increment. This ensures your code remains stable when updating minor versions only.
+When a release adds substantial new functionality, we may publish a new major
+version even without breaking changes. Breaking changes are always documented in
+the [changelog](/docs/changelog/latest). While not every major release contains
+breaking changes, any breaking change will trigger a major version bump. This
+ensures your application remains stable when updating only minor versions.
 
-## Checking for the Latest Version
+### Checking for the Latest Version
 
-You can verify the latest published version on the
+You can find the latest published version on the
 [NPM Registry](https://www.npmjs.com/package/@1771technologies/lytenyte-pro).
 
-### Version Date
+### Fixed Versioning
 
-For license holders, your license covers all versions released within your license term
-(typically one year from purchase date). If you use a version of LyteNyte Grid outside your license
-term, a watermark will appear in your application.
+LyteNyte Grid packages use a fixed versioning scheme. The code base is a monorepo,
+and all packages are released under the same version number. As a result, the
+LyteNyte Grid Core and LyteNyte Grid PRO packages always share the same version,
+even when a change affects only one package.
 
-LyteNyte Grid exports both the version number and version date for reference:
+## LyteNyte PRO Version and PRO License
 
-```ts
-import { versionDate, version } from "@1771technologies/lytenyte-pro";
-```
+When you purchase a LyteNyte Grid PRO license, you receive one year of updates.
+You may use any version released within your license period. Versions released after your
+license expires require purchasing a new license.
+
+New releases do not affect your ability to use older versions.
+Any version published during your active license term may be used indefinitely.
+
+For a detailed explanation of licensing terms, see our [Pricing page](https://www.1771technologies.com/pricing).
+
+## Next Steps
+
+- [Security](/docs/prodready-security): Learn how LyteNyte Grid handles code security and protects applications from common exploits.
+- [Supported Browsers](/docs/prodready-supported-browsers): Review which browsers LyteNyte Grid supports.
+- [Bundling And Tree Shaking](/docs/prodready-bundling): Learn the best way to include LyteNyte Grid in your bundle.

@@ -19,3 +19,23 @@ import { SupportedBrowsers, MobileBrowsers } from "./components/supported-browse
 1771 Technologies officially supports the following mobile browsers:
 
 <MobileBrowsers />
+
+## Usage of Baseline Features
+
+LyteNyte Grid may use any feature classified as _baseline_.
+Baseline features are available across all modern browsers. If
+you are unfamiliar with how baseline status is determined, see this
+[web.dev article](https://web.dev/baseline) for an overview.
+
+Because LyteNyte Grid limits itself to baseline features, it does not
+rely on any browser-specific APIs. However, some internal logic reads
+the user agent to detect the current browser and adjust behavior to smooth over
+browser inconsistencies. These adjustments run entirely inside the grid and require
+no action from developers. Users with nonstandard environments that
+override the user agent should be aware that doing so may affect these internal checks.
+
+## Next Steps
+
+- [Bundling And Tree Shaking](/docs/prodready-bundling): Learn the best way to include LyteNyte Grid in your bundle.
+- [Security](/docs/prodready-security): Learn how LyteNyte Grid handles code security and protects applications from common exploits.
+- [Grid Versioning](/docs/prodready-grid-versioning): Understand LyteNyte Grid's versioning strategy and how to update your package safely.
