@@ -1,51 +1,53 @@
 ---
 title: Responsive Container
-description: LyteNyte Grid needs a container with explicitly defined dimensions. The
-  HTMLElement hosting the Grid must have a specified height and
-  width, even when empty.
+description: LyteNyte Grid does not have intrinsic dimensions. The viewport
+  fills its parent container, so the parent must have an
+  intrinsic size for the grid to render correctly.
 ---
 
-This requirement still allows responsive layouts. The sections below
-show effective ways to create containers that work well with LyteNyte
-Grid.
+Despite not having an intrinsic size, LyteNyte Grid remains fully responsive.
+To make the grid responsive, ensure its parent element is responsive.
+This guide covers several ways to size the parent container.
 
 <Callout>
 
-Make LyteNyte Grid the sole child element inside its container. Do not
-place sibling elements alongside it.
+Place LyteNyte Grid as the sole child of its container.
+Do not include sibling elements.
 
 </Callout>
 
 ## Pixel Value
 
-Setting fixed pixel values for `height` and `width` is the simplest
-approach but offers limited flexibility. Often, you can fix the
-`height` and let the width adjust automatically based on the parent
-container. You can also set a fixed width if needed, though it's usually
-unnecessary.
+Fixed pixel values for `height` and `width` offer the simplest sizing option but
+limit flexibility. In most cases, set a fixed `height` and allow the
+width to adjust based on the parent container. Set a fixed width only when necessary.
 
 !demo:Pixel Height and Width="./demos/pixel-height-container"
 
 ## Flex Height Containers
 
-Flexbox layouts let containers distribute space dynamically. When you
-assign `flex: 1` to a Flexbox child, it expands to fill the available
-space. However, because Flexbox containers grow to fit their content,
-you must ensure the grid doesn't add to the height. The simplest method
-is to wrap the grid in a second `div` with `position: absolute`,
-`width: 100%`, and `height: 100%`. LyteNyte Grid will then fill the
-space without overflow or pushing beyond container boundaries.
+Flexbox layouts distribute space dynamically. When you assign `flex: 1` to a Flexbox child,
+it expands to fill the available space. Because Flexbox containers grow with their content,
+wrap LyteNyte Grid in an inner `div` with `position: absolute`, `width: 100%`,
+and `height: 100%` to prevent the grid from increasing the container's height.
+The grid then fills the space without overflow.
 
 !demo:Flex Height Container="./demos/flex-height-container"
 
 ## Grid Height Containers
 
-CSS Grid (not to be confused with LyteNyte Grid) offers a flexible and versatile
-layout system. Like Flexbox, LyteNyte Grid expands to fill its assigned space
-within a grid container while keeping proper containment.
+CSS Grid (not to be confused with LyteNyte Grid) provides a flexible layout system.
+Within a grid container, LyteNyte Grid expands to fill its assigned
+area while remaining properly contained.
 
 !demo:Grid Height Container="./demos/grid-height-container"
 
-Additional CSS methods can also size containers for LyteNyte Grid
-effectively. We encourage developers to experiment and choose the
-solution that best meets their requirements.
+Other CSS sizing techniques also work well with LyteNyte Grid.
+Choose the approach that best fits your layout requirements.
+
+## Next Steps
+
+- [Headless Component Parts](/docs/grid-headless-parts): Learn about the component parts that make up LyteNyte Grid.
+- [Events](/docs/grid-events): Learn how to handle events fired by LyteNyte Grid and different approaches to event handling.
+- [Keyboard Navigation](/docs/grid-keyboard-navigation): Review keybindings for navigating grid cells.
+- [Grid Atoms and Reactivity](/docs/grid-reactivity): Learn how to manage reactivity and state changes in LyteNyte Grid.
