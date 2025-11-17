@@ -1,5 +1,12 @@
 {
   "title": "Grid",
-  "pages": ["grid-container", "grid-reactivity", "grid-events"],
+  "pages": [
+    "grid-container",
+    "grid-reactivity",
+    "grid-headless-parts",
+    "grid-events",
+    "grid-virtualization",
+    "grid-keyboard-navigation"
+  ],
   "defaultOpen": true
 }
