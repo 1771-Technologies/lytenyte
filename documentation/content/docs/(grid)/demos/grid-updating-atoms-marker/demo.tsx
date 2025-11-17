@@ -3,26 +3,32 @@ import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
-import { useId, useMemo } from "react";
+import { useId } from "react";
+import {
+  BalanceCell,
+  DurationCell,
+  GridButton,
+  MarkerCell,
+  MarkerHeader,
+  NumberCell,
+  tw,
+} from "./components";
 
 type BankData = (typeof bankDataSmall)[number];
 
 const columns: Column<BankData>[] = [
-  { id: "age", type: "number" },
-  { id: "job" },
-  { id: "balance", type: "number" },
+  { id: "job", width: 120 },
+  { id: "age", type: "number", width: 80, cellRenderer: NumberCell },
+  { id: "balance", type: "number", cellRenderer: BalanceCell },
   { id: "education" },
   { id: "marital" },
   { id: "default" },
   { id: "housing" },
   { id: "loan" },
   { id: "contact" },
-  { id: "day", type: "number" },
+  { id: "day", type: "number", cellRenderer: NumberCell },
   { id: "month" },
-  { id: "duration" },
-  { id: "campaign" },
-  { id: "pdays" },
-  { id: "previous" },
+  { id: "duration", type: "number", cellRenderer: DurationCell },
   { id: "poutcome", name: "P Outcome" },
   { id: "y" },
 ];
@@ -35,36 +41,29 @@ export default function GridReactivitySignal() {
     rowDataSource: ds,
     columns,
 
+    columnMarker: {
+      cellRenderer: MarkerCell,
+      headerRenderer: MarkerHeader,
+    },
+    columnMarkerEnabled: true,
+
     rowSelectedIds: new Set(["3", "4"]),
     rowSelectionMode: "multiple",
     rowSelectionActivator: "single-click",
   });
 
-  const selectedRows = grid.state.rowSelectedIds.useValue();
-  const selectedRow = useMemo(() => {
-    if (!selectedRows.size) return null;
-
-    return [...selectedRows.values()].join(", ");
-  }, [selectedRows]);
-
   const view = grid.view.useValue();
 
   return (
     <div className="lng-grid" style={{ display: "flex", flexDirection: "column" }}>
-      <div className="p-2">
-        <button
-          className="rounded border border-gray-600 bg-gray-900 px-2 text-white dark:text-black"
-          onClick={() => grid.state.rowSelectedIds.set(new Set())}
+      <div className="flex w-full border-b px-2 py-2">
+        <GridButton
+          onClick={() => {
+            grid.state.columnMarkerEnabled.set((prev) => !prev);
+          }}
         >
-          Clear Row Selection
-        </button>
-      </div>
-      <div
-        className="max-h-[200px] max-w-full overflow-auto font-bold"
-        style={{ padding: 8, display: "flex", gap: 8, scrollbarWidth: "thin" }}
-      >
-        {selectedRow && `Currently selected rows: ${selectedRow}`}
-        {!selectedRow && "No rows selected"}
+          Toggle Marker Column
+        </GridButton>
       </div>
       <div style={{ height: 500 }}>
         <Grid.Root grid={grid}>
@@ -76,7 +75,16 @@ export default function GridReactivitySignal() {
                     {row.map((c) => {
                       if (c.kind === "group") return null;
 
-                      return <Grid.HeaderCell key={c.id} cell={c} />;
+                      return (
+                        <Grid.HeaderCell
+                          key={c.id}
+                          cell={c}
+                          className={tw(
+                            "flex h-full w-full items-center px-2 text-sm capitalize",
+                            c.column.type === "number" && "justify-end",
+                          )}
+                        />
+                      );
                     })}
                   </Grid.HeaderRow>
                 );
@@ -90,7 +98,16 @@ export default function GridReactivitySignal() {
                   return (
                     <Grid.Row row={row} key={row.id}>
                       {row.cells.map((c) => {
-                        return <Grid.Cell key={c.id} cell={c} />;
+                        return (
+                          <Grid.Cell
+                            key={c.id}
+                            cell={c}
+                            className={tw(
+                              "flex h-full w-full items-center px-2 text-sm",
+                              c.column.type === "number" && "justify-end",
+                            )}
+                          />
+                        );
                       })}
                     </Grid.Row>
                   );

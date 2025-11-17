@@ -1,85 +1,167 @@
 ---
 title: Grid Atoms and Reactivity
-description: LyteNyte Grid follows declarative principles. Its state system stays
-  fully reactive, automatically keeping the view synchronized with state
-  changes. This aligns with React's core philosophy that "view is a
-  function of state."
+description: LyteNyte Grid is a declarative grid. The state applied
+  determines what the grid will display. The design follows the core
+  philosophy that "view is a function of state."
 ---
 
-You can naturally leverage this reactivity in your React code, allowing
-smooth integration with other components. LyteNyte Grid achieves this
-by using standard React primitives, enabling seamless interaction
-throughout your application.
+LyteNyte Grid's state is created using the `Grid.useLyteNyte` hook. This hook
+returns an object compromising of three properties:
 
-## The Grid State Object
+- `state`: the declarative state of LyteNyte Grid. The state is a store of attributes that may be
+  updates, reactively used, or imperatively retrieved.
+- `api`: an imperative set of functions that simplify complex state updates and data retrieval. Think of the
+  `api` property as a useful set of utilities provided by LyteNyte Grid.
+- `view`: the current set of rows and columns visible. The `view` property is a grid atom, which is the main
+  type of state that is created by the LyteNyte Grid `useLyteNyte` hook.
 
-The grid state object serves as your interface to LyteNyte Grid. The
-`Grid.useLyteNyte` hook returns it, and it contains a `state` property.
-Most keys in this object match those in the initial state you pass to
-`useLyteNyte`. This is intentional. LyteNyte Grid also adds several
-helpful fields.
+## Grid Atoms
 
-While the keys match, the values differ. State values are grid atoms
-(observable values) designed for LyteNyte Grid's needs.
+The core primitive of LyteNyte Grid's state is a **grid atom**. A grid atom is a piece of state that
+works in conjunction with React's state primitives. Grid atoms can be used to retrieve, update, and
+reactively use all kinds of state. The majority of the properties on the `state` store are grid atoms.
 
-Each atom provides `watch`, `get`, `set`, and `useValue` methods. To
-integrate an atom with React, call its `useValue` method. This hook
-retrieves the current value and triggers re-renders when the value
-changes. The `set` method updates the atom's value. Not all fields are
-settable, but most props you provide can also be changed reactively
-later.
+Grid atoms come in two variants, a readonly atom and a writable atom. As you'd expect, readonly atoms
+represent derived state, which is generally updated when writable atoms are updated. Writable atoms
+are atoms whose value may be updated. Both read and write atoms may be 'used' by React to 'reactively'
+listen to state changes. The subsections that follow cover the individual atom methods, but you may
+also refer to the [API reference](/docs/reference/grid-atom) for more technical coverage.
 
-Here's an example:
+### Retrieving Atom Values
 
-!demo:Grid Atoms="./demos/grid-reactivity-signal"
+Grid atoms provide the `get` method to imperatively retrieve the state within an atom. The key word here
+is 'imperative'. The `get` method is a non-reactive way to retrieve the state of an atom. Generally this is
+useful in event handlers or effects. For example, the demo below contains a button that one pressed will raise
+an alert with the number of rows selected.
 
-The power of `useValue` extends beyond simple reactivity. Because the
-grid state comes from `useLyteNyte`, you can lift it to higher
-components and share it throughout your app.
+!demo:Get Atom Value="./demos/grid-retrieving-atoms"
 
-For example, you can display a line chart based on the selected row by
-passing the grid state to a chart component. Inside the chart, call
-`grid.state.rowSelectedIds.useValue` to re-render whenever the selection
-set changes:
+Notice in the implementation of the button that we are simply retrieving the value of the selected rows state
+atom, which returns a `Set<string>`. We then alert the user of the selected count:
 
-!demo:Draw Line On Row Selection="./demos/grid-reactivity-chart"
+```tsx
+<GridButton
+  onClick={() => {
+    // Retrieve the atom value here
+    const rowsSelected = grid.state.rowSelectedIds.get().size;
 
-This approach maintains React's one-way data flow without complex
-synchronization.
-
-## The Other Atom Methods
-
-Atoms also offer methods for specific scenarios.
-
-### The `get` Method
-
-`get` returns the atom's current value without hook rules, so you can
-call it anywhere.
-
-### The `set` Method
-
-`set` updates the atom's value. Like `useState`, it accepts a value or a
-function:
-
-```ts
-const grid = Grid.useLyteNyte({ gridId: "x" });
-
-grid.state.rowHeight.set(22);
-grid.state.rowHeight.set((prev) => prev + 10);
+    if (rowsSelected === 0) alert("There are no rows selected.");
+    else if (rowsSelected === 1) alert("There is 1 row selected.");
+    else alert(`There are ${rowsSelected} rows selected.`);
+  }}
+>
+  Tell me how many rows are selected?
+</GridButton>
 ```
 
-Avoid reading immediately after `set`, capture the value first:
+### Reactively Using Atom Values
 
-```ts
-const current = grid.state.rowHeight.get();
-grid.state.rowHeight.set(24);
+Grid atoms provide the `useValue` method to reactively retrieve the state within an atom. This method is a
+React hook, and as such must conform to all the [rules of hooks](https://react.dev/reference/rules/rules-of-hooks).
+Use the `useValue` hook when you want a component to re-render when state changes.
+
+For example, we can create a component that tracks and displays the number of rows selected:
+
+!demo:Use Atom Value="./demos/grid-using-atoms"
+
+When passing around grid atoms, its better to pass the atom itself rather than reactively retrieving its value
+and passing it down as props. It's much better to call `useValue` as close to where its needed as possible.
+This will minimize the number of components that re-render when the atoms value changes. In the example, notice
+how the `RenderSelectionCount` component is separated out from the main grid, and the `rowSelectedIds`'s `useValue`
+method is called in that component. This ensures that when the selected rows change, only the display component re-renders.
+
+```tsx
+function RenderSelectionCount({ rowSelectedIds }: { rowSelectedIds: GridAtom<Set<string>> }) {
+  const selectedRows = rowSelectedIds.useValue();
+
+  if (selectedRows.size === 0)
+    return <div className="border-b px-2 py-2">You have not selected any rows</div>;
+
+  return (
+    <div className="border-b px-2 py-2">
+      There are {selectedRows.size} selected rows in the grid.
+    </div>
+  );
+}
 ```
 
-### The `watch` Method
+<Callout>
 
-`watch` monitors changes. Use it in `useEffect` or handlers, not during
-render. It notifies you of changes but doesn't pass the new value
-directly:
+React 19 introduced the [React Compiler](https://react.dev/learn/react-compiler). If you are using the
+compiler, ensure you are adopting the latest version. Earlier versions incorrectly flag the `useValue`
+hook as problematic code usage. New versions fix issues in the compiler and grid atoms are perfectly
+compatible with React's compiler without any configuration necessary.
+
+</Callout>
+
+Reactively using a value is quite powerful. It does not have to be limited to displaying grid state. A
+reactive value may be used to drive the state of another component. For example, in the demo below, selecting
+a row results in a price line for that row being plotted in the chart below. Try selecting a row to see this in
+action.
+
+!demo:Reactive Line Plot="./demos/grid-reactivity-chart"
+
+This is only a minimal example of what is possible. The ability to share grid state across your application in
+a reactive manner greatly simplifies the complexity of creating a well integrated and complete application. For
+maximum performance, remember to push the reactive state to the edges of your component tree.
+
+### Updating Atom Values
+
+Grid atoms that are writable may be updated. When a grid atom is updated, any derived atoms will be
+recalculated, and any components that are reactively using the atom's value will re-render. Updating a
+grid atom's value is similar to calling the `setState` function from the `useState` hook. This means it
+it safe to update a grid atom in an effect or event, but the `set` method on the atom should never be called
+within the render method of a component.
+
+In the example below, the row height of individual rows is updated by setting the value of the `rowHeight` atom
+on the grid's state object. This is a simple example, but there isn't much more to updating a state value.
+
+!demo:Row Height Changing="./demos/grid-updating-atoms-row-height"
+
+To update the `rowHeight` the demo simply sets it's value in the `onClick` handler of the button:
+
+```tsx
+<GridButton
+  onClick={() => {
+    grid.state.rowHeight.set(20);
+  }}
+>
+  SM
+</GridButton>
+```
+
+Like the `setState` returned from `useState`, the `set` method of a grid atom also accepts a function to
+generate the next value of the state. The function will be given the previous value and should return the
+next value. If the next value is the same as the previous value (determined by `Object.is`) then the update
+is ignored.
+
+The example below demonstrates this by allowing you to toggle the marker column's visibility.
+
+!demo:Toggle Column Marker="./demos/grid-updating-atoms-marker"
+
+The code for this is very straightforward and should feel familiar to React developers:
+
+```tsx
+<GridButton
+  onClick={() => {
+    grid.state.columnMarkerEnabled.set((prev) => !prev);
+  }}
+>
+  Toggle Marker Column
+</GridButton>
+```
+
+### Watching Atom Value Changes
+
+The `watch` method may be used to monitor changes. Use it in `useEffect` or event handlers, not during
+render. The `watch` method will return a function that when called will dispose of the monitoring logic.
+Every call to `watch` should have a corresponding call to dispose of the watch once monitoring is completed
+(for example, when a component unmounts).
+
+Using the `watch` method is generally discouraged, but if used, it should only be called in effects or
+event handlers. Never call the `watch` method within the render path of a component. The code below illustrates
+a contrived use case of watching for row height changes. Notice that the `watch` method does not provide the
+value of the atom that has changed. If the value is required, use the `get` method within the `watch` callback.
 
 ```ts
 const rowHeightAtom = grid.state.rowHeight;
@@ -93,7 +175,8 @@ useEffect(() => {
 }, [rowHeightAtom]);
 ```
 
-LyteNyte Grid batches multiple changes into a single `watch` call:
+LyteNyte Grid batches multiple changes into a single `watch` call. Hence, multiple successive updates to
+the same state will be batched. For example:
 
 ```ts
 rowHeightAtom.set(24);
@@ -101,5 +184,24 @@ rowHeightAtom.set(32);
 rowHeightAtom.set(18);
 ```
 
-This triggers only one `watch` call. Callbacks run in the microtask
-queue.
+This triggers only one `watch` call. Callbacks run in the microtask queue.
+
+## Why Grid Atoms And Not React State
+
+LyteNyte Grid is a declarative data grid built for React, so a natural question that arises
+is why the Grid uses its own atom state management solution instead of React's built-in state.
+The answer is performance. LyteNyte Grid has a significant number of individual pieces of state
+(well over 100 state values). React's `useState` (or `useReducer`) do not allow granular state
+updates. Hence any state update results in a re-render, even if a component does not care about
+the state. Furthermore it is not possible to push reactivity to the least from a central source
+of truth using React's state primitives. LyteNyte Grid uses grid atoms to enhance performance
+and improve the reactive capabilities of the grid. This is nothing new in React, and there are
+many popular React state management libraries that do something similar, such as
+[Jotai](https://jotai.org/) and [Zustand](https://github.com/pmndrs/zustand).
+
+## Next Steps
+
+- [Headless Component Parts](/docs/grid-headless-parts): Learn about the component parts that make up LyteNyte Grid.
+- [Grid Events](/docs/grid-events): Learn how to handle events fired by LyteNyte Grid and different approaches to event handling.
+- [Keyboard Navigation](/docs/grid-keyboard-navigation): Review keybindings for navigating grid cells.
+- [Row and Column Virtualization](/docs/grid-virtualization): Learn how LyteNyte Grid enables performance at scale with row and column virtualization.
