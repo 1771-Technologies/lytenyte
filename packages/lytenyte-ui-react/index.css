@@ -20,6 +20,8 @@
     "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
     "Noto Color Emoji";
 
+  --color-page: var(--page-bg);
+
   --color-gray-950: var(--gray-950);
   --color-gray-900: var(--gray-900);
   --color-gray-800: var(--gray-800);
@@ -81,6 +83,9 @@
   --warning: amber;
   --info: blue;
 
+
+  --page-bg: white;
+
   --gray-50:  oklch(from var(--base) calc(l + 0.999) c h);
   --gray-100: oklch(from var(--base) calc(l + 0.940) c h);
   --gray-200: oklch(from var(--base) calc(l + 0.840) c h);
@@ -133,6 +138,8 @@
 /* prettier-ignore */
 .dark {
   --base: oklch(0.99 0 0);
+  
+  --page-bg: hsl(214, 30%, 5%);
 
 
   --gray-50:  oklch(from var(--base) calc(l - 0.950) c h);
@@ -182,4 +189,8 @@
   --tertiary-800: oklch(from var(--tertiary) clamp(0.02, calc(l + 0.34), 0.98) clamp(0, calc(c - 0.08), 0.40) h);
   --tertiary-900: oklch(from var(--tertiary) clamp(0.02, calc(l + 0.42), 0.98) clamp(0, calc(c - 0.10), 0.40) h);
   --tertiary-950: oklch(from var(--tertiary) clamp(0.02, calc(l + 0.50), 0.98) clamp(0, calc(c - 0.11), 0.40) h);
+}
+
+:root {
+  @apply bg-page;
 }
