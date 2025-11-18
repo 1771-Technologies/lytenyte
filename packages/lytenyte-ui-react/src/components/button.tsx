@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "../external/cva.js";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const buttonStyles = cva(
-  "h-11 px-3 rounded-lg flex items-center text-sm font-semibold tracking-tight transition-[background-color,transform] cursor-pointer disabled:cursor-not-allowed not-disabled:active:scale-[0.98] focus-visible:outline focus-visible:-outline-offset-1 focus-visible:outline-primary-500",
+  "h-11 px-3 rounded-lg flex items-center justify-center text-sm font-semibold tracking-tight transition-[background-color,transform] cursor-pointer disabled:cursor-not-allowed not-disabled:active:scale-[0.98] focus-visible:outline focus-visible:-outline-offset-1 focus-visible:outline-primary-500",
   {
     variants: {
       kind: {
