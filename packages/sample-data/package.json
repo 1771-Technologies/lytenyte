@@ -1,0 +1,53 @@
+{
+  "name": "@1771technologies/grid-sample-data",
+  "description": "A package with sample data sets for testing grids",
+  "version": "1.0.18",
+  "license": "Apache-2.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "require": "./src/index.ts"
+    },
+    "./stock-data": {
+      "types": "./src/stocks-data.ts",
+      "import": "./src/stocks-data.ts",
+      "require": "./src/stocks-data.ts"
+    },
+    "./bank-data-small": {
+      "types": "./src/bank-data-small.ts",
+      "import": "./src/bank-data-small.ts",
+      "require": "./src/bank-data-small.ts"
+    },
+    "./bank-data": {
+      "types": "./src/bank-data.ts",
+      "import": "./src/bank-data.ts",
+      "require": "./src/bank-data.ts"
+    },
+    "./pivot-data": {
+      "types": "./src/pivot-data.ts",
+      "import": "./src/pivot-data.ts",
+      "require": "./src/pivot-data.ts"
+    },
+    "./tree-data": {
+      "types": "./src/tree-data.ts",
+      "import": "./src/tree-data.ts",
+      "require": "./src/tree-data.ts"
+    },
+    "./salary-data": {
+      "types": "./src/salary-data.ts",
+      "import": "./src/salary-data.ts",
+      "require": "./src/salary-data.ts"
+    },
+    "./movie-data": {
+      "types": "./src/movie-data.ts",
+      "require": "./src/movie-data.ts",
+      "import": "./src/movie-data.ts"
+    }
+  },
+  "devDependencies": {
+    "csv-parser": "^3.0.0",
+    "es-toolkit": "^1.42.0"
+  }
+}
