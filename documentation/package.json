@@ -12,9 +12,10 @@
   "dependencies": {
     "@1771technologies/lytenyte-pro": "workspace:*",
     "@1771technologies/remark-code-demo": "workspace:*",
-    "@1771technologies/sample-data": "^0.9.4",
+    "@1771technologies/grid-sample-data": "workspace:*",
     "@ark-ui/react": "^5.25.0",
     "@bprogress/next": "^3.2.12",
+    "@emotion/styled": "^11.14.1",
     "@fumadocs/mdx-remote": "^1.4.0",
     "@radix-ui/react-icons": "1.3.2",
     "@radix-ui/react-presence": "^1.1.5",

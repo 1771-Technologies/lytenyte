@@ -36,7 +36,7 @@ const columns: Column<any>[] = [
   { id: "campaign" },
   { id: "pdays" },
   { id: "previous" },
-  { id: "poutcome" },
+  { id: "poutcome", name: "P Outcome" },
   { id: "y" },
 ];
 
@@ -56,7 +56,7 @@ const columnsPinStart: Column<any>[] = [
   { id: "campaign" },
   { id: "pdays" },
   { id: "previous" },
-  { id: "poutcome" },
+  { id: "poutcome", name: "P Outcome" },
   { id: "y" },
 ];
 const columnsPinEnd: Column<any>[] = [
@@ -75,7 +75,7 @@ const columnsPinEnd: Column<any>[] = [
   { id: "campaign" },
   { id: "pdays" },
   { id: "previous" },
-  { id: "poutcome" },
+  { id: "poutcome", name: "P Outcome" },
   { id: "y" },
 ];
 
@@ -95,7 +95,7 @@ const columnsPinBoth: Column<any>[] = [
   { id: "campaign", pin: "start" },
   { id: "pdays" },
   { id: "previous" },
-  { id: "poutcome" },
+  { id: "poutcome", name: "P Outcome" },
   { id: "y" },
 ];
 

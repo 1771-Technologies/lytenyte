@@ -1,6 +1,6 @@
 "use client";
 
-import { bankDataSmall as bankData } from "@1771technologies/sample-data/bank-data-smaller";
+import { bankDataSmall as bankData } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { Grid, useServerDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
 import type {
@@ -12,7 +12,7 @@ import type {
   DataResponseLeafItem,
   DataResponsePinned,
 } from "@1771technologies/lytenyte-pro/types";
-import type { bankDataSmall } from "@1771technologies/sample-data/bank-data-smaller";
+import type { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { useId } from "react";
 import sql from "alasql";
 

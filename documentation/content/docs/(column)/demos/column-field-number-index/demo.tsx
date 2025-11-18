@@ -3,7 +3,7 @@
 import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
-import { stockData } from "@1771technologies/sample-data/stock-data-smaller";
+import { stockData } from "@1771technologies/grid-sample-data/stock-data-smaller";
 import { useId } from "react";
 
 type StockData = (typeof stockData)[number];

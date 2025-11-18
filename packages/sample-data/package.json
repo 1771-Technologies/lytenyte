@@ -1,9 +1,23 @@
 {
   "name": "@1771technologies/grid-sample-data",
   "description": "A package with sample data sets for testing grids",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "license": "Apache-2.0",
   "type": "module",
+  "homepage": "https://1771technologies.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/1771-technologies/lytenyte.git",
+    "directory": "packages/grid-sample-data"
+  },
+  "bugs": {
+    "url": "https://github.com/1771-technologies/lytenyte/issues"
+  },
+  "files": [
+    "src",
+    "tsconfig.json",
+    "LICENSE"
+  ],
   "exports": {
     ".": {
       "types": "./src/index.ts",
@@ -15,10 +29,30 @@
       "import": "./src/stocks-data.ts",
       "require": "./src/stocks-data.ts"
     },
-    "./bank-data-small": {
+    "./stock-data-smaller": {
+      "types": "./src/stock-data-smaller.ts",
+      "import": "./src/stock-data-smaller.ts",
+      "default": "./src/stock-data-smaller.ts"
+    },
+    "./companies-with-price-performance": {
+      "types": "./src/companies-with-price-performance.ts",
+      "import": "./src/companies-with-price-performance.ts",
+      "require": "./src/companies-with-price-performance.ts"
+    },
+    "./performance": {
+      "types": "./src/performance.ts",
+      "import": "./src/performance.ts",
+      "require": "./src/performance.ts"
+    },
+    "./bank-data-smaller": {
       "types": "./src/bank-data-small.ts",
       "import": "./src/bank-data-small.ts",
       "require": "./src/bank-data-small.ts"
+    },
+    "./file-data": {
+      "types": "./src/file-data.ts",
+      "import": "./src/file-data.ts",
+      "require": "./src/file-data.ts"
     },
     "./bank-data": {
       "types": "./src/bank-data.ts",

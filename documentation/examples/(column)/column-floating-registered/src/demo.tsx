@@ -6,7 +6,7 @@ import type {
   Column,
   HeaderFloatingCellRendererParams,
 } from "@1771technologies/lytenyte-pro/types";
-import { bankDataSmall } from "@1771technologies/sample-data/bank-data-smaller";
+import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { useId } from "react";
 
 type BankData = (typeof bankDataSmall)[number];
@@ -27,7 +27,7 @@ const columns: Column<BankData>[] = [
   { id: "campaign" },
   { id: "pdays" },
   { id: "previous" },
-  { id: "poutcome" },
+  { id: "poutcome", name: "P Outcome" },
   { id: "y" },
 ];
 

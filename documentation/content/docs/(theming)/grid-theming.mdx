@@ -1,0 +1,339 @@
+---
+title: Grid Theming
+description:
+  LyteNyte Grid is a headless data grid. This guide explains how to theme LyteNyte Grid using
+  vanilla CSS or pre-built themes to create a visually polished data grid.
+---
+
+<Callout>
+
+As a headless data grid, LyteNyte Grid applies no colors, fonts, borders, or backgrounds by default.
+However, it does include inline styles required for layout calculations and row or column virtualization.
+These functional styles should not be overridden. Because inline styles have high specificity,
+they are unlikely to be affected unless you deliberately create an extremely specific CSS selector.
+
+</Callout>
+
+## Pre-built Themes
+
+The fastest way to create a visually polished grid is by using one of the built-in LyteNyte Grid themes.
+To apply a theme, add the `lng-grid` class to any HTML element above the grid, then
+include the class name of the theme you want to use. Ensure you have imported the CSS file
+for the themes:
+
+<Tabs items={['Core', 'PRO']} className="bg-fd-card">
+
+<Tab value="Core" className="p-0 rounded-t-[0px] [&>div]:rounded-t-[0px]">
+
+```ts
+import "@1771technologies/lytenyte-core/grid.css";
+```
+
+</Tab>
+
+<Tab value="PRO" className="p-0 rounded-t-[0px] [&>div]:rounded-t-[0px]">
+```ts
+import "@1771technologies/lytenyte-pro/grid.css";
+```
+
+</Tab>
+
+</Tabs>
+
+LyteNyte Grid provides seven ready-to-use themes. Add the theme class, alongside the
+`lng-grid` class, to a parent element of the grid (typically `html` or `body`):
+
+- `lng1771-teal`: Teal-accent theme.
+- `lng1771-term256`: Terminal-style color theme.
+- `dark`: Standard dark theme.
+- `light`: Standard light theme.
+- `lng1771-shadcn-light`: Light theme based on shadcn color tokens. Use in projects that adopt shadcn.
+- `lng1771-shadcn-dark`: Dark theme based on shadcn color tokens. Use in projects that adopt shadcn.
+- `lng1771-cotton-candy`: Playful, colorful theme for friendly data grid views.
+
+The demo below shows how each theme looks in practice. For a complete example with
+auxiliary components, visit our [live demo](https://www.1771technologies.com/demo) page,
+which includes a theme toggle.
+
+!demo:Pre-built LyteNyte Grid Themes="./demos/grid-theming"
+
+You can also create a custom theme from scratch. LyteNyte Grid is unopinionated about
+your styling method and works with any approach. The rest of this guide explains
+how to style the grid using vanilla CSS and inline styles. Even if you use a framework
+like Tailwind, reviewing these examples will help you understand the styling attributes available in LyteNyte Grid.
+
+## Styling Through Data Attributes
+
+LyteNyte Grid makes extensive use of data attributes on grid elements.
+Data attributes are custom pieces of information attached to an HTML element.
+They always begin with the `data-` prefix. For example, each cell element includes the
+attribute `data-ln-cell="true"`. All LyteNyte Grid data attributes begin with the `data-ln`
+prefix, where `ln` stands for LyteNyte. Using these attributes is an effective
+way to target specific parts of the grid for CSS styling.
+
+In the demo below, the header cells and grid cells are styled using HSLA color codes and
+the [`light-dark`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark)
+CSS function, which is useful for specifying theme colors for light and dark color schemes.
+
+!demo:Data Attribute Styling="./demos/data-attributes"
+
+The CSS uses the [attribute selector](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/Attribute_selectors), as shown below:
+
+```css
+.data-styles {
+  [data-ln-cell="true"] {
+    display: flex;
+    align-items: center;
+    padding-inline: 8px;
+    background-color: light-dark(white, hsla(190, 32%, 6%, 1));
+    color: light-dark(hsla(175, 6%, 38%, 1), hsla(175, 10%, 86%, 1));
+    font-size: 14px;
+    border-bottom: 1px solid light-dark(hsla(175, 20%, 95%, 1), hsla(177, 19%, 17%, 1));
+  }
+
+  [data-ln-alternate="true"] [data-ln-cell="true"] {
+    background-color: light-dark(hsl(0, 27%, 98%), hsl(184, 33%, 8%));
+  }
+
+  [data-ln-header-cell="true"] {
+    display: flex;
+    align-items: center;
+    padding-inline: 8px;
+    background-color: light-dark(hsla(175, 12%, 92%, 1), hsla(177, 19%, 17%, 1));
+    color: light-dark(hsla(177, 19%, 17%, 1), hsla(175, 12%, 92%, 1));
+    text-transform: capitalize;
+    font-size: 14px;
+  }
+}
+```
+
+Wrap the styles in a `data-styles` class to apply them on a per-grid basis.
+If you prefer to apply them globally, remove the wrapper class.
+
+### Commonly Used Data Attributes
+
+It is useful to understand which data attributes apply to each element.
+You can inspect the rendered grid in your browser's developer tools, but
+the most common attributes are listed below for convenience.
+
+### Header Elements
+
+Each header element includes an attribute indicating its type:
+
+- `Grid.Viewport`: `data-ln-viewport`
+- `Grid.Header`: `data-ln-header`
+- `Grid.HeaderRow`: `data-ln-header-row`
+- `Grid.HeaderGroupCell`: `data-ln-header-group`
+- `Grid.HeaderCell`: `data-ln-header-cell`
+
+Additionally, `Grid.HeaderCell` may include `data-ln-header-floating`
+to indicate that the cell belongs to the floating header.
+
+Some elements also include attributes for contextual styling. For example,
+`Grid.HeaderCell` includes `data-ln-colpin` to indicate the pin
+section (`start`, `center`, or `end`). It may also include `data-ln-last-start-pin`
+or `data-ln-first-end-pin` to indicate whether the cell is the last in the start section or the first in the end section.
+
+`Grid.HeaderGroupCell` includes attributes describing its state. The
+`data-ln-collapsible` attribute indicates that the group cell can collapse,
+while `data-ln-collapsed` reflects the current collapse state.
+
+Use these attributes to precisely target header elements for custom styling.
+
+### Row and Cell Elements
+
+Each row and cell element includes an identifying data attribute:
+
+- `Grid.RowsContainer`: `data-ln-rows-container`
+- `Grid.RowsTop`: `data-ln-rows-top`
+- `Grid.RowsCenter`: `data-ln-rows-center`
+- `Grid.RowsBottom`: `data-ln-rows-bottom`
+- `Grid.Row`: `data-ln-row`
+- `Grid.RowFullWidth`: `data-ln-row` and `data-ln-rowtype="full-width"`
+- `Grid.Cell`: `data-ln-cell`
+
+Additional contextual attributes support conditional styling. For example,
+`Grid.Row` may include `data-ln-last-top-pin` or `data-ln-first-bottom-pin`
+to indicate whether the row is the last top-pinned or first bottom-pinned row.
+
+Using these attributes provides a consistent and reliable way to
+target specific parts of LyteNyte Grid for styling.
+
+## Styling Through Classes
+
+LyteNyte Grid provides flexible styling options. Since each component is exposed,
+you can apply any number of classes to its elements. Use this approach when you
+have an existing design system and want LyteNyte Grid to match it.
+
+The example below styles grid elements using predefined classes and
+the [clsx](https://github.com/lukeed/clsx) library to conditionally apply styles
+based on column type.
+
+!demo:Styling With Classes="./demos/styling-with-classnames"
+
+The CSS is straightforward. The example below shows how the classes
+are applied through the `className` property on the components.
+
+```css
+.cell {
+  display: flex;
+  align-items: center;
+  padding-inline: 8px;
+  background-color: light-dark(hsla(175, 12%, 92%, 1), hsla(177, 19%, 17%, 1));
+  color: light-dark(hsla(177, 19%, 17%, 1), hsla(175, 12%, 92%, 1));
+  text-transform: capitalize;
+  font-size: 14px;
+}
+
+[data-ln-alternate="true"] .cell {
+  background-color: light-dark(hsl(0, 27%, 98%), hsl(184, 33%, 8%));
+}
+
+.cell-number {
+  justify-content: flex-end;
+}
+
+.header-cell {
+  display: flex;
+  align-items: center;
+  padding-inline: 8px;
+  background-color: light-dark(white, hsla(190, 32%, 6%, 1));
+  color: light-dark(hsla(175, 6%, 38%, 1), hsla(175, 10%, 86%, 1));
+  font-size: 14px;
+  border-bottom: 1px solid light-dark(hsla(175, 20%, 95%, 1), hsla(177, 19%, 17%, 1));
+}
+```
+
+## Styling Through Inline Styles
+
+You can also style LyteNyte Grid elements using inline styles. This approach works
+well when style values are dynamic and available in JavaScript. For example, a simple
+theme editor can be built this way, although it is not generally recommended.
+
+!demo:Inline Styles="./demos/grid-inline-styles"
+
+Inline styles are applied directly to each component. For example, the `Grid.Cell`
+component can use the `style` property as shown below.
+
+```tsx
+<Grid.Cell
+  key={c.id}
+  cell={c}
+  style={{
+    display: "flex",
+    alignItems: "center",
+    paddingInline: "8px",
+    justifyContent: c.column.type === "number" ? "flex-end" : "flex-start",
+    fontSize: 14,
+    background: cellBg,
+    color: cellFg,
+    borderBottom: "1px solid light-dark(hsla(175, 20%, 95%, 1), hsla(177, 19%, 17%, 1))",
+  }}
+/>
+```
+
+<Callout>
+
+Use caution when applying inline styles. The same maintainability issues and limitations of
+inline styles also apply in LyteNyte Grid. When used selectively,
+inline styles can simplify code, but avoid using them for every grid element.
+
+</Callout>
+
+## Styling Elements Not Directly Exposed
+
+Most LyteNyte Grid components are accessible through the headless interface.
+However, for convenience, some advanced features are rendered
+and controlled internally by LyteNyte Grid. These elements include:
+
+- The row detail container (master detail container).
+- The cell selection rectangles.
+
+To style these elements, you must target them directly using CSS.
+In most cases, a single selector is enough to apply your styles. If you
+are using one of our pre-built themes, these elements are already styled.
+
+### Styling the Row Detail (Master Detail) Container
+
+The example below shows a grid with a single row detail expanded. Styles
+for the detail container are applied by targeting the row element
+that includes the `data-ln-row-detail` attribute.
+
+!demo:Styling Row Detail="./demos/row-detail-styling"
+
+The applied styles are simple. Padding is added to the detail container, and a border is
+applied to its direct `div` descendant. You can adapt this approach as needed
+to fit your use case.
+
+```css
+[data-ln-row-detail="true"] {
+  padding: 24px;
+
+  & > div {
+    border: 1px solid var(--lng1771-gray-30);
+    border-radius: 8px;
+    background-color: light-dark(white, transparent);
+  }
+}
+```
+
+### Styling the Cell Selection Rectangle
+
+The cell selection rectangle consists of `div` elements created by LyteNyte Grid
+to show the range of selected cells. This is a PRO feature available
+in LyteNyte Grid PRO. You can style the selection rectangles using data
+attributes, primarily `data-ln-cell-selection-rect`.
+
+!demo:Cell Selection Styling="./demos/cell-selection-rect"
+
+In this example, the cell selection rectangle is styled using the CSS below,
+which targets the selection rectangles generated by LyteNyte Grid
+when selection ranges are active. Notice how individual rectangles are selected, as
+the selection area is actually a set of split `div`s assembled to visually form the selection rectangle.
+
+```css
+[data-ln-cell-selection-rect]:not([data-ln-cell-selection-is-unit="true"]) {
+  background-color: var(--lng1771-primary-30);
+  box-sizing: border-box;
+
+  &[data-ln-cell-selection-border-top="true"] {
+    border-top: 1px solid var(--lng1771-primary-50);
+  }
+  &[data-ln-cell-selection-border-bottom="true"] {
+    border-bottom: 1px solid var(--lng1771-primary-50);
+  }
+  &[data-ln-cell-selection-border-start="true"] {
+    border-inline-start: 1px solid var(--lng1771-primary-50);
+  }
+  &[data-ln-cell-selection-border-end="true"] {
+    border-inline-end: 1px solid var(--lng1771-primary-50);
+  }
+}
+[data-ln-cell-selection-rect][data-ln-cell-selection-is-unit="true"] {
+  outline: 1px solid var(--lng1771-primary-50);
+  outline-offset: -1px;
+}
+```
+
+## Layout Constraints
+
+LyteNyte Grid is mostly headless and unstyled, but some functional inline
+styles are necessary for layout and rendering. These styles control cell
+sizing and positioning. Avoid overriding them to ensure the grid renders correctly.
+
+Functional styles typically affect properties such as
+`width`, `height`, `top`, `left`, and `transform`. Avoid applying
+`margin` directly to grid elements, as it may interfere with layout calculations.
+
+LyteNyte Grid applies its functional styles inline, which gives them high specificity.
+As a result, it is difficult to unintentionally override these styles.
+In most cases, conflicts will only occur if you create an extremely specific CSS selector.
+
+## Next Steps
+
+This guide covers the main styling approaches for LyteNyte Grid. Since most developers
+use a framework or CSS abstraction, we also provide dedicated guides for popular styling methods.
+
+- [Grid Theming With Tailwind](/docs/grid-theming-tailwind): style LyteNyte Grid using Tailwind.
+- [Grid Theming With CSS Modules](/docs/grid-theming-css-modules): apply scoped styles using CSS Modules.
+- [Grid Theming With Emotion](/docs/grid-theming-emotion): learn how to theme LyteNyte Grid with Emotion or similar CSS-in-JS libraries.

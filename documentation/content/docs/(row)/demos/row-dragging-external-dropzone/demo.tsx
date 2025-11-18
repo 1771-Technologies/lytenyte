@@ -4,7 +4,7 @@ import { DropWrap, Grid, useClientRowDataSource } from "@1771technologies/lyteny
 import "@1771technologies/lytenyte-pro/grid.css";
 import { DragDotsSmallIcon, DragIcon } from "@1771technologies/lytenyte-pro/icons";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
-import { bankDataSmall } from "@1771technologies/sample-data/bank-data-smaller";
+import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { useId, useState } from "react";
 
 type BankData = (typeof bankDataSmall)[number];
@@ -25,7 +25,7 @@ const columns: Column<BankData>[] = [
   { id: "campaign" },
   { id: "pdays" },
   { id: "previous" },
-  { id: "poutcome" },
+  { id: "poutcome", name: "P Outcome" },
   { id: "y" },
 ];
 
