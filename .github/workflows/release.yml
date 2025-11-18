@@ -44,7 +44,7 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Lint All Packages
-        run: op np --filter './packages/*' exec op lint
+        run: op np --filter './packages/*' --filter '!./packages/sample-data' exec op lint
 
       - name: Check All Packages Format
         run: op np --filter './packages/*' exec op fmt

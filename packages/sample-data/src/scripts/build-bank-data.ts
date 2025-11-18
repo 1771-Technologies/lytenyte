@@ -3,6 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { capitalize } from "es-toolkit";
 
 function createDirname(url: string): string {
   return dirname(fileURLToPath(url));
@@ -28,7 +29,7 @@ fs.createReadStream(bankData)
         if (header === "age" || header === "balance" || header === "day" || header === "duration")
           return Number.parseInt(value as string);
 
-        return value as string;
+        return capitalize(value as string);
       },
     }),
   )
@@ -48,7 +49,7 @@ fs.createReadStream(bankDataLarge)
         if (header === "age" || header === "balance" || header === "day" || header === "duration")
           return Number.parseInt(value as string);
 
-        return value as string;
+        return capitalize(value as string);
       },
     }),
   )
@@ -68,7 +69,7 @@ fs.createReadStream(bankDataSmall)
         if (header === "age" || header === "balance" || header === "day" || header === "duration")
           return Number.parseInt(value as string);
 
-        return value as string;
+        return capitalize(value as string);
       },
     }),
   )
