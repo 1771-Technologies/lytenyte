@@ -5,12 +5,28 @@ import { HeroIconReact } from "./icon-react.js";
 import { HeroIconPivot } from "./icon-pivot.js";
 import { HeroIconSum } from "./icon-sum.js";
 import { HeroIconHash } from "./icon-hash.js";
+import { HeroTitle } from "./hero-title.js";
+import { HeroHighlights } from "./hero-highlights.js";
+import { Button } from "../../components/button.js";
 
 export function HeroSquares() {
   return (
     <div className="grid h-full grid-cols-[1fr] md:grid-cols-[50px_1fr_50px]">
       <FenceDivider className="hidden md:block" />
-      <div className="grid grid-cols-[3fr_2fr_3fr_2fr_1.5fr_3fr_2fr] grid-rows-[repeat(11,auto)_200px]">
+      <div className="relative grid grid-cols-[3fr_2fr_3fr_2fr_1.5fr_3fr_2fr] grid-rows-[repeat(11,auto)_200px]">
+        <div className="absolute z-10 w-full">
+          <HeroTitle />
+          <HeroHighlights />
+
+          <div className="flex items-center justify-center gap-6">
+            <Button kind="primary" size="large" className="w-[140px]">
+              Demo Now
+            </Button>
+            <Button kind="secondary" size="large" className="w-[140px] text-nowrap text-center">
+              Get LyteNyte
+            </Button>
+          </div>
+        </div>
         {/* Row 1 */}
         <SquareRow>
           <EmptyCell cornerStart />
@@ -130,6 +146,8 @@ export function HeroSquares() {
 function SquareRow(props: PropsWithChildren<{ className?: string }>) {
   return (
     <div
+      role="presentation"
+      aria-hidden
       className={tw(
         "col-span-full grid h-[44px] grid-cols-subgrid border-b border-gray-300/40 dark:border-gray-200/50",
         props.className,
