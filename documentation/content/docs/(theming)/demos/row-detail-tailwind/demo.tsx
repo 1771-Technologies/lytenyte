@@ -13,7 +13,7 @@ const columns: Column<PerformanceData>[] = [
   { id: "Company", widthFlex: 2 },
   { id: "Country", widthFlex: 2 },
   { id: "Founded", type: "number" },
-  { id: "Employee Cnt", type: "number", cellRenderer: NumberCell },
+  { id: "Employee Cnt", name: "Employees", type: "number", cellRenderer: NumberCell },
   { id: "Price", type: "number", cellRenderer: PriceCell },
 ];
 

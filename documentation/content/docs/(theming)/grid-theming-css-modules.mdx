@@ -7,7 +7,8 @@ description: LyteNyte Grid can be styled using CSS modules.
 <Callout>
 
 Review the basic theming approaches in LyteNyte Grid by reading our [Grid Theming guide](/docs/grid-theming).
-This guide assumes you already understand the data attributes used to style LyteNyte Grid elements.
+The theming with CSS modules guide assumes you already understand the data
+attributes used to style LyteNyte Grid elements.
 
 </Callout>
 
@@ -16,21 +17,20 @@ This guide assumes you already understand the data attributes used to style Lyte
 Depending on your framework, CSS modules may work without additional configuration. For example,
 when using [Vite](https://vite.dev/guide/features#css-modules), any CSS file ending
 with `.module.css` is treated as a CSS module. [Next.js](https://nextjs.org/docs/app/getting-started/css#css-modules)
-follows the same convention.
-
-If you are not using Next.js or Vite, consult your framework's documentation. If needed,
+follows the same convention. If you are not using Next.js or Vite, consult your framework's documentation. If needed,
 refer to the official [CSS Modules](https://github.com/css-modules/css-modules) documentation.
 
 ## Styling With Scoped Styles
 
 To style LyteNyte Grid using CSS modules, create a module file and define classes that
-target grid elements through their data attributes—such as `data-ln-header-cell` and `data-ln-cell`.
+target grid elements through their data attributes, such as `data-ln-header-cell` and `data-ln-cell`.
 The example below illustrates this:
 
 !demo:Styling With CSS Modules="./demos/styling-with-modules"
 
-In the example, we create a module file (`style.module.css`).
-The CSS inside the file is standard vanilla CSS:
+The `styles.cell` class only applies to `<Grid.Cell>`.
+This scoping behavior is the main benefit of CSS modules, as styles in
+one module don't conflict with class names defined elsewhere.
 
 ```css
 .cell {
@@ -155,7 +155,7 @@ You can style LyteNyte Grid entirely with CSS modules, but this is not required.
 You may also combine a pre-built LyteNyte Grid theme with custom CSS module classes.
 The example below demonstrates how to enhance an existing theme:
 
-!demo:Prebuilt Themes and CSS Modules="./demos/grid-theming-modules"
+!demo:Pre-built Themes With CSS Modules="./demos/grid-theming-modules"
 
 In the demo, the pre-built theme provides the base styling, and CSS modules
 add additional cell-specific styles. This works seamlessly because the pre-built

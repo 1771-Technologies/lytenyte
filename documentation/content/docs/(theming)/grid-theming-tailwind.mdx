@@ -9,7 +9,7 @@ CSS frameworks, such as [UnoCSS](https://unocss.dev/).
 
 <Callout>
 
-We highly recommend reading the general [Grid Theming Guide](/docs/grid-theming) first to
+We highly recommend reading the general [Grid Theming guide](/docs/grid-theming) first to
 understand the styling options available in LyteNyte Grid.
 
 This guide assumes you are using Tailwind v4. Translating
@@ -20,7 +20,7 @@ the examples back to Tailwind v3 is straightforward.
 ## Tailwind Theming Setup
 
 Start by setting up Tailwind. The exact steps depend on your React framework.
-See Tailwind's [installation guide](https://tailwindcss.com/docs/installation/using-vite) for framework-specific details.
+See Tailwind's [Installation guide](https://tailwindcss.com/docs/installation/using-vite) for framework-specific details.
 
 This guide assumes you have Tailwind configured with the default setup, and a CSS file that contains:
 
@@ -40,7 +40,7 @@ As a result, styling the grid with Tailwind is as simple as applying utility cla
 
 The example below demonstrates this using the standard Tailwind color palette:
 
-!demo:LyteNyte Grid Styled With Tailwind="./demos/tailwind-styles"
+!demo:Styling With Tailwind="./demos/tailwind-styles"
 
 In the example, Tailwind classes are applied in the usual way.
 No special configuration is required. For example, the `Grid.Cell` component is styled as follows:
@@ -246,12 +246,12 @@ you can map into Tailwind:
 
 ## Shadcn and LyteNyte Grid
 
-[shadcn/ui](https://ui.shadcn.com/) is a popular library for bootstrapping applications.
-shadcn/ui uses Tailwind but defines its own theme tokens instead of relying on the default
+[Shadcn/ui](https://ui.shadcn.com/) is a popular library for bootstrapping applications.
+Shadcn/ui uses Tailwind but defines its own theme tokens instead of relying on the default
 Tailwind color palette. LyteNyte Grid includes a pre-made shadcn/ui theme. To apply
 it, add the `lng-grid lng1771-shadcn` classes to an element above the grid.
 
-!demo:LyteNyte With Shadcn Theme="./demos/grid-theming-shadcn"
+!demo:LyteNyte With Shadcn/ui Theme="./demos/grid-theming-shadcn"
 
 The shadcn/ui theme is designed to work with shadcn/ui tokens. A typical set is shown below.
 These tokens are usually already defined in any shadcn/ui project.

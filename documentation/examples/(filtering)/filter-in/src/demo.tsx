@@ -24,7 +24,7 @@ const columns: Column<BankData>[] = [
   { id: "campaign" },
   { id: "pdays" },
   { id: "previous" },
-  { id: "poutcome" },
+  { id: "poutcome", name: "P Outcome" },
   { id: "y" },
 ];
 

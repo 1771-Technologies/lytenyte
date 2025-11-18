@@ -38,7 +38,7 @@ const columns: Column<any>[] = [
   { id: "campaign" },
   { id: "pdays", groupPath: ["A", "C"] },
   { id: "previous" },
-  { id: "poutcome" },
+  { id: "poutcome", name: "P Outcome" },
   { id: "y" },
 ];
 

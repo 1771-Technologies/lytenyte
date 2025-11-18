@@ -21,7 +21,7 @@ const columns: Column<BankData>[] = [
   { id: "day", type: "number", cellRenderer: NumberCell },
   { id: "month" },
   { id: "duration", type: "number", cellRenderer: DurationCell },
-  { id: "poutcome" },
+  { id: "poutcome", name: "P Outcome" },
   { id: "y" },
 ];
 
