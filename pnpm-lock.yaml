@@ -114,15 +114,15 @@ importers:
 
   documentation:
     dependencies:
+      '@1771technologies/grid-sample-data':
+        specifier: workspace:*
+        version: link:../packages/sample-data
       '@1771technologies/lytenyte-pro':
         specifier: workspace:*
         version: link:../packages/commercial-lytenyte-pro
       '@1771technologies/remark-code-demo':
         specifier: workspace:*
         version: link:../packages-auxiliary/remark-code-demo
-      '@1771technologies/sample-data':
-        specifier: ^0.9.4
-        version: 0.9.4
       '@ark-ui/react':
         specifier: ^5.25.0
         version: 5.25.0(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
@@ -450,9 +450,6 @@ packages:
 
   '@1771technologies/cli-table@1.0.1':
     resolution: {integrity: sha512-hrT5Dg0hLbz3+skubTuHaPnUs/WASEZXuLhqXb9kuo06fJGViZZqaMlO1VCDkozh4ff0cddnMemh3QC9MEUWng==}
-
-  '@1771technologies/sample-data@0.9.4':
-    resolution: {integrity: sha512-Inn65VuN2vEqaReEKU1IgEi/ty8MN9LCQCuK+ngQCxBHUm7b9u3wJW/X4nSbBPTQCL3gu/AJDT10H7bvcHPJaA==}
 
   '@alloc/quick-lru@5.2.0':
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
@@ -6270,8 +6267,6 @@ snapshots:
   '@1771technologies/cli-table@1.0.1':
     dependencies:
       cli-table3: 0.6.5
-
-  '@1771technologies/sample-data@0.9.4': {}
 
   '@alloc/quick-lru@5.2.0': {}
 

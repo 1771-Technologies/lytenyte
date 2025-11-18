@@ -1,5 +1,5 @@
 import type { CellRendererParams } from "@1771technologies/lytenyte-pro/types";
-import type { companiesWithPricePerf } from "@1771technologies/sample-data/companies-with-price-performance";
+import type { companiesWithPricePerf } from "@1771technologies/grid-sample-data/companies-with-price-performance";
 
 type PerformanceData = (typeof companiesWithPricePerf)[number];
 

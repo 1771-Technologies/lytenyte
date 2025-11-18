@@ -1,5 +1,5 @@
 import type { CellRendererParams } from "@1771technologies/lytenyte-pro/types";
-import type { bankDataSmall } from "@1771technologies/sample-data/bank-data-smaller";
+import type { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 
 export type BankData = (typeof bankDataSmall)[number];
 

@@ -3,7 +3,7 @@
 import "@1771technologies/lytenyte-pro/grid.css";
 import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
-import { bankDataSmall } from "@1771technologies/sample-data/bank-data-smaller";
+import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { useEffect, useId, useState } from "react";
 
 type BankData = (typeof bankDataSmall)[number];

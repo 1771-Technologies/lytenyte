@@ -3,7 +3,7 @@
 import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
-import { companiesWithPricePerf } from "@1771technologies/sample-data/companies-with-price-performance";
+import { companiesWithPricePerf } from "@1771technologies/grid-sample-data/companies-with-price-performance";
 import { useId } from "react";
 import { Sparklines, SparklinesLine } from "react-sparklines";
 

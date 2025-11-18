@@ -3,7 +3,7 @@
 import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
-import { performance } from "@1771technologies/sample-data/performance";
+import { performance } from "@1771technologies/grid-sample-data/performance";
 import { useId } from "react";
 
 type PerformanceData = (typeof performance)[number];

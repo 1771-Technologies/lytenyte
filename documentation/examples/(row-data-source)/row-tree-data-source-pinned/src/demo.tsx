@@ -4,7 +4,7 @@ import { Grid, useClientTreeDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
 import { ChevronDownIcon, ChevronRightIcon } from "@1771technologies/lytenyte-pro/icons";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
-import { fileData } from "@1771technologies/sample-data/file-data";
+import { fileData } from "@1771technologies/grid-sample-data/file-data";
 import { useId } from "react";
 
 type FileData = (typeof fileData)[number];

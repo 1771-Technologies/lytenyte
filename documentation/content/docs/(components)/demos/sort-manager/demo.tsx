@@ -10,7 +10,7 @@ import {
   CloseIcon,
 } from "@1771technologies/lytenyte-pro/icons";
 import type { Column, HeaderCellRendererParams } from "@1771technologies/lytenyte-pro/types";
-import { bankDataSmall } from "@1771technologies/sample-data/bank-data-smaller";
+import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { useId } from "react";
 
 type BankData = (typeof bankDataSmall)[number];

@@ -4,7 +4,7 @@ import { useClientRowDataSource, Grid, ColumnManager as CM } from "@1771technolo
 import "@1771technologies/lytenyte-pro/grid.css";
 import { ChevronDownIcon, DragDotsSmallIcon } from "@1771technologies/lytenyte-pro/icons";
 import type { Column, Grid as GridType } from "@1771technologies/lytenyte-pro/types";
-import { bankDataSmall } from "@1771technologies/sample-data/bank-data-smaller";
+import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
 import { useId } from "react";
 
