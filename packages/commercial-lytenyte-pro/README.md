@@ -110,12 +110,12 @@ information on available support channels and response options.
 
 ## Contributing
 
-Please review our [contributing guide](./CONTRIBUTING.md) to learn about our development
+Please review our [contributing guide](https://github.com/1771-Technologies/lytenyte/blob/main/CONTRIBUTING.md) to learn about our development
 process, bug reporting procedures, and codebase maintenance practices.
 
 ## Changelog
 
-Our [changelog](https://www.1771technologies.com/docs/changelog/changelog) is regularly updated
+Our [changelog](https://www.1771technologies.com/docs/changelog/latest) is regularly updated
 with detailed notes on new features, improvements, and bug fixes in each release.
 LyteNyte Grid follows [semantic versioning](https://semver.org/) to ensure clear and predictable upgrade paths.
 
