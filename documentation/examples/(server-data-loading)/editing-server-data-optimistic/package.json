@@ -24,6 +24,7 @@
     "@uidotdev/usehooks": "^2.4.1",
     "alasql": "^4.6.6",
     "clsx": "^2.1.1",
+    "class-variance-authority": "^0.7.1",
     "date-fns": "^4.1.0",
     "exceljs": "^4.4.0",
     "radix-ui": "^1.1.2",

@@ -1,5 +1,6 @@
 "use client";
 import styles from "./detail.module.css";
+import "@1771technologies/lytenyte-pro/grid.css";
 
 import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import type { Column, RowLeaf } from "@1771technologies/lytenyte-pro/types";

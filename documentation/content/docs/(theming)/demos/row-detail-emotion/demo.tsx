@@ -1,5 +1,5 @@
 "use client";
-
+import "@1771technologies/lytenyte-pro/grid.css";
 import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import type { Column, RowLeaf } from "@1771technologies/lytenyte-pro/types";
 import { companiesWithPricePerf } from "@1771technologies/grid-sample-data/companies-with-price-performance";

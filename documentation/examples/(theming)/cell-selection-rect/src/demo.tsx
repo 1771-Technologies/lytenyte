@@ -1,5 +1,6 @@
 "use client";
 import "./cell-styles.css";
+import "@1771technologies/lytenyte-pro/grid.css";
 import { useClientRowDataSource, Grid } from "@1771technologies/lytenyte-pro";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
@@ -21,7 +22,7 @@ const columns: Column<BankData>[] = [
   { id: "day", type: "number", cellRenderer: NumberCell },
   { id: "month" },
   { id: "duration", type: "number", cellRenderer: DurationCell },
-  { id: "poutcome", name: "P Outcome" },
+  { id: "poutcome" },
   { id: "y" },
 ];
 
