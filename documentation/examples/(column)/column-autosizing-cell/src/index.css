@@ -1,4 +1,7 @@
 @import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   font-synthesis: none;
   text-rendering: optimizeLegibility;
