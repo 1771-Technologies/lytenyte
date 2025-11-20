@@ -57902,7 +57902,7 @@
     },
     {
       "kind": "text",
-      "text": ") to learn about our development\nprocess, bug reporting procedures, and codebase maintenance practices.\n\n## Changelog\n\nOur [changelog](https://www.1771technologies.com/docs/changelog/changelog) is regularly updated\nwith detailed notes on new features, improvements, and bug fixes in each release.\nLyteNyte Grid follows [semantic versioning](https://semver.org/) to ensure clear and predictable upgrade paths.\n\n## Security\n\nFor information on reporting security vulnerabilities,\nplease consult our [security policy]("
+      "text": ") to learn about our development\nprocess, bug reporting procedures, and codebase maintenance practices.\n\n## Changelog\n\nOur [changelog](https://www.1771technologies.com/docs/changelog/latest/changelog) is regularly updated\nwith detailed notes on new features, improvements, and bug fixes in each release.\nLyteNyte Grid follows [semantic versioning](https://semver.org/) to ensure clear and predictable upgrade paths.\n\n## Security\n\nFor information on reporting security vulnerabilities,\nplease consult our [security policy]("
     },
     {
       "kind": "relative-link",

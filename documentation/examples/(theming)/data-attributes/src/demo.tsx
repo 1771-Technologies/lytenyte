@@ -1,5 +1,6 @@
 "use client";
 import "./data-styles.css";
+import "@1771technologies/lytenyte-pro/grid.css";
 import { useClientRowDataSource, Grid } from "@1771technologies/lytenyte-pro";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";

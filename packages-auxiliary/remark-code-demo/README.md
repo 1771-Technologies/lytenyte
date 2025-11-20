@@ -115,7 +115,7 @@ process, bug reporting procedures, and codebase maintenance practices.
 
 ## Changelog
 
-Our [changelog](https://www.1771technologies.com/docs/changelog/changelog) is regularly updated
+Our [changelog](https://www.1771technologies.com/docs/changelog/latest/changelog) is regularly updated
 with detailed notes on new features, improvements, and bug fixes in each release.
 LyteNyte Grid follows [semantic versioning](https://semver.org/) to ensure clear and predictable upgrade paths.
 
