@@ -42,7 +42,7 @@ export default function CellSelectionRect() {
 
   return (
     <div>
-      <div style={{ height: 500 }}>
+      <div style={{ height: 500 }} className="select-none">
         <Grid.Root grid={grid}>
           <Grid.Viewport>
             <Grid.Header>
