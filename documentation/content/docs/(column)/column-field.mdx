@@ -6,12 +6,12 @@ description: The field property in LyteNyte Grid determines the cell value for a
 
 LyteNyte Grid supports four types of values for `field`:
 
-- **String**: When row data is an object. The string acts as a key to
+- **String:** When row data is an object. The string acts as a key to
   look up the value.
-- **Number**: When row data is an array. The number acts as the index in
+- **Number:** When row data is an array. The number acts as the index in
   the array.
-- **Function**: A callback for custom calculations of a column's value.
-- **Path object**: `{ kind: "path"; path: string }` to access nested
+- **Function:** A callback for custom calculations of a column's value.
+- **Path object:** `{ kind: "path"; path: string }` to access nested
   values. `kind` must be `"path"`, and `path` must specify the lookup.
 
 `field` is optional. If omitted, LyteNyte Grid uses the column's `id` as

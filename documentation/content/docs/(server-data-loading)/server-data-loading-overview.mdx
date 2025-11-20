@@ -16,9 +16,9 @@ a partial data loading solution becomes necessary.
 
 Developers typically choose one of these approaches:
 
-- **Pagination**: load one page of data at a time.
-- **Infinite scrolling**: lazily load more data as the user scrolls down.
-- **Viewport-based loading**: load only the rows currently in view.
+- **Pagination:** Load one page of data at a time.
+- **Infinite scrolling:** Lazily load more data as the user scrolls down.
+- **Viewport-based loading:** Load only the rows currently in view.
 
 LyteNyte Grid supports all three approaches, but the Server Data Loading guides focus on
 viewport-based loading. This approach is the most powerful and flexible but also the
@@ -38,10 +38,10 @@ network latency.
 
 To enable the server data source, developers must provide LyteNyte Grid with:
 
-- **Total row count**: determines the scrollable area size. When row grouping is used,
+- **Total row count:** Determines the scrollable area size. When row grouping is used,
   group specific row counts are required. LyteNyte Grid assembles these counts into the
   full dataset.
-- **`dataFetcher` function**: a function LyteNyte Grid calls to fetch rows from your server.
+- **`dataFetcher`:** A function LyteNyte Grid calls to fetch rows from your server.
 
 ## Data Flow
 
@@ -85,7 +85,7 @@ below. Read the guides in this section for in depth coverage:
 
 ## Next Steps
 
-- [Data Interface](/docs/server-data-loading-interface): request and response interface of the LyteNyte Grid server data source.
-- [Server Row Data Loading](/docs/server-data-loading-row-data): detailed guide on slicing and loading data from the server.
-- [Server Row Grouping and Aggregation](/docs/server-data-loading-row-grouping-and-aggregation): handle grouped data and load group slices.
-- [Server Data Updating](/docs/server-data-loading-row-updating): learn the steps for updating server-loaded data.
+- [Data Interface](/docs/server-data-loading-interface): Request and response interface of the LyteNyte Grid server data source.
+- [Server Row Data Loading](/docs/server-data-loading-row-data): Detailed guide on slicing and loading data from the server.
+- [Server Row Grouping and Aggregation](/docs/server-data-loading-row-grouping-and-aggregation): Handle grouped data and load group slices.
+- [Server Data Updating](/docs/server-data-loading-row-updating): Learn the steps for updating server-loaded data.

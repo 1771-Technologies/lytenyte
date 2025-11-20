@@ -10,12 +10,12 @@ description:
 There are three parts of the LyteNyte Filter Model. Additionally a custom filter model may be defined. These
 provide four different ways filters may be applied when using the LyteNyte Grid server data source:
 
-- [Filter Model](/docs/reference/filters#filtermodelitem): standard column filters that
+- [Filter Model](/docs/reference/filters#filtermodelitem): Standard column filters that
   apply predicates to cell values, such as greater than or less than comparisons.
-- [Filter In Model](/docs/reference/filters#filterin): a tree-set definition used
+- [Filter In Model](/docs/reference/filters#filterin): A tree-set definition used
   for inclusion or exclusion of values.
-- [Quick Search](/docs/filter-quick-filter): a string-based search that matches a value across any cell in a row.
-- **Custom:** a developer-defined model, not part of the LyteNyte Grid state.
+- [Quick Search](/docs/filter-quick-filter): A string-based search that matches a value across any cell in a row.
+- **Custom:** A developer-defined model, not part of the LyteNyte Grid state.
   Developers can define any model structure that suits their application.
 
 ## Handling the Filter Model on the Server
@@ -80,9 +80,9 @@ interface DataInFilterItemFetcherParams<T> {
 }
 ```
 
-- **`grid`**: reference to the grid state; you can query sort or group state as needed.
-- **`column`**: the column requesting filter items.
-- **`reqTime`**: a Unix timestamp for handling request collisions.
+- **`grid`:** Reference to the grid state; you can query sort or group state as needed.
+- **`column`:** The column requesting filter items.
+- **`reqTime`:** A Unix timestamp for handling request collisions.
 
 The fetcher should return an array (or `Promise`) of [`FilterInFilterItem`](/docs/reference/filters#filterinfilteritem) objects:
 
@@ -97,9 +97,9 @@ export interface FilterInFilterItem {
 
 Each filter item must have a unique `id` for rendering.
 
-- `label`: displays the filter text.
-- `value`: is used for membership tests and must be storable in a `Set`.
-- `groupPath`: (optional) defines hierarchical groupings, such as dates or category trees.
+- `label`: Displays the filter text.
+- `value`: Is used for membership tests and must be storable in a `Set`.
+- `groupPath`: Defines hierarchical groupings, such as dates or category trees.
 
 ### Applying the In Filter
 
@@ -170,8 +170,8 @@ dependencies are stable and only change when necessary.
 
 ## Next Steps
 
-- [Server Row Grouping and Aggregations](/docs/server-data-loading-row-grouping-and-aggregation): learn how
+- [Server Row Grouping and Aggregations](/docs/server-data-loading-row-grouping-and-aggregation): Learn how
   to fetch grouped data and handle row expansion and collapse.
-- [Server Row Sorting](/docs/server-data-loading-row-sorting): implement and display server-side sorting.
-- [Optimistic Loading](/docs/server-data-loading-optimistic-loading): use optimistic loading
+- [Server Row Sorting](/docs/server-data-loading-row-sorting): Implement and display server-side sorting.
+- [Optimistic Loading](/docs/server-data-loading-optimistic-loading): Use optimistic loading
   to pre-fetch data and improve responsiveness.

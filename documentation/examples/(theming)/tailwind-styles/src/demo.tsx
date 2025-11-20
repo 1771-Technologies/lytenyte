@@ -77,7 +77,7 @@ export default function GridTheming() {
                             cell={c}
                             className={
                               "flex items-center border-b border-gray-200 bg-white px-2 text-sm text-gray-800 group-data-[ln-alternate=true]:bg-gray-100 dark:border-gray-100 dark:bg-gray-50 dark:text-gray-600 dark:group-data-[ln-alternate=true]:bg-gray-100/30" +
-                              (c.column.type === "number" ? " justify-end" : "")
+                              (c.column.type === "number" ? " justify-end tabular-nums" : "")
                             }
                           />
                         );

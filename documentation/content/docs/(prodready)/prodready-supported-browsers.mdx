@@ -8,7 +8,7 @@ description:
 
 ## Desktop Browsers
 
-1771 Technologies officially supports the following desktop browsers:
+1771 Technologies officially supports LyteNyte Grid on the following desktop browsers:
 
 import { SupportedBrowsers, MobileBrowsers } from "./components/supported-browsers";
 
@@ -16,23 +16,24 @@ import { SupportedBrowsers, MobileBrowsers } from "./components/supported-browse
 
 ## Mobile Browsers
 
-1771 Technologies officially supports the following mobile browsers:
+1771 Technologies officially supports LyteNyte Grid on the following mobile browsers:
 
 <MobileBrowsers />
 
 ## Usage of Baseline Features
 
-LyteNyte Grid may use any feature classified as _baseline_.
+LyteNyte Grid may use any feature classified as **_baseline_**.
 Baseline features are available across all modern browsers. If
 you are unfamiliar with how baseline status is determined, see this
-[web.dev article](https://web.dev/baseline) for an overview.
+[Baseline article on web.dev](https://web.dev/baseline) for an overview.
 
-Because LyteNyte Grid limits itself to baseline features, it does not
-rely on any browser-specific APIs. However, some internal logic reads
-the user agent to detect the current browser and adjust behavior to smooth over
-browser inconsistencies. These adjustments run entirely inside the grid and require
-no action from developers. Users with nonstandard environments that
-override the user agent should be aware that doing so may affect these internal checks.
+Since LyteNyte Grid limits itself to baseline features, it does not rely on any
+browser-specific APIs. However, some internal logic reads the user agent to
+identify the current browser and adjust behavior to better handle browser inconsistencies.
+These adjustments happen entirely within the grid and require no action from developers.
+
+Users with nonstandard environments that override the user agent
+should be aware that this may impact these internal checks.
 
 ## Next Steps
 
