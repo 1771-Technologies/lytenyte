@@ -113,7 +113,7 @@ const cellStyles = cva("flex items-center bg-gray-50 px-2 text-sm text-gray-800"
       true: "flex items-center border-b border-gray-200 bg-white px-2 text-sm text-gray-800 group-data-[ln-alternate=true]:bg-gray-100 dark:border-gray-100 dark:bg-gray-50 dark:text-gray-600 dark:group-data-[ln-alternate=true]:bg-gray-100/30",
     },
     header: {
-      true: "capitalize bg-gray-100 text-gray-700",
+      true: "flex items-center bg-gray-300 px-2 text-sm capitalize text-gray-900 dark:bg-gray-100 dark:text-gray-700",
     },
   },
 });
