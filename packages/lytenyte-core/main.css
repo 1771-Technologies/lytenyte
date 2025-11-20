@@ -278,6 +278,8 @@
     font-family: var(--lng1771-typeface);
 
     user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
 
     background-color: var(--lng1771-gray-00);
 

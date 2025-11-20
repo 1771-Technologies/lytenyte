@@ -42,7 +42,7 @@ export default function CellSelectionRect() {
   const view = grid.view.useValue();
 
   return (
-    <div className="cell-styles">
+    <div className="cell-styles select-none">
       <div style={{ height: 500 }}>
         <Grid.Root grid={grid}>
           <Grid.Viewport>
