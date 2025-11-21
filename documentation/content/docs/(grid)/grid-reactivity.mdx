@@ -8,11 +8,11 @@ description: LyteNyte Grid is a declarative grid. The state applied
 LyteNyte Grid's state is created using the `Grid.useLyteNyte` hook. This hook
 returns an object compromising of three properties:
 
-- `state`: the declarative state of LyteNyte Grid. The state is a store of attributes that may be
+- `state`: The declarative state of LyteNyte Grid. The state is a store of attributes that may be
   updates, reactively used, or imperatively retrieved.
-- `api`: an imperative set of functions that simplify complex state updates and data retrieval. Think of the
+- `api`: An imperative set of functions that simplify complex state updates and data retrieval. Think of the
   `api` property as a useful set of utilities provided by LyteNyte Grid.
-- `view`: the current set of rows and columns visible. The `view` property is a grid atom, which is the main
+- `view`: The current set of rows and columns visible. The `view` property is a grid atom, which is the main
   type of state that is created by the LyteNyte Grid `useLyteNyte` hook.
 
 ## Grid Atoms
@@ -186,7 +186,35 @@ rowHeightAtom.set(18);
 
 This triggers only one `watch` call. Callbacks run in the microtask queue.
 
-## Why Grid Atoms And Not React State
+## Grid State
+
+As mentioned at the beginning of this guide the `Grid.useLyteNyte` hook is used to create the grid state
+object. The hooks behaves like `useState`, with the initial value that is passed in being considered the
+initial state. This has implications that developers should be aware of. Code such as the following will
+not work as expected, and is considered incorrect from an API usage perspective:
+
+```tsx
+const [rowHeight, setRowHeight] = useState(20);
+
+const grid = Grid.useLyteNyte({ rowHeight })
+
+// Later
+<button onClick={() => setRowHeight(prev => prev + 10)}>Increase Row Height</button>
+```
+
+It might be tempting to think that changing the value of the `rowHeight` state will change the
+`grid.state.rowHeight` value, but this will not work. The grid state is not derived, it is its own
+state. The correct way to adjust the row height is to directly update the grid state. The code sample
+below shows this:
+
+```tsx
+const grid = Grid.useLyteNyte({ rowHeight: 20 })
+
+// Later
+<button onClick={() => grid.state.rowHeight.set(prev => prev + 10)}>Increase Row Height</button>
+```
+
+### Why Grid Atoms And Not React State
 
 LyteNyte Grid is a declarative data grid built for React, so a natural question that arises
 is why the Grid uses its own atom state management solution instead of React's built-in state.

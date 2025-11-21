@@ -3,3 +3,154 @@ title: Headless Component Parts
 description: LyteNyte Grid is a headless data grid. Each part of the grid is split out into
   constituent components that may be put together to form the grid view in a declarative way.
 ---
+
+All the grid components exist under the named `Grid` export from the LyteNyte Grid packages:
+
+<Tabs items={['Core', 'PRO']} className="bg-fd-card">
+
+<Tab value="Core" className="rounded-t-[0px] p-0 [&>div]:rounded-t-[0px]">
+
+```ts
+import { Grid } from "@1771technologies/lytenyte-core";
+```
+
+</Tab>
+
+<Tab value="PRO" className="rounded-t-[0px] p-0 [&>div]:rounded-t-[0px]">
+
+```ts
+import { Grid } from "@1771technologies/lytenyte-pro";
+```
+
+</Tab>
+
+</Tabs>
+
+<Callout>
+
+Only the components necessary to form the grid view are found under the `Grid` export. Other LyteNyte Grid
+parts, such as the row data sources, are separate name exports to allow for tree shaking. The `Grid` components
+are coupled and hence must be used together under a common `Grid.Root` component.
+
+</Callout>
+
+The remainder of this guide will take you through the individual grid components,
+finally leading up to a complete demo example. Hence, this guide is best read top
+to bottom. For a complete full working example,
+see our [Getting Started guide](/docs/intro-getting-started).
+
+## Root
+
+The `Grid.Root` component is the main parent of the LyteNyte Grid components. All the other grid parts should be rendered
+inside of a `Grid.Root` component. Hence our starting point is. The `Grid.Root` component
+accepts a [grid state object](/docs/reference/grid-state/#grid) as a prop. The grid state object is created using the
+`Grid.useLyteNyte` hook. The `Grid.Root` component does not result in any DOM elements being created.
+
+<Tabs items={['Core', 'PRO']} className="bg-fd-card">
+
+<Tab value="Core" className="rounded-t-[0px] p-0 [&>div]:rounded-t-[0px]">
+
+```tsx
+import { Grid } from "@1771technologies/lytenyte-core";
+
+export function MyGrid() {
+  const grid = Grid.useLyteNyte({});
+
+  return <Grid.Root grid={grid} />;
+}
+```
+
+</Tab>
+
+<Tab value="PRO" className="rounded-t-[0px] p-0 [&>div]:rounded-t-[0px]">
+
+```tsx
+import { Grid } from "@1771technologies/lytenyte-pro";
+
+export function MyGrid() {
+  const grid = Grid.useLyteNyte({});
+
+  return <Grid.Root grid={grid} />;
+}
+```
+
+</Tab>
+
+</Tabs>
+
+## Viewport
+
+The `Grid.Viewport` component creates an element that will be the overflow parent for the grid.
+As it's name suggests it is the visible area of the grid that will display rows and columns based
+on the scroll position. The viewport will automatically size to fit its container. See the
+[Responsive Container guide](/docs/grid-container) for full guidance on creating grid containers
+to house the grid.
+
+Add the `Grid.Viewport` to our grid component, we now have:
+
+<Tabs items={['Core', 'PRO']} className="bg-fd-card">
+
+<Tab value="Core" className="rounded-t-[0px] p-0 [&>div]:rounded-t-[0px]">
+
+```tsx
+import { Grid } from "@1771technologies/lytenyte-core";
+
+export function MyGrid() {
+  const grid = Grid.useLyteNyte({});
+
+  return (
+    <Grid.Root grid={grid}>
+      <Grid.Viewport />
+    </Grid.Root>
+  );
+}
+```
+
+</Tab>
+
+<Tab value="PRO" className="rounded-t-[0px] p-0 [&>div]:rounded-t-[0px]">
+
+```tsx
+import { Grid } from "@1771technologies/lytenyte-pro";
+
+export function MyGrid() {
+  const grid = Grid.useLyteNyte({});
+
+  return (
+    <Grid.Root grid={grid}>
+      <Grid.Viewport />
+    </Grid.Root>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+The `Grid.Viewport` component is a `div` element. Hence it accepts all the props a normal `div`
+would including `className` and `style`. The `Grid.Viewport` will have some inline-styles applied
+for grid sizing, which cannot be overridden.
+
+## Header
+
+### Header Row
+
+### Header Cell
+
+## Rows Container
+
+### Rows Top, Center, and Bottom
+
+## Row
+
+### Cell
+
+## Putting It All Together
+
+## Next Steps
+
+- [Responsive Container](/docs/grid-container): Learn about the component parts that make up LyteNyte Grid.
+- [Grid Events](/docs/grid-events): Learn how to handle events fired by LyteNyte Grid and different approaches to event handling.
+- [Keyboard Navigation](/docs/grid-keyboard-navigation): Review keybindings for navigating grid cells.
+- [Grid Atoms and Reactivity](/docs/grid-reactivity): Learn how to manage reactivity and state changes in LyteNyte Grid.
