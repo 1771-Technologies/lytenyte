@@ -471,6 +471,18 @@ importers:
 
   packages/lytenyte-design: {}
 
+  packages/lytenyte-dnd-react:
+    dependencies:
+      '@1771technologies/lytenyte-shared':
+        specifier: workspace:*
+        version: link:../lytenyte-shared
+      react:
+        specifier: ^18.0.0 || ^19.0.0
+        version: 19.1.1
+      react-dom:
+        specifier: ^18.0.0 || ^19.0.0
+        version: 19.1.1(react@19.1.1)
+
   packages/lytenyte-shared: {}
 
   packages/sample-data:

@@ -1,0 +1,50 @@
+{
+  "name": "@1771technologies/lytenyte-dnd-react",
+  "description": "A simple slightly opinionated React DnD library",
+  "license": "Apache-2.0",
+  "keywords": [
+    "react",
+    "dnd"
+  ],
+  "version": "1.0.18",
+  "type": "module",
+  "files": [
+    "dist",
+    "main.css",
+    "LICENSE",
+    "README.md"
+  ],
+  "homepage": "https://1771technologies.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/1771-technologies/lytenyte.git",
+    "directory": "packages/lytenyte-dnd-react"
+  },
+  "bugs": {
+    "url": "https://github.com/1771-technologies/lytenyte/issues"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "require": "./src/index.ts"
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "require": "./dist/index.js"
+      }
+    }
+  },
+  "dependencies": {
+    "@1771technologies/lytenyte-shared": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  }
+}
