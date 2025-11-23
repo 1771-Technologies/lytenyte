@@ -57,7 +57,7 @@ export function useDroppable({
     return {
       over,
       canDrop,
-      eventHandlers: active
+      eventHandlers: !active
         ? {}
         : {
             onDragEnter: (ev: DragEventReact) => {
