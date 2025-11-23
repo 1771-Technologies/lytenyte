@@ -28,7 +28,7 @@ const columns: Column<BankData>[] = [
   { id: "y" },
 ];
 
-export default function UseEventsHook() {
+export default function AddEventListener() {
   const ds = useClientRowDataSource({ data: bankDataSmall });
 
   const grid = Grid.useLyteNyte({
@@ -40,22 +40,29 @@ export default function UseEventsHook() {
     rowSelectionActivator: "single-click",
   });
 
-  const [events, setEvents] = useState(0);
-
   const view = grid.view.useValue();
+
+  const [scrollY, setScrollY] = useState(0);
+  const [scrollX, setScrollX] = useState(0);
 
   return (
     <div className="lng-grid" style={{ display: "flex", flexDirection: "column" }}>
-      <div>Row selection events recorded: {events}</div>
+      <div className="flex gap-2 border-b py-2 text-sm">
+        <div className="bg-ln-primary-30 border-ln-primary-50 text-ln-gray-90 gap-2 rounded border px-2 font-mono">
+          Scroll X: {scrollX}
+        </div>
+        <div className="bg-ln-primary-30 border-ln-primary-50 text-ln-gray-90 gap-2 rounded border px-2 font-mono">
+          Scroll Y: {scrollY}
+        </div>
+      </div>
       <div style={{ height: 500 }}>
-        <Grid.Root
-          grid={grid}
-          onRowSelectBegin={({ preventDefault, selected }) => {
-            if (Number.parseInt(selected) % 2) preventDefault();
-          }}
-          onRowSelectEnd={() => setEvents((prev) => prev + 1)}
-        >
-          <Grid.Viewport>
+        <Grid.Root grid={grid}>
+          <Grid.Viewport
+            onScroll={(ev) => {
+              setScrollX(ev.currentTarget.scrollLeft);
+              setScrollY(ev.currentTarget.scrollTop);
+            }}
+          >
             <Grid.Header>
               {view.header.layout.map((row, i) => {
                 return (

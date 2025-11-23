@@ -4,7 +4,7 @@ import "@1771technologies/lytenyte-pro/grid.css";
 import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
-import { useId } from "react";
+import { useEffect, useId } from "react";
 
 type BankData = (typeof bankDataSmall)[number];
 
@@ -28,7 +28,7 @@ const columns: Column<BankData>[] = [
   { id: "y" },
 ];
 
-export default function AddEventListener() {
+export default function UseEventsHook() {
   const ds = useClientRowDataSource({ data: bankDataSmall });
 
   const grid = Grid.useLyteNyte({
@@ -40,17 +40,18 @@ export default function AddEventListener() {
     rowSelectionActivator: "single-click",
   });
 
+  useEffect(() => {
+    return grid.api.eventAddListener("rowSelectEnd", (p) => {
+      alert(`The row with ID ${p.selected} was ${p.deselect ? "deselected" : "selected"}`);
+    });
+  }, [grid.api]);
+
   const view = grid.view.useValue();
 
   return (
     <div className="lng-grid" style={{ display: "flex", flexDirection: "column" }}>
       <div style={{ height: 500 }}>
-        <Grid.Root
-          grid={grid}
-          onRowSelectEnd={(p) => {
-            alert(`The row with ID ${p.selected} was ${p.deselect ? "deselected" : "selected"}`);
-          }}
-        >
+        <Grid.Root grid={grid}>
           <Grid.Viewport>
             <Grid.Header>
               {view.header.layout.map((row, i) => {
