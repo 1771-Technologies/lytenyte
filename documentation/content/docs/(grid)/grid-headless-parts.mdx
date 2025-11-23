@@ -39,6 +39,63 @@ finally leading up to a complete demo example. Hence, this guide is best read to
 to bottom. For a complete full working example,
 see our [Getting Started guide](/docs/intro-getting-started).
 
+## Grid Anatomy Overview
+
+The following sections will explain the individual parts of the grid component anatomy, and will finish
+off with a full working example. This section provides a high-level view of the structure:
+
+<Tabs items={['Core', 'PRO']} className="bg-fd-card">
+
+<Tab value="Core" className="rounded-t-[0px] p-0 [&>div]:rounded-t-[0px]">
+
+```tsx
+import { Grid } from "@1771technologies/lytenyte-core";
+
+<Grid.Root>
+  <Grid.Viewport>
+    <Grid.Header>
+      {headerRows.map((row, i) => {
+        return (
+          <Grid.HeaderRow key={i} headerRowIndex={i}>
+            {row.map((c) => {
+              if (c.kind === "group") return <Grid.HeaderGroupCell />;
+              return <Grid.HeaderCell />;
+            })}
+          </Grid.HeaderRow>
+        );
+      })}
+    </Grid.Header>
+
+    <Grid.RowsContainer>
+      <Grid.RowsCenter>
+        {rows.map((row) => {
+          if (row.kind === "full-width") return <Grid.RowFullWidth />;
+          return (
+            <Grid.Row row={row} key={row.id}>
+              {row.cells.map((c) => (
+                <Grid.Cell />
+              ))}
+            </Grid.Row>
+          );
+        })}
+      </Grid.RowsCenter>
+    </Grid.RowsContainer>
+  </Grid.Viewport>
+</Grid.Root>;
+```
+
+</Tab>
+
+<Tab value="PRO" className="rounded-t-[0px] p-0 [&>div]:rounded-t-[0px]">
+
+```ts
+import { Grid } from "@1771technologies/lytenyte-pro";
+```
+
+</Tab>
+
+</Tabs>
+
 ## Root
 
 The `Grid.Root` component is the main parent of the LyteNyte Grid components. All the other grid parts should be rendered
@@ -134,19 +191,647 @@ for grid sizing, which cannot be overridden.
 
 ## Header
 
+LyteNyte Grid has a single header container, which is rendered by the `Grid.Header` component. The header
+component is where all the other header parts are rendered. The header will remain fixed at the top of the
+viewport regardless of the scroll position. The width of the header is determine by the total width of the
+columns in the grid. The height is determined by the `headerHeight`, `headerGroupHeight`
+and the `floatingRowHeight` on the [grid state object](/docs/reference/grid-state#gridstate).
+
+Building on the code so far, the `Grid.Header` component should be rendered within the viewport:
+
+<Tabs items={['Core', 'PRO']} className="bg-fd-card">
+
+<Tab value="Core" className="rounded-t-[0px] p-0 [&>div]:rounded-t-[0px]">
+
+```tsx
+import { Grid } from "@1771technologies/lytenyte-core";
+
+export function MyGrid() {
+  const grid = Grid.useLyteNyte({});
+
+  return (
+    <Grid.Root grid={grid}>
+      <Grid.Viewport>
+        <Grid.Header />
+      </Grid.Viewport>
+    </Grid.Root>
+  );
+}
+```
+
+</Tab>
+
+<Tab value="PRO" className="rounded-t-[0px] p-0 [&>div]:rounded-t-[0px]">
+
+```tsx
+import { Grid } from "@1771technologies/lytenyte-pro";
+
+export function MyGrid() {
+  const grid = Grid.useLyteNyte({});
+
+  return (
+    <Grid.Root grid={grid}>
+      <Grid.Viewport>
+        <Grid.Header />
+      </Grid.Viewport>
+    </Grid.Root>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+Like the `Grid.Viewport`, the `Grid.Header` is a `div` element, and any property that may be passed to a `div`
+element may be passed to the `Grid.Header` component.
+
 ### Header Row
+
+The `Grid.HeaderRow` must be rendered within the `Grid.Header` component. There will always be at least one
+header row component, however, depending on the column definitions provided to the grid, there may be more
+than one level. The total number of header rows is determined by the maximum column group depth plus 1 if the
+floating row is enabled, plus 1 for the column header row itself.
+
+The `Grid.useLyteNyte` hooks returns a grid view [atom](/docs/grid-reactivity). The grid view atom may be used
+to get the layout state for the current view. Part of this layout state is the header layout state, with an array
+of header rows. For each item in the header row state, a single `Grid.HeaderRow` should be provided. The code below
+shows all of this in action:
+
+<Tabs items={['Core', 'PRO']} className="bg-fd-card">
+
+<Tab value="Core" className="rounded-t-[0px] p-0 [&>div]:rounded-t-[0px]">
+
+```tsx
+import { Grid } from "@1771technologies/lytenyte-core";
+
+export function MyGrid() {
+  const grid = Grid.useLyteNyte({});
+
+  const view = grid.view.useValue();
+
+  return (
+    <Grid.Root grid={grid}>
+      <Grid.Viewport>
+        <Grid.Header>
+          {view.header.layout.map((row, i) => {
+            return <Grid.HeaderRow key={i} headerRowIndex={i} />;
+          })}
+        </Grid.Header>
+      </Grid.Viewport>
+    </Grid.Root>
+  );
+}
+```
+
+</Tab>
+
+<Tab value="PRO" className="rounded-t-[0px] p-0 [&>div]:rounded-t-[0px]">
+
+```tsx
+import { Grid } from "@1771technologies/lytenyte-pro";
+
+export function MyGrid() {
+  const grid = Grid.useLyteNyte({});
+
+  const view = grid.view.useValue();
+
+  return (
+    <Grid.Root grid={grid}>
+      <Grid.Viewport>
+        <Grid.Header>
+          {view.header.layout.map((row, i) => {
+            return <Grid.HeaderRow key={i} headerRowIndex={i} />;
+          })}
+        </Grid.Header>
+      </Grid.Viewport>
+    </Grid.Root>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+In the code example, the `view.header.layout` contains the array of header rows. Notice how we
+pass the `<Grid.HeaderRow />` component the current header index. This is required by LyteNyte Grid
+for correctly positioning the header elements. The `key` is also the index of the row. Header rows
+never reorder, so using an integer key is completely fine.
 
 ### Header Cell
 
+Within the `<Grid.HeaderRow/>` there will be the header cells. These are the cells that represent the
+column header. There are two types of header cell components:
+
+- `Grid.HeaderGroupCell`: Represents a column group header cell.
+- `Grid.HeaderCell`: Represents a column header cell or a floating row cell.
+
+You can determine what type of cell is being rendered by the header row using the `kind`
+property on the cell. If the `kind` is `"group"`, then the cell that should be rendered
+is a `Grid.HeaderGroupCell`. In code this all becomes:
+
+<Tabs items={['Core', 'PRO']} className="bg-fd-card">
+
+<Tab value="Core" className="rounded-t-[0px] p-0 [&>div]:rounded-t-[0px]">
+
+```tsx
+import { Grid } from "@1771technologies/lytenyte-core";
+
+export function MyGrid() {
+  const grid = Grid.useLyteNyte({});
+
+  const view = grid.view.useValue();
+
+  return (
+    <Grid.Root grid={grid}>
+      <Grid.Viewport>
+        <Grid.Header>
+          {view.header.layout.map((row, i) => {
+            return (
+              <Grid.HeaderRow key={i} headerRowIndex={i}>
+                {row.map((c) => {
+                  if (c.kind === "group") {
+                    return <Grid.HeaderGroupCell key={c.idOccurrence} cell={c} />;
+                  }
+
+                  return <Grid.HeaderCell key={c.id} cell={c} />;
+                })}
+              </Grid.HeaderRow>
+            );
+          })}
+        </Grid.Header>
+      </Grid.Viewport>
+    </Grid.Root>
+  );
+}
+```
+
+</Tab>
+
+<Tab value="PRO" className="rounded-t-[0px] p-0 [&>div]:rounded-t-[0px]">
+
+```tsx
+import { Grid } from "@1771technologies/lytenyte-pro";
+
+export function MyGrid() {
+  const grid = Grid.useLyteNyte({});
+
+  const view = grid.view.useValue();
+
+  return (
+    <Grid.Root grid={grid}>
+      <Grid.Viewport>
+        <Grid.Header>
+          {view.header.layout.map((row, i) => {
+            return (
+              <Grid.HeaderRow key={i} headerRowIndex={i}>
+                {row.map((c) => {
+                  if (c.kind === "group") {
+                    return <Grid.HeaderGroupCell key={c.idOccurrence} cell={c} />;
+                  }
+
+                  return <Grid.HeaderCell key={c.id} cell={c} />;
+                })}
+              </Grid.HeaderRow>
+            );
+          })}
+        </Grid.Header>
+      </Grid.Viewport>
+    </Grid.Root>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+There are a few key takeaways here. Notice that the `view.header.layout` is an array of header cells.
+Depending on the cell, we choose which type of header cell to render. Finally notice that for the
+`Grid.HeaderGroupCell` the `key` property is the `c.idOccurrence` and not the `c.id` value. The same
+column group may be split across the header, hence the same `c.id` will be repeated on elements. React
+requires a unique key for each element when rendering a list, which in this case will be the `c.idOccurrence`
+value.
+
+The `Grid.HeaderGroupCell` will render it's `children` prop. Hence for custom header group content,
+simply provide the `Grid.HeaderGroupCell` with the content that should be rendered, for example:
+
+```tsx
+<Grid.HeaderGroupCell key={c.idOccurrence} cell={c} className="group flex items-center gap-2 px-2">
+  <div>{c.groupPath.at(-1)}</div>
+  <button
+    className="text-ln-gray-90 flex items-center justify-center"
+    onClick={() => grid.api.columnToggleGroup(c.id)}
+  >
+    <ChevronLeftIcon className="hidden group-data-[ln-collapsed=false]:block" />
+    <ChevronRightIcon className="block group-data-[ln-collapsed=false]:hidden" />
+  </button>
+</Grid.HeaderGroupCell>
+```
+
+For the full properties available on the header group cell, see the
+[`HeaderGroupCellLayout`](/docs/reference/grid-view#headergroupcelllayout) API reference.
+
+In contrast to the `Grid.HeaderGroupCell`, the `Grid.HeaderCell` does not accept a `children` prop.
+Instead the content is determined by the `cellRenderer` property on the column the cell belongs to
+or the `floatingCellRenderer` of the column if the header cell is for the floating row. See the
+[Column Header Renderer](/docs/column-header-renderer) and
+[Column Floating Header](/docs/column-floating-header) guides for more details.
+
 ## Rows Container
+
+Use the `Grid.RowsContainer` component to render all the grid rows. The `Grid.RowsContainer` is
+similar to the `Grid.Header` component. It it where all the rows in the grid are rendered. Furthermore,
+like the `Grid.Header` component it is is normal `div` element and accepts all the properties that a
+`div` element accepts. Updating our code sample so far, we now have:
+
+<Tabs items={['Core', 'PRO']} className="bg-fd-card">
+
+<Tab value="Core" className="rounded-t-[0px] p-0 [&>div]:rounded-t-[0px]">
+
+```tsx
+import { Grid } from "@1771technologies/lytenyte-core";
+
+export function MyGrid() {
+  const grid = Grid.useLyteNyte({});
+
+  const view = grid.view.useValue();
+
+  return (
+    <Grid.Root grid={grid}>
+      <Grid.Viewport>
+        <Grid.Header>
+          {view.header.layout.map((row, i) => {
+            return (
+              <Grid.HeaderRow key={i} headerRowIndex={i}>
+                {row.map((c) => {
+                  if (c.kind === "group") {
+                    return <Grid.HeaderGroupCell key={c.idOccurrence} cell={c} />;
+                  }
+
+                  return <Grid.HeaderCell key={c.id} cell={c} />;
+                })}
+              </Grid.HeaderRow>
+            );
+          })}
+        </Grid.Header>
+
+        <Grid.RowsContainer />
+      </Grid.Viewport>
+    </Grid.Root>
+  );
+}
+```
+
+</Tab>
+
+<Tab value="PRO" className="rounded-t-[0px] p-0 [&>div]:rounded-t-[0px]">
+
+```tsx
+import { Grid } from "@1771technologies/lytenyte-pro";
+
+export function MyGrid() {
+  const grid = Grid.useLyteNyte({});
+
+  const view = grid.view.useValue();
+
+  return (
+    <Grid.Root grid={grid}>
+      <Grid.Viewport>
+        <Grid.Header>
+          {view.header.layout.map((row, i) => {
+            return (
+              <Grid.HeaderRow key={i} headerRowIndex={i}>
+                {row.map((c) => {
+                  if (c.kind === "group") {
+                    return <Grid.HeaderGroupCell key={c.idOccurrence} cell={c} />;
+                  }
+
+                  return <Grid.HeaderCell key={c.id} cell={c} />;
+                })}
+              </Grid.HeaderRow>
+            );
+          })}
+        </Grid.Header>
+
+        <Grid.RowsContainer />
+      </Grid.Viewport>
+    </Grid.Root>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
 
 ### Rows Top, Center, and Bottom
 
+The `Grid.RowsContainer` is where all the rows of LyteNyte Grid are rendered. The rows are further
+split into three sections, top, center, and bottom. The top and bottom sections is where the rows that
+are pinned top and bottom respectively will be rendered. The center section is where scrollable rows are
+rendered. This leads to the following updated structure:
+
+<Tabs items={['Core', 'PRO']} className="bg-fd-card">
+
+<Tab value="Core" className="rounded-t-[0px] p-0 [&>div]:rounded-t-[0px]">
+
+```tsx
+import { Grid } from "@1771technologies/lytenyte-core";
+
+export function MyGrid() {
+  const grid = Grid.useLyteNyte({});
+
+  const view = grid.view.useValue();
+
+  return (
+    <Grid.Root grid={grid}>
+      <Grid.Viewport>
+        <Grid.Header>
+          {view.header.layout.map((row, i) => {
+            return (
+              <Grid.HeaderRow key={i} headerRowIndex={i}>
+                {row.map((c) => {
+                  if (c.kind === "group") {
+                    return <Grid.HeaderGroupCell key={c.idOccurrence} cell={c} />;
+                  }
+
+                  return <Grid.HeaderCell key={c.id} cell={c} />;
+                })}
+              </Grid.HeaderRow>
+            );
+          })}
+        </Grid.Header>
+
+        <Grid.RowsContainer>
+          <Grid.RowsTop />
+          <Grid.RowsCenter />
+          <Grid.RowsBottom />
+        </Grid.RowsContainer>
+      </Grid.Viewport>
+    </Grid.Root>
+  );
+}
+```
+
+</Tab>
+
+<Tab value="PRO" className="rounded-t-[0px] p-0 [&>div]:rounded-t-[0px]">
+
+```tsx
+import { Grid } from "@1771technologies/lytenyte-pro";
+
+export function MyGrid() {
+  const grid = Grid.useLyteNyte({});
+
+  const view = grid.view.useValue();
+
+  return (
+    <Grid.Root grid={grid}>
+      <Grid.Viewport>
+        <Grid.Header>
+          {view.header.layout.map((row, i) => {
+            return (
+              <Grid.HeaderRow key={i} headerRowIndex={i}>
+                {row.map((c) => {
+                  if (c.kind === "group") {
+                    return <Grid.HeaderGroupCell key={c.idOccurrence} cell={c} />;
+                  }
+
+                  return <Grid.HeaderCell key={c.id} cell={c} />;
+                })}
+              </Grid.HeaderRow>
+            );
+          })}
+        </Grid.Header>
+
+        <Grid.RowsContainer>
+          <Grid.RowsTop />
+          <Grid.RowsCenter />
+          <Grid.RowsBottom />
+        </Grid.RowsContainer>
+      </Grid.Viewport>
+    </Grid.Root>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+Each of the row section components are optional, but you will almost always render the `Grid.RowsCenter`
+component, and only use the `Grid.RowsTop` and `Grid.RowsBottom` section when you grid configuration
+will make use of pinned rows.
+
 ## Row
+
+There are two types of grid rows:
+
+- A normal grid row, which has one cell per column. Rendered using the `Grid.Row` component.
+- A full width row, which fill render a single cell that spans the width of the viewport.
+  Rendered using the `Grid.RowFullWidth`.
+
+Earlier in this tutorial we made use of the grid's `view` state to determine that layout of the
+header component. The rows in LyteNyte Grid are similar, except the row sections are divided into
+top, center, bottom. To access the layout of each section we use the `view.rows` state. For example,
+to get the layout of the center rows, we use the `view.rows.center` property. Zooming in a little and
+translating this code, for the center section we would have:
+
+```tsx
+<Grid.RowsCenter>
+  {view.rows.center.map((row) => {
+    if (row.kind === "full-width") return <Grid.RowFullWidth key={row.id} row={row} />;
+
+    return <Grid.Row row={row} key={row.id} />;
+  })}
+</Grid.RowsCenter>
+```
+
+For each section (top, center, bottom) we would have to repeat the above code. However, we can
+make a `RowSection` component and simply provide it layout for the given section. The code below
+does this:
+
+<Tabs items={['Core', 'PRO']} className="bg-fd-card">
+
+<Tab value="Core" className="rounded-t-[0px] p-0 [&>div]:rounded-t-[0px]">
+
+```tsx
+import { Grid } from "@1771technologies/lytenyte-core";
+import type { RowLayout } from "@1771technologies/lytenyte-core/types";
+
+export function MyGrid() {
+  const grid = Grid.useLyteNyte({});
+
+  const view = grid.view.useValue();
+
+  return (
+    <Grid.Root grid={grid}>
+      <Grid.Viewport>
+        <Grid.Header>
+          {view.header.layout.map((row, i) => {
+            return (
+              <Grid.HeaderRow key={i} headerRowIndex={i}>
+                {row.map((c) => {
+                  if (c.kind === "group") {
+                    return <Grid.HeaderGroupCell key={c.idOccurrence} cell={c} />;
+                  }
+
+                  return <Grid.HeaderCell key={c.id} cell={c} />;
+                })}
+              </Grid.HeaderRow>
+            );
+          })}
+        </Grid.Header>
+
+        <Grid.RowsContainer>
+          <RowSection rows={view.rows.top} section="top" />
+          <RowSection rows={view.rows.top} section="center" />
+          <RowSection rows={view.rows.top} section="bottom" />
+        </Grid.RowsContainer>
+      </Grid.Viewport>
+    </Grid.Root>
+  );
+}
+
+function RowSection<D = any>({
+  section,
+  rows,
+}: {
+  rows: RowLayout<D>[];
+  section: "top" | "center" | "bottom";
+}) {
+  const Section =
+    section === "top" ? Grid.RowsTop : section === "bottom" ? Grid.RowsBottom : Grid.RowsCenter;
+
+  return (
+    <Section>
+      {rows.map((row) => {
+        if (row.kind === "full-width") return <Grid.RowFullWidth key={row.id} row={row} />;
+
+        return <Grid.Row row={row} key={row.id} />;
+      })}
+    </Section>
+  );
+}
+```
+
+</Tab>
+
+<Tab value="PRO" className="rounded-t-[0px] p-0 [&>div]:rounded-t-[0px]">
+
+```tsx
+import { Grid } from "@1771technologies/lytenyte-pro";
+import type { RowLayout } from "@1771technologies/lytenyte-pro/types";
+
+export function MyGrid() {
+  const grid = Grid.useLyteNyte({});
+
+  const view = grid.view.useValue();
+
+  return (
+    <Grid.Root grid={grid}>
+      <Grid.Viewport>
+        <Grid.Header>
+          {view.header.layout.map((row, i) => {
+            return (
+              <Grid.HeaderRow key={i} headerRowIndex={i}>
+                {row.map((c) => {
+                  if (c.kind === "group") {
+                    return <Grid.HeaderGroupCell key={c.idOccurrence} cell={c} />;
+                  }
+
+                  return <Grid.HeaderCell key={c.id} cell={c} />;
+                })}
+              </Grid.HeaderRow>
+            );
+          })}
+        </Grid.Header>
+
+        <Grid.RowsContainer>
+          <RowSection rows={view.rows.top} section="top" />
+          <RowSection rows={view.rows.top} section="center" />
+          <RowSection rows={view.rows.top} section="bottom" />
+        </Grid.RowsContainer>
+      </Grid.Viewport>
+    </Grid.Root>
+  );
+}
+
+function RowSection<D = any>({
+  section,
+  rows,
+}: {
+  rows: RowLayout<D>[];
+  section: "top" | "center" | "bottom";
+}) {
+  const Section =
+    section === "top" ? Grid.RowsTop : section === "bottom" ? Grid.RowsBottom : Grid.RowsCenter;
+
+  return (
+    <Section>
+      {rows.map((row) => {
+        if (row.kind === "full-width") return <Grid.RowFullWidth key={row.id} row={row} />;
+
+        return <Grid.Row row={row} key={row.id} />;
+      })}
+    </Section>
+  );
+}
+```
+
+</Tab>
+
+</Tabs>
+
+The `Grid.RowFullWidth` component will render a full width row using the configured `fullWidthRenderer`.
+For more on full width rows see our dedicated [Row Full Width guide](/docs/row-full-width)
 
 ### Cell
 
+The the row is a row with cells (which is all rows except full width rows), then the `cells` property
+on the row will be an array of cells that can be rendered using the `Grid.Cell` component. Updating
+the `RowSection` component defined earlier we now have the following definition:
+
+```tsx
+function RowSection<D = any>({
+  section,
+  rows,
+}: {
+  rows: RowLayout<D>[];
+  section: "top" | "center" | "bottom";
+}) {
+  const Section =
+    section === "top" ? Grid.RowsTop : section === "bottom" ? Grid.RowsBottom : Grid.RowsCenter;
+
+  return (
+    <Section>
+      {rows.map((row) => {
+        if (row.kind === "full-width") return <Grid.RowFullWidth key={row.id} row={row} />;
+        return (
+          <Grid.Row row={row} key={row.id}>
+            {row.cells.map((c) => {
+              return <Grid.Cell key={c.id} cell={c} />;
+            })}
+          </Grid.Row>
+        );
+      })}
+    </Section>
+  );
+}
+```
+
+Notice that the `Grid.Row` now has an array of cells as children.
+
 ## Putting It All Together
+
+Everything to this point has been putting the grid together. The example below shows a full working
+example that puts together all the parts covered in the previous sections. The demo has rows that are
+pinned top and bottom, column groups and the full row structure. Additionally some styles have been applied
+using Tailwind CSS.
+
+!demo:Headless Component Parts="./demos/grid-headless-components"
 
 ## Next Steps
 
