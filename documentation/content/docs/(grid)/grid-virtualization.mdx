@@ -1,14 +1,91 @@
 ---
-title: Row and Column Virtualization
-description:
-  LyteNyte Grid virtualizes rows and columns. This guide will explain what virtualization is,
-  how it improves performance and the specific gotchas that developers need to be aware of.
+title: Row & Column Virtualization
+description: LyteNyte Grid virtualizes rows and columns. This guide explains what virtualization is,
+  how it improves performance, and the specific gotchas developers must consider.
 ---
 
 ## What Is Virtualization
 
+Virtualization determines which elements are visible in the viewport and renders only those elements.
+The grid does not render elements outside the viewport. Whenever the viewport changes, such as during
+scrolling or resizing, the grid recalculates the visible range and updates the rendered elements.
+
+In this guide, virtualization refers to UI rendering and not to hardware or OS-level virtualization.
+Despite the similarity in naming, these are distinct concepts with no overlap.
+
+LyteNyte Grid virtualizes rows and columns with a buffer of additional items on each side of the viewport.
+Virtualization serves as the grid's primary performance optimization, and LyteNyte Grid enables it by default.
+
+To see virtualization in action, inspect the grid below using your browser's developer tools. As you scroll,
+you will see rows mount and unmount. That behavior shows virtualization at work.
+
+!demo:Virtualized Grid="../(introduction)/demos/getting-started"
+
+You can implement virtualization in several ways. LyteNyte Grid supports advanced scenarios such as variable
+row heights, row detail areas, cell and row spans, and pinned rows and columns. To learn more about general
+virtualization techniques, see this [List Virtualization](https://www.patterns.dev/vanilla/virtual-lists/)
+guide on [patterns.dev](https://www.patterns.dev/).
+
 ## Virtualization Configuration
+
+You can tweak or disable the grid's virtualization behavior. LyteNyte Grid renders all rows and columns
+visible in the viewport plus a small number outside the viewport. These out-of-view elements form the
+grid's “overscan.” You can adjust overscan using four grid properties:
+
+- `rowOverscanTop`
+- `rowOverscanBottom`
+- `colOverscanStart`
+- `colOverscanEnd`
+
+Because overscan affects only out-of-view content, changes may not appear obvious. To confirm overscan
+values, inspect the DOM and count the rendered rows outside the viewport. The example below shows this
+in practice:
+
+!demo:Row Overscan Configuration="./demos/grid-overscan"
+
+In this example, the grid renders 30 extra rows above and below the viewport. The configuration looks like:
+
+```tsx
+const grid = Grid.useLyteNyte({
+  // Other properties
+  rowOverscanTop: 30,
+  rowOverscanBottom: 30,
+});
+```
+
+### Disabling Virtualization
+
+If your dataset is small (fewer than ~100 rows), you may disable virtualization entirely. Use the
+`virtualizeRows` and `virtualizeCols` properties to turn virtualization off.
+
+!demo:Disabling Virtualization="./demos/grid-no-virtualization"
+
+In the demo, the dataset includes only 40 rows and a limited number of columns. Rendering everything at once
+reduces performance for larger datasets, which holds true for all data grids, not just LyteNyte Grid.
+
+You may need to disable virtualization when printing the grid. Because virtualization removes out-of-view
+rows and columns from the DOM, printed output includes only the rendered content. Turning off virtualization
+ensures the full dataset appears in the printed result.
 
 ## Virtualization Considerations
 
+Virtualization significantly improves performance, but it introduces several important considerations.
+
+First, because the grid mounts and unmounts row and cell components as they enter and exit the viewport,
+React state stored inside a cell component disappears when that component unmounts. Persist any required
+state higher in the component tree.
+
+Second, virtualized rows and columns do not exist in the DOM. Browser-level “find in page” cannot match
+cells outside the viewport. Any DOM queries also return only rendered elements.
+
+Finally, rapid scrolling, such as dragging the scrollbar to the bottom, may reveal a momentary background flash
+before new content appears. This effect occurs because scrolling runs on a separate thread in modern browsers.
+The scroll position updates before the main thread paints the new content. Some grids work around this by
+translating content on the main thread, but that approach causes frame drops and reduces overall application
+performance.
+
 ## Next Steps
+
+- [Headless Component Parts](/docs/grid-headless-parts): Learn about the component parts that make up LyteNyte Grid.
+- [Grid Events](/docs/grid-events): Learn how to handle events fired by LyteNyte Grid and different approaches to event handling.
+- [Grid Atoms and Reactivity](/docs/grid-reactivity): Learn how to manage reactivity and state changes in LyteNyte Grid.

@@ -6,20 +6,19 @@ description: LyteNyte Grid fires events in response to specific user interaction
 
 ## Handling Events
 
-LyteNyte Grid has its own set of events that fire on specific user interactions. This guide
-will describe how to listen and respond to these events but it will not cover every single
-event the grid may fire. Refer to the [Events API reference](/docs/reference/events) for
-specifics on individual events.
+LyteNyte Grid defines its own events that fire on specific user interactions. This guide
+explains how to listen for and handle these events. It does not cover every event the grid
+can fire. Refer to the [Events API reference](/docs/reference/events) for details on
+individual events.
 
 ### Listening to Events
 
-The simplest way to listen to event is to add an event listen to the `Grid.Root` component.
-For example, the demo below will alert the user every time a row is selected.
+The simplest way to listen to events is to add an event listener to the `Grid.Root` component.
+For example, the demo below alerts the user every time a row is selected.
 
 !demo:Row Selection Event="./demos/grid-add-event-listener"
 
-The code for handling the event is also quite straight forward and this approach should feel
-very familiar to React developers:
+The code for handling the event is straightforward and should feel familiar to React developers:
 
 ```tsx
 <Grid.Root
@@ -32,25 +31,28 @@ very familiar to React developers:
 
 ### Cancelling LyteNyte Events
 
-In the code above, notice that the row selection event is named `onRowSelectEnd`. This is because many of
-LyteNyte Grid's events are split into two or more parts (as some actions may be asynchronous). Using
-row selection as an example, there is an `onRowSelectBegin` event that is fired when the user
-tries to a select a row. The event object passed to the callback has a `preventDefault` method. Calling this
-method will stop the row selection from happening, and the `onRowSelectEnd` event will never fire.
+In the code above, the row selection event is named `onRowSelectEnd`. Many LyteNyte Grid events
+are split into two or more phases because some actions may be asynchronous. For row selection,
+LyteNyte Grid also fires an `onRowSelectBegin` event when the user attempts to select a row.
+
+The event object passed to `onRowSelectBegin` includes a `preventDefault` method. Call this method
+to cancel the selection. If you call `preventDefault`, LyteNyte Grid does not change the selection
+state and does not fire the `onRowSelectEnd` event.
 
 ### Imperatively Adding Event Listeners
 
-LyteNyte Grid's headless architecture allows developers to move the grid state higher up the React component
-tree, and in a different place from where the `Grid.Root` component is declared. Rather that prop-drilling an
-event handler, LyteNyte Grid's API allows for events to be Imperatively added. Events added in this way must
-be cleaned up but they provide a nice way to add event listeners when the rendered grid is in a separate
-component from the place where state is created. The example below demonstrates Imperatively adding an
-event:
+LyteNyte Grid's headless architecture allows you to create grid state higher in the React component
+tree, separate from where you render `Grid.Root`. Instead of prop-drilling event handlers down to
+`Grid.Root`, you can add listeners imperatively through the grid API.
+
+Imperative listeners must be cleaned up, but they provide a convenient way to subscribe to events
+when the component that creates state is different from the component that renders the grid. The
+example below demonstrates imperatively adding an event listener:
 
 !demo:Imperative Event Listener="./demos/grid-imperative-event"
 
-The behavior of the event listener is the same as the previous demo (every time a row is selected the user is
-alerted), however the code to do so happens in a `useEffect`:
+This example behaves the same as the previous one (it alerts the user whenever a row is selected),
+but it attaches the listener inside a `useEffect`:
 
 ```tsx
 useEffect(() => {
@@ -60,32 +62,37 @@ useEffect(() => {
 }, [grid.api]);
 ```
 
-Notice the result of the `eventAddListener` method is returned. This value is a function that will remove the
-event listener from the grid when the effect's clean up runs. In general the effect pattern above is what
-should always be used when adding event listeners Imperatively.
+This pattern returns the cleanup function from `eventAddListener` as the effect's cleanup. That
+function removes the event listener when the effect is disposed. In general, use this pattern
+whenever you add grid event listeners imperatively.
 
 ### Differences From DOM Events
 
-LyteNyte Grid's events are not the same as DOM events and do not behave the same. There is
-no bubbling of events and the event object is specific to the event fired. Furthermore, the
-event listeners can only be added through the grid API's `eventAddListener` or by adding
-a listener to the `Grid.Root` component. For the most part these differences can safely be
-ignored, but the difference is noted here to avoid confusion.
+LyteNyte Grid events are not DOM events and behave differently. They do not bubble, and the event
+object shape is specific to each grid event. You can only attach listeners through the grid API's
+`eventAddListener` method or via event props on `Grid.Root`.
+
+<Callout>
+
+For most use cases, you can ignore these differences and treat grid events as a separate,
+grid-specific event system. This note exists to prevent confusion with DOM event behavior.
+
+</Callout>
 
 ## Grid Component Event Listeners
 
-If you review the list of events LyteNyte Grid fires in the [API reference](/docs/reference/events)
-you will notice that all the events are specific to some grid interaction. There are not cell clicked
-events, or grid scroll events. This is due to LyteNyte Grid's headless component architecture. The
-grid components accept normal DOM event listeners, that can be used for all the standard interaction
-you'd expect. There is no need to learn a separate event system for the type of interactions browsers
-already define. For example, a scroll event listener may be added to the `Grid.Viewport` component to
-track the current scroll position. The example below demonstrates this:
+If you review the list of events in the
+[API reference](/docs/reference/events), you will notice that all of them are tied to grid-specific
+interactions. LyteNyte Grid does not define events such as cell-clicked events or scroll events.
+This design follows the headless component architecture.
+
+Grid components accept normal DOM event listeners, which you can use for common interactions.
+You do not need to learn a custom system for these cases. For example, you can add a scroll
+listener to the `Grid.Viewport` component to track the current scroll position:
 
 !demo:Listen To Scroll Event="./demos/grid-dom-events"
 
-The code for the scroll listeners is the same code that all normal React elements accept. Your existing
-React event knowledge perfectly translates to LyteNyte Grid's components.
+The scroll listener uses the same pattern as any other React DOM event:
 
 ```tsx
 <Grid.Viewport
@@ -96,9 +103,10 @@ React event knowledge perfectly translates to LyteNyte Grid's components.
 />
 ```
 
+Your existing React event handling experience translates directly to LyteNyte Grid components.
+
 ## Next Step
 
 - [Headless Component Parts](/docs/grid-headless-parts): Learn about the component parts that make up LyteNyte Grid.
 - [Row and Column Virtualization](/docs/grid-virtualization): Learn how LyteNyte Grid enables performance at scale with row and column virtualization.
-- [Keyboard Navigation](/docs/grid-keyboard-navigation): Review keybindings for navigating grid cells.
 - [Grid Atoms and Reactivity](/docs/grid-reactivity): Learn how to manage reactivity and state changes in LyteNyte Grid.

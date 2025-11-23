@@ -5,8 +5,7 @@
     "grid-reactivity",
     "grid-headless-parts",
     "grid-events",
-    "grid-virtualization",
-    "grid-keyboard-navigation"
+    "grid-virtualization"
   ],
   "defaultOpen": true
 }

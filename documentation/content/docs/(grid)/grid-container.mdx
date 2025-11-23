@@ -18,11 +18,20 @@ Do not include sibling elements.
 
 ## Pixel Value
 
-Fixed pixel values for `height` and `width` offer the simplest sizing option but
+Fixed pixel values for `height` and `width` provide the simplest sizing option but
 limit flexibility. In most cases, set a fixed `height` and allow the
 width to adjust based on the parent container. Set a fixed width only when necessary.
 
 !demo:Pixel Height and Width="./demos/pixel-height-container"
+
+The height of the grid viewport comes from the `div` that contains it, which uses
+the following code:
+
+```tsx
+<div className="lng-grid" style={{ height: 500 }}>
+  {/* Grid components */}
+</div>
+```
 
 ## Flex Height Containers
 
@@ -34,6 +43,18 @@ The grid then fills the space without overflow.
 
 !demo:Flex Height Container="./demos/flex-height-container"
 
+The flex height container uses a series of nested `div`s, as shown below:
+
+```tsx
+<div className="lng-grid" style={{ height: 500, display: "flex", flexDirection: "column" }}>
+  <div style={{ flex: "1", position: "relative" }}>
+    <div style={{ position: "absolute", width: "100%", height: "100%" }}>
+      {/* Grid components */}
+    </div>
+  </div>
+</div>
+```
+
 ## Grid Height Containers
 
 CSS Grid (not to be confused with LyteNyte Grid) provides a flexible layout system.
@@ -42,6 +63,14 @@ area while remaining properly contained.
 
 !demo:Grid Height Container="./demos/grid-height-container"
 
+The grid height container uses the `grid-template-rows` property, as shown below:
+
+```tsx
+<div className="lng-grid" style={{ display: "grid", gridTemplateRows: "500px" }}>
+  {/* Grid components */}
+</div>
+```
+
 Other CSS sizing techniques also work well with LyteNyte Grid.
 Choose the approach that best fits your layout requirements.
 
@@ -49,5 +78,4 @@ Choose the approach that best fits your layout requirements.
 
 - [Headless Component Parts](/docs/grid-headless-parts): Learn about the component parts that make up LyteNyte Grid.
 - [Grid Events](/docs/grid-events): Learn how to handle events fired by LyteNyte Grid and different approaches to event handling.
-- [Keyboard Navigation](/docs/grid-keyboard-navigation): Review keybindings for navigating grid cells.
 - [Grid Atoms and Reactivity](/docs/grid-reactivity): Learn how to manage reactivity and state changes in LyteNyte Grid.

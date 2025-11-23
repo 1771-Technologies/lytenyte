@@ -3,17 +3,18 @@
 import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import type { Column, Grid as GridType } from "@1771technologies/lytenyte-pro/types";
 import { companiesWithPricePerf } from "@1771technologies/grid-sample-data/companies-with-price-performance";
-import { useId, useMemo } from "react";
+import { useEffect, useId, useMemo } from "react";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import { MarkerCell, NumberCell, PriceCell } from "./components";
 
 type RowData = (typeof companiesWithPricePerf)[number];
 
 const columns: Column<RowData>[] = [
-  { id: "Company" },
-  { id: "Founded" },
-  { id: "Employee Cnt" },
-  { id: "Country" },
-  { id: "Price" },
+  { id: "Company", widthFlex: 2 },
+  { id: "Country", widthFlex: 2 },
+  { id: "Founded", type: "number" },
+  { id: "Employee Cnt", type: "number", cellRenderer: NumberCell },
+  { id: "Price", type: "number", cellRenderer: PriceCell },
 ];
 
 export default function GridReactivityChart() {
@@ -23,11 +24,22 @@ export default function GridReactivityChart() {
     gridId: useId(),
     rowDataSource: ds,
     columns,
+    columnBase: { width: 100, widthFlex: 1 },
 
-    rowSelectedIds: new Set(["0"]),
+    columnMarker: {
+      cellRenderer: MarkerCell,
+    },
+    columnMarkerEnabled: true,
+
     rowSelectionMode: "multiple",
     rowSelectionActivator: "single-click",
   });
+
+  useEffect(() => {
+    // Row data source may not be immediately ready since we rendering everything in one go.
+    // Hence apply the state update in an effect.
+    grid.state.rowSelectedIds.set(new Set(["2", "0", "4", "7"]));
+  }, [grid.state.rowSelectedIds]);
 
   const view = grid.view.useValue();
 
@@ -47,7 +59,10 @@ export default function GridReactivityChart() {
                         <Grid.HeaderCell
                           key={c.id}
                           cell={c}
-                          className="flex h-full w-full items-center px-2 capitalize"
+                          className="flex h-full w-full items-center px-2 text-sm capitalize"
+                          style={{
+                            justifyContent: c.column.type === "number" ? "flex-end" : "flex-start",
+                          }}
                         />
                       );
                     })}
@@ -68,6 +83,10 @@ export default function GridReactivityChart() {
                             key={c.id}
                             cell={c}
                             className="flex h-full w-full items-center px-2 text-sm"
+                            style={{
+                              justifyContent:
+                                c.column.type === "number" ? "flex-end" : "flex-start",
+                            }}
                           />
                         );
                       })}
@@ -117,39 +136,46 @@ function PriceChart({ grid }: { grid: GridType<RowData> }) {
   }, [grid.api, rows]);
 
   return (
-    <ResponsiveContainer height={300} width="100%">
-      <AreaChart data={data}>
-        <defs>
+    <div className="p-4">
+      <ResponsiveContainer height={300} width="100%">
+        <AreaChart data={data}>
+          <defs>
+            {rows.map((row, i) => {
+              const color = colors[i];
+
+              return (
+                <linearGradient key={row.id} id={row.id} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor={color.stop5} stopOpacity={0.8} />
+                  <stop offset="95%" stopColor={color.stop95} stopOpacity={0} />
+                </linearGradient>
+              );
+            })}
+          </defs>
+          <XAxis
+            dataKey="week"
+            ticks={[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]}
+            fontSize="14px"
+            tickLine={false}
+          />
+          <YAxis fontFamily="Inter" fontSize="14px" tickLine={false} axisLine={false} />
+          <CartesianGrid vertical={false} stroke="var(--lng1771-gray-10)" />
           {rows.map((row, i) => {
             const color = colors[i];
 
             return (
-              <linearGradient key={row.id} id={row.id} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor={color.stop5} stopOpacity={0.8} />
-                <stop offset="95%" stopColor={color.stop95} stopOpacity={0} />
-              </linearGradient>
+              <Area
+                type="monotone"
+                key={row.id}
+                dataKey={row.id}
+                stroke={color.solid}
+                fillOpacity={1}
+                fill={`url(#${row.id})`}
+              />
             );
           })}
-        </defs>
-        <XAxis dataKey="week" />
-        <YAxis />
-        <CartesianGrid strokeDasharray="3 3" />
-        {rows.map((row, i) => {
-          const color = colors[i];
-
-          return (
-            <Area
-              type="monotone"
-              key={row.id}
-              dataKey={row.id}
-              stroke={color.solid}
-              fillOpacity={1}
-              fill={`url(#${row.id})`}
-            />
-          );
-        })}
-      </AreaChart>
-    </ResponsiveContainer>
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
   );
 }
 const colors = [

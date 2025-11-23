@@ -1,10 +1,10 @@
 ---
 title: Headless Component Parts
-description: LyteNyte Grid is a headless data grid. Each part of the grid is split out into
-  constituent components that may be put together to form the grid view in a declarative way.
+description: LyteNyte Grid is a headless data grid. Each part of the grid is split into
+  constituent components that you can compose declaratively to form the grid view.
 ---
 
-All the grid components exist under the named `Grid` export from the LyteNyte Grid packages:
+All grid components exist under the named `Grid` export from the LyteNyte Grid packages:
 
 <Tabs items={['Core', 'PRO']} className="bg-fd-card">
 
@@ -28,21 +28,20 @@ import { Grid } from "@1771technologies/lytenyte-pro";
 
 <Callout>
 
-Only the components necessary to form the grid view are found under the `Grid` export. Other LyteNyte Grid
-parts, such as the row data sources, are separate name exports to allow for tree shaking. The `Grid` components
-are coupled and hence must be used together under a common `Grid.Root` component.
+Only the components needed to form the grid view live under the `Grid` export. Other LyteNyte Grid
+parts, such as row data sources, are separate named exports to allow for tree shaking. `Grid` components
+are tightly coupled and must be used together under a common `Grid.Root` component.
 
 </Callout>
 
-The remainder of this guide will take you through the individual grid components,
-finally leading up to a complete demo example. Hence, this guide is best read top
-to bottom. For a complete full working example,
-see our [Getting Started guide](/docs/intro-getting-started).
+The remainder of this guide walks through the individual grid components and then shows a complete
+demo example. This guide is best read from top to bottom. For a complete working example,
+see the [Getting Started guide](/docs/intro-getting-started).
 
 ## Grid Anatomy Overview
 
-The following sections will explain the individual parts of the grid component anatomy, and will finish
-off with a full working example. This section provides a high-level view of the structure:
+The following sections explain the individual parts of the grid component anatomy and then end with
+a full working example. This section provides a high-level view of the structure:
 
 <Tabs items={['Core', 'PRO']} className="bg-fd-card">
 
@@ -90,6 +89,38 @@ import { Grid } from "@1771technologies/lytenyte-core";
 
 ```ts
 import { Grid } from "@1771technologies/lytenyte-pro";
+
+<Grid.Root>
+  <Grid.Viewport>
+    <Grid.Header>
+      {headerRows.map((row, i) => {
+        return (
+          <Grid.HeaderRow key={i} headerRowIndex={i}>
+            {row.map((c) => {
+              if (c.kind === "group") return <Grid.HeaderGroupCell />;
+              return <Grid.HeaderCell />;
+            })}
+          </Grid.HeaderRow>
+        );
+      })}
+    </Grid.Header>
+
+    <Grid.RowsContainer>
+      <Grid.RowsCenter>
+        {rows.map((row) => {
+          if (row.kind === "full-width") return <Grid.RowFullWidth />;
+          return (
+            <Grid.Row row={row} key={row.id}>
+              {row.cells.map((c) => (
+                <Grid.Cell />
+              ))}
+            </Grid.Row>
+          );
+        })}
+      </Grid.RowsCenter>
+    </Grid.RowsContainer>
+  </Grid.Viewport>
+</Grid.Root>;
 ```
 
 </Tab>
@@ -98,10 +129,10 @@ import { Grid } from "@1771technologies/lytenyte-pro";
 
 ## Root
 
-The `Grid.Root` component is the main parent of the LyteNyte Grid components. All the other grid parts should be rendered
-inside of a `Grid.Root` component. Hence our starting point is. The `Grid.Root` component
-accepts a [grid state object](/docs/reference/grid-state/#grid) as a prop. The grid state object is created using the
-`Grid.useLyteNyte` hook. The `Grid.Root` component does not result in any DOM elements being created.
+The `Grid.Root` component is the main parent of LyteNyte Grid components. Render all other grid parts
+inside `Grid.Root`. The `Grid.Root` component accepts a
+[grid state object](/docs/reference/grid-state#grid) as a prop. Create this grid state object using
+the `Grid.useLyteNyte` hook. `Grid.Root` does not render any DOM elements.
 
 <Tabs items={['Core', 'PRO']} className="bg-fd-card">
 
@@ -137,13 +168,13 @@ export function MyGrid() {
 
 ## Viewport
 
-The `Grid.Viewport` component creates an element that will be the overflow parent for the grid.
-As it's name suggests it is the visible area of the grid that will display rows and columns based
-on the scroll position. The viewport will automatically size to fit its container. See the
-[Responsive Container guide](/docs/grid-container) for full guidance on creating grid containers
-to house the grid.
+The `Grid.Viewport` component creates the element that acts as the overflow parent for the grid.
+As its name suggests, it defines the visible area of the grid and displays rows and columns based
+on the scroll position. The viewport automatically sizes to fit its container. See the
+[Responsive Container guide](/docs/grid-container) for details on configuring containers
+for the grid.
 
-Add the `Grid.Viewport` to our grid component, we now have:
+Adding `Grid.Viewport` to the grid component gives us:
 
 <Tabs items={['Core', 'PRO']} className="bg-fd-card">
 
@@ -185,19 +216,18 @@ export function MyGrid() {
 
 </Tabs>
 
-The `Grid.Viewport` component is a `div` element. Hence it accepts all the props a normal `div`
-would including `className` and `style`. The `Grid.Viewport` will have some inline-styles applied
-for grid sizing, which cannot be overridden.
+`Grid.Viewport` renders a `div` element. It accepts all standard `div` props, including `className` and `style`.
+LyteNyte Grid also applies inline styles for grid sizing, which you cannot override.
 
 ## Header
 
-LyteNyte Grid has a single header container, which is rendered by the `Grid.Header` component. The header
-component is where all the other header parts are rendered. The header will remain fixed at the top of the
-viewport regardless of the scroll position. The width of the header is determine by the total width of the
-columns in the grid. The height is determined by the `headerHeight`, `headerGroupHeight`
-and the `floatingRowHeight` on the [grid state object](/docs/reference/grid-state#gridstate).
+LyteNyte Grid has a single header container, rendered by the `Grid.Header` component. Render all other header
+parts inside this component. The header stays fixed at the top of the viewport regardless of scroll position.
+The header width matches the total width of the grid's columns. The header height comes from the `headerHeight`,
+`headerGroupHeight`, and `floatingRowHeight` values on the
+[grid state object](/docs/reference/grid-state#gridstate).
 
-Building on the code so far, the `Grid.Header` component should be rendered within the viewport:
+Building on the previous examples, render `Grid.Header` within the viewport:
 
 <Tabs items={['Core', 'PRO']} className="bg-fd-card">
 
@@ -243,20 +273,17 @@ export function MyGrid() {
 
 </Tabs>
 
-Like the `Grid.Viewport`, the `Grid.Header` is a `div` element, and any property that may be passed to a `div`
-element may be passed to the `Grid.Header` component.
+Like `Grid.Viewport`, `Grid.Header` renders a `div` and accepts any prop you can pass to a `div`.
 
 ### Header Row
 
-The `Grid.HeaderRow` must be rendered within the `Grid.Header` component. There will always be at least one
-header row component, however, depending on the column definitions provided to the grid, there may be more
-than one level. The total number of header rows is determined by the maximum column group depth plus 1 if the
-floating row is enabled, plus 1 for the column header row itself.
+Render `Grid.HeaderRow` components inside `Grid.Header`. There is always at least one header row, but you
+may have more depending on the column definitions. The total number of header rows equals the maximum column
+group depth, plus one for the floating row (if enabled), plus one for the column header row.
 
-The `Grid.useLyteNyte` hooks returns a grid view [atom](/docs/grid-reactivity). The grid view atom may be used
-to get the layout state for the current view. Part of this layout state is the header layout state, with an array
-of header rows. For each item in the header row state, a single `Grid.HeaderRow` should be provided. The code below
-shows all of this in action:
+The `Grid.useLyteNyte` hook returns a grid view [atom](/docs/grid-reactivity). You can use the grid view atom
+to obtain layout state for the current view. The header layout includes an array of header rows. Render a
+`Grid.HeaderRow` for each header row in the layout. The code below shows this:
 
 <Tabs items={['Core', 'PRO']} className="bg-fd-card">
 
@@ -314,22 +341,20 @@ export function MyGrid() {
 
 </Tabs>
 
-In the code example, the `view.header.layout` contains the array of header rows. Notice how we
-pass the `<Grid.HeaderRow />` component the current header index. This is required by LyteNyte Grid
-for correctly positioning the header elements. The `key` is also the index of the row. Header rows
-never reorder, so using an integer key is completely fine.
+In this example, `view.header.layout` contains the array of header rows. You pass each `Grid.HeaderRow`
+its corresponding index through the `headerRowIndex` prop. LyteNyte Grid uses this index to position
+header elements correctly. Using the index as the `key` is safe because header rows never reorder.
 
 ### Header Cell
 
-Within the `<Grid.HeaderRow/>` there will be the header cells. These are the cells that represent the
-column header. There are two types of header cell components:
+Within each `<Grid.HeaderRow />`, you render header cells. These cells represent column headers. LyteNyte Grid
+provides two header cell components:
 
 - `Grid.HeaderGroupCell`: Represents a column group header cell.
 - `Grid.HeaderCell`: Represents a column header cell or a floating row cell.
 
-You can determine what type of cell is being rendered by the header row using the `kind`
-property on the cell. If the `kind` is `"group"`, then the cell that should be rendered
-is a `Grid.HeaderGroupCell`. In code this all becomes:
+You can determine which component to render by checking the cell's `kind` property. When `kind` is `"group"`,
+render a `Grid.HeaderGroupCell`. Otherwise, render a `Grid.HeaderCell`. In code:
 
 <Tabs items={['Core', 'PRO']} className="bg-fd-card">
 
@@ -407,15 +432,13 @@ export function MyGrid() {
 
 </Tabs>
 
-There are a few key takeaways here. Notice that the `view.header.layout` is an array of header cells.
-Depending on the cell, we choose which type of header cell to render. Finally notice that for the
-`Grid.HeaderGroupCell` the `key` property is the `c.idOccurrence` and not the `c.id` value. The same
-column group may be split across the header, hence the same `c.id` will be repeated on elements. React
-requires a unique key for each element when rendering a list, which in this case will be the `c.idOccurrence`
-value.
+There are several details to note here. `view.header.layout` is an array of header cells, and for each cell
+you choose the appropriate header component. For `Grid.HeaderGroupCell`, use `c.idOccurrence` as the `key`
+instead of `c.id`. A column group can be split across the header, so `c.id` may repeat. React requires keys
+to be unique within the list, and `c.idOccurrence` guarantees uniqueness.
 
-The `Grid.HeaderGroupCell` will render it's `children` prop. Hence for custom header group content,
-simply provide the `Grid.HeaderGroupCell` with the content that should be rendered, for example:
+`Grid.HeaderGroupCell` renders its `children`. To provide custom header group content, pass your content
+as `children`. For example:
 
 ```tsx
 <Grid.HeaderGroupCell key={c.idOccurrence} cell={c} className="group flex items-center gap-2 px-2">
@@ -430,21 +453,20 @@ simply provide the `Grid.HeaderGroupCell` with the content that should be render
 </Grid.HeaderGroupCell>
 ```
 
-For the full properties available on the header group cell, see the
+For the full list of properties available on the header group cell, see the
 [`HeaderGroupCellLayout`](/docs/reference/grid-view#headergroupcelllayout) API reference.
 
-In contrast to the `Grid.HeaderGroupCell`, the `Grid.HeaderCell` does not accept a `children` prop.
-Instead the content is determined by the `cellRenderer` property on the column the cell belongs to
-or the `floatingCellRenderer` of the column if the header cell is for the floating row. See the
+In contrast, `Grid.HeaderCell` does not accept `children`. Instead, the content comes from the `cellRenderer`
+property on the column the cell belongs to, or from the `floatingCellRenderer` property when the header cell
+is part of the floating row. For more information, see the
 [Column Header Renderer](/docs/column-header-renderer) and
-[Column Floating Header](/docs/column-floating-header) guides for more details.
+[Column Floating Header](/docs/column-floating-header) guides.
 
 ## Rows Container
 
-Use the `Grid.RowsContainer` component to render all the grid rows. The `Grid.RowsContainer` is
-similar to the `Grid.Header` component. It it where all the rows in the grid are rendered. Furthermore,
-like the `Grid.Header` component it is is normal `div` element and accepts all the properties that a
-`div` element accepts. Updating our code sample so far, we now have:
+Use the `Grid.RowsContainer` component to render all grid rows. `Grid.RowsContainer` plays a similar role
+to `Grid.Header`: it hosts the rows of the grid. Like `Grid.Header`, `Grid.RowsContainer` renders a normal
+`div` element and accepts all `div` props. Updating the example, we now have:
 
 <Tabs items={['Core', 'PRO']} className="bg-fd-card">
 
@@ -528,10 +550,9 @@ export function MyGrid() {
 
 ### Rows Top, Center, and Bottom
 
-The `Grid.RowsContainer` is where all the rows of LyteNyte Grid are rendered. The rows are further
-split into three sections, top, center, and bottom. The top and bottom sections is where the rows that
-are pinned top and bottom respectively will be rendered. The center section is where scrollable rows are
-rendered. This leads to the following updated structure:
+`Grid.RowsContainer` is the parent for all grid rows. LyteNyte Grid splits rows into three sections:
+top, center, and bottom. The top and bottom sections render rows pinned to the top and bottom. The center
+section renders scrollable rows. This leads to the following structure:
 
 <Tabs items={['Core', 'PRO']} className="bg-fd-card">
 
@@ -621,23 +642,20 @@ export function MyGrid() {
 
 </Tabs>
 
-Each of the row section components are optional, but you will almost always render the `Grid.RowsCenter`
-component, and only use the `Grid.RowsTop` and `Grid.RowsBottom` section when you grid configuration
-will make use of pinned rows.
+Each row section component is optional, but you will almost always render `Grid.RowsCenter`. Use
+`Grid.RowsTop` and `Grid.RowsBottom` only when your grid configuration uses pinned rows.
 
 ## Row
 
-There are two types of grid rows:
+LyteNyte Grid supports two row types:
 
-- A normal grid row, which has one cell per column. Rendered using the `Grid.Row` component.
-- A full width row, which fill render a single cell that spans the width of the viewport.
-  Rendered using the `Grid.RowFullWidth`.
+- A normal grid row, which has one cell per column and renders with `Grid.Row`.
+- A full width row, which renders a single cell that spans the viewport width and renders with `Grid.RowFullWidth`.
 
-Earlier in this tutorial we made use of the grid's `view` state to determine that layout of the
-header component. The rows in LyteNyte Grid are similar, except the row sections are divided into
-top, center, bottom. To access the layout of each section we use the `view.rows` state. For example,
-to get the layout of the center rows, we use the `view.rows.center` property. Zooming in a little and
-translating this code, for the center section we would have:
+Earlier in this guide you used the grid's `view` state to determine the header layout. Rows use the same
+`view` state, but the layout splits into top, center, and bottom sections. You access the layout for each
+section through `view.rows`. For example, `view.rows.center` contains the center rows. For the center
+section, you could write:
 
 ```tsx
 <Grid.RowsCenter>
@@ -649,9 +667,8 @@ translating this code, for the center section we would have:
 </Grid.RowsCenter>
 ```
 
-For each section (top, center, bottom) we would have to repeat the above code. However, we can
-make a `RowSection` component and simply provide it layout for the given section. The code below
-does this:
+You would repeat this pattern for the top and bottom sections. To avoid duplication, you can create a
+`RowSection` component and pass it the appropriate layout:
 
 <Tabs items={['Core', 'PRO']} className="bg-fd-card">
 
@@ -687,8 +704,8 @@ export function MyGrid() {
 
         <Grid.RowsContainer>
           <RowSection rows={view.rows.top} section="top" />
-          <RowSection rows={view.rows.top} section="center" />
-          <RowSection rows={view.rows.top} section="bottom" />
+          <RowSection rows={view.rows.center} section="center" />
+          <RowSection rows={view.rows.bottom} section="bottom" />
         </Grid.RowsContainer>
       </Grid.Viewport>
     </Grid.Root>
@@ -751,8 +768,8 @@ export function MyGrid() {
 
         <Grid.RowsContainer>
           <RowSection rows={view.rows.top} section="top" />
-          <RowSection rows={view.rows.top} section="center" />
-          <RowSection rows={view.rows.top} section="bottom" />
+          <RowSection rows={view.rows.center} section="center" />
+          <RowSection rows={view.rows.bottom} section="bottom" />
         </Grid.RowsContainer>
       </Grid.Viewport>
     </Grid.Root>
@@ -785,14 +802,13 @@ function RowSection<D = any>({
 
 </Tabs>
 
-The `Grid.RowFullWidth` component will render a full width row using the configured `fullWidthRenderer`.
-For more on full width rows see our dedicated [Row Full Width guide](/docs/row-full-width)
+`Grid.RowFullWidth` renders a full width row using the configured `fullWidthRenderer`.
+For more details, see the [Row Full Width guide](/docs/row-full-width).
 
 ### Cell
 
-The the row is a row with cells (which is all rows except full width rows), then the `cells` property
-on the row will be an array of cells that can be rendered using the `Grid.Cell` component. Updating
-the `RowSection` component defined earlier we now have the following definition:
+When a row contains cells (all rows except full width rows), the `cells` property on the row is an array of
+cells that you render using `Grid.Cell`. Updating the `RowSection` component gives us:
 
 ```tsx
 function RowSection<D = any>({
@@ -822,20 +838,18 @@ function RowSection<D = any>({
 }
 ```
 
-Notice that the `Grid.Row` now has an array of cells as children.
+Here, `Grid.Row` renders an array of `Grid.Cell` components as its children.
 
 ## Putting It All Together
 
-Everything to this point has been putting the grid together. The example below shows a full working
-example that puts together all the parts covered in the previous sections. The demo has rows that are
-pinned top and bottom, column groups and the full row structure. Additionally some styles have been applied
-using Tailwind CSS.
+Everything so far has focused on assembling the grid. The example below shows a full working setup that
+combines all the parts covered in the previous sections. The demo includes rows pinned to the top and
+bottom, column groups, and the full row structure. It also applies some styling using Tailwind CSS.
 
 !demo:Headless Component Parts="./demos/grid-headless-components"
 
 ## Next Steps
 
-- [Responsive Container](/docs/grid-container): Learn about the component parts that make up LyteNyte Grid.
+- [Responsive Container](/docs/grid-container): Learn how to configure containers for LyteNyte Grid.
 - [Grid Events](/docs/grid-events): Learn how to handle events fired by LyteNyte Grid and different approaches to event handling.
-- [Keyboard Navigation](/docs/grid-keyboard-navigation): Review keybindings for navigating grid cells.
 - [Grid Atoms and Reactivity](/docs/grid-reactivity): Learn how to manage reactivity and state changes in LyteNyte Grid.
