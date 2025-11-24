@@ -152,3 +152,8 @@ export {
   testPlatform,
   testUserAgent,
 } from "./dom-utils/index.js";
+export type { FocusTrapOptions } from "./dom-utils/focus/+types.js";
+
+export { onAnimationFinished } from "./dom-utils/frame/animation-finished.js";
+export { frame } from "./dom-utils/frame/frame.js";
+export { SCROLL_LOCKER } from "./dom-utils/scroll-lock/scroll-locker.js";
