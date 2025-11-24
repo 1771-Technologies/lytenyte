@@ -23,5 +23,6 @@
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
     "types": ["vitest/importMeta"]
-  }
+  },
+  "exclude": ["./packages/sample-data"]
 }
