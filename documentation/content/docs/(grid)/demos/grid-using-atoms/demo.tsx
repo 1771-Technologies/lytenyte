@@ -110,11 +110,12 @@ function RenderSelectionCount({ rowSelectedIds }: { rowSelectedIds: GridAtom<Set
   const selectedRows = rowSelectedIds.useValue();
 
   if (selectedRows.size === 0)
-    return <div className="border-b px-2 py-2">You have not selected any rows</div>;
+    return <div className="border-b px-2 py-2 text-[15px]">There are no rows selected.</div>;
 
-  return (
-    <div className="border-b px-2 py-2">
-      There are {selectedRows.size} selected rows in the grid.
-    </div>
-  );
+  const text =
+    selectedRows.size === 1
+      ? "There is 1 row selected."
+      : `There are ${selectedRows.size} rows selected.`;
+
+  return <div className="text-ln-gray-100 border-b px-2 py-2 text-[15px]">{text}</div>;
 }

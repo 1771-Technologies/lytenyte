@@ -98,8 +98,8 @@ export function GridCheckbox({
         )}
       >
         <C.CheckboxIndicator className={tw("flex items-center justify-center")}>
-          {!indeterminate && <CheckIcon className="text-white" />}
-          {indeterminate && <MinusIcon className="text-white" />}
+          {!indeterminate && <CheckIcon className="text-white dark:text-black" />}
+          {indeterminate && <MinusIcon className="text-white dark:text-black" />}
         </C.CheckboxIndicator>
       </C.Root>
       {children}

@@ -4,8 +4,8 @@ import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import type { Column, Grid as GridType } from "@1771technologies/lytenyte-pro/types";
 import { companiesWithPricePerf } from "@1771technologies/grid-sample-data/companies-with-price-performance";
 import { useEffect, useId, useMemo } from "react";
-import { Area, AreaChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from "recharts";
-import { MarkerCell, NumberCell, PriceCell } from "./components";
+import { AreaChart, CartesianGrid, Line, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import { MarkerCell, MarkerHeader, NumberCell, PriceCell } from "./components";
 
 type RowData = (typeof companiesWithPricePerf)[number];
 
@@ -13,21 +13,23 @@ const columns: Column<RowData>[] = [
   { id: "Company", widthFlex: 2 },
   { id: "Country", widthFlex: 2 },
   { id: "Founded", type: "number" },
-  { id: "Employee Cnt", type: "number", cellRenderer: NumberCell },
+  { id: "Employee Cnt", name: "Employees", type: "number", cellRenderer: NumberCell },
   { id: "Price", type: "number", cellRenderer: PriceCell },
 ];
 
 export default function GridReactivityChart() {
-  const ds = useClientRowDataSource({ data: companiesWithPricePerf });
+  const ds = useClientRowDataSource({ data: companiesWithPricePerf.slice(0, 9) });
 
   const grid = Grid.useLyteNyte({
     gridId: useId(),
     rowDataSource: ds,
     columns,
     columnBase: { width: 100, widthFlex: 1 },
+    rowHeight: "fill:20",
 
     columnMarker: {
       cellRenderer: MarkerCell,
+      headerRenderer: MarkerHeader,
     },
     columnMarkerEnabled: true,
 
@@ -139,18 +141,6 @@ function PriceChart({ grid }: { grid: GridType<RowData> }) {
     <div className="p-4">
       <ResponsiveContainer height={300} width="100%">
         <AreaChart data={data}>
-          <defs>
-            {rows.map((row, i) => {
-              const color = colors[i];
-
-              return (
-                <linearGradient key={row.id} id={row.id} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={color.stop5} stopOpacity={0.8} />
-                  <stop offset="95%" stopColor={color.stop95} stopOpacity={0} />
-                </linearGradient>
-              );
-            })}
-          </defs>
           <XAxis
             dataKey="week"
             ticks={[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]}
@@ -163,13 +153,14 @@ function PriceChart({ grid }: { grid: GridType<RowData> }) {
             const color = colors[i];
 
             return (
-              <Area
+              <Line
                 type="monotone"
                 key={row.id}
                 dataKey={row.id}
                 stroke={color.solid}
-                fillOpacity={1}
-                fill={`url(#${row.id})`}
+                strokeWidth={2}
+                dot={false}
+                // fill={`url(#${row.id})`}
               />
             );
           })}

@@ -7,10 +7,10 @@ import { useId } from "react";
 import {
   BalanceCell,
   DurationCell,
-  GridButton,
   MarkerCell,
   MarkerHeader,
   NumberCell,
+  SwitchToggle,
   tw,
 } from "./components";
 
@@ -58,13 +58,13 @@ export default function GridReactivitySignal() {
   return (
     <div className="lng-grid" style={{ display: "flex", flexDirection: "column" }}>
       <div className="flex w-full border-b px-2 py-2">
-        <GridButton
-          onClick={() => {
+        <SwitchToggle
+          label="Toggle Marker Column"
+          checked={grid.state.columnMarkerEnabled.useValue()}
+          onChange={() => {
             grid.state.columnMarkerEnabled.set((prev) => !prev);
           }}
-        >
-          Toggle Marker Column
-        </GridButton>
+        />
       </div>
       <div style={{ height: 500 }}>
         <Grid.Root grid={grid}>

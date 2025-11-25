@@ -1,6 +1,9 @@
 import { Checkbox as C } from "radix-ui";
-import type { CellRendererParams } from "@1771technologies/lytenyte-pro/types";
-import type { companiesWithPricePerf } from "@1771technologies/sample-data/companies-with-price-performance";
+import type {
+  CellRendererParams,
+  HeaderCellRendererParams,
+} from "@1771technologies/lytenyte-pro/types";
+import type { companiesWithPricePerf } from "@1771technologies/grid-sample-data/companies-with-price-performance";
 import { CheckIcon, MinusIcon } from "@radix-ui/react-icons";
 import type { ClassValue } from "clsx";
 import clsx from "clsx";
@@ -49,6 +52,29 @@ export function MarkerCell({ grid, rowSelected }: CellRendererParams<Performance
   );
 }
 
+export function MarkerHeader({ grid }: HeaderCellRendererParams<PerformanceData>) {
+  const allSelected = grid.state.rowDataSource.get().rowAreAllSelected();
+
+  const selected = grid.state.rowSelectedIds.useValue();
+
+  return (
+    <div className="flex h-full w-full items-center justify-center">
+      <GridCheckbox
+        checked={allSelected || selected.size > 0}
+        indeterminate={!allSelected && selected.size > 0}
+        onClick={(ev) => {
+          ev.preventDefault();
+          grid.api.rowSelectAll({ deselect: allSelected });
+        }}
+        onKeyDown={(ev) => {
+          if (ev.key === "Enter" || ev.key === " ")
+            grid.api.rowSelectAll({ deselect: allSelected });
+        }}
+      />
+    </div>
+  );
+}
+
 export function GridCheckbox({
   children,
   indeterminate,
@@ -68,8 +94,8 @@ export function GridCheckbox({
         )}
       >
         <C.CheckboxIndicator className={tw("flex items-center justify-center")}>
-          {!indeterminate && <CheckIcon className="text-white" />}
-          {indeterminate && <MinusIcon className="text-white" />}
+          {!indeterminate && <CheckIcon className="text-white dark:text-black" />}
+          {indeterminate && <MinusIcon className="text-white dark:text-black" />}
         </C.CheckboxIndicator>
       </C.Root>
       {children}

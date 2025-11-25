@@ -8,7 +8,7 @@ import type {
   HeaderCellRendererParams,
 } from "@1771technologies/lytenyte-pro/types";
 import type { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
-import type { JSX } from "react";
+import { ToggleGroup as TG } from "radix-ui";
 
 export type BankData = (typeof bankDataSmall)[number];
 
@@ -99,8 +99,8 @@ export function GridCheckbox({
         )}
       >
         <C.CheckboxIndicator className={tw("flex items-center justify-center")}>
-          {!indeterminate && <CheckIcon className="text-white" />}
-          {indeterminate && <MinusIcon className="text-white" />}
+          {!indeterminate && <CheckIcon className="text-white dark:text-black" />}
+          {indeterminate && <MinusIcon className="text-white dark:text-black" />}
         </C.CheckboxIndicator>
       </C.Root>
       {children}
@@ -112,14 +112,24 @@ export function tw(...c: ClassValue[]) {
   return twMerge(clsx(...c));
 }
 
-export function GridButton(props: JSX.IntrinsicElements["button"]) {
+export function ToggleGroup(props: Parameters<typeof TG.Root>[0]) {
   return (
-    <button
+    <TG.Root
+      {...props}
+      className={tw("bg-ln-gray-20 flex items-center gap-2 rounded-xl px-2 py-1", props.className)}
+    ></TG.Root>
+  );
+}
+
+export function ToggleItem(props: Parameters<typeof TG.Item>[0]) {
+  return (
+    <TG.Item
       {...props}
       className={tw(
-        "border-ln-gray-30 hover:bg-ln-gray-80 dark:hover:bg-ln-gray-90 flex h-8 cursor-pointer items-center gap-2 rounded-lg border bg-black px-2 text-sm text-white shadow transition-colors dark:bg-white dark:text-black",
+        "text-ln-gray-70 flex cursor-pointer items-center justify-center px-2 py-1 text-xs font-bold outline-none focus:outline-none",
+        "data-[state=on]:text-ln-gray-90 data-[state=on]:bg-linear-to-b from-ln-gray-02 to-ln-gray-05 data-[state=on]:rounded-md",
         props.className,
       )}
-    ></button>
+    ></TG.Item>
   );
 }

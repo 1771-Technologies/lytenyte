@@ -7,7 +7,26 @@ import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smal
 import { useId } from "react";
 import { BalanceCell, DurationCell, NumberCell } from "./components";
 
+const [under30, under50, over50] = Object.values(
+  Object.groupBy(
+    bankDataSmall.toSorted((l, r) => l.age - r.age),
+    (r) => {
+      if (r.age < 30) return "Under 30";
+      if (r.age < 50) return "Under 50";
+      return "Over 50";
+    },
+  ),
+);
+
 type BankData = (typeof bankDataSmall)[number];
+const finalData = [
+  { id: "full-width", label: "Under 30" } as unknown as BankData,
+  ...under30,
+  { id: "full-width", label: "Under 50" } as unknown as BankData,
+  ...under50,
+  { id: "full-width", label: "Over 50" } as unknown as BankData,
+  ...over50,
+];
 
 const columns: Column<BankData>[] = [
   { id: "job", width: 120 },
@@ -28,7 +47,7 @@ const columns: Column<BankData>[] = [
 
 export default function ColumnGroupExpansions() {
   const ds = useClientRowDataSource({
-    data: bankDataSmall.slice(4),
+    data: finalData,
     topData: bankDataSmall.slice(0, 2),
     bottomData: bankDataSmall.slice(2, 4),
   });
@@ -37,6 +56,18 @@ export default function ColumnGroupExpansions() {
     gridId: useId(),
     rowDataSource: ds,
     columns,
+
+    rowFullWidthPredicate: (r) =>
+      Boolean(r.row.data && "id" in r.row.data && r.row.data.id === "full-width"),
+    rowFullWidthRenderer: (r) => {
+      const data = r.row.data as { label: string };
+
+      return (
+        <div className="text-ln-gray-70 flex h-full w-full items-center justify-center font-bold">
+          {data.label}
+        </div>
+      );
+    },
 
     columnBase: {
       width: 100,
@@ -59,7 +90,7 @@ export default function ColumnGroupExpansions() {
                         <Grid.HeaderGroupCell
                           key={c.idOccurrence}
                           cell={c}
-                          className="group flex items-center gap-2 px-2 capitalize"
+                          className="group flex items-center justify-center gap-2 px-2 capitalize"
                         >
                           <div>{c.groupPath.at(-1)}</div>
                         </Grid.HeaderGroupCell>

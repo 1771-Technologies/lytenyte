@@ -8,7 +8,6 @@ import type {
   HeaderCellRendererParams,
 } from "@1771technologies/lytenyte-pro/types";
 import type { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
-import type { JSX } from "react";
 
 export type BankData = (typeof bankDataSmall)[number];
 
@@ -99,8 +98,8 @@ export function GridCheckbox({
         )}
       >
         <C.CheckboxIndicator className={tw("flex items-center justify-center")}>
-          {!indeterminate && <CheckIcon className="text-white" />}
-          {indeterminate && <MinusIcon className="text-white" />}
+          {!indeterminate && <CheckIcon className="text-white dark:text-black" />}
+          {indeterminate && <MinusIcon className="text-white dark:text-black" />}
         </C.CheckboxIndicator>
       </C.Root>
       {children}
@@ -110,16 +109,4 @@ export function GridCheckbox({
 
 export function tw(...c: ClassValue[]) {
   return twMerge(clsx(...c));
-}
-
-export function GridButton(props: JSX.IntrinsicElements["button"]) {
-  return (
-    <button
-      {...props}
-      className={tw(
-        "border-ln-gray-30 hover:bg-ln-gray-80 dark:hover:bg-ln-gray-90 flex h-8 cursor-pointer items-center gap-2 rounded-lg border bg-black px-2 text-sm text-white shadow transition-colors dark:bg-white dark:text-black",
-        props.className,
-      )}
-    ></button>
-  );
 }

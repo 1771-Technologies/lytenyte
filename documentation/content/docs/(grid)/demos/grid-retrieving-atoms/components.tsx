@@ -99,8 +99,8 @@ export function GridCheckbox({
         )}
       >
         <C.CheckboxIndicator className={tw("flex items-center justify-center")}>
-          {!indeterminate && <CheckIcon className="text-white" />}
-          {indeterminate && <MinusIcon className="text-white" />}
+          {!indeterminate && <CheckIcon className="text-white dark:text-black" />}
+          {indeterminate && <MinusIcon className="text-white dark:text-black" />}
         </C.CheckboxIndicator>
       </C.Root>
       {children}
@@ -117,7 +117,8 @@ export function GridButton(props: JSX.IntrinsicElements["button"]) {
     <button
       {...props}
       className={tw(
-        "border-ln-gray-30 hover:bg-ln-gray-80 dark:hover:bg-ln-gray-90 flex h-8 cursor-pointer items-center gap-2 rounded-lg border bg-black px-2 text-sm text-white shadow transition-colors dark:bg-white dark:text-black",
+        "dark:border-ln-gray-30 border-ln-gray-60 hover:bg-ln-gray-20 text-ln-gray-80 flex h-10 cursor-pointer items-center gap-2 rounded-lg border px-2 text-sm font-semibold shadow-lg transition-colors",
+        "shadow-[0_2px_2px_0_hsla(176,64%,5%,0.22)] shadow-[inset_0_0_11px_0_hsla(176,55%,89%,0.12)] backdrop-blur-[10px]",
         props.className,
       )}
     ></button>

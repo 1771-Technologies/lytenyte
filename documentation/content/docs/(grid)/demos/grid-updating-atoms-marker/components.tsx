@@ -1,14 +1,14 @@
 import { CheckIcon, MinusIcon } from "@radix-ui/react-icons";
 import type { ClassValue } from "clsx";
 import clsx from "clsx";
-import { Checkbox as C } from "radix-ui";
+import { Checkbox as C, Switch } from "radix-ui";
 import { twMerge } from "tailwind-merge";
 import type {
   CellRendererParams,
   HeaderCellRendererParams,
 } from "@1771technologies/lytenyte-pro/types";
 import type { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
-import type { JSX } from "react";
+import { useId, type CSSProperties, type JSX } from "react";
 
 export type BankData = (typeof bankDataSmall)[number];
 
@@ -99,8 +99,8 @@ export function GridCheckbox({
         )}
       >
         <C.CheckboxIndicator className={tw("flex items-center justify-center")}>
-          {!indeterminate && <CheckIcon className="text-white" />}
-          {indeterminate && <MinusIcon className="text-white" />}
+          {!indeterminate && <CheckIcon className="text-white dark:text-black" />}
+          {indeterminate && <MinusIcon className="text-white dark:text-black" />}
         </C.CheckboxIndicator>
       </C.Root>
       {children}
@@ -117,9 +117,34 @@ export function GridButton(props: JSX.IntrinsicElements["button"]) {
     <button
       {...props}
       className={tw(
-        "border-ln-gray-30 hover:bg-ln-gray-80 dark:hover:bg-ln-gray-90 flex h-8 cursor-pointer items-center gap-2 rounded-lg border bg-black px-2 text-sm text-white shadow transition-colors dark:bg-white dark:text-black",
+        "dark:border-ln-gray-30 border-ln-gray-60 hover:bg-ln-gray-20 text-ln-gray-80 flex h-10 cursor-pointer items-center gap-2 rounded-lg border px-2 text-sm font-semibold shadow-lg transition-colors",
+        "shadow-[0_2px_2px_0_hsla(176,64%,5%,0.22)] shadow-[inset_0_0_11px_0_hsla(176,55%,89%,0.12)] backdrop-blur-[10px]",
         props.className,
       )}
     ></button>
+  );
+}
+
+export function SwitchToggle(props: {
+  label: string;
+  checked: boolean;
+  onChange: (b: boolean) => void;
+}) {
+  const id = useId();
+  return (
+    <div className="flex items-center gap-2">
+      <label className="text-ln-gray-90 text-sm leading-none" htmlFor={id}>
+        {props.label}
+      </label>
+      <Switch.Root
+        className="bg-ln-gray-00 border-ln-gray-30 data-[state=checked]:bg-ln-gray-10 relative h-[22px] w-[38px] cursor-default cursor-pointer rounded-full border outline-none"
+        id={id}
+        checked={props.checked}
+        onCheckedChange={(c) => props.onChange(c)}
+        style={{ "-webkit-tap-highlight-color": "rgba(0, 0, 0, 0)" } as CSSProperties}
+      >
+        <Switch.Thumb className="bg-ln-primary-50 block size-[20px] translate-x-0 rounded-full shadow transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-[15px]" />
+      </Switch.Root>
+    </div>
   );
 }

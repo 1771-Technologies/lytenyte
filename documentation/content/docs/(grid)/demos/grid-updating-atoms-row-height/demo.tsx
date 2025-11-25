@@ -4,7 +4,7 @@ import "@1771technologies/lytenyte-pro/grid.css";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { useId } from "react";
-import { BalanceCell, DurationCell, GridButton, NumberCell, tw } from "./components";
+import { BalanceCell, DurationCell, NumberCell, ToggleGroup, ToggleItem, tw } from "./components";
 
 type BankData = (typeof bankDataSmall)[number];
 
@@ -40,34 +40,19 @@ export default function GridReactivitySignal() {
   return (
     <div className="lng-grid" style={{ display: "flex", flexDirection: "column" }}>
       <div className="flex w-full border-b px-2 py-2">
-        <GridButton
-          onClick={() => {
-            grid.state.rowHeight.set(20);
+        <ToggleGroup
+          type="single"
+          value={`${grid.state.rowHeight.useValue()}`}
+          onValueChange={(c) => {
+            if (!c) return;
+            grid.state.rowHeight.set(Number.parseInt(c));
           }}
         >
-          SM
-        </GridButton>
-        <GridButton
-          onClick={() => {
-            grid.state.rowHeight.set(40);
-          }}
-        >
-          MD
-        </GridButton>
-        <GridButton
-          onClick={() => {
-            grid.state.rowHeight.set(60);
-          }}
-        >
-          LG
-        </GridButton>
-        <GridButton
-          onClick={() => {
-            grid.state.rowHeight.set(80);
-          }}
-        >
-          XL
-        </GridButton>
+          <ToggleItem value="20">Small</ToggleItem>
+          <ToggleItem value="40">Medium</ToggleItem>
+          <ToggleItem value="60">Large</ToggleItem>
+          <ToggleItem value="80">Extra Large</ToggleItem>
+        </ToggleGroup>
       </div>
       <div style={{ height: 500 }}>
         <Grid.Root grid={grid}>
