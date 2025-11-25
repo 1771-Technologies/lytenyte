@@ -1,13 +1,13 @@
 ---
 title: Responsive Container
-description: LyteNyte Grid does not have intrinsic dimensions. The viewport
-  fills its parent container, so the parent must have an
-  intrinsic size for the grid to render correctly.
+description: Learn how to create a responsive container for LyteNyte Grid using various
+  approaches, from fixed sized containers to grid and flex based containers.
 ---
 
-Despite not having an intrinsic size, LyteNyte Grid remains fully responsive.
-To make the grid responsive, ensure its parent element is responsive.
-This guide covers several ways to size the parent container.
+LyteNyte Grid lacks inherent dimensions. Since the viewport fills its parent container,
+the parent must have a defined size for the grid to render correctly.
+Although it doesn't have a defined size, LyteNyte Grid remains fully responsive.
+To ensure responsiveness, make sure its parent element is responsive.
 
 <Callout>
 
@@ -36,7 +36,7 @@ the following code:
 ## Flex Height Containers
 
 Flexbox layouts distribute space dynamically. When you assign `flex: 1` to a Flexbox child,
-it expands to fill the available space. Because Flexbox containers grow with their content,
+it expands to fill the available space. Since Flexbox containers grow with their content,
 wrap LyteNyte Grid in an inner `div` with `position: absolute`, `width: 100%`,
 and `height: 100%` to prevent the grid from increasing the container's height.
 The grid then fills the space without overflow.
@@ -78,4 +78,4 @@ Choose the approach that best fits your layout requirements.
 
 - [Headless Component Parts](/docs/grid-headless-parts): Learn about the component parts that make up LyteNyte Grid.
 - [Grid Events](/docs/grid-events): Learn how to handle events fired by LyteNyte Grid and different approaches to event handling.
-- [Grid Atoms and Reactivity](/docs/grid-reactivity): Learn how to manage reactivity and state changes in LyteNyte Grid.
+- [Grid Atoms & Reactivity](/docs/grid-reactivity): Learn how to manage reactivity and state changes in LyteNyte Grid.

@@ -17,15 +17,13 @@ returns an object comprising three properties:
 
 ## Grid Atoms
 
-A **grid atom** is the core primitive of LyteNyte Grid's state system. A grid atom works alongside
-React's state primitives and provides a consistent way to retrieve, update, and reactively consume state.
-Most properties on the `state` store are grid atoms.
+Grid atoms come in two variants: Readonly atoms and writable atoms.
+― **Readonly atoms** represent derived state, which updates when writable atoms change.
+― **Writable atoms** hold values that you can directly update.
 
-Grid atoms come in two variants: readonly atoms and writable atoms. Readonly atoms represent derived
-state, which updates when writable atoms change. Writable atoms hold values that you can directly update.
-Both variants provide methods that React can use to re-render when atom values change. The subsections
-below cover the atom methods. You can also refer to the
-[API reference](/docs/reference/grid-atom) for a more technical explanation.
+Both variants provide methods that React can use to re-render when atom values change.
+The subsections below cover the atom methods. You can also refer to
+the [API reference](/docs/reference/grid-atom) for a more technical explanation.
 
 ### Retrieving Atom Values
 
@@ -64,7 +62,7 @@ For example, this component tracks and displays the number of selected rows:
 
 !demo:Use Atom Value="./demos/grid-using-atoms"
 
-When passing grid atoms around, pass the atom itself rather than its resolved value. Call `useValue` as
+When passing grid atoms around, pass the atom object rather than its resolved value. Call `useValue` as
 close to the consuming component as possible. This approach reduces unnecessary re-renders. In the example,
 the `RenderSelectionCount` component receives the atom and calls `useValue` inside that component, ensuring
 only that component re-renders when selection changes.
@@ -109,7 +107,7 @@ using the atom reactively re-renders. Updating a grid atom works much like calli
 
 In the example below, clicking a button updates the `rowHeight` atom on the grid's state:
 
-!demo:Row Height Changing="./demos/grid-updating-atoms-row-height"
+!demo:Change Row Height="./demos/grid-updating-atoms-row-height"
 
 The example updates `rowHeight` in the `onClick` handler:
 
@@ -129,7 +127,9 @@ ignores the update.
 
 The demo below toggles the marker column's visibility using the `set` method callback update form:
 
-!demo:Toggle Column Marker="./demos/grid-updating-atoms-marker"
+!demo:Column Marker Toggling="./demos/grid-updating-atoms-marker"
+
+<p />
 
 ```tsx
 <GridButton
@@ -162,15 +162,15 @@ useEffect(() => {
 }, [rowHeightAtom]);
 ```
 
-LyteNyte Grid batches multiple updates into a single `watch` callback. For example, calling multiple subsequent calls to `set`:
+LyteNyte Grid batches multiple updates into a single `watch` callback.
+Calling `set` multiple times in the same synchronous task block will trigger
+only one watch `call`. The watch callbacks run in the microtask queue.
 
 ```ts
 rowHeightAtom.set(24);
 rowHeightAtom.set(32);
 rowHeightAtom.set(18);
 ```
-
-This triggers only one `watch` call. Callbacks run in the microtask queue.
 
 ## Grid State
 
