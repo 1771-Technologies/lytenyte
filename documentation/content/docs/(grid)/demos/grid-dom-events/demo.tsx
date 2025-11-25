@@ -34,9 +34,6 @@ export default function AddEventListener() {
     rowDataSource: ds,
     columns,
     columnBase: { width: 100 },
-
-    rowSelectionMode: "multiple",
-    rowSelectionActivator: "single-click",
   });
 
   const view = grid.view.useValue();
@@ -47,11 +44,8 @@ export default function AddEventListener() {
   return (
     <div className="lng-grid" style={{ display: "flex", flexDirection: "column" }}>
       <div className="flex gap-2 border-b px-2 py-2 text-sm">
-        <div className="bg-ln-primary-30 border-ln-primary-50 text-ln-gray-90 gap-2 rounded border px-2 font-mono">
-          Scroll X: {scrollX}
-        </div>
-        <div className="bg-ln-primary-30 border-ln-primary-50 text-ln-gray-90 gap-2 rounded border px-2 font-mono">
-          Scroll Y: {scrollY}
+        <div className="bg-ln-pill-column-fill border-ln-pill-column-stroke text-ln-gray-90 gap-2 rounded border px-2 py-2 font-mono text-sm">
+          Scroll Position: ({scrollX}, {scrollY})
         </div>
       </div>
       <div style={{ height: 500 }}>
