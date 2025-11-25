@@ -1,0 +1,84 @@
+.ln-shadcn {
+  --ln-gray-00: var(--background);
+  --ln-gray-01: var(--background);
+  --ln-gray-02: color-mix(in oklch, var(--background) 90%, var(--foreground));
+  --ln-gray-05: color-mix(in oklch, var(--background) 75%, var(--foreground));
+  --ln-gray-10: color-mix(in oklch, var(--background) 60%, var(--foreground));
+  --ln-gray-20: color-mix(in oklch, var(--background) 50%, var(--foreground));
+  --ln-gray-30: color-mix(in oklch, var(--background) 40%, var(--foreground));
+  --ln-gray-40: color-mix(in oklch, var(--background) 30%, var(--foreground));
+  --ln-gray-50: color-mix(in oklch, var(--background) 25%, var(--foreground));
+  --ln-gray-60: color-mix(in oklch, var(--background) 20%, var(--foreground));
+  --ln-gray-70: color-mix(in oklch, var(--background) 15%, var(--foreground));
+  --ln-gray-80: color-mix(in oklch, var(--background) 10%, var(--foreground));
+  --ln-gray-90: var(--foreground);
+  --ln-gray-100: var(--foreground);
+
+  --ln-primary-05: color-mix(in oklch, var(--primary) 05%, var(--primary-foreground));
+  --ln-primary-10: color-mix(in oklch, var(--primary) 10%, var(--primary-foreground));
+  --ln-primary-30: color-mix(in oklch, var(--primary) 30%, var(--primary-foreground));
+  --ln-primary-50: var(--primary);
+  --ln-primary-70: color-mix(in oklch, var(--primary) 70%, var(--primary-foreground));
+  --ln-primary-90: color-mix(in oklch, var(--primary) 90%, var(--primary-foreground));
+
+  --ln-system-red-10: hsla(356, 100%, 95%, 1);
+  --ln-system-red-30: hsla(352, 100%, 82%, 1);
+  --ln-system-red-50: hsla(345, 100%, 56%, 1);
+  --ln-system-red-70: hsla(344, 100%, 39%, 1);
+  --ln-system-red-90: hsla(342, 95%, 15%, 1);
+
+  --ln-system-yellow-10: hsla(55, 97%, 88%, 1);
+  --ln-system-yellow-30: hsla(51, 100%, 56%, 1);
+  --ln-system-yellow-50: hsla(44, 100%, 47%, 1);
+  --ln-system-yellow-70: hsla(34, 100%, 33%, 1);
+  --ln-system-yellow-90: hsla(27, 89%, 14%, 1);
+
+  --ln-system-green-10: hsla(142, 85%, 92%, 1);
+  --ln-system-green-30: hsla(143, 81%, 71%, 1);
+  --ln-system-green-50: hsla(144, 100%, 39%, 1);
+  --ln-system-green-70: hsla(144, 100%, 25%, 1);
+  --ln-system-green-90: hsla(145, 88%, 10%, 1);
+
+  --ln-system-info-10: hsla(0, 0%, 89%, 1);
+  --ln-system-info-30: hsla(0, 0%, 64%, 1);
+  --ln-system-info-50: hsla(0, 0%, 25%, 1);
+  --ln-system-info-70: hsla(0, 0%, 15%, 1);
+  --ln-system-info-90: hsla(0, 0%, 9%, 1);
+
+  --ln-border: var(--border);
+  --ln-border-row: var(--border);
+  --ln-border-strong: var(--border);
+  --ln-border-icon: var(--border);
+  --ln-border-ui-panel: var(--sidebar-border);
+  --ln-border-button-light: var(--ln-gray-30);
+  --ln-border-field-and-button: var(--ln-gray-30);
+  --ln-border-field-and-button-shadow: var(--ln-gray-00);
+  --ln-border-floating-panel: var(--border);
+  --ln-border-context-menu: var(--border);
+
+  --ln-bg: var(--background);
+  --ln-bg-button-light: var(--muted);
+  --ln-bg-page: var(--background);
+  --ln-bg-light: var(--secondary);
+  --ln-bg-strong: var(--card);
+  --ln-bg-row-hover: var(--ln-primary-05);
+  --ln-bg-row-alternate: var(--ln-primary-10);
+  --ln-bg-ui-panel: var(--popover);
+  --ln-bg-form-field: var(--input);
+  --ln-bg-floating-panel: var(--popover);
+  --ln-bg-context-menu: var(--popover);
+
+  --ln-text: var(--foreground);
+  --ln-text-dark: var(--foreground);
+  --ln-text-light: var(--foreground);
+  --ln-text-xlight: var(--muted-foreground);
+  --ln-text-hyperlink: var(--accent-foreground);
+  --ln-text-primary-button: var(--accent-foreground);
+
+  --ln-system-row-pivot-fill: hsla(179, 92%, 10%, 1);
+  --ln-system-row-pivot-stroke: hsla(176, 76%, 18%, 1);
+  --ln-system-column-pivot-fill: hsla(262, 78%, 23%, 1);
+  --ln-system-column-pivot-stroke: hsla(265, 74%, 35%, 1);
+  --ln-system-column-group-fill: hsla(227, 59%, 21%, 1);
+  --ln-system-column-group-stroke: hsla(225, 67%, 33%, 1);
+}
