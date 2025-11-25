@@ -1,0 +1,84 @@
+.ln-dark {
+  --ln-gray-00: hsla(230, 10%, 9%, 1);
+  --ln-gray-01: hsla(230, 10%, 9%, 1);
+  --ln-gray-02: hsla(228, 10%, 8%, 1);
+  --ln-gray-05: hsla(220, 7%, 12%, 1);
+  --ln-gray-10: hsla(228, 7%, 17%, 1);
+  --ln-gray-20: hsla(228, 7%, 20%, 1);
+  --ln-gray-30: hsla(225, 8%, 27%, 1);
+  --ln-gray-40: hsla(224, 8%, 35%, 1);
+  --ln-gray-50: hsla(223, 8%, 44%, 1);
+  --ln-gray-60: hsla(233, 4%, 40%, 1);
+  --ln-gray-70: hsla(233, 4%, 50%, 1);
+  --ln-gray-80: hsla(240, 4%, 61%, 1);
+  --ln-gray-90: hsla(240, 6%, 90%, 1);
+  --ln-gray-100: hsla(240, 6%, 90%, 1);
+
+  --ln-primary-05: hsla(217, 100%, 54%, 0.05);
+  --ln-primary-10: hsla(217, 100%, 60%, 0.1);
+  --ln-primary-30: hsla(217, 100%, 54%, 0.3);
+  --ln-primary-50: hsla(217, 100%, 54%, 1);
+  --ln-primary-70: hsla(217, 100%, 40%, 1);
+  --ln-primary-90: hsla(217, 100%, 25%, 1);
+
+  --ln-system-red-10: hsla(352, 92%, 57%, 0.12);
+  --ln-system-red-30: hsla(352, 92%, 57%, 0.4);
+  --ln-system-red-50: hsla(352, 92%, 57%, 1);
+  --ln-system-red-70: hsla(352, 83%, 49%, 1);
+  --ln-system-red-90: hsla(352, 82%, 37%, 1);
+
+  --ln-system-yellow-10: hsla(42, 86%, 61%, 0.12);
+  --ln-system-yellow-30: hsla(42, 86%, 61%, 0.4);
+  --ln-system-yellow-50: hsla(42, 86%, 61%, 1);
+  --ln-system-yellow-70: hsla(48, 100%, 42%, 1);
+  --ln-system-yellow-90: hsla(48, 100%, 34%, 1);
+
+  --ln-system-green-10: hsla(159, 71%, 48%, 0.12);
+  --ln-system-green-30: hsla(159, 71%, 48%, 0.4);
+  --ln-system-green-50: hsla(159, 71%, 48%, 1);
+  --ln-system-green-70: hsla(159, 76%, 35%, 1);
+  --ln-system-green-90: hsla(158, 85%, 26%, 1);
+
+  --ln-system-info-10: var(--ln-gray-10);
+  --ln-system-info-30: var(--ln-gray-30);
+  --ln-system-info-50: var(--ln-gray-60);
+  --ln-system-info-70: var(--ln-gray-70);
+  --ln-system-info-90: var(--ln-gray-80);
+
+  --ln-border: var(--ln-gray-10);
+  --ln-border-row: var(--ln-gray-05);
+  --ln-border-strong: var(--ln-gray-20);
+  --ln-border-icon: var(--ln-gray-70);
+  --ln-border-ui-panel: var(--ln-gray-10);
+  --ln-border-button-light: var(--ln-gray-30);
+  --ln-border-field-and-button: var(--ln-gray-20);
+  --ln-border-field-and-button-shadow: hsla(0, 0%, 0%, 0);
+  --ln-border-floating-panel: var(--ln-border-strong);
+  --ln-border-context-menu: var(--ln-gray-30);
+
+  --ln-bg: var(--ln-gray-05);
+  --ln-bg-button-light: var(--ln-gray-20);
+  --ln-bg-page: hsla(230, 9%, 5%, 1);
+  --ln-bg-light: var(--ln-gray-00);
+  --ln-bg-strong: var(--ln-gray-10);
+  --ln-bg-row-hover: var(--ln-primary-05);
+  --ln-bg-row-alternate: var(--ln-gray-02);
+  --ln-bg-ui-panel: var(--ln-gray-00);
+  --ln-bg-form-field: var(--ln-gray-00);
+  --ln-bg-floating-panel: var(--ln-bg-default);
+  --ln-bg-context-menu: var(--ln-bg-strong);
+
+  --ln-text: var(--ln-gray-80);
+  --ln-text-dark: var(--ln-gray-90);
+  --ln-text-light: var(--ln-gray-70);
+  --ln-text-xlight: var(--ln-gray-60);
+  --ln-text-hyperlink: var(--ln-primary-50);
+  --ln-text-primary-button: hsla(0, 0%, 100%, 1);
+
+  --ln-system-row-pivot-fill: hsla(160, 100%, 43%, 0.14);
+  --ln-system-row-pivot-stroke: hsla(158, 100%, 55%, 0.35);
+  --ln-system-column-pivot-fill: hsla(259, 100%, 61%, 0.18);
+  --ln-system-column-pivot-stroke: hsla(259, 100%, 66%, 0.6);
+  --ln-system-column-group-fill: hsla(217, 100%, 54%, 0.19);
+  --ln-system-column-group-stroke: hsla(217, 100%, 54%, 0.58);
+}
