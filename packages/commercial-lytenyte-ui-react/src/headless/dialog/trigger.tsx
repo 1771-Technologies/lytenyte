@@ -18,15 +18,15 @@ function TriggerImpl(
 ) {
   const ctx = useDialogRoot();
 
-  const internalProps: JSX.IntrinsicElements["button"] & { "data-dialog-open": boolean } = {
+  const internalProps: JSX.IntrinsicElements["button"] & { "data-ln-dialog-open": boolean } = {
     onClick: () => ctx.onOpenChange(!ctx.open),
-    "data-dialog-open": ctx.open,
+    "data-ln-dialog-open": ctx.open,
     "aria-haspopup": "dialog",
     "aria-controls": ctx.open ? ctx.id : undefined,
   };
 
   const final = useSlot({
-    props: [internalProps, props],
+    props: [internalProps, props, { "data-ln-dialog-trigger": "true" }],
     ref: ref,
     slot: render ?? <button />,
     state: {

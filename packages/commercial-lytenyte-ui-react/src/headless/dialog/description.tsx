@@ -22,7 +22,7 @@ function DescriptionBase(
   };
 
   const final = useSlot({
-    props: [internalProps, props],
+    props: [internalProps, props, { "data-ln-dialog-description": "true" }],
     ref: ref,
     slot: render ?? <p />,
     state: {

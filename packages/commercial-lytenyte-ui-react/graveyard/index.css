@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+@custom-variant ln-dark (&:where(.ln-dark, .ln-dark *));
+@custom-variant ln-light (&:where(.ln-light, .ln-light *));
+@custom-variant ln-shadcn (&:where(.ln-shadcn, .ln-shadcn *));
+@custom-variant ln-teal (&:where(.ln-teal, .ln-teal *));
+@custom-variant ln-term (&:where(.ln-term, .ln-term *));
+@custom-variant ln-cotton-candy (&:where(.ln-cotton-candy, .ln-cotton-candy *));
+
+@plugin "@iconify/tailwind4" {
+  prefix: "ico";
+  prefixes: ph, svg-spinners;
+}
+
+@plugin "./src/plugins/transitions.js";
+
+@theme {
+  --font-sans:
+    "Inter Variable", Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Noto Color Emoji";
+
+  --font-inter:
+    "Inter Variable", Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Noto Color Emoji";
+
+  --color-ln-gray-00: var(--ln-gray-00);
+  --color-ln-gray-01: var(--ln-gray-01);
+  --color-ln-gray-02: var(--ln-gray-02);
+  --color-ln-gray-05: var(--ln-gray-05);
+  --color-ln-gray-10: var(--ln-gray-10);
+  --color-ln-gray-20: var(--ln-gray-20);
+  --color-ln-gray-30: var(--ln-gray-30);
+  --color-ln-gray-40: var(--ln-gray-40);
+  --color-ln-gray-50: var(--ln-gray-50);
+  --color-ln-gray-60: var(--ln-gray-60);
+  --color-ln-gray-70: var(--ln-gray-70);
+  --color-ln-gray-80: var(--ln-gray-80);
+  --color-ln-gray-90: var(--ln-gray-90);
+  --color-ln-gray-100: var(--ln-gray-100);
+  --color-ln-primary-05: var(--ln-primary-05);
+  --color-ln-primary-10: var(--ln-primary-10);
+  --color-ln-primary-30: var(--ln-primary-30);
+  --color-ln-primary-50: var(--ln-primary-50);
+  --color-ln-primary-70: var(--ln-primary-70);
+  --color-ln-primary-90: var(--ln-primary-90);
+  --color-ln-red-10: var(--ln-red-10);
+  --color-ln-red-30: var(--ln-red-30);
+  --color-ln-red-50: var(--ln-red-50);
+  --color-ln-red-70: var(--ln-red-70);
+  --color-ln-red-90: var(--ln-red-90);
+  --color-ln-yellow-10: var(--ln-yellow-10);
+  --color-ln-yellow-30: var(--ln-yellow-30);
+  --color-ln-yellow-50: var(--ln-yellow-50);
+  --color-ln-yellow-70: var(--ln-yellow-70);
+  --color-ln-yellow-90: var(--ln-yellow-90);
+  --color-ln-green-10: var(--ln-green-10);
+  --color-ln-green-30: var(--ln-green-30);
+  --color-ln-green-50: var(--ln-green-50);
+  --color-ln-green-70: var(--ln-green-70);
+  --color-ln-green-90: var(--ln-green-90);
+  --color-ln-info-10: var(--ln-info-10);
+  --color-ln-info-30: var(--ln-info-30);
+  --color-ln-info-50: var(--ln-info-50);
+  --color-ln-info-70: var(--ln-info-70);
+  --color-ln-info-90: var(--ln-info-90);
+  --color-ln-border: var(--ln-border);
+  --color-ln-border-row: var(--ln-border-row);
+  --color-ln-border-strong: var(--ln-border-strong);
+  --color-ln-border-icon: var(--ln-border-icon);
+  --color-ln-border-ui-panel: var(--ln-border-ui-panel);
+  --color-ln-border-button-light: var(--ln-border-button-light);
+  --color-ln-border-field-and-button: var(--ln-border-field-and-button);
+  --color-ln-border-field-and-button-shadow: var(--ln-border-field-and-button-shadow);
+  --color-ln-border-floating-panel: var(--ln-border-floating-panel);
+  --color-ln-border-context-menu: var(--ln-border-context-menu);
+  --color-ln-bg: var(--ln-bg);
+  --color-ln-bg-button-light: var(--ln-bg-button-light);
+  --color-ln-bg-page: var(--ln-bg-page);
+  --color-ln-bg-light: var(--ln-bg-light);
+  --color-ln-bg-strong: var(--ln-bg-strong);
+  --color-ln-bg-row-hover: var(--ln-bg-row-hover);
+  --color-ln-bg-row-alternate: var(--ln-bg-row-alternate);
+  --color-ln-bg-ui-panel: var(--ln-bg-ui-panel);
+  --color-ln-bg-form-field: var(--ln-bg-form-field);
+  --color-ln-bg-floating-panel: var(--ln-bg-floating-panel);
+  --color-ln-bg-context-menu: var(--ln-bg-context-menu);
+  --color-ln-text: var(--ln-text);
+  --color-ln-text-dark: var(--ln-text-dark);
+  --color-ln-text-light: var(--ln-text-light);
+  --color-ln-text-xlight: var(--ln-text-xlight);
+  --color-ln-text-hyperlink: var(--ln-text-hyperlink);
+  --color-ln-text-primary-button: var(--ln-text-primary-button);
+  --color-ln-row-pivot-fill: var(--ln-row-pivot-fill);
+  --color-ln-row-pivot-stroke: var(--ln-row-pivot-stroke);
+  --color-ln-column-pivot-fill: var(--ln-column-pivot-fill);
+  --color-ln-column-pivot-stroke: var(--ln-column-pivot-stroke);
+  --color-ln-column-group-fill: var(--ln-column-group-fill);
+  --color-ln-column-group-stroke: var(--ln-column-group-stroke);
+}
+
+:root {
+  @apply bg-page;
+}

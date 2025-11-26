@@ -22,7 +22,7 @@ function TitleBase(
   };
 
   const final = useSlot({
-    props: [internalProps, props],
+    props: [internalProps, props, { "data-ln-dialog-title": "true" }],
     ref: ref,
     slot: render ?? <h2 />,
     state: {
