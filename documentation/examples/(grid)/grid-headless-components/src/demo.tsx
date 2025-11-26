@@ -20,11 +20,11 @@ const [under30, under50, over50] = Object.values(
 
 type BankData = (typeof bankDataSmall)[number];
 const finalData = [
-  { id: "full-width", label: "Under 30" } as unknown as BankData,
+  { id: "full-width", label: "Under 30 Years Old" } as unknown as BankData,
   ...under30,
-  { id: "full-width", label: "Under 50" } as unknown as BankData,
+  { id: "full-width", label: "Between 30 and 50 Years Old" } as unknown as BankData,
   ...under50,
-  { id: "full-width", label: "Over 50" } as unknown as BankData,
+  { id: "full-width", label: "Over 50 Years Old" } as unknown as BankData,
   ...over50,
 ];
 
@@ -63,7 +63,7 @@ export default function ColumnGroupExpansions() {
       const data = r.row.data as { label: string };
 
       return (
-        <div className="text-ln-gray-70 flex h-full w-full items-center justify-center font-bold">
+        <div className="text-ln-gray-70 border-ln-gray-20 flex h-full w-full items-center justify-center border-b font-bold">
           {data.label}
         </div>
       );
@@ -136,7 +136,8 @@ function RowSection<D = any>({
   return (
     <Section>
       {rows.map((row) => {
-        if (row.kind === "full-width") return <Grid.RowFullWidth key={row.id} row={row} />;
+        if (row.kind === "full-width")
+          return <Grid.RowFullWidth style={{ borderBottom: 0 }} key={row.id} row={row} />;
         return (
           <Grid.Row row={row} key={row.id}>
             {row.cells.map((c) => {

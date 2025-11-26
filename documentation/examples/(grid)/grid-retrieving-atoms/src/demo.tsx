@@ -66,7 +66,7 @@ export default function GridReactivitySignal() {
             else alert(`There are ${rowsSelected} rows selected.`);
           }}
         >
-          Selected rows count
+          Count Selected Rows
         </GridButton>
       </div>
       <div style={{ height: 500 }}>

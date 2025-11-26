@@ -118,7 +118,7 @@ export function GridButton(props: JSX.IntrinsicElements["button"]) {
       {...props}
       className={tw(
         "dark:border-ln-gray-30 border-ln-gray-60 hover:bg-ln-gray-20 text-ln-gray-80 flex h-10 cursor-pointer items-center gap-2 rounded-lg border px-2 text-sm font-semibold shadow-lg transition-colors",
-        "shadow-[0_2px_2px_0_hsla(176,64%,5%,0.22)] shadow-[inset_0_0_11px_0_hsla(176,55%,89%,0.12)] backdrop-blur-[10px]",
+        "shadow-[inset_0_0_11px_0_hsla(176,55%,89%,0.12)] backdrop-blur-[10px]",
         props.className,
       )}
     ></button>
@@ -137,13 +137,13 @@ export function SwitchToggle(props: {
         {props.label}
       </label>
       <Switch.Root
-        className="bg-ln-gray-00 border-ln-gray-30 data-[state=checked]:bg-ln-gray-10 relative h-[22px] w-[38px] cursor-default cursor-pointer rounded-full border outline-none"
+        className="bg-ln-gray-10 data-[state=checked]:bg-ln-gray-40 relative h-[22px] w-[38px] cursor-pointer rounded-full border outline-none"
         id={id}
         checked={props.checked}
         onCheckedChange={(c) => props.onChange(c)}
         style={{ "-webkit-tap-highlight-color": "rgba(0, 0, 0, 0)" } as CSSProperties}
       >
-        <Switch.Thumb className="bg-ln-primary-50 block size-[20px] translate-x-0 rounded-full shadow transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-[15px]" />
+        <Switch.Thumb className="block size-[18px] translate-x-[2px] rounded-full bg-white/95 shadow transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-[16px] data-[state=checked]:bg-white" />
       </Switch.Root>
     </div>
   );

@@ -63,7 +63,7 @@ export default function ColumnGroupExpansions() {
       const data = r.row.data as { label: string };
 
       return (
-        <div className="text-ln-gray-70 border-ln-gray-30 flex h-full w-full items-center justify-center border-b font-bold">
+        <div className="text-ln-gray-70 border-ln-gray-20 flex h-full w-full items-center justify-center border-b font-bold">
           {data.label}
         </div>
       );
@@ -136,7 +136,8 @@ function RowSection<D = any>({
   return (
     <Section>
       {rows.map((row) => {
-        if (row.kind === "full-width") return <Grid.RowFullWidth key={row.id} row={row} />;
+        if (row.kind === "full-width")
+          return <Grid.RowFullWidth style={{ borderBottom: 0 }} key={row.id} row={row} />;
         return (
           <Grid.Row row={row} key={row.id}>
             {row.cells.map((c) => {

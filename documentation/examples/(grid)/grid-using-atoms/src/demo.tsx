@@ -117,5 +117,5 @@ function RenderSelectionCount({ rowSelectedIds }: { rowSelectedIds: GridAtom<Set
       ? "There is 1 row selected."
       : `There are ${selectedRows.size} rows selected.`;
 
-  return <div className="text-ln-gray-100 border-b px-2 py-2 text-[15px]">{text}</div>;
+  return <div className="border-b px-2 py-2 text-[15px]">{text}</div>;
 }
