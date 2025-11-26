@@ -91,27 +91,25 @@ export default function Theming() {
         <div style={{ paddingBlockStart: "32px", paddingBlockEnd: "8px" }}>System Red</div>
         <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
           {system.map((x) => {
-            return <ColorBox key={x} color={`var(--ln-system-red-${x})`} label={`Red ${x}`} />;
+            return <ColorBox key={x} color={`var(--ln-red-${x})`} label={`Red ${x}`} />;
           })}
         </div>
         <div style={{ paddingBlockStart: "32px", paddingBlockEnd: "8px" }}>System Yellow</div>
         <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
           {system.map((x) => {
-            return (
-              <ColorBox key={x} color={`var(--ln-system-yellow-${x})`} label={`Yellow ${x}`} />
-            );
+            return <ColorBox key={x} color={`var(--ln-yellow-${x})`} label={`Yellow ${x}`} />;
           })}
         </div>
         <div style={{ paddingBlockStart: "32px", paddingBlockEnd: "8px" }}>System Green</div>
         <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
           {system.map((x) => {
-            return <ColorBox key={x} color={`var(--ln-system-green-${x})`} label={`Green ${x}`} />;
+            return <ColorBox key={x} color={`var(--ln-green-${x})`} label={`Green ${x}`} />;
           })}
         </div>
         <div style={{ paddingBlockStart: "32px", paddingBlockEnd: "8px" }}>System Info</div>
         <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
           {system.map((x) => {
-            return <ColorBox key={x} color={`var(--ln-system-info-${x})`} label={`Info ${x}`} />;
+            return <ColorBox key={x} color={`var(--ln-info-${x})`} label={`Info ${x}`} />;
           })}
         </div>
         <div style={{ paddingBlockStart: "32px", paddingBlockEnd: "8px" }}>Borders</div>
@@ -153,7 +151,7 @@ export default function Theming() {
         <div style={{ paddingBlockStart: "32px", paddingBlockEnd: "8px" }}>Pill</div>
         <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
           {pills.map((x) => {
-            return <ColorBox key={x} color={`var(--ln-system-${x})`} label={`Pill ${x}`} />;
+            return <ColorBox key={x} color={`var(--ln-${x})`} label={`Pill ${x}`} />;
           })}
         </div>
       </div>
