@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@1771technologies/lytenyte-pro": "1.0.18",
+    "@1771technologies/lytenyte-pro": "1.0.19",
     "@1771technologies/grid-sample-data": "1.0.19",
     "@ark-ui/react": "^5.9.0",
     "@base-ui-components/react": "1.0.0-beta.2",
