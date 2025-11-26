@@ -137,7 +137,7 @@ export function SwitchToggle(props: {
         {props.label}
       </label>
       <Switch.Root
-        className="bg-ln-gray-00 border-ln-gray-30 data-[state=checked]:bg-ln-gray-10 relative h-[22px] w-[38px] cursor-default cursor-pointer rounded-full border outline-none"
+        className="bg-ln-gray-30 border-ln-gray-30 data-[state=checked]:bg-ln-gray-30 relative h-[22px] w-[38px] cursor-default cursor-pointer rounded-full border outline-none"
         id={id}
         checked={props.checked}
         onCheckedChange={(c) => props.onChange(c)}

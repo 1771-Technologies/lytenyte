@@ -8,7 +8,7 @@ description: This guide explains how to listen for and handle grid events.
 
 LyteNyte Grid defines its own events that fire on specific user interactions.
 This guide does not cover every event that can cause the grid to fire.
-For more information, refer to the Events API reference](/docs/reference/events)
+For more information, refer to the Events [API reference](/docs/reference/events)
 for details on individual events.
 
 ### Listening to Events
@@ -30,7 +30,7 @@ should feel familiar to React developers.
 ></Grid.Root>
 ```
 
-### Cancelling LyteNyte Events
+### Cancelling Events
 
 The row selection event that's been used in this guide so far is named `onRowSelectEnd`.
 Many LyteNyte Grid events are split into two or more phases because some actions may be asynchronous.
@@ -100,10 +100,9 @@ grid-specific event system. This note exists to prevent confusion with DOM event
 
 ## Grid Component Event Listeners
 
-If you review the list of events in the
-[API reference](/docs/reference/events), you will notice that all of them are tied to grid-specific
-interactions. LyteNyte Grid does not define events such as cell-clicked events or scroll events.
-This design follows the headless component architecture.
+If you review the list of events in the [API Reference](/docs/reference/events),
+you will notice that all of them are tied to grid-specific interactions. LyteNyte Grid does not define
+events such as cell-clicked events or scroll events.This design follows the headless component architecture.
 
 Grid components accept normal DOM event listeners, which you can use for common interactions.
 You do not need to learn a custom system for these cases. For example, you can add a scroll
