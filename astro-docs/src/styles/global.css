@@ -1,0 +1,168 @@
+@import "tailwindcss";
+
+html {
+  scrollbar-width: thin;
+  scrollbar-gutter: stable;
+}
+
+body {
+  /* 1. MacOS / iOS specific: Enables subpixel antialiasing */
+  -webkit-font-smoothing: antialiased;
+  /* 2. Firefox specific: Thins out the font slightly for better readability */
+  -moz-osx-font-smoothing: grayscale;
+  /* 3. Standard property (improves kerning and ligatures) */
+  text-rendering: optimizeLegibility;
+  /* 4. Optional: Fixes potential layout shifts when fonts load */
+  text-size-adjust: 100%;
+}
+
+:root {
+  --color-gray-50: oklch(0.985 0.002 247.839);
+  --color-gray-100: oklch(0.967 0.003 264.542);
+  --color-gray-200: oklch(0.928 0.006 264.531);
+  --color-gray-300: oklch(0.872 0.01 258.338);
+  --color-gray-400: oklch(0.707 0.022 261.325);
+  --color-gray-500: oklch(0.551 0.027 264.364);
+  --color-gray-600: oklch(0.446 0.03 256.802);
+  --color-gray-700: oklch(0.373 0.034 259.733);
+  --color-gray-800: oklch(0.278 0.033 256.848);
+  --color-gray-900: oklch(0.21 0.034 264.665);
+  --color-gray-950: oklch(0.13 0.028 261.692);
+}
+
+[data-theme="dark"] {
+  --color-gray-950: oklch(0.935 0.002 247.839);
+  --color-gray-900: oklch(0.917 0.003 264.542);
+  --color-gray-800: oklch(0.878 0.006 264.531);
+  --color-gray-700: oklch(0.822 0.01 258.338);
+  --color-gray-600: oklch(0.657 0.022 261.325);
+  --color-gray-500: oklch(0.501 0.027 264.364);
+  --color-gray-400: oklch(0.376 0.03 256.802);
+  --color-gray-300: oklch(0.303 0.034 259.733);
+  --color-gray-200: oklch(0.208 0.033 256.848);
+  --color-gray-100: oklch(0.12 0.034 264.665);
+  --color-gray-50: oklch(0.02 0.028 261.692);
+}
+
+@custom-variant dark {
+  &:where([data-theme="dark"] *) {
+    @slot;
+  }
+}
+
+@theme {
+  --spacing-header: 52px;
+  --spacing-subheader: 40px;
+  --spacing-sidenav: 280px;
+  --spacing-pagenav: 200px;
+
+  --color-gray-50: var(--color-gray-50);
+  --color-gray-100: var(--color-gray-100);
+  --color-gray-200: var(--color-gray-200);
+  --color-gray-300: var(--color-gray-300);
+  --color-gray-400: var(--color-gray-400);
+  --color-gray-500: var(--color-gray-500);
+  --color-gray-600: var(--color-gray-600);
+  --color-gray-700: var(--color-gray-700);
+  --color-gray-800: var(--color-gray-800);
+  --color-gray-900: var(--color-gray-900);
+  --color-gray-950: var(--color-gray-950);
+
+  --text-sm: 15px;
+}
+
+@utility step {
+  counter-increment: step;
+  @apply relative;
+
+  &:before {
+    @apply right-0 mr-2 hidden size-7 items-center justify-center rounded-full text-center -indent-px font-mono text-sm font-medium text-gray-500 md:absolute;
+    content: counter(step);
+  }
+}
+
+@utility no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.no-transition * {
+  transition-duration: 0s !important;
+  animation-duration: 0s !important;
+}
+
+.prose:not(.not-prose) {
+  @apply text-sm text-gray-600;
+
+  h1 {
+    @apply mt-2 scroll-m-28 text-3xl font-bold tracking-tight;
+  }
+
+  h2 {
+    @apply [&+*]:[code]:text-xl [&+.steps]:mt-0! [&+.steps>h3]:mt-4! [&+h3]:mt-6! [&+p]:mt-4! mt-10 scroll-m-28 text-xl font-medium tracking-tight first:mt-0 lg:mt-16;
+  }
+
+  h3 {
+    @apply [&+p]:mt-4! *:[code]:text-xl mt-12 scroll-m-28 text-lg font-medium tracking-tight;
+  }
+
+  h4 {
+    @apply mt-8 scroll-m-28 text-base font-medium tracking-tight;
+  }
+
+  h5 {
+    @apply mt-8 scroll-m-28 text-base font-medium tracking-tight;
+  }
+
+  h6 {
+    @apply mt-8 scroll-m-28 text-base font-medium tracking-tight;
+  }
+
+  a {
+    @apply font-medium underline underline-offset-4;
+  }
+
+  p {
+    @apply not-first:mt-6 leading-relaxed;
+  }
+
+  strong {
+    @apply font-semibold text-gray-800;
+  }
+
+  ul {
+    @apply my-6 ml-6 list-disc;
+  }
+  ol {
+    @apply my-6 ml-6 list-decimal;
+  }
+  li {
+    @apply mt-2;
+  }
+  blockquote {
+    @apply mt-6 border-l-2 pl-6 italic;
+  }
+  img {
+    @apply my-2 rounded-md;
+  }
+  hr {
+    @apply my-4 md:my-8;
+  }
+
+  table {
+    @apply relative w-full overflow-hidden border-none text-sm [&_tbody_tr:last-child]:border-b-0;
+  }
+  th {
+    @apply [[align=center]]:text-center [[align=right]]:text-right px-4 py-2 text-left font-bold;
+  }
+  td {
+    @apply [[align=center]]:text-center [[align=right]]:text-right whitespace-nowrap px-4 py-2 text-left;
+  }
+  pre {
+    @apply no-scrollbar min-w-0 overflow-x-auto px-4 py-3.5 outline-none has-[[data-slot=tabs]]:p-0 has-[[data-highlighted-line]]:px-0 has-[[data-line-numbers]]:px-0;
+  }
+}
