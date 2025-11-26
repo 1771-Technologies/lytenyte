@@ -1,0 +1,55 @@
+---
+import "../styles/global.css";
+import ThemeToggle from "../components/theme-toggle/theme-toggle.astro";
+import ThemeScript from "../components/theme-toggle/theme-script.astro";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <ThemeScript />
+  </head>
+  <body class="bg-gray-50 text-gray-950">
+    <div class="sticky top-0 z-10">
+      <header class="h-header border-b border-gray-200 bg-gray-50">
+        <ThemeToggle />
+      </header>
+      <aside class="h-subheader border-b border-gray-200 bg-gray-50"></aside>
+    </div>
+    <div
+      class="relative min-h-[calc(100vh-var(--spacing-header)-var(--spacing-subheader))] container px-4 sm:px-0 mx-auto flex flex-col"
+    >
+      <div class="flex-1 flex">
+        <div
+          class:list={[
+            "w-sidenav min-w-sidenav max-w-sidenav py-8 sticky top-[calc(var(--spacing-header)+var(--spacing-subheader))]",
+            "overflow-auto contain-strict no-scrollbar",
+            "h-[calc(100vh-var(--spacing-header)-var(--spacing-subheader))]",
+            "hidden xl:block",
+          ]}
+        >
+          Side Nav
+        </div>
+        <div class="flex-1 flex flex-col">
+          <main class="flex-1 flex flex-row-reverse">
+            <aside
+              class:list={[
+                "w-sidenav min-w-sidenav max-w-sidenav sticky top-[calc(var(--spacing-header)+var(--spacing-subheader))] h-0 py-8",
+                "hidden lg:block",
+              ]}
+            >
+              On this
+            </aside>
+            <div class="flex-1 p-8 prose max-w-4xl mx-auto">
+              <slot />
+            </div>
+          </main>
+          <footer class="h-pagenav w-full lg:w-[calc(100%-var(--spacing-pagenav))]"></footer>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

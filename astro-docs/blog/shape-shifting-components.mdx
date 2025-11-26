@@ -1,0 +1,565 @@
+---
+title: "Shape-Shifting Components: Mastering Render Props in React"
+---
+
+The **render prop** pattern in React is a familiar concept, but one that can introduce subtle issues. It
+often leads to performance bottlenecks, increases garbage collection frequency, and may interfere
+with otherwise stable third-party components. It can also slow your TypeScript language server,
+causing IntelliSense to lag or become unresponsive, making your Editor feel like a janky mess.
+
+Despite these drawbacks, nearly every UI component library offers some variant of the render prop
+pattern. The reason is clear: it provides an impressive level of flexibility with relatively little DX overhead.
+The experience is so smooth it often conceals the messy complexity underneath and the footguns
+waiting for maintainers who aren't paying attention.
+
+This post explores the render prop as a general concept and proposes what I believe to be a
+practical, less surprising way to approach this pattern, particularly in UI component libraries. I'm not
+introducing a new pattern in this post. I'm modernizing a good one that still holds up—just with fewer
+sharp edges.
+
+## About Me
+
+I'm Lee, a software engineer with around decade of hands-on experience, primarily in the finance industry
+at firms like Citadel and Jane Street.
+
+I'm also the co-founder of [1771 Technologies](https://www.1771technologies.com/), where I'm building
+[LyteNyte Grid](https://www.1771technologies.com/demo) a next-generation React
+Data Grid built for developers who care about speed, stability, and clean API design.
+
+If you found this post useful or if you're just passionate about frontend performance, check out our work
+and consider leaving a star on [GitHub](https://github.com/1771-Technologies/lytenyte).
+It helps more than you might think.
+
+## What This Post Covers
+
+- The `as` prop: its purpose, its popularity, and reasons to move away from it.
+- The `asChild` prop: made popular by the
+  [Radix UI library](https://www.radix-ui.com/primitives/docs/overview/introduction).
+- Modern approaches to polymorphism in React components.
+- Finally, the `useSlot` pattern: a stable, predictable alternative inspired by `asChild`.
+
+This guide is intended to provide a more grounded understanding of the render prop pattern and how
+to implement it effectively in a modern React codebase, without accidentally building a complexity
+machine.
+
+## Base Knowledge
+
+Feel free to skip this section if you're already familiar with what a render prop is. This is intended
+for newer React developers or anyone not yet comfortable with the pattern.
+
+A render prop is simply a prop that accepts JSX or a function that returns JSX as its value. If you've
+done any React development, you're already familiar with one common example: the `children` prop.
+Consider these two equivalent snippets:
+
+```tsx
+<MyComponent>{children}</MyComponent>
+
+<MyComponent children={children} />
+```
+
+> [!note]
+> Some developers distinguish between render props that are JSX and those that are functions
+> returning JSX. While that distinction can be made, in practice, they are often interchangeable from
+> the perspective of a library author. For simplicity, we will treat them the same here.
+
+This is common knowledge: `children` is just a prop. React passes it automatically when you nest
+components between opening and closing tags, but this is not a requirement. You could pass `children`
+like any other prop.
+
+You can also redefine `children` in your own component. For example, you can make the `children`
+prop a function and handle calling it in your component:
+
+```tsx
+function MyComponent(props: { children: () => ReactNode }) {
+  return <div>{props.children()}</div>;
+}
+```
+
+React handles the children prop by default, but it is still just a prop, even if it comes with special
+behavior in certain cases like cloning elements. Because of that, nothing stops us from using
+other props like children. A good example is a button with an icon:
+
+```tsx
+<MyButtonWithIcon icon={<DownloadIcon />}>Click me</MyButtonWithIcon>
+```
+
+In this case, the `icon` prop accepts JSX. That makes it a render prop too. It's conceptually
+and practically similar to `children`, just with a different name.
+
+So how might you implement this in a component?
+
+```tsx
+function MyButtonWithIcon({
+  icon,
+  children,
+}: PropsWithChildren<{ icon: ReactNode | (() => ReactNode) }>) {
+  return (
+    <button>
+      {typeof icon === "function" ? icon() : icon}
+      {children}
+    </button>
+  );
+}
+```
+
+This is a basic render prop pattern, and it sets the foundation for the next step: the `as` render prop
+pattern, also known as the component render prop pattern or polymorphic render prop pattern.
+
+## The `as` Pattern
+
+The `as` pattern (also referred to as _polymorphic components_ if you're trying to sound more
+impressive than necessary) is a render prop-based approach that allows a component to render a
+different base element.
+
+A common use case is enabling support for router-specific `Link` components while maintaining a
+single, styled component API. This allows UI libraries to remain agnostic to routing frameworks
+without sacrificing styling or customization.
+
+For example, in the MUI UI component library, a recommended usage pattern looks like this:
+
+```tsx
+<Router>
+  <Link component={RouterLink} to="/">
+    With prop forwarding
+  </Link>
+  <br />
+  <Link component={LinkBehavior}>Without prop forwarding</Link>
+</Router>
+```
+
+Here, `component` is used instead of `as`, but the concept is exactly the same.
+
+So why is it called the `as` pattern? The terminology became popular thanks to the
+[Styled Components](https://styled-components.com/) library, which used `as` as the prop name.
+The library saw wide adoption, and the naming convention stuck.
+
+Under the hood, it's still just a render prop pattern. Different name, same underlying behavior.
+
+### The Pattern Implementation
+
+The `as` pattern is relatively straightforward to implement. It usually looks something like this:
+
+```tsx
+function MyPolymorphicComponent({ as, ...props }: ComponentProps) {
+  const Comp = as ?? "div";
+
+  return <Comp {...props} />;
+}
+```
+
+That's it. In case you didn't know, the `"div"` string is equivalent to writing <div />. Yes, you can
+use a string as a JSX component, as long as it's a valid HTML tag.
+
+Since render props are all about developer experience, we can't ignore prop typing. Fortunately,
+typing the `as` prop is also fairly manageable:
+
+```ts
+import type { ElementType, ComponentPropsWithoutRef, ComponentPropsWithRef } from "react";
+
+type WithAs<
+  E extends ElementType,
+  Props extends Record<string, unknown>,
+> = ComponentPropsWithoutRef<E> & {
+  ref?: ComponentPropsWithRef<E>["ref"];
+} & Props & { as?: E };
+```
+
+The type is relatively straightforward, but let's walk through its individual parts:
+
+- `E extends ElementType` defines `E` as any valid React component. `ElementType` is provided by React
+  and includes both intrinsic HTML elements like `"div"` and custom function or class components.
+
+- `Props` represents the unique, custom props specific to the polymorphic component you're building.
+
+- `ComponentPropsWithoutRef<E>` retrieves all props for the component `E`, excluding `ref`. This is a
+  performance-conscious choice. Using `ComponentPropsWithRef` here leads to more type computations
+  in TypeScript, especially for complex components. So we separate the `ref` typing out manually.
+
+- `{ ref?: ComponentPropsWithRef<E>["ref"] }` adds back in the `ref` prop, but only its type. This
+  avoids overloading the type system while still supporting proper `ref` usage.
+
+- `{ as?: E }` is the prop that drives polymorphism. It lets the caller choose which component to render.
+  While it could be named anything, `as` has become the de facto standard across libraries.
+
+### A Full Pattern Example
+
+Below is a complete implementation example using the pattern with a simple `Counter` component.
+
+The example is annotated to highlight how each part contributes to polymorphic behavior. Make sure
+you understand the concepts before continuing to the next section, where we'll explore how this
+pattern has evolved in modern UI libraries.
+
+```tsx
+import type {
+  ElementType,
+  ComponentPropsWithoutRef,
+  ComponentPropsWithRef,
+  ReactNode,
+} from "react";
+import { forwardRef } from "react";
+
+// Define a utility type for polymorphic components
+type WithAs<E extends ElementType, Props = {}> = ComponentPropsWithoutRef<E> & {
+  ref?: ComponentPropsWithRef<E>["ref"];
+} & Props & { as?: E };
+
+// Define a simple set of props unique to our component
+type CounterProps = {
+  count: number;
+  label?: string;
+  children?: ReactNode;
+};
+
+// Create the polymorphic component using `forwardRef`
+const Counter = forwardRef(
+  <E extends ElementType = "div">(
+    props: WithAs<E, CounterProps>,
+    ref: ComponentPropsWithRef<E>["ref"],
+  ) => {
+    const { as, count, label = "Count", children, ...rest } = props;
+
+    const Component = as ?? "div";
+
+    return (
+      <Component ref={ref} {...rest}>
+        <strong>{label}:</strong> {count}
+        {children && <div>{children}</div>}
+      </Component>
+    );
+  },
+);
+
+Counter.displayName = "Counter";
+```
+
+This implementation allows Counter to render as any valid HTML tag or React component via the as
+prop. By default, it falls back to a `div`.
+
+You could use it like this:
+
+```tsx
+<Counter as="section" count={42} label="Score" className="p-4 border" />
+
+<Counter as="button" count={10} onClick={() => alert("Clicked!")}>
+  Clickable Count
+</Counter>
+
+```
+
+## The `asChild` Pattern
+
+The `as` pattern, while useful, does come with some downsides:
+
+- **Prop merging ambiguity**
+  - What happens to internal props that the component needs?
+  - What if the component you're rendering is generic?
+  - How are events overridden or merged?
+
+- **Slower type inference**  
+  TypeScript has improved significantly in recent years, but type inference involving the `as` prop
+  remains relatively costly. Developers often notice their editors becoming sluggish as polymorphic
+  components accumulate in a codebase.
+
+- **Prop origin confusion**  
+  It becomes difficult to distinguish between props expected by the original component and those
+  passed through the render prop.
+
+To address these challenges, the team behind
+[Radix UI](https://www.radix-ui.com/primitives/docs/overview/introduction) introduced a
+variation: the `asChild` pattern.
+
+Instead of accepting a render prop, components expose a boolean `asChild` prop. When this is set,
+the component defers rendering to its direct child, using that element as its visual base.
+
+Let's revisit our earlier `Link` example. With the `asChild` pattern, it would look like this:
+
+```tsx
+<Link asChild href="/">
+	<RouterLink href="/" />
+</LinK>
+```
+
+Perhaps you've already noticed one of the tradeoffs of this pattern: repeated props, or potentially
+conflicting prop types.
+
+The core idea behind the `asChild` pattern is to take the parent's props, merge them with the child's props,
+and render the result. While this process introduces complexity—especially around props,
+events, and refs, it proves to be highly effective in most practical cases.
+
+I won't dive into the implementation here (mainly to keep this article to a reasonable length), but
+you can explore the [Radix UI source code](https://github.com/radix-ui/primitives/blob/main/packages/react/slot/src/slot.tsx)
+for a working example.
+
+The `asChild` pattern offers several key improvements over the `as` pattern:
+
+- **Supports generic components**  
+  Since no type merging is required, you can safely render generic child elements.
+
+- **Better TypeScript performance**  
+  Type inference remains fast and won't degrade as usage scales.
+
+- **Clear prop ownership**  
+  It's much easier to understand which props are meant for which element.
+
+- **Advanced merging options**  
+  The pattern enables more powerful merging strategies, including for `ref` and event props.
+
+- **Contextual flexibility**  
+  The child element can reference values from the surrounding scope or closure. This is a major
+  ergonomic win for component composition.
+
+The `asChild` pattern retains the flexibility of the `as` prop pattern but avoids many of its
+performance and maintainability issues.
+
+Where the pattern evolves next is less obvious. But there are some interesting directions to explore
+and one in particular that I believe strikes the best balance. We'll look at that next.
+
+## The `baseUI` Render Prop
+
+The [Base UI](https://base-ui.com/react/utils/use-render) library introduces a unique variation on the
+render prop pattern. Inspired by the `asChild` pattern, it attempts to retain the same benefits, clean
+prop merging, flexible composition, while adding something new: access to component state from
+within the render prop.
+
+In Base UI's approach, components explicitly expose their internal state to the render function,
+enabling more dynamic behavior without compromising encapsulation.
+
+Here's an excerpt adapted from one of Base UI's examples. The main innovation is the ability to define
+and expose internal state directly to a render prop:
+
+```tsx
+"use client";
+import * as React from "react";
+import { useRender } from "@base-ui-components/react/use-render";
+import { mergeProps } from "@base-ui-components/react/merge-props";
+import styles from "./index.module.css";
+
+interface CounterState {
+  odd: boolean;
+}
+
+interface CounterProps extends useRender.ComponentProps<"button", CounterState> {}
+
+function Counter(props: CounterProps) {
+  const { render = <button />, ...otherProps } = props;
+
+  const [count, setCount] = React.useState(0);
+  const odd = count % 2 === 1;
+  const state = React.useMemo(() => ({ odd }), [odd]);
+
+  const defaultProps: useRender.ElementProps<"button"> = {
+    className: styles.Button,
+    type: "button",
+    children: (
+      <React.Fragment>
+        Counter: <span>{count}</span>
+      </React.Fragment>
+    ),
+    onClick() {
+      setCount((prev) => prev + 1);
+    },
+    "aria-label": `Count is ${count}, click to increase.`,
+  };
+
+  const { renderElement } = useRender({
+    render,
+    state,
+    props: mergeProps<"button">(defaultProps, otherProps),
+  });
+
+  return renderElement();
+}
+
+export default function ExampleCounter() {
+  return (
+    <Counter
+      render={(props, state) => (
+        <button {...props}>
+          {props.children}
+          <span className={styles.suffix}>{state.odd ? "👎" : "👍"}</span>
+        </button>
+      )}
+    />
+  );
+}
+```
+
+The implementation of the hook behind this pattern is fairly complex, but using it is relatively simple.
+All components in the Base UI library follow this model, making it a versatile and flexible system.
+
+However, the pattern does come with tradeoffs. Merging props dynamically leads to increased
+memory allocation. It also requires more upfront work when designing a new component library.
+
+The hook itself introduces complexity that may not scale well in large codebases. While it's likely
+that the Base UI team will continue iterating on this approach, I'm not convinced further investment
+is worthwhile. At some point, the added abstraction doesn't justify the cost; the juice may not be
+worth the squeeze.
+
+## Render Hooks
+
+The [Render Hooks](https://github.com/brandonmcconnell/render-hooks) library offers another
+distinct take on render props, introducing a unique implementation that allows React hooks to be used
+inside a function based render prop.
+
+This pattern unlocks a powerful composition strategy, where logic can be colocated with UI without
+violating the rules of hooks.
+
+Here's a simplified example adapted from their documentation:
+
+```tsx
+import $ from "render-hooks";
+
+export function Counter() {
+  return (
+    <$>
+      {({ useState }) => {
+        const [n, set] = useState(0);
+        return <button onClick={() => set(n + 1)}>Clicked {n}</button>;
+      }}
+    </$>
+  );
+}
+```
+
+The most interesting aspect of Render Hooks is how it enables hooks to be used in places where they
+would be especially useful, but where React normally doesn't allow them.
+
+Surprisingly, the implementation is quite simple and doesn't add much to your bundle size. It's a clever
+idea with real technical merit.
+
+That said, I believe this pattern should generally be avoided.
+
+The fact that you need hooks inside a render prop often signals a deeper issue in your component
+architecture. While it's a novel and creative solution, introducing hooks in unconventional places adds
+cognitive overhead and can lead to subtle, hard-to-trace bugs.
+
+If you're reaching for this pattern, it's likely time to rethink the structure of your component.
+
+## `useSlot`
+
+Finally, I'd like to introduce the `useSlot` hook, which I created to address some of the limitations of
+existing patterns. It borrows heavily from Radix UI's `asChild` implementation, but aims to offer a more
+flexible and composable alternative.
+
+My view is that the `asChild` pattern does an excellent job of covering the render prop use case. The
+main drawback is that it exclusively targets the `children` slot, which limits where the rendered content
+can appear.
+
+With `useSlot`, the goal is to allow any prop, whether a function or JSX, to act as a render slot,
+without being locked into `children`. In addition, I wanted an implementation that works well with
+`React.memo` and is compatible with future optimizations from the React compiler.
+
+So how does it work? Usage is simple. It behaves just like a traditional render prop:
+
+```tsx
+<Link as={<RouterLink href="/" />} href="/" />
+```
+
+Cosmetically, this looks very similar to the `asChild` pattern—except we use a named prop like `as`
+instead of relying on `children`. And in practice, that's mostly accurate.
+
+However, this pattern improves on the `asChild` approach in two key ways:
+
+1. The internal implementation is slightly more efficient.
+2. It supports multiple "slots" within a single component.
+
+This means you're not limited to a single render target like `children`. For example, you can define a
+button component with both `startIcon` and `endIcon` slots:
+
+```tsx
+import { useSlot, type SlotComponent } from "@1771technologies/lytenyte-react-hooks";
+import { type JSX } from "react";
+
+export function MyFancyButton({
+  as,
+  iconStart: startSlot,
+  iconEnd: endSlot,
+  ref,
+  ...props
+}: JSX.IntrinsicElements["div"] & {
+  as?: SlotComponent;
+  iconStart?: SlotComponent;
+  iconEnd?: SlotComponent;
+}) {
+  // we could even provide a default icon here
+  const iconStart = useSlot({ slot: startSlot ?? <></> });
+  const iconEnd = useSlot({ slot: endSlot ?? <></> });
+
+  const buttonSlot = useSlot({
+    slot: as ?? <button />,
+    props: {
+      ...props,
+      children: (
+        <>
+          {iconStart}
+          {props.children}
+          {iconEnd}
+        </>
+      ),
+      ref,
+    },
+  });
+
+  return buttonSlot;
+}
+```
+
+Then to use the `MyFancyButton` component it would just be:
+
+```tsx
+<MyFancyButton
+  iconStart={<DownloadIcon />}
+  iconEnd={
+    <button>
+      <TrashIcon />
+    </button>
+  }
+>
+  Click me
+</MyFancyButton>
+```
+
+The implementation of the `useSlot` hook is also straightforward. You can check out the source code
+[here](https://github.com/1771-Technologies/lytenyte/blob/road_to_v1/v1-migration-folder/packages/react-hooks/src/use-slot/use-slot.tsx).
+
+### What Makes the `useSlot` Pattern Stand Out
+
+- **Supports multiple slots**  
+  Unlike `asChild`, this pattern supports more than one slot. Each slot can accept either JSX or a
+  function render prop.
+
+- **Intelligent prop merging**  
+  Props like `style`, `className`, and event handlers are merged correctly without overwriting
+  behavior.
+
+- **Children semantics**  
+  Both the render prop and the component can supply children. In cases of overlap, the last child
+  wins—making the behavior predictable and override-friendly.
+
+- **Works with the React compiler**  
+  Designed to play nicely with compiler optimizations out of the box.
+
+- **Custom state exposure**  
+  Allows internal component state to be exposed to render props, without binding state to a specific
+  implementation.
+
+In my view, the `useSlot` hook offers the most ergonomic and complete approach to implementing
+render props. Its API is both flexible and straightforward.
+
+## Conclusion
+
+Render props continue to be a powerful tool for creating flexible, composable components in React.
+But not all patterns are created equal. While the traditional `as` prop offers an accessible entry point,
+it brings complexity, ambiguity, and performance costs that scale poorly in large codebases.
+
+The `asChild` pattern refined these ideas by introducing clearer prop boundaries and better developer
+experience. But even it has limitations, chiefly, being tied to the `children` slot.
+
+The `useSlot` hook is a further evolution. It combines the flexibility of multiple named slots, correct
+prop merging, performance optimizations, and compatibility with upcoming React features like the
+React compiler. It delivers everything you'd want from a modern render prop utility without
+introducing unnecessary complexity.
+
+Whether you're building design systems, internal tools, or reusable component libraries, having a
+consistent, efficient pattern for render props is critical. `useSlot` may not be the final word in render
+prop evolution, but it's an incremental step forward.
