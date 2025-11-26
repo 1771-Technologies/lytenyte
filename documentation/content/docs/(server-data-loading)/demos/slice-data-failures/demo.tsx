@@ -8,6 +8,7 @@ import { Server } from "./server";
 import type { MovieData } from "./data";
 import {
   GenreRenderer,
+  GridButton,
   LinkRenderer,
   NameCellRenderer,
   RatingRenderer,
@@ -52,14 +53,13 @@ export default function FailedSlices() {
   return (
     <>
       <div className="border-ln-gray-30 flex border-b px-2 py-2">
-        <button
-          className="border-ln-primary-30 hover:bg-ln-primary-70 bg-ln-primary-50 text-ln-gray-02 cursor-pointer rounded border px-3 py-0.5 text-sm font-semibold"
+        <GridButton
           onClick={() => {
             ds.retry();
           }}
         >
           Retry Failed
-        </button>
+        </GridButton>
       </div>
 
       <div className="lng-grid" style={{ height: 500 }}>

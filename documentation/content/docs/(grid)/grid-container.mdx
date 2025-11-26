@@ -1,51 +1,81 @@
 ---
 title: Responsive Container
-description: LyteNyte Grid needs a container with explicitly defined dimensions. The
-  HTMLElement hosting the Grid must have a specified height and
-  width, even when empty.
+description: Learn how to create a responsive container for LyteNyte Grid using various
+  approaches, from fixed sized containers to grid and flex based containers.
 ---
 
-This requirement still allows responsive layouts. The sections below
-show effective ways to create containers that work well with LyteNyte
-Grid.
+LyteNyte Grid lacks inherent dimensions. Since the viewport fills its parent container,
+the parent must have a defined size for the grid to render correctly.
+Although it doesn't have a defined size, LyteNyte Grid remains fully responsive.
+To ensure responsiveness, make sure its parent element is responsive.
 
 <Callout>
 
-Make LyteNyte Grid the sole child element inside its container. Do not
-place sibling elements alongside it.
+Place LyteNyte Grid as the sole child of its container.
+Do not include sibling elements.
 
 </Callout>
 
 ## Pixel Value
 
-Setting fixed pixel values for `height` and `width` is the simplest
-approach but offers limited flexibility. Often, you can fix the
-`height` and let the width adjust automatically based on the parent
-container. You can also set a fixed width if needed, though it's usually
-unnecessary.
+Fixed pixel values for `height` and `width` provide the simplest sizing option but
+limit flexibility. In most cases, set a fixed `height` and allow the
+width to adjust based on the parent container. Set a fixed width only when necessary.
 
 !demo:Pixel Height and Width="./demos/pixel-height-container"
 
+The height of the grid viewport comes from the `div` that contains it, which uses
+the following code:
+
+```tsx
+<div className="lng-grid" style={{ height: 500 }}>
+  {/* Grid components */}
+</div>
+```
+
 ## Flex Height Containers
 
-Flexbox layouts let containers distribute space dynamically. When you
-assign `flex: 1` to a Flexbox child, it expands to fill the available
-space. However, because Flexbox containers grow to fit their content,
-you must ensure the grid doesn't add to the height. The simplest method
-is to wrap the grid in a second `div` with `position: absolute`,
-`width: 100%`, and `height: 100%`. LyteNyte Grid will then fill the
-space without overflow or pushing beyond container boundaries.
+Flexbox layouts distribute space dynamically. When you assign `flex: 1` to a Flexbox child,
+it expands to fill the available space. Since Flexbox containers grow with their content,
+wrap LyteNyte Grid in an inner `div` with `position: absolute`, `width: 100%`,
+and `height: 100%` to prevent the grid from increasing the container's height.
+The grid then fills the space without overflow.
 
 !demo:Flex Height Container="./demos/flex-height-container"
 
+The flex height container uses a series of nested `div`s, as shown below:
+
+```tsx
+<div className="lng-grid" style={{ height: 500, display: "flex", flexDirection: "column" }}>
+  <div style={{ flex: "1", position: "relative" }}>
+    <div style={{ position: "absolute", width: "100%", height: "100%" }}>
+      {/* Grid components */}
+    </div>
+  </div>
+</div>
+```
+
 ## Grid Height Containers
 
-CSS Grid (not to be confused with LyteNyte Grid) offers a flexible and versatile
-layout system. Like Flexbox, LyteNyte Grid expands to fill its assigned space
-within a grid container while keeping proper containment.
+CSS Grid (not to be confused with LyteNyte Grid) provides a flexible layout system.
+Within a grid container, LyteNyte Grid expands to fill its assigned
+area while remaining properly contained.
 
 !demo:Grid Height Container="./demos/grid-height-container"
 
-Additional CSS methods can also size containers for LyteNyte Grid
-effectively. We encourage developers to experiment and choose the
-solution that best meets their requirements.
+The grid height container uses the `grid-template-rows` property, as shown below:
+
+```tsx
+<div className="lng-grid" style={{ display: "grid", gridTemplateRows: "500px" }}>
+  {/* Grid components */}
+</div>
+```
+
+Other CSS sizing techniques also work well with LyteNyte Grid.
+Choose the approach that best fits your layout requirements.
+
+## Next Steps
+
+- [Headless Component Parts](/docs/grid-headless-parts): Learn about the component parts that make up LyteNyte Grid.
+- [Grid Events](/docs/grid-events): Learn how to handle events fired by LyteNyte Grid and different approaches to event handling.
+- [Grid Atoms & Reactivity](/docs/grid-reactivity): Learn how to manage reactivity and state changes in LyteNyte Grid.

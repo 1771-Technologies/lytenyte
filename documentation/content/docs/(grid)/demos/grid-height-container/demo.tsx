@@ -5,25 +5,26 @@ import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { useId } from "react";
+import type { ClassValue } from "clsx";
+import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
+import { BalanceCell, DurationCell, NumberCell } from "./components";
 
 type BankData = (typeof bankDataSmall)[number];
 
 const columns: Column<BankData>[] = [
-  { id: "age", type: "number" },
-  { id: "job" },
-  { id: "balance", type: "number" },
+  { id: "job", width: 120 },
+  { id: "age", type: "number", width: 80, cellRenderer: NumberCell },
+  { id: "balance", type: "number", cellRenderer: BalanceCell },
   { id: "education" },
   { id: "marital" },
   { id: "default" },
   { id: "housing" },
   { id: "loan" },
   { id: "contact" },
-  { id: "day", type: "number" },
+  { id: "day", type: "number", cellRenderer: NumberCell },
   { id: "month" },
-  { id: "duration" },
-  { id: "campaign" },
-  { id: "pdays" },
-  { id: "previous" },
+  { id: "duration", type: "number", cellRenderer: DurationCell },
   { id: "poutcome", name: "P Outcome" },
   { id: "y" },
 ];
@@ -35,6 +36,7 @@ export default function GridHeightContainer() {
     gridId: useId(),
     rowDataSource: ds,
     columns,
+    columnBase: { width: 100 },
   });
 
   const view = grid.view.useValue();
@@ -54,7 +56,10 @@ export default function GridHeightContainer() {
                       <Grid.HeaderCell
                         key={c.id}
                         cell={c}
-                        className="flex h-full w-full items-center px-2 capitalize"
+                        className={tw(
+                          "flex h-full w-full items-center px-2 text-sm capitalize",
+                          c.column.type === "number" && "justify-end",
+                        )}
                       />
                     );
                   })}
@@ -74,7 +79,10 @@ export default function GridHeightContainer() {
                         <Grid.Cell
                           key={c.id}
                           cell={c}
-                          className="flex h-full w-full items-center px-2 text-sm"
+                          className={tw(
+                            "flex h-full w-full items-center px-2 text-sm",
+                            c.column.type === "number" && "justify-end",
+                          )}
                         />
                       );
                     })}
@@ -87,4 +95,8 @@ export default function GridHeightContainer() {
       </Grid.Root>
     </div>
   );
+}
+
+function tw(...c: ClassValue[]) {
+  return twMerge(clsx(...c));
 }

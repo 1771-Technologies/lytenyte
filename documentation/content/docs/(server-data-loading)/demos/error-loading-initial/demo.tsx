@@ -8,6 +8,7 @@ import { Server } from "./server";
 import type { MovieData } from "./data";
 import {
   GenreRenderer,
+  GridButton,
   LinkRenderer,
   NameCellRenderer,
   RatingRenderer,
@@ -58,14 +59,14 @@ export default function ServerDataFailFirst() {
       {!!error && (
         <div className="absolute left-0 top-0 z-[10] flex h-full w-full flex-col items-center justify-center gap-2 bg-red-500/20">
           <span>{`${error}`}</span>
-          <button
+          <GridButton
+            className="bg-gray-ln-10"
             onClick={() => {
               ds.reset();
             }}
-            className="border-primary-300 hover:bg-primary-600 bg-primary-500 text-ln-gray-02 cursor-pointer rounded border px-3 py-0.5 text-sm font-semibold"
           >
             Retry - it will work now
-          </button>
+          </GridButton>
         </div>
       )}
 

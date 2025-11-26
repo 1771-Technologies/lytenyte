@@ -8,6 +8,7 @@ import { Server } from "./server";
 import type { MovieData } from "./data";
 import {
   GenreRenderer,
+  GridCheckbox,
   HeaderRenderer,
   NameCellRenderer,
   RatingRenderer,
@@ -68,12 +69,8 @@ export default function SortingNullsFirst() {
     <context.Provider value={nullsFirst}>
       <div>
         <div className="border-ln-gray-20 flex items-center border-b px-2 py-1">
-          <label className="flex items-center gap-1">
-            <input
-              type="checkbox"
-              checked={nullsFirst}
-              onChange={(e) => setNullsFirst(e.target.checked)}
-            />
+          <label className="flex items-center gap-2">
+            <GridCheckbox checked={nullsFirst} onCheckedChange={(b) => setNullsFirst(!!b)} />
             Display Nulls First
           </label>
         </div>

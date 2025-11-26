@@ -12,9 +12,10 @@ import {
   NameCellRenderer,
   RatingRenderer,
   ReleasedRenderer,
+  ToggleGroup,
+  ToggleItem,
   TypeRenderer,
 } from "./components";
-import clsx from "clsx";
 
 const columns: Column<MovieData>[] = [
   {
@@ -57,29 +58,10 @@ export default function Filtering() {
   return (
     <>
       <div className="border-b-ln-gray-20 flex items-center gap-1 border-b px-2 py-2.5">
-        <div className="border-ln-primary-30 text-ln-gray-90 relative flex items-center overflow-hidden rounded-lg border text-sm">
-          <button
-            className={clsx(
-              "flex h-8 cursor-pointer items-center px-2",
-              !on && "bg-ln-primary-30",
-              on && "hover:bg-ln-gray-20 rounded transition-colors",
-            )}
-            onClick={() => setOn(false)}
-          >
-            TV Shows
-          </button>
-          <div className="bg-ln-gray-30 h-8 w-px" />
-          <button
-            className={clsx(
-              "flex h-8 cursor-pointer items-center px-2",
-              !on && "hover:bg-ln-gray-20 rounded transition-colors",
-              on && "bg-ln-primary-30",
-            )}
-            onClick={() => setOn(true)}
-          >
-            Movies
-          </button>
-        </div>
+        <ToggleGroup type="single" value={on ? "1" : "0"} onValueChange={(x) => setOn(x === "1")}>
+          <ToggleItem value="0">TV Shows</ToggleItem>
+          <ToggleItem value="1">Movies</ToggleItem>
+        </ToggleGroup>
       </div>
       <div className="lng-grid" style={{ height: 500 }}>
         <Grid.Root grid={grid}>
