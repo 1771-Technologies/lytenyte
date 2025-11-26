@@ -1,5 +1,14 @@
 # @1771technologies/lytenyte-pro
 
+## 1.0.19
+
+### Patch Changes
+
+- Updated
+- Updated dependencies
+  - @1771technologies/lytenyte-core@1.0.19
+  - @1771technologies/lytenyte-shared@1.0.19
+
 ## 1.0.18
 
 ### Patch Changes
