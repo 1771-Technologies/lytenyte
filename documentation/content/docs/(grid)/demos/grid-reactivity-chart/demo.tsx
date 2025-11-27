@@ -26,7 +26,7 @@ export default function GridReactivityChart() {
     rowDataSource: ds,
     columns,
     columnBase: { width: 100, widthFlex: 1 },
-    rowHeight: "fill:20",
+    rowHeight: "fill:24",
 
     columnMarker: {
       cellRenderer: MarkerCell,
