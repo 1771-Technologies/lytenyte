@@ -1,5 +1,6 @@
 "use client";
 
+import "@1771technologies/lytenyte-pro/grid.css";
 import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import type { Column, Grid as GridType } from "@1771technologies/lytenyte-pro/types";
 import { companiesWithPricePerf } from "@1771technologies/grid-sample-data/companies-with-price-performance";
@@ -100,9 +101,10 @@ export default function GridReactivityChart() {
           </Grid.Viewport>
         </Grid.Root>
       </div>
-      <div style={{ borderTop: "1px solid gray" }} className="pr-10 pt-2">
-        {" "}
-        <PriceChart grid={grid} />
+      <div className="p-2">
+        <div className="h-[300px] w-full pr-10 pt-2">
+          <PriceChart grid={grid} />
+        </div>
       </div>
     </div>
   );
@@ -138,7 +140,7 @@ function PriceChart({ grid }: { grid: GridType<RowData> }) {
   }, [grid.api, rows]);
 
   return (
-    <div className="p-4">
+    <div className="px-4">
       <ResponsiveContainer height={300} width="100%">
         <AreaChart data={data}>
           <XAxis
