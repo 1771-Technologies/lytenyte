@@ -5,7 +5,7 @@ import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import type { Column, Grid as GridType } from "@1771technologies/lytenyte-pro/types";
 import { companiesWithPricePerf } from "@1771technologies/grid-sample-data/companies-with-price-performance";
 import { useEffect, useId, useMemo } from "react";
-import { AreaChart, CartesianGrid, Line, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import { CartesianGrid, Line, LineChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { MarkerCell, MarkerHeader, NumberCell, PriceCell } from "./components";
 
 type RowData = (typeof companiesWithPricePerf)[number];
@@ -26,7 +26,7 @@ export default function GridReactivityChart() {
     rowDataSource: ds,
     columns,
     columnBase: { width: 100, widthFlex: 1 },
-    rowHeight: "fill:20",
+    rowHeight: "fill:24",
 
     columnMarker: {
       cellRenderer: MarkerCell,
@@ -142,7 +142,7 @@ function PriceChart({ grid }: { grid: GridType<RowData> }) {
   return (
     <div className="px-4">
       <ResponsiveContainer height={300} width="100%">
-        <AreaChart data={data}>
+        <LineChart data={data}>
           <XAxis
             dataKey="week"
             ticks={[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]}
@@ -165,7 +165,7 @@ function PriceChart({ grid }: { grid: GridType<RowData> }) {
               />
             );
           })}
-        </AreaChart>
+        </LineChart>
       </ResponsiveContainer>
     </div>
   );
