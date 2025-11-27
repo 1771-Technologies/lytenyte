@@ -41,7 +41,9 @@ export default function GridReactivityChart() {
   useEffect(() => {
     // Row data source may not be immediately ready since we rendering everything in one go.
     // Hence apply the state update in an effect.
-    grid.state.rowSelectedIds.set(new Set(["2", "0", "4", "7"]));
+    setTimeout(() => {
+      grid.state.rowSelectedIds.set(new Set(["2", "0", "4", "7"]));
+    });
   }, [grid.state.rowSelectedIds]);
 
   const view = grid.view.useValue();
@@ -102,7 +104,7 @@ export default function GridReactivityChart() {
         </Grid.Root>
       </div>
       <div className="p-2">
-        <div className="h-[300px] w-full pr-10 pt-2">
+        <div className="h-[300px] w-full pt-2 pr-10">
           <PriceChart grid={grid} />
         </div>
       </div>
