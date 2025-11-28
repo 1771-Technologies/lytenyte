@@ -4,8 +4,8 @@ import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { useId } from "react";
-import type { OrderData } from "./data";
-import { data } from "./data";
+import type { OrderData } from "@1771technologies/grid-sample-data/orders";
+import { data } from "@1771technologies/grid-sample-data/orders";
 import {
   AvatarCell,
   EmailCell,

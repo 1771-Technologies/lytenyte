@@ -24,6 +24,11 @@
       "import": "./src/index.ts",
       "require": "./src/index.ts"
     },
+    "./orders": {
+      "types": "./src/orders.ts",
+      "import": "./src/orders.ts",
+      "require": "./src/orders.ts"
+    },
     "./stock-data": {
       "types": "./src/stocks-data.ts",
       "import": "./src/stocks-data.ts",
