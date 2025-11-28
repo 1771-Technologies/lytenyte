@@ -1,58 +1,91 @@
 ---
 title: Column Header Renderer
-description: Learn how to create, implement, and register custom header renderers for
-  columns in LyteNyte Grid.
+description: Every column may define a unique header renderer to determine the
+  content that should be displayed in the header cell. A header renderer is a
+  custom React component that LyteNyte Grid will use to create the element for the
+  header.
 ---
 
-Add a custom React component to a column's header by setting the
-`headerRenderer` property. Custom header renderers let you show
-specialized content in LyteNyte Grid headers.
+There are two ways to create a header renderer in LyteNyte Grid. Both ways make
+use of the `headerRenderer` property on the [column](/docs/reference/column#column)
+specification.
 
-LyteNyte Grid renders your custom header inside a managed container. The
-grid maintains the container structure, while your renderer controls the
-content inside it.
+- By providing a function that returns a `ReactNode` to the `headerRenderer` property.
+- A string which represents a key lookup into a set of registered header renderer components.
 
-import Image from "next/image";
-import Header from "./components/header-renderer.png";
+This guide will cover both approaches, and provide some guidance on when to consider one approach
+over the other.
 
-<div className="flex items-center justify-center">
-  <Image src={Header} alt="header renders in custom container" />
-</div>
+## Header Function Renderers
 
-## Creating a Header Renderer
+Creating a function header renderer is as simple as:
 
-A header renderer is a React component that receives the LyteNyte Grid
-API and the column as props. Your header renderer must return a
-`ReactNode`.
+1. Defining a custom React component function that accepts an object of type
+   [`HeaderCellRendererParams`](docs/reference/column-header#headercellrendererparams) as props.
+2. Setting the value of the `headerRenderer` property on a column that should use this renderer.
 
-!demo:Creating A Header Renderer="./demos/column-header-renderer"
+The demo below demonstrates this in action. Every column has a custom `headerRenderer` which will add
+an icon based on the column ID.
 
-## Header Renderer Registration System
+!demo:Function Header Renderers="./demos/column-header-renderer_x"
 
-You can also pass a `string` value to `headerRenderer`. In this case,
-LyteNyte Grid treats it as a key for a registered header renderer.
+The header renderer in the demo is a normal React component. It is rendered within the same React
+tree as the rest of your React application. This means that the renderer will have access to React
+context and any React hooks may be used within the header renderer.
 
-Register header renderers and reference them by name when you want to:
+## Registered Header Renderers
 
-- Reuse the same renderer across columns
-- Keep columns serializable
-- Define columns on the server and renderers on the client
+LyteNyte Grid has a header renderer registry for each grid instance. The `headerCellRenderers` property
+on the grid state is used to register a specific render for a given key. Columns in the grid may then
+reference the registered by the key. Whilst there is a little bit more boilerplate to use registered
+header renderers, this approach has two key advantages:
 
-Register a header renderer by setting `headerCellRenderers` in the
-initial value for `useLyteNyte`. You can then reference it by name.
+- The column specifications remain serializable. Since the column specification does not have a function,
+  it may be serialized to JSON safely.
+- Renderers can be registered in advance and the switched without creating new functions for different
+  renderers.
 
-!demo:Registering A Header Renderer="./demos/column-header-renderer-registration"
+In the demo below, each column will use a registered header renderer with the key `header-with-icon`.
+The result is the same as the function renderers but the approach is different.
 
-### Registering a Header Renderer vs Direct Component
+!demo:Registered Header Renderers="./demos/column-header-renderer-registration_x"
 
-**Direct React component:**
+The code for using the registered renders is straightforward. Define your header component,
+register it on the `headerCellRenderers` property, and then reference the renderer by the
+registered key. The code in the demo that does this is shown below:
 
-- Quick for simple use cases
-- Less flexible because the column is not serializable
-- Logs for the column won't show a readable property value
+```ts
+const grid = Grid.useLyteNyte({
+  // Other props
+  headerCellRenderers: {
+    "header-with-icon": HeaderWithIcon,
+  },
+  columnBase: {
+    headerRenderer: "header-with-icon",
+  },
+});
+```
 
-**Registered header renderer:**
+## Registered Or Function
 
-- Keeps the column serializable for data transfer
-- Produces readable values when logging columns
-- Separates column definitions from rendering logic
+Providing a direction header renderer function or registering the function then referencing
+it by key are both able to achieve the same result. The question then arises which approach
+to prefer. Either will work for any use case, but it is recommended to use the function
+approach when:
+
+- The use case is simple and does not require updates to columns.
+- Header renderers are created and set on columns dynamically, i.e. at runtime.
+
+For other cases prefer registering a header renderer ahead of time. This is especially
+true when:
+
+- Columns are defined on the server and fetched before displaying the grid.
+- There are a lot of columns in the grid that share similar renderers.
+- The columns provided to LyteNyte Grid need to be serializable.
+
+## Next Steps
+
+- [Column Resizing](/docs/column-resizing): Change column widths programmatically or via user interaction.
+- [Column ID & Name](/docs/column-header-name): Define user-friendly column names and ensure unique IDs.
+- [Column Moving](/docs/column-moving): Reorder columns programmatically or through drag-and-drop.
+- [Column Field](/docs/column-field): Control how a column retrieves its value for each cell.
