@@ -2,7 +2,9 @@
   "title": "Columns",
   "pages": [
     "columns",
+    "column-base",
     "column-header-name",
+
     "column-header-renderer",
     "column-visibility",
     "column-field",
