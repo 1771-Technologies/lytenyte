@@ -29,6 +29,11 @@
       "import": "./src/orders.ts",
       "require": "./src/orders.ts"
     },
+    "./temperatures": {
+      "types": "./src/monthly-temperature.ts",
+      "import": "./src/monthly-temperature.ts",
+      "require": "./src/monthly-temperature.ts"
+    },
     "./stock-data": {
       "types": "./src/stocks-data.ts",
       "import": "./src/stocks-data.ts",
