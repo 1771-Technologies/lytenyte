@@ -2,9 +2,9 @@ import type { CellRendererParams } from "@1771technologies/lytenyte-pro/types";
 import type { ClassValue } from "clsx";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
-import type { OrderData } from "./data";
 import { format } from "date-fns";
 import type { JSX, ReactNode } from "react";
+import type { OrderData } from "@1771technologies/grid-sample-data/orders";
 
 export function tw(...c: ClassValue[]) {
   return twMerge(clsx(...c));
