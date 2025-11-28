@@ -3,49 +3,21 @@
 import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
-import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { useId } from "react";
+import type { OrderData } from "@1771technologies/grid-sample-data/orders";
+import { data } from "@1771technologies/grid-sample-data/orders";
+import { tw } from "./components";
 
-type BankData = (typeof bankDataSmall)[number];
-
-const columns: Column<BankData>[] = [
-  { id: "age", type: "number" },
-  { id: "job" },
-  { id: "balance", type: "number" },
-  { id: "education" },
-  { id: "marital" },
-  { id: "default" },
-  { id: "housing" },
-  { id: "loan" },
-  { id: "contact" },
-  { id: "day", type: "number" },
-  { id: "month" },
-  { id: "duration" },
-  { id: "campaign" },
-  { id: "pdays" },
-  { id: "previous" },
-  { id: "poutcome", name: "P Outcome" },
-  { id: "y" },
-];
+const columns: Column<OrderData>[] = [];
 
 export default function ColumnBase() {
-  const ds = useClientRowDataSource({ data: bankDataSmall });
+  const ds = useClientRowDataSource({ data: data });
 
   const grid = Grid.useLyteNyte({
     gridId: useId(),
     rowDataSource: ds,
     columns,
-
-    // Make all the columns have a default width of 140px,
-    // are movable, and are resizable.
-    columnBase: {
-      width: 140,
-
-      uiHints: {
-        movable: true,
-        resizable: true,
-      },
-    },
+    rowHeight: 50,
   });
 
   const view = grid.view.useValue();
@@ -65,7 +37,10 @@ export default function ColumnBase() {
                       <Grid.HeaderCell
                         key={c.id}
                         cell={c}
-                        className="flex h-full w-full items-center px-2 capitalize"
+                        className={tw(
+                          "flex h-full w-full items-center px-3 text-sm text-nowrap capitalize",
+                          c.column.type === "number" && "justify-end",
+                        )}
                       />
                     );
                   })}
@@ -85,7 +60,7 @@ export default function ColumnBase() {
                         <Grid.Cell
                           key={c.id}
                           cell={c}
-                          className="flex h-full w-full items-center px-2 text-sm"
+                          className="flex h-full w-full items-center px-3 text-sm"
                         />
                       );
                     })}
