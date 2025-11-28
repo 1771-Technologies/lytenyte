@@ -9,6 +9,7 @@ import { data } from "@1771technologies/grid-sample-data/orders";
 import {
   AvatarCell,
   EmailCell,
+  HeaderCell,
   IdCell,
   PaymentMethodCell,
   PriceCell,
@@ -19,12 +20,12 @@ import {
 
 const columns: Column<OrderData>[] = [
   { id: "id", width: 60, widthMin: 60, cellRenderer: IdCell, name: "ID" },
-  { id: "product", cellRenderer: ProductCell, width: 200 },
-  { id: "price", type: "number", cellRenderer: PriceCell, width: 100 },
-  { id: "customer", cellRenderer: AvatarCell, width: 180 },
+  { id: "product", cellRenderer: ProductCell, width: 200, name: "Product" },
+  { id: "price", type: "number", cellRenderer: PriceCell, width: 100, name: "Price" },
+  { id: "customer", cellRenderer: AvatarCell, width: 180, name: "Customer" },
   { id: "purchaseDate", cellRenderer: PurchaseDateCell, name: "Purchase Date", width: 120 },
   { id: "paymentMethod", cellRenderer: PaymentMethodCell, name: "Payment Method", width: 150 },
-  { id: "email", cellRenderer: EmailCell, width: 220 },
+  { id: "email", cellRenderer: EmailCell, width: 220, name: "Email" },
 ];
 
 export default function ColumnBase() {
@@ -34,6 +35,9 @@ export default function ColumnBase() {
     gridId: useId(),
     rowDataSource: ds,
     columns,
+    columnBase: {
+      headerRenderer: HeaderCell,
+    },
     rowHeight: 50,
   });
 
@@ -55,7 +59,7 @@ export default function ColumnBase() {
                         key={c.id}
                         cell={c}
                         className={tw(
-                          "flex h-full w-full items-center px-3 text-sm text-nowrap capitalize",
+                          "focus-visible:outline-ln-primary-50 flex h-full w-full items-center text-sm text-nowrap capitalize focus-visible:outline-1 focus-visible:outline-offset-[-1px]",
                           c.column.type === "number" && "justify-end",
                         )}
                       />
