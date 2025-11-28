@@ -162,7 +162,13 @@ body {
   td {
     @apply [[align=center]]:text-center [[align=right]]:text-right whitespace-nowrap px-4 py-2 text-left;
   }
-  pre {
-    @apply no-scrollbar min-w-0 overflow-x-auto px-4 py-3.5 outline-none has-[[data-slot=tabs]]:p-0 has-[[data-highlighted-line]]:px-0 has-[[data-line-numbers]]:px-0;
+
+  .expressive-code {
+    width: 100%;
+    border: 1px solid white;
+    overflow: hidden;
+
+    pre {
+    }
   }
 }
