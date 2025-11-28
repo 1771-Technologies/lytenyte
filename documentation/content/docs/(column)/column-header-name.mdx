@@ -1,21 +1,77 @@
 ---
 title: Column ID & Name
-description: Learn how to set, display, and update column header names in LyteNyte Grid.
+description: Every column in LyteNyte Grid must have a unique ID. LyteNyte Grid
+  uses this ID to manage column related state. When the ID is not human readable,
+  you can provide a display name.
 ---
 
-Set the `name` property to give any column a user-friendly display name.
-The grid's default header renderer shows this value in the column header.
+## Unique Column IDs
 
-Other LyteNyte Grid components also use the `name` property when showing
-column-related information. For example, the
-[Column Manager](/docs/component-column-manager) uses `name` values as
-row labels.
+LyteNyte Grid uses the `id` of a column to uniquely identify and track the column.
+The `id` is used for retrieval, detecting movement, and computing cell values.
 
-!demo:Header Name Usage="./demos/column-header-name"
+Column IDs are immutable. If you change a column's `id` value, LyteNyte Grid
+treats the column as a new column, even if the rest of the object is unchanged.
 
-## Updating the Header Name
+A column `id` can be any string that fits your data model.
+Many developers set the `id` to a key on the row data. This is convenient
+since LyteNyte Grid also uses the `id` as a fallback when a column
+does not define a `field`. See the [Column Field guide](/docs/column-field) for details.
 
-Use the `columnUpdate` API method to change a column's header name. This
-method lets you update any column property, including the header name.
+## Display Name of a Column
 
-!demo:Header Name Update="./demos/column-header-name-update"
+By default, LyteNyte Grid uses the column's `id` as its display name.
+The display name appears in the column header and in components that manage
+columns, such as the [Column Manager](/docs/components-column-manger).
+
+If the `id` is not suitable for display, set the `name` property to a
+human-readable string. In the example below, several columns specify
+a `name` to improve their header text:
+
+```ts
+const columns: Column<OrderData>[] = [
+  { id: "id", name: "ID" },
+  { id: "product" },
+  { id: "price" },
+  { id: "customer" },
+  { id: "purchaseDate", name: "Purchase Date" },
+  { id: "paymentMethod", name: "Payment Method" },
+  { id: "email" },
+];
+```
+
+!demo:Human Readable Names="./demos/column-overview-demo"
+
+In this example, `purchaseDate`, `paymentMethod`, and `id` use `name` to
+provide readable labels, while the remaining IDs are already clear. Developers often
+set `name` when the `id` is written in snake case or camel case.
+
+## Updating the Display Name
+
+A column's `id` is immutable, but its `name` can be updated. To change the display
+name, update the column specification. LyteNyte Grid provides the `columnUpdate` API
+for updating individual columns.
+
+For example, you may want users to rename columns. In the demo below, users can
+double-click a header to edit the display name. Pressing Enter or
+clicking away saves the new value.
+
+!demo:Renaming Header="./demos/column-header-name-update_x"
+
+A custom header cell powers this behavior. After editing, the
+header cell calls `columnUpdate`:
+
+```ts
+// In the HeaderCell component of components.tsx
+const onUpdate = (v: string) => {
+  setIsUpdating(false);
+  grid.api.columnUpdate({ [column.id]: { name: v } });
+};
+```
+
+# Next Steps
+
+- [Column Base](/docs/column-base): See the default column values and how to override them with the `columnBase` property.
+- [Column Resizing](/docs/column-resizing): Change column widths programmatically or via user interaction.
+- [Column Moving](/docs/column-moving): Reorder columns programmatically or through drag-and-drop.
+- [Column Field](/docs/column-field): Control how a column retrieves its value for each cell.
