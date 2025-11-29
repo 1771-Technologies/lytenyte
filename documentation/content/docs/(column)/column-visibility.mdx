@@ -1,36 +1,65 @@
 ---
 title: Column Visibility
-description: Learn how to control, check, and update column visibility in LyteNyte
-  Grid, including interaction with column groups.
+description: LyteNyte Grid may be given a set of columns where only some of the columns are
+  initially visible to the user. The visibility of columns may be updated to toggle which ones
+  are visible. LyteNyte Grid, additionally supports column groups which allow related columns
+  to be hidden or shown.
 ---
-
-Control column visibility in LyteNyte Grid with the column's `hide`
-property. A column may also be visually omitted when it belongs to a
-group that is collapsed (or expanded, for columns meant to show only
-when the group is closed). This guide explains how to configure column
-visibility and the nuances of showing and hiding columns.
 
 ## Hiding Columns
 
-Set a column's `hide` property to `true` to hide it. Users typically
-toggle visibility with LyteNyte Grid components like the
-[Column Manager](/docs/component-column-manager).
+Every column in LyteNyte Grid has a `hide` property on the column specification. By default this
+property is `false`, but if set to `true`, the column will not be rendered in the viewport. This
+does not remove the column from LyteNyte Grid, and querying the columns in grid state will return
+it.
 
-!demo:Hiding Columns="./demos/column-visibility"
+In the demo below, the **Network** and **Exchange** columns are hidden. Clicking the respective pills
+will toggle the column's visibility. When a column that is hidden becomes visible it will be displayed
+in the order it appears in the columns state of the grid.
 
-### Hiding Columns and Column Groups
+!demo:Hiding Columns="./demos/column-visibility_x"
 
-When a column belongs to a group, its visibility can change based on
-the group's state.
+If you examine the code for the Pill Manager, you will notice that clicking a pill is simply calling the
+`columnUpdate` method on the grid API. The code below shows the snippet. The visibility setting is simply
+toggled. LyteNyte Grid handles the rest.
 
-LyteNyte Grid does not treat these temporarily hidden columns as fully
-hidden. It considers them part of a temporary view state caused by user
-interaction, not a permanent visibility setting. While most use cases
-are unaffected, keep this in mind when managing column visibility in
-code.
+```ts
+grid.api.columnUpdate({
+  [c.data.id]: { hide: !c.data.hide },
+});
+```
 
-The example below shows this difference. The `job` column is hidden when the
-group is collapsed but is still considered a visible column since it's `hide`
-property is not `true`.
+<Callout>
 
-!demo:Column Visibility and Hiding="./demos/column-visibility-with-groups"
+Exercise caution when frequently updating the visibility of a column as this can become a
+performance bottleneck if the updates occur too frequently. Updating a column results in
+LyteNyte Grid recomputing its layout calculation as well as updating the actual DOM layout.
+These operations can be quite expensive if performed many times per second.
+
+</Callout>
+
+## Column Group Visibility
+
+LyteNyte Grid columns may be part of a column group. A column group is a collection of columns
+that are related in some fashion define by the developer. A column group may be collapsed when
+some columns are configured to be visible when the group is open and hidden when the group
+is closed.
+
+When a column group is collapsed some columns will be hidden. However, this is not the same as
+setting the columns `hide` property on its specification. A column that is hidden because its
+group is collapsed is treated as visually hidden but logically visible. In simpler terms, the
+column's state is still visible even if it is hidden because its group is collapsed.
+
+The example below demonstrates this. Notice that the **Market Info** group is collapsed, hiding
+the **Network** and **Exchange** columns, however the pill manager still displays them as visible.
+This is because these columns are still visible in grid state, just hidden visually due to the group
+being collapsed.
+
+!demo:Column Group Visibility="./demos/column-visibility_groups_x"
+
+## Next Steps
+
+- [Column Resizing](/docs/column-resizing): Change column widths programmatically or via user interaction.
+- [Column ID & Name](/docs/column-header-name): Define user-friendly column names and ensure unique IDs.
+- [Column Moving](/docs/column-moving): Reorder columns programmatically or through drag-and-drop.
+- [Column Field](/docs/column-field): Control how a column retrieves its value for each cell.
