@@ -50,6 +50,7 @@ const columns: Column<DEXPerformanceData>[] = [
     cellRenderer: PercentCellPositiveNegative,
     headerRenderer: makePerfHeaderCell("Change", "24h"),
     name: "Change % 24h",
+    type: "number,",
   },
 
   {
@@ -57,37 +58,43 @@ const columns: Column<DEXPerformanceData>[] = [
     cellRenderer: PercentCellPositiveNegative,
     headerRenderer: makePerfHeaderCell("Perf %", "1w"),
     name: "Perf % 1W",
+    type: "number,",
   },
   {
     id: "perf1m",
     cellRenderer: PercentCellPositiveNegative,
     headerRenderer: makePerfHeaderCell("Perf %", "1m"),
     name: "Perf % 1M",
+    type: "number,",
   },
   {
     id: "perf3m",
     cellRenderer: PercentCellPositiveNegative,
     headerRenderer: makePerfHeaderCell("Perf %", "3m"),
     name: "Perf % 3M",
+    type: "number,",
   },
   {
     id: "perf6m",
     cellRenderer: PercentCellPositiveNegative,
     headerRenderer: makePerfHeaderCell("Perf %", "6m"),
     name: "Perf % 6M",
+    type: "number,",
   },
   {
     id: "perfYtd",
     cellRenderer: PercentCellPositiveNegative,
     headerRenderer: makePerfHeaderCell("Perf %", "YTD"),
     name: "Perf % YTD",
+    type: "number,",
   },
-  { id: "volatility", cellRenderer: PercentCell, name: "Volatility" },
+  { id: "volatility", cellRenderer: PercentCell, name: "Volatility", type: "number" },
   {
     id: "volatility1m",
     cellRenderer: PercentCell,
     headerRenderer: makePerfHeaderCell("Volatility", "1m"),
     name: "Volatility 1M",
+    type: "number,",
   },
 ];
 
@@ -99,6 +106,7 @@ export default function ColumnBase() {
     rowDataSource: ds,
     columns,
     rowHeight: 50,
+    headerGroupHeight: 30,
     columnBase: { width: 80 },
     columnGroupExpansions: { "Market Info": false },
   });
@@ -121,11 +129,11 @@ export default function ColumnBase() {
                           <Grid.HeaderGroupCell
                             cell={c}
                             key={c.idOccurrence}
-                            className="group flex items-center px-2 text-xs"
+                            className="text-xs! group flex items-center px-2"
                           >
                             <div className="flex-1">{c.id}</div>
                             <button
-                              className="text-ln-gray-90 hidden items-center justify-center group-data-[ln-collapsible=true]:flex"
+                              className="text-ln-gray-90 hidden items-center justify-center text-base group-data-[ln-collapsible=true]:flex"
                               onClick={() => grid.api.columnToggleGroup(c.id)}
                             >
                               <ChevronLeftIcon className="hidden group-data-[ln-collapsed=false]:block" />
