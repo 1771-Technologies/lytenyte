@@ -2,53 +2,42 @@
 
 import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
-import type { Column, HeaderCellRendererParams } from "@1771technologies/lytenyte-pro/types";
-import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
+import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { useId } from "react";
+import type { OrderData } from "@1771technologies/grid-sample-data/orders";
+import { data } from "@1771technologies/grid-sample-data/orders";
+import {
+  AvatarCell,
+  EmailCell,
+  HeaderWithIcon,
+  IdCell,
+  PaymentMethodCell,
+  PriceCell,
+  ProductCell,
+  PurchaseDateCell,
+  tw,
+} from "./components";
 
-type BankData = (typeof bankDataSmall)[number];
-function HeaderRendererExample({ grid, column }: HeaderCellRendererParams<BankData>) {
-  const name = column.name ?? column.id;
-  const index = grid.api.columnIndex(column);
-
-  return (
-    <div
-      style={{
-        textAlign: "center",
-        height: "100%",
-        width: "100%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        textTransform: "uppercase",
-      }}
-    >
-      {index}. {name}
-    </div>
-  );
-}
-
-const columns: Column<BankData>[] = [
-  { id: "age", type: "number", headerRenderer: "indexed-uppercase" },
-  { id: "job", headerRenderer: "indexed-uppercase" },
-  { id: "balance", type: "number", headerRenderer: "indexed-uppercase" },
-  { id: "education", headerRenderer: "indexed-uppercase" },
-  { id: "marital", headerRenderer: "indexed-uppercase" },
+const columns: Column<OrderData>[] = [
+  { id: "id", width: 60, widthMin: 60, cellRenderer: IdCell, name: "ID" },
+  { id: "product", cellRenderer: ProductCell, width: 200 },
+  { id: "price", type: "number", cellRenderer: PriceCell, width: 100 },
+  { id: "customer", cellRenderer: AvatarCell, width: 180 },
+  { id: "purchaseDate", cellRenderer: PurchaseDateCell, name: "Purchase Date", width: 140 },
+  { id: "paymentMethod", cellRenderer: PaymentMethodCell, name: "Payment Method", width: 150 },
+  { id: "email", cellRenderer: EmailCell, width: 220 },
 ];
 
-export default function ColumnHeaderRendererRegistration() {
-  const ds = useClientRowDataSource({ data: bankDataSmall });
+export default function ColumnBase() {
+  const ds = useClientRowDataSource({ data: data });
 
   const grid = Grid.useLyteNyte({
     gridId: useId(),
     rowDataSource: ds,
     columns,
-
-    headerCellRenderers: {
-      "indexed-uppercase": HeaderRendererExample,
-    },
+    rowHeight: 50,
     columnBase: {
-      widthFlex: 1,
+      headerRenderer: HeaderWithIcon,
     },
   });
 
@@ -69,7 +58,10 @@ export default function ColumnHeaderRendererRegistration() {
                       <Grid.HeaderCell
                         key={c.id}
                         cell={c}
-                        className="flex h-full w-full items-center px-2 capitalize"
+                        className={tw(
+                          "flex h-full w-full items-center px-3 text-sm text-nowrap capitalize",
+                          c.column.type === "number" && "justify-end",
+                        )}
                       />
                     );
                   })}
@@ -89,7 +81,7 @@ export default function ColumnHeaderRendererRegistration() {
                         <Grid.Cell
                           key={c.id}
                           cell={c}
-                          className="flex h-full w-full items-center px-2 text-sm"
+                          className="flex h-full w-full items-center px-3 text-sm"
                         />
                       );
                     })}

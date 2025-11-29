@@ -3,48 +3,40 @@
 import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
-import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { useId } from "react";
+import type { MonthlyTemperature } from "@1771technologies/grid-sample-data/temperatures";
+import { data } from "@1771technologies/grid-sample-data/temperatures";
+import { HeatMapCell, tw, YearCell } from "./components";
 
-type BankData = (typeof bankDataSmall)[number];
-
-const columns: Column<BankData>[] = [
-  { id: "age", type: "number" },
-  { id: "job" },
-  { id: "balance", type: "number" },
-  { id: "education" },
-  { id: "marital" },
-  { id: "default" },
-  { id: "housing" },
-  { id: "loan" },
-  { id: "contact" },
-  { id: "day", type: "number" },
-  { id: "month" },
-  { id: "duration" },
-  { id: "campaign" },
-  { id: "pdays" },
-  { id: "previous" },
-  { id: "poutcome", name: "P Outcome" },
-  { id: "y" },
+const columns: Column<MonthlyTemperature>[] = [
+  { id: "year", cellRenderer: YearCell, width: 100 },
+  { id: "Jan" },
+  { id: "Feb" },
+  { id: "Mar" },
+  { id: "Apr" },
+  { id: "May" },
+  { id: "Jun" },
+  { id: "Jul" },
+  { id: "Aug" },
+  { id: "Sep" },
+  { id: "Oct" },
+  { id: "Nov" },
+  { id: "Dec" },
 ];
 
 export default function ColumnBase() {
-  const ds = useClientRowDataSource({ data: bankDataSmall });
+  const ds = useClientRowDataSource({ data: data });
 
   const grid = Grid.useLyteNyte({
     gridId: useId(),
     rowDataSource: ds,
     columns,
 
-    // Make all the columns have a default width of 140px,
-    // are movable, and are resizable.
     columnBase: {
-      width: 140,
-
-      uiHints: {
-        movable: true,
-        resizable: true,
-      },
+      widthMin: 30,
+      width: 50,
+      widthFlex: 1,
+      cellRenderer: HeatMapCell,
     },
   });
 
@@ -65,7 +57,10 @@ export default function ColumnBase() {
                       <Grid.HeaderCell
                         key={c.id}
                         cell={c}
-                        className="flex h-full w-full items-center px-2 capitalize"
+                        className={tw(
+                          "flex h-full w-full items-center justify-center text-sm text-nowrap capitalize",
+                          c.column.type === "number" && "justify-end",
+                        )}
                       />
                     );
                   })}
@@ -79,13 +74,13 @@ export default function ColumnBase() {
                 if (row.kind === "full-width") return null;
 
                 return (
-                  <Grid.Row row={row} key={row.id}>
+                  <Grid.Row row={row} key={row.id} className="group">
                     {row.cells.map((c) => {
                       return (
                         <Grid.Cell
                           key={c.id}
                           cell={c}
-                          className="flex h-full w-full items-center px-2 text-sm"
+                          className="flex h-full w-full items-center justify-center border-x-0! text-sm data-[ln-cell=true]:border-b-0!"
                         />
                       );
                     })}

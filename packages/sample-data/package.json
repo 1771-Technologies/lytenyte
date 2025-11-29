@@ -24,6 +24,21 @@
       "import": "./src/index.ts",
       "require": "./src/index.ts"
     },
+    "./orders": {
+      "types": "./src/orders.ts",
+      "import": "./src/orders.ts",
+      "require": "./src/orders.ts"
+    },
+    "./dex-pairs-performance": {
+      "types": "./src/dex-pairs-performance.ts",
+      "import": "./src/dex-pairs-performance.ts",
+      "require": "./src/dex-pairs-performance.ts"
+    },
+    "./temperatures": {
+      "types": "./src/monthly-temperature.ts",
+      "import": "./src/monthly-temperature.ts",
+      "require": "./src/monthly-temperature.ts"
+    },
     "./stock-data": {
       "types": "./src/stocks-data.ts",
       "import": "./src/stocks-data.ts",

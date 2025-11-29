@@ -454,3 +454,12 @@ h4 {
   outline: 1px solid var(--color-ln-primary-50);
   outline-offset: -1px;
 }
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}

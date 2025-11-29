@@ -3,63 +3,61 @@
 import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
-import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
-import { useId } from "react";
+import { useEffect, useId, useState } from "react";
+import type { OrderData } from "@1771technologies/grid-sample-data/orders";
+import { data } from "@1771technologies/grid-sample-data/orders";
+import {
+  AvatarCell,
+  IdCell,
+  PaymentMethodCell,
+  PriceCell,
+  ProductCell,
+  SwitchToggle,
+  tw,
+} from "./components";
 
-type BankData = (typeof bankDataSmall)[number];
-
-const columns: Column<BankData>[] = [
-  { id: "age", type: "number" },
-  { id: "job" },
-  { id: "balance", type: "number" },
-  { id: "education", hide: true },
-  { id: "marital", hide: true },
+const columns: Column<OrderData>[] = [
+  { id: "id", width: 60, widthMin: 60, cellRenderer: IdCell, name: "ID" },
+  { id: "product", cellRenderer: ProductCell, width: 200, widthFlex: 1 },
+  { id: "price", type: "number", cellRenderer: PriceCell, width: 100 },
+  { id: "paymentMethod", cellRenderer: PaymentMethodCell, name: "Payment Method", width: 150 },
+  { id: "customer", cellRenderer: AvatarCell, width: 180, widthFlex: 1 },
 ];
 
-export default function ColumnVisibility() {
-  const ds = useClientRowDataSource({ data: bankDataSmall });
+export default function ColumnBase() {
+  const ds = useClientRowDataSource({ data: data });
+  const [widthFlex, setWidthFlex] = useState(true);
 
   const grid = Grid.useLyteNyte({
     gridId: useId(),
     rowDataSource: ds,
     columns,
-
-    columnBase: {
-      widthFlex: 1,
-    },
+    rowHeight: 50,
   });
 
   const view = grid.view.useValue();
 
-  return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
-      <div className="flex gap-2 py-2">
-        <button
-          className="rounded border border-gray-600 bg-gray-900 px-2 text-white dark:text-black"
-          onClick={() =>
-            grid.api.columnUpdate({
-              education: { hide: false },
-              marital: { hide: false },
-            })
-          }
-        >
-          Show Education and Marital
-        </button>
-        <button
-          className="rounded border border-gray-600 bg-gray-900 px-2 text-white dark:text-black"
-          onClick={() =>
-            grid.api.columnUpdate(Object.fromEntries(columns.map((c) => [c.id, { hide: true }])))
-          }
-        >
-          Hide All
-        </button>
+  useEffect(() => {
+    grid.state.columns.set((prev) => {
+      return [...prev].map((x) => {
+        if (x.id === "product" || x.id === "customer") {
+          return { ...x, widthFlex: widthFlex ? 1 : 0 };
+        }
+        return x;
+      });
+    });
+  }, [grid.state.columns, widthFlex]);
 
-        <button
-          className="rounded border border-gray-600 bg-gray-900 px-2 text-white dark:text-black"
-          onClick={() => grid.state.columns.set(columns)}
-        >
-          Reset
-        </button>
+  return (
+    <>
+      <div className="flex w-full border-b px-2 py-2">
+        <SwitchToggle
+          label="Toggle Width Flex"
+          checked={widthFlex}
+          onChange={() => {
+            setWidthFlex((prev) => !prev);
+          }}
+        />
       </div>
       <div className="lng-grid" style={{ height: 500 }}>
         <Grid.Root grid={grid}>
@@ -75,7 +73,10 @@ export default function ColumnVisibility() {
                         <Grid.HeaderCell
                           key={c.id}
                           cell={c}
-                          className="flex h-full w-full items-center px-2 capitalize"
+                          className={tw(
+                            "flex h-full w-full items-center text-nowrap px-3 text-sm capitalize",
+                            c.column.type === "number" && "justify-end",
+                          )}
                         />
                       );
                     })}
@@ -95,7 +96,7 @@ export default function ColumnVisibility() {
                           <Grid.Cell
                             key={c.id}
                             cell={c}
-                            className="flex h-full w-full items-center px-2 text-sm"
+                            className="flex h-full w-full items-center px-3 text-sm"
                           />
                         );
                       })}
@@ -107,6 +108,6 @@ export default function ColumnVisibility() {
           </Grid.Viewport>
         </Grid.Root>
       </div>
-    </div>
+    </>
   );
 }
