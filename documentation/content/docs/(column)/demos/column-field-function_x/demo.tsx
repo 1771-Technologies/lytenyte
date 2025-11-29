@@ -3,30 +3,51 @@
 import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
-import { performance } from "@1771technologies/grid-sample-data/performance";
+import { stockData } from "@1771technologies/grid-sample-data/stock-data-smaller";
 import { useId } from "react";
+import {
+  PercentCell,
+  CurrencyCell,
+  SymbolCell,
+  CompactNumberCell,
+  HeaderRenderer,
+  CurrencyCellGBP,
+  AnalystRatingCell,
+} from "./components";
 
-type PerformanceData = (typeof performance)[number];
+type StockData = (typeof stockData)[number];
 
-const columns: Column<PerformanceData>[] = [
-  { id: "name" },
-  { id: "q1", field: { kind: "path", path: "performance.q1" } },
-  { id: "q2", field: { kind: "path", path: "performance.q2" } },
-  { id: "q3", field: { kind: "path", path: "performance.q3" } },
-  { id: "q4", field: { kind: "path", path: "performance.q4" } },
-  { id: "q1 revenue", field: { kind: "path", path: "revenue[0]" } },
-  { id: "q2 revenue", field: { kind: "path", path: "revenue[1]" } },
-  { id: "q3 revenue", field: { kind: "path", path: "revenue[2]" } },
-  { id: "q4 revenue", field: { kind: "path", path: "revenue[3]" } },
+const columns: Column<StockData>[] = [
+  { field: 0, id: "symbol", name: "Symbol", cellRenderer: SymbolCell, width: 220 },
+  { field: 2, id: "analyst-rating", cellRenderer: AnalystRatingCell, width: 130 },
+  { field: 3, id: "price", type: "number", cellRenderer: CurrencyCell, width: 110 },
+  {
+    field: (d) => {
+      if (d.data.kind === "branch" || !d.data.data) return 0;
+      return ((d.data.data as StockData)[3] as number) * 1.36;
+    },
+    id: "price",
+    name: "Price in GBP",
+    type: "number",
+    cellRenderer: CurrencyCellGBP,
+    width: 110,
+  },
+  { field: 5, id: "change", type: "number", cellRenderer: PercentCell, width: 130 },
+  { field: 11, id: "eps", type: "number", cellRenderer: CurrencyCell, width: 130 },
+  { field: 6, id: "volume", type: "number", cellRenderer: CompactNumberCell, width: 130 },
 ];
 
-export default function ColumnFieldPath() {
-  const ds = useClientRowDataSource({ data: performance });
+export default function ColumnFieldNumberIndex() {
+  const ds = useClientRowDataSource({ data: stockData });
 
   const grid = Grid.useLyteNyte({
     gridId: useId(),
     rowDataSource: ds,
     columns,
+    columnBase: {
+      headerRenderer: HeaderRenderer,
+      widthFlex: 1,
+    },
   });
 
   const view = grid.view.useValue();
@@ -63,11 +84,7 @@ export default function ColumnFieldPath() {
                   <Grid.Row row={row} key={row.id}>
                     {row.cells.map((c) => {
                       return (
-                        <Grid.Cell
-                          key={c.id}
-                          cell={c}
-                          className="flex h-full w-full items-center px-2 text-sm"
-                        />
+                        <Grid.Cell key={c.id} cell={c} className="text-xs! flex text-nowrap" />
                       );
                     })}
                   </Grid.Row>

@@ -5,41 +5,37 @@ import "@1771technologies/lytenyte-pro/grid.css";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { stockData } from "@1771technologies/grid-sample-data/stock-data-smaller";
 import { useId } from "react";
+import {
+  AnalystRatingCell,
+  PercentCell,
+  CurrencyCell,
+  SymbolCell,
+  CompactNumberCell,
+  HeaderRenderer,
+} from "./components";
 
-type Stock = (typeof stockData)[number];
+type StockData = (typeof stockData)[number];
 
-const columns: Column<Stock>[] = [
-  { field: 0, id: "ticker" },
-  { field: 1, id: "full", widthFlex: 1 },
-  { field: 2, id: "analyst-rating" },
-  {
-    field: ({ data }) => {
-      if (data.kind === "branch" || !data.data) return null;
-
-      const value = data.data[3] as number;
-      return `$${value}`;
-    },
-    id: "price",
-  },
-  {
-    field: ({ data }) => {
-      if (data.kind === "branch" || !data.data) return null;
-
-      const value = data.data[3] as number;
-      return `£${(value / 1.28).toFixed(2)}`;
-    },
-
-    id: "Price (GBP @ 1.28)",
-  },
+const columns: Column<StockData>[] = [
+  { field: 0, id: "symbol", name: "Symbol", cellRenderer: SymbolCell, width: 220 },
+  { field: 2, id: "analyst-rating", cellRenderer: AnalystRatingCell, width: 130 },
+  { field: 3, id: "price", type: "number", cellRenderer: CurrencyCell, width: 110 },
+  { field: 5, id: "change", type: "number", cellRenderer: PercentCell, width: 130 },
+  { field: 11, id: "eps", type: "number", cellRenderer: CurrencyCell, width: 130 },
+  { field: 6, id: "volume", type: "number", cellRenderer: CompactNumberCell, width: 130 },
 ];
 
-export default function ColumnFieldFunction() {
+export default function ColumnFieldNumberIndex() {
   const ds = useClientRowDataSource({ data: stockData });
 
   const grid = Grid.useLyteNyte({
     gridId: useId(),
     rowDataSource: ds,
     columns,
+    columnBase: {
+      headerRenderer: HeaderRenderer,
+      widthFlex: 1,
+    },
   });
 
   const view = grid.view.useValue();
@@ -76,11 +72,7 @@ export default function ColumnFieldFunction() {
                   <Grid.Row row={row} key={row.id}>
                     {row.cells.map((c) => {
                       return (
-                        <Grid.Cell
-                          key={c.id}
-                          cell={c}
-                          className="flex h-full w-full items-center overflow-hidden text-ellipsis text-nowrap px-2 text-sm"
-                        />
+                        <Grid.Cell key={c.id} cell={c} className="text-xs! flex text-nowrap" />
                       );
                     })}
                   </Grid.Row>

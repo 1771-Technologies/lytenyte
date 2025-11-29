@@ -105,7 +105,6 @@ export default function ColumnBase() {
     gridId: useId(),
     rowDataSource: ds,
     columns,
-    rowHeight: 50,
     headerGroupHeight: 30,
     columnBase: { width: 80 },
     columnGroupExpansions: { "Market Info": false },
@@ -169,7 +168,7 @@ export default function ColumnBase() {
                           <Grid.Cell
                             key={c.id}
                             cell={c}
-                            className="text-[13px]! flex h-full w-full items-center px-2"
+                            className="text-xs! flex h-full w-full items-center px-2"
                           />
                         );
                       })}
