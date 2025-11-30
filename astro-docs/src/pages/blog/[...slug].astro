@@ -12,10 +12,10 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
 ---
 
-<DocsLayout>
+<DocsLayout toc={headings.filter((x) => x.depth === 2 || x.depth === 3)}>
   <h1>{entry.data.title}</h1>
   <Content />
 </DocsLayout>

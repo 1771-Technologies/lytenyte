@@ -28,20 +28,44 @@ body {
   --color-gray-800: oklch(0.278 0.033 256.848);
   --color-gray-900: oklch(0.21 0.034 264.665);
   --color-gray-950: oklch(0.13 0.028 261.692);
+
+  --color-primary-950: hsla(177, 91%, 8%, 1);
+  --color-primary-900: hsla(173, 60%, 15%, 1);
+  --color-primary-800: hsla(175, 64%, 21%, 1);
+  --color-primary-700: hsla(173, 73%, 27%, 1);
+  --color-primary-600: hsla(173, 78%, 34%, 1);
+  --color-primary-500: hsla(172, 75%, 40%, 1);
+  --color-primary-400: hsla(171, 61%, 50%, 1);
+  --color-primary-300: hsla(169, 71%, 64%, 1);
+  --color-primary-200: hsla(167, 78%, 78%, 1);
+  --color-primary-100: hsla(166, 78%, 89%, 1);
+  --color-primary-50: hsla(166, 76%, 97%, 1);
 }
 
 [data-theme="dark"] {
-  --color-gray-950: oklch(0.935 0.002 247.839);
-  --color-gray-900: oklch(0.917 0.003 264.542);
-  --color-gray-800: oklch(0.878 0.006 264.531);
-  --color-gray-700: oklch(0.822 0.01 258.338);
-  --color-gray-600: oklch(0.657 0.022 261.325);
-  --color-gray-500: oklch(0.501 0.027 264.364);
-  --color-gray-400: oklch(0.376 0.03 256.802);
-  --color-gray-300: oklch(0.303 0.034 259.733);
-  --color-gray-200: oklch(0.208 0.033 256.848);
-  --color-gray-100: oklch(0.12 0.034 264.665);
-  --color-gray-50: oklch(0.02 0.028 261.692);
+  --color-gray-950: oklch(0.985 0 0);
+  --color-gray-900: oklch(0.97 0 0);
+  --color-gray-800: oklch(0.922 0 0);
+  --color-gray-700: oklch(0.87 0 0);
+  --color-gray-600: oklch(0.708 0 0);
+  --color-gray-500: oklch(0.556 0 0);
+  --color-gray-400: oklch(0.439 0 0);
+  --color-gray-300: oklch(0.371 0 0);
+  --color-gray-200: oklch(0.269 0 0);
+  --color-gray-100: oklch(0.205 0 0);
+  --color-gray-50: oklch(0.145 0 0);
+
+  --color-primary-950: hsla(166, 76%, 97%, 1);
+  --color-primary-900: hsla(166, 78%, 89%, 1);
+  --color-primary-800: hsla(167, 78%, 78%, 1);
+  --color-primary-700: hsla(169, 71%, 64%, 1);
+  --color-primary-600: hsla(171, 61%, 50%, 1);
+  --color-primary-500: hsla(172, 75%, 40%, 1);
+  --color-primary-400: hsla(173, 78%, 34%, 1);
+  --color-primary-300: hsla(173, 73%, 27%, 1);
+  --color-primary-200: hsla(175, 64%, 21%, 1);
+  --color-primary-100: hsla(173, 60%, 15%, 1);
+  --color-primary-50: hsla(177, 91%, 8%, 1);
 }
 
 @custom-variant dark {
@@ -50,11 +74,16 @@ body {
   }
 }
 
+@plugin "@iconify/tailwind4" {
+  prefix: "ico";
+  prefixes: ph, svg-spinners;
+}
+
 @theme {
   --spacing-header: 52px;
   --spacing-subheader: 40px;
-  --spacing-sidenav: 280px;
-  --spacing-pagenav: 200px;
+  --spacing-sidenav: 290px;
+  --spacing-toc: 275px;
 
   --color-gray-50: var(--color-gray-50);
   --color-gray-100: var(--color-gray-100);
@@ -67,6 +96,18 @@ body {
   --color-gray-800: var(--color-gray-800);
   --color-gray-900: var(--color-gray-900);
   --color-gray-950: var(--color-gray-950);
+
+  --color-primary-50: var(--color-primary-50);
+  --color-primary-100: var(--color-primary-100);
+  --color-primary-200: var(--color-primary-200);
+  --color-primary-300: var(--color-primary-300);
+  --color-primary-400: var(--color-primary-400);
+  --color-primary-500: var(--color-primary-500);
+  --color-primary-600: var(--color-primary-600);
+  --color-primary-700: var(--color-primary-700);
+  --color-primary-800: var(--color-primary-800);
+  --color-primary-900: var(--color-primary-900);
+  --color-primary-950: var(--color-primary-950);
 
   --text-sm: 15px;
 }
@@ -99,15 +140,15 @@ body {
   @apply text-sm text-gray-600;
 
   h1 {
-    @apply mt-2 scroll-m-28 text-3xl font-bold tracking-tight;
+    @apply not-first:mt-2 scroll-m-28 text-3xl font-bold tracking-tight text-gray-700;
   }
 
   h2 {
-    @apply [&+*]:[code]:text-xl [&+.steps]:mt-0! [&+.steps>h3]:mt-4! [&+h3]:mt-6! [&+p]:mt-4! mt-10 scroll-m-28 text-xl font-medium tracking-tight first:mt-0 lg:mt-16;
+    @apply [&+*]:[code]:text-xl [&+.steps]:mt-0! [&+.steps>h3]:mt-4! [&+h3]:mt-6! [&+p]:mt-4! mt-10 scroll-m-28 text-2xl font-medium tracking-tight text-gray-700 first:mt-0;
   }
 
   h3 {
-    @apply [&+p]:mt-4! *:[code]:text-xl mt-12 scroll-m-28 text-lg font-medium tracking-tight;
+    @apply [&+p]:mt-4! *:[code]:text-xl mt-12 scroll-m-28 text-xl font-medium tracking-tight text-gray-700;
   }
 
   h4 {
@@ -123,7 +164,7 @@ body {
   }
 
   a {
-    @apply font-medium underline underline-offset-4;
+    @apply text-primary-600 hover:text-primary-500 font-medium underline underline-offset-4 transition-colors;
   }
 
   p {
@@ -135,13 +176,13 @@ body {
   }
 
   ul {
-    @apply my-6 ml-6 list-disc;
+    @apply ml-4.5 my-6 list-disc;
   }
   ol {
-    @apply my-6 ml-6 list-decimal;
+    @apply ml-4.5 my-6 list-decimal;
   }
   li {
-    @apply mt-2;
+    @apply mt-4 py-1;
   }
   blockquote {
     @apply mt-6 border-l-2 pl-6 italic;
@@ -161,14 +202,5 @@ body {
   }
   td {
     @apply [[align=center]]:text-center [[align=right]]:text-right whitespace-nowrap px-4 py-2 text-left;
-  }
-
-  .expressive-code {
-    width: 100%;
-    border: 1px solid white;
-    overflow: hidden;
-
-    pre {
-    }
   }
 }

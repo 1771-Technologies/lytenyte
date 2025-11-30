@@ -1,7 +1,15 @@
 ---
 import "../styles/global.css";
+import DesktopToc from "../components/toc/desktop-toc.astro";
 import ThemeToggle from "../components/theme-toggle/theme-toggle.astro";
 import ThemeScript from "../components/theme-toggle/theme-script.astro";
+import type { MarkdownHeading } from "astro";
+
+export interface Props {
+  readonly toc: MarkdownHeading[];
+}
+
+const { toc } = Astro.props;
 ---
 
 <!doctype html>
@@ -12,42 +20,56 @@ import ThemeScript from "../components/theme-toggle/theme-script.astro";
     <title>Home</title>
     <ThemeScript />
   </head>
-  <body class="bg-gray-50 text-gray-950">
+  <body class="bg-gray-50 text-gray-950 min-h-screen flex flex-col">
     <div class="sticky top-0 z-10">
       <header class="h-header border-b border-gray-200 bg-gray-50">
         <ThemeToggle />
       </header>
       <aside class="h-subheader border-b border-gray-200 bg-gray-50"></aside>
     </div>
-    <div
-      class="relative min-h-[calc(100vh-var(--spacing-header)-var(--spacing-subheader))] container px-4 sm:px-0 mx-auto flex flex-col"
-    >
-      <div class="flex-1 flex">
+    <div class="flex-1 grid grid-row-[1fr]">
+      <div class="w-full h-full">
         <div
-          class:list={[
-            "w-sidenav min-w-sidenav max-w-sidenav py-8 sticky top-[calc(var(--spacing-header)+var(--spacing-subheader))]",
-            "overflow-auto contain-strict no-scrollbar",
-            "h-[calc(100vh-var(--spacing-header)-var(--spacing-subheader))]",
-            "hidden xl:block",
-          ]}
+          class="h-full w-full lg:max-w-[1000px] xl:max-w-7xl [@media(min-width:1380px)]:max-w-[1360px] mx-auto"
         >
-          Side Nav
-        </div>
-        <div class="flex-1 flex flex-col">
-          <main class="flex-1 flex flex-row-reverse">
-            <aside
+          <div
+            class="grid grid-cols-1 lg:grid-cols-[calc(100%-var(--spacing-toc))_var(--spacing-toc)] xl:grid-cols-[var(--spacing-sidenav)_calc(100%-var(--spacing-sidenav)-var(--spacing-toc))_var(--spacing-toc)]"
+          >
+            <div
               class:list={[
-                "w-sidenav min-w-sidenav max-w-sidenav sticky top-[calc(var(--spacing-header)+var(--spacing-subheader))] h-0 py-8",
-                "hidden lg:block",
+                "overflow-auto contain-strict no-scrollbar",
+                "w-sidenav min-w-sidenav max-w-sidenav py-8 sticky top-[calc(var(--spacing-header)+var(--spacing-subheader))]",
+                "h-[calc(100vh-var(--spacing-header)-var(--spacing-subheader))]",
+                "hidden xl:block",
               ]}
             >
-              On this
-            </aside>
-            <div class="flex-1 p-8 prose max-w-4xl mx-auto">
-              <slot />
+              Side Nav
             </div>
-          </main>
-          <footer class="h-pagenav w-full lg:w-[calc(100%-var(--spacing-pagenav))]"></footer>
+
+            <div class="flex flex-col">
+              <div class="w-full max-w-full flex-1">
+                <div class="prose px-4 py-8 max-w-4xl mx-auto">
+                  <main class="mx-auto">
+                    <slot />
+                  </main>
+                </div>
+              </div>
+              <footer class="h-[200px]">Lee</footer>
+            </div>
+
+            {
+              toc.length > 0 && (
+                <div
+                  class:list={[
+                    "w-toc min-w-toc max-w-toc sticky top-[calc(var(--spacing-header)+var(--spacing-subheader))] h-0 py-8 pl-2",
+                    "hidden lg:block",
+                  ]}
+                >
+                  <DesktopToc toc={toc} />
+                </div>
+              )
+            }
+          </div>
         </div>
       </div>
     </div>

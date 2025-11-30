@@ -1,0 +1,94 @@
+---
+import type { MarkdownHeading } from "astro";
+
+export interface Props {
+  readonly toc: MarkdownHeading[];
+}
+
+const { toc } = Astro.props;
+---
+
+<h3 class="pb-2 text-sm flex items-center gap-2 relative -left-1 text-gray-600">
+  <span class="iconify ph--text-align-left-light size-4"></span>
+  On this page
+</h3>
+
+<div class="relative">
+  <div role="none" class="absolute transition-all bg-gray-800 w-px" id="toc-border"></div>
+
+  <div class="flex flex-col text-sm gap-1.5 border-l border-gray-200" id="toc">
+    {
+      toc.map((x) => {
+        return (
+          <a
+            class:list={[
+              x.depth === 3 ? "pl-6" : "pl-3",
+              "font-semibold text-gray-500 hover:text-gray-900 transition-colors cursor-pointer py-0.5 toc-link",
+              "data-[active=true]:text-gray-900",
+            ]}
+            href={`#${x.slug}`}
+          >
+            {x.text}
+          </a>
+        );
+      })
+    }
+  </div>
+</div>
+
+<script>
+  const tocLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>("#toc .toc-link"));
+
+  if (tocLinks.length) {
+    // Map TOC links to actual headings on the page
+    const headings = tocLinks
+      .map((link) => {
+        const id = link.getAttribute("href")?.slice(1);
+        if (!id) return null;
+        return document.getElementById(id);
+      })
+      .filter((el): el is HTMLElement => !!el);
+
+    const bar = document.getElementById("toc-border")!;
+    const setActive = (id: string) => {
+      tocLinks.forEach((link) => {
+        const li = link;
+        if (!li) return;
+
+        if (link.getAttribute("href") === `#${id}`) {
+          li.setAttribute("data-active", "true");
+          const offset = li.offsetTop - li.parentElement!.offsetTop;
+          const height = li.offsetHeight;
+          bar.style.top = `${offset}px`;
+          bar.style.height = `${height}px`;
+        } else {
+          li.removeAttribute("data-active");
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Find the heading closest to the top that’s in view
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort(
+            (a, b) => (a.target as HTMLElement).offsetTop - (b.target as HTMLElement).offsetTop,
+          );
+
+        if (!visible.length) return;
+
+        const activeId = (visible[0].target as HTMLElement).id;
+        if (activeId) setActive(activeId);
+      },
+      {
+        root: null,
+        threshold: 0.1,
+        // Start considering a heading "active" when it’s in the top ~30% of the viewport
+        rootMargin: "0px 0px -70% 0px",
+      },
+    );
+
+    headings.forEach((heading) => observer.observe(heading));
+  }
+</script>
