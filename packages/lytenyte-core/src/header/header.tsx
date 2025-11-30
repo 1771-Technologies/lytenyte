@@ -54,7 +54,6 @@ const HeaderImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(
         data-ln-rowcount={rows}
         data-ln-floating={floatingRowEnabled ? true : undefined}
         style={{
-          ...props.style,
           width,
           minWidth: "100%",
           boxSizing: "border-box",
@@ -64,6 +63,7 @@ const HeaderImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(
           display: "grid",
           gridTemplateRows: gridRowTemplate,
           gridTemplateColumns: gridTemplateColumns,
+          ...props.style,
         }}
       ></div>
     );

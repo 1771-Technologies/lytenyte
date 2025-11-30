@@ -15,7 +15,6 @@ import {
 } from "./components";
 import type { DEXPerformanceData } from "@1771technologies/grid-sample-data/dex-pairs-performance";
 import { data } from "@1771technologies/grid-sample-data/dex-pairs-performance";
-import { ColumnPills } from "./pill-manager";
 import { ChevronLeftIcon, ChevronRightIcon } from "@1771technologies/lytenyte-pro/icons";
 
 const columns: Column<DEXPerformanceData>[] = [
@@ -24,8 +23,8 @@ const columns: Column<DEXPerformanceData>[] = [
     cellRenderer: SymbolCell,
     width: 220,
     name: "Symbol",
+    pin: "start",
     groupPath: ["Market Info"],
-    groupVisibility: "always",
   },
   {
     id: "network",
@@ -33,32 +32,29 @@ const columns: Column<DEXPerformanceData>[] = [
     width: 220,
     name: "Network",
     groupPath: ["Market Info"],
-    groupVisibility: "open",
   },
-
   {
     id: "exchange",
     cellRenderer: ExchangeCell,
     width: 220,
     name: "Exchange",
     groupPath: ["Market Info"],
-    groupVisibility: "open",
   },
-
   {
     id: "change24h",
     cellRenderer: PercentCellPositiveNegative,
     headerRenderer: makePerfHeaderCell("Change", "24h"),
     name: "Change % 24h",
     type: "number,",
+    groupPath: ["Performance"],
   },
-
   {
     id: "perf1w",
     cellRenderer: PercentCellPositiveNegative,
     headerRenderer: makePerfHeaderCell("Perf %", "1w"),
     name: "Perf % 1W",
     type: "number,",
+    groupPath: ["Performance"],
   },
   {
     id: "perf1m",
@@ -66,6 +62,7 @@ const columns: Column<DEXPerformanceData>[] = [
     headerRenderer: makePerfHeaderCell("Perf %", "1m"),
     name: "Perf % 1M",
     type: "number,",
+    groupPath: ["Performance"],
   },
   {
     id: "perf3m",
@@ -73,6 +70,7 @@ const columns: Column<DEXPerformanceData>[] = [
     headerRenderer: makePerfHeaderCell("Perf %", "3m"),
     name: "Perf % 3M",
     type: "number,",
+    groupPath: ["Performance"],
   },
   {
     id: "perf6m",
@@ -80,13 +78,15 @@ const columns: Column<DEXPerformanceData>[] = [
     headerRenderer: makePerfHeaderCell("Perf %", "6m"),
     name: "Perf % 6M",
     type: "number,",
+    groupPath: ["Performance"],
   },
   {
     id: "perfYtd",
     cellRenderer: PercentCellPositiveNegative,
     headerRenderer: makePerfHeaderCell("Perf %", "YTD"),
     name: "Perf % YTD",
-    type: "number,",
+    type: "number",
+    groupPath: ["Performance"],
   },
   { id: "volatility", cellRenderer: PercentCell, name: "Volatility", type: "number" },
   {
@@ -94,7 +94,7 @@ const columns: Column<DEXPerformanceData>[] = [
     cellRenderer: PercentCell,
     headerRenderer: makePerfHeaderCell("Volatility", "1m"),
     name: "Volatility 1M",
-    type: "number,",
+    type: "number",
   },
 ];
 
@@ -105,7 +105,6 @@ export default function ColumnBase() {
     gridId: useId(),
     rowDataSource: ds,
     columns,
-    headerGroupHeight: 30,
     columnBase: { width: 80 },
     columnGroupExpansions: { "Market Info": false },
   });
@@ -114,7 +113,6 @@ export default function ColumnBase() {
 
   return (
     <div>
-      <ColumnPills grid={grid} />
       <div className="lng-grid" style={{ height: 500 }}>
         <Grid.Root grid={grid}>
           <Grid.Viewport>

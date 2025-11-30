@@ -23,7 +23,6 @@ export const RowsContainer = memo(
         role="presentation"
         style={
           {
-            ...props.style,
             height,
             minHeight: height,
             width,
@@ -36,6 +35,7 @@ export const RowsContainer = memo(
             [SCROLL_WIDTH_VARIABLE]: `${width}px`,
             [VIEWPORT_WIDTH_VARIABLE]: `${viewportWidth}px`,
             [VIEWPORT_HEIGHT_VARIABLE]: `${viewportHeight}px`,
+            ...props.style,
           } as CSSProperties
         }
       />

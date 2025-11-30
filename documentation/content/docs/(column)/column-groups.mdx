@@ -1,83 +1,212 @@
 ---
 title: Column Groups
 description: LyteNyte Grid lets you organize columns into groups to create visual
-  relationships between related columns. Each column belongs to only one
-  group. Groups can contain nested groups to form hierarchies.
+  relationships between related columns. Each column belongs to one
+  group, and groups may contain nested groups to form hierarchies.
 ---
 
 ## Creating a Column Group
 
 Create column groups in LyteNyte Grid by setting the `groupPath`
-property on columns. The grid builds a hierarchy based on all
-`groupPath` values in your columns.
+property on each column. The grid builds a hierarchy from the
+`groupPath` values across all columns. The demo below shows a basic
+column group setup.
 
-!demo:Column Groups="./demos/column-groups"
+!demo:Column Groups="./demos/column-groups_x"
 
-The longest path in your hierarchy determines the number of group rows.
-If a column is not part of any group, or belongs to a group with a
-shorter path, its header spans the empty group rows.
+Columns remain a flat array, even when grouped. LyteNyte Grid creates
+the hierarchy by joining each column's group path. Columns with the
+same group path belong to the same group. In the example below, the
+**Symbol**, **Network**, and **Exchange** columns all belong to the
+**Market Info** group.
+
+```ts
+const columns: Column<DEXPerformanceData>[] = [
+  {
+    id: "symbol",
+    name: "Symbol",
+    groupPath: ["Market Info"],
+  },
+  {
+    id: "network",
+    name: "Network",
+    groupPath: ["Market Info"],
+  },
+  {
+    id: "exchange",
+    name: "Exchange",
+    groupPath: ["Market Info"],
+  },
+  // other columns
+];
+```
+
+Columns do not need to belong to a group. If a column has no group path,
+its header cell spans the full height of the header.
 
 ### Split Column Groups
 
-LyteNyte Grid identifies column groups by the `groupPath` property.
-Groups appear split if columns from other groups appear between group
-members. This creates multiple visual instances of the same logical
-group. When you move separated group columns next to each other, the
-grid merges them automatically. Pinned columns always appear visually
-separate from non-pinned columns, even within the same group.
+LyteNyte Grid identifies column groups using the `groupPath` property.
+A group appears split when columns from another group appear between its
+members. Although the group remains a single logical entity, it renders
+as multiple visual segments. When you move separated columns next to
+each other, the grid merges the segments automatically. Pinned columns
+always appear visually separate from non-pinned columns, even when they
+share a group.
 
-!demo:Column Groups Split="./demos/column-groups-split"
+The demo below shows this behavior. The **Market Info** and
+**Performance** groups are split visually but remain single logical
+groups.
 
-<Callout>
+!demo:Column Groups Split="./demos/column-groups-split_x"
 
-Visually split groups still function as a single logical group in grid
-state. Expanding or collapsing one affects all visual instances.
+The `key` passed to `Grid.HeaderGroupCell` uses `c.idOccurrence`. Split
+groups create multiple occurrences of the same header, and each shares
+the same `id`. Because React requires unique keys, the grid provides
+`idOccurrence`, which combines the group ID with an occurrence count.
 
-</Callout>
+```tsx
+<Grid.HeaderGroupCell cell={c} key={c.idOccurrence} />
+```
+
+## Multiple Column Group Levels
+
+The `groupPath` property is an array of strings. Each string represents
+a grouping level. Adding more entries creates deeper nesting. The demo
+below illustrates multiple group levels:
+
+!demo:Multiple Group Levels="./demos/column-groups-multiple-levels_x"
+
+Each grouping level creates a new header row. The longest `groupPath`
+in the grid determines the number of header rows.
+
+## Column Groups & Pinned Columns
+
+Pinned columns can still belong to a group. Pinned columns create a
+split boundary, so the grid treats them as visually separate even if
+they are adjacent to other group members. The example below shows this:
+
+!demo:Column Groups With Pinned="./demos/column-groups-expansions-pinned_x"
+
+Set the `pin` property to `"start"` or `"end"` to pin a column to the
+start or end of the viewport. For details, see the
+[Column Pinning guide](/docs/column-pinning).
 
 ## Column Group Expansions
 
-You can expand or collapse column groups. The `groupVisibility`
-property controls column visibility:
+Column groups become collapsible when you use the `groupVisibility`
+property, which controls when each column is visible:
 
-- `"open"`: Show the column only when the group is expanded.
-- `"closed"`: Show the column only when the group is collapsed.
-- `"always"`: Show the column regardless of the group's state.
+- `"open"`: Visible only when the group is expanded.
+- `"closed"`: Visible only when the group is collapsed.
+- `"always"`: Always visible.
 
-If all columns in a group use `"always"`, you cannot collapse the group.
-To make a group collapsible, include at least one column hidden when
-expanded and one visible when expanded.
+A group becomes collapsible when at least one column is visible in the
+collapsed state and at least one is visible in the expanded state.
 
-!demo:Column Group Expansion="./demos/column-groups-expansions"
+In the demo below, the **Market Info** and **Performance** groups are
+collapsible. The **Market Info** group starts collapsed. Click the
+chevron to expand it.
 
-### Initial Group State
+!demo:Column Group Expansion="./demos/column-groups-expansions_x"
 
-Configure the initial expansion state of column groups by understanding
-how LyteNyte Grid generates group `id`s.
+The demo uses a few noteworthy patterns:
 
-The `groupPath` array defines the hierarchy. The grid joins the array
-using a delimiter (set via `columnGroupJoinDelimiter`) to form the group
-`id`.
+- A button is passed to the `children` prop of `Grid.HeaderGroupCell`.
+  The button toggles the group using `grid.api.columnToggleGroup`.
+- The Tailwind classes use the `data-ln-collapsible` attribute, which
+  LyteNyte Grid adds to indicate whether a group can collapse. Use this
+  attribute in custom CSS if some groups should not collapse.
 
-The `columnGroupExpansions` property controls the initial expansion
-state. Keys are group `id`s and values are booleans. Groups without an
-explicit value use `columnGroupDefaultExpansion` (defaults to `true`).
-
-!demo:Column Group Initial State="./demos/column-groups-initial-state"
-
-Because `columnGroupExpansions`, `columnGroupDefaultExpansion`, and
-`columnGroupJoinDelimiter` are part of grid state, you can update them
-at runtime:
-
-```ts
-// Reset all groups to their default expansion state
-grid.state.columnGroupExpansions.set({});
+```tsx
+<Grid.HeaderGroupCell
+  cell={c}
+  key={c.idOccurrence}
+  className="text-xs! group flex items-center px-2"
+>
+  <div className="flex-1">{c.id}</div>
+  <button
+    className="text-ln-gray-90 hidden cursor-pointer items-center justify-center text-base group-data-[ln-collapsible=true]:flex"
+    onClick={() => grid.api.columnToggleGroup(c.id)}
+  >
+    <ChevronLeftIcon className="hidden group-data-[ln-collapsed=false]:block" />
+    <ChevronRightIcon className="block group-data-[ln-collapsed=false]:hidden" />
+  </button>
+</Grid.HeaderGroupCell>
 ```
 
-Avoid changing `columnGroupJoinDelimiter` after setup, since the grid
-won't update existing group ids automatically.
+### Default Group Expansion
 
-## Programmatically Toggle Groups
+Collapsible groups expand by default. Use the
+`columnGroupDefaultExpansion` property to change this. Setting it to
+`false` collapses all groups initially:
 
-Call the `columnToggleGroup` API method to toggle a group's expansion
-state programmatically.
+!demo:Default Expansion State="./demos/column-groups-default-expansions_x"
+
+You can also provide explicit initial expansion states. To do this, you
+must know how LyteNyte Grid generates group IDs.
+
+Group IDs come from joining the `groupPath` array with a delimiter. The
+default delimiter is `-->`, but you can change it using
+`columnGroupJoinDelimiter`. For example:
+
+```ts
+["Market Info"]; // "Market Info"
+["Market Info", "Location"]; // "Market Info-->Location"
+```
+
+With this information, you can set expansion states directly:
+
+```ts
+const grid = Grid.useLyteNyte({
+  // Other grid props
+  columnGroupExpansions: { "Market Info": false },
+});
+```
+
+## Sticky Group Labels
+
+Some groups contain many columns, and horizontal scrolling can hide the
+group label. LyteNyte Grid allows you to style header cells so the
+label remains visible. The demo below shows this behavior. Try scrolling
+horizontally and observe that the **Market Info** label remain in view.
+
+!demo:Sticky Group Labels="./demos/column-groups-sticky_x"
+
+The implementation is simple. The important part is the `style`
+override. `Grid.HeaderGroupCell` uses `relative` position and `hidden`
+overflow by default. In this case, overriding those defaults is
+appropriate. Since pinned columns may appear at the start, compute the
+starting width and use it for `insetInlineStart`.
+
+```tsx
+function StickyGroupHeader({
+  layout,
+  grid,
+}: {
+  grid: GridState<DEXPerformanceData>;
+  layout: HeaderGroupCellLayout;
+}) {
+  const meta = grid.state.columnMeta.useValue();
+  const widths = grid.state.xPositions.useValue();
+  const startWidth = widths[meta.columnVisibleStartCount];
+
+  return (
+    <Grid.HeaderGroupCell
+      cell={layout}
+      style={{
+        overflow: "unset",
+        position: "sticky",
+        insetInlineStart: startWidth,
+      }}
+    />
+  );
+}
+```
+
+## Next Steps
+
+- [Column Resizing](/docs/column-resizing)
+- [Column ID & Name](/docs/column-header-name)
+- [Column Moving](/docs/column-moving)
+- [Column Field](/docs/column-field)

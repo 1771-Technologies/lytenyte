@@ -2,7 +2,11 @@
 
 import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
-import type { Column } from "@1771technologies/lytenyte-pro/types";
+import type {
+  Column,
+  Grid as GridState,
+  HeaderGroupCellLayout,
+} from "@1771technologies/lytenyte-pro/types";
 import { useId } from "react";
 import {
   ExchangeCell,
@@ -15,8 +19,6 @@ import {
 } from "./components";
 import type { DEXPerformanceData } from "@1771technologies/grid-sample-data/dex-pairs-performance";
 import { data } from "@1771technologies/grid-sample-data/dex-pairs-performance";
-import { ColumnPills } from "./pill-manager";
-import { ChevronLeftIcon, ChevronRightIcon } from "@1771technologies/lytenyte-pro/icons";
 
 const columns: Column<DEXPerformanceData>[] = [
   {
@@ -25,7 +27,6 @@ const columns: Column<DEXPerformanceData>[] = [
     width: 220,
     name: "Symbol",
     groupPath: ["Market Info"],
-    groupVisibility: "always",
   },
   {
     id: "network",
@@ -33,16 +34,13 @@ const columns: Column<DEXPerformanceData>[] = [
     width: 220,
     name: "Network",
     groupPath: ["Market Info"],
-    groupVisibility: "open",
   },
-
   {
     id: "exchange",
     cellRenderer: ExchangeCell,
     width: 220,
     name: "Exchange",
     groupPath: ["Market Info"],
-    groupVisibility: "open",
   },
 
   {
@@ -51,6 +49,7 @@ const columns: Column<DEXPerformanceData>[] = [
     headerRenderer: makePerfHeaderCell("Change", "24h"),
     name: "Change % 24h",
     type: "number,",
+    groupPath: ["Performance"],
   },
 
   {
@@ -59,6 +58,7 @@ const columns: Column<DEXPerformanceData>[] = [
     headerRenderer: makePerfHeaderCell("Perf %", "1w"),
     name: "Perf % 1W",
     type: "number,",
+    groupPath: ["Performance"],
   },
   {
     id: "perf1m",
@@ -66,6 +66,7 @@ const columns: Column<DEXPerformanceData>[] = [
     headerRenderer: makePerfHeaderCell("Perf %", "1m"),
     name: "Perf % 1M",
     type: "number,",
+    groupPath: ["Performance"],
   },
   {
     id: "perf3m",
@@ -73,6 +74,7 @@ const columns: Column<DEXPerformanceData>[] = [
     headerRenderer: makePerfHeaderCell("Perf %", "3m"),
     name: "Perf % 3M",
     type: "number,",
+    groupPath: ["Performance"],
   },
   {
     id: "perf6m",
@@ -80,13 +82,15 @@ const columns: Column<DEXPerformanceData>[] = [
     headerRenderer: makePerfHeaderCell("Perf %", "6m"),
     name: "Perf % 6M",
     type: "number,",
+    groupPath: ["Performance"],
   },
   {
     id: "perfYtd",
     cellRenderer: PercentCellPositiveNegative,
     headerRenderer: makePerfHeaderCell("Perf %", "YTD"),
     name: "Perf % YTD",
-    type: "number,",
+    type: "number",
+    groupPath: ["Performance"],
   },
   { id: "volatility", cellRenderer: PercentCell, name: "Volatility", type: "number" },
   {
@@ -94,7 +98,7 @@ const columns: Column<DEXPerformanceData>[] = [
     cellRenderer: PercentCell,
     headerRenderer: makePerfHeaderCell("Volatility", "1m"),
     name: "Volatility 1M",
-    type: "number,",
+    type: "number",
   },
 ];
 
@@ -105,16 +109,13 @@ export default function ColumnBase() {
     gridId: useId(),
     rowDataSource: ds,
     columns,
-    headerGroupHeight: 30,
     columnBase: { width: 80 },
-    columnGroupExpansions: { "Market Info": false },
   });
 
   const view = grid.view.useValue();
 
   return (
     <div>
-      <ColumnPills grid={grid} />
       <div className="lng-grid" style={{ height: 500 }}>
         <Grid.Root grid={grid}>
           <Grid.Viewport>
@@ -124,22 +125,7 @@ export default function ColumnBase() {
                   <Grid.HeaderRow key={i} headerRowIndex={i}>
                     {row.map((c) => {
                       if (c.kind === "group")
-                        return (
-                          <Grid.HeaderGroupCell
-                            cell={c}
-                            key={c.idOccurrence}
-                            className="text-xs! group flex items-center px-2"
-                          >
-                            <div className="flex-1">{c.id}</div>
-                            <button
-                              className="text-ln-gray-90 hidden cursor-pointer items-center justify-center text-base group-data-[ln-collapsible=true]:flex"
-                              onClick={() => grid.api.columnToggleGroup(c.id)}
-                            >
-                              <ChevronLeftIcon className="hidden group-data-[ln-collapsed=false]:block" />
-                              <ChevronRightIcon className="block group-data-[ln-collapsed=false]:hidden" />
-                            </button>
-                          </Grid.HeaderGroupCell>
-                        );
+                        return <StickyGroupHeader key={c.idOccurrence} grid={grid} layout={c} />;
 
                       return (
                         <Grid.HeaderCell
@@ -181,5 +167,29 @@ export default function ColumnBase() {
         </Grid.Root>
       </div>
     </div>
+  );
+}
+
+function StickyGroupHeader({
+  layout,
+  grid,
+}: {
+  grid: GridState<DEXPerformanceData>;
+  layout: HeaderGroupCellLayout;
+}) {
+  const meta = grid.state.columnMeta.useValue();
+  const widths = grid.state.xPositions.useValue();
+  const startWidth = widths[meta.columnVisibleStartCount];
+
+  return (
+    <Grid.HeaderGroupCell
+      cell={layout}
+      className="text-xs! left-0 flex items-center px-2"
+      style={{
+        overflow: "unset",
+        position: "sticky",
+        insetInlineStart: startWidth,
+      }}
+    />
   );
 }

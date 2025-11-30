@@ -22,12 +22,12 @@ export const RowsTop = memo(
         data-ln-rows-top
         data-ln-gridid={gridId}
         style={{
-          ...props.style,
           height,
           position: "sticky",
           top,
           zIndex: 4,
           minWidth: "100%",
+          ...props.style,
         }}
       />
     );
@@ -64,11 +64,11 @@ export const RowsCenter = memo(
         data-ln-rows-center
         data-ln-gridid={gridId}
         style={{
-          ...props.style,
           height,
           minHeight: `calc(100% - ${pinSectionHeights}px - 4px)`,
           minWidth: "100%",
           position: "relative",
+          ...props.style,
         }}
       >
         <NativeScroller>{children}</NativeScroller>
@@ -99,14 +99,13 @@ export const RowsBottom = memo(
         data-ln-rows-bottom
         data-ln-gridid={gridId}
         style={{
-          ...props.style,
-
           height,
           boxSizing: "border-box",
           position: "sticky",
           bottom: 0,
           zIndex: 3,
           minWidth: "100%",
+          ...props.style,
         }}
       />
     );
