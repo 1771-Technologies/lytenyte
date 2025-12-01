@@ -1,17 +1,15 @@
 ---
 title: Column Pinning
-description: Guide to pinning columns at the start or end of the LyteNyte Grid
-  viewport
+description: LyteNyte Grid supports pinning columns to the start or end of the
+  grid's viewport. Pinned columns remaining visible even as the user scrolls horizontally.
 ---
-
-LyteNyte Grid lets you pin columns to the start or end of the viewport.
-Pinned columns stay visible as users scroll horizontally. For best
-usability, pin only one or two columns at a time.
 
 <Callout>
 
-We use `start` and `end` instead of `right` or `left` to indicate
-pinning positions for both RTL and LTR modes.
+LyteNyte Grid uses the `start` and `end` terminology for referring to
+position, rather than `left` or `right`. This aligns with the logical CSS
+properties, such as `paddingInlineStart` instead of `paddingLeft`. This
+ensures pinned column functionality works seamlessly for both LTR and RTL modes.
 
 </Callout>
 
@@ -21,7 +19,18 @@ Set a column's `pin` property to `"start"` to pin it to the start. In
 LTR mode, start-pinned columns stay on the left; in RTL mode, they stay
 on the right.
 
-!demo:Column Pinning Start="./demos/column-pinning-start"
+!demo:Column Pinning Start="./demos/column-pinning-start_x"
+
+In the demo the **ID** and **Product** columns are pinned to the beginning of the
+grid's viewport. The column definitions for this are shown below:
+
+```ts
+const columns: Column<OrderData>[] = [
+  { id: "id", pin: "start" },
+  { id: "product", pin: "start" },
+  // other definitions
+];
+```
 
 ## Pinning Columns to End
 
@@ -29,12 +38,38 @@ Set a column's `pin` property to `"end"` to pin it to the end. In LTR
 mode, end-pinned columns stay on the right; in RTL mode, they stay on
 the left.
 
-import ColumnPinningEnd from "./demos/column-pinning-end/demo";
+!demo:Column Pinning End="./demos/column-pinning-end_x"
 
-!demo:Column Pinning End="./demos/column-pinning-end"
+In the demo the **ID** and **Product** columns are pinned to the end of the
+grid's viewport. The column definitions for this are shown below:
+
+```ts
+const columns: Column<OrderData>[] = [
+  { id: "id", pin: "end" },
+  { id: "product", pin: "end" },
+  // other definitions
+];
+```
+
+## Pinning Columns Start & End
+
+LyteNyte Grid supports pinning columns both start and end at the same time. The demo
+below demonstrates this. Pinning on both sides as simple as specifying that some columns
+should be pinned to the start of the grid and others to the end.
+
+!demo:Column Pinning Start & End="./demos/column-pinning-both_x"
 
 ## Column Pinning Considerations
 
 When using both start-pinned and end-pinned columns, ensure enough space
 remains to display them while still scrolling unpinned columns in the
-middle.
+middle. LyteNyte Grid does not prevent the pinned sections from overlapping,
+and if they do overlap the columns pinned `end` will be visible above those
+pinned right.
+
+## Next Steps
+
+- [Column Base](/docs/column-base): See the default column values and how to override them.
+- [Column Resizing](/docs/column-resizing): Change column widths programmatically or through user interaction.
+- [Column ID & Name](/docs/column-header-name): Define user-friendly column names and ensure unique IDs.
+- [Column Field](/docs/column-field): Control how a column retrieves each cells value.
