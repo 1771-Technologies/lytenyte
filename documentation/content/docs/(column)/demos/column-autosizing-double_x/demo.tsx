@@ -6,7 +6,6 @@ import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { useId } from "react";
 import {
   ExchangeCell,
-  GridButton,
   makePerfHeaderCell,
   NetworkCell,
   PercentCell,
@@ -21,16 +20,7 @@ const columns: Column<DEXPerformanceData>[] = [
   {
     id: "symbol",
     cellRenderer: SymbolCell,
-    name: "Crypto Currency Symbol Logo & Ticker Shorthand & Symbol Name",
-    autosizeHeaderFn: (p) => {
-      const textWidth = measureText(
-        `${p.column.name ?? p.column.id}`,
-        p.grid.state.viewport.get(),
-      ).width;
-
-      const padding = 20;
-      return textWidth + padding;
-    },
+    name: "Symbol",
     autosizeCellFn: (p) => {
       if (p.row.kind !== "leaf" || !p.row.data) return null;
 
@@ -140,78 +130,66 @@ export default function ColumnBase() {
     gridId: useId(),
     rowDataSource: ds,
     columns,
+    columnDoubleClickToAutosize: true,
+
+    columnBase: {
+      uiHints: {
+        resizable: true,
+      },
+    },
   });
 
   const view = grid.view.useValue();
 
   return (
-    <div>
-      <div className="flex gap-2 border-b px-2 py-2">
-        <GridButton
-          onClick={() => {
-            grid.api.columnAutosize({ includeHeader: true });
-          }}
-        >
-          Autosize Cells Including Header
-        </GridButton>
+    <div className="lng-grid" style={{ height: 500 }}>
+      <Grid.Root grid={grid}>
+        <Grid.Viewport className="text-xs">
+          <Grid.Header>
+            {view.header.layout.map((row, i) => {
+              return (
+                <Grid.HeaderRow key={i} headerRowIndex={i}>
+                  {row.map((c) => {
+                    if (c.kind === "group") return null;
 
-        <GridButton
-          onClick={() => {
-            grid.state.columns.set(columns);
-          }}
-        >
-          Reset Columns
-        </GridButton>
-      </div>
-      <div className="lng-grid" style={{ height: 500 }}>
-        <Grid.Root grid={grid}>
-          <Grid.Viewport className="text-xs">
-            <Grid.Header>
-              {view.header.layout.map((row, i) => {
+                    return (
+                      <Grid.HeaderCell
+                        key={c.id}
+                        cell={c}
+                        className={tw(
+                          "text-ln-gray-60! dark:text-ln-gray-70! flex h-full w-full items-center text-nowrap px-2 text-xs capitalize",
+                          c.column.type === "number" && "justify-end",
+                        )}
+                      />
+                    );
+                  })}
+                </Grid.HeaderRow>
+              );
+            })}
+          </Grid.Header>
+          <Grid.RowsContainer>
+            <Grid.RowsCenter>
+              {view.rows.center.map((row) => {
+                if (row.kind === "full-width") return null;
+
                 return (
-                  <Grid.HeaderRow key={i} headerRowIndex={i}>
-                    {row.map((c) => {
-                      if (c.kind === "group") return null;
-
+                  <Grid.Row row={row} key={row.id}>
+                    {row.cells.map((c) => {
                       return (
-                        <Grid.HeaderCell
+                        <Grid.Cell
                           key={c.id}
                           cell={c}
-                          className={tw(
-                            "text-ln-gray-60! dark:text-ln-gray-70! flex h-full w-full items-center text-nowrap px-2 text-xs capitalize",
-                            c.column.type === "number" && "justify-end",
-                          )}
+                          className="text-xs! flex h-full w-full items-center px-2"
                         />
                       );
                     })}
-                  </Grid.HeaderRow>
+                  </Grid.Row>
                 );
               })}
-            </Grid.Header>
-            <Grid.RowsContainer>
-              <Grid.RowsCenter>
-                {view.rows.center.map((row) => {
-                  if (row.kind === "full-width") return null;
-
-                  return (
-                    <Grid.Row row={row} key={row.id}>
-                      {row.cells.map((c) => {
-                        return (
-                          <Grid.Cell
-                            key={c.id}
-                            cell={c}
-                            className="text-xs! flex h-full w-full items-center px-2"
-                          />
-                        );
-                      })}
-                    </Grid.Row>
-                  );
-                })}
-              </Grid.RowsCenter>
-            </Grid.RowsContainer>
-          </Grid.Viewport>
-        </Grid.Root>
-      </div>
+            </Grid.RowsCenter>
+          </Grid.RowsContainer>
+        </Grid.Viewport>
+      </Grid.Root>
     </div>
   );
 }

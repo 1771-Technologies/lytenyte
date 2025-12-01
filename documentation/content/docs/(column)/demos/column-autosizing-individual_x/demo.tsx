@@ -21,16 +21,7 @@ const columns: Column<DEXPerformanceData>[] = [
   {
     id: "symbol",
     cellRenderer: SymbolCell,
-    name: "Crypto Currency Symbol Logo & Ticker Shorthand & Symbol Name",
-    autosizeHeaderFn: (p) => {
-      const textWidth = measureText(
-        `${p.column.name ?? p.column.id}`,
-        p.grid.state.viewport.get(),
-      ).width;
-
-      const padding = 20;
-      return textWidth + padding;
-    },
+    name: "Symbol",
     autosizeCellFn: (p) => {
       if (p.row.kind !== "leaf" || !p.row.data) return null;
 
@@ -146,15 +137,28 @@ export default function ColumnBase() {
 
   return (
     <div>
-      <div className="flex gap-2 border-b px-2 py-2">
+      <div className="flex flex-wrap gap-2 border-b px-2 py-2">
         <GridButton
           onClick={() => {
-            grid.api.columnAutosize({ includeHeader: true });
+            grid.api.columnAutosize({ columns: ["symbol"] });
           }}
         >
-          Autosize Cells Including Header
+          Autosize Symbol
         </GridButton>
-
+        <GridButton
+          onClick={() => {
+            grid.api.columnAutosize({ columns: ["network"] });
+          }}
+        >
+          Autosize Network
+        </GridButton>
+        <GridButton
+          onClick={() => {
+            grid.api.columnAutosize({});
+          }}
+        >
+          All Columns
+        </GridButton>
         <GridButton
           onClick={() => {
             grid.state.columns.set(columns);
