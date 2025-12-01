@@ -1,28 +1,27 @@
 ---
 title: Column Pinning
-description: LyteNyte Grid supports pinning columns to the start or end of the
-  grid's viewport. Pinned columns remaining visible even as the user scrolls horizontally.
+description: LyteNyte Grid supports pinning columns to the start or end
+  of the viewport. Pinned columns stay visible as the user scrolls horizontally.
 ---
 
 <Callout>
 
-LyteNyte Grid uses the `start` and `end` terminology for referring to
-position, rather than `left` or `right`. This aligns with the logical CSS
-properties, such as `paddingInlineStart` instead of `paddingLeft`. This
-ensures pinned column functionality works seamlessly for both LTR and RTL modes.
+LyteNyte Grid uses the `start` and `end` terminology for column position instead
+of `left` or `right`. This matches logical CSS properties
+like `paddingInlineStart`, ensuring pinned column behavior works consistently
+in both LTR and RTL modes.
 
 </Callout>
 
 ## Pinning Columns to Start
 
-Set a column's `pin` property to `"start"` to pin it to the start. In
-LTR mode, start-pinned columns stay on the left; in RTL mode, they stay
-on the right.
+Set a column's `pin` property to `"start"` to pin it to the beginning of the grid's viewport.
+In LTR mode, start-pinned columns appear on the left; in RTL mode, they appear on the right.
 
 !demo:Column Pinning Start="./demos/column-pinning-start_x"
 
-In the demo the **ID** and **Product** columns are pinned to the beginning of the
-grid's viewport. The column definitions for this are shown below:
+In the demo, the **ID** and **Product** columns are
+pinned to the start of the viewport:
 
 ```ts
 const columns: Column<OrderData>[] = [
@@ -34,14 +33,13 @@ const columns: Column<OrderData>[] = [
 
 ## Pinning Columns to End
 
-Set a column's `pin` property to `"end"` to pin it to the end. In LTR
-mode, end-pinned columns stay on the right; in RTL mode, they stay on
-the left.
+Set a column's `pin` property to `"end"` to pin it to the end of the grid's viewport.
+In LTR mode, end-pinned columns appear on the right; in RTL
+mode, they appear on the left.
 
 !demo:Column Pinning End="./demos/column-pinning-end_x"
 
-In the demo the **ID** and **Product** columns are pinned to the end of the
-grid's viewport. The column definitions for this are shown below:
+In the demo, the **ID** and **Product** columns are pinned to the end of the viewport:
 
 ```ts
 const columns: Column<OrderData>[] = [
@@ -53,23 +51,32 @@ const columns: Column<OrderData>[] = [
 
 ## Pinning Columns Start & End
 
-LyteNyte Grid supports pinning columns both start and end at the same time. The demo
-below demonstrates this. Pinning on both sides as simple as specifying that some columns
-should be pinned to the start of the grid and others to the end.
+LyteNyte Grid supports pinning columns to both the start and end.
+The demo below shows this behavior. Pin columns on both sides by
+assigning some columns `pin: "start"` and others `pin: "end"`.
 
 !demo:Column Pinning Start & End="./demos/column-pinning-both_x"
+
+In the demo, the **ID** and **Product** columns are pinned to the start and end of the viewport respectively:
+
+```ts
+const columns: Column<OrderData>[] = [
+  { id: "id", pin: "end" },
+  { id: "product", pin: "start" },
+  // other definitions
+];
+```
 
 ## Column Pinning Considerations
 
 When using both start-pinned and end-pinned columns, ensure enough space
-remains to display them while still scrolling unpinned columns in the
-middle. LyteNyte Grid does not prevent the pinned sections from overlapping,
-and if they do overlap the columns pinned `end` will be visible above those
-pinned right.
+remains for unpinned columns to scroll between them. LyteNyte Grid does
+not prevent pinned regions from overlapping. If they overlap, columns
+pinned to `"end"` appear above those pinned to `"start"`.
 
 ## Next Steps
 
 - [Column Base](/docs/column-base): See the default column values and how to override them.
 - [Column Resizing](/docs/column-resizing): Change column widths programmatically or through user interaction.
 - [Column ID & Name](/docs/column-header-name): Define user-friendly column names and ensure unique IDs.
-- [Column Field](/docs/column-field): Control how a column retrieves each cells value.
+- [Column Field](/docs/column-field): Control how a column retrieves each cell's value.
