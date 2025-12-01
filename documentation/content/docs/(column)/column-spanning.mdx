@@ -1,36 +1,105 @@
 ---
 title: Column Spanning
-description: Guide to implementing column spans in LyteNyte Grid for merged cell
-  layouts
+description: Cells in LyteNyte Grid can span across multiple columns.
+  Spanning cells extend into adjacent columns, and the grid skips rendering the cells they cover.
 ---
 
-Use the `colSpan` property to make cells span multiple columns in
-LyteNyte Grid. For example, setting `colSpan` to `2` makes a cell extend
-across two columns. The grid skips rendering cells covered by the span.
+The `colSpan` property on a column definition controls how many columns a cell spans. It accepts:
 
-The `colSpan` property can be a `number` or a function that returns the
-number of columns a cell should span.
+- A number, which applies the same span for all rows.
+- A function that returns the number of columns to span for each row.
 
-!demo:Column Spanning="./demos/column-spanning"
+Cells always span toward the end of the viewport. A spanning cell
+covers the next column, not the previous one.
 
-## Column Span Scan Distance
+## Uniform Column Spans
 
-For performance, LyteNyte Grid does not calculate all spans in advance.
-Instead, it scans back from the first visible column, based on the
-scroll position. Control this lookback with the `colScanDistance`
-property.
+When `colSpan` is a number, every cell in the column spans
+the same number of adjacent columns for every row. The grid skips rendering any cells covered
+by the span. The demo below shows the **Price** column spanning over the adjacent **Price In GBP** column.
 
-`colScanDistance` must be at least the maximum possible span in your
-grid. Make sure no span exceeds this value to ensure proper rendering.
+!demo:Uniform Column Spans="./demos/column-spanning-number_x"
+
+Uniform spans are uncommon and mainly appear in cases where the
+visual layout differs from the logical column structure. Hence,
+these types of column spans are used sparingly.
+
+```ts
+const columns = [
+  // other columns,
+  { field: 3, id: "price", type: "number", colSpan: 2 },
+];
+```
+
+## Function Column Spans
+
+You can set `colSpan` to a function that returns the span for each row.
+This allows dynamic spans based on row data. The demo below merges cells
+for rows whose temperature values differ by less than `3`.
+
+!demo:Function Column Spans="./demos/column-spanning-fn_x"
+
+The `colSpan` function below shows how flexible span logic can be:
+
+```ts
+function joinSimilarTemps(x: CellSpanFnParams<MonthlyTemperature>) {
+  if (x.row.kind !== "leaf" || !x.row.data) return 1;
+
+  const temps = x.row.data.temps;
+  const myOrder = ordering[x.colIndex - 1];
+  const value = temps[myOrder];
+
+  let count = 1;
+  let i = x.colIndex; // Index is offset by 1 due to the year column
+
+  while (true) {
+    const next = ordering[i];
+    if (!next) break;
+
+    const nextValue = temps[next];
+    if (Math.abs(nextValue - value) < 3) {
+      count++;
+      i++;
+    } else {
+      break;
+    }
+  }
+
+  return count;
+}
+```
+
+## Column Span Scanning Distance
+
+For performance, LyteNyte Grid does not pre-calculate all spans.
+Instead, it scans backward from the first visible column based on
+the scroll position. Control this lookback
+using the `colScanDistance` property:
+
+```ts
+const grid = Grid.useLyteNyte({
+  // Other grid props
+  colScanDistance: 100,
+});
+```
+
+`colScanDistance` must be at least the maximum possible span
+in your grid. Ensure no span exceeds this value
+to guarantee correct rendering.
 
 <Callout>
 
 LyteNyte Grid uses a scan distance for correctness and performance.
-Other grids may pre-calculate spans (hurting scalability) or render
-incorrectly based on scroll position. This approach requires you to
-specify a max span, but it preserves both performance and accuracy.
+Many grids pre-calculate spans (which limits scalability) or render incorrectly when scrolling.
+LyteNyte Grid's model requires you to define a max span, but it preserves accuracy and performance.
 
-In most real-world cases, a scan distance of `100` is more than enough,
-since it's rare for a column to span more than 100 columns.
+In most real-world cases, a scan distance of `100` is more than enough, since spans rarely approach this size.
 
 </Callout>
+
+## Next Steps
+
+- [Column Base](/docs/column-base): See the default column values and how to override them.
+- [Column Resizing](/docs/column-resizing): Change column widths programmatically or through user interaction.
+- [Column ID & Name](/docs/column-header-name): Define user-friendly column names and ensure unique IDs.
+- [Column Field](/docs/column-field): Control how a column retrieves each cell's value.
