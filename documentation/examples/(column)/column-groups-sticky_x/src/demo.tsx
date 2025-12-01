@@ -1,0 +1,195 @@
+"use client";
+
+import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
+import "@1771technologies/lytenyte-pro/grid.css";
+import type {
+  Column,
+  Grid as GridState,
+  HeaderGroupCellLayout,
+} from "@1771technologies/lytenyte-pro/types";
+import { useId } from "react";
+import {
+  ExchangeCell,
+  makePerfHeaderCell,
+  NetworkCell,
+  PercentCell,
+  PercentCellPositiveNegative,
+  SymbolCell,
+  tw,
+} from "./components";
+import type { DEXPerformanceData } from "@1771technologies/grid-sample-data/dex-pairs-performance";
+import { data } from "@1771technologies/grid-sample-data/dex-pairs-performance";
+
+const columns: Column<DEXPerformanceData>[] = [
+  {
+    id: "symbol",
+    cellRenderer: SymbolCell,
+    width: 220,
+    name: "Symbol",
+    groupPath: ["Market Info"],
+  },
+  {
+    id: "network",
+    cellRenderer: NetworkCell,
+    width: 220,
+    name: "Network",
+    groupPath: ["Market Info"],
+  },
+  {
+    id: "exchange",
+    cellRenderer: ExchangeCell,
+    width: 220,
+    name: "Exchange",
+    groupPath: ["Market Info"],
+  },
+
+  {
+    id: "change24h",
+    cellRenderer: PercentCellPositiveNegative,
+    headerRenderer: makePerfHeaderCell("Change", "24h"),
+    name: "Change % 24h",
+    type: "number,",
+    groupPath: ["Performance"],
+  },
+
+  {
+    id: "perf1w",
+    cellRenderer: PercentCellPositiveNegative,
+    headerRenderer: makePerfHeaderCell("Perf %", "1w"),
+    name: "Perf % 1W",
+    type: "number,",
+    groupPath: ["Performance"],
+  },
+  {
+    id: "perf1m",
+    cellRenderer: PercentCellPositiveNegative,
+    headerRenderer: makePerfHeaderCell("Perf %", "1m"),
+    name: "Perf % 1M",
+    type: "number,",
+    groupPath: ["Performance"],
+  },
+  {
+    id: "perf3m",
+    cellRenderer: PercentCellPositiveNegative,
+    headerRenderer: makePerfHeaderCell("Perf %", "3m"),
+    name: "Perf % 3M",
+    type: "number,",
+    groupPath: ["Performance"],
+  },
+  {
+    id: "perf6m",
+    cellRenderer: PercentCellPositiveNegative,
+    headerRenderer: makePerfHeaderCell("Perf %", "6m"),
+    name: "Perf % 6M",
+    type: "number,",
+    groupPath: ["Performance"],
+  },
+  {
+    id: "perfYtd",
+    cellRenderer: PercentCellPositiveNegative,
+    headerRenderer: makePerfHeaderCell("Perf %", "YTD"),
+    name: "Perf % YTD",
+    type: "number",
+    groupPath: ["Performance"],
+  },
+  { id: "volatility", cellRenderer: PercentCell, name: "Volatility", type: "number" },
+  {
+    id: "volatility1m",
+    cellRenderer: PercentCell,
+    headerRenderer: makePerfHeaderCell("Volatility", "1m"),
+    name: "Volatility 1M",
+    type: "number",
+  },
+];
+
+export default function ColumnBase() {
+  const ds = useClientRowDataSource({ data: data });
+
+  const grid = Grid.useLyteNyte({
+    gridId: useId(),
+    rowDataSource: ds,
+    columns,
+    columnBase: { width: 80 },
+  });
+
+  const view = grid.view.useValue();
+
+  return (
+    <div>
+      <div className="lng-grid" style={{ height: 500 }}>
+        <Grid.Root grid={grid}>
+          <Grid.Viewport>
+            <Grid.Header>
+              {view.header.layout.map((row, i) => {
+                return (
+                  <Grid.HeaderRow key={i} headerRowIndex={i}>
+                    {row.map((c) => {
+                      if (c.kind === "group")
+                        return <StickyGroupHeader key={c.idOccurrence} grid={grid} layout={c} />;
+
+                      return (
+                        <Grid.HeaderCell
+                          key={c.id}
+                          cell={c}
+                          className={tw(
+                            "text-ln-gray-60! dark:text-ln-gray-70! flex h-full w-full items-center text-nowrap px-2 text-xs capitalize",
+                            c.column.type === "number" && "justify-end",
+                          )}
+                        />
+                      );
+                    })}
+                  </Grid.HeaderRow>
+                );
+              })}
+            </Grid.Header>
+            <Grid.RowsContainer>
+              <Grid.RowsCenter>
+                {view.rows.center.map((row) => {
+                  if (row.kind === "full-width") return null;
+
+                  return (
+                    <Grid.Row row={row} key={row.id}>
+                      {row.cells.map((c) => {
+                        return (
+                          <Grid.Cell
+                            key={c.id}
+                            cell={c}
+                            className="text-xs! flex h-full w-full items-center px-2"
+                          />
+                        );
+                      })}
+                    </Grid.Row>
+                  );
+                })}
+              </Grid.RowsCenter>
+            </Grid.RowsContainer>
+          </Grid.Viewport>
+        </Grid.Root>
+      </div>
+    </div>
+  );
+}
+
+function StickyGroupHeader({
+  layout,
+  grid,
+}: {
+  grid: GridState<DEXPerformanceData>;
+  layout: HeaderGroupCellLayout;
+}) {
+  const meta = grid.state.columnMeta.useValue();
+  const widths = grid.state.xPositions.useValue();
+  const startWidth = widths[meta.columnVisibleStartCount];
+
+  return (
+    <Grid.HeaderGroupCell
+      cell={layout}
+      className="text-xs! left-0 flex items-center px-2"
+      style={{
+        overflow: "unset",
+        position: "sticky",
+        insetInlineStart: startWidth,
+      }}
+    />
+  );
+}
