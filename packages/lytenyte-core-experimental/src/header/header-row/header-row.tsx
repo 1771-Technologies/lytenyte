@@ -1,5 +1,5 @@
 import { forwardRef, memo, type JSX } from "react";
-import { useGridRoot } from "../root/context-grid.js";
+import { useGridRoot } from "../../root/context.js";
 import { useHeaderRow } from "./context.js";
 
 function HeaderRowImpl(

@@ -1,6 +1,6 @@
 import { useMemo, type ReactNode } from "react";
 import type { HeaderLayoutCell } from "../types/layout.js";
-import { HeaderRowContext } from "../header-row/context.js";
+import { HeaderRowContext } from "./header-row/context.js";
 
 export function useHeaderCellReactNodes(
   headerLayoutRows: HeaderLayoutCell<any>[][],

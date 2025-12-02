@@ -1,12 +1,12 @@
 import { forwardRef, memo, type JSX, type ReactNode } from "react";
-import { useGridRoot } from "../root/context-grid.js";
+import { useGridRoot } from "../root/context.js";
 import { useHeaderRowTemplate } from "./use-header-row-template.js";
 import { useHeaderColTemplate } from "./use-header-col-template.js";
-import { HeaderRowRenderer } from "../header-row/header-row-renderer.js";
+import { HeaderRowRenderer } from "./header-row/header-row-renderer.js";
 import type { HeaderLayoutCell } from "../types/layout.js";
 import { useColumnLayout } from "../root/column-layout/column-layout-context.js";
 import { useBounds } from "../root/bounds/context.js";
-import { $colEndBound, $colStartBound } from "../selectors.js";
+import { $colEndBound, $colStartBound } from "../selectors/selectors.js";
 import { useVirtualizedHeader } from "./use-virtualized-header.js";
 import { useHeaderCellReactNodes } from "./use-header-cell-react-nodes.js";
 

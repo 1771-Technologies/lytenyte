@@ -1,6 +1,6 @@
 import { forwardRef, memo, useState, type JSX } from "react";
-import { useGridRoot } from "./root/context-grid.js";
-import { useCombinedRefs } from "./hooks/use-combine-refs.js";
+import { useGridRoot } from "../root/context.js";
+import { useCombinedRefs } from "../hooks/use-combine-refs.js";
 
 function ViewportImpl(
   { children, ...props }: JSX.IntrinsicElements["div"],

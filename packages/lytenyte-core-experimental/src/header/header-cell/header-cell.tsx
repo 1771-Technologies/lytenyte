@@ -1,9 +1,9 @@
 import { forwardRef, memo, useMemo, type JSX } from "react";
-import { useGridRoot } from "../root/context-grid.js";
+import { useGridRoot } from "../../root/context.js";
 import { useHeaderCellStyle } from "./use-header-cell-style.js";
 import { sizeFromCoord } from "@1771technologies/lytenyte-shared";
 import { DefaultRenderer } from "./header-default.js";
-import type { HeaderCellFloating, HeaderCellLayout } from "../types/layout.js";
+import type { HeaderCellFloating, HeaderCellLayout } from "../../types/layout.js";
 
 export interface HeaderCellProps<T> {
   readonly cell: HeaderCellLayout<T> | HeaderCellFloating<T>;

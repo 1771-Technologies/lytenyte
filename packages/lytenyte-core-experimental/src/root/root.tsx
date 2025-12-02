@@ -1,8 +1,8 @@
 import { useId, useMemo, useState, type PropsWithChildren } from "react";
-import { GridContext, type GridContextType } from "./context-grid.js";
+import { GridContext, type GridContextType } from "./context.js";
 import { useViewportDimensions } from "./use-viewport-dimensions.js";
 import { useXPositions } from "./positions/use-x-positions.js";
-import { AnyArray, AnyObject } from "../constants.js";
+import { AnyArray, AnyObject, DEFAULT_ROW_SOURCE } from "../constants.js";
 import { useControlled } from "../hooks/use-controlled.js";
 import { useEvent } from "../hooks/use-event.js";
 import { useColumnView } from "./column-view/use-column-view.js";
@@ -11,6 +11,9 @@ import { useColumnMeta } from "./column-view/use-column-meta.js";
 import { BoundsProvider } from "./bounds/bounds-provider.js";
 import { useYPositions } from "./positions/use-y-positions.js";
 import { ColumnLayoutProvider } from "./column-layout/column-layout-provider.js";
+import type { RowHeight, RowSource } from "../types/row.js";
+import { useHeaderHeightTotal } from "./use-header-height-total.js";
+import { RowSourceProvider } from "./row-source/row-source-provider.js";
 
 export interface RootProps<T> {
   readonly columns?: Column<T>[];
@@ -38,6 +41,9 @@ export interface RootProps<T> {
   readonly rowOverscanBottom?: number;
   readonly colOverscanStart?: number;
   readonly colOverscanEnd?: number;
+
+  readonly rowSource?: RowSource;
+  readonly rowHeight?: RowHeight;
 }
 
 export function Root<T>({
@@ -54,24 +60,26 @@ export function Root<T>({
 
   columnGroupDefaultExpansion = true,
   columnGroupJoinDelimiter = "-->",
-  columnGroupExpansions = AnyObject,
   columnMarker = AnyObject,
   columnMarkerEnabled = false,
 
   children,
+
+  columnGroupExpansions = AnyObject,
   onColumnGroupExpansionChange,
 
   rowOverscanTop = 10,
   rowOverscanBottom = 10,
   colOverscanStart = 3,
   colOverscanEnd = 3,
+
+  rowSource = DEFAULT_ROW_SOURCE,
+  rowHeight = 40,
 }: PropsWithChildren<RootProps<T>>) {
   const [vp, setVp] = useState<HTMLDivElement | null>(null);
   const id = useId();
 
   const dimensions = useViewportDimensions(vp);
-  const xPositions = useXPositions(columns, columnBase, dimensions.innerWidth, sizeToFit);
-  const yPositions = useYPositions();
 
   // Column Grouping
   const [colGroupExpansions, setColGroupExpansions] = useControlled({
@@ -94,11 +102,28 @@ export function Root<T>({
   );
   const columnMeta = useColumnMeta(view);
 
+  const floatHeight = floatingRowEnabled ? 0 : floatingRowHeight;
+  const totalHeaderHeight = useHeaderHeightTotal(
+    headerGroupHeight,
+    headerHeight,
+    floatHeight,
+    view.maxRow,
+  );
+  const xPositions = useXPositions(columns, columnBase, dimensions.innerWidth, sizeToFit);
+  const yPositions = useYPositions(
+    rowSource,
+    vp,
+    dimensions.innerHeight,
+    rowHeight,
+    totalHeaderHeight,
+  );
+
   const value = useMemo<GridContextType>(() => {
     return {
       setViewport: setVp,
       rtl: rtl ?? false,
       id: gridId ?? id,
+      headerHeightTotal: totalHeaderHeight,
       headerHeight,
       headerGroupHeight,
       floatingRowHeight,
@@ -109,21 +134,28 @@ export function Root<T>({
       columnGroupDefaultExpansion,
       columnGroupExpansions: colGroupExpansions,
       xPositions,
+      yPositions,
+      vpInnerHeight: dimensions.innerHeight,
+      vpInnerWidth: dimensions.innerWidth,
     };
   }, [
-    colGroupExpansions,
+    rtl,
+    gridId,
+    id,
+    totalHeaderHeight,
+    headerHeight,
+    headerGroupHeight,
+    floatingRowHeight,
+    floatingRowEnabled,
+    view.maxRow,
+    columnMeta,
     columnBase,
     columnGroupDefaultExpansion,
-    columnMeta,
-    view.maxRow,
-    floatingRowEnabled,
-    floatingRowHeight,
-    gridId,
-    headerGroupHeight,
-    headerHeight,
-    id,
-    rtl,
+    colGroupExpansions,
     xPositions,
+    yPositions,
+    dimensions.innerHeight,
+    dimensions.innerWidth,
   ]);
 
   return (
@@ -140,11 +172,10 @@ export function Root<T>({
         viewportWidth={dimensions.innerWidth}
         xPositions={xPositions}
         yPositions={yPositions}
-        topCount={0}
-        bottomCount={0}
+        rowSource={rowSource}
       >
         <ColumnLayoutProvider view={view} floatingRowEnabled={floatingRowEnabled}>
-          {children}
+          <RowSourceProvider rowSource={rowSource}>{children}</RowSourceProvider>
         </ColumnLayoutProvider>
       </BoundsProvider>
     </GridContext.Provider>
