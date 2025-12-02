@@ -2,6 +2,7 @@ import { computeBounds, equal, type SpanLayout } from "@1771technologies/lytenyt
 import { boundsContext } from "./context.js";
 import { memo, useMemo, useRef, useState, type PropsWithChildren } from "react";
 import { useIsoEffect } from "../../hooks/use-iso-effect.js";
+import { usePiece } from "../../hooks/use-piece.js";
 
 export interface BoundsProviderProps {
   readonly rowOverscanTop: number;
@@ -100,7 +101,9 @@ function BoundsProviderBase({
     return () => controller.abort();
   }, [viewport]);
 
-  return <boundsContext.Provider value={bounds}>{children}</boundsContext.Provider>;
+  const piece = usePiece(bounds);
+
+  return <boundsContext.Provider value={piece}>{children}</boundsContext.Provider>;
 }
 
 export const BoundsProvider = memo(BoundsProviderBase);

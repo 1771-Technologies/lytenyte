@@ -47,13 +47,13 @@ const HeaderGroupCellImpl = forwardRef<
       {...attrs}
       // Data attributes end
       style={{
-        ...props.style,
         ...styles,
         gridRow: "1 / 2",
         width,
         height: headerGroupHeight,
         boxSizing: "border-box",
         opacity: (cell.isHiddenMove ?? false) ? 0 : undefined,
+        ...props.style,
       }}
     >
       {children == undefined ? cell.id : children}
