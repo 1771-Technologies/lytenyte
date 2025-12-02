@@ -3,14 +3,13 @@ import { boundsContext } from "./context.js";
 import { memo, useMemo, useRef, useState, type PropsWithChildren } from "react";
 import { useIsoEffect } from "../../hooks/use-iso-effect.js";
 import { usePiece } from "../../hooks/use-piece.js";
+import type { RowSource } from "../../types/row.js";
 
 export interface BoundsProviderProps {
   readonly rowOverscanTop: number;
   readonly rowOverscanBottom: number;
   readonly colOverscanStart: number;
   readonly colOverscanEnd: number;
-  readonly topCount: number;
-  readonly bottomCount: number;
   readonly startCount: number;
   readonly endCount: number;
   readonly viewport: HTMLDivElement | null;
@@ -18,6 +17,7 @@ export interface BoundsProviderProps {
   readonly viewportHeight: number;
   readonly yPositions: Uint32Array;
   readonly xPositions: Uint32Array;
+  readonly rowSource: RowSource;
 }
 
 function BoundsProviderBase({
@@ -27,17 +27,19 @@ function BoundsProviderBase({
   yPositions,
   startCount,
   endCount,
-  topCount,
-  bottomCount,
   colOverscanEnd,
   colOverscanStart,
   rowOverscanBottom,
   rowOverscanTop,
   viewport,
+  rowSource,
   children,
 }: PropsWithChildren<BoundsProviderProps>) {
   const [scrollTop, setScrollTop] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+
+  const topCount = rowSource.useTopCount();
+  const bottomCount = rowSource.useBottomCount();
 
   const prev = useRef<SpanLayout>(null as unknown as SpanLayout);
 

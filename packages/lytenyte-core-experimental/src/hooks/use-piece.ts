@@ -45,12 +45,14 @@ export function usePiece<T>(
       piece: {
         get: () => valueRef.current.value,
         useValue: (selector?: <K>(v: T) => K) => {
-          const snapshot = useMemo(() => {
-            if (selector) return () => selector(valueRef.current!.value);
-            return () => valueRef.current.value;
-          }, [selector]);
+          const source = valueRef;
 
-          return useSyncExternalStore(valueRef.current.notifier.on, snapshot, snapshot);
+          const snapshot = useMemo(() => {
+            if (selector) return () => selector(source.current!.value);
+            return () => source.current.value;
+          }, [selector, source]);
+
+          return useSyncExternalStore(source.current.notifier.on, snapshot, snapshot);
         },
       },
     } as any;

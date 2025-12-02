@@ -4,7 +4,7 @@ import type {
   HeaderCellFloating,
   HeaderCellLayout,
   HeaderGroupCellLayout,
-} from "../types/layout.js";
+} from "../../types/layout.js";
 
 export function useHeaderCellStyle(
   cell: HeaderCellLayout<any> | HeaderCellFloating<any> | HeaderGroupCellLayout,

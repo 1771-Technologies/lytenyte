@@ -6,6 +6,7 @@ export interface GridContextType {
   readonly rtl: boolean;
   readonly setViewport: Dispatch<SetStateAction<HTMLDivElement | null>>;
 
+  readonly headerHeightTotal: number;
   readonly headerHeight: number;
   readonly headerGroupHeight: number;
   readonly floatingRowHeight: number;
@@ -19,6 +20,10 @@ export interface GridContextType {
 
   readonly columnMeta: ColumnMeta<any>;
   readonly xPositions: Uint32Array;
+  readonly yPositions: Uint32Array;
+
+  readonly vpInnerWidth: number;
+  readonly vpInnerHeight: number;
 }
 
 export const GridContext = createContext<GridContextType>({} as GridContextType);
