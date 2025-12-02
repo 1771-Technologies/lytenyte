@@ -1,11 +1,14 @@
-import { forwardRef, memo, useMemo, type JSX, type ReactNode } from "react";
+import { forwardRef, memo, type JSX, type ReactNode } from "react";
 import { useGridRoot } from "../root/context-grid.js";
 import { useHeaderRowTemplate } from "./use-header-row-template.js";
 import { useHeaderColTemplate } from "./use-header-col-template.js";
-import { HeaderRowContext } from "../header-row/context.js";
 import { HeaderRowRenderer } from "../header-row/header-row-renderer.js";
 import type { HeaderLayoutCell } from "../types/layout.js";
 import { useColumnLayout } from "../root/column-layout/column-layout-context.js";
+import { useBounds } from "../root/bounds/context.js";
+import { $colEndBound, $colStartBound } from "../selectors.js";
+import { useVirtualizedHeader } from "./use-virtualized-header.js";
+import { useHeaderCellReactNodes } from "./use-header-cell-react-nodes.js";
 
 export interface HeaderProps<T = any> {
   readonly children?: (cells: HeaderLayoutCell<T>[]) => ReactNode;
@@ -18,9 +21,13 @@ function HeaderImpl(
   }: Omit<JSX.IntrinsicElements["div"], "children"> & HeaderProps<any>,
   ref: JSX.IntrinsicElements["div"]["ref"],
 ) {
+  const boundsPiece = useBounds();
+  const colStartBound = boundsPiece.useValue($colStartBound);
+  const colEndBound = boundsPiece.useValue($colEndBound);
+  const layout = useColumnLayout();
+
   const {
     id,
-    headerRowCount,
     floatingRowEnabled,
     floatingRowHeight,
     headerGroupHeight,
@@ -30,29 +37,16 @@ function HeaderImpl(
   } = useGridRoot();
 
   const gridRowTemplate = useHeaderRowTemplate(
-    headerRowCount,
+    layout.length,
     headerGroupHeight,
     headerHeight,
     floatingRowHeight,
     floatingRowEnabled,
   );
   const gridColTemplate = useHeaderColTemplate(columnMeta, xPositions);
-  const layout = useColumnLayout();
 
-  const headerRows = useMemo(() => {
-    const rows: ReactNode[] = [];
-
-    for (let i = 0; i < headerRowCount; i++) {
-      const rowCells = layout[i];
-      rows.push(
-        <HeaderRowContext key={i} value={i}>
-          {children(rowCells)}
-        </HeaderRowContext>,
-      );
-    }
-
-    return rows;
-  }, [children, headerRowCount, layout]);
+  const virtualizedHeaderCells = useVirtualizedHeader(layout, colStartBound, colEndBound);
+  const headerRows = useHeaderCellReactNodes(virtualizedHeaderCells, children);
 
   return (
     <div

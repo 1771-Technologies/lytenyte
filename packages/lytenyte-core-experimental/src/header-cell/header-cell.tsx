@@ -54,13 +54,13 @@ const HeaderCellImpl = forwardRef<
       {...dataAttrs}
       // Data attributes end
       style={{
-        ...props.style,
         ...useHeaderCellStyle(cell, xPositions),
         gridRowStart: 1,
         gridRowEnd: rowSpan + 1,
         width,
         height: "100%",
         boxSizing: "border-box",
+        ...props.style,
       }}
     >
       {children == undefined ? <Renderer column={cell.column} /> : children}
