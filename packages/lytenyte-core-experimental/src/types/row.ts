@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 export type RowHeight = number | `fill:${number}` | ((i: number) => number);
 export type RowPin = "top" | "bottom" | null;
 
@@ -40,5 +42,10 @@ export interface RowAtom<T> {
 
 export type RowFullWidthPredicate<T> = (params: {
   readonly rowIndex: number;
-  row: RowNode<T | null>;
+  readonly row: RowNode<T | null>;
 }) => boolean;
+
+export type RowFullWidthRenderer<T> = (props: {
+  readonly rowIndex: number;
+  readonly row: RowNode<T>;
+}) => ReactNode;

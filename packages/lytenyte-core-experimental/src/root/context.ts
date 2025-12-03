@@ -1,5 +1,7 @@
 import { createContext, useContext, type Dispatch, type SetStateAction } from "react";
 import type { ColumnBase, ColumnMeta } from "../types/column";
+import type { Piece } from "../hooks/use-piece";
+import type { RowFullWidthRenderer } from "../types/row";
 
 export interface GridContextType {
   readonly id: string;
@@ -11,6 +13,9 @@ export interface GridContextType {
   readonly headerGroupHeight: number;
   readonly floatingRowHeight: number;
   readonly floatingRowEnabled: boolean;
+
+  readonly rowFullWidthRenderer: Piece<RowFullWidthRenderer<any> | null>;
+  readonly rowDetailExpansions: Piece<Set<string>>;
 
   readonly columnGroupExpansions: Record<string, boolean>;
   readonly columnGroupDefaultExpansion: boolean;

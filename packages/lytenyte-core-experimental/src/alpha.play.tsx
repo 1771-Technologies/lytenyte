@@ -5,7 +5,7 @@ import type { Column } from "./types/column.js";
 import { Viewport } from "./viewport/viewport.js";
 import { usePiece } from "./hooks/use-piece.js";
 import type { RowSource } from "./types/row.js";
-import { RowsContainer } from "./rows/rows-container.js";
+import { RowsContainer } from "./rows/rows-container/rows-container.js";
 import { RowsBottom, RowsCenter, RowsTop } from "./rows/rows-section.js";
 
 const columns: Column<any>[] = [
