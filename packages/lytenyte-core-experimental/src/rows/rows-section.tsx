@@ -1,17 +1,43 @@
-import { forwardRef, memo, type JSX } from "react";
+import { forwardRef, Fragment, memo, useMemo, type JSX, type ReactNode } from "react";
 import { NativeScroller } from "./scrollers/native-scroller.js";
 import { useGridRoot } from "../root/context.js";
-import { useRowSource } from "../root/row-source/context.js";
 import { useRowLayout } from "../root/layout-rows/row-layout-context.js";
+import type { LayoutRow } from "../types/layout.js";
+import { RowChildrenDefault } from "./row-children-default.js";
+import { useRowsContainerContext } from "./rows-container/context.js";
+import {
+  $botCount,
+  $botHeight,
+  $centerCount,
+  $centerHeight,
+  $pinHeight,
+  $topCount,
+  $topHeight,
+} from "../selectors/selectors.js";
+
+type Children = <T>(c: LayoutRow<T>) => ReactNode;
 
 export const RowsTop = memo(
-  forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function RowsTop(props, forwarded) {
-    const { id, headerHeightTotal, yPositions } = useGridRoot();
-    const source = useRowSource();
+  forwardRef<
+    HTMLDivElement,
+    Omit<JSX.IntrinsicElements["div"], "children"> & { children?: Children }
+  >(function RowsTop({ children = RowChildrenDefault, ...props }, forwarded) {
+    const { id, headerHeightTotal: top } = useGridRoot();
+    const layout = useRowLayout();
+    const container = useRowsContainerContext();
 
-    const topCount = source.useTopCount();
-    const top = headerHeightTotal;
-    const height = yPositions.at(topCount)!;
+    const topCount = container.useValue($topCount);
+    const height = container.useValue($topHeight);
+
+    const rows = useMemo(() => {
+      const rows: ReactNode[] = [];
+
+      for (let i = 0; i < layout.top.length; i++) {
+        rows.push(<Fragment key={layout.top[i].id}>{children(layout.top[i])}</Fragment>);
+      }
+
+      return rows;
+    }, [children, layout.top]);
 
     if (height <= 0) return null;
 
@@ -32,35 +58,38 @@ export const RowsTop = memo(
           minWidth: "100%",
           ...props.style,
         }}
-      />
+      >
+        {rows}
+      </RowsSection>
     );
   }),
 );
 
 export const RowsCenter = memo(
-  forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function RowsCenter(
-    { children, ...props },
-    forwarded,
-  ) {
-    const { id, yPositions } = useGridRoot();
-    const source = useRowSource();
+  forwardRef<
+    HTMLDivElement,
+    Omit<JSX.IntrinsicElements["div"], "children"> & { children?: Children }
+  >(function RowsCenter({ children = RowChildrenDefault, ...props }, forwarded) {
+    const { id } = useGridRoot();
+    const layout = useRowLayout();
+    const container = useRowsContainerContext();
 
-    const rowTopCount = source.useTopCount();
-    const rowBottomCount = source.useBottomCount();
-    const rowCount = source.useRowCount();
-    const rowCenterCount = rowCount - rowTopCount - rowBottomCount;
+    const pinSectionHeights = container.useValue($pinHeight);
+    const centerHeight = container.useValue($centerHeight);
+    const rowCenterCount = container.useValue($centerCount);
+    const rowTopCount = container.useValue($topCount);
 
-    const rowBottomTotalHeight = yPositions.at(-1)! - yPositions.at(-1 - rowBottomCount)!;
-    const rowTopTotalHeight = yPositions.at(rowTopCount)!;
-    const height = yPositions.at(-1)! - rowBottomTotalHeight - rowTopTotalHeight;
+    const rows = useMemo(() => {
+      const rows: ReactNode[] = [];
 
-    const pinSectionHeights = rowBottomTotalHeight + rowTopTotalHeight;
+      for (let i = 0; i < layout.center.length; i++) {
+        rows.push(<Fragment key={layout.center[i].id}>{children(layout.center[i])}</Fragment>);
+      }
 
-    // TODO continue from here. We want to provide function children to the row sections.
-    const l = useRowLayout();
-    console.log(l);
+      return rows;
+    }, [children, layout.center]);
 
-    if (height <= 0) {
+    if (centerHeight <= 0) {
       return (
         <div role="presentation" style={{ height: `calc(100% - ${pinSectionHeights}px - 4px)` }} />
       );
@@ -77,28 +106,41 @@ export const RowsCenter = memo(
         data-ln-gridid={id}
         style={{
           ...props.style,
-          height,
+          height: centerHeight,
           minHeight: `calc(100% - ${pinSectionHeights}px - 4px)`,
           minWidth: "100%",
           position: "relative",
         }}
       >
-        <NativeScroller>{children}</NativeScroller>
+        <NativeScroller>{rows}</NativeScroller>
       </RowsSection>
     );
   }),
 );
 
 export const RowsBottom = memo(
-  forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function RowsBottom(props, forwarded) {
-    const { id, yPositions } = useGridRoot();
-    const source = useRowSource();
+  forwardRef<
+    HTMLDivElement,
+    Omit<JSX.IntrinsicElements["div"], "children"> & { children?: Children }
+  >(function RowsBottom({ children = RowChildrenDefault, ...props }, forwarded) {
+    const { id } = useGridRoot();
+    const layout = useRowLayout();
+    const container = useRowsContainerContext();
 
-    const rowTopCount = source.useTopCount();
-    const rowBottomCount = source.useBottomCount();
-    const rowCount = source.useRowCount();
-    const rowCenterCount = rowCount - rowTopCount - rowBottomCount;
-    const height = yPositions.at(-1)! - yPositions.at(-1 - rowBottomCount)!;
+    const rowTopCount = container.useValue($topCount);
+    const rowBottomCount = container.useValue($botCount);
+    const rowCenterCount = container.useValue($centerCount);
+    const height = container.useValue($botHeight);
+
+    const rows = useMemo(() => {
+      const rows: ReactNode[] = [];
+
+      for (let i = 0; i < layout.bottom.length; i++) {
+        rows.push(<Fragment key={layout.bottom[i].id}>{children(layout.bottom[i])}</Fragment>);
+      }
+
+      return rows;
+    }, [children, layout.bottom]);
 
     if (height <= 0) return null;
 
@@ -121,7 +163,9 @@ export const RowsBottom = memo(
           zIndex: 3,
           minWidth: "100%",
         }}
-      />
+      >
+        {rows}
+      </RowsSection>
     );
   }),
 );

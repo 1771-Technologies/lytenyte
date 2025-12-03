@@ -11,10 +11,16 @@ import { useColumnMeta } from "./column-view/use-column-meta.js";
 import { BoundsProvider } from "./bounds/bounds-provider.js";
 import { useYPositions } from "./positions/use-y-positions.js";
 import { ColumnLayoutProvider } from "./layout-columns/column-layout-provider.js";
-import type { RowFullWidthPredicate, RowHeight, RowSource } from "../types/row.js";
+import type {
+  RowFullWidthPredicate,
+  RowFullWidthRenderer,
+  RowHeight,
+  RowSource,
+} from "../types/row.js";
 import { useHeaderHeightTotal } from "./use-header-height-total.js";
 import { RowSourceProvider } from "./row-source/row-source-provider.js";
 import { RowLayoutProvider } from "./layout-rows/row-layout-provider.js";
+import { usePiece } from "../hooks/use-piece.js";
 
 export interface RootProps<T> {
   readonly columns?: Column<T>[];
@@ -41,9 +47,11 @@ export interface RootProps<T> {
   readonly colOverscanEnd?: number;
 
   readonly rowScanDistance?: number;
-  readonly rowFullWidthPredicate?: RowFullWidthPredicate<T> | null;
   readonly rowSource?: RowSource;
   readonly rowHeight?: RowHeight;
+
+  readonly rowFullWidthPredicate?: RowFullWidthPredicate<T> | null;
+  readonly rowFullWidthRenderer?: RowFullWidthRenderer<T> | null;
 
   readonly virtualizeCols?: boolean;
   readonly virtualizeRows?: boolean;
@@ -83,9 +91,11 @@ export function Root<T>({
   rowHeight = 40,
 
   rowScanDistance = 100,
-  rowFullWidthPredicate = null,
   virtualizeCols = true,
   virtualizeRows = true,
+
+  rowFullWidthPredicate = null,
+  rowFullWidthRenderer = null,
 
   columnGroupExpansions = AnyObject,
   onColumnGroupExpansionChange,
@@ -143,6 +153,9 @@ export function Root<T>({
     totalHeaderHeight,
   );
 
+  const fullWidthPiece = usePiece(rowFullWidthRenderer);
+  const rowDetailPiece = usePiece(detailExpansions);
+
   const value = useMemo<GridContextType>(() => {
     return {
       setViewport: setVp,
@@ -162,6 +175,9 @@ export function Root<T>({
       yPositions,
       vpInnerHeight: dimensions.innerHeight,
       vpInnerWidth: dimensions.innerWidth,
+
+      rowFullWidthRenderer: fullWidthPiece,
+      rowDetailExpansions: rowDetailPiece,
     };
   }, [
     rtl,
@@ -181,6 +197,8 @@ export function Root<T>({
     yPositions,
     dimensions.innerHeight,
     dimensions.innerWidth,
+    fullWidthPiece,
+    rowDetailPiece,
   ]);
 
   return (

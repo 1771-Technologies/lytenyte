@@ -9,7 +9,10 @@ export function useHeaderRowTemplate(
 ) {
   const gridRowTemplate = useMemo(() => {
     const template = [];
-    for (let i = 0; i < rows - 1; i++) template.push(`${headerGroupHeight}px`);
+    const adjust = floatingRowEnabled ? 2 : 1;
+
+    for (let i = 0; i < rows - adjust; i++) template.push(`${headerGroupHeight}px`);
+
     template.push(`${headerHeight}px`);
     if (floatingRowEnabled) template.push(`${floatingRowHeight}px`);
 
