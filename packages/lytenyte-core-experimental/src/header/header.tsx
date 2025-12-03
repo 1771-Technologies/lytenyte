@@ -4,7 +4,7 @@ import { useHeaderRowTemplate } from "./use-header-row-template.js";
 import { useHeaderColTemplate } from "./use-header-col-template.js";
 import { HeaderRowRenderer } from "./header-row/header-row-renderer.js";
 import type { HeaderLayoutCell } from "../types/layout.js";
-import { useColumnLayout } from "../root/column-layout/column-layout-context.js";
+import { useColumnLayout } from "../root/layout-columns/column-layout-context.js";
 import { useBounds } from "../root/bounds/context.js";
 import { $colEndBound, $colStartBound } from "../selectors/selectors.js";
 import { useVirtualizedHeader } from "./use-virtualized-header.js";

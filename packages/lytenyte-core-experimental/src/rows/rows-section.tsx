@@ -2,6 +2,7 @@ import { forwardRef, memo, type JSX } from "react";
 import { NativeScroller } from "./scrollers/native-scroller.js";
 import { useGridRoot } from "../root/context.js";
 import { useRowSource } from "../root/row-source/context.js";
+import { useRowLayout } from "../root/layout-rows/row-layout-context.js";
 
 export const RowsTop = memo(
   forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function RowsTop(props, forwarded) {
@@ -54,6 +55,10 @@ export const RowsCenter = memo(
     const height = yPositions.at(-1)! - rowBottomTotalHeight - rowTopTotalHeight;
 
     const pinSectionHeights = rowBottomTotalHeight + rowTopTotalHeight;
+
+    // TODO continue from here. We want to provide function children to the row sections.
+    const l = useRowLayout();
+    console.log(l);
 
     if (height <= 0) {
       return (

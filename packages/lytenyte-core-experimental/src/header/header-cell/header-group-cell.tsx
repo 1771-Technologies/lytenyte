@@ -1,10 +1,10 @@
 import { forwardRef, memo, type JSX } from "react";
 import { useGridRoot } from "../../root/context.js";
 import { useHeaderCellStyle } from "./use-header-cell-style.js";
-import type { HeaderGroupCellLayout } from "../../types/layout.js";
+import type { LayoutHeaderGroup } from "../../types/layout.js";
 
 export interface HeaderGroupCellProps {
-  readonly cell: HeaderGroupCellLayout;
+  readonly cell: LayoutHeaderGroup;
 }
 
 const HeaderGroupCellImpl = forwardRef<

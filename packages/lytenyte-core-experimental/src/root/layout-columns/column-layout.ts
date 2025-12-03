@@ -1,4 +1,8 @@
-import type { HeaderCellFloating, HeaderCellLayout, HeaderLayoutCell } from "../../types/layout.js";
+import type {
+  LayoutHeaderFloating,
+  LayoutHeaderCell,
+  HeaderLayoutCell,
+} from "../../types/layout.js";
 import type { MakeColumnViewReturn } from "../column-view/column-view.js";
 
 export function makeColumnLayout<T>(view: MakeColumnViewReturn<T>, floatingRowEnabled: boolean) {
@@ -8,7 +12,7 @@ export function makeColumnLayout<T>(view: MakeColumnViewReturn<T>, floatingRowEn
 
   const layout: HeaderLayoutCell<T>[][] = [];
 
-  const floatingRow: HeaderCellFloating<T>[] = [];
+  const floatingRow: LayoutHeaderFloating<T>[] = [];
   for (let r = 0; r < combinedView.length; r++) {
     const row = combinedView[r];
 
@@ -20,7 +24,7 @@ export function makeColumnLayout<T>(view: MakeColumnViewReturn<T>, floatingRowEn
       const colPin = colS < view.startCount ? "start" : colS >= centerEnd ? "end" : null;
 
       if (c.kind === "leaf") {
-        const vals: Omit<HeaderCellLayout<T>, "kind"> = {
+        const vals: Omit<LayoutHeaderCell<T>, "kind"> = {
           id: c.data.id,
           colPin,
           column: c.data,
