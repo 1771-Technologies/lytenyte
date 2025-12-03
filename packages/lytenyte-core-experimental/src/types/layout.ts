@@ -1,6 +1,7 @@
 import type { Column, ColumnPin } from "./column";
+import type { RowAtom, RowNode, RowPin } from "./row";
 
-export interface HeaderCellLayout<T> {
+export interface LayoutHeaderCell<T> {
   readonly kind: "cell";
   readonly id: string;
   readonly rowStart: number;
@@ -15,7 +16,7 @@ export interface HeaderCellLayout<T> {
   readonly column: Column<T>;
 }
 
-export interface HeaderCellFloating<T> {
+export interface LayoutHeaderFloating<T> {
   readonly kind: "floating";
   readonly id: string;
   readonly rowStart: number;
@@ -30,7 +31,7 @@ export interface HeaderCellFloating<T> {
   readonly column: Column<T>;
 }
 
-export interface HeaderGroupCellLayout {
+export interface LayoutHeaderGroup {
   readonly kind: "group";
   readonly id: string;
   readonly idOccurrence: string;
@@ -51,13 +52,57 @@ export interface HeaderGroupCellLayout {
   readonly isHiddenMove?: boolean;
 }
 
-export interface HeaderLayout<T> {
-  readonly maxRow: number;
-  readonly maxCol: number;
-  readonly layout: HeaderLayoutCell<T>[][];
+export type HeaderLayoutCell<T> = LayoutHeaderCell<T> | LayoutHeaderFloating<T> | LayoutHeaderGroup;
+
+export interface LayoutCell<T> {
+  readonly kind: "cell";
+  readonly colSpan: number;
+  readonly rowSpan: number;
+  readonly isDeadRow: boolean;
+  readonly isDeadCol: boolean;
+  readonly id: string;
+  readonly rowIndex: number;
+  readonly colIndex: number;
+  readonly row: RowAtom<RowNode<T> | null>;
+  readonly column: Column<T>;
+  readonly colPin: ColumnPin;
+  readonly rowPin: RowPin;
+  readonly colFirstEndPin?: boolean;
+  readonly colLastStartPin?: boolean;
+  readonly rowLastPinTop?: boolean;
+  readonly rowFirstPinBottom?: boolean;
+  readonly rowIsFocusRow?: boolean;
 }
 
-export type HeaderLayoutCell<T> =
-  | HeaderCellLayout<T>
-  | HeaderCellFloating<T>
-  | HeaderGroupCellLayout;
+export interface LayoutFullWidthRow<T> {
+  readonly kind: "full-width";
+  readonly id: string;
+  readonly rowIndex: number;
+  readonly row: RowAtom<RowNode<T> | null>;
+  readonly rowPin: RowPin;
+  readonly rowLastPinTop?: boolean;
+  readonly rowFirstPinBottom?: boolean;
+  readonly rowIsFocusRow?: boolean;
+}
+
+export interface LayoutRowWithCells<T> {
+  readonly kind: "row";
+  readonly rowIndex: number;
+  readonly row: RowAtom<RowNode<T> | null>;
+  readonly rowPin: RowPin;
+  readonly rowLastPinTop?: boolean;
+  readonly rowFirstPinBottom?: boolean;
+  readonly rowIsFocusRow?: boolean;
+  readonly id: string;
+  readonly cells: LayoutCell<T>[];
+}
+
+export type LayoutRow<T> = LayoutRowWithCells<T> | LayoutFullWidthRow<T>;
+
+export interface RowView<T> {
+  readonly top: LayoutRow<T>[];
+  readonly center: LayoutRow<T>[];
+  readonly bottom: LayoutRow<T>[];
+  readonly rowFocusedIndex: number | null;
+  readonly rowFirstCenter: number;
+}

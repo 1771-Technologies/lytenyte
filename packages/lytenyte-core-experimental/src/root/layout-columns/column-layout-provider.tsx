@@ -1,6 +1,6 @@
 import { useMemo, type PropsWithChildren } from "react";
 import { makeColumnLayout } from "./column-layout.js";
-import type { MakeColumnViewReturn } from "../column-view/column-view";
+import type { MakeColumnViewReturn } from "../column-view/column-view.js";
 import { columnLayoutContext } from "./column-layout-context.js";
 
 export function ColumnLayoutProvider<T>({

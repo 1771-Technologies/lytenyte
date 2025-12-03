@@ -1,4 +1,5 @@
 export type RowHeight = number | `fill:${number}` | ((i: number) => number);
+export type RowPin = "top" | "bottom" | null;
 
 export type RowNode<T> = RowLeaf<T> | RowGroup;
 
@@ -22,11 +23,22 @@ export interface RowGroup {
   readonly loadingGroup?: boolean;
 }
 
-export interface RowSource {
+export interface RowSource<T = any> {
   readonly useRowCount: () => number;
   readonly useTopCount: () => number;
   readonly useBottomCount: () => number;
   readonly useSnapshotVersion: () => number;
 
   readonly rowIndexToRowId: (index: number) => string | null | undefined;
+  readonly rowByIndex: (row: number) => RowAtom<RowNode<T> | null>;
 }
+
+export interface RowAtom<T> {
+  readonly get: () => T;
+  readonly useValue: () => T;
+}
+
+export type RowFullWidthPredicate<T> = (params: {
+  readonly rowIndex: number;
+  row: RowNode<T | null>;
+}) => boolean;

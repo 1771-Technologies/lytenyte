@@ -2,7 +2,7 @@ import { useId, useMemo, useState, type PropsWithChildren } from "react";
 import { GridContext, type GridContextType } from "./context.js";
 import { useViewportDimensions } from "./use-viewport-dimensions.js";
 import { useXPositions } from "./positions/use-x-positions.js";
-import { AnyArray, AnyObject, DEFAULT_ROW_SOURCE } from "../constants.js";
+import { AnyArray, AnyObject, AnySet, DEFAULT_ROW_SOURCE } from "../constants.js";
 import { useControlled } from "../hooks/use-controlled.js";
 import { useEvent } from "../hooks/use-event.js";
 import { useColumnView } from "./column-view/use-column-view.js";
@@ -10,10 +10,11 @@ import type { Column, ColumnBase, ColumnMarker } from "../types/column.js";
 import { useColumnMeta } from "./column-view/use-column-meta.js";
 import { BoundsProvider } from "./bounds/bounds-provider.js";
 import { useYPositions } from "./positions/use-y-positions.js";
-import { ColumnLayoutProvider } from "./column-layout/column-layout-provider.js";
-import type { RowHeight, RowSource } from "../types/row.js";
+import { ColumnLayoutProvider } from "./layout-columns/column-layout-provider.js";
+import type { RowFullWidthPredicate, RowHeight, RowSource } from "../types/row.js";
 import { useHeaderHeightTotal } from "./use-header-height-total.js";
 import { RowSourceProvider } from "./row-source/row-source-provider.js";
+import { RowLayoutProvider } from "./layout-rows/row-layout-provider.js";
 
 export interface RootProps<T> {
   readonly columns?: Column<T>[];
@@ -34,16 +35,24 @@ export interface RootProps<T> {
   readonly floatingRowHeight?: number;
   readonly floatingRowEnabled?: boolean;
 
-  readonly columnGroupExpansions?: Record<string, boolean>;
-  readonly onColumnGroupExpansionChange?: (change: Record<string, boolean>) => void;
-
   readonly rowOverscanTop?: number;
   readonly rowOverscanBottom?: number;
   readonly colOverscanStart?: number;
   readonly colOverscanEnd?: number;
 
+  readonly rowScanDistance?: number;
+  readonly rowFullWidthPredicate?: RowFullWidthPredicate<T> | null;
   readonly rowSource?: RowSource;
   readonly rowHeight?: RowHeight;
+
+  readonly virtualizeCols?: boolean;
+  readonly virtualizeRows?: boolean;
+
+  // Values that can be changed by the grid
+  readonly columnGroupExpansions?: Record<string, boolean>;
+  readonly onColumnGroupExpansionChange?: (change: Record<string, boolean>) => void;
+  readonly rowDetailExpansions?: Set<string>;
+  readonly onRowDetailExpansionsChange?: (change: Set<string>) => void;
 }
 
 export function Root<T>({
@@ -65,9 +74,6 @@ export function Root<T>({
 
   children,
 
-  columnGroupExpansions = AnyObject,
-  onColumnGroupExpansionChange,
-
   rowOverscanTop = 10,
   rowOverscanBottom = 10,
   colOverscanStart = 3,
@@ -75,6 +81,17 @@ export function Root<T>({
 
   rowSource = DEFAULT_ROW_SOURCE,
   rowHeight = 40,
+
+  rowScanDistance = 100,
+  rowFullWidthPredicate = null,
+  virtualizeCols = true,
+  virtualizeRows = true,
+
+  columnGroupExpansions = AnyObject,
+  onColumnGroupExpansionChange,
+
+  rowDetailExpansions,
+  onRowDetailExpansionsChange,
 }: PropsWithChildren<RootProps<T>>) {
   const [vp, setVp] = useState<HTMLDivElement | null>(null);
   const id = useId();
@@ -89,6 +106,14 @@ export function Root<T>({
   const _onColGroupExpansionChange = useEvent((change: Record<string, boolean>) => {
     onColumnGroupExpansionChange?.(change);
     setColGroupExpansions(change);
+  });
+  const [detailExpansions, setDetailExpansions] = useControlled({
+    controlled: rowDetailExpansions,
+    default: AnySet,
+  });
+  const _onRowDetailExpansionsChange = useEvent((change: Set<string>) => {
+    onRowDetailExpansionsChange?.(change);
+    setDetailExpansions(change);
   });
 
   const view = useColumnView(
@@ -175,7 +200,18 @@ export function Root<T>({
         rowSource={rowSource}
       >
         <ColumnLayoutProvider view={view} floatingRowEnabled={floatingRowEnabled}>
-          <RowSourceProvider rowSource={rowSource}>{children}</RowSourceProvider>
+          <RowLayoutProvider
+            columnMeta={columnMeta}
+            rowDetailExpansions={detailExpansions}
+            rowFullWidthPredicate={rowFullWidthPredicate}
+            rowScan={rowScanDistance}
+            rs={rowSource}
+            virtualizeCols={virtualizeCols}
+            virtualizeRows={virtualizeRows}
+            vp={vp}
+          >
+            <RowSourceProvider rowSource={rowSource}>{children}</RowSourceProvider>
+          </RowLayoutProvider>
         </ColumnLayoutProvider>
       </BoundsProvider>
     </GridContext.Provider>

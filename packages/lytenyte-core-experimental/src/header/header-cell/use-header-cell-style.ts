@@ -1,13 +1,13 @@
 import { useMemo, type CSSProperties } from "react";
 import { sizeFromCoord } from "@1771technologies/lytenyte-shared";
 import type {
-  HeaderCellFloating,
-  HeaderCellLayout,
-  HeaderGroupCellLayout,
+  LayoutHeaderFloating,
+  LayoutHeaderCell,
+  LayoutHeaderGroup,
 } from "../../types/layout.js";
 
 export function useHeaderCellStyle(
-  cell: HeaderCellLayout<any> | HeaderCellFloating<any> | HeaderGroupCellLayout,
+  cell: LayoutHeaderCell<any> | LayoutHeaderFloating<any> | LayoutHeaderGroup,
   xPositions: Uint32Array,
 ) {
   const styles = useMemo(() => {

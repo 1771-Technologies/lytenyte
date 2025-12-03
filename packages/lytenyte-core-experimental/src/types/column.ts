@@ -5,7 +5,7 @@ export type ColumnPin = "start" | "end" | null;
 export type ColumnGroupVisibility = "always" | "close" | "open";
 
 export type HeaderParams<T> = { column: Column<T> };
-export type CellParams<T> = { row: RowNode<T>; column: Column<T> };
+export type CellParams<T> = { row: RowNode<T | null>; column: Column<T> };
 export type CellParamsWithIndex<T> = CellParams<T> & { rowIndex: number; colIndex: number };
 
 export type PathField = { kind: "path"; path: string };

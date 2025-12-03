@@ -45,6 +45,7 @@ export default function Experimental() {
       useRowCount: countPiece.useValue,
       useSnapshotVersion: () => 1,
       rowIndexToRowId: (i: number) => `${i}`,
+      rowByIndex: () => ({ get: () => null, useValue: () => null }),
     };
   }, [botPiece.useValue, countPiece.useValue, topPiece.useValue]);
 
