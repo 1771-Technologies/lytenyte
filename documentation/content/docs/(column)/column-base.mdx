@@ -1,7 +1,7 @@
 ---
 title: Column Base
 description: LyteNyte Grid applies a set of default options to the columns you provide.
-  You can override these defaults through the column base.
+  You can override these defaults through the column base object.
 ---
 
 ## Overriding Defaults
@@ -24,7 +24,8 @@ LyteNyte Grid merges this object with the built-in defaults,
 overriding any specified properties.
 
 For example, in the code below the default column width becomes 100.
-You can override any default except those explicitly excluded.
+You can override any default property on the column specification except
+those properties that have been explicitly excluded, such as `field` or `pin`.
 
 ```tsx
 function MyGrid() {
@@ -41,7 +42,7 @@ shared default cell renderer:
 
 !demo:Monthly Temperatures Heatmap="./demos/column-base-temperature_x"
 
-The demo also overrides `width`, `widthMin`, and `widthFlex`. Because
+The demo overrides `width`, `widthMin`, and `widthFlex`. Since
 those defaults are tailored for monthly temperature columns,
 the `year` column must specify its own values:
 
