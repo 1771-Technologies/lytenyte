@@ -6,7 +6,7 @@ import type { ClassValue } from "clsx";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
 import { format } from "date-fns";
-import { useState, type JSX, type ReactNode } from "react";
+import { useEffect, useState, type JSX, type ReactNode } from "react";
 import type { OrderData } from "@1771technologies/grid-sample-data/orders";
 
 export function tw(...c: ClassValue[]) {
@@ -20,9 +20,25 @@ export function HeaderCell({ column, grid }: HeaderCellRendererParams<OrderData>
     setIsUpdating(false);
     grid.api.columnUpdate({ [column.id]: { name: v } });
   };
+  const [el, setEl] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!el) return;
+    const controller = new AbortController();
+    el.addEventListener(
+      "begin-edit",
+      () => {
+        setIsUpdating(true);
+      },
+      { signal: controller.signal },
+    );
+
+    return () => controller.abort();
+  }, [el]);
 
   return (
     <div
+      ref={setEl}
       className={tw("flex h-full w-full items-center", !isUpdating && "px-3")}
       onDoubleClick={() => {
         if (isUpdating) return;
@@ -55,6 +71,7 @@ function HeaderCellInput({
           onUpdate(name);
         }
         if (e.key === "Enter") {
+          e.stopPropagation();
           e.currentTarget.parentElement?.parentElement?.focus();
           onUpdate(value);
         }

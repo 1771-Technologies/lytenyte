@@ -58,8 +58,15 @@ export default function ColumnBase() {
                       <Grid.HeaderCell
                         key={c.id}
                         cell={c}
+                        onKeyDown={(ev) => {
+                          if (ev.key === "Enter") {
+                            ev.currentTarget.firstElementChild?.dispatchEvent(
+                              new Event("begin-edit", { bubbles: false }),
+                            );
+                          }
+                        }}
                         className={tw(
-                          "focus-visible:outline-ln-primary-50 flex h-full w-full items-center text-sm text-nowrap capitalize focus-visible:outline-1 focus-visible:outline-offset-[-1px]",
+                          "focus-visible:outline-ln-primary-50 flex h-full w-full items-center text-nowrap text-sm capitalize focus-visible:outline-1 focus-visible:outline-offset-[-1px]",
                           c.column.type === "number" && "justify-end",
                         )}
                       />

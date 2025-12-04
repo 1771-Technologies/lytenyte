@@ -18,7 +18,7 @@ Many developers set the `id` to a key on the row data. This is convenient
 since LyteNyte Grid also uses the `id` as a fallback when a column
 does not define a `field`. See the [Column Field guide](/docs/column-field) for details.
 
-## Display Name of a Column
+## Column Display Name
 
 By default, LyteNyte Grid uses the column's `id` as its display name.
 The display name appears in the column header and in components that manage
@@ -56,7 +56,7 @@ For example, you may want users to rename columns. In the demo below, users can
 double-click a header to edit the display name. Pressing Enter or
 clicking away saves the new value.
 
-!demo:Renaming Header="./demos/column-header-name-update_x"
+!demo:Renaming Column Headers="./demos/column-header-name-update_x"
 
 A custom header cell powers this behavior. After editing, the
 header cell calls `columnUpdate`:
