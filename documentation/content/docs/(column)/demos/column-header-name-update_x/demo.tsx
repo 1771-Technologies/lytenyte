@@ -59,6 +59,8 @@ export default function ColumnBase() {
                         key={c.id}
                         cell={c}
                         onKeyDown={(ev) => {
+                          // Fire event to the child renderer. In future LyteNyte will support direct
+                          // event delegation.
                           if (ev.key === "Enter") {
                             ev.currentTarget.firstElementChild?.dispatchEvent(
                               new Event("begin-edit", { bubbles: false }),
