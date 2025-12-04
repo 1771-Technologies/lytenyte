@@ -1,8 +1,8 @@
 import { createContext, useContext, type Dispatch, type SetStateAction } from "react";
-import type { ColumnBase, ColumnMeta } from "../types/column";
-import type { Piece } from "../hooks/use-piece";
-import type { RowFullWidthRenderer } from "../types/row";
-import type { API } from "./root";
+import type { ColumnBase, ColumnMeta } from "../types/column.js";
+import type { Piece } from "../hooks/use-piece.js";
+import type { RowFullWidthRenderer } from "../types/row.js";
+import type { Root } from "./root.js";
 
 export interface GridContextType {
   readonly id: string;
@@ -31,7 +31,7 @@ export interface GridContextType {
   readonly vpInnerWidth: number;
   readonly vpInnerHeight: number;
 
-  readonly api: API<any>;
+  readonly api: Root.API<any>;
 }
 
 export const GridContext = createContext<GridContextType>({} as GridContextType);

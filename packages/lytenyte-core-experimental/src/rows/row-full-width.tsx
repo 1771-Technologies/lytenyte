@@ -34,7 +34,7 @@ const RowFullWidthImpl = forwardRef<
   const topOffset = container.useValue($topHeight);
   const rowIsFocusRow = !!layout.rowIsFocusRow;
 
-  const rowDetailHeight = row ? api.getRowDetailHeight(row) : 0;
+  const rowDetailHeight = row ? api.rowDetailHeight(row) : 0;
   const height = sizeFromCoord(rowIndex, yPositions) - rowDetailHeight;
 
   return (
