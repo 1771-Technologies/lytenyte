@@ -4,10 +4,10 @@ import {
   type LayoutState,
   type SpanLayout,
 } from "@1771technologies/lytenyte-shared";
-import type { LayoutCell, LayoutRow, LayoutRowWithCells, RowView } from "../../types/layout";
-import type { RowAtom, RowNode, RowPin, RowSource } from "../../types/row";
-import type { Column } from "../../types/column";
-import type { PositionUnion } from "../../types/position";
+import type { LayoutCell, LayoutRow, LayoutRowWithCells, RowView } from "../../types/layout.js";
+import type { Ln } from "../../types.js";
+import type { RowAtom, RowNode, RowPin, RowSource } from "../../types/row.js";
+import type { PositionUnion } from "../../types/position.js";
 
 interface MakeRowViewArgs<T> {
   view: SpanLayout;
@@ -15,7 +15,7 @@ interface MakeRowViewArgs<T> {
   viewCache: Map<number, LayoutRow<T>>;
 
   rds: RowSource;
-  columns: Column<T>[];
+  columns: Ln.LnColumn<T>[];
   focus: PositionUnion | null;
 }
 
@@ -75,7 +75,7 @@ export function makeRowLayout<T>({ view: n, viewCache, layout, rds, columns }: M
 }
 
 interface HandleViewLayoutArgs<T> {
-  readonly columns: Column<T>[];
+  readonly columns: Ln.LnColumn<T>[];
   readonly spanLayout: SpanLayout;
   readonly rowStart: number;
   readonly rowEnd: number;

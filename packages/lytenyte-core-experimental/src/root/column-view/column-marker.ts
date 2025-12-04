@@ -1,10 +1,10 @@
 import { COLUMN_MARKER_ID } from "@1771technologies/lytenyte-shared";
 import { itemsWithIdToMap } from "@1771technologies/lytenyte-shared";
-import type { Column, ColumnMarker } from "../../types/column";
+import type { Ln } from "../../types.js";
 
 interface ColumnHandleMarkerArgs<T> {
-  readonly columns: Column<T>[];
-  readonly marker: ColumnMarker<T>;
+  readonly columns: Ln.LnColumn<T>[];
+  readonly marker: Ln.ColumnMarker<T>;
   readonly markerEnabled: boolean;
 }
 
@@ -26,7 +26,7 @@ export function columnHandleMarker<T>({
         cellRenderer: marker.cellRenderer,
         headerRenderer: marker.headerRenderer,
         floatingCellRenderer: marker.floatingCellRenderer,
-      },
+      } as Ln.Column<any>,
       ...columns,
     ];
     lookup.set(COLUMN_MARKER_ID, columns[0]);

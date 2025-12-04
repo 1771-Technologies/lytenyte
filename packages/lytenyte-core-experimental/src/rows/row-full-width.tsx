@@ -73,7 +73,7 @@ const RowFullWidthImpl = forwardRef<
           pointerEvents: "all",
         }}
       >
-        {row && Renderer ? <Renderer row={row} rowIndex={layout.rowIndex} /> : null}
+        {row && Renderer ? <Renderer api={api} row={row} rowIndex={layout.rowIndex} /> : null}
       </div>
       <RowDetailRow layout={layout} />
     </div>

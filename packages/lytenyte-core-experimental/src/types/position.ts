@@ -42,11 +42,6 @@ export interface PositionHeaderGroupCell {
   readonly colIndex: number;
 }
 
-/**
- * Union of all valid focusable positions in the grid: cells, headers, full width rows, etc.
- *
- *   @group Navigation
- */
 export type PositionUnion =
   | PositionGridCell
   | PositionFloatingCell

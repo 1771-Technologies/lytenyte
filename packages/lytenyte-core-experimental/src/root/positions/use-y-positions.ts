@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import type { RowHeight, RowSource } from "../../types/row.js";
 import { AnyObject, EMPTY_POSITION_ARRAY } from "../../constants.js";
 import { computeRowPositions } from "@1771technologies/lytenyte-shared";
+import type { RowHeight, RowSource } from "../../types/row.js";
 
 export function useYPositions(
   rowSource: RowSource,

@@ -13,7 +13,7 @@ const HeaderCellImpl = forwardRef<
   HTMLDivElement,
   JSX.IntrinsicElements["div"] & HeaderCellProps<any>
 >(function HeaderCell({ cell, children, ...props }, ref) {
-  const { id, xPositions, columnBase: base } = useGridRoot();
+  const { id, xPositions, columnBase: base, api } = useGridRoot();
 
   const Renderer =
     cell.kind === "cell"
@@ -63,7 +63,7 @@ const HeaderCellImpl = forwardRef<
         ...props.style,
       }}
     >
-      {children == undefined ? <Renderer column={cell.column} /> : children}
+      {children == undefined ? <Renderer column={cell.column} api={api} /> : children}
     </div>
   );
 });

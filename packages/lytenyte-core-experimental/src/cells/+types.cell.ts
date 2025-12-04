@@ -1,4 +1,4 @@
-import type { ColumnPin } from "../types/column";
+import type { ColumnPin } from "../types/column.js";
 
 export interface Cell {
   readonly rowIndex: number;

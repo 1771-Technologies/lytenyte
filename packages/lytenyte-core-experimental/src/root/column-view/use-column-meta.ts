@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import type { MakeColumnViewReturn } from "./column-view";
-import type { ColumnMeta } from "../../types/column.js";
+import type { ColumnMeta } from "../../types/column";
 
 export function useColumnMeta<T>(columnView: MakeColumnViewReturn<T>) {
   const columnMeta = useMemo<ColumnMeta<T>>(() => {

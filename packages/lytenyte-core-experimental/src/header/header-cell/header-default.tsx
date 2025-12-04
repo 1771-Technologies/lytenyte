@@ -1,5 +1,5 @@
-import type { HeaderParams } from "../../types/column.js";
+import type { Ln } from "../../types.js";
 
-export function DefaultRenderer(p: HeaderParams<any>) {
+export function DefaultRenderer(p: Ln.HeaderParams<any>) {
   return <>{p.column.name ?? p.column.id}</>;
 }

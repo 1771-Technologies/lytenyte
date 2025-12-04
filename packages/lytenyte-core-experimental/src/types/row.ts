@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { Ln } from "../types";
 
 export type RowHeight = number | `fill:${number}` | ((i: number) => number);
 export type RowPin = "top" | "bottom" | null;
@@ -40,15 +41,21 @@ export interface RowAtom<T> {
   readonly useValue: () => T;
 }
 
-export interface RowRendererParams<T> {
+export interface RowRendererParams<T, K extends Record<string, any> = any> {
   readonly rowIndex: number;
   readonly row: RowNode<T>;
+  readonly api: Ln.API<T, K>;
 }
 
-export type RowFullWidthPredicate<T> = (params: {
+export type RowFullWidthPredicate<T, K extends Record<string, any> = any> = (params: {
   readonly rowIndex: number;
   readonly row: RowNode<T | null>;
+  readonly api: Ln.API<T, K>;
 }) => boolean;
 
-export type RowFullWidthRenderer<T> = (props: RowRendererParams<T>) => ReactNode;
-export type RowDetailRenderer<T> = (props: RowRendererParams<T>) => ReactNode;
+export type RowFullWidthRenderer<T, K extends Record<string, any> = any> = (
+  props: RowRendererParams<T, K>,
+) => ReactNode;
+export type RowDetailRenderer<T, K extends Record<string, any> = any> = (
+  props: RowRendererParams<T, K>,
+) => ReactNode;

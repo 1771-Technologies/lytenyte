@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
-import type { RowNode } from "../../types/row.js";
 import type { LayoutRowWithCells } from "../../types/layout.js";
+import type { RowNode } from "../../types/row.js";
 
 export interface RowMetaData {
   readonly row: RowNode<any> | null;
