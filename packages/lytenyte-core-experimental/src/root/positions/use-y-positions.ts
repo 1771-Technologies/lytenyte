@@ -9,11 +9,22 @@ export function useYPositions(
   innerHeight: number,
   rowHeight: RowHeight,
   headerHeight: number,
+  detailHeight: number | "auto",
+  detailHeightCache: Record<string, number>,
+  detailHeightGuess: number,
+  detailHeightExpansions: Set<string>,
 ) {
   const rowCount = rowSource.useRowCount();
   const snapshot = rowSource.useSnapshotVersion();
 
   return useMemo(() => {
+    const detailHeightCalc = (i: number) => {
+      const id = rowSource.rowIndexToRowId(i);
+      if (!id || !detailHeightExpansions.has(id)) return 0;
+
+      if (detailHeight === "auto") return detailHeightCache[id] ?? detailHeightGuess;
+      return detailHeight;
+    };
     // Rerun the memo whenever the snapshot changes.
     void snapshot;
     if (!vp) return EMPTY_POSITION_ARRAY;
@@ -22,10 +33,20 @@ export function useYPositions(
       rowHeight,
       40,
       AnyObject,
-      () => {
-        return 0;
-      },
+      detailHeightCalc,
       innerHeight - headerHeight,
     );
-  }, [headerHeight, innerHeight, rowCount, rowHeight, snapshot, vp]);
+  }, [
+    detailHeight,
+    detailHeightCache,
+    detailHeightExpansions,
+    detailHeightGuess,
+    headerHeight,
+    innerHeight,
+    rowCount,
+    rowHeight,
+    rowSource,
+    snapshot,
+    vp,
+  ]);
 }

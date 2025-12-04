@@ -33,7 +33,7 @@ export const Cell = forwardRef<
 const CellImpl = memo(
   forwardRef<HTMLDivElement, Omit<JSX.IntrinsicElements["div"], "children"> & CellProps>(
     function Cell({ cell, ...props }, forwarded) {
-      const { id, rtl, columnBase: base, xPositions, yPositions } = useGridRoot();
+      const { id, rtl, columnBase: base, xPositions, yPositions, api } = useGridRoot();
       const row = cell.row.useValue();
 
       const Renderer = cell.column.cellRenderer ?? base.cellRenderer ?? CellDefault;
@@ -46,7 +46,7 @@ const CellImpl = memo(
         yPositions,
         cell,
         rtl,
-        0, // grid.api.rowDetailRenderedHeight(row ?? ""), TODO
+        row ? api.getRowDetailHeight(row) : 0,
         undefined,
       );
 

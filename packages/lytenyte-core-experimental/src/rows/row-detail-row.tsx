@@ -1,7 +1,9 @@
-import { sizeFromCoord } from "@1771technologies/lytenyte-shared";
+import { SCROLL_WIDTH_VARIABLE_USE, sizeFromCoord } from "@1771technologies/lytenyte-shared";
 import type { LayoutFullWidthRow, LayoutRowWithCells } from "../types/layout";
 import { useGridRoot } from "../root/context.js";
 import type { RowNode } from "../types/row";
+import { useRowDetailContext } from "../root/row-detail/row-detail-context.js";
+import { useEffect, useState } from "react";
 
 export function RowDetailRow<T>({
   layout,
@@ -20,66 +22,60 @@ export function RowDetailRow<T>({
 
 function RowDetailImpl<T>({ row, rowIndex }: { row: RowNode<T>; rowIndex: number }) {
   const cx = useGridRoot();
+  const detailCtx = useRowDetailContext();
   const rtl = cx.rtl;
 
-  // TODO cx.grid.api.rowDetailRenderedHeight(row);
-  const height = 0;
-
+  const height = detailCtx.getRowDetailHeight(row.id);
   const rowHeight = sizeFromCoord(rowIndex, cx.yPositions) - height;
-  void rtl;
-  void rowHeight;
-  void row;
-  return null;
+  const Renderer = detailCtx.rowDetailRenderer;
+  const [detailEl, setDetailEl] = useState<HTMLDivElement | null>(null);
 
-  // const Renderer = cx.grid.state.rowDetailRenderer.useValue().fn;
+  useEffect(() => {
+    const first = detailEl?.firstElementChild as HTMLElement;
+    if (!first) return;
 
-  // const [ref, setRef] = useState<HTMLDivElement | null>(null);
+    const obs = new ResizeObserver(() => {
+      detailCtx.setAutoHeightCache((prev) => ({
+        ...prev,
+        [rowIndex]: first.offsetHeight,
+      }));
+    });
 
-  // useEffect(() => {
-  //   const first = ref?.firstElementChild as HTMLElement;
-  //   if (!first) return;
+    obs.observe(first);
 
-  //   const obs = new ResizeObserver(() => {
-  //     cx.grid.internal.rowDetailAutoHeightCache.set((prev) => ({
-  //       ...prev,
-  //       [rowIndex]: first.offsetHeight,
-  //     }));
-  //   });
+    return () => obs.disconnect();
+  }, [detailCtx, detailEl?.firstElementChild, rowIndex]);
 
-  //   obs.observe(first);
+  const isAuto = detailCtx.rowDetailHeight === "auto";
 
-  //   return () => obs.disconnect();
-  // }, [cx.grid.internal.rowDetailAutoHeightCache, ref?.firstElementChild, rowIndex]);
-
-  // const isAuto = cx.grid.state.rowDetailHeight.useValue() === "auto";
-  // return (
-  //   <div
-  //     ref={setRef}
-  //     role="gridcell"
-  //     style={{
-  //       pointerEvents: "none",
-  //       position: "absolute",
-  //       left: 0,
-  //       width: SCROLL_WIDTH_VARIABLE_USE,
-  //     }}
-  //   >
-  //     <div
-  //       tabIndex={0}
-  //       data-ln-gridid={cx.gridId}
-  //       data-ln-row-detail
-  //       data-ln-rowindex={rowIndex}
-  //       style={{
-  //         position: "sticky",
-  //         pointerEvents: "all",
-  //         right: rtl ? "0px" : undefined,
-  //         left: rtl ? undefined : "0px",
-  //         marginTop: rowHeight,
-  //         width: cx.grid.state.viewportWidthInner.useValue(),
-  //         height: isAuto ? "auto" : height,
-  //       }}
-  //     >
-  //       <Renderer grid={cx.grid} row={row} rowIndex={rowIndex} />
-  //     </div>
-  //   </div>
-  // );
+  return (
+    <div
+      ref={setDetailEl}
+      role="gridcell"
+      style={{
+        pointerEvents: "none",
+        position: "absolute",
+        left: 0,
+        width: SCROLL_WIDTH_VARIABLE_USE,
+      }}
+    >
+      <div
+        tabIndex={0}
+        data-ln-gridid={cx.id}
+        data-ln-row-detail
+        data-ln-rowindex={rowIndex}
+        style={{
+          position: "sticky",
+          pointerEvents: "all",
+          right: rtl ? "0px" : undefined,
+          left: rtl ? undefined : "0px",
+          marginTop: rowHeight,
+          width: cx.vpInnerWidth,
+          height: isAuto ? "auto" : height,
+        }}
+      >
+        {Renderer ? <Renderer row={row} rowIndex={rowIndex} /> : null}
+      </div>
+    </div>
+  );
 }

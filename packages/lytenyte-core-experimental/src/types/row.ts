@@ -40,12 +40,15 @@ export interface RowAtom<T> {
   readonly useValue: () => T;
 }
 
+export interface RowRendererParams<T> {
+  readonly rowIndex: number;
+  readonly row: RowNode<T>;
+}
+
 export type RowFullWidthPredicate<T> = (params: {
   readonly rowIndex: number;
   readonly row: RowNode<T | null>;
 }) => boolean;
 
-export type RowFullWidthRenderer<T> = (props: {
-  readonly rowIndex: number;
-  readonly row: RowNode<T>;
-}) => ReactNode;
+export type RowFullWidthRenderer<T> = (props: RowRendererParams<T>) => ReactNode;
+export type RowDetailRenderer<T> = (props: RowRendererParams<T>) => ReactNode;

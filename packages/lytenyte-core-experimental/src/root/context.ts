@@ -2,6 +2,7 @@ import { createContext, useContext, type Dispatch, type SetStateAction } from "r
 import type { ColumnBase, ColumnMeta } from "../types/column";
 import type { Piece } from "../hooks/use-piece";
 import type { RowFullWidthRenderer } from "../types/row";
+import type { API } from "./root";
 
 export interface GridContextType {
   readonly id: string;
@@ -29,6 +30,8 @@ export interface GridContextType {
 
   readonly vpInnerWidth: number;
   readonly vpInnerHeight: number;
+
+  readonly api: API<any>;
 }
 
 export const GridContext = createContext<GridContextType>({} as GridContextType);
