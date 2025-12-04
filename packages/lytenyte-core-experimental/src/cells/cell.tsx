@@ -46,7 +46,7 @@ const CellImpl = memo(
         yPositions,
         cell,
         rtl,
-        row ? api.getRowDetailHeight(row) : 0,
+        row ? api.rowDetailHeight(row) : 0,
         undefined,
       );
 

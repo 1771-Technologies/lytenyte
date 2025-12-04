@@ -8,9 +8,6 @@ export function useXPositions<T>(
   containerWidth: number,
   sizeToFit: boolean,
 ) {
-  // TODO @Lee investigate if this should be optimized further. When optimizing we would likely
-  // want to avoid computing the position array if the columns haven't really change and the size
-  // to fit value is false.
   const xLayout = useMemo(() => {
     const next = computeColumnPositions(columns, base, containerWidth, sizeToFit);
 

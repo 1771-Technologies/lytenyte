@@ -27,7 +27,8 @@ export function useRowStyle(
     // FireFox does not correctly paint translations when scrolling. This results pin columns
     // appearing and disappearing as the user horizontally scrolls. However, if we directly
     // position the rows, then it appears to produce the correct calculation.
-    // TODO @Lee: is there a reason to prefer transform over top? It seems like performance wise
+
+    // @Lee: is there a reason to prefer transform over top? It seems like performance wise
     // they are the same, and we don't actually change the translation. It also seems using positioning
     // results in fewer cross browsers issues.
     const shouldBeRelative = isTranslated && (isFF || hasSpans);
