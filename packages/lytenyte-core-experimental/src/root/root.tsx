@@ -1,11 +1,4 @@
-import {
-  useId,
-  useImperativeHandle,
-  useMemo,
-  useState,
-  type PropsWithChildren,
-  type Ref,
-} from "react";
+import { useId, useImperativeHandle, useMemo, useState, type PropsWithChildren } from "react";
 import { GridContext, type GridContextType } from "./context.js";
 import { useViewportDimensions } from "./use-viewport-dimensions.js";
 import { useXPositions } from "./positions/use-x-positions.js";
@@ -13,19 +6,10 @@ import { AnyArray, AnyObject, DEFAULT_ROW_SOURCE } from "../constants.js";
 import { useControlled } from "../hooks/use-controlled.js";
 import { useEvent } from "../hooks/use-event.js";
 import { useColumnView } from "./column-view/use-column-view.js";
-import type { Column, ColumnBase, ColumnMarker } from "../types/column.js";
 import { useColumnMeta } from "./column-view/use-column-meta.js";
 import { BoundsProvider } from "./bounds/bounds-provider.js";
 import { useYPositions } from "./positions/use-y-positions.js";
 import { ColumnLayoutProvider } from "./layout-columns/column-layout-provider.js";
-import type {
-  RowDetailRenderer,
-  RowFullWidthPredicate,
-  RowFullWidthRenderer,
-  RowHeight,
-  RowNode,
-  RowSource,
-} from "../types/row.js";
 import { useHeaderHeightTotal } from "./use-header-height-total.js";
 import { RowSourceProvider } from "./row-source/row-source-provider.js";
 import { RowLayoutProvider } from "./layout-rows/row-layout-provider.js";
@@ -33,11 +17,12 @@ import { usePiece } from "../hooks/use-piece.js";
 import { useRowDetail } from "./row-detail/use-row-detail.js";
 import { RowDetailContext } from "./row-detail/row-detail-context.js";
 import { useApi } from "./use-api.js";
+import type { Ln } from "../types.js";
 
-export function Root<T>(props: PropsWithChildren<Root.Props<T>>) {
+export function Root<T>(props: PropsWithChildren<Ln.Props<T>>) {
   const {
-    columns = AnyArray as Column<T>[],
-    columnBase = AnyObject as ColumnBase<T>,
+    columns = AnyArray as Ln.LnColumn<T>[],
+    columnBase = AnyObject as Ln.ColumnBase<T>,
     sizeToFit = false,
     gridId,
     rtl,
@@ -140,8 +125,8 @@ export function Root<T>(props: PropsWithChildren<Root.Props<T>>) {
   const fullWidthPiece = usePiece(rowFullWidthRenderer);
   const rowDetailPiece = usePiece(detailCtx.detailExpansions);
 
-  const api = useApi(props, detailCtx, view);
-  useImperativeHandle(ref, () => api, [api]);
+  const api = useApi(props, detailCtx, view, rowSource);
+  useImperativeHandle(ref, () => api as any, [api]);
 
   const value = useMemo<GridContextType>(() => {
     return {
@@ -165,7 +150,7 @@ export function Root<T>(props: PropsWithChildren<Root.Props<T>>) {
 
       rowFullWidthRenderer: fullWidthPiece,
       rowDetailExpansions: rowDetailPiece,
-      api,
+      api: api,
     };
   }, [
     rtl,
@@ -217,6 +202,7 @@ export function Root<T>(props: PropsWithChildren<Root.Props<T>>) {
               virtualizeCols={virtualizeCols}
               virtualizeRows={virtualizeRows}
               vp={vp}
+              api={api}
             >
               <RowSourceProvider rowSource={rowSource}>{children}</RowSourceProvider>
             </RowLayoutProvider>
@@ -225,60 +211,4 @@ export function Root<T>(props: PropsWithChildren<Root.Props<T>>) {
       </BoundsProvider>
     </GridContext.Provider>
   );
-}
-
-export namespace Root {
-  export interface Props<T> {
-    readonly columns?: Column<T>[];
-    readonly columnBase?: ColumnBase<T>;
-    readonly columnMarker?: ColumnMarker<T>;
-    readonly columnMarkerEnabled?: boolean;
-    readonly columnGroupDefaultExpansion?: boolean;
-    readonly columnGroupJoinDelimiter?: string;
-
-    readonly sizeToFit?: boolean;
-
-    readonly gridId?: string;
-
-    readonly rtl?: boolean;
-
-    readonly headerHeight?: number;
-    readonly headerGroupHeight?: number;
-    readonly floatingRowHeight?: number;
-    readonly floatingRowEnabled?: boolean;
-
-    readonly rowOverscanTop?: number;
-    readonly rowOverscanBottom?: number;
-    readonly colOverscanStart?: number;
-    readonly colOverscanEnd?: number;
-
-    readonly rowScanDistance?: number;
-    readonly rowSource?: RowSource;
-    readonly rowHeight?: RowHeight;
-
-    readonly rowFullWidthPredicate?: RowFullWidthPredicate<T> | null;
-    readonly rowFullWidthRenderer?: RowFullWidthRenderer<T> | null;
-
-    readonly virtualizeCols?: boolean;
-    readonly virtualizeRows?: boolean;
-
-    readonly rowDetailHeight?: number | "auto";
-    readonly rowDetailAutoHeightGuess?: number;
-    readonly rowDetailRenderer?: RowDetailRenderer<T> | null;
-
-    // Values that can be changed by the grid
-    readonly columnGroupExpansions?: Record<string, boolean>;
-    readonly onColumnGroupExpansionChange?: (change: Record<string, boolean>) => void;
-    readonly rowDetailExpansions?: Set<string>;
-    readonly onRowDetailExpansionsChange?: (change: Set<string>) => void;
-
-    readonly ref: Ref<API<T>>;
-  }
-
-  export interface API<T> {
-    readonly columnField: (columnOrId: string | Column<T>, row: RowNode<T>) => unknown;
-    readonly rowDetailHeight: (rowId: RowNode<T> | string) => number;
-
-    readonly getProps: () => Root.Props<T>;
-  }
 }

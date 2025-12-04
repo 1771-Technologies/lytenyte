@@ -7,11 +7,12 @@ import {
   partitionColumnsByPinState,
   type PathTableItem,
 } from "@1771technologies/lytenyte-shared";
-import type { Column, ColumnBase, ColumnGroupMeta } from "../../types/column.js";
+import type { Ln } from "../../types";
+import type { ColumnGroupMeta } from "../../types/column";
 
 export interface MakeColumnViewArgs<T> {
-  readonly columns: Column<T>[];
-  readonly base: ColumnBase<T>;
+  readonly columns: Ln.LnColumn<T>[];
+  readonly base: Ln.ColumnBase<T>;
 
   readonly groupExpansions: Record<string, boolean>;
   readonly groupJoinDelimiter: string;
@@ -22,9 +23,9 @@ export interface MakeColumnViewReturn<T> {
   meta: ColumnGroupMeta;
   maxRow: number;
   maxCol: number;
-  combinedView: PathTableItem<Column<T>>[][];
-  visibleColumns: Column<T>[];
-  lookup: Map<string, Column<T>>;
+  combinedView: PathTableItem<Ln.LnColumn<T>>[][];
+  visibleColumns: Ln.LnColumn<T>[];
+  lookup: Map<string, Ln.LnColumn<T>>;
   startCount: number;
   endCount: number;
   centerCount: number;
@@ -66,9 +67,9 @@ export function makeColumnView<T>({
   ).table;
   const endTable = computePathTable(end, maxDepth, seenMap, groupJoinDelimiter, endOffset).table;
 
-  const combinedView: PathTableItem<Column<T>>[][] = [];
+  const combinedView: PathTableItem<Ln.LnColumn<T>>[][] = [];
   for (let i = 0; i <= maxDepth; i++) {
-    const row: PathTableItem<Column<T>>[] = [];
+    const row: PathTableItem<Ln.LnColumn<T>>[] = [];
 
     row.push(...(startTable[i] ?? []));
     row.push(...(centerTable[i] ?? []));

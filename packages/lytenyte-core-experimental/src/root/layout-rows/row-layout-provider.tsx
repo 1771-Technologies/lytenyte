@@ -1,13 +1,14 @@
 import { useCallback, useMemo, useRef, type PropsWithChildren } from "react";
 import { makeRowLayout } from "./make-row-layout.js";
-import type { RowFullWidthPredicate, RowSource } from "../../types/row.js";
 import type { LayoutRow, RowView } from "../../types/layout.js";
 import { useBounds } from "../bounds/context.js";
-import type { ColumnMeta } from "../../types/column.js";
 import { makeLayoutState, updateFull, type LayoutState } from "@1771technologies/lytenyte-shared";
 import { getSpanFn } from "./get-span-fn.js";
 import { getFullWidthFn } from "./get-full-width-fn.js";
 import { RowLayoutContext } from "./row-layout-context.js";
+import type { RowFullWidthPredicate, RowSource } from "../../types/row.js";
+import type { ColumnMeta } from "../../types/column.js";
+import type { Ln } from "../../types.js";
 
 export function RowLayoutProvider<T>({
   vp,
@@ -18,6 +19,7 @@ export function RowLayoutProvider<T>({
   columnMeta,
   rowDetailExpansions,
   rowFullWidthPredicate,
+  api,
   children,
 }: PropsWithChildren<{
   vp: HTMLElement | null;
@@ -28,6 +30,7 @@ export function RowLayoutProvider<T>({
   columnMeta: ColumnMeta<T>;
   rowDetailExpansions: Set<string>;
   rowFullWidthPredicate: RowFullWidthPredicate<T> | null;
+  api: Ln.API<any>;
 }>) {
   const bounds$ = useBounds();
   const bounds = bounds$.useValue();
@@ -65,13 +68,15 @@ export function RowLayoutProvider<T>({
 
   const columns = columnMeta.columnsVisible;
   const [computeColSpan, computeRowSpan] = useMemo(() => {
-    return [getSpanFn(rs, columns, "col"), getSpanFn(rs, columns, "row")];
-  }, [columns, rs]);
+    return [getSpanFn(rs, columns, "col", api), getSpanFn(rs, columns, "row", api)];
+  }, [api, columns, rs]);
+
   const isFullWidth = useMemo(() => {
     if (!rowFullWidthPredicate) return null;
 
-    return getFullWidthFn(rs, rowFullWidthPredicate);
-  }, [rowFullWidthPredicate, rs]);
+    return getFullWidthFn(rs, rowFullWidthPredicate, api);
+  }, [api, rowFullWidthPredicate, rs]);
+
   const isRowCutoff = useCallback(
     (r: number) => {
       const row = rs.rowByIndex(r)?.get();
@@ -111,6 +116,7 @@ export function RowLayoutProvider<T>({
       ...layout,
     });
 
+    console.log("Updated", rs.rowByIndex);
     const view = makeRowLayout({
       view: n,
       viewCache: cache,

@@ -2,8 +2,8 @@ import { useMemo, useState } from "react";
 import { AnySet } from "../../constants.js";
 import { useControlled } from "../../hooks/use-controlled.js";
 import { useEvent } from "../../hooks/use-event.js";
-import type { RowDetailRenderer, RowNode } from "../../types/row.js";
 import type { RowDetailContext } from "./row-detail-context.js";
+import type { RowDetailRenderer, RowNode } from "../../types/row.js";
 
 export function useRowDetail<T>(
   rowDetailExpansions: Set<string> | undefined,

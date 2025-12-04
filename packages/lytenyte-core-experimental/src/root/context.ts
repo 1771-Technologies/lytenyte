@@ -1,8 +1,8 @@
 import { createContext, useContext, type Dispatch, type SetStateAction } from "react";
-import type { ColumnBase, ColumnMeta } from "../types/column.js";
 import type { Piece } from "../hooks/use-piece.js";
+import type { Ln } from "../types.js";
 import type { RowFullWidthRenderer } from "../types/row.js";
-import type { Root } from "./root.js";
+import type { ColumnMeta } from "../types/column.js";
 
 export interface GridContextType {
   readonly id: string;
@@ -20,7 +20,7 @@ export interface GridContextType {
 
   readonly columnGroupExpansions: Record<string, boolean>;
   readonly columnGroupDefaultExpansion: boolean;
-  readonly columnBase: ColumnBase<any>;
+  readonly columnBase: Ln.ColumnBase<any>;
 
   readonly headerRowCount: number;
 
@@ -31,7 +31,7 @@ export interface GridContextType {
   readonly vpInnerWidth: number;
   readonly vpInnerHeight: number;
 
-  readonly api: Root.API<any>;
+  readonly api: Ln.API<any>;
 }
 
 export const GridContext = createContext<GridContextType>({} as GridContextType);

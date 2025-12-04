@@ -1,9 +1,9 @@
 import { SCROLL_WIDTH_VARIABLE_USE, sizeFromCoord } from "@1771technologies/lytenyte-shared";
 import type { LayoutFullWidthRow, LayoutRowWithCells } from "../types/layout";
 import { useGridRoot } from "../root/context.js";
-import type { RowNode } from "../types/row";
 import { useRowDetailContext } from "../root/row-detail/row-detail-context.js";
 import { useEffect, useState } from "react";
+import type { RowNode } from "../types/row";
 
 export function RowDetailRow<T>({
   layout,
@@ -74,7 +74,7 @@ function RowDetailImpl<T>({ row, rowIndex }: { row: RowNode<T>; rowIndex: number
           height: isAuto ? "auto" : height,
         }}
       >
-        {Renderer ? <Renderer row={row} rowIndex={rowIndex} /> : null}
+        {Renderer ? <Renderer row={row} rowIndex={rowIndex} api={cx.api} /> : null}
       </div>
     </div>
   );

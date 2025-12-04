@@ -7,6 +7,7 @@ import { useGridRoot } from "../root/context.js";
 import type { LayoutCell } from "../types/layout.js";
 import { useBounds } from "../root/bounds/context.js";
 import { $colEndBound, $colStartBound } from "../selectors/selectors.js";
+import { useRowMeta } from "../rows/row/context.js";
 
 export interface CellProps {
   readonly cell: LayoutCell<any>;
@@ -34,7 +35,8 @@ const CellImpl = memo(
   forwardRef<HTMLDivElement, Omit<JSX.IntrinsicElements["div"], "children"> & CellProps>(
     function Cell({ cell, ...props }, forwarded) {
       const { id, rtl, columnBase: base, xPositions, yPositions, api } = useGridRoot();
-      const row = cell.row.useValue();
+      const { row } = useRowMeta();
+      console.log(row);
 
       const Renderer = cell.column.cellRenderer ?? base.cellRenderer ?? CellDefault;
 
@@ -79,7 +81,7 @@ const CellImpl = memo(
             style={{ ...style, ...props.style }}
           >
             {/* {isEditing && <CellEditor cell={cell} />} */}
-            {!isEditing && <Renderer column={cell.column} row={row} />}
+            {!isEditing && <Renderer column={cell.column} row={row} api={api} />}
           </div>
           {cell.colLastStartPin && <CellSpacePinStart xPositions={xPositions} />}
         </>

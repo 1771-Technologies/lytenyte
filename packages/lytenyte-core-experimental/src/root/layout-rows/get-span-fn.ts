@@ -1,7 +1,12 @@
-import type { Column } from "../../types/column";
+import type { Ln } from "../../types";
 import type { RowSource } from "../../types/row";
 
-export function getSpanFn<T>(rs: RowSource<T>, visibleColumns: Column<T>[], span: "row" | "col") {
+export function getSpanFn<T>(
+  rs: RowSource<T>,
+  visibleColumns: Ln.LnColumn<T>[],
+  span: "row" | "col",
+  api: Ln.API<T>,
+) {
   if (visibleColumns.every((c) => !(span === "col" ? c.colSpan : c.rowSpan))) return null;
 
   return (r: number, c: number) => {
@@ -20,6 +25,6 @@ export function getSpanFn<T>(rs: RowSource<T>, visibleColumns: Column<T>[], span
       }
     }
 
-    return spanFn({ rowIndex: r, colIndex: c, column, row });
+    return spanFn({ rowIndex: r, colIndex: c, column, row, api });
   };
 }

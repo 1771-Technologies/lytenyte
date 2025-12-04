@@ -1,10 +1,10 @@
 import { computeColumnPositions } from "@1771technologies/lytenyte-shared";
 import { useMemo } from "react";
-import type { Column, ColumnBase } from "../../types/column.js";
+import type { Ln } from "../../types";
 
 export function useXPositions<T>(
-  columns: Column<T>[],
-  base: ColumnBase<T>,
+  columns: Ln.Column<T>[],
+  base: Ln.ColumnBase<T>,
   containerWidth: number,
   sizeToFit: boolean,
 ) {

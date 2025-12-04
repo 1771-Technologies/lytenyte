@@ -1,10 +1,10 @@
-import type { CellParams } from "../types/column";
+import type { Ln } from "../types.js";
 
-export function CellDefault<T>({ row }: CellParams<T>) {
+export function CellDefault<T>({ column, row, api }: Ln.CellParams<T>) {
   if (row.data == null && row.loading) {
     return <div>Loading...</div>;
   }
 
-  // TODO;
-  return <div>-</div>;
+  const field = api.columnField(column, row);
+  return <div>{`${field ?? "-"}`}</div>;
 }
