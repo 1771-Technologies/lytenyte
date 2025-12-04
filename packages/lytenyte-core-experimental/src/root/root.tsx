@@ -1,8 +1,15 @@
-import { useId, useMemo, useState, type PropsWithChildren } from "react";
+import {
+  useId,
+  useImperativeHandle,
+  useMemo,
+  useState,
+  type PropsWithChildren,
+  type Ref,
+} from "react";
 import { GridContext, type GridContextType } from "./context.js";
 import { useViewportDimensions } from "./use-viewport-dimensions.js";
 import { useXPositions } from "./positions/use-x-positions.js";
-import { AnyArray, AnyObject, AnySet, DEFAULT_ROW_SOURCE } from "../constants.js";
+import { AnyArray, AnyObject, DEFAULT_ROW_SOURCE } from "../constants.js";
 import { useControlled } from "../hooks/use-controlled.js";
 import { useEvent } from "../hooks/use-event.js";
 import { useColumnView } from "./column-view/use-column-view.js";
@@ -12,15 +19,23 @@ import { BoundsProvider } from "./bounds/bounds-provider.js";
 import { useYPositions } from "./positions/use-y-positions.js";
 import { ColumnLayoutProvider } from "./layout-columns/column-layout-provider.js";
 import type {
+  RowDetailRenderer,
   RowFullWidthPredicate,
   RowFullWidthRenderer,
   RowHeight,
+  RowNode,
   RowSource,
 } from "../types/row.js";
 import { useHeaderHeightTotal } from "./use-header-height-total.js";
 import { RowSourceProvider } from "./row-source/row-source-provider.js";
 import { RowLayoutProvider } from "./layout-rows/row-layout-provider.js";
 import { usePiece } from "../hooks/use-piece.js";
+import { useRowDetail } from "./row-detail/use-row-detail.js";
+import { RowDetailContext } from "./row-detail/row-detail-context.js";
+
+export interface API<T> {
+  readonly getRowDetailHeight: (rowId: RowNode<T> | string) => number;
+}
 
 export interface RootProps<T> {
   readonly columns?: Column<T>[];
@@ -56,11 +71,17 @@ export interface RootProps<T> {
   readonly virtualizeCols?: boolean;
   readonly virtualizeRows?: boolean;
 
+  readonly rowDetailHeight?: number | "auto";
+  readonly rowDetailAutoHeightGuess?: number;
+  readonly rowDetailRenderer?: RowDetailRenderer<T> | null;
+
   // Values that can be changed by the grid
   readonly columnGroupExpansions?: Record<string, boolean>;
   readonly onColumnGroupExpansionChange?: (change: Record<string, boolean>) => void;
   readonly rowDetailExpansions?: Set<string>;
   readonly onRowDetailExpansionsChange?: (change: Set<string>) => void;
+
+  readonly ref: Ref<API<T>>;
 }
 
 export function Root<T>({
@@ -90,6 +111,10 @@ export function Root<T>({
   rowSource = DEFAULT_ROW_SOURCE,
   rowHeight = 40,
 
+  rowDetailHeight = 300,
+  rowDetailAutoHeightGuess = 300,
+  rowDetailRenderer = null,
+
   rowScanDistance = 100,
   virtualizeCols = true,
   virtualizeRows = true,
@@ -102,6 +127,8 @@ export function Root<T>({
 
   rowDetailExpansions,
   onRowDetailExpansionsChange,
+
+  ref,
 }: PropsWithChildren<RootProps<T>>) {
   const [vp, setVp] = useState<HTMLDivElement | null>(null);
   const id = useId();
@@ -116,14 +143,6 @@ export function Root<T>({
   const _onColGroupExpansionChange = useEvent((change: Record<string, boolean>) => {
     onColumnGroupExpansionChange?.(change);
     setColGroupExpansions(change);
-  });
-  const [detailExpansions, setDetailExpansions] = useControlled({
-    controlled: rowDetailExpansions,
-    default: AnySet,
-  });
-  const _onRowDetailExpansionsChange = useEvent((change: Set<string>) => {
-    onRowDetailExpansionsChange?.(change);
-    setDetailExpansions(change);
   });
 
   const view = useColumnView(
@@ -144,6 +163,15 @@ export function Root<T>({
     floatHeight,
     view.maxRow,
   );
+
+  const detailCtx = useRowDetail(
+    rowDetailExpansions,
+    onRowDetailExpansionsChange,
+    rowDetailHeight,
+    rowDetailAutoHeightGuess,
+    rowDetailRenderer,
+  );
+
   const xPositions = useXPositions(columns, columnBase, dimensions.innerWidth, sizeToFit);
   const yPositions = useYPositions(
     rowSource,
@@ -151,10 +179,22 @@ export function Root<T>({
     dimensions.innerHeight,
     rowHeight,
     totalHeaderHeight,
+    rowDetailHeight,
+    detailCtx.autoHeightCache,
+    rowDetailAutoHeightGuess,
+    detailCtx.detailExpansions,
   );
 
   const fullWidthPiece = usePiece(rowFullWidthRenderer);
-  const rowDetailPiece = usePiece(detailExpansions);
+  const rowDetailPiece = usePiece(detailCtx.detailExpansions);
+
+  const api = useMemo<API<T>>(() => {
+    return {
+      getRowDetailHeight: detailCtx.getRowDetailHeight,
+    };
+  }, [detailCtx.getRowDetailHeight]);
+
+  useImperativeHandle(ref, () => api, [api]);
 
   const value = useMemo<GridContextType>(() => {
     return {
@@ -178,6 +218,7 @@ export function Root<T>({
 
       rowFullWidthRenderer: fullWidthPiece,
       rowDetailExpansions: rowDetailPiece,
+      api,
     };
   }, [
     rtl,
@@ -199,6 +240,7 @@ export function Root<T>({
     dimensions.innerWidth,
     fullWidthPiece,
     rowDetailPiece,
+    api,
   ]);
 
   return (
@@ -217,20 +259,22 @@ export function Root<T>({
         yPositions={yPositions}
         rowSource={rowSource}
       >
-        <ColumnLayoutProvider view={view} floatingRowEnabled={floatingRowEnabled}>
-          <RowLayoutProvider
-            columnMeta={columnMeta}
-            rowDetailExpansions={detailExpansions}
-            rowFullWidthPredicate={rowFullWidthPredicate}
-            rowScan={rowScanDistance}
-            rs={rowSource}
-            virtualizeCols={virtualizeCols}
-            virtualizeRows={virtualizeRows}
-            vp={vp}
-          >
-            <RowSourceProvider rowSource={rowSource}>{children}</RowSourceProvider>
-          </RowLayoutProvider>
-        </ColumnLayoutProvider>
+        <RowDetailContext.Provider value={detailCtx}>
+          <ColumnLayoutProvider view={view} floatingRowEnabled={floatingRowEnabled}>
+            <RowLayoutProvider
+              columnMeta={columnMeta}
+              rowDetailExpansions={detailCtx.detailExpansions}
+              rowFullWidthPredicate={rowFullWidthPredicate}
+              rowScan={rowScanDistance}
+              rs={rowSource}
+              virtualizeCols={virtualizeCols}
+              virtualizeRows={virtualizeRows}
+              vp={vp}
+            >
+              <RowSourceProvider rowSource={rowSource}>{children}</RowSourceProvider>
+            </RowLayoutProvider>
+          </ColumnLayoutProvider>
+        </RowDetailContext.Provider>
       </BoundsProvider>
     </GridContext.Provider>
   );

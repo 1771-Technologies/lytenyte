@@ -16,7 +16,7 @@ const RowFullWidthImpl = forwardRef<
   HTMLDivElement,
   Omit<JSX.IntrinsicElements["div"], "children"> & RowFullWidthProps
 >(function RowFullWidth({ row: layout, ...props }, forwarded) {
-  const { id, rtl, columnMeta, yPositions, rowFullWidthRenderer } = useGridRoot();
+  const { id, rtl, columnMeta, yPositions, rowFullWidthRenderer, api } = useGridRoot();
   const container = useRowsContainerContext();
 
   const hasSpans = useMemo(() => {
@@ -34,8 +34,7 @@ const RowFullWidthImpl = forwardRef<
   const topOffset = container.useValue($topHeight);
   const rowIsFocusRow = !!layout.rowIsFocusRow;
 
-  // TODO
-  const rowDetailHeight = 0; // grid.api.rowDetailRenderedHeight(row ?? "")
+  const rowDetailHeight = row ? api.getRowDetailHeight(row) : 0;
   const height = sizeFromCoord(rowIndex, yPositions) - rowDetailHeight;
 
   return (
