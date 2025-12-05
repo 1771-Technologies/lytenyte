@@ -1,24 +1,26 @@
 ---
 title: Column Spanning
-description: Cells in LyteNyte Grid can span across multiple columns.
-  Spanning cells extend into adjacent columns, and the grid skips rendering the cells they cover.
+description: With LyteNyte Grid, cells can span multiple columns. When a cell spans,
+  it extends into adjacent columns, and the grid skips rendering any cells it covers.
 ---
 
-The `colSpan` property on a column definition controls how many columns a cell spans. It accepts:
+The `colSpan` property on a column definition controls how
+many columns a cell spans. It accepts either a number or a function.
 
-- A number, which applies the same span for all rows.
-- A function that returns the number of columns to span for each row.
+- **Provide a number** to apply the same span to all rows; or
+- **Provide a function** that returns a number to vary the span per row
 
 Cells always span toward the end of the viewport. A spanning cell
 covers the next column, not the previous one.
 
 ## Uniform Column Spans
 
-When `colSpan` is a number, every cell in the column spans
-the same number of adjacent columns for every row. The grid skips rendering any cells covered
-by the span. The demo below shows the **Price** column spanning over the adjacent **Price In GBP** column.
+When `colSpan` is a **number**, every cell in the column spans the same number of
+adjacent columns for all rows. The grid skips rendering any cells covered
+by the span. The demo below shows the **USD Price** column spanning over the
+adjacent **GBP Price** column.
 
-!demo:Uniform Column Spans="./demos/column-spanning-number_x"
+!demo:Uniform Column Span="./demos/column-spanning-number_x"
 
 Uniform spans are uncommon and mainly appear in cases where the
 visual layout differs from the logical column structure. Hence,
@@ -33,11 +35,11 @@ const columns = [
 
 ## Function Column Spans
 
-You can set `colSpan` to a function that returns the span for each row.
+You can set `colSpan` to a **function** that returns the span for each row.
 This allows dynamic spans based on row data. The demo below merges cells
 for rows whose temperature values differ by less than `3`.
 
-!demo:Function Column Spans="./demos/column-spanning-fn_x"
+!demo:Function Column Span="./demos/column-spanning-fn_x"
 
 The `colSpan` function below shows how flexible span logic can be:
 
@@ -89,11 +91,13 @@ to guarantee correct rendering.
 
 <Callout>
 
-LyteNyte Grid uses a scan distance for correctness and performance.
-Many grids pre-calculate spans (which limits scalability) or render incorrectly when scrolling.
-LyteNyte Grid's model requires you to define a max span, but it preserves accuracy and performance.
+LyteNyte Grid uses a scan distance to ensure correctness and performance.
+Many grids pre-calculate spans, which limits scalability, or render incorrectly
+during scrolling. LyteNyte Grid's model requires you to specify a maximum span,
+but it maintains accuracy and performance.
 
-In most real-world cases, a scan distance of `100` is more than enough, since spans rarely approach this size.
+In most real-world cases, a scan distance of 100 is more than enough,
+since spans rarely approach this size.
 
 </Callout>
 
