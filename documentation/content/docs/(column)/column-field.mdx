@@ -1,7 +1,7 @@
 ---
 title: Column Field
 description: A column's field determines how LyteNyte Grid retrieves a cell value.
-  LyteNyte Grid supports four field types, and this guide explains each one.
+  This guide explains the four field types supported by LyteNyte Grid.
 ---
 
 Set a column's value source using the `field` property on the column definition.
@@ -10,10 +10,10 @@ The `field` property applies only to individual columns and cannot be set on the
 
 LyteNyte Grid supports four field types:
 
-- **String:** Use when row data is an object. The string is the key used to read the value.
-- **Number:** Use when row data is an array. The number is the index in the array.
-- **Function:** A callback that computes the column's value.
-- **Path object:** An object of the form `{ kind: "path"; path: string }` for accessing nested values. `kind` must be `"path"` and `path` defines the lookup.
+- **String:** Use when each row is a flat JavaScript object. The string value is used as an object key to read the cell value.
+- **Number:** Use when each row is an array. The number value is used as an array index to read the cell value.
+- **Function:** Use to compute the cell value from the row data. This callback can run any logic and is commonly used for derived values.
+- **Path object:** Use when each row is a nested JavaScript object. Provide an object of the form `{ kind: "path"; path: string }` to read a nested cell value.
 
 The `field` property is optional. If omitted, LyteNyte Grid uses the column's `id` as
 a fallback, which behaves the same as a string field.
@@ -72,8 +72,8 @@ LyteNyte Grid passes a single argument to the function. This argument contains
 either aggregated group data or leaf-row data, depending on the row being processed.
 See the [field data param](/docs/reference/field#fielddataparam) for the exact type.
 
-Function fields are ideal for derived or calculated values. In the
-demo below, the **Price in GBP** column computes a value from the base **Price** column.
+Function fields are ideal for derived or calculated values.
+In the demo below, the **GBP Price** column computes a value from the base **USD Price** column.
 
 !demo:Function Fields="./demos/column-field-function_x"
 
