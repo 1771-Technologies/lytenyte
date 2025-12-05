@@ -21,7 +21,7 @@ const columns: Column<DEXPerformanceData>[] = [
   {
     id: "symbol",
     cellRenderer: SymbolCell,
-    name: "Crypto Currency Symbol Logo & Ticker Shorthand & Symbol Name",
+    name: "Crypto Currency Symbol, Ticker, and Name",
     autosizeHeaderFn: (p) => {
       const textWidth = measureText(
         `${p.column.name ?? p.column.id}`,
@@ -83,7 +83,7 @@ const columns: Column<DEXPerformanceData>[] = [
   {
     id: "change24h",
     cellRenderer: PercentCellPositiveNegative,
-    headerRenderer: makePerfHeaderCell("Change", "24h"),
+    headerRenderer: makePerfHeaderCell("Change", "24H"),
     name: "Change % 24h",
     type: "number,",
   },
@@ -91,28 +91,28 @@ const columns: Column<DEXPerformanceData>[] = [
   {
     id: "perf1w",
     cellRenderer: PercentCellPositiveNegative,
-    headerRenderer: makePerfHeaderCell("Perf %", "1w"),
+    headerRenderer: makePerfHeaderCell("Perf %", "1W"),
     name: "Perf % 1W",
     type: "number,",
   },
   {
     id: "perf1m",
     cellRenderer: PercentCellPositiveNegative,
-    headerRenderer: makePerfHeaderCell("Perf %", "1m"),
+    headerRenderer: makePerfHeaderCell("Perf %", "1M"),
     name: "Perf % 1M",
     type: "number,",
   },
   {
     id: "perf3m",
     cellRenderer: PercentCellPositiveNegative,
-    headerRenderer: makePerfHeaderCell("Perf %", "3m"),
+    headerRenderer: makePerfHeaderCell("Perf %", "3M"),
     name: "Perf % 3M",
     type: "number,",
   },
   {
     id: "perf6m",
     cellRenderer: PercentCellPositiveNegative,
-    headerRenderer: makePerfHeaderCell("Perf %", "6m"),
+    headerRenderer: makePerfHeaderCell("Perf %", "6M"),
     name: "Perf % 6M",
     type: "number,",
   },
@@ -127,7 +127,7 @@ const columns: Column<DEXPerformanceData>[] = [
   {
     id: "volatility1m",
     cellRenderer: PercentCell,
-    headerRenderer: makePerfHeaderCell("Volatility", "1m"),
+    headerRenderer: makePerfHeaderCell("Volatility", "1M"),
     name: "Volatility 1M",
     type: "number",
   },
@@ -178,7 +178,7 @@ export default function ColumnBase() {
                           key={c.id}
                           cell={c}
                           className={tw(
-                            "text-ln-gray-60! dark:text-ln-gray-70! flex h-full w-full items-center text-nowrap px-2 text-xs capitalize",
+                            "text-ln-gray-60! dark:text-ln-gray-70! flex h-full w-full items-center text-nowrap px-2 text-xs",
                             c.column.type === "number" && "justify-end",
                           )}
                         />
