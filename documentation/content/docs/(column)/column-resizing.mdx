@@ -25,8 +25,9 @@ const grid = Grid.useLyteNyte({
 
 When `resizable` is `true`, the grid renders a resize handle on the
 header's edge. Users can drag this handle to change the width of a column.
-The demo below enables the drag handle. Try placing your cursor on the right edge
-of a column's header and dragging once the hover indicator is shown.
+The demo below enables the drag handle.
+Try placing your cursor on the right edge of a column header
+and dragging once the hover indicator appears.
 
 !demo:Resizing Columns="./demos/column-resizing-drag_x"
 
@@ -67,7 +68,7 @@ customizations:
 ### Resizing Programmatically
 
 For one-off resizes or custom resize workflows, call the grid API's `columnResize` method.
-It accepts an object mapping column IDs to widths.
+It accepts a JavaScript object mapping column IDs to widths.
 
 ```ts
 grid.api.columnResize({ exchange: 200, network: 100 });
@@ -80,7 +81,7 @@ code produces the same result:
 grid.api.columnUpdate({ exchange: { width: 200 }, network: { width: 100 } });
 ```
 
-### Min & Max Width
+### Min & Max Column Width
 
 Use the `widthMin` and `widthMax` properties to clamp a column's width.
 By default, columns have a minimum width of `80px` and a maximum width of `1000px`.
@@ -91,12 +92,11 @@ width value for layout calculations.
 
 !demo:Column Width Bounds="./demos/column-resizing-minmax_x"
 
-You can set `width` to a value outside the `widthMin` and `widthMax` bounds.
-The grid clamps the value during layout. If you later change the bounds,
-the column's visible width may adjust to match the new limits. For example, the
-column configuration below is perfectly valid. Adjusting the `widthMax` property to
-a higher value will result in the column immediately resizing to that higher value, until
-the column has reached its desired width value of `3000px`.
+The column `widthMin` and `widthMax` properties define visual layout bounds that
+LyteNyte enforces. LyteNyte does not clamp the column's `width` value to
+those limits, so your code can set `width` outside `widthMin`/`widthMax`. If `width` is out
+of bounds and you later change `widthMin` or `widthMax`, LyteNyte immediately
+resizes the column to fit the updated limits.
 
 ```ts
 const column = { id: "exchange", widthMin: 100, width: 3000, widthMax: 300 };
@@ -109,7 +109,7 @@ smaller than the viewport, you can allocate the remaining space using `widthFlex
 This property defines how much of the free space a column should take,
 similar to the CSS `flex` property.
 
-!demo:Filling Free Space="./demos/column-resizing-width-flex_x"
+!demo:Full Width Viewport Filling="./demos/column-resizing-width-flex_x"
 
 <Callout>
 
@@ -128,23 +128,26 @@ In the demo below, you can toggle the `columnSizeToFit` property to observe how
 it changes the widths of the column. The smaller the size of your display the
 more pronounced the effect will be.
 
-!demo:Size Columns To Fit="./demos/column-resizing-size-to-fit_x"
+!demo:Size-to-Fit Columns="./demos/column-resizing-size-to-fit_x"
 
-Use size-to-fit sparingly. Columns can appear compressed on narrow viewports,
-and cell content may truncate. Only enable this feature when all columns must be visible.
+Use the `columnSizeToFit` property sparingly. Columns can appear compressed on
+narrow viewports, and cell content may truncate. Only enable this feature
+when all columns must be visible.
 
-## The Measure Text Function
+## Measure Text Function
 
 LyteNyte Grid exports a `measureText` function that approximates the
 pixel width of a string. This is useful when adjusting cell
 content based on available space.
 
 Measuring the width of a given cell's text, allows for some interesting use cases.
-For example, applications like Excel show `#` symbols when a number overflows the cell. You can
-replicate this behavior in LyteNyte Grid by comparing the measured text width with the cell width.
-The demo below illustrates the pattern.
+For example, applications like Excel show `#` symbols when a number overflows the cell.
+The demo below demonstrates the pattern by toggling this effect on and off.
 
-!demo:Hash Truncate Cells="./demos/column-resizing-measure-text_x"
+- **String Truncation:** The **Symbol** and **Exchange** columns, which contain strings, are truncated.
+- **Number Hashing:** The **Performance** and **Volatility** columns, which contain numbers, are hashed.
+
+!demo:Truncating and Hashing="./demos/column-resizing-measure-text_x"
 
 In the demo, the `HashedValue` component uses `measureText` inside a `useMemo`
 call. Measuring text is expensive, so caching the result avoids running the calculation on every render.
