@@ -20,10 +20,18 @@ type StockData = (typeof stockData)[number];
 const columns: Column<StockData>[] = [
   { field: 0, id: "symbol", name: "Symbol", cellRenderer: SymbolCell, width: 220 },
   { field: 2, id: "analyst-rating", cellRenderer: AnalystRatingCell, width: 130 },
-  { field: 3, id: "price", type: "number", cellRenderer: PriceCell, width: 110, colSpan: 2 },
-  { id: "price", name: "Price in GBP", type: "number", width: 110 },
+  {
+    field: 3,
+    id: "price",
+    name: "USD Price",
+    type: "number",
+    cellRenderer: PriceCell,
+    width: 110,
+    colSpan: 2,
+  },
+  { id: "price", name: "GBP Price", type: "number", width: 110 },
   { field: 5, id: "change", type: "number", cellRenderer: PercentCell, width: 130 },
-  { field: 11, id: "eps", type: "number", cellRenderer: CurrencyCell, width: 130 },
+  { field: 11, id: "eps", name: "EPS", type: "number", cellRenderer: CurrencyCell, width: 130 },
   { field: 6, id: "volume", type: "number", cellRenderer: CompactNumberCell, width: 130 },
 ];
 
