@@ -1,14 +1,16 @@
 ---
 title: Column Floating Header
-description:
-  LyteNyte Grid's floating row is a specialized header row that appears below the main column
-  headers. It lets you render custom components for each column. While often used
-  for filtering components, it can render any type of component.
+description: LyteNyte Grid's floating row is a specialized header row that appears below the main column headers.
 ---
 
-Enable the floating row by setting the `floatingRowEnabled` property on the grid state.
-Once enabled, each column can define a floating cell renderer
-through the `floatingCellRenderer` property.
+Floating header rows let you render custom components for
+each column. While often used for filtering components,
+it can render any type of component.
+
+Enable the floating row by setting the
+`floatingRowEnabled` property on the grid state.
+Once enabled, each column can define a floating cell
+renderer through the `floatingCellRenderer` property.
 
 The `floatingCellRenderer` may be:
 
@@ -45,7 +47,7 @@ If `floatingCellRenderer` is a string, LyteNyte Grid treats it as a lookup key
 into the grid's `floatingCellRenderers` registry. The demo below shows the same example as above,
 but using a registered renderer instead of an inline component:
 
-!demo:Floating Cell Registered="./demos/column-floating-registered_x"
+!demo:Column Floating Cell Registered="./demos/column-floating-registered_x"
 
 String-based renderers are helpful when column definitions must be
 serializable. In other cases, prefer using component-based renderers.
@@ -61,13 +63,13 @@ const grid = Grid.useLyteNyte({
 });
 ```
 
-## Toggling the Floating Row Visibility
+## Floating Row Visibility Toggling
 
 You can show or hide the floating row by toggling the
 `floatingRowEnabled` state. The demo below includes a
 switch that updates this state:
 
-!demo:Floating Cell Registered="./demos/column-floating-visibility_x"
+!demo:Floating Cell Visibility="./demos/column-floating-visibility_x"
 
 The toggle simply flips the `floatingRowEnabled` value:
 
@@ -84,6 +86,6 @@ The toggle simply flips the `floatingRowEnabled` value:
 ## Next Steps
 
 - [Column Resizing](/docs/column-resizing): Change column widths programmatically or through user interaction.
-- [Column ID & Name](/docs/column-header-name): Define user-friendly column names and ensure unique IDs.
 - [Column Moving](/docs/column-moving): Reorder columns programmatically or via drag-and-drop.
 - [Column Base](/docs/column-base): See the default column values and how to override them with the `columnBase` property.
+- [Column Header Height](/docs/column-header-height): Adjust the height of the header row, group header rows, or the floating header row.

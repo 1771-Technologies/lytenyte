@@ -11,7 +11,7 @@ cleanly into other columns. Common use cases include:
 - Displaying the current row index.
 - Rendering a checkbox for row selection.
 
-## Enabling the Marker Column
+## Enabling Marker Column
 
 Enable the marker column using the `columnMarkerEnabled` property on the grid
 state. When enabled, provide a column specification using the `columnMarker` property.
@@ -20,7 +20,7 @@ The demo below shows the marker column displaying row indices.
 The displayed index starts at `1`, while actual row indices in
 LyteNyte Grid start at `0`.
 
-!demo:Marker Column For Row Index="./demos/column-marker_x"
+!demo:Row Index Marker Column="./demos/column-marker_x"
 
 Below is the code that enables the marker column and defines its renderer:
 
@@ -43,14 +43,14 @@ The marker column differs from standard columns and has important restrictions:
 - It is not part of the `columns` state but does affect column display order. When enabled,
   the marker column always appears first, and display index `0` refers to the marker column.
 
-## Marker Column For Selection
+## Selection Marker Column
 
 A common use case for the marker column is row selection.
 The marker column can render a checkbox for each row. Because
 this is so common, LyteNyte Grid provides the `api.rowHandleSelect`
 method to simplify selection logic, including shift-select behavior.
 
-!demo:Marker Column="./demos/column-marker-selection_x"
+!demo:Marker Column Selection="./demos/column-marker-selection_x"
 
 The demo uses `api.rowHandleSelect` to manage checkbox interactions:
 
@@ -70,6 +70,6 @@ The demo uses `api.rowHandleSelect` to manage checkbox interactions:
 ## Next Steps
 
 - [Column Resizing](/docs/column-resizing): Change column widths programmatically or through user interaction.
-- [Column ID & Name](/docs/column-header-name): Define user-friendly column names and ensure unique IDs.
 - [Column Moving](/docs/column-moving): Reorder columns programmatically or through drag-and-drop.
+- [Column Groups](/docs/column-groups): Create a column header hierarchy and associate columns with column groups.
 - [Column Field](/docs/column-field): Control how a column retrieves each cell's value.
