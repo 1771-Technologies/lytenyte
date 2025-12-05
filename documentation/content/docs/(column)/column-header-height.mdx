@@ -4,26 +4,35 @@ description: LyteNyte Grid lets you customize header height flexibly. The header
   comes from the combined height of column group headers, column headers, and floating headers.
 ---
 
-## Column Header Height
-
 Use the `headerHeight` property on the grid state to set the height of the header row in pixels.
-The demo below shows how it works, including programmatic updates.
+The demo below showcases this feature, including programmatic updates.
 
 !demo:Column Header Height="./demos/column-header-height_x"
 
-### Column Headers Span Column Group Rows
+## Column Groups & Header Spanning
 
-When column groups are enabled, some columns may not belong to a group or may belong to a group
-with fewer levels than the deepest group. These columns span multiple group rows, which increases
-their header height.
+When column groups are enabled, some column headers may span across
+multiple group rows, increasing the cell's header height since it
+must `bridge` the missing group rows. This occurs when:
 
-In the demo below, the **Price** and **Product** columns belong to the **Inventory** group.
-The remaining columns span the full header height. A header cell's final height equals the base
-header height plus the height of any group rows it spans.
+- A column does not belong to any group
+- The columns group path is shallower than the deepest group level
+
+In the demo below, **Price** and **Product** belong to the **Inventory** group.
+All other columns are ungrouped, so their header cells span every group
+row and reach the leaf row, giving them the full header height. A
+header cell's height is the **leaf header (base) height**
+plus the **combined height of the group rows it spans**.
+
+If all group rows share height G, then header height is determined as follows:
+
+```txt
+finalHeaderHeight = baseHeaderHeight + (spannedGroupRowCount * G)
+```
 
 !demo:Column Header Group Span="./demos/column-header-height-spans_x"
 
-The demo updates the header height programmatically by setting the `headerHeight` state:
+The demo updates the group header height by setting the `headerGroupHeight` state:
 
 ```ts
 grid.state.headerHeight.set(60);
@@ -61,6 +70,6 @@ grid.state.floatingRowHeight.set(60);
 ## Next Steps
 
 - [Column Resizing](/docs/column-resizing): Change column widths programmatically or via user interaction.
-- [Column ID & Name](/docs/column-header-name): Define user-friendly column names and ensure unique IDs.
+- [Column Floating Header](/docs/column-floating-header): Add a secondary header row for extra header features.
 - [Column Moving](/docs/column-moving): Reorder columns programmatically or through drag-and-drop.
 - [Column Field](/docs/column-field): Control how a column retrieves its value for each cell.
