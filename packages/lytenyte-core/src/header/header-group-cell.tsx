@@ -3,7 +3,7 @@ import type { HeaderGroupCellLayout } from "../+types";
 import { useGridRoot } from "../context.js";
 import { useDragMove } from "./use-drag-move.js";
 import { useHeaderCellStyle } from "./use-header-cell-style.js";
-import { useCombinedRefs } from "../hooks/index.js";
+import { useCombinedRefs } from "@1771technologies/lytenyte-hooks-react";
 
 export interface HeaderGroupCellProps {
   readonly cell: HeaderGroupCellLayout;

@@ -9,11 +9,11 @@ import type {
   AggModelFn,
   RowDataSourceClient,
   GridAtom,
-} from "../+types";
+} from "../+types.js";
 import { type ClientRowDataSourceParams, type Grid, type RowNode } from "../+types.js";
 import { useRef } from "react";
 import { traverse } from "./tree/traverse.js";
-import type { TreeNode } from "./+types";
+import type { TreeNode } from "./+types.js";
 import {
   dateComparator,
   numberComparator,

@@ -6,7 +6,7 @@ import { useHeaderCellRenderer } from "./use-header-cell-renderer.js";
 import { ResizeHandler } from "./resize-handler.js";
 import { useDragMove } from "./use-drag-move.js";
 import { useHeaderCellStyle } from "./use-header-cell-style.js";
-import { useCombinedRefs, type SlotComponent } from "../hooks/index.js";
+import { useCombinedRefs, type SlotComponent } from "@1771technologies/lytenyte-hooks-react";
 
 export interface HeaderCellProps<T> {
   readonly cell: HeaderCellLayout<T> | HeaderCellFloating<T>;

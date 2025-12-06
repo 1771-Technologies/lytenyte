@@ -4,7 +4,7 @@ import {
   type DragEvent as ReactDragEvent,
   type SetStateAction,
 } from "react";
-import type { UseDraggableProps } from "../use-draggable";
+import type { UseDraggableProps } from "../use-draggable.js";
 import {
   activeDragElement,
   dragDataAtom,

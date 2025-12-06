@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { DragMoveState } from "../+types.js";
 import { activeDragElement, dragState } from "../+globals.js";
 import { computeMoveState } from "../utils/compute-move-state.js";
-import { useEvent } from "../../hooks/index.js";
+import { useEvent } from "@1771technologies/lytenyte-hooks-react";
 import { peek } from "../../signal/index.js";
 
 export function useOnDragMove(

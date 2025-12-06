@@ -8,7 +8,7 @@ import {
 import { useGridRoot } from "../context.js";
 import { getComputedStyle } from "@1771technologies/lytenyte-shared";
 import { clamp, getClientX } from "@1771technologies/lytenyte-shared";
-import { useSlot, type SlotComponent } from "../hooks/index.js";
+import { useSlot, type SlotComponent } from "@1771technologies/lytenyte-hooks-react";
 
 interface ResizeHandlerProps<T> {
   readonly as?: SlotComponent;

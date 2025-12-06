@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { HeaderCellFloating, HeaderCellLayout, HeaderCellRendererParams } from "../+types";
+import type { HeaderCellFloating, HeaderCellLayout, HeaderCellRendererParams } from "../+types.js";
 import { useGridRoot } from "../context.js";
 
 // eslint-disable-next-line react-refresh/only-export-components

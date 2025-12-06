@@ -1,5 +1,5 @@
 import { useMemo, type CSSProperties } from "react";
-import type { HeaderCellFloating, HeaderCellLayout, HeaderGroupCellLayout } from "../+types";
+import type { HeaderCellFloating, HeaderCellLayout, HeaderGroupCellLayout } from "../+types.js";
 import { sizeFromCoord } from "@1771technologies/lytenyte-shared";
 
 export function useHeaderCellStyle(

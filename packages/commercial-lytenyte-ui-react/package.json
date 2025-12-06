@@ -41,6 +41,8 @@
   },
   "dependencies": {
     "@1771technologies/lytenyte-shared": "workspace:*",
+    "@1771technologies/lytenyte-hooks-react": "workspace:*",
+    "@1771technologies/lytenyte-dnd-react": "workspace:*",
     "@1771technologies/lytenyte-design": "workspace:*"
   },
   "peerDependencies": {

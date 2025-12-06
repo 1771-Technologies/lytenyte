@@ -1,0 +1,26 @@
+[data-ln-dlist-row="true"] {
+  font-family: var(--ln-typeface);
+}
+
+[data-ln-dlist-row="true"][data-ln-dlist-orientation="horizontal"] {
+  display: flex;
+
+  & [data-ln-dlist-item="true"] {
+    padding-inline: var(--ln-space-20);
+    padding-block: var(--ln-space-10);
+    width: fit-content;
+    height: fit-content;
+  }
+}
+
+[data-ln-dlist-row="true"][data-ln-dlist-orientation="vertical"] {
+  display: flex;
+  flex-direction: column;
+
+  & [data-ln-dlist-item="true"] {
+    padding-inline: var(--ln-space-10);
+    padding-block: var(--ln-space-20);
+    width: fit-content;
+    height: fit-content;
+  }
+}

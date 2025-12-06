@@ -9,7 +9,11 @@ import type { DragMoveState, DropWrapState, OnDropParams } from "../+types.js";
 import { useOnDragMove } from "./use-on-drag-move.js";
 import { useDropZone } from "./use-drop-zone.js";
 import { dragStyleHandler, placeholderHandler } from "../+globals.js";
-import { useCombinedRefs, useSlot, type SlotComponent } from "../../hooks/index.js";
+import {
+  useCombinedRefs,
+  useSlot,
+  type SlotComponent,
+} from "@1771technologies/lytenyte-hooks-react";
 
 export type DropWrapProps = Omit<JSX.IntrinsicElements["div"], "onDrop"> & {
   onDrop?: (params: OnDropParams) => void;

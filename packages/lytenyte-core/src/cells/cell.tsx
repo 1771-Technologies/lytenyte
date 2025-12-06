@@ -1,5 +1,5 @@
 import { forwardRef, memo, useEffect, useState, type JSX } from "react";
-import type { RowCellLayout } from "../+types";
+import type { RowCellLayout } from "../+types.js";
 import { useGridRoot } from "../context.js";
 import { sizeFromCoord } from "@1771technologies/lytenyte-shared";
 import { CellDefault } from "./cell-default.js";

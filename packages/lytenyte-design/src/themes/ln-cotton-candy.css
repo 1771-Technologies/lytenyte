@@ -79,6 +79,6 @@
   --ln-row-pivot-stroke: hsla(133, 78%, 61%, 1);
   --ln-column-pivot-fill: hsla(331, 100%, 89%, 1);
   --ln-column-pivot-stroke: hsla(354, 75%, 76%, 1);
-  --ln-column-group-fill: hsla(242, 100%, 88%, 1);
-  --ln-column-group-stroke: hsla(254, 100%, 65%, 1);
+  --ln-column-fill: hsla(242, 100%, 88%, 1);
+  --ln-column-stroke: hsla(254, 100%, 65%, 1);
 }
