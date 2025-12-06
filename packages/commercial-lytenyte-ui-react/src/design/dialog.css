@@ -41,6 +41,28 @@ DIALOG CONTAINER
   border: 1px solid var(--ln-border-strong);
   background-color: var(--ln-bg);
   box-shadow: var(--ln-shadow-dark-500);
+
+  transition-property: opacity, scale;
+  transition-duration: var(--ln-transition-duration);
+  transition-timing-function: var(--ln-transition-fn);
+
+  &[data-ln-transition="opening"],
+  &[data-ln-transition="closing"] {
+    opacity: 0;
+    transform: scale(0.98) translateX(-50%);
+  }
+  &::backdrop {
+    backdrop-filter: blur(1px);
+    background-color: transparent;
+    transition-property: backdrop-filter;
+    transition-duration: var(--ln-transition-duration);
+    transition-timing-function: var(--ln-transition-fn);
+  }
+  &[data-ln-transition="opening"]::backdrop,
+  &[data-ln-transition="closing"]::backdrop {
+    background-color: transparent;
+    backdrop-filter: blur(0px);
+  }
 }
 
 .ln-light,

@@ -3,6 +3,7 @@ import { useDialogRoot } from "./context.js";
 import { useCombinedRefs } from "../../hooks/use-combined-ref.js";
 import { useSlot } from "../../hooks/use-slot/use-slot.js";
 import type { LnComponent } from "../../types.js";
+import { useLnStyle } from "../provider.js";
 
 const DialogArrowBase = (
   { render, ...props }: DialogArrow.Props,
@@ -11,8 +12,10 @@ const DialogArrowBase = (
   const ctx = useDialogRoot();
   const combined = useCombinedRefs(ref, ctx.setArrow as any);
 
+  const s = useLnStyle().Dialog?.Arrow;
+
   const comp = useSlot({
-    props: [props],
+    props: [s, props],
     ref: combined,
     slot: render ?? (
       <svg

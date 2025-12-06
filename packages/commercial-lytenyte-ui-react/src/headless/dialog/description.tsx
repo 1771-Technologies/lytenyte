@@ -2,6 +2,7 @@ import { forwardRef, type JSX } from "react";
 import { useSlot } from "../../hooks/use-slot/use-slot.js";
 import { useDialogRoot } from "./context.js";
 import type { LnComponent } from "../../types.js";
+import { useLnStyle } from "../provider.js";
 
 function DialogDescriptionBase(
   { render, ...props }: DialogDescription.Props,
@@ -9,12 +10,13 @@ function DialogDescriptionBase(
 ) {
   const ctx = useDialogRoot();
 
+  const s = useLnStyle().Dialog?.Description;
   const internalProps: JSX.IntrinsicElements["p"] = {
     id: ctx.descriptionId,
   };
 
   const final = useSlot({
-    props: [internalProps, props, { "data-ln-dialog-description": "true" }],
+    props: [s, internalProps, props, { "data-ln-dialog-description": "true" }],
     ref: ref,
     slot: render ?? <p />,
     state: {
