@@ -114,7 +114,7 @@
   --lng1771-primary-70: color-mix(in srgb, var(--color-accent) 70%, white);
   --lng1771-primary-90: color-mix(in srgb, var(--color-accent) 90%, white);
 
-  --lng1771-row-selected: color-mix(in srgb, var(--color-accent) 30%, transparent);
+  --lng1771-row-selected: white;
   --lng1771-focus-outline: var(--color-primary);
 
   --lng1771-gray-00: var(--color-background);

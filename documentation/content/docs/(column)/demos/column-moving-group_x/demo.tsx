@@ -18,9 +18,9 @@ import {
 } from "./components";
 
 const columns: Column<OrderData>[] = [
-  { id: "id", width: 60, widthMin: 60, cellRenderer: IdCell, name: "ID", groupPath: ["Inventory"] },
+  { id: "id", width: 60, widthMin: 60, cellRenderer: IdCell, name: "ID" },
   { id: "product", cellRenderer: ProductCell, width: 200, groupPath: ["Inventory"] },
-  { id: "price", type: "number", cellRenderer: PriceCell, width: 100 },
+  { id: "price", type: "number", cellRenderer: PriceCell, width: 100, groupPath: ["Inventory"] },
   { id: "customer", cellRenderer: AvatarCell, width: 180 },
   { id: "purchaseDate", cellRenderer: PurchaseDateCell, name: "Purchase Date", width: 120 },
   { id: "paymentMethod", cellRenderer: PaymentMethodCell, name: "Payment Method", width: 150 },
