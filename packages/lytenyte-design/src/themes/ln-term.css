@@ -82,3 +82,11 @@
   --ln-column-group-fill: hsla(180, 100%, 35%, 0.15);
   --ln-column-group-stroke: hsla(180, 100%, 35%, 0.36);
 }
+
+@font-face {
+  font-family: "Noto Sans Mono";
+  src: url("../fonts/notosans-mono.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}

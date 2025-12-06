@@ -48,7 +48,7 @@
   --ln-border: var(--border);
   --ln-border-row: var(--border);
   --ln-border-strong: var(--border);
-  --ln-border-icon: var(--border);
+  --ln-border-icon: var(--foreground);
   --ln-border-ui-panel: var(--sidebar-border);
   --ln-border-button-light: var(--ln-gray-30);
   --ln-border-field-and-button: var(--ln-gray-30);
@@ -57,10 +57,11 @@
   --ln-border-context-menu: var(--border);
 
   --ln-bg: var(--background);
-  --ln-bg-button-light: var(--muted);
   --ln-bg-page: var(--background);
-  --ln-bg-light: var(--secondary);
-  --ln-bg-strong: var(--card);
+  --ln-bg-light: color-mix(in srgb, var(--background) 90%, black 10%);
+  --ln-bg-strong: color-mix(in srgb, var(--background) 80%, black 20%);
+
+  --ln-bg-button-light: var(--muted);
   --ln-bg-row-hover: var(--ln-primary-05);
   --ln-bg-row-alternate: var(--ln-primary-10);
   --ln-bg-ui-panel: var(--popover);
