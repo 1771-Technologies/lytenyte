@@ -19,7 +19,7 @@ function CheckboxItemImpl(
     children,
     ...props
   }: Omit<JSX.IntrinsicElements["div"], "children"> & CheckboxItemProps,
-  ref: JSX.IntrinsicElements["div"]["ref"],
+  ref: JSX.IntrinsicElements["div"]["ref"]
 ) {
   const [item, setItem] = useState<HTMLDivElement | null>(null);
 

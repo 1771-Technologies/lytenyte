@@ -5,20 +5,9 @@ import { context } from "./context.js";
 import { useCombinedRefs } from "../../../hooks/use-combined-ref.js";
 import { useDialogRoot } from "../../dialog/context.js";
 
-export interface RadioItemProps {
-  readonly value: string;
-  readonly children?: ReactNode | ((checked: boolean) => ReactNode);
-  readonly closeOnAction?: boolean;
-}
-
 function ItemImpl(
-  {
-    value,
-    children,
-    closeOnAction,
-    ...props
-  }: Omit<JSX.IntrinsicElements["div"], "children"> & RadioItemProps,
-  ref: JSX.IntrinsicElements["div"]["ref"],
+  { value, children, closeOnAction, ...props }: RadioItem.Props,
+  ref: RadioItem.Props["ref"]
 ) {
   const [item, setItem] = useState<HTMLDivElement | null>(null);
 
@@ -74,3 +63,11 @@ function ItemImpl(
 }
 
 export const RadioItem = forwardRef(ItemImpl);
+
+export namespace RadioItem {
+  export type Props = Omit<JSX.IntrinsicElements["div"], "children"> & {
+    readonly value: string;
+    readonly children?: ReactNode | ((checked: boolean) => ReactNode);
+    readonly closeOnAction?: boolean;
+  };
+}

@@ -64,4 +64,11 @@
   --ln-shadow-dark-500: 0 3px 20px 0 rgba(0, 0, 0, 0.28), 0 19px 24.75px -9px rgba(0, 0, 0, 0.35);
   --ln-shadow-dark-600: 0 6px 36px 0 rgba(0, 0, 0, 0.28), 0 37px 35.75px -20px rgba(0, 0, 0, 0.35);
   --ln-shadow-dark-700: 0 16px 22px -10px rgba(0, 0, 0, 0.28), 0 22px 64px 0 rgba(0, 0, 0, 0.35);
+
+  --ln-typeface:
+    "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji",
+    "Segoe UI Emoji";
+
+  --ln-transition-fn: cubic-bezier(0.7, 0, 0.3, 1);
+  --ln-transition-duration: 220ms;
 }

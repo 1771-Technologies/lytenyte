@@ -1,19 +1,11 @@
 import { forwardRef, type JSX } from "react";
-import type { SlotComponent } from "../../hooks/use-slot/+types.use-slot";
 import { useSlot } from "../../hooks/use-slot/use-slot.js";
 import { useDialogRoot } from "./context.js";
+import type { LnComponent } from "../../types.js";
 
-export interface DescriptionState {
-  readonly id: string;
-}
-
-export interface DescriptionProps {
-  readonly render?: SlotComponent<DescriptionState>;
-}
-
-function DescriptionBase(
-  { render, ...props }: Omit<JSX.IntrinsicElements["p"], "id"> & DescriptionProps,
-  ref: JSX.IntrinsicElements["p"]["ref"],
+function DialogDescriptionBase(
+  { render, ...props }: DialogDescription.Props,
+  ref: DialogDescription.Props["ref"],
 ) {
   const ctx = useDialogRoot();
 
@@ -33,4 +25,12 @@ function DescriptionBase(
   return final;
 }
 
-export const Description = forwardRef(DescriptionBase);
+export const DialogDescription = forwardRef(DialogDescriptionBase);
+
+export namespace DialogDescription {
+  export type Props = LnComponent<Omit<JSX.IntrinsicElements["p"], "id">, State>;
+
+  export interface State {
+    readonly id: string;
+  }
+}

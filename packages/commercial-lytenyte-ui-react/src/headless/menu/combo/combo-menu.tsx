@@ -3,10 +3,7 @@ import { useCombinedRefs } from "../../../hooks/use-combined-ref.js";
 import { useMenuItemEvents } from "../item/use-menu-item-events.js";
 import { comboContext } from "./combo-context.js";
 
-function ComboMenuImpl(
-  props: JSX.IntrinsicElements["div"],
-  ref: JSX.IntrinsicElements["div"]["ref"],
-) {
+function ComboMenuImpl(props: ComboMenu.Props, ref: ComboMenu.Props["ref"]) {
   const [item, setItem] = useState<HTMLDivElement | null>(null);
 
   const combinedRefs = useCombinedRefs(ref, setItem);
@@ -33,7 +30,7 @@ function ComboMenuImpl(
           if (ev.isPropagationStopped()) return;
 
           const input = ev.currentTarget.querySelector(
-            '[data-ln-combomenu-input="true"]',
+            '[data-ln-combomenu-input="true"]'
           ) as HTMLElement;
           if (input) input.focus();
         }}
@@ -43,3 +40,7 @@ function ComboMenuImpl(
 }
 
 export const ComboMenu = forwardRef(ComboMenuImpl);
+
+export namespace ComboMenu {
+  export type Props = JSX.IntrinsicElements["div"];
+}

@@ -1,6 +1,6 @@
-import type { FocusTrapOptions } from "@1771technologies/lytenyte-shared";
 import { createContext, useContext, type Dispatch, type SetStateAction } from "react";
 import type { Placement, ReferenceElement } from "../../external/floating-ui";
+import type { FocusTrapOptions } from "@1771technologies/lytenyte-shared";
 
 export interface DialogContext {
   readonly open: boolean;
@@ -21,8 +21,6 @@ export interface DialogContext {
   readonly focusCanReturn?: FocusTrapOptions["checkCanReturnFocus"];
   readonly focusCanTrap?: FocusTrapOptions["checkCanFocusTrap"];
   readonly focusPreventScroll?: FocusTrapOptions["preventScroll"];
-  readonly focusIsKeyForward?: FocusTrapOptions["isKeyForward"];
-  readonly focusIsKeyBackward?: FocusTrapOptions["isKeyBackward"];
 
   readonly anchor: ReferenceElement | string | null;
   readonly placement: Placement;

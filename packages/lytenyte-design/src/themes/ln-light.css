@@ -65,7 +65,7 @@
   --ln-bg-row-alternate: var(--ln-gray-02);
   --ln-bg-ui-panel: var(--ln-gray-00);
   --ln-bg-form-field: var(--ln-gray-00);
-  --ln-bg-floating-panel: var(--ln-bg-default);
+  --ln-bg-floating-panel: var(--ln-gray-00);
   --ln-bg-context-menu: var(--ln-gray-00);
 
   --ln-text: var(--ln-gray-80);

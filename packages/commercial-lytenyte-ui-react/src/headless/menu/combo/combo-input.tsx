@@ -2,10 +2,7 @@ import { forwardRef, type JSX } from "react";
 import { useComboContext } from "./combo-context.js";
 import { handleVerticalNavigation } from "../item/handle-vertical-navigation.js";
 
-const ComboInputImpl = (
-  props: Omit<JSX.IntrinsicElements["input"], "children">,
-  ref: JSX.IntrinsicElements["input"]["ref"],
-) => {
+const ComboInputImpl = (props: ComboInput.Props, ref: ComboInput.Props["ref"]) => {
   const ctx = useComboContext();
   return (
     <input
@@ -70,3 +67,7 @@ const ComboInputImpl = (
 };
 
 export const ComboInput = forwardRef(ComboInputImpl);
+
+export namespace ComboInput {
+  export type Props = Omit<JSX.IntrinsicElements["input"], "children">;
+}

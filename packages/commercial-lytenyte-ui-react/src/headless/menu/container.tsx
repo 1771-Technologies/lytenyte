@@ -3,10 +3,7 @@ import { useMenu } from "./use-menu.js";
 import { useSubmenuContext } from "./submenu/submenu-context.js";
 import { useCombinedRefs } from "../../hooks/use-combined-ref.js";
 
-function ContainerImpl(
-  props: JSX.IntrinsicElements["div"],
-  ref: JSX.IntrinsicElements["div"]["ref"],
-) {
+function ContainerImpl(props: Container.Props, ref: Container.Props["ref"]) {
   const [menuEl, setMenuEl] = useState<HTMLDivElement | null>(null);
   const combinedRefs = useCombinedRefs(ref, setMenuEl);
 
@@ -34,3 +31,7 @@ function ContainerImpl(
 }
 
 export const Container = forwardRef(ContainerImpl);
+
+export namespace Container {
+  export type Props = JSX.IntrinsicElements["div"];
+}

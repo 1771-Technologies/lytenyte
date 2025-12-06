@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import type { SubmenuProps } from "./submenu";
+import type { SubmenuProps } from "./submenu.js";
 import {
   autoUpdate,
   computePosition,

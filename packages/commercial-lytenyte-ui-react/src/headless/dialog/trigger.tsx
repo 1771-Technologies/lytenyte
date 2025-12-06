@@ -1,20 +1,11 @@
 import { forwardRef, type JSX } from "react";
-import type { SlotComponent } from "../../hooks/use-slot/+types.use-slot";
 import { useSlot } from "../../hooks/use-slot/use-slot.js";
 import { useDialogRoot } from "./context.js";
+import type { LnComponent } from "../../types.js";
 
-export interface TriggerState {
-  readonly open: boolean;
-  readonly openChange: (b: boolean) => void;
-}
-
-export interface TriggerProps {
-  readonly render?: SlotComponent<TriggerState>;
-}
-
-function TriggerImpl(
-  { render, ...props }: JSX.IntrinsicElements["button"] & TriggerProps,
-  ref: JSX.IntrinsicElements["button"]["ref"],
+function DialogTriggerBase(
+  { render, ...props }: DialogTrigger.Props,
+  ref: DialogTrigger.Props["ref"],
 ) {
   const ctx = useDialogRoot();
 
@@ -38,4 +29,12 @@ function TriggerImpl(
   return final;
 }
 
-export const Trigger = forwardRef(TriggerImpl);
+export const DialogTrigger = forwardRef(DialogTriggerBase);
+
+export namespace DialogTrigger {
+  export type Props = LnComponent<JSX.IntrinsicElements["button"], State>;
+  export interface State {
+    readonly open: boolean;
+    readonly openChange: (b: boolean) => void;
+  }
+}
