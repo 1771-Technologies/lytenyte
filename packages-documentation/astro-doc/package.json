@@ -1,0 +1,41 @@
+{
+  "name": "@1771technologies/astro-doc",
+  "version": "1.0.13",
+  "type": "module",
+  "license": "Apache-2.0",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "homepage": "https://1771technologies.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/1771-technologies/lytenyte.git",
+    "directory": "packages-documentation/astro-doc"
+  },
+  "bugs": {
+    "url": "https://github.com/1771-technologies/lytenyte/issues"
+  },
+  "exports": {
+    ".": "./astro-doc.ts",
+    "./*.astro": "./src/*.astro",
+    "./theme.css": "./src/theme.css"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "astro": "^5.16.1"
+  },
+  "dependencies": {
+    "@1771technologies/mdx-plugins": "workspace:*",
+    "@tailwindcss/vite": "4.1.17",
+    "@astrojs/mdx": "4.3.12",
+    "astro-expressive-code": "0.41.3",
+    "tailwindcss": "4.1.17",
+    "@iconify-json/ph": "1.2.2",
+    "@iconify-json/svg-spinners": "1.2.4",
+    "@iconify/tailwind4": "1.2.0"
+  }
+}

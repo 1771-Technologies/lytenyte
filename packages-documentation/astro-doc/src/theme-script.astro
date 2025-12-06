@@ -1,8 +1,4 @@
----
-
----
-
-<script>
+<script is:inline>
   const theme = { value: "" };
   const storageKey = "theme-preference";
   const toggleTheme = () => {
@@ -10,7 +6,7 @@
     setStoredThemePreference();
   };
 
-  const getStoredPreferenceOrFallback = (): string => {
+  const getStoredPreferenceOrFallback = () => {
     const storedPreference = localStorage.getItem(storageKey);
     if (storedPreference) return storedPreference;
 

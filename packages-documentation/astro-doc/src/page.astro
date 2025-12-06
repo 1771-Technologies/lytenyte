@@ -1,0 +1,27 @@
+---
+import { render } from "astro:content";
+import DocsLayout from "./docs-layout.astro";
+import { Code } from "astro-expressive-code/components";
+
+import Callout from "./callout.astro";
+import CodeFrame from "./code-frame.astro";
+
+export interface Props {
+  entry: {
+    id: string;
+    body?: string;
+    collection: any;
+    data: any;
+    rendered?: any;
+    filePath?: string;
+  };
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+---
+
+<DocsLayout toc={headings.filter((x: any) => x.depth === 2 || x.depth === 3)}>
+  <h1>{entry.data.title}</h1>
+  <Content components={{ Code, CodeFrame, Callout }} />
+</DocsLayout>

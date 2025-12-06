@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@source "./";
 
 html {
   scrollbar-width: thin;
@@ -136,71 +137,73 @@ body {
   animation-duration: 0s !important;
 }
 
-.prose:not(.not-prose) {
-  @apply text-sm text-gray-600;
+@layer base {
+  .prose {
+    @apply text-sm text-gray-600;
 
-  h1 {
-    @apply not-first:mt-2 scroll-m-28 text-3xl font-bold tracking-tight text-gray-700;
-  }
+    h1 {
+      @apply not-first:mt-2 scroll-m-28 text-3xl font-bold tracking-tight text-gray-700;
+    }
 
-  h2 {
-    @apply [&+*]:[code]:text-xl [&+.steps]:mt-0! [&+.steps>h3]:mt-4! [&+h3]:mt-6! [&+p]:mt-4! mt-10 scroll-m-28 text-2xl font-medium tracking-tight text-gray-700 first:mt-0;
-  }
+    h2 {
+      @apply [&+*]:[code]:text-xl [&+.steps]:mt-0! [&+.steps>h3]:mt-4! [&+h3]:mt-6! [&+p]:mt-4! mt-10 scroll-m-28 text-2xl font-medium tracking-tight text-gray-700 first:mt-0;
+    }
 
-  h3 {
-    @apply [&+p]:mt-4! *:[code]:text-xl mt-12 scroll-m-28 text-xl font-medium tracking-tight text-gray-700;
-  }
+    h3 {
+      @apply [&+p]:mt-4! *:[code]:text-xl mt-12 scroll-m-28 text-xl font-medium tracking-tight text-gray-700;
+    }
 
-  h4 {
-    @apply mt-8 scroll-m-28 text-base font-medium tracking-tight;
-  }
+    h4 {
+      @apply mt-8 scroll-m-28 text-base font-medium tracking-tight;
+    }
 
-  h5 {
-    @apply mt-8 scroll-m-28 text-base font-medium tracking-tight;
-  }
+    h5 {
+      @apply mt-8 scroll-m-28 text-base font-medium tracking-tight;
+    }
 
-  h6 {
-    @apply mt-8 scroll-m-28 text-base font-medium tracking-tight;
-  }
+    h6 {
+      @apply mt-8 scroll-m-28 text-base font-medium tracking-tight;
+    }
 
-  a {
-    @apply text-primary-600 hover:text-primary-500 font-medium underline underline-offset-4 transition-colors;
-  }
+    a {
+      @apply text-primary-600 hover:text-primary-500 font-medium underline underline-offset-4 transition-colors;
+    }
 
-  p {
-    @apply not-first:mt-6 leading-relaxed;
-  }
+    p {
+      @apply not-first:mt-6 leading-relaxed;
+    }
 
-  strong {
-    @apply font-semibold text-gray-800;
-  }
+    strong {
+      @apply font-semibold text-gray-800;
+    }
 
-  ul {
-    @apply ml-4.5 my-6 list-disc;
-  }
-  ol {
-    @apply ml-4.5 my-6 list-decimal;
-  }
-  li {
-    @apply mt-4 py-1;
-  }
-  blockquote {
-    @apply mt-6 border-l-2 pl-6 italic;
-  }
-  img {
-    @apply my-2 rounded-md;
-  }
-  hr {
-    @apply my-4 md:my-8;
-  }
+    ul {
+      @apply ml-4.5 my-6 list-disc;
+    }
+    ol {
+      @apply ml-4.5 my-6 list-decimal;
+    }
+    li {
+      @apply mt-4 py-1;
+    }
+    blockquote {
+      @apply mt-6 border-l-2 pl-6 italic;
+    }
+    img {
+      @apply my-2 rounded-md;
+    }
+    hr {
+      @apply my-4 md:my-8;
+    }
 
-  table {
-    @apply relative w-full overflow-hidden border-none text-sm [&_tbody_tr:last-child]:border-b-0;
-  }
-  th {
-    @apply [[align=center]]:text-center [[align=right]]:text-right px-4 py-2 text-left font-bold;
-  }
-  td {
-    @apply [[align=center]]:text-center [[align=right]]:text-right whitespace-nowrap px-4 py-2 text-left;
+    table {
+      @apply relative w-full overflow-hidden border-none text-sm [&_tbody_tr:last-child]:border-b-0;
+    }
+    th {
+      @apply [[align=center]]:text-center [[align=right]]:text-right px-4 py-2 text-left font-bold;
+    }
+    td {
+      @apply [[align=center]]:text-center [[align=right]]:text-right whitespace-nowrap px-4 py-2 text-left;
+    }
   }
 }
