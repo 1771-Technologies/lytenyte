@@ -1,5 +1,11 @@
 # @1771technologies/lytenyte-typegen
 
+## 1.0.20
+
+### Patch Changes
+
+- verison
+
 ## 1.0.19
 
 ### Patch Changes
