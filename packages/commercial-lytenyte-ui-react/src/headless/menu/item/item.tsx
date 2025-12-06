@@ -4,15 +4,7 @@ import { useMenuItemEvents } from "./use-menu-item-events.js";
 import { handleVerticalNavigation } from "./handle-vertical-navigation.js";
 import { useDialogRoot } from "../../dialog/context.js";
 
-export interface ItemProps {
-  readonly onAction: () => void;
-  readonly closeOnAction?: boolean;
-}
-
-function ItemImpl(
-  { onAction, closeOnAction, ...props }: JSX.IntrinsicElements["div"] & ItemProps,
-  ref: JSX.IntrinsicElements["div"]["ref"],
-) {
+function ItemImpl({ onAction, closeOnAction, ...props }: Item.Props, ref: Item.Props["ref"]) {
   const [item, setItem] = useState<HTMLDivElement | null>(null);
 
   const combinedRefs = useCombinedRefs(ref, setItem);
@@ -59,3 +51,10 @@ function ItemImpl(
 }
 
 export const Item = forwardRef(ItemImpl);
+
+export namespace Item {
+  export type Props = JSX.IntrinsicElements["div"] & {
+    readonly onAction: () => void;
+    readonly closeOnAction?: boolean;
+  };
+}

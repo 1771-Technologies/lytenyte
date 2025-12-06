@@ -4,10 +4,7 @@ import { useCombinedRefs } from "../../../hooks/use-combined-ref.js";
 import { getNearestMatching, getTabbables } from "@1771technologies/lytenyte-shared";
 import { handleVerticalNavigation } from "../item/handle-vertical-navigation.js";
 
-function SubmenuTriggerImpl(
-  props: JSX.IntrinsicElements["div"],
-  ref: JSX.IntrinsicElements["div"]["ref"],
-) {
+function SubmenuTriggerImpl(props: SubmenuTrigger.Props, ref: SubmenuTrigger.Props["ref"]) {
   const [active, setActive] = useState(false);
   const sub = useSubmenuContext();
   const [triggerEl, setTriggerEl] = useState<HTMLDivElement | null>(null);
@@ -104,3 +101,7 @@ function SubmenuTriggerImpl(
 }
 
 export const SubmenuTrigger = forwardRef(SubmenuTriggerImpl);
+
+export namespace SubmenuTrigger {
+  export type Props = JSX.IntrinsicElements["div"];
+}

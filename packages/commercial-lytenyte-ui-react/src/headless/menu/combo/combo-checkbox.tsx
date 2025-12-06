@@ -3,22 +3,9 @@ import { useCombinedRefs } from "../../../hooks/use-combined-ref.js";
 import { useComboContext } from "./combo-context.js";
 import { useDialogRoot } from "../../dialog/context.js";
 
-export interface ComboCheckbox {
-  readonly checked: boolean;
-  readonly onCheckChange?: (b: boolean) => void;
-  readonly children?: ReactNode | ((b: boolean) => ReactNode);
-  readonly closeOnAction?: boolean;
-}
-
 function ComboCheckboxBase(
-  {
-    checked,
-    onCheckChange,
-    children,
-    closeOnAction,
-    ...props
-  }: Omit<JSX.IntrinsicElements["div"], "children"> & ComboCheckbox,
-  ref: JSX.IntrinsicElements["div"]["ref"],
+  { checked, onCheckChange, children, closeOnAction, ...props }: ComboCheckbox.Props,
+  ref: ComboCheckbox.Props["ref"]
 ) {
   const [item, setItem] = useState<HTMLDivElement | null>(null);
   const ctx = useComboContext();
@@ -36,7 +23,7 @@ function ComboCheckboxBase(
 
         d.onOpenChange?.(false);
       },
-      { signal: controller.signal },
+      { signal: controller.signal }
     );
 
     return () => controller.abort();
@@ -73,3 +60,12 @@ function ComboCheckboxBase(
 }
 
 export const ComboCheckbox = forwardRef(ComboCheckboxBase);
+
+export namespace ComboCheckbox {
+  export type Props = Omit<JSX.IntrinsicElements["div"], "children"> & {
+    readonly checked: boolean;
+    readonly onCheckChange?: (b: boolean) => void;
+    readonly children?: ReactNode | ((b: boolean) => ReactNode);
+    readonly closeOnAction?: boolean;
+  };
+}

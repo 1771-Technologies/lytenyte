@@ -1,21 +1,9 @@
 import { forwardRef, type JSX } from "react";
-import type { SlotComponent } from "../../hooks/use-slot/+types.use-slot";
 import { useSlot } from "../../hooks/use-slot/use-slot.js";
 import { useDialogRoot } from "./context.js";
+import type { LnComponent } from "../../types.js";
 
-export interface CloseState {
-  readonly open: boolean;
-  readonly openChange: (b: boolean) => void;
-}
-
-export interface CloseProps {
-  readonly render?: SlotComponent<CloseState>;
-}
-
-function CloseImpl(
-  { render, ...props }: JSX.IntrinsicElements["button"] & CloseProps,
-  ref: JSX.IntrinsicElements["button"]["ref"],
-) {
+function DialogCloseImpl({ render, ...props }: DialogClose.Props, ref: DialogClose.Props["ref"]) {
   const ctx = useDialogRoot();
 
   const internalProps: JSX.IntrinsicElements["button"] = {
@@ -36,4 +24,12 @@ function CloseImpl(
   return final;
 }
 
-export const Close = forwardRef(CloseImpl);
+export const DialogClose = forwardRef(DialogCloseImpl);
+
+export namespace DialogClose {
+  export type Props = LnComponent<JSX.IntrinsicElements["button"], State>;
+  export type State = {
+    readonly open: boolean;
+    readonly openChange: (b: boolean) => void;
+  };
+}

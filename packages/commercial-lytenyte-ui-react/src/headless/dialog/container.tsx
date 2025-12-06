@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useRef, useState, type HTMLProps, type JSX } from "react";
+import { forwardRef, useEffect, useRef, useState, type JSX } from "react";
 import { useTransitioned } from "../../hooks/use-transitioned-open.js";
 import { useCombinedRefs } from "../../hooks/use-combined-ref.js";
 import { useDialogRoot } from "./context.js";
@@ -20,10 +20,7 @@ import {
   SCROLL_LOCKER,
 } from "@1771technologies/lytenyte-shared";
 
-function ContainerBase(
-  props: HTMLProps<HTMLDialogElement>,
-  ref: JSX.IntrinsicElements["dialog"]["ref"],
-) {
+function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.Props["ref"]) {
   const {
     open,
     onOpenChange,
@@ -33,8 +30,6 @@ function ContainerBase(
     focusCanTrap,
     focusFallback,
     focusInitial,
-    focusIsKeyBackward,
-    focusIsKeyForward,
     focusPreventScroll,
     focusReturn,
     focusTrap,
@@ -62,6 +57,7 @@ function ContainerBase(
 
     const anchorEl =
       typeof anchor === "string" ? (document.querySelector(anchor) as HTMLElement) : anchor;
+
     if (!anchorEl || !dialog) return;
 
     const middleware: Middleware[] = [offset({ alignmentAxis: alignOffset, mainAxis: sideOffset })];
@@ -197,8 +193,6 @@ function ContainerBase(
       fallbackFocus: focusFallback,
       initialFocus: focusInitial,
       setReturnFocus: focusReturn ?? getActiveElement(document),
-      isKeyBackward: focusIsKeyBackward,
-      isKeyForward: focusIsKeyForward,
     };
     Object.keys(options).forEach((c) => {
       if (options[c] === undefined) delete options[c];
@@ -267,4 +261,8 @@ function ContainerBase(
   );
 }
 
-export const Container = forwardRef(ContainerBase);
+export const DialogContainer = forwardRef(DialogContainerBase);
+
+export namespace DialogContainer {
+  export type Props = JSX.IntrinsicElements["dialog"];
+}

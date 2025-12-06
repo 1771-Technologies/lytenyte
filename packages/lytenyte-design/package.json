@@ -22,16 +22,17 @@
       "types": "./src/index.ts",
       "import": "./src/index.ts",
       "require": "./src/index.ts"
-    }
+    },
+    "./font.css": "./src/font.css",
+    "./design.css": "./src/design.css",
+    "./light.css": "./src/themes/ln-light.css",
+    "./dark.css": "./src/themes/ln-dark.css",
+    "./cotton-candy.css": "./src/themes/ln-cotton-candy.css",
+    "./shadcn.css": "./src/themes/ln-shadcn.css",
+    "./term.css": "./src/themes/ln-term.css",
+    "./teal.css": "./src/themes/ln-teal.css"
   },
   "publishConfig": {
-    "access": "public",
-    "exports": {
-      ".": {
-        "types": "./dist/index.d.ts",
-        "import": "./dist/index.js",
-        "require": "./dist/index.js"
-      }
-    }
+    "access": "public"
   }
 }
