@@ -23,7 +23,7 @@ type PossibleRef<T> = React.RefCallback<T> | React.RefObject<T> | null;
  */
 export function useCombinedRefs<T>(
   left: PossibleRef<T | null> | undefined,
-  right: PossibleRef<T | null> | undefined
+  right: PossibleRef<T | null> | undefined,
 ): React.RefCallback<T> {
   // Memoize the combined ref callback to maintain referential equality
   const combinedRef = useCallback(
@@ -43,7 +43,7 @@ export function useCombinedRefs<T>(
       updateRef(left);
       updateRef(right);
     },
-    [left, right]
+    [left, right],
   );
 
   return combinedRef;

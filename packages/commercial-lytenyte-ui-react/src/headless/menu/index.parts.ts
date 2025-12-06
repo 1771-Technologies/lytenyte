@@ -1,9 +1,11 @@
 import { Popover as P } from "../popover/index.js";
+import { MenuPopover } from "./popover.js";
 import { Container } from "./container.js";
 
 export { Item } from "./item/item.js";
 export { Container } from "./container.js";
 export { CheckboxItem } from "./checkbox-item.js";
+export { DialogArrow as Arrow } from "../dialog/arrow.js";
 
 export { RadioGroup } from "./radio-group/context.js";
 export { RadioItem } from "./radio-group/radio-item.js";
@@ -22,7 +24,7 @@ export { SubmenuTrigger } from "./submenu/submenu-trigger.js";
 export const SubmenuContainer = Container;
 
 export const Root = P.Root;
-export const Popover = P.Container;
+export const Popover = MenuPopover;
 export const Title = P.Title;
 export const Description = P.Description;
 export const Trigger = P.Trigger;

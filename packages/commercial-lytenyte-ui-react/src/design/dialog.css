@@ -38,9 +38,9 @@ DIALOG CONTAINER
 
   font-family: var(--ln-typeface);
 
-  border: 1px solid var(--ln-border-strong);
-  background-color: var(--ln-bg);
-  box-shadow: var(--ln-shadow-dark-500);
+  border: 1px solid var(--ln-border-popover);
+  background-color: var(--ln-bg-popover);
+  box-shadow: var(--ln-shadow-400);
 
   transition-property: opacity, scale;
   transition-duration: var(--ln-transition-duration);
@@ -62,22 +62,6 @@ DIALOG CONTAINER
   &[data-ln-transition="closing"]::backdrop {
     background-color: transparent;
     backdrop-filter: blur(0px);
-  }
-}
-
-.ln-light,
-.ln-shadcn {
-  [data-ln-dialog="true"] {
-    border: 1px solid var(--ln-border-floating-panel);
-    background-color: var(--ln-bg-floating-panel);
-    box-shadow: var(--ln-shadow-500);
-  }
-}
-
-.ln-cotton-candy {
-  [data-ln-dialog="true"] {
-    border: 2px solid var(--ln-border);
-    background-color: #fde9ff;
   }
 }
 

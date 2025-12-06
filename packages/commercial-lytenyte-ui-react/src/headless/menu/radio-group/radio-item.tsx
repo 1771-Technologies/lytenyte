@@ -6,8 +6,8 @@ import { useCombinedRefs } from "../../../hooks/use-combined-ref.js";
 import { useDialogRoot } from "../../dialog/context.js";
 
 function ItemImpl(
-  { value, children, closeOnAction, ...props }: RadioItem.Props,
-  ref: RadioItem.Props["ref"]
+  { value, disabled, children, closeOnAction, ...props }: RadioItem.Props,
+  ref: RadioItem.Props["ref"],
 ) {
   const [item, setItem] = useState<HTMLDivElement | null>(null);
 
@@ -27,6 +27,8 @@ function ItemImpl(
       ref={combinedRefs}
       tabIndex={0}
       aria-checked={ctx.value === value}
+      data-ln-disabled={disabled ? true : undefined}
+      inert={disabled ? true : undefined}
       data-ln-menu-item
       data-ln-active={active}
       data-ln-checked={ctx.value === value}
@@ -66,6 +68,7 @@ export const RadioItem = forwardRef(ItemImpl);
 
 export namespace RadioItem {
   export type Props = Omit<JSX.IntrinsicElements["div"], "children"> & {
+    readonly disabled?: boolean;
     readonly value: string;
     readonly children?: ReactNode | ((checked: boolean) => ReactNode);
     readonly closeOnAction?: boolean;

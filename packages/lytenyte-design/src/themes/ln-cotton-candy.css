@@ -54,7 +54,7 @@
   --ln-border-field-and-button: hsla(0, 0%, 100%, 0);
   --ln-border-field-and-button-shadow: hsla(0, 0%, 46%, 0);
   --ln-border-floating-panel: hsla(232, 85%, 68%, 1);
-  --ln-border-context-menu: var(--ln-border);
+  --ln-border-popover: var(--ln-border);
 
   --ln-bg: hsla(0, 0%, 96%, 1);
   --ln-bg-button-light: white;
@@ -66,7 +66,7 @@
   --ln-bg-ui-panel: white;
   --ln-bg-form-field: hsla(269, 88%, 53%, 0.21);
   --ln-bg-floating-panel: hsla(295, 100%, 96%, 1);
-  --ln-bg-context-menu: white;
+  --ln-bg-popover: white;
 
   --ln-text: hsla(245, 48%, 28%, 1);
   --ln-text-dark: hsla(245, 48%, 28%, 1);

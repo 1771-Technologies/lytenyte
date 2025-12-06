@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 export function useMenuItemEvents(
   el: HTMLElement | null,
   onActivate?: () => void,
-  onDeactivate?: () => void
+  onDeactivate?: () => void,
 ) {
   const [active, setActive] = useState(false);
 
@@ -17,14 +17,14 @@ export function useMenuItemEvents(
       () => {
         const elementToFocus =
           el.getAttribute("data-ln-combo") === "true"
-            ? (el.querySelector('[data-ln-combomenu-input="true"]') as HTMLElement) ?? el
+            ? ((el.querySelector('[data-ln-combomenu-input="true"]') as HTMLElement) ?? el)
             : el;
 
         if (elementToFocus === document.activeElement) return;
         elementToFocus.focus();
         onActivate?.();
       },
-      { signal }
+      { signal },
     );
     el.addEventListener(
       "ln-deactivate-mouse",
@@ -32,7 +32,7 @@ export function useMenuItemEvents(
         el.blur();
         onDeactivate?.();
       },
-      { signal }
+      { signal },
     );
 
     return () => controller.abort();

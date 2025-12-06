@@ -1,13 +1,16 @@
 import "../../design/ui.css";
 
 import { Dialog } from "../../headless/dialog/index.js";
+import { Menu } from "../../headless/menu/index.js";
 import { Popover } from "../../headless/popover/index.js";
 
 export default function NormalPlay() {
   return (
-    <div className="ln-dark">
+    <div className="ln-light">
       <Dialog.Root>
-        <Dialog.Trigger>Open Dialog</Dialog.Trigger>
+        <Dialog.Trigger data-ln-button="secondary" data-ln-size="md">
+          Open Dialog
+        </Dialog.Trigger>
         <Dialog.Container>
           <Dialog.Title>This is my dialog</Dialog.Title>
           <Dialog.Description>This is the dialog's description</Dialog.Description>
@@ -16,9 +19,9 @@ export default function NormalPlay() {
         </Dialog.Container>
       </Dialog.Root>
 
-      <div style={{ display: "flex", justifyContent: "center", padding: "300px" }}>
+      <div style={{ display: "flex", justifyContent: "center", padding: "20px" }}>
         <Popover.Root placement="bottom">
-          <Popover.Trigger data-ln-button="primary" data-ln-icon>
+          <Popover.Trigger data-ln-button="primary" data-ln-size="md" data-ln-icon>
             P
           </Popover.Trigger>
           <Popover.Container>
@@ -28,6 +31,42 @@ export default function NormalPlay() {
             This is my popover content.
           </Popover.Container>
         </Popover.Root>
+      </div>
+
+      <div style={{ display: "flex", justifyContent: "center", padding: "20px" }}>
+        <Menu.Root>
+          <Menu.Trigger data-ln-button="primary" data-ln-size="md">
+            Menu
+          </Menu.Trigger>
+          <Menu.Popover>
+            <Menu.Arrow />
+            <Menu.Title style={{ display: "none" }}>My Menu</Menu.Title>
+            <Menu.Description style={{ display: "none" }}>This is the description</Menu.Description>
+            <Menu.Container>
+              <Menu.Item disabled onAction={() => {}}>
+                Item A
+              </Menu.Item>
+              <Menu.Item onAction={() => {}}>Item B</Menu.Item>
+              <Menu.Item onAction={() => {}}>Item C</Menu.Item>
+              <Menu.Divider />
+              <Menu.Submenu sideOffset={8}>
+                <Menu.SubmenuTrigger>Sub List A</Menu.SubmenuTrigger>
+                <Menu.SubmenuContainer>
+                  <Menu.Item onAction={() => {}}>Item C</Menu.Item>
+                  <Menu.Item onAction={() => {}}>Item C</Menu.Item>
+                </Menu.SubmenuContainer>
+              </Menu.Submenu>
+              <Menu.RadioGroup value="x">
+                <Menu.RadioItem value="y">Item Y</Menu.RadioItem>
+                <Menu.RadioItem value="x">Item X</Menu.RadioItem>
+                <Menu.RadioItem value="z">Item Z</Menu.RadioItem>
+              </Menu.RadioGroup>
+              <Menu.Divider />
+              <Menu.CheckboxItem checked>Left</Menu.CheckboxItem>
+              <Menu.CheckboxItem checked>Right</Menu.CheckboxItem>
+            </Menu.Container>
+          </Menu.Popover>
+        </Menu.Root>
       </div>
     </div>
   );

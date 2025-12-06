@@ -11,7 +11,7 @@ export const context = createContext({} as RadioGroupContext);
 
 const RadioGroupBase = (
   { value, onChange, ...props }: Omit<JSX.IntrinsicElements["div"], "onChange"> & RadioGroupContext,
-  ref: JSX.IntrinsicElements["div"]["ref"]
+  ref: JSX.IntrinsicElements["div"]["ref"],
 ) => {
   return (
     <context.Provider value={{ value: value, onChange: onChange }}>

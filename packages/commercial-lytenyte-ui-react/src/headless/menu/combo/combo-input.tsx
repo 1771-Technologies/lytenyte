@@ -2,12 +2,14 @@ import { forwardRef, type JSX } from "react";
 import { useComboContext } from "./combo-context.js";
 import { handleVerticalNavigation } from "../item/handle-vertical-navigation.js";
 
-const ComboInputImpl = (props: ComboInput.Props, ref: ComboInput.Props["ref"]) => {
+const ComboInputImpl = ({ disabled, ...props }: ComboInput.Props, ref: ComboInput.Props["ref"]) => {
   const ctx = useComboContext();
   return (
     <input
       {...props}
       data-ln-combomenu-input
+      data-ln-disabled={disabled ? true : undefined}
+      disabled={disabled ? true : undefined}
       ref={ref}
       onBlur={(ev) => {
         props.onBlur?.(ev);
@@ -69,5 +71,5 @@ const ComboInputImpl = (props: ComboInput.Props, ref: ComboInput.Props["ref"]) =
 export const ComboInput = forwardRef(ComboInputImpl);
 
 export namespace ComboInput {
-  export type Props = Omit<JSX.IntrinsicElements["input"], "children">;
+  export type Props = Omit<JSX.IntrinsicElements["input"], "children"> & { disabled?: boolean };
 }

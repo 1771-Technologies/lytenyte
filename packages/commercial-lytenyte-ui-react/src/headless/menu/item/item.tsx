@@ -4,7 +4,10 @@ import { useMenuItemEvents } from "./use-menu-item-events.js";
 import { handleVerticalNavigation } from "./handle-vertical-navigation.js";
 import { useDialogRoot } from "../../dialog/context.js";
 
-function ItemImpl({ onAction, closeOnAction, ...props }: Item.Props, ref: Item.Props["ref"]) {
+function ItemImpl(
+  { onAction, closeOnAction, disabled, ...props }: Item.Props,
+  ref: Item.Props["ref"],
+) {
   const [item, setItem] = useState<HTMLDivElement | null>(null);
 
   const combinedRefs = useCombinedRefs(ref, setItem);
@@ -21,6 +24,8 @@ function ItemImpl({ onAction, closeOnAction, ...props }: Item.Props, ref: Item.P
       tabIndex={0}
       data-ln-menu-item
       data-ln-active={active}
+      data-ln-disabled={disabled ? true : undefined}
+      inert={disabled ? true : undefined}
       onFocus={(ev) => {
         props.onFocus?.(ev);
         if (ev.isPropagationStopped()) return;
@@ -54,6 +59,7 @@ export const Item = forwardRef(ItemImpl);
 
 export namespace Item {
   export type Props = JSX.IntrinsicElements["div"] & {
+    readonly disabled?: boolean;
     readonly onAction: () => void;
     readonly closeOnAction?: boolean;
   };

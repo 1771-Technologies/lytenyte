@@ -54,7 +54,7 @@
   --ln-border-field-and-button: var(--ln-gray-30);
   --ln-border-field-and-button-shadow: hsla(222, 8%, 51%, 0.15);
   --ln-border-floating-panel: var(--ln-border-ui-panel);
-  --ln-border-context-menu: var(--ln-border-strong);
+  --ln-border-popover: var(--ln-border-strong);
 
   --ln-bg: var(--ln-gray-10);
   --ln-bg-button-light: var(--ln-gray-00);
@@ -66,7 +66,7 @@
   --ln-bg-ui-panel: var(--ln-gray-00);
   --ln-bg-form-field: var(--ln-gray-00);
   --ln-bg-floating-panel: var(--ln-gray-00);
-  --ln-bg-context-menu: var(--ln-gray-00);
+  --ln-bg-popover: var(--ln-gray-00);
 
   --ln-text: var(--ln-gray-80);
   --ln-text-dark: var(--ln-gray-90);

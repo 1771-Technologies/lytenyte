@@ -2,18 +2,16 @@ import { forwardRef, type JSX } from "react";
 import { useSlot } from "../../hooks/use-slot/use-slot.js";
 import { useDialogRoot } from "./context.js";
 import type { LnComponent } from "../../types.js";
-import { useLnStyle } from "../provider.js";
 
 function DialogTitleBase({ render, ...props }: DialogTitle.Props, ref: DialogTitle.Props["ref"]) {
   const ctx = useDialogRoot();
 
-  const s = useLnStyle().Dialog?.Title;
   const internalProps: JSX.IntrinsicElements["h2"] = {
     id: ctx.titleId,
   };
 
   const final = useSlot({
-    props: [s, internalProps, props, { "data-ln-dialog-title": "true" }],
+    props: [internalProps, props, { "data-ln-dialog-title": "true" }],
     ref: ref,
     slot: render ?? <h2 />,
     state: {

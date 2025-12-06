@@ -2,7 +2,6 @@ import { forwardRef, type JSX } from "react";
 import { useSlot } from "../../hooks/use-slot/use-slot.js";
 import { useDialogRoot } from "./context.js";
 import type { LnComponent } from "../../types.js";
-import { useLnStyle } from "../provider.js";
 
 function DialogTriggerBase(
   { render, ...props }: DialogTrigger.Props,
@@ -10,7 +9,6 @@ function DialogTriggerBase(
 ) {
   const ctx = useDialogRoot();
 
-  const s = useLnStyle().Dialog?.Trigger;
   const internalProps: JSX.IntrinsicElements["button"] & { "data-ln-dialog-open": boolean } = {
     onClick: () => ctx.onOpenChange(!ctx.open),
     "data-ln-dialog-open": ctx.open,
@@ -19,7 +17,7 @@ function DialogTriggerBase(
   };
 
   const final = useSlot({
-    props: [s, internalProps, props, { "data-ln-dialog-trigger": "true" }],
+    props: [internalProps, props, { "data-ln-dialog-trigger": "true" }],
     ref: ref,
     slot: render ?? <button />,
     state: {

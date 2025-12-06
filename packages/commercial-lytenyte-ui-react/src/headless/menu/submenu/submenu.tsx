@@ -25,7 +25,7 @@ function SubmenuImpl(
     alignOffset = 0,
     ...props
   }: Submenu.Props,
-  ref: Submenu.Props["ref"]
+  ref: Submenu.Props["ref"],
 ) {
   const [open, setOpen] = useControlled({ controlled: userOpen, default: false });
   const [sub, submenuRef] = useState<HTMLDivElement | null>(null);
@@ -37,7 +37,7 @@ function SubmenuImpl(
       setOpen(b);
       onOpenChange?.(b);
     },
-    [onOpenChange, setOpen]
+    [onOpenChange, setOpen],
   );
 
   const [root, setRoot] = useState<HTMLDivElement | null>(null);
@@ -61,7 +61,7 @@ function SubmenuImpl(
       () => {
         openChange(false);
       },
-      { signal }
+      { signal },
     );
 
     return () => controller.abort();
@@ -75,7 +75,7 @@ function SubmenuImpl(
           open: shouldMount,
           onOpenChange: openChange,
         }),
-        [openChange, shouldMount]
+        [openChange, shouldMount],
       )}
     >
       <div
@@ -95,7 +95,7 @@ function SubmenuImpl(
           if (ev.key === "ArrowLeft") {
             setOpen(false);
             const trigger = ev.currentTarget.querySelector(
-              '[data-ln-subtrigger="true"]'
+              '[data-ln-subtrigger="true"]',
             ) as HTMLElement;
             trigger?.focus();
             ev.stopPropagation();

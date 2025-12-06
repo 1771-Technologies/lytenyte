@@ -4,8 +4,8 @@ import { useComboContext } from "./combo-context.js";
 import { useDialogRoot } from "../../dialog/context.js";
 
 function ComboOptionImpl(
-  { onAction, closeOnAction, ...props }: ComboOption.Props,
-  ref: ComboOption.Props["ref"]
+  { disabled, onAction, closeOnAction, ...props }: ComboOption.Props,
+  ref: ComboOption.Props["ref"],
 ) {
   const [item, setItem] = useState<HTMLDivElement | null>(null);
   const ctx = useComboContext();
@@ -23,7 +23,7 @@ function ComboOptionImpl(
 
         d.onOpenChange?.(false);
       },
-      { signal: controller.signal }
+      { signal: controller.signal },
     );
 
     return () => controller.abort();
@@ -36,6 +36,8 @@ function ComboOptionImpl(
       {...props}
       data-ln-active={active}
       data-ln-combomenu-option
+      data-ln-disabled={disabled ? true : undefined}
+      inert={disabled ? true : undefined}
       onClick={(ev) => {
         props.onClick?.(ev);
         if (ev.isPropagationStopped()) return;
@@ -59,6 +61,7 @@ export const ComboOption = forwardRef(ComboOptionImpl);
 
 export namespace ComboOption {
   export type Props = JSX.IntrinsicElements["div"] & {
+    disabled?: boolean;
     onAction: () => void;
     closeOnAction?: boolean;
   };

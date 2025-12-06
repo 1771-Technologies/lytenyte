@@ -4,8 +4,8 @@ import { useComboContext } from "./combo-context.js";
 import { useDialogRoot } from "../../dialog/context.js";
 
 function ComboCheckboxBase(
-  { checked, onCheckChange, children, closeOnAction, ...props }: ComboCheckbox.Props,
-  ref: ComboCheckbox.Props["ref"]
+  { checked, onCheckChange, disabled, children, closeOnAction, ...props }: ComboCheckbox.Props,
+  ref: ComboCheckbox.Props["ref"],
 ) {
   const [item, setItem] = useState<HTMLDivElement | null>(null);
   const ctx = useComboContext();
@@ -23,7 +23,7 @@ function ComboCheckboxBase(
 
         d.onOpenChange?.(false);
       },
-      { signal: controller.signal }
+      { signal: controller.signal },
     );
 
     return () => controller.abort();
@@ -38,6 +38,8 @@ function ComboCheckboxBase(
       data-ln-active={active}
       data-ln-combomenu-option
       data-ln-checked={checked}
+      data-ln-disabled={disabled ? true : undefined}
+      inert={disabled ? true : undefined}
       onClick={(ev) => {
         props.onClick?.(ev);
         if (ev.isPropagationStopped()) return;
@@ -63,6 +65,7 @@ export const ComboCheckbox = forwardRef(ComboCheckboxBase);
 
 export namespace ComboCheckbox {
   export type Props = Omit<JSX.IntrinsicElements["div"], "children"> & {
+    readonly disabled?: boolean;
     readonly checked: boolean;
     readonly onCheckChange?: (b: boolean) => void;
     readonly children?: ReactNode | ((b: boolean) => ReactNode);

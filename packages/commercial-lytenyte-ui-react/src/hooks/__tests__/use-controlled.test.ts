@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import { renderHook } from "vitest-browser-react";
-import { useControlled } from "../use-controlled";
-import { wait } from "../../utils/wait";
+import { useControlled } from "../use-controlled.js";
+import { wait } from "@1771technologies/lytenyte-shared";
 
 test("when a controlled value is provided, setting the use controlled should do nothing", () => {
   const { result } = renderHook(() => useControlled({ controlled: false, default: true }));

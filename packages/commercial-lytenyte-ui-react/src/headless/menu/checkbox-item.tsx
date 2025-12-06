@@ -4,22 +4,9 @@ import { useMenuItemEvents } from "./item/use-menu-item-events.js";
 import { handleVerticalNavigation } from "./item/handle-vertical-navigation.js";
 import { useDialogRoot } from "../dialog/context.js";
 
-export interface CheckboxItemProps {
-  readonly checked: boolean;
-  readonly onCheckChange?: (b: boolean) => void;
-  readonly children?: ReactNode | ((b: boolean) => ReactNode);
-  readonly closeOnAction?: boolean;
-}
-
 function CheckboxItemImpl(
-  {
-    checked,
-    onCheckChange,
-    closeOnAction,
-    children,
-    ...props
-  }: Omit<JSX.IntrinsicElements["div"], "children"> & CheckboxItemProps,
-  ref: JSX.IntrinsicElements["div"]["ref"]
+  { checked, onCheckChange, closeOnAction, disabled, children, ...props }: CheckboxItem.Props,
+  ref: CheckboxItem.Props["ref"],
 ) {
   const [item, setItem] = useState<HTMLDivElement | null>(null);
 
@@ -41,6 +28,8 @@ function CheckboxItemImpl(
       data-ln-active={active}
       data-ln-checked={checked}
       aria-checked={checked}
+      data-ln-disabled={disabled ? true : undefined}
+      inert={disabled ? true : undefined}
       onFocus={(ev) => {
         props.onFocus?.(ev);
         if (ev.isPropagationStopped()) return;
@@ -73,3 +62,13 @@ function CheckboxItemImpl(
 }
 
 export const CheckboxItem = forwardRef(CheckboxItemImpl);
+
+export namespace CheckboxItem {
+  export type Props = Omit<JSX.IntrinsicElements["div"], "children"> & {
+    readonly disabled?: boolean;
+    readonly checked: boolean;
+    readonly onCheckChange?: (b: boolean) => void;
+    readonly children?: ReactNode | ((b: boolean) => ReactNode);
+    readonly closeOnAction?: boolean;
+  };
+}

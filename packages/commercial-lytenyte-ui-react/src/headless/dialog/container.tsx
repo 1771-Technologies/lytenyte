@@ -19,8 +19,6 @@ import {
   getTabbables,
   SCROLL_LOCKER,
 } from "@1771technologies/lytenyte-shared";
-import { useLnStyle } from "../provider.js";
-import { mergeProps } from "../../hooks/use-slot/merge-props.js";
 
 function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.Props["ref"]) {
   const {
@@ -246,18 +244,20 @@ function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.
 
   const combined = useCombinedRefs(ref, setDialog as any);
 
-  const s = useLnStyle().Dialog?.Container;
-  const mergedProps = mergeProps(s ?? {}, props);
   if (!shouldMount) return null;
 
   return (
     <dialog
-      {...mergedProps}
+      {...props}
       popover={!modal ? "manual" : undefined}
       aria-describedby={descriptionId}
       aria-labelledby={titleId}
       data-ln-transition={t}
-      data-ln-dialog={!(props as any)["data-ln-popover"] ? true : undefined}
+      data-ln-dialog={
+        !(props as any)["data-ln-popover"] && !(props as any)["data-ln-menu-popover"]
+          ? true
+          : undefined
+      }
       ref={combined}
     >
       {props.children}

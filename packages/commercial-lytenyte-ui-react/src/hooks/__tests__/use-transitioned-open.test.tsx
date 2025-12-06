@@ -1,10 +1,10 @@
 import { expect, test } from "vitest";
-import { useControlled } from "../use-controlled";
+import { useControlled } from "../use-controlled.js";
 import { useRef } from "react";
-import { useTransitioned } from "../use-transitioned-open";
+import { useTransitioned } from "../use-transitioned-open.js";
 import { render } from "vitest-browser-react";
 import { userEvent } from "@vitest/browser/context";
-import { wait } from "../../utils/wait";
+import { wait } from "@1771technologies/lytenyte-shared";
 
 test("the initial state should be idle, and then move states correctly", async () => {
   const Component = () => {

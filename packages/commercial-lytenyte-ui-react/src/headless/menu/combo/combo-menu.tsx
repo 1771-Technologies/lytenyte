@@ -30,7 +30,7 @@ function ComboMenuImpl(props: ComboMenu.Props, ref: ComboMenu.Props["ref"]) {
           if (ev.isPropagationStopped()) return;
 
           const input = ev.currentTarget.querySelector(
-            '[data-ln-combomenu-input="true"]'
+            '[data-ln-combomenu-input="true"]',
           ) as HTMLElement;
           if (input) input.focus();
         }}

@@ -1,3 +1,4 @@
+/* eslint-disable */
 //#region node_modules/.pnpm/@floating-ui+utils@0.2.10/node_modules/@floating-ui/utils/dist/floating-ui.utils.d.mts
 declare type AlignedPlacement = `${Side}-${Alignment}`;
 declare type Alignment = "start" | "end";
@@ -349,7 +350,7 @@ declare interface SizeOptions$1 extends DetectOverflowOptions$1 {
     args: MiddlewareState$1 & {
       availableWidth: number;
       availableHeight: number;
-    }
+    },
   ): void | Promise<void>;
 }
 //#endregion
@@ -357,7 +358,7 @@ declare interface SizeOptions$1 extends DetectOverflowOptions$1 {
 declare function getOverflowAncestors(
   node: Node,
   list?: OverflowAncestors,
-  traverseIframes?: boolean
+  traverseIframes?: boolean,
 ): OverflowAncestors;
 declare type OverflowAncestors = Array<Element | Window | VisualViewport>;
 //#endregion
@@ -367,9 +368,7 @@ declare type OverflowAncestors = Array<Element | Window | VisualViewport>;
  * appears centered to the reference element.
  * @see https://floating-ui.com/docs/arrow
  */
-declare const arrow: (
-  options: ArrowOptions | Derivable<ArrowOptions>
-) => Middleware;
+declare const arrow: (options: ArrowOptions | Derivable<ArrowOptions>) => Middleware;
 declare type ArrowOptions = Prettify<
   Omit<ArrowOptions$1, "element"> & {
     element: Element;
@@ -382,7 +381,7 @@ declare type ArrowOptions = Prettify<
  * @see https://floating-ui.com/docs/autoPlacement
  */
 declare const autoPlacement: (
-  options?: AutoPlacementOptions | Derivable<AutoPlacementOptions>
+  options?: AutoPlacementOptions | Derivable<AutoPlacementOptions>,
 ) => Middleware;
 declare type AutoPlacementOptions = Prettify<
   Omit<AutoPlacementOptions$1, "boundary"> & DetectOverflowOptions
@@ -399,7 +398,7 @@ declare function autoUpdate(
   reference: ReferenceElement,
   floating: FloatingElement,
   update: () => void,
-  options?: AutoUpdateOptions
+  options?: AutoUpdateOptions,
 ): () => void;
 declare interface AutoUpdateOptions {
   /**
@@ -443,7 +442,7 @@ declare type Boundary = "clippingAncestors" | Element | Array<Element> | Rect;
 declare const computePosition: (
   reference: ReferenceElement,
   floating: FloatingElement,
-  options?: Partial<ComputePositionConfig>
+  options?: Partial<ComputePositionConfig>,
 ) => Promise<ComputePositionReturn>;
 declare type ComputePositionConfig = Prettify<
   Omit<ComputePositionConfig$1, "middleware" | "platform"> & {
@@ -469,7 +468,7 @@ declare type Derivable<T> = (state: MiddlewareState) => T;
  */
 declare const detectOverflow: (
   state: MiddlewareState,
-  options?: DetectOverflowOptions | Derivable<DetectOverflowOptions>
+  options?: DetectOverflowOptions | Derivable<DetectOverflowOptions>,
 ) => Promise<SideObject>;
 declare type DetectOverflowOptions = Prettify<
   Omit<DetectOverflowOptions$1, "boundary"> & {
@@ -486,38 +485,26 @@ declare interface Elements {
  * clipping boundary. Alternative to `autoPlacement`.
  * @see https://floating-ui.com/docs/flip
  */
-declare const flip: (
-  options?: FlipOptions | Derivable<FlipOptions>
-) => Middleware;
-declare type FlipOptions = Prettify<
-  Omit<FlipOptions$1, "boundary"> & DetectOverflowOptions
->;
+declare const flip: (options?: FlipOptions | Derivable<FlipOptions>) => Middleware;
+declare type FlipOptions = Prettify<Omit<FlipOptions$1, "boundary"> & DetectOverflowOptions>;
 declare type FloatingElement = HTMLElement;
 /**
  * Provides data to hide the floating element in applicable situations, such as
  * when it is not in the same clipping context as the reference element.
  * @see https://floating-ui.com/docs/hide
  */
-declare const hide: (
-  options?: HideOptions | Derivable<HideOptions>
-) => Middleware;
-declare type HideOptions = Prettify<
-  Omit<HideOptions$1, "boundary"> & DetectOverflowOptions
->;
+declare const hide: (options?: HideOptions | Derivable<HideOptions>) => Middleware;
+declare type HideOptions = Prettify<Omit<HideOptions$1, "boundary"> & DetectOverflowOptions>;
 /**
  * Provides improved positioning for inline reference elements that can span
  * over multiple lines, such as hyperlinks or range selections.
  * @see https://floating-ui.com/docs/inline
  */
-declare const inline: (
-  options?: InlineOptions | Derivable<InlineOptions>
-) => Middleware;
+declare const inline: (options?: InlineOptions | Derivable<InlineOptions>) => Middleware;
 /**
  * Built-in `limiter` that will stop `shift()` at a certain point.
  */
-declare const limitShift: (
-  options?: LimitShiftOptions | Derivable<LimitShiftOptions>
-) => {
+declare const limitShift: (options?: LimitShiftOptions | Derivable<LimitShiftOptions>) => {
   options: any;
   fn: (state: MiddlewareState) => Coords;
 };
@@ -597,7 +584,7 @@ declare interface Platform {
   }) => Promisable<Rect>;
   getOffsetParent: (
     element: Element,
-    polyfill?: (element: HTMLElement) => Element | null
+    polyfill?: (element: HTMLElement) => Element | null,
   ) => Promisable<Element | Window>;
   isElement: (value: unknown) => Promisable<boolean>;
   getDocumentElement: (element: Element) => Promisable<HTMLElement>;
@@ -617,21 +604,15 @@ declare type ReferenceElement = Element | VirtualElement;
  * keep it in view when it will overflow the clipping boundary.
  * @see https://floating-ui.com/docs/shift
  */
-declare const shift: (
-  options?: ShiftOptions | Derivable<ShiftOptions>
-) => Middleware;
-declare type ShiftOptions = Prettify<
-  Omit<ShiftOptions$1, "boundary"> & DetectOverflowOptions
->;
+declare const shift: (options?: ShiftOptions | Derivable<ShiftOptions>) => Middleware;
+declare type ShiftOptions = Prettify<Omit<ShiftOptions$1, "boundary"> & DetectOverflowOptions>;
 /**
  * Provides data that allows you to change the size of the floating element —
  * for instance, prevent it from overflowing the clipping boundary or match the
  * width of the reference element.
  * @see https://floating-ui.com/docs/size
  */
-declare const size: (
-  options?: SizeOptions | Derivable<SizeOptions>
-) => Middleware;
+declare const size: (options?: SizeOptions | Derivable<SizeOptions>) => Middleware;
 declare type SizeOptions = Prettify<
   Omit<SizeOptions$1, "apply" | "boundary"> &
     DetectOverflowOptions & {
@@ -644,7 +625,7 @@ declare type SizeOptions = Prettify<
         args: MiddlewareState & {
           availableWidth: number;
           availableHeight: number;
-        }
+        },
       ): Promisable<void>;
     }
 >;
