@@ -24,42 +24,38 @@ DIALOG CONTAINER
 */
 [data-ln-dialog="true"] {
   margin: 0px;
+  padding: var(--ln-space-40);
   max-width: unset;
   max-height: unset;
+
+  color: var(--ln-text-dark);
+  border-radius: var(--ln-radius-lg);
 
   inset-block-start: 10%;
   inset-inline-start: 50%;
   transform: translateX(-50%);
   overflow: unset;
+
+  font-family: var(--ln-typeface);
+
+  border: 1px solid var(--ln-border-strong);
+  background-color: var(--ln-bg);
+  box-shadow: var(--ln-shadow-dark-500);
 }
 
-.ln-light {
+.ln-light,
+.ln-shadcn {
   [data-ln-dialog="true"] {
-    padding: var(--ln-space-40);
-
     border: 1px solid var(--ln-border-floating-panel);
-    border-radius: var(--ln-radius-lg);
-
-    color: var(--ln-text-dark);
     background-color: var(--ln-bg-floating-panel);
     box-shadow: var(--ln-shadow-500);
-
-    font-family: var(--ln-typeface);
   }
 }
 
-.ln-dark {
+.ln-cotton-candy {
   [data-ln-dialog="true"] {
-    padding: var(--ln-space-40);
-
-    border: 1px solid var(--ln-border-strong);
-    border-radius: var(--ln-radius-lg);
-
-    color: var(--ln-text-dark);
-    background-color: var(--ln-bg);
-    box-shadow: var(--ln-shadow-dark-500);
-
-    font-family: var(--ln-typeface);
+    border: 2px solid var(--ln-border);
+    background-color: #fde9ff;
   }
 }
 
@@ -84,32 +80,14 @@ DIALOG CLOSE BUTTON
   transition-duration: var(--ln-transition-duration);
   transition-timing-function: var(--ln-transition-fn);
 
+  color: var(--ln-border-icon);
+  background-color: var(--ln-bg-light);
+
   &:hover:not(:disabled) {
     cursor: pointer;
+    background-color: var(--ln-bg-strong);
   }
   &:active:not(:disabled) {
     transform: scale(0.98);
-  }
-}
-
-.ln-light {
-  [data-ln-dialog-close="true"] {
-    color: var(--ln-border-icon);
-    background-color: var(--ln-bg-light);
-
-    &:hover:not(:disabled) {
-      background-color: var(--ln-bg-strong);
-    }
-  }
-}
-
-.ln-dark {
-  [data-ln-dialog-close="true"] {
-    color: var(--ln-border-icon);
-    background-color: var(--ln-bg-light);
-
-    &:hover:not(:disabled) {
-      background-color: var(--ln-bg-strong);
-    }
   }
 }

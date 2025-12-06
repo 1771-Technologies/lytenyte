@@ -72,3 +72,9 @@
   --ln-transition-fn: cubic-bezier(0.7, 0, 0.3, 1);
   --ln-transition-duration: 220ms;
 }
+
+.ln-term {
+  --ln-typeface:
+    "Noto Sans Mono", ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono",
+    "DejaVu Sans Mono", "Courier New", monospace;
+}

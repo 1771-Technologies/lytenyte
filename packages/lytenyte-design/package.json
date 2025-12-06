@@ -29,6 +29,7 @@
     "./dark.css": "./src/themes/ln-dark.css",
     "./cotton-candy.css": "./src/themes/ln-cotton-candy.css",
     "./shadcn.css": "./src/themes/ln-shadcn.css",
+    "./shadcn-vars.css": "./src/themes/ln-shadcn-vars-fallback.css",
     "./term.css": "./src/themes/ln-term.css",
     "./teal.css": "./src/themes/ln-teal.css"
   },
