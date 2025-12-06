@@ -10,11 +10,11 @@ import type {
   AggModelFn,
   RowDataSourceClientPaginated,
   ClientRowDataSourcePaginatedParams,
-} from "../+types";
+} from "../+types.js";
 import { type Grid, type RowNode } from "../+types.js";
 import { useRef } from "react";
 import { traverse } from "./tree/traverse.js";
-import type { TreeNode } from "./+types";
+import type { TreeNode } from "./+types.js";
 import {
   dateComparator,
   numberComparator,

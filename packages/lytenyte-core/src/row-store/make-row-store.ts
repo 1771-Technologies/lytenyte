@@ -6,7 +6,7 @@ import {
   useSignalValue,
   type AtomReadonly,
 } from "../signal/index.js";
-import type { RowDataStore, RowNode } from "../+types";
+import type { RowDataStore, RowNode } from "../+types.js";
 
 export interface MakeRowStore<T> {
   readonly getRow: (i: number) => RowNode<T> | null;

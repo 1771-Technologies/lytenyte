@@ -1,8 +1,8 @@
 import "../../design/ui.css";
 
-import { Dialog } from "../../headless/dialog/index.js";
-import { Menu } from "../../headless/menu/index.js";
-import { Popover } from "../../headless/popover/index.js";
+import { Dialog } from "../../components/dialog/index.js";
+import { Menu } from "../../components/menu/index.js";
+import { Popover } from "../../components/popover/index.js";
 
 export default function NormalPlay() {
   return (

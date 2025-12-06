@@ -3,7 +3,7 @@ import { useGridRoot } from "../context.js";
 import { navigator } from "@1771technologies/lytenyte-shared";
 import { beginEditing } from "./begin-editing.js";
 import { useFocusTracking } from "./use-focus-tracking.js";
-import { useCombinedRefs } from "../hooks/use-combine-refs.js";
+import { useCombinedRefs } from "@1771technologies/lytenyte-hooks-react";
 
 export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function Viewport(
   { children, style, ...props },

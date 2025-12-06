@@ -1,11 +1,12 @@
 {
-  "name": "@1771technologies/lytenyte-ui-react",
-  "description": "A simple UI component library with headless components and Tailwind styled components built on top",
-  "license": "COMMERCIAL",
+  "name": "@1771technologies/lytenyte-hooks-react",
+  "description": "A hooks library used internally by the LyteNyte packages",
+  "license": "Apache-2.0",
   "keywords": [
-    "TODO"
+    "react",
+    "dnd"
   ],
-  "version": "0.0.1",
+  "version": "1.0.20",
   "type": "module",
   "files": [
     "dist",
@@ -17,7 +18,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/1771-technologies/lytenyte.git",
-    "directory": "packages/lytenyte-ui-react"
+    "directory": "packages/lytenyte-react-hooks"
   },
   "bugs": {
     "url": "https://github.com/1771-technologies/lytenyte/issues"
@@ -40,18 +41,10 @@
     }
   },
   "dependencies": {
-    "@1771technologies/lytenyte-shared": "workspace:*",
-    "@1771technologies/lytenyte-hooks-react": "workspace:*",
-    "@1771technologies/lytenyte-design": "workspace:*"
+    "@1771technologies/lytenyte-shared": "workspace:*"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0"
-  },
-  "devDependencies": {
-    "@iconify-json/ph": "^1.2.2",
-    "@iconify-json/svg-spinners": "^1.2.4",
-    "@iconify/tailwind4": "^1.1.0",
-    "tailwindcss": "^4.1.13"
   }
 }
