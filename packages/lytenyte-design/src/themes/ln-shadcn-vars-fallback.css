@@ -33,11 +33,12 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 .dark {
-  --background: oklch(0.145 0 0);
+  --popover: #1f1f1f;
+  --background: #161616;
+
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
