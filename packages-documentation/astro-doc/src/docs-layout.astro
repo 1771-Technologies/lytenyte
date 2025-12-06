@@ -1,10 +1,9 @@
 ---
-import "../styles/global.css";
-import DesktopToc from "../components/toc/desktop-toc.astro";
-import ThemeToggle from "../components/theme-toggle/theme-toggle.astro";
-import ThemeScript from "../components/theme-toggle/theme-script.astro";
-import type { MarkdownHeading } from "astro";
+import DesktopToc from "./toc/desktop-toc.astro";
+import ThemeToggle from "./theme-toggle.astro";
+import ThemeScript from "./theme-script.astro";
 
+import type { MarkdownHeading } from "astro";
 export interface Props {
   readonly toc: MarkdownHeading[];
 }

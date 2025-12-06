@@ -1,0 +1,37 @@
+---
+interface Props {
+  readonly type: "note" | "tip" | "info" | "warn" | "danger" | "best";
+  readonly title?: string;
+}
+
+const props = Astro.props;
+
+const titleLookup: Record<Props["type"], string> = {
+  note: "Note",
+  tip: "Tip",
+  info: "Info",
+  warn: "Warn",
+  danger: "Danger",
+  best: "Best",
+};
+const title = props.title ?? titleLookup[props.type];
+const type = props.type;
+---
+
+<div
+  class=""
+  class:list={[
+    "grid grid-cols-[32px_1fr] grid-rows-[auto_1fr] my-8 items-center pl",
+    "w-full my-3 gay-y-1 not-prose p-2 border rounded",
+    type === "info" && "dark:border-blue-950 dark:bg-blue-950/30 border-blue-200 bg-blue-100",
+  ]}
+>
+  <div class="flex items-center justify-center h-full relative -top-px text-blue-600">
+    <span class="iconify ph--warning size-4"></span>
+  </div>
+  <h3 class="mt-0 text-base">{title}</h3>
+  <div role="none"></div>
+  <div>
+    <slot />
+  </div>
+</div>
