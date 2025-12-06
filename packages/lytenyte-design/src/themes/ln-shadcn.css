@@ -21,52 +21,53 @@
   --ln-primary-70: color-mix(in oklch, var(--primary) 70%, var(--primary-foreground));
   --ln-primary-90: color-mix(in oklch, var(--primary) 90%, var(--primary-foreground));
 
-  --ln-system-red-10: hsla(356, 100%, 95%, 1);
-  --ln-system-red-30: hsla(352, 100%, 82%, 1);
-  --ln-system-red-50: hsla(345, 100%, 56%, 1);
-  --ln-system-red-70: hsla(344, 100%, 39%, 1);
-  --ln-system-red-90: hsla(342, 95%, 15%, 1);
+  --ln-red-10: hsla(356, 100%, 95%, 1);
+  --ln-red-30: hsla(352, 100%, 82%, 1);
+  --ln-red-50: hsla(345, 100%, 56%, 1);
+  --ln-red-70: hsla(344, 100%, 39%, 1);
+  --ln-red-90: hsla(342, 95%, 15%, 1);
 
-  --ln-system-yellow-10: hsla(55, 97%, 88%, 1);
-  --ln-system-yellow-30: hsla(51, 100%, 56%, 1);
-  --ln-system-yellow-50: hsla(44, 100%, 47%, 1);
-  --ln-system-yellow-70: hsla(34, 100%, 33%, 1);
-  --ln-system-yellow-90: hsla(27, 89%, 14%, 1);
+  --ln-yellow-10: hsla(55, 97%, 88%, 1);
+  --ln-yellow-30: hsla(51, 100%, 56%, 1);
+  --ln-yellow-50: hsla(44, 100%, 47%, 1);
+  --ln-yellow-70: hsla(34, 100%, 33%, 1);
+  --ln-yellow-90: hsla(27, 89%, 14%, 1);
 
-  --ln-system-green-10: hsla(142, 85%, 92%, 1);
-  --ln-system-green-30: hsla(143, 81%, 71%, 1);
-  --ln-system-green-50: hsla(144, 100%, 39%, 1);
-  --ln-system-green-70: hsla(144, 100%, 25%, 1);
-  --ln-system-green-90: hsla(145, 88%, 10%, 1);
+  --ln-green-10: hsla(142, 85%, 92%, 1);
+  --ln-green-30: hsla(143, 81%, 71%, 1);
+  --ln-green-50: hsla(144, 100%, 39%, 1);
+  --ln-green-70: hsla(144, 100%, 25%, 1);
+  --ln-green-90: hsla(145, 88%, 10%, 1);
 
-  --ln-system-info-10: hsla(0, 0%, 89%, 1);
-  --ln-system-info-30: hsla(0, 0%, 64%, 1);
-  --ln-system-info-50: hsla(0, 0%, 25%, 1);
-  --ln-system-info-70: hsla(0, 0%, 15%, 1);
-  --ln-system-info-90: hsla(0, 0%, 9%, 1);
+  --ln-info-10: hsla(0, 0%, 89%, 1);
+  --ln-info-30: hsla(0, 0%, 64%, 1);
+  --ln-info-50: hsla(0, 0%, 25%, 1);
+  --ln-info-70: hsla(0, 0%, 15%, 1);
+  --ln-info-90: hsla(0, 0%, 9%, 1);
 
   --ln-border: var(--border);
   --ln-border-row: var(--border);
   --ln-border-strong: var(--border);
-  --ln-border-icon: var(--border);
+  --ln-border-icon: var(--foreground);
   --ln-border-ui-panel: var(--sidebar-border);
   --ln-border-button-light: var(--ln-gray-30);
   --ln-border-field-and-button: var(--ln-gray-30);
   --ln-border-field-and-button-shadow: var(--ln-gray-00);
   --ln-border-floating-panel: var(--border);
-  --ln-border-context-menu: var(--border);
+  --ln-border-popover: var(--border);
 
   --ln-bg: var(--background);
-  --ln-bg-button-light: var(--muted);
   --ln-bg-page: var(--background);
-  --ln-bg-light: var(--secondary);
-  --ln-bg-strong: var(--card);
+  --ln-bg-light: color-mix(in srgb, var(--background) 90%, black 10%);
+  --ln-bg-strong: color-mix(in srgb, var(--background) 80%, black 20%);
+
+  --ln-bg-button-light: var(--muted);
   --ln-bg-row-hover: var(--ln-primary-05);
   --ln-bg-row-alternate: var(--ln-primary-10);
   --ln-bg-ui-panel: var(--popover);
   --ln-bg-form-field: var(--input);
   --ln-bg-floating-panel: var(--popover);
-  --ln-bg-context-menu: var(--popover);
+  --ln-bg-popover: var(--popover);
 
   --ln-text: var(--foreground);
   --ln-text-dark: var(--foreground);
@@ -75,10 +76,10 @@
   --ln-text-hyperlink: var(--accent-foreground);
   --ln-text-primary-button: var(--accent-foreground);
 
-  --ln-system-row-pivot-fill: hsla(179, 92%, 10%, 1);
-  --ln-system-row-pivot-stroke: hsla(176, 76%, 18%, 1);
-  --ln-system-column-pivot-fill: hsla(262, 78%, 23%, 1);
-  --ln-system-column-pivot-stroke: hsla(265, 74%, 35%, 1);
-  --ln-system-column-group-fill: hsla(227, 59%, 21%, 1);
-  --ln-system-column-group-stroke: hsla(225, 67%, 33%, 1);
+  --ln-row-pivot-fill: hsla(179, 92%, 10%, 1);
+  --ln-row-pivot-stroke: hsla(176, 76%, 18%, 1);
+  --ln-column-pivot-fill: hsla(262, 78%, 23%, 1);
+  --ln-column-pivot-stroke: hsla(265, 74%, 35%, 1);
+  --ln-column-group-fill: hsla(227, 59%, 21%, 1);
+  --ln-column-group-stroke: hsla(225, 67%, 33%, 1);
 }

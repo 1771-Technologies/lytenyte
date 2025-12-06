@@ -1,4 +1,5 @@
 import { build } from "vite";
+import tailwind from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import fs from "fs/promises";
 import { HTML_TEMPLATE } from "./constants.js";
@@ -8,6 +9,7 @@ try {
 
   await build({
     plugins: [
+      tailwind(),
       {
         name: "playframe",
         enforce: "pre",

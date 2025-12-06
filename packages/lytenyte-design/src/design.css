@@ -1,51 +1,32 @@
 :root {
-  --ln-pt-02: 2px;
-  --ln-pt-04: 4px;
-  --ln-pt-06: 6px;
-  --ln-pt-08: 8px;
-  --ln-pt-10: 10px;
-  --ln-pt-12: 12px;
-  --ln-pt-16: 16px;
-  --ln-pt-20: 20px;
-  --ln-pt-24: 24px;
-  --ln-pt-28: 28px;
-  --ln-pt-32: 32px;
-  --ln-pt-36: 36px;
-  --ln-pt-40: 40px;
-  --ln-pt-48: 48px;
-  --ln-pt-64: 64px;
-  --ln-pt-96: 96px;
-  --ln-pt-128: 128px;
-  --ln-pt-152: 152px;
-  --ln-pt-200: 200px;
-  --ln-pt-256: 256px;
+  --ln-space-02: 2px;
+  --ln-space-05: 4px;
+  --ln-space-10: 6px;
+  --ln-space-20: 8px;
+  --ln-space-25: 10px;
+  --ln-space-30: 12px;
+  --ln-space-40: 16px;
+  --ln-space-50: 20px;
+  --ln-space-60: 24px;
+  --ln-space-70: 32px;
+  --ln-space-80: 48px;
+  --ln-space-90: 64px;
+  --ln-space-100: 128px;
 
-  --ln-space-05: var(--ln-pt-04);
-  --ln-space-10: var(--ln-pt-06);
-  --ln-space-20: var(--ln-pt-08);
-  --ln-space-30: var(--ln-pt-12);
-  --ln-space-40: var(--ln-pt-16);
-  --ln-space-50: var(--ln-pt-20);
-  --ln-space-60: var(--ln-pt-24);
-  --ln-space-70: var(--ln-pt-32);
-  --ln-space-80: var(--ln-pt-48);
-  --ln-space-90: var(--ln-pt-64);
-  --ln-space-100: var(--ln-pt-128);
+  --ln-padding-field-sm: 4px;
+  --ln-padding-field-md: 6px;
+  --ln-padding-field-lg: 8px;
+  --ln-padding-field-xl: 12px;
+  --ln-padding-vertical-thead: 4px;
+  --ln-padding-vertical-cell: 8px;
+  --ln-padding-horizontal-cell: 10px;
 
-  --ln-padding-field-sm: var(--ln-pt-04);
-  --ln-padding-field-md: var(--ln-pt-06);
-  --ln-padding-field-lg: var(--ln-pt-08);
-  --ln-padding-field-xl: var(--ln-pt-12);
-  --ln-padding-vertical-thead: var(--ln-pt-04);
-  --ln-padding-vertical-cell: var(--ln-pt-08);
-  --ln-padding-horizontal-cell: var(--ln-pt-10);
-
-  --ln-radius: var(--ln-pt-06);
-  --ln-radius-md: var(--ln-pt-08);
-  --ln-radius-lg: var(--ln-pt-12);
-  --ln-radius-field-lg: var(--ln-pt-10);
-  --ln-radius-field-md: var(--ln-pt-08);
-  --ln-radius-field-sm: var(--ln-pt-06);
+  --ln-radius: 6px;
+  --ln-radius-md: 8px;
+  --ln-radius-lg: 12px;
+  --ln-radius-field-lg: 10px;
+  --ln-radius-field-md: 8px;
+  --ln-radius-field-sm: 6px;
 
   --ln-shadow-100: 0 1px 2.5px 0 rgba(30, 30, 41, 0.13), 0 0 0 1px rgba(30, 30, 41, 0.02);
   --ln-shadow-200:
@@ -57,11 +38,16 @@
   --ln-shadow-600: 0 6px 36px 0 rgba(30, 30, 41, 0.12), 0 37px 35.75px -20px rgba(30, 30, 41, 0.07);
   --ln-shadow-700: 0 16px 22px -10px rgba(30, 30, 41, 0.06), 0 22px 64px 0 rgba(30, 30, 41, 0.16);
 
-  --ln-shadow-dark-100: 0 1px 2.5px 0 rgba(0, 0, 0, 0.53);
-  --ln-shadow-dark-200: 0 1px 1px 0 rgba(0, 0, 0, 0.3), 0 2px 3px 0.625px rgba(0, 0, 0, 0.27);
-  --ln-shadow-dark-300: 0 11px 10px -6px rgba(0, 0, 0, 0.2), 0 1px 7px 0 rgba(0, 0, 0, 0.6);
-  --ln-shadow-dark-400: 0 14px 18px -6px rgba(0, 0, 0, 0.25), 0 3px 13px 0 rgba(0, 0, 0, 0.35);
-  --ln-shadow-dark-500: 0 3px 20px 0 rgba(0, 0, 0, 0.28), 0 19px 24.75px -9px rgba(0, 0, 0, 0.35);
-  --ln-shadow-dark-600: 0 6px 36px 0 rgba(0, 0, 0, 0.28), 0 37px 35.75px -20px rgba(0, 0, 0, 0.35);
-  --ln-shadow-dark-700: 0 16px 22px -10px rgba(0, 0, 0, 0.28), 0 22px 64px 0 rgba(0, 0, 0, 0.35);
+  --ln-typeface:
+    "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji",
+    "Segoe UI Emoji";
+
+  --ln-transition-fn: cubic-bezier(0.4, 0, 0.2, 1);
+  --ln-transition-duration: 100ms;
+}
+
+.ln-term {
+  --ln-typeface:
+    "Noto Sans Mono", ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono",
+    "DejaVu Sans Mono", "Courier New", monospace;
 }

@@ -28,6 +28,7 @@ export default defineConfig(
       "@typescript-eslint/no-this-alias": "off",
       "@typescript-eslint/consistent-type-imports": "error",
       "@typescript-eslint/consistent-type-exports": "error",
+      "@typescript-eslint/no-namespace": "off",
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
