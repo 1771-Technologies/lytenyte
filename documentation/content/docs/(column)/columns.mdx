@@ -1,122 +1,68 @@
 ---
-title: Columns
-description: LyteNyte Grid uses columns to power core features like sorting,
-  filtering, moving, and resizing. When you call the `useLyteNyte` hook,
-  you provide an array of column definitions. This guide explains how to
-  define columns and describes each property.
+title: Overview
+description: LyteNyte Grid uses columns to define the data displayed in the grid's viewport.
+  This guide details how to use columns to configure dynamic views.
 ---
 
-## Basic Column Definition
+## Columns View Specification
 
-At minimum, a column requires an `id` property:
+A column in LyteNyte Grid defines the specification (or type interface)
+the grid follows to configure how cells and headers are displayed. LyteNyte Grid
+accepts an array of columns, which developers **provide** to the grid through the
+`Grid.useLyteNyte` hook.
+
+For example, defining a set of columns can be done as follows:
 
 ```ts
-const column = { id: "my-column" };
+const columns: Column<OrderData>[] = [
+  { id: "id", width: 60, widthMin: 60, cellRenderer: IdCell, name: "ID" },
+  { id: "product", cellRenderer: ProductCell, width: 200 },
+  { id: "price", type: "number", cellRenderer: PriceCell, width: 100 },
+  { id: "customer", cellRenderer: AvatarCell, width: 180 },
+  { id: "purchaseDate", cellRenderer: PurchaseDateCell, name: "Purchase Date", width: 120 },
+  { id: "paymentMethod", cellRenderer: PaymentMethodCell, name: "Payment Method" },
+  { id: "email", cellRenderer: EmailCell, width: 220 },
+];
 ```
 
-Each column must have a unique `id`. Ensure uniqueness across all
-columns in your grid.
+Notice from the definitions above:
 
-### The Column Base
+- Each column has an `id` property. This is the only **required** property
+  for columns provided to LyteNyte Grid.
+- The `width` property determines the horizontal space the
+  column's cells occupy in the viewport.
+- The `widthMin` sets the minimum allowable width for the column.
+- The `name` property provides a display name for components that
+  use the column specification.
+- The `cellRenderer` property accepts a React component for
+  rendering the cell's content.
 
-LyteNyte Grid provides defaults for properties you omit. Use
-`columnBase` to set defaults for all columns. For example, instead of
-configuring every column for moving and resizing, set it once in
-`columnBase`.
+The example specification contains only a few of the available properties
+for a column. The remaining guides in this section cover all configuration
+possibilities, but you can refer to the [Column API reference](/docs/reference/column#column)
+for details on every configuration option a column accepts.
 
-<Callout>
+Think of columns declaratively. As the developer, you provide LyteNyte Grid
+with the column specification. LyteNyte Grid follows the specification
+to create the correct view. Hence, updating the columns in the grid updates the current view.
 
-To move a column, click and drag the header. To resize the header, hover your
-mouse cursor near the right edge of the header and an indicator will appear. You
-may then click and drag to resize.
+**LyteNyte Grid** does not maintain a separate column state from the
+column specification. The `columns` property is the **source of truth** for
+the grid. This source of truth includes implicit state,
+such as column ordering, which the grid infers from the
+order of columns in the array.
 
-</Callout>
+## Complete Working Example
 
-!demo:Column Base="./demos/column-base"
+The example below shows the columns defined earlier in use.
+Use this example as a lightweight introduction to what is possible with columns
+and how even a relatively small amount of configuration creates rich data experiences.
 
-## Column Properties Overview
+!demo:Columns in Action="./demos/column-overview-demo"
 
-### Column Type
+## Next Steps
 
-Use the `type` field to hint at the data type. Defaults to `string`.
-Options include `number`, `date`, `datetime`, or any custom string.
-Providing the correct type ensures proper sorting and filtering.
-
-### Header Rendering
-
-The `name` property sets display text for a column. If omitted, the
-`id` is used. You can pass a custom `headerRenderer` returning a
-ReactNode.
-
-### Header Autosizing
-
-`autosizeHeaderFn` calculates width for custom header components. It
-applies only to headers. Use `autosizeCellFn` for cell widths.
-
-### Pinning
-
-The `pin` property freezes columns at the start or end of the grid so
-they stay visible during horizontal scrolling.
-
-### Column Visibility
-
-Use the `hide` property to control visibility. Defaults to `false`.
-
-### Cell Editing
-
-- `editable`: whether the cell is editable
-- `editRenderer`: the editing component
-- `editSetter`: updates row data after editing
-
-### Cell Autosizing
-
-`autosizeCellFn` customizes how cell widths are calculated.
-
-### Floating Cell
-
-`floatingCellRenderer` sets content for floating header cells when
-`floatingRowEnabled` is true.
-
-### Field
-
-`field` defines how to extract cell values from your data. Defaults to
-the column `id`.
-
-### Column Grouping
-
-`groupPath` is an ordered set of strings that define the group
-hierarchy. Groups form implicitly from all `groupPath` values.
-
-`groupVisibility` controls when a column appears:
-
-- `open`: Only when the group is expanded
-- `closed`: Only when the group is collapsed
-- `always`: Always visible
-
-### Column Width
-
-- `width`: desired column width
-- `widthMin` / `widthMax`: width bounds
-- `widthFlex`: share of extra viewport space
-
-### Cell Rendering
-
-`cellRenderer` provides a custom React component for cells.
-
-### Row and Column Spanning
-
-`rowSpan` / `colSpan` let cells span multiple rows or columns.
-
-### UI Hints
-
-`uiHints` inform UI components about column capabilities. They do not
-affect core grid behavior or API methods.
-
-### Quick Search
-
-PRO only: `quickSearchIgnore` excludes the column from quick search.
-
-## Summary
-
-You now know the available column properties in LyteNyte Grid. See
-individual guides for deeper details on each property.
+- [Column Base](/docs/column-base): See the default column values and how to override them with the `columnBase` property.
+- [Column ID & Name](/docs/column-header-name): Define user-friendly column names and ensure unique IDs.
+- [Column Moving](/docs/column-moving): Reorder columns programmatically or through drag-and-drop.
+- [Column Field](/docs/column-field): Control how a column retrieves its value for each cell.

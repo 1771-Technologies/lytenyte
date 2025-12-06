@@ -1,7 +1,7 @@
 {
   "name": "@1771technologies/grid-sample-data",
   "description": "A package with sample data sets for testing grids",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "license": "Apache-2.0",
   "type": "module",
   "homepage": "https://1771technologies.com",
@@ -23,6 +23,21 @@
       "types": "./src/index.ts",
       "import": "./src/index.ts",
       "require": "./src/index.ts"
+    },
+    "./orders": {
+      "types": "./src/orders.ts",
+      "import": "./src/orders.ts",
+      "require": "./src/orders.ts"
+    },
+    "./dex-pairs-performance": {
+      "types": "./src/dex-pairs-performance.ts",
+      "import": "./src/dex-pairs-performance.ts",
+      "require": "./src/dex-pairs-performance.ts"
+    },
+    "./temperatures": {
+      "types": "./src/monthly-temperature.ts",
+      "import": "./src/monthly-temperature.ts",
+      "require": "./src/monthly-temperature.ts"
     },
     "./stock-data": {
       "types": "./src/stocks-data.ts",

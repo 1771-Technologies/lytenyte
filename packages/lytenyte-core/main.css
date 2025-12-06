@@ -7,6 +7,8 @@
   --lng1771-primary-70: #053f9e;
   --lng1771-primary-90: #012259;
 
+  --lng1771-mix-value: black;
+
   --lng1771-row-selected: #d6e4fe;
   --lng1771-focus-outline: var(--lng1771-primary-50);
   --lng1771-gradient-shadow: linear-gradient(90deg, var(--lng1771-gray-50), var(--lng1771-gray-50));
@@ -51,6 +53,7 @@
   --lng1771-primary-70: #004dcc;
   --lng1771-primary-90: #00307d;
 
+  --lng1771-mix-value: white;
   --lng1771-row-selected: #1c2b44;
   --lng1771-focus-outline: var(--lng1771-primary-50);
 
@@ -87,6 +90,7 @@
   --lng1771-primary-70: #278177;
   --lng1771-primary-90: #278177;
 
+  --lng1771-mix-value: white;
   --lng1771-focus-outline: var(--lng1771-primary-50);
   --lng1771-row-selected: #192b2d;
 
@@ -125,6 +129,7 @@
   --lng1771-cell-font-typeface: var(--lng1771-typeface);
   --lng1771-menu-item-font-typeface: var(--lng1771-typeface);
 
+  --lng1771-mix-value: white;
   --lng1771-primary-05: rgba(87, 255, 255, 0.07);
   --lng1771-primary-10: rgba(87, 255, 255, 0.07);
   --lng1771-primary-30: rgba(87, 255, 255, 0.3);
@@ -168,7 +173,8 @@
   --lng1771-primary-70: rgba(240, 48, 230, 1);
   --lng1771-primary-90: rgba(194, 0, 184, 1);
 
-  --lng1771-row-selected: color-mix(in srgb, var(--color-accent) 30%, transparent);
+  --lng1771-mix-value: black;
+  --lng1771-row-selected: color-mix(in srgb, var(--color-accent) 95%, black 5%);
   --lng1771-focus-outline: var(--color-primary);
 
   --lng1771-gray-00: #cff8ff;
@@ -204,7 +210,8 @@
   --lng1771-primary-70: color-mix(in srgb, var(--color-accent) 70%, black);
   --lng1771-primary-90: color-mix(in srgb, var(--color-accent) 90%, black);
 
-  --lng1771-row-selected: color-mix(in srgb, var(--color-accent) 30%, transparent);
+  --lng1771-mix-value: black;
+  --lng1771-row-selected: color-mix(in srgb, var(--color-accent) 95%, black 5%);
   --lng1771-focus-outline: var(--color-primary);
 
   --lng1771-gray-00: var(--color-background);
@@ -240,7 +247,8 @@
   --lng1771-primary-70: color-mix(in srgb, var(--color-accent) 70%, white);
   --lng1771-primary-90: color-mix(in srgb, var(--color-accent) 90%, white);
 
-  --lng1771-row-selected: color-mix(in srgb, var(--color-accent) 30%, transparent);
+  --lng1771-mix-value: white;
+  --lng1771-row-selected: color-mix(in srgb, var(--color-accent) 95%, white 5%);
   --lng1771-focus-outline: var(--color-primary);
 
   --lng1771-gray-00: var(--color-background);
@@ -268,6 +276,10 @@
 }
 
 .lng-grid {
+  [data-ln-has-cell-selection="true"] [data-ln-cell="true"]:focus-visible {
+    outline: none;
+  }
+
   [data-ln-cell="true"] {
     border-bottom: 1px solid var(--lng1771-gray-20);
     border-right: 1px solid transparent;
@@ -320,7 +332,11 @@
     background-color: var(--lng1771-gray-10);
   }
   [data-ln-row-selected="true"][data-ln-row="true"]:hover [data-ln-cell="true"] {
-    background-color: var(--lng1771-primary-30);
+    background-color: color-mix(
+      in srgb,
+      var(--lng1771-row-selected) 95%,
+      var(--lng1771-mix-value) 5%
+    );
   }
   [data-ln-rowtype="full-width"][data-ln-row="true"] > div:hover {
     background-color: var(--lng1771-gray-10);
@@ -423,9 +439,5 @@
     &[data-ln-over-top-half="false"] [data-ln-cell="true"] {
       border-bottom: 1px solid var(--lng1771-primary-50);
     }
-  }
-
-  [data-ln-cell-selection-rect] {
-    background-color: var(--lng1771-primary-30);
   }
 }

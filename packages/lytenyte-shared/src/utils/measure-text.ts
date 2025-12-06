@@ -3,7 +3,7 @@ import { isHTMLElement } from "../dom-utils/index.js";
 let canvas: null | HTMLCanvasElement = null;
 let context: null | CanvasRenderingContext2D = null;
 
-export function measureText(text: string, reference?: HTMLElement | string) {
+export function measureText(text: string, reference?: HTMLElement | string | undefined | null) {
   if (!canvas) {
     canvas = document.createElement("canvas");
     canvas.style.position = "fixed";

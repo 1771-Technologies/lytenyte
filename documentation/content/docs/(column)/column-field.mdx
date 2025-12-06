@@ -1,62 +1,101 @@
 ---
 title: Column Field
-description: The field property in LyteNyte Grid determines the cell value for a
-  given row in a specific column.
+description: A column's field determines how LyteNyte Grid retrieves a cell value.
+  This guide explains the four field types supported by LyteNyte Grid.
 ---
 
-LyteNyte Grid supports four types of values for `field`:
+Set a column's value source using the `field` property on the column definition.
+The `field` property applies only to individual columns and cannot be set on the
+[base column specification](/docs/column-base).
 
-- **String:** When row data is an object. The string acts as a key to
-  look up the value.
-- **Number:** When row data is an array. The number acts as the index in
-  the array.
-- **Function:** A callback for custom calculations of a column's value.
-- **Path object:** `{ kind: "path"; path: string }` to access nested
-  values. `kind` must be `"path"`, and `path` must specify the lookup.
+LyteNyte Grid supports four field types:
 
-`field` is optional. If omitted, LyteNyte Grid uses the column's `id` as
-a fallback.
+- **String:** Use when each row is a flat JavaScript object. The string value is used as an object key to read the cell value.
+- **Number:** Use when each row is an array. The number value is used as an array index to read the cell value.
+- **Function:** Use to compute the cell value from the row data. This callback can run any logic and is commonly used for derived values.
+- **Path object:** Use when each row is a nested JavaScript object. Provide an object of the form `{ kind: "path"; path: string }` to read a nested cell value.
 
-## Key Lookup Fields
+The `field` property is optional. If omitted, LyteNyte Grid uses the column's `id` as
+a fallback, which behaves the same as a string field.
 
-When `field` is a string, the grid uses it as a key to access the value
-in object row data.
+## String Fields
 
-!demo:Key Lookup Fields="./demos/column-field-key"
+When `field` is a string, the grid uses it as a key to read the value from
+object-based row data. Use string fields when each row is a standard JavaScript object.
+This is demonstrated in the example below:
 
-If no `field` is set, the grid uses the column `id`. Because `id` must
-be a string, this fallback behaves like a key lookup.
+!demo:String Field="./demos/column-field-string_x"
 
-## Number Index Fields
+In the example, each column specifies its `field` directly:
 
-When `field` is a number, row data should be an array. The number acts
-as the index for retrieving the value.
+```ts
+const columns = [
+  { id: "Symbol", field: "symbol" },
+  { id: "Network", field: "network" },
+  { id: "Exchange", field: "exchange" },
+  // other columns
+];
+```
 
-!demo:Number Index Fields="./demos/column-field-number-index"
+## Number Fields
+
+When `field` is a number, row data must be an array. The number acts as the index used
+to retrieve the value. In the demo below, each row is an array, so each column uses a numeric index.
+
+!demo:Number Index Fields="./demos/column-field-number-index_x"
+
+The column definitions specify numeric indices. These indices do not need to be sequential:
+
+```ts
+const columns: Column<StockData>[] = [
+  { field: 0, id: "symbol", name: "Symbol" },
+  { field: 2, id: "analyst-rating" },
+  { field: 3, id: "price", type: "number" },
+  { field: 5, id: "change", type: "number" },
+  { field: 11, id: "eps", type: "number" },
+  { field: 6, id: "volume", type: "number" },
+];
+```
+
+Number fields are efficient. In JavaScript, array indexing usually performs better
+than key-based lookups, and array-structured row data is often more compact than
+object-based data. This makes number fields a strong choice for performance-sensitive grids.
 
 ## Function Fields
 
-Set `field` to a function for maximum flexibility. The function can
-compute values using other columns.
+A function field offers the most flexible way to compute a column's value.
+You provide a function, and LyteNyte Grid calls it for each row to compute the
+cell value. Function fields are commonly mixed with other field types rather
+than being used for every column.
 
-!demo:Function Fields="./demos/column-field-function"
+LyteNyte Grid passes a single argument to the function. This argument contains
+either aggregated group data or leaf-row data, depending on the row being processed.
+See the [field data param](/docs/reference/field#fielddataparam) for the exact type.
+
+Function fields are ideal for derived or calculated values.
+In the demo below, the **GBP Price** column computes a value from the base **USD Price** column.
+
+!demo:Function Fields="./demos/column-field-function_x"
 
 ## Path Fields
 
-Set `field` to `{ kind: "path", path: string }` to access nested object
-values.
-
-!demo:Path Fields="./demos/column-field-path-fields"
-
-The `path` syntax matches [Lodash's get](https://lodash.com/docs/#get):
+Set the `field` property to an object of the form `{ kind: "path"; path: string }` to retrieve a nested value from the row data.
+The `path` syntax matches [Lodash's `get`](https://lodash.com/docs/#get) function. Examples:
 
 ```ts
-{ kind: 1, path: "alpha.beta[0]" };
-{ kind: 1, path: "beta[0].alpha" };
+{ kind: "path", path: "alpha.beta[0]" };
+{ kind: "path", path: "beta[0].alpha" };
 ```
 
-## Which Field Type to Use
+The demo below shows path fields in use. Each row exposes temperatures
+under a `temps` property keyed by month, so fields such
+as `{ kind: "path", path: "temps.Jan" }` read the appropriate value.
 
-Prefer `string` or `number` fields for simplicity. Number fields are
-compact and efficient. Function and path fields add complexity and may
-prevent serialization of column definitions.
+!demo:Path Fields="./demos/column-field-path_x"
+
+## Next Steps
+
+- [Column Resizing](/docs/column-resizing): Change column widths programmatically or via user interaction.
+- [Column ID & Name](/docs/column-header-name): Define user-friendly column names and ensure unique IDs.
+- [Column Moving](/docs/column-moving): Reorder columns programmatically or through drag-and-drop.
+- [Column Base](/docs/column-base): See the default column values and how to override them with the `columnBase` property.

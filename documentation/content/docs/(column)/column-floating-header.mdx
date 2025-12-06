@@ -1,38 +1,91 @@
 ---
 title: Column Floating Header
-description: LyteNyte Grid's floating row is a specialized header row that appears
-  below the main column headers. It lets you render custom components for
-  each column. While often used for filtering interfaces, you can use it
-  for any component type.
+description: LyteNyte Grid's floating row is a specialized header row that appears below the main column headers.
 ---
 
-# Column Floating Header
+Floating header rows let you render custom components for
+each column. While often used for filtering components,
+it can render any type of component.
 
-Enable the floating header row by setting `floatingRowEnabled` to `true`
-in the grid configuration. Once enabled, a row appears below the column
-headers with cells for each column. Each floating cell's content comes
-from the column's `floatingCellRenderer` property.
+Enable the floating row by setting the
+`floatingRowEnabled` property on the grid state.
+Once enabled, each column can define a floating cell
+renderer through the `floatingCellRenderer` property.
 
-!demo:Column Floating Cell="./demos/column-floating"
+The `floatingCellRenderer` may be:
 
-## Floating Cell Components
+- A React component that LyteNyte Grid renders as the floating cell.
+- A string referencing a registered floating cell renderer defined
+  on the grid's `floatingCellRenderers` property.
 
-Set a column's `floatingCellRenderer` to a React component or a string.
-If you provide a string, it acts as a lookup key for components
-registered in the grid's state. Use the grid's
-`floatingCellRenderers` property to register these components.
+## Floating Component Renderer
 
-!demo:Floating Cell Registered="./demos/column-floating-registered"
+When the floating row is enabled, LyteNyte Grid uses each column's `floatingCellRenderer` to decide
+what to render in the floating cell. The demo below shows a simple
+renderer that provides a basic text filter input.
 
-We recommend registering floating cell renderers and referencing them
-from columns instead of providing React components directly. This
-practice keeps columns serializable and simplifies debugging.
+!demo:Column Floating Cell="./demos/column-floating_x"
 
-## Toggling the Floating Row Visibility
+In the demo, the floating row renders as a normal `Grid.HeaderCell` component.
+LyteNyte Grid determines whether a header cell belongs to the main header
+or the floating row based on the `cell` property supplied by the view layout:
 
-Toggle the floating row by updating the grid's
-`floatingRowEnabled` state:
+```tsx
+<Grid.HeaderCell cell={c} />
+```
+
+The `cell` object has a `kind` value:
+
+- `"cell"` for a normal header cell.
+- `"floating"` for a floating header cell.
+
+See the [Grid View API reference](/docs/reference/grid-view#headercellfloating) for more details.
+
+## Floating Registered Renderer
+
+If `floatingCellRenderer` is a string, LyteNyte Grid treats it as a lookup key
+into the grid's `floatingCellRenderers` registry. The demo below shows the same example as above,
+but using a registered renderer instead of an inline component:
+
+!demo:Column Floating Cell Registered="./demos/column-floating-registered_x"
+
+String-based renderers are helpful when column definitions must be
+serializable. In other cases, prefer using component-based renderers.
 
 ```ts
-const toggleFloatingFilter = () => grid.state.floatingRowEnabled.set((prev) => !prev);
+const grid = Grid.useLyteNyte({
+  // Other grid props...
+  floatingRowEnabled: true,
+  floatingCellRenderers: { "string-filter": FloatingFilter },
+  columnBase: {
+    floatingCellRenderer: "string-filter",
+  },
+});
 ```
+
+## Floating Row Visibility Toggling
+
+You can show or hide the floating row by toggling the
+`floatingRowEnabled` state. The demo below includes a
+switch that updates this state:
+
+!demo:Floating Cell Visibility="./demos/column-floating-visibility_x"
+
+The toggle simply flips the `floatingRowEnabled` value:
+
+```tsx
+<SwitchToggle
+  label="Toggle Floating Row"
+  checked={grid.state.floatingRowEnabled.useValue()}
+  onChange={() => {
+    grid.state.floatingRowEnabled.set((prev) => !prev);
+  }}
+/>
+```
+
+## Next Steps
+
+- [Column Resizing](/docs/column-resizing): Change column widths programmatically or through user interaction.
+- [Column Moving](/docs/column-moving): Reorder columns programmatically or via drag-and-drop.
+- [Column Base](/docs/column-base): See the default column values and how to override them with the `columnBase` property.
+- [Column Header Height](/docs/column-header-height): Adjust the height of the header row, group header rows, or the floating header row.

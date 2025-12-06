@@ -1,20 +1,75 @@
 ---
 title: Marker Column
-description: Understanding the automatically generated marker column and its
-  functionality in LyteNyte Grid
+description: The marker column is an auxiliary column created and managed by
+  LyteNyte Grid. It is always pinned to the start of the viewport.
 ---
 
-The marker column is a special column you can enable in the grid state.
-LyteNyte Grid creates and manages it automatically. It is not part of
-your column definitions and is always frozen to the start of the grid.
+Use the marker column for information that does not come from the
+row data or for interactive actions that do not fit
+cleanly into other columns. Common use cases include:
 
-The marker column provides auxiliary row functionality, such as a
-selection checkbox or an expand icon for master-detail features.
+- Displaying the current row index.
+- Rendering a checkbox for row selection.
 
-## Marker Column Usage
+## Enabling Marker Column
 
-Enable the marker column by setting `markerColumnEnabled` to `true` on
-the grid. You can define it with the `markerColumn` property. The
-example below shows a marker column with checkbox selection.
+Enable the marker column using the `columnMarkerEnabled` property on the grid
+state. When enabled, provide a column specification using the `columnMarker` property.
 
-!demo:Marker Column="./demos/column-marker"
+The demo below shows the marker column displaying row indices.
+The displayed index starts at `1`, while actual row indices in
+LyteNyte Grid start at `0`.
+
+!demo:Row Index Marker Column="./demos/column-marker_x"
+
+Below is the code that enables the marker column and defines its renderer:
+
+```tsx
+const grid = Grid.useLyteNyte({
+  // Other grid properties...
+  columnMarkerEnabled: true,
+  columnMarker: {
+    cellRenderer: (p) => {
+      return <div>{p.rowIndex + 1}</div>;
+    },
+  },
+});
+```
+
+The marker column differs from standard columns and has important restrictions:
+
+- It is always pinned to the start of the viewport.
+- It cannot be moved or reordered.
+- It is not part of the `columns` state but does affect column display order. When enabled,
+  the marker column always appears first, and display index `0` refers to the marker column.
+
+## Selection Marker Column
+
+A common use case for the marker column is row selection.
+The marker column can render a checkbox for each row. Because
+this is so common, LyteNyte Grid provides the `api.rowHandleSelect`
+method to simplify selection logic, including shift-select behavior.
+
+!demo:Marker Column Selection="./demos/column-marker-selection_x"
+
+The demo uses `api.rowHandleSelect` to manage checkbox interactions:
+
+```tsx
+<GridCheckbox
+  onClick={(ev) => {
+    ev.stopPropagation();
+    grid.api.rowHandleSelect({ shiftKey: ev.shiftKey, target: ev.target });
+  }}
+  onKeyDown={(ev) => {
+    if (ev.key === "Enter" || ev.key === " ")
+      grid.api.rowHandleSelect({ shiftKey: ev.shiftKey, target: ev.target });
+  }}
+/>
+```
+
+## Next Steps
+
+- [Column Resizing](/docs/column-resizing): Change column widths programmatically or through user interaction.
+- [Column Moving](/docs/column-moving): Reorder columns programmatically or through drag-and-drop.
+- [Column Groups](/docs/column-groups): Create a column header hierarchy and associate columns with column groups.
+- [Column Field](/docs/column-field): Control how a column retrieves each cell's value.

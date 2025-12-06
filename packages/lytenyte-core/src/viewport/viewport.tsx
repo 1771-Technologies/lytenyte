@@ -100,16 +100,16 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
         data-ln-viewport
         data-ln-gridid={ctx.gridId}
         style={{
-          ...style,
           position: "relative",
           display: "flex",
           flexDirection: "column",
           contain: "strict",
           width: "100%",
           height: "100%",
-          overflowX: style?.overflowX ?? "auto",
-          overflowY: style?.overflowY ?? "auto",
+          overflowX: "auto",
+          overflowY: "auto",
           direction: rtl ? "rtl" : "ltr",
+          ...style,
         }}
       >
         {vp && children}

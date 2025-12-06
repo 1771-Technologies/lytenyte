@@ -49,7 +49,7 @@ export function useRowStyle(
       top: shouldBeRelative ? yPositions[rowIndex] - topOffset : undefined,
     };
 
-    return { ...propStyles, ...styles };
+    return { ...styles, ...propStyles };
   }, [hasSpans, height, propStyles, rowIndex, rowIsFocusRow, rowPin, topOffset, yPositions]);
 
   return styles;
