@@ -1,3 +1,4 @@
+import "./component.css";
 import type {
   CellRendererParams,
   HeaderCellRendererParams,
