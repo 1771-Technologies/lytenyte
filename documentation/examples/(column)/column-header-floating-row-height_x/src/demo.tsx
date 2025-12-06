@@ -89,8 +89,9 @@ export default function ColumnBase() {
                         <Grid.HeaderCell
                           key={c.id}
                           cell={c}
+                          data-size={height}
                           className={tw(
-                            "flex h-full w-full items-center text-nowrap px-3 text-sm capitalize",
+                            "group flex h-full w-full items-center text-nowrap px-3 text-sm capitalize",
                             c.column.type === "number" && "justify-end",
                           )}
                         />

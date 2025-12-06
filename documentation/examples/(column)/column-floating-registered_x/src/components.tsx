@@ -178,6 +178,9 @@ export function FloatingFilter({ column, grid }: HeaderFloatingCellRendererParam
                 kind: "string",
                 operator: "contains",
                 value: e.target.value,
+                options: {
+                  caseInsensitive: true,
+                },
               },
             };
           });

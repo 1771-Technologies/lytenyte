@@ -59,7 +59,7 @@ const columns: Column<DEXPerformanceData>[] = [
     headerRenderer: makePerfHeaderCell("Perf %", "1w"),
     name: "Perf % 1W",
     type: "number,",
-    groupVisibility: "open",
+    groupVisibility: "always",
     groupPath: ["Performance"],
   },
   {

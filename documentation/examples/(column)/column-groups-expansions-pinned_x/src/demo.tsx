@@ -15,7 +15,6 @@ import {
 } from "./components";
 import type { DEXPerformanceData } from "@1771technologies/grid-sample-data/dex-pairs-performance";
 import { data } from "@1771technologies/grid-sample-data/dex-pairs-performance";
-import { ChevronLeftIcon, ChevronRightIcon } from "@1771technologies/lytenyte-pro/icons";
 
 const columns: Column<DEXPerformanceData>[] = [
   {
@@ -126,17 +125,8 @@ export default function ColumnBase() {
                           <Grid.HeaderGroupCell
                             cell={c}
                             key={c.idOccurrence}
-                            className="text-xs! group flex items-center px-2"
-                          >
-                            <div className="flex-1">{c.id}</div>
-                            <button
-                              className="text-ln-gray-90 hidden cursor-pointer items-center justify-center text-base group-data-[ln-collapsible=true]:flex"
-                              onClick={() => grid.api.columnToggleGroup(c.id)}
-                            >
-                              <ChevronLeftIcon className="hidden group-data-[ln-collapsed=false]:block" />
-                              <ChevronRightIcon className="block group-data-[ln-collapsed=false]:hidden" />
-                            </button>
-                          </Grid.HeaderGroupCell>
+                            className="text-xs! group flex items-center justify-center px-2"
+                          />
                         );
 
                       return (

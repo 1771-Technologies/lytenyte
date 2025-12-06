@@ -80,7 +80,7 @@ export default function ColumnBase() {
                         <Grid.Cell
                           key={c.id}
                           cell={c}
-                          className="border-x-0! data-[ln-cell=true]:border-b-0! flex h-full w-full items-center justify-center text-sm"
+                          className="flex h-full w-full items-center justify-center text-sm"
                         />
                       );
                     })}

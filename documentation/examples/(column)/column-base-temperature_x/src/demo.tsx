@@ -58,7 +58,7 @@ export default function ColumnBase() {
                         key={c.id}
                         cell={c}
                         className={tw(
-                          "flex h-full w-full items-center justify-center text-sm text-nowrap capitalize",
+                          "flex h-full w-full items-center justify-center text-nowrap text-sm capitalize",
                           c.column.type === "number" && "justify-end",
                         )}
                       />
@@ -80,7 +80,7 @@ export default function ColumnBase() {
                         <Grid.Cell
                           key={c.id}
                           cell={c}
-                          className="flex h-full w-full items-center justify-center border-x-0! text-sm data-[ln-cell=true]:border-b-0!"
+                          className="flex h-full w-full items-center justify-center text-sm"
                         />
                       );
                     })}

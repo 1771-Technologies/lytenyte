@@ -22,9 +22,9 @@ export function HeatMapCell({
   return (
     <div
       style={{ background: bg }}
-      className="flex h-full w-full items-center justify-center font-bold text-white group-hover:opacity-90"
+      className="flex h-full w-full items-center justify-center text-white group-hover:opacity-70"
     >
-      {value}
+      {value.toFixed(1)}°C
     </div>
   );
 }
@@ -36,24 +36,15 @@ export function YearCell({ grid: { api }, row, column }: CellRendererParams<Mont
 }
 
 /**
- * Returns a color between blue and red based on a value.
- * - value <= 0  => pure blue (#0000FF)
- * - value >= 30 => pure red (#FF0000)
- * - values in between interpolate smoothly from blue → red
+ * Interpolate between two HSL colors based on value in [0, 30].
+ * 0  -> hsl(173.4 80.4% 40%)
+ * 30 -> hsl(0 84.2% 60.2%)
  */
 export function valueToColor(value: number): string {
-  const min = 0;
-  const max = 30;
+  const percentage = Math.min((value / 19) * 100, 100);
 
-  // Clamp + normalize value between 0 and 1
-  const t = Math.max(0, Math.min(1, (value - min) / (max - min)));
+  const start = "174.7 83.9% 31.6%";
+  const end = "178.6 84.3% 10%";
 
-  // Blue → Red interpolation:
-  // Blue = (0, 0, 255)
-  // Red  = (255, 0, 0)
-  const r = Math.round(255 * t);
-  const g = 0; // stays at 0
-  const b = Math.round(255 * (1 - t));
-
-  return `rgb(${r}, ${g}, ${b})`;
+  return `color-mix(in hsl, hsl(${start}) ${100 - percentage}%, hsl(${end}) ${percentage}%)`;
 }

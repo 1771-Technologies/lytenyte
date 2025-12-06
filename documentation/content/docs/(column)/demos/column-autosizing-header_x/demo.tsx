@@ -152,7 +152,7 @@ export default function ColumnBase() {
             grid.api.columnAutosize({ includeHeader: true });
           }}
         >
-          Autosize Cells Including Header
+          Autosize Including Headers
         </GridButton>
 
         <GridButton

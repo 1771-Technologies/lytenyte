@@ -28,14 +28,14 @@ const grid = Grid.useLyteNyte({
 ### Pinned Columns & Drag Reordering
 
 When the grid has both pinned and scrollable columns, drag-and-drop
-reordering updates a column's pin state based on where you drop it.
+reordering updates the column's pin state depending on where you drop it.
 
-- Moving an unpinned column over a pinned column pins the moved column.
-- Moving a pinned column over an unpinned column unpins the moved column.
+- Moving an unpinned column over a pinned column causes the moved column to become pinned.
+- Moving a pinned column over an unpinned one unpins the moved column.
 
-Crossing the pinned/scrollable boundary changes the pin state.
-Reordering within the same section leaves it unchanged. The demo below
-shows this boundary-based behavior.
+Crossing the pinned or scrollable boundary when moving columns changes the pin state.
+However, reordering columns within the same section without crossing the boundary leaves it
+unchanged. The demo below shows this boundary-based behavior.
 
 !demo:Moving Pinned Columns="./demos/column-moving-pinned_x"
 

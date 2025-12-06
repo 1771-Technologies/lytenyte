@@ -183,7 +183,7 @@ export function FloatingFilter({ column, grid }: HeaderFloatingCellRendererParam
 
   return (
     <input
-      className="border-ln-gray-30 h-[calc(100%-8px)] w-full rounded-lg border px-2 text-sm"
+      className="border-ln-gray-30 h-[calc(100%-8px)] w-full rounded-lg border px-2 text-sm group-data-[size=small]:h-[calc(100%-4px)] group-data-[size=small]:rounded-sm group-data-[size=small]:text-xs"
       value={filterForColumn?.value ?? ""}
       placeholder="Type to search..."
       onChange={(e) => {
@@ -201,6 +201,9 @@ export function FloatingFilter({ column, grid }: HeaderFloatingCellRendererParam
                 kind: "string",
                 operator: "contains",
                 value: e.target.value,
+                options: {
+                  caseInsensitive: true,
+                },
               },
             };
           });

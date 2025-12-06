@@ -125,7 +125,7 @@ export default function ColumnBase() {
                           <Grid.HeaderGroupCell
                             cell={c}
                             key={c.idOccurrence}
-                            className="text-xs! flex items-center px-2"
+                            className="text-xs! flex items-center justify-center px-2"
                           >
                             {c.groupPath.at(-1)}
                           </Grid.HeaderGroupCell>

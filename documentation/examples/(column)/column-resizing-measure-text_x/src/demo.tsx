@@ -82,7 +82,7 @@ export default function ColumnBase() {
     gridId: useId(),
     rowDataSource: ds,
     columns,
-    columnBase: { width: 80 },
+    columnBase: { width: 90 },
     columnSizeToFit: true,
   });
 
@@ -92,7 +92,7 @@ export default function ColumnBase() {
     <div>
       <div className="flex w-full border-b px-2 py-2">
         <SwitchToggle
-          label="Toggle Size To Fit"
+          label="Toggle Hash Truncate Cells"
           checked={grid.state.columnSizeToFit.useValue()}
           onChange={() => {
             grid.state.columnSizeToFit.set((prev) => !prev);
