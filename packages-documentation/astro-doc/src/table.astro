@@ -1,0 +1,9 @@
+---
+const props = Astro.props;
+---
+
+<div class="border rounded-xl my-8 p-px overflow-hidden border-gray-200">
+  <table {...props}>
+    <slot />
+  </table>
+</div>
