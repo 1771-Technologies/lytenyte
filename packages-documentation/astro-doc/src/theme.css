@@ -216,7 +216,7 @@ body {
     }
 
     table {
-      @apply relative my-8 min-w-full divide-y divide-gray-300;
+      @apply relative min-w-full divide-y divide-gray-300;
     }
     th {
       @apply py-3.5 pl-4 pr-3 text-left text-sm sm:pl-3;
