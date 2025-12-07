@@ -10,37 +10,44 @@ const titleLookup: Record<Props["type"], string> = {
   note: "Note",
   tip: "Tip",
   info: "Info",
-  warn: "Warn",
+  warn: "Warning",
   danger: "Danger",
-  best: "Best",
+  best: "Best Practice",
 };
 const title = props.title ?? titleLookup[props.type];
 const type = props.type;
 ---
 
-<div class:list={["border-l-4 rounded-lg my-4 p-4 border-yellow-500 bg-yellow-500/10"]}>
-  <div class="flex">
-    <div class="shrink-0">
-      <svg
-        viewBox="0 0 20 20"
-        fill="currentColor"
-        data-slot="icon"
-        aria-hidden="true"
-        class="size-5 text-yellow-500"
-      >
-        <path
-          d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495ZM10 5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 10 5Zm0 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"
-          clip-rule="evenodd"
-          fill-rule="evenodd"></path>
-      </svg>
+<div
+  class:list={[
+    "border-l-4 rounded-s-lg rounded-e-xl my-8 p-4 border border-gray-500/30",
+    type === "warn" && "border-l-yellow-500",
+    type === "info" && "border-l-blue-500",
+    type === "tip" && "border-l-green-500",
+    type === "best" && "border-l-teal-500",
+    type === "danger" && "border-l-rose-500",
+    type === "note" && "border-l-emerald-500",
+  ]}
+>
+  <div class="grid grid-cols-[auto_1fr] grid-rows-[auto_1fr] gap-x-4 gap-y-2">
+    <div class="flex items-center gap-1.5 col-span-2">
+      <div class="center size-5">
+        <span
+          class:list={[
+            type === "warn" && "iconify ph--warning-duotone text-yellow-500",
+            type === "info" && "iconify ph--info-duotone text-blue-500",
+            type === "tip" && "iconify ph--warning-duotone text-green-500",
+            type === "best" && "iconify ph--thumbs-up text-teal-500",
+            type === "danger" && "iconify ph--warning-circle-duotone relative top-px text-rose-500",
+            type === "note" && "iconify ph--chat-circle-duotone relative top-px text-emerald-500",
+          ]}></span>
+      </div>
+      <h3 class="text-base mt-0 font-extrabold">{title}</h3>
     </div>
-    <div class="ml-3">
-      <p class="text-sm text-yellow-300">
-        You have no credits left.
-        <a href="#" class="font-medium text-yellow-300 underline hover:text-yellow-200"
-          >Upgrade your account to add more credits.</a
-        >
-      </p>
+    <div role="presentation" class="size-2.5"></div>
+
+    <div>
+      <slot />
     </div>
   </div>
 </div>

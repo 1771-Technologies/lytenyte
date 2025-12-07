@@ -30,12 +30,13 @@
   },
   "dependencies": {
     "@1771technologies/mdx-plugins": "workspace:*",
-    "@tailwindcss/vite": "4.1.17",
     "@astrojs/mdx": "4.3.12",
-    "astro-expressive-code": "0.41.3",
-    "tailwindcss": "4.1.17",
+    "@astrojs/starlight": "^0.37.0",
     "@iconify-json/ph": "1.2.2",
     "@iconify-json/svg-spinners": "1.2.4",
-    "@iconify/tailwind4": "1.2.0"
+    "@iconify/tailwind4": "1.2.0",
+    "@tailwindcss/vite": "4.1.17",
+    "astro-expressive-code": "0.41.3",
+    "tailwindcss": "4.1.17"
   }
 }
