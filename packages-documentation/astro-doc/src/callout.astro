@@ -18,20 +18,29 @@ const title = props.title ?? titleLookup[props.type];
 const type = props.type;
 ---
 
-<div
-  class=""
-  class:list={[
-    "grid grid-cols-[32px_1fr] grid-rows-[auto_1fr] my-8 items-center pl",
-    "w-full my-3 gay-y-1 not-prose p-2 border rounded",
-    type === "info" && "dark:border-blue-950 dark:bg-blue-950/30 border-blue-200 bg-blue-100",
-  ]}
->
-  <div class="flex items-center justify-center h-full relative -top-px text-blue-600">
-    <span class="iconify ph--warning size-4"></span>
-  </div>
-  <h3 class="mt-0 text-base">{title}</h3>
-  <div role="none"></div>
-  <div>
-    <slot />
+<div class:list={["border-l-4 rounded-lg my-4 p-4 border-yellow-500 bg-yellow-500/10"]}>
+  <div class="flex">
+    <div class="shrink-0">
+      <svg
+        viewBox="0 0 20 20"
+        fill="currentColor"
+        data-slot="icon"
+        aria-hidden="true"
+        class="size-5 text-yellow-500"
+      >
+        <path
+          d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495ZM10 5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 10 5Zm0 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"
+          clip-rule="evenodd"
+          fill-rule="evenodd"></path>
+      </svg>
+    </div>
+    <div class="ml-3">
+      <p class="text-sm text-yellow-300">
+        You have no credits left.
+        <a href="#" class="font-medium text-yellow-300 underline hover:text-yellow-200"
+          >Upgrade your account to add more credits.</a
+        >
+      </p>
+    </div>
   </div>
 </div>
