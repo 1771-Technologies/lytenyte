@@ -9,6 +9,7 @@ import CodeFrame from "./code-frame.astro";
 import Steps from "./steps.astro";
 import Tabs from "./tabs.astro";
 import Tab from "./tab.astro";
+import FileTree from "./file-tree/file-tree.astro";
 
 export interface Props {
   entry: {
@@ -27,5 +28,5 @@ const { Content, headings } = await render(entry);
 
 <DocsLayout toc={headings.filter((x: any) => x.depth === 2 || x.depth === 3)}>
   <h1>{entry.data.title}</h1>
-  <Content components={{ Code, CodeFrame, Callout, StandaloneImage, Steps, Tabs, Tab }} />
+  <Content components={{ Code, CodeFrame, Callout, StandaloneImage, Steps, Tabs, Tab, FileTree }} />
 </DocsLayout>

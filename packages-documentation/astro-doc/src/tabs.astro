@@ -14,15 +14,31 @@ const props = Astro.props;
     starlight-tabs {
       border: 1px solid var(--color-gray-200);
       background-color: var(--color-gray-50);
-      padding: 2px 2px 2px 2px;
+      padding-top: 4px;
       border-radius: 16px;
+      overflow: hidden;
+
+      p:first-child {
+        padding-top: 16px;
+      }
+      p:last-child {
+        padding-bottom: 16px;
+      }
+
+      .expressive-code:not(:first-child) {
+        margin-top: 16px;
+      }
 
       .expressive-code {
-        padding-block: 8px;
-        margin-inline: -10px;
+        margin-inline: -16px;
+
         .frame {
           box-shadow: none;
-          border-block: 1px solid var(--color-gray-200);
+          border-block: 0px solid transparent;
+
+          pre {
+            border-radius: 0px;
+          }
         }
       }
 
@@ -35,7 +51,7 @@ const props = Astro.props;
           gap: 16px;
 
           li {
-            padding-inline: 0px;
+            padding-inline: 4px;
             padding-block: 0px;
 
             margin: 0px;
@@ -65,8 +81,7 @@ const props = Astro.props;
         margin: 0px;
         background-color: var(--color-gray-100);
         padding-inline: 16px;
-        padding-block-start: 18px;
-        border-radius: 12px;
+        padding-block-start: 0px;
       }
     }
   }
