@@ -1,0 +1,13 @@
+---
+const props = Astro.props;
+---
+
+<div
+  class:list={[
+    "center p-2 my-8 rounded-xl border border-gray-200",
+    "bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-size-[10px_10px] bg-fixed",
+    "*:dark:[--pattern-fg:var(--color-gray-200)]/50 [--pattern-fg:var(--color-gray-300)]/40",
+  ]}
+>
+  <img {...props} />
+</div>

@@ -132,6 +132,12 @@ body {
   }
 }
 
+@utility center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .no-transition * {
   transition-duration: 0s !important;
   animation-duration: 0s !important;
@@ -178,11 +184,21 @@ body {
     }
 
     ul {
-      @apply ml-4.5 my-6 list-disc;
+      @apply ml-4.5 list-disc;
     }
     ol {
-      @apply ml-4.5 my-6 list-decimal;
+      @apply ml-4.5 list-decimal;
     }
+    /* Only ULs that are NOT inside another UL/OL */
+    ul:not(ul ul, ol ul) {
+      @apply my-6;
+    }
+
+    /* Only OLs that are NOT inside another UL/OL */
+    ol:not(ul ol, ol ol) {
+      @apply my-6;
+    }
+
     li {
       @apply mt-4 py-1;
     }
@@ -190,20 +206,23 @@ body {
       @apply mt-6 border-l-2 pl-6 italic;
     }
     img {
-      @apply my-2 rounded-md;
+      @apply my-2 justify-center rounded-md;
     }
     hr {
       @apply my-4 md:my-8;
     }
 
     table {
-      @apply relative w-full overflow-hidden border-none text-sm [&_tbody_tr:last-child]:border-b-0;
+      @apply relative my-8 min-w-full divide-y divide-gray-300;
     }
     th {
-      @apply [[align=center]]:text-center [[align=right]]:text-right px-4 py-2 text-left font-bold;
+      @apply py-3.5 pl-4 pr-3 text-left text-sm sm:pl-3;
+    }
+    tr {
+      @apply even:bg-gray-100/70;
     }
     td {
-      @apply [[align=center]]:text-center [[align=right]]:text-right whitespace-nowrap px-4 py-2 text-left;
+      @apply whitespace-nowrap px-3 py-4 text-sm;
     }
   }
 }

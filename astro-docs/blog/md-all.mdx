@@ -1,39 +1,184 @@
 ---
-title: Home
+title: LyteNyte Doc MDX Walkthrough
 ---
 
-## Paragraphs
+## Headers
+
+Headers create created using the `#` symbol. Each `#` is one level of the header.
+HTML supports 6 levels of headers, however, only the first four are styled by
+in LyteNyte Doc:
+
+```mdx
+# Header 1
+
+## Header 2
+
+### Header 3
+
+#### Header 4
+
+##### Header 5
+
+###### Header 6
+```
+
+## Text
+
+Normal text is converted into paragraph tags. The standard MD syntax for lists,
+quotes, images, and tables is also supported.
+
+```mdx
+Hello World, **BOLD**, _ITALIC_, ~STRIKETHROUGH~
+
+1. First
+2. Second
+3. Third
+
+- Item 1
+- Item 2
+
+1. First
+   - Item 1
+   - Item 2
+
+2. Second
+3. Third
+
+> Quote here
+
+![alt](https://upload.wikimedia.org/wikipedia/commons/7/70/Example.png)
+
+| Table | Description |
+| ----- | ----------- |
+| Hello | World       |
+```
+
+Hello World, **BOLD**, _ITALIC_, ~STRIKETHROUGH~
+
+**Numbered List**
+
+1. First
+2. Second
+3. Third
+
+**Unordered List**
+
+- Item 1
+- Item 2
+
+**List with nested items**
+
+1. First
+   - Item 1
+   - Item 2
+
+2. Second
+3. Third
+
+> Quote here
+
+![alt](https://upload.wikimedia.org/wikipedia/commons/7/70/Example.png)
+
+| Table | Description |
+| ----- | ----------- |
+| Hello | World       |
+| Hello | World       |
+| Hello | World       |
+| Hello | World       |
+
+## Auto Links
+
+```mdx
+[My Link](https://github.github.com/gfm)
+
+This also works: https://github.github.com/gfm.
+```
+
+[My Link](https://github.github.com/gfm)
+
+This also works: https://github.github.com/gfm.
+
+## Callouts
+
+:::tip
+Tip directive.
 
 Lorem Ipsum is simply dummy text of the printing and typesetting industry.
 Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
 when an unknown printer took a galley of type and scrambled it to make a type
 specimen book. It has survived not only five centuries, but also the
-leap into electronic typesetting, remaining essentially unchanged. It was
-popularised in the 1960s with the release of Letraset sheets containing Lorem
-Ipsum passages, and more recently with desktop publishing software like
-Aldus PageMaker including versions of Lorem Ipsum.
-
-Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-when an unknown printer took a galley of type and scrambled it to make a type
-specimen book. It has survived not only five centuries, but also the
-leap into electronic typesetting, remaining essentially unchanged. It was
-popularised in the 1960s with the release of Letraset sheets containing Lorem
-Ipsum passages, and more recently with desktop publishing software like
-Aldus PageMaker including versions of Lorem Ipsum.
-
-## Text Changes
-
-The is **bold** text.
-
-This is _italic_ text.
-
-This is ~strikethrough~ text.
-
-This is an `inline-code` span.
-
-:::info{title="Callout"}
-Info directive
 :::
 
-::demo[Title One="./play"]
+:::info
+Info directive
+
+Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+when an unknown printer took a galley of type and scrambled it to make a type
+specimen book. It has survived not only five centuries, but also the
+:::
+
+:::warn
+Warning directive
+
+Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+when an unknown printer took a galley of type and scrambled it to make a type
+specimen book. It has survived not only five centuries, but also the
+
+:::
+
+:::danger
+Danger directive
+
+Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+when an unknown printer took a galley of type and scrambled it to make a type
+specimen book. It has survived not only five centuries, but also the
+:::
+
+:::best
+Best directive
+
+Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+when an unknown printer took a galley of type and scrambled it to make a type
+specimen book. It has survived not only five centuries, but also the
+:::
+
+:::note
+Note directive
+
+Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+when an unknown printer took a galley of type and scrambled it to make a type
+specimen book. It has survived not only five centuries, but also the
+:::
+
+## Steps
+
+<Steps>
+
+1. Import the component into your MDX file:
+
+   The paragraph
+   ![alt](https://upload.wikimedia.org/wikipedia/commons/7/70/Example.png)
+
+2. Wrap `<Steps>` around your ordered list items.
+
+</Steps>
+
+## Tabs
+
+<Tabs>
+  <Tab label="Stars">
+
+This results in code:
+
+```tsx
+const x = 23;
+```
+
+</Tab>
+<Tab label="Moons">Io, Europa, Ganymede</Tab>
+</Tabs>

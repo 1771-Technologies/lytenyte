@@ -3,7 +3,12 @@ import tailwindcss from "@tailwindcss/vite";
 import type { AstroIntegration } from "astro";
 import mdx from "@astrojs/mdx";
 import expressiveCode from "astro-expressive-code";
-import { remarkDirective, remarkCallout, remarkDemo } from "@1771technologies/mdx-plugins";
+import {
+  remarkStandaloneImage,
+  remarkDirective,
+  remarkCallout,
+  remarkDemo,
+} from "@1771technologies/mdx-plugins";
 
 export interface OneDocConfig {
   readonly collections?: string[];
@@ -50,7 +55,7 @@ export function astroDoc(opts?: OneDocConfig): AstroIntegration[] {
       },
     }),
     mdx({
-      remarkPlugins: [remarkDemo, remarkDirective, remarkCallout],
+      remarkPlugins: [remarkStandaloneImage, remarkDemo, remarkDirective, remarkCallout],
     }),
   ];
 }

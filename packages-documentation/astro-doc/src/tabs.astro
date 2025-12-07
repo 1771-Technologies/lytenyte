@@ -1,0 +1,73 @@
+---
+import { Tabs as SLTabs } from "@astrojs/starlight/components";
+const props = Astro.props;
+---
+
+<div class="ln-tabs my-8">
+  <SLTabs {...props}>
+    <slot />
+  </SLTabs>
+</div>
+
+<style>
+  .ln-tabs {
+    starlight-tabs {
+      border: 1px solid var(--color-gray-200);
+      background-color: var(--color-gray-50);
+      padding: 2px 2px 2px 2px;
+      border-radius: 16px;
+
+      .expressive-code {
+        padding-block: 8px;
+        margin-inline: -10px;
+        .frame {
+          box-shadow: none;
+          border-block: 1px solid var(--color-gray-200);
+        }
+      }
+
+      .tablist-wrapper {
+        ul {
+          margin: 0px;
+          padding: 0px;
+          padding-inline: 16px;
+          display: flex;
+          gap: 16px;
+
+          li {
+            padding-inline: 0px;
+            padding-block: 0px;
+
+            margin: 0px;
+
+            a {
+              padding: 8px 0px 8px 0px;
+              font-size: 15px;
+              font-weight: 400;
+
+              border-bottom: 2px solid transparent;
+              color: var(--color-gray-600);
+
+              &:hover {
+                color: var(--color-gray-800);
+              }
+
+              &[aria-selected="true"] {
+                border-bottom: 2px solid var(--color-primary-500);
+                color: var(--color-primary-700);
+              }
+            }
+          }
+        }
+      }
+
+      [role="tabpanel"] {
+        margin: 0px;
+        background-color: var(--color-gray-100);
+        padding-inline: 16px;
+        padding-block-start: 18px;
+        border-radius: 12px;
+      }
+    }
+  }
+</style>

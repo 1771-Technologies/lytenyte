@@ -1,0 +1,9 @@
+---
+import { TabItem as SLTab } from "@astrojs/starlight/components";
+
+const props = Astro.props;
+---
+
+<SLTab {...props as any}>
+  <slot />
+</SLTab>
