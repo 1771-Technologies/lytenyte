@@ -76,7 +76,7 @@ frame.throttle = (fn) => {
   return throttled as any;
 };
 
-const nativeRaf = requestAnimationFrame;
+const nativeRaf = typeof window === "undefined" ? () => {} : requestAnimationFrame;
 
 frame.now = () => performance.now();
 frame.batchedUpdates = (fn) => fn();
