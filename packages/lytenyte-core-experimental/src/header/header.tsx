@@ -55,6 +55,8 @@ function HeaderImpl(
       role="rowgroup"
       data-ln-header
       data-ln-gridid={id}
+      data-ln-rowcount={layout.length - (floatingRowEnabled ? 1 : 0)}
+      data-ln-floating={floatingRowEnabled ? true : undefined}
       style={{
         width: xPositions.at(-1)!,
         minWidth: "100%",

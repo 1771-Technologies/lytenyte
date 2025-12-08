@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, type PropsWithChildren } from "react";
+import { useCallback, useMemo, type PropsWithChildren, type RefObject } from "react";
 import { makeRowLayout } from "./make-row-layout.js";
 import type { LayoutRow, RowView } from "../../types/layout.js";
 import { useBounds } from "../bounds/context.js";
@@ -20,6 +20,7 @@ export function RowLayoutProvider<T>({
   rowDetailExpansions,
   rowFullWidthPredicate,
   api,
+  layoutStateRef,
   children,
 }: PropsWithChildren<{
   vp: HTMLElement | null;
@@ -31,6 +32,7 @@ export function RowLayoutProvider<T>({
   rowDetailExpansions: Set<string>;
   rowFullWidthPredicate: RowFullWidthPredicate<T> | null;
   api: Ln.API<any>;
+  layoutStateRef: RefObject<LayoutState>;
 }>) {
   const bounds$ = useBounds();
   const bounds = bounds$.useValue();
@@ -42,7 +44,6 @@ export function RowLayoutProvider<T>({
   const centerCount = rowCount - topCount - botCount;
   const columnCount = columnMeta.columnsVisible.length;
 
-  const layoutStateRef = useRef<LayoutState>(null as unknown as LayoutState);
   if (!layoutStateRef.current) layoutStateRef.current = makeLayoutState(0);
 
   const layoutCache = useMemo(() => {
@@ -64,7 +65,7 @@ export function RowLayoutProvider<T>({
     }
 
     return { layout: { ...layoutState }, cache: new Map<number, LayoutRow<T>>() };
-  }, [botCount, centerCount, columnCount, rowDetailExpansions, snapshot, topCount]);
+  }, [botCount, centerCount, columnCount, layoutStateRef, rowDetailExpansions, snapshot, topCount]);
 
   const columns = columnMeta.columnsVisible;
   const [computeColSpan, computeRowSpan] = useMemo(() => {
@@ -116,7 +117,6 @@ export function RowLayoutProvider<T>({
       ...layout,
     });
 
-    console.log("Updated", rs.rowByIndex);
     const view = makeRowLayout({
       view: n,
       viewCache: cache,

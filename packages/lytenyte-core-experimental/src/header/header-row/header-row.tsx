@@ -24,6 +24,7 @@ function HeaderRowImpl(
         gridTemplateRows: "100%",
         gridRow: `${headerRowIndex + 1} / ${maxRow + 1}`,
         gridColumn: "1 / -1",
+        ...props.style,
       }}
     />
   );
