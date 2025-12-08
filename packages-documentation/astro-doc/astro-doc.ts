@@ -3,6 +3,8 @@ import tailwindcss from "@tailwindcss/vite";
 import type { AstroIntegration } from "astro";
 import mdx from "@astrojs/mdx";
 import expressiveCode from "astro-expressive-code";
+import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
+import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
 import {
   remarkStandaloneImage,
   remarkDirective,
@@ -48,9 +50,13 @@ export function astroDoc(opts?: OneDocConfig): AstroIntegration[] {
     },
 
     expressiveCode({
-      themes: ["vitesse-black", "vitesse-light"],
+      plugins: [pluginCollapsibleSections(), pluginLineNumbers()],
+      defaultProps: {
+        showLineNumbers: false,
+      },
+      themes: ["kanagawa-dragon", "rose-pine-dawn"],
       themeCssSelector: (t) => {
-        if (t.name === "vitesse-black") return `[data-theme="dark"]`;
+        if (t.name === "kanagawa-dragon") return `[data-theme="dark"]`;
         return `[data-theme="light"]`;
       },
     }),
