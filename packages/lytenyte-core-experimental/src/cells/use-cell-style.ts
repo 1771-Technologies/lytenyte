@@ -1,11 +1,11 @@
 import { useMemo, type CSSProperties } from "react";
 import { sizeFromCoord } from "@1771technologies/lytenyte-shared";
-import type { Cell } from "./+types.cell";
+import type { LayoutCell } from "../types/layout";
 
 export function useCellStyle(
   xPositions: Uint32Array,
   yPositions: Uint32Array,
-  cell: Cell,
+  cell: LayoutCell<any>,
   rtl: boolean,
   detailHeight: number,
   additional: CSSProperties | undefined,

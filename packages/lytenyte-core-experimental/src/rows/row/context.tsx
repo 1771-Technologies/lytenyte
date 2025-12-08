@@ -2,7 +2,7 @@ import { createContext, useContext } from "react";
 import type { LayoutRowWithCells } from "../../types/layout.js";
 import type { RowNode } from "../../types/row.js";
 
-export interface RowMetaData {
+export interface RowMeta {
   readonly row: RowNode<any> | null;
   readonly layout: LayoutRowWithCells<any>;
   readonly xPositions: Uint32Array;
@@ -10,7 +10,7 @@ export interface RowMetaData {
   readonly bounds: [number, number];
 }
 
-export const RowContext = createContext<RowMetaData>({
+export const RowContext = createContext<RowMeta>({
   row: null,
   layout: null as any,
   xPositions: new Uint32Array(),
