@@ -229,7 +229,145 @@ Io, Europa, Ganymede
 
 ## Code Blocks
 
-### Code Frames
+**Normal Code block**
+
+```ts
+let _id;
+let fb_id: any;
+fb_id = true;
+fb_id = 23423523;
+
+const firstName = "Tommy";
+const lastName: string = "OneLife";
+let isLoading: boolean;
+isLoading = false;
+```
+
+**Highlights**
+
+```ts {1, 3-4} del={7} ins={8}
+let _id;
+let fb_id: any;
+fb_id = true;
+fb_id = 23423523;
+
+const firstName = "Tommy";
+const lastName: string = "OneLife";
+let isLoading: boolean;
+isLoading = false;
+```
+
+**With Labels**
+
+```ts {"1. this is a label on its own line":3} {4-5} {1} del={"2. This line is deleted":6} ins={"3. This line is inserted":9-11}
+let _id;
+let fb_id: any;
+
+fb_id = true;
+fb_id = 23423523;
+
+const firstName = "Tommy";
+const lastName: string = "OneLife";
+
+let isLoading: boolean;
+isLoading = false;
+```
+
+**Marking Individual Words**
+
+```ts "isLoading"
+let _id;
+let fb_id: any;
+
+fb_id = true;
+fb_id = 23423523;
+
+const firstName = "Tommy";
+const lastName: string = "OneLife";
+
+let isLoading: boolean;
+isLoading = false;
+```
+
+**Word Wrap**
+
+```js wrap hangingIndent=2
+// Example with wrap
+function getLongString() {
+  return "This is a very long string that will most probably not fit into the available space unless the container is extremely wide";
+}
+```
+
+```js wrap=false
+// Example with wrap=false
+function getLongString() {
+  return "This is a very long string that will most probably not fit into the available space unless the container is extremely wide";
+}
+```
+
+**Line numbers**
+
+```ts "isLoading" showLineNumbers
+let _id;
+let fb_id: any;
+
+fb_id = true;
+fb_id = 23423523;
+
+const firstName = "Tommy";
+const lastName: string = "OneLife";
+
+let isLoading: boolean;
+isLoading = false;
+```
+
+```ts showLineNumbers startLineNumber=5
+let _id;
+let fb_id: any;
+
+fb_id = true;
+fb_id = 23423523;
+
+const firstName = "Tommy";
+const lastName: string = "OneLife";
+
+let isLoading: boolean;
+isLoading = false;
+```
+
+**Collapse Parts**
+
+```ts collapse={1-5} collapse={9-11}
+let _id;
+let fb_id: any;
+
+fb_id = true;
+fb_id = 23423523;
+
+const firstName = "Tommy";
+const lastName: string = "OneLife";
+
+let isLoading: boolean;
+isLoading = false;
+```
+
+```ts collapse={1-5} collapse={9-11} showLineNumbers {"1":7}
+let _id;
+let fb_id: any;
+
+fb_id = true;
+fb_id = 23423523;
+
+const firstName = "Tommy";
+const lastName: string = "OneLife";
+
+let isLoading: boolean;
+isLoading = false;
+```
+
+## Code Frames Demo
+
+::demo[Playful Title="./play"]
 
 ## Other Features
 
