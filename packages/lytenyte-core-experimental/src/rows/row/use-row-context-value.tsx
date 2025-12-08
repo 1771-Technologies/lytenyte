@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { RowMetaData } from "./context.js";
+import type { RowMeta } from "./context.js";
 import type { LayoutRowWithCells } from "../../types/layout.js";
 import { useBounds } from "../../root/bounds/context.js";
 import { $colEndBound, $colStartBound } from "../../selectors/selectors.js";
@@ -14,7 +14,7 @@ export function useRowContextValue(
   const start = bounds.useValue($colStartBound);
   const end = bounds.useValue($colEndBound);
 
-  const value = useMemo<RowMetaData>(() => {
+  const value = useMemo<RowMeta>(() => {
     return {
       row: r,
       layout: row,

@@ -1,4 +1,6 @@
-import type { Ln } from "../types";
+import type { Ln } from "../types.js";
+import type { ColumnPin } from "./column.js";
+import type { RowAtom, RowNode, RowPin } from "./row.js";
 
 export interface LayoutHeaderCell<T> {
   readonly kind: "cell";
@@ -9,7 +11,7 @@ export interface LayoutHeaderCell<T> {
   readonly colStart: number;
   readonly colEnd: number;
   readonly colSpan: number;
-  readonly colPin: Ln.ColumnPin;
+  readonly colPin: ColumnPin;
   readonly colFirstEndPin?: boolean;
   readonly colLastStartPin?: boolean;
   readonly column: Ln.LnColumn<T>;
@@ -24,7 +26,7 @@ export interface LayoutHeaderFloating<T> {
   readonly colStart: number;
   readonly colEnd: number;
   readonly colSpan: number;
-  readonly colPin: Ln.ColumnPin;
+  readonly colPin: ColumnPin;
   readonly colFirstEndPin?: boolean;
   readonly colLastStartPin?: boolean;
   readonly column: Ln.LnColumn<T>;
@@ -40,7 +42,7 @@ export interface LayoutHeaderGroup {
   readonly colStart: number;
   readonly colEnd: number;
   readonly colSpan: number;
-  readonly colPin: Ln.ColumnPin;
+  readonly colPin: ColumnPin;
   readonly colFirstEndPin?: boolean;
   readonly colLastStartPin?: boolean;
   readonly isCollapsible: boolean;
@@ -62,10 +64,10 @@ export interface LayoutCell<T> {
   readonly id: string;
   readonly rowIndex: number;
   readonly colIndex: number;
-  readonly row: Ln.RowAtom<Ln.RowNode<T> | null>;
+  readonly row: RowAtom<RowNode<T> | null>;
   readonly column: Ln.LnColumn<T>;
-  readonly colPin: Ln.ColumnPin;
-  readonly rowPin: Ln.RowPin;
+  readonly colPin: ColumnPin;
+  readonly rowPin: RowPin;
   readonly colFirstEndPin?: boolean;
   readonly colLastStartPin?: boolean;
   readonly rowLastPinTop?: boolean;
@@ -77,8 +79,8 @@ export interface LayoutFullWidthRow<T> {
   readonly kind: "full-width";
   readonly id: string;
   readonly rowIndex: number;
-  readonly row: Ln.RowAtom<Ln.RowNode<T> | null>;
-  readonly rowPin: Ln.RowPin;
+  readonly row: RowAtom<RowNode<T> | null>;
+  readonly rowPin: RowPin;
   readonly rowLastPinTop?: boolean;
   readonly rowFirstPinBottom?: boolean;
   readonly rowIsFocusRow?: boolean;
@@ -87,8 +89,8 @@ export interface LayoutFullWidthRow<T> {
 export interface LayoutRowWithCells<T> {
   readonly kind: "row";
   readonly rowIndex: number;
-  readonly row: Ln.RowAtom<Ln.RowNode<T> | null>;
-  readonly rowPin: Ln.RowPin;
+  readonly row: RowAtom<RowNode<T> | null>;
+  readonly rowPin: RowPin;
   readonly rowLastPinTop?: boolean;
   readonly rowFirstPinBottom?: boolean;
   readonly rowIsFocusRow?: boolean;

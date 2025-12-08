@@ -1,13 +1,14 @@
 import { forwardRef, memo, type JSX } from "react";
 import { sizeFromCoord } from "@1771technologies/lytenyte-shared";
 import { CellDefault } from "./cell-default.js";
-import { CellSpacePinStart, CellSpacerPinEnd } from "./cell-spacer.js";
 import { useCellStyle } from "./use-cell-style.js";
 import { useGridRoot } from "../root/context.js";
 import type { LayoutCell } from "../types/layout.js";
 import { useBounds } from "../root/bounds/context.js";
 import { $colEndBound, $colStartBound } from "../selectors/selectors.js";
 import { useRowMeta } from "../rows/row/context.js";
+import { CellSpacerEnd } from "./cell-spacers/cell-spacer-end.js";
+import { CellSpacerStart } from "./cell-spacers/cell-spacer-start.js";
 
 export interface CellProps {
   readonly cell: LayoutCell<any>;
@@ -20,6 +21,7 @@ export const Cell = forwardRef<
   const bounds = useBounds();
   const end = bounds.useValue($colEndBound);
   const start = bounds.useValue($colStartBound);
+
   // This enforces our column virtualization.
   if (
     props.cell.colPin == null &&
@@ -34,9 +36,20 @@ export const Cell = forwardRef<
 const CellImpl = memo(
   forwardRef<HTMLDivElement, Omit<JSX.IntrinsicElements["div"], "children"> & CellProps>(
     function Cell({ cell, ...props }, forwarded) {
-      const { id, rtl, columnBase: base, xPositions, yPositions, api } = useGridRoot();
-      const { row } = useRowMeta();
-      console.log(row);
+      const bounds = useBounds();
+      const {
+        id,
+        rtl,
+        columnBase: base,
+        xPositions,
+        yPositions,
+        api,
+        vpInnerWidth,
+        columnMeta,
+      } = useGridRoot();
+
+      const rowMeta = useRowMeta();
+      const row = rowMeta.row;
 
       const Renderer = cell.column.cellRenderer ?? base.cellRenderer ?? CellDefault;
 
@@ -59,12 +72,22 @@ const CellImpl = memo(
 
       return (
         <>
-          {cell.colFirstEndPin && <CellSpacerPinEnd />}
+          {cell.colFirstEndPin && (
+            <CellSpacerEnd
+              bounds={bounds}
+              viewportWidth={vpInnerWidth}
+              visibleEndCount={columnMeta.columnVisibleEndCount}
+              xPositions={xPositions}
+            />
+          )}
 
           <div
             {...props}
             ref={forwarded}
             role="gridcell"
+            tabIndex={isEditing ? -1 : 0}
+            style={{ ...style, ...props.style }}
+            // Data Properties
             data-ln-rowindex={cell.rowIndex}
             data-ln-colindex={cell.colIndex}
             data-ln-colspan={cell.colSpan}
@@ -77,13 +100,19 @@ const CellImpl = memo(
             data-ln-first-bottom-pin={cell.rowFirstPinBottom}
             data-ln-last-start-pin={cell.colLastStartPin}
             data-ln-first-end-pin={cell.colFirstEndPin}
-            tabIndex={isEditing ? -1 : 0}
-            style={{ ...style, ...props.style }}
           >
             {/* {isEditing && <CellEditor cell={cell} />} */}
             {!isEditing && <Renderer column={cell.column} row={row} api={api} />}
           </div>
-          {cell.colLastStartPin && <CellSpacePinStart xPositions={xPositions} />}
+
+          {cell.colLastStartPin && (
+            <CellSpacerStart
+              xPositions={xPositions}
+              bounds={bounds}
+              rowMeta={rowMeta}
+              visibleStartCount={columnMeta.columnVisibleStartCount}
+            />
+          )}
         </>
       );
     },
