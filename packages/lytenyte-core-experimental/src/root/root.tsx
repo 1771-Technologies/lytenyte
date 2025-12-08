@@ -1,4 +1,11 @@
-import { useId, useImperativeHandle, useMemo, useState, type PropsWithChildren } from "react";
+import {
+  useId,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+  type PropsWithChildren,
+} from "react";
 import { GridContext, type GridContextType } from "./context.js";
 import { useViewportDimensions } from "./use-viewport-dimensions.js";
 import { useXPositions } from "./positions/use-x-positions.js";
@@ -16,8 +23,10 @@ import { RowLayoutProvider } from "./layout-rows/row-layout-provider.js";
 import { usePiece } from "../hooks/use-piece.js";
 import { useRowDetail } from "./row-detail/use-row-detail.js";
 import { RowDetailContext } from "./row-detail/row-detail-context.js";
-import { useApi } from "./use-api.js";
+import { useApi } from "./api/use-api.js";
 import type { Ln } from "../types.js";
+import { FocusPositionProvider } from "./focus-position/focus-position-provider.js";
+import type { LayoutState } from "@1771technologies/lytenyte-shared";
 
 export function Root<T>(props: PropsWithChildren<Ln.Props<T>>) {
   const {
@@ -125,7 +134,21 @@ export function Root<T>(props: PropsWithChildren<Ln.Props<T>>) {
   const fullWidthPiece = usePiece(rowFullWidthRenderer);
   const rowDetailPiece = usePiece(detailCtx.detailExpansions);
 
-  const api = useApi(props, detailCtx, view, rowSource);
+  const layoutStateRef = useRef<LayoutState>(null as unknown as LayoutState);
+  const api = useApi(
+    rtl ?? false,
+    props,
+    detailCtx,
+    view,
+    rowSource,
+    rowFullWidthPredicate,
+    layoutStateRef,
+    vp,
+    xPositions,
+    yPositions,
+    totalHeaderHeight,
+  );
+
   useImperativeHandle(ref, () => api as any, [api]);
 
   const value = useMemo<GridContextType>(() => {
@@ -176,39 +199,42 @@ export function Root<T>(props: PropsWithChildren<Ln.Props<T>>) {
   ]);
 
   return (
-    <GridContext.Provider value={value}>
-      <BoundsProvider
-        startCount={view.startCount}
-        endCount={view.endCount}
-        rowOverscanTop={rowOverscanTop}
-        rowOverscanBottom={rowOverscanBottom}
-        colOverscanEnd={colOverscanEnd}
-        colOverscanStart={colOverscanStart}
-        viewport={vp}
-        viewportHeight={dimensions.innerHeight}
-        viewportWidth={dimensions.innerWidth}
-        xPositions={xPositions}
-        yPositions={yPositions}
-        rowSource={rowSource}
-      >
-        <RowDetailContext.Provider value={detailCtx}>
-          <ColumnLayoutProvider view={view} floatingRowEnabled={floatingRowEnabled}>
-            <RowLayoutProvider
-              columnMeta={columnMeta}
-              rowDetailExpansions={detailCtx.detailExpansions}
-              rowFullWidthPredicate={rowFullWidthPredicate}
-              rowScan={rowScanDistance}
-              rs={rowSource}
-              virtualizeCols={virtualizeCols}
-              virtualizeRows={virtualizeRows}
-              vp={vp}
-              api={api}
-            >
-              <RowSourceProvider rowSource={rowSource}>{children}</RowSourceProvider>
-            </RowLayoutProvider>
-          </ColumnLayoutProvider>
-        </RowDetailContext.Provider>
-      </BoundsProvider>
-    </GridContext.Provider>
+    <FocusPositionProvider>
+      <GridContext.Provider value={value}>
+        <BoundsProvider
+          startCount={view.startCount}
+          endCount={view.endCount}
+          rowOverscanTop={rowOverscanTop}
+          rowOverscanBottom={rowOverscanBottom}
+          colOverscanEnd={colOverscanEnd}
+          colOverscanStart={colOverscanStart}
+          viewport={vp}
+          viewportHeight={dimensions.innerHeight}
+          viewportWidth={dimensions.innerWidth}
+          xPositions={xPositions}
+          yPositions={yPositions}
+          rowSource={rowSource}
+        >
+          <RowDetailContext.Provider value={detailCtx}>
+            <ColumnLayoutProvider view={view} floatingRowEnabled={floatingRowEnabled}>
+              <RowLayoutProvider
+                columnMeta={columnMeta}
+                rowDetailExpansions={detailCtx.detailExpansions}
+                rowFullWidthPredicate={rowFullWidthPredicate}
+                rowScan={rowScanDistance}
+                rs={rowSource}
+                virtualizeCols={virtualizeCols}
+                virtualizeRows={virtualizeRows}
+                vp={vp}
+                api={api}
+                layoutStateRef={layoutStateRef}
+              >
+                <RowSourceProvider rowSource={rowSource}>{children}</RowSourceProvider>
+              </RowLayoutProvider>
+            </ColumnLayoutProvider>
+          </RowDetailContext.Provider>
+        </BoundsProvider>
+      </GridContext.Provider>
+    </FocusPositionProvider>
   );
 }

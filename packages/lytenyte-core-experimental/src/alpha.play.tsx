@@ -62,6 +62,7 @@ export default function Experimental() {
 
   return (
     <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <button>A</button>
       <div style={{ height: "90vh", width: "90vw" }}>
         <Root columns={columns} rowSource={rowStore} floatingRowEnabled>
           <Viewport style={{ border: "1px solid white" }}>
@@ -74,6 +75,7 @@ export default function Experimental() {
           </Viewport>
         </Root>
       </div>
+      <button>A</button>
     </div>
   );
 }

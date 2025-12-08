@@ -9,6 +9,7 @@ import type {
   RowSource,
 } from "./types/row.js";
 import type { ColumnGroupVisibility, ColumnPin, PathField } from "./types/column.js";
+import type { PositionFullWidthRow, PositionGridCell } from "./types/position.js";
 
 export namespace Ln {
   export type HeaderParams<
@@ -160,6 +161,19 @@ export namespace Ln {
   export type API<T, K extends Record<string, any> = object> = {
     readonly columnField: (columnOrId: string | LnColumn<T, K>, row: RowNode<T>) => unknown;
     readonly rowDetailHeight: (rowId: RowNode<T> | string) => number;
+
+    readonly scrollIntoView: (params: {
+      readonly column?: number | string | LnColumn<T, K>;
+      readonly row?: number;
+      readonly behavior?: "smooth" | "auto" | "instant";
+    }) => void;
+
+    readonly cellRoot: (
+      row: number,
+      column: number,
+    ) => PositionGridCell | PositionFullWidthRow | null;
+
+    readonly rowDetailExpanded: (rowOrId: RowNode<T> | string | number) => boolean;
 
     readonly props: () => Props<T>;
   } & K;

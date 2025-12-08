@@ -1,11 +1,11 @@
-import type { Ln } from "./types.js";
+import type { RowSource } from "./types/row.js";
 
 export const EMPTY_POSITION_ARRAY = new Uint32Array();
 export const AnyArray = Object.freeze([]) as any;
 export const AnyObject = Object.freeze({}) as any;
 export const AnySet = Object.freeze(new Set<any>());
 
-export const DEFAULT_ROW_SOURCE: Ln.RowSource = {
+export const DEFAULT_ROW_SOURCE: RowSource = {
   useBottomCount: () => 0,
   useTopCount: () => 0,
   useRowCount: () => 0,
