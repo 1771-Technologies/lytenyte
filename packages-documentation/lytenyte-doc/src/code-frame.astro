@@ -1,0 +1,196 @@
+---
+import FenceContainer from "./fence-container.astro";
+import Tab from "./tab.astro";
+import Tabs from "./tabs.astro";
+import { Code } from "astro-expressive-code/components";
+import { Resetter } from "./resetter";
+
+interface Props {
+  title: string;
+  files: Record<string, string>;
+}
+
+const props = Astro.props;
+
+const tabs = Object.entries(props.files);
+---
+
+<div class="flex flex-col overflow-hidden rounded-xl border border-gray-200 shadow my-8 code-demo">
+  <div class="bg-gray-100 flex items-center gap-1 p-4">
+    <h3 class="text-base font-medium text-gray-800 my-0">
+      {props.title}
+    </h3>
+  </div>
+  <FenceContainer class="p-2 my-0 rounded-none">
+    <div class="bg-gray-50">
+      <Resetter client:load>
+        <slot />
+      </Resetter>
+    </div>
+  </FenceContainer>
+  <div class="relative flex items-center">
+    <div class="flex-1 min-h-12 cf-root group" data-expanded="false">
+      <div class="codeframe-tabs-container group-data-[expanded=true]:block hidden">
+        {
+          tabs.length > 0 && (
+            <Tabs class="codeframe-tabs">
+              {tabs.map(([filename, code]) => {
+                const lang = filename.split(".").at(-1);
+                return (
+                  <Tab label={filename}>
+                    <Code lang={lang} code={code} />
+                  </Tab>
+                );
+              })}
+            </Tabs>
+          )
+        }
+      </div>
+
+      <div class="flex justify-end items-center py-2 px-3 gap-2 absolute top-0.5 z-1 right-0">
+        <button
+          class="cf-expand-btn flex items-center text-[12px] gap-1 center transition-colors rounded-lg hover:bg-gray-200 py-1 px-1.5 cursor-pointer"
+        >
+          <span class="iconify ph--arrows-out-simple size-4 group-data-[expanded=true]:hidden block"
+          ></span>
+          <span class="iconify ph--arrows-in-simple size-4 group-data-[expanded=false]:hidden block"
+          ></span>
+          <span class="group-data-[expanded=false]:block hidden">Expand Code</span>
+          <span class="group-data-[expanded=false]:hidden block">Collapse Code</span>
+        </button>
+
+        <button
+          class="size-7 center transition-colors rounded-lg hover:bg-gray-200 cursor-pointer ln-resetter"
+        >
+          <span class="iconify ph--arrows-counter-clockwise-duotone size-4.5"></span>
+        </button>
+
+        <button
+          class="make-sandbox size-7 center transition-colors rounded-lg hover:bg-gray-200 cursor-pointer"
+        >
+          <span class="sr-only">Fork code on code sandbox</span>
+          <span class="iconify ph--codesandbox-logo-duotone size-4.5"></span>
+        </button>
+
+        <a
+          class="size-7 center transition-colors rounded-lg hover:bg-gray-200"
+          target="_blank"
+          href="#"
+        >
+          <span class="sr-only">Fork code on code stackblitz</span>
+          <span class="iconify logos--stackblitz-icon size-4.5"></span>
+        </a>
+
+        <button
+          class="cf-copy-btn relative top-px hover:bg-gray-200 size-7 center rounded-lg transition-colors cursor-pointer group"
+        >
+          <span class="iconify ph--copy-duotone size-4.5 group-data-[active=true]:hidden"></span>
+          <span
+            class="iconify ph--check size-4.5 text-green-500 hidden group-data-[active=true]:block"
+          ></span>
+        </button>
+      </div>
+
+      {
+        tabs.map(([filename, code]) => {
+          return (
+            <div
+              data-copy-block="true"
+              data-content={code}
+              data-filename={filename}
+              class="hidden"
+            />
+          );
+        })
+      }
+    </div>
+  </div>
+</div>
+
+<script>
+  import { openInCodeSandbox } from "./create-code-sandbox";
+
+  const getTabsContainerRoot = (el: HTMLElement) => {
+    let current = el;
+    while (current && !current.classList.contains("cf-root")) {
+      current = current.parentElement!;
+    }
+    return current;
+  };
+
+  const getCodeDemo = (el: HTMLElement) => {
+    let current = el;
+    while (current && !current.classList.contains("code-demo")) {
+      current = current.parentElement!;
+    }
+    return current;
+  };
+
+  const resetters = Array.from(document.querySelectorAll(".ln-resetter")) as HTMLElement[];
+  resetters.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const demo = getCodeDemo(btn);
+      if (!demo) return;
+
+      const resetter = demo.querySelector(".ln-resetter");
+      if (!resetter) return;
+
+      resetter.dispatchEvent(new Event("ln-reset"));
+    });
+  });
+
+  const expandBtns = Array.from(document.querySelectorAll(".cf-expand-btn")) as HTMLElement[];
+  expandBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const root = getTabsContainerRoot(btn);
+      if (!root) return;
+
+      const expanded = root.getAttribute("data-expanded") === "true";
+      if (expanded) root.setAttribute("data-expanded", "false");
+      else root.setAttribute("data-expanded", "true");
+    });
+  });
+
+  const copyBtns = Array.from(document.querySelectorAll(".cf-copy-btn")) as HTMLButtonElement[];
+  copyBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const root = getTabsContainerRoot(btn);
+
+      const file = Array.from(root.querySelectorAll("li.tab a"))
+        .filter((x) => x.getAttribute("aria-selected") === "true")
+        .map((x) => x.textContent.trim())[0];
+
+      if (!file) return;
+
+      const block = root.querySelector(
+        `[data-copy-block][data-filename="${file}"]`,
+      ) as HTMLElement | null;
+      if (!block) return;
+
+      const text = block.getAttribute("data-content")!;
+      navigator.clipboard.writeText(text);
+
+      btn.setAttribute("data-active", "true");
+      btn.disabled = true;
+
+      setTimeout(() => {
+        btn.setAttribute("data-active", "false");
+        btn.disabled = false;
+      }, 2000);
+    });
+  });
+
+  const makeSandboxBtns = Array.from(
+    document.querySelectorAll(".make-sandbox"),
+  ) as HTMLButtonElement[];
+
+  makeSandboxBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      openInCodeSandbox({
+        files: {
+          "index.html": { content: "<h1>Lee</h1>" },
+        },
+      });
+    });
+  });
+</script>

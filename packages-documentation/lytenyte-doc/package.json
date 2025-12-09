@@ -1,5 +1,5 @@
 {
-  "name": "@1771technologies/astro-doc",
+  "name": "@1771technologies/lytenyte-doc",
   "version": "1.0.13",
   "type": "module",
   "license": "Apache-2.0",
@@ -12,13 +12,14 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/1771-technologies/lytenyte.git",
-    "directory": "packages-documentation/astro-doc"
+    "directory": "packages-documentation/lytenyte-doc"
   },
   "bugs": {
     "url": "https://github.com/1771-technologies/lytenyte/issues"
   },
   "exports": {
-    ".": "./astro-doc.ts",
+    ".": "./lytenyte-doc.ts",
+    "./code": "./code.ts",
     "./*.astro": "./src/*.astro",
     "./theme.css": "./src/theme.css"
   },
@@ -26,27 +27,31 @@
     "access": "public"
   },
   "devDependencies": {
-    "@types/hast": "^3.0.4",
-    "astro": "^5.16.1"
+    "@types/hast": "3.0.4",
+    "astro": "5.16.1"
   },
   "dependencies": {
     "@1771technologies/mdx-plugins": "workspace:*",
     "@astrojs/mdx": "4.3.12",
-    "@astrojs/starlight": "^0.37.0",
-    "@expressive-code/plugin-collapsible-sections": "^0.41.3",
-    "@expressive-code/plugin-line-numbers": "^0.41.3",
+    "@astrojs/starlight": "0.37.0",
+    "@expressive-code/plugin-collapsible-sections": "0.41.3",
+    "@expressive-code/plugin-line-numbers": "0.41.3",
+    "@iconify-json/logos": "^1.2.10",
     "@iconify-json/ph": "1.2.2",
     "@iconify-json/svg-spinners": "1.2.4",
     "@iconify/tailwind4": "1.2.0",
+    "@lion/ui": "^0.15.3",
     "@tailwindcss/vite": "4.1.17",
     "astro-expressive-code": "0.41.3",
-    "hast": "^1.0.0",
-    "hast-util-from-html": "^2.0.3",
-    "hast-util-select": "^6.0.4",
-    "hast-util-to-string": "^3.0.1",
-    "hastscript": "^9.0.1",
-    "rehype": "^13.0.2",
+    "codesandbox": "^2.2.3",
+    "hast": "1.0.0",
+    "hast-util-from-html": "2.0.3",
+    "hast-util-select": "6.0.4",
+    "hast-util-to-string": "3.0.1",
+    "hastscript": "9.0.1",
+    "rehype": "13.0.2",
+    "tailwind-merge": "^3.3.1",
     "tailwindcss": "4.1.17",
-    "unist-util-visit": "^5.0.0"
+    "unist-util-visit": "5.0.0"
   }
 }

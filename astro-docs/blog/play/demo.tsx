@@ -1,3 +1,10 @@
+import { useState } from "react";
+
 export default function Load() {
-  return <div>le</div>;
+  const [count, setCount] = useState(0);
+  return (
+    <div className="border px-2 py-2" onClick={() => setCount((prev) => prev + 1)}>
+      {count}
+    </div>
+  );
 }
