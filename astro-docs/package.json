@@ -9,11 +9,11 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@1771technologies/astro-doc": "workspace:*",
-    "@astrojs/react": "^4.4.2",
-    "@types/react-dom": "^19.1.7",
-    "astro": "^5.16.1",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "@1771technologies/lytenyte-doc": "workspace:*",
+    "@astrojs/react": "4.4.2",
+    "@types/react-dom": "19.1.7",
+    "astro": "5.16.1",
+    "react": "19.1.1",
+    "react-dom": "19.1.1"
   }
 }

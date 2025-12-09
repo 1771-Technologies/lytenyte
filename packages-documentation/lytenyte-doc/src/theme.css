@@ -79,7 +79,7 @@ body {
 
 @plugin "@iconify/tailwind4" {
   prefix: "ico";
-  prefixes: ph, svg-spinners;
+  prefixes: ph, svg-spinners, logos;
 }
 
 @theme {
@@ -228,4 +228,19 @@ body {
       @apply whitespace-nowrap px-3 py-4 text-sm;
     }
   }
+}
+
+.codeframe-tabs pre {
+  border: 0px !important;
+}
+.codeframe-tabs .copy {
+  display: none !important;
+}
+
+.codeframe-tabs .expressive-code {
+  margin: 0px;
+}
+
+.expressive-code {
+  @apply my-8;
 }

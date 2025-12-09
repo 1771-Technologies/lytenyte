@@ -3,8 +3,6 @@ import tailwindcss from "@tailwindcss/vite";
 import type { AstroIntegration } from "astro";
 import mdx from "@astrojs/mdx";
 import expressiveCode from "astro-expressive-code";
-import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
-import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
 import {
   remarkStandaloneImage,
   remarkDirective,
@@ -48,18 +46,7 @@ export function astroDoc(opts?: OneDocConfig): AstroIntegration[] {
         },
       },
     },
-
-    expressiveCode({
-      plugins: [pluginCollapsibleSections(), pluginLineNumbers()],
-      defaultProps: {
-        showLineNumbers: false,
-      },
-      themes: ["kanagawa-dragon", "rose-pine-dawn"],
-      themeCssSelector: (t) => {
-        if (t.name === "kanagawa-dragon") return `[data-theme="dark"]`;
-        return `[data-theme="light"]`;
-      },
-    }),
+    expressiveCode(),
     mdx({
       remarkPlugins: [remarkStandaloneImage, remarkDemo, remarkDirective, remarkCallout],
     }),
@@ -68,11 +55,11 @@ export function astroDoc(opts?: OneDocConfig): AstroIntegration[] {
 
 const pageTemplate = `
 ---
-import "@1771technologies/astro-doc/theme.css";
+import "@1771technologies/lytenyte-doc/theme.css";
 import { getCollection } from "astro:content";
 import { render } from "astro:content";
 
-import Page from "@1771technologies/astro-doc/page.astro";
+import Page from "@1771technologies/lytenyte-doc/page.astro";
 
 export async function getStaticPaths() {
   const entries = await getCollection("##replace");
@@ -86,3 +73,5 @@ const { entry } = Astro.props;
 
 <Page entry={entry} />
 `.trim();
+
+export { generateId } from "./collections/generate-id.js";
