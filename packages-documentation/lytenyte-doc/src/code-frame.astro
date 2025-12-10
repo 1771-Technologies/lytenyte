@@ -8,10 +8,11 @@ import { Resetter } from "./resetter";
 interface Props {
   title: string;
   files: Record<string, string>;
+  codeSandbox: string;
+  stackBlitz: string;
 }
 
-const props = Astro.props;
-
+const { codeSandbox, stackBlitz, ...props } = Astro.props;
 const tabs = Object.entries(props.files);
 ---
 
@@ -65,19 +66,20 @@ const tabs = Object.entries(props.files);
           <span class="iconify ph--arrows-counter-clockwise-duotone size-4.5"></span>
         </button>
 
-        <button
-          class="make-sandbox size-7 center transition-colors rounded-lg hover:bg-gray-200 cursor-pointer"
+        <a
+          href={codeSandbox}
+          target="_blank"
+          class="center size-7 cursor-pointer rounded-lg transition-colors hover:bg-gray-200"
         >
           <span class="sr-only">Fork code on code sandbox</span>
           <span class="iconify ph--codesandbox-logo-duotone size-4.5"></span>
-        </button>
-
+        </a>
         <a
-          class="size-7 center transition-colors rounded-lg hover:bg-gray-200"
+          href={stackBlitz}
           target="_blank"
-          href="#"
+          class="center size-7 cursor-pointer rounded-lg transition-colors hover:bg-gray-200"
         >
-          <span class="sr-only">Fork code on code stackblitz</span>
+          <span class="sr-only">Fork code on stack blitz</span>
           <span class="iconify logos--stackblitz-icon size-4.5"></span>
         </a>
 
@@ -177,20 +179,6 @@ const tabs = Object.entries(props.files);
         btn.setAttribute("data-active", "false");
         btn.disabled = false;
       }, 2000);
-    });
-  });
-
-  const makeSandboxBtns = Array.from(
-    document.querySelectorAll(".make-sandbox"),
-  ) as HTMLButtonElement[];
-
-  makeSandboxBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      openInCodeSandbox({
-        files: {
-          "index.html": { content: "<h1>Lee</h1>" },
-        },
-      });
     });
   });
 </script>

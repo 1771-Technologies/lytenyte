@@ -482,6 +482,9 @@ importers:
       hastscript:
         specifier: 9.0.1
         version: 9.0.1
+      lz-string:
+        specifier: ^1.5.0
+        version: 1.5.0
       rehype:
         specifier: 13.0.2
         version: 13.0.2
@@ -504,6 +507,9 @@ importers:
 
   packages-documentation/mdx-plugins:
     dependencies:
+      '@manypkg/find-root':
+        specifier: 3.1.0
+        version: 3.1.0
       mdast:
         specifier: ^3.0.0
         version: 3.0.0
@@ -9915,7 +9921,7 @@ snapshots:
   '@manypkg/tools@2.1.0':
     dependencies:
       jju: 1.4.0
-      js-yaml: 4.1.0
+      js-yaml: 4.1.1
       tinyglobby: 0.2.15
 
   '@mdx-js/mdx@3.1.1':
