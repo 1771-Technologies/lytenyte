@@ -12,9 +12,12 @@ import {
 
 export interface OneDocConfig {
   readonly collections?: string[];
+
+  readonly githubOrg?: string;
+  readonly githubRepo?: string;
 }
 
-export function astroDoc(opts?: OneDocConfig): AstroIntegration[] {
+export function lnDoc(opts?: OneDocConfig): AstroIntegration[] {
   const collections = opts?.collections ?? ["blog"];
 
   return [
@@ -48,7 +51,12 @@ export function astroDoc(opts?: OneDocConfig): AstroIntegration[] {
     },
     expressiveCode(),
     mdx({
-      remarkPlugins: [remarkStandaloneImage, remarkDemo, remarkDirective, remarkCallout],
+      remarkPlugins: [
+        remarkStandaloneImage,
+        [remarkDemo, { ...opts }],
+        remarkDirective,
+        remarkCallout,
+      ],
     }),
   ];
 }

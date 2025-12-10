@@ -49,6 +49,7 @@
     "hast-util-select": "6.0.4",
     "hast-util-to-string": "3.0.1",
     "hastscript": "9.0.1",
+    "lz-string": "^1.5.0",
     "rehype": "13.0.2",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "4.1.17",
