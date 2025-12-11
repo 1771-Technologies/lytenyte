@@ -10,6 +10,7 @@ export default defineEcConfig({
     showLineNumbers: false,
   },
   themes: ["kanagawa-dragon", "rose-pine-dawn"],
+  frames: false,
   themeCssSelector: (t) => {
     if (t.name === "kanagawa-dragon") return `[data-theme="dark"]`;
     return `[data-theme="light"]`;

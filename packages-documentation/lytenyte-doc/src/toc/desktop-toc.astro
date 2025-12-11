@@ -8,23 +8,23 @@ export interface Props {
 const { toc } = Astro.props;
 ---
 
-<h3 class="pb-2 text-sm flex items-center gap-2 relative -left-1 text-gray-600">
+<h3 class="pb-2 text-sm flex items-center gap-2 relative -left-1 text-ln-muted-foreground">
   <span class="iconify ph--text-align-left-light size-4"></span>
   On this page
 </h3>
 
 <div class="relative">
-  <div role="none" class="absolute transition-all bg-gray-800 w-px" id="toc-border"></div>
+  <div role="none" class="absolute transition-all bg-ln-foreground w-px" id="toc-border"></div>
 
-  <div class="flex flex-col text-sm gap-1.5 border-l border-gray-200" id="toc">
+  <div class="flex flex-col text-sm gap-1.5 border-l border-ln-border" id="toc">
     {
       toc.map((x) => {
         return (
           <a
             class:list={[
               x.depth === 3 ? "pl-6" : "pl-3",
-              "font-semibold text-gray-500 hover:text-gray-900 transition-colors cursor-pointer py-0.5 toc-link",
-              "data-[active=true]:text-gray-900",
+              "text-ln-muted-foreground hover:text-ln-accent-foreground transition-colors cursor-pointer py-0.5 toc-link",
+              "data-[active=true]:text-ln-foreground data-[active=true]:font-semibold",
             ]}
             href={`#${x.slug}`}
           >

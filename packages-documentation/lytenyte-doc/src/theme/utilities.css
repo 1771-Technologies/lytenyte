@@ -1,0 +1,24 @@
+@utility step {
+  counter-increment: step;
+  @apply relative;
+
+  &:before {
+    @apply right-0 mr-2 hidden size-7 items-center justify-center rounded-full text-center -indent-px font-mono text-sm font-medium text-gray-500 md:absolute;
+    content: counter(step);
+  }
+}
+
+@utility no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

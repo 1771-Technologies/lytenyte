@@ -11,6 +11,7 @@ import Tabs from "./tabs.astro";
 import Tab from "./tab.astro";
 import FileTree from "./file-tree/file-tree.astro";
 import Table from "./table.astro";
+import ProTag from "./company/pro-tag.astro";
 
 export interface Props {
   entry: {
@@ -31,6 +32,7 @@ const { Content, headings } = await render(entry);
   <h1>{entry.data.title}</h1>
   <Content
     components={{
+      ProTag,
       Code,
       CodeFrame,
       Callout,

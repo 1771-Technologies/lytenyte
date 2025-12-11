@@ -39,8 +39,8 @@ const props = Astro.props;
     margin-block: 32px;
 
     starlight-tabs {
-      border: 1px solid var(--color-gray-200);
-      background-color: var(--color-gray-50);
+      border: 1px solid var(--color-ln-border);
+      background-color: var(--color-ln-card);
       padding-top: 4px;
       border-radius: 16px;
       overflow: hidden;
@@ -90,15 +90,15 @@ const props = Astro.props;
               font-weight: 400;
 
               border-bottom: 2px solid transparent;
-              color: var(--color-gray-600);
+              color: var(--color-ln-muted-foreground);
 
               &:hover {
-                color: var(--color-gray-800);
+                color: var(--color-ln-foreground);
               }
 
               &[aria-selected="true"] {
-                border-bottom: 2px solid var(--color-primary-500);
-                color: var(--color-primary-700);
+                border-bottom: 2px solid var(--color-ln-accent-foreground);
+                color: var(--color-ln-accent-foreground);
               }
             }
           }
@@ -107,7 +107,7 @@ const props = Astro.props;
 
       [role="tabpanel"] {
         margin: 0px;
-        background-color: var(--color-gray-100);
+        background-color: var(--color-ln-background);
         padding-inline: 16px;
         padding-block-start: 0px;
       }
