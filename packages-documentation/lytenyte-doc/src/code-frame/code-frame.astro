@@ -5,6 +5,7 @@ import Tabs from "../tabs.astro";
 import { Code } from "astro-expressive-code/components";
 import { Resetter } from "./resetter";
 import { FrameControls } from "./frame-controls";
+import { parseExpressiveCode } from "./parse-text";
 
 interface Props {
   title: string;
@@ -38,9 +39,12 @@ const tabs = Object.entries(props.files);
             <Tabs class="codeframe-tabs">
               {tabs.map(([filename, code]) => {
                 const lang = filename.split(".").at(-1);
+
+                const parsed = parseExpressiveCode(code);
+
                 return (
                   <Tab label={filename}>
-                    <Code lang={lang} code={code} />
+                    <Code lang={lang} {...parsed} />
                   </Tab>
                 );
               })}

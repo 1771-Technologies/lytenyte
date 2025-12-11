@@ -1,4 +1,5 @@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip.js";
+import { parseExpressiveCode } from "./parse-text.js";
 
 export function FrameControls({
   codeSandbox,
@@ -78,7 +79,9 @@ export function FrameControls({
                 const content = files[file];
                 if (!content) return;
 
-                navigator.clipboard.writeText(content);
+                const parsed = parseExpressiveCode(content);
+
+                navigator.clipboard.writeText(parsed.code);
 
                 btn.setAttribute("data-active", "true");
                 btn.disabled = true;
