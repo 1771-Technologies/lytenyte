@@ -18,20 +18,22 @@ const { codeSandbox, stackBlitz, ...props } = Astro.props;
 const tabs = Object.entries(props.files);
 ---
 
-<div class="flex flex-col overflow-hidden rounded-xl border border-gray-200 shadow my-8 code-demo">
-  <div class="bg-gray-100 flex items-center gap-1 p-4">
-    <h3 class="text-base font-medium text-gray-800 my-0">
+<div
+  class="flex flex-col overflow-hidden rounded-xl border border-gray-200 dark:border-gray-800 shadow my-8 code-demo"
+>
+  <div class="bg-ln-card flex items-center gap-1 p-4">
+    <h3 class="text-base font-medium text-ln-foreground my-0">
       {props.title}
     </h3>
   </div>
-  <FenceContainer class="p-2 my-0 rounded-none">
-    <div class="bg-gray-50">
+  <FenceContainer class="p-0 my-0 rounded-none">
+    <div class="bg-ln-background">
       <Resetter client:load>
         <slot />
       </Resetter>
     </div>
   </FenceContainer>
-  <div class="relative flex items-center">
+  <div class="relative flex items-center bg-ln-card">
     <div class="flex-1 min-h-12 cf-root group" data-expanded="false">
       <div class="codeframe-tabs-container group-data-[expanded=true]:block hidden">
         {

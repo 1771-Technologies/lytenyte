@@ -1,5 +1,4 @@
-@import "tailwindcss";
-@source "./";
+@import "./theme/main.css";
 
 html {
   scrollbar-width: thin;
@@ -7,79 +6,10 @@ html {
 }
 
 body {
-  /* 1. MacOS / iOS specific: Enables subpixel antialiasing */
-  -webkit-font-smoothing: antialiased;
-  /* 2. Firefox specific: Thins out the font slightly for better readability */
-  -moz-osx-font-smoothing: grayscale;
-  /* 3. Standard property (improves kerning and ligatures) */
-  text-rendering: optimizeLegibility;
-  /* 4. Optional: Fixes potential layout shifts when fonts load */
-  text-size-adjust: 100%;
-}
-
-:root {
-  --color-gray-00: white;
-  --color-gray-50: oklch(0.985 0.002 247.839);
-  --color-gray-100: oklch(0.967 0.003 264.542);
-  --color-gray-200: oklch(0.928 0.006 264.531);
-  --color-gray-300: oklch(0.872 0.01 258.338);
-  --color-gray-400: oklch(0.707 0.022 261.325);
-  --color-gray-500: oklch(0.551 0.027 264.364);
-  --color-gray-600: oklch(0.446 0.03 256.802);
-  --color-gray-700: oklch(0.373 0.034 259.733);
-  --color-gray-800: oklch(0.278 0.033 256.848);
-  --color-gray-900: oklch(0.21 0.034 264.665);
-  --color-gray-950: oklch(0.13 0.028 261.692);
-
-  --color-primary-950: hsla(177, 91%, 8%, 1);
-  --color-primary-900: hsla(173, 60%, 15%, 1);
-  --color-primary-800: hsla(175, 64%, 21%, 1);
-  --color-primary-700: hsla(173, 73%, 27%, 1);
-  --color-primary-600: hsla(173, 78%, 34%, 1);
-  --color-primary-500: hsla(172, 75%, 40%, 1);
-  --color-primary-400: hsla(171, 61%, 50%, 1);
-  --color-primary-300: hsla(169, 71%, 64%, 1);
-  --color-primary-200: hsla(167, 78%, 78%, 1);
-  --color-primary-100: hsla(166, 78%, 89%, 1);
-  --color-primary-50: hsla(166, 76%, 97%, 1);
-}
-
-[data-theme="dark"] {
-  --color-gray-950: oklch(0.985 0 0);
-  --color-gray-900: oklch(0.97 0 0);
-  --color-gray-800: oklch(0.922 0 0);
-  --color-gray-700: oklch(0.87 0 0);
-  --color-gray-600: oklch(0.708 0 0);
-  --color-gray-500: oklch(0.556 0 0);
-  --color-gray-400: oklch(0.439 0 0);
-  --color-gray-300: oklch(0.371 0 0);
-  --color-gray-200: oklch(0.269 0 0);
-  --color-gray-100: oklch(0.205 0 0);
-  --color-gray-50: oklch(0.145 0 0);
-  --color-gray-00: oklch(0.145 0 0);
-
-  --color-primary-950: hsla(166, 76%, 97%, 1);
-  --color-primary-900: hsla(166, 78%, 89%, 1);
-  --color-primary-800: hsla(167, 78%, 78%, 1);
-  --color-primary-700: hsla(169, 71%, 64%, 1);
-  --color-primary-600: hsla(171, 61%, 50%, 1);
-  --color-primary-500: hsla(172, 75%, 40%, 1);
-  --color-primary-400: hsla(173, 78%, 34%, 1);
-  --color-primary-300: hsla(173, 73%, 27%, 1);
-  --color-primary-200: hsla(175, 64%, 21%, 1);
-  --color-primary-100: hsla(173, 60%, 15%, 1);
-  --color-primary-50: hsla(177, 91%, 8%, 1);
-}
-
-@custom-variant dark {
-  &:where([data-theme="dark"] *) {
-    @slot;
-  }
-}
-
-@plugin "@iconify/tailwind4" {
-  prefix: "ico";
-  prefixes: ph, svg-spinners, logos;
+  -webkit-font-smoothing: antialiased; /* 1. MacOS / iOS specific: Enables subpixel antialiasing */
+  -moz-osx-font-smoothing: grayscale; /* 2. Firefox specific: Thins out the font slightly for better readability */
+  text-rendering: optimizeLegibility; /* 3. Standard property (improves kerning and ligatures) */
+  text-size-adjust: 100%; /* 4. Optional: Fixes potential layout shifts when fonts load */
 }
 
 @theme {
@@ -88,146 +18,41 @@ body {
   --spacing-sidenav: 290px;
   --spacing-toc: 275px;
 
-  --color-gray-00: var(--color-gray-00);
-  --color-gray-50: var(--color-gray-50);
-  --color-gray-100: var(--color-gray-100);
-  --color-gray-200: var(--color-gray-200);
-  --color-gray-300: var(--color-gray-300);
-  --color-gray-400: var(--color-gray-400);
-  --color-gray-500: var(--color-gray-500);
-  --color-gray-600: var(--color-gray-600);
-  --color-gray-700: var(--color-gray-700);
-  --color-gray-800: var(--color-gray-800);
-  --color-gray-900: var(--color-gray-900);
-  --color-gray-950: var(--color-gray-950);
+  --color-ln-gray-00: var(--lng1771-gray-00);
+  --color-ln-gray-02: var(--lng1771-gray-02);
+  --color-ln-gray-05: var(--lng1771-gray-05);
+  --color-ln-gray-10: var(--lng1771-gray-10);
+  --color-ln-gray-20: var(--lng1771-gray-20);
+  --color-ln-gray-30: var(--lng1771-gray-30);
+  --color-ln-gray-40: var(--lng1771-gray-40);
+  --color-ln-gray-50: var(--lng1771-gray-50);
+  --color-ln-gray-60: var(--lng1771-gray-60);
+  --color-ln-gray-70: var(--lng1771-gray-70);
+  --color-ln-gray-80: var(--lng1771-gray-80);
+  --color-ln-gray-90: var(--lng1771-gray-90);
+  --color-ln-gray-100: var(--lng1771-gray-100);
 
-  --color-primary-50: var(--color-primary-50);
-  --color-primary-100: var(--color-primary-100);
-  --color-primary-200: var(--color-primary-200);
-  --color-primary-300: var(--color-primary-300);
-  --color-primary-400: var(--color-primary-400);
-  --color-primary-500: var(--color-primary-500);
-  --color-primary-600: var(--color-primary-600);
-  --color-primary-700: var(--color-primary-700);
-  --color-primary-800: var(--color-primary-800);
-  --color-primary-900: var(--color-primary-900);
-  --color-primary-950: var(--color-primary-950);
+  --color-ln-primary-05: var(--lng1771-primary-05);
+  --color-ln-primary-10: var(--lng1771-primary-10);
+  --color-ln-primary-30: var(--lng1771-primary-30);
+  --color-ln-primary-50: var(--lng1771-primary-50);
+  --color-ln-primary-70: var(--lng1771-primary-70);
+  --color-ln-primary-90: var(--lng1771-primary-90);
+  --color-ln-focus-outline: var(--lng1771-focus-outline);
 
-  --text-sm: 15px;
-}
-
-@utility step {
-  counter-increment: step;
-  @apply relative;
-
-  &:before {
-    @apply right-0 mr-2 hidden size-7 items-center justify-center rounded-full text-center -indent-px font-mono text-sm font-medium text-gray-500 md:absolute;
-    content: counter(step);
-  }
-}
-
-@utility no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
-@utility center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  --color-ln-pill-plain-fill: var(--lng1771-pill-plain-fill);
+  --color-ln-pill-column-fill: var(--lng1771-pill-column-fill);
+  --color-ln-pill-column-stroke: var(--lng1771-pill-column-stroke);
+  --color-ln-pill-pivot-fill: var(--lng1771-pill-pivot-fill);
+  --color-ln-pill-pivot-stroke: var(--lng1771-pill-pivot-stroke);
+  --color-ln-pill-group-fill: var(--lng1771-pill-group-fill);
+  --color-ln-pill-group-stroke: var(--lng1771-pill-group-stroke);
+  --color-ln-pill-icon-color: var(--lng1771-pill-icon-color);
 }
 
 .no-transition * {
   transition-duration: 0s !important;
   animation-duration: 0s !important;
-}
-
-@layer base {
-  .prose {
-    @apply text-sm text-gray-600;
-
-    h1 {
-      @apply not-first:mt-2 scroll-m-28 text-3xl font-bold tracking-tight text-gray-700;
-    }
-
-    h2 {
-      @apply [&+*]:[code]:text-xl [&+.steps]:mt-0! [&+.steps>h3]:mt-4! [&+h3]:mt-6! [&+p]:mt-4! mt-10 scroll-m-28 text-2xl font-medium tracking-tight text-gray-700 first:mt-0;
-    }
-
-    h3 {
-      @apply [&+p]:mt-4! *:[code]:text-xl mt-12 scroll-m-28 text-xl font-medium tracking-tight text-gray-700;
-    }
-
-    h4 {
-      @apply mt-8 scroll-m-28 text-base font-medium tracking-tight;
-    }
-
-    h5 {
-      @apply mt-8 scroll-m-28 text-base font-medium tracking-tight;
-    }
-
-    h6 {
-      @apply mt-8 scroll-m-28 text-base font-medium tracking-tight;
-    }
-
-    a {
-      @apply text-primary-600 hover:text-primary-500 font-medium underline underline-offset-4 transition-colors;
-    }
-
-    p {
-      @apply not-first:mt-6 leading-relaxed;
-    }
-
-    strong {
-      @apply font-semibold text-gray-800;
-    }
-
-    ul {
-      @apply ml-4.5 list-disc;
-    }
-    ol {
-      @apply ml-4.5 list-decimal;
-    }
-    /* Only ULs that are NOT inside another UL/OL */
-    ul:not(ul ul, ol ul) {
-      @apply my-6;
-    }
-
-    /* Only OLs that are NOT inside another UL/OL */
-    ol:not(ul ol, ol ol) {
-      @apply my-6;
-    }
-
-    li {
-      @apply mt-4 py-1;
-    }
-    blockquote {
-      @apply mt-6 border-l-2 pl-6 italic;
-    }
-    img {
-      @apply my-2 justify-center rounded-md;
-    }
-    hr {
-      @apply my-4 md:my-8;
-    }
-
-    table {
-      @apply relative min-w-full divide-y divide-gray-300;
-    }
-    th {
-      @apply py-3.5 pl-4 pr-3 text-left text-sm sm:pl-3;
-    }
-    tr {
-      @apply even:bg-gray-100/70;
-    }
-    td {
-      @apply whitespace-nowrap px-3 py-4 text-sm;
-    }
-  }
 }
 
 .codeframe-tabs pre {

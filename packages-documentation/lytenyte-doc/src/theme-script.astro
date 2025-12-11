@@ -21,6 +21,9 @@
   const reflectPreference = (noTransition = false) => {
     if (noTransition) document.documentElement.classList.add("no-transition");
     document.documentElement.setAttribute("data-theme", theme.value);
+    document.documentElement.classList.remove(theme.value === "dark" ? "light" : "dark");
+    document.documentElement.classList.add(theme.value);
+
     document.querySelector("#theme-toggle")?.setAttribute("aria-label", theme.value);
     if (noTransition)
       setTimeout(() => {

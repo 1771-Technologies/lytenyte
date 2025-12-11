@@ -1,0 +1,17 @@
+---
+interface Props {
+  small?: boolean;
+}
+import ProSrc from "./assets/pro.png";
+
+import { cn } from "../ui/cn.js";
+
+const { small } = Astro.props;
+---
+
+<img
+  class={cn("my-0 ml-1 inline-flex w-8", small && "w-6")}
+  style={{ margin: "0px" }}
+  src={ProSrc.src}
+  alt="Tag indicating the feature is only available for LyteNyte PRO"
+/>

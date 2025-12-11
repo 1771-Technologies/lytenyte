@@ -2,13 +2,32 @@
 import DesktopToc from "./toc/desktop-toc.astro";
 import ThemeToggle from "./theme-toggle.astro";
 import ThemeScript from "./theme-script.astro";
-
 import type { MarkdownHeading } from "astro";
+import type { OneDocConfig } from "../lytenyte-doc";
+import { getEntry } from "astro:content";
+
 export interface Props {
   readonly toc: MarkdownHeading[];
 }
 
+// @ts-expect-error this is virtual model
+import ConfigUntyped from "one:doc";
+const sidebarConfig = ConfigUntyped as OneDocConfig["sidebar"];
+
 const { toc } = Astro.props;
+
+const { pathname } = Astro.url;
+
+const sortedSidebar = sidebarConfig.toSorted((l, r) => {
+  const start = l.path.split("/");
+  const end = r.path.split("/");
+  const diff = start.length - end.length;
+  if (diff !== 0) return diff;
+
+  return l.path.localeCompare(r.path);
+});
+
+const sidebar = sortedSidebar.find((x) => pathname.startsWith(x.path));
 ---
 
 <!doctype html>
@@ -19,17 +38,17 @@ const { toc } = Astro.props;
     <title>Home</title>
     <ThemeScript />
   </head>
-  <body class="bg-gray-50 text-gray-950 min-h-screen flex flex-col">
+  <body class="bg-ln-background text-ln-foreground min-h-screen flex flex-col">
     <div class="sticky top-0 z-10">
-      <header class="h-header border-b border-gray-200 bg-gray-50">
+      <header class="h-header border-b border-ln-border bg-ln-background">
         <ThemeToggle />
       </header>
-      <aside class="h-subheader border-b border-gray-200 bg-gray-50"></aside>
+      <aside class="h-subheader border-b border-ln-border bg-ln-background"></aside>
     </div>
     <div class="flex-1 grid grid-row-[1fr]">
       <div class="w-full h-full">
         <div
-          class="h-full w-full lg:max-w-[1000px] xl:max-w-7xl [@media(min-width:1380px)]:max-w-[1360px] [@media(min-width:1512px)]:max-w-[1480px] mx-auto"
+          class="h-full w-full lg:max-w-[1000px] xl:max-w-7xl [@media(min-width:1380px)]:max-w-[1360px] [@media(min-width:1500px)]:max-w-[1480px] mx-auto"
         >
           <div
             class="grid grid-cols-1 lg:grid-cols-[calc(100%-var(--spacing-toc))_var(--spacing-toc)] xl:grid-cols-[var(--spacing-sidenav)_calc(100%-var(--spacing-sidenav)-var(--spacing-toc))_var(--spacing-toc)]"
@@ -42,7 +61,41 @@ const { toc } = Astro.props;
                 "hidden xl:block",
               ]}
             >
-              Side Nav
+              {
+                sidebar?.sections.map((x) => {
+                  const collection = sidebar.collection;
+                  return (
+                    <>
+                      <button>{x.name}</button>
+                      <div>
+                        {x.children.map(async (c) => {
+                          if (typeof c === "string") {
+                            const x = await getEntry(collection, c);
+                            if (!x) return;
+                            const title = x.data.title;
+                            return <div>{title}</div>;
+                          }
+                          if ("href" in c) return <div>{c.label}</div>;
+                          if ("label" in c) return <div>{c.label}</div>;
+
+                          return (
+                            <div>
+                              <button>{c.name}</button>
+                              <div>
+                                {c.links.map((x) => {
+                                  if (typeof x === "string") return <div>{x}</div>;
+                                  if ("href" in x) return <div>{x.label}</div>;
+                                  if ("label" in x) return <div>{x.label}</div>;
+                                })}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </>
+                  );
+                })
+              }
             </div>
 
             <div class="flex flex-col">

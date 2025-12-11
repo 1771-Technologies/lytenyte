@@ -12,7 +12,7 @@ export function FrameControls({
 }) {
   return (
     <>
-      <button className="cf-expand-btn center flex cursor-pointer items-center gap-1 rounded-lg px-1.5 py-1 text-[12px] transition-colors hover:bg-gray-200">
+      <button className="cf-expand-btn center flex cursor-pointer items-center gap-1 rounded-lg px-1.5 py-1.5 text-[12px] transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-700">
         <span className="iconify ph--arrows-out-simple block size-4 group-data-[expanded=true]:hidden"></span>
         <span className="iconify ph--arrows-in-simple block size-4 group-data-[expanded=false]:hidden"></span>
         <span className="hidden group-data-[expanded=false]:block">Expand Code</span>
@@ -22,7 +22,7 @@ export function FrameControls({
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            <button className="center ln-resetter size-7 cursor-pointer rounded-lg transition-colors hover:bg-gray-200">
+            <button className="center ln-resetter size-7 cursor-pointer rounded-lg transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-700">
               <span className="sr-only">Reset the demo to the initial state</span>
               <span className="iconify ph--arrows-counter-clockwise-duotone size-4.5"></span>
             </button>
@@ -35,7 +35,7 @@ export function FrameControls({
             <a
               href={codeSandbox}
               target="_blank"
-              className="center size-7 cursor-pointer rounded-lg transition-colors hover:bg-gray-200"
+              className="center text-ln-foreground size-7 cursor-pointer rounded-lg transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-700"
             >
               <span className="sr-only">Fork code on code sandbox</span>
               <span className="iconify ph--codesandbox-logo-duotone size-4.5"></span>
@@ -48,7 +48,7 @@ export function FrameControls({
             <a
               href={stackBlitz}
               target="_blank"
-              className="center size-7 cursor-pointer rounded-lg transition-colors hover:bg-gray-200"
+              className="center text-ln-foreground size-7 cursor-pointer rounded-lg transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-700"
             >
               <span className="sr-only">Fork code on stack blitz</span>
               <span className="iconify logos--stackblitz-icon size-4.5"></span>
@@ -60,7 +60,7 @@ export function FrameControls({
         <Tooltip>
           <TooltipTrigger asChild>
             <button
-              className="center group relative top-px size-7 cursor-pointer rounded-lg transition-colors hover:bg-gray-200"
+              className="center group relative top-px size-7 cursor-pointer rounded-lg transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-700"
               onClick={(ev) => {
                 const btn = ev.currentTarget;
 

@@ -8,6 +8,45 @@ export default defineConfig({
     lnDoc({
       githubOrg: "1771-technologies",
       githubRepo: "lytenyte",
+      collections: ["blog", "docs"],
+
+      sidebar: [
+        {
+          path: "/docs",
+          collection: "docs",
+          sections: [
+            {
+              name: "Introduction",
+              children: [
+                "intro-getting-started",
+                "intro-installation",
+                "intro-installation-shadcn",
+                "intro-license-activation",
+                "intro-getting-support",
+              ],
+            },
+            {
+              name: "Production Ready",
+              children: [
+                "prodready-bundling",
+                "prodready-security",
+                "prodready-supported-browsers",
+                "prodready-grid-versioning",
+              ],
+            },
+            {
+              name: "Grid",
+              children: [
+                "grid-container",
+                "grid-reactivity",
+                "grid-headless-parts",
+                "grid-events",
+                "grid-virtualization",
+              ],
+            },
+          ],
+        },
+      ],
     }),
   ],
 });

@@ -89,6 +89,7 @@ export function parseExpressiveCode(src: string) {
     ins,
     mark,
     collapse: collapses,
+    showLineNumbers: true,
     ...attrs,
   };
 }

@@ -1,0 +1,39 @@
+@import "./colors.css";
+
+@theme {
+  --color-ln-background: hsl(0, 0%, 98%);
+  --color-ln-foreground: hsl(0, 0%, 3.9%);
+  --color-ln-muted: hsl(0, 0%, 96.1%);
+  --color-ln-muted-foreground: hsl(0, 0%, 45.1%);
+  --color-ln-popover: hsl(0, 0%, 100%);
+  --color-ln-popover-foreground: hsl(0, 0%, 15.1%);
+  --color-ln-card: hsl(0, 0%, 99.7%);
+  --color-ln-card-foreground: hsl(0, 0%, 3.9%);
+  --color-ln-border: hsla(0, 0%, 60%, 0.2);
+  --color-ln-primary: hsl(0, 0%, 9%);
+  --color-ln-primary-foreground: hsl(0, 0%, 98%);
+  --color-ln-secondary: hsl(0, 0%, 96.1%);
+  --color-ln-secondary-foreground: hsl(0, 0%, 9%);
+  --color-ln-accent: hsl(0, 0%, 94.1%);
+  --color-ln-accent-foreground: hsl(0, 0%, 9%);
+  --color-ln-ring: hsl(0, 0%, 63.9%);
+}
+
+[data-theme="dark"] {
+  --color-ln-background: hsl(0, 0%, 2%);
+  --color-ln-foreground: hsl(0, 0%, 98%);
+  --color-ln-muted: hsl(0, 0%, 8%);
+  --color-ln-muted-foreground: hsl(0, 0%, 60%);
+  --color-ln-popover: hsl(0, 0%, 4%);
+  --color-ln-popover-foreground: hsl(0, 0%, 98%);
+  --color-ln-card: hsl(0, 0%, 4%);
+  --color-ln-card-foreground: hsl(0, 0%, 98%);
+  --color-ln-border: hsl(0, 0%, 50%, 0.2);
+  --color-ln-primary: hsl(0, 0%, 98%);
+  --color-ln-primary-foreground: hsl(0, 0%, 9%);
+  --color-ln-secondary: hsl(0, 0%, 12.9%);
+  --color-ln-secondary-foreground: hsl(0, 0%, 98%);
+  --color-ln-accent: hsl(0, 0%, 15%);
+  --color-ln-accent-foreground: hsl(0, 0%, 100%);
+  --color-ln-ring: hsl(0, 0%, 34.9%);
+}
