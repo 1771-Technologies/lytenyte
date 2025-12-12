@@ -12,6 +12,7 @@ import Tab from "./tab.astro";
 import FileTree from "./file-tree/file-tree.astro";
 import Table from "./table.astro";
 import ProTag from "./company/pro-tag.astro";
+import { getSidebarConfig } from "./sidebar/get-sidebar-config";
 
 export interface Props {
   entry: {
@@ -25,10 +26,13 @@ export interface Props {
 }
 
 const { entry } = Astro.props;
+
 const { Content, headings } = await render(entry);
+
+const sidebar = getSidebarConfig(entry.filePath!, entry.collection);
 ---
 
-<DocsLayout toc={headings.filter((x: any) => x.depth === 2 || x.depth === 3)}>
+<DocsLayout sidebar={sidebar} toc={headings.filter((x: any) => x.depth === 2 || x.depth === 3)}>
   <h1>{entry.data.title}</h1>
   <Content
     components={{

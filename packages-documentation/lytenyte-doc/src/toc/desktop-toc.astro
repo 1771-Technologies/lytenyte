@@ -8,10 +8,14 @@ export interface Props {
 const { toc } = Astro.props;
 ---
 
-<h3 class="pb-2 text-sm flex items-center gap-2 relative -left-1 text-ln-muted-foreground">
-  <span class="iconify ph--text-align-left-light size-4"></span>
-  On this page
-</h3>
+{
+  toc.length && (
+    <h3 class="pb-2 text-sm flex items-center gap-2 relative -left-1 text-ln-muted-foreground">
+      <span class="iconify ph--text-align-left-light size-4" />
+      On this page
+    </h3>
+  )
+}
 
 <div class="relative">
   <div role="none" class="absolute transition-all bg-ln-foreground w-px" id="toc-border"></div>
@@ -67,28 +71,29 @@ const { toc } = Astro.props;
       });
     };
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        // Find the heading closest to the top that’s in view
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort(
-            (a, b) => (a.target as HTMLElement).offsetTop - (b.target as HTMLElement).offsetTop,
-          );
+    function getClosestHeading() {
+      const header = headings.map((x) => x.getBoundingClientRect().top);
 
-        if (!visible.length) return;
+      const firstPositiveIndex = header.findIndex((x) => x >= 0);
+      const previousIndex = firstPositiveIndex - 1;
+      const value = header[firstPositiveIndex];
+      const prevValue = Math.abs(header[previousIndex]);
 
-        const activeId = (visible[0].target as HTMLElement).id;
-        if (activeId) setActive(activeId);
-      },
-      {
-        root: null,
-        threshold: 0.1,
-        // Start considering a heading "active" when it’s in the top ~30% of the viewport
-        rootMargin: "0px 0px -70% 0px",
-      },
-    );
+      const index = prevValue < value ? previousIndex : firstPositiveIndex;
 
-    headings.forEach((heading) => observer.observe(heading));
+      const activeId = headings[index].id;
+      if (activeId) setActive(activeId);
+    }
+    getClosestHeading();
+
+    let frame: number | null = null;
+    document.addEventListener("scroll", () => {
+      if (frame) return;
+
+      frame = requestAnimationFrame(() => {
+        getClosestHeading();
+        frame = null;
+      });
+    });
   }
 </script>
