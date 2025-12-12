@@ -1,14 +1,15 @@
 {
   "title": "Rows",
   "pages": [
+    "row-overview",
     "row-height",
     "row-pinning",
     "row-selection",
-    "row-sorting",
     "row-detail",
-    "row-pagination",
     "row-full-width",
-    "row-dragging"
+    "row-dragging",
+    "row-sorting",
+    "row-grouping-and-aggregations"
   ],
   "defaultOpen": true
 }
