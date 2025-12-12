@@ -10,28 +10,8 @@ import {
   remarkDemo,
 } from "@1771technologies/mdx-plugins";
 
-export type Link = string | { href: string; label: string } | { path: string; label: string };
-export type Subsection = {
-  readonly name: string;
-  readonly path: string;
-  readonly expanded?: boolean;
-  readonly expandable?: boolean;
-  readonly links: Link[];
-};
-
-interface Sidebar {
-  readonly path: string;
-  readonly collection: string;
-  readonly sections: {
-    readonly name: string;
-    readonly children: (Link | Subsection)[];
-  }[];
-}
-
 export interface OneDocConfig {
-  readonly sidebar: Sidebar[];
   readonly collections?: string[];
-
   readonly githubOrg?: string;
   readonly githubRepo?: string;
 }
@@ -53,8 +33,7 @@ export function lnDoc(opts?: OneDocConfig): AstroIntegration[] {
                     if (id === "one:doc") return "one:doc";
                   },
                   load: (id) => {
-                    if (id === "one:doc")
-                      return `export default ${JSON.stringify(opts?.sidebar ?? [])}`;
+                    if (id === "one:doc") return `export default ${JSON.stringify(opts ?? [])}`;
                   },
                 },
               ],

@@ -3,31 +3,15 @@ import DesktopToc from "./toc/desktop-toc.astro";
 import ThemeToggle from "./theme-toggle.astro";
 import ThemeScript from "./theme-script.astro";
 import type { MarkdownHeading } from "astro";
-import type { OneDocConfig } from "../lytenyte-doc";
-import { getEntry } from "astro:content";
+import type { Root } from "./sidebar/types";
+import Sidebar from "./sidebar/sidebar.astro";
 
 export interface Props {
   readonly toc: MarkdownHeading[];
+  readonly sidebar: Root;
 }
 
-// @ts-expect-error this is virtual model
-import ConfigUntyped from "one:doc";
-const sidebarConfig = ConfigUntyped as OneDocConfig["sidebar"];
-
-const { toc } = Astro.props;
-
-const { pathname } = Astro.url;
-
-const sortedSidebar = sidebarConfig.toSorted((l, r) => {
-  const start = l.path.split("/");
-  const end = r.path.split("/");
-  const diff = start.length - end.length;
-  if (diff !== 0) return diff;
-
-  return l.path.localeCompare(r.path);
-});
-
-const sidebar = sortedSidebar.find((x) => pathname.startsWith(x.path));
+const { toc, sidebar } = Astro.props;
 ---
 
 <!doctype html>
@@ -62,37 +46,11 @@ const sidebar = sortedSidebar.find((x) => pathname.startsWith(x.path));
               ]}
             >
               {
-                sidebar?.sections.map((x) => {
-                  const collection = sidebar.collection;
+                sidebar.children.map((x) => {
                   return (
-                    <>
-                      <button>{x.name}</button>
-                      <div>
-                        {x.children.map(async (c) => {
-                          if (typeof c === "string") {
-                            const x = await getEntry(collection, c);
-                            if (!x) return;
-                            const title = x.data.title;
-                            return <div>{title}</div>;
-                          }
-                          if ("href" in c) return <div>{c.label}</div>;
-                          if ("label" in c) return <div>{c.label}</div>;
-
-                          return (
-                            <div>
-                              <button>{c.name}</button>
-                              <div>
-                                {c.links.map((x) => {
-                                  if (typeof x === "string") return <div>{x}</div>;
-                                  if ("href" in x) return <div>{x.label}</div>;
-                                  if ("label" in x) return <div>{x.label}</div>;
-                                })}
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </>
+                    <div class="flex flex-col gap-2">
+                      <Sidebar item={x} collection={sidebar.collection} />
+                    </div>
                   );
                 })
               }
