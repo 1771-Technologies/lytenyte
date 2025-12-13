@@ -1,4 +1,19 @@
-@import "./theme/main.css";
+@import "tailwindcss";
+@source "./";
+
+@custom-variant dark {
+  &:where([data-theme="dark"] *) {
+    @slot;
+  }
+}
+
+@plugin "@iconify/tailwind4" {
+  prefix: "ico";
+  prefixes: ph, svg-spinners, logos;
+}
+
+@import "./theme/colors.css";
+@import "./theme/utilities.css";
 
 html {
   scrollbar-width: thin;

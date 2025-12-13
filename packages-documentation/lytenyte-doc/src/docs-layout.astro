@@ -5,6 +5,7 @@ import ThemeScript from "./theme-script.astro";
 import type { MarkdownHeading } from "astro";
 import type { Root } from "./sidebar/types";
 import Sidebar from "./sidebar/sidebar.astro";
+import SidebarScript from "./sidebar/sidebar-script.astro";
 
 export interface Props {
   readonly toc: MarkdownHeading[];
@@ -48,12 +49,13 @@ const { toc, sidebar } = Astro.props;
               {
                 sidebar.children.map((x) => {
                   return (
-                    <div class="flex flex-col gap-2">
+                    <div class="flex flex-col gap-2 pr-3 pl-2">
                       <Sidebar item={x} collection={sidebar.collection} />
                     </div>
                   );
                 })
               }
+              <SidebarScript />
             </div>
 
             <div class="flex flex-col">

@@ -22,9 +22,10 @@ export interface ExternalLink {
 
 export interface Group {
   readonly kind: "group";
-  readonly label?: string;
-  readonly collapsed?: boolean;
-  readonly collapsible?: boolean;
+  readonly id: string;
+  readonly label: string;
+  readonly collapsed: boolean;
+  readonly collapsible: boolean;
   readonly children: (PageLink | DirectLink | ExternalLink | Separator | Group | null)[];
 }
 

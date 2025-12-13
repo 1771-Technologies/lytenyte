@@ -1,4 +1,5 @@
 import fs, { existsSync, readFileSync, statSync } from "fs";
+import { capitalize } from "es-toolkit";
 import { getRoot } from "./get-root.js";
 import type { DirectLink, ExternalLink, Group, PageLink, Root, Separator } from "./types.js";
 import { generateId } from "../../lytenyte-doc.js";
@@ -50,9 +51,10 @@ function processPage(
     if (meta.root) return null;
 
     const pages: string[] = finalizePageList(meta.pages, path);
-
     const group = {
       kind: "group",
+      id: path,
+      label: meta.label ?? capitalize(current.replace("(", "").replace(")", "")),
       collapsed: meta.collapsed ?? false,
       collapsible: meta.collapsible ?? true,
       children: pages.map((x) => processPage(path, x)).filter(Boolean),
@@ -100,8 +102,8 @@ function finalizePageList(pages: string[] | undefined, path: string) {
 
   const finalPages: string[] = [];
 
-  for (let i = 0; i < pagesForDir.length; i++) {
-    const p = pagesForDir[i];
+  for (let i = 0; i < pages.length; i++) {
+    const p = pages[i];
     if (p.startsWith("...")) {
       finalPages.push(...remainingPages);
       continue;

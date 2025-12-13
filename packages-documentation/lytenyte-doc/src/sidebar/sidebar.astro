@@ -15,20 +15,64 @@ if (item?.kind === "page-link") {
   const entry = await getEntry(collection, item.id);
   title = entry.data.title;
 }
+
+const { pathname } = Astro.url;
 ---
 
-{item?.kind === "direct-link" && <a href={item.id}>{item.label}</a>}
+{
+  item?.kind === "direct-link" && (
+    <a data-active={pathname === item.id} href={item.id}>
+      {item.label}
+    </a>
+  )
+}
 {item?.kind === "external-link" && <a href={item.href}>{item.label}</a>}
-{item?.kind === "page-link" && <a href={item.id}>{title}</a>}
+{
+  item?.kind === "page-link" && (
+    <a
+      data-active={pathname === `/${collection}/${item.id}`}
+      href={`/${collection}/${item.id}`}
+      class:list={[
+        "data-[active=true]:bg-ln-accent-foreground/10 -ms-6 ps-5 -me-5 py-2.5 rounded-lg data-[active=true]:text-ln-foreground relative hover:bg-ln-accent-foreground/5 transition-colors",
+        "data-[active=true]:before:absolute data-[active=true]:before:w-px data-[active=true]:before:h-1/2 data-[active=true]:before:bg-ln-foreground",
+        "data-[active=true]:before:left-[7px] data-[active=true]:before:top-1/4 hover:duration-0 duration-100",
+      ]}
+    >
+      {title}
+    </a>
+  )
+}
 {item?.kind === "separator" && <div>Separator</div>}
 {
   item?.kind === "group" && (
-    <div>
-      <div>{item.label}</div>
-      <div class="flex flex-col gap-2">
-        {item.children!.map((x) => (
-          <Tree item={x} collection={collection} />
-        ))}
+    <div
+      class="group"
+      data-collapsible={item.collapsible}
+      data-collapsed={item.collapsed}
+      data-group-id={item.id}
+    >
+      <div class="tracking-tight font-semibold flex items-center ps-1.5">
+        {!item.collapsible && <div class="flex-1">{item.label}</div>}
+        {item.collapsible && (
+          <button
+            class="flex items-center text-start ln-collapse-btn flex-1 hover:bg-ln-accent-foreground/10 transition-colors cursor-pointer px-2 -mx-1 rounded-lg py-1"
+            data-group-id={item.id}
+          >
+            <span class="flex-1">{item.label}</span>
+            <span class="iconify ph--caret-down group-data-[collapsed=true]:-rotate-90 transition-transform" />
+          </button>
+        )}
+      </div>
+      <div class="grid grid-rows-[1fr] group-data-[collapsible=true]:group-data-[collapsed=true]:grid-rows-[0fr] transition-[grid-template-rows] overflow-hidden px-1">
+        <div class="min-h-0">
+          <div class="ps-2">
+            <div class="flex flex-col px-4 text-xs tracking-tight text-ln-muted-foreground font-semibold py-1 border-l dark:border-neutral-800 border-neutral-200">
+              {item.children!.map((x) => (
+                <Tree item={x} collection={collection} />
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

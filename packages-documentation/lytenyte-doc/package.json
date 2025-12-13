@@ -44,6 +44,7 @@
     "astro-expressive-code": "0.41.3",
     "clsx": "^2.1.1",
     "codesandbox": "^2.2.3",
+    "es-toolkit": "^1.42.0",
     "hast": "1.0.0",
     "hast-util-from-html": "2.0.3",
     "hast-util-select": "6.0.4",
