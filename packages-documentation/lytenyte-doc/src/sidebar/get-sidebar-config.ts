@@ -6,7 +6,8 @@ import { generateId } from "../../lytenyte-doc.js";
 export function getSidebarConfig(path: string, collection: string): Root {
   const root = getRoot(path);
 
-  const pages = root.pages ?? fs.readdirSync(root.path);
+  const allPagesForDir = getPagesForDirectory(root.path);
+  const pages = root.pages ?? allPagesForDir;
 
   return {
     kind: "root",
@@ -48,7 +49,7 @@ function processPage(
 
     if (meta.root) return null;
 
-    const pages: string[] = meta.pages ?? fs.readdirSync(path);
+    const pages: string[] = finalizePageList(meta.pages, path);
 
     const group = {
       kind: "group",
@@ -72,4 +73,42 @@ function processPage(
       id: generateId({ entry: path.split("/").slice(1).join("/") }),
     };
   }
+}
+
+function getPagesForDirectory(path: string) {
+  const dir = fs.readdirSync(path);
+
+  return dir
+    .filter((x) => {
+      const s = statSync(`${path}/${x}`);
+      if (s.isDirectory()) return true;
+
+      return x.endsWith(".mdx");
+    })
+    .map((x) => (x.endsWith(".mdx") ? x.slice(0, x.length - 4) : x));
+}
+
+function finalizePageList(pages: string[] | undefined, path: string) {
+  let pagesForDir = getPagesForDirectory(path);
+
+  if (!pages) return pagesForDir;
+
+  const pagesToRemove = new Set(pages.filter((x) => x.startsWith("!")).map((x) => x.slice(1)));
+  pagesForDir = pagesForDir.filter((x) => !pagesToRemove.has(x));
+
+  const remainingPages = pagesForDir.filter((x) => !pages.includes(x));
+
+  const finalPages: string[] = [];
+
+  for (let i = 0; i < pagesForDir.length; i++) {
+    const p = pagesForDir[i];
+    if (p.startsWith("...")) {
+      finalPages.push(...remainingPages);
+      continue;
+    }
+
+    finalPages.push(p);
+  }
+
+  return finalPages;
 }

@@ -1,0 +1,12 @@
+---
+const props = Astro.props;
+---
+
+<h1
+  {...props}
+  class:list={[
+    "not-first:mt-2 text-ln-foreground scroll-m-28 text-[28px] font-bold tracking-tight",
+  ]}
+>
+  <slot />
+</h1>

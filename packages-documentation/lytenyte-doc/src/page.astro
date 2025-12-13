@@ -13,6 +13,25 @@ import FileTree from "./file-tree/file-tree.astro";
 import Table from "./table.astro";
 import ProTag from "./company/pro-tag.astro";
 import { getSidebarConfig } from "./sidebar/get-sidebar-config";
+import PackageInstall from "./package-install.astro";
+import H1 from "./parts/h1.astro";
+import H2 from "./parts/h2.astro";
+import H3 from "./parts/h3.astro";
+import H4 from "./parts/h4.astro";
+import H5 from "./parts/h5.astro";
+import H6 from "./parts/h6.astro";
+import A from "./parts/a.astro";
+import Ol from "./parts/ol.astro";
+import Strong from "./parts/strong.astro";
+import Ul from "./parts/ul.astro";
+import P from "./parts/p.astro";
+import Li from "./parts/li.astro";
+import Blockquote from "./parts/block-quote.astro";
+import Hr from "./parts/hr.astro";
+import Img from "./parts/img.astro";
+import Th from "./parts/th.astro";
+import Tr from "./parts/tr.astro";
+import Td from "./parts/td.astro";
 
 export interface Props {
   entry: {
@@ -33,7 +52,7 @@ const sidebar = getSidebarConfig(entry.filePath!, entry.collection);
 ---
 
 <DocsLayout sidebar={sidebar} toc={headings.filter((x: any) => x.depth === 2 || x.depth === 3)}>
-  <h1>{entry.data.title}</h1>
+  <H1>{entry.data.title}</H1>
   <Content
     components={{
       ProTag,
@@ -41,11 +60,34 @@ const sidebar = getSidebarConfig(entry.filePath!, entry.collection);
       CodeFrame,
       Callout,
       StandaloneImage,
+      PackageInstall,
       Steps,
       Tabs,
       Tab,
       FileTree,
+
       table: Table,
+      th: Th,
+      tr: Tr,
+      td: Td,
+
+      h1: H1,
+      h2: H2,
+      h3: H3,
+      h4: H4,
+      h5: H5,
+      h6: H6,
+
+      a: A,
+      ol: Ol,
+      ul: Ul,
+      p: P,
+      strong: Strong,
+
+      li: Li,
+      blockquote: Blockquote,
+      img: Img,
+      hr: Hr,
     }}
   />
 </DocsLayout>
