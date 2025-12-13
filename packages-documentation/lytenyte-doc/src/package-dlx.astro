@@ -1,0 +1,26 @@
+---
+import Tab from "./tab.astro";
+import Tabs from "./tabs.astro";
+import { Code } from "astro-expressive-code/components";
+
+interface Props {
+  readonly package: string;
+}
+
+const { package: p } = Astro.props;
+---
+
+<Tabs syncKey="package-dlx" class="package-tabs">
+  <Tab label="npm">
+    <Code code={`npx ${p}`} lang="sh" />
+  </Tab>
+  <Tab label="pnpm">
+    <Code code={`pnpm dlx ${p}`} lang="sh" />
+  </Tab>
+  <Tab label="yarn">
+    <Code code={`yarn ${p}`} lang="sh" />
+  </Tab>
+  <Tab label="bun">
+    <Code code={`bunx --bun ${p}`} lang="sh" />
+  </Tab>
+</Tabs>

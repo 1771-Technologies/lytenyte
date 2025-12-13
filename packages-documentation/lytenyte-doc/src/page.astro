@@ -32,6 +32,7 @@ import Img from "./parts/img.astro";
 import Th from "./parts/th.astro";
 import Tr from "./parts/tr.astro";
 import Td from "./parts/td.astro";
+import PackageDlx from "./package-dlx.astro";
 
 export interface Props {
   entry: {
@@ -61,6 +62,7 @@ const sidebar = getSidebarConfig(entry.filePath!, entry.collection);
       Callout,
       StandaloneImage,
       PackageInstall,
+      PackageDlx,
       Steps,
       Tabs,
       Tab,
