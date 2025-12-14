@@ -1,48 +1,51 @@
 ---
 title: Row Sorting
-description:
-  Configure and control row sorting in LyteNyte Grid using sort models, column configurations, and
-  programmatic API methods.
+description: LyteNyte Grid rows may be sorted in ascending or descending order. Use the grid's sort
+  model to declaratively describe the sort state and the grid will display sorted rows.
 ---
-
-LyteNyte Grid sorts rows based on the `sortModel` property in grid state. The row data source you set
-on the grid performs the actual sorting.
 
 ## Sort Model
 
-The `sortModel` is an array of sort configurations. LyteNyte Grid supports three standard sort types and
-one custom type.
+LyteNyte Grid sorts rows based on the `sortModel` property in grid state. The row data source you set
+on the grid performs the actual sorting. The `sortModel` is an array of sort configurations.
+LyteNyte Grid supports standard sort types and the ability to set a custom sort.
 
-Example:
+The [`SortModelItem`](/docs/reference/sort#sortmodelitem) describes the type interface of the each item
+in the `sortModel`. An example is shown below:
 
 ```tsx
 { columnId: "age", sort: { kind: "number" }, isDescending: false },
 ```
 
-Each sort configuration includes:
+This guide covers the sort model as a generic way to represent grid sorts, however the data source provided is
+responsible for actually sorting the rows. The demo below demonstrates this is action using
+the [Client Row Data Source](/docs/row-client-data-source). Checkout the
+[Server Row Sorting guide](/docs/server-data-loading-row-sorting) for an example that sorts data on a mock server
+before returning the sorted rows to the client.
 
-- **`columnId`** - The column to sort.
-- **`sort.kind`** - The sort type:
-  - `"number"`
-  - `"string"`
-  - `"date"`
-  - `"custom"` - Requires a custom comparator function.
-- **`isDescending`** - Boolean indicating sort direction.
+To sort rows on the demo below, click the header cell, which will result in cycling through the sorts.
 
 !demo:Row Sort Model="./demos/row-sorting"
 
 ## Multi-Column Sort
 
-Because `sortModel` is an array, you can define multiple sort rules. This creates a multi-way sort:
+Since `sortModel` is an array, you can define multiple sort rules. This creates a multi-way sort:
 
 1. The first item in the array takes priority.
 2. If values are equal, the next sort rule is applied, and so on.
 
 In the example below hold **Ctrl** (Windows/Linux) or **Command** (macOS) when clicking a header
 to add it to the sorting list. See the `Header` component in the
-example for one way to implement this.
+example for one way to implement this functionality.
 
 If header clicks are reserved for another action or feel unintuitive, use the
 [Sort Manager](/docs/component-sort-manager) component for a dedicated multi-sort UI.
 
-!demo:Row Sort Model Multi="./demos/row-sorting-multi"
+!demo:Multi-Column Sorting="./demos/row-sorting-multi"
+
+## Next Steps
+
+- [Row Height](/docs/row-height): Learn how to change the height of rows, how to handle variable height rows and fill height rows.
+- [Row Pinning](/docs/row-pinning): See how to freeze specific rows to the top and bottom of the grid's viewport.
+- [Row Full Width](/docs/row-full-width): Create rows the expand the full width of the viewport.
+- [Row Selection](/docs/row-selection): Select individual and multiple rows.
