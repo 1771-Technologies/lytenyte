@@ -1,39 +1,40 @@
 ---
 title: Row Height
-description:
-  LyteNyte Grid lets developers control the height of rows in the grid. All rows may have the
-  same height, variable height, or grow to fill the available space.
+description: LyteNyte Grid lets developers control row height. Rows can use a fixed height,
+  vary height per row, or expand to fill the available viewport space.
 ---
 
-The `rowHeight` property on the grid state controls how LyteNyte Grid should calculate the height
-in pixels for individual rows. The property accepts one of three values:
+The `rowHeight` property on the grid state controls how LyteNyte Grid calculates the
+height, in pixels, for each row. This property accepts one of three values:
 
-- **Number:** Sets the height of rows to a fixed pixel value.
-- **Function:** A function that will return the height in pixels on a per row basis. Use function values to
-  create variable row heights.
-- **Fill String:** A string value of the form `fill:<number>`. For example `fill:24`, this instructs LyteNyte Grid to distribute
-  the available viewport space among the rows with a minimum height of `24px` per row.
+- **Number:** Sets all rows to a fixed height in pixels.
+- **Function:** Returns the height in pixels for each row. Use this option to create variable row heights.
+- **Fill String:** A string of the form `fill:<number>`. For example, `fill:24` instructs LyteNyte Grid
+  to distribute the available viewport space across all rows, while enforcing a minimum height of `24px` per row.
 
 ## Number Row Heights
 
-Set `rowHeight` to a number to give all rows a uniform height. The number provided to the `rowHeight`
-represents the height in pixels. The demo below demonstrates fixed rows heights in action.
+Set `rowHeight` to a number to give all rows a uniform height. The numeric value
+represents the row height in pixels. The demo below shows fixed row heights in action.
 
 !demo:Fixed Row Height="./demos/row-height-fixed_x"
 
 ### Updating Row Height
 
-In the demo above, the row height is changed by clicking the different toggle group buttons.
-Updating the row height can be done by setting the `grid.state.rowHeight` property. Setting this property
-results in the grid recalculating the row layout hence, hence avoid setting the row height state in hot loops.
-The code below shows how to change the row height to `40px`.
+In the demo above, clicking the toggle buttons updates the row height.
+You can change the row height by setting the `grid.state.rowHeight` property.
+Updating this value causes the grid to recalculate row layout,
+so avoid changing it inside hot or frequently running code paths.
+
+The following example sets the row height to `40px`:
 
 ```ts
 grid.state.rowHeight.set(40);
 ```
 
-When updating a variable row height after initialization, set `rowHeight` to a function that returns
-your height function. This avoids overwriting the setter with your function directly.
+If you need to update a **variable** row height after grid initialization, set `rowHeight` to a function
+that **returns** your height function. This pattern prevents you from overwriting
+the state setter with the height function itself.
 
 ```ts
 const myRowHeightFunction = (i: number) => {
@@ -49,16 +50,20 @@ grid.state.rowHeight.set(() => myRowHeightFunction);
 
 ## Variable Row Height
 
-LyteNyte Grid supports variable row height using a function callback. The function provided should
-return a number, however the value returned may differ on a per row basis. Since LyteNyte Grid will
-call this function for each row, its important that the function is extremely performant. Avoid performing
-any costly calculations in the provided callback. The demo below demonstrates variable row heights in
-action.
+LyteNyte Grid supports variable row heights through a function callback.
+This function must return a number representing the row height in pixels,
+and the returned value may differ per row.
+
+LyteNyte Grid calls this function for every row during layout, so performance is critical.
+Keep the implementation simple and avoid expensive calculations inside the callback.
+
+The demo below illustrates variable row heights in practice.
 
 !demo:Variable Row Height="./demos/row-height-variable_x"
 
-In the demo the row height is calculating as a simple repeating array of heights. The code for this is
-shown below. However, your own row height calculations can be as complex as you desire.
+In this example, the row height cycles through a predefined set of values.
+While this demo uses a simple pattern, your own logic can be as complex as needed,
+as long as it remains performant.
 
 ```ts
 const grid = Grid.useLyteNyte({
@@ -69,25 +74,26 @@ const grid = Grid.useLyteNyte({
 
 ## Fill Row Height
 
-Use the fill row height syntax `"fill:<n>"` to make rows expand and fill available space, where `n`
-is the minimum row height in pixels. LyteNyte Grid assigns each row its minimum height, calculates
-remaining space, and distributes it evenly among all rows. This is useful in cases where only a few
-rows are displayed in the grid.
+Use the fill row height syntax `"fill:<n>"` to make rows expand and fill
+the available viewport space, where `n` is the minimum row height in pixels.
+
+LyteNyte Grid assigns each row its minimum height, calculates the remaining available space,
+and then distributes that space evenly across all rows. This approach works well when the
+grid displays only a small number of rows and you want them to occupy the full viewport height.
 
 !demo:Fill Row Height="./demos/row-height-fill_x"
 
 <Callout>
 
-When using row height fills, if the minimum total row height exceeds the height of the viewport then
-the row height will behave similar to fixed row heights, with each row taking exactly the minimum
-height specified. This is because fill row heights distribute available free space, however, when the
-rows exceed the viewport height, the available free space is 0.
+When using fill row heights, if the combined minimum height of all rows exceeds the viewport height,
+the grid cannot distribute additional space. In this case, each row renders at exactly
+its minimum height, behaving the same as fixed-height rows.
 
 </Callout>
 
 ## Next Steps
 
-- [Row Pinning](/docs/row-pinning): See how to freeze specific rows to the top and bottom of the grid's viewport.
-- [Row Full Width](/docs/row-full-width): Create rows the expand the full width of the viewport.
-- [Row Selection](/docs/row-selection): Select individual and multiple rows.
-- [Row Sorting](/docs/row-detail): Learn about the row sort model and how to order rows.
+- [Row Pinning](/docs/row-pinning): Freeze specific rows at the top or bottom of the viewport.
+- [Row Full Width](/docs/row-full-width): Create rows that expand to the full width of the viewport.
+- [Row Selection](/docs/row-selection): Select individual or multiple rows.
+- [Row Sorting](/docs/row-detail): Learn about the row sort model and how rows are ordered.

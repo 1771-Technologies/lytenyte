@@ -1,30 +1,27 @@
 ---
 title: Rows Overview
-description: LyteNyte Grid has two types of rows, group rows and leaf rows. These rows are used
-  to create the main content displayed by the grid.
+description: LyteNyte Grid has two row types, group rows and leaf rows. These rows define the grid's primary content.
 ---
 
 ## Row Node Interface
 
-The rows in the LyteNyte Grid are represented by the [`RowNode` interface](/docs/reference/row#rownode). This
-interface is a type union of two types:
+LyteNyte Grid represents rows using the [`RowNode` interface](/docs/reference/row#rownode).
+This interface is a union of two types:
 
-- [`RowLeaf`](/docs/reference/row#rowleaf): A row in the grid that does not have an children rows.
-- [`RowGroup`](/docs/refernce/row#rowgroup): A row with children rows. The group row creates a hierarchical relationship
-  among rows.
+- [`RowLeaf`](/docs/reference/row#rowleaf): A row with no child rows.
+- [`RowGroup`](/docs/reference/row#rowgroup): A row that contains child rows and establishes a hierarchical relationship.
 
-You can distinguish between the row node types by using the `kind` property on the interfaces. For example:
+You can distinguish between row node types by checking the `kind` property. For example:
 
 ```ts
 const row: RowNode = { ... };
 
-const isLeaf = row.kind === "leaf"
-const isGroup = row.kind === "branch"
+const isLeaf = row.kind === "leaf";
+const isGroup = row.kind === "branch";
 ```
 
-LyteNyte Grid's API provides a convenience methods to make distinguishing row node types straightforward.
-The code below demonstrates these methods in action. If you are using TypeScript, these methods will also
-narrow the row node type union:
+LyteNyte Grid also provides convenience methods for identifying row node types. When using
+TypeScript, these methods will narrow the type of the `RowNode` union:
 
 ```ts
 const isLeaf = grid.api.rowIsLeaf(row);
@@ -33,21 +30,19 @@ const isGroup = grid.api.rowIsGroup(row);
 
 ## Row Indices
 
-If you carefully inspect the `RowNode` interface you will notice that there is no **row index** property.
-At first glance this seems strange, however, it important to understand that a row node does not necessarily
-have to be displayed in the grid. Row nodes are created by the provided grid data source, and some data
-sources (like the [Server Data Source](/docs/server-data-loading-overview)) are capable of returning rows
-that have not yet been displayed to the user. Such rows will not have defined row index.
+The `RowNode` interface does not include a **row index**. This omission is intentional.
+A row node does not always correspond to a rendered row. The grid's data source creates row nodes,
+and some data sources, such as the [Server Data Source](/docs/server-data-loading-overview),
+can return rows that are not yet visible. These rows do not have a defined row index.
 
-The lack of row index on the `RowNode` interface does not mean it is impossible to get the row index for a given
-row. Where the row index is available, LyteNyte Grid will provide it as a prop to components or callbacks. For example,
-the cell renderers are given the `rowIndex` property, as the marker column example demonstrates:
+Although `RowNode` does not store a row index, LyteNyte Grid exposes the index when it does exist.
+The grid passes `rowIndex` to components and callbacks that operate on rendered rows.
+For example, cell renderers receive a `rowIndex` prop, as shown in the marker column demo:
 
 !demo:Marker Column Row Index Display="../(column)/demos/column-marker_x"
 
-Notice how the row index value is displayed in the marker column for each row. The marker column's cell renderer
-is shown below. The `rowIndex` property is available on the props provided by LyteNyte Grid. Furthermore, the
-renderer adds 1 to the row index, since LyteNyte Grid starts counting rows at 0.
+The marker column displays the row index for each rendered row.
+The following cell renderer adds `1` to the index because LyteNyte Grid uses zero-based indexing:
 
 ```tsx
 const cellRenderer = (p) => {
@@ -57,14 +52,15 @@ const cellRenderer = (p) => {
 
 ## Other Row State
 
-The `RowNode` interface represents individual rows, but it does not contain layout information. For
-example, the pin state of a row is maintained separately in the grid state as part of grid view.
-The example below demonstrates this in action:
+`RowNode` represents row identity and structure, not layout or view state.
+LyteNyte Grid stores layout-related information separately as part of the grid's view state.
+For example, row pinning state lives in the grid view, not on the row node.
+
+The following demo shows this separation:
 
 !demo:Row Pinning="./demos/row-pinning_x"
 
-In the demo, the pin state of the row is kept in the `view` property of the grid state. You can see
-this in the code responsible for rendering the top section:
+In this example, the grid reads pinned rows from the `view` property when rendering the top section:
 
 ```tsx
 <Grid.RowsTop>
@@ -74,18 +70,18 @@ this in the code responsible for rendering the top section:
 </Grid.RowsTop>
 ```
 
-In addition to pin state the following information is not maintained on the row node:
+In addition to pin state, `RowNode` does not store the following information:
 
 - Row height
-- Row detail expansion
-- Row full width predicate
+- Row detail expansion state
+- Full-width row predicate
 - Row selection state
 
-The remaining guides in the Rows section will cover each aspect of the rows in the grid.
+The remaining guides in this section describe how LyteNyte Grid manages each of these concerns.
 
 ## Next Steps
 
-- [Row Height](/docs/row-height): Learn how to change the height of rows, how to handle variable height rows and fill height rows.
-- [Row Pinning](/docs/row-pinning): See how to freeze specific rows to the top and bottom of the grid's viewport.
-- [Row Selection](/docs/row-selection): Select individual and multiple rows.
-- [Row Detail](/docs/row-detail): Provide auxiliary row components or nested grids in expandable row detail accordions.
+- [Row Height](/docs/row-height): Change row height, support variable-height rows, and configure fill-height rows.
+- [Row Pinning](/docs/row-pinning): Freeze rows at the top or bottom of the viewport.
+- [Row Selection](/docs/row-selection): Select single or multiple rows.
+- [Row Detail](/docs/row-detail): Render expandable row detail content, including nested grids.
