@@ -1,5 +1,11 @@
 # @1771technologies/eslint-preset
 
+## 0.0.14
+
+### Patch Changes
+
+- Version 1.0.21
+
 ## 0.0.13
 
 ### Patch Changes
