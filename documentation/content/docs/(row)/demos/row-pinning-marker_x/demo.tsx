@@ -1,44 +1,55 @@
 "use client";
 
-import { useClientRowDataSource, Grid } from "@1771technologies/lytenyte-pro";
+import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
-import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { useId } from "react";
+import type { OrderData } from "@1771technologies/grid-sample-data/orders";
+import { data } from "@1771technologies/grid-sample-data/orders";
+import {
+  AvatarCell,
+  EmailCell,
+  IdCell,
+  PaymentMethodCell,
+  PriceCell,
+  ProductCell,
+  PurchaseDateCell,
+  tw,
+} from "./components";
 
-type BankData = (typeof bankDataSmall)[number];
-
-const columns: Column<BankData>[] = [
-  { id: "age", type: "number" },
-  { id: "job" },
-  { id: "balance", type: "number" },
-  { id: "education" },
-  { id: "marital" },
-  { id: "default" },
-  { id: "housing" },
-  { id: "loan" },
-  { id: "contact" },
-  { id: "day", type: "number" },
-  { id: "month" },
-  { id: "duration" },
-  { id: "campaign" },
-  { id: "pdays" },
-  { id: "previous" },
-  { id: "poutcome", name: "P Outcome" },
-  { id: "y" },
+const columns: Column<OrderData>[] = [
+  { id: "id", width: 60, widthMin: 60, cellRenderer: IdCell, name: "ID" },
+  { id: "product", cellRenderer: ProductCell, width: 200, type: "string" },
+  { id: "price", type: "number", cellRenderer: PriceCell, width: 100 },
+  { id: "customer", cellRenderer: AvatarCell, width: 180, type: "string" },
+  { id: "purchaseDate", cellRenderer: PurchaseDateCell, name: "Purchase Date", width: 120 },
+  { id: "paymentMethod", cellRenderer: PaymentMethodCell, name: "Payment Method", width: 150 },
+  { id: "email", cellRenderer: EmailCell, width: 220, type: "string" },
 ];
 
-export default function RowPinning() {
+export default function ColumnBase() {
   const ds = useClientRowDataSource({
-    data: bankDataSmall,
-    topData: bankDataSmall.slice(0, 2),
-    bottomData: bankDataSmall.slice(3, 5),
+    data: data.slice(2, -2),
+    topData: data.slice(0, 2),
+    bottomData: data.slice(-2),
   });
 
   const grid = Grid.useLyteNyte({
     gridId: useId(),
     rowDataSource: ds,
     columns,
+    columnMarkerEnabled: true,
+    columnMarker: {
+      cellRenderer: (p) => {
+        return (
+          <div className="flex h-full w-full items-center justify-center text-xs">
+            {p.rowIndex + 1}
+          </div>
+        );
+      },
+    },
+
+    rowHeight: 50,
   });
 
   const view = grid.view.useValue();
@@ -54,11 +65,16 @@ export default function RowPinning() {
                   {row.map((c) => {
                     if (c.kind === "group") return null;
 
+                    console.log(c.id);
                     return (
                       <Grid.HeaderCell
                         key={c.id}
                         cell={c}
-                        className="flex h-full w-full items-center px-2 capitalize"
+                        className={tw(
+                          "flex h-full w-full items-center text-nowrap text-sm capitalize",
+                          !c.id.startsWith("lytenyte") && "px-3",
+                          c.column.type === "number" && "justify-end",
+                        )}
                       />
                     );
                   })}
@@ -78,7 +94,7 @@ export default function RowPinning() {
                         <Grid.Cell
                           key={c.id}
                           cell={c}
-                          className="flex h-full w-full items-center px-2 text-sm"
+                          className="text-xs! flex h-full w-full items-center px-2"
                         />
                       );
                     })}
@@ -98,7 +114,7 @@ export default function RowPinning() {
                         <Grid.Cell
                           key={c.id}
                           cell={c}
-                          className="flex h-full w-full items-center px-2 text-sm"
+                          className="text-xs! flex h-full w-full items-center px-2"
                         />
                       );
                     })}
@@ -118,7 +134,7 @@ export default function RowPinning() {
                         <Grid.Cell
                           key={c.id}
                           cell={c}
-                          className="flex h-full w-full items-center px-2 text-sm"
+                          className="text-xs! flex h-full w-full items-center px-2"
                         />
                       );
                     })}

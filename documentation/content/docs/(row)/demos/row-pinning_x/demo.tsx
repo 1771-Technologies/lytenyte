@@ -75,7 +75,11 @@ const columns: Column<DEXPerformanceData>[] = [
 ];
 
 export default function ColumnBase() {
-  const ds = useClientRowDataSource({ data: data.slice(2), topData: data.slice(0, 2) });
+  const ds = useClientRowDataSource({
+    data: data.slice(2, -2),
+    topData: data.slice(0, 2),
+    bottomData: data.slice(-2),
+  });
 
   const grid = Grid.useLyteNyte({
     gridId: useId(),
@@ -152,6 +156,26 @@ export default function ColumnBase() {
                 );
               })}
             </Grid.RowsCenter>
+
+            <Grid.RowsBottom>
+              {view.rows.bottom.map((row) => {
+                if (row.kind === "full-width") return null;
+
+                return (
+                  <Grid.Row row={row} key={row.id}>
+                    {row.cells.map((c) => {
+                      return (
+                        <Grid.Cell
+                          key={c.id}
+                          cell={c}
+                          className="text-xs! flex h-full w-full items-center px-2"
+                        />
+                      );
+                    })}
+                  </Grid.Row>
+                );
+              })}
+            </Grid.RowsBottom>
           </Grid.RowsContainer>
         </Grid.Viewport>
       </Grid.Root>

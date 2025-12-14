@@ -1,24 +1,70 @@
 ---
 title: Row Pinning
-description: Fix rows at the top or bottom of LyteNyte Grid to keep key information visible while
-  scrolling.
+description: LyteNyte Grid can freeze rows to the top or bottom of the grid viewport. Frozen rows
+  remain visible even as the user scrolls the grid.
 ---
 
-LyteNyte Grid lets you pin rows to the top or bottom of the viewport so they remain visible while
-scrolling. Use pinned rows to highlight important data, keep headers in view, or display summary
-information.
+## Pinned Row Elements
 
-## Set Pinned Rows
+Pinned rows occupy a different section in the `Grid.RowsContainer` than scrollable rows. When using
+pinned rows be sure to include the section elements, as show below. See
+the [Headless Component Parts guide](/docs/grid-headless-parts) for more details.
 
-Pinned rows are defined by your configured `rowDataSource`. The method for specifying pinned rows
-depends on the row data source type. The example below uses the client row data source.
+```tsx
+<Grid.RowsContainer>
+  <Grid.RowsTop>
+    {view.rows.top.map((row) => {
+      // top rows here
+    })}
+  </Grid.RowsTop>
 
-!demo:Pinned Rows="./demos/row-pinning"
+  <Grid.RowsCenter>
+    {view.rows.center.map((row) => {
+      // center rows here
+    })}
+  </Grid.RowsCenter>
+  <Grid.RowsBottom>
+    {view.rows.bottom.map((row) => {
+      // bottom rows here
+    })}
+  </Grid.RowsBottom>
+</Grid.RowsContainer>
+```
 
-## Learn More
+## Pinned Row Example
 
-See these guides for details on pinning rows with different data sources:
+Pinned rows are defined by the data source provided to the grid. The method for specifying pinned rows
+depends on the row data source type. The demo below will use the
+[Client Row Data Source](/docs/row-client-data-source) to demonstrate pinned rows. For other data source
+see their dedicated guides:
 
-- [Client Row Data Source](/docs/row-client-data-source)
-- [Server Row Data Source](/docs/row-server-data-source)
-- [Tree Row Data Source](/docs/row-tree-data-source)
+- [Tree Data Source](/docs/row-tree-data-source)
+- [Server Row Pinning](/docs/server-data-loading-row-pinning)
+
+Regardless of the data source, the approach to displaying the pinned rows is the same. Rendering the
+`Grid.RowsTops` and `Grid.RowsBottom` components will always display the pinned rows for a given view.
+
+!demo:Pinned Rows="./demos/row-pinning_x"
+
+## Pinned Row Indices
+
+LyteNyte Grid starting counting rows from the top to the bottom. When the grid contains pinned rows, the
+first row is considering the first top pinned row, and the last row is considered the last bottom pinned row.
+This has one important consideration that developers should be aware of. When rows are pinned top the row
+index of scrollable rows is offset by the number of rows pinned top. This mainly has implications when
+working with rows by row index, for example when retrieving a row by its index developers should offset the
+index by the top count if they want to retrieve the first scrollable row.
+
+You can see this most clearly if use the marker column to display row indices, as the example below demonstrates:
+
+!demo:Rows With Pinned Offset="./demos/row-pinning-marker_x"
+
+Notice the first scrollable row has an index of 3 displayed. This is because rows 1 and 2 are pinned top. Furthermore,
+the bottom rows have index 17 and 18, as the index for these rows is offset by the top and center rows.
+
+## Next Steps
+
+- [Row Full Width](/docs/row-full-width): Create rows the expand the full width of the viewport.
+- [Row Dragging](/docs/row-selection): Drag rows within the same grid, or between grids and external drop zones.
+- [Row Sorting](/docs/row-detail): Learn about the row sort model and how to order rows.
+- [Row Grouping & Aggregation](/docs/row-grouping-and-aggregation): Group and aggregate rows to form hierarchical relationships.
