@@ -1,66 +1,132 @@
 ---
 title: Row Selection
 description:
-  Configure and manage single and multiple row selection in LyteNyte Grid with checkboxes, click
-  interactions, and programmatic control.
+  Select individual or multiple rows using LyteNyte Grid's flexible row selection functionality.
+  Easily implement checkbox selection with support for bulk selections.
 ---
 
-LyteNyte Grid supports flexible row selection, including single and multiple selection modes. Users
-can select rows through clicks, checkboxes, or both.
+## Enabling Row Selection
 
-## Enable Row Selection
+The `rowSelectionMode` property on the LyteNyte grid state object may be used to configure the
+row selection functionality the grid will support. It accepts one of the following values:
 
-Set the `rowSelectionMode` property to `"single"` or `"multiple"`. To enable click-based selection,
-set `rowSelectionActivator` to `"single-click"` or `"double-click"`.
+- `"none"`: Completely disables row selection in the grid, preventing any user action from selecting rows.
+  Rows may still be selected programmatically by the developer.
+- `"single"`: Allows the user to select a single row. When a row is selected, all other selected rows will be
+  removed from the selection.
+- `"multiple"`: Allows multiple rows to be selected, with support for additively adding rows to the current row
+  selection.
 
-!demo:Enabling Row Selection="./demos/row-selection"
+In addition to the `rowSelectionMode`, the `rowSelectionActivator` on the grid state may be used to control the
+action that user should perform on a row to select it. It accepts one of the following values:
+
+- `"none"`: Disabled all selection actions. It will be up to the developer to provide a way for users to select rows,
+  for example, using selection checkboxes.
+- `"single-click"`: Will select a row when a user clicks the row.
+- `"double-click"`: A row will be selected by the user if the user double clicks the row.
+
+Using the properties above the demo demonstrates single row selection using a single click to select rows.
+Different properties may be used to augment the way rows selected in the grid. Other sections in this guide
+will cover multiple row selection and checkbox selection.
+
+!demo:Enabling Row Selection="./demos/row-selection_x"
 
 ### Multiple Row Selection
 
 Set `rowSelectionMode` to `"multiple"` to allow selecting multiple rows. Clicking a row toggles its
 selection. Hold **Shift** and click another row to select the range between it and the last selected
-row.
+row. The demo below demonstrates all of this in action.
 
-!demo:Multiple Row Selection="./demos/row-selection-multi"
+!demo:Multiple Row Selection="./demos/row-selection-multi_x"
 
-## Row Selection with Group Rows
+The code to configure this row selection is shown below. The important configuration is setting the
+`rowSelectionMode` to `"multiple"`.
 
-Group rows create hierarchical relationships with their child rows. Control whether selecting a
-group row also selects its children with the `rowSelectChildren` property.
-
-!demo:Row Selection Group Selection="./demos/row-selection-groups"
+```ts
+const grid = Grid.useLyteNyte({
+  // Other grid props
+  rowSelectionMode: "multiple",
+  rowSelectionActivator: "single-click",
+});
+```
 
 ## Checkbox Selection
 
-When combining selection with group toggle buttons, stop event propagation to avoid triggering both
-actions. Alternatively, set selection to `"double-click"` or implement your own checkbox selection
-logic.
+Selecting rows on click often conflicts with other grid interaction capabilities, or it may not conform
+to common design patterns that users are familiar with. A familiar pattern for row selection is using
+checkboxes that the user may click to select a row. This pattern is so common that LyteNyte Grid
+provides the `api.rowHandleSelect` method to simplify selection logic, including shift-select behavior.
 
-!demo:Row Selection Checkbox="./demos/row-selection-checkbox"
+!demo:Checkbox Row Selection="./demos/row-selection-checkbox_x"
 
-Use `grid.api.rowHandleSelect` to simplify selection handling in components. This method supports
-shift-based range selection out of the box.
+The demo uses `api.rowHandleSelect` to manage checkbox interactions:
 
 ```tsx
-<input
-  type="checkbox"
-  checked={rowSelected}
-  onChange={() => {}}
-  onClick={(e) => {
-    grid.api.rowHandleSelect({
-      target: e.currentTarget,
-      shiftKey: e.shiftKey,
-    });
+<GridCheckbox
+  onClick={(ev) => {
+    ev.stopPropagation();
+    grid.api.rowHandleSelect({ shiftKey: ev.shiftKey, target: ev.target });
+  }}
+  onKeyDown={(ev) => {
+    if (ev.key === "Enter" || ev.key === " ")
+      grid.api.rowHandleSelect({ shiftKey: ev.shiftKey, target: ev.target });
   }}
 />
 ```
 
-Attach the selection logic to the `onClick` event to easily detect **Shift** key presses.
+### Selecting All Rows
 
-## Prevent Row Selection
+The checkbox demo allows for all the rows to be selected by clicking the checkbox in the header. This
+is made possible using the [`grid.api.rowSelectAll`](/docs/reference/grid-api#gridapi) method on the grid
+API. This method can be used to select or deselect all the rows in the grid.
 
-To block selection for certain rows, listen for the `rowSelectBegin` event and call
-`preventDefault()`. In the example below, odd-numbered rows cannot be selected.  
-See the [event guide](/docs/grid-events) for more on handling grid events.
+## Group Row Selection
 
-!demo:Prevent Row Selection="./demos/row-selection-preventing"
+Row groups create a hierarchical relationships with their child rows, however, the group row is
+a distinct row from its children, and has its own selection state. By default selecting a group row
+will not select its children. This behavior can be changed using the `rowSelectChildren` property
+on the grid's state. In the example below, selecting a group will select its children as well.
+
+!demo:Row Selection Group Selection="./demos/row-selection-groups_x"
+
+## Row Selection State
+
+The `rowSelectionIds` property on the grid controls which rows are considered selected. It is a
+set of string values where each value corresponds to a row ID. Not every value in the `rowSelectionIds`
+set must be a valid row in the grid. This allows for rows that have not been created to be pre-selected
+ahead of time. The example below demonstrates initially selecting rows by providing the a set of initial
+ids.
+
+!demo:Row Selection State="./demos/row-selection-state_x"
+
+## Preventing Row Selection
+
+When a row is selected, LyteNyte Grid will fire the `rowSelectBegin` event. This event
+may be used to prevent a specific row from being selected. In the example below, the selection
+of any odd-numbered rows is disallowed using this event.
+
+!demo:Prevent Row Selection="./demos/row-selection-preventing_x"
+
+The code to prevent the row selection is shown below. For more details on grid events
+see the [Grid Events guide](/docs/grid-events).
+
+```tsx
+<Grid.Root
+  grid={grid}
+  onRowSelectBegin={({ preventDefault, selected }) => {
+    if (Number.parseInt(selected) % 2) {
+      preventDefault();
+      alert(`Selection of the row at index ${Number.parseInt(selected)} has been prevent.`);
+    }
+  }}
+>
+  {/* other parts */}
+</Grid.Root>
+```
+
+## Next Steps
+
+- [Row Pinning](/docs/row-pinning): See how to freeze specific rows to the top and bottom of the grid's viewport.
+- [Row Full Width](/docs/row-full-width): Create rows the expand the full width of the viewport.
+- [Row Grouping & Aggregation](/docs/row-grouping-and-aggregation): Group and aggregate rows to form hierarchical relationships.
+- [Row Detail](/docs/row-detail): Provide auxiliary row components or nested grids in expandable row detail accordions.
