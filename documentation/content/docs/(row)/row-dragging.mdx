@@ -1,17 +1,12 @@
 ---
 title: Row Dragging
-description:
-  Learn about row dragging in LyteNyte Grid, with support for external drop zones and multiple row
-  dragging.
+description: LyteNyte Grid supports row dragging. Rows may be dragged within the same grid, to other
+  grids, or to an external drop area.
 ---
-
-LyteNyte Grid provides flexible row dragging that lets users move data through intuitive
-drag-and-drop interactions. You can drag single or multiple rows within a grid, across multiple
-grids, or into external drop zones. The grid supplies the mechanics without enforcing default
-behavior, so you control how drag interactions are handled.
 
 ## Single Row Dragging
 
+LyteNyte Grid's row dragging capabilities are hook based.
 Use the `grid.api.useRowDrag` hook to add row dragging. This hook returns drag props that you attach
 to a drag handle component. It expects a `getDragData` callback, which must return the drag data in
 the following shape:
@@ -24,9 +19,8 @@ export interface DragData {
 ```
 
 Drop zones must declare which drag data keys they accept. For example, the `Row` component is a
-dropzone. Set its `accepted` property to specify what it will accept.
-
-The example below shows a basic setup. Pay attention to the marker column's `cellRenderer` and the
+dropzone. Set its `accepted` property to specify what it will accept. In the example below, the
+basic single row drag setup is shown. Pay attention to the marker column's `cellRenderer` and the
 `accepted` prop on `Grid.Row`.
 
 !demo:Row Dragging="./demos/row-dragging"
@@ -51,3 +45,10 @@ LyteNyte Grid provides a `DropWrap` component for external drop zones. `DropWrap
 that handles all the necessary drag events and can accept any drag data produced by the grid.
 
 !demo:Row Dragging External Drop Zone="./demos/row-dragging-external-dropzone"
+
+## Next Steps
+
+- [Row Pinning](/docs/row-pinning): See how to freeze specific rows to the top and bottom of the grid's viewport.
+- [Row Full Width](/docs/row-full-width): Create rows the expand the full width of the viewport.
+- [Row Selection](/docs/row-selection): Select individual and multiple rows.
+- [Row Sorting](/docs/row-detail): Learn about the row sort model and how to order rows.

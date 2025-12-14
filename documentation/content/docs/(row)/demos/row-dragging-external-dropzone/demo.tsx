@@ -6,25 +6,23 @@ import { DragDotsSmallIcon, DragIcon } from "@1771technologies/lytenyte-pro/icon
 import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { useId, useState } from "react";
+import { BalanceCell, DurationCell, NumberCell, tw } from "./components";
 
 type BankData = (typeof bankDataSmall)[number];
 
 const columns: Column<BankData>[] = [
+  { id: "job", width: 120 },
+  { id: "age", type: "number", width: 80, cellRenderer: NumberCell },
+  { id: "balance", type: "number", cellRenderer: BalanceCell },
   { id: "education" },
   { id: "marital" },
-  { id: "age", type: "number" },
-  { id: "job" },
-  { id: "balance", type: "number" },
   { id: "default" },
   { id: "housing" },
   { id: "loan" },
   { id: "contact" },
-  { id: "day", type: "number" },
+  { id: "day", type: "number", cellRenderer: NumberCell },
   { id: "month" },
-  { id: "duration" },
-  { id: "campaign" },
-  { id: "pdays" },
-  { id: "previous" },
+  { id: "duration", type: "number", cellRenderer: DurationCell },
   { id: "poutcome", name: "P Outcome" },
   { id: "y" },
 ];
@@ -34,26 +32,28 @@ export default function RowDraggingExternalDropZone() {
     data: bankDataSmall,
   });
 
-  const [dropped, setDropped] = useState<number[]>([]);
+  const [dropped, setDropped] = useState<BankData[]>([]);
 
   const upper = Grid.useLyteNyte({
     gridId: useId(),
     rowDataSource: ds,
     columns,
+    columnBase: { width: 100 },
 
     columnMarkerEnabled: true,
     columnMarker: {
       cellRenderer: (p) => {
         const drag = p.grid.api.useRowDrag({
+          placeholder: (_, el) => el.parentElement?.parentElement ?? el,
           getDragData: () => {
             return {
               siteLocalData: {
-                row: p.rowIndex,
+                row: p.row.data as BankData,
               },
             };
           },
           onDrop: (p) => {
-            setDropped((prev) => [...prev, p.state.siteLocalData?.row as number]);
+            setDropped((prev) => [...prev, p.state.siteLocalData?.row as BankData]);
           },
         });
 
@@ -84,7 +84,10 @@ export default function RowDraggingExternalDropZone() {
                         <Grid.HeaderCell
                           key={c.id}
                           cell={c}
-                          className="flex h-full w-full items-center px-2 capitalize"
+                          className={tw(
+                            "flex items-center px-2 text-sm capitalize",
+                            c.column.type === "number" && "justify-end",
+                          )}
                         />
                       );
                     })}
@@ -104,7 +107,10 @@ export default function RowDraggingExternalDropZone() {
                           <Grid.Cell
                             key={c.id}
                             cell={c}
-                            className="flex h-full w-full items-center px-2 text-sm"
+                            className={tw(
+                              "flex items-center px-2 text-sm",
+                              c.column.type === "number" && "justify-end tabular-nums",
+                            )}
                           />
                         );
                       })}
@@ -119,18 +125,20 @@ export default function RowDraggingExternalDropZone() {
 
       <DropWrap
         accepted={["row"]}
-        className="data-[ln-can-drop=true]:border-ln-primary-50 border border-dashed"
+        className="data-[ln-can-drop=true]:border-ln-primary-50 overflow-auto border border-dashed"
         style={{ height: 200 }}
       >
         {dropped.length === 0 && (
           <div className="flex h-full w-full items-center justify-center">
-            <DragIcon width={100} height={100} />
+            <DragIcon className="size-8" />
+            <div className="text-center">Drag a row here</div>
           </div>
         )}
         {dropped.map((c, i) => {
           return (
-            <div className="flex items-center px-2 py-1" key={i}>
-              Value: {c}
+            <div className="flex items-center gap-2 text-nowrap px-2 py-1" key={i}>
+              <span className="text-ln-gray-100 font-semibold">Row Value:</span>{" "}
+              <span className="font-mono">{JSON.stringify(c)}</span>
             </div>
           );
         })}
