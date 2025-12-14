@@ -81,7 +81,7 @@ const { toc } = Astro.props;
 
       const index = prevValue < value ? previousIndex : firstPositiveIndex;
 
-      const activeId = headings[index].id;
+      const activeId = headings[index]?.id;
       if (activeId) setActive(activeId);
     }
     getClosestHeading();

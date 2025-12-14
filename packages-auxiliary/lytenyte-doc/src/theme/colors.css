@@ -1,5 +1,6 @@
 @theme {
-  --color-ln-background: hsl(0, 0%, 96%);
+  --color-ln-prose-link: hsla(194, 80%, 43%, 1);
+  --color-ln-background: hsl(0, 0%, 99%);
   --color-ln-foreground: hsl(0, 0%, 3.9%);
   --color-ln-muted: hsl(0, 0%, 96.1%);
   --color-ln-muted-foreground: hsl(0, 0%, 45.1%);
@@ -19,6 +20,7 @@
 }
 
 [data-theme="dark"] {
+  --color-ln-prose-link: hsla(172, 75%, 40%, 1);
   --color-ln-background: hsl(0, 0%, 7.04%);
   --color-ln-foreground: hsl(0, 0%, 92%);
   --color-ln-muted: hsl(0, 0%, 12.9%);
@@ -36,16 +38,4 @@
   --color-ln-accent-foreground: hsl(0, 0%, 90%);
   --color-ln-ring: hsl(0, 0%, 54.9%);
   --color-ln-overlay: hsla(0, 0%, 0%, 0.2);
-}
-
-@theme static {
-  --color-ln-info: oklch(62.3% 0.214 259.815);
-  --color-ln-warning: oklch(76.9% 0.188 70.08);
-  --color-ln-error: oklch(63.7% 0.237 25.331);
-  --color-ln-success: oklch(72.3% 0.219 149.579);
-  --color-ln-idea: oklch(70.5% 0.209 60.849);
-  --color-ln-diff-remove: rgba(200, 10, 100, 0.12);
-  --color-ln-diff-remove-symbol: rgb(230, 10, 100);
-  --color-ln-diff-add: rgba(14, 180, 100, 0.1);
-  --color-ln-diff-add-symbol: rgb(10, 200, 100);
 }

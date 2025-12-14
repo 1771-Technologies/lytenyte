@@ -1,4 +1,0 @@
-{
-  "extends": "astro/tsconfigs/strict",
-  "include": ["./src", "lytenyte-doc.ts"]
-}

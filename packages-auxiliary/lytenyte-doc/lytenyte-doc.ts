@@ -8,16 +8,16 @@ import {
   remarkDirective,
   remarkCallout,
   remarkDemo,
-} from "@1771technologies/mdx-plugins";
+} from "./plugins/index.js";
 
 export interface OneDocConfig {
-  readonly collections?: string[];
+  readonly collections: (string | { name: string; base: string })[];
   readonly githubOrg?: string;
   readonly githubRepo?: string;
 }
 
-export function lnDoc(opts?: OneDocConfig): AstroIntegration[] {
-  const collections = opts?.collections ?? ["blog"];
+export function lnDoc(opts: OneDocConfig): AstroIntegration[] {
+  const collections = opts.collections;
 
   return [
     {
@@ -30,25 +30,59 @@ export function lnDoc(opts?: OneDocConfig): AstroIntegration[] {
                 tailwindcss() as any,
                 {
                   resolveId: (id) => {
-                    if (id === "one:doc") return "one:doc";
+                    if (id === "ln:collections") return "ln:collections";
                   },
                   load: (id) => {
-                    if (id === "one:doc") return `export default ${JSON.stringify(opts ?? [])}`;
+                    if (id === "ln:collections") {
+                      const file = `
+                      import { defineCollection, z } from "astro:content";
+                      import { generateId } from "@1771technologies/lytenyte-doc";
+                      import { glob } from "astro/loaders"
+
+                      ${collections
+                        .map((x) => {
+                          const name = typeof x === "string" ? x : x.name;
+                          return `const ${name} = defineCollection({
+                          loader: glob({
+                            pattern: "**/*.mdx",
+                            base: "./${x}",
+                            generateId
+                          }),
+                          schema: z.object({
+                            title: z.string(),
+                            description: z.string().optional(),
+                          })
+                        })`;
+                        })
+                        .join("\n")}
+
+
+                      export const collections = { ${collections.map((x) => `${typeof x === "string" ? x : x.name}`).join(", ")} }
+                      `;
+
+                      return file;
+                    }
                   },
                 },
               ],
+
               resolve: {
                 alias: {
+                  "@1771technologies/lytenyte-doc/collections": "ln:collections",
                   "@root": config.root.pathname,
                 },
               },
             },
           });
+
           const codegen = createCodegenDir();
-          for (const collection of collections) {
+          for (let i = 0; i < collections.length; i++) {
+            const collection = collections[i];
+            const name = typeof collection === "string" ? collection : collection.name;
+
             const url = new URL(`${collection}.astro`, codegen);
 
-            await writeFile(url, pageTemplate.replace("##replace", collection));
+            await writeFile(url, pageTemplate.replace("##replace", `${name}`));
 
             injectRoute({
               pattern: `/${collection}/[...slug]`,

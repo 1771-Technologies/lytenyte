@@ -21,12 +21,12 @@ const type = props.type;
 <div
   class:list={[
     "border-l-4 rounded-s-lg rounded-e-xl my-8 p-4 border border-neutral-300 dark:border-neutral-800 bg-ln-card ln-callout",
-    type === "warn" && "border-l-yellow-500",
-    type === "info" && "border-l-blue-500",
-    type === "tip" && "border-l-green-500",
-    type === "best" && "border-l-teal-500",
-    type === "danger" && "border-l-rose-500",
-    type === "note" && "border-l-emerald-500",
+    type === "warn" && "dark:border-l-yellow-500 border-l-yellow-500",
+    type === "info" && "dark:border-l-blue-500 border-l-blue-500",
+    type === "tip" && "dark:border-l-green-500 border-l-green-500",
+    type === "best" && "dark:border-l-teal-500 border-l-teal-500",
+    type === "danger" && "dark:border-l-rose-500 border-l-rose-500",
+    type === "note" && "dark:border-l-emerald-500 border-l-emerald-500",
   ]}
 >
   <div class="grid grid-cols-[auto_1fr] grid-rows-[auto_1fr] gap-x-4 gap-y-2">

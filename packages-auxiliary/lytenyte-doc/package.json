@@ -19,6 +19,7 @@
   },
   "exports": {
     ".": "./lytenyte-doc.ts",
+    "./collections": "./collections.d.ts",
     "./code": "./code.ts",
     "./*.astro": "./src/*.astro",
     "./theme.css": "./src/theme.css"
@@ -28,10 +29,10 @@
   },
   "devDependencies": {
     "@types/hast": "3.0.4",
+    "@types/mdast": "^4.0.4",
     "astro": "5.16.1"
   },
   "dependencies": {
-    "@1771technologies/mdx-plugins": "workspace:*",
     "@astrojs/mdx": "4.3.12",
     "@astrojs/starlight": "0.37.0",
     "@expressive-code/plugin-collapsible-sections": "0.41.3",
@@ -40,6 +41,7 @@
     "@iconify-json/ph": "1.2.2",
     "@iconify-json/svg-spinners": "1.2.4",
     "@iconify/tailwind4": "1.2.0",
+    "@manypkg/find-root": "3.1.0",
     "@tailwindcss/vite": "4.1.17",
     "astro-expressive-code": "0.41.3",
     "clsx": "^2.1.1",
@@ -50,10 +52,19 @@
     "hast-util-select": "6.0.4",
     "hast-util-to-string": "3.0.1",
     "hastscript": "9.0.1",
+    "mdast": "^3.0.0",
+    "mdast-util-directive": "^3.1.0",
+    "mdast-util-from-markdown": "^2.0.2",
+    "mdast-util-mdx": "^3.0.0",
+    "mdast-util-mdx-jsx": "^3.2.0",
+    "mdast-util-mdxjs-esm": "^2.0.1",
+    "micromark-extension-mdxjs": "^3.0.0",
     "radix-ui": "^1.4.3",
     "rehype": "13.0.2",
+    "remark-directive": "^4.0.0",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "4.1.17",
-    "unist-util-visit": "5.0.0"
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.0.0"
   }
 }

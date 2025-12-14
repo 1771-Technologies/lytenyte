@@ -4,11 +4,13 @@ import type { Root } from "./types";
 interface Props {
   readonly collection: string;
   readonly item: Root["children"][number];
+  readonly depth?: number;
 }
 import Tree from "./sidebar.astro";
 import { getEntry } from "astro:content";
+import { cn } from "../ui/cn";
 
-const { item, collection } = Astro.props;
+const { item, collection, depth = 0 } = Astro.props;
 
 let title = "";
 if (item?.kind === "page-link") {
@@ -32,11 +34,14 @@ const { pathname } = Astro.url;
     <a
       data-active={pathname === `/${collection}/${item.id}`}
       href={`/${collection}/${item.id}`}
-      class:list={[
-        "data-[active=true]:bg-ln-accent-foreground/10 -ms-6 ps-5 -me-5 py-2.5 rounded-lg data-[active=true]:text-ln-foreground relative hover:bg-ln-accent-foreground/5 transition-colors",
-        "data-[active=true]:before:absolute data-[active=true]:before:w-px data-[active=true]:before:h-1/2 data-[active=true]:before:bg-ln-foreground",
-        "data-[active=true]:before:left-[7px] data-[active=true]:before:top-1/4 hover:duration-0 duration-100",
-      ]}
+      class:list={cn(
+        "data-[active=true]:bg-ln-accent-foreground/10 data-[active=true]:text-ln-foreground relative hover:bg-ln-accent-foreground/5 transition-colors",
+        "data-active:before:bg-ln-border data-active:before:h-full data-active:before:top-0",
+        "data-active:before:absolute data-active:before:w-px data-[active=true]:before:h-2/5 data-[active=true]:before:bg-ln-foreground",
+        "data-active:before:left-[7px] data-[active=true]:before:top-3/10 hover:duration-0 duration-100",
+        "text-xs tracking-tight text-ln-muted-foreground font-semibold",
+        "px-[calc(var(--sidebar-depth,1)*16px)] py-2 rounded-lg",
+      )}
     >
       {title}
     </a>
@@ -51,7 +56,7 @@ const { pathname } = Astro.url;
       data-collapsed={item.collapsed}
       data-group-id={item.id}
     >
-      <div class="tracking-tight font-semibold flex items-center ps-1.5">
+      <div class="tracking-tight font-semibold text-sm flex items-center">
         {!item.collapsible && <div class="flex-1">{item.label}</div>}
         {item.collapsible && (
           <button
@@ -63,12 +68,12 @@ const { pathname } = Astro.url;
           </button>
         )}
       </div>
-      <div class="grid grid-rows-[1fr] group-data-[collapsible=true]:group-data-[collapsed=true]:grid-rows-[0fr] transition-[grid-template-rows] overflow-hidden px-1">
+      <div class="grid grid-rows-[1fr] group-data-[collapsible=true]:group-data-[collapsed=true]:grid-rows-[0fr] transition-[grid-template-rows] overflow-hidden mt-1 mb-3">
         <div class="min-h-0">
-          <div class="ps-2">
-            <div class="flex flex-col px-4 text-xs tracking-tight text-ln-muted-foreground font-semibold py-1 border-l dark:border-neutral-800 border-neutral-200">
+          <div>
+            <div class="flex flex-col" style={`--sidebar-depth: ${depth + 1}`}>
               {item.children!.map((x) => (
-                <Tree item={x} collection={collection} />
+                <Tree item={x} collection={collection} depth={depth + 1} />
               ))}
             </div>
           </div>

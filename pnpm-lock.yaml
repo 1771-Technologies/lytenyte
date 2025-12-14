@@ -116,7 +116,7 @@ importers:
     dependencies:
       '@1771technologies/lytenyte-doc':
         specifier: workspace:*
-        version: link:../packages-documentation/lytenyte-doc
+        version: link:../packages-auxiliary/lytenyte-doc
       '@astrojs/react':
         specifier: 4.4.2
         version: 4.4.2(@types/node@24.5.2)(@types/react-dom@19.1.7(@types/react@19.2.7))(@types/react@19.2.7)(jiti@2.6.1)(lightningcss@1.30.2)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)(terser@5.39.2)(tsx@4.20.5)(yaml@2.8.0)
@@ -375,6 +375,118 @@ importers:
         specifier: 8.44.0
         version: 8.44.0(eslint@9.35.0(jiti@2.6.1))(typescript@5.9.2)
 
+  packages-auxiliary/lytenyte-doc:
+    dependencies:
+      '@astrojs/mdx':
+        specifier: 4.3.12
+        version: 4.3.12(astro@5.16.1(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.47.1)(terser@5.39.2)(tsx@4.20.5)(typescript@5.9.2)(yaml@2.8.0))
+      '@astrojs/starlight':
+        specifier: 0.37.0
+        version: 0.37.0(astro@5.16.1(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.47.1)(terser@5.39.2)(tsx@4.20.5)(typescript@5.9.2)(yaml@2.8.0))
+      '@expressive-code/plugin-collapsible-sections':
+        specifier: 0.41.3
+        version: 0.41.3
+      '@expressive-code/plugin-line-numbers':
+        specifier: 0.41.3
+        version: 0.41.3
+      '@iconify-json/logos':
+        specifier: ^1.2.10
+        version: 1.2.10
+      '@iconify-json/ph':
+        specifier: 1.2.2
+        version: 1.2.2
+      '@iconify-json/svg-spinners':
+        specifier: 1.2.4
+        version: 1.2.4
+      '@iconify/tailwind4':
+        specifier: 1.2.0
+        version: 1.2.0(tailwindcss@4.1.17)
+      '@manypkg/find-root':
+        specifier: 3.1.0
+        version: 3.1.0
+      '@tailwindcss/vite':
+        specifier: 4.1.17
+        version: 4.1.17(vite@6.4.1(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.39.2)(tsx@4.20.5)(yaml@2.8.0))
+      astro-expressive-code:
+        specifier: 0.41.3
+        version: 0.41.3(astro@5.16.1(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.47.1)(terser@5.39.2)(tsx@4.20.5)(typescript@5.9.2)(yaml@2.8.0))
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
+      codesandbox:
+        specifier: ^2.2.3
+        version: 2.2.3
+      es-toolkit:
+        specifier: ^1.42.0
+        version: 1.42.0
+      hast:
+        specifier: 1.0.0
+        version: 1.0.0
+      hast-util-from-html:
+        specifier: 2.0.3
+        version: 2.0.3
+      hast-util-select:
+        specifier: 6.0.4
+        version: 6.0.4
+      hast-util-to-string:
+        specifier: 3.0.1
+        version: 3.0.1
+      hastscript:
+        specifier: 9.0.1
+        version: 9.0.1
+      mdast:
+        specifier: ^3.0.0
+        version: 3.0.0
+      mdast-util-directive:
+        specifier: ^3.1.0
+        version: 3.1.0
+      mdast-util-from-markdown:
+        specifier: ^2.0.2
+        version: 2.0.2
+      mdast-util-mdx:
+        specifier: ^3.0.0
+        version: 3.0.0
+      mdast-util-mdx-jsx:
+        specifier: ^3.2.0
+        version: 3.2.0
+      mdast-util-mdxjs-esm:
+        specifier: ^2.0.1
+        version: 2.0.1
+      micromark-extension-mdxjs:
+        specifier: ^3.0.0
+        version: 3.0.0
+      radix-ui:
+        specifier: ^1.4.3
+        version: 1.4.3(@types/react-dom@19.1.7(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      rehype:
+        specifier: 13.0.2
+        version: 13.0.2
+      remark-directive:
+        specifier: ^4.0.0
+        version: 4.0.0
+      tailwind-merge:
+        specifier: ^3.3.1
+        version: 3.3.1
+      tailwindcss:
+        specifier: 4.1.17
+        version: 4.1.17
+      unified:
+        specifier: ^11.0.5
+        version: 11.0.5
+      unist-util-visit:
+        specifier: ^5.0.0
+        version: 5.0.0
+    devDependencies:
+      '@types/hast':
+        specifier: 3.0.4
+        version: 3.0.4
+      '@types/mdast':
+        specifier: ^4.0.4
+        version: 4.0.4
+      astro:
+        specifier: 5.16.1
+        version: 5.16.1(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.47.1)(terser@5.39.2)(tsx@4.20.5)(typescript@5.9.2)(yaml@2.8.0)
+
   packages-auxiliary/play-frame:
     dependencies:
       '@radix-ui/react-icons':
@@ -444,128 +556,6 @@ importers:
       unist-util-visit:
         specifier: ^5.0.0
         version: 5.0.0
-
-  packages-documentation/lytenyte-doc:
-    dependencies:
-      '@1771technologies/mdx-plugins':
-        specifier: workspace:*
-        version: link:../mdx-plugins
-      '@astrojs/mdx':
-        specifier: 4.3.12
-        version: 4.3.12(astro@5.16.1(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.47.1)(terser@5.39.2)(tsx@4.20.5)(typescript@5.9.2)(yaml@2.8.0))
-      '@astrojs/starlight':
-        specifier: 0.37.0
-        version: 0.37.0(astro@5.16.1(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.47.1)(terser@5.39.2)(tsx@4.20.5)(typescript@5.9.2)(yaml@2.8.0))
-      '@expressive-code/plugin-collapsible-sections':
-        specifier: 0.41.3
-        version: 0.41.3
-      '@expressive-code/plugin-line-numbers':
-        specifier: 0.41.3
-        version: 0.41.3
-      '@iconify-json/logos':
-        specifier: ^1.2.10
-        version: 1.2.10
-      '@iconify-json/ph':
-        specifier: 1.2.2
-        version: 1.2.2
-      '@iconify-json/svg-spinners':
-        specifier: 1.2.4
-        version: 1.2.4
-      '@iconify/tailwind4':
-        specifier: 1.2.0
-        version: 1.2.0(tailwindcss@4.1.17)
-      '@tailwindcss/vite':
-        specifier: 4.1.17
-        version: 4.1.17(vite@6.4.1(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.39.2)(tsx@4.20.5)(yaml@2.8.0))
-      astro-expressive-code:
-        specifier: 0.41.3
-        version: 0.41.3(astro@5.16.1(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.47.1)(terser@5.39.2)(tsx@4.20.5)(typescript@5.9.2)(yaml@2.8.0))
-      clsx:
-        specifier: ^2.1.1
-        version: 2.1.1
-      codesandbox:
-        specifier: ^2.2.3
-        version: 2.2.3
-      es-toolkit:
-        specifier: ^1.42.0
-        version: 1.42.0
-      hast:
-        specifier: 1.0.0
-        version: 1.0.0
-      hast-util-from-html:
-        specifier: 2.0.3
-        version: 2.0.3
-      hast-util-select:
-        specifier: 6.0.4
-        version: 6.0.4
-      hast-util-to-string:
-        specifier: 3.0.1
-        version: 3.0.1
-      hastscript:
-        specifier: 9.0.1
-        version: 9.0.1
-      radix-ui:
-        specifier: ^1.4.3
-        version: 1.4.3(@types/react-dom@19.1.7(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      rehype:
-        specifier: 13.0.2
-        version: 13.0.2
-      tailwind-merge:
-        specifier: ^3.3.1
-        version: 3.3.1
-      tailwindcss:
-        specifier: 4.1.17
-        version: 4.1.17
-      unist-util-visit:
-        specifier: 5.0.0
-        version: 5.0.0
-    devDependencies:
-      '@types/hast':
-        specifier: 3.0.4
-        version: 3.0.4
-      astro:
-        specifier: 5.16.1
-        version: 5.16.1(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.47.1)(terser@5.39.2)(tsx@4.20.5)(typescript@5.9.2)(yaml@2.8.0)
-
-  packages-documentation/mdx-plugins:
-    dependencies:
-      '@manypkg/find-root':
-        specifier: 3.1.0
-        version: 3.1.0
-      mdast:
-        specifier: ^3.0.0
-        version: 3.0.0
-      mdast-util-directive:
-        specifier: ^3.1.0
-        version: 3.1.0
-      mdast-util-from-markdown:
-        specifier: ^2.0.2
-        version: 2.0.2
-      mdast-util-mdx:
-        specifier: ^3.0.0
-        version: 3.0.0
-      mdast-util-mdx-jsx:
-        specifier: ^3.2.0
-        version: 3.2.0
-      mdast-util-mdxjs-esm:
-        specifier: ^2.0.1
-        version: 2.0.1
-      micromark-extension-mdxjs:
-        specifier: ^3.0.0
-        version: 3.0.0
-      remark-directive:
-        specifier: ^4.0.0
-        version: 4.0.0
-      unified:
-        specifier: ^11.0.5
-        version: 11.0.5
-      unist-util-visit:
-        specifier: ^5.0.0
-        version: 5.0.0
-    devDependencies:
-      '@types/mdast':
-        specifier: ^4.0.4
-        version: 4.0.4
 
   packages/commercial-lytenyte-pro:
     dependencies:
@@ -16156,7 +16146,7 @@ snapshots:
 
   i18next@23.16.8:
     dependencies:
-      '@babel/runtime': 7.27.6
+      '@babel/runtime': 7.28.4
 
   iconv-lite@0.4.24:
     dependencies:

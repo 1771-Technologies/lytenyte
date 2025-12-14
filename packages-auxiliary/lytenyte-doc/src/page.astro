@@ -1,5 +1,6 @@
 ---
-import { render } from "astro:content";
+import { capitalize } from "es-toolkit";
+import { getCollection, render } from "astro:content";
 import DocsLayout from "./docs-layout.astro";
 import { Code } from "astro-expressive-code/components";
 
@@ -46,14 +47,52 @@ export interface Props {
 }
 
 const { entry } = Astro.props;
-
 const { Content, headings } = await render(entry);
 
 const sidebar = getSidebarConfig(entry.filePath!, entry.collection);
+
+const breadcrumbs = entry
+  .filePath!.replace(entry.collection + "/", "")
+  .split("/")
+  .map((x) => {
+    if (x.startsWith("(@"))
+      return capitalize(
+        x.replace("(@", "").replace(")", "").replaceAll("-", " ").replaceAll("_", " "),
+      );
+    if (x.startsWith("("))
+      return capitalize(
+        x.replace("(", "").replace(")", "").replaceAll("-", " ").replaceAll("_", " "),
+      );
+
+    return capitalize(x.replaceAll("_", " ").replaceAll("-", " "));
+  })
+  .slice(0, -1);
 ---
 
 <DocsLayout sidebar={sidebar} toc={headings.filter((x: any) => x.depth === 2 || x.depth === 3)}>
+  {
+    breadcrumbs.length > 0 && (
+      <div class="flex items-center gap-1.5 text-sm text-fd-muted-foreground mb-5">
+        {breadcrumbs.map((b, i) => {
+          const isLast = i === breadcrumbs.length - 1;
+          if (isLast) return <span class="truncate text-ln-primary font-medium">{b}</span>;
+
+          return (
+            <>
+              <span>{b}</span>
+              <span>/</span>
+            </>
+          );
+        })}
+      </div>
+    )
+  }
   <H1>{entry.data.title}</H1>
+  {
+    entry.data.description && (
+      <P sx="text-base text-ln-muted-foreground">{entry.data.description}</P>
+    )
+  }
   <Content
     components={{
       ProTag,

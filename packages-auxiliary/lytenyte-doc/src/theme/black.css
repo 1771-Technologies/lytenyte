@@ -1,6 +1,7 @@
 @import "./colors.css";
 
 @theme {
+  --color-ln-prose-link: hsla(194, 80%, 43%, 1);
   --color-ln-background: hsl(0, 0%, 98%);
   --color-ln-foreground: hsl(0, 0%, 3.9%);
   --color-ln-muted: hsl(0, 0%, 96.1%);
@@ -20,6 +21,7 @@
 }
 
 [data-theme="dark"] {
+  --color-ln-prose-link: hsla(172, 75%, 40%, 1);
   --color-ln-background: hsl(0, 0%, 2%);
   --color-ln-foreground: hsl(0, 0%, 98%);
   --color-ln-muted: hsl(0, 0%, 8%);
