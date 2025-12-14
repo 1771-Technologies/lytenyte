@@ -3,39 +3,38 @@
 import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
-import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { useId } from "react";
+import type { OrderData } from "@1771technologies/grid-sample-data/orders";
+import { data } from "@1771technologies/grid-sample-data/orders";
+import {
+  AvatarCell,
+  EmailCell,
+  IdCell,
+  PaymentMethodCell,
+  PriceCell,
+  ProductCell,
+  PurchaseDateCell,
+  tw,
+} from "./components";
 
-type BankData = (typeof bankDataSmall)[number];
-
-const columns: Column<BankData>[] = [
-  { id: "age", type: "number" },
-  { id: "job" },
-  { id: "balance", type: "number" },
-  { id: "education" },
-  { id: "marital" },
-  { id: "default" },
-  { id: "housing" },
-  { id: "loan" },
-  { id: "contact" },
-  { id: "day", type: "number" },
-  { id: "month" },
-  { id: "duration" },
-  { id: "campaign" },
-  { id: "pdays" },
-  { id: "previous" },
-  { id: "poutcome", name: "P Outcome" },
-  { id: "y" },
+const columns: Column<OrderData>[] = [
+  { id: "id", width: 60, widthMin: 60, cellRenderer: IdCell, name: "ID" },
+  { id: "product", cellRenderer: ProductCell, width: 200 },
+  { id: "price", type: "number", cellRenderer: PriceCell, width: 100 },
+  { id: "customer", cellRenderer: AvatarCell, width: 180 },
+  { id: "purchaseDate", cellRenderer: PurchaseDateCell, name: "Purchase Date", width: 120 },
+  { id: "paymentMethod", cellRenderer: PaymentMethodCell, name: "Payment Method", width: 150 },
+  { id: "email", cellRenderer: EmailCell, width: 220 },
 ];
 
-export default function RowHeightVariable() {
-  const ds = useClientRowDataSource({ data: bankDataSmall });
+export default function ColumnBase() {
+  const ds = useClientRowDataSource({ data: data.slice(0, 8) });
 
   const grid = Grid.useLyteNyte({
     gridId: useId(),
     rowDataSource: ds,
     columns,
-    rowHeight: (i) => [30, 50, 80, 120][i % 4],
+    rowHeight: "fill:50",
   });
 
   const view = grid.view.useValue();
@@ -55,7 +54,10 @@ export default function RowHeightVariable() {
                       <Grid.HeaderCell
                         key={c.id}
                         cell={c}
-                        className="flex h-full w-full items-center px-2 capitalize"
+                        className={tw(
+                          "flex h-full w-full items-center text-nowrap px-3 text-sm capitalize",
+                          c.column.type === "number" && "justify-end",
+                        )}
                       />
                     );
                   })}
@@ -75,7 +77,7 @@ export default function RowHeightVariable() {
                         <Grid.Cell
                           key={c.id}
                           cell={c}
-                          className="flex h-full w-full items-center px-2 text-sm"
+                          className="flex h-full w-full items-center px-3 text-sm"
                         />
                       );
                     })}
