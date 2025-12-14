@@ -3,56 +3,46 @@
 import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
-import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
+import { historicalCompareDataset as stockData } from "@1771technologies/grid-sample-data/stock-data-smaller";
 import { useId } from "react";
+import {
+  PercentCell,
+  CurrencyCell,
+  SymbolCell,
+  CompactNumberCell,
+  HeaderRenderer,
+  AnalystRatingCell,
+  PriceCell,
+} from "./components";
 
-type BankData = (typeof bankDataSmall)[number];
+type StockData = (typeof stockData)[number];
 
-const columns: Column<BankData>[] = [
-  { id: "age", type: "number" },
-  { id: "job" },
-  { id: "balance", type: "number" },
-  { id: "education" },
-  { id: "marital" },
-  { id: "default" },
-  { id: "housing" },
-  { id: "loan" },
-  { id: "contact" },
-  { id: "day", type: "number" },
-  { id: "month" },
-  { id: "duration" },
-  { id: "campaign" },
-  { id: "pdays" },
-  { id: "previous" },
-  { id: "poutcome", name: "P Outcome" },
-  { id: "y" },
+const columns: Column<StockData>[] = [
+  { field: 0, id: "symbol", name: "Symbol", cellRenderer: SymbolCell, width: 220, rowSpan: 2 },
+  { field: 2, id: "analyst-rating", cellRenderer: AnalystRatingCell, width: 130 },
+  {
+    field: 3,
+    id: "price",
+    name: "USD Price",
+    type: "number",
+    cellRenderer: PriceCell,
+    width: 110,
+  },
+  { field: 5, id: "change", type: "number", cellRenderer: PercentCell, width: 130 },
+  { field: 11, id: "eps", name: "EPS", type: "number", cellRenderer: CurrencyCell, width: 130 },
+  { field: 6, id: "volume", type: "number", cellRenderer: CompactNumberCell, width: 130 },
 ];
 
-export default function RowFullWidth() {
-  const ds = useClientRowDataSource({
-    data: bankDataSmall,
-  });
+export default function ColumnFieldNumberIndex() {
+  const ds = useClientRowDataSource({ data: stockData });
 
   const grid = Grid.useLyteNyte({
     gridId: useId(),
     rowDataSource: ds,
     columns,
-    rowFullWidthPredicate: (p) =>
-      p.grid.api.rowIsLeaf(p.row) ? p.row.data?.marital === "single" : false,
-    rowFullWidthRenderer: () => {
-      return (
-        <div
-          className="overflow-hidden text-nowrap bg-gray-500/20 px-10"
-          style={{
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          Person with single marital status. Data is redacted.
-        </div>
-      );
+    columnBase: {
+      headerRenderer: HeaderRenderer,
+      widthFlex: 1,
     },
   });
 
@@ -84,17 +74,13 @@ export default function RowFullWidth() {
           <Grid.RowsContainer>
             <Grid.RowsCenter>
               {view.rows.center.map((row) => {
-                if (row.kind === "full-width") return <Grid.RowFullWidth row={row} key={row.id} />;
+                if (row.kind === "full-width") return null;
 
                 return (
                   <Grid.Row row={row} key={row.id}>
                     {row.cells.map((c) => {
                       return (
-                        <Grid.Cell
-                          key={c.id}
-                          cell={c}
-                          className="flex h-full w-full items-center px-2 text-sm"
-                        />
+                        <Grid.Cell key={c.id} cell={c} className="text-xs! flex text-nowrap" />
                       );
                     })}
                   </Grid.Row>

@@ -9,8 +9,7 @@
     "row-full-width",
     "row-spanning",
     "row-dragging",
-    "row-sorting",
-    "row-grouping-and-aggregations"
+    "row-sorting"
   ],
   "defaultOpen": true
 }
