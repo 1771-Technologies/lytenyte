@@ -43,6 +43,7 @@ export default function RowDragging() {
     columnMarker: {
       cellRenderer: (p) => {
         const drag = p.grid.api.useRowDrag({
+          placeholder: (_, el: HTMLElement) => el.parentElement?.parentElement,
           getDragData: () => {
             return {
               siteLocalData: {
