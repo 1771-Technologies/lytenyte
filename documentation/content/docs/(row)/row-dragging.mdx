@@ -1,20 +1,13 @@
 ---
 title: Row Dragging
-description:
-  Learn about row dragging in LyteNyte Grid, with support for external drop zones and multiple row
-  dragging.
+description: Drag rows within the same LyteNyte Grid, between grids, or to external drop zones.
 ---
-
-LyteNyte Grid provides flexible row dragging that lets users move data through intuitive
-drag-and-drop interactions. You can drag single or multiple rows within a grid, across multiple
-grids, or into external drop zones. The grid supplies the mechanics without enforcing default
-behavior, so you control how drag interactions are handled.
 
 ## Single Row Dragging
 
-Use the `grid.api.useRowDrag` hook to add row dragging. This hook returns drag props that you attach
-to a drag handle component. It expects a `getDragData` callback, which must return the drag data in
-the following shape:
+LyteNyte Grid implements row dragging through hooks. Use the `grid.api.useRowDrag` hook to enable row
+dragging. This hook returns drag props that you attach to a drag handle component. It requires a
+`getDragData` callback, which must return drag data in the following shape:
 
 ```tsx
 export interface DragData {
@@ -23,31 +16,38 @@ export interface DragData {
 }
 ```
 
-Drop zones must declare which drag data keys they accept. For example, the `Row` component is a
-dropzone. Set its `accepted` property to specify what it will accept.
+Drop zones must declare which drag data keys they accept. For example, the `Row` component acts as a
+drop zone. Set its `accepted` property to define which drag data it can receive. The demo below shows
+a basic single-row drag setup. Focus on the marker column's `cellRenderer` and the `accepted` prop on
+`Grid.Row`.
 
-The example below shows a basic setup. Pay attention to the marker column's `cellRenderer` and the
-`accepted` prop on `Grid.Row`.
-
-!demo:Row Dragging="./demos/row-dragging"
+!demo:Single Row Dragging="./demos/row-dragging"
 
 ## Dragging Multiple Rows
 
-Extend row dragging to multiple rows by combining it with Row Selection. Instead of dragging a single
-row, you query the selection state in `getDragData` to include all selected rows.
+Combine row dragging with **row selection** to support dragging multiple rows. Instead of returning data
+for a single row, use `getDragData` to include all selected rows from the selection state.
 
-!demo:Row Dragging Multiple="./demos/row-dragging-multi"
+!demo:Dragging Multiple Rows="./demos/row-dragging-multi"
 
 ## Dragging Between Grids
 
-To drag between grids, use a shared `accepted` value. For example, setting `accepted=["row"]` on both
-grids allows any drag data with a `row` property to be dropped onto rows in either grid.
+To enable dragging between grids, use a shared `accepted` value. For example, setting
+`accepted={["row"]}` on both grids allows drag data containing a `row` key to be dropped onto rows in
+either grid.
 
-!demo:Row Dragging Between Grids="./demos/row-dragging-between-grids"
+!demo:Dragging Between Grdis="./demos/row-dragging-between-grids"
 
 ## External Drop Zones
 
-LyteNyte Grid provides a `DropWrap` component for external drop zones. `DropWrap` is a simple `div`
-that handles all the necessary drag events and can accept any drag data produced by the grid.
+Use the `DropWrap` component to create external drop zones. `DropWrap` renders a `div` that handles
+all required drag events and can accept any drag data produced by the grid.
 
-!demo:Row Dragging External Drop Zone="./demos/row-dragging-external-dropzone"
+!demo:External Drop Zones="./demos/row-dragging-external-dropzone"
+
+## Next Steps
+
+- [Row Pinning](/docs/row-pinning): Freeze rows at the top or bottom of the viewport.
+- [Row Full Width](/docs/row-full-width): Create rows that span the full width of the viewport.
+- [Row Selection](/docs/row-selection): Select single or multiple rows.
+- [Row Sorting](/docs/row-detail): Learn how to sort and order rows.

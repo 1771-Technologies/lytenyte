@@ -1,0 +1,95 @@
+---
+title: Row Spanning
+description: Cells in LyteNyte Grid can span multiple rows. A spanning cell
+  extends into the rows below it, and the grid skips rendering any cells it covers.
+---
+
+The `rowSpan` property on a column definition controls how many rows a cell spans. It accepts either a
+number or a function.
+
+- **Provide a number** to apply the same span to every row.
+- **Provide a function** that returns a number to vary the span per row.
+
+Cells always span downward toward the bottom of the viewport. A spanning cell covers cells in
+subsequent rows, never previous rows.
+
+## Uniform Row Spans
+
+When `rowSpan` is a **number**, every cell in the column spans the same number of rows. The grid skips
+rendering any cells covered by the span. The demo below shows the **Symbol** column spanning two rows.
+The first row in each span represents the current value, while the second row represents the previous
+value.
+
+The meaning of a span depends on your use case, but fixed numeric spans are relatively uncommon and
+should be used with caution.
+
+!demo:Uniform Row Spans="./demos/row-spanning-number_x"
+
+Define a two-row span directly on the column definition:
+
+```ts
+const columns = [
+  // other columns
+  { id: "symbol", rowSpan: 2 },
+];
+```
+
+## Function Column Spans
+
+Set `rowSpan` to a **function** to compute spans dynamically per row. This allows spans based on row
+data. The demo below groups cryptocurrencies by exchange, with the **Exchange** column spanning all
+rows that share the same exchange value.
+
+!demo:Function Row Spans="./demos/row-spanning-fn_x"
+
+The span for each exchange is computed ahead of time. The column then uses a span function to return
+the correct value, as shown below:
+
+```ts
+const columns: Column<DEXPerformanceData>[] = [
+  // Other columns
+  {
+    id: "exchange",
+    cellRenderer: ExchangeCell,
+    name: "Exchange",
+    rowSpan: (r) => {
+      const exchange = r.row.data?.exchange as string;
+      // Lookup the precomputed span
+      return exchangeCounts[exchange] ?? 1;
+    },
+  },
+];
+```
+
+## Row Scan Distance
+
+For performance, LyteNyte Grid does not precompute spans for all rows. Instead, it scans backward from
+the first visible row based on the current scroll position. Control this lookback using the
+`rowScanDistance` property:
+
+```ts
+const grid = Grid.useLyteNyte({
+  rowScanDistance: 100,
+});
+```
+
+The `rowScanDistance` property must be at least the maximum possible span in the grid. Ensure that no span exceeds
+this value to guarantee correct rendering.
+
+<Callout>
+
+LyteNyte Grid uses a scan-based approach to balance correctness and performance. Many grids either
+precompute spans, which limits scalability, or render spans incorrectly during scrolling. LyteNyte
+Grid requires you to specify a maximum span, but it maintains both accuracy and performance.
+
+In most real-world scenarios, a scan distance of 100 is more than sufficient, since spans rarely reach
+this size.
+
+</Callout>
+
+## Next Steps
+
+- [Row Height](/docs/row-height): Change row height, including variable-height and fill-height rows.
+- [Row Pinning](/docs/row-pinning): Freeze rows at the top or bottom of the viewport.
+- [Row Sorting](/docs/row-detail): Learn how to sort and order rows.
+- [Row Selection](/docs/row-selection): Select single or multiple rows.

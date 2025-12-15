@@ -1,5 +1,11 @@
 # @1771technologies/play-frame
 
+## 0.0.19
+
+### Patch Changes
+
+- Version 1.0.21
+
 ## 0.0.18
 
 ### Patch Changes

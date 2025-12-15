@@ -1,5 +1,13 @@
 # @1771technologies/lytenyte-core
 
+## 1.0.21
+
+### Patch Changes
+
+- Version 1.0.21
+- Updated dependencies
+  - @1771technologies/lytenyte-shared@1.0.21
+
 ## 1.0.20
 
 ### Patch Changes

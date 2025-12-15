@@ -6198,6 +6198,11 @@ export interface UseRowDragParams<T> {
    * Triggered when the drag results in a drop.
    */
   readonly onDrop?: DropEventFn;
+
+  /**
+   * Returns a custom HTML Element to use for the drag image.
+   */
+  readonly placeholder?: (d: DragData, el: HTMLElement) => HTMLElement;
 }
 
 /**

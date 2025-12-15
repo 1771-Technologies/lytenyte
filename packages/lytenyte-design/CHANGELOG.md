@@ -1,5 +1,11 @@
 # @1771technologies/lytenyte-design
 
+## 1.0.21
+
+### Patch Changes
+
+- Version 1.0.21
+
 ## 1.0.20
 
 ### Patch Changes

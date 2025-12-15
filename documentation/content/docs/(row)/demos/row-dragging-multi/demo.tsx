@@ -6,25 +6,23 @@ import { DragDotsSmallIcon } from "@1771technologies/lytenyte-pro/icons";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { useId } from "react";
+import { BalanceCell, DurationCell, NumberCell, tw } from "./components";
 
 type BankData = (typeof bankDataSmall)[number];
 
 const columns: Column<BankData>[] = [
+  { id: "job", width: 120 },
+  { id: "age", type: "number", width: 80, cellRenderer: NumberCell },
+  { id: "balance", type: "number", cellRenderer: BalanceCell },
   { id: "education" },
   { id: "marital" },
-  { id: "age", type: "number" },
-  { id: "job" },
-  { id: "balance", type: "number" },
   { id: "default" },
   { id: "housing" },
   { id: "loan" },
   { id: "contact" },
-  { id: "day", type: "number" },
+  { id: "day", type: "number", cellRenderer: NumberCell },
   { id: "month" },
-  { id: "duration" },
-  { id: "campaign" },
-  { id: "pdays" },
-  { id: "previous" },
+  { id: "duration", type: "number", cellRenderer: DurationCell },
   { id: "poutcome", name: "P Outcome" },
   { id: "y" },
 ];
@@ -38,6 +36,7 @@ export default function RowDraggingMultiple() {
     gridId: useId(),
     rowDataSource: ds,
     columns,
+    columnBase: { width: 100 },
 
     rowSelectionMode: "multiple",
     rowSelectionActivator: "single-click",
@@ -46,6 +45,7 @@ export default function RowDraggingMultiple() {
     columnMarker: {
       cellRenderer: (p) => {
         const drag = p.grid.api.useRowDrag({
+          placeholder: (_, el) => el.parentElement?.parentElement ?? el,
           getDragData: () => {
             const allIndices = [...grid.state.rowSelectedIds.get()]
               .map((c) => {
@@ -93,7 +93,10 @@ export default function RowDraggingMultiple() {
                       <Grid.HeaderCell
                         key={c.id}
                         cell={c}
-                        className="flex h-full w-full items-center px-2 capitalize"
+                        className={tw(
+                          "flex items-center px-2 text-sm capitalize",
+                          c.column.type === "number" && "justify-end",
+                        )}
                       />
                     );
                   })}
@@ -113,7 +116,10 @@ export default function RowDraggingMultiple() {
                         <Grid.Cell
                           key={c.id}
                           cell={c}
-                          className="flex h-full w-full items-center px-2 text-sm"
+                          className={tw(
+                            "flex items-center px-2 text-sm",
+                            c.column.type === "number" && "justify-end tabular-nums",
+                          )}
                         />
                       );
                     })}

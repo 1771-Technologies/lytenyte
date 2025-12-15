@@ -360,6 +360,14 @@ export const UseRowDragParams: InterfaceType = {
     },
     {
       kind: "property",
+      doc: { en: `` },
+      name: "placeholder",
+      optional: true,
+      tsDoc: `Function to retrieve a custom element placeholder for dragging`,
+      value: `(data: DragData, el: HTMLElement) => HTMLElement`,
+    },
+    {
+      kind: "property",
       name: "onDragMove",
       doc: { en: `` },
       tsDoc: `Invoked frequently as the drag position updates.`,
