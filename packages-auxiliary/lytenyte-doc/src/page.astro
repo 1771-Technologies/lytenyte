@@ -1,7 +1,7 @@
 ---
 import { capitalize } from "es-toolkit";
-import { getCollection, getEntry, render } from "astro:content";
-import DocsLayout from "./docs-layout.astro";
+import { getEntry, render } from "astro:content";
+import DocsLayout from "./layout/docs-layout.astro";
 import { Code } from "astro-expressive-code/components";
 
 import StandaloneImage from "./standalone-image.astro";
@@ -46,9 +46,12 @@ export interface Props {
     filePath?: string;
   };
 }
+type RenderFM = { lastModified?: string; lastModifiedSource?: "git" | "fs" };
 
 const { entry } = Astro.props;
-const { Content, headings } = await render(entry);
+const { Content, headings, remarkPluginFrontmatter } = await render(entry);
+
+const { lastModified } = remarkPluginFrontmatter as RenderFM;
 
 const sidebar = getSidebarConfig(entry.filePath!, entry.collection);
 const flat = flattenTree(sidebar);
@@ -81,6 +84,7 @@ const breadcrumbs = entry
 <DocsLayout
   sidebar={sidebar}
   toc={headings.filter((x: any) => x.depth === 2 || x.depth === 3)}
+  lastModified={lastModified ?? new Date().toISOString()}
   prevEntry={prevEntry
     ? {
         title: prevEntry.data.title,

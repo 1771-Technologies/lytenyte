@@ -8,6 +8,7 @@ import {
   remarkDirective,
   remarkCallout,
   remarkDemo,
+  remarkLastModified,
 } from "./plugins/index.js";
 
 export interface OneDocConfig {
@@ -99,6 +100,7 @@ export function lnDoc(opts: OneDocConfig): AstroIntegration[] {
         [remarkDemo, { ...opts }],
         remarkDirective,
         remarkCallout,
+        remarkLastModified,
       ],
     }),
   ];

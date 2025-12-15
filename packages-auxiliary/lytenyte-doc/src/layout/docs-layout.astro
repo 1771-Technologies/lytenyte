@@ -1,12 +1,13 @@
 ---
-import DesktopToc from "./toc/desktop-toc.astro";
-import ThemeToggle from "./theme-toggle.astro";
-import ThemeScript from "./theme-script.astro";
+import { format } from "date-fns";
+import DesktopToc from "../toc/desktop-toc.astro";
+import ThemeToggle from "../theme-toggle.astro";
+import ThemeScript from "../theme-script.astro";
 import type { MarkdownHeading } from "astro";
-import type { Root } from "./sidebar/types";
-import Sidebar from "./sidebar/sidebar.astro";
-import SidebarScript from "./sidebar/sidebar-script.astro";
-import { cn } from "./ui/cn";
+import type { Root } from "../sidebar/types";
+import Sidebar from "../sidebar/sidebar.astro";
+import SidebarScript from "../sidebar/sidebar-script.astro";
+import { cn } from "../ui/cn";
 
 export interface Props {
   readonly toc: MarkdownHeading[];
@@ -14,9 +15,10 @@ export interface Props {
 
   readonly nextEntry: null | { url: string; title: string; description: string };
   readonly prevEntry: null | { url: string; title: string; description: string };
+  readonly lastModified: string;
 }
 
-const { toc, sidebar, nextEntry, prevEntry } = Astro.props;
+const { toc, sidebar, nextEntry, prevEntry, lastModified } = Astro.props;
 ---
 
 <!doctype html>
@@ -73,10 +75,17 @@ const { toc, sidebar, nextEntry, prevEntry } = Astro.props;
                 </div>
               </div>
               <footer class="w-full max-w-full flex-1">
-                <div class="mx-auto">
+                <div>
+                  <div class="max-w-4xl mx-auto px-4.5 pt-4 text-sm text-ln-muted-foreground">
+                    <div class="border-t border-ln-border pb-4" role="separator"></div>
+                    <p>
+                      Last updated on
+                      {format(lastModified, "dd/MM/yyyy")}
+                    </p>
+                  </div>
                   <div
                     class:list={cn(
-                      "text-neutral-800 dark:text-neutral-400 px-4 py-8 max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-8",
+                      "text-neutral-800 dark:text-neutral-400 px-4 pt-4 pb-8 max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-8",
                       ((!prevEntry && nextEntry) || (!nextEntry && prevEntry)) && "sm:grid-cols-1",
                     )}
                   >
