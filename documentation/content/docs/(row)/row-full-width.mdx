@@ -1,28 +1,25 @@
 ---
 title: Row Full Width
-description: LyteNyte Grid supports the ability to create full width rows. Full width rows
-  will render a single grid cell that will have the same width as the viewport.
+description: Create full width rows in LyteNyte Grid that render a single cell spanning the entire viewport.
 ---
 
 ## Full Width Row Predicate
 
-The `rowFullWidthPredicate` on the grid state is used by LyteNyte Grid to determine if a row should
-be rendered as a full width row. A full width row will span the width of the viewport. Furthermore,
-full width rows replace the existing row that would've otherwise been rendered in its position.
+Use `rowFullWidthPredicate` on the grid state to determine whether a row renders as a full width row.
+A full width row spans the entire viewport and replaces the standard row that would otherwise render
+in the same position.
 
-Full width rows always span the grid's viewport width and remain
-visible during horizontal scrolling. Use them for
-section headers, summary rows, or specialized content areas within your grid.
+Full width rows always span the viewport and remain visible during horizontal scrolling. Use them for
+section headers, summary rows, or other specialized content within the grid.
 
-In the demo below, full width
-rows are used to create sections by the exchange the crypto symbol trades on. This is one common
-use case of full width rows.
+In the demo below, full width rows group data by the exchange on which each crypto symbol trades. This
+pattern is a common use case for full width rows.
 
 !demo:Row Full Width="./demos/row-full-width_x"
 
-The demo uses the `rowFullWidthRenderer` to provide LyteNyte Grid with a component to use for rendering
-full width rows. This component may be any arbitrary React component. In the demo, the component renders
-the exchange centered within the row, as the code below shows.
+The demo uses `rowFullWidthRenderer` to provide a React component for rendering full width rows. This
+renderer can return any React component. In the demo, the component renders the exchange name and logo
+centered within the row, as shown below.
 
 ```tsx
 export function FullWidthCell({
@@ -37,7 +34,7 @@ export function FullWidthCell({
   return (
     <div>
       <div>
-        <img src={image} alt={`Logo for exchange ${name}`} />
+        <img src={image} alt={`Logo for exchange \${name}`} />
       </div>
       <div>{name}</div>
     </div>
@@ -47,10 +44,9 @@ export function FullWidthCell({
 
 ### Grid Full Width Component
 
-LyteNyte Grid treats full width rows as a separate row type from the normal grid cell. When
-rendering full width rows be sure to include handling for the full width component in the headless
-component parts, as shown in the code below. For more on the individual component parts see our
-[Headless Component Parts guide](/docs/grid-headless-parts).
+LyteNyte Grid treats full width rows as a distinct row type. When rendering rows in a headless setup,
+handle full width rows explicitly, as shown below. For details on the individual component parts, see
+the [Headless Component Parts guide](/docs/grid-headless-parts).
 
 ```tsx
 <Grid.RowsCenter>
@@ -64,7 +60,7 @@ component parts, as shown in the code below. For more on the individual componen
 
 ## Next Steps
 
-- [Row Pinning](/docs/row-pinning): See how to freeze specific rows to the top and bottom of the grid's viewport.
-- [Row Sorting](/docs/row-detail): Learn about the row sort model and how to order rows.
-- [Row Spanning](/docs/row-spanning): See how the cells of a row may span more than one row.
-- [Row Dragging](/docs/row-selection): Drag rows within the same grid, or between grids and external drop zones.
+- [Row Pinning](/docs/row-pinning): Freeze rows at the top or bottom of the viewport.
+- [Row Sorting](/docs/row-detail): Learn how to sort and order rows.
+- [Row Spanning](/docs/row-spanning): Span cells across multiple rows.
+- [Row Dragging](/docs/row-selection): Drag rows within a grid or between grids and external drop zones.
