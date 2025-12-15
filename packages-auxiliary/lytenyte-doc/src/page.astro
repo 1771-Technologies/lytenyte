@@ -1,6 +1,6 @@
 ---
 import { capitalize } from "es-toolkit";
-import { getCollection, render } from "astro:content";
+import { getCollection, getEntry, render } from "astro:content";
 import DocsLayout from "./docs-layout.astro";
 import { Code } from "astro-expressive-code/components";
 
@@ -34,6 +34,7 @@ import Th from "./parts/th.astro";
 import Tr from "./parts/tr.astro";
 import Td from "./parts/td.astro";
 import PackageDlx from "./package-dlx.astro";
+import { flattenTree } from "./sidebar/flatten-tree";
 
 export interface Props {
   entry: {
@@ -50,6 +51,14 @@ const { entry } = Astro.props;
 const { Content, headings } = await render(entry);
 
 const sidebar = getSidebarConfig(entry.filePath!, entry.collection);
+const flat = flattenTree(sidebar);
+
+const current = flat.indexOf(entry.id);
+const next = current !== -1 ? (flat[current + 1] ?? null) : null;
+const prev = current !== -1 ? (flat[current - 1] ?? null) : null;
+
+const nextEntry = next ? await getEntry(entry.collection, next) : null;
+const prevEntry = prev ? await getEntry(entry.collection, prev) : null;
 
 const breadcrumbs = entry
   .filePath!.replace(entry.collection + "/", "")
@@ -69,7 +78,24 @@ const breadcrumbs = entry
   .slice(0, -1);
 ---
 
-<DocsLayout sidebar={sidebar} toc={headings.filter((x: any) => x.depth === 2 || x.depth === 3)}>
+<DocsLayout
+  sidebar={sidebar}
+  toc={headings.filter((x: any) => x.depth === 2 || x.depth === 3)}
+  prevEntry={prevEntry
+    ? {
+        title: prevEntry.data.title,
+        description: prevEntry.data.description ?? "",
+        url: `/${prevEntry.collection}/${prevEntry.id}`,
+      }
+    : null}
+  nextEntry={nextEntry
+    ? {
+        title: nextEntry.data.title,
+        description: nextEntry.data.description ?? "",
+        url: `/${nextEntry.collection}/${nextEntry.id}`,
+      }
+    : null}
+>
   {
     breadcrumbs.length > 0 && (
       <div class="flex items-center gap-1.5 text-sm text-fd-muted-foreground mb-5">

@@ -6,13 +6,17 @@ import type { MarkdownHeading } from "astro";
 import type { Root } from "./sidebar/types";
 import Sidebar from "./sidebar/sidebar.astro";
 import SidebarScript from "./sidebar/sidebar-script.astro";
+import { cn } from "./ui/cn";
 
 export interface Props {
   readonly toc: MarkdownHeading[];
   readonly sidebar: Root;
+
+  readonly nextEntry: null | { url: string; title: string; description: string };
+  readonly prevEntry: null | { url: string; title: string; description: string };
 }
 
-const { toc, sidebar } = Astro.props;
+const { toc, sidebar, nextEntry, prevEntry } = Astro.props;
 ---
 
 <!doctype html>
@@ -68,7 +72,48 @@ const { toc, sidebar } = Astro.props;
                   </main>
                 </div>
               </div>
-              <footer class="h-[200px]">Lee</footer>
+              <footer class="w-full max-w-full flex-1">
+                <div class="mx-auto">
+                  <div
+                    class:list={cn(
+                      "text-neutral-800 dark:text-neutral-400 px-4 py-8 max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-8",
+                      ((!prevEntry && nextEntry) || (!nextEntry && prevEntry)) && "sm:grid-cols-1",
+                    )}
+                  >
+                    {
+                      prevEntry && (
+                        <a
+                          href={prevEntry.url}
+                          class="text-sm flex-1 border  rounded-lg hover:bg-ln-accent/80 hover:text-ln-accent-foreground transition-colors p-4 gap-2 flex flex-col border-ln-border"
+                        >
+                          <div class="font-semibold text-ln-foreground flex items-center gap-2">
+                            <span class="iconify ph--caret-left" />
+
+                            {prevEntry.title}
+                          </div>
+                          <p class="text-nowrap truncate w-full mb-0">{prevEntry.description}</p>
+                        </a>
+                      )
+                    }
+                    {
+                      nextEntry && (
+                        <a
+                          href={nextEntry.url}
+                          class="text-sm flex-1 border rounded-lg hover:bg-ln-accent/80 hover:text-ln-accent-foreground transition-colors p-4 gap-2 flex flex-col border-ln-border"
+                        >
+                          <div class="text-end font-semibold text-ln-foreground flex items-center justify-end gap-2">
+                            {nextEntry.title}
+                            <span class="iconify ph--caret-right" />
+                          </div>
+                          <p class="text-nowrap text-end truncate w-full mb-0">
+                            {nextEntry.description}
+                          </p>
+                        </a>
+                      )
+                    }
+                  </div>
+                </div>
+              </footer>
             </div>
 
             {
