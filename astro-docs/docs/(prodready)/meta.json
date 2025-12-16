@@ -1,0 +1,10 @@
+{
+  "title": "Production Ready",
+  "pages": [
+    "prodready-bundling",
+    "prodready-security",
+    "prodready-supported-browsers",
+    "prodready-grid-versioning"
+  ],
+  "defaultOpen": true
+}

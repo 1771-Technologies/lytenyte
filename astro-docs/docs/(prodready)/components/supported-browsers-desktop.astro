@@ -1,0 +1,25 @@
+---
+import Safari from "./browser-images/safari.svg";
+import Chrome from "./browser-images/chrome.svg";
+import Edge from "./browser-images/edge.svg";
+import Firefox from "./browser-images/firefox.svg";
+import { Image } from "astro:assets";
+---
+
+<div class="grid grid-cols-[24px_140px_1fr] gap-4 my-8">
+  <div class="col-span-2 text-lg font-bold">Browser</div>
+  <div class="text-lg font-bold">Supported Versions</div>
+  <div class="col-span-full border-b border-b-gray-500"></div>
+  <Image src={Chrome} alt="Chrome logo" style={{ margin: 0 }} class="m-0 h-7 w-7" />{" "}
+  <div>Chrome</div>
+  <div>Latest two major versions</div>
+  <Image src={Edge} alt="Microsoft Edge logo" style={{ margin: 0 }} class="m-0 h-7 w-7" />{" "}
+  <div>Microsoft Edge</div>
+  <div>Latest two major versions</div>
+  <Image src={Safari} alt="Safari logo" style={{ margin: 0 }} class="m-0 h-7 w-7" />{" "}
+  <div>Safari</div>
+  <div>Latest two major versions</div>
+  <Image src={Firefox} alt="Firefox Logo" style={{ margin: 0 }} class="m-0 h-7 w-7" />{" "}
+  <div>Firefox</div>
+  <div>Latest two major versions</div>
+</div>

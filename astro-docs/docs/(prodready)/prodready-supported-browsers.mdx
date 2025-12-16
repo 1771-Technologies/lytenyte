@@ -1,0 +1,44 @@
+---
+title: Supported Browsers
+description:
+  LyteNyte Grid is designed to work seamlessly across all popular desktop and mobile browsers.
+  Our comprehensive testing ensures consistent functionality and performance across these supported
+  platforms.
+---
+
+## Desktop Browsers
+
+1771 Technologies officially supports LyteNyte Grid on the following desktop browsers:
+
+import SupportedBrowsers from "./components/supported-browsers-desktop.astro";
+
+<SupportedBrowsers />
+
+## Mobile Browsers
+
+1771 Technologies officially supports LyteNyte Grid on the following mobile browsers:
+
+import MobileBrowsers from "./components/supported-browsers-mobile.astro";
+
+<MobileBrowsers />
+
+## Usage of Baseline Features
+
+LyteNyte Grid may use any feature classified as **_baseline_**.
+Baseline features are available across all modern browsers. If
+you are unfamiliar with how baseline status is determined, see this
+[Baseline article on web.dev](https://web.dev/baseline) for an overview.
+
+Since LyteNyte Grid limits itself to baseline features, it does not rely on any
+browser-specific APIs. However, some internal logic reads the user agent to
+identify the current browser and adjust behavior to better handle browser inconsistencies.
+These adjustments happen entirely within the grid and require no action from developers.
+
+Users with nonstandard environments that override the user agent
+should be aware that this may impact these internal checks.
+
+## Next Steps
+
+- [Bundling & Tree Shaking](/docs/prodready-bundling): Learn the best way to include LyteNyte Grid in your bundle.
+- [Security](/docs/prodready-security): Learn how LyteNyte Grid handles code security and protects applications from common exploits.
+- [Grid Versioning](/docs/prodready-grid-versioning): Understand LyteNyte Grid's versioning strategy and how to update your package safely.
