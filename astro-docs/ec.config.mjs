@@ -11,7 +11,7 @@ export default defineEcConfig({
     frame: "none",
   },
 
-  themes: ["kanagawa-dragon", "rose-pine-dawn"],
+  themes: ["kanagawa-dragon", "one-light"],
   styleOverrides: {
     frames: {
       copyIcon:

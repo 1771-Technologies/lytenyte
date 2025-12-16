@@ -121,10 +121,8 @@ const breadcrumbs = entry
       </div>
     )
   }
-  <div class="flex items-center">
-    <div class="flex-1">
-      <H1>{entry.data.title}</H1>
-    </div>
+  <div class="flex items-center justify-between gap-1 text-start relative">
+    <H1>{entry.data.title}</H1>
     <PageAction
       client:idle
       githubOrg={githubOrg}

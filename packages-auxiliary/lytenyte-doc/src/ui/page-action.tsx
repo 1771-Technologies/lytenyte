@@ -26,7 +26,7 @@ export function PageAction({
         <TooltipRoot>
           <TooltipTrigger className="hover:bg-xd-accent cursor-pointer transition-colors hover:rounded-s-lg">
             <span className="iconify ph--copy size-4" />
-            <span>Copy Page</span>
+            <span className="hidden md:inline">Copy Page</span>
           </TooltipTrigger>
           <Tooltip side="bottom">Copy page as MarkDown</Tooltip>
         </TooltipRoot>
