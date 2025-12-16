@@ -1,20 +1,21 @@
 "use client";
-
-import { DropWrap, Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
+import "./main.css";
 import "@1771technologies/lytenyte-pro/grid.css";
-import { DragDotsSmallIcon, DragIcon } from "@1771technologies/lytenyte-pro/icons";
+import { useClientRowDataSource, Grid } from "@1771technologies/lytenyte-pro";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
-import { useId, useState } from "react";
-import { BalanceCell, DurationCell, NumberCell, tw } from "./components";
+import { useId } from "react";
+import { tw } from "./ui";
+import { BalanceCell, DurationCell, MarkerCell, MarkerHeader, NumberCell } from "./components";
+import { ChevronDownIcon, ChevronRightIcon } from "@1771technologies/lytenyte-pro/icons";
 
 type BankData = (typeof bankDataSmall)[number];
 
 const columns: Column<BankData>[] = [
-  { id: "job", width: 120 },
+  { id: "job", width: 120, hide: true },
   { id: "age", type: "number", width: 80, cellRenderer: NumberCell },
   { id: "balance", type: "number", cellRenderer: BalanceCell },
-  { id: "education" },
+  { id: "education", hide: true },
   { id: "marital" },
   { id: "default" },
   { id: "housing" },
@@ -27,54 +28,70 @@ const columns: Column<BankData>[] = [
   { id: "y" },
 ];
 
-export default function RowDraggingExternalDropZone() {
-  const ds = useClientRowDataSource({
-    data: bankDataSmall,
-  });
+export default function GridTheming() {
+  const ds = useClientRowDataSource({ data: bankDataSmall });
 
-  const [dropped, setDropped] = useState<BankData[]>([]);
-
-  const upper = Grid.useLyteNyte({
+  const grid = Grid.useLyteNyte({
     gridId: useId(),
     rowDataSource: ds,
+    rowGroupModel: ["job", "education"],
     columns,
     columnBase: { width: 100 },
+    rowGroupExpansions: {
+      "+.+Unemployed": true,
+      "+.+Unemployed/Primary": true,
+    },
+    rowSelectedIds: new Set(["+.+Unemployed/Primary", "0", "99", "108"]),
+    rowSelectionMode: "multiple",
+    rowSelectionActivator: "single-click",
+    rowSelectChildren: true,
 
     columnMarkerEnabled: true,
     columnMarker: {
-      cellRenderer: (p) => {
-        const drag = p.grid.api.useRowDrag({
-          placeholder: (_, el) => el.parentElement?.parentElement ?? el,
-          getDragData: () => {
-            return {
-              siteLocalData: {
-                row: p.row.data as BankData,
-              },
-            };
-          },
-          onDrop: (p) => {
-            setDropped((prev) => [...prev, p.state.siteLocalData?.row as BankData]);
-          },
-        });
+      cellRenderer: MarkerCell,
+      headerRenderer: MarkerHeader,
+    },
+
+    rowGroupColumn: {
+      width: 200,
+      cellRenderer: ({ grid, row, column }) => {
+        if (!grid.api.rowIsGroup(row)) return null;
+
+        const field = grid.api.columnField(column, row);
+        const isExpanded = grid.api.rowGroupIsExpanded(row);
 
         return (
-          <span {...drag.dragProps}>
-            <DragDotsSmallIcon />
-          </span>
+          <div
+            className="flex h-full w-full items-center gap-2"
+            style={{ paddingLeft: row.depth * 16 }}
+          >
+            <button
+              className="flex items-center justify-center"
+              onClick={(e) => {
+                e.stopPropagation();
+                grid.api.rowGroupToggle(row);
+              }}
+            >
+              {!isExpanded && <ChevronRightIcon />}
+              {isExpanded && <ChevronDownIcon />}
+            </button>
+
+            <div>{`${field}`}</div>
+          </div>
         );
       },
     },
   });
 
-  const grid = upper.view.useValue();
+  const view = grid.view.useValue();
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="lng-grid" style={{ height: 200 }}>
-        <Grid.Root grid={upper}>
+    <div className="lng-grid" style={{ display: "flex", flexDirection: "column" }}>
+      <div style={{ height: 500 }}>
+        <Grid.Root grid={grid}>
           <Grid.Viewport>
             <Grid.Header>
-              {grid.header.layout.map((row, i) => {
+              {view.header.layout.map((row, i) => {
                 return (
                   <Grid.HeaderRow key={i} headerRowIndex={i}>
                     {row.map((c) => {
@@ -97,7 +114,7 @@ export default function RowDraggingExternalDropZone() {
             </Grid.Header>
             <Grid.RowsContainer>
               <Grid.RowsCenter>
-                {grid.rows.center.map((row) => {
+                {view.rows.center.map((row) => {
                   if (row.kind === "full-width") return null;
 
                   return (
@@ -122,27 +139,6 @@ export default function RowDraggingExternalDropZone() {
           </Grid.Viewport>
         </Grid.Root>
       </div>
-
-      <DropWrap
-        accepted={["row"]}
-        className="data-[ln-can-drop=true]:border-ln-primary-50 overflow-auto border border-dashed"
-        style={{ height: 200 }}
-      >
-        {dropped.length === 0 && (
-          <div className="flex h-full w-full items-center justify-center">
-            <DragIcon className="size-8" />
-            <div className="text-center">Drag a row here</div>
-          </div>
-        )}
-        {dropped.map((c, i) => {
-          return (
-            <div className="flex items-center gap-2 text-nowrap px-2 py-1" key={i}>
-              <span className="text-ln-gray-100 font-semibold">Row Value:</span>{" "}
-              <span className="font-mono">{JSON.stringify(c)}</span>
-            </div>
-          );
-        })}
-      </DropWrap>
     </div>
   );
 }

@@ -10,25 +10,23 @@ import type {
 } from "@1771technologies/lytenyte-pro/types";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { useId } from "react";
+import { BalanceCell, DurationCell, NumberCell, tw } from "./components";
 
 type BankData = (typeof bankDataSmall)[number];
 
 const columns: Column<BankData>[] = [
+  { id: "job", width: 120 },
+  { id: "age", type: "number", width: 80, cellRenderer: NumberCell },
+  { id: "balance", type: "number", cellRenderer: BalanceCell },
   { id: "education" },
   { id: "marital" },
-  { id: "age", type: "number" },
-  { id: "job" },
-  { id: "balance", type: "number" },
   { id: "default" },
   { id: "housing" },
   { id: "loan" },
   { id: "contact" },
-  { id: "day", type: "number" },
+  { id: "day", type: "number", cellRenderer: NumberCell },
   { id: "month" },
-  { id: "duration" },
-  { id: "campaign" },
-  { id: "pdays" },
-  { id: "previous" },
+  { id: "duration", type: "number", cellRenderer: DurationCell },
   { id: "poutcome", name: "P Outcome" },
   { id: "y" },
 ];
@@ -44,6 +42,7 @@ export default function RowSortingMulti() {
     columns,
 
     columnBase: {
+      width: 100,
       headerRenderer: Header,
     },
 
@@ -70,7 +69,10 @@ export default function RowSortingMulti() {
                       <Grid.HeaderCell
                         key={c.id}
                         cell={c}
-                        className="flex h-full w-full items-center px-2 capitalize"
+                        className={tw(
+                          "flex items-center text-sm capitalize",
+                          c.column.type === "number" && "justify-end",
+                        )}
                       />
                     );
                   })}
@@ -90,7 +92,10 @@ export default function RowSortingMulti() {
                         <Grid.Cell
                           key={c.id}
                           cell={c}
-                          className="flex h-full w-full items-center px-2 text-sm"
+                          className={tw(
+                            "flex items-center px-2 text-sm",
+                            c.column.type === "number" && "justify-end tabular-nums",
+                          )}
                         />
                       );
                     })}
@@ -116,7 +121,10 @@ function Header({ column, grid }: HeaderCellRendererParams<BankData>) {
 
   return (
     <div
-      className="hover:bg-ln-gray-10 flex h-full w-full items-center px-2 text-sm transition-all"
+      className={tw(
+        "hover:bg-ln-gray-10 flex h-full w-full items-center px-2 text-sm transition-all",
+        column.type === "number" && "justify-end",
+      )}
       onClick={(ev) => {
         const current = grid.api.sortForColumn(column.id);
 
@@ -175,16 +183,14 @@ function Header({ column, grid }: HeaderCellRendererParams<BankData>) {
       {column.name ?? column.id}
 
       {sort && (
-        <div className="relative">
+        <div className="text-ln-primary-50 relative font-bold">
           {!isDescending ? (
             <ArrowUpIcon className="size-4" />
           ) : (
             <ArrowDownIcon className="size-4" />
           )}
           {sortIndex >= 0 && sortModel.length > 1 && (
-            <div className="text-ln-primary-5 absolute right-[-2px] top-[-2px] text-xs">
-              {sortIndex + 1}
-            </div>
+            <div className="absolute right-[-2px] top-[-2px] text-xs">{sortIndex + 1}</div>
           )}
         </div>
       )}
