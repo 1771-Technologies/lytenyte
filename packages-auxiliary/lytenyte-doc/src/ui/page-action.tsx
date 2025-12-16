@@ -9,8 +9,6 @@ export function PageAction({
   rootDir,
   branch,
   path,
-  collection,
-  id,
 }: {
   githubOrg: string;
   githubRepo: string;
@@ -41,9 +39,7 @@ export function PageAction({
                 t = setTimeout(() => {
                   setCopying(true);
                 }, 100);
-                const result = await (
-                  await fetch(`/doc-markdown/${collection}_${id.replaceAll("/", "_")}`)
-                ).text();
+                const result = await (await fetch(`${window.location.pathname}.mdx`)).text();
 
                 await navigator.clipboard.writeText(result);
 

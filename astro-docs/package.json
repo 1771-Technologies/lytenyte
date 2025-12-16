@@ -11,15 +11,12 @@
   "dependencies": {
     "@1771technologies/lytenyte-doc": "workspace:*",
     "@astrojs/react": "4.4.2",
-    "@types/react-dom": "19.1.7",
-    "astro": "5.16.1",
-    "react": "19.1.1",
-    "react-dom": "19.1.1"
+    "astro": "5.16.6"
   },
   "devDependencies": {
+    "@1771technologies/grid-sample-data": "workspace:*",
     "@1771technologies/lytenyte-pro": "workspace:*",
     "@1771technologies/remark-code-demo": "workspace:*",
-    "@1771technologies/grid-sample-data": "workspace:*",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "react-minimal-pie-chart": "^9.1.1"

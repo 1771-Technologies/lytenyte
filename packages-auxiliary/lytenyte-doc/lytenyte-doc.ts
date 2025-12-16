@@ -3,6 +3,9 @@ import { execSync } from "node:child_process";
 import tailwindcss from "@tailwindcss/vite";
 import type { AstroIntegration } from "astro";
 import mdx from "@astrojs/mdx";
+import { mdxRoutes } from "./ln-doc/mdx-routes.js";
+import { llmFull } from "./ln-doc/llms-full.js";
+import { llmsText } from "./ln-doc/llms.js";
 import expressiveCode from "astro-expressive-code";
 import {
   remarkStandaloneImage,
@@ -20,6 +23,10 @@ export interface OneDocConfig {
   readonly collections: (string | { name: string; base: string })[];
   readonly githubOrg: string;
   readonly githubRepo: string;
+
+  readonly llmWebsiteName: string;
+  readonly llmWebsiteURL: string;
+  readonly llmWebsiteDescription: string;
 }
 
 export function lnDoc(opts: OneDocConfig): AstroIntegration[] {
@@ -88,41 +95,18 @@ export function lnDoc(opts: OneDocConfig): AstroIntegration[] {
 
           const codegen = createCodegenDir();
 
-          const url = new URL(`markdowns.json.ts`, codegen);
-          await writeFile(
-            url,
-            `
-            import { getCollection } from "astro:content";
-            import { readFileSync} from "node:fs"
-
-            const collections = []
-
-            const x = [${collections.map((x) => (typeof x === "string" ? '"' + x + '"' : '"' + x.name + '"'))}]
-
-            for(const c of x) {
-              const entries = await getCollection(c);
-
-              const values = entries.map(x => [c.replace("/", "_") + "_" + x.id.replaceAll("/", "_"), readFileSync(x.filePath!, "utf-8")])
-
-              collections.push(...values);
-            }
-
-            const lookup = Object.fromEntries(collections);
-
-            export const GET = ({ params, request }) => {
-              return new Response(lookup[params.id])
-            }
-
-            export function getStaticPaths() {
-              return Object.keys(lookup).map(x => ({ params: { id: x }}))
-            }
-            `,
+          const mdxUrl = await mdxRoutes(codegen, collections);
+          injectRoute({ pattern: `/[...id].mdx`, entrypoint: mdxUrl });
+          const llmFullURL = await llmFull(codegen, collections);
+          injectRoute({ pattern: `/llms-full.txt`, entrypoint: llmFullURL });
+          const llms = await llmsText(
+            codegen,
+            collections,
+            opts.llmWebsiteName,
+            opts.llmWebsiteDescription,
+            opts.llmWebsiteURL,
           );
-
-          injectRoute({
-            pattern: `/doc-markdown/[id]`,
-            entrypoint: url,
-          });
+          injectRoute({ pattern: `/llms.txt`, entrypoint: llms });
 
           for (let i = 0; i < collections.length; i++) {
             const collection = collections[i];

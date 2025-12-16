@@ -9,6 +9,9 @@ export default defineConfig({
       githubOrg: "1771-technologies",
       githubRepo: "lytenyte",
       collections: ["blog", "docs"],
+      llmWebsiteDescription: "Documentation and blogs for LyteNyte Grid built by 1771 Technologies",
+      llmWebsiteName: "1771 Technologies",
+      llmWebsiteURL: "https://1771technologies",
     }),
   ],
 });
