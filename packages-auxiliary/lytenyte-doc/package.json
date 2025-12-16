@@ -35,6 +35,7 @@
   "dependencies": {
     "@astrojs/mdx": "4.3.12",
     "@astrojs/starlight": "0.37.0",
+    "@base-ui/react": "^1.0.0",
     "@expressive-code/plugin-collapsible-sections": "0.41.3",
     "@expressive-code/plugin-line-numbers": "0.41.3",
     "@iconify-json/logos": "^1.2.10",
@@ -44,6 +45,7 @@
     "@manypkg/find-root": "3.1.0",
     "@tailwindcss/vite": "4.1.17",
     "astro-expressive-code": "0.41.3",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "codesandbox": "^2.2.3",
     "date-fns": "^4.1.0",

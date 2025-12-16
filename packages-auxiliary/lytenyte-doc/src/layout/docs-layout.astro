@@ -30,12 +30,12 @@ const { toc, sidebar, nextEntry, prevEntry, lastModified } = Astro.props;
     <title>Home</title>
     <ThemeScript />
   </head>
-  <body class="bg-ln-background text-ln-foreground min-h-screen flex flex-col">
+  <body class="bg-xd-background text-xd-foreground min-h-screen flex flex-col">
     <div class="sticky top-0 z-10">
-      <header class="h-header border-b border-ln-border bg-ln-background">
+      <header class="h-header border-b border-xd-border bg-xd-background">
         <ThemeToggle />
       </header>
-      <aside class="h-subheader border-b border-ln-border bg-ln-background"></aside>
+      <aside class="h-subheader border-b border-xd-border bg-xd-background"></aside>
     </div>
     <div class="flex-1 grid grid-row-[1fr]">
       <div class="w-full h-full">
@@ -77,8 +77,8 @@ const { toc, sidebar, nextEntry, prevEntry, lastModified } = Astro.props;
               </div>
               <footer class="w-full max-w-full flex-1">
                 <div>
-                  <div class="max-w-4xl mx-auto px-4.5 pt-4 text-sm text-ln-muted-foreground">
-                    <div class="border-t border-ln-border pb-4" role="separator"></div>
+                  <div class="max-w-4xl mx-auto px-4.5 pt-4 text-sm text-xd-muted-foreground">
+                    <div class="border-t border-xd-border pb-4" role="separator"></div>
                     <p>
                       Last updated on
                       {format(lastModified, "dd/MM/yyyy")}
@@ -94,9 +94,9 @@ const { toc, sidebar, nextEntry, prevEntry, lastModified } = Astro.props;
                       prevEntry && (
                         <a
                           href={prevEntry.url}
-                          class="text-sm flex-1 border  rounded-lg hover:bg-ln-accent/80 hover:text-ln-accent-foreground transition-colors p-4 gap-2 flex flex-col border-ln-border"
+                          class="text-sm flex-1 border  rounded-lg hover:bg-xd-accent/80 hover:text-xd-accent-foreground transition-colors p-4 gap-2 flex flex-col border-xd-border"
                         >
-                          <div class="font-semibold text-ln-foreground flex items-center gap-2">
+                          <div class="font-semibold text-xd-foreground flex items-center gap-2">
                             <span class="iconify ph--caret-left" />
 
                             {prevEntry.title}
@@ -109,9 +109,9 @@ const { toc, sidebar, nextEntry, prevEntry, lastModified } = Astro.props;
                       nextEntry && (
                         <a
                           href={nextEntry.url}
-                          class="text-sm flex-1 border rounded-lg hover:bg-ln-accent/80 hover:text-ln-accent-foreground transition-colors p-4 gap-2 flex flex-col border-ln-border"
+                          class="text-sm flex-1 border rounded-lg hover:bg-xd-accent/80 hover:text-xd-accent-foreground transition-colors p-4 gap-2 flex flex-col border-xd-border"
                         >
-                          <div class="text-end font-semibold text-ln-foreground flex items-center justify-end gap-2">
+                          <div class="text-end font-semibold text-xd-foreground flex items-center justify-end gap-2">
                             {nextEntry.title}
                             <span class="iconify ph--caret-right" />
                           </div>

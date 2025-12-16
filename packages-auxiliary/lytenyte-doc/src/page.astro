@@ -34,8 +34,13 @@ import Td from "./parts/td.astro";
 import PackageDlx from "./package-dlx.astro";
 import { flattenTree } from "./sidebar/flatten-tree";
 import { Code } from "astro-expressive-code/components";
+import { PageAction } from "./ui/page-action";
 
 export interface Props {
+  githubOrg: string;
+  githubRepo: string;
+  rootDir: string;
+  branch: string;
   entry: {
     id: string;
     body?: string;
@@ -47,7 +52,7 @@ export interface Props {
 }
 type RenderFM = { lastModified?: string; lastModifiedSource?: "git" | "fs" };
 
-const { entry } = Astro.props;
+const { entry, githubOrg, githubRepo, rootDir, branch } = Astro.props;
 const { Content, headings, remarkPluginFrontmatter } = await render(entry);
 
 const { lastModified } = remarkPluginFrontmatter as RenderFM;
@@ -104,7 +109,7 @@ const breadcrumbs = entry
       <div class="flex items-center gap-1.5 text-sm text-fd-muted-foreground mb-5">
         {breadcrumbs.map((b, i) => {
           const isLast = i === breadcrumbs.length - 1;
-          if (isLast) return <span class="truncate text-ln-primary font-medium">{b}</span>;
+          if (isLast) return <span class="truncate text-xd-primary font-medium">{b}</span>;
 
           return (
             <>
@@ -116,10 +121,22 @@ const breadcrumbs = entry
       </div>
     )
   }
-  <H1>{entry.data.title}</H1>
+  <div class="flex items-center">
+    <div class="flex-1">
+      <H1>{entry.data.title}</H1>
+    </div>
+    <PageAction
+      client:idle
+      githubOrg={githubOrg}
+      githubRepo={githubRepo}
+      rootDir={rootDir}
+      branch={branch}
+      path={entry.filePath!}
+    />
+  </div>
   {
     entry.data.description && (
-      <P sx="text-base text-ln-muted-foreground">{entry.data.description}</P>
+      <P sx="text-base text-xd-muted-foreground">{entry.data.description}</P>
     )
   }
   <Content

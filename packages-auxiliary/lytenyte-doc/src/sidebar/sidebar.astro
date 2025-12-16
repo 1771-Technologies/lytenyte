@@ -35,11 +35,11 @@ const { pathname } = Astro.url;
       data-active={pathname === `/${collection}/${item.id}`}
       href={`/${collection}/${item.id}`}
       class:list={cn(
-        "data-[active=true]:bg-ln-accent-foreground/10 data-[active=true]:text-ln-foreground relative hover:bg-ln-accent-foreground/5 transition-colors",
-        "data-active:before:bg-ln-border data-active:before:h-full data-active:before:top-0",
-        "data-active:before:absolute data-active:before:w-px data-[active=true]:before:h-2/5 data-[active=true]:before:bg-ln-foreground",
+        "data-[active=true]:bg-xd-accent-foreground/10 data-[active=true]:text-xd-foreground relative hover:bg-xd-accent-foreground/5 transition-colors",
+        "data-active:before:bg-xd-border data-active:before:h-full data-active:before:top-0",
+        "data-active:before:absolute data-active:before:w-px data-[active=true]:before:h-2/5 data-[active=true]:before:bg-xd-foreground",
         "data-active:before:left-[7px] data-[active=true]:before:top-3/10 hover:duration-0 duration-100",
-        "text-xs tracking-tight text-ln-muted-foreground font-semibold",
+        "text-xs tracking-tight text-xd-muted-foreground font-semibold",
         "px-[calc(var(--sidebar-depth,1)*16px)] py-2 rounded-lg",
       )}
     >
@@ -60,7 +60,7 @@ const { pathname } = Astro.url;
         {!item.collapsible && <div class="flex-1">{item.label}</div>}
         {item.collapsible && (
           <button
-            class="flex items-center text-start ln-collapse-btn flex-1 hover:bg-ln-accent-foreground/10 transition-colors cursor-pointer px-2 -mx-1 rounded-lg py-1"
+            class="flex items-center text-start xd-collapse-btn flex-1 hover:bg-xd-accent-foreground/10 transition-colors cursor-pointer px-2 -mx-1 rounded-lg py-1"
             data-group-id={item.id}
           >
             <span class="flex-1">{item.label}</span>

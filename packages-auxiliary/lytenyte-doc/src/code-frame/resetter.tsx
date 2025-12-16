@@ -9,7 +9,7 @@ export function Resetter(props: PropsWithChildren) {
 
     const controller = new AbortController();
     el.addEventListener(
-      "ln-reset",
+      "xd-reset",
       () => {
         setKey((prev) => prev + 1);
       },

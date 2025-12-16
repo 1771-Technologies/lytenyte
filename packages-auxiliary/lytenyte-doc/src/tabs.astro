@@ -8,14 +8,14 @@ import { Tabs as SLTabs } from "@astrojs/starlight/components";
 const props = Astro.props;
 ---
 
-<div class:list={["ln-tabs", props.class]}>
+<div class:list={["xd-tabs", props.class]}>
   <SLTabs {...props}>
     <slot />
   </SLTabs>
 </div>
 
 <style>
-  .codeframe-tabs.ln-tabs {
+  .codeframe-tabs.xd-tabs {
     margin-block: 0px;
 
     starlight-tabs {
@@ -25,7 +25,7 @@ const props = Astro.props;
   }
 
   @media (max-width: 700px) {
-    .codeframe-tabs.ln-tabs {
+    .codeframe-tabs.xd-tabs {
       starlight-tabs {
         .tablist-wrapper {
           ul {
@@ -36,12 +36,12 @@ const props = Astro.props;
     }
   }
 
-  .ln-tabs {
+  .xd-tabs {
     margin-block: 32px;
 
     starlight-tabs {
-      border: 1px solid var(--color-ln-border);
-      background-color: var(--color-ln-card);
+      border: 1px solid var(--color-xd-border);
+      background-color: var(--color-xd-card);
       padding-top: 4px;
       border-radius: 16px;
       overflow: hidden;
@@ -91,15 +91,15 @@ const props = Astro.props;
               font-weight: 400;
 
               border-bottom: 2px solid transparent;
-              color: var(--color-ln-muted-foreground);
+              color: var(--color-xd-muted-foreground);
 
               &:hover {
-                color: var(--color-ln-foreground);
+                color: var(--color-xd-foreground);
               }
 
               &[aria-selected="true"] {
-                border-bottom: 2px solid var(--color-ln-accent-foreground);
-                color: var(--color-ln-accent-foreground);
+                border-bottom: 2px solid var(--color-xd-accent-foreground);
+                color: var(--color-xd-accent-foreground);
               }
             }
           }
@@ -108,7 +108,7 @@ const props = Astro.props;
 
       [role="tabpanel"] {
         margin: 0px;
-        background-color: var(--color-ln-background);
+        background-color: var(--color-xd-background);
         padding-inline: 16px;
         padding-block-start: 0px;
       }

@@ -10,7 +10,7 @@ const { toc } = Astro.props;
 
 {
   toc.length && (
-    <h3 class="pb-2 text-sm flex items-center gap-2 relative -left-1 text-ln-muted-foreground">
+    <h3 class="pb-2 text-sm flex items-center gap-2 relative -left-1 text-xd-muted-foreground">
       <span class="iconify ph--text-align-left-light size-4" />
       On this page
     </h3>
@@ -18,17 +18,17 @@ const { toc } = Astro.props;
 }
 
 <div class="relative">
-  <div role="none" class="absolute transition-all bg-ln-foreground w-px" id="toc-border"></div>
+  <div role="none" class="absolute transition-all bg-xd-foreground w-px" id="toc-border"></div>
 
-  <div class="flex flex-col text-sm gap-1.5 border-l border-ln-border" id="toc">
+  <div class="flex flex-col text-sm gap-1.5 border-l border-xd-border" id="toc">
     {
       toc.map((x) => {
         return (
           <a
             class:list={[
               x.depth === 3 ? "pl-6" : "pl-3",
-              "text-ln-muted-foreground hover:text-ln-accent-foreground transition-colors cursor-pointer py-0.5 toc-link",
-              "data-[active=true]:text-ln-foreground data-[active=true]:font-semibold",
+              "text-xd-muted-foreground hover:text-xd-accent-foreground transition-colors cursor-pointer py-0.5 toc-link",
+              "data-[active=true]:text-xd-foreground data-[active=true]:font-semibold",
             ]}
             href={`#${x.slug}`}
           >

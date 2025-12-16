@@ -1,4 +1,5 @@
 import { writeFile } from "fs/promises";
+import { execSync } from "node:child_process";
 import tailwindcss from "@tailwindcss/vite";
 import type { AstroIntegration } from "astro";
 import mdx from "@astrojs/mdx";
@@ -12,11 +13,13 @@ import {
   remarkMath,
   rehypeKatex,
 } from "./plugins/index.js";
+import { relative } from "node:path";
 
+export { generateId } from "./collections/generate-id.js";
 export interface OneDocConfig {
   readonly collections: (string | { name: string; base: string })[];
-  readonly githubOrg?: string;
-  readonly githubRepo?: string;
+  readonly githubOrg: string;
+  readonly githubRepo: string;
 }
 
 export function lnDoc(opts: OneDocConfig): AstroIntegration[] {
@@ -27,6 +30,8 @@ export function lnDoc(opts: OneDocConfig): AstroIntegration[] {
       name: "one-doc",
       hooks: {
         "astro:config:setup": async ({ config, updateConfig, injectRoute, createCodegenDir }) => {
+          const projectRoot = gitRoot();
+          const root = relative(projectRoot, config.root.pathname);
           updateConfig({
             markdown: {
               rehypePlugins: [rehypeKatex],
@@ -88,7 +93,33 @@ export function lnDoc(opts: OneDocConfig): AstroIntegration[] {
 
             const url = new URL(`${collection}.astro`, codegen);
 
-            await writeFile(url, pageTemplate.replace("##replace", `${name}`));
+            const pageTemplate = `
+---
+import "@1771technologies/lytenyte-doc/theme.css";
+import { getCollection } from "astro:content";
+import { render } from "astro:content";
+
+import Page from "@1771technologies/lytenyte-doc/page.astro";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("${name}");
+  return entries.map((entry) => {
+    return { params: { slug: entry.id }, props: { entry } };
+  });
+}
+
+const githubOrg = "${opts.githubOrg}";
+const githubRepo = "${opts.githubRepo}";
+const rootDir = "${root}";
+const branch = "${getCurrentGitBranch()}";
+
+const { entry } = Astro.props;
+---
+
+<Page entry={entry} githubOrg={githubOrg} githubRepo={githubRepo} rootDir={rootDir} branch={branch} />
+`.trim();
+
+            await writeFile(url, pageTemplate);
 
             injectRoute({
               pattern: `/${collection}/[...slug]`,
@@ -112,25 +143,22 @@ export function lnDoc(opts: OneDocConfig): AstroIntegration[] {
   ];
 }
 
-const pageTemplate = `
----
-import "@1771technologies/lytenyte-doc/theme.css";
-import { getCollection } from "astro:content";
-import { render } from "astro:content";
+const gitRoot = () =>
+  execSync("git rev-parse --show-toplevel", {
+    encoding: "utf8",
+  }).trim();
 
-import Page from "@1771technologies/lytenyte-doc/page.astro";
+export function getCurrentGitBranch(cwd = process.cwd()) {
+  try {
+    // Works in normal repos. In detached HEAD it returns "HEAD".
+    const branch = execSync("git rev-parse --abbrev-ref HEAD", {
+      cwd,
+      stdio: ["ignore", "pipe", "ignore"],
+      encoding: "utf8",
+    }).trim();
 
-export async function getStaticPaths() {
-  const entries = await getCollection("##replace");
-  return entries.map((entry) => {
-    return { params: { slug: entry.id }, props: { entry } };
-  });
+    return branch; // e.g. "main", "feature/foo", or "HEAD" (detached)
+  } catch {
+    return null; // not a git repo, git not installed, etc.
+  }
 }
-
-const { entry } = Astro.props;
----
-
-<Page entry={entry} />
-`.trim();
-
-export { generateId } from "./collections/generate-id.js";
