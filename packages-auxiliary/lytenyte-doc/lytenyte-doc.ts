@@ -87,6 +87,43 @@ export function lnDoc(opts: OneDocConfig): AstroIntegration[] {
           });
 
           const codegen = createCodegenDir();
+
+          const url = new URL(`markdowns.json.ts`, codegen);
+          await writeFile(
+            url,
+            `
+            import { getCollection } from "astro:content";
+            import { readFileSync} from "node:fs"
+
+            const collections = []
+
+            const x = [${collections.map((x) => (typeof x === "string" ? '"' + x + '"' : '"' + x.name + '"'))}]
+
+            for(const c of x) {
+              const entries = await getCollection(c);
+
+              const values = entries.map(x => [c.replace("/", "_") + "_" + x.id.replaceAll("/", "_"), readFileSync(x.filePath!, "utf-8")])
+
+              collections.push(...values);
+            }
+
+            const lookup = Object.fromEntries(collections);
+
+            export const GET = ({ params, request }) => {
+              return new Response(lookup[params.id])
+            }
+
+            export function getStaticPaths() {
+              return Object.keys(lookup).map(x => ({ params: { id: x }}))
+            }
+            `,
+          );
+
+          injectRoute({
+            pattern: `/doc-markdown/[id]`,
+            entrypoint: url,
+          });
+
           for (let i = 0; i < collections.length; i++) {
             const collection = collections[i];
             const name = typeof collection === "string" ? collection : collection.name;

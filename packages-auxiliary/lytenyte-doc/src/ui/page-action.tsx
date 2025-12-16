@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { cn } from "./cn.js";
 import { Tooltip, TooltipTrigger, TooltipProvider, TooltipRoot } from "./tooltip.js";
 import { Menu as M } from "@base-ui/react";
@@ -8,24 +9,59 @@ export function PageAction({
   rootDir,
   branch,
   path,
+  collection,
+  id,
 }: {
   githubOrg: string;
   githubRepo: string;
   rootDir: string;
   branch: string;
   path: string;
+  collection: string;
+  id: string;
 }) {
   const url = typeof window !== "undefined" ? new URL(window.location.href) : "";
   const fullMarkdownUrl =
     typeof window !== "undefined" ? new URL(url, window.location.origin) : "loading";
   const q = `Read ${fullMarkdownUrl}, I want to ask questions about it.`;
 
+  const [copying, setCopying] = useState(false);
+  const [success, setSuccess] = useState(false);
+
   return (
     <div className="border-xd-border bg-xd-accent/60 flex items-center rounded-lg">
       <TooltipProvider>
         <TooltipRoot>
-          <TooltipTrigger className="hover:bg-xd-accent cursor-pointer transition-colors hover:rounded-s-lg">
-            <span className="iconify ph--copy size-4" />
+          <TooltipTrigger
+            className="hover:bg-xd-accent cursor-pointer transition-colors hover:rounded-s-lg"
+            onClick={async () => {
+              if (success) return;
+              let t;
+              try {
+                t = setTimeout(() => {
+                  setCopying(true);
+                }, 100);
+                const result = await (
+                  await fetch(`/doc-markdown/${collection}_${id.replaceAll("/", "_")}`)
+                ).text();
+
+                await navigator.clipboard.writeText(result);
+
+                setSuccess(true);
+                setTimeout(() => {
+                  setSuccess(false);
+                }, 2000);
+              } finally {
+                clearTimeout(t);
+                setCopying(false);
+              }
+            }}
+          >
+            {!copying && !success && <span className="iconify ph--copy size-4" />}
+            {copying && <span className="iconify svg-spinners--90-ring size-4"></span>}
+            {success && (
+              <span className="iconify ph--check size-4 text-green-900 dark:text-green-500"></span>
+            )}
             <span className="hidden md:inline">Copy Page</span>
           </TooltipTrigger>
           <Tooltip side="bottom">Copy page as MarkDown</Tooltip>
