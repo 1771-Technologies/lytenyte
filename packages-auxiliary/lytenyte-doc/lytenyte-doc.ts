@@ -9,6 +9,8 @@ import {
   remarkCallout,
   remarkDemo,
   remarkLastModified,
+  remarkMath,
+  rehypeKatex,
 } from "./plugins/index.js";
 
 export interface OneDocConfig {
@@ -26,6 +28,9 @@ export function lnDoc(opts: OneDocConfig): AstroIntegration[] {
       hooks: {
         "astro:config:setup": async ({ config, updateConfig, injectRoute, createCodegenDir }) => {
           updateConfig({
+            markdown: {
+              rehypePlugins: [rehypeKatex],
+            },
             vite: {
               plugins: [
                 tailwindcss() as any,
@@ -101,6 +106,7 @@ export function lnDoc(opts: OneDocConfig): AstroIntegration[] {
         remarkDirective,
         remarkCallout,
         remarkLastModified,
+        remarkMath,
       ],
     }),
   ];

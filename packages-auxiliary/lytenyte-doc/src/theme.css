@@ -83,10 +83,14 @@ body {
 }
 
 .ln-callout .expressive-code {
-  @apply my-0;
+  @apply my-2 -ms-1;
 }
 .ln-tabs .expressive-code:first-child {
   @apply my-0;
+
+  & pre {
+    @apply rounded-none border-transparent;
+  }
 }
 
 .expressive-code {

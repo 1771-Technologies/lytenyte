@@ -10,5 +10,7 @@ export { remarkStandaloneImage } from "./remark-standalone-img.js";
 export { remarkLastModified } from "./remark-modified-time.js";
 
 import remarkDirective from "remark-directive";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
 
-export { remarkDirective };
+export { remarkDirective, remarkMath, rehypeKatex };
