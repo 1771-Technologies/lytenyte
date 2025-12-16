@@ -2,70 +2,49 @@
 
 import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
-import { DragDotsSmallIcon } from "@1771technologies/lytenyte-pro/icons";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
-import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { useId } from "react";
-import { BalanceCell, DurationCell, NumberCell, tw } from "./components";
+import type { OrderData } from "@1771technologies/grid-sample-data/orders";
+import { data } from "@1771technologies/grid-sample-data/orders";
+import {
+  AvatarCell,
+  EmailCell,
+  IdCell,
+  MarkerCell,
+  MarkerHeader,
+  PaymentMethodCell,
+  PriceCell,
+  ProductCell,
+  PurchaseDateCell,
+  tw,
+} from "./components";
 
-type BankData = (typeof bankDataSmall)[number];
-
-const columns: Column<BankData>[] = [
-  { id: "job", width: 120 },
-  { id: "age", type: "number", width: 80, cellRenderer: NumberCell },
-  { id: "balance", type: "number", cellRenderer: BalanceCell },
-  { id: "education" },
-  { id: "marital" },
-  { id: "default" },
-  { id: "housing" },
-  { id: "loan" },
-  { id: "contact" },
-  { id: "day", type: "number", cellRenderer: NumberCell },
-  { id: "month" },
-  { id: "duration", type: "number", cellRenderer: DurationCell },
-  { id: "poutcome", name: "P Outcome" },
-  { id: "y" },
+const columns: Column<OrderData>[] = [
+  { id: "id", width: 60, widthMin: 60, cellRenderer: IdCell, name: "ID" },
+  { id: "product", cellRenderer: ProductCell, width: 200, type: "string" },
+  { id: "price", type: "number", cellRenderer: PriceCell, width: 100 },
+  { id: "customer", cellRenderer: AvatarCell, width: 180, type: "string" },
+  { id: "purchaseDate", cellRenderer: PurchaseDateCell, name: "Purchase Date", width: 120 },
+  { id: "paymentMethod", cellRenderer: PaymentMethodCell, name: "Payment Method", width: 150 },
+  { id: "email", cellRenderer: EmailCell, width: 220, type: "string" },
 ];
 
-export default function RowDragging() {
-  const ds = useClientRowDataSource({
-    data: bankDataSmall,
-  });
+export default function RowSelection() {
+  const ds = useClientRowDataSource({ data: data });
 
   const grid = Grid.useLyteNyte({
     gridId: useId(),
     rowDataSource: ds,
     columns,
-    columnBase: { width: 100 },
-
     columnMarkerEnabled: true,
     columnMarker: {
-      cellRenderer: (p) => {
-        const drag = p.grid.api.useRowDrag({
-          placeholder: (_, el) => el.parentElement?.parentElement ?? el,
-          getDragData: () => {
-            return {
-              siteLocalData: {
-                row: p.rowIndex,
-              },
-            };
-          },
-          onDrop: (p) => {
-            alert(
-              `Dropped row at ${p.state.siteLocalData?.row ?? ""} ${
-                p.moveState.topHalf ? "before" : "after"
-              } row ${p.dropElement.getAttribute("data-ln-rowindex")}`,
-            );
-          },
-        });
-
-        return (
-          <span {...drag.dragProps}>
-            <DragDotsSmallIcon />
-          </span>
-        );
-      },
+      cellRenderer: MarkerCell,
+      headerRenderer: MarkerHeader,
     },
+
+    rowSelectionMode: "multiple",
+    rowSelectionActivator: "none",
+    rowHeight: 50,
   });
 
   const view = grid.view.useValue();
@@ -86,7 +65,8 @@ export default function RowDragging() {
                         key={c.id}
                         cell={c}
                         className={tw(
-                          "flex items-center px-2 text-sm capitalize",
+                          "flex h-full w-full items-center text-nowrap text-sm capitalize",
+                          !c.id.startsWith("lytenyte") && "px-3",
                           c.column.type === "number" && "justify-end",
                         )}
                       />
@@ -102,15 +82,15 @@ export default function RowDragging() {
                 if (row.kind === "full-width") return null;
 
                 return (
-                  <Grid.Row row={row} key={row.id} accepted={["row"]}>
+                  <Grid.Row row={row} key={row.id}>
                     {row.cells.map((c) => {
                       return (
                         <Grid.Cell
                           key={c.id}
                           cell={c}
                           className={tw(
-                            "flex items-center px-2 text-sm",
-                            c.column.type === "number" && "justify-end tabular-nums",
+                            "flex h-full w-full items-center text-sm",
+                            !c.column.id.startsWith("lytenyte") && "px-3",
                           )}
                         />
                       );
