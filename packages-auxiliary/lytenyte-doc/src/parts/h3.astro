@@ -2,5 +2,9 @@
   {...Astro.props}
   class="[&+p]:mt-4! *:[code]:text-xl text-xd-foreground mt-12 scroll-m-28 text-[18px] md:text-xl font-medium tracking-tight"
 >
-  <slot />
+  <a href={`#${Astro.props.id}`} class="flex items-center gap-2 group">
+    <slot />
+    <span class="iconify ph--link size-4 group-hover:opacity-100 opacity-0 transition-opacity"
+    ></span>
+  </a>
 </h3>

@@ -9,8 +9,17 @@ export function Search() {
   const [searchResults, setSearchResults] = useState<DocIndex[]>([]);
   const [error, setError] = useState<string | null>(null);
   const searchRef = useRef<(s: string) => Promise<DocIndex[]>>(null);
+  const [open, setOpen] = useState(false);
 
   const { contains } = A.useFilter({ sensitivity: "base" });
+
+  useEffect(() => {
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        setOpen(true);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     const getSearchIndex = async () => {
@@ -90,6 +99,8 @@ export function Search() {
 
   return (
     <D.Root
+      open={open}
+      onOpenChange={setOpen}
       onOpenChangeComplete={(x) => {
         if (!x) {
           setSearchResults([]);
@@ -99,7 +110,14 @@ export function Search() {
         }
       }}
     >
-      <D.Trigger>Search</D.Trigger>
+      <D.Trigger className="md:border-xd-border md:bg-xd-card flex items-center gap-2 rounded-xl py-1.5 pe-2 ps-2 text-sm md:border md:pe-3">
+        <span className="iconify ph--magnifying-glass-duotone size-5 md:size-4"></span>
+        <span className="hidden pe-32 md:block">Search</span>
+        <div className="md:center hidden gap-1">
+          <ModKey />
+          <kbd className="relative text-xs">K</kbd>
+        </div>
+      </D.Trigger>
       <D.Portal>
         <D.Backdrop
           className={cn(
@@ -165,6 +183,7 @@ export function Search() {
                         {(doc: DocIndex) => (
                           <A.Item
                             key={doc.link}
+                            render={<a href={"/" + doc.link} className="block" />}
                             className={cn(
                               "select-none overflow-hidden rounded-xl px-2 py-2 text-base leading-4 outline-none",
                               "data-highlighted:bg-xd-accent",
@@ -229,5 +248,35 @@ export function Highlight({ text, query }: { text: string; query: string }) {
         ),
       )}
     </>
+  );
+}
+
+/**
+ * Renders the correct "modifier key" for the user's OS:
+ * - macOS: ⌘ (Command)
+ * - Windows/Linux/other: Ctrl
+ */
+export function ModKey({
+  showSymbolOnMac = true,
+  className,
+}: {
+  showSymbolOnMac?: boolean;
+  className?: string;
+}) {
+  const isMac =
+    typeof navigator !== "undefined" && /Mac|iPhone|iPad|iPod/i.test(navigator.platform);
+
+  if (isMac) {
+    return (
+      <kbd className={className} aria-label="Command key">
+        {showSymbolOnMac ? "⌘" : "Cmd"}
+      </kbd>
+    );
+  }
+
+  return (
+    <kbd className={className} aria-label="Control key">
+      Ctrl
+    </kbd>
   );
 }

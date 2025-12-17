@@ -31,14 +31,32 @@ const { toc, sidebar, nextEntry, prevEntry, lastModified } = Astro.props;
     <title>Home</title>
     <ThemeScript />
   </head>
-  <body class="bg-xd-background text-xd-foreground min-h-screen flex flex-col">
+  <body
+    class="bg-xd-background text-xd-foreground min-h-screen flex flex-col dark:scheme-dark scheme-light"
+  >
     <div class="sticky top-0 z-10">
-      <header class="h-header border-b border-xd-border bg-xd-background">
-        <ThemeToggle />
-
-        <Search client:idle />
-      </header>
-      <aside class="h-subheader border-b border-xd-border bg-xd-background"></aside>
+      <div
+        class="h-header border-b border-xd-border bg-xd-background flex gap-2 items-center justify-between"
+      >
+        <header
+          class="flex items-center lg:max-w-[1000px] xl:max-w-7xl [@media(min-width:1380px)]:max-w-[1360px] [@media(min-width:1500px)]:max-w-[1480px] mx-auto w-full md:justify-between px-2 gap-2"
+        >
+          <div>Logo</div>
+          <div class="flex-1 flex justify-end md:block md:flex-[unset]">
+            <Search client:idle />
+          </div>
+          <div>
+            <ThemeToggle />
+          </div>
+        </header>
+      </div>
+      <div class="h-subheader border-b border-xd-border bg-xd-background">
+        <div
+          class="flex items-center lg:max-w-[1000px] xl:max-w-7xl [@media(min-width:1380px)]:max-w-[1360px] [@media(min-width:1500px)]:max-w-[1480px] mx-auto w-full justify-between px-2"
+        >
+          <aside class="">Link 1</aside>
+        </div>
+      </div>
     </div>
     <div class="flex-1 grid grid-row-[1fr]">
       <div class="w-full h-full">

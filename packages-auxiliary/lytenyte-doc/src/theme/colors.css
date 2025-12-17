@@ -20,6 +20,7 @@
 }
 
 [data-theme="dark"] {
+  color-scheme: dark;
   --color-xd-prose-link: hsla(172, 75%, 40%, 1);
   --color-xd-background: hsl(0, 0%, 7.04%);
   --color-xd-foreground: hsl(0, 0%, 92%);
@@ -38,4 +39,8 @@
   --color-xd-accent-foreground: hsl(0, 0%, 90%);
   --color-xd-ring: hsl(0, 0%, 54.9%);
   --color-xd-overlay: hsla(0, 0%, 0%, 0.2);
+}
+
+[data-theme="light"] {
+  color-scheme: light;
 }
