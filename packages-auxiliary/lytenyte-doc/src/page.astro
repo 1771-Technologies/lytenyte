@@ -1,5 +1,4 @@
 ---
-import { indexMdxH2H3 } from "../ln-doc/doc-index.js";
 import { getEntry, render } from "astro:content";
 import DocsLayout from "./layout/docs-layout.astro";
 
@@ -36,6 +35,7 @@ import { flattenTree } from "./sidebar/flatten-tree";
 import { findTitle } from "./sidebar/find-title";
 import { Code } from "astro-expressive-code/components";
 import { PageAction } from "./ui/page-action";
+import TypeTable from "./type-table.astro";
 
 export interface Props {
   githubOrg: string;
@@ -126,6 +126,7 @@ const prevEntry = prev ? await getEntry(entry.collection, prev) : null;
       Steps,
       Tabs,
       Tab,
+      TypeTable
 
       table: Table,
       th: Th,

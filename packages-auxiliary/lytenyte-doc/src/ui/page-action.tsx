@@ -27,11 +27,11 @@ export function PageAction({
   const [success, setSuccess] = useState(false);
 
   return (
-    <div className="border-xd-border bg-xd-accent/60 flex items-center rounded-lg">
+    <div className="border-xd-border bg-xd-accent/60 flex items-center overflow-hidden rounded-lg">
       <TooltipProvider>
         <TooltipRoot>
           <TooltipTrigger
-            className="hover:bg-xd-accent cursor-pointer transition-colors hover:rounded-s-lg"
+            className="hover:bg-xd-accent cursor-pointer rounded-s-lg transition-colors"
             onClick={async () => {
               if (success) return;
               let t;
