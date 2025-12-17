@@ -6,6 +6,7 @@ import mdx from "@astrojs/mdx";
 import { mdxRoutes } from "./ln-doc/mdx-routes.js";
 import { llmFull } from "./ln-doc/llms-full.js";
 import { llmsText } from "./ln-doc/llms.js";
+import { searchIndexFile } from "./ln-doc/search-index.js";
 import expressiveCode from "astro-expressive-code";
 import {
   remarkStandaloneImage,
@@ -19,6 +20,7 @@ import {
 import { relative } from "node:path";
 
 export { generateId } from "./collections/generate-id.js";
+export { indexMdxH2H3 } from "./ln-doc/doc-index.js";
 export interface OneDocConfig {
   readonly collections: (string | { name: string; base: string })[];
   readonly githubOrg: string;
@@ -107,6 +109,9 @@ export function lnDoc(opts: OneDocConfig): AstroIntegration[] {
             opts.llmWebsiteURL,
           );
           injectRoute({ pattern: `/llms.txt`, entrypoint: llms });
+
+          const searchIndex = await searchIndexFile(codegen, collections);
+          injectRoute({ pattern: "/search.json", entrypoint: searchIndex });
 
           for (let i = 0; i < collections.length; i++) {
             const collection = collections[i];
