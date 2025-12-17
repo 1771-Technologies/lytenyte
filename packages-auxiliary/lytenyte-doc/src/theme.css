@@ -33,6 +33,9 @@ body {
   --spacing-sidenav: 290px;
   --spacing-toc: 275px;
 
+  --animate-xd-fade-in: xd-fade-in 300ms ease;
+  --animate-xd-fade-out: xd-fade-out 300ms ease;
+
   --color-xd-gray-00: var(--lng1771-gray-00);
   --color-xd-gray-02: var(--lng1771-gray-02);
   --color-xd-gray-05: var(--lng1771-gray-05);
@@ -63,6 +66,24 @@ body {
   --color-xd-pill-group-fill: var(--lng1771-pill-group-fill);
   --color-xd-pill-group-stroke: var(--lng1771-pill-group-stroke);
   --color-xd-pill-icon-color: var(--lng1771-pill-icon-color);
+
+  @keyframes xd-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes xd-fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
 }
 
 .no-transition * {
@@ -95,4 +116,7 @@ body {
 
 .expressive-code {
   @apply my-8;
+}
+.expressive-code .frame.frame {
+  box-shadow: none;
 }

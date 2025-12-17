@@ -12,7 +12,7 @@ export function getSidebarConfig(path: string, collection: string): Root {
 
   return {
     kind: "root",
-    children: pages.map((x) => processPage(root.path, x)).filter(Boolean),
+    children: pages.map((x) => processPage(root.path, x, "")).filter(Boolean),
     path: root.path,
     collection,
   };
@@ -21,6 +21,7 @@ export function getSidebarConfig(path: string, collection: string): Root {
 function processPage(
   parent: string,
   current: string,
+  title: string,
 ): PageLink | DirectLink | ExternalLink | Separator | Group | null {
   if (current === "---") return { kind: "separator" };
   if (current.startsWith("[")) {
@@ -51,13 +52,14 @@ function processPage(
     if (meta.root) return null;
 
     const pages: string[] = finalizePageList(meta.pages, path);
+    const title = meta.title ?? capitalize(current.replace("(", "").replace(")", ""));
     const group = {
       kind: "group",
       id: path,
-      label: meta.label ?? capitalize(current.replace("(", "").replace(")", "")),
+      label: title,
       collapsed: meta.collapsed ?? false,
       collapsible: meta.collapsible ?? true,
-      children: pages.map((x) => processPage(path, x)).filter(Boolean),
+      children: pages.map((x) => processPage(path, x, title)).filter(Boolean),
     } satisfies Group;
 
     if (!group.children.length) return null;
@@ -73,6 +75,7 @@ function processPage(
       kind: "page-link",
       path,
       id: generateId({ entry: path.split("/").slice(1).join("/") }),
+      title,
     };
   }
 }

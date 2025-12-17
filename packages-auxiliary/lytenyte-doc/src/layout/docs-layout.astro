@@ -9,6 +9,7 @@ import type { Root } from "../sidebar/types";
 import Sidebar from "../sidebar/sidebar.astro";
 import SidebarScript from "../sidebar/sidebar-script.astro";
 import { cn } from "../ui/cn";
+import { Search } from "../search/search";
 
 export interface Props {
   readonly toc: MarkdownHeading[];
@@ -34,6 +35,8 @@ const { toc, sidebar, nextEntry, prevEntry, lastModified } = Astro.props;
     <div class="sticky top-0 z-10">
       <header class="h-header border-b border-xd-border bg-xd-background">
         <ThemeToggle />
+
+        <Search client:idle />
       </header>
       <aside class="h-subheader border-b border-xd-border bg-xd-background"></aside>
     </div>

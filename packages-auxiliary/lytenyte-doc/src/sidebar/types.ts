@@ -6,6 +6,7 @@ export interface PageLink {
   readonly kind: "page-link";
   readonly id: string;
   readonly path: string;
+  readonly title: string;
 }
 
 export interface DirectLink {

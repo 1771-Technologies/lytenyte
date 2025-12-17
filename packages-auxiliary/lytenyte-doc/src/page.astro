@@ -33,6 +33,7 @@ import Tr from "./parts/tr.astro";
 import Td from "./parts/td.astro";
 import PackageDlx from "./package-dlx.astro";
 import { flattenTree } from "./sidebar/flatten-tree";
+import { findTitle } from "./sidebar/find-title";
 import { Code } from "astro-expressive-code/components";
 import { PageAction } from "./ui/page-action";
 
@@ -59,6 +60,7 @@ const { lastModified } = remarkPluginFrontmatter as RenderFM;
 
 const sidebar = getSidebarConfig(entry.filePath!, entry.collection);
 const flat = flattenTree(sidebar);
+const title = findTitle(sidebar, entry.id);
 
 const current = flat.indexOf(entry.id);
 const next = current !== -1 ? (flat[current + 1] ?? null) : null;
@@ -66,23 +68,6 @@ const prev = current !== -1 ? (flat[current - 1] ?? null) : null;
 
 const nextEntry = next ? await getEntry(entry.collection, next) : null;
 const prevEntry = prev ? await getEntry(entry.collection, prev) : null;
-
-const breadcrumbs = entry
-  .filePath!.replace(entry.collection + "/", "")
-  .split("/")
-  .map((x) => {
-    if (x.startsWith("(@"))
-      return capitalize(
-        x.replace("(@", "").replace(")", "").replaceAll("-", " ").replaceAll("_", " "),
-      );
-    if (x.startsWith("("))
-      return capitalize(
-        x.replace("(", "").replace(")", "").replaceAll("-", " ").replaceAll("_", " "),
-      );
-
-    return capitalize(x.replaceAll("_", " ").replaceAll("-", " "));
-  })
-  .slice(0, -1);
 ---
 
 <DocsLayout
@@ -105,19 +90,9 @@ const breadcrumbs = entry
     : null}
 >
   {
-    breadcrumbs.length > 0 && (
+    title.length > 0 && (
       <div class="flex items-center gap-1.5 text-sm text-fd-muted-foreground mb-5">
-        {breadcrumbs.map((b, i) => {
-          const isLast = i === breadcrumbs.length - 1;
-          if (isLast) return <span class="truncate text-xd-primary font-medium">{b}</span>;
-
-          return (
-            <>
-              <span>{b}</span>
-              <span>/</span>
-            </>
-          );
-        })}
+        <span class="truncate text-xd-primary font-medium">{title}</span>
       </div>
     )
   }
