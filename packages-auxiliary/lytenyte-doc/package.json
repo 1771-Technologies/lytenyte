@@ -28,11 +28,6 @@
     "access": "public"
   },
   "devDependencies": {
-    "@types/hast": "3.0.4",
-    "@types/mdast": "^4.0.4",
-    "astro": "5.16.1"
-  },
-  "dependencies": {
     "@astrojs/mdx": "4.3.12",
     "@astrojs/starlight": "0.37.0",
     "@base-ui/react": "^1.0.0",
@@ -44,6 +39,9 @@
     "@iconify/tailwind4": "1.2.0",
     "@manypkg/find-root": "3.1.0",
     "@tailwindcss/vite": "4.1.17",
+    "@types/hast": "3.0.4",
+    "@types/mdast": "^4.0.4",
+    "astro": "5.16.1",
     "astro-expressive-code": "0.41.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -87,5 +85,9 @@
     "unist-util-visit": "^5.0.0",
     "unist-util-visit-parents": "^6.0.2",
     "vfile": "^6.0.3"
+  },
+  "dependencies": {
+    "@astrojs/markdown-remark": "^6.3.10",
+    "@mdx-js/mdx": "^3.1.1"
   }
 }

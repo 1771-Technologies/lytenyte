@@ -77,6 +77,7 @@ export function lnDoc(opts: OneDocConfig): AstroIntegration[] {
                 {
                   resolveId: (id) => {
                     if (id === "ln:collections") return "ln:collections";
+                    if (id === "mdx:type") return "";
                   },
                   load: (id) => {
                     if (id === "ln:collections") {
@@ -180,6 +181,7 @@ const { entry } = Astro.props;
         },
       },
     },
+
     expressiveCode(),
     mdx({
       remarkPlugins: [

@@ -1,8 +1,12 @@
 import { defineConfig } from "astro/config";
 import react from "@astrojs/react";
 import { lnDoc } from "@1771technologies/lytenyte-doc";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
+  vite: {
+    plugins: [tailwindcss()],
+  },
   integrations: [
     react(),
     lnDoc({

@@ -10,8 +10,13 @@
   },
   "dependencies": {
     "@1771technologies/lytenyte-doc": "workspace:*",
+    "@astrojs/mdx": "4.3.12",
     "@astrojs/react": "4.4.2",
-    "astro": "5.16.6"
+    "@tailwindcss/vite": "^4.1.18",
+    "astro": "5.16.6",
+    "rehype-expressive-code": "^0.41.5",
+    "sharp": "^0.34.5",
+    "ts-morph": "26.0.0"
   },
   "devDependencies": {
     "@1771technologies/grid-sample-data": "workspace:*",

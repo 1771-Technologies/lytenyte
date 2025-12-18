@@ -34,6 +34,8 @@ import Td from "../parts/td.astro";
 import PackageDlx from "../package-dlx.astro";
 import { Code } from "astro-expressive-code/components";
 import type { DocEntry } from "./base";
+import { render } from "astro:content";
+import { renderMdx } from "./render-markdown";
 import { ensureDirSync } from "fs-extra";
 
 export interface ParameterNode {
@@ -99,15 +101,26 @@ const type = Astro.props.type;
       })
       .map(async ({ name, description, required = false, deprecated, type }) => {
         description = description.replaceAll("{", "").replaceAll("}", "").replaceAll("@", "");
-        ensureDirSync(`node_modules/ln-type-mdx`);
-        const mdxFile = `node_modules/ln-type-mdx/${name}.mdx`;
 
-        if (!existsSync(mdxFile)) writeFileSync(mdxFile, description as string);
-        else if (readFileSync(mdxFile, "utf-8") !== description) {
-          writeFileSync(mdxFile, description as string);
+        let mdxContent = "";
+        try {
+          mdxContent = await renderMdx(description);
+        } catch {
+          console.log(`${name} needs fixing`);
         }
 
-        const { Content } = await import(/* @vite-ignore */ process.cwd() + `/${mdxFile}`);
+        if (!mdxContent) return;
+
+        ensureDirSync(`node_modules/ln-type-mdx`);
+        const mdxFile = `node_modules/ln-type-mdx/${name}.js`;
+
+        if (!existsSync(mdxFile)) writeFileSync(mdxFile, mdxContent);
+        else if (readFileSync(mdxFile, "utf-8") !== mdxContent) {
+          writeFileSync(mdxFile, mdxContent);
+        }
+
+        const Module = await import(/* @vite-ignore */ process.cwd() + `/${mdxFile}`);
+        const Content = Module.default;
 
         return (
           <Collapsible>
