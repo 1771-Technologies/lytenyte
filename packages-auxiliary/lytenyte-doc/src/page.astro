@@ -35,7 +35,7 @@ import { flattenTree } from "./sidebar/flatten-tree";
 import { findTitle } from "./sidebar/find-title";
 import { Code } from "astro-expressive-code/components";
 import { PageAction } from "./ui/page-action";
-import TypeTable from "./type-table.astro";
+import TypeTable from "./type-table/type-table.astro";
 
 export interface Props {
   githubOrg: string;
@@ -126,7 +126,7 @@ const prevEntry = prev ? await getEntry(entry.collection, prev) : null;
       Steps,
       Tabs,
       Tab,
-      TypeTable
+      TypeTable,
 
       table: Table,
       th: Th,

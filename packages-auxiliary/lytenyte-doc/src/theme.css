@@ -120,3 +120,15 @@ body {
 .expressive-code .frame.frame {
   box-shadow: none;
 }
+
+.type-table .expressive-code {
+  @apply my-0;
+
+  & code {
+    @apply p-0;
+
+    & .code {
+      @apply pe-1! ps-1!;
+    }
+  }
+}
