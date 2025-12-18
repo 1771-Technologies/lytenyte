@@ -9,10 +9,12 @@ import { cn } from "../ui/cn";
     <slot name="trigger" />
   </button>
   <div
-    class="grid grid-rows-[0fr] data-open:grid-rows-[1fr] transition-[grid-template-rows] overflow-hidden"
+    class="grid grid-rows-[0fr] data-open:grid-rows-[1fr] transition-[grid-template-rows] overflow-hidden group"
   >
     <div class="min-h-0">
-      <slot name="content" />
+      <div class="group-data-open:block hidden transition-discrete transition-all">
+        <slot name="content" />
+      </div>
     </div>
   </div>
 </div>

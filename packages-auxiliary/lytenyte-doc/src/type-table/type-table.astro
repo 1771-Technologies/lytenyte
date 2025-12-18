@@ -2,7 +2,7 @@
 import { cva } from "class-variance-authority";
 import Collapsible from "./collapsible.astro";
 import { cn } from "../ui/cn";
-import { writeFileSync } from "fs";
+import { existsSync, readFile, readFileSync, writeFileSync } from "fs";
 
 import StandaloneImage from "../standalone-image.astro";
 import Callout from "../callout.astro";
@@ -34,6 +34,7 @@ import Td from "../parts/td.astro";
 import PackageDlx from "../package-dlx.astro";
 import { Code } from "astro-expressive-code/components";
 import type { DocEntry } from "./base";
+import { ensureDirSync } from "fs-extra";
 
 export interface ParameterNode {
   name: string;
@@ -81,7 +82,7 @@ const type = Astro.props.type;
 ---
 
 <div
-  class="@container bg-xd-card text-xd-card-foreground p-t my-6 flex flex-col overflow-hidden rounded-2xl border-x border-t border-xd-border text-sm"
+  class="@container bg-xd-popover text-xd-card-foreground p-t my-6 flex flex-col overflow-hidden rounded-2xl border-x border-t border-xd-border text-sm"
 >
   <div
     class="not-prose text-xd-muted-foreground flex items-center px-3 py-1 font-medium border-b border-xd-border"
@@ -90,15 +91,23 @@ const type = Astro.props.type;
   </div>
   {
     type
-      .sort((l, r) => {
+      ?.sort?.((l, r) => {
         if (l.required && r.required) return l.name.localeCompare(r.name);
         if (l.required) return -1;
         if (r.required) return 1;
         return l.name.localeCompare(r.name);
       })
       .map(async ({ name, description, required = false, deprecated, type }) => {
-        writeFileSync(".astro/temp.mdx", description as string);
-        const { Content } = await import(/* @vite-ignore */ process.cwd() + "/.astro/temp.mdx");
+        description = description.replaceAll("{", "").replaceAll("}", "").replaceAll("@", "");
+        ensureDirSync(`node_modules/ln-type-mdx`);
+        const mdxFile = `node_modules/ln-type-mdx/${name}.mdx`;
+
+        if (!existsSync(mdxFile)) writeFileSync(mdxFile, description as string);
+        else if (readFileSync(mdxFile, "utf-8") !== description) {
+          writeFileSync(mdxFile, description as string);
+        }
+
+        const { Content } = await import(/* @vite-ignore */ process.cwd() + `/${mdxFile}`);
 
         return (
           <Collapsible>

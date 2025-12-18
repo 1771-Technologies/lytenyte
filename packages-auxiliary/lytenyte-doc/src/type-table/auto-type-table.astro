@@ -1,6 +1,6 @@
 ---
 import { createGenerator } from "./base";
-import { getTypeTableOutput, type BaseTypeTableProps } from "./type-table";
+import { type BaseTypeTableProps } from "./type-table";
 import TypeTable from "./type-table.astro";
 
 interface Props extends BaseTypeTableProps {}
@@ -11,4 +11,4 @@ const props = Astro.props;
 const typeProps = await generator.generateTypeTable(props);
 ---
 
-<TypeTable type={typeProps} />
+<TypeTable type={typeProps.flatMap((x) => x.entries)} />

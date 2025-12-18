@@ -36,6 +36,7 @@ import { findTitle } from "./sidebar/find-title";
 import { Code } from "astro-expressive-code/components";
 import { PageAction } from "./ui/page-action";
 import TypeTable from "./type-table/type-table.astro";
+import AutoTypeTable from "./type-table/auto-type-table.astro";
 
 export interface Props {
   githubOrg: string;
@@ -127,6 +128,7 @@ const prevEntry = prev ? await getEntry(entry.collection, prev) : null;
       Tabs,
       Tab,
       TypeTable,
+      AutoTypeTable,
 
       table: Table,
       th: Th,

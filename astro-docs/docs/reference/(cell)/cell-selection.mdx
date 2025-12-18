@@ -1,0 +1,17 @@
+---
+title: Cell Selection
+description: The API reference for the cell selection functionality in LyteNyte Grid.
+---
+
+## `CellSelectionMode`<span className="type-tag" style={{ '--type-content': "'union'" }} />
+
+<TypeTable
+  type={[
+    {
+      name: "CellSelectionMode",
+      description:
+        'Specifies the available modes for cell selection in LyteNyte Grid.\n\nThis is a **PRO-only** feature that controls how users can interact with and select cells:\n\n-  \\`\\`"range"\\`\\` : Allows a single rectangular selection of cells.\n-  \\`\\`"multi-range"\\`\\` : Enables multiple, possibly overlapping, independent cell selections.\n-  \\`\\`"none"\\`\\` : Disables all cell selection interactions.\n\nUseful for enabling features like copy-paste, cell highlighting, and keyboard navigation.',
+      type: '"range" | "multi-range" | "none"',
+    },
+  ]}
+/>

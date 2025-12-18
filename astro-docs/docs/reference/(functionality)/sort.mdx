@@ -1,0 +1,81 @@
+---
+title: Sort
+description: The API reference for the sort functionality in LyteNyte Grid.
+---
+## `SortComparatorFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
+
+<AutoTypeTable type={`export interface SortComparatorFn<T> {
+          /** 
+           * Function signature for custom sort comparators.
+           */
+          SortComparatorFn<T>: <T>(l: FieldDataParam<T>, r: FieldDataParam<T>, opts: any) => number
+          }`} />
+
+## `SortComparators`<span className="type-tag" style={{ '--type-content': "'union'" }} />
+
+<AutoTypeTable type={`export interface SortComparators<T> {
+          /** 
+           * Predefined sort comparator types supported by LyteNyte Grid.
+           */
+          SortComparators: string
+          }`} />
+
+## `SortCustomSort`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+Definition for a user-defined custom sort comparator.
+
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="SortCustomSort" />
+
+
+## `SortDateColumnSort`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+A built-in date sort model definition.
+
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="SortDateColumnSort" />
+
+
+## `SortDateComparatorOptions`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+Options used for date-based sorting.
+
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="SortDateComparatorOptions" />
+
+
+## `SortGridSorts`<span className="type-tag" style={{ '--type-content': "'union'" }} />
+
+<TypeTable type={{"SortGridSorts":{"description":"Union of all supported grid sort types.","type":"SortCustomSort | SortDateColumnSort | SortNumberColumnSort | SortStringColumnSort"}}} />
+
+## `SortModelItem`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+A model item representing an active sort applied to the grid.
+
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="SortModelItem" />
+
+
+## `SortNumberColumnSort`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+A built-in numeric sort model definition.
+
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="SortNumberColumnSort" />
+
+
+## `SortNumberComparatorOptions`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+Options for number-based sorting.
+
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="SortNumberComparatorOptions" />
+
+
+## `SortStringColumnSort`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+A built-in string sort model definition.
+
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="SortStringColumnSort" />
+
+
+## `SortStringComparatorOptions`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+Options used when sorting string values.
+
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="SortStringComparatorOptions" />
+

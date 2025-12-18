@@ -47,7 +47,7 @@ const { pathname } = Astro.url;
     </a>
   )
 }
-{item?.kind === "separator" && <div>Separator</div>}
+{item?.kind === "separator" && <div role="separator" class="bg-xd-border/30 h-px w-full my-2" />}
 {
   item?.kind === "group" && (
     <div
