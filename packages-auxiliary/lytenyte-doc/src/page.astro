@@ -57,7 +57,7 @@ type RenderFM = { lastModified?: string; lastModifiedSource?: "git" | "fs" };
 
 const {
   entry,
-  options: { githubOrg, githubRepo, navbar, githubUrl, links },
+  options: { homeUrl, titleSuffix, githubOrg, githubRepo, navbar, githubUrl, links },
   rootDir,
   branch,
 } = Astro.props;
@@ -82,6 +82,9 @@ const prevEntry = prev ? await getEntry(entry.collection, prev) : null;
   sidebar={sidebar}
   links={links}
   githubUrl={githubUrl}
+  title={entry.data.title}
+  titleSuffix={titleSuffix}
+  homeUrl={homeUrl}
   navbar={navbar}
   toc={headings.filter((x: any) => x.depth === 2 || x.depth === 3)}
   lastModified={lastModified ?? new Date().toISOString()}

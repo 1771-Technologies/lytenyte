@@ -1,0 +1,18 @@
+---
+import { Image } from "astro:assets";
+import DarkLogo from "./assets/dark-logo.png";
+import LightLogo from "./assets/light-logo.png";
+---
+
+<Image
+  src={DarkLogo}
+  alt="LyteNyte Grid logo for dark mode. Links back to the documentation home page."
+  class="hidden w-[120px] dark:block"
+  priority
+/>
+<Image
+  src={LightLogo}
+  priority
+  alt="LyteNyte Grid logo for light mode. Links back to the documentation home page."
+  class="block w-[120px] dark:hidden"
+/>

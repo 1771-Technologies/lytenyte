@@ -16,6 +16,8 @@ export default defineConfig({
       llmWebsiteDescription: "Documentation and blogs for LyteNyte Grid built by 1771 Technologies",
       llmWebsiteName: "1771 Technologies",
       llmWebsiteURL: "https://1771technologies",
+      titleSuffix: "1771 Technologies",
+      homeUrl: "/docs/intro-getting-started",
 
       githubUrl: "https://github.com/1771-Technologies/lytenyte",
       links: [

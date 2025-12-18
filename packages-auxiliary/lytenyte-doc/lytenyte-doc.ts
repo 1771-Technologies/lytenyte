@@ -26,6 +26,9 @@ export interface OneDocConfig {
   readonly githubOrg: string;
   readonly githubRepo: string;
 
+  readonly titleSuffix: string;
+  readonly homeUrl: string;
+
   readonly llmWebsiteName: string;
   readonly llmWebsiteURL: string;
   readonly llmWebsiteDescription: string;
