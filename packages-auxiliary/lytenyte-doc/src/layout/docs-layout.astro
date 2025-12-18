@@ -1,5 +1,6 @@
 ---
 import "katex/dist/katex.css";
+import { ClientRouter } from "astro:transitions";
 import { format } from "date-fns";
 import DesktopToc from "../toc/desktop-toc.astro";
 import ThemeToggle from "../theme-toggle.astro";
@@ -58,12 +59,14 @@ const pathname = Astro.url.pathname;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" transition:persist transition:animate="none">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title} | {titleSuffix}</title>
+
     <ThemeScript />
+    <ClientRouter />
   </head>
   <body
     class="bg-xd-background text-xd-foreground min-h-screen flex flex-col dark:scheme-dark scheme-light"

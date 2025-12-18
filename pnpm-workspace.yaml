@@ -3,4 +3,4 @@ packages:
   - packages-auxiliary/**
   - packages-documentation/**
   - documentation
-  - astro-docs
+  - documentation-2

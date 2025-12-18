@@ -40,6 +40,8 @@
     document.querySelector("#theme-toggle")?.addEventListener("click", toggleTheme);
   };
 
+  document.addEventListener("astro:after-swap", () => reflectPreference(true));
+
   window
     .matchMedia("(prefers-color-scheme: dark)")
     .addEventListener("change", ({ matches: isDark }) => {
