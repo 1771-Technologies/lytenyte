@@ -18,7 +18,8 @@ if (item?.kind === "page-link") {
   title = entry.data.title;
 }
 
-const { pathname } = Astro.url;
+let { pathname } = Astro.url;
+if (pathname.endsWith("/")) pathname = pathname.slice(0, -1);
 ---
 
 {

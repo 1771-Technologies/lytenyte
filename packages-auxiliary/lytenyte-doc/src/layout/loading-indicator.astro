@@ -1,0 +1,128 @@
+---
+export interface Props {
+  /**
+   * The indicator background color. Can be any valid CSS property.
+   */
+  color: string;
+  /**
+   * The indicator height. Can be any valid CSS property.
+   *
+   * @default "2px"
+   */
+  height?: string;
+  /**
+   * The indicator element class.
+   *
+   * @default "astro-loading-indicator"
+   */
+  class?: string;
+  /**
+   * The animation duration, in ms.
+   *
+   * @default 300
+   */
+  animationDuration?: number;
+  /**
+   * If the page loads in less than the specified duration (in ms), the indicator
+   * will not be shown. It can be set to `false` to always show it.
+   *
+   * @default 200
+   */
+  threshold?: number | false;
+}
+
+const {
+  color,
+  height = "2px",
+  class: className = "astro-loading-indicator",
+  animationDuration = 300,
+  threshold: defaultThreshold = 200,
+} = Astro.props;
+
+const threshold = defaultThreshold === false ? 0 : defaultThreshold;
+
+const styles = `.${className} {
+  pointer-events: none;
+  background-color: ${color};
+  position: fixed;
+  z-index: 1031;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: ${height};
+  transition: transform ${animationDuration}ms ease-out, opacity ${
+    animationDuration / 2
+  }ms ${animationDuration / 2}ms ease-in;
+	transform: translate3d(0, 0, 0) scaleX(var(--progress, 0));
+  transform-origin: 0;
+}
+
+[dir="rtl"] .${className} {
+  transform-origin: 100% 0;
+}
+`;
+---
+
+<style set:html={styles}></style>
+
+<script is:inline define:vars={{ className, animationDuration, threshold }}>
+  (() => {
+    let progress = 0.25;
+    let opacity = 0;
+    /** @type {number | undefined} */
+    let trickleInterval = undefined;
+    /** @type {number | undefined} */
+    let thresholdTimeout = undefined;
+
+    const element = document.createElement("div");
+    element.classList.add(className);
+    element.ariaHidden = "true";
+
+    /** @param {typeof progress} _progress */
+    const setProgress = (_progress) => {
+      progress = _progress;
+      element.style.setProperty("--progress", String(progress));
+    };
+
+    /** @param {typeof opacity} _opacity */
+    const setOpacity = (_opacity) => {
+      opacity = _opacity;
+      element.style.setProperty("opacity", String(opacity));
+    };
+
+    setOpacity(opacity);
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.body.prepend(element);
+    });
+
+    document.addEventListener("astro:before-preparation", () => {
+      thresholdTimeout = setTimeout(() => {
+        setOpacity(1);
+        trickleInterval = window.setInterval(() => {
+          setProgress(progress + Math.random() * 0.03);
+        }, animationDuration);
+      }, threshold);
+    });
+
+    document.addEventListener("astro:before-swap", (ev) => {
+      if (!thresholdTimeout) {
+        return;
+      }
+      window.clearTimeout(thresholdTimeout);
+
+      ev.newDocument.body.prepend(element);
+      window.clearInterval(trickleInterval);
+      trickleInterval = undefined;
+
+      setProgress(1);
+      window.setTimeout(() => {
+        setOpacity(0);
+      }, animationDuration / 2);
+
+      window.setTimeout(() => {
+        setProgress(0.25);
+      }, animationDuration * 2);
+    });
+  })();
+</script>

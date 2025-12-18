@@ -20,20 +20,28 @@ import { cn } from "../ui/cn";
 </div>
 
 <script>
-  const triggers = Array.from(document.querySelectorAll(".collapse-trigger")) as HTMLElement[];
+  const init = () => {
+    const triggers = Array.from(document.querySelectorAll(".collapse-trigger")) as HTMLElement[];
 
-  triggers.forEach((t) => {
-    t.addEventListener("click", (ev) => {
-      const parent = (ev.currentTarget as HTMLElement).parentElement!;
-      const sibling = (ev.currentTarget as HTMLElement).nextElementSibling!;
+    triggers.forEach((t) => {
+      t.addEventListener("click", (ev) => {
+        const parent = (ev.currentTarget as HTMLElement).parentElement!;
+        const sibling = (ev.currentTarget as HTMLElement).nextElementSibling!;
 
-      const parentOpen = parent.hasAttribute("data-open");
-      if (parentOpen) parent.removeAttribute("data-open");
-      else parent.setAttribute("data-open", "true");
+        const parentOpen = parent.hasAttribute("data-open");
+        if (parentOpen) parent.removeAttribute("data-open");
+        else parent.setAttribute("data-open", "true");
 
-      const open = sibling.hasAttribute("data-open");
-      if (open) sibling.removeAttribute("data-open");
-      else sibling.setAttribute("data-open", "true");
+        const open = sibling.hasAttribute("data-open");
+        if (open) sibling.removeAttribute("data-open");
+        else sibling.setAttribute("data-open", "true");
+      });
     });
+  };
+
+  window.addEventListener("load", () => init());
+
+  document.addEventListener("astro:after-swap", () => {
+    init();
   });
 </script>

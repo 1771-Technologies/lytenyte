@@ -203,7 +203,9 @@ export function Search() {
                                   })}
                                 </div>
 
-                                <Highlight text={doc.header} query={searchValue} />
+                                <div>
+                                  <Highlight text={doc.header} query={searchValue} />
+                                </div>
                               </div>
                               <div className="text-xd-muted-foreground text-sm leading-4">
                                 <Highlight text={doc.text.slice(0, 180)} query={searchValue} />
@@ -240,7 +242,7 @@ export function Highlight({ text, query }: { text: string; query: string }) {
     <>
       {parts.map((part, i) =>
         re.test(part) ? (
-          <mark key={i} className="bg-transparent font-semibold text-emerald-500 underline">
+          <mark key={i} className="bg-transparent px-0 font-semibold text-emerald-500 underline">
             {part}
           </mark>
         ) : (

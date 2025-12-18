@@ -35,12 +35,15 @@
 
   reflectPreference(true);
 
-  window.onload = () => {
+  window.addEventListener("load", () => {
     reflectPreference();
     document.querySelector("#theme-toggle")?.addEventListener("click", toggleTheme);
-  };
+  });
 
-  document.addEventListener("astro:after-swap", () => reflectPreference(true));
+  document.addEventListener("astro:after-swap", () => {
+    reflectPreference(true);
+    document.querySelector("#theme-toggle")?.addEventListener("click", toggleTheme);
+  });
 
   window
     .matchMedia("(prefers-color-scheme: dark)")

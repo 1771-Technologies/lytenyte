@@ -18,6 +18,7 @@ import { ChangelogIcon } from "./icons/changelog-icon";
 import { GuidesIcon } from "./icons/guides-icon";
 import { BlogIcon } from "./icons/blog-icon";
 import LogoLytenyte from "../company/logo-lytenyte.astro";
+import LoadingIndicator from "./loading-indicator.astro";
 
 const icons = {
   guides: GuidesIcon,
@@ -67,6 +68,7 @@ const pathname = Astro.url.pathname;
 
     <ThemeScript />
     <ClientRouter />
+    <LoadingIndicator color="blue" />
   </head>
   <body
     class="bg-xd-background text-xd-foreground min-h-screen flex flex-col dark:scheme-dark scheme-light"

@@ -20,7 +20,7 @@ export function Resetter(props: PropsWithChildren) {
   }, [el]);
 
   return (
-    <div ref={setEl} className="h-full w-full" key={key}>
+    <div ref={setEl} className="h-full w-full" key={key} data-reset-target>
       {props.children}
     </div>
   );

@@ -1,4 +1,3 @@
-@import "tailwindcss";
 @source "./";
 
 @custom-variant dark {
@@ -35,37 +34,6 @@ body {
 
   --animate-xd-fade-in: xd-fade-in 300ms ease;
   --animate-xd-fade-out: xd-fade-out 300ms ease;
-
-  --color-xd-gray-00: var(--lng1771-gray-00);
-  --color-xd-gray-02: var(--lng1771-gray-02);
-  --color-xd-gray-05: var(--lng1771-gray-05);
-  --color-xd-gray-10: var(--lng1771-gray-10);
-  --color-xd-gray-20: var(--lng1771-gray-20);
-  --color-xd-gray-30: var(--lng1771-gray-30);
-  --color-xd-gray-40: var(--lng1771-gray-40);
-  --color-xd-gray-50: var(--lng1771-gray-50);
-  --color-xd-gray-60: var(--lng1771-gray-60);
-  --color-xd-gray-70: var(--lng1771-gray-70);
-  --color-xd-gray-80: var(--lng1771-gray-80);
-  --color-xd-gray-90: var(--lng1771-gray-90);
-  --color-xd-gray-100: var(--lng1771-gray-100);
-
-  --color-xd-primary-05: var(--lng1771-primary-05);
-  --color-xd-primary-10: var(--lng1771-primary-10);
-  --color-xd-primary-30: var(--lng1771-primary-30);
-  --color-xd-primary-50: var(--lng1771-primary-50);
-  --color-xd-primary-70: var(--lng1771-primary-70);
-  --color-xd-primary-90: var(--lng1771-primary-90);
-  --color-xd-focus-outline: var(--lng1771-focus-outline);
-
-  --color-xd-pill-plain-fill: var(--lng1771-pill-plain-fill);
-  --color-xd-pill-column-fill: var(--lng1771-pill-column-fill);
-  --color-xd-pill-column-stroke: var(--lng1771-pill-column-stroke);
-  --color-xd-pill-pivot-fill: var(--lng1771-pill-pivot-fill);
-  --color-xd-pill-pivot-stroke: var(--lng1771-pill-pivot-stroke);
-  --color-xd-pill-group-fill: var(--lng1771-pill-group-fill);
-  --color-xd-pill-group-stroke: var(--lng1771-pill-group-stroke);
-  --color-xd-pill-icon-color: var(--lng1771-pill-icon-color);
 
   @keyframes xd-fade-in {
     from {

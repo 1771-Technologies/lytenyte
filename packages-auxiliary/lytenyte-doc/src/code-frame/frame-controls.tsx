@@ -30,7 +30,7 @@ export function FrameControls({
 
         <TooltipRoot>
           <TooltipTrigger
-            className="center xd-resetter size-7 cursor-pointer rounded-lg transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-700"
+            className="center size-7 cursor-pointer rounded-lg transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-700"
             render={
               <a
                 href={codeSandbox}
@@ -46,7 +46,7 @@ export function FrameControls({
         </TooltipRoot>
         <TooltipRoot>
           <TooltipTrigger
-            className="center xd-resetter size-7 cursor-pointer rounded-lg transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-700"
+            className="center size-7 cursor-pointer rounded-lg transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-700"
             render={
               <a
                 href={stackBlitz}

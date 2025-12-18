@@ -80,7 +80,6 @@ export function lnDoc(opts: OneDocConfig): AstroIntegration[] {
                 {
                   resolveId: (id) => {
                     if (id === "ln:collections") return "ln:collections";
-                    if (id === "mdx:type") return "";
                   },
                   load: (id) => {
                     if (id === "ln:collections") {
@@ -151,9 +150,9 @@ export function lnDoc(opts: OneDocConfig): AstroIntegration[] {
 
             const pageTemplate = `
 ---
-import "@1771technologies/lytenyte-doc/theme.css";
 import { getCollection } from "astro:content";
 import { render } from "astro:content";
+import "../../../src/main.css"
 
 import Page from "@1771technologies/lytenyte-doc/page.astro";
 
