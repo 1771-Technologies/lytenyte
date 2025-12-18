@@ -29,6 +29,32 @@ export interface OneDocConfig {
   readonly llmWebsiteName: string;
   readonly llmWebsiteURL: string;
   readonly llmWebsiteDescription: string;
+
+  readonly githubUrl: string;
+  readonly links: {
+    description: string;
+    external: false;
+    url: string;
+    type: "icon" | "link";
+    icon: "1771";
+  }[];
+
+  readonly navbar: {
+    left?: {
+      title: string;
+      url: string;
+      matchSelected: { match: string[]; ignore: string[] };
+      description: string;
+      icon: "guides" | "api-reference" | "changelog" | "blog";
+    }[];
+    right?: {
+      title: string;
+      url: string;
+      matchSelected: { match: string[]; ignore: string[] };
+      description: string;
+      icon: "guides" | "api-reference" | "changelog" | "blog";
+    }[];
+  };
 }
 
 export function lnDoc(opts: OneDocConfig): AstroIntegration[] {
@@ -134,15 +160,14 @@ export async function getStaticPaths() {
   });
 }
 
-const githubOrg = "${opts.githubOrg}";
-const githubRepo = "${opts.githubRepo}";
+const options = ${JSON.stringify(opts)};
 const rootDir = "${root}";
 const branch = "${getCurrentGitBranch()}";
 
 const { entry } = Astro.props;
 ---
 
-<Page entry={entry} githubOrg={githubOrg} githubRepo={githubRepo} rootDir={rootDir} branch={branch} />
+<Page entry={entry} options={options} rootDir={rootDir} branch={branch} />
 `.trim();
 
             await writeFile(url, pageTemplate);

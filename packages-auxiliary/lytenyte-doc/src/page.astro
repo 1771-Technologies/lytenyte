@@ -37,10 +37,11 @@ import { Code } from "astro-expressive-code/components";
 import { PageAction } from "./ui/page-action";
 import TypeTable from "./type-table/type-table.astro";
 import AutoTypeTable from "./type-table/auto-type-table.astro";
+import InlineCode from "./parts/inline-code.astro";
+import type { OneDocConfig } from "../lytenyte-doc";
 
 export interface Props {
-  githubOrg: string;
-  githubRepo: string;
+  options: OneDocConfig;
   rootDir: string;
   branch: string;
   entry: {
@@ -54,7 +55,13 @@ export interface Props {
 }
 type RenderFM = { lastModified?: string; lastModifiedSource?: "git" | "fs" };
 
-const { entry, githubOrg, githubRepo, rootDir, branch } = Astro.props;
+const {
+  entry,
+  options: { githubOrg, githubRepo, navbar, githubUrl, links },
+  rootDir,
+  branch,
+} = Astro.props;
+
 const { Content, headings, remarkPluginFrontmatter } = await render(entry);
 
 const { lastModified } = remarkPluginFrontmatter as RenderFM;
@@ -73,6 +80,9 @@ const prevEntry = prev ? await getEntry(entry.collection, prev) : null;
 
 <DocsLayout
   sidebar={sidebar}
+  links={links}
+  githubUrl={githubUrl}
+  navbar={navbar}
   toc={headings.filter((x: any) => x.depth === 2 || x.depth === 3)}
   lastModified={lastModified ?? new Date().toISOString()}
   prevEntry={prevEntry
@@ -147,6 +157,7 @@ const prevEntry = prev ? await getEntry(entry.collection, prev) : null;
       ul: Ul,
       p: P,
       strong: Strong,
+      code: InlineCode,
 
       li: Li,
       blockquote: Blockquote,

@@ -10,17 +10,23 @@ import Sidebar from "../sidebar/sidebar.astro";
 import SidebarScript from "../sidebar/sidebar-script.astro";
 import { cn } from "../ui/cn";
 import { Search } from "../search/search";
+import type { OneDocConfig } from "../../lytenyte-doc";
+import { Logo1771 } from "../company/logo-1771";
 
 export interface Props {
   readonly toc: MarkdownHeading[];
   readonly sidebar: Root;
+
+  readonly navbar: OneDocConfig["navbar"];
+  readonly githubUrl: string;
+  readonly links: OneDocConfig["links"];
 
   readonly nextEntry: null | { url: string; title: string; description: string };
   readonly prevEntry: null | { url: string; title: string; description: string };
   readonly lastModified: string;
 }
 
-const { toc, sidebar, nextEntry, prevEntry, lastModified } = Astro.props;
+const { githubUrl, links, toc, sidebar, nextEntry, prevEntry, lastModified } = Astro.props;
 ---
 
 <!doctype html>
@@ -45,8 +51,29 @@ const { toc, sidebar, nextEntry, prevEntry, lastModified } = Astro.props;
           <div class="flex-1 flex justify-end md:block md:flex-[unset]">
             <Search client:idle />
           </div>
-          <div>
+          <div class="flex items-center gap-3">
             <ThemeToggle />
+            <a
+              class="center size-7 hover:bg-xd-accent transition-colors rounded-lg"
+              href={githubUrl}
+              target="_blank"
+            >
+              <span class="iconify logos--github-icon size-5"></span>
+            </a>
+
+            {
+              links.map((x) => {
+                return (
+                  <a
+                    class="center size-7 hover:bg-xd-accent transition-colors rounded-lg"
+                    href={x.url}
+                    target={x.external ? "_blank" : "_self"}
+                  >
+                    {x.icon === "1771" && <Logo1771 className="size-4.5 relative top-px" />}
+                  </a>
+                );
+              })
+            }
           </div>
         </header>
       </div>
