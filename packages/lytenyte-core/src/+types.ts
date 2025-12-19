@@ -1033,10 +1033,7 @@ export interface HeaderLayout<T> {
  *
  *   @group Grid View
  */
-export type HeaderLayoutCell<T> =
-  | HeaderCellLayout<T>
-  | HeaderCellFloating<T>
-  | HeaderGroupCellLayout;
+export type HeaderLayoutCell<T> = HeaderCellLayout<T> | HeaderCellFloating<T> | HeaderGroupCellLayout;
 
 /**
  * Represents the layout metadata for a single cell within a row, including span and contextual info.
@@ -3149,10 +3146,7 @@ export interface GridApi<T> {
    *   spanned over, so it is not possible for a spanning cell to continue past a full width row, even if the
    *   span amount would allow it
    */
-  readonly cellRoot: (
-    row: number,
-    column: number,
-  ) => PositionGridCell | PositionFullWidthRow | null;
+  readonly cellRoot: (row: number, column: number) => PositionGridCell | PositionFullWidthRow | null;
 
   /**
    * Toggles the expansion state of one or more column groups.
@@ -3332,11 +3326,7 @@ export interface SortDateComparatorOptions {
  *
  * @group Sort
  */
-export type SortGridSorts<T> =
-  | SortCustomSort<T>
-  | SortDateColumnSort
-  | SortNumberColumnSort
-  | SortStringColumnSort;
+export type SortGridSorts<T> = SortCustomSort<T> | SortDateColumnSort | SortNumberColumnSort | SortStringColumnSort;
 
 /**
  * A model item representing an active sort applied to the grid.
@@ -3674,12 +3664,7 @@ export interface FilterFunc<T> {
  *
  * @group Filters
  */
-export type FilterModelItem<T> =
-  | FilterNumber
-  | FilterString
-  | FilterDate
-  | FilterCombination
-  | FilterFunc<T>;
+export type FilterModelItem<T> = FilterNumber | FilterString | FilterDate | FilterCombination | FilterFunc<T>;
 
 /**
  * Defines a filter for numeric columns.
