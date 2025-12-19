@@ -9,8 +9,8 @@ export const DEFAULT_ROW_SOURCE: RowSource = {
   useBottomCount: () => 0,
   useTopCount: () => 0,
   useRowCount: () => 0,
-  useSnapshotVersion: () => 1,
   useMaxRowGroupDepth: () => 0,
+  useSnapshotVersion: () => 1,
 
   rowIndexToRowId: () => null,
   rowByIndex: () => ({ get: () => null, useValue: () => null }),

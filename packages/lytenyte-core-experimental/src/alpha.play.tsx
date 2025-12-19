@@ -1,14 +1,12 @@
-import { useMemo, useState } from "react";
-import { Header } from "./header/header.js";
+import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
+import { Viewport } from "./components/viewport/viewport.js";
 import { Root } from "./root/root.js";
-import { Viewport } from "./viewport/viewport.js";
-import { usePiece } from "./hooks/use-piece.js";
-import { RowsContainer } from "./rows/rows-container/rows-container.js";
-import { RowsBottom, RowsCenter, RowsTop } from "./rows/rows-section.js";
-import type { RowSource } from "./types/row.js";
-import type { Ln } from "./types.js";
+import { Header } from "./components/header/header.js";
+import { RowsContainer } from "./components/rows/rows-container/rows-container.js";
+import { RowsBottom, RowsCenter, RowsTop } from "./components/rows/rows-section.js";
+import { useClientDataSource } from "./data-source/use-client-data-source.js";
 
-const columns: Ln.Column<any>[] = [
+const columns: Root.Column<number, { x?: 23 }>[] = [
   { id: "age", groupPath: ["A", "B"] },
   { id: "marital", groupPath: ["A"] },
   { id: "default", groupPath: ["T"] },
@@ -26,45 +24,17 @@ const columns: Ln.Column<any>[] = [
 ];
 
 export default function Experimental() {
-  const [top] = useState(0);
-  const [bot] = useState(0);
-  const [center] = useState(100);
+  const rowSource = useClientDataSource({
+    data: bankDataSmall,
 
-  const topPiece = usePiece(top);
-  const botPiece = usePiece(bot);
-  const countPiece = usePiece(center + top + bot);
-
-  const data = useMemo(() => {
-    return Array.from({ length: 2000 }, (_, i) => ({
-      id: `${i}`,
-      kind: "leaf" as const,
-      data: { age: "3", marital: "A" },
-    }));
-  }, []);
-  const ds = usePiece(data);
-
-  const rowStore = useMemo<RowSource>(() => {
-    return {
-      id: "first",
-      useBottomCount: botPiece.useValue,
-      useTopCount: topPiece.useValue,
-      useRowCount: countPiece.useValue,
-      useSnapshotVersion: () => 1,
-      rowIndexToRowId: (i: number) => `${i}`,
-      rowByIndex: (i: number) => ({
-        get: () => null,
-        useValue: () => {
-          return ds.useValue((x) => x[i]);
-        },
-      }),
-    };
-  }, [botPiece.useValue, countPiece.useValue, ds, topPiece.useValue]);
+    group: (x) => [x.data.education],
+  });
 
   return (
     <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
       <button>A</button>
       <div style={{ height: "90vh", width: "90vw" }}>
-        <Root columns={columns} rowSource={rowStore} floatingRowEnabled>
+        <Root columns={columns} rowSource={rowSource} floatingRowEnabled>
           <Viewport style={{ border: "1px solid white" }}>
             <Header />
             <RowsContainer>

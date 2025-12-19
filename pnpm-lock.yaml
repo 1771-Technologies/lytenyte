@@ -773,6 +773,10 @@ importers:
       react-dom:
         specifier: ^18.0.0 || ^19.0.0
         version: 19.1.1(react@19.1.1)
+    devDependencies:
+      '@1771technologies/grid-sample-data':
+        specifier: workspace:*
+        version: link:../sample-data
 
   packages/lytenyte-design: {}
 
