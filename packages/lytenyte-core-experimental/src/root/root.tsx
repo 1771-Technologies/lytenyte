@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 import {
   useId,
   useImperativeHandle,
@@ -5,236 +6,357 @@ import {
   useRef,
   useState,
   type PropsWithChildren,
+  type ReactNode,
+  type Ref,
 } from "react";
-import { GridContext, type GridContextType } from "./context.js";
-import { useViewportDimensions } from "./use-viewport-dimensions.js";
-import { useXPositions } from "./positions/use-x-positions.js";
-import { AnyArray, AnyObject, DEFAULT_ROW_SOURCE } from "../constants.js";
-import { useControlled } from "../hooks/use-controlled.js";
-import { useEvent } from "../hooks/use-event.js";
-import { useColumnView } from "./column-view/use-column-view.js";
-import { useColumnMeta } from "./column-view/use-column-meta.js";
-import { BoundsProvider } from "./bounds/bounds-provider.js";
-import { useYPositions } from "./positions/use-y-positions.js";
-import { ColumnLayoutProvider } from "./layout-columns/column-layout-provider.js";
-import { useHeaderHeightTotal } from "./use-header-height-total.js";
-import { RowSourceProvider } from "./row-source/row-source-provider.js";
-import { RowLayoutProvider } from "./layout-rows/row-layout-provider.js";
+import type { API, Props, RowHeight } from "../types/types-internal.js";
+import { useViewportDimensions } from "./hooks/use-viewport-dimensions.js";
+import { useControlledGridState } from "./hooks/use-controlled-grid-state.js";
+import { useColumnView } from "./hooks/use-column-view.js";
+import { DEFAULT_ROW_SOURCE } from "./constants.js";
+import { useTotalHeaderHeight } from "./hooks/use-total-header-height.js";
+import { useXPositions } from "./hooks/use-x-positions.js";
+import { useYPositions } from "./hooks/use-y-positions.js";
+import { useHeaderLayout } from "./hooks/use-header-layout.js";
+import type {
+  ColumnAbstract,
+  LayoutState,
+  PositionFullWidthRow,
+  PositionGridCell,
+  PositionUnion,
+  RowGroupDisplayMode,
+  RowNode,
+  RowSource,
+} from "@1771technologies/lytenyte-shared";
+import { useRowLayout } from "./hooks/use-row-layout/use-row-layout.js";
+import { useBounds } from "./hooks/use-bounds.js";
+import { useApi } from "./hooks/use-api/use-api.js";
+import {
+  BoundsContextProvider,
+  ColumnLayoutContextProvider,
+  RootContextProvider,
+  RowLayoutContextProvider,
+  type RootContextValue,
+} from "./root-context.js";
 import { usePiece } from "../hooks/use-piece.js";
-import { useRowDetail } from "./row-detail/use-row-detail.js";
-import { RowDetailContext } from "./row-detail/row-detail-context.js";
-import { useApi } from "./api/use-api.js";
-import type { Ln } from "../types.js";
-import { FocusPositionProvider } from "./focus-position/focus-position-provider.js";
-import type { LayoutState } from "@1771technologies/lytenyte-shared";
 
-export function Root<T>(props: PropsWithChildren<Ln.Props<T>>) {
-  const {
-    columns = AnyArray as Ln.LnColumn<T>[],
-    columnBase = AnyObject as Ln.ColumnBase<T>,
-    sizeToFit = false,
-    gridId,
-    rtl,
-
-    headerHeight = 40,
-    headerGroupHeight = 40,
-    floatingRowHeight = 40,
-    floatingRowEnabled = false,
-
-    columnGroupDefaultExpansion = true,
-    columnGroupJoinDelimiter = "-->",
-    columnMarker = AnyObject,
-    columnMarkerEnabled = false,
-
-    children,
-
-    rowOverscanTop = 10,
-    rowOverscanBottom = 10,
-    colOverscanStart = 3,
-    colOverscanEnd = 3,
-
-    rowSource = DEFAULT_ROW_SOURCE,
-    rowHeight = 40,
-
-    rowDetailHeight = 300,
-    rowDetailAutoHeightGuess = 300,
-    rowDetailRenderer = null,
-
-    rowScanDistance = 100,
-    virtualizeCols = true,
-    virtualizeRows = true,
-
-    rowFullWidthPredicate = null,
-    rowFullWidthRenderer = null,
-
-    columnGroupExpansions = AnyObject,
-    onColumnGroupExpansionChange,
-
-    rowDetailExpansions,
-    onRowDetailExpansionsChange,
-
-    ref,
-  } = props;
+export const Root = <
+  Data = unknown,
+  ColExt extends Record<string, unknown> = {},
+  Source extends RowSource = RowSource,
+  Ext extends Record<string, unknown> = {},
+>({
+  children,
+  ...p
+}: PropsWithChildren<Root.Props<Data, ColExt, Source, Ext>>) => {
+  const props = p as unknown as Props;
+  const source = props.rowSource ?? DEFAULT_ROW_SOURCE;
 
   const [vp, setVp] = useState<HTMLDivElement | null>(null);
   const id = useId();
 
   const dimensions = useViewportDimensions(vp);
+  const controlled = useControlledGridState(props);
 
-  // Column Grouping
-  const [colGroupExpansions, setColGroupExpansions] = useControlled({
-    controlled: columnGroupExpansions,
-    default: AnyObject,
-  });
-  const _onColGroupExpansionChange = useEvent((change: Record<string, boolean>) => {
-    onColumnGroupExpansionChange?.(change);
-    setColGroupExpansions(change);
-  });
+  const view = useColumnView(props, source, controlled.columnGroupExpansions);
+  const totalHeaderHeight = useTotalHeaderHeight(props, view.maxRow);
 
-  const view = useColumnView(
-    columns,
-    columnBase,
-    columnGroupDefaultExpansion,
-    colGroupExpansions,
-    columnGroupJoinDelimiter,
-    columnMarkerEnabled,
-    columnMarker,
-  );
-  const columnMeta = useColumnMeta(view);
-
-  const floatHeight = floatingRowEnabled ? 0 : floatingRowHeight;
-  const totalHeaderHeight = useHeaderHeightTotal(
-    headerGroupHeight,
-    headerHeight,
-    floatHeight,
-    view.maxRow,
-  );
-
-  const detailCtx = useRowDetail(
-    rowDetailExpansions,
-    onRowDetailExpansionsChange,
-    rowDetailHeight,
-    rowDetailAutoHeightGuess,
-    rowDetailRenderer,
-  );
-
-  const xPositions = useXPositions(columns, columnBase, dimensions.innerWidth, sizeToFit);
+  const xPositions = useXPositions(props, view, dimensions.innerWidth);
   const yPositions = useYPositions(
-    rowSource,
-    vp,
-    dimensions.innerHeight,
-    rowHeight,
-    totalHeaderHeight,
-    rowDetailHeight,
-    detailCtx.autoHeightCache,
-    rowDetailAutoHeightGuess,
-    detailCtx.detailExpansions,
+    props,
+    source,
+    dimensions.innerHeight - totalHeaderHeight,
+    controlled.detailExpansions,
   );
 
-  const fullWidthPiece = usePiece(rowFullWidthRenderer);
-  const rowDetailPiece = usePiece(detailCtx.detailExpansions);
+  const api = useRef<API>({} as any);
+  useImperativeHandle(props.ref, () => api.current as any, []);
+
+  const bounds = useBounds(
+    props,
+    source,
+    view,
+    vp,
+    dimensions.innerWidth,
+    dimensions.innerHeight,
+    xPositions,
+    yPositions.positions,
+  );
 
   const layoutStateRef = useRef<LayoutState>(null as unknown as LayoutState);
-  const api = useApi(
-    rtl ?? false,
+  const headerLayout = useHeaderLayout(view, props);
+  const rowLayout = useRowLayout(
     props,
-    detailCtx,
+    source,
     view,
-    rowSource,
-    rowFullWidthPredicate,
-    layoutStateRef,
     vp,
-    xPositions,
-    yPositions,
-    totalHeaderHeight,
+    api.current,
+    bounds,
+    layoutStateRef,
+    controlled.detailExpansions,
   );
 
-  useImperativeHandle(ref, () => api as any, [api]);
+  useApi(
+    props,
+    source,
+    view,
+    layoutStateRef,
+    controlled.detailExpansions,
+    yPositions.detailCache,
+    vp,
+    xPositions,
+    yPositions.positions,
+    totalHeaderHeight,
+    api.current,
+  );
 
-  const value = useMemo<GridContextType>(() => {
+  const [position, setPosition] = useState<PositionUnion | null>(null);
+  const focusPiece = usePiece(position, setPosition);
+
+  const value = useMemo<RootContextValue>(() => {
     return {
-      setViewport: setVp,
-      rtl: rtl ?? false,
-      id: gridId ?? id,
-      headerHeightTotal: totalHeaderHeight,
-      headerHeight,
-      headerGroupHeight,
-      floatingRowHeight,
-      floatingRowEnabled,
-      headerRowCount: view.maxRow,
-      columnMeta,
-      columnBase,
-      columnGroupDefaultExpansion,
-      columnGroupExpansions: colGroupExpansions,
+      id: props.gridId ?? id,
+      rtl: props.rtl ?? false,
+      api: api.current,
       xPositions,
-      yPositions,
-      vpInnerHeight: dimensions.innerHeight,
-      vpInnerWidth: dimensions.innerWidth,
+      yPositions: yPositions.positions,
+      setViewport: setVp,
+      view,
+      focusActive: focusPiece,
+      source,
 
-      rowFullWidthRenderer: fullWidthPiece,
-      rowDetailExpansions: rowDetailPiece,
-      api: api,
+      dimensions,
+
+      totalHeaderHeight,
+      detailExpansions: controlled.detailExpansions,
+
+      rowDetailHeight: props.rowDetailHeight ?? 200,
+      rowDetailRenderer: props.rowDetailRenderer,
+      rowFullWidthRenderer: props.rowFullWidthRenderer,
+      setDetailCache: yPositions.setDetailCache,
+
+      base: props.columnBase ?? {},
+
+      columnGroupDefaultExpansion: props.columnGroupDefaultExpansion ?? true,
+      columnGroupExpansions: controlled.columnGroupExpansions,
+
+      floatingRowEnabled: props.floatingRowEnabled ?? false,
+      floatingRowHeight: props.floatingRowHeight ?? 40,
+      headerGroupHeight: props.headerGroupHeight ?? 40,
+      headerHeight: props.headerHeight ?? 40,
     };
   }, [
-    rtl,
-    gridId,
+    controlled.columnGroupExpansions,
+    controlled.detailExpansions,
+    dimensions,
+    focusPiece,
     id,
+    props.columnBase,
+    props.columnGroupDefaultExpansion,
+    props.floatingRowEnabled,
+    props.floatingRowHeight,
+    props.gridId,
+    props.headerGroupHeight,
+    props.headerHeight,
+    props.rowDetailHeight,
+    props.rowDetailRenderer,
+    props.rowFullWidthRenderer,
+    props.rtl,
+    source,
     totalHeaderHeight,
-    headerHeight,
-    headerGroupHeight,
-    floatingRowHeight,
-    floatingRowEnabled,
-    view.maxRow,
-    columnMeta,
-    columnBase,
-    columnGroupDefaultExpansion,
-    colGroupExpansions,
+    view,
     xPositions,
-    yPositions,
-    dimensions.innerHeight,
-    dimensions.innerWidth,
-    fullWidthPiece,
-    rowDetailPiece,
-    api,
+    yPositions.positions,
+    yPositions.setDetailCache,
   ]);
 
   return (
-    <FocusPositionProvider>
-      <GridContext.Provider value={value}>
-        <BoundsProvider
-          startCount={view.startCount}
-          endCount={view.endCount}
-          rowOverscanTop={rowOverscanTop}
-          rowOverscanBottom={rowOverscanBottom}
-          colOverscanEnd={colOverscanEnd}
-          colOverscanStart={colOverscanStart}
-          viewport={vp}
-          viewportHeight={dimensions.innerHeight}
-          viewportWidth={dimensions.innerWidth}
-          xPositions={xPositions}
-          yPositions={yPositions}
-          rowSource={rowSource}
-        >
-          <RowDetailContext.Provider value={detailCtx}>
-            <ColumnLayoutProvider view={view} floatingRowEnabled={floatingRowEnabled}>
-              <RowLayoutProvider
-                columnMeta={columnMeta}
-                rowDetailExpansions={detailCtx.detailExpansions}
-                rowFullWidthPredicate={rowFullWidthPredicate}
-                rowScan={rowScanDistance}
-                rs={rowSource}
-                virtualizeCols={virtualizeCols}
-                virtualizeRows={virtualizeRows}
-                vp={vp}
-                api={api}
-                layoutStateRef={layoutStateRef}
-              >
-                <RowSourceProvider rowSource={rowSource}>{children}</RowSourceProvider>
-              </RowLayoutProvider>
-            </ColumnLayoutProvider>
-          </RowDetailContext.Provider>
-        </BoundsProvider>
-      </GridContext.Provider>
-    </FocusPositionProvider>
+    <RootContextProvider value={value}>
+      <RowLayoutContextProvider value={rowLayout}>
+        <ColumnLayoutContextProvider value={headerLayout}>
+          <BoundsContextProvider value={bounds}>{children}</BoundsContextProvider>
+        </ColumnLayoutContextProvider>
+      </RowLayoutContextProvider>
+    </RootContextProvider>
   );
+};
+
+export namespace Root {
+  type WithId = { readonly id: string };
+
+  export type PathField = { kind: "path"; path: string };
+
+  export interface RowParams<
+    T,
+    ColExt extends Record<string, unknown> = {},
+    S extends RowSource<T> = RowSource,
+    Ext extends Record<string, unknown> = {},
+  > {
+    readonly rowIndex: number;
+    readonly row: RowNode<T>;
+    readonly api: API<T, ColExt, S, Ext>;
+  }
+
+  export interface HeaderParams<
+    T,
+    ColExt extends Record<string, unknown> = {},
+    S extends RowSource<T> = RowSource,
+    Ext extends Record<string, unknown> = {},
+  > {
+    readonly column: Column<T, ColExt, S, Ext>;
+    readonly api: API<T, ColExt, S, Ext>;
+  }
+
+  export interface CellParams<
+    T,
+    ColExt extends Record<string, unknown> = {},
+    S extends RowSource<T> = RowSource,
+    Ext extends Record<string, unknown> = {},
+  > {
+    readonly row: RowNode<T>;
+    readonly column: Column<T, ColExt, S, Ext>;
+    readonly api: API<T, ColExt, S, Ext>;
+  }
+
+  export interface CellParamsWithIndex<
+    T,
+    ColExt extends Record<string, unknown> = {},
+    S extends RowSource<T> = RowSource,
+    Ext extends Record<string, unknown> = {},
+  > extends CellParams<T, ColExt, S, Ext> {
+    readonly rowIndex: number;
+    readonly colIndex: number;
+  }
+
+  export interface Renderers<
+    T,
+    ColExt extends Record<string, unknown> = {},
+    S extends RowSource<T> = RowSource,
+    Ext extends Record<string, unknown> = {},
+  > {
+    readonly header: (props: HeaderParams<T, ColExt, S, Ext>) => ReactNode;
+    readonly cell: (props: CellParamsWithIndex<T, ColExt, S, Ext>) => ReactNode;
+    readonly row: (props: RowParams<T, ColExt, S, Ext>) => ReactNode;
+  }
+
+  export type API<
+    T,
+    ColExt extends Record<string, unknown> = {},
+    S extends RowSource<T> = RowSource,
+    Ext extends Record<string, unknown> = {},
+  > = {
+    readonly cellRoot: (row: number, column: number) => PositionGridCell | PositionFullWidthRow | null;
+    readonly columnById: (id: string) => Column<T, ColExt, S, Ext> | null;
+    readonly columnField: (columnOrId: string | WithId, row: RowNode<T>) => unknown;
+
+    readonly rowDetailHeight: (rowId: WithId | string) => number;
+    readonly rowDetailExpanded: (rowOrId: RowNode<T> | string | number) => boolean;
+
+    readonly scrollIntoView: (params: {
+      readonly column?: number | string | WithId;
+      readonly row?: number;
+      readonly behavior?: "smooth" | "auto" | "instant";
+    }) => void;
+    readonly props: () => Props<T, ColExt, S, Ext>;
+  } & S &
+    Ext;
+
+  interface ColumnUnextended<
+    T,
+    ColExt extends Record<string, unknown> = {},
+    S extends RowSource<T> = RowSource,
+    Ext extends Record<string, unknown> = {},
+  > extends ColumnAbstract {
+    readonly field?: string | number | PathField | ((params: CellParams<T, ColExt, S, Ext>) => unknown);
+
+    readonly colSpan?: number | ((params: CellParamsWithIndex<T, ColExt, S, Ext>) => number);
+    readonly rowSpan?: number | ((params: CellParamsWithIndex<T, ColExt, S, Ext>) => number);
+
+    readonly autosizeCellFn?: (params: CellParams<T, ColExt, S, Ext>) => number | null | undefined;
+    readonly autosizeHeaderFn?: (
+      params: HeaderParams<this & ColExt, API<T, ColExt, S, Ext>>,
+    ) => number | null | undefined;
+
+    readonly floatingCellRenderer?: Renderers<T, ColExt, S, Ext>["header"];
+    readonly headerRenderer?: Renderers<T, ColExt, S, Ext>["header"];
+    readonly cellRenderer?: Renderers<T, ColExt, S, Ext>["cell"];
+    readonly editRenderer?: Renderers<T, ColExt, S, Ext>["cell"];
+  }
+
+  export type Column<
+    T = unknown,
+    ColExt extends Record<string, unknown> = {},
+    S extends RowSource<T> = RowSource,
+    Ext extends Record<string, unknown> = {},
+  > = ColumnUnextended<T, ColExt, S, Ext> & ColExt;
+
+  export type Props<
+    Data = unknown,
+    ColExt extends Record<string, any> = object,
+    S extends RowSource<Data> = RowSource,
+    Ext extends Record<string, any> = object,
+  > = {
+    readonly columns?: Column<Data, ColExt, S, Ext>[];
+    readonly columnBase?: Omit<Column<Data, ColExt, S, Ext>, "pin" | "field">;
+    readonly columnMarker?: Omit<Column<Data, ColExt, S, Ext>, "field"> & { width?: number };
+
+    readonly columnMarkerEnabled?: boolean;
+    readonly columnGroupDefaultExpansion?: boolean;
+    readonly columnGroupExpansions?: Record<string, boolean>;
+    readonly columnGroupJoinDelimiter?: string;
+    readonly columnSizeToFit?: boolean;
+    readonly columnDoubleClickToAutosize?: boolean;
+
+    readonly gridId?: string;
+
+    readonly rtl?: boolean;
+
+    readonly headerHeight?: number;
+    readonly headerGroupHeight?: number;
+    readonly floatingRowHeight?: number;
+    readonly floatingRowEnabled?: boolean;
+
+    readonly rowOverscanTop?: number;
+    readonly rowOverscanBottom?: number;
+
+    readonly colOverscanStart?: number;
+    readonly colOverscanEnd?: number;
+
+    readonly rowScanDistance?: number;
+    readonly rowSource?: S;
+    readonly rowHeight?: RowHeight;
+    readonly rowAutoHeightGuess?: number;
+
+    readonly rowGroupColumn?: Omit<Column<Data, ColExt, S, Ext>, "field"> &
+      Pick<
+        ColumnAbstract,
+        "width" | "widthMax" | "widthFlex" | "widthMin" | "pin" | "resizable" | "hide" | "name" | "type"
+      >;
+    readonly rowGroupDisplayMode?: RowGroupDisplayMode;
+
+    readonly rowFullWidthPredicate?: null | ((params: RowParams<RowNode<Data>, API<Data, ColExt, S, Ext>>) => boolean);
+    readonly rowFullWidthRenderer?: Renderers<Data, ColExt, S, Ext>["row"] | null;
+
+    readonly virtualizeCols?: boolean;
+    readonly virtualizeRows?: boolean;
+
+    readonly rowSelectionMode?: "single" | "multiple" | "none";
+    readonly rowSelectionActivator?: "single-click" | "double-click" | "none";
+    readonly rowSelectChildren?: boolean;
+
+    readonly rowDetailExpansions?: Set<string>;
+    readonly rowDetailHeight?: number | "auto";
+    readonly rowDetailAutoHeightGuess?: number;
+    readonly rowDetailRenderer?: Renderers<Data, ColExt, S, Ext>["row"] | null;
+
+    readonly ref?: Ref<API<Data, ColExt, S, Ext>>;
+
+    readonly editRowValidatorFn?: any;
+    readonly editClickActivator?: "single" | "double-click" | "none";
+    readonly editCellMode?: "cell" | "readonly";
+
+    // Values that can be changed by the grid
+    readonly onColumnGroupExpansionChange?: (change: Record<string, boolean>) => void;
+    readonly onRowDetailExpansionsChange?: (change: Set<string>) => void;
+  };
 }

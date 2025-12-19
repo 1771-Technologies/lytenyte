@@ -1,5 +1,3 @@
-import type { PositionFullWidthRow, PositionGridCell } from "./+types";
-
 export interface ColumnWidthItem {
   readonly width?: number;
   readonly widthMin?: number;
@@ -41,6 +39,7 @@ export type ScrollIntoViewFn = (p: { row?: number; column?: number; behavior: "i
 export type RootCellFn = (r: number, c: number) => PositionGridCell | PositionFullWidthRow | null;
 
 export type ColumnPin = "start" | "end" | null;
+export type RowPin = "top" | "bottom" | null;
 
 export type ColumnGroupVisibility = "always" | "close" | "open";
 export type RowGroupDisplayMode = "single-column" | "custom";
@@ -65,3 +64,109 @@ export interface ColumnAbstract {
   readonly editable?: boolean;
   readonly movable?: boolean;
 }
+
+export interface RowAtom<T> {
+  readonly get: () => T;
+  readonly useValue: () => T;
+}
+
+export interface RowSource<T = any> {
+  readonly useRowCount: () => number;
+  readonly useTopCount: () => number;
+  readonly useBottomCount: () => number;
+  readonly useSnapshotVersion: () => number;
+  readonly useMaxRowGroupDepth: () => number;
+
+  readonly rowIndexToRowId: (index: number) => string | null | undefined;
+  readonly rowByIndex: (row: number) => RowAtom<RowNode<T> | null>;
+}
+
+export type LeafIdFn<T> = (d: T, index: number, section: "top" | "center" | "bottom") => string;
+export type GroupIdFn = (path: (string | null)[]) => string;
+
+export type SortFn<T> = (left: RowNode<T>, right: RowNode<T>) => number;
+export type FilterFn<T> = (node: RowLeaf<T>) => boolean;
+export type GroupFn<T> = (node: RowLeaf<T>) => (string | null)[] | null;
+export type AggregationFn<T> = (data: RowLeaf<T>[]) => Record<string, unknown>;
+
+export interface RowLeaf<T = any> {
+  readonly id: string;
+  readonly loading?: boolean;
+  readonly error?: unknown;
+  readonly kind: "leaf";
+  readonly data: T;
+
+  readonly selected?: boolean;
+  readonly indeterminate?: boolean;
+}
+
+export interface RowGroup {
+  readonly id: string;
+  readonly kind: "branch";
+  readonly key: string | null;
+  readonly data: Record<string, unknown>;
+  readonly depth: number;
+
+  readonly selected?: boolean;
+  readonly indeterminate?: boolean;
+
+  readonly loading?: boolean;
+  readonly error?: unknown;
+
+  readonly errorGroup?: unknown;
+  readonly loadingGroup?: boolean;
+}
+
+export type RowNode<T> = RowLeaf<T> | RowGroup;
+
+export interface PositionDetailCell {
+  readonly kind: "detail";
+  readonly rowIndex: number;
+  readonly colIndex: number;
+}
+
+export interface PositionFloatingCell {
+  readonly kind: "floating-cell";
+  readonly colIndex: number;
+}
+
+export interface PositionFullWidthRow {
+  readonly kind: "full-width";
+  readonly rowIndex: number;
+  readonly colIndex: number;
+}
+
+export interface PositionGridCell {
+  readonly kind: "cell";
+  readonly rowIndex: number;
+  readonly colIndex: number;
+  readonly root: PositionGridCellRoot | null;
+}
+
+export interface PositionGridCellRoot {
+  readonly colIndex: number;
+  readonly rowIndex: number;
+  readonly rowSpan: number;
+  readonly colSpan: number;
+}
+
+export interface PositionHeaderCell {
+  readonly kind: "header-cell";
+  readonly colIndex: number;
+}
+
+export interface PositionHeaderGroupCell {
+  readonly kind: "header-group-cell";
+  readonly columnStartIndex: number;
+  readonly columnEndIndex: number;
+  readonly hierarchyRowIndex: number;
+  readonly colIndex: number;
+}
+
+export type PositionUnion =
+  | PositionGridCell
+  | PositionFloatingCell
+  | PositionHeaderCell
+  | PositionDetailCell
+  | PositionFullWidthRow
+  | PositionHeaderGroupCell;
