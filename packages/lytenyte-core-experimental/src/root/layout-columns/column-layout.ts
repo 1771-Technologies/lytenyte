@@ -1,8 +1,4 @@
-import type {
-  LayoutHeaderFloating,
-  LayoutHeaderCell,
-  HeaderLayoutCell,
-} from "../../types/layout.js";
+import type { LayoutHeaderFloating, LayoutHeaderCell, HeaderLayoutCell } from "../../layout.js";
 import type { MakeColumnViewReturn } from "../column-view/column-view.js";
 
 export function makeColumnLayout<T>(view: MakeColumnViewReturn<T>, floatingRowEnabled: boolean) {

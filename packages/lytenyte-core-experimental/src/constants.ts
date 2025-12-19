@@ -1,4 +1,4 @@
-import type { RowSource } from "./types/row.js";
+import type { RowSource } from "./types/row-source.js";
 
 export const EMPTY_POSITION_ARRAY = new Uint32Array();
 export const AnyArray = Object.freeze([]) as any;

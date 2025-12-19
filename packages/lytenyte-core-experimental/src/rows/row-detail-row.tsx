@@ -1,15 +1,11 @@
 import { SCROLL_WIDTH_VARIABLE_USE, sizeFromCoord } from "@1771technologies/lytenyte-shared";
-import type { LayoutFullWidthRow, LayoutRowWithCells } from "../types/layout";
+import type { LayoutFullWidthRow, LayoutRowWithCells } from "../layout";
 import { useGridRoot } from "../root/context.js";
 import { useRowDetailContext } from "../root/row-detail/row-detail-context.js";
 import { useEffect, useState } from "react";
 import type { RowNode } from "../types/row";
 
-export function RowDetailRow<T>({
-  layout,
-}: {
-  layout: LayoutRowWithCells<T> | LayoutFullWidthRow<T>;
-}) {
+export function RowDetailRow<T>({ layout }: { layout: LayoutRowWithCells<T> | LayoutFullWidthRow<T> }) {
   const cx = useGridRoot();
   const row = layout.row.useValue();
 

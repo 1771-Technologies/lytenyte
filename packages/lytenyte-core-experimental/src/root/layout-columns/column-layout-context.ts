@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import type { HeaderLayoutCell } from "../../types/layout";
+import type { HeaderLayoutCell } from "../../layout";
 
 export const columnLayoutContext = createContext<HeaderLayoutCell<any>[][]>([]);
 

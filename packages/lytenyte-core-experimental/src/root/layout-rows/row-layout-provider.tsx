@@ -1,6 +1,6 @@
 import { useCallback, useMemo, type PropsWithChildren, type RefObject } from "react";
 import { makeRowLayout } from "./make-row-layout.js";
-import type { LayoutRow, RowView } from "../../types/layout.js";
+import type { LayoutRow, RowView } from "../../layout.js";
 import { useBounds } from "../bounds/context.js";
 import { makeLayoutState, updateFull, type LayoutState } from "@1771technologies/lytenyte-shared";
 import { getSpanFn } from "./get-span-fn.js";
