@@ -1,4 +1,4 @@
-import type { HeaderLayoutCell } from "../types/layout";
+import type { HeaderLayoutCell } from "../layout";
 import { useMemo } from "react";
 
 export function useVirtualizedHeader(

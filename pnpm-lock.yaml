@@ -1811,6 +1811,7 @@ packages:
     cpu: [x64]
     os: [win32]
 
+<<<<<<< HEAD
   '@inquirer/ansi@1.0.2':
     resolution: {integrity: sha512-S8qNSZiYzFd0wAcyG5AXCvUHC5Sr7xpZ9wZ2py9XR88jUz8wooStVx5M6dRzczbBWjic9NP7+rY0Xi7qqK/aMQ==}
     engines: {node: '>=18'}
@@ -1945,6 +1946,8 @@ packages:
       '@types/node':
         optional: true
 
+=======
+>>>>>>> 827a96b3 (Adjusted LyteNyte experimental types)
   '@internationalized/date@3.9.0':
     resolution: {integrity: sha512-yaN3brAnHRD+4KyyOsJyk49XUvj2wtbNACSqg0bz3u8t2VuzhC8Q5dfRnrSxjnnbDb+ienBnkn1TzQfE154vyg==}
 
@@ -10545,17 +10548,17 @@ snapshots:
       '@floating-ui/core': 1.7.3
       '@floating-ui/utils': 0.2.10
 
-  '@floating-ui/react-dom@2.1.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
-    dependencies:
-      '@floating-ui/dom': 1.7.2
-      react: 19.1.1
-      react-dom: 19.1.1(react@19.1.1)
-
   '@floating-ui/react-dom@2.1.4(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
     dependencies:
       '@floating-ui/dom': 1.7.2
       react: 19.2.1
       react-dom: 19.2.1(react@19.2.1)
+
+  '@floating-ui/react-dom@2.1.6(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
+    dependencies:
+      '@floating-ui/dom': 1.7.4
+      react: 19.1.1
+      react-dom: 19.1.1(react@19.1.1)
 
   '@floating-ui/react-dom@2.1.6(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
     dependencies:
@@ -10768,6 +10771,7 @@ snapshots:
   '@img/sharp-win32-x64@0.34.4':
     optional: true
 
+<<<<<<< HEAD
   '@inquirer/ansi@1.0.2': {}
 
   '@inquirer/checkbox@4.3.2(@types/node@22.19.3)':
@@ -10893,6 +10897,8 @@ snapshots:
     optionalDependencies:
       '@types/node': 22.19.3
 
+=======
+>>>>>>> 827a96b3 (Adjusted LyteNyte experimental types)
   '@internationalized/date@3.9.0':
     dependencies:
       '@swc/helpers': 0.5.15
@@ -12243,7 +12249,7 @@ snapshots:
 
   '@radix-ui/react-popper@1.2.8(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
     dependencies:
-      '@floating-ui/react-dom': 2.1.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      '@floating-ui/react-dom': 2.1.6(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@radix-ui/react-arrow': 1.1.7(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@radix-ui/react-compose-refs': 1.1.2(@types/react@19.1.8)(react@19.1.1)
       '@radix-ui/react-context': 1.1.2(@types/react@19.1.8)(react@19.1.1)
@@ -12261,7 +12267,7 @@ snapshots:
 
   '@radix-ui/react-popper@1.2.8(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
     dependencies:
-      '@floating-ui/react-dom': 2.1.4(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+      '@floating-ui/react-dom': 2.1.6(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       '@radix-ui/react-arrow': 1.1.7(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       '@radix-ui/react-compose-refs': 1.1.2(@types/react@19.1.8)(react@19.2.1)
       '@radix-ui/react-context': 1.1.2(@types/react@19.1.8)(react@19.2.1)
@@ -14237,6 +14243,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+<<<<<<< HEAD
   '@vitest/browser-playwright@4.0.3(playwright@1.56.1)(vite@6.4.1(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.39.2)(tsx@4.20.5)(yaml@2.8.0))(vitest@3.2.4)':
     dependencies:
       '@vitest/browser': 4.0.3(vite@6.4.1(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.39.2)(tsx@4.20.5)(yaml@2.8.0))(vitest@3.2.4)
@@ -14251,6 +14258,8 @@ snapshots:
       - vite
     optional: true
 
+=======
+>>>>>>> 827a96b3 (Adjusted LyteNyte experimental types)
   '@vitest/browser-playwright@4.0.3(playwright@1.56.1)(vite@7.1.3(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.39.2)(tsx@4.20.3)(yaml@2.8.0))(vitest@4.0.3)':
     dependencies:
       '@vitest/browser': 4.0.3(vite@7.1.3(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.39.2)(tsx@4.20.3)(yaml@2.8.0))(vitest@4.0.3)

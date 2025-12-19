@@ -1,5 +1,5 @@
 import type { Ln } from "../types.js";
-import type { ColumnPin } from "./column.js";
+import type { ColumnPin } from "./types/column.js";
 import type { RowAtom, RowNode, RowPin } from "./row.js";
 
 export interface LayoutHeaderCell<T> {

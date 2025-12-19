@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { Cell } from "../cells/cell.js";
-import type { LayoutRow, LayoutRowWithCells } from "../types/layout";
+import type { LayoutRow, LayoutRowWithCells } from "../layout.js";
 import { RowFullWidth } from "./row-full-width.js";
 import { Row } from "./row/row.js";
 

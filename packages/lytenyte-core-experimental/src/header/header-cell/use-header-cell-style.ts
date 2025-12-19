@@ -1,10 +1,6 @@
 import { useMemo, type CSSProperties } from "react";
 import { sizeFromCoord } from "@1771technologies/lytenyte-shared";
-import type {
-  LayoutHeaderFloating,
-  LayoutHeaderCell,
-  LayoutHeaderGroup,
-} from "../../types/layout.js";
+import type { LayoutHeaderFloating, LayoutHeaderCell, LayoutHeaderGroup } from "../../layout.js";
 
 export function useHeaderCellStyle(
   cell: LayoutHeaderCell<any> | LayoutHeaderFloating<any> | LayoutHeaderGroup,
@@ -24,10 +20,7 @@ export function useHeaderCellStyle(
       styles.zIndex = 11;
     } else if (cell.colPin === "end") {
       styles.position = "sticky";
-      const x =
-        xPositions.at(-1)! -
-        sizeFromCoord(cell.colStart, xPositions, cell.colSpan) -
-        xPositions[cell.colStart];
+      const x = xPositions.at(-1)! - sizeFromCoord(cell.colStart, xPositions, cell.colSpan) - xPositions[cell.colStart];
       styles.gridColumnStart = `${cell.colStart + 2}`;
       styles.insetInlineEnd = `${x}px`;
       styles.zIndex = 11;

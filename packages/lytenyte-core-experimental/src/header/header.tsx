@@ -3,7 +3,7 @@ import { useGridRoot } from "../root/context.js";
 import { useHeaderRowTemplate } from "./use-header-row-template.js";
 import { useHeaderColTemplate } from "./use-header-col-template.js";
 import { HeaderRowRenderer } from "./header-row/header-row-renderer.js";
-import type { HeaderLayoutCell } from "../types/layout.js";
+import type { HeaderLayoutCell } from "../layout.js";
 import { useColumnLayout } from "../root/layout-columns/column-layout-context.js";
 import { useBounds } from "../root/bounds/context.js";
 import { $colEndBound, $colStartBound } from "../selectors/selectors.js";
@@ -15,10 +15,7 @@ export interface HeaderProps<T = any> {
 }
 
 function HeaderImpl(
-  {
-    children = HeaderRowRenderer,
-    ...props
-  }: Omit<JSX.IntrinsicElements["div"], "children"> & HeaderProps<any>,
+  { children = HeaderRowRenderer, ...props }: Omit<JSX.IntrinsicElements["div"], "children"> & HeaderProps<any>,
   ref: JSX.IntrinsicElements["div"]["ref"],
 ) {
   const boundsPiece = useBounds();
@@ -26,15 +23,8 @@ function HeaderImpl(
   const colEndBound = boundsPiece.useValue($colEndBound);
   const layout = useColumnLayout();
 
-  const {
-    id,
-    floatingRowEnabled,
-    floatingRowHeight,
-    headerGroupHeight,
-    headerHeight,
-    columnMeta,
-    xPositions,
-  } = useGridRoot();
+  const { id, floatingRowEnabled, floatingRowHeight, headerGroupHeight, headerHeight, columnMeta, xPositions } =
+    useGridRoot();
 
   const gridRowTemplate = useHeaderRowTemplate(
     layout.length,

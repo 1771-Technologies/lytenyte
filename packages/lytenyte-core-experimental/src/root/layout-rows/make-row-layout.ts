@@ -1,10 +1,5 @@
-import {
-  CONTAINS_DEAD_CELLS,
-  FULL_WIDTH,
-  type LayoutState,
-  type SpanLayout,
-} from "@1771technologies/lytenyte-shared";
-import type { LayoutCell, LayoutRow, LayoutRowWithCells, RowView } from "../../types/layout.js";
+import { CONTAINS_DEAD_CELLS, FULL_WIDTH, type LayoutState, type SpanLayout } from "@1771technologies/lytenyte-shared";
+import type { LayoutCell, LayoutRow, LayoutRowWithCells, RowView } from "../../layout.js";
 import type { Ln } from "../../types.js";
 import type { RowAtom, RowNode, RowPin, RowSource } from "../../types/row.js";
 import type { PositionUnion } from "../../types/position.js";

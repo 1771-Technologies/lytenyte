@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import type { LayoutRowWithCells } from "../../types/layout.js";
+import type { LayoutRowWithCells } from "../../layout.js";
 import type { RowNode } from "../../types/row.js";
 
 export interface RowMeta {
