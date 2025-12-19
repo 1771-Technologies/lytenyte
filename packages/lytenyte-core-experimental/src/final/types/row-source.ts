@@ -10,6 +10,7 @@ export interface RowSource<T = any> {
   readonly useTopCount: () => number;
   readonly useBottomCount: () => number;
   readonly useSnapshotVersion: () => number;
+  readonly useMaxRowGroupDepth: () => number;
 
   readonly rowIndexToRowId: (index: number) => string | null | undefined;
   readonly rowByIndex: (row: number) => RowAtom<RowNode<T> | null>;

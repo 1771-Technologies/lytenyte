@@ -39,3 +39,29 @@ export type RowPredicate = (r: Row) => boolean;
 
 export type ScrollIntoViewFn = (p: { row?: number; column?: number; behavior: "instant" }) => void;
 export type RootCellFn = (r: number, c: number) => PositionGridCell | PositionFullWidthRow | null;
+
+export type ColumnPin = "start" | "end" | null;
+
+export type ColumnGroupVisibility = "always" | "close" | "open";
+export type RowGroupDisplayMode = "single-column" | "custom";
+
+export interface ColumnAbstract {
+  readonly id: string;
+
+  readonly name?: string;
+  readonly type?: "string" | "number" | "date" | "datetime" | ({} & string);
+
+  readonly width?: number;
+  readonly widthMax?: number;
+  readonly widthMin?: number;
+  readonly widthFlex?: number;
+
+  readonly groupVisibility?: ColumnGroupVisibility;
+  readonly groupPath?: string[];
+
+  readonly pin?: ColumnPin;
+  readonly hide?: boolean;
+  readonly resizable?: boolean;
+  readonly editable?: boolean;
+  readonly movable?: boolean;
+}

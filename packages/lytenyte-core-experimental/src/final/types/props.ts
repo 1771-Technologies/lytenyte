@@ -1,13 +1,13 @@
 import type { ReactNode, Ref } from "react";
 import type { API } from "./api";
-import type { ColumnAbstract, ColumnExtension } from "./column";
+import type { ColumnExtension } from "./column";
 import type { Renderers, RowParams } from "./rendering";
 import type { RowNode } from "./row-node";
 import type { RowSource } from "./row-source";
+import type { ColumnAbstract } from "@1771technologies/lytenyte-shared";
 
 export type RowHeight = number | `fill:${number}` | ((i: number) => number);
 export type RowPin = "top" | "bottom" | null;
-export type RowGroupDisplayMode = "single-column" | "multi-column" | "custom";
 
 export interface Props<
   Data = unknown,

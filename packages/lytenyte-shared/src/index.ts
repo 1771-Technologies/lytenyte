@@ -1,3 +1,6 @@
+export type { ColumnView } from "./column-view/index.js";
+export { columnAddRowGroup, columnAddMarker, makeColumnView } from "./column-view/index.js";
+
 export { getMaxHeaderDepth } from "./header-view/get-max-header-depth.js";
 export { getVisibleColumns } from "./header-view/get-visible-columns.js";
 export { getVisibleColumnsWithGroups } from "./header-view/get-visible-columns-with-groups.js";
@@ -8,19 +11,35 @@ export { partitionColumnsByPinState } from "./header-view/partition-columns-by-p
 export { computeColumnPositions } from "./coordinates/compute-column-positions.js";
 export { computeRowPositions } from "./coordinates/compute-row-positions.js";
 
-export type { SpanFn, RowPredicate, SpanLayout } from "./+types.non-gen.js";
-
-export type { LayoutState } from "./layout/make-layout-state.js";
-export { makeLayoutState } from "./layout/make-layout-state.js";
-export { updateFull } from "./layout/update-full.js";
 export type {
+  SpanFn,
+  RowPredicate,
+  SpanLayout,
+  ColumnAbstract,
+  ColumnGroupVisibility,
+  ColumnPin,
+} from "./+types.non-gen.js";
+
+export type {
+  LayoutHeader,
+  LayoutHeaderCell,
+  LayoutHeaderFloating,
+  LayoutHeaderGroup,
+  LayoutState,
+  UpdateLayoutArgs,
   Computed,
   DeadCells,
   LayoutDiffers,
-  RootCellLookup as RootCellSpanLookup,
-  UpdateLayoutArgs,
-} from "./layout/update-layout.js";
-export { updateLayout, FULL_WIDTH, CONTAINS_DEAD_CELLS } from "./layout/update-layout.js";
+  RootCellSpanLookup,
+} from "./layout/index.js";
+export {
+  makeColumnLayout,
+  makeLayoutState,
+  updateFull,
+  updateLayout,
+  FULL_WIDTH,
+  CONTAINS_DEAD_CELLS,
+} from "./layout/index.js";
 
 export { computeBounds } from "./virtual-bounds/compute-bounds.js";
 export {
