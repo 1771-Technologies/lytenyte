@@ -1,0 +1,141 @@
+---
+title: Column
+description: The API reference for the column functionality in LyteNyte Grid.
+---
+## `AutosizeCellFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
+
+<AutoTypeTable type={`export interface AutosizeCellFn {
+
+          /** 
+           * A function used by LyteNyte Grid to determine the ideal width for a column based
+ * on a representative sample of cell content.
+ * 
+ * This is called when autosize is triggered via the grid's API. Returning  ''null'' 
+ * disables sizing behavior.
+           */
+          AutosizeCellFn: (params: (AutosizeCellParams) => number | null)
+          }`} />
+
+## `AutosizeCellParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+Parameters passed to the  [AutosizeCellFn](/docs/reference/column#autosizecellfn)  function.
+
+These provide context about the cell and grid configuration so that the function
+can determine the optimal column width based on cell content.
+
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="AutosizeCellParams" />
+
+
+## `AutosizeHeaderFn`<span className="type-tag" style={{ '--type-content': "'function'" }} />
+
+<AutoTypeTable type={`export interface AutosizeHeaderFn {
+
+          /** 
+           * A function used by LyteNyte Grid to calculate the ideal width for a column header
+ * based on the header's rendered content.
+ * 
+ * This is called as part of the grid's autosize process.
+           */
+          AutosizeHeaderFn: (params: (AutosizeHeaderParams) => number | null)
+          }`} />
+
+## `AutosizeHeaderParams`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+Parameters passed to the  [AutosizeHeaderFn](/docs/reference/column#autosizeheaderfn)  function.
+
+These are used by LyteNyte Grid to calculate the ideal column width based on the
+header content.
+
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="AutosizeHeaderParams" />
+
+
+## `Column`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+Describes a column definition in LyteNyte Grid.
+
+Columns define how data is presented and interacted with in the grid. They control
+rendering, grouping, sorting, filtering, editing, and more.
+
+A grid must define at least one column to display meaningful data. Columns are essential
+for determining:
+- How rows are visualized
+- What each cell renders
+- How rows are grouped and sorted
+- How filters are evaluated
+
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="Column" />
+
+
+## `ColumnBase`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+Represents the default column configuration used by LyteNyte Grid.
+
+This serves as a base template that provides fallback values for various column properties.
+Rather than merging, LyteNyte Grid looks up configuration properties on the column first,
+then on the default.
+
+This allows you to set column-wide defaults that apply retroactively to all applicable columns
+without rewriting each one.
+
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="ColumnBase" />
+
+
+## `ColumnMarker`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+Defines the structure of a marker column.
+
+  The marker column is a grid managed column used to support features like selection checkboxes or row drag handles.
+
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="ColumnMarker" />
+
+
+## `ColumnMeta`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+Represents runtime metadata for the current column configuration in LyteNyte Grid.
+
+This metadata is primarily useful for programmatic interaction with the grid. The values
+are derived from the grid's internal column state and may change depending on modes
+like pivoting. For example, when pivot mode is enabled,  ``columnsVisible``  refers to
+visible pivot columns instead of the regular ones.
+
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="ColumnMeta" />
+
+
+## `ColumnPin`<span className="type-tag" style={{ '--type-content': "'union'" }} />
+
+<TypeTable type={{"ColumnPin":{"description":"Represents the possible pinned positions a column can occupy in LyteNyte Grid.\n\nThe actual position is determined by the document's reading direction:\n- In left-to-right (LTR) mode,  \\`\\`\"start\"\\`\\`  pins to the left and  \\`\\`\"end\"\\`\\`  to the right.\n- In right-to-left (RTL) mode, this behavior is reversed.\n\nThis approach aligns with CSS logical properties for layout direction.","type":"\"start\" | \"end\" | null"}}} />
+
+## `ColumnPivotUIHints`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+Describes UI hints related to column pivot functionality.
+
+These hints indicate whether a column is eligible to act as a value, row group, or
+column pivot in a pivot table configuration. External components can use these values
+to determine pivot-related capabilities.
+
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="ColumnPivotUIHints" />
+
+
+## `ColumnUIHints`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+UI hints describing column capabilities in LyteNyte Grid.
+
+These hints can be used by external components to drive UI decisions (e.g.
+enabling/disabling sort or resize handles). They are not enforced by LyteNyte Grid
+and can be bypassed by modifying grid state directly.
+
+Includes support for pivot-specific behaviors via  [ColumnPivotUIHints](/docs/reference/column#columnpivotuihints) .
+
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="ColumnUIHints" />
+
+
+## `RowGroupColumn`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+The internal definition used by LyteNyte Grid to automatically generate group columns
+when row grouping is enabled.
+
+These columns are created behind the scenes to represent group headers and aggregations
+and can be configured via this interface.
+
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="RowGroupColumn" />
+

@@ -1,0 +1,41 @@
+@import "./colors.css";
+
+@theme {
+  --color-xd-prose-link: hsla(194, 80%, 43%, 1);
+  --color-xd-background: hsl(0, 0%, 98%);
+  --color-xd-foreground: hsl(0, 0%, 3.9%);
+  --color-xd-muted: hsl(0, 0%, 96.1%);
+  --color-xd-muted-foreground: hsl(0, 0%, 45.1%);
+  --color-xd-popover: hsl(0, 0%, 100%);
+  --color-xd-popover-foreground: hsl(0, 0%, 15.1%);
+  --color-xd-card: hsl(0, 0%, 99.7%);
+  --color-xd-card-foreground: hsl(0, 0%, 3.9%);
+  --color-xd-border: hsla(0, 0%, 60%, 0.2);
+  --color-xd-primary: hsl(0, 0%, 9%);
+  --color-xd-primary-foreground: hsl(0, 0%, 98%);
+  --color-xd-secondary: hsl(0, 0%, 96.1%);
+  --color-xd-secondary-foreground: hsl(0, 0%, 9%);
+  --color-xd-accent: hsl(0, 0%, 94.1%);
+  --color-xd-accent-foreground: hsl(0, 0%, 9%);
+  --color-xd-ring: hsl(0, 0%, 63.9%);
+}
+
+[data-theme="dark"] {
+  --color-xd-prose-link: hsla(172, 75%, 40%, 1);
+  --color-xd-background: hsl(0, 0%, 2%);
+  --color-xd-foreground: hsl(0, 0%, 98%);
+  --color-xd-muted: hsl(0, 0%, 8%);
+  --color-xd-muted-foreground: hsl(0, 0%, 60%);
+  --color-xd-popover: hsl(0, 0%, 4%);
+  --color-xd-popover-foreground: hsl(0, 0%, 98%);
+  --color-xd-card: hsl(0, 0%, 4%);
+  --color-xd-card-foreground: hsl(0, 0%, 98%);
+  --color-xd-border: hsl(0, 0%, 50%, 0.2);
+  --color-xd-primary: hsl(0, 0%, 98%);
+  --color-xd-primary-foreground: hsl(0, 0%, 9%);
+  --color-xd-secondary: hsl(0, 0%, 12.9%);
+  --color-xd-secondary-foreground: hsl(0, 0%, 98%);
+  --color-xd-accent: hsl(0, 0%, 15%);
+  --color-xd-accent-foreground: hsl(0, 0%, 100%);
+  --color-xd-ring: hsl(0, 0%, 34.9%);
+}

@@ -1,0 +1,359 @@
+---
+title: LyteNyte Doc MDX Walkthrough
+---
+
+## Headers
+
+Headers create created using the `#` symbol. Each `#` is one level of the header.
+HTML supports 6 levels of headers, however, only the first four are styled by
+in LyteNyte Doc:
+
+```mdx
+# Header 1
+
+## Header 2
+
+### Header 3
+
+#### Header 4
+
+##### Header 5
+
+###### Header 6
+```
+
+## Text
+
+Normal text is converted into paragraph tags. The standard MD syntax for lists,
+quotes, images, and tables is also supported.
+
+```mdx
+Hello World, **BOLD**, _ITALIC_, ~STRIKETHROUGH~
+
+1. First
+2. Second
+3. Third
+
+- Item 1
+- Item 2
+
+1. First
+   - Item 1
+   - Item 2
+
+2. Second
+3. Third
+
+> Quote here
+
+![alt](https://upload.wikimedia.org/wikipedia/commons/7/70/Example.png)
+
+| Table | Description |
+| ----- | ----------- |
+| Hello | World       |
+```
+
+Hello World, **BOLD**, _ITALIC_, ~STRIKETHROUGH~
+
+**Numbered List**
+
+1. First
+2. Second
+3. Third
+
+**Unordered List**
+
+- Item 1
+- Item 2
+
+**List with nested items**
+
+1. First
+   - Item 1
+   - Item 2
+
+2. Second
+3. Third
+
+> Quote here
+
+![alt](https://upload.wikimedia.org/wikipedia/commons/7/70/Example.png)
+
+| Table | Description |
+| ----- | ----------- |
+| Hello | World       |
+| Hello | World       |
+| Hello | World       |
+| Hello | World       |
+
+## Auto Links
+
+```mdx
+[My Link](https://github.github.com/gfm)
+
+This also works: https://github.github.com/gfm.
+```
+
+[My Link](https://github.github.com/gfm)
+
+This also works: https://github.github.com/gfm.
+
+## Callouts
+
+:::tip
+Tip directive.
+
+Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+when an unknown printer took a galley of type and scrambled it to make a type
+specimen book. It has survived not only five centuries, but also the
+:::
+
+:::info
+Info directive
+
+Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+when an unknown printer took a galley of type and scrambled it to make a type
+specimen book. It has survived not only five centuries, but also the
+:::
+
+:::warn
+Warning directive
+
+Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+when an unknown printer took a galley of type and scrambled it to make a type
+specimen book. It has survived not only five centuries, but also the
+
+:::
+
+:::danger
+Danger directive
+
+Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+when an unknown printer took a galley of type and scrambled it to make a type
+specimen book. It has survived not only five centuries, but also the
+:::
+
+:::best
+Best directive
+
+Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+when an unknown printer took a galley of type and scrambled it to make a type
+specimen book. It has survived not only five centuries, but also the
+:::
+
+:::note
+Note directive
+
+Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+when an unknown printer took a galley of type and scrambled it to make a type
+specimen book. It has survived not only five centuries, but also the
+:::
+
+## Steps
+
+<Steps>
+
+1. Import the component into your MDX file:
+
+   The paragraph
+   ![alt](https://upload.wikimedia.org/wikipedia/commons/7/70/Example.png)
+
+2. Wrap `<Steps>` around your ordered list items.
+
+</Steps>
+
+## Tabs
+
+<Tabs>
+<Tab label="Stars">
+
+```tsx
+const x = 23;
+```
+
+</Tab>
+
+<Tab label="Moons">
+
+Io, Europa, Ganymede
+
+</Tab>
+</Tabs>
+
+## Code Blocks
+
+**Normal Code block**
+
+```ts
+let _id;
+let fb_id: any;
+fb_id = true;
+fb_id = 23423523;
+
+const firstName = "Tommy";
+const lastName: string = "OneLife";
+let isLoading: boolean;
+isLoading = false;
+```
+
+**Highlights**
+
+```ts {1, 3-4} del={7} ins={8}
+let _id;
+let fb_id: any;
+fb_id = true;
+fb_id = 23423523;
+
+const firstName = "Tommy";
+const lastName: string = "OneLife";
+let isLoading: boolean;
+isLoading = false;
+```
+
+**With Labels**
+
+```ts {"1. this is a label on its own line":3} {4-5} {1} del={"2. This line is deleted":6} ins={"3. This line is inserted":9-11}
+let _id;
+let fb_id: any;
+
+fb_id = true;
+fb_id = 23423523;
+
+const firstName = "Tommy";
+const lastName: string = "OneLife";
+
+let isLoading: boolean;
+isLoading = false;
+```
+
+**Marking Individual Words**
+
+```ts "isLoading"
+let _id;
+let fb_id: any;
+
+fb_id = true;
+fb_id = 23423523;
+
+const firstName = "Tommy";
+const lastName: string = "OneLife";
+
+let isLoading: boolean;
+isLoading = false;
+```
+
+**Word Wrap**
+
+```js wrap hangingIndent=2
+// Example with wrap
+function getLongString() {
+  return "This is a very long string that will most probably not fit into the available space unless the container is extremely wide";
+}
+```
+
+```js wrap=false
+// Example with wrap=false
+function getLongString() {
+  return "This is a very long string that will most probably not fit into the available space unless the container is extremely wide";
+}
+```
+
+**Line numbers**
+
+```ts "isLoading" showLineNumbers
+let _id;
+let fb_id: any;
+
+fb_id = true;
+fb_id = 23423523;
+
+const firstName = "Tommy";
+const lastName: string = "OneLife";
+
+let isLoading: boolean;
+isLoading = false;
+```
+
+```ts showLineNumbers startLineNumber=5
+let _id;
+let fb_id: any;
+
+fb_id = true;
+fb_id = 23423523;
+
+const firstName = "Tommy";
+const lastName: string = "OneLife";
+
+let isLoading: boolean;
+isLoading = false;
+```
+
+**Collapse Parts**
+
+```ts collapse={1-5} collapse={9-11}
+let _id;
+let fb_id: any;
+
+fb_id = true;
+fb_id = 23423523;
+
+const firstName = "Tommy";
+const lastName: string = "OneLife";
+
+let isLoading: boolean;
+isLoading = false;
+```
+
+```ts collapse={1-5} collapse={9-11} showLineNumbers {"1":7}
+let _id;
+let fb_id: any;
+
+fb_id = true;
+fb_id = 23423523;
+
+const firstName = "Tommy";
+const lastName: string = "OneLife";
+
+let isLoading: boolean;
+isLoading = false;
+```
+
+## Code Frames Demo
+
+::demo[Playful Title="./play"]
+
+## Math
+
+Inline: $$c = \pm\sqrt{a^2 + b^2}$$
+
+$$
+c = \pm\sqrt{a^2 + b^2}
+$$
+
+## Type Table
+
+<TypeTable
+  type={[
+    {
+      name: "Editable",
+      description:
+        "A column-level property that controls editability of cells.\n\n- Use  \\`\\`true\\`\\`  to enable editing for all rows.\n- Use  [EditableFn](/docs/reference/cell-edit#editablefn)  for conditional, row-specific editability.",
+      type: "boolean | EditableFn",
+    },
+  ]}
+/>
+
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="CellRendererParams" />
+
+## Remaining
+
+- Mobile TOC
+- Focus Indicators
+- Jump to content
+- Pro markers

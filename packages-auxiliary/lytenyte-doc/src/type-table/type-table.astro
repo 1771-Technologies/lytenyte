@@ -1,0 +1,197 @@
+---
+import { cva } from "class-variance-authority";
+import Collapsible from "./collapsible.astro";
+import { cn } from "../ui/cn";
+import { existsSync, readFile, readFileSync, writeFileSync } from "fs";
+
+import StandaloneImage from "../standalone-image.astro";
+import Callout from "../callout.astro";
+import CodeFrame from "../code-frame/code-frame.astro";
+import Steps from "../steps.astro";
+import Tabs from "../tabs.astro";
+import Tab from "../tab.astro";
+import Table from "../table.astro";
+import ProTag from "../company/pro-tag.astro";
+import PackageInstall from "../package-install.astro";
+import H1 from "../parts/h1.astro";
+import H2 from "../parts/h2.astro";
+import H3 from "../parts/h3.astro";
+import H4 from "../parts/h4.astro";
+import H5 from "../parts/h5.astro";
+import H6 from "../parts/h6.astro";
+import A from "../parts/a.astro";
+import Ol from "../parts/ol.astro";
+import Strong from "../parts/strong.astro";
+import Ul from "../parts/ul.astro";
+import P from "../parts/p.astro";
+import Li from "../parts/li.astro";
+import Blockquote from "../parts/block-quote.astro";
+import Hr from "../parts/hr.astro";
+import Img from "../parts/img.astro";
+import Th from "../parts/th.astro";
+import Tr from "../parts/tr.astro";
+import Td from "../parts/td.astro";
+import PackageDlx from "../package-dlx.astro";
+import { Code } from "astro-expressive-code/components";
+import type { DocEntry } from "./base";
+import { render } from "astro:content";
+import { renderMdx } from "./render-markdown";
+import { ensureDirSync } from "fs-extra";
+
+export interface ParameterNode {
+  name: string;
+  description: string;
+}
+
+export interface TypeNode {
+  /**
+   * Additional description of the field
+   */
+  description?: string;
+
+  /**
+   * type signature (short)
+   */
+  type: string;
+
+  typeDescription?: string;
+
+  typeDescriptionLink?: string;
+
+  default?: string;
+
+  required?: boolean;
+  deprecated?: boolean;
+
+  parameters?: ParameterNode[];
+
+  returns?: string;
+}
+
+const keyVariants = cva("text-xd-primary", {
+  variants: {
+    deprecated: {
+      true: "line-through text-xd-primary/50",
+    },
+  },
+});
+
+interface Props {
+  readonly type: DocEntry[];
+}
+
+const type = Astro.props.type;
+---
+
+<div
+  class="@container bg-xd-popover text-xd-card-foreground p-t my-6 flex flex-col overflow-hidden rounded-2xl border-x border-t border-xd-border text-sm"
+>
+  <div
+    class="not-prose text-xd-muted-foreground flex items-center px-3 py-1 font-medium border-b border-xd-border"
+  >
+    <p class="w-[25%]">Prop</p>
+  </div>
+  {
+    type
+      ?.sort?.((l, r) => {
+        if (l.required && r.required) return l.name.localeCompare(r.name);
+        if (l.required) return -1;
+        if (r.required) return 1;
+        return l.name.localeCompare(r.name);
+      })
+      .map(async ({ name, description, required = false, deprecated, type }) => {
+        description = description.replaceAll("{", "").replaceAll("}", "").replaceAll("@", "");
+
+        let mdxContent = "";
+        try {
+          mdxContent = await renderMdx(description);
+        } catch {
+          console.log(`${name} needs fixing`);
+        }
+
+        if (!mdxContent) return;
+
+        ensureDirSync(`node_modules/ln-type-mdx`);
+        const mdxFile = `node_modules/ln-type-mdx/${name}.js`;
+
+        if (!existsSync(mdxFile)) writeFileSync(mdxFile, mdxContent);
+        else if (readFileSync(mdxFile, "utf-8") !== mdxContent) {
+          writeFileSync(mdxFile, mdxContent);
+        }
+
+        const Module = await import(/* @vite-ignore */ process.cwd() + `/${mdxFile}`);
+        const Content = Module.default;
+
+        return (
+          <Collapsible>
+            <div class="flex flex-1 items-center gap-2 type-table" slot="trigger">
+              <code
+                class={cn(
+                  keyVariants({
+                    deprecated,
+                    class: "min-w-fit flex-1 font-medium",
+                  }),
+                )}
+              >
+                {name}
+                {!required && (
+                  <span class="bg-primary-300/20  border-gray-300 dark:border-gray-700 dark:text-blue-200 text-blue-800 ml-1 rounded border py-1 text-[10px] px-2">
+                    optional
+                  </span>
+                )}
+              </code>
+
+              <code class="bg-primary-300/20  border-gray-300 dark:border-gray-700 text-xd-accent-foreground ml-1 rounded border py-1 text-[10px] px-2">
+                <div class="@max-xl:hidden">{type}</div>
+              </code>
+            </div>
+
+            <div
+              class="bg-xd-background grid grid-cols-[1fr_3fr] gap-y-4 overflow-auto p-3 text-sm"
+              slot="content"
+            >
+              <div class="text-sm text-neutral-800 dark:text-neutral-400 col-span-full empty:hidden">
+                <Content
+                  components={{
+                    ProTag,
+                    Code,
+                    CodeFrame,
+                    Callout,
+                    StandaloneImage,
+                    PackageInstall,
+                    PackageDlx,
+                    Steps,
+                    Tabs,
+                    Tab,
+
+                    table: Table,
+                    th: Th,
+                    tr: Tr,
+                    td: Td,
+
+                    h1: H1,
+                    h2: H2,
+                    h3: H3,
+                    h4: H4,
+                    h5: H5,
+                    h6: H6,
+
+                    a: A,
+                    ol: Ol,
+                    ul: Ul,
+                    p: P,
+                    strong: Strong,
+
+                    li: Li,
+                    blockquote: Blockquote,
+                    img: Img,
+                    hr: Hr,
+                  }}
+                />
+              </div>
+            </div>
+          </Collapsible>
+        );
+      })
+  }
+</div>

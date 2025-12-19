@@ -1,0 +1,284 @@
+---
+import "katex/dist/katex.css";
+import { ClientRouter } from "astro:transitions";
+import { format } from "date-fns";
+import DesktopToc from "../toc/desktop-toc.astro";
+import ThemeToggle from "../theme-toggle.astro";
+import ThemeScript from "../theme-script.astro";
+import type { MarkdownHeading } from "astro";
+import type { Root } from "../sidebar/types";
+import Sidebar from "../sidebar/sidebar.astro";
+import SidebarScript from "../sidebar/sidebar-script.astro";
+import { cn } from "../ui/cn";
+import { Search } from "../search/search";
+import type { OneDocConfig } from "../../lytenyte-doc";
+import { Logo1771 } from "../company/logo-1771";
+import { ApiReferenceIcon } from "./icons/api-reference-icon";
+import { ChangelogIcon } from "./icons/changelog-icon";
+import { GuidesIcon } from "./icons/guides-icon";
+import { BlogIcon } from "./icons/blog-icon";
+import LogoLytenyte from "../company/logo-lytenyte.astro";
+import LoadingIndicator from "./loading-indicator.astro";
+
+const icons = {
+  guides: GuidesIcon,
+  "api-reference": ApiReferenceIcon,
+  changelog: ChangelogIcon,
+  blog: BlogIcon,
+};
+
+export interface Props {
+  readonly toc: MarkdownHeading[];
+  readonly sidebar: Root;
+  readonly title: string;
+  readonly titleSuffix: string;
+  readonly homeUrl: string;
+
+  readonly navbar: OneDocConfig["navbar"];
+  readonly githubUrl: string;
+  readonly links: OneDocConfig["links"];
+
+  readonly nextEntry: null | { url: string; title: string; description: string };
+  readonly prevEntry: null | { url: string; title: string; description: string };
+  readonly lastModified: string;
+}
+
+const {
+  githubUrl,
+  title,
+  titleSuffix,
+  links,
+  navbar,
+  toc,
+  sidebar,
+  nextEntry,
+  homeUrl,
+  prevEntry,
+  lastModified,
+} = Astro.props;
+const pathname = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en" transition:persist transition:animate="none">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} | {titleSuffix}</title>
+
+    <ThemeScript />
+    <ClientRouter />
+    <LoadingIndicator color="blue" />
+  </head>
+  <body
+    class="bg-xd-background text-xd-foreground min-h-screen flex flex-col dark:scheme-dark scheme-light"
+  >
+    <div class="sticky top-0 z-10">
+      <div
+        class="h-header border-b border-xd-border bg-xd-background flex gap-2 items-center justify-between"
+      >
+        <header
+          class="flex items-center lg:max-w-[1000px] xl:max-w-7xl [@media(min-width:1380px)]:max-w-[1360px] [@media(min-width:1500px)]:max-w-[1480px] mx-auto w-full md:justify-between px-2 gap-2"
+        >
+          <div>
+            <a href={homeUrl}>
+              <LogoLytenyte />
+            </a>
+          </div>
+          <div class="flex-1 flex justify-end md:block md:flex-[unset]">
+            <Search client:idle />
+          </div>
+          <div class="flex items-center gap-3">
+            <ThemeToggle />
+            <a
+              class="center size-7 hover:bg-xd-accent transition-colors rounded-lg"
+              href={githubUrl}
+              target="_blank"
+            >
+              <span class="iconify logos--github-icon size-5"></span>
+              <span class="sr-only">Github repository for this project.</span>
+            </a>
+
+            {
+              links.map((x) => {
+                return (
+                  <a
+                    class="center size-7 hover:bg-xd-accent transition-colors rounded-lg"
+                    href={x.url}
+                    target={x.external ? "_blank" : "_self"}
+                  >
+                    {x.icon === "1771" && <Logo1771 className="size-4.5 relative top-px" />}
+                    <span class="sr-only">1771 Technologies home page</span>
+                  </a>
+                );
+              })
+            }
+          </div>
+        </header>
+      </div>
+      <div class="h-subheader border-b border-xd-border bg-xd-background">
+        <div
+          class="flex items-center lg:max-w-[1000px] xl:max-w-7xl [@media(min-width:1380px)]:max-w-[1360px] [@media(min-width:1500px)]:max-w-[1480px] mx-auto w-full justify-between px-2 h-full"
+        >
+          <aside class="h-full flex justify-between w-full">
+            <div class="flex gap-6 h-full">
+              {
+                navbar.left?.map((x) => {
+                  const Icon = icons[x.icon];
+
+                  const active =
+                    x.matchSelected.match.some((x) => pathname.startsWith(x)) &&
+                    !x.matchSelected.ignore.some((x) => pathname.startsWith(x));
+
+                  return (
+                    <a
+                      href={x.url}
+                      class:list={cn(
+                        "h-full items-center flex font-semibold text-sm text-xd-muted-foreground hover:text-xd-foreground transition-colors gap-1 px-2 border-b border-transparent",
+                        active && "border-b border-b-xd-foreground text-xd-foreground",
+                      )}
+                    >
+                      <Icon />
+                      <span class="sr-only">{x.description}</span>
+
+                      {x.title}
+                    </a>
+                  );
+                })
+              }
+            </div>
+            <div class="flex gap-8 h-full">
+              {
+                navbar.right?.map((x) => {
+                  const Icon = icons[x.icon];
+                  const active =
+                    x.matchSelected.match.some((x) => pathname.startsWith(x)) &&
+                    !x.matchSelected.ignore.some((x) => pathname.startsWith(x));
+
+                  return (
+                    <a
+                      href={x.url}
+                      class:list={cn(
+                        "h-full items-center flex font-semibold text-sm text-xd-muted-foreground hover:text-xd-foreground transition-colors gap-1 px-2",
+                        active && "border-b border-b-xd-foreground text-xd-foreground",
+                      )}
+                    >
+                      <Icon />
+                      <span class="sr-only">{x.description}</span>
+                      {x.title}
+                    </a>
+                  );
+                })
+              }
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+    <div class="flex-1 grid grid-row-[1fr]">
+      <div class="w-full h-full">
+        <div
+          class="h-full w-full lg:max-w-[1000px] xl:max-w-7xl [@media(min-width:1380px)]:max-w-[1360px] [@media(min-width:1500px)]:max-w-[1480px] mx-auto"
+        >
+          <div
+            class="grid grid-cols-1 lg:grid-cols-[calc(100%-var(--spacing-toc))_var(--spacing-toc)] xl:grid-cols-[var(--spacing-sidenav)_calc(100%-var(--spacing-sidenav)-var(--spacing-toc))_var(--spacing-toc)]"
+          >
+            <div
+              class:list={[
+                "overflow-auto contain-strict no-scrollbar",
+                "w-sidenav min-w-sidenav max-w-sidenav py-8 sticky top-[calc(var(--spacing-header)+var(--spacing-subheader))]",
+                "h-[calc(100vh-var(--spacing-header)-var(--spacing-subheader))]",
+                "hidden xl:block",
+              ]}
+            >
+              {
+                sidebar.children.map((x) => {
+                  return (
+                    <div class="flex flex-col gap-2 pr-3 pl-2">
+                      <Sidebar item={x} collection={sidebar.collection} />
+                    </div>
+                  );
+                })
+              }
+              <SidebarScript />
+            </div>
+
+            <div class="flex flex-col">
+              <div class="w-full max-w-full flex-1">
+                <div
+                  class="text-sm text-neutral-800 dark:text-neutral-400 px-4 py-8 max-w-4xl mx-auto"
+                >
+                  <main class="mx-auto">
+                    <slot />
+                  </main>
+                </div>
+              </div>
+              <footer class="w-full max-w-full">
+                <div>
+                  <div class="max-w-4xl mx-auto px-4.5 pt-4 text-sm text-xd-muted-foreground">
+                    <div class="border-t border-xd-border pb-4" role="separator"></div>
+                    <p>
+                      Last updated on
+                      {format(lastModified, "dd/MM/yyyy")}
+                    </p>
+                  </div>
+                  <div
+                    class:list={cn(
+                      "text-neutral-800 dark:text-neutral-400 px-4 pt-4 pb-8 max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-8",
+                      ((!prevEntry && nextEntry) || (!nextEntry && prevEntry)) && "sm:grid-cols-1",
+                    )}
+                  >
+                    {
+                      prevEntry && (
+                        <a
+                          href={prevEntry.url}
+                          class="text-sm flex-1 border  rounded-lg hover:bg-xd-accent/80 hover:text-xd-accent-foreground transition-colors p-4 gap-2 flex flex-col border-xd-border"
+                        >
+                          <div class="font-semibold text-xd-foreground flex items-center gap-2">
+                            <span class="iconify ph--caret-left" />
+
+                            {prevEntry.title}
+                          </div>
+                          <p class="text-nowrap truncate w-full mb-0">{prevEntry.description}</p>
+                        </a>
+                      )
+                    }
+                    {
+                      nextEntry && (
+                        <a
+                          href={nextEntry.url}
+                          class="text-sm flex-1 border rounded-lg hover:bg-xd-accent/80 hover:text-xd-accent-foreground transition-colors p-4 gap-2 flex flex-col border-xd-border"
+                        >
+                          <div class="text-end font-semibold text-xd-foreground flex items-center justify-end gap-2">
+                            {nextEntry.title}
+                            <span class="iconify ph--caret-right" />
+                          </div>
+                          <p class="text-nowrap text-end truncate w-full mb-0">
+                            {nextEntry.description}
+                          </p>
+                        </a>
+                      )
+                    }
+                  </div>
+                </div>
+              </footer>
+            </div>
+
+            {
+              toc.length > 0 && (
+                <div
+                  class:list={[
+                    "w-toc min-w-toc max-w-toc sticky top-[calc(var(--spacing-header)+var(--spacing-subheader))] h-0 py-8 pl-2",
+                    "hidden lg:block",
+                  ]}
+                >
+                  <DesktopToc toc={toc} />
+                </div>
+              )
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

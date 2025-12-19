@@ -1,0 +1,53 @@
+---
+interface Props {
+  readonly type: "note" | "tip" | "info" | "warn" | "danger" | "best";
+  readonly title?: string;
+}
+
+const props = Astro.props;
+
+const titleLookup: Record<Props["type"], string> = {
+  note: "Note",
+  tip: "Tip",
+  info: "Info",
+  warn: "Warning",
+  danger: "Danger",
+  best: "Best Practice",
+};
+const title = props.title ?? titleLookup[props.type];
+const type = props.type;
+---
+
+<div
+  class:list={[
+    "border-l-4 rounded-s-lg rounded-e-xl my-8 p-4 border border-neutral-300 dark:border-neutral-800 bg-xd-card xd-callout",
+    type === "warn" && "dark:border-l-yellow-500 border-l-yellow-500",
+    type === "info" && "dark:border-l-blue-500 border-l-blue-500",
+    type === "tip" && "dark:border-l-green-500 border-l-green-500",
+    type === "best" && "dark:border-l-teal-500 border-l-teal-500",
+    type === "danger" && "dark:border-l-rose-500 border-l-rose-500",
+    type === "note" && "dark:border-l-emerald-500 border-l-emerald-500",
+  ]}
+>
+  <div class="grid grid-cols-[auto_1fr] grid-rows-[auto_1fr] gap-x-4 gap-y-2">
+    <div class="flex items-center gap-1.5 col-span-2">
+      <div class="center size-5">
+        <span
+          class:list={[
+            type === "warn" && "iconify ph--warning-duotone text-yellow-500",
+            type === "info" && "iconify ph--info-duotone text-blue-500",
+            type === "tip" && "iconify ph--warning-duotone text-green-500",
+            type === "best" && "iconify ph--thumbs-up text-teal-500",
+            type === "danger" && "iconify ph--warning-circle-duotone relative top-px text-rose-500",
+            type === "note" && "iconify ph--chat-circle-duotone relative top-px text-emerald-500",
+          ]}></span>
+      </div>
+      <h3 class="text-base mt-0 font-extrabold">{title}</h3>
+    </div>
+    <div role="presentation" class="size-2.5"></div>
+
+    <div>
+      <slot />
+    </div>
+  </div>
+</div>

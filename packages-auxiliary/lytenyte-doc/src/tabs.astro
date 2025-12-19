@@ -1,0 +1,117 @@
+---
+interface Props {
+  readonly syncKey?: string;
+  readonly class?: string;
+}
+
+import { Tabs as SLTabs } from "@astrojs/starlight/components";
+const props = Astro.props;
+---
+
+<div class:list={["xd-tabs", props.class]}>
+  <SLTabs {...props}>
+    <slot />
+  </SLTabs>
+</div>
+
+<style>
+  .codeframe-tabs.xd-tabs {
+    margin-block: 0px;
+
+    starlight-tabs {
+      border-radius: 0px;
+      border: 1px solid transparent;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .codeframe-tabs.xd-tabs {
+      starlight-tabs {
+        .tablist-wrapper {
+          ul {
+            padding-top: 32px;
+          }
+        }
+      }
+    }
+  }
+
+  .xd-tabs {
+    margin-block: 32px;
+
+    starlight-tabs {
+      border: 1px solid var(--color-xd-border);
+      background-color: var(--color-xd-card);
+      padding-top: 4px;
+      border-radius: 16px;
+      overflow: hidden;
+
+      p:first-child {
+        padding-top: 16px;
+      }
+      p:last-child {
+        padding-bottom: 16px;
+      }
+
+      .expressive-code:not(:first-child) {
+        margin-top: 16px;
+      }
+
+      .expressive-code {
+        margin-inline: -16px;
+
+        .frame {
+          box-shadow: none;
+          border-block: 0px solid transparent;
+
+          pre {
+            border-radius: 0px;
+          }
+        }
+      }
+
+      .tablist-wrapper {
+        ul {
+          margin: 0px;
+          padding: 0px;
+          padding-inline: 16px;
+          display: flex;
+          gap: 16px;
+
+          li {
+            padding-inline: 4px;
+            padding-block: 0px;
+
+            user-select: none;
+            margin: 0px;
+
+            a {
+              padding: 8px 0px 8px 0px;
+              font-size: 15px;
+              font-weight: 400;
+
+              border-bottom: 2px solid transparent;
+              color: var(--color-xd-muted-foreground);
+
+              &:hover {
+                color: var(--color-xd-foreground);
+              }
+
+              &[aria-selected="true"] {
+                border-bottom: 2px solid var(--color-xd-accent-foreground);
+                color: var(--color-xd-accent-foreground);
+              }
+            }
+          }
+        }
+      }
+
+      [role="tabpanel"] {
+        margin: 0px;
+        background-color: var(--color-xd-background);
+        padding-inline: 16px;
+        padding-block-start: 0px;
+      }
+    }
+  }
+</style>

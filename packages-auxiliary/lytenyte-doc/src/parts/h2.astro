@@ -1,0 +1,12 @@
+<h2
+  {...Astro.props}
+  class:list={[
+    "[&+*]:[code]:text-xl [&+.steps]:mt-0! [&+.steps>h3]:mt-4! [&+h3]:mt-4! [&+p]:mt-4! text-xd-foreground mt-10 scroll-m-28 text-[20px] md:text-2xl font-medium tracking-tight first:mt-0",
+  ]}
+>
+  <a href={`#${Astro.props.id}`} class="flex items-center gap-2 group">
+    <slot />
+    <span class="iconify ph--link size-4 group-hover:opacity-100 opacity-0 transition-opacity"
+    ></span>
+  </a>
+</h2>

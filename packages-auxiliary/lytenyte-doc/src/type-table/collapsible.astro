@@ -1,0 +1,47 @@
+---
+import { cn } from "../ui/cn";
+---
+
+<div class:list={cn("overflow-hidden border-b border-xd-border transition-all")}>
+  <button
+    class="collapse-trigger not-prose hover:bg-xd-accent group relative flex w-full flex-row items-center gap-2 px-3 py-2 text-start"
+  >
+    <slot name="trigger" />
+  </button>
+  <div
+    class="grid grid-rows-[0fr] data-open:grid-rows-[1fr] transition-[grid-template-rows] overflow-hidden group"
+  >
+    <div class="min-h-0">
+      <div class="group-data-open:block hidden transition-discrete transition-all">
+        <slot name="content" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const init = () => {
+    const triggers = Array.from(document.querySelectorAll(".collapse-trigger")) as HTMLElement[];
+
+    triggers.forEach((t) => {
+      t.addEventListener("click", (ev) => {
+        const parent = (ev.currentTarget as HTMLElement).parentElement!;
+        const sibling = (ev.currentTarget as HTMLElement).nextElementSibling!;
+
+        const parentOpen = parent.hasAttribute("data-open");
+        if (parentOpen) parent.removeAttribute("data-open");
+        else parent.setAttribute("data-open", "true");
+
+        const open = sibling.hasAttribute("data-open");
+        if (open) sibling.removeAttribute("data-open");
+        else sibling.setAttribute("data-open", "true");
+      });
+    });
+  };
+
+  window.addEventListener("load", () => init());
+
+  document.addEventListener("astro:after-swap", () => {
+    init();
+  });
+</script>

@@ -1,0 +1,271 @@
+---
+title: Installation With Shadcn
+description:
+  Install LyteNyte Grid using the shadcn CLI. 1771 Technologies maintains a public registry
+  of preconfigured LyteNyte Grid components styled for shadcn.
+---
+
+## Before You Start
+
+Before adding LyteNyte Grid components, ensure your project is set up with shadcn.
+Follow the [shadcn/ui installation guide](https://ui.shadcn.com/docs/installation) for your framework
+to get started.
+
+## The LyteNyte Registry
+
+LyteNyte Grid components are available under the `@lytenyte` namespace.
+The shadcn CLI automatically locates the 1771 Technologies public registry. Run the following command to get started:
+
+<PackageDlx package="shadcn@latest add @lytenyte/lytenyte-core" />
+
+If you're using the PRO edition of LyteNyte Grid, run the following instead:
+
+<PackageDlx package="shadcn@latest add @lytenyte/lytenyte-pro" />
+
+After you run the command, shadcn adds a `lytenyte-core.tsx` or `lytenyte-pro.tsx` component file,
+along with a corresponding hook file (`use-lytenyte-core.tsx` or `use-lytenyte-pro.tsx`).
+
+Each component file includes the preconfigured, headless LyteNyte Grid
+parts for your project. Modify these as needed for your
+application. Depending on your import path configuration,
+importing the components is as simple as:
+
+<Tabs className="bg-fd-card">
+
+<Tab  label="Core">
+
+```ts
+import { LyteNyte } from "@/components/lytenyte-core";
+import { useLyteNyte } from "@/hooks/use-lytenyte-core";
+```
+
+</Tab>
+
+<Tab label="PRO">
+
+```ts
+import { LyteNyte } from "@/components/lytenyte-pro";
+import { useLyteNyte } from "@/hooks/use-lytenyte-pro";
+```
+
+</Tab>
+
+</Tabs>
+
+## Manual Installation
+
+Add `@1771technologies/lytenyte-core` or `@1771technologies/lytenyte-pro` to your project dependencies:
+
+<PackageInstall package="@1771technologies/lytenyte-core" />
+
+<PackageInstall package="@1771technologies/lytenyte-pro" />
+
+Next copy and paste the following code into your project:
+
+<Tabs>
+
+<Tab label="Core">
+
+```tsx
+import "@1771technologies/lytenyte-core/grid.css";
+import type {
+  Grid as G,
+  RowLayout,
+  RowNormalRowLayout,
+} from "@1771technologies/lytenyte-core/types";
+import { Grid } from "@1771technologies/lytenyte-core";
+import { memo, type ReactNode } from "react";
+
+export function LyteNyte<T>({ grid }: { grid: G<T> }) {
+  const view = grid.view.useValue();
+
+  return (
+    <div className="lng-grid lng1771-shadcn h-full w-full">
+      <Grid.Root grid={grid}>
+        <Grid.Viewport>
+          <Grid.Header>
+            {view.header.layout.map((headerRow, i) => {
+              return (
+                <Grid.HeaderRow headerRowIndex={i} key={i}>
+                  {headerRow.map((headerCell) => {
+                    if (headerCell.kind === "group")
+                      return (
+                        <Grid.HeaderGroupCell cell={headerCell} key={headerCell.idOccurrence} />
+                      );
+
+                    return (
+                      <Grid.HeaderCell
+                        className="flex items-center px-2"
+                        cell={headerCell}
+                        key={headerCell.id}
+                      />
+                    );
+                  })}
+                </Grid.HeaderRow>
+              );
+            })}
+          </Grid.Header>
+          <Grid.RowsContainer>
+            <Grid.RowsTop>
+              <RowHandler rows={view.rows.top} />
+            </Grid.RowsTop>
+            <Grid.RowsCenter>
+              <RowHandler rows={view.rows.center} />
+            </Grid.RowsCenter>
+            <Grid.RowsBottom>
+              <RowHandler rows={view.rows.bottom} />
+            </Grid.RowsBottom>
+          </Grid.RowsContainer>
+        </Grid.Viewport>
+      </Grid.Root>
+    </div>
+  );
+}
+
+const RowHandler = <T,>(props: { rows: RowLayout<T>[] }) => {
+  return props.rows.map((row) => {
+    if (row.kind === "full-width") return <Grid.RowFullWidth key={row.id} row={row} />;
+
+    return <Row key={row.id} row={row} />;
+  });
+};
+function RowImpl<T>({ row }: { row: RowNormalRowLayout<T> }) {
+  return (
+    <Grid.Row key={row.id} row={row}>
+      {row.cells.map((cell) => {
+        return <Grid.Cell className="flex items-center px-2" cell={cell} key={cell.id} />;
+      })}
+    </Grid.Row>
+  );
+}
+
+const Row = memo(RowImpl) as <T>(props: { row: RowNormalRowLayout<T> }) => ReactNode;
+```
+
+</Tab>
+
+<Tab label="PRO">
+
+```tsx
+import "@1771technologies/lytenyte-pro/grid.css";
+import type {
+  Grid as G,
+  RowLayout,
+  RowNormalRowLayout,
+} from "@1771technologies/lytenyte-pro/types";
+import { Grid } from "@1771technologies/lytenyte-pro";
+import { memo, type ReactNode } from "react";
+
+export function LyteNyte<T>({ grid }: { grid: G<T> }) {
+  const view = grid.view.useValue();
+
+  return (
+    <div className="lng-grid lng1771-shadcn h-full w-full">
+      <Grid.Root grid={grid}>
+        <Grid.Viewport>
+          <Grid.Header>
+            {view.header.layout.map((headerRow, i) => {
+              return (
+                <Grid.HeaderRow headerRowIndex={i} key={i}>
+                  {headerRow.map((headerCell) => {
+                    if (headerCell.kind === "group")
+                      return (
+                        <Grid.HeaderGroupCell cell={headerCell} key={headerCell.idOccurrence} />
+                      );
+
+                    return (
+                      <Grid.HeaderCell
+                        className="flex items-center px-2"
+                        cell={headerCell}
+                        key={headerCell.id}
+                      />
+                    );
+                  })}
+                </Grid.HeaderRow>
+              );
+            })}
+          </Grid.Header>
+          <Grid.RowsContainer>
+            <Grid.RowsTop>
+              <RowHandler rows={view.rows.top} />
+            </Grid.RowsTop>
+            <Grid.RowsCenter>
+              <RowHandler rows={view.rows.center} />
+            </Grid.RowsCenter>
+            <Grid.RowsBottom>
+              <RowHandler rows={view.rows.bottom} />
+            </Grid.RowsBottom>
+          </Grid.RowsContainer>
+        </Grid.Viewport>
+      </Grid.Root>
+    </div>
+  );
+}
+
+const RowHandler = <T,>(props: { rows: RowLayout<T>[] }) => {
+  return props.rows.map((row) => {
+    if (row.kind === "full-width") return <Grid.RowFullWidth key={row.id} row={row} />;
+
+    return <Row key={row.id} row={row} />;
+  });
+};
+function RowImpl<T>({ row }: { row: RowNormalRowLayout<T> }) {
+  return (
+    <Grid.Row key={row.id} row={row}>
+      {row.cells.map((cell) => {
+        return <Grid.Cell className="flex items-center px-2" cell={cell} key={cell.id} />;
+      })}
+    </Grid.Row>
+  );
+}
+
+const Row = memo(RowImpl) as <T>(props: { row: RowNormalRowLayout<T> }) => ReactNode;
+```
+
+</Tab>
+
+</Tabs>
+
+Then copy and paste the following code into your hooks folder:
+
+<Tabs>
+
+<Tab label="Core">
+
+```tsx
+import {
+  Grid,
+  useClientRowDataSource,
+  useClientRowDataSourcePaginated,
+} from "@1771technologies/lytenyte-core";
+
+const useLyteNyte = Grid.useLyteNyte;
+export { useLyteNyte, useClientRowDataSource, useClientRowDataSourcePaginated };
+```
+
+</Tab>
+
+<Tab label="PRO">
+
+```tsx
+import {
+  Grid,
+  useClientRowDataSource,
+  useClientRowDataSourcePaginated,
+  useClientTreeDataSource,
+  useServerDataSource,
+} from "@1771technologies/lytenyte-pro";
+
+const useLyteNyte = Grid.useLyteNyte;
+export {
+  useLyteNyte,
+  useClientRowDataSource,
+  useClientRowDataSourcePaginated,
+  useServerDataSource,
+  useClientTreeDataSource,
+};
+```
+
+</Tab>
+
+</Tabs>

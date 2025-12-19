@@ -1,0 +1,93 @@
+{
+  "name": "@1771technologies/lytenyte-doc",
+  "version": "1.0.13",
+  "type": "module",
+  "license": "Apache-2.0",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "homepage": "https://1771technologies.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/1771-technologies/lytenyte.git",
+    "directory": "packages-documentation/lytenyte-doc"
+  },
+  "bugs": {
+    "url": "https://github.com/1771-technologies/lytenyte/issues"
+  },
+  "exports": {
+    ".": "./lytenyte-doc.ts",
+    "./collections": "./collections.d.ts",
+    "./code": "./code.ts",
+    "./*.astro": "./src/*.astro",
+    "./theme.css": "./src/theme.css"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@astrojs/mdx": "4.3.12",
+    "@astrojs/starlight": "0.37.0",
+    "@base-ui/react": "^1.0.0",
+    "@expressive-code/plugin-collapsible-sections": "0.41.3",
+    "@expressive-code/plugin-line-numbers": "0.41.3",
+    "@iconify-json/logos": "^1.2.10",
+    "@iconify-json/ph": "1.2.2",
+    "@iconify-json/svg-spinners": "1.2.4",
+    "@iconify/tailwind4": "1.2.0",
+    "@manypkg/find-root": "3.1.0",
+    "@tailwindcss/vite": "4.1.17",
+    "@types/hast": "3.0.4",
+    "@types/mdast": "^4.0.4",
+    "astro": "5.16.1",
+    "astro-expressive-code": "0.41.3",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "codesandbox": "^2.2.3",
+    "date-fns": "^4.1.0",
+    "es-toolkit": "^1.42.0",
+    "flexsearch": "^0.8.212",
+    "fumadocs-typescript": "4.0.8",
+    "github-slugger": "^2.0.0",
+    "gray-matter": "^4.0.3",
+    "hast": "1.0.0",
+    "hast-util-from-html": "2.0.3",
+    "hast-util-from-html-isomorphic": "^2.0.0",
+    "hast-util-select": "6.0.4",
+    "hast-util-to-string": "3.0.1",
+    "hast-util-to-text": "^4.0.2",
+    "hastscript": "9.0.1",
+    "katex": "^0.16.27",
+    "mdast": "^3.0.0",
+    "mdast-util-directive": "^3.1.0",
+    "mdast-util-from-markdown": "^2.0.2",
+    "mdast-util-mdx": "^3.0.0",
+    "mdast-util-mdx-jsx": "^3.2.0",
+    "mdast-util-mdxjs-esm": "^2.0.1",
+    "mdast-util-to-string": "^4.0.0",
+    "micromark-extension-mdxjs": "^3.0.0",
+    "radix-ui": "^1.4.3",
+    "rehype": "13.0.2",
+    "rehype-katex": "^7.0.1",
+    "remark-directive": "^4.0.0",
+    "remark-frontmatter": "^5.0.0",
+    "remark-gfm": "4.0.1",
+    "remark-math": "^6.0.0",
+    "remark-mdx": "3.1.1",
+    "remark-parse": "^11.0.0",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss": "4.1.17",
+    "tinyglobby": "0.2.15",
+    "ts-morph": "26.0.0",
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.0.0",
+    "unist-util-visit-parents": "^6.0.2",
+    "vfile": "^6.0.3"
+  },
+  "dependencies": {
+    "@astrojs/markdown-remark": "^6.3.10",
+    "@mdx-js/mdx": "^3.1.1"
+  }
+}

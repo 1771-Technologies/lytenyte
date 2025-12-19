@@ -1,0 +1,12 @@
+<ul {...Astro.props}><slot /></ul>
+
+<style>
+  ul {
+    list-style: disc;
+    margin-left: 18px;
+  }
+
+  ul:not(ul ul, ol ul) {
+    margin-block: 24px;
+  }
+</style>

@@ -1,0 +1,13 @@
+<ol {...Astro.props}><slot /></ol>
+
+<style>
+  ol {
+    list-style: disc;
+    margin-left: 18px;
+  }
+
+  /* Only OLs that are NOT inside another UL/OL */
+  ol:not(ul ol, ol ol) {
+    margin-block: 24px;
+  }
+</style>

@@ -1,0 +1,29 @@
+---
+title: Grid State
+description: The API reference for the grid state functionality in LyteNyte Grid.
+---
+## `Grid`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+The grid object encapsulates the full LyteNyte Grid instance, including its state, view, and imperative API.
+  It is returned by the  ``useLyteNyte``  hook and serves as the primary interface for interacting with the grid programmatically.
+
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="Grid" />
+
+
+## `GridState`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+The declarative state object of LyteNyte Grid. This state encapsulates all mutable and observable
+  grid properties that affect layout, data, selection, and rendering. Updating any of these atoms will trigger
+  corresponding changes in the grid UI. These state values can also be used to create and synchronize external
+  components such as toolbars, panels, or widgets.
+
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="GridState" />
+
+
+## `UseLyteNyteProps`<span className="type-tag" style={{ '--type-content': "'object'" }} />
+
+The initial props that may be passed to the  ``useLyteNyte``  hook. The hook
+    returns the state representation of LyteNyte Grid.
+
+<AutoTypeTable path="../packages/commercial-lytenyte-pro/src/+types.ts" name="UseLyteNyteProps" />
+

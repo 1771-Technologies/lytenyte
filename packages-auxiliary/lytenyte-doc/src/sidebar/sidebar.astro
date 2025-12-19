@@ -1,0 +1,85 @@
+---
+import type { Root } from "./types";
+
+interface Props {
+  readonly collection: string;
+  readonly item: Root["children"][number];
+  readonly depth?: number;
+}
+import Tree from "./sidebar.astro";
+import { getEntry } from "astro:content";
+import { cn } from "../ui/cn";
+
+const { item, collection, depth = 0 } = Astro.props;
+
+let title = "";
+if (item?.kind === "page-link") {
+  const entry = await getEntry(collection, item.id);
+  title = entry.data.title;
+}
+
+let { pathname } = Astro.url;
+if (pathname.endsWith("/")) pathname = pathname.slice(0, -1);
+---
+
+{
+  item?.kind === "direct-link" && (
+    <a data-active={pathname === item.id} href={item.id}>
+      {item.label}
+    </a>
+  )
+}
+{item?.kind === "external-link" && <a href={item.href}>{item.label}</a>}
+{
+  item?.kind === "page-link" && (
+    <a
+      data-active={pathname === `/${collection}/${item.id}`}
+      href={`/${collection}/${item.id}`}
+      class:list={cn(
+        "data-[active=true]:bg-xd-accent-foreground/10 data-[active=true]:text-xd-foreground relative hover:bg-xd-accent-foreground/5 transition-colors",
+        "data-active:before:bg-xd-border data-active:before:h-full data-active:before:top-0",
+        "data-active:before:absolute data-active:before:w-px data-[active=true]:before:h-2/5 data-[active=true]:before:bg-xd-foreground",
+        "data-active:before:left-[7px] data-[active=true]:before:top-3/10 hover:duration-0 duration-100",
+        "text-xs tracking-tight text-xd-muted-foreground font-semibold",
+        "px-[calc(var(--sidebar-depth,1)*16px)] py-2 rounded-lg",
+      )}
+    >
+      {title}
+    </a>
+  )
+}
+{item?.kind === "separator" && <div role="separator" class="bg-xd-border/30 h-px w-full my-2" />}
+{
+  item?.kind === "group" && (
+    <div
+      class="group"
+      data-collapsible={item.collapsible}
+      data-collapsed={item.collapsed}
+      data-group-id={item.id}
+    >
+      <div class="tracking-tight font-semibold text-sm flex items-center">
+        {!item.collapsible && <div class="flex-1">{item.label}</div>}
+        {item.collapsible && (
+          <button
+            class="flex items-center text-start xd-collapse-btn flex-1 hover:bg-xd-accent-foreground/10 transition-colors cursor-pointer px-2 -mx-1 rounded-lg py-1"
+            data-group-id={item.id}
+          >
+            <span class="flex-1">{item.label}</span>
+            <span class="iconify ph--caret-down group-data-[collapsed=true]:-rotate-90 transition-transform" />
+          </button>
+        )}
+      </div>
+      <div class="grid grid-rows-[1fr] group-data-[collapsible=true]:group-data-[collapsed=true]:grid-rows-[0fr] transition-[grid-template-rows] overflow-hidden mt-1 mb-3">
+        <div class="min-h-0">
+          <div>
+            <div class="flex flex-col" style={`--sidebar-depth: ${depth + 1}`}>
+              {item.children!.map((x) => (
+                <Tree item={x} collection={collection} depth={depth + 1} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

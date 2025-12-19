@@ -1,0 +1,171 @@
+---
+import { getEntry, render } from "astro:content";
+import DocsLayout from "./layout/docs-layout.astro";
+
+import StandaloneImage from "./standalone-image.astro";
+import Callout from "./callout.astro";
+import CodeFrame from "./code-frame/code-frame.astro";
+import Steps from "./steps.astro";
+import Tabs from "./tabs.astro";
+import Tab from "./tab.astro";
+import Table from "./table.astro";
+import ProTag from "./company/pro-tag.astro";
+import { getSidebarConfig } from "./sidebar/get-sidebar-config";
+import PackageInstall from "./package-install.astro";
+import H1 from "./parts/h1.astro";
+import H2 from "./parts/h2.astro";
+import H3 from "./parts/h3.astro";
+import H4 from "./parts/h4.astro";
+import H5 from "./parts/h5.astro";
+import H6 from "./parts/h6.astro";
+import A from "./parts/a.astro";
+import Ol from "./parts/ol.astro";
+import Strong from "./parts/strong.astro";
+import Ul from "./parts/ul.astro";
+import P from "./parts/p.astro";
+import Li from "./parts/li.astro";
+import Blockquote from "./parts/block-quote.astro";
+import Hr from "./parts/hr.astro";
+import Img from "./parts/img.astro";
+import Th from "./parts/th.astro";
+import Tr from "./parts/tr.astro";
+import Td from "./parts/td.astro";
+import PackageDlx from "./package-dlx.astro";
+import { flattenTree } from "./sidebar/flatten-tree";
+import { findTitle } from "./sidebar/find-title";
+import { Code } from "astro-expressive-code/components";
+import { PageAction } from "./ui/page-action";
+import TypeTable from "./type-table/type-table.astro";
+import AutoTypeTable from "./type-table/auto-type-table.astro";
+import InlineCode from "./parts/inline-code.astro";
+import type { OneDocConfig } from "../lytenyte-doc";
+
+export interface Props {
+  options: OneDocConfig;
+  rootDir: string;
+  branch: string;
+  entry: {
+    id: string;
+    body?: string;
+    collection: any;
+    data: any;
+    rendered?: any;
+    filePath?: string;
+  };
+}
+type RenderFM = { lastModified?: string; lastModifiedSource?: "git" | "fs" };
+
+const {
+  entry,
+  options: { homeUrl, titleSuffix, githubOrg, githubRepo, navbar, githubUrl, links },
+  rootDir,
+  branch,
+} = Astro.props;
+
+const { Content, headings, remarkPluginFrontmatter } = await render(entry);
+
+const { lastModified } = remarkPluginFrontmatter as RenderFM;
+
+const sidebar = getSidebarConfig(entry.filePath!, entry.collection);
+const flat = flattenTree(sidebar);
+const title = findTitle(sidebar, entry.id);
+
+const current = flat.indexOf(entry.id);
+const next = current !== -1 ? (flat[current + 1] ?? null) : null;
+const prev = current !== -1 ? (flat[current - 1] ?? null) : null;
+
+const nextEntry = next ? await getEntry(entry.collection, next) : null;
+const prevEntry = prev ? await getEntry(entry.collection, prev) : null;
+---
+
+<DocsLayout
+  sidebar={sidebar}
+  links={links}
+  githubUrl={githubUrl}
+  title={entry.data.title}
+  titleSuffix={titleSuffix}
+  homeUrl={homeUrl}
+  navbar={navbar}
+  toc={headings.filter((x: any) => x.depth === 2 || x.depth === 3)}
+  lastModified={lastModified ?? new Date().toISOString()}
+  prevEntry={prevEntry
+    ? {
+        title: prevEntry.data.title,
+        description: prevEntry.data.description ?? "",
+        url: `/${prevEntry.collection}/${prevEntry.id}`,
+      }
+    : null}
+  nextEntry={nextEntry
+    ? {
+        title: nextEntry.data.title,
+        description: nextEntry.data.description ?? "",
+        url: `/${nextEntry.collection}/${nextEntry.id}`,
+      }
+    : null}
+>
+  {
+    title.length > 0 && (
+      <div class="flex items-center gap-1.5 text-sm text-fd-muted-foreground mb-5">
+        <span class="truncate text-xd-primary font-medium">{title}</span>
+      </div>
+    )
+  }
+  <div class="flex items-center justify-between gap-1 text-start relative">
+    <H1>{entry.data.title}</H1>
+    <PageAction
+      client:idle
+      githubOrg={githubOrg}
+      githubRepo={githubRepo}
+      rootDir={rootDir}
+      branch={branch}
+      path={entry.filePath!}
+      collection={entry.collection}
+      id={entry.id}
+    />
+  </div>
+  {
+    entry.data.description && (
+      <P sx="text-base text-xd-muted-foreground">{entry.data.description}</P>
+    )
+  }
+  <Content
+    components={{
+      ProTag,
+      Code,
+      CodeFrame,
+      Callout,
+      StandaloneImage,
+      PackageInstall,
+      PackageDlx,
+      Steps,
+      Tabs,
+      Tab,
+      TypeTable,
+      AutoTypeTable,
+
+      table: Table,
+      th: Th,
+      tr: Tr,
+      td: Td,
+
+      h1: H1,
+      h2: H2,
+      h3: H3,
+      h4: H4,
+      h5: H5,
+      h6: H6,
+
+      a: A,
+      ol: Ol,
+      ul: Ul,
+      p: P,
+      strong: Strong,
+      code: InlineCode,
+
+      li: Li,
+      blockquote: Blockquote,
+      img: Img,
+      hr: Hr,
+    }}
+  />
+</DocsLayout>

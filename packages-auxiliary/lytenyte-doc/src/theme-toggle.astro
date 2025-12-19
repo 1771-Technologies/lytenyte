@@ -1,0 +1,46 @@
+<button
+  class="size-7 aspect-square rounded-lg hover:bg-xd-accent transition-colors flex items-center justify-center cursor-pointer touch-manipulation"
+  id="theme-toggle"
+  title="Toggles light & dark"
+  aria-label="auto"
+  aria-live="polite"
+>
+  <svg
+    class="h-full w-full origin-center scale-75"
+    style="stroke-linecap: round;"
+    aria-hidden="true"
+    width="32"
+    height="32"
+    viewBox="0 0 24 24"
+  >
+    <circle
+      class="origin-center dark:scale-[1.75]"
+      cx="12"
+      cy="12"
+      r="6"
+      mask="url(#moon-mask)"
+      fill="currentColor"></circle>
+    <g
+      class="origin-center stroke-2 dark:opacity-0 dark:rotate-[-25deg] motion-safe:transition-all"
+      stroke="currentColor"
+    >
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </g>
+    <mask id="moon-mask">
+      <rect x="0" y="0" width="100%" height="100%" fill="white"></rect>
+      <circle
+        class="dark:translate-x-[-7px] motion-safe:transition-transform"
+        cx="24"
+        cy="10"
+        r="6"
+        fill="black"></circle>
+    </mask>
+  </svg>
+</button>

@@ -1,0 +1,102 @@
+@source "./";
+
+@custom-variant dark {
+  &:where([data-theme="dark"] *) {
+    @slot;
+  }
+}
+
+@plugin "@iconify/tailwind4" {
+  prefix: "ico";
+  prefixes: ph, svg-spinners, logos;
+}
+
+@import "./theme/colors.css";
+@import "./theme/utilities.css";
+
+html {
+  scrollbar-width: thin;
+  scrollbar-gutter: stable;
+}
+
+body {
+  -webkit-font-smoothing: antialiased; /* 1. MacOS / iOS specific: Enables subpixel antialiasing */
+  -moz-osx-font-smoothing: grayscale; /* 2. Firefox specific: Thins out the font slightly for better readability */
+  text-rendering: optimizeLegibility; /* 3. Standard property (improves kerning and ligatures) */
+  text-size-adjust: 100%; /* 4. Optional: Fixes potential layout shifts when fonts load */
+}
+
+@theme {
+  --spacing-header: 52px;
+  --spacing-subheader: 40px;
+  --spacing-sidenav: 290px;
+  --spacing-toc: 275px;
+
+  --animate-xd-fade-in: xd-fade-in 300ms ease;
+  --animate-xd-fade-out: xd-fade-out 300ms ease;
+
+  @keyframes xd-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes xd-fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+}
+
+.no-transition * {
+  transition-duration: 0s !important;
+  animation-duration: 0s !important;
+}
+
+.codeframe-tabs pre {
+  border: 0px !important;
+}
+.codeframe-tabs .copy {
+  display: none !important;
+}
+
+.codeframe-tabs .expressive-code,
+.package-tabs .expressive-code {
+  margin: 0px;
+}
+
+.xd-callout .expressive-code {
+  @apply my-2 -ms-1;
+}
+.xd-tabs .expressive-code:first-child {
+  @apply my-0;
+
+  & pre {
+    @apply rounded-none border-transparent;
+  }
+}
+
+.expressive-code {
+  @apply my-8;
+}
+.expressive-code .frame.frame {
+  box-shadow: none;
+}
+
+.type-table .expressive-code {
+  @apply my-0;
+
+  & code {
+    @apply p-0;
+
+    & .code {
+      @apply pe-1! ps-1!;
+    }
+  }
+}

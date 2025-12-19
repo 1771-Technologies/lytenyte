@@ -1,0 +1,20 @@
+{
+  "title": "Guides",
+  "pages": [
+    "(introduction)",
+    "(prodready)",
+    "(grid)",
+    "(theming)",
+    "(column)",
+    "(row)",
+    "(cell)",
+    "(row-data-source)",
+    "(pivoting)",
+    "(filtering)",
+    "(server-data-loading)",
+    "(components)",
+    "(export)",
+    "(misc)"
+  ],
+  "root": true
+}
