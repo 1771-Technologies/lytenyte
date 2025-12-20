@@ -7,7 +7,7 @@ import { RowsBottom, RowsCenter, RowsTop } from "./components/rows/rows-section.
 import { useClientDataSource } from "./data-source/use-client-data-source.js";
 
 const columns: Root.Column<number, { x?: 23 }>[] = [
-  { id: "age", groupPath: ["A", "B"] },
+  { id: "age", name: "ob", groupPath: ["A", "B"] },
   { id: "marital", groupPath: ["A"] },
   { id: "default", groupPath: ["T"] },
   { id: "housing" },
@@ -19,7 +19,7 @@ const columns: Root.Column<number, { x?: 23 }>[] = [
   { id: "campaign" },
   { id: "pdays", groupPath: ["C"] },
   { id: "previous", groupPath: ["C", "D"] },
-  { id: "poutcome", colSpan: 2 },
+  { id: "poutcome" },
   { id: "y" },
 ];
 
@@ -34,7 +34,22 @@ export default function Experimental() {
     <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
       <button>A</button>
       <div style={{ height: "90vh", width: "90vw" }}>
-        <Root columns={columns} rowSource={rowSource} floatingRowEnabled>
+        <Root
+          columns={columns}
+          rowSource={rowSource}
+          columnMarkerEnabled
+          rowGroupColumn={{
+            cellRenderer: (p) => {
+              if (p.row.kind === "leaf") return <div />;
+              return (
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", paddingInline: "8px" }}>
+                  <button onClick={() => p.api.rowGroupToggle(p.row)}>X</button>
+                  <div>{p.row.key}</div>
+                </div>
+              );
+            },
+          }}
+        >
           <Viewport style={{ border: "1px solid white" }}>
             <Header />
             <RowsContainer>
@@ -49,3 +64,7 @@ export default function Experimental() {
     </div>
   );
 }
+
+// Moving
+// Resizing
+// Editing

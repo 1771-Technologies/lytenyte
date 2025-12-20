@@ -49,14 +49,21 @@ const CellImpl = memo(
     const rowMeta = useRowMeta();
     const row = rowMeta.row;
 
-    const column = api.columnById(cell.id)!;
+    const column = view.lookup.get(cell.id)!;
 
-    const Renderer = column.cellRenderer ?? (base as any).cellRenderer ?? CellDefault;
+    const Renderer = (column as any).cellRenderer ?? (base as any).cellRenderer ?? CellDefault;
 
     // TODO
     const isEditing = false;
 
-    const style = useCellStyle(xPositions, yPositions, cell, rtl, row ? api.rowDetailHeight(row) : 0, undefined);
+    const style = useCellStyle(
+      xPositions,
+      yPositions,
+      cell,
+      rtl,
+      row ? api.rowDetailHeight(row) : 0,
+      undefined,
+    );
 
     if (cell.isDeadRow) return <div style={{ width: sizeFromCoord(cell.colIndex, xPositions) }} />;
 

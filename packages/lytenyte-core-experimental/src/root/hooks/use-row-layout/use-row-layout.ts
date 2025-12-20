@@ -39,6 +39,7 @@ export function useRowLayout(
   const layoutCache = useMemo(() => {
     void snapshot;
     void rowDetailExpansions;
+    void view;
 
     // Directly compute row count here so that the different row count parts are part of the
     // memo's dependency array.
@@ -55,7 +56,7 @@ export function useRowLayout(
     }
 
     return { layout: { ...layoutState }, cache: new Map<number, LayoutRow<any>>() };
-  }, [botCount, centerCount, columnCount, layoutStateRef, rowDetailExpansions, snapshot, topCount]);
+  }, [botCount, centerCount, columnCount, layoutStateRef, rowDetailExpansions, snapshot, topCount, view]);
 
   const columns = view.visibleColumns;
   const [computeColSpan, computeRowSpan] = useMemo(() => {
@@ -111,8 +112,10 @@ export function useRowLayout(
     if (!vp) return { top: [], bottom: [], center: [], rowFirstCenter: 0, rowFocusedIndex: null };
 
     let n = spanLayout;
-    if (props.virtualizeRows === false) n = { ...n, rowCenterStart: n.rowTopEnd, rowCenterEnd: n.rowCenterLast };
-    if (props.virtualizeCols === false) n = { ...n, colCenterStart: n.colStartEnd, colCenterEnd: n.colCenterLast };
+    if (props.virtualizeRows === false)
+      n = { ...n, rowCenterStart: n.rowTopEnd, rowCenterEnd: n.rowCenterLast };
+    if (props.virtualizeCols === false)
+      n = { ...n, colCenterStart: n.colStartEnd, colCenterEnd: n.colCenterLast };
 
     const hasSpans = Boolean(computeColSpan || computeRowSpan);
     const { layout, cache } = layoutCache;

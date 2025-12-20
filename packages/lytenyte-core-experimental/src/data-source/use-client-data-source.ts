@@ -18,6 +18,7 @@ import { useSorted } from "./hooks/use-sorted.js";
 import { useGroupTree } from "./hooks/use-group-tree.js";
 import { useControlled } from "../hooks/use-controlled.js";
 import { useFlattenedGroups } from "./hooks/use-flattened-groups.js";
+import { useEvent } from "../hooks/use-event.js";
 
 export interface UseClientDataSourceParams<T> {
   readonly data: T[];
@@ -56,10 +57,11 @@ export function useClientDataSource<T>({
   const filtered = useFiltered(leafs, filter);
   const sorted = useSorted(leafs, sort, filtered);
 
-  const [expansions] = useControlled({
+  const [expansions, setExpansions] = useControlled({
     controlled: rowGroupExpansions,
     default: {},
   });
+
   const expandedFn = useCallback(
     (id: string, depth: number) => {
       const s = expansions[id];
@@ -84,7 +86,11 @@ export function useClientDataSource<T>({
     expandedFn,
   );
 
-  const { flatten: piece, rowByIndexRef } = useFlattenedPiece({
+  const {
+    flatten: piece,
+    rowByIdRef,
+    rowByIndexRef,
+  } = useFlattenedPiece({
     leafsTop,
     leafsCenter: leafs,
     leafsBot,
@@ -97,6 +103,19 @@ export function useClientDataSource<T>({
   const maxDepthPiece = usePiece(maxDepth);
 
   const atomCache = useRef<Record<number, RowAtom<RowNode<T> | null>>>({});
+
+  const rowGroupIsExpanded = useEvent((id: string) => {
+    const row = rowByIdRef.current.get(id);
+    if (!row || row.kind !== "branch") return false;
+
+    const state = expansions[row.id];
+    if (state != null) return state;
+
+    if (typeof rowGroupDefaultExpansion === "boolean") return rowGroupDefaultExpansion;
+
+    return row.depth <= rowGroupDefaultExpansion;
+  });
+
   const source = useMemo<RowSource>(() => {
     const rowCount$ = (x: RowNode<T>[]) => x.length;
     return {
@@ -111,14 +130,29 @@ export function useClientDataSource<T>({
         return atomCache.current[row];
       },
       rowIndexToRowId: (index) => rowByIndexRef.current.get(index)?.id ?? null,
+      rowById: (id) => rowByIdRef.current.get(id) ?? null,
+      rowGroupIsExpanded,
       useBottomCount: botPiece.useValue,
       useTopCount: topPiece.useValue,
       useRowCount: () => piece.useValue(rowCount$),
 
       useMaxRowGroupDepth: maxDepthPiece.useValue,
       useSnapshotVersion: () => 0,
+
+      onRowGroupExpansionsChange: (deltaChanges) => {
+        setExpansions((prev) => ({ ...prev, ...deltaChanges }));
+      },
     };
-  }, [botPiece.useValue, maxDepthPiece, piece, rowByIndexRef, topPiece.useValue]);
+  }, [
+    botPiece.useValue,
+    maxDepthPiece.useValue,
+    piece,
+    rowByIdRef,
+    rowByIndexRef,
+    rowGroupIsExpanded,
+    setExpansions,
+    topPiece.useValue,
+  ]);
 
   return source;
 }

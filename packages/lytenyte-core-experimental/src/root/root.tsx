@@ -252,11 +252,14 @@ export namespace Root {
     readonly rowDetailHeight: (rowId: WithId | string) => number;
     readonly rowDetailExpanded: (rowOrId: RowNode<T> | string | number) => boolean;
 
+    readonly rowGroupToggle: (rowOrId: RowNode<T> | string, state?: boolean) => void;
+
     readonly scrollIntoView: (params: {
       readonly column?: number | string | WithId;
       readonly row?: number;
       readonly behavior?: "smooth" | "auto" | "instant";
     }) => void;
+
     readonly props: () => Props<T, ColExt, S, Ext>;
   } & S &
     Ext;
@@ -327,14 +330,12 @@ export namespace Root {
     readonly rowHeight?: RowHeight;
     readonly rowAutoHeightGuess?: number;
 
-    readonly rowGroupColumn?: Omit<Column<Data, ColExt, S, Ext>, "field"> &
-      Pick<
-        ColumnAbstract,
-        "width" | "widthMax" | "widthFlex" | "widthMin" | "pin" | "resizable" | "hide" | "name" | "type"
-      >;
+    readonly rowGroupColumn?: Omit<Column<Data, ColExt, S, Ext>, "field" | "id">;
     readonly rowGroupDisplayMode?: RowGroupDisplayMode;
 
-    readonly rowFullWidthPredicate?: null | ((params: RowParams<RowNode<Data>, API<Data, ColExt, S, Ext>>) => boolean);
+    readonly rowFullWidthPredicate?:
+      | null
+      | ((params: RowParams<RowNode<Data>, API<Data, ColExt, S, Ext>>) => boolean);
     readonly rowFullWidthRenderer?: Renderers<Data, ColExt, S, Ext>["row"] | null;
 
     readonly virtualizeCols?: boolean;
@@ -358,5 +359,6 @@ export namespace Root {
     // Values that can be changed by the grid
     readonly onColumnGroupExpansionChange?: (change: Record<string, boolean>) => void;
     readonly onRowDetailExpansionsChange?: (change: Set<string>) => void;
+    readonly onRowGroupExpansionChange?: (deltaChange: Record<string, boolean>) => void;
   };
 }
