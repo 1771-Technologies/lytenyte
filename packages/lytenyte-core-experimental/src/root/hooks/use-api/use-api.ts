@@ -3,11 +3,14 @@ import {
   CONTAINS_DEAD_CELLS,
   FULL_WIDTH,
   get,
+  GROUP_COLUMN_PREFIX,
   rowScrollIntoViewValue,
   updateLayout,
+  type ColumnAbstract,
   type ColumnView,
   type LayoutState,
   type RowSource,
+  type SpanLayout,
 } from "@1771technologies/lytenyte-shared";
 import type { API, Props } from "../../../types/types-internal";
 import type { RefObject } from "react";
@@ -15,7 +18,8 @@ import { useEvent } from "../../../hooks/use-event.js";
 import { getSpanFn } from "../use-row-layout/get-span-fn.js";
 import { getFullWidthFn } from "../use-row-layout/get-full-width-fn.js";
 import { resolveColumn } from "./resolve-column.js";
-import type { Controlled } from "../use-controlled-grid-state";
+import type { Controlled } from "../use-controlled-grid-state.js";
+import { defaultAutosize, defaultAutosizeHeader } from "./autosizers.js";
 
 type Writable<T> = { -readonly [k in keyof T]: T[k] };
 
@@ -24,6 +28,7 @@ export function useApi(
   source: RowSource,
   view: ColumnView,
   controlled: Controlled,
+  bounds: SpanLayout,
   layoutStateRef: RefObject<LayoutState>,
 
   detailExpansions: Set<string>,
@@ -35,6 +40,111 @@ export function useApi(
   providedApi: API,
 ) {
   const api: Writable<API> = providedApi;
+  const rowTopCount = source.useTopCount();
+  const rowBottomCount = source.useBottomCount();
+  const rowCount = source.useRowCount();
+
+  api.columnUpdate = useEvent((updates) => {
+    const columns = [...controlled.columns];
+
+    const groupColumns = view.visibleColumns.filter((c) => c.id.startsWith(GROUP_COLUMN_PREFIX));
+    const groupColumn = groupColumns[0];
+
+    if (groupColumn) {
+      if (updates[groupColumn.id]) {
+        const next = { ...groupColumn, ...updates[groupColumn.id] };
+        controlled.onRowGroupColumnChange(next);
+      }
+    }
+
+    for (let i = 0; i < columns.length; i++) {
+      const column = columns[i];
+
+      if (updates[column.id]) {
+        const next = { ...column, ...updates[column.id] };
+        columns[i] = next;
+      }
+    }
+    controlled.onColumnsChange(columns);
+  });
+
+  api.columnAutosize = (params) => {
+    const errorRef = { current: false };
+
+    const columns =
+      (params.columns
+        ?.map((c) => resolveColumn(c, errorRef, view))
+        .map((c) => c && (typeof c === "string" ? api.columnById(c) : c))
+        .filter(Boolean) as ColumnAbstract[]) ?? view.visibleColumns;
+
+    if (errorRef.current) {
+      console.error("Invalid column autosize column params");
+      return {};
+    }
+    if (columns.length === 0) return {};
+
+    const base = props.columnBase ?? {};
+    const result: Record<string, number> = {};
+
+    const rowFirstVisible = bounds.rowCenterStart;
+    const rowLastVisible = bounds.rowCenterEnd;
+
+    const rowStart = Math.max(rowFirstVisible, 0);
+    const rowEnd = rowLastVisible === 0 ? Math.min(50, rowCount - rowBottomCount) : rowLastVisible;
+    calculateWidths(rowStart, rowEnd);
+    if (rowTopCount) calculateWidths(0, rowTopCount);
+    if (rowBottomCount) calculateWidths(rowCount - rowBottomCount, rowCount);
+
+    if (params?.includeHeader) {
+      for (let columnIndex = 0; columnIndex < columns.length; columnIndex++) {
+        const column = columns[columnIndex];
+
+        const autoFn =
+          (column as any).autosizeHeaderFn ?? (base as any).autosizeHeaderFn ?? defaultAutosizeHeader;
+
+        const width = autoFn({ api, column: column as any });
+
+        if (width != null) result[column.id] = Math.max(width, result[column.id]);
+      }
+    }
+
+    if (params?.dryRun) return result;
+
+    const updates = Object.fromEntries(
+      Object.entries(result).map(([key, v]) => [key, { width: v }] as const),
+    );
+
+    api.columnUpdate(updates);
+
+    return result;
+
+    function calculateWidths(start: number, end: number) {
+      for (let rowIndex = start; rowIndex < end; rowIndex++) {
+        const row = api.rowByIndex(rowIndex);
+        if (!row) continue;
+
+        for (let i = 0; i < columns.length; i++) {
+          const column = columns[i];
+
+          const autoFn = (column as any).autosizeCellFn ?? (base as any).autosizeCellFn ?? defaultAutosize;
+          const width = autoFn({ column, api, row });
+          result[column.id] ??= 0;
+
+          if (width != null) result[column.id] = Math.max(width, result[column.id]);
+        }
+      }
+    }
+  };
+
+  api.columnResize = useEvent((updates) => {
+    const columnUpdates = Object.fromEntries(
+      Object.entries(updates)
+        .map(([c, v]) => [c, { width: v }] as const)
+        .filter((c) => api.columnById(c[0])),
+    );
+
+    api.columnUpdate(columnUpdates);
+  });
 
   api.columnById = useEvent((id) => {
     return view.lookup.get(id) ?? null;
@@ -94,10 +204,6 @@ export function useApi(
     return (row.data as any)[field] as unknown;
   });
 
-  const topCount = source.useTopCount();
-  const botCount = source.useBottomCount();
-  const rowCount = source.useRowCount();
-
   api.cellRoot = useEvent((row, column) => {
     const l = layoutStateRef.current;
 
@@ -114,8 +220,8 @@ export function useApi(
         lookup: l.lookup,
         special: l.special,
 
-        botCount,
-        topCount,
+        botCount: rowBottomCount,
+        topCount: rowTopCount,
 
         startCount: view.startCount,
         centerCount: view.centerCount,
@@ -133,7 +239,7 @@ export function useApi(
 
         rowStart: row,
         rowEnd: row + 1,
-        rowMax: rowCount - botCount,
+        rowMax: rowCount - rowBottomCount,
         rowScanDistance: props.rowScanDistance ?? 100,
       });
     }
@@ -196,8 +302,8 @@ export function useApi(
     const row = opts.row;
     if (row != null) {
       y = rowScrollIntoViewValue({
-        bottomCount: botCount,
-        topCount: topCount,
+        bottomCount: rowBottomCount,
+        topCount: rowTopCount,
         rowCount: rowCount,
         headerHeight: headerHeightTotal,
         rowIndex: row,
@@ -240,6 +346,10 @@ export function useApi(
     const change = { [row.id]: next };
     source.onRowGroupExpansionsChange(change);
     props.onRowGroupExpansionChange?.(change);
+  });
+
+  api.viewport = useEvent(() => {
+    return vp;
   });
 
   api.props = useEvent(() => props as any);

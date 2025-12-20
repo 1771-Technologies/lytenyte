@@ -31,11 +31,23 @@ export function useControlledGridState(props: Props) {
   // Columns
   const [columns, setColumns] = useControlled({
     controlled: props.onColumnsChange ? props.columns : undefined,
-    default: props.columns ?? [],
+    default: props.columns,
   });
   const onColumnsChange = useEvent((change: ColumnAbstract[]) => {
     props.onColumnsChange?.(change);
     setColumns(change);
+  });
+
+  const [rowGroupColumn, setRowGroupColumn] = useControlled({
+    controlled: props.onRowGroupColumnChange ? props.rowGroupColumn : undefined,
+    default: props.rowGroupColumn,
+  });
+  const onRowGroupColumnChange = useEvent((change: Omit<ColumnAbstract, "id" | "field">) => {
+    delete (change as any)["id"];
+    delete (change as any)["field"];
+
+    props.onRowGroupColumnChange?.(change);
+    setRowGroupColumn(change);
   });
 
   return useMemo(() => {
@@ -48,6 +60,9 @@ export function useControlledGridState(props: Props) {
 
       columns,
       onColumnsChange,
+
+      rowGroupColumn,
+      onRowGroupColumnChange,
     };
   }, [
     columnGroupExpansions,
@@ -56,5 +71,7 @@ export function useControlledGridState(props: Props) {
     onColumnGroupExpansionChange,
     onColumnsChange,
     onRowDetailExpansionsChange,
+    onRowGroupColumnChange,
+    rowGroupColumn,
   ]);
 }

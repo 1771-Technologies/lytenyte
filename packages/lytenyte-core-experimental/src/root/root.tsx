@@ -101,6 +101,7 @@ export const Root = <
     source,
     view,
     controlled,
+    bounds.get(),
     layoutStateRef,
     controlled.detailExpansions,
     yPositions.detailCache,
@@ -130,6 +131,7 @@ export const Root = <
       columnGroupMoveDragPlaceholder: props.columnGroupMoveDragPlaceholder,
       columnGroupRenderer: props.columnGroupRenderer,
       columnMoveDragPlaceholder: props.columnMoveDragPlaceholder,
+      columnDoubleClickToAutosize: props.columnDoubleClickToAutosize ?? true,
 
       dimensions,
 
@@ -158,6 +160,7 @@ export const Root = <
     focusPiece,
     id,
     props.columnBase,
+    props.columnDoubleClickToAutosize,
     props.columnGroupDefaultExpansion,
     props.columnGroupMoveDragPlaceholder,
     props.columnGroupRenderer,
@@ -276,6 +279,13 @@ export namespace Root {
       readonly before?: boolean;
       readonly updatePinState?: boolean;
     }) => void;
+    readonly columnResize: (sizes: Record<string, number>) => void;
+    readonly columnAutosize: (params: {
+      readonly dryRun?: boolean;
+      readonly includeHeader?: boolean;
+      readonly columns?: (string | number | WithId)[];
+    }) => Record<string, number>;
+    readonly columnUpdate: (updates: Record<string, Omit<Column<T, ColExt, S, Ext>, "id">>) => void;
 
     readonly rowDetailHeight: (rowId: WithId | string) => number;
     readonly rowDetailExpanded: (rowOrId: RowNode<T> | string | number) => boolean;
@@ -287,6 +297,8 @@ export namespace Root {
       readonly row?: number;
       readonly behavior?: "smooth" | "auto" | "instant";
     }) => void;
+
+    readonly viewport: () => HTMLElement | null;
 
     readonly props: () => Props<T, ColExt, S, Ext>;
   } & S &
@@ -400,6 +412,7 @@ export namespace Root {
     readonly onColumnGroupExpansionChange?: (change: Record<string, boolean>) => void;
     readonly onRowDetailExpansionsChange?: (change: Set<string>) => void;
     readonly onRowGroupExpansionChange?: (deltaChange: Record<string, boolean>) => void;
-    readonly onColumnsChange?: (columns: Column<Data, ColExt, S, Ext>) => void;
+    readonly onColumnsChange?: (columns: Column<Data, ColExt, S, Ext>[]) => void;
+    readonly onRowGroupColumnChange?: (column: Omit<Column<Data, ColExt, S, Ext>, "field" | "id">) => void;
   };
 }
