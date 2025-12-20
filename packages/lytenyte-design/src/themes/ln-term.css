@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100..900&display=swap");
+
 .ln-term {
   --ln-gray-00: hsla(0, 0%, 0%, 1);
   --ln-gray-01: hsla(0, 0%, 0%, 1);
@@ -81,12 +83,4 @@
   --ln-column-pivot-stroke: hsla(259, 100%, 66%, 0.6);
   --ln-column-group-fill: hsla(180, 100%, 35%, 0.15);
   --ln-column-group-stroke: hsla(180, 100%, 35%, 0.36);
-}
-
-@font-face {
-  font-family: "Noto Sans Mono";
-  src: url("../fonts/notosans-mono.woff2") format("woff2-variations");
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
 }

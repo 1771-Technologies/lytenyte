@@ -1,5 +1,10 @@
 import type { Ref } from "react";
-import type { ColumnAbstract, RowGroupDisplayMode, RowSource } from "@1771technologies/lytenyte-shared";
+import type {
+  ColumnAbstract,
+  RowGroupDisplayMode,
+  RowNode,
+  RowSource,
+} from "@1771technologies/lytenyte-shared";
 import type { Root } from "../root/root";
 
 export type API = Root.API<any>;
@@ -63,7 +68,6 @@ export interface Props {
 
   readonly rowSelectionMode?: "single" | "multiple" | "none";
   readonly rowSelectionActivator?: "single-click" | "double-click" | "none";
-  readonly rowSelectChildren?: boolean;
 
   readonly rowDetailExpansions?: Set<string>;
   readonly rowDetailHeight?: number | "auto";
@@ -74,7 +78,7 @@ export interface Props {
 
   readonly editRowValidatorFn?: any;
   readonly editClickActivator?: "single" | "double-click" | "none";
-  readonly editCellMode?: "cell" | "readonly";
+  readonly editMode?: "cell" | "readonly";
 
   // Values that can be changed by the grid
   readonly onColumnGroupExpansionChange?: (change: Record<string, boolean>) => void;
@@ -82,4 +86,39 @@ export interface Props {
   readonly onRowGroupExpansionChange?: (deltaChange: Record<string, boolean>) => void;
   readonly onColumnsChange?: (columns: ColumnAbstract[]) => void;
   readonly onRowGroupColumnChange?: (column: Omit<ColumnAbstract, "id">) => void;
+
+  readonly onEditBegin?: (params: {
+    readonly preventDefault: () => void;
+    readonly api: API;
+    readonly row: RowNode<any>;
+    readonly column: ColumnAbstract;
+    readonly editData: unknown;
+  }) => void;
+  readonly onEditEnd?: (params: {
+    readonly preventDefault: () => void;
+    readonly api: API;
+    readonly row: RowNode<any>;
+    readonly column: ColumnAbstract;
+    readonly editData: unknown;
+  }) => void;
+  readonly onEditCancel?: (params: {
+    readonly api: API;
+    readonly row: RowNode<any>;
+    readonly column: ColumnAbstract;
+    readonly editData: unknown;
+  }) => void;
+  readonly onEditFail?: (params: {
+    readonly api: API;
+    readonly row: RowNode<any>;
+    readonly column: ColumnAbstract;
+    readonly editData: unknown;
+    readonly validation: null | Record<string, unknown> | boolean;
+  }) => void;
+
+  readonly onRowSelect?: (params: {
+    readonly preventDefault: () => void;
+    readonly api: API;
+    readonly rows: string[] | "all";
+    readonly deselect: boolean;
+  }) => boolean;
 }

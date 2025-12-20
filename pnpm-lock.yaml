@@ -764,6 +764,9 @@ importers:
 
   packages/lytenyte-core-experimental:
     dependencies:
+      '@1771technologies/lytenyte-design':
+        specifier: workspace:*
+        version: link:../lytenyte-design
       '@1771technologies/lytenyte-shared':
         specifier: workspace:*
         version: link:../lytenyte-shared

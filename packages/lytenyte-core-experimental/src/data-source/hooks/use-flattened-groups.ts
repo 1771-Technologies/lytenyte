@@ -1,21 +1,11 @@
-import type {
-  AggregationFn,
-  GroupIdFn,
-  RowGroup,
-  RowLeaf,
-  RowNode,
-  SortFn,
-} from "@1771technologies/lytenyte-shared";
+import type { AggregationFn, RowGroup, RowLeaf, RowNode, SortFn } from "@1771technologies/lytenyte-shared";
 import type { RootMap, RootNode } from "./use-group-tree";
 import { useMemo } from "react";
-
-const groupIdFallback: GroupIdFn = (p) => p.map((x) => (x == null ? "_null_" : x)).join("->");
 
 type UseFlattenedGroupsReturn<T> = [rows: RowNode<T>[] | null, depth: number];
 
 export function useFlattenedGroups<T>(
   root: RootNode<T> | null,
-  branchId: GroupIdFn | undefined = groupIdFallback,
   agg: AggregationFn<T> | undefined,
   leafs: RowLeaf<T>[],
   workingSet: number[],
@@ -36,10 +26,16 @@ export function useFlattenedGroups<T>(
       | RowLeaf<T>;
 
     let maxDepth = 0;
-    function processRowsBetter(node: RootMap<T>, parent: RowGroup | null, start: number, depth = 0) {
+    function processRowsBetter(
+      node: RootMap<T>,
+      parent: RowGroup | null,
+      start: number,
+      isLast: boolean,
+      depth = 0,
+    ) {
       maxDepth = Math.max(depth + 1, maxDepth);
 
-      const rows = nodeChildrenToRows(node, branchId, agg, leafs, workingSet, sort, false, depth);
+      const rows = nodeChildrenToRows(node, agg, leafs, workingSet, sort, isLast);
 
       let offset = 0;
 
@@ -56,34 +52,32 @@ export function useFlattenedGroups<T>(
 
         if (!expandedFn(row.id, depth)) continue;
 
-        offset += processRowsBetter(row.__children, row, rowIndex + 1, depth + 1);
+        offset += processRowsBetter(row.__children, row, rowIndex + 1, row.__isLast, depth + 1);
       }
 
       ranges.push({ parent, start, end: offset + start + node.size });
       return offset + node.size;
     }
 
-    const count = processRowsBetter(root!.children, null, 0);
+    const count = processRowsBetter(root!.children, null, 0, root.maxDepth <= 1);
 
     // Potentially do something with these??
     void ranges;
     void count;
 
     return [flatList, maxDepth];
-  }, [agg, branchId, expandedFn, leafs, root, sort, workingSet]);
+  }, [agg, expandedFn, leafs, root, sort, workingSet]);
 
   return flat;
 }
 
 const nodeChildrenToRows = <T>(
   root: RootMap<T>,
-  branchId: GroupIdFn,
   agg: AggregationFn<T> | undefined,
   leafs: RowLeaf<T>[],
   workingSet: number[],
   sort: SortFn<T> | undefined,
   isLast: boolean,
-  depth: number,
 ) => {
   const values = root.values();
 
@@ -93,21 +87,10 @@ const nodeChildrenToRows = <T>(
       rows.push(v.row);
       continue;
     } else {
-      const id = branchId(v.path);
       const data = agg ? agg(v.leafs.map((i) => leafs[workingSet[i]])) : {};
 
-      const row: RowGroup = {
-        kind: "branch",
-        id,
-        data,
-        depth,
-        key: v.path.at(-1)!,
-
-        __children: v.children,
-        __isLast: v.last,
-      } as RowGroup;
-
-      rows.push(row);
+      const row = v.row;
+      (row as any).data = data;
     }
   }
 

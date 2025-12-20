@@ -1,5 +1,5 @@
 import type { DragEventParams, UseDraggableProps } from "./types";
-import { createSignal } from "./signal.js";
+import { createSignal } from "../signal/signal.js";
 
 export const dragX = createSignal(-1);
 export const dragY = createSignal(-1);

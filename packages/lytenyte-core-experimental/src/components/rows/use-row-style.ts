@@ -45,7 +45,9 @@ export function useRowStyle(
       transform: isTranslatedButNotRelative ? getTranslate(0, yPositions[rowIndex] - topOffset) : undefined,
       position: shouldBeRelative ? "relative" : undefined,
       top: shouldBeRelative ? yPositions[rowIndex] - topOffset : undefined,
-    };
+
+      "--ln-row-height": `${height}px`,
+    } as CSSProperties;
 
     return { ...propStyles, ...styles };
   }, [hasSpans, height, propStyles, rowIndex, rowIsFocusRow, rowPin, topOffset, yPositions]);

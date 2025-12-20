@@ -61,7 +61,6 @@ export interface ColumnAbstract {
   readonly pin?: ColumnPin;
   readonly hide?: boolean;
   readonly resizable?: boolean;
-  readonly editable?: boolean;
   readonly movable?: boolean;
 }
 
@@ -80,10 +79,22 @@ export interface RowSource<T = any> {
   readonly rowIndexToRowId: (index: number) => string | null | undefined;
   readonly rowByIndex: (row: number) => RowAtom<RowNode<T> | null>;
   readonly rowById: (id: string) => RowNode<T> | null;
+  readonly rowParents: (id: string) => string[];
   readonly rowGroupIsExpanded: (id: string) => boolean;
+  readonly rowIsSelected: (id: string) => boolean;
+  readonly rowChildren: (id: string) => string[];
+  readonly rowLeafs: (id: string) => string[];
+  readonly rowsBetween: (start: string, end: string) => string[];
+  readonly rowInvalidate: (row?: number) => void;
 
   // Methods the LyteNyte will call
   readonly onRowGroupExpansionsChange: (deltaChanges: Record<string, boolean>) => void;
+  readonly onRowsUpdated: (rows: Map<RowNode<T>, T>) => void;
+  readonly onRowsSelected: (params: {
+    readonly selected: string[] | "all";
+    readonly deselect?: boolean;
+    readonly mode: "single" | "multiple" | "none";
+  }) => void;
 }
 
 export type LeafIdFn<T> = (d: T, index: number, section: "top" | "center" | "bottom") => string;
@@ -100,9 +111,6 @@ export interface RowLeaf<T = any> {
   readonly error?: unknown;
   readonly kind: "leaf";
   readonly data: T;
-
-  readonly selected?: boolean;
-  readonly indeterminate?: boolean;
 }
 
 export interface RowGroup {
@@ -111,9 +119,6 @@ export interface RowGroup {
   readonly key: string | null;
   readonly data: Record<string, unknown>;
   readonly depth: number;
-
-  readonly selected?: boolean;
-  readonly indeterminate?: boolean;
 
   readonly loading?: boolean;
   readonly error?: unknown;

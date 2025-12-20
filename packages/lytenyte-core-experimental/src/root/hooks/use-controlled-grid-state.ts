@@ -6,11 +6,14 @@ import type { ColumnAbstract } from "@1771technologies/lytenyte-shared";
 
 export type Controlled = ReturnType<typeof useControlledGridState>;
 
+const EMPTY: any = {};
+const EMPTY_SET = new Set();
+const EMPTY_ARRAY: ColumnAbstract[] = [];
 export function useControlledGridState(props: Props) {
   // Column group expansion state
   const [columnGroupExpansions, setColumnGroupExpansions] = useControlled({
     controlled: props.columnGroupExpansions,
-    default: {},
+    default: EMPTY as Record<string, boolean>,
   });
   const onColumnGroupExpansionChange = useEvent((change: Record<string, boolean>) => {
     props.onColumnGroupExpansionChange?.(change);
@@ -20,7 +23,7 @@ export function useControlledGridState(props: Props) {
   // Row Detail expansion state
   const [detailExpansions, setDetailExpansions] = useControlled<Set<string>>({
     controlled: props.rowDetailExpansions,
-    default: new Set(),
+    default: EMPTY_SET as Set<string>,
   });
 
   const onRowDetailExpansionsChange = useEvent((change: Set<string>) => {
@@ -31,7 +34,7 @@ export function useControlledGridState(props: Props) {
   // Columns
   const [columns, setColumns] = useControlled({
     controlled: props.onColumnsChange ? props.columns : undefined,
-    default: props.columns,
+    default: props.columns ?? (EMPTY_ARRAY as ColumnAbstract[]),
   });
   const onColumnsChange = useEvent((change: ColumnAbstract[]) => {
     props.onColumnsChange?.(change);
@@ -40,7 +43,7 @@ export function useControlledGridState(props: Props) {
 
   const [rowGroupColumn, setRowGroupColumn] = useControlled({
     controlled: props.onRowGroupColumnChange ? props.rowGroupColumn : undefined,
-    default: props.rowGroupColumn,
+    default: props.rowGroupColumn ?? (EMPTY as Omit<ColumnAbstract, "id" | "field">),
   });
   const onRowGroupColumnChange = useEvent((change: Omit<ColumnAbstract, "id" | "field">) => {
     delete (change as any)["id"];

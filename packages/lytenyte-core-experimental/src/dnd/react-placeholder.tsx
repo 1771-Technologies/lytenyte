@@ -1,6 +1,6 @@
 import { dragX, dragY, dragData } from "./global.js";
 import type { ReactPlaceholderFn } from "./types.js";
-import { useSelector } from "./signal.js";
+import { useSelector } from "../signal/signal.js";
 
 export function ReactPlaceholder({
   Render,

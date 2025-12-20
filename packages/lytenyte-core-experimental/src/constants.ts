@@ -18,4 +18,5 @@ export const DEFAULT_ROW_SOURCE: RowSource = {
   rowGroupIsExpanded: () => false,
 
   onRowGroupExpansionsChange: () => {},
+  onRowsUpdated: () => {},
 };
