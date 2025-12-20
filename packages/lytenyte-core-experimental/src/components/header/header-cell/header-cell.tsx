@@ -38,7 +38,7 @@ const HeaderCellImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] &
       return dataAttrs;
     }, [column.groupPath?.length, cell.kind, rowSpan]);
 
-    const { props: dragProps } = useDragMove(cell, props.onDragStart);
+    const { props: dragProps, placeholder } = useDragMove(cell, props.onDragStart);
     const headerStyle = useHeaderCellStyle(cell, xPositions);
 
     return (
@@ -73,6 +73,7 @@ const HeaderCellImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] &
         }}
       >
         {children == undefined ? <Renderer column={column} api={api} /> : children}
+        {placeholder}
       </div>
     );
   },
