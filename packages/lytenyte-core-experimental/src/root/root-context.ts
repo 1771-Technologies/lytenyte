@@ -32,6 +32,7 @@ export interface RootContextValue {
   readonly rowDetailRenderer: Props["rowDetailRenderer"];
   readonly rowFullWidthRenderer: Props["rowFullWidthRenderer"];
 
+  readonly columnDoubleClickToAutosize: boolean;
   readonly columnMoveDragPlaceholder: Props["columnMoveDragPlaceholder"];
   readonly columnGroupMoveDragPlaceholder: Props["columnGroupMoveDragPlaceholder"];
   readonly columnGroupRenderer: Props["columnGroupRenderer"];

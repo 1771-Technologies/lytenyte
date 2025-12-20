@@ -1,6 +1,7 @@
-import { forwardRef, memo, useMemo, type JSX } from "react";
+import { forwardRef, memo, useMemo, type CSSProperties, type JSX } from "react";
 import { useHeaderCellStyle } from "./use-header-cell-style.js";
 import {
+  COLUMN_MARKER_ID,
   sizeFromCoord,
   type LayoutHeaderCell,
   type LayoutHeaderFloating,
@@ -8,16 +9,21 @@ import {
 import { DefaultRenderer } from "./header-default.js";
 import { useRoot } from "../../../root/root-context.js";
 import { useDragMove } from "./use-drag-move.js";
+import { ResizeHandler } from "./resize-handler.js";
 
 export interface HeaderCellProps {
   readonly cell: LayoutHeaderCell | LayoutHeaderFloating;
+
+  readonly resizerStyle?: CSSProperties;
+  readonly resizerClassName?: string;
 }
 
 const HeaderCellImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & HeaderCellProps>(
-  function HeaderCell({ cell, children, ...props }, ref) {
+  function HeaderCell({ cell, resizerClassName, resizerStyle, children, ...props }, ref) {
     const { id, xPositions, base, view, api } = useRoot();
 
     const column = view.lookup.get(cell.id)!;
+    const resizable = (column.resizable ?? base.resizable) && column.id !== COLUMN_MARKER_ID;
 
     const Renderer =
       cell.kind === "cell"
@@ -73,6 +79,9 @@ const HeaderCellImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] &
         }}
       >
         {children == undefined ? <Renderer column={column} api={api} /> : children}
+        {resizable && cell.kind === "cell" && (
+          <ResizeHandler cell={cell} style={resizerStyle} className={resizerClassName} />
+        )}
         {placeholder}
       </div>
     );

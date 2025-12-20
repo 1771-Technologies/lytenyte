@@ -5,25 +5,28 @@ import { Header } from "./components/header/header.js";
 import { RowsContainer } from "./components/rows/rows-container/rows-container.js";
 import { RowsBottom, RowsCenter, RowsTop } from "./components/rows/rows-section.js";
 import { useClientDataSource } from "./data-source/use-client-data-source.js";
+import { useState } from "react";
 
-const columns: Root.Column<number, { x?: 23 }>[] = [
-  { id: "age", name: "ob", groupPath: ["A", "B"] },
-  { id: "marital", groupPath: ["A"] },
-  { id: "default", groupPath: ["T"] },
-  { id: "housing" },
-  { id: "loan" },
-  { id: "contact", groupPath: ["A", "B", "C"] },
-  { id: "day", groupPath: ["A", "B"] },
-  { id: "month", groupPath: ["A"] },
-  { id: "duration" },
-  { id: "campaign" },
-  { id: "pdays", groupPath: ["C"] },
-  { id: "previous", groupPath: ["C", "D"] },
-  { id: "poutcome" },
-  { id: "y" },
-];
+type BankData = (typeof bankDataSmall)[number];
 
 export default function Experimental() {
+  const [columns, setColumns] = useState<Root.Column<BankData>[]>([
+    { id: "age", name: "bob", groupPath: ["A", "B"] },
+    { id: "marital", groupPath: ["A"] },
+    { id: "default", groupPath: ["T"] },
+    { id: "housing" },
+    { id: "loan" },
+    { id: "contact", groupPath: ["A", "B", "C"] },
+    { id: "day", groupPath: ["A", "B"] },
+    { id: "month", groupPath: ["A"] },
+    { id: "duration" },
+    { id: "campaign" },
+    { id: "pdays", groupPath: ["C"] },
+    { id: "previous", groupPath: ["C", "D"] },
+    { id: "poutcome" },
+    { id: "y" },
+  ]);
+
   const rowSource = useClientDataSource({
     data: bankDataSmall,
   });
@@ -34,7 +37,8 @@ export default function Experimental() {
       <div style={{ height: "90vh", width: "90vw" }}>
         <Root
           columns={columns}
-          columnBase={{ movable: true }}
+          onColumnsChange={setColumns}
+          columnBase={{ movable: true, resizable: false }}
           rowSource={rowSource}
           columnMarkerEnabled
           rowGroupColumn={{
@@ -64,8 +68,6 @@ export default function Experimental() {
   );
 }
 
-// Moving
-// Resizing
 // Editing
 // Row Dragging
 // Animations??
