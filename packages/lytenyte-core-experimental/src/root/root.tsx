@@ -34,11 +34,13 @@ import { useApi } from "./hooks/use-api/use-api.js";
 import {
   BoundsContextProvider,
   ColumnLayoutContextProvider,
+  EditProvider,
   RootContextProvider,
   RowLayoutContextProvider,
   type RootContextValue,
 } from "./root-context.js";
 import { usePiece } from "../hooks/use-piece.js";
+import { useEditContext } from "./hooks/use-edit-context.js";
 
 export const Root = <
   Data = unknown,
@@ -54,6 +56,8 @@ export const Root = <
 
   const [vp, setVp] = useState<HTMLDivElement | null>(null);
   const id = useId();
+  const gridId = props.gridId ?? id;
+  const selectPivot = useRef<number | null>(null);
 
   const dimensions = useViewportDimensions(vp);
   const controlled = useControlledGridState(props);
@@ -96,11 +100,16 @@ export const Root = <
     controlled.detailExpansions,
   );
 
+  const editValue = useEditContext(view, api.current, props, source);
+
   useApi(
+    gridId,
     props,
     source,
     view,
     controlled,
+    editValue,
+    selectPivot,
     bounds.get(),
     layoutStateRef,
     controlled.detailExpansions,
@@ -117,7 +126,7 @@ export const Root = <
 
   const value = useMemo<RootContextValue>(() => {
     return {
-      id: props.gridId ?? id,
+      id: gridId,
       rtl: props.rtl ?? false,
       api: api.current,
       xPositions,
@@ -152,27 +161,37 @@ export const Root = <
       floatingRowHeight: props.floatingRowHeight ?? 40,
       headerGroupHeight: props.headerGroupHeight ?? 40,
       headerHeight: props.headerHeight ?? 40,
+
+      editMode: props.editMode ?? "readonly",
+      editClickActivator: props.editClickActivator ?? "double-click",
+      editValidator: props.editRowValidatorFn ?? null,
+
+      selectActivator: props.rowSelectionActivator ?? "single-click",
+      selectPivot,
     };
   }, [
     controlled.columnGroupExpansions,
     controlled.detailExpansions,
     dimensions,
     focusPiece,
-    id,
+    gridId,
     props.columnBase,
     props.columnDoubleClickToAutosize,
     props.columnGroupDefaultExpansion,
     props.columnGroupMoveDragPlaceholder,
     props.columnGroupRenderer,
     props.columnMoveDragPlaceholder,
+    props.editClickActivator,
+    props.editMode,
+    props.editRowValidatorFn,
     props.floatingRowEnabled,
     props.floatingRowHeight,
-    props.gridId,
     props.headerGroupHeight,
     props.headerHeight,
     props.rowDetailHeight,
     props.rowDetailRenderer,
     props.rowFullWidthRenderer,
+    props.rowSelectionActivator,
     props.rtl,
     source,
     totalHeaderHeight,
@@ -187,7 +206,9 @@ export const Root = <
     <RootContextProvider value={value}>
       <RowLayoutContextProvider value={rowLayout}>
         <ColumnLayoutContextProvider value={headerLayout}>
-          <BoundsContextProvider value={bounds}>{children}</BoundsContextProvider>
+          <BoundsContextProvider value={bounds}>
+            <EditProvider value={editValue}>{children}</EditProvider>
+          </BoundsContextProvider>
         </ColumnLayoutContextProvider>
       </RowLayoutContextProvider>
     </RootContextProvider>
@@ -252,6 +273,30 @@ export namespace Root {
     readonly colIndex: number;
   }
 
+  export interface CellParamsWithSelection<
+    T,
+    ColExt extends Record<string, unknown> = {},
+    S extends RowSource<T> = RowSource,
+    Ext extends Record<string, unknown> = {},
+  > extends CellParamsWithIndex<T, ColExt, S, Ext> {
+    readonly selected: boolean;
+    readonly indeterminate: boolean;
+  }
+
+  export interface EditParams<
+    T,
+    ColExt extends Record<string, unknown> = {},
+    S extends RowSource<T> = RowSource,
+    Ext extends Record<string, unknown> = {},
+  > extends CellParamsWithIndex<T, ColExt, S, Ext> {
+    readonly editValue: unknown;
+    readonly changeValue: (value: unknown) => boolean | Record<string, unknown>;
+    readonly editData: unknown;
+    readonly changeData: (data: unknown) => boolean | Record<string, unknown>;
+    readonly commit: () => boolean | Record<string, unknown>;
+    readonly cancel: () => void;
+  }
+
   export interface Renderers<
     T,
     ColExt extends Record<string, unknown> = {},
@@ -259,10 +304,12 @@ export namespace Root {
     Ext extends Record<string, unknown> = {},
   > {
     readonly header: (props: HeaderParams<T, ColExt, S, Ext>) => ReactNode;
-    readonly cell: (props: CellParamsWithIndex<T, ColExt, S, Ext>) => ReactNode;
+    readonly cell: (props: CellParamsWithSelection<T, ColExt, S, Ext>) => ReactNode;
     readonly row: (props: RowParams<T, ColExt, S, Ext>) => ReactNode;
+    readonly edit: (props: EditParams<T, ColExt, S, Ext>) => ReactNode;
   }
 
+  type RowSourceOmits = "onRowGroupExpansionsChange" | "onRowsUpdated" | "onRowsSelected";
   export type API<
     T,
     ColExt extends Record<string, unknown> = {},
@@ -300,8 +347,29 @@ export namespace Root {
 
     readonly viewport: () => HTMLElement | null;
 
+    readonly editBegin: (params: {
+      readonly init?: any;
+      readonly column: WithId | string | number;
+      readonly rowIndex: number;
+      readonly focusIfNotEditable?: boolean;
+    }) => void;
+    readonly editEnd: (cancel?: boolean) => void;
+    readonly editIsCellActive: (params: {
+      readonly column: WithId | string | number;
+      readonly rowIndex: number;
+    }) => boolean;
+    readonly editUpdate: (
+      rows: Map<string | number, unknown>,
+    ) => true | Map<string | number, boolean | Record<string, unknown>>;
+
+    readonly rowSelect: (params: {
+      readonly selected: string | [start: string, end: string] | Set<string> | "all";
+      readonly deselect?: boolean;
+    }) => void;
+    readonly rowHandleSelect: (params: { readonly target: EventTarget; readonly shiftKey: boolean }) => void;
+
     readonly props: () => Props<T, ColExt, S, Ext>;
-  } & S &
+  } & Omit<S, RowSourceOmits> &
     Ext;
 
   interface ColumnUnextended<
@@ -323,7 +391,12 @@ export namespace Root {
     readonly floatingCellRenderer?: Renderers<T, ColExt, S, Ext>["header"];
     readonly headerRenderer?: Renderers<T, ColExt, S, Ext>["header"];
     readonly cellRenderer?: Renderers<T, ColExt, S, Ext>["cell"];
-    readonly editRenderer?: Renderers<T, ColExt, S, Ext>["cell"];
+
+    readonly editRenderer?: Renderers<T, ColExt, S, Ext>["edit"];
+    readonly editable?: boolean | ((params: CellParamsWithIndex<T, ColExt, S, Ext>) => boolean);
+    readonly editSetter?: (
+      params: Pick<EditParams<T, ColExt, S, Ext>, "api" | "editValue" | "editData" | "row" | "column">,
+    ) => unknown;
   }
 
   export type Column<
@@ -340,7 +413,7 @@ export namespace Root {
     Ext extends Record<string, any> = object,
   > = {
     readonly columns?: Column<Data, ColExt, S, Ext>[];
-    readonly columnBase?: Omit<Column<Data, ColExt, S, Ext>, "id" | "pin" | "field">;
+    readonly columnBase?: Omit<Column<Data, ColExt, S, Ext>, "id" | "pin" | "field" | "editSetter">;
     readonly columnMarker?: Omit<Column<Data, ColExt, S, Ext>, "field"> & { width?: number };
 
     readonly columnMarkerEnabled?: boolean;
@@ -395,7 +468,6 @@ export namespace Root {
 
     readonly rowSelectionMode?: "single" | "multiple" | "none";
     readonly rowSelectionActivator?: "single-click" | "double-click" | "none";
-    readonly rowSelectChildren?: boolean;
 
     readonly rowDetailExpansions?: Set<string>;
     readonly rowDetailHeight?: number | "auto";
@@ -404,9 +476,11 @@ export namespace Root {
 
     readonly ref?: Ref<API<Data, ColExt, S, Ext>>;
 
-    readonly editRowValidatorFn?: any;
+    readonly editRowValidatorFn?: (
+      params: Pick<EditParams<Data, ColExt, S, Ext>, "api" | "editData" | "row">,
+    ) => boolean | Record<string, unknown>;
     readonly editClickActivator?: "single" | "double-click" | "none";
-    readonly editCellMode?: "cell" | "readonly";
+    readonly editMode?: "cell" | "row" | "readonly";
 
     // Values that can be changed by the grid
     readonly onColumnGroupExpansionChange?: (change: Record<string, boolean>) => void;
@@ -414,5 +488,40 @@ export namespace Root {
     readonly onRowGroupExpansionChange?: (deltaChange: Record<string, boolean>) => void;
     readonly onColumnsChange?: (columns: Column<Data, ColExt, S, Ext>[]) => void;
     readonly onRowGroupColumnChange?: (column: Omit<Column<Data, ColExt, S, Ext>, "field" | "id">) => void;
+
+    // Events
+    readonly onEditBegin?: (params: {
+      readonly api: API<Data, ColExt, S, Ext>;
+      readonly preventDefault: () => void;
+      readonly row: RowNode<Data>;
+      readonly column: Column<Data, ColExt, S, Ext>;
+      readonly editData: unknown;
+    }) => void;
+    readonly onEditEnd?: (params: {
+      readonly api: API<Data, ColExt, S, Ext>;
+      readonly preventDefault: () => void;
+      readonly row: RowNode<Data>;
+      readonly column: Column<Data, ColExt, S, Ext>;
+      readonly editData: unknown;
+    }) => void;
+    readonly onEditCancel?: (params: {
+      readonly api: API<Data, ColExt, S, Ext>;
+      readonly row: RowNode<Data>;
+      readonly column: Column<Data, ColExt, S, Ext>;
+      readonly editData: unknown;
+    }) => void;
+    readonly onEditFail?: (params: {
+      readonly api: API<Data, ColExt, S, Ext>;
+      readonly row: RowNode<Data>;
+      readonly column: Column<Data, ColExt, S, Ext>;
+      readonly editData: unknown;
+      readonly validation: null | Record<string, unknown> | boolean;
+    }) => void;
+    readonly onRowSelect?: (params: {
+      readonly preventDefault: () => void;
+      readonly api: API<Data, ColExt, S, Ext>;
+      readonly rows: string[] | "all";
+      readonly deselect: boolean;
+    }) => boolean;
   };
 }

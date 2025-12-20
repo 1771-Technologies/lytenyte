@@ -21,17 +21,20 @@ export function useFlattenedPiece<T>({
 }: UseFlattenedPieceParams<T>) {
   const rowByIdRef = useRef<Map<string, RowNode<T>>>(null as any);
   const rowByIndexRef = useRef<Map<number, RowNode<T>>>(null as any);
+  const rowIdToRowIndexRef = useRef<Map<string, number>>(null as any);
 
   const [flatten] = useMemo(() => {
     const flat: RowNode<T>[] = [];
     const byId = new Map<string, RowNode<T>>();
     const byIndex = new Map<number, RowNode<T>>();
+    const byIdToIndex = new Map<string, number>();
 
     for (let i = 0; i < leafsTop.length; i++) {
       const node = leafsTop[i];
       flat.push(node);
       byIndex.set(i, node);
       byId.set(node.id, node);
+      byIdToIndex.set(node.id, i);
     }
 
     const offset = leafsTop.length;
@@ -43,6 +46,7 @@ export function useFlattenedPiece<T>({
         flat.push(node);
         byIndex.set(rowIndex, node);
         byId.set(node.id, node);
+        byIdToIndex.set(node.id, rowIndex);
       }
     } else {
       for (let i = 0; i < centerIndices.length; i++) {
@@ -53,6 +57,7 @@ export function useFlattenedPiece<T>({
         flat.push(node);
         byIndex.set(rowIndex, node);
         byId.set(node.id, node);
+        byIdToIndex.set(node.id, rowIndex);
       }
     }
 
@@ -63,15 +68,17 @@ export function useFlattenedPiece<T>({
       flat.push(node);
       byIndex.set(rowIndex, node);
       byId.set(node.id, node);
+      byIdToIndex.set(node.id, rowIndex);
     }
 
     rowByIdRef.current = byId;
     rowByIndexRef.current = byIndex;
+    rowIdToRowIndexRef.current = byIdToIndex;
 
     return [flat];
   }, [centerIndices, groupFlat, leafsBot, leafsCenter, leafsTop]);
 
   const piece = usePiece(flatten);
 
-  return { flatten: piece, rowByIdRef, rowByIndexRef };
+  return { flatten: piece, rowByIdRef, rowByIndexRef, rowIdToRowIndexRef };
 }

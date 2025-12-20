@@ -3,11 +3,12 @@ import type {
   ColumnView,
   LayoutHeader,
   PositionUnion,
+  RowNode,
   RowSource,
   RowView,
   SpanLayout,
 } from "@1771technologies/lytenyte-shared";
-import { createContext, useContext, type Dispatch, type SetStateAction } from "react";
+import { createContext, useContext, type Dispatch, type RefObject, type SetStateAction } from "react";
 import type { Piece, PieceWritable } from "../hooks/use-piece";
 import type { API, Props } from "../types/types-internal";
 import type { Dimension } from "./hooks/use-viewport-dimensions";
@@ -49,6 +50,13 @@ export interface RootContextValue {
   readonly floatingRowHeight: number;
   readonly headerGroupHeight: number;
   readonly headerHeight: number;
+
+  readonly editMode: "cell" | "row" | "readonly";
+  readonly editClickActivator: "single" | "double-click" | "none";
+  readonly editValidator: null | ((x: any) => any);
+
+  readonly selectActivator: Props["rowSelectionActivator"];
+  readonly selectPivot: RefObject<number | null>;
 }
 
 const context = createContext<RootContextValue>({} as any);
@@ -67,3 +75,20 @@ export const useColumnLayout = () => useContext(colContextLayout);
 const boundsContext = createContext<Piece<SpanLayout>>({} as any);
 export const BoundsContextProvider = boundsContext.Provider;
 export const useBounds = () => useContext(boundsContext);
+
+export interface EditContext {
+  readonly activeEdit: PieceWritable<null | { readonly rowId: string; readonly column: string }>;
+  readonly activeRow: Piece<string | null>;
+  readonly editData: PieceWritable<any>;
+
+  readonly changeValue: (value: any) => boolean | Record<string, unknown>;
+  readonly changeWithInit: (value: any, row: RowNode<any>, column: ColumnAbstract) => any;
+  readonly changeData: (data: any) => boolean | Record<string, unknown>;
+
+  readonly commit: () => boolean | Record<string, unknown>;
+  readonly cancel: () => void;
+}
+
+const editContext = createContext({} as EditContext);
+export const EditProvider = editContext.Provider;
+export const useEdit = () => useContext(editContext);

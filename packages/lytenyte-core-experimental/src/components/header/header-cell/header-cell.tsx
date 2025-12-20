@@ -57,6 +57,7 @@ const HeaderCellImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] &
         role="columnheader"
         // DATA Attributes Start
         data-ln-header-cell
+        data-ln-type={column.type ?? base.type ?? "string"}
         data-ln-header-floating={cell.kind === "floating" ? "true" : undefined}
         data-ln-header-id={column.id}
         data-ln-gridid={id}

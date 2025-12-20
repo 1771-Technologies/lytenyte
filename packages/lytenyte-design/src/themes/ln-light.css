@@ -61,7 +61,7 @@
   --ln-bg-page: hsla(150, 10%, 96%, 1);
   --ln-bg-light: var(--ln-gray-05);
   --ln-bg-strong: var(--ln-gray-20);
-  --ln-bg-row-hover: var(--ln-gray-10);
+  --ln-bg-row-hover: hsla(226, 10%, 40%, 0.04);
   --ln-bg-row-alternate: var(--ln-gray-02);
   --ln-bg-ui-panel: var(--ln-gray-00);
   --ln-bg-form-field: var(--ln-gray-00);

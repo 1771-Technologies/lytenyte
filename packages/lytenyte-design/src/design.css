@@ -28,6 +28,11 @@
   --ln-radius-field-md: 8px;
   --ln-radius-field-sm: 6px;
 
+  --ln-font-xs: 10px;
+  --ln-font-sm: 12px;
+  --ln-font-md: 14px;
+  --ln-font-lg: 16px;
+
   --ln-shadow-100: 0 1px 2.5px 0 rgba(30, 30, 41, 0.13), 0 0 0 1px rgba(30, 30, 41, 0.02);
   --ln-shadow-200:
     0 1px 1px 0 rgba(30, 30, 41, 0.06), 0 1px 0 1px rgba(51, 51, 51, 0.05) inset,

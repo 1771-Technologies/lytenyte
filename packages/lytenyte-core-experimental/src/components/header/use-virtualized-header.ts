@@ -10,7 +10,7 @@ export function useVirtualizedHeader(
   const virtualizedHeaderCells = useMemo(() => {
     const filtered = layout.map((row) => {
       return row.filter((col) => {
-        return col.colStart >= colStartBound && col.colStart < colEndBound;
+        return col.colPin || (col.colStart >= colStartBound && col.colStart < colEndBound);
       });
     });
 

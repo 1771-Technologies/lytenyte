@@ -139,6 +139,7 @@ export { rowScrollIntoViewValue } from "./scroll/scroll-row-into-view.js";
 export { focusCell } from "./navigation-x/focus-cell.js";
 export { trackFocus } from "./navigation-x/track-focus.js";
 export { navigator } from "./navigation-x/navigator.js";
+export { queryCell } from "./navigation-x/query.js";
 export { nearestFocusable as getNearestFocusable } from "./navigation-x/nearest-focusable.js";
 export { positionFromElement as getPositionFromFocusable } from "./navigation-x/position-from-element.js";
 export { getRowIndexFromEl } from "./navigation-x/get-row-index-from-el.js";
@@ -198,6 +199,7 @@ export {
   isWebKit,
   testPlatform,
   testUserAgent,
+  getScrollStatus,
 } from "./dom-utils/index.js";
 export type { OnAnimationFinishedParams } from "./dom-utils/frame/animation-finished.js";
 export { onAnimationFinished } from "./dom-utils/frame/animation-finished.js";

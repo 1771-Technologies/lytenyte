@@ -3,12 +3,18 @@ import {
   CONTAINS_DEAD_CELLS,
   FULL_WIDTH,
   get,
+  getFirstTabbable,
+  getNearestRow,
+  getRowIndexFromEl,
   GROUP_COLUMN_PREFIX,
+  queryCell,
   rowScrollIntoViewValue,
+  runWithBackoff,
   updateLayout,
   type ColumnAbstract,
   type ColumnView,
   type LayoutState,
+  type RowNode,
   type RowSource,
   type SpanLayout,
 } from "@1771technologies/lytenyte-shared";
@@ -20,14 +26,19 @@ import { getFullWidthFn } from "../use-row-layout/get-full-width-fn.js";
 import { resolveColumn } from "./resolve-column.js";
 import type { Controlled } from "../use-controlled-grid-state.js";
 import { defaultAutosize, defaultAutosizeHeader } from "./autosizers.js";
+import type { EditContext } from "../../root-context";
+import type { Root } from "../../root";
 
 type Writable<T> = { -readonly [k in keyof T]: T[k] };
 
 export function useApi(
+  gridId: string,
   props: Props,
   source: RowSource,
   view: ColumnView,
   controlled: Controlled,
+  edit: EditContext,
+  selectPivot: RefObject<number | null>,
   bounds: SpanLayout,
   layoutStateRef: RefObject<LayoutState>,
 
@@ -43,6 +54,168 @@ export function useApi(
   const rowTopCount = source.useTopCount();
   const rowBottomCount = source.useBottomCount();
   const rowCount = source.useRowCount();
+
+  api.rowHandleSelect = useEvent((params) => {
+    const mode = props.rowSelectionMode ?? "none";
+    if (mode === "none") return;
+
+    const rowEl = getNearestRow(gridId, params.target as HTMLElement);
+    if (!rowEl) return;
+
+    const selectIndex = getRowIndexFromEl(rowEl);
+    const row = api.rowByIndex(selectIndex).get();
+    if (!row) return;
+
+    if (mode === "single") {
+      api.rowSelect({ selected: row.id, deselect: api.rowIsSelected(row.id) });
+      return;
+    }
+
+    if (mode === "multiple") {
+      const pivotRow = selectPivot.current != null ? api.rowByIndex(selectPivot.current).get() : null;
+      if (params.shiftKey && pivotRow) {
+        // If the pivot row is not selected then it must've been deselected last.
+        const isDeselect = !api.rowIsSelected(pivotRow.id);
+        api.rowSelect({ selected: [row.id, pivotRow.id], deselect: isDeselect });
+      } else {
+        selectPivot.current = selectIndex;
+        api.rowSelect({ selected: row.id, deselect: api.rowIsSelected(row.id) });
+      }
+    }
+  });
+
+  api.rowSelect = useEvent(({ selected, deselect = false }) => {
+    if (selected === "all") {
+      let stop = false;
+      const preventDefault = () => (stop = true);
+      props.onRowSelect?.({ api, deselect, rows: selected, preventDefault });
+      if (stop) return;
+
+      source.onRowsSelected({ selected: "all", deselect, mode: props.rowSelectionMode ?? "none" });
+
+      return;
+    }
+
+    let rows: string[];
+    if (typeof selected === "string") rows = [selected];
+    else if (Array.isArray(selected)) rows = api.rowsBetween(selected[0], selected[1]);
+    else rows = [...selected];
+
+    let stop = false;
+    const preventDefault = () => (stop = true);
+    props.onRowSelect?.({ api, deselect, rows, preventDefault });
+    if (stop) return;
+
+    source.onRowsSelected({ selected: rows, deselect, mode: props.rowSelectionMode ?? "none" });
+  });
+
+  api.editEnd = useEvent((cancel) => {
+    if (cancel) {
+      edit.cancel();
+      return true;
+    }
+    return edit.commit();
+  });
+
+  api.editBegin = useEvent(({ init, column: c, rowIndex, focusIfNotEditable }) => {
+    const row = api.rowByIndex(rowIndex).get();
+    const column =
+      typeof c === "number"
+        ? api.columnByIndex(c)
+        : typeof c === "string"
+          ? api.columnById(c)
+          : api.columnById(c.id);
+
+    const columnIndex = view.visibleColumns.findIndex((x) => x.id === column?.id);
+
+    if (!vp || !row || !column || columnIndex == -1 || props.rowFullWidthPredicate?.({ rowIndex, row, api }))
+      return;
+
+    // If there is already an active edit commit it.
+    edit.commit();
+
+    const base = props.columnBase as Root.Column;
+    const editable = column.editable ?? base.editable;
+    if (
+      typeof editable === "function"
+        ? !editable({ api, row, column, colIndex: columnIndex, rowIndex })
+        : !editable
+    ) {
+      if (focusIfNotEditable) {
+        api.scrollIntoView({ column, row: rowIndex, behavior: "instant" });
+        runWithBackoff(() => {
+          const cell = queryCell(gridId, rowIndex, columnIndex, vp);
+          if (!cell) return false;
+
+          cell.focus();
+          return true;
+        }, [8, 16, 32, 64, 128]);
+      }
+
+      return;
+    }
+
+    edit.activeEdit.set({ rowId: row.id, column: column.id });
+    edit.editData.set(init ?? row.data);
+
+    api.scrollIntoView({ column, row: rowIndex, behavior: "instant" });
+    runWithBackoff(() => {
+      const cell = queryCell(gridId, rowIndex, columnIndex, vp);
+      if (!cell || cell.getAttribute("data-ln-edit-active") !== "true") return false;
+
+      const first = getFirstTabbable(cell, false);
+      if (!first) return false;
+
+      first.focus();
+
+      return true;
+    }, [8, 16, 32, 64, 128]);
+  });
+
+  api.editIsCellActive = useEvent(({ column: c, rowIndex }) => {
+    const row = api.rowByIndex(rowIndex);
+    const column =
+      typeof c === "number"
+        ? api.columnByIndex(c)
+        : typeof c === "string"
+          ? api.columnById(c)
+          : api.columnById(c.id);
+
+    if (!row || !column) return false;
+
+    const active = edit.activeEdit.get();
+    return active?.column === column.id && active.rowId === row.get()?.id;
+  });
+
+  api.editUpdate = useEvent((param) => {
+    const updateMap = new Map<RowNode<any>, any>();
+
+    const errors = new Map<number | string, boolean | Record<string, unknown>>();
+
+    const validator = props.editRowValidatorFn as Root.Props["editRowValidatorFn"];
+    for (const [key, data] of param) {
+      const row = typeof key === "number" ? api.rowByIndex(key).get() : api.rowById(key);
+
+      if (!row) {
+        errors.set(key, false);
+        continue;
+      }
+
+      if (validator) {
+        const valid = validator({ api, editData: data, row });
+        if (!valid) {
+          errors.set(key, valid);
+          continue;
+        }
+      }
+      updateMap.set(row, data);
+    }
+
+    if (errors.size) return errors;
+
+    source.onRowsUpdated(updateMap);
+    return true;
+  });
 
   api.columnUpdate = useEvent((updates) => {
     const columns = [...controlled.columns];
@@ -168,17 +341,16 @@ export function useApi(
     }
     const columns = controlled.columns;
 
-    const columnsToMove = columns.filter((c) => colSet.has(c.id));
-    let nextColumns = columns.filter((c) => !colSet.has(c.id));
+    let columnsToMove = columns.filter((c) => colSet.has(c.id));
+    const nextColumns = columns.filter((c) => !colSet.has(c.id));
     const indexOfDest = nextColumns.findIndex((c) => c.id === dest);
 
     const destCol = nextColumns[indexOfDest];
 
     const offset = params.before ? 0 : 1;
+
+    if (params.updatePinState) columnsToMove = columnsToMove.map((x) => ({ ...x, pin: destCol.pin ?? null }));
     nextColumns.splice(indexOfDest + offset, 0, ...columnsToMove);
-    if (params.updatePinState) {
-      nextColumns = nextColumns.map((x) => ({ ...x, pin: destCol.pin ?? null }));
-    }
 
     controlled.onColumnsChange(nextColumns);
   });

@@ -15,6 +15,7 @@ export { isInView } from "./is-in-view.js";
 export { isLastTraversableNode } from "./is-last-traversable-node.js";
 export { getActiveElement } from "./get-active-element.js";
 export { getNearestMatching } from "./get-nearest-matching.js";
+export { getScrollStatus } from "./get-scroll-status.js";
 
 export { FocusTrap } from "./focus/focus-trap.js";
 export { getFirstFocusable } from "./focus/get-first-focusable.js";
