@@ -127,6 +127,10 @@ export const Root = <
       focusActive: focusPiece,
       source,
 
+      columnGroupMoveDragPlaceholder: props.columnGroupMoveDragPlaceholder,
+      columnGroupRenderer: props.columnGroupRenderer,
+      columnMoveDragPlaceholder: props.columnMoveDragPlaceholder,
+
       dimensions,
 
       totalHeaderHeight,
@@ -155,6 +159,9 @@ export const Root = <
     id,
     props.columnBase,
     props.columnGroupDefaultExpansion,
+    props.columnGroupMoveDragPlaceholder,
+    props.columnGroupRenderer,
+    props.columnMoveDragPlaceholder,
     props.floatingRowEnabled,
     props.floatingRowHeight,
     props.gridId,
@@ -207,6 +214,17 @@ export namespace Root {
     Ext extends Record<string, unknown> = {},
   > {
     readonly column: Column<T, ColExt, S, Ext>;
+    readonly api: API<T, ColExt, S, Ext>;
+  }
+
+  export interface HeaderGroupParams<
+    T,
+    ColExt extends Record<string, unknown> = {},
+    S extends RowSource<T> = RowSource,
+    Ext extends Record<string, unknown> = {},
+  > {
+    readonly groupPath: string[];
+    readonly columns: Column<T, ColExt, S, Ext>[];
     readonly api: API<T, ColExt, S, Ext>;
   }
 
@@ -319,6 +337,18 @@ export namespace Root {
     readonly columnGroupJoinDelimiter?: string;
     readonly columnSizeToFit?: boolean;
     readonly columnDoubleClickToAutosize?: boolean;
+
+    readonly columnMoveDragPlaceholder?:
+      | { query: string; offset?: [number, number] }
+      | string
+      | ((props: HeaderParams<Data, ColExt, S, Ext> & { readonly x: number; y: number }) => ReactNode);
+    readonly columnGroupMoveDragPlaceholder?:
+      | { query: string; offset?: [number, number] }
+      | string
+      | ((
+          props: HeaderGroupParams<Data, ColExt, S, Ext> & { readonly x: number; readonly y: number },
+        ) => ReactNode);
+    readonly columnGroupRenderer?: (props: HeaderGroupParams<Data, ColExt, S, Ext>) => ReactNode;
 
     readonly gridId?: string;
 

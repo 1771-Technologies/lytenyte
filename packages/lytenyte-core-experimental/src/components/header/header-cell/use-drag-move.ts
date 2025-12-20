@@ -12,12 +12,29 @@ import { useMemo, useRef, type DragEvent, type JSX } from "react";
 import { useDraggable } from "../../../dnd/use-draggable.js";
 import { useHeader } from "../header-context.js";
 import { useRoot } from "../../../root/root-context.js";
+import { HeaderMovePlaceholder } from "./header-move-placer.js";
 
 export function useDragMove(
   cell: LayoutHeaderGroup | LayoutHeaderCell | LayoutHeaderFloating,
   onDragStart?: JSX.IntrinsicElements["div"]["onDragStart"],
 ) {
-  const { view, viewport: vp, base, id, rtl, xPositions, api } = useRoot();
+  const {
+    view,
+    viewport: vp,
+    base,
+    id,
+    rtl,
+    xPositions,
+    api,
+    columnGroupMoveDragPlaceholder,
+    columnMoveDragPlaceholder,
+  } = useRoot();
+
+  const placeholderSetting =
+    cell.kind === "group" ? columnGroupMoveDragPlaceholder : columnMoveDragPlaceholder;
+  let dragPlaceholder;
+  if (typeof dragPlaceholder === "function") dragPlaceholder = HeaderMovePlaceholder;
+  else dragPlaceholder = placeholderSetting;
 
   const viewRef = useRef(view);
   viewRef.current = view;
@@ -47,8 +64,9 @@ export function useDragMove(
   const prevPos = useRef(-1);
 
   const { props, isDragActive, placeholder } = useDraggable({
+    placeholder: dragPlaceholder,
     data: {
-      __movable: { kind: "site", data: "" },
+      moving: { kind: "site", data: { columns, cell } },
     },
     onDragStart: () => {
       if (cell.kind === "group") setActiveHeaderDrag(cell);

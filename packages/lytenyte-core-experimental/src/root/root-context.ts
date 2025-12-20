@@ -32,6 +32,10 @@ export interface RootContextValue {
   readonly rowDetailRenderer: Props["rowDetailRenderer"];
   readonly rowFullWidthRenderer: Props["rowFullWidthRenderer"];
 
+  readonly columnMoveDragPlaceholder: Props["columnMoveDragPlaceholder"];
+  readonly columnGroupMoveDragPlaceholder: Props["columnGroupMoveDragPlaceholder"];
+  readonly columnGroupRenderer: Props["columnGroupRenderer"];
+
   readonly viewport: HTMLDivElement | null;
   readonly setViewport: Dispatch<SetStateAction<HTMLDivElement | null>>;
 

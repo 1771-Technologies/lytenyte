@@ -19,6 +19,16 @@ export interface Props {
   readonly columnSizeToFit?: boolean;
   readonly columnDoubleClickToAutosize?: boolean;
 
+  readonly columnMoveDragPlaceholder?:
+    | { query: string; offset?: [number, number] }
+    | string
+    | ((props: any) => any);
+  readonly columnGroupMoveDragPlaceholder?:
+    | { query: string; offset?: [number, number] }
+    | string
+    | ((props: any) => any);
+  readonly columnGroupRenderer?: (props: any) => any;
+
   readonly gridId?: string;
 
   readonly rtl?: boolean;
