@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import type { RowCellLayout } from "../+types";
+import type { RowCellLayout } from "../+types.js";
 import { getTabbables, navigator } from "@1771technologies/lytenyte-shared";
 import { useGridRoot } from "../context.js";
 import { editOnChange } from "../state/helpers/edit-on-change.js";

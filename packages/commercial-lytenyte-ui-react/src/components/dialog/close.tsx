@@ -1,0 +1,35 @@
+import { forwardRef, type JSX } from "react";
+import { useSlot } from "@1771technologies/lytenyte-hooks-react";
+import { useDialogRoot } from "./context.js";
+import type { LnComponent } from "../../types.js";
+
+function DialogCloseImpl({ render, ...props }: DialogClose.Props, ref: DialogClose.Props["ref"]) {
+  const ctx = useDialogRoot();
+
+  const internalProps: JSX.IntrinsicElements["button"] = {
+    "aria-label": "Close dialog",
+    onClick: () => ctx.onOpenChange(false),
+  };
+
+  const final = useSlot({
+    props: [internalProps, props, { "data-ln-dialog-close": true }],
+    ref: ref,
+    slot: render ?? <button />,
+    state: {
+      open: ctx.open,
+      openChange: ctx.onOpenChange,
+    },
+  });
+
+  return final;
+}
+
+export const DialogClose = forwardRef(DialogCloseImpl);
+
+export namespace DialogClose {
+  export type Props = LnComponent<JSX.IntrinsicElements["button"], State>;
+  export type State = {
+    readonly open: boolean;
+    readonly openChange: (b: boolean) => void;
+  };
+}

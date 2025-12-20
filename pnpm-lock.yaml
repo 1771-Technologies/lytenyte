@@ -679,6 +679,12 @@ importers:
       '@1771technologies/lytenyte-design':
         specifier: workspace:*
         version: link:../lytenyte-design
+      '@1771technologies/lytenyte-dnd-react':
+        specifier: workspace:*
+        version: link:../lytenyte-dnd-react
+      '@1771technologies/lytenyte-hooks-react':
+        specifier: workspace:*
+        version: link:../lytenyte-hooks-react
       '@1771technologies/lytenyte-shared':
         specifier: workspace:*
         version: link:../lytenyte-shared
@@ -704,6 +710,9 @@ importers:
 
   packages/lytenyte-core:
     dependencies:
+      '@1771technologies/lytenyte-hooks-react':
+        specifier: workspace:*
+        version: link:../lytenyte-hooks-react
       '@1771technologies/lytenyte-shared':
         specifier: workspace:*
         version: link:../lytenyte-shared
@@ -715,6 +724,33 @@ importers:
         version: 19.1.0(react@19.1.0)
 
   packages/lytenyte-design: {}
+
+  packages/lytenyte-dnd-react:
+    dependencies:
+      '@1771technologies/lytenyte-hooks-react':
+        specifier: workspace:*
+        version: link:../lytenyte-hooks-react
+      '@1771technologies/lytenyte-shared':
+        specifier: workspace:*
+        version: link:../lytenyte-shared
+      react:
+        specifier: ^18.0.0 || ^19.0.0
+        version: 19.1.1
+      react-dom:
+        specifier: ^18.0.0 || ^19.0.0
+        version: 19.1.1(react@19.1.1)
+
+  packages/lytenyte-hooks-react:
+    dependencies:
+      '@1771technologies/lytenyte-shared':
+        specifier: workspace:*
+        version: link:../lytenyte-shared
+      react:
+        specifier: ^18.0.0 || ^19.0.0
+        version: 19.2.1
+      react-dom:
+        specifier: ^18.0.0 || ^19.0.0
+        version: 19.2.1(react@19.2.1)
 
   packages/lytenyte-shared: {}
 

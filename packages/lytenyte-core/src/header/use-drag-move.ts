@@ -10,9 +10,9 @@ import type {
   HeaderCellFloating,
   HeaderCellLayout,
   HeaderGroupCellLayout,
-} from "../+types";
+} from "../+types.js";
 import { useMemo, useRef, type JSX } from "react";
-import type { InternalAtoms } from "../state/+types";
+import type { InternalAtoms } from "../state/+types.js";
 import { useDraggable, type DragProps } from "../drag-and-drop/index.js";
 
 export function useDragMove<T>(
