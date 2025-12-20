@@ -32,6 +32,7 @@ export interface RootContextValue {
   readonly rowDetailRenderer: Props["rowDetailRenderer"];
   readonly rowFullWidthRenderer: Props["rowFullWidthRenderer"];
 
+  readonly viewport: HTMLDivElement | null;
   readonly setViewport: Dispatch<SetStateAction<HTMLDivElement | null>>;
 
   readonly focusActive: PieceWritable<PositionUnion | null>;

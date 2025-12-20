@@ -70,4 +70,5 @@ export interface Props {
   readonly onColumnGroupExpansionChange?: (change: Record<string, boolean>) => void;
   readonly onRowDetailExpansionsChange?: (change: Set<string>) => void;
   readonly onRowGroupExpansionChange?: (deltaChange: Record<string, boolean>) => void;
+  readonly onColumnsChange?: (columns: ColumnAbstract[]) => void;
 }

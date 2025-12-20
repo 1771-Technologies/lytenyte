@@ -26,8 +26,6 @@ const columns: Root.Column<number, { x?: 23 }>[] = [
 export default function Experimental() {
   const rowSource = useClientDataSource({
     data: bankDataSmall,
-
-    group: (x) => [x.data.education],
   });
 
   return (
@@ -36,6 +34,7 @@ export default function Experimental() {
       <div style={{ height: "90vh", width: "90vw" }}>
         <Root
           columns={columns}
+          columnBase={{ movable: true }}
           rowSource={rowSource}
           columnMarkerEnabled
           rowGroupColumn={{

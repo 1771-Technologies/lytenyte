@@ -58,7 +58,7 @@ export const Root = <
   const dimensions = useViewportDimensions(vp);
   const controlled = useControlledGridState(props);
 
-  const view = useColumnView(props, source, controlled.columnGroupExpansions);
+  const view = useColumnView(controlled.columns, props, source, controlled.columnGroupExpansions);
   const totalHeaderHeight = useTotalHeaderHeight(props, view.maxRow);
 
   const xPositions = useXPositions(props, view, dimensions.innerWidth);
@@ -100,6 +100,7 @@ export const Root = <
     props,
     source,
     view,
+    controlled,
     layoutStateRef,
     controlled.detailExpansions,
     yPositions.detailCache,
@@ -120,6 +121,7 @@ export const Root = <
       api: api.current,
       xPositions,
       yPositions: yPositions.positions,
+      viewport: vp,
       setViewport: setVp,
       view,
       focusActive: focusPiece,
@@ -165,6 +167,7 @@ export const Root = <
     source,
     totalHeaderHeight,
     view,
+    vp,
     xPositions,
     yPositions.positions,
     yPositions.setDetailCache,
@@ -247,7 +250,14 @@ export namespace Root {
   > = {
     readonly cellRoot: (row: number, column: number) => PositionGridCell | PositionFullWidthRow | null;
     readonly columnById: (id: string) => Column<T, ColExt, S, Ext> | null;
+    readonly columnByIndex: (index: number) => Column<T, ColExt, S, Ext> | null;
     readonly columnField: (columnOrId: string | WithId, row: RowNode<T>) => unknown;
+    readonly columnMove: (params: {
+      readonly moveColumns: (string | WithId)[];
+      readonly moveTarget: string | number | WithId;
+      readonly before?: boolean;
+      readonly updatePinState?: boolean;
+    }) => void;
 
     readonly rowDetailHeight: (rowId: WithId | string) => number;
     readonly rowDetailExpanded: (rowOrId: RowNode<T> | string | number) => boolean;
@@ -300,7 +310,7 @@ export namespace Root {
     Ext extends Record<string, any> = object,
   > = {
     readonly columns?: Column<Data, ColExt, S, Ext>[];
-    readonly columnBase?: Omit<Column<Data, ColExt, S, Ext>, "pin" | "field">;
+    readonly columnBase?: Omit<Column<Data, ColExt, S, Ext>, "id" | "pin" | "field">;
     readonly columnMarker?: Omit<Column<Data, ColExt, S, Ext>, "field"> & { width?: number };
 
     readonly columnMarkerEnabled?: boolean;
@@ -360,5 +370,6 @@ export namespace Root {
     readonly onColumnGroupExpansionChange?: (change: Record<string, boolean>) => void;
     readonly onRowDetailExpansionsChange?: (change: Set<string>) => void;
     readonly onRowGroupExpansionChange?: (deltaChange: Record<string, boolean>) => void;
+    readonly onColumnsChange?: (columns: Column<Data, ColExt, S, Ext>) => void;
   };
 }
