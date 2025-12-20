@@ -2,12 +2,14 @@ import {
   columnAddMarker,
   columnAddRowGroup,
   makeColumnView,
+  type ColumnAbstract,
   type RowSource,
 } from "@1771technologies/lytenyte-shared";
 import { useMemo } from "react";
 import type { Props } from "../../types/types-internal";
 
 export function useColumnView(
+  columns: ColumnAbstract[],
   props: Props,
   source: RowSource,
   columnGroupExpansions: Record<string, boolean>,
@@ -16,7 +18,7 @@ export function useColumnView(
 
   const view = useMemo(() => {
     const colsWithGroup = columnAddRowGroup({
-      columns: props.columns ?? [],
+      columns: columns,
       rowGroupDepth: maxRowDepth,
       rowGroupDisplayMode: props.rowGroupDisplayMode ?? "single-column",
       rowGroupTemplate: props.rowGroupColumn ?? {},
@@ -39,13 +41,13 @@ export function useColumnView(
     return view;
   }, [
     columnGroupExpansions,
+    columns,
     maxRowDepth,
     props.columnBase,
     props.columnGroupDefaultExpansion,
     props.columnGroupJoinDelimiter,
     props.columnMarker,
     props.columnMarkerEnabled,
-    props.columns,
     props.rowGroupColumn,
     props.rowGroupDisplayMode,
   ]);

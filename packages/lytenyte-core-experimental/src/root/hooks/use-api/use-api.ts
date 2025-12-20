@@ -14,6 +14,8 @@ import type { RefObject } from "react";
 import { useEvent } from "../../../hooks/use-event.js";
 import { getSpanFn } from "../use-row-layout/get-span-fn.js";
 import { getFullWidthFn } from "../use-row-layout/get-full-width-fn.js";
+import { resolveColumn } from "./resolve-column.js";
+import type { Controlled } from "../use-controlled-grid-state";
 
 type Writable<T> = { -readonly [k in keyof T]: T[k] };
 
@@ -21,6 +23,7 @@ export function useApi(
   props: Props,
   source: RowSource,
   view: ColumnView,
+  controlled: Controlled,
   layoutStateRef: RefObject<LayoutState>,
 
   detailExpansions: Set<string>,
@@ -35,6 +38,39 @@ export function useApi(
 
   api.columnById = useEvent((id) => {
     return view.lookup.get(id) ?? null;
+  });
+  api.columnByIndex = useEvent((i) => {
+    return view.visibleColumns[i] ?? null;
+  });
+  api.columnMove = useEvent((params) => {
+    const errorRef = { current: false };
+    const colSet = new Set(
+      params.moveColumns.map((c) => {
+        return resolveColumn(c, errorRef, view);
+      }),
+    );
+    const dest = resolveColumn(params.moveTarget, errorRef, view);
+
+    if (errorRef.current) return;
+    if (colSet.has(dest)) {
+      console.error(`Destination column cannot be in the move columns`);
+      return;
+    }
+    const columns = controlled.columns;
+
+    const columnsToMove = columns.filter((c) => colSet.has(c.id));
+    let nextColumns = columns.filter((c) => !colSet.has(c.id));
+    const indexOfDest = nextColumns.findIndex((c) => c.id === dest);
+
+    const destCol = nextColumns[indexOfDest];
+
+    const offset = params.before ? 0 : 1;
+    nextColumns.splice(indexOfDest + offset, 0, ...columnsToMove);
+    if (params.updatePinState) {
+      nextColumns = nextColumns.map((x) => ({ ...x, pin: destCol.pin ?? null }));
+    }
+
+    controlled.onColumnsChange(nextColumns);
   });
 
   api.columnField = useEvent((col, row) => {

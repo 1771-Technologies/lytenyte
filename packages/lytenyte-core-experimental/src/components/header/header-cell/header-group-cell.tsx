@@ -2,6 +2,7 @@ import { forwardRef, memo, type JSX } from "react";
 import { useHeaderCellStyle } from "./use-header-cell-style.js";
 import type { LayoutHeaderGroup } from "@1771technologies/lytenyte-shared";
 import { useRoot } from "../../../root/root-context.js";
+import { useDragMove } from "./use-drag-move.js";
 
 export interface HeaderGroupCellProps {
   readonly cell: LayoutHeaderGroup;
@@ -9,7 +10,8 @@ export interface HeaderGroupCellProps {
 
 const HeaderGroupCellImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] & HeaderGroupCellProps>(
   function HeaderCell({ cell, children, ...props }, ref) {
-    const { id, xPositions, headerGroupHeight, columnGroupDefaultExpansion, columnGroupExpansions } = useRoot();
+    const { id, xPositions, headerGroupHeight, columnGroupDefaultExpansion, columnGroupExpansions } =
+      useRoot();
 
     const isExpanded = columnGroupExpansions[cell.id] ?? columnGroupDefaultExpansion;
 
@@ -22,9 +24,13 @@ const HeaderGroupCellImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["di
       [`data-ln-header-row-${cell.rowStart}`]: true,
     };
 
+    const { props: dragProps } = useDragMove(cell, props.onDragStart);
+
     return (
       <div
+        {...dragProps}
         {...props}
+        onDragStart={dragProps.onDragStart}
         tabIndex={0}
         ref={ref}
         role="columnheader"

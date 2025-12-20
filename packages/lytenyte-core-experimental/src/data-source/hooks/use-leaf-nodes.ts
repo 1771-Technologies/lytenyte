@@ -1,6 +1,5 @@
 import type { LeafIdFn, RowLeaf } from "@1771technologies/lytenyte-shared";
 import { useMemo, useRef } from "react";
-import { makeLeafNode } from "../make-leaf-node.js";
 
 const leafIdFallback: LeafIdFn<any> = (_, i, s) => (s !== "center" ? `leaf-${i}-${s}` : `leaf-${i}`);
 export function useLeafNodes<T>(
@@ -41,3 +40,14 @@ export function useLeafNodes<T>(
 
   return [leafsTop, leafsCenter, leafsBot] as const;
 }
+
+const makeLeafNode = <T>(
+  d: T,
+  i: number,
+  section: "top" | "center" | "bottom",
+  leafIdFn: LeafIdFn<T>,
+): RowLeaf<T> => ({
+  kind: "leaf",
+  data: d,
+  id: leafIdFn(d, i, section),
+});

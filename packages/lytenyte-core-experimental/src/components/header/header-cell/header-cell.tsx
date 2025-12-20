@@ -7,6 +7,7 @@ import {
 } from "@1771technologies/lytenyte-shared";
 import { DefaultRenderer } from "./header-default.js";
 import { useRoot } from "../../../root/root-context.js";
+import { useDragMove } from "./use-drag-move.js";
 
 export interface HeaderCellProps {
   readonly cell: LayoutHeaderCell | LayoutHeaderFloating;
@@ -37,9 +38,14 @@ const HeaderCellImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] &
       return dataAttrs;
     }, [column.groupPath?.length, cell.kind, rowSpan]);
 
+    const { props: dragProps } = useDragMove(cell, props.onDragStart);
+    const headerStyle = useHeaderCellStyle(cell, xPositions);
+
     return (
       <div
+        {...dragProps}
         {...props}
+        onDragStart={dragProps.onDragStart}
         tabIndex={0}
         ref={ref}
         role="columnheader"
@@ -57,7 +63,7 @@ const HeaderCellImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] &
         {...dataAttrs}
         // Data attributes end
         style={{
-          ...useHeaderCellStyle(cell, xPositions),
+          ...headerStyle,
           gridRowStart: 1,
           gridRowEnd: rowSpan + 1,
           width,

@@ -24,14 +24,15 @@ export type ReactPlaceholderFn = (p: { x: number; y: number; data: UseDraggableP
 export interface DragEventParams {
   readonly ev: DragEvent;
   readonly data: UseDraggableProps["data"] | null;
+  readonly position: { x: number; y: number };
 }
 
 export interface UseDraggableProps {
   readonly data: { [tag: string]: DragItem };
   readonly onDragStart?: (ev: DragEventParams) => void;
   readonly onDragMove?: (ev: DragEventParams) => void;
-  readonly onDragEnd?: (ev: DragEventParams) => void;
-  readonly onDrop?: (ev: DragEventParams) => void;
+  readonly onDragEnd?: (ev: Omit<DragEventParams, "position">) => void;
+  readonly onDrop?: (ev: Omit<DragEventParams, "position">) => void;
   readonly placeholder?: { query: string; offset?: [number, number] } | string | null | ReactPlaceholderFn;
 }
 

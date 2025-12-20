@@ -37,14 +37,14 @@ export function useDraggable({
         if (x.kind === "dt") dataTransfer.setData(x.type, x.data);
       });
 
-      setDragging(true);
-      onDragStart?.({ data, ev: startEvent.nativeEvent });
-
       let frame: number | null = null;
       let [x, x1] = [startEvent.clientX, startEvent.clientX];
       let [y, y1] = [startEvent.clientY, startEvent.clientY];
       let prevX = startEvent.clientX;
       let prevY = startEvent.clientY;
+
+      setDragging(true);
+      onDragStart?.({ data, ev: startEvent.nativeEvent, position: { x, y } });
 
       dragX(x);
       dragY(y);
@@ -102,7 +102,7 @@ export function useDraggable({
             yOffset = bb.y;
           }
 
-          onDragMove?.({ data, ev });
+          onDragMove?.({ data, ev, position: { x: x - xOffset, y: y - yOffset } });
           dragX(x - xOffset);
           dragY(y - yOffset);
 

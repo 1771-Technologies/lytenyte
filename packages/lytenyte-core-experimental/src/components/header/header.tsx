@@ -1,4 +1,4 @@
-import { forwardRef, memo, type JSX, type ReactNode } from "react";
+import { forwardRef, memo, useMemo, useState, type JSX, type ReactNode } from "react";
 import { useHeaderRowTemplate } from "./use-header-row-template.js";
 import { useHeaderColTemplate } from "./use-header-col-template.js";
 import { HeaderRowRenderer } from "./header-row/header-row-renderer.js";
@@ -7,6 +7,7 @@ import { useHeaderCellReactNodes } from "./use-header-cell-react-nodes.js";
 import type { LayoutHeader } from "@1771technologies/lytenyte-shared";
 import { useBounds, useColumnLayout, useRoot } from "../../root/root-context.js";
 import { $colEndBound, $colStartBound } from "../../selectors.js";
+import { HeaderProvider, type HeaderContextType } from "./header-context.js";
 
 export interface HeaderProps {
   readonly children?: (cells: LayoutHeader[]) => ReactNode;
@@ -16,7 +17,8 @@ function HeaderImpl(
   { children = HeaderRowRenderer, ...props }: Omit<JSX.IntrinsicElements["div"], "children"> & HeaderProps,
   ref: JSX.IntrinsicElements["div"]["ref"],
 ) {
-  const { id, floatingRowEnabled, floatingRowHeight, headerGroupHeight, headerHeight, view, xPositions } = useRoot();
+  const { id, floatingRowEnabled, floatingRowHeight, headerGroupHeight, headerHeight, view, xPositions } =
+    useRoot();
   const columnLayout = useColumnLayout();
 
   const bounds = useBounds();
@@ -32,33 +34,43 @@ function HeaderImpl(
   );
   const gridColTemplate = useHeaderColTemplate(view, xPositions);
 
-  const virtualizedHeaderCells = useVirtualizedHeader(columnLayout, colStartBound, colEndBound);
+  const [active, setActive] = useState<LayoutHeader | null>(null);
+  const virtualizedHeaderCells = useVirtualizedHeader(columnLayout, active, colStartBound, colEndBound);
   const headerRows = useHeaderCellReactNodes(virtualizedHeaderCells, children);
 
+  const value = useMemo<HeaderContextType>(() => {
+    return {
+      activeHeaderDrag: active,
+      setActiveHeaderDrag: setActive,
+    };
+  }, [active]);
+
   return (
-    <div
-      {...props}
-      ref={ref}
-      role="rowgroup"
-      data-ln-header
-      data-ln-gridid={id}
-      data-ln-rowcount={columnLayout.length - (floatingRowEnabled ? 1 : 0)}
-      data-ln-floating={floatingRowEnabled ? true : undefined}
-      style={{
-        width: xPositions.at(-1)!,
-        minWidth: "100%",
-        boxSizing: "border-box",
-        position: "sticky",
-        top: 0,
-        zIndex: 10,
-        display: "grid",
-        gridTemplateRows: gridRowTemplate,
-        gridTemplateColumns: gridColTemplate,
-        ...props.style,
-      }}
-    >
-      {headerRows}
-    </div>
+    <HeaderProvider value={value}>
+      <div
+        {...props}
+        ref={ref}
+        role="rowgroup"
+        data-ln-header
+        data-ln-gridid={id}
+        data-ln-rowcount={columnLayout.length - (floatingRowEnabled ? 1 : 0)}
+        data-ln-floating={floatingRowEnabled ? true : undefined}
+        style={{
+          width: xPositions.at(-1)!,
+          minWidth: "100%",
+          boxSizing: "border-box",
+          position: "sticky",
+          top: 0,
+          zIndex: 10,
+          display: "grid",
+          gridTemplateRows: gridRowTemplate,
+          gridTemplateColumns: gridColTemplate,
+          ...props.style,
+        }}
+      >
+        {headerRows}
+      </div>
+    </HeaderProvider>
   );
 }
 

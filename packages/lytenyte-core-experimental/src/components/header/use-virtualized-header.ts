@@ -3,16 +3,34 @@ import { useMemo } from "react";
 
 export function useVirtualizedHeader(
   layout: LayoutHeader[][],
+  dragged: LayoutHeader | null,
   colStartBound: number,
   colEndBound: number,
 ): LayoutHeader[][] {
   const virtualizedHeaderCells = useMemo(() => {
-    return layout.map((row) => {
+    const filtered = layout.map((row) => {
       return row.filter((col) => {
         return col.colStart >= colStartBound && col.colStart < colEndBound;
       });
     });
-  }, [colEndBound, colStartBound, layout]);
+
+    // When dragging a group column, we may end up removing that group column when joining
+    // the group with other columns in the same group (if they are separated). We want to ensure
+    // the group remains mounted until after the drag. Hence we check if there would've been a merge
+    // and add the dragged element to the layout. Once the drag ends the element will be removed. The
+    // isHiddenMove is important for this.
+    if (dragged && dragged.kind === "group") {
+      const row = dragged.rowStart;
+      const has = filtered[row].findIndex(
+        (c) => c.kind === "group" && c.idOccurrence === dragged.idOccurrence,
+      );
+      if (has === -1) {
+        filtered[row].push({ ...dragged, isHiddenMove: true });
+      }
+    }
+
+    return filtered;
+  }, [colEndBound, colStartBound, dragged, layout]);
 
   return virtualizedHeaderCells;
 }
