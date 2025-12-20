@@ -1,8 +1,17 @@
-import { columnAddMarker, columnAddRowGroup, makeColumnView, type RowSource } from "@1771technologies/lytenyte-shared";
+import {
+  columnAddMarker,
+  columnAddRowGroup,
+  makeColumnView,
+  type RowSource,
+} from "@1771technologies/lytenyte-shared";
 import { useMemo } from "react";
 import type { Props } from "../../types/types-internal";
 
-export function useColumnView(props: Props, source: RowSource, columnGroupExpansions: Record<string, boolean>) {
+export function useColumnView(
+  props: Props,
+  source: RowSource,
+  columnGroupExpansions: Record<string, boolean>,
+) {
   const maxRowDepth = source.useMaxRowGroupDepth();
 
   const view = useMemo(() => {

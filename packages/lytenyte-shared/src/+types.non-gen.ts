@@ -79,6 +79,11 @@ export interface RowSource<T = any> {
 
   readonly rowIndexToRowId: (index: number) => string | null | undefined;
   readonly rowByIndex: (row: number) => RowAtom<RowNode<T> | null>;
+  readonly rowById: (id: string) => RowNode<T> | null;
+  readonly rowGroupIsExpanded: (id: string) => boolean;
+
+  // Methods the LyteNyte will call
+  readonly onRowGroupExpansionsChange: (deltaChanges: Record<string, boolean>) => void;
 }
 
 export type LeafIdFn<T> = (d: T, index: number, section: "top" | "center" | "bottom") => string;

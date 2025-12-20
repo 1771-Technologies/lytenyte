@@ -181,7 +181,8 @@ export function useApi(
     const id = typeof rowOrId === "string" ? rowOrId : rowOrId.id;
 
     if (!detailExpansions.has(id)) return 0;
-    if (props.rowDetailHeight === "auto") return detailHeightCache[id] ?? props.rowDetailAutoHeightGuess ?? 200;
+    if (props.rowDetailHeight === "auto")
+      return detailHeightCache[id] ?? props.rowDetailAutoHeightGuess ?? 200;
     return props.rowDetailHeight ?? 200;
   });
 
@@ -192,6 +193,17 @@ export function useApi(
       return r == null ? false : detailExpansions.has(r.id);
     }
     return detailExpansions.has(row.id);
+  });
+
+  api.rowGroupToggle = useEvent((rowOrId, state) => {
+    const rowId = typeof rowOrId === "string" ? rowOrId : rowOrId.id;
+    const row = source.rowById(rowId);
+    if (!row || row.kind !== "branch") return;
+
+    const next = state ?? !source.rowGroupIsExpanded(row.id);
+    const change = { [row.id]: next };
+    source.onRowGroupExpansionsChange(change);
+    props.onRowGroupExpansionChange?.(change);
   });
 
   api.props = useEvent(() => props as any);

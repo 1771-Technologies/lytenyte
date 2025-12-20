@@ -23,7 +23,8 @@ export function columnAddRowGroup({
 
   if (hasGroupColumn) {
     const groupColumn = { ...baseGroup, ...rowGroupTemplate, id: GROUP_COLUMN_SINGLE_ID };
-    columns.unshift(groupColumn);
+
+    return [groupColumn, ...columns];
   }
 
   return columns;

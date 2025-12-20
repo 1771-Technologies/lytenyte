@@ -69,4 +69,5 @@ export interface Props {
   // Values that can be changed by the grid
   readonly onColumnGroupExpansionChange?: (change: Record<string, boolean>) => void;
   readonly onRowDetailExpansionsChange?: (change: Set<string>) => void;
+  readonly onRowGroupExpansionChange?: (deltaChange: Record<string, boolean>) => void;
 }
