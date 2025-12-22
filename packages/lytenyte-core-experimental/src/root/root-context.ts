@@ -97,3 +97,7 @@ export interface EditContext {
 const editContext = createContext({} as EditContext);
 export const EditProvider = editContext.Provider;
 export const useEdit = () => useContext(editContext);
+
+const focusContext = createContext<null | { row: number; column: number }>({} as any);
+export const FocusProvider = focusContext.Provider;
+export const useFocus = () => useContext(focusContext);

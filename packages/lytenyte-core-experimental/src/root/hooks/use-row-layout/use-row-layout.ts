@@ -5,6 +5,7 @@ import {
   type ColumnView,
   type LayoutRow,
   type LayoutState,
+  type PositionUnion,
   type RowSource,
   type RowView,
   type SpanLayout,
@@ -24,6 +25,7 @@ export function useRowLayout(
   bounds$: Piece<SpanLayout>,
   layoutStateRef: RefObject<LayoutState>,
   rowDetailExpansions: Set<string>,
+  position: PositionUnion | null,
 ) {
   const bounds = bounds$.useValue();
 
@@ -147,7 +149,7 @@ export function useRowLayout(
       layout,
       rds: rs,
       columns,
-      focus: null, // TODO
+      focus: position,
     });
 
     return {
@@ -163,6 +165,7 @@ export function useRowLayout(
     isFullWidth,
     isRowCutoff,
     layoutCache,
+    position,
     props.rowScanDistance,
     props.virtualizeCols,
     props.virtualizeRows,

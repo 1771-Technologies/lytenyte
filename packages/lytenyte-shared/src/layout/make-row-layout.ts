@@ -26,11 +26,27 @@ interface MakeRowViewArgs<T> {
 /**
  * This is quite a complex function so read each part carefully.
  */
-export function makeRowLayout<T>({ view: n, rowScan, viewCache, layout, rds, columns }: MakeRowViewArgs<T>) {
+export function makeRowLayout<T>({
+  view: n,
+  rowScan,
+  viewCache,
+  layout,
+  rds,
+  columns,
+  focus,
+}: MakeRowViewArgs<T>) {
   // Initializes the layout sections for the view.
   const top: RowView<T>["top"] = [];
   const center: RowView<T>["center"] = [];
   const bottom: RowView<T>["bottom"] = [];
+
+  const shouldIncludeFocus =
+    (focus?.kind === "cell" || focus?.kind === "full-width" || focus?.kind === "detail") &&
+    focus.rowIndex >= n.rowTopEnd &&
+    focus.rowIndex < n.rowBotStart;
+
+  const before = shouldIncludeFocus && focus.rowIndex < n.rowCenterStart && focus;
+  const after = shouldIncludeFocus && focus.rowIndex >= n.rowCenterEnd && focus;
 
   handleViewLayout({
     columns,
@@ -58,6 +74,36 @@ export function makeRowLayout<T>({ view: n, rowScan, viewCache, layout, rds, col
     viewCache,
   });
 
+  if (before) {
+    const alreadyIncluded = center.findIndex((x) => x.rowIndex === focus.rowIndex);
+
+    const before: RowView<T>["center"] = [];
+    handleViewLayout({
+      columns,
+      container: before,
+      layout,
+      rowStart: focus.rowIndex,
+      rowEnd: focus.rowIndex + 1,
+      rowForIndex: rds.rowByIndex,
+      onlySpans: false,
+      rowPin: null,
+      spanLayout: n,
+      viewCache,
+    });
+
+    if (alreadyIncluded) center.splice(alreadyIncluded, 1, ...before);
+    else {
+      const insertionIndex = center.findIndex(
+        (x, i) => x.rowIndex < focus.rowIndex && center[i + 1].rowIndex > focus.rowIndex,
+      );
+      if (insertionIndex === -1) center.push(...before);
+      else {
+        console.log(" iran");
+        center.splice(insertionIndex, 1, ...before);
+      }
+    }
+  }
+
   handleViewLayout({
     columns,
     container: center,
@@ -70,6 +116,21 @@ export function makeRowLayout<T>({ view: n, rowScan, viewCache, layout, rds, col
     spanLayout: n,
     viewCache,
   });
+
+  if (after) {
+    handleViewLayout({
+      columns,
+      container: center,
+      layout,
+      rowStart: focus.rowIndex,
+      rowEnd: focus.rowIndex + 1,
+      rowForIndex: rds.rowByIndex,
+      onlySpans: false,
+      rowPin: null,
+      spanLayout: n,
+      viewCache,
+    });
+  }
 
   handleViewLayout({
     columns,
@@ -128,7 +189,7 @@ function handleViewLayout<T>({
       const row = viewCache.get(r)!;
       if (onlySpans) {
         if (row.kind === "full-width") continue;
-        const spansIntoView = row.cells.some((x) => x.rowSpan + x.rowIndex >= rowEnd);
+        const spansIntoView = row.cells.some((x) => x.rowSpan + x.rowIndex - 1 >= rowEnd);
         if (spansIntoView) container.push(row);
         continue;
       } else {
@@ -252,7 +313,7 @@ function handleViewLayout<T>({
     };
     viewCache.set(r, row);
 
-    if (onlySpans && row.cells.some((x) => x.rowSpan + x.rowIndex >= rowEnd)) continue;
+    if (onlySpans && row.cells.some((x) => x.rowSpan + x.rowIndex - 1 >= rowEnd)) continue;
 
     container.push(row);
   }

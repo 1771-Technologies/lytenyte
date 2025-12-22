@@ -16,7 +16,6 @@ import { RowsBottom, RowsCenter, RowsTop } from "./components/rows/rows-section.
 import { useClientDataSource } from "./data-source/use-client-data-source.js";
 import { ViewportShadows } from "./components/viewport/viewport-shadows.js";
 import { useMemo } from "react";
-import { getDragData } from "./dnd/get-drag-data.js";
 
 const columns: Root.Column[] = [
   {
@@ -68,7 +67,7 @@ export default function Experimental() {
         <button>A</button>
         <div
           className={"ln-grid " + (resolvedTheme === "light" ? "ln-light" : "ln-dark")}
-          style={{ height: "30vh", width: "90vw" }}
+          style={{ height: "90vh", width: "90vw" }}
         >
           <Root
             onRowDragEnter={(p) => {
@@ -108,14 +107,6 @@ export default function Experimental() {
         </div>
         <button>A</button>
       </div>
-      <div
-        style={{ width: 200, height: 200, background: "red" }}
-        onDrop={(ev) => {
-          ev.preventDefault();
-          const ge = getDragData();
-          console.log(ge);
-        }}
-      ></div>
     </>
   );
 }
