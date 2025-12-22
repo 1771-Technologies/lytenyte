@@ -240,6 +240,18 @@ export function useClientDataSource<T>({
     setSelected(next);
   });
 
+  const rowsSelected = useEvent(() => {
+    if (rowsIsolatedSelection) return [...selected].map((x) => source.rowById(x)!).filter(Boolean);
+
+    return [...selected]
+      .map((x) => {
+        const row = source.rowById(x);
+        if (row?.kind !== "leaf") return null as unknown as RowNode<any>;
+        return row;
+      })
+      .filter(Boolean);
+  });
+
   const selectedPiece = usePiece(selected);
 
   const source = useMemo<RowSource>(() => {
@@ -351,6 +363,7 @@ export function useClientDataSource<T>({
         return [...group.leafIds];
       },
       rowIsSelected,
+      rowsSelected,
       rowParents,
 
       useBottomCount: botPiece.useValue,
@@ -397,6 +410,7 @@ export function useClientDataSource<T>({
     rowIsSelected,
     rowParents,
     rowsIsolatedSelection,
+    rowsSelected,
     selectedPiece,
     setExpansions,
     topPiece.useValue,
