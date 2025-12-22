@@ -1,15 +1,24 @@
-import type { LayoutHeader } from "@1771technologies/lytenyte-shared";
+import type { LayoutHeader, PositionUnion } from "@1771technologies/lytenyte-shared";
 import { useMemo } from "react";
+import type { Piece } from "../../hooks/use-piece";
 
 export function useVirtualizedHeader(
   layout: LayoutHeader[][],
   dragged: LayoutHeader | null,
   colStartBound: number,
   colEndBound: number,
+  focusActive: Piece<PositionUnion | null>,
 ): LayoutHeader[][] {
+  const position = focusActive.useValue();
+  const headerFocusIndex =
+    position?.kind === "header-cell" || position?.kind === "header-group-cell" ? position.colIndex : null;
+
   const virtualizedHeaderCells = useMemo(() => {
     const filtered = layout.map((row) => {
       return row.filter((col) => {
+        if (headerFocusIndex != null && col.colStart <= headerFocusIndex && headerFocusIndex < col.colEnd)
+          return true;
+
         return col.colPin || (col.colStart >= colStartBound && col.colStart < colEndBound);
       });
     });
@@ -30,7 +39,7 @@ export function useVirtualizedHeader(
     }
 
     return filtered;
-  }, [colEndBound, colStartBound, dragged, layout]);
+  }, [colEndBound, colStartBound, dragged, headerFocusIndex, layout]);
 
   return virtualizedHeaderCells;
 }

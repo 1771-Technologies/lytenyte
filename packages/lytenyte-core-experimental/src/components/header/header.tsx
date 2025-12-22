@@ -17,8 +17,16 @@ function HeaderImpl(
   { children = HeaderRowRenderer, ...props }: Omit<JSX.IntrinsicElements["div"], "children"> & HeaderProps,
   ref: JSX.IntrinsicElements["div"]["ref"],
 ) {
-  const { id, floatingRowEnabled, floatingRowHeight, headerGroupHeight, headerHeight, view, xPositions } =
-    useRoot();
+  const {
+    id,
+    floatingRowEnabled,
+    floatingRowHeight,
+    headerGroupHeight,
+    headerHeight,
+    view,
+    xPositions,
+    focusActive,
+  } = useRoot();
   const columnLayout = useColumnLayout();
 
   const bounds = useBounds();
@@ -35,7 +43,13 @@ function HeaderImpl(
   const gridColTemplate = useHeaderColTemplate(view, xPositions);
 
   const [active, setActive] = useState<LayoutHeader | null>(null);
-  const virtualizedHeaderCells = useVirtualizedHeader(columnLayout, active, colStartBound, colEndBound);
+  const virtualizedHeaderCells = useVirtualizedHeader(
+    columnLayout,
+    active,
+    colStartBound,
+    colEndBound,
+    focusActive,
+  );
   const headerRows = useHeaderCellReactNodes(virtualizedHeaderCells, children);
 
   const value = useMemo<HeaderContextType>(() => {

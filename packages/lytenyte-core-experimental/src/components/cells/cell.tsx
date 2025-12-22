@@ -4,7 +4,7 @@ import { CellDefault } from "./cell-default.js";
 import { useCellStyle } from "./use-cell-style.js";
 import { CellSpacerEnd } from "./cell-spacers/cell-spacer-end.js";
 import { CellSpacerStart } from "./cell-spacers/cell-spacer-start.js";
-import { useBounds, useRoot } from "../../root/root-context.js";
+import { useBounds, useFocus, useRoot } from "../../root/root-context.js";
 import { $colEndBound, $colStartBound } from "../../selectors.js";
 import { useRowMeta } from "../rows/row/context.js";
 import type { Root } from "../../root/root.js";
@@ -16,11 +16,15 @@ export interface CellProps {
 export const Cell = forwardRef<HTMLDivElement, Omit<JSX.IntrinsicElements["div"], "children"> & CellProps>(
   function Cell(props, forwarded) {
     const bounds = useBounds();
+    const focus = useFocus();
     const end = bounds.useValue($colEndBound);
     const start = bounds.useValue($colStartBound);
 
+    const isFocused = focus && focus.row === props.cell.rowIndex && focus.column === props.cell.colIndex;
+
     // This enforces our column virtualization.
     if (
+      !isFocused &&
       props.cell.colPin == null &&
       (props.cell.colIndex >= end || props.cell.colIndex + props.cell.colSpan - 1 < start)
     ) {

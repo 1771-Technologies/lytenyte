@@ -24,7 +24,9 @@ import type {
   PositionFullWidthRow,
   PositionGridCell,
   PositionUnion,
+  RowGroup,
   RowGroupDisplayMode,
+  RowLeaf,
   RowNode,
   RowSource,
 } from "@1771technologies/lytenyte-shared";
@@ -35,6 +37,7 @@ import {
   BoundsContextProvider,
   ColumnLayoutContextProvider,
   EditProvider,
+  FocusProvider,
   RootContextProvider,
   RowLayoutContextProvider,
   type RootContextValue,
@@ -96,6 +99,17 @@ export const Root = <
     yPositions.positions,
   );
 
+  const [position, setPosition] = useState<PositionUnion | null>(null);
+  const focusPiece = usePiece(position, setPosition);
+
+  const focusValue = useMemo(() => {
+    if (position?.kind === "cell") {
+      return { row: position.rowIndex, column: position.colIndex };
+    }
+
+    return null;
+  }, [position]);
+
   const layoutStateRef = useRef<LayoutState>(null as unknown as LayoutState);
   const headerLayout = useHeaderLayout(view, props);
   const rowLayout = useRowLayout(
@@ -107,6 +121,7 @@ export const Root = <
     bounds,
     layoutStateRef,
     controlled.detailExpansions,
+    position,
   );
 
   const editValue = useEditContext(view, api.current, props, source);
@@ -129,9 +144,6 @@ export const Root = <
     totalHeaderHeight,
     api.current,
   );
-
-  const [position, setPosition] = useState<PositionUnion | null>(null);
-  const focusPiece = usePiece(position, setPosition);
 
   const value = useMemo<RootContextValue>(() => {
     return {
@@ -224,7 +236,9 @@ export const Root = <
       <RowLayoutContextProvider value={rowLayout}>
         <ColumnLayoutContextProvider value={headerLayout}>
           <BoundsContextProvider value={bounds}>
-            <EditProvider value={editValue}>{children}</EditProvider>
+            <EditProvider value={editValue}>
+              <FocusProvider value={focusValue}>{children}</FocusProvider>
+            </EditProvider>
           </BoundsContextProvider>
         </ColumnLayoutContextProvider>
       </RowLayoutContextProvider>
@@ -326,6 +340,20 @@ export namespace Root {
     readonly edit: (props: EditParams<T, ColExt, S, Ext>) => ReactNode;
   }
 
+  export interface DataRect {
+    readonly rowStart: number;
+    readonly rowEnd: number;
+    readonly columnStart: number;
+    readonly columnEnd: number;
+  }
+
+  export interface ExportDataRectResult<T> {
+    readonly headers: string[];
+    readonly groupHeaders: (string | null)[][];
+    readonly data: unknown[][];
+    readonly columns: Column<T>[];
+  }
+
   type RowSourceOmits = "onRowGroupExpansionsChange" | "onRowsUpdated" | "onRowsSelected";
   export type API<
     T,
@@ -355,6 +383,17 @@ export namespace Root {
     readonly rowDetailExpanded: (rowOrId: RowNode<T> | string | number) => boolean;
 
     readonly rowGroupToggle: (rowOrId: RowNode<T> | string, state?: boolean) => void;
+
+    // To implement
+    readonly rowIsLeaf: (row: RowNode<T>) => row is RowLeaf<T>;
+    readonly rowIsGroup: (row: RowNode<T>) => row is RowGroup;
+    readonly rowGroupIsExpanded: (row: RowNode<T>) => boolean;
+    readonly columnToggleGroup: (group: string | string[], state?: boolean) => void;
+    readonly exportData: (params?: {
+      readonly rect: DataRect;
+      readonly uniformGroupHeaders?: boolean;
+    }) => Promise<ExportDataRectResult<T>>;
+    // To implement end
 
     readonly scrollIntoView: (params: {
       readonly column?: number | string | WithId;
@@ -433,6 +472,8 @@ export namespace Root {
     S extends RowSource<Data> = RowSource,
     Ext extends Record<string, any> = object,
   > = {
+    readonly apiExtensions?: Ext;
+
     readonly columns?: Column<Data, ColExt, S, Ext>[];
     readonly columnBase?: Omit<Column<Data, ColExt, S, Ext>, "id" | "pin" | "field" | "editSetter">;
     readonly columnMarker?: Omit<Column<Data, ColExt, S, Ext>, "field"> & { width?: number };
