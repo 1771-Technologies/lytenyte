@@ -16,6 +16,7 @@ import { RowsBottom, RowsCenter, RowsTop } from "./components/rows/rows-section.
 import { useClientDataSource } from "./data-source/use-client-data-source.js";
 import { ViewportShadows } from "./components/viewport/viewport-shadows.js";
 import { useMemo } from "react";
+import type { RowLeaf } from "@1771technologies/lytenyte-shared";
 
 const columns: Root.Column[] = [
   {
@@ -44,10 +45,10 @@ const columns: Root.Column[] = [
   { id: "poutcome" },
   { id: "y" },
 ];
-
+const group = (x: RowLeaf<(typeof bankDataSmall)[number]>) => [x.data.education, x.data.campaign];
 export default function Experimental() {
   const rowSource = useClientDataSource({
-    group: (x) => [x.data.education, x.data.campaign],
+    group,
     data: bankDataSmall,
   });
 
@@ -65,6 +66,18 @@ export default function Experimental() {
           columnBase={useMemo(() => ({ movable: true, resizable: false }), [])}
           rowSource={rowSource}
           rowSelectionMode="multiple"
+          rowSelectionActivator="single-click"
+          rowGroupColumn={useMemo<Root.Props["rowGroupColumn"]>(() => {
+            return {
+              cellRenderer: (p) => {
+                return (
+                  <div>
+                    <button onClick={() => p.api.rowGroupToggle(p.row)}>{p.column.name ?? "Group"}</button>
+                  </div>
+                );
+              },
+            };
+          }, [])}
         >
           <Viewport>
             <ViewportShadows />
