@@ -185,7 +185,16 @@ export function useClientDataSource<T>({
   });
 
   const rowIsSelected: RowSource<T>["rowIsSelected"] = useEvent((id) => {
-    return selected.has(id);
+    if (rowsIsolatedSelection) return selected.has(id);
+
+    const row = source.rowById(id);
+    if (!row) return false;
+    if (row.kind === "leaf") return selected.has(id);
+
+    const group = tree?.groupLookup.get(row.id);
+    if (!group) return false;
+
+    return group.leafIds.isSubsetOf(selected);
   });
   const onRowsSelected: RowSource<T>["onRowsSelected"] = useEvent(({ selected: c, deselect, mode }) => {
     if (mode === "none") return;

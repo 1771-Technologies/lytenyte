@@ -91,6 +91,8 @@ const nodeChildrenToRows = <T>(
 
       const row = v.row;
       (row as any).data = data;
+
+      rows.push(row);
     }
   }
 
