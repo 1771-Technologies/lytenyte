@@ -1,8 +1,15 @@
 import { useCallback, useMemo, useState, type DragEvent as DragEventReact } from "react";
-import { clearDragGlobals, dragActiveDrop, dragData } from "./global.js";
+import { clearDragGlobals, dragActiveDrop, dragData, dragX, dragY } from "./global.js";
 import type { UseDroppableProps } from "./types.js";
 
-export function useDroppable({ onExit, onEnter, onDrop, accepted, moveEffect, active }: UseDroppableProps) {
+export function useDroppable({
+  onExit,
+  onEnter,
+  onDrop,
+  accepted,
+  moveEffect,
+  active = true,
+}: UseDroppableProps) {
   const [over, setOver] = useState(false);
   const [canDrop, setCanDrop] = useState(false);
   const [dropEl, setDropRef] = useState<HTMLElement | null>(null);
@@ -41,7 +48,7 @@ export function useDroppable({ onExit, onEnter, onDrop, accepted, moveEffect, ac
       if (!canDrop || !data || !dropEl) return;
 
       onDrop?.({ ev, canDrop: false, data, element: dropEl });
-      dragActiveDrop()?.({ data, ev });
+      dragActiveDrop()?.({ data, ev, position: { x: dragX(), y: dragY() } });
     },
     [canDrop, dropEl, onDrop],
   );

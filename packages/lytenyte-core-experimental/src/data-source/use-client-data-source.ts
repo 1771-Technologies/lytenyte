@@ -240,7 +240,7 @@ export function useClientDataSource<T>({
     setSelected(next);
   });
 
-  const rowsSelected = useEvent(() => {
+  const rowsSelected: RowSource["rowsSelected"] = useEvent(() => {
     if (rowsIsolatedSelection) return [...selected].map((x) => source.rowById(x)!).filter(Boolean);
 
     return [...selected]
@@ -327,6 +327,8 @@ export function useClientDataSource<T>({
           invalidate?.(Date.now());
         }
       },
+
+      rowIdToRowIndex: (id: string) => rowIdToRowIndexRef.current.get(id) ?? null,
 
       rowsBetween: (startId, endId) => {
         const left = rowIdToRowIndexRef.current.get(startId);

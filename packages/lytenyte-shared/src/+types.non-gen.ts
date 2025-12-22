@@ -77,6 +77,7 @@ export interface RowSource<T = any> {
   readonly useMaxRowGroupDepth: () => number;
 
   readonly rowIndexToRowId: (index: number) => string | null | undefined;
+  readonly rowIdToRowIndex: (id: string) => number | null | undefined;
   readonly rowByIndex: (row: number) => RowAtom<RowNode<T> | null>;
   readonly rowById: (id: string) => RowNode<T> | null;
   readonly rowParents: (id: string) => string[];

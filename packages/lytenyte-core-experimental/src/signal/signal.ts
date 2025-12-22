@@ -59,12 +59,12 @@ const clockUpdateEvent = createEvent();
 
 export const createSignal = <T>(initialValue: T | (() => T)): Signal<T> => {
   const event = createEvent<T>();
-  let value = typeof initialValue === "function" ? (initialValue as () => T)() : initialValue;
+  let value = initialValue;
 
   return Object.assign(
     (...args: [] | [nextValue: T | ((value: T) => T)]) => {
       if (args.length) {
-        const nextValue = typeof args[0] === "function" ? (args[0] as (value: T) => T)(value) : args[0];
+        const nextValue = args[0] as T;
 
         if (nextValue !== value) {
           value = nextValue;

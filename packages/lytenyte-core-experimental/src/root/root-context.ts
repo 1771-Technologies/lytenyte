@@ -55,6 +55,11 @@ export interface RootContextValue {
   readonly editClickActivator: "single" | "double-click" | "none";
   readonly editValidator: null | ((x: any) => any);
 
+  readonly dropAccept: string[];
+  readonly onRowDragLeave: Props["onRowDragLeave"];
+  readonly onRowDragEnter: Props["onRowDragEnter"];
+  readonly onRowDrop: Props["onRowDrop"];
+
   readonly selectActivator: Props["rowSelectionActivator"];
   readonly selectPivot: RefObject<number | null>;
 }
