@@ -18,7 +18,7 @@ import {
   type RowSource,
   type SpanLayout,
 } from "@1771technologies/lytenyte-shared";
-import type { API, Props } from "../../../types/types-internal";
+import type { API, Props } from "../../../types/types-internal.js";
 import type { RefObject } from "react";
 import { useEvent } from "../../../hooks/use-event.js";
 import { getSpanFn } from "../use-row-layout/get-span-fn.js";
@@ -26,8 +26,9 @@ import { getFullWidthFn } from "../use-row-layout/get-full-width-fn.js";
 import { resolveColumn } from "./resolve-column.js";
 import type { Controlled } from "../use-controlled-grid-state.js";
 import { defaultAutosize, defaultAutosizeHeader } from "./autosizers.js";
-import type { EditContext } from "../../root-context";
-import type { Root } from "../../root";
+import type { EditContext } from "../../root-context.js";
+import type { Root } from "../../root.js";
+import { useDraggable } from "../../../dnd/use-draggable.js";
 
 type Writable<T> = { -readonly [k in keyof T]: T[k] };
 
@@ -518,6 +519,40 @@ export function useApi(
     const change = { [row.id]: next };
     source.onRowGroupExpansionsChange(change);
     props.onRowGroupExpansionChange?.(change);
+  });
+
+  api.useRowDrag = useEvent(({ rowIndex, data, placeholder }) => {
+    const row = api.rowByIndex(rowIndex).get();
+    if (!row) throw new Error("The row index provided for row drag must be a valid row");
+
+    const rowSelect = `[data-ln-gridid="${gridId}"][data-ln-row="true"][data-ln-rowindex="${rowIndex}"]`;
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    return useDraggable({
+      data: {
+        ...data,
+        [`grid:${gridId}`]: {
+          kind: "site",
+          data: {
+            row,
+            api,
+            get rowIndex() {
+              return api.rowIdToRowIndex(row.id);
+            },
+          },
+        },
+        [`grid:source`]: {
+          kind: "site",
+          data: {
+            row,
+            api,
+            get rowIndex() {
+              return api.rowIdToRowIndex(row.id);
+            },
+          },
+        },
+      },
+      placeholder: placeholder ?? rowSelect,
+    });
   });
 
   api.viewport = useEvent(() => {

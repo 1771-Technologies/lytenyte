@@ -16,6 +16,7 @@ import { RowsBottom, RowsCenter, RowsTop } from "./components/rows/rows-section.
 import { useClientDataSource } from "./data-source/use-client-data-source.js";
 import { ViewportShadows } from "./components/viewport/viewport-shadows.js";
 import { useMemo } from "react";
+import { getDragData } from "./dnd/get-drag-data.js";
 
 const columns: Root.Column[] = [
   {
@@ -23,6 +24,16 @@ const columns: Root.Column[] = [
     name: "bob",
     groupPath: ["Alpha", "Beta"],
     type: "number",
+
+    cellRenderer: (props) => {
+      const drag = props.api.useRowDrag({ rowIndex: props.rowIndex });
+
+      return (
+        <div style={{ background: "green" }} {...drag.props}>
+          Drag handle
+        </div>
+      );
+    },
   },
   {
     id: "marital",
@@ -51,46 +62,60 @@ export default function Experimental() {
   });
 
   const { resolvedTheme } = useTheme();
-
   return (
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <button>A</button>
-      <div
-        className={"ln-grid " + (resolvedTheme === "light" ? "ln-light" : "ln-dark")}
-        style={{ height: "90vh", width: "90vw" }}
-      >
-        <Root
-          columns={columns}
-          columnBase={useMemo(() => ({ movable: true, resizable: false }), [])}
-          rowSource={rowSource}
-          rowGroupColumn={useMemo<Root.Props["rowGroupColumn"]>(() => {
-            return {
-              cellRenderer: (p) => {
-                return (
-                  <div>
-                    <button onClick={() => p.api.rowGroupToggle(p.row)}>{p.column.name ?? "Group"}</button>
-                  </div>
-                );
-              },
-            };
-          }, [])}
+    <>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <button>A</button>
+        <div
+          className={"ln-grid " + (resolvedTheme === "light" ? "ln-light" : "ln-dark")}
+          style={{ height: "30vh", width: "90vw" }}
         >
-          <Viewport>
-            <ViewportShadows />
-            <Header />
-            <RowsContainer>
-              <RowsTop />
-              <RowsCenter />
-              <RowsBottom />
-            </RowsContainer>
-          </Viewport>
-        </Root>
+          <Root
+            onRowDragEnter={(p) => {
+              console.log(p.over.kind === "viewport" ? "Entering viewport" : `Entering ${p.over.rowIndex}`);
+            }}
+            onRowDragLeave={(p) => {
+              console.log(p.over.kind === "viewport" ? "Leaving viewport" : `Leaving ${p.over.rowIndex}`);
+            }}
+            onRowDrop={(p) => {
+              console.log(p.over, p.source);
+            }}
+            columns={columns}
+            columnBase={useMemo(() => ({ movable: true, resizable: false }), [])}
+            rowSource={rowSource}
+            rowGroupColumn={useMemo<Root.Props["rowGroupColumn"]>(() => {
+              return {
+                cellRenderer: (p) => {
+                  return (
+                    <div>
+                      <button onClick={() => p.api.rowGroupToggle(p.row)}>{p.column.name ?? "Group"}</button>
+                    </div>
+                  );
+                },
+              };
+            }, [])}
+          >
+            <Viewport>
+              <ViewportShadows />
+              <Header />
+              <RowsContainer>
+                <RowsTop />
+                <RowsCenter />
+                <RowsBottom />
+              </RowsContainer>
+            </Viewport>
+          </Root>
+        </div>
+        <button>A</button>
       </div>
-      <button>A</button>
-    </div>
+      <div
+        style={{ width: 200, height: 200, background: "red" }}
+        onDrop={(ev) => {
+          ev.preventDefault();
+          const ge = getDragData();
+          console.log(ge);
+        }}
+      ></div>
+    </>
   );
 }
-
-// Row Dragging
-
-// Animations??

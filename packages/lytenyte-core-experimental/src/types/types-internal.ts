@@ -73,6 +73,7 @@ export interface Props {
   readonly rowDetailHeight?: number | "auto";
   readonly rowDetailAutoHeightGuess?: number;
   readonly rowDetailRenderer?: ((params: any) => any) | null;
+  readonly rowDropAccept?: string[];
 
   readonly ref?: Ref<API>;
 
@@ -121,4 +122,45 @@ export interface Props {
     readonly rows: string[] | "all";
     readonly deselect: boolean;
   }) => boolean;
+
+  readonly onRowDrop?: (params: {
+    readonly source: { id: string; api: API; row: RowNode<any>; rowIndex: number | null; data?: any };
+    readonly over:
+      | { kind: "viewport"; id: string; element: HTMLElement; api: API }
+      | {
+          kind: "row";
+          id: string;
+          api: API;
+          row: RowNode<any>;
+          rowIndex: number | null;
+          element: HTMLElement;
+        };
+  }) => void;
+
+  readonly onRowDragEnter?: (params: {
+    readonly source: { id: string; api: API; row: RowNode<any>; rowIndex: number | null; data?: any };
+    readonly over:
+      | { kind: "viewport"; id: string; element: HTMLElement; api: API }
+      | {
+          kind: "row";
+          id: string;
+          api: API;
+          row: RowNode<any>;
+          rowIndex: number | null;
+          element: HTMLElement;
+        };
+  }) => void;
+  readonly onRowDragLeave?: (params: {
+    readonly source: { id: string; api: API; row: RowNode<any>; rowIndex: number | null; data?: any };
+    readonly over:
+      | { kind: "viewport"; id: string; element: HTMLElement; api: API }
+      | {
+          kind: "row";
+          id: string;
+          api: API;
+          row: RowNode<any>;
+          rowIndex: number | null;
+          element: HTMLElement;
+        };
+  }) => void;
 }

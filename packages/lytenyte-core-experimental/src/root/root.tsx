@@ -41,6 +41,8 @@ import {
 } from "./root-context.js";
 import { usePiece } from "../hooks/use-piece.js";
 import { useEditContext } from "./hooks/use-edit-context.js";
+import type { UseDraggableProps } from "../dnd/types.js";
+import type { useDraggable } from "../dnd/use-draggable.js";
 
 export const Root = <
   Data = unknown,
@@ -58,6 +60,13 @@ export const Root = <
   const id = useId();
   const gridId = props.gridId ?? id;
   const selectPivot = useRef<number | null>(null);
+
+  const dropAccept = useMemo(() => {
+    const drop = props.rowDropAccept ?? [];
+    if (!drop.includes(gridId)) drop.push(gridId);
+
+    return drop.map((x) => `grid:${x}`);
+  }, [gridId, props.rowDropAccept]);
 
   const dimensions = useViewportDimensions(vp);
   const controlled = useControlledGridState(props);
@@ -168,11 +177,16 @@ export const Root = <
 
       selectActivator: props.rowSelectionActivator ?? "single-click",
       selectPivot,
+      dropAccept,
+      onRowDragEnter: props.onRowDragEnter,
+      onRowDragLeave: props.onRowDragLeave,
+      onRowDrop: props.onRowDrop,
     };
   }, [
     controlled.columnGroupExpansions,
     controlled.detailExpansions,
     dimensions,
+    dropAccept,
     focusPiece,
     gridId,
     props.columnBase,
@@ -188,6 +202,9 @@ export const Root = <
     props.floatingRowHeight,
     props.headerGroupHeight,
     props.headerHeight,
+    props.onRowDragEnter,
+    props.onRowDragLeave,
+    props.onRowDrop,
     props.rowDetailHeight,
     props.rowDetailRenderer,
     props.rowFullWidthRenderer,
@@ -368,6 +385,10 @@ export namespace Root {
     }) => void;
     readonly rowHandleSelect: (params: { readonly target: EventTarget; readonly shiftKey: boolean }) => void;
 
+    readonly useRowDrag: (
+      params: Partial<Pick<UseDraggableProps, "data" | "placeholder">> & { rowIndex: number },
+    ) => ReturnType<typeof useDraggable>;
+
     readonly props: () => Props<T, ColExt, S, Ext>;
   } & Omit<S, RowSourceOmits> &
     Ext;
@@ -473,6 +494,7 @@ export namespace Root {
     readonly rowDetailHeight?: number | "auto";
     readonly rowDetailAutoHeightGuess?: number;
     readonly rowDetailRenderer?: Renderers<Data, ColExt, S, Ext>["row"] | null;
+    readonly rowDropAccept?: string[];
 
     readonly ref?: Ref<API<Data, ColExt, S, Ext>>;
 
@@ -523,5 +545,46 @@ export namespace Root {
       readonly rows: string[] | "all";
       readonly deselect: boolean;
     }) => boolean;
+
+    readonly onRowDrop?: (params: {
+      readonly source: { id: string; api: API<any>; row: RowNode<any>; rowIndex: number; data?: any };
+      readonly over:
+        | { kind: "viewport"; id: string; element: HTMLElement; api: API<any> }
+        | {
+            kind: "row";
+            id: string;
+            api: API<any>;
+            row: RowNode<any>;
+            rowIndex: number;
+            element: HTMLElement;
+          };
+    }) => void;
+
+    readonly onRowDragEnter?: (params: {
+      readonly source: { id: string; api: API<any>; row: RowNode<any>; rowIndex: number; data?: any };
+      readonly over:
+        | { kind: "viewport"; id: string; element: HTMLElement; api: API<any> }
+        | {
+            kind: "row";
+            id: string;
+            api: API<any>;
+            row: RowNode<any>;
+            rowIndex: number;
+            element: HTMLElement;
+          };
+    }) => void;
+    readonly onRowDragLeave?: (params: {
+      readonly source: { id: string; api: API<any>; row: RowNode<any>; rowIndex: number | null; data?: any };
+      readonly over:
+        | { kind: "viewport"; id: string; element: HTMLElement; api: API<any> }
+        | {
+            kind: "row";
+            id: string;
+            api: API<any>;
+            row: RowNode<any>;
+            rowIndex: number | null;
+            element: HTMLElement;
+          };
+    }) => void;
   };
 }

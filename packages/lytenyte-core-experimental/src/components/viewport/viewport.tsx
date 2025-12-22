@@ -4,6 +4,7 @@ import { useCombinedRefs } from "../../hooks/use-combine-refs.js";
 import { useFocusTracking } from "./use-focus-tracking.js";
 import { getNearestFocusable, navigator, runWithBackoff } from "@1771technologies/lytenyte-shared";
 import { beginEditing } from "./begin-editing.js";
+import { RowDragMonitor } from "./row-drag-monitor.js";
 
 const noop = () => {};
 function ViewportImpl(
@@ -26,7 +27,6 @@ function ViewportImpl(
   } = useRoot();
   const edit = useEdit();
 
-  const combined = useCombinedRefs(ref, setViewport, setVp);
   const [focused, vpFocused] = useFocusTracking(vp, focusActive, id);
 
   const shouldCapture = !focused && !vpFocused;
@@ -67,8 +67,11 @@ function ViewportImpl(
     vp,
   ]);
 
+  const combined = useCombinedRefs(ref, setViewport, setVp);
+
   return (
     <>
+      <RowDragMonitor />
       <div
         {...props}
         role="grid"
