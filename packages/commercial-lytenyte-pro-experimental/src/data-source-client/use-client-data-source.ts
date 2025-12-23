@@ -5,6 +5,8 @@ import type {
   GroupFn,
   GroupIdFn,
   LeafIdFn,
+  RowGroup,
+  RowLeaf,
   RowNode,
   RowSource,
   SortFn,
@@ -29,11 +31,29 @@ import { useRowChildren } from "./source-functions/use-row-children.js";
 import { useRowByIndex } from "./source-functions/use-row-by-index.js";
 import { useRowsBetween } from "./source-functions/use-rows-between.js";
 import { usePiece } from "@1771technologies/lytenyte-core-experimental/internal";
+import type { Column, PathField } from "../types/column.js";
+import type { GridSpec } from "../types/grid.js";
 
-export interface UseClientDataSourceParams<T = unknown> {
+export type HavingFilterFn = (node: RowGroup) => boolean;
+
+export type PivotField<T> = { value: string | number | PathField | ((row: RowLeaf<T>) => string) };
+export type PivotMeasure<T> = { id: string; measure: (row: RowLeaf<T>) => unknown };
+export type PivotLabelFilter = (s: string) => boolean;
+
+export interface UseClientDataSourceParams<Spec extends GridSpec = GridSpec, T = Spec["data"]> {
   readonly data: T[];
   readonly topData?: T[];
   readonly botData?: T[];
+
+  readonly pivotModel?: {
+    readonly pivotMode: boolean;
+    readonly pivotColumns?: (Column<Spec> | PivotField<T>)[];
+    readonly pivotRows?: (Column<Spec> | PivotField<T>)[];
+    readonly pivotMeasures?: PivotMeasure<T>[];
+    readonly pivotSort?: SortFn<T> | SortFn<T>[];
+    readonly pivotRowLabelFilter?: HavingFilterFn[];
+    readonly pivotColLabelFilter?: HavingFilterFn[];
+  };
 
   readonly rowGroupExpansions?: { [rowId: string]: boolean | undefined };
   readonly rowGroupDefaultExpansion?: boolean | number;
@@ -41,7 +61,11 @@ export interface UseClientDataSourceParams<T = unknown> {
   readonly rowGroupSuppressLeafExpansion?: boolean;
 
   readonly sort?: SortFn<T> | SortFn<T>[];
+  readonly sortGroupAlways?: boolean;
+
   readonly filter?: FilterFn<T>;
+  readonly having?: HavingFilterFn | HavingFilterFn[];
+  readonly havingGroupAlways?: boolean;
   readonly group?: GroupFn<T>;
   readonly aggregate?: AggregationFn<T>;
 
@@ -61,7 +85,11 @@ export interface UseClientDataSourceParams<T = unknown> {
 }
 
 const groupIdFallback: GroupIdFn = (p) => p.map((x) => (x == null ? "_null_" : x)).join("->");
-export function useClientDataSource<T>(props: UseClientDataSourceParams<T>) {
+export function useClientDataSource<Spec extends GridSpec = GridSpec>(
+  props: UseClientDataSourceParams<Spec>,
+) {
+  type T = Spec["data"];
+
   const rowsIsolatedSelection = props.rowsIsolatedSelection ?? false;
 
   const { expandedFn, expansions, selected, setExpansions, setSelected } = useControlledState(props);
@@ -78,12 +106,20 @@ export function useClientDataSource<T>(props: UseClientDataSourceParams<T>) {
   const filtered = useFiltered(leafs, props.filter);
   const sorted = useSorted(leafs, leafSort, filtered);
 
+  const havingFilter = Array.isArray(props.having)
+    ? props.having.length
+      ? props.having
+      : null
+    : props.having;
   const tree = useGroupTree(
     leafs,
     sorted,
     props.group,
     props.groupIdFn ?? groupIdFallback,
     props.rowGroupCollapseBehavior ?? "no-collapse",
+    havingFilter,
+    props.havingGroupAlways ?? false,
+    props.aggregate,
   );
 
   const groupSort = Array.isArray(props.sort) ? (props.sort.length ? props.sort : null) : props.sort;
@@ -94,6 +130,7 @@ export function useClientDataSource<T>(props: UseClientDataSourceParams<T>) {
     leafs,
     sorted,
     groupSort,
+    props.sortGroupAlways ?? true,
     expandedFn,
     props.rowGroupSuppressLeafExpansion ?? false,
   );

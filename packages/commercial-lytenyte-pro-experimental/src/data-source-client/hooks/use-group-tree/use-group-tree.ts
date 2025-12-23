@@ -1,7 +1,15 @@
-import type { GroupFn, GroupIdFn, RowGroup, RowLeaf, Writable } from "@1771technologies/lytenyte-shared";
+import type {
+  AggregationFn,
+  GroupFn,
+  GroupIdFn,
+  RowGroup,
+  RowLeaf,
+  Writable,
+} from "@1771technologies/lytenyte-shared";
 import { useMemo, useRef } from "react";
 import { collapse } from "./collapse.js";
 import { collapseLast } from "./collapse-last.js";
+import type { HavingFilterFn } from "../../use-client-data-source.js";
 
 export interface RootNode<T> {
   readonly kind: "root";
@@ -22,6 +30,7 @@ export interface GroupNode<T> {
   readonly id: string;
   readonly row: RowGroup & {
     __children: Map<string | null | number, GroupNode<T> | LeafNode<T>>;
+    __invalidate: boolean;
   };
   readonly last: boolean;
   readonly key: string | null | number;
@@ -40,6 +49,9 @@ export function useGroupTree<T>(
   group: GroupFn<T> | undefined,
   groupIdFn: GroupIdFn,
   rowGroupCollapseBehavior: "no-collapse" | "last-only" | "full-tree",
+  having: HavingFilterFn | HavingFilterFn[] | null | undefined,
+  havingGroupAlways: boolean,
+  agg: AggregationFn<T> | undefined,
 ) {
   const groupNodeCacheRef = useRef(new Map<string, GroupNode<T>["row"]>());
   return useMemo(() => {
@@ -81,6 +93,7 @@ export function useGroupTree<T>(
           if (!groupNodeCacheRef.current.get(groupId))
             groupNodeCacheRef.current.set(groupId, {
               __children: children,
+              __invalidate: true,
               last: isLast,
               kind: "branch",
               id: groupId,
@@ -91,6 +104,7 @@ export function useGroupTree<T>(
           const node = groupNodeCacheRef.current.get(groupId)!;
 
           node.__children = children;
+          node.__invalidate = true;
           (node as Writable<RowGroup>).last = isLast;
 
           current.set(p, {
@@ -126,9 +140,55 @@ export function useGroupTree<T>(
       current.set(current.size, { kind: "leaf", row: n, parent: currentGroup, key: current.size });
     }
 
+    // Doing filtering here. Then I can collapse afterwards
+    // TODO: @lee verify this logic is sound and test thoroughly
+    if (having) {
+      const traverse = (node: RootNode<T> | GroupNode<T> | LeafNode<T>, depth: number = 0) => {
+        if (node.kind === "leaf") return;
+        if (node.kind === "root") node.children.forEach((c) => traverse(c, 0));
+
+        const filterFn = Array.isArray(having)
+          ? (having[depth] ?? (havingGroupAlways ? having.at(-1) : null))
+          : having;
+        if (!filterFn) return;
+
+        if (node.kind === "branch") {
+          const row = node.row;
+          if (row.__invalidate) {
+            const data = agg ? agg(node.leafs.map((i) => leafs[workingSet[i]])) : {};
+            (row as Writable<RowGroup>).data = data;
+            row.__invalidate = false;
+          }
+
+          const shouldKeep = filterFn(row);
+          if (shouldKeep) {
+            node.children.forEach((c) => traverse(c, depth + 1));
+          } else {
+            // This node is definitely being deleted, so let's get rid of it.
+            root.groupLookup.delete(node.id);
+            if (node.parent.kind === "root") {
+              node.parent.children.delete(node.key);
+            } else {
+              let current: GroupNode<T> | RootNode<T> = node;
+              while (current.kind !== "root") {
+                // Remove the node from itself
+                current.parent.children.delete(current.key);
+
+                // The parent still has more children, so we should keep them and move on.
+                if (current.parent.children.size) break;
+                current = current.parent;
+              }
+            }
+          }
+        }
+      };
+
+      traverse(root, 0);
+    }
+
     if (rowGroupCollapseBehavior === "full-tree") root.children.forEach(collapse);
     if (rowGroupCollapseBehavior === "last-only") root.children.forEach(collapseLast);
 
     return root;
-  }, [group, groupIdFn, leafs, rowGroupCollapseBehavior, workingSet]);
+  }, [agg, group, groupIdFn, having, havingGroupAlways, leafs, rowGroupCollapseBehavior, workingSet]);
 }

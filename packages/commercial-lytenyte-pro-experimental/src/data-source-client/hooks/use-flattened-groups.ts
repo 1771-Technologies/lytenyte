@@ -1,4 +1,11 @@
-import type { AggregationFn, RowGroup, RowLeaf, RowNode, SortFn } from "@1771technologies/lytenyte-shared";
+import type {
+  AggregationFn,
+  RowGroup,
+  RowLeaf,
+  RowNode,
+  SortFn,
+  Writable,
+} from "@1771technologies/lytenyte-shared";
 import type { RootMap, RootNode } from "./use-group-tree/use-group-tree";
 import { useMemo } from "react";
 
@@ -10,6 +17,7 @@ export function useFlattenedGroups<T>(
   leafs: RowLeaf<T>[],
   workingSet: number[],
   sort: SortFn<T> | SortFn<T>[] | null | undefined,
+  sortGroupAlways: boolean,
   expandedFn: (id: string, depth: number) => boolean,
   suppressLeafExpansion: boolean,
 ) {
@@ -35,7 +43,9 @@ export function useFlattenedGroups<T>(
     ) {
       maxDepth = Math.max(depth + 1, maxDepth);
 
-      const sortAtLevel = Array.isArray(sort) ? (sort[depth] ?? sort.at(-1)) : sort;
+      const sortAtLevel = Array.isArray(sort)
+        ? (sort[depth] ?? (sortGroupAlways ? sort.at(-1) : null))
+        : sort;
       const rows = nodeChildrenToRows(node, agg, leafs, workingSet, sortAtLevel, isLast);
 
       let offset = 0;
@@ -60,14 +70,10 @@ export function useFlattenedGroups<T>(
       return offset + node.size;
     }
 
-    const count = processRowsBetter(root!.children, null, 0, root.maxDepth <= 1);
-
-    // Potentially do something with these??
-    void ranges;
-    void count;
+    processRowsBetter(root!.children, null, 0, root.maxDepth <= 1);
 
     return [flatList, maxDepth];
-  }, [agg, expandedFn, leafs, root, sort, suppressLeafExpansion, workingSet]);
+  }, [agg, expandedFn, leafs, root, sort, sortGroupAlways, suppressLeafExpansion, workingSet]);
 
   return flat;
 }
@@ -88,10 +94,12 @@ const nodeChildrenToRows = <T>(
       rows.push(v.row);
       continue;
     } else {
-      const data = agg ? agg(v.leafs.map((i) => leafs[workingSet[i]])) : {};
-
       const row = v.row;
-      (row as any).data = data;
+      if (row.__invalidate) {
+        const data = agg ? agg(v.leafs.map((i) => leafs[workingSet[i]])) : {};
+        (row as Writable<RowGroup>).data = data;
+        row.__invalidate = false;
+      }
 
       rows.push(row);
     }
