@@ -40,7 +40,7 @@ export interface UseClientDataSourceParams<T = unknown> {
   readonly rowGroupCollapseBehavior?: "no-collapse" | "last-only" | "full-tree";
   readonly rowGroupSuppressLeafExpansion?: boolean;
 
-  readonly sort?: SortFn<T>;
+  readonly sort?: SortFn<T> | SortFn<T>[];
   readonly filter?: FilterFn<T>;
   readonly group?: GroupFn<T>;
   readonly aggregate?: AggregationFn<T>;
@@ -72,8 +72,11 @@ export function useClientDataSource<T>(props: UseClientDataSourceParams<T>) {
     props.botData,
     props.leafIdFn,
   );
+
+  const leafSort = Array.isArray(props.sort) ? props.sort.at(-1) : props.sort;
+
   const filtered = useFiltered(leafs, props.filter);
-  const sorted = useSorted(leafs, props.sort, filtered);
+  const sorted = useSorted(leafs, leafSort, filtered);
 
   const tree = useGroupTree(
     leafs,
@@ -83,12 +86,14 @@ export function useClientDataSource<T>(props: UseClientDataSourceParams<T>) {
     props.rowGroupCollapseBehavior ?? "no-collapse",
   );
 
+  const groupSort = Array.isArray(props.sort) ? (props.sort.length ? props.sort : null) : props.sort;
+
   const [groupFlat, maxDepth] = useFlattenedGroups(
     tree,
     props.aggregate,
     leafs,
     sorted,
-    props.sort,
+    groupSort,
     expandedFn,
     props.rowGroupSuppressLeafExpansion ?? false,
   );
