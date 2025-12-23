@@ -1,5 +1,5 @@
-import type { Root } from "../../../root/root";
+import type { HeaderGroupParams } from "../../../types/column.js";
 
-export function HeaderGroupDefault({ groupPath }: Root.HeaderGroupParams<any>) {
+export function HeaderGroupDefault({ groupPath }: HeaderGroupParams<any>) {
   return <>{groupPath.at(-1)}</>;
 }

@@ -1,6 +1,6 @@
-import type { Root } from "../../root/root";
+import type { CellParams } from "../../types/column.js";
 
-export function CellDefault({ column, row, api }: Root.CellParams<any>) {
+export function CellDefault({ column, row, api }: CellParams<any>) {
   if (row.data == null && row.loading) {
     return <div>Loading...</div>;
   }

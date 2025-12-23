@@ -5,7 +5,7 @@ import {
   type ColumnAbstract,
   type RowNode,
 } from "@1771technologies/lytenyte-shared";
-import type { Root } from "../../root";
+import type { ExportDataRectResult } from "../../../../types/api.js";
 
 export interface GetDataRectArgs {
   readonly columnStart: number;
@@ -24,7 +24,7 @@ export function getDataRect({
   uniformGroupHeaders,
   visible,
   columnField,
-}: GetDataRectArgs): Root.ExportDataRectResult<any> {
+}: GetDataRectArgs): ExportDataRectResult<any> {
   const data: unknown[][] = [];
 
   const columns: ColumnAbstract[] = [];

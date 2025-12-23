@@ -44,7 +44,18 @@ export function useCellStyle(
     }
 
     return { ...additional, ...styles };
-  }, [additional, cell.colIndex, cell.colPin, cell.colSpan, height, isRowPinned, isSticky, rtl, width, xPositions]);
+  }, [
+    additional,
+    cell.colIndex,
+    cell.colPin,
+    cell.colSpan,
+    height,
+    isRowPinned,
+    isSticky,
+    rtl,
+    width,
+    xPositions,
+  ]);
 
   return styles;
 }

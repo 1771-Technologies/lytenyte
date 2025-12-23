@@ -7,10 +7,7 @@ import { beginEditing } from "./begin-editing.js";
 import { RowDragMonitor } from "./row-drag-monitor.js";
 
 const noop = () => {};
-function ViewportImpl(
-  { children, ...props }: JSX.IntrinsicElements["div"],
-  ref: JSX.IntrinsicElements["div"]["ref"],
-) {
+function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Props["ref"]) {
   const [vp, setVp] = useState<HTMLDivElement | null>(null);
 
   const {
@@ -201,3 +198,7 @@ function ViewportImpl(
 }
 
 export const Viewport = memo(forwardRef(ViewportImpl));
+
+export namespace Viewport {
+  export type Props = JSX.IntrinsicElements["div"];
+}

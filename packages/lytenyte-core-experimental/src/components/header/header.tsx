@@ -9,14 +9,7 @@ import { useBounds, useColumnLayout, useRoot } from "../../root/root-context.js"
 import { $colEndBound, $colStartBound } from "../../selectors.js";
 import { HeaderProvider, type HeaderContextType } from "./header-context.js";
 
-export interface HeaderProps {
-  readonly children?: (cells: LayoutHeader[]) => ReactNode;
-}
-
-function HeaderImpl(
-  { children = HeaderRowRenderer, ...props }: Omit<JSX.IntrinsicElements["div"], "children"> & HeaderProps,
-  ref: JSX.IntrinsicElements["div"]["ref"],
-) {
+function HeaderImpl({ children = HeaderRowRenderer, ...props }: Header.Props, ref: Header.Props["ref"]) {
   const {
     id,
     floatingRowEnabled,
@@ -89,3 +82,9 @@ function HeaderImpl(
 }
 
 export const Header = memo(forwardRef(HeaderImpl));
+
+export namespace Header {
+  export type Props = Omit<JSX.IntrinsicElements["div"], "children"> & {
+    readonly children?: (cells: LayoutHeader[]) => ReactNode;
+  };
+}

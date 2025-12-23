@@ -9,7 +9,7 @@ import { useRoot } from "../../../root/root-context.js";
 import { usePiece } from "../../../hooks/use-piece.js";
 
 export const RowsContainer = memo(
-  forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function Rows(props, forwarded) {
+  forwardRef<HTMLDivElement, RowsContainer.Props>(function Rows(props, forwarded) {
     const { id, source, view, xPositions, yPositions, dimensions } = useRoot();
 
     const startWidth = xPositions[view.startCount];
@@ -86,3 +86,7 @@ export const RowsContainer = memo(
     );
   }),
 );
+
+export namespace RowsContainer {
+  export type Props = JSX.IntrinsicElements["div"];
+}
