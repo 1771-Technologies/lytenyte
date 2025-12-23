@@ -1,4 +1,12 @@
-import { useMemo, useRef, useState, type PropsWithChildren } from "react";
+import {
+  forwardRef,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+  type PropsWithChildren,
+  type ReactNode,
+} from "react";
 import { useViewportDimensions } from "./hooks/use-viewport-dimensions.js";
 import { useControlledGridState } from "./hooks/use-controlled-grid-state.js";
 import { useColumnView } from "./hooks/use-column-view.js";
@@ -30,11 +38,15 @@ import type { Column as LnColumn } from "../types/column.js";
 import type { API as LnAPI } from "../types/api.js";
 import type { Props as LnProps } from "../types/props.js";
 
-export const Root = <Spec extends Root.GridSpec = Root.GridSpec>({
-  children,
-  ...p
-}: PropsWithChildren<Root.Props<Spec>>) => {
-  const props = p as unknown as Root.Props;
+const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
+  { children, ...p }: PropsWithChildren<Root.Props<Spec>>,
+  forwarded: Root.Props<Spec>["ref"],
+) => {
+  const props = p as unknown as Root.Props & {
+    ln_topComponent?: () => ReactNode;
+    ln_bottomComponent: () => ReactNode;
+    ln_centerComponent: () => ReactNode;
+  };
   const source = props.rowSource ?? DEFAULT_ROW_SOURCE;
 
   const [vp, setVp] = useState<HTMLDivElement | null>(null);
@@ -58,6 +70,7 @@ export const Root = <Spec extends Root.GridSpec = Root.GridSpec>({
   );
 
   const api = useExtendedAPI(props);
+  useImperativeHandle(forwarded, () => api as any, [api]);
 
   const bounds = useBounds(
     props,
@@ -129,6 +142,10 @@ export const Root = <Spec extends Root.GridSpec = Root.GridSpec>({
       totalHeaderHeight,
       detailExpansions: controlled.detailExpansions,
 
+      topComponent: props.ln_topComponent,
+      bottomComponent: props.ln_bottomComponent,
+      centerComponent: props.ln_centerComponent,
+
       rowDetailHeight: props.rowDetailHeight ?? 200,
       rowDetailRenderer: props.rowDetailRenderer,
       rowFullWidthRenderer: props.rowFullWidthRenderer,
@@ -176,6 +193,9 @@ export const Root = <Spec extends Root.GridSpec = Root.GridSpec>({
     props.floatingRowHeight,
     props.headerGroupHeight,
     props.headerHeight,
+    props.ln_bottomComponent,
+    props.ln_centerComponent,
+    props.ln_topComponent,
     props.onRowDragEnter,
     props.onRowDragLeave,
     props.onRowDrop,
@@ -207,6 +227,10 @@ export const Root = <Spec extends Root.GridSpec = Root.GridSpec>({
     </RootContextProvider>
   );
 };
+
+export const Root = forwardRef(RootImpl) as <Spec extends Root.GridSpec = Root.GridSpec>(
+  props: PropsWithChildren<Root.Props<Spec>>,
+) => ReactNode;
 
 export namespace Root {
   export type GridSpec<

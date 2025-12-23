@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react";
+import { useMemo } from "react";
 import type {
   AggregationFn,
   FilterFn,
@@ -81,8 +81,6 @@ export function useClientDataSource<T>(props: UseClientDataSourceParams<T>) {
   const sorted = useSorted(leafs, sort, filtered);
 
   const tree = useGroupTree(leafs, sorted, group, props.groupIdFn ?? groupIdFallback);
-  const treeRef = useRef(tree);
-  treeRef.current = tree;
 
   const [groupFlat, maxDepth] = useFlattenedGroups(tree, aggregate, leafs, sorted, sort, expandedFn);
 

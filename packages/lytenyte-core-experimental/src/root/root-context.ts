@@ -8,7 +8,14 @@ import type {
   RowView,
   SpanLayout,
 } from "@1771technologies/lytenyte-shared";
-import { createContext, useContext, type Dispatch, type RefObject, type SetStateAction } from "react";
+import {
+  createContext,
+  useContext,
+  type Dispatch,
+  type ReactNode,
+  type RefObject,
+  type SetStateAction,
+} from "react";
 import type { Piece, PieceWritable } from "../hooks/use-piece";
 import type { Dimension } from "./hooks/use-viewport-dimensions";
 import type { Root } from "./root";
@@ -19,6 +26,10 @@ export interface RootContextValue {
   readonly rtl: boolean;
   readonly view: ColumnView;
   readonly api: Root.API;
+
+  readonly topComponent?: () => ReactNode;
+  readonly centerComponent?: () => ReactNode;
+  readonly bottomComponent?: () => ReactNode;
 
   readonly detailExpansions: Set<string>;
   readonly totalHeaderHeight: number;

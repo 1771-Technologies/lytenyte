@@ -713,6 +713,28 @@ importers:
         specifier: ^18.0.0 || ^19.0.0
         version: 19.1.0(react@19.1.0)
 
+  packages/commercial-lytenyte-pro-experimental:
+    dependencies:
+      '@1771technologies/lytenyte-core-experimental':
+        specifier: workspace:*
+        version: link:../lytenyte-core-experimental
+      '@1771technologies/lytenyte-design':
+        specifier: workspace:*
+        version: link:../lytenyte-design
+      '@1771technologies/lytenyte-shared':
+        specifier: workspace:*
+        version: link:../lytenyte-shared
+      react:
+        specifier: ^18.0.0 || ^19.0.0
+        version: 19.2.1
+      react-dom:
+        specifier: ^18.0.0 || ^19.0.0
+        version: 19.2.1(react@19.2.1)
+    devDependencies:
+      '@1771technologies/grid-sample-data':
+        specifier: workspace:*
+        version: link:../sample-data
+
   packages/commercial-lytenyte-type-gen:
     dependencies:
       react:

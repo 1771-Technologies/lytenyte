@@ -11,7 +11,7 @@ export const RowsTop = memo(
     { children = RowChildrenDefault, ...props },
     forwarded,
   ) {
-    const { id, totalHeaderHeight: top } = useRoot();
+    const { id, totalHeaderHeight: top, topComponent: T } = useRoot();
     const layout = useRowLayout();
 
     const container = useRowsContainerContext();
@@ -49,6 +49,7 @@ export const RowsTop = memo(
           ...props.style,
         }}
       >
+        {T && <T />}
         {rows}
       </RowsSection>
     );
