@@ -12,10 +12,12 @@ import { Viewport } from "./components/viewport/viewport.js";
 import { Root } from "./root/root.js";
 import { Header } from "./components/header/header.js";
 import { RowsContainer } from "./components/rows/rows-container/rows-container.js";
-import { RowsBottom, RowsCenter, RowsTop } from "./components/rows/rows-section.js";
+import { RowsTop } from "./components/rows/row-sections/rows-top.js";
 import { useClientDataSource } from "./data-source/use-client-data-source.js";
 import { ViewportShadows } from "./components/viewport/viewport-shadows.js";
 import { useMemo } from "react";
+import { RowsCenter } from "./components/rows/row-sections/rows-center.js";
+import { RowsBottom } from "./components/rows/row-sections/rows-bottom.js";
 
 type BankData = (typeof bankDataSmall)[number];
 

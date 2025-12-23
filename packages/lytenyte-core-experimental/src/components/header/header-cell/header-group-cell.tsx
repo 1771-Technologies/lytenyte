@@ -5,14 +5,10 @@ import { useRoot } from "../../../root/root-context.js";
 import { useDragMove } from "./use-drag-move.js";
 import { HeaderGroupDefault } from "./header-group-default.js";
 
-export interface HeaderGroupCellProps {
-  readonly cell: LayoutHeaderGroup;
-}
-
-const HeaderGroupCellImpl = forwardRef<
-  HTMLDivElement,
-  Omit<JSX.IntrinsicElements["div"], "children"> & HeaderGroupCellProps
->(function HeaderCell({ cell, ...props }, ref) {
+const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(function HeaderCell(
+  { cell, ...props },
+  ref,
+) {
   const {
     id,
     xPositions,
@@ -83,3 +79,7 @@ const HeaderGroupCellImpl = forwardRef<
 });
 
 export const HeaderGroupCell = memo(HeaderGroupCellImpl);
+
+export namespace HeaderGroupCell {
+  export type Props = Omit<JSX.IntrinsicElements["div"], "children"> & { readonly cell: LayoutHeaderGroup };
+}

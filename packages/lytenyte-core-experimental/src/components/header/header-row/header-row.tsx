@@ -2,7 +2,7 @@ import { forwardRef, memo, type JSX } from "react";
 import { useHeaderRow } from "./context.js";
 import { useRoot } from "../../../root/root-context.js";
 
-function HeaderRowImpl(props: JSX.IntrinsicElements["div"], ref: JSX.IntrinsicElements["div"]["ref"]) {
+function HeaderRowImpl(props: HeaderRow.Props, ref: HeaderRow.Props["ref"]) {
   const { id, view } = useRoot();
   const headerRowIndex = useHeaderRow();
 
@@ -28,3 +28,7 @@ function HeaderRowImpl(props: JSX.IntrinsicElements["div"], ref: JSX.IntrinsicEl
 }
 
 export const HeaderRow = memo(forwardRef(HeaderRowImpl));
+
+export namespace HeaderRow {
+  export type Props = JSX.IntrinsicElements["div"];
+}

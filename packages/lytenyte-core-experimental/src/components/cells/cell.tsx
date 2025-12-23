@@ -9,37 +9,28 @@ import { $colEndBound, $colStartBound } from "../../selectors.js";
 import { useRowMeta } from "../rows/row/context.js";
 import type { Root } from "../../root/root.js";
 
-export interface CellProps {
-  readonly cell: LayoutCell<any>;
-}
+export const Cell = forwardRef<HTMLDivElement, Cell.Props>(function Cell(props, forwarded) {
+  const bounds = useBounds();
+  const focus = useFocus();
+  const end = bounds.useValue($colEndBound);
+  const start = bounds.useValue($colStartBound);
 
-export const Cell = forwardRef<HTMLDivElement, Omit<JSX.IntrinsicElements["div"], "children"> & CellProps>(
-  function Cell(props, forwarded) {
-    const bounds = useBounds();
-    const focus = useFocus();
-    const end = bounds.useValue($colEndBound);
-    const start = bounds.useValue($colStartBound);
+  const isFocused = focus && focus.row === props.cell.rowIndex && focus.column === props.cell.colIndex;
 
-    const isFocused = focus && focus.row === props.cell.rowIndex && focus.column === props.cell.colIndex;
+  // This enforces our column virtualization.
+  if (
+    !isFocused &&
+    props.cell.colPin == null &&
+    (props.cell.colIndex >= end || props.cell.colIndex + props.cell.colSpan - 1 < start)
+  ) {
+    return null;
+  }
 
-    // This enforces our column virtualization.
-    if (
-      !isFocused &&
-      props.cell.colPin == null &&
-      (props.cell.colIndex >= end || props.cell.colIndex + props.cell.colSpan - 1 < start)
-    ) {
-      return null;
-    }
-
-    return <CellImpl {...props} ref={forwarded} />;
-  },
-);
+  return <CellImpl {...props} ref={forwarded} />;
+});
 
 const CellImpl = memo(
-  forwardRef<HTMLDivElement, Omit<JSX.IntrinsicElements["div"], "children"> & CellProps>(function Cell(
-    { cell, ...props },
-    forwarded,
-  ) {
+  forwardRef<HTMLDivElement, Cell.Props>(function Cell({ cell, ...props }, forwarded) {
     const {
       id,
       rtl,
@@ -166,3 +157,9 @@ const CellImpl = memo(
     );
   }),
 );
+
+export namespace Cell {
+  export type Props = Omit<JSX.IntrinsicElements["div"], "children"> & {
+    readonly cell: LayoutCell<any>;
+  };
+}
