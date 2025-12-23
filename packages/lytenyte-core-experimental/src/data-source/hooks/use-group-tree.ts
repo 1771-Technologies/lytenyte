@@ -1,4 +1,4 @@
-import type { GroupFn, GroupIdFn, RowGroup, RowLeaf } from "@1771technologies/lytenyte-shared";
+import type { GroupFn, GroupIdFn, RowGroup, RowLeaf, Writable } from "@1771technologies/lytenyte-shared";
 import { useMemo, useRef } from "react";
 
 export interface RootNode<T> {
@@ -20,7 +20,6 @@ export interface GroupNode<T> {
   readonly id: string;
   readonly row: RowGroup & {
     __children: Map<string | null | number, GroupNode<T> | LeafNode<T>>;
-    __isLast: boolean;
   };
   readonly last: boolean;
   readonly key: string | null | number;
@@ -79,7 +78,7 @@ export function useGroupTree<T>(
           if (!groupNodeCacheRef.current.get(groupId))
             groupNodeCacheRef.current.set(groupId, {
               __children: children,
-              __isLast: isLast,
+              last: isLast,
               kind: "branch",
               id: groupId,
               data: null as any,
@@ -89,7 +88,7 @@ export function useGroupTree<T>(
           const node = groupNodeCacheRef.current.get(groupId)!;
 
           node.__children = children;
-          node.__isLast = isLast;
+          (node as Writable<RowGroup>).last = isLast;
 
           current.set(p, {
             id: groupId,

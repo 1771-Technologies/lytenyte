@@ -11,6 +11,7 @@ export function useFlattenedGroups<T>(
   workingSet: number[],
   sort: SortFn<T> | undefined,
   expandedFn: (id: string, depth: number) => boolean,
+  suppressLeafExpansion: boolean,
 ) {
   const flat = useMemo<UseFlattenedGroupsReturn<T>>(() => {
     if (!root) return [null, 0];
@@ -21,7 +22,6 @@ export function useFlattenedGroups<T>(
     type EnhancedRow =
       | (RowGroup & {
           __children: RootMap<T>;
-          __isLast: boolean;
         })
       | RowLeaf<T>;
 
@@ -50,9 +50,9 @@ export function useFlattenedGroups<T>(
 
         flatList.push(row as RowGroup);
 
-        if (!expandedFn(row.id, depth)) continue;
+        if (!expandedFn(row.id, depth) || (suppressLeafExpansion && row.last)) continue;
 
-        offset += processRowsBetter(row.__children, row, rowIndex + 1, row.__isLast, depth + 1);
+        offset += processRowsBetter(row.__children, row, rowIndex + 1, row.last, depth + 1);
       }
 
       ranges.push({ parent, start, end: offset + start + node.size });
@@ -66,7 +66,7 @@ export function useFlattenedGroups<T>(
     void count;
 
     return [flatList, maxDepth];
-  }, [agg, expandedFn, leafs, root, sort, workingSet]);
+  }, [agg, expandedFn, leafs, root, sort, suppressLeafExpansion, workingSet]);
 
   return flat;
 }

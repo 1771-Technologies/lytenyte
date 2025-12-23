@@ -21,7 +21,6 @@ export function useFlattenedGroups<T>(
     type EnhancedRow =
       | (RowGroup & {
           __children: RootMap<T>;
-          __isLast: boolean;
         })
       | RowLeaf<T>;
 
@@ -52,7 +51,7 @@ export function useFlattenedGroups<T>(
 
         if (!expandedFn(row.id, depth)) continue;
 
-        offset += processRowsBetter(row.__children, row, rowIndex + 1, row.__isLast, depth + 1);
+        offset += processRowsBetter(row.__children, row, rowIndex + 1, row.last, depth + 1);
       }
 
       ranges.push({ parent, start, end: offset + start + node.size });

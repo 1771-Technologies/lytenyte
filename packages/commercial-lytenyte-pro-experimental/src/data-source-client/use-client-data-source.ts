@@ -90,6 +90,7 @@ export function useClientDataSource<T>(props: UseClientDataSourceParams<T>) {
     sorted,
     props.sort,
     expandedFn,
+    props.rowGroupSuppressLeafExpansion ?? false,
   );
 
   const {
