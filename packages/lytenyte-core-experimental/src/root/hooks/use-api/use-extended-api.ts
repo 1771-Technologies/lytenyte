@@ -1,4 +1,4 @@
-import { useImperativeHandle, useRef } from "react";
+import { useRef } from "react";
 import type { Root } from "../../root";
 
 export function useExtendedAPI(p: Root.Props) {
@@ -13,8 +13,6 @@ export function useExtendedAPI(p: Root.Props) {
     previousExtensions.current = props.apiExtension ?? {};
     Object.assign(api, previousExtensions.current);
   }
-
-  useImperativeHandle(p.ref, () => api.current, [api]);
 
   return api.current;
 }

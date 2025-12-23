@@ -11,7 +11,7 @@ export const RowsBottom = memo(
     { children = RowChildrenDefault, ...props },
     forwarded,
   ) {
-    const { id } = useRoot();
+    const { id, bottomComponent: B } = useRoot();
     const layout = useRowLayout();
     const container = useRowsContainerContext();
 
@@ -52,6 +52,7 @@ export const RowsBottom = memo(
           minWidth: "100%",
         }}
       >
+        {B && <B />}
         {rows}
       </RowsSection>
     );

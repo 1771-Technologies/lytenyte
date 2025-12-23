@@ -1151,10 +1151,7 @@ export interface HeaderLayout<T> {
  *
  *   @group Grid View
  */
-export type HeaderLayoutCell<T> =
-  | HeaderCellLayout<T>
-  | HeaderCellFloating<T>
-  | HeaderGroupCellLayout;
+export type HeaderLayoutCell<T> = HeaderCellLayout<T> | HeaderCellFloating<T> | HeaderGroupCellLayout;
 
 /**
  * Represents the layout metadata for a single cell within a row, including span and contextual info.
@@ -2061,10 +2058,7 @@ export interface ClientRowDataSourcePaginatedParams<T> {
   /**
    * Callback that transforms a set of values for a given column into the in filter items LyteNyte Grid should use.
    */
-  readonly transformInFilterItem?: (params: {
-    column: Column<T>;
-    values: unknown[];
-  }) => FilterInFilterItem[];
+  readonly transformInFilterItem?: (params: { column: Column<T>; values: unknown[] }) => FilterInFilterItem[];
 
   /**
    * The number of rows to have per page. This will impact the total page count.
@@ -2111,10 +2105,7 @@ export interface ClientRowDataSourceParams<T> {
   /**
    * Callback that transforms a set of values for a given column into the in filter items LyteNyte Grid should use.
    */
-  readonly transformInFilterItem?: (params: {
-    column: Column<T>;
-    values: unknown[];
-  }) => FilterInFilterItem[];
+  readonly transformInFilterItem?: (params: { column: Column<T>; values: unknown[] }) => FilterInFilterItem[];
 }
 
 /**
@@ -2156,10 +2147,7 @@ export interface ClientTreeDataSourceParams<T> {
   /**
    * Callback that transforms a set of values for a given column into the in filter items LyteNyte Grid should use.
    */
-  readonly transformInFilterItem?: (params: {
-    column: Column<T>;
-    values: unknown[];
-  }) => FilterInFilterItem[];
+  readonly transformInFilterItem?: (params: { column: Column<T>; values: unknown[] }) => FilterInFilterItem[];
 
   /**
    * Returns the hierarchical path to group a given data row in tree mode.
@@ -2262,9 +2250,7 @@ export interface RowDataSourceClientPaginated<T> {
    *
    *   @group Row Data Source
    */
-  readonly inFilterItems: (
-    column: Column<T>,
-  ) => Promise<FilterInFilterItem[]> | FilterInFilterItem[];
+  readonly inFilterItems: (column: Column<T>) => Promise<FilterInFilterItem[]> | FilterInFilterItem[];
 
   /**
    * A client data source method to retrieve the raw data passed to the data source.
@@ -2387,9 +2373,7 @@ export interface RowDataSourceClient<T> {
    *
    *   @group Row Data Source
    */
-  readonly inFilterItems: (
-    column: Column<T>,
-  ) => Promise<FilterInFilterItem[]> | FilterInFilterItem[];
+  readonly inFilterItems: (column: Column<T>) => Promise<FilterInFilterItem[]> | FilterInFilterItem[];
 
   /**
    * A client data source method to retrieve the raw data passed to the data source.
@@ -2485,9 +2469,7 @@ export interface RowDataSource<T> {
    *
    *   @group Row Data Source
    */
-  readonly inFilterItems: (
-    column: Column<T>,
-  ) => Promise<FilterInFilterItem[]> | FilterInFilterItem[];
+  readonly inFilterItems: (column: Column<T>) => Promise<FilterInFilterItem[]> | FilterInFilterItem[];
 }
 
 /**
@@ -2584,9 +2566,7 @@ export interface RowDataSourceServer<T> {
    *
    *   @group Row Data Source
    */
-  readonly inFilterItems: (
-    column: Column<T>,
-  ) => Promise<FilterInFilterItem[]> | FilterInFilterItem[];
+  readonly inFilterItems: (column: Column<T>) => Promise<FilterInFilterItem[]> | FilterInFilterItem[];
 
   /**
    * Indicates whether the server data source is currently fetching data.
@@ -2665,11 +2645,7 @@ export interface RowDataSourceServer<T> {
    * Triggers the data fetching pipeline with a set of requests. Can
    *       optionally invoke a callback upon successful completion.
    */
-  readonly pushRequests: (
-    req: DataRequest[],
-    onSuccess?: () => void,
-    onError?: (e: unknown) => void,
-  ) => void;
+  readonly pushRequests: (req: DataRequest[], onSuccess?: () => void, onError?: (e: unknown) => void) => void;
 
   /**
    * Resets the internal state and clears all server data previously fetched by the grid.
@@ -3597,10 +3573,7 @@ export interface GridApi<T> {
    *   spanned over, so it is not possible for a spanning cell to continue past a full width row, even if the
    *   span amount would allow it
    */
-  readonly cellRoot: (
-    row: number,
-    column: number,
-  ) => PositionGridCell | PositionFullWidthRow | null;
+  readonly cellRoot: (row: number, column: number) => PositionGridCell | PositionFullWidthRow | null;
 
   /**
    * Toggles the expansion state of one or more column groups.
@@ -3653,11 +3626,7 @@ export interface GridApi<T> {
    * Opens a popover frame at the specified target element or virtual target.
    *       An optional context can be passed into the popover renderer for configuration.
    */
-  readonly popoverFrameOpen: (
-    id: string,
-    target: HTMLElement | VirtualTarget,
-    context?: any,
-  ) => void;
+  readonly popoverFrameOpen: (id: string, target: HTMLElement | VirtualTarget, context?: any) => void;
 
   /**
    * Closes popover frames. If an id is provided, only the corresponding frame is closed;
@@ -4258,12 +4227,7 @@ export type FilterInOperator = "in" | "not_in";
  *
  * @group Filters
  */
-export type FilterModelItem<T> =
-  | FilterNumber
-  | FilterString
-  | FilterDate
-  | FilterCombination
-  | FilterFunc<T>;
+export type FilterModelItem<T> = FilterNumber | FilterString | FilterDate | FilterCombination | FilterFunc<T>;
 
 /**
  * Defines a filter for numeric columns.
