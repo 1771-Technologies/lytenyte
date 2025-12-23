@@ -1,10 +1,15 @@
 import { useMemo, useState } from "react";
-import type { Props } from "../../types/types-internal.js";
 import { computeRowPositions, type RowSource } from "@1771technologies/lytenyte-shared";
+import type { Root } from "../root.js";
 
 const EMPTY_POSITION_ARRAY = new Uint32Array([0]);
 
-export function useYPositions(props: Props, rowSource: RowSource, height: number, detailExpansions: Set<string>) {
+export function useYPositions(
+  props: Root.Props,
+  rowSource: RowSource,
+  height: number,
+  detailExpansions: Set<string>,
+) {
   const rowCount = rowSource.useRowCount();
   const snapshot = rowSource.useSnapshotVersion();
 

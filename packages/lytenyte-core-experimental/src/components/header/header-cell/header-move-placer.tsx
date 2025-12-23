@@ -16,5 +16,5 @@ export const HeaderMovePlaceholder: ReactPlaceholderFn = ({ x, y, data }) => {
       ? { columns: moving.columns, groupPath: cell.groupPath, api, x, y }
       : { column: moving.columns[0], api, x, y };
 
-  return <Placeholder {...props} />;
+  return <Placeholder {...(props as any)} />;
 };

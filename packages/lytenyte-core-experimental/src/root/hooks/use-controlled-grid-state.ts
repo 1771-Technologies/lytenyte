@@ -1,15 +1,15 @@
 import { useMemo } from "react";
 import { useControlled } from "../../hooks/use-controlled.js";
 import { useEvent } from "../../hooks/use-event.js";
-import type { Props } from "../../types/types-internal.js";
 import type { ColumnAbstract } from "@1771technologies/lytenyte-shared";
+import type { Root } from "../root.js";
 
 export type Controlled = ReturnType<typeof useControlledGridState>;
 
 const EMPTY: any = {};
 const EMPTY_SET = new Set();
 const EMPTY_ARRAY: ColumnAbstract[] = [];
-export function useControlledGridState(props: Props) {
+export function useControlledGridState(props: Root.Props) {
   // Column group expansion state
   const [columnGroupExpansions, setColumnGroupExpansions] = useControlled({
     controlled: props.columnGroupExpansions,

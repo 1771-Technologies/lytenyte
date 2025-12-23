@@ -64,7 +64,7 @@ export function useDragMove(
   const prevPos = useRef(-1);
 
   const { props, isDragActive, placeholder } = useDraggable({
-    placeholder: dragPlaceholder,
+    placeholder: dragPlaceholder as any,
     data: {
       moving: { kind: "site", data: { columns, cell } },
     },

@@ -6,11 +6,11 @@ import {
   type RowSource,
 } from "@1771technologies/lytenyte-shared";
 import { useMemo } from "react";
-import type { Props } from "../../types/types-internal";
+import type { Root } from "../root";
 
 export function useColumnView(
   columns: ColumnAbstract[],
-  props: Props,
+  props: Root.Props,
   source: RowSource,
   columnGroupExpansions: Record<string, boolean>,
 ) {

@@ -4,10 +4,9 @@ import type { ColumnAbstract, RowNode } from "@1771technologies/lytenyte-shared"
 import { type ColumnView, type RowSource } from "@1771technologies/lytenyte-shared";
 import { useEvent } from "../../hooks/use-event.js";
 import type { Root } from "../root.js";
-import type { API, Props } from "../../types/types-internal.js";
 import type { EditContext } from "../root-context.js";
 
-export function useEditContext(view: ColumnView, api: API, props: Props, source: RowSource) {
+export function useEditContext(view: ColumnView, api: Root.API, props: Root.Props, source: RowSource) {
   const [activeEditState, setActiveEdit] = useState<null | {
     readonly rowId: string;
     readonly column: string;

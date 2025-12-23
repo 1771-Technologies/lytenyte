@@ -1,9 +1,9 @@
 import type { PositionUnion } from "@1771technologies/lytenyte-shared";
-import type { API } from "../../types/types-internal";
 import type { EditContext } from "../../root/root-context";
+import type { Root } from "../../root/root";
 
 export function beginEditing(
-  api: API,
+  api: Root.API,
   edit: EditContext,
   focusPos: PositionUnion | null,
   editMode: "cell" | "row" | "readonly",

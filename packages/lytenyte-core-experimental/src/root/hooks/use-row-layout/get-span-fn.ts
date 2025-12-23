@@ -1,7 +1,12 @@
 import type { ColumnAbstract, RowSource } from "@1771technologies/lytenyte-shared";
-import type { API } from "../../../types/types-internal";
+import type { Root } from "../../root";
 
-export function getSpanFn(rs: RowSource, visibleColumns: ColumnAbstract[], span: "row" | "col", api: API) {
+export function getSpanFn(
+  rs: RowSource,
+  visibleColumns: ColumnAbstract[],
+  span: "row" | "col",
+  api: Root.API,
+) {
   if (visibleColumns.every((c) => !(span === "col" ? (c as any).colSpan : (c as any).rowSpan))) return null;
 
   return (r: number, c: number) => {

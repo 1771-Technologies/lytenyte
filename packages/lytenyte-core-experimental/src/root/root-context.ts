@@ -10,15 +10,15 @@ import type {
 } from "@1771technologies/lytenyte-shared";
 import { createContext, useContext, type Dispatch, type RefObject, type SetStateAction } from "react";
 import type { Piece, PieceWritable } from "../hooks/use-piece";
-import type { API, Props } from "../types/types-internal";
 import type { Dimension } from "./hooks/use-viewport-dimensions";
+import type { Root } from "./root";
 
 export interface RootContextValue {
   readonly id: string;
   readonly source: RowSource;
   readonly rtl: boolean;
   readonly view: ColumnView;
-  readonly api: API;
+  readonly api: Root.API;
 
   readonly detailExpansions: Set<string>;
   readonly totalHeaderHeight: number;
@@ -30,13 +30,13 @@ export interface RootContextValue {
 
   readonly setDetailCache: Dispatch<SetStateAction<Record<string, number>>>;
   readonly rowDetailHeight: number | "auto";
-  readonly rowDetailRenderer: Props["rowDetailRenderer"];
-  readonly rowFullWidthRenderer: Props["rowFullWidthRenderer"];
+  readonly rowDetailRenderer: Root.Props["rowDetailRenderer"];
+  readonly rowFullWidthRenderer: Root.Props["rowFullWidthRenderer"];
 
   readonly columnDoubleClickToAutosize: boolean;
-  readonly columnMoveDragPlaceholder: Props["columnMoveDragPlaceholder"];
-  readonly columnGroupMoveDragPlaceholder: Props["columnGroupMoveDragPlaceholder"];
-  readonly columnGroupRenderer: Props["columnGroupRenderer"];
+  readonly columnMoveDragPlaceholder: Root.Props["columnMoveDragPlaceholder"];
+  readonly columnGroupMoveDragPlaceholder: Root.Props["columnGroupMoveDragPlaceholder"];
+  readonly columnGroupRenderer: Root.Props["columnGroupRenderer"];
 
   readonly viewport: HTMLDivElement | null;
   readonly setViewport: Dispatch<SetStateAction<HTMLDivElement | null>>;
@@ -56,11 +56,11 @@ export interface RootContextValue {
   readonly editValidator: null | ((x: any) => any);
 
   readonly dropAccept: string[];
-  readonly onRowDragLeave: Props["onRowDragLeave"];
-  readonly onRowDragEnter: Props["onRowDragEnter"];
-  readonly onRowDrop: Props["onRowDrop"];
+  readonly onRowDragLeave: Root.Props["onRowDragLeave"];
+  readonly onRowDragEnter: Root.Props["onRowDragEnter"];
+  readonly onRowDrop: Root.Props["onRowDrop"];
 
-  readonly selectActivator: Props["rowSelectionActivator"];
+  readonly selectActivator: Root.Props["rowSelectionActivator"];
   readonly selectPivot: RefObject<number | null>;
 }
 
