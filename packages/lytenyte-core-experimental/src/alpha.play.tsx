@@ -17,7 +17,9 @@ import { useClientDataSource } from "./data-source/use-client-data-source.js";
 import { ViewportShadows } from "./components/viewport/viewport-shadows.js";
 import { useMemo } from "react";
 
-const columns: Root.Column[] = [
+type BankData = (typeof bankDataSmall)[number];
+
+const columns: Root.Column<{ data: BankData }>[] = [
   {
     id: "age",
     name: "bob",
@@ -70,29 +72,9 @@ export default function Experimental() {
           style={{ height: "90vh", width: "90vw" }}
         >
           <Root
-            onRowDragEnter={(p) => {
-              console.log(p.over.kind === "viewport" ? "Entering viewport" : `Entering ${p.over.rowIndex}`);
-            }}
-            onRowDragLeave={(p) => {
-              console.log(p.over.kind === "viewport" ? "Leaving viewport" : `Leaving ${p.over.rowIndex}`);
-            }}
-            onRowDrop={(p) => {
-              console.log(p.over, p.source);
-            }}
             columns={columns}
             columnBase={useMemo(() => ({ movable: true, resizable: false }), [])}
             rowSource={rowSource}
-            rowGroupColumn={useMemo<Root.Props["rowGroupColumn"]>(() => {
-              return {
-                cellRenderer: (p) => {
-                  return (
-                    <div>
-                      <button onClick={() => p.api.rowGroupToggle(p.row)}>{p.column.name ?? "Group"}</button>
-                    </div>
-                  );
-                },
-              };
-            }, [])}
           >
             <Viewport>
               <ViewportShadows />

@@ -47,15 +47,10 @@ import { useEditContext } from "./hooks/use-edit-context.js";
 import type { UseDraggableProps } from "../dnd/types.js";
 import type { useDraggable } from "../dnd/use-draggable.js";
 
-export const Root = <
-  Data = unknown,
-  ColExt extends Record<string, unknown> = {},
-  Source extends RowSource = RowSource,
-  Ext extends Record<string, unknown> = {},
->({
+export const Root = <Spec extends Root.GridSpec = Root.GridSpec>({
   children,
   ...p
-}: PropsWithChildren<Root.Props<Data, ColExt, Source, Ext>>) => {
+}: PropsWithChildren<Root.Props<Spec>>) => {
   const props = p as unknown as Props;
   const source = props.rowSource ?? DEFAULT_ROW_SOURCE;
 
@@ -85,7 +80,17 @@ export const Root = <
     controlled.detailExpansions,
   );
 
+  const previousExtensions = useRef(props.apiExtensions ?? {});
+
   const api = useRef<API>({} as any);
+  if (previousExtensions.current !== props.apiExtensions) {
+    const keys = Object.keys(previousExtensions.current);
+    for (const k of keys) delete (api.current as any)[k];
+
+    previousExtensions.current = props.apiExtensions ?? {};
+    Object.assign(api, previousExtensions.current);
+  }
+
   useImperativeHandle(props.ref, () => api.current as any, []);
 
   const bounds = useBounds(
@@ -247,79 +252,57 @@ export const Root = <
 };
 
 export namespace Root {
+  export interface GridSpec<
+    Data = unknown,
+    ColExt extends Record<string, any> = object,
+    S extends RowSource<Data> = RowSource,
+    Ext extends Record<string, unknown> = {},
+  > {
+    readonly data?: Data;
+    readonly columnExtension?: ColExt;
+    readonly source?: S;
+    readonly apiExtension?: Ext;
+  }
+
   type WithId = { readonly id: string };
 
   export type PathField = { kind: "path"; path: string };
 
-  export interface RowParams<
-    T,
-    ColExt extends Record<string, unknown> = {},
-    S extends RowSource<T> = RowSource,
-    Ext extends Record<string, unknown> = {},
-  > {
+  export interface RowParams<Spec extends GridSpec = GridSpec> {
     readonly rowIndex: number;
-    readonly row: RowNode<T>;
-    readonly api: API<T, ColExt, S, Ext>;
+    readonly row: RowNode<GridSpec["data"]>;
+    readonly api: API<Spec>;
   }
 
-  export interface HeaderParams<
-    T,
-    ColExt extends Record<string, unknown> = {},
-    S extends RowSource<T> = RowSource,
-    Ext extends Record<string, unknown> = {},
-  > {
-    readonly column: Column<T, ColExt, S, Ext>;
-    readonly api: API<T, ColExt, S, Ext>;
+  export interface HeaderParams<Spec extends GridSpec = GridSpec> {
+    readonly column: Column<Spec>;
+    readonly api: API<Spec>;
   }
 
-  export interface HeaderGroupParams<
-    T,
-    ColExt extends Record<string, unknown> = {},
-    S extends RowSource<T> = RowSource,
-    Ext extends Record<string, unknown> = {},
-  > {
+  export interface HeaderGroupParams<Spec extends GridSpec = GridSpec> {
     readonly groupPath: string[];
-    readonly columns: Column<T, ColExt, S, Ext>[];
-    readonly api: API<T, ColExt, S, Ext>;
+    readonly columns: Column<Spec>[];
+    readonly api: API<Spec>;
   }
 
-  export interface CellParams<
-    T,
-    ColExt extends Record<string, unknown> = {},
-    S extends RowSource<T> = RowSource,
-    Ext extends Record<string, unknown> = {},
-  > {
-    readonly row: RowNode<T>;
-    readonly column: Column<T, ColExt, S, Ext>;
-    readonly api: API<T, ColExt, S, Ext>;
+  export interface CellParams<Spec extends GridSpec = GridSpec> {
+    readonly row: RowNode<Spec["data"]>;
+    readonly column: Column<Spec>;
+    readonly api: API<Spec>;
   }
 
-  export interface CellParamsWithIndex<
-    T,
-    ColExt extends Record<string, unknown> = {},
-    S extends RowSource<T> = RowSource,
-    Ext extends Record<string, unknown> = {},
-  > extends CellParams<T, ColExt, S, Ext> {
+  export interface CellParamsWithIndex<Spec extends GridSpec = GridSpec> extends CellParams<Spec> {
     readonly rowIndex: number;
     readonly colIndex: number;
   }
 
-  export interface CellParamsWithSelection<
-    T,
-    ColExt extends Record<string, unknown> = {},
-    S extends RowSource<T> = RowSource,
-    Ext extends Record<string, unknown> = {},
-  > extends CellParamsWithIndex<T, ColExt, S, Ext> {
+  export interface CellParamsWithSelection<Spec extends GridSpec = GridSpec>
+    extends CellParamsWithIndex<Spec> {
     readonly selected: boolean;
     readonly indeterminate: boolean;
   }
 
-  export interface EditParams<
-    T,
-    ColExt extends Record<string, unknown> = {},
-    S extends RowSource<T> = RowSource,
-    Ext extends Record<string, unknown> = {},
-  > extends CellParamsWithIndex<T, ColExt, S, Ext> {
+  export interface EditParams<Spec extends GridSpec = GridSpec> extends CellParamsWithIndex<Spec> {
     readonly editValue: unknown;
     readonly changeValue: (value: unknown) => boolean | Record<string, unknown>;
     readonly editData: unknown;
@@ -328,16 +311,11 @@ export namespace Root {
     readonly cancel: () => void;
   }
 
-  export interface Renderers<
-    T,
-    ColExt extends Record<string, unknown> = {},
-    S extends RowSource<T> = RowSource,
-    Ext extends Record<string, unknown> = {},
-  > {
-    readonly header: (props: HeaderParams<T, ColExt, S, Ext>) => ReactNode;
-    readonly cell: (props: CellParamsWithSelection<T, ColExt, S, Ext>) => ReactNode;
-    readonly row: (props: RowParams<T, ColExt, S, Ext>) => ReactNode;
-    readonly edit: (props: EditParams<T, ColExt, S, Ext>) => ReactNode;
+  export interface Renderers<Spec extends GridSpec = GridSpec> {
+    readonly header: (props: HeaderParams<Spec>) => ReactNode;
+    readonly cell: (props: CellParamsWithSelection<Spec>) => ReactNode;
+    readonly row: (props: RowParams<Spec>) => ReactNode;
+    readonly edit: (props: EditParams<Spec>) => ReactNode;
   }
 
   export interface DataRect {
@@ -347,24 +325,19 @@ export namespace Root {
     readonly columnEnd: number;
   }
 
-  export interface ExportDataRectResult<T> {
+  export interface ExportDataRectResult<Spec extends GridSpec = GridSpec> {
     readonly headers: string[];
     readonly groupHeaders: (string | null)[][];
     readonly data: unknown[][];
-    readonly columns: Column<T>[];
+    readonly columns: Column<Spec>[];
   }
 
   type RowSourceOmits = "onRowGroupExpansionsChange" | "onRowsUpdated" | "onRowsSelected";
-  export type API<
-    T,
-    ColExt extends Record<string, unknown> = {},
-    S extends RowSource<T> = RowSource,
-    Ext extends Record<string, unknown> = {},
-  > = {
+  export type API<Spec extends GridSpec = GridSpec> = {
     readonly cellRoot: (row: number, column: number) => PositionGridCell | PositionFullWidthRow | null;
-    readonly columnById: (id: string) => Column<T, ColExt, S, Ext> | null;
-    readonly columnByIndex: (index: number) => Column<T, ColExt, S, Ext> | null;
-    readonly columnField: (columnOrId: string | WithId, row: RowNode<T>) => unknown;
+    readonly columnById: (id: string) => Column<Spec> | null;
+    readonly columnByIndex: (index: number) => Column<Spec> | null;
+    readonly columnField: (columnOrId: string | WithId, row: RowNode<Spec["data"]>) => unknown;
     readonly columnMove: (params: {
       readonly moveColumns: (string | WithId)[];
       readonly moveTarget: string | number | WithId;
@@ -377,23 +350,20 @@ export namespace Root {
       readonly includeHeader?: boolean;
       readonly columns?: (string | number | WithId)[];
     }) => Record<string, number>;
-    readonly columnUpdate: (updates: Record<string, Omit<Column<T, ColExt, S, Ext>, "id">>) => void;
+    readonly columnUpdate: (updates: Record<string, Omit<Column<Spec>, "id">>) => void;
+    readonly columnToggleGroup: (group: string | string[], state?: boolean) => void;
 
     readonly rowDetailHeight: (rowId: WithId | string) => number;
-    readonly rowDetailExpanded: (rowOrId: RowNode<T> | string | number) => boolean;
+    readonly rowDetailExpanded: (rowOrId: RowNode<Spec["data"]> | string | number) => boolean;
 
-    readonly rowGroupToggle: (rowOrId: RowNode<T> | string, state?: boolean) => void;
+    readonly rowGroupToggle: (rowOrId: RowNode<Spec["data"]> | string, state?: boolean) => void;
+    readonly rowIsLeaf: (row: RowNode<Spec["data"]>) => row is RowLeaf<Spec["data"]>;
+    readonly rowIsGroup: (row: RowNode<Spec["data"]>) => row is RowGroup;
 
-    // To implement
-    readonly rowIsLeaf: (row: RowNode<T>) => row is RowLeaf<T>;
-    readonly rowIsGroup: (row: RowNode<T>) => row is RowGroup;
-    readonly rowGroupIsExpanded: (row: RowNode<T>) => boolean;
-    readonly columnToggleGroup: (group: string | string[], state?: boolean) => void;
     readonly exportData: (params?: {
       readonly rect: DataRect;
       readonly uniformGroupHeaders?: boolean;
-    }) => Promise<ExportDataRectResult<T>>;
-    // To implement end
+    }) => Promise<ExportDataRectResult<Spec>>;
 
     readonly scrollIntoView: (params: {
       readonly column?: number | string | WithId;
@@ -428,55 +398,36 @@ export namespace Root {
       params: Partial<Pick<UseDraggableProps, "data" | "placeholder">> & { rowIndex: number },
     ) => ReturnType<typeof useDraggable>;
 
-    readonly props: () => Props<T, ColExt, S, Ext>;
-  } & Omit<S, RowSourceOmits> &
-    Ext;
+    readonly props: () => Props<Spec>;
+  } & Omit<Spec["source"], RowSourceOmits> &
+    Spec["apiExtension"];
 
-  interface ColumnUnextended<
-    T,
-    ColExt extends Record<string, unknown> = {},
-    S extends RowSource<T> = RowSource,
-    Ext extends Record<string, unknown> = {},
-  > extends ColumnAbstract {
-    readonly field?: string | number | PathField | ((params: CellParams<T, ColExt, S, Ext>) => unknown);
+  interface ColumnUnextended<Spec extends GridSpec = GridSpec> extends ColumnAbstract {
+    readonly field?: string | number | PathField | ((params: CellParams<Spec>) => unknown);
 
-    readonly colSpan?: number | ((params: CellParamsWithIndex<T, ColExt, S, Ext>) => number);
-    readonly rowSpan?: number | ((params: CellParamsWithIndex<T, ColExt, S, Ext>) => number);
+    readonly colSpan?: number | ((params: CellParamsWithIndex<Spec>) => number);
+    readonly rowSpan?: number | ((params: CellParamsWithIndex<Spec>) => number);
 
-    readonly autosizeCellFn?: (params: CellParams<T, ColExt, S, Ext>) => number | null | undefined;
-    readonly autosizeHeaderFn?: (
-      params: HeaderParams<this & ColExt, API<T, ColExt, S, Ext>>,
-    ) => number | null | undefined;
+    readonly autosizeCellFn?: (params: CellParams<Spec>) => number | null | undefined;
+    readonly autosizeHeaderFn?: (params: HeaderParams<Spec>) => number | null | undefined;
 
-    readonly floatingCellRenderer?: Renderers<T, ColExt, S, Ext>["header"];
-    readonly headerRenderer?: Renderers<T, ColExt, S, Ext>["header"];
-    readonly cellRenderer?: Renderers<T, ColExt, S, Ext>["cell"];
+    readonly floatingCellRenderer?: Renderers<Spec>["header"];
+    readonly headerRenderer?: Renderers<Spec>["header"];
+    readonly cellRenderer?: Renderers<Spec>["cell"];
 
-    readonly editRenderer?: Renderers<T, ColExt, S, Ext>["edit"];
-    readonly editable?: boolean | ((params: CellParamsWithIndex<T, ColExt, S, Ext>) => boolean);
+    readonly editRenderer?: Renderers<Spec>["edit"];
+    readonly editable?: boolean | ((params: CellParamsWithIndex<Spec>) => boolean);
     readonly editSetter?: (
-      params: Pick<EditParams<T, ColExt, S, Ext>, "api" | "editValue" | "editData" | "row" | "column">,
+      params: Pick<EditParams<Spec>, "api" | "editValue" | "editData" | "row" | "column">,
     ) => unknown;
   }
 
-  export type Column<
-    T = unknown,
-    ColExt extends Record<string, unknown> = {},
-    S extends RowSource<T> = RowSource,
-    Ext extends Record<string, unknown> = {},
-  > = ColumnUnextended<T, ColExt, S, Ext> & ColExt;
+  export type Column<Spec extends GridSpec = GridSpec> = ColumnUnextended<Spec> & Spec["columnExtension"];
 
-  export type Props<
-    Data = unknown,
-    ColExt extends Record<string, any> = object,
-    S extends RowSource<Data> = RowSource,
-    Ext extends Record<string, any> = object,
-  > = {
-    readonly apiExtensions?: Ext;
-
-    readonly columns?: Column<Data, ColExt, S, Ext>[];
-    readonly columnBase?: Omit<Column<Data, ColExt, S, Ext>, "id" | "pin" | "field" | "editSetter">;
-    readonly columnMarker?: Omit<Column<Data, ColExt, S, Ext>, "field"> & { width?: number };
+  export type Props<Spec extends GridSpec = GridSpec> = {
+    readonly columns?: Column<Spec>[];
+    readonly columnBase?: Omit<Column<Spec>, "id" | "pin" | "field" | "editSetter">;
+    readonly columnMarker?: Omit<Column<Spec>, "field"> & { width?: number };
 
     readonly columnMarkerEnabled?: boolean;
     readonly columnGroupDefaultExpansion?: boolean;
@@ -488,14 +439,12 @@ export namespace Root {
     readonly columnMoveDragPlaceholder?:
       | { query: string; offset?: [number, number] }
       | string
-      | ((props: HeaderParams<Data, ColExt, S, Ext> & { readonly x: number; y: number }) => ReactNode);
+      | ((props: HeaderParams<Spec> & { readonly x: number; y: number }) => ReactNode);
     readonly columnGroupMoveDragPlaceholder?:
       | { query: string; offset?: [number, number] }
       | string
-      | ((
-          props: HeaderGroupParams<Data, ColExt, S, Ext> & { readonly x: number; readonly y: number },
-        ) => ReactNode);
-    readonly columnGroupRenderer?: (props: HeaderGroupParams<Data, ColExt, S, Ext>) => ReactNode;
+      | ((props: HeaderGroupParams<Spec> & { readonly x: number; readonly y: number }) => ReactNode);
+    readonly columnGroupRenderer?: (props: HeaderGroupParams<Spec>) => ReactNode;
 
     readonly gridId?: string;
 
@@ -513,17 +462,15 @@ export namespace Root {
     readonly colOverscanEnd?: number;
 
     readonly rowScanDistance?: number;
-    readonly rowSource?: S;
+    readonly rowSource?: Spec["source"];
     readonly rowHeight?: RowHeight;
     readonly rowAutoHeightGuess?: number;
 
-    readonly rowGroupColumn?: Omit<Column<Data, ColExt, S, Ext>, "field" | "id">;
+    readonly rowGroupColumn?: Omit<Column<Spec>, "field" | "id">;
     readonly rowGroupDisplayMode?: RowGroupDisplayMode;
 
-    readonly rowFullWidthPredicate?:
-      | null
-      | ((params: RowParams<RowNode<Data>, API<Data, ColExt, S, Ext>>) => boolean);
-    readonly rowFullWidthRenderer?: Renderers<Data, ColExt, S, Ext>["row"] | null;
+    readonly rowFullWidthPredicate?: null | ((params: RowParams<Spec>) => boolean);
+    readonly rowFullWidthRenderer?: Renderers<Spec>["row"] | null;
 
     readonly virtualizeCols?: boolean;
     readonly virtualizeRows?: boolean;
@@ -534,13 +481,13 @@ export namespace Root {
     readonly rowDetailExpansions?: Set<string>;
     readonly rowDetailHeight?: number | "auto";
     readonly rowDetailAutoHeightGuess?: number;
-    readonly rowDetailRenderer?: Renderers<Data, ColExt, S, Ext>["row"] | null;
+    readonly rowDetailRenderer?: Renderers<Spec>["row"] | null;
     readonly rowDropAccept?: string[];
 
-    readonly ref?: Ref<API<Data, ColExt, S, Ext>>;
+    readonly ref?: Ref<API<Spec>>;
 
     readonly editRowValidatorFn?: (
-      params: Pick<EditParams<Data, ColExt, S, Ext>, "api" | "editData" | "row">,
+      params: Pick<EditParams<Spec>, "api" | "editData" | "row">,
     ) => boolean | Record<string, unknown>;
     readonly editClickActivator?: "single" | "double-click" | "none";
     readonly editMode?: "cell" | "row" | "readonly";
@@ -549,40 +496,40 @@ export namespace Root {
     readonly onColumnGroupExpansionChange?: (change: Record<string, boolean>) => void;
     readonly onRowDetailExpansionsChange?: (change: Set<string>) => void;
     readonly onRowGroupExpansionChange?: (deltaChange: Record<string, boolean>) => void;
-    readonly onColumnsChange?: (columns: Column<Data, ColExt, S, Ext>[]) => void;
-    readonly onRowGroupColumnChange?: (column: Omit<Column<Data, ColExt, S, Ext>, "field" | "id">) => void;
+    readonly onColumnsChange?: (columns: Column<Spec>[]) => void;
+    readonly onRowGroupColumnChange?: (column: Omit<Column<Spec>, "field" | "id">) => void;
 
     // Events
     readonly onEditBegin?: (params: {
-      readonly api: API<Data, ColExt, S, Ext>;
+      readonly api: API<Spec>;
       readonly preventDefault: () => void;
-      readonly row: RowNode<Data>;
-      readonly column: Column<Data, ColExt, S, Ext>;
+      readonly row: RowNode<Spec["data"]>;
+      readonly column: Column<Spec>;
       readonly editData: unknown;
     }) => void;
     readonly onEditEnd?: (params: {
-      readonly api: API<Data, ColExt, S, Ext>;
+      readonly api: API<Spec>;
       readonly preventDefault: () => void;
-      readonly row: RowNode<Data>;
-      readonly column: Column<Data, ColExt, S, Ext>;
+      readonly row: RowNode<Spec["data"]>;
+      readonly column: Column<Spec>;
       readonly editData: unknown;
     }) => void;
     readonly onEditCancel?: (params: {
-      readonly api: API<Data, ColExt, S, Ext>;
-      readonly row: RowNode<Data>;
-      readonly column: Column<Data, ColExt, S, Ext>;
+      readonly api: API<Spec>;
+      readonly row: RowNode<Spec["data"]>;
+      readonly column: Column<Spec>;
       readonly editData: unknown;
     }) => void;
     readonly onEditFail?: (params: {
-      readonly api: API<Data, ColExt, S, Ext>;
-      readonly row: RowNode<Data>;
-      readonly column: Column<Data, ColExt, S, Ext>;
+      readonly api: API<Spec>;
+      readonly row: RowNode<Spec["data"]>;
+      readonly column: Column<Spec>;
       readonly editData: unknown;
       readonly validation: null | Record<string, unknown> | boolean;
     }) => void;
     readonly onRowSelect?: (params: {
       readonly preventDefault: () => void;
-      readonly api: API<Data, ColExt, S, Ext>;
+      readonly api: API<Spec>;
       readonly rows: string[] | "all";
       readonly deselect: boolean;
     }) => boolean;
@@ -627,5 +574,5 @@ export namespace Root {
             element: HTMLElement;
           };
     }) => void;
-  };
+  } & (undefined extends Spec["apiExtension"] ? {} : { apiExtension: Spec["apiExtension"] });
 }

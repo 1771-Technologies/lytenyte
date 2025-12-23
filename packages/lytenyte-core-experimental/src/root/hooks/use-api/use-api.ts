@@ -29,6 +29,7 @@ import { defaultAutosize, defaultAutosizeHeader } from "./autosizers.js";
 import type { EditContext } from "../../root-context.js";
 import type { Root } from "../../root.js";
 import { useDraggable } from "../../../dnd/use-draggable.js";
+import { getDataRect } from "./get-data-rect.js";
 
 type Writable<T> = { -readonly [k in keyof T]: T[k] };
 
@@ -55,6 +56,48 @@ export function useApi(
   const rowTopCount = source.useTopCount();
   const rowBottomCount = source.useBottomCount();
   const rowCount = source.useRowCount();
+
+  api.rowIsLeaf = useEvent((row) => {
+    return row.kind === "leaf";
+  });
+  api.rowIsGroup = useEvent((row) => {
+    return row.kind === "branch";
+  });
+
+  api.columnToggleGroup = useEvent((group, state) => {
+    const delimiter = props.columnGroupJoinDelimiter ?? "/";
+
+    const id = typeof group === "string" ? group : group.join(delimiter);
+
+    const currentExpansions = controlled.columnGroupExpansions;
+    const currentState = currentExpansions[id] ?? props.columnGroupDefaultExpansion ?? true;
+    const next = state ?? !currentState;
+
+    controlled.onColumnGroupExpansionChange({ ...currentExpansions, [id]: next });
+  });
+
+  api.exportData = useEvent(async (p) => {
+    const visible = view.visibleColumns;
+
+    const rowStart = p?.rect?.rowStart ?? 0;
+    const rowEnd = p?.rect?.rowEnd ?? rowCount;
+    const columnStart = p?.rect?.columnStart ?? 0;
+    const columnEnd = p?.rect?.columnEnd ?? visible.length;
+
+    const rows: (RowNode<any> | null)[] = [];
+    for (let i = rowStart; i < rowEnd; i++) {
+      rows.push(source.rowByIndex(i).get() ?? null);
+    }
+
+    return getDataRect({
+      rows,
+      visible,
+      columnField: api.columnField as any,
+      uniformGroupHeaders: p?.uniformGroupHeaders,
+      columnEnd,
+      columnStart,
+    });
+  });
 
   api.rowHandleSelect = useEvent((params) => {
     const mode = props.rowSelectionMode ?? "none";

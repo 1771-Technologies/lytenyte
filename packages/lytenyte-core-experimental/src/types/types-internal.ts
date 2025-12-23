@@ -13,6 +13,8 @@ export type RowHeight = number | `fill:${number}` | ((i: number) => number);
 export type RowPin = "top" | "bottom" | null;
 
 export interface Props {
+  readonly apiExtensions?: any;
+
   readonly columns?: ColumnAbstract[];
   readonly columnBase?: Omit<ColumnAbstract, "pin" | "field">;
   readonly columnMarker?: Omit<ColumnAbstract, "field"> & { width?: number };
