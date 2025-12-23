@@ -122,6 +122,7 @@ export interface RowGroup {
   readonly key: string | null;
   readonly data: Record<string, unknown>;
   readonly depth: number;
+  readonly last: boolean;
 
   readonly loading?: boolean;
   readonly error?: unknown;
