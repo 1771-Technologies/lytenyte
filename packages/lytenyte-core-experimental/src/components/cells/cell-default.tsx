@@ -1,6 +1,6 @@
 import type { Root } from "../../root/root";
 
-export function CellDefault<T>({ column, row, api }: Root.CellParams<T>) {
+export function CellDefault({ column, row, api }: Root.CellParams<any>) {
   if (row.data == null && row.loading) {
     return <div>Loading...</div>;
   }

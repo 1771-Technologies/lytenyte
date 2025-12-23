@@ -3,7 +3,7 @@ import { dragData, dragX, dragY } from "../../dnd/global.js";
 import { useRoot } from "../../root/root-context.js";
 import { useSelector } from "../../signal/signal.js";
 import { getNearestRow, getRowIndexFromEl, type RowNode } from "@1771technologies/lytenyte-shared";
-import type { API } from "../../types/types-internal.js";
+import type { Root } from "../../root/root.js";
 
 export function RowDragMonitor() {
   const { id } = useRoot();
@@ -89,14 +89,14 @@ function RowDragCollider() {
   return null;
 }
 
-type Source = { id: string; api: API; row: RowNode<any>; rowIndex: number; data?: any };
+type Source = { id: string; api: Root.API; row: RowNode<any>; rowIndex: number; data?: any };
 type Over =
   | {
       kind: "row";
       id: string;
-      api: API;
+      api: Root.API;
       row: RowNode<any>;
       rowIndex: number;
       element: HTMLElement;
     }
-  | { kind: "viewport"; id: string; element: HTMLElement; api: API };
+  | { kind: "viewport"; id: string; element: HTMLElement; api: Root.API };

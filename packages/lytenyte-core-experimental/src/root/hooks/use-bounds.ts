@@ -1,5 +1,4 @@
 import { useMemo, useRef, useState } from "react";
-import type { Props } from "../../types/types-internal";
 import {
   computeBounds,
   equal,
@@ -9,9 +8,10 @@ import {
 } from "@1771technologies/lytenyte-shared";
 import { useIsoEffect } from "../../hooks/use-iso-effect.js";
 import { usePiece } from "../../hooks/use-piece.js";
+import type { Root } from "../root";
 
 export function useBounds(
-  props: Props,
+  props: Root.Props,
   source: RowSource,
   view: ColumnView,
   viewport: HTMLElement | null,

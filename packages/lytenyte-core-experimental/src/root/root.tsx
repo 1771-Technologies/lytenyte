@@ -1,15 +1,4 @@
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-import {
-  useId,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-  useState,
-  type PropsWithChildren,
-  type ReactNode,
-  type Ref,
-} from "react";
-import type { API, Props, RowHeight } from "../types/types-internal.js";
+import { useMemo, useRef, useState, type PropsWithChildren, type ReactNode, type Ref } from "react";
 import { useViewportDimensions } from "./hooks/use-viewport-dimensions.js";
 import { useControlledGridState } from "./hooks/use-controlled-grid-state.js";
 import { useColumnView } from "./hooks/use-column-view.js";
@@ -23,9 +12,9 @@ import type {
   LayoutState,
   PositionFullWidthRow,
   PositionGridCell,
-  PositionUnion,
   RowGroup,
   RowGroupDisplayMode,
+  RowHeight,
   RowLeaf,
   RowNode,
   RowSource,
@@ -42,29 +31,26 @@ import {
   RowLayoutContextProvider,
   type RootContextValue,
 } from "./root-context.js";
-import { usePiece } from "../hooks/use-piece.js";
 import { useEditContext } from "./hooks/use-edit-context.js";
 import type { UseDraggableProps } from "../dnd/types.js";
 import type { useDraggable } from "../dnd/use-draggable.js";
+import { useExtendedAPI } from "./hooks/use-api/use-extended-api.js";
+import { usePosition } from "./hooks/use-position.js";
+import { useDropAccept } from "./hooks/use-drop-accept.js";
+import { useGridId } from "./hooks/use-grid-id.js";
 
 export const Root = <Spec extends Root.GridSpec = Root.GridSpec>({
   children,
   ...p
 }: PropsWithChildren<Root.Props<Spec>>) => {
-  const props = p as unknown as Props;
+  const props = p as unknown as Root.Props;
   const source = props.rowSource ?? DEFAULT_ROW_SOURCE;
 
   const [vp, setVp] = useState<HTMLDivElement | null>(null);
-  const id = useId();
-  const gridId = props.gridId ?? id;
+  const gridId = useGridId(props.gridId);
   const selectPivot = useRef<number | null>(null);
 
-  const dropAccept = useMemo(() => {
-    const drop = props.rowDropAccept ?? [];
-    if (!drop.includes(gridId)) drop.push(gridId);
-
-    return drop.map((x) => `grid:${x}`);
-  }, [gridId, props.rowDropAccept]);
+  const dropAccept = useDropAccept(props, gridId);
 
   const dimensions = useViewportDimensions(vp);
   const controlled = useControlledGridState(props);
@@ -80,18 +66,7 @@ export const Root = <Spec extends Root.GridSpec = Root.GridSpec>({
     controlled.detailExpansions,
   );
 
-  const previousExtensions = useRef(props.apiExtensions ?? {});
-
-  const api = useRef<API>({} as any);
-  if (previousExtensions.current !== props.apiExtensions) {
-    const keys = Object.keys(previousExtensions.current);
-    for (const k of keys) delete (api.current as any)[k];
-
-    previousExtensions.current = props.apiExtensions ?? {};
-    Object.assign(api, previousExtensions.current);
-  }
-
-  useImperativeHandle(props.ref, () => api.current as any, []);
+  const api = useExtendedAPI(props);
 
   const bounds = useBounds(
     props,
@@ -104,16 +79,7 @@ export const Root = <Spec extends Root.GridSpec = Root.GridSpec>({
     yPositions.positions,
   );
 
-  const [position, setPosition] = useState<PositionUnion | null>(null);
-  const focusPiece = usePiece(position, setPosition);
-
-  const focusValue = useMemo(() => {
-    if (position?.kind === "cell") {
-      return { row: position.rowIndex, column: position.colIndex };
-    }
-
-    return null;
-  }, [position]);
+  const { focusPiece, focusValue, position } = usePosition();
 
   const layoutStateRef = useRef<LayoutState>(null as unknown as LayoutState);
   const headerLayout = useHeaderLayout(view, props);
@@ -122,14 +88,14 @@ export const Root = <Spec extends Root.GridSpec = Root.GridSpec>({
     source,
     view,
     vp,
-    api.current,
+    api,
     bounds,
     layoutStateRef,
     controlled.detailExpansions,
     position,
   );
 
-  const editValue = useEditContext(view, api.current, props, source);
+  const editValue = useEditContext(view, api, props, source);
 
   useApi(
     gridId,
@@ -147,14 +113,14 @@ export const Root = <Spec extends Root.GridSpec = Root.GridSpec>({
     xPositions,
     yPositions.positions,
     totalHeaderHeight,
-    api.current,
+    api,
   );
 
   const value = useMemo<RootContextValue>(() => {
     return {
       id: gridId,
       rtl: props.rtl ?? false,
-      api: api.current,
+      api: api,
       xPositions,
       yPositions: yPositions.positions,
       viewport: vp,
@@ -200,6 +166,7 @@ export const Root = <Spec extends Root.GridSpec = Root.GridSpec>({
       onRowDrop: props.onRowDrop,
     };
   }, [
+    api,
     controlled.columnGroupExpansions,
     controlled.detailExpansions,
     dimensions,
@@ -256,7 +223,7 @@ export namespace Root {
     Data = unknown,
     ColExt extends Record<string, any> = object,
     S extends RowSource<Data> = RowSource,
-    Ext extends Record<string, unknown> = {},
+    Ext extends Record<string, any> = object,
   > {
     readonly data?: Data;
     readonly columnExtension?: ColExt;
@@ -399,7 +366,9 @@ export namespace Root {
     ) => ReturnType<typeof useDraggable>;
 
     readonly props: () => Props<Spec>;
-  } & Omit<Spec["source"], RowSourceOmits> &
+  } & (undefined extends Spec["source"]
+    ? Omit<RowSource, RowSourceOmits>
+    : Omit<Spec["source"], RowSourceOmits>) &
     Spec["apiExtension"];
 
   interface ColumnUnextended<Spec extends GridSpec = GridSpec> extends ColumnAbstract {
@@ -574,5 +543,5 @@ export namespace Root {
             element: HTMLElement;
           };
     }) => void;
-  } & (undefined extends Spec["apiExtension"] ? {} : { apiExtension: Spec["apiExtension"] });
+  } & (undefined extends Spec["apiExtension"] ? object : { apiExtension: Spec["apiExtension"] });
 }

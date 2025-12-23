@@ -1,7 +1,11 @@
 import type { RowSource } from "@1771technologies/lytenyte-shared";
-import type { API, Props } from "../../../types/types-internal.js";
+import type { Root } from "../../root";
 
-export function getFullWidthFn(rds: RowSource, predicate: Props["rowFullWidthPredicate"], api: API) {
+export function getFullWidthFn(
+  rds: RowSource,
+  predicate: Root.Props["rowFullWidthPredicate"],
+  api: Root.API,
+) {
   if (!predicate) return null;
   return (r: number) => {
     const rowNode = rds.rowByIndex(r)?.get();

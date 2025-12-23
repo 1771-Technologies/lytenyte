@@ -1,3 +1,4 @@
+export type Writable<T> = { -readonly [k in keyof T]: T[k] };
 export interface ColumnWidthItem {
   readonly width?: number;
   readonly widthMin?: number;

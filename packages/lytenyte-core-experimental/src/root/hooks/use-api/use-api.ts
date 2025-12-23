@@ -17,8 +17,8 @@ import {
   type RowNode,
   type RowSource,
   type SpanLayout,
+  type Writable,
 } from "@1771technologies/lytenyte-shared";
-import type { API, Props } from "../../../types/types-internal.js";
 import type { RefObject } from "react";
 import { useEvent } from "../../../hooks/use-event.js";
 import { getSpanFn } from "../use-row-layout/get-span-fn.js";
@@ -31,11 +31,9 @@ import type { Root } from "../../root.js";
 import { useDraggable } from "../../../dnd/use-draggable.js";
 import { getDataRect } from "./get-data-rect.js";
 
-type Writable<T> = { -readonly [k in keyof T]: T[k] };
-
 export function useApi(
   gridId: string,
-  props: Props,
+  props: Root.Props,
   source: RowSource,
   view: ColumnView,
   controlled: Controlled,
@@ -50,9 +48,9 @@ export function useApi(
   xPositions: Uint32Array,
   yPositions: Uint32Array,
   headerHeightTotal: number,
-  providedApi: API,
+  providedApi: Root.API,
 ) {
-  const api: Writable<API> = providedApi;
+  const api: Writable<Root.API> = providedApi;
   const rowTopCount = source.useTopCount();
   const rowBottomCount = source.useBottomCount();
   const rowCount = source.useRowCount();

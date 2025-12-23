@@ -10,18 +10,18 @@ import {
   type RowView,
   type SpanLayout,
 } from "@1771technologies/lytenyte-shared";
-import type { API, Props } from "../../../types/types-internal.js";
 import type { Piece } from "../../../hooks/use-piece.js";
 import { useCallback, useMemo, type RefObject } from "react";
 import { getSpanFn } from "./get-span-fn.js";
 import { getFullWidthFn } from "./get-full-width-fn.js";
+import type { Root } from "../../root.js";
 
 export function useRowLayout(
-  props: Props,
+  props: Root.Props,
   rs: RowSource,
   view: ColumnView,
   vp: HTMLElement | null,
-  api: API,
+  api: Root.API,
   bounds$: Piece<SpanLayout>,
   layoutStateRef: RefObject<LayoutState>,
   rowDetailExpansions: Set<string>,

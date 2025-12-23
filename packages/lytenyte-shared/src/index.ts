@@ -12,12 +12,14 @@ export { computeColumnPositions } from "./coordinates/compute-column-positions.j
 export { computeRowPositions } from "./coordinates/compute-row-positions.js";
 
 export type {
+  Writable,
   SpanFn,
   RowPredicate,
   SpanLayout,
   ColumnAbstract,
   ColumnGroupVisibility,
   ColumnPin,
+  RowHeight,
   RowPin,
   RowSource,
   SortFn,
