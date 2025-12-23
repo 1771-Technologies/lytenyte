@@ -9,7 +9,7 @@ export function useFlattenedGroups<T>(
   agg: AggregationFn<T> | undefined,
   leafs: RowLeaf<T>[],
   workingSet: number[],
-  sort: SortFn<T> | undefined,
+  sort: SortFn<T> | SortFn<T>[] | null | undefined,
   expandedFn: (id: string, depth: number) => boolean,
   suppressLeafExpansion: boolean,
 ) {
@@ -35,7 +35,8 @@ export function useFlattenedGroups<T>(
     ) {
       maxDepth = Math.max(depth + 1, maxDepth);
 
-      const rows = nodeChildrenToRows(node, agg, leafs, workingSet, sort, isLast);
+      const sortAtLevel = Array.isArray(sort) ? (sort[depth] ?? sort.at(-1)) : sort;
+      const rows = nodeChildrenToRows(node, agg, leafs, workingSet, sortAtLevel, isLast);
 
       let offset = 0;
 
@@ -76,7 +77,7 @@ const nodeChildrenToRows = <T>(
   agg: AggregationFn<T> | undefined,
   leafs: RowLeaf<T>[],
   workingSet: number[],
-  sort: SortFn<T> | undefined,
+  sort: SortFn<T> | null | undefined,
   isLast: boolean,
 ) => {
   const values = root.values();
