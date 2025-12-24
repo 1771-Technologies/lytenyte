@@ -30,6 +30,7 @@ export function useFlattenedData<Spec extends GridSpec>(
     props.group,
     props.groupIdFn ?? groupIdFallback,
     props.rowGroupCollapseBehavior ?? "no-collapse",
+    props.labelFilter,
     havingFilter,
     props.havingGroupAlways ?? false,
     props.aggregate,

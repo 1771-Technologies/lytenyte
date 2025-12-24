@@ -32,6 +32,7 @@
       "import": "./src/index.ts",
       "require": "./src/index.ts"
     },
+    "./grid.css": "./main.css",
     "./types": "./src/types/index.ts",
     "./internal": {
       "types": "./src/internal..ts",
