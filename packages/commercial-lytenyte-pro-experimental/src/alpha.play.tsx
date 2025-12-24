@@ -54,7 +54,7 @@ export default function Experimental() {
       ],
     },
   });
-  const pivotColumns = ds.usePivotColumns();
+  const pivotProps = ds.usePivotProps();
 
   const { resolvedTheme } = useTheme();
   return (
@@ -66,9 +66,10 @@ export default function Experimental() {
           style={{ height: "90vh", width: "90vw" }}
         >
           <Root
-            columns={pivotColumns ?? columns}
-            columnBase={useMemo(() => ({ movable: true, resizable: false, width: 100 }), [])}
+            columns={columns}
+            columnBase={useMemo(() => ({ movable: true, resizable: true, width: 100 }), [])}
             rowSource={ds}
+            {...pivotProps}
           >
             <Viewport>
               <ViewportShadows />

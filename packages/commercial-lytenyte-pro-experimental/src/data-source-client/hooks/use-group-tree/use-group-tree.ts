@@ -9,7 +9,8 @@ import type {
 import { useMemo, useRef } from "react";
 import { collapse } from "./collapse.js";
 import { collapseLast } from "./collapse-last.js";
-import type { HavingFilterFn } from "../../use-client-data-source.js";
+import type { HavingFilterFn, LabelFilter } from "../../use-client-data-source.js";
+import { evaluateLabelFilter } from "../use-pivot/auxiliary-functions/evaluate-label-filter.js";
 
 export interface RootNode<T> {
   readonly kind: "root";
@@ -49,6 +50,7 @@ export function useGroupTree<T>(
   group: GroupFn<T> | undefined | null,
   groupIdFn: GroupIdFn,
   rowGroupCollapseBehavior: "no-collapse" | "last-only" | "full-tree",
+  labelFilter: (LabelFilter | null)[] | null | undefined,
   having: HavingFilterFn | HavingFilterFn[] | null | undefined,
   havingGroupAlways: boolean,
   agg: AggregationFn<T> | undefined | null,
@@ -70,6 +72,9 @@ export function useGroupTree<T>(
       const n = leafs[workingSet[i]];
       const paths = group(n);
 
+      // Skip this row if its path is filtered out.
+      if (!evaluateLabelFilter(labelFilter, paths)) continue;
+
       let current = root.children;
       let currentGroup: GroupNode<T> | RootNode<T> = root;
 
@@ -83,6 +88,7 @@ export function useGroupTree<T>(
 
       for (let j = 0; j < paths.length; j++) {
         const p = paths[j];
+
         if (!current.has(p)) {
           const partial = paths.slice(0, j + 1);
           const groupId = groupIdFn(partial);
@@ -190,5 +196,15 @@ export function useGroupTree<T>(
     if (rowGroupCollapseBehavior === "last-only") root.children.forEach(collapseLast);
 
     return root;
-  }, [agg, group, groupIdFn, having, havingGroupAlways, leafs, rowGroupCollapseBehavior, workingSet]);
+  }, [
+    agg,
+    group,
+    groupIdFn,
+    having,
+    havingGroupAlways,
+    labelFilter,
+    leafs,
+    rowGroupCollapseBehavior,
+    workingSet,
+  ]);
 }
