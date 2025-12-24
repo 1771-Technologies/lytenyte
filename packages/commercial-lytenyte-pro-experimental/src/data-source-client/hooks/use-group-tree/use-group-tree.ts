@@ -46,12 +46,12 @@ export type RootMap<T> = Map<string | null | number, GroupNode<T> | LeafNode<T>>
 export function useGroupTree<T>(
   leafs: RowLeaf<T>[],
   workingSet: number[],
-  group: GroupFn<T> | undefined,
+  group: GroupFn<T> | undefined | null,
   groupIdFn: GroupIdFn,
   rowGroupCollapseBehavior: "no-collapse" | "last-only" | "full-tree",
   having: HavingFilterFn | HavingFilterFn[] | null | undefined,
   havingGroupAlways: boolean,
-  agg: AggregationFn<T> | undefined,
+  agg: AggregationFn<T> | undefined | null,
 ) {
   const groupNodeCacheRef = useRef(new Map<string, GroupNode<T>["row"]>());
   return useMemo(() => {

@@ -11,12 +11,7 @@ import type {
   RowSource,
   SortFn,
 } from "@1771technologies/lytenyte-shared";
-import { useFlattenedPiece } from "./hooks/use-flattened-piece.js";
 import { useLeafNodes } from "./hooks/use-leaf-nodes.js";
-import { useFiltered } from "./hooks/use-filtered.js";
-import { useSorted } from "./hooks/use-sorted.js";
-import { useGroupTree } from "./hooks/use-group-tree/use-group-tree.js";
-import { useFlattenedGroups } from "./hooks/use-flattened-groups.js";
 import { useControlledState } from "./hooks/use-controlled-ds-state.js";
 import { useRowGroupIsExpanded } from "./source-functions/use-row-group-is-expanded.js";
 import { useOnRowsUpdated } from "./source-functions/use-on-rows-updated.js";
@@ -33,15 +28,31 @@ import { useRowsBetween } from "./source-functions/use-rows-between.js";
 import { usePiece } from "@1771technologies/lytenyte-core-experimental/internal";
 import type { Column, Field } from "../types/column.js";
 import type { GridSpec } from "../types/grid.js";
+import { useFlattenedData } from "./hooks/use-flattened-data.js";
+import { usePivotData } from "./hooks/use-pivot/use-pivot-data.js";
 
 export type HavingFilterFn = (node: RowGroup) => boolean;
 
-export type PivotField<Spec extends GridSpec = GridSpec> = { name: string; field: Field<Spec> };
-export type PivotMeasure<T> = { id: string; measure: (row: RowLeaf<T>) => unknown };
+export type PivotField<Spec extends GridSpec = GridSpec> = { field?: Field<Spec["data"]> };
+export type PivotMeasure<Spec extends GridSpec = GridSpec> = {
+  id: string;
+  measure: (row: RowLeaf<Spec["data"]>[]) => unknown;
+  reference?: Omit<Column<Spec>, "id">;
+};
 export type PivotLabelFilter = (s: string) => boolean;
 
 export interface RowSourceClient<Spec extends GridSpec = GridSpec> extends RowSource<Spec["data"]> {
   readonly usePivotColumns: () => null | Column<Spec>[];
+}
+
+export interface PivotModel<Spec extends GridSpec> {
+  readonly pivotMode: boolean;
+  readonly columns?: (Column<Spec> | PivotField<Spec>)[];
+  readonly rows?: (Column<Spec> | PivotField<Spec>)[];
+  readonly measures?: PivotMeasure<Spec>[];
+  readonly sort?: SortFn<Spec["data"]> | SortFn<Spec["data"]>[];
+  readonly rowLabelFilter?: HavingFilterFn[];
+  readonly colLabelFilter?: HavingFilterFn[];
 }
 
 export interface UseClientDataSourceParams<Spec extends GridSpec = GridSpec, T = Spec["data"]> {
@@ -49,16 +60,9 @@ export interface UseClientDataSourceParams<Spec extends GridSpec = GridSpec, T =
   readonly topData?: T[];
   readonly botData?: T[];
 
-  readonly pivotModel?: {
-    readonly pivotMode: boolean;
-    readonly pivotColumns?: (Column<Spec> | PivotField<Spec>)[];
-    readonly pivotRows?: (Column<Spec> | PivotField<Spec>)[];
-    readonly pivotMeasures?: PivotMeasure<T>[];
-    readonly pivotSort?: SortFn<T> | SortFn<T>[];
-    readonly pivotRowLabelFilter?: HavingFilterFn[];
-    readonly pivotColLabelFilter?: HavingFilterFn[];
-  };
+  readonly pivotModel?: PivotModel<Spec>;
   readonly pivotGroupExpansion?: { [rowId: string]: boolean | undefined };
+  readonly pivotApplyExistingFilter?: boolean;
 
   readonly rowGroupExpansions?: { [rowId: string]: boolean | undefined };
   readonly rowGroupDefaultExpansion?: boolean | number;
@@ -95,99 +99,60 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
 ): RowSourceClient<Spec> {
   type T = Spec["data"];
   const rowsIsolatedSelection = props.rowsIsolatedSelection ?? false;
+  const leafsTuple = useLeafNodes(props);
 
-  const { expandedFn, expansions, selected, setExpansions, setSelected } = useControlledState(props);
+  // s == state, f == flat, p == pivot
+  const s = useControlledState(props);
+  const d = useFlattenedData(props, leafsTuple, s);
+  const p = usePivotData(props, leafsTuple, s);
 
-  const [leafsTop, leafs, leafsBot, leafIdsRef] = useLeafNodes(
-    props.topData,
-    props.data,
-    props.botData,
-    props.leafIdFn,
+  const f = props.pivotModel?.pivotMode ? p : d;
+
+  const mode = props.pivotModel?.pivotMode === true;
+  const piece = usePiece(mode ? p.flatten : d.flatten);
+
+  const botPiece = usePiece(f.leafsBot.length);
+  const topPiece = usePiece(f.leafsTop.length);
+  const maxDepthPiece = usePiece(f.maxDepth);
+
+  const rowById = useRowById(f.tree, f.leafIdsRef);
+  const rowParents = useRowParents(rowById, f.tree, props.group, props.groupIdFn ?? groupIdFallback);
+  const rowGroupIsExpanded = useRowGroupIsExpanded(
+    f.rowByIdRef,
+    s.expansions,
+    props.rowGroupDefaultExpansion,
   );
-
-  const leafSort = Array.isArray(props.sort) ? props.sort.at(-1) : props.sort;
-
-  const filtered = useFiltered(leafs, props.filter);
-  const sorted = useSorted(leafs, leafSort, filtered);
-
-  const havingFilter = Array.isArray(props.having)
-    ? props.having.length
-      ? props.having
-      : null
-    : props.having;
-  const tree = useGroupTree(
-    leafs,
-    sorted,
-    props.group,
-    props.groupIdFn ?? groupIdFallback,
-    props.rowGroupCollapseBehavior ?? "no-collapse",
-    havingFilter,
-    props.havingGroupAlways ?? false,
-    props.aggregate,
-  );
-
-  const groupSort = Array.isArray(props.sort) ? (props.sort.length ? props.sort : null) : props.sort;
-
-  const [groupFlat, maxDepth] = useFlattenedGroups(
-    tree,
-    props.aggregate,
-    leafs,
-    sorted,
-    groupSort,
-    props.sortGroupAlways ?? true,
-    expandedFn,
-    props.rowGroupSuppressLeafExpansion ?? false,
-  );
-
-  const {
-    flatten: piece,
-    rowByIdRef,
-    rowByIndexRef,
-    rowIdToRowIndexRef,
-  } = useFlattenedPiece({
-    leafsTop,
-    leafsCenter: leafs,
-    leafsBot,
-    groupFlat,
-    centerIndices: sorted,
-  });
-
-  const botPiece = usePiece(leafsBot.length);
-  const topPiece = usePiece(leafsTop.length);
-  const maxDepthPiece = usePiece(maxDepth);
-
-  const rowById = useRowById(tree, leafIdsRef);
-  const rowParents = useRowParents(rowById, tree, props.group, props.groupIdFn ?? groupIdFallback);
-  const rowGroupIsExpanded = useRowGroupIsExpanded(rowByIdRef, expansions, props.rowGroupDefaultExpansion);
   const onRowsUpdated = useOnRowsUpdated(props.onRowDataChange);
 
-  const rowIsSelected = useRowIsSelected(rowById, selected, tree, rowsIsolatedSelection);
+  const rowIsSelected = useRowIsSelected(rowById, s.selected, f.tree, rowsIsolatedSelection);
   const onRowsSelected = useOnRowsSelected(
     rowById,
-    selected,
-    setSelected,
-    tree,
-    sorted,
-    leafs,
-    leafsTop,
-    leafsBot,
+    s.selected,
+    s.setSelected,
+    f.tree,
+    f.sorted,
+    f.leafs,
+    f.leafsTop,
+    f.leafsBot,
     rowsIsolatedSelection,
   );
 
-  const rowsSelected: RowSource["rowsSelected"] = useRowsSelected(rowById, selected, rowsIsolatedSelection);
+  const rowsSelected: RowSource["rowsSelected"] = useRowsSelected(rowById, s.selected, rowsIsolatedSelection);
 
   const globalSignal = useGlobalRefresh();
   const { rowInvalidate, rowByIndex } = useRowByIndex(
-    tree,
+    f.tree,
     piece,
     globalSignal,
-    selected,
+    s.selected,
     rowsIsolatedSelection,
   );
-  const rowsBetween = useRowsBetween(rowIdToRowIndexRef, rowByIndex);
+  const rowsBetween = useRowsBetween(f.rowIdToRowIndexRef, rowByIndex);
 
-  const rowLeafs = useRowLeafs(tree);
-  const rowChildren = useRowChildren(tree);
+  const rowLeafs = useRowLeafs(f.tree);
+  const rowChildren = useRowChildren(f.tree);
+
+  const setExpansions = s.setExpansions;
 
   const source = useMemo<RowSourceClient<Spec>>(() => {
     const rowCount$ = (x: RowNode<T>[]) => x.length;
@@ -195,8 +160,8 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
     const source: RowSourceClient<Spec> = {
       rowInvalidate,
       rowByIndex,
-      rowIndexToRowId: (index) => rowByIndexRef.current.get(index)?.id ?? null,
-      rowIdToRowIndex: (id: string) => rowIdToRowIndexRef.current.get(id) ?? null,
+      rowIndexToRowId: (index) => f.rowByIndexRef.current.get(index)?.id ?? null,
+      rowIdToRowIndex: (id: string) => f.rowIdToRowIndexRef.current.get(id) ?? null,
       rowById,
       rowGroupIsExpanded,
       rowsBetween,
@@ -219,30 +184,31 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
       onRowsSelected,
       onRowsUpdated,
 
-      usePivotColumns: () => null,
+      usePivotColumns: () => p.pivotPiece.useValue() as Column<Spec>[] | null,
     };
 
     return source;
   }, [
+    rowInvalidate,
+    rowByIndex,
+    rowById,
+    rowGroupIsExpanded,
+    rowsBetween,
+    rowChildren,
+    rowLeafs,
+    rowIsSelected,
+    rowsSelected,
+    rowParents,
     botPiece.useValue,
+    topPiece.useValue,
     maxDepthPiece.useValue,
     onRowsSelected,
     onRowsUpdated,
+    p.pivotPiece,
+    f.rowByIndexRef,
+    f.rowIdToRowIndexRef,
     piece,
-    rowById,
-    rowByIndex,
-    rowByIndexRef,
-    rowChildren,
-    rowGroupIsExpanded,
-    rowIdToRowIndexRef,
-    rowInvalidate,
-    rowIsSelected,
-    rowLeafs,
-    rowParents,
-    rowsBetween,
-    rowsSelected,
     setExpansions,
-    topPiece.useValue,
   ]);
 
   return source;

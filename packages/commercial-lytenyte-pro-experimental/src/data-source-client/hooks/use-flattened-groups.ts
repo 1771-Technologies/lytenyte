@@ -13,7 +13,7 @@ type UseFlattenedGroupsReturn<T> = [rows: RowNode<T>[] | null, depth: number];
 
 export function useFlattenedGroups<T>(
   root: RootNode<T> | null,
-  agg: AggregationFn<T> | undefined,
+  agg: AggregationFn<T> | undefined | null,
   leafs: RowLeaf<T>[],
   workingSet: number[],
   sort: SortFn<T> | SortFn<T>[] | null | undefined,
@@ -80,7 +80,7 @@ export function useFlattenedGroups<T>(
 
 const nodeChildrenToRows = <T>(
   root: RootMap<T>,
-  agg: AggregationFn<T> | undefined,
+  agg: AggregationFn<T> | null | undefined,
   leafs: RowLeaf<T>[],
   workingSet: number[],
   sort: SortFn<T> | null | undefined,

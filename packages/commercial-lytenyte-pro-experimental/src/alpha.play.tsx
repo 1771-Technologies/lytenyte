@@ -40,6 +40,24 @@ const columns: Root.Column<Spec>[] = [
 export default function Experimental() {
   const ds = useClientDataSource<Spec>({
     data: bankDataSmall,
+    pivotModel: {
+      pivotMode: true,
+      columns: [{ field: "contact" }, { field: "education" }, { field: "marital" }],
+
+      // rows: [{ field: "education" }],
+      measures: [
+        {
+          id: "Balance (sum)",
+          measure: (rows) => rows.reduce((acc, row) => row.data.balance + acc, 0),
+          reference: { type: "number" },
+        },
+        {
+          id: "Balance (age)",
+          measure: (rows) => rows.reduce((acc, row) => row.data.age + acc, 0),
+          reference: { type: "number" },
+        },
+      ],
+    },
   });
   const pivotColumns = ds.usePivotColumns();
 
@@ -54,7 +72,7 @@ export default function Experimental() {
         >
           <Root
             columns={pivotColumns ?? columns}
-            columnBase={useMemo(() => ({ movable: true, resizable: false }), [])}
+            columnBase={useMemo(() => ({ movable: true, resizable: false, width: 100 }), [])}
             rowSource={ds}
           >
             <Viewport>

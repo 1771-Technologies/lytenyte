@@ -76,7 +76,7 @@ export function useApi(
   api.columnByIndex = useColumnByIndex(view);
   api.columnMove = useColumnMove(view, controlled);
 
-  api.columnField = useColumnField(view, source);
+  api.columnField = useColumnField(view);
 
   api.cellRoot = useCellRoot(
     props,

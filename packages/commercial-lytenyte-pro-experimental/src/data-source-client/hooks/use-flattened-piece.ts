@@ -1,4 +1,3 @@
-import { usePiece } from "@1771technologies/lytenyte-core-experimental/internal";
 import type { RowNode } from "@1771technologies/lytenyte-shared";
 import { useMemo, useRef } from "react";
 
@@ -78,7 +77,5 @@ export function useFlattenedPiece<T>({
     return [flat];
   }, [centerIndices, groupFlat, leafsBot, leafsCenter, leafsTop]);
 
-  const piece = usePiece(flatten);
-
-  return { flatten: piece, rowByIdRef, rowByIndexRef, rowIdToRowIndexRef };
+  return { flatten, rowByIdRef, rowByIndexRef, rowIdToRowIndexRef };
 }
