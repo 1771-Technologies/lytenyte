@@ -12,10 +12,15 @@ import { Header, Root, RowsBottom, RowsCenter, RowsContainer, RowsTop, Viewport 
 import { ViewportShadows } from "@1771technologies/lytenyte-core-experimental";
 import { useClientDataSource } from "./data-source-client/use-client-data-source.js";
 import { useMemo } from "react";
+import type { GridSpec } from "./types";
 
 type BankData = (typeof bankDataSmall)[number];
 
-const columns: Root.Column<{ data: BankData }>[] = [
+interface Spec extends GridSpec {
+  data: BankData;
+}
+
+const columns: Root.Column<Spec>[] = [
   { id: "age", name: "bob", groupPath: ["Alpha", "Beta"], type: "number" },
   { id: "marital", groupPath: ["Alpha"] },
   { id: "default", groupPath: ["Top Dog"] },
@@ -33,9 +38,10 @@ const columns: Root.Column<{ data: BankData }>[] = [
 ];
 
 export default function Experimental() {
-  const rowSource = useClientDataSource({
+  const ds = useClientDataSource<Spec>({
     data: bankDataSmall,
   });
+  const pivotColumns = ds.usePivotColumns();
 
   const { resolvedTheme } = useTheme();
   return (
@@ -47,9 +53,9 @@ export default function Experimental() {
           style={{ height: "90vh", width: "90vw" }}
         >
           <Root
-            columns={columns}
+            columns={pivotColumns ?? columns}
             columnBase={useMemo(() => ({ movable: true, resizable: false }), [])}
-            rowSource={rowSource}
+            rowSource={ds}
           >
             <Viewport>
               <ViewportShadows />

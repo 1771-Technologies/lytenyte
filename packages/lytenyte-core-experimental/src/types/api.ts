@@ -98,4 +98,4 @@ export type API<Spec extends GridSpec = GridSpec> = {
 } & (undefined extends Spec["source"]
   ? Omit<RowSource, RowSourceOmits>
   : Omit<Spec["source"], RowSourceOmits>) &
-  Spec["apiExtension"];
+  Spec["api"];

@@ -5,7 +5,7 @@ import type { GridSpec } from "./grid.js";
 import type { API } from "./api.js";
 
 export type Props<Spec extends GridSpec = GridSpec> = {
-  readonly columns?: Column<Spec>[];
+  readonly columns?: Column<Spec>[] | null;
   readonly columnBase?: Omit<Column<Spec>, "id" | "pin" | "field" | "editSetter">;
   readonly columnMarker?: Omit<Column<Spec>, "field"> & { width?: number };
 
@@ -154,4 +154,4 @@ export type Props<Spec extends GridSpec = GridSpec> = {
           element: HTMLElement;
         };
   }) => void;
-} & (undefined extends Spec["apiExtension"] ? object : { apiExtension: Spec["apiExtension"] });
+} & (undefined extends Spec["api"] ? object : { apiExtension: Spec["api"] });

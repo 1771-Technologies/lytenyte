@@ -1,8 +1,9 @@
-import { get, type ColumnView } from "@1771technologies/lytenyte-shared";
+import { get, type ColumnView, type RowSource } from "@1771technologies/lytenyte-shared";
 import { useEvent } from "../../../../hooks/use-event.js";
 import type { Root } from "../../../root";
+import type { Column } from "../../../../types/column.js";
 
-export function useColumnField(view: ColumnView, api: Root.API): Root.API["columnField"] {
+export function useColumnField(view: ColumnView, source: RowSource): Root.API["columnField"] {
   return useEvent((col, row) => {
     const column = typeof col === "string" ? view.lookup.get(col) : col;
     if (!column) {
@@ -10,14 +11,14 @@ export function useColumnField(view: ColumnView, api: Root.API): Root.API["colum
       return null;
     }
 
-    const field = (column as any).field ?? column.id;
+    const field = (column as Column).field ?? column.id;
     if (row.kind === "branch") {
-      if (typeof field === "function") return field({ column, row, api });
+      if (typeof field === "function") return field({ row, source });
       if (!row.data) return null;
       return row.data[column.id];
     }
 
-    if (typeof field === "function") return field({ column, row, api });
+    if (typeof field === "function") return field({ row, source });
     else if (!row.data) return null;
     else if (typeof field === "object") return get(row.data, (field as { path: string }).path);
 

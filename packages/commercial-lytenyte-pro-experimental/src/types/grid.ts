@@ -9,9 +9,9 @@ export interface GridSpec<
   Ext extends Record<string, any> = object,
 > {
   readonly data?: Data;
-  readonly columnExtension?: ColExt;
+  readonly column?: ColExt;
   readonly source?: S;
-  readonly apiExtension?: Ext;
+  readonly api?: Ext;
 }
 
 export interface DialogFrame<Spec extends GridSpec = GridSpec> {

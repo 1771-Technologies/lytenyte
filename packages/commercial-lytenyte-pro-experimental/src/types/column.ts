@@ -47,8 +47,14 @@ export interface EditParams<Spec extends GridSpec = GridSpec> extends CellParams
   readonly cancel: () => void;
 }
 
+export type Field<Spec extends GridSpec = GridSpec> =
+  | string
+  | number
+  | PathField
+  | ((params: { row: RowNode<Spec["data"]>; source: Spec["source"] }) => unknown);
+
 interface ColumnUnextended<Spec extends GridSpec = GridSpec> extends ColumnAbstract {
-  readonly field?: string | number | PathField | ((params: CellParams<Spec>) => unknown);
+  readonly field?: Field<Spec>;
 
   readonly colSpan?: number | ((params: CellParamsWithIndex<Spec>) => number);
   readonly rowSpan?: number | ((params: CellParamsWithIndex<Spec>) => number);
@@ -67,4 +73,4 @@ interface ColumnUnextended<Spec extends GridSpec = GridSpec> extends ColumnAbstr
   ) => unknown;
 }
 
-export type Column<Spec extends GridSpec = GridSpec> = ColumnUnextended<Spec> & Spec["columnExtension"];
+export type Column<Spec extends GridSpec = GridSpec> = ColumnUnextended<Spec> & Spec["column"];
