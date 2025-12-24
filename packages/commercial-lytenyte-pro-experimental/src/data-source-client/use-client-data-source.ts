@@ -31,14 +31,18 @@ import { useRowChildren } from "./source-functions/use-row-children.js";
 import { useRowByIndex } from "./source-functions/use-row-by-index.js";
 import { useRowsBetween } from "./source-functions/use-rows-between.js";
 import { usePiece } from "@1771technologies/lytenyte-core-experimental/internal";
-import type { Column, PathField } from "../types/column.js";
+import type { Column, Field } from "../types/column.js";
 import type { GridSpec } from "../types/grid.js";
 
 export type HavingFilterFn = (node: RowGroup) => boolean;
 
-export type PivotField<T> = { value: string | number | PathField | ((row: RowLeaf<T>) => string) };
+export type PivotField<Spec extends GridSpec = GridSpec> = { name: string; field: Field<Spec> };
 export type PivotMeasure<T> = { id: string; measure: (row: RowLeaf<T>) => unknown };
 export type PivotLabelFilter = (s: string) => boolean;
+
+export interface RowSourceClient<Spec extends GridSpec = GridSpec> extends RowSource<Spec["data"]> {
+  readonly usePivotColumns: () => null | Column<Spec>[];
+}
 
 export interface UseClientDataSourceParams<Spec extends GridSpec = GridSpec, T = Spec["data"]> {
   readonly data: T[];
@@ -47,13 +51,14 @@ export interface UseClientDataSourceParams<Spec extends GridSpec = GridSpec, T =
 
   readonly pivotModel?: {
     readonly pivotMode: boolean;
-    readonly pivotColumns?: (Column<Spec> | PivotField<T>)[];
-    readonly pivotRows?: (Column<Spec> | PivotField<T>)[];
+    readonly pivotColumns?: (Column<Spec> | PivotField<Spec>)[];
+    readonly pivotRows?: (Column<Spec> | PivotField<Spec>)[];
     readonly pivotMeasures?: PivotMeasure<T>[];
     readonly pivotSort?: SortFn<T> | SortFn<T>[];
     readonly pivotRowLabelFilter?: HavingFilterFn[];
     readonly pivotColLabelFilter?: HavingFilterFn[];
   };
+  readonly pivotGroupExpansion?: { [rowId: string]: boolean | undefined };
 
   readonly rowGroupExpansions?: { [rowId: string]: boolean | undefined };
   readonly rowGroupDefaultExpansion?: boolean | number;
@@ -87,9 +92,8 @@ export interface UseClientDataSourceParams<Spec extends GridSpec = GridSpec, T =
 const groupIdFallback: GroupIdFn = (p) => p.map((x) => (x == null ? "_null_" : x)).join("->");
 export function useClientDataSource<Spec extends GridSpec = GridSpec>(
   props: UseClientDataSourceParams<Spec>,
-) {
+): RowSourceClient<Spec> {
   type T = Spec["data"];
-
   const rowsIsolatedSelection = props.rowsIsolatedSelection ?? false;
 
   const { expandedFn, expansions, selected, setExpansions, setSelected } = useControlledState(props);
@@ -157,8 +161,6 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
   const rowGroupIsExpanded = useRowGroupIsExpanded(rowByIdRef, expansions, props.rowGroupDefaultExpansion);
   const onRowsUpdated = useOnRowsUpdated(props.onRowDataChange);
 
-  const globalSignal = useGlobalRefresh();
-
   const rowIsSelected = useRowIsSelected(rowById, selected, tree, rowsIsolatedSelection);
   const onRowsSelected = useOnRowsSelected(
     rowById,
@@ -174,6 +176,7 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
 
   const rowsSelected: RowSource["rowsSelected"] = useRowsSelected(rowById, selected, rowsIsolatedSelection);
 
+  const globalSignal = useGlobalRefresh();
   const { rowInvalidate, rowByIndex } = useRowByIndex(
     tree,
     piece,
@@ -186,10 +189,10 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
   const rowLeafs = useRowLeafs(tree);
   const rowChildren = useRowChildren(tree);
 
-  const source = useMemo<RowSource>(() => {
+  const source = useMemo<RowSourceClient<Spec>>(() => {
     const rowCount$ = (x: RowNode<T>[]) => x.length;
 
-    const source: RowSource = {
+    const source: RowSourceClient<Spec> = {
       rowInvalidate,
       rowByIndex,
       rowIndexToRowId: (index) => rowByIndexRef.current.get(index)?.id ?? null,
@@ -215,6 +218,8 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
       },
       onRowsSelected,
       onRowsUpdated,
+
+      usePivotColumns: () => null,
     };
 
     return source;
