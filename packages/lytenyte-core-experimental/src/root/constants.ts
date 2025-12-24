@@ -25,7 +25,7 @@ export const DEFAULT_ROW_SOURCE: RowSource = {
   rowsBetween: () => [],
   rowsSelected: () => [],
 
-  onRowGroupExpansionsChange: () => {},
+  onRowGroupExpansionChange: () => {},
   onRowsUpdated: () => {},
   onRowsSelected: () => {},
 };

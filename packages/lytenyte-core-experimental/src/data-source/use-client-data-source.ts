@@ -163,7 +163,7 @@ export function useClientDataSource<T>(props: UseClientDataSourceParams<T>) {
       useMaxRowGroupDepth: maxDepthPiece.useValue,
       useSnapshotVersion: () => 0,
 
-      onRowGroupExpansionsChange: (deltaChanges) => {
+      onRowGroupExpansionChange: (deltaChanges) => {
         setExpansions((prev) => ({ ...prev, ...deltaChanges }));
       },
       onRowsSelected,

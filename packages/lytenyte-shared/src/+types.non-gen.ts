@@ -91,7 +91,7 @@ export interface RowSource<T = any> {
   readonly rowsSelected: () => RowNode<T>[];
 
   // Methods the LyteNyte will call
-  readonly onRowGroupExpansionsChange: (deltaChanges: Record<string, boolean>) => void;
+  readonly onRowGroupExpansionChange: (deltaChanges: Record<string, boolean>) => void;
   readonly onRowsUpdated: (rows: Map<RowNode<T>, T>) => void;
   readonly onRowsSelected: (params: {
     readonly selected: string[] | "all";

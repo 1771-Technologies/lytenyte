@@ -10,7 +10,7 @@ export function useRowGroupToggle(props: Root.Props, source: RowSource): Root.AP
 
     const next = state ?? !source.rowGroupIsExpanded(row.id);
     const change = { [row.id]: next };
-    source.onRowGroupExpansionsChange(change);
+    source.onRowGroupExpansionChange(change);
     props.onRowGroupExpansionChange?.(change);
   });
 }

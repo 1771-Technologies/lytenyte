@@ -30,7 +30,7 @@ export function usePivotData<Spec extends GridSpec>(
   const measures = model?.measures;
   const rows = model?.rows;
 
-  const { pivotColumns, setPivotState, setPivotGroupState } = usePivotColumns(
+  const { pivotColumns, setPivotState, setPivotGroupState, pivotGroupState } = usePivotColumns(
     pivotMode,
     model,
     leafs,
@@ -65,7 +65,7 @@ export function usePivotData<Spec extends GridSpec>(
     filtered,
     groupSort,
     props.pivotSortGroupAlways ?? props.sortGroupAlways ?? true,
-    c.expandedFn,
+    c.pivotExpandedFn,
     true,
   );
 
@@ -78,6 +78,7 @@ export function usePivotData<Spec extends GridSpec>(
   });
 
   const pivotPiece = usePiece(pivotColumns);
+  const pivotGroupPiece = usePiece(pivotGroupState);
 
   const trueMaxDepth = useMemo(() => {
     if (!model?.rows?.length) return 0;
@@ -103,6 +104,7 @@ export function usePivotData<Spec extends GridSpec>(
     leafsBot: empty,
     sorted: filtered,
     pivotPiece,
+    pivotGroupPiece,
     setPivotState,
     setPivotGroupState,
   };

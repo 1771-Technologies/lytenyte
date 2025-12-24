@@ -13,6 +13,7 @@ export interface PivotState {
     readonly pinning: Record<string, ColumnPin>;
   };
   columnGroupState: Record<string, boolean>;
+  rowGroupExpansions: Record<string, boolean | undefined>;
 }
 
 export function usePivotColumns<Spec extends GridSpec = GridSpec>(
@@ -33,7 +34,10 @@ export function usePivotColumns<Spec extends GridSpec = GridSpec>(
     value: stateRef?.current.columnGroupState ?? {},
   });
 
-  if (stateRef) stateRef.current = { columnState: pivotState.value, columnGroupState: pivotGroupState.value };
+  if (stateRef) {
+    stateRef.current.columnGroupState = pivotGroupState.value;
+    stateRef.current.columnState = pivotState.value;
+  }
 
   const pivotStateRef = useRef(pivotState);
   pivotStateRef.current = pivotState;
@@ -56,11 +60,10 @@ export function usePivotColumns<Spec extends GridSpec = GridSpec>(
       pivotStateRef.current.value = { ordering: [], pinning: {}, resizing: {} };
       pivotGroupStateRef.current.value = {};
 
-      if (stateRef)
-        stateRef.current = {
-          columnState: pivotStateRef.current.value,
-          columnGroupState: pivotGroupStateRef.current.value,
-        };
+      if (stateRef) {
+        stateRef.current.columnGroupState = pivotGroupStateRef.current.value;
+        stateRef.current.columnState = pivotStateRef.current.value;
+      }
 
       prevColumnsRef.current = columns;
       prevMeasuresRef.current = measures;
@@ -191,5 +194,5 @@ export function usePivotColumns<Spec extends GridSpec = GridSpec>(
     return processor(pivotColumnsWithState) as Column<Spec>[];
   }, [pivotColumnsWithState, processor]);
 
-  return { pivotColumns: processedColumns, setPivotState, setPivotGroupState };
+  return { pivotColumns: processedColumns, setPivotState, setPivotGroupState, pivotGroupState };
 }
