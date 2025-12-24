@@ -32,7 +32,7 @@ export function useYPositions(
     };
 
     const positions =
-      height <= 0
+      height <= 0 && typeof rowHeight === "string"
         ? EMPTY_POSITION_ARRAY
         : computeRowPositions(rowCount, rowHeight, rowHeightGuess, rowCache, detailHeightCalc, height);
 

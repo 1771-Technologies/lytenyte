@@ -80,6 +80,7 @@ export interface UseClientDataSourceParams<Spec extends GridSpec = GridSpec, T =
   readonly pivotModel?: PivotModel<Spec>;
   readonly pivotSortGroupAlways?: boolean;
   readonly pivotHavingGroupingAlways?: boolean;
+  readonly pivotGrandTotals?: "top" | "bottom" | null;
   readonly pivotColumnProcessor?: (columns: Column<Spec>[]) => Column<Spec>[];
   readonly pivotStateRef?: RefObject<PivotState>;
 
@@ -221,7 +222,7 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
           const object: any = {};
 
           if (pivotColumns) object.columns = pivotColumns;
-          if (pivotColumns) object.columnGroupExpansions = pivotGroups;
+          if (pivotColumns) object.columnGroupExpansions = pivotGroups.value;
 
           const onRowGroup: PropsWithoutExtension<Spec>["onRowGroupExpansionChange"] = (rows) => {
             if (!mode$.get()) return onRowGroupExpansionChange?.(rows);
@@ -247,13 +248,15 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
               },
             });
           };
-          const onGroup: Required<PropsWithoutExtension<Spec>>["onColumnGroupExpansionChange"] = (change) => {
+          const onColumnGroup: Required<PropsWithoutExtension<Spec>>["onColumnGroupExpansionChange"] = (
+            change,
+          ) => {
             if (!mode$.get()) return onColumnGroupExpansionChange?.(change);
             setPivotGroupState({ value: change });
           };
 
           object.onColumnsChange = onColChange;
-          object.onColumnGroupExpansionChange = onGroup;
+          object.onColumnGroupExpansionChange = onColumnGroup;
           object.onRowGroupExpansionChange = onRowGroup;
 
           return object;

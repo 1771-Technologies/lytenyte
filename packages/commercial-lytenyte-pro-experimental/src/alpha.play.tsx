@@ -44,6 +44,7 @@ export default function Experimental() {
     data: bankDataSmall,
     rowGroupDefaultExpansion: true,
     pivotMode: true,
+    pivotGrandTotals: "bottom",
     pivotModel: {
       columns: [{ id: "contact" }, { id: "education" }],
       rows: [{ id: "marital" }],
@@ -69,6 +70,17 @@ export default function Experimental() {
           <Root
             columns={columns}
             columnBase={useMemo(() => ({ movable: true, resizable: true, width: 100 }), [])}
+            columnGroupRenderer={(props) => {
+              const label = props.groupPath.at(-1)!;
+              return (
+                <div>
+                  {label}
+                  {props.collapsible && (
+                    <button onClick={() => props.api.columnToggleGroup(props.groupPath)}>{">"}</button>
+                  )}
+                </div>
+              );
+            }}
             rowSource={ds}
             {...pivotProps}
           >
