@@ -1,13 +1,27 @@
 import type { LeafIdFn, RowLeaf } from "@1771technologies/lytenyte-shared";
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, type RefObject } from "react";
+import type { UseClientDataSourceParams } from "../use-client-data-source";
+import type { GridSpec } from "../../types";
 
 const leafIdFallback: LeafIdFn<any> = (_, i, s) => (s !== "center" ? `leaf-${i}-${s}` : `leaf-${i}`);
-export function useLeafNodes<T>(
-  top: T[] | undefined,
-  center: T[],
-  bot: T[] | undefined,
-  leafIdFn: LeafIdFn<T> | undefined,
-) {
+
+export type LeafRowTuple<T> = [
+  top: RowLeaf<T>[],
+  center: RowLeaf<T>[],
+  bot: RowLeaf<T>[],
+  idRef: RefObject<Map<string, RowLeaf<T>>>,
+];
+
+export function useLeafNodes<Spec extends GridSpec>({
+  topData: top,
+  botData: bot,
+  data: center,
+  leafIdFn,
+}: Pick<UseClientDataSourceParams<Spec>, "data" | "topData" | "botData" | "leafIdFn">): LeafRowTuple<
+  Spec["data"]
+> {
+  type T = Spec["data"];
+
   const nodeCache = useRef(new Map<T, RowLeaf<T>>());
 
   const [leafsCenter, centerMap] = useMemo(() => {

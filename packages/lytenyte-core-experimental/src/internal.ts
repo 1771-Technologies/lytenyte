@@ -1,3 +1,4 @@
+export { computeField } from "./root/hooks/use-api/auxiliary-functions/compute-field.js";
 export { useEvent } from "./hooks/use-event.js";
 export { useControlled } from "./hooks/use-controlled.js";
 export type { Piece, PieceWritable } from "./hooks/use-piece.js";
