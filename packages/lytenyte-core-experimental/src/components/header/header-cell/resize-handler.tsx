@@ -32,8 +32,7 @@ export function ResizeHandler({ cell, style, className }: ResizeHandlerProps) {
       className={className}
       style={{
         height: "100%",
-        width: "6px",
-        background: "blue",
+        width: 6,
         ...style,
         top: "0px",
         insetInlineEnd: cell.colPin !== "end" ? "0px" : undefined,

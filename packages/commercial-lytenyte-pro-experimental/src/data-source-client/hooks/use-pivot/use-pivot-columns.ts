@@ -122,6 +122,7 @@ export function usePivotColumns<Spec extends GridSpec = GridSpec>(
           id: path,
           name,
           groupPath: group,
+          groupVisibility: path.includes("ln__total") || path.includes("ln__grand_total") ? "always" : "open",
           field: ({ row }) => {
             // If the value is a group then we can simply grab the aggregated value.
             if (row.kind === "branch") return row.data[path];
