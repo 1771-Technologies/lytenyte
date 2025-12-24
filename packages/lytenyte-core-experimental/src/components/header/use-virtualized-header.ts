@@ -19,7 +19,7 @@ export function useVirtualizedHeader(
         if (headerFocusIndex != null && col.colStart <= headerFocusIndex && headerFocusIndex < col.colEnd)
           return true;
 
-        return col.colPin || (col.colStart >= colStartBound && col.colStart < colEndBound);
+        return col.colPin || rangesOverlap(col.colStart, col.colEnd, colStartBound, colEndBound);
       });
     });
 
@@ -42,4 +42,8 @@ export function useVirtualizedHeader(
   }, [colEndBound, colStartBound, dragged, headerFocusIndex, layout]);
 
   return virtualizedHeaderCells;
+}
+
+function rangesOverlap(aStart: number, aEnd: number, bStart: number, bEnd: number) {
+  return aStart <= bEnd && bStart <= aEnd;
 }
