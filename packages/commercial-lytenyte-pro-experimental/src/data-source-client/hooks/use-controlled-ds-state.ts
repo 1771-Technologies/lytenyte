@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import type { UseClientDataSourceParams } from "../use-client-data-source.js";
 import { useControlled, useEvent } from "@1771technologies/lytenyte-core-experimental/internal";
 
@@ -9,6 +9,7 @@ export function useControlledState({
   rowsSelected: selectedRows,
   rowGroupDefaultExpansion = false,
   onRowSelectionChange: handleSelectChange,
+  pivotStateRef,
 }: UseClientDataSourceParams<any>) {
   const [expansions, setExpansions] = useControlled({
     controlled: rowGroupExpansions,
@@ -25,6 +26,10 @@ export function useControlledState({
     setSelectedUncontrolled(s);
   });
 
+  const [pivotRowGroupExpansions, setPivotRowGroupExpansions] = useState<Record<string, boolean | undefined>>(
+    pivotStateRef?.current.rowGroupExpansions ?? {},
+  );
+
   const expandedFn = useCallback(
     (id: string, depth: number) => {
       const s = expansions[id];
@@ -36,6 +41,25 @@ export function useControlledState({
     },
     [expansions, rowGroupDefaultExpansion],
   );
+  const pivotExpandedFn = useCallback(
+    (id: string, depth: number) => {
+      const s = pivotRowGroupExpansions[id];
+      if (s != null) return s;
 
-  return { selected, expansions, setExpansions, setSelected, expandedFn };
+      if (typeof rowGroupDefaultExpansion === "boolean") return rowGroupDefaultExpansion;
+
+      return rowGroupDefaultExpansion <= depth;
+    },
+    [pivotRowGroupExpansions, rowGroupDefaultExpansion],
+  );
+
+  return {
+    selected,
+    expansions,
+    setExpansions,
+    setSelected,
+    expandedFn,
+    pivotExpandedFn,
+    setPivotRowGroupExpansions,
+  };
 }
