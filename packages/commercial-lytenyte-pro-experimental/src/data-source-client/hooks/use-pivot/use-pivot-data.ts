@@ -69,10 +69,23 @@ export function usePivotData<Spec extends GridSpec>(
     true,
   );
 
+  const grandTotalRow = props.pivotGrandTotals;
+  const grandTotal = useMemo(() => {
+    if (!grandTotalRow || !aggFn) return empty;
+
+    const rows = filtered.map((x) => leafs[x]);
+    const agg = aggFn(rows);
+
+    return [{ id: "ln-pivot-grand-total", data: agg, kind: "leaf" } satisfies RowLeaf<any>];
+  }, [aggFn, filtered, grandTotalRow, leafs]);
+
+  const top = grandTotalRow === "top" ? grandTotal : empty;
+  const bot = grandTotalRow === "bottom" ? grandTotal : empty;
+
   const { flatten, rowByIdRef, rowByIndexRef, rowIdToRowIndexRef } = useFlattenedPiece({
-    leafsTop: empty,
+    leafsTop: top,
     leafsCenter: leafs,
-    leafsBot: empty,
+    leafsBot: bot,
     groupFlat,
     centerIndices: filtered,
   });
@@ -99,9 +112,9 @@ export function usePivotData<Spec extends GridSpec>(
     rowByIndexRef,
     rowIdToRowIndexRef,
     leafIdsRef,
-    leafsTop: empty,
+    leafsTop: top,
     leafs,
-    leafsBot: empty,
+    leafsBot: bot,
     sorted: filtered,
     pivotPiece,
     pivotGroupPiece,

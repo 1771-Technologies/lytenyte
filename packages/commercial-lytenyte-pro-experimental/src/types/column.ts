@@ -17,6 +17,7 @@ export interface HeaderParams<Spec extends GridSpec = GridSpec> {
 }
 
 export interface HeaderGroupParams<Spec extends GridSpec = GridSpec> {
+  readonly collapsible: boolean;
   readonly groupPath: string[];
   readonly columns: Column<Spec>[];
   readonly api: API<Spec>;
