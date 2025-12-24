@@ -21,7 +21,7 @@ export function usePivotData<Spec extends GridSpec>(
   c: Controlled,
 ) {
   const model = props.pivotModel;
-  const pivotMode = model?.pivotMode ?? false;
+  const pivotMode = props.pivotMode ?? false;
 
   const filter = props.pivotApplyExistingFilter ? props.filter : null;
   const filtered = useFilteredData(pivotMode, filter, leafs);
@@ -30,7 +30,14 @@ export function usePivotData<Spec extends GridSpec>(
   const measures = model?.measures;
   const rows = model?.rows;
 
-  const pivotColumns = usePivotColumns(pivotMode, model, leafs, filtered, props.pivotColumnProcessor);
+  const { pivotColumns, setPivotState, setPivotGroupState } = usePivotColumns(
+    pivotMode,
+    model,
+    leafs,
+    filtered,
+    props.pivotColumnProcessor,
+    props.pivotStateRef,
+  );
   const aggFn = usePivotAggFunction(pivotColumns, model);
 
   const havingFilter = Array.isArray(model?.filter)
@@ -96,5 +103,7 @@ export function usePivotData<Spec extends GridSpec>(
     leafsBot: empty,
     sorted: filtered,
     pivotPiece,
+    setPivotState,
+    setPivotGroupState,
   };
 }

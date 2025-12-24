@@ -1,15 +1,18 @@
-import { useMemo } from "react";
+import { useMemo, useRef, useState, type RefObject } from "react";
 import type { PivotModel } from "../../use-client-data-source";
 import type { Column, GridSpec } from "@1771technologies/lytenyte-core-experimental/types";
-import { pivotPathsWithTotals } from "./auxiliary-functions/pivot-paths-with-totals.js";
 import { computeField } from "@1771technologies/lytenyte-core-experimental/internal";
-import type { ColumnPin, RowLeaf } from "@1771technologies/lytenyte-shared";
-import { evaluateLabelFilter } from "./auxiliary-functions/evaluate-label-filter.js";
+import { equal, type ColumnPin, type RowLeaf, itemsWithIdToMap } from "@1771technologies/lytenyte-shared";
+import { pivotPaths } from "./auxiliary-functions/pivot-paths.js";
+import { applyReferenceColumn } from "./auxiliary-functions/apply-reference-column.js";
 
 export interface PivotState {
-  readonly ordering: string[];
-  readonly resizing: Record<string, number>;
-  readonly pinning: Record<string, ColumnPin>;
+  columnState: {
+    readonly ordering: string[];
+    readonly resizing: Record<string, number>;
+    readonly pinning: Record<string, ColumnPin>;
+  };
+  columnGroupState: Record<string, boolean>;
 }
 
 export function usePivotColumns<Spec extends GridSpec = GridSpec>(
@@ -18,60 +21,71 @@ export function usePivotColumns<Spec extends GridSpec = GridSpec>(
   leafs: RowLeaf<Spec["data"]>[],
   filtered: number[],
   processor: null | undefined | ((columns: Column<any>[]) => Column<any>[]),
+  stateRef?: RefObject<PivotState>,
 ) {
   const measures = model?.measures;
   const columns = model?.columns;
-  const columnLabelFilter = model?.colLabelFilter;
 
-  // const [pivotState, setPivotState] = useState<PivotState>({ ordering: [], resizing: {}, pinning: {} });
+  const [pivotState, setPivotState] = useState<{ value: PivotState["columnState"] }>({
+    value: stateRef?.current.columnState ?? { ordering: [], pinning: {}, resizing: {} },
+  });
+  const [pivotGroupState, setPivotGroupState] = useState<{ value: PivotState["columnGroupState"] }>({
+    value: stateRef?.current.columnGroupState ?? {},
+  });
+
+  if (stateRef) stateRef.current = { columnState: pivotState.value, columnGroupState: pivotGroupState.value };
+
+  const pivotStateRef = useRef(pivotState);
+  pivotStateRef.current = pivotState;
+
+  const pivotGroupStateRef = useRef(pivotGroupState);
+  pivotGroupStateRef.current = pivotGroupState;
+
+  const prevMeasuresRef = useRef(measures);
+  const prevColumnsRef = useRef(columns);
 
   const pivotColumns = useMemo<Column<Spec>[] | null>(() => {
     if (!pivotMode) return null;
+
+    // At this point we should check if we need to replace the pivot state
+    const prevMeasures = prevMeasuresRef.current;
+    const prevColumns = prevColumnsRef.current;
+
+    // If the measures or columns have changed, then the pivot state should be reset.
+    if (!equal(prevMeasures, measures) || !equal(prevColumns, columns)) {
+      pivotStateRef.current.value = { ordering: [], pinning: {}, resizing: {} };
+      pivotGroupStateRef.current.value = {};
+
+      if (stateRef)
+        stateRef.current = {
+          columnState: pivotStateRef.current.value,
+          columnGroupState: pivotGroupStateRef.current.value,
+        };
+
+      prevColumnsRef.current = columns;
+      prevMeasuresRef.current = measures;
+    }
+
     if (!measures?.length && !columns?.length) return [];
 
     // There are only measures, hence each measure should become a column.
     if (!columns?.length) {
       return measures!.map<Column<Spec>>((x) => {
-        const column: Column<Spec> = {
-          ...((x.reference as Column<Spec>) ?? {}),
-          id: x.id,
-          field: x.id,
-        };
+        const column: Column<Spec> = applyReferenceColumn(
+          {
+            id: x.id,
+            field: x.id,
+          },
+          x.reference as any,
+        );
         return column;
       });
     }
 
-    // There are only columns.
-    const pathSet = new Set<string>();
-    for (let i = 0; i < filtered.length; i++) {
-      const row = leafs[filtered[i]];
-      let current: string[] = [];
-      for (const c of columns) {
-        const field = c.field ?? (c as any).id;
-        const value = field ? computeField(field, row) : null;
-
-        const pivotKey = value == null ? null : String(value);
-        current.push(pivotKey as string);
-      }
-
-      current = current.map((x) => (x == null ? "ln__blank__" : x));
-      if (!evaluateLabelFilter(columnLabelFilter, current)) continue;
-
-      if (measures?.length) {
-        for (const measure of measures) {
-          pathSet.add([...current, measure.id].join("-->"));
-        }
-      } else {
-        current.push("ln__noop");
-        pathSet.add(current.join("-->"));
-      }
-    }
-    const paths = [...pathSet];
-
-    const pathsWithTotals = pivotPathsWithTotals(paths);
+    const paths = pivotPaths(filtered, leafs, columns, measures);
 
     const lookup = Object.fromEntries((measures ?? []).map((x) => [x.id, x]));
-    const cols = pathsWithTotals.map((path) => {
+    const cols = paths.map((path) => {
       const partsRaw = path.split("-->");
       const parts = partsRaw.map((x) => (x === "ln__blank__" ? "(blank)" : x));
 
@@ -100,58 +114,82 @@ export function usePivotColumns<Spec extends GridSpec = GridSpec>(
       )?.map((x) => (x === "ln__total" ? "Total" : x));
 
       partsRaw.pop();
-      const column: Column<Spec> = {
-        id: path,
-        name,
-        groupPath: group,
-        field: ({ row }) => {
-          // If the value is a group then we can simply grab the aggregated value.
-          if (row.kind === "branch") return row.data[path];
+      const column: Column<Spec> = applyReferenceColumn(
+        {
+          id: path,
+          name,
+          groupPath: group,
+          field: ({ row }) => {
+            // If the value is a group then we can simply grab the aggregated value.
+            if (row.kind === "branch") return row.data[path];
 
-          // Pivots do not have leafs displayed. So here we do something interesting. We return true if the
-          // row should be kept for this pivot, otherwise false. This is effectively a leaf row filter for pivots.
-          // We can then aggregate these.
-          for (let i = 0; i < columns.length; i++) {
-            const c = columns[i];
-            const field = c.field ?? (c as any).id;
-            const value = field ? computeField(field, row) : false;
-            const match = partsRaw[i];
+            // Pivots do not have leafs displayed. So here we do something interesting. We return true if the
+            // row should be kept for this pivot, otherwise false. This is effectively a leaf row filter for pivots.
+            // We can then aggregate these.
+            for (let i = 0; i < columns.length; i++) {
+              const c = columns[i];
+              const field = c.field ?? (c as any).id;
+              const value = field ? computeField(field, row) : false;
+              const match = partsRaw[i];
 
-            // This is a total columns. Totals will always be one shorter than than the path
-            if (i >= partsRaw.length) return true;
+              // This is a total columns. Totals will always be one shorter than than the path
+              if (i >= partsRaw.length) return true;
 
-            const isMatch =
-              match.startsWith("ln") || String(value) === match || (value == null && match === "ln__blank__");
-            if (!isMatch) return false;
-          }
+              const isMatch =
+                match.startsWith("ln") ||
+                String(value) === match ||
+                (value == null && match === "ln__blank__");
+              if (!isMatch) return false;
+            }
 
-          return true;
+            return true;
+          },
         },
-        headerRenderer: measureRef.headerRenderer,
-        cellRenderer: measureRef.cellRenderer,
-        autosizeCellFn: measureRef.autosizeCellFn,
-        autosizeHeaderFn: measureRef.autosizeHeaderFn,
-        floatingCellRenderer: measureRef.floatingCellRenderer,
-        movable: measureRef.movable,
-        resizable: measureRef.resizable,
-        type: measureRef.type,
-        width: measureRef.width,
-        widthMin: measureRef.widthMin,
-        widthMax: measureRef.widthMax,
-        widthFlex: measureRef.widthFlex,
-      };
+        measureRef,
+      );
 
       return column;
     });
 
     return cols;
-  }, [columnLabelFilter, columns, filtered, leafs, measures, pivotMode]);
+  }, [pivotMode, measures, columns, filtered, leafs, stateRef]);
+
+  const pivotColumnsWithState = useMemo(() => {
+    if (!pivotColumns) return null;
+
+    const state = pivotState.value;
+    const byId = itemsWithIdToMap(pivotColumns);
+    const ordering = state.ordering.filter((x) => byId.has(x));
+
+    const withBlanks = pivotColumns.map((x) => (ordering.includes(x.id) ? null : x));
+    let orderPos = 0;
+    for (let i = 0; i < withBlanks.length; i++) {
+      if (withBlanks[i]) continue;
+
+      const id = state.ordering[orderPos];
+      const column = byId.get(id)!;
+      withBlanks[i] = column;
+      orderPos++;
+    }
+    Object.entries(state.resizing).forEach(([id, value]) => {
+      const column = byId.get(id);
+      if (!column) return;
+      Object.assign(column, { width: value });
+    });
+    Object.entries(state.pinning).forEach(([id, value]) => {
+      const column = byId.get(id);
+      if (!column) return;
+      Object.assign(column, { pin: value });
+    });
+
+    return withBlanks as Column<Spec>[];
+  }, [pivotColumns, pivotState.value]);
 
   const processedColumns = useMemo(() => {
-    if (!processor || !pivotColumns) return pivotColumns;
+    if (!processor || !pivotColumnsWithState) return pivotColumnsWithState;
 
-    return processor(pivotColumns);
-  }, [pivotColumns, processor]);
+    return processor(pivotColumnsWithState) as Column<Spec>[];
+  }, [pivotColumnsWithState, processor]);
 
-  return processedColumns;
+  return { pivotColumns: processedColumns, setPivotState, setPivotGroupState };
 }

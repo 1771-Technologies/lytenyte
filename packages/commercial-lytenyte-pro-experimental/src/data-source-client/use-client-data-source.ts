@@ -1,6 +1,7 @@
-import { useMemo } from "react";
+import { useMemo, type RefObject } from "react";
 import type {
   AggregationFn,
+  ColumnPin,
   FilterFn,
   GroupFn,
   GroupIdFn,
@@ -31,6 +32,7 @@ import type { GridSpec } from "../types/grid.js";
 import { useFlattenedData } from "./hooks/use-flattened-data.js";
 import { usePivotData } from "./hooks/use-pivot/use-pivot-data.js";
 import type { Props, PropsWithoutExtension } from "@1771technologies/lytenyte-core-experimental/types";
+import type { PivotState } from "./hooks/use-pivot/use-pivot-columns.js";
 
 export type HavingFilterFn = (node: RowGroup) => boolean;
 
@@ -48,14 +50,15 @@ export interface RowSourceClient<Spec extends GridSpec = GridSpec> extends RowSo
   }) => {
     readonly columns?: Column<Spec>[];
     readonly onColumnsChange: Props<Spec>["onColumnsChange"];
+
+    readonly columnGroupExpansions: Props<Spec>["columnGroupExpansions"];
     readonly onColumnGroupExpansionChange: Props<Spec>["onColumnGroupExpansionChange"];
   };
 }
 
 export type LabelFilter = (s: string | null) => boolean;
 
-export interface PivotModel<Spec extends GridSpec> {
-  readonly pivotMode: boolean;
+export interface PivotModel<Spec extends GridSpec = GridSpec> {
   readonly columns?: (Column<Spec> | PivotField<Spec>)[];
   readonly rows?: (Column<Spec> | PivotField<Spec>)[];
   readonly measures?: PivotMeasure<Spec>[];
@@ -70,12 +73,12 @@ export interface UseClientDataSourceParams<Spec extends GridSpec = GridSpec, T =
   readonly topData?: T[];
   readonly botData?: T[];
 
+  readonly pivotMode?: boolean;
   readonly pivotModel?: PivotModel<Spec>;
-  readonly pivotRowGroupExpansion?: { [rowId: string]: boolean | undefined };
-  readonly pivotRowGroupDefaultExpansion?: boolean | number;
   readonly pivotSortGroupAlways?: boolean;
   readonly pivotHavingGroupingAlways?: boolean;
   readonly pivotColumnProcessor?: (columns: Column<Spec>[]) => Column<Spec>[];
+  readonly pivotStateRef?: RefObject<PivotState>;
 
   readonly pivotApplyExistingFilter?: boolean;
 
@@ -122,9 +125,9 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
   const d = useFlattenedData(props, leafsTuple, s);
   const p = usePivotData(props, leafsTuple, s);
 
-  const f = props.pivotModel?.pivotMode ? p : d;
+  const f = props.pivotMode ? p : d;
 
-  const mode = props.pivotModel?.pivotMode === true;
+  const mode = props?.pivotMode === true;
   const piece = usePiece(mode ? p.flatten : d.flatten);
 
   const botPiece = usePiece(f.leafsBot.length);
@@ -169,6 +172,8 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
   const rowChildren = useRowChildren(f.tree);
 
   const setExpansions = s.setExpansions;
+  const setPivotState = p.setPivotState;
+  const setPivotGroupState = p.setPivotGroupState;
 
   const mode$ = usePiece(mode);
 
@@ -212,13 +217,27 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
           if (pivotColumns) object.columns = pivotColumns;
 
           const onColChange: Required<PropsWithoutExtension<Spec>>["onColumnsChange"] = (columns) => {
-            if (!mode$.get()) onColumnsChange?.(columns);
-            console.log(columns);
-            // Call pivot change here maybe?
+            if (!mode$.get()) return onColumnsChange?.(columns);
+
+            const ordering = columns.map((x) => x.id);
+            const resizingEntries = columns
+              .map((x) => (x.width == null ? null : [x.id, x.width]))
+              .filter(Boolean) as [string, number][];
+            const pinnedEntries = columns
+              .map((x) => (x.pin === undefined ? null : [x.id, x.pin]))
+              .filter(Boolean) as [string, ColumnPin][];
+
+            setPivotState({
+              value: {
+                ordering,
+                resizing: Object.fromEntries(resizingEntries),
+                pinning: Object.fromEntries(pinnedEntries),
+              },
+            });
           };
           const onGroup: Required<PropsWithoutExtension<Spec>>["onColumnGroupExpansionChange"] = (change) => {
-            if (!mode$.get()) onColumnGroupExpansionChange?.(change);
-            // Call pivot change here
+            if (!mode$.get()) return onColumnGroupExpansionChange?.(change);
+            setPivotGroupState({ value: change });
           };
 
           object.onColumnsChange = onColChange;
@@ -252,6 +271,8 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
     setExpansions,
     p.pivotPiece,
     mode$,
+    setPivotState,
+    setPivotGroupState,
   ]);
 
   return source;

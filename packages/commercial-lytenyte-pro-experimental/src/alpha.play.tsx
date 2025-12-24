@@ -13,6 +13,7 @@ import { ViewportShadows } from "@1771technologies/lytenyte-core-experimental";
 import { useClientDataSource } from "./data-source-client/use-client-data-source.js";
 import { useMemo } from "react";
 import type { GridSpec } from "./types";
+import type { RowLeaf } from "@1771technologies/lytenyte-shared";
 
 type BankData = (typeof bankDataSmall)[number];
 
@@ -37,18 +38,19 @@ const columns: Root.Column<Spec>[] = [
   { id: "y" },
 ];
 
+const sumAge = (rows: RowLeaf<BankData>[]) => rows.reduce((acc, x) => x.data.balance + acc, 0);
 export default function Experimental() {
   const ds = useClientDataSource<Spec>({
     data: bankDataSmall,
     rowGroupDefaultExpansion: true,
+    pivotMode: true,
     pivotModel: {
-      pivotMode: true,
       columns: [{ id: "contact" }],
       rows: [{ id: "marital" }],
       measures: [
         {
           id: "Balance",
-          measure: (rows) => rows.reduce((acc, x) => x.data.balance + acc, 0),
+          measure: sumAge,
           reference: { type: "number" },
         },
       ],
