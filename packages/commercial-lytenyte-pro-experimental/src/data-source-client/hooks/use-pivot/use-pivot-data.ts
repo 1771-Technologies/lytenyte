@@ -75,21 +75,24 @@ export function usePivotData<Spec extends GridSpec>(
     const pathsWithTotals = pivotPathsWithTotals(paths);
 
     const lookup = Object.fromEntries((measures ?? []).map((x) => [x.id, x]));
-
     const cols = pathsWithTotals.map((path) => {
-      const parts = path.split("-->").map((x) => (x === "ln__blank__" ? "(blank)" : x));
+      const partsRaw = path.split("-->");
+      const parts = partsRaw.map((x) => (x === "ln__blank__" ? "(blank)" : x));
+
       if (parts.length === 1) {
         return { id: path };
       }
 
       const measureId = parts.at(-1)!;
-      // const measure = lookup[measureId];
+      const measureRef = (lookup[measureId]?.reference ?? {}) as Omit<Column<Spec>, "id">;
 
       // Pop the last part as this is the aggregation value
       parts.pop();
 
       let name = measureId === "ln__noop" || measures?.length === 1 ? parts.at(-1)! : measureId;
       if (name === "ln__grand_total") name = "Grand Total";
+      if (parts[0] === "ln__grand_total" && measures && measures.length! > 1)
+        name = "Grand Total " + measureId;
       if (name === "ln__total") name = "Total";
 
       const group = (
@@ -99,10 +102,36 @@ export function usePivotData<Spec extends GridSpec>(
             ? parts.slice(0, -1)
             : parts
       )?.map((x) => (x === "ln__total" ? "Total" : x));
+
+      partsRaw.pop();
       const column: Column<Spec> = {
+        ...measureRef,
         id: path,
         name,
         groupPath: group,
+        field: ({ row }) => {
+          // If the value is a group then we can simply grab the aggregated value.
+          if (row.kind === "branch") return row.data[path];
+
+          // Pivots do not have leafs displayed. So here we do something interesting. We return true if the
+          // row should be kept for this pivot, otherwise false. This is effectively a leaf row filter for pivots.
+          // We can then aggregate these.
+          for (let i = 0; i < columns.length; i++) {
+            const c = columns[i];
+            const field = c.field ?? (c as any).id;
+            const value = field ? computeField(field, row) : false;
+            const match = partsRaw[i];
+
+            // This is a total columns. Totals will always be one shorter than than the path
+            if (i >= partsRaw.length) return true;
+
+            const isMatch =
+              match.startsWith("ln") || String(value) === match || (value == null && match === "ln__blank__");
+            if (!isMatch) return false;
+          }
+
+          return true;
+        },
       };
       return column;
     });
@@ -113,14 +142,36 @@ export function usePivotData<Spec extends GridSpec>(
   const aggFn = useMemo<AggregationFn<Spec["data"]> | null>(() => {
     if (!measures?.length) return null;
 
+    if (!pivotColumns?.length || !columns?.length)
+      return (rows) => {
+        const aggResult: Record<string, unknown> = {};
+
+        for (const m of measures!) aggResult[m.id] = m.measure(rows);
+
+        return aggResult;
+      };
+
+    const lookup = Object.fromEntries((measures ?? []).map((x) => [x.id, x]));
     return (rows) => {
       const aggResult: Record<string, unknown> = {};
 
-      for (const m of measures!) aggResult[m.id] = m.measure(rows);
+      for (let i = 0; i < pivotColumns.length; i++) {
+        const column = pivotColumns[i];
+        const measureId = column.id.split("-->").at(-1)!;
+        if (measureId === "ln__noop") break;
+
+        const finalLeafs = rows.filter((x) => computeField(column.field!, x));
+        if (finalLeafs.length) {
+          const measure = lookup[measureId];
+          aggResult[column.id] = measure.measure(finalLeafs);
+        } else {
+          aggResult[column.id] = null;
+        }
+      }
 
       return aggResult;
     };
-  }, [measures]);
+  }, [columns?.length, measures, pivotColumns]);
 
   const havingFilter = null;
   const tree = useGroupTree(
@@ -128,7 +179,7 @@ export function usePivotData<Spec extends GridSpec>(
     filtered,
     groupFn,
     props.groupIdFn ?? groupIdFallback,
-    props.rowGroupCollapseBehavior ?? "no-collapse",
+    "no-collapse",
     havingFilter,
     props.havingGroupAlways ?? false,
     aggFn,
@@ -143,7 +194,7 @@ export function usePivotData<Spec extends GridSpec>(
     groupSort,
     props.sortGroupAlways ?? true,
     c.expandedFn,
-    props.rowGroupSuppressLeafExpansion ?? false,
+    true,
   );
 
   const { flatten, rowByIdRef, rowByIndexRef, rowIdToRowIndexRef } = useFlattenedPiece({

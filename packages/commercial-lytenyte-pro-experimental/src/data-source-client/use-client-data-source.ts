@@ -36,7 +36,7 @@ export type HavingFilterFn = (node: RowGroup) => boolean;
 export type PivotField<Spec extends GridSpec = GridSpec> = { field?: Field<Spec["data"]> };
 export type PivotMeasure<Spec extends GridSpec = GridSpec> = {
   id: string;
-  measure: (row: RowLeaf<Spec["data"]>[]) => unknown;
+  measure: (rows: RowLeaf<Spec["data"]>[]) => unknown;
   reference?: Omit<Column<Spec>, "id">;
 };
 export type PivotLabelFilter = (s: string) => boolean;

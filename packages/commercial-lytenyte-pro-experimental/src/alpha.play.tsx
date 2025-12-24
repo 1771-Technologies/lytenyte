@@ -40,20 +40,15 @@ const columns: Root.Column<Spec>[] = [
 export default function Experimental() {
   const ds = useClientDataSource<Spec>({
     data: bankDataSmall,
+    rowGroupDefaultExpansion: true,
     pivotModel: {
       pivotMode: true,
-      columns: [{ field: "contact" }, { field: "education" }, { field: "marital" }],
-
-      // rows: [{ field: "education" }],
+      columns: [{ id: "contact" }],
+      rows: [{ id: "marital" }],
       measures: [
         {
-          id: "Balance (sum)",
-          measure: (rows) => rows.reduce((acc, row) => row.data.balance + acc, 0),
-          reference: { type: "number" },
-        },
-        {
-          id: "Balance (age)",
-          measure: (rows) => rows.reduce((acc, row) => row.data.age + acc, 0),
+          id: "Balance",
+          measure: (rows) => rows.reduce((acc, x) => x.data.balance + acc, 0),
           reference: { type: "number" },
         },
       ],
