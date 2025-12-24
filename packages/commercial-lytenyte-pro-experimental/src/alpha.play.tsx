@@ -45,7 +45,7 @@ export default function Experimental() {
     rowGroupDefaultExpansion: true,
     pivotMode: true,
     pivotModel: {
-      columns: [{ id: "contact" }],
+      columns: [{ id: "contact" }, { id: "education" }],
       rows: [{ id: "marital" }],
       measures: [
         {
@@ -62,7 +62,6 @@ export default function Experimental() {
   return (
     <>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <button>A</button>
         <div
           className={"ln-grid " + (resolvedTheme === "light" ? "ln-light" : "ln-dark")}
           style={{ height: "90vh", width: "90vw" }}
@@ -84,7 +83,6 @@ export default function Experimental() {
             </Viewport>
           </Root>
         </div>
-        <button>A</button>
       </div>
     </>
   );

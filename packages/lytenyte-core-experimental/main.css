@@ -137,6 +137,15 @@
       }
     }
 
+    [data-ln-header-resizer="true"] {
+      background-color: transparent;
+      transition: background-color 200ms ease-in-out;
+      cursor: col-resize;
+      &:hover {
+        background-color: var(--ln-primary-50);
+      }
+    }
+
     [data-ln-row="true"] {
       box-sizing: border-box;
 

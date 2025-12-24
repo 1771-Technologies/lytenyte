@@ -141,7 +141,7 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
   const rowParents = useRowParents(rowById, f.tree, props.group, props.groupIdFn ?? groupIdFallback);
   const rowGroupIsExpanded = useRowGroupIsExpanded(
     f.rowByIdRef,
-    s.expansions,
+    mode ? s.pivotRowGroupExpansions : s.expansions,
     props.rowGroupDefaultExpansion,
   );
   const onRowsUpdated = useOnRowsUpdated(props.onRowDataChange);

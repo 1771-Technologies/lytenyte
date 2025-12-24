@@ -60,6 +60,7 @@ export function useControlledState({
     setSelected,
     expandedFn,
     pivotExpandedFn,
+    pivotRowGroupExpansions,
     setPivotRowGroupExpansions,
   };
 }
