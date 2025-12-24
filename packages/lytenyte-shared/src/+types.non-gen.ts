@@ -131,7 +131,15 @@ export interface RowGroup {
   readonly loadingGroup?: boolean;
 }
 
-export type RowNode<T> = RowLeaf<T> | RowGroup;
+export interface RowAggregated {
+  readonly id: string;
+  readonly kind: "aggregated";
+  readonly data: Record<string, unknown>;
+  readonly loading?: boolean;
+  readonly error?: unknown;
+}
+
+export type RowNode<T> = RowLeaf<T> | RowGroup | RowAggregated;
 
 export interface PositionDetailCell {
   readonly kind: "detail";

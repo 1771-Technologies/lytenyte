@@ -162,4 +162,4 @@ export type Props<Spec extends GridSpec = GridSpec> = {
           element: HTMLElement;
         };
   }) => void;
-} & (undefined extends Spec["api"] ? object : { apiExtension: Spec["api"] });
+};

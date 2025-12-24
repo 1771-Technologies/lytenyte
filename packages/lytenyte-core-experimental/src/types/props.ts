@@ -4,8 +4,8 @@ import type { Column, EditParams, HeaderGroupParams, HeaderParams, RowParams } f
 import type { GridSpec } from "./grid.js";
 import type { API } from "./api.js";
 
-export type PropsWithoutExtension<Spec extends GridSpec = GridSpec> = {
-  readonly columns?: Column<Spec>[] | null;
+export type Props<Spec extends GridSpec = GridSpec> = {
+  readonly columns?: Column<Spec>[];
   readonly columnBase?: Omit<Column<Spec>, "id" | "pin" | "field" | "editSetter">;
   readonly columnMarker?: Omit<Column<Spec>, "field"> & { width?: number };
 
@@ -155,6 +155,3 @@ export type PropsWithoutExtension<Spec extends GridSpec = GridSpec> = {
         };
   }) => void;
 };
-
-export type Props<Spec extends GridSpec = GridSpec> = PropsWithoutExtension<Spec> &
-  (undefined extends Spec["api"] ? object : { apiExtension: Spec["api"] });

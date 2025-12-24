@@ -1,6 +1,7 @@
 import type {
   PositionFullWidthRow,
   PositionGridCell,
+  RowAggregated,
   RowGroup,
   RowLeaf,
   RowNode,
@@ -55,6 +56,7 @@ export type API<Spec extends GridSpec = GridSpec> = {
   readonly rowGroupToggle: (rowOrId: RowNode<Spec["data"]> | string, state?: boolean) => void;
   readonly rowIsLeaf: (row: RowNode<Spec["data"]>) => row is RowLeaf<Spec["data"]>;
   readonly rowIsGroup: (row: RowNode<Spec["data"]>) => row is RowGroup;
+  readonly rowIsAggregated: (row: RowNode<Spec["data"]>) => row is RowAggregated;
 
   readonly exportData: (params?: {
     readonly rect: DataRect;

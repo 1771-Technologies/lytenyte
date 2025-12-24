@@ -39,7 +39,12 @@ import type { API as LnAPI } from "../types/api.js";
 import type { Props as LnProps } from "../types/props.js";
 
 const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
-  { children, ...p }: PropsWithChildren<Root.Props<Spec>>,
+  {
+    children,
+    ...p
+  }: PropsWithChildren<
+    Root.Props<Spec> & (undefined extends Spec["api"] ? object : { apiExtension: Spec["api"] })
+  >,
   forwarded: Root.Props<Spec>["ref"],
 ) => {
   const props = p as unknown as Root.Props & {

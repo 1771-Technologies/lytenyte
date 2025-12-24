@@ -125,7 +125,7 @@ export function usePivotColumns<Spec extends GridSpec = GridSpec>(
           groupVisibility: path.includes("ln__total") || path.includes("ln__grand_total") ? "always" : "open",
           field: ({ row }) => {
             // If the value is a group then we can simply grab the aggregated value.
-            if (row.kind === "branch") return row.data[path];
+            if (row.kind === "branch" || row.kind === "aggregated") return row.data[path];
 
             // Pivots do not have leafs displayed. So here we do something interesting. We return true if the
             // row should be kept for this pivot, otherwise false. This is effectively a leaf row filter for pivots.

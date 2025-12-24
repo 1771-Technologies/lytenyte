@@ -32,6 +32,7 @@ export type {
   RowAtom,
   RowLeaf,
   RowGroup,
+  RowAggregated,
   RowGroupDisplayMode,
   PositionDetailCell,
   PositionFloatingCell,
