@@ -1,9 +1,13 @@
 import type { RowLeaf, RowSource } from "@1771technologies/lytenyte-shared";
 import type { UseClientDataSourceParams } from "../use-client-data-source.js";
 import { useEvent } from "@1771technologies/lytenyte-core-experimental/internal";
+import type { GridSpec } from "@1771technologies/lytenyte-core-experimental/types";
 
-export function useOnRowsUpdated<T>(onRowDataChange: UseClientDataSourceParams<T>["onRowDataChange"]) {
+export function useOnRowsUpdated<Spec extends GridSpec>(
+  onRowDataChange: UseClientDataSourceParams<Spec>["onRowDataChange"],
+) {
   const onRowsUpdated: RowSource["onRowsUpdated"] = useEvent((rows) => {
+    type T = Spec["data"];
     if (!onRowDataChange) return;
 
     const top = new Map<number, T>();

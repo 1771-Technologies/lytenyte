@@ -185,7 +185,9 @@ const RootImpl = ({ children, ...p }: PropsWithChildren<Root.Props>) => {
 };
 
 export const Root = forwardRef(RootWrapper) as <Spec extends Root.GridSpec = Root.GridSpec>(
-  props: PropsWithChildren<Root.Props<Spec>>,
+  props: PropsWithChildren<
+    Root.Props<Spec> & (undefined extends Spec["api"] ? unknown : { apiExtension: Spec["api"] })
+  >,
 ) => ReactNode;
 
 export namespace Root {

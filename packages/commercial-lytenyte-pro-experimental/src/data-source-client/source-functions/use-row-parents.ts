@@ -13,7 +13,7 @@ export function useRowParents<T>(
     if (!tree) return [];
 
     const row = rowById(id);
-    if (!row) return [];
+    if (!row || row.kind === "aggregated") return [];
 
     if (row.kind === "branch") {
       const group = tree?.groupLookup.get(row.id);

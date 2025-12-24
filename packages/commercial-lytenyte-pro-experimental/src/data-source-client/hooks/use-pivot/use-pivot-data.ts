@@ -6,7 +6,7 @@ import type { LeafRowTuple } from "../use-leaf-nodes";
 import { useFilteredData } from "./use-filtered-data.js";
 import { usePivotGroupFn } from "./use-pivot-group-fn.js";
 import { useGroupTree } from "../use-group-tree/use-group-tree.js";
-import { type GroupIdFn, type RowLeaf } from "@1771technologies/lytenyte-shared";
+import { type GroupIdFn, type RowAggregated, type RowLeaf } from "@1771technologies/lytenyte-shared";
 import { useFlattenedGroups } from "../use-flattened-groups.js";
 import { useFlattenedPiece } from "../use-flattened-piece.js";
 import { usePivotColumns } from "./use-pivot-columns.js";
@@ -76,7 +76,7 @@ export function usePivotData<Spec extends GridSpec>(
     const rows = filtered.map((x) => leafs[x]);
     const agg = aggFn(rows);
 
-    return [{ id: "ln-pivot-grand-total", data: agg, kind: "leaf" } satisfies RowLeaf<any>];
+    return [{ id: "ln-pivot-grand-total", data: agg, kind: "aggregated" } satisfies RowAggregated];
   }, [aggFn, filtered, grandTotalRow, leafs]);
 
   const top = grandTotalRow === "top" ? grandTotal : empty;

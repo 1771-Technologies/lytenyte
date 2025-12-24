@@ -31,8 +31,8 @@ import type { Column, Field } from "../types/column.js";
 import type { GridSpec } from "../types/grid.js";
 import { useFlattenedData } from "./hooks/use-flattened-data.js";
 import { usePivotData } from "./hooks/use-pivot/use-pivot-data.js";
-import type { Props, PropsWithoutExtension } from "@1771technologies/lytenyte-core-experimental/types";
 import type { PivotState } from "./hooks/use-pivot/use-pivot-columns.js";
+import type { Props } from "../types/props.js";
 
 export type HavingFilterFn = (node: RowGroup) => boolean;
 
@@ -51,10 +51,8 @@ export interface RowSourceClient<Spec extends GridSpec = GridSpec> extends RowSo
   }) => {
     readonly columns?: Column<Spec>[];
     readonly onColumnsChange: Props<Spec>["onColumnsChange"];
-
     readonly columnGroupExpansions: Props<Spec>["columnGroupExpansions"];
     readonly onColumnGroupExpansionChange: Props<Spec>["onColumnGroupExpansionChange"];
-
     readonly onRowGroupExpansionChange: Props<Spec>["onRowGroupExpansionChange"];
   };
 }
@@ -224,12 +222,12 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
           if (pivotColumns) object.columns = pivotColumns;
           if (pivotColumns) object.columnGroupExpansions = pivotGroups.value;
 
-          const onRowGroup: PropsWithoutExtension<Spec>["onRowGroupExpansionChange"] = (rows) => {
+          const onRowGroup: Props<Spec>["onRowGroupExpansionChange"] = (rows) => {
             if (!mode$.get()) return onRowGroupExpansionChange?.(rows);
             setPivotRowGroupExpansions(rows);
           };
 
-          const onColChange: Required<PropsWithoutExtension<Spec>>["onColumnsChange"] = (columns) => {
+          const onColChange: Required<Props<Spec>>["onColumnsChange"] = (columns) => {
             if (!mode$.get()) return onColumnsChange?.(columns);
 
             const ordering = columns.map((x) => x.id);
@@ -248,9 +246,7 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
               },
             });
           };
-          const onColumnGroup: Required<PropsWithoutExtension<Spec>>["onColumnGroupExpansionChange"] = (
-            change,
-          ) => {
+          const onColumnGroup: Required<Props<Spec>>["onColumnGroupExpansionChange"] = (change) => {
             if (!mode$.get()) return onColumnGroupExpansionChange?.(change);
             setPivotGroupState({ value: change });
           };

@@ -34,6 +34,7 @@ import { useRowGroupToggle } from "./api-functions/use-row-group-toggle.js";
 import { useUseRowDrag } from "./api-functions/use-row-drag.js";
 import { useViewport } from "./api-functions/use-viewport.js";
 import { useProps } from "./api-functions/use-props.js";
+import { useRowIsAggregated } from "./api-functions/use-row-is-aggregated.js";
 
 export function useApi(
   gridId: string,
@@ -59,6 +60,7 @@ export function useApi(
 
   api.rowIsLeaf = useRowIsLeaf();
   api.rowIsGroup = useRowIsGroup();
+  api.rowIsAggregated = useRowIsAggregated();
   api.columnToggleGroup = useColumnToggleGroup(props, controlled);
   api.exportData = useExportData(view, source, api, rowCount);
   api.rowHandleSelect = useRowHandleSelect(props, api, gridId, selectPivot);

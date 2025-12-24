@@ -1,4 +1,4 @@
-import type { RowLeaf, RowSource } from "@1771technologies/lytenyte-shared";
+import type { RowAggregated, RowLeaf, RowSource } from "@1771technologies/lytenyte-shared";
 import type { RootNode } from "../hooks/use-group-tree/use-group-tree.js";
 import { useEvent } from "@1771technologies/lytenyte-core-experimental/internal";
 
@@ -9,8 +9,8 @@ export function useOnRowsSelected<T>(
   tree: RootNode<T> | null,
   sorted: number[],
   leafs: RowLeaf<T>[],
-  leafsTop: RowLeaf<T>[],
-  leafsBot: RowLeaf<T>[],
+  leafsTop: (RowLeaf<T> | RowAggregated)[],
+  leafsBot: (RowLeaf<T> | RowAggregated)[],
   rowsIsolatedSelection: boolean,
 ) {
   const onRowsSelected: RowSource<T>["onRowsSelected"] = useEvent(({ selected: c, deselect, mode }) => {
