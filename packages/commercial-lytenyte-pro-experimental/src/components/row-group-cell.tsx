@@ -1,14 +1,18 @@
 import type { RowNode } from "@1771technologies/lytenyte-shared";
 import type { CellParamsWithIndex, GridSpec } from "../types";
+import type { CSSProperties } from "react";
 
 export const RowGroupCell = <Spec extends GridSpec = GridSpec>({ api, row }: CellParamsWithIndex<Spec>) => {
   const label = getRowLabel(row);
+
+  const depth = row.kind === "branch" ? row.depth : 0;
 
   return (
     <div
       data-ln-component-group-cell
       data-ln-component-group-cell-expanded={api.rowIsExpanded(row)}
       data-ln-component-group-cell-expandable={api.rowIsExpandable(row)}
+      style={{ "--ln-row-depth": depth } as CSSProperties}
     >
       {row.kind === "branch" && row.expandable && (
         <button

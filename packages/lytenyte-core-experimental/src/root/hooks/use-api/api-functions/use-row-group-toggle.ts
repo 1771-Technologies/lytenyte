@@ -8,7 +8,9 @@ export function useRowGroupToggle(props: Root.Props, source: RowSource): Root.AP
     const row = source.rowById(rowId);
     if (!row || row.kind !== "branch") return;
 
-    const next = state ?? !source.rowGroupIsExpanded(row.id);
+    if (!row.expandable) return;
+
+    const next = state ?? !row.expanded;
 
     const change = { [row.id]: next };
     source.onRowGroupExpansionChange(change);

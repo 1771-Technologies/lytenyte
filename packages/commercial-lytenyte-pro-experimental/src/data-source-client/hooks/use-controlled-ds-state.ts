@@ -8,6 +8,7 @@ export function useControlledState({
   rowGroupExpansions,
   rowsSelected: selectedRows,
   rowGroupDefaultExpansion = false,
+  pivotRowGroupDefaultExpansion = rowGroupDefaultExpansion,
   onRowSelectionChange: handleSelectChange,
   pivotStateRef,
 }: UseClientDataSourceParams<any>) {
@@ -41,16 +42,17 @@ export function useControlledState({
     },
     [expansions, rowGroupDefaultExpansion],
   );
+
   const pivotExpandedFn = useCallback(
     (id: string, depth: number) => {
       const s = pivotRowGroupExpansions[id];
       if (s != null) return s;
 
-      if (typeof rowGroupDefaultExpansion === "boolean") return rowGroupDefaultExpansion;
+      if (typeof pivotRowGroupDefaultExpansion === "boolean") return pivotRowGroupDefaultExpansion;
 
-      return rowGroupDefaultExpansion <= depth;
+      return pivotRowGroupDefaultExpansion <= depth;
     },
-    [pivotRowGroupExpansions, rowGroupDefaultExpansion],
+    [pivotRowGroupDefaultExpansion, pivotRowGroupExpansions],
   );
 
   return {
