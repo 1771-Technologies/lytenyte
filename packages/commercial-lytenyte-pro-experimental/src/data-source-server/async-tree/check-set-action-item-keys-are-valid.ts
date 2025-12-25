@@ -2,7 +2,7 @@ import type { SetDataAction } from "./+types.async-tree.js";
 
 const invalidItemKeyType = "Invalid set action items, 'relIndex' must be a positive integer";
 
-export function checkSetActionItemKeysAreValid<K, D>(p: SetDataAction<K, D>) {
+export function checkSetActionItemKeysAreValid(p: SetDataAction) {
   if (!p.items?.length) return true;
 
   const items = p.items;

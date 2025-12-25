@@ -1,6 +1,6 @@
 import type { TreeParent, TreeRoot } from "../async-tree/+types.async-tree.js";
 
-export function getNodePath<T, K>(c: TreeRoot<T, K> | TreeParent<T, K>) {
+export function getNodePath(c: TreeRoot | TreeParent) {
   const path = [];
   let current = c;
   while (current.kind !== "root") {

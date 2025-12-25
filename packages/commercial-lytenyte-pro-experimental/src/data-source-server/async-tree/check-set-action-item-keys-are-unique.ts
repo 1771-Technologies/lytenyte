@@ -4,7 +4,7 @@ import type { SetDataAction } from "./+types.async-tree.js";
 const invalidItemKeyDupes = "Invalid set action items, the same 'key' appears more than once";
 const invalidItemPathsDupes = "Invalid set action items, the same 'path' appears more than once";
 
-export function checkSetActionItemKeysAreUnique<K, D>(p: SetDataAction<K, D>) {
+export function checkSetActionItemKeysAreUnique(p: SetDataAction) {
   const seenKeys = new Set<number>();
   const seenPaths = new Set<string | null>();
   if (!p.items?.length) return true;

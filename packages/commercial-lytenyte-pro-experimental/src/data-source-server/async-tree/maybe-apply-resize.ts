@@ -1,10 +1,6 @@
 import type { TreeParent, TreeRoot } from "./+types.async-tree.js";
 
-export function maybeApplyResize<K, D>(
-  pathNode: TreeParent<K, D> | TreeRoot<K, D>,
-  size: number | undefined,
-  asOf: number,
-) {
+export function maybeApplyResize(pathNode: TreeParent | TreeRoot, size: number | undefined, asOf: number) {
   if (size == null) return false;
   if (size === pathNode.size) return false;
   if (pathNode.asOf > asOf) return false;

@@ -1,10 +1,7 @@
 import { ROOT_LEAF_PREFIX } from "./+constants.async-tree.js";
 import type { SetDataAction, TreeLeaf, TreeParent, TreeRoot } from "./+types.async-tree.js";
 
-export function maybeApplySetActionItems<K, D>(
-  p: SetDataAction<K, D>,
-  pathNode: TreeParent<K, D> | TreeRoot<K, D>,
-) {
+export function maybeApplySetActionItems(p: SetDataAction, pathNode: TreeParent | TreeRoot) {
   if (!p.items?.length) {
     return false;
   }
@@ -32,7 +29,7 @@ export function maybeApplySetActionItems<K, D>(
 
     // We always replace when making a leaf
     if (item.kind === "leaf") {
-      const node: TreeLeaf<K, D> = { ...item, parent: pathNode, path: path!, asOf };
+      const node: TreeLeaf = { ...item, parent: pathNode, path: path!, asOf };
 
       const currentI = pathNode.byIndex.get(item.relIndex);
       const currentP = pathNode.byPath.get(path);
@@ -40,10 +37,10 @@ export function maybeApplySetActionItems<K, D>(
       if (!currentI || currentI.asOf < asOf) pathNode.byIndex.set(item.relIndex, node);
       if (!currentP || currentP.asOf < asOf) pathNode.byPath.set(path, node);
     } else {
-      const node: TreeParent<K, D> = {
+      const node: TreeParent = {
         byIndex: existing?.kind === "parent" ? existing.byIndex : new Map(),
         byPath: existing?.kind === "parent" ? existing.byPath : new Map(),
-        data: item.data,
+        row: item.row,
         kind: "parent",
         relIndex: item.relIndex,
         parent: pathNode,
