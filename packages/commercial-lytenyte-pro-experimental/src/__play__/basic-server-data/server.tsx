@@ -2,7 +2,7 @@ import type { DataRequest, DataResponse } from "../../data-source-server/types";
 import type { SalaryData } from "./data";
 import { data } from "./data.js";
 
-const sleep = () => new Promise((res) => setTimeout(res, 600));
+const sleep = () => new Promise((res) => setTimeout(res, 0));
 
 export async function Server(reqs: DataRequest[], groupModel: string[]) {
   // Simulate latency and server work.

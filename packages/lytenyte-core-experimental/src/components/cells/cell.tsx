@@ -43,6 +43,8 @@ const CellImpl = memo(
       dimensions: { innerWidth },
     } = useRoot();
 
+    // if (cell.colIndex === 0) console.log(cell.rowIndex);
+
     const rowMeta = useRowMeta();
     const row = rowMeta.row;
 

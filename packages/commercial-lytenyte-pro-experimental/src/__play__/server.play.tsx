@@ -9,8 +9,8 @@ import "@1771technologies/lytenyte-design/term.css";
 import "../../main.css";
 import { Header, Root, RowsBottom, RowsCenter, RowsContainer, RowsTop, Viewport } from "../index.parts.js";
 import { ViewportShadows } from "@1771technologies/lytenyte-core-experimental";
-import { useState } from "react";
-import type { Column, GridSpec, Props } from "../types";
+import { useRef, useState } from "react";
+import type { API, Column, GridSpec, Props } from "../types";
 import { RowGroupCell } from "../components/row-group-cell.js";
 import type { SalaryData } from "./basic-server-data/data";
 import { useServerDataSource } from "../data-source-server/use-server-data-source.js";
@@ -51,7 +51,7 @@ const columns: Column<Spec>[] = [
 export default function Experimental() {
   const ds = useServerDataSource({
     queryFn: async ({ requests }) => {
-      return Server(requests, ["Education Level"]);
+      return Server(requests, []);
     },
     queryKey: [],
   });
@@ -64,6 +64,8 @@ export default function Experimental() {
   const error = ds.loadingError.useValue();
 
   const { resolvedTheme } = useTheme();
+
+  const ref = useRef<API<Spec>>(null);
   return (
     <>
       <div style={{ height: 40 }}>
@@ -71,6 +73,13 @@ export default function Experimental() {
           {isLoading && <div>Loading...</div>}
           {error && <div>{`${error}`}</div>}
         </>
+        <button
+          onClick={() => {
+            ref.current?.rowSelect({ selected: "all" });
+          }}
+        >
+          Select All
+        </button>
       </div>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div
@@ -79,20 +88,11 @@ export default function Experimental() {
         >
           <Root
             columns={columns}
-            columnGroupRenderer={(props) => {
-              const label = props.groupPath.at(-1)!;
-              return (
-                <div>
-                  {label}
-                  {props.collapsible && (
-                    <button onClick={() => props.api.columnToggleGroup(props.groupPath)}>{">"}</button>
-                  )}
-                </div>
-              );
-            }}
             rowSource={ds}
             rowGroupColumn={rowGroupColumn}
             onRowGroupColumnChange={setRowGroupColumn}
+            rowSelectionMode="multiple"
+            ref={ref}
           >
             <Viewport style={{ scrollbarGutter: "stable" }}>
               <ViewportShadows />
