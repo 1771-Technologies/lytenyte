@@ -57,8 +57,12 @@ export interface UseClientDataSourceParams<T = unknown> {
   }) => void;
 }
 
+export interface RowSourceClient<T> extends RowSource<T> {
+  readonly rowsSelected: () => RowNode<T>[];
+}
+
 const groupIdFallback: GroupIdFn = (p) => p.map((x) => (x == null ? "_null_" : x)).join("->");
-export function useClientDataSource<T>(props: UseClientDataSourceParams<T>) {
+export function useClientDataSource<T>(props: UseClientDataSourceParams<T>): RowSourceClient<T> {
   const {
     data,
     topData,
@@ -118,7 +122,7 @@ export function useClientDataSource<T>(props: UseClientDataSourceParams<T>) {
     rowsIsolatedSelection ?? false,
   );
 
-  const rowsSelected: RowSource["rowsSelected"] = useRowsSelected(
+  const rowsSelected: RowSourceClient<T>["rowsSelected"] = useRowsSelected(
     rowById,
     selected,
     rowsIsolatedSelection ?? false,
@@ -136,10 +140,10 @@ export function useClientDataSource<T>(props: UseClientDataSourceParams<T>) {
   const rowLeafs = useRowLeafs(tree);
   const rowChildren = useRowChildren(tree);
 
-  const source = useMemo<RowSource>(() => {
+  const source = useMemo<RowSourceClient<T>>(() => {
     const rowCount$ = (x: RowNode<T>[]) => x.length;
 
-    const source: RowSource = {
+    const source: RowSourceClient<T> = {
       rowInvalidate,
       rowByIndex,
       rowIndexToRowId: (index) => rowByIndexRef.current.get(index)?.id ?? null,

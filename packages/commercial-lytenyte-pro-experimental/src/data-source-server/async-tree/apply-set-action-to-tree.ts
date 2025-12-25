@@ -20,16 +20,35 @@ export function applySetActionToTree(p: SetDataAction, root: TreeRoot) {
   const pathNode = getParentNodeByPath(root, p.path);
   if (!pathNode) return false;
 
-  if (!checkSetActionItemKeysFit(p, pathNode)) return false;
-  if (!checkSetActionItemKinds(p)) return false;
-  if (!checkSetActionItemKeysAreValid(p)) return false;
-  if (!checkSetActionItemKeysAreUnique(p)) return false;
+  // We need to make sure that the items being added will fit path nodes specification.
+  if (!checkSetActionItemKeysFit(p, pathNode)) {
+    console.error("Invalid data dispatch", p);
+    throw new Error(
+      `Server data payload error occurred. The node at at ${p.path} has a size of ${pathNode.size} but data payload would exceed this size.`,
+    );
+  }
+
+  // We need to ensure the kind of the data in the dispatch is valid.
+  if (!checkSetActionItemKinds(p)) {
+    console.error("Invalid data dispatch", p);
+    throw new Error(
+      `Server data payload error occurred. The payload has invalid data kinds. Each item must have kind "leaf" or "parent".`,
+    );
+  }
+  if (!checkSetActionItemKeysAreValid(p)) {
+    console.error("Invalid data dispatch", p);
+    throw new Error(`Server data payload error occurred. The payload has invalid relIndex values.`);
+  }
+  if (!checkSetActionItemKeysAreUnique(p)) {
+    console.error("Invalid data dispatch", p);
+    throw new Error(`Server data payload error occurred. The payload has duplicated key items or paths.`);
+  }
 
   if (isSetActionANoOpOnNode(p, pathNode)) return false;
   maybeApplyResize(pathNode, p.size, p.asOf ?? Date.now());
 
   if (maybeApplyParentRemoveSelf(pathNode)) return true;
-  maybeApplySetActionItems(p, pathNode);
+  maybeApplySetActionItems(p, pathNode, root);
 
   return true;
 }

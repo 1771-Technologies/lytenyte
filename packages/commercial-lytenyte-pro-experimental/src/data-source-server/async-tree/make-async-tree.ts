@@ -14,8 +14,11 @@ export function makeAsyncTree(): TreeRootAndApi {
     kind: "root",
     byIndex: new Map(),
     byPath: new Map(),
+
     size: 0,
     asOf: Date.now(),
+
+    rowIdToNode: new Map(),
   };
 
   const api = {

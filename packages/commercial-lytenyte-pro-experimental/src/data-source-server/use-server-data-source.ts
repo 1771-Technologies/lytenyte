@@ -10,6 +10,9 @@ import { useRowById } from "./source/use-row-by-id.js";
 import { useOnViewChange } from "./source/use-on-view-change.js";
 import { useSourceState } from "./source/use-source-state.js";
 import { useSource } from "./source/use-source.js";
+import { useRowParents } from "./source/use-row-parents.js";
+import { useRowsBetween } from "./source/use-rows-between.js";
+import { useRowChildren } from "./source/use-row-children.js";
 
 export interface RowSourceServer<T> extends RowSource<T> {
   isLoading: Piece<boolean>;
@@ -47,6 +50,10 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
   const rowById = useRowById<T>(source);
   const rowIdToRowIndex = useRowIdToRowIndex<T>(source);
   const rowIndexToRowId = useRowIndexToRowId<T>(source);
+  const rowParents = useRowParents<T>(source);
+  const rowsBetween = useRowsBetween<T>(source);
+  const rowChildren = useRowChildren<T>(source);
+
   const onViewChange = useOnViewChange(source, s.requestsForView, s.setRequestsForView);
 
   const setExpansions = s.setExpansions;
@@ -57,7 +64,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
       rowInvalidate,
       rowIdToRowIndex,
       rowIndexToRowId,
-      rowChildren: () => [],
+      rowChildren,
       rowIsSelected: () => false,
 
       rowLeafs: () => {
@@ -66,24 +73,13 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
         );
         return [];
       },
-      rowParents: (id) => {
-        const rowIndex = rowIdToRowIndex(id);
-        if (rowIndex == null) return [];
-
-        const ranges = source.flat.rangeTree.findRangesForRowIndex(rowIndex);
-        console.log(ranges);
-
-        return [];
-      },
-      rowsBetween: () => [],
-      rowsSelected: () => [],
+      rowParents,
+      rowsBetween,
 
       useTopCount: () => top$.useValue(),
       useRowCount: () => rowCount$.useValue(),
       useBottomCount: () => bot$.useValue(),
       useMaxRowGroupDepth: () => maxDepth$.useValue(),
-
-      useSnapshotVersion: () => 0,
 
       onRowGroupExpansionChange: (deltaChanges) => {
         setExpansions((prev) => ({ ...prev, ...deltaChanges }));
@@ -94,6 +90,8 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
       isLoading: isLoading$,
       loadingError: loadError$,
       requestsForView: requestsForView$,
+
+      useSnapshotVersion: () => 0,
     };
 
     return rowSource;
@@ -106,12 +104,14 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
     requestsForView$,
     rowById,
     rowByIndex,
+    rowChildren,
     rowCount$,
     rowIdToRowIndex,
     rowIndexToRowId,
     rowInvalidate,
+    rowParents,
+    rowsBetween,
     setExpansions,
-    source,
     top$,
   ]);
 

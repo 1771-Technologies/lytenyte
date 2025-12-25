@@ -87,7 +87,6 @@ export interface RowSource<T = any> {
   readonly rowLeafs: (id: string) => string[];
   readonly rowsBetween: (start: string, end: string) => string[];
   readonly rowInvalidate: (row?: number) => void;
-  readonly rowsSelected: () => RowNode<T>[];
 
   // Methods the LyteNyte will call
   readonly onViewChange: (view: SpanLayout) => void;
