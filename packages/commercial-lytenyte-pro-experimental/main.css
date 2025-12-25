@@ -53,6 +53,7 @@
         justify-content: center;
         width: var(--ln-space-60);
         height: var(--ln-space-60);
+        margin-inline-start: calc(var(--ln-padding-horizontal-cell) * -1 + 3px);
 
         &:hover {
           background-color: var(--ln-bg-button-light);

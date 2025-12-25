@@ -3,7 +3,10 @@ import type { DataRequest } from "../types";
 import { useControlled } from "@1771technologies/lytenyte-core-experimental/internal";
 import type { UseServerDataSourceParams } from "../use-server-data-source";
 
+export type SourceState = ReturnType<typeof useSourceState>;
+
 export function useSourceState<K extends unknown[]>(props: UseServerDataSourceParams<K>) {
+  const [maxDepth, setMaxDepth] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingError, setLoadingError] = useState<unknown>(null);
   const [requestsForView, setRequestsForView] = useState<DataRequest[]>([]);
@@ -34,5 +37,8 @@ export function useSourceState<K extends unknown[]>(props: UseServerDataSourcePa
 
     expansions,
     setExpansions,
+
+    maxDepth,
+    setMaxDepth,
   };
 }
