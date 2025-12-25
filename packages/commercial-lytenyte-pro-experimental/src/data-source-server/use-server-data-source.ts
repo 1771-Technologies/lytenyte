@@ -7,7 +7,7 @@ import {
   type Piece,
 } from "@1771technologies/lytenyte-core-experimental/internal";
 import { ServerData, type DataFetcher } from "./server-data.js";
-import { arrayShallow, type RowSource } from "@1771technologies/lytenyte-shared";
+import { arrayShallow, equal, type RowSource } from "@1771technologies/lytenyte-shared";
 import { useRowByIndex } from "./source/use-row-by-index.js";
 import { useGlobalRefresh } from "../data-source-client/source-functions/use-global-refresh.js";
 
@@ -31,7 +31,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
 ): RowSourceServer<T> {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingError, setLoadingError] = useState<unknown>(null);
-  const [requestsForView] = useState<DataRequest[]>([]);
+  const [requestsForView, setRequestsForView] = useState<DataRequest[]>([]);
 
   const [topCount, setTopCount] = useState(0);
   const [rowCount, setRowCount] = useState(0);
@@ -86,6 +86,8 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
         setTopCount(f.top);
         setBotCount(f.bottom);
         setRowCount(f.center + f.top + f.bottom);
+
+        globalSignal(Date.now());
       },
     });
   }
@@ -96,7 +98,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
 
   const isLoading$ = usePiece(isLoading);
   const loadError$ = usePiece(loadingError);
-  const requestsForView$ = usePiece(requestsForView);
+  const requestsForView$ = usePiece(requestsForView, setRequestsForView);
   const top$ = usePiece(topCount);
   const bot$ = usePiece(botCount);
   const rowCount$ = usePiece(rowCount);
@@ -130,6 +132,18 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
       onRowGroupExpansionChange: () => {},
       onRowsSelected: () => {},
       onRowsUpdated: () => {},
+      onViewChange: (bounds) => {
+        const source = sourceRef.current;
+
+        // This will result in the server sending the requests for the current view.
+        source.rowViewBounds = [bounds.rowCenterStart, bounds.rowCenterEnd];
+
+        const requests = source.requestsForView();
+        const current = requestsForView$.get();
+        if (equal(requests, current)) return;
+
+        requestsForView$.set(requests);
+      },
 
       isLoading: isLoading$,
       loadingError: loadError$,
