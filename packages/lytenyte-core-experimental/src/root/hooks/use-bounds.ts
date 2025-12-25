@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import {
   computeBounds,
   equal,
@@ -66,10 +66,6 @@ export function useBounds(
     xPositions,
     yPositions,
   ]);
-
-  useEffect(() => {
-    source.onViewChange(bounds);
-  }, [bounds, source]);
 
   useIsoEffect(() => {
     if (!viewport) return;

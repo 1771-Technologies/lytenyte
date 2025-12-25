@@ -58,11 +58,12 @@ export interface ServerDataConstructorParams {
 }
 
 export class ServerData {
-  #tree: TreeRootAndApi<RowGroup, RowLeaf>;
   #top: { asOf: number; rows: RowNode<any>[] } = { asOf: 0, rows: [] };
   #bottom: { asOf: number; rows: RowNode<any>[] } = { asOf: 0, rows: [] };
 
   #blocksize: number;
+
+  tree: TreeRootAndApi<RowGroup, RowLeaf>;
   flat!: FlatView;
 
   #dataFetcher: DataFetcher = noopFetcher;
@@ -100,7 +101,7 @@ export class ServerData {
     onInvalidate,
     defaultExpansion,
   }: ServerDataConstructorParams) {
-    this.#tree = makeAsyncTree();
+    this.tree = makeAsyncTree();
     this.#blocksize = blocksize;
 
     this.#pivotMode = pivotMode;
@@ -155,7 +156,7 @@ export class ServerData {
     // Abort all the existing requests in flight.
     this.#controllers.forEach((c) => c.abort());
 
-    this.#tree = makeAsyncTree();
+    this.tree = makeAsyncTree();
     this.#flatten();
 
     this.#rowsWithError.clear();
@@ -287,7 +288,7 @@ export class ServerData {
 
     for (let i = 0; i < center.length; i++) {
       const r = center[i];
-      this.#tree.set({
+      this.tree.set({
         path: r.path,
         items: r.data.map<Required<SetDataAction<RowGroup, RowLeaf>>["items"][number]>((c, i) => {
           if (c.kind === "leaf") {
@@ -309,7 +310,7 @@ export class ServerData {
                 depth: r.path.length,
                 id: c.id,
                 key: c.key,
-                expandable: false,
+                expandable: true, // Group nodes are always expandable for the server data source3
                 expanded: false,
                 last: false,
               },
@@ -329,7 +330,7 @@ export class ServerData {
   };
 
   requestForNextSlice(req: DataRequest) {
-    let current: TreeRoot<any, any> | TreeParent<any, any> | TreeLeaf<any, any> = this.#tree;
+    let current: TreeRoot<any, any> | TreeParent<any, any> | TreeLeaf<any, any> = this.tree;
 
     for (const c of req.path) {
       if (current.kind === "leaf") return null;
@@ -510,7 +511,7 @@ export class ServerData {
     // The mode we are in determines the expansions we will use for the server data.
     const mode = this.#pivotMode;
     const expansions = mode ? this.#pivotExpansions : this.#expansions;
-    const t = this.#tree;
+    const t = this.tree;
 
     // We use these maps to keep track of the current view. These are helpful for
     // quick lookup. They are also used to implement many of the data source APIs.

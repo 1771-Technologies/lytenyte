@@ -5,6 +5,7 @@ import { useFocusTracking } from "./use-focus-tracking.js";
 import { getNearestFocusable, navigator, runWithBackoff } from "@1771technologies/lytenyte-shared";
 import { beginEditing } from "./begin-editing.js";
 import { RowDragMonitor } from "./row-drag-monitor.js";
+import { ViewMonitor } from "./view-monitor.js";
 
 const noop = () => {};
 function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Props["ref"]) {
@@ -69,6 +70,7 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
   return (
     <>
       <RowDragMonitor />
+      {vp && <ViewMonitor viewport={vp} />}
       <div
         {...props}
         role="grid"

@@ -13,18 +13,18 @@ import type {
   SortFn,
 } from "@1771technologies/lytenyte-shared";
 import { useLeafNodes } from "./hooks/use-leaf-nodes.js";
-import { useControlledState } from "./hooks/use-controlled-ds-state.js";
-import { useOnRowsUpdated } from "./source-functions/use-on-rows-updated.js";
-import { useGlobalRefresh } from "./source-functions/use-global-refresh.js";
-import { useRowById } from "./source-functions/use-row-by-id.js";
-import { useRowParents } from "./source-functions/use-row-parents.js";
-import { useRowIsSelected } from "./source-functions/use-row-is-selected.js";
-import { useOnRowsSelected } from "./source-functions/use-on-rows-selected.js";
-import { useRowsSelected } from "./source-functions/use-rows-selected.js";
-import { useRowLeafs } from "./source-functions/use-row-leafs.js";
-import { useRowChildren } from "./source-functions/use-row-children.js";
-import { useRowByIndex } from "./source-functions/use-row-by-index.js";
-import { useRowsBetween } from "./source-functions/use-rows-between.js";
+import { useSourceState } from "./hooks/use-controlled-ds-state.js";
+import { useOnRowsUpdated } from "./source/use-on-rows-updated.js";
+import { useGlobalRefresh } from "./source/use-global-refresh.js";
+import { useRowById } from "./source/use-row-by-id.js";
+import { useRowParents } from "./source/use-row-parents.js";
+import { useRowIsSelected } from "./source/use-row-is-selected.js";
+import { useOnRowsSelected } from "./source/use-on-rows-selected.js";
+import { useRowsSelected } from "./source/use-rows-selected.js";
+import { useRowLeafs } from "./source/use-row-leafs.js";
+import { useRowChildren } from "./source/use-row-children.js";
+import { useRowByIndex } from "./source/use-row-by-index.js";
+import { useRowsBetween } from "./source/use-rows-between.js";
 import { usePiece } from "@1771technologies/lytenyte-core-experimental/internal";
 import type { Column, Field } from "../types/column.js";
 import type { GridSpec } from "../types/grid.js";
@@ -122,7 +122,7 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
   const leafsTuple = useLeafNodes(props);
 
   // s == state, f == flat, p == pivot
-  const s = useControlledState(props);
+  const s = useSourceState(props);
   const d = useFlattenedData(props, leafsTuple, s);
   const p = usePivotData(props, leafsTuple, s);
 

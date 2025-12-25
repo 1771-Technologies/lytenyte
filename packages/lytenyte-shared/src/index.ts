@@ -177,6 +177,7 @@ export {
 export type { FocusTrapOptions } from "./dom-utils/focus/+types.js";
 export {
   FocusTrap,
+  supportsScrollEnd,
   getActiveElement,
   getComputedStyle,
   getFirstFocusable,
