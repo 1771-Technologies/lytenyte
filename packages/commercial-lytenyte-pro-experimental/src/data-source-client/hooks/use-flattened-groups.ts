@@ -61,7 +61,14 @@ export function useFlattenedGroups<T>(
 
         flatList.push(row as RowGroup);
 
-        if (!expandedFn(row.id, depth) || (suppressLeafExpansion && row.last)) continue;
+        const notExpandable = suppressLeafExpansion && row.last;
+        (row as Writable<RowGroup>).expandable = !notExpandable;
+
+        if (!expandedFn(row.id, depth) || notExpandable) {
+          (row as Writable<RowGroup>).expanded = false;
+          continue;
+        }
+        (row as Writable<RowGroup>).expanded = true;
 
         offset += processRowsBetter(row.__children, row, rowIndex + 1, row.last, depth + 1);
       }

@@ -15,7 +15,6 @@ export const DEFAULT_ROW_SOURCE: RowSource = {
   rowIndexToRowId: () => null,
   rowByIndex: () => ({ get: () => null, useValue: () => null }),
   rowById: () => null,
-  rowGroupIsExpanded: () => false,
   rowChildren: () => [],
   rowIdToRowIndex: () => null,
   rowInvalidate: () => {},

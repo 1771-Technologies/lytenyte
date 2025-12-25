@@ -1,4 +1,11 @@
-import type { AggregationFn, RowGroup, RowLeaf, RowNode, SortFn } from "@1771technologies/lytenyte-shared";
+import type {
+  AggregationFn,
+  RowGroup,
+  RowLeaf,
+  RowNode,
+  SortFn,
+  Writable,
+} from "@1771technologies/lytenyte-shared";
 import type { RootMap, RootNode } from "./use-group-tree";
 import { useMemo } from "react";
 
@@ -49,7 +56,11 @@ export function useFlattenedGroups<T>(
 
         flatList.push(row as RowGroup);
 
-        if (!expandedFn(row.id, depth)) continue;
+        if (!expandedFn(row.id, depth)) {
+          (row as Writable<RowGroup>).expanded = false;
+          continue;
+        }
+        (row as Writable<RowGroup>).expanded = true;
 
         offset += processRowsBetter(row.__children, row, rowIndex + 1, row.last, depth + 1);
       }

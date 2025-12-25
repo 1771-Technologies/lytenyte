@@ -5,7 +5,6 @@ import {
   sizeFromCoord,
   type LayoutHeaderCell,
 } from "@1771technologies/lytenyte-shared";
-import { getComputedStyle } from "@1771technologies/lytenyte-shared";
 import { clamp, getClientX } from "@1771technologies/lytenyte-shared";
 import { useRoot } from "../../../root/root-context.js";
 
@@ -54,10 +53,6 @@ export function ResizeHandler({ cell, style, className }: ResizeHandlerProps) {
         let startX: number | null = null;
         let anim: number | null = null;
 
-        const style = getComputedStyle(vp);
-        const overflow = style.overflowX;
-        vp.style.overflowX = "hidden";
-
         const minWidth = column.widthMin ?? base.widthMin ?? DEFAULT_COLUMN_WIDTH_MIN;
         const maxWidth = column.widthMax ?? base.widthMax ?? DEFAULT_COLUMN_WIDTH_MAX;
 
@@ -98,7 +93,7 @@ export function ResizeHandler({ cell, style, className }: ResizeHandlerProps) {
             if (anim) cancelAnimationFrame(anim);
             controller.abort();
 
-            vp.style.overflowX = overflow;
+            // vp.style.overflowX = overflow;
             const newWidth = width + deltaRef.current;
 
             api.columnResize({ [cell.id]: newWidth });

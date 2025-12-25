@@ -1,6 +1,6 @@
 import type { RowSource } from "@1771technologies/lytenyte-shared";
-import { useEvent } from "../../../../hooks/use-event.js";
 import type { Root } from "../../../root.js";
+import { useEvent } from "../../../../internal.js";
 
 export function useRowGroupToggle(props: Root.Props, source: RowSource): Root.API["rowGroupToggle"] {
   return useEvent((rowOrId, state) => {
@@ -9,6 +9,7 @@ export function useRowGroupToggle(props: Root.Props, source: RowSource): Root.AP
     if (!row || row.kind !== "branch") return;
 
     const next = state ?? !source.rowGroupIsExpanded(row.id);
+
     const change = { [row.id]: next };
     source.onRowGroupExpansionChange(change);
     props.onRowGroupExpansionChange?.(change);

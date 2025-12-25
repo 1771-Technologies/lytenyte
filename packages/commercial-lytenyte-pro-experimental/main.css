@@ -24,5 +24,32 @@
       outline: 1px solid var(--ln-primary-50);
       outline-offset: -1px;
     }
+
+    [data-ln-component-group-cell="true"] {
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+
+      &[data-ln-component-group-cell-expanded="true"] [data-ln-component-group-cell-expander="true"] {
+        transform: rotate(90deg);
+      }
+
+      & [data-ln-component-group-cell-expander="true"] {
+        background-color: transparent;
+        border: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: var(--ln-space-60);
+        height: var(--ln-space-60);
+
+        &:hover {
+          background-color: var(--ln-bg-button-light);
+          cursor: pointer;
+        }
+      }
+    }
   }
 }

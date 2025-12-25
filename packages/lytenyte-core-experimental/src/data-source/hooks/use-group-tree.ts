@@ -83,6 +83,8 @@ export function useGroupTree<T>(
               id: groupId,
               data: null as any,
               depth: j,
+              expandable: true,
+              expanded: false,
               key: p,
             });
           const node = groupNodeCacheRef.current.get(groupId)!;
