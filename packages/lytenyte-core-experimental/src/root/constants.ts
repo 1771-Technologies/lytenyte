@@ -27,4 +27,5 @@ export const DEFAULT_ROW_SOURCE: RowSource = {
   onRowGroupExpansionChange: () => {},
   onRowsUpdated: () => {},
   onRowsSelected: () => {},
+  onViewChange: () => {},
 };

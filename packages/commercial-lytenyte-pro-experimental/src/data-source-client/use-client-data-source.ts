@@ -203,6 +203,7 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
       },
       onRowsSelected,
       onRowsUpdated,
+      onViewChange: () => {},
 
       usePivotProps: (params) => {
         const { onColumnGroupExpansionChange, onColumnsChange, onRowGroupExpansionChange } = params ?? {};
