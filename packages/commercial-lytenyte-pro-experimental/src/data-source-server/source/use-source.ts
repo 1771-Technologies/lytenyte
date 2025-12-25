@@ -6,7 +6,7 @@ import { ServerData, type DataFetcher } from "../server-data.js";
 import type { SourceState } from "./use-source-state";
 
 export function useSource<K extends unknown[]>(
-  props: UseServerDataSourceParams<K>,
+  props: UseServerDataSourceParams<K, unknown[]>,
   s: SourceState,
   globalSignal: Signal<number>,
 ) {
