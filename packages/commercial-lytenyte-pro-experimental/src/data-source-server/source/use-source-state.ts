@@ -5,7 +5,7 @@ import type { UseServerDataSourceParams } from "../use-server-data-source";
 
 export type SourceState = ReturnType<typeof useSourceState>;
 
-export function useSourceState<K extends unknown[]>(props: UseServerDataSourceParams<K>) {
+export function useSourceState<K extends unknown[]>(props: UseServerDataSourceParams<K, unknown[]>) {
   const [maxDepth, setMaxDepth] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingError, setLoadingError] = useState<unknown>(null);

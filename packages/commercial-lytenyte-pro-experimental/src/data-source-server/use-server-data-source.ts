@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import type { DataRequest, DataResponse, DataResponsePinned, QueryFnParams } from "./types";
 import { usePiece, type Piece } from "@1771technologies/lytenyte-core-experimental/internal";
-import { type RowSource } from "@1771technologies/lytenyte-shared";
+import { type RowGroup, type RowLeaf, type RowNode, type RowSource } from "@1771technologies/lytenyte-shared";
 import { useRowByIndex } from "./source/use-row-by-index.js";
 import { useGlobalRefresh } from "../data-source-client/source/use-global-refresh.js";
 import { useRowIndexToRowId } from "./source/use-row-index-to-row-id.js";
@@ -15,22 +15,37 @@ import { useRowsBetween } from "./source/use-rows-between.js";
 import { useRowChildren } from "./source/use-row-children.js";
 
 export interface RowSourceServer<T> extends RowSource<T> {
-  isLoading: Piece<boolean>;
-  loadingError: Piece<unknown>;
-  requestsForView: Piece<DataRequest[]>;
+  readonly isLoading: Piece<boolean>;
+  readonly loadingError: Piece<unknown>;
+  readonly requestsForView: Piece<DataRequest[]>;
+
+  readonly rowsSelected: () =>
+    | { kind: "all"; exceptions: string[]; loaded: Map<string, RowNode<T>>[] }
+    | {
+        kind: "leafs-and-groups";
+        selected: (
+          | { kind: "leaf"; row: RowLeaf<T> }
+          | { kind: "group"; row: RowGroup; exceptions: string[]; loaded: Map<string, RowNode<T>>[] }
+        )[];
+      }
+    | { kind: "leafs"; selected: RowLeaf<T>[] }
+    | { kind: "isolated"; selected: RowNode<T>[] };
 }
 
-export interface UseServerDataSourceParams<K extends unknown[]> {
+export interface UseServerDataSourceParams<K extends unknown[], S extends unknown[]> {
   readonly queryFn: (params: QueryFnParams<K>) => Promise<(DataResponse | DataResponsePinned)[]>;
   readonly queryKey: K;
   readonly blockSize?: number;
 
   readonly rowGroupExpansions?: { [rowId: string]: boolean | undefined };
   readonly rowGroupDefaultExpansion?: boolean | number;
+
+  readonly rowsIsolatedSelection?: boolean;
+  readonly rowSelectKey?: S;
 }
 
-export function useServerDataSource<T, K extends unknown[] = unknown[]>(
-  props: UseServerDataSourceParams<K>,
+export function useServerDataSource<T, K extends unknown[] = unknown[], S extends unknown[] = unknown[]>(
+  props: UseServerDataSourceParams<K, S>,
 ): RowSourceServer<T> {
   const s = useSourceState(props);
 
@@ -65,6 +80,8 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
       rowIdToRowIndex,
       rowIndexToRowId,
       rowChildren,
+
+      rowsSelected: () => ({ kind: "leafs", selected: [] }),
       rowIsSelected: () => false,
 
       rowLeafs: () => {
