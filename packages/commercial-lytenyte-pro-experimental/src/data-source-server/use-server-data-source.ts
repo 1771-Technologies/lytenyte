@@ -1,15 +1,15 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import type { DataRequest, DataResponse, DataResponsePinned, QueryFnParams } from "./types";
-import {
-  useControlled,
-  useEvent,
-  usePiece,
-  type Piece,
-} from "@1771technologies/lytenyte-core-experimental/internal";
+import { useEvent, usePiece, type Piece } from "@1771technologies/lytenyte-core-experimental/internal";
 import { ServerData, type DataFetcher } from "./server-data.js";
-import { arrayShallow, equal, type RowSource } from "@1771technologies/lytenyte-shared";
+import { arrayShallow, type RowSource } from "@1771technologies/lytenyte-shared";
 import { useRowByIndex } from "./source/use-row-by-index.js";
-import { useGlobalRefresh } from "../data-source-client/source-functions/use-global-refresh.js";
+import { useGlobalRefresh } from "../data-source-client/source/use-global-refresh.js";
+import { useRowIndexToRowId } from "./source/use-row-index-to-row-id.js";
+import { useRowIdToRowIndex } from "./source/use-row-id-to-row-index.js";
+import { useRowById } from "./source/use-row-by-id.js";
+import { useOnViewChange } from "./source/use-on-view-change.js";
+import { useSourceState } from "./source/use-source-state.js";
 
 export interface RowSourceServer<T> extends RowSource<T> {
   isLoading: Piece<boolean>;
@@ -29,18 +29,7 @@ export interface UseServerDataSourceParams<K extends unknown[]> {
 export function useServerDataSource<T, K extends unknown[] = unknown[]>(
   props: UseServerDataSourceParams<K>,
 ): RowSourceServer<T> {
-  const [isLoading, setIsLoading] = useState(false);
-  const [loadingError, setLoadingError] = useState<unknown>(null);
-  const [requestsForView, setRequestsForView] = useState<DataRequest[]>([]);
-
-  const [topCount, setTopCount] = useState(0);
-  const [rowCount, setRowCount] = useState(0);
-  const [botCount, setBotCount] = useState(0);
-
-  const [expansions] = useControlled({
-    controlled: props.rowGroupExpansions,
-    default: {},
-  });
+  const s = useSourceState(props);
 
   const prevQueryKeyRef = useRef(null as any);
   const queryKey = useMemo(() => {
@@ -72,20 +61,20 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
     sourceRef.current = new ServerData({
       defaultExpansion: props.rowGroupDefaultExpansion ?? false,
       blocksize: props.blockSize ?? 200,
-      expansions,
+      expansions: s.expansions,
       pivotExpansions: {}, // TODO
       pivotMode: false, // TODO
       onResetLoadBegin: () => {
-        setIsLoading(true);
-        setLoadingError(null);
+        s.setIsLoading(true);
+        s.setLoadingError(null);
       },
       onInvalidate: () => {}, // TODO
-      onResetLoadEnd: () => setIsLoading(false),
-      onResetLoadError: (e) => setLoadingError(e),
+      onResetLoadEnd: () => s.setIsLoading(false),
+      onResetLoadError: (e) => s.setLoadingError(e),
       onFlatten: (f) => {
-        setTopCount(f.top);
-        setBotCount(f.bottom);
-        setRowCount(f.center + f.top + f.bottom);
+        s.setTopCount(f.top);
+        s.setBotCount(f.bottom);
+        s.setRowCount(f.center + f.top + f.bottom);
 
         globalSignal(Date.now());
       },
@@ -96,29 +85,43 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
     sourceRef.current.dataFetcher = dataFetcher;
   }, [dataFetcher]);
 
-  const isLoading$ = usePiece(isLoading);
-  const loadError$ = usePiece(loadingError);
-  const requestsForView$ = usePiece(requestsForView, setRequestsForView);
-  const top$ = usePiece(topCount);
-  const bot$ = usePiece(botCount);
-  const rowCount$ = usePiece(rowCount);
+  const isLoading$ = usePiece(s.isLoading);
+  const loadError$ = usePiece(s.loadingError);
+  const requestsForView$ = usePiece(s.requestsForView, s.setRequestsForView);
+
+  const top$ = usePiece(s.topCount);
+  const bot$ = usePiece(s.botCount);
+  const rowCount$ = usePiece(s.rowCount);
 
   // Source from here down
-
   const globalSignal = useGlobalRefresh();
+
   const { rowByIndex, rowInvalidate } = useRowByIndex<T>(sourceRef.current, globalSignal);
+  const rowById = useRowById<T>(sourceRef.current);
+  const rowIdToRowIndex = useRowIdToRowIndex<T>(sourceRef.current);
+  const rowIndexToRowId = useRowIndexToRowId<T>(sourceRef.current);
+  const onViewChange = useOnViewChange(sourceRef.current, s.requestsForView, s.setRequestsForView);
 
   const rowSource = useMemo<RowSourceServer<T>>(() => {
     const source: RowSourceServer<T> = {
-      rowById: () => null,
+      rowById,
       rowByIndex,
       rowInvalidate,
-      rowIdToRowIndex: () => null,
-      rowIndexToRowId: () => null,
+      rowIdToRowIndex,
+      rowIndexToRowId,
       rowChildren: () => [],
       rowIsSelected: () => false,
+
       rowLeafs: () => [],
-      rowParents: () => [],
+      rowParents: (id) => {
+        const rowIndex = rowIdToRowIndex(id);
+        if (rowIndex == null) return [];
+
+        const ranges = sourceRef.current.flat.rangeTree.findRangesForRowIndex(rowIndex);
+        console.log(ranges);
+
+        return [];
+      },
       rowsBetween: () => [],
       rowsSelected: () => [],
 
@@ -132,26 +135,27 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
       onRowGroupExpansionChange: () => {},
       onRowsSelected: () => {},
       onRowsUpdated: () => {},
-      onViewChange: (bounds) => {
-        const source = sourceRef.current;
-
-        // This will result in the server sending the requests for the current view.
-        source.rowViewBounds = [bounds.rowCenterStart, bounds.rowCenterEnd];
-
-        const requests = source.requestsForView();
-        const current = requestsForView$.get();
-        if (equal(requests, current)) return;
-
-        requestsForView$.set(requests);
-      },
-
+      onViewChange,
       isLoading: isLoading$,
       loadingError: loadError$,
       requestsForView: requestsForView$,
     };
 
     return source;
-  }, [bot$, isLoading$, loadError$, requestsForView$, rowByIndex, rowCount$, rowInvalidate, top$]);
+  }, [
+    bot$,
+    isLoading$,
+    loadError$,
+    onViewChange,
+    requestsForView$,
+    rowById,
+    rowByIndex,
+    rowCount$,
+    rowIdToRowIndex,
+    rowIndexToRowId,
+    rowInvalidate,
+    top$,
+  ]);
 
   return rowSource;
 }

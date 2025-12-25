@@ -12,34 +12,46 @@ import { ViewportShadows } from "@1771technologies/lytenyte-core-experimental";
 import { useState } from "react";
 import type { Column, GridSpec, Props } from "../types";
 import { RowGroupCell } from "../components/row-group-cell.js";
-import type { MovieData } from "./basic-server-data/data";
+import type { SalaryData } from "./basic-server-data/data";
 import { useServerDataSource } from "../data-source-server/use-server-data-source.js";
 import { Server } from "./basic-server-data/server.js";
 
 interface Spec extends GridSpec {
-  data: MovieData;
+  data: SalaryData;
 }
 
 const columns: Column<Spec>[] = [
   {
-    id: "#",
-    name: "",
-    width: 30,
-    field: "link",
-    widthMin: 30,
-    widthMax: 30,
+    id: "Gender",
+    width: 120,
+    widthFlex: 1,
   },
-  { id: "name", name: "Title", width: 250, widthFlex: 1 },
-  { id: "released_at", name: "Released", width: 120 },
-  { id: "genre", name: "Genre" },
-  { id: "type", name: "Type", width: 120 },
-  { id: "imdb_rating", name: "Rating", width: 120 },
+  {
+    id: "Education Level",
+    name: "Education",
+    width: 160,
+    hide: true,
+    widthFlex: 1,
+  },
+  {
+    id: "Age",
+    type: "number",
+    width: 100,
+    widthFlex: 1,
+  },
+  {
+    id: "Years of Experience",
+    name: "YoE",
+    type: "number",
+    width: 100,
+    widthFlex: 1,
+  },
+  { id: "Salary", type: "number", width: 160, widthFlex: 1 },
 ];
-
 export default function Experimental() {
   const ds = useServerDataSource({
     queryFn: async ({ requests }) => {
-      return Server(requests);
+      return Server(requests, ["Education Level"]);
     },
     queryKey: [],
   });
@@ -82,7 +94,7 @@ export default function Experimental() {
             rowGroupColumn={rowGroupColumn}
             onRowGroupColumnChange={setRowGroupColumn}
           >
-            <Viewport>
+            <Viewport style={{ scrollbarGutter: "stable" }}>
               <ViewportShadows />
               <Header />
               <RowsContainer>
