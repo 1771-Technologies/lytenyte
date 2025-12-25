@@ -1,7 +1,7 @@
 import { ROOT_LEAF_PREFIX } from "./+constants.async-tree.js";
 import type { SetDataAction, TreeLeaf, TreeParent, TreeRoot } from "./+types.async-tree.js";
 
-export function maybeApplySetActionItems(p: SetDataAction, pathNode: TreeParent | TreeRoot) {
+export function maybeApplySetActionItems(p: SetDataAction, pathNode: TreeParent | TreeRoot, root: TreeRoot) {
   if (!p.items?.length) {
     return false;
   }
@@ -36,6 +36,8 @@ export function maybeApplySetActionItems(p: SetDataAction, pathNode: TreeParent 
 
       if (!currentI || currentI.asOf < asOf) pathNode.byIndex.set(item.relIndex, node);
       if (!currentP || currentP.asOf < asOf) pathNode.byPath.set(path, node);
+
+      root.rowIdToNode.set(node.row.id, node);
     } else {
       const node: TreeParent = {
         byIndex: existing?.kind === "parent" ? existing.byIndex : new Map(),
@@ -54,6 +56,8 @@ export function maybeApplySetActionItems(p: SetDataAction, pathNode: TreeParent 
 
       if (!currentI || currentI.asOf < asOf) pathNode.byIndex.set(item.relIndex, node);
       if (!currentP || currentP.asOf < asOf) pathNode.byPath.set(path, node);
+
+      root.rowIdToNode.set(node.row.id, node);
     }
   }
 

@@ -9,6 +9,7 @@ export type TreeRoot = {
   readonly byIndex: Map<number, LeafOrParent>;
   readonly size: number;
   readonly asOf: number;
+  readonly rowIdToNode: Map<string, LeafOrParent>;
 };
 
 export type TreeParent = {

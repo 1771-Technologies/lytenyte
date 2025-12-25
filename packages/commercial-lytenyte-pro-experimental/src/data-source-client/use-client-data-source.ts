@@ -43,6 +43,7 @@ export type PivotMeasure<Spec extends GridSpec = GridSpec> = {
 };
 
 export interface RowSourceClient<Spec extends GridSpec = GridSpec> extends RowSource<Spec["data"]> {
+  readonly rowsSelected: () => RowNode<Spec["data"]>[];
   readonly usePivotProps: (props?: {
     onColumnsChange?: Props<Spec>["onColumnsChange"];
     onColumnGroupExpansionChange?: Props<Spec>["onColumnGroupExpansionChange"];
@@ -152,7 +153,11 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
     rowsIsolatedSelection,
   );
 
-  const rowsSelected: RowSource["rowsSelected"] = useRowsSelected(rowById, s.selected, rowsIsolatedSelection);
+  const rowsSelected: RowSourceClient["rowsSelected"] = useRowsSelected(
+    rowById,
+    s.selected,
+    rowsIsolatedSelection,
+  );
 
   const globalSignal = useGlobalRefresh();
   const { rowInvalidate, rowByIndex } = useRowByIndex(

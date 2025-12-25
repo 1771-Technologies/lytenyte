@@ -4,7 +4,9 @@ import type { RowSourceServer } from "../use-server-data-source";
 
 export function useRowById<T>(source: ServerData) {
   const rowById: RowSourceServer<T>["rowById"] = useEvent((id) => {
-    return source.flat.rowIdToRow.get(id) ?? null;
+    const node = source.tree.rowIdToNode.get(id)?.row;
+
+    return node ?? null;
   });
 
   return rowById;
