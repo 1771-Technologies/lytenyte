@@ -1,7 +1,7 @@
 import type { DeleteDataAction, TreeRoot } from "./+types.async-tree";
 import { getParentNodeByPath } from "./get-parent-node-by-path.js";
 
-export function applyDeleteActionToTree<K, D>(p: DeleteDataAction, tree: TreeRoot<K, D>) {
+export function applyDeleteActionToTree(p: DeleteDataAction, tree: TreeRoot) {
   // No op. We aren't deleting keys or indices
   if (!p.relIndices?.length && !p.paths?.length) return;
 

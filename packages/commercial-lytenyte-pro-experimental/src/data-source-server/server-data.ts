@@ -29,7 +29,7 @@ export type DataFetcher = (
 ) => Promise<(DataResponse | DataResponsePinned)[]>;
 
 export interface FlatView {
-  readonly tree: TreeRootAndApi<RowGroup, RowLeaf>;
+  readonly tree: TreeRootAndApi;
   readonly top: number;
   readonly center: number;
   readonly bottom: number;
@@ -37,7 +37,7 @@ export interface FlatView {
   readonly rowIndexToRow: Map<number, RowNode<any>>;
   readonly rowIdToRow: Map<string, RowNode<any>>;
   readonly rowIdToRowIndex: Map<string, number>;
-  readonly rowIdToTreeNode: Map<string, LeafOrParent<RowGroup, RowLeaf>>;
+  readonly rowIdToTreeNode: Map<string, LeafOrParent>;
   readonly loading: Set<number>;
   readonly loadingGroup: Set<number>;
   readonly errored: Map<number, { error: unknown; request?: DataRequest }>;
@@ -70,7 +70,7 @@ export class ServerData {
 
   #blocksize: number;
 
-  tree: TreeRootAndApi<RowGroup, RowLeaf>;
+  tree: TreeRootAndApi;
   flat!: FlatView;
 
   #dataFetcher: DataFetcher = noopFetcher;
@@ -206,7 +206,7 @@ export class ServerData {
 
     path.push(row.key);
 
-    const r = (ranges.at(-1)?.parent as TreeParent<any, any>).byPath.get(row.key) as TreeParent<any, any>;
+    const r = (ranges.at(-1)?.parent as TreeParent).byPath.get(row.key) as TreeParent;
     const blocksize = this.#blocksize;
 
     const start = 0;
@@ -297,11 +297,11 @@ export class ServerData {
       const r = center[i];
       this.tree.set({
         path: r.path,
-        items: r.data.map<Required<SetDataAction<RowGroup, RowLeaf>>["items"][number]>((c, i) => {
+        items: r.data.map<Required<SetDataAction>["items"][number]>((c, i) => {
           if (c.kind === "leaf") {
             return {
               kind: "leaf",
-              data: {
+              row: {
                 kind: "leaf",
                 data: c.data,
                 id: c.id,
@@ -311,7 +311,7 @@ export class ServerData {
           } else {
             return {
               kind: "parent",
-              data: {
+              row: {
                 kind: "branch",
                 data: c.data,
                 depth: r.path.length,
@@ -338,7 +338,7 @@ export class ServerData {
   };
 
   requestForNextSlice(req: DataRequest) {
-    let current: TreeRoot<any, any> | TreeParent<any, any> | TreeLeaf<any, any> = this.tree;
+    let current: TreeRoot | TreeParent | TreeLeaf = this.tree;
 
     for (const c of req.path) {
       if (current.kind === "leaf") return null;
@@ -496,7 +496,7 @@ export class ServerData {
     const centerRow = this.flat.rowIdToTreeNode.get(id);
 
     if (centerRow) {
-      (centerRow as any).data = { ...centerRow.data, data };
+      (centerRow as any).data = { ...centerRow.row, data };
       return;
     }
 
@@ -526,7 +526,7 @@ export class ServerData {
     const rowIdToRow = new Map<string, RowNode<any>>();
     const rowIndexToRow = new Map<number, RowNode<any>>();
     const rowIdToRowIndex = new Map<string, number>();
-    const rowIdToTreeNode = new Map<string, LeafOrParent<RowGroup, RowLeaf>>();
+    const rowIdToTreeNode = new Map<string, LeafOrParent>();
 
     // When flattening the tree we need to keep track of the ranges. The tree itself
     // will only have some rows loaded, but the ranges will be fully defined.
@@ -545,47 +545,46 @@ export class ServerData {
     const postFlatRequests: [ri: number, DataRequest][] = [];
 
     let hasGroups = false;
-    function processParent(
-      node: TreeRoot<RowGroup, RowLeaf> | TreeParent<RowGroup, RowLeaf>,
-      start: number,
-    ): number {
+    function processParent(node: TreeRoot | TreeParent, start: number): number {
       const rows = [...node.byIndex.values()].sort((l, r) => l.relIndex - r.relIndex);
 
       let offset = 0;
 
       for (let i = 0; i < rows.length; i++) {
-        const row = rows[i];
-        const rowIndex = row.relIndex + start + offset;
+        const node = rows[i];
+        const rowIndex = node.relIndex + start + offset;
 
-        rowIndexToRow.set(rowIndex, row.data);
-        rowIdToRowIndex.set(row.data.id, rowIndex);
-        rowIdToRow.set(row.data.id, row.data);
-        rowIdToTreeNode.set(row.data.id, row);
+        rowIndexToRow.set(rowIndex, node.row);
+        rowIdToRowIndex.set(node.row.id, rowIndex);
+        rowIdToRow.set(node.row.id, node.row);
+        rowIdToTreeNode.set(node.row.id, node);
 
         // If this rows is a parent row, we need to check if it is expanded. There are a couple of
         // situations this to consider.
         // - the row is not expanded, in which case we only add the row itself to the flat view
         // - the row is expanded but it has no data loaded. We should then request data, but not add the rows
         // - the row is expanded and there is add. This is the easy case, we simply add the child rows as we flatten
-        if (row.kind === "parent") {
+        if (node.kind === "parent") {
           hasGroups = true;
 
           const expanded =
-            expansions[row.data.id] ??
-            (typeof defaultExpansion === "number" ? getNodeDepth(row) <= defaultExpansion : defaultExpansion);
+            expansions[node.row.id] ??
+            (typeof defaultExpansion === "number"
+              ? getNodeDepth(node) <= defaultExpansion
+              : defaultExpansion);
 
           if (expanded) {
-            (row.data as Writable<RowGroup>).expanded = true;
+            (node.row as Writable<RowGroup>).expanded = true;
           } else {
-            (row.data as Writable<RowGroup>).expanded = false;
+            (node.row as Writable<RowGroup>).expanded = false;
           }
 
           // Expanded but no data. Fetch the child data.
-          if (expanded && !row.byIndex.size) {
-            const path = getNodePath(row);
+          if (expanded && !node.byIndex.size) {
+            const path = getNodePath(node);
 
             const start = 0;
-            const end = Math.min(start + blocksize, row.size);
+            const end = Math.min(start + blocksize, node.size);
             const reqSize = end - start;
             const req: DataRequest = {
               path,
@@ -601,7 +600,7 @@ export class ServerData {
               postFlatRequests.push([rowIndex, req]);
             }
           } else if (expanded) {
-            offset += processParent(row, rowIndex + 1);
+            offset += processParent(node, rowIndex + 1);
           }
         }
       }

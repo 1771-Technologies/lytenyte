@@ -2,10 +2,7 @@ import type { SetDataAction, TreeParent, TreeRoot } from "./+types.async-tree.js
 
 const invalidItemKeySize = "Invalid set action items, 'relIndex' must be less than parent size";
 
-export function checkSetActionItemKeysFit<K, D>(
-  p: SetDataAction<K, D>,
-  pathNode: TreeParent<K, D> | TreeRoot<K, D>,
-) {
+export function checkSetActionItemKeysFit(p: SetDataAction, pathNode: TreeParent | TreeRoot) {
   // If we are not adding any items, then the items definitely fit - since 0 fits in 0.
   if (!p.items?.length) return true;
 

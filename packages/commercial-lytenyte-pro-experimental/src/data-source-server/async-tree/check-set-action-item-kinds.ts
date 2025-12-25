@@ -2,7 +2,7 @@ import type { SetDataAction } from "./+types.async-tree.js";
 
 const invalidItemKind = "Invalid set action items, 'kind' must be 'leaf' or 'parent'";
 
-export function checkSetActionItemKinds<K, D>(p: SetDataAction<K, D>) {
+export function checkSetActionItemKinds(p: SetDataAction) {
   if (!p.items?.length) return true;
 
   const items = p.items;

@@ -9,7 +9,7 @@ export type FlattenedRange = {
   /** Ending row index (exclusive) */
   rowEnd: number;
   /** Path identifier for this range */
-  parent: TreeParent<any, any> | TreeRoot<any, any>;
+  parent: TreeParent | TreeRoot;
 };
 
 /**

@@ -9,7 +9,7 @@ import { isSetActionANoOpOnNode } from "./is-set-action-a-no-op-on-node.js";
 import { maybeApplyResize } from "./maybe-apply-resize.js";
 import { maybeApplySetActionItems } from "./maybe-apply-set-action-items.js";
 
-export function applySetActionToTree<K, D>(p: SetDataAction<K, D>, root: TreeRoot<K, D>) {
+export function applySetActionToTree(p: SetDataAction, root: TreeRoot) {
   // If we are not adding items and we are not resizing a node, then we just
   // return our previous data and skip the update. This is effectively a no-op.
   if (!p.items?.length && p.size == null) return false;
