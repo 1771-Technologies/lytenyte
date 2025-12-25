@@ -82,7 +82,6 @@ export interface RowSource<T = any> {
   readonly rowByIndex: (row: number) => RowAtom<RowNode<T> | null>;
   readonly rowById: (id: string) => RowNode<T> | null;
   readonly rowParents: (id: string) => string[];
-  readonly rowGroupIsExpanded: (id: string) => boolean;
   readonly rowIsSelected: (id: string) => boolean;
   readonly rowChildren: (id: string) => string[];
   readonly rowLeafs: (id: string) => string[];
@@ -123,6 +122,9 @@ export interface RowGroup {
   readonly data: Record<string, unknown>;
   readonly depth: number;
   readonly last: boolean;
+
+  readonly expanded: boolean;
+  readonly expandable: boolean;
 
   readonly loading?: boolean;
   readonly error?: unknown;

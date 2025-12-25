@@ -14,7 +14,6 @@ import type {
 } from "@1771technologies/lytenyte-shared";
 import { useLeafNodes } from "./hooks/use-leaf-nodes.js";
 import { useControlledState } from "./hooks/use-controlled-ds-state.js";
-import { useRowGroupIsExpanded } from "./source-functions/use-row-group-is-expanded.js";
 import { useOnRowsUpdated } from "./source-functions/use-on-rows-updated.js";
 import { useGlobalRefresh } from "./source-functions/use-global-refresh.js";
 import { useRowById } from "./source-functions/use-row-by-id.js";
@@ -138,11 +137,6 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
 
   const rowById = useRowById(f.tree, f.leafIdsRef);
   const rowParents = useRowParents(rowById, f.tree, props.group, props.groupIdFn ?? groupIdFallback);
-  const rowGroupIsExpanded = useRowGroupIsExpanded(
-    f.rowByIdRef,
-    mode ? s.pivotRowGroupExpansions : s.expansions,
-    props.rowGroupDefaultExpansion,
-  );
   const onRowsUpdated = useOnRowsUpdated(props.onRowDataChange);
 
   const rowIsSelected = useRowIsSelected(rowById, s.selected, f.tree, rowsIsolatedSelection);
@@ -189,7 +183,6 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
       rowIndexToRowId: (index) => f.rowByIndexRef.current.get(index)?.id ?? null,
       rowIdToRowIndex: (id: string) => f.rowIdToRowIndexRef.current.get(id) ?? null,
       rowById,
-      rowGroupIsExpanded,
       rowsBetween,
       rowChildren,
       rowLeafs,
@@ -271,7 +264,6 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
     rowInvalidate,
     rowByIndex,
     rowById,
-    rowGroupIsExpanded,
     rowsBetween,
     rowChildren,
     rowLeafs,

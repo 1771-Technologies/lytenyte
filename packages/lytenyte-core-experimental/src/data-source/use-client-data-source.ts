@@ -17,7 +17,6 @@ import { useSorted } from "./hooks/use-sorted.js";
 import { useGroupTree } from "./hooks/use-group-tree.js";
 import { useFlattenedGroups } from "./hooks/use-flattened-groups.js";
 import { useControlledState } from "./hooks/use-controlled-ds-state.js";
-import { useRowGroupIsExpanded } from "./source-functions/use-row-group-is-expanded.js";
 import { useOnRowsUpdated } from "./source-functions/use-on-rows-updated.js";
 import { useGlobalRefresh } from "./source-functions/use-global-refresh.js";
 import { useRowById } from "./source-functions/use-row-by-id.js";
@@ -74,7 +73,7 @@ export function useClientDataSource<T>(props: UseClientDataSourceParams<T>) {
     rowsIsolatedSelection = false,
   } = props;
 
-  const { expandedFn, expansions, selected, setExpansions, setSelected } = useControlledState(props);
+  const { expandedFn, selected, setExpansions, setSelected } = useControlledState(props);
 
   const [leafsTop, leafs, leafsBot, leafIdsRef] = useLeafNodes(topData, data, botData, leafIdFn);
   const filtered = useFiltered(leafs, filter);
@@ -86,7 +85,6 @@ export function useClientDataSource<T>(props: UseClientDataSourceParams<T>) {
 
   const {
     flatten: piece,
-    rowByIdRef,
     rowByIndexRef,
     rowIdToRowIndexRef,
   } = useFlattenedPiece({
@@ -103,7 +101,6 @@ export function useClientDataSource<T>(props: UseClientDataSourceParams<T>) {
 
   const rowById = useRowById(tree, leafIdsRef);
   const rowParents = useRowParents(rowById, tree, group, props.groupIdFn ?? groupIdFallback);
-  const rowGroupIsExpanded = useRowGroupIsExpanded(rowByIdRef, expansions, props.rowGroupDefaultExpansion);
   const onRowsUpdated = useOnRowsUpdated(props.onRowDataChange);
 
   const globalSignal = useGlobalRefresh();
@@ -148,7 +145,6 @@ export function useClientDataSource<T>(props: UseClientDataSourceParams<T>) {
       rowIndexToRowId: (index) => rowByIndexRef.current.get(index)?.id ?? null,
       rowIdToRowIndex: (id: string) => rowIdToRowIndexRef.current.get(id) ?? null,
       rowById,
-      rowGroupIsExpanded,
       rowsBetween,
       rowChildren,
       rowLeafs,
@@ -181,7 +177,6 @@ export function useClientDataSource<T>(props: UseClientDataSourceParams<T>) {
     rowByIndex,
     rowByIndexRef,
     rowChildren,
-    rowGroupIsExpanded,
     rowIdToRowIndexRef,
     rowInvalidate,
     rowIsSelected,

@@ -11,9 +11,10 @@ import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smal
 import { Header, Root, RowsBottom, RowsCenter, RowsContainer, RowsTop, Viewport } from "./index.parts.js";
 import { ViewportShadows } from "@1771technologies/lytenyte-core-experimental";
 import { useClientDataSource } from "./data-source-client/use-client-data-source.js";
-import { useMemo } from "react";
-import type { GridSpec } from "./types";
+import { useMemo, useState } from "react";
+import type { GridSpec, Props } from "./types";
 import type { RowLeaf } from "@1771technologies/lytenyte-shared";
+import { RowGroupCell } from "./components/row-group-cell.js";
 
 type BankData = (typeof bankDataSmall)[number];
 
@@ -42,7 +43,6 @@ const sumAge = (rows: RowLeaf<BankData>[]) => rows.reduce((acc, x) => x.data.bal
 export default function Experimental() {
   const ds = useClientDataSource<Spec>({
     data: bankDataSmall,
-    rowGroupDefaultExpansion: true,
     pivotMode: true,
     pivotGrandTotals: "bottom",
     pivotModel: {
@@ -58,6 +58,10 @@ export default function Experimental() {
     },
   });
   const pivotProps = ds.usePivotProps();
+
+  const [rowGroupColumn, setRowGroupColumn] = useState<Props<Spec>["rowGroupColumn"]>({
+    cellRenderer: RowGroupCell,
+  });
 
   const { resolvedTheme } = useTheme();
   return (
@@ -82,6 +86,8 @@ export default function Experimental() {
               );
             }}
             rowSource={ds}
+            rowGroupColumn={rowGroupColumn}
+            onRowGroupColumnChange={setRowGroupColumn}
             {...pivotProps}
           >
             <Viewport>

@@ -64,6 +64,8 @@ export type API<Spec extends GridSpec = GridSpec> = {
   readonly rowIsLeaf: (row: RowNode<Spec["data"]>) => row is RowLeaf<Spec["data"]>;
   readonly rowIsGroup: (row: RowNode<Spec["data"]>) => row is RowGroup;
   readonly rowIsAggregated: (row: RowNode<Spec["data"]>) => row is RowAggregated;
+  readonly rowIsExpanded: (row: RowNode<Spec["data"]>) => boolean;
+  readonly rowIsExpandable: (row: RowNode<Spec["data"]>) => boolean;
 
   readonly exportData: (params?: {
     readonly rect: DataRect;
@@ -104,7 +106,6 @@ export type API<Spec extends GridSpec = GridSpec> = {
   ) => ReturnType<typeof useDraggable>;
 
   readonly props: () => Props<Spec>;
-} & (undefined extends Spec["source"]
-  ? Omit<RowSource, RowSourceOmits>
-  : Omit<Spec["source"], RowSourceOmits>) &
+} & Omit<RowSource, RowSourceOmits> &
+  (undefined extends Spec["source"] ? object : Omit<Spec["source"], RowSourceOmits>) &
   Spec["api"];
