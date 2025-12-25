@@ -15,7 +15,7 @@ export function useRowParents<T>(source: ServerData) {
       current = current.parent;
     }
 
-    return parents;
+    return parents.reverse();
   });
 
   return rowParents;

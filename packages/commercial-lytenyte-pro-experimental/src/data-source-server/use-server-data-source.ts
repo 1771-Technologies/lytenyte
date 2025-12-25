@@ -1,13 +1,7 @@
 import { useMemo } from "react";
-import type {
-  DataRequest,
-  DataResponse,
-  DataResponsePinned,
-  QueryFnParams,
-  ServerRowSelection,
-} from "./types";
-import { useEvent, usePiece, type Piece } from "@1771technologies/lytenyte-core-experimental/internal";
-import { type RowGroup, type RowLeaf, type RowNode, type RowSource } from "@1771technologies/lytenyte-shared";
+import type { DataRequest, DataResponse, DataResponsePinned, QueryFnParams } from "./types";
+import { usePiece, type Piece } from "@1771technologies/lytenyte-core-experimental/internal";
+import { type RowNode, type RowSelectionState, type RowSource } from "@1771technologies/lytenyte-shared";
 import { useRowByIndex } from "./source/use-row-by-index.js";
 import { useGlobalRefresh } from "../data-source-client/source/use-global-refresh.js";
 import { useRowIndexToRowId } from "./source/use-row-index-to-row-id.js";
@@ -20,23 +14,15 @@ import { useRowParents } from "./source/use-row-parents.js";
 import { useRowsBetween } from "./source/use-rows-between.js";
 import { useRowChildren } from "./source/use-row-children.js";
 import { useRowIsSelected } from "./source/use-row-is-selected.js";
+import { useOnRowsSelected } from "./source/on-rows-selected/use-on-rows-selected.js";
+import { useRowsSelected } from "./source/use-rows-selected.js";
 
 export interface RowSourceServer<T> extends RowSource<T> {
   readonly isLoading: Piece<boolean>;
   readonly loadingError: Piece<unknown>;
   readonly requestsForView: Piece<DataRequest[]>;
 
-  readonly rowsSelected: () =>
-    | { kind: "all"; exceptions: string[]; loaded: Map<string, RowNode<T>>[] }
-    | {
-        kind: "leafs-and-groups";
-        selected: (
-          | { kind: "leaf"; row: RowLeaf<T> }
-          | { kind: "group"; row: RowGroup; exceptions: string[]; loaded: Map<string, RowNode<T>>[] }
-        )[];
-      }
-    | { kind: "leafs"; selected: RowLeaf<T>[] }
-    | { kind: "isolated"; selected: RowNode<T>[] };
+  readonly rowsSelected: () => { state: RowSelectionState; loadedNodesSelected: RowNode<T>[] };
 }
 
 export interface UseServerDataSourceParams<K extends unknown[], S extends unknown[]> {
@@ -46,6 +32,9 @@ export interface UseServerDataSourceParams<K extends unknown[], S extends unknow
 
   readonly rowGroupExpansions?: { [rowId: string]: boolean | undefined };
   readonly rowGroupDefaultExpansion?: boolean | number;
+
+  readonly rowSelection?: RowSelectionState;
+  readonly onRowSelectionChange?: (state: RowSelectionState) => void;
 
   readonly rowsIsolatedSelection?: boolean;
   readonly rowSelectKey?: S;
@@ -77,62 +66,14 @@ export function useServerDataSource<T, K extends unknown[] = unknown[], S extend
   const rowChildren = useRowChildren<T>(source);
 
   const onViewChange = useOnViewChange(source, s.requestsForView, s.setRequestsForView);
+  const onRowsSelected = useOnRowsSelected(source, s, rowParents, isolatedSelected, globalSignal);
 
-  const onRowsSelected: RowSourceServer<T>["onRowsSelected"] = useEvent(({ mode, selected, deselect }) => {
-    // Invalid selection type.
-    if ((selected === "all" && mode === "single") || mode === "none") return;
-
-    if (mode === "single") {
-      s.setSelected({ kind: "isolated", selected: deselect ? new Set() : new Set([selected[0]]) });
-      globalSignal(Date.now());
-      return;
-    }
-
-    if (selected === "all" && deselect) {
-      const next: ServerRowSelection = isolatedSelected
-        ? { kind: "isolated", selected: new Set() }
-        : { kind: "leafs", selected: new Set() };
-      s.setSelected(next);
-      globalSignal(Date.now());
-
-      return;
-    }
-
-    if (selected === "all") {
-      s.setSelected({ kind: "all", exceptions: new Set() });
-      globalSignal(Date.now());
-      return;
-    }
-
-    // At this point we are selecting individual rows. We can handle isolated rows simply enough.
-    if (isolatedSelected) {
-      s.setSelected((prev) => {
-        if (prev.kind === "all") {
-          // We go something to do here
-          const exceptions = prev.exceptions;
-          const next = new Set(exceptions);
-          if (deselect) selected.forEach((x) => next.add(x));
-          else selected.forEach((x) => next.delete(x));
-
-          return { kind: "all", exceptions: next };
-        } else if (prev.kind !== "isolated") {
-          return { kind: "isolated", selected: new Set(selected) };
-        } else {
-          const next = new Set(prev.selected);
-          if (deselect) selected.forEach((x) => next.delete(x));
-          else selected.forEach((x) => next.add(x));
-
-          return { kind: "isolated", selected: next };
-        }
-      });
-      globalSignal(Date.now());
-    }
-  });
-
-  const rowIsSelected = useRowIsSelected(source, s);
-  const { rowByIndex, rowInvalidate } = useRowByIndex<T>(source, globalSignal, s);
+  const rowIsSelected = useRowIsSelected<T>(source, s, rowParents);
+  const rowsSelected = useRowsSelected<T>(source, s, rowParents);
+  const { rowByIndex, rowInvalidate } = useRowByIndex<T>(source, globalSignal, s, rowParents);
 
   const setExpansions = s.setExpansions;
+
   const rowSource = useMemo<RowSourceServer<T>>(() => {
     const rowSource: RowSourceServer<T> = {
       rowById,
@@ -141,8 +82,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[], S extend
       rowIdToRowIndex,
       rowIndexToRowId,
       rowChildren,
-
-      rowsSelected: () => ({ kind: "leafs", selected: [] }),
+      rowsSelected,
       rowIsSelected,
 
       rowLeafs: () => {
@@ -191,6 +131,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[], S extend
     rowIsSelected,
     rowParents,
     rowsBetween,
+    rowsSelected,
     setExpansions,
     top$,
   ]);

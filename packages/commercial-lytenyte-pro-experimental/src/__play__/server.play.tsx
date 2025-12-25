@@ -50,8 +50,11 @@ const columns: Column<Spec>[] = [
 ];
 export default function Experimental() {
   const ds = useServerDataSource({
+    rowsIsolatedSelection: false,
+    rowGroupDefaultExpansion: true,
+
     queryFn: async ({ requests }) => {
-      return Server(requests, []);
+      return Server(requests, ["Education Level", "Age"]);
     },
     queryKey: [],
   });

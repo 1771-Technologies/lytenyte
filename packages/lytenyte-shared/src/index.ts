@@ -11,8 +11,17 @@ export { partitionColumnsByPinState } from "./header-view/partition-columns-by-p
 export { computeColumnPositions } from "./coordinates/compute-column-positions.js";
 export { computeRowPositions } from "./coordinates/compute-row-positions.js";
 
+export { rowSelectLinkWithParents } from "./row-selection/row-select-link-with-parents.js";
+export { rowSelectLinkWithoutParents } from "./row-selection/row-select-link-without-parent.js";
 export type {
   Writable,
+  RowSelectionIsolated,
+  RowSelectionLinked,
+  RowSelectionState,
+  RowSelectNode,
+  RowSelectNodeWithParent,
+  RowSelectionLinkedWithParent,
+  RowSelectionStateWithParent,
   SpanFn,
   RowPredicate,
   SpanLayout,

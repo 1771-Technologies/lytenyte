@@ -45,19 +45,3 @@ export interface QueryFnParams<K extends unknown[]> {
     readonly rowGroupExpansions: Record<string, boolean | undefined>;
   };
 }
-
-export interface ServerRowSelectionAll {
-  readonly kind: "all";
-  readonly exceptions: Set<string>;
-}
-
-export interface ServerRowSelectionLeaf {
-  readonly kind: "leafs";
-  readonly selected: Set<string>;
-}
-export interface ServerRowSelectionIsolated {
-  readonly kind: "isolated";
-  readonly selected: Set<string>;
-}
-
-export type ServerRowSelection = ServerRowSelectionAll | ServerRowSelectionLeaf | ServerRowSelectionIsolated;
