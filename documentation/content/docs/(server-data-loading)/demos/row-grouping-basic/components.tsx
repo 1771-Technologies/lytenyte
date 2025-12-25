@@ -23,9 +23,7 @@ export function SalaryRenderer({ grid, row, column }: CellRendererParams<SalaryD
 
   if (typeof field !== "number") return null;
 
-  return (
-    <div className="flex h-full w-full items-center justify-end">${formatter.format(field)}</div>
-  );
+  return <div className="flex h-full w-full items-center justify-end">${formatter.format(field)}</div>;
 }
 
 export function YearsOfExperienceRenderer({ grid, row, column }: CellRendererParams<SalaryData>) {
@@ -108,29 +106,29 @@ export function GroupCellRenderer({ row, grid }: CellRendererParams<any>) {
   );
 }
 
-const LoadingSpinner = () => {
+/**
+ * 24x24 SVG loading spinner.
+ * - Inherits currentColor.
+ * - Use className to control size/color (defaults to 24px via width/height).
+ */
+function LoadingSpinner({ ...props }: React.SVGProps<SVGSVGElement> & { title?: string }) {
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <svg
-        className="h-4 w-4 animate-spin text-blue-500"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <circle
-          className="opacity-25"
-          cx="12"
-          cy="12"
-          r="8"
-          stroke="currentColor"
-          strokeWidth="4"
-        ></circle>
-        <path
-          className="opacity-75"
-          fill="currentColor"
-          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-        ></path>
-      </svg>
-    </div>
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" role="status" {...props}>
+      {/* Track */}
+      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" opacity="0.2" />
+
+      {/* Spinner arc */}
+      <path d="M21 12a9 9 0 0 1-9 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+
+      {/* Rotate animation */}
+      <animateTransform
+        attributeName="transform"
+        type="rotate"
+        from="0 12 12"
+        to="360 12 12"
+        dur="0.8s"
+        repeatCount="indefinite"
+      />
+    </svg>
   );
-};
+}

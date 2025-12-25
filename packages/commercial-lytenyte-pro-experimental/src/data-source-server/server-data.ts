@@ -1,4 +1,10 @@
-import { equal, type RowGroup, type RowLeaf, type RowNode } from "@1771technologies/lytenyte-shared";
+import {
+  equal,
+  type RowGroup,
+  type RowLeaf,
+  type RowNode,
+  type Writable,
+} from "@1771technologies/lytenyte-shared";
 import type {
   LeafOrParent,
   SetDataAction,
@@ -36,6 +42,7 @@ export interface FlatView {
   readonly loadingGroup: Set<number>;
   readonly errored: Map<number, { error: unknown; request?: DataRequest }>;
   readonly erroredGroup: Map<number, { error: unknown; request: DataRequest }>;
+  readonly maxDepth: number;
   readonly seenRequests: Set<string>;
 }
 
@@ -313,6 +320,7 @@ export class ServerData {
                 expandable: true, // Group nodes are always expandable for the server data source3
                 expanded: false,
                 last: false,
+                __path: r.path,
               },
               path: c.key,
               relIndex: r.start + i,
@@ -536,6 +544,7 @@ export class ServerData {
 
     const postFlatRequests: [ri: number, DataRequest][] = [];
 
+    let hasGroups = false;
     function processParent(
       node: TreeRoot<RowGroup, RowLeaf> | TreeParent<RowGroup, RowLeaf>,
       start: number,
@@ -559,9 +568,17 @@ export class ServerData {
         // - the row is expanded but it has no data loaded. We should then request data, but not add the rows
         // - the row is expanded and there is add. This is the easy case, we simply add the child rows as we flatten
         if (row.kind === "parent") {
+          hasGroups = true;
+
           const expanded =
             expansions[row.data.id] ??
             (typeof defaultExpansion === "number" ? getNodeDepth(row) <= defaultExpansion : defaultExpansion);
+
+          if (expanded) {
+            (row.data as Writable<RowGroup>).expanded = true;
+          } else {
+            (row.data as Writable<RowGroup>).expanded = false;
+          }
 
           // Expanded but no data. Fetch the child data.
           if (expanded && !row.byIndex.size) {
@@ -661,6 +678,7 @@ export class ServerData {
       erroredGroup: this.#rowsWithGroupError,
       loading: this.#loadingRows,
       loadingGroup: this.#loadingGroup,
+      maxDepth: hasGroups ? 1 : 0,
       seenRequests: seen,
     };
 
