@@ -150,6 +150,7 @@ export { getNearestRow } from "./navigation-x/get-nearest-row.js";
 
 // JS UTILS
 export {
+  arrayShallow,
   clamp,
   debounce,
   distance,
