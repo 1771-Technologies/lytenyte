@@ -41,13 +41,16 @@ const columns: Root.Column<Spec>[] = [
 
 const sumAge = (rows: RowLeaf<BankData>[]) => rows.reduce((acc, x) => x.data.balance + acc, 0);
 export default function Experimental() {
+  const [pivotMode, setPivotMode] = useState(false);
   const ds = useClientDataSource<Spec>({
     data: bankDataSmall,
-    pivotMode: true,
+    rowGroupDefaultExpansion: true,
+    pivotRowGroupDefaultExpansion: false,
+    pivotMode,
     pivotGrandTotals: "bottom",
     pivotModel: {
       columns: [{ id: "contact" }, { id: "education" }],
-      rows: [{ id: "marital" }],
+      rows: [{ id: "marital" }, { id: "age" }],
       measures: [
         {
           id: "Balance",
@@ -66,6 +69,9 @@ export default function Experimental() {
   const { resolvedTheme } = useTheme();
   return (
     <>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "8px" }}>
+        <button onClick={() => setPivotMode((prev) => !prev)}>Toggle Pivot Mode</button>
+      </div>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div
           className={"ln-grid " + (resolvedTheme === "light" ? "ln-light" : "ln-dark")}

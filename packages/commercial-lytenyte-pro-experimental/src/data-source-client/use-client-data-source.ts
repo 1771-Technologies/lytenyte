@@ -80,8 +80,8 @@ export interface UseClientDataSourceParams<Spec extends GridSpec = GridSpec, T =
   readonly pivotGrandTotals?: "top" | "bottom" | null;
   readonly pivotColumnProcessor?: (columns: Column<Spec>[]) => Column<Spec>[];
   readonly pivotStateRef?: RefObject<PivotState>;
-
   readonly pivotApplyExistingFilter?: boolean;
+  readonly pivotRowGroupDefaultExpansion?: boolean | number;
 
   readonly rowGroupExpansions?: { [rowId: string]: boolean | undefined };
   readonly rowGroupDefaultExpansion?: boolean | number;
@@ -217,7 +217,7 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
 
           const onRowGroup: Props<Spec>["onRowGroupExpansionChange"] = (rows) => {
             if (!mode$.get()) return onRowGroupExpansionChange?.(rows);
-            setPivotRowGroupExpansions(rows);
+            setPivotRowGroupExpansions((prev) => ({ ...prev, ...rows }));
           };
 
           const onColChange: Required<Props<Spec>>["onColumnsChange"] = (columns) => {
