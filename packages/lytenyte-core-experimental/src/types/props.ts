@@ -107,6 +107,7 @@ export type Props<Spec extends GridSpec = GridSpec> = {
     readonly editData: unknown;
     readonly validation: null | Record<string, unknown> | boolean;
   }) => void;
+
   readonly onRowSelect?: (params: {
     readonly preventDefault: () => void;
     readonly api: API<Spec>;

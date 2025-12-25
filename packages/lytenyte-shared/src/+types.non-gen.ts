@@ -45,6 +45,40 @@ export type RowPin = "top" | "bottom" | null;
 export type ColumnGroupVisibility = "always" | "close" | "open";
 export type RowGroupDisplayMode = "single-column" | "custom";
 
+export interface RowSelectNode {
+  readonly id: string;
+  exceptions?: Set<string>;
+  selected?: boolean;
+  children?: Map<string, RowSelectNode>;
+}
+export interface RowSelectionLinked {
+  readonly kind: "controlled";
+  readonly selected: boolean;
+  readonly children: Map<string, RowSelectNode>;
+  exceptions?: Set<string>;
+}
+export interface RowSelectionIsolated {
+  readonly kind: "isolated";
+  readonly selected: boolean;
+  readonly exceptions: Set<string>;
+}
+export type RowSelectionState = RowSelectionIsolated | RowSelectionLinked;
+
+export interface RowSelectNodeWithParent {
+  readonly id: string;
+  parent: RowSelectNodeWithParent | RowSelectionLinkedWithParent;
+  exceptions?: Set<string>;
+  selected?: boolean;
+  children?: Map<string, RowSelectNodeWithParent>;
+}
+export interface RowSelectionLinkedWithParent {
+  readonly kind: "controlled";
+  readonly selected: boolean;
+  readonly children: Map<string, RowSelectNodeWithParent>;
+  exceptions?: Set<string>;
+}
+export type RowSelectionStateWithParent = RowSelectionLinkedWithParent | RowSelectionIsolated;
+
 export interface ColumnAbstract {
   readonly id: string;
 

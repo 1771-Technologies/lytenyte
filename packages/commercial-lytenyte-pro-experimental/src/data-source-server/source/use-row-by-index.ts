@@ -10,7 +10,12 @@ import {
 import type { SourceState } from "./use-source-state.js";
 import { isSelected } from "../utils/is-selected.js";
 
-export function useRowByIndex<T>(source: ServerData, globalSignal: Signal<number>, state: SourceState) {
+export function useRowByIndex<T>(
+  source: ServerData,
+  globalSignal: Signal<number>,
+  state: SourceState,
+  getParents: (id: string) => string[],
+) {
   const invalidateCacheRef = useRef(new Map<number, (t: number) => void>());
   const atomCacheRef = useRef<Record<number, RowAtom<RowNode<T> | null>>>({});
   const loadingCache = useRef<Record<number, RowLeaf<T>>>({});
@@ -60,7 +65,7 @@ export function useRowByIndex<T>(source: ServerData, globalSignal: Signal<number
             return loadingRow;
           }
 
-          const selected = isSelected(row.id, state.selections);
+          const selected = isSelected(row.id, state.selections, getParents);
 
           if (row.kind === "leaf" || row.kind === "aggregated") {
             Object.assign(row, {

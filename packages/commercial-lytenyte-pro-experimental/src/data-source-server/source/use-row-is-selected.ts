@@ -4,12 +4,16 @@ import type { ServerData } from "../server-data.js";
 import type { SourceState } from "./use-source-state.js";
 import { isSelected } from "../utils/is-selected.js";
 
-export function useRowIsSelected<T>(source: ServerData, state: SourceState) {
+export function useRowIsSelected<T>(
+  source: ServerData,
+  state: SourceState,
+  getParents: (id: string) => string[],
+) {
   const rowIsSelected: RowSourceServer<T>["rowIsSelected"] = useEvent((id) => {
     const row = source.tree.rowIdToNode.get(id);
     if (!row) return false;
 
-    return isSelected(row.row.id, state.selections);
+    return isSelected(row.row.id, state.selections, getParents);
   });
 
   return rowIsSelected;
