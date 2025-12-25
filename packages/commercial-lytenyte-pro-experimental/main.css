@@ -31,11 +31,13 @@
       box-sizing: border-box;
       width: 100%;
       height: 100%;
+      gap: 8px;
 
       padding-inline-start: calc(var(--ln-space-40) * var(--ln-row-depth));
 
       &[data-ln-component-group-cell-expandable="false"] {
-        padding-inline-start: calc(var(--ln-space-40) * var(--ln-row-depth) + var(--ln-space-60));
+        /* space 60 for the icon and 8px for the gap. */
+        padding-inline-start: calc(var(--ln-space-40) * var(--ln-row-depth) + var(--ln-space-60) + 8px);
       }
 
       &[data-ln-component-group-cell-expanded="true"] [data-ln-component-group-cell-expander="true"] {
@@ -43,6 +45,7 @@
       }
 
       & [data-ln-component-group-cell-expander="true"] {
+        border-radius: var(--ln-radius-field-md);
         background-color: transparent;
         border: transparent;
         display: flex;
