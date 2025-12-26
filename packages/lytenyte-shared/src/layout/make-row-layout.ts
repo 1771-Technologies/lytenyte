@@ -2,23 +2,21 @@ import type {
   ColumnAbstract,
   ColumnPin,
   PositionUnion,
-  RowAtom,
   RowNode,
   RowPin,
-  RowSource,
   SpanLayout,
 } from "../+types.non-gen.js";
 import type { LayoutState } from "./make-layout-state.js";
 import { CONTAINS_DEAD_CELLS, FULL_WIDTH } from "./update-layout.js";
 
-interface MakeRowViewArgs<T> {
+interface MakeRowViewArgs {
   view: SpanLayout;
   layout: LayoutState;
-  viewCache: Map<number, LayoutRow<T>>;
+  viewCache: Map<number, LayoutRow>;
 
   rowScan: number;
 
-  rds: RowSource;
+  rowByIndex: (i: number) => RowNode<any> | null;
   columns: ColumnAbstract[];
   focus: PositionUnion | null;
 }
@@ -26,19 +24,19 @@ interface MakeRowViewArgs<T> {
 /**
  * This is quite a complex function so read each part carefully.
  */
-export function makeRowLayout<T>({
+export function makeRowLayout({
   view: n,
   rowScan,
   viewCache,
   layout,
-  rds,
+  rowByIndex,
   columns,
   focus,
-}: MakeRowViewArgs<T>) {
+}: MakeRowViewArgs) {
   // Initializes the layout sections for the view.
-  const top: RowView<T>["top"] = [];
-  const center: RowView<T>["center"] = [];
-  const bottom: RowView<T>["bottom"] = [];
+  const top: RowView["top"] = [];
+  const center: RowView["center"] = [];
+  const bottom: RowView["bottom"] = [];
 
   const shouldIncludeFocus =
     (focus?.kind === "cell" || focus?.kind === "full-width" || focus?.kind === "detail") &&
@@ -54,7 +52,7 @@ export function makeRowLayout<T>({
     layout,
     rowStart: n.rowTopStart,
     rowEnd: n.rowTopEnd,
-    rowForIndex: rds.rowByIndex,
+    rowForIndex: rowByIndex,
     onlySpans: false,
     rowPin: "top",
     spanLayout: n,
@@ -67,7 +65,7 @@ export function makeRowLayout<T>({
     layout,
     rowStart: Math.max(n.rowCenterStart - rowScan, n.rowTopEnd),
     rowEnd: n.rowCenterStart,
-    rowForIndex: rds.rowByIndex,
+    rowForIndex: rowByIndex,
     onlySpans: true,
     rowPin: null,
     spanLayout: n,
@@ -77,14 +75,14 @@ export function makeRowLayout<T>({
   if (before) {
     const alreadyIncluded = center.findIndex((x) => x.rowIndex === focus.rowIndex);
 
-    const before: RowView<T>["center"] = [];
+    const before: RowView["center"] = [];
     handleViewLayout({
       columns,
       container: before,
       layout,
       rowStart: focus.rowIndex,
       rowEnd: focus.rowIndex + 1,
-      rowForIndex: rds.rowByIndex,
+      rowForIndex: rowByIndex,
       onlySpans: false,
       rowPin: null,
       spanLayout: n,
@@ -98,7 +96,6 @@ export function makeRowLayout<T>({
       );
       if (insertionIndex === -1) center.push(...before);
       else {
-        console.log(" iran");
         center.splice(insertionIndex, 1, ...before);
       }
     }
@@ -110,7 +107,7 @@ export function makeRowLayout<T>({
     layout,
     rowStart: n.rowCenterStart,
     rowEnd: n.rowCenterEnd,
-    rowForIndex: rds.rowByIndex,
+    rowForIndex: rowByIndex,
     onlySpans: false,
     rowPin: null,
     spanLayout: n,
@@ -124,7 +121,7 @@ export function makeRowLayout<T>({
       layout,
       rowStart: focus.rowIndex,
       rowEnd: focus.rowIndex + 1,
-      rowForIndex: rds.rowByIndex,
+      rowForIndex: rowByIndex,
       onlySpans: false,
       rowPin: null,
       spanLayout: n,
@@ -138,7 +135,7 @@ export function makeRowLayout<T>({
     layout,
     rowStart: n.rowBotStart,
     rowEnd: n.rowBotEnd,
-    rowForIndex: rds.rowByIndex,
+    rowForIndex: rowByIndex,
     onlySpans: false,
     rowPin: "bottom",
     spanLayout: n,
@@ -163,9 +160,9 @@ interface HandleViewLayoutArgs<T> {
   readonly rowPin: RowPin;
   readonly onlySpans: boolean;
   readonly layout: LayoutState;
-  readonly viewCache: Map<number, LayoutRow<T>>;
-  readonly container: LayoutRow<T>[];
-  readonly rowForIndex: (row: number) => RowAtom<RowNode<T> | null>;
+  readonly viewCache: Map<number, LayoutRow>;
+  readonly container: LayoutRow[];
+  readonly rowForIndex: (row: number) => RowNode<T> | null;
 }
 
 function handleViewLayout<T>({
@@ -204,14 +201,11 @@ function handleViewLayout<T>({
     const rowLastPinTop = n.rowTopEnd - 1 === r ? true : undefined;
 
     if (status === FULL_WIDTH) {
-      const row: LayoutRow<T> = {
-        get id() {
-          return node.get()?.id ?? `${r}`;
-        },
+      const row: LayoutRow = {
+        id: node.id,
         rowIndex: r,
         kind: "full-width",
         rowPin,
-        row: node,
         rowLastPinTop,
       };
 
@@ -224,7 +218,7 @@ function handleViewLayout<T>({
     }
 
     const cellSpec = layout.lookup.get(r);
-    const cellLayout: LayoutCell<T>[] = [];
+    const cellLayout: LayoutCell[] = [];
     const hasDead = status === CONTAINS_DEAD_CELLS;
 
     for (let c = n.colStartStart; c < n.colStartEnd; c++) {
@@ -248,7 +242,6 @@ function handleViewLayout<T>({
 
         colLastStartPin: c + colSpan === n.colStartEnd ? true : undefined,
         rowLastPinTop,
-        row: node,
       });
     }
 
@@ -272,7 +265,6 @@ function handleViewLayout<T>({
         isDeadRow,
 
         rowLastPinTop,
-        row: node,
       });
     }
 
@@ -296,19 +288,15 @@ function handleViewLayout<T>({
 
         colFirstEndPin: c === n.colCenterLast ? true : undefined,
         rowLastPinTop,
-        row: node,
       });
     }
 
-    const row: LayoutRowWithCells<T> = {
-      get id() {
-        return node.get()?.id ?? `${r}`;
-      },
+    const row: LayoutRowWithCells = {
+      id: node.id,
       rowIndex: r,
       kind: "row",
       cells: cellLayout,
       rowPin,
-      row: node,
       rowLastPinTop,
     };
     viewCache.set(r, row);
@@ -319,7 +307,7 @@ function handleViewLayout<T>({
   }
 }
 
-export interface LayoutCell<T = any> {
+export interface LayoutCell {
   readonly kind: "cell";
   readonly colSpan: number;
   readonly rowSpan: number;
@@ -328,7 +316,6 @@ export interface LayoutCell<T = any> {
   readonly id: string;
   readonly rowIndex: number;
   readonly colIndex: number;
-  readonly row: RowAtom<RowNode<T> | null>;
   readonly colPin: ColumnPin;
   readonly rowPin: RowPin;
   readonly colFirstEndPin?: boolean;
@@ -338,35 +325,33 @@ export interface LayoutCell<T = any> {
   readonly rowIsFocusRow?: boolean;
 }
 
-export interface LayoutFullWidthRow<T> {
+export interface LayoutFullWidthRow {
   readonly kind: "full-width";
   readonly id: string;
   readonly rowIndex: number;
-  readonly row: RowAtom<RowNode<T> | null>;
   readonly rowPin: RowPin;
   readonly rowLastPinTop?: boolean;
   readonly rowFirstPinBottom?: boolean;
   readonly rowIsFocusRow?: boolean;
 }
 
-export interface LayoutRowWithCells<T> {
+export interface LayoutRowWithCells {
   readonly kind: "row";
   readonly rowIndex: number;
-  readonly row: RowAtom<RowNode<T> | null>;
   readonly rowPin: RowPin;
   readonly rowLastPinTop?: boolean;
   readonly rowFirstPinBottom?: boolean;
   readonly rowIsFocusRow?: boolean;
   readonly id: string;
-  readonly cells: LayoutCell<T>[];
+  readonly cells: LayoutCell[];
 }
 
-export type LayoutRow<T> = LayoutRowWithCells<T> | LayoutFullWidthRow<T>;
+export type LayoutRow = LayoutRowWithCells | LayoutFullWidthRow;
 
-export interface RowView<T> {
-  readonly top: LayoutRow<T>[];
-  readonly center: LayoutRow<T>[];
-  readonly bottom: LayoutRow<T>[];
+export interface RowView {
+  readonly top: LayoutRow[];
+  readonly center: LayoutRow[];
+  readonly bottom: LayoutRow[];
   readonly rowFocusedIndex: number | null;
   readonly rowFirstCenter: number;
 }

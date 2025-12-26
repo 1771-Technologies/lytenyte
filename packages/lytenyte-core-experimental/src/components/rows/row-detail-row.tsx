@@ -8,9 +8,9 @@ import {
 import { useEffect, useState } from "react";
 import { useRoot } from "../../root/root-context.js";
 
-export function RowDetailRow<T>({ layout }: { layout: LayoutRowWithCells<T> | LayoutFullWidthRow<T> }) {
-  const { detailExpansions: expansions } = useRoot();
-  const row = layout.row.useValue();
+export function RowDetailRow({ layout }: { layout: LayoutRowWithCells | LayoutFullWidthRow }) {
+  const { detailExpansions: expansions, source } = useRoot();
+  const row = source.rowByIndex(layout.rowIndex).useValue();
 
   if (!row || !expansions.has(row.id)) return null;
 
@@ -18,7 +18,8 @@ export function RowDetailRow<T>({ layout }: { layout: LayoutRowWithCells<T> | La
 }
 
 function RowDetailImpl<T>({ row, rowIndex }: { row: RowNode<T>; rowIndex: number }) {
-  const { id, rtl, dimensions, api, yPositions, rowDetailRenderer, setDetailCache, rowDetailHeight } = useRoot();
+  const { id, rtl, dimensions, api, yPositions, rowDetailRenderer, setDetailCache, rowDetailHeight } =
+    useRoot();
 
   const height = api.rowDetailHeight(row.id);
   const rowHeight = sizeFromCoord(rowIndex, yPositions) - height;

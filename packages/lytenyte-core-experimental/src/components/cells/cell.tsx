@@ -162,6 +162,6 @@ const CellImpl = memo(
 
 export namespace Cell {
   export type Props = Omit<JSX.IntrinsicElements["div"], "children"> & {
-    readonly cell: LayoutCell<any>;
+    readonly cell: LayoutCell;
   };
 }

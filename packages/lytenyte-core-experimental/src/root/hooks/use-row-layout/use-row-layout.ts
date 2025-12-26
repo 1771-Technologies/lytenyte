@@ -32,14 +32,21 @@ export function useRowLayout(
   const topCount = rs.useTopCount();
   const botCount = rs.useBottomCount();
   const rowCount = rs.useRowCount();
-  const snapshot = rs.useSnapshotVersion();
   const centerCount = rowCount - topCount - botCount;
   const columnCount = view.visibleColumns.length;
 
   if (!layoutStateRef.current) layoutStateRef.current = makeLayoutState(0);
 
+  const rows = rs.useRows();
+  const rowByIndex = useCallback(
+    (i: number) => {
+      return rows.get(i);
+    },
+    [rows],
+  );
+
   const layoutCache = useMemo(() => {
-    void snapshot;
+    void rowByIndex;
     void rowDetailExpansions;
     void view;
 
@@ -57,27 +64,30 @@ export function useRowLayout(
       layoutState.lookup.clear();
     }
 
-    return { layout: { ...layoutState }, cache: new Map<number, LayoutRow<any>>() };
-  }, [botCount, centerCount, columnCount, layoutStateRef, rowDetailExpansions, snapshot, topCount, view]);
+    return { layout: { ...layoutState }, cache: new Map<number, LayoutRow>() };
+  }, [botCount, centerCount, columnCount, layoutStateRef, rowByIndex, rowDetailExpansions, topCount, view]);
 
   const columns = view.visibleColumns;
   const [computeColSpan, computeRowSpan] = useMemo(() => {
-    return [getSpanFn(rs, columns as any, "col", api), getSpanFn(rs, columns as any, "row", api)];
-  }, [api, columns, rs]);
+    return [
+      getSpanFn(rowByIndex, columns as any, "col", api),
+      getSpanFn(rowByIndex, columns as any, "row", api),
+    ];
+  }, [api, columns, rowByIndex]);
 
   const isFullWidth = useMemo(() => {
     if (!props.rowFullWidthPredicate) return null;
 
-    return getFullWidthFn(rs, props.rowFullWidthPredicate, api);
-  }, [api, props.rowFullWidthPredicate, rs]);
+    return getFullWidthFn(rowByIndex, props.rowFullWidthPredicate, api);
+  }, [api, props.rowFullWidthPredicate, rowByIndex]);
 
   const isRowCutoff = useCallback(
     (r: number) => {
-      const row = rs.rowByIndex(r)?.get();
+      const row = rowByIndex(r);
 
       return !row || row.kind === "branch" || rowDetailExpansions.has(row.id);
     },
-    [rowDetailExpansions, rs],
+    [rowByIndex, rowDetailExpansions],
   );
 
   const spanLayout = useMemo<SpanLayout>(() => {
@@ -110,7 +120,7 @@ export function useRowLayout(
     view.visibleColumns.length,
   ]);
 
-  const layout = useMemo<RowView<any>>(() => {
+  const layout = useMemo<RowView>(() => {
     if (!vp) return { top: [], bottom: [], center: [], rowFirstCenter: 0, rowFocusedIndex: null };
 
     let n = spanLayout;
@@ -147,7 +157,7 @@ export function useRowLayout(
       viewCache: cache,
       rowScan: hasSpans ? 0 : (props.rowScanDistance ?? 50),
       layout,
-      rds: rs,
+      rowByIndex,
       columns,
       focus: position,
     });
@@ -169,7 +179,7 @@ export function useRowLayout(
     props.rowScanDistance,
     props.virtualizeCols,
     props.virtualizeRows,
-    rs,
+    rowByIndex,
     spanLayout,
     topCount,
     vp,

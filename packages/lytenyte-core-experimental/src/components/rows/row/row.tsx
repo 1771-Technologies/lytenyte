@@ -10,7 +10,7 @@ import { RowDetailRow } from "../row-detail-row.js";
 import { CellSpacerCenter } from "../../cells/cell-spacers/cell-spacer-center.js";
 
 const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...props }, forwarded) {
-  const { id, yPositions, xPositions, view, editMode } = useRoot();
+  const { id, yPositions, xPositions, view, editMode, source } = useRoot();
 
   const container = useRowsContainerContext();
 
@@ -20,7 +20,7 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
     return !visible.every((c) => !(c.colSpan || c.rowSpan));
   }, [view.visibleColumns]);
 
-  const rowMeta = useRowContextValue(row, yPositions, xPositions);
+  const rowMeta = useRowContextValue(row, yPositions, xPositions, source);
   const topOffset = container.useValue($topHeight);
 
   const styles = useRowStyle(
@@ -84,6 +84,6 @@ export const Row = memo(RowImpl, (prev, next) => {
 
 export namespace Row {
   export type Props = JSX.IntrinsicElements["div"] & {
-    readonly row: LayoutRowWithCells<any>;
+    readonly row: LayoutRowWithCells;
   };
 }

@@ -80,7 +80,7 @@ const context = createContext<RootContextValue>({} as any);
 export const RootContextProvider = context.Provider;
 export const useRoot = () => useContext(context);
 
-const rowContextLayout = createContext<RowView<any>>({} as any);
+const rowContextLayout = createContext<RowView>({} as any);
 export const RowLayoutContextProvider = rowContextLayout.Provider;
 export const useRowLayout = () => useContext(rowContextLayout);
 

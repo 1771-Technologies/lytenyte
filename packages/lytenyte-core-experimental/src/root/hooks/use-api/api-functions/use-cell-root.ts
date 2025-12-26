@@ -35,6 +35,7 @@ export function useCellRoot(
     if (row < 0 || row >= rowCount) return null;
     if (column < 0 || column >= columns.length) return null;
 
+    const rowByIndex = (i: number) => rs.rowByIndex(i).get();
     if (!l.computed[row]) {
       updateLayout({
         base: l.base,
@@ -49,10 +50,10 @@ export function useCellRoot(
         centerCount: view.centerCount,
         endCount: view.endCount,
 
-        computeColSpan: getSpanFn(rs, columns as any, "col", api),
-        computeRowSpan: getSpanFn(rs, columns as any, "row", api),
+        computeColSpan: getSpanFn(rowByIndex, columns as any, "col", api),
+        computeRowSpan: getSpanFn(rowByIndex, columns as any, "row", api),
 
-        isFullWidth: getFullWidthFn(rs, props.rowFullWidthPredicate, api),
+        isFullWidth: getFullWidthFn(rowByIndex, props.rowFullWidthPredicate, api),
         isRowCutoff: (r) => {
           const row = rs.rowByIndex(r)?.get();
 

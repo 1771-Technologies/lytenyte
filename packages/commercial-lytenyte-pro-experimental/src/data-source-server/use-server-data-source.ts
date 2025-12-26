@@ -16,6 +16,7 @@ import { useRowChildren } from "./source/use-row-children.js";
 import { useRowIsSelected } from "./source/use-row-is-selected.js";
 import { useOnRowsSelected } from "./source/on-rows-selected/use-on-rows-selected.js";
 import { useRowsSelected } from "./source/use-rows-selected.js";
+import { useRowLeafs } from "./source/use-row-leafs.js";
 
 export interface RowSourceServer<T> extends RowSource<T> {
   readonly isLoading: Piece<boolean>;
@@ -70,6 +71,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[], S extend
 
   const rowIsSelected = useRowIsSelected<T>(source, s, rowParents);
   const rowsSelected = useRowsSelected<T>(source, s, rowParents);
+  const rowLeafs = useRowLeafs<T>(source);
   const { rowByIndex, rowInvalidate } = useRowByIndex<T>(source, globalSignal, s, rowParents);
 
   const setExpansions = s.setExpansions;
@@ -85,12 +87,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[], S extend
       rowsSelected,
       rowIsSelected,
 
-      rowLeafs: () => {
-        console.error(
-          "The LyteNyte Grid Server Data Source does not support requesting leaf values for a given row.",
-        );
-        return [];
-      },
+      rowLeafs,
       rowParents,
       rowsBetween,
 
@@ -103,13 +100,12 @@ export function useServerDataSource<T, K extends unknown[] = unknown[], S extend
         setExpansions((prev) => ({ ...prev, ...deltaChanges }));
       },
       onRowsSelected,
-      onRowsUpdated: () => {},
       onViewChange,
       isLoading: isLoading$,
       loadingError: loadError$,
       requestsForView: requestsForView$,
 
-      useSnapshotVersion: () => 0,
+      onRowsUpdated: () => {},
     };
 
     return rowSource;
@@ -129,6 +125,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[], S extend
     rowIndexToRowId,
     rowInvalidate,
     rowIsSelected,
+    rowLeafs,
     rowParents,
     rowsBetween,
     rowsSelected,

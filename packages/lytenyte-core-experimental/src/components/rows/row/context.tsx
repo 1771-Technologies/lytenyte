@@ -11,7 +11,7 @@ export interface RowMeta {
         __globalSnapshot: number;
       })
     | null;
-  readonly layout: LayoutRowWithCells<any>;
+  readonly layout: LayoutRowWithCells;
   readonly xPositions: Uint32Array;
   readonly yPositions: Uint32Array;
 

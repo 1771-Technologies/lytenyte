@@ -1,14 +1,14 @@
-import type { RowSource } from "@1771technologies/lytenyte-shared";
+import type { RowNode } from "@1771technologies/lytenyte-shared";
 import type { Root } from "../../root";
 
 export function getFullWidthFn(
-  rds: RowSource,
+  rowByIndex: (i: number) => RowNode<any> | null,
   predicate: Root.Props["rowFullWidthPredicate"],
   api: Root.API,
 ) {
   if (!predicate) return null;
   return (r: number) => {
-    const rowNode = rds.rowByIndex(r)?.get();
+    const rowNode = rowByIndex(r);
     if (!rowNode) return false;
 
     return predicate({ row: rowNode, rowIndex: r, api });
