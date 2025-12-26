@@ -9,7 +9,6 @@ import {
   type RowSource,
 } from "@1771technologies/lytenyte-shared";
 import type { SourceRowSelection } from "./use-row-selection";
-import { cleanTree } from "./clean-tree.js";
 
 export function useOnRowsSelected<T>(
   s: SourceRowSelection,
@@ -84,8 +83,6 @@ export function useOnRowsSelected<T>(
             selected: prev.selected,
             children: overrides,
           };
-
-          cleanTree(state);
 
           return state;
         });

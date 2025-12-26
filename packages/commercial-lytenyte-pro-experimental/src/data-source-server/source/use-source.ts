@@ -6,7 +6,7 @@ import { ServerData, type DataFetcher } from "../server-data.js";
 import type { SourceState } from "./use-source-state";
 
 export function useSource<K extends unknown[]>(
-  props: UseServerDataSourceParams<K, unknown[]>,
+  props: UseServerDataSourceParams<K>,
   s: SourceState,
   globalSignal: Signal<number>,
 ) {
@@ -56,6 +56,7 @@ export function useSource<K extends unknown[]>(
         s.setRowCount(f.center + f.top + f.bottom);
         s.setMaxDepth(f.maxDepth);
         s.setRows(f.rowIndexToRow);
+        s.setIdUniverse(new Set(f.tree.rowIdToNode.keys()));
 
         // Not sure why this is being flagged. This is not being used in hook. This is also fine. We don't
         // actually care about the value, just that it will be different from the previous value.

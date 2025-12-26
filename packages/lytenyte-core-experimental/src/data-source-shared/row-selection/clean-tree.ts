@@ -3,8 +3,11 @@ import {
   type RowSelectNodeWithParent,
 } from "@1771technologies/lytenyte-shared";
 
-export function cleanTree(s: RowSelectionLinkedWithParent | RowSelectNodeWithParent) {
-  s.children?.forEach((x) => cleanTree(x));
+export function cleanTree(
+  s: RowSelectionLinkedWithParent | RowSelectNodeWithParent,
+  idUniverse: Set<string> | null,
+) {
+  s.children?.forEach((x) => cleanTree(x, idUniverse));
 
   // handle root here
   if ("kind" in s) return;
@@ -16,5 +19,10 @@ export function cleanTree(s: RowSelectionLinkedWithParent | RowSelectNodeWithPar
   // we should remove it from its parent.
   if (s.children === undefined && s.selected === s.parent.selected) {
     s.parent.children?.delete(s.id);
+  }
+
+  if (idUniverse && !idUniverse.has(s.id)) {
+    s.parent.children?.delete(s.id);
+    s.parent.exceptions?.delete(s.id);
   }
 }
