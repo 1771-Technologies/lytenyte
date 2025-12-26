@@ -1,14 +1,15 @@
 import { useMemo } from "react";
 import type { RowMeta } from "./context.js";
-import type { LayoutRowWithCells } from "@1771technologies/lytenyte-shared";
+import type { LayoutRowWithCells, RowSource } from "@1771technologies/lytenyte-shared";
 import { useEdit } from "../../../root/root-context.js";
 
 export function useRowContextValue(
-  row: LayoutRowWithCells<any>,
+  row: LayoutRowWithCells,
   yPositions: Uint32Array,
   xPositions: Uint32Array,
+  source: RowSource,
 ) {
-  const r = row.row.useValue() as RowMeta["row"];
+  const r = source.rowByIndex(row.rowIndex).useValue() as RowMeta["row"];
 
   const edit = useEdit();
 

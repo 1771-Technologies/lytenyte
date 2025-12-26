@@ -61,7 +61,7 @@ export const RowsCenter = memo(
 );
 
 export namespace RowsCenter {
-  type Children = <T>(c: LayoutRow<T>) => ReactNode;
+  type Children = (c: LayoutRow) => ReactNode;
 
   export type Props = Omit<JSX.IntrinsicElements["div"], "children"> & { children?: Children };
 }

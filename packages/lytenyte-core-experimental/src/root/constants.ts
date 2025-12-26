@@ -9,7 +9,7 @@ export const DEFAULT_ROW_SOURCE: RowSource = {
   useBottomCount: () => 0,
   useTopCount: () => 0,
   useRowCount: () => 0,
-  useSnapshotVersion: () => 1,
+  useRows: () => ({ get: () => null, size: 0 }),
   useMaxRowGroupDepth: () => 0,
 
   rowIndexToRowId: () => null,

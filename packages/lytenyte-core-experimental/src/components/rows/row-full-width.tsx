@@ -14,7 +14,7 @@ const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function
   { row: layout, ...props },
   forwarded,
 ) {
-  const { id, rtl, view, yPositions, rowFullWidthRenderer, api } = useRoot();
+  const { id, rtl, view, yPositions, rowFullWidthRenderer, api, source } = useRoot();
   const container = useRowsContainerContext();
 
   const hasSpans = useMemo(() => {
@@ -25,7 +25,7 @@ const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function
 
   const Renderer = rowFullWidthRenderer;
 
-  const row = layout.row.useValue();
+  const row = source.rowByIndex(layout.rowIndex).useValue();
 
   const rowIndex = layout.rowIndex;
   const rowPin = layout.rowPin;
@@ -75,6 +75,6 @@ export const RowFullWidth = memo(RowFullWidthImpl);
 
 export namespace RowFullWidth {
   export type Props = Omit<JSX.IntrinsicElements["div"], "children"> & {
-    readonly row: LayoutFullWidthRow<any>;
+    readonly row: LayoutFullWidthRow;
   };
 }

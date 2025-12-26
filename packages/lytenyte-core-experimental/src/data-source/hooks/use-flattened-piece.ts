@@ -80,5 +80,5 @@ export function useFlattenedPiece<T>({
 
   const piece = usePiece(flatten);
 
-  return { flatten: piece, rowByIdRef, rowByIndexRef, rowIdToRowIndexRef };
+  return { flatten, flatten$: piece, rowByIdRef, rowByIndexRef, rowIdToRowIndexRef };
 }

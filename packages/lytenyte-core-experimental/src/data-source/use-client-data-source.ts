@@ -88,7 +88,8 @@ export function useClientDataSource<T>(props: UseClientDataSourceParams<T>): Row
   const [groupFlat, maxDepth] = useFlattenedGroups(tree, aggregate, leafs, sorted, sort, expandedFn);
 
   const {
-    flatten: piece,
+    flatten,
+    flatten$: piece,
     rowByIndexRef,
     rowIdToRowIndexRef,
   } = useFlattenedPiece({
@@ -140,6 +141,15 @@ export function useClientDataSource<T>(props: UseClientDataSourceParams<T>): Row
   const rowLeafs = useRowLeafs(tree);
   const rowChildren = useRowChildren(tree);
 
+  const rows = useMemo<ReturnType<RowSourceClient<T>["useRows"]>>(() => {
+    return {
+      get: (i: number) => flatten[i],
+      size: flatten.length,
+    };
+  }, [flatten]);
+
+  const rows$ = usePiece(rows);
+
   const source = useMemo<RowSourceClient<T>>(() => {
     const rowCount$ = (x: RowNode<T>[]) => x.length;
 
@@ -159,9 +169,9 @@ export function useClientDataSource<T>(props: UseClientDataSourceParams<T>): Row
       useBottomCount: botPiece.useValue,
       useTopCount: topPiece.useValue,
       useRowCount: () => piece.useValue(rowCount$),
+      useRows: () => rows$.useValue(),
 
       useMaxRowGroupDepth: maxDepthPiece.useValue,
-      useSnapshotVersion: () => 0,
 
       onRowGroupExpansionChange: (deltaChanges) => setExpansions((prev) => ({ ...prev, ...deltaChanges })),
       onRowsSelected,
@@ -186,6 +196,7 @@ export function useClientDataSource<T>(props: UseClientDataSourceParams<T>): Row
     rowIsSelected,
     rowLeafs,
     rowParents,
+    rows$,
     rowsBetween,
     rowsSelected,
     setExpansions,

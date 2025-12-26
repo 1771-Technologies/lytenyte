@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { computeRowPositions, type RowSource } from "@1771technologies/lytenyte-shared";
 import type { Root } from "../root.js";
 
@@ -11,20 +11,26 @@ export function useYPositions(
   detailExpansions: Set<string>,
 ) {
   const rowCount = rowSource.useRowCount();
-  const snapshot = rowSource.useSnapshotVersion();
+
+  const rows = rowSource.useRows();
+  const rowIndexToRowId = useCallback(
+    (i: number) => {
+      return rows.get(i)?.id ?? null;
+    },
+    [rows],
+  );
 
   const [rowCache, setRowCache] = useState<Record<string, number>>({});
   const [detailCache, setDetailCache] = useState<Record<string, number>>({});
 
   return useMemo(() => {
-    void snapshot;
     const detailHeight = props.rowDetailHeight ?? 200;
     const detailHeightGuess = props.rowDetailAutoHeightGuess ?? 200;
     const rowHeight = props.rowHeight ?? 40;
     const rowHeightGuess = props.rowAutoHeightGuess ?? 40;
 
     const detailHeightCalc = (i: number) => {
-      const id = rowSource.rowIndexToRowId(i);
+      const id = rowIndexToRowId(i);
       if (!id || !detailExpansions.has(id)) return 0;
 
       if (detailHeight === "auto") return detailCache[id] ?? detailHeightGuess;
@@ -47,7 +53,6 @@ export function useYPositions(
     props.rowHeight,
     rowCache,
     rowCount,
-    rowSource,
-    snapshot,
+    rowIndexToRowId,
   ]);
 }

@@ -1,8 +1,8 @@
-import type { ColumnAbstract, RowSource } from "@1771technologies/lytenyte-shared";
+import type { ColumnAbstract, RowNode } from "@1771technologies/lytenyte-shared";
 import type { Root } from "../../root";
 
 export function getSpanFn(
-  rs: RowSource,
+  rowByIndex: (r: number) => RowNode<any> | null,
   visibleColumns: ColumnAbstract[],
   span: "row" | "col",
   api: Root.API,
@@ -10,7 +10,7 @@ export function getSpanFn(
   if (visibleColumns.every((c) => !(span === "col" ? (c as any).colSpan : (c as any).rowSpan))) return null;
 
   return (r: number, c: number) => {
-    const row = rs.rowByIndex(r)?.get();
+    const row = rowByIndex(r);
     const column = visibleColumns[c];
     if (!row || !column) return 1;
 

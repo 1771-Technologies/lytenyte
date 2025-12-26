@@ -4,7 +4,7 @@ import { sizeFromCoord, type LayoutCell } from "@1771technologies/lytenyte-share
 export function useCellStyle(
   xPositions: Uint32Array,
   yPositions: Uint32Array,
-  cell: LayoutCell<any>,
+  cell: LayoutCell,
   rtl: boolean,
   detailHeight: number,
   additional: CSSProperties | undefined,

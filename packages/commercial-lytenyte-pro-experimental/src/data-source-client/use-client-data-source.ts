@@ -200,7 +200,6 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
       useRowCount: () => piece.useValue(rowCount$),
 
       useMaxRowGroupDepth: maxDepthPiece.useValue,
-      useSnapshotVersion: () => 0,
 
       onRowGroupExpansionChange: (deltaChanges) => {
         if (mode$.get()) setPivotRowGroupExpansions((prev) => ({ ...prev, ...deltaChanges }));

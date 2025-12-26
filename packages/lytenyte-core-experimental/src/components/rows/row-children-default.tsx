@@ -4,13 +4,13 @@ import { Row } from "./row/row.js";
 import type { LayoutRow, LayoutRowWithCells } from "@1771technologies/lytenyte-shared";
 import { Cell } from "../cells/cell.js";
 
-export function RowChildrenDefault(row: LayoutRow<any>) {
+export function RowChildrenDefault(row: LayoutRow) {
   if (row.kind === "full-width") return <RowFullWidth row={row} />;
 
   return <RowWithCellRenderer row={row} />;
 }
 
-const RowWithCellRenderer = memo(({ row }: { row: LayoutRowWithCells<any> }) => {
+const RowWithCellRenderer = memo(({ row }: { row: LayoutRowWithCells }) => {
   return (
     <Row row={row}>
       {row.cells.map((cell) => {
