@@ -3,6 +3,7 @@ import type { ReactNode, Ref } from "react";
 import type { Column, EditParams, HeaderGroupParams, HeaderParams, RowParams } from "./column.js";
 import type { GridSpec } from "./grid.js";
 import type { API } from "./api.js";
+import type { ViewportShadowsProps } from "../components/viewport/viewport-shadows.js";
 
 export type Props<Spec extends GridSpec = GridSpec> = {
   readonly columns?: Column<Spec>[];
@@ -79,6 +80,7 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   readonly onColumnsChange?: (columns: Column<Spec>[]) => void;
   readonly onRowGroupColumnChange?: (column: Omit<Column<Spec>, "field" | "id">) => void;
 
+  readonly slotShadows?: (props: ViewportShadowsProps) => ReactNode;
   // Events
   readonly onEditBegin?: (params: {
     readonly api: API<Spec>;

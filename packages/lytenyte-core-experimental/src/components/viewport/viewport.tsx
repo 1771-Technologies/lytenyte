@@ -22,6 +22,7 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
     id,
     api,
     view,
+    slotShadows: Shadows,
   } = useRoot();
   const edit = useEdit();
 
@@ -179,6 +180,7 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
           } as CSSProperties
         }
       >
+        {Shadows && <Shadows />}
         {children}
       </div>
 

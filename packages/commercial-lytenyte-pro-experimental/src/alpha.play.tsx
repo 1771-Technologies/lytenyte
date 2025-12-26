@@ -8,13 +8,13 @@ import "@1771technologies/lytenyte-design/term.css";
 
 import "../main.css";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
-import { Header, Root, RowsBottom, RowsCenter, RowsContainer, RowsTop, Viewport } from "./index.parts.js";
 import { ViewportShadows } from "@1771technologies/lytenyte-core-experimental";
 import { useClientDataSource } from "./data-source-client/use-client-data-source.js";
 import { useMemo, useState } from "react";
 import type { GridSpec, Props } from "./types";
 import type { RowLeaf } from "@1771technologies/lytenyte-shared";
 import { RowGroupCell } from "./components/row-group-cell.js";
+import { Grid } from "./index.js";
 
 type BankData = (typeof bankDataSmall)[number];
 
@@ -22,7 +22,7 @@ interface Spec extends GridSpec {
   data: BankData;
 }
 
-const columns: Root.Column<Spec>[] = [
+const columns: Grid.Column<Spec>[] = [
   { id: "age", name: "bob", groupPath: ["Alpha", "Beta"], type: "number" },
   { id: "marital", groupPath: ["Alpha"] },
   { id: "default", groupPath: ["Top Dog"] },
@@ -78,9 +78,10 @@ export default function Experimental() {
           className={"ln-grid " + (resolvedTheme === "light" ? "ln-light" : "ln-dark")}
           style={{ height: "90vh", width: "90vw" }}
         >
-          <Root
+          <Grid
             columns={columns}
             columnBase={useMemo(() => ({ movable: true, resizable: true, width: 100 }), [])}
+            slotShadows={ViewportShadows}
             columnGroupRenderer={(props) => {
               const label = props.groupPath.at(-1)!;
               return (
@@ -97,17 +98,7 @@ export default function Experimental() {
             onRowGroupColumnChange={setRowGroupColumn}
             rowSelectionMode="multiple"
             {...pivotProps}
-          >
-            <Viewport>
-              <ViewportShadows />
-              <Header />
-              <RowsContainer>
-                <RowsTop />
-                <RowsCenter />
-                <RowsBottom />
-              </RowsContainer>
-            </Viewport>
-          </Root>
+          />
         </div>
       </div>
     </>

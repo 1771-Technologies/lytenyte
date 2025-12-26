@@ -3,6 +3,7 @@ import type { ReactNode, Ref } from "react";
 import type { Column, EditParams, HeaderGroupParams, HeaderParams, RowParams } from "./column.js";
 import type { DialogFrame, GridSpec, PopoverFrame } from "./grid.js";
 import type { API, DataRect } from "./api.js";
+import type { ViewportShadowsProps } from "@1771technologies/lytenyte-core-experimental";
 
 export type Props<Spec extends GridSpec = GridSpec> = {
   readonly dialogFrames?: Record<string, DialogFrame<Spec>>;
@@ -73,6 +74,8 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   readonly rowDropAccept?: string[];
 
   readonly ref?: Ref<API<Spec>>;
+
+  readonly slotShadows?: (props: ViewportShadowsProps) => ReactNode;
 
   readonly editRowValidatorFn?: (
     params: Pick<EditParams<Spec>, "api" | "editData" | "row">,
