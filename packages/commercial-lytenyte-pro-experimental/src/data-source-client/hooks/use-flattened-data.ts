@@ -6,14 +6,14 @@ import { useGroupTree } from "./use-group-tree/use-group-tree.js";
 import type { LeafRowTuple } from "./use-leaf-nodes.js";
 import { useSorted } from "./use-sorted.js";
 import { useFlattenedGroups } from "./use-flattened-groups.js";
-import type { Controlled } from "./use-controlled-ds-state.js";
+import type { SourceState } from "./use-controlled-ds-state.js";
 import { useFlattenedPiece } from "./use-flattened-piece.js";
 
 const groupIdFallback: GroupIdFn = (p) => p.map((x) => (x == null ? "_null_" : x)).join("->");
 export function useFlattenedData<Spec extends GridSpec>(
   props: UseClientDataSourceParams<Spec>,
   [leafsTop, leafs, leafsBot, leafIdsRef]: LeafRowTuple<Spec["data"]>,
-  { expandedFn }: Controlled,
+  { expandedFn }: SourceState,
 ) {
   const leafSort = Array.isArray(props.sort) ? props.sort.at(-1) : props.sort;
   const filtered = useFiltered(leafs, props.filter);

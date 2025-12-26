@@ -16,7 +16,7 @@ interface MakeRowViewArgs {
 
   rowScan: number;
 
-  rowByIndex: (i: number) => RowNode<any> | null;
+  rowByIndex: (i: number) => RowNode<any> | null | undefined;
   columns: ColumnAbstract[];
   focus: PositionUnion | null;
 }
@@ -162,7 +162,7 @@ interface HandleViewLayoutArgs<T> {
   readonly layout: LayoutState;
   readonly viewCache: Map<number, LayoutRow>;
   readonly container: LayoutRow[];
-  readonly rowForIndex: (row: number) => RowNode<T> | null;
+  readonly rowForIndex: (row: number) => RowNode<T> | null | undefined;
 }
 
 function handleViewLayout<T>({

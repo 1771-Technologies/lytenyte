@@ -34,17 +34,16 @@ export interface UseServerDataSourceParams<K extends unknown[], S extends unknow
   readonly rowGroupExpansions?: { [rowId: string]: boolean | undefined };
   readonly rowGroupDefaultExpansion?: boolean | number;
 
+  readonly rowsIsolatedSelection?: boolean;
   readonly rowSelection?: RowSelectionState;
   readonly onRowSelectionChange?: (state: RowSelectionState) => void;
-
-  readonly rowsIsolatedSelection?: boolean;
   readonly rowSelectKey?: S;
 }
 
 export function useServerDataSource<T, K extends unknown[] = unknown[], S extends unknown[] = unknown[]>(
   props: UseServerDataSourceParams<K, S>,
 ): RowSourceServer<T> {
-  const isolatedSelected = props.rowsIsolatedSelection ?? true;
+  const isolatedSelected = props.rowsIsolatedSelection ?? false;
   const s = useSourceState(props, isolatedSelected);
 
   const isLoading$ = usePiece(s.isLoading);
@@ -108,6 +107,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[], S extend
       loadingError: loadError$,
       requestsForView: requestsForView$,
 
+      // TODO
       onRowsUpdated: () => {},
     };
 

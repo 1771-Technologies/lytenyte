@@ -2,7 +2,7 @@ import type { ColumnAbstract, RowNode } from "@1771technologies/lytenyte-shared"
 import type { Root } from "../../root";
 
 export function getSpanFn(
-  rowByIndex: (r: number) => RowNode<any> | null,
+  rowByIndex: (r: number) => RowNode<any> | null | undefined,
   visibleColumns: ColumnAbstract[],
   span: "row" | "col",
   api: Root.API,
