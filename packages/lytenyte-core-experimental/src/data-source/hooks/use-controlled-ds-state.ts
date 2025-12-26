@@ -1,27 +1,14 @@
 import { useCallback } from "react";
 import { useControlled } from "../../hooks/use-controlled.js";
-import { useEvent } from "../../hooks/use-event.js";
 import type { UseClientDataSourceParams } from "../use-client-data-source.js";
 
 export function useControlledState({
   rowGroupExpansions,
-  rowsSelected: selectedRows,
   rowGroupDefaultExpansion = false,
-  onRowSelectionChange: handleSelectChange,
 }: UseClientDataSourceParams<any>) {
   const [expansions, setExpansions] = useControlled({
     controlled: rowGroupExpansions,
     default: {},
-  });
-
-  const [selected, setSelectedUncontrolled] = useControlled<Set<string>>({
-    controlled: selectedRows,
-    default: new Set(),
-  });
-
-  const setSelected = useEvent((s: Set<string>) => {
-    handleSelectChange?.(s);
-    setSelectedUncontrolled(s);
   });
 
   const expandedFn = useCallback(
@@ -36,5 +23,5 @@ export function useControlledState({
     [expansions, rowGroupDefaultExpansion],
   );
 
-  return { selected, expansions, setExpansions, setSelected, expandedFn };
+  return { expansions, setExpansions, expandedFn };
 }

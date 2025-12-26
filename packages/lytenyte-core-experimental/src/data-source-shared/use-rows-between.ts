@@ -1,5 +1,5 @@
-import { useEvent } from "@1771technologies/lytenyte-core-experimental/internal";
 import type { RowSource } from "@1771technologies/lytenyte-shared";
+import { useEvent } from "../hooks/use-event.js";
 import type { RefObject } from "react";
 
 export function useRowsBetween<T>(

@@ -15,6 +15,11 @@ export { rowSelectLinkWithParents } from "./row-selection/row-select-link-with-p
 export { rowSelectLinkWithoutParents } from "./row-selection/row-select-link-without-parent.js";
 export type {
   Writable,
+  PathField,
+  Field,
+  Dimension,
+  DimensionSort,
+  DimensionAgg,
   RowSelectionIsolated,
   RowSelectionLinked,
   RowSelectionState,
@@ -22,6 +27,7 @@ export type {
   RowSelectNodeWithParent,
   RowSelectionLinkedWithParent,
   RowSelectionStateWithParent,
+  Aggregator,
   SpanFn,
   RowPredicate,
   SpanLayout,

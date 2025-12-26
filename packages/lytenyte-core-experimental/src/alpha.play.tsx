@@ -62,6 +62,8 @@ const columns: Root.Column<{ data: BankData }>[] = [
 export default function Experimental() {
   const rowSource = useClientDataSource({
     data: bankDataSmall,
+    rowGroupDefaultExpansion: true,
+    group: [{ id: "age" }],
   });
 
   const { resolvedTheme } = useTheme();
@@ -77,6 +79,7 @@ export default function Experimental() {
             columns={columns}
             columnBase={useMemo(() => ({ movable: true, resizable: false }), [])}
             rowSource={rowSource}
+            rowSelectionMode="multiple"
           >
             <Viewport>
               <ViewportShadows />

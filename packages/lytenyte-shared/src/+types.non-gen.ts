@@ -122,6 +122,7 @@ export interface RowSource<T = any> {
   readonly rowLeafs: (id: string) => string[];
   readonly rowsBetween: (start: string, end: string) => string[];
   readonly rowInvalidate: (row?: number) => void;
+  readonly rowsSelected: () => { state: RowSelectionState; rows: RowNode<T>[] };
 
   // Methods the LyteNyte will call
   readonly onViewChange: (view: SpanLayout) => void;
@@ -134,13 +135,19 @@ export interface RowSource<T = any> {
   }) => void;
 }
 
+export type PathField = { kind: "path"; path: string };
+export type Field<T> = string | number | PathField | ((params: { row: RowNode<T> }) => unknown);
+export type Dimension<T> = { name?: string; field: Field<T> } | { id: string; field?: Field<T> };
+export type DimensionSort<T> = { dim: Dimension<T>; descending?: boolean };
+export type DimensionAgg<T> = { dim: { id: string; field?: Field<T> }; fn: AggregationFn<T> | string };
+
 export type LeafIdFn<T> = (d: T, index: number, section: "top" | "center" | "bottom") => string;
 export type GroupIdFn = (path: (string | null)[]) => string;
-
 export type SortFn<T> = (left: RowNode<T>, right: RowNode<T>) => number;
 export type FilterFn<T> = (node: RowLeaf<T>) => boolean;
 export type GroupFn<T> = (node: RowLeaf<T>) => (string | null)[] | null;
 export type AggregationFn<T> = (data: RowLeaf<T>[]) => Record<string, unknown>;
+export type Aggregator<T> = (data: RowLeaf<T>[], field: Field<T>) => unknown;
 
 export interface RowLeaf<T = any> {
   readonly id: string;

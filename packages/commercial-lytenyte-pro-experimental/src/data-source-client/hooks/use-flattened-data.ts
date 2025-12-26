@@ -1,23 +1,33 @@
 import type { GroupIdFn } from "@1771technologies/lytenyte-shared";
 import type { GridSpec } from "../../types/grid.js";
 import type { UseClientDataSourceParams } from "../use-client-data-source.js";
-import { useFiltered } from "./use-filtered.js";
 import { useGroupTree } from "./use-group-tree/use-group-tree.js";
-import type { LeafRowTuple } from "./use-leaf-nodes.js";
 import { useSorted } from "./use-sorted.js";
 import { useFlattenedGroups } from "./use-flattened-groups.js";
 import type { SourceState } from "./use-controlled-ds-state.js";
 import { useFlattenedPiece } from "./use-flattened-piece.js";
+import {
+  useAggregationFn,
+  useFiltered,
+  useFilterFn,
+  useGroupFn,
+  useSortFn,
+  type LeafNodeTuple,
+} from "@1771technologies/lytenyte-core-experimental/internal";
 
 const groupIdFallback: GroupIdFn = (p) => p.map((x) => (x == null ? "_null_" : x)).join("->");
 export function useFlattenedData<Spec extends GridSpec>(
   props: UseClientDataSourceParams<Spec>,
-  [leafsTop, leafs, leafsBot, leafIdsRef]: LeafRowTuple<Spec["data"]>,
+  [leafsTop, leafs, leafsBot, leafIdsRef]: LeafNodeTuple<Spec["data"]>,
   { expandedFn }: SourceState,
 ) {
-  const leafSort = Array.isArray(props.sort) ? props.sort.at(-1) : props.sort;
-  const filtered = useFiltered(leafs, props.filter);
-  const sorted = useSorted(leafs, leafSort, filtered);
+  const filterFn = useFilterFn(props.filter);
+  const sortFn = useSortFn(props.sort);
+  const groupFn = useGroupFn(props.group);
+  const aggFn = useAggregationFn(props.aggregate, props.aggregateFns);
+
+  const filtered = useFiltered(leafs, filterFn);
+  const sorted = useSorted(leafs, sortFn, filtered);
 
   const havingFilter = Array.isArray(props.having)
     ? props.having.length
@@ -27,23 +37,20 @@ export function useFlattenedData<Spec extends GridSpec>(
   const tree = useGroupTree(
     leafs,
     sorted,
-    props.group,
+    groupFn,
     props.groupIdFn ?? groupIdFallback,
     props.rowGroupCollapseBehavior ?? "no-collapse",
     props.labelFilter,
     havingFilter,
-    props.havingGroupAlways ?? false,
-    props.aggregate,
+    aggFn,
   );
 
-  const groupSort = Array.isArray(props.sort) ? (props.sort.length ? props.sort : null) : props.sort;
   const [groupFlat, maxDepth] = useFlattenedGroups(
     tree,
-    props.aggregate,
+    aggFn,
     leafs,
     sorted,
-    groupSort,
-    props.sortGroupAlways ?? true,
+    sortFn,
     expandedFn,
     props.rowGroupSuppressLeafExpansion ?? false,
   );
@@ -68,5 +75,6 @@ export function useFlattenedData<Spec extends GridSpec>(
     leafs,
     leafsBot,
     sorted,
+    groupFn,
   };
 }

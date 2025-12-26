@@ -2,7 +2,6 @@ import { useMemo } from "react";
 import type { GridSpec } from "../../../types";
 import type { UseClientDataSourceParams } from "../../use-client-data-source";
 import type { SourceState } from "../use-controlled-ds-state";
-import type { LeafRowTuple } from "../use-leaf-nodes";
 import { useFilteredData } from "./use-filtered-data.js";
 import { usePivotGroupFn } from "./use-pivot-group-fn.js";
 import { useGroupTree } from "../use-group-tree/use-group-tree.js";
@@ -11,19 +10,25 @@ import { useFlattenedGroups } from "../use-flattened-groups.js";
 import { useFlattenedPiece } from "../use-flattened-piece.js";
 import { usePivotColumns } from "./use-pivot-columns.js";
 import { usePivotAggFunction } from "./use-agg-model.js";
-import { usePiece } from "@1771technologies/lytenyte-core-experimental/internal";
+import {
+  useFilterFn,
+  usePiece,
+  type LeafNodeTuple,
+} from "@1771technologies/lytenyte-core-experimental/internal";
 
 const empty: RowLeaf<any>[] = [];
 const groupIdFallback: GroupIdFn = (p) => p.map((x) => (x == null ? "_null_" : x)).join("->");
 export function usePivotData<Spec extends GridSpec>(
   props: UseClientDataSourceParams<Spec>,
-  [, leafs, , leafIdsRef]: LeafRowTuple<Spec["data"]>,
+  [, leafs, , leafIdsRef]: LeafNodeTuple<Spec["data"]>,
   c: SourceState,
 ) {
   const model = props.pivotModel;
   const pivotMode = props.pivotMode ?? false;
 
-  const filter = props.pivotApplyExistingFilter ? props.filter : null;
+  const filterFn = useFilterFn(props.filter);
+  const filter = props.pivotApplyExistingFilter ? filterFn : null;
+
   const filtered = useFilteredData(pivotMode, filter, leafs);
   const groupFn = usePivotGroupFn(pivotMode, model);
 
@@ -53,7 +58,6 @@ export function usePivotData<Spec extends GridSpec>(
     "no-collapse",
     model?.rowLabelFilter,
     havingFilter,
-    props.pivotHavingGroupingAlways ?? props.havingGroupAlways ?? false,
     aggFn,
   );
 
@@ -64,7 +68,6 @@ export function usePivotData<Spec extends GridSpec>(
     leafs,
     filtered,
     groupSort,
-    props.pivotSortGroupAlways ?? props.sortGroupAlways ?? true,
     c.pivotExpandedFn,
     true,
   );
@@ -120,5 +123,6 @@ export function usePivotData<Spec extends GridSpec>(
     pivotGroupPiece,
     setPivotState,
     setPivotGroupState,
+    groupFn,
   };
 }

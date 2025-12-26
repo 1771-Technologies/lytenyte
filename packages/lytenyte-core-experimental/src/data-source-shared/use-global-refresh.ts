@@ -1,5 +1,5 @@
-import { createSignal, type Signal } from "@1771technologies/lytenyte-core-experimental/internal";
 import { useRef } from "react";
+import { createSignal, type Signal } from "../signal/signal.js";
 
 export function useGlobalRefresh() {
   const globalSignal = useRef<Signal<number>>(null as any);

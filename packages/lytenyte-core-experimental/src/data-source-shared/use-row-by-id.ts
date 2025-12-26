@@ -1,6 +1,6 @@
 import type { RowLeaf, RowSource } from "@1771technologies/lytenyte-shared";
-import { useEvent } from "../../hooks/use-event.js";
-import type { RootNode } from "../hooks/use-group-tree.js";
+import { useEvent } from "../hooks/use-event.js";
+import type { RootNode } from "../data-source/hooks/use-group-tree.js";
 import type { RefObject } from "react";
 
 export function useRowById<T>(tree: RootNode<T> | null, leafIdsRef: RefObject<Map<string, RowLeaf<T>>>) {

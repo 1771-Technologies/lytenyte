@@ -51,8 +51,7 @@ export function useGroupTree<T>(
   groupIdFn: GroupIdFn,
   rowGroupCollapseBehavior: "no-collapse" | "last-only" | "full-tree",
   labelFilter: (LabelFilter | null)[] | null | undefined,
-  having: HavingFilterFn | HavingFilterFn[] | null | undefined,
-  havingGroupAlways: boolean,
+  having: HavingFilterFn | (HavingFilterFn | null)[] | null | undefined,
   agg: AggregationFn<T> | undefined | null,
 ) {
   const groupNodeCacheRef = useRef(new Map<string, GroupNode<T>["row"]>());
@@ -155,9 +154,7 @@ export function useGroupTree<T>(
         if (node.kind === "leaf") return;
         if (node.kind === "root") node.children.forEach((c) => traverse(c, 0));
 
-        const filterFn = Array.isArray(having)
-          ? (having[depth] ?? (havingGroupAlways ? having.at(-1) : null))
-          : having;
+        const filterFn = Array.isArray(having) ? (having[depth] ?? null) : having;
         if (!filterFn) return;
 
         if (node.kind === "branch") {
@@ -198,15 +195,5 @@ export function useGroupTree<T>(
     if (rowGroupCollapseBehavior === "last-only") root.children.forEach(collapseLast);
 
     return root;
-  }, [
-    agg,
-    group,
-    groupIdFn,
-    having,
-    havingGroupAlways,
-    labelFilter,
-    leafs,
-    rowGroupCollapseBehavior,
-    workingSet,
-  ]);
+  }, [agg, group, groupIdFn, having, labelFilter, leafs, rowGroupCollapseBehavior, workingSet]);
 }

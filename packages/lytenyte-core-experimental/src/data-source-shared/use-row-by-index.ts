@@ -1,26 +1,23 @@
 import { useRef } from "react";
-import type { RowAtom, RowNode, RowSource } from "@1771technologies/lytenyte-shared";
-import type { RootNode } from "../hooks/use-group-tree/use-group-tree.js";
-import {
-  createSignal,
-  useEvent,
-  usePiece,
-  useSelector,
-  type Piece,
-  type Signal,
-} from "@1771technologies/lytenyte-core-experimental/internal";
+import { useEvent } from "../hooks/use-event.js";
+import type {
+  RowAtom,
+  RowNode,
+  RowSelectionStateWithParent,
+  RowSource,
+} from "@1771technologies/lytenyte-shared";
+import { createSignal, useSelector, type Signal } from "../signal/signal.js";
+import { type Piece } from "../hooks/use-piece.js";
+import { isRowSelected } from "./row-selection/is-row-selected.js";
 
 export function useRowByIndex<T>(
-  tree: RootNode<T> | null,
   piece: Piece<RowNode<T>[]>,
   globalSignal: Signal<number>,
-  selected: Set<string>,
-  rowsIsolatedSelection: boolean,
+  state: { rowSelections: RowSelectionStateWithParent },
+  rowParents: (id: string) => string[],
 ) {
   const invalidateCacheRef = useRef(new Map<number, (t: number) => void>());
   const atomCacheRef = useRef<Record<number, RowAtom<RowNode<T> | null>>>({});
-
-  const selectedPiece = usePiece(selected);
 
   const rowInvalidate: RowSource<T>["rowInvalidate"] = useEvent((row) => {
     if (row == null) {
@@ -49,26 +46,8 @@ export function useRowByIndex<T>(
           const globalSnapshot = useSelector(globalSignal);
 
           const row = piece.useValue($);
-
-          const selected = selectedPiece.useValue((x) => {
-            if (!row) return false;
-            if (rowsIsolatedSelection) return x.has(row.id);
-            if (row.kind === "leaf") return x.has(row.id);
-            const group = tree?.groupLookup.get(row.id);
-            if (!group) return false;
-
-            return group.leafIds.isSubsetOf(x);
-          });
-
-          const isIndeterminate = selectedPiece.useValue((x) => {
-            if (!row || row.kind === "leaf") return false;
-            const group = tree?.groupLookup.get(row.id);
-            if (!group) return false;
-
-            const intersection = group.leafIds.intersection(x);
-
-            return intersection.size > 0 && intersection.size !== group.leafIds.size;
-          });
+          const selected = isRowSelected(row.id, state.rowSelections, rowParents);
+          const isIndeterminate = false;
 
           Object.assign(row, {
             __selected: selected,

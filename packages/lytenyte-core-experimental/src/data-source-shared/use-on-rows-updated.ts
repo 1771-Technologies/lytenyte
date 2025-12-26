@@ -1,6 +1,6 @@
 import type { RowLeaf, RowSource } from "@1771technologies/lytenyte-shared";
-import { useEvent } from "../../hooks/use-event.js";
-import type { UseClientDataSourceParams } from "../use-client-data-source";
+import { useEvent } from "../hooks/use-event.js";
+import type { UseClientDataSourceParams } from "../data-source/use-client-data-source.js";
 
 export function useOnRowsUpdated<T>(onRowDataChange: UseClientDataSourceParams<T>["onRowDataChange"]) {
   const onRowsUpdated: RowSource["onRowsUpdated"] = useEvent((rows) => {

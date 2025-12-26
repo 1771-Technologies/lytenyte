@@ -1,7 +1,7 @@
 import type { FilterFn, RowLeaf } from "@1771technologies/lytenyte-shared";
 import { useMemo } from "react";
 
-export function useFiltered<T>(leafs: RowLeaf<T>[], filter: FilterFn<T> | undefined) {
+export function useFiltered<T>(leafs: RowLeaf<T>[], filter: FilterFn<T> | undefined | null) {
   const filtered = useMemo(() => {
     if (!filter) return null;
 
