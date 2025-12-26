@@ -53,9 +53,8 @@ export default function Experimental() {
       rows: [{ id: "marital" }, { id: "age" }],
       measures: [
         {
-          id: "Balance",
-          measure: sumAge,
-          reference: { type: "number" },
+          dim: { id: "Balance", type: "number" },
+          fn: sumAge,
         },
       ],
     },

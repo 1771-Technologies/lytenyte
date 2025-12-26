@@ -3,7 +3,7 @@ import { useMemo } from "react";
 
 const defaultAggregations = {};
 export function useAggregationFn<T>(
-  aggregate: AggregationFn<T> | DimensionAgg<T>[] | null | undefined,
+  aggregate: AggregationFn<T> | DimensionAgg<T, any>[] | null | undefined,
   fns: Record<string, Aggregator<T>> = defaultAggregations,
 ) {
   return useMemo<AggregationFn<T> | null>(() => {
@@ -13,16 +13,14 @@ export function useAggregationFn<T>(
     return (data) => {
       const result: Record<string, unknown> = {};
       for (const agg of aggregate) {
-        if (typeof agg.fn === "string") {
-          const fn = fns[agg.fn];
-          if (!fn) {
-            console.error(`Unknown aggregation function applied: ${agg.fn}`);
-            continue;
-          }
-          result[agg.dim.id] = fn(data, agg.dim.field ?? agg.dim.id);
-        } else {
-          Object.assign(result, agg.fn(data));
+        const fn = typeof agg.fn === "string" ? fns[agg.fn] : agg.fn;
+
+        if (!fn) {
+          console.error(`Unknown aggregation function applied: ${agg.fn}`);
+          continue;
         }
+
+        result[agg.dim.id] = fn(data, agg.dim.field ?? agg.dim.id);
       }
 
       return result;

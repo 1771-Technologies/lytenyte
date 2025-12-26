@@ -24,7 +24,7 @@ export function pivotPaths<Spec extends GridSpec>(
 
     if (measures?.length) {
       for (const measure of measures) {
-        pathSet.add([...current, measure.id].join("-->"));
+        pathSet.add([...current, measure.dim.id].join("-->"));
       }
     } else {
       current.push("ln__noop");
