@@ -11,7 +11,6 @@ import type {
   GroupIdFn,
   LeafIdFn,
   RowGroup,
-  RowLeaf,
   RowNode,
   RowSelectionState,
   RowSource,
@@ -46,9 +45,8 @@ export type HavingFilterFn = (node: RowGroup) => boolean;
 
 export type PivotField<Spec extends GridSpec = GridSpec> = { field?: Field<Spec["data"]> };
 export type PivotMeasure<Spec extends GridSpec = GridSpec> = {
-  id: string;
-  measure: (rows: RowLeaf<Spec["data"]>[]) => unknown;
-  reference?: Omit<Column<Spec>, "id">;
+  dim: Column<Spec>;
+  fn: Aggregator<Spec["data"]> | string;
 };
 
 export interface RowSourceClient<Spec extends GridSpec = GridSpec> extends RowSource<Spec["data"]> {
@@ -70,7 +68,7 @@ export type LabelFilter = (s: string | null) => boolean;
 export interface PivotModel<Spec extends GridSpec = GridSpec> {
   readonly columns?: (Column<Spec> | PivotField<Spec>)[];
   readonly rows?: (Column<Spec> | PivotField<Spec>)[];
-  readonly measures?: PivotMeasure<Spec>[];
+  readonly measures?: DimensionAgg<Spec["data"], Column<Spec>>[];
   readonly sort?: SortFn<Spec["data"]>;
   readonly filter?: HavingFilterFn | (HavingFilterFn | null)[];
   readonly rowLabelFilter?: (LabelFilter | null)[];

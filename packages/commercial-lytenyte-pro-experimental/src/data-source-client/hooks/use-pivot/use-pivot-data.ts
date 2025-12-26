@@ -43,7 +43,7 @@ export function usePivotData<Spec extends GridSpec>(
     props.pivotColumnProcessor,
     props.pivotStateRef,
   );
-  const aggFn = usePivotAggFunction(pivotColumns, model);
+  const aggFn = usePivotAggFunction(pivotColumns, model, props.aggregateFns);
 
   const havingFilter = Array.isArray(model?.filter)
     ? model.filter.length

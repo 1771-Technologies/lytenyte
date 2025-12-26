@@ -76,10 +76,10 @@ export function usePivotColumns<Spec extends GridSpec = GridSpec>(
       return measures!.map<Column<Spec>>((x) => {
         const column: Column<Spec> = applyReferenceColumn(
           {
-            id: x.id,
-            field: x.id,
+            id: x.dim.id,
+            field: x.dim.id,
           },
-          x.reference as any,
+          x.dim as any,
         );
         return column;
       });
@@ -87,7 +87,7 @@ export function usePivotColumns<Spec extends GridSpec = GridSpec>(
 
     const paths = pivotPaths(filtered, leafs, columns, measures);
 
-    const lookup = Object.fromEntries((measures ?? []).map((x) => [x.id, x]));
+    const lookup = Object.fromEntries((measures ?? []).map((x) => [x.dim.id, x]));
     const cols = paths.map((path) => {
       const partsRaw = path.split("-->");
       const parts = partsRaw.map((x) => (x === "ln__blank__" ? "(blank)" : x));
@@ -97,7 +97,7 @@ export function usePivotColumns<Spec extends GridSpec = GridSpec>(
       }
 
       const measureId = parts.at(-1)!;
-      const measureRef = (lookup[measureId]?.reference ?? {}) as Omit<Column<Spec>, "id">;
+      const measureRef = lookup[measureId]?.dim as Omit<Column<Spec>, "id">;
 
       // Pop the last part as this is the aggregation value
       parts.pop();
