@@ -25,7 +25,6 @@ const noopFetcher = async () => [];
 export type DataFetcher = (
   req: DataRequest[],
   expansions: Record<string, boolean | undefined>,
-  pivotExpansions: Record<string, boolean | undefined>,
 ) => Promise<(DataResponse | DataResponsePinned)[]>;
 
 export interface FlatView {
@@ -50,9 +49,7 @@ export interface ServerDataConstructorParams {
   readonly blocksize: number;
 
   // Needs sync
-  readonly pivotMode: boolean;
   readonly expansions: Record<string, boolean | undefined>;
-  readonly pivotExpansions: Record<string, boolean | undefined>;
 
   readonly onResetLoadBegin: () => void;
   readonly onResetLoadError: (error: unknown) => void;
@@ -74,10 +71,7 @@ export class ServerData {
   flat!: FlatView;
 
   #dataFetcher: DataFetcher = noopFetcher;
-  #pivotMode: boolean;
-
   #expansions: Record<string, boolean | undefined>;
-  #pivotExpansions: Record<string, boolean | undefined>;
 
   #onResetLoadBegin: () => void;
   #onResetLoadError: (error: unknown) => void;
@@ -98,8 +92,6 @@ export class ServerData {
 
   constructor({
     blocksize,
-    pivotMode,
-    pivotExpansions,
     expansions,
     onResetLoadBegin,
     onResetLoadEnd,
@@ -111,9 +103,7 @@ export class ServerData {
     this.tree = makeAsyncTree();
     this.#blocksize = blocksize;
 
-    this.#pivotMode = pivotMode;
     this.#expansions = expansions;
-    this.#pivotExpansions = pivotExpansions;
     this.#defaultExpansion = defaultExpansion;
 
     this.#onResetLoadBegin = onResetLoadBegin;
@@ -130,20 +120,8 @@ export class ServerData {
     this.#dataFetcher = d;
     this.reset();
   }
-  set pivotMode(b: boolean) {
-    if (b === this.#pivotMode) return;
-    this.#pivotMode = b;
-    this.reset();
-  }
-
   set expansions(d: Record<string, boolean | undefined>) {
     this.#expansions = d;
-    if (this.#pivotMode) return;
-    this.#flatten();
-  }
-  set pivotExpansions(d: Record<string, boolean | undefined>) {
-    this.#pivotExpansions = d;
-    if (!this.#pivotMode) return;
     this.#flatten();
   }
   set defaultExpansion(d: boolean | number) {
@@ -186,7 +164,7 @@ export class ServerData {
       };
 
       this.#seenRequests.add(req.id);
-      const res = await this.#dataFetcher([req], this.#expansions, this.#pivotExpansions);
+      const res = await this.#dataFetcher([req], this.#expansions);
 
       this.handleResponses(res);
     } catch (e) {
@@ -241,7 +219,7 @@ export class ServerData {
       requests.forEach((req) => {
         if (!skip) for (let i = req.rowStartIndex; i < req.rowEndIndex; i++) this.#loadingRows.add(i);
       });
-      const responses = await this.#dataFetcher(requests, this.#expansions, this.#pivotExpansions);
+      const responses = await this.#dataFetcher(requests, this.#expansions);
 
       // The request was aborted, so we can ignore it from this point
       if (controller.signal.aborted) return;
@@ -517,8 +495,7 @@ export class ServerData {
 
   #flatten = (beforeOnFlat?: () => void) => {
     // The mode we are in determines the expansions we will use for the server data.
-    const mode = this.#pivotMode;
-    const expansions = mode ? this.#pivotExpansions : this.#expansions;
+    const expansions = this.#expansions;
     const t = this.tree;
 
     // We use these maps to keep track of the current view. These are helpful for

@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import type { UseClientDataSourceParams } from "../use-client-data-source.js";
 import { useControlled, useEvent } from "@1771technologies/lytenyte-core-experimental/internal";
 
-export type Controlled = ReturnType<typeof useSourceState>;
+export type SourceState = ReturnType<typeof useSourceState>;
 
 export function useSourceState({
   rowGroupExpansions,

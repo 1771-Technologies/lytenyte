@@ -41,13 +41,13 @@ export function useSource<K extends unknown[]>(
       defaultExpansion: props.rowGroupDefaultExpansion ?? false,
       blocksize: props.blockSize ?? 200,
       expansions: s.expansions,
-      pivotExpansions: {}, // TODO
-      pivotMode: false, // TODO
       onResetLoadBegin: () => {
         s.setIsLoading(true);
         s.setLoadingError(null);
       },
-      onInvalidate: () => {}, // TODO
+      // I know what I am about. This is fine, we only care the global signal has changed.
+      // eslint-disable-next-line react-hooks/purity
+      onInvalidate: () => globalSignal(Date.now()),
       onResetLoadEnd: () => s.setIsLoading(false),
       onResetLoadError: (e) => s.setLoadingError(e),
       onFlatten: (f) => {

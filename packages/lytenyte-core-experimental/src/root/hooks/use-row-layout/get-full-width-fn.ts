@@ -2,7 +2,7 @@ import type { RowNode } from "@1771technologies/lytenyte-shared";
 import type { Root } from "../../root";
 
 export function getFullWidthFn(
-  rowByIndex: (i: number) => RowNode<any> | null,
+  rowByIndex: (i: number) => RowNode<any> | null | undefined,
   predicate: Root.Props["rowFullWidthPredicate"],
   api: Root.API,
 ) {

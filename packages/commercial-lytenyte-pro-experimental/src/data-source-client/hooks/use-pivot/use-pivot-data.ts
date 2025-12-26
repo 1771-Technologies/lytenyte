@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import type { GridSpec } from "../../../types";
 import type { UseClientDataSourceParams } from "../../use-client-data-source";
-import type { Controlled } from "../use-controlled-ds-state";
+import type { SourceState } from "../use-controlled-ds-state";
 import type { LeafRowTuple } from "../use-leaf-nodes";
 import { useFilteredData } from "./use-filtered-data.js";
 import { usePivotGroupFn } from "./use-pivot-group-fn.js";
@@ -18,7 +18,7 @@ const groupIdFallback: GroupIdFn = (p) => p.map((x) => (x == null ? "_null_" : x
 export function usePivotData<Spec extends GridSpec>(
   props: UseClientDataSourceParams<Spec>,
   [, leafs, , leafIdsRef]: LeafRowTuple<Spec["data"]>,
-  c: Controlled,
+  c: SourceState,
 ) {
   const model = props.pivotModel;
   const pivotMode = props.pivotMode ?? false;
