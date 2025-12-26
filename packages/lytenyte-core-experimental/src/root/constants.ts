@@ -22,6 +22,7 @@ export const DEFAULT_ROW_SOURCE: RowSource = {
   rowLeafs: () => [],
   rowParents: () => [],
   rowsBetween: () => [],
+  rowSelectionState: () => null as any,
 
   onRowGroupExpansionChange: () => {},
   onRowsUpdated: () => {},

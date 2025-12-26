@@ -48,8 +48,8 @@ export type RowGroupDisplayMode = "single-column" | "custom";
 export interface RowSelectNode {
   readonly id: string;
   exceptions?: Set<string>;
-  selected?: boolean;
   children?: Map<string, RowSelectNode>;
+  selected?: boolean;
 }
 export interface RowSelectionLinked {
   readonly kind: "controlled";
@@ -123,6 +123,7 @@ export interface RowSource<T = any> {
   readonly rowsBetween: (start: string, end: string) => string[];
   readonly rowInvalidate: (row?: number) => void;
   readonly rowsSelected: () => { state: RowSelectionState; rows: RowNode<T>[] };
+  readonly rowSelectionState: () => RowSelectionState;
 
   // Methods the LyteNyte will call
   readonly onViewChange: (view: SpanLayout) => void;

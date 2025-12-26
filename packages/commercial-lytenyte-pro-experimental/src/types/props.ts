@@ -15,7 +15,7 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   // CORE Shared Properties
   readonly columns?: Column<Spec>[] | null;
   readonly columnBase?: Omit<Column<Spec>, "id" | "pin" | "field" | "editSetter">;
-  readonly columnMarker?: Omit<Column<Spec>, "field"> & { width?: number };
+  readonly columnMarker?: Omit<Column<Spec>, "id" | "field"> & { width?: number };
 
   readonly columnMarkerEnabled?: boolean;
   readonly columnGroupDefaultExpansion?: boolean;

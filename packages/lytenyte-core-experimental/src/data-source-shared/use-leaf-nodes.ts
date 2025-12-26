@@ -12,9 +12,7 @@ export function useLeafNodes<T>(
 ) {
   const nodeCache = useRef(new Map<T, RowLeaf<T>>());
 
-  const [leafsCenter, centerMap] = useMemo(() => {
-    const idMap = new Map<string, RowLeaf<T>>();
-
+  const leafsCenter = useMemo(() => {
     const nextMap = new Map<T, RowLeaf<T>>();
     const nextNodes: RowLeaf<T>[] = [];
 
@@ -25,12 +23,11 @@ export function useLeafNodes<T>(
       const node = lookup.get(d) ?? makeLeafNode(d, i, "center", leafIdFn ?? leafIdFallback);
 
       nextMap.set(d, node);
-      idMap.set(node.id, node);
       nextNodes.push(node);
     }
 
     nodeCache.current = nextMap;
-    return [nextNodes, idMap] as const;
+    return nextNodes;
   }, [center, leafIdFn]);
 
   const [leafsTop, topMap] = useMemo(() => {
@@ -58,14 +55,12 @@ export function useLeafNodes<T>(
 
     return [botNodes, idMap] as const;
   }, [bot, leafIdFn]);
-  const leafIdMap = useMemo(() => {
-    return new Map([...centerMap, ...topMap, ...botMap]);
-  }, [botMap, centerMap, topMap]);
 
-  const leafIdRef = useRef(leafIdMap);
-  leafIdRef.current = leafIdMap;
+  const pinMap = useMemo(() => {
+    return new Map([...topMap, ...botMap]);
+  }, [botMap, topMap]);
 
-  return [leafsTop, leafsCenter, leafsBot, leafIdRef] as const;
+  return [leafsTop, leafsCenter, leafsBot, pinMap] as const;
 }
 
 const makeLeafNode = <T>(

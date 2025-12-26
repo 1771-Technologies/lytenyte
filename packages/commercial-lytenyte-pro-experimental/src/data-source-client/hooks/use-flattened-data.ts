@@ -14,11 +14,12 @@ import {
   useSortFn,
   type LeafNodeTuple,
 } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useMemo, useRef } from "react";
 
 const groupIdFallback: GroupIdFn = (p) => p.map((x) => (x == null ? "_null_" : x)).join("->");
 export function useFlattenedData<Spec extends GridSpec>(
   props: UseClientDataSourceParams<Spec>,
-  [leafsTop, leafs, leafsBot, leafIdsRef]: LeafNodeTuple<Spec["data"]>,
+  [leafsTop, leafs, leafsBot, pinMap]: LeafNodeTuple<Spec["data"]>,
   { expandedFn }: SourceState,
 ) {
   const filterFn = useFilterFn(props.filter);
@@ -27,7 +28,11 @@ export function useFlattenedData<Spec extends GridSpec>(
   const aggFn = useAggregationFn(props.aggregate, props.aggregateFns);
 
   const filtered = useFiltered(leafs, filterFn);
-  const sorted = useSorted(leafs, sortFn, filtered);
+  const [sorted, centerMap] = useSorted(leafs, sortFn, filtered);
+
+  const leafIds = useMemo(() => new Map([...centerMap, ...pinMap]), [centerMap, pinMap]);
+  const leafIdsRef = useRef(leafIds);
+  leafIdsRef.current = leafIds;
 
   const havingFilter = Array.isArray(props.having)
     ? props.having.length

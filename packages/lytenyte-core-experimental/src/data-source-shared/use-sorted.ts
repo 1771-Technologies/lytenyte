@@ -7,13 +7,20 @@ export function useSorted<T>(
   filtered: number[] | null,
 ) {
   const sorted = useMemo(() => {
+    const centerMap = new Map<string, RowLeaf<T>>();
+    let finalSorted: number[];
     if (!sort) {
-      if (filtered) return filtered;
-      return Array.from({ length: leafs.length }, (_, i) => i);
-    }
+      if (filtered) finalSorted = filtered;
+      finalSorted = Array.from({ length: leafs.length }, (_, i) => i);
+    } else if (filtered) {
+      finalSorted = filtered.toSorted((li, ri) => {
+        const leftNode = leafs[li];
+        const rightNode = leafs[ri];
 
-    if (filtered) {
-      return filtered.toSorted((li, ri) => {
+        return sort(leftNode, rightNode);
+      });
+    } else {
+      finalSorted = Array.from({ length: leafs.length }, (_, i) => i).sort((li, ri) => {
         const leftNode = leafs[li];
         const rightNode = leafs[ri];
 
@@ -21,12 +28,12 @@ export function useSorted<T>(
       });
     }
 
-    return Array.from({ length: leafs.length }, (_, i) => i).sort((li, ri) => {
-      const leftNode = leafs[li];
-      const rightNode = leafs[ri];
+    for (let i = 0; i < finalSorted.length; i++) {
+      const row = leafs[finalSorted[i]];
+      centerMap.set(row.id, row);
+    }
 
-      return sort(leftNode, rightNode);
-    });
+    return [finalSorted, centerMap] as const;
   }, [filtered, leafs, sort]);
 
   return sorted;

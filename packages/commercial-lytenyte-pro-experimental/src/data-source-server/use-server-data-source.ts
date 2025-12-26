@@ -9,6 +9,7 @@ import {
   useRowsSelected,
   useEvent,
   useGlobalRefresh,
+  useRowSelectionState,
 } from "@1771technologies/lytenyte-core-experimental/internal";
 import { type RowSelectionState, type RowSource } from "@1771technologies/lytenyte-shared";
 import { useRowByIndex } from "./source/use-row-by-index.js";
@@ -87,6 +88,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[], S extend
   );
   const rowIsSelected = useRowIsSelected<T>(selectionState, rowParents, rowById);
   const rowsSelected = useRowsSelected(selectionState, source.tree.rowIdToNode, rowParents);
+  const rowSelectionState = useRowSelectionState(selectionState);
 
   const rowLeafs = useRowLeafs<T>(source);
   const { rowByIndex, rowInvalidate } = useRowByIndex<T>(source, selectionState, globalSignal, rowParents);
@@ -105,6 +107,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[], S extend
       rowChildren,
       rowsSelected,
       rowIsSelected,
+      rowSelectionState,
 
       rowLeafs,
       rowParents,
@@ -149,6 +152,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[], S extend
     rowIsSelected,
     rowLeafs,
     rowParents,
+    rowSelectionState,
     rowsBetween,
     rowsSelected,
     setExpansions,

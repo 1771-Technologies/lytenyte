@@ -21,6 +21,8 @@ export {
   useRowSelectSplitLookup,
 } from "./data-source-shared/row-selection/use-rows-selected.js";
 
+export { isRowIndeterminate } from "./data-source-shared/row-selection/is-row-indeterminate.js";
+export { isRowSelected } from "./data-source-shared/row-selection/is-row-selected.js";
 export { useAggregationFn } from "./data-source-shared/use-aggregation-fn.js";
 export { useFiltered } from "./data-source-shared/use-filtered.js";
 export { useFilterFn } from "./data-source-shared/use-filter-fn.js";
@@ -37,3 +39,4 @@ export { useRowsBetween } from "./data-source-shared/use-rows-between.js";
 export { useSorted } from "./data-source-shared/use-sorted.js";
 export type { LeafNodeTuple } from "./data-source-shared/use-leaf-nodes.js";
 export { useLeafNodes } from "./data-source-shared/use-leaf-nodes.js";
+export { useRowSelectionState } from "./data-source-shared/use-row-selection-state.js";
