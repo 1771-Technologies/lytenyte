@@ -32,6 +32,7 @@ import {
   useRowParents,
   useRowsBetween,
   useRowSelection,
+  useRowSelectionState,
   useRowSelectSplitLookup,
 } from "@1771technologies/lytenyte-core-experimental/internal";
 import type { Column, Field } from "../types/column.js";
@@ -172,6 +173,7 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
     f.tree?.groupLookup,
     rowParents,
   );
+  const rowSelectionState = useRowSelectionState(selectionState);
 
   const { rowInvalidate, rowByIndex } = useRowByIndex(piece, globalSignal, selectionState, rowParents);
   const rowsBetween = useRowsBetween(f.rowIdToRowIndexRef, rowByIndex);
@@ -210,6 +212,7 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
       rowIsSelected,
       rowsSelected,
       rowParents,
+      rowSelectionState,
 
       useBottomCount: botPiece.useValue,
       useTopCount: topPiece.useValue,
@@ -292,6 +295,7 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
     rowIsSelected,
     rowsSelected,
     rowParents,
+    rowSelectionState,
     botPiece.useValue,
     topPiece.useValue,
     maxDepthPiece.useValue,

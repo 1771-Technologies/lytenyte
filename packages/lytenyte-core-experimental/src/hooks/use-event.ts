@@ -64,7 +64,7 @@ type AnyFunction = (...args: any[]) => any;
  */
 export function useEvent<TCallback extends AnyFunction>(callback: TCallback): TCallback {
   // Store the latest callback version to ensure we always have access to current props/state
-  const latestRef = React.useRef<TCallback>(useEvent_shouldNotBeInvokedBeforeMount as any);
+  const latestRef = React.useRef<TCallback>(callback as any);
   useInsertionEffect(() => {
     latestRef.current = callback;
   }, [callback]);
@@ -81,16 +81,4 @@ export function useEvent<TCallback extends AnyFunction>(callback: TCallback): TC
   }
 
   return stableRef.current;
-}
-
-/**
- * Error handler for invalid hook usage during the initial render phase.
- *
- * @internal
- * @throws {Error} Always throws to indicate invalid usage before component mount
- */
-function useEvent_shouldNotBeInvokedBeforeMount() {
-  throw new Error(
-    "INVALID_USEEVENT_INVOCATION: the callback from useEvent cannot be invoked before the component has mounted.",
-  );
 }

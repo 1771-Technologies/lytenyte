@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import type { GridSpec } from "../../../types";
 import type { UseClientDataSourceParams } from "../../use-client-data-source";
 import type { SourceState } from "../use-controlled-ds-state";
@@ -20,7 +20,7 @@ const empty: RowLeaf<any>[] = [];
 const groupIdFallback: GroupIdFn = (p) => p.map((x) => (x == null ? "_null_" : x)).join("->");
 export function usePivotData<Spec extends GridSpec>(
   props: UseClientDataSourceParams<Spec>,
-  [, leafs, , leafIdsRef]: LeafNodeTuple<Spec["data"]>,
+  [, leafs, , pinMap]: LeafNodeTuple<Spec["data"]>,
   c: SourceState,
 ) {
   const model = props.pivotModel;
@@ -31,6 +31,18 @@ export function usePivotData<Spec extends GridSpec>(
 
   const filtered = useFilteredData(pivotMode, filter, leafs);
   const groupFn = usePivotGroupFn(pivotMode, model);
+
+  const leafIds = useMemo(() => {
+    const centerMap = new Map(pinMap);
+
+    for (let i = 0; i < filtered.length; i++) {
+      const row = leafs[filtered[i]];
+      centerMap.set(row.id, row);
+    }
+    return centerMap;
+  }, [filtered, leafs, pinMap]);
+  const leafIdsRef = useRef(leafIds);
+  leafIdsRef.current = leafIds;
 
   const measures = model?.measures;
   const rows = model?.rows;

@@ -137,6 +137,13 @@
       }
     }
 
+    [data-ln-header-id="lytenyte-marker-column"] {
+      padding: 0px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
     [data-ln-header-resizer="true"] {
       background-color: transparent;
       transition: background-color 200ms ease-in-out;

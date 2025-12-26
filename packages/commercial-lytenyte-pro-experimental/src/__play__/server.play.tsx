@@ -15,6 +15,7 @@ import { RowGroupCell } from "../components/row-group-cell.js";
 import type { SalaryData } from "./basic-server-data/data";
 import { useServerDataSource } from "../data-source-server/use-server-data-source.js";
 import { Server } from "./basic-server-data/server.js";
+import { SelectAll } from "../components/select-all.js";
 
 interface Spec extends GridSpec {
   data: SalaryData;
@@ -95,6 +96,10 @@ export default function Experimental() {
             rowGroupColumn={rowGroupColumn}
             onRowGroupColumnChange={setRowGroupColumn}
             rowSelectionMode="multiple"
+            columnMarkerEnabled
+            columnMarker={{
+              headerRenderer: SelectAll,
+            }}
             ref={ref}
           >
             <Viewport style={{ scrollbarGutter: "stable" }}>

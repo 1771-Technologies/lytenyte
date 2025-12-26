@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import { useEvent } from "../hooks/use-event.js";
 import type {
   RowAtom,
@@ -9,6 +9,7 @@ import type {
 import { createSignal, useSelector, type Signal } from "../signal/signal.js";
 import { type Piece } from "../hooks/use-piece.js";
 import { isRowSelected } from "./row-selection/is-row-selected.js";
+import { isRowIndeterminate } from "./row-selection/is-row-indeterminate.js";
 
 export function useRowByIndex<T>(
   piece: Piece<RowNode<T>[]>,
@@ -46,8 +47,14 @@ export function useRowByIndex<T>(
           const globalSnapshot = useSelector(globalSignal);
 
           const row = piece.useValue($);
-          const selected = isRowSelected(row.id, state.rowSelections, rowParents);
-          const isIndeterminate = false;
+
+          const [selected, isIndeterminate] = useMemo(() => {
+            const selected = isRowSelected(row.id, state.rowSelections, rowParents);
+            const indeterminate = isRowIndeterminate(row.id, state.rowSelections, rowParents);
+
+            return [selected, indeterminate];
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+          }, [row.id, localSnapshot, globalSnapshot]);
 
           Object.assign(row, {
             __selected: selected,

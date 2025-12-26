@@ -12,5 +12,6 @@ export function isRowSelected(
   }
 
   const parents = getParents(id);
-  return isRowSelectedInTree(s.selected, s.children, parents.concat([id]));
+  parents.push(id);
+  return isRowSelectedInTree(s.selected, s.children, parents);
 }

@@ -6,14 +6,15 @@ import type {
   RowSource,
 } from "@1771technologies/lytenyte-shared";
 import type { ServerData } from "../server-data.js";
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import {
   createSignal,
+  isRowIndeterminate,
+  isRowSelected,
   useEvent,
   useSelector,
   type Signal,
 } from "@1771technologies/lytenyte-core-experimental/internal";
-import { isSelected } from "../utils/is-selected.js";
 
 export function useRowByIndex<T>(
   source: ServerData,
@@ -55,6 +56,17 @@ export function useRowByIndex<T>(
           const errorGroup = flat.erroredGroup.get(i);
           const error = flat.errored.get(i);
 
+          const [selected, indeterminate] = useMemo(() => {
+            void localSnapshot;
+            void globalSnapshot;
+            if (!row) return [false, false];
+
+            const selected = isRowSelected(row.id, state.rowSelections, getParents);
+            const indeterminate =
+              row.kind === "branch" && isRowIndeterminate(row.id, state.rowSelections, getParents);
+            return [selected, indeterminate];
+          }, [row, localSnapshot, globalSnapshot]);
+
           if (!row) {
             if (!loadingCache.current[i]) {
               loadingCache.current[i] = {
@@ -70,12 +82,11 @@ export function useRowByIndex<T>(
             return loadingRow;
           }
 
-          const selected = isSelected(row.id, state.rowSelections, getParents);
-
           if (row.kind === "leaf" || row.kind === "aggregated") {
             Object.assign(row, {
               loading: isLoading,
               error: error?.error,
+              __indeterminate: indeterminate,
               __selected: selected,
               __localSnapshot: localSnapshot,
               __globalSnapshot: globalSnapshot,
@@ -86,6 +97,7 @@ export function useRowByIndex<T>(
               error: error?.error,
               errorGroup: errorGroup?.error,
               loadingGroup: isGroupLoading,
+              __indeterminate: indeterminate,
               __selected: selected,
               __localSnapshot: localSnapshot,
               __globalSnapshot: globalSnapshot,

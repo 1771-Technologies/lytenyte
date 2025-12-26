@@ -26,7 +26,7 @@ export function useRowParents<T>(
         current = current.parent;
       }
 
-      return parents;
+      return parents.reverse();
     }
 
     const path = group!(row);
@@ -42,7 +42,7 @@ export function useRowParents<T>(
       current = current.parent;
     }
 
-    return parents;
+    return parents.reverse();
   });
 
   return rowParents;

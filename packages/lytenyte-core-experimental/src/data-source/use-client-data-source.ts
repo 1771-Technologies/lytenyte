@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import type {
   AggregationFn,
   FilterFn,
@@ -34,7 +34,13 @@ import { useSortFn } from "../data-source-shared/use-sort-fn.js";
 import { useFilterFn } from "../data-source-shared/use-filter-fn.js";
 import { useGroupFn } from "../data-source-shared/use-group-fn.js";
 import { useAggregationFn } from "../data-source-shared/use-aggregation-fn.js";
-import { useEvent, useOnRowsSelected, useRowIsSelected, useRowSelection } from "../internal.js";
+import {
+  useEvent,
+  useOnRowsSelected,
+  useRowIsSelected,
+  useRowSelection,
+  useRowSelectionState,
+} from "../internal.js";
 import { useRowSelectSplitLookup } from "../data-source-shared/row-selection/use-rows-selected.js";
 
 export interface UseClientDataSourceParams<T = unknown> {
@@ -75,10 +81,13 @@ export function useClientDataSource<T>(p: UseClientDataSourceParams<T>): RowSour
 
   const { expandedFn, setExpansions } = useControlledState(p);
 
-  const [leafsTop, leafs, leafsBot, leafIdsRef] = useLeafNodes(p.topData, p.data, p.botData, p.leafIdFn);
+  const [leafsTop, leafs, leafsBot, pinMap] = useLeafNodes(p.topData, p.data, p.botData, p.leafIdFn);
   const filtered = useFiltered(leafs, filterFn);
+  const [sorted, centerMap] = useSorted(leafs, sortFn, filtered);
 
-  const sorted = useSorted(leafs, sortFn, filtered);
+  const leafIds = useMemo(() => new Map([...centerMap, ...pinMap]), [centerMap, pinMap]);
+  const leafIdsRef = useRef(leafIds);
+  leafIdsRef.current = leafIds;
 
   const tree = useGroupTree(leafs, sorted, groupFn, p.groupIdFn ?? groupIdFallback);
   const [groupFlat, maxDepth] = useFlattenedGroups(tree, aggregate, leafs, sorted, sortFn, expandedFn);
@@ -134,6 +143,7 @@ export function useClientDataSource<T>(p: UseClientDataSourceParams<T>): RowSour
     tree?.groupLookup,
     rowParents,
   );
+  const rowSelectionState = useRowSelectionState(selectionState);
 
   const { rowInvalidate, rowByIndex } = useRowByIndex(piece, globalSignal, selectionState, rowParents);
   const rowsBetween = useRowsBetween(rowIdToRowIndexRef, rowByIndex);
@@ -165,6 +175,7 @@ export function useClientDataSource<T>(p: UseClientDataSourceParams<T>): RowSour
       rowIsSelected,
       rowsSelected,
       rowParents,
+      rowSelectionState,
 
       useBottomCount: botPiece.useValue,
       useTopCount: topPiece.useValue,
@@ -196,6 +207,7 @@ export function useClientDataSource<T>(p: UseClientDataSourceParams<T>): RowSour
     rowIsSelected,
     rowLeafs,
     rowParents,
+    rowSelectionState,
     rows$,
     rowsBetween,
     rowsSelected,

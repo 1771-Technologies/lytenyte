@@ -45,6 +45,7 @@ export default function Experimental() {
   const ds = useClientDataSource<Spec>({
     data: bankDataSmall,
     rowGroupDefaultExpansion: true,
+    group: [{ id: "marital" }, { id: "contact" }, { id: "age" }],
     pivotRowGroupDefaultExpansion: false,
     pivotMode,
     pivotGrandTotals: "bottom",
@@ -93,6 +94,7 @@ export default function Experimental() {
             rowSource={ds}
             rowGroupColumn={rowGroupColumn}
             onRowGroupColumnChange={setRowGroupColumn}
+            rowSelectionMode="multiple"
             {...pivotProps}
           >
             <Viewport>
