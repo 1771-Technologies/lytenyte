@@ -40,6 +40,7 @@ const columns: Root.Column<Spec>[] = [
 ];
 
 const sumAge = (rows: RowLeaf<BankData>[]) => rows.reduce((acc, x) => x.data.balance + acc, 0);
+
 export default function Experimental() {
   const [pivotMode, setPivotMode] = useState(false);
   const ds = useClientDataSource<Spec>({
