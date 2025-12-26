@@ -1,9 +1,17 @@
 import { useMemo } from "react";
 import type { DataRequest, DataResponse, DataResponsePinned, QueryFnParams } from "./types";
-import { usePiece, type Piece } from "@1771technologies/lytenyte-core-experimental/internal";
-import { type RowNode, type RowSelectionState, type RowSource } from "@1771technologies/lytenyte-shared";
+import {
+  usePiece,
+  type Piece,
+  useOnRowsSelected,
+  useRowIsSelected,
+  useRowSelection,
+  useRowsSelected,
+  useEvent,
+  useGlobalRefresh,
+} from "@1771technologies/lytenyte-core-experimental/internal";
+import { type RowSelectionState, type RowSource } from "@1771technologies/lytenyte-shared";
 import { useRowByIndex } from "./source/use-row-by-index.js";
-import { useGlobalRefresh } from "../data-source-client/source/use-global-refresh.js";
 import { useRowIndexToRowId } from "./source/use-row-index-to-row-id.js";
 import { useRowIdToRowIndex } from "./source/use-row-id-to-row-index.js";
 import { useRowById } from "./source/use-row-by-id.js";
@@ -13,17 +21,12 @@ import { useSource } from "./source/use-source.js";
 import { useRowParents } from "./source/use-row-parents.js";
 import { useRowsBetween } from "./source/use-rows-between.js";
 import { useRowChildren } from "./source/use-row-children.js";
-import { useRowIsSelected } from "./source/use-row-is-selected.js";
-import { useOnRowsSelected } from "./source/on-rows-selected/use-on-rows-selected.js";
-import { useRowsSelected } from "./source/use-rows-selected.js";
 import { useRowLeafs } from "./source/use-row-leafs.js";
 
 export interface RowSourceServer<T> extends RowSource<T> {
   readonly isLoading: Piece<boolean>;
   readonly loadingError: Piece<unknown>;
   readonly requestsForView: Piece<DataRequest[]>;
-
-  readonly rowsSelected: () => { state: RowSelectionState; loadedNodesSelected: RowNode<T>[] };
 }
 
 export interface UseServerDataSourceParams<K extends unknown[], S extends unknown[]> {
@@ -44,19 +47,18 @@ export function useServerDataSource<T, K extends unknown[] = unknown[], S extend
   props: UseServerDataSourceParams<K, S>,
 ): RowSourceServer<T> {
   const isolatedSelected = props.rowsIsolatedSelection ?? false;
-  const s = useSourceState(props, isolatedSelected);
+  const state = useSourceState(props);
 
-  const isLoading$ = usePiece(s.isLoading);
-  const loadError$ = usePiece(s.loadingError);
-  const requestsForView$ = usePiece(s.requestsForView, s.setRequestsForView);
-
-  const top$ = usePiece(s.topCount);
-  const bot$ = usePiece(s.botCount);
-  const maxDepth$ = usePiece(s.maxDepth);
-  const rowCount$ = usePiece(s.rowCount);
+  const isLoading$ = usePiece(state.isLoading);
+  const loadError$ = usePiece(state.loadingError);
+  const requestsForView$ = usePiece(state.requestsForView, state.setRequestsForView);
+  const top$ = usePiece(state.topCount);
+  const bot$ = usePiece(state.botCount);
+  const maxDepth$ = usePiece(state.maxDepth);
+  const rowCount$ = usePiece(state.rowCount);
 
   const globalSignal = useGlobalRefresh();
-  const source = useSource(props, s, globalSignal);
+  const source = useSource(props, state, globalSignal);
 
   const rowById = useRowById<T>(source);
   const rowIdToRowIndex = useRowIdToRowIndex<T>(source);
@@ -65,17 +67,33 @@ export function useServerDataSource<T, K extends unknown[] = unknown[], S extend
   const rowsBetween = useRowsBetween<T>(source);
   const rowChildren = useRowChildren<T>(source);
 
-  const onViewChange = useOnViewChange(source, s.requestsForView, s.setRequestsForView);
-  const onRowsSelected = useOnRowsSelected(source, s, rowParents, isolatedSelected, globalSignal);
+  const onViewChange = useOnViewChange(source, state.requestsForView, state.setRequestsForView);
 
-  const rowIsSelected = useRowIsSelected<T>(source, s, rowParents);
-  const rowsSelected = useRowsSelected<T>(source, s, rowParents);
+  const idSpec = useEvent((id: string) => {
+    const node = source.tree.rowIdToNode.get(id);
+    if (!node || node.kind === "leaf") return null;
+
+    return { size: node.size, children: node.byIndex };
+  });
+
+  // Handling row selection
+  const selectionState = useRowSelection(props.rowSelection, props.onRowSelectionChange, isolatedSelected);
+  const onRowsSelected = useOnRowsSelected(
+    selectionState,
+    idSpec,
+    rowParents,
+    isolatedSelected,
+    globalSignal,
+  );
+  const rowIsSelected = useRowIsSelected<T>(selectionState, rowParents, rowById);
+  const rowsSelected = useRowsSelected(selectionState, source.tree.rowIdToNode, rowParents);
+
   const rowLeafs = useRowLeafs<T>(source);
-  const { rowByIndex, rowInvalidate } = useRowByIndex<T>(source, globalSignal, s, rowParents);
+  const { rowByIndex, rowInvalidate } = useRowByIndex<T>(source, selectionState, globalSignal, rowParents);
 
-  const setExpansions = s.setExpansions;
+  const setExpansions = state.setExpansions;
 
-  const row$ = usePiece(s.rows);
+  const row$ = usePiece(state.rows);
 
   const rowSource = useMemo<RowSourceServer<T>>(() => {
     const rowSource: RowSourceServer<T> = {

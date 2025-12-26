@@ -1,4 +1,10 @@
-import type { RowAtom, RowLeaf, RowNode, RowSource } from "@1771technologies/lytenyte-shared";
+import type {
+  RowAtom,
+  RowLeaf,
+  RowNode,
+  RowSelectionStateWithParent,
+  RowSource,
+} from "@1771technologies/lytenyte-shared";
 import type { ServerData } from "../server-data.js";
 import { useRef } from "react";
 import {
@@ -7,13 +13,12 @@ import {
   useSelector,
   type Signal,
 } from "@1771technologies/lytenyte-core-experimental/internal";
-import type { SourceState } from "./use-source-state.js";
 import { isSelected } from "../utils/is-selected.js";
 
 export function useRowByIndex<T>(
   source: ServerData,
+  state: { rowSelections: RowSelectionStateWithParent },
   globalSignal: Signal<number>,
-  state: SourceState,
   getParents: (id: string) => string[],
 ) {
   const invalidateCacheRef = useRef(new Map<number, (t: number) => void>());
@@ -65,7 +70,7 @@ export function useRowByIndex<T>(
             return loadingRow;
           }
 
-          const selected = isSelected(row.id, state.selections, getParents);
+          const selected = isSelected(row.id, state.rowSelections, getParents);
 
           if (row.kind === "leaf" || row.kind === "aggregated") {
             Object.assign(row, {

@@ -13,10 +13,10 @@ type UseFlattenedGroupsReturn<T> = [rows: RowNode<T>[] | null, depth: number];
 
 export function useFlattenedGroups<T>(
   root: RootNode<T> | null,
-  agg: AggregationFn<T> | undefined,
+  agg: AggregationFn<T> | null | undefined,
   leafs: RowLeaf<T>[],
   workingSet: number[],
-  sort: SortFn<T> | undefined,
+  sort: SortFn<T> | null | undefined,
   expandedFn: (id: string, depth: number) => boolean,
 ) {
   const flat = useMemo<UseFlattenedGroupsReturn<T>>(() => {
@@ -83,10 +83,10 @@ export function useFlattenedGroups<T>(
 
 const nodeChildrenToRows = <T>(
   root: RootMap<T>,
-  agg: AggregationFn<T> | undefined,
+  agg: AggregationFn<T> | null | undefined,
   leafs: RowLeaf<T>[],
   workingSet: number[],
-  sort: SortFn<T> | undefined,
+  sort: SortFn<T> | null | undefined,
   isLast: boolean,
 ) => {
   const values = root.values();

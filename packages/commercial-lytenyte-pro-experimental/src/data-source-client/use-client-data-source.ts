@@ -1,7 +1,11 @@
 import { useMemo, type RefObject } from "react";
 import type {
   AggregationFn,
+  Aggregator,
   ColumnPin,
+  Dimension,
+  DimensionAgg,
+  DimensionSort,
   FilterFn,
   GroupFn,
   GroupIdFn,
@@ -9,23 +13,28 @@ import type {
   RowGroup,
   RowLeaf,
   RowNode,
+  RowSelectionState,
   RowSource,
   SortFn,
 } from "@1771technologies/lytenyte-shared";
-import { useLeafNodes } from "./hooks/use-leaf-nodes.js";
 import { useSourceState } from "./hooks/use-controlled-ds-state.js";
-import { useOnRowsUpdated } from "./source/use-on-rows-updated.js";
-import { useGlobalRefresh } from "./source/use-global-refresh.js";
-import { useRowById } from "./source/use-row-by-id.js";
-import { useRowParents } from "./source/use-row-parents.js";
-import { useRowIsSelected } from "./source/use-row-is-selected.js";
-import { useOnRowsSelected } from "./source/use-on-rows-selected.js";
-import { useRowsSelected } from "./source/use-rows-selected.js";
-import { useRowLeafs } from "./source/use-row-leafs.js";
-import { useRowChildren } from "./source/use-row-children.js";
-import { useRowByIndex } from "./source/use-row-by-index.js";
-import { useRowsBetween } from "./source/use-rows-between.js";
-import { usePiece } from "@1771technologies/lytenyte-core-experimental/internal";
+import {
+  useEvent,
+  useGlobalRefresh,
+  useLeafNodes,
+  useOnRowsSelected,
+  useOnRowsUpdated,
+  usePiece,
+  useRowById,
+  useRowByIndex,
+  useRowChildren,
+  useRowIsSelected,
+  useRowLeafs,
+  useRowParents,
+  useRowsBetween,
+  useRowSelection,
+  useRowSelectSplitLookup,
+} from "@1771technologies/lytenyte-core-experimental/internal";
 import type { Column, Field } from "../types/column.js";
 import type { GridSpec } from "../types/grid.js";
 import { useFlattenedData } from "./hooks/use-flattened-data.js";
@@ -43,7 +52,6 @@ export type PivotMeasure<Spec extends GridSpec = GridSpec> = {
 };
 
 export interface RowSourceClient<Spec extends GridSpec = GridSpec> extends RowSource<Spec["data"]> {
-  readonly rowsSelected: () => RowNode<Spec["data"]>[];
   readonly usePivotProps: (props?: {
     onColumnsChange?: Props<Spec>["onColumnsChange"];
     onColumnGroupExpansionChange?: Props<Spec>["onColumnGroupExpansionChange"];
@@ -63,8 +71,8 @@ export interface PivotModel<Spec extends GridSpec = GridSpec> {
   readonly columns?: (Column<Spec> | PivotField<Spec>)[];
   readonly rows?: (Column<Spec> | PivotField<Spec>)[];
   readonly measures?: PivotMeasure<Spec>[];
-  readonly sort?: SortFn<Spec["data"]> | SortFn<Spec["data"]>[];
-  readonly filter?: HavingFilterFn | HavingFilterFn[];
+  readonly sort?: SortFn<Spec["data"]>;
+  readonly filter?: HavingFilterFn | (HavingFilterFn | null)[];
   readonly rowLabelFilter?: (LabelFilter | null)[];
   readonly colLabelFilter?: (LabelFilter | null)[];
 }
@@ -76,8 +84,6 @@ export interface UseClientDataSourceParams<Spec extends GridSpec = GridSpec, T =
 
   readonly pivotMode?: boolean;
   readonly pivotModel?: PivotModel<Spec>;
-  readonly pivotSortGroupAlways?: boolean;
-  readonly pivotHavingGroupingAlways?: boolean;
   readonly pivotGrandTotals?: "top" | "bottom" | null;
   readonly pivotColumnProcessor?: (columns: Column<Spec>[]) => Column<Spec>[];
   readonly pivotStateRef?: RefObject<PivotState>;
@@ -89,23 +95,22 @@ export interface UseClientDataSourceParams<Spec extends GridSpec = GridSpec, T =
   readonly rowGroupCollapseBehavior?: "no-collapse" | "last-only" | "full-tree";
   readonly rowGroupSuppressLeafExpansion?: boolean;
 
-  readonly sort?: SortFn<T> | SortFn<T>[];
-  readonly sortGroupAlways?: boolean;
+  readonly sort?: SortFn<T> | DimensionSort<T>[] | null;
+  readonly group?: GroupFn<T> | Dimension<T>[];
+  readonly filter?: FilterFn<T> | FilterFn<T>[] | null;
+  readonly aggregate?: AggregationFn<T> | DimensionAgg<T>[];
+  readonly aggregateFns?: Record<string, Aggregator<T>>;
 
-  readonly filter?: FilterFn<T>;
-  readonly having?: HavingFilterFn | HavingFilterFn[];
+  readonly having?: HavingFilterFn | (HavingFilterFn | null)[];
   readonly labelFilter?: (LabelFilter | null)[];
-  readonly havingGroupAlways?: boolean;
-  readonly group?: GroupFn<T>;
-  readonly aggregate?: AggregationFn<T>;
 
   readonly leafIdFn?: LeafIdFn<T>;
   readonly groupIdFn?: GroupIdFn;
 
   readonly rowsIsolatedSelection?: boolean;
-  readonly rowsSelected?: Set<string>;
+  readonly rowSelection?: RowSelectionState;
+  readonly onRowSelectionChange?: (state: RowSelectionState) => void;
 
-  readonly onRowSelectionChange?: (newSelection: Set<string>) => void;
   readonly onRowDataChange?: (params: {
     readonly rows: Map<RowNode<T>, T>;
     readonly top: Map<number, T>;
@@ -119,8 +124,7 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
   props: UseClientDataSourceParams<Spec>,
 ): RowSourceClient<Spec> {
   type T = Spec["data"];
-  const rowsIsolatedSelection = props.rowsIsolatedSelection ?? false;
-  const leafsTuple = useLeafNodes(props);
+  const leafsTuple = useLeafNodes(props.topData, props.data, props.botData, props.leafIdFn);
 
   // s == state, f == flat, p == pivot
   const s = useSourceState(props);
@@ -137,36 +141,41 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
   const maxDepthPiece = usePiece(f.maxDepth);
 
   const rowById = useRowById(f.tree, f.leafIdsRef);
-  const rowParents = useRowParents(rowById, f.tree, props.group, props.groupIdFn ?? groupIdFallback);
+  const rowParents = useRowParents(rowById, f.tree, f.groupFn, props.groupIdFn ?? groupIdFallback);
+
   const onRowsUpdated = useOnRowsUpdated(props.onRowDataChange);
-
-  const rowIsSelected = useRowIsSelected(rowById, s.selected, f.tree, rowsIsolatedSelection);
-  const onRowsSelected = useOnRowsSelected(
-    rowById,
-    s.selected,
-    s.setSelected,
-    f.tree,
-    f.sorted,
-    f.leafs,
-    f.leafsTop,
-    f.leafsBot,
-    rowsIsolatedSelection,
-  );
-
-  const rowsSelected: RowSourceClient["rowsSelected"] = useRowsSelected(
-    rowById,
-    s.selected,
-    rowsIsolatedSelection,
-  );
-
   const globalSignal = useGlobalRefresh();
-  const { rowInvalidate, rowByIndex } = useRowByIndex(
-    f.tree,
-    piece,
-    globalSignal,
-    s.selected,
-    rowsIsolatedSelection,
+
+  const idToSpec = useEvent((id: string) => {
+    if (!f.tree) return null;
+
+    const node = f.tree.groupLookup.get(id);
+    if (!node) return null;
+
+    return { size: node.children.size, children: node.children };
+  });
+
+  const selectionState = useRowSelection(
+    props.rowSelection,
+    props.onRowSelectionChange,
+    props.rowsIsolatedSelection ?? false,
   );
+  const onRowsSelected = useOnRowsSelected(
+    selectionState,
+    idToSpec,
+    rowParents,
+    props.rowsIsolatedSelection ?? false,
+    globalSignal,
+  );
+  const rowIsSelected = useRowIsSelected(selectionState, rowParents, rowById);
+  const rowsSelected = useRowSelectSplitLookup(
+    selectionState,
+    f.leafIdsRef.current,
+    f.tree?.groupLookup,
+    rowParents,
+  );
+
+  const { rowInvalidate, rowByIndex } = useRowByIndex(piece, globalSignal, selectionState, rowParents);
   const rowsBetween = useRowsBetween(f.rowIdToRowIndexRef, rowByIndex);
 
   const rowLeafs = useRowLeafs(f.tree);

@@ -1,9 +1,8 @@
-import type { RowSelectNodeWithParent } from "@1771technologies/lytenyte-shared";
-import type { ServerData } from "../../server-data";
+import type { RowNode, RowSelectNodeWithParent } from "@1771technologies/lytenyte-shared";
 
 export function collapseUpwards(
   node: RowSelectNodeWithParent,
-  source: ServerData,
+  idToSpec: (id: string) => { size: number; children: Map<any, { row: RowNode<any> }> } | null,
   root: Map<string, RowSelectNodeWithParent>,
   base: boolean,
 ) {
@@ -11,15 +10,15 @@ export function collapseUpwards(
 
   const parent = node.parent;
 
-  const treeNode = source.tree.rowIdToNode.get(parent.id);
-  if (!treeNode || treeNode.kind === "leaf") return;
+  const treeNode = idToSpec(parent.id);
+  if (!treeNode) return;
 
   const size = treeNode.size;
 
   // We've potentially exempted all the rows in this parent.
   if (parent.exceptions && parent.exceptions.size >= size) {
     let allPresent = true;
-    for (const x of treeNode.byIndex.values()) {
+    for (const x of treeNode.children.values()) {
       if (!parent.exceptions.has(x.row.id)) {
         allPresent = false;
         break;
@@ -40,7 +39,7 @@ export function collapseUpwards(
   // We have a bunch of selected nodes. So lets check if everything is selected
   if (parent.children && parent.children.size >= size) {
     let allPresentAndSelected = true;
-    for (const x of treeNode.byIndex.values()) {
+    for (const x of treeNode.children.values()) {
       const n = parent.children.get(x.row.id);
       if (!n || !n.selected || n.exceptions?.size) {
         allPresentAndSelected = false;
@@ -59,5 +58,5 @@ export function collapseUpwards(
     }
   }
 
-  collapseUpwards(parent, source, root, base);
+  collapseUpwards(parent, idToSpec, root, base);
 }

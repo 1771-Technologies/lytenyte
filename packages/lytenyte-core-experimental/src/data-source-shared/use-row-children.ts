@@ -1,6 +1,6 @@
 import type { RowSource } from "@1771technologies/lytenyte-shared";
-import type { RootNode } from "../hooks/use-group-tree/use-group-tree.js";
-import { useEvent } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useEvent } from "../hooks/use-event.js";
+import type { RootNode } from "../data-source/hooks/use-group-tree.js";
 
 export function useRowChildren<T>(tree: RootNode<T> | null) {
   const rowChildren: RowSource<T>["rowChildren"] = useEvent((id) => {

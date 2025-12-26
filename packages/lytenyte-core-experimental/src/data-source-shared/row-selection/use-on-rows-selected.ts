@@ -1,23 +1,23 @@
 import { useEvent, type Signal } from "@1771technologies/lytenyte-core-experimental/internal";
-import type { RowSourceServer } from "../../use-server-data-source";
-import type { SourceState } from "../use-source-state";
 import { exemptUpwards } from "./exempt-upwards.js";
-import type { ServerData } from "../../server-data";
 import { handleIsolatedSelect } from "./handle-isolated-select.js";
 import { collapseUpwards } from "./collapse-upward.js";
 import {
+  type RowNode,
   type RowSelectionLinkedWithParent,
   type RowSelectNodeWithParent,
+  type RowSource,
 } from "@1771technologies/lytenyte-shared";
+import type { SourceRowSelection } from "./use-row-selection";
 
 export function useOnRowsSelected<T>(
-  source: ServerData,
-  s: SourceState,
-  rowParents: RowSourceServer<T>["rowParents"],
+  s: SourceRowSelection,
+  idToSpec: (id: string) => { size: number; children: Map<any, { row: RowNode<any> }> } | null,
+  rowParents: RowSource<T>["rowParents"],
   isolatedSelected: boolean,
   globalSignal: Signal<number>,
 ) {
-  const onRowsSelected: RowSourceServer<T>["onRowsSelected"] = useEvent(({ mode, selected, deselect }) => {
+  const onRowsSelected: RowSource<T>["onRowsSelected"] = useEvent(({ mode, selected, deselect }) => {
     if (selected === "all" && mode === "single") {
       console.error("You cannot select all rows when the selection mode is 'single'");
       return;
@@ -28,17 +28,18 @@ export function useOnRowsSelected<T>(
     }
 
     if (mode === "single") {
-      s.setSelected({ kind: "isolated", selected: false, exceptions: new Set([selected[0]]) });
+      s.rowSelectionsSet({ kind: "isolated", selected: false, exceptions: new Set([selected[0]]) });
     } else if (mode === "multiple" && isolatedSelected) {
       // We are either selecting or deselecting everything.
-      if (selected === "all") s.setSelected({ kind: "isolated", selected: !deselect, exceptions: new Set() });
-      else s.setSelected((prev) => handleIsolatedSelect(prev, selected, !!deselect));
+      if (selected === "all")
+        s.rowSelectionsSet({ kind: "isolated", selected: !deselect, exceptions: new Set() });
+      else s.rowSelectionsSet((prev) => handleIsolatedSelect(prev, selected, !!deselect));
     } else {
       // mode === multiple && !isolatedSelected
       if (selected === "all") {
-        s.setSelected({ kind: "controlled", selected: !deselect, children: new Map() });
+        s.rowSelectionsSet({ kind: "controlled", selected: !deselect, children: new Map() });
       } else {
-        s.setSelected((prev) => {
+        s.rowSelectionsSet((prev) => {
           if (prev.kind === "isolated") return { kind: "controlled", selected: false, children: new Map() };
 
           const rowsWithParents = selected
@@ -72,7 +73,7 @@ export function useOnRowsSelected<T>(
                 next.children = undefined;
                 next.exceptions = undefined;
 
-                collapseUpwards(next, source, prev.children, prev.selected);
+                collapseUpwards(next, idToSpec, prev.children, prev.selected);
               }
             }
           }

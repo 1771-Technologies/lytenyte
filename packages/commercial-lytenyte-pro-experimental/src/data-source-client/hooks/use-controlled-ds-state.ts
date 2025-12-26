@@ -1,30 +1,18 @@
 import { useCallback, useState } from "react";
 import type { UseClientDataSourceParams } from "../use-client-data-source.js";
-import { useControlled, useEvent } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useControlled } from "@1771technologies/lytenyte-core-experimental/internal";
 
 export type SourceState = ReturnType<typeof useSourceState>;
 
 export function useSourceState({
   rowGroupExpansions,
-  rowsSelected: selectedRows,
   rowGroupDefaultExpansion = false,
   pivotRowGroupDefaultExpansion = rowGroupDefaultExpansion,
-  onRowSelectionChange: handleSelectChange,
   pivotStateRef,
 }: UseClientDataSourceParams<any>) {
   const [expansions, setExpansions] = useControlled({
     controlled: rowGroupExpansions,
     default: {},
-  });
-
-  const [selected, setSelectedUncontrolled] = useControlled<Set<string>>({
-    controlled: selectedRows,
-    default: new Set(),
-  });
-
-  const setSelected = useEvent((s: Set<string>) => {
-    handleSelectChange?.(s);
-    setSelectedUncontrolled(s);
   });
 
   const [pivotRowGroupExpansions, setPivotRowGroupExpansions] = useState<Record<string, boolean | undefined>>(
@@ -56,10 +44,8 @@ export function useSourceState({
   );
 
   return {
-    selected,
     expansions,
     setExpansions,
-    setSelected,
     expandedFn,
     pivotExpandedFn,
     pivotRowGroupExpansions,

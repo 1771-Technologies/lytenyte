@@ -1,21 +1,12 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import type { DataRequest } from "../types";
-import { useControlled, useEvent } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useControlled } from "@1771technologies/lytenyte-core-experimental/internal";
 import type { UseServerDataSourceParams } from "../use-server-data-source";
-import type { RowNode, RowSelectionState } from "@1771technologies/lytenyte-shared";
-import {
-  arrayShallow,
-  rowSelectLinkWithoutParents,
-  rowSelectLinkWithParents,
-  type RowSelectionStateWithParent,
-} from "@1771technologies/lytenyte-shared";
+import type { RowNode } from "@1771technologies/lytenyte-shared";
 
 export type SourceState = ReturnType<typeof useSourceState>;
 
-export function useSourceState<K extends unknown[]>(
-  props: UseServerDataSourceParams<K, unknown[]>,
-  isolatedSelected: boolean,
-) {
+export function useSourceState<K extends unknown[]>(props: UseServerDataSourceParams<K, unknown[]>) {
   const [rows, setRows] = useState<Map<number, RowNode<any>>>(new Map());
   const [maxDepth, setMaxDepth] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -30,57 +21,6 @@ export function useSourceState<K extends unknown[]>(
     controlled: props.rowGroupExpansions,
     default: {},
   });
-
-  const [rawSelections, setRawSelections] = useControlled<RowSelectionState>({
-    controlled: props.rowSelection,
-    default: isolatedSelected
-      ? { kind: "isolated", selected: false, exceptions: new Set() }
-      : { kind: "controlled", selected: false, children: new Map() },
-  });
-
-  const selections = useMemo<RowSelectionStateWithParent>(() => {
-    if (isolatedSelected) {
-      if (rawSelections.kind === "controlled")
-        return { kind: "isolated", selected: false, exceptions: new Set() };
-      return rawSelections;
-    }
-    return rowSelectLinkWithParents(rawSelections);
-  }, [isolatedSelected, rawSelections]);
-
-  const setSelected = useEvent(
-    (
-      s: RowSelectionStateWithParent | ((prev: RowSelectionStateWithParent) => RowSelectionStateWithParent),
-    ) => {
-      const nextState = typeof s === "function" ? s(selections) : s;
-
-      const without: RowSelectionState = isolatedSelected
-        ? nextState.kind !== "isolated"
-          ? { kind: "isolated", selected: false, exceptions: new Set() }
-          : nextState
-        : nextState.kind !== "controlled"
-          ? { kind: "controlled", selected: false, children: new Map() }
-          : rowSelectLinkWithoutParents(nextState);
-
-      setRawSelections(without);
-      props.onRowSelectionChange?.(without);
-    },
-  );
-
-  const selectionKey = props.rowSelectKey ?? props.queryKey;
-  const ref = useRef(selectionKey);
-  const refIso = useRef(isolatedSelected);
-  useEffect(() => {
-    if (arrayShallow(ref.current, selectionKey) && refIso.current === isolatedSelected) return;
-
-    ref.current = selectionKey;
-    refIso.current = isolatedSelected;
-
-    setSelected(() =>
-      isolatedSelected
-        ? { kind: "isolated", selected: false, exceptions: new Set() }
-        : { kind: "controlled", selected: false, children: new Map() },
-    );
-  }, [isolatedSelected, selectionKey, setSelected]);
 
   const state = {
     isLoading,
@@ -99,10 +39,6 @@ export function useSourceState<K extends unknown[]>(
 
     expansions,
     setExpansions,
-
-    rawSelections,
-    selections,
-    setSelected,
 
     maxDepth,
     setMaxDepth,

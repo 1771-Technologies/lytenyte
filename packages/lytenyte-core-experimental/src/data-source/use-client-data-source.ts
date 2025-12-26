@@ -7,27 +7,35 @@ import type {
   LeafIdFn,
   RowNode,
   RowSource,
+  DimensionSort,
   SortFn,
+  Dimension,
+  DimensionAgg,
+  Aggregator,
+  RowSelectionState,
 } from "@1771technologies/lytenyte-shared";
 import { usePiece } from "../hooks/use-piece.js";
 import { useFlattenedPiece } from "./hooks/use-flattened-piece.js";
-import { useLeafNodes } from "./hooks/use-leaf-nodes.js";
-import { useFiltered } from "./hooks/use-filtered.js";
-import { useSorted } from "./hooks/use-sorted.js";
+import { useLeafNodes } from "../data-source-shared/use-leaf-nodes.js";
+import { useFiltered } from "../data-source-shared/use-filtered.js";
+import { useSorted } from "../data-source-shared/use-sorted.js";
 import { useGroupTree } from "./hooks/use-group-tree.js";
 import { useFlattenedGroups } from "./hooks/use-flattened-groups.js";
 import { useControlledState } from "./hooks/use-controlled-ds-state.js";
-import { useOnRowsUpdated } from "./source-functions/use-on-rows-updated.js";
-import { useGlobalRefresh } from "./source-functions/use-global-refresh.js";
-import { useRowById } from "./source-functions/use-row-by-id.js";
-import { useRowParents } from "./source-functions/use-row-parents.js";
-import { useRowIsSelected } from "./source-functions/use-row-is-selected.js";
-import { useOnRowsSelected } from "./source-functions/use-on-rows-selected.js";
-import { useRowsSelected } from "./source-functions/use-rows-selected.js";
-import { useRowLeafs } from "./source-functions/use-row-leafs.js";
-import { useRowChildren } from "./source-functions/use-row-children.js";
-import { useRowByIndex } from "./source-functions/use-row-by-index.js";
-import { useRowsBetween } from "./source-functions/use-rows-between.js";
+import { useOnRowsUpdated } from "../data-source-shared/use-on-rows-updated.js";
+import { useGlobalRefresh } from "../data-source-shared/use-global-refresh.js";
+import { useRowById } from "../data-source-shared/use-row-by-id.js";
+import { useRowParents } from "../data-source-shared/use-row-parents.js";
+import { useRowLeafs } from "../data-source-shared/use-row-leafs.js";
+import { useRowChildren } from "../data-source-shared/use-row-children.js";
+import { useRowByIndex } from "../data-source-shared/use-row-by-index.js";
+import { useRowsBetween } from "../data-source-shared/use-rows-between.js";
+import { useSortFn } from "../data-source-shared/use-sort-fn.js";
+import { useFilterFn } from "../data-source-shared/use-filter-fn.js";
+import { useGroupFn } from "../data-source-shared/use-group-fn.js";
+import { useAggregationFn } from "../data-source-shared/use-aggregation-fn.js";
+import { useEvent, useOnRowsSelected, useRowIsSelected, useRowSelection } from "../internal.js";
+import { useRowSelectSplitLookup } from "../data-source-shared/row-selection/use-rows-selected.js";
 
 export interface UseClientDataSourceParams<T = unknown> {
   readonly data: T[];
@@ -37,18 +45,19 @@ export interface UseClientDataSourceParams<T = unknown> {
   readonly rowGroupExpansions?: { [rowId: string]: boolean | undefined };
   readonly rowGroupDefaultExpansion?: boolean | number;
 
-  readonly sort?: SortFn<T>;
-  readonly filter?: FilterFn<T>;
-  readonly group?: GroupFn<T>;
-  readonly aggregate?: AggregationFn<T>;
+  readonly sort?: SortFn<T> | DimensionSort<T>[] | null;
+  readonly filter?: FilterFn<T> | FilterFn<T>[] | null;
+  readonly group?: GroupFn<T> | Dimension<T>[];
+  readonly aggregate?: AggregationFn<T> | DimensionAgg<T>[];
+  readonly aggregateFns?: Record<string, Aggregator<T>>;
 
   readonly leafIdFn?: LeafIdFn<T>;
   readonly groupIdFn?: GroupIdFn;
 
   readonly rowsIsolatedSelection?: boolean;
-  readonly rowsSelected?: Set<string>;
+  readonly rowSelection?: RowSelectionState;
+  readonly onRowSelectionChange?: (state: RowSelectionState) => void;
 
-  readonly onRowSelectionChange?: (newSelection: Set<string>) => void;
   readonly onRowDataChange?: (params: {
     readonly rows: Map<RowNode<T>, T>;
     readonly top: Map<number, T>;
@@ -57,35 +66,22 @@ export interface UseClientDataSourceParams<T = unknown> {
   }) => void;
 }
 
-export interface RowSourceClient<T> extends RowSource<T> {
-  readonly rowsSelected: () => RowNode<T>[];
-}
-
 const groupIdFallback: GroupIdFn = (p) => p.map((x) => (x == null ? "_null_" : x)).join("->");
-export function useClientDataSource<T>(props: UseClientDataSourceParams<T>): RowSourceClient<T> {
-  const {
-    data,
-    topData,
-    botData,
-    filter,
-    sort,
-    group,
-    aggregate,
+export function useClientDataSource<T>(p: UseClientDataSourceParams<T>): RowSource<T> {
+  const sortFn = useSortFn(p.sort);
+  const filterFn = useFilterFn(p.filter);
+  const groupFn = useGroupFn(p.group);
+  const aggregate = useAggregationFn(p.aggregate, p.aggregateFns);
 
-    leafIdFn,
+  const { expandedFn, setExpansions } = useControlledState(p);
 
-    rowsIsolatedSelection = false,
-  } = props;
+  const [leafsTop, leafs, leafsBot, leafIdsRef] = useLeafNodes(p.topData, p.data, p.botData, p.leafIdFn);
+  const filtered = useFiltered(leafs, filterFn);
 
-  const { expandedFn, selected, setExpansions, setSelected } = useControlledState(props);
+  const sorted = useSorted(leafs, sortFn, filtered);
 
-  const [leafsTop, leafs, leafsBot, leafIdsRef] = useLeafNodes(topData, data, botData, leafIdFn);
-  const filtered = useFiltered(leafs, filter);
-  const sorted = useSorted(leafs, sort, filtered);
-
-  const tree = useGroupTree(leafs, sorted, group, props.groupIdFn ?? groupIdFallback);
-
-  const [groupFlat, maxDepth] = useFlattenedGroups(tree, aggregate, leafs, sorted, sort, expandedFn);
+  const tree = useGroupTree(leafs, sorted, groupFn, p.groupIdFn ?? groupIdFallback);
+  const [groupFlat, maxDepth] = useFlattenedGroups(tree, aggregate, leafs, sorted, sortFn, expandedFn);
 
   const {
     flatten,
@@ -105,43 +101,47 @@ export function useClientDataSource<T>(props: UseClientDataSourceParams<T>): Row
   const maxDepthPiece = usePiece(maxDepth);
 
   const rowById = useRowById(tree, leafIdsRef);
-  const rowParents = useRowParents(rowById, tree, group, props.groupIdFn ?? groupIdFallback);
-  const onRowsUpdated = useOnRowsUpdated(props.onRowDataChange);
+  const rowParents = useRowParents(rowById, tree, groupFn, p.groupIdFn ?? groupIdFallback);
+  const onRowsUpdated = useOnRowsUpdated(p.onRowDataChange);
 
   const globalSignal = useGlobalRefresh();
 
-  const rowIsSelected = useRowIsSelected(rowById, selected, tree, rowsIsolatedSelection ?? false);
+  const idToSpec = useEvent((id: string) => {
+    if (!tree) return null;
+
+    const node = tree.groupLookup.get(id);
+    if (!node) return null;
+
+    return { size: node.children.size, children: node.children };
+  });
+
+  const selectionState = useRowSelection(
+    p.rowSelection,
+    p.onRowSelectionChange,
+    p.rowsIsolatedSelection ?? false,
+  );
   const onRowsSelected = useOnRowsSelected(
-    rowById,
-    selected,
-    setSelected,
-    tree,
-    sorted,
-    leafs,
-    leafsTop,
-    leafsBot,
-    rowsIsolatedSelection ?? false,
-  );
-
-  const rowsSelected: RowSourceClient<T>["rowsSelected"] = useRowsSelected(
-    rowById,
-    selected,
-    rowsIsolatedSelection ?? false,
-  );
-
-  const { rowInvalidate, rowByIndex } = useRowByIndex(
-    tree,
-    piece,
+    selectionState,
+    idToSpec,
+    rowParents,
+    p.rowsIsolatedSelection ?? false,
     globalSignal,
-    selected,
-    rowsIsolatedSelection ?? false,
   );
+  const rowIsSelected = useRowIsSelected(selectionState, rowParents, rowById);
+  const rowsSelected = useRowSelectSplitLookup(
+    selectionState,
+    leafIdsRef.current,
+    tree?.groupLookup,
+    rowParents,
+  );
+
+  const { rowInvalidate, rowByIndex } = useRowByIndex(piece, globalSignal, selectionState, rowParents);
   const rowsBetween = useRowsBetween(rowIdToRowIndexRef, rowByIndex);
 
   const rowLeafs = useRowLeafs(tree);
   const rowChildren = useRowChildren(tree);
 
-  const rows = useMemo<ReturnType<RowSourceClient<T>["useRows"]>>(() => {
+  const rows = useMemo<ReturnType<RowSource<T>["useRows"]>>(() => {
     return {
       get: (i: number) => flatten[i],
       size: flatten.length,
@@ -150,10 +150,10 @@ export function useClientDataSource<T>(props: UseClientDataSourceParams<T>): Row
 
   const rows$ = usePiece(rows);
 
-  const source = useMemo<RowSourceClient<T>>(() => {
+  const source = useMemo<RowSource<T>>(() => {
     const rowCount$ = (x: RowNode<T>[]) => x.length;
 
-    const source: RowSourceClient<T> = {
+    const source: RowSource<T> = {
       rowInvalidate,
       rowByIndex,
       rowIndexToRowId: (index) => rowByIndexRef.current.get(index)?.id ?? null,

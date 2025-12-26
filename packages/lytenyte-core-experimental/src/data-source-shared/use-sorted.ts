@@ -1,7 +1,11 @@
 import type { RowLeaf, SortFn } from "@1771technologies/lytenyte-shared";
 import { useMemo } from "react";
 
-export function useSorted<T>(leafs: RowLeaf<T>[], sort: SortFn<T> | undefined, filtered: number[] | null) {
+export function useSorted<T>(
+  leafs: RowLeaf<T>[],
+  sort: SortFn<T> | null | undefined,
+  filtered: number[] | null,
+) {
   const sorted = useMemo(() => {
     if (!sort) {
       if (filtered) return filtered;
