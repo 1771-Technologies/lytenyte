@@ -179,6 +179,15 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
 
   const mode$ = usePiece(mode);
 
+  const flat = piece.get();
+  const rows = useMemo<ReturnType<RowSourceClient<Spec>["useRows"]>>(() => {
+    return {
+      get: (i: number) => flat[i],
+      size: flat.length,
+    };
+  }, [flat]);
+  const rows$ = usePiece(rows);
+
   const source = useMemo<RowSourceClient<Spec>>(() => {
     const rowCount$ = (x: RowNode<T>[]) => x.length;
 
@@ -198,6 +207,7 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
       useBottomCount: botPiece.useValue,
       useTopCount: topPiece.useValue,
       useRowCount: () => piece.useValue(rowCount$),
+      useRows: () => rows$.useValue(),
 
       useMaxRowGroupDepth: maxDepthPiece.useValue,
 
@@ -283,6 +293,7 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
     f.rowByIndexRef,
     f.rowIdToRowIndexRef,
     piece,
+    rows$,
     mode$,
     setPivotRowGroupExpansions,
     setExpansions,

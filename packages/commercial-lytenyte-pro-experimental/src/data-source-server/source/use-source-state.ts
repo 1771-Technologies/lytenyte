@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { DataRequest } from "../types";
 import { useControlled, useEvent } from "@1771technologies/lytenyte-core-experimental/internal";
 import type { UseServerDataSourceParams } from "../use-server-data-source";
-import type { RowSelectionState } from "@1771technologies/lytenyte-shared";
+import type { RowNode, RowSelectionState } from "@1771technologies/lytenyte-shared";
 import {
   arrayShallow,
   rowSelectLinkWithoutParents,
@@ -16,6 +16,7 @@ export function useSourceState<K extends unknown[]>(
   props: UseServerDataSourceParams<K, unknown[]>,
   isolatedSelected: boolean,
 ) {
+  const [rows, setRows] = useState<Map<number, RowNode<any>>>(new Map());
   const [maxDepth, setMaxDepth] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingError, setLoadingError] = useState<unknown>(null);
@@ -105,6 +106,9 @@ export function useSourceState<K extends unknown[]>(
 
     maxDepth,
     setMaxDepth,
+
+    rows,
+    setRows,
   };
 
   // React is stupid sometimes.
