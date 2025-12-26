@@ -7,21 +7,19 @@ import "@1771technologies/lytenyte-design/teal.css";
 import "@1771technologies/lytenyte-design/term.css";
 
 import "../../main.css";
-import { Header, Root, RowsBottom, RowsCenter, RowsContainer, RowsTop, Viewport } from "../index.parts.js";
-import { ViewportShadows } from "@1771technologies/lytenyte-core-experimental";
 import { useRef, useState } from "react";
-import type { API, Column, GridSpec, Props } from "../types";
 import { RowGroupCell } from "../components/row-group-cell.js";
 import type { SalaryData } from "./basic-server-data/data";
 import { useServerDataSource } from "../data-source-server/use-server-data-source.js";
 import { Server } from "./basic-server-data/server.js";
 import { SelectAll } from "../components/select-all.js";
+import { Grid } from "../index.js";
 
-interface Spec extends GridSpec {
+interface Spec extends Grid.GridSpec {
   data: SalaryData;
 }
 
-const columns: Column<Spec>[] = [
+const columns: Grid.Column<Spec>[] = [
   {
     id: "Gender",
     width: 120,
@@ -57,7 +55,7 @@ export default function Experimental() {
     queryKey: [],
   });
 
-  const [rowGroupColumn, setRowGroupColumn] = useState<Props<Spec>["rowGroupColumn"]>({
+  const [rowGroupColumn, setRowGroupColumn] = useState<Grid.Props<Spec>["rowGroupColumn"]>({
     cellRenderer: RowGroupCell,
   });
 
@@ -66,7 +64,7 @@ export default function Experimental() {
 
   const { resolvedTheme } = useTheme();
 
-  const ref = useRef<API<Spec>>(null);
+  const ref = useRef<Grid.API<Spec>>(null);
   return (
     <>
       <div style={{ height: 40 }}>
@@ -87,7 +85,7 @@ export default function Experimental() {
           className={"ln-grid " + (resolvedTheme === "light" ? "ln-light" : "ln-dark")}
           style={{ height: "90vh", width: "90vw" }}
         >
-          <Root
+          <Grid
             columns={columns}
             rowSource={ds}
             rowGroupColumn={rowGroupColumn}
@@ -98,17 +96,7 @@ export default function Experimental() {
               headerRenderer: SelectAll,
             }}
             ref={ref}
-          >
-            <Viewport style={{ scrollbarGutter: "stable" }}>
-              <ViewportShadows />
-              <Header />
-              <RowsContainer>
-                <RowsTop />
-                <RowsCenter />
-                <RowsBottom />
-              </RowsContainer>
-            </Viewport>
-          </Root>
+          />
         </div>
       </div>
     </>

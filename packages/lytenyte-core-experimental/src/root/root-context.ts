@@ -19,6 +19,7 @@ import {
 import type { Piece, PieceWritable } from "../hooks/use-piece";
 import type { Dimension } from "./hooks/use-viewport-dimensions";
 import type { Root } from "./root";
+import type { ViewportShadowsProps } from "../components/viewport/viewport-shadows";
 
 export interface RootContextValue {
   readonly id: string;
@@ -73,6 +74,8 @@ export interface RootContextValue {
 
   readonly selectActivator: Root.Props["rowSelectionActivator"];
   readonly selectPivot: RefObject<number | null>;
+
+  readonly slotShadows?: (props: ViewportShadowsProps) => ReactNode;
 }
 
 const context = createContext<RootContextValue>({} as any);

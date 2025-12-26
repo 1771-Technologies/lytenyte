@@ -1,5 +1,6 @@
 import {
   forwardRef,
+  memo,
   useImperativeHandle,
   useMemo,
   useRef,
@@ -37,10 +38,19 @@ import type { GridSpec as LnSpec } from "../types/grid.js";
 import type { Column as LnColumn } from "../types/column.js";
 import type { API as LnAPI } from "../types/api.js";
 import type { Props as LnProps } from "../types/props.js";
+import { Viewport } from "../components/viewport/viewport.js";
+import { Header } from "../components/header/header.js";
+import { RowsContainer } from "../components/rows/rows-container/rows-container.js";
+import { RowsTop } from "../components/rows/row-sections/rows-top.js";
+import { RowsCenter } from "../components/rows/row-sections/rows-center.js";
+import { RowsBottom } from "../components/rows/row-sections/rows-bottom.js";
 
 const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   {
     children,
+
+    // @ts-expect-error a secret typescript variable for internal use only.
+    __noFallback,
     ...p
   }: PropsWithChildren<
     Root.Props<Spec> & (undefined extends Spec["api"] ? object : { apiExtension: Spec["api"] })
@@ -166,6 +176,8 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
       headerGroupHeight: props.headerGroupHeight ?? 40,
       headerHeight: props.headerHeight ?? 40,
 
+      slotShadows: props.slotShadows,
+
       editMode: props.editMode ?? "readonly",
       editClickActivator: props.editClickActivator ?? "double-click",
       editValidator: props.editRowValidatorFn ?? null,
@@ -209,6 +221,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     props.rowFullWidthRenderer,
     props.rowSelectionActivator,
     props.rtl,
+    props.slotShadows,
     source,
     totalHeaderHeight,
     view,
@@ -224,7 +237,9 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
         <ColumnLayoutContextProvider value={headerLayout}>
           <BoundsContextProvider value={bounds}>
             <EditProvider value={editValue}>
-              <FocusProvider value={focusValue}>{children}</FocusProvider>
+              <FocusProvider value={focusValue}>
+                {__noFallback ? children : (children ?? <Fallback />)}
+              </FocusProvider>
             </EditProvider>
           </BoundsContextProvider>
         </ColumnLayoutContextProvider>
@@ -232,6 +247,19 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     </RootContextProvider>
   );
 };
+
+export const Fallback = memo(() => {
+  return (
+    <Viewport>
+      <Header />
+      <RowsContainer>
+        <RowsTop />
+        <RowsCenter />
+        <RowsBottom />
+      </RowsContainer>
+    </Viewport>
+  );
+});
 
 export const Root = forwardRef(RootImpl) as <Spec extends Root.GridSpec = Root.GridSpec>(
   props: PropsWithChildren<Root.Props<Spec>>,

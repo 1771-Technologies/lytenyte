@@ -1,4 +1,4 @@
-import { Grid } from "@1771technologies/lytenyte-core-experimental";
+import { Fallback, Root as RootCore } from "@1771technologies/lytenyte-core-experimental/internal";
 import {
   forwardRef,
   useEffect,
@@ -73,9 +73,9 @@ const RootWrapper = <Spec extends Root.GridSpec = Root.GridSpec>(
       : {};
 
   return (
-    <Grid.Root ref={forwarded as any} {...(p as any)} {...components}>
+    <RootCore ref={forwarded as any} {...(p as any)} {...components} __noFallback>
       <RootImpl {...(p as any)}>{children}</RootImpl>
-    </Grid.Root>
+    </RootCore>
   );
 };
 
@@ -179,7 +179,7 @@ const RootImpl = ({ children, ...p }: PropsWithChildren<Root.Props>) => {
       <DialogDriver />
       <PopoverDriver />
       {cellSelectionMode !== "none" && <CellSelectionDriver />}
-      {children}
+      {children ?? <Fallback />}
     </ProRootProvider>
   );
 };
