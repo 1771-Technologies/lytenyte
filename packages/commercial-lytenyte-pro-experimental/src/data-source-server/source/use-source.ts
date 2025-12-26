@@ -55,6 +55,7 @@ export function useSource<K extends unknown[]>(
         s.setBotCount(f.bottom);
         s.setRowCount(f.center + f.top + f.bottom);
         s.setMaxDepth(f.maxDepth);
+        s.setRows(f.rowIndexToRow);
 
         // Not sure why this is being flagged. This is not being used in hook. This is also fine. We don't
         // actually care about the value, just that it will be different from the previous value.

@@ -76,6 +76,8 @@ export function useServerDataSource<T, K extends unknown[] = unknown[], S extend
 
   const setExpansions = s.setExpansions;
 
+  const row$ = usePiece(s.rows);
+
   const rowSource = useMemo<RowSourceServer<T>>(() => {
     const rowSource: RowSourceServer<T> = {
       rowById,
@@ -94,6 +96,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[], S extend
       useTopCount: () => top$.useValue(),
       useRowCount: () => rowCount$.useValue(),
       useBottomCount: () => bot$.useValue(),
+      useRows: () => row$.useValue(),
       useMaxRowGroupDepth: () => maxDepth$.useValue(),
 
       onRowGroupExpansionChange: (deltaChanges) => {
@@ -117,6 +120,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[], S extend
     onRowsSelected,
     onViewChange,
     requestsForView$,
+    row$,
     rowById,
     rowByIndex,
     rowChildren,
