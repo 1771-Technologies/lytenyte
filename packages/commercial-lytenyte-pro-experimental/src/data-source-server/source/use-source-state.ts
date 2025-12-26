@@ -6,12 +6,13 @@ import type { RowNode } from "@1771technologies/lytenyte-shared";
 
 export type SourceState = ReturnType<typeof useSourceState>;
 
-export function useSourceState<K extends unknown[]>(props: UseServerDataSourceParams<K, unknown[]>) {
+export function useSourceState<K extends unknown[]>(props: UseServerDataSourceParams<K>) {
   const [rows, setRows] = useState<Map<number, RowNode<any>>>(new Map());
   const [maxDepth, setMaxDepth] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingError, setLoadingError] = useState<unknown>(null);
   const [requestsForView, setRequestsForView] = useState<DataRequest[]>([]);
+  const [idUniverse, setIdUniverse] = useState(new Set<string>());
 
   const [topCount, setTopCount] = useState(0);
   const [rowCount, setRowCount] = useState(0);
@@ -45,6 +46,9 @@ export function useSourceState<K extends unknown[]>(props: UseServerDataSourcePa
 
     rows,
     setRows,
+
+    idUniverse,
+    setIdUniverse,
   };
 
   // React is stupid sometimes.

@@ -30,7 +30,7 @@ export interface RowSourceServer<T> extends RowSource<T> {
   readonly requestsForView: Piece<DataRequest[]>;
 }
 
-export interface UseServerDataSourceParams<K extends unknown[], S extends unknown[]> {
+export interface UseServerDataSourceParams<K extends unknown[]> {
   readonly queryFn: (params: QueryFnParams<K>) => Promise<(DataResponse | DataResponsePinned)[]>;
   readonly queryKey: K;
   readonly blockSize?: number;
@@ -40,12 +40,13 @@ export interface UseServerDataSourceParams<K extends unknown[], S extends unknow
 
   readonly rowsIsolatedSelection?: boolean;
   readonly rowSelection?: RowSelectionState;
+  readonly rowSelectionIdUniverseAdditions?: Set<string>;
   readonly onRowSelectionChange?: (state: RowSelectionState) => void;
-  readonly rowSelectKey?: S;
+  readonly rowSelectKey?: unknown[];
 }
 
-export function useServerDataSource<T, K extends unknown[] = unknown[], S extends unknown[] = unknown[]>(
-  props: UseServerDataSourceParams<K, S>,
+export function useServerDataSource<T, K extends unknown[] = unknown[]>(
+  props: UseServerDataSourceParams<K>,
 ): RowSourceServer<T> {
   const isolatedSelected = props.rowsIsolatedSelection ?? false;
   const state = useSourceState(props);
@@ -78,7 +79,17 @@ export function useServerDataSource<T, K extends unknown[] = unknown[], S extend
   });
 
   // Handling row selection
-  const selectionState = useRowSelection(props.rowSelection, props.onRowSelectionChange, isolatedSelected);
+  const selectionState = useRowSelection(
+    props.rowSelection,
+    props.onRowSelectionChange,
+    isolatedSelected,
+    props.rowSelectKey ?? props.queryKey,
+    useMemo(() => {
+      if (!props.rowSelectionIdUniverseAdditions) return state.idUniverse;
+
+      return state.idUniverse.union(props.rowSelectionIdUniverseAdditions);
+    }, [props.rowSelectionIdUniverseAdditions, state.idUniverse]),
+  );
   const onRowsSelected = useOnRowsSelected(
     selectionState,
     idSpec,

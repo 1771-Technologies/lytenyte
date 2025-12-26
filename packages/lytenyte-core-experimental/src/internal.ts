@@ -40,3 +40,4 @@ export { useSorted } from "./data-source-shared/use-sorted.js";
 export type { LeafNodeTuple } from "./data-source-shared/use-leaf-nodes.js";
 export { useLeafNodes } from "./data-source-shared/use-leaf-nodes.js";
 export { useRowSelectionState } from "./data-source-shared/use-row-selection-state.js";
+export { useIdUniverse } from "./data-source-shared/use-id-universe.js";

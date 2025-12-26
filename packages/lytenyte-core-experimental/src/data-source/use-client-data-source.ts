@@ -42,6 +42,7 @@ import {
   useRowSelectionState,
 } from "../internal.js";
 import { useRowSelectSplitLookup } from "../data-source-shared/row-selection/use-rows-selected.js";
+import { useIdUniverse } from "../data-source-shared/use-id-universe.js";
 
 export interface UseClientDataSourceParams<T = unknown> {
   readonly data: T[];
@@ -62,6 +63,8 @@ export interface UseClientDataSourceParams<T = unknown> {
 
   readonly rowsIsolatedSelection?: boolean;
   readonly rowSelection?: RowSelectionState;
+  readonly rowSelectKey?: unknown[];
+  readonly rowSelectionIdUniverseAdditions?: Set<string>;
   readonly onRowSelectionChange?: (state: RowSelectionState) => void;
 
   readonly onRowDataChange?: (params: {
@@ -91,6 +94,8 @@ export function useClientDataSource<T>(p: UseClientDataSourceParams<T>): RowSour
 
   const tree = useGroupTree(leafs, sorted, groupFn, p.groupIdFn ?? groupIdFallback);
   const [groupFlat, maxDepth] = useFlattenedGroups(tree, aggregate, leafs, sorted, sortFn, expandedFn);
+
+  const idUniverse = useIdUniverse(tree, leafIds, p.rowSelectionIdUniverseAdditions);
 
   const {
     flatten,
@@ -124,10 +129,16 @@ export function useClientDataSource<T>(p: UseClientDataSourceParams<T>): RowSour
     return { size: node.children.size, children: node.children };
   });
 
+  const rowSelectionKey = useMemo(() => {
+    return [p.group, p.filter];
+  }, [p.filter, p.group]);
+
   const selectionState = useRowSelection(
     p.rowSelection,
     p.onRowSelectionChange,
     p.rowsIsolatedSelection ?? false,
+    rowSelectionKey,
+    idUniverse,
   );
   const onRowsSelected = useOnRowsSelected(
     selectionState,

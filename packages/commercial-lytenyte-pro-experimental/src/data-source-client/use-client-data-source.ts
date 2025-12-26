@@ -20,6 +20,7 @@ import { useSourceState } from "./hooks/use-controlled-ds-state.js";
 import {
   useEvent,
   useGlobalRefresh,
+  useIdUniverse,
   useLeafNodes,
   useOnRowsSelected,
   useOnRowsUpdated,
@@ -107,7 +108,9 @@ export interface UseClientDataSourceParams<Spec extends GridSpec = GridSpec, T =
   readonly groupIdFn?: GroupIdFn;
 
   readonly rowsIsolatedSelection?: boolean;
+  readonly rowSelectKey?: unknown[];
   readonly rowSelection?: RowSelectionState;
+  readonly rowSelectionIdUniverseAdditions?: Set<string>;
   readonly onRowSelectionChange?: (state: RowSelectionState) => void;
 
   readonly onRowDataChange?: (params: {
@@ -154,11 +157,19 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
     return { size: node.children.size, children: node.children };
   });
 
+  const rowSelectionKey = useMemo(() => {
+    if (props.rowSelectKey) return props.rowSelectKey;
+
+    return [props.group, props.filter];
+  }, [props.filter, props.group, props.rowSelectKey]);
   const selectionState = useRowSelection(
     props.rowSelection,
     props.onRowSelectionChange,
     props.rowsIsolatedSelection ?? false,
+    rowSelectionKey,
+    useIdUniverse(f.tree, f.leafIdsRef.current, props.rowSelectionIdUniverseAdditions),
   );
+
   const onRowsSelected = useOnRowsSelected(
     selectionState,
     idToSpec,
