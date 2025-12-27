@@ -25,6 +25,8 @@ export type TreeParent = {
 
   readonly path: string | null;
   readonly parent: TreeParent | TreeRoot;
+
+  readonly deleted?: boolean;
 };
 
 export type TreeLeaf = {
@@ -35,6 +37,8 @@ export type TreeLeaf = {
 
   readonly parent: TreeParent | TreeRoot;
   readonly path: string;
+
+  readonly deleted?: boolean;
 };
 
 export type LeafOrParent = TreeLeaf | TreeParent;

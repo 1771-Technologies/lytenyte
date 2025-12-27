@@ -12,7 +12,7 @@ import type {
   TreeParent,
   TreeRoot,
   TreeRootAndApi,
-} from "./async-tree/+types.async-tree.js";
+} from "./async-tree/types.js";
 import { makeAsyncTree } from "./async-tree/make-async-tree.js";
 import { RangeTree, type FlattenedRange } from "./range-tree/range-tree.js";
 import { getRequestId } from "./utils/get-request-id.js";
@@ -529,10 +529,17 @@ export class ServerData {
       const rows = [...node.byIndex.values()].sort((l, r) => l.relIndex - r.relIndex);
 
       let offset = 0;
+      let deleted = 0;
 
       for (let i = 0; i < rows.length; i++) {
         const node = rows[i];
-        const rowIndex = node.relIndex + start + offset;
+
+        if (node.deleted) {
+          deleted++;
+          continue;
+        }
+
+        const rowIndex = node.relIndex + start + offset - deleted;
 
         rowIndexToRow.set(rowIndex, node.row);
         rowIdToRowIndex.set(node.row.id, rowIndex);
@@ -586,10 +593,11 @@ export class ServerData {
       }
       ranges.push({
         rowStart: start,
-        rowEnd: offset + node.size + start,
+        rowEnd: offset + node.size + start - deleted,
         parent: node,
       });
-      return offset + node.size;
+
+      return offset + node.size - deleted;
     }
 
     const topCount = this.#top.rows.length;

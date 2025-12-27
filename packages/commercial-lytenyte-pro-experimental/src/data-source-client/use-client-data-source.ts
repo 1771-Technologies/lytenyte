@@ -11,6 +11,7 @@ import type {
   GroupIdFn,
   LeafIdFn,
   RowGroup,
+  RowLeaf,
   RowNode,
   RowSelectionState,
   RowSource,
@@ -115,6 +116,20 @@ export interface UseClientDataSourceParams<Spec extends GridSpec = GridSpec, T =
   readonly rowSelectionIdUniverseAdditions?: Set<string>;
   readonly onRowSelectionChange?: (state: RowSelectionState) => void;
 
+  readonly onRowsAdded?: (params: {
+    newData: T[];
+    placement: "start" | "end" | number;
+    top: T[];
+    center: T[];
+    bottom: T[];
+  }) => void;
+  readonly onRowsDeleted?: (params: {
+    rows: RowLeaf<T>[];
+    sourceIndices: number[];
+    top: T[];
+    center: T[];
+    bottom: T[];
+  }) => void;
   readonly onRowDataChange?: (params: {
     readonly rows: Map<RowNode<T>, T>;
     readonly top: Map<number, T>;

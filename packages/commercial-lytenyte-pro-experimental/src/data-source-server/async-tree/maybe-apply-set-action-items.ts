@@ -1,5 +1,5 @@
 import { ROOT_LEAF_PREFIX } from "./+constants.async-tree.js";
-import type { SetDataAction, TreeLeaf, TreeParent, TreeRoot } from "./+types.async-tree.js";
+import type { SetDataAction, TreeLeaf, TreeParent, TreeRoot } from "./types.js";
 
 export function maybeApplySetActionItems(p: SetDataAction, pathNode: TreeParent | TreeRoot, root: TreeRoot) {
   if (!p.items?.length) {

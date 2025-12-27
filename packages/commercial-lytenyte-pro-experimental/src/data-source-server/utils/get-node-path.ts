@@ -1,4 +1,4 @@
-import type { TreeParent, TreeRoot } from "../async-tree/+types.async-tree.js";
+import type { TreeParent, TreeRoot } from "../async-tree/types.js";
 
 export function getNodePath(c: TreeRoot | TreeParent) {
   const path = [];

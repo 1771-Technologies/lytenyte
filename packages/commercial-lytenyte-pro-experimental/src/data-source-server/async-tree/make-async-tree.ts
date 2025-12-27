@@ -1,10 +1,4 @@
-import type {
-  DeleteDataAction,
-  GetDataAction,
-  SetDataAction,
-  TreeRoot,
-  TreeRootAndApi,
-} from "./+types.async-tree";
+import type { DeleteDataAction, GetDataAction, SetDataAction, TreeRoot, TreeRootAndApi } from "./types";
 import { applyDeleteActionToTree } from "./apply-delete-action-to-tree.js";
 import { applySetActionToTree } from "./apply-set-action-to-tree.js";
 import { getParentNodeByPath } from "./get-parent-node-by-path.js";

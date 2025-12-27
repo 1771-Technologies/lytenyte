@@ -1,4 +1,4 @@
-import type { SetDataAction } from "./+types.async-tree.js";
+import type { SetDataAction } from "../types.js";
 
 export function checkSetActionItemKinds(p: SetDataAction) {
   if (!p.items?.length) return true;

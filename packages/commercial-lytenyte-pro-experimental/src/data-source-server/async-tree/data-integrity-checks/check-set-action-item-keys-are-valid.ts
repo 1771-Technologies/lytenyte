@@ -1,4 +1,4 @@
-import type { SetDataAction } from "./+types.async-tree.js";
+import type { SetDataAction } from "../types.js";
 
 export function checkSetActionItemKeysAreValid(p: SetDataAction) {
   if (!p.items?.length) return true;

@@ -12,7 +12,6 @@ import { RowGroupCell } from "../components/row-group-cell.js";
 import type { SalaryData } from "./basic-server-data/data";
 import { useServerDataSource, type RowSourceServer } from "../data-source-server/use-server-data-source.js";
 import { Server } from "./basic-server-data/server.js";
-import { SelectAll } from "../components/select-all.js";
 import { Grid } from "../index.js";
 
 interface Spec extends Grid.GridSpec {
@@ -50,10 +49,17 @@ const columns: Grid.Column<Spec>[] = [
 ];
 export default function Experimental() {
   const ds = useServerDataSource<SalaryData>({
+    rowGroupDefaultExpansion: true,
     queryFn: async ({ requests }) => {
       return Server(requests, ["Education Level", "Age"]);
     },
     queryKey: [],
+    rowUpdateOptimistically: true,
+    onRowDelete: () => {
+      return new Promise((_, rej) => {
+        setTimeout(rej, 2000);
+      });
+    },
   });
 
   const [rowGroupColumn, setRowGroupColumn] = useState<Grid.Props<Spec>["rowGroupColumn"]>({
@@ -91,10 +97,11 @@ export default function Experimental() {
             rowSource={ds}
             rowGroupColumn={rowGroupColumn}
             onRowGroupColumnChange={setRowGroupColumn}
-            rowSelectionMode="multiple"
             columnMarkerEnabled
             columnMarker={{
-              headerRenderer: SelectAll,
+              cellRenderer: ({ api, row }) => {
+                return <button onClick={() => api.rowDelete([row])}>X</button>;
+              },
             }}
             ref={ref}
           />
