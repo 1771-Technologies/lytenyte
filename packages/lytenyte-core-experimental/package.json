@@ -32,13 +32,22 @@
       "import": "./src/index.ts",
       "require": "./src/index.ts"
     },
-    "./grid.css": "./main.css",
     "./types": "./src/types/index.ts",
     "./internal": {
       "types": "./src/internal..ts",
       "import": "./src/internal.ts",
       "require": "./src/internal.ts"
-    }
+    },
+    "./grid.css": "./css/grid.css",
+    "./grid-full.css": "./css/grid-full.css",
+    "./all-colors.css": "./css/all-colors.css",
+    "./cotton-candy.css": "./css/cotton-candy.css",
+    "./dark.css": "./css/dark.css",
+    "./design.css": "./css/design.css",
+    "./light.css": "./css/light.css",
+    "./shadcn.css": "./css/shadcn.css",
+    "./teal.css": "./css/teal.css",
+    "./term.css": "./css/term.css"
   },
   "publishConfig": {
     "access": "public",
@@ -48,13 +57,22 @@
         "import": "./dist/index.js",
         "require": "./dist/index.js"
       },
-      "./grid.css": "./main.css",
       "./types": "./dist/types/index.d.ts",
       "./internal": {
         "types": "./dist/internal.d.ts",
         "import": "./dist/internal.js",
         "require": "./dist/internal.js"
-      }
+      },
+      "./grid.css": "./css/grid.css",
+      "./grid-full.css": "./css/grid-full.css",
+      "./all-colors.css": "./css/all-colors.css",
+      "./cotton-candy.css": "./css/cotton-candy.css",
+      "./dark.css": "./css/dark.css",
+      "./design.css": "./css/design.css",
+      "./light.css": "./css/light.css",
+      "./shadcn.css": "./css/shadcn.css",
+      "./teal.css": "./css/teal.css",
+      "./term.css": "./css/term.css"
     }
   },
   "dependencies": {

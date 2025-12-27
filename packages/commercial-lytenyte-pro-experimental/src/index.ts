@@ -65,11 +65,24 @@ export namespace Grid {
   }
 }
 
-export type { ViewportShadowsProps } from "@1771technologies/lytenyte-core-experimental";
-export { ViewportShadows } from "@1771technologies/lytenyte-core-experimental";
-
 export type {
   UseClientDataSourceParams,
   RowSourceClient,
 } from "./data-source-client/use-client-data-source.js";
 export { useClientDataSource } from "./data-source-client/use-client-data-source.js";
+
+export type {
+  UseServerDataSourceParams,
+  RowSourceServer,
+} from "./data-source-server/use-server-data-source.js";
+export { useServerDataSource } from "./data-source-server/use-server-data-source.js";
+
+export type { RowSourceTree, UseTreeDataSourceParams } from "./data-source-tree/use-tree-data-source.js";
+export { useTreeDataSource } from "./data-source-tree/use-tree-data-source.js";
+
+export type { ViewportShadowsProps } from "@1771technologies/lytenyte-core-experimental";
+export { ViewportShadows } from "@1771technologies/lytenyte-core-experimental";
+
+export { RowGroupCell } from "./components/row-group-cell.js";
+export type { SelectAllProps } from "./components/select-all.js";
+export { SelectAll } from "./components/select-all.js";

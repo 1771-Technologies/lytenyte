@@ -65,7 +65,7 @@ export interface RowSourceTree<T> extends RowSource<T> {
 }
 
 const emptyKey: any[] = [];
-export function UseTreeDataSource<T>(p: UseTreeDataSourceParams<T>): RowSource {
+export function useTreeDataSource<T>(p: UseTreeDataSourceParams<T>): RowSource {
   const sortFn = useSortFn(p.sort);
   const state = useControlledState(p);
 

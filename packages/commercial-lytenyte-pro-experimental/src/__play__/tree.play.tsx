@@ -1,15 +1,10 @@
 import { useTheme } from "@1771technologies/play-frame";
-import "@1771technologies/lytenyte-design/design.css";
 import "@1771technologies/lytenyte-design/font.css";
-import "@1771technologies/lytenyte-design/dark.css";
-import "@1771technologies/lytenyte-design/light.css";
-import "@1771technologies/lytenyte-design/teal.css";
-import "@1771technologies/lytenyte-design/term.css";
+import "../../css/grid-full.css";
 
-import "../../main.css";
 import { useMemo, useRef } from "react";
 import { Grid } from "../index.js";
-import { UseTreeDataSource } from "../data-source-tree/use-tree-data-source.js";
+import { useTreeDataSource } from "../data-source-tree/use-tree-data-source.js";
 import { RowGroupCell } from "../components/row-group-cell.js";
 
 const columns: Grid.Column[] = [
@@ -18,7 +13,7 @@ const columns: Grid.Column[] = [
   },
 ];
 export default function Experimental() {
-  const ds = UseTreeDataSource({
+  const ds = useTreeDataSource({
     filter: (v) => v.x > 1,
     data: {
       one: { x: 12 },

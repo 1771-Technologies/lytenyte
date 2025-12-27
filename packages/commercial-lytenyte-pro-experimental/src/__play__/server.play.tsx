@@ -1,12 +1,7 @@
 import { useTheme } from "@1771technologies/play-frame";
-import "@1771technologies/lytenyte-design/design.css";
 import "@1771technologies/lytenyte-design/font.css";
-import "@1771technologies/lytenyte-design/dark.css";
-import "@1771technologies/lytenyte-design/light.css";
-import "@1771technologies/lytenyte-design/teal.css";
-import "@1771technologies/lytenyte-design/term.css";
+import "../../css/grid-full.css";
 
-import "../../main.css";
 import { useRef, useState } from "react";
 import { RowGroupCell } from "../components/row-group-cell.js";
 import type { SalaryData } from "./basic-server-data/data";
