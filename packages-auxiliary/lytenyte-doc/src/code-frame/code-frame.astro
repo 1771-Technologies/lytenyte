@@ -15,7 +15,9 @@ interface Props {
 }
 
 const { codeSandbox, stackBlitz, ...props } = Astro.props;
-const tabs = Object.entries(props.files);
+const tabs = Object.entries(props.files).filter(
+  ([name]) => !name.endsWith(".css") && !name.startsWith("data"),
+);
 ---
 
 <div
@@ -56,12 +58,7 @@ const tabs = Object.entries(props.files);
       </div>
 
       <div class="flex justify-end items-center py-2 px-3 gap-2 absolute top-0.5 z-1 right-0">
-        <FrameControls
-          client:load
-          files={props.files}
-          codeSandbox={codeSandbox}
-          stackBlitz={stackBlitz}
-        />
+        <FrameControls client:load files={props.files} codeSandbox={codeSandbox} stackBlitz={stackBlitz} />
       </div>
     </div>
   </div>

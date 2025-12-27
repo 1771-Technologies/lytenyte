@@ -1,6 +1,5 @@
 ---
 title: Getting Started
-pro: true
 description:
   Get started with LyteNyte Grid, a modern React data grid designed for enterprise-scale data challenges.
   Built in React, for React, it enables developers to ship faster and more efficiently than ever before.
@@ -11,14 +10,14 @@ description:
 ## Our Motivation
 
 Before LyteNyte Grid, we were trapped in a cycle of frustration with bloated, brittle,
-and bizarrely over-engineered data grid libraries. Every new project
+and over-engineered data grid libraries. Every new project
 became a ritual of fighting APIs that felt like they were written by a
 committee that never used React.
 
 Here's what we kept running into again and again:
 
 - **Customization was a nightmare.** Clunky, opaque APIs made even basic tweaks feel like defusing
-  a bomb. Two-way data bindings, sync issues between React and the grid... we've seen things.
+  a bomb. Two-way data bindings, state sync issues between React and the grid... we've seen things.
 
 - **Server data loading was a disaster.** Optimistic updates, partial rendering, and caching
   never worked properly, or worse, worked sometimes, which is somehow more dangerous.
@@ -52,8 +51,8 @@ Here's why we stand out:
   React's data flow and state model. No wrappers, no adapter layers.
   No awkward integrations, only cleaner, more maintainable code.
 
-- 📦 **Tiny Bundle Size:** Core edition is a tiny **36kb gzipped**, while the PRO edition weighs
-  only **49kb gzipped**, so you no longer have to choose between advanced
+- 📦 **Tiny Bundle Size:** Core edition is a tiny **30kb gzipped**, while the PRO edition weighs
+  only **40kb gzipped**, so you no longer have to choose between advanced
   functionality and a fast user experience.
 
 - ⚡ **Unrivaled Speed:** LyteNyte can handle **10,000+ updates per second** and render millions of rows.
@@ -100,7 +99,7 @@ out our [price page](https://www.1771technologies.com/pricing).
 
 In this guide, you will build a data table inspired by the log tables in Vercel and DataDog.
 
-::demo[Getting Started="./demos/getting-started"]
+::demo[Getting Started="./demos/getting-started_x"]
 
 This demo shows the final output of the guide. If you prefer to jump straight
 to the complete code, fork the working demo by clicking the StackBlitz or Code Sandbox icon
@@ -538,13 +537,7 @@ export function Header({ column, grid }: HeaderCellRendererParams<RequestData>) 
       {column.name ?? column.id}
 
       {sort && (
-        <>
-          {!isDescending ? (
-            <ArrowUpIcon className="size-4" />
-          ) : (
-            <ArrowDownIcon className="size-4" />
-          )}
-        </>
+        <>{!isDescending ? <ArrowUpIcon className="size-4" /> : <ArrowDownIcon className="size-4" />}</>
       )}
     </div>
   );

@@ -80,40 +80,39 @@ export const createSignal = <T>(initialValue: T | (() => T)): Signal<T> => {
   ) as Signal<T>;
 };
 
-export const useSelector: UseSelector = <T, K>(signal: Signal<T> | (() => T), selector?: (value: T) => K) =>
-  useSyncExternalStore(
-    "on" in signal ? signal.on : clockUpdateEvent.on,
-    useMemo<() => T | K>(() => {
-      if ("on" in signal) {
-        if (selector) {
-          let lastSignalValue: T | typeof EMPTY = EMPTY;
-          let value: K;
+export const useSelector: UseSelector = <T, K>(signal: Signal<T> | (() => T), selector?: (value: T) => K) => {
+  const snapshot = useMemo<() => T | K>(() => {
+    if ("on" in signal) {
+      if (selector) {
+        let lastSignalValue: T | typeof EMPTY = EMPTY;
+        let value: K;
 
-          return () => {
-            const nextSignalValue = signal();
+        return () => {
+          const nextSignalValue = signal();
 
-            if (nextSignalValue !== lastSignalValue) {
-              lastSignalValue = nextSignalValue;
-              value = selector(nextSignalValue);
-            }
+          if (nextSignalValue !== lastSignalValue) {
+            lastSignalValue = nextSignalValue;
+            value = selector(nextSignalValue);
+          }
 
-            return value;
-          };
-        }
-
-        return signal;
+          return value;
+        };
       }
 
-      let lastClock: typeof clock | typeof EMPTY = EMPTY;
-      let value: T;
+      return signal;
+    }
 
-      return () => {
-        if (clock !== lastClock) {
-          lastClock = clock;
-          value = signal();
-        }
+    let lastClock: typeof clock | typeof EMPTY = EMPTY;
+    let value: T;
 
-        return value;
-      };
-    }, [selector, signal]),
-  );
+    return () => {
+      if (clock !== lastClock) {
+        lastClock = clock;
+        value = signal();
+      }
+
+      return value;
+    };
+  }, [selector, signal]);
+  return useSyncExternalStore("on" in signal ? signal.on : clockUpdateEvent.on, snapshot, snapshot);
+};

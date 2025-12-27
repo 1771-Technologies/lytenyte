@@ -33,3 +33,7 @@
   --color-ln-pill-group-stroke: var(--lng1771-pill-group-stroke);
   --color-ln-pill-icon-color: var(--lng1771-pill-icon-color);
 }
+
+[data-ln-viewport="true"] {
+  border: 0px solid transparent;
+}

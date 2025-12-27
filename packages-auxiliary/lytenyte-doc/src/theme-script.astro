@@ -23,6 +23,8 @@
     document.documentElement.setAttribute("data-theme", theme.value);
     document.documentElement.classList.remove(theme.value === "dark" ? "light" : "dark");
     document.documentElement.classList.add(theme.value);
+    document.documentElement.classList.remove(theme.value === "dark" ? "ln-light" : "ln-dark");
+    document.documentElement.classList.add(theme.value === "dark" ? "ln-dark" : "ln-light");
 
     document.querySelector("#theme-toggle")?.setAttribute("aria-label", theme.value);
     if (noTransition)
@@ -45,10 +47,8 @@
     document.querySelector("#theme-toggle")?.addEventListener("click", toggleTheme);
   });
 
-  window
-    .matchMedia("(prefers-color-scheme: dark)")
-    .addEventListener("change", ({ matches: isDark }) => {
-      theme.value = isDark ? "dark" : "light";
-      setStoredThemePreference();
-    });
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches: isDark }) => {
+    theme.value = isDark ? "dark" : "light";
+    setStoredThemePreference();
+  });
 </script>
