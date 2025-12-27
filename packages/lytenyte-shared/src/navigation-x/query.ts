@@ -65,11 +65,7 @@ export const queryHeaderCellsAtRow = (
   );
 };
 
-export const queryDetail = (
-  gridId: string,
-  rowIndex: number,
-  element: HTMLElement,
-): HTMLElement | null => {
+export const queryDetail = (gridId: string, rowIndex: number, element: HTMLElement): HTMLElement | null => {
   return element.querySelector(
     `[data-ln-gridid="${gridId}"][data-ln-rowindex="${rowIndex}"][data-ln-row-detail="true"]`,
   );

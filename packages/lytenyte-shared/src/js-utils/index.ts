@@ -1,3 +1,4 @@
+export { arrayShallow } from "./array-shallow.js";
 export { clamp } from "./clamp.js";
 export { debounce } from "./debounce.js";
 export { distance } from "./distance.js";
