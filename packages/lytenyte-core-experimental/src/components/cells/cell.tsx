@@ -65,14 +65,7 @@ const CellImpl = memo(
 
     const willDisplayEdit = isEditing && isEditingThis;
 
-    const style = useCellStyle(
-      xPositions,
-      yPositions,
-      cell,
-      rtl,
-      row ? api.rowDetailHeight(row) : 0,
-      undefined,
-    );
+    const style = useCellStyle(xPositions, yPositions, cell, rtl, rowMeta.detailHeight, undefined);
 
     if (!row || cell.isDeadCol) return null;
 
@@ -146,6 +139,7 @@ const CellImpl = memo(
               colIndex={cell.colIndex}
               selected={selected}
               indeterminate={indeterminate}
+              detailExpanded={rowMeta.detailExpanded}
             />
           )}
         </div>

@@ -1,14 +1,18 @@
 import { useMemo } from "react";
 import type { RowMeta } from "./context.js";
-import type { LayoutRowWithCells, RowSource } from "@1771technologies/lytenyte-shared";
-import { useEdit } from "../../../root/root-context.js";
+import type { LayoutRowWithCells } from "@1771technologies/lytenyte-shared";
+import { useEdit, type RootContextValue } from "../../../root/root-context.js";
 
-export function useRowContextValue(
-  row: LayoutRowWithCells,
-  yPositions: Uint32Array,
-  xPositions: Uint32Array,
-  source: RowSource,
-) {
+export function useRowContextValue(row: LayoutRowWithCells, ctx: RootContextValue) {
+  const {
+    source,
+    yPositions,
+    xPositions,
+    detailExpansions,
+    rowDetailHeight,
+    rowDetailHeightCache,
+    rowDetailAutoHeightGuess,
+  } = ctx;
   const r = source.rowByIndex(row.rowIndex).useValue() as RowMeta["row"];
 
   const edit = useEdit();
@@ -17,12 +21,22 @@ export function useRowContextValue(
   const editColumn = edit.activeEdit.useValue((x) => (isEditing ? x!.column! : null));
   const editValue = edit.editData.useValue((x) => (isEditing ? x : null));
 
+  const detailExpanded = row && detailExpansions.has(row.id);
+  const detailHeight = !detailExpanded
+    ? 0
+    : rowDetailHeight === "auto"
+      ? (rowDetailHeightCache[row.id] ?? rowDetailAutoHeightGuess)
+      : rowDetailHeight;
+
   const value = useMemo<RowMeta>(() => {
     return {
       row: r,
       layout: row,
       xPositions,
       yPositions,
+
+      detailExpanded,
+      detailHeight,
 
       isEditing,
       editColumn,
@@ -42,6 +56,8 @@ export function useRowContextValue(
     editColumn,
     editValue,
     isEditing,
+    detailExpanded,
+    detailExpansions,
     r,
     r?.__selected,
     r?.__indeterminate,

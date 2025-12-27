@@ -98,8 +98,8 @@ export default function Experimental() {
             rowSource={ds}
             rowGroupColumn={rowGroupColumn}
             onRowGroupColumnChange={setRowGroupColumn}
-            columnMarkerEnabled
             columnMarker={{
+              on: true,
               cellRenderer: ({ api, row }) => {
                 return <button onClick={() => api.rowDelete([row])}>X</button>;
               },

@@ -34,9 +34,10 @@ export interface CellParamsWithIndex<Spec extends GridSpec = GridSpec> extends C
   readonly colIndex: number;
 }
 
-export interface CellParamsWithSelection<Spec extends GridSpec = GridSpec> extends CellParamsWithIndex<Spec> {
+export interface CellRendererParams<Spec extends GridSpec = GridSpec> extends CellParamsWithIndex<Spec> {
   readonly selected: boolean;
   readonly indeterminate: boolean;
+  readonly detailExpanded: boolean;
 }
 
 export interface EditParams<Spec extends GridSpec = GridSpec> extends CellParamsWithIndex<Spec> {
@@ -61,7 +62,7 @@ interface ColumnUnextended<Spec extends GridSpec = GridSpec> extends ColumnAbstr
 
   readonly floatingCellRenderer?: (props: HeaderParams<Spec>) => ReactNode;
   readonly headerRenderer?: (props: HeaderParams<Spec>) => ReactNode;
-  readonly cellRenderer?: (props: CellParamsWithSelection<Spec>) => ReactNode;
+  readonly cellRenderer?: (props: CellRendererParams<Spec>) => ReactNode;
 
   readonly editRenderer?: (props: EditParams<Spec>) => ReactNode;
   readonly editable?: boolean | ((params: CellParamsWithIndex<Spec>) => boolean);

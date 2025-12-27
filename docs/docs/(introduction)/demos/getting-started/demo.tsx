@@ -40,14 +40,13 @@ const base: Grid.Props<GridSpec>["columnBase"] = {
 const marker: Grid.Props<GridSpec>["columnMarker"] = {
   on: true,
   width: 40,
-  cellRenderer: ({ api, row }) => {
-    const isExpanded = api.rowDetailExpanded(row);
+  cellRenderer: ({ api, row, detailExpanded }) => {
     return (
       <button
         className="text-ln-text-dark flex h-full w-[calc(100%-1px)] items-center justify-center pl-2"
         onClick={() => api.rowDetailToggle(row)}
       >
-        {isExpanded ? (
+        {detailExpanded ? (
           <ChevronDownIcon width={20} height={20} />
         ) : (
           <ChevronRightIcon width={20} height={20} />

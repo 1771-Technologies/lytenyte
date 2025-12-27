@@ -162,6 +162,8 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
       centerComponent: props.ln_centerComponent,
 
       rowDetailHeight: props.rowDetailHeight ?? 200,
+      rowDetailAutoHeightGuess: props.rowDetailAutoHeightGuess ?? 200,
+      rowDetailHeightCache: yPositions.detailCache,
       rowDetailRenderer: props.rowDetailRenderer,
       rowFullWidthRenderer: props.rowFullWidthRenderer,
       setDetailCache: yPositions.setDetailCache,
@@ -216,6 +218,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     props.onRowDragEnter,
     props.onRowDragLeave,
     props.onRowDrop,
+    props.rowDetailAutoHeightGuess,
     props.rowDetailHeight,
     props.rowDetailRenderer,
     props.rowFullWidthRenderer,
@@ -227,6 +230,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     view,
     vp,
     xPositions,
+    yPositions.detailCache,
     yPositions.positions,
     yPositions.setDetailCache,
   ]);

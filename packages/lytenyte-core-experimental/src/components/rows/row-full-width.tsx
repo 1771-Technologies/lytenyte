@@ -14,7 +14,19 @@ const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function
   { row: layout, ...props },
   forwarded,
 ) {
-  const { id, rtl, view, yPositions, rowFullWidthRenderer, api, source } = useRoot();
+  const {
+    id,
+    rtl,
+    view,
+    yPositions,
+    rowFullWidthRenderer,
+    api,
+    source,
+    detailExpansions,
+    rowDetailHeight,
+    rowDetailAutoHeightGuess,
+    rowDetailHeightCache,
+  } = useRoot();
   const container = useRowsContainerContext();
 
   const hasSpans = useMemo(() => {
@@ -33,8 +45,13 @@ const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function
   const topOffset = container.useValue($topHeight);
   const rowIsFocusRow = !!layout.rowIsFocusRow;
 
-  const rowDetailHeight = row ? api.rowDetailHeight(row) : 0;
-  const height = sizeFromCoord(rowIndex, yPositions) - rowDetailHeight;
+  const detailExpanded = row && detailExpansions.has(row.id);
+  const detailHeight = !detailExpanded
+    ? 0
+    : rowDetailHeight === "auto"
+      ? (rowDetailHeightCache[row.id] ?? rowDetailAutoHeightGuess)
+      : rowDetailHeight;
+  const height = sizeFromCoord(rowIndex, yPositions) - detailHeight;
 
   return (
     <div
@@ -50,7 +67,16 @@ const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function
       data-ln-rowtype="full-width"
       /** Data attributes end */
       ref={forwarded}
-      style={useRowStyle(yPositions, rowIndex, rowPin, topOffset, rowIsFocusRow, hasSpans, props.style)}
+      style={useRowStyle(
+        yPositions,
+        rowIndex,
+        rowPin,
+        topOffset,
+        rowIsFocusRow,
+        hasSpans,
+        detailHeight,
+        props.style,
+      )}
     >
       <div
         role="gridcell"

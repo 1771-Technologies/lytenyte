@@ -18,10 +18,22 @@ export function RowDetailRow({ layout }: { layout: LayoutRowWithCells | LayoutFu
 }
 
 function RowDetailImpl<T>({ row, rowIndex }: { row: RowNode<T>; rowIndex: number }) {
-  const { id, rtl, dimensions, api, yPositions, rowDetailRenderer, setDetailCache, rowDetailHeight } =
-    useRoot();
+  const {
+    id,
+    rtl,
+    dimensions,
+    api,
+    yPositions,
+    rowDetailRenderer,
+    setDetailCache,
+    rowDetailHeight,
+    rowDetailAutoHeightGuess,
+    rowDetailHeightCache,
+  } = useRoot();
 
-  const height = api.rowDetailHeight(row.id);
+  const height =
+    rowDetailHeight === "auto" ? (rowDetailHeightCache[row.id] ?? rowDetailAutoHeightGuess) : rowDetailHeight;
+
   const rowHeight = sizeFromCoord(rowIndex, yPositions) - height;
 
   const Renderer = rowDetailRenderer;

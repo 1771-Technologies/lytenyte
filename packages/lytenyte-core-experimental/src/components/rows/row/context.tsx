@@ -18,6 +18,9 @@ export interface RowMeta {
   readonly isEditing: boolean;
   readonly editData: any;
   readonly editColumn: string | null | undefined;
+
+  readonly detailHeight: number;
+  readonly detailExpanded: boolean;
   readonly commit: EditContext["commit"];
   readonly cancel: EditContext["cancel"];
   readonly changeValue: EditContext["changeValue"];

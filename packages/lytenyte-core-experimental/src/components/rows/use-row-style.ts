@@ -16,6 +16,7 @@ export function useRowStyle(
   topOffset: number,
   rowIsFocusRow: boolean,
   hasSpans: boolean,
+  detailHeight: number,
   propStyles: CSSProperties | undefined,
 ): CSSProperties {
   const height = sizeFromCoord(rowIndex, yPositions);
@@ -46,11 +47,11 @@ export function useRowStyle(
       position: shouldBeRelative ? "relative" : undefined,
       top: shouldBeRelative ? yPositions[rowIndex] - topOffset : undefined,
 
-      "--ln-row-height": `${height}px`,
+      "--ln-row-height": `${height - detailHeight}px`,
     } as CSSProperties;
 
     return { ...propStyles, ...styles };
-  }, [hasSpans, height, propStyles, rowIndex, rowIsFocusRow, rowPin, topOffset, yPositions]);
+  }, [detailHeight, hasSpans, height, propStyles, rowIndex, rowIsFocusRow, rowPin, topOffset, yPositions]);
 
   return styles;
 }
