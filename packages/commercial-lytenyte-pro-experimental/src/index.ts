@@ -67,3 +67,9 @@ export namespace Grid {
 
 export type { ViewportShadowsProps } from "@1771technologies/lytenyte-core-experimental";
 export { ViewportShadows } from "@1771technologies/lytenyte-core-experimental";
+
+export type {
+  UseClientDataSourceParams,
+  RowSourceClient,
+} from "./data-source-client/use-client-data-source.js";
+export { useClientDataSource } from "./data-source-client/use-client-data-source.js";

@@ -46,13 +46,8 @@ import { usePivotData } from "./hooks/use-pivot/use-pivot-data.js";
 import type { PivotState } from "./hooks/use-pivot/use-pivot-columns.js";
 import type { Props } from "../types/props.js";
 
-export type HavingFilterFn = (node: RowGroup) => boolean;
-
 export type PivotField<Spec extends GridSpec = GridSpec> = { field?: Field<Spec["data"]> };
-export type PivotMeasure<Spec extends GridSpec = GridSpec> = {
-  dim: Column<Spec>;
-  fn: Aggregator<Spec["data"]> | string;
-};
+export type HavingFilterFn = (node: RowGroup) => boolean;
 
 export interface RowSourceClient<Spec extends GridSpec = GridSpec> extends RowSource<Spec["data"]> {
   readonly usePivotProps: (props?: {
