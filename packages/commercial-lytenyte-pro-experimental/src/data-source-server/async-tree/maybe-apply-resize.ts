@@ -1,4 +1,4 @@
-import type { TreeParent, TreeRoot } from "./+types.async-tree.js";
+import type { TreeParent, TreeRoot } from "./types.js";
 
 export function maybeApplyResize(pathNode: TreeParent | TreeRoot, size: number | undefined, asOf: number) {
   if (size == null) return false;

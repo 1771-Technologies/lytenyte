@@ -29,6 +29,7 @@ export function useOnRowsUpdated<T>(
       rollbackMap.forEach((d, id) => {
         source.updateRow(id, d.data, d.asOf);
       });
+      source.flatten();
     });
   });
 

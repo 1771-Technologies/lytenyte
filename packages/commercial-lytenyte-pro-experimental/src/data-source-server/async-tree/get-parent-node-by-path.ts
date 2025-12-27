@@ -1,4 +1,4 @@
-import type { LeafOrParent, TreeParent, TreeRoot } from "./+types.async-tree.js";
+import type { LeafOrParent, TreeParent, TreeRoot } from "./types.js";
 
 const invalidPathRoute = "Invalid path specified. Paths must be built up incrementally.";
 const invalidPathChild = "Invalid path specified. Leaf nodes can have children.";

@@ -1,4 +1,4 @@
-import type { SetDataAction, TreeParent, TreeRoot } from "./+types.async-tree.js";
+import type { SetDataAction, TreeParent, TreeRoot } from "../types.js";
 
 const invalidItemKeySize = "Invalid set action items, 'relIndex' must be less than parent size";
 

@@ -1,5 +1,5 @@
-import { ROOT_LEAF_PREFIX } from "./+constants.async-tree.js";
-import type { SetDataAction } from "./+types.async-tree.js";
+import { ROOT_LEAF_PREFIX } from "../+constants.async-tree.js";
+import type { SetDataAction } from "../types.js";
 
 export function checkSetActionItemKeysAreUnique(p: SetDataAction) {
   const seenKeys = new Set<number>();

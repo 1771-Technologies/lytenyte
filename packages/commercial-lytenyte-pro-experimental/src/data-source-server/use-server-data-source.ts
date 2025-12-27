@@ -29,6 +29,7 @@ import { useRowsBetween } from "./source/use-rows-between.js";
 import { useRowChildren } from "./source/use-row-children.js";
 import { useRowLeafs } from "./source/use-row-leafs.js";
 import { useOnRowsUpdated } from "./source/use-on-rows-updated.js";
+import { useRowDelete } from "./source/use-row-delete.js";
 
 export interface RowSourceServer<T> extends RowSource<T> {
   readonly isLoading: Piece<boolean>;
@@ -43,6 +44,9 @@ export interface RowSourceServer<T> extends RowSource<T> {
   readonly pushResponses: (req: (DataResponse | DataResponsePinned)[]) => void;
   readonly pushRequests: (req: DataRequest[], onSuccess?: () => void, onError?: (e: unknown) => void) => void;
   readonly reset: () => void;
+
+  readonly rowDelete: (rows: RowNode<T>[]) => void;
+  readonly rowUpdate: (rows: Map<RowNode<T>, T>) => void;
 }
 
 export interface UseServerDataSourceParams<K extends unknown[], T = any> {
@@ -59,8 +63,9 @@ export interface UseServerDataSourceParams<K extends unknown[], T = any> {
   readonly onRowSelectionChange?: (state: RowSelectionState) => void;
   readonly rowSelectKey?: unknown[];
 
-  readonly rowUpdateOptimistically: boolean;
+  readonly rowUpdateOptimistically?: boolean;
   readonly onRowDataChange?: (params: { readonly rows: Map<RowNode<T>, T> }) => Promise<void>;
+  readonly onRowDelete?: (params: { readonly rows: RowNode<T>[] }) => Promise<void>;
 }
 
 export function useServerDataSource<T, K extends unknown[] = unknown[]>(
@@ -127,6 +132,8 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
 
   const row$ = usePiece(state.rows);
 
+  const rowDelete = useRowDelete(source, props.onRowDelete, props.rowUpdateOptimistically);
+
   const rowSource = useMemo<RowSourceServer<T>>(() => {
     const rowSource: RowSourceServer<T> = {
       rowById,
@@ -138,6 +145,8 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
       rowsSelected,
       rowIsSelected,
       rowSelectionState,
+      rowDelete,
+      rowUpdate: onRowsUpdated,
 
       rowLeafs,
       rowParents,
@@ -201,6 +210,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
     rowByIndex,
     rowChildren,
     rowCount$,
+    rowDelete,
     rowIdToRowIndex,
     rowIndexToRowId,
     rowInvalidate,

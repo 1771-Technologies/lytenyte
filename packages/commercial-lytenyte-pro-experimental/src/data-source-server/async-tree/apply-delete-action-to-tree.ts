@@ -1,4 +1,4 @@
-import type { DeleteDataAction, TreeRoot } from "./+types.async-tree";
+import type { DeleteDataAction, TreeRoot } from "./types";
 import { getParentNodeByPath } from "./get-parent-node-by-path.js";
 
 export function applyDeleteActionToTree(p: DeleteDataAction, tree: TreeRoot) {

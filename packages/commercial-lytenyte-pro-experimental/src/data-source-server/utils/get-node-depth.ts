@@ -1,4 +1,4 @@
-import type { TreeLeaf, TreeParent } from "../async-tree/+types.async-tree.js";
+import type { TreeLeaf, TreeParent } from "../async-tree/types.js";
 
 export function getNodeDepth(node: TreeParent | TreeLeaf) {
   let depth = 0;

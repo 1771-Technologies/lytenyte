@@ -1,4 +1,4 @@
-import type { TreeParent, TreeRoot } from "./+types.async-tree.js";
+import type { TreeParent, TreeRoot } from "./types.js";
 
 export function maybeApplyParentRemoveSelf(pathNode: TreeParent | TreeRoot) {
   if (!pathNode.size && pathNode.kind === "parent") {
