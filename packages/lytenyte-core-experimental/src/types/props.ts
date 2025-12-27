@@ -8,9 +8,8 @@ import type { ViewportShadowsProps } from "../components/viewport/viewport-shado
 export type Props<Spec extends GridSpec = GridSpec> = {
   readonly columns?: Column<Spec>[];
   readonly columnBase?: Omit<Column<Spec>, "id" | "pin" | "field" | "editSetter">;
-  readonly columnMarker?: Omit<Column<Spec>, "field"> & { width?: number };
+  readonly columnMarker?: Omit<Column<Spec>, "id" | "field" | "pin"> & { on?: boolean };
 
-  readonly columnMarkerEnabled?: boolean;
   readonly columnGroupDefaultExpansion?: boolean;
   readonly columnGroupExpansions?: Record<string, boolean>;
   readonly columnGroupJoinDelimiter?: string;

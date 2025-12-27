@@ -27,7 +27,7 @@ export function useColumnView(
     const colsWithMarker = columnAddMarker({
       columns: colsWithGroup,
       marker: props.columnMarker ?? {},
-      markerEnabled: props.columnMarkerEnabled ?? false,
+      markerEnabled: props.columnMarker?.on ?? false,
     });
 
     const view = makeColumnView({
@@ -47,7 +47,6 @@ export function useColumnView(
     props.columnGroupDefaultExpansion,
     props.columnGroupJoinDelimiter,
     props.columnMarker,
-    props.columnMarkerEnabled,
     props.rowGroupColumn,
     props.rowGroupDisplayMode,
   ]);
