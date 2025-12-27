@@ -10,6 +10,9 @@ export type TreeRoot = {
   readonly size: number;
   readonly asOf: number;
   readonly rowIdToNode: Map<string, LeafOrParent>;
+
+  before: TreeLeaf[];
+  after: TreeLeaf[];
 };
 
 export type TreeParent = {
@@ -39,6 +42,7 @@ export type TreeLeaf = {
   readonly path: string;
 
   readonly deleted?: boolean;
+  readonly optimistic?: "start" | "end";
 };
 
 export type LeafOrParent = TreeLeaf | TreeParent;
@@ -47,6 +51,10 @@ export type TreeRootAndApi = TreeRoot & {
   readonly set: (payload: SetDataAction) => void;
   readonly delete: (path: DeleteDataAction) => void;
   readonly get: (payload: GetDataAction) => TreeRoot | TreeParent | null;
+  readonly addBefore: (leafs: TreeLeaf[]) => void;
+  readonly addAfter: (leafs: TreeLeaf[]) => void;
+  readonly deleteBefore: (ids: string[]) => void;
+  readonly deleteAfter: (ids: string[]) => void;
 };
 
 export interface SetDataAction {

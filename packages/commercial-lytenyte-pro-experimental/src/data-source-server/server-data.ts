@@ -470,8 +470,21 @@ export class ServerData {
     });
   }
 
+  addBefore(leafs: TreeLeaf[]) {
+    this.tree.addBefore(leafs);
+  }
+  addAfter(leafs: TreeLeaf[]) {
+    this.tree.addAfter(leafs);
+  }
+  deleteBefore(leafs: string[]) {
+    this.tree.deleteBefore(leafs);
+  }
+  deleteAfter(leafs: string[]) {
+    this.tree.deleteAfter(leafs);
+  }
+
   updateRow(id: string, data: any, asOf?: number) {
-    const centerRow = this.flat.rowIdToTreeNode.get(id);
+    const centerRow = this.tree.rowIdToNode.get(id);
 
     if (centerRow) {
       if (asOf && centerRow.asOf > asOf) return;
@@ -530,6 +543,19 @@ export class ServerData {
 
       let offset = 0;
       let deleted = 0;
+
+      if (node.kind === "root") {
+        if (node.before.length) {
+          for (const n of node.before) {
+            const rowIndex = offset;
+            offset++;
+            rowIndexToRow.set(rowIndex, n.row);
+            rowIdToRowIndex.set(n.row.id, rowIndex);
+            rowIdToRow.set(n.row.id, n.row);
+            rowIdToTreeNode.set(n.row.id, n);
+          }
+        }
+      }
 
       for (let i = 0; i < rows.length; i++) {
         const node = rows[i];

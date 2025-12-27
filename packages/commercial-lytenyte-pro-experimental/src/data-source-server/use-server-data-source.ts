@@ -13,6 +13,7 @@ import {
 } from "@1771technologies/lytenyte-core-experimental/internal";
 import {
   type RowGroup,
+  type RowLeaf,
   type RowNode,
   type RowSelectionState,
   type RowSource,
@@ -30,6 +31,7 @@ import { useRowChildren } from "./source/use-row-children.js";
 import { useRowLeafs } from "./source/use-row-leafs.js";
 import { useOnRowsUpdated } from "./source/use-on-rows-updated.js";
 import { useRowDelete } from "./source/use-row-delete.js";
+import { useRowAdd } from "./source/use-row-add.js";
 
 export interface RowSourceServer<T> extends RowSource<T> {
   readonly isLoading: Piece<boolean>;
@@ -45,6 +47,7 @@ export interface RowSourceServer<T> extends RowSource<T> {
   readonly pushRequests: (req: DataRequest[], onSuccess?: () => void, onError?: (e: unknown) => void) => void;
   readonly reset: () => void;
 
+  readonly rowAdd: (rows: RowLeaf<T>[], placement?: "start" | "end") => void;
   readonly rowDelete: (rows: RowNode<T>[]) => void;
   readonly rowUpdate: (rows: Map<RowNode<T>, T>) => void;
 }
@@ -65,7 +68,11 @@ export interface UseServerDataSourceParams<K extends unknown[], T = any> {
 
   readonly rowUpdateOptimistically?: boolean;
   readonly onRowDataChange?: (params: { readonly rows: Map<RowNode<T>, T> }) => Promise<void>;
-  readonly onRowDelete?: (params: { readonly rows: RowNode<T>[] }) => Promise<void>;
+  readonly onRowsDeleted?: (params: { readonly rows: RowNode<T>[] }) => Promise<void>;
+  readonly onRowsAdded?: (params: {
+    readonly rows: RowLeaf<T>[];
+    placement: "start" | "end";
+  }) => Promise<void>;
 }
 
 export function useServerDataSource<T, K extends unknown[] = unknown[]>(
@@ -132,7 +139,9 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
 
   const row$ = usePiece(state.rows);
 
-  const rowDelete = useRowDelete(source, props.onRowDelete, props.rowUpdateOptimistically);
+  const rowDelete = useRowDelete(source, props.onRowsDeleted, props.rowUpdateOptimistically);
+
+  const rowAdd = useRowAdd(source, props.onRowsAdded, props.rowUpdateOptimistically);
 
   const rowSource = useMemo<RowSourceServer<T>>(() => {
     const rowSource: RowSourceServer<T> = {
@@ -146,6 +155,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
       rowIsSelected,
       rowSelectionState,
       rowDelete,
+      rowAdd,
       rowUpdate: onRowsUpdated,
 
       rowLeafs,
@@ -206,6 +216,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
     onViewChange,
     requestsForView$,
     row$,
+    rowAdd,
     rowById,
     rowByIndex,
     rowChildren,

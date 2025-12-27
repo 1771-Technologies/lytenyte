@@ -6,11 +6,11 @@ import type { LeafOrParent } from "../async-tree/types";
 
 export function useRowDelete<T>(
   source: ServerData,
-  onRowDelete: UseServerDataSourceParams<unknown[]>["onRowDelete"],
+  onRowDelete: UseServerDataSourceParams<unknown[]>["onRowsDeleted"],
   optimistic: boolean = false,
 ) {
   const rowDelete: RowSourceServer<T>["rowDelete"] = useEvent((rows) => {
-    if (!onRowDelete) return null;
+    if (!onRowDelete || !rows.length) return null;
 
     if (!optimistic) {
       onRowDelete({ rows });
@@ -18,12 +18,23 @@ export function useRowDelete<T>(
     }
 
     const rollbackNodes: Writable<LeafOrParent>[] = [];
+
+    const startDeletes: string[] = [];
+    const endDeletes: string[] = [];
+
     rows.forEach((x) => {
       const node = source.tree.rowIdToNode.get(x.id) as Writable<LeafOrParent>;
+      if (node && node.kind === "leaf" && node.optimistic) {
+        if (node.optimistic === "start") startDeletes.push(node.row.id);
+        else endDeletes.push(node.row.id);
+        return;
+      }
       if (node) node.deleted = true;
-
       rollbackNodes.push(node);
     });
+
+    if (startDeletes.length) source.deleteBefore(startDeletes);
+    if (endDeletes.length) source.deleteAfter(endDeletes);
 
     onRowDelete({ rows }).catch(() => {
       rollbackNodes.forEach((x) => {
