@@ -1,12 +1,5 @@
 import { equal } from "@1771technologies/lytenyte-shared";
-import type {
-  DataRequest,
-  DataResponse,
-  DataResponsePinned,
-  RowGroup,
-  RowLeaf,
-  RowNode,
-} from "../+types.js";
+import type { DataRequest, DataResponse, DataResponsePinned, RowGroup, RowLeaf, RowNode } from "../+types.js";
 import type {
   LeafOrParent,
   SetDataAction,
@@ -205,10 +198,7 @@ export class ServerData {
 
     path.push(row.key);
 
-    const r = (ranges.at(-1)?.parent as TreeParent<any, any>).byPath.get(row.key) as TreeParent<
-      any,
-      any
-    >;
+    const r = (ranges.at(-1)?.parent as TreeParent<any, any>).byPath.get(row.key) as TreeParent<any, any>;
     const blocksize = this.#blocksize;
 
     const start = 0;
@@ -241,8 +231,7 @@ export class ServerData {
     try {
       // Mark these rows as loading
       requests.forEach((req) => {
-        if (!skip)
-          for (let i = req.rowStartIndex; i < req.rowEndIndex; i++) this.#loadingRows.add(i);
+        if (!skip) for (let i = req.rowStartIndex; i < req.rowEndIndex; i++) this.#loadingRows.add(i);
       });
       const responses = await this.#dataFetcher(requests, this.#expansions, this.#pivotExpansions);
 
@@ -275,9 +264,7 @@ export class ServerData {
   };
 
   handleResponses = (data: (DataResponse | DataResponsePinned)[], beforeOnFlat?: () => void) => {
-    const pinned = data.filter(
-      (c) => c.kind === "top" || c.kind === "bottom",
-    ) as DataResponsePinned[];
+    const pinned = data.filter((c) => c.kind === "top" || c.kind === "bottom") as DataResponsePinned[];
     const center = data.filter((c) => c.kind !== "top" && c.kind !== "bottom") as DataResponse[];
 
     // handle pinned
@@ -393,8 +380,7 @@ export class ServerData {
           if (seen.has(reqId)) return;
           seen.add(reqId);
 
-          const size =
-            start + this.#blocksize > c.parent.size ? c.parent.size - start : this.#blocksize;
+          const size = start + this.#blocksize > c.parent.size ? c.parent.size - start : this.#blocksize;
 
           requests.push({ id: reqId, path, start, end, rowStartIndex: i, rowEndIndex: i + size });
         } else {
@@ -408,8 +394,7 @@ export class ServerData {
           if (seen.has(reqId)) return;
           seen.add(reqId);
 
-          const size =
-            start + this.#blocksize > c.parent.size ? c.parent.size - start : this.#blocksize;
+          const size = start + this.#blocksize > c.parent.size ? c.parent.size - start : this.#blocksize;
 
           requests.push({ id: reqId, path, start, end, rowStartIndex: i, rowEndIndex: i + size });
         }
@@ -572,9 +557,7 @@ export class ServerData {
         if (row.kind === "parent") {
           const expanded =
             expansions[row.data.id] ??
-            (typeof defaultExpansion === "number"
-              ? getNodeDepth(row) <= defaultExpansion
-              : defaultExpansion);
+            (typeof defaultExpansion === "number" ? getNodeDepth(row) <= defaultExpansion : defaultExpansion);
 
           // Expanded but no data. Fetch the child data.
           if (expanded && !row.byIndex.size) {

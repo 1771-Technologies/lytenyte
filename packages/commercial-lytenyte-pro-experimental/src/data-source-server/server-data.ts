@@ -470,10 +470,11 @@ export class ServerData {
     });
   }
 
-  updateRow(id: string, data: any) {
+  updateRow(id: string, data: any, asOf?: number) {
     const centerRow = this.flat.rowIdToTreeNode.get(id);
 
     if (centerRow) {
+      if (asOf && centerRow.asOf > asOf) return;
       (centerRow as any).data = { ...centerRow.row, data };
       return;
     }
@@ -481,10 +482,12 @@ export class ServerData {
     // Maybe its a pinned row?
     const topIndex = this.#top.rows.findIndex((c) => c.id === id);
     if (topIndex != -1) {
+      if (asOf && this.#top.asOf > asOf) return;
       this.#top.rows[topIndex] = { ...this.#top.rows[topIndex], data };
     }
     const botIndex = this.#bottom.rows.findIndex((c) => c.id === id);
     if (botIndex != -1) {
+      if (asOf && this.#bottom.asOf > asOf) return;
       this.#top.rows[botIndex] = { ...this.#top.rows[botIndex], data };
     }
   }

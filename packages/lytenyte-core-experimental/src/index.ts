@@ -76,3 +76,6 @@ export namespace Grid {
 
 export type { ViewportShadowsProps } from "./components/viewport/viewport-shadows.js";
 export { ViewportShadows } from "./components/viewport/viewport-shadows.js";
+
+export { useClientDataSource } from "./data-source/use-client-data-source.js";
+export type { RowSourceClient, UseClientDataSourceParams } from "./data-source/use-client-data-source.js";

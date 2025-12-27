@@ -11,7 +11,12 @@ import {
   useGlobalRefresh,
   useRowSelectionState,
 } from "@1771technologies/lytenyte-core-experimental/internal";
-import { type RowGroup, type RowSelectionState, type RowSource } from "@1771technologies/lytenyte-shared";
+import {
+  type RowGroup,
+  type RowNode,
+  type RowSelectionState,
+  type RowSource,
+} from "@1771technologies/lytenyte-shared";
 import { useRowByIndex } from "./source/use-row-by-index.js";
 import { useRowIndexToRowId } from "./source/use-row-index-to-row-id.js";
 import { useRowIdToRowIndex } from "./source/use-row-id-to-row-index.js";
@@ -23,6 +28,7 @@ import { useRowParents } from "./source/use-row-parents.js";
 import { useRowsBetween } from "./source/use-rows-between.js";
 import { useRowChildren } from "./source/use-row-children.js";
 import { useRowLeafs } from "./source/use-row-leafs.js";
+import { useOnRowsUpdated } from "./source/use-on-rows-updated.js";
 
 export interface RowSourceServer<T> extends RowSource<T> {
   readonly isLoading: Piece<boolean>;
@@ -39,7 +45,7 @@ export interface RowSourceServer<T> extends RowSource<T> {
   readonly reset: () => void;
 }
 
-export interface UseServerDataSourceParams<K extends unknown[]> {
+export interface UseServerDataSourceParams<K extends unknown[], T = any> {
   readonly queryFn: (params: QueryFnParams<K>) => Promise<(DataResponse | DataResponsePinned)[]>;
   readonly queryKey: K;
   readonly blockSize?: number;
@@ -52,6 +58,9 @@ export interface UseServerDataSourceParams<K extends unknown[]> {
   readonly rowSelectionIdUniverseAdditions?: Set<string>;
   readonly onRowSelectionChange?: (state: RowSelectionState) => void;
   readonly rowSelectKey?: unknown[];
+
+  readonly rowUpdateOptimistically: boolean;
+  readonly onRowDataChange?: (params: { readonly rows: Map<RowNode<T>, T> }) => Promise<void>;
 }
 
 export function useServerDataSource<T, K extends unknown[] = unknown[]>(
@@ -112,8 +121,9 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
 
   const rowLeafs = useRowLeafs<T>(source);
   const { rowByIndex, rowInvalidate } = useRowByIndex<T>(source, selectionState, globalSignal, rowParents);
-
   const setExpansions = state.setExpansions;
+
+  const onRowsUpdated = useOnRowsUpdated(source, props.onRowDataChange, props.rowUpdateOptimistically);
 
   const row$ = usePiece(state.rows);
 
@@ -145,8 +155,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
       onRowsSelected,
       onViewChange,
 
-      // TODO
-      onRowsUpdated: () => {},
+      onRowsUpdated,
 
       // Specific to the server data source
       isLoading: isLoading$,
@@ -184,6 +193,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
     loadError$,
     maxDepth$,
     onRowsSelected,
+    onRowsUpdated,
     onViewChange,
     requestsForView$,
     row$,
