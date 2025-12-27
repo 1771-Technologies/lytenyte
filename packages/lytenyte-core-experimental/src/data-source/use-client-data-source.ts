@@ -36,17 +36,15 @@ import { useSortFn } from "../data-source-shared/use-sort-fn.js";
 import { useFilterFn } from "../data-source-shared/use-filter-fn.js";
 import { useGroupFn } from "../data-source-shared/use-group-fn.js";
 import { useAggregationFn } from "../data-source-shared/use-aggregation-fn.js";
-import {
-  useEvent,
-  useOnRowsSelected,
-  useRowIsSelected,
-  useRowSelection,
-  useRowSelectionState,
-} from "../internal.js";
 import { useRowSelectSplitLookup } from "../data-source-shared/row-selection/use-rows-selected.js";
 import { useIdUniverse } from "../data-source-shared/use-id-universe.js";
 import { useRows } from "../data-source-shared/use-rows.js";
 import { useRowDelete } from "../data-source-shared/use-row-delete.js";
+import { useRowIsSelected } from "../data-source-shared/row-selection/use-row-is-selected.js";
+import { useOnRowsSelected } from "../data-source-shared/row-selection/use-on-rows-selected.js";
+import { useRowSelection } from "../data-source-shared/row-selection/use-row-selection.js";
+import { useEvent } from "../hooks/use-event.js";
+import { useRowSelectionState } from "../data-source-shared/use-row-selection-state.js";
 
 export interface RowSourceClient<T> extends RowSource<T> {
   readonly rowUpdate: (rows: Map<RowNode<T>, T>) => void;

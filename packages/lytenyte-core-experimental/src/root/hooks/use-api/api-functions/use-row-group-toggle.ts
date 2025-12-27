@@ -1,6 +1,6 @@
 import type { RowSource } from "@1771technologies/lytenyte-shared";
 import type { Root } from "../../../root.js";
-import { useEvent } from "../../../../internal.js";
+import { useEvent } from "../../../../hooks/use-event.js";
 
 export function useRowGroupToggle(props: Root.Props, source: RowSource): Root.API["rowGroupToggle"] {
   return useEvent((rowOrId, state) => {

@@ -1,7 +1,7 @@
-import { useEvent } from "@1771technologies/lytenyte-core-experimental/internal";
 import type { RowNode, RowSource } from "@1771technologies/lytenyte-shared";
 import type { SourceRowSelection } from "./use-row-selection";
 import { isRowSelected } from "./is-row-selected.js";
+import { useEvent } from "../../hooks/use-event.js";
 
 export function useRowIsSelected<T>(
   state: SourceRowSelection,

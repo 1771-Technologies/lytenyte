@@ -1,4 +1,3 @@
-import { useControlled, useEvent } from "@1771technologies/lytenyte-core-experimental/internal";
 import {
   equal,
   rowSelectLinkWithoutParents,
@@ -8,6 +7,8 @@ import {
 } from "@1771technologies/lytenyte-shared";
 import { useEffect, useMemo, useRef, type Dispatch, type SetStateAction } from "react";
 import { cleanTree } from "./clean-tree.js";
+import { useControlled } from "../../hooks/use-controlled.js";
+import { useEvent } from "../../hooks/use-event.js";
 
 export type SourceRowSelection = {
   readonly rowSelectionsRaw: RowSelectionState;
