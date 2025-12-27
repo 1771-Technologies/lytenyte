@@ -37,10 +37,10 @@ export function parseExpressiveCode(src: string) {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     if (line.trim().startsWith("//# start")) {
-      const start = i;
+      const start = i + 1;
 
       while (i < lines.length && !lines[i].trim().startsWith("//# end")) i++;
-      const end = i;
+      const end = i - 1;
 
       collapses.push(`${start}-${end}`);
 

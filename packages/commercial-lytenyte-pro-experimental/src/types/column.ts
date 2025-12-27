@@ -7,7 +7,7 @@ export type PathField = { kind: "path"; path: string };
 
 export interface RowParams<Spec extends GridSpec = GridSpec> {
   readonly rowIndex: number;
-  readonly row: RowNode<GridSpec["data"]>;
+  readonly row: RowNode<Spec["data"]>;
   readonly api: API<Spec>;
 }
 

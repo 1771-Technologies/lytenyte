@@ -12,7 +12,7 @@ export function RowChildrenDefault(row: LayoutRow) {
 
 const RowWithCellRenderer = memo(({ row }: { row: LayoutRowWithCells }) => {
   return (
-    <Row row={row}>
+    <Row key={row.id} row={row}>
       {row.cells.map((cell) => {
         return <Cell cell={cell} key={cell.id} />;
       })}
