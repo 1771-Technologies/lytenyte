@@ -14,11 +14,6 @@ export function useSourceState({
     controlled: rowGroupExpansions,
     default: {},
   });
-
-  const [pivotRowGroupExpansions, setPivotRowGroupExpansions] = useState<Record<string, boolean | undefined>>(
-    pivotStateRef?.current.rowGroupExpansions ?? {},
-  );
-
   const expandedFn = useCallback(
     (id: string, depth: number) => {
       const s = expansions[id];
@@ -31,6 +26,9 @@ export function useSourceState({
     [expansions, rowGroupDefaultExpansion],
   );
 
+  const [pivotRowGroupExpansions, setPivotRowGroupExpansions] = useState<Record<string, boolean | undefined>>(
+    pivotStateRef?.current.rowGroupExpansions ?? {},
+  );
   const pivotExpandedFn = useCallback(
     (id: string, depth: number) => {
       const s = pivotRowGroupExpansions[id];

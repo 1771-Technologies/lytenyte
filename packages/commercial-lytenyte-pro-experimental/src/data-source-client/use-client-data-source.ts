@@ -179,6 +179,7 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
 
     return [props.group, props.filter];
   }, [props.filter, props.group, props.rowSelectKey]);
+
   const selectionState = useRowSelection(
     props.rowSelection,
     props.onRowSelectionChange,
