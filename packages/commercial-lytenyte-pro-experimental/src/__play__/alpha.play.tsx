@@ -6,15 +6,15 @@ import "@1771technologies/lytenyte-design/light.css";
 import "@1771technologies/lytenyte-design/teal.css";
 import "@1771technologies/lytenyte-design/term.css";
 
-import "../main.css";
+import "../../main.css";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { ViewportShadows } from "@1771technologies/lytenyte-core-experimental";
-import { useClientDataSource } from "./data-source-client/use-client-data-source.js";
+import { useClientDataSource } from "../data-source-client/use-client-data-source.js";
 import { useMemo, useState } from "react";
-import type { GridSpec, Props } from "./types";
+import type { GridSpec, Props } from "../types";
 import type { RowLeaf } from "@1771technologies/lytenyte-shared";
-import { RowGroupCell } from "./components/row-group-cell.js";
-import { Grid } from "./index.js";
+import { RowGroupCell } from "../components/row-group-cell.js";
+import { Grid } from "../index.js";
 
 type BankData = (typeof bankDataSmall)[number];
 

@@ -1,4 +1,11 @@
-import type { RowAggregated, RowLeaf, RowSelectionState, RowSource } from "@1771technologies/lytenyte-shared";
+import type {
+  DimensionSort,
+  RowAggregated,
+  RowLeaf,
+  RowSelectionState,
+  RowSource,
+  SortFn,
+} from "@1771technologies/lytenyte-shared";
 import { useTree } from "./source/use-tree.js";
 import { useMemo } from "react";
 import { useRowById } from "./source/use-row-by-id.js";
@@ -16,6 +23,7 @@ import {
   useRowSelection,
   useRowSelectionState,
   useRowsSelected,
+  useSortFn,
 } from "@1771technologies/lytenyte-core-experimental/internal";
 import { useRowParents } from "./source/use-row-parents.js";
 import { useRowLeafs } from "./source/use-row-leafs.js";
@@ -27,11 +35,14 @@ export interface UseTreeDataSourceParams<T = unknown> {
   readonly data: Record<string, unknown>;
   readonly idFn?: (path: string[], data: any) => string;
 
-  readonly rowValueFn?: (x: object) => any;
-  readonly rowChildrenFn?: (x: object) => [key: string, child: object][];
+  readonly rowValueFn?: (x: object, parent: object, key: string) => any;
+  readonly rowChildrenFn?: (x: object, parent: object, key: string) => [key: string, child: object][];
 
   readonly rowGroupExpansions?: { [rowId: string]: boolean | undefined };
   readonly rowGroupDefaultExpansion?: boolean | number;
+
+  readonly sort?: SortFn<T> | DimensionSort<T>[] | null;
+  readonly filter?: (data: any) => boolean;
 
   readonly rowsIsolatedSelection?: boolean;
   readonly rowSelectKey?: unknown[];
@@ -44,9 +55,18 @@ export type RowSourceTree = RowSource;
 
 const emptyKey: any[] = [];
 export function UseTreeDataSource<T>(p: UseTreeDataSourceParams<T>): RowSource {
-  const tree = useTree(p);
+  const sortFn = useSortFn(p.sort);
   const state = useControlledState(p);
-  const flat = useFlattened(tree, state.expandedFn, p.topData, p.botData, p.rowSelectionIdUniverseAdditions);
+
+  const tree = useTree(p);
+  const flat = useFlattened(
+    tree,
+    state.expandedFn,
+    p.topData,
+    p.botData,
+    p.rowSelectionIdUniverseAdditions,
+    sortFn,
+  );
 
   const top$ = usePiece(flat.topCount);
   const bot$ = usePiece(flat.botCount);

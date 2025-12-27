@@ -16,12 +16,13 @@ const rowChildrenFnDefault = (x: object) => {
   return Object.entries(x).filter((x) => isObject(x[1]));
 };
 
-export function useTree({
+export function useTree<T>({
   data,
+  filter,
   idFn = defaultIdFn,
   rowValueFn = rowValueFnDefault,
   rowChildrenFn = rowChildrenFnDefault,
-}: UseTreeDataSourceParams) {
+}: UseTreeDataSourceParams<T>) {
   const rowTree = useMemo(() => {
     const root: TreeRoot = {
       kind: "root",
@@ -29,9 +30,11 @@ export function useTree({
       rowIdToNode: new Map(),
     };
 
-    const groupKeys = (parent: TreeRoot | TreeParent, path: string[], row: any) => {
-      const value = rowValueFn(row);
-      const entries = rowChildrenFn(row);
+    const groupKeys = (parent: TreeRoot | TreeParent, path: string[], row: any, parentObj: object) => {
+      const value = rowValueFn(row, parentObj, path.at(-1)!);
+      const entries = rowChildrenFn(row, parentObj, path.at(-1)!);
+
+      if (filter && !filter(value)) return;
 
       const expandable = entries.some((x) => isObject(x[1]));
       const node: TreeParent = {
@@ -46,23 +49,23 @@ export function useTree({
           expanded: false,
           key: path.at(-1)!,
           last: !expandable,
-          id: idFn(path, row),
+          id: idFn(path, value),
           data: value,
         },
       };
       parent.children.set(path.at(-1)!, node);
       root.rowIdToNode.set(node.row.id, node);
 
-      entries.forEach((x) => groupKeys(node, [...path, x[0]], x[1]));
+      entries.forEach((x) => groupKeys(node, [...path, x[0]], x[1], row));
     };
 
     const rootRows = Object.entries(data);
     for (const [path, row] of rootRows) {
-      groupKeys(root, [path], row);
+      groupKeys(root, [path], row, data);
     }
 
     return root;
-  }, [data, idFn, rowChildrenFn, rowValueFn]);
+  }, [data, filter, idFn, rowChildrenFn, rowValueFn]);
 
   return rowTree;
 }

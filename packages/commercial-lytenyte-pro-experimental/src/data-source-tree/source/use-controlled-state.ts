@@ -2,10 +2,10 @@ import { useControlled } from "@1771technologies/lytenyte-core-experimental/inte
 import type { UseTreeDataSourceParams } from "../use-tree-data-source";
 import { useCallback } from "react";
 
-export function useControlledState({
+export function useControlledState<T>({
   rowGroupDefaultExpansion = false,
   rowGroupExpansions,
-}: UseTreeDataSourceParams) {
+}: UseTreeDataSourceParams<T>) {
   const [expansions, setExpansions] = useControlled({
     controlled: rowGroupExpansions,
     default: {},

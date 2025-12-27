@@ -1,6 +1,13 @@
 import { useMemo } from "react";
 import type { TreeRoot } from "../types";
-import type { RowAggregated, RowGroup, RowLeaf, RowNode, Writable } from "@1771technologies/lytenyte-shared";
+import type {
+  RowAggregated,
+  RowGroup,
+  RowLeaf,
+  RowNode,
+  SortFn,
+  Writable,
+} from "@1771technologies/lytenyte-shared";
 
 const empty: any[] = [];
 export function useFlattened<T>(
@@ -9,9 +16,13 @@ export function useFlattened<T>(
   top: (RowLeaf<T> | RowAggregated)[] = empty,
   bot: (RowLeaf<T> | RowAggregated)[] = empty,
   idUniverseAdditions: Set<string> | null | undefined,
+  sort: SortFn<T> | null | undefined,
 ) {
   const flat = useMemo(() => {
     const stack = [...tree.children.values()];
+
+    if (sort) stack.sort((l, r) => sort(l.row, r.row));
+
     const indexToRow = new Map<number, RowNode<T>>();
     const idToIndex = new Map<string, number>();
 
@@ -34,7 +45,10 @@ export function useFlattened<T>(
 
       if (node.kind === "parent" && expandFn(node.row.id, node.row.depth) && node.row.expandable) {
         (node.row as Writable<RowGroup>).expanded = true;
-        stack.unshift(...node.children.values());
+        const children = [...node.children.values()];
+        if (sort) children.sort((l, r) => sort(l.row, r.row));
+
+        stack.unshift(...children);
       } else if (node.kind === "parent") {
         (node.row as Writable<RowGroup>).expanded = false;
       }
@@ -55,7 +69,7 @@ export function useFlattened<T>(
       botCount: bot.length,
       maxDepth,
     };
-  }, [bot, expandFn, top, tree.children]);
+  }, [bot, expandFn, sort, top, tree.children]);
 
   return useMemo(() => {
     const initialSet = new Set(tree.rowIdToNode.keys());

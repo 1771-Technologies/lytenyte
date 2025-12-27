@@ -19,15 +19,19 @@ const columns: Grid.Column[] = [
 ];
 export default function Experimental() {
   const ds = UseTreeDataSource({
+    filter: (v) => v.x > 1,
     data: {
       one: { x: 12 },
       two: {
-        x: 12,
+        x: 11,
         fire: {
           x: 11,
         },
         axel: {
           x: 12,
+          cooked: {
+            x: 12,
+          },
           timer: {
             x: 1,
             fly: {
