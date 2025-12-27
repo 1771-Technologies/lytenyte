@@ -10,13 +10,14 @@ import "../../main.css";
 import { useRef, useState } from "react";
 import { RowGroupCell } from "../components/row-group-cell.js";
 import type { SalaryData } from "./basic-server-data/data";
-import { useServerDataSource } from "../data-source-server/use-server-data-source.js";
+import { useServerDataSource, type RowSourceServer } from "../data-source-server/use-server-data-source.js";
 import { Server } from "./basic-server-data/server.js";
 import { SelectAll } from "../components/select-all.js";
 import { Grid } from "../index.js";
 
 interface Spec extends Grid.GridSpec {
   data: SalaryData;
+  source: RowSourceServer<SalaryData>;
 }
 
 const columns: Grid.Column<Spec>[] = [
@@ -48,7 +49,7 @@ const columns: Grid.Column<Spec>[] = [
   { id: "Salary", type: "number", width: 160, widthFlex: 1 },
 ];
 export default function Experimental() {
-  const ds = useServerDataSource({
+  const ds = useServerDataSource<SalaryData>({
     queryFn: async ({ requests }) => {
       return Server(requests, ["Education Level", "Age"]);
     },
