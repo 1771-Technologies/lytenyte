@@ -1,6 +1,6 @@
 import type { RowLeaf, RowSource } from "@1771technologies/lytenyte-shared";
 import type { RowSourceClient, UseClientDataSourceParams } from "../data-source/use-client-data-source.js";
-import { useEvent } from "../internal.js";
+import { useEvent } from "../hooks/use-event.js";
 
 export function useRowDelete<T>(props: UseClientDataSourceParams<T>, rowById: RowSource<T>["rowById"]) {
   const rowDelete: RowSourceClient<T>["rowDelete"] = useEvent((rows) => {

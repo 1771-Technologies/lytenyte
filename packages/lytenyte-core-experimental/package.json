@@ -48,6 +48,7 @@
         "import": "./dist/index.js",
         "require": "./dist/index.js"
       },
+      "./grid.css": "./main.css",
       "./types": "./dist/types/index.d.ts",
       "./internal": {
         "types": "./dist/internal.d.ts",

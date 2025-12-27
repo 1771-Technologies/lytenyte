@@ -1,4 +1,3 @@
-import { useEvent, type Signal } from "@1771technologies/lytenyte-core-experimental/internal";
 import { exemptUpwards } from "./exempt-upwards.js";
 import { handleIsolatedSelect } from "./handle-isolated-select.js";
 import { collapseUpwards } from "./collapse-upward.js";
@@ -9,6 +8,8 @@ import {
   type RowSource,
 } from "@1771technologies/lytenyte-shared";
 import type { SourceRowSelection } from "./use-row-selection";
+import type { Signal } from "../../signal/signal.js";
+import { useEvent } from "../../hooks/use-event.js";
 
 export function useOnRowsSelected<T>(
   s: SourceRowSelection,

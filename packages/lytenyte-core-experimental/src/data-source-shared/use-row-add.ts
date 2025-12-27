@@ -1,5 +1,5 @@
 import type { RowSourceClient, UseClientDataSourceParams } from "../data-source/use-client-data-source";
-import { useEvent } from "../internal.js";
+import { useEvent } from "../hooks/use-event.js";
 
 export function useRowAdd<T>(props: UseClientDataSourceParams<T>) {
   const rowAdd: RowSourceClient<T>["rowAdd"] = useEvent((rows, index) => {
