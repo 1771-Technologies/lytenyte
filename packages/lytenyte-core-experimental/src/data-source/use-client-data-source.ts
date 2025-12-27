@@ -13,7 +13,9 @@ import type {
   DimensionAgg,
   Aggregator,
   RowSelectionState,
+  RowLeaf,
 } from "@1771technologies/lytenyte-shared";
+import { useRowAdd } from "../data-source-shared/use-row-add.js";
 import { usePiece } from "../hooks/use-piece.js";
 import { useFlattenedPiece } from "./hooks/use-flattened-piece.js";
 import { useLeafNodes } from "../data-source-shared/use-leaf-nodes.js";
@@ -43,11 +45,19 @@ import {
 } from "../internal.js";
 import { useRowSelectSplitLookup } from "../data-source-shared/row-selection/use-rows-selected.js";
 import { useIdUniverse } from "../data-source-shared/use-id-universe.js";
+import { useRows } from "../data-source-shared/use-rows.js";
+import { useRowDelete } from "../data-source-shared/use-row-delete.js";
+
+export interface RowSourceClient<T> extends RowSource<T> {
+  readonly rowUpdate: (rows: Map<RowNode<T>, T>) => void;
+  readonly rowDelete: (rows: RowNode<T>[]) => void;
+  readonly rowAdd: (rows: T[], placement?: "start" | "end" | number) => void;
+}
 
 export interface UseClientDataSourceParams<T = unknown> {
   readonly data: T[];
   readonly topData?: T[];
-  readonly botData?: T[];
+  readonly bottomData?: T[];
 
   readonly rowGroupExpansions?: { [rowId: string]: boolean | undefined };
   readonly rowGroupDefaultExpansion?: boolean | number;
@@ -67,6 +77,20 @@ export interface UseClientDataSourceParams<T = unknown> {
   readonly rowSelectionIdUniverseAdditions?: Set<string>;
   readonly onRowSelectionChange?: (state: RowSelectionState) => void;
 
+  readonly onRowsAdded?: (params: {
+    newData: T[];
+    placement: "start" | "end" | number;
+    top: T[];
+    center: T[];
+    bottom: T[];
+  }) => void;
+  readonly onRowsDeleted?: (params: {
+    rows: RowLeaf<T>[];
+    sourceIndices: number[];
+    top: T[];
+    center: T[];
+    bottom: T[];
+  }) => void;
   readonly onRowDataChange?: (params: {
     readonly rows: Map<RowNode<T>, T>;
     readonly top: Map<number, T>;
@@ -84,7 +108,7 @@ export function useClientDataSource<T>(p: UseClientDataSourceParams<T>): RowSour
 
   const { expandedFn, setExpansions } = useControlledState(p);
 
-  const [leafsTop, leafs, leafsBot, pinMap] = useLeafNodes(p.topData, p.data, p.botData, p.leafIdFn);
+  const [leafsTop, leafs, leafsBot, pinMap] = useLeafNodes(p.topData, p.data, p.bottomData, p.leafIdFn);
   const filtered = useFiltered(leafs, filterFn);
   const [sorted, centerMap] = useSorted(leafs, sortFn, filtered);
 
@@ -162,19 +186,14 @@ export function useClientDataSource<T>(p: UseClientDataSourceParams<T>): RowSour
   const rowLeafs = useRowLeafs(tree);
   const rowChildren = useRowChildren(tree);
 
-  const rows = useMemo<ReturnType<RowSource<T>["useRows"]>>(() => {
-    return {
-      get: (i: number) => flatten[i],
-      size: flatten.length,
-    };
-  }, [flatten]);
+  const rowAdd = useRowAdd(p);
+  const rowDelete = useRowDelete(p, rowById);
+  const rows$ = useRows(flatten);
 
-  const rows$ = usePiece(rows);
-
-  const source = useMemo<RowSource<T>>(() => {
+  const source = useMemo<RowSourceClient<T>>(() => {
     const rowCount$ = (x: RowNode<T>[]) => x.length;
 
-    const source: RowSource<T> = {
+    const source: RowSourceClient<T> = {
       rowInvalidate,
       rowByIndex,
       rowIndexToRowId: (index) => rowByIndexRef.current.get(index)?.id ?? null,
@@ -187,6 +206,9 @@ export function useClientDataSource<T>(p: UseClientDataSourceParams<T>): RowSour
       rowsSelected,
       rowParents,
       rowSelectionState,
+      rowAdd,
+      rowDelete,
+      rowUpdate: onRowsUpdated,
 
       useBottomCount: botPiece.useValue,
       useTopCount: topPiece.useValue,
@@ -209,10 +231,12 @@ export function useClientDataSource<T>(p: UseClientDataSourceParams<T>): RowSour
     onRowsSelected,
     onRowsUpdated,
     piece,
+    rowAdd,
     rowById,
     rowByIndex,
     rowByIndexRef,
     rowChildren,
+    rowDelete,
     rowIdToRowIndexRef,
     rowInvalidate,
     rowIsSelected,

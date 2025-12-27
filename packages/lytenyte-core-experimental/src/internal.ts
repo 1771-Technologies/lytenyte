@@ -42,3 +42,6 @@ export type { LeafNodeTuple } from "./data-source-shared/use-leaf-nodes.js";
 export { useLeafNodes } from "./data-source-shared/use-leaf-nodes.js";
 export { useRowSelectionState } from "./data-source-shared/use-row-selection-state.js";
 export { useIdUniverse } from "./data-source-shared/use-id-universe.js";
+export { useRows } from "./data-source-shared/use-rows.js";
+export { useRowAdd } from "./data-source-shared/use-row-add.js";
+export { useRowDelete } from "./data-source-shared/use-row-delete.js";
