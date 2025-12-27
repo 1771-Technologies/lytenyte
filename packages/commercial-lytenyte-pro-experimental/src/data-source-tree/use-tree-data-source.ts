@@ -2,6 +2,7 @@ import type {
   DimensionSort,
   RowAggregated,
   RowLeaf,
+  RowNode,
   RowSelectionState,
   RowSource,
   SortFn,
@@ -28,6 +29,7 @@ import {
 import { useRowParents } from "./source/use-row-parents.js";
 import { useRowLeafs } from "./source/use-row-leafs.js";
 import { useRowChildren } from "./source/use-row-children.js";
+import { useOnRowsUpdated } from "./source/use-on-rows-updated.js";
 
 export interface UseTreeDataSourceParams<T = unknown> {
   readonly topData?: (RowLeaf<T> | RowAggregated)[];
@@ -48,10 +50,19 @@ export interface UseTreeDataSourceParams<T = unknown> {
   readonly rowSelectKey?: unknown[];
   readonly rowSelection?: RowSelectionState;
   readonly rowSelectionIdUniverseAdditions?: Set<string>;
+
   readonly onRowSelectionChange?: (state: RowSelectionState) => void;
+
+  readonly onRowDataChange?: (params: {
+    readonly changes: { next: object; prev: object; parent: object; key: string }[];
+    readonly top: Map<number, T>;
+    readonly bottom: Map<number, T>;
+  }) => void;
 }
 
-export type RowSourceTree = RowSource;
+export interface RowSourceTree<T> extends RowSource<T> {
+  readonly rowUpdate: (rows: Map<RowNode<T>, T>) => void;
+}
 
 const emptyKey: any[] = [];
 export function UseTreeDataSource<T>(p: UseTreeDataSourceParams<T>): RowSource {
@@ -82,7 +93,7 @@ export function UseTreeDataSource<T>(p: UseTreeDataSourceParams<T>): RowSource {
 
   const idToSpec = useEvent((id: string) => {
     const node = tree.rowIdToNode.get(id);
-    if (!node || node.kind === "leaf") return null;
+    if (!node) return null;
 
     return { size: node.children.size, children: node.children };
   });
@@ -117,8 +128,10 @@ export function UseTreeDataSource<T>(p: UseTreeDataSourceParams<T>): RowSource {
 
   const setExpansions = state.setExpansions;
 
+  const onRowsUpdated = useOnRowsUpdated(tree, p);
+
   const source = useMemo(() => {
-    const s: RowSourceTree = {
+    const s: RowSourceTree<T> = {
       rowByIndex,
       rowById,
       rowInvalidate,
@@ -131,6 +144,7 @@ export function UseTreeDataSource<T>(p: UseTreeDataSourceParams<T>): RowSource {
       rowChildren,
       rowIndexToRowId: (i) => s.rowByIndex(i).get()?.id ?? null,
       rowIdToRowIndex: (id) => rowIdToIndex.get().get(id) ?? null,
+      rowUpdate: onRowsUpdated,
 
       onRowGroupExpansionChange: (delta) => {
         setExpansions((prev) => ({ ...prev, ...delta }));
@@ -144,8 +158,7 @@ export function UseTreeDataSource<T>(p: UseTreeDataSourceParams<T>): RowSource {
       useMaxRowGroupDepth: maxDepth$.useValue,
 
       onRowsSelected,
-
-      onRowsUpdated: () => {},
+      onRowsUpdated,
     };
 
     return s;
@@ -153,6 +166,7 @@ export function UseTreeDataSource<T>(p: UseTreeDataSourceParams<T>): RowSource {
     bot$.useValue,
     maxDepth$.useValue,
     onRowsSelected,
+    onRowsUpdated,
     rowById,
     rowByIndex,
     rowChildren,

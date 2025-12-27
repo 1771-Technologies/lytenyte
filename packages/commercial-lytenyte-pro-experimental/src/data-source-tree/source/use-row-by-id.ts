@@ -3,7 +3,7 @@ import type { TreeRoot } from "../types.js";
 import type { RowSourceTree } from "../use-tree-data-source.js";
 
 export function useRowById(tree: TreeRoot) {
-  const rowById: RowSourceTree["rowById"] = useEvent((id) => {
+  const rowById: RowSourceTree<any>["rowById"] = useEvent((id) => {
     return tree.rowIdToNode.get(id)?.row ?? null;
   });
 

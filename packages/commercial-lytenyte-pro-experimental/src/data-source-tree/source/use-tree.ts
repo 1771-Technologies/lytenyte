@@ -28,6 +28,7 @@ export function useTree<T>({
       kind: "root",
       children: new Map(),
       rowIdToNode: new Map(),
+      data,
     };
 
     const groupKeys = (parent: TreeRoot | TreeParent, path: string[], row: any, parentObj: object) => {
@@ -42,6 +43,8 @@ export function useTree<T>({
         children: new Map(),
         parent,
         path,
+        data: row,
+        key: path.at(-1)!,
         row: {
           kind: "branch",
           depth: path.length - 1,

@@ -3,9 +3,9 @@ import type { TreeRoot } from "../types";
 import type { RowSourceTree } from "../use-tree-data-source";
 
 export function useRowLeafs(tree: TreeRoot) {
-  const rowLeafs: RowSourceTree["rowLeafs"] = useEvent((id) => {
+  const rowLeafs: RowSourceTree<any>["rowLeafs"] = useEvent((id) => {
     const node = tree.rowIdToNode.get(id);
-    if (!node || node.kind === "leaf") return [];
+    if (!node || !node.row.expandable) return [];
 
     const rows: string[] = [];
 
@@ -13,7 +13,7 @@ export function useRowLeafs(tree: TreeRoot) {
     while (stack.length) {
       const next = stack.pop()!;
 
-      if (next.kind === "leaf") rows.push(next.row.id);
+      if (!next.row.expandable) rows.push(next.row.id);
       else {
         stack.push(...next.children.values());
       }
