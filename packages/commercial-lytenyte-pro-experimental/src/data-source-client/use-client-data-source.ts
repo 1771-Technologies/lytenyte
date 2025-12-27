@@ -25,12 +25,15 @@ import {
   useOnRowsSelected,
   useOnRowsUpdated,
   usePiece,
+  useRowAdd,
   useRowById,
   useRowByIndex,
   useRowChildren,
+  useRowDelete,
   useRowIsSelected,
   useRowLeafs,
   useRowParents,
+  useRows,
   useRowsBetween,
   useRowSelection,
   useRowSelectionState,
@@ -63,6 +66,10 @@ export interface RowSourceClient<Spec extends GridSpec = GridSpec> extends RowSo
     readonly onColumnGroupExpansionChange: Props<Spec>["onColumnGroupExpansionChange"];
     readonly onRowGroupExpansionChange: Props<Spec>["onRowGroupExpansionChange"];
   };
+
+  readonly rowUpdate: (rows: Map<RowNode<Spec["data"]>, Spec["data"]>) => void;
+  readonly rowDelete: (rows: RowNode<Spec["data"]>[]) => void;
+  readonly rowAdd: (rows: Spec["data"][], placement?: "start" | "end" | number) => void;
 }
 
 export type LabelFilter = (s: string | null) => boolean;
@@ -200,13 +207,10 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
   const mode$ = usePiece(mode);
 
   const flat = piece.get();
-  const rows = useMemo<ReturnType<RowSourceClient<Spec>["useRows"]>>(() => {
-    return {
-      get: (i: number) => flat[i],
-      size: flat.length,
-    };
-  }, [flat]);
-  const rows$ = usePiece(rows);
+
+  const rowAdd = useRowAdd(props);
+  const rowDelete = useRowDelete(props, rowById);
+  const rows$ = useRows(flat);
 
   const source = useMemo<RowSourceClient<Spec>>(() => {
     const rowCount$ = (x: RowNode<T>[]) => x.length;
@@ -224,6 +228,9 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
       rowsSelected,
       rowParents,
       rowSelectionState,
+      rowAdd,
+      rowDelete,
+      rowUpdate: onRowsUpdated,
 
       useBottomCount: botPiece.useValue,
       useTopCount: topPiece.useValue,
@@ -307,11 +314,13 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
     rowsSelected,
     rowParents,
     rowSelectionState,
+    rowAdd,
+    rowDelete,
+    onRowsUpdated,
     botPiece.useValue,
     topPiece.useValue,
     maxDepthPiece.useValue,
     onRowsSelected,
-    onRowsUpdated,
     f.rowByIndexRef,
     f.rowIdToRowIndexRef,
     piece,
