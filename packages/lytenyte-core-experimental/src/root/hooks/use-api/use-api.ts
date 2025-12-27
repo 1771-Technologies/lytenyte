@@ -37,6 +37,7 @@ import { useProps } from "./api-functions/use-props.js";
 import { useRowIsAggregated } from "./api-functions/use-row-is-aggregated.js";
 import { useRowIsExpandable } from "./api-functions/use-row-is-expandable.js";
 import { useRowIsExpanded } from "./api-functions/use-row-is-expanded.js";
+import { useRowDetailToggle } from "./api-functions/use-row-detail-toggle.js";
 
 export function useApi(
   gridId: string,
@@ -110,6 +111,7 @@ export function useApi(
 
   api.rowDetailHeight = useRowDetailHeight(props, controlled, detailHeightCache);
   api.rowDetailExpanded = useRowDetailExpanded(controlled, source);
+  api.rowDetailToggle = useRowDetailToggle(api, controlled);
   api.rowGroupToggle = useRowGroupToggle(props, source);
   api.useRowDrag = useUseRowDrag(api, gridId);
   api.viewport = useViewport(vp);

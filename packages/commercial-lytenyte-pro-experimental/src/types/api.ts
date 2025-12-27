@@ -59,6 +59,7 @@ export type API<Spec extends GridSpec = GridSpec> = {
 
   readonly rowDetailHeight: (rowId: WithId | string) => number;
   readonly rowDetailExpanded: (rowOrId: RowNode<Spec["data"]> | string | number) => boolean;
+  readonly rowDetailToggle: (rowOrId: string | RowNode<Spec["data"]>, state?: boolean) => void;
 
   readonly rowGroupToggle: (rowOrId: RowNode<Spec["data"]> | string, state?: boolean) => void;
   readonly rowIsLeaf: (row: RowNode<Spec["data"]>) => row is RowLeaf<Spec["data"]>;
