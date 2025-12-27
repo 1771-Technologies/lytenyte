@@ -37,6 +37,7 @@ export function SelectAll<Spec extends GridSpec>({ api, slot }: SelectAllProps &
   const rendered = useSlot({
     slot: slot ?? (
       <input
+        aria-label="Toggle the selection for all the rows in the grid."
         ref={(x) => {
           if (!x) return;
           x.indeterminate = indeterminate;
