@@ -51,15 +51,14 @@ export default function Experimental() {
   const ds = useServerDataSource<SalaryData>({
     rowGroupDefaultExpansion: true,
     queryFn: async ({ requests }) => {
-      return Server(requests, ["Education Level", "Age"]);
+      return Server(requests, []);
     },
     queryKey: [],
     rowUpdateOptimistically: true,
-    onRowDelete: () => {
-      return new Promise((_, rej) => {
-        setTimeout(rej, 2000);
-      });
+    onRowsAdded: async () => {
+      //
     },
+    onRowsDeleted: async () => {},
   });
 
   const [rowGroupColumn, setRowGroupColumn] = useState<Grid.Props<Spec>["rowGroupColumn"]>({
@@ -85,6 +84,13 @@ export default function Experimental() {
           }}
         >
           Select All
+        </button>
+        <button
+          onClick={() =>
+            ref.current?.rowAdd([{ id: crypto.randomUUID(), data: {} as SalaryData, kind: "leaf" }])
+          }
+        >
+          Add Row
         </button>
       </div>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
