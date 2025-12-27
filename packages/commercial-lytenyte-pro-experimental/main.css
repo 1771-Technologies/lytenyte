@@ -37,7 +37,7 @@
 
       &[data-ln-component-group-cell-expandable="false"] {
         /* space 60 for the icon and 8px for the gap. */
-        padding-inline-start: calc(var(--ln-space-40) * var(--ln-row-depth) + var(--ln-space-60) + 8px);
+        padding-inline-start: calc(var(--ln-space-40) * var(--ln-row-depth) + var(--ln-space-60));
       }
 
       &[data-ln-component-group-cell-expanded="true"] [data-ln-component-group-cell-expander="true"] {

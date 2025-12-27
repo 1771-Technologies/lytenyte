@@ -1,10 +1,27 @@
 import { useMemo } from "react";
-import type { TreeLeaf, TreeParent, TreeRoot } from "../types";
+import type { TreeParent, TreeRoot } from "../types";
 import { isObject } from "../utils/is-object.js";
 import type { UseTreeDataSourceParams } from "../use-tree-data-source";
 
 const defaultIdFn = (path: string[]) => path.join("-->");
-export function useTree({ data, idFn = defaultIdFn }: UseTreeDataSourceParams) {
+
+const rowValueFnDefault = (x: object) => {
+  if (!isObject(x)) return null;
+  const entries = Object.entries(x).filter((v) => !isObject(v[1]));
+  return Object.fromEntries(entries);
+};
+
+const rowChildrenFnDefault = (x: object) => {
+  if (!isObject(x)) return [];
+  return Object.entries(x).filter((x) => isObject(x[1]));
+};
+
+export function useTree({
+  data,
+  idFn = defaultIdFn,
+  rowValueFn = rowValueFnDefault,
+  rowChildrenFn = rowChildrenFnDefault,
+}: UseTreeDataSourceParams) {
   const rowTree = useMemo(() => {
     const root: TreeRoot = {
       kind: "root",
@@ -13,44 +30,30 @@ export function useTree({ data, idFn = defaultIdFn }: UseTreeDataSourceParams) {
     };
 
     const groupKeys = (parent: TreeRoot | TreeParent, path: string[], row: any) => {
-      // This will form a group node
-      if (isObject(row)) {
-        const entries = Object.entries(row);
+      const value = rowValueFn(row);
+      const entries = rowChildrenFn(row);
 
-        const node: TreeParent = {
-          kind: "parent",
-          children: new Map(),
-          parent,
-          path,
-          row: {
-            kind: "branch",
-            depth: path.length - 1,
-            expandable: entries.length > 0,
-            expanded: false,
-            key: path.at(-1)!,
-            last: entries.every((x) => !isObject(x[1])),
-            id: idFn(path, row),
-            data: row,
-          },
-        };
-        parent.children.set(path.at(-1)!, node);
-        root.rowIdToNode.set(node.row.id, node);
+      const expandable = entries.some((x) => isObject(x[1]));
+      const node: TreeParent = {
+        kind: "parent",
+        children: new Map(),
+        parent,
+        path,
+        row: {
+          kind: "branch",
+          depth: path.length - 1,
+          expandable,
+          expanded: false,
+          key: path.at(-1)!,
+          last: !expandable,
+          id: idFn(path, row),
+          data: value,
+        },
+      };
+      parent.children.set(path.at(-1)!, node);
+      root.rowIdToNode.set(node.row.id, node);
 
-        entries.forEach((entry) => groupKeys(node, [...path, entry[0]], entry[1]));
-      } else {
-        const node: TreeLeaf = {
-          kind: "leaf",
-          parent,
-          path,
-          row: {
-            id: idFn(path, row),
-            data: row,
-            kind: "leaf",
-          },
-        };
-        parent.children.set(path.at(-1)!, node);
-        root.rowIdToNode.set(node.row.id, node);
-      }
+      entries.forEach((x) => groupKeys(node, [...path, x[0]], x[1]));
     };
 
     const rootRows = Object.entries(data);
@@ -59,7 +62,7 @@ export function useTree({ data, idFn = defaultIdFn }: UseTreeDataSourceParams) {
     }
 
     return root;
-  }, [data, idFn]);
+  }, [data, idFn, rowChildrenFn, rowValueFn]);
 
   return rowTree;
 }

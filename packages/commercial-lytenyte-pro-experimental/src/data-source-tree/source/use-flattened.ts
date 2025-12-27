@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import type { TreeRoot } from "../types";
-import type { RowAggregated, RowLeaf, RowNode } from "@1771technologies/lytenyte-shared";
+import type { RowAggregated, RowGroup, RowLeaf, RowNode, Writable } from "@1771technologies/lytenyte-shared";
 
 const empty: any[] = [];
 export function useFlattened<T>(
@@ -32,8 +32,11 @@ export function useFlattened<T>(
 
       if (node.kind === "parent") maxDepth = Math.max(maxDepth, node.row.depth + 1);
 
-      if (node.kind === "parent" && expandFn(node.row.id, node.row.depth)) {
+      if (node.kind === "parent" && expandFn(node.row.id, node.row.depth) && node.row.expandable) {
+        (node.row as Writable<RowGroup>).expanded = true;
         stack.unshift(...node.children.values());
+      } else if (node.kind === "parent") {
+        (node.row as Writable<RowGroup>).expanded = false;
       }
     }
 

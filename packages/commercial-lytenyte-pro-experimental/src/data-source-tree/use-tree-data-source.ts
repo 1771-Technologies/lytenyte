@@ -27,6 +27,9 @@ export interface UseTreeDataSourceParams<T = unknown> {
   readonly data: Record<string, unknown>;
   readonly idFn?: (path: string[], data: any) => string;
 
+  readonly rowValueFn?: (x: object) => any;
+  readonly rowChildrenFn?: (x: object) => [key: string, child: object][];
+
   readonly rowGroupExpansions?: { [rowId: string]: boolean | undefined };
   readonly rowGroupDefaultExpansion?: boolean | number;
 
@@ -109,7 +112,9 @@ export function UseTreeDataSource<T>(p: UseTreeDataSourceParams<T>): RowSource {
       rowIndexToRowId: (i) => s.rowByIndex(i).get()?.id ?? null,
       rowIdToRowIndex: (id) => rowIdToIndex.get().get(id) ?? null,
 
-      onRowGroupExpansionChange: (delta) => setExpansions((prev) => ({ ...prev, ...delta })),
+      onRowGroupExpansionChange: (delta) => {
+        setExpansions((prev) => ({ ...prev, ...delta }));
+      },
       onViewChange: () => {},
 
       useBottomCount: bot$.useValue,
