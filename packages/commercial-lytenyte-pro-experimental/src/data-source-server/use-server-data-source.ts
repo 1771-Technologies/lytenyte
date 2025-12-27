@@ -11,7 +11,7 @@ import {
   useGlobalRefresh,
   useRowSelectionState,
 } from "@1771technologies/lytenyte-core-experimental/internal";
-import { type RowSelectionState, type RowSource } from "@1771technologies/lytenyte-shared";
+import { type RowGroup, type RowSelectionState, type RowSource } from "@1771technologies/lytenyte-shared";
 import { useRowByIndex } from "./source/use-row-by-index.js";
 import { useRowIndexToRowId } from "./source/use-row-index-to-row-id.js";
 import { useRowIdToRowIndex } from "./source/use-row-id-to-row-index.js";
@@ -28,6 +28,15 @@ export interface RowSourceServer<T> extends RowSource<T> {
   readonly isLoading: Piece<boolean>;
   readonly loadingError: Piece<unknown>;
   readonly requestsForView: Piece<DataRequest[]>;
+
+  readonly seenRequests: Set<string>;
+  readonly retry: () => void;
+  readonly requestForGroup: (row: RowGroup | number) => DataRequest | null;
+  readonly requestForNextSlice: (currentRequest: DataRequest) => DataRequest | null;
+  readonly refresh: (onSuccess?: () => void, onError?: (e: unknown) => void) => void;
+  readonly pushResponses: (req: (DataResponse | DataResponsePinned)[]) => void;
+  readonly pushRequests: (req: DataRequest[], onSuccess?: () => void, onError?: (e: unknown) => void) => void;
+  readonly reset: () => void;
 }
 
 export interface UseServerDataSourceParams<K extends unknown[]> {
@@ -135,12 +144,37 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
       },
       onRowsSelected,
       onViewChange,
+
+      // TODO
+      onRowsUpdated: () => {},
+
+      // Specific to the server data source
       isLoading: isLoading$,
       loadingError: loadError$,
       requestsForView: requestsForView$,
 
-      // TODO
-      onRowsUpdated: () => {},
+      pushRequests: (requests) => source.handleRequests(requests),
+      pushResponses: source.handleResponses,
+      retry: () => {
+        source.retry();
+        rowSource.rowInvalidate();
+      },
+      refresh: (onSuccess, onError) => {
+        const requests = requestsForView$.get();
+        rowSource.pushRequests(requests, onSuccess, onError);
+      },
+      reset: () => source.reset(),
+      requestForGroup: (row) => {
+        const index = typeof row === "number" ? row : source.flat.rowIdToRowIndex.get(row.id);
+        if (index == null) return null;
+
+        return source.requestForGroup(index);
+      },
+      requestForNextSlice: (req) => source.requestForNextSlice(req),
+
+      get seenRequests() {
+        return source.flat?.seenRequests ?? new Set();
+      },
     };
 
     return rowSource;
@@ -167,6 +201,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
     rowsBetween,
     rowsSelected,
     setExpansions,
+    source,
     top$,
   ]);
 
