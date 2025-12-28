@@ -1,0 +1,16 @@
+---
+import { Code } from "astro-expressive-code/components";
+import { parseExpressiveCode } from "./parse-text";
+
+interface Props {
+  readonly lang: string;
+  readonly code: string;
+}
+
+const { lang, code } = Astro.props;
+const parsed = parseExpressiveCode(code);
+
+const shouldDim = parsed.del.length || parsed.ins.length || parsed.mark.length;
+---
+
+<Code lang={lang} {...parsed} class:list={["overflow-hidden max-w-full", shouldDim && "code-dim"]} />

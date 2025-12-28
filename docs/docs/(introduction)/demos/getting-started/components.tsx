@@ -1,5 +1,5 @@
 import type {
-  CellParamsWithIndex,
+  CellRendererParams,
   HeaderParams,
   RowParams,
 } from "@1771technologies/lytenyte-pro-experimental/types";
@@ -9,6 +9,7 @@ import { format } from "date-fns";
 import clsx from "clsx";
 import type { RequestData } from "./data";
 import { PieChart } from "react-minimal-pie-chart";
+import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 
 export function Header({ column }: HeaderParams<GridSpec>) {
   return (
@@ -18,7 +19,22 @@ export function Header({ column }: HeaderParams<GridSpec>) {
   );
 }
 
-export function DateCell({ column, row, api }: CellParamsWithIndex<GridSpec>) {
+export function MarkerCell({ detailExpanded, row, api }: CellRendererParams<GridSpec>) {
+  return (
+    <button
+      className="text-ln-text-dark flex h-full w-[calc(100%-1px)] items-center justify-center pl-2"
+      onClick={() => api.rowDetailToggle(row)}
+    >
+      {detailExpanded ? (
+        <ChevronDownIcon width={20} height={20} />
+      ) : (
+        <ChevronRightIcon width={20} height={20} />
+      )}
+    </button>
+  );
+}
+
+export function DateCell({ column, row, api }: CellRendererParams<GridSpec>) {
   const field = api.columnField(column, row);
 
   const niceDate = useMemo(() => {
@@ -32,7 +48,7 @@ export function DateCell({ column, row, api }: CellParamsWithIndex<GridSpec>) {
   return <div className="text-ln-text flex h-full w-full items-center tabular-nums">{niceDate}</div>;
 }
 
-export function StatusCell({ column, row, api }: CellParamsWithIndex<GridSpec>) {
+export function StatusCell({ column, row, api }: CellRendererParams<GridSpec>) {
   const status = api.columnField(column, row);
 
   // Guard against bad values
@@ -54,7 +70,7 @@ export function StatusCell({ column, row, api }: CellParamsWithIndex<GridSpec>) 
   );
 }
 
-export function MethodCell({ column, row, api }: CellParamsWithIndex<GridSpec>) {
+export function MethodCell({ column, row, api }: CellRendererParams<GridSpec>) {
   const method = api.columnField(column, row);
 
   // Guard against bad values
@@ -76,7 +92,7 @@ export function MethodCell({ column, row, api }: CellParamsWithIndex<GridSpec>) 
   );
 }
 
-export function PathnameCell({ column, row, api }: CellParamsWithIndex<GridSpec>) {
+export function PathnameCell({ column, row, api }: CellRendererParams<GridSpec>) {
   const path = api.columnField(column, row);
 
   if (typeof path !== "string") return null;
@@ -92,7 +108,7 @@ const numberFormatter = new Intl.NumberFormat("en-Us", {
   maximumFractionDigits: 0,
   minimumFractionDigits: 0,
 });
-export function LatencyCell({ column, row, api }: CellParamsWithIndex<GridSpec>) {
+export function LatencyCell({ column, row, api }: CellRendererParams<GridSpec>) {
   const ms = api.columnField(column, row);
   if (typeof ms !== "number") return null;
 
@@ -106,7 +122,7 @@ export function LatencyCell({ column, row, api }: CellParamsWithIndex<GridSpec>)
   );
 }
 
-export function RegionCell({ api, row }: CellParamsWithIndex<GridSpec>) {
+export function RegionCell({ api, row }: CellRendererParams<GridSpec>) {
   // Only render for leaf rows and we have some data
   if (!api.rowIsLeaf(row) || !row.data) return null;
 
@@ -124,7 +140,7 @@ export function RegionCell({ api, row }: CellParamsWithIndex<GridSpec>) {
 }
 
 const colors = ["var(--transfer)", "var(--dns)", "var(--connection)", "var(--ttfb)", "var(--tls)"];
-export function TimingPhaseCell({ api, row }: CellParamsWithIndex<GridSpec>) {
+export function TimingPhaseCell({ api, row }: CellRendererParams<GridSpec>) {
   // Guard against rows that are not leafs or rows that have no data.
   if (!api.rowIsLeaf(row) || !row.data) return;
 

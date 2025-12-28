@@ -31,7 +31,8 @@
     "./shadcn.css": "./src/themes/ln-shadcn.css",
     "./shadcn-vars.css": "./src/themes/ln-shadcn-vars-fallback.css",
     "./term.css": "./src/themes/ln-term.css",
-    "./teal.css": "./src/themes/ln-teal.css"
+    "./teal.css": "./src/themes/ln-teal.css",
+    "./light-dark.css": "./src/themes/light-dark.css"
   },
   "publishConfig": {
     "access": "public"

@@ -1,5 +1,5 @@
 import { TooltipRoot, TooltipProvider, TooltipTrigger, Tooltip } from "../ui/tooltip.js";
-import { parseExpressiveCode } from "./parse-text.js";
+import { parseExpressiveCode } from "../parts/parse-text.js";
 
 export function FrameControls({
   codeSandbox,

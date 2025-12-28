@@ -5,19 +5,17 @@ import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experi
 
 import type { RequestData } from "./data.js";
 import { requestData } from "./data.js";
+//# end
+
 import {
   DateCell,
-  Header,
   LatencyCell,
-  MarkerCell,
   MethodCell,
   PathnameCell,
   RegionCell,
-  RowDetailRenderer,
   StatusCell,
   TimingPhaseCell,
 } from "./components.jsx";
-//# end
 
 export interface GridSpec {
   data: RequestData;
@@ -33,16 +31,6 @@ const columns: Grid.Column<GridSpec>[] = [
   { id: "region", name: "Region", cellRenderer: RegionCell },
 ];
 
-const base: Grid.Props<GridSpec>["columnBase"] = {
-  headerRenderer: Header,
-};
-
-const marker: Grid.Props<GridSpec>["columnMarker"] = {
-  on: true,
-  width: 40,
-  cellRenderer: MarkerCell,
-};
-
 export default function GettingStartedDemo() {
   const ds = useClientDataSource<GridSpec>({
     data: requestData,
@@ -50,13 +38,7 @@ export default function GettingStartedDemo() {
 
   return (
     <div className="ln-grid" style={{ height: 400 }}>
-      <Grid
-        columnBase={base}
-        columns={columns}
-        rowSource={ds}
-        rowDetailRenderer={RowDetailRenderer}
-        columnMarker={marker}
-      />
+      <Grid columns={columns} rowSource={ds} />
     </div>
   );
 }
