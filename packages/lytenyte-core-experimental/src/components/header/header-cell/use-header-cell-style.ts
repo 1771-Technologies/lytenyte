@@ -24,7 +24,10 @@ export function useHeaderCellStyle(
       styles.zIndex = 11;
     } else if (cell.colPin === "end") {
       styles.position = "sticky";
-      const x = xPositions.at(-1)! - sizeFromCoord(cell.colStart, xPositions, cell.colSpan) - xPositions[cell.colStart];
+      const x =
+        xPositions.at(-1)! -
+        sizeFromCoord(cell.colStart, xPositions, cell.colSpan) -
+        xPositions[cell.colStart];
       styles.gridColumnStart = `${cell.colStart + 2}`;
       styles.insetInlineEnd = `${x}px`;
       styles.zIndex = 11;

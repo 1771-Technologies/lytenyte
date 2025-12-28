@@ -3,11 +3,7 @@ import type { RowFullWidthRowLayout, RowNode, RowNormalRowLayout } from "../+typ
 import { useGridRoot } from "../context.js";
 import { useEffect, useState } from "react";
 
-export function RowDetailRow<T>({
-  layout,
-}: {
-  layout: RowNormalRowLayout<T> | RowFullWidthRowLayout<T>;
-}) {
+export function RowDetailRow<T>({ layout }: { layout: RowNormalRowLayout<T> | RowFullWidthRowLayout<T> }) {
   const cx = useGridRoot();
   const row = layout.row.useValue();
   if (!row || !cx.grid.api.rowDetailIsExpanded(row)) return null;

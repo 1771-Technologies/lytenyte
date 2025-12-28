@@ -16,7 +16,9 @@ function CellSpacerCenterBase({ rowMeta, xPositions, visibleStartCount }: CellSp
 
   if (visibleStartCount > 0) return null;
 
-  const colOffset = rowMeta.layout.cells.findIndex((c) => c.colIndex + c.colSpan - 1 >= start && !c.isDeadCol);
+  const colOffset = rowMeta.layout.cells.findIndex(
+    (c) => c.colIndex + c.colSpan - 1 >= start && !c.isDeadCol,
+  );
   const offset = xPositions[colOffset - colStartEnd];
 
   return <div style={{ display: "inline-block", width: offset, height: 0 }} />;

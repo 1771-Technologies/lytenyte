@@ -15,9 +15,7 @@ export function CellSpacePinStart({ xPositions: x }: { xPositions: Uint32Array }
   );
   const offset = x[colOffset] - x[bounds.colStartEnd];
 
-  return (
-    <div style={{ display: "inline-block", width: Number.isNaN(offset) ? 0 : offset, height: 0 }} />
-  );
+  return <div style={{ display: "inline-block", width: Number.isNaN(offset) ? 0 : offset, height: 0 }} />;
 }
 
 export function CellSpacerPinEnd({ xPositions: x }: { xPositions: Uint32Array }) {
@@ -46,9 +44,7 @@ export function CellSpacerNoPin({ xPositions: x }: { xPositions: Uint32Array }) 
   const meta = ctx.state.columnMeta.useValue();
   if (meta.columnVisibleStartCount > 0 || layout.kind === "full-width") return null;
 
-  const colOffset = layout.cells.findIndex(
-    (c) => c.colIndex + c.colSpan - 1 >= colBounds[0] && !c.isDeadCol,
-  );
+  const colOffset = layout.cells.findIndex((c) => c.colIndex + c.colSpan - 1 >= colBounds[0] && !c.isDeadCol);
   const offset = x[colOffset - bounds.colStartEnd];
 
   return <div style={{ display: "inline-block", width: offset, height: 0 }} />;

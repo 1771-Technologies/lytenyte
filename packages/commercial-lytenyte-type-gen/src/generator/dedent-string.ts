@@ -18,10 +18,7 @@ export function dedentString(input: string, spacesPerTab: number = 2): string {
   const leadingSpacesCount = firstNonEmptyLine.match(/^ */)?.[0].length || 0;
 
   // Step 4: If the first line has 0 leading spaces and the second line also has 0, return the original string
-  if (
-    leadingSpacesCount === 0 &&
-    lines[firstNonEmptyLineIndex + 1]?.match(/^ */)?.[0].length === 0
-  ) {
+  if (leadingSpacesCount === 0 && lines[firstNonEmptyLineIndex + 1]?.match(/^ */)?.[0].length === 0) {
     return convertedInput;
   }
 

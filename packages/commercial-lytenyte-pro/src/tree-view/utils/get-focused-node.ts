@@ -4,11 +4,7 @@ export function getFocusedNode() {
   if (!document.activeElement) return null;
 
   let current: Element | null = document.activeElement;
-  while (
-    current &&
-    !isLastTraversableNode(current) &&
-    current.getAttribute("data-ln-tree-node") !== "true"
-  ) {
+  while (current && !isLastTraversableNode(current) && current.getAttribute("data-ln-tree-node") !== "true") {
     current = current.parentElement;
   }
 

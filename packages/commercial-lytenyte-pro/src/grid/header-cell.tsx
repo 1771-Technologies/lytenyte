@@ -1,9 +1,6 @@
 import { type CSSProperties, type JSX, type ReactNode } from "react";
 import type { HeaderCellFloating, HeaderCellLayout } from "../+types";
-import {
-  HeaderCell as HeaderCellCore,
-  type SlotComponent,
-} from "@1771technologies/lytenyte-core/yinternal";
+import { HeaderCell as HeaderCellCore, type SlotComponent } from "@1771technologies/lytenyte-core/yinternal";
 
 export interface HeaderCellProps<T> {
   readonly cell: HeaderCellLayout<T> | HeaderCellFloating<T>;

@@ -2,9 +2,7 @@ import { useCallback } from "react";
 
 type PossibleRef<T> = React.RefCallback<T> | React.RefObject<T> | null;
 
-export function useCombinedRefs<T>(
-  ...refs: (PossibleRef<T | null> | undefined)[]
-): React.RefCallback<T> {
+export function useCombinedRefs<T>(...refs: (PossibleRef<T | null> | undefined)[]): React.RefCallback<T> {
   // Memoize the combined ref callback to maintain referential equality
   const combinedRef = useCallback(
     (element: T | null) => {

@@ -148,13 +148,7 @@ function EditRenderer<T>({ cell }: CellEditorParams<T>) {
     if (type === "date")
       return <input type="date" value={value ?? ""} onChange={(e) => onChange(e.target.value)} />;
     if (type === "datetime")
-      return (
-        <input
-          type="datetime-local"
-          value={value ?? ""}
-          onChange={(e) => onChange(e.target.value)}
-        />
-      );
+      return <input type="datetime-local" value={value ?? ""} onChange={(e) => onChange(e.target.value)} />;
 
     return <input value={value ?? ""} onChange={(e) => onChange(e.target.value)} />;
   }

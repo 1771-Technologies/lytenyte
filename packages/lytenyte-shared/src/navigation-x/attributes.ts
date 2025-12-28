@@ -8,20 +8,16 @@ export const getRow = (el: HTMLElement): string | null => el.getAttribute("data-
 
 export const getRowIndex = (el: HTMLElement): string | null => el.getAttribute("data-ln-rowindex");
 
-export const getRowDetail = (el: HTMLElement): string | null =>
-  el.getAttribute("data-ln-row-detail");
+export const getRowDetail = (el: HTMLElement): string | null => el.getAttribute("data-ln-row-detail");
 
-export const getHeaderCell = (el: HTMLElement): string | null =>
-  el.getAttribute("data-ln-header-cell");
+export const getHeaderCell = (el: HTMLElement): string | null => el.getAttribute("data-ln-header-cell");
 
 export const getHeaderFloating = (el: HTMLElement): string | null =>
   el.getAttribute("data-ln-header-floating");
 
-export const getHeaderRange = (el: HTMLElement): string | null =>
-  el.getAttribute("data-ln-header-range");
+export const getHeaderRange = (el: HTMLElement): string | null => el.getAttribute("data-ln-header-range");
 
-export const getHeaderGroup = (el: HTMLElement): string | null =>
-  el.getAttribute("data-ln-header-group");
+export const getHeaderGroup = (el: HTMLElement): string | null => el.getAttribute("data-ln-header-group");
 
 export const getColSpan = (el: HTMLElement): string | null => el.getAttribute("data-ln-colspan");
 
@@ -33,8 +29,7 @@ export const getColPin = (el: HTMLElement): string | null => el.getAttribute("da
 
 export const getRowPin = (el: HTMLElement): string | null => el.getAttribute("data-ln-rowpin");
 
-export const getHeaderRow = (el: HTMLElement): string | null =>
-  el.getAttribute("data-ln-header-row");
+export const getHeaderRow = (el: HTMLElement): string | null => el.getAttribute("data-ln-header-row");
 
 export const getHeader = (el: HTMLElement): string | null => el.getAttribute("data-ln-header");
 

@@ -9,13 +9,7 @@ interface GetHashArguments {
   licenseType: "seated" | "company-wide";
 }
 
-export function getHash({
-  companyName,
-  startDate,
-  endDate,
-  licenseType,
-  randomString,
-}: GetHashArguments) {
+export function getHash({ companyName, startDate, endDate, licenseType, randomString }: GetHashArguments) {
   const details = `${startDate} ${endDate} ${companyName} ${licenseType} ${randomString}`;
 
   const hash = new MD5().md5(details + hashSalt);

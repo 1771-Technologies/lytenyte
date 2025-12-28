@@ -66,14 +66,10 @@ export default function CellSelection({ data = bankDataSmall }: { data?: any[] }
         <button onClick={() => g.state.rtl.set((prev) => !prev)}>
           RTL: {g.state.rtl.get() ? "Yes" : "No"}
         </button>
-        <button onClick={() => g.state.columnMarkerEnabled.set((prev) => !prev)}>
-          Toggle Marker
-        </button>
+        <button onClick={() => g.state.columnMarkerEnabled.set((prev) => !prev)}>Toggle Marker</button>
         <button
           onClick={() =>
-            g.state.cellSelectionMode.set((prev) =>
-              prev === "multi-range" ? "range" : "multi-range",
-            )
+            g.state.cellSelectionMode.set((prev) => (prev === "multi-range" ? "range" : "multi-range"))
           }
         >
           Range Selection

@@ -32,13 +32,7 @@ const baseColumns: Column<any>[] = [
   { id: "poutcome", name: "P Outcome" },
   { id: "y" },
 ];
-export default function FullWidthRows({
-  rtl,
-  columns,
-}: {
-  rtl?: boolean;
-  columns?: Column<any>[];
-}) {
+export default function FullWidthRows({ rtl, columns }: { rtl?: boolean; columns?: Column<any>[] }) {
   const ds = useClientRowDataSource({
     data: bankDataSmall,
   });

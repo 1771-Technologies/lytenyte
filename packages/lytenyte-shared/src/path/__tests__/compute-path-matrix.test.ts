@@ -88,13 +88,7 @@ describe("computePathMatrix", () => {
   });
 
   test("handles the case where there are no group paths", () => {
-    const table = computePathMatrix([
-      { id: "x" },
-      { id: "y" },
-      { id: "z" },
-      { id: "f" },
-      { id: "g" },
-    ]);
+    const table = computePathMatrix([{ id: "x" }, { id: "y" }, { id: "z" }, { id: "f" }, { id: "g" }]);
 
     const t = new Table();
     table.forEach((row) => t.push(mapRowsToStrings(row)));
@@ -212,13 +206,7 @@ describe("computePathMatrix", () => {
   });
 
   test("should handle the case where there are no groups", () => {
-    const table = computePathMatrix([
-      { id: "x" },
-      { id: "y" },
-      { id: "z" },
-      { id: "d" },
-      { id: "v" },
-    ]);
+    const table = computePathMatrix([{ id: "x" }, { id: "y" }, { id: "z" }, { id: "d" }, { id: "v" }]);
 
     const t = new Table();
     table.forEach((row) => t.push(mapRowsToStrings(row)));

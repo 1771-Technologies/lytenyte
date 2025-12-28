@@ -1,11 +1,4 @@
-import {
-  computed,
-  effect,
-  makeAtom,
-  signal,
-  useSignalValue,
-  type AtomReadonly,
-} from "../signal/index.js";
+import { computed, effect, makeAtom, signal, useSignalValue, type AtomReadonly } from "../signal/index.js";
 import type { RowDataStore, RowNode } from "../+types";
 
 export interface MakeRowStore<T> {
@@ -18,10 +11,7 @@ export function makeRowStore<T>({ getRow }: MakeRowStore<T>): RowDataStore<T> {
   const bottomCount = signal(0);
   const rowCount = computed(() => rowCenterCount() + topCount() + bottomCount());
 
-  const signalCache = new Map<
-    number,
-    AtomReadonly<RowNode<T> | null> & { __invalidate: () => void }
-  >();
+  const signalCache = new Map<number, AtomReadonly<RowNode<T> | null> & { __invalidate: () => void }>();
 
   const globalSnapshot = signal(Date.now());
 

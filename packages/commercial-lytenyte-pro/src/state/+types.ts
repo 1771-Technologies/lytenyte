@@ -48,9 +48,7 @@ export interface InternalAtoms {
 
   // Dialog & Popover frames
   readonly dialogFrames: GridAtom<Record<string, any>>;
-  readonly popoverFrames: GridAtom<
-    Record<string, { target: HTMLElement | VirtualTarget; context: any }>
-  >;
+  readonly popoverFrames: GridAtom<Record<string, { target: HTMLElement | VirtualTarget; context: any }>>;
 
   // Cell Selection
   readonly cellSelectionPivot: GridAtom<DataRectSplit | null>;

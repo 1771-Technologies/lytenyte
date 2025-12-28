@@ -11,8 +11,7 @@ export const getFocusables = (
   if (!container) return [];
   const elements = Array.from(container.querySelectorAll<HTMLElement>(focusableSelector));
 
-  const include =
-    includeContainer == true || (includeContainer == "if-empty" && elements.length === 0);
+  const include = includeContainer == true || (includeContainer == "if-empty" && elements.length === 0);
   if (include && isHTMLElement(container) && isFocusable(container)) {
     elements.unshift(container);
   }

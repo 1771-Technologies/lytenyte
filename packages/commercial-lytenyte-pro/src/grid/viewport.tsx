@@ -7,12 +7,6 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
     const ctx = useGridRoot();
     const cellSelectionMode = ctx.grid.state.cellSelectionMode.useValue();
 
-    return (
-      <Core
-        {...props}
-        data-ln-has-cell-selection={cellSelectionMode !== "none"}
-        ref={forwarded}
-      ></Core>
-    );
+    return <Core {...props} data-ln-has-cell-selection={cellSelectionMode !== "none"} ref={forwarded}></Core>;
   },
 );

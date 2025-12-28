@@ -19,8 +19,7 @@ export const isHeaderCell = (gridId: string, el: HTMLElement) =>
 export const isFloatingCell = (gridId: string, el: HTMLElement) =>
   getHeaderCell(el) === "true" && getGridId(el) === gridId && getHeaderFloating(el) == "true";
 
-export const isCell = (gridId: string, el: HTMLElement) =>
-  getCell(el) === "true" && getGridId(el) === gridId;
+export const isCell = (gridId: string, el: HTMLElement) => getCell(el) === "true" && getGridId(el) === gridId;
 
 export const isFullWidth = (gridId: string, el: HTMLElement) =>
   getRow(el) === "true" && getRowType(el) === "full-width" && getGridId(el) === gridId;

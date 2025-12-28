@@ -27,9 +27,7 @@ export async function handleRequest(
         `SELECT *, ${groupKey} AS pathKey, count(*) AS childCnt 
         FROM banks GROUP BY ${groupKey}`,
       ).slice(c.start, c.start + limit);
-      const cnt = sql<{ cnt: number }[]>(
-        `SELECT count(*) AS cnt FROM banks GROUP BY ${groupKey}`,
-      ).length;
+      const cnt = sql<{ cnt: number }[]>(`SELECT count(*) AS cnt FROM banks GROUP BY ${groupKey}`).length;
 
       return {
         asOfTime: Date.now(),
@@ -54,9 +52,7 @@ export async function handleRequest(
     for (let i = 0; i < c.path.length; i++) {
       const group = model.groups[i];
       const groupKey = typeof group === "string" ? group : group.id;
-      groupFilter.push(
-        `${groupKey} = ${typeof c.path[i] === "string" ? `'${c.path[i]}'` : c.path[i]}`,
-      );
+      groupFilter.push(`${groupKey} = ${typeof c.path[i] === "string" ? `'${c.path[i]}'` : c.path[i]}`);
     }
 
     const data = sql<any[]>(`

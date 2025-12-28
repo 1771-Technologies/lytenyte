@@ -131,11 +131,7 @@ function updateKeyedMap<Item, MappedItem>(this: KeyedMapData<Item, MappedItem>):
 
       for (j = 0; j < newLen; j++) {
         this._items[j] = newItems[j];
-        this._mappings[j] = compute<MappedItem>(
-          (this._nodes[j] = createComputation(j, null)),
-          mapper,
-          null,
-        );
+        this._mappings[j] = compute<MappedItem>((this._nodes[j] = createComputation(j, null)), mapper, null);
       }
 
       this._len = newLen;

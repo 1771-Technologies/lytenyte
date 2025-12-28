@@ -55,10 +55,7 @@ export default function Component() {
       </div>
       <div></div>
 
-      <div
-        className="lng-grid"
-        style={{ width: "100%", height: "90vh", border: "1px solid black" }}
-      >
+      <div className="lng-grid" style={{ width: "100%", height: "90vh", border: "1px solid black" }}>
         <Root grid={g}>
           <Viewport>
             <Header>

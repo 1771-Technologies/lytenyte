@@ -45,9 +45,7 @@ export function evaluateStringFilter(
     op === "not_length"
   ) {
     const leftLen =
-      typeof v === "string"
-        ? prep(v, caseInsensitive, ignorePunctuation, trimWhitespace, locale).length
-        : v;
+      typeof v === "string" ? prep(v, caseInsensitive, ignorePunctuation, trimWhitespace, locale).length : v;
     const rightLen =
       typeof cv === "string"
         ? prep(cv, caseInsensitive, ignorePunctuation, trimWhitespace, locale).length

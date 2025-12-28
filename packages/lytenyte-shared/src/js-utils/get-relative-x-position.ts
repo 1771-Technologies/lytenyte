@@ -1,7 +1,4 @@
-export function getRelativeXPosition(
-  element: HTMLElement,
-  mouseX: number,
-): { left: number; right: number } {
+export function getRelativeXPosition(element: HTMLElement, mouseX: number): { left: number; right: number } {
   const rect = element.getBoundingClientRect();
   const computedStyled = getComputedStyle(element);
 

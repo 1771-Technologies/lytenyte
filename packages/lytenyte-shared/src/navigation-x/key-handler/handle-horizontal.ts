@@ -113,13 +113,7 @@ export function handleHorizontal({
     }
 
     const elColIndex = Number.parseInt(getColIndex(posElement)!);
-    const nextIndex = isBack
-      ? modified
-        ? 0
-        : elColIndex - 1
-      : modified
-        ? columnCount - 1
-        : elColIndex + 1;
+    const nextIndex = isBack ? (modified ? 0 : elColIndex - 1) : modified ? columnCount - 1 : elColIndex + 1;
 
     if (nextIndex < 0 || nextIndex >= columnCount || nextIndex === elColIndex) return;
 
@@ -151,8 +145,7 @@ export function handleHorizontal({
     // the first cell in the full width row is actually what has the focus. Hence we cycle through the first element child
     // when the position is a full width row.
     // -- cycleInnerHook
-    const element =
-      pos.kind === "detail" ? posElement : (posElement.firstElementChild as HTMLElement);
+    const element = pos.kind === "detail" ? posElement : (posElement.firstElementChild as HTMLElement);
     if (handleInnerItemFocus(element, active, isBack, true)) {
       done();
       cp.set((prev) => ({ ...prev, colIndex: pos.colIndex }) as PositionFullWidthRow);

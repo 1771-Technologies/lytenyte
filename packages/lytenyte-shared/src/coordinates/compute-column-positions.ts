@@ -1,8 +1,4 @@
-import {
-  DEFAULT_COLUMN_WIDTH,
-  DEFAULT_COLUMN_WIDTH_MAX,
-  DEFAULT_COLUMN_WIDTH_MIN,
-} from "../+constants.js";
+import { DEFAULT_COLUMN_WIDTH, DEFAULT_COLUMN_WIDTH_MAX, DEFAULT_COLUMN_WIDTH_MIN } from "../+constants.js";
 import { makeUint32PositionArray } from "./make-uint32-position-array.js";
 import type { ColumnWidthItem } from "../+types.non-gen.js";
 import { clamp } from "../js-utils/index.js";

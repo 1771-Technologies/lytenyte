@@ -4,13 +4,7 @@ import {
   getNearestFocusable,
   GROUP_COLUMN_PREFIX,
 } from "@1771technologies/lytenyte-shared";
-import type {
-  Column,
-  Grid,
-  HeaderCellFloating,
-  HeaderCellLayout,
-  HeaderGroupCellLayout,
-} from "../+types";
+import type { Column, Grid, HeaderCellFloating, HeaderCellLayout, HeaderGroupCellLayout } from "../+types";
 import { useMemo, useRef, type JSX } from "react";
 import type { InternalAtoms } from "../state/+types";
 import { useDraggable, type DragProps } from "../drag-and-drop/index.js";
@@ -85,8 +79,7 @@ export function useDragMove<T>(
       if (index == null) return;
       const columnTarget = grid.api.columnByIndex(index);
       if (columnTarget) {
-        if (columnTarget.id === COLUMN_MARKER_ID || columnTarget.id.startsWith(GROUP_COLUMN_PREFIX))
-          return;
+        if (columnTarget.id === COLUMN_MARKER_ID || columnTarget.id.startsWith(GROUP_COLUMN_PREFIX)) return;
       }
 
       const first = columns[0];

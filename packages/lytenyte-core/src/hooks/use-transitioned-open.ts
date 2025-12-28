@@ -22,8 +22,7 @@ export function useTransitionedOpen({
   const toggle = useCallback(
     (toOpen?: boolean) => {
       const isOpenOrOpening = state === "open" || state === "opening" || state === "open-begin";
-      const isClosedOrClosing =
-        state === "closed" || state === "closing" || state === "close-begin";
+      const isClosedOrClosing = state === "closed" || state === "closing" || state === "close-begin";
 
       const shouldOpen = toOpen === true || isClosedOrClosing;
 

@@ -8,11 +8,7 @@ interface ColumnHandleMarkerArgs<T> {
   readonly markerEnabled: boolean;
 }
 
-export function columnHandleMarker<T>({
-  columns,
-  marker,
-  markerEnabled,
-}: ColumnHandleMarkerArgs<T>) {
+export function columnHandleMarker<T>({ columns, marker, markerEnabled }: ColumnHandleMarkerArgs<T>) {
   const lookup = itemsWithIdToMap(columns);
 
   if (markerEnabled && !lookup.has(COLUMN_MARKER_ID)) {

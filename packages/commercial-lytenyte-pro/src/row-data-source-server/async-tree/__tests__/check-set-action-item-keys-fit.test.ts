@@ -28,10 +28,7 @@ test("checkSetActionItemKeysFit: should return the correct result", () => {
   );
 
   expect(
-    checkSetActionItemKeysFit(
-      { path: [], items: [{ relIndex: 2, kind: "leaf", data: 1 }] },
-      pathNode,
-    ),
+    checkSetActionItemKeysFit({ path: [], items: [{ relIndex: 2, kind: "leaf", data: 1 }] }, pathNode),
   ).toEqual(true);
 
   console.error = err;

@@ -3326,7 +3326,11 @@ export interface SortDateComparatorOptions {
  *
  * @group Sort
  */
-export type SortGridSorts<T> = SortCustomSort<T> | SortDateColumnSort | SortNumberColumnSort | SortStringColumnSort;
+export type SortGridSorts<T> =
+  | SortCustomSort<T>
+  | SortDateColumnSort
+  | SortNumberColumnSort
+  | SortStringColumnSort;
 
 /**
  * A model item representing an active sort applied to the grid.

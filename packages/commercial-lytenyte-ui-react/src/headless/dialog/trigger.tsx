@@ -3,10 +3,7 @@ import { useSlot } from "../../hooks/use-slot/use-slot.js";
 import { useDialogRoot } from "./context.js";
 import type { LnComponent } from "../../types.js";
 
-function DialogTriggerBase(
-  { render, ...props }: DialogTrigger.Props,
-  ref: DialogTrigger.Props["ref"],
-) {
+function DialogTriggerBase({ render, ...props }: DialogTrigger.Props, ref: DialogTrigger.Props["ref"]) {
   const ctx = useDialogRoot();
 
   const internalProps: JSX.IntrinsicElements["button"] & { "data-ln-dialog-open": boolean } = {

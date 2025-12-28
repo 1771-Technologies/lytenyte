@@ -4,10 +4,7 @@ import type { IncludeContainerType } from "./+types.js";
 import { getTabIndex } from "./get-tab-index.js";
 import { isTabbable } from "./is-tabbable.js";
 
-export function getTabbables(
-  container: HTMLElement | null,
-  includeContainer?: IncludeContainerType,
-) {
+export function getTabbables(container: HTMLElement | null, includeContainer?: IncludeContainerType) {
   if (!container) return [];
   const elements = Array.from(container.querySelectorAll<HTMLElement>(focusableSelector));
   const tabbableElements = elements.filter(isTabbable);

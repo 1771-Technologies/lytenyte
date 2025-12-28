@@ -7,6 +7,4 @@ export interface RowProps extends Omit<DropWrapProps, "accepted"> {
   readonly accepted?: string[];
 }
 
-export const Row = RowCore as (
-  props: Omit<JSX.IntrinsicElements["div"], "onDrag"> & RowProps,
-) => ReactNode;
+export const Row = RowCore as (props: Omit<JSX.IntrinsicElements["div"], "onDrag"> & RowProps) => ReactNode;

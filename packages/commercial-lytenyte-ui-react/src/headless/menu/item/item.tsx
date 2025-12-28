@@ -4,10 +4,7 @@ import { useMenuItemEvents } from "./use-menu-item-events.js";
 import { handleVerticalNavigation } from "./handle-vertical-navigation.js";
 import { useDialogRoot } from "../../dialog/context.js";
 
-function ItemImpl(
-  { onAction, closeOnAction, disabled, ...props }: Item.Props,
-  ref: Item.Props["ref"],
-) {
+function ItemImpl({ onAction, closeOnAction, disabled, ...props }: Item.Props, ref: Item.Props["ref"]) {
   const [item, setItem] = useState<HTMLDivElement | null>(null);
 
   const combinedRefs = useCombinedRefs(ref, setItem);

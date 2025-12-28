@@ -44,9 +44,7 @@ export const Leaf = forwardRef<HTMLLIElement, ColumnManagerLeafProps & JSX.Intri
         <DropWrap
           accepted={[accepted]}
           onEnter={(el) => {
-            const data = dragState.data
-              .get()
-              ?.siteLocalData?.[accepted]?.at(-1) as Column<any> | null;
+            const data = dragState.data.get()?.siteLocalData?.[accepted]?.at(-1) as Column<any> | null;
 
             if (!data) return;
 

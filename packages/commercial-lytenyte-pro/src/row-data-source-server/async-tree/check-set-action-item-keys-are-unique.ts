@@ -17,8 +17,7 @@ export function checkSetActionItemKeysAreUnique<K, D>(p: SetDataAction<K, D>) {
       return false;
     }
 
-    const pathId =
-      item.kind === "leaf" ? `${p.path.at(-1) ?? ROOT_LEAF_PREFIX}#${item.relIndex}` : item.path;
+    const pathId = item.kind === "leaf" ? `${p.path.at(-1) ?? ROOT_LEAF_PREFIX}#${item.relIndex}` : item.path;
 
     if (seenPaths.has(pathId)) {
       console.error(invalidItemPathsDupes, p);

@@ -1,11 +1,6 @@
 import { readFile } from "fs/promises";
 import fs from "fs-extra";
-import type {
-  CommentDisplayPart,
-  DeclarationReflection,
-  ReferenceReflection,
-  SomeType,
-} from "typedoc";
+import type { CommentDisplayPart, DeclarationReflection, ReferenceReflection, SomeType } from "typedoc";
 import type { JSONOutput } from "typedoc";
 import { writeFileSync, rmdirSync } from "fs";
 import { renderTypeExpr } from "./mdx-generator.js";
@@ -34,10 +29,7 @@ const rootLinkLookup = Object.fromEntries(
 
     const groupName = groupTag.content[0].text;
 
-    return [
-      c.name,
-      `${rootPath}/${groupName.toLowerCase().replaceAll(" ", "-")}#${c.name}`.toLowerCase(),
-    ];
+    return [c.name, `${rootPath}/${groupName.toLowerCase().replaceAll(" ", "-")}#${c.name}`.toLowerCase()];
   }),
 );
 
@@ -239,8 +231,7 @@ function handleSignatureType(rt: SomeType | undefined): FunctionReturn {
     const obj = handleSignatureType(rt.elementType);
     return { type: `${obj.type}[]`, link: obj.link };
   }
-  if (rt.type === "literal")
-    return { type: `${typeof rt.value === "string" ? `"${rt.value}"` : rt.value}` };
+  if (rt.type === "literal") return { type: `${typeof rt.value === "string" ? `"${rt.value}"` : rt.value}` };
   if (rt.type === "reference") return { type: rt.name, link: rootLinkLookup[rt.name] };
   if (rt.type === "reflection") {
     return { type: getProperties(rt.declaration) as FunctionDeclaration };
@@ -390,10 +381,7 @@ group.forEach((f) => {
   const frontMatter = `---\ntitle: ${f.groupName}\ndescription: The API reference for the ${f.groupName.toLowerCase()} functionality in LyteNyte Grid.\n---`;
 
   fs.ensureFileSync(`../../documentation/content/docs/reference/${f.file}`);
-  writeFileSync(
-    `../../documentation/content/docs/reference/${f.file}`,
-    frontMatter + "\n" + f.content,
-  );
+  writeFileSync(`../../documentation/content/docs/reference/${f.file}`, frontMatter + "\n" + f.content);
 });
 
 const folderMeta = {

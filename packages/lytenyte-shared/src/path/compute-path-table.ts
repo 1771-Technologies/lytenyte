@@ -72,9 +72,7 @@ export function computePathTable<T extends PathProvidedItem>(
   // First compute the path matrix and transpose it
   // Transposition transforms the matrix from column-major to row-major order,
   // making it easier to process row by row
-  const matrix = transposePathMatrix(
-    computePathMatrix(paths, maxDepth, mutableSeenMap, pathDelimiter),
-  );
+  const matrix = transposePathMatrix(computePathMatrix(paths, maxDepth, mutableSeenMap, pathDelimiter));
 
   // Calculate the maximum row span
   // We add 1 because the matrix doesn't include the leaf nodes row,

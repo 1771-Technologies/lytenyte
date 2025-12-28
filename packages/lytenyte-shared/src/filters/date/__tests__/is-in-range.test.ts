@@ -9,11 +9,7 @@ describe("isInRange", () => {
     vi.unstubAllEnvs();
   });
   test("should return the correct result", () => {
-    expect(
-      isInRange(new Date("2025-01-01"), new Date("2024-12-30"), new Date("2025-02-01")),
-    ).toEqual(true);
-    expect(
-      isInRange(new Date("2025-03-01"), new Date("2024-12-30"), new Date("2025-02-01")),
-    ).toEqual(false);
+    expect(isInRange(new Date("2025-01-01"), new Date("2024-12-30"), new Date("2025-02-01"))).toEqual(true);
+    expect(isInRange(new Date("2025-03-01"), new Date("2024-12-30"), new Date("2025-02-01"))).toEqual(false);
   });
 });

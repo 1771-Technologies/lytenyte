@@ -33,14 +33,11 @@ export const Panel = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(
           }
 
           if (ev.key === nextKey) {
-            const items = getTabbables(ref).filter(
-              (c) => c.getAttribute("data-ln-listbox-item") === "true",
-            );
+            const items = getTabbables(ref).filter((c) => c.getAttribute("data-ln-listbox-item") === "true");
             const currentIndex = items.findIndex(
               (c) => c.contains(document.activeElement) || c === document.activeElement,
             );
-            const focusItem =
-              currentIndex === -1 ? items[0] : (items[currentIndex + 1] ?? items[0]);
+            const focusItem = currentIndex === -1 ? items[0] : (items[currentIndex + 1] ?? items[0]);
             if (!focusItem) return;
 
             focusItem.focus();
@@ -48,14 +45,11 @@ export const Panel = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(
             ev.stopPropagation();
           }
           if (ev.key === prevKey) {
-            const items = getTabbables(ref).filter(
-              (c) => c.getAttribute("data-ln-listbox-item") === "true",
-            );
+            const items = getTabbables(ref).filter((c) => c.getAttribute("data-ln-listbox-item") === "true");
             const currentIndex = items.findIndex(
               (c) => c.contains(document.activeElement) || c === document.activeElement,
             );
-            const focusItem =
-              currentIndex === -1 ? items.at(-1) : (items[currentIndex - 1] ?? items.at(-1));
+            const focusItem = currentIndex === -1 ? items.at(-1) : (items[currentIndex - 1] ?? items.at(-1));
             if (!focusItem) return;
 
             focusItem.focus();

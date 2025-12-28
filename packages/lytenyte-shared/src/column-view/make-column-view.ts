@@ -46,7 +46,12 @@ export function makeColumnView({
   const columnsNotHidden = getVisibleColumns(columns, base);
   const groupMetadata = makeColumnGroupMetadata(columnsNotHidden, groupJoinDelimiter);
 
-  const visible = getVisibleColumnsWithGroups(columnsNotHidden, groupMetadata, groupExpansions, groupExpansionDefault);
+  const visible = getVisibleColumnsWithGroups(
+    columnsNotHidden,
+    groupMetadata,
+    groupExpansions,
+    groupExpansionDefault,
+  );
 
   const { start, center, end } = partitionColumnsByPinState(visible);
 

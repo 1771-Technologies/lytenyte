@@ -1,8 +1,6 @@
 import type { PathBranch, PathLeaf, PathProvidedItem } from "@1771technologies/lytenyte-shared";
 
-export function buildVirtualTreePartial<T extends PathProvidedItem>(
-  items: (PathBranch<T> | PathLeaf<T>)[],
-) {
+export function buildVirtualTreePartial<T extends PathProvidedItem>(items: (PathBranch<T> | PathLeaf<T>)[]) {
   const paths = items.map((c) => {
     if (c.kind === "leaf") {
       const parent = c.parent;

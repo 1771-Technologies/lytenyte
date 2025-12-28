@@ -1,10 +1,21 @@
-export type { LayoutHeader, LayoutHeaderCell, LayoutHeaderFloating, LayoutHeaderGroup } from "./make-column-layout.js";
+export type {
+  LayoutHeader,
+  LayoutHeaderCell,
+  LayoutHeaderFloating,
+  LayoutHeaderGroup,
+} from "./make-column-layout.js";
 export { makeColumnLayout } from "./make-column-layout.js";
 
 export type { LayoutState } from "./make-layout-state.js";
 export { makeLayoutState } from "./make-layout-state.js";
 
-export type { LayoutCell, LayoutFullWidthRow, LayoutRow, LayoutRowWithCells, RowView } from "./make-row-layout.js";
+export type {
+  LayoutCell,
+  LayoutFullWidthRow,
+  LayoutRow,
+  LayoutRowWithCells,
+  RowView,
+} from "./make-row-layout.js";
 export { makeRowLayout } from "./make-row-layout.js";
 
 export { updateFull } from "./update-full.js";

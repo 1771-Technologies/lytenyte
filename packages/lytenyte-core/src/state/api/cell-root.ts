@@ -4,9 +4,7 @@ import type { Grid, GridApi } from "../../+types";
 import { getSpanFn } from "../helpers/get-span-callback.js";
 import { getFullWidthCallback } from "../helpers/get-full-width-callback.js";
 
-export const makeCellRoot = (
-  grid: Grid<any> & { internal: InternalAtoms },
-): GridApi<any>["cellRoot"] => {
+export const makeCellRoot = (grid: Grid<any> & { internal: InternalAtoms }): GridApi<any>["cellRoot"] => {
   return (row, column) => {
     const l = grid.internal.layout;
 

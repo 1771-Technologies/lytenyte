@@ -1,10 +1,6 @@
 import type { DragMoveState, DragPosition } from "../+types.js";
 
-export function computeMoveState(
-  dropEl: HTMLElement,
-  dragEl: HTMLElement,
-  pos: DragPosition,
-): DragMoveState {
+export function computeMoveState(dropEl: HTMLElement, dragEl: HTMLElement, pos: DragPosition): DragMoveState {
   const rect = dropEl.getBoundingClientRect();
   const x = pos.x - rect.x;
   const y = pos.y - rect.y;

@@ -65,9 +65,7 @@ export const Main: StoryObj = {
 
     await sleep(100);
 
-    await userEvent.keyboard(
-      "{ArrowDown}{ArrowUp}{Enter}{Enter}{ArrowRight}{ArrowLeft}{End}{Home}",
-    );
+    await userEvent.keyboard("{ArrowDown}{ArrowUp}{Enter}{Enter}{ArrowRight}{ArrowLeft}{End}{Home}");
   },
 };
 
@@ -236,9 +234,7 @@ function VirtualizedView() {
       >
         <ForceSyncScrolling>
           {virtualTree.map((c) => {
-            return (
-              <VirtRenderNode node={c} key={c.kind === "branch" ? c.branch.id : c.leaf.data.id} />
-            );
+            return <VirtRenderNode node={c} key={c.kind === "branch" ? c.branch.id : c.leaf.data.id} />;
           })}
         </ForceSyncScrolling>
         {spacer}

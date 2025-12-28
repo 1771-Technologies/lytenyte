@@ -13,5 +13,4 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-export const isFunction = (value: unknown): value is (...args: any) => any =>
-  typeof value === "function";
+export const isFunction = (value: unknown): value is (...args: any) => any => typeof value === "function";

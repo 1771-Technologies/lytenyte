@@ -29,9 +29,7 @@ function ComboMenuImpl(props: ComboMenu.Props, ref: ComboMenu.Props["ref"]) {
           props.onFocus?.(ev);
           if (ev.isPropagationStopped()) return;
 
-          const input = ev.currentTarget.querySelector(
-            '[data-ln-combomenu-input="true"]',
-          ) as HTMLElement;
+          const input = ev.currentTarget.querySelector('[data-ln-combomenu-input="true"]') as HTMLElement;
           if (input) input.focus();
         }}
       />

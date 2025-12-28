@@ -4,10 +4,7 @@ import { useCombinedRefs } from "../../hooks/use-combined-ref.js";
 import { useSlot } from "../../hooks/use-slot/use-slot.js";
 import type { LnComponent } from "../../types.js";
 
-const DialogArrowBase = (
-  { render, ...props }: DialogArrow.Props,
-  ref: DialogArrow.Props["ref"],
-) => {
+const DialogArrowBase = ({ render, ...props }: DialogArrow.Props, ref: DialogArrow.Props["ref"]) => {
   const ctx = useDialogRoot();
   const combined = useCombinedRefs(ref, ctx.setArrow as any);
 

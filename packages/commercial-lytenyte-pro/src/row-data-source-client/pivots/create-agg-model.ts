@@ -1,10 +1,6 @@
 import { type Column, type ColumnPivotModel } from "../../+types.js";
 
-export function createAggModel<T>(
-  model: ColumnPivotModel<T>,
-  columns: Column<T>[],
-  separator: string,
-) {
+export function createAggModel<T>(model: ColumnPivotModel<T>, columns: Column<T>[], separator: string) {
   const aggFunToId = new Map(model.values.map((c) => [c.field, c.aggFn]));
 
   const aggModel = columns

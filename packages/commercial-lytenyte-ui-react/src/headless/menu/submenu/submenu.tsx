@@ -94,9 +94,7 @@ function SubmenuImpl(
 
           if (ev.key === "ArrowLeft") {
             setOpen(false);
-            const trigger = ev.currentTarget.querySelector(
-              '[data-ln-subtrigger="true"]',
-            ) as HTMLElement;
+            const trigger = ev.currentTarget.querySelector('[data-ln-subtrigger="true"]') as HTMLElement;
             trigger?.focus();
             ev.stopPropagation();
             ev.preventDefault();

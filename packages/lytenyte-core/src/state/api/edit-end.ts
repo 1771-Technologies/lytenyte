@@ -1,9 +1,7 @@
 import type { InternalAtoms } from "../+types.js";
 import type { Grid, GridApi } from "../../+types.js";
 
-export const makeEditEnd = (
-  grid: Grid<any> & { internal: InternalAtoms },
-): GridApi<any>["editEnd"] => {
+export const makeEditEnd = (grid: Grid<any> & { internal: InternalAtoms }): GridApi<any>["editEnd"] => {
   return (cancel?: boolean) => {
     const active = grid.internal.editActivePos.get();
     if (!active) return;

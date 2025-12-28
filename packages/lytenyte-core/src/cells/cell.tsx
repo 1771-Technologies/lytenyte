@@ -12,43 +12,30 @@ export interface CellProps {
   readonly cell: RowCellLayout<any>;
 }
 
-export const Cell = forwardRef<
-  HTMLDivElement,
-  Omit<JSX.IntrinsicElements["div"], "children"> & CellProps
->(function Cell(props, forwarded) {
-  const {
-    colBounds: [start, end],
-    ...rowMeta
-  } = useRowMeta();
-  // This enforces our column virtualization.
-  if (
-    props.cell.colPin == null &&
-    (props.cell.colIndex >= end || props.cell.colIndex + props.cell.colSpan - 1 < start)
-  ) {
-    return null;
-  }
+export const Cell = forwardRef<HTMLDivElement, Omit<JSX.IntrinsicElements["div"], "children"> & CellProps>(
+  function Cell(props, forwarded) {
+    const {
+      colBounds: [start, end],
+      ...rowMeta
+    } = useRowMeta();
+    // This enforces our column virtualization.
+    if (
+      props.cell.colPin == null &&
+      (props.cell.colIndex >= end || props.cell.colIndex + props.cell.colSpan - 1 < start)
+    ) {
+      return null;
+    }
 
-  return <CellImpl {...props} ref={forwarded} {...rowMeta} />;
-});
+    return <CellImpl {...props} ref={forwarded} {...rowMeta} />;
+  },
+);
 
 const CellImpl = memo(
   forwardRef<
     HTMLDivElement,
     Omit<JSX.IntrinsicElements["div"], "children"> & CellProps & Omit<RowMetaData, "colBounds">
   >(function Cell(
-    {
-      cell,
-      row,
-      selected,
-      indeterminate,
-      xPositions,
-      yPositions,
-      base,
-      renderers,
-      rtl,
-      layout: _,
-      ...props
-    },
+    { cell, row, selected, indeterminate, xPositions, yPositions, base, renderers, rtl, layout: _, ...props },
     forwarded,
   ) {
     const { grid, gridId } = useGridRoot();

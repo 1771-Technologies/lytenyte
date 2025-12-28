@@ -1,9 +1,6 @@
 import type { Alignment, Middleware, Placement, Side } from "../../external/floating-ui.js";
 
-export const transformOrigin = (options: {
-  arrowWidth: number;
-  arrowHeight: number;
-}): Middleware => ({
+export const transformOrigin = (options: { arrowWidth: number; arrowHeight: number }): Middleware => ({
   name: "transformOrigin",
   options,
   fn(data) {

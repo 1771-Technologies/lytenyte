@@ -4,9 +4,7 @@ import type { Column, Grid, GridApi } from "../../+types";
 import { runWithBackoff } from "@1771technologies/lytenyte-shared";
 import { editOnChange } from "../helpers/edit-on-change.js";
 
-export const makeEditBegin = (
-  grid: Grid<any> & { internal: InternalAtoms },
-): GridApi<any>["editBegin"] => {
+export const makeEditBegin = (grid: Grid<any> & { internal: InternalAtoms }): GridApi<any>["editBegin"] => {
   return (params) => {
     if (grid.state.editCellMode.get() === "readonly") return;
     // Start by canceling existing edits

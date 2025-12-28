@@ -39,8 +39,8 @@
 
 :root {
   --lng1771-typeface:
-    "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-    "Segoe UI Symbol", "Noto Color Emoji";
+    "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Noto Color Emoji";
 }
 
 .dark {
@@ -123,8 +123,7 @@
   /* Grid theme */
 
   --lng1771-typeface:
-    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
-    monospace;
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --lng1771-header-font-typeface: var(--lng1771-typeface);
   --lng1771-cell-font-typeface: var(--lng1771-typeface);
   --lng1771-menu-item-font-typeface: var(--lng1771-typeface);
@@ -332,11 +331,7 @@
     background-color: var(--lng1771-gray-10);
   }
   [data-ln-row-selected="true"][data-ln-row="true"]:hover [data-ln-cell="true"] {
-    background-color: color-mix(
-      in srgb,
-      var(--lng1771-row-selected) 95%,
-      var(--lng1771-mix-value) 5%
-    );
+    background-color: color-mix(in srgb, var(--lng1771-row-selected) 95%, var(--lng1771-mix-value) 5%);
   }
   [data-ln-rowtype="full-width"][data-ln-row="true"] > div:hover {
     background-color: var(--lng1771-gray-10);

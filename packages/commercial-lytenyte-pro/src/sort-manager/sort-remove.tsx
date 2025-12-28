@@ -6,18 +6,17 @@ export interface SortRemoveProps {
   readonly as?: SlotComponent<{ onRemove: () => void }>;
 }
 
-export const SortRemove = forwardRef<
-  HTMLDivElement,
-  JSX.IntrinsicElements["button"] & SortRemoveProps
->(function SortRemove({ as, ...props }, forwarded) {
-  const row = useSortRowCtx();
+export const SortRemove = forwardRef<HTMLDivElement, JSX.IntrinsicElements["button"] & SortRemoveProps>(
+  function SortRemove({ as, ...props }, forwarded) {
+    const row = useSortRowCtx();
 
-  const renderer = useSlot({
-    props: [typeof as !== "function" ? { onClick: row.onDelete } : {}, props],
-    ref: forwarded,
-    slot: as ?? <button>x</button>,
-    state: { onAdd: row.onDelete },
-  });
+    const renderer = useSlot({
+      props: [typeof as !== "function" ? { onClick: row.onDelete } : {}, props],
+      ref: forwarded,
+      slot: as ?? <button>x</button>,
+      state: { onAdd: row.onDelete },
+    });
 
-  return renderer;
-});
+    return renderer;
+  },
+);

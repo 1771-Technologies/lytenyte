@@ -28,10 +28,7 @@ export interface PieceWritable<T> extends Piece<T> {
  */
 export function usePiece<T>(source: T): Piece<T>;
 export function usePiece<T>(source: T, setter: Dispatch<SetStateAction<T>>): PieceWritable<T>;
-export function usePiece<T>(
-  source: T,
-  setter?: Dispatch<SetStateAction<T>>,
-): Piece<T> | PieceWritable<T> {
+export function usePiece<T>(source: T, setter?: Dispatch<SetStateAction<T>>): Piece<T> | PieceWritable<T> {
   // We use a ref to track our "Piece". A ref is nice since we can initialize it once,
   // and then never recreate the functions for the initialization. Using memos and callback
   // can achieve the same thing, however, the memo/callback will still create a function

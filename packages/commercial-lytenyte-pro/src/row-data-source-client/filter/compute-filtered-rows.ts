@@ -6,13 +6,7 @@ import {
   getNumberFilterSettings,
   getStringFilterSettings,
 } from "@1771technologies/lytenyte-shared";
-import type {
-  FilterIn,
-  FilterModelItem,
-  FilterQuickSearchSensitivity,
-  Grid,
-  RowLeaf,
-} from "../../+types";
+import type { FilterIn, FilterModelItem, FilterQuickSearchSensitivity, Grid, RowLeaf } from "../../+types";
 import type { FilterWithSettings } from "./+types.js";
 import { itemsWithIdToMap } from "@1771technologies/lytenyte-shared";
 
@@ -30,11 +24,9 @@ export function computeFilteredRows<T>(
   const columns = isPivot ? grid.state.columnPivotColumns.get() : grid.state.columns.get();
   const lookup = itemsWithIdToMap(columns);
 
-  const filterEntries = [...Object.entries(filterModel), ...Object.entries(filterInModel)].filter(
-    ([key]) => {
-      return lookup.has(key);
-    },
-  );
+  const filterEntries = [...Object.entries(filterModel), ...Object.entries(filterInModel)].filter(([key]) => {
+    return lookup.has(key);
+  });
 
   if (!(filterEntries.length || quickSearch) || !grid) return rows;
 
@@ -117,19 +109,13 @@ function createFilter<T>(id: string, filter: FilterModelItem<T> | FilterIn): Fil
 
 function evaluateFilter<T>(row: T | null, grid: Grid<T>, filter: FilterWithSettings<T>): boolean {
   if (filter.kind === "date") {
-    const fieldValue = grid.api.columnField(filter.field, { data: row, kind: "leaf" }) as
-      | string
-      | null;
+    const fieldValue = grid.api.columnField(filter.field, { data: row, kind: "leaf" }) as string | null;
     return evaluateDateFilter(filter, fieldValue, filter.settings);
   } else if (filter.kind === "string") {
-    const fieldValue = grid.api.columnField(filter.field, { data: row, kind: "leaf" }) as
-      | string
-      | null;
+    const fieldValue = grid.api.columnField(filter.field, { data: row, kind: "leaf" }) as string | null;
     return evaluateStringFilter(filter, fieldValue, filter.settings);
   } else if (filter.kind === "number") {
-    const fieldValue = grid.api.columnField(filter.field, { data: row, kind: "leaf" }) as
-      | number
-      | null;
+    const fieldValue = grid.api.columnField(filter.field, { data: row, kind: "leaf" }) as number | null;
     return evaluateNumberFilter(filter, fieldValue, filter.settings);
   } else if (filter.kind === "func") {
     return filter.func({ data: row, grid });

@@ -47,9 +47,7 @@ export function CellStyleRow({
 
     const firstBotIndex = rowCount - rowBotCount;
 
-    const x = isEnd
-      ? xPositions[columnIndex] - xPositions.at(-1)! + vpWidth
-      : xPositions[columnIndex];
+    const x = isEnd ? xPositions[columnIndex] - xPositions.at(-1)! + vpWidth : xPositions[columnIndex];
 
     let y: number | string;
     if (isBot) y = yPositions[rowIndex] - yPositions[firstBotIndex];

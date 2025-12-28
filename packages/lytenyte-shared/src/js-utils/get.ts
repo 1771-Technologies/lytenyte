@@ -8,9 +8,7 @@ type GetIndexedField<T, K> = K extends keyof T
         : undefined
     : undefined;
 
-type FieldWithPossiblyUndefined<T, Key> =
-  | GetFieldType<Exclude<T, undefined>, Key>
-  | Extract<T, undefined>;
+type FieldWithPossiblyUndefined<T, Key> = GetFieldType<Exclude<T, undefined>, Key> | Extract<T, undefined>;
 
 type IndexedFieldWithPossiblyUndefined<T, Key> =
   | GetIndexedField<Exclude<T, undefined>, Key>
@@ -21,10 +19,7 @@ export type GetFieldType<T, P> = P extends `${infer Left}.${infer Right}`
     ? FieldWithPossiblyUndefined<T[Left], Right>
     : Left extends `${infer FieldKey}[${infer IndexKey}]`
       ? FieldKey extends keyof T
-        ? FieldWithPossiblyUndefined<
-            IndexedFieldWithPossiblyUndefined<T[FieldKey], IndexKey>,
-            Right
-          >
+        ? FieldWithPossiblyUndefined<IndexedFieldWithPossiblyUndefined<T[FieldKey], IndexKey>, Right>
         : undefined
       : undefined
   : P extends keyof T
@@ -90,10 +85,7 @@ export type GetFieldType<T, P> = P extends `${infer Left}.${infer Right}`
  * - Preserves type information through TypeScript's type system
  * - Returns undefined for invalid paths
  */
-export function get<TData, TPath extends string>(
-  data: TData,
-  path: TPath,
-): GetFieldType<TData, TPath> {
+export function get<TData, TPath extends string>(data: TData, path: TPath): GetFieldType<TData, TPath> {
   const valueItems = path.split(/[.[\]]/).filter(Boolean);
 
   let value = data;

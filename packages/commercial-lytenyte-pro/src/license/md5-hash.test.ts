@@ -17,8 +17,7 @@ describe("activateLicense", () => {
     ).toBe(license);
   });
   test("invalid license", () => {
-    const license =
-      "2023-01-01 2024-01-01 citadel seated myrandomstring|c1c818278b02303e818ceebc901bd6f3";
+    const license = "2023-01-01 2024-01-01 citadel seated myrandomstring|c1c818278b02303e818ceebc901bd6f3";
 
     expect(
       getHash({

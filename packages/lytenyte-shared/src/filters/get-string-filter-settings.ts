@@ -26,9 +26,7 @@ export function getStringFilterSettings(filter: FilterString): FilterStringSetti
   const collator = filter.options?.collation ? new Intl.Collator(locale, { sensitivity }) : null;
 
   const regex =
-    filter.operator === "matches"
-      ? new RegExp(filter.value as string, filter.options?.regexOpts)
-      : null;
+    filter.operator === "matches" ? new RegExp(filter.value as string, filter.options?.regexOpts) : null;
 
   return {
     includeNulls,

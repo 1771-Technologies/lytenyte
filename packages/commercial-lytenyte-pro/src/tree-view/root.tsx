@@ -19,76 +19,70 @@ export interface TreeRootProps {
 
   readonly onFocusChange?: (el: HTMLElement | null) => void;
   readonly getAllIds?: (panel: HTMLElement) => Set<string>;
-  readonly getIdsBetweenNodes?: (
-    start: HTMLElement,
-    end: HTMLElement,
-    panel: HTMLElement,
-  ) => string[];
+  readonly getIdsBetweenNodes?: (start: HTMLElement, end: HTMLElement, panel: HTMLElement) => string[];
 
   readonly ref?: Ref<HTMLElement | null>;
 }
 
-export const TreeRoot = forwardRef<HTMLElement, PropsWithChildren<TreeRootProps>>(
-  (p, forwarded) => {
-    const [panel, setPanel] = useState<HTMLUListElement | null>(null);
-    const [expansions, onExpansionChange] = useState<Record<string, boolean>>({});
-    const [selection, setSelections] = useState<Set<string>>(() => new Set());
+export const TreeRoot = forwardRef<HTMLElement, PropsWithChildren<TreeRootProps>>((p, forwarded) => {
+  const [panel, setPanel] = useState<HTMLUListElement | null>(null);
+  const [expansions, onExpansionChange] = useState<Record<string, boolean>>({});
+  const [selection, setSelections] = useState<Set<string>>(() => new Set());
 
-    const ref = useCombinedRefs(setPanel, forwarded as any);
-    const selectionPivotRef = useRef<string | null>(null);
+  const ref = useCombinedRefs(setPanel, forwarded as any);
+  const selectionPivotRef = useRef<string | null>(null);
 
-    const allIds = useEvent((el) => {
-      if (p.getAllIds) return p.getAllIds(el);
-      return getAllIds(el);
-    });
-    const idsBetween = useEvent((left: HTMLElement, right: HTMLElement, panel: HTMLElement) => {
-      if (p.getIdsBetweenNodes) return p.getIdsBetweenNodes(left, right, panel);
+  const allIds = useEvent((el) => {
+    if (p.getAllIds) return p.getAllIds(el);
+    return getAllIds(el);
+  });
+  const idsBetween = useEvent((left: HTMLElement, right: HTMLElement, panel: HTMLElement) => {
+    if (p.getIdsBetweenNodes) return p.getIdsBetweenNodes(left, right, panel);
 
-      return getIdsBetweenNodes(left, right, panel);
-    });
+    return getIdsBetweenNodes(left, right, panel);
+  });
 
-    const onFocusChange = useEvent((el: HTMLElement | null) => {
-      p.onFocusChange?.(el);
-    });
+  const onFocusChange = useEvent((el: HTMLElement | null) => {
+    p.onFocusChange?.(el);
+  });
 
-    const value = useMemo<TreeViewRootContext>(() => {
-      return {
-        panel,
-        panelRef: ref as any,
-        selectionMode: p.selectMode ?? "single",
-        transitionEnterMs: p.transitionEnter ?? 0,
-        transitionExitMs: p.transitionExit ?? 0,
-        gridWrappedBranches: p.gridWrappedBranches ?? false,
-        expansions: p.expansions ?? expansions,
-        onExpansionChange: p.onExpansionChange ?? onExpansionChange,
-        selection: p.selection ?? selection,
-        onSelectionChange: p.onSelectionChange ?? setSelections,
-        selectionPivotRef,
-        expansionDefault: p.expansionDefault ?? false,
-
-        onFocusChange,
-        getAllIds: allIds,
-        getIdsBetweenNodes: idsBetween,
-      };
-    }, [
-      allIds,
-      expansions,
-      idsBetween,
-      onFocusChange,
-      p.expansionDefault,
-      p.expansions,
-      p.gridWrappedBranches,
-      p.onExpansionChange,
-      p.onSelectionChange,
-      p.selectMode,
-      p.selection,
-      p.transitionEnter,
-      p.transitionExit,
+  const value = useMemo<TreeViewRootContext>(() => {
+    return {
       panel,
-      ref,
-      selection,
-    ]);
+      panelRef: ref as any,
+      selectionMode: p.selectMode ?? "single",
+      transitionEnterMs: p.transitionEnter ?? 0,
+      transitionExitMs: p.transitionExit ?? 0,
+      gridWrappedBranches: p.gridWrappedBranches ?? false,
+      expansions: p.expansions ?? expansions,
+      onExpansionChange: p.onExpansionChange ?? onExpansionChange,
+      selection: p.selection ?? selection,
+      onSelectionChange: p.onSelectionChange ?? setSelections,
+      selectionPivotRef,
+      expansionDefault: p.expansionDefault ?? false,
 
-    return <context.Provider value={value}>{p.children}</context.Provider>;
-  },
-);
+      onFocusChange,
+      getAllIds: allIds,
+      getIdsBetweenNodes: idsBetween,
+    };
+  }, [
+    allIds,
+    expansions,
+    idsBetween,
+    onFocusChange,
+    p.expansionDefault,
+    p.expansions,
+    p.gridWrappedBranches,
+    p.onExpansionChange,
+    p.onSelectionChange,
+    p.selectMode,
+    p.selection,
+    p.transitionEnter,
+    p.transitionExit,
+    panel,
+    ref,
+    selection,
+  ]);
+
+  return <context.Provider value={value}>{p.children}</context.Provider>;
+});

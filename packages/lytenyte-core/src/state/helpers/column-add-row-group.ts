@@ -65,8 +65,7 @@ export function columnAddRowGroup<T>({
         ? Number.parseInt(c.id.split(":").at(-1)!)
         : null;
 
-      if (c.id === GROUP_COLUMN_SINGLE_ID || (posCnt != null && posCnt >= weNeedXColumns))
-        return false;
+      if (c.id === GROUP_COLUMN_SINGLE_ID || (posCnt != null && posCnt >= weNeedXColumns)) return false;
 
       return true;
     });

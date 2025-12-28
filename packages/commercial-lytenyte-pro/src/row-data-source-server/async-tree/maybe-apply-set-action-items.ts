@@ -13,8 +13,7 @@ export function maybeApplySetActionItems<K, D>(
   for (let i = 0; i < p.items.length; i++) {
     const item = p.items[i];
 
-    const path =
-      item.kind === "leaf" ? `${p.path.at(-1) ?? ROOT_LEAF_PREFIX}#${item.relIndex}` : item.path;
+    const path = item.kind === "leaf" ? `${p.path.at(-1) ?? ROOT_LEAF_PREFIX}#${item.relIndex}` : item.path;
 
     const existingIndex = pathNode.byIndex.get(item.relIndex);
 

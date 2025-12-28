@@ -115,10 +115,7 @@ export function makeServerDataSource<T>({
     const pivotModel = g.state.columnPivotModel.get();
     let prevPivotColumnModel = pivotModel.columns;
     let prevPivotColumnValues = pivotModel.values;
-    const updatePivotColumns = async (
-      model: ColumnPivotModel<T>,
-      ignoreEqualCheck: boolean = false,
-    ) => {
+    const updatePivotColumns = async (model: ColumnPivotModel<T>, ignoreEqualCheck: boolean = false) => {
       if (
         !ignoreEqualCheck &&
         equal(prevPivotColumnModel, model.columns) &&

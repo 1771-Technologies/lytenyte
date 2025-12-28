@@ -380,9 +380,7 @@ declare type ArrowOptions = Prettify<
  * preferred placement. Alternative to `flip`.
  * @see https://floating-ui.com/docs/autoPlacement
  */
-declare const autoPlacement: (
-  options?: AutoPlacementOptions | Derivable<AutoPlacementOptions>,
-) => Middleware;
+declare const autoPlacement: (options?: AutoPlacementOptions | Derivable<AutoPlacementOptions>) => Middleware;
 declare type AutoPlacementOptions = Prettify<
   Omit<AutoPlacementOptions$1, "boundary"> & DetectOverflowOptions
 >;

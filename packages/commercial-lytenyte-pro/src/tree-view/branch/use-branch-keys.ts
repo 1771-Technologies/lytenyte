@@ -11,11 +11,7 @@ import { useEvent } from "@1771technologies/lytenyte-core/yinternal";
 
 const accepted = ["ArrowRight", "ArrowLeft", "Enter", "*"];
 
-export function useBranchKeys(
-  id: string,
-  defaultExpansion: boolean,
-  current?: KeyboardEventHandler,
-) {
+export function useBranchKeys(id: string, defaultExpansion: boolean, current?: KeyboardEventHandler) {
   const ctx = useTreeRoot();
   const onKeyDown = useEvent((ev: KeyboardEvent) => {
     current?.(ev);

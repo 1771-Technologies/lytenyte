@@ -22,18 +22,19 @@ export const RowsTop = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(
   },
 );
 
-export const RowsCenter = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(
-  function RowsCenter({ children, ...props }, forwarded) {
-    return (
-      <RowsCenterCore {...props} ref={forwarded}>
-        <NativeScroller>
-          <CellSelectionCenter />
-          {children}
-        </NativeScroller>
-      </RowsCenterCore>
-    );
-  },
-);
+export const RowsCenter = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(function RowsCenter(
+  { children, ...props },
+  forwarded,
+) {
+  return (
+    <RowsCenterCore {...props} ref={forwarded}>
+      <NativeScroller>
+        <CellSelectionCenter />
+        {children}
+      </NativeScroller>
+    </RowsCenterCore>
+  );
+});
 
 export const RowsBottom = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(
   function RowsBottom(props, forwarded) {

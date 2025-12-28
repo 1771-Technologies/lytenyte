@@ -98,17 +98,14 @@ export class FocusTrap {
     this.doc = config.document || getDocument(Array.isArray(elements) ? elements[0] : elements);
     this.config = config;
 
-    this.state.containers = Array.isArray(elements)
-      ? elements.filter(Boolean)
-      : [elements].filter(Boolean);
+    this.state.containers = Array.isArray(elements) ? elements.filter(Boolean) : [elements].filter(Boolean);
 
     this.updateObservedNodes();
     this.setupMutationObserver();
   }
 
   private findContainerIndex(element: HTMLElement, event?: Event): number {
-    const composedPath =
-      typeof event?.composedPath === "function" ? event.composedPath() : undefined;
+    const composedPath = typeof event?.composedPath === "function" ? event.composedPath() : undefined;
     return this.state.containerGroups.findIndex(
       ({ container, tabbableNodes }) =>
         container.contains(element) ||
@@ -123,8 +120,7 @@ export class FocusTrap {
       const focusableNodes = getFocusables(container);
 
       const firstTabbableNode = tabbableNodes.length > 0 ? tabbableNodes[0] : undefined;
-      const lastTabbableNode =
-        tabbableNodes.length > 0 ? tabbableNodes[tabbableNodes.length - 1] : undefined;
+      const lastTabbableNode = tabbableNodes.length > 0 ? tabbableNodes[tabbableNodes.length - 1] : undefined;
 
       const firstDomTabbableNode = focusableNodes.find((node) => isTabbable(node));
       const lastDomTabbableNode = focusableNodes
@@ -138,9 +134,7 @@ export class FocusTrap {
         const nodeIdx = tabbableNodes.indexOf(node);
         if (nodeIdx < 0) {
           if (forward) {
-            return focusableNodes
-              .slice(focusableNodes.indexOf(node) + 1)
-              .find((el) => isTabbable(el));
+            return focusableNodes.slice(focusableNodes.indexOf(node) + 1).find((el) => isTabbable(el));
           }
           return focusableNodes
             .slice(0, focusableNodes.indexOf(node))
@@ -163,9 +157,7 @@ export class FocusTrap {
       };
     });
 
-    this.state.tabbableGroups = this.state.containerGroups.filter(
-      (group) => group.tabbableNodes.length > 0,
-    );
+    this.state.tabbableGroups = this.state.containerGroups.filter((group) => group.tabbableNodes.length > 0);
 
     // throw if no groups have tabbable nodes and we don't have a fallback focus node either
     if (
@@ -252,9 +244,7 @@ export class FocusTrap {
 
           if (tabbableNodes.length > 0) {
             // MRU tab index MAY not be found if the MRU node is focusable but not tabbable
-            const mruTabIdx = tabbableNodes.findIndex(
-              (node) => node === this.state.mostRecentlyFocusedNode,
-            );
+            const mruTabIdx = tabbableNodes.findIndex((node) => node === this.state.mostRecentlyFocusedNode);
 
             if (mruTabIdx >= 0) {
               if (this.config.isKeyForward!(this.state.recentNavEvent!)) {
@@ -284,9 +274,7 @@ export class FocusTrap {
           //  the trap because focus seems to escape when navigating backward from a tabbable node
           //  with tabindex=0 when this is the case (instead of wrapping to the tabbable node with
           //  the greatest positive tab index like it should)
-          if (
-            !this.state.containerGroups.some((g) => g.tabbableNodes.some((n) => getTabIndex(n) > 0))
-          ) {
+          if (!this.state.containerGroups.some((g) => g.tabbableNodes.some((n) => getTabIndex(n) > 0))) {
             // no containers with tabbable nodes with positive tab indexes which means the focus
             //  escaped for some other reason and we should just execute the fallback to the
             //  MRU node or initial focus node, if any
@@ -614,9 +602,7 @@ export class FocusTrap {
       if (optionValue === undefined || optionValue === false) {
         return optionValue;
       }
-      throw new Error(
-        `\`${optionName}\` was specified but was not a node, or did not return a node`,
-      );
+      throw new Error(`\`${optionName}\` was specified but was not a node, or did not return a node`);
     }
 
     let node = optionValue;
@@ -625,9 +611,7 @@ export class FocusTrap {
       try {
         node = this.doc.querySelector(optionValue); // resolve to node, or null if fails
       } catch (err: any) {
-        throw new Error(
-          `\`${optionName}\` appears to be an invalid selector; error="${err.message}"`,
-        );
+        throw new Error(`\`${optionName}\` appears to be an invalid selector; error="${err.message}"`);
       }
 
       if (!node) {
@@ -654,16 +638,14 @@ export class FocusTrap {
       // NOTE: the target may also be the container itself if it's focusable
       //  with tabIndex='-1' and was given initial focus
       const containerIndex = this.findContainerIndex(target, event);
-      const containerGroup =
-        containerIndex >= 0 ? this.state.containerGroups[containerIndex] : undefined;
+      const containerGroup = containerIndex >= 0 ? this.state.containerGroups[containerIndex] : undefined;
 
       if (containerIndex < 0) {
         // target not found in any group: quite possible focus has escaped the trap,
         //  so bring it back into...
         if (isBackward) {
           // ...the last node in the last group
-          destinationNode =
-            this.state.tabbableGroups[this.state.tabbableGroups.length - 1].lastTabbableNode;
+          destinationNode = this.state.tabbableGroups[this.state.tabbableGroups.length - 1].lastTabbableNode;
         } else {
           // ...the first node in the first group
           destinationNode = this.state.tabbableGroups[0].firstTabbableNode;
@@ -679,9 +661,7 @@ export class FocusTrap {
         if (
           startOfGroupIndex < 0 &&
           (containerGroup?.container === target ||
-            (isFocusable(target) &&
-              !isTabbable(target) &&
-              !containerGroup?.nextTabbableNode(target, false)))
+            (isFocusable(target) && !isTabbable(target) && !containerGroup?.nextTabbableNode(target, false)))
         ) {
           // an exception case where the target is either the container itself, or
           //  a non-tabbable node that was given focus (i.e. tabindex is negative
@@ -722,9 +702,7 @@ export class FocusTrap {
         if (
           lastOfGroupIndex < 0 &&
           (containerGroup?.container === target ||
-            (isFocusable(target) &&
-              !isTabbable(target) &&
-              !containerGroup?.nextTabbableNode(target)))
+            (isFocusable(target) && !isTabbable(target) && !containerGroup?.nextTabbableNode(target)))
         ) {
           // an exception case where the target is the container itself, or
           //  a non-tabbable node that was given focus (i.e. tabindex is negative

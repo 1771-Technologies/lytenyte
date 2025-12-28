@@ -81,13 +81,7 @@ export function computeBounds({
   const topOffset = scrollTop + yPositions[topCount];
 
   // Determine the first visible row index (including overscan)
-  const rowStart = getBoundStart(
-    yPositions,
-    topOffset,
-    rowOverscanTop,
-    topCount,
-    maxCenterRowCount,
-  );
+  const rowStart = getBoundStart(yPositions, topOffset, rowOverscanTop, topCount, maxCenterRowCount);
 
   // Determine the last visible row index (including overscan)
   const rowEnd = getBoundEnd(

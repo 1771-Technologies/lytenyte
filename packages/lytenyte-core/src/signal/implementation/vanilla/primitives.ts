@@ -65,10 +65,7 @@ export function scoped<T>(run: () => T, scope: Scope | null): T | undefined {
  * walk up the computation tree trying to find a context record and matching key. If no value can
  * be found `undefined` will be returned.
  */
-export function getContext<T>(
-  key: string | symbol,
-  scope: Scope | null = G.currentScope,
-): T | undefined {
+export function getContext<T>(key: string | symbol, scope: Scope | null = G.currentScope): T | undefined {
   return scope?._context![key] as T | undefined;
 }
 
@@ -76,11 +73,7 @@ export function getContext<T>(
  * Attempts to set a context value on the parent scope with the given key. This will be a no-op if
  * no parent is defined.
  */
-export function setContext<T>(
-  key: string | symbol,
-  value: T,
-  scope: Scope | null = G.currentScope,
-) {
+export function setContext<T>(key: string | symbol, value: T, scope: Scope | null = G.currentScope) {
   if (scope) scope._context = { ...scope._context, [key]: value };
 }
 
@@ -90,9 +83,7 @@ export function setContext<T>(
  */
 export function onError<T = Error>(handler: (error: T) => void): void {
   if (!G.currentScope) return;
-  G.currentScope._handlers = G.currentScope._handlers
-    ? [handler, ...G.currentScope._handlers]
-    : [handler];
+  G.currentScope._handlers = G.currentScope._handlers ? [handler, ...G.currentScope._handlers] : [handler];
 }
 
 /**

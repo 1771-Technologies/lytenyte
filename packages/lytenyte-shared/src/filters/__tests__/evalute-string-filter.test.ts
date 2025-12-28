@@ -42,15 +42,15 @@ describe("evaluateStringFilter", () => {
     collator = new Intl.Collator("en", { sensitivity: "accent" });
     expect(ev({ ...f, value: plain }, accented, { ...opts, collator })).toEqual(false);
     collator = new Intl.Collator("en", { sensitivity: "case" });
-    expect(
-      ev({ ...f, value: uppercase }, accented, { ...opts, collator, caseInsensitive: true }),
-    ).toEqual(true);
+    expect(ev({ ...f, value: uppercase }, accented, { ...opts, collator, caseInsensitive: true })).toEqual(
+      true,
+    );
     collator = new Intl.Collator("en", { sensitivity: "base" });
     expect(ev({ ...f, value: uppercase }, accented, { ...opts, collator })).toEqual(true);
     collator = new Intl.Collator("en", { sensitivity: "variant" });
-    expect(
-      ev({ ...f, value: uppercase }, accented, { ...opts, collator, caseInsensitive: true }),
-    ).toEqual(true);
+    expect(ev({ ...f, value: uppercase }, accented, { ...opts, collator, caseInsensitive: true })).toEqual(
+      true,
+    );
   });
 
   test("not_equals", () => {
@@ -78,15 +78,15 @@ describe("evaluateStringFilter", () => {
     collator = new Intl.Collator("en", { sensitivity: "accent" });
     expect(ev({ ...f, value: plain }, accented, { ...opts, collator })).toEqual(true);
     collator = new Intl.Collator("en", { sensitivity: "case" });
-    expect(
-      ev({ ...f, value: uppercase }, accented, { ...opts, collator, caseInsensitive: true }),
-    ).toEqual(false);
+    expect(ev({ ...f, value: uppercase }, accented, { ...opts, collator, caseInsensitive: true })).toEqual(
+      false,
+    );
     collator = new Intl.Collator("en", { sensitivity: "base" });
     expect(ev({ ...f, value: uppercase }, accented, { ...opts, collator })).toEqual(false);
     collator = new Intl.Collator("en", { sensitivity: "variant" });
-    expect(
-      ev({ ...f, value: uppercase }, accented, { ...opts, collator, caseInsensitive: true }),
-    ).toEqual(false);
+    expect(ev({ ...f, value: uppercase }, accented, { ...opts, collator, caseInsensitive: true })).toEqual(
+      false,
+    );
   });
 
   test("length", () => {
@@ -105,9 +105,7 @@ describe("evaluateStringFilter", () => {
     expect(ev(f, "lifeA", opts)).toEqual(false);
     expect(ev(f, "lifeA", { ...opts, caseInsensitive: true })).toEqual(false);
     expect(ev(f, "l.if.e", { ...opts, ignorePunctuation: true })).toEqual(true);
-    expect(ev(f, "   l.if.e!", { ...opts, ignorePunctuation: true, trimWhitespace: true })).toEqual(
-      true,
-    );
+    expect(ev(f, "   l.if.e!", { ...opts, ignorePunctuation: true, trimWhitespace: true })).toEqual(true);
     expect(ev(f, null, { ...opts, includeNulls: true })).toEqual(true);
     expect(ev(f, null, { ...opts, includeNulls: false })).toEqual(false);
   });
@@ -127,12 +125,8 @@ describe("evaluateStringFilter", () => {
     expect(ev(f, "lifeA", opts)).toEqual(true);
     expect(ev(f, "l.if.e", { ...opts, ignorePunctuation: true })).toEqual(false);
     expect(ev(f, "la.if.e", { ...opts, ignorePunctuation: true })).toEqual(true);
-    expect(ev(f, "   l.if.e!", { ...opts, ignorePunctuation: true, trimWhitespace: true })).toEqual(
-      false,
-    );
-    expect(
-      ev(f, "   la.if.e!", { ...opts, ignorePunctuation: true, trimWhitespace: true }),
-    ).toEqual(true);
+    expect(ev(f, "   l.if.e!", { ...opts, ignorePunctuation: true, trimWhitespace: true })).toEqual(false);
+    expect(ev(f, "   la.if.e!", { ...opts, ignorePunctuation: true, trimWhitespace: true })).toEqual(true);
   });
 
   test("length_greater_than_or_equals", () => {
@@ -338,15 +332,15 @@ describe("evaluateStringFilter", () => {
     collator = new Intl.Collator("en", { sensitivity: "accent" });
     expect(ev({ ...f, value: plain }, accented, { ...opts, collator })).toEqual(true);
     collator = new Intl.Collator("en", { sensitivity: "case" });
-    expect(
-      ev({ ...f, value: uppercase }, accented, { ...opts, collator, caseInsensitive: true }),
-    ).toEqual(false);
+    expect(ev({ ...f, value: uppercase }, accented, { ...opts, collator, caseInsensitive: true })).toEqual(
+      false,
+    );
     collator = new Intl.Collator("en", { sensitivity: "base" });
     expect(ev({ ...f, value: uppercase }, accented, { ...opts, collator })).toEqual(false);
     collator = new Intl.Collator("en", { sensitivity: "variant" });
-    expect(
-      ev({ ...f, value: uppercase }, accented, { ...opts, collator, caseInsensitive: true }),
-    ).toEqual(false);
+    expect(ev({ ...f, value: uppercase }, accented, { ...opts, collator, caseInsensitive: true })).toEqual(
+      false,
+    );
   });
 
   test("greater_than_or_equals", () => {
@@ -369,15 +363,15 @@ describe("evaluateStringFilter", () => {
     collator = new Intl.Collator("en", { sensitivity: "accent" });
     expect(ev({ ...f, value: plain }, accented, { ...opts, collator })).toEqual(true);
     collator = new Intl.Collator("en", { sensitivity: "case" });
-    expect(
-      ev({ ...f, value: uppercase }, accented, { ...opts, collator, caseInsensitive: true }),
-    ).toEqual(true);
+    expect(ev({ ...f, value: uppercase }, accented, { ...opts, collator, caseInsensitive: true })).toEqual(
+      true,
+    );
     collator = new Intl.Collator("en", { sensitivity: "base" });
     expect(ev({ ...f, value: uppercase }, accented, { ...opts, collator })).toEqual(true);
     collator = new Intl.Collator("en", { sensitivity: "variant" });
-    expect(
-      ev({ ...f, value: uppercase }, accented, { ...opts, collator, caseInsensitive: true }),
-    ).toEqual(true);
+    expect(ev({ ...f, value: uppercase }, accented, { ...opts, collator, caseInsensitive: true })).toEqual(
+      true,
+    );
   });
 
   test("less_than", () => {
@@ -400,15 +394,15 @@ describe("evaluateStringFilter", () => {
     collator = new Intl.Collator("en", { sensitivity: "accent" });
     expect(ev({ ...f, value: plain }, accented, { ...opts, collator })).toEqual(false);
     collator = new Intl.Collator("en", { sensitivity: "case" });
-    expect(
-      ev({ ...f, value: uppercase }, accented, { ...opts, collator, caseInsensitive: true }),
-    ).toEqual(false);
+    expect(ev({ ...f, value: uppercase }, accented, { ...opts, collator, caseInsensitive: true })).toEqual(
+      false,
+    );
     collator = new Intl.Collator("en", { sensitivity: "base" });
     expect(ev({ ...f, value: uppercase }, accented, { ...opts, collator })).toEqual(false);
     collator = new Intl.Collator("en", { sensitivity: "variant" });
-    expect(
-      ev({ ...f, value: uppercase }, accented, { ...opts, collator, caseInsensitive: true }),
-    ).toEqual(false);
+    expect(ev({ ...f, value: uppercase }, accented, { ...opts, collator, caseInsensitive: true })).toEqual(
+      false,
+    );
   });
 
   test("less_than_or_equals", () => {
@@ -431,15 +425,15 @@ describe("evaluateStringFilter", () => {
     collator = new Intl.Collator("en", { sensitivity: "accent" });
     expect(ev({ ...f, value: plain }, accented, { ...opts, collator })).toEqual(false);
     collator = new Intl.Collator("en", { sensitivity: "case" });
-    expect(
-      ev({ ...f, value: uppercase }, accented, { ...opts, collator, caseInsensitive: true }),
-    ).toEqual(true);
+    expect(ev({ ...f, value: uppercase }, accented, { ...opts, collator, caseInsensitive: true })).toEqual(
+      true,
+    );
     collator = new Intl.Collator("en", { sensitivity: "base" });
     expect(ev({ ...f, value: uppercase }, accented, { ...opts, collator })).toEqual(true);
     collator = new Intl.Collator("en", { sensitivity: "variant" });
-    expect(
-      ev({ ...f, value: uppercase }, accented, { ...opts, collator, caseInsensitive: true }),
-    ).toEqual(true);
+    expect(ev({ ...f, value: uppercase }, accented, { ...opts, collator, caseInsensitive: true })).toEqual(
+      true,
+    );
   });
 
   test("matches", () => {
