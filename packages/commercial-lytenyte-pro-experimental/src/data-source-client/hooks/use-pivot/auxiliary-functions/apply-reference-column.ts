@@ -1,4 +1,4 @@
-import type { Column, GridSpec } from "@1771technologies/lytenyte-core-experimental/types";
+import type { Column, GridSpec } from "../../../../types/index.js";
 
 export function applyReferenceColumn<Spec extends GridSpec>(
   pivotColumn: Column<Spec>,

@@ -13,6 +13,7 @@ import { Viewport } from "./components/viewport/viewport.js";
 import { Root } from "./root/root.js";
 import type { PropsWithChildren, ReactNode } from "react";
 import type { RowSource } from "@1771technologies/lytenyte-shared";
+import type * as LnTypes from "./types/index.js";
 
 export interface GridComponent {
   <Spec extends Root.GridSpec = Root.GridSpec>(props: PropsWithChildren<Root.Props<Spec>>): ReactNode;
@@ -58,7 +59,7 @@ export namespace Grid {
   export type API<Spec extends GridSpec = GridSpec> = Root.API<Spec>;
   export type Column<Spec extends GridSpec = GridSpec> = Root.Column<Spec>;
 
-  export namespace Props {
+  export namespace Components {
     export type Header = Header.Props;
     export type HeaderRow = HeaderRow.Props;
     export type HeaderCell = HeaderCell.Props;
@@ -71,6 +72,31 @@ export namespace Grid {
     export type RowFullWidth = RowFullWidth.Props;
     export type Cell = Cell.Props;
     export type Viewport = Viewport.Props;
+  }
+
+  export namespace T {
+    export type AggregationFn<T> = LnTypes.AggregationFn<T>;
+    export type Aggregator<T> = LnTypes.Aggregator<T>;
+    export type CellParams<Spec extends GridSpec> = LnTypes.CellParams<Spec>;
+    export type CellParamsWithIndex<Spec extends GridSpec> = LnTypes.CellParamsWithIndex<Spec>;
+    export type CellRendererParams<Spec extends GridSpec> = LnTypes.CellRendererParams<Spec>;
+    export type DataRect = LnTypes.DataRect;
+    export type Dimension<T> = LnTypes.Dimension<T>;
+    export type DimensionAgg<T, K extends { id: string; field?: Field<T> }> = LnTypes.DimensionAgg<T, K>;
+    export type DimensionSort<T> = LnTypes.DimensionSort<T>;
+    export type EditParams = LnTypes.EditParams;
+    export type ExportDataRectResult = LnTypes.ExportDataRectResult;
+    export type Field<T> = LnTypes.Field<T>;
+    export type FilterFn<T> = LnTypes.FilterFn<T>;
+    export type GroupFn<T> = LnTypes.GroupFn<T>;
+    export type GroupIdFn = LnTypes.GroupIdFn;
+    export type HeaderGroupParams<Spec extends GridSpec> = LnTypes.HeaderGroupParams<Spec>;
+    export type HeaderParams<Spec extends GridSpec> = LnTypes.HeaderParams<Spec>;
+    export type LeafIdFn<T> = LnTypes.LeafIdFn<T>;
+    export type PathField = LnTypes.PathField;
+    export type RowParams<Spec extends GridSpec> = LnTypes.RowParams<Spec>;
+    export type RowSelectionState = LnTypes.RowSelectionState;
+    export type SortFn<T> = LnTypes.SortFn<T>;
   }
 }
 

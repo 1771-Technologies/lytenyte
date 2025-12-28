@@ -1,8 +1,3 @@
-import type {
-  CellRendererParams,
-  HeaderParams,
-  RowParams,
-} from "@1771technologies/lytenyte-pro-experimental/types";
 import type { GridSpec } from "./demo";
 import { useMemo } from "react";
 import { format } from "date-fns";
@@ -12,7 +7,7 @@ import { PieChart } from "react-minimal-pie-chart";
 import { ArrowDownIcon, ArrowUpIcon, ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
 
-export function Header({ api, column }: HeaderParams<GridSpec>) {
+export function Header({ api, column }: Grid.T.HeaderParams<GridSpec>) {
   return (
     <div
       className="text-ln-gray-60 group relative flex h-full w-full cursor-pointer items-center px-1 text-sm transition-colors"
@@ -47,7 +42,7 @@ export function Header({ api, column }: HeaderParams<GridSpec>) {
   );
 }
 
-export function MarkerCell({ detailExpanded, row, api }: CellRendererParams<GridSpec>) {
+export function MarkerCell({ detailExpanded, row, api }: Grid.T.CellRendererParams<GridSpec>) {
   return (
     <button
       className="text-ln-text flex h-full w-[calc(100%-1px)] cursor-pointer items-center justify-center"
@@ -62,7 +57,7 @@ export function MarkerCell({ detailExpanded, row, api }: CellRendererParams<Grid
   );
 }
 
-export function DateCell({ column, row, api }: CellRendererParams<GridSpec>) {
+export function DateCell({ column, row, api }: Grid.T.CellRendererParams<GridSpec>) {
   const field = api.columnField(column, row);
 
   const niceDate = useMemo(() => {
@@ -76,7 +71,7 @@ export function DateCell({ column, row, api }: CellRendererParams<GridSpec>) {
   return <div className="text-ln-text flex h-full w-full items-center tabular-nums">{niceDate}</div>;
 }
 
-export function StatusCell({ column, row, api }: CellRendererParams<GridSpec>) {
+export function StatusCell({ column, row, api }: Grid.T.CellRendererParams<GridSpec>) {
   const status = api.columnField(column, row);
 
   // Guard against bad values
@@ -98,7 +93,7 @@ export function StatusCell({ column, row, api }: CellRendererParams<GridSpec>) {
   );
 }
 
-export function MethodCell({ column, row, api }: CellRendererParams<GridSpec>) {
+export function MethodCell({ column, row, api }: Grid.T.CellRendererParams<GridSpec>) {
   const method = api.columnField(column, row);
 
   // Guard against bad values
@@ -120,7 +115,7 @@ export function MethodCell({ column, row, api }: CellRendererParams<GridSpec>) {
   );
 }
 
-export function PathnameCell({ column, row, api }: CellRendererParams<GridSpec>) {
+export function PathnameCell({ column, row, api }: Grid.T.CellRendererParams<GridSpec>) {
   const path = api.columnField(column, row);
 
   if (typeof path !== "string") return null;
@@ -136,7 +131,7 @@ const numberFormatter = new Intl.NumberFormat("en-Us", {
   maximumFractionDigits: 0,
   minimumFractionDigits: 0,
 });
-export function LatencyCell({ column, row, api }: CellRendererParams<GridSpec>) {
+export function LatencyCell({ column, row, api }: Grid.T.CellRendererParams<GridSpec>) {
   const ms = api.columnField(column, row);
   if (typeof ms !== "number") return null;
 
@@ -150,7 +145,7 @@ export function LatencyCell({ column, row, api }: CellRendererParams<GridSpec>) 
   );
 }
 
-export function RegionCell({ api, row }: CellRendererParams<GridSpec>) {
+export function RegionCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
   // Only render for leaf rows and we have some data
   if (!api.rowIsLeaf(row) || !row.data) return null;
 
@@ -168,7 +163,7 @@ export function RegionCell({ api, row }: CellRendererParams<GridSpec>) {
 }
 
 const colors = ["var(--transfer)", "var(--dns)", "var(--connection)", "var(--ttfb)", "var(--tls)"];
-export function TimingPhaseCell({ api, row }: CellRendererParams<GridSpec>) {
+export function TimingPhaseCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
   // Guard against rows that are not leafs or rows that have no data.
   if (!api.rowIsLeaf(row) || !row.data) return;
 
@@ -204,7 +199,7 @@ export function TimingPhaseCell({ api, row }: CellRendererParams<GridSpec>) {
   );
 }
 
-export function RowDetailRenderer({ row, api }: RowParams<GridSpec>) {
+export function RowDetailRenderer({ row, api }: Grid.T.RowParams<GridSpec>) {
   // Guard against empty data.
   if (!api.rowIsLeaf(row) || !row.data) return null;
 

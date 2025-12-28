@@ -1,4 +1,4 @@
-import type { GridSpec } from "@1771technologies/lytenyte-core-experimental/types";
+import type { GridSpec } from "../../../types/index.js";
 import type { GroupFn } from "@1771technologies/lytenyte-shared";
 import { useMemo } from "react";
 import type { PivotModel } from "../../use-client-data-source";

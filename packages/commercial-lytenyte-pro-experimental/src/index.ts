@@ -3,6 +3,7 @@ import { Grid as GridCore } from "@1771technologies/lytenyte-core-experimental";
 import type { PropsWithChildren, ReactNode } from "react";
 import { Root } from "./root/root.js";
 import type { RowSource } from "@1771technologies/lytenyte-shared";
+import type * as LnTypes from "./types/index.js";
 
 export { Root } from "./root/root.js";
 
@@ -50,19 +51,57 @@ export namespace Grid {
   export type API<Spec extends GridSpec = GridSpec> = Root.API<Spec>;
   export type Column<Spec extends GridSpec = GridSpec> = Root.Column<Spec>;
 
-  export namespace Props {
-    export type Header = GridCore.Props.Header;
-    export type HeaderRow = GridCore.Props.HeaderRow;
-    export type HeaderCell = GridCore.Props.HeaderCell;
-    export type HeaderGroupCell = GridCore.Props.HeaderGroupCell;
-    export type RowsContainer = GridCore.Props.RowsContainer;
-    export type RowsTop = GridCore.Props.RowsTop;
-    export type RowsCenter = GridCore.Props.RowsCenter;
-    export type RowsBottom = GridCore.Props.RowsBottom;
-    export type Row = GridCore.Props.Row;
-    export type RowFullWidth = GridCore.Props.RowFullWidth;
-    export type Cell = GridCore.Props.Cell;
-    export type Viewport = GridCore.Props.Viewport;
+  export namespace Components {
+    export type Header = GridCore.Components.Header;
+    export type HeaderRow = GridCore.Components.HeaderRow;
+    export type HeaderCell = GridCore.Components.HeaderCell;
+    export type HeaderGroupCell = GridCore.Components.HeaderGroupCell;
+    export type RowsContainer = GridCore.Components.RowsContainer;
+    export type RowsTop = GridCore.Components.RowsTop;
+    export type RowsCenter = GridCore.Components.RowsCenter;
+    export type RowsBottom = GridCore.Components.RowsBottom;
+    export type Row = GridCore.Components.Row;
+    export type RowFullWidth = GridCore.Components.RowFullWidth;
+    export type Cell = GridCore.Components.Cell;
+    export type Viewport = GridCore.Components.Viewport;
+  }
+
+  export namespace T {
+    export type AggregationFn<T> = LnTypes.AggregationFn<T>;
+    export type Aggregator<T> = LnTypes.Aggregator<T>;
+    export type CellParams<Spec extends GridSpec> = LnTypes.CellParams<Spec>;
+    export type CellParamsWithIndex<Spec extends GridSpec> = LnTypes.CellParamsWithIndex<Spec>;
+    export type CellRendererParams<Spec extends GridSpec> = LnTypes.CellRendererParams<Spec>;
+    export type DataRect = LnTypes.DataRect;
+    export type Dimension<T> = LnTypes.Dimension<T>;
+    export type DimensionAgg<T, K extends { id: string; field?: Field<T> }> = LnTypes.DimensionAgg<T, K>;
+    export type DimensionSort<T> = LnTypes.DimensionSort<T>;
+    export type EditParams = LnTypes.EditParams;
+    export type ExportDataRectResult = LnTypes.ExportDataRectResult;
+    export type Field<T> = LnTypes.Field<T>;
+    export type FilterFn<T> = LnTypes.FilterFn<T>;
+    export type GroupFn<T> = LnTypes.GroupFn<T>;
+    export type GroupIdFn = LnTypes.GroupIdFn;
+    export type HeaderGroupParams<Spec extends GridSpec> = LnTypes.HeaderGroupParams<Spec>;
+    export type HeaderParams<Spec extends GridSpec> = LnTypes.HeaderParams<Spec>;
+    export type LeafIdFn<T> = LnTypes.LeafIdFn<T>;
+    export type PathField = LnTypes.PathField;
+    export type RowParams<Spec extends GridSpec> = LnTypes.RowParams<Spec>;
+    export type RowSelectionState = LnTypes.RowSelectionState;
+    export type SortFn<T> = LnTypes.SortFn<T>;
+
+    // PRO Specific types
+
+    export type DataRectSplit = LnTypes.DataRectSplit;
+    export type DialogFrame<Spec extends GridSpec> = LnTypes.DialogFrame<Spec>;
+    export type DialogFrameProps<Spec extends GridSpec> = LnTypes.DialogFrameProps<Spec>;
+    export type HavingFilterFn = LnTypes.HavingFilterFn;
+    export type LabelFilter = LnTypes.LabelFilter;
+    export type PivotField<Spec extends GridSpec> = LnTypes.PivotField<Spec>;
+    export type PivotModel<Spec extends GridSpec> = LnTypes.PivotModel<Spec>;
+    export type PopoverFrame<Spec extends GridSpec> = LnTypes.PopoverFrame<Spec>;
+    export type PopoverFrameProps<Spec extends GridSpec> = LnTypes.PopoverFrameProps<Spec>;
+    export type VirtualTarget = LnTypes.VirtualTarget;
   }
 }
 

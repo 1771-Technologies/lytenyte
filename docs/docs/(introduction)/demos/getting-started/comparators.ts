@@ -1,9 +1,9 @@
-import type { SortFn } from "@1771technologies/lytenyte-pro-experimental/types";
 import type { GridSpec } from "./demo.js";
 import type { RequestData } from "./data.js";
 import { compareAsc } from "date-fns";
+import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
 
-export const sortComparators: Record<string, SortFn<GridSpec["data"]>> = {
+export const sortComparators: Record<string, Grid.T.SortFn<GridSpec["data"]>> = {
   region: (left, right) => {
     if (left.kind !== "leaf" && right.kind !== "leaf") return 0;
     if (left.kind === "leaf" && right.kind !== "leaf") return -1;
