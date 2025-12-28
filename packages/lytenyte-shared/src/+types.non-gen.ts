@@ -139,7 +139,7 @@ export interface RowSource<T = any> {
 export type PathField = { kind: "path"; path: string };
 export type Field<T> = string | number | PathField | ((params: { row: RowNode<T> }) => unknown);
 export type Dimension<T> = { name?: string; field: Field<T> } | { id: string; field?: Field<T> };
-export type DimensionSort<T> = { dim: Dimension<T>; descending?: boolean };
+export type DimensionSort<T> = { dim: Dimension<T> | SortFn<T>; descending?: boolean };
 export type DimensionAgg<T, K extends { id: string; field?: Field<T> } = { id: string; field?: Field<T> }> = {
   dim: K;
   fn: Aggregator<T> | string;

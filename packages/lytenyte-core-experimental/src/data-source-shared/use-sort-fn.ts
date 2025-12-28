@@ -11,6 +11,9 @@ export function useSortFn<T>(sort: SortFn<T> | DimensionSort<T>[] | null | undef
 
     const sortFn: SortFn<T> = (left: RowNode<any>, right: RowNode<any>) => {
       for (const { dim, descending } of sort) {
+        if (typeof dim === "function") {
+          return descending ? dim(right, left) : dim(left, right);
+        }
         const field = dim.field ?? (dim as any).id;
         if (!field) continue;
 

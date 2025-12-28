@@ -9,12 +9,40 @@ import { format } from "date-fns";
 import clsx from "clsx";
 import type { RequestData } from "./data";
 import { PieChart } from "react-minimal-pie-chart";
-import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import { ArrowDownIcon, ArrowUpIcon, ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
 
-export function Header({ column }: HeaderParams<GridSpec>) {
+export function Header({ api, column }: HeaderParams<GridSpec>) {
   return (
-    <div className="text-ln-gray-60 flex h-full w-full items-center text-sm transition-all">
-      {column.name ?? column.id}
+    <div
+      className="text-ln-gray-60 group relative flex h-full w-full cursor-pointer items-center px-1 text-sm transition-colors"
+      onClick={() => {
+        const columns = api.props().columns;
+        if (!columns) return;
+
+        const updates: Record<string, Partial<Grid.Column<GridSpec>>> = {};
+        const columnWithSort = columns.filter((x) => x.sort);
+        columnWithSort.forEach((x) => {
+          updates[x.id] = { sort: null };
+        });
+
+        if (column.sort === "asc") {
+          updates[column.id] = { sort: null };
+        } else if (column.sort === "desc") {
+          updates[column.id] = { sort: "asc" };
+        } else {
+          updates[column.id] = { sort: "desc" };
+        }
+
+        api.columnUpdate(updates);
+      }}
+    >
+      <div className="sort-button flex w-full items-center justify-between rounded px-1 py-1 transition-colors">
+        {column.name ?? column.id}
+
+        {column.sort === "asc" && <ArrowUpIcon className="text-ln-text-dark size-4" />}
+        {column.sort === "desc" && <ArrowDownIcon className="text-ln-text-dark size-4" />}
+      </div>
     </div>
   );
 }

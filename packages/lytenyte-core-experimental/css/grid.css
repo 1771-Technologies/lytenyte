@@ -5,6 +5,11 @@
       box-sizing: border-box;
       scrollbar-width: thin;
 
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+
       font-family: var(--ln-typeface);
       font-size: var(--ln-font-md);
 
