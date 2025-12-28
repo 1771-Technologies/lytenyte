@@ -1,14 +1,8 @@
-import type {
-  CellRendererParams,
-  HeaderParams,
-  RowParams,
-} from "@1771technologies/lytenyte-pro-experimental/types";
+import type { CellRendererParams, HeaderParams } from "@1771technologies/lytenyte-pro-experimental/types";
 import type { GridSpec } from "./demo";
 import { useMemo } from "react";
 import { format } from "date-fns";
 import clsx from "clsx";
-import type { RequestData } from "./data";
-import { PieChart } from "react-minimal-pie-chart";
 import { ArrowDownIcon, ArrowUpIcon, ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
 
@@ -50,7 +44,7 @@ export function Header({ api, column }: HeaderParams<GridSpec>) {
 export function MarkerCell({ detailExpanded, row, api }: CellRendererParams<GridSpec>) {
   return (
     <button
-      className="text-ln-text flex h-full w-[calc(100%-1px)] cursor-pointer items-center justify-center"
+      className="text-ln-text-dark flex h-full w-[calc(100%-1px)] items-center justify-center pl-2"
       onClick={() => api.rowDetailToggle(row)}
     >
       {detailExpanded ? (
@@ -200,120 +194,6 @@ export function TimingPhaseCell({ api, row }: CellRendererParams<GridSpec>) {
           );
         })}
       </div>
-    </div>
-  );
-}
-
-export function RowDetailRenderer({ row, api }: RowParams<GridSpec>) {
-  // Guard against empty data.
-  if (!api.rowIsLeaf(row) || !row.data) return null;
-
-  const total =
-    row.data["timing-phase.connection"] +
-    row.data["timing-phase.dns"] +
-    row.data["timing-phase.tls"] +
-    row.data["timing-phase.transfer"] +
-    row.data["timing-phase.ttfb"];
-
-  const connectionPer = (row.data["timing-phase.connection"] / total) * 100;
-  const dnsPer = (row.data["timing-phase.dns"] / total) * 100;
-  const tlPer = (row.data["timing-phase.tls"] / total) * 100;
-  const transferPer = (row.data["timing-phase.transfer"] / total) * 100;
-  const ttfbPer = (row.data["timing-phase.ttfb"] / total) * 100;
-
-  return (
-    <div className="pt-1.75 flex h-full flex-col px-4 pb-5 text-sm">
-      <h3 className="text-ln-text-xlight mt-0 text-xs font-medium">Timing Phases</h3>
-
-      <div className="flex flex-1 gap-2 pt-1.5">
-        <div className="bg-ln-gray-00 border-ln-gray-20 h-full flex-1 rounded-[10px] border">
-          <div className="grid-cols[auto_auto_1fr] grid grid-rows-5 gap-1 gap-x-4 p-4 md:grid-cols-[auto_auto_200px_auto]">
-            <TimingPhaseRow
-              label="Transfer"
-              color={colors[0]}
-              msPercentage={transferPer}
-              msValue={row.data["timing-phase.transfer"]}
-            />
-            <TimingPhaseRow
-              label="DNS"
-              color={colors[1]}
-              msPercentage={dnsPer}
-              msValue={row.data["timing-phase.dns"]}
-            />
-            <TimingPhaseRow
-              label="Connection"
-              color={colors[2]}
-              msPercentage={connectionPer}
-              msValue={row.data["timing-phase.connection"]}
-            />
-            <TimingPhaseRow
-              label="TTFB"
-              color={colors[3]}
-              msPercentage={ttfbPer}
-              msValue={row.data["timing-phase.ttfb"]}
-            />
-            <TimingPhaseRow
-              label="TLS"
-              color={colors[4]}
-              msPercentage={tlPer}
-              msValue={row.data["timing-phase.tls"]}
-            />
-
-            <div className="col-start-3 row-span-full flex h-full flex-1 items-center justify-center">
-              <TimingPhasePieChart row={row.data} />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-interface TimePhaseRowProps {
-  readonly color: string;
-  readonly msValue: number;
-  readonly msPercentage: number;
-  readonly label: string;
-}
-
-function TimingPhaseRow({ color, msValue, msPercentage, label }: TimePhaseRowProps) {
-  return (
-    <>
-      <div className="text-sm">{label}</div>
-      <div className="text-sm tabular-nums">{msPercentage.toFixed(2)}%</div>
-      <div className="col-start-4 hidden items-center justify-end gap-1 text-sm md:flex">
-        <div>
-          <span className="text-ln-gray-100">{numberFormatter.format(msValue)}</span>
-          <span className="text-ln-text-xlight text-xs">ms</span>
-        </div>
-        <div
-          className="rounded"
-          style={{
-            width: `${msValue}px`,
-            height: "12px",
-            background: color,
-            display: "block",
-          }}
-        ></div>
-      </div>
-    </>
-  );
-}
-
-function TimingPhasePieChart({ row }: { row: RequestData }) {
-  const data = useMemo(() => {
-    return [
-      { subject: "Transfer", value: row["timing-phase.transfer"], color: colors[0] },
-      { subject: "DNS", value: row["timing-phase.dns"], color: colors[1] },
-      { subject: "Connection", value: row["timing-phase.connection"], color: colors[2] },
-      { subject: "TTFB", value: row["timing-phase.ttfb"], color: colors[3] },
-      { subject: "TLS", value: row["timing-phase.tls"], color: colors[4] },
-    ];
-  }, [row]);
-
-  return (
-    <div style={{ height: 100 }}>
-      <PieChart data={data} startAngle={180} lengthAngle={180} center={[50, 75]} paddingAngle={1} />
     </div>
   );
 }

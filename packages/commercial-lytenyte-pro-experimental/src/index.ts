@@ -1,3 +1,4 @@
+export { activateLicense } from "./license.js";
 import { Grid as GridCore } from "@1771technologies/lytenyte-core-experimental";
 import type { PropsWithChildren, ReactNode } from "react";
 import { Root } from "./root/root.js";

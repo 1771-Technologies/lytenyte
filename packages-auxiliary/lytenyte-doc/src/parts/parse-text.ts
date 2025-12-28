@@ -15,7 +15,7 @@ export function parseExpressiveCode(src: string) {
   const mark: MarkerDefinition[] = [];
 
   let attrs = {};
-  if (lines[0]?.startsWith("//!")) {
+  if (lines[0]?.startsWith("//!") && !lines[0]?.startsWith("//!next")) {
     const line = lines.shift()!;
     attrs = Object.fromEntries(
       line
@@ -24,7 +24,9 @@ export function parseExpressiveCode(src: string) {
         .map((x) => {
           const [prop, value] = x.split("=");
           if (!value) return [prop.trim(), true];
-          return [prop.trim(), value.trim()];
+
+          const v = value.trim() === "false" ? false : value.trim() === "true" ? true : value.trim();
+          return [prop.trim(), v];
         }),
     );
   }
@@ -34,10 +36,15 @@ export function parseExpressiveCode(src: string) {
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
-    if (line.trim().startsWith("//# start")) {
+    if (line.trim().startsWith("//#start") || line.trim().startsWith("{/*#start")) {
       const start = i + 1;
 
-      while (i < lines.length && !lines[i].trim().startsWith("//# end")) i++;
+      while (
+        i < lines.length &&
+        !lines[i].trim().startsWith("//#end") &&
+        !lines[i].trim().startsWith("{/*#end")
+      )
+        i++;
       const end = i - 1;
 
       collapses.push({ start: start - collapses.length * 2, end: end - collapses.length * 2 });
