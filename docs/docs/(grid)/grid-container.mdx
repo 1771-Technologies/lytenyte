@@ -7,7 +7,7 @@ description: Learn how to create a responsive container for LyteNyte Grid using 
 LyteNyte Grid lacks inherent dimensions. Since the viewport fills its parent container,
 the parent must have a defined size for the grid to render correctly.
 Although it doesn't have a defined size, LyteNyte Grid remains fully responsive.
-To ensure responsiveness, make sure its parent element is responsive.
+To ensure responsiveness, make its parent element is responsive.
 
 :::warn
 
@@ -28,9 +28,7 @@ The height of the grid viewport comes from the `div` that contains it, which use
 the following code:
 
 ```tsx
-<div className="lng-grid" style={{ height: 500 }}>
-  {/* Grid components */}
-</div>
+<div style={{ height: 500 }}>{/* Grid components */}</div>
 ```
 
 ## Flex Height Containers
@@ -46,11 +44,9 @@ The grid then fills the space without overflow.
 The flex height container uses a series of nested `div`s, as shown below:
 
 ```tsx
-<div className="lng-grid" style={{ height: 500, display: "flex", flexDirection: "column" }}>
+<div style={{ height: 500, display: "flex", flexDirection: "column" }}>
   <div style={{ flex: "1", position: "relative" }}>
-    <div style={{ position: "absolute", width: "100%", height: "100%" }}>
-      {/* Grid components */}
-    </div>
+    <div style={{ position: "absolute", width: "100%", height: "100%" }}>{/* Grid components */}</div>
   </div>
 </div>
 ```
@@ -66,9 +62,7 @@ area while remaining properly contained.
 The grid height container uses the `grid-template-rows` property, as shown below:
 
 ```tsx
-<div className="lng-grid" style={{ display: "grid", gridTemplateRows: "500px" }}>
-  {/* Grid components */}
-</div>
+<div style={{ display: "grid", gridTemplateRows: "500px" }}>{/* Grid components */}</div>
 ```
 
 Other CSS sizing techniques also work well with LyteNyte Grid.

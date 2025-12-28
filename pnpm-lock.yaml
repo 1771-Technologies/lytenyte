@@ -446,7 +446,7 @@ importers:
         version: 3.1.0
       '@tailwindcss/vite':
         specifier: 4.1.17
-        version: 4.1.17(vite@6.4.1(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.39.2)(tsx@4.20.5)(yaml@2.8.0))
+        version: 4.1.17(vite@7.1.3(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.39.2)(tsx@4.20.5)(yaml@2.8.0))
       '@types/hast':
         specifier: 3.0.4
         version: 3.0.4
@@ -1930,7 +1930,6 @@ packages:
     cpu: [x64]
     os: [win32]
 
-<<<<<<< HEAD
   '@inquirer/ansi@1.0.2':
     resolution: {integrity: sha512-S8qNSZiYzFd0wAcyG5AXCvUHC5Sr7xpZ9wZ2py9XR88jUz8wooStVx5M6dRzczbBWjic9NP7+rY0Xi7qqK/aMQ==}
     engines: {node: '>=18'}
@@ -2065,8 +2064,6 @@ packages:
       '@types/node':
         optional: true
 
-=======
->>>>>>> 827a96b3 (Adjusted LyteNyte experimental types)
   '@internationalized/date@3.9.0':
     resolution: {integrity: sha512-yaN3brAnHRD+4KyyOsJyk49XUvj2wtbNACSqg0bz3u8t2VuzhC8Q5dfRnrSxjnnbDb+ienBnkn1TzQfE154vyg==}
 
@@ -10823,17 +10820,17 @@ snapshots:
       '@floating-ui/core': 1.7.3
       '@floating-ui/utils': 0.2.10
 
+  '@floating-ui/react-dom@2.1.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
+    dependencies:
+      '@floating-ui/dom': 1.7.2
+      react: 19.1.1
+      react-dom: 19.1.1(react@19.1.1)
+
   '@floating-ui/react-dom@2.1.4(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
     dependencies:
       '@floating-ui/dom': 1.7.2
       react: 19.2.1
       react-dom: 19.2.1(react@19.2.1)
-
-  '@floating-ui/react-dom@2.1.6(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
-    dependencies:
-      '@floating-ui/dom': 1.7.4
-      react: 19.1.1
-      react-dom: 19.1.1(react@19.1.1)
 
   '@floating-ui/react-dom@2.1.6(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
     dependencies:
@@ -11053,7 +11050,6 @@ snapshots:
   '@img/sharp-win32-x64@0.34.5':
     optional: true
 
-<<<<<<< HEAD
   '@inquirer/ansi@1.0.2': {}
 
   '@inquirer/checkbox@4.3.2(@types/node@22.19.3)':
@@ -11179,8 +11175,6 @@ snapshots:
     optionalDependencies:
       '@types/node': 22.19.3
 
-=======
->>>>>>> 827a96b3 (Adjusted LyteNyte experimental types)
   '@internationalized/date@3.9.0':
     dependencies:
       '@swc/helpers': 0.5.15
@@ -12531,7 +12525,7 @@ snapshots:
 
   '@radix-ui/react-popper@1.2.8(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
     dependencies:
-      '@floating-ui/react-dom': 2.1.6(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      '@floating-ui/react-dom': 2.1.4(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@radix-ui/react-arrow': 1.1.7(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@radix-ui/react-compose-refs': 1.1.2(@types/react@19.1.8)(react@19.1.1)
       '@radix-ui/react-context': 1.1.2(@types/react@19.1.8)(react@19.1.1)
@@ -12549,7 +12543,7 @@ snapshots:
 
   '@radix-ui/react-popper@1.2.8(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
     dependencies:
-      '@floating-ui/react-dom': 2.1.6(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+      '@floating-ui/react-dom': 2.1.4(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       '@radix-ui/react-arrow': 1.1.7(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       '@radix-ui/react-compose-refs': 1.1.2(@types/react@19.1.8)(react@19.2.1)
       '@radix-ui/react-context': 1.1.2(@types/react@19.1.8)(react@19.2.1)
@@ -14108,12 +14102,12 @@ snapshots:
       tailwindcss: 4.1.16
       vite: 7.1.3(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.39.2)(tsx@4.20.5)(yaml@2.8.0)
 
-  '@tailwindcss/vite@4.1.17(vite@6.4.1(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.39.2)(tsx@4.20.5)(yaml@2.8.0))':
+  '@tailwindcss/vite@4.1.17(vite@7.1.3(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.39.2)(tsx@4.20.5)(yaml@2.8.0))':
     dependencies:
       '@tailwindcss/node': 4.1.17
       '@tailwindcss/oxide': 4.1.17
       tailwindcss: 4.1.17
-      vite: 6.4.1(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.39.2)(tsx@4.20.5)(yaml@2.8.0)
+      vite: 7.1.3(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.39.2)(tsx@4.20.5)(yaml@2.8.0)
 
   '@tailwindcss/vite@4.1.18(vite@6.4.1(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.39.2)(tsx@4.20.5)(yaml@2.8.0))':
     dependencies:
@@ -14594,8 +14588,18 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+  '@vitejs/plugin-react@4.7.0(vite@6.4.1(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.39.2)(tsx@4.20.5)(yaml@2.8.0))':
+    dependencies:
+      '@babel/core': 7.28.3
+      '@babel/plugin-transform-react-jsx-self': 7.27.1(@babel/core@7.28.3)
+      '@babel/plugin-transform-react-jsx-source': 7.27.1(@babel/core@7.28.3)
+      '@rolldown/pluginutils': 1.0.0-beta.27
+      '@types/babel__core': 7.20.5
+      react-refresh: 0.17.0
+      vite: 6.4.1(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.39.2)(tsx@4.20.5)(yaml@2.8.0)
+    transitivePeerDependencies:
+      - supports-color
+
   '@vitest/browser-playwright@4.0.3(playwright@1.56.1)(vite@6.4.1(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.39.2)(tsx@4.20.5)(yaml@2.8.0))(vitest@3.2.4)':
     dependencies:
       '@vitest/browser': 4.0.3(vite@6.4.1(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.39.2)(tsx@4.20.5)(yaml@2.8.0))(vitest@3.2.4)
@@ -14610,22 +14614,6 @@ snapshots:
       - vite
     optional: true
 
-=======
->>>>>>> 827a96b3 (Adjusted LyteNyte experimental types)
-=======
-  '@vitejs/plugin-react@4.7.0(vite@6.4.1(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.39.2)(tsx@4.20.5)(yaml@2.8.0))':
-    dependencies:
-      '@babel/core': 7.28.3
-      '@babel/plugin-transform-react-jsx-self': 7.27.1(@babel/core@7.28.3)
-      '@babel/plugin-transform-react-jsx-source': 7.27.1(@babel/core@7.28.3)
-      '@rolldown/pluginutils': 1.0.0-beta.27
-      '@types/babel__core': 7.20.5
-      react-refresh: 0.17.0
-      vite: 6.4.1(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.39.2)(tsx@4.20.5)(yaml@2.8.0)
-    transitivePeerDependencies:
-      - supports-color
-
->>>>>>> 2c79e4aa (Migration to the v2 for docs)
   '@vitest/browser-playwright@4.0.3(playwright@1.56.1)(vite@7.1.3(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.39.2)(tsx@4.20.3)(yaml@2.8.0))(vitest@4.0.3)':
     dependencies:
       '@vitest/browser': 4.0.3(vite@7.1.3(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.39.2)(tsx@4.20.3)(yaml@2.8.0))(vitest@4.0.3)
@@ -15623,7 +15611,7 @@ snapshots:
       zod-to-json-schema: 3.25.0(zod@3.25.76)
       zod-to-ts: 1.2.0(typescript@5.9.2)(zod@3.25.76)
     optionalDependencies:
-      sharp: 0.34.4
+      sharp: 0.34.5
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -15725,7 +15713,7 @@ snapshots:
       zod-to-json-schema: 3.25.0(zod@3.25.76)
       zod-to-ts: 1.2.0(typescript@5.8.3)(zod@3.25.76)
     optionalDependencies:
-      sharp: 0.34.4
+      sharp: 0.34.5
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'

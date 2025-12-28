@@ -5,7 +5,6 @@ import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experi
 
 import type { RequestData } from "./data.js";
 import { requestData } from "./data.js";
-//#end
 
 import {
   DateCell,
@@ -16,6 +15,7 @@ import {
   StatusCell,
   TimingPhaseCell,
 } from "./components.jsx";
+//#end
 
 export interface GridSpec {
   data: RequestData;

@@ -4,7 +4,8 @@
     "grid-container",
     "grid-reactivity",
     "grid-headless-parts",
-    "grid-events",
+    "grid-api-extensions",
+    "grid-react-compiler",
     "grid-virtualization"
   ],
   "defaultOpen": true

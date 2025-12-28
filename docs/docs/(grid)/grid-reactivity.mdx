@@ -1,19 +1,23 @@
 ---
-title: Grid Atoms & Reactivity
+title: Grid Reactivity
 description: LyteNyte Grid is a declarative grid. The state you apply
   determines what the grid displays. The design follows the philosophy that
   "view is a function of state."
 ---
 
-LyteNyte Grid creates state through the `Grid.useLyteNyte` hook. This hook
-returns an object comprising three properties:
+LyteNyte Grid accepts state via props provided to the `Grid` component.
 
-- `state`: The declarative state of LyteNyte Grid. The state is a store of
-  attributes that you can update, use reactively, or retrieve imperatively.
-- `api`: A set of imperative functions that simplify complex state updates and
-  data retrieval. Treat the `api` property as utility functions provided by LyteNyte Grid.
-- `view`: The current set of visible rows and columns. The `view` property is a grid atom,
-  which is the primary state type created by the `useLyteNyte` hook.
+## Props as State
+
+## Responding to State Updates
+
+## Stable State Values
+
+## Next Steps
+
+- [Headless Component Parts](/docs/grid-headless-parts): Learn about the component parts that make up LyteNyte Grid.
+- [Grid Events](/docs/grid-events): Learn how to handle events fired by LyteNyte Grid and different approaches to event handling.
+- [Row & Column Virtualization](/docs/grid-virtualization): Learn how LyteNyte Grid enables performance at scale with row and column virtualization.
 
 ## Grid Atoms
 
@@ -75,11 +79,7 @@ function RenderSelectionCount({ rowSelectedIds }: { rowSelectedIds: GridAtom<Set
   if (selectedRows.size === 0)
     return <div className="border-b px-2 py-2">You have not selected any rows</div>;
 
-  return (
-    <div className="border-b px-2 py-2">
-      There are {selectedRows.size} selected rows in the grid.
-    </div>
-  );
+  return <div className="border-b px-2 py-2">There are {selectedRows.size} selected rows in the grid.</div>;
 }
 ```
 
