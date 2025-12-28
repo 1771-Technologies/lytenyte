@@ -40,9 +40,11 @@ export interface GridSpec<
 }
 ```
 
-The specification has four optional type parameters and four optional properties. Each property extends the grid's typing in a specific way.
+The grid specification has four optional type parameters and four optional properties.
+Each property extends the grid's typing in a specific way.
 
-- The `Data` type describes the shape of the row data that the grid receives. For example, if the row data is a `number[]`, define the grid spec like this:
+- The `Data` type describes the shape of the row data that the grid receives.
+  For example, if the row data is a `number[]`, define the grid spec like this:
 
   ```ts
   interface GridSpec {
@@ -50,7 +52,9 @@ The specification has four optional type parameters and four optional properties
   }
   ```
 
-- The `ColExt` type describes additional properties you want to add to columns. LyteNyte Grid combines the additional properties with the base `Grid.Column` type. For example, the code below shows two equivalent definitions:
+- The `ColExt` type describes additional properties you want to add to columns.
+  LyteNyte Grid combines these additional properties with the base
+  `Grid.Column` type. For example, the code below shows two equivalent definitions:
 
   ```ts
   interface GridSpec {
@@ -64,9 +68,13 @@ The specification has four optional type parameters and four optional properties
   }
   ```
 
-  The `GridSpec` approach is recommended, because it keeps column extensions and data typing in one place.
+  The `GridSpec` approach is recommended because it keeps column
+  extensions and row data typing in one place.
 
-- The `Source` type describes the row data source you provide. Each row data source shares common capabilities, but each source type also adds source-specific capabilities and functions. The `source` property exposes those capabilities through the grid types. The code below shows an example using the `RowSourceServer` type from the
+- The `Source` type describes the row data source you provide. Each row data source shares common capabilities,
+  but each source type also adds source-specific capabilities and functions.
+  The `source` property exposes those capabilities through the grid types.
+  The code below shows an example using the `RowSourceServer` type from the
   [server row data source](/docs/server-data-loading-overview):
 
   ```ts
@@ -75,11 +83,14 @@ The specification has four optional type parameters and four optional properties
   }
   ```
 
-- The `Ext` type describes the API extensions that you provide through the `apiExtension` property on the grid. Use `Ext` to add user-defined functions and state to the grid’s API. By typing `Ext` on the grid spec, you extend the API type.
+- The `Ext` type describes the API extensions that you provide through the `apiExtension` property
+  on the grid. Use `Ext` to add user-defined functions and state to
+  the grid's API. When you type `Ext` on the grid spec, you extend the API type.
 
-  LyteNyte Grid also extends the API type with the provided `RowSource` type, so the final API type is the combination: `Grid.API & Source & Ext`.
+  LyteNyte Grid also extends the API type with the provided `Source` type,
+  so the final API type is the combination: `Grid.API & Source & Ext`.
 
-  The code below shows an example that adds a `notifyUser` method to LyteNyte Grid’s API:
+  The code below shows an example that adds a `notifyUser` method to LyteNyte Grid's API:
 
   ```ts
   interface GridSpec {
@@ -87,7 +98,8 @@ The specification has four optional type parameters and four optional properties
   }
   ```
 
-You can combine all properties to create a full set of specified grid types. In the example below, each part of the `GridSpec` is defined and used with the main types used by LyteNyte Grid:
+You can combine all properties to create a full set of specified grid types. In the example
+below, each part of the `GridSpec` is defined and used with the main types used by LyteNyte Grid:
 
 ```ts
 interface GridSpec {
@@ -102,16 +114,19 @@ type Column = Grid.Column<GridSpec>;
 type API = Grid.API<GridSpec>;
 ```
 
-With these types defined, you can define derived types for specific properties. For example, you can create renderer types like this:
+With these types defined, you can define derived types for specific properties.
+For example, you can create renderer types like this:
 
 ```ts
 type CellRenderer = Required<Grid.Column<GridSpec>>["cellRenderer"];
 type HeaderRenderer = Required<Grid.Column<GridSpec>>["headerRenderer"];
 ```
 
-## Grid is Namespace and Component
+## Grid is a Namespace and Component
 
-The `Grid` export in LyteNyte Grid is both the root component and a type namespace. The namespace contains all the types used by LyteNyte Grid’s publicly exposed functions and components. This means the following code is valid:
+The `Grid` export in LyteNyte Grid is both the root component and a type namespace.
+The namespace contains all the types used by LyteNyte Grid's publicly exposed functions
+and components. This means the following code is valid:
 
 ```tsx
 function GridWrapper<K extends Grid.GridSpec>(props: Grid.Props<K>) {
@@ -119,8 +134,11 @@ function GridWrapper<K extends Grid.GridSpec>(props: Grid.Props<K>) {
 }
 ```
 
-This guide does not cover the details of why this works in TypeScript, but you do not need to actively think about it.
-TypeScript does not allow `Grid` itself to be used as a type, so TypeScript prevents misuse in places where a type is expected. For example, this code fails type checking:
+This guide does not cover the details of why this works in
+TypeScript, but you do not need to actively think about it.
+TypeScript does not allow `Grid` itself to be used as a type,
+so TypeScript prevents misuse in places where a type is
+expected. For example, this code fails type checking:
 
 ```ts
 type MyGrid = Grid;
