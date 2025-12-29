@@ -6,17 +6,23 @@ on:
     branches:
       - main
 
-concurrency: ${{ github.workflow }}-${{ github.ref }}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
   pull-requests: write
 
-jobs:
-  pr-checks:
-    name: PR Validation
-    runs-on: ubuntu-24.04
+env:
+  NODE_VERSION: "24"
 
+jobs:
+  setup:
+    name: Setup
+    runs-on: ubuntu-24.04
+    outputs:
+      pnpm-store-path: ${{ steps.pnpm-store.outputs.path }}
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v5
@@ -26,13 +32,25 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "24"
+          node-version: ${{ env.NODE_VERSION }}
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v3
         with:
           version: latest
-          run_install: true
+          run_install: false
+
+      - name: Get pnpm store path
+        id: pnpm-store
+        run: echo "path=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
+
+      - name: Cache pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-store.outputs.path }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
 
       - name: Install One Play
         run: pnpm install -g @1771technologies/oneplay --ignore-workspace
@@ -40,35 +58,177 @@ jobs:
       - name: Install Dependencies
         run: op np i
 
-      - name: Install Playwright Binaries
-        run: npx playwright install --with-deps
+  lint:
+    name: Lint
+    runs-on: ubuntu-24.04
+    needs: setup
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          lfs: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: latest
+          run_install: false
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ needs.setup.outputs.pnpm-store-path }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - run: pnpm install -g @1771technologies/oneplay --ignore-workspace
+      - run: op np i
 
       - name: Lint All Packages
         run: op np --filter './packages/*' --filter '!./packages/sample-data' exec op lint
 
+  fmt:
+    name: Format
+    runs-on: ubuntu-24.04
+    needs: setup
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          lfs: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: latest
+          run_install: false
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ needs.setup.outputs.pnpm-store-path }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - run: pnpm install -g @1771technologies/oneplay --ignore-workspace
+      - run: op np i
+
       - name: Check All Packages Format
         run: op np --filter './packages/*' exec op fmt
+
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-24.04
+    needs: setup
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          lfs: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: latest
+          run_install: false
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ needs.setup.outputs.pnpm-store-path }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - run: pnpm install -g @1771technologies/oneplay --ignore-workspace
+      - run: op np i
 
       - name: Typecheck All Packages
         run: op np --filter './packages/*' exec op typecheck
 
-      - name: Test All Packages (chrome)
-        run: op np --filter './packages/*' exec op test run --project=chrome
-      - name: Test All Packages (firefox)
-        run: op np --filter './packages/*' exec op test run --project=firefox
-      - name: Test All Packages (safari)
-        run: op np --filter './packages/*' exec op test run --project=safari
+  test:
+    name: Test (${{ matrix.browser }})
+    runs-on: ubuntu-24.04
+    needs: setup
+    strategy:
+      fail-fast: false
+      matrix:
+        browser:
+          - chrome
+          - firefox
+          - safari
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          lfs: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: latest
+          run_install: false
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ needs.setup.outputs.pnpm-store-path }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - run: pnpm install -g @1771technologies/oneplay --ignore-workspace
+      - run: op np i
+
+      - name: Install Playwright Binaries
+        run: npx playwright install --with-deps
+
+      - name: Test All Packages (${{ matrix.browser }})
+        run: op np --filter './packages/*' exec op test run --project=${{ matrix.browser }}
 
       - name: Upload screenshots (on failure)
         if: ${{ failure() }}
         uses: actions/upload-artifact@v4
         with:
-          name: failed-screenshots-${{ github.run_number }}
-          # grab screenshots from ANY package/test folder:
+          name: failed-screenshots-${{ matrix.browser }}-${{ github.run_number }}
           path: |
             **/__screenshots__/**
           if-no-files-found: ignore
           retention-days: 1
+
+  build:
+    name: Build
+    runs-on: ubuntu-24.04
+    needs: setup
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          lfs: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: latest
+          run_install: false
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ needs.setup.outputs.pnpm-store-path }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - run: pnpm install -g @1771technologies/oneplay --ignore-workspace
+      - run: op np i
 
       - name: Build All Packages
         run: op np --filter './packages/*' exec op compile
