@@ -10,9 +10,8 @@ sort data directly. Instead, the row data source applies the sort and returns th
 `sortModel` is an array of sort configurations.
 
 LyteNyte Grid supports built-in sort types and custom sort implementations.
-
-Each item in the `sortModel` conforms to the
-[`SortModelItem`](/docs/reference/sort#sortmodelitem) interface. An example appears below:
+Each item in the `sortModel` conforms to the [`SortModelItem`](/docs/reference/sort#sortmodelitem)
+interface. An example appears below:
 
 ```tsx
 { columnId: "age", sort: { kind: "number" }, isDescending: false },
@@ -20,7 +19,7 @@ Each item in the `sortModel` conforms to the
 
 This guide describes the sort model as a generic representation of sort state. The data source you
 provide remains responsible for applying the sort. The demo below shows this behavior using the
-[Client Row Data Source](/docs/row-client-data-source).
+[client row data source](/docs/row-client-data-source).
 
 For a server-driven example, see the
 [Server Row Sorting guide](/docs/server-data-loading-row-sorting), which sorts data on a mock server
@@ -41,10 +40,11 @@ In the demo below, hold **Ctrl** (Windows/Linux) or **Command** (macOS) while cl
 to add it to the sort model. See the example's `Header` component for one way to implement this
 interaction.
 
-If header clicks are reserved for another action or feel unintuitive, use the
-[Sort Manager](/docs/component-sort-manager) component to provide a dedicated multi-sort UI.
-
 !demo:Multi-Column Sorting="./demos/row-sorting-multi"
+
+If your application already performs an action when a column header is clicked, or if Ctrl+click to add more sorts feels unintuitive,
+LyteNyte Grid provides a [Sort Manager](/docs/component-sort-manager) to handle multi-sorting in a user-friendly way.
+Consider using it when your grid requires sorting across multiple dimensions.
 
 ## Next Steps
 

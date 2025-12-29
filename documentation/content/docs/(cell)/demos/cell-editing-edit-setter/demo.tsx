@@ -11,7 +11,7 @@ type Stock = (typeof stockData)[number];
 const columns: Column<Stock>[] = [
   { field: 0, width: 150, id: "ticker" },
   { field: 1, width: 150, id: "full", widthFlex: 1 },
-  { field: 2, width: 150, id: "analyst-rating" },
+  { field: 2, width: 150, id: "analyst-rating", name: "Analyst Rating" },
   {
     width: 150,
     field: ({ data }) => {
@@ -24,9 +24,7 @@ const columns: Column<Stock>[] = [
       const field = p.grid.api.columnField(p.column, p.row);
 
       return (
-        <div className="flex h-full w-full items-center justify-end px-2 tabular-nums">
-          {`${field}`} USD
-        </div>
+        <div className="flex h-full w-full items-center justify-end px-2 tabular-nums">{`${field}`} USD</div>
       );
     },
     id: "price",

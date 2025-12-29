@@ -1,6 +1,6 @@
 ---
 title: Row Dragging
-description: Drag rows within the same LyteNyte Grid, between grids, or to external drop zones.
+description: Drag and drop rows within the same LyteNyte Grid, across multiple grids, or into external drop zones.
 ---
 
 ## Single Row Dragging
@@ -28,7 +28,7 @@ a basic single-row drag setup. Focus on the marker column's `cellRenderer` and t
 Combine row dragging with **row selection** to support dragging multiple rows. Instead of returning data
 for a single row, use `getDragData` to include all selected rows from the selection state.
 
-!demo:Dragging Multiple Rows="./demos/row-dragging-multi"
+!demo:Multiple Row Dragging="./demos/row-dragging-multi"
 
 ## Dragging Between Grids
 
@@ -36,7 +36,7 @@ To enable dragging between grids, use a shared `accepted` value. For example, se
 `accepted={["row"]}` on both grids allows drag data containing a `row` key to be dropped onto rows in
 either grid.
 
-!demo:Dragging Between Grdis="./demos/row-dragging-between-grids"
+!demo:Grid-to-Grid Dragging="./demos/row-dragging-between-grids"
 
 ## External Drop Zones
 
@@ -50,4 +50,4 @@ all required drag events and can accept any drag data produced by the grid.
 - [Row Pinning](/docs/row-pinning): Freeze rows at the top or bottom of the viewport.
 - [Row Full Width](/docs/row-full-width): Create rows that span the full width of the viewport.
 - [Row Selection](/docs/row-selection): Select single or multiple rows.
-- [Row Sorting](/docs/row-detail): Learn how to sort and order rows.
+- [Row Sorting](/docs/row-sorting): Learn how to sort and order rows.

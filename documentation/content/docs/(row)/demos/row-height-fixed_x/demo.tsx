@@ -87,7 +87,7 @@ export default function RowHeight() {
   });
 
   const view = grid.view.useValue();
-  const [height, setHeight] = useState("small");
+  const [height, setHeight] = useState("medium");
 
   useEffect(() => {
     if (height === "small") grid.state.rowHeight.set(30);

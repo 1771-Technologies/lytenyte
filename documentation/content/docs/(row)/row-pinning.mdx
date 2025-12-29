@@ -8,6 +8,7 @@ description: LyteNyte Grid can freeze rows at the top or bottom of the grid view
 
 Pinned rows render in separate sections of the `Grid.RowsContainer` from scrollable rows.
 When using row pinning, you must include the pinned row section components, as shown below.
+
 For more details on these layout components, see the [Headless Component Parts guide](/docs/grid-headless-parts).
 
 ```tsx
@@ -32,20 +33,20 @@ For more details on these layout components, see the [Headless Component Parts g
 </Grid.RowsContainer>
 ```
 
-## Pinned Row Example
+## Pinned Row Specifications
 
 The grid's data source defines which rows are pinned. How you specify pinned rows
 depends on the type of row data source in use.
 
-The demo below uses the [Client Row Data Source](/docs/row-client-data-source) to
-demonstrate row pinning. For other data sources, see their dedicated guides:
+The demo below uses the [client row data source](/docs/row-client-data-source) to
+demonstrate row pinning. For other data sources, see their respective guides:
 
 - [Tree Data Source](/docs/row-tree-data-source)
 - [Server Row Pinning](/docs/server-data-loading-row-pinning)
 
-Regardless of the data source, rendering pinned rows follows the same pattern. Including the
-`Grid.RowsTop` and `Grid.RowsBottom` components always displays the
-pinned rows for the current grid view.
+Pinning renders the same way regardless of the data source. Use `Grid.RowsTop` to
+render top-pinned rows and `Grid.RowsBottom` to render bottom-pinned rows.
+These components always display the pinned rows for the current grid view.
 
 !demo:Pinned Rows="./demos/row-pinning_x"
 
@@ -62,7 +63,7 @@ you must account for the number of rows pinned at the top.
 
 The marker column demo below makes this behavior explicit:
 
-!demo:Rows With Pinned Offset="./demos/row-pinning-marker_x"
+!demo:Offset Pinned Rows="./demos/row-pinning-marker_x"
 
 In this example, the first scrollable row displays an index of `3` because two rows are pinned to the top. The bottom-pinned rows display
 indices `17` and `18`, reflecting their position after both the
@@ -71,6 +72,6 @@ top-pinned and scrollable rows.
 ## Next Steps
 
 - [Row Full Width](/docs/row-full-width): Create rows that expand to the full width of the viewport.
-- [Row Dragging](/docs/row-selection): Drag rows within the grid or between grids and external drop zones.
-- [Row Sorting](/docs/row-detail): Learn about the row sort model and how rows are ordered.
+- [Row Dragging](/docs/row-dragging): Drag and drop rows within the same LyteNyte Grid, across multiple grids, or into external drop zones.
+- [Row Sorting](/docs/row-sorting): Learn about the row sort model and how rows are ordered.
 - [Row Spanning](/docs/row-spanning): See how cells can span multiple rows.
