@@ -16,6 +16,6 @@ test("when a controlled value is not provided, the uncontrolled value should wor
 
   expect(result.current[0]).toEqual(true);
   result.current[1](false);
-  await wait();
+  await wait(100);
   expect(result.current[0]).toEqual(false);
 });
