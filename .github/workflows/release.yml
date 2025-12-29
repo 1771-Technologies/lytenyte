@@ -6,17 +6,23 @@ on:
     branches:
       - main
 
-concurrency: ${{ github.workflow }}-${{ github.ref }}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
   pull-requests: write
 
-jobs:
-  pr-checks:
-    name: PR Validation
-    runs-on: ubuntu-24.04
+env:
+  NODE_VERSION: "24"
 
+jobs:
+  setup:
+    name: Setup
+    runs-on: ubuntu-24.04
+    outputs:
+      pnpm-store-path: ${{ steps.pnpm-store.outputs.path }}
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v5
@@ -26,13 +32,25 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "24"
+          node-version: ${{ env.NODE_VERSION }}
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v3
         with:
           version: latest
-          run_install: true
+          run_install: false
+
+      - name: Get pnpm store path
+        id: pnpm-store
+        run: echo "path=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
+
+      - name: Cache pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-store.outputs.path }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
 
       - name: Install One Play
         run: pnpm install -g @1771technologies/oneplay --ignore-workspace
@@ -40,35 +58,322 @@ jobs:
       - name: Install Dependencies
         run: op np i
 
-      - name: Install Playwright Binaries
-        run: npx playwright install --with-deps
+  lint:
+    name: Lint
+    runs-on: ubuntu-24.04
+    needs: setup
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          lfs: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: latest
+          run_install: false
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ needs.setup.outputs.pnpm-store-path }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - run: pnpm install -g @1771technologies/oneplay --ignore-workspace
+      - run: op np i
 
       - name: Lint All Packages
         run: op np --filter './packages/*' --filter '!./packages/sample-data' exec op lint
 
+  fmt:
+    name: Format
+    runs-on: ubuntu-24.04
+    needs: setup
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          lfs: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: latest
+          run_install: false
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ needs.setup.outputs.pnpm-store-path }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - run: pnpm install -g @1771technologies/oneplay --ignore-workspace
+      - run: op np i
+
       - name: Check All Packages Format
         run: op np --filter './packages/*' exec op fmt
+
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-24.04
+    needs: setup
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          lfs: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: latest
+          run_install: false
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ needs.setup.outputs.pnpm-store-path }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - run: pnpm install -g @1771technologies/oneplay --ignore-workspace
+      - run: op np i
 
       - name: Typecheck All Packages
         run: op np --filter './packages/*' exec op typecheck
 
-      - name: Test All Packages (chrome)
-        run: op np --filter './packages/*' exec op test run --project=chrome
-      - name: Test All Packages (firefox)
-        run: op np --filter './packages/*' exec op test run --project=firefox
-      - name: Test All Packages (safari)
-        run: op np --filter './packages/*' exec op test run --project=safari
+  packages-matrix:
+    name: Compute package matrix
+    runs-on: ubuntu-24.04
+    outputs:
+      packages: ${{ steps.gen.outputs.packages }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          lfs: true
+          fetch-depth: 0 # IMPORTANT for diffs across PRs / merges
+
+      - name: Generate packages JSON (changed-only for PRs)
+        id: gen
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # --- Determine diff range ---
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            base="${{ github.event.pull_request.base.sha }}"
+            head="${{ github.event.pull_request.head.sha }}"
+          else
+            # push event
+            base="${{ github.event.before }}"
+            head="${{ github.sha }}"
+          fi
+
+          echo "Diffing changes from $base to $head"
+
+          # --- All packages (full list) ---
+          all_pkgs=$(
+            find packages -mindepth 1 -maxdepth 1 -type d \
+              ! -name "sample-data" \
+              -print | sort
+          )
+
+          # If this is a push to main, always run all packages
+          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "Push to main detected → running ALL packages."
+            pkgs="$all_pkgs"
+          else
+            # --- PR / non-main push behavior ---
+            changed_files=$(git diff --name-only "$base" "$head" || true)
+
+            echo "Changed files:"
+            echo "$changed_files"
+
+            # Root file detection (NEW DEFINITION):
+            # Any file path with NO slash (e.g. "eslint.js") counts as a root file change.
+            root_file_changed=$(
+              printf '%s\n' "$changed_files" \
+                | awk '
+                    NF==0 {next}
+                    $0 !~ /\// {print; exit 0}
+                  ' || true
+            )
+
+            if [[ -n "$root_file_changed" ]]; then
+              echo "Root file change detected (example: $root_file_changed) → running ALL packages."
+              pkgs="$all_pkgs"
+            else
+              echo "No root files changed → running ONLY changed packages."
+
+              # Extract changed packages (packages/<pkg>)
+              changed_pkgs=$(
+                printf '%s\n' "$changed_files" \
+                  | awk -F/ '$1=="packages" && $2!="" { print "packages/"$2 }' \
+                  | sort -u \
+                  | while read -r p; do
+                      if [[ -d "$p" && "$(basename "$p")" != "sample-data" ]]; then
+                        echo "$p"
+                      fi
+                    done
+              )
+
+              # If nothing changed under packages/, output an empty list (means no test jobs)
+              if [[ -z "${changed_pkgs// }" ]]; then
+                echo "No package changes found under packages/ → outputting empty package matrix."
+                pkgs=""
+              else
+                pkgs="$changed_pkgs"
+              fi
+            fi
+          fi
+
+          # --- Build JSON array of objects ---
+          # If pkgs is empty, output an empty string.
+          # The test job will be skipped via a job-level condition.
+          if [[ -z "${pkgs// }" ]]; then
+            json=""
+          else
+            json=$(
+              while IFS= read -r p; do
+                [[ -z "$p" ]] && continue
+                name="${p#packages/}"
+
+                # Remove all occurrences of "commercial-"
+                pretty="${name//commercial-/}"
+
+                # Normalize separators to spaces for display only
+                pretty="${pretty//-/ }"
+                pretty="${pretty//_/ }"
+
+                # Title Case each word
+                pretty="$(echo "$pretty" | awk '{ for(i=1;i<=NF;i++){ $i=toupper(substr($i,1,1)) substr($i,2) } print }')"
+
+                jq -n --arg path "$p" --arg name "$name" --arg display "$pretty" \
+                  '{path:$path,name:$name,display:$display}'
+              done <<< "$pkgs" | jq -cs .
+            )
+          fi
+
+
+          echo "Final package matrix: $json"
+
+          {
+            echo "packages<<EOF"
+            echo "$json"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+  test:
+    if: ${{ needs.packages-matrix.outputs.packages != '' }}
+    name: >-
+      ${{
+        (matrix.browser == 'chrome' && 'Chrome') ||
+        (matrix.browser == 'firefox' && 'Firefox') ||
+        (matrix.browser == 'safari' && 'Safari') ||
+        matrix.browser
+      }} | ${{ matrix.package.display }}
+
+    runs-on: ubuntu-24.04
+    needs:
+      - setup
+      - packages-matrix
+    strategy:
+      fail-fast: false
+      max-parallel: 24
+      matrix:
+        browser:
+          - chrome
+          - firefox
+          - safari
+        package: ${{ fromJson(needs.packages-matrix.outputs.packages) }}
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          lfs: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: latest
+          run_install: false
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ needs.setup.outputs.pnpm-store-path }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - run: pnpm install -g @1771technologies/oneplay --ignore-workspace
+      - run: op np i
+
+      # Install only the browser needed for this matrix entry.
+      # "chrome" project corresponds to Chromium; "safari" corresponds to WebKit on Linux.
+      - name: Install Playwright Binaries (${{ matrix.browser }})
+        shell: bash
+        run: |
+          case "${{ matrix.browser }}" in
+            chrome)  npx playwright install --with-deps chromium ;;
+            firefox) npx playwright install --with-deps firefox ;;
+            safari)  npx playwright install --with-deps webkit ;;
+            *) echo "Unknown browser: ${{ matrix.browser }}" && exit 1 ;;
+          esac
+
+      - name: Run tests
+        working-directory: ${{ matrix.package.path }}
+        run: op test run --project=${{ matrix.browser }}
 
       - name: Upload screenshots (on failure)
         if: ${{ failure() }}
         uses: actions/upload-artifact@v4
         with:
-          name: failed-screenshots-${{ github.run_number }}
-          # grab screenshots from ANY package/test folder:
+          # Uses the short name (no `packages/`), avoids slashes in artifact names.
+          name: failed-screenshots-${{ matrix.package.name }}-${{ matrix.browser }}-${{ github.run_number }}
           path: |
             **/__screenshots__/**
           if-no-files-found: ignore
           retention-days: 1
+
+  build:
+    name: Build
+    runs-on: ubuntu-24.04
+    needs: setup
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          lfs: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: latest
+          run_install: false
+
+      - uses: actions/cache@v4
+        with:
+          path: ${{ needs.setup.outputs.pnpm-store-path }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
+      - run: pnpm install -g @1771technologies/oneplay --ignore-workspace
+      - run: op np i
 
       - name: Build All Packages
         run: op np --filter './packages/*' exec op compile
