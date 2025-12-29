@@ -35,7 +35,7 @@ jobs:
           run_install: true
 
       - name: Install One Play
-        run: pnpm install -g @1771technologies/oneplay --no-workspace-pacakges
+        run: pnpm install -g @1771technologies/oneplay --ignore-workspace
 
       - name: Install Dependencies
         run: op np i
