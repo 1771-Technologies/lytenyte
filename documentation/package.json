@@ -10,6 +10,7 @@
     "update-examples": "pnpm tsx ./make-examples.ts"
   },
   "dependencies": {
+    "@base-ui-components/react": "1.0.0-beta.1",
     "@1771technologies/lytenyte-pro": "workspace:*",
     "@1771technologies/lytenyte-pro-experimental": "workspace:*",
     "@1771technologies/remark-code-demo": "workspace:*",
