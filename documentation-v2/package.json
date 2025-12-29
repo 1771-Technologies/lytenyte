@@ -1,5 +1,5 @@
 {
-  "name": "astro-docs",
+  "name": "docs",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -28,6 +28,7 @@
   "devDependencies": {
     "@1771technologies/grid-sample-data": "workspace:*",
     "@1771technologies/lytenyte-pro": "workspace:*",
+    "@1771technologies/lytenyte-pro-experimental": "workspace:*",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "react-minimal-pie-chart": "^9.1.1"

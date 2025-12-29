@@ -1,7 +1,6 @@
 ---
 title: Bundling & Tree Shaking
-description:
-  LyteNyte Grid takes full advantage of automatic tree shaking, ensuring your final bundle
+description: LyteNyte Grid takes full advantage of automatic tree shaking, ensuring your final bundle
   includes only the components you use. This guide explains best practices to help your bundler exclude unused code.
 ---
 
@@ -13,21 +12,18 @@ uses it. Modern bundlers detect unused imports and exclude their code from the b
 
 ```tsx
 import {
-  useServerDataSource, // Not used
-  useClientRowDataSource,
+  //!next
+  useServerDataSource, // Not use, hence it will be tree-shaken by your bundler.
+  useClientDataSource,
   Grid
 } from "@1771technologies/lytenyte-pro"
 
 export function TreeShakingExample() {
   const ds = useClientRowDataSource({ ... });
 
-  const grid = Grid.useLyteNyte({ ... })
-
-  return <Grid.Root>{...}</Grid.Root>
+  return <Grid rowSource={ds} />
 }
 ```
-
-<div className="bg-ln-gray-50 border p-10" />
 
 For a bundler to tree shake correctly, your code must meet several criteria. It must be statically
 analyzable, meaning the bundler can determine the structure of imports at compile time.

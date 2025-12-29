@@ -20,7 +20,7 @@ const type = props.type;
 
 <div
   class:list={[
-    "border-l-4 rounded-s-lg rounded-e-xl my-8 p-4 border border-neutral-300 dark:border-neutral-800 bg-xd-card xd-callout",
+    "border-l-4 rounded-s-lg rounded-e-xl my-8 p-4 border border-neutral-300 dark:border-neutral-800 bg-xd-background shadow xd-callout",
     type === "warn" && "dark:border-l-yellow-500 border-l-yellow-500",
     type === "info" && "dark:border-l-blue-500 border-l-blue-500",
     type === "tip" && "dark:border-l-green-500 border-l-green-500",
@@ -29,8 +29,8 @@ const type = props.type;
     type === "note" && "dark:border-l-emerald-500 border-l-emerald-500",
   ]}
 >
-  <div class="grid grid-cols-[auto_1fr] grid-rows-[auto_1fr] gap-x-4 gap-y-2">
-    <div class="flex items-center gap-1.5 col-span-2">
+  <div class="grid grid-cols-[100%] grid-rows-[auto_1fr] gap-y-1">
+    <div class="flex items-center gap-1.5">
       <div class="center size-5">
         <span
           class:list={[

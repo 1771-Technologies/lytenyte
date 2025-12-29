@@ -3,11 +3,7 @@ import { Cell } from "../../cells/cell.js";
 import { Row } from "../../rows/row/row.js";
 import { RowFullWidth } from "../../rows/row-full-width.js";
 
-export const RowHandler = (props: {
-  rows: RowLayout<any>[];
-  withStyles?: boolean;
-  pinned?: boolean;
-}) => {
+export const RowHandler = (props: { rows: RowLayout<any>[]; withStyles?: boolean; pinned?: boolean }) => {
   return props.rows.map((row) => {
     if (row.kind === "full-width") return <RowFullWidth row={row} key={row.id} />;
 
@@ -26,11 +22,7 @@ function RowFor<T>({
 }) {
   const styles = withStyles
     ? {
-        background: pinned
-          ? "rgb(0,0,60)"
-          : row.rowIndex % 2 === 0
-            ? "rgb(0,0,0)"
-            : "rgb(30,30,30)",
+        background: pinned ? "rgb(0,0,60)" : row.rowIndex % 2 === 0 ? "rgb(0,0,0)" : "rgb(30,30,30)",
         color: "white",
         display: "flex",
         alignItems: "center",

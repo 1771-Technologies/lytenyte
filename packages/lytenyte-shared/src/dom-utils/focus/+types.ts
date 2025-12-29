@@ -243,9 +243,6 @@ export interface DeactivateOptions
   returnFocus?: boolean | undefined;
 }
 
-export type ActivateOptions = Pick<
-  FocusTrapOptions,
-  "onActivate" | "onPostActivate" | "checkCanFocusTrap"
->;
+export type ActivateOptions = Pick<FocusTrapOptions, "onActivate" | "onPostActivate" | "checkCanFocusTrap">;
 export type PauseOptions = Pick<FocusTrapOptions, "onPause" | "onPostPause">;
 export type UnpauseOptions = Pick<FocusTrapOptions, "onUnpause" | "onPostUnpause">;

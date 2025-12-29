@@ -16,18 +16,8 @@ import { type ClientRowDataSourceParams, type Grid, type RowNode } from "../+typ
 import { useRef } from "react";
 import { traverse } from "./tree/traverse.js";
 import type { TreeNode } from "./+types.js";
-import {
-  dateComparator,
-  numberComparator,
-  stringComparator,
-} from "@1771technologies/lytenyte-shared";
-import {
-  computed,
-  effect,
-  makeAtom,
-  peek,
-  signal,
-} from "@1771technologies/lytenyte-core/yinternal";
+import { dateComparator, numberComparator, stringComparator } from "@1771technologies/lytenyte-shared";
+import { computed, effect, makeAtom, peek, signal } from "@1771technologies/lytenyte-core/yinternal";
 import { equal, get, itemsWithIdToMap } from "@1771technologies/lytenyte-shared";
 
 import { computeFilteredRows } from "./filter/compute-filtered-rows.js";
@@ -120,9 +110,7 @@ export function makeClientDataSource<T>(
   const filterModel = computed<Record<string, FilterModelItem<T>>>(() => models().filter);
   const filterInModel = computed<Record<string, FilterIn>>(() => models().filterIn);
   const rowGroupModel = computed<RowGroupModelItem<T>[]>(() => models().group);
-  const groupExpansions = computed<{ [rowId: string]: boolean | undefined }>(
-    () => models().groupExpansions,
-  );
+  const groupExpansions = computed<{ [rowId: string]: boolean | undefined }>(() => models().groupExpansions);
   const aggModel = computed<Record<string, { fn: AggModelFn<T> }>>(() => models().agg);
   const quickSearch = computed(() => models().quickSearch);
 
@@ -188,9 +176,7 @@ export function makeClientDataSource<T>(
 
       const key = agg.fn;
       const fn = (data: RowLeaf<T>[]) => {
-        const fieldData = data.map((r) =>
-          grid?.api.columnField(name, { kind: "leaf", data: r.data }),
-        );
+        const fieldData = data.map((r) => grid?.api.columnField(name, { kind: "leaf", data: r.data }));
         return builtIns[key as keyof typeof builtIns](fieldData as any);
       };
 
@@ -251,9 +237,7 @@ export function makeClientDataSource<T>(
 
       const key = agg.fn;
       const fn = (data: RowLeaf<T>[]) => {
-        const fieldData = data.map((r) =>
-          grid?.api.columnField(name, { kind: "leaf", data: r.data }),
-        );
+        const fieldData = data.map((r) => grid?.api.columnField(name, { kind: "leaf", data: r.data }));
         return builtIns[key as keyof typeof builtIns](fieldData as any);
       };
 
@@ -281,13 +265,9 @@ export function makeClientDataSource<T>(
         const columnId = sortSpec.columnId;
 
         const ld: FieldDataParam<T> =
-          l.kind === 2
-            ? { kind: "branch", data: l.data, key: l.key }
-            : { kind: "leaf", data: l.data.data };
+          l.kind === 2 ? { kind: "branch", data: l.data, key: l.key } : { kind: "leaf", data: l.data.data };
         const rd: FieldDataParam<T> =
-          r.kind === 2
-            ? { kind: "branch", data: r.data, key: r.key }
-            : { kind: "leaf", data: r.data.data };
+          r.kind === 2 ? { kind: "branch", data: r.data, key: r.key } : { kind: "leaf", data: r.data.data };
 
         if (sort.kind === "custom") {
           res = sort.comparator(ld, rd, sort.options ?? {});
@@ -365,9 +345,7 @@ export function makeClientDataSource<T>(
         if (node.kind === 2) {
           const expanded =
             expansions[node.id] ??
-            (typeof defaultExpansion === "number"
-              ? node.depth <= defaultExpansion
-              : defaultExpansion);
+            (typeof defaultExpansion === "number" ? node.depth <= defaultExpansion : defaultExpansion);
 
           return expanded;
         }
@@ -414,9 +392,7 @@ export function makeClientDataSource<T>(
         if (node.kind === 2) {
           const expanded =
             expansions[node.id] ??
-            (typeof defaultExpansion === "number"
-              ? node.depth <= defaultExpansion
-              : defaultExpansion);
+            (typeof defaultExpansion === "number" ? node.depth <= defaultExpansion : defaultExpansion);
 
           return expanded;
         }
@@ -759,8 +735,7 @@ export function makeClientDataSource<T>(
 
         const mode = grid.state.columnPivotMode.get();
 
-        if (mode)
-          grid.state.columnPivotRowGroupExpansions.set((prev) => ({ ...prev, ...expansions }));
+        if (mode) grid.state.columnPivotRowGroupExpansions.set((prev) => ({ ...prev, ...expansions }));
         else grid.state.rowGroupExpansions.set((prev) => ({ ...prev, ...expansions }));
       },
       rowToIndex,

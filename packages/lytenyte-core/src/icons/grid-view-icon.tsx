@@ -20,12 +20,7 @@ const SvgGridViewIcon = (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>
       strokeWidth={1.5}
       rx={3}
     />
-    <path
-      stroke="currentcolor"
-      strokeLinecap="round"
-      strokeWidth={1.5}
-      d="M10.21 2.5v15M2.71 10h15"
-    />
+    <path stroke="currentcolor" strokeLinecap="round" strokeWidth={1.5} d="M10.21 2.5v15M2.71 10h15" />
   </svg>
 );
 const ForwardRef = forwardRef(SvgGridViewIcon);

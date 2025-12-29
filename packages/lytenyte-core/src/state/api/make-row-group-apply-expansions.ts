@@ -1,8 +1,6 @@
 import type { Grid, GridApi } from "../../+types";
 
-export const makeRowGroupApplyExpansions = (
-  grid: Grid<any>,
-): GridApi<any>["rowGroupApplyExpansions"] => {
+export const makeRowGroupApplyExpansions = (grid: Grid<any>): GridApi<any>["rowGroupApplyExpansions"] => {
   return (expansions) => {
     const api = grid.api;
     let prevented = false;

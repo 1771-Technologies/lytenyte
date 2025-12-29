@@ -1,0 +1,30 @@
+import type { ColumnAbstract, RowNode } from "@1771technologies/lytenyte-shared";
+import type { Root } from "../../root";
+
+export function getSpanFn(
+  rowByIndex: (r: number) => RowNode<any> | null | undefined,
+  visibleColumns: ColumnAbstract[],
+  span: "row" | "col",
+  api: Root.API,
+) {
+  if (visibleColumns.every((c) => !(span === "col" ? (c as any).colSpan : (c as any).rowSpan))) return null;
+
+  return (r: number, c: number) => {
+    const row = rowByIndex(r);
+    const column = visibleColumns[c];
+    if (!row || !column) return 1;
+
+    const spanFn = span === "col" ? (column as any).colSpan : (column as any).rowSpan;
+
+    if (!spanFn) return 1;
+    if (typeof spanFn === "number") {
+      if (span === "col") {
+        return spanFn;
+      } else {
+        return r % spanFn === 0 ? spanFn : 1;
+      }
+    }
+
+    return spanFn({ rowIndex: r, colIndex: c, column: column as any, row, api });
+  };
+}

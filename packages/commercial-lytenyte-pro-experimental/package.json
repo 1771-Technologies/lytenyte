@@ -1,0 +1,80 @@
+{
+  "name": "@1771technologies/lytenyte-pro-experimental",
+  "description": "Blazingly fast headless React data grid with 100s of features.",
+  "version": "1.0.21",
+  "type": "module",
+  "license": "COMMERCIAL",
+  "files": [
+    "dist",
+    "css",
+    "LICENSE",
+    "README.md"
+  ],
+  "keywords": [
+    "react",
+    "data-grid",
+    "react-table",
+    "headless",
+    "virtualized"
+  ],
+  "homepage": "https://1771technologies.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/1771-technologies/lytenyte.git",
+    "directory": "packages/commercial-lytenyte-pro"
+  },
+  "bugs": {
+    "url": "https://github.com/1771-technologies/lytenyte/issues"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "require": "./src/index.ts"
+    },
+    "./grid.css": "./css/grid.css",
+    "./grid-full.css": "./css/grid-full.css",
+    "./light-dark.css": "./css/light-dark.css",
+    "./all-colors.css": "./css/all-colors.css",
+    "./cotton-candy.css": "./css/cotton-candy.css",
+    "./dark.css": "./css/dark.css",
+    "./design.css": "./css/design.css",
+    "./light.css": "./css/light.css",
+    "./shadcn.css": "./css/shadcn.css",
+    "./teal.css": "./css/teal.css",
+    "./term.css": "./css/term.css"
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "require": "./dist/index.js"
+      },
+      "./grid.css": "./css/grid.css",
+      "./grid-full.css": "./css/grid-full.css",
+      "./light-dark.css": "./css/light-dark.css",
+      "./all-colors.css": "./css/all-colors.css",
+      "./cotton-candy.css": "./css/cotton-candy.css",
+      "./dark.css": "./css/dark.css",
+      "./design.css": "./css/design.css",
+      "./light.css": "./css/light.css",
+      "./shadcn.css": "./css/shadcn.css",
+      "./teal.css": "./css/teal.css",
+      "./term.css": "./css/term.css"
+    }
+  },
+  "dependencies": {
+    "@1771technologies/lytenyte-core-experimental": "workspace:*",
+    "@1771technologies/lytenyte-shared": "workspace:*",
+    "@1771technologies/lytenyte-design": "workspace:*"
+  },
+  "devDependencies": {
+    "@1771technologies/grid-sample-data": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  }
+}

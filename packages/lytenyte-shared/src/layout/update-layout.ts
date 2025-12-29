@@ -1,4 +1,4 @@
-import type { RowPredicate, SpanFn } from "../+types.non-gen";
+import type { RowPredicate, SpanFn } from "../types";
 import { clamp } from "../js-utils/index.js";
 
 type RowIndex = number;

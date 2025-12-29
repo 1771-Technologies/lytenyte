@@ -2,10 +2,10 @@
 import FenceContainer from "../fence-container.astro";
 import Tab from "../tab.astro";
 import Tabs from "../tabs.astro";
-import { Code } from "astro-expressive-code/components";
+import BlockCode from "../parts/block-code.astro";
 import { Resetter } from "./resetter";
 import { FrameControls } from "./frame-controls";
-import { parseExpressiveCode } from "./parse-text";
+import path from "node:path";
 
 interface Props {
   title: string;
@@ -14,8 +14,37 @@ interface Props {
   stackBlitz: string;
 }
 
+const priorityOrder = ["tsx", "ts", "css"];
 const { codeSandbox, stackBlitz, ...props } = Astro.props;
-const tabs = Object.entries(props.files);
+const tabs = Object.entries(props.files)
+  .filter(([name]) => !name.endsWith(".css") && !name.startsWith("data"))
+  .sort((l, r) => {
+    const a = l[1];
+    const b = r[1];
+
+    const aBase = path.parse(a).name.toLowerCase();
+    const bBase = path.parse(b).name.toLowerCase();
+
+    // 1. component.* files always first
+    if (aBase === "demo" && bBase !== "demo") return -1;
+    if (bBase === "demo" && aBase !== "demo") return 1;
+
+    // 2. Compare by extension priority
+    const aExt = path.extname(a).slice(1); // remove dot
+    const bExt = path.extname(b).slice(1);
+
+    const aIndex = priorityOrder.indexOf(aExt);
+    const bIndex = priorityOrder.indexOf(bExt);
+
+    if (aIndex !== -1 && bIndex !== -1) {
+      return aIndex - bIndex;
+    }
+    if (aIndex !== -1) return -1;
+    if (bIndex !== -1) return 1;
+
+    // 3. Otherwise alphabetical
+    return a.localeCompare(b);
+  });
 ---
 
 <div
@@ -33,8 +62,8 @@ const tabs = Object.entries(props.files);
       </Resetter>
     </div>
   </FenceContainer>
-  <div class="relative flex items-center bg-xd-card">
-    <div class="flex-1 min-h-12 cf-root group" data-expanded="false">
+  <div class="relative flex items-center bg-xd-card max-w-full overflow-hidden">
+    <div class="flex-1 min-h-12 cf-root group overflow-hidden" data-expanded="false">
       <div class="codeframe-tabs-container group-data-[expanded=true]:block hidden">
         {
           tabs.length > 0 && (
@@ -42,11 +71,9 @@ const tabs = Object.entries(props.files);
               {tabs.map(([filename, code]) => {
                 const lang = filename.split(".").at(-1);
 
-                const parsed = parseExpressiveCode(code);
-
                 return (
                   <Tab label={filename}>
-                    <Code lang={lang} {...parsed} />
+                    <BlockCode lang={lang!} code={code} />
                   </Tab>
                 );
               })}
@@ -56,12 +83,7 @@ const tabs = Object.entries(props.files);
       </div>
 
       <div class="flex justify-end items-center py-2 px-3 gap-2 absolute top-0.5 z-1 right-0">
-        <FrameControls
-          client:load
-          files={props.files}
-          codeSandbox={codeSandbox}
-          stackBlitz={stackBlitz}
-        />
+        <FrameControls client:load files={props.files} codeSandbox={codeSandbox} stackBlitz={stackBlitz} />
       </div>
     </div>
   </div>

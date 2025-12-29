@@ -46,8 +46,7 @@ export const BoxItem = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"] &
                   item.onAction?.(ev.currentTarget);
                   ev.preventDefault();
                 }
-                if (ev.key === "Backspace" || ev.key === "Delete")
-                  item.onDelete?.(ev.currentTarget);
+                if (ev.key === "Backspace" || ev.key === "Delete") item.onDelete?.(ev.currentTarget);
               }}
               onClick={(ev) => item.onAction(ev.currentTarget)}
               className={itemClassName}

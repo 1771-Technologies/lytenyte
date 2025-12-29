@@ -49,8 +49,7 @@ export const useFilterSelect = <T>({ grid, column, maxCount = 2 }: UseFilterSele
   const filterOnModel = model[column.id];
 
   const defaultFilter = useMemo<FilterSelectFlat>(() => {
-    if (column.type === "date" || column.type === "datetime")
-      return { kind: "date", operator: "equals" };
+    if (column.type === "date" || column.type === "datetime") return { kind: "date", operator: "equals" };
     if (column.type === "number") return { kind: "number", operator: "equals" };
     return { kind: "string", operator: "equals" };
   }, [column.type]);
@@ -141,8 +140,7 @@ export const useFilterSelect = <T>({ grid, column, maxCount = 2 }: UseFilterSele
       }
 
       let next: FilterCombination["filters"][number] | null = null;
-      if (filter.kind === "date")
-        next = { kind: "date", value: filter.value!, operator: filter.operator! };
+      if (filter.kind === "date") next = { kind: "date", value: filter.value!, operator: filter.operator! };
       else if (filter.kind === "number")
         next = { kind: "number", value: filter.value! as number, operator: filter.operator! };
       else if (filter.kind === "string")

@@ -4,7 +4,8 @@
     "prodready-bundling",
     "prodready-security",
     "prodready-supported-browsers",
-    "prodready-grid-versioning"
+    "prodready-grid-versioning",
+    "prodready-typescript"
   ],
   "defaultOpen": true
 }

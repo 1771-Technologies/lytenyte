@@ -46,9 +46,7 @@ export const makeColumnMove = (grid: Grid<any>): GridApi<any>["columnMove"] => {
     grid.state.columns.set(nextColumns);
 
     if (params.updatePinState) {
-      const updates = Object.fromEntries(
-        columnsToMove.map((c) => [c.id, { pin: destCol.pin ?? null }]),
-      );
+      const updates = Object.fromEntries(columnsToMove.map((c) => [c.id, { pin: destCol.pin ?? null }]));
       grid.api.columnUpdate(updates);
     }
 

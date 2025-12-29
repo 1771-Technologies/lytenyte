@@ -1,5 +1,5 @@
 import { getActiveElement, getNearestMatching } from "../dom-utils/index.js";
-import type { ScrollIntoViewFn } from "../+types.non-gen.js";
+import type { ScrollIntoViewFn } from "../types.js";
 import { handleViewportFocused } from "./key-handler/handle-viewport-focused.js";
 import { nearestFocusable } from "./nearest-focusable.js";
 import type { PositionState, RootCellFn } from "./+types.js";

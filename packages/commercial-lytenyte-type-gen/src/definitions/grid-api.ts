@@ -127,8 +127,7 @@ const EventFire: PropertyType = {
   tsDoc: `Manually dispatches a grid event with a given payload. This is intended for advanced usage 
   where custom behavior or testing scenarios require simulating native event lifecycles.`,
   optional: false,
-  value:
-    "<K extends keyof GridEvents<T>>(name: K, event: Parameters<Required<GridEvents<T>>[K]>[0]) => void",
+  value: "<K extends keyof GridEvents<T>>(name: K, event: Parameters<Required<GridEvents<T>>[K]>[0]) => void",
 };
 
 export const ScrollIntoViewOptions: InterfaceType = {

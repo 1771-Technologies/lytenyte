@@ -97,25 +97,10 @@ export function useVirtualizedTree<T extends PathProvidedItem>({
     }
 
     const subtreePaths = buildVirtualTreePartial(items);
-    const subtree = makeVirtualTree(
-      subtreePaths,
-      nodeToIndex,
-      itemHeight,
-      nonAdjacentPathTrees ?? false,
-    );
+    const subtree = makeVirtualTree(subtreePaths, nodeToIndex, itemHeight, nonAdjacentPathTrees ?? false);
 
     return subtree;
-  }, [
-    flat,
-    focused,
-    idToNode,
-    indexToId,
-    itemHeight,
-    nodeToIndex,
-    nonAdjacentPathTrees,
-    rowEnd,
-    rowStart,
-  ]);
+  }, [flat, focused, idToNode, indexToId, itemHeight, nodeToIndex, nonAdjacentPathTrees, rowEnd, rowStart]);
 
   const spacer = <div style={{ height: size * itemHeight, width: 0 }} />;
 

@@ -1,9 +1,4 @@
-import {
-  useCallback,
-  type Dispatch,
-  type DragEvent as ReactDragEvent,
-  type SetStateAction,
-} from "react";
+import { useCallback, type Dispatch, type DragEvent as ReactDragEvent, type SetStateAction } from "react";
 import type { UseDraggableProps } from "../use-draggable";
 import {
   activeDragElement,
@@ -18,15 +13,7 @@ import { getFrameElement, isFirefox } from "@1771technologies/lytenyte-shared";
 import { peek } from "../../signal/index.js";
 
 export function useDragEventHandler(
-  {
-    getItems,
-    onDragEnd,
-    onDragMove,
-    onDragStart,
-    onDrop,
-    placeholder,
-    placeholderOffset,
-  }: UseDraggableProps,
+  { getItems, onDragEnd, onDragMove, onDragStart, onDrop, placeholder, placeholderOffset }: UseDraggableProps,
   setDragging: Dispatch<SetStateAction<boolean>>,
 ) {
   const handleDragStart = useCallback(
@@ -157,16 +144,7 @@ export function useDragEventHandler(
         { signal: controller.signal },
       );
     },
-    [
-      getItems,
-      onDragEnd,
-      onDragMove,
-      onDragStart,
-      onDrop,
-      placeholder,
-      placeholderOffset,
-      setDragging,
-    ],
+    [getItems, onDragEnd, onDragMove, onDragStart, onDrop, placeholder, placeholderOffset, setDragging],
   );
 
   return handleDragStart;

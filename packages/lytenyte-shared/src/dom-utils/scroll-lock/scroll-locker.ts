@@ -75,10 +75,8 @@ function preventScrollStandard(referenceElement: Element | null) {
 
     const isScrollableY = html.scrollHeight > html.clientHeight;
     const isScrollableX = html.scrollWidth > html.clientWidth;
-    const hasConstantOverflowY =
-      htmlStyles.overflowY === "scroll" || bodyStyles.overflowY === "scroll";
-    const hasConstantOverflowX =
-      htmlStyles.overflowX === "scroll" || bodyStyles.overflowX === "scroll";
+    const hasConstantOverflowY = htmlStyles.overflowY === "scroll" || bodyStyles.overflowY === "scroll";
+    const hasConstantOverflowX = htmlStyles.overflowX === "scroll" || bodyStyles.overflowX === "scroll";
 
     // Values can be negative in Firefox
     const scrollbarWidth = Math.max(0, win.innerWidth - html.clientWidth);
@@ -97,19 +95,14 @@ function preventScrollStandard(referenceElement: Element | null) {
     Object.assign(html.style, {
       scrollbarGutter: "stable",
       overflowY:
-        !supportsStableScrollbarGutter && (isScrollableY || hasConstantOverflowY)
-          ? "scroll"
-          : "hidden",
+        !supportsStableScrollbarGutter && (isScrollableY || hasConstantOverflowY) ? "scroll" : "hidden",
       overflowX:
-        !supportsStableScrollbarGutter && (isScrollableX || hasConstantOverflowX)
-          ? "scroll"
-          : "hidden",
+        !supportsStableScrollbarGutter && (isScrollableX || hasConstantOverflowX) ? "scroll" : "hidden",
     });
 
     Object.assign(body.style, {
       position: "relative",
-      height:
-        marginY || scrollbarHeight ? `calc(100dvh - ${marginY + scrollbarHeight}px)` : "100dvh",
+      height: marginY || scrollbarHeight ? `calc(100dvh - ${marginY + scrollbarHeight}px)` : "100dvh",
       width: marginX || scrollbarWidth ? `calc(100vw - ${marginX + scrollbarWidth}px)` : "100vw",
       boxSizing: "border-box",
       overflow: "hidden",

@@ -350,20 +350,7 @@ test("when there are column spans the grid should be able to navigate across the
   await expect.element(document.activeElement as HTMLElement).toHaveTextContent("39");
 
   (document.querySelector(getCellQuery("x", 12, 0)) as HTMLElement).focus();
-  expected = [
-    "36",
-    "tertiary",
-    "no",
-    "no",
-    "cellular",
-    "13",
-    "aug",
-    "328",
-    "2",
-    "-1",
-    "0",
-    "unknown",
-  ];
+  expected = ["36", "tertiary", "no", "no", "cellular", "13", "aug", "328", "2", "-1", "0", "unknown"];
   await verify();
 
   (document.querySelector(getCellQuery("x", 13, 0)) as HTMLElement).focus();
@@ -571,20 +558,7 @@ test("when there are column spans the grid should be able to navigate across the
   await expect.element(document.activeElement as HTMLElement).toHaveTextContent("39");
 
   (document.querySelector(getCellQuery("x", 12, 0)) as HTMLElement).focus();
-  expected = [
-    "36",
-    "tertiary",
-    "no",
-    "no",
-    "cellular",
-    "13",
-    "aug",
-    "328",
-    "2",
-    "-1",
-    "0",
-    "unknown",
-  ];
+  expected = ["36", "tertiary", "no", "no", "cellular", "13", "aug", "328", "2", "-1", "0", "unknown"];
   await verify();
 
   (document.querySelector(getCellQuery("x", 13, 0)) as HTMLElement).focus();
@@ -624,9 +598,7 @@ test("when cells have interactive elements they should be navigable", async () =
   await userEvent.keyboard("{ArrowRight}");
   await expect.element(document.activeElement as HTMLElement).toHaveTextContent("C");
   await userEvent.keyboard("{ArrowRight}");
-  await expect
-    .element(document.activeElement as HTMLElement)
-    .toHaveTextContent("PrevNot TabbableNext");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("PrevNot TabbableNext");
   await userEvent.keyboard("{ArrowRight}");
   await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Prev");
   await userEvent.keyboard("{ArrowRight}");
@@ -638,9 +610,7 @@ test("when cells have interactive elements they should be navigable", async () =
   await userEvent.keyboard("{ArrowLeft}");
   await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Prev");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect
-    .element(document.activeElement as HTMLElement)
-    .toHaveTextContent("PrevNot TabbableNext");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("PrevNot TabbableNext");
   await userEvent.keyboard("{ArrowLeft}");
   await expect.element(document.activeElement as HTMLElement).toHaveTextContent("C");
   await userEvent.keyboard("{ArrowLeft}");
@@ -653,9 +623,7 @@ test("when cells have interactive elements they should be navigable", async () =
   (document.querySelector(getCellQuery("x", 5, 2)) as HTMLElement).focus();
   await expect.element(document.activeElement as HTMLElement).toHaveTextContent("747");
   await userEvent.keyboard("{ArrowRight}");
-  await expect
-    .element(document.activeElement as HTMLElement)
-    .toHaveTextContent("PrevNot TabbableNext");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("PrevNot TabbableNext");
   await userEvent.keyboard("{ArrowRight}");
   await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Prev");
   (document.activeElement!.nextElementSibling as HTMLElement).focus();
@@ -685,9 +653,7 @@ test("when cells have interactive elements they should be navigable rtl", async 
   await userEvent.keyboard("{ArrowLeft}");
   await expect.element(document.activeElement as HTMLElement).toHaveTextContent("C");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect
-    .element(document.activeElement as HTMLElement)
-    .toHaveTextContent("PrevNot TabbableNext");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("PrevNot TabbableNext");
   await userEvent.keyboard("{ArrowLeft}");
   await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Prev");
   await userEvent.keyboard("{ArrowLeft}");
@@ -699,9 +665,7 @@ test("when cells have interactive elements they should be navigable rtl", async 
   await userEvent.keyboard("{ArrowRight}");
   await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Prev");
   await userEvent.keyboard("{ArrowRight}");
-  await expect
-    .element(document.activeElement as HTMLElement)
-    .toHaveTextContent("PrevNot TabbableNext");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("PrevNot TabbableNext");
   await userEvent.keyboard("{ArrowRight}");
   await expect.element(document.activeElement as HTMLElement).toHaveTextContent("C");
   await userEvent.keyboard("{ArrowRight}");
@@ -714,9 +678,7 @@ test("when cells have interactive elements they should be navigable rtl", async 
   (document.querySelector(getCellQuery("x", 5, 2)) as HTMLElement).focus();
   await expect.element(document.activeElement as HTMLElement).toHaveTextContent("747");
   await userEvent.keyboard("{ArrowLeft}");
-  await expect
-    .element(document.activeElement as HTMLElement)
-    .toHaveTextContent("PrevNot TabbableNext");
+  await expect.element(document.activeElement as HTMLElement).toHaveTextContent("PrevNot TabbableNext");
   await userEvent.keyboard("{ArrowLeft}");
   await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Prev");
   (document.activeElement!.nextElementSibling as HTMLElement).focus();

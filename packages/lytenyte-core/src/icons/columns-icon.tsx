@@ -19,12 +19,7 @@ const SvgColumnsIcon = (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>)
       rx={3}
       transform="matrix(1 0 0 -1 2.71 17.5)"
     />
-    <path
-      stroke="currentcolor"
-      strokeLinecap="round"
-      strokeWidth={1.5}
-      d="M7.21 2.5v15M2.71 7h15"
-    />
+    <path stroke="currentcolor" strokeLinecap="round" strokeWidth={1.5} d="M7.21 2.5v15M2.71 7h15" />
   </svg>
 );
 const ForwardRef = forwardRef(SvgColumnsIcon);

@@ -1,21 +1,15 @@
 import { useCallback, useMemo } from "react";
 import type { FilterInFilterItem } from "../../+types.js";
 import { useGrid } from "../../grid-provider/use-grid.js";
-import type {
-  TreeVirtualItem,
-  TreeVirtualLeaf,
-} from "../../tree-view/virtualized/make-virtual-tree.js";
+import type { TreeVirtualItem, TreeVirtualLeaf } from "../../tree-view/virtualized/make-virtual-tree.js";
 import { useTreeContext } from "../context.js";
 
-function isSelectAll(
-  item: TreeVirtualItem<FilterInFilterItem>,
-): item is TreeVirtualLeaf<FilterInFilterItem> {
+function isSelectAll(item: TreeVirtualItem<FilterInFilterItem>): item is TreeVirtualLeaf<FilterInFilterItem> {
   return item.kind === "leaf" && item.leaf.data.id === "__LNG__SELECT_ALL";
 }
 
 export function useTreeItem(item: TreeVirtualItem<FilterInFilterItem>) {
-  const { filter, filterChange, pivotMode, columnId, items, applyChangesImmediately } =
-    useTreeContext();
+  const { filter, filterChange, pivotMode, columnId, items, applyChangesImmediately } = useTreeContext();
   const grid = useGrid();
 
   const itemValues = useMemo(() => {
@@ -57,9 +51,7 @@ export function useTreeItem(item: TreeVirtualItem<FilterInFilterItem>) {
       return !isChecked && itemValues.some((c) => filter.value.has(c as any));
     } else {
       if (isSelectAll(item)) {
-        return (
-          !isChecked && filter.value.size > 0 && items.some((c) => !filter.value.has(c as any))
-        );
+        return !isChecked && filter.value.size > 0 && items.some((c) => !filter.value.has(c as any));
       }
 
       return !isChecked && itemValues.some((c) => !filter.value.has(c as any));

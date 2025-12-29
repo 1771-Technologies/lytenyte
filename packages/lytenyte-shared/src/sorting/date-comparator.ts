@@ -3,11 +3,7 @@ import type { SortDateComparatorOptions } from "../+types.js";
 export function dateComparator(
   left: string | null,
   right: string | null,
-  {
-    includeTime = true,
-    nullsFirst = true,
-    toIsoDateString = (v) => v as string,
-  }: SortDateComparatorOptions,
+  { includeTime = true, nullsFirst = true, toIsoDateString = (v) => v as string }: SortDateComparatorOptions,
 ) {
   if (left == null && right == null) return 0;
   if (left != null && right == null) return nullsFirst ? 1 : -1;

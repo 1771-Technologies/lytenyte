@@ -51,9 +51,7 @@ export function useSortRowItems(
   const sortRows = useMemo<SortRowItem[]>(() => {
     return sortItems.map((item, i) => {
       const columnItem = columnItems.find((s) => item.columnId === s.value) ?? null;
-      const columnOptions = columnItem
-        ? [columnItem, ...unselectedSortedColumns]
-        : unselectedSortedColumns;
+      const columnOptions = columnItem ? [columnItem, ...unselectedSortedColumns] : unselectedSortedColumns;
 
       // Handle select
       const columnOnSelect = (column: { value: string; label: string } | null) => {

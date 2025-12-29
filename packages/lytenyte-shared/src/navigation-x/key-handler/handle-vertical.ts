@@ -184,8 +184,7 @@ export function handleVertical(params: HandleVerticalParams) {
         return handleFocus(false, () => {
           const cells = queryHeaderCellsAtRow(gridId, rowCount - 1, header);
           return cells.find(
-            (c) =>
-              c.getAttribute("data-ln-colindex") === posElement.getAttribute("data-ln-colindex"),
+            (c) => c.getAttribute("data-ln-colindex") === posElement.getAttribute("data-ln-colindex"),
           );
         });
       }, BACKOFF_RUNS());
@@ -308,13 +307,7 @@ export function handleVertical(params: HandleVerticalParams) {
   }
 }
 
-function handleFocusHeaderFromRow({
-  gridId,
-  viewport,
-  scrollIntoView,
-  done,
-  pos,
-}: HandleVerticalParams) {
+function handleFocusHeaderFromRow({ gridId, viewport, scrollIntoView, done, pos }: HandleVerticalParams) {
   const header = queryHeader(gridId, viewport);
   if (!header) return;
   const rowCount = Number.parseInt(header.getAttribute("data-ln-rowcount")!);

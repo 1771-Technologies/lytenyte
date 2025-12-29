@@ -21,8 +21,7 @@ export function useHeaderCellRenderer<T>(cell: HeaderCellLayout<T> | HeaderCellF
       if (typeof renderer === "string") return headerRenderers[renderer] ?? DefaultRenderer;
       else return renderer;
     } else {
-      const renderer =
-        cell.column.floatingCellRenderer ?? base.floatingCellRenderer ?? DefaultRenderer;
+      const renderer = cell.column.floatingCellRenderer ?? base.floatingCellRenderer ?? DefaultRenderer;
       if (typeof renderer === "string") return floatingRenderers[renderer] ?? DefaultRenderer;
       else return renderer;
     }

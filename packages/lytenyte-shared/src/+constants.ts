@@ -1,4 +1,4 @@
-import type { Column, RowColTuple, SpanLayout } from "./+types.non-gen.js";
+import type { Column, RowColTuple, SpanLayout } from "./types.js";
 
 export const DEFAULT_COLUMN_WIDTH = 200;
 export const DEFAULT_COLUMN_WIDTH_MAX = 1000;

@@ -2,8 +2,7 @@ import type { Grid, GridApi } from "../../+types";
 
 export const makeRowDetailToggle = (grid: Grid<any>): GridApi<any>["rowDetailToggle"] => {
   return (rowOrId, state) => {
-    const row =
-      typeof rowOrId === "string" ? grid.api.rowById(rowOrId) : grid.api.rowById(rowOrId.id);
+    const row = typeof rowOrId === "string" ? grid.api.rowById(rowOrId) : grid.api.rowById(rowOrId.id);
 
     if (!row) return;
 

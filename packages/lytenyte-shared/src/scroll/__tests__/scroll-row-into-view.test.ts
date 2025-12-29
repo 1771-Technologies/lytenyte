@@ -1,10 +1,7 @@
 import { test, expect, describe } from "vitest";
 import { rowScrollIntoViewValue } from "../scroll-row-into-view.js";
 
-function createViewport({
-  scrollTop = 0,
-  clientHeight = 400,
-}: Partial<HTMLElement> = {}): HTMLElement {
+function createViewport({ scrollTop = 0, clientHeight = 400 }: Partial<HTMLElement> = {}): HTMLElement {
   return {
     scrollTop,
     clientHeight,

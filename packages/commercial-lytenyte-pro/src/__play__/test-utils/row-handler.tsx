@@ -3,11 +3,7 @@ import { Row } from "../../grid/row.js";
 import { Cell } from "../../grid/cell.js";
 import { RowFullWidth } from "../../grid/row-full-width.js";
 
-export const RowHandler = (props: {
-  rows: RowLayout<any>[];
-  withStyles?: boolean;
-  pinned?: boolean;
-}) => {
+export const RowHandler = (props: { rows: RowLayout<any>[]; withStyles?: boolean; pinned?: boolean }) => {
   return props.rows.map((row) => {
     if (row.kind === "full-width") return <RowFullWidth row={row} key={row.id} />;
 

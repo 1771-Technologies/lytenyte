@@ -44,13 +44,7 @@ describe("computePathTable", () => {
   });
 
   test("should create a flat table when there are no paths", () => {
-    const table = computePathTable([
-      { id: "x" },
-      { id: "y" },
-      { id: "z" },
-      { id: "f" },
-      { id: "g" },
-    ]);
+    const table = computePathTable([{ id: "x" }, { id: "y" }, { id: "z" }, { id: "f" }, { id: "g" }]);
 
     expect(toGridTable(table)).toMatchInlineSnapshot(`
     "

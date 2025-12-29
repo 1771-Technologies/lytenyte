@@ -1,8 +1,4 @@
-import {
-  COLUMN_MARKER_ID,
-  computePathMatrix,
-  GROUP_COLUMN_PREFIX,
-} from "@1771technologies/lytenyte-shared";
+import { COLUMN_MARKER_ID, computePathMatrix, GROUP_COLUMN_PREFIX } from "@1771technologies/lytenyte-shared";
 import type { Column, ExportDataRectResult, RowNode } from "../../+types";
 
 export interface GetDataRectArgs {

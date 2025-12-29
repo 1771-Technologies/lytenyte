@@ -86,12 +86,8 @@ describe("evaluateDateFilter", () => {
     expect(evaluateDateFilter(base, "2025-02-01", opts)).toEqual(true);
     expect(evaluateDateFilter(base, "2025-02-02", opts)).toEqual(false);
     expect(evaluateDateFilter(base, "2025-02-01T02:30:00", opts)).toEqual(true);
-    expect(evaluateDateFilter(base, "2025-02-01T02:30:00", { ...opts, includeTime: true })).toEqual(
-      true,
-    );
-    expect(evaluateDateFilter(base, "2025-02-01T02:40:00", { ...opts, includeTime: true })).toEqual(
-      false,
-    );
+    expect(evaluateDateFilter(base, "2025-02-01T02:30:00", { ...opts, includeTime: true })).toEqual(true);
+    expect(evaluateDateFilter(base, "2025-02-01T02:40:00", { ...opts, includeTime: true })).toEqual(false);
   });
 
   test("not_equals", () => {
@@ -106,12 +102,8 @@ describe("evaluateDateFilter", () => {
     expect(evaluateDateFilter(base, "2025-02-01", opts)).toEqual(false);
     expect(evaluateDateFilter(base, "2025-02-02", opts)).toEqual(true);
     expect(evaluateDateFilter(base, "2025-02-01T02:30:00", opts)).toEqual(false);
-    expect(evaluateDateFilter(base, "2025-02-01T02:30:00", { ...opts, includeTime: true })).toEqual(
-      false,
-    );
-    expect(evaluateDateFilter(base, "2025-02-01T02:40:00", { ...opts, includeTime: true })).toEqual(
-      true,
-    );
+    expect(evaluateDateFilter(base, "2025-02-01T02:30:00", { ...opts, includeTime: true })).toEqual(false);
+    expect(evaluateDateFilter(base, "2025-02-01T02:40:00", { ...opts, includeTime: true })).toEqual(true);
   });
 
   test("after", () => {
@@ -127,9 +119,7 @@ describe("evaluateDateFilter", () => {
     expect(evaluateDateFilter(base, "2025-02-01", opts)).toEqual(false);
     expect(evaluateDateFilter(base, "2025-01-18", opts)).toEqual(false);
     expect(evaluateDateFilter(base, "2025-02-01T03:30", opts)).toEqual(false);
-    expect(evaluateDateFilter(base, "2025-02-01T03:30", { ...opts, includeTime: true })).toEqual(
-      true,
-    );
+    expect(evaluateDateFilter(base, "2025-02-01T03:30", { ...opts, includeTime: true })).toEqual(true);
   });
 
   test("after_or_equals", () => {
@@ -145,9 +135,7 @@ describe("evaluateDateFilter", () => {
     expect(evaluateDateFilter(base, "2025-02-01", opts)).toEqual(true);
     expect(evaluateDateFilter(base, "2025-01-18", opts)).toEqual(false);
     expect(evaluateDateFilter(base, "2025-02-01T03:30", opts)).toEqual(true);
-    expect(evaluateDateFilter(base, "2025-02-01T01:30", { ...opts, includeTime: true })).toEqual(
-      false,
-    );
+    expect(evaluateDateFilter(base, "2025-02-01T01:30", { ...opts, includeTime: true })).toEqual(false);
   });
 
   test("before", () => {
@@ -164,9 +152,7 @@ describe("evaluateDateFilter", () => {
     expect(evaluateDateFilter(base, "2025-01-18", opts)).toEqual(true);
     expect(evaluateDateFilter(base, "2025-02-18", opts)).toEqual(false);
     expect(evaluateDateFilter(base, "2025-02-02T03:30", opts)).toEqual(false);
-    expect(evaluateDateFilter(base, "2025-02-02T01:30", { ...opts, includeTime: true })).toEqual(
-      true,
-    );
+    expect(evaluateDateFilter(base, "2025-02-02T01:30", { ...opts, includeTime: true })).toEqual(true);
   });
 
   test("before_or_equals", () => {
@@ -182,9 +168,7 @@ describe("evaluateDateFilter", () => {
     expect(evaluateDateFilter(base, "2025-02-01", opts)).toEqual(true);
     expect(evaluateDateFilter(base, "2025-02-18", opts)).toEqual(false);
     expect(evaluateDateFilter(base, "2025-02-02T03:30", opts)).toEqual(true);
-    expect(evaluateDateFilter(base, "2025-02-02T03:30", { ...opts, includeTime: true })).toEqual(
-      false,
-    );
+    expect(evaluateDateFilter(base, "2025-02-02T03:30", { ...opts, includeTime: true })).toEqual(false);
   });
 
   test("is_weekday", () => {
@@ -598,9 +582,9 @@ describe("evaluateDateFilter", () => {
 
     const opts: FilterDateSetting = { includeNulls: false, includeTime: false };
     expect(evaluateDateFilter(base, "2025-06-02", opts)).toEqual(false);
-    expect(
-      evaluateDateFilter({ ...base, value: 2, operator: "x" as any }, "2025-06-02", opts),
-    ).toEqual(false);
+    expect(evaluateDateFilter({ ...base, value: 2, operator: "x" as any }, "2025-06-02", opts)).toEqual(
+      false,
+    );
 
     vi.useRealTimers();
   });

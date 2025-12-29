@@ -1,3 +1,6 @@
+export type { ColumnView } from "./column-view/index.js";
+export { columnAddRowGroup, columnAddMarker, makeColumnView } from "./column-view/index.js";
+
 export { getMaxHeaderDepth } from "./header-view/get-max-header-depth.js";
 export { getVisibleColumns } from "./header-view/get-visible-columns.js";
 export { getVisibleColumnsWithGroups } from "./header-view/get-visible-columns-with-groups.js";
@@ -8,19 +11,80 @@ export { partitionColumnsByPinState } from "./header-view/partition-columns-by-p
 export { computeColumnPositions } from "./coordinates/compute-column-positions.js";
 export { computeRowPositions } from "./coordinates/compute-row-positions.js";
 
-export type { SpanFn, RowPredicate, SpanLayout } from "./+types.non-gen.js";
-
-export type { LayoutState } from "./layout/make-layout-state.js";
-export { makeLayoutState } from "./layout/make-layout-state.js";
-export { updateFull } from "./layout/update-full.js";
+export { rowSelectLinkWithParents } from "./row-selection/row-select-link-with-parents.js";
+export { rowSelectLinkWithoutParents } from "./row-selection/row-select-link-without-parent.js";
 export type {
+  Writable,
+  PathField,
+  Field,
+  Dimension,
+  DimensionSort,
+  DimensionAgg,
+  RowSelectionIsolated,
+  RowSelectionLinked,
+  RowSelectionState,
+  RowSelectNode,
+  RowSelectNodeWithParent,
+  RowSelectionLinkedWithParent,
+  RowSelectionStateWithParent,
+  Aggregator,
+  SpanFn,
+  RowPredicate,
+  SpanLayout,
+  ColumnAbstract,
+  ColumnGroupVisibility,
+  ColumnPin,
+  RowHeight,
+  RowPin,
+  RowSource,
+  SortFn,
+  GroupIdFn,
+  LeafIdFn,
+  FilterFn,
+  GroupFn,
+  AggregationFn,
+  RowNode,
+  RowAtom,
+  RowLeaf,
+  RowGroup,
+  RowAggregated,
+  RowGroupDisplayMode,
+  PositionDetailCell,
+  PositionFloatingCell,
+  PositionFullWidthRow,
+  PositionGridCell,
+  PositionGridCellRoot,
+  PositionHeaderCell,
+  PositionHeaderGroupCell,
+  PositionUnion,
+} from "./types.js";
+
+export type {
+  LayoutHeader,
+  LayoutHeaderCell,
+  LayoutHeaderFloating,
+  LayoutHeaderGroup,
+  LayoutState,
+  UpdateLayoutArgs,
   Computed,
   DeadCells,
   LayoutDiffers,
-  RootCellLookup as RootCellSpanLookup,
-  UpdateLayoutArgs,
-} from "./layout/update-layout.js";
-export { updateLayout, FULL_WIDTH, CONTAINS_DEAD_CELLS } from "./layout/update-layout.js";
+  RootCellSpanLookup,
+  LayoutCell,
+  LayoutFullWidthRow,
+  LayoutRow,
+  LayoutRowWithCells,
+  RowView,
+} from "./layout/index.js";
+export {
+  makeColumnLayout,
+  makeLayoutState,
+  makeRowLayout,
+  updateFull,
+  updateLayout,
+  FULL_WIDTH,
+  CONTAINS_DEAD_CELLS,
+} from "./layout/index.js";
 
 export { computeBounds } from "./virtual-bounds/compute-bounds.js";
 export {
@@ -93,6 +157,7 @@ export { rowScrollIntoViewValue } from "./scroll/scroll-row-into-view.js";
 export { focusCell } from "./navigation-x/focus-cell.js";
 export { trackFocus } from "./navigation-x/track-focus.js";
 export { navigator } from "./navigation-x/navigator.js";
+export { queryCell } from "./navigation-x/query.js";
 export { nearestFocusable as getNearestFocusable } from "./navigation-x/nearest-focusable.js";
 export { positionFromElement as getPositionFromFocusable } from "./navigation-x/position-from-element.js";
 export { getRowIndexFromEl } from "./navigation-x/get-row-index-from-el.js";
@@ -100,6 +165,7 @@ export { getNearestRow } from "./navigation-x/get-nearest-row.js";
 
 // JS UTILS
 export {
+  arrayShallow,
   clamp,
   debounce,
   distance,
@@ -126,6 +192,7 @@ export {
 export type { FocusTrapOptions } from "./dom-utils/focus/+types.js";
 export {
   FocusTrap,
+  supportsScrollEnd,
   getActiveElement,
   getComputedStyle,
   getFirstFocusable,
@@ -152,6 +219,7 @@ export {
   isWebKit,
   testPlatform,
   testUserAgent,
+  getScrollStatus,
 } from "./dom-utils/index.js";
 export type { OnAnimationFinishedParams } from "./dom-utils/frame/animation-finished.js";
 export { onAnimationFinished } from "./dom-utils/frame/animation-finished.js";

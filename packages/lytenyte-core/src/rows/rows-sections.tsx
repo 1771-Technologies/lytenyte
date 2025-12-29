@@ -49,9 +49,7 @@ export const RowsCenter = memo(
     const pinSectionHeights = view.rowBottomTotalHeight + view.rowTopTotalHeight;
 
     if (height <= 0) {
-      return (
-        <div role="presentation" style={{ height: `calc(100% - ${pinSectionHeights}px - 4px)` }} />
-      );
+      return <div role="presentation" style={{ height: `calc(100% - ${pinSectionHeights}px - 4px)` }} />;
     }
 
     return (

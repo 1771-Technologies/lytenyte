@@ -44,16 +44,8 @@ export function useMeasure(
   });
 
   // set actual debounce values early, so effects know if they should react accordingly
-  const scrollDebounce = debounce
-    ? typeof debounce === "number"
-      ? debounce
-      : debounce.scroll
-    : null;
-  const resizeDebounce = debounce
-    ? typeof debounce === "number"
-      ? debounce
-      : debounce.resize
-    : null;
+  const scrollDebounce = debounce ? (typeof debounce === "number" ? debounce : debounce.scroll) : null;
+  const resizeDebounce = debounce ? (typeof debounce === "number" ? debounce : debounce.resize) : null;
 
   // make sure to update state only as long as the component is truly mounted
   const mounted = useRef(false);

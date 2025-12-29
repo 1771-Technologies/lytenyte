@@ -4,10 +4,7 @@ import { useCombinedRefs } from "../../../hooks/use-combined-ref.js";
 import { getNearestMatching, getTabbables } from "@1771technologies/lytenyte-shared";
 import { handleVerticalNavigation } from "../item/handle-vertical-navigation.js";
 
-function SubmenuTriggerImpl(
-  { disabled, ...props }: SubmenuTrigger.Props,
-  ref: SubmenuTrigger.Props["ref"],
-) {
+function SubmenuTriggerImpl({ disabled, ...props }: SubmenuTrigger.Props, ref: SubmenuTrigger.Props["ref"]) {
   const [active, setActive] = useState(false);
   const sub = useSubmenuContext();
   const [triggerEl, setTriggerEl] = useState<HTMLDivElement | null>(null);
@@ -94,9 +91,7 @@ function SubmenuTriggerImpl(
             ) as HTMLElement;
             if (!menu) return;
 
-            const first = getTabbables(menu).filter(
-              (x) => x.getAttribute("data-ln-menu-item") === "true",
-            )[0];
+            const first = getTabbables(menu).filter((x) => x.getAttribute("data-ln-menu-item") === "true")[0];
             first?.focus();
           }, 20);
         }

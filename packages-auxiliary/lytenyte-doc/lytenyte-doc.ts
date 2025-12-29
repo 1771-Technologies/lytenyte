@@ -18,6 +18,7 @@ import {
   rehypeKatex,
 } from "./plugins/index.js";
 import { relative } from "node:path";
+import { remarkBetterExpressiveCode } from "./plugins/remark-better-expressive-code.js";
 
 export { generateId } from "./collections/generate-id.js";
 export { indexMdxH2H3 } from "./ln-doc/doc-index.js";
@@ -187,6 +188,7 @@ const { entry } = Astro.props;
     expressiveCode(),
     mdx({
       remarkPlugins: [
+        remarkBetterExpressiveCode,
         remarkStandaloneImage,
         [remarkDemo, { ...opts }],
         remarkDirective,

@@ -1,10 +1,4 @@
-import {
-  activeDragElement,
-  activeDropAtom,
-  dragDataAtom,
-  dragPositionAtom,
-  dropAtom,
-} from "../+globals.js";
+import { activeDragElement, activeDropAtom, dragDataAtom, dragPositionAtom, dropAtom } from "../+globals.js";
 
 export function resetDragState() {
   dragDataAtom.set(null);

@@ -61,8 +61,7 @@ const typeModules = [
 
 const types = typeModules
   .filter(
-    (c) =>
-      c.kind === "interface" || c.kind === "prelude" || c.kind === "union" || c.kind === "function",
+    (c) => c.kind === "interface" || c.kind === "prelude" || c.kind === "union" || c.kind === "function",
   )
   .filter((c) => !c.tag || c.tag === "core");
 

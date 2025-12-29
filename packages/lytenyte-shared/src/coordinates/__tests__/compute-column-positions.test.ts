@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { computeColumnPositions } from "../compute-column-positions.js";
-import type { ColumnWidthItem } from "../../+types.non-gen.js";
+import type { ColumnWidthItem } from "../../types.js";
 
 describe("computeColumnPositions", () => {
   test("should handle empty column widths", () => {
@@ -12,12 +12,7 @@ describe("computeColumnPositions", () => {
   });
 
   test("should handle standard column widths", () => {
-    const widths: ColumnWidthItem[] = [
-      { width: 200 },
-      { width: 200 },
-      { width: 100 },
-      { width: 80 },
-    ];
+    const widths: ColumnWidthItem[] = [{ width: 200 }, { width: 200 }, { width: 100 }, { width: 80 }];
 
     expect(computeColumnPositions(widths, {}, 0, false)).toMatchInlineSnapshot(`
     Uint32Array [
@@ -76,8 +71,7 @@ describe("computeColumnPositions", () => {
       { width: 50 }, // default min width is 80
     ];
 
-    expect(computeColumnPositions(widths, { widthMax: 250, widthMin: 50 }, 0, false))
-      .toMatchInlineSnapshot(`
+    expect(computeColumnPositions(widths, { widthMax: 250, widthMin: 50 }, 0, false)).toMatchInlineSnapshot(`
     Uint32Array [
       0,
       150,
@@ -235,12 +229,7 @@ describe("computeColumnPositions", () => {
   });
 
   test("should handle size to fit shrink", () => {
-    const widths: ColumnWidthItem[] = [
-      { width: 300 },
-      { width: 200 },
-      { width: 300 },
-      { width: 300 },
-    ];
+    const widths: ColumnWidthItem[] = [{ width: 300 }, { width: 200 }, { width: 300 }, { width: 300 }];
 
     expect(computeColumnPositions(widths, {}, 973, true)).toMatchInlineSnapshot(`
     Uint32Array [
@@ -252,12 +241,7 @@ describe("computeColumnPositions", () => {
     ]
   `);
 
-    const widths2: ColumnWidthItem[] = [
-      { width: 121 },
-      { width: 421 },
-      { width: 132 },
-      { width: 167 },
-    ];
+    const widths2: ColumnWidthItem[] = [{ width: 121 }, { width: 421 }, { width: 132 }, { width: 167 }];
 
     expect(computeColumnPositions(widths2, {}, 1000, true)).toMatchInlineSnapshot(`
     Uint32Array [
@@ -271,12 +255,7 @@ describe("computeColumnPositions", () => {
   });
 
   test("should handle size to fit expansion", () => {
-    const widths: ColumnWidthItem[] = [
-      { width: 300 },
-      { width: 200 },
-      { width: 300 },
-      { width: 300 },
-    ];
+    const widths: ColumnWidthItem[] = [{ width: 300 }, { width: 200 }, { width: 300 }, { width: 300 }];
 
     expect(computeColumnPositions(widths, {}, 1200, true)).toMatchInlineSnapshot(`
     Uint32Array [

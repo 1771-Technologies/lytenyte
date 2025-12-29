@@ -45,7 +45,5 @@ export function deselectRectRange(rect: DataRect, deselectRect: DataRect): DataR
     });
   }
 
-  return result.filter(
-    (rect) => !(rect.rowStart >= rect.rowEnd || rect.columnStart >= rect.columnEnd),
-  );
+  return result.filter((rect) => !(rect.rowStart >= rect.rowEnd || rect.columnStart >= rect.columnEnd));
 }

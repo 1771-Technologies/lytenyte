@@ -22,12 +22,7 @@ export const TreeLeaf = forwardRef<HTMLLIElement, JSX.IntrinsicElements["li"] & 
         data-ln-tree-id={itemId}
         onKeyDown={(e) => {
           props.onKeyDown?.(e);
-          if (
-            (e.key !== "ArrowLeft" && e.key !== "ArrowRight") ||
-            e.metaKey ||
-            e.ctrlKey ||
-            e.shiftKey
-          )
+          if ((e.key !== "ArrowLeft" && e.key !== "ArrowRight") || e.metaKey || e.ctrlKey || e.shiftKey)
             return;
 
           e.preventDefault();

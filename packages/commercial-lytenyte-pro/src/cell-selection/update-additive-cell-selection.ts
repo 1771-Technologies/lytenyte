@@ -5,10 +5,7 @@ import { splitCellSelectionRect } from "./split-cell-selection-rect.js";
 import type { DataRect, Grid } from "../+types.js";
 import type { InternalAtoms } from "../state/+types.js";
 
-export function updateAdditiveCellSelection(
-  grid: Grid<any> & { internal: InternalAtoms },
-  rect: DataRect,
-) {
+export function updateAdditiveCellSelection(grid: Grid<any> & { internal: InternalAtoms }, rect: DataRect) {
   const s = grid.state.columnMeta.get();
   const ds = grid.state.rowDataStore;
 

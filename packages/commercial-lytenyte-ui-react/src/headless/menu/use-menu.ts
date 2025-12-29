@@ -33,18 +33,13 @@ export function useMenu(el: HTMLElement | null) {
       "mouseover",
       (ev) => {
         const target = ev.target as HTMLElement;
-        const item = getNearestMatching(
-          target,
-          (el) => el.getAttribute("data-ln-menu-item") === "true",
-        );
+        const item = getNearestMatching(target, (el) => el.getAttribute("data-ln-menu-item") === "true");
         if (!item) return;
 
         if (item) {
           const itemRoots = getSubmenuRoots(item);
 
-          const menus = el.querySelectorAll(
-            '[data-ln-submenu-root="true"]',
-          ) as unknown as HTMLElement[];
+          const menus = el.querySelectorAll('[data-ln-submenu-root="true"]') as unknown as HTMLElement[];
 
           menus.forEach((m) => {
             if (!itemRoots.includes(m)) dispatchClose(m);
@@ -61,10 +56,7 @@ export function useMenu(el: HTMLElement | null) {
       "mouseout",
       (ev) => {
         const target = ev.target as HTMLElement;
-        const item = getNearestMatching(
-          target,
-          (el) => el.getAttribute("data-ln-menu-item") === "true",
-        );
+        const item = getNearestMatching(target, (el) => el.getAttribute("data-ln-menu-item") === "true");
         if (!item) return;
 
         mouseOutTime.current = setTimeout(() => {

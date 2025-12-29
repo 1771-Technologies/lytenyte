@@ -4,7 +4,7 @@ description: 1771 Technologies implements comprehensive security measures to ens
 ---
 
 This guide outlines key security considerations when using LyteNyte Grid.
-These guidelines apply to both the free `Core` edition and the commercial `PRO` edition.
+These guidelines apply to both the free **Core edition** and the **commercial PRO edition**.
 
 ## Content Security Policy
 
@@ -18,15 +18,12 @@ must include `unsafe-inline`. This directive supports advanced layout and
 virtualization features. Add the following tag to your HTML if your framework does not already provide it:
 
 ```html
-<meta
-  http-equiv="Content-Security-Policy"
-  content="default-src 'self'; style-src 'self' 'unsafe-inline';"
-/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline';" />
 ```
 
 :::info
 
-Add this tag only if you use a custom meta framework. Popular frameworks such as
+Add this tag only if you use a custom in-house meta framework. Popular frameworks such as
 Vite, React Router, TanStack Start, and Next.js already provide the necessary tags.
 
 :::
@@ -52,7 +49,7 @@ Your application is responsible for retrieving and securing all data before pass
 
 LyteNyte Grid avoids JavaScript features commonly associated with security exploits:
 
-- The code base never uses `eval`, and future versions will not introduce it.
+- The code base never uses `eval`, and future versions of LyteNyte Grid will not introduce it.
 - LyteNyte Grid does not modify the `prototype` chain of any object.
 - The library has **no external dependencies**, ensuring that no
   third-party code is downloaded during installation.
@@ -64,7 +61,7 @@ Our team will address the issue promptly.
 
 ## Telemetry and Remote Checks
 
-LyteNyte Grid does not collect telemetry and performs no remote validation checks.
+LyteNyte Grid **does not** collect telemetry and performs no remote validation checks.
 The library works entirely offline and supports sandboxed environments. No firewall configuration is required.
 
 ## Next Steps

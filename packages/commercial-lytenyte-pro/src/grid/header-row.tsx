@@ -5,6 +5,4 @@ export interface HeaderRowProps {
   readonly headerRowIndex: number;
 }
 
-export const HeaderRow = Core as (
-  props: JSX.IntrinsicElements["div"] & HeaderRowProps,
-) => ReactNode;
+export const HeaderRow = Core as (props: JSX.IntrinsicElements["div"] & HeaderRowProps) => ReactNode;

@@ -72,10 +72,7 @@ import { makeExportDataRect } from "./api/export-data-rect.js";
 import { makeDialogFrameClose, makeDialogFrameOpen } from "./api/dialog-frame.js";
 import { makePopoverFrameClose, makePopoverFrameOpen } from "./api/popover-frame.js";
 import { makePositionFromElement } from "./api/position-from-element.js";
-import {
-  splitCellSelectionRect,
-  type DataRectSplit,
-} from "../cell-selection/split-cell-selection-rect.js";
+import { splitCellSelectionRect, type DataRectSplit } from "../cell-selection/split-cell-selection-rect.js";
 import { boundSelectionRect } from "../cell-selection/bound-selection-rect.js";
 import { makeCellRoot } from "./api/cell-root.js";
 import { splitOnPivot } from "../cell-selection/split-on-pivot.js";
@@ -102,9 +99,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const viewportHeightOuter = signal(0);
   const viewportWidthInner = signal(0);
   const viewportWidthOuter = signal(0);
-  const columnGroupJoinDelimiter = signal(
-    p.columnGroupJoinDelimiter ?? COLUMN_GROUP_JOIN_DELIMITER,
-  );
+  const columnGroupJoinDelimiter = signal(p.columnGroupJoinDelimiter ?? COLUMN_GROUP_JOIN_DELIMITER);
   const columnGroupExpansions = signal(p.columnGroupExpansions ?? {});
   const columnGroupDefaultExpansion = signal(p.columnGroupDefaultExpansion ?? true);
 
@@ -164,9 +159,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
   const rowSelectedIds = signal(p.rowSelectedIds ?? new Set<string>());
   const rowSelectionMode = signal(p.rowSelectionMode ?? "none");
   const rowSelectChildren = signal(p.rowSelectChildren ?? false);
-  const rowSelectionActivator = signal<RowSelectionActivator>(
-    p.rowSelectionActivator ?? "single-click",
-  );
+  const rowSelectionActivator = signal<RowSelectionActivator>(p.rowSelectionActivator ?? "single-click");
 
   const virtualizeRows = signal(p.virtualizeRows ?? true);
   const virtualizeCols = signal(p.virtualizeCols ?? true);
@@ -472,12 +465,7 @@ export function makeLyteNyte<T>(p: UseLyteNyteProps<T>): Grid<T> {
     if (!viewport()) return EMPTY_POSITION_ARRAY;
 
     const view = columnView();
-    return computeColumnPositions(
-      view.visibleColumns,
-      base(),
-      viewportWidthInner(),
-      columnSizeToFit(),
-    );
+    return computeColumnPositions(view.visibleColumns, base(), viewportWidthInner(), columnSizeToFit());
   });
   const widthTotal = computed(() => xPositions().at(-1)!);
 

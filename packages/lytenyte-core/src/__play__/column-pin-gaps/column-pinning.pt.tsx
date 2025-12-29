@@ -104,14 +104,10 @@ test("should handle two start and scrollable", async () => {
   await userEvent.click(screen.getByText("Toggle RTL: Currently Off"));
   await wait(100);
 
-  await expect
-    .element(screen.getByRole("grid"))
-    .toMatchScreenshot("two_start_and_scrollable_003-rtl");
+  await expect.element(screen.getByRole("grid")).toMatchScreenshot("two_start_and_scrollable_003-rtl");
   grid.scrollBy({ left: -10_000 });
   await wait(100);
-  await expect
-    .element(screen.getByRole("grid"))
-    .toMatchScreenshot("two_start_and_scrollable_004-rtl");
+  await expect.element(screen.getByRole("grid")).toMatchScreenshot("two_start_and_scrollable_004-rtl");
 });
 
 test("should handle two start, two end, and scrollable", async () => {
@@ -120,15 +116,11 @@ test("should handle two start, two end, and scrollable", async () => {
   await expect.element(screen.getByRole("grid")).toBeVisible();
   await wait(100);
 
-  await expect
-    .element(screen.getByRole("grid"))
-    .toMatchScreenshot("two_start_two_end_and_scrollable_001");
+  await expect.element(screen.getByRole("grid")).toMatchScreenshot("two_start_two_end_and_scrollable_001");
   const grid = screen.getByRole("grid").element();
   grid.scrollBy({ left: 10_000 });
   await wait(100);
-  await expect
-    .element(screen.getByRole("grid"))
-    .toMatchScreenshot("two_start_two_end_and_scrollable_002");
+  await expect.element(screen.getByRole("grid")).toMatchScreenshot("two_start_two_end_and_scrollable_002");
   grid.scrollBy({ left: -10_000 });
   await wait(100);
   await userEvent.click(screen.getByText("Toggle RTL: Currently Off"));
@@ -150,15 +142,11 @@ test("should handle one start, two end, and scrollable", async () => {
   await expect.element(screen.getByRole("grid")).toBeVisible();
   await wait(100);
 
-  await expect
-    .element(screen.getByRole("grid"))
-    .toMatchScreenshot("one_start_two_end_and_scrollable_001");
+  await expect.element(screen.getByRole("grid")).toMatchScreenshot("one_start_two_end_and_scrollable_001");
   const grid = screen.getByRole("grid").element();
   grid.scrollBy({ left: 10_000 });
   await wait(100);
-  await expect
-    .element(screen.getByRole("grid"))
-    .toMatchScreenshot("one_start_two_end_and_scrollable_002");
+  await expect.element(screen.getByRole("grid")).toMatchScreenshot("one_start_two_end_and_scrollable_002");
   grid.scrollBy({ left: -10_000 });
   await wait(100);
   await userEvent.click(screen.getByText("Toggle RTL: Currently Off"));
@@ -180,15 +168,11 @@ test("should handle two start, one end, and scrollable", async () => {
   await expect.element(screen.getByRole("grid")).toBeVisible();
   await wait(100);
 
-  await expect
-    .element(screen.getByRole("grid"))
-    .toMatchScreenshot("two_start_one_end_and_scrollable_001");
+  await expect.element(screen.getByRole("grid")).toMatchScreenshot("two_start_one_end_and_scrollable_001");
   const grid = screen.getByRole("grid").element();
   grid.scrollBy({ left: 10_000 });
   await wait(100);
-  await expect
-    .element(screen.getByRole("grid"))
-    .toMatchScreenshot("two_start_one_end_and_scrollable_002");
+  await expect.element(screen.getByRole("grid")).toMatchScreenshot("two_start_one_end_and_scrollable_002");
   grid.scrollBy({ left: -10_000 });
   await wait(100);
   await userEvent.click(screen.getByText("Toggle RTL: Currently Off"));
@@ -235,9 +219,7 @@ test("should handle two start, two end, and many scrollable", async () => {
 });
 
 test("should handle two start (with groups), two end, and scrollable", async () => {
-  const screen = render(
-    <ColumnPinning initial="Two Start (with groups), Two End, and Scrollable" />,
-  );
+  const screen = render(<ColumnPinning initial="Two Start (with groups), Two End, and Scrollable" />);
 
   await expect.element(screen.getByRole("grid")).toBeVisible();
   await wait(100);
@@ -267,9 +249,7 @@ test("should handle two start (with groups), two end, and scrollable", async () 
 });
 
 test("should handle two start, two end (with groups), and scrollable", async () => {
-  const screen = render(
-    <ColumnPinning initial="Two Start, Two End (with groups), and Scrollable" />,
-  );
+  const screen = render(<ColumnPinning initial="Two Start, Two End (with groups), and Scrollable" />);
 
   await expect.element(screen.getByRole("grid")).toBeVisible();
   await wait(100);
@@ -299,9 +279,7 @@ test("should handle two start, two end (with groups), and scrollable", async () 
 });
 
 test("should handle two start, two end, and scrollable (with groups)", async () => {
-  const screen = render(
-    <ColumnPinning initial="Two Start, Two End, and Scrollable (with groups)" />,
-  );
+  const screen = render(<ColumnPinning initial="Two Start, Two End, and Scrollable (with groups)" />);
 
   await expect.element(screen.getByRole("grid")).toBeVisible();
   await wait(100);

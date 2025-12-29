@@ -1,9 +1,7 @@
 import type { InternalAtoms } from "../+types";
 import type { Grid, GridApi } from "../../+types";
 
-export const makeRowSelect = (
-  grid: Grid<any> & { internal: InternalAtoms },
-): GridApi<any>["rowSelect"] => {
+export const makeRowSelect = (grid: Grid<any> & { internal: InternalAtoms }): GridApi<any>["rowSelect"] => {
   return (params) => {
     let stop = false;
     grid.api.eventFire("rowSelectBegin", {
@@ -30,8 +28,7 @@ export const makeRowSelect = (
       mode: grid.state.rowSelectionMode.get(),
     });
 
-    if (!params.selectBetweenPivot)
-      grid.internal.rowSelectionLastWasDeselect.set(!!params.deselect);
+    if (!params.selectBetweenPivot) grid.internal.rowSelectionLastWasDeselect.set(!!params.deselect);
 
     grid.api.eventFire("rowSelectEnd", {
       grid,

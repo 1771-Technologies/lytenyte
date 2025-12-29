@@ -1,12 +1,5 @@
 import { BRANCH, LEAF } from "../+constants.js";
-import type {
-  AggregationItem,
-  BranchNode,
-  GroupItem,
-  LeafNode,
-  Root,
-  TreeNode,
-} from "../+types.js";
+import type { AggregationItem, BranchNode, GroupItem, LeafNode, Root, TreeNode } from "../+types.js";
 import { traverse } from "./traverse.js";
 import { aggregationEvaluator } from "./evaluator-aggregation.js";
 import { groupEvaluator } from "./evaluator-group.js";

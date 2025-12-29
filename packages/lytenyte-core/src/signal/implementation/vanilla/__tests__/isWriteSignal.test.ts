@@ -11,15 +11,7 @@ describe("isWriteSignal", () => {
 
   test("should return false if given non-subject", () => {
     (
-      [
-        false,
-        null,
-        undefined,
-        () => {},
-        computed(() => 10),
-        readonly(signal(10)),
-        effect(() => {}),
-      ] as const
+      [false, null, undefined, () => {}, computed(() => 10), readonly(signal(10)), effect(() => {})] as const
     ).forEach((type) => expect(isWriteSignal(type)).toBe(false));
   });
 });

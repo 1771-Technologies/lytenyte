@@ -2,10 +2,7 @@ import { useEffect, useReducer, useRef } from "react";
 import type { Grid, RowNode } from "../../+types.js";
 import type { InternalAtoms } from "../../state/+types.js";
 
-export function useRowSelectionState(
-  grid: Grid<any> & { internal: InternalAtoms },
-  r: RowNode<any> | null,
-) {
+export function useRowSelectionState(grid: Grid<any> & { internal: InternalAtoms }, r: RowNode<any> | null) {
   const indeterminateRef = useRef(false);
   const selectedRef = useRef(false);
   const indeterminate = indeterminateRef.current;

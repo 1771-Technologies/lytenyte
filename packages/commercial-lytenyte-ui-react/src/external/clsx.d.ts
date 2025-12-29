@@ -1,13 +1,5 @@
 declare namespace clsx {
-  type ClassValue =
-    | ClassArray
-    | ClassDictionary
-    | string
-    | number
-    | bigint
-    | null
-    | boolean
-    | undefined;
+  type ClassValue = ClassArray | ClassDictionary | string | number | bigint | null | boolean | undefined;
   type ClassDictionary = Record<string, any>;
   type ClassArray = ClassValue[];
   function clsx(...inputs: ClassValue[]): string;

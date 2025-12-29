@@ -1,6 +1,5 @@
 ---
 title: Getting Started
-pro: true
 description:
   Get started with LyteNyte Grid, a modern React data grid designed for enterprise-scale data challenges.
   Built in React, for React, it enables developers to ship faster and more efficiently than ever before.
@@ -11,14 +10,14 @@ description:
 ## Our Motivation
 
 Before LyteNyte Grid, we were trapped in a cycle of frustration with bloated, brittle,
-and bizarrely over-engineered data grid libraries. Every new project
+and over-engineered data grid libraries. Every new project
 became a ritual of fighting APIs that felt like they were written by a
 committee that never used React.
 
 Here's what we kept running into again and again:
 
 - **Customization was a nightmare.** Clunky, opaque APIs made even basic tweaks feel like defusing
-  a bomb. Two-way data bindings, sync issues between React and the grid... we've seen things.
+  a bomb. Two-way data bindings, state sync issues between React and the grid... we've seen things.
 
 - **Server data loading was a disaster.** Optimistic updates, partial rendering, and caching
   never worked properly, or worse, worked sometimes, which is somehow more dangerous.
@@ -52,8 +51,8 @@ Here's why we stand out:
   React's data flow and state model. No wrappers, no adapter layers.
   No awkward integrations, only cleaner, more maintainable code.
 
-- 📦 **Tiny Bundle Size:** Core edition is a tiny **36kb gzipped**, while the PRO edition weighs
-  only **49kb gzipped**, so you no longer have to choose between advanced
+- 📦 **Tiny Bundle Size:** Core edition is a tiny **30kb gzipped**, while the PRO edition weighs
+  only **40kb gzipped**, so you no longer have to choose between advanced
   functionality and a fast user experience.
 
 - ⚡ **Unrivaled Speed:** LyteNyte can handle **10,000+ updates per second** and render millions of rows.
@@ -96,7 +95,7 @@ next to the feature name on the navigation bar.
 For a complete feature comparison between Core and PRO, check
 out our [price page](https://www.1771technologies.com/pricing).
 
-## Quick Start Guide
+## Quick Start
 
 In this guide, you will build a data table inspired by the log tables in Vercel and DataDog.
 
@@ -106,7 +105,7 @@ This demo shows the final output of the guide. If you prefer to jump straight
 to the complete code, fork the working demo by clicking the StackBlitz or Code Sandbox icon
 under the code frame.
 
-## Installing LyteNyte Grid
+### Installing LyteNyte Grid
 
 This guide works with either edition of LyteNyte Grid. If you have a license, install PRO. You
 can use PRO without a license, but the page will show a watermark.
@@ -123,6 +122,7 @@ If you do not have a React project yet, we recommend using
 [Vite](https://vite.dev/). Create a project quickly with:
 
 ```sh
+//! showLineNumbers=false
 pnpm create vite
 ```
 
@@ -131,575 +131,678 @@ For details, see the
 
 :::
 
-## Creating a Sized Container
+### Import LyteNyte Grid
 
-LyteNyte Grid uses
-[virtualization](https://www.patterns.dev/vanilla/virtual-lists/) for maximum
-performance. It virtualizes both rows and columns. This requires a sized
-container - a DOM element that occupies space even without child nodes.
-
-The simplest approach is to set the `height` style on the element, which we do
-here. For more on sized containers, see the
-[Sized Container guide](/docs/grid-container).
-
-Define a sized container for LyteNyte Grid:
-
-```tsx
-export function GettingStartedDemo() {
-  return <div style={{ width: "100%", height: "400px" }}></div>;
-}
-```
-
-## Data and Columns
-
-Next, import `LyteNyteGrid`, prepare your data, and define columns that tell the
-grid what to display.
-
-This demo uses sample request log data. Here is one item:
-
-```json
-{
-  "Date": "2025-08-01 10:12:04",
-  "Status": 200,
-  "Method": "GET",
-  "Pathname": "/",
-  "Latency": 51,
-  "region.shortname": "sin",
-  "region.fullname": "Singapore",
-  "timing-phase.dns": 0,
-  "timing-phase.tls": 10,
-  "timing-phase.ttfb": 9,
-  "timing-phase.connection": 23,
-  "timing-phase.transfer": 9
-}
-```
-
-You can download the full data file from our
-[GitHub example](<https://github.com/1771-Technologies/lytenyte/blob/main/documentation/content/docs/(introduction)/demos/getting-started/data.ts>).
-
-### Importing LyteNyte Grid
-
-LyteNyte Grid uses a modular design to minimize bundle size. It exposes named
+LyteNyte Grid uses a modular design to minimize bundle size. The library exposes named
 exports to maximize tree-shaking.
 
-The main export is the `Grid` object, which contains components and hooks for
-building a grid.
+`Grid` is the main export. `Grid` is a React component, and it includes additional component
+functions attached to it. In this guide, you only need the `Grid` function.
+See the [Headless Component Parts guide](/docs/grid-headless-parts) for advanced usage of the
+different component parts that make up LyteNyte Grid.
 
-`Grid` also exposes the `useLyteNyte` hook. It resembles React's `useState`:
-the provided value initializes state, and later changes to that object do not
-update the initial value.
+Start by:
 
-The code below shows the minimal setup for this demo. Paste it into your editor.
-We will enhance it as we progress.
+1. Importing the `Grid` function.
+2. Defining the grid columns.
+
+The code below shows each part. The rest of this guide builds on this code,
+so if you are following along in your editor, copy it.
 
 ```tsx
-"use client";
-
+import "@1771technologies/lytenyte-pro/light-dark.css";
 import { Grid } from "@1771technologies/lytenyte-pro";
-import type { Column, RowLayout } from "@1771technologies/lytenyte-pro/types";
-import { memo, useId } from "react";
 
-type RequestData = {
-  Date: string;
-  Status: number;
-  Method: string;
-  Pathname: string;
-  Latency: number;
-  "region.shortname": string;
-  "region.fullname": string;
-  "timing-phase.dns": number;
-  "timing-phase.tls": number;
-  "timing-phase.ttfb": number;
-  "timing-phase.connection": number;
-  "timing-phase.transfer": number;
-};
-
-const columns: Column<RequestData>[] = [
-  { id: "Date", name: "Date", type: "datetime" },
-  { id: "Status", name: "Status" },
-  { id: "Method", name: "Method" },
+//!next "1" 1
+const columns: Grid.Column<GridSpec>[] = [
+  { id: "Date", name: "Date", width: 200, type: "datetime" },
+  { id: "Status", name: "Status", width: 100 },
+  { id: "Method", name: "Method", width: 100 },
   { id: "timing-phase", name: "Timing Phase" },
   { id: "Pathname", name: "Pathname" },
-  { id: "Latency", name: "Latency" },
+  { id: "Latency", name: "Latency", width: 120, type: "number" },
   { id: "region", name: "Region" },
 ];
 
-export function GettingStartedDemo() {
-  const grid = Grid.useLyteNyte({
-    gridId: useId(),
-    columns,
-  });
-
-  const view = grid.view.useValue();
-
+export default function GettingStarted() {
   return (
-    <div style={{ width: "100%", height: "400px" }}>
-      <Grid.Root grid={grid}>
-        <Grid.Viewport>
-          <Grid.Header>
-            {view.header.layout.map((row, i) => (
-              <Grid.HeaderRow headerRowIndex={i} key={i}>
-                {row.map((c) => {
-                  if (c.kind === "group") {
-                    return <Grid.HeaderGroupCell cell={c} key={c.idOccurrence} />;
-                  }
-                  return <Grid.HeaderCell cell={c} key={c.column.id} />;
-                })}
-              </Grid.HeaderRow>
-            ))}
-          </Grid.Header>
-
-          <Grid.RowsContainer>
-            <Grid.RowsCenter>
-              {view.rows.center.map((row) => {
-                if (row.kind === "full-width") {
-                  return <Grid.RowFullWidth row={row} key={row.id} />;
-                }
-
-                return (
-                  <Grid.Row key={row.id} row={row} accepted={["row"]}>
-                    {row.cells.map((cell) => (
-                      <Grid.Cell cell={cell} key={cell.id} />
-                    ))}
-                  </Grid.Row>
-                );
-              })}
-            </Grid.RowsCenter>
-          </Grid.RowsContainer>
-        </Grid.Viewport>
-      </Grid.Root>
+    //!next "2" 1
+    <div className="ln-grid" style={{ height: 400 }}>
+      {/*!next "3" 1 */}
+      <Grid columns={columns} />
     </div>
   );
 }
 ```
 
-### Basic Code Breakdown
+The annotated lines mark important parts:
 
-The code starts with:
-
-```tsx
-"use client";
-```
-
-Use this directive when you combine LyteNyte Grid with React Server Components.
-If you build a simple SPA, you can omit it.
-
-Next, the imports:
-
-```tsx
-import { Grid } from "@1771technologies/lytenyte-pro";
-import type { Column, RowLayout } from "@1771technologies/lytenyte-pro/types";
-import { memo, useId } from "react";
-```
-
-`Grid` contains the headless building blocks of LyteNyte Grid. The types package
-exposes helpful types to keep your app type-safe.
-
-Then, define columns:
-
-```tsx
-const columns: Column<RequestData>[] = [
-  { id: "Date", name: "Date", type: "datetime" },
-  { id: "Status", name: "Status" },
-  { id: "Method", name: "Method" },
-  { id: "timing-phase", name: "Timing Phase" },
-  { id: "Pathname", name: "Pathname" },
-  { id: "Latency", name: "Latency" },
-  { id: "region", name: "Region" },
-];
-```
-
-Each column must have a unique `id`. Other fields are optional, but they improve
-the experience.
-
-Finally, the grid component:
-
-```tsx
-<div style={{ width: "100%", height: "400px" }}>
-  <Grid.Root grid={grid}>{/* Omitted for brevity */}</Grid.Root>
-</div>
-```
-
-The `Grid` object provides components that make up LyteNyte Grid. The general
-structure looks like:
-
-```txt
-Viewport
-  Header
-    HeaderRow
-      HeaderCell, HeaderCell, HeaderCell
-  RowsContainer
-    RowsCenter
-      Row
-        Cell, Cell, Cell
-```
-
-When you use column groups, `HeaderCell` may be a `HeaderGroupCell`, and there
-may be multiple `HeaderRow`s. Rows can also be full width. The template above
-handles these cases.
-
-`RowsContainer` renders `RowsCenter`. The grid also supports `RowsTop` and
-`RowsBottom` for pinned rows. See the [Row Pinning guide](/docs/row-pinning)
-for details.
+1. Defines the set of column definitions. The grid uses these definitions to display content.
+   To learn more about the available properties, see the [Column Overview guide](/docs/columns).
+2. Creates a `400px`-tall container for the grid. LyteNyte Grid virtualizes rows by default,
+   so the grid needs a container with a height to fill. See the [Responsive Container guide](/docs/grid-container)
+   for different approaches to creating a grid container. The container also applies the `ln-grid` class.
+   LyteNyte Grid requires the `ln-grid` class for the pre-made styles. To learn more about styling, see
+   the [Grid Theming guide](/docs/grid-theming).
+3. Renders the grid. This example uses the default `Grid` component API. You can also use LyteNyte Grid
+   in a headless fashion by providing `children`. To learn more about headless usage, see the
+   [Headless Component Parts guide](/docs/grid-headless-parts).
 
 ### Providing Data to the Grid
 
 LyteNyte Grid reads data from a row data source. The most common option is a
-client-side data source when all data is available in the browser.
+client-side data source. Use the client-side data source when all row data is available in the browser.
 
-Import `useClientRowDataSource` and provide the `requestData` sample data:
+Next you will:
+
+1. Import the row data and the data source hook.
+2. Create a row data source from the imported data and pass it to the grid.
 
 ```tsx
-import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
+import "@1771technologies/lytenyte-pro/light-dark.css";
+import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro"; //! "1"
 
-// Rest omitted
+import { requestData, type RequestData } from "./data.js"; //! "2"
 
-export function MyLyteNyteGridComponent() {
-  const ds = useClientRowDataSource<RequestData>({
+//!next "3" 3
+interface GridSpec {
+  data: RequestData;
+}
+
+const columns: Grid.Column<GridSpec>[] = [
+  { id: "Date", name: "Date", width: 200, type: "datetime" },
+  { id: "Status", name: "Status", width: 100 },
+  { id: "Method", name: "Method", width: 100 },
+  { id: "timing-phase", name: "Timing Phase" },
+  { id: "Pathname", name: "Pathname" },
+  { id: "Latency", name: "Latency", width: 120, type: "number" },
+  { id: "region", name: "Region" },
+];
+
+export default function GettingStarted() {
+  //!next "4" 3
+  const ds = useClientDataSource<GridSpec>({
     data: requestData,
   });
 
-  const grid = Grid.useLyteNyte({
-    gridId: useId(),
-    columns,
-    rowDataSource: ds,
-  });
-
-  // Omitted ...
+  return (
+    <div className="ln-grid" style={{ height: 400 }}>
+      <Grid columns={columns} rowSource={ds} /> {/*! */}
+    </div>
+  );
 }
 ```
 
-### Styling the Grid
+The annotated code marks the important changes.
 
-By default, LyteNyte Grid is unstyled. Only minimal styles for core behavior are
-included.
+1. Import the `useClientDataSource` hook from the LyteNyte package. Use the client-side data source
+   hook when the browser already has all row data.
+2. Import `requestData` from `./data.js`. This guide assumes you downloaded the data for the demo
+   and created a `data.js` (or `data.ts`) file. You can download or copy the data file from the
+   LyteNyte Grid GitHub repository [here](<https://github.com/1771-Technologies/lytenyte/blob/main/documentation/content/docs/(introduction)/demos/getting-started/data.ts>).
+   Create a local `data.js` file in the same folder as the file that renders the grid.
+3. Create a `GridSpec` type. LyteNyte Grid uses TypeScript for code completion and type checking.
+   The grid cannot know the row data type ahead of time, so you define a specification interface
+   and pass it as the type parameter to the relevant grid types. The specification interface can
+   do more than define the row data type, and this guide covers that later. For best practices regarding TypeScript usage
+   and LyteNyte Grid, see the [TypeScript guide](/docs/prodready-typescript).
+4. Call the `useClientDataSource` hook and pass in `requestData`. Then set the grid's `rowSource`
+   property to the `ds` value returned from `useClientDataSource`.
 
-You can style it yourself or use a built-in theme. You can also combine both.
-The examples below use Tailwind CSS.
+If you followed along to this point you will have a working grid, but a very plain looking view. The demo
+below shows what the result looks like. The example looks plain, and not every column displays a value.
+LyteNyte Grid's default cell renderer only displays simple values, such as strings or numbers. For complex
+values, you must provide a custom cell renderer. You will do that next.
 
-Import the Grid CSS:
+::demo[Basic Grid="./demos/getting-started_functional"]
+
+## Custom Cell Renderer
+
+A custom cell renderer is a normal React component. LyteNyte Grid passes the cell renderer
+cell-specific properties, defined by the [CellRendererParams](/docs/reference/cells#cellrendererparams)
+type.
+
+You set a cell renderer on the column definitions you pass to the grid. Start by defining a cell renderer
+for the **Timing Phase** column. The code block below collapses the implementation, because a cell renderer can contain
+any React content you want. Focus on the function definition. You define a cell renderer by creating a React component
+that accepts `CellRendererParams`. This example also uses the `GridSpec` type, which we defined earlier, to improve type checking.
 
 ```tsx
-import "@1771technologies/lytenyte-pro/grid.css";
-```
+//#start
+import type { CellRendererParams } from "@1771technologies/lytenyte-pro-experimental/types";
+const colors = ["var(--transfer)", "var(--dns)", "var(--connection)", "var(--ttfb)", "var(--tls)"];
+//#end
 
-:::info
+export function TimingPhaseCell({ api, row }: CellRendererParams<GridSpec>) {
+  //#start
+  // Guard against rows that are not leaves or rows that have no data.
+  if (!api.rowIsLeaf(row) || !row.data) return;
 
-We use Tailwind CSS with these color variables in the Tailwind config:
+  const total =
+    row.data["timing-phase.connection"] +
+    row.data["timing-phase.dns"] +
+    row.data["timing-phase.tls"] +
+    row.data["timing-phase.transfer"] +
+    row.data["timing-phase.ttfb"];
 
-<Tabs>
-  <Tab label="v3">
+  const connectionPer = (row.data["timing-phase.connection"] / total) * 100;
+  const dnsPer = (row.data["timing-phase.dns"] / total) * 100;
+  const tlPer = (row.data["timing-phase.tls"] / total) * 100;
+  const transferPer = (row.data["timing-phase.transfer"] / total) * 100;
+  const ttfbPer = (row.data["timing-phase.ttfb"] / total) * 100;
 
-```ts
-const colorConfig = {
-  colors: {
-    "ln-gray-00": "var(--lng1771-gray-00)",
-    "ln-gray-02": "var(--lng1771-gray-02)",
-    "ln-gray-05": "var(--lng1771-gray-05)",
-    "ln-gray-10": "var(--lng1771-gray-10)",
-    "ln-gray-20": "var(--lng1771-gray-20)",
-    "ln-gray-30": "var(--lng1771-gray-30)",
-    "ln-gray-40": "var(--lng1771-gray-40)",
-    "ln-gray-50": "var(--lng1771-gray-50)",
-    "ln-gray-60": "var(--lng1771-gray-60)",
-    "ln-gray-70": "var(--lng1771-gray-70)",
-    "ln-gray-80": "var(--lng1771-gray-80)",
-    "ln-gray-90": "var(--lng1771-gray-90)",
-    "ln-gray-100": "var(--lng1771-gray-100)",
+  const values = [connectionPer, dnsPer, tlPer, transferPer, ttfbPer];
 
-    "ln-primary-05": "var(--lng1771-primary-05)",
-    "ln-primary-10": "var(--lng1771-primary-10)",
-    "ln-primary-30": "var(--lng1771-primary-30)",
-    "ln-primary-50": "var(--lng1771-primary-50)",
-    "ln-primary-70": "var(--lng1771-primary-70)",
-    "ln-primary-90": "var(--lng1771-primary-90)",
-    "ln-focus-outline": "var(--lng1771-focus-outline)",
-  },
-};
-```
-
-  </Tab>
-
-  <Tab label="v4">
-
-```css
-@theme {
-  --color-ln-gray-00: var(--lng1771-gray-00);
-  --color-ln-gray-02: var(--lng1771-gray-02);
-  --color-ln-gray-05: var(--lng1771-gray-05);
-  --color-ln-gray-10: var(--lng1771-gray-10);
-  --color-ln-gray-20: var(--lng1771-gray-20);
-  --color-ln-gray-30: var(--lng1771-gray-30);
-  --color-ln-gray-40: var(--lng1771-gray-40);
-  --color-ln-gray-50: var(--lng1771-gray-50);
-  --color-ln-gray-60: var(--lng1771-gray-60);
-  --color-ln-gray-70: var(--lng1771-gray-70);
-  --color-ln-gray-80: var(--lng1771-gray-80);
-  --color-ln-gray-90: var(--lng1771-gray-90);
-  --color-ln-gray-100: var(--lng1771-gray-100);
-
-  --color-ln-primary-05: var(--lng1771-primary-05);
-  --color-ln-primary-10: var(--lng1771-primary-10);
-  --color-ln-primary-30: var(--lng1771-primary-30);
-  --color-ln-primary-50: var(--lng1771-primary-50);
-  --color-ln-primary-70: var(--lng1771-primary-70);
-  --color-ln-primary-90: var(--lng1771-primary-90);
-  --color-ln-focus-outline: var(--lng1771-focus-outline);
+  return (
+    <div className="flex h-full w-full items-center">
+      <div className="flex h-4 w-full items-center gap-px overflow-hidden">
+        {values.map((v, i) => {
+          return (
+            <div
+              key={i}
+              style={{ width: `${v}%`, background: colors[i] }}
+              className={clsx("h-full rounded-sm")}
+            />
+          );
+        })}
+      </div>
+    </div>
+  );
+  //#end
 }
 ```
 
-  </Tab>
+Now that you know how to define cell renderers, set the `cellRenderer` property on the
+columns. The updated column code is shown below.
 
-</Tabs>
+```tsx
+//#start
+import "./main.css";
+import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
+
+import type { RequestData } from "./data.js";
+import { requestData } from "./data.js";
+
+export interface GridSpec {
+  data: RequestData;
+}
+//#end
+
+import {
+  DateCell,
+  LatencyCell,
+  MethodCell,
+  PathnameCell,
+  RegionCell,
+  StatusCell,
+  TimingPhaseCell,
+} from "./components.js";
+
+//!next 9
+const columns: Grid.Column<GridSpec>[] = [
+  { id: "Date", name: "Date", width: 200, type: "datetime", cellRenderer: DateCell },
+  { id: "Status", name: "Status", width: 100, cellRenderer: StatusCell },
+  { id: "Method", name: "Method", width: 100, cellRenderer: MethodCell },
+  { id: "timing-phase", name: "Timing Phase", cellRenderer: TimingPhaseCell },
+  { id: "Pathname", name: "Pathname", cellRenderer: PathnameCell },
+  { id: "Latency", name: "Latency", width: 120, type: "number", cellRenderer: LatencyCell },
+  { id: "region", name: "Region", cellRenderer: RegionCell },
+];
+
+//#start
+export default function GettingStarted() {
+  const ds = useClientDataSource<GridSpec>({
+    data: requestData,
+  });
+
+  return (
+    <div className="ln-grid" style={{ height: 400 }}>
+      <Grid columns={columns} rowSource={ds} />
+    </div>
+  );
+}
+//#end
+```
+
+:::note
+
+We use Tailwind CSS to style components. LyteNyte Grid has no opinion on which styling framework you use.
+If you follow this guide line by line and want the cell renderers to render correctly, set up Tailwind by following
+the [Tailwind installation guide](https://tailwindcss.com/docs/installation/using-vite), and add applying our
+[Tailwind theme configuration (todo)](/theme).
+
+The cell renderers also use custom CSS properties for colors. The CSS below defines those properties:
+
+```css
+:root {
+  --transfer: #7badff;
+  --dns: #126cff;
+  --connection: #053f9e;
+  --ttfb: #7c8193;
+  --tls: #c0c7d1;
+}
+
+.dark {
+  --transfer: #2be4ce;
+  --dns: #03b6a1;
+  --connection: #008c7b;
+  --ttfb: #6a6c73;
+  --tls: #bfc3c9;
+}
+```
+
+For general theming and best practices, see the [Grid Theming guide](/docs/grid-theming).
 
 :::
 
-After importing the CSS, add the `lng-grid` class to a container to apply the
-theme. You can also add one of these color themes:
+The cell renderers live in the `components.js` file. You can create this file yourself or copy our implementation
+from [GitHub](<https://github.com/1771-Technologies/lytenyte/blob/main/documentation/content/docs/(introduction)/demos/getting-started/components.tsx>).
+A full working example is shown below.
 
-- `light` for light mode.
-- `dark` for dark mode.
-- `lng1771-teal` for a sleek dark teal theme.
-- `lng1771-term256` for a minimal monospaced dark theme.
+::demo[Cell Renderers="./demos/getting-started_cell-renderers"]
 
-```tsx
-<div className="lng-grid" style={{ width: "100%", height: "400px" }}>
-  <Grid.Root grid={grid}>{/* ... */}</Grid.Root>
-</div>
+The grid now looks much better, but you can still add more features. In the sections that follow,
+you will:
+
+1. Add the ability to sort columns. You will do this by extending the column definition with a custom `sort` property.
+2. Make every row a master-detail row that expands to reveal more information about the row data.
+
+All the features in these sections work in both the Core and PRO editions of LyteNyte Grid, so you can follow along
+regardless of which edition you use.
+
+## Column Sorting
+
+LyteNyte Grid can sort rows by a specific column. To enable sorting, you will:
+
+1. Extend the column definition with a `sort` property.
+2. Store the columns in React state, so you can update them through the LyteNyte Grid API.
+3. Provide a custom header renderer that sorts by a column when the user clicks the header.
+
+### Extending Columns
+
+Start by extending the column definition in the `GridSpec` interface, as shown below:
+
+```ts
+export interface GridSpec {
+  data: RequestData;
+  column: { sort?: "asc" | "desc" | null }; //!
+}
 ```
 
-## A Header With Sorting
+This change only affects TypeScript. If you use JavaScript, you can safely ignore this section.
 
-Let's improve usability by adding sortable headers. Set a `headerRenderer` on
-all columns using `columnBase`:
+### Controlled Column State
+
+Next, store the columns in React state. The simplest way to do this is with `useState`, as shown in the code below:
 
 ```tsx
-const grid = Grid.useLyteNyte({
-  gridId: useId(),
-  columns,
-  columnBase: {
-    headerRenderer: Header,
-  },
-});
+export default function GettingStarted() {
+  //!next 1
+  const [columns, setColumns] = useState<Grid.Column<GridSpec>[]>([
+    { id: "Date", name: "Date", width: 200, type: "datetime", cellRenderer: DateCell },
+    { id: "Status", name: "Status", width: 100, cellRenderer: StatusCell },
+    { id: "Method", name: "Method", width: 100, cellRenderer: MethodCell },
+    { id: "timing-phase", name: "Timing Phase", cellRenderer: TimingPhaseCell },
+    { id: "Pathname", name: "Pathname", cellRenderer: PathnameCell },
+    { id: "Latency", name: "Latency", width: 120, type: "number", cellRenderer: LatencyCell },
+    { id: "region", name: "Region", cellRenderer: RegionCell },
+  ]);
+
+  //#start
+  const ds = useClientDataSource<GridSpec>({
+    data: requestData,
+    sort,
+  });
+  //#end
+
+  return (
+    <div className="demo ln-grid" style={{ height: 400 }}>
+      <Grid
+        columns={columns} //!
+        onColumnsChange={setColumns} //!
+        rowSource={ds}
+      />
+    </div>
+  );
+}
 ```
 
-Now define the `Header` renderer:
+This code passes the state-backed `columns` to the grid, additionally it passes the `setColumns` state setter
+to the `onColumnsChange` prop. This lets the grid update column state when the user interacts with
+the grid.
+
+### Header Renderer
+
+With the column definitions in place, create a header renderer that sorts a column when the user clicks it. You can
+set a header renderer on a column with the `headerRenderer` property. Since all columns use the same header renderer,
+set `headerRenderer` on the base column through the grid's `columnBase` property.
 
 ```tsx
-export function Header({ column, grid }: HeaderCellRendererParams<RequestData>) {
-  const sort = grid.state.sortModel.useValue().find((c) => c.columnId === column.id);
+//!next 3
+const base: Grid.Props<GridSpec>["columnBase"] = {
+  headerRenderer: Header,
+};
 
-  const isDescending = sort?.isDescending ?? false;
+export default function GettingStarted() {
+  //#start
+  const [columns, setColumns] = useState<Grid.Column<GridSpec>[]>([
+    { id: "Date", name: "Date", width: 200, type: "datetime", cellRenderer: DateCell },
+    { id: "Status", name: "Status", width: 100, cellRenderer: StatusCell },
+    { id: "Method", name: "Method", width: 100, cellRenderer: MethodCell },
+    { id: "timing-phase", name: "Timing Phase", cellRenderer: TimingPhaseCell },
+    { id: "Pathname", name: "Pathname", cellRenderer: PathnameCell },
+    { id: "Latency", name: "Latency", width: 120, type: "number", cellRenderer: LatencyCell },
+    { id: "region", name: "Region", cellRenderer: RegionCell },
+  ]);
 
+  const ds = useClientDataSource<GridSpec>({
+    data: requestData,
+    sort,
+  });
+  //#end
+
+  return (
+    <div className="demo ln-grid" style={{ height: 400 }}>
+      <Grid
+        columns={columns}
+        onColumnsChange={setColumns}
+        columnBase={base} //!
+        rowSource={ds}
+      />
+    </div>
+  );
+}
+```
+
+Next, define the header renderer and use it to update column state. The code below uses an `onClick` handler to build
+a column update by cycling through sort states for the clicked column. The handler then calls `api.columnUpdate`, which
+produces an updated set of columns. When `api.columnUpdate` runs, the grid calls `onColumnsChange` with the new columns.
+
+```tsx
+export function Header({ api, column }: HeaderParams<GridSpec>) {
   return (
     <div
-      className="bg-ln-gray-05 hover:bg-ln-gray-10 flex h-full w-full items-center px-2 text-sm transition-all"
+      //!next 20
       onClick={() => {
-        const current = grid.api.sortForColumn(column.id);
+        const columns = api.props().columns;
+        if (!columns) return;
 
-        if (current == null) {
-          let sort: SortModelItem<RequestData>;
-          const columnId = column.id;
+        const updates: Record<string, Partial<Grid.Column<GridSpec>>> = {};
+        const columnsWithSort = columns.filter((x) => x.sort);
 
-          if (customComparators[column.id]) {
-            sort = {
-              columnId,
-              sort: {
-                kind: "custom",
-                columnId,
-                comparator: customComparators[column.id],
-              },
-            };
-          } else if (column.type === "datetime") {
-            sort = {
-              columnId,
-              sort: {
-                kind: "date",
-                options: { includeTime: true },
-              },
-            };
-          } else if (column.type === "number") {
-            sort = { columnId, sort: { kind: "number" } };
-          } else {
-            sort = { columnId, sort: { kind: "string" } };
-          }
+        columnsWithSort.forEach((x) => {
+          updates[x.id] = { sort: null };
+        });
 
-          grid.state.sortModel.set([sort]);
-          return;
-        }
-
-        if (!current.sort.isDescending) {
-          grid.state.sortModel.set([{ ...current.sort, isDescending: true }]);
+        if (column.sort === "asc") {
+          updates[column.id] = { sort: null };
+        } else if (column.sort === "desc") {
+          updates[column.id] = { sort: "asc" };
         } else {
-          grid.state.sortModel.set([]);
+          updates[column.id] = { sort: "desc" };
         }
+
+        api.columnUpdate(updates);
       }}
     >
-      {column.name ?? column.id}
-
-      {sort && (
-        <>
-          {!isDescending ? (
-            <ArrowUpIcon className="size-4" />
-          ) : (
-            <ArrowDownIcon className="size-4" />
-          )}
-        </>
-      )}
+      {/*#start */}
+      <div className="sort-button flex w-full items-center justify-between rounded px-1 py-1 transition-colors">
+        {column.name ?? column.id}
+        {column.sort === "asc" && <ArrowUpIcon className="text-ln-text-dark size-4" />}
+        {column.sort === "desc" && <ArrowDownIcon className="text-ln-text-dark size-4" />}
+      </div>
+      {/*#end */}
     </div>
   );
 }
 ```
 
-This cycles through ascending → descending → none. It also supports custom
-comparators keyed by column id:
+Finally, pass a sort definition to the client row data source. Create the sort definition by deriving a value
+from the column state. The code below builds a `sort` value from the column that has a `sort` value.
 
 ```tsx
-const customComparators: Record<string, SortComparatorFn<RequestData>> = {
-  region: (left, right) => {
-    if (left.kind === "branch" || right.kind === "branch") {
-      if (left.kind === "branch" && right.kind === "branch") return 0;
-      if (left.kind === "branch" && right.kind !== "branch") return -1;
-      if (left.kind !== "branch" && right.kind === "branch") return 1;
-    }
-    if (!left.data || !right.data) return !left.data ? 1 : -1;
+export default function GettingStarted() {
+  const [columns, setColumns] = useState<Grid.Column<GridSpec>[]>([
+    //#start
+    { id: "Date", name: "Date", width: 200, type: "datetime", cellRenderer: DateCell },
+    { id: "Status", name: "Status", width: 100, cellRenderer: StatusCell },
+    { id: "Method", name: "Method", width: 100, cellRenderer: MethodCell },
+    { id: "timing-phase", name: "Timing Phase", cellRenderer: TimingPhaseCell },
+    { id: "Pathname", name: "Pathname", cellRenderer: PathnameCell },
+    { id: "Latency", name: "Latency", width: 120, type: "number", cellRenderer: LatencyCell },
+    { id: "region", name: "Region", cellRenderer: RegionCell },
+    //#end
+  ]);
 
-    const leftData = left.data as RequestData;
-    const rightData = right.data as RequestData;
+  //!next 9
+  const sort = useMemo<UseClientDataSourceParams<GridSpec>["sort"]>(() => {
+    const colWithSort = columns.find((x) => x.sort);
+    if (!colWithSort) return null;
 
-    return leftData["region.fullname"].localeCompare(rightData["region.fullname"]);
-  },
-  "timing-phase": (left, right) => {
-    if (left.kind === "branch" || right.kind === "branch") {
-      if (left.kind === "branch" && right.kind === "branch") return 0;
-      if (left.kind === "branch" && right.kind !== "branch") return -1;
-      if (left.kind !== "branch" && right.kind === "branch") return 1;
-    }
-    if (!left.data || !right.data) return !left.data ? 1 : -1;
+    if (sortComparators[colWithSort.id])
+      return [{ dim: sortComparators[colWithSort.id], descending: colWithSort.sort === "desc" }];
 
-    const leftData = left.data as RequestData;
-    const rightData = right.data as RequestData;
+    return [{ dim: colWithSort, descending: colWithSort.sort === "desc" }];
+  }, [columns]);
 
-    return leftData.Latency - rightData.Latency;
-  },
-};
-```
-
-We use a custom comparator for `region` and `timing-phase` because those fields
-store objects. Basic string or number sorts do not work there.
-
-## Custom Cell Renderers
-
-Next, add cell renderers to improve readability. You can pass a `cellRenderer`
-to a column. Below we add a renderer for the `Date` column. See our
-[GitHub components file](<https://github.com/1771-Technologies/lytenyte/blob/main/documentation/content/docs/(introduction)/demos/getting-started/components.tsx>)
-for more renderers.
-
-Declare the renderer on the column:
-
-```tsx
-const columns: Column<RequestData>[] = [
-  {
-    id: "Date",
-    name: "Date",
-    cellRenderer: DateCell,
-    type: "datetime",
-  },
-  // other columns...
-];
-```
-
-Then define `DateCell`. After editing column definitions, refresh the page since
-hot reload does not apply to column metadata:
-
-```tsx
-export function DateCell({ column, row, grid }: CellRendererParams<RequestData>) {
-  const field = grid.api.columnField(column, row);
-
-  const niceDate = useMemo(() => {
-    if (typeof field !== "string") return null;
-    return format(field, "MMM dd, yyyy HH:mm:ss");
-  }, [field]);
-
-  if (!niceDate) return null;
+  //#start
+  const ds = useClientDataSource<GridSpec>({
+    data: requestData,
+    sort,
+  });
 
   return (
-    <div className="text-ln-gray-70 flex h-full w-full items-center px-2 font-mono font-light">
-      {niceDate}
+    <div className="demo ln-grid" style={{ height: 400 }}>
+      <Grid
+        columns={columns}
+        onColumnsChange={setColumns}
+        columnBase={base}
+        rowSource={ds}
+        rowDetailRenderer={RowDetailRenderer}
+        columnMarker={marker}
+        slotShadows={ViewportShadows}
+      />
+    </div>
+  );
+  //#end
+}
+```
+
+A full working example with column sorting is shown below.
+
+::demo[Sorting Demo="./demos/getting-started-with-sort"]
+
+## Row Master Detail
+
+LyteNyte Grid supports row detail information, also known as master detail.
+This section covers the basic setup and functionality. For more information, see the
+[Row Master Detail guide](/docs/row-detai).
+
+To enable row master detail, you will:
+
+1. Define a detail renderer.
+2. Enable LyteNyte Grid's [marker column](/docs/marker-column) and provide a cell renderer that
+   toggles the row detail expansion state.
+
+### Row Detail Renderer
+
+A row detail renderer is a React component that LyteNyte Grid uses to render the detail area for an expanded
+row. Set the renderer on the grid's `rowDetailRenderer` property, as shown below:
+
+```tsx
+<Grid
+  columns={columns}
+  onColumnsChange={setColumns}
+  columnBase={base}
+  rowSource={ds}
+  rowDetailRenderer={RowDetailRenderer} //!
+/>
+```
+
+The renderer is a normal React component that receives row props from LyteNyte Grid. The definition of a detail
+renderer is shown below. The content is collapsed because the important line is the function definition. A row
+detail renderer can return any React content. The key requirements are that the function returns a valid
+`ReactNode` and accepts `RowParams` as a prop.
+
+```tsx
+//!next 1
+export function RowDetailRenderer({ row, api }: RowParams<GridSpec>) {
+  //#start
+  // Guard against empty data.
+  if (!api.rowIsLeaf(row) || !row.data) return null;
+
+  const total =
+    row.data["timing-phase.connection"] +
+    row.data["timing-phase.dns"] +
+    row.data["timing-phase.tls"] +
+    row.data["timing-phase.transfer"] +
+    row.data["timing-phase.ttfb"];
+
+  const connectionPer = (row.data["timing-phase.connection"] / total) * 100;
+  const dnsPer = (row.data["timing-phase.dns"] / total) * 100;
+  const tlPer = (row.data["timing-phase.tls"] / total) * 100;
+  const transferPer = (row.data["timing-phase.transfer"] / total) * 100;
+  const ttfbPer = (row.data["timing-phase.ttfb"] / total) * 100;
+
+  return (
+    <div className="pt-1.75 flex h-full flex-col px-4 pb-5 text-sm">
+      <h3 className="text-ln-text-xlight mt-0 text-xs font-medium">Timing Phases</h3>
+
+      <div className="flex flex-1 gap-2 pt-1.5">
+        <div className="bg-ln-gray-00 border-ln-gray-20 h-full flex-1 rounded-[10px] border">
+          <div className="grid-cols[auto_auto_1fr] grid grid-rows-5 gap-1 gap-x-4 p-4 md:grid-cols-[auto_auto_200px_auto]">
+            <TimingPhaseRow
+              label="Transfer"
+              color={colors[0]}
+              msPercentage={transferPer}
+              msValue={row.data["timing-phase.transfer"]}
+            />
+            <TimingPhaseRow
+              label="DNS"
+              color={colors[1]}
+              msPercentage={dnsPer}
+              msValue={row.data["timing-phase.dns"]}
+            />
+            <TimingPhaseRow
+              label="Connection"
+              color={colors[2]}
+              msPercentage={connectionPer}
+              msValue={row.data["timing-phase.connection"]}
+            />
+            <TimingPhaseRow
+              label="TTFB"
+              color={colors[3]}
+              msPercentage={ttfbPer}
+              msValue={row.data["timing-phase.ttfb"]}
+            />
+            <TimingPhaseRow
+              label="TLS"
+              color={colors[4]}
+              msPercentage={tlPer}
+              msValue={row.data["timing-phase.tls"]}
+            />
+
+            <div className="col-start-3 row-span-full flex h-full flex-1 items-center justify-center">
+              <TimingPhasePieChart row={row.data} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+  //#end
+}
+```
+
+### Marker Column
+
+After you define the row detail renderer, you need a way to toggle the visibility of each detail row.
+LyteNyte Grid's [marker column](/docs/marker-column) provides the perfect place to add this functionality.
+
+The marker column is a special column that LyteNyte Grid creates and manages. LyteNyte always pins the marker
+column to the start of the grid, and the marker column does not appear in the `columns` array you
+pass to the grid. Use the marker column for auxiliary row actions such as row selection or row detail expansion.
+
+To enable the marker column, set the grid's `columnMarker` property to a marker column definition, as shown below:
+
+```tsx
+//!next 5
+const marker: Grid.Props<GridSpec>["columnMarker"] = {
+  on: true,
+  width: 40,
+  cellRenderer: MarkerCell,
+};
+
+export default function GettingStarted() {
+  //#start
+  const [columns, setColumns] = useState<Grid.Column<GridSpec>[]>([
+    { id: "Date", name: "Date", width: 200, type: "datetime", cellRenderer: DateCell },
+    { id: "Status", name: "Status", width: 100, cellRenderer: StatusCell },
+    { id: "Method", name: "Method", width: 100, cellRenderer: MethodCell },
+    { id: "timing-phase", name: "Timing Phase", cellRenderer: TimingPhaseCell },
+    { id: "Pathname", name: "Pathname", cellRenderer: PathnameCell },
+    { id: "Latency", name: "Latency", width: 120, type: "number", cellRenderer: LatencyCell },
+    { id: "region", name: "Region", cellRenderer: RegionCell },
+  ]);
+
+  const sort = useMemo<UseClientDataSourceParams<GridSpec>["sort"]>(() => {
+    const colWithSort = columns.find((x) => x.sort);
+    if (!colWithSort) return null;
+
+    if (sortComparators[colWithSort.id])
+      return [{ dim: sortComparators[colWithSort.id], descending: colWithSort.sort === "desc" }];
+
+    return [{ dim: colWithSort, descending: colWithSort.sort === "desc" }];
+  }, [columns]);
+
+  const ds = useClientDataSource<GridSpec>({
+    data: requestData,
+    sort,
+  });
+  //#end
+
+  return (
+    <div className="demo ln-grid" style={{ height: 400 }}>
+      <Grid
+        columns={columns}
+        onColumnsChange={setColumns}
+        columnBase={base}
+        rowSource={ds}
+        rowDetailRenderer={RowDetailRenderer}
+        columnMarker={marker} //!
+      />
     </div>
   );
 }
 ```
 
-## The Row Detail Setup (Master Detail)
-
-LyteNyte Grid supports master-detail out of the box. Define a detail renderer
-and a way to expand or collapse detail rows.
-
-Enable row detail in the grid:
+The marker column uses the `MarkerCell` component as its cell renderer. The `MarkerCell` definition is shown
+below. Focus on the `api.rowDetailToggle` method, which toggles the row detail expansion state for a given row.
+Use this method to show and hide row detail areas.
 
 ```tsx
-const grid = Grid.useLyteNyte({
-  gridId: useId(),
-  columns,
-
-  rowDetailHeight: 200,
-  rowDetailRenderer: RowDetailRenderer,
-
-  // other properties...
-});
-```
-
-Then implement the detail component:
-
-```tsx
-export function RowDetailRenderer({ row, grid }: RowDetailRendererParams<RequestData>) {
-  if (!grid.api.rowIsLeaf(row) || !row.data) return null;
-
-  return <div className="h-full w-full p-3">{/* Detail renderer content */}</div>;
+export function MarkerCell({ detailExpanded, row, api }: CellRendererParams<GridSpec>) {
+  return (
+    {/*!next */}
+    <button onClick={() => api.rowDetailToggle(row)}>
+      {detailExpanded ? (
+        <ChevronDownIcon width={20} height={20} />
+      ) : (
+        <ChevronRightIcon width={20} height={20} />
+      )}
+    </button>
+  );
 }
 ```
 
-To toggle details, use the marker column - a fixed column at the start of the
-grid that you can use for auxiliary controls:
+Putting everything together, the full working example is shown below:
 
-```tsx
-const grid = Grid.useLyteNyte({
-  gridId: useId(),
-  columns,
-
-  rowDetailHeight: 200,
-  rowDetailRenderer: RowDetailRenderer,
-
-  columnMarkerEnabled: true,
-  columnMarker: {
-    cellRenderer: ({ row, grid }) => {
-      const isExpanded = grid.api.rowDetailIsExpanded(row);
-      return (
-        <button
-          className="flex h-full w-full items-center justify-center"
-          onClick={() => grid.api.rowDetailToggle(row)}
-        >
-          {isExpanded ? <ChevronDownIcon /> : <ChevronRightIcon />}
-        </button>
-      );
-    },
-  },
-
-  // other properties...
-});
-```
-
-With these changes, the grid supports row details. You can extend this pattern
-as needed.
+::demo[Complete Getting Started Demo="./demos/getting-started"]
 
 ## Next Steps
 
-Explore more LyteNyte Grid capabilities:
-
-- [Row Data Sources](/docs/row-data-source-intro): Create and use various row
-  data sources.
-- [Column Definitions](/docs/columns): Review all column configuration options.
-- [Grid Atoms & Reactivity](/docs/grid-reactivity): Learn how LyteNyte Grid enables
-  declarative reactivity.
-- [API Reference](/docs/reference): Browse all exported interfaces and types.
+- [Columns](/docs/columns): Review all column configuration options.
+- [Grid Theming](/docs/grid-theming): Learn different approaches to theming LyteNyte Grid.
+- [Grid Reactivity](/docs/grid-reactivity): Learn how LyteNyte Grid enables declarative reactivity.
+- [Client Row Data Source](/docs/reference): Learn how to work with client-side row data.

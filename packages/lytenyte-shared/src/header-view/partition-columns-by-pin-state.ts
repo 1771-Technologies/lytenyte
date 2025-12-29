@@ -1,6 +1,4 @@
-export function partitionColumnsByPinState<T extends { pin?: "start" | "end" | null }>(
-  columns: T[],
-) {
+export function partitionColumnsByPinState<T extends { pin?: "start" | "end" | null }>(columns: T[]) {
   const start: T[] = [];
   const center: T[] = [];
   const end: T[] = [];

@@ -21,10 +21,7 @@ export function GridBoxRoot<T>({
   return (
     <GridProvider value={grid as any}>
       <GridBoxContext.Provider
-        value={useMemo(
-          () => ({ accepted, orientation, onRootDrop }),
-          [accepted, onRootDrop, orientation],
-        )}
+        value={useMemo(() => ({ accepted, orientation, onRootDrop }), [accepted, onRootDrop, orientation])}
       >
         <Root orientation={orientation}>{children}</Root>
       </GridBoxContext.Provider>

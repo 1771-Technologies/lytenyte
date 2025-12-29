@@ -222,9 +222,7 @@ export function renderTypeExpr(
 
   if (isFunctionDeclaration(t)) {
     // functions already render as a bare signature; the name is not used here
-    const params = t.params
-      .map((p) => `${escIdent(p.name)}: ${renderTypeExpr(p.type, true)}`)
-      .join(", ");
+    const params = t.params.map((p) => `${escIdent(p.name)}: ${renderTypeExpr(p.type, true)}`).join(", ");
     const returns = renderTypeExpr(t.return.type, true);
     return `(${params}) => ${returns}`;
   }

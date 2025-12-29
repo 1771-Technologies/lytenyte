@@ -47,9 +47,9 @@ test("getParentNodeByPath: should return the correct node", () => {
   parentB.byPath.set("x", leaf);
 
   expect(getParentNodeByPath(root, ["x", "b"])?.kind).toMatchInlineSnapshot(`"parent"`);
-  expect(
-    (getParentNodeByPath(root, ["x", "b"]) as TreeParent<any, any>).data,
-  ).toMatchInlineSnapshot(`"Path B"`);
+  expect((getParentNodeByPath(root, ["x", "b"]) as TreeParent<any, any>).data).toMatchInlineSnapshot(
+    `"Path B"`,
+  );
 });
 
 test("getParentNodeByPath: should handle invalid paths", () => {
@@ -171,7 +171,7 @@ test("getParentNodeByPath: should handle null paths", () => {
   parentB.byPath.set(null, parentC);
 
   expect(getParentNodeByPath(root, [null, "B", null])?.kind).toMatchInlineSnapshot(`"parent"`);
-  expect(
-    (getParentNodeByPath(root, [null, "B", null]) as TreeParent<any, any>).data,
-  ).toMatchInlineSnapshot(`"Path C"`);
+  expect((getParentNodeByPath(root, [null, "B", null]) as TreeParent<any, any>).data).toMatchInlineSnapshot(
+    `"Path C"`,
+  );
 });

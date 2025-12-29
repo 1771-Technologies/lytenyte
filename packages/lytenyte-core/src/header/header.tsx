@@ -25,8 +25,7 @@ const HeaderImpl = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>(
       floatingRowEnabled,
     );
 
-    const countBeforeEnd =
-      columnVisible.columnVisibleCenterCount + columnVisible.columnVisibleStartCount;
+    const countBeforeEnd = columnVisible.columnVisibleCenterCount + columnVisible.columnVisibleStartCount;
     const width = grid.state.widthTotal.useValue();
     const gridTemplateColumns = useMemo(() => {
       const items: string[] = [];

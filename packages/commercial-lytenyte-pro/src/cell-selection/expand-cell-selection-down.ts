@@ -2,10 +2,7 @@ import type { DataRect, Grid } from "../+types.js";
 import type { InternalAtoms } from "../state/+types.js";
 import { getRootCell } from "./get-root-cell.js";
 
-export function expandCellSelectionDown(
-  grid: Grid<any> & { internal: InternalAtoms },
-  meta: boolean,
-) {
+export function expandCellSelectionDown(grid: Grid<any> & { internal: InternalAtoms }, meta: boolean) {
   const cellSelections = grid.state.cellSelections.get();
   const rect = cellSelections.at(-1);
   const pivot = grid.internal.cellSelectionPivot.get();

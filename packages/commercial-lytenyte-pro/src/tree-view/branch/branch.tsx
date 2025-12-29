@@ -23,16 +23,7 @@ export interface TreeBranchProps {
 
 export const TreeBranch = forwardRef<HTMLLIElement, JSX.IntrinsicElements["li"] & TreeBranchProps>(
   function TreeBranch(
-    {
-      itemId,
-      label,
-      expander,
-      transitionEnterMs,
-      transitionExitMs,
-      gridWrapped,
-      labelWrap,
-      ...props
-    },
+    { itemId, label, expander, transitionEnterMs, transitionExitMs, gridWrapped, labelWrap, ...props },
     forwarded,
   ) {
     const depth = useDepth();
@@ -121,12 +112,7 @@ export const TreeBranch = forwardRef<HTMLLIElement, JSX.IntrinsicElements["li"] 
           <div>
             <Wrapped wrapped={wrapped} expanded={open}>
               {shouldMount && (
-                <ul
-                  data-tree-branch-children
-                  data-expanded={open}
-                  data-open-state={state}
-                  role="group"
-                >
+                <ul data-tree-branch-children data-expanded={open} data-open-state={state} role="group">
                   {props.children}
                 </ul>
               )}

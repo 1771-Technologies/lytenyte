@@ -326,12 +326,7 @@ export const SortGridSorts: UnionType = {
   `,
   doc: { en: `` },
   export: true,
-  types: [
-    "SortCustomSort<T>",
-    "SortDateColumnSort",
-    "SortNumberColumnSort",
-    "SortStringColumnSort",
-  ],
+  types: ["SortCustomSort<T>", "SortDateColumnSort", "SortNumberColumnSort", "SortStringColumnSort"],
 };
 
 export const SortModelItem: InterfaceType = {

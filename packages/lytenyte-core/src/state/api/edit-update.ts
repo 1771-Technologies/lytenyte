@@ -2,9 +2,7 @@ import type { InternalAtoms } from "../+types";
 import type { Column, Grid, GridApi } from "../../+types";
 import { editOnChange } from "../helpers/edit-on-change.js";
 
-export const makeEditUpdate = (
-  grid: Grid<any> & { internal: InternalAtoms },
-): GridApi<any>["editUpdate"] => {
+export const makeEditUpdate = (grid: Grid<any> & { internal: InternalAtoms }): GridApi<any>["editUpdate"] => {
   return (params) => {
     if (grid.state.editCellMode.get() === "readonly") return;
     // We must be editing a valid cell location

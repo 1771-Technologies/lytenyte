@@ -93,8 +93,7 @@ export function CellSelectionDriver() {
             : startSelection.columnStart >= firstEnd
               ? "end"
               : "center";
-        const colSection =
-          columnIndex < startCount ? "start" : columnIndex >= firstEnd ? "end" : "center";
+        const colSection = columnIndex < startCount ? "start" : columnIndex >= firstEnd ? "end" : "center";
 
         const rowSection = rowIndex < topCount ? "top" : rowIndex >= firstEnd ? "bottom" : "center";
         const startRowSection =
@@ -125,10 +124,8 @@ export function CellSelectionDriver() {
         const startRow = rowIndex < startSelection.rowStart ? rowIndex : startSelection.rowStart;
         const endRow = rowIndex < startSelection.rowStart ? startSelection.rowEnd : rowIndex + 1;
 
-        const startCol =
-          columnIndex < startSelection.columnStart ? columnIndex : startSelection.columnStart;
-        const endCol =
-          columnIndex < startSelection.columnStart ? startSelection.columnEnd : columnIndex + 1;
+        const startCol = columnIndex < startSelection.columnStart ? columnIndex : startSelection.columnStart;
+        const endCol = columnIndex < startSelection.columnStart ? startSelection.columnEnd : columnIndex + 1;
 
         const active: DataRect[] = [
           { rowStart: startRow, rowEnd: endRow, columnStart: startCol, columnEnd: endCol },

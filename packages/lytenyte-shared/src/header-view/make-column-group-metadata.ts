@@ -39,9 +39,7 @@ export function makeColumnGroupMetadata<T extends PartialColumns>(
     colIdToGroupIds.set(c.id, columnGroupIds);
   }
 
-  const groupIsCollapsible = new Map(
-    Object.entries(lookup).map((c) => [c[0], c[1].open && c[1].close]),
-  );
+  const groupIsCollapsible = new Map(Object.entries(lookup).map((c) => [c[0], c[1].open && c[1].close]));
 
   return {
     colIdToGroupIds,

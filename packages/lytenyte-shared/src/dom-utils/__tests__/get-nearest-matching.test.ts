@@ -28,9 +28,7 @@ describe("getNearestMatching", () => {
     parent.appendChild(child);
     child.appendChild(nestedChild);
 
-    expect(getNearestMatching(nestedChild, (el) => el.getAttribute("data-parent") === "true")).toBe(
-      parent,
-    );
+    expect(getNearestMatching(nestedChild, (el) => el.getAttribute("data-parent") === "true")).toBe(parent);
   });
 
   test("if there is no matching element should return null", () => {
@@ -45,8 +43,6 @@ describe("getNearestMatching", () => {
     parent.appendChild(child);
     child.appendChild(nestedChild);
 
-    expect(
-      getNearestMatching(nestedChild, (el) => el.getAttribute("data-parent") === "false"),
-    ).toEqual(null);
+    expect(getNearestMatching(nestedChild, (el) => el.getAttribute("data-parent") === "false")).toEqual(null);
   });
 });

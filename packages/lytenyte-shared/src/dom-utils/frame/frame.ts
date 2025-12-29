@@ -38,8 +38,7 @@ frame.setTimeout = (handler, ms) => {
 };
 
 /** Find the index where the given time is not greater. */
-const findTimeout = (time: number) =>
-  ~(~timeouts.findIndex((t) => t.time > time) || ~timeouts.length);
+const findTimeout = (time: number) => ~(~timeouts.findIndex((t) => t.time > time) || ~timeouts.length);
 
 frame.cancel = (fn) => {
   onStartQueue.delete(fn);
@@ -86,9 +85,7 @@ frame.frameLoop = "always";
 
 frame.advance = () => {
   if (frame.frameLoop !== "demand") {
-    console.warn(
-      "Cannot call the manual advancement of rafz whilst frameLoop is not set as demand",
-    );
+    console.warn("Cannot call the manual advancement of rafz whilst frameLoop is not set as demand");
   } else {
     update();
   }

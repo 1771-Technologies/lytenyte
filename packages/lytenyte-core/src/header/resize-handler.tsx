@@ -18,13 +18,7 @@ interface ResizeHandlerProps<T> {
   readonly style?: CSSProperties;
 }
 
-export function ResizeHandler<T>({
-  as,
-  cell,
-  xPositions,
-  style,
-  className,
-}: ResizeHandlerProps<T>) {
+export function ResizeHandler<T>({ as, cell, xPositions, style, className }: ResizeHandlerProps<T>) {
   const width = sizeFromCoord(cell.colStart, xPositions, cell.colSpan);
   const sx = useGridRoot().grid;
 
@@ -81,11 +75,7 @@ export function ResizeHandler<T>({
           const endAdjust = cell.colPin === "end" ? -1 : 1;
           const rtlAdjust = isRtl ? -1 : 1;
 
-          deltaRef.current = clamp(
-            minDelta,
-            (getClientX(ev) - startX!) * endAdjust * rtlAdjust,
-            maxDelta,
-          );
+          deltaRef.current = clamp(minDelta, (getClientX(ev) - startX!) * endAdjust * rtlAdjust, maxDelta);
 
           if (anim) return;
           anim = requestAnimationFrame(() => {

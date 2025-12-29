@@ -1,7 +1,4 @@
-import {
-  columnScrollIntoViewValue,
-  rowScrollIntoViewValue,
-} from "@1771technologies/lytenyte-shared";
+import { columnScrollIntoViewValue, rowScrollIntoViewValue } from "@1771technologies/lytenyte-shared";
 import type { Grid, GridApi } from "../../+types";
 import type { InternalAtoms } from "../+types";
 
@@ -19,14 +16,12 @@ export const makeScrollIntoView = (
       const meta = grid.state.columnMeta.get();
       let colIndex: number;
       if (typeof col === "number") colIndex = col;
-      else if (typeof col === "string")
-        colIndex = meta.columnsVisible.findIndex((c) => c.id === col);
+      else if (typeof col === "string") colIndex = meta.columnsVisible.findIndex((c) => c.id === col);
       else colIndex = meta.columnsVisible.findIndex((c) => c.id === col.id);
 
       if (colIndex !== -1) {
         x = columnScrollIntoViewValue({
-          centerCount: meta.columnsVisible.filter((c) => c.pin !== "start" && c.pin !== "end")
-            .length,
+          centerCount: meta.columnsVisible.filter((c) => c.pin !== "start" && c.pin !== "end").length,
           startCount: meta.columnsVisible.filter((c) => c.pin === "start").length,
           endCount: meta.columnsVisible.filter((c) => c.pin === "end").length,
           columnIndex: colIndex,

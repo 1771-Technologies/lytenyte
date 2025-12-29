@@ -100,3 +100,32 @@ body {
     }
   }
 }
+
+.code-dim {
+  code > .ec-line:not(.highlight) {
+    @apply transition-opacity;
+    opacity: 0.5;
+  }
+  code:hover > .ec-line:not(.highlight) {
+    opacity: 1;
+  }
+}
+
+.expressive-code .ec-line.mark.tm-label .code.code::before {
+  background-color: var(--color-xd-foreground);
+  color: var(--color-xd-background);
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  height: calc(100% - 0px);
+  top: calc(50%);
+  left: -12px;
+  transform: translateY(-50%);
+  aspect-ratio: 1/ 1;
+}
+
+.expressive-code .ec-line.mark .code.code {
+  --ecLineBrdCol: var(--color-xd-foreground);
+}

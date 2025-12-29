@@ -1,7 +1,7 @@
 import { getBoundEnd } from "./get-bound-end.js";
 import { getBoundStart } from "./get-bound-start.js";
 import { COL_OVERSCAN, ROW_OVERSCAN_END, ROW_OVERSCAN_START } from "../+constants.js";
-import type { SpanLayout } from "../+types.non-gen.js";
+import type { SpanLayout } from "../types.js";
 
 /**
  * Parameters required to calculate viewport bounds for virtualized content
@@ -81,13 +81,7 @@ export function computeBounds({
   const topOffset = scrollTop + yPositions[topCount];
 
   // Determine the first visible row index (including overscan)
-  const rowStart = getBoundStart(
-    yPositions,
-    topOffset,
-    rowOverscanTop,
-    topCount,
-    maxCenterRowCount,
-  );
+  const rowStart = getBoundStart(yPositions, topOffset, rowOverscanTop, topCount, maxCenterRowCount);
 
   // Determine the last visible row index (including overscan)
   const rowEnd = getBoundEnd(

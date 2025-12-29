@@ -127,24 +127,14 @@ export default function Theming() {
         <div style={{ paddingBlockStart: "32px", paddingBlockEnd: "8px" }}>Backgrounds</div>
         <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
           {backgrounds.map((x) => {
-            return (
-              <ColorBox
-                key={x}
-                color={x ? `var(--ln-bg-${x})` : "var(--ln-bg)"}
-                label={`BG ${x}`}
-              />
-            );
+            return <ColorBox key={x} color={x ? `var(--ln-bg-${x})` : "var(--ln-bg)"} label={`BG ${x}`} />;
           })}
         </div>
         <div style={{ paddingBlockStart: "32px", paddingBlockEnd: "8px" }}>Text</div>
         <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
           {text.map((x) => {
             return (
-              <ColorBox
-                key={x}
-                color={x ? `var(--ln-text-${x})` : "var(--ln-text)"}
-                label={`Text ${x}`}
-              />
+              <ColorBox key={x} color={x ? `var(--ln-text-${x})` : "var(--ln-text)"} label={`Text ${x}`} />
             );
           })}
         </div>

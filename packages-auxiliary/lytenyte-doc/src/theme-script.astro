@@ -45,10 +45,8 @@
     document.querySelector("#theme-toggle")?.addEventListener("click", toggleTheme);
   });
 
-  window
-    .matchMedia("(prefers-color-scheme: dark)")
-    .addEventListener("change", ({ matches: isDark }) => {
-      theme.value = isDark ? "dark" : "light";
-      setStoredThemePreference();
-    });
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches: isDark }) => {
+    theme.value = isDark ? "dark" : "light";
+    setStoredThemePreference();
+  });
 </script>

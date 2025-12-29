@@ -205,12 +205,7 @@ function computeCoordsFromPlacement(_ref, placement, rtl) {
  * write one for the platform you are using Floating UI with.
  */
 const computePosition$1 = async (reference, floating, config) => {
-  const {
-    placement = "bottom",
-    strategy = "absolute",
-    middleware = [],
-    platform: platform$1,
-  } = config;
+  const { placement = "bottom", strategy = "absolute", middleware = [], platform: platform$1 } = config;
   const validMiddleware = middleware.filter(Boolean);
   const rtl = await (platform$1.isRTL == null ? void 0 : platform$1.isRTL(floating));
   let rects = await platform$1.getElementRects({
@@ -299,9 +294,7 @@ async function detectOverflow$1(state, options) {
   } = evaluate(options, state);
   const paddingObject = getPaddingObject(padding);
   const element =
-    elements[
-      altBoundary ? (elementContext === "floating" ? "reference" : "floating") : elementContext
-    ];
+    elements[altBoundary ? (elementContext === "floating" ? "reference" : "floating") : elementContext];
   const clippingClientRect = rectToClientRect(
     await platform$1.getClippingRect({
       element: (
@@ -333,9 +326,7 @@ async function detectOverflow$1(state, options) {
   const offsetParent = await (platform$1.getOffsetParent == null
     ? void 0
     : platform$1.getOffsetParent(elements.floating));
-  const offsetScale = (await (platform$1.isElement == null
-    ? void 0
-    : platform$1.isElement(offsetParent)))
+  const offsetScale = (await (platform$1.isElement == null ? void 0 : platform$1.isElement(offsetParent)))
     ? (await (platform$1.getScale == null ? void 0 : platform$1.getScale(offsetParent))) || {
         x: 1,
         y: 1,
@@ -356,11 +347,9 @@ async function detectOverflow$1(state, options) {
   );
   return {
     top: (clippingClientRect.top - elementClientRect.top + paddingObject.top) / offsetScale.y,
-    bottom:
-      (elementClientRect.bottom - clippingClientRect.bottom + paddingObject.bottom) / offsetScale.y,
+    bottom: (elementClientRect.bottom - clippingClientRect.bottom + paddingObject.bottom) / offsetScale.y,
     left: (clippingClientRect.left - elementClientRect.left + paddingObject.left) / offsetScale.x,
-    right:
-      (elementClientRect.right - clippingClientRect.right + paddingObject.right) / offsetScale.x,
+    right: (elementClientRect.right - clippingClientRect.right + paddingObject.right) / offsetScale.x,
   };
 }
 /**
@@ -387,8 +376,7 @@ const arrow$1 = (options) => ({
     const minProp = isYAxis ? "top" : "left";
     const maxProp = isYAxis ? "bottom" : "right";
     const clientProp = isYAxis ? "clientHeight" : "clientWidth";
-    const endDiff =
-      rects.reference[length] + rects.reference[axis] - coords[axis] - rects.floating[length];
+    const endDiff = rects.reference[length] + rects.reference[axis] - coords[axis] - rects.floating[length];
     const startDiff = coords[axis] - rects.reference[axis];
     const arrowOffsetParent = await (platform$1.getOffsetParent == null
       ? void 0
@@ -411,15 +399,9 @@ const arrow$1 = (options) => ({
       !middlewareData.arrow &&
       getAlignment(placement) != null &&
       center !== offset$2 &&
-      rects.reference[length] / 2 -
-        (center < min$1 ? minPadding : maxPadding) -
-        arrowDimensions[length] / 2 <
+      rects.reference[length] / 2 - (center < min$1 ? minPadding : maxPadding) - arrowDimensions[length] / 2 <
         0;
-    const alignmentOffset = shouldAddOffset
-      ? center < min$1
-        ? center - min$1
-        : center - max$1
-      : 0;
+    const alignmentOffset = shouldAddOffset ? (center < min$1 ? center - min$1 : center - max$1) : 0;
     return {
       [axis]: coords[axis] + alignmentOffset,
       data: {
@@ -552,14 +534,7 @@ const flip$1 = function (options) {
     options,
     async fn(state) {
       var _middlewareData$arrow, _middlewareData$flip;
-      const {
-        placement,
-        middlewareData,
-        rects,
-        initialPlacement,
-        platform: platform$1,
-        elements,
-      } = state;
+      const { placement, middlewareData, rects, initialPlacement, platform: platform$1, elements } = state;
       const {
         mainAxis: checkMainAxis = true,
         crossAxis: checkCrossAxis = true,
@@ -569,10 +544,7 @@ const flip$1 = function (options) {
         flipAlignment = true,
         ...detectOverflowOptions
       } = evaluate(options, state);
-      if (
-        (_middlewareData$arrow = middlewareData.arrow) != null &&
-        _middlewareData$arrow.alignmentOffset
-      )
+      if ((_middlewareData$arrow = middlewareData.arrow) != null && _middlewareData$arrow.alignmentOffset)
         return {};
       const side = getSide(placement);
       const initialSideAxis = getSideAxis(initialPlacement);
@@ -586,20 +558,14 @@ const flip$1 = function (options) {
       const hasFallbackAxisSideDirection = fallbackAxisSideDirection !== "none";
       if (!specifiedFallbackPlacements && hasFallbackAxisSideDirection)
         fallbackPlacements.push(
-          ...getOppositeAxisPlacements(
-            initialPlacement,
-            flipAlignment,
-            fallbackAxisSideDirection,
-            rtl,
-          ),
+          ...getOppositeAxisPlacements(initialPlacement, flipAlignment, fallbackAxisSideDirection, rtl),
         );
       const placements$1 = [initialPlacement, ...fallbackPlacements];
       const overflow = await detectOverflow$1(state, detectOverflowOptions);
       const overflows = [];
       let overflowsData =
-        ((_middlewareData$flip = middlewareData.flip) == null
-          ? void 0
-          : _middlewareData$flip.overflows) || [];
+        ((_middlewareData$flip = middlewareData.flip) == null ? void 0 : _middlewareData$flip.overflows) ||
+        [];
       if (checkMainAxis) overflows.push(overflow[side]);
       if (checkCrossAxis) {
         const sides$1 = getAlignmentSides(placement, rects, rtl);
@@ -615,15 +581,12 @@ const flip$1 = function (options) {
       if (!overflows.every((side$1) => side$1 <= 0)) {
         var _middlewareData$flip2, _overflowsData$filter;
         const nextIndex =
-          (((_middlewareData$flip2 = middlewareData.flip) == null
-            ? void 0
-            : _middlewareData$flip2.index) || 0) + 1;
+          (((_middlewareData$flip2 = middlewareData.flip) == null ? void 0 : _middlewareData$flip2.index) ||
+            0) + 1;
         const nextPlacement = placements$1[nextIndex];
         if (nextPlacement) {
           if (
-            !(checkCrossAxis === "alignment"
-              ? initialSideAxis !== getSideAxis(nextPlacement)
-              : false) ||
+            !(checkCrossAxis === "alignment" ? initialSideAxis !== getSideAxis(nextPlacement) : false) ||
             overflowsData.every((d) =>
               getSideAxis(d.placement) === initialSideAxis ? d.overflows[0] > 0 : true,
             )
@@ -784,12 +747,7 @@ const inline$1 = function (options) {
       const fallback = rectToClientRect(getBoundingRect(nativeClientRects));
       const paddingObject = getPaddingObject(padding);
       function getBoundingClientRect$1() {
-        if (
-          clientRects.length === 2 &&
-          clientRects[0].left > clientRects[1].right &&
-          x != null &&
-          y != null
-        )
+        if (clientRects.length === 2 && clientRects[0].left > clientRects[1].right && x != null && y != null)
           return (
             clientRects.find(
               (rect) =>
@@ -1111,15 +1069,9 @@ const size$1 = function (options) {
       const noShift = !state.middlewareData.shift;
       let availableHeight = overflowAvailableHeight;
       let availableWidth = overflowAvailableWidth;
-      if (
-        (_state$middlewareData = state.middlewareData.shift) != null &&
-        _state$middlewareData.enabled.x
-      )
+      if ((_state$middlewareData = state.middlewareData.shift) != null && _state$middlewareData.enabled.x)
         availableWidth = maximumClippingWidth;
-      if (
-        (_state$middlewareData2 = state.middlewareData.shift) != null &&
-        _state$middlewareData2.enabled.y
-      )
+      if ((_state$middlewareData2 = state.middlewareData.shift) != null && _state$middlewareData2.enabled.y)
         availableHeight = maximumClippingHeight;
       if (noShift && !alignment) {
         const xMin = max(overflow.left, 0);
@@ -1128,12 +1080,10 @@ const size$1 = function (options) {
         const yMax = max(overflow.bottom, 0);
         if (isYAxis)
           availableWidth =
-            width -
-            2 * (xMin !== 0 || xMax !== 0 ? xMin + xMax : max(overflow.left, overflow.right));
+            width - 2 * (xMin !== 0 || xMax !== 0 ? xMin + xMax : max(overflow.left, overflow.right));
         else
           availableHeight =
-            height -
-            2 * (yMin !== 0 || yMax !== 0 ? yMin + yMax : max(overflow.top, overflow.bottom));
+            height - 2 * (yMin !== 0 || yMax !== 0 ? yMin + yMax : max(overflow.top, overflow.bottom));
       }
       await apply({
         ...state,
@@ -1258,16 +1208,12 @@ function getNodeScroll(element) {
 function getParentNode(node) {
   if (getNodeName(node) === "html") return node;
   const result =
-    node.assignedSlot ||
-    node.parentNode ||
-    (isShadowRoot(node) && node.host) ||
-    getDocumentElement(node);
+    node.assignedSlot || node.parentNode || (isShadowRoot(node) && node.host) || getDocumentElement(node);
   return isShadowRoot(result) ? result.host : result;
 }
 function getNearestOverflowAncestor(node) {
   const parentNode = getParentNode(node);
-  if (isLastTraversableNode(parentNode))
-    return node.ownerDocument ? node.ownerDocument.body : node.body;
+  if (isLastTraversableNode(parentNode)) return node.ownerDocument ? node.ownerDocument.body : node.body;
   if (isHTMLElement(parentNode) && isOverflowElement(parentNode)) return parentNode;
   return getNearestOverflowAncestor(parentNode);
 }
@@ -1289,10 +1235,7 @@ function getOverflowAncestors(node, list, traverseIframes) {
       frameElement && traverseIframes ? getOverflowAncestors(frameElement) : [],
     );
   }
-  return list.concat(
-    scrollableAncestor,
-    getOverflowAncestors(scrollableAncestor, [], traverseIframes),
-  );
+  return list.concat(scrollableAncestor, getOverflowAncestors(scrollableAncestor, [], traverseIframes));
 }
 function getFrameElement(win) {
   return win.parent && Object.getPrototypeOf(win.parent) ? win.frameElement : null;
@@ -1346,8 +1289,7 @@ function getVisualOffsets(element) {
 }
 function shouldAddVisualOffsets(element, isFixed, floatingOffsetParent) {
   if (isFixed === void 0) isFixed = false;
-  if (!floatingOffsetParent || (isFixed && floatingOffsetParent !== getWindow(element)))
-    return false;
+  if (!floatingOffsetParent || (isFixed && floatingOffsetParent !== getWindow(element))) return false;
   return isFixed;
 }
 function getBoundingClientRect(element, includeScale, isFixedStrategy, offsetParent) {
@@ -1369,18 +1311,15 @@ function getBoundingClientRect(element, includeScale, isFixedStrategy, offsetPar
   let height = clientRect.height / scale.y;
   if (domElement) {
     const win = getWindow(domElement);
-    const offsetWin =
-      offsetParent && isElement(offsetParent) ? getWindow(offsetParent) : offsetParent;
+    const offsetWin = offsetParent && isElement(offsetParent) ? getWindow(offsetParent) : offsetParent;
     let currentWin = win;
     let currentIFrame = getFrameElement(currentWin);
     while (currentIFrame && offsetParent && offsetWin !== currentWin) {
       const iframeScale = getScale(currentIFrame);
       const iframeRect = currentIFrame.getBoundingClientRect();
       const css = getComputedStyle$1(currentIFrame);
-      const left =
-        iframeRect.left + (currentIFrame.clientLeft + parseFloat(css.paddingLeft)) * iframeScale.x;
-      const top =
-        iframeRect.top + (currentIFrame.clientTop + parseFloat(css.paddingTop)) * iframeScale.y;
+      const left = iframeRect.left + (currentIFrame.clientLeft + parseFloat(css.paddingLeft)) * iframeScale.x;
+      const top = iframeRect.top + (currentIFrame.clientTop + parseFloat(css.paddingTop)) * iframeScale.y;
       x *= iframeScale.x;
       y *= iframeScale.y;
       width *= iframeScale.x;
@@ -1455,8 +1394,7 @@ function getDocumentRect(element) {
   const height = max(html.scrollHeight, html.clientHeight, body.scrollHeight, body.clientHeight);
   let x = -scroll.scrollLeft + getWindowScrollBarX(element);
   const y = -scroll.scrollTop;
-  if (getComputedStyle$1(body).direction === "rtl")
-    x += max(html.clientWidth, body.clientWidth) - width;
+  if (getComputedStyle$1(body).direction === "rtl") x += max(html.clientWidth, body.clientWidth) - width;
   return {
     width,
     height,
@@ -1491,9 +1429,7 @@ function getViewportRect(element, strategy) {
       doc.compatMode === "CSS1Compat"
         ? parseFloat(bodyStyles.marginLeft) + parseFloat(bodyStyles.marginRight) || 0
         : 0;
-    const clippingStableScrollbarWidth = Math.abs(
-      html.clientWidth - body.clientWidth - bodyMarginInline,
-    );
+    const clippingStableScrollbarWidth = Math.abs(html.clientWidth - body.clientWidth - bodyMarginInline);
     if (clippingStableScrollbarWidth <= SCROLLBAR_MAX) width -= clippingStableScrollbarWidth;
   } else if (windowScrollbarX <= SCROLLBAR_MAX) width += windowScrollbarX;
   return {
@@ -1520,8 +1456,7 @@ function getClientRectFromClippingAncestor(element, clippingAncestor, strategy) 
   let rect;
   if (clippingAncestor === "viewport") rect = getViewportRect(element, strategy);
   else if (clippingAncestor === "document") rect = getDocumentRect(getDocumentElement(element));
-  else if (isElement(clippingAncestor))
-    rect = getInnerBoundingClientRect(clippingAncestor, strategy);
+  else if (isElement(clippingAncestor)) rect = getInnerBoundingClientRect(clippingAncestor, strategy);
   else {
     const visualOffsets = getVisualOffsets(element);
     rect = {
@@ -1535,11 +1470,9 @@ function getClientRectFromClippingAncestor(element, clippingAncestor, strategy) 
 }
 function hasFixedPositionAncestor(element, stopNode) {
   const parentNode = getParentNode(element);
-  if (parentNode === stopNode || !isElement(parentNode) || isLastTraversableNode(parentNode))
-    return false;
+  if (parentNode === stopNode || !isElement(parentNode) || isLastTraversableNode(parentNode)) return false;
   return (
-    getComputedStyle$1(parentNode).position === "fixed" ||
-    hasFixedPositionAncestor(parentNode, stopNode)
+    getComputedStyle$1(parentNode).position === "fixed" || hasFixedPositionAncestor(parentNode, stopNode)
   );
 }
 function getClippingElementAncestors(element, cache) {
@@ -1651,8 +1584,7 @@ function getTrueOffsetParent(element, polyfill) {
   if (!isHTMLElement(element) || getComputedStyle$1(element).position === "fixed") return null;
   if (polyfill) return polyfill(element);
   let rawOffsetParent = element.offsetParent;
-  if (getDocumentElement(element) === rawOffsetParent)
-    rawOffsetParent = rawOffsetParent.ownerDocument.body;
+  if (getDocumentElement(element) === rawOffsetParent) rawOffsetParent = rawOffsetParent.ownerDocument.body;
   return rawOffsetParent;
 }
 function getOffsetParent(element, polyfill) {
@@ -1661,8 +1593,7 @@ function getOffsetParent(element, polyfill) {
   if (!isHTMLElement(element)) {
     let svgOffsetParent = getParentNode(element);
     while (svgOffsetParent && !isLastTraversableNode(svgOffsetParent)) {
-      if (isElement(svgOffsetParent) && !isStaticPositioned(svgOffsetParent))
-        return svgOffsetParent;
+      if (isElement(svgOffsetParent) && !isStaticPositioned(svgOffsetParent)) return svgOffsetParent;
       svgOffsetParent = getParentNode(svgOffsetParent);
     }
     return win;
@@ -1738,8 +1669,7 @@ function observeMove(element, onMove) {
     const insetBottom = floor(root.clientHeight - (top + height));
     const insetLeft = floor(left);
     const options = {
-      rootMargin:
-        -insetTop + "px " + -insetRight + "px " + -insetBottom + "px " + -insetLeft + "px",
+      rootMargin: -insetTop + "px " + -insetRight + "px " + -insetBottom + "px " + -insetLeft + "px",
       threshold: max(0, min(1, threshold)) || 1,
     };
     let isFirstUpdate = true;
@@ -1753,8 +1683,7 @@ function observeMove(element, onMove) {
           }, 1e3);
         else refresh(false, ratio);
       }
-      if (ratio === 1 && !rectsAreEqual(elementRectForRootMargin, element.getBoundingClientRect()))
-        refresh();
+      if (ratio === 1 && !rectsAreEqual(elementRectForRootMargin, element.getBoundingClientRect())) refresh();
       isFirstUpdate = false;
     }
     try {
@@ -1790,10 +1719,7 @@ function autoUpdate(reference, floating, update, options) {
   const referenceEl = unwrapElement(reference);
   const ancestors =
     ancestorScroll || ancestorResize
-      ? [
-          ...(referenceEl ? getOverflowAncestors(referenceEl) : []),
-          ...getOverflowAncestors(floating),
-        ]
+      ? [...(referenceEl ? getOverflowAncestors(referenceEl) : []), ...getOverflowAncestors(floating)]
       : [];
   ancestors.forEach((ancestor) => {
     ancestorScroll && ancestor.addEventListener("scroll", update, { passive: true });

@@ -20,11 +20,7 @@ export interface TreeViewRootContext {
   // API Methods
   readonly onFocusChange: (el: HTMLElement | null) => void;
   readonly getAllIds: (panel: HTMLElement) => Set<string>;
-  readonly getIdsBetweenNodes: (
-    start: HTMLElement,
-    end: HTMLElement,
-    panel: HTMLElement,
-  ) => string[];
+  readonly getIdsBetweenNodes: (start: HTMLElement, end: HTMLElement, panel: HTMLElement) => string[];
 }
 
 export const context = createContext<TreeViewRootContext>({} as any);

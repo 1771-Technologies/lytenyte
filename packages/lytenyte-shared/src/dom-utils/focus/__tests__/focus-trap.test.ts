@@ -1058,9 +1058,7 @@ describe("focusTrap", () => {
   test("when both the initial selector is badly formed it should throw", () => {
     const div = document.createElement("div");
     const trap = new FocusTrap(div, { fallbackFocus: "{{" });
-    expect(() => trap.activate()).toThrowError(
-      "`fallbackFocus` appears to be an invalid selector;",
-    );
+    expect(() => trap.activate()).toThrowError("`fallbackFocus` appears to be an invalid selector;");
 
     trap.deactivate();
   });

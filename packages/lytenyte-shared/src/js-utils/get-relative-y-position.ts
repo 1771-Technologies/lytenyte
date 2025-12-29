@@ -1,7 +1,4 @@
-export function getRelativeYPosition(
-  element: HTMLElement,
-  mouseY: number,
-): { top: number; bot: number } {
+export function getRelativeYPosition(element: HTMLElement, mouseY: number): { top: number; bot: number } {
   const rect = element.getBoundingClientRect();
 
   const scrollbarHeight = element.offsetHeight - element.clientHeight;

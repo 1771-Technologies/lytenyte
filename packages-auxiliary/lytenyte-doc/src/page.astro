@@ -33,6 +33,7 @@ import Td from "./parts/td.astro";
 import PackageDlx from "./package-dlx.astro";
 import { flattenTree } from "./sidebar/flatten-tree";
 import { findTitle } from "./sidebar/find-title";
+import BlockCode from "./parts/block-code.astro";
 import { Code } from "astro-expressive-code/components";
 import { PageAction } from "./ui/page-action";
 import TypeTable from "./type-table/type-table.astro";
@@ -123,11 +124,7 @@ const prevEntry = prev ? await getEntry(entry.collection, prev) : null;
       id={entry.id}
     />
   </div>
-  {
-    entry.data.description && (
-      <P sx="text-base text-xd-muted-foreground">{entry.data.description}</P>
-    )
-  }
+  {entry.data.description && <P sx="text-base text-xd-muted-foreground">{entry.data.description}</P>}
   <Content
     components={{
       ProTag,
@@ -142,6 +139,8 @@ const prevEntry = prev ? await getEntry(entry.collection, prev) : null;
       Tab,
       TypeTable,
       AutoTypeTable,
+
+      BlockCode,
 
       table: Table,
       th: Th,

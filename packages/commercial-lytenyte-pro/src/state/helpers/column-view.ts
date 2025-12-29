@@ -57,13 +57,7 @@ export function makeColumnView<T>({
   const endOffset = start.length + center.length;
 
   const startTable = computePathTable(start, maxDepth, seenMap, groupJoinDelimiter, 0).table;
-  const centerTable = computePathTable(
-    center,
-    maxDepth,
-    seenMap,
-    groupJoinDelimiter,
-    start.length,
-  ).table;
+  const centerTable = computePathTable(center, maxDepth, seenMap, groupJoinDelimiter, start.length).table;
   const endTable = computePathTable(end, maxDepth, seenMap, groupJoinDelimiter, endOffset).table;
 
   const combinedView: PathTableItem<Column<T>>[][] = [];

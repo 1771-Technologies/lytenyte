@@ -13,12 +13,7 @@ import {
   type Middleware,
 } from "../../external/floating-ui.js";
 import { transformOrigin } from "./transform-origin.js";
-import {
-  FocusTrap,
-  getActiveElement,
-  getTabbables,
-  SCROLL_LOCKER,
-} from "@1771technologies/lytenyte-shared";
+import { FocusTrap, getActiveElement, getTabbables, SCROLL_LOCKER } from "@1771technologies/lytenyte-shared";
 
 function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.Props["ref"]) {
   const {
@@ -55,8 +50,7 @@ function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.
   useEffect(() => {
     if (!open || !anchor) return;
 
-    const anchorEl =
-      typeof anchor === "string" ? (document.querySelector(anchor) as HTMLElement) : anchor;
+    const anchorEl = typeof anchor === "string" ? (document.querySelector(anchor) as HTMLElement) : anchor;
 
     if (!anchorEl || !dialog) return;
 
@@ -116,18 +110,7 @@ function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.
     });
 
     return () => clean();
-  }, [
-    alignOffset,
-    anchor,
-    arrowEl,
-    dialog,
-    inlineV,
-    open,
-    placement,
-    shiftPadding,
-    shouldMount,
-    sideOffset,
-  ]);
+  }, [alignOffset, anchor, arrowEl, dialog, inlineV, open, placement, shiftPadding, shouldMount, sideOffset]);
 
   useEffect(() => {
     if (lockScroll == false) return;
@@ -254,9 +237,7 @@ function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.
       aria-labelledby={titleId}
       data-ln-transition={t}
       data-ln-dialog={
-        !(props as any)["data-ln-popover"] && !(props as any)["data-ln-menu-popover"]
-          ? true
-          : undefined
+        !(props as any)["data-ln-popover"] && !(props as any)["data-ln-menu-popover"] ? true : undefined
       }
       ref={combined}
     >

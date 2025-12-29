@@ -1,4 +1,4 @@
-import type { RowHeight } from "../+types.non-gen.js";
+import type { RowHeight } from "../types.js";
 import { makeUint32PositionArray } from "./make-uint32-position-array.js";
 
 /**

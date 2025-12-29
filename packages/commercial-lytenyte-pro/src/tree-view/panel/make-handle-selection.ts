@@ -49,8 +49,7 @@ export function makeHandleSelection(ctx: TreeViewRootContext) {
 
     if (ev.key === "ArrowUp" && focusedIndex !== 0) {
       const node = getPrevNode(focused);
-      if (!isInView(node!, ctx.panel!))
-        node?.scrollIntoView({ behavior: "instant", block: "start" });
+      if (!isInView(node!, ctx.panel!)) node?.scrollIntoView({ behavior: "instant", block: "start" });
       selectNode(node, ctx, true);
       return;
     }

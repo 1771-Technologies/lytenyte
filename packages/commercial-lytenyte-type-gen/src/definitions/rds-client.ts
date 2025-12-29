@@ -111,15 +111,7 @@ export const ClientRowDataSourceParamsPro: InterfaceType = {
   `,
   tag: "pro",
   doc: { en: `` },
-  properties: [
-    Data,
-    TopData,
-    BottomData,
-    ReflectData,
-    RowIdBranch,
-    RowIdLeaf,
-    TransformInFilterProp,
-  ],
+  properties: [Data, TopData, BottomData, ReflectData, RowIdBranch, RowIdLeaf, TransformInFilterProp],
 };
 
 export const ClientRowDataSourcePaginatedParamsPro: InterfaceType = {
