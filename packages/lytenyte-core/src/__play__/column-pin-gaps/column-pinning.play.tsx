@@ -1,5 +1,5 @@
 import { useEffect, useId, useState } from "react";
-import { bankData } from "../../__tests__/sample-data/bank-data.js";
+import { bankData } from "../sample-data/bank-data.js";
 import { useLyteNyte } from "../../state/use-lytenyte.js";
 import { Root } from "../../root/root.js";
 import { Viewport } from "../../viewport/viewport.js";
@@ -9,7 +9,7 @@ import { HeaderGroupCell } from "../../header/header-group-cell.js";
 import { HeaderCell } from "../../header/header-cell.js";
 import { RowsContainer } from "../../rows/rows-container.js";
 import { RowsBottom, RowsCenter, RowsTop } from "../../rows/rows-sections.js";
-import { RowHandler } from "../../__tests__/sample-data/row-handler.js";
+import { RowHandler } from "../sample-data/row-handler.js";
 import { useClientRowDataSource } from "../../row-data-source/use-client-data-source.js";
 import type { Column } from "../../+types";
 

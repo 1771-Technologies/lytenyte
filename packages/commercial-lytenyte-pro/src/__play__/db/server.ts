@@ -7,7 +7,7 @@ import type {
   DataResponseBranchItem,
   DataResponseLeafItem,
   DataResponsePinned,
-} from "../../+types";
+} from "../../+types.js";
 
 export async function handleRequest(
   request: DataRequest[],
