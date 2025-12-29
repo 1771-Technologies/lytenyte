@@ -1,14 +1,14 @@
 ---
 title: Row Height
-description: LyteNyte Grid lets developers control row height. Rows can use a fixed height,
-  vary height per row, or expand to fill the available viewport space.
+description: LyteNyte Grid allows developers to control row height. Rows can have a fixed height,
+  vary in height per row, or expand to fill the available viewport space.
 ---
 
-The `rowHeight` property on the grid state controls how LyteNyte Grid calculates the
-height, in pixels, for each row. This property accepts one of three values:
+The `rowHeight` property on the grid state controls how LyteNyte Grid
+calculates each row's height in pixels. This property accepts three possible values:
 
-- **Number:** Sets all rows to a fixed height in pixels.
-- **Function:** Returns the height in pixels for each row. Use this option to create variable row heights.
+- **Numbers:** Sets all rows to a fixed height in pixels.
+- **Functions:** Returns the height in pixels for each row. Use this option to create variable row heights.
 - **Fill String:** A string of the form `fill:<number>`. For example, `fill:24` instructs LyteNyte Grid
   to distribute the available viewport space across all rows, while enforcing a minimum height of `24px` per row.
 
@@ -96,4 +96,4 @@ its minimum height, behaving the same as fixed-height rows.
 - [Row Pinning](/docs/row-pinning): Freeze specific rows at the top or bottom of the viewport.
 - [Row Full Width](/docs/row-full-width): Create rows that expand to the full width of the viewport.
 - [Row Selection](/docs/row-selection): Select individual or multiple rows.
-- [Row Sorting](/docs/row-detail): Learn about the row sort model and how rows are ordered.
+- [Row Sorting](/docs/row-sorting): Learn about the row sort model and how rows are ordered.

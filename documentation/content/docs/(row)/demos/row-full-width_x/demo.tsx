@@ -125,7 +125,12 @@ export default function RowFullWidth() {
               <Grid.RowsCenter>
                 {view.rows.center.map((row) => {
                   if (row.kind === "full-width")
-                    return <Grid.RowFullWidth row={row} className="border-t-none" />;
+                    return (
+                      <Grid.RowFullWidth
+                        row={row}
+                        className="[&>div]:border-b-ln-gray-20 [&>div]:border-b!"
+                      />
+                    );
 
                   return (
                     <Grid.Row row={row} key={row.id}>

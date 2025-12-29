@@ -22,10 +22,7 @@ renderer can return any React component. In the demo, the component renders the 
 centered within the row, as shown below.
 
 ```tsx
-export function FullWidthCell({
-  grid: { api },
-  row,
-}: RowFullWidthRendererParams<DEXPerformanceData>) {
+export function FullWidthCell({ grid: { api }, row }: RowFullWidthRendererParams<DEXPerformanceData>) {
   if (!api.rowIsLeaf(row) || !row.data) return null;
 
   const name = row.data.exchange;
@@ -42,7 +39,7 @@ export function FullWidthCell({
 }
 ```
 
-### Grid Full Width Component
+### Full Width Row Component
 
 LyteNyte Grid treats full width rows as a distinct row type. When rendering rows in a headless setup,
 handle full width rows explicitly, as shown below. For details on the individual component parts, see
@@ -61,6 +58,6 @@ the [Headless Component Parts guide](/docs/grid-headless-parts).
 ## Next Steps
 
 - [Row Pinning](/docs/row-pinning): Freeze rows at the top or bottom of the viewport.
-- [Row Sorting](/docs/row-detail): Learn how to sort and order rows.
+- [Row Sorting](/docs/row-sorting): Learn how to sort and order rows.
 - [Row Spanning](/docs/row-spanning): Span cells across multiple rows.
-- [Row Dragging](/docs/row-selection): Drag rows within a grid or between grids and external drop zones.
+- [Row Dragging](/docs/row-dragging): Drag and drop rows within the same LyteNyte Grid, across multiple grids, or into external drop zones.

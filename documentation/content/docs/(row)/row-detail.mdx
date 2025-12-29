@@ -1,10 +1,10 @@
 ---
-title: Row Detail (Master Detail)
-description: Create expandable detail sections beneath rows in LyteNyte Grid with customizable React
-  components, expansion controls, and programmatic API methods.
+title: Row Master Detail
+description: Create expandable detail sections beneath rows using customizable React components,
+  expansion controls, and programmatic API methods.
 ---
 
-## Using Row Detail
+## Enabling Row Detail
 
 Row detail functionality in LyteNyte Grid is always enabled. Any row can display a detail section.
 To create a detail section, define a `rowDetailRenderer` on the grid state object. LyteNyte Grid uses
@@ -18,7 +18,7 @@ The demo below shows this behavior. The [marker column](/docs/marker-column) ren
 The toggle calls `grid.api.rowDetailToggle`, which adds or removes the row ID from the
 `rowDetailExpansions` set.
 
-!demo:Row Detail In Action="../(introduction)/demos/getting-started"
+!demo:Row Detail="../(introduction)/demos/getting-started"
 
 ## Auto Row Detail Height
 
@@ -41,7 +41,7 @@ a grid to be rendered inside a row detail section.
 
 The demo below shows a nested grid rendered inside the detail area of a row:
 
-!demo:Nested Grids="./demos/row-detail-nested_x"
+!demo:Nested Grid Row Detail="./demos/row-detail-nested_x"
 
 A nested grid is not a special case. To create one, have the detail renderer return another grid
 instance. LyteNyte Grid places no restrictions on what the detail renderer can display.

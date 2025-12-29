@@ -1,7 +1,6 @@
 ---
 title: Row Spanning
-description: Cells in LyteNyte Grid can span multiple rows. A spanning cell
-  extends into the rows below it, and the grid skips rendering any cells it covers.
+description: Cells can span multiple rows in LyteNyte Grid. When a cell spans, it occupies the rows beneath it, and the grid does not render the cells it covers.
 ---
 
 The `rowSpan` property on a column definition controls how many rows a cell spans. It accepts either a
@@ -25,7 +24,7 @@ should be used with caution.
 
 !demo:Uniform Row Spans="./demos/row-spanning-number_x"
 
-Define a two-row span directly on the column definition:
+Define a two-row span directly within the column definition:
 
 ```ts
 const columns = [
@@ -34,7 +33,7 @@ const columns = [
 ];
 ```
 
-## Function Column Spans
+## Function Row Spans
 
 Set `rowSpan` to a **function** to compute spans dynamically per row. This allows spans based on row
 data. The demo below groups cryptocurrencies by exchange, with the **Exchange** column spanning all
@@ -67,23 +66,29 @@ For performance, LyteNyte Grid does not precompute spans for all rows. Instead, 
 the first visible row based on the current scroll position. Control this lookback using the
 `rowScanDistance` property:
 
+LyteNyte Grid optimizes performance by not precomputing spans for all rows.
+Instead, it scans backward from the first visible row according to
+the current scroll position. Control this
+lookback using the `rowScanDistance` property:
+
 ```ts
 const grid = Grid.useLyteNyte({
   rowScanDistance: 100,
 });
 ```
 
-The `rowScanDistance` property must be at least the maximum possible span in the grid. Ensure that no span exceeds
-this value to guarantee correct rendering.
+The `rowScanDistance` value sets the maximum row span a cell is allowed to have. The value returned by the `rowSpan`
+property on the column must never exceed `rowScanDistance`, otherwise, LyteNyte Grid cannot ensure that it will hide the
+cells covered by the span.
 
 <Callout>
 
-LyteNyte Grid uses a scan-based approach to balance correctness and performance. Many grids either
-precompute spans, which limits scalability, or render spans incorrectly during scrolling. LyteNyte
-Grid requires you to specify a maximum span, but it maintains both accuracy and performance.
+LyteNyte Grid uses a scan-based approach to optimize correctness and performance.
+Unlike many grids that precompute spans (limiting scalability) or render spans inaccurately
+when scrolling, it requires you to set a maximum span, ensuring both
+accuracy and performance are maintained.
 
-In most real-world scenarios, a scan distance of 100 is more than sufficient, since spans rarely reach
-this size.
+In most cases, a scan distance of 100 is sufficient, as spans rarely reach this size.
 
 </Callout>
 
@@ -91,5 +96,5 @@ this size.
 
 - [Row Height](/docs/row-height): Change row height, including variable-height and fill-height rows.
 - [Row Pinning](/docs/row-pinning): Freeze rows at the top or bottom of the viewport.
-- [Row Sorting](/docs/row-detail): Learn how to sort and order rows.
+- [Row Sorting](/docs/row-sorting): Learn how to sort and order rows.
 - [Row Selection](/docs/row-selection): Select single or multiple rows.
