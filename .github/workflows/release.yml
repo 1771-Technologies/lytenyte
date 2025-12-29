@@ -160,42 +160,111 @@ jobs:
       - uses: actions/checkout@v5
         with:
           lfs: true
+          fetch-depth: 0 # IMPORTANT for diffs across PRs / merges
 
-      - name: Generate packages JSON
+      - name: Generate packages JSON (changed-only for PRs)
         id: gen
         shell: bash
         run: |
           set -euo pipefail
 
-          pkgs=$(find packages -mindepth 1 -maxdepth 1 -type d \
-            ! -name "sample-data" \
-            -print | sort)
+          # --- Determine diff range ---
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            base="${{ github.event.pull_request.base.sha }}"
+            head="${{ github.event.pull_request.head.sha }}"
+          else
+            # push event
+            base="${{ github.event.before }}"
+            head="${{ github.sha }}"
+          fi
 
-          # Build an array of objects:
-          # [
-          #   {"path":"packages/commercial-foo-bar","name":"commercial-foo-bar","display":"Foo Bar"},
-          #   ...
-          # ]
-          json=$(
-            while IFS= read -r p; do
-              name="${p#packages/}"
+          echo "Diffing changes from $base to $head"
 
-              # Remove all occurrences of "commercial-"
-              pretty="${name//commercial-/}"
-
-              # Normalize separators to spaces for display only
-              pretty="${pretty//-/ }"
-              pretty="${pretty//_/ }"
-
-              # Title Case each word
-              pretty="$(echo "$pretty" | awk '{ for(i=1;i<=NF;i++){ $i=toupper(substr($i,1,1)) substr($i,2) } print }')"
-
-              jq -n --arg path "$p" --arg name "$name" --arg display "$pretty" \
-                '{path:$path,name:$name,display:$display}'
-            done <<< "$pkgs" | jq -cs .
+          # --- All packages (full list) ---
+          all_pkgs=$(
+            find packages -mindepth 1 -maxdepth 1 -type d \
+              ! -name "sample-data" \
+              -print | sort
           )
 
-          echo "Discovered packages matrix: $json"
+          # If this is a push to main, always run all packages
+          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "Push to main detected → running ALL packages."
+            pkgs="$all_pkgs"
+          else
+            # --- PR / non-main push behavior ---
+            changed_files=$(git diff --name-only "$base" "$head" || true)
+
+            echo "Changed files:"
+            echo "$changed_files"
+
+            # Root file detection (NEW DEFINITION):
+            # Any file path with NO slash (e.g. "eslint.js") counts as a root file change.
+            root_file_changed=$(
+              printf '%s\n' "$changed_files" \
+                | awk '
+                    NF==0 {next}
+                    $0 !~ /\// {print; exit 0}
+                  ' || true
+            )
+
+            if [[ -n "$root_file_changed" ]]; then
+              echo "Root file change detected (example: $root_file_changed) → running ALL packages."
+              pkgs="$all_pkgs"
+            else
+              echo "No root files changed → running ONLY changed packages."
+
+              # Extract changed packages (packages/<pkg>)
+              changed_pkgs=$(
+                printf '%s\n' "$changed_files" \
+                  | awk -F/ '$1=="packages" && $2!="" { print "packages/"$2 }' \
+                  | sort -u \
+                  | while read -r p; do
+                      if [[ -d "$p" && "$(basename "$p")" != "sample-data" ]]; then
+                        echo "$p"
+                      fi
+                    done
+              )
+
+              # If nothing changed under packages/, output an empty list (means no test jobs)
+              if [[ -z "${changed_pkgs// }" ]]; then
+                echo "No package changes found under packages/ → outputting empty package matrix."
+                pkgs=""
+              else
+                pkgs="$changed_pkgs"
+              fi
+            fi
+          fi
+
+          # --- Build JSON array of objects ---
+          # If pkgs is empty, output an empty string.
+          # The test job will be skipped via a job-level condition.
+          if [[ -z "${pkgs// }" ]]; then
+            json=""
+          else
+            json=$(
+              while IFS= read -r p; do
+                [[ -z "$p" ]] && continue
+                name="${p#packages/}"
+
+                # Remove all occurrences of "commercial-"
+                pretty="${name//commercial-/}"
+
+                # Normalize separators to spaces for display only
+                pretty="${pretty//-/ }"
+                pretty="${pretty//_/ }"
+
+                # Title Case each word
+                pretty="$(echo "$pretty" | awk '{ for(i=1;i<=NF;i++){ $i=toupper(substr($i,1,1)) substr($i,2) } print }')"
+
+                jq -n --arg path "$p" --arg name "$name" --arg display "$pretty" \
+                  '{path:$path,name:$name,display:$display}'
+              done <<< "$pkgs" | jq -cs .
+            )
+          fi
+
+
+          echo "Final package matrix: $json"
 
           {
             echo "packages<<EOF"
@@ -204,6 +273,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
   test:
+    if: ${{ needs.packages-matrix.outputs.packages != '' }}
     name: >-
       ${{
         (matrix.browser == 'chrome' && 'Chrome') ||
