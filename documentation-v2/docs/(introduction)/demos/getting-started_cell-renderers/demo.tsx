@@ -14,7 +14,7 @@ import {
   RegionCell,
   StatusCell,
   TimingPhaseCell,
-} from "./components.jsx";
+} from "./components.js";
 //#end
 
 export interface GridSpec {

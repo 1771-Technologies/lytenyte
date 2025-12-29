@@ -4,6 +4,7 @@ import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
 import {
   Grid,
   useClientDataSource,
+  ViewportShadows,
   type UseClientDataSourceParams,
 } from "@1771technologies/lytenyte-pro-experimental";
 
@@ -13,12 +14,14 @@ import {
   DateCell,
   Header,
   LatencyCell,
+  MarkerCell,
   MethodCell,
   PathnameCell,
   RegionCell,
+  RowDetailRenderer,
   StatusCell,
   TimingPhaseCell,
-} from "./components.jsx";
+} from "./components.js";
 import { useMemo, useState } from "react";
 import { sortComparators } from "./comparators.js";
 //#end
@@ -30,6 +33,13 @@ export interface GridSpec {
 
 const base: Grid.Props<GridSpec>["columnBase"] = {
   headerRenderer: Header,
+};
+
+const marker: Grid.Props<GridSpec>["columnMarker"] = {
+  on: true,
+  width: 40,
+  headerRenderer: () => <div className="sr-only">Toggle row detail expansion</div>,
+  cellRenderer: MarkerCell,
 };
 
 export default function GettingStartedDemo() {
@@ -60,7 +70,15 @@ export default function GettingStartedDemo() {
 
   return (
     <div className="demo ln-grid" style={{ height: 400 }}>
-      <Grid columns={columns} onColumnsChange={setColumns} columnBase={base} rowSource={ds} />
+      <Grid
+        columns={columns}
+        onColumnsChange={setColumns}
+        columnBase={base}
+        rowSource={ds}
+        rowDetailRenderer={RowDetailRenderer}
+        columnMarker={marker}
+        slotShadows={ViewportShadows}
+      />
     </div>
   );
 }

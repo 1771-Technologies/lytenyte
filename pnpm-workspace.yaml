@@ -3,4 +3,4 @@ packages:
   - packages-auxiliary/**
   - packages-documentation/**
   - documentation
-  - docs
+  - documentation-v2
