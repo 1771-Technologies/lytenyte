@@ -167,24 +167,32 @@ jobs:
         run: |
           set -euo pipefail
 
-          # Find direct children of ./packages (one level deep)
-          # Exclude sample-data (adjust as needed)
           pkgs=$(find packages -mindepth 1 -maxdepth 1 -type d \
             ! -name "sample-data" \
             -print | sort)
 
           # Build an array of objects:
           # [
-          #   {"path":"packages/foo","name":"foo"},
-          #   {"path":"packages/bar","name":"bar"}
+          #   {"path":"packages/commercial-foo-bar","name":"commercial-foo-bar","display":"Foo Bar"},
+          #   ...
           # ]
           json=$(
-            printf '%s\n' "$pkgs" \
-              | jq -R '{
-                  path: .,
-                  name: (sub("^packages/"; ""))
-                }' \
-              | jq -cs .
+            while IFS= read -r p; do
+              name="${p#packages/}"
+
+              # Remove all occurrences of "commercial-"
+              pretty="${name//commercial-/}"
+
+              # Normalize separators to spaces for display only
+              pretty="${pretty//-/ }"
+              pretty="${pretty//_/ }"
+
+              # Title Case each word
+              pretty="$(echo "$pretty" | awk '{ for(i=1;i<=NF;i++){ $i=toupper(substr($i,1,1)) substr($i,2) } print }')"
+
+              jq -n --arg path "$p" --arg name "$name" --arg display "$pretty" \
+                '{path:$path,name:$name,display:$display}'
+            done <<< "$pkgs" | jq -cs .
           )
 
           echo "Discovered packages matrix: $json"
@@ -196,7 +204,14 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
   test:
-    name: ${{ matrix.browser }}) | (${{ matrix.package.name }}
+    name: >-
+      ${{
+        (matrix.browser == 'chrome' && 'Chrome') ||
+        (matrix.browser == 'firefox' && 'Firefox') ||
+        (matrix.browser == 'safari' && 'Safari') ||
+        matrix.browser
+      }} | ${{ matrix.package.display }}
+
     runs-on: ubuntu-24.04
     needs:
       - setup
@@ -237,7 +252,7 @@ jobs:
 
       # Install only the browser needed for this matrix entry.
       # "chrome" project corresponds to Chromium; "safari" corresponds to WebKit on Linux.
-      - name: Install Playwright browser (${{ matrix.browser }})
+      - name: Install Playwright Binaries (${{ matrix.browser }})
         shell: bash
         run: |
           case "${{ matrix.browser }}" in
