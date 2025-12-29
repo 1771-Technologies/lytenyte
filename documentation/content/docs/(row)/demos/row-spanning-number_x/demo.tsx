@@ -3,7 +3,7 @@
 import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
 import "@1771technologies/lytenyte-pro/grid.css";
 import type { Column } from "@1771technologies/lytenyte-pro/types";
-import { historicalCompareDataset as stockData } from "@1771technologies/grid-sample-data/stock-data-smaller";
+import { historicalCompareDataset as stockData } from "./data.js";
 import { useId } from "react";
 import {
   PercentCell,
