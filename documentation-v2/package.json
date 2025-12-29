@@ -10,27 +10,27 @@
   },
   "dependencies": {
     "@1771technologies/lytenyte-doc": "workspace:*",
-    "@astrojs/mdx": "4.3.12",
+    "@astrojs/mdx": "4.3.13",
     "@astrojs/react": "4.4.2",
     "@emotion/styled": "11.14.1",
     "@radix-ui/react-icons": "1.3.2",
-    "@tailwindcss/vite": "^4.1.18",
+    "@tailwindcss/vite": "4.1.18",
     "astro": "5.16.6",
-    "class-variance-authority": "^0.7.1",
-    "radix-ui": "^1.4.3",
+    "class-variance-authority": "0.7.1",
+    "radix-ui": "1.4.3",
     "recharts": "3.2.1",
-    "rehype-expressive-code": "^0.41.5",
-    "sharp": "^0.34.5",
-    "tailwind-merge": "^3.4.0",
-    "tailwindcss": "^4.1.18",
+    "rehype-expressive-code": "0.41.5",
+    "sharp": "0.34.5",
+    "tailwind-merge": "3.4.0",
+    "tailwindcss": "4.1.18",
     "ts-morph": "26.0.0"
   },
   "devDependencies": {
     "@1771technologies/grid-sample-data": "workspace:*",
     "@1771technologies/lytenyte-pro": "workspace:*",
     "@1771technologies/lytenyte-pro-experimental": "workspace:*",
-    "clsx": "^2.1.1",
-    "date-fns": "^4.1.0",
-    "react-minimal-pie-chart": "^9.1.1"
+    "clsx": "2.1.1",
+    "date-fns": "4.1.0",
+    "react-minimal-pie-chart": "9.1.1"
   }
 }
