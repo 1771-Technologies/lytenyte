@@ -37,7 +37,7 @@ test("the initial state should be idle, and then move states correctly", async (
     );
   };
 
-  const screen = render(<Component />);
+  const screen = await render(<Component />);
 
   await expect.element(screen.getByRole("button")).toBeVisible();
   await userEvent.click(screen.getByRole("button"));
@@ -76,7 +76,7 @@ test("when the element provided is not defined it should do nothing", async () =
     );
   };
 
-  const screen = render(<Component />);
+  const screen = await render(<Component />);
 
   await expect.element(screen.getByRole("button")).toBeVisible();
   await userEvent.click(screen.getByRole("button"));

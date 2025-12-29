@@ -6,12 +6,7 @@ const chromeConfig: TestProjectConfiguration = {
   extends: `${import.meta.dirname}/vitest.config.ts`,
   test: {
     name: "chrome",
-    include: [
-      "./packages/**/*.test.?(c|m)[jt]s?(x)",
-      "src/**/*.test.?(c|m)[jt]s?(x)",
-      "./packages/**/*.pt.?(c|m)[jt]s?(x)",
-      "src/**/*.pt.?(c|m)[jt]s?(x)",
-    ],
+    include: ["./packages/**/*.test.?(c|m)[jt]s?(x)", "src/**/*.test.?(c|m)[jt]s?(x)"],
     includeSource: ["src/**/*.play.tsx"],
 
     // Tests can take quite long in CI

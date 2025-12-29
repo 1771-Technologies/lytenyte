@@ -34,7 +34,7 @@ const rowDetailRenderer: Grid.Props["rowDetailRenderer"] = () => {
   );
 };
 
-export default function BasicRendering({
+export default function NestedDetailGrid({
   rtl,
   columns,
   pinTop,
@@ -69,6 +69,7 @@ export default function BasicRendering({
       </button>
       <div style={{ width: "100%", height: "90vh", border: "1px solid black" }}>
         <Grid
+          gridId="x"
           columns={columns ?? baseColumns}
           rowSource={ds}
           columnMarker={marker}
@@ -92,5 +93,5 @@ function NestedGrid() {
     data: bankDataSmall,
   });
 
-  return <Grid columns={baseColumns} rowSource={ds} />;
+  return <Grid gridId="nested" columns={baseColumns} rowSource={ds} />;
 }

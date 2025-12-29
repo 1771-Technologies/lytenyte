@@ -45,7 +45,7 @@ export default function RowDetailWithSpans({ rtl, columns }: { rtl?: boolean; co
     data: bankDataSmall,
   });
 
-  const [expansions, setExpansions] = useState<Grid.Props["rowDetailExpansions"]>(new Set("2"));
+  const [expansions, setExpansions] = useState<Grid.Props["rowDetailExpansions"]>(new Set(["leaf-2"]));
 
   const [marker] = useState<Grid.ColumnMarker>({
     on: true,
@@ -60,6 +60,7 @@ export default function RowDetailWithSpans({ rtl, columns }: { rtl?: boolean; co
       </button>
       <div style={{ width: "100%", height: "90vh", border: "1px solid black" }}>
         <Grid
+          gridId="x"
           columns={columns ?? baseColumns}
           rowSource={ds}
           rtl={rtl}
@@ -74,4 +75,31 @@ export default function RowDetailWithSpans({ rtl, columns }: { rtl?: boolean; co
       </button>
     </div>
   );
+}
+
+if (import.meta.vitest) {
+  const { test, expect } = import.meta.vitest;
+  const { userEvent } = await import("vitest/browser");
+  const { wait, getCellQuery } = await import("../utils.js");
+  const { render } = await import("vitest-browser-react");
+
+  test("when there are row spans it should be cutoff when the detail is expanded", async () => {
+    const screen = await render(<RowDetailWithSpans />);
+    const grid = screen.getByRole("grid");
+
+    await expect.element(grid).toBeVisible();
+    await wait(); // Give the grid a moment to render
+
+    const ourFirstCell = document.querySelector(getCellQuery("x", 0, 2)) as HTMLElement;
+    ourFirstCell.focus();
+    await expect.element(ourFirstCell).toHaveFocus();
+
+    await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Unemployed");
+    await userEvent.keyboard("{ArrowDown}");
+    await wait();
+    await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Management");
+    await userEvent.keyboard("{ArrowDown}");
+    await wait();
+    await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Detail A");
+  });
 }
