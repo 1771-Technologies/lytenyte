@@ -34,9 +34,7 @@ const columns: Column<any>[] = [
 ];
 export default function BasicRendering() {
   const ds = useClientRowDataSource({
-    topData: bankDataSmall.slice(0, 2),
-    data: bankDataSmall.slice(0, 10),
-    bottomData: bankDataSmall.slice(0, 2),
+    data: bankDataSmall,
   });
   const g = useLyteNyte({
     gridId: useId(),
