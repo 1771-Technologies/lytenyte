@@ -151,17 +151,66 @@ jobs:
       - name: Typecheck All Packages
         run: op np --filter './packages/*' exec op typecheck
 
-  test:
-    name: Test (${{ matrix.browser }})
+  packages-matrix:
+    name: Compute package matrix
     runs-on: ubuntu-24.04
-    needs: setup
+    outputs:
+      packages: ${{ steps.gen.outputs.packages }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          lfs: true
+
+      - name: Generate packages JSON
+        id: gen
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # Find direct children of ./packages (one level deep)
+          # Exclude sample-data (adjust as needed)
+          pkgs=$(find packages -mindepth 1 -maxdepth 1 -type d \
+            ! -name "sample-data" \
+            -print | sort)
+
+          # Build an array of objects:
+          # [
+          #   {"path":"packages/foo","name":"foo"},
+          #   {"path":"packages/bar","name":"bar"}
+          # ]
+          json=$(
+            printf '%s\n' "$pkgs" \
+              | jq -R '{
+                  path: .,
+                  name: (sub("^packages/"; ""))
+                }' \
+              | jq -cs .
+          )
+
+          echo "Discovered packages matrix: $json"
+
+          {
+            echo "packages<<EOF"
+            echo "$json"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+  test:
+    name: ${{ matrix.browser }}) | (${{ matrix.package.name }}
+    runs-on: ubuntu-24.04
+    needs:
+      - setup
+      - packages-matrix
     strategy:
       fail-fast: false
+      max-parallel: 24
       matrix:
         browser:
           - chrome
           - firefox
           - safari
+        package: ${{ fromJson(needs.packages-matrix.outputs.packages) }}
+
     steps:
       - uses: actions/checkout@v5
         with:
@@ -186,17 +235,28 @@ jobs:
       - run: pnpm install -g @1771technologies/oneplay --ignore-workspace
       - run: op np i
 
-      - name: Install Playwright Binaries
-        run: npx playwright install --with-deps
+      # Install only the browser needed for this matrix entry.
+      # "chrome" project corresponds to Chromium; "safari" corresponds to WebKit on Linux.
+      - name: Install Playwright browser (${{ matrix.browser }})
+        shell: bash
+        run: |
+          case "${{ matrix.browser }}" in
+            chrome)  npx playwright install --with-deps chromium ;;
+            firefox) npx playwright install --with-deps firefox ;;
+            safari)  npx playwright install --with-deps webkit ;;
+            *) echo "Unknown browser: ${{ matrix.browser }}" && exit 1 ;;
+          esac
 
-      - name: Test All Packages (${{ matrix.browser }})
-        run: op np --filter './packages/*' exec op test run --project=${{ matrix.browser }}
+      - name: Run tests
+        working-directory: ${{ matrix.package.path }}
+        run: op test run --project=${{ matrix.browser }}
 
       - name: Upload screenshots (on failure)
         if: ${{ failure() }}
         uses: actions/upload-artifact@v4
         with:
-          name: failed-screenshots-${{ matrix.browser }}-${{ github.run_number }}
+          # Uses the short name (no `packages/`), avoids slashes in artifact names.
+          name: failed-screenshots-${{ matrix.package.name }}-${{ matrix.browser }}-${{ github.run_number }}
           path: |
             **/__screenshots__/**
           if-no-files-found: ignore
