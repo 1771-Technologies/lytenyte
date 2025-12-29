@@ -75,6 +75,7 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
       <div
         {...props}
         role="grid"
+        tabIndex={0}
         ref={combined}
         onClick={(ev) => {
           props.onClick?.(ev);

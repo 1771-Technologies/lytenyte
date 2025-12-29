@@ -76,8 +76,8 @@
     }
   },
   "dependencies": {
-    "@1771technologies/lytenyte-shared": "workspace:*",
-    "@1771technologies/lytenyte-design": "workspace:*"
+    "@1771technologies/lytenyte-design": "workspace:*",
+    "@1771technologies/lytenyte-shared": "workspace:*"
   },
   "devDependencies": {
     "@1771technologies/grid-sample-data": "workspace:*"

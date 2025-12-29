@@ -3,19 +3,16 @@ import react from "@vitejs/plugin-react";
 import { playwright } from "@vitest/browser-playwright";
 
 const chromeConfig: TestProjectConfiguration = {
-  extends: `${__dirname}/vitest.config.ts`,
+  extends: `${import.meta.dirname}/vitest.config.ts`,
   test: {
     name: "chrome",
-    include: [
-      "./packages/**/*.test.?(c|m)[jt]s?(x)",
-      "src/**/*.test.?(c|m)[jt]s?(x)",
-      "./packages/**/*.pt.?(c|m)[jt]s?(x)",
-      "src/**/*.pt.?(c|m)[jt]s?(x)",
-    ],
+    include: ["./packages/**/*.test.?(c|m)[jt]s?(x)", "src/**/*.test.?(c|m)[jt]s?(x)"],
+    includeSource: ["src/**/*.play.tsx"],
+
     // Tests can take quite long in CI
     testTimeout: process.env.CI ? 120_000 : 40_000,
 
-    setupFiles: `${__dirname}/test-setup.ts`,
+    setupFiles: `${import.meta.dirname}/test-setup.ts`,
     browser: {
       screenshotFailures: false,
 
@@ -52,6 +49,10 @@ chromeConfig.test!.browser!.provider = playwright({ actionTimeout: 5000 });
 firefoxConfig.test!.browser!.provider = playwright({ actionTimeout: 5000 });
 safariConfig.test!.browser!.provider = playwright({ actionTimeout: 5000 });
 
+chromeConfig.plugins = [react()];
+firefoxConfig.plugins = [react()];
+safariConfig.plugins = [react()];
+
 export default defineConfig({
   plugins: [react()],
   test: {
@@ -84,12 +85,7 @@ export default defineConfig({
         // but we don't expect full coverage of them.
         "**/fork-*/**",
       ],
-      include: [
-        "**/packages/**/src/**/*.ts",
-        "**/packages/**/src/**/*.tsx",
-        "src/**/*.ts",
-        "src/**/*.tsx",
-      ],
+      include: ["**/packages/**/src/**/*.ts", "**/packages/**/src/**/*.tsx", "src/**/*.ts", "src/**/*.tsx"],
     },
   },
 });
