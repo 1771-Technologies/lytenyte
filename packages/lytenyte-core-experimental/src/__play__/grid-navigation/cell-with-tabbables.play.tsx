@@ -66,53 +66,71 @@ if (import.meta.vitest) {
     const grid = screen.getByRole("grid");
 
     await expect.element(grid).toBeVisible();
-    await wait(); // Give the grid a moment to render
+    await wait(100); // Give the grid a moment to render
 
     (document.querySelector(getCellQuery("x", 0, 0)) as HTMLElement).focus();
-    await wait();
+    await wait(100);
 
     await userEvent.keyboard("{ArrowRight}");
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("A");
     await userEvent.keyboard("{ArrowRight}");
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("B");
     await userEvent.keyboard("{ArrowRight}");
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("C");
     await userEvent.keyboard("{ArrowRight}");
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("PrevNot TabbableNext");
     await userEvent.keyboard("{ArrowRight}");
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Prev");
     await userEvent.keyboard("{ArrowRight}");
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Next");
     await userEvent.keyboard("{ArrowRight}");
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Married");
     await userEvent.keyboard("{ArrowLeft}");
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Next");
     await userEvent.keyboard("{ArrowLeft}");
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Prev");
     await userEvent.keyboard("{ArrowLeft}");
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("PrevNot TabbableNext");
     await userEvent.keyboard("{ArrowLeft}");
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("C");
     await userEvent.keyboard("{ArrowLeft}");
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("B");
     await userEvent.keyboard("{ArrowLeft}");
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("A");
     await userEvent.keyboard("{ArrowLeft}");
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("ABC");
 
     (document.querySelector(getCellQuery("x", 5, 2)) as HTMLElement).focus();
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("747");
     await userEvent.keyboard("{ArrowRight}");
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("PrevNot TabbableNext");
     await userEvent.keyboard("{ArrowRight}");
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Prev");
     (document.activeElement!.nextElementSibling as HTMLElement).focus();
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Not Tabbable");
     await userEvent.keyboard("{ArrowRight}");
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Next");
     (document.activeElement!.previousElementSibling as HTMLElement).focus();
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Not Tabbable");
     await userEvent.keyboard("{ArrowLeft}");
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Prev");
   });
 
@@ -121,71 +139,71 @@ if (import.meta.vitest) {
     const grid = screen.getByRole("grid");
 
     await expect.element(grid).toBeVisible();
-    await wait(); // Give the grid a moment to render
+    await wait(100); // Give the grid a moment to render
 
     (document.querySelector(getCellQuery("x", 0, 0)) as HTMLElement).focus();
-    await wait();
+    await wait(100);
 
     await userEvent.keyboard("{ArrowLeft}");
-    await wait();
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("A");
     await userEvent.keyboard("{ArrowLeft}");
-    await wait();
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("B");
     await userEvent.keyboard("{ArrowLeft}");
-    await wait();
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("C");
     await userEvent.keyboard("{ArrowLeft}");
-    await wait();
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("PrevNot TabbableNext");
     await userEvent.keyboard("{ArrowLeft}");
-    await wait();
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Prev");
     await userEvent.keyboard("{ArrowLeft}");
-    await wait();
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Next");
     await userEvent.keyboard("{ArrowLeft}");
-    await wait();
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Married");
     await userEvent.keyboard("{ArrowRight}");
-    await wait();
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Next");
     await userEvent.keyboard("{ArrowRight}");
-    await wait();
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Prev");
     await userEvent.keyboard("{ArrowRight}");
-    await wait();
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("PrevNot TabbableNext");
     await userEvent.keyboard("{ArrowRight}");
-    await wait();
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("C");
     await userEvent.keyboard("{ArrowRight}");
-    await wait();
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("B");
     await userEvent.keyboard("{ArrowRight}");
-    await wait();
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("A");
     await userEvent.keyboard("{ArrowRight}");
-    await wait();
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("ABC");
 
     (document.querySelector(getCellQuery("x", 5, 2)) as HTMLElement).focus();
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("747");
     await userEvent.keyboard("{ArrowLeft}");
-    await wait();
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("PrevNot TabbableNext");
     await userEvent.keyboard("{ArrowLeft}");
-    await wait();
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Prev");
     (document.activeElement!.nextElementSibling as HTMLElement).focus();
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Not Tabbable");
     await userEvent.keyboard("{ArrowLeft}");
-    await wait();
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Next");
     (document.activeElement!.previousElementSibling as HTMLElement).focus();
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Not Tabbable");
     await userEvent.keyboard("{ArrowRight}");
-    await wait();
+    await wait(100);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("Prev");
   });
 }
