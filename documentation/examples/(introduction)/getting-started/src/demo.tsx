@@ -1,10 +1,11 @@
 "use client";
-
+//#start
 import "./main.css";
-import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
-import "@1771technologies/lytenyte-pro/grid.css";
-import type { Column } from "@1771technologies/lytenyte-pro/types";
-import { useId } from "react";
+import "@1771technologies/lytenyte-pro-experimental/grid-full.css";
+import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
+
+import type { RequestData } from "./data";
+import { requestData } from "./data";
 import {
   DateCell,
   Header,
@@ -16,114 +17,61 @@ import {
   StatusCell,
   TimingPhaseCell,
 } from "./components";
-import { type RequestData, requestData } from "./data";
-import { ChevronDownIcon, ChevronRightIcon } from "@1771technologies/lytenyte-pro/icons";
+import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+//#end
 
-const columns: Column<RequestData>[] = [
-  {
-    id: "Date",
-    name: "Date",
-    width: 200,
-    cellRenderer: DateCell,
-    type: "datetime",
-  },
+export interface GridSpec {
+  data: RequestData;
+}
+
+const columns: Grid.Column<GridSpec>[] = [
+  { id: "Date", name: "Date", width: 200, type: "datetime", cellRenderer: DateCell },
   { id: "Status", name: "Status", width: 100, cellRenderer: StatusCell },
-  {
-    id: "Method",
-    name: "Method",
-    width: 100,
-    cellRenderer: MethodCell,
-  },
+  { id: "Method", name: "Method", width: 100, cellRenderer: MethodCell },
   { id: "timing-phase", name: "Timing Phase", cellRenderer: TimingPhaseCell },
   { id: "Pathname", name: "Pathname", cellRenderer: PathnameCell },
-  {
-    id: "Latency",
-    name: "Latency",
-    width: 120,
-    cellRenderer: LatencyCell,
-    type: "number",
-  },
+  { id: "Latency", name: "Latency", width: 120, type: "number", cellRenderer: LatencyCell },
   { id: "region", name: "Region", cellRenderer: RegionCell },
 ];
 
-export default function Demo() {
-  const ds = useClientRowDataSource<RequestData>({
+const base: Grid.Props<GridSpec>["columnBase"] = {
+  headerRenderer: Header,
+};
+
+const marker: Grid.Props<GridSpec>["columnMarker"] = {
+  on: true,
+  width: 40,
+  cellRenderer: ({ api, row }) => {
+    const isExpanded = api.rowDetailExpanded(row);
+    return (
+      <button
+        className="text-ln-text-dark flex h-full w-[calc(100%-1px)] items-center justify-center pl-2"
+        onClick={() => api.rowDetailToggle(row)}
+      >
+        {isExpanded ? (
+          <ChevronDownIcon width={20} height={20} />
+        ) : (
+          <ChevronRightIcon width={20} height={20} />
+        )}
+      </button>
+    );
+  },
+};
+
+export default function GettingStartedDemo() {
+  const ds = useClientDataSource<GridSpec>({
     data: requestData,
   });
-  const grid = Grid.useLyteNyte({
-    gridId: useId(),
-    columns,
-
-    rowDetailHeight: 200,
-    rowDetailRenderer: RowDetailRenderer,
-
-    columnMarkerEnabled: true,
-    columnMarker: {
-      width: 40,
-      cellRenderer: ({ row, grid }) => {
-        const isExpanded = grid.api.rowDetailIsExpanded(row);
-        return (
-          <button
-            className="text-ln-gray-70 flex h-full w-[calc(100%-1px)] items-center justify-center pl-2"
-            onClick={() => grid.api.rowDetailToggle(row)}
-          >
-            {isExpanded ? (
-              <ChevronDownIcon width={20} height={20} />
-            ) : (
-              <ChevronRightIcon width={20} height={20} />
-            )}
-          </button>
-        );
-      },
-    },
-
-    columnBase: {
-      headerRenderer: Header,
-    },
-
-    rowDataSource: ds,
-  });
-
-  const view = grid.view.useValue();
 
   return (
-    <div className="lng-grid" style={{ width: "100%", height: "400px" }}>
-      <Grid.Root grid={grid}>
-        <Grid.Viewport>
-          <Grid.Header>
-            {view.header.layout.map((row, i) => {
-              return (
-                <Grid.HeaderRow headerRowIndex={i} key={i}>
-                  {row.map((c) => {
-                    if (c.kind === "group")
-                      return <Grid.HeaderGroupCell cell={c} key={c.idOccurrence} />;
-
-                    return (
-                      <Grid.HeaderCell cell={c} key={c.column.id} className="after:bg-ln-gray-20" />
-                    );
-                  })}
-                </Grid.HeaderRow>
-              );
-            })}
-          </Grid.Header>
-
-          <Grid.RowsContainer>
-            <Grid.RowsCenter>
-              {view.rows.center.map((row) => {
-                if (row.kind === "full-width") return <Grid.RowFullWidth row={row} key={row.id} />;
-
-                return (
-                  <Grid.Row key={row.id} row={row} accepted={["row"]}>
-                    {row.cells.map((cell) => {
-                      return <Grid.Cell cell={cell} key={cell.id} />;
-                    })}
-                  </Grid.Row>
-                );
-              })}
-            </Grid.RowsCenter>
-          </Grid.RowsContainer>
-        </Grid.Viewport>
-      </Grid.Root>
+    <div className="ln-grid" style={{ height: 400 }}>
+      <Grid
+        columnBase={base}
+        columns={columns}
+        rowSource={ds}
+        rowDetailRenderer={RowDetailRenderer}
+        columnMarker={marker}
+      />
     </div>
   );
 }

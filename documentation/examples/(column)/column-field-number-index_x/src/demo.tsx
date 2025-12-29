@@ -18,7 +18,7 @@ type StockData = (typeof stockData)[number];
 
 const columns: Column<StockData>[] = [
   { field: 0, id: "symbol", name: "Symbol", cellRenderer: SymbolCell, width: 220 },
-  { field: 2, id: "analyst-rating", cellRenderer: AnalystRatingCell, width: 130 },
+  { field: 2, id: "analyst-rating", name: "Analyst Rating", cellRenderer: AnalystRatingCell, width: 130 },
   { field: 3, id: "price", type: "number", cellRenderer: CurrencyCell, width: 110 },
   { field: 5, id: "change", type: "number", cellRenderer: PercentCell, width: 130 },
   { field: 11, id: "eps", name: "EPS", type: "number", cellRenderer: CurrencyCell, width: 130 },
@@ -71,9 +71,7 @@ export default function ColumnFieldNumberIndex() {
                 return (
                   <Grid.Row row={row} key={row.id}>
                     {row.cells.map((c) => {
-                      return (
-                        <Grid.Cell key={c.id} cell={c} className="text-xs! flex text-nowrap" />
-                      );
+                      return <Grid.Cell key={c.id} cell={c} className="text-xs! flex text-nowrap" />;
                     })}
                   </Grid.Row>
                 );

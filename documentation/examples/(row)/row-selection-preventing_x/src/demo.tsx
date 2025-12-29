@@ -55,7 +55,7 @@ export default function RowSelection() {
         onRowSelectBegin={({ preventDefault, selected }) => {
           if (Number.parseInt(selected) % 2) {
             preventDefault();
-            alert(`Selection of the row at index ${Number.parseInt(selected)} has been prevent.`);
+            alert(`Selection prevented: Row index ${Number.parseInt(selected)}`);
           }
         }}
       >

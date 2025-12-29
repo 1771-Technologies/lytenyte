@@ -43,7 +43,11 @@ const customComparators: Record<string, SortComparatorFn<RequestData>> = {
   },
 };
 
-export function Header({ column, grid }: HeaderCellRendererParams<RequestData>) {
+export function Header({
+  column,
+  grid,
+  noSort,
+}: HeaderCellRendererParams<RequestData> & { noSort?: boolean }) {
   const sort = grid.state.sortModel.useValue().find((c) => c.columnId === column.id);
 
   const isDescending = sort?.isDescending ?? false;
@@ -52,6 +56,7 @@ export function Header({ column, grid }: HeaderCellRendererParams<RequestData>) 
     <div
       className="text-ln-gray-60 flex h-full w-full items-center px-4 text-sm transition-all"
       onClick={() => {
+        if (noSort) return;
         const current = grid.api.sortForColumn(column.id);
 
         if (current == null) {
@@ -91,13 +96,7 @@ export function Header({ column, grid }: HeaderCellRendererParams<RequestData>) 
       {column.name ?? column.id}
 
       {sort && (
-        <>
-          {!isDescending ? (
-            <ArrowUpIcon className="size-4" />
-          ) : (
-            <ArrowDownIcon className="size-4" />
-          )}
-        </>
+        <>{!isDescending ? <ArrowUpIcon className="size-4" /> : <ArrowDownIcon className="size-4" />}</>
       )}
     </div>
   );
@@ -151,8 +150,7 @@ export function MethodCell({ column, row, grid }: CellRendererParams<RequestData
         className={clsx(
           "rounded-sm px-1 py-px",
           method === "GET" && "text-ln-primary-50 bg-[#126CFF1F]",
-          (method === "PATCH" || method === "PUT" || method === "POST") &&
-            "bg-[#FF991D1C] text-[#EEA760]",
+          (method === "PATCH" || method === "PUT" || method === "POST") && "bg-[#FF991D1C] text-[#EEA760]",
           method === "DELETE" && "bg-[#e63d3d2d] text-[#e63d3d]",
         )}
       >
@@ -169,9 +167,7 @@ export function PathnameCell({ column, row, grid }: CellRendererParams<RequestDa
 
   return (
     <div className="text-ln-gray-90 flex h-full w-full items-center px-4 text-sm">
-      <div className="text-ln-primary-50 w-full overflow-hidden text-ellipsis text-nowrap">
-        {path}
-      </div>
+      <div className="text-ln-primary-50 w-full overflow-hidden text-ellipsis text-nowrap">{path}</div>
     </div>
   );
 }
@@ -281,7 +277,7 @@ export function RowDetailRenderer({ row }: RowDetailRendererParams<RequestData>)
     rowHeight: "fill:24",
     columnBase: {
       // Reuse header for convenience
-      headerRenderer: Header as any,
+      headerRenderer: (p) => <Header {...(p as any)} noSort />,
       cellRenderer: (p) => {
         const field = p.grid.api.columnField(p.column, p.row) as number;
 
@@ -312,16 +308,9 @@ export function RowDetailRenderer({ row }: RowDetailRendererParams<RequestData>)
                 return (
                   <Grid.HeaderRow headerRowIndex={i} key={i}>
                     {row.map((c) => {
-                      if (c.kind === "group")
-                        return <Grid.HeaderGroupCell cell={c} key={c.idOccurrence} />;
+                      if (c.kind === "group") return <Grid.HeaderGroupCell cell={c} key={c.idOccurrence} />;
 
-                      return (
-                        <Grid.HeaderCell
-                          cell={c}
-                          key={c.column.id}
-                          className="after:bg-ln-gray-20"
-                        />
-                      );
+                      return <Grid.HeaderCell cell={c} key={c.column.id} className="after:bg-ln-gray-20" />;
                     })}
                   </Grid.HeaderRow>
                 );
@@ -331,8 +320,7 @@ export function RowDetailRenderer({ row }: RowDetailRendererParams<RequestData>)
             <Grid.RowsContainer>
               <Grid.RowsCenter>
                 {view.rows.center.map((row) => {
-                  if (row.kind === "full-width")
-                    return <Grid.RowFullWidth row={row} key={row.id} />;
+                  if (row.kind === "full-width") return <Grid.RowFullWidth row={row} key={row.id} />;
 
                   return (
                     <Grid.Row key={row.id} row={row} accepted={["row"]}>
