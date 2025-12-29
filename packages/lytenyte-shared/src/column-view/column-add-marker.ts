@@ -1,4 +1,5 @@
-import { COLUMN_MARKER_ID, type ColumnAbstract } from "@1771technologies/lytenyte-shared";
+import { COLUMN_MARKER_ID } from "../+constants.js";
+import type { ColumnAbstract } from "../+types.non-gen.js";
 
 interface ColumnHandleMarkerArgs {
   readonly columns: ColumnAbstract[];
