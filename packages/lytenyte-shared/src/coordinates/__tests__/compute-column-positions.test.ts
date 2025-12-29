@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { computeColumnPositions } from "../compute-column-positions.js";
-import type { ColumnWidthItem } from "../../+types.non-gen.js";
+import type { ColumnWidthItem } from "../../types.js";
 
 describe("computeColumnPositions", () => {
   test("should handle empty column widths", () => {

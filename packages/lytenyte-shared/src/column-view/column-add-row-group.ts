@@ -1,5 +1,5 @@
 import { GROUP_COLUMN_SINGLE_ID } from "../+constants.js";
-import type { ColumnAbstract, RowGroupDisplayMode } from "../+types.non-gen.js";
+import type { ColumnAbstract, RowGroupDisplayMode } from "../types.js";
 
 interface ColumnHandleGroupColumnArgs {
   readonly columns: ColumnAbstract[];

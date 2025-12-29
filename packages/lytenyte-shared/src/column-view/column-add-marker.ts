@@ -1,5 +1,5 @@
 import { COLUMN_MARKER_ID } from "../+constants.js";
-import type { ColumnAbstract } from "../+types.non-gen.js";
+import type { ColumnAbstract } from "../types.js";
 
 interface ColumnHandleMarkerArgs {
   readonly columns: ColumnAbstract[];

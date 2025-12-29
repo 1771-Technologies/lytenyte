@@ -1,4 +1,4 @@
-import type { ColumnAbstract } from "../+types.non-gen.js";
+import type { ColumnAbstract } from "../types.js";
 import { getMaxHeaderDepth } from "../header-view/get-max-header-depth.js";
 import { getVisibleColumns } from "../header-view/get-visible-columns.js";
 import { getVisibleColumnsWithGroups } from "../header-view/get-visible-columns-with-groups.js";

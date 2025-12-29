@@ -1,11 +1,4 @@
-import type {
-  ColumnAbstract,
-  ColumnPin,
-  PositionUnion,
-  RowNode,
-  RowPin,
-  SpanLayout,
-} from "../+types.non-gen.js";
+import type { ColumnAbstract, ColumnPin, PositionUnion, RowNode, RowPin, SpanLayout } from "../types.js";
 import type { LayoutState } from "./make-layout-state.js";
 import { CONTAINS_DEAD_CELLS, FULL_WIDTH } from "./update-layout.js";
 

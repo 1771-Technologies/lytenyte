@@ -3,7 +3,7 @@ import type {
   RowSelectionState,
   RowSelectNode,
   RowSelectNodeWithParent,
-} from "../+types.non-gen";
+} from "../types";
 
 export function rowSelectLinkWithParents(state: RowSelectionState): RowSelectionLinkedWithParent {
   if (state.kind === "isolated") return { kind: "controlled", children: new Map(), selected: false };

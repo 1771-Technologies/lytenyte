@@ -1,5 +1,5 @@
 import type { AfterKeyFn, BeforeKeyFn } from "../+types";
-import type { ScrollIntoViewFn } from "../../+types.non-gen";
+import type { ScrollIntoViewFn } from "../../types";
 import { runWithBackoff } from "../../js-utils/index.js";
 import { BACKOFF_RUNS } from "../constants.js";
 import { queryFirstFocusable, queryHeader } from "../query.js";

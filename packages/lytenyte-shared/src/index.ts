@@ -57,7 +57,7 @@ export type {
   PositionHeaderCell,
   PositionHeaderGroupCell,
   PositionUnion,
-} from "./+types.non-gen.js";
+} from "./types.js";
 
 export type {
   LayoutHeader,

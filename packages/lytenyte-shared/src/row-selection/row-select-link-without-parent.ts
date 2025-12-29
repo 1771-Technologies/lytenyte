@@ -3,7 +3,7 @@ import type {
   RowSelectionLinkedWithParent,
   RowSelectNode,
   RowSelectNodeWithParent,
-} from "../+types.non-gen";
+} from "../types";
 
 export function rowSelectLinkWithoutParents(state: RowSelectionLinkedWithParent): RowSelectionLinked {
   const removeParents = (parent: RowSelectionLinked | RowSelectNode, node: RowSelectNodeWithParent) => {
