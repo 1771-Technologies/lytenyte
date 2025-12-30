@@ -19,6 +19,7 @@ import {
 } from "./plugins/index.js";
 import { relative } from "node:path";
 import { remarkBetterExpressiveCode } from "./plugins/remark-better-expressive-code.js";
+import { remarkNext } from "./plugins/remark-next.js";
 
 export { generateId } from "./collections/generate-id.js";
 export { indexMdxH2H3 } from "./ln-doc/doc-index.js";
@@ -81,8 +82,25 @@ export function lnDoc(opts: OneDocConfig): AstroIntegration[] {
                 {
                   resolveId: (id) => {
                     if (id === "ln:collections") return "ln:collections";
+                    if (id === "ln:all") return "ln:all";
                   },
                   load: (id) => {
+                    if (id === "ln:all") {
+                      return `
+                        import { getCollection } from "astro:content";
+
+                        const allCollections = await Promise.all([
+                          ${collections
+                            .map((col) => {
+                              return `getCollection("${typeof col === "string" ? col : col.name}")`;
+                            })
+                            .join(",")}
+                        ])
+
+                        export const all = allCollections.flat();
+                      `;
+                    }
+
                     if (id === "ln:collections") {
                       const file = `
                       import { defineCollection, z } from "astro:content";
@@ -100,6 +118,7 @@ export function lnDoc(opts: OneDocConfig): AstroIntegration[] {
                           }),
                           schema: z.object({
                             title: z.string(),
+                            step: z.string().optional(),
                             description: z.string().optional(),
                           })
                         })`;
@@ -188,6 +207,7 @@ const { entry } = Astro.props;
     expressiveCode(),
     mdx({
       remarkPlugins: [
+        remarkNext,
         remarkBetterExpressiveCode,
         remarkStandaloneImage,
         [remarkDemo, { ...opts }],

@@ -1,0 +1,77 @@
+---
+title: Data Pushing or Pulling
+description: The LyteNyte Grid's server data source enables programmatic data exchange
+  with the server, giving developers full control over how data is loaded into the
+  grid. It also supports hybrid patterns where row data originates from both the
+  client and the server.
+---
+
+## Pulling Data
+
+LyteNyte Grid provides the `pushRequests` method on the server data source to request (**"pull"**) data
+from the server. When invoked, the grid processes the requests as new, ignoring existing request
+tracking. The grid also manages row data conflict resolution and cancels pending requests
+if the grid resets before a response is received.
+
+In the example below, clicking the **"Request Data"** button triggers the
+grid to tick, a manual refresh similar to those in many UIs that let users poll for updates.
+
+!demo:Data Pulling="./demos/data-pulling"
+
+The code for pulling data from the server is simple and runs in
+the **"Request Data"** button's `onClick` callback:
+
+```tsx
+<button
+  onClick={() => {
+    ds.pushRequests(ds.requestsForView.get());
+  }}
+>
+  Request Data
+</button>
+```
+
+We use the `requestsForView` atom to fetch requests for the current view, though any
+request set can be used. If you're unfamiliar with the request interface,
+see the [Data Interface guide](/docs/server-data-loading-interface) for more details.
+
+## Pushing Data
+
+You can push data into LyteNyte Grid using the `pushResponses` method on the
+server data source. This method accepts complete data responses and sends
+them to the data source. It can also be used to generate data ticks on the client
+and push the result into the data source as though it were the server that sent the rows.
+This is shown in the example below.
+
+!demo:Data Pushing="./demos/data-pushing"
+
+This example is intentionally simple to highlight the core functionality. Like
+the data-pulling example, the main logic runs in the **"Push Data"** button's `onClick`
+handler. However, instead of calling `pushRequests`, it calls `pushResponses`
+and provides complete responses.
+
+```tsx
+<button
+  onClick={() => {
+    const res = getResponses(
+      ds.requestsForView.get(),
+      grid.state.rowGroupModel.get(),
+      grid.state.aggModel.get(),
+    );
+    ds.pushResponses(res);
+  }}
+>
+  Push Data
+</button>
+```
+
+Pushing responses requires a solid understanding of the LyteNyte Grid server
+data source's response model and how responses form the data tree.
+See the [Data Interface guide](/docs/server-data-loading-interface) for more information.
+
+## Next Steps
+
+- [Server Row Sorting](/docs/server-data-loading-row-sorting): Explains server-side sorting and client-side display.
+- [Server Row Filtering](/docs/server-data-loading-row-filtering): Covers server-side filtering, including **in filters (tree set filters)** and **quick search filters**.
+- [Server Row Grouping and Aggregation](/docs/server-data-loading-row-grouping-and-aggregation): Handles grouped data and loads group slices.
+- [Handling Load Failures](/docs/server-data-loading-handling-load-failures): Explores all scenarios where data requests may fail.

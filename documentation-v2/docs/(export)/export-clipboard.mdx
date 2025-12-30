@@ -1,0 +1,38 @@
+---
+title: Clipboard
+description:
+  Use LyteNyte Grid's clipboard API methods to implement copy, cut, and paste with customizable
+  transform options.
+---
+
+LyteNyte Grid does not provide a direct API for clipboard operations, but it offers methods you can
+combine to implement copy, cut, and paste. Pair these methods with
+[cell selection](/docs/cell-selection) to support familiar spreadsheet-style interactions.
+
+- Use `api.exportDataRect` to retrieve data for the full grid or a selected section.
+- Use `api.editUpdate` to modify cell values.
+
+## Clipboard Operation Flow
+
+The basic approach for clipboard support is:
+
+- **Copy** - Call `api.exportDataRect` to get the selected data, then write it to the clipboard.
+- **Cut** - Call `api.exportDataRect` to get the selected data, write it to the clipboard, then call
+  `api.editUpdate` to clear those cells.  
+  **Note:** `api.editUpdate` requires the cells to be editable. See the [cell editing](/docs/cell-editing)
+  guide for details.
+- **Paste** - Read and parse the clipboard content, then call `api.editUpdate` to update the target
+  cells.
+
+<Callout>
+
+As an alternative to `exportDataRect`, call `exportCsv` to get a string that can be written directly
+to the clipboard.
+
+</Callout>
+
+## Example
+
+The following example demonstrates copy, cut, and paste in a simple grid setup.
+
+!demo:Clipboard Copy and Cut="./demos/clipboard"

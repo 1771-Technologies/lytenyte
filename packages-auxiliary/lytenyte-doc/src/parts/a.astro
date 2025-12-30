@@ -1,3 +1,9 @@
+---
+const { href } = Astro.props;
+
+console.log(href);
+---
+
 <a
   {...Astro.props}
   class="font-semibold text-xd-prose-link underline underline-offset-4 transition-colors hover:text-xd-prose-link/80 [&_strong]:text-xd-prose-link"

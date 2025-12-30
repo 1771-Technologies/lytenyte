@@ -1,0 +1,27 @@
+.horizontal-indicators {
+  &[data-ln-drag-over="true"][data-ln-can-drop="true"] {
+    position: relative;
+    &[data-ln-is-before] {
+      &::before {
+        content: "";
+        position: absolute;
+        height: calc(100% - 20px);
+        top: 10px;
+        width: 2px;
+        background-color: var(--lng1771-primary-50);
+        left: 0px;
+      }
+    }
+    &[data-ln-is-after] {
+      &::after {
+        content: "";
+        position: absolute;
+        width: 2px;
+        background-color: var(--lng1771-primary-50);
+        right: 0px;
+        height: calc(100% - 20px);
+        top: 10px;
+      }
+    }
+  }
+}

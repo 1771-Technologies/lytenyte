@@ -1,0 +1,29 @@
+---
+import UL from "./parts/ul.astro";
+import LI from "./parts/li.astro";
+import A from "./parts/a.astro";
+import { byId } from "./all-collections";
+
+interface Props {
+  readonly items: string[];
+}
+
+const { items } = Astro.props;
+---
+
+<UL>
+  {
+    items.map((x) => {
+      const collectionDoc = byId[x];
+      const doc = collectionDoc.data;
+
+      if (!doc?.step) throw new Error(`Failed to find next description for id: ${x}.`);
+
+      return (
+        <LI>
+          <A href={x}>{`${doc.title}:`}</A> {doc.step}
+        </LI>
+      );
+    })
+  }
+</UL>

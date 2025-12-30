@@ -1,0 +1,5 @@
+{
+  "title": "Pivoting",
+  "pages": ["row-grouping", "row-aggregations", "column-pivoting"],
+  "defaultOpen": true
+}

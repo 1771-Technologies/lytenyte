@@ -1,5 +1,6 @@
 ---
 title: Grid Theming With Tailwind
+step: Style LyteNyte Grid using Tailwind.
 description: Tailwind can be used to style LyteNyte Grid. This guide explains how to set up Tailwind and apply it to grid elements.
 ---
 
@@ -46,11 +47,7 @@ In the example, Tailwind classes are applied in the usual way.
 No special configuration is required. For example, the `Grid.Cell` component is styled as follows:
 
 ```tsx
-<Grid.Cell
-  key={c.id}
-  cell={c}
-  className="flex items-center bg-gray-50 px-2 text-sm text-gray-800"
-/>
+<Grid.Cell key={c.id} cell={c} className="flex items-center bg-gray-50 px-2 text-sm text-gray-800" />
 ```
 
 ### Class Variance Authority

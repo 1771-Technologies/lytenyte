@@ -1,0 +1,88 @@
+---
+title: Overview
+description: Learn how the LyteNyte grid creates, renders, and manages rows. LyteNyte Grid has two
+  types of rows, group rows and leaf rows. These rows define the grid's main content.
+---
+
+## Row Node Interface
+
+LyteNyte Grid represents rows using the `RowNode` interface. This interface is a union of two types:
+
+- [`RowLeaf`](/docs/reference/row#rowleaf): A row with no child rows.
+- [`RowGroup`](/docs/reference/row#rowgroup): A row that contains child rows and establishes a hierarchical relationship.
+
+You can distinguish between row node types by checking the `kind` property. For example:
+
+```ts
+const row: RowNode = { ... };
+
+const isLeaf = row.kind === "leaf";
+const isGroup = row.kind === "branch";
+```
+
+LyteNyte Grid also provides convenience methods for identifying row node types. When using
+TypeScript, these methods will narrow the type of the `RowNode` union:
+
+```ts
+const isLeaf = grid.api.rowIsLeaf(row);
+const isGroup = grid.api.rowIsGroup(row);
+```
+
+## Row Indices
+
+The **RowNode** interface intentionally omits a **row index** because a row node does not always
+correspond to a rendered row. The grid's data source creates row nodes, and some
+data sources, such as the [server data source](/docs/server-data-loading-overview), can return rows that are
+not yet visible. These rows do not have a defined row index.
+
+Although `RowNode` does not store a row index, LyteNyte Grid exposes the index when it does exist.
+The grid passes `rowIndex` to components and callbacks that operate on rendered rows.
+
+Cell renderers, for example, receive a `rowIndex` prop, as shown in the row index demo below:
+
+!demo:Row Indexing="../(column)/demos/column-marker_x"
+
+The marker column displays the row index for each rendered row.
+The following cell renderer adds `1` to the index because LyteNyte Grid uses zero-based indexing:
+
+```tsx
+const cellRenderer = (p) => {
+  return <div>{p.rowIndex + 1}</div>;
+};
+```
+
+## Row State
+
+`RowNode` represents row identity and structure, not layout or view state.
+LyteNyte Grid stores layout-related information separately as part of the grid's view state.
+For example, row pinning state lives in the grid view, not on the row node.
+
+The following demo shows this separation:
+
+!demo:Row Pinning="./demos/row-pinning_x"
+
+In this example, the grid reads pinned rows from the `view` property when rendering the top section:
+
+```tsx
+<Grid.RowsTop>
+  {view.rows.top.map((row) => {
+    // Render logic
+  })}
+</Grid.RowsTop>
+```
+
+In addition to pin state, `RowNode` **does not** store the following information:
+
+- Row height
+- Row detail expansion state
+- Full-width row predicate
+- Row selection state
+
+The remaining guides in this section describe how LyteNyte Grid manages each of these concerns.
+
+## Next Steps
+
+- [Row Height](/docs/row-height): Change row height, support variable-height rows, and configure fill-height rows.
+- [Row Pinning](/docs/row-pinning): Freeze rows at the top or bottom of the viewport.
+- [Row Selection](/docs/row-selection): Select single or multiple rows.
+- [Row Detail](/docs/row-detail): Render expandable row detail content, including nested grids.

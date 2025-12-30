@@ -1,0 +1,170 @@
+---
+title: Server Row Sorting
+description: LyteNyte Grid's server data source requests sorted rows by sending a defined sort model.
+  The server applies the sort and returns the corresponding slice of sorted data.
+---
+
+## Retrieving Sorted Row Data
+
+The LyteNyte Grid [state object](/docs/grid-reactivity) maintains a [sort model](/docs/reference/sort#sortmodelitem),
+which declaratively describes how rows should be sorted. The row data source is responsible for applying
+this sorting. When using a server data source, sorting must occur on the server because only the server
+has access to the complete dataset.
+
+In the example below, and all examples that follow, clicking a column header cycles through its sort states.
+Each time the sort changes, the grid resets its rows and fetches a new batch of sorted data from the server.
+
+!demo:Row Sorting="./demos/basic-sorting"
+
+Server-side sorting often ignores some parts of the grid's sort model. For example, the implementation below
+uses only the column `id` and ignores the sort's `kind`. This approach is typical, as the server understands the
+data types for each column. For example, SQL uses `ORDER BY` clauses rather than data-type specific sorting logic.
+
+```ts
+for (const m of sortModel) {
+  const id = m.columnId;
+
+  const leftValue = l[id];
+  const rightValue = r[id];
+
+  // Check null states before comparing sort values
+  if (!leftValue && !rightValue) continue;
+  else if (leftValue && !rightValue) return -1;
+  else if (!leftValue && rightValue) return 1;
+
+  let val = 0;
+  if (id === "link" || id === "name" || id === "genre" || id === "type") {
+    // Sort logic - see code example
+  } else if (id === "released_at") {
+    // Sort logic - see code example
+  } else if (id === "imdb_rating") {
+    // Sort logic - see code example
+  }
+
+  if (val !== 0) return m.isDescending ? -val : val;
+}
+```
+
+## Handling Sort Model Options
+
+LyteNyte Grid's sort model supports options such as placing `null` values first. These options can be included
+in the model sent to the server, but the server must interpret and implement them. The following example handles
+the `nullsFirst` option; other options can follow a similar pattern:
+
+!demo:Nulls First="./demos/basic-sorting-nulls-first"
+
+<div className="pt-8" />
+
+```ts
+const isNullsFirst = m.sort.options?.nullsFirst;
+// Check null states before comparing sort values
+if (!leftValue && !rightValue) continue;
+else if (leftValue && !rightValue) return isNullsFirst ? 1 : -1;
+else if (!leftValue && rightValue) return isNullsFirst ? -1 : 1;
+```
+
+<Callout>
+
+The `null` value doesn't have to represent JavaScript's `null`. The server in this example treats empty strings as
+`null`. It's up to your implementation to define what `null` means and how to order it. In Python, this might be
+`None`; in SQL, `NULL` or `NaN`.
+
+</Callout>
+
+## Using a Different Sort Model
+
+LyteNyte Grid defines its own sort model, but you may already use a different one in your application or backend.
+The grid doesn't require you to use its model. Developers can supply a custom sort model to the data fetcher. The example
+below demonstrates how:
+
+!demo:Custom Sort Model="./demos/custom-sorting"
+
+This example defines a sort model outside of the LyteNyte Grid state. It includes three key steps:
+
+<Steps>
+
+1. Injecting External Data Into the Data Fetcher
+
+   The server data source's `dataFetcher` function doesn't automatically capture updates from React state. Instead
+   dependencies must be explicitly declared using the `dataFetchExternals` property. When `sort` changes, LyteNyte
+   Grid will detect that change in dependencies and refetch row data from the server.
+
+   ```ts
+   const [sort, setSort] = useState<{ sort: CustomSort | null }>(null);
+   const ds = useServerDataSource<MovieData>({
+     dataFetcher: (params) => {
+       return Server(params.requests, sort);
+     },
+     dataFetchExternals: [sort],
+   });
+   ```
+
+2. Creating External State
+
+   Create the external sort model however you prefer. In this example, React's `useState` and context are used
+   to share the state:
+
+   ```ts
+   export const context = createContext<{
+     sort: CustomSort | null;
+     setSort: Dispatch<SetStateAction<CustomSort | null>>;
+   }>({
+     sort: null,
+     setSort: () => {},
+   });
+   ```
+
+   Provide this context to the grid:
+
+   ```tsx
+   const [sort, setSort] = useState<CustomSort | null>({ columnId: "name", isDescending: false });
+
+   return (
+     <context.Provider value={useMemo(() => ({ sort, setSort }), [sort])}>
+       ... Grid defined here
+     </context.Provider>
+   );
+   ```
+
+3. Updating External State from Components
+
+   The grid's header renderer accesses the context and updates the external sort state on click:
+
+   ```tsx
+   export function HeaderRenderer({ column }: HeaderCellRendererParams<MovieData>) {
+     const customSort = useContext(context);
+     const isDescending = customSort.sort?.isDescending ?? false;
+
+     return (
+       <div
+         onClick={() => {
+           const sort = customSort.sort;
+           const current = sort?.columnId === column.id ? sort : null;
+
+           if (current == null) {
+             customSort.setSort({ columnId: column.id, isDescending: false });
+           } else if (!current.isDescending) {
+             customSort.setSort({ columnId: column.id, isDescending: true });
+           } else {
+             customSort.setSort(null);
+           }
+         }}
+       >
+         ... Header content
+       </div>
+     );
+   }
+   ```
+
+</Steps>
+
+These steps represent one approach. External state libraries like
+[Zustand](https://zustand.docs.pmnd.rs/getting-started/introduction) or
+[Jotai](https://jotai.org/) provide simpler mechanisms for sharing and syncing state outside React components.
+
+## Next Steps
+
+- [Server Row Filtering](/docs/server-data-loading-row-filtering): Server-side filtering, including **in filters (tree set filters)** and **quick search filters**.
+- [Server Row Pinning](/docs/server-data-loading-row-pinning): Pin rows to keep specific data visible.
+- [Server Row Grouping and Aggregation](/docs/server-data-loading-row-grouping-and-aggregation): Handle grouped data and load group slices.
+- [Handling Load Failures](/docs/server-data-loading-handling-load-failures): Explore how to handle failed data requests.

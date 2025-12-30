@@ -1,0 +1,77 @@
+---
+title: Row Pinning
+description: LyteNyte Grid can freeze rows at the top or bottom of the grid viewport.
+  Pinned rows remain visible as the user scrolls.
+---
+
+## Pinned Row Elements
+
+Pinned rows render in separate sections of the `Grid.RowsContainer` from scrollable rows.
+When using row pinning, you must include the pinned row section components, as shown below.
+
+For more details on these layout components, see the [Headless Component Parts guide](/docs/grid-headless-parts).
+
+```tsx
+<Grid.RowsContainer>
+  <Grid.RowsTop>
+    {view.rows.top.map((row) => {
+      // render top pinned rows
+    })}
+  </Grid.RowsTop>
+
+  <Grid.RowsCenter>
+    {view.rows.center.map((row) => {
+      // render scrollable rows
+    })}
+  </Grid.RowsCenter>
+
+  <Grid.RowsBottom>
+    {view.rows.bottom.map((row) => {
+      // render bottom pinned rows
+    })}
+  </Grid.RowsBottom>
+</Grid.RowsContainer>
+```
+
+## Pinned Row Specifications
+
+The grid's data source defines which rows are pinned. How you specify pinned rows
+depends on the type of row data source in use.
+
+The demo below uses the [client row data source](/docs/row-client-data-source) to
+demonstrate row pinning. For other data sources, see their respective guides:
+
+- [Tree Data Source](/docs/row-tree-data-source)
+- [Server Row Pinning](/docs/server-data-loading-row-pinning)
+
+Pinning renders the same way regardless of the data source. Use `Grid.RowsTop` to
+render top-pinned rows and `Grid.RowsBottom` to render bottom-pinned rows.
+These components always display the pinned rows for the current grid view.
+
+!demo:Pinned Rows="./demos/row-pinning_x"
+
+## Pinned Row Indices
+
+LyteNyte Grid assigns row indices sequentially from top to bottom.
+When the grid includes pinned rows, the first row index belongs to the first top-pinned row,
+and the final index belongs to the last bottom-pinned row.
+
+This indexing model has an important implication. When rows are pinned to the top, the row indices of scrollable
+rows are offset by the number of top-pinned rows. This matters when you work with rows by index, such as when
+retrieving a row programmatically. To access the first scrollable row by index,
+you must account for the number of rows pinned at the top.
+
+The marker column demo below makes this behavior explicit:
+
+!demo:Offset Pinned Rows="./demos/row-pinning-marker_x"
+
+In this example, the first scrollable row displays an index of `3` because two rows are pinned to the top. The bottom-pinned rows display
+indices `17` and `18`, reflecting their position after both the
+top-pinned and scrollable rows.
+
+## Next Steps
+
+- [Row Full Width](/docs/row-full-width): Create rows that expand to the full width of the viewport.
+- [Row Dragging](/docs/row-dragging): Drag and drop rows within the same LyteNyte Grid, across multiple grids, or into external drop zones.
+- [Row Sorting](/docs/row-sorting): Learn about the row sort model and how rows are ordered.
+- [Row Spanning](/docs/row-spanning): See how cells can span multiple rows.
