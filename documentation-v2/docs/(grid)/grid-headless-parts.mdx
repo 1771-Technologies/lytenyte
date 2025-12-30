@@ -1,5 +1,6 @@
 ---
 title: Headless Component Parts
+step: Learn about the component parts that make up LyteNyte Grid.
 description: LyteNyte Grid is a headless data grid. Each part of the grid is split into
   constituent components that you can compose declaratively to form the grid view.
 ---
@@ -726,8 +727,7 @@ function RowSection<D = any>({
   rows: RowLayout<D>[];
   section: "top" | "center" | "bottom";
 }) {
-  const Section =
-    section === "top" ? Grid.RowsTop : section === "bottom" ? Grid.RowsBottom : Grid.RowsCenter;
+  const Section = section === "top" ? Grid.RowsTop : section === "bottom" ? Grid.RowsBottom : Grid.RowsCenter;
 
   return (
     <Section>
@@ -790,8 +790,7 @@ function RowSection<D = any>({
   rows: RowLayout<D>[];
   section: "top" | "center" | "bottom";
 }) {
-  const Section =
-    section === "top" ? Grid.RowsTop : section === "bottom" ? Grid.RowsBottom : Grid.RowsCenter;
+  const Section = section === "top" ? Grid.RowsTop : section === "bottom" ? Grid.RowsBottom : Grid.RowsCenter;
 
   return (
     <Section>
@@ -826,8 +825,7 @@ function RowSection<D = any>({
   rows: RowLayout<D>[];
   section: "top" | "center" | "bottom";
 }) {
-  const Section =
-    section === "top" ? Grid.RowsTop : section === "bottom" ? Grid.RowsBottom : Grid.RowsCenter;
+  const Section = section === "top" ? Grid.RowsTop : section === "bottom" ? Grid.RowsBottom : Grid.RowsCenter;
 
   return (
     <Section>
