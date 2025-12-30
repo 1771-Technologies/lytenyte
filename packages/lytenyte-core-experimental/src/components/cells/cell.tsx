@@ -107,6 +107,7 @@ const CellImpl = memo(
           data-ln-rowspan={cell.rowSpan}
           data-ln-colpin={cell.colPin ?? "center"}
           data-ln-rowpin={cell.rowPin ?? "center"}
+          data-ln-colid={cell.id}
           data-ln-gridid={id}
           data-ln-cell
           data-ln-edit-active={willDisplayEdit || undefined}

@@ -142,7 +142,7 @@
       }
     }
 
-    [data-ln-header-id="lytenyte-marker-column"] {
+    [data-ln-colid="lytenyte-marker-column"] {
       padding: 0px;
       display: flex;
       justify-content: center;
