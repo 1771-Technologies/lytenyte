@@ -359,6 +359,9 @@ importers:
       '@1771technologies/grid-sample-data':
         specifier: workspace:*
         version: link:../packages/sample-data
+      '@1771technologies/lytenyte-design':
+        specifier: workspace:*
+        version: link:../packages/lytenyte-design
       '@1771technologies/lytenyte-pro':
         specifier: workspace:*
         version: link:../packages/commercial-lytenyte-pro

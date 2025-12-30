@@ -1,17 +1,17 @@
 .ln-shadcn {
   --ln-gray-00: var(--background);
   --ln-gray-01: var(--background);
-  --ln-gray-02: color-mix(in oklch, var(--background) 90%, var(--foreground));
-  --ln-gray-05: color-mix(in oklch, var(--background) 75%, var(--foreground));
-  --ln-gray-10: color-mix(in oklch, var(--background) 60%, var(--foreground));
-  --ln-gray-20: color-mix(in oklch, var(--background) 50%, var(--foreground));
-  --ln-gray-30: color-mix(in oklch, var(--background) 40%, var(--foreground));
-  --ln-gray-40: color-mix(in oklch, var(--background) 30%, var(--foreground));
-  --ln-gray-50: color-mix(in oklch, var(--background) 25%, var(--foreground));
-  --ln-gray-60: color-mix(in oklch, var(--background) 20%, var(--foreground));
-  --ln-gray-70: color-mix(in oklch, var(--background) 15%, var(--foreground));
-  --ln-gray-80: color-mix(in oklch, var(--background) 10%, var(--foreground));
-  --ln-gray-90: var(--foreground);
+  --ln-gray-02: color-mix(in oklch, var(--background) 96%, var(--foreground));
+  --ln-gray-05: color-mix(in oklch, var(--background) 94%, var(--foreground));
+  --ln-gray-10: color-mix(in oklch, var(--background) 90%, var(--foreground));
+  --ln-gray-20: color-mix(in oklch, var(--background) 80%, var(--foreground));
+  --ln-gray-30: color-mix(in oklch, var(--background) 70%, var(--foreground));
+  --ln-gray-40: color-mix(in oklch, var(--background) 60%, var(--foreground));
+  --ln-gray-50: color-mix(in oklch, var(--background) 50%, var(--foreground));
+  --ln-gray-60: color-mix(in oklch, var(--background) 40%, var(--foreground));
+  --ln-gray-70: color-mix(in oklch, var(--background) 30%, var(--foreground));
+  --ln-gray-80: color-mix(in oklch, var(--background) 20%, var(--foreground));
+  --ln-gray-90: color-mix(in oklch, var(--background) 10%, var(--foreground));
   --ln-gray-100: var(--foreground);
 
   --ln-primary-05: color-mix(in oklch, var(--primary) 05%, var(--primary-foreground));
@@ -62,9 +62,9 @@
   --ln-bg-strong: color-mix(in srgb, var(--background) 80%, black 20%);
 
   --ln-bg-button-light: var(--muted);
-  --ln-bg-row-hover: var(--ln-primary-05);
-  --ln-bg-row-alternate: var(--ln-primary-10);
-  --ln-bg-ui-panel: var(--popover);
+  --ln-bg-row-hover: color-mix(in srgb, var(--accent-foreground) 10%, transparent);
+  --ln-bg-row-alternate: var(--ln-gray-02);
+  --ln-bg-ui-panel: var(--ln-gray-00);
   --ln-bg-form-field: var(--input);
   --ln-bg-floating-panel: var(--popover);
   --ln-bg-popover: var(--popover);

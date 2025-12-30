@@ -118,7 +118,7 @@
   }
 }
 
-@theme {
+@theme inline {
   --color-ln-gray-00: var(--ln-gray-00);
   --color-ln-gray-01: var(--ln-gray-01);
   --color-ln-gray-02: var(--ln-gray-02);

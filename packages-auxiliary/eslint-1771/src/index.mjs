@@ -29,7 +29,6 @@ export default defineConfig(
       "@typescript-eslint/no-namespace": "off",
       "@typescript-eslint/consistent-type-imports": "error",
       "@typescript-eslint/consistent-type-exports": "error",
-      "@typescript-eslint/no-namespace": "off",
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
@@ -55,6 +54,7 @@ export default defineConfig(
     files: ["**/*.js", "**/*.mjs"],
     ...tseslint.configs.disableTypeChecked,
   },
+
   {
     files: ["**/*.{ts,tsx}"],
     extends: [reactHooks.configs["recommended-latest"], reactRefresh.configs.vite],
@@ -63,6 +63,7 @@ export default defineConfig(
       "react-hooks/immutability": "off",
       "react-hooks/preserve-manual-memoization": "off",
       "react-hooks/unsupported-syntax": "off",
+      "react-refresh/only-export-components": "off",
     },
   },
 );

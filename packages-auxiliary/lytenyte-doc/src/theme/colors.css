@@ -1,46 +1,65 @@
-@theme {
-  --color-xd-prose-link: hsla(194, 80%, 43%, 1);
-  --color-xd-background: hsl(0, 0%, 99%);
-  --color-xd-foreground: hsl(0, 0%, 3.9%);
-  --color-xd-muted: hsl(0, 0%, 96.1%);
-  --color-xd-muted-foreground: hsl(0, 0%, 45.1%);
-  --color-xd-popover: hsl(0, 0%, 98%);
-  --color-xd-popover-foreground: hsl(0, 0%, 15.1%);
-  --color-xd-card: hsl(0, 0%, 94.7%);
-  --color-xd-card-foreground: hsl(0, 0%, 3.9%);
-  --color-xd-border: hsla(0, 0%, 80%, 50%);
-  --color-xd-primary: hsl(0, 0%, 9%);
-  --color-xd-primary-foreground: hsl(0, 0%, 98%);
-  --color-xd-secondary: hsl(0, 0%, 93.1%);
-  --color-xd-secondary-foreground: hsl(0, 0%, 9%);
-  --color-xd-accent: hsla(0, 0%, 82%, 50%);
-  --color-xd-accent-foreground: hsl(0, 0%, 9%);
-  --color-xd-ring: hsl(0, 0%, 63.9%);
-  --color-xd-overlay: hsla(0, 0%, 0%, 0.2);
+:root {
+  --xd-prose-link: hsla(194, 80%, 43%, 1);
+  --xd-background: hsl(0, 0%, 99%);
+  --xd-foreground: hsl(0, 0%, 3.9%);
+  --xd-muted: hsl(0, 0%, 96.1%);
+  --xd-muted-foreground: hsl(0, 0%, 45.1%);
+  --xd-popover: hsl(0, 0%, 98%);
+  --xd-popover-foreground: hsl(0, 0%, 15.1%);
+  --xd-card: hsl(0, 0%, 94.7%);
+  --xd-card-foreground: hsl(0, 0%, 3.9%);
+  --xd-border: hsla(0, 0%, 80%, 50%);
+  --xd-primary: hsl(0, 0%, 9%);
+  --xd-primary-foreground: hsl(0, 0%, 98%);
+  --xd-secondary: hsl(0, 0%, 93.1%);
+  --xd-secondary-foreground: hsl(0, 0%, 9%);
+  --xd-accent: hsla(0, 0%, 82%, 50%);
+  --xd-accent-foreground: hsl(0, 0%, 9%);
+  --xd-ring: hsl(0, 0%, 63.9%);
+  --xd-overlay: hsla(0, 0%, 0%, 0.2);
 }
 
 [data-theme="dark"] {
   color-scheme: dark;
-  --color-xd-prose-link: hsla(172, 75%, 40%, 1);
-  --color-xd-background: hsl(0, 0%, 7.04%);
-  --color-xd-foreground: hsl(0, 0%, 92%);
-  --color-xd-muted: hsl(0, 0%, 12.9%);
-  --color-xd-muted-foreground: hsla(0, 0%, 70%, 0.8);
-  --color-xd-popover: hsl(0, 0%, 11.6%);
-  --color-xd-popover-foreground: hsl(0, 0%, 86.9%);
-  --color-xd-card: hsl(0, 0%, 9.8%);
-  --color-xd-card-foreground: hsl(0, 0%, 98%);
-  --color-xd-border: hsla(0, 0%, 40%, 20%);
-  --color-xd-primary: hsl(0, 0%, 98%);
-  --color-xd-primary-foreground: hsl(0, 0%, 9%);
-  --color-xd-secondary: hsl(0, 0%, 12.9%);
-  --color-xd-secondary-foreground: hsl(0, 0%, 92%);
-  --color-xd-accent: hsla(0, 0%, 40.9%, 30%);
-  --color-xd-accent-foreground: hsl(0, 0%, 90%);
-  --color-xd-ring: hsl(0, 0%, 54.9%);
-  --color-xd-overlay: hsla(0, 0%, 0%, 0.2);
+  --xd-prose-link: hsla(172, 75%, 40%, 1);
+  --xd-background: hsl(0, 0%, 7.04%);
+  --xd-foreground: hsl(0, 0%, 92%);
+  --xd-muted: hsl(0, 0%, 12.9%);
+  --xd-muted-foreground: hsla(0, 0%, 70%, 0.8);
+  --xd-popover: hsl(0, 0%, 11.6%);
+  --xd-popover-foreground: hsl(0, 0%, 86.9%);
+  --xd-card: hsl(0, 0%, 9.8%);
+  --xd-card-foreground: hsl(0, 0%, 98%);
+  --xd-border: hsla(0, 0%, 40%, 20%);
+  --xd-primary: hsl(0, 0%, 98%);
+  --xd-primary-foreground: hsl(0, 0%, 9%);
+  --xd-secondary: hsl(0, 0%, 12.9%);
+  --xd-secondary-foreground: hsl(0, 0%, 92%);
+  --xd-accent: hsla(0, 0%, 40.9%, 30%);
+  --xd-accent-foreground: hsl(0, 0%, 90%);
+  --xd-ring: hsl(0, 0%, 54.9%);
+  --xd-overlay: hsla(0, 0%, 0%, 0.2);
 }
-
 [data-theme="light"] {
   color-scheme: light;
+}
+
+@theme inline {
+  --color-xd-prose-link: var(--xd-prose-link);
+  --color-xd-background: var(--xd-background);
+  --color-xd-foreground: var(--xd-foreground);
+  --color-xd-muted: var(--xd-muted);
+  --color-xd-muted-foreground: var(--xd-muted-foreground);
+  --color-xd-popover: var(--xd-popover);
+  --color-xd-popover-foreground: var(--xd-popover-foreground);
+  --color-xd-card: var(--xd-card);
+  --color-xd-card-foreground: var(--xd-card-foreground);
+  --color-xd-border: var(--xd-border);
+  --color-xd-primary: var(--xd-primary);
+  --color-xd-primary-foreground: var(--xd-primary-foreground) --color-xd-secondary: hsl(0, 0%, 93.1%);
+  --color-xd-secondary-foreground: var(--xd-secondary-foreground);
+  --color-xd-accent: var(--xd-accent);
+  --color-xd-accent-foreground: var(--xd-accent-foreground);
+  --color-xd-ring: var(--xd-ring);
+  --color-xd-overlay: var(--xd-overlay);
 }

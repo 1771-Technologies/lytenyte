@@ -72,6 +72,7 @@
       font-weight: 600;
       color: var(--ln-text-dark);
       line-height: 20px;
+      white-space: nowrap;
 
       border-bottom: 1px solid var(--ln-border);
 
@@ -111,6 +112,7 @@
       line-height: 20px;
       padding-inline: var(--ln-padding-horizontal-cell);
       border-bottom: 1px solid var(--ln-border);
+      white-space: nowrap;
 
       &:focus {
         outline: 1px solid var(--ln-primary-50);

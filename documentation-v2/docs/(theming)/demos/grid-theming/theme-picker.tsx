@@ -21,8 +21,8 @@ export function ToggleItem(props: Parameters<typeof TG.Item>[0]) {
     <TG.Item
       {...props}
       className={tw(
-        "text-ln-gray-70 flex items-center justify-center px-2 py-1 text-xs font-bold outline-none focus:outline-none",
-        "data-[state=on]:text-ln-gray-90 data-[state=on]:bg-linear-to-b from-ln-gray-02 to-ln-gray-05 data-[state=on]:rounded-md",
+        "text-ln-text flex items-center justify-center px-2 py-1 text-xs font-bold outline-none focus:outline-none",
+        "data-[state=on]:text-ln-text-dark data-[state=on]:bg-linear-to-b from-ln-gray-02 to-ln-gray-05 data-[state=on]:rounded-md",
         props.className,
       )}
     ></TG.Item>
@@ -42,13 +42,13 @@ export function ThemePicker({ theme, setTheme }: { theme: string; setTheme: (s: 
           setTheme(c);
         }}
       >
-        <ToggleItem value="light">Light</ToggleItem>
-        <ToggleItem value="dark">Dark</ToggleItem>
-        <ToggleItem value="lng1771-teal">LyteNyte Teal</ToggleItem>
-        <ToggleItem value="lng1771-term256">Term 256</ToggleItem>
-        <ToggleItem value="lng1771-shadcn-dark dark">Shadcn Dark</ToggleItem>
-        <ToggleItem value="lng1771-shadcn-light light">Shadcn Light</ToggleItem>
-        <ToggleItem value="lng1771-cotton-candy">Cotton Candy</ToggleItem>
+        <ToggleItem value="ln-light">Light</ToggleItem>
+        <ToggleItem value="ln-dark">Dark</ToggleItem>
+        <ToggleItem value="ln-teal">LyteNyte Teal</ToggleItem>
+        <ToggleItem value="ln-term">Term 256</ToggleItem>
+        <ToggleItem value="ln-shadcn dark">Shadcn Dark</ToggleItem>
+        <ToggleItem value="ln-shadcn light">Shadcn Light</ToggleItem>
+        <ToggleItem value="ln-cotton-candy">Cotton Candy</ToggleItem>
       </ToggleGroup>
     </div>
   );

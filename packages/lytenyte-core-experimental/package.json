@@ -47,7 +47,8 @@
     "./light.css": "./css/light.css",
     "./shadcn.css": "./css/shadcn.css",
     "./teal.css": "./css/teal.css",
-    "./term.css": "./css/term.css"
+    "./term.css": "./css/term.css",
+    "./fonts.css": "./css/fonts.css"
   },
   "publishConfig": {
     "access": "public",
@@ -72,7 +73,8 @@
       "./light.css": "./css/light.css",
       "./shadcn.css": "./css/shadcn.css",
       "./teal.css": "./css/teal.css",
-      "./term.css": "./css/term.css"
+      "./term.css": "./css/term.css",
+      "./fonts.css": "./css/fonts.css"
     }
   },
   "dependencies": {
