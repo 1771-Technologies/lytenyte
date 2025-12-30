@@ -4,6 +4,7 @@ import "@1771technologies/lytenyte-pro/grid.css";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
 
+export type BankData = (typeof bankDataSmall)[number];
 interface GridSpec {
   readonly data: BankData;
 }
@@ -48,7 +49,6 @@ export default function CellSelectionRect() {
 }
 
 //#start
-export type BankData = (typeof bankDataSmall)[number];
 
 const formatter = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 2,

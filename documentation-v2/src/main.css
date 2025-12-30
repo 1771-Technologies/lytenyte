@@ -1,12 +1,11 @@
 @import "@1771technologies/lytenyte-pro-experimental/fonts.css";
 @import "@1771technologies/lytenyte-design/shadcn-vars.css";
 
-@layer base, ln-grid, components,  utilities;
+@layer base, ln-grid, components, utilities;
 
 @import "tailwindcss";
 @import "@1771technologies/lytenyte-doc/theme.css";
-
-@import "./ln-tailwind.css";
+@import "@1771technologies/lytenyte-pro-experimental/tw.css";
 
 [data-ln-viewport="true"] {
   border: 0px solid transparent;

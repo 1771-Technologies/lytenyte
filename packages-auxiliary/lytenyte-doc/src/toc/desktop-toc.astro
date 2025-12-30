@@ -28,7 +28,7 @@ const { toc } = Astro.props;
             class:list={[
               x.depth === 3 ? "pl-6" : "pl-3",
               "text-xd-muted-foreground hover:text-xd-accent-foreground transition-colors cursor-pointer py-0.5 toc-link",
-              "data-[active=true]:text-xd-foreground data-[active=true]:font-semibold",
+              "data-[active=true]:text-xd-foreground",
             ]}
             href={`#${x.slug}`}
           >

@@ -48,6 +48,7 @@
     "./shadcn.css": "./css/shadcn.css",
     "./teal.css": "./css/teal.css",
     "./term.css": "./css/term.css",
+    "./tw.css": "./css/tw.css",
     "./fonts.css": "./css/fonts.css"
   },
   "publishConfig": {
@@ -74,6 +75,7 @@
       "./shadcn.css": "./css/shadcn.css",
       "./teal.css": "./css/teal.css",
       "./term.css": "./css/term.css",
+      "./tw.css": "./css/tw.css",
       "./fonts.css": "./css/fonts.css"
     }
   },

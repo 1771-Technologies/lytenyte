@@ -45,6 +45,12 @@
   }
 }
 
+@custom-variant ln-detail {
+  & [data-ln-row-detail="true"] {
+    @slot;
+  }
+}
+
 @custom-variant ln-row-alt {
   & [data-ln-row="true"][data-ln-alternate="true"] {
     @slot;
