@@ -3,21 +3,16 @@ import type { ClassValue } from "clsx";
 import clsx from "clsx";
 import { Checkbox as C } from "radix-ui";
 import { twMerge } from "tailwind-merge";
-import type {
-  CellRendererParams,
-  HeaderCellRendererParams,
-} from "@1771technologies/lytenyte-pro/types";
-import type { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { ToggleGroup as TG } from "radix-ui";
-
-export type BankData = (typeof bankDataSmall)[number];
+import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
+import type { GridSpec } from "./demo";
 
 const formatter = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 2,
   minimumFractionDigits: 0,
 });
-export function BalanceCell({ grid, row, column }: CellRendererParams<BankData>) {
-  const field = grid.api.columnField(column, row);
+export function BalanceCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
 
   if (typeof field === "number") {
     if (field < 0) return `-$${formatter.format(Math.abs(field))}`;
@@ -27,57 +22,16 @@ export function BalanceCell({ grid, row, column }: CellRendererParams<BankData>)
 
   return `${field ?? "-"}`;
 }
-export function DurationCell({ grid, row, column }: CellRendererParams<BankData>) {
-  const field = grid.api.columnField(column, row);
+export function DurationCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
 
   return typeof field === "number" ? `${formatter.format(field)} days` : `${field ?? "-"}`;
 }
 
-export function NumberCell({ grid, row, column }: CellRendererParams<BankData>) {
-  const field = grid.api.columnField(column, row);
+export function NumberCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
 
   return typeof field === "number" ? formatter.format(field) : `${field ?? "-"}`;
-}
-
-export function MarkerHeader({ grid }: HeaderCellRendererParams<BankData>) {
-  const allSelected = grid.state.rowDataSource.get().rowAreAllSelected();
-
-  const selected = grid.state.rowSelectedIds.useValue();
-
-  return (
-    <div className="flex h-full w-full items-center justify-center">
-      <GridCheckbox
-        checked={allSelected || selected.size > 0}
-        indeterminate={!allSelected && selected.size > 0}
-        onClick={(ev) => {
-          ev.preventDefault();
-          grid.api.rowSelectAll({ deselect: allSelected });
-        }}
-        onKeyDown={(ev) => {
-          if (ev.key === "Enter" || ev.key === " ")
-            grid.api.rowSelectAll({ deselect: allSelected });
-        }}
-      />
-    </div>
-  );
-}
-
-export function MarkerCell({ grid, rowSelected }: CellRendererParams<BankData>) {
-  return (
-    <div className="flex h-full w-full items-center justify-center">
-      <GridCheckbox
-        checked={rowSelected}
-        onClick={(ev) => {
-          ev.stopPropagation();
-          grid.api.rowHandleSelect({ shiftKey: ev.shiftKey, target: ev.target });
-        }}
-        onKeyDown={(ev) => {
-          if (ev.key === "Enter" || ev.key === " ")
-            grid.api.rowHandleSelect({ shiftKey: ev.shiftKey, target: ev.target });
-        }}
-      />
-    </div>
-  );
 }
 
 export function GridCheckbox({
@@ -108,7 +62,7 @@ export function GridCheckbox({
   );
 }
 
-export function tw(...c: ClassValue[]) {
+function tw(...c: ClassValue[]) {
   return twMerge(clsx(...c));
 }
 

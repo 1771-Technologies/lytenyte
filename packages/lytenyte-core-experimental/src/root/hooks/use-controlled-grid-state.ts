@@ -32,13 +32,8 @@ export function useControlledGridState(props: Root.Props) {
   });
 
   // Columns
-  const [columns, setColumns] = useControlled({
-    controlled: props.onColumnsChange ? props.columns : undefined,
-    default: props.columns ?? (EMPTY_ARRAY as ColumnAbstract[]),
-  });
   const onColumnsChange = useEvent((change: ColumnAbstract[]) => {
     props.onColumnsChange?.(change);
-    setColumns(change);
   });
 
   const [rowGroupColumn, setRowGroupColumn] = useControlled({
@@ -61,7 +56,7 @@ export function useControlledGridState(props: Root.Props) {
       detailExpansions,
       onRowDetailExpansionsChange,
 
-      columns,
+      columns: props.columns ?? EMPTY_ARRAY,
       onColumnsChange,
 
       rowGroupColumn,
@@ -69,12 +64,12 @@ export function useControlledGridState(props: Root.Props) {
     };
   }, [
     columnGroupExpansions,
-    columns,
     detailExpansions,
     onColumnGroupExpansionChange,
     onColumnsChange,
     onRowDetailExpansionsChange,
     onRowGroupColumnChange,
+    props.columns,
     rowGroupColumn,
   ]);
 }
