@@ -1,25 +1,104 @@
 import type {
-  CellParamsWithIndex,
-  HeaderParams,
-  RowParams,
-} from "@1771technologies/lytenyte-pro-experimental/types";
-import type { GridSpec } from "./demo";
-import { useMemo } from "react";
-import { format } from "date-fns";
-import clsx from "clsx";
+  CellRendererParams,
+  HeaderCellRendererParams,
+  RowDetailRendererParams,
+  SortComparatorFn,
+  SortModelItem,
+} from "@1771technologies/lytenyte-pro/types";
 import type { RequestData } from "./data";
+import { format } from "date-fns";
+import { useMemo } from "react";
+import clsx from "clsx";
 import { PieChart } from "react-minimal-pie-chart";
+import { ArrowDownIcon, ArrowUpIcon } from "@1771technologies/lytenyte-pro/icons";
 
-export function Header({ column }: HeaderParams<GridSpec>) {
+const colors = ["var(--transfer)", "var(--dns)", "var(--connection)", "var(--ttfb)", "var(--tls)"];
+
+const customComparators: Record<string, SortComparatorFn<RequestData>> = {
+  region: (left, right) => {
+    if (left.kind === "branch" || right.kind === "branch") {
+      if (left.kind === "branch" && right.kind === "branch") return 0;
+      if (left.kind === "branch" && right.kind !== "branch") return -1;
+      if (left.kind !== "branch" && right.kind === "branch") return 1;
+    }
+    if (!left.data || !right.data) return !left.data ? 1 : -1;
+
+    const leftData = left.data as RequestData;
+    const rightData = right.data as RequestData;
+
+    return leftData["region.fullname"].localeCompare(rightData["region.fullname"]);
+  },
+  "timing-phase": (left, right) => {
+    if (left.kind === "branch" || right.kind === "branch") {
+      if (left.kind === "branch" && right.kind === "branch") return 0;
+      if (left.kind === "branch" && right.kind !== "branch") return -1;
+      if (left.kind !== "branch" && right.kind === "branch") return 1;
+    }
+    if (!left.data || !right.data) return !left.data ? 1 : -1;
+
+    const leftData = left.data as RequestData;
+    const rightData = right.data as RequestData;
+
+    return leftData.Latency - rightData.Latency;
+  },
+};
+
+export function Header({ column, grid }: HeaderCellRendererParams<RequestData>) {
+  const sort = grid.state.sortModel.useValue().find((c) => c.columnId === column.id);
+
+  const isDescending = sort?.isDescending ?? false;
+
   return (
-    <div className="text-ln-gray-60 flex h-full w-full items-center text-sm transition-all">
+    <div
+      className="text-ln-gray-60 flex h-full w-full items-center px-4 text-sm transition-all"
+      onClick={() => {
+        const current = grid.api.sortForColumn(column.id);
+
+        if (current == null) {
+          let sort: SortModelItem<RequestData>;
+          const columnId = column.id;
+
+          if (customComparators[column.id]) {
+            sort = {
+              columnId,
+              sort: {
+                kind: "custom",
+                columnId,
+                comparator: customComparators[column.id],
+              },
+            };
+          } else if (column.type === "datetime") {
+            sort = {
+              columnId,
+              sort: { kind: "date", options: { includeTime: true } },
+            };
+          } else if (column.type === "number") {
+            sort = { columnId, sort: { kind: "number" } };
+          } else {
+            sort = { columnId, sort: { kind: "string" } };
+          }
+
+          grid.state.sortModel.set([sort]);
+          return;
+        }
+        if (!current.sort.isDescending) {
+          grid.state.sortModel.set([{ ...current.sort, isDescending: true }]);
+        } else {
+          grid.state.sortModel.set([]);
+        }
+      }}
+    >
       {column.name ?? column.id}
+
+      {sort && (
+        <>{!isDescending ? <ArrowUpIcon className="size-4" /> : <ArrowDownIcon className="size-4" />}</>
+      )}
     </div>
   );
 }
 
-export function DateCell({ column, row, api }: CellParamsWithIndex<GridSpec>) {
-  const field = api.columnField(column, row);
+export function DateCell({ column, row, grid }: CellRendererParams<RequestData>) {
+  const field = grid.api.columnField(column, row);
 
   const niceDate = useMemo(() => {
     if (typeof field !== "string") return null;
@@ -29,17 +108,17 @@ export function DateCell({ column, row, api }: CellParamsWithIndex<GridSpec>) {
   // Guard against bad values and render nothing
   if (!niceDate) return null;
 
-  return <div className="text-ln-text flex h-full w-full items-center tabular-nums">{niceDate}</div>;
+  return <div className="text-ln-gray-100 flex h-full w-full items-center px-4">{niceDate}</div>;
 }
 
-export function StatusCell({ column, row, api }: CellParamsWithIndex<GridSpec>) {
-  const status = api.columnField(column, row);
+export function StatusCell({ column, row, grid }: CellRendererParams<RequestData>) {
+  const status = grid.api.columnField(column, row);
 
   // Guard against bad values
   if (typeof status !== "number") return null;
 
   return (
-    <div className={clsx("flex h-full w-full items-center text-xs font-bold")}>
+    <div className={clsx("flex h-full w-full items-center px-4 text-xs font-bold")}>
       <div
         className={clsx(
           "rounded-sm px-1 py-px",
@@ -54,14 +133,14 @@ export function StatusCell({ column, row, api }: CellParamsWithIndex<GridSpec>) 
   );
 }
 
-export function MethodCell({ column, row, api }: CellParamsWithIndex<GridSpec>) {
-  const method = api.columnField(column, row);
+export function MethodCell({ column, row, grid }: CellRendererParams<RequestData>) {
+  const method = grid.api.columnField(column, row);
 
   // Guard against bad values
   if (typeof method !== "string") return null;
 
   return (
-    <div className={clsx("flex h-full w-full items-center text-xs font-bold")}>
+    <div className={clsx("flex h-full w-full items-center px-4 text-xs font-bold")}>
       <div
         className={clsx(
           "rounded-sm px-1 py-px",
@@ -76,13 +155,13 @@ export function MethodCell({ column, row, api }: CellParamsWithIndex<GridSpec>) 
   );
 }
 
-export function PathnameCell({ column, row, api }: CellParamsWithIndex<GridSpec>) {
-  const path = api.columnField(column, row);
+export function PathnameCell({ column, row, grid }: CellRendererParams<RequestData>) {
+  const path = grid.api.columnField(column, row);
 
   if (typeof path !== "string") return null;
 
   return (
-    <div className="text-ln-text-dark flex h-full w-full items-center text-sm">
+    <div className="text-ln-gray-90 flex h-full w-full items-center px-4 text-sm">
       <div className="text-ln-primary-50 w-full overflow-hidden text-ellipsis text-nowrap">{path}</div>
     </div>
   );
@@ -92,41 +171,40 @@ const numberFormatter = new Intl.NumberFormat("en-Us", {
   maximumFractionDigits: 0,
   minimumFractionDigits: 0,
 });
-export function LatencyCell({ column, row, api }: CellParamsWithIndex<GridSpec>) {
-  const ms = api.columnField(column, row);
+export function LatencyCell({ column, row, grid }: CellRendererParams<RequestData>) {
+  const ms = grid.api.columnField(column, row);
   if (typeof ms !== "number") return null;
 
   return (
-    <div className="text-ln-text-dark flex h-full w-full items-center text-sm tabular-nums">
+    <div className="text-ln-gray-90 flex h-full w-full items-center px-4 text-sm tabular-nums">
       <div>
         <span className="text-ln-gray-100">{numberFormatter.format(ms)}</span>
-        <span className="text-ln-text-light text-xs">ms</span>
+        <span className="text-ln-gray-60 text-xs">ms</span>
       </div>
     </div>
   );
 }
 
-export function RegionCell({ api, row }: CellParamsWithIndex<GridSpec>) {
+export function RegionCell({ grid, row }: CellRendererParams<RequestData>) {
   // Only render for leaf rows and we have some data
-  if (!api.rowIsLeaf(row) || !row.data) return null;
+  if (!grid.api.rowIsLeaf(row) || !row.data) return null;
 
   const shortName = row.data["region.shortname"];
   const longName = row.data["region.fullname"];
 
   return (
     <div className="flex h-full w-full items-center">
-      <div className="flex items-baseline gap-2 text-sm">
+      <div className="flex items-baseline gap-2 px-4 text-sm">
         <div className="text-ln-gray-100">{shortName}</div>
-        <div className="text-ln-text-light leading-4">{longName}</div>
+        <div className="text-ln-gray-60 leading-4">{longName}</div>
       </div>
     </div>
   );
 }
 
-const colors = ["var(--transfer)", "var(--dns)", "var(--connection)", "var(--ttfb)", "var(--tls)"];
-export function TimingPhaseCell({ api, row }: CellParamsWithIndex<GridSpec>) {
+export function TimingPhaseCell({ grid, row }: CellRendererParams<RequestData>) {
   // Guard against rows that are not leafs or rows that have no data.
-  if (!api.rowIsLeaf(row) || !row.data) return;
+  if (!grid.api.rowIsLeaf(row) || !row.data) return;
 
   const total =
     row.data["timing-phase.connection"] +
@@ -144,7 +222,7 @@ export function TimingPhaseCell({ api, row }: CellParamsWithIndex<GridSpec>) {
   const values = [connectionPer, dnsPer, tlPer, transferPer, ttfbPer];
 
   return (
-    <div className="flex h-full w-full items-center">
+    <div className="flex h-full w-full items-center px-4">
       <div className="flex h-4 w-full items-center gap-px overflow-hidden">
         {values.map((v, i) => {
           return (
@@ -160,9 +238,9 @@ export function TimingPhaseCell({ api, row }: CellParamsWithIndex<GridSpec>) {
   );
 }
 
-export function RowDetailRenderer({ row, api }: RowParams<GridSpec>) {
+export function RowDetailRenderer({ row, grid }: RowDetailRendererParams<RequestData>) {
   // Guard against empty data.
-  if (!api.rowIsLeaf(row) || !row.data) return null;
+  if (!grid.api.rowIsLeaf(row) || !row.data) return null;
 
   const total =
     row.data["timing-phase.connection"] +
@@ -178,10 +256,10 @@ export function RowDetailRenderer({ row, api }: RowParams<GridSpec>) {
   const ttfbPer = (row.data["timing-phase.ttfb"] / total) * 100;
 
   return (
-    <div className="pt-1.75 flex h-full flex-col px-4 pb-5 text-sm">
-      <h3 className="text-ln-text-xlight mt-0 text-xs font-medium">Timing Phases</h3>
+    <div className="flex h-full flex-col px-4 pb-[20px] pt-[7px] text-sm">
+      <h3 className="text-ln-gray-60 mt-0 text-xs font-[500]">Timing Phases</h3>
 
-      <div className="flex flex-1 gap-2 pt-1.5">
+      <div className="flex flex-1 gap-2 pt-[6px]">
         <div className="bg-ln-gray-00 border-ln-gray-20 h-full flex-1 rounded-[10px] border">
           <div className="grid-cols[auto_auto_1fr] grid grid-rows-5 gap-1 gap-x-4 p-4 md:grid-cols-[auto_auto_200px_auto]">
             <TimingPhaseRow
@@ -240,7 +318,7 @@ function TimingPhaseRow({ color, msValue, msPercentage, label }: TimePhaseRowPro
       <div className="col-start-4 hidden items-center justify-end gap-1 text-sm md:flex">
         <div>
           <span className="text-ln-gray-100">{numberFormatter.format(msValue)}</span>
-          <span className="text-ln-text-xlight text-xs">ms</span>
+          <span className="text-ln-gray-60 text-xs">ms</span>
         </div>
         <div
           className="rounded"
