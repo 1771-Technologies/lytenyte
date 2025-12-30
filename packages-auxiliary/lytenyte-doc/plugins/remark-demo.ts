@@ -40,7 +40,7 @@ export const remarkDemo: Plugin<[], Root> = (opts?: RemarkDemoOptions) => {
       const demoFolder = resolve(file.dirname!, path);
       const files = readdirSync(demoFolder);
 
-      const demoFile = files.find((x) => x.startsWith("demo"));
+      const demoFile = files.find((x) => x.startsWith("demo.tsx"));
 
       const filesMap: string[] = [];
       const imports = files.map((x) => {
@@ -60,9 +60,7 @@ export const remarkDemo: Plugin<[], Root> = (opts?: RemarkDemoOptions) => {
       demoPathPart.splice(1, 0, "examples");
       const demoPath = demoPathPart.join("/");
 
-      const stackblitzUrl = githubRepo
-        ? getStackBlitzUrl(demoPath, githubOrg, githubRepo, githubBranch)
-        : "";
+      const stackblitzUrl = githubRepo ? getStackBlitzUrl(demoPath, githubOrg, githubRepo, githubBranch) : "";
       const codeSandboxUrl = githubRepo
         ? getCodeSandboxUrl(demoPath, githubOrg, githubRepo, githubBranch)
         : "";

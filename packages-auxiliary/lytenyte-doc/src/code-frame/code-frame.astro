@@ -17,10 +17,10 @@ interface Props {
 const priorityOrder = ["tsx", "ts", "css"];
 const { codeSandbox, stackBlitz, ...props } = Astro.props;
 const tabs = Object.entries(props.files)
-  .filter(([name]) => !name.endsWith(".css") && !name.startsWith("data"))
+  .filter(([name]) => (!name.endsWith(".css") && !name.startsWith("data")) || name.startsWith("demo"))
   .sort((l, r) => {
-    const a = l[1];
-    const b = r[1];
+    const a = l[0];
+    const b = r[0];
 
     const aBase = path.parse(a).name.toLowerCase();
     const bBase = path.parse(b).name.toLowerCase();

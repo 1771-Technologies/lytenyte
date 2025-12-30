@@ -1,4 +1,8 @@
 .data-styles {
+  [data-ln-type="number"] {
+    justify-content: end;
+  }
+
   [data-ln-cell="true"] {
     display: flex;
     align-items: center;

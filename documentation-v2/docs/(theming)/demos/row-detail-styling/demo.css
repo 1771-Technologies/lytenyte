@@ -27,7 +27,7 @@
     padding: 24px;
 
     & > div {
-      border: 1px solid var(--lng1771-gray-30);
+      border: 1px solid light-dark(rgb(216, 202, 202), rgb(62, 54, 54));
       border-radius: 8px;
       background-color: light-dark(white, transparent);
     }

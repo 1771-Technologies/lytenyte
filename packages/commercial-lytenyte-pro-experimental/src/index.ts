@@ -104,6 +104,28 @@ export namespace Grid {
     export type PopoverFrame<Spec extends GridSpec> = LnTypes.PopoverFrame<Spec>;
     export type PopoverFrameProps<Spec extends GridSpec> = LnTypes.PopoverFrameProps<Spec>;
     export type VirtualTarget = LnTypes.VirtualTarget;
+
+    export type RowNode<T> = LnTypes.RowNode<T>;
+    export type RowLeaf<T> = LnTypes.RowLeaf<T>;
+    export type RowGroup = LnTypes.RowGroup;
+    export type RowAggregated = LnTypes.RowAggregated;
+    export type ColumnPin = LnTypes.ColumnPin;
+    export type LayoutCell = LnTypes.LayoutCell;
+    export type LayoutHeader = LnTypes.LayoutHeader;
+    export type LayoutHeaderCell = LnTypes.LayoutHeaderCell;
+    export type LayoutHeaderGroup = LnTypes.LayoutHeaderGroup;
+    export type LayoutHeaderFloating = LnTypes.LayoutHeaderFloating;
+    export type LayoutFullWidthRow = LnTypes.LayoutFullWidthRow;
+    export type LayoutRow = LnTypes.LayoutRow;
+    export type LayoutRowWithCells = LnTypes.LayoutRowWithCells;
+    export type PositionDetailCell = LnTypes.PositionDetailCell;
+    export type PositionFloatingCell = LnTypes.PositionFloatingCell;
+    export type PositionFullWidthRow = LnTypes.PositionFullWidthRow;
+    export type PositionGridCell = LnTypes.PositionGridCell;
+    export type PositionGridCellRoot = LnTypes.PositionGridCellRoot;
+    export type PositionHeaderCell = LnTypes.PositionHeaderCell;
+    export type PositionHeaderGroupCell = LnTypes.PositionHeaderGroupCell;
+    export type PositionUnion = LnTypes.PositionUnion;
   }
 }
 

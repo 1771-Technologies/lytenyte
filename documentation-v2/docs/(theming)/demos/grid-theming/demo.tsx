@@ -1,5 +1,4 @@
-"use client";
-
+//#start
 import "@1771technologies/lytenyte-pro-experimental/grid-full.css";
 import type { OrderData } from "@1771technologies/grid-sample-data/orders";
 import { data } from "@1771technologies/grid-sample-data/orders";
@@ -15,6 +14,7 @@ import {
 import { useClientDataSource, Grid, ViewportShadows } from "@1771technologies/lytenyte-pro-experimental";
 import { ThemePicker } from "./theme-picker.jsx";
 import { useState } from "react";
+//#end
 
 export interface GridSpec {
   readonly data: OrderData;
