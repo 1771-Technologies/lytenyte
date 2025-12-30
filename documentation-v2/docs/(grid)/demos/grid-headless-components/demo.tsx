@@ -52,7 +52,7 @@ const rowFullWidthRenderer: Grid.Props<GridSpec>["rowFullWidthRenderer"] = (r) =
   const data = r.row.data as { label: string };
 
   return (
-    <div className="text-ln-gray-70 border-ln-gray-20 flex h-full w-full items-center justify-center border-b font-bold">
+    <div className="text-ln-gray-70 border-ln-gray-20 flex h-full w-full items-center justify-center border-y font-bold">
       {data.label}
     </div>
   );

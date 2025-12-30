@@ -107,3 +107,6 @@ export { ViewportShadows } from "./components/viewport/viewport-shadows.js";
 
 export { useClientDataSource } from "./data-source/use-client-data-source.js";
 export type { RowSourceClient, UseClientDataSourceParams } from "./data-source/use-client-data-source.js";
+
+export type { Piece, PieceWritable } from "./hooks/use-piece.js";
+export { usePiece } from "./hooks/use-piece.js";

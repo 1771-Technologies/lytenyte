@@ -5,3 +5,217 @@ description: LyteNyte Grid's API can be extended with additional properties on a
   These extensions may be used to share bespoke functionality with the various renderers provided
   to the grid.
 ---
+
+## Grid API
+
+The LyteNyte Grid API is a set of useful methods for programmatically handling common
+functionality in the grid, such as selecting rows or toggling row groups. The grid provides a reference
+to the API to all grid component callbacks, such as cell renderers and row detail renderers. You can also
+obtain a reference to the API by providing a ref to the `Grid` component, as shown below:
+
+```tsx
+function MyGrid() {
+  const ref = useRef<Grid.API | null>(null);
+
+  return <Grid ref={ref} />;
+}
+```
+
+## Extending the API
+
+Use the `apiExtension` property to add additional properties to the LyteNyte Grid API.
+Extending the API lets you add bespoke functionality on top of the
+existing API methods. For example, you can add a `notify` function as follows:
+
+```tsx
+const extension = {
+  notify: (msg: string) => {
+    // Notify user
+  },
+};
+
+function MyGrid() {
+  return <Grid apiExtension={extension} />;
+}
+```
+
+The value of the `apiExtension` property must be an object. LyteNyte Grid assigns the
+extension value onto a stable API reference. The API object reference in LyteNyte Grid never
+changes, so it is not a reactive value. Changes to the value of `apiExtension`
+apply to the API object, but these changes do not automatically trigger cell re-renders.
+
+## Supplying Reactive Values
+
+Since the API reference never changes, any component that reads values from the API object will not
+re-render when the `apiExtension` value changes. You may want to supply the API with a reactive value, such as
+application state. The naive approach might look like this:
+
+```tsx
+function MyGrid() {
+  const [count, setCount] = useState(0);
+
+  const extension = useMemo(() => {
+    return { count, setCount };
+  }, [count]);
+
+  return <Grid apiExtension={extension} />;
+}
+
+// Then later in a component renderer
+const IncrementRenderer = ({ api }) => {
+  return (
+    <button
+      onClick={() => {
+        api.setCount((prev) => prev + 1);
+      }}
+    >
+      Current Count: {count}
+    </button>
+  );
+};
+```
+
+You may expect clicking `IncrementRenderer` to increment the displayed count, but it won't.
+When you click the button, the count does increment, but cells do not re-render because the API
+object reference remains stable.
+
+To make this work, you need to inject a hook for the state value. The exact
+approach varies depending on how you create state. If you use a state management
+library like [Zustand](https://github.com/pmndrs/zustand) or [Jotai](https://jotai.org/), you
+can add the store or atom to the API extension and then read the value from the store/atom in your
+component renderer. For example, with Jotai you can do the following:
+
+```tsx
+import { atom, useAtom } from "jotai"; //!
+
+function MyGrid() {
+  //!next 3
+  // This could be defined outside of MyGrid, but it's defined here
+  // to demonstrate how state created in React components can be shared.
+  const countAtom = useMemo(() => atom(0), []);
+
+  const extension = useMemo(() => {
+    return { countAtom }; //!
+  }, [countAtom]);
+
+  return <Grid apiExtension={extension} />;
+}
+
+// Then later in a component renderer
+const IncrementRenderer = ({ api }) => {
+  const [count, setCount] = useAtom(api.countAtom); //!
+
+  return (
+    <button
+      onClick={() => {
+        setCount((prev) => prev + 1); //!
+      }}
+    >
+      Current Count: {count} //!
+    </button>
+  );
+};
+```
+
+### The Piece Utility
+
+LyteNyte Grid provides the `usePiece` hook to simplify extending the API with reactive state.
+This hook is convenient if you are not using an external state management library. The
+`usePiece` hook creates a reactive watcher for the value you provide. You can then share the watcher
+with other components, which can selectively update when the watched value changes. You can use
+`usePiece` to extend the API as follows:
+
+```tsx
+//!next
+import { usePiece } from "@1771technologies/lytenyte-pro"; // core
+
+function MyGrid() {
+  const [count, setCount] = useState(0);
+  const count$ = usePiece(count, setCount); //!
+
+  const extension = useMemo(() => {
+    return { count$ }; //!
+  }, [count$]);
+
+  return <Grid apiExtension={extension} />;
+}
+
+// Then later in a component renderer
+const IncrementRenderer = ({ api }) => {
+  const count = api.count$.useValue(); //!
+  return (
+    <button
+      onClick={() => {
+        api.count$.set((prev) => prev + 1); //!
+      }}
+    >
+      Current Count: {count}
+    </button>
+  );
+};
+```
+
+:::note
+
+The second parameter to `usePiece` is optional. If you provide it, the
+returned piece becomes writable.
+
+```tsx
+// A readonly piece value
+const count$ = usePiece(count);
+
+// A read-write piece value
+const count$ = usePiece(count, setCount);
+```
+
+:::
+
+## Typing the API Extension
+
+You can provide type information for API extensions using the `GridSpec`
+interface. The example below shows the basic idea. See our
+[TypeScript guide](/docs/prodready-typescript) for further information.
+
+```tsx
+//!next 5
+interface GridSpec {
+  readonly api: {
+    count$: PieceWritable<number>;
+  };
+}
+
+function MyGrid() {
+  const [count, setCount] = useState(0);
+  const count$ = usePiece(count, setCount);
+
+  const extension = useMemo(() => {
+    return { count$ };
+  }, [count$]);
+
+  return <Grid<GridSpec> apiExtension={extension} />; //!
+}
+```
+
+## API & Row Source
+
+LyteNyte Grid expects you to provide a value for the `rowSource` property. The grid uses this
+property to define the row source implementation. The LyteNyte Grid API
+also includes the properties of the `RowSource` you provide, so the grid API includes both
+your `apiExtension` properties and the `RowSource` properties.
+
+The code below results in an API that includes the `ds` value. The row source
+provides useful functionality such as row retrieval and editing.
+
+```tsx
+function MyGrid() {
+  const ds = useClientRowSource({ ... });
+
+  return <Grid rowSource={ds} />;
+}
+```
+
+## Next Steps
+
+::next[/docs/grid-react-compiler]
+::next[/docs/grid-reactivity]
+::next[/docs/columns]

@@ -1,7 +1,5 @@
-import { CheckIcon, MinusIcon } from "@radix-ui/react-icons";
 import type { ClassValue } from "clsx";
 import clsx from "clsx";
-import { Checkbox as C } from "radix-ui";
 import { twMerge } from "tailwind-merge";
 import { ToggleGroup as TG } from "radix-ui";
 import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
@@ -32,34 +30,6 @@ export function NumberCell({ api, row, column }: Grid.T.CellRendererParams<GridS
   const field = api.columnField(column, row);
 
   return typeof field === "number" ? formatter.format(field) : `${field ?? "-"}`;
-}
-
-export function GridCheckbox({
-  children,
-  indeterminate,
-  ...props
-}: C.CheckboxProps & { indeterminate?: boolean }) {
-  return (
-    <label className="text-md text-light flex items-center gap-2">
-      <C.Root
-        {...props}
-        type="button"
-        className={tw(
-          "bg-ln-gray-02 rounded border-transparent",
-          "shadow-[0_1.5px_2px_0_rgba(18,46,88,0.08),0_0_0_1px_var(--lng1771-gray-40)]",
-          "data-[state=checked]:bg-ln-primary-50 data-[state=checked]:shadow-[0_1.5px_2px_0_rgba(18,46,88,0.08),0_0_0_1px_var(--lng1771-primary-50)]",
-          "h-4 w-4",
-          props.className,
-        )}
-      >
-        <C.CheckboxIndicator className={tw("flex items-center justify-center")}>
-          {!indeterminate && <CheckIcon className="text-white dark:text-black" />}
-          {indeterminate && <MinusIcon className="text-white dark:text-black" />}
-        </C.CheckboxIndicator>
-      </C.Root>
-      {children}
-    </label>
-  );
 }
 
 function tw(...c: ClassValue[]) {

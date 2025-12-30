@@ -212,6 +212,11 @@
           font-variant-numeric: tabular-nums;
         }
       }
+
+      &[data-ln-rowtype="full-width"] > div:focus {
+        outline: 1px solid var(--ln-primary-50);
+        outline-offset: -2px;
+      }
     }
   }
 }
