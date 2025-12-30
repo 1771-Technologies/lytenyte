@@ -5,3 +5,47 @@ description: LyteNyte Grid is built in React for React. There is no special conf
   necessary to begin using the React compiler. Set up the compiler as part of your build
   process and LyteNyte Grid will work seamlessly.
 ---
+
+## Why Use the Compiler?
+
+LyteNyte Grid accepts props that are not simple primitive JavaScript values. For example,
+`columns` is provided as an array. When you pass non-memoized props to the grid, LyteNyte Grid
+may perform unnecessary re-renders. In some cases, this can significantly degrade
+performance. For example, the following simple code can result in lost performance.
+
+```tsx
+<Grid columnBase={{ width: 100 }} />
+```
+
+Every time the component re-renders, React creates a new `columnBase` object. When the `columnBase`
+value changes, LyteNyte Grid needs to recompute the row and cell layout. As a result, every element in the
+grid will re-render. One re-render won't impact performance, but if the component re-renders
+many times, the performance of your application will quickly degrade.
+
+It's worth noting that this performance issue is not specific to LyteNyte Grid. React behaves this way,
+and every React developer must address it whether or not they use LyteNyte Grid. The fix is simple:
+memoize the value using `useMemo`.
+
+```tsx
+<Grid columnBase={useMemo(() => ({ width: 100 }), [])} />
+```
+
+Since memoizing values is so common, and in complex applications becomes difficult to manage,
+the React team created the [React compiler](https://react.dev/learn/react-compiler/introduction) to
+automatically optimize React code.
+
+When you use the React compiler, you no longer need to worry about memoizing values manually. As a result,
+code like the following is no longer a performance bottleneck. The compiler will optimize it for you.
+
+```tsx
+<Grid columnBase={{ width: 100 }} />
+```
+
+For more on the React compiler, see the [React introduction docs](https://react.dev/learn/react-compiler/introduction).
+If the React compiler works for your project, it is recommended to adopt it.
+
+## Next Steps
+
+::next[/docs/grid-reactivity]
+::next[/docs/grid-api-extensions]
+::next[/docs/grid-container]
