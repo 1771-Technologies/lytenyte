@@ -8,9 +8,9 @@ description: LyteNyte Grid is a declarative grid. The state you apply
 
 ## Props as State
 
-LyteNyte Grid accepts state via props provided to the `Grid` component. The view displayed by the grid
-will always respect the props provided. The code below shows a basic example of passing columns to
-the grid. You should already be familiar with React, and this approach of passing props to components
+LyteNyte Grid accepts state via props passed to the `Grid` component. The grid view
+always reflects the props you provide. The code below shows a basic example of passing columns to
+the grid. You should already be familiar with React, and passing props to components like this
 should be second nature.
 
 ```tsx
@@ -27,9 +27,9 @@ function MyGrid() {
 }
 ```
 
-If you are using TypeScript, all the props passed to the grid will be type checked for correctness. Since,
-some of the props have generic type parameters, it is sometimes necessary to provide a concrete type to the
-grid. An example of this is shown below. See our [TypeScript guide](/docs/prodready-typescript) for more
+If you use TypeScript, TypeScript will type check all props passed to the grid. Since
+some props use generic type parameters, you may need to provide a concrete type for the
+grid. The example below shows one case. See our [TypeScript guide](/docs/prodready-typescript) for more
 details.
 
 ```tsx
@@ -59,34 +59,33 @@ function MyGrid() {
 
 Since LyteNyte Grid accepts props for its state, updating the state of the grid is done
 by updating the prop values passed to the grid. For example, to configure the row height
-of the grid, different `rowHeight` values may be passed to the grid. The state of the
-`rowHeight` value can simply be kept in the value returned by React's `useState` hook.
+of the grid, pass different `rowHeight` values to the grid. You can store the `rowHeight`
+value in React state using the `useState` hook.
 
 ::demo[Change Row Height="./demos/grid-reactivity-row-height"]
 
 ## Controlled State
 
-Some operations performed in LyteNyte Grid may result in a state update. These properties
-can either be controlled or uncontrolled in LyteNyte Grid. Such properties include:
+Some operations in LyteNyte Grid can trigger a state update. LyteNyte Grid can manage these
+properties as either controlled or uncontrolled. These properties include:
 
 - `rowDetailExpansions`
 - `columnGroupExpansions`
 - `rowGroupColumn`
 
-When these properties are updated a change handler is called if provided. For example, the
-state of the row detail expansions can be made **controlled** by providing the grid with
-properties for the `rowDetailExpansions` and `onRowDetailExpansionsChange`. The demo below
-demonstrates this:
+When one of these properties updates, the grid calls the corresponding change handler (if you provide one).
+For example, you can make row detail expansions **controlled** by providing both `rowDetailExpansions`
+and `onRowDetailExpansionsChange` props to the grid. The demo below demonstrates this:
 
 ::demo[Controlled Row Detail Expansions="./demos/grid-reactivity-controlled-state"]
 
 :::note
 
-Most state properties automatically become controlled state properties when a value for the
-property is provided to the grid (providing a change handler is optional). For example, just
-providing the `rowDetailExpansions` state is enough to make row detail expansions change. This
-is similar to setting the `value` property on an `input` element, without a corresponding
-`onChange` handler, i.e. the value will never change based on changes to the input.
+Most state properties become controlled when you provide a value for that property
+(providing a change handler is optional). For example, providing `rowDetailExpansions`
+is enough to prevent the grid from changing row detail expansions internally. This
+behavior is similar to setting the `value` prop on an `input` element without a corresponding
+`onChange` handler: the value will never change based on user input.
 
 ```tsx
 <Grid
@@ -94,19 +93,18 @@ is similar to setting the `value` property on an `input` element, without a corr
 />
 ```
 
-One exception is the `columns` property, which is always controlled. For columns to be
-changed by the grid (for example, by resizing through drag actions) a `onColumnsChange`
-handler must be provided.
+One exception is the `columns` property, which is always controlled. If you want the grid
+to update columns (for example, when the user resizes columns by dragging), you must provide an
+`onColumnsChange` handler.
 
 :::
 
 ## Memoizing State
 
-Many of the properties provided to LyteNyte Grid are object, function, or array values.
-These properties should have stable references to prevent unnecessary re-renders. The
-easiest way to enforce a stable reference is to define the property outside of any
-component. However, if this is not an option, you can leverage React's `useMemo` and
-`useCallback` hooks:
+Many properties you pass to LyteNyte Grid are objects, functions, or arrays. These properties
+should have stable references to prevent unnecessary re-renders. The easiest way to ensure stable
+references is to define the value outside the component. If you cannot do that, use React's `useMemo`
+and `useCallback` hooks:
 
 ```tsx
 function MyGrid() {
@@ -126,21 +124,22 @@ function MyGrid() {
 ```
 
 Avoid creating and passing objects in the render path of a component. For example, a common
-performance problem is defining the `columnBase` property as a plain object:
+performance problem is defining the `columnBase` prop as a plain object:
 
 ```tsx
 // Don't do this, it results in unnecessary re-renders.
 <Grid columnBase={{ width: 100 }} />
 ```
 
-This practices is not specific to LyteNyte Grid but part and parcel of how React works. Read
-the [`useMemo`](https://react.dev/reference/react/useMemo) guide in React's information.
+This practice is not specific to LyteNyte Grid. It is a core part of how React works. Read
+the [`useMemo`](https://react.dev/reference/react/useMemo) guide in the React documentation
+for further guidance.
 
 :::tip
 
-React's new [compiler](https://react.dev/learn/react-compiler) is capable of automatically
-memoizing values, removing the mental overhead to remember to memo values. See
-our [React Compiler guide](/docs/react-compiler) guide learn how to use LyteNyte Grid with
+React's new [compiler](https://react.dev/learn/react-compiler) can automatically
+memoize values, removing the mental overhead of remembering to memoize manually. See
+our [React Compiler guide](/docs/react-compiler) to learn how to use LyteNyte Grid with
 the new compiler.
 
 :::

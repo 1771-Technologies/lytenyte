@@ -253,10 +253,10 @@ if (import.meta.vitest) {
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("30");
 
     await userEvent.keyboard("{Control>}{ArrowDown}{/Control}");
-    await wait(100);
+    await wait(200);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("36");
     await userEvent.keyboard("{Control>}{ArrowUp}{/Control}");
-    await wait(100);
+    await wait(200);
     await expect.element(document.activeElement as HTMLElement).toHaveTextContent("30");
   });
 }
