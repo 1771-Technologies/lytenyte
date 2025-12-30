@@ -12,7 +12,6 @@
   display: flex;
   align-items: center;
   padding-inline: 8px;
-  background-color: light-dark(white, black);
   color: gray;
   font-size: 14px;
   border-bottom: 1px solid light-dark(rgb(197, 196, 196), rgb(56, 32, 32));

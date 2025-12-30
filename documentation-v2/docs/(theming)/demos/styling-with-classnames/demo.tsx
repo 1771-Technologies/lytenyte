@@ -41,7 +41,7 @@ export default function GridTheming() {
                     {cells.map((cell) => {
                       if (cell.kind === "group") return null;
 
-                      return <Grid.HeaderCell key={cell.id} cell={cell} className="header-cell" />;
+                      return <Grid.HeaderCell key={cell.id} cell={cell} className="header-cell" />; //!
                     })}
                   </Grid.HeaderRow>
                 );
@@ -55,7 +55,7 @@ export default function GridTheming() {
                   return (
                     <Grid.Row row={row}>
                       {row.cells.map((cell) => {
-                        return <Grid.Cell cell={cell} key={cell.id} className="cell" />;
+                        return <Grid.Cell cell={cell} key={cell.id} className="cell" />; //!
                       })}
                     </Grid.Row>
                   );

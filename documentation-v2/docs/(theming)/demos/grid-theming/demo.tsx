@@ -12,7 +12,7 @@ import {
   PurchaseDateCell,
 } from "./components.jsx";
 import { useClientDataSource, Grid, ViewportShadows } from "@1771technologies/lytenyte-pro-experimental";
-import { ThemePicker } from "./theme-picker.jsx";
+import { ThemePicker } from "./theme.jsx";
 import { useState } from "react";
 //#end
 

@@ -36,6 +36,7 @@ export default function InlineStyles() {
 
   return (
     <div>
+      {/*#start  */}
       <div className="flex flex-col gap-2 px-2 pb-4 pt-2">
         <div className="grid grid-cols-2 gap-2 2xl:grid-cols-4 2xl:gap-8">
           <label className="flex flex-col">
@@ -89,6 +90,7 @@ export default function InlineStyles() {
           </label>
         </div>
       </div>
+      {/*#end  */}
       <div style={{ height: 500 }}>
         <Grid rowSource={ds} columns={columns} columnBase={base}>
           <Grid.Viewport>
@@ -100,6 +102,7 @@ export default function InlineStyles() {
                       if (cell.kind === "group") return null;
 
                       return (
+                        //!next 14
                         <Grid.HeaderCell
                           key={cell.id}
                           cell={cell}
@@ -129,6 +132,7 @@ export default function InlineStyles() {
                     <Grid.Row row={row}>
                       {row.cells.map((cell) => {
                         return (
+                          //!next 14
                           <Grid.Cell
                             key={cell.id}
                             cell={cell}
