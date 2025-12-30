@@ -6,9 +6,54 @@ description: LyteNyte Grid is a declarative grid. The state you apply
   "view is a function of state."
 ---
 
-LyteNyte Grid accepts state via props provided to the `Grid` component.
-
 ## Props as State
+
+LyteNyte Grid accepts state via props provided to the `Grid` component. The view displayed by the grid
+will always respect the props provided. The code below shows a basic example of passing columns to
+the grid. You should already be familiar with React, and this approach of passing props to components
+should be second nature.
+
+```tsx
+const columns: Column[] = [
+  { id: "Company", widthFlex: 2 },
+  { id: "Country", widthFlex: 2 },
+  { id: "Founded", type: "number" },
+  { id: "Employee Cnt", name: "Employees", type: "number", cellRenderer: NumberCell },
+  { id: "Price", type: "number", cellRenderer: PriceCell },
+];
+
+function MyGrid() {
+  return <Grid columns={columns} />; //!
+}
+```
+
+If you are using TypeScript, all the props passed to the grid will be type checked for correctness. Since,
+some of the props have generic type parameters, it is sometimes necessary to provide a concrete type to the
+grid. An example of this is shown below. See our [TypeScript guide](/docs/prodready-typescript) for more
+details.
+
+```tsx
+//!next 3
+interface GridSpec {
+  readonly data: number[];
+}
+
+//! next
+const columns: Column<GridSpec>[] = [
+  { id: "Company", widthFlex: 2 },
+  { id: "Country", widthFlex: 2 },
+  { id: "Founded", type: "number" },
+  { id: "Employee Cnt", name: "Employees", type: "number", cellRenderer: NumberCell },
+  { id: "Price", type: "number", cellRenderer: PriceCell },
+];
+
+function MyGrid() {
+  //!next 3
+  // The type param is optional since TypeScript will infer
+  // it to be GridSpec from the provided columns
+  return <Grid<GridSpec> columns={columns} />;
+}
+```
 
 ## Responding to State Updates
 
