@@ -1,0 +1,40 @@
+---
+title: Dialog Frame
+description:
+  Implement and use dialog frames in LyteNyte Grid to create accessible modal interfaces in your
+  grid applications.
+---
+
+LyteNyte Grid PRO lets you open dialogs on demand, but leaves the actual dialog UI to your chosen
+component library. This prevents bundling multiple dialog libraries into the same application.
+
+## How It Works
+
+Register a dialog frame on the grid using the `dialogFrames` property.  
+Open a dialog with:
+
+- `grid.api.dialogFrameOpen(id, context?)` - Opens the dialog frame with the given `id` and optional
+  context for that instance.
+
+Close a dialog with:
+
+- `grid.api.dialogFrameClose(id?)` - Closes the specified dialog frame, or all frames if no `id` is
+  provided.
+
+LyteNyte Grid manages the dialog state, while you handle rendering using your preferred library.
+
+Example below uses the [dialog component from Radix UI](https://www.radix-ui.com/primitives/docs/components/dialog),
+but any dialog component library can be used.
+
+!demo:Dialog Frame="./demos/dialog-frame"
+
+## Why Use the Grid's Dialog Frame?
+
+The key advantage is **context management**. Defining dialogs at the grid level means:
+
+- You can open dialogs directly from grid components (e.g., cell renderers) with the right context.
+- You avoid building custom state management or using React Context for dialog coordination.
+- You focus on dialog rendering while the grid handles orchestration.
+
+This approach simplifies integration and ensures dialogs work seamlessly with grid-level state and
+interactions.

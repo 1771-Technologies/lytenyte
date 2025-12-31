@@ -1,0 +1,69 @@
+---
+title: Overview
+step: Review all column configuration options.
+description: LyteNyte Grid uses columns to define the data displayed in the grid's viewport.
+  This guide details how to use columns to configure dynamic views.
+---
+
+## Columns View Specification
+
+A column in LyteNyte Grid defines the specification (or type interface)
+the grid follows to configure how cells and headers are displayed. LyteNyte Grid
+accepts an array of columns, which developers **provide** to the grid through the
+`Grid.useLyteNyte` hook.
+
+For example, defining a set of columns can be done as follows:
+
+```ts
+const columns: Column<OrderData>[] = [
+  { id: "id", width: 60, widthMin: 60, cellRenderer: IdCell, name: "ID" },
+  { id: "product", cellRenderer: ProductCell, width: 200 },
+  { id: "price", type: "number", cellRenderer: PriceCell, width: 100 },
+  { id: "customer", cellRenderer: AvatarCell, width: 180 },
+  { id: "purchaseDate", cellRenderer: PurchaseDateCell, name: "Purchase Date", width: 120 },
+  { id: "paymentMethod", cellRenderer: PaymentMethodCell, name: "Payment Method" },
+  { id: "email", cellRenderer: EmailCell, width: 220 },
+];
+```
+
+Notice from the definitions above:
+
+- Each column has an `id` property. This is the only **required** property
+  for columns provided to LyteNyte Grid.
+- The `width` property determines the horizontal space the
+  column's cells occupy in the viewport.
+- The `widthMin` sets the minimum allowable width for the column.
+- The `name` property provides a display name for components that
+  use the column specification.
+- The `cellRenderer` property accepts a React component for
+  rendering the cell's content.
+
+The example specification contains only a few of the available properties
+for a column. The remaining guides in this section cover all configuration
+possibilities, but you can refer to the [Column API reference](/docs/reference/column#column)
+for details on every configuration option a column accepts.
+
+Think of columns declaratively. As the developer, you provide LyteNyte Grid
+with the column specification. LyteNyte Grid follows the specification
+to create the correct view. Hence, updating the columns in the grid updates the current view.
+
+**LyteNyte Grid** does not maintain a separate column state from the
+column specification. The `columns` property is the **source of truth** for
+the grid. This source of truth includes implicit state,
+such as column ordering, which the grid infers from the
+order of columns in the array.
+
+## Complete Working Example
+
+The example below shows the columns defined earlier in use.
+Use this example as a lightweight introduction to what is possible with columns
+and how even a relatively small amount of configuration creates rich data experiences.
+
+!demo:Columns in Action="./demos/column-overview-demo"
+
+## Next Steps
+
+- [Column Base](/docs/column-base): See the default column values and how to override them with the `columnBase` property.
+- [Column ID & Name](/docs/column-header-name): Define user-friendly column names and ensure unique IDs.
+- [Column Moving](/docs/column-moving): Reorder columns programmatically or through drag-and-drop.
+- [Column Field](/docs/column-field): Control how a column retrieves its value for each cell.

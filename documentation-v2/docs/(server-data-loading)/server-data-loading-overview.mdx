@@ -1,0 +1,80 @@
+---
+title: Overview
+description: The server row data source enables applications using LyteNyte Grid to retrieve and interact
+  with data stored on the server.
+---
+
+The server data source is the most advanced and capable of all LyteNyte Grid
+data sources. Partial data loading is necessary when the dataset contains hundreds
+of thousands or even millions of rows.
+
+## What Problem Does Server Data Loading Solve?
+
+When the amount of row data exceeds what is feasible to transfer to a browser at once,
+a partial data loading solution becomes necessary.
+
+Developers typically choose one of these approaches:
+
+- **Pagination:** Load one page of data at a time.
+- **Infinite scrolling:** Lazily load more data as the user scrolls down.
+- **Viewport-based loading:** Load only the rows currently in view.
+
+LyteNyte Grid supports all three approaches, but the Server Data Loading guides focus on
+viewport-based loading. This approach is the most powerful and flexible but also the
+most complex to implement. LyteNyte Grid handles the client-side code, so developers
+only need to implement the server logic.
+
+## Why Use Server Data Loading?
+
+Server Data Loading allows direct interaction with any row in the dataset and provides
+a consistent view. For example, if a user scrolls to row index 9,500, the grid retrieves
+that data seamlessly. Operations like pivoting and grouping are natural with the server
+data source but limited or unintuitive with pagination and infinite scrolling.
+Server data loading aims to deliver a client-like experience, with the trade-off of
+network latency.
+
+## High-Level Overview
+
+To enable the server data source, developers must provide LyteNyte Grid with:
+
+- **Total row count:** Determines the scrollable area size. When row grouping is used,
+  group specific row counts are required. LyteNyte Grid assembles these counts into the
+  full dataset.
+- **`dataFetcher`:** A function LyteNyte Grid calls to fetch rows from your server.
+
+## Data Flow
+
+The server data source follows a well defined lifecycle:
+
+<Steps>
+
+1. Initial Data Fetch
+
+   When the grid first renders, LyteNyte Grid calls the `dataFetcher` function with an initial
+   request payload. At this stage, LyteNyte Grid has no cached view data. The initial response
+   provides the `rowCount` and the first rows to display.
+
+2. User Scrolls (View Changes)
+
+   LyteNyte Grid tracks which rows are visible. When the view changes, it determines whether
+   to request more data from the server. If necessary, multiple requests may be issued.
+
+3. Actions That Reset the View
+
+   Some actions require a full view reset and fresh data from the server. This occurs when
+   users sort a column or group rows, as these operations alter the dataset view.
+
+</Steps>
+
+All other operations extend this basic flow. LyteNyte Grid's server data source is advanced
+and supports many extensions. The simplest example of a server data loading grid is shown
+below. Read the guides in this section for in depth coverage:
+
+!demo:Basic Server Data="./demos/basic-server-data"
+
+## Next Steps
+
+- [Data Interface](/docs/server-data-loading-interface): Request and response interface of the LyteNyte Grid server data source.
+- [Server Row Data Loading](/docs/server-data-loading-row-data): Detailed guide on slicing and loading data from the server.
+- [Server Row Grouping and Aggregation](/docs/server-data-loading-row-grouping-and-aggregation): Handle grouped data and load group slices.
+- [Server Data Updating](/docs/server-data-loading-row-updating): Learn the steps for updating server-loaded data.

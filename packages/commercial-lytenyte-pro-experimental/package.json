@@ -42,7 +42,9 @@
     "./light.css": "./css/light.css",
     "./shadcn.css": "./css/shadcn.css",
     "./teal.css": "./css/teal.css",
-    "./term.css": "./css/term.css"
+    "./term.css": "./css/term.css",
+    "./tw.css": "./css/tw.css",
+    "./fonts.css": "./css/fonts.css"
   },
   "publishConfig": {
     "access": "public",
@@ -62,7 +64,9 @@
       "./light.css": "./css/light.css",
       "./shadcn.css": "./css/shadcn.css",
       "./teal.css": "./css/teal.css",
-      "./term.css": "./css/term.css"
+      "./term.css": "./css/term.css",
+      "./tw.css": "./css/tw.css",
+      "./fonts.css": "./css/fonts.css"
     }
   },
   "dependencies": {
@@ -74,7 +78,7 @@
     "@1771technologies/grid-sample-data": "workspace:*"
   },
   "peerDependencies": {
-    "react": "^18.0.0 || ^19.0.0",
-    "react-dom": "^18.0.0 || ^19.0.0"
+    "react": "18.0.0 || ^19.0.0",
+    "react-dom": "18.0.0 || ^19.0.0"
   }
 }

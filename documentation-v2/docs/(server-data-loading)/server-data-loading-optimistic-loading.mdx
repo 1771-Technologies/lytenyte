@@ -1,0 +1,105 @@
+---
+title: Optimistic Loading
+description: Predicting the data a user will want to view next is key to building a server
+  data loading solution that feels instant. This guide explains how to
+  optimistically load rows so users never encounter a loading indicator.
+---
+
+## Optimistically Fetching Data Slices
+
+Optimistic data loading is not a one-size-fits-all strategy. Instead,
+it's about predicting which data a user is likely to view next and preparing it in advance.
+This approach is common on webpages, where links to other pages are preloaded to speed
+up navigation. We can apply the same principle to loading data slices.
+
+<Callout>
+
+Before looking at examples, note that optimistic loading is not a fixed sequence
+of functions. The best approach depends on your application and how users interact
+with it. The examples in this guide introduce common use cases and
+demonstrate how LyteNyte Grid supports optimistic data loading.
+
+</Callout>
+
+The example below demonstrates how to optimistically load slices in a flat data view.
+This works by tracking the current view and preloading the next slice whenever the
+view changes. This way, the grid “stays ahead of the scroll.” Note that this does
+not guarantee users will never see a loading indicator. Scrolling is fast, and if users
+scroll too quickly, the grid may not have finished fetching rows before they become visible.
+
+!demo:Prefetch Next Block="./demos/optimistic-loading"
+
+In the example above, optimistic loading occurs within a single `useEffect`, but it uses several parts of the
+server data source interface. The full effect is shown and explained here, but check out the
+[`RowDataSourceServer` reference](/docs/reference/row-data-source#rowdatasourceserver) for a complete breakdown
+of the methods available on the server data source.
+
+```ts
+useEffect(() => {
+  // Watch for view changes to track the current requests that define the view.
+  return ds.requestsForView.watch(() => {
+    // When the view changes, grab the next view value using the atom's get method.
+    // Since this grid is flat, take the last item in the view.
+    const view = ds.requestsForView.get().at(-1);
+    if (!view) return;
+
+    // Compute the next slice for this view. Returns null if the current view is the last one.
+    const next = ds.requestForNextSlice(view);
+    if (!next || ds.seenRequests.has(next.id)) return;
+
+    // Mark this request as seen so the grid doesn’t refetch it when scrolled into view.
+    // This step is optional but helps LyteNyte Grid track requested data.
+    ds.seenRequests.add(next.id);
+
+    // Push the new request into the grid. This triggers LyteNyte Grid to fetch the data.
+    ds.pushRequests([next]);
+  });
+}, [ds]);
+```
+
+Notice how multiple parts of the data source API work together to create an optimistic data loading
+pattern. LyteNyte Grid's API for optimistic loading is intentionally low-level, allowing developers to
+tailor the behavior to their specific use case.
+
+## Optimistically Fetching Group Rows
+
+Another way to optimistically fetch rows is when row groups are present. Before the user
+expands a group, you can fetch its data in advance. A convenient approach is to detect
+when a row is hovered by the user's mouse cursor and then fetch the data for that
+row's children. The example below demonstrates this:
+
+!demo:Preload Group Rows On Hover="./demos/optimistic-loading-groups"
+
+Preloading on hover is just one approach. You could also preload on load or when a cell
+gains focus. The core concept remains the same: before the user requests
+the data, the grid predicts that they'll want to expand the row and loads it ahead of time.
+
+The code for preloading rows is even simpler than for optimistically fetching rows while scrolling:
+
+```tsx
+<Grid.Row
+  onMouseEnter={() => {
+    const req = ds.requestForGroup(row.rowIndex);
+    if (!req || ds.seenRequests.has(req.id)) return;
+
+    // Preload the row group
+    ds.seenRequests.add(req.id);
+    ds.pushRequests([req]);
+  }}
+>
+  {...}
+</Grid.Row>
+```
+
+The code above uses another server data source method, `requestForGroup`. This
+method returns a `DataRequest` object that can be used to request the child
+rows of a group, allowing you to preload them in advance.
+
+## Next Steps
+
+- [Server Row Data](/docs/server-data-loading-row-data): Shows how to fetch server data in slices.
+- [Server Row Sorting](/docs/server-data-loading-row-sorting): Explains server-side sorting and how it is
+  displayed client-side.
+- [Server Row Filtering](/docs/server-data-loading-row-filtering): Covers server-side filtering, including
+  advanced features such as **in filters (tree set filters)** and **quick search filters**.
+- [Server Row Grouping and Aggregation](/docs/server-data-loading-row-grouping-and-aggregation): Handles grouped data and loads group slices.

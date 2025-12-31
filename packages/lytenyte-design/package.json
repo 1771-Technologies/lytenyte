@@ -23,7 +23,7 @@
       "import": "./src/index.ts",
       "require": "./src/index.ts"
     },
-    "./font.css": "./src/font.css",
+    "./fonts.css": "./src/font.css",
     "./design.css": "./src/design.css",
     "./light.css": "./src/themes/ln-light.css",
     "./dark.css": "./src/themes/ln-dark.css",

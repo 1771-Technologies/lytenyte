@@ -1,0 +1,41 @@
+---
+title: Grid Box
+description: The LyteNyte Grid PRO library includes a versatile list component called GridBox.
+  This component can be used to create both horizontal and vertical lists that integrate seamlessly with LyteNyte Grid.
+---
+
+## Usage
+
+The `GridBox` component is highly flexible-it can power pill rows, list pickers, and many other interactive layouts.
+
+In the example below, it's used as a **group pill manager:**
+
+- Pills can be dragged and reordered.
+- Groups can be added or removed by clicking the **`+` icon** on the right.
+- Even the popover list relies on the same `GridBox` component.
+
+!demo:Grid Box Group Pills="./demos/grid-box"
+
+## Default Hooks
+
+LyteNyte Grid provides three built-in hooks that make it easy to generate lists for common use cases:
+
+- **`GridBox.useAggregationBoxItems`** - Enumerates the grid's aggregation model,
+  producing a list of applied aggregations.
+- **`GridBox.useColumnBoxItems`** - Enumerates the grid's columns. Use this to
+  build lists that manage column-related settings or behaviors.
+- **`GridBox.useRowGroupBoxItems`** - Enumerates the row group model of the grid.
+  This hook also supports drag-and-drop ordering for row groups.
+
+These hooks are **convenience utilities**-they simplify setup but are not required
+to use the `GridBox` component effectively.
+
+---
+
+## GridBox Structure
+
+The `GridBox` component is composed of the following parts:
+
+- **`Root`** - The root context of the grid box. All components must be rendered within `Root`.
+- **`Panel`** - The main container that provides layout and keyboard interaction handling.
+- **`Item`** - A single list item, serving as the primary interaction point.

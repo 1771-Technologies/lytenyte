@@ -1,0 +1,71 @@
+---
+title: Row Grouping
+description:
+  Group rows by one or more columns in LyteNyte Grid and customize display and behavior for
+  hierarchical data visualization.
+---
+
+Group rows by one or more columns using the `rowGroupModel` property. This property accepts an array
+of column `id` strings, where each `id` represents a groupable column.
+
+## Grouping Model
+
+`rowGroupModel` defines how the grid groups data. Each entry creates a group level, producing group
+rows that can contain child rows. This creates a tree-like view of your data.
+
+**Note:** Group rows are not aggregated by default, so their cell values appear empty. To aggregate
+group rows, see the [Row Aggregation guide](/docs/row-aggregations).
+
+!demo:Row Grouping="./demos/row-grouping"
+
+Any column can be added to `rowGroupModel`. It's your responsibility to group only on columns that
+make sense for your data.
+
+## Row Group Field Function
+
+Instead of grouping by a column, you can use a custom field object. Pass an object with a `field`
+property to perform arbitrary grouping unrelated to any single column.
+
+```ts
+export interface RowGroupField<T> {
+  readonly kind: "field";
+  readonly id: string;
+  readonly field: FieldRowGroup<T>;
+  readonly name?: string;
+}
+```
+
+For example, you can group by an age bucket rather than the exact age:
+
+!demo:Row Grouping Field="./demos/row-grouping-field"
+
+## The Row Group Column
+
+When row groups are applied, LyteNyte Grid creates extra columns for these groups. Control their
+display with the `rowGroupDisplayMode` property:
+
+- `"single-column"` - Default. One group column expands/collapses all groups; most space-efficient.
+- `"multi-column"` - Creates a separate group column for each item in the row group model.
+- `"custom"` - Lets you provide your own expand/collapse column. LyteNyte Grid won't create one.
+
+!demo:Row Grouping Display Mode="./demos/row-grouping-multi-column"
+
+### Customizing Group Columns
+
+Use the `rowGroupColumn` property to customize group columns. This property accepts a simplified
+column configuration that LyteNyte Grid applies when creating group columns.
+
+## Row Group Expansions
+
+The `rowGroupExpansions` property tracks which groups are expanded and controls when child rows are
+visible.
+
+If a group isn't listed in `rowGroupExpansions`, the grid uses the `rowGroupDefaultExpansion`
+property, which can be:
+
+- **Number** - Expands groups up to that depth.
+- **Boolean** - Expands all (`true`) or none (`false`) of the groups by default.
+
+_Depth_ refers to the group's position in the `rowGroupModel`.
+
+!demo:Row Group Expansions="./demos/row-grouping-default-expansions"

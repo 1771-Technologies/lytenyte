@@ -1,0 +1,188 @@
+---
+title: Column Autosizing
+description: LyteNyte Grid can automatically size columns to fit their content. Columns do not
+  need to be visible to be autosized. The grid uses heuristic functions
+  to determine optimal widths based on content.
+---
+
+Autosizing can consider header width, cell content width, or both. Each column can
+define `autosizeHeaderFn` and `autosizeCellFn` to control header and cell
+width calculations. If you omit these functions, LyteNyte Grid
+uses a default text measurement function.
+
+<Callout>
+
+LyteNyte Grid encourages custom header and cell renderers. When using
+custom renderers, provide matching autosize functions to ensure accurate sizing.
+
+</Callout>
+
+## Autosizing Cells
+
+Use the `api.autosizeColumns` method to autosize all columns or
+a selected subset. The demo below shows this behavior.
+Clicking **Autosize Cells** triggers the autosizing logic.
+
+!demo:Cell Autosize="./demos/column-autosizing_x"
+
+The **Autosize Cells** button calls `api.autosizeColumns` to compute and apply
+new widths. When you call this method without arguments,
+the grid autosizes every column. Autosizing is a one off operation, if
+cell data changes later, the grid does not autosize again.
+Call `api.autosizeColumns` whenever updated content requires resizing.
+
+```tsx
+<GridButton
+  onClick={() => {
+    grid.api.columnAutosize();
+  }}
+/>
+```
+
+### Autosize Header Text
+
+The `api.autosizeColumns` method accepts an option that includes a column's header
+content in the calculation. You can customize how header width
+is measured using `autosizeHeaderFn`. This is useful when header text
+is longer than any cell in the column.
+
+In the demo below, the **Crypto Currency Symbol, Ticker, and Name** column
+has a long header, so autosizing expands the column to fit the header.
+
+!demo:Autosize Header Text="./demos/column-autosizing-header_x"
+
+The **Autosize Cells Including Header** button
+passes the `includeHeader` flag:
+
+```tsx
+<GridButton
+  onClick={() => {
+    grid.api.columnAutosize({ includeHeader: true });
+  }}
+/>
+```
+
+### Autosize Calculators
+
+Columns can define their own autosize calculation functions. When you
+call `api.autosizeColumns`, the grid uses these functions to compute each width.
+The example below shows the autosize functions used in this guide's demos:
+
+```ts
+const columns = [
+  {
+    id: "symbol",
+    autosizeHeaderFn: (p) => {
+      const textWidth = measureText(
+        `${p.column.name ?? p.column.id}`,
+        p.grid.state.viewport.get(),
+      ).width;
+
+      const padding = 20;
+      return textWidth + padding;
+    },
+    autosizeCellFn: (p) => {
+      if (p.row.kind !== "leaf" || !p.row.data) return null;
+
+      const data = p.row.data;
+      const textWidth = measureText(
+        `${data.symbol.split("/")[0].trim()}${data.symbolTicker}`,
+        p.grid.state.viewport.get(),
+      ).width;
+      const iconWidth = 20;
+      const gapWidth = 20;
+      const padding = 24;
+
+      return textWidth + iconWidth + gapWidth + padding;
+    },
+  },
+];
+```
+
+These autosize functions mirror the structure of the cell renderer. They account for the logo icon,
+ticker text, symbol name, and the spacing added by CSS.
+The `autosizeCellFn` combines these measurements into a final width.
+
+The `autosizeHeaderFn` and `autosizeCellFn` functions above use `measureText`, a utility exported
+from the LyteNyte Grid package. The `measureText` function uses an offscreen
+canvas to approximate text width based on the provided element, in this case the viewport.
+
+### Autosize Dry Run
+
+The autosize method returns an `AutosizeResult` object mapping
+column `id`s to their computed widths. It also supports a
+dry-run mode that calculates widths without applying them:
+
+```ts
+const widths = grid.api.columnAutosize({ dryRun: true });
+```
+
+## Autosizing Individual Columns
+
+You can autosize only specific columns by passing their
+identifiers to `api.autosizeColumns`. The demo below shows
+**Autosize Symbol** and **Autosize Network**, which resize only those columns.
+
+!demo:Autosize Individual Columns="./demos/column-autosizing-individual_x"
+
+Specify the columns to autosize using any supported reference:
+
+```ts
+grid.api.columnAutosize({ columns: ["symbol"] });
+
+// Other ways to reference columns:
+grid.api.columnAutosize({ columns: [1] }); // By visible column index
+grid.api.columnAutosize({ columns: [{ id: "symbol" }] }); // By column object
+```
+
+## Double Click To Resize
+
+The `columnDoubleClickToAutosize` grid property controls whether LyteNyte
+Grid autosizes a column when you double-click the column's right edge.
+Try double-clicking the header edges in the demo below.
+
+!demo:Double Click To Autosize="./demos/column-autosizing-double_x"
+
+For double-click autosizing to work, the column must be resizable.
+Set the `resizable` property on the column's `uiHints`.
+The example below enables double-click resizing for all columns:
+
+```ts
+const grid = Grid.useLyteNyte({
+  // Other grid props
+  columnDoubleClickToAutosize: true,
+  columnBase: {
+    uiHints: {
+      resizable: true,
+    },
+  },
+});
+```
+
+## Virtualization Considerations
+
+LyteNyte Grid uses row virtualization for performance.
+Autosizing considers only visible rows. If the viewport has not initialized,
+the grid samples about 50 rows for calculations.
+
+If a column has a known set of possible values, consider writing an autosize function
+that returns the maximum width required for those values,
+independent of viewport visibility.
+
+To learn more about LyteNyte Grid's virtualization features and configuration options,
+see the [Row & Column Virtualization guide](/docs/grid-virtualization).
+
+<Callout>
+
+LyteNyte Grid autosizes every column by default, even when virtualization keeps a
+column out of the DOM. If your grid defines many columns, consider
+autosizing only the visible ones to avoid unnecessary work.
+
+</Callout>
+
+## Next Steps
+
+- [Column Resizing](/docs/column-resizing): Change column widths programmatically or through user interaction.
+- [Column ID & Name](/docs/column-header-name): Define user-friendly column names and ensure unique IDs.
+- [Column Field](/docs/column-field): Control how a column retrieves each cell's value.
+- [Row and Column Virtualization](/docs/grid-virtualization): Learn how LyteNyte Grid enables performance at scale with row and column virtualization.

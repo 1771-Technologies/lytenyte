@@ -1,5 +1,6 @@
 ---
 title: Row & Column Virtualization
+step: Learn how LyteNyte Grid enables performance at scale with row and column virtualization.
 description: LyteNyte Grid virtualizes rows and columns. This guide explains
   virtualization, highlights its performance benefits, and outlines key considerations for developers.
 ---
@@ -46,17 +47,6 @@ To confirm overscan values, inspect the DOM and count the rendered rows
 outside the viewport. This is demonstrated in the example below:
 
 ::demo[Row Overscan Configuration="./demos/grid-overscan"]
-
-In this example, the grid renders 30 extra rows above and below the viewport.
-The configuration looks as follows:
-
-```tsx
-const grid = Grid.useLyteNyte({
-  // Other properties
-  rowOverscanTop: 30,
-  rowOverscanBottom: 30,
-});
-```
 
 ### Disabling Virtualization
 

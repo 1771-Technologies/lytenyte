@@ -1,16 +1,16 @@
-"use client";
-import "@1771technologies/lytenyte-pro/grid.css";
-import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
-import type { Column, RowLeaf } from "@1771technologies/lytenyte-pro/types";
+//#start
 import { companiesWithPricePerf } from "@1771technologies/grid-sample-data/companies-with-price-performance";
-import { useId, useMemo } from "react";
+import { useMemo } from "react";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
 import styled from "@emotion/styled";
-import { NumberCell, PriceCell } from "./components";
 
 type PerformanceData = (typeof companiesWithPricePerf)[number];
+export interface GridSpec {
+  readonly data: PerformanceData;
+}
 
-const columns: Column<PerformanceData>[] = [
+const columns: Grid.Column<GridSpec>[] = [
   { id: "Company", widthFlex: 2 },
   { id: "Country", widthFlex: 2 },
   { id: "Founded", type: "number" },
@@ -18,93 +18,118 @@ const columns: Column<PerformanceData>[] = [
   { id: "Price", type: "number", cellRenderer: PriceCell },
 ];
 
+const rowDetailExpansions = new Set(["leaf-0"]);
+const rowDetailRenderer: Grid.Props<GridSpec>["rowDetailRenderer"] = (p) => {
+  if (!p.api.rowIsLeaf(p.row)) return;
+  return (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        boxSizing: "border-box",
+        padding: "20px 20px 20px 0px",
+      }}
+    >
+      <PriceChart row={p.row} />
+    </div>
+  );
+};
+const base: Grid.ColumnBase<GridSpec> = { width: 100, widthFlex: 1 };
+
+const Cell = styled(Grid.Cell)`
+  display: flex;
+  align-items: center;
+  padding-inline: 8px;
+  background-color: light-dark(white, hsla(190, 32%, 6%, 1));
+  color: light-dark(hsla(175, 6%, 38%, 1), hsla(175, 10%, 86%, 1));
+  font-size: 14px;
+  border-bottom: 1px solid light-dark(hsla(175, 20%, 95%, 1), hsla(177, 19%, 17%, 1));
+`;
+
+const HeaderCell = styled(Grid.HeaderCell)`
+  display: flex;
+  align-items: center;
+  padding-inline: 8px;
+  background-color: light-dark(hsla(175, 12%, 92%, 1), hsla(177, 19%, 17%, 1));
+  color: light-dark(hsla(177, 19%, 17%, 1), hsla(175, 12%, 92%, 1));
+  text-transform: capitalize;
+  font-size: 14px;
+`;
+
+const Row = styled(Grid.Row)`
+  &[data-ln-alternate="true"] .cell {
+    background-color: light-dark(hsl(0, 27%, 98%), hsl(184, 33%, 8%));
+  }
+`;
+
+//#end
+
+//!next 11
+const RowsContainer = styled(Grid.RowsContainer)`
+  & [data-ln-row-detail="true"] {
+    padding: 24px;
+  }
+
+  & [data-ln-row-detail="true"] > div {
+    border: 1px solid var(--lng1771-gray-30);
+    border-radius: 8px;
+    background-color: light-dark(white, transparent);
+  }
+`;
+
 export default function RowDetail() {
-  const ds = useClientRowDataSource({
+  const ds = useClientDataSource({
     data: companiesWithPricePerf,
   });
 
-  const grid = Grid.useLyteNyte({
-    gridId: useId(),
-    rowDataSource: ds,
-    columns,
-    columnBase: { width: 100, widthFlex: 1 },
-
-    rowDetailExpansions: new Set(["0"]),
-    rowDetailRenderer: (p) => {
-      if (!grid.api.rowIsLeaf(p.row)) return;
-      return (
-        <div
-          style={{
-            width: "100%",
-            height: "100%",
-            boxSizing: "border-box",
-            padding: "20px 20px 20px 0px",
-          }}
-        >
-          <PriceChart row={p.row} />
-        </div>
-      );
-    },
-  });
-
-  const view = grid.view.useValue();
-
   return (
     <div style={{ height: 500 }}>
-      <Grid.Root grid={grid}>
+      <Grid
+        columns={columns}
+        columnBase={base}
+        rowSource={ds}
+        rowDetailRenderer={rowDetailRenderer}
+        rowDetailExpansions={rowDetailExpansions}
+        rowDetailHeight={300}
+      >
         <Grid.Viewport>
           <Grid.Header>
-            {view.header.layout.map((row, i) => {
+            {(cells) => {
               return (
-                <Grid.HeaderRow key={i} headerRowIndex={i}>
-                  {row.map((c) => {
-                    if (c.kind === "group") return null;
+                <Grid.HeaderRow>
+                  {cells.map((cell) => {
+                    if (cell.kind === "group") return null;
 
-                    return (
-                      <HeaderCell
-                        key={c.id}
-                        cell={c}
-                        style={{
-                          justifyContent: c.column.type === "number" ? "flex-end" : "flex-start",
-                        }}
-                      />
-                    );
+                    return <HeaderCell key={cell.id} cell={cell} />;
                   })}
                 </Grid.HeaderRow>
               );
-            })}
+            }}
           </Grid.Header>
+          {/*!next */}
           <RowsContainer>
             <Grid.RowsCenter>
-              {view.rows.center.map((row) => {
+              {(row) => {
                 if (row.kind === "full-width") return null;
 
                 return (
-                  <Row row={row} key={row.id}>
-                    {row.cells.map((c) => {
-                      return (
-                        <Cell
-                          key={c.id}
-                          cell={c}
-                          className="cell"
-                          style={{
-                            justifyContent: c.column.type === "number" ? "flex-end" : "flex-start",
-                          }}
-                        />
-                      );
+                  <Row row={row}>
+                    {row.cells.map((cell) => {
+                      return <Cell cell={cell} key={cell.id} />;
                     })}
                   </Row>
                 );
-              })}
+              }}
             </Grid.RowsCenter>
           </RowsContainer>
         </Grid.Viewport>
-      </Grid.Root>
+      </Grid>
     </div>
   );
 }
+//#start
 
-function PriceChart({ row }: { row: RowLeaf<PerformanceData> }) {
+function PriceChart({ row }: { row: Grid.T.RowLeaf<GridSpec["data"]> }) {
   const data = useMemo(() => {
     if (!row.data) return [];
     const weeks: Record<string, { week: number; [key: string]: number }> = Object.fromEntries(
@@ -135,7 +160,7 @@ function PriceChart({ row }: { row: RowLeaf<PerformanceData> }) {
           tickLine={false}
         />
         <YAxis fontFamily="Inter" fontSize="14px" tickLine={false} axisLine={false} />
-        <CartesianGrid vertical={false} stroke="var(--lng1771-gray-10)" />
+        <CartesianGrid vertical={false} stroke="rgba(0,0,0,0.1)" />
 
         <Area
           key={row.id}
@@ -157,40 +182,26 @@ const color = {
   stop95: "transparent",
 };
 
-const RowsContainer = styled(Grid.RowsContainer)`
-  & [data-ln-row-detail="true"] {
-    padding: 24px;
+const formatter = new Intl.NumberFormat("en-US", {
+  maximumFractionDigits: 2,
+  minimumFractionDigits: 0,
+});
+
+export function PriceCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
+
+  if (typeof field === "number") {
+    if (field < 0) return `-$${formatter.format(Math.abs(field))}`;
+
+    return "$" + formatter.format(field);
   }
 
-  & [data-ln-row-detail="true"] > div {
-    border: 1px solid var(--lng1771-gray-30);
-    border-radius: 8px;
-    background-color: light-dark(white, transparent);
-  }
-`;
+  return `${field ?? "-"}`;
+}
 
-const Cell = styled(Grid.Cell)`
-  display: flex;
-  align-items: center;
-  padding-inline: 8px;
-  background-color: light-dark(white, hsla(190, 32%, 6%, 1));
-  color: light-dark(hsla(175, 6%, 38%, 1), hsla(175, 10%, 86%, 1));
-  font-size: 14px;
-  border-bottom: 1px solid light-dark(hsla(175, 20%, 95%, 1), hsla(177, 19%, 17%, 1));
-`;
+export function NumberCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
 
-const HeaderCell = styled(Grid.HeaderCell)`
-  display: flex;
-  align-items: center;
-  padding-inline: 8px;
-  background-color: light-dark(hsla(175, 12%, 92%, 1), hsla(177, 19%, 17%, 1));
-  color: light-dark(hsla(177, 19%, 17%, 1), hsla(175, 12%, 92%, 1));
-  text-transform: capitalize;
-  font-size: 14px;
-`;
-
-const Row = styled(Grid.Row)`
-  &[data-ln-alternate="true"] .cell {
-    background-color: light-dark(hsl(0, 27%, 98%), hsl(184, 33%, 8%));
-  }
-`;
+  return typeof field === "number" ? formatter.format(field) : `${field ?? "-"}`;
+}
+//#end

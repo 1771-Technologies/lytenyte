@@ -27,7 +27,7 @@ body {
 }
 
 @theme {
-  --spacing-header: 52px;
+  --spacing-header: 64px;
   --spacing-subheader: 40px;
   --spacing-sidenav: 290px;
   --spacing-toc: 275px;

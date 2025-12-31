@@ -1,0 +1,40 @@
+---
+title: Cell Selection
+description:
+  Let users select individual cells or cell ranges in LyteNyte Grid with flexible modes and
+  programmatic control.
+---
+
+LyteNyte Grid lets you select a single range of cells or multiple ranges. Use the `cellSelectionMode`
+property in grid state to control selection behavior. The `cellSelections` property tracks the
+currently selected cells.
+
+## Range Selection
+
+Set `cellSelectionMode` to `"range"` to allow users to select a continuous block of cells. Users can
+click and drag to define the range.
+
+!demo:Range Cell Selection="./demos/cell-selection"
+
+## Multi-Range Selection
+
+Set `cellSelectionMode` to `"multi-range"` to enable selecting multiple, separate cell ranges. Users
+can hold **Control** (or **Command** on macOS) to add new ranges. You can also add or remove ranges
+programmatically.
+
+import CellSelectionMultiRange from "./demos/cell-selection-multi-range/demo";
+
+!demo:Multi Range Cell Selection="./demos/cell-selection-multi-range"
+
+## Manage Selections
+
+The `cellSelections` property in grid state stores all active selections as rectangles, defined by
+their starting and ending row and column indices.
+
+Pinned rows are included in the same coordinate space as unpinned rows. For example, if two rows are
+pinned to the top, the first scrollable row has an index of `2`.
+
+## Retrieve Selected Data
+
+Use the `exportDataRect` API method to extract data from selected cells. Pass a rectangle object
+that defines the selection area. See the [Any Data Export](/docs/export-any-data) guide for details.

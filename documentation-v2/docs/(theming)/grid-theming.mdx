@@ -1,7 +1,7 @@
 ---
 title: Grid Theming
-description:
-  LyteNyte Grid is a headless data grid. This guide explains how to theme LyteNyte Grid using
+step: Review the general theming guide to learn more about styling LyteNyte Grid.
+description: LyteNyte Grid is a headless data grid. This guide explains how to theme LyteNyte Grid using
   vanilla CSS or pre-built themes to create a visually polished data grid.
 ---
 
@@ -17,7 +17,7 @@ they are unlikely to be affected unless you deliberately create an extremely spe
 ## Pre-built Themes
 
 The fastest way to create a visually polished grid is by using one of the built-in LyteNyte Grid themes.
-To apply a theme, add the `lng-grid` class to any HTML element above the grid, then
+To apply a theme, add the `ln-grid` class to any HTML element above the grid, then
 include the class name of the theme you want to use. Ensure you have imported the CSS file
 for the themes:
 
@@ -26,14 +26,14 @@ for the themes:
 <Tab label="Core">
 
 ```ts
-import "@1771technologies/lytenyte-core/grid.css";
+import "@1771technologies/lytenyte-core/grid-full.css";
 ```
 
 </Tab>
 
 <Tab label="PRO">
 ```ts
-import "@1771technologies/lytenyte-pro/grid.css";
+import "@1771technologies/lytenyte-pro/grid-full.css";
 ```
 
 </Tab>
@@ -41,15 +41,14 @@ import "@1771technologies/lytenyte-pro/grid.css";
 </Tabs>
 
 LyteNyte Grid provides seven ready-to-use themes. Add the theme class, alongside the
-`lng-grid` class, to a parent element of the grid (typically `html` or `body`):
+`ln-grid` class, to a parent element of the grid (typically `html` or `body`):
 
-- `lng1771-teal`: Teal-accent theme.
-- `lng1771-term256`: Terminal-style color theme.
-- `dark`: Standard dark theme.
-- `light`: Standard light theme.
-- `lng1771-shadcn-light`: Light theme based on shadcn color tokens. Use in projects that adopt shadcn.
-- `lng1771-shadcn-dark`: Dark theme based on shadcn color tokens. Use in projects that adopt shadcn.
-- `lng1771-cotton-candy`: Playful, colorful theme for friendly data grid views.
+- `ln-teal`: Teal-accent theme.
+- `ln-term`: Terminal-style color theme.
+- `ln-dark`: Standard dark theme.
+- `ln-light`: Standard light theme.
+- `ln-shadcn`: A theme based on the Shadcn color tokens. Supports both light and dark mode. Use in projects that adopt shadcn.
+- `ln-cotton-candy`: Playful, colorful theme for friendly data grid views.
 
 The demo below shows how each theme looks in practice. For a complete example with
 auxiliary components, visit our [live demo](https://www.1771technologies.com/demo) page,
@@ -58,9 +57,71 @@ which includes a theme toggle.
 ::demo[Pre-built LyteNyte Grid Themes="./demos/grid-theming"]
 
 You can also create a custom theme from scratch. LyteNyte Grid is unopinionated about
-your styling method and works with any approach. The rest of this guide explains
-how to style the grid using vanilla CSS and inline styles. Even if you use a framework
-like Tailwind, reviewing these examples will help you understand the styling attributes available in LyteNyte Grid.
+your styling method and works with any approach.
+
+### CSS Exports
+
+LyteNyte Grid aims to minimize the final bundle size produced by your application, including the size of your bundled CSS.
+For this reason, the LyteNyte Grid packages export individual CSS themes so that unused themes can be excluded from your final CSS bundle.
+The exports are shown below with a comment explaining their purpose.
+
+```css
+/* 
+  Contains the design theme token definitions for LyteNyte Grid, excluding colors.
+  These tokens are used for spacing, fonts, and shadows.
+ */
+@import "@1771technologies/lytenyte-pro/design.css";
+
+/* 
+  Contains the base grid styles. This export styles grid elements using the colors
+  and tokens defined for the grid's theme.
+*/
+@import "@1771technologies/lytenyte-pro/grid.css";
+
+/*
+  These imports define the various color themes. Import them individually
+  to include only the colors for a specific theme.
+*/
+@import "@1771technologies/lytenyte-pro/cotton-candy.css";
+@import "@1771technologies/lytenyte-pro/dark.css";
+@import "@1771technologies/lytenyte-pro/light.css";
+@import "@1771technologies/lytenyte-pro/shadcn.css";
+@import "@1771technologies/lytenyte-pro/teal.css";
+@import "@1771technologies/lytenyte-pro/term.css";
+
+/*
+  Imports all predefined theme colors. Use this when you want to include
+  all pre-made color themes in your application.
+*/
+@import "@1771technologies/lytenyte-pro/all-colors.css";
+
+/* 
+  Imports all tokens, colors, and grid styles. This single import contains
+  all pre-made CSS provided by LyteNyte Grid.
+ */
+@import "@1771technologies/lytenyte-pro/grid-full.css";
+
+/*
+  Contains the colors for the ln-light and ln-dark themes, but exports the light
+  colors under the :root selector and the dark colors under the .dark class.
+  Useful for a standard light/dark theme setup.
+*/
+@import "@1771technologies/lytenyte-pro/light-dark.css";
+```
+
+### The LyteNyte Design Tokens
+
+The pre-built LyteNyte themes use a set of design tokens to maintain a consistent look and feel.
+These tokens are CSS variables that your application can modify to augment or adjust the existing themes.
+
+- See the [design.css file](https://github.com/1771-Technologies/lytenyte/blob/main/packages/lytenyte-design/src/design.css)
+  in our GitHub repository for the definitions of the non-color design tokens.
+- See the [ln-dark.css file](https://github.com/1771-Technologies/lytenyte/blob/main/packages/lytenyte-design/src/themes/ln-dark.css)
+  in our GitHub repository for the definitions of the color design tokens. All themes use the same set of color token names.
+
+The rest of this guide explains how to style the grid using vanilla CSS and inline styles.
+Even if you use a framework like Tailwind, reviewing these examples will help
+you understand the styling attributes available in LyteNyte Grid.
 
 ## Styling Through Data Attributes
 
@@ -77,10 +138,15 @@ CSS function, which is useful for specifying theme colors for light and dark col
 
 ::demo[Data Attribute Styling="./demos/data-attributes"]
 
-The CSS uses the [attribute selector](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/Attribute_selectors), as shown below:
+The CSS uses the [attribute selector](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/Attribute_selectors),
+as shown below:
 
 ```css
 .data-styles {
+  [data-ln-type="number"] {
+    justify-content: end;
+  }
+
   [data-ln-cell="true"] {
     display: flex;
     align-items: center;
@@ -165,42 +231,44 @@ LyteNyte Grid provides flexible styling options. Since each component is exposed
 you can apply any number of classes to its elements. Use this approach when you
 have an existing design system and want LyteNyte Grid to match it.
 
-The example below styles grid elements using predefined classes and
-the [clsx](https://github.com/lukeed/clsx) library to conditionally apply styles
-based on column type.
-
 ::demo[Styling With Classes="./demos/styling-with-classnames"]
 
 The CSS is straightforward. The example below shows how the classes
 are applied through the `className` property on the components.
 
 ```css
-.cell {
-  display: flex;
-  align-items: center;
-  padding-inline: 8px;
-  background-color: light-dark(hsla(175, 12%, 92%, 1), hsla(177, 19%, 17%, 1));
-  color: light-dark(hsla(177, 19%, 17%, 1), hsla(175, 12%, 92%, 1));
-  text-transform: capitalize;
-  font-size: 14px;
-}
+.classes {
+  .cell {
+    display: flex;
+    align-items: center;
+    padding-inline: 8px;
+    background-color: light-dark(white, hsla(190, 32%, 6%, 1));
+    color: light-dark(hsla(175, 6%, 38%, 1), hsla(175, 10%, 86%, 1));
+    font-size: 14px;
+    border-bottom: 1px solid light-dark(hsla(175, 20%, 95%, 1), hsla(177, 19%, 17%, 1));
 
-[data-ln-alternate="true"] .cell {
-  background-color: light-dark(hsl(0, 27%, 98%), hsl(184, 33%, 8%));
-}
+    &[data-ln-type="number"] {
+      justify-content: flex-end;
+    }
+  }
 
-.cell-number {
-  justify-content: flex-end;
-}
+  [data-ln-alternate="true"] .cell {
+    background-color: light-dark(hsl(0, 27%, 98%), hsl(184, 33%, 8%));
+  }
 
-.header-cell {
-  display: flex;
-  align-items: center;
-  padding-inline: 8px;
-  background-color: light-dark(white, hsla(190, 32%, 6%, 1));
-  color: light-dark(hsla(175, 6%, 38%, 1), hsla(175, 10%, 86%, 1));
-  font-size: 14px;
-  border-bottom: 1px solid light-dark(hsla(175, 20%, 95%, 1), hsla(177, 19%, 17%, 1));
+  .header-cell {
+    display: flex;
+    align-items: center;
+    padding-inline: 8px;
+    background-color: light-dark(hsla(175, 12%, 92%, 1), hsla(177, 19%, 17%, 1));
+    color: light-dark(hsla(177, 19%, 17%, 1), hsla(175, 12%, 92%, 1));
+    text-transform: capitalize;
+    font-size: 14px;
+
+    &[data-ln-type="number"] {
+      justify-content: flex-end;
+    }
+  }
 }
 ```
 
@@ -217,13 +285,13 @@ component can use the `style` property as shown below.
 
 ```tsx
 <Grid.Cell
-  key={c.id}
-  cell={c}
+  key={cell.id}
+  cell={cell}
   style={{
     display: "flex",
     alignItems: "center",
     paddingInline: "8px",
-    justifyContent: c.column.type === "number" ? "flex-end" : "flex-start",
+    justifyContent: cell.type === "number" ? "flex-end" : "flex-start",
     fontSize: 14,
     background: cellBg,
     color: cellFg,
@@ -270,7 +338,7 @@ to fit your use case.
   padding: 24px;
 
   & > div {
-    border: 1px solid var(--lng1771-gray-30);
+    border: 1px solid light-dark(rgb(216, 202, 202), rgb(62, 54, 54));
     border-radius: 8px;
     background-color: light-dark(white, transparent);
   }
@@ -293,24 +361,24 @@ the selection area is actually a set of split `div`s assembled to visually form 
 
 ```css
 [data-ln-cell-selection-rect]:not([data-ln-cell-selection-is-unit="true"]) {
-  background-color: var(--lng1771-primary-30);
+  background-color: rgba(0, 0, 255, 0.08);
   box-sizing: border-box;
 
   &[data-ln-cell-selection-border-top="true"] {
-    border-top: 1px solid var(--lng1771-primary-50);
+    border-top: 1px solid rgba(0, 0, 255, 1);
   }
   &[data-ln-cell-selection-border-bottom="true"] {
-    border-bottom: 1px solid var(--lng1771-primary-50);
+    border-bottom: 1px solid rgba(0, 0, 255, 1);
   }
   &[data-ln-cell-selection-border-start="true"] {
-    border-inline-start: 1px solid var(--lng1771-primary-50);
+    border-inline-start: 1px solid rgba(0, 0, 255, 1);
   }
   &[data-ln-cell-selection-border-end="true"] {
-    border-inline-end: 1px solid var(--lng1771-primary-50);
+    border-inline-end: 1px solid rgba(0, 0, 255, 1);
   }
 }
 [data-ln-cell-selection-rect][data-ln-cell-selection-is-unit="true"] {
-  outline: 1px solid var(--lng1771-primary-50);
+  outline: 1px solid rgba(0, 0, 255, 1);
   outline-offset: -1px;
 }
 ```
@@ -334,6 +402,6 @@ In most cases, conflicts will only occur if you create an extremely specific CSS
 This guide covers the main styling approaches for LyteNyte Grid. Since most developers
 use a framework or CSS abstraction, we also provide dedicated guides for popular styling methods.
 
-- [Grid Theming With Tailwind](/docs/grid-theming-tailwind): Style LyteNyte Grid using Tailwind.
-- [Grid Theming With CSS Modules](/docs/grid-theming-css-modules): Apply scoped styles using CSS Modules.
-- [Grid Theming With Emotion](/docs/grid-theming-emotion): Learn how to theme LyteNyte Grid with Emotion or similar CSS-in-JS libraries.
+::next[/docs/grid-theming-tailwind]
+::next[/docs/grid-theming-css-modules]
+::next[/docs/grid-theming-emotion]

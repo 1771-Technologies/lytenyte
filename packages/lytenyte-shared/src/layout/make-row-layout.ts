@@ -223,6 +223,7 @@ function handleViewLayout<T>({
       const colSpan = cellSpec?.[c * 4 + 1] || 1;
       cellLayout.push({
         id: columns[c].id,
+        type: columns[c].type ?? "string",
         kind: "cell",
         colIndex: c,
         rowIndex: r,
@@ -247,6 +248,7 @@ function handleViewLayout<T>({
       const colSpan = cellSpec?.[c * 4 + 1] || 1;
       cellLayout.push({
         id: columns[c].id,
+        type: columns[c].type ?? "string",
         kind: "cell",
         colIndex: c,
         rowIndex: r,
@@ -269,6 +271,7 @@ function handleViewLayout<T>({
 
       cellLayout.push({
         id: columns[c].id,
+        type: columns[c].type ?? "string",
         kind: "cell",
         colIndex: c,
         rowIndex: r,
@@ -302,6 +305,7 @@ function handleViewLayout<T>({
 
 export interface LayoutCell {
   readonly kind: "cell";
+  readonly type: string;
   readonly colSpan: number;
   readonly rowSpan: number;
   readonly isDeadRow: boolean;

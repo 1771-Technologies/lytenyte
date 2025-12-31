@@ -1,41 +1,33 @@
-"use client";
-import "@1771technologies/lytenyte-pro/grid.css";
-import { useClientRowDataSource, Grid } from "@1771technologies/lytenyte-pro";
-import type { Column } from "@1771technologies/lytenyte-pro/types";
+//#start
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
-import { useId, useState } from "react";
-import { BalanceCell, DurationCell, NumberCell } from "./components";
+import { useState } from "react";
+import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
 
-type BankData = (typeof bankDataSmall)[number];
+export type BankData = (typeof bankDataSmall)[number];
+interface GridSpec {
+  readonly data: BankData;
+}
 
-const columns: Column<BankData>[] = [
-  { id: "job", width: 120 },
-  { id: "age", type: "number", width: 80, cellRenderer: NumberCell },
-  { id: "balance", type: "number", cellRenderer: BalanceCell },
-  { id: "education" },
-  { id: "marital" },
-  { id: "default" },
-  { id: "housing" },
-  { id: "loan" },
-  { id: "contact" },
-  { id: "day", type: "number", cellRenderer: NumberCell },
-  { id: "month" },
-  { id: "duration", type: "number", cellRenderer: DurationCell },
-  { id: "poutcome", name: "P Outcome" },
-  { id: "y" },
+const columns: Grid.Column<GridSpec>[] = [
+  { name: "Job", id: "job", width: 120 },
+  { name: "Age", id: "age", type: "number", width: 80, cellRenderer: NumberCell },
+  { name: "Balance", id: "balance", type: "number", cellRenderer: BalanceCell },
+  { name: "Education", id: "education" },
+  { name: "Marital", id: "marital" },
+  { name: "Default", id: "default" },
+  { name: "Housing", id: "housing" },
+  { name: "Loan", id: "loan" },
+  { name: "Contact", id: "contact" },
+  { name: "Day", id: "day", type: "number", cellRenderer: NumberCell },
+  { name: "Month", id: "month" },
+  { name: "Duration", id: "duration", type: "number", cellRenderer: DurationCell },
 ];
 
+const base: Grid.ColumnBase<GridSpec> = { width: 100 };
+
+//#end
 export default function InlineStyles() {
-  const ds = useClientRowDataSource({ data: bankDataSmall });
-
-  const grid = Grid.useLyteNyte({
-    gridId: useId(),
-    rowDataSource: ds,
-    columns,
-    columnBase: { width: 100 },
-  });
-
-  const view = grid.view.useValue();
+  const ds = useClientDataSource({ data: bankDataSmall });
 
   const [cellBg, setCellBg] = useState("#0a1314");
   const [cellFg, setCellFg] = useState("#d8dfde");
@@ -44,6 +36,7 @@ export default function InlineStyles() {
 
   return (
     <div>
+      {/*#start  */}
       <div className="flex flex-col gap-2 px-2 pb-4 pt-2">
         <div className="grid grid-cols-2 gap-2 2xl:grid-cols-4 2xl:gap-8">
           <label className="flex flex-col">
@@ -97,25 +90,27 @@ export default function InlineStyles() {
           </label>
         </div>
       </div>
+      {/*#end  */}
       <div style={{ height: 500 }}>
-        <Grid.Root grid={grid}>
+        <Grid rowSource={ds} columns={columns} columnBase={base}>
           <Grid.Viewport>
             <Grid.Header>
-              {view.header.layout.map((row, i) => {
+              {(cells) => {
                 return (
-                  <Grid.HeaderRow key={i} headerRowIndex={i}>
-                    {row.map((c) => {
-                      if (c.kind === "group") return null;
+                  <Grid.HeaderRow>
+                    {cells.map((cell) => {
+                      if (cell.kind === "group") return null;
 
                       return (
+                        //!next 14
                         <Grid.HeaderCell
-                          key={c.id}
-                          cell={c}
+                          key={cell.id}
+                          cell={cell}
                           style={{
                             display: "flex",
                             alignItems: "center",
                             paddingInline: "8px",
-                            justifyContent: c.column.type === "number" ? "flex-end" : "flex-start",
+                            justifyContent: cell.type === "number" ? "flex-end" : "flex-start",
                             fontSize: 14,
                             background: headerBg,
                             color: headerFg,
@@ -126,26 +121,26 @@ export default function InlineStyles() {
                     })}
                   </Grid.HeaderRow>
                 );
-              })}
+              }}
             </Grid.Header>
             <Grid.RowsContainer>
               <Grid.RowsCenter>
-                {view.rows.center.map((row) => {
+                {(row) => {
                   if (row.kind === "full-width") return null;
 
                   return (
-                    <Grid.Row row={row} key={row.id}>
-                      {row.cells.map((c) => {
+                    <Grid.Row row={row}>
+                      {row.cells.map((cell) => {
                         return (
+                          //!next 14
                           <Grid.Cell
-                            key={c.id}
-                            cell={c}
+                            key={cell.id}
+                            cell={cell}
                             style={{
                               display: "flex",
                               alignItems: "center",
                               paddingInline: "8px",
-                              justifyContent:
-                                c.column.type === "number" ? "flex-end" : "flex-start",
+                              justifyContent: cell.type === "number" ? "flex-end" : "flex-start",
                               fontSize: 14,
                               background: cellBg,
                               color: cellFg,
@@ -156,12 +151,41 @@ export default function InlineStyles() {
                       })}
                     </Grid.Row>
                   );
-                })}
+                }}
               </Grid.RowsCenter>
             </Grid.RowsContainer>
           </Grid.Viewport>
-        </Grid.Root>
+        </Grid>
       </div>
     </div>
   );
 }
+
+//#start
+const formatter = new Intl.NumberFormat("en-US", {
+  maximumFractionDigits: 2,
+  minimumFractionDigits: 0,
+});
+export function BalanceCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
+
+  if (typeof field === "number") {
+    if (field < 0) return `-$${formatter.format(Math.abs(field))}`;
+
+    return "$" + formatter.format(field);
+  }
+
+  return `${field ?? "-"}`;
+}
+export function DurationCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
+
+  return typeof field === "number" ? `${formatter.format(field)} days` : `${field ?? "-"}`;
+}
+
+export function NumberCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
+
+  return typeof field === "number" ? formatter.format(field) : `${field ?? "-"}`;
+}
+//#end

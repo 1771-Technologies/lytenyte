@@ -1,5 +1,6 @@
 ---
 title: Grid Theming With Tailwind
+step: Style LyteNyte Grid using Tailwind.
 description: Tailwind can be used to style LyteNyte Grid. This guide explains how to set up Tailwind and apply it to grid elements.
 ---
 
@@ -46,11 +47,7 @@ In the example, Tailwind classes are applied in the usual way.
 No special configuration is required. For example, the `Grid.Cell` component is styled as follows:
 
 ```tsx
-<Grid.Cell
-  key={c.id}
-  cell={c}
-  className="flex items-center bg-gray-50 px-2 text-sm text-gray-800"
-/>
+<Grid.Cell key={c.id} cell={c} className="flex items-center bg-gray-50 px-2 text-sm text-gray-800" />
 ```
 
 ### Class Variance Authority
@@ -85,16 +82,16 @@ may already exist, often named `cn` in shadcn/ui projects.
 Next, define grid-cell variants using `class-variance-authority`:
 
 ```ts
-const cellStyles = cva("flex items-center bg-gray-50 px-2 text-sm text-gray-800", {
+const cellStyles = cva("flex items-center px-2", {
   variants: {
     number: {
       true: "justify-end tabular-nums",
     },
     rowBase: {
-      true: "flex items-center border-b border-gray-200 bg-white px-2 text-sm text-gray-800 group-data-[ln-alternate=true]:bg-gray-100 dark:border-gray-100 dark:bg-gray-50 dark:text-gray-600 dark:group-data-[ln-alternate=true]:bg-gray-100/30",
+      true: "border-b border-neutral-200 bg-white text-sm text-neutral-800 group-data-[ln-alternate=true]:bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-200 dark:group-data-[ln-alternate=true]:bg-neutral-950",
     },
     header: {
-      true: "capitalize bg-gray-100 text-gray-700",
+      true: "border-b border-neutral-100 bg-neutral-200 text-sm capitalize text-neutral-900 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-100",
     },
   },
 });
@@ -112,11 +109,11 @@ Notice how the CVA-generated style is applied to the grid cell:
 
 ```tsx
 <Grid.Cell
-  key={c.id}
-  cell={c}
+  key={cell.id}
+  cell={cell}
   className={tw(
     cellStyles({
-      number: c.column.type === "number",
+      number: cell.type === "number",
       rowBase: true,
     }),
   )}
@@ -151,12 +148,11 @@ unfamiliar with this syntax, see Tailwind's guide on
 ```tsx
 <Grid.Row
   row={row}
-  key={row.id}
   className={tw(
-    '[&_[data-ln-row-detail="true"]>div]:rounded-lg',
+    '**:data-[ln-row-detail="true"]:p-7 [&_[data-ln-row-detail="true"]>div]:rounded-lg',
     '[&_[data-ln-row-detail="true"]>div]:border',
-    '[&_[data-ln-row-detail="true"]>div]:border-gray-500',
-    '**:data-[ln-row-detail="true"]:p-7',
+    '[&_[data-ln-row-detail="true"]>div]:border-neutral-200',
+    'dark:[&_[data-ln-row-detail="true"]>div]:border-neutral-700',
   )}
 />
 ```
@@ -197,107 +193,75 @@ If you want the grid to match your design system exactly, you may choose to defi
 style yourself. However, starting from a pre-built theme and then adjusting
 styles with Tailwind is often more efficient.
 
-Because Tailwind does not restrict other CSS, you can combine a pre-built LyteNyte Grid
+Because Tailwind does not restrict other CSS inputs, you can combine a pre-built LyteNyte Grid
 theme with Tailwind utilities. This is how many of the demos on the 1771 Technologies website
 are built. The example below shows Tailwind working alongside the provided grid themes:
 
 ::demo[Pre-built Themes With Tailwind="./demos/grid-theming"]
 
-### Theme Variables
+:::warn
 
-When you use one of the provided pre-built themes, it helps to define Tailwind theme variables so you
-can reuse the same colors across your application. The CSS below shows the theme variables
-you can map into Tailwind:
+Depending on the order of CSS imports in your application, Tailwind styles may override LyteNyte Grid
+styles. This happens because the pre-built LyteNyte Grid styles are defined
+in the `ln-grid` CSS layer.
+
+To ensure Tailwind and LyteNyte Grid work together as expected, set the layer order in your application
+as follows:
 
 ```css
-@theme {
-  --color-ln-gray-00: var(--lng1771-gray-00);
-  --color-ln-gray-02: var(--lng1771-gray-02);
-  --color-ln-gray-05: var(--lng1771-gray-05);
-  --color-ln-gray-10: var(--lng1771-gray-10);
-  --color-ln-gray-20: var(--lng1771-gray-20);
-  --color-ln-gray-30: var(--lng1771-gray-30);
-  --color-ln-gray-40: var(--lng1771-gray-40);
-  --color-ln-gray-50: var(--lng1771-gray-50);
-  --color-ln-gray-60: var(--lng1771-gray-60);
-  --color-ln-gray-70: var(--lng1771-gray-70);
-  --color-ln-gray-80: var(--lng1771-gray-80);
-  --color-ln-gray-90: var(--lng1771-gray-90);
-  --color-ln-gray-100: var(--lng1771-gray-100);
-
-  --color-ln-primary-05: var(--lng1771-primary-05);
-  --color-ln-primary-10: var(--lng1771-primary-10);
-  --color-ln-primary-30: var(--lng1771-primary-30);
-  --color-ln-primary-50: var(--lng1771-primary-50);
-  --color-ln-primary-70: var(--lng1771-primary-70);
-  --color-ln-primary-90: var(--lng1771-primary-90);
-  --color-ln-focus-outline: var(--lng1771-focus-outline);
-
-  --color-ln-pill-plain-fill: var(--lng1771-pill-plain-fill);
-  --color-ln-pill-column-fill: var(--lng1771-pill-column-fill);
-  --color-ln-pill-column-stroke: var(--lng1771-pill-column-stroke);
-  --color-ln-pill-pivot-fill: var(--lng1771-pill-pivot-fill);
-  --color-ln-pill-pivot-stroke: var(--lng1771-pill-pivot-stroke);
-  --color-ln-pill-group-fill: var(--lng1771-pill-group-fill);
-  --color-ln-pill-group-stroke: var(--lng1771-pill-group-stroke);
-  --color-ln-pill-icon-color: var(--lng1771-pill-icon-color);
-}
+@layer base, ln-grid, components, utilities;
 ```
 
-## Shadcn and LyteNyte Grid
+For more guidance on CSS layers, see
+this [MDN guide](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@layer).
 
-[Shadcn/ui](https://ui.shadcn.com/) is a popular library for bootstrapping applications.
-Shadcn/ui uses Tailwind but defines its own theme tokens instead of relying on the default
-Tailwind color palette. LyteNyte Grid includes a pre-made shadcn/ui theme. To apply
-it, add the `lng-grid lng1771-shadcn` classes to an element above the grid.
+:::
 
-::demo[LyteNyte With Shadcn/ui Theme="./demos/grid-theming-shadcn"]
+## LyteNyte Tailwind Variants
 
-The shadcn/ui theme is designed to work with shadcn/ui tokens. A typical set is shown below.
-These tokens are usually already defined in any shadcn/ui project.
-See the [shadcn/ui theming](https://ui.shadcn.com/themes) page for more details:
+To make styling LyteNyte Grid with Tailwind easier, the LyteNyte Grid packages export
+a Tailwind-specific CSS file with useful variants and Tailwind theme values.
+The full content is available on our
+[GitHub repository](https://github.com/1771-Technologies/lytenyte/blob/main/packages/lytenyte-core-experimental/css/tw.css).
+
+To use the LyteNyte Grid Tailwind variants, import the file in the same CSS file where you
+set up Tailwind:
+
+<Tabs>
+
+<Tab label="Core">
 
 ```css
-:root {
-  --color-background: oklch(0.145 0 0);
-  --color-foreground: oklch(0.985 0 0);
-  --color-card: oklch(0.205 0 0);
-  --color-card-foreground: oklch(0.985 0 0);
-  --color-popover: oklch(0.205 0 0);
-  --color-popover-foreground: oklch(0.985 0 0);
-  --color-primary: oklch(0.922 0 0);
-  --color-primary-foreground: oklch(0.205 0 0);
-  --color-secondary: oklch(0.269 0 0);
-  --color-secondary-foreground: oklch(0.985 0 0);
-  --color-muted: oklch(0.269 0 0);
-  --color-muted-foreground: oklch(0.708 0 0);
-  --color-accent: oklch(0.269 0 0);
-  --color-accent-foreground: oklch(0.985 0 0);
-  --color-destructive: oklch(0.704 0.191 22.216);
-  --color-border: oklch(1 0 0 / 10%);
-  --color-input: oklch(1 0 0 / 15%);
-  --color-ring: oklch(0.556 0 0);
-  --color-chart-1: oklch(0.488 0.243 264.376);
-  --color-chart-2: oklch(0.696 0.17 162.48);
-  --color-chart-3: oklch(0.769 0.188 70.08);
-  --color-chart-4: oklch(0.627 0.265 303.9);
-  --color-chart-5: oklch(0.645 0.246 16.439);
-  --color-sidebar: oklch(0.205 0 0);
-  --color-sidebar-foreground: oklch(0.985 0 0);
-  --color-sidebar-primary: oklch(0.488 0.243 264.376);
-  --color-sidebar-primary-foreground: oklch(0.985 0 0);
-  --color-sidebar-accent: oklch(0.269 0 0);
-  --color-sidebar-accent-foreground: oklch(0.985 0 0);
-  --color-sidebar-border: oklch(1 0 0 / 10%);
-  --color-sidebar-ring: oklch(0.556 0 0);
-}
+@import "tailwindcss";
+@import "@1771technologies/lytenyte-core/tw.css";
+```
+
+</Tab>
+
+<Tab label="PRO">
+
+```css
+@import "tailwindcss";
+@import "@1771technologies/lytenyte-pro/tw.css";
+```
+
+</Tab>
+
+</Tabs>
+
+After you import it, you can use the custom variants defined in the file. For example,
+the `ln-cell` variant sets the cell background in the grid to the value of the
+`ln-bg` token.
+
+```tsx
+<Grid className="ln-cell:bg-ln-bg" />
 ```
 
 ## Next Steps
 
 This guide covered the basics of styling LyteNyte Grid with Tailwind. For more details, see:
 
-- [Installation With Shadcn](/docs/intro-installation-shadcn): Learn how to use LyteNyte Grid with shadcn/ui.
-- [Grid Theming](/docs/grid-theming): Review the general theming guide to learn more about styling LyteNyte Grid.
-- [Columns](/docs/columns): See how column configuration affects what the grid displays.
-- [Cell Renderers](/docs/cell-custom-renderers): Define custom cell renderers for more control over cell content.
+::next[/docs/intro-installation-shadcn]
+::next[/docs/grid-theming]
+::next[/docs/columns]
+::next[/docs/cell-custom-renderers]

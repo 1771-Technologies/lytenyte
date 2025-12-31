@@ -72,6 +72,7 @@
       font-weight: 600;
       color: var(--ln-text-dark);
       line-height: 20px;
+      white-space: nowrap;
 
       border-bottom: 1px solid var(--ln-border);
 
@@ -111,6 +112,7 @@
       line-height: 20px;
       padding-inline: var(--ln-padding-horizontal-cell);
       border-bottom: 1px solid var(--ln-border);
+      white-space: nowrap;
 
       &:focus {
         outline: 1px solid var(--ln-primary-50);
@@ -142,7 +144,7 @@
       }
     }
 
-    [data-ln-header-id="lytenyte-marker-column"] {
+    [data-ln-colid="lytenyte-marker-column"] {
       padding: 0px;
       display: flex;
       justify-content: center;
@@ -211,6 +213,11 @@
           justify-content: flex-end;
           font-variant-numeric: tabular-nums;
         }
+      }
+
+      &[data-ln-rowtype="full-width"] > div:focus {
+        outline: 1px solid var(--ln-primary-50);
+        outline-offset: -2px;
       }
     }
   }

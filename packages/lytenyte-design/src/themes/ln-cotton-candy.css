@@ -61,7 +61,7 @@
   --ln-bg-page: hsla(0, 0%, 100%, 1);
   --ln-bg-light: hsla(0, 0%, 96%, 1);
   --ln-bg-strong: hsla(0, 0%, 89%, 1);
-  --ln-bg-row-hover: hsla(0, 0%, 96%, 1);
+  --ln-bg-row-hover: hsla(303, 87%, 57%, 0.1);
   --ln-bg-row-alternate: hsla(187, 72%, 82%, 1);
   --ln-bg-ui-panel: white;
   --ln-bg-form-field: hsla(269, 88%, 53%, 0.21);

@@ -54,7 +54,7 @@ const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function Hea
       data-ln-header-cell
       data-ln-type={column.type ?? base.type ?? "string"}
       data-ln-header-floating={cell.kind === "floating" ? "true" : undefined}
-      data-ln-header-id={column.id}
+      data-ln-colid={column.id}
       data-ln-gridid={id}
       data-ln-header-range={`${cell.colStart},${cell.colStart + cell.colSpan}`}
       data-ln-rowindex={cell.rowStart}

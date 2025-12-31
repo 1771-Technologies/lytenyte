@@ -1,0 +1,54 @@
+---
+title: Row Master Detail
+description: Create expandable detail sections beneath rows using customizable React components,
+  expansion controls, and programmatic API methods.
+---
+
+## Enabling Row Detail
+
+Row detail functionality in LyteNyte Grid is always enabled. Any row can display a detail section.
+To create a detail section, define a `rowDetailRenderer` on the grid state object. LyteNyte Grid uses
+this renderer to render the content of each row's detail area.
+
+After defining a detail renderer, populate the `rowDetailExpansions` set on the grid state to control
+which rows display their detail sections. `rowDetailExpansions` contains the row IDs of rows whose detail
+areas are expanded.
+
+The demo below shows this behavior. The [marker column](/docs/marker-column) renders a detail toggle.
+The toggle calls `grid.api.rowDetailToggle`, which adds or removes the row ID from the
+`rowDetailExpansions` set.
+
+!demo:Row Detail="../(introduction)/demos/getting-started"
+
+## Auto Row Detail Height
+
+Use `rowDetailHeight` to control the height of the detail section. The `rowDetailHeight` property
+accepts one of the following values:
+
+- **Number**: A fixed height in pixels.
+- **Auto**: The string value `"auto"`, which sizes the detail section based on its content.
+
+By default, the grid uses a numeric height. Use `"auto"` when the detail content should determine
+its own height.
+
+!demo:Row Detail Height="./demos/row-detail-height_x"
+
+## Nested Grids
+
+A common use case for row detail is rendering nested grids or tables. In this pattern, a master grid
+expands to reveal a child grid within the detail area. LyteNyte Grid supports this pattern by allowing
+a grid to be rendered inside a row detail section.
+
+The demo below shows a nested grid rendered inside the detail area of a row:
+
+!demo:Nested Grid Row Detail="./demos/row-detail-nested_x"
+
+A nested grid is not a special case. To create one, have the detail renderer return another grid
+instance. LyteNyte Grid places no restrictions on what the detail renderer can display.
+
+## Next Steps
+
+- [Row Height](/docs/row-height): Change row height, including variable-height and fill-height rows.
+- [Row Pinning](/docs/row-pinning): Freeze rows at the top or bottom of the viewport.
+- [Row Selection](/docs/row-selection): Select single or multiple rows.
+- [Row Full Width](/docs/row-full-width): Create rows that span the full width of the viewport.

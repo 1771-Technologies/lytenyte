@@ -1,99 +1,79 @@
-"use client";
-import "./cell-styles.css";
+import "./demo.css";
+//#start
 import "@1771technologies/lytenyte-pro/grid.css";
-import { useClientRowDataSource, Grid } from "@1771technologies/lytenyte-pro";
-import type { Column } from "@1771technologies/lytenyte-pro/types";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
-import { useId } from "react";
-import { BalanceCell, DurationCell, NumberCell } from "./components";
+import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
 
-type BankData = (typeof bankDataSmall)[number];
+export type BankData = (typeof bankDataSmall)[number];
+interface GridSpec {
+  readonly data: BankData;
+}
 
-const columns: Column<BankData>[] = [
-  { id: "job", width: 120 },
-  { id: "age", type: "number", width: 80, cellRenderer: NumberCell },
-  { id: "balance", type: "number", cellRenderer: BalanceCell },
-  { id: "education" },
-  { id: "marital" },
-  { id: "default" },
-  { id: "housing" },
-  { id: "loan" },
-  { id: "contact" },
-  { id: "day", type: "number", cellRenderer: NumberCell },
-  { id: "month" },
-  { id: "duration", type: "number", cellRenderer: DurationCell },
-  { id: "poutcome" },
-  { id: "y" },
+const columns: Grid.Column<GridSpec>[] = [
+  { name: "Job", id: "job", width: 120 },
+  { name: "Age", id: "age", type: "number", width: 80, cellRenderer: NumberCell },
+  { name: "Balance", id: "balance", type: "number", cellRenderer: BalanceCell },
+  { name: "Education", id: "education" },
+  { name: "Marital", id: "marital" },
+  { name: "Default", id: "default" },
+  { name: "Housing", id: "housing" },
+  { name: "Loan", id: "loan" },
+  { name: "Contact", id: "contact" },
+  { name: "Day", id: "day", type: "number", cellRenderer: NumberCell },
+  { name: "Month", id: "month" },
+  { name: "Duration", id: "duration", type: "number", cellRenderer: DurationCell },
 ];
 
+const base: Grid.ColumnBase<GridSpec> = { width: 100 };
+
+//#end
+
+const cellSelection: Grid.T.DataRect[] = [{ rowStart: 4, rowEnd: 7, columnStart: 2, columnEnd: 4 }];
+
 export default function CellSelectionRect() {
-  const ds = useClientRowDataSource({ data: bankDataSmall });
-
-  const grid = Grid.useLyteNyte({
-    gridId: useId(),
-    rowDataSource: ds,
-    columns,
-    columnBase: { width: 100 },
-
-    cellSelectionMode: "range",
-    cellSelections: [{ rowStart: 4, rowEnd: 7, columnStart: 2, columnEnd: 4 }],
-  });
-
-  const view = grid.view.useValue();
+  const ds = useClientDataSource({ data: bankDataSmall });
 
   return (
-    <div className="cell-styles select-none">
+    <div className="cell-styles">
       <div style={{ height: 500 }}>
-        <Grid.Root grid={grid}>
-          <Grid.Viewport>
-            <Grid.Header>
-              {view.header.layout.map((row, i) => {
-                return (
-                  <Grid.HeaderRow key={i} headerRowIndex={i}>
-                    {row.map((c) => {
-                      if (c.kind === "group") return null;
-
-                      return (
-                        <Grid.HeaderCell
-                          key={c.id}
-                          cell={c}
-                          style={{
-                            justifyContent: c.column.type === "number" ? "flex-end" : "flex-start",
-                          }}
-                        />
-                      );
-                    })}
-                  </Grid.HeaderRow>
-                );
-              })}
-            </Grid.Header>
-            <Grid.RowsContainer>
-              <Grid.RowsCenter>
-                {view.rows.center.map((row) => {
-                  if (row.kind === "full-width") return null;
-
-                  return (
-                    <Grid.Row row={row} key={row.id}>
-                      {row.cells.map((c) => {
-                        return (
-                          <Grid.Cell
-                            key={c.id}
-                            cell={c}
-                            style={{
-                              justifyContent:
-                                c.column.type === "number" ? "flex-end" : "flex-start",
-                            }}
-                          />
-                        );
-                      })}
-                    </Grid.Row>
-                  );
-                })}
-              </Grid.RowsCenter>
-            </Grid.RowsContainer>
-          </Grid.Viewport>
-        </Grid.Root>
+        <Grid
+          rowSource={ds}
+          columns={columns}
+          columnBase={base}
+          cellSelectMode="range"
+          cellSelections={cellSelection}
+        />
       </div>
     </div>
   );
 }
+
+//#start
+
+const formatter = new Intl.NumberFormat("en-US", {
+  maximumFractionDigits: 2,
+  minimumFractionDigits: 0,
+});
+export function BalanceCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
+
+  if (typeof field === "number") {
+    if (field < 0) return `-$${formatter.format(Math.abs(field))}`;
+
+    return "$" + formatter.format(field);
+  }
+
+  return `${field ?? "-"}`;
+}
+export function DurationCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
+
+  return typeof field === "number" ? `${formatter.format(field)} days` : `${field ?? "-"}`;
+}
+
+export function NumberCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
+
+  return typeof field === "number" ? formatter.format(field) : `${field ?? "-"}`;
+}
+//#end

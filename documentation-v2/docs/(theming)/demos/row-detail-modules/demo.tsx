@@ -1,17 +1,16 @@
-"use client";
-import styles from "./detail.module.css";
-import "@1771technologies/lytenyte-pro/grid.css";
-
-import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
-import type { Column, RowLeaf } from "@1771technologies/lytenyte-pro/types";
+import styles from "./demo.module.css";
+//#start
 import { companiesWithPricePerf } from "@1771technologies/grid-sample-data/companies-with-price-performance";
-import { useId, useMemo } from "react";
+import { useMemo } from "react";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from "recharts";
-import { NumberCell, PriceCell } from "./components";
+import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
 
 type PerformanceData = (typeof companiesWithPricePerf)[number];
+export interface GridSpec {
+  readonly data: PerformanceData;
+}
 
-const columns: Column<PerformanceData>[] = [
+const columns: Grid.Column<GridSpec>[] = [
   { id: "Company", widthFlex: 2 },
   { id: "Country", widthFlex: 2 },
   { id: "Founded", type: "number" },
@@ -19,94 +18,78 @@ const columns: Column<PerformanceData>[] = [
   { id: "Price", type: "number", cellRenderer: PriceCell },
 ];
 
+const rowDetailExpansions = new Set(["leaf-0"]);
+const rowDetailRenderer: Grid.Props<GridSpec>["rowDetailRenderer"] = (p) => {
+  if (!p.api.rowIsLeaf(p.row)) return;
+  return (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        boxSizing: "border-box",
+        padding: "20px 20px 20px 0px",
+      }}
+    >
+      <PriceChart row={p.row} />
+    </div>
+  );
+};
+const base: Grid.ColumnBase<GridSpec> = { width: 100, widthFlex: 1 };
+
+//#end
 export default function RowDetail() {
-  const ds = useClientRowDataSource({
+  const ds = useClientDataSource({
     data: companiesWithPricePerf,
   });
 
-  const grid = Grid.useLyteNyte({
-    gridId: useId(),
-    rowDataSource: ds,
-    columns,
-    columnBase: { width: 100, widthFlex: 1 },
-
-    rowDetailExpansions: new Set(["0"]),
-    rowDetailRenderer: (p) => {
-      if (!grid.api.rowIsLeaf(p.row)) return;
-      return (
-        <div
-          style={{
-            width: "100%",
-            height: "100%",
-            boxSizing: "border-box",
-            padding: "20px 20px 20px 0px",
-          }}
-        >
-          <PriceChart row={p.row} />
-        </div>
-      );
-    },
-  });
-
-  const view = grid.view.useValue();
-
   return (
     <div style={{ height: 500 }}>
-      <Grid.Root grid={grid}>
+      <Grid
+        columns={columns}
+        columnBase={base}
+        rowSource={ds}
+        rowDetailRenderer={rowDetailRenderer}
+        rowDetailExpansions={rowDetailExpansions}
+        rowDetailHeight={300}
+      >
         <Grid.Viewport>
           <Grid.Header>
-            {view.header.layout.map((row, i) => {
+            {(cells) => {
               return (
-                <Grid.HeaderRow key={i} headerRowIndex={i}>
-                  {row.map((c) => {
-                    if (c.kind === "group") return null;
+                <Grid.HeaderRow>
+                  {cells.map((cell) => {
+                    if (cell.kind === "group") return null;
 
-                    return (
-                      <Grid.HeaderCell
-                        key={c.id}
-                        cell={c}
-                        className={
-                          styles.headerCell +
-                          (c.column.type === "number" ? " " + styles.numberCell : "")
-                        }
-                      />
-                    );
+                    return <Grid.HeaderCell key={cell.id} cell={cell} className={styles.headerCell} />;
                   })}
                 </Grid.HeaderRow>
               );
-            })}
+            }}
           </Grid.Header>
           <Grid.RowsContainer>
             <Grid.RowsCenter>
-              {view.rows.center.map((row) => {
+              {(row) => {
                 if (row.kind === "full-width") return null;
 
                 return (
-                  <Grid.Row row={row} key={row.id} className={styles.rowDetail}>
-                    {row.cells.map((c) => {
-                      return (
-                        <Grid.Cell
-                          key={c.id}
-                          cell={c}
-                          className={
-                            styles.cell +
-                            (c.column.type === "number" ? " " + styles.numberCell : "")
-                          }
-                        />
-                      );
+                  //!next
+                  <Grid.Row row={row} className={styles.rowDetail}>
+                    {row.cells.map((cell) => {
+                      return <Grid.Cell cell={cell} key={cell.id} className={styles.cell} />;
                     })}
                   </Grid.Row>
                 );
-              })}
+              }}
             </Grid.RowsCenter>
           </Grid.RowsContainer>
         </Grid.Viewport>
-      </Grid.Root>
+      </Grid>
     </div>
   );
 }
+//#start
 
-function PriceChart({ row }: { row: RowLeaf<PerformanceData> }) {
+function PriceChart({ row }: { row: Grid.T.RowLeaf<GridSpec["data"]> }) {
   const data = useMemo(() => {
     if (!row.data) return [];
     const weeks: Record<string, { week: number; [key: string]: number }> = Object.fromEntries(
@@ -137,7 +120,7 @@ function PriceChart({ row }: { row: RowLeaf<PerformanceData> }) {
           tickLine={false}
         />
         <YAxis fontFamily="Inter" fontSize="14px" tickLine={false} axisLine={false} />
-        <CartesianGrid vertical={false} stroke="var(--lng1771-gray-10)" />
+        <CartesianGrid vertical={false} stroke="rgba(0,0,0,0.1)" />
 
         <Area
           key={row.id}
@@ -158,3 +141,27 @@ const color = {
   stop5: "#CC5500",
   stop95: "transparent",
 };
+
+const formatter = new Intl.NumberFormat("en-US", {
+  maximumFractionDigits: 2,
+  minimumFractionDigits: 0,
+});
+
+export function PriceCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
+
+  if (typeof field === "number") {
+    if (field < 0) return `-$${formatter.format(Math.abs(field))}`;
+
+    return "$" + formatter.format(field);
+  }
+
+  return `${field ?? "-"}`;
+}
+
+export function NumberCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
+
+  return typeof field === "number" ? formatter.format(field) : `${field ?? "-"}`;
+}
+//#end

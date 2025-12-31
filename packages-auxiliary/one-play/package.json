@@ -6,20 +6,20 @@
   },
   "type": "module",
   "dependencies": {
-    "@inquirer/prompts": "^7.5.0",
-    "@manypkg/find-root": "^3.0.0",
-    "astro": "^5.7.12",
-    "chalk": "^5.4.1",
-    "commander": "^13.1.0",
-    "es-toolkit": "^1.37.2",
-    "execa": "^9.5.3",
-    "fs-extra": "^11.3.0",
-    "prettier": "^3.5.3",
-    "rimraf": "^6.0.1",
-    "toml": "^3.0.0",
-    "validate-npm-package-name": "^6.0.0"
+    "@inquirer/prompts": "7.5.0",
+    "@manypkg/find-root": "3.0.0",
+    "astro": "5.7.12",
+    "chalk": "5.4.1",
+    "commander": "13.1.0",
+    "es-toolkit": "1.37.2",
+    "execa": "9.5.3",
+    "fs-extra": "11.3.0",
+    "prettier": "3.5.3",
+    "rimraf": "6.0.1",
+    "toml": "3.0.0",
+    "validate-npm-package-name": "6.0.0"
   },
   "devDependencies": {
-    "@types/node": "^22.15.15"
+    "@types/node": "22.15.15"
   }
 }

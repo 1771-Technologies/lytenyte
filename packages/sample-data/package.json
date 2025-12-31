@@ -96,7 +96,7 @@
     }
   },
   "devDependencies": {
-    "csv-parser": "^3.0.0",
-    "es-toolkit": "^1.42.0"
+    "csv-parser": "3.0.0",
+    "es-toolkit": "1.42.0"
   }
 }

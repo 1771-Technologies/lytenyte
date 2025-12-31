@@ -1,0 +1,93 @@
+---
+title: Column Manager
+description: Learn how to implement and customize the Column Manager component
+  to give users control over column visibility, grouping, aggregations, and pivots in LyteNyte Grid PRO.
+---
+
+The **Column Manager** is a tree-based component provided by **LyteNyte Grid PRO**.
+It gives users intuitive control over **column visibility, grouping, and order**,
+while developers retain full flexibility over layout and styling.
+
+## Basic Setup
+
+The Column Manager renders a **virtualized tree structure**, meaning its implementation
+typically uses a recursive `RenderNode` function. This pattern makes it easy to handle **nested column groups**.
+
+```tsx
+import { ColumnManager as CM } from "@1771technologies/lytenyte-pro";
+
+type TreeItem = ReturnType<typeof CM.useColumnManager<BankData>>["items"][number];
+
+export default function ColumnManager() {
+  const { items, lookup } = CM.useColumnManager({ grid });
+
+  return (
+    <CM.Root items={items} lookup={lookup}>
+      <CM.Panel className="h-full w-full" style={{ position: "relative", overflow: "auto" }}>
+        {items.map((c) => {
+          return <RenderNode item={c} grid={grid} key={c.kind === "branch" ? c.id : c.data.id} />;
+        })}
+        {spacer}
+      </CM.Panel>
+    </CM.Root>
+  );
+}
+
+function RenderNode({ item, grid }: { item: TreeItem; grid: Grid<BankData> }) {
+  if (item.kind === "leaf") {
+    return (
+      <CM.Leaf item={item}>
+        <CM.MoveHandle>
+          <DragDotsSmallIcon />
+        </CM.MoveHandle>
+        <CM.VisibilityCheckbox />
+        <CM.Label />
+      </CM.Leaf>
+    );
+  }
+
+  const values = [...item.children.values()];
+
+  return (
+    <CM.Branch
+      item={item}
+      label={
+        <div style={{ display: "flex", gap: "2px" }}>
+          <CM.VisibilityCheckbox />
+          <CM.Label />
+        </div>
+      }
+    >
+      {values.map((c) => {
+        return <RenderNode item={c} grid={grid} key={c.kind === "branch" ? c.id : c.data.id} />;
+      })}
+    </CM.Branch>
+  );
+}
+```
+
+The example above demonstrates a Column Manager where users can:
+
+- Reorder columns using the drag handle.
+- Toggle column visibility with checkboxes.
+
+!demo:Column Manager="./demos/column-manager"
+
+## Column Manager Parts
+
+The Column Manager is composed of modular building blocks. Each part can be styled,
+extended, or overridden to match your application's design system:
+
+- **`Root`** - Provides the root context for the Column Manager.
+  All other parts must be rendered inside this component.
+- **`Panel`** - The main container that renders the column tree.
+  Includes built-in keyboard navigation but otherwise behaves like a plain `div`.
+- **`Branch`** - Represents a **column group** (i.e., a node in the tree with children).
+  Can contain both `Leaf` items and nested `Branch` items.
+- **`Leaf`** - Represents a single **column** in the grid. Supports drag-and-drop reordering and visibility toggling.
+- **`MoveHandle`** - A drag handle, usually rendered as an icon (e.g., `⋮⋮`),
+  that lets users reorder columns or column groups.
+- **`VisibilityCheckbox`** A checkbox that toggles whether a column
+  (or entire group) is visible in the grid.
+- **`Label`** Displays the column or column group's name.
+  Can be customized or replaced using the `as` prop.

@@ -22,6 +22,7 @@ export function makeColumnLayout(view: ColumnView, floatingRowEnabled: boolean) 
       if (c.kind === "leaf") {
         const vals: Omit<LayoutHeaderCell, "kind"> = {
           id: c.data.id,
+          type: c.data.type ?? "string",
           colPin,
           rowStart: c.rowStart,
           rowEnd: c.rowStart + c.rowSpan,
@@ -72,6 +73,7 @@ export function makeColumnLayout(view: ColumnView, floatingRowEnabled: boolean) 
 
 export interface LayoutHeaderCell {
   readonly kind: "cell";
+  readonly type: string;
   readonly id: string;
   readonly rowStart: number;
   readonly rowEnd: number;
@@ -87,6 +89,7 @@ export interface LayoutHeaderCell {
 export interface LayoutHeaderFloating {
   readonly kind: "floating";
   readonly id: string;
+  readonly type: string;
   readonly rowStart: number;
   readonly rowEnd: number;
   readonly rowSpan: number;

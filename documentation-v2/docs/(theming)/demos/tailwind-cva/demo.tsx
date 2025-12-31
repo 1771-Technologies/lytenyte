@@ -1,92 +1,97 @@
-/* eslint-disable react-refresh/only-export-components */
-"use client";
-import "@1771technologies/lytenyte-pro/grid.css";
-import { useClientRowDataSource, Grid } from "@1771technologies/lytenyte-pro";
-import type { Column } from "@1771technologies/lytenyte-pro/types";
-import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
+//#start
 import { cva } from "class-variance-authority";
-import { useId } from "react";
-import type { ClassValue } from "clsx";
-import clsx from "clsx";
+import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
+import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { BalanceCell, DurationCell, NumberCell } from "./components.js";
 
+export type BankData = (typeof bankDataSmall)[number];
+interface GridSpec {
+  readonly data: BankData;
+}
+
+const columns: Grid.Column<GridSpec>[] = [
+  { name: "Job", id: "job", width: 120 },
+  { name: "Age", id: "age", type: "number", width: 80, cellRenderer: NumberCell },
+  { name: "Balance", id: "balance", type: "number", cellRenderer: BalanceCell },
+  { name: "Education", id: "education" },
+  { name: "Marital", id: "marital" },
+  { name: "Default", id: "default" },
+  { name: "Housing", id: "housing" },
+  { name: "Loan", id: "loan" },
+  { name: "Contact", id: "contact" },
+  { name: "Day", id: "day", type: "number", cellRenderer: NumberCell },
+  { name: "Month", id: "month" },
+  { name: "Duration", id: "duration", type: "number", cellRenderer: DurationCell },
+];
+
+const base: Grid.ColumnBase<GridSpec> = { width: 100 };
+
+//#end
+
+//!next 3
 export function tw(...c: ClassValue[]) {
   return twMerge(clsx(...c));
 }
 
-type BankData = (typeof bankDataSmall)[number];
-
-const columns: Column<BankData>[] = [
-  { id: "job", width: 120 },
-  { id: "age", type: "number", width: 80, cellRenderer: NumberCell },
-  { id: "balance", type: "number", cellRenderer: BalanceCell },
-  { id: "education" },
-  { id: "marital" },
-  { id: "default" },
-  { id: "housing" },
-  { id: "loan" },
-  { id: "contact" },
-  { id: "day", type: "number", cellRenderer: NumberCell },
-  { id: "month" },
-  { id: "duration", type: "number", cellRenderer: DurationCell },
-  { id: "poutcome", name: "P Outcome" },
-  { id: "y" },
-];
+//!next 13
+const cellStyles = cva("flex items-center px-2", {
+  variants: {
+    number: {
+      true: "justify-end tabular-nums",
+    },
+    rowBase: {
+      true: "border-b border-neutral-200 bg-white text-sm text-neutral-800 group-data-[ln-alternate=true]:bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-200 dark:group-data-[ln-alternate=true]:bg-neutral-950",
+    },
+    header: {
+      true: "border-b border-neutral-100 bg-neutral-200 text-sm capitalize text-neutral-900 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-100",
+    },
+  },
+});
 
 export default function GridTheming() {
-  const ds = useClientRowDataSource({ data: bankDataSmall });
-
-  const grid = Grid.useLyteNyte({
-    gridId: useId(),
-    rowDataSource: ds,
-    columns,
-    columnBase: { width: 100 },
-  });
-
-  const view = grid.view.useValue();
+  const ds = useClientDataSource({ data: bankDataSmall });
 
   return (
-    <div>
+    <div className="classes">
       <div style={{ height: 500 }}>
-        <Grid.Root grid={grid}>
+        <Grid rowSource={ds} columns={columns} columnBase={base}>
           <Grid.Viewport>
             <Grid.Header>
-              {view.header.layout.map((row, i) => {
+              {(cells) => {
                 return (
-                  <Grid.HeaderRow key={i} headerRowIndex={i}>
-                    {row.map((c) => {
-                      if (c.kind === "group") return null;
+                  <Grid.HeaderRow>
+                    {cells.map((cell) => {
+                      if (cell.kind === "group") return null;
 
                       return (
                         <Grid.HeaderCell
-                          key={c.id}
-                          cell={c}
-                          className={tw(
-                            cellStyles({ number: c.column.type === "number", header: true }),
-                          )}
+                          key={cell.id}
+                          cell={cell}
+                          className={tw(cellStyles({ number: cell.type === "number", header: true }))} //!
                         />
                       );
                     })}
                   </Grid.HeaderRow>
                 );
-              })}
+              }}
             </Grid.Header>
             <Grid.RowsContainer>
               <Grid.RowsCenter>
-                {view.rows.center.map((row) => {
+                {(row) => {
                   if (row.kind === "full-width") return null;
 
                   return (
-                    <Grid.Row row={row} key={row.id} className="group">
-                      {row.cells.map((c) => {
+                    <Grid.Row row={row} className="group">
+                      {row.cells.map((cell) => {
                         return (
                           <Grid.Cell
-                            key={c.id}
-                            cell={c}
+                            key={cell.id}
+                            cell={cell}
+                            //!next 6
                             className={tw(
                               cellStyles({
-                                number: c.column.type === "number",
+                                number: cell.type === "number",
                                 rowBase: true,
                               }),
                             )}
@@ -95,26 +100,42 @@ export default function GridTheming() {
                       })}
                     </Grid.Row>
                   );
-                })}
+                }}
               </Grid.RowsCenter>
             </Grid.RowsContainer>
           </Grid.Viewport>
-        </Grid.Root>
+        </Grid>
       </div>
     </div>
   );
 }
 
-const cellStyles = cva("flex items-center bg-gray-50 px-2 text-sm text-gray-800", {
-  variants: {
-    number: {
-      true: "justify-end tabular-nums",
-    },
-    rowBase: {
-      true: "flex items-center border-b border-gray-200 bg-white px-2 text-sm text-gray-800 group-data-[ln-alternate=true]:bg-gray-100 dark:border-gray-100 dark:bg-gray-50 dark:text-gray-600 dark:group-data-[ln-alternate=true]:bg-gray-100/30",
-    },
-    header: {
-      true: "flex items-center bg-gray-300 px-2 text-sm capitalize text-gray-900 dark:bg-gray-100 dark:text-gray-700",
-    },
-  },
+//#start
+
+const formatter = new Intl.NumberFormat("en-US", {
+  maximumFractionDigits: 2,
+  minimumFractionDigits: 0,
 });
+export function BalanceCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
+
+  if (typeof field === "number") {
+    if (field < 0) return `-$${formatter.format(Math.abs(field))}`;
+
+    return "$" + formatter.format(field);
+  }
+
+  return `${field ?? "-"}`;
+}
+export function DurationCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
+
+  return typeof field === "number" ? `${formatter.format(field)} days` : `${field ?? "-"}`;
+}
+
+export function NumberCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
+
+  return typeof field === "number" ? formatter.format(field) : `${field ?? "-"}`;
+}
+//#end

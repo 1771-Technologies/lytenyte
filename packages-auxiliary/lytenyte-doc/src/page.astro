@@ -40,6 +40,7 @@ import TypeTable from "./type-table/type-table.astro";
 import AutoTypeTable from "./type-table/auto-type-table.astro";
 import InlineCode from "./parts/inline-code.astro";
 import type { OneDocConfig } from "../lytenyte-doc";
+import NextList from "./next-list.astro";
 
 export interface Props {
   options: OneDocConfig;
@@ -141,6 +142,7 @@ const prevEntry = prev ? await getEntry(entry.collection, prev) : null;
       AutoTypeTable,
 
       BlockCode,
+      Next: NextList,
 
       table: Table,
       th: Th,

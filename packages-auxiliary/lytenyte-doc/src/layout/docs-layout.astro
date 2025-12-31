@@ -70,9 +70,7 @@ const pathname = Astro.url.pathname;
     <ClientRouter />
     <LoadingIndicator color="blue" />
   </head>
-  <body
-    class="bg-xd-background text-xd-foreground min-h-screen flex flex-col dark:scheme-dark scheme-light"
-  >
+  <body class="bg-xd-background text-xd-foreground min-h-screen flex flex-col dark:scheme-dark scheme-light">
     <div class="sticky top-0 z-10">
       <div
         class="h-header border-b border-xd-border bg-xd-background flex gap-2 items-center justify-between"
@@ -205,9 +203,7 @@ const pathname = Astro.url.pathname;
 
             <div class="flex flex-col">
               <div class="w-full max-w-full flex-1">
-                <div
-                  class="text-sm text-neutral-800 dark:text-neutral-400 px-4 py-8 max-w-4xl mx-auto"
-                >
+                <div class="text-sm text-neutral-800 dark:text-neutral-400 px-4 py-8 max-w-4xl mx-auto">
                   <main class="mx-auto">
                     <slot />
                   </main>
@@ -253,9 +249,7 @@ const pathname = Astro.url.pathname;
                             {nextEntry.title}
                             <span class="iconify ph--caret-right" />
                           </div>
-                          <p class="text-nowrap text-end truncate w-full mb-0">
-                            {nextEntry.description}
-                          </p>
+                          <p class="text-nowrap text-end truncate w-full mb-0">{nextEntry.description}</p>
                         </a>
                       )
                     }
