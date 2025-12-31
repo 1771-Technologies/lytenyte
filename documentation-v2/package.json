@@ -17,6 +17,7 @@
     "@tailwindcss/vite": "4.1.18",
     "astro": "5.16.6",
     "class-variance-authority": "0.7.1",
+    "lucide-react": "0.544.0",
     "radix-ui": "1.4.3",
     "recharts": "3.2.1",
     "rehype-expressive-code": "0.41.5",
@@ -27,9 +28,9 @@
   },
   "devDependencies": {
     "@1771technologies/grid-sample-data": "workspace:*",
+    "@1771technologies/lytenyte-design": "workspace:*",
     "@1771technologies/lytenyte-pro": "workspace:*",
     "@1771technologies/lytenyte-pro-experimental": "workspace:*",
-    "@1771technologies/lytenyte-design": "workspace:*",
     "clsx": "2.1.1",
     "date-fns": "4.1.0",
     "react-minimal-pie-chart": "9.1.1"
