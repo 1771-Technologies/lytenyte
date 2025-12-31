@@ -20,6 +20,8 @@ import type { Piece, PieceWritable } from "../hooks/use-piece";
 import type { Dimension } from "./hooks/use-viewport-dimensions";
 import type { Root } from "./root";
 import type { ViewportShadowsProps } from "../components/viewport/viewport-shadows";
+import type { GridEvents } from "../types/events";
+import type { GridSpec } from "../types";
 
 export interface RootContextValue {
   readonly id: string;
@@ -56,6 +58,8 @@ export interface RootContextValue {
   readonly setViewport: Dispatch<SetStateAction<HTMLDivElement | null>>;
 
   readonly focusActive: PieceWritable<PositionUnion | null>;
+
+  readonly events: GridEvents<GridSpec>;
 
   readonly columnGroupDefaultExpansion: boolean;
   readonly columnGroupExpansions: Record<string, boolean>;

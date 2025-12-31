@@ -4,6 +4,7 @@ import type { Column, EditParams, HeaderGroupParams, HeaderParams, RowParams } f
 import type { GridSpec } from "./grid.js";
 import type { API } from "./api.js";
 import type { ViewportShadowsProps } from "../components/viewport/viewport-shadows.js";
+import type { GridEvents } from "./events.js";
 
 export type Props<Spec extends GridSpec = GridSpec> = {
   readonly columns?: Column<Spec>[];
@@ -27,6 +28,7 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   readonly columnGroupRenderer?: (props: HeaderGroupParams<Spec>) => ReactNode;
 
   readonly gridId?: string;
+  readonly events?: GridEvents<Spec>;
 
   readonly rtl?: boolean;
 

@@ -8,6 +8,7 @@ import { useBounds, useFocus, useRoot } from "../../root/root-context.js";
 import { $colEndBound, $colStartBound } from "../../selectors.js";
 import { useRowMeta } from "../rows/row/context.js";
 import type { Root } from "../../root/root.js";
+import { useMappedEvents } from "../../hooks/use-mapped-events.js";
 
 export const Cell = forwardRef<HTMLDivElement, Cell.Props>(function Cell(props, forwarded) {
   const bounds = useBounds();
@@ -40,6 +41,7 @@ const CellImpl = memo(
       api,
       view,
       editMode,
+      events,
       dimensions: { innerWidth },
     } = useRoot();
 
@@ -67,6 +69,8 @@ const CellImpl = memo(
 
     const style = useCellStyle(xPositions, yPositions, cell, rtl, rowMeta.detailHeight, undefined);
 
+    const handlers = useMappedEvents(events.cell, column, row);
+
     if (!row || cell.isDeadCol) return null;
 
     if (cell.isDeadRow) return <div style={{ width: sizeFromCoord(cell.colIndex, xPositions) }} />;
@@ -88,9 +92,9 @@ const CellImpl = memo(
           style={{ ...style, ...props.style }}
           onBlur={
             !isEditing || editMode !== "cell"
-              ? props.onBlur
+              ? (props.onBlur ?? handlers.onBlur)
               : (ev) => {
-                  props.onBlur?.(ev);
+                  (props.onBlur ?? handlers.onBlur)?.(ev);
                   // We are still in the same cell, no reason to end the editing.
                   if (ev.currentTarget !== ev.relatedTarget && ev.currentTarget.contains(ev.relatedTarget))
                     return;

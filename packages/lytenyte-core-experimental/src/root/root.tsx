@@ -147,6 +147,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
       focusActive: focusPiece,
       source,
 
+      events: props.events ?? {},
       columnGroupMoveDragPlaceholder: props.columnGroupMoveDragPlaceholder,
       columnGroupRenderer: props.columnGroupRenderer,
       columnMoveDragPlaceholder: props.columnMoveDragPlaceholder,
@@ -208,6 +209,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     props.editClickActivator,
     props.editMode,
     props.editRowValidatorFn,
+    props.events,
     props.floatingRowEnabled,
     props.floatingRowHeight,
     props.headerGroupHeight,
