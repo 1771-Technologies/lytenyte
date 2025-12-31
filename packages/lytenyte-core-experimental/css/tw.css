@@ -22,7 +22,7 @@
   }
 }
 
-@custom-variant ln-header-cell {
+@custom-variant ln-header {
   & [data-ln-header-cell="true"] {
     @slot;
   }
@@ -41,6 +41,17 @@
 
 @custom-variant ln-row {
   & [data-ln-row="true"] {
+    @slot;
+  }
+}
+
+@custom-variant ln-row-hover {
+  & [data-ln-row="true"]:hover::before {
+    @slot;
+  }
+}
+@custom-variant ln-row-selected-hover {
+  & [data-ln-row="true"][data-ln-selected="true"]:hover::before {
     @slot;
   }
 }
