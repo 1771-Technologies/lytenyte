@@ -9,6 +9,7 @@ import { useRowStyle } from "./use-row-style.js";
 import { useRowsContainerContext } from "./rows-container/context.js";
 import { useRoot } from "../../root/root-context.js";
 import { $topHeight } from "../../selectors.js";
+import { useMappedEvents } from "../../hooks/use-mapped-events.js";
 
 const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function RowFullWidth(
   { row: layout, ...props },
@@ -26,6 +27,7 @@ const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function
     rowDetailHeight,
     rowDetailAutoHeightGuess,
     rowDetailHeightCache,
+    events,
   } = useRoot();
   const container = useRowsContainerContext();
 
@@ -38,6 +40,8 @@ const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function
   const Renderer = rowFullWidthRenderer;
 
   const row = source.rowByIndex(layout.rowIndex).useValue();
+
+  const handlers = useMappedEvents(events.row, row);
 
   const rowIndex = layout.rowIndex;
   const rowPin = layout.rowPin;
@@ -56,6 +60,7 @@ const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function
   return (
     <div
       {...props}
+      {...handlers}
       role="row"
       /** Data attributes start */
       data-ln-gridid={id}

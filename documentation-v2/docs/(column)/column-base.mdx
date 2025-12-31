@@ -1,5 +1,6 @@
 ---
 title: Column Base
+step: Provide the set of default configuration options for the LyteNyte Grid columns.
 description: LyteNyte Grid applies a set of default options to the columns you provide.
   You can override these defaults through the column base object.
 ---
@@ -28,11 +29,10 @@ You can override any default property on the column specification except
 those properties that have been explicitly excluded, such as `field` or `pin`.
 
 ```tsx
+const base: Grid.ColumnBase<GridSpec> = { width: 100 }; //!
+
 function MyGrid() {
-  const grid = Grid.useLyteNyte({
-    columnBase: { width: 100 },
-    columns,
-  });
+  return <Grid columnBase={base} />; //!
 }
 ```
 
@@ -40,15 +40,15 @@ A common pattern is to set a default cell renderer or header renderer.
 The demo below creates a heatmap of temperatures using a
 shared default cell renderer:
 
-!demo:Monthly Temperatures Heatmap="./demos/column-base-temperature_x"
+::demo[Monthly Temperatures Heatmap="./demos/column-base-temperature"]
 
 The demo overrides `width`, `widthMin`, and `widthFlex`. Since
 those defaults are tailored for monthly temperature columns,
 the `year` column must specify its own values:
 
 ```ts
-const columns: Column<MonthlyTemperature>[] = [
-  { id: "year", cellRenderer: YearCell, width: 100 },
+const columns: Grid.Column<GridSpec>[] = [
+  { id: "Year", cellRenderer: YearCell, width: 100 }, //!
   { id: "Jan" },
   // other columns
 ];
@@ -57,15 +57,14 @@ const columns: Column<MonthlyTemperature>[] = [
 ### Exclusions From the Base
 
 The `columnBase` property cannot override every column option.
-In particular, `pin` and `field` must be set per column and
+In particular, `pin` and `field` must be set on a per column basis and
 cannot be defined through the base. These properties apply only
 to specific columns, not all columns, so this limitation
-is intentional. See the [`ColumnBase` API reference](/docs/reference/column#columnbase)
-for the full list of overridable properties.
+is intentional.
 
 ## Next Steps
 
-- [Column Resizing](/docs/column-resizing): Change column widths programmatically or via user interaction.
-- [Column ID & Name](/docs/column-header-name): Define user-friendly column names and ensure unique IDs.
-- [Column Moving](/docs/column-moving): Reorder columns programmatically or through drag-and-drop.
-- [Column Field](/docs/column-field): Control how a column retrieves its value for each cell.
+::next[/docs/column-resizing]
+::next[/docs/column-header-name]
+::next[/docs/column-moving]
+::next[/docs/column-field]

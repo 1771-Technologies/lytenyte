@@ -334,6 +334,9 @@ importers:
       class-variance-authority:
         specifier: 0.7.1
         version: 0.7.1
+      lucide-react:
+        specifier: 0.544.0
+        version: 0.544.0(react@19.2.1)
       radix-ui:
         specifier: 1.4.3
         version: 1.4.3(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)

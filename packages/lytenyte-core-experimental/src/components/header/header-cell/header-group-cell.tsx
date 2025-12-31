@@ -4,6 +4,7 @@ import type { LayoutHeaderGroup } from "@1771technologies/lytenyte-shared";
 import { useRoot } from "../../../root/root-context.js";
 import { useDragMove } from "./use-drag-move.js";
 import { HeaderGroupDefault } from "./header-group-default.js";
+import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
 
 const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(function HeaderCell(
   { cell, ...props },
@@ -18,6 +19,7 @@ const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(fu
     columnGroupDefaultExpansion,
     columnGroupExpansions,
     columnGroupRenderer,
+    events,
   } = useRoot();
 
   const isExpanded = columnGroupExpansions[cell.id] ?? columnGroupDefaultExpansion;
@@ -35,7 +37,8 @@ const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(fu
     [`data-ln-header-row-${cell.rowStart}`]: true,
   };
 
-  const { props: dragProps, placeholder } = useDragMove(cell, props.onDragStart);
+  const handlers = useMappedEvents(events.headerGroup, cell.groupPath, columns);
+  const { props: dragProps, placeholder } = useDragMove(cell, props.onDragStart ?? handlers.onDragStart);
 
   const Renderer = columnGroupRenderer ?? HeaderGroupDefault;
 
@@ -43,6 +46,7 @@ const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(fu
     <div
       {...dragProps}
       {...props}
+      {...handlers}
       onDragStart={dragProps.onDragStart}
       tabIndex={0}
       ref={ref}

@@ -8,10 +8,11 @@ import { $topHeight } from "../../../selectors.js";
 import { useRowStyle } from "../use-row-style.js";
 import { RowDetailRow } from "../row-detail-row.js";
 import { CellSpacerCenter } from "../../cells/cell-spacers/cell-spacer-center.js";
+import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
 
 const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...props }, forwarded) {
   const ctx = useRoot();
-  const { id, yPositions, xPositions, view, editMode } = ctx;
+  const { id, yPositions, xPositions, view, editMode, events } = ctx;
 
   const container = useRowsContainerContext();
 
@@ -35,16 +36,19 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
     props.style,
   );
 
+  const handlers = useMappedEvents(events.row, rowMeta.row);
+
   return (
     <RowContext.Provider value={rowMeta}>
       <div
         {...props}
+        {...handlers}
         role="row"
         onBlur={
           !rowMeta.isEditing || editMode !== "row"
-            ? props.onBlur
+            ? (props.onBlur ?? handlers.onBlur)
             : (ev) => {
-                props.onBlur?.(ev);
+                (props.onBlur ?? handlers.onBlur)?.(ev);
 
                 if (ev.currentTarget !== ev.relatedTarget && ev.currentTarget.contains(ev.relatedTarget))
                   return;

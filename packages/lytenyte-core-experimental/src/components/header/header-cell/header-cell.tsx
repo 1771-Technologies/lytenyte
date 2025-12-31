@@ -10,12 +10,13 @@ import { DefaultRenderer } from "./header-default.js";
 import { useRoot } from "../../../root/root-context.js";
 import { useDragMove } from "./use-drag-move.js";
 import { ResizeHandler } from "./resize-handler.js";
+import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
 
 const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function HeaderCell(
   { cell, resizerClassName, resizerStyle, ...props },
   ref,
 ) {
-  const { id, xPositions, base, view, api } = useRoot();
+  const { id, xPositions, base, view, api, events } = useRoot();
 
   const column = view.lookup.get(cell.id)!;
   const resizable = (column.resizable ?? base.resizable) && column.id !== COLUMN_MARKER_ID;
@@ -39,13 +40,16 @@ const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function Hea
     return dataAttrs;
   }, [column.groupPath?.length, cell.kind, rowSpan]);
 
-  const { props: dragProps, placeholder } = useDragMove(cell, props.onDragStart);
+  const handlers = useMappedEvents(events.headerCell, column);
+
+  const { props: dragProps, placeholder } = useDragMove(cell, props.onDragStart ?? handlers.onDragStart);
   const headerStyle = useHeaderCellStyle(cell, xPositions);
 
   return (
     <div
       {...dragProps}
       {...props}
+      {...handlers}
       onDragStart={dragProps.onDragStart}
       tabIndex={0}
       ref={ref}

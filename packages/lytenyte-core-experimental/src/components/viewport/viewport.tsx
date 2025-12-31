@@ -6,12 +6,14 @@ import { getNearestFocusable, navigator, runWithBackoff } from "@1771technologie
 import { beginEditing } from "./begin-editing.js";
 import { RowDragMonitor } from "./row-drag-monitor.js";
 import { ViewMonitor } from "./view-monitor.js";
+import { useMappedEvents } from "../../hooks/use-mapped-events.js";
 
 const noop = () => {};
 function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Props["ref"]) {
   const [vp, setVp] = useState<HTMLDivElement | null>(null);
 
   const {
+    events,
     setViewport,
     editMode,
     editClickActivator,
@@ -30,6 +32,8 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
 
   const shouldCapture = !focused && !vpFocused;
   const rowCount = source.useRowCount();
+
+  const handlers = useMappedEvents(events.viewport, vp);
 
   const handleNavigation = useMemo(() => {
     if (!vp) return () => {};
@@ -74,11 +78,13 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
       {vp && <ViewMonitor viewport={vp} />}
       <div
         {...props}
+        {...handlers}
         role="grid"
         tabIndex={0}
         ref={combined}
         onClick={(ev) => {
-          props.onClick?.(ev);
+          const h = props.onClick ?? handlers.onClick;
+          h?.(ev);
           if (ev.defaultPrevented) return;
 
           beginEditing(api, edit, focusActive.get(), editMode, editClickActivator, "single");
@@ -86,7 +92,8 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
           if (selectActivator === "single-click") api.rowHandleSelect(ev);
         }}
         onDoubleClick={(ev) => {
-          props.onClick?.(ev);
+          const h = props.onClick ?? handlers.onClick;
+          h?.(ev);
           if (ev.defaultPrevented) return;
 
           beginEditing(api, edit, focusActive.get(), editMode, editClickActivator, "double-click");
@@ -98,7 +105,8 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
         data-ln-has-start={view.startCount > 0 ? true : undefined}
         data-ln-gridid={id}
         onKeyDown={(e) => {
-          props.onKeyDown?.(e);
+          const h = props.onKeyDown ?? handlers.onKeyDown;
+          h?.(e);
 
           if (e.defaultPrevented || e.isPropagationStopped() || !vp) return;
 

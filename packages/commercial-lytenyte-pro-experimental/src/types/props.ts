@@ -4,6 +4,7 @@ import type { Column, EditParams, HeaderGroupParams, HeaderParams, RowParams } f
 import type { DialogFrame, GridSpec, PopoverFrame } from "./grid.js";
 import type { API, DataRect } from "./api.js";
 import type { ViewportShadowsProps } from "@1771technologies/lytenyte-core-experimental";
+import type { GridEvents } from "./events.js";
 
 export type Props<Spec extends GridSpec = GridSpec> = {
   readonly dialogFrames?: Record<string, DialogFrame<Spec>>;
@@ -35,6 +36,7 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   readonly columnGroupRenderer?: (props: HeaderGroupParams<Spec>) => ReactNode;
 
   readonly gridId?: string;
+  readonly events?: GridEvents<Spec>;
 
   readonly rtl?: boolean;
 

@@ -4,14 +4,22 @@ import type { Root } from "../../root";
 export function useExtendedAPI(p: Root.Props) {
   const props = p as { apiExtension?: any };
 
-  const previousExtensions = useRef(props.apiExtension ?? {});
+  const previousAPI = useRef(null);
+  const previousExtensions = useRef({});
+
   const api = useRef<Root.API>({} as any);
-  if (previousExtensions.current !== props.apiExtension) {
+
+  const ext = props.apiExtension;
+  if (previousAPI.current != ext) {
+    // Remove the previous extensions keys
     const keys = Object.keys(previousExtensions.current);
     for (const k of keys) delete (api.current as any)[k];
 
-    previousExtensions.current = props.apiExtension ?? {};
-    Object.assign(api, previousExtensions.current);
+    const nextExt = typeof ext === "function" ? ext(api.current) : ext;
+
+    previousAPI.current = ext;
+    previousExtensions.current = nextExt;
+    if (previousExtensions.current) Object.assign(api.current, previousExtensions.current);
   }
 
   return api.current;

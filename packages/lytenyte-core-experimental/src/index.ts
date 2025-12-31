@@ -16,7 +16,14 @@ import type { RowSource } from "@1771technologies/lytenyte-shared";
 import type * as LnTypes from "./types/index.js";
 
 export interface GridComponent {
-  <Spec extends Root.GridSpec = Root.GridSpec>(props: PropsWithChildren<Root.Props<Spec>>): ReactNode;
+  <Spec extends Root.GridSpec = Root.GridSpec>(
+    props: PropsWithChildren<
+      Root.Props<Spec> &
+        (undefined extends Spec["api"]
+          ? unknown
+          : { apiExtension: ((incomplete: Root.API<Spec>) => Spec["api"] | null) | Spec["api"] })
+    >,
+  ): ReactNode;
 
   Header: typeof Header;
   HeaderRow: typeof HeaderRow;
@@ -60,6 +67,7 @@ export namespace Grid {
   export type Column<Spec extends GridSpec = GridSpec> = Root.Column<Spec>;
   export type ColumnBase<Spec extends GridSpec = GridSpec> = Required<Root.Props<Spec>>["columnBase"];
   export type ColumnMarker<Spec extends GridSpec = GridSpec> = Required<Root.Props<Spec>>["columnMarker"];
+  export type Events<Spec extends GridSpec = GridSpec> = Required<Root.Props<Spec>>["events"];
 
   export namespace Components {
     export type Header = Header.Props;
