@@ -30,7 +30,7 @@ human-readable string. In the example below, several columns specify
 a `name` to improve their header text:
 
 ```ts
-const columns: Column<OrderData>[] = [
+const columns: Grid.Column[] = [
   { id: "id", name: "ID" },
   { id: "product" },
   { id: "price" },
@@ -41,7 +41,7 @@ const columns: Column<OrderData>[] = [
 ];
 ```
 
-!demo:Human Readable Names="./demos/column-overview-demo"
+::demo[Human Readable Names="./demos/column-overview-demo"]
 
 In this example, `purchaseDate`, `paymentMethod`, and `id` use `name` to
 provide readable labels, while the remaining IDs are already clear. Developers often
@@ -66,13 +66,13 @@ header cell calls `columnUpdate`:
 // In the HeaderCell component of components.tsx
 const onUpdate = (v: string) => {
   setIsUpdating(false);
-  grid.api.columnUpdate({ [column.id]: { name: v } });
+  api.columnUpdate({ [column.id]: { name: v } });
 };
 ```
 
 # Next Steps
 
-- [Column Base](/docs/column-base): See the default column values and how to override them with the `columnBase` property.
-- [Column Resizing](/docs/column-resizing): Change column widths programmatically or via user interaction.
-- [Column Moving](/docs/column-moving): Reorder columns programmatically or through drag-and-drop.
-- [Column Field](/docs/column-field): Control how a column retrieves its value for each cell.
+::next[/docs/column-base]
+::next[/docs/column-resizing]
+::next[/docs/column-moving]
+::next[/docs/column-field]

@@ -29,7 +29,7 @@ You can override any default property on the column specification except
 those properties that have been explicitly excluded, such as `field` or `pin`.
 
 ```tsx
-const base: Grid.ColumnBase = { width: 100 }; //!
+const base: Grid.ColumnBase<GridSpec> = { width: 100 }; //!
 
 function MyGrid() {
   return <Grid columnBase={base} />; //!
@@ -47,8 +47,8 @@ those defaults are tailored for monthly temperature columns,
 the `year` column must specify its own values:
 
 ```ts
-const columns: Column<MonthlyTemperature>[] = [
-  { id: "Year", cellRenderer: YearCell, width: 100 },
+const columns: Grid.Column<GridSpec>[] = [
+  { id: "Year", cellRenderer: YearCell, width: 100 }, //!
   { id: "Jan" },
   // other columns
 ];

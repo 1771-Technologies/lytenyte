@@ -1,9 +1,9 @@
-"use client";
-
+//#start
 import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
 import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
 import type { MonthlyTemperature } from "@1771technologies/grid-sample-data/temperatures";
 import { data } from "@1771technologies/grid-sample-data/temperatures";
+//#end
 
 interface GridSpec {
   data: MonthlyTemperature;
@@ -25,6 +25,7 @@ const columns: Grid.Column<GridSpec>[] = [
   { id: "Dec" },
 ];
 
+//!next 6
 const base: Grid.ColumnBase<GridSpec> = {
   widthMin: 30,
   widthMax: 50,
@@ -32,18 +33,19 @@ const base: Grid.ColumnBase<GridSpec> = {
   cellRenderer: HeatMapCell,
 };
 
-export default function ColumnBase() {
+export default function Demo() {
   const ds = useClientDataSource({ data: data });
 
   return (
     <div
-      className="ln-grid ln-cell:px-0 ln-row-hover:bg-ln-primary-50/10 ln-cell:border-e ln-cell:border-ln-border-strong ln-header:justify-center"
+      className="ln-grid ln-cell:tabular-nums ln-header:tabular-nums ln-cell:px-0 ln-row-hover:bg-ln-primary-50/10 ln-cell:border-e ln-cell:border-ln-border-strong ln-header:justify-center"
       style={{ height: 500 }}
     >
-      <Grid columnBase={base} rowSource={ds} columns={columns} />
+      <Grid columnBase={base} rowSource={ds} columns={columns} /> //!
     </div>
   );
 }
+//#start
 
 export function HeatMapCell({ api, column, row }: Grid.T.CellRendererParams<GridSpec>) {
   if (!api.rowIsLeaf(row) || !row.data) return null;
@@ -81,3 +83,4 @@ export function valueToColor(value: number): string {
 
   return `color-mix(in hsl, hsl(${start}) ${100 - percentage}%, hsl(${end}) ${percentage}%)`;
 }
+//#end

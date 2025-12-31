@@ -68,7 +68,7 @@ export default function ColumnBase() {
                           }
                         }}
                         className={tw(
-                          "focus-visible:outline-ln-primary-50 flex h-full w-full items-center text-nowrap text-sm capitalize focus-visible:outline-1 focus-visible:outline-offset-[-1px]",
+                          "focus-visible:outline-ln-primary-50 flex h-full w-full items-center text-nowrap text-sm capitalize focus-visible:outline-1 focus-visible:-outline-offset-1",
                           c.column.type === "number" && "justify-end",
                         )}
                       />
