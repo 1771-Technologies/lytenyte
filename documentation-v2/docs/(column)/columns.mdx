@@ -9,13 +9,13 @@ description: LyteNyte Grid uses columns to define the data displayed in the grid
 
 A column in LyteNyte Grid defines the specification (or type interface)
 the grid follows to configure how cells and headers are displayed. LyteNyte Grid
-accepts an array of columns, which developers **provide** to the grid through the
-`Grid.useLyteNyte` hook.
+accepts an array of columns, which developers **provide** to the grid via the
+`columns` property.
 
 For example, defining a set of columns can be done as follows:
 
 ```ts
-const columns: Column<OrderData>[] = [
+const columns: Grid.Column[] = [
   { id: "id", width: 60, widthMin: 60, cellRenderer: IdCell, name: "ID" },
   { id: "product", cellRenderer: ProductCell, width: 200 },
   { id: "price", type: "number", cellRenderer: PriceCell, width: 100 },
@@ -59,11 +59,11 @@ The example below shows the columns defined earlier in use.
 Use this example as a lightweight introduction to what is possible with columns
 and how even a relatively small amount of configuration creates rich data experiences.
 
-!demo:Columns in Action="./demos/column-overview-demo"
+::demo[Columns in Action="./demos/column-overview-demo"]
 
 ## Next Steps
 
-- [Column Base](/docs/column-base): See the default column values and how to override them with the `columnBase` property.
-- [Column ID & Name](/docs/column-header-name): Define user-friendly column names and ensure unique IDs.
-- [Column Moving](/docs/column-moving): Reorder columns programmatically or through drag-and-drop.
-- [Column Field](/docs/column-field): Control how a column retrieves its value for each cell.
+::next[/docs/column-base]
+::next[/docs/column-header-name]
+::next[/docs/column-moving]
+::next[/docs/column-field]

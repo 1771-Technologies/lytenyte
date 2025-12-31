@@ -21,7 +21,7 @@ export function ToggleItem(props: Parameters<typeof TG.Item>[0]) {
     <TG.Item
       {...props}
       className={tw(
-        "text-ln-text flex items-center justify-center px-2 py-1 text-xs font-bold outline-none focus:outline-none",
+        "text-ln-text flex cursor-pointer items-center justify-center px-2 py-1 text-xs font-bold outline-none focus:outline-none",
         "data-[state=on]:text-ln-text-dark data-[state=on]:bg-linear-to-b from-ln-gray-02 to-ln-gray-05 data-[state=on]:rounded-md",
         props.className,
       )}
