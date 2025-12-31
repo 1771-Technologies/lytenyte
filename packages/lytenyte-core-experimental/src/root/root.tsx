@@ -57,7 +57,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   >,
   forwarded: Root.Props<Spec>["ref"],
 ) => {
-  const props = p as unknown as Root.Props & {
+  const props = p as unknown as Root.Props & { apiExtension?: Spec["api"] } & {
     ln_topComponent?: () => ReactNode;
     ln_bottomComponent: () => ReactNode;
     ln_centerComponent: () => ReactNode;

@@ -44,6 +44,32 @@ extension value onto a stable API reference. The API object reference in LyteNyt
 changes, so it is not a reactive value. Changes to the value of `apiExtension`
 apply to the API object, but these changes do not automatically trigger cell re-renders.
 
+### Function API Extension
+
+The `apiExtension` property can accept a function that returns an object containing the additional API methods to add to the grid API.
+The function form is called with a reference to a partial version of the grid API. You can safely capture this reference in your extension methods,
+but do not call any API methods inside the extension function itself.
+
+```ts
+const myExtender = (api: Grid.API) => {
+  // DO NOT USE THE API here
+  api.props(); // This will throw
+
+  return {
+    notify: (id: string) => {
+      // Safe to use the API reference here. The function has captured the reference.
+      api.columnById(id);
+    },
+  };
+};
+```
+
+The function form of the `apiExtension` is useful when the methods you add to the API need to call the grid API to perform work. For example,
+you can add the ability to rename header cells by extending the API with an `updateHeaderName` method. This method can then call
+`api.columnUpdate` to change the name of a column. The demo below shows this approach.
+
+::demo[Renaming Column Headers="./demos/grid-api-function"]
+
 ## Supplying Reactive Values
 
 Since the API reference never changes, any component that reads values from the API object will not

@@ -57,20 +57,14 @@ For example, you may want users to rename columns. In the demo below, users can
 double-click a header to edit the display name. Pressing Enter or
 clicking away saves the new value.
 
-!demo:Renaming Column Headers="./demos/column-header-name-update_x"
+::demo[Renaming Column Headers="./demos/column-header-name-update"]
 
-A custom header cell powers this behavior. After editing, the
-header cell calls `columnUpdate`:
+To support header name editing, this example uses a custom header cell
+and extends the grid API to edit header names.
+For more guidance on extending the grid API,
+see the [API Extension guide](/docs/grid-api-extension).
 
-```ts
-// In the HeaderCell component of components.tsx
-const onUpdate = (v: string) => {
-  setIsUpdating(false);
-  api.columnUpdate({ [column.id]: { name: v } });
-};
-```
-
-# Next Steps
+## Next Steps
 
 ::next[/docs/column-base]
 ::next[/docs/column-resizing]

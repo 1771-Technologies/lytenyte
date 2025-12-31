@@ -1,6 +1,7 @@
 import { Fallback, Root as RootCore } from "@1771technologies/lytenyte-core-experimental/internal";
 import {
   forwardRef,
+  memo,
   useEffect,
   useMemo,
   useRef,
@@ -29,7 +30,12 @@ import {
 } from "../cell-selection/cell-selection-containers.js";
 
 const RootWrapper = <Spec extends Root.GridSpec = Root.GridSpec>(
-  { children, ...p }: PropsWithChildren<Root.Props<Spec>>,
+  {
+    children,
+    ...p
+  }: PropsWithChildren<
+    Root.Props<Spec> & (undefined extends Spec["api"] ? object : { apiExtension: Spec["api"] })
+  >,
   forwarded: Root.Props<Spec>["ref"],
 ) => {
   useEffect(() => {
@@ -184,9 +190,9 @@ const RootImpl = ({ children, ...p }: PropsWithChildren<Root.Props>) => {
   );
 };
 
-export const Root = forwardRef(RootWrapper) as <Spec extends Root.GridSpec = Root.GridSpec>(
+export const Root = memo(forwardRef(RootWrapper)) as <Spec extends Root.GridSpec = Root.GridSpec>(
   props: PropsWithChildren<
-    Root.Props<Spec> & (undefined extends Spec["api"] ? unknown : { apiExtension: Spec["api"] })
+    Root.Props<Spec> & (undefined extends Spec["api"] ? object : { apiExtension: Spec["api"] })
   >,
 ) => ReactNode;
 
