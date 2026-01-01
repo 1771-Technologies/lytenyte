@@ -8,7 +8,7 @@ export { useCombinedRefs } from "./hooks/use-combine-refs.js";
 export { useBounds, useColumnLayout, useEdit, useFocus, useRoot, useRowLayout } from "./root/root-context.js";
 export type { Signal } from "./signal/signal.js";
 export { createSignal, useSelector } from "./signal/signal.js";
-export { getDragData } from "./dnd/get-drag-data.js";
+export { getRowDragData, getDragData } from "./dnd/get-drag-data.js";
 export { useDraggable } from "./dnd/use-draggable.js";
 export type { UseDraggableProps } from "./dnd/types.js";
 export * from "./dnd/global.js";

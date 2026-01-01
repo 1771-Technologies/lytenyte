@@ -186,6 +186,7 @@ export {
   smartStringIncludes,
   upperCaseFirstLetter,
   wait,
+  moveRelative,
 } from "./js-utils/index.js";
 
 // DOM Utils

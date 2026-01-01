@@ -16,7 +16,9 @@ import { AxePopover } from "./axe-popover/axe-popover.js";
 import { demoOptions, type Demo } from "./demo-tree.js";
 
 export function Main() {
-  const [demoA, setDemoA] = useState<Demo | null>(demoOptions[0]);
+  const savedIndex = localStorage.getItem("demo-key");
+  const index = demoOptions.findIndex((x) => x.value === savedIndex);
+  const [demoA, setDemoA] = useState<Demo | null>(demoOptions[index] ?? demoOptions[0]);
   const [demoB, setDemoB] = useState<Demo | null>(null);
 
   const [current, setCurrent] = useState<Demo>(demoA!);
@@ -76,6 +78,7 @@ export function Main() {
             demo={current}
             onDemoChange={(d) => {
               if (d === current) return;
+              localStorage.setItem("demo-key", d.value);
               setDemo(d);
               setCurrent(d);
             }}
