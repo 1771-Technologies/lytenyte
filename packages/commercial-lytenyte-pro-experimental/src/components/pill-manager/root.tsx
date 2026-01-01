@@ -1,4 +1,4 @@
-import { Fragment, memo, useMemo, useState, type ReactNode } from "react";
+import { Fragment, memo, useMemo, useRef, useState, type ReactNode } from "react";
 import { PillRootProvider, type PillRootContext } from "./root.context.js";
 import type { PillItemSpec, PillRowSpec } from "./types.js";
 import { PillRowDefault } from "./row-default.js";
@@ -8,7 +8,12 @@ function PillRootImpl({ children = PillRowDefault, ...p }: PillManager.Props) {
   const [dragState, setDragState] = useState<{
     readonly activeId: string;
     readonly activeRow: string;
+    readonly activeType: string;
   } | null>(null);
+
+  const prevSwapId = useRef<string | null>(null);
+  const prevRowId = useRef<string | null>(null);
+
   const value = useMemo<PillRootContext>(() => {
     return {
       orientation: p.orientation ?? "horizontal",
@@ -20,6 +25,9 @@ function PillRootImpl({ children = PillRowDefault, ...p }: PillManager.Props) {
 
       dragState,
       setDragState,
+
+      prevSwapId,
+      prevRowId,
 
       onActiveChange: p.onActiveChange ?? (() => {}),
       onPillRowChange: p.onPillRowChange ?? (() => {}),

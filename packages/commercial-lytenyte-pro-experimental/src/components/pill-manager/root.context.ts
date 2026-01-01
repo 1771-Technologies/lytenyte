@@ -1,4 +1,4 @@
-import { createContext, useContext, type Dispatch, type SetStateAction } from "react";
+import { createContext, useContext, type Dispatch, type RefObject, type SetStateAction } from "react";
 import type { PillManager } from "./root";
 import type { PillRowSpec } from "./types";
 
@@ -10,12 +10,17 @@ export type PillRootContext = Required<Omit<PillManager.Props, "children">> & {
     SetStateAction<{
       readonly activeId: string;
       readonly activeRow: string;
+      readonly activeType: string;
     } | null>
   >;
   readonly dragState: null | {
     readonly activeId: string;
     readonly activeRow: string;
+    readonly activeType: string;
   };
+
+  prevSwapId: RefObject<string | null>;
+  prevRowId: RefObject<string | null>;
 };
 
 const context = createContext({} as PillRootContext);

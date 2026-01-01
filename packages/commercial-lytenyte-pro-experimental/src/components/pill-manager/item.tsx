@@ -14,7 +14,17 @@ import { equal, moveRelative } from "@1771technologies/lytenyte-shared";
 
 function PillItemBase({ render, item, ...props }: PillItem.Props, ref: PillItem.Props["ref"]) {
   const { expandToggle, expanded, row } = usePillRow();
-  const { setDragState, setCloned, cloned, onActiveChange, rows, onPillRowChange } = usePillRoot();
+  const {
+    prevRowId,
+    prevSwapId,
+    setDragState,
+    setCloned,
+    cloned,
+    onActiveChange,
+    rows,
+    onPillRowChange,
+    dragState,
+  } = usePillRoot();
 
   const clonedRef = useRef(cloned);
   clonedRef.current = cloned;
@@ -29,10 +39,13 @@ function PillItemBase({ render, item, ...props }: PillItem.Props, ref: PillItem.
     },
 
     onDragStart: () => {
-      setDragState({ activeId: item.id, activeRow: row.id });
+      setDragState({ activeId: item.id, activeRow: row.id, activeType: row.type ?? "" });
       setCloned([...rows]);
     },
     onDragEnd: () => {
+      prevRowId.current = null;
+      prevSwapId.current = null;
+
       const changed = clonedRef.current!.filter((x, i) => {
         return !equal(x, rows[i]);
       });
@@ -76,13 +89,13 @@ function PillItemBase({ render, item, ...props }: PillItem.Props, ref: PillItem.
     const ds = getDragData() as { pill?: { data: { id: string; item: PillItemSpec } } } | null;
     if (!ds?.pill?.data) return;
 
-    const { item: dragged, id } = ds.pill.data;
+    const { item: dragged } = ds.pill.data;
 
-    const sameRow = id === row.id;
+    const hasId = row.pills.find((x) => x.id === dragged.id);
 
     if (dragged.id === item.id) return;
 
-    if (sameRow) {
+    if (hasId) {
       const draggedIndex = row.pills.findIndex((x) => x.id === dragged.id);
       const overIndex = row.pills.findIndex((x) => x.id === item.id);
 
@@ -90,8 +103,17 @@ function PillItemBase({ render, item, ...props }: PillItem.Props, ref: PillItem.
 
       const [horizontal] = getDragDirection();
 
-      if (horizontal === "end" && draggedIndex >= overIndex) return;
-      if (horizontal === "start" && draggedIndex <= overIndex) return;
+      const currentSwapId = row.pills[overIndex].id;
+      const currentRowId = row.id;
+
+      if (currentSwapId === prevSwapId.current && currentRowId === prevRowId.current) {
+        if (horizontal === "end" && draggedIndex >= overIndex) return;
+        if (horizontal === "start" && draggedIndex <= overIndex) return;
+      }
+
+      // We are gonna swap these two
+      prevSwapId.current = currentSwapId;
+      prevRowId.current = currentRowId;
 
       setCloned((prev) => {
         if (!prev) throw new Error("Can't call drag function without cloning nodes.");
@@ -174,9 +196,12 @@ function PillItemBase({ render, item, ...props }: PillItem.Props, ref: PillItem.
     },
   });
 
+  const isActive = dragState?.activeId === item.id;
+  const type = isActive ? dragState.activeType : row.type;
+
   return (
     <div
-      data-ln-pill-type={row.type}
+      data-ln-pill-type={type}
       data-ln-pill-item-container
       data-ln-pill-active={item.active}
       data-ln-draggable={item.movable}
