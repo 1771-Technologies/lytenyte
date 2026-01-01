@@ -33,6 +33,7 @@ export interface UseDraggableProps {
   readonly onDragMove?: (ev: DragEventParams) => void;
   readonly onDragEnd?: (ev: Omit<DragEventParams, "position">) => void;
   readonly onDrop?: (ev: Omit<DragEventParams, "position">) => void;
+  readonly onUnhandledDrop?: (ev: DragEventParams) => void;
   readonly placeholder?: { query: string; offset?: [number, number] } | string | null | ReactPlaceholderFn;
 }
 

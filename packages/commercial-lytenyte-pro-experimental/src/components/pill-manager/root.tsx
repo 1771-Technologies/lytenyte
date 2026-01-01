@@ -29,13 +29,15 @@ function PillRootImpl({ children = PillRowDefault, ...p }: PillManager.Props) {
       prevSwapId,
       prevRowId,
 
-      onActiveChange: p.onActiveChange ?? (() => {}),
+      onPillItemActiveChange: p.onPillItemActiveChange ?? (() => {}),
       onPillRowChange: p.onPillRowChange ?? (() => {}),
+      onPillItemThrown: p.onPillItemThrown ?? (() => {}),
     };
   }, [
     cloned,
     dragState,
-    p.onActiveChange,
+    p.onPillItemActiveChange,
+    p.onPillItemThrown,
     p.onPillRowChange,
     p.orientation,
     p.rows,
@@ -71,7 +73,13 @@ export namespace PillManager {
       readonly full: PillRowSpec[];
     }) => void;
 
-    readonly onActiveChange?: (params: {
+    readonly onPillItemActiveChange?: (params: {
+      readonly index: number;
+      readonly item: PillItemSpec;
+      readonly row: PillRowSpec;
+    }) => void;
+
+    readonly onPillItemThrown?: (params: {
       readonly index: number;
       readonly item: PillItemSpec;
       readonly row: PillRowSpec;

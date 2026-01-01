@@ -22,6 +22,7 @@ export function useDraggable({
   onDragMove,
   onDragEnd,
   onDrop,
+  onUnhandledDrop,
 }: UseDraggableProps) {
   const [dragging, setDragging] = useState(false);
 
@@ -140,6 +141,12 @@ export function useDraggable({
         (e) => {
           e.preventDefault();
 
+          onUnhandledDrop?.({
+            data,
+            ev: e,
+            position: { x: dragX(), y: dragY() },
+          });
+
           clearDragGlobals();
         },
         { signal: controller.signal },
@@ -162,7 +169,7 @@ export function useDraggable({
       draggable: true,
       onDragStart: handleDrag,
     };
-  }, [data, onDragEnd, onDragMove, onDragStart, onDrop, placeholder]);
+  }, [data, onDragEnd, onDragMove, onDragStart, onDrop, onUnhandledDrop, placeholder]);
 
   const p =
     typeof placeholder === "function" ? (

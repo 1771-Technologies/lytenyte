@@ -20,10 +20,12 @@ function PillItemBase({ render, item, ...props }: PillItem.Props, ref: PillItem.
     setDragState,
     setCloned,
     cloned,
-    onActiveChange,
     rows,
-    onPillRowChange,
     dragState,
+
+    onPillItemThrown,
+    onPillItemActiveChange,
+    onPillRowChange,
   } = usePillRoot();
 
   const clonedRef = useRef(cloned);
@@ -38,6 +40,13 @@ function PillItemBase({ render, item, ...props }: PillItem.Props, ref: PillItem.
       pill: { data: { item, id: row.id }, kind: "site" },
     },
 
+    onUnhandledDrop: () => {
+      onPillItemThrown?.({
+        index: rows.findIndex((x) => x.id === row.id)!,
+        item,
+        row: rows.find((x) => x.id === row.id)!,
+      });
+    },
     onDragStart: () => {
       setDragState({ activeId: item.id, activeRow: row.id, activeType: row.type ?? "" });
       setCloned([...rows]);
@@ -180,7 +189,7 @@ function PillItemBase({ render, item, ...props }: PillItem.Props, ref: PillItem.
 
       const index = rows.indexOf(row);
 
-      onActiveChange({ index, item: nextPill, row: nextRow });
+      onPillItemActiveChange({ index, item: nextPill, row: nextRow });
     },
   };
 

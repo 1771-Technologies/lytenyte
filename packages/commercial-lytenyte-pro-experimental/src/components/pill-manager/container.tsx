@@ -37,12 +37,12 @@ function ContainerBase(props: PillContainer.Props, forwarded: PillContainer.Prop
 
     const bb = container.getBoundingClientRect();
     if (bb.left < x && bb.right > x && bb.top < y && bb.bottom > y) {
-      setOver(true);
       // I am inside
       if (row.pills.find((x) => x.id === dragged.id)) return;
 
       if (!row.accepts || !dragged.tags || dragged.tags.every((x) => !row.accepts?.includes(x))) return;
 
+      setOver(true);
       const thisRow = rows.findIndex((x) => x.id === row.id);
       const originalRow = rows[thisRow];
 
@@ -89,6 +89,15 @@ function ContainerBase(props: PillContainer.Props, forwarded: PillContainer.Prop
       data-ln-orientation={orientation}
       data-ln-pill-container
       data-ln-pill-type={row.type}
+      onDrop={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+      onDragOver={(e) => {
+        e.dataTransfer.dropEffect = "move";
+        e.preventDefault();
+        e.stopPropagation();
+      }}
     />
   );
 }

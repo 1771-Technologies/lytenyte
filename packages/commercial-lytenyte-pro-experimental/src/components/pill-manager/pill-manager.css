@@ -14,6 +14,8 @@
     box-sizing: border-box;
     border-block-end: 1px solid black;
 
+    min-height: 52px;
+
     border-bottom: 1px solid var(--ln-border);
   }
 
@@ -40,7 +42,8 @@
     flex-wrap: wrap;
 
     & [data-ln-pill-item-container] {
-      padding-block: var(--ln-space-10);
+      padding-block-end: var(--ln-space-05);
+      padding-block-start: var(--ln-space-02);
     }
   }
 

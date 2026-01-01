@@ -50,7 +50,18 @@ export default function Demo() {
         onPillRowChange={(p) => {
           setState(p.full);
         }}
-        onActiveChange={(p) => {
+        onPillItemThrown={(x) => {
+          setState((prev) => {
+            const next = [...prev];
+            next[x.index] = {
+              ...next[x.index],
+              pills: next[x.index].pills.filter((item) => item.id !== x.item.id),
+            };
+
+            return next;
+          });
+        }}
+        onPillItemActiveChange={(p) => {
           setState((prev) => {
             const next = [...prev];
             next.splice(p.index, 1, p.row);
