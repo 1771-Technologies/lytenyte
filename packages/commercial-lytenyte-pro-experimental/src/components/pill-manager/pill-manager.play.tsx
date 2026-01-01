@@ -62,6 +62,7 @@ export default function Demo() {
           });
         }}
         onPillItemActiveChange={(p) => {
+          console.log("i ran");
           setState((prev) => {
             const next = [...prev];
             next.splice(p.index, 1, p.row);

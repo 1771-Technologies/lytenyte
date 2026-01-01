@@ -96,6 +96,10 @@
       padding-block: var(--ln-space-05);
       padding-inline: var(--ln-space-10);
       border: 1px solid transparent;
+
+      &:focus-visible {
+        outline: 1px solid var(--ln-primary-50);
+      }
     }
 
     &[data-ln-draggable="true"] [data-ln-pill-item] {

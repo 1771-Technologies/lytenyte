@@ -71,26 +71,6 @@ function PillItemBase({ render, item, ...props }: PillItem.Props, ref: PillItem.
     },
   });
 
-  const s = render ?? (
-    <div>
-      {item.movable && (
-        <div
-          style={{
-            width: 20,
-            height: 20,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "grab",
-          }}
-        >
-          <DragDots />
-        </div>
-      )}
-      <div>{item.id}</div>
-    </div>
-  );
-
   const handleDragEnter = useEvent((ev) => {
     ev.preventDefault();
     ev.stopPropagation();
@@ -178,23 +158,49 @@ function PillItemBase({ render, item, ...props }: PillItem.Props, ref: PillItem.
     });
   });
 
-  const itemProps: JSX.IntrinsicElements["div"] = {
-    onClick: () => {
-      const next = !item.active;
-      const nextPill: PillItemSpec = { ...item, active: next };
-      const nextPills = [...row.pills];
-      nextPills.splice(nextPills.indexOf(item), 1, nextPill);
+  const onItemClick = () => {
+    const next = !item.active;
+    const nextPill: PillItemSpec = { ...item, active: next };
+    const nextPills = [...row.pills];
+    nextPills.splice(nextPills.indexOf(item), 1, nextPill);
 
-      const nextRow: PillRowSpec = { ...row, pills: nextPills };
+    const nextRow: PillRowSpec = { ...row, pills: nextPills };
 
-      const index = rows.indexOf(row);
+    const index = rows.indexOf(row);
 
-      onPillItemActiveChange({ index, item: nextPill, row: nextRow });
-    },
+    onPillItemActiveChange({ index, item: nextPill, row: nextRow });
   };
 
+  const s = render ?? (
+    <div
+      tabIndex={-1}
+      onClick={onItemClick}
+      onKeyDown={(ev) => {
+        if (ev.key === " " && document.activeElement === ev.currentTarget) {
+          onItemClick?.();
+        }
+      }}
+    >
+      {item.movable && (
+        <div
+          style={{
+            width: 20,
+            height: 20,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "grab",
+          }}
+        >
+          <DragDots />
+        </div>
+      )}
+      <div>{item.id}</div>
+    </div>
+  );
+
   const slot = useSlot({
-    props: [itemProps, item.movable ? dragProps : {}, props, { "data-ln-pill-item": true }],
+    props: [item.movable ? dragProps : {}, props, { "data-ln-pill-item": true }],
     ref,
     slot: render ?? s,
     state: {

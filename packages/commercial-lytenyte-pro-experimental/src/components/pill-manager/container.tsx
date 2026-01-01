@@ -9,6 +9,7 @@ import {
   useSelector,
 } from "@1771technologies/lytenyte-core-experimental/internal";
 import type { PillItemSpec } from "./types.js";
+import { getFocusables } from "@1771technologies/lytenyte-shared";
 
 function ContainerBase(props: PillContainer.Props, forwarded: PillContainer.Props["ref"]) {
   const { setCloned, orientation, rows } = usePillRoot();
@@ -89,6 +90,32 @@ function ContainerBase(props: PillContainer.Props, forwarded: PillContainer.Prop
       data-ln-orientation={orientation}
       data-ln-pill-container
       data-ln-pill-type={row.type}
+      tabIndex={0}
+      onKeyDown={(ev) => {
+        if (ev.key === "ArrowRight") {
+          const focusables = getFocusables(ev.currentTarget);
+          if (!focusables.length) return;
+
+          const active = focusables.indexOf(document.activeElement as HTMLElement);
+          if (active === -1 || active === focusables.length - 1) {
+            focusables[0].focus();
+          } else {
+            focusables[active + 1].focus();
+          }
+          ev.preventDefault();
+        } else if (ev.key === "ArrowLeft") {
+          const focusables = getFocusables(ev.currentTarget);
+          if (!focusables.length) return;
+
+          const active = focusables.indexOf(document.activeElement as HTMLElement);
+          if (active === -1 || active === 0) {
+            focusables.at(-1)?.focus();
+          } else {
+            focusables[active - 1].focus();
+          }
+          ev.preventDefault();
+        }
+      }}
       onDrop={(e) => {
         e.preventDefault();
         e.stopPropagation();
