@@ -1,27 +1,17 @@
-import type {
-  CellRendererParams,
-  GridState,
-  HeaderCellRendererParams,
-} from "@1771technologies/lytenyte-pro/types";
 import type { ClassValue } from "clsx";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
+import { exchanges, networks, symbols } from "@1771technologies/grid-sample-data/dex-pairs-performance";
 
-import type { DEXPerformanceData } from "@1771technologies/grid-sample-data/dex-pairs-performance";
-import {
-  exchanges,
-  networks,
-  symbols,
-} from "@1771technologies/grid-sample-data/dex-pairs-performance";
-import type { CSSProperties } from "react";
-import { useId, useMemo } from "react";
-import { Switch } from "radix-ui";
-import { measureText } from "@1771technologies/lytenyte-pro";
 export function tw(...c: ClassValue[]) {
   return twMerge(clsx(...c));
 }
+import { measureText, type Grid } from "@1771technologies/lytenyte-pro-experimental";
+import type { GridSpec } from "./demo";
+import { useId, useMemo, type CSSProperties } from "react";
+import { Switch } from "radix-ui";
 
-export function SymbolCell({ grid: { api }, row }: CellRendererParams<DEXPerformanceData>) {
+export function SymbolCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
   if (!api.rowIsLeaf(row) || !row.data) return null;
 
   const ticker = row.data.symbolTicker;
@@ -37,7 +27,7 @@ export function SymbolCell({ grid: { api }, row }: CellRendererParams<DEXPerform
           className="h-full w-full overflow-hidden rounded-full"
         />
       </div>
-      <div className="bg-ln-gray-20 text-ln-gray-100 flex h-fit items-center justify-center rounded-lg px-2 py-px text-[10px]">
+      <div className="bg-ln-gray-20 text-ln-text-dark flex h-fit items-center justify-center rounded-lg px-2 py-px text-[10px]">
         {ticker}
       </div>
       <div className="w-full overflow-hidden text-ellipsis">{symbol.split("/")[0]}</div>
@@ -45,7 +35,7 @@ export function SymbolCell({ grid: { api }, row }: CellRendererParams<DEXPerform
   );
 }
 
-export function NetworkCell({ grid: { api }, row }: CellRendererParams<DEXPerformanceData>) {
+export function NetworkCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
   if (!api.rowIsLeaf(row) || !row.data) return null;
 
   const name = row.data.network;
@@ -65,7 +55,7 @@ export function NetworkCell({ grid: { api }, row }: CellRendererParams<DEXPerfor
   );
 }
 
-export function ExchangeCell({ grid: { api }, row }: CellRendererParams<DEXPerformanceData>) {
+export function ExchangeCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
   if (!api.rowIsLeaf(row) || !row.data) return null;
 
   const name = row.data.exchange;
@@ -86,11 +76,11 @@ export function ExchangeCell({ grid: { api }, row }: CellRendererParams<DEXPerfo
 }
 
 export function PercentCellPositiveNegative({
-  grid: { api, state },
+  api,
   column,
   colIndex,
   row,
-}: CellRendererParams<DEXPerformanceData>) {
+}: Grid.T.CellRendererParams<GridSpec>) {
   if (!api.rowIsLeaf(row) || !row.data) return null;
 
   const field = api.columnField(column, row);
@@ -106,17 +96,12 @@ export function PercentCellPositiveNegative({
         field < 0 ? "text-red-600 dark:text-red-300" : "text-green-600 dark:text-green-300",
       )}
     >
-      <HashedValue value={value} gridState={state} columnIndex={colIndex} />
+      <HashedValue value={value} api={api} columnIndex={colIndex} />
     </div>
   );
 }
 
-export function PercentCell({
-  grid: { api, state },
-  colIndex,
-  column,
-  row,
-}: CellRendererParams<DEXPerformanceData>) {
+export function PercentCell({ api, colIndex, column, row }: Grid.T.CellRendererParams<GridSpec>) {
   if (!api.rowIsLeaf(row) || !row.data) return null;
 
   const field = api.columnField(column, row);
@@ -127,7 +112,7 @@ export function PercentCell({
 
   return (
     <div className="flex h-full w-full items-center justify-end tabular-nums">
-      <HashedValue value={value} gridState={state} columnIndex={colIndex} />
+      <HashedValue value={value} api={api} columnIndex={colIndex} />
     </div>
   );
 }
@@ -135,19 +120,20 @@ export function PercentCell({
 function HashedValue({
   value,
   columnIndex,
-  gridState,
+  api,
 }: {
   value: string;
-  gridState: GridState<DEXPerformanceData>;
   columnIndex: number;
+  api: Grid.API<GridSpec>;
 }) {
-  const widths = gridState.xPositions.useValue();
+  const widths = api.xPositions$.useValue();
+
   const width = widths[columnIndex + 1] - widths[columnIndex];
   const measuredWidth = useMemo(() => {
-    const m = measureText(value, gridState.viewport.get()!);
+    const m = measureText(value, api.viewport()!);
 
     return m.width;
-  }, [gridState.viewport, value]);
+  }, [api, value]);
 
   // Minus 6 as slight adjustment so we know there is definitely enough space
   if (measuredWidth > width - 6) return "#".repeat(Math.ceil(width / 16) + 1);
@@ -156,35 +142,31 @@ function HashedValue({
 }
 
 export const makePerfHeaderCell = (name: string, subname: string) => {
-  return (_: HeaderCellRendererParams<DEXPerformanceData>) => {
+  return (_: Grid.T.HeaderParams<GridSpec>) => {
     return (
-      <div className="flex h-full w-full flex-col items-end justify-center">
+      <div className="flex h-full w-full flex-col items-end justify-center tabular-nums">
         <div>{name}</div>
-        <div className="font-mono uppercase">{subname}</div>
+        <div className="text-ln-text-light font-mono uppercase">{subname}</div>
       </div>
     );
   };
 };
 
-export function SwitchToggle(props: {
-  label: string;
-  checked: boolean;
-  onChange: (b: boolean) => void;
-}) {
+export function SwitchToggle(props: { label: string; checked: boolean; onChange: (b: boolean) => void }) {
   const id = useId();
   return (
     <div className="flex items-center gap-2">
-      <label className="text-ln-gray-90 text-sm leading-none" htmlFor={id}>
+      <label className="text-ln-text-dark text-sm leading-none" htmlFor={id}>
         {props.label}
       </label>
       <Switch.Root
-        className="bg-ln-gray-10 data-[state=checked]:bg-ln-gray-40 relative h-[22px] w-[38px] cursor-pointer rounded-full border outline-none"
+        className="bg-ln-gray-10 data-[state=checked]:bg-ln-primary-50 h-5.5 w-9.5 border-ln-border-strong relative cursor-pointer rounded-full border outline-none"
         id={id}
         checked={props.checked}
         onCheckedChange={(c) => props.onChange(c)}
         style={{ "-webkit-tap-highlight-color": "rgba(0, 0, 0, 0)" } as CSSProperties}
       >
-        <Switch.Thumb className="block size-[18px] translate-x-[2px] rounded-full bg-white/95 shadow transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-[16px] data-[state=checked]:bg-white" />
+        <Switch.Thumb className="size-4.5 block translate-x-0.5 rounded-full bg-white/95 shadow transition-transform duration-100 will-change-transform data-[state=checked]:translate-x-4 data-[state=checked]:bg-white" />
       </Switch.Root>
     </div>
   );

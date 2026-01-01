@@ -1,13 +1,13 @@
 //#start
 import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
-import "@1771technologies/lytenyte-pro-experimental/pill-manager.css";
-import { Grid, PillManager, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
 import {
   ExchangeCell,
   makePerfHeaderCell,
   NetworkCell,
   PercentCell,
   PercentCellPositiveNegative,
+  SwitchToggle,
   SymbolCell,
 } from "./components.jsx";
 import type { DEXPerformanceData } from "@1771technologies/grid-sample-data/dex-pairs-performance";
@@ -18,9 +18,9 @@ export interface GridSpec {
   readonly data: DEXPerformanceData;
 }
 
-const initialColumns: Grid.Column<GridSpec>[] = [
+const columns: Grid.Column<GridSpec>[] = [
   { id: "symbol", cellRenderer: SymbolCell, width: 250, name: "Symbol" },
-  { id: "network", cellRenderer: NetworkCell, width: 220, hide: true, name: "Network" },
+  { id: "network", cellRenderer: NetworkCell, width: 220, name: "Network" },
   { id: "exchange", cellRenderer: ExchangeCell, width: 220, hide: true, name: "Exchange" },
 
   {
@@ -81,45 +81,24 @@ const base: Grid.ColumnBase<GridSpec> = { width: 80 };
 //#end
 export default function ColumnBase() {
   const ds = useClientDataSource({ data: data });
-  const [columns, setColumns] = useState(initialColumns); //!
+  const [sizeToFit, setSizeToFit] = useState(true);
 
   return (
     <>
-      <div>
-        {/*!next 27 */}
-        <PillManager
-          onPillItemActiveChange={(p) => {
-            setColumns((prev) => {
-              return [...prev].map((x) => {
-                if (p.item.id === x.id) {
-                  return { ...x, hide: !p.item.active };
-                }
-                return x;
-              });
-            });
+      <div className="border-ln-border flex w-full border-b px-2 py-2">
+        <SwitchToggle
+          label="Toggle Hash Truncate Cells"
+          checked={sizeToFit}
+          onChange={() => {
+            setSizeToFit((prev) => !prev);
           }}
-          rows={[
-            {
-              id: "columns",
-              label: "Columns",
-              type: "columns",
-              pills: columns.map((c) => ({
-                id: c.id,
-                name: c.name,
-                active: !c.hide,
-                data: c,
-                movable: false,
-                removable: false,
-              })),
-            },
-          ]}
         />
       </div>
       <div
         className="ln-grid ln-cell:text-xs ln-header:text-xs ln-header:text-ln-text-xlight"
         style={{ height: 500 }}
       >
-        <Grid columns={columns} columnBase={base} rowSource={ds} />
+        <Grid columns={columns} columnBase={base} rowSource={ds} columnSizeToFit={sizeToFit} />
       </div>
     </>
   );
