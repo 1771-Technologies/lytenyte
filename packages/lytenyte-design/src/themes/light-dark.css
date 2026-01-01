@@ -79,8 +79,8 @@
   --ln-row-pivot-stroke: hsla(158, 34%, 75%, 1);
   --ln-column-pivot-fill: hsla(260, 56%, 94%, 1);
   --ln-column-pivot-stroke: hsla(259, 57%, 82%, 1);
-  --ln-column-group-fill: hsla(0, 0%, 100%, 1);
-  --ln-column-group-stroke: hsla(217, 98%, 18%, 0.14);
+  --ln-column-fill: hsla(0, 0%, 100%, 1);
+  --ln-column-stroke: hsla(217, 98%, 18%, 0.14);
 }
 
 .dark {
@@ -164,6 +164,6 @@
   --ln-row-pivot-stroke: hsla(158, 100%, 55%, 0.35);
   --ln-column-pivot-fill: hsla(259, 100%, 61%, 0.18);
   --ln-column-pivot-stroke: hsla(259, 100%, 66%, 0.6);
-  --ln-column-group-fill: hsla(217, 100%, 54%, 0.19);
-  --ln-column-group-stroke: hsla(217, 100%, 54%, 0.58);
+  --ln-column-fill: hsla(217, 100%, 54%, 0.19);
+  --ln-column-stroke: hsla(217, 100%, 54%, 0.58);
 }

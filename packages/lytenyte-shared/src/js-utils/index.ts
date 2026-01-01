@@ -13,6 +13,7 @@ export { isFunction } from "./is-function.js";
 export { itemsWithIdToMap } from "./items-with-id-to-map.js";
 export { rangedBinarySearch } from "./ranged-binary-search.js";
 export { rangesOverlap } from "./ranges-overlap.js";
+export { moveRelative } from "./move-relative.js";
 export { runWithBackoff } from "./run-with-backoff.js";
 export { sleep, wait } from "./sleep.js";
 export { smartStringIncludes } from "./smart-string-includes.js";

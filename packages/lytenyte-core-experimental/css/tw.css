@@ -216,8 +216,8 @@
   --color-ln-row-pivot-stroke: var(--ln-row-pivot-stroke);
   --color-ln-column-pivot-fill: var(--ln-column-pivot-fill);
   --color-ln-column-pivot-stroke: var(--ln-column-pivot-stroke);
-  --color-ln-column-group-fill: var(--ln-column-group-fill);
-  --color-ln-column-group-stroke: var(--ln-column-group-stroke);
+  --color-ln-column-fill: var(--ln-column-fill);
+  --color-ln-column-stroke: var(--ln-column-stroke);
 
   --spacing-ln-space-02: var(--ln-space-02);
   --spacing-ln-space-05: var(--ln-space-05);

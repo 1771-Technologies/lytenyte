@@ -1,5 +1,5 @@
 import { useTheme } from "@1771technologies/play-frame";
-import "@1771technologies/lytenyte-design/font.css";
+import "@1771technologies/lytenyte-design/fonts.css";
 import "../../css/grid-full.css";
 
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";

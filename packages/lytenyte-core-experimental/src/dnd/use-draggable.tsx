@@ -10,6 +10,8 @@ import {
   dragStyleEl,
   dragX,
   dragY,
+  horizontalDirection,
+  verticalDirection,
 } from "./global.js";
 import { ReactPlaceholder } from "./react-placeholder.js";
 
@@ -20,6 +22,7 @@ export function useDraggable({
   onDragMove,
   onDragEnd,
   onDrop,
+  onUnhandledDrop,
 }: UseDraggableProps) {
   const [dragging, setDragging] = useState(false);
 
@@ -91,6 +94,9 @@ export function useDraggable({
           [x, x1] = [x1, ev.clientX];
           [y, y1] = [y1, ev.clientY];
 
+          horizontalDirection(prevX < ev.clientX ? "end" : "start");
+          verticalDirection(prevY < ev.clientY ? "bottom" : "top");
+
           prevX = ev.clientX;
           prevY = ev.clientY;
 
@@ -135,6 +141,12 @@ export function useDraggable({
         (e) => {
           e.preventDefault();
 
+          onUnhandledDrop?.({
+            data,
+            ev: e,
+            position: { x: dragX(), y: dragY() },
+          });
+
           clearDragGlobals();
         },
         { signal: controller.signal },
@@ -157,7 +169,7 @@ export function useDraggable({
       draggable: true,
       onDragStart: handleDrag,
     };
-  }, [data, onDragEnd, onDragMove, onDragStart, onDrop, placeholder]);
+  }, [data, onDragEnd, onDragMove, onDragStart, onDrop, onUnhandledDrop, placeholder]);
 
   const p =
     typeof placeholder === "function" ? (

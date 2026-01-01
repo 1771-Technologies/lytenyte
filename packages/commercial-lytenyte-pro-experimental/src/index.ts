@@ -161,3 +161,5 @@ export { SelectAll } from "./components/select-all.js";
 
 export type { Piece, PieceWritable } from "@1771technologies/lytenyte-core-experimental";
 export { usePiece } from "@1771technologies/lytenyte-core-experimental";
+
+export { PillManager } from "./components/pill-manager/index.js";
