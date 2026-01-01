@@ -5,6 +5,17 @@ import type { PillRowSpec } from "./types";
 export type PillRootContext = Required<Omit<PillManager.Props, "children">> & {
   readonly cloned: null | PillRowSpec[];
   readonly setCloned: Dispatch<SetStateAction<null | PillRowSpec[]>>;
+
+  readonly setDragState: Dispatch<
+    SetStateAction<{
+      readonly activeId: string;
+      readonly activeRow: string;
+    } | null>
+  >;
+  readonly dragState: null | {
+    readonly activeId: string;
+    readonly activeRow: string;
+  };
 };
 
 const context = createContext({} as PillRootContext);

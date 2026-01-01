@@ -10,6 +10,8 @@ import {
   dragStyleEl,
   dragX,
   dragY,
+  horizontalDirection,
+  verticalDirection,
 } from "./global.js";
 import { ReactPlaceholder } from "./react-placeholder.js";
 
@@ -90,6 +92,9 @@ export function useDraggable({
         frame = requestAnimationFrame(() => {
           [x, x1] = [x1, ev.clientX];
           [y, y1] = [y1, ev.clientY];
+
+          horizontalDirection(prevX < ev.clientX ? "end" : "start");
+          verticalDirection(prevY < ev.clientY ? "bottom" : "top");
 
           prevX = ev.clientX;
           prevY = ev.clientY;

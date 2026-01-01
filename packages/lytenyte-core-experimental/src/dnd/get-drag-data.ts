@@ -1,5 +1,5 @@
 import type { RowNode } from "@1771technologies/lytenyte-shared";
-import { dragData } from "./global.js";
+import { dragData, dragX, dragY, horizontalDirection, verticalDirection } from "./global.js";
 import type { Root } from "../root/root.js";
 
 type Source = { id: string; api: Root.API; row: RowNode<any>; rowIndex: number; data?: any };
@@ -11,4 +11,11 @@ export function getRowDragData() {
 
 export function getDragData() {
   return dragData();
+}
+export function getDragDirection() {
+  return [horizontalDirection(), verticalDirection()] as const;
+}
+
+export function getDragXY() {
+  return [dragX(), dragY()] as const;
 }

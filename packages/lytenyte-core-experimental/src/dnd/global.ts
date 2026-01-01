@@ -7,8 +7,13 @@ export const dragData = createSignal<UseDraggableProps["data"] | null>(null);
 export const dragStyleEl = createSignal<HTMLStyleElement | null>(null);
 export const dragBlankEl = createSignal<HTMLElement | null>(null);
 export const dragActiveDrop = createSignal<((p: DragEventParams) => void) | null>(null);
+export const horizontalDirection = createSignal<"start" | "end">("start");
+export const verticalDirection = createSignal<"top" | "bottom">("bottom");
 
 export const clearDragGlobals = () => {
+  horizontalDirection("start");
+  verticalDirection("bottom");
+
   dragX(-1);
   dragY(-1);
   dragData(null);

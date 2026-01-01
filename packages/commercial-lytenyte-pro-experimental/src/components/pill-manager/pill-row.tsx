@@ -20,7 +20,11 @@ export function PillRow({ row, ...props }: PropsWithChildren<PillRow.Props>) {
 
   return (
     <PillRowProvider value={value}>
-      {wrappedRows && <div data-ln-pill-row>{props.children}</div>}
+      {wrappedRows && (
+        <div data-ln-pill-row data-ln-expanded={expanded}>
+          {props.children}
+        </div>
+      )}
       {!wrappedRows && props.children}
     </PillRowProvider>
   );

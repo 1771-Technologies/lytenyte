@@ -5,6 +5,10 @@ import { PillRowDefault } from "./row-default.js";
 
 function PillRootImpl({ children = PillRowDefault, ...p }: PillManager.Props) {
   const [cloned, setCloned] = useState<PillRowSpec[] | null>(null);
+  const [dragState, setDragState] = useState<{
+    readonly activeId: string;
+    readonly activeRow: string;
+  } | null>(null);
   const value = useMemo<PillRootContext>(() => {
     return {
       orientation: p.orientation ?? "horizontal",
@@ -14,9 +18,22 @@ function PillRootImpl({ children = PillRowDefault, ...p }: PillManager.Props) {
       setCloned,
       rows: p.rows,
 
+      dragState,
+      setDragState,
+
       onActiveChange: p.onActiveChange ?? (() => {}),
+      onPillRowChange: p.onPillRowChange ?? (() => {}),
     };
-  }, [cloned, p.onActiveChange, p.orientation, p.rows, p.wrappedRoot, p.wrappedRows]);
+  }, [
+    cloned,
+    dragState,
+    p.onActiveChange,
+    p.onPillRowChange,
+    p.orientation,
+    p.rows,
+    p.wrappedRoot,
+    p.wrappedRows,
+  ]);
 
   const rendered = useMemo(() => {
     const rows = cloned ?? p.rows;
@@ -40,6 +57,11 @@ export namespace PillManager {
     readonly wrappedRows?: boolean;
     readonly wrappedRoot?: boolean;
     readonly children?: (row: PillRowSpec, ctx: PillRootContext) => ReactNode;
+
+    readonly onPillRowChange?: (params: {
+      readonly changed: PillRowSpec[];
+      readonly full: PillRowSpec[];
+    }) => void;
 
     readonly onActiveChange?: (params: {
       readonly index: number;

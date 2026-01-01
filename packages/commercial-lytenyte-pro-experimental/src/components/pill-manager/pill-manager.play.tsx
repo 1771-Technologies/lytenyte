@@ -6,7 +6,7 @@ import type { PillRowSpec } from "./types";
 import type { Column } from "../../types";
 
 interface GridSpec {
-  readonly column: { groupable?: boolean };
+  readonly column: { grouped?: boolean };
 }
 
 const columns: Column<GridSpec>[] = [
@@ -15,11 +15,11 @@ const columns: Column<GridSpec>[] = [
   { id: "default", groupPath: ["Top Dog"] },
   { id: "housing" },
   { id: "loan" },
-  { id: "contact", groupPath: ["Alpha", "Beta", "Carlson"] },
+  { id: "contact", groupPath: ["Alpha", "Beta", "Carlson"], grouped: true },
   { id: "day", groupPath: ["Alpha", "Beta"] },
-  { id: "month", groupPath: ["Alpha"] },
-  { id: "duration" },
-  { id: "campaign" },
+  { id: "month", groupPath: ["Alpha"], grouped: true },
+  { id: "duration", grouped: true },
+  { id: "campaign", grouped: true },
   { id: "pdays", groupPath: ["Carlson"] },
   { id: "previous", groupPath: ["Carlson", "Delta"] },
   { id: "poutcome" },
@@ -32,7 +32,14 @@ export default function Demo() {
       id: "columns",
       type: "columns",
       label: "Columns",
-      pills: columns.map((x) => ({ ...x, active: !x.hide, movable: true })),
+      pills: columns.map((x) => ({ ...x, active: !x.hide, movable: true, tags: ["groupable"] })),
+    },
+    {
+      id: "group",
+      type: "row-pivots",
+      label: "Row Groups",
+      accepts: ["groupable"],
+      pills: columns.filter((x) => x.grouped).map((x) => ({ ...x, active: true, movable: true })),
     },
   ]);
 
@@ -40,6 +47,9 @@ export default function Demo() {
     <div style={{ display: "flex", gap: 8, flexDirection: "column" }}>
       <PillManager
         rows={state}
+        onPillRowChange={(p) => {
+          setState(p.full);
+        }}
         onActiveChange={(p) => {
           setState((prev) => {
             const next = [...prev];
