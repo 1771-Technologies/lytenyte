@@ -1,5 +1,6 @@
 ---
 title: Column Groups
+step: Create a column header hierarchy and associate columns with column groups.
 description: LyteNyte Grid lets you organize columns into groups to create visual
   relationships between related columns. Each column belongs to one
   group, and groups may contain nested groups to form hierarchies.
@@ -119,11 +120,7 @@ The demo uses a few noteworthy patterns:
   attribute in custom CSS if some groups should not collapse.
 
 ```tsx
-<Grid.HeaderGroupCell
-  cell={c}
-  key={c.idOccurrence}
-  className="text-xs! group flex items-center px-2"
->
+<Grid.HeaderGroupCell cell={c} key={c.idOccurrence} className="text-xs! group flex items-center px-2">
   <div className="flex-1">{c.id}</div>
   <button
     className="text-ln-gray-90 hidden cursor-pointer items-center justify-center text-base group-data-[ln-collapsible=true]:flex"

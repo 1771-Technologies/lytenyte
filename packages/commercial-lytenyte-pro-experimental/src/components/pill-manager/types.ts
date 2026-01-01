@@ -1,6 +1,7 @@
 export interface PillItemSpec {
   readonly id: string;
   readonly active: boolean;
+  readonly name?: string;
   readonly movable?: boolean;
   readonly tags?: string[];
   readonly data?: unknown;

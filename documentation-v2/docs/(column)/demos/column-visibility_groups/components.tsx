@@ -1,23 +1,16 @@
-import "./component.css";
-import type {
-  CellRendererParams,
-  HeaderCellRendererParams,
-} from "@1771technologies/lytenyte-pro/types";
 import type { ClassValue } from "clsx";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
+import { exchanges, networks, symbols } from "@1771technologies/grid-sample-data/dex-pairs-performance";
 
-import type { DEXPerformanceData } from "@1771technologies/grid-sample-data/dex-pairs-performance";
-import {
-  exchanges,
-  networks,
-  symbols,
-} from "@1771technologies/grid-sample-data/dex-pairs-performance";
 export function tw(...c: ClassValue[]) {
   return twMerge(clsx(...c));
 }
+import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
+import type { GridSpec } from "./demo";
+import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 
-export function SymbolCell({ grid: { api }, row }: CellRendererParams<DEXPerformanceData>) {
+export function SymbolCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
   if (!api.rowIsLeaf(row) || !row.data) return null;
 
   const ticker = row.data.symbolTicker;
@@ -33,7 +26,7 @@ export function SymbolCell({ grid: { api }, row }: CellRendererParams<DEXPerform
           className="h-full w-full overflow-hidden rounded-full"
         />
       </div>
-      <div className="bg-ln-gray-20 text-ln-gray-100 flex h-fit items-center justify-center rounded-lg px-2 py-px text-[10px]">
+      <div className="bg-ln-gray-20 text-ln-text-dark flex h-fit items-center justify-center rounded-lg px-2 py-px text-[10px]">
         {ticker}
       </div>
       <div className="w-full overflow-hidden text-ellipsis">{symbol.split("/")[0]}</div>
@@ -41,7 +34,7 @@ export function SymbolCell({ grid: { api }, row }: CellRendererParams<DEXPerform
   );
 }
 
-export function NetworkCell({ grid: { api }, row }: CellRendererParams<DEXPerformanceData>) {
+export function NetworkCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
   if (!api.rowIsLeaf(row) || !row.data) return null;
 
   const name = row.data.network;
@@ -61,7 +54,7 @@ export function NetworkCell({ grid: { api }, row }: CellRendererParams<DEXPerfor
   );
 }
 
-export function ExchangeCell({ grid: { api }, row }: CellRendererParams<DEXPerformanceData>) {
+export function ExchangeCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
   if (!api.rowIsLeaf(row) || !row.data) return null;
 
   const name = row.data.exchange;
@@ -81,11 +74,7 @@ export function ExchangeCell({ grid: { api }, row }: CellRendererParams<DEXPerfo
   );
 }
 
-export function PercentCellPositiveNegative({
-  grid: { api },
-  column,
-  row,
-}: CellRendererParams<DEXPerformanceData>) {
+export function PercentCellPositiveNegative({ api, column, row }: Grid.T.CellRendererParams<GridSpec>) {
   if (!api.rowIsLeaf(row) || !row.data) return null;
 
   const field = api.columnField(column, row);
@@ -106,11 +95,7 @@ export function PercentCellPositiveNegative({
   );
 }
 
-export function PercentCell({
-  grid: { api },
-  column,
-  row,
-}: CellRendererParams<DEXPerformanceData>) {
+export function PercentCell({ api, column, row }: Grid.T.CellRendererParams<GridSpec>) {
   if (!api.rowIsLeaf(row) || !row.data) return null;
 
   const field = api.columnField(column, row);
@@ -123,12 +108,34 @@ export function PercentCell({
 }
 
 export const makePerfHeaderCell = (name: string, subname: string) => {
-  return (_: HeaderCellRendererParams<DEXPerformanceData>) => {
+  return (_: Grid.T.HeaderParams<GridSpec>) => {
     return (
-      <div className="flex h-full w-full flex-col items-end justify-center">
+      <div className="flex h-full w-full flex-col items-end justify-center tabular-nums">
         <div>{name}</div>
-        <div className="font-mono uppercase">{subname}</div>
+        <div className="text-ln-text-light font-mono uppercase">{subname}</div>
       </div>
     );
   };
 };
+
+export function HeaderGroupCell({
+  groupPath,
+  api,
+  collapsible,
+  collapsed,
+}: Grid.T.HeaderGroupParams<GridSpec>) {
+  return (
+    <>
+      <div className="flex-1">{groupPath.at(-1)!}</div>
+      <button
+        data-ln-button="secondary"
+        data-ln-icon
+        data-ln-size="sm"
+        onClick={() => api.columnToggleGroup(groupPath)}
+      >
+        {collapsible && collapsed && <ChevronRightIcon />}
+        {collapsible && !collapsed && <ChevronLeftIcon />}
+      </button>
+    </>
+  );
+}

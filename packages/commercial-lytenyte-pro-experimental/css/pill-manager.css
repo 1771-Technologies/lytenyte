@@ -1,4 +1,4 @@
-@import "../shared/button.css";
+@import "./components.css";
 
 @layer ln-grid {
   [data-ln-pill-root] {
@@ -10,6 +10,7 @@
   [data-ln-pill-row] {
     display: grid;
     grid-template-columns: subgrid;
+    align-items: center;
     grid-column: 1 / -1;
     box-sizing: border-box;
     border-block-end: 1px solid black;
@@ -38,12 +39,15 @@
     }
   }
 
+  [data-ln-pill-row][data-ln-expanded="true"] {
+    padding-block: var(--ln-space-20);
+  }
+
   [data-ln-pill-row][data-ln-expanded="true"] [data-ln-pill-container] {
     flex-wrap: wrap;
 
     & [data-ln-pill-item-container] {
-      padding-block-end: var(--ln-space-05);
-      padding-block-start: var(--ln-space-02);
+      padding-block: var(--ln-space-05);
     }
   }
 
@@ -97,6 +101,8 @@
       padding-inline: var(--ln-space-10);
       border: 1px solid transparent;
 
+      white-space: nowrap;
+
       &:focus-visible {
         outline: 1px solid var(--ln-primary-50);
       }
@@ -127,6 +133,7 @@
   [data-ln-pill-expander] {
     display: flex;
     align-items: center;
+    height: 100%;
     padding-inline: var(--ln-space-30);
     border-inline-start: 1px solid var(--ln-border);
   }

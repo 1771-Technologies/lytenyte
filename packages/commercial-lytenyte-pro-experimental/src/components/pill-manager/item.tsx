@@ -195,7 +195,7 @@ function PillItemBase({ render, item, ...props }: PillItem.Props, ref: PillItem.
           <DragDots />
         </div>
       )}
-      <div>{item.id}</div>
+      <div>{item.name ?? item.id}</div>
     </div>
   );
 

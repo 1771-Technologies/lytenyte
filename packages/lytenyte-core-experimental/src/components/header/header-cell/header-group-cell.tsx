@@ -76,7 +76,13 @@ const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(fu
         ...props.style,
       }}
     >
-      <Renderer api={api} columns={columns} groupPath={cell.groupPath} collapsible={cell.isCollapsible} />
+      <Renderer
+        api={api}
+        columns={columns}
+        groupPath={cell.groupPath}
+        collapsed={!isExpanded}
+        collapsible={cell.isCollapsible}
+      />
       {placeholder}
     </div>
   );
