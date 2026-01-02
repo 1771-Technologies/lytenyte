@@ -23,7 +23,7 @@ value.
 The meaning of a span depends on your use case, but fixed numeric spans are relatively uncommon and
 should be used with caution.
 
-!demo:Uniform Row Spans="./demos/row-spanning-number_x"
+::demo[Uniform Row Spans="./demos/row-spanning-number"]
 
 Define a two-row span directly within the column definition:
 
@@ -40,62 +40,52 @@ Set `rowSpan` to a **function** to compute spans dynamically per row. This allow
 data. The demo below groups cryptocurrencies by exchange, with the **Exchange** column spanning all
 rows that share the same exchange value.
 
-!demo:Function Row Spans="./demos/row-spanning-fn_x"
+::demo[Function Row Spans="./demos/row-spanning-fn"]
 
 The span for each exchange is computed ahead of time. The column then uses a span function to return
 the correct value, as shown below:
 
 ```ts
-const columns: Column<DEXPerformanceData>[] = [
-  // Other columns
-  {
-    id: "exchange",
-    cellRenderer: ExchangeCell,
-    name: "Exchange",
-    rowSpan: (r) => {
-      const exchange = r.row.data?.exchange as string;
-      // Lookup the precomputed span
-      return exchangeCounts[exchange] ?? 1;
-    },
+{
+  id: "symbol",
+  cellRenderer: SymbolCell,
+  width: 250,
+  name: "Symbol",
+  //!next 4
+  rowSpan: (r) => {
+    const exchange = r.row.data?.exchange as string;
+    return exchangeCounts[exchange] ?? 1;
   },
-];
+}
 ```
 
 ## Row Scan Distance
 
-For performance, LyteNyte Grid does not precompute spans for all rows. Instead, it scans backward from
-the first visible row based on the current scroll position. Control this lookback using the
-`rowScanDistance` property:
+For performance, LyteNyte Grid does not precompute spans for all rows ahead of time. Instead, it scans backward from
+the first visible row to determine which cells should span. The grid scans a specific number of rows before the first
+visible row based on the `rowScanDistance` property. You can change `rowScanDistance` to tune span calculation
+performance. The default scan distance is 50, which is usually sufficient for most use cases.
 
-LyteNyte Grid optimizes performance by not precomputing spans for all rows.
-Instead, it scans backward from the first visible row according to
-the current scroll position. Control this
-lookback using the `rowScanDistance` property:
-
-```ts
-const grid = Grid.useLyteNyte({
-  rowScanDistance: 100,
-});
+```tsx
+<Grid rowScanDistance={100} />
 ```
 
-The `rowScanDistance` value sets the maximum row span a cell is allowed to have. The value returned by the `rowSpan`
-property on the column must never exceed `rowScanDistance`, otherwise, LyteNyte Grid cannot ensure that it will hide the
-cells covered by the span.
+The `rowScanDistance` value sets the maximum row span that a cell is allowed to have. The value returned by the `rowSpan`
+property on the column must not exceed `rowScanDistance`. If `rowSpan` exceeds `rowScanDistance`, LyteNyte Grid cannot
+guarantee that it will hide the cells covered by the span.
 
-<Callout>
+:::info
 
-LyteNyte Grid uses a scan-based approach to optimize correctness and performance.
-Unlike many grids that precompute spans (limiting scalability) or render spans inaccurately
-when scrolling, it requires you to set a maximum span, ensuring both
-accuracy and performance are maintained.
+LyteNyte Grid uses a scan-based approach to optimize for correctness and performance.
+Unlike grids that precompute spans (which limits scalability) or render spans inaccurately
+when scrolling, LyteNyte Grid requires you to set a maximum span so it can maintain both
+accuracy and performance.
 
-In most cases, a scan distance of 100 is sufficient, as spans rarely reach this size.
-
-</Callout>
+:::
 
 ## Next Steps
 
-- [Row Height](/docs/row-height): Change row height, including variable-height and fill-height rows.
-- [Row Pinning](/docs/row-pinning): Freeze rows at the top or bottom of the viewport.
-- [Row Sorting](/docs/row-sorting): Learn how to sort and order rows.
-- [Row Selection](/docs/row-selection): Select single or multiple rows.
+::next[/docs/row-height]
+::next[/docs/row-pinning]
+::next[/docs/row-sorting]
+::next[/docs/row-selection]
