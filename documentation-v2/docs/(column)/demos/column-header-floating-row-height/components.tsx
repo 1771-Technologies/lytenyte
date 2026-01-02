@@ -174,7 +174,7 @@ export function FloatingFilter({ column, api }: Grid.T.HeaderParams<GridSpec>) {
   return (
     <input
       className={tw(
-        "border-ln-gray-30 h-[calc(100%-8px)] w-full rounded-lg border px-2 text-sm",
+        "border-ln-gray-30 focus:outline-ln-primary-50 h-[calc(100%-8px)] w-full rounded-lg border px-2 text-sm focus:outline-1",
         isSmall && "rounded text-xs",
       )}
       value={filterForColumn ?? ""}
