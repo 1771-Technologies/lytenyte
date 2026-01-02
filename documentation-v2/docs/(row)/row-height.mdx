@@ -18,36 +18,7 @@ calculates each row's height in pixels. This property accepts three possible val
 Set `rowHeight` to a number to give all rows a uniform height. The numeric value
 represents the row height in pixels. The demo below shows fixed row heights in action.
 
-!demo:Fixed Row Height="./demos/row-height-fixed_x"
-
-### Updating Row Height
-
-In the demo above, clicking the toggle buttons updates the row height.
-You can change the row height by setting the `grid.state.rowHeight` property.
-Updating this value causes the grid to recalculate row layout,
-so avoid changing it inside hot or frequently running code paths.
-
-The following example sets the row height to `40px`:
-
-```ts
-grid.state.rowHeight.set(40);
-```
-
-If you need to update a **variable** row height after grid initialization, set `rowHeight` to a function
-that **returns** your height function. This pattern prevents you from overwriting
-the state setter with the height function itself.
-
-```ts
-const myRowHeightFunction = (i: number) => {
-  /* implementation */
-};
-
-// ❌ Incorrect
-grid.state.rowHeight.set(myRowHeightFunction);
-
-// ✅ Correct
-grid.state.rowHeight.set(() => myRowHeightFunction);
-```
+::demo[Fixed Row Height="./demos/row-height-fixed"]
 
 ## Variable Row Height
 
@@ -60,17 +31,14 @@ Keep the implementation simple and avoid expensive calculations inside the callb
 
 The demo below illustrates variable row heights in practice.
 
-!demo:Variable Row Height="./demos/row-height-variable_x"
+::demo[Variable Row Height="./demos/row-height-variable"]
 
 In this example, the row height cycles through a predefined set of values.
 While this demo uses a simple pattern, your own logic can be as complex as needed,
 as long as it remains performant.
 
 ```ts
-const grid = Grid.useLyteNyte({
-  // Other grid properties
-  rowHeight: (i) => [30, 50, 80, 120][i % 4],
-});
+const rowHeight = (i: number) => [30, 50, 80, 120][i % 4];
 ```
 
 ## Fill Row Height
@@ -82,19 +50,19 @@ LyteNyte Grid assigns each row its minimum height, calculates the remaining avai
 and then distributes that space evenly across all rows. This approach works well when the
 grid displays only a small number of rows and you want them to occupy the full viewport height.
 
-!demo:Fill Row Height="./demos/row-height-fill_x"
+::demo[Fill Row Height="./demos/row-height-fill"]
 
-<Callout>
+:::info
 
 When using fill row heights, if the combined minimum height of all rows exceeds the viewport height,
 the grid cannot distribute additional space. In this case, each row renders at exactly
 its minimum height, behaving the same as fixed-height rows.
 
-</Callout>
+:::
 
 ## Next Steps
 
-- [Row Pinning](/docs/row-pinning): Freeze specific rows at the top or bottom of the viewport.
-- [Row Full Width](/docs/row-full-width): Create rows that expand to the full width of the viewport.
-- [Row Selection](/docs/row-selection): Select individual or multiple rows.
-- [Row Sorting](/docs/row-sorting): Learn about the row sort model and how rows are ordered.
+::next[/docs/row-pinning]
+::next[/docs/row-full-width]
+::next[/docs/row-selection]
+::next[/docs/row-sorting]
