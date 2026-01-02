@@ -10,7 +10,11 @@ import type {
 } from "@1771technologies/lytenyte-shared";
 import type { Column } from "./column.js";
 import type { GridSpec, VirtualTarget } from "./grid.js";
-import type { useDraggable, UseDraggableProps } from "@1771technologies/lytenyte-core-experimental/internal";
+import type {
+  Piece,
+  useDraggable,
+  UseDraggableProps,
+} from "@1771technologies/lytenyte-core-experimental/internal";
 import type { Props } from "./props.js";
 
 type WithId = { readonly id: string };
@@ -38,6 +42,10 @@ export type API<Spec extends GridSpec = GridSpec> = {
   readonly positionFromElement: (el: HTMLElement) => PositionUnion | null;
 
   // CORE Shared Properties
+  readonly xPositions$: Piece<Uint32Array>;
+  readonly yPositions$: Piece<Uint32Array>;
+  readonly viewport$: Piece<HTMLElement | null>;
+
   readonly cellRoot: (row: number, column: number) => PositionGridCell | PositionFullWidthRow | null;
   readonly columnById: (id: string) => Column<Spec> | null;
   readonly columnByIndex: (index: number) => Column<Spec> | null;
@@ -49,7 +57,7 @@ export type API<Spec extends GridSpec = GridSpec> = {
     readonly updatePinState?: boolean;
   }) => void;
   readonly columnResize: (sizes: Record<string, number>) => void;
-  readonly columnAutosize: (params: {
+  readonly columnAutosize: (params?: {
     readonly dryRun?: boolean;
     readonly includeHeader?: boolean;
     readonly columns?: (string | number | WithId)[];

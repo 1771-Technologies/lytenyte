@@ -20,6 +20,7 @@ const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(fu
     columnGroupExpansions,
     columnGroupRenderer,
     events,
+    styles: sx,
   } = useRoot();
 
   const isExpanded = columnGroupExpansions[cell.id] ?? columnGroupDefaultExpansion;
@@ -44,6 +45,7 @@ const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(fu
 
   return (
     <div
+      className={sx?.headerGroup?.className}
       {...dragProps}
       {...props}
       {...handlers}
@@ -73,10 +75,16 @@ const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(fu
         height: headerGroupHeight,
         boxSizing: "border-box",
         opacity: (cell.isHiddenMove ?? false) ? 0 : undefined,
-        ...props.style,
+        ...(props.style ?? sx?.headerGroup?.style),
       }}
     >
-      <Renderer api={api} columns={columns} groupPath={cell.groupPath} collapsible={cell.isCollapsible} />
+      <Renderer
+        api={api}
+        columns={columns}
+        groupPath={cell.groupPath}
+        collapsed={!isExpanded}
+        collapsible={cell.isCollapsible}
+      />
       {placeholder}
     </div>
   );

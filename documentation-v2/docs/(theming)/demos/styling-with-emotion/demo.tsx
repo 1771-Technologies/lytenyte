@@ -27,7 +27,7 @@ const base: Grid.ColumnBase<GridSpec> = { width: 100 };
 
 //#end
 
-//!next 25
+//!next 33
 const Cell = styled(Grid.Cell)`
   display: flex;
   align-items: center;
@@ -36,6 +36,10 @@ const Cell = styled(Grid.Cell)`
   color: light-dark(hsla(175, 6%, 38%, 1), hsla(175, 10%, 86%, 1));
   font-size: 14px;
   border-bottom: 1px solid light-dark(hsla(175, 20%, 95%, 1), hsla(177, 19%, 17%, 1));
+
+  &[data-ln-type="number"] {
+    justify-content: flex-end;
+  }
 `;
 
 const HeaderCell = styled(Grid.HeaderCell)`
@@ -46,6 +50,10 @@ const HeaderCell = styled(Grid.HeaderCell)`
   color: light-dark(hsla(177, 19%, 17%, 1), hsla(175, 12%, 92%, 1));
   text-transform: capitalize;
   font-size: 14px;
+
+  &[data-ln-type="number"] {
+    justify-content: flex-end;
+  }
 `;
 
 const Row = styled(Grid.Row)`

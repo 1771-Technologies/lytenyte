@@ -13,35 +13,29 @@ cleanly into other columns. Common use cases include:
 
 ## Enabling Marker Column
 
-Enable the marker column using the `columnMarkerEnabled` property on the grid
-state. When enabled, provide a column specification using the `columnMarker` property.
+Enable the marker column by setting the `columnMarker` property on the grid with
+a marker definition that has the `on` property set to `true`. For example:
+
+```ts
+const marker: Grid.ColumnMarker<GridSpec> = {
+  on: true, //!
+
+  // Other marker column properties
+};
+```
 
 The demo below shows the marker column displaying row indices.
 The displayed index starts at `1`, while actual row indices in
 LyteNyte Grid start at `0`.
 
-!demo:Row Index Marker Column="./demos/column-marker_x"
-
-Below is the code that enables the marker column and defines its renderer:
-
-```tsx
-const grid = Grid.useLyteNyte({
-  // Other grid properties...
-  columnMarkerEnabled: true,
-  columnMarker: {
-    cellRenderer: (p) => {
-      return <div>{p.rowIndex + 1}</div>;
-    },
-  },
-});
-```
+::demo[Row Index Marker Column="./demos/column-marker"]
 
 The marker column differs from standard columns and has important restrictions:
 
 - It is always pinned to the start of the viewport.
 - It cannot be moved or reordered.
 - It is not part of the `columns` state but does affect column display order. When enabled,
-  the marker column always appears first, and display index `0` refers to the marker column.
+  the marker column will always appear first, and display index `0` always refers to the marker column.
 
 ## Selection Marker Column
 
@@ -50,26 +44,27 @@ The marker column can render a checkbox for each row. Because
 this is so common, LyteNyte Grid provides the `api.rowHandleSelect`
 method to simplify selection logic, including shift-select behavior.
 
-!demo:Marker Column Selection="./demos/column-marker-selection_x"
+::demo[Marker Column Selection="./demos/column-marker-selection"]
 
 The demo uses `api.rowHandleSelect` to manage checkbox interactions:
 
 ```tsx
 <GridCheckbox
+  checked={selected}
   onClick={(ev) => {
     ev.stopPropagation();
-    grid.api.rowHandleSelect({ shiftKey: ev.shiftKey, target: ev.target });
+    api.rowHandleSelect({ shiftKey: ev.shiftKey, target: ev.target }); //!
   }}
   onKeyDown={(ev) => {
     if (ev.key === "Enter" || ev.key === " ")
-      grid.api.rowHandleSelect({ shiftKey: ev.shiftKey, target: ev.target });
+      api.rowHandleSelect({ shiftKey: ev.shiftKey, target: ev.target }); //!
   }}
 />
 ```
 
 ## Next Steps
 
-- [Column Resizing](/docs/column-resizing): Change column widths programmatically or through user interaction.
-- [Column Moving](/docs/column-moving): Reorder columns programmatically or through drag-and-drop.
-- [Column Groups](/docs/column-groups): Create a column header hierarchy and associate columns with column groups.
-- [Column Field](/docs/column-field): Control how a column retrieves each cell's value.
+::next[/docs/column-resizing]
+::next[/docs/column-moving]
+::next[/docs/column-groups]
+::next[/docs/column-field]

@@ -11,6 +11,7 @@ export const DEFAULT_ROW_SOURCE: RowSource = {
   useRowCount: () => 0,
   useRows: () => ({ get: () => null, size: 0 }),
   useMaxRowGroupDepth: () => 0,
+  useSelectionState: () => ({ kind: "isolated", selected: false, exceptions: new Set() }),
   rowsSelected: () => ({ rows: [], state: { kind: "isolated", selected: false, exceptions: new Set() } }),
   rowIndexToRowId: () => null,
   rowByIndex: () => ({ get: () => null, useValue: () => null }),

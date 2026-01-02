@@ -28,6 +28,7 @@ const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function
     rowDetailAutoHeightGuess,
     rowDetailHeightCache,
     events,
+    styles,
   } = useRoot();
   const container = useRowsContainerContext();
 
@@ -59,6 +60,7 @@ const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function
 
   return (
     <div
+      className={styles?.row?.className}
       {...props}
       {...handlers}
       role="row"
@@ -80,7 +82,7 @@ const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function
         rowIsFocusRow,
         hasSpans,
         detailHeight,
-        props.style,
+        props.style ?? styles?.row?.style,
       )}
     >
       <div

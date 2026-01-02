@@ -38,6 +38,7 @@ import { useRowIsAggregated } from "./api-functions/use-row-is-aggregated.js";
 import { useRowIsExpandable } from "./api-functions/use-row-is-expandable.js";
 import { useRowIsExpanded } from "./api-functions/use-row-is-expanded.js";
 import { useRowDetailToggle } from "./api-functions/use-row-detail-toggle.js";
+import { usePiece } from "../../../hooks/use-piece.js";
 
 export function useApi(
   gridId: string,
@@ -60,6 +61,14 @@ export function useApi(
   const rowTopCount = source.useTopCount();
   const rowBottomCount = source.useBottomCount();
   const rowCount = source.useRowCount();
+
+  const x$ = usePiece(xPositions);
+  const y$ = usePiece(yPositions);
+  const v$ = usePiece(vp);
+
+  api.xPositions$ = x$;
+  api.yPositions$ = y$;
+  api.viewport$ = v$;
 
   api.rowIsLeaf = useRowIsLeaf();
   api.rowIsGroup = useRowIsGroup();

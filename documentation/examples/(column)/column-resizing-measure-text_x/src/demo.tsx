@@ -18,7 +18,7 @@ import type { DEXPerformanceData } from "@1771technologies/grid-sample-data/dex-
 import { data } from "@1771technologies/grid-sample-data/dex-pairs-performance";
 
 const columns: Column<DEXPerformanceData>[] = [
-  { id: "symbol", cellRenderer: SymbolCell, width: 220, name: "Symbol" },
+  { id: "symbol", cellRenderer: SymbolCell, width: 250, name: "Symbol" },
   { id: "network", cellRenderer: NetworkCell, width: 220, hide: true, name: "Network" },
   { id: "exchange", cellRenderer: ExchangeCell, width: 220, name: "Exchange" },
 

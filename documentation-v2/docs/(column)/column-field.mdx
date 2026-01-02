@@ -25,7 +25,7 @@ When `field` is a string, the grid uses it as a key to read the value from
 object-based row data. Use string fields when each row is a standard JavaScript object.
 This is demonstrated in the example below:
 
-!demo:String Field="./demos/column-field-string_x"
+::demo[String Field="./demos/column-field-string"]
 
 In the example, each column specifies its `field` directly:
 
@@ -33,7 +33,6 @@ In the example, each column specifies its `field` directly:
 const columns = [
   { id: "Symbol", field: "symbol" },
   { id: "Network", field: "network" },
-  { id: "Exchange", field: "exchange" },
   // other columns
 ];
 ```
@@ -43,18 +42,18 @@ const columns = [
 When `field` is a number, row data must be an array. The number acts as the index used
 to retrieve the value. In the demo below, each row is an array, so each column uses a numeric index.
 
-!demo:Number Index Fields="./demos/column-field-number-index_x"
+::demo[Number Index Fields="./demos/column-field-number-index"]
 
 The column definitions specify numeric indices. These indices do not need to be sequential:
 
 ```ts
-const columns: Column<StockData>[] = [
+const columns: Grid.Column<GridSpec>[] = [
   { field: 0, id: "symbol", name: "Symbol" },
   { field: 2, id: "analyst-rating", name: "Analyst Rating" },
-  { field: 3, id: "price", type: "number" },
-  { field: 5, id: "change", type: "number" },
-  { field: 11, id: "eps", type: "number" },
-  { field: 6, id: "volume", type: "number" },
+  { field: 3, id: "price", type: "number", name: "Price" },
+  { field: 5, id: "change", type: "number", name: "Change" },
+  { field: 11, id: "eps", name: "EPS", type: "number" },
+  { field: 6, id: "volume", name: "Volume", type: "number" },
 ];
 ```
 
@@ -76,7 +75,7 @@ See the [field data param](/docs/reference/field#fielddataparam) for the exact t
 Function fields are ideal for derived or calculated values.
 In the demo below, the **GBP Price** column computes a value from the base **USD Price** column.
 
-!demo:Function Fields="./demos/column-field-function_x"
+::demo[Function Fields="./demos/column-field-function"]
 
 ## Path Fields
 
@@ -92,11 +91,11 @@ The demo below shows path fields in use. Each row exposes temperatures
 under a `temps` property keyed by month, so fields such
 as `{ kind: "path", path: "temps.Jan" }` read the appropriate value.
 
-!demo:Path Fields="./demos/column-field-path_x"
+::demo[Path Fields="./demos/column-field-path"]
 
 ## Next Steps
 
-- [Column Resizing](/docs/column-resizing): Change column widths programmatically or via user interaction.
-- [Column ID & Name](/docs/column-header-name): Define user-friendly column names and ensure unique IDs.
-- [Column Moving](/docs/column-moving): Reorder columns programmatically or through drag-and-drop.
-- [Column Base](/docs/column-base): See the default column values and how to override them with the `columnBase` property.
+::next[/docs/column-resizing]
+::next[/docs/column-header-name]
+::next[/docs/column-moving]
+::next[/docs/column-base]

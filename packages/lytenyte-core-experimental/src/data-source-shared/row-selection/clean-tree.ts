@@ -12,7 +12,6 @@ export function cleanTree(
   // handle root here
   if ("kind" in s) return;
 
-  // if (s.id === "row-114" && s.selected === s.parent.selected) debugger;
   if (s.children?.size === 0) s.children = undefined;
 
   // We've reached a leaf level - if it shares the same selected state as its parent,

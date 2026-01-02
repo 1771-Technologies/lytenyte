@@ -12,7 +12,7 @@ import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
 
 const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...props }, forwarded) {
   const ctx = useRoot();
-  const { id, yPositions, xPositions, view, editMode, events } = ctx;
+  const { id, yPositions, xPositions, view, editMode, events, styles: sx } = ctx;
 
   const container = useRowsContainerContext();
 
@@ -33,7 +33,7 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
     !!row.rowIsFocusRow,
     hasSpans,
     rowMeta.detailHeight,
-    props.style,
+    props.style ?? sx?.row?.style,
   );
 
   const handlers = useMappedEvents(events.row, rowMeta.row);
@@ -41,6 +41,7 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
   return (
     <RowContext.Provider value={rowMeta}>
       <div
+        className={sx?.row?.className}
         {...props}
         {...handlers}
         role="row"

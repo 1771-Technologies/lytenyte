@@ -1,5 +1,5 @@
 import "@1771technologies/lytenyte-design/light-dark.css";
-import "./pill-manager.css";
+import "../../../css/pill-manager.css";
 import { PillManager } from "./root.js";
 import { useState } from "react";
 import type { PillRowSpec } from "./types";

@@ -25,6 +25,11 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
     api,
     view,
     slotShadows: Shadows,
+    styles,
+    topOffset,
+    bottomOffset,
+    startOffset,
+    endOffset,
   } = useRoot();
   const edit = useEdit();
 
@@ -77,6 +82,7 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
       <RowDragMonitor />
       {vp && <ViewMonitor viewport={vp} />}
       <div
+        className={styles?.viewport?.className}
         {...props}
         {...handlers}
         role="grid"
@@ -185,7 +191,11 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
             overflowY: "auto",
             boxSizing: "border-box",
             direction: rtl ? "rtl" : "ltr",
-            ...props.style,
+            "--ln-start-offset": `${startOffset}px`,
+            "--ln-end-offset": `${endOffset}px`,
+            "--ln-top-offset": `${topOffset}px`,
+            "--ln-bottom-offset": `${bottomOffset}px`,
+            ...(props.style ?? styles?.viewport?.style),
           } as CSSProperties
         }
       >

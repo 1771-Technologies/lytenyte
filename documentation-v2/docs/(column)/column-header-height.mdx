@@ -1,13 +1,14 @@
 ---
 title: Column Header Height
+step: Set the height of the column header and column group header.
 description: LyteNyte Grid lets you customize header height flexibly. The header's total height
   comes from the combined height of column group headers, column headers, and floating headers.
 ---
 
-Use the `headerHeight` property on the grid state to set the height of the header row in pixels.
+Use the `headerHeight` property on the grid to set the height of the header row in pixels.
 The demo below showcases this feature, including programmatic updates.
 
-!demo:Column Header Height="./demos/column-header-height_x"
+::demo[Column Header Height="./demos/column-header-height"]
 
 ## Column Groups & Header Spanning
 
@@ -30,26 +31,14 @@ If all group rows share height G, then header height is determined as follows:
 finalHeaderHeight = baseHeaderHeight + (spannedGroupRowCount * G)
 ```
 
-!demo:Column Header Group Span="./demos/column-header-height-spans_x"
-
-The demo updates the group header height by setting the `headerGroupHeight` state:
-
-```ts
-grid.state.headerHeight.set(60);
-```
+::demo[Column Header Group Span="./demos/column-header-height-spans"]
 
 ## Column Group Header Height
 
-Set the height of group header rows using the `headerGroupHeight` property on the grid state.
+Set the height of group header rows using the `headerGroupHeight` property on the grid.
 All column groups share the same group-header height.
 
-!demo:Column Group Header Height="./demos/column-header-group-height_x"
-
-The demo updates the group header height by setting the `headerGroupHeight` state:
-
-```ts
-grid.state.headerGroupHeight.set(60);
-```
+::demo[Column Group Header Height="./demos/column-header-group-height"]
 
 ## Floating Row Height
 
@@ -59,17 +48,11 @@ such as floating filters. Set its height using the `floatingRowHeight` property.
 The demo below shows a simple example that adds text-matching filters for string columns. For
 more details, see the [Column Floating Header guide](/docs/column-floating-header).
 
-!demo:Floating Row Height="./demos/column-header-floating-row-height_x"
-
-The demo updates the floating row height by setting the `floatingRowHeight` state:
-
-```ts
-grid.state.floatingRowHeight.set(60);
-```
+::demo[Floating Row Height="./demos/column-header-floating-row-height"]
 
 ## Next Steps
 
-- [Column Resizing](/docs/column-resizing): Change column widths programmatically or via user interaction.
-- [Column Floating Header](/docs/column-floating-header): Add a secondary header row for extra header features.
-- [Column Moving](/docs/column-moving): Reorder columns programmatically or through drag-and-drop.
-- [Column Field](/docs/column-field): Control how a column retrieves its value for each cell.
+::next[/docs/column-resizing]
+::next[/docs/column-floating-header]
+::next[/docs/column-moving]
+::next[/docs/column-field]

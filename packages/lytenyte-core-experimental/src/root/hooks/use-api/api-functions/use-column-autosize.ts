@@ -13,7 +13,7 @@ export function useColumnAutosize(
   rowBottomCount: number,
   rowTopCount: number,
 ): Root.API["columnAutosize"] {
-  return useEvent((params) => {
+  return useEvent((params = {}) => {
     const errorRef = { current: false };
 
     const columns =
@@ -65,7 +65,7 @@ export function useColumnAutosize(
 
     function calculateWidths(start: number, end: number) {
       for (let rowIndex = start; rowIndex < end; rowIndex++) {
-        const row = api.rowByIndex(rowIndex);
+        const row = api.rowByIndex(rowIndex).get();
         if (!row) continue;
 
         for (let i = 0; i < columns.length; i++) {

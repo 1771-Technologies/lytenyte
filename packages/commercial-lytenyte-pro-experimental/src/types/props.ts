@@ -1,5 +1,5 @@
 import type { RowGroupDisplayMode, RowHeight, RowNode } from "@1771technologies/lytenyte-shared";
-import type { ReactNode, Ref } from "react";
+import type { CSSProperties, ReactNode, Ref } from "react";
 import type { Column, EditParams, HeaderGroupParams, HeaderParams, RowParams } from "./column.js";
 import type { DialogFrame, GridSpec, PopoverFrame } from "./grid.js";
 import type { API, DataRect } from "./api.js";
@@ -28,15 +28,49 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   readonly columnMoveDragPlaceholder?:
     | { query: string; offset?: [number, number] }
     | string
-    | ((props: HeaderParams<Spec> & { readonly x: number; y: number }) => ReactNode);
+    | ((
+        props: HeaderParams<Spec> & { readonly x: number; readonly y: number; readonly outside: boolean },
+      ) => ReactNode);
   readonly columnGroupMoveDragPlaceholder?:
     | { query: string; offset?: [number, number] }
     | string
-    | ((props: HeaderGroupParams<Spec> & { readonly x: number; readonly y: number }) => ReactNode);
+    | ((
+        props: HeaderGroupParams<Spec> & {
+          readonly x: number;
+          readonly y: number;
+          readonly outside: boolean;
+        },
+      ) => ReactNode);
   readonly columnGroupRenderer?: (props: HeaderGroupParams<Spec>) => ReactNode;
 
   readonly gridId?: string;
   readonly events?: GridEvents<Spec>;
+  readonly styles?: {
+    readonly viewport?: {
+      readonly style?: CSSProperties;
+      readonly className?: string;
+    };
+    readonly row?: {
+      readonly style?: CSSProperties;
+      readonly className?: string;
+    };
+    readonly header?: {
+      readonly style?: CSSProperties;
+      readonly className?: string;
+    };
+    readonly detail?: {
+      readonly style?: CSSProperties;
+      readonly className?: string;
+    };
+    readonly headerGroup?: {
+      readonly style?: CSSProperties;
+      readonly className?: string;
+    };
+    readonly cell?: {
+      readonly style?: CSSProperties;
+      readonly className?: string;
+    };
+  };
 
   readonly rtl?: boolean;
 
@@ -92,6 +126,12 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   readonly onRowGroupColumnChange?: (column: Omit<Column<Spec>, "field" | "id">) => void;
 
   // Events
+
+  readonly onColumnMoveOutside?: (params: {
+    readonly api: API<Spec>;
+    readonly columns: Column<Spec>[];
+  }) => void;
+
   readonly onEditBegin?: (params: {
     readonly api: API<Spec>;
     readonly preventDefault: () => void;

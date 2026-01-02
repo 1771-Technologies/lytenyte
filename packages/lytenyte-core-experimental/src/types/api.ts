@@ -12,6 +12,7 @@ import type { GridSpec } from "./grid.js";
 import type { UseDraggableProps } from "../dnd/types.js";
 import type { useDraggable } from "../dnd/use-draggable.js";
 import type { Props } from "./props.js";
+import type { Piece } from "../hooks/use-piece.js";
 
 type WithId = { readonly id: string };
 type RowSourceOmits = "onRowGroupExpansionsChange" | "onRowsUpdated" | "onRowsSelected";
@@ -31,6 +32,10 @@ export interface ExportDataRectResult<Spec extends GridSpec = GridSpec> {
 }
 
 export type API<Spec extends GridSpec = GridSpec> = {
+  readonly xPositions$: Piece<Uint32Array>;
+  readonly yPositions$: Piece<Uint32Array>;
+  readonly viewport$: Piece<HTMLElement | null>;
+
   readonly cellRoot: (row: number, column: number) => PositionGridCell | PositionFullWidthRow | null;
   readonly columnById: (id: string) => Column<Spec> | null;
   readonly columnByIndex: (index: number) => Column<Spec> | null;
@@ -42,7 +47,7 @@ export type API<Spec extends GridSpec = GridSpec> = {
     readonly updatePinState?: boolean;
   }) => void;
   readonly columnResize: (sizes: Record<string, number>) => void;
-  readonly columnAutosize: (params: {
+  readonly columnAutosize: (params?: {
     readonly dryRun?: boolean;
     readonly includeHeader?: boolean;
     readonly columns?: (string | number | WithId)[];

@@ -188,6 +188,8 @@ export function useClientDataSource<T>(p: UseClientDataSourceParams<T>): RowSour
   const rowDelete = useRowDelete(p, rowById);
   const rows$ = useRows(flatten);
 
+  const selection$ = usePiece(selectionState.rowSelectionsRaw);
+
   const source = useMemo<RowSourceClient<T>>(() => {
     const rowCount$ = (x: RowNode<T>[]) => x.length;
 
@@ -212,6 +214,8 @@ export function useClientDataSource<T>(p: UseClientDataSourceParams<T>): RowSour
       useTopCount: topPiece.useValue,
       useRowCount: () => piece.useValue(rowCount$),
       useRows: () => rows$.useValue(),
+
+      useSelectionState: selection$.useValue,
 
       useMaxRowGroupDepth: maxDepthPiece.useValue,
 
@@ -244,6 +248,7 @@ export function useClientDataSource<T>(p: UseClientDataSourceParams<T>): RowSour
     rows$,
     rowsBetween,
     rowsSelected,
+    selection$.useValue,
     setExpansions,
     topPiece.useValue,
   ]);

@@ -152,6 +152,8 @@ export { useServerDataSource } from "./data-source-server/use-server-data-source
 export type { RowSourceTree, UseTreeDataSourceParams } from "./data-source-tree/use-tree-data-source.js";
 export { useTreeDataSource } from "./data-source-tree/use-tree-data-source.js";
 
+export { measureText } from "@1771technologies/lytenyte-shared";
+
 export type { ViewportShadowsProps } from "@1771technologies/lytenyte-core-experimental";
 export { ViewportShadows } from "@1771technologies/lytenyte-core-experimental";
 

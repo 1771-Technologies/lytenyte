@@ -15,7 +15,19 @@ export function ViewportShadows({
   top = true,
   bottom = true,
 }: ViewportShadowsProps) {
-  const { rtl, view, viewport, totalHeaderHeight, source, xPositions, yPositions, dimensions } = useRoot();
+  const {
+    rtl,
+    view,
+    viewport,
+    totalHeaderHeight,
+    source,
+    xPositions,
+    yPositions,
+    dimensions,
+    startOffset: startWidth,
+    endOffset: endWidth,
+    bottomOffset: botHeight,
+  } = useRoot();
 
   const rowTopCount = source.useTopCount();
   const rowBotCount = source.useBottomCount();
@@ -25,12 +37,7 @@ export function ViewportShadows({
   const widthExcludingEnd = xPositions[view.startCount + view.centerCount];
 
   const hasYSplit = heightExcludingBot < dimensions.innerHeight;
-  const hasXSplit = widthExcludingEnd < dimensions.innerWidth;
-
-  const botHeight = yPositions.at(-1)! - yPositions[rowCount - rowBotCount];
-
-  const startWidth = xPositions[view.startCount];
-  const endWidth = xPositions.at(-1)! - xPositions[view.centerCount + view.startCount];
+  const hasXSplit = xPositions.at(-1)! < dimensions.innerWidth;
 
   const topOffset = rowTopCount > 0 ? totalHeaderHeight + yPositions[rowTopCount] : totalHeaderHeight;
 

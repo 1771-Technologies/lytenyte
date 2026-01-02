@@ -8,20 +8,13 @@ description: Columns can be resized programmatically or through user interaction
 ## Resizing Columns
 
 Columns in LyteNyte Grid always have a fixed width. To resize a column, update
-its fixed width. Users can drag the edge of a column header to change its width.
-LyteNyte Grid supports this interaction out of the box. Enable it by setting
-the `resizable` property to `true` on the column's `uiHints` property.
-The example below enables resizing for all columns.
+the column's `width` property. Users can drag the edge of a column header
+to change the column's width. LyteNyte Grid supports this interaction out of the box.
+Enable it by setting the `resizable` property to `true` on the column specification.
+You can make all columns resizable by setting `resizable` on the base column.
 
-```ts
-const grid = Grid.useLyteNyte({
-  // ... other properties
-  columnBase: {
-    uiHints: {
-      resizable: true,
-    },
-  },
-});
+```tsx
+<Grid columnBase={{ resizable: true }} />
 ```
 
 When `resizable` is `true`, the grid renders a resize handle on the
@@ -30,24 +23,23 @@ The demo below enables the drag handle.
 Try placing your cursor on the right edge of a column header
 and dragging once the hover indicator appears.
 
-!demo:Resizing Columns="./demos/column-resizing-drag_x"
+::demo[Resizing Columns="./demos/column-resizing-drag"]
 
-<Callout>
+:::warn
 
 Dragging to resize does not work on touch devices because touch dragging scrolls the viewport.
 The developer should provide an alternative resize action, such as a “size to fit” button for accessibility purposes.
 
-</Callout>
+:::
 
 ### Customizing the Resize Handle
 
 LyteNyte Grid renders the resize handle as an invisible `div`. You can style it
 using CSS or by passing properties to the `Grid.HeaderCell` component.
-Three properties customize the resize handle:
+Two properties customize the resize handle:
 
 - `resizeStyle`: Inline styles applied to the handle.
 - `resizeClassName`: CSS class names applied to the handle.
-- `resizeAs`: A render prop that supplies custom React content for the handle.
 
 In most cases, `resizeClassName` is enough to customize the handle's appearance.
 
@@ -61,7 +53,7 @@ customizations:
   transition: background-color 200ms ease-in-out;
   cursor: col-resize;
   &:hover {
-    background-color: var(--lng1771-primary-50);
+    background-color: var(--ln-primary-50);
   }
 }
 ```
@@ -72,14 +64,14 @@ For one-off resizes or custom resize workflows, call the grid API's `columnResiz
 It accepts a JavaScript object mapping column IDs to widths.
 
 ```ts
-grid.api.columnResize({ exchange: 200, network: 100 });
+api.columnResize({ exchange: 200, network: 100 });
 ```
 
 The `columnResize` method is a convenience wrapper around `columnUpdate`. The following
 code produces the same result:
 
 ```ts
-grid.api.columnUpdate({ exchange: { width: 200 }, network: { width: 100 } });
+api.columnUpdate({ exchange: { width: 200 }, network: { width: 100 } });
 ```
 
 ### Min & Max Column Width
@@ -91,7 +83,7 @@ The demo below clamps column widths between `100px` and `300px`.
 When a user resizes a column past these bounds, LyteNyte Grid will use a clamped
 width value for layout calculations.
 
-!demo:Column Width Bounds="./demos/column-resizing-minmax_x"
+::demo[Column Width Bounds="./demos/column-resizing-minmax"]
 
 The column `widthMin` and `widthMax` properties define visual layout bounds that
 LyteNyte enforces. LyteNyte does not clamp the column's `width` value to
@@ -110,14 +102,14 @@ smaller than the viewport, you can allocate the remaining space using `widthFlex
 This property defines how much of the free space a column should take,
 similar to the CSS `flex` property.
 
-!demo:Full Width Viewport Filling="./demos/column-resizing-width-flex_x"
+::demo[Full Width Viewport Filling="./demos/column-resizing-width-flex"]
 
-<Callout>
+:::info
 
 `widthFlex` is most noticeable on wide viewports. On small screens, you may not see
 columns expand. View this demo on a desktop-sized display to see the effect.
 
-</Callout>
+:::
 
 ## Size To Fit
 
@@ -129,7 +121,7 @@ In the demo below, you can toggle the `columnSizeToFit` property to observe how
 it changes the widths of the column. The smaller the size of your display the
 more pronounced the effect will be.
 
-!demo:Size-to-Fit Columns="./demos/column-resizing-size-to-fit_x"
+::demo[Size-to-Fit Columns="./demos/column-resizing-size-to-fit"]
 
 Use the `columnSizeToFit` property sparingly. Columns can appear compressed on
 narrow viewports, and cell content may truncate. Only enable this feature
@@ -148,7 +140,7 @@ The demo below demonstrates the pattern by toggling this effect on and off.
 - **String Truncation:** The **Symbol** and **Exchange** columns, which contain strings, are truncated.
 - **Number Hashing:** The **Performance** and **Volatility** columns, which contain numbers, are hashed.
 
-!demo:Truncating and Hashing="./demos/column-resizing-measure-text_x"
+::demo[Truncating and Hashing="./demos/column-resizing-measure-text"]
 
 In the demo, the `HashedValue` component uses `measureText` inside a `useMemo`
 call. Measuring text is expensive, so caching the result avoids running the calculation on every render.
@@ -157,21 +149,23 @@ call. Measuring text is expensive, so caching the result avoids running the calc
 function HashedValue({
   value,
   columnIndex,
-  gridState,
+  api,
 }: {
   value: string;
-  gridState: GridState<DEXPerformanceData>;
   columnIndex: number;
+  api: Grid.API<GridSpec>;
 }) {
-  const widths = gridState.xPositions.useValue();
+  const widths = api.xPositions$.useValue();
+
   const width = widths[columnIndex + 1] - widths[columnIndex];
-
   const measuredWidth = useMemo(() => {
-    const m = measureText(value, gridState.viewport.get()!);
-    return m.width;
-  }, [gridState.viewport, value]);
+    const m = measureText(value, api.viewport()!);
 
-  if (measuredWidth > width) return "#".repeat(Math.ceil(width / 16) + 1);
+    return m.width;
+  }, [api, value]);
+
+  // Minus 6 as slight adjustment so we know there is definitely enough space
+  if (measuredWidth > width - 6) return "#".repeat(Math.ceil(width / 16) + 1);
 
   return value;
 }
@@ -183,7 +177,7 @@ an exact value. Differences in browser text rendering prevent pixel-perfect cons
 
 ## Next Steps
 
-- [Column Base](/docs/column-base): See the default column values and how to override them with the `columnBase` property.
-- [Column ID & Name](/docs/column-header-name): Define user-friendly column names and ensure unique IDs.
-- [Column Moving](/docs/column-moving): Reorder columns programmatically or through drag-and-drop.
-- [Column Field](/docs/column-field): Control how a column retrieves its value for each cell.
+::next[/docs/column-base]
+::next[/docs/column-header-name]
+::next[/docs/column-moving]
+::next[/docs/column-field]

@@ -16,7 +16,7 @@ import { useTotalHeaderHeight } from "./hooks/use-total-header-height.js";
 import { useXPositions } from "./hooks/use-x-positions.js";
 import { useYPositions } from "./hooks/use-y-positions.js";
 import { useHeaderLayout } from "./hooks/use-header-layout.js";
-import type { LayoutState, RowSource } from "@1771technologies/lytenyte-shared";
+import { equal, type LayoutState, type RowSource } from "@1771technologies/lytenyte-shared";
 import { useRowLayout } from "./hooks/use-row-layout/use-row-layout.js";
 import { useBounds } from "./hooks/use-bounds.js";
 import { useApi } from "./hooks/use-api/use-api.js";
@@ -44,6 +44,7 @@ import { RowsContainer } from "../components/rows/rows-container/rows-container.
 import { RowsTop } from "../components/rows/row-sections/rows-top.js";
 import { RowsCenter } from "../components/rows/row-sections/rows-center.js";
 import { RowsBottom } from "../components/rows/row-sections/rows-bottom.js";
+import { useOffsets } from "./hooks/use-offsets.js";
 
 const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   {
@@ -134,6 +135,17 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     api,
   );
 
+  const prevStyles = useRef(props.styles);
+  const styles = useMemo(() => {
+    const next = props.styles;
+    if (equal(prevStyles.current, next)) return prevStyles.current;
+
+    prevStyles.current = next;
+    return next;
+  }, [props.styles]);
+
+  const offsets = useOffsets(source, view, totalHeaderHeight, xPositions, yPositions.positions);
+
   const value = useMemo<RootContextValue>(() => {
     return {
       id: gridId,
@@ -154,6 +166,11 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
       columnDoubleClickToAutosize: props.columnDoubleClickToAutosize ?? true,
 
       dimensions,
+      styles,
+      topOffset: offsets.topOffset,
+      bottomOffset: offsets.bottomOffset,
+      startOffset: offsets.startOffset,
+      endOffset: offsets.endOffset,
 
       totalHeaderHeight,
       detailExpansions: controlled.detailExpansions,
@@ -171,6 +188,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
 
       base: props.columnBase ?? {},
 
+      onColumnMoveOutside: props.onColumnMoveOutside,
       columnGroupDefaultExpansion: props.columnGroupDefaultExpansion ?? true,
       columnGroupExpansions: controlled.columnGroupExpansions,
 
@@ -200,6 +218,10 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     dropAccept,
     focusPiece,
     gridId,
+    offsets.bottomOffset,
+    offsets.endOffset,
+    offsets.startOffset,
+    offsets.topOffset,
     props.columnBase,
     props.columnDoubleClickToAutosize,
     props.columnGroupDefaultExpansion,
@@ -217,6 +239,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     props.ln_bottomComponent,
     props.ln_centerComponent,
     props.ln_topComponent,
+    props.onColumnMoveOutside,
     props.onRowDragEnter,
     props.onRowDragLeave,
     props.onRowDrop,
@@ -228,6 +251,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     props.rtl,
     props.slotShadows,
     source,
+    styles,
     totalHeaderHeight,
     view,
     vp,

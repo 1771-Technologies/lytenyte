@@ -44,6 +44,8 @@
     "./teal.css": "./css/teal.css",
     "./term.css": "./css/term.css",
     "./tw.css": "./css/tw.css",
+    "./components.css": "./css/components.css",
+    "./pill-manager.css": "./css/pill-manager.css",
     "./fonts.css": "./css/fonts.css"
   },
   "publishConfig": {
@@ -66,6 +68,8 @@
       "./teal.css": "./css/teal.css",
       "./term.css": "./css/term.css",
       "./tw.css": "./css/tw.css",
+      "./components.css": "./css/components.css",
+      "./pill-manager.css": "./css/pill-manager.css",
       "./fonts.css": "./css/fonts.css"
     }
   },

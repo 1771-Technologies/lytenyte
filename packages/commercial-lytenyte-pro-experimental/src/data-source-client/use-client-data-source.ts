@@ -223,6 +223,8 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
   const rowDelete = useRowDelete(props, rowById);
   const rows$ = useRows(flat);
 
+  const selection$ = usePiece(selectionState.rowSelectionsRaw);
+
   const source = useMemo<RowSourceClient<Spec>>(() => {
     const rowCount$ = (x: RowNode<T>[]) => x.length;
 
@@ -247,6 +249,7 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
       useTopCount: topPiece.useValue,
       useRowCount: () => piece.useValue(rowCount$),
       useRows: () => rows$.useValue(),
+      useSelectionState: selection$.useValue,
 
       useMaxRowGroupDepth: maxDepthPiece.useValue,
 
@@ -330,6 +333,7 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
     onRowsUpdated,
     botPiece.useValue,
     topPiece.useValue,
+    selection$.useValue,
     maxDepthPiece.useValue,
     onRowsSelected,
     f.rowByIndexRef,

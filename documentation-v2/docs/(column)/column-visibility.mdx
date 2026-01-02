@@ -1,5 +1,6 @@
 ---
 title: Column Visibility
+step: Control which columns are visible.
 description: Learn how to manage column visibility in LyteNyte Grid and understand
   the difference between hidden columns and collapsed column groups.
 ---
@@ -20,24 +21,20 @@ Clicking their pills toggles each column's visibility.
 When a hidden column becomes visible, the grid inserts it based on
 its position in the column state.
 
-!demo:Hiding Columns="./demos/column-visibility_x"
+::demo[Hiding Columns="./demos/column-visibility"]
 
-The Pill Manager calls the grid API's `columnUpdate` method when a pill is clicked.
-The snippet below shows how the handler toggles the `hide` property. LyteNyte Grid handles
-updating the visual display of the viewport.
+The demo uses the Pill Manager provided by LyteNyte Grid. When a user clicks a pill,
+the demo toggles that column's visibility. Since the demo updates the columns at runtime,
+the demo stores the column definitions in React state. The Pill Manager is a versatile
+component capable of managing column visibility, ordering, grouping, and more.
+See the [Pill Manager guide](/docs/component-pill-manager) for more details.
 
-```ts
-grid.api.columnUpdate({
-  [c.data.id]: { hide: !c.data.hide },
-});
-```
-
-<Callout>
+:::warn
 
 Avoid updating a column's visibility too frequently. Each update triggers a layout recalculation and
 DOM update, which can be expensive when performed many times per second.
 
-</Callout>
+:::
 
 ## Column Group Visibility
 
@@ -55,11 +52,16 @@ which hides the **Network** and **Exchange** columns. The Pill Manager still sho
 them as visible because the grid treats them as visible in state,
 even though the collapsed group hides them visually.
 
-!demo:Column Group Visibility="./demos/column-visibility_groups_x"
+::demo[Column Group Visibility="./demos/column-visibility_groups"]
+
+You may also notice that if you hide the **Symbol** column, or if you hide both the **Exchange**
+and **Network** columns, the column group is no longer collapsible. You can collapse a column group
+only if at least one column is visible when the group is open and at least one column is visible when
+the group is closed. For more on column groups, see our [Column Groups guide].
 
 ## Next Steps
 
-- [Column Resizing](/docs/column-resizing): Change column widths programmatically or through user interaction.
-- [Column ID & Name](/docs/column-header-name): Define user-friendly column names and ensure unique IDs.
-- [Column Moving](/docs/column-moving): Reorder columns programmatically or through drag-and-drop.
-- [Column Groups](/docs/column-groups): Create a column header hierarchy and associate columns with column groups.
+::next[/docs/column-resizing]
+::next[/docs/column-header-name]
+::next[/docs/column-moving]
+::next[/docs/column-groups]

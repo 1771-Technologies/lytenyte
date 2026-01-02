@@ -9,9 +9,10 @@ export function useSorted<T>(
   const sorted = useMemo(() => {
     const centerMap = new Map<string, RowLeaf<T>>();
     let finalSorted: number[];
+
     if (!sort) {
       if (filtered) finalSorted = filtered;
-      finalSorted = Array.from({ length: leafs.length }, (_, i) => i);
+      else finalSorted = Array.from({ length: leafs.length }, (_, i) => i);
     } else if (filtered) {
       finalSorted = filtered.toSorted((li, ri) => {
         const leftNode = leafs[li];
