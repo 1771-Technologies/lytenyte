@@ -188,6 +188,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
 
       base: props.columnBase ?? {},
 
+      onColumnMoveOutside: props.onColumnMoveOutside,
       columnGroupDefaultExpansion: props.columnGroupDefaultExpansion ?? true,
       columnGroupExpansions: controlled.columnGroupExpansions,
 
@@ -238,6 +239,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     props.ln_bottomComponent,
     props.ln_centerComponent,
     props.ln_topComponent,
+    props.onColumnMoveOutside,
     props.onRowDragEnter,
     props.onRowDragLeave,
     props.onRowDrop,

@@ -7,24 +7,11 @@ description: Columns in LyteNyte Grid may be reordered programmatically or throu
 
 ## Move By Dragging
 
-LyteNyte Grid supports column reordering through the `uiHints` property on each
+LyteNyte Grid supports column reordering through the `movable` property on each
 column definition. Set `movable` to `true` to allow users to drag a column
 header to a new position. Click and hold to drag a header in the demo below:
 
-!demo:Move By Dragging="./demos/column-moving_x"
-
-The demo enables moving for all columns by setting `movable` on the base column:
-
-```ts
-const grid = Grid.useLyteNyte({
-  // Other grid props
-  columnBase: {
-    uiHints: {
-      movable: true,
-    },
-  },
-});
-```
+::demo[Move By Dragging="./demos/column-moving"]
 
 ### Pinned Columns & Drag Reordering
 
@@ -38,7 +25,7 @@ Crossing the pinned or scrollable boundary when moving columns changes the pin s
 However, reordering columns within the same section without crossing the boundary leaves it
 unchanged. The demo below shows this boundary-based behavior.
 
-!demo:Moving Pinned Columns="./demos/column-moving-pinned_x"
+::demo[Moving Pinned Columns="./demos/column-moving-pinned"]
 
 ## Dragging Column Groups
 
@@ -46,7 +33,7 @@ Columns in the same group can be dragged together. All columns in the group must
 be movable for group dragging to work. In the demo below,
 dragging the **Inventory** group moves both the **Product** and **Price** columns:
 
-!demo:Moving Column Groups="./demos/column-moving-group_x"
+::demo[Moving Column Groups="./demos/column-moving-group"]
 
 Moving grouped columns can change the group hierarchy:
 
@@ -59,22 +46,85 @@ Moving grouped columns can change the group hierarchy:
 See the [Column Groups guide](/docs/column-groups) for details on
 when groups split and how LyteNyte Grid handles column groups.
 
+## Drag Placeholder
+
+When column dragging begins, the browser takes an image snapshot of the column being dragged.
+This is native browser behavior. LyteNyte Grid lets you customize the drag placeholder.
+The grid exposes two properties:
+
+- `columnMoveDragPlaceholder`: Determines the placeholder to use when dragging column headers to reorder
+  columns.
+- `columnGroupMoveDragPlaceholder`: Determines the placeholder to use when dragging column group headers.
+
+The placeholder may be one of the following:
+
+- **String**: A query selector for another element on the page to use for the drag image snapshot.
+- **Query Object**: An object with a query selector string and an offset tuple for snapshot image placement.
+- **Component Placeholder**: A React component to render as the placeholder.
+
+:::note
+
+When you use a **Component Placeholder**, you opt out of the native browser drag-and-drop image snapshot.
+LyteNyte Grid provides the client coordinates for the drag, but you must render the placeholder correctly.
+LyteNyte Grid also renders the placeholder within the header component in the React tree.
+This means the placeholder component will almost certainly need a React portal to render elsewhere in the DOM.
+
+:::
+
+In the demo below, the column header and column group header drag placeholders have been replaced
+with a stylized React component placeholder.
+
+::demo[Column Move Placeholder="./demos/column-moving-placeholder"]
+
+Although it may not be immediately obvious from the drag examples, using a React component
+instead of a query selector (or relying on the default drag behavior) has some differences that you
+should be aware of.
+
+The query selector and default drag behavior rely on the native browser drag-and-drop functionality.
+When the drag begins, the browser takes an image snapshot of the element being dragged. You cannot
+change this image once the browser takes the snapshot. Conversely, a React component re-renders every time the cursor moves,
+and you can update the visual output at any point. However, the React component approach will be significantly
+slower than the native browser approach. Unless you have a good reason to prefer a React component, prefer
+query selectors and elements for drag placeholders.
+
+## Column Dropped Outside Viewport
+
+LyteNyte Grid detects when a moved column or column group is dropped outside the grid.
+When this happens, the grid calls the `onColumnMoveOutside` handler (if provided). You can use
+this handler to determine whether a column move ended outside the grid. For example, if you want
+to hide a column when it is dropped outside the grid, attach a callback to `onColumnMoveOutside`
+to hide the moved columns, as demonstrated in the demo below.
+
+::demo[Hide Column On Outside Drag="./demos/column-moving-outside"]
+
+If you remove all columns, reset the demo by clicking the refresh icon next to the **Expand Code**
+button.
+
+:::tip
+
+LyteNyte Grid supports hiding columns when users drag them outside the grid, but we do not recommend
+implementing this behavior. Our experience shows that users find this behavior unintuitive and easy to
+get wrong. A better approach is to use a dedicated component that manages column visibility, such as
+our [Pill Manager component](/docs/component-pill-manager) or our [Column Manager component](/docs/component-column-manager).
+
+:::
+
 ## Programmatic Column Reordering
 
 Use `api.columnMove` to reorder columns programmatically. Column order is determined
 by the sequence of columns in the grid state, and `api.columnMove`
-updates `grid.state.columns` accordingly. For example, the code
+updates `columns` property accordingly. For example, the code
 below swaps the **ID** and **Product** columns:
 
 ```ts
-grid.api.columnMove({ moveColumns: ["product"], moveTarget: "id", before: false });
+api.columnMove({ moveColumns: ["product"], moveTarget: "id", before: false });
 ```
 
 For more details, see the [Grid API reference](/docs/reference/grid-api#gridapi).
 
 ## Next Steps
 
-- [Column Base](/docs/column-base): See the default column values and how to override them.
-- [Column Resizing](/docs/column-resizing): Change column widths programmatically or through user interaction.
-- [Column Pinning](/docs/column-pinning): Pin columns to the start or end of the viewport.
-- [Column Groups](/docs/column-groups): Create a column header hierarchy and associate columns with column groups.
+::next[/docs/column-base]
+::next[/docs/column-resizing]
+::next[/docs/column-pinning]
+::next[/docs/column-groups]

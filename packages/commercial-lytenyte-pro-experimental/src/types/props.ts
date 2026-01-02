@@ -28,11 +28,19 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   readonly columnMoveDragPlaceholder?:
     | { query: string; offset?: [number, number] }
     | string
-    | ((props: HeaderParams<Spec> & { readonly x: number; y: number }) => ReactNode);
+    | ((
+        props: HeaderParams<Spec> & { readonly x: number; readonly y: number; readonly outside: boolean },
+      ) => ReactNode);
   readonly columnGroupMoveDragPlaceholder?:
     | { query: string; offset?: [number, number] }
     | string
-    | ((props: HeaderGroupParams<Spec> & { readonly x: number; readonly y: number }) => ReactNode);
+    | ((
+        props: HeaderGroupParams<Spec> & {
+          readonly x: number;
+          readonly y: number;
+          readonly outside: boolean;
+        },
+      ) => ReactNode);
   readonly columnGroupRenderer?: (props: HeaderGroupParams<Spec>) => ReactNode;
 
   readonly gridId?: string;
@@ -118,6 +126,12 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   readonly onRowGroupColumnChange?: (column: Omit<Column<Spec>, "field" | "id">) => void;
 
   // Events
+
+  readonly onColumnMoveOutside?: (params: {
+    readonly api: API<Spec>;
+    readonly columns: Column<Spec>[];
+  }) => void;
+
   readonly onEditBegin?: (params: {
     readonly api: API<Spec>;
     readonly preventDefault: () => void;

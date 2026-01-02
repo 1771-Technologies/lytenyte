@@ -87,6 +87,8 @@ export function useDraggable({
       }, 4);
       document.head.appendChild(styleEl);
 
+      let lastX = -1;
+      let lastY = -1;
       const handleDrag = (ev: DragEvent) => {
         if (frame || (prevX === ev.clientX && prevY === ev.clientY)) return;
 
@@ -111,6 +113,9 @@ export function useDraggable({
           onDragMove?.({ data, ev, position: { x: x - xOffset, y: y - yOffset } });
           dragX(x - xOffset);
           dragY(y - yOffset);
+
+          lastX = x - xOffset;
+          lastY = y - yOffset;
 
           frame = null;
         });
@@ -144,7 +149,7 @@ export function useDraggable({
           onUnhandledDrop?.({
             data,
             ev: e,
-            position: { x: dragX(), y: dragY() },
+            position: { x: lastX, y: lastY },
           });
 
           clearDragGlobals();

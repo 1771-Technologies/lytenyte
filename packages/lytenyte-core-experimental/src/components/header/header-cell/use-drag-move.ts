@@ -28,12 +28,14 @@ export function useDragMove(
     api,
     columnGroupMoveDragPlaceholder,
     columnMoveDragPlaceholder,
+    onColumnMoveOutside,
   } = useRoot();
 
   const placeholderSetting =
     cell.kind === "group" ? columnGroupMoveDragPlaceholder : columnMoveDragPlaceholder;
+
   let dragPlaceholder;
-  if (typeof dragPlaceholder === "function") dragPlaceholder = HeaderMovePlaceholder;
+  if (typeof placeholderSetting === "function") dragPlaceholder = HeaderMovePlaceholder;
   else dragPlaceholder = placeholderSetting;
 
   const viewRef = useRef(view);
@@ -67,6 +69,15 @@ export function useDragMove(
     placeholder: dragPlaceholder as any,
     data: {
       moving: { kind: "site", data: { columns, cell } },
+    },
+    onUnhandledDrop: ({ position: { x, y } }) => {
+      if (!onColumnMoveOutside || !vp) return;
+      const bb = vp.getBoundingClientRect();
+
+      const isOutside = bb.top >= y || bb.bottom <= y || bb.left >= x || bb.right <= x;
+      if (!isOutside) return;
+
+      onColumnMoveOutside?.({ columns, api });
     },
     onDragStart: () => {
       if (cell.kind === "group") setActiveHeaderDrag(cell);

@@ -58,6 +58,7 @@ export interface RootContextValue {
   readonly columnMoveDragPlaceholder: Root.Props["columnMoveDragPlaceholder"];
   readonly columnGroupMoveDragPlaceholder: Root.Props["columnGroupMoveDragPlaceholder"];
   readonly columnGroupRenderer: Root.Props["columnGroupRenderer"];
+  readonly onColumnMoveOutside: Root.Props["onColumnMoveOutside"];
 
   readonly viewport: HTMLDivElement | null;
   readonly setViewport: Dispatch<SetStateAction<HTMLDivElement | null>>;
