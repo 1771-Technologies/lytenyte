@@ -12,7 +12,7 @@ export interface SelectAllProps {
 }
 
 export function SelectAll<Spec extends GridSpec>({ api, slot }: SelectAllProps & HeaderParams<Spec>) {
-  const s = api.rowSelectionState();
+  const s = api.useSelectionState();
 
   const selected = useMemo(() => {
     const selected =

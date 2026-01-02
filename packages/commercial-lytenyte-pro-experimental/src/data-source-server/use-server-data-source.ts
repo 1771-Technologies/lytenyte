@@ -143,6 +143,8 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
 
   const rowAdd = useRowAdd(source, props.onRowsAdded, props.rowUpdateOptimistically);
 
+  const selection$ = usePiece(selectionState.rowSelectionsRaw);
+
   const rowSource = useMemo<RowSourceServer<T>>(() => {
     const rowSource: RowSourceServer<T> = {
       rowById,
@@ -167,6 +169,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
       useBottomCount: () => bot$.useValue(),
       useRows: () => row$.useValue(),
       useMaxRowGroupDepth: () => maxDepth$.useValue(),
+      useSelectionState: selection$.useValue,
 
       onRowGroupExpansionChange: (deltaChanges) => {
         setExpansions((prev) => ({ ...prev, ...deltaChanges }));
@@ -231,6 +234,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
     rowSelectionState,
     rowsBetween,
     rowsSelected,
+    selection$.useValue,
     setExpansions,
     source,
     top$,

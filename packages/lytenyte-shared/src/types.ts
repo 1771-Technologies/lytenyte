@@ -124,6 +124,7 @@ export interface RowSource<T = any> {
   readonly rowInvalidate: (row?: number) => void;
   readonly rowsSelected: () => { state: RowSelectionState; rows: RowNode<T>[] };
   readonly rowSelectionState: () => RowSelectionState;
+  readonly useSelectionState: () => RowSelectionState;
 
   // Methods the LyteNyte will call
   readonly onViewChange: (view: SpanLayout) => void;

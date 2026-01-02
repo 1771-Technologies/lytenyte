@@ -130,6 +130,8 @@ export function useTreeDataSource<T>(p: UseTreeDataSourceParams<T>): RowSource {
 
   const onRowsUpdated = useOnRowsUpdated(tree, p);
 
+  const selection$ = usePiece(selectionState.rowSelectionsRaw);
+
   const source = useMemo(() => {
     const s: RowSourceTree<T> = {
       rowByIndex,
@@ -156,6 +158,7 @@ export function useTreeDataSource<T>(p: UseTreeDataSourceParams<T>): RowSource {
       useTopCount: top$.useValue,
       useRows: rows.useValue,
       useMaxRowGroupDepth: maxDepth$.useValue,
+      useSelectionState: selection$.useValue,
 
       onRowsSelected,
       onRowsUpdated,
@@ -180,6 +183,7 @@ export function useTreeDataSource<T>(p: UseTreeDataSourceParams<T>): RowSource {
     rows.useValue,
     rowsBetween,
     rowsSelected,
+    selection$.useValue,
     setExpansions,
     top$.useValue,
   ]);
