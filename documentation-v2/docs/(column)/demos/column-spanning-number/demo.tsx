@@ -8,8 +8,8 @@ import {
   CurrencyCell,
   SymbolCell,
   CompactNumberCell,
-  CurrencyCellGBP,
-} from "./components.jsx";
+  PriceCell,
+} from "./components.js";
 
 type StockData = (typeof stockData)[number];
 
@@ -26,24 +26,14 @@ const columns: Grid.Column<GridSpec>[] = [
     id: "price",
     name: "USD Price",
     type: "number",
-    cellRenderer: CurrencyCell,
+    cellRenderer: PriceCell,
     width: 110,
+    colSpan: 2,
   },
-  //!next 11
-  {
-    field: ({ row }) => {
-      if (row.kind === "branch" || !row.data) return 0;
-      return ((row.data as StockData)[3] as number) * 1.36;
-    },
-    id: "price gbp",
-    name: "GBP Price",
-    type: "number",
-    cellRenderer: CurrencyCellGBP,
-    width: 110,
-  },
-  { field: 5, id: "change", name: "Change", type: "number", cellRenderer: PercentCell, width: 130 },
+  { id: "price-gbp", name: "GBP Price", type: "number", width: 110 },
+  { field: 5, id: "change", type: "number", cellRenderer: PercentCell, width: 130 },
   { field: 11, id: "eps", name: "EPS", type: "number", cellRenderer: CurrencyCell, width: 130 },
-  { field: 6, id: "volume", name: "Volume", type: "number", cellRenderer: CompactNumberCell, width: 130 },
+  { field: 6, id: "volume", type: "number", cellRenderer: CompactNumberCell, width: 130 },
 ];
 
 const base: Grid.ColumnBase<GridSpec> = { widthFlex: 1 };
