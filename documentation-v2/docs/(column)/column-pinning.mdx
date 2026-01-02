@@ -5,27 +5,27 @@ description: LyteNyte Grid supports pinning columns to the start or end
   of the viewport. Pinned columns stay visible as the user scrolls horizontally.
 ---
 
-<Callout>
+:::note
 
 LyteNyte Grid uses the `start` and `end` terminology for column position instead
 of `left` or `right`. This matches logical CSS properties
 like `paddingInlineStart`, ensuring pinned column behavior works consistently
 in both LTR and RTL modes.
 
-</Callout>
+:::
 
 ## Pinning Columns to Start
 
 Set a column's `pin` property to `"start"` to pin it to the beginning of the grid's viewport.
 In LTR mode, start-pinned columns appear on the left; in RTL mode, they appear on the right.
 
-!demo:Column Pinning Start="./demos/column-pinning-start_x"
+::demo[Column Pinning Start="./demos/column-pinning-start"]
 
 In the demo, the **ID** and **Product** columns are
 pinned to the start of the viewport:
 
 ```ts
-const columns: Column<OrderData>[] = [
+const columns: Grid.Column<GridSpec>[] = [
   { id: "id", pin: "start" },
   { id: "product", pin: "start" },
   // other definitions
@@ -38,12 +38,12 @@ Set a column's `pin` property to `"end"` to pin it to the end of the grid's view
 In LTR mode, end-pinned columns appear on the right; in RTL
 mode, they appear on the left.
 
-!demo:Column Pinning End="./demos/column-pinning-end_x"
+::demo[Column Pinning End="./demos/column-pinning-end"]
 
 In the demo, the **ID** and **Product** columns are pinned to the end of the viewport:
 
 ```ts
-const columns: Column<OrderData>[] = [
+const columns: Grid.Column<GridSpec>[] = [
   { id: "id", pin: "end" },
   { id: "product", pin: "end" },
   // other definitions
@@ -56,12 +56,12 @@ LyteNyte Grid supports pinning columns to both the start and end.
 The demo below shows this behavior. Pin columns on both sides by
 assigning some columns `pin: "start"` and others `pin: "end"`.
 
-!demo:Column Pinning Start & End="./demos/column-pinning-both_x"
+::demo[Column Pinning Start & End="./demos/column-pinning-both"]
 
 In the demo, the **ID** and **Product** columns are pinned to the start and end of the viewport respectively:
 
 ```ts
-const columns: Column<OrderData>[] = [
+const columns: Grid.Column<GridSpec>[] = [
   { id: "id", pin: "end" },
   { id: "product", pin: "start" },
   // other definitions
@@ -77,7 +77,7 @@ pinned to `"end"` appear above those pinned to `"start"`.
 
 ## Next Steps
 
-- [Column Resizing](/docs/column-resizing): Change column widths programmatically or through user interaction.
-- [Column ID & Name](/docs/column-header-name): Define user-friendly column names and ensure unique IDs.
-- [Column Floating Header](/docs/column-floating-header): Add a secondary header row for extra header features.
-- [Column Visibility](/docs/column-visibility): Control which columns are visible.
+::next[/docs/column-resizing]
+::next[/docs/column-header-name]
+::next[/docs/column-floating-header]
+::next[/docs/column-visibility]

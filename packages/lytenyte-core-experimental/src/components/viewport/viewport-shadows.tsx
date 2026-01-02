@@ -37,7 +37,7 @@ export function ViewportShadows({
   const widthExcludingEnd = xPositions[view.startCount + view.centerCount];
 
   const hasYSplit = heightExcludingBot < dimensions.innerHeight;
-  const hasXSplit = widthExcludingEnd < dimensions.innerWidth;
+  const hasXSplit = xPositions.at(-1)! < dimensions.innerWidth;
 
   const topOffset = rowTopCount > 0 ? totalHeaderHeight + yPositions[rowTopCount] : totalHeaderHeight;
 
