@@ -1,34 +1,41 @@
-"use client";
-
-import { Grid, measureText, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
-import "@1771technologies/lytenyte-pro/grid.css";
-import type { Column } from "@1771technologies/lytenyte-pro/types";
-import { useId } from "react";
+//#start
+import "@1771technologies/lytenyte-pro-experimental/components.css";
+import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
 import {
   ExchangeCell,
-  GridButton,
   makePerfHeaderCell,
   NetworkCell,
   PercentCell,
   PercentCellPositiveNegative,
   SymbolCell,
-  tw,
-} from "./components";
+} from "./components.jsx";
 import type { DEXPerformanceData } from "@1771technologies/grid-sample-data/dex-pairs-performance";
 import { data } from "@1771technologies/grid-sample-data/dex-pairs-performance";
+import { Grid, measureText, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import { useRef, useState } from "react";
 
-const columns: Column<DEXPerformanceData>[] = [
+export interface GridSpec {
+  readonly data: DEXPerformanceData;
+}
+
+const initialColumns: Grid.Column<GridSpec>[] = [
   {
     id: "symbol",
     cellRenderer: SymbolCell,
-    name: "Symbol",
+    name: "Crypto Currency Symbol, Ticker, and Name",
+    autosizeHeaderFn: (p) => {
+      const textWidth = measureText(`${p.column.name ?? p.column.id}`, p.api.viewport()).width;
+
+      const padding = 20;
+      return textWidth + padding;
+    },
     autosizeCellFn: (p) => {
       if (p.row.kind !== "leaf" || !p.row.data) return null;
 
       const data = p.row.data;
       const textWidth = measureText(
         `${data.symbol.split("/")[0].trim()}${data.symbolTicker}`,
-        p.grid.state.viewport.get(),
+        p.api.viewport(),
       ).width;
       const iconWidth = 20;
       const gapWidth = 20;
@@ -45,7 +52,7 @@ const columns: Column<DEXPerformanceData>[] = [
       if (p.row.kind !== "leaf" || !p.row.data) return null;
 
       const data = p.row.data;
-      const textWidth = measureText(data.network, p.grid.state.viewport.get()).width;
+      const textWidth = measureText(data.network, p.api.viewport()).width;
       const iconWidth = 20;
       const gapWidth = 6;
       const padding = 20;
@@ -62,7 +69,7 @@ const columns: Column<DEXPerformanceData>[] = [
       if (p.row.kind !== "leaf" || !p.row.data) return null;
 
       const data = p.row.data;
-      const textWidth = measureText(data.exchange, p.grid.state.viewport.get()).width;
+      const textWidth = measureText(data.exchange, p.api.viewport()).width;
       const iconWidth = 20;
       const gapWidth = 6;
       const padding = 20;
@@ -124,85 +131,43 @@ const columns: Column<DEXPerformanceData>[] = [
   },
 ];
 
-export default function ColumnBase() {
-  const ds = useClientRowDataSource({ data: data });
+const base: Grid.ColumnBase<GridSpec> = { width: 80 };
 
-  const grid = Grid.useLyteNyte({
-    gridId: useId(),
-    rowDataSource: ds,
-    columns,
-  });
+//#end
+export default function ColumnAutosize() {
+  const ds = useClientDataSource({ data: data });
 
-  const view = grid.view.useValue();
+  const ref = useRef<Grid.API<GridSpec>>(null);
+  const [columns, setColumns] = useState(initialColumns);
 
   return (
-    <div>
-      <div className="flex gap-2 border-b px-2 py-2">
-        <GridButton
+    <>
+      <div className="border-ln-border flex gap-4 border-b px-4 py-3">
+        <button
+          data-ln-button="tertiary"
+          data-ln-size="md"
           onClick={() => {
-            grid.api.columnAutosize({});
+            ref.current?.columnAutosize({ includeHeader: true }); //!
           }}
         >
-          Autosize Cells
-        </GridButton>
-
-        <GridButton
+          Autosize Including Headers
+        </button>
+        <button
+          data-ln-button="tertiary"
+          data-ln-size="md"
           onClick={() => {
-            grid.state.columns.set(columns);
+            setColumns(initialColumns);
           }}
         >
           Reset Columns
-        </GridButton>
+        </button>
       </div>
-      <div className="lng-grid" style={{ height: 500 }}>
-        <Grid.Root grid={grid}>
-          <Grid.Viewport className="text-xs">
-            <Grid.Header>
-              {view.header.layout.map((row, i) => {
-                return (
-                  <Grid.HeaderRow key={i} headerRowIndex={i}>
-                    {row.map((c) => {
-                      if (c.kind === "group") return null;
-
-                      return (
-                        <Grid.HeaderCell
-                          key={c.id}
-                          cell={c}
-                          className={tw(
-                            "text-ln-gray-60! dark:text-ln-gray-70! flex h-full w-full items-center text-nowrap px-2 text-xs capitalize",
-                            c.column.type === "number" && "justify-end",
-                          )}
-                        />
-                      );
-                    })}
-                  </Grid.HeaderRow>
-                );
-              })}
-            </Grid.Header>
-            <Grid.RowsContainer>
-              <Grid.RowsCenter>
-                {view.rows.center.map((row) => {
-                  if (row.kind === "full-width") return null;
-
-                  return (
-                    <Grid.Row row={row} key={row.id}>
-                      {row.cells.map((c) => {
-                        return (
-                          <Grid.Cell
-                            key={c.id}
-                            cell={c}
-                            className="text-xs! flex h-full w-full items-center px-2"
-                          />
-                        );
-                      })}
-                    </Grid.Row>
-                  );
-                })}
-              </Grid.RowsCenter>
-            </Grid.RowsContainer>
-          </Grid.Viewport>
-        </Grid.Root>
+      <div
+        className="ln-grid ln-cell:text-xs ln-header:text-xs ln-header:text-ln-text-xlight"
+        style={{ height: 500 }}
+      >
+        <Grid columns={columns} onColumnsChange={setColumns} columnBase={base} rowSource={ds} ref={ref} />
       </div>
-    </div>
+    </>
   );
 }

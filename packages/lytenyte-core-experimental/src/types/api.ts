@@ -47,7 +47,7 @@ export type API<Spec extends GridSpec = GridSpec> = {
     readonly updatePinState?: boolean;
   }) => void;
   readonly columnResize: (sizes: Record<string, number>) => void;
-  readonly columnAutosize: (params: {
+  readonly columnAutosize: (params?: {
     readonly dryRun?: boolean;
     readonly includeHeader?: boolean;
     readonly columns?: (string | number | WithId)[];
