@@ -1,17 +1,16 @@
-import type { CellRendererParams } from "@1771technologies/lytenyte-pro/types";
-import type { ClassValue } from "clsx";
-import { ToggleGroup as TG } from "radix-ui";
-import clsx from "clsx";
-import { twMerge } from "tailwind-merge";
 import { format } from "date-fns";
-import type { JSX, ReactNode } from "react";
-import type { OrderData } from "@1771technologies/grid-sample-data/orders";
+import { type JSX, type ReactNode } from "react";
+import { ToggleGroup as TG } from "radix-ui";
+import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
+import type { GridSpec } from "./demo.jsx";
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
-export function tw(...c: ClassValue[]) {
+function tw(...c: ClassValue[]) {
   return twMerge(clsx(...c));
 }
 
-export function ProductCell({ grid: { api }, row }: CellRendererParams<OrderData>) {
+export function ProductCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
   if (!api.rowIsLeaf(row) || !row.data) return;
 
   const url = row.data?.productThumbnail;
@@ -20,16 +19,16 @@ export function ProductCell({ grid: { api }, row }: CellRendererParams<OrderData
 
   return (
     <div className="flex h-full w-full items-center gap-2">
-      <img className="border-ln-gray-50 h-7 w-7 rounded-lg border" src={url} alt={title + desc} />
-      <div className="text-ln-gray-90 flex flex-col gap-0.5">
+      <img className="border-ln-border-strong h-7 w-7 rounded-lg border" src={url} alt={title + desc} />
+      <div className="text-ln-text-dark flex flex-col gap-0.5">
         <div className="font-semibold">{title}</div>
-        <div className="text-ln-gray-70 text-xs">{desc}</div>
+        <div className="text-ln-text-light text-xs">{desc}</div>
       </div>
     </div>
   );
 }
 
-export function AvatarCell({ grid: { api }, row }: CellRendererParams<OrderData>) {
+export function AvatarCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
   if (!api.rowIsLeaf(row) || !row.data) return;
 
   const url = row.data?.customerAvatar;
@@ -38,8 +37,8 @@ export function AvatarCell({ grid: { api }, row }: CellRendererParams<OrderData>
 
   return (
     <div className="flex h-full w-full items-center gap-2">
-      <img className="border-ln-gray-50 h-7 w-7 rounded-full border" src={url} alt={name} />
-      <div className="text-ln-gray-90 flex flex-col gap-0.5">
+      <img className="border-ln-border-strong h-7 w-7 rounded-full border" src={url} alt={name} />
+      <div className="text-ln-text-dark flex flex-col gap-0.5">
         <div>{name}</div>
       </div>
     </div>
@@ -50,7 +49,7 @@ const formatter = new Intl.NumberFormat("en-Us", {
   minimumFractionDigits: 2,
   maximumFractionDigits: 2,
 });
-export function PriceCell({ grid: { api }, row }: CellRendererParams<OrderData>) {
+export function PriceCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
   if (!api.rowIsLeaf(row) || !row.data) return;
 
   const price = formatter.format(row.data.price);
@@ -59,27 +58,27 @@ export function PriceCell({ grid: { api }, row }: CellRendererParams<OrderData>)
   return (
     <div className="flex h-full w-full items-center justify-end">
       <div className="flex items-baseline tabular-nums">
-        <span className="text-ln-gray-80 font-semibold">${dollars}</span>.
+        <span className="text-ln-text font-semibold">${dollars}</span>.
         <span className="relative text-xs">{cents}</span>
       </div>
     </div>
   );
 }
 
-export function PurchaseDateCell({ grid: { api }, row }: CellRendererParams<OrderData>) {
+export function PurchaseDateCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
   if (!api.rowIsLeaf(row) || !row.data) return;
 
   const formattedDate = format(row.data.purchaseDate, "dd MMM, yyyy");
 
   return <div className="flex h-full w-full items-center">{formattedDate}</div>;
 }
-export function IdCell({ grid: { api }, row }: CellRendererParams<OrderData>) {
+export function IdCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
   if (!api.rowIsLeaf(row) || !row.data) return;
 
   return <div className="text-xs tabular-nums">{row.data.id}</div>;
 }
 
-export function PaymentMethodCell({ grid: { api }, row }: CellRendererParams<OrderData>) {
+export function PaymentMethodCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
   if (!api.rowIsLeaf(row) || !row.data) return;
 
   const cardNumber = row.data.cardNumber;
@@ -92,7 +91,7 @@ export function PaymentMethodCell({ grid: { api }, row }: CellRendererParams<Ord
   return (
     <div className="flex h-full w-full items-center gap-2">
       <div className="flex w-7 items-center justify-center">{Logo}</div>
-      <div className="flex items-center">
+      <div className="flex items-center gap-px">
         <div className="bg-ln-gray-40 size-2 rounded-full"></div>
         <div className="bg-ln-gray-40 size-2 rounded-full"></div>
         <div className="bg-ln-gray-40 size-2 rounded-full"></div>
@@ -103,20 +102,14 @@ export function PaymentMethodCell({ grid: { api }, row }: CellRendererParams<Ord
   );
 }
 
-export function EmailCell({ grid: { api }, row }: CellRendererParams<OrderData>) {
+export function EmailCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
   if (!api.rowIsLeaf(row) || !row.data) return;
 
   return <div className="text-ln-primary-50 flex h-full w-full items-center">{row.data.email}</div>;
 }
 
 const VisaLogo = (props: JSX.IntrinsicElements["svg"]) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={2500}
-    height={812}
-    viewBox="0.5 0.5 999 323.684"
-    {...props}
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width={2500} height={812} viewBox="0.5 0.5 999 323.684" {...props}>
     <path
       fill="#1434cb"
       d="M651.185.5c-70.933 0-134.322 36.766-134.322 104.694 0 77.9 112.423 83.28 112.423 122.415 0 16.478-18.884 31.229-51.137 31.229-45.773 0-79.984-20.611-79.984-20.611l-14.638 68.547s39.41 17.41 91.734 17.41c77.552 0 138.576-38.572 138.576-107.66 0-82.316-112.89-87.537-112.89-123.86 0-12.91 15.501-27.053 47.662-27.053 36.286 0 65.892 14.99 65.892 14.99l14.326-66.204S696.614.5 651.185.5zM2.218 5.497.5 15.49s29.842 5.461 56.719 16.356c34.606 12.492 37.072 19.765 42.9 42.353l63.51 244.832h85.138L379.927 5.497h-84.942L210.707 218.67l-34.39-180.696c-3.154-20.68-19.13-32.477-38.685-32.477H2.218zm411.865 0L347.449 319.03h80.999l66.4-313.534h-80.765zm451.759 0c-19.532 0-29.88 10.457-37.474 28.73L709.699 319.03h84.942l16.434-47.468h103.483l9.994 47.468H999.5L934.115 5.497h-68.273zm11.047 84.707 25.178 117.653h-67.454z"
@@ -161,8 +154,8 @@ export function ToggleItem(props: Parameters<typeof TG.Item>[0]) {
     <TG.Item
       {...props}
       className={tw(
-        "text-ln-gray-70 flex items-center justify-center px-2 py-1 text-xs font-bold outline-none focus:outline-none",
-        "data-[state=on]:text-ln-gray-90 data-[state=on]:bg-linear-to-b from-ln-gray-02 to-ln-gray-05 data-[state=on]:rounded-md",
+        "text-ln-text flex cursor-pointer items-center justify-center px-2 py-1 text-xs font-bold outline-none focus:outline-none",
+        "data-[state=on]:text-ln-text-dark data-[state=on]:bg-linear-to-b from-ln-gray-02 to-ln-gray-05 data-[state=on]:rounded-md",
         props.className,
       )}
     ></TG.Item>
