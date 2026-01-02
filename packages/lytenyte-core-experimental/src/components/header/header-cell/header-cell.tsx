@@ -16,7 +16,7 @@ const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function Hea
   { cell, resizerClassName, resizerStyle, ...props },
   ref,
 ) {
-  const { id, xPositions, base, view, api, events } = useRoot();
+  const { id, xPositions, base, view, api, events, styles } = useRoot();
 
   const column = view.lookup.get(cell.id)!;
   const resizable = (column.resizable ?? base.resizable) && column.id !== COLUMN_MARKER_ID;
@@ -47,6 +47,7 @@ const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function Hea
 
   return (
     <div
+      className={styles?.header?.className}
       {...dragProps}
       {...props}
       {...handlers}
@@ -75,7 +76,7 @@ const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function Hea
         width,
         height: "100%",
         boxSizing: "border-box",
-        ...props.style,
+        ...(props.style ?? styles?.header?.style),
       }}
     >
       {<Renderer column={column} api={api} />}

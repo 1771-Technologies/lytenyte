@@ -29,6 +29,7 @@ function RowDetailImpl<T>({ row, rowIndex }: { row: RowNode<T>; rowIndex: number
     rowDetailHeight,
     rowDetailAutoHeightGuess,
     rowDetailHeightCache,
+    styles,
   } = useRoot();
 
   const height =
@@ -59,6 +60,7 @@ function RowDetailImpl<T>({ row, rowIndex }: { row: RowNode<T>; rowIndex: number
 
   return (
     <div
+      className={styles?.detail?.className}
       ref={setDetailEl}
       role="gridcell"
       style={{
@@ -66,6 +68,7 @@ function RowDetailImpl<T>({ row, rowIndex }: { row: RowNode<T>; rowIndex: number
         position: "absolute",
         left: 0,
         width: SCROLL_WIDTH_VARIABLE_USE,
+        ...styles?.detail?.style,
       }}
     >
       <div

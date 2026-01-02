@@ -13,7 +13,7 @@ property on each column. The grid builds a hierarchy from the
 `groupPath` values across all columns. The demo below shows a basic
 column group setup.
 
-!demo:Column Groups="./demos/column-groups_x"
+::demo[Column Groups="./demos/column-groups"]
 
 Columns stay as a flat array, even when grouped. LyteNyte Grid creates
 the hierarchy by joining each column's group path. Columns with the
@@ -59,16 +59,7 @@ The demo below shows this behavior. The **Market Info** and
 **Performance** groups are split visually but remain single logical
 groups.
 
-!demo:Split Column Groups="./demos/column-groups-split_x"
-
-The `key` passed to `Grid.HeaderGroupCell` uses `c.idOccurrence`. Split
-groups create multiple occurrences of the same header, and each shares
-the same `id`. Since React requires unique keys, the grid provides
-`idOccurrence`, which combines the group ID with an occurrence count.
-
-```tsx
-<Grid.HeaderGroupCell cell={c} key={c.idOccurrence} />
-```
+::demo[Split Column Groups="./demos/column-groups-split"]
 
 ## Multiple Column Group Levels
 
@@ -76,7 +67,7 @@ The `groupPath` property is an array of strings. Each string represents
 a grouping level. Adding more entries creates deeper nesting. The demo
 below illustrates multiple group levels:
 
-!demo:Multiple Group Levels="./demos/column-groups-multiple-levels_x"
+::demo[Multiple Group Levels="./demos/column-groups-multiple-levels"]
 
 Each grouping level creates a new header row. The longest `groupPath`
 in the grid determines the number of header rows.
@@ -87,7 +78,7 @@ Pinned columns can still belong to a group. Pinned columns create a
 split boundary, so the grid treats them as visually separate even if
 they are adjacent to other group members. The example below shows this:
 
-!demo:Pinned Column Groups="./demos/column-groups-expansions-pinned_x"
+::demo[Pinned Column Groups="./demos/column-groups-expansions-pinned"]
 
 Set the `pin` property to `"start"` or `"end"` to pin a column to the
 start or end of the viewport. For details, see the
@@ -109,27 +100,31 @@ In the demo below, the **Market Info** and **Performance** groups are
 collapsible. The **Market Info** group starts collapsed. Click the
 chevron to expand it.
 
-!demo:Column Group Expansion="./demos/column-groups-expansions_x"
+::demo[Column Group Expansion="./demos/column-groups-expansions"]
 
-The demo uses a few noteworthy patterns:
-
-- A button is passed to the `children` prop of `Grid.HeaderGroupCell`.
-  The button toggles the group using `grid.api.columnToggleGroup`.
-- The Tailwind classes use the `data-ln-collapsible` attribute, which
-  LyteNyte Grid adds to indicate whether a group can collapse. Use this
-  attribute in custom CSS if some groups should not collapse.
+The demo uses a custom header renderer to manage the column group expansion state.
+A simplified implementation is shown below. Notice the call
+to `api.columnToggleGroup`. You can use this method to programmatically toggle the
+column group expansion state.
 
 ```tsx
-<Grid.HeaderGroupCell cell={c} key={c.idOccurrence} className="text-xs! group flex items-center px-2">
-  <div className="flex-1">{c.id}</div>
-  <button
-    className="text-ln-gray-90 hidden cursor-pointer items-center justify-center text-base group-data-[ln-collapsible=true]:flex"
-    onClick={() => grid.api.columnToggleGroup(c.id)}
-  >
-    <ChevronLeftIcon className="hidden group-data-[ln-collapsed=false]:block" />
-    <ChevronRightIcon className="block group-data-[ln-collapsed=false]:hidden" />
-  </button>
-</Grid.HeaderGroupCell>
+export function HeaderGroupCell({
+  groupPath,
+  api,
+  collapsible,
+  collapsed,
+}: Grid.T.HeaderGroupParams<GridSpec>) {
+  return (
+    <>
+      <div>{groupPath.at(-1)!}</div>
+      {/*!next */}
+      <button onClick={() => api.columnToggleGroup(groupPath)}>
+        {collapsible && collapsed && <ChevronRightIcon />}
+        {collapsible && !collapsed && <ChevronLeftIcon />}
+      </button>
+    </>
+  );
+}
 ```
 
 ### Default Group Expansion
@@ -138,7 +133,7 @@ Collapsible groups are expanded by default. Use the
 `columnGroupDefaultExpansion` property to change this. Setting it to
 `false` will collapse column groups by default:
 
-!demo:Default Expansion State="./demos/column-groups-default-expansions_x"
+::demo[Default Expansion State="./demos/column-groups-default-expansions"]
 
 You can also provide explicit initial expansion states. To do this, you
 must know how LyteNyte Grid generates group IDs.
@@ -168,42 +163,33 @@ group label. LyteNyte Grid allows you to style header cells so the
 label remains visible. The demo below shows this behavior. Try scrolling
 horizontally and observe that the **Market Info** label remains in view.
 
-!demo:Sticky Group Labels="./demos/column-groups-sticky_x"
+::demo[Sticky Group Labels="./demos/column-groups-sticky"]
 
-The implementation is simple. The important part is the `style`
-override. `Grid.HeaderGroupCell` uses `relative` position and `hidden`
-overflow by default. In this case, overriding those defaults is
-appropriate. Since pinned columns may appear at the start, compute the
-starting width and use it for `insetInlineStart`.
+The implementation is simple. The important part is the `styles` override.
+`Grid.HeaderGroupCell` uses `position: relative` and `overflow: hidden` by default.
+In this case, overriding those defaults is appropriate. Since pinned columns may be
+pinned to the start, we use the `--ln-start-offset` variable. This variable equals
+the total width (in pixels) of the columns pinned to the
+start. LyteNyte Grid sets `--ln-start-offset` on the grid viewport.
 
 ```tsx
-function StickyGroupHeader({
-  layout,
-  grid,
-}: {
-  grid: GridState<DEXPerformanceData>;
-  layout: HeaderGroupCellLayout;
-}) {
-  const meta = grid.state.columnMeta.useValue();
-  const widths = grid.state.xPositions.useValue();
-  const startWidth = widths[meta.columnVisibleStartCount];
-
-  return (
-    <Grid.HeaderGroupCell
-      cell={layout}
-      style={{
-        overflow: "unset",
-        position: "sticky",
-        insetInlineStart: startWidth,
-      }}
-    />
-  );
-}
+<Grid
+  columns={columns}
+  columnBase={base}
+  rowSource={ds}
+  columnGroupRenderer={HeaderGroupCell}
+  //!next 5
+  styles={{
+    headerGroup: {
+      style: { position: "sticky", insetInlineStart: "var(--ln-start-offset)", overflow: "unset" },
+    },
+  }}
+/>
 ```
 
 ## Next Steps
 
-- [Column Resizing](/docs/column-resizing): Change column widths programmatically or via user interaction.
-- [Column ID & Name](/docs/column-header-name): Define user-friendly column names and ensure unique IDs.
-- [Column Pinning](/docs/column-pinning): Pin columns to the start or end of the viewport.
-- [Column Field](/docs/column-field): Control how a column retrieves its value for each cell.
+::next[/docs/column-resizing]
+::next[/docs/column-header-name]
+::next[/docs/column-pinning]
+::next[/docs/column-field]

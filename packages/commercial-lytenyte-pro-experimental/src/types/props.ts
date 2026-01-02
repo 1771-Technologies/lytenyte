@@ -1,5 +1,5 @@
 import type { RowGroupDisplayMode, RowHeight, RowNode } from "@1771technologies/lytenyte-shared";
-import type { ReactNode, Ref } from "react";
+import type { CSSProperties, ReactNode, Ref } from "react";
 import type { Column, EditParams, HeaderGroupParams, HeaderParams, RowParams } from "./column.js";
 import type { DialogFrame, GridSpec, PopoverFrame } from "./grid.js";
 import type { API, DataRect } from "./api.js";
@@ -37,6 +37,32 @@ export type Props<Spec extends GridSpec = GridSpec> = {
 
   readonly gridId?: string;
   readonly events?: GridEvents<Spec>;
+  readonly styles?: {
+    readonly viewport?: {
+      readonly style?: CSSProperties;
+      readonly className?: string;
+    };
+    readonly row?: {
+      readonly style?: CSSProperties;
+      readonly className?: string;
+    };
+    readonly header?: {
+      readonly style?: CSSProperties;
+      readonly className?: string;
+    };
+    readonly detail?: {
+      readonly style?: CSSProperties;
+      readonly className?: string;
+    };
+    readonly headerGroup?: {
+      readonly style?: CSSProperties;
+      readonly className?: string;
+    };
+    readonly cell?: {
+      readonly style?: CSSProperties;
+      readonly className?: string;
+    };
+  };
 
   readonly rtl?: boolean;
 

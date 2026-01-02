@@ -161,6 +161,11 @@ logic, though the default rendering behavior is usually the best place to start.
 Like the `Grid.Viewport` component, the `Grid.Header`, `Grid.HeaderRow`, `Grid.HeaderGroupCell`,
 and `Grid.HeaderCell` components all render a `div` element, and you can pass any `div` prop to them.
 
+The `key` passed to `Grid.HeaderGroupCell` uses `c.idOccurrence`. Split
+groups create multiple occurrences of the same header, and each shares
+the same `id`. Since React requires unique keys, the grid provides
+`idOccurrence`, which combines the group ID with an occurrence count.
+
 ## Rows Container
 
 Use the `Grid.RowsContainer` component to render all grid rows.

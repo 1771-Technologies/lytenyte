@@ -21,7 +21,7 @@ import type { Dimension } from "./hooks/use-viewport-dimensions";
 import type { Root } from "./root";
 import type { ViewportShadowsProps } from "../components/viewport/viewport-shadows";
 import type { GridEvents } from "../types/events";
-import type { GridSpec } from "../types";
+import type { GridSpec, Props } from "../types";
 
 export interface RootContextValue {
   readonly id: string;
@@ -42,6 +42,11 @@ export interface RootContextValue {
   readonly xPositions: Uint32Array;
   readonly yPositions: Uint32Array;
 
+  readonly startOffset: number;
+  readonly endOffset: number;
+  readonly topOffset: number;
+  readonly bottomOffset: number;
+
   readonly setDetailCache: Dispatch<SetStateAction<Record<string, number>>>;
   readonly rowDetailHeightCache: Record<string, number>;
   readonly rowDetailAutoHeightGuess: number;
@@ -56,6 +61,8 @@ export interface RootContextValue {
 
   readonly viewport: HTMLDivElement | null;
   readonly setViewport: Dispatch<SetStateAction<HTMLDivElement | null>>;
+
+  readonly styles: Props["styles"];
 
   readonly focusActive: PieceWritable<PositionUnion | null>;
 

@@ -42,6 +42,7 @@ const CellImpl = memo(
       view,
       editMode,
       events,
+      styles,
       dimensions: { innerWidth },
     } = useRoot();
 
@@ -85,11 +86,12 @@ const CellImpl = memo(
         )}
 
         <div
+          className={styles?.cell?.className}
           {...props}
           ref={forwarded}
           role="gridcell"
           tabIndex={isEditingThis ? -1 : 0}
-          style={{ ...style, ...props.style }}
+          style={{ ...style, ...(props.style ?? styles?.cell?.style) }}
           onBlur={
             !isEditing || editMode !== "cell"
               ? (props.onBlur ?? handlers.onBlur)

@@ -383,6 +383,86 @@ the selection area is actually a set of split `div`s assembled to visually form 
 }
 ```
 
+## Style Overrides
+
+LyteNyte Grid is headless, but the default view setup is usually the recommended way to render grid cells.
+Sometimes you need to apply styles directly to a cell or header, and normal CSS selectors are
+insufficient (see the [sticky column group labels demo](/docs/column-groups) for an example).
+In these cases, use the `styles` property on the grid to apply CSS classes or
+inline styles to specific grid components. For example:
+
+<Tabs>
+
+<Tab label="Style Overrides">
+
+```tsx
+<Grid
+  //!next 8
+  styles={{
+    headerGroup: {
+      style: {
+        position: "sticky",
+        insetInlineStart: "var(--ln-start-offset)",
+        overflow: "unset",
+      },
+    },
+  }}
+/>
+```
+
+</Tab>
+
+<Tab label="Full Headless Mode">
+
+```tsx
+<Grid>
+  <Grid.Viewport>
+    <Grid.Header>
+      {(cells) => {
+        return (
+          <Grid.HeaderRow>
+            {cells.map((c) => {
+              if (c.kind === "group")
+                return (
+                  <Grid.HeaderGroupCell
+                    cell={c}
+                    key={c.idOccurrence}
+                    //!next 4
+                    style={{
+                      position: "sticky",
+                      insetInlineStart: "var(--ln-start-offset)",
+                      overflow: "unset",
+                    }}
+                  />
+                );
+
+              return <Grid.HeaderCell cell={c} key={c.id} />;
+            })}
+          </Grid.HeaderRow>
+        );
+      }}
+    </Grid.Header>
+
+    <Grid.RowsContainer>
+      <Grid.RowsTop />
+      <Grid.RowsCenter />
+      <Grid.RowsBottom />
+    </Grid.RowsContainer>
+  </Grid.Viewport>
+</Grid>
+```
+
+</Tab>
+
+</Tabs>
+
+Both approaches are equivalent, and you do not pay a performance penalty for choosing one over the other.
+You also do not need to memoize the `styles` property. LyteNyte Grid diffs the styles object
+and notifies cells when the styles change.
+
+For more guidance on the headless setup of LyteNyte Grid,
+see the [Headless Component Parts guide](/docs/grid-headless-parts).
+
 ## Layout Constraints
 
 LyteNyte Grid is mostly headless and unstyled, but some functional inline
