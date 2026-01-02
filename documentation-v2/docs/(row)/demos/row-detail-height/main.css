@@ -13,3 +13,17 @@
   --ttfb: #6a6c73;
   --tls: #bfc3c9;
 }
+
+.demo {
+  [data-ln-header-cell] {
+    padding: 0px;
+
+    &:focus {
+      outline: none;
+    }
+
+    & > div:hover .sort-button {
+      background-color: var(--ln-bg-strong);
+    }
+  }
+}
