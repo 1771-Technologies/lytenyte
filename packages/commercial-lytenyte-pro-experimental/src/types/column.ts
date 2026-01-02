@@ -1,5 +1,10 @@
 import type { ReactNode } from "react";
-import type { ColumnAbstract, RowNode } from "@1771technologies/lytenyte-shared";
+import type {
+  ColumnAbstract,
+  LayoutCell,
+  LayoutFullWidthRow,
+  RowNode,
+} from "@1771technologies/lytenyte-shared";
 import type { GridSpec } from "./grid.js";
 import type { API } from "./api.js";
 
@@ -9,6 +14,10 @@ export interface RowParams<Spec extends GridSpec = GridSpec> {
   readonly rowIndex: number;
   readonly row: RowNode<Spec["data"]>;
   readonly api: API<Spec>;
+}
+
+export interface RowFullWidthRendererParams<Spec extends GridSpec = GridSpec> extends RowParams<Spec> {
+  readonly layout: LayoutFullWidthRow;
 }
 
 export interface HeaderParams<Spec extends GridSpec = GridSpec> {
@@ -39,6 +48,7 @@ export interface CellRendererParams<Spec extends GridSpec = GridSpec> extends Ce
   readonly selected: boolean;
   readonly indeterminate: boolean;
   readonly detailExpanded: boolean;
+  readonly layout: LayoutCell;
 }
 
 export interface EditParams<Spec extends GridSpec = GridSpec> extends CellParamsWithIndex<Spec> {
@@ -48,6 +58,7 @@ export interface EditParams<Spec extends GridSpec = GridSpec> extends CellParams
   readonly changeData: (data: unknown) => boolean | Record<string, unknown>;
   readonly commit: () => boolean | Record<string, unknown>;
   readonly cancel: () => void;
+  readonly layout: LayoutCell;
 }
 
 export type Field<T> = string | number | PathField | ((params: { row: RowNode<T> }) => unknown);

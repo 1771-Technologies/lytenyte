@@ -1,6 +1,13 @@
 import type { RowGroupDisplayMode, RowHeight, RowNode } from "@1771technologies/lytenyte-shared";
 import type { CSSProperties, ReactNode, Ref } from "react";
-import type { Column, EditParams, HeaderGroupParams, HeaderParams, RowParams } from "./column.js";
+import type {
+  Column,
+  EditParams,
+  HeaderGroupParams,
+  HeaderParams,
+  RowFullWidthRendererParams,
+  RowParams,
+} from "./column.js";
 import type { DialogFrame, GridSpec, PopoverFrame } from "./grid.js";
 import type { API, DataRect } from "./api.js";
 import type { ViewportShadowsProps } from "@1771technologies/lytenyte-core-experimental";
@@ -94,7 +101,7 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   readonly rowGroupDisplayMode?: RowGroupDisplayMode;
 
   readonly rowFullWidthPredicate?: null | ((params: RowParams<Spec>) => boolean);
-  readonly rowFullWidthRenderer?: (props: RowParams<Spec>) => ReactNode | null;
+  readonly rowFullWidthRenderer?: (props: RowFullWidthRendererParams<Spec>) => ReactNode | null;
 
   readonly virtualizeCols?: boolean;
   readonly virtualizeRows?: boolean;

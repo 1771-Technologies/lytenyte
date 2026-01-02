@@ -42,19 +42,19 @@ function RowDetailImpl<T>({ row, rowIndex }: { row: RowNode<T>; rowIndex: number
 
   useEffect(() => {
     const first = detailEl?.firstElementChild as HTMLElement;
-    if (!first) return;
+    if (!first || rowDetailHeight !== "auto") return;
 
     const obs = new ResizeObserver(() => {
       setDetailCache((prev) => ({
         ...prev,
-        [rowIndex]: first.offsetHeight,
+        [row.id]: first.offsetHeight,
       }));
     });
 
     obs.observe(first);
 
     return () => obs.disconnect();
-  }, [detailEl?.firstElementChild, rowIndex, setDetailCache]);
+  }, [detailEl?.firstElementChild, row.id, rowDetailHeight, setDetailCache]);
 
   const isAuto = rowDetailHeight === "auto";
 

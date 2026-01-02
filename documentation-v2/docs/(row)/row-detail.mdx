@@ -1,5 +1,6 @@
 ---
 title: Row Master Detail
+step: Render expandable row detail content, including nested grids.
 description: Create expandable detail sections beneath rows using customizable React components,
   expansion controls, and programmatic API methods.
 ---
@@ -10,20 +11,16 @@ Row detail functionality in LyteNyte Grid is always enabled. Any row can display
 To create a detail section, define a `rowDetailRenderer` on the grid state object. LyteNyte Grid uses
 this renderer to render the content of each row's detail area.
 
-After defining a detail renderer, populate the `rowDetailExpansions` set on the grid state to control
-which rows display their detail sections. `rowDetailExpansions` contains the row IDs of rows whose detail
-areas are expanded.
+The demo an example of row detail in action. The [marker column](/docs/marker-column) renders a detail toggle.
+The toggle calls `api.rowDetailToggle`, which adds or removes the row ID from the `rowDetailExpansions` set,
+which determines the rows that have an expanded row detail area.
 
-The demo below shows this behavior. The [marker column](/docs/marker-column) renders a detail toggle.
-The toggle calls `grid.api.rowDetailToggle`, which adds or removes the row ID from the
-`rowDetailExpansions` set.
+::demo[Row Detail="../(introduction)/demos/getting-started"]
 
-!demo:Row Detail="../(introduction)/demos/getting-started"
+## Row Detail Height
 
-## Auto Row Detail Height
-
-Use `rowDetailHeight` to control the height of the detail section. The `rowDetailHeight` property
-accepts one of the following values:
+Use `rowDetailHeight` property on the grid to control the height of the detail section.
+The `rowDetailHeight` property accepts one of the following values:
 
 - **Number**: A fixed height in pixels.
 - **Auto**: The string value `"auto"`, which sizes the detail section based on its content.
@@ -31,7 +28,7 @@ accepts one of the following values:
 By default, the grid uses a numeric height. Use `"auto"` when the detail content should determine
 its own height.
 
-!demo:Row Detail Height="./demos/row-detail-height_x"
+::demo[Row Detail Height="./demos/row-detail-height"]
 
 ## Nested Grids
 
@@ -41,14 +38,30 @@ a grid to be rendered inside a row detail section.
 
 The demo below shows a nested grid rendered inside the detail area of a row:
 
-!demo:Nested Grid Row Detail="./demos/row-detail-nested_x"
+::demo[Nested Grid Row Detail="./demos/row-detail-nested"]
 
 A nested grid is not a special case. To create one, have the detail renderer return another grid
 instance. LyteNyte Grid places no restrictions on what the detail renderer can display.
 
+## Controlled Detail Expansion State
+
+The `rowDetailExpansions` property on the grid determines which rows have their detail area
+expanded. If you do not set `rowDetailExpansions` on the grid, LyteNyte Grid tracks detail
+expansion using internal, uncontrolled state.
+
+By providing a `rowDetailExpansions` value, you can control which rows have their detail area
+expanded in a way that matches your application's desired behavior. Then, by listening to
+`onRowDetailExpansionChange`, you can update your controlled expansion state.
+
+For example, you can restrict the grid to allow at most one expanded detail area at a time.
+Expanding another row's detail area collapses any other open detail areas.
+The demo below demonstrates this.
+
+::demo[Controlled Row Detail Expansion="./demos/row-detail-controlled"]
+
 ## Next Steps
 
-- [Row Height](/docs/row-height): Change row height, including variable-height and fill-height rows.
-- [Row Pinning](/docs/row-pinning): Freeze rows at the top or bottom of the viewport.
-- [Row Selection](/docs/row-selection): Select single or multiple rows.
-- [Row Full Width](/docs/row-full-width): Create rows that span the full width of the viewport.
+::next[/docs/row-height]
+::next[/docs/row-pinning]
+::next[/docs/row-selection]
+::next[/docs/row-full-width]

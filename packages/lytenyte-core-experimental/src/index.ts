@@ -107,6 +107,7 @@ export namespace Grid {
     export type RowParams<Spec extends GridSpec> = LnTypes.RowParams<Spec>;
     export type RowSelectionState = LnTypes.RowSelectionState;
     export type SortFn<T> = LnTypes.SortFn<T>;
+    export type RowFullWidthRendererParams<Spec extends GridSpec> = LnTypes.RowFullWidthRendererParams<Spec>;
 
     export type RowNode<T> = LnTypes.RowNode<T>;
     export type RowLeaf<T> = LnTypes.RowLeaf<T>;

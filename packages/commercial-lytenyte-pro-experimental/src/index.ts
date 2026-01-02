@@ -99,19 +99,7 @@ export namespace Grid {
     export type RowParams<Spec extends GridSpec> = LnTypes.RowParams<Spec>;
     export type RowSelectionState = LnTypes.RowSelectionState;
     export type SortFn<T> = LnTypes.SortFn<T>;
-
-    // PRO Specific types
-
-    export type DataRectSplit = LnTypes.DataRectSplit;
-    export type DialogFrame<Spec extends GridSpec> = LnTypes.DialogFrame<Spec>;
-    export type DialogFrameProps<Spec extends GridSpec> = LnTypes.DialogFrameProps<Spec>;
-    export type HavingFilterFn = LnTypes.HavingFilterFn;
-    export type LabelFilter = LnTypes.LabelFilter;
-    export type PivotField<Spec extends GridSpec> = LnTypes.PivotField<Spec>;
-    export type PivotModel<Spec extends GridSpec> = LnTypes.PivotModel<Spec>;
-    export type PopoverFrame<Spec extends GridSpec> = LnTypes.PopoverFrame<Spec>;
-    export type PopoverFrameProps<Spec extends GridSpec> = LnTypes.PopoverFrameProps<Spec>;
-    export type VirtualTarget = LnTypes.VirtualTarget;
+    export type RowFullWidthRendererParams<Spec extends GridSpec> = LnTypes.RowFullWidthRendererParams<Spec>;
 
     export type RowNode<T> = LnTypes.RowNode<T>;
     export type RowLeaf<T> = LnTypes.RowLeaf<T>;
@@ -134,6 +122,19 @@ export namespace Grid {
     export type PositionHeaderCell = LnTypes.PositionHeaderCell;
     export type PositionHeaderGroupCell = LnTypes.PositionHeaderGroupCell;
     export type PositionUnion = LnTypes.PositionUnion;
+
+    // PRO Specific types
+
+    export type DataRectSplit = LnTypes.DataRectSplit;
+    export type DialogFrame<Spec extends GridSpec> = LnTypes.DialogFrame<Spec>;
+    export type DialogFrameProps<Spec extends GridSpec> = LnTypes.DialogFrameProps<Spec>;
+    export type HavingFilterFn = LnTypes.HavingFilterFn;
+    export type LabelFilter = LnTypes.LabelFilter;
+    export type PivotField<Spec extends GridSpec> = LnTypes.PivotField<Spec>;
+    export type PivotModel<Spec extends GridSpec> = LnTypes.PivotModel<Spec>;
+    export type PopoverFrame<Spec extends GridSpec> = LnTypes.PopoverFrame<Spec>;
+    export type PopoverFrameProps<Spec extends GridSpec> = LnTypes.PopoverFrameProps<Spec>;
+    export type VirtualTarget = LnTypes.VirtualTarget;
   }
 }
 

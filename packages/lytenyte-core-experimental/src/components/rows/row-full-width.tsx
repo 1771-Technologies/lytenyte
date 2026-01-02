@@ -97,7 +97,7 @@ const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function
           pointerEvents: "all",
         }}
       >
-        {row && Renderer ? <Renderer api={api} row={row} rowIndex={layout.rowIndex} /> : null}
+        {row && Renderer ? <Renderer api={api} row={row} rowIndex={layout.rowIndex} layout={layout} /> : null}
       </div>
       <RowDetailRow layout={layout} />
     </div>
