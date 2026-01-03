@@ -1,3 +1,4 @@
+import type { SVGProps } from "react";
 import type { ClassValue } from "clsx";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -8,14 +9,11 @@ export function tw(...c: ClassValue[]) {
 }
 import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
 import type { GridSpec } from "./demo";
-import type { SVGProps } from "react";
 
-export function SymbolCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
-  if (!api.rowIsLeaf(row) || !row.data) return null;
-
-  const ticker = row.data.symbolTicker;
-  const symbol = row.data.symbol;
-  const image = symbols[row.data.symbolTicker];
+export function SymbolLabel({ data }: { data: GridSpec["data"] }) {
+  const ticker = data.symbolTicker;
+  const symbol = data.symbol;
+  const image = symbols[data.symbolTicker];
 
   return (
     <div className="grid grid-cols-[20px_auto_auto] items-center gap-1.5">
@@ -32,6 +30,12 @@ export function SymbolCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
       <div className="w-full overflow-hidden text-ellipsis">{symbol.split("/")[0]}</div>
     </div>
   );
+}
+
+export function SymbolCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
+  if (!api.rowIsLeaf(row) || !row.data) return null;
+
+  return <SymbolLabel data={row.data} />;
 }
 
 export function NetworkCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {

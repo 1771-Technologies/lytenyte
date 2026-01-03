@@ -137,6 +137,7 @@ export namespace Grid {
 }
 
 export { measureText, moveRelative } from "@1771technologies/lytenyte-shared";
+export { getRowDragData } from "./dnd/get-drag-data.js";
 
 export type { ViewportShadowsProps } from "./components/viewport/viewport-shadows.js";
 export { ViewportShadows } from "./components/viewport/viewport-shadows.js";

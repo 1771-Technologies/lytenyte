@@ -4,6 +4,7 @@ import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
 import "@1771technologies/lytenyte-pro-experimental/pill-manager.css";
 import { Grid, moveRelative, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
 import {
+  DragIcon,
   ExchangeCell,
   makePerfHeaderCell,
   NetworkCell,
@@ -170,7 +171,10 @@ export default function RowSelection() {
                     entered && "bg-ln-primary-10",
                   )}
                 >
-                  Drag Rows Here To Add Them
+                  <div className="flex h-full w-full flex-col items-center justify-center">
+                    <DragIcon className="size-12" />
+                    Drag rows from the grid here.
+                  </div>
                 </div>
               </div>
             )
