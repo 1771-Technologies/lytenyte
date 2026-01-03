@@ -136,7 +136,7 @@ export namespace Grid {
   }
 }
 
-export { measureText } from "@1771technologies/lytenyte-shared";
+export { measureText, moveRelative } from "@1771technologies/lytenyte-shared";
 
 export type { ViewportShadowsProps } from "./components/viewport/viewport-shadows.js";
 export { ViewportShadows } from "./components/viewport/viewport-shadows.js";
