@@ -29,7 +29,7 @@ a basic single-row drag setup. Focus on the marker column's `cellRenderer` and t
 Combine row dragging with **row selection** to support dragging multiple rows. Instead of returning data
 for a single row, use `getDragData` to include all selected rows from the selection state.
 
-!demo:Multiple Row Dragging="./demos/row-dragging-multi"
+::demo[Multiple Row Dragging="./demos/row-dragging-multi"]
 
 ## Dragging Between Grids
 
@@ -37,7 +37,7 @@ To enable dragging between grids, use a shared `accepted` value. For example, se
 `accepted={["row"]}` on both grids allows drag data containing a `row` key to be dropped onto rows in
 either grid.
 
-!demo:Grid-to-Grid Dragging="./demos/row-dragging-between-grids"
+::demo[Grid-to-Grid Dragging="./demos/row-dragging-between-grids"]
 
 ## External Drop Zones
 

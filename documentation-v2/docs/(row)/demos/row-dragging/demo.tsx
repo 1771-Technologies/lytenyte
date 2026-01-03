@@ -118,7 +118,6 @@ export default function RowSelection() {
           if (p.over.kind === "viewport") return;
           p.over.element.removeAttribute("data-ln-drag-position");
 
-          console.log(p.over.element);
           setData((prev) => {
             if (p.over.kind === "viewport") return prev;
 

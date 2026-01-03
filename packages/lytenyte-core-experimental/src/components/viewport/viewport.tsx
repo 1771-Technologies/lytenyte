@@ -30,6 +30,7 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
     bottomOffset,
     startOffset,
     endOffset,
+    slotViewportOverlay: ViewportOverlay,
   } = useRoot();
   const edit = useEdit();
 
@@ -198,6 +199,7 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
         }
       >
         {Shadows && <Shadows />}
+        {typeof ViewportOverlay === "function" ? <ViewportOverlay api={api} /> : ViewportOverlay}
         {children}
       </div>
 

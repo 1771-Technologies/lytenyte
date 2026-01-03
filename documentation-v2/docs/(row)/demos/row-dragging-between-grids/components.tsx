@@ -1,38 +1,118 @@
-import type { CellRendererParams } from "@1771technologies/lytenyte-pro/types";
-import type { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import type { ClassValue } from "clsx";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
-
-export type BankData = (typeof bankDataSmall)[number];
+import { exchanges, networks, symbols } from "@1771technologies/grid-sample-data/dex-pairs-performance";
 
 export function tw(...c: ClassValue[]) {
   return twMerge(clsx(...c));
 }
+import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
+import type { GridSpec } from "./demo";
 
-const formatter = new Intl.NumberFormat("en-US", {
-  maximumFractionDigits: 2,
-  minimumFractionDigits: 0,
-});
-export function BalanceCell({ grid, row, column }: CellRendererParams<BankData>) {
-  const field = grid.api.columnField(column, row);
+export function SymbolCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
+  if (!api.rowIsLeaf(row) || !row.data) return null;
 
-  if (typeof field === "number") {
-    if (field < 0) return `-$${formatter.format(Math.abs(field))}`;
+  const ticker = row.data.symbolTicker;
+  const symbol = row.data.symbol;
+  const image = symbols[row.data.symbolTicker];
 
-    return "$" + formatter.format(field);
-  }
-
-  return `${field ?? "-"}`;
+  return (
+    <div className="grid grid-cols-[20px_auto_auto] items-center gap-1.5">
+      <div>
+        <img
+          src={image}
+          alt={`Logo for symbol ${symbol}`}
+          className="h-full w-full overflow-hidden rounded-full"
+        />
+      </div>
+      <div className="bg-ln-gray-20 text-ln-text-dark flex h-fit items-center justify-center rounded-lg px-2 py-px text-[10px]">
+        {ticker}
+      </div>
+      <div className="w-full overflow-hidden text-ellipsis">{symbol.split("/")[0]}</div>
+    </div>
+  );
 }
-export function DurationCell({ grid, row, column }: CellRendererParams<BankData>) {
-  const field = grid.api.columnField(column, row);
 
-  return typeof field === "number" ? `${formatter.format(field)} days` : `${field ?? "-"}`;
+export function NetworkCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
+  if (!api.rowIsLeaf(row) || !row.data) return null;
+
+  const name = row.data.network;
+  const image = networks[name];
+
+  return (
+    <div className="grid grid-cols-[20px_1fr] items-center gap-1.5">
+      <div>
+        <img
+          src={image}
+          alt={`Logo for network ${name}`}
+          className="h-full w-full overflow-hidden rounded-full"
+        />
+      </div>
+      <div className="w-full overflow-hidden text-ellipsis">{name}</div>
+    </div>
+  );
 }
 
-export function NumberCell({ grid, row, column }: CellRendererParams<BankData>) {
-  const field = grid.api.columnField(column, row);
+export function ExchangeCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
+  if (!api.rowIsLeaf(row) || !row.data) return null;
 
-  return typeof field === "number" ? formatter.format(field) : `${field ?? "-"}`;
+  const name = row.data.exchange;
+  const image = exchanges[name];
+
+  return (
+    <div className="grid grid-cols-[20px_1fr] items-center gap-1.5">
+      <div>
+        <img
+          src={image}
+          alt={`Logo for exchange ${name}`}
+          className="h-full w-full overflow-hidden rounded-full"
+        />
+      </div>
+      <div className="w-full overflow-hidden text-ellipsis">{name}</div>
+    </div>
+  );
 }
+
+export function PercentCellPositiveNegative({ api, column, row }: Grid.T.CellRendererParams<GridSpec>) {
+  if (!api.rowIsLeaf(row) || !row.data) return null;
+
+  const field = api.columnField(column, row);
+
+  if (typeof field !== "number") return "-";
+
+  const value = (field > 0 ? "+" : "") + (field * 100).toFixed(2) + "%";
+
+  return (
+    <div
+      className={tw(
+        "h-ful flex w-full items-center justify-end tabular-nums",
+        field < 0 ? "text-red-600 dark:text-red-300" : "text-green-600 dark:text-green-300",
+      )}
+    >
+      {value}
+    </div>
+  );
+}
+
+export function PercentCell({ api, column, row }: Grid.T.CellRendererParams<GridSpec>) {
+  if (!api.rowIsLeaf(row) || !row.data) return null;
+
+  const field = api.columnField(column, row);
+
+  if (typeof field !== "number") return "-";
+
+  const value = (field > 0 ? "+" : "") + (field * 100).toFixed(2) + "%";
+
+  return <div className="h-ful flex w-full items-center justify-end tabular-nums">{value}</div>;
+}
+
+export const makePerfHeaderCell = (name: string, subname: string) => {
+  return (_: Grid.T.HeaderParams<GridSpec>) => {
+    return (
+      <div className="flex h-full w-full flex-col items-end justify-center tabular-nums">
+        <div>{name}</div>
+        <div className="text-ln-text-light font-mono uppercase">{subname}</div>
+      </div>
+    );
+  };
+};

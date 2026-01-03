@@ -4,6 +4,7 @@ import { useRoot } from "../../root/root-context.js";
 import { useSelector } from "../../signal/signal.js";
 import { getNearestRow, getRowIndexFromEl, type RowNode } from "@1771technologies/lytenyte-shared";
 import type { Root } from "../../root/root.js";
+import { getRowDragData } from "../../internal.js";
 
 export function RowDragMonitor() {
   const { id } = useRoot();
@@ -18,15 +19,15 @@ function RowDragCollider() {
   const { viewport, id, api, onRowDragLeave: leave, onRowDragEnter: enter, onRowDrop: drop } = useRoot();
   const x = useSelector(dragX);
   const y = useSelector(dragY);
-  const d = useSelector(dragData);
 
   // This means the drag account happening here is for us
   const overRef = useRef<null | Over>(null);
+
   useEffect(() => {
     if (!viewport) return;
-
     const controller = new AbortController();
-    const source = d!["grid:source"].data as Source;
+    const source = getRowDragData();
+
     viewport.addEventListener(
       "drop",
       (ev) => {
@@ -40,6 +41,14 @@ function RowDragCollider() {
       },
       { signal: controller.signal },
     );
+
+    return () => controller.abort();
+  }, [drop, viewport]);
+
+  useEffect(() => {
+    if (!viewport) return;
+
+    const source = getRowDragData()!;
 
     const element = document.elementFromPoint(x, y) as HTMLElement;
     if (!element || !viewport.contains(element)) {
@@ -82,14 +91,11 @@ function RowDragCollider() {
 
     overRef.current = over;
     enter?.({ source, over });
-
-    return () => controller.abort();
-  }, [api, d, drop, enter, id, leave, viewport, x, y]);
+  }, [api, drop, enter, id, leave, viewport, x, y]);
 
   return null;
 }
 
-type Source = { id: string; api: Root.API; row: RowNode<any>; rowIndex: number; data?: any };
 type Over =
   | {
       kind: "row";

@@ -90,6 +90,8 @@ export interface RootContextValue {
   readonly selectPivot: RefObject<number | null>;
 
   readonly slotShadows?: (props: ViewportShadowsProps) => ReactNode;
+  readonly slotViewportOverlay?: ((props: { api: Root.API }) => ReactNode) | ReactNode;
+  readonly slotRowsOverlay?: ((props: { api: Root.API }) => ReactNode) | ReactNode;
 }
 
 const context = createContext<RootContextValue>({} as any);

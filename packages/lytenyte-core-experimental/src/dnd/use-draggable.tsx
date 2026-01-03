@@ -1,5 +1,5 @@
 import type { DragEventHandler } from "react";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import type { UseDraggableProps } from "./types.js";
 import { getFrameElement, isFirefox } from "@1771technologies/lytenyte-shared";
 import {
@@ -14,23 +14,33 @@ import {
   verticalDirection,
 } from "./global.js";
 import { ReactPlaceholder } from "./react-placeholder.js";
+import { useEvent } from "../internal.js";
 
 export function useDraggable({
-  data,
+  data: d,
   placeholder,
-  onDragStart,
-  onDragMove,
-  onDragEnd,
-  onDrop,
-  onUnhandledDrop,
+  onDragStart: providedOnDragStart,
+  onDragMove: providedOnDragMove,
+  onDragEnd: providedOnDragEnd,
+  onDrop: providedOnDrop,
+  onUnhandledDrop: providedOnUnhandledDrop,
 }: UseDraggableProps) {
   const [dragging, setDragging] = useState(false);
 
-  const props = useMemo(() => {
-    const dataValues = Object.values(data);
-    if (!dataValues.length) return {};
+  const onDragStart = useEvent(providedOnDragStart ?? (() => {}));
+  const onDragMove = useEvent(providedOnDragMove ?? (() => {}));
+  const onDragEnd = useEvent(providedOnDragEnd ?? (() => {}));
+  const onDrop = useEvent(providedOnDrop ?? (() => {}));
+  const onUnhandledDrop = useEvent(providedOnUnhandledDrop ?? (() => {}));
 
+  const dataRef = useRef(d);
+  dataRef.current = d;
+
+  const props = useMemo(() => {
     const handleDrag: DragEventHandler = (startEvent) => {
+      const data = dataRef.current;
+      const dataValues = Object.values(data);
+
       const ff = isFirefox();
 
       const dataTransfer = startEvent.dataTransfer;
@@ -146,12 +156,7 @@ export function useDraggable({
         (e) => {
           e.preventDefault();
 
-          onUnhandledDrop?.({
-            data,
-            ev: e,
-            position: { x: lastX, y: lastY },
-          });
-
+          onUnhandledDrop?.({ data, ev: e, position: { x: lastX, y: lastY } });
           clearDragGlobals();
         },
         { signal: controller.signal },
@@ -174,7 +179,7 @@ export function useDraggable({
       draggable: true,
       onDragStart: handleDrag,
     };
-  }, [data, onDragEnd, onDragMove, onDragStart, onDrop, onUnhandledDrop, placeholder]);
+  }, [onDragEnd, onDragMove, onDragStart, onDrop, onUnhandledDrop, placeholder]);
 
   const p =
     typeof placeholder === "function" ? (

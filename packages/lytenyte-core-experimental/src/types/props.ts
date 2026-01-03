@@ -123,6 +123,9 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   readonly onRowGroupColumnChange?: (column: Omit<Column<Spec>, "field" | "id">) => void;
 
   readonly slotShadows?: (props: ViewportShadowsProps) => ReactNode;
+  readonly slotViewportOverlay?: ((props: { api: API<Spec> }) => ReactNode) | ReactNode;
+  readonly slotRowsOverlay?: ((props: { api: API<Spec> }) => ReactNode) | ReactNode;
+
   // Events
 
   readonly onColumnMoveOutside?: (params: {
@@ -166,13 +169,13 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   }) => void;
 
   readonly onRowDrop?: (params: {
-    readonly source: { id: string; api: API<any>; row: RowNode<any>; rowIndex: number; data?: any };
+    readonly source: { id: string; api: API<GridSpec>; row: RowNode<any>; rowIndex: number; data?: any };
     readonly over:
-      | { kind: "viewport"; id: string; element: HTMLElement; api: API<any> }
+      | { kind: "viewport"; id: string; element: HTMLElement; api: API<GridSpec> }
       | {
           kind: "row";
           id: string;
-          api: API<any>;
+          api: API<GridSpec>;
           row: RowNode<any>;
           rowIndex: number;
           element: HTMLElement;
@@ -180,26 +183,32 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   }) => void;
 
   readonly onRowDragEnter?: (params: {
-    readonly source: { id: string; api: API<any>; row: RowNode<any>; rowIndex: number; data?: any };
+    readonly source: { id: string; api: API<GridSpec>; row: RowNode<any>; rowIndex: number; data?: any };
     readonly over:
-      | { kind: "viewport"; id: string; element: HTMLElement; api: API<any> }
+      | { kind: "viewport"; id: string; element: HTMLElement; api: API<GridSpec> }
       | {
           kind: "row";
           id: string;
-          api: API<any>;
+          api: API<GridSpec>;
           row: RowNode<any>;
           rowIndex: number;
           element: HTMLElement;
         };
   }) => void;
   readonly onRowDragLeave?: (params: {
-    readonly source: { id: string; api: API<any>; row: RowNode<any>; rowIndex: number | null; data?: any };
+    readonly source: {
+      id: string;
+      api: API<GridSpec>;
+      row: RowNode<any>;
+      rowIndex: number | null;
+      data?: any;
+    };
     readonly over:
-      | { kind: "viewport"; id: string; element: HTMLElement; api: API<any> }
+      | { kind: "viewport"; id: string; element: HTMLElement; api: API<GridSpec> }
       | {
           kind: "row";
           id: string;
-          api: API<any>;
+          api: API<GridSpec>;
           row: RowNode<any>;
           rowIndex: number | null;
           element: HTMLElement;
