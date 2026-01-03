@@ -32,7 +32,7 @@ export function isRowIndeterminate(
   while (stack.length) {
     const next = stack.pop()!;
 
-    if (next.selected) return true;
+    if (next.selected != null) return true;
 
     if (next.children) stack.push(...next.children.values());
   }

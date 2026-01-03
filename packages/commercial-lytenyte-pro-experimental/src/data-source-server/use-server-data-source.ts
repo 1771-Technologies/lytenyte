@@ -119,6 +119,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
 
       return state.idUniverse.union(props.rowSelectionIdUniverseAdditions);
     }, [props.rowSelectionIdUniverseAdditions, state.idUniverse]),
+    globalSignal,
   );
   const onRowsSelected = useOnRowsSelected(
     selectionState,

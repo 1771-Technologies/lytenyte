@@ -9,6 +9,7 @@ import { useEffect, useMemo, useRef, type Dispatch, type SetStateAction } from "
 import { cleanTree } from "./clean-tree.js";
 import { useControlled } from "../../hooks/use-controlled.js";
 import { useEvent } from "../../hooks/use-event.js";
+import type { Signal } from "../../internal.js";
 
 export type SourceRowSelection = {
   readonly rowSelectionsRaw: RowSelectionState;
@@ -22,6 +23,7 @@ export function useRowSelection(
   isolatedSelection: boolean,
   rowSelectionKey: any[],
   idUniverse: Set<string> | null,
+  globalRefresh: Signal<number>,
 ) {
   const [rowSelectionsRaw, setRowSelectionsRaw] = useControlled<RowSelectionState>({
     controlled: userSelection,
@@ -49,7 +51,8 @@ export function useRowSelection(
         ? { kind: "isolated", selected: false, exceptions: new Set() }
         : { kind: "linked", selected: false, children: new Map() },
     );
-  }, [isolatedSelection, rowSelectionKey, setRowSelectionsRaw]);
+    globalRefresh(Date.now());
+  }, [globalRefresh, isolatedSelection, rowSelectionKey, setRowSelectionsRaw]);
 
   const rowSelectionsSet = useEvent(
     (

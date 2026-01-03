@@ -171,7 +171,7 @@ export type Props<Spec extends GridSpec = GridSpec> = {
     readonly api: API<Spec>;
     readonly rows: string[] | "all";
     readonly deselect: boolean;
-  }) => boolean;
+  }) => void;
 
   readonly onRowDrop?: (params: {
     readonly source: { id: string; api: API<any>; row: RowNode<any>; rowIndex: number; data?: any };

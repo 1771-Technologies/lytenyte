@@ -15,6 +15,8 @@ export type {
   LeafIdFn,
   GroupIdFn,
   RowSelectionState,
+  RowSelectionLinked,
+  RowSelectionIsolated,
   RowNode,
   RowLeaf,
   RowGroup,
