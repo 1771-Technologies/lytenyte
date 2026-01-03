@@ -1,20 +1,30 @@
 <script is:inline>
-  const btns = Array.from(document.querySelectorAll(".xd-collapse-btn"));
-  btns.forEach((btn) => {
-    const root = btn.parentElement?.parentElement;
-    if (!root) return;
+  function handleToggle() {
+    const btns = Array.from(document.querySelectorAll(".xd-collapse-btn"));
+    btns.forEach((btn) => {
+      const root = btn.parentElement?.parentElement;
+      if (!root) return;
 
-    const id = root.getAttribute("data-group-id");
-    btn.addEventListener("click", () => {
-      const expanded = root.getAttribute("data-collapsed") === "true";
-      if (expanded) root.setAttribute("data-collapsed", "false");
-      else root.setAttribute("data-collapsed", "true");
+      const id = root.getAttribute("data-group-id");
+      btn.addEventListener("click", () => {
+        const expanded = root.getAttribute("data-collapsed") === "true";
+        if (expanded) root.setAttribute("data-collapsed", "false");
+        else root.setAttribute("data-collapsed", "true");
 
-      if (id) localStorage.setItem(`nav_group:${id}`, expanded ? "false" : "true");
+        if (id) localStorage.setItem(`nav_group:${id}`, expanded ? "false" : "true");
+      });
+
+      const state = localStorage.getItem(`nav_group:${id}`);
+      if (!state) return;
+      root.setAttribute("data-collapsed", state);
     });
+  }
 
-    const state = localStorage.getItem(`nav_group:${id}`);
-    if (!state) return;
-    root.setAttribute("data-collapsed", state);
+  window.addEventListener("load", () => {
+    handleToggle();
+  });
+
+  document.addEventListener("astro:after-swap", () => {
+    handleToggle();
   });
 </script>

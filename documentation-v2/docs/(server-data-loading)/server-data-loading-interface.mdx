@@ -1,5 +1,6 @@
 ---
 title: Data Interface
+pro: true
 description: Use LyteNyte Grid's server data loading interfaces
   to load and display server-provided row data efficiently.
 ---
@@ -259,9 +260,7 @@ WebSocket message, and returning the data. A brief code example is shown below:
 
 ```ts
 const ds = useServerDataSource<MyDataType>({
-  dataFetcher: (
-    params: DataFetcherParams<MyDataType>,
-  ): Promise<(DataResponse | DataResponsePinned)[]> => {
+  dataFetcher: (params: DataFetcherParams<MyDataType>): Promise<(DataResponse | DataResponsePinned)[]> => {
     return Server(params.requests);
   },
 });
