@@ -59,6 +59,7 @@ export namespace Grid {
   export type Column<Spec extends GridSpec = GridSpec> = Root.Column<Spec>;
   export type ColumnBase<Spec extends GridSpec = GridSpec> = Required<Root.Props<Spec>>["columnBase"];
   export type ColumnMarker<Spec extends GridSpec = GridSpec> = Required<Root.Props<Spec>>["columnMarker"];
+  export type RowGroupColumn<Spec extends GridSpec = GridSpec> = Required<Root.Props<Spec>>["rowGroupColumn"];
   export type Events<Spec extends GridSpec = GridSpec> = Required<Root.Props<Spec>>["events"];
 
   export namespace Components {

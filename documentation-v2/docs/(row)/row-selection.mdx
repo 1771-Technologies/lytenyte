@@ -27,7 +27,7 @@ The demo below shows single-row selection configured to select a row with
 a single click. Other configurations, covered in later sections, support
 multiple selection modes or checkbox-based selection.
 
-!demo:Enabling Row Selection="./demos/row-selection_x"
+::demo[Enabling Row Selection="./demos/row-selection"]
 
 ### Multiple Row Selection
 
@@ -37,7 +37,7 @@ another row selects the range between the two rows.
 
 The demo below demonstrates these interactions.
 
-!demo:Multiple Row Selection="./demos/row-selection-multi_x"
+::demo[Multiple Row Selection="./demos/row-selection-multi"]
 
 The following configuration enables multiple row selection using single-click activation:
 
@@ -57,29 +57,168 @@ from common UX patterns. A common alternative is checkbox-based row selection.
 LyteNyte Grid provides the `api.rowHandleSelect` helper to simplify checkbox selection logic,
 including support for shift-based range selection.
 
-!demo:Checkbox Row Selection="./demos/row-selection-checkbox_x"
+::demo[Checkbox Row Selection="./demos/row-selection-checkbox"]
 
 The demo uses `api.rowHandleSelect` to handle checkbox interactions:
 
 ```tsx
 <GridCheckbox
+  checked={selected}
   onClick={(ev) => {
     ev.stopPropagation();
-    grid.api.rowHandleSelect({ shiftKey: ev.shiftKey, target: ev.target });
+    api.rowHandleSelect({ shiftKey: ev.shiftKey, target: ev.target }); //!
   }}
   onKeyDown={(ev) => {
     if (ev.key === "Enter" || ev.key === " ")
-      grid.api.rowHandleSelect({ shiftKey: ev.shiftKey, target: ev.target });
+      api.rowHandleSelect({ shiftKey: ev.shiftKey, target: ev.target }); //!
   }}
 />
 ```
 
 ### Selecting All Rows
 
-The checkbox demo also supports selecting all rows using a header checkbox. This
-behavior uses the [`grid.api.rowSelectAll`](/docs/reference/grid-api#gridapi) method. You can call
-this method to select or deselect all rows
-currently known to the grid.
+The selection checkbox demo includes the ability to select or deselect all the rows
+in the grid via the [marker column's](/docs/marker-column) header checkbox. The
+demo uses the [SelectAll component](/docs/component-select-all), however you can
+programmatically perform the same select all functionality using
+the `api.rowSelect` method, as shown below:
+
+```ts
+api.rowSelect({ selected: "all" }); // select all rows
+api.rowSelect({ selected: "all", deselect: true }); // deselect all rows
+```
+
+Selecting all rows will only work if the `rowSelectionMode` property is set to
+`multiple`.
+
+## Row Selection State
+
+The row selection state is maintained by the row data source provided to the grid.
+Using the selection state that data source will determine which rows to mark selected,
+and which rows are returned when you request the selected row set.
+
+Whilst each row data source maintains its own selection state, all the provided LyteNyte
+Grid data source use the same row selection state representation. The explanation that follows
+is relevant to the provided LyteNyte Grid data sources. If you are using a custom made
+data source the explanations here do not apply.
+
+The row selection state may be one of two types:
+
+- `isolated`: Set when the row selection mode is `"single"` or when the `rowsIsolatedSelection`
+  is set to `true` on the data source being used.
+- `linked`: Set when the row selection mode is `"multiple"` and when the `rowsIsolatedSelection`
+  selection property is set to `false` on the data source being used.
+
+The code below shows a brief snippet of setting `linked` and `isolated` selection when using the
+[client row data source](/docs/client-source-overview). The properties are used for all the other
+provided LyteNyte Grid data sources.
+
+<Tabs>
+
+<Tab label="Isolated">
+
+```tsx
+const ds = useClientDataSource({ data: data, rowsIsolatedSelection: true });
+```
+
+</Tab>
+
+<Tab label="Linked">
+
+```tsx
+// rowIsolatedSelection is false by default, so can be omitted.
+const ds = useClientDataSource({ data: data, rowsIsolatedSelection: false });
+```
+
+</Tab>
+
+</Tabs>
+
+The different row selection state modes primarily differ on how the selection of group rows
+is handled. For flat datasets which have no grouping applied, they behave identically.
+
+### Isolated Row Selection
+
+Isolated row selection treats every row as individually selectable. As a TypeScript interface it
+is represented as follows:
+
+```ts
+export interface RowSelectionIsolated {
+  readonly kind: "isolated";
+  readonly selected: boolean;
+  readonly exceptions: Set<string>;
+}
+```
+
+When using isolated selection, selecting a group row does not select its children, and selecting all the
+child rows of a group will not result in the parent being selected. Each row maintains its own unique
+selection.
+
+The `RowSelectionIsolated` state works as an exclusion set. The `selected` property determines if a row
+will be selected by default. If `true` all rows will be selected, otherwise no rows will be selected.
+The `exceptions` set determines the rows that have the opposite value of the `selected` property:
+
+- If `selected` is `true`, then any row with an ID in the `exceptions` set will not be selected.
+- If `selected` is `false`, then any row with an ID in the `exceptions` set will be selected.
+
+The demo below demonstrates isolated row selection. Notice that selecting a group row will not
+select its children. This is the intended behavior of isolated row selection.
+
+::demo[Isolated Row Selection="./demos/row-selection-groups"]
+
+### Linked Row Selection
+
+Linked row selection represents the selection state as an inclusion/exclusion tree of nodes. The
+type interfaces are shown below. The root of the selection tree is the `RowSelectionLinked` type.
+
+```ts
+interface RowSelectNode {
+  readonly id: string;
+  exceptions?: Set<string>;
+  children?: Map<string, RowSelectNode>;
+  selected?: boolean;
+}
+
+interface RowSelectionLinked {
+  readonly kind: "linked";
+  readonly selected: boolean;
+  readonly children: Map<string, RowSelectNode>;
+  exceptions?: Set<string>;
+}
+```
+
+A leaf row is selected based on its parent selection state, taking into account any exclusions in the
+parent. When using the linked selection state, a group row is considered **selected** if, and only if,
+all its children are selected. For example, a group row will be selected when the `RowSelectNode` for that
+row has the following value:
+
+```ts
+{
+  id: "ID of group row",
+  exceptions: undefined, // can also be an empty set
+  children: undefined, // can also be an empty map, or a map with all selected children
+  selected: true
+}
+```
+
+The linked row representation may appear complex at first, but it has some very desirable properties.
+
+- It compactly represents group selection states, especially in cases where many groups are selected.
+- It works whether all the rows for a group have been loaded or are available. This is particularly important
+  for server data loading, where only some of the rows of a group will be loaded.
+- It can be serialized into a string without consuming many characters. This is important if selection state
+  should be maintained in the URL of your application.
+
+In addition to the above benefits, LyteNyte Grid will compact and collapse redundant nodes in the tree as the
+user selects rows. This will keep the tree as flat as possible whilst still representing the correct selection
+state. Finally, as a developer you seldom need to interact with the selection state value. Generally it is
+sufficient to call the `rowsSelected` method on the data source or grid API. This method will return all the
+selected row nodes that are available.
+
+The demo below demonstrates linked rows. Selecting all the children of a group row will select it. You can
+also select the group row itself to select all rows under that group.
+
+::demo[Linked Row Selection="./demos/row-selection-groups-linked"]
 
 ## Group Row Selection
 

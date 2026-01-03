@@ -42,7 +42,8 @@ export function useRowByIndex<T>(
       atomCache[rowI] = {
         get: () => piece.get()[rowI],
         useValue: () => {
-          // Invalidate is used to invalidate an individual row, and the global signal will invalidate all rows.
+          // Invalidate is used to invalidate an individual row,
+          // and the global signal will invalidate all rows.
           const localSnapshot = useSelector(signal);
           const globalSnapshot = useSelector(globalSignal);
 

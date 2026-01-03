@@ -103,9 +103,7 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
           if (ev.defaultPrevented) return;
 
           beginEditing(api, edit, focusActive.get(), editMode, editClickActivator, "double-click");
-          if (selectActivator === "double-click") {
-            api.rowHandleSelect(ev);
-          }
+          if (selectActivator === "double-click") api.rowHandleSelect(ev);
         }}
         data-ln-viewport
         data-ln-has-start={view.startCount > 0 ? true : undefined}

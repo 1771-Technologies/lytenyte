@@ -30,14 +30,13 @@ const columns: Grid.Column<GridSpec>[] = [
 
 //#end
 
-//!next 5
 const marker: Grid.ColumnMarker<GridSpec> = {
   on: true,
   cellRenderer: MarkerCell,
   headerRenderer: MarkerHeader,
 };
 
-export default function Demo() {
+export default function RowSelectionCheckbox() {
   const ds = useClientDataSource({ data: data });
 
   return (
@@ -50,7 +49,9 @@ export default function Demo() {
         columns={columns}
         rowSource={ds}
         columnMarker={marker}
+        //!next 2
         rowSelectionMode="multiple"
+        rowSelectionActivator="none"
       />
     </div>
   );

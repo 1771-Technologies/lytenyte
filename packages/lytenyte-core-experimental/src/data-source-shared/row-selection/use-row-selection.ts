@@ -27,17 +27,14 @@ export function useRowSelection(
     controlled: userSelection,
     default: isolatedSelection
       ? { kind: "isolated", selected: false, exceptions: new Set() }
-      : { kind: "controlled", selected: false, children: new Map() },
+      : { kind: "linked", selected: false, children: new Map() },
   });
 
   const rowSelections = useMemo<RowSelectionStateWithParent>(() => {
-    if (isolatedSelection) {
-      if (rowSelectionsRaw.kind === "controlled")
-        return { kind: "isolated", selected: false, exceptions: new Set() };
-      return rowSelectionsRaw;
-    }
+    if (rowSelectionsRaw.kind === "isolated") return rowSelectionsRaw;
+
     return rowSelectLinkWithParents(rowSelectionsRaw);
-  }, [isolatedSelection, rowSelectionsRaw]);
+  }, [rowSelectionsRaw]);
 
   const prevIsolated = useRef(isolatedSelection);
   const prevKey = useRef(rowSelectionKey);
@@ -50,7 +47,7 @@ export function useRowSelection(
     setRowSelectionsRaw(
       isolatedSelection
         ? { kind: "isolated", selected: false, exceptions: new Set() }
-        : { kind: "controlled", selected: false, children: new Map() },
+        : { kind: "linked", selected: false, children: new Map() },
     );
   }, [isolatedSelection, rowSelectionKey, setRowSelectionsRaw]);
 
@@ -60,15 +57,9 @@ export function useRowSelection(
     ) => {
       const nextState = typeof s === "function" ? s(rowSelections) : s;
 
-      if (nextState.kind === "controlled") cleanTree(nextState, idUniverse);
+      if (nextState.kind === "linked") cleanTree(nextState, idUniverse);
 
-      const without: RowSelectionState = isolatedSelection
-        ? nextState.kind !== "isolated"
-          ? { kind: "isolated", selected: false, exceptions: new Set() }
-          : nextState
-        : nextState.kind !== "controlled"
-          ? { kind: "controlled", selected: false, children: new Map() }
-          : rowSelectLinkWithoutParents(nextState);
+      const without = nextState.kind === "isolated" ? nextState : rowSelectLinkWithoutParents(nextState);
 
       if (equal(without, rowSelectionsRaw)) return;
 

@@ -53,6 +53,10 @@
         justify-content: center;
         width: var(--ln-space-60);
         height: var(--ln-space-60);
+        min-width: var(--ln-space-60);
+        min-height: var(--ln-space-60);
+        max-width: var(--ln-space-60);
+        max-height: var(--ln-space-60);
         margin-inline-start: calc(var(--ln-padding-horizontal-cell) * -1 + 3px);
 
         &:hover {

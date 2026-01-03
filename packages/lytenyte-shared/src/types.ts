@@ -52,7 +52,7 @@ export interface RowSelectNode {
   selected?: boolean;
 }
 export interface RowSelectionLinked {
-  readonly kind: "controlled";
+  readonly kind: "linked";
   readonly selected: boolean;
   readonly children: Map<string, RowSelectNode>;
   exceptions?: Set<string>;
@@ -72,7 +72,7 @@ export interface RowSelectNodeWithParent {
   children?: Map<string, RowSelectNodeWithParent>;
 }
 export interface RowSelectionLinkedWithParent {
-  readonly kind: "controlled";
+  readonly kind: "linked";
   readonly selected: boolean;
   readonly children: Map<string, RowSelectNodeWithParent>;
   exceptions?: Set<string>;

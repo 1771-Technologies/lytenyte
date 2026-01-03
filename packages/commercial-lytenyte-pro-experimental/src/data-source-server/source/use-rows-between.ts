@@ -13,7 +13,7 @@ export function useRowsBetween<T>(source: ServerData) {
 
     const ids: string[] = [];
 
-    for (let i = start; i < end + 1; i++) {
+    for (let i = start; i <= end + 1; i++) {
       const row = source.flat.rowIndexToRow.get(i);
       if (!row) continue;
       ids.push(row.id);

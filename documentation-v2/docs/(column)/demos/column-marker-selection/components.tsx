@@ -152,7 +152,7 @@ export function GridCheckbox({
         {...props}
         type="button"
         className={tw(
-          "bg-ln-gray-02 rounded border-transparent",
+          "bg-ln-gray-02 cursor-pointer rounded border-transparent",
           "shadow-[0_1.5px_2px_0_rgba(18,46,88,0.08),0_0_0_1px_var(--ln-gray-40)]",
           "data-[state=checked]:bg-ln-primary-50 data-[state=checked]:shadow-[0_1.5px_2px_0_rgba(18,46,88,0.08),0_0_0_1px_var(--ln-primary-50)]",
           "h-4 w-4",
