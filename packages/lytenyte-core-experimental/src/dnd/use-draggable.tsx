@@ -14,24 +14,17 @@ import {
   verticalDirection,
 } from "./global.js";
 import { ReactPlaceholder } from "./react-placeholder.js";
-import { useEvent } from "../internal.js";
 
 export function useDraggable({
   data: d,
   placeholder,
-  onDragStart: providedOnDragStart,
-  onDragMove: providedOnDragMove,
-  onDragEnd: providedOnDragEnd,
-  onDrop: providedOnDrop,
-  onUnhandledDrop: providedOnUnhandledDrop,
+  onDragStart,
+  onDragMove,
+  onDragEnd,
+  onDrop,
+  onUnhandledDrop,
 }: UseDraggableProps) {
   const [dragging, setDragging] = useState(false);
-
-  const onDragStart = useEvent(providedOnDragStart ?? (() => {}));
-  const onDragMove = useEvent(providedOnDragMove ?? (() => {}));
-  const onDragEnd = useEvent(providedOnDragEnd ?? (() => {}));
-  const onDrop = useEvent(providedOnDrop ?? (() => {}));
-  const onUnhandledDrop = useEvent(providedOnUnhandledDrop ?? (() => {}));
 
   const dataRef = useRef(d);
   dataRef.current = d;

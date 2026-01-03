@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import { dragData, dragX, dragY } from "../../dnd/global.js";
+import { useEffect, useMemo, useRef } from "react";
+import { clearDragGlobals, dragData, dragX, dragY } from "../../dnd/global.js";
 import { useRoot } from "../../root/root-context.js";
 import { useSelector } from "../../signal/signal.js";
 import { getNearestRow, getRowIndexFromEl, type RowNode } from "@1771technologies/lytenyte-shared";
@@ -7,10 +7,15 @@ import type { Root } from "../../root/root.js";
 import { getRowDragData } from "../../internal.js";
 
 export function RowDragMonitor() {
-  const { id } = useRoot();
+  const { dropAccept } = useRoot();
+
   const d = useSelector(dragData);
 
-  if (!d || !d[`grid:${id}`]) return null;
+  const acceptableIds = useMemo(() => {
+    return dropAccept.map((x) => x);
+  }, [dropAccept]);
+
+  if (!d || acceptableIds.every((x) => !d[x])) return null;
 
   return <RowDragCollider />;
 }
@@ -23,10 +28,11 @@ function RowDragCollider() {
   // This means the drag account happening here is for us
   const overRef = useRef<null | Over>(null);
 
+  const dropped = useRef(false);
+
   useEffect(() => {
     if (!viewport) return;
     const controller = new AbortController();
-    const source = getRowDragData();
 
     viewport.addEventListener(
       "drop",
@@ -35,18 +41,22 @@ function RowDragCollider() {
         ev.stopImmediatePropagation();
         ev.preventDefault();
 
+        const source = getRowDragData();
+
         if (!overRef.current) return;
 
+        dropped.current = true;
         drop?.({ source, over: overRef.current });
+        clearDragGlobals();
       },
       { signal: controller.signal },
     );
 
     return () => controller.abort();
-  }, [drop, viewport]);
+  }, [drop, id, viewport]);
 
   useEffect(() => {
-    if (!viewport) return;
+    if (!viewport || dropped.current) return;
 
     const source = getRowDragData()!;
 

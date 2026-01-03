@@ -91,7 +91,9 @@ export const RowsContainer = memo(
             } as CSSProperties
           }
         >
-          {typeof RowsOverlay === "function" ? <RowsOverlay api={api} /> : RowsOverlay}
+          {dimensions.innerHeight !== 0 && (
+            <>{typeof RowsOverlay === "function" ? <RowsOverlay api={api} /> : RowsOverlay}</>
+          )}
           {props.children}
         </div>
       </RowsContainerContext.Provider>

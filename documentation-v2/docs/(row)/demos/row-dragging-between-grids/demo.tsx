@@ -10,11 +10,12 @@ import {
   PercentCell,
   PercentCellPositiveNegative,
   SymbolCell,
+  tw,
 } from "./components.jsx";
 import type { DEXPerformanceData } from "@1771technologies/grid-sample-data/dex-pairs-performance";
 import { data as initialData } from "@1771technologies/grid-sample-data/dex-pairs-performance";
 import { DragHandleDots2Icon } from "@radix-ui/react-icons";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 export interface GridSpec {
   readonly data: DEXPerformanceData;
@@ -84,12 +85,17 @@ const base: Grid.ColumnBase<GridSpec> = { width: 80 };
 
 const marker: Grid.ColumnMarker<GridSpec> = { on: true, cellRenderer: MarkerCell };
 
+const leafIdFn: Grid.T.LeafIdFn<GridSpec["data"]> = (d) =>
+  `${d.symbolTicker}-${d.exchange}-${d.network}-${d.symbol}`;
+
 export default function RowSelection() {
   const [primary, setPrimary] = useState(initialData);
-  const [secondary, setSecondary] = useState([]);
+  const [secondary, setSecondary] = useState<typeof initialData>([]);
 
-  const ds = useClientDataSource({ data: primary });
-  const dsOther = useClientDataSource({ data: secondary });
+  const ds = useClientDataSource<GridSpec>({ data: primary, leafIdFn });
+  const dsOther = useClientDataSource<GridSpec>({ data: secondary, leafIdFn });
+
+  const [entered, setEntered] = useState(false);
 
   return (
     <div className="ln-grid ln-cell:text-xs ln-header:text-xs ln-header:text-ln-text-xlight ln-cell-marker:px-0 flex flex-col gap-8">
@@ -99,68 +105,124 @@ export default function RowSelection() {
           columnBase={base}
           rowSource={ds}
           columnMarker={marker}
+          gridId="primary"
+          rowDropAccept={useMemo(() => ["secondary"], [])}
           onRowDragEnter={(p) => {
             if (p.over.kind === "viewport") return;
 
-            const overIndex = p.over.rowIndex;
-            const dragIndex = p.source.rowIndex;
+            if (p.over.id === p.source.id && p.over.rowIndex === p.source.rowIndex) return;
 
-            if (overIndex === dragIndex) return;
+            const isBefore = p.over.id !== p.source.id || p.over.rowIndex > p.source.rowIndex;
 
-            if (overIndex < dragIndex) p.over.element.setAttribute("data-ln-drag-position", "before");
-            else p.over.element.setAttribute("data-ln-drag-position", "after");
+            if (isBefore) p.over.element.setAttribute("data-ln-drag-position", "after");
+            else p.over.element.setAttribute("data-ln-drag-position", "before");
           }}
           onRowDragLeave={(p) => {
             if (p.over.kind === "viewport") return;
             p.over.element.removeAttribute("data-ln-drag-position");
           }}
           onRowDrop={(p) => {
-            if (p.over.kind === "viewport") return;
             p.over.element.removeAttribute("data-ln-drag-position");
+            if (p.over.id === p.source.id) {
+              if (p.over.kind === "viewport") return;
 
-            setPrimary((prev) => {
-              if (p.over.kind === "viewport") return prev;
+              setPrimary((prev) => {
+                if (p.over.kind === "viewport") return prev;
+                const next = moveRelative(prev, p.source.rowIndex, p.over.rowIndex);
+                return next;
+              });
+            } else {
+              // Start by removing the row from the source
+              const sourceIndex = primary.indexOf(p.source.row.data);
+              setSecondary((prev) => {
+                const next = [...prev];
+                next.splice(sourceIndex, 1);
+                return next;
+              });
 
-              const next = moveRelative(prev, p.source.rowIndex, p.over.rowIndex);
+              setPrimary((prev) => {
+                if (p.over.kind === "viewport") return [...prev, p.source.row.data];
 
-              return next;
-            });
+                const next = [...prev];
+                next.splice(p.over.rowIndex + 1, 0, p.source.row.data);
+                return next;
+              });
+            }
           }}
         />
       </div>
 
       <div style={{ height: 250 }} className="border-ln-border border-t">
         <Grid
+          gridId="secondary"
           columns={columns}
           columnBase={base}
           rowSource={dsOther}
           columnMarker={marker}
+          rowDropAccept={useMemo(() => ["primary"], [])}
+          slotRowsOverlay={
+            secondary.length ? null : (
+              <div className="sticky start-0 top-0 h-0 w-0">
+                <div
+                  className={tw(
+                    "w-(--ln-vp-width) h-(--ln-vp-row-height) absolute left-0 top-0 flex items-center justify-center",
+
+                    entered && "bg-ln-primary-10",
+                  )}
+                >
+                  Drag Rows Here To Add Them
+                </div>
+              </div>
+            )
+          }
           onRowDragEnter={(p) => {
+            if (!secondary.length && p.over.kind === "viewport") {
+              setEntered(true);
+              return;
+            }
             if (p.over.kind === "viewport") return;
 
-            const overIndex = p.over.rowIndex;
-            const dragIndex = p.source.rowIndex;
+            if (p.over.id === p.source.id && p.over.rowIndex === p.source.rowIndex) return;
 
-            if (overIndex === dragIndex) return;
+            const isBefore = p.over.id !== p.source.id || p.over.rowIndex > p.source.rowIndex;
 
-            if (overIndex < dragIndex) p.over.element.setAttribute("data-ln-drag-position", "before");
-            else p.over.element.setAttribute("data-ln-drag-position", "after");
+            if (isBefore) p.over.element.setAttribute("data-ln-drag-position", "after");
+            else p.over.element.setAttribute("data-ln-drag-position", "before");
           }}
           onRowDragLeave={(p) => {
+            setEntered(false);
             if (p.over.kind === "viewport") return;
             p.over.element.removeAttribute("data-ln-drag-position");
           }}
           onRowDrop={(p) => {
-            if (p.over.kind === "viewport") return;
+            setEntered(false);
             p.over.element.removeAttribute("data-ln-drag-position");
 
-            setPrimary((prev) => {
-              if (p.over.kind === "viewport") return prev;
+            if (p.over.id === p.source.id) {
+              if (p.over.kind === "viewport") return;
 
-              const next = moveRelative(prev, p.source.rowIndex, p.over.rowIndex);
+              setSecondary((prev) => {
+                if (p.over.kind === "viewport") return prev;
+                const next = moveRelative(prev, p.source.rowIndex, p.over.rowIndex);
+                return next;
+              });
+            } else {
+              // Start by removing the row from the source
+              const sourceIndex = primary.indexOf(p.source.row.data);
+              setPrimary((prev) => {
+                const next = [...prev];
+                next.splice(sourceIndex, 1);
+                return next;
+              });
 
-              return next;
-            });
+              setSecondary((prev) => {
+                if (p.over.kind === "viewport") return [...prev, p.source.row.data];
+
+                const next = [...prev];
+                next.splice(p.over.rowIndex + 1, 0, p.source.row.data);
+                return next;
+              });
+            }
           }}
         />
       </div>

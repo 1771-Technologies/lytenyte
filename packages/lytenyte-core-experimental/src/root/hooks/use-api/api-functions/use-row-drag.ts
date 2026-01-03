@@ -17,6 +17,7 @@ export function useUseRowDrag(api: Root.API, gridId: string): Root.API["useRowDr
           data: {
             row,
             api,
+            id: gridId,
             get rowIndex() {
               return api.rowIdToRowIndex(row.id);
             },
@@ -27,6 +28,7 @@ export function useUseRowDrag(api: Root.API, gridId: string): Root.API["useRowDr
           data: {
             row,
             api,
+            id: gridId,
             get rowIndex() {
               return api.rowIdToRowIndex(row.id);
             },
