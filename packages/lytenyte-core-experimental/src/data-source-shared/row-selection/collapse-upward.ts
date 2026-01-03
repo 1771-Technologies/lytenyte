@@ -1,4 +1,5 @@
-import type { RowNode, RowSelectNodeWithParent } from "@1771technologies/lytenyte-shared";
+import { type RowNode, type RowSelectNodeWithParent } from "@1771technologies/lytenyte-shared";
+import { isNodeSelected } from "./is-node-selected.js";
 
 export function collapseUpwards(
   node: RowSelectNodeWithParent,
@@ -6,57 +7,59 @@ export function collapseUpwards(
   root: Map<string, RowSelectNodeWithParent>,
   base: boolean,
 ) {
-  if ("kind" in node.parent) return;
+  const parentSelected = isNodeSelected(node.parent);
 
-  const parent = node.parent;
+  // This node is the same as the parent, so just remove it.
+  if (parentSelected === node.selected) {
+    node.parent.children?.delete(node.id);
 
-  const treeNode = idToSpec(parent.id);
+    if (!("kind" in node.parent)) collapseUpwards(node.parent, idToSpec, root, base);
+    return;
+  }
+
+  // Is this a leaf, if so just move upward
+  if (node.children == null) {
+    // This node doesn't do anything.
+    if (node.selected == null) {
+      node.parent.children?.delete(node.id);
+    }
+
+    if (!("kind" in node.parent)) collapseUpwards(node.parent, idToSpec, root, base);
+    return;
+  }
+
+  const treeNode = idToSpec(node.id);
   if (!treeNode) return;
 
   const size = treeNode.size;
 
-  // We've potentially exempted all the rows in this parent.
-  if (parent.exceptions && parent.exceptions.size >= size) {
-    let allPresent = true;
-    for (const x of treeNode.children.values()) {
-      if (!parent.exceptions.has(x.row.id)) {
-        allPresent = false;
+  // This means potentially we have a parent that is equivalent to its children. For example, if all the children
+  // are selected, then the parent is also selected, and hence we can select the parent and remove the children.
+  if (node.children.size >= size) {
+    // Do all the children have the same state.
+    let all = true;
+    let first: boolean | null | undefined = null;
+
+    for (const x of node.children.values()) {
+      if (first == null) first = x.selected;
+
+      if (x.selected !== first) {
+        all = false;
         break;
       }
     }
 
-    if (allPresent) {
-      parent.exceptions = undefined;
-      parent.children = undefined;
+    if (all) {
+      node.selected = first!;
+      delete node.children;
+    }
 
-      if (!base) {
-        if (!parent.parent) root.delete(parent.id);
-        else parent.parent?.children?.delete(parent.id);
-      } else parent.selected = false;
+    // Remove this node
+    if (isNodeSelected(node.parent) === node.selected) {
+      node.parent.children?.delete(node.id);
     }
   }
 
-  // We have a bunch of selected nodes. So lets check if everything is selected
-  if (parent.children && parent.children.size >= size) {
-    let allPresentAndSelected = true;
-    for (const x of treeNode.children.values()) {
-      const n = parent.children.get(x.row.id);
-      if (!n || !n.selected || n.exceptions?.size) {
-        allPresentAndSelected = false;
-        break;
-      }
-    }
-
-    if (allPresentAndSelected) {
-      parent.exceptions = undefined;
-      parent.children = undefined;
-
-      if (base) {
-        if (!parent.parent) root.delete(parent.id);
-        else parent.parent.children?.delete(parent.id);
-      } else parent.selected = true;
-    }
-  }
-
-  collapseUpwards(parent, idToSpec, root, base);
+  if (!("kind" in node.parent)) collapseUpwards(node.parent, idToSpec, root, base);
+  return;
 }

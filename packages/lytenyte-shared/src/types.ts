@@ -47,7 +47,6 @@ export type RowGroupDisplayMode = "single-column" | "custom";
 
 export interface RowSelectNode {
   readonly id: string;
-  exceptions?: Set<string>;
   children?: Map<string, RowSelectNode>;
   selected?: boolean;
 }
@@ -55,7 +54,6 @@ export interface RowSelectionLinked {
   readonly kind: "linked";
   readonly selected: boolean;
   readonly children: Map<string, RowSelectNode>;
-  exceptions?: Set<string>;
 }
 export interface RowSelectionIsolated {
   readonly kind: "isolated";
@@ -67,7 +65,6 @@ export type RowSelectionState = RowSelectionIsolated | RowSelectionLinked;
 export interface RowSelectNodeWithParent {
   readonly id: string;
   parent: RowSelectNodeWithParent | RowSelectionLinkedWithParent;
-  exceptions?: Set<string>;
   selected?: boolean;
   children?: Map<string, RowSelectNodeWithParent>;
 }
@@ -75,7 +72,6 @@ export interface RowSelectionLinkedWithParent {
   readonly kind: "linked";
   readonly selected: boolean;
   readonly children: Map<string, RowSelectNodeWithParent>;
-  exceptions?: Set<string>;
 }
 export type RowSelectionStateWithParent = RowSelectionLinkedWithParent | RowSelectionIsolated;
 

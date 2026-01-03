@@ -16,16 +16,14 @@ export function SelectAll<Spec extends GridSpec>({ api, slot }: SelectAllProps &
 
   const selected = useMemo(() => {
     const selected =
-      s.kind === "isolated"
-        ? s.selected && s.exceptions.size === 0
-        : s.selected && !s.exceptions && s.children.size === 0;
+      s.kind === "isolated" ? s.selected && s.exceptions.size === 0 : s.selected && s.children.size === 0;
     return selected;
   }, [s]);
 
   const indeterminate = useMemo(() => {
     if (s.kind === "isolated") return !!s.exceptions.size;
 
-    return Boolean(s.exceptions?.size || s.children.size);
+    return Boolean(s.children.size);
   }, [s]);
 
   const toggle = useEvent((b?: boolean) => {

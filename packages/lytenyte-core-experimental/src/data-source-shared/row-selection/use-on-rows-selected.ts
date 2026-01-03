@@ -1,4 +1,3 @@
-import { exemptUpwards } from "./exempt-upwards.js";
 import { handleIsolatedSelect } from "./handle-isolated-select.js";
 import { collapseUpwards } from "./collapse-upward.js";
 import {
@@ -60,8 +59,6 @@ export function useOnRowsSelected<T>(
           for (const path of rowsWithParents) {
             let current: Map<string, RowSelectNodeWithParent> = overrides;
 
-            let pathValue = prev.selected;
-
             let next: RowSelectNodeWithParent | RowSelectionLinkedWithParent = prev;
             for (let i = 0; i < path.length; i++) {
               const id = path[i];
@@ -70,17 +67,11 @@ export function useOnRowsSelected<T>(
 
               // We aren't on the last node
               if (i != path.length - 1) {
-                next.selected = next.selected ?? pathValue;
-                pathValue = next.selected;
-
                 next.children ??= new Map();
                 current = next.children;
               } else {
-                exemptUpwards(next.id, next, deselect ?? false);
-
                 next.selected = !deselect;
                 next.children = undefined;
-                next.exceptions = undefined;
 
                 collapseUpwards(next, idToSpec, prev.children, prev.selected);
               }

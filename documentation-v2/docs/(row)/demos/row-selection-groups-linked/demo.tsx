@@ -126,7 +126,7 @@ function MarkerCell({ api, selected, indeterminate }: Grid.T.CellRendererParams<
   return (
     <div className="flex h-full w-full items-center justify-center">
       <GridCheckbox
-        checked={selected || indeterminate}
+        checked={selected}
         indeterminate={indeterminate}
         onClick={(ev) => {
           ev.stopPropagation();
@@ -150,6 +150,7 @@ function GridCheckbox({ children, indeterminate, ...props }: C.CheckboxProps & {
     <label className="text-md text-light flex items-center gap-2">
       <C.Root
         {...props}
+        checked={indeterminate || props.checked}
         type="button"
         className={tw(
           "bg-ln-gray-02 cursor-pointer rounded border-transparent",
