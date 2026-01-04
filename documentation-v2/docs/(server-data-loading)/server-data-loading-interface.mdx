@@ -15,7 +15,7 @@ overview. For a practical guide, see the [Server Row Data guide](/docs/server-da
 ## The Request Interface
 
 At the core of the server data interface is the request interface, the API description of which
-may be found in the [API reference](/docs/reference/row-data-source#datarequest). In plain
+may be found in the [API reference](/docs/reference). In plain
 typescript the _ts`DataRequest`_ interface is relatively simple:
 
 ```ts
@@ -113,9 +113,9 @@ which is valid and expected by LyteNyte Grid's server data source.
 There are two distinct response types:
 
 - A data response for scrollable rows, described in this
-  [API reference](/docs/reference/row-data-source#dataresponse).
+  [API reference](/docs/reference).
 - A data response for pinned rows (top or bottom), described in this
-  [API reference](/docs/reference/row-data-source#dataresponsepinned).
+  [API reference](/docs/reference).
 
 LyteNyte Grid expects an array of responses, so the server may send multiple response types in the
 same network round trip.
@@ -176,7 +176,7 @@ These may be changed in the server response, but doing so is generally not recom
 #### Leaf Row Data
 
 Leaf row data uses the `DataResponseLeafItem` type (see the
-[API reference](/docs/reference/row-data-source#dataresponseleafitem)). Its TypeScript definition is
+[API reference](/docs/reference)). Its TypeScript definition is
 shown below:
 
 ```ts
@@ -191,17 +191,17 @@ Like the `DataResponse` type, the `DataResponseLeafItem` also has a `kind` prope
 _ts`"leaf"`_. LyteNyte Grid uses this value to determine if the response data should create a leaf
 row node.
 
-The `id` value maps to the [row node's](/docs/reference/row#rowleaf) `id` property, and the `data`
+The `id` value maps to the [row node's](/docs/reference) `id` property, and the `data`
 in the response is associated with that row node. Each item in the data response becomes a row node.
 
 #### Branch Row Data
 
 Group (or branch) row data is represented by the `DataResponseBranchItem`. LyteNyte Grid uses these
-items to create [row group nodes](/docs/reference/row#rowgroup). Group nodes represent branches in
+items to create [row group nodes](/docs/reference). Group nodes represent branches in
 the view that may be expanded or collapsed.
 
 The TypeScript interface for `DataResponseBranchItem` is shown below. For details, see the
-[API reference](/docs/reference/row-data-source#dataresponsebranchitem).
+[API reference](/docs/reference).
 
 ```ts
 export interface DataResponseBranchItem {
@@ -222,7 +222,7 @@ is used to place the node in the row tree maintained by the server data source. 
 property is required and indicates how many child nodes the group will have.
 
 The close mapping between `DataResponseBranchItem` and the
-[row group node](/docs/reference/row#rowgroup) is intentional. The server response is designed to
+[row group node](/docs/reference) is intentional. The server response is designed to
 map directly to row creation for performance.
 
 ### Data Response For Pinned Rows
@@ -232,7 +232,7 @@ address this, the server data source allows developers to push pinned row respon
 scrollable row responses.
 
 The `DataResponsePinned` interface
-([API reference](/docs/reference/row-data-source#dataresponsepinned)) defines the response type that
+([API reference](/docs/reference)) defines the response type that
 LyteNyte Grid expects:
 
 ```ts
@@ -268,7 +268,7 @@ const ds = useServerDataSource<MyDataType>({
 
 The `dataFetcher` function receives a `params` object, which includes more than the data requests for
 the current grid view. This object is described by the `DataFetcherParams` type
-([API reference](/docs/reference/row-data-source#datafetcherparams)), whose TypeScript definition is
+([API reference](/docs/reference), whose TypeScript definition is
 shown below:
 
 ```ts
@@ -296,7 +296,7 @@ the `asOfTime`, or ignore it if responses define their own freshness rules.
 
 The `model` property describes the grid's configuration state that affects the view, such as filters,
 sorting, or row grouping. The full interface is shown below, but see the
-[API reference](/docs/reference/row-data-source#datarequestmodel) for details on each property.
+[API reference](/docs/reference) for details on each property.
 
 ```ts
 export interface DataRequestModel<T> {
