@@ -20,6 +20,7 @@ import { BlogIcon } from "./icons/blog-icon";
 import LogoLytenyte from "../company/logo-lytenyte.astro";
 import LoadingIndicator from "./loading-indicator.astro";
 import { MobileToc } from "../toc/mobile-toc";
+import { SidebarDialog } from "../sidebar/sidebar-dialog";
 
 const icons = {
   guides: GuidesIcon,
@@ -112,10 +113,77 @@ const pathname = Astro.url.pathname;
                 );
               })
             }
+            <SidebarDialog client:load>
+              <div class="pt-2 pb-6 px-2">
+                <a href={homeUrl}>
+                  <LogoLytenyte />
+                </a>
+              </div>
+
+              <div class="flex flex-col gap-4 pt-2 pb-8 px-2">
+                {
+                  navbar.left?.map((x) => {
+                    const Icon = icons[x.icon];
+
+                    const active =
+                      x.matchSelected.match.some((x) => pathname.startsWith(x)) &&
+                      !x.matchSelected.ignore.some((x) => pathname.startsWith(x));
+
+                    return (
+                      <a
+                        href={x.url}
+                        class:list={cn(
+                          "items-center flex font-semibold text-sm text-xd-muted-foreground hover:text-xd-foreground transition-colors gap-1 px-2 border-s border-transparent",
+                          active && "border-s border-s-xd-foreground text-xd-foreground",
+                        )}
+                      >
+                        <Icon />
+                        <span class="sr-only">{x.description}</span>
+
+                        {x.title}
+                      </a>
+                    );
+                  })
+                }
+
+                {
+                  navbar.right?.map((x) => {
+                    const Icon = icons[x.icon];
+                    const active =
+                      x.matchSelected.match.some((x) => pathname.startsWith(x)) &&
+                      !x.matchSelected.ignore.some((x) => pathname.startsWith(x));
+
+                    return (
+                      <a
+                        href={x.url}
+                        class:list={cn(
+                          "h-full items-center flex font-semibold text-sm text-xd-muted-foreground hover:text-xd-foreground transition-colors gap-1 px-2",
+                          active && "border-b border-b-xd-foreground text-xd-foreground",
+                        )}
+                      >
+                        <Icon />
+                        <span class="sr-only">{x.description}</span>
+                        {x.title}
+                      </a>
+                    );
+                  })
+                }
+              </div>
+
+              {
+                sidebar.children.map((x) => {
+                  return (
+                    <div class="flex flex-col gap-2 ps-2">
+                      <Sidebar item={x} collection={sidebar.collection} />
+                    </div>
+                  );
+                })
+              }
+            </SidebarDialog>
           </div>
         </header>
       </div>
-      <div class="h-subheader border-b border-xd-border bg-xd-background">
+      <div class="h-subheader border-b border-xd-border bg-xd-background hidden md:block">
         <div
           class="flex items-center lg:max-w-[1000px] xl:max-w-7xl [@media(min-width:1380px)]:max-w-[1360px] [@media(min-width:1500px)]:max-w-[1480px] mx-auto w-full justify-between px-2 h-full"
         >

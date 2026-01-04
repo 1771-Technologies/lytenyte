@@ -51,29 +51,31 @@ export function MobileToc({ toc }: { toc: MarkdownHeading[] }) {
         id="toc"
       >
         <div className="min-h-[0px]">
-          <div className="border-xd-border bg-xd-background flex flex-col gap-1.5 rounded-b-xl border-b border-t py-2">
-            {toc.map((x) => {
-              return (
-                <a
-                  onClick={(ev) => {
-                    setOpen(false);
+          {open && (
+            <div className="border-xd-border bg-xd-background flex flex-col gap-1.5 rounded-b-xl border-b border-t py-2">
+              {toc.map((x) => {
+                return (
+                  <a
+                    onClick={(ev) => {
+                      setOpen(false);
 
-                    ev.preventDefault();
-                  }}
-                  key={`#${x.slug}`}
-                  className={cn(
-                    x.depth === 3 ? "pl-6" : "pl-3",
-                    (opened.current || open) && "toc-link",
-                    "text-xd-muted-foreground hover:text-xd-accent-foreground cursor-pointer py-0.5 transition-colors",
-                    "data-[active=true]:text-xd-foreground",
-                  )}
-                  href={`#${x.slug}`}
-                >
-                  {x.text}
-                </a>
-              );
-            })}
-          </div>
+                      ev.preventDefault();
+                    }}
+                    key={`#${x.slug}`}
+                    className={cn(
+                      x.depth === 3 ? "pl-6" : "pl-3",
+                      (opened.current || open) && "toc-link",
+                      "text-xd-muted-foreground hover:text-xd-accent-foreground cursor-pointer py-0.5 transition-colors",
+                      "data-[active=true]:text-xd-foreground",
+                    )}
+                    href={`#${x.slug}`}
+                  >
+                    {x.text}
+                  </a>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -42,7 +42,6 @@ import InlineCode from "./parts/inline-code.astro";
 import type { OneDocConfig } from "../lytenyte-doc";
 import NextList from "./next-list.astro";
 import { MobileToc } from "./toc/mobile-toc";
-import { head } from "es-toolkit";
 
 export interface Props {
   options: OneDocConfig;
@@ -107,7 +106,7 @@ const prevEntry = prev ? await getEntry(entry.collection, prev) : null;
       }
     : null}
 >
-  <div class="top-[104px] sticky z-50">
+  <div class="top-header sticky z-20">
     <MobileToc toc={headings} client:load />
   </div>
   <div class="text-sm text-neutral-800 dark:text-neutral-400 px-4 py-2 md:py-8 max-w-4xl mx-auto">
