@@ -60,7 +60,7 @@ export function SidebarDialog(props: PropsWithChildren) {
         <D.Popup
           ref={setEl}
           className={cn(
-            "data-starting-style:translate-x-full bg-xd-popover data-ending-style:translate-x-full border-xd-border fixed end-0 top-0 z-50 h-full w-4/5 border-s bg-gray-50 px-2 py-4 transition-transform",
+            "data-starting-style:translate-x-full data-ending-style:translate-x-full border-xd-border fixed end-0 top-0 z-50 h-full w-4/5 border-s bg-white px-2 py-4 transition-transform dark:bg-black",
             "no-scrollbar overflow-auto",
           )}
         >
