@@ -1,5 +1,12 @@
 {
   "title": "Filtering",
-  "pages": ["filter-column-filters", "filter-in-column-filter", "filter-quick-filter"],
+  "pages": [
+    "filtering-text",
+    "filtering-numbers",
+    "filtering-dates",
+    "filtering-labels",
+    "filtering-tree-filters",
+    "filtering-quick-search"
+  ],
   "defaultOpen": true
 }

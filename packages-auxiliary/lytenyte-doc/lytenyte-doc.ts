@@ -118,6 +118,7 @@ export function lnDoc(opts: OneDocConfig): AstroIntegration[] {
                           }),
                           schema: z.object({
                             title: z.string(),
+                            pro: z.boolean().optional(),
                             step: z.string().optional(),
                             description: z.string().optional(),
                           })

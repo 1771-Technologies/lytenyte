@@ -1,13 +1,20 @@
 {
   "title": "Components",
   "pages": [
+    "component-grid-overlays",
+    "component-viewport-shadows",
     "component-column-manager",
+    "component-pill-manager",
+    "component-sort-manager",
     "component-filter-tree",
-    "component-context-menu",
     "component-dialog-frame",
     "component-popover-frame",
-    "component-sort-manager",
-    "component-grid-box"
+    "component-menu-button",
+    "component-context-menu",
+    "component-smart-select",
+    "component-tree-view",
+    "component-select-all",
+    "component-row-group-cell"
   ],
   "defaultOpen": true
 }

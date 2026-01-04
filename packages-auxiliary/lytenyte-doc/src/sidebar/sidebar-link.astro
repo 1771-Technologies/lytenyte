@@ -1,0 +1,24 @@
+---
+import ProTag from "../company/pro-tag.astro";
+import { cn } from "../ui/cn";
+
+interface Props {
+  active: boolean;
+  href: string;
+  pro?: boolean;
+}
+---
+
+<a
+  data-active={Astro.props.active}
+  href={Astro.props.href}
+  class:list={cn(
+    "data-[active=true]:bg-xd-accent-foreground/10 data-[active=true]:text-xd-foreground relative hover:bg-xd-accent-foreground/5 transition-colors",
+    "data-active:before:bg-xd-border data-active:before:h-full data-active:before:top-0",
+    "data-active:before:absolute data-active:before:w-px data-[active=true]:before:h-2/5 data-[active=true]:before:bg-xd-foreground",
+    "data-active:before:left-[7px] data-[active=true]:before:top-3/10 hover:duration-0 duration-100",
+    "text-xs tracking-tight text-xd-muted-foreground font-semibold",
+    "px-[calc(var(--sidebar-depth,1)*16px)] py-2 rounded-lg",
+    "flex gap-2 items-center",
+  )}><slot />{Astro.props.pro && <ProTag small />}</a
+>

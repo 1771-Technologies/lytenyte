@@ -132,8 +132,8 @@ export default function RowSelection() {
           <div className="flex flex-wrap gap-2 px-2 py-2 font-mono">
             {external.map((x, i) => {
               return (
-                <div className="bg-ln-bg-strong rounded px-2 py-2">
-                  <SymbolLabel data={x} key={i} />
+                <div className="bg-ln-bg-strong rounded px-2 py-2" key={i}>
+                  <SymbolLabel data={x} />
                 </div>
               );
             })}
