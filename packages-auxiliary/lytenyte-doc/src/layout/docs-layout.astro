@@ -19,6 +19,7 @@ import { GuidesIcon } from "./icons/guides-icon";
 import { BlogIcon } from "./icons/blog-icon";
 import LogoLytenyte from "../company/logo-lytenyte.astro";
 import LoadingIndicator from "./loading-indicator.astro";
+import { MobileToc } from "../toc/mobile-toc";
 
 const icons = {
   guides: GuidesIcon,
@@ -205,11 +206,7 @@ const pathname = Astro.url.pathname;
 
             <div class="flex flex-col">
               <div class="w-full max-w-full flex-1">
-                <div class="text-sm text-neutral-800 dark:text-neutral-400 px-4 py-8 max-w-4xl mx-auto">
-                  <article class="mx-auto">
-                    <slot />
-                  </article>
-                </div>
+                <slot />
               </div>
               <footer class="w-full max-w-full">
                 <div>

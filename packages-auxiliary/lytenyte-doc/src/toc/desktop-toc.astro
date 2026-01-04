@@ -41,7 +41,7 @@ const { toc } = Astro.props;
 </div>
 
 <script>
-  const setupToc = () => {
+  function getClosestHeading() {
     const tocLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>("#toc .toc-link"));
 
     if (tocLinks.length) {
@@ -72,31 +72,34 @@ const { toc } = Astro.props;
         });
       };
 
-      function getClosestHeading() {
-        const header = headings.map((x) => x.getBoundingClientRect().top);
+      const header = headings.map((x) => x.getBoundingClientRect().top);
 
-        const firstPositiveIndex = header.findIndex((x) => x >= 0);
-        const previousIndex = firstPositiveIndex - 1;
-        const value = header[firstPositiveIndex];
-        const prevValue = Math.abs(header[previousIndex]);
+      const firstPositiveIndex = header.findIndex((x) => x >= 0);
+      const previousIndex = firstPositiveIndex - 1;
+      const value = header[firstPositiveIndex];
+      const prevValue = Math.abs(header[previousIndex]);
 
-        const index = prevValue < value ? previousIndex : firstPositiveIndex;
+      const index = prevValue < value ? previousIndex : firstPositiveIndex;
 
-        const activeId = headings[index]?.id;
-        if (activeId) setActive(activeId);
-      }
-      getClosestHeading();
-
-      let frame: number | null = null;
-      document.addEventListener("scroll", () => {
-        if (frame) return;
-
-        frame = requestAnimationFrame(() => {
-          getClosestHeading();
-          frame = null;
-        });
-      });
+      const activeId = headings[index]?.id;
+      if (activeId) setActive(activeId);
     }
+  }
+
+  const setupToc = () => {
+    document.addEventListener("toc-reapply", () => {
+      getClosestHeading();
+    });
+
+    let frame: number | null = null;
+    document.addEventListener("scroll", () => {
+      if (frame) return;
+
+      frame = requestAnimationFrame(() => {
+        getClosestHeading();
+        frame = null;
+      });
+    });
   };
 
   window.addEventListener("load", () => setupToc());

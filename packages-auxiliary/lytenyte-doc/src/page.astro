@@ -41,6 +41,8 @@ import AutoTypeTable from "./type-table/auto-type-table.astro";
 import InlineCode from "./parts/inline-code.astro";
 import type { OneDocConfig } from "../lytenyte-doc";
 import NextList from "./next-list.astro";
+import { MobileToc } from "./toc/mobile-toc";
+import { head } from "es-toolkit";
 
 export interface Props {
   options: OneDocConfig;
@@ -105,68 +107,75 @@ const prevEntry = prev ? await getEntry(entry.collection, prev) : null;
       }
     : null}
 >
-  {
-    title.length > 0 && (
-      <div class="flex items-center gap-1.5 text-sm text-fd-muted-foreground mb-5">
-        <span class="truncate text-xd-primary font-medium">{title}</span>
-      </div>
-    )
-  }
-  <div class="flex items-center justify-between gap-1 text-start relative">
-    <H1>{entry.data.title}</H1>
-    <PageAction
-      client:idle
-      githubOrg={githubOrg}
-      githubRepo={githubRepo}
-      rootDir={rootDir}
-      branch={branch}
-      path={entry.filePath!}
-      collection={entry.collection}
-      id={entry.id}
-    />
+  <div class="top-[104px] sticky z-50">
+    <MobileToc toc={headings} client:load />
   </div>
-  {entry.data.description && <P sx="text-base text-xd-muted-foreground">{entry.data.description}</P>}
-  <Content
-    components={{
-      ProTag,
-      Code,
-      CodeFrame,
-      Callout,
-      StandaloneImage,
-      PackageInstall,
-      PackageDlx,
-      Steps,
-      Tabs,
-      Tab,
-      TypeTable,
-      AutoTypeTable,
+  <div class="text-sm text-neutral-800 dark:text-neutral-400 px-4 py-2 md:py-8 max-w-4xl mx-auto">
+    <article class="mx-auto">
+      {
+        title.length > 0 && (
+          <div class="flex items-center gap-1.5 text-sm text-fd-muted-foreground mb-5">
+            <span class="truncate text-xd-primary font-medium">{title}</span>
+          </div>
+        )
+      }
+      <div class="flex items-center justify-between gap-1 text-start relative">
+        <H1>{entry.data.title}</H1>
+        <PageAction
+          client:idle
+          githubOrg={githubOrg}
+          githubRepo={githubRepo}
+          rootDir={rootDir}
+          branch={branch}
+          path={entry.filePath!}
+          collection={entry.collection}
+          id={entry.id}
+        />
+      </div>
+      {entry.data.description && <P sx="text-base text-xd-muted-foreground">{entry.data.description}</P>}
+      <Content
+        components={{
+          ProTag,
+          Code,
+          CodeFrame,
+          Callout,
+          StandaloneImage,
+          PackageInstall,
+          PackageDlx,
+          Steps,
+          Tabs,
+          Tab,
+          TypeTable,
+          AutoTypeTable,
 
-      BlockCode,
-      Next: NextList,
+          BlockCode,
+          Next: NextList,
 
-      table: Table,
-      th: Th,
-      tr: Tr,
-      td: Td,
+          table: Table,
+          th: Th,
+          tr: Tr,
+          td: Td,
 
-      h1: H1,
-      h2: H2,
-      h3: H3,
-      h4: H4,
-      h5: H5,
-      h6: H6,
+          h1: H1,
+          h2: H2,
+          h3: H3,
+          h4: H4,
+          h5: H5,
+          h6: H6,
 
-      a: A,
-      ol: Ol,
-      ul: Ul,
-      p: P,
-      strong: Strong,
-      code: InlineCode,
+          a: A,
+          ol: Ol,
+          ul: Ul,
+          p: P,
+          strong: Strong,
+          code: InlineCode,
 
-      li: Li,
-      blockquote: Blockquote,
-      img: Img,
-      hr: Hr,
-    }}
-  />
+          li: Li,
+          blockquote: Blockquote,
+          img: Img,
+          hr: Hr,
+        }}
+      />
+    </article>
+  </div>
 </DocsLayout>
