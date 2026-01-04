@@ -90,7 +90,7 @@ export function Search() {
   } else if (error) {
     status = error;
   } else if (searchResults.length === 0 && searchValue) {
-    status = `Movie or year "${searchValue}" does not exist in the Top 100 IMDb movies`;
+    status = `No search results for "${searchValue}"`;
   }
 
   const shouldRenderPopup = searchValue !== "";
@@ -265,8 +265,7 @@ export function ModKey({
   showSymbolOnMac?: boolean;
   className?: string;
 }) {
-  const isMac =
-    typeof navigator !== "undefined" && /Mac|iPhone|iPad|iPod/i.test(navigator.platform);
+  const isMac = typeof navigator !== "undefined" && /Mac|iPhone|iPad|iPod/i.test(navigator.platform);
 
   if (isMac) {
     return (
