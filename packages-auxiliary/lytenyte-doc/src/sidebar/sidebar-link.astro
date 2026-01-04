@@ -5,6 +5,7 @@ import { cn } from "../ui/cn";
 interface Props {
   active: boolean;
   href: string;
+  target?: string;
   pro?: boolean;
 }
 ---
@@ -12,6 +13,7 @@ interface Props {
 <a
   data-active={Astro.props.active}
   href={Astro.props.href}
+  target={Astro.props.target}
   class:list={cn(
     "data-[active=true]:bg-xd-accent-foreground/10 data-[active=true]:text-xd-foreground relative hover:bg-xd-accent-foreground/5 transition-colors",
     "data-active:before:bg-xd-border data-active:before:h-full data-active:before:top-0",
