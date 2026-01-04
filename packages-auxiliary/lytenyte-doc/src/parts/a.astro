@@ -1,5 +1,11 @@
 ---
+import { byId } from "../all-collections";
 
+const href = Astro.props.href as string;
+
+if (!href.startsWith("https") && !href.startsWith("mailto:") && !byId[href.split("#").at(0)!]) {
+  throw new Error(`The link ${href} is not exist.`);
+}
 ---
 
 <a

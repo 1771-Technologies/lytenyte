@@ -5,7 +5,7 @@ description: Every column may define a unique header renderer to determine the
 ---
 
 A header renderer is a custom React component that LyteNyte Grid uses to render header cell content.
-Use the `headerRenderer` property on the [column specification](/docs/reference/column#column)
+Use the `headerRenderer` property on the [column specification](/docs/reference)
 to set the component.
 
 ## Header Renderers
@@ -13,7 +13,7 @@ to set the component.
 Creating a functional header renderer is as simple as:
 
 1. Defining a custom React component function that accepts an object of type
-   [`Grid.T.HeaderParams`](/docs/reference/column-header#headercellrendererparams) as props.
+   [`Grid.T.HeaderParams`](/docs/reference) as props.
 2. Setting the value of the `headerRenderer` property on each column that should use this renderer.
 
 The demo below demonstrates this in action. Every column has a custom `headerRenderer` that adds
