@@ -111,6 +111,10 @@ export namespace Grid {
     export type RowSelectionLinked = LnTypes.RowSelectionLinked;
     export type SortFn<T> = LnTypes.SortFn<T>;
     export type RowFullWidthRendererParams<Spec extends GridSpec> = LnTypes.RowFullWidthRendererParams<Spec>;
+    export type RowDragPlaceholderFn = LnTypes.ReactPlaceholderFn;
+    export type DragItem = LnTypes.DragItem;
+    export type DragItemSiteLocal = LnTypes.DragItemSiteLocal;
+    export type DragItemTransfer = LnTypes.DragItemTransfer;
 
     export type RowNode<T> = LnTypes.RowNode<T>;
     export type RowLeaf<T> = LnTypes.RowLeaf<T>;

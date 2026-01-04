@@ -103,6 +103,10 @@ export namespace Grid {
     export type RowFullWidthRendererParams<Spec extends GridSpec> = LnTypes.RowFullWidthRendererParams<Spec>;
     export type RowSelectionIsolated = LnTypes.RowSelectionIsolated;
     export type RowSelectionLinked = LnTypes.RowSelectionLinked;
+    export type RowDragPlaceholderFn = GridCore.T.RowDragPlaceholderFn;
+    export type DragItem = GridCore.T.DragItem;
+    export type DragItemSiteLocal = GridCore.T.DragItemSiteLocal;
+    export type DragItemTransfer = GridCore.T.DragItemTransfer;
 
     export type RowNode<T> = LnTypes.RowNode<T>;
     export type RowLeaf<T> = LnTypes.RowLeaf<T>;

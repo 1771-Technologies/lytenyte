@@ -2,9 +2,13 @@
 import "./demo.css";
 import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
 import "@1771technologies/lytenyte-pro-experimental/pill-manager.css";
-import { getRowDragData, Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
 import {
-  DragIcon,
+  getRowDragData,
+  Grid,
+  moveRelative,
+  useClientDataSource,
+} from "@1771technologies/lytenyte-pro-experimental";
+import {
   ExchangeCell,
   makePerfHeaderCell,
   NetworkCell,
@@ -12,12 +16,12 @@ import {
   PercentCellPositiveNegative,
   SymbolCell,
   SymbolLabel,
-  tw,
 } from "./components.jsx";
 import type { DEXPerformanceData } from "@1771technologies/grid-sample-data/dex-pairs-performance";
-import { data } from "@1771technologies/grid-sample-data/dex-pairs-performance";
+import { data as initialData } from "@1771technologies/grid-sample-data/dex-pairs-performance";
 import { DragHandleDots2Icon } from "@radix-ui/react-icons";
-import { useMemo, useState } from "react";
+import { useState } from "react";
+import { createPortal } from "react-dom";
 
 export interface GridSpec {
   readonly data: DEXPerformanceData;
@@ -87,70 +91,77 @@ const base: Grid.ColumnBase<GridSpec> = { width: 80 };
 
 const marker: Grid.ColumnMarker<GridSpec> = { on: true, cellRenderer: MarkerCell };
 
-const leafIdFn: Grid.T.LeafIdFn<GridSpec["data"]> = (d) =>
-  `${d.symbolTicker}-${d.exchange}-${d.network}-${d.symbol}`;
-
 export default function RowSelection() {
-  const ds = useClientDataSource<GridSpec>({ data: data, leafIdFn });
+  const [data, setData] = useState(initialData);
 
-  const [over, setOver] = useState(false);
-
-  const [external, setData] = useState<GridSpec["data"][]>([]);
+  const ds = useClientDataSource({ data });
 
   return (
-    <div className="ln-grid ln-cell:text-xs ln-header:text-xs ln-header:text-ln-text-xlight ln-cell-marker:px-0 flex flex-col gap-8">
-      <div style={{ height: 250 }}>
-        <Grid
-          columns={columns}
-          columnBase={base}
-          rowSource={ds}
-          columnMarker={marker}
-          gridId="primary"
-          rowDropAccept={useMemo(() => ["secondary"], [])}
-        />
-      </div>
+    <div
+      className="ln-grid ln-cell:text-xs ln-header:text-xs ln-header:text-ln-text-xlight ln-cell-marker:px-0"
+      style={{ height: 500 }}
+    >
+      <Grid
+        columns={columns}
+        columnBase={base}
+        rowSource={ds}
+        columnMarker={marker}
+        onRowDragEnter={(p) => {
+          if (p.over.kind === "viewport") return;
 
-      <div
-        style={{ height: 250 }}
-        className={tw("border-ln-border border-t", over && "bg-ln-primary-10")}
-        onDragLeave={() => setOver(false)}
-        onDragOver={() => setOver(true)}
-        //!next 6
-        onDrop={() => {
-          setOver(false);
-          const row = getRowDragData();
+          const overIndex = p.over.rowIndex;
+          const dragIndex = p.source.rowIndex;
 
-          setData((prev) => [...prev, row.row.data]);
+          if (overIndex === dragIndex) return;
+
+          if (overIndex < dragIndex) p.over.element.setAttribute("data-ln-drag-position", "before");
+          else p.over.element.setAttribute("data-ln-drag-position", "after");
         }}
-      >
-        {!external.length && (
-          <div className="flex h-full w-full flex-col items-center justify-center">
-            <DragIcon className="size-12" />
-            Drag rows from the grid here.
-          </div>
-        )}
-        {external.length > 0 && (
-          <div className="flex flex-wrap gap-2 px-2 py-2 font-mono">
-            {external.map((x, i) => {
-              return (
-                <div className="bg-ln-bg-strong rounded px-2 py-2" key={i}>
-                  <SymbolLabel data={x} />
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
+        onRowDragLeave={(p) => {
+          if (p.over.kind === "viewport") return;
+          p.over.element.removeAttribute("data-ln-drag-position");
+        }}
+        onRowDrop={(p) => {
+          if (p.over.kind === "viewport") return;
+          p.over.element.removeAttribute("data-ln-drag-position");
+
+          setData((prev) => {
+            if (p.over.kind === "viewport") return prev;
+
+            const next = moveRelative(prev, p.source.rowIndex, p.over.rowIndex);
+
+            return next;
+          });
+        }}
+      />
     </div>
   );
 }
 
 function MarkerCell({ api, rowIndex }: Grid.T.CellRendererParams<GridSpec>) {
-  const { props } = api.useRowDrag({ rowIndex });
+  const { props, placeholder } = api.useRowDrag({ rowIndex, placeholder: Placeholder }); //!
 
   return (
     <div className="flex h-full w-full cursor-grab items-center justify-center" {...props}>
       <DragHandleDots2Icon />
+      {placeholder}
     </div>
   );
 }
+
+//!next 15
+const Placeholder: Grid.T.RowDragPlaceholderFn = ({ x, y }) => {
+  const data = getRowDragData();
+
+  if (data.row.kind !== "leaf") return;
+
+  return createPortal(
+    <div
+      className="bg-ln-bg-strong border-ln-primary-50 pointer-events-none rounded border px-2 py-2"
+      style={{ position: "fixed", top: 0, left: 0, transform: `translate3d(${x}px, ${y}px, 0px)` }}
+    >
+      <SymbolLabel data={data.row.data} />
+    </div>,
+    document.body,
+  );
+};

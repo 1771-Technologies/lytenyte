@@ -99,6 +99,7 @@ export default function RowSelection() {
         columnBase={base}
         rowSource={ds}
         columnMarker={marker}
+        //!next 20
         onRowDragEnter={(p) => {
           if (p.over.kind === "viewport") return;
 
@@ -131,6 +132,7 @@ export default function RowSelection() {
   );
 }
 
+//!next 9
 function MarkerCell({ api, rowIndex }: Grid.T.CellRendererParams<GridSpec>) {
   const { props } = api.useRowDrag({ rowIndex });
 

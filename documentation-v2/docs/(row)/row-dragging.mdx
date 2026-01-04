@@ -1,56 +1,212 @@
 ---
 title: Row Dragging
-step: Drag and drop rows within the same LyteNyte Grid, across multiple grids, or into external drop zones.
-description: Drag and drop rows within the same LyteNyte Grid, across multiple grids, or into external drop zones.
+step: Drag and drop rows within the same LyteNyte Grid, across multiple grids, or into external drop zones and applications.
+description: Drag and drop rows within the same LyteNyte Grid, across multiple grids, or into external drop zones and applications.
 ---
 
 ## Single Row Dragging
 
-LyteNyte Grid implements row dragging through hooks. Use the `grid.api.useRowDrag` hook to enable row
-dragging. This hook returns drag props that you attach to a drag handle component. It requires a
-`getDragData` callback, which must return drag data in the following shape:
+LyteNyte Grid provides the `api.useRowDrag` hook for row dragging. This hook returns the properties
+needed to handle row dragging. Apply the returned properties to a drag handle component. The drag
+handle can be any component that supports standard HTML drag properties, such as `draggable` and
+`onDragStart`.
 
-```tsx
-export interface DragData {
-  readonly siteLocalData?: Record<string, any>;
-  readonly dataTransfer?: Record<string, string>;
-}
-```
-
-Drop zones must declare which drag data keys they accept. For example, the `Row` component acts as a
-drop zone. Set its `accepted` property to define which drag data it can receive. The demo below shows
-a basic single-row drag setup. Focus on the marker column's `cellRenderer` and the `accepted` prop on
-`Grid.Row`.
+The demo below demonstrates the basic row dragging setup. Users can drag rows to reorder them within the
+same grid. The demo uses LyteNyte Grid's `onRowDragEnter`, `onRowDragLeave`, and `onRowDrop` properties
+to attach callbacks for the drag events.
 
 ::demo[Single Row Dragging="./demos/row-dragging"]
 
+The `api.useRowDrag` hook requires a `rowIndex`. LyteNyte Grid creates the necessary drag data when the
+drag operation begins. The code for the drag handle is shown below.
+
+```tsx
+function MarkerCell({ api, rowIndex }: Grid.T.CellRendererParams<GridSpec>) {
+  const { props } = api.useRowDrag({ rowIndex }); //!
+
+  return (
+    //!next
+    <div {...props}>
+      <DragHandleDots2Icon />
+    </div>
+  );
+}
+```
+
+The `onRowDragEnter`, `onRowDragLeave`, and `onRowDrop` callbacks receive parameters describing the
+drag operation. The parameter object has two properties:
+
+- `source`: Data related to the row being dragged.
+- `over`: Data related to the row or viewport being dragged over.
+
+Using these properties, you can perform actions when events occur, such as adding and removing drag
+indicators, or reordering rows.
+
 ## Dragging Multiple Rows
 
-Combine row dragging with **row selection** to support dragging multiple rows. Instead of returning data
-for a single row, use `getDragData` to include all selected rows from the selection state.
+Combine row dragging with **row selection** to support dragging multiple rows. The drag event parameters
+include a `source` property, which contains the grid API for the row being dragged. You can use that API to
+retrieve the selected rows and move them in addition to the current row. The demo below demonstrates this.
 
 ::demo[Multiple Row Dragging="./demos/row-dragging-multi"]
 
+In the demo code, `p.source.api` retrieves the selected rows, as shown below. The example ignores drags
+over the viewport, since the demo uses dragging to reorder rows.
+
+```ts
+setData((prev) => {
+  if (p.over.kind === "viewport") return prev;
+
+  //!next 6
+  const selected = p.source.api
+    .rowsSelected()
+    .rows.filter((x) => x.id !== p.source.row.id)
+    .map((x) => p.source.api.rowIdToRowIndex(x.id))
+    .filter((b) => b != null)
+    .sort((l, r) => l - r);
+
+  const next = moveRelative(prev, p.source.rowIndex, p.over.rowIndex, selected);
+
+  return next;
+});
+```
+
+The `moveRelative` function is a utility provided by LyteNyte Grid. It moves items from one position to
+another. It performs a smart swap of rows using the indices provided.
+
 ## Dragging Between Grids
 
-To enable dragging between grids, use a shared `accepted` value. For example, setting
-`accepted={["row"]}` on both grids allows drag data containing a `row` key to be dropped onto rows in
-either grid.
+You can drag rows between grids using the `rowDropAccept` property. A grid can always drag rows within
+itself. To allow dragging between different grids, assign each grid an ID using the `gridId` property.
+Then share those IDs with the grids that should accept drops using the `rowDropAccept` property.
+
+In the demo below, the first grid is the **primary** grid and the second grid is the **secondary** grid.
+The grid IDs have been shared with each grid so rows can be dragged between them.
 
 ::demo[Grid-to-Grid Dragging="./demos/row-dragging-between-grids"]
 
+You can identify whether the drag operation comes from the same grid or another grid using the `id` property
+on the `source` and `over` parameters, as shown below.
+
+```ts
+onRowDrop={(p) => {
+  if (p.over.id === p.source.id) {
+    // Same grid
+  } else {
+    // Different grids
+  }
+}}
+```
+
+Both the `source` and `over` properties include a reference to the `api` of their respective grids. This is
+useful when you need to retrieve information or perform actions across different grids.
+
+:::note
+
+LyteNyte Grid cannot fully type the `api` property on the `source` and `over` parameters, because
+drag operations can come from any grid. Use a type assertion when you need access to API methods specific to
+your grid.
+
+```ts
+const api = source.api as Grid.API<MySpec>;
+```
+
+:::
+
 ## External Drop Zones
 
-Use the `DropWrap` component to create external drop zones. `DropWrap` renders a `div` that handles
-all required drag events and can accept any drag data produced by the grid.
+LyteNyte Grid's row dragging leverages the native browser
+[drag and drop](https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API) API.
+This means you can implement external drop zones by handling `onDrop` on an element. The demo below
+demonstrates this in action.
 
 ::demo[External Drop Zones="./demos/row-dragging-external"]
 
+The `getRowDragData` function is a helper provided by LyteNyte Grid. This function returns the current
+row drag data while a row drag is active. Use this function to retrieve the drag data for your own
+components. **Do not call this function** unless a row drag operation is currently happening.
+
 ## Drag Placeholders
+
+The `api.useRowDrag` hook accepts an optional `placeholder` property. Use this property to provide a
+custom placeholder for drag operations. The `placeholder` can be one of the following:
+
+- **String**: A query selector for an HTML element to use as the placeholder. The browser creates an image
+  snapshot of the element.
+- **Query Object**: An object with a `query` string and an optional `offset` tuple. This works the same as a
+  **String** value but allows you to offset the placeholder image by the tuple provided.
+- **React Component**: A custom React component to render as the placeholder. This opts out of native browser
+  drag image snapshots. Only use this option when drag operations will remain within the same web page.
+
+The demo below demonstrates a React placeholder in action. Notice that the placeholder component uses a
+portal to render into the `body` element.
+
+::demo[Drag Placeholder="./demos/row-dragging-placeholder"]
+
+When you use a React placeholder, render the `placeholder` value returned by `api.useRowDrag`, as shown below.
+
+```tsx
+function MarkerCell({ api, rowIndex }: Grid.T.CellRendererParams<GridSpec>) {
+  const { props, placeholder } = api.useRowDrag({ rowIndex, placeholder: Placeholder }); //!
+
+  return (
+    <div className="flex h-full w-full cursor-grab items-center justify-center" {...props}>
+      <DragHandleDots2Icon />
+      {placeholder} //!
+    </div>
+  );
+}
+```
 
 ## Drag To External Applications
 
-## Drag Outside Grid
+Because LyteNyte Grid uses the native browser drag and drop API, you can drag rows into external
+applications. To enable this, set the `data` property in the `api.useRowDrag` hook parameters, as shown below:
+
+```tsx
+function MarkerCell({ api, rowIndex, row }: Grid.T.CellRendererParams<GridSpec>) {
+  const { props } = api.useRowDrag({
+    rowIndex,
+    //!next
+    data: { "row-content": { kind: "dt", data: JSON.stringify(row.data), type: "text/plain" } },
+  });
+
+  return (
+    <div className="flex h-full w-full cursor-grab items-center justify-center" {...props}>
+      <DragHandleDots2Icon />
+    </div>
+  );
+}
+```
+
+The `data` property is a record of drag data. Each entry must be one of the following types, shown below.
+The `dt` kind uses the native browser **DataTransfer** object. Use this kind when you want to support
+dragging data into external applications.
+
+```ts
+export type DragItemTransfer = {
+  readonly kind: "dt";
+  readonly type:
+    | "text/plain"
+    | "text/html"
+    | "text/uri-list"
+    | "application/json"
+    | "text/csv"
+    | "text/rtf"
+    | ({} & string);
+  readonly data: string;
+};
+
+export type DragItemSiteLocal = {
+  readonly kind: "site";
+  readonly data: unknown;
+};
+```
+
+In the demo below, users can drag rows into an external application that accepts the `text/plain` MIME
+type. This includes most code editors. To try it out, open your text editor and drag a row into it.
+
+::demo[Drag To External Applications="./demos/row-dragging-external-app"]
 
 ## Next Steps
 

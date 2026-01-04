@@ -31,17 +31,24 @@ export function useDraggable({
 
   const props = useMemo(() => {
     const handleDrag: DragEventHandler = (startEvent) => {
+      clearDragGlobals();
       const data = dataRef.current;
       const dataValues = Object.values(data);
 
       const ff = isFirefox();
 
       const dataTransfer = startEvent.dataTransfer;
-      dataTransfer.setData("__ignore__", ""); // Allow drag on safari
+
+      let noDt = true;
       dataValues.forEach((x) => {
         if (x.kind === "site") return;
-        if (x.kind === "dt") dataTransfer.setData(x.type, x.data);
+        if (x.kind === "dt") {
+          dataTransfer.setData(x.type, x.data);
+          noDt = false;
+        }
       });
+
+      if (noDt) dataTransfer.setData("__ignore__", ""); // Allow drag on safari
 
       let frame: number | null = null;
       let [x, x1] = [startEvent.clientX, startEvent.clientX];
