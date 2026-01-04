@@ -14,7 +14,7 @@ provide four different ways filters may be applied when using the LyteNyte Grid 
   apply predicates to cell values, such as greater than or less than comparisons.
 - [Filter In Model](/docs/reference): A tree-set definition used
   for inclusion or exclusion of values.
-- [Quick Search](/docs/filter-quick-filter): A string-based search that matches a value across any cell in a row.
+- [Quick Search](/docs/reference): A string-based search that matches a value across any cell in a row.
 - **Custom:** A developer-defined model, not part of the LyteNyte Grid state.
   Developers can define any model structure that suits their application.
 
@@ -70,7 +70,7 @@ returns a `Promise` of filter values for a given column.
 LyteNyte Grid calls this function whenever in-filter values are requested for display.
 
 This function receives parameters described by the
-[`DataInFilterItemFetcherParams`](/docs/reference/row-data-source#datainfilteritemfetcherparams) interface:
+[`DataInFilterItemFetcherParams`](/docs/reference) interface:
 
 ```ts
 interface DataInFilterItemFetcherParams<T> {
@@ -84,7 +84,7 @@ interface DataInFilterItemFetcherParams<T> {
 - **`column`:** The column requesting filter items.
 - **`reqTime`:** A Unix timestamp for handling request collisions.
 
-The fetcher should return an array (or `Promise`) of [`FilterInFilterItem`](/docs/reference/filters#filterinfilteritem) objects:
+The fetcher should return an array (or `Promise`) of [`FilterInFilterItem`](/docs/reference) objects:
 
 ```ts
 export interface FilterInFilterItem {

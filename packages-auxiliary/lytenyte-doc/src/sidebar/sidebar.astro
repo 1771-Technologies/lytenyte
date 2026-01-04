@@ -33,7 +33,7 @@ if (pathname.endsWith("/")) pathname = pathname.slice(0, -1);
 }
 {
   item?.kind === "external-link" && (
-    <SidebarLink active={false} href={item.href}>
+    <SidebarLink active={false} href={item.href} target="_blank">
       {item.label}
       <span class="flex-1" /> <span class="iconify ph--arrow-square-out relative left-2 top-px" />
     </SidebarLink>
