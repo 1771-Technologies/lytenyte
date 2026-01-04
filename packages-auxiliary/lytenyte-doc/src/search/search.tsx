@@ -15,7 +15,7 @@ export function Search() {
 
   useEffect(() => {
     document.addEventListener("keydown", (e) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+      if (e.key === "/") {
         setOpen(true);
       }
     });
@@ -110,12 +110,15 @@ export function Search() {
         }
       }}
     >
-      <D.Trigger className="md:border-xd-border md:bg-xd-card flex items-center gap-2 rounded-xl py-1.5 pe-2 ps-2 text-sm md:border md:pe-3">
+      <D.Trigger className="md:border-xd-border md:bg-xd-card focus-visible:outline-xd-accent-foreground flex items-center gap-2 rounded-xl py-1.5 pe-2 ps-2 text-sm focus-visible:outline md:border md:pe-3">
         <span className="iconify ph--magnifying-glass-duotone size-5 md:size-4"></span>
         <span className="hidden pe-32 md:block">Search</span>
         <div className="md:center hidden gap-1">
-          <ModKey />
-          <kbd className="relative text-xs">K</kbd>
+          <ModKey
+            className="border-xd-border center text-xd-muted-foreground size-5 rounded border"
+            isSlash
+          />
+          {/* <kbd className="relative text-xs">K</kbd> */}
         </div>
       </D.Trigger>
       <D.Portal>
@@ -260,11 +263,20 @@ export function Highlight({ text, query }: { text: string; query: string }) {
  */
 export function ModKey({
   showSymbolOnMac = true,
+  isSlash,
   className,
 }: {
   showSymbolOnMac?: boolean;
+  isSlash?: boolean;
   className?: string;
 }) {
+  if (isSlash) {
+    return (
+      <kbd className={className} aria-label="Search">
+        /
+      </kbd>
+    );
+  }
   const isMac = typeof navigator !== "undefined" && /Mac|iPhone|iPad|iPod/i.test(navigator.platform);
 
   if (isMac) {
