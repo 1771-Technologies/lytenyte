@@ -3,14 +3,13 @@
   "pages": [
     "client-source-overview",
     "client-source-data",
-    "client-source-sorting",
+    "client-source-row-pinning",
+    "client-source-row-sorting",
     "client-source-filtering",
-    "client-source-grouping",
+    "client-source-row-grouping",
     "client-source-aggregations",
-    "client-source-pinning",
     "client-source-row-adding",
     "client-source-row-deleting",
-    "client-source-high-frequency-updates",
     "client-source-having-filters",
     "client-source-label-filters",
     "client-source-row-group-collapsing"

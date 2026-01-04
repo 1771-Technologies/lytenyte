@@ -1,3 +1,18 @@
 ---
 title: Client Row Data
+step: See how to manage client row data in LyteNyte Grid.
+description: Client row data is an array of rows that is fully available on the client.
+  This guide covers key considerations when working with client-side row data.
 ---
+
+## The Data Property
+
+Use the `data` property on the `useClientDataSource` hook to provide the raw data the client
+data source should use to create rows. The example below demonstrates the basic setup.
+
+::demo[Client Data="./demos/client-overview"]
+
+## Updating Data
+
+LyteNyte Grid's `useClientDataSource` derives the view from the `data` provided. This means that
+changes to

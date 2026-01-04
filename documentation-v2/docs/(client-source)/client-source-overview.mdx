@@ -1,4 +1,71 @@
 ---
 title: Overview
 step: Visualize client row data and perform advance operations such as filtering and sorting.
+description: LyteNyte Grid's client data source may be used to display, edit, group, sort, and
+  filter row data that is available in the browser.
 ---
+
+Client data in the, context of LyteNyte Grid, refers to row data that is available in the browser
+in its entirety. Client data should be used when you can load all the rows that will be used by
+the grid into the browser. In practice this is usually up to 10,000 rows worth of data, though the
+actual limit is dependent on your network bandwidth and your users network bandwidth.
+
+## Client Row Source
+
+LyteNyte provides the `useClientDataSource` hook, which may be used to create a grid row source
+for client data. A **row source** is an object that implements the LyteNyte Grid `RowSource` interface
+shown below. The interface has quite a few properties, however, as a developer you will never need to
+implement the interface directly since LyteNyte Grid provides hooks for different types of row sources.
+This guide covers the client row source.
+
+```ts
+export interface RowSource<T = any> {
+  readonly useRowCount: () => number;
+  readonly useTopCount: () => number;
+  readonly useBottomCount: () => number;
+  readonly useRows: () => { get: (i: number) => RowNode<T> | null | undefined; size: number };
+
+  readonly useMaxRowGroupDepth: () => number;
+
+  readonly rowIndexToRowId: (index: number) => string | null | undefined;
+  readonly rowIdToRowIndex: (id: string) => number | null | undefined;
+  readonly rowByIndex: (row: number) => RowAtom<RowNode<T> | null>;
+  readonly rowById: (id: string) => RowNode<T> | null;
+  readonly rowParents: (id: string) => string[];
+  readonly rowIsSelected: (id: string) => boolean;
+  readonly rowChildren: (id: string) => string[];
+  readonly rowLeafs: (id: string) => string[];
+  readonly rowsBetween: (start: string, end: string) => string[];
+  readonly rowInvalidate: (row?: number) => void;
+  readonly rowsSelected: () => { state: RowSelectionState; rows: RowNode<T>[] };
+  readonly rowSelectionState: () => RowSelectionState;
+  readonly useSelectionState: () => RowSelectionState;
+
+  // Methods the LyteNyte will call
+  readonly onViewChange: (view: SpanLayout) => void;
+  readonly onRowGroupExpansionChange: (deltaChanges: Record<string, boolean>) => void;
+  readonly onRowsUpdated: (rows: Map<RowNode<T>, T>) => void;
+  readonly onRowsSelected: (params: {
+    readonly selected: string[] | "all";
+    readonly deselect?: boolean;
+    readonly mode: "single" | "multiple" | "none";
+  }) => void;
+}
+```
+
+## Using the Client Row Source
+
+The `useClientDataSource` requires an array of `data` to be provided. Each item in the array will
+become a row in the grid. Updates to the `data` property, **declaratively**, result in updates to
+the row source. This means that the client row source can be considered derived state. The demo below
+is a minimal example of using the client row source. The remaining guides in this section will cover
+the different capabilities of LyteNyte Grid's client data source.
+
+::demo[Client Row Data Source="./demos/client-overview"]
+
+## Next Steps
+
+::next[/docs/client-source-data]
+::next[/docs/client-source-filtering]
+::next[/docs/client-source-row-sorting]
+::next[/docs/client-source-row-pinning]
