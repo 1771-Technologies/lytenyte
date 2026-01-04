@@ -65,7 +65,7 @@ if (pathname.endsWith("/")) pathname = pathname.slice(0, -1);
         {!item.collapsible && <div class="flex-1">{item.label}</div>}
         {item.collapsible && (
           <button
-            class="flex items-center text-start xd-collapse-btn flex-1 hover:bg-xd-accent-foreground/5 transition-colors cursor-pointer px-3 -mx-1 rounded-lg py-2"
+            class="flex items-center text-start xd-collapse-btn flex-1 hover:bg-xd-accent-foreground/5 transition-colors cursor-pointer px-3 -mx-1 rounded-lg py-2 focus-visible:outline-xd-accent-foreground focus-visible:outline"
             data-group-id={item.id}
           >
             <span class="flex-1">{item.label}</span>

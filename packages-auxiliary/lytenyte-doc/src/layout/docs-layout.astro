@@ -182,12 +182,14 @@ const pathname = Astro.url.pathname;
             class="grid grid-cols-1 lg:grid-cols-[calc(100%-var(--spacing-toc))_var(--spacing-toc)] xl:grid-cols-[var(--spacing-sidenav)_calc(100%-var(--spacing-sidenav)-var(--spacing-toc))_var(--spacing-toc)]"
           >
             <div
+              id="ln-sidebar"
               class:list={[
                 "overflow-auto contain-strict no-scrollbar",
                 "w-sidenav min-w-sidenav max-w-sidenav pt-8 pb-60 sticky top-[calc(var(--spacing-header)+var(--spacing-subheader))]",
                 "h-[calc(100vh-var(--spacing-header)-var(--spacing-subheader))]",
-                "hidden xl:block",
+                "hidden xl:block no-transition",
               ]}
+              style="opacity: 0;"
             >
               {
                 sidebar.children.map((x) => {

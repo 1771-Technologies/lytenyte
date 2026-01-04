@@ -20,11 +20,48 @@
     });
   }
 
+  function handleSidebarScroll() {
+    const sidebar = document.getElementById("ln-sidebar");
+    sidebar.style.opacity = 1;
+
+    const scroll = Number.parseInt(localStorage.getItem("sidebar-scroll"));
+    const href = localStorage.getItem("sidebar-href");
+    if (!Number.isNaN(scroll)) {
+      sidebar.scrollTo({ top: scroll, behavior: "instant" });
+      localStorage.removeItem("sidebar-scroll");
+      localStorage.removeItem("sidebar-href");
+    }
+
+    const links = Array.from(sidebar.querySelectorAll("a"));
+    links.forEach((x) => {
+      if (x.href === href) x.focus();
+
+      x.addEventListener("click", () => {
+        const scrollTop = sidebar.scrollTop;
+        localStorage.setItem("sidebar-scroll", scrollTop);
+        localStorage.setItem("sidebar-href", x.href);
+      });
+      x.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          const scrollTop = sidebar.scrollTop;
+          localStorage.setItem("sidebar-scroll", scrollTop);
+          localStorage.setItem("sidebar-href", x.href);
+        }
+      });
+    });
+
+    setTimeout(() => {
+      sidebar.classList.remove("no-transition");
+    }, 80);
+  }
+
   window.addEventListener("load", () => {
     handleToggle();
+    handleSidebarScroll();
   });
 
   document.addEventListener("astro:after-swap", () => {
     handleToggle();
+    handleSidebarScroll();
   });
 </script>
