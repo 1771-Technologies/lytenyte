@@ -22,6 +22,5 @@ export function cleanTree(
 
   if (idUniverse && !idUniverse.has(s.id)) {
     s.parent.children?.delete(s.id);
-    s.parent.exceptions?.delete(s.id);
   }
 }

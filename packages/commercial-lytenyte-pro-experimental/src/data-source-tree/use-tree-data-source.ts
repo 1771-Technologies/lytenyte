@@ -104,6 +104,7 @@ export function useTreeDataSource<T>(p: UseTreeDataSourceParams<T>): RowSource {
     p.rowsIsolatedSelection ?? false,
     p.rowSelectKey ?? emptyKey,
     flat.idUniverse,
+    globalSignal,
   );
 
   const onRowsSelected = useOnRowsSelected(

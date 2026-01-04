@@ -1,5 +1,6 @@
 import type { SVGProps, Ref } from "react";
 import { forwardRef } from "react";
+
 const SvgDragIcon = (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"

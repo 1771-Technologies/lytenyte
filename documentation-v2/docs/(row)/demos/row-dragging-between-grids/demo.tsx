@@ -1,219 +1,245 @@
-"use client";
+//#start
+import "./demo.css";
+import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import "@1771technologies/lytenyte-pro-experimental/pill-manager.css";
+import { Grid, moveRelative, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import {
+  DragIcon,
+  ExchangeCell,
+  makePerfHeaderCell,
+  NetworkCell,
+  PercentCell,
+  PercentCellPositiveNegative,
+  SymbolCell,
+  tw,
+} from "./components.jsx";
+import type { DEXPerformanceData } from "@1771technologies/grid-sample-data/dex-pairs-performance";
+import { data as initialData } from "@1771technologies/grid-sample-data/dex-pairs-performance";
+import { DragHandleDots2Icon } from "@radix-ui/react-icons";
+import { useMemo, useState } from "react";
 
-import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
-import "@1771technologies/lytenyte-pro/grid.css";
-import { DragDotsSmallIcon } from "@1771technologies/lytenyte-pro/icons";
-import type { Column } from "@1771technologies/lytenyte-pro/types";
-import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
-import { useId } from "react";
-import { BalanceCell, DurationCell, NumberCell, tw } from "./components";
+export interface GridSpec {
+  readonly data: DEXPerformanceData;
+}
 
-type BankData = (typeof bankDataSmall)[number];
+const columns: Grid.Column<GridSpec>[] = [
+  { id: "symbol", cellRenderer: SymbolCell, width: 250, name: "Symbol" },
+  { id: "network", cellRenderer: NetworkCell, width: 220, hide: true, name: "Network" },
+  { id: "exchange", cellRenderer: ExchangeCell, width: 220, hide: true, name: "Exchange" },
 
-const columns: Column<BankData>[] = [
-  { id: "job", width: 120 },
-  { id: "age", type: "number", width: 80, cellRenderer: NumberCell },
-  { id: "balance", type: "number", cellRenderer: BalanceCell },
-  { id: "education" },
-  { id: "marital" },
-  { id: "default" },
-  { id: "housing" },
-  { id: "loan" },
-  { id: "contact" },
-  { id: "day", type: "number", cellRenderer: NumberCell },
-  { id: "month" },
-  { id: "duration", type: "number", cellRenderer: DurationCell },
-  { id: "poutcome", name: "P Outcome" },
-  { id: "y" },
+  {
+    id: "change24h",
+    cellRenderer: PercentCellPositiveNegative,
+    headerRenderer: makePerfHeaderCell("Change", "24h"),
+    name: "Change % 24h",
+    type: "number,",
+  },
+
+  {
+    id: "perf1w",
+    cellRenderer: PercentCellPositiveNegative,
+    headerRenderer: makePerfHeaderCell("Perf %", "1w"),
+    name: "Perf % 1W",
+    type: "number,",
+  },
+  {
+    id: "perf1m",
+    cellRenderer: PercentCellPositiveNegative,
+    headerRenderer: makePerfHeaderCell("Perf %", "1m"),
+    name: "Perf % 1M",
+    type: "number,",
+  },
+  {
+    id: "perf3m",
+    cellRenderer: PercentCellPositiveNegative,
+    headerRenderer: makePerfHeaderCell("Perf %", "3m"),
+    name: "Perf % 3M",
+    type: "number,",
+  },
+  {
+    id: "perf6m",
+    cellRenderer: PercentCellPositiveNegative,
+    headerRenderer: makePerfHeaderCell("Perf %", "6m"),
+    name: "Perf % 6M",
+    type: "number,",
+  },
+  {
+    id: "perfYtd",
+    cellRenderer: PercentCellPositiveNegative,
+    headerRenderer: makePerfHeaderCell("Perf %", "YTD"),
+    name: "Perf % YTD",
+    type: "number",
+  },
+  { id: "volatility", cellRenderer: PercentCell, name: "Volatility", type: "number" },
+  {
+    id: "volatility1m",
+    cellRenderer: PercentCell,
+    headerRenderer: makePerfHeaderCell("Volatility", "1m"),
+    name: "Volatility 1M",
+    type: "number",
+  },
 ];
 
-export default function RowDraggingBetweenGrids() {
-  const ds = useClientRowDataSource({
-    data: bankDataSmall,
-  });
+const base: Grid.ColumnBase<GridSpec> = { width: 80 };
 
-  const upper = Grid.useLyteNyte({
-    gridId: useId(),
-    rowDataSource: ds,
-    columns,
-    columnBase: { width: 100 },
+//#end
 
-    columnMarkerEnabled: true,
-    columnMarker: {
-      cellRenderer: (p) => {
-        const drag = p.grid.api.useRowDrag({
-          placeholder: (_, el) => el.parentElement?.parentElement ?? el,
-          getDragData: () => {
-            return {
-              siteLocalData: {
-                row: p.rowIndex,
-              },
-            };
-          },
-          onDrop: (p) => {
-            alert(
-              `Dropped row at ${p.state.siteLocalData?.row ?? ""} ${
-                p.moveState.topHalf ? "before" : "after"
-              } row ${p.dropElement.getAttribute("data-ln-rowindex")}`,
-            );
-          },
-        });
+const marker: Grid.ColumnMarker<GridSpec> = { on: true, cellRenderer: MarkerCell };
 
-        return (
-          <span {...drag.dragProps}>
-            <DragDotsSmallIcon />
-          </span>
-        );
-      },
-    },
-  });
+const leafIdFn: Grid.T.LeafIdFn<GridSpec["data"]> = (d) =>
+  `${d.symbolTicker}-${d.exchange}-${d.network}-${d.symbol}`;
 
-  const lower = Grid.useLyteNyte({
-    gridId: useId(),
-    rowDataSource: ds,
-    columns,
-    columnBase: { width: 100 },
+export default function RowSelection() {
+  const [primary, setPrimary] = useState(initialData);
+  const [secondary, setSecondary] = useState<typeof initialData>([]);
 
-    columnMarkerEnabled: true,
-    columnMarker: {
-      cellRenderer: (p) => {
-        const drag = p.grid.api.useRowDrag({
-          placeholder: (_, el) => el.parentElement?.parentElement ?? el,
-          getDragData: () => {
-            return {
-              siteLocalData: {
-                row: p.rowIndex,
-              },
-            };
-          },
-          onDrop: (p) => {
-            alert(
-              `Dropped row at ${p.state.siteLocalData?.row ?? ""} ${
-                p.moveState.topHalf ? "before" : "after"
-              } row ${p.dropElement.getAttribute("data-ln-rowindex")}`,
-            );
-          },
-        });
+  const ds = useClientDataSource<GridSpec>({ data: primary, leafIdFn });
+  const dsOther = useClientDataSource<GridSpec>({ data: secondary, leafIdFn });
 
-        return (
-          <span {...drag.dragProps}>
-            <DragDotsSmallIcon />
-          </span>
-        );
-      },
-    },
-  });
-
-  const viewUpper = upper.view.useValue();
-  const viewLower = lower.view.useValue();
+  const [entered, setEntered] = useState(false);
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="lng-grid" style={{ height: 200 }}>
-        <Grid.Root grid={upper}>
-          <Grid.Viewport>
-            <Grid.Header>
-              {viewUpper.header.layout.map((row, i) => {
-                return (
-                  <Grid.HeaderRow key={i} headerRowIndex={i}>
-                    {row.map((c) => {
-                      if (c.kind === "group") return null;
+    <div className="ln-grid ln-cell:text-xs ln-header:text-xs ln-header:text-ln-text-xlight ln-cell-marker:px-0 flex flex-col gap-8">
+      <div style={{ height: 250 }}>
+        <Grid
+          columns={columns}
+          columnBase={base}
+          rowSource={ds}
+          columnMarker={marker}
+          gridId="primary"
+          rowDropAccept={useMemo(() => ["secondary"], [])}
+          onRowDragEnter={(p) => {
+            if (p.over.kind === "viewport") return;
 
-                      return (
-                        <Grid.HeaderCell
-                          key={c.id}
-                          cell={c}
-                          className={tw(
-                            "flex items-center px-2 text-sm capitalize",
-                            c.column.type === "number" && "justify-end",
-                          )}
-                        />
-                      );
-                    })}
-                  </Grid.HeaderRow>
-                );
-              })}
-            </Grid.Header>
-            <Grid.RowsContainer>
-              <Grid.RowsCenter>
-                {viewUpper.rows.center.map((row) => {
-                  if (row.kind === "full-width") return null;
+            if (p.over.id === p.source.id && p.over.rowIndex === p.source.rowIndex) return;
 
-                  return (
-                    <Grid.Row row={row} key={row.id} accepted={["row"]}>
-                      {row.cells.map((c) => {
-                        return (
-                          <Grid.Cell
-                            key={c.id}
-                            cell={c}
-                            className={tw(
-                              "flex items-center px-2 text-sm",
-                              c.column.type === "number" && "justify-end tabular-nums",
-                            )}
-                          />
-                        );
-                      })}
-                    </Grid.Row>
-                  );
-                })}
-              </Grid.RowsCenter>
-            </Grid.RowsContainer>
-          </Grid.Viewport>
-        </Grid.Root>
+            const isBefore = p.over.id !== p.source.id || p.over.rowIndex > p.source.rowIndex;
+
+            if (isBefore) p.over.element.setAttribute("data-ln-drag-position", "after");
+            else p.over.element.setAttribute("data-ln-drag-position", "before");
+          }}
+          onRowDragLeave={(p) => {
+            if (p.over.kind === "viewport") return;
+            p.over.element.removeAttribute("data-ln-drag-position");
+          }}
+          onRowDrop={(p) => {
+            p.over.element.removeAttribute("data-ln-drag-position");
+            if (p.over.id === p.source.id) {
+              if (p.over.kind === "viewport") return;
+
+              setPrimary((prev) => {
+                if (p.over.kind === "viewport") return prev;
+                const next = moveRelative(prev, p.source.rowIndex, p.over.rowIndex);
+                return next;
+              });
+            } else {
+              // Start by removing the row from the source
+              const sourceIndex = primary.indexOf(p.source.row.data);
+              setSecondary((prev) => {
+                const next = [...prev];
+                next.splice(sourceIndex, 1);
+                return next;
+              });
+
+              setPrimary((prev) => {
+                if (p.over.kind === "viewport") return [...prev, p.source.row.data];
+
+                const next = [...prev];
+                next.splice(p.over.rowIndex + 1, 0, p.source.row.data);
+                return next;
+              });
+            }
+          }}
+        />
       </div>
 
-      <div className="lng-grid border-t" style={{ height: 200 }}>
-        <Grid.Root grid={lower}>
-          <Grid.Viewport>
-            <Grid.Header>
-              {viewLower.header.layout.map((row, i) => {
-                return (
-                  <Grid.HeaderRow key={i} headerRowIndex={i}>
-                    {row.map((c) => {
-                      if (c.kind === "group") return null;
+      <div style={{ height: 250 }} className="border-ln-border border-t">
+        <Grid
+          gridId="secondary"
+          columns={columns}
+          columnBase={base}
+          rowSource={dsOther}
+          columnMarker={marker}
+          rowDropAccept={useMemo(() => ["primary"], [])}
+          slotRowsOverlay={
+            secondary.length ? null : (
+              <div className="sticky start-0 top-0 h-0 w-0">
+                <div
+                  className={tw(
+                    "w-(--ln-vp-width) h-(--ln-vp-row-height) absolute left-0 top-0 flex items-center justify-center",
 
-                      return (
-                        <Grid.HeaderCell
-                          key={c.id}
-                          cell={c}
-                          className={tw(
-                            "flex items-center px-2 text-sm capitalize",
-                            c.column.type === "number" && "justify-end",
-                          )}
-                        />
-                      );
-                    })}
-                  </Grid.HeaderRow>
-                );
-              })}
-            </Grid.Header>
-            <Grid.RowsContainer>
-              <Grid.RowsCenter>
-                {viewLower.rows.center.map((row) => {
-                  if (row.kind === "full-width") return null;
+                    entered && "bg-ln-primary-10",
+                  )}
+                >
+                  <div className="flex h-full w-full flex-col items-center justify-center">
+                    <DragIcon className="size-12" />
+                    Drag rows from the grid here.
+                  </div>
+                </div>
+              </div>
+            )
+          }
+          onRowDragEnter={(p) => {
+            if (!secondary.length && p.over.kind === "viewport") {
+              setEntered(true);
+              return;
+            }
+            if (p.over.kind === "viewport") return;
 
-                  return (
-                    <Grid.Row row={row} key={row.id} accepted={["row"]}>
-                      {row.cells.map((c) => {
-                        return (
-                          <Grid.Cell
-                            key={c.id}
-                            cell={c}
-                            className={tw(
-                              "flex items-center px-2 text-sm",
-                              c.column.type === "number" && "justify-end tabular-nums",
-                            )}
-                          />
-                        );
-                      })}
-                    </Grid.Row>
-                  );
-                })}
-              </Grid.RowsCenter>
-            </Grid.RowsContainer>
-          </Grid.Viewport>
-        </Grid.Root>
+            if (p.over.id === p.source.id && p.over.rowIndex === p.source.rowIndex) return;
+
+            const isBefore = p.over.id !== p.source.id || p.over.rowIndex > p.source.rowIndex;
+
+            if (isBefore) p.over.element.setAttribute("data-ln-drag-position", "after");
+            else p.over.element.setAttribute("data-ln-drag-position", "before");
+          }}
+          onRowDragLeave={(p) => {
+            setEntered(false);
+            if (p.over.kind === "viewport") return;
+            p.over.element.removeAttribute("data-ln-drag-position");
+          }}
+          onRowDrop={(p) => {
+            setEntered(false);
+            p.over.element.removeAttribute("data-ln-drag-position");
+
+            if (p.over.id === p.source.id) {
+              if (p.over.kind === "viewport") return;
+
+              setSecondary((prev) => {
+                if (p.over.kind === "viewport") return prev;
+                const next = moveRelative(prev, p.source.rowIndex, p.over.rowIndex);
+                return next;
+              });
+            } else {
+              // Start by removing the row from the source
+              const sourceIndex = primary.indexOf(p.source.row.data);
+              setPrimary((prev) => {
+                const next = [...prev];
+                next.splice(sourceIndex, 1);
+                return next;
+              });
+
+              setSecondary((prev) => {
+                if (p.over.kind === "viewport") return [...prev, p.source.row.data];
+
+                const next = [...prev];
+                next.splice(p.over.rowIndex + 1, 0, p.source.row.data);
+                return next;
+              });
+            }
+          }}
+        />
       </div>
+    </div>
+  );
+}
+
+function MarkerCell({ api, rowIndex }: Grid.T.CellRendererParams<GridSpec>) {
+  const { props } = api.useRowDrag({ rowIndex });
+
+  return (
+    <div className="flex h-full w-full cursor-grab items-center justify-center" {...props}>
+      <DragHandleDots2Icon />
     </div>
   );
 }

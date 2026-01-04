@@ -186,6 +186,7 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
     props.rowsIsolatedSelection ?? false,
     rowSelectionKey,
     useIdUniverse(f.tree, f.leafIdsRef.current, props.rowSelectionIdUniverseAdditions),
+    globalSignal,
   );
 
   const onRowsSelected = useOnRowsSelected(

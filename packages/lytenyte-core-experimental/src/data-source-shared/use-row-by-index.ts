@@ -42,7 +42,8 @@ export function useRowByIndex<T>(
       atomCache[rowI] = {
         get: () => piece.get()[rowI],
         useValue: () => {
-          // Invalidate is used to invalidate an individual row, and the global signal will invalidate all rows.
+          // Invalidate is used to invalidate an individual row,
+          // and the global signal will invalidate all rows.
           const localSnapshot = useSelector(signal);
           const globalSnapshot = useSelector(globalSignal);
 
@@ -50,9 +51,13 @@ export function useRowByIndex<T>(
 
           const [selected, isIndeterminate] = useMemo(() => {
             const selected = isRowSelected(row.id, state.rowSelections, rowParents);
-            const indeterminate = isRowIndeterminate(row.id, state.rowSelections, rowParents);
 
-            return [selected, indeterminate];
+            return [
+              selected,
+              !selected &&
+                row.kind === "branch" &&
+                isRowIndeterminate(row.id, state.rowSelections, rowParents),
+            ];
             // eslint-disable-next-line react-hooks/exhaustive-deps
           }, [row.id, localSnapshot, globalSnapshot]);
 

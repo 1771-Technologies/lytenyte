@@ -41,7 +41,10 @@ export default function Demo() {
   const ds = useClientDataSource({ data: data });
 
   return (
-    <div className="ln-grid" style={{ height: 500 }}>
+    <div
+      className="ln-grid ln-cell-marker:border-e ln-cell-marker:border-e-ln-border-strong"
+      style={{ height: 500 }}
+    >
       <Grid
         rowHeight={50}
         columns={columns}

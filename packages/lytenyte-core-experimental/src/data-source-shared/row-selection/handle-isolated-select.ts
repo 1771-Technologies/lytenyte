@@ -5,7 +5,7 @@ export function handleIsolatedSelect(
   selected: string[],
   deselect: boolean,
 ): RowSelectionStateWithParent {
-  if (prev.kind === "controlled") {
+  if (prev.kind === "linked") {
     return {
       kind: "isolated",
       exceptions: deselect ? new Set() : new Set(selected),

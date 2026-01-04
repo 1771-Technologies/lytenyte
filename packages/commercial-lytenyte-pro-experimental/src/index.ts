@@ -59,6 +59,7 @@ export namespace Grid {
   export type Column<Spec extends GridSpec = GridSpec> = Root.Column<Spec>;
   export type ColumnBase<Spec extends GridSpec = GridSpec> = Required<Root.Props<Spec>>["columnBase"];
   export type ColumnMarker<Spec extends GridSpec = GridSpec> = Required<Root.Props<Spec>>["columnMarker"];
+  export type RowGroupColumn<Spec extends GridSpec = GridSpec> = Required<Root.Props<Spec>>["rowGroupColumn"];
   export type Events<Spec extends GridSpec = GridSpec> = Required<Root.Props<Spec>>["events"];
 
   export namespace Components {
@@ -99,19 +100,13 @@ export namespace Grid {
     export type RowParams<Spec extends GridSpec> = LnTypes.RowParams<Spec>;
     export type RowSelectionState = LnTypes.RowSelectionState;
     export type SortFn<T> = LnTypes.SortFn<T>;
-
-    // PRO Specific types
-
-    export type DataRectSplit = LnTypes.DataRectSplit;
-    export type DialogFrame<Spec extends GridSpec> = LnTypes.DialogFrame<Spec>;
-    export type DialogFrameProps<Spec extends GridSpec> = LnTypes.DialogFrameProps<Spec>;
-    export type HavingFilterFn = LnTypes.HavingFilterFn;
-    export type LabelFilter = LnTypes.LabelFilter;
-    export type PivotField<Spec extends GridSpec> = LnTypes.PivotField<Spec>;
-    export type PivotModel<Spec extends GridSpec> = LnTypes.PivotModel<Spec>;
-    export type PopoverFrame<Spec extends GridSpec> = LnTypes.PopoverFrame<Spec>;
-    export type PopoverFrameProps<Spec extends GridSpec> = LnTypes.PopoverFrameProps<Spec>;
-    export type VirtualTarget = LnTypes.VirtualTarget;
+    export type RowFullWidthRendererParams<Spec extends GridSpec> = LnTypes.RowFullWidthRendererParams<Spec>;
+    export type RowSelectionIsolated = LnTypes.RowSelectionIsolated;
+    export type RowSelectionLinked = LnTypes.RowSelectionLinked;
+    export type RowDragPlaceholderFn = GridCore.T.RowDragPlaceholderFn;
+    export type DragItem = GridCore.T.DragItem;
+    export type DragItemSiteLocal = GridCore.T.DragItemSiteLocal;
+    export type DragItemTransfer = GridCore.T.DragItemTransfer;
 
     export type RowNode<T> = LnTypes.RowNode<T>;
     export type RowLeaf<T> = LnTypes.RowLeaf<T>;
@@ -134,6 +129,19 @@ export namespace Grid {
     export type PositionHeaderCell = LnTypes.PositionHeaderCell;
     export type PositionHeaderGroupCell = LnTypes.PositionHeaderGroupCell;
     export type PositionUnion = LnTypes.PositionUnion;
+
+    // PRO Specific types
+
+    export type DataRectSplit = LnTypes.DataRectSplit;
+    export type DialogFrame<Spec extends GridSpec> = LnTypes.DialogFrame<Spec>;
+    export type DialogFrameProps<Spec extends GridSpec> = LnTypes.DialogFrameProps<Spec>;
+    export type HavingFilterFn = LnTypes.HavingFilterFn;
+    export type LabelFilter = LnTypes.LabelFilter;
+    export type PivotField<Spec extends GridSpec> = LnTypes.PivotField<Spec>;
+    export type PivotModel<Spec extends GridSpec> = LnTypes.PivotModel<Spec>;
+    export type PopoverFrame<Spec extends GridSpec> = LnTypes.PopoverFrame<Spec>;
+    export type PopoverFrameProps<Spec extends GridSpec> = LnTypes.PopoverFrameProps<Spec>;
+    export type VirtualTarget = LnTypes.VirtualTarget;
   }
 }
 
@@ -152,7 +160,8 @@ export { useServerDataSource } from "./data-source-server/use-server-data-source
 export type { RowSourceTree, UseTreeDataSourceParams } from "./data-source-tree/use-tree-data-source.js";
 export { useTreeDataSource } from "./data-source-tree/use-tree-data-source.js";
 
-export { measureText } from "@1771technologies/lytenyte-shared";
+export { measureText, moveRelative } from "@1771technologies/lytenyte-shared";
+export { getRowDragData } from "@1771technologies/lytenyte-core-experimental/internal";
 
 export type { ViewportShadowsProps } from "@1771technologies/lytenyte-core-experimental";
 export { ViewportShadows } from "@1771technologies/lytenyte-core-experimental";

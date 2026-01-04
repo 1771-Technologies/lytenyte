@@ -184,7 +184,7 @@ const pathname = Astro.url.pathname;
             <div
               class:list={[
                 "overflow-auto contain-strict no-scrollbar",
-                "w-sidenav min-w-sidenav max-w-sidenav py-8 sticky top-[calc(var(--spacing-header)+var(--spacing-subheader))]",
+                "w-sidenav min-w-sidenav max-w-sidenav pt-8 pb-60 sticky top-[calc(var(--spacing-header)+var(--spacing-subheader))]",
                 "h-[calc(100vh-var(--spacing-header)-var(--spacing-subheader))]",
                 "hidden xl:block",
               ]}
@@ -204,9 +204,9 @@ const pathname = Astro.url.pathname;
             <div class="flex flex-col">
               <div class="w-full max-w-full flex-1">
                 <div class="text-sm text-neutral-800 dark:text-neutral-400 px-4 py-8 max-w-4xl mx-auto">
-                  <main class="mx-auto">
+                  <article class="mx-auto">
                     <slot />
-                  </main>
+                  </article>
                 </div>
               </div>
               <footer class="w-full max-w-full">

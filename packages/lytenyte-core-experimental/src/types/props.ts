@@ -1,6 +1,13 @@
 import type { RowGroupDisplayMode, RowHeight, RowNode } from "@1771technologies/lytenyte-shared";
 import type { CSSProperties, ReactNode, Ref } from "react";
-import type { Column, EditParams, HeaderGroupParams, HeaderParams, RowParams } from "./column.js";
+import type {
+  Column,
+  EditParams,
+  HeaderGroupParams,
+  HeaderParams,
+  RowFullWidthRendererParams,
+  RowParams,
+} from "./column.js";
 import type { GridSpec } from "./grid.js";
 import type { API } from "./api.js";
 import type { ViewportShadowsProps } from "../components/viewport/viewport-shadows.js";
@@ -86,7 +93,7 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   readonly rowGroupDisplayMode?: RowGroupDisplayMode;
 
   readonly rowFullWidthPredicate?: null | ((params: RowParams<Spec>) => boolean);
-  readonly rowFullWidthRenderer?: (props: RowParams<Spec>) => ReactNode | null;
+  readonly rowFullWidthRenderer?: (props: RowFullWidthRendererParams<Spec>) => ReactNode | null;
 
   readonly virtualizeCols?: boolean;
   readonly virtualizeRows?: boolean;
@@ -116,6 +123,9 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   readonly onRowGroupColumnChange?: (column: Omit<Column<Spec>, "field" | "id">) => void;
 
   readonly slotShadows?: (props: ViewportShadowsProps) => ReactNode;
+  readonly slotViewportOverlay?: ((props: { api: API<Spec> }) => ReactNode) | ReactNode;
+  readonly slotRowsOverlay?: ((props: { api: API<Spec> }) => ReactNode) | ReactNode;
+
   // Events
 
   readonly onColumnMoveOutside?: (params: {
@@ -156,16 +166,16 @@ export type Props<Spec extends GridSpec = GridSpec> = {
     readonly api: API<Spec>;
     readonly rows: string[] | "all";
     readonly deselect: boolean;
-  }) => boolean;
+  }) => void;
 
   readonly onRowDrop?: (params: {
-    readonly source: { id: string; api: API<any>; row: RowNode<any>; rowIndex: number; data?: any };
+    readonly source: { id: string; api: API<GridSpec>; row: RowNode<any>; rowIndex: number; data?: any };
     readonly over:
-      | { kind: "viewport"; id: string; element: HTMLElement; api: API<any> }
+      | { kind: "viewport"; id: string; element: HTMLElement; api: API<GridSpec> }
       | {
           kind: "row";
           id: string;
-          api: API<any>;
+          api: API<GridSpec>;
           row: RowNode<any>;
           rowIndex: number;
           element: HTMLElement;
@@ -173,26 +183,32 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   }) => void;
 
   readonly onRowDragEnter?: (params: {
-    readonly source: { id: string; api: API<any>; row: RowNode<any>; rowIndex: number; data?: any };
+    readonly source: { id: string; api: API<GridSpec>; row: RowNode<any>; rowIndex: number; data?: any };
     readonly over:
-      | { kind: "viewport"; id: string; element: HTMLElement; api: API<any> }
+      | { kind: "viewport"; id: string; element: HTMLElement; api: API<GridSpec> }
       | {
           kind: "row";
           id: string;
-          api: API<any>;
+          api: API<GridSpec>;
           row: RowNode<any>;
           rowIndex: number;
           element: HTMLElement;
         };
   }) => void;
   readonly onRowDragLeave?: (params: {
-    readonly source: { id: string; api: API<any>; row: RowNode<any>; rowIndex: number | null; data?: any };
+    readonly source: {
+      id: string;
+      api: API<GridSpec>;
+      row: RowNode<any>;
+      rowIndex: number | null;
+      data?: any;
+    };
     readonly over:
-      | { kind: "viewport"; id: string; element: HTMLElement; api: API<any> }
+      | { kind: "viewport"; id: string; element: HTMLElement; api: API<GridSpec> }
       | {
           kind: "row";
           id: string;
-          api: API<any>;
+          api: API<GridSpec>;
           row: RowNode<any>;
           rowIndex: number | null;
           element: HTMLElement;

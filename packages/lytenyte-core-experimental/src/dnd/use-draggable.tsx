@@ -1,5 +1,5 @@
 import type { DragEventHandler } from "react";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import type { UseDraggableProps } from "./types.js";
 import { getFrameElement, isFirefox } from "@1771technologies/lytenyte-shared";
 import {
@@ -16,7 +16,7 @@ import {
 import { ReactPlaceholder } from "./react-placeholder.js";
 
 export function useDraggable({
-  data,
+  data: d,
   placeholder,
   onDragStart,
   onDragMove,
@@ -26,19 +26,29 @@ export function useDraggable({
 }: UseDraggableProps) {
   const [dragging, setDragging] = useState(false);
 
-  const props = useMemo(() => {
-    const dataValues = Object.values(data);
-    if (!dataValues.length) return {};
+  const dataRef = useRef(d);
+  dataRef.current = d;
 
+  const props = useMemo(() => {
     const handleDrag: DragEventHandler = (startEvent) => {
+      clearDragGlobals();
+      const data = dataRef.current;
+      const dataValues = Object.values(data);
+
       const ff = isFirefox();
 
       const dataTransfer = startEvent.dataTransfer;
-      dataTransfer.setData("__ignore__", ""); // Allow drag on safari
+
+      let noDt = true;
       dataValues.forEach((x) => {
         if (x.kind === "site") return;
-        if (x.kind === "dt") dataTransfer.setData(x.type, x.data);
+        if (x.kind === "dt") {
+          dataTransfer.setData(x.type, x.data);
+          noDt = false;
+        }
       });
+
+      if (noDt) dataTransfer.setData("__ignore__", ""); // Allow drag on safari
 
       let frame: number | null = null;
       let [x, x1] = [startEvent.clientX, startEvent.clientX];
@@ -146,12 +156,7 @@ export function useDraggable({
         (e) => {
           e.preventDefault();
 
-          onUnhandledDrop?.({
-            data,
-            ev: e,
-            position: { x: lastX, y: lastY },
-          });
-
+          onUnhandledDrop?.({ data, ev: e, position: { x: lastX, y: lastY } });
           clearDragGlobals();
         },
         { signal: controller.signal },
@@ -174,7 +179,7 @@ export function useDraggable({
       draggable: true,
       onDragStart: handleDrag,
     };
-  }, [data, onDragEnd, onDragMove, onDragStart, onDrop, onUnhandledDrop, placeholder]);
+  }, [onDragEnd, onDragMove, onDragStart, onDrop, onUnhandledDrop, placeholder]);
 
   const p =
     typeof placeholder === "function" ? (

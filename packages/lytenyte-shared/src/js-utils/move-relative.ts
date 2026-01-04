@@ -1,23 +1,30 @@
-export function moveRelative<T>(items: T[], srcIndex: number, destIndex: number): T[] {
-  const before = srcIndex < destIndex;
+export function moveRelative<T>(
+  items: T[],
+  srcIndex: number,
+  destIndex: number,
+  additional: number[] = [],
+): T[] {
+  if (additional.includes(destIndex)) return items;
+
   const length = items.length;
 
   if (srcIndex < 0 || srcIndex >= length) return [...items];
   if (destIndex < 0 || destIndex >= length) return [...items];
   if (srcIndex === destIndex) return [...items];
 
-  const result = [...items];
-  const [item] = result.splice(srcIndex, 1);
+  const itemsToFilter = [srcIndex, ...additional].sort((l, r) => l - r);
 
-  // After removing the item, indices may shift.
-  // If we removed an element before `toIndex`, then `toIndex` decreases by 1.
-  const adjustedToIndex = srcIndex < destIndex ? destIndex - 1 : destIndex;
+  const set = new Set(itemsToFilter.map((x) => items[x]));
 
-  // Compute insertion index:
-  // - isBefore true  -> insert AFTER adjustedToIndex (so +1)
-  // - isBefore false -> insert BEFORE adjustedToIndex
-  const insertIndex = before ? adjustedToIndex + 1 : adjustedToIndex;
+  const result = items.filter((x) => !set.has(x));
 
-  result.splice(insertIndex, 0, item);
+  const dest = items[destIndex];
+  const newTarget = result.indexOf(dest);
+
+  result.splice(
+    newTarget + (srcIndex < destIndex ? 1 : 0),
+    0,
+    ...[srcIndex, ...additional].sort((l, r) => l - r).map((x) => items[x]),
+  );
   return result;
 }

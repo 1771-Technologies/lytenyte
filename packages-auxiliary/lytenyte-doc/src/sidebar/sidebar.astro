@@ -8,14 +8,16 @@ interface Props {
 }
 import Tree from "./sidebar.astro";
 import { getEntry } from "astro:content";
-import { cn } from "../ui/cn";
+import SidebarLink from "./sidebar-link.astro";
 
 const { item, collection, depth = 0 } = Astro.props;
 
 let title = "";
+let pro = false;
 if (item?.kind === "page-link") {
   const entry = await getEntry(collection, item.id);
   title = entry.data.title;
+  pro = entry.data.pro;
 }
 
 let { pathname } = Astro.url;
@@ -24,35 +26,37 @@ if (pathname.endsWith("/")) pathname = pathname.slice(0, -1);
 
 {
   item?.kind === "direct-link" && (
-    <a data-active={pathname === item.id} href={item.id}>
+    <SidebarLink active={pathname === item.id} href={item.id} pro={pro}>
       {item.label}
-    </a>
+    </SidebarLink>
   )
 }
-{item?.kind === "external-link" && <a href={item.href}>{item.label}</a>}
+{
+  item?.kind === "external-link" && (
+    <SidebarLink active={false} href={item.href}>
+      {item.label}
+      <span class="flex-1" /> <span class="iconify ph--arrow-square-out relative left-2 top-px" />
+    </SidebarLink>
+  )
+}
 {
   item?.kind === "page-link" && (
-    <a
-      data-active={pathname === `/${collection}/${item.id}`}
+    <SidebarLink
+      active={pathname === `/${collection}/${item.id}`}
       href={`/${collection}/${item.id}`}
-      class:list={cn(
-        "data-[active=true]:bg-xd-accent-foreground/10 data-[active=true]:text-xd-foreground relative hover:bg-xd-accent-foreground/5 transition-colors",
-        "data-active:before:bg-xd-border data-active:before:h-full data-active:before:top-0",
-        "data-active:before:absolute data-active:before:w-px data-[active=true]:before:h-2/5 data-[active=true]:before:bg-xd-foreground",
-        "data-active:before:left-[7px] data-[active=true]:before:top-3/10 hover:duration-0 duration-100",
-        "text-xs tracking-tight text-xd-muted-foreground font-semibold",
-        "px-[calc(var(--sidebar-depth,1)*16px)] py-2 rounded-lg",
-      )}
+      pro={pro}
     >
       {title}
-    </a>
+    </SidebarLink>
   )
 }
+
 {item?.kind === "separator" && <div role="separator" class="bg-xd-border/30 h-px w-full my-2" />}
+
 {
   item?.kind === "group" && (
     <div
-      class="group"
+      class="group pb-3"
       data-collapsible={item.collapsible}
       data-collapsed={item.collapsed}
       data-group-id={item.id}
@@ -61,7 +65,7 @@ if (pathname.endsWith("/")) pathname = pathname.slice(0, -1);
         {!item.collapsible && <div class="flex-1">{item.label}</div>}
         {item.collapsible && (
           <button
-            class="flex items-center text-start xd-collapse-btn flex-1 hover:bg-xd-accent-foreground/10 transition-colors cursor-pointer px-2 -mx-1 rounded-lg py-1"
+            class="flex items-center text-start xd-collapse-btn flex-1 hover:bg-xd-accent-foreground/5 transition-colors cursor-pointer px-3 -mx-1 rounded-lg py-2"
             data-group-id={item.id}
           >
             <span class="flex-1">{item.label}</span>

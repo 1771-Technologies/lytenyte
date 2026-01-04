@@ -198,6 +198,8 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
       headerHeight: props.headerHeight ?? 40,
 
       slotShadows: props.slotShadows,
+      slotRowsOverlay: props.slotRowsOverlay,
+      slotViewportOverlay: props.slotViewportOverlay,
 
       editMode: props.editMode ?? "readonly",
       editClickActivator: props.editClickActivator ?? "double-click",
@@ -249,7 +251,9 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     props.rowFullWidthRenderer,
     props.rowSelectionActivator,
     props.rtl,
+    props.slotRowsOverlay,
     props.slotShadows,
+    props.slotViewportOverlay,
     source,
     styles,
     totalHeaderHeight,

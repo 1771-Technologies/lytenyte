@@ -10,7 +10,16 @@ import { usePiece } from "../../../hooks/use-piece.js";
 
 export const RowsContainer = memo(
   forwardRef<HTMLDivElement, RowsContainer.Props>(function Rows(props, forwarded) {
-    const { id, source, view, xPositions, yPositions, dimensions } = useRoot();
+    const {
+      id,
+      source,
+      view,
+      xPositions,
+      yPositions,
+      dimensions,
+      api,
+      slotRowsOverlay: RowsOverlay,
+    } = useRoot();
 
     const startWidth = xPositions[view.startCount];
     const endWidth = xPositions.at(-1)! - xPositions.at(-1 - view.endCount)!;
@@ -81,7 +90,12 @@ export const RowsContainer = memo(
               [VIEWPORT_HEIGHT_VARIABLE]: `${dimensions.innerHeight}px`,
             } as CSSProperties
           }
-        />
+        >
+          {dimensions.innerHeight !== 0 && (
+            <>{typeof RowsOverlay === "function" ? <RowsOverlay api={api} /> : RowsOverlay}</>
+          )}
+          {props.children}
+        </div>
       </RowsContainerContext.Provider>
     );
   }),

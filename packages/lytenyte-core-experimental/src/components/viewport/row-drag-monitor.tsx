@@ -1,15 +1,21 @@
-import { useEffect, useRef } from "react";
-import { dragData, dragX, dragY } from "../../dnd/global.js";
+import { useEffect, useMemo, useRef } from "react";
+import { clearDragGlobals, dragData, dragX, dragY } from "../../dnd/global.js";
 import { useRoot } from "../../root/root-context.js";
 import { useSelector } from "../../signal/signal.js";
 import { getNearestRow, getRowIndexFromEl, type RowNode } from "@1771technologies/lytenyte-shared";
 import type { Root } from "../../root/root.js";
+import { getRowDragData } from "../../internal.js";
 
 export function RowDragMonitor() {
-  const { id } = useRoot();
+  const { dropAccept } = useRoot();
+
   const d = useSelector(dragData);
 
-  if (!d || !d[`grid:${id}`]) return null;
+  const acceptableIds = useMemo(() => {
+    return dropAccept.map((x) => x);
+  }, [dropAccept]);
+
+  if (!d || acceptableIds.every((x) => !d[x])) return null;
 
   return <RowDragCollider />;
 }
@@ -18,15 +24,16 @@ function RowDragCollider() {
   const { viewport, id, api, onRowDragLeave: leave, onRowDragEnter: enter, onRowDrop: drop } = useRoot();
   const x = useSelector(dragX);
   const y = useSelector(dragY);
-  const d = useSelector(dragData);
 
   // This means the drag account happening here is for us
   const overRef = useRef<null | Over>(null);
+
+  const dropped = useRef(false);
+
   useEffect(() => {
     if (!viewport) return;
-
     const controller = new AbortController();
-    const source = d!["grid:source"].data as Source;
+
     viewport.addEventListener(
       "drop",
       (ev) => {
@@ -34,12 +41,24 @@ function RowDragCollider() {
         ev.stopImmediatePropagation();
         ev.preventDefault();
 
+        const source = getRowDragData();
+
         if (!overRef.current) return;
 
+        dropped.current = true;
         drop?.({ source, over: overRef.current });
+        clearDragGlobals();
       },
       { signal: controller.signal },
     );
+
+    return () => controller.abort();
+  }, [drop, id, viewport]);
+
+  useEffect(() => {
+    if (!viewport || dropped.current) return;
+
+    const source = getRowDragData()!;
 
     const element = document.elementFromPoint(x, y) as HTMLElement;
     if (!element || !viewport.contains(element)) {
@@ -82,14 +101,11 @@ function RowDragCollider() {
 
     overRef.current = over;
     enter?.({ source, over });
-
-    return () => controller.abort();
-  }, [api, d, drop, enter, id, leave, viewport, x, y]);
+  }, [api, drop, enter, id, leave, viewport, x, y]);
 
   return null;
 }
 
-type Source = { id: string; api: Root.API; row: RowNode<any>; rowIndex: number; data?: any };
 type Over =
   | {
       kind: "row";

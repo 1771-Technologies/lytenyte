@@ -30,7 +30,11 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
     bottomOffset,
     startOffset,
     endOffset,
+    slotViewportOverlay: ViewportOverlay,
+    totalHeaderHeight,
+    dimensions,
   } = useRoot();
+
   const edit = useEdit();
 
   const [focused, vpFocused] = useFocusTracking(vp, focusActive, id);
@@ -103,9 +107,7 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
           if (ev.defaultPrevented) return;
 
           beginEditing(api, edit, focusActive.get(), editMode, editClickActivator, "double-click");
-          if (selectActivator === "double-click") {
-            api.rowHandleSelect(ev);
-          }
+          if (selectActivator === "double-click") api.rowHandleSelect(ev);
         }}
         data-ln-viewport
         data-ln-has-start={view.startCount > 0 ? true : undefined}
@@ -191,6 +193,9 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
             overflowY: "auto",
             boxSizing: "border-box",
             direction: rtl ? "rtl" : "ltr",
+            "--ln-vp-height": `${dimensions.innerHeight}px`,
+            "--ln-vp-row-height": `${dimensions.innerHeight - totalHeaderHeight}px`,
+            "--ln-vp-width": `${dimensions.innerWidth}px`,
             "--ln-start-offset": `${startOffset}px`,
             "--ln-end-offset": `${endOffset}px`,
             "--ln-top-offset": `${topOffset}px`,
@@ -200,6 +205,9 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
         }
       >
         {Shadows && <Shadows />}
+        {dimensions.innerHeight !== 0 && (
+          <>{typeof ViewportOverlay === "function" ? <ViewportOverlay api={api} /> : ViewportOverlay}</>
+        )}
         {children}
       </div>
 

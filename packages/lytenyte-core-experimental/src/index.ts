@@ -67,6 +67,7 @@ export namespace Grid {
   export type Column<Spec extends GridSpec = GridSpec> = Root.Column<Spec>;
   export type ColumnBase<Spec extends GridSpec = GridSpec> = Required<Root.Props<Spec>>["columnBase"];
   export type ColumnMarker<Spec extends GridSpec = GridSpec> = Required<Root.Props<Spec>>["columnMarker"];
+  export type RowGroupColumn<Spec extends GridSpec = GridSpec> = Required<Root.Props<Spec>>["rowGroupColumn"];
   export type Events<Spec extends GridSpec = GridSpec> = Required<Root.Props<Spec>>["events"];
 
   export namespace Components {
@@ -106,7 +107,14 @@ export namespace Grid {
     export type PathField = LnTypes.PathField;
     export type RowParams<Spec extends GridSpec> = LnTypes.RowParams<Spec>;
     export type RowSelectionState = LnTypes.RowSelectionState;
+    export type RowSelectionIsolated = LnTypes.RowSelectionIsolated;
+    export type RowSelectionLinked = LnTypes.RowSelectionLinked;
     export type SortFn<T> = LnTypes.SortFn<T>;
+    export type RowFullWidthRendererParams<Spec extends GridSpec> = LnTypes.RowFullWidthRendererParams<Spec>;
+    export type RowDragPlaceholderFn = LnTypes.ReactPlaceholderFn;
+    export type DragItem = LnTypes.DragItem;
+    export type DragItemSiteLocal = LnTypes.DragItemSiteLocal;
+    export type DragItemTransfer = LnTypes.DragItemTransfer;
 
     export type RowNode<T> = LnTypes.RowNode<T>;
     export type RowLeaf<T> = LnTypes.RowLeaf<T>;
@@ -132,7 +140,8 @@ export namespace Grid {
   }
 }
 
-export { measureText } from "@1771technologies/lytenyte-shared";
+export { measureText, moveRelative } from "@1771technologies/lytenyte-shared";
+export { getRowDragData } from "./dnd/get-drag-data.js";
 
 export type { ViewportShadowsProps } from "./components/viewport/viewport-shadows.js";
 export { ViewportShadows } from "./components/viewport/viewport-shadows.js";

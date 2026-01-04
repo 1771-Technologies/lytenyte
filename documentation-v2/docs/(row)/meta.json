@@ -8,8 +8,7 @@
     "row-detail",
     "row-full-width",
     "row-spanning",
-    "row-dragging",
-    "row-sorting"
+    "row-dragging"
   ],
   "defaultOpen": true
 }

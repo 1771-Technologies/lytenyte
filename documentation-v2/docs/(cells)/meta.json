@@ -1,0 +1,5 @@
+{
+  "title": "Cells",
+  "pages": ["cell-renderers", "cell-diff-flashing", "cell-selection", "cell-tooltips"],
+  "defaultOpen": true
+}

@@ -63,7 +63,9 @@ export function useRowByIndex<T>(
 
             const selected = isRowSelected(row.id, state.rowSelections, getParents);
             const indeterminate =
-              row.kind === "branch" && isRowIndeterminate(row.id, state.rowSelections, getParents);
+              !selected &&
+              row.kind === "branch" &&
+              isRowIndeterminate(row.id, state.rowSelections, getParents);
             return [selected, indeterminate];
           }, [row, localSnapshot, globalSnapshot]);
 

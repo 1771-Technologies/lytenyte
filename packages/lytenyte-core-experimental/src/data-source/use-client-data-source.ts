@@ -161,6 +161,7 @@ export function useClientDataSource<T>(p: UseClientDataSourceParams<T>): RowSour
     p.rowsIsolatedSelection ?? false,
     rowSelectionKey,
     idUniverse,
+    globalSignal,
   );
   const onRowsSelected = useOnRowsSelected(
     selectionState,

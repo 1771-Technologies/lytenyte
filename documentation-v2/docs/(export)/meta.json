@@ -1,5 +1,5 @@
 {
   "title": "Export & Clipboard",
-  "pages": ["export-csv", "export-excel", "export-any-data", "export-clipboard"],
+  "pages": ["export-csv", "export-excel", "export-parquet", "export-any-data", "export-clipboard"],
   "defaultOpen": true
 }

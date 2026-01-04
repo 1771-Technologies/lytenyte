@@ -6,7 +6,7 @@ import type {
 } from "../types";
 
 export function rowSelectLinkWithParents(state: RowSelectionState): RowSelectionLinkedWithParent {
-  if (state.kind === "isolated") return { kind: "controlled", children: new Map(), selected: false };
+  if (state.kind === "isolated") return { kind: "linked", children: new Map(), selected: false };
 
   const makeWithParents = (
     parent: RowSelectionLinkedWithParent | RowSelectNodeWithParent,

@@ -1,6 +1,7 @@
 import { dragX, dragY, dragData } from "./global.js";
 import type { ReactPlaceholderFn } from "./types.js";
 import { useSelector } from "../signal/signal.js";
+import { useEffect, useState } from "react";
 
 export function ReactPlaceholder({
   Render,
@@ -19,7 +20,15 @@ function ReactPlaceholderImpl({ Render }: { Render: ReactPlaceholderFn }) {
   const y = useSelector(dragY);
   const data = useSelector(dragData);
 
-  if (!data) return null;
+  const [mount, setMount] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setMount(true);
+    }, 100);
+  }, []);
+
+  if (!data || !mount) return null;
 
   return <Render data={data} y={y} x={x} />;
 }

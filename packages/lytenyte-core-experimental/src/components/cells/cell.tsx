@@ -133,6 +133,7 @@ const CellImpl = memo(
               colIndex={cell.colIndex}
               column={column}
               row={row}
+              layout={cell}
               editData={rowMeta.editData}
               editValue={api.columnField(column, { ...row, data: rowMeta.editData })}
             />
@@ -142,6 +143,7 @@ const CellImpl = memo(
               column={column}
               row={row}
               api={api}
+              layout={cell}
               rowIndex={cell.rowIndex}
               colIndex={cell.colIndex}
               selected={selected}

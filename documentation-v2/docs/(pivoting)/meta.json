@@ -1,5 +1,14 @@
 {
   "title": "Pivoting",
-  "pages": ["row-grouping", "row-aggregations", "column-pivoting"],
+  "pages": [
+    "pivoting-overview",
+    "pivoting-columns-and-rows",
+    "pivoting-measures",
+    "pivoting-sorting",
+    "pivoting-filtering",
+    "pivoting-label-filters",
+    "pivoting-grand-totals",
+    "pivoting-state-persistence"
+  ],
   "defaultOpen": true
 }

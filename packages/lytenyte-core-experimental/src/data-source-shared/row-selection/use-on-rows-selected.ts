@@ -1,4 +1,3 @@
-import { exemptUpwards } from "./exempt-upwards.js";
 import { handleIsolatedSelect } from "./handle-isolated-select.js";
 import { collapseUpwards } from "./collapse-upward.js";
 import {
@@ -10,6 +9,7 @@ import {
 import type { SourceRowSelection } from "./use-row-selection";
 import type { Signal } from "../../signal/signal.js";
 import { useEvent } from "../../hooks/use-event.js";
+import { isRowSelected } from "./is-row-selected.js";
 
 export function useOnRowsSelected<T>(
   s: SourceRowSelection,
@@ -29,7 +29,14 @@ export function useOnRowsSelected<T>(
     }
 
     if (mode === "single") {
-      s.rowSelectionsSet({ kind: "isolated", selected: false, exceptions: new Set([selected[0]]) });
+      const id = selected[0];
+      const isSelected = isRowSelected(id, s.rowSelections, rowParents);
+
+      s.rowSelectionsSet({
+        kind: "isolated",
+        selected: false,
+        exceptions: isSelected ? new Set() : new Set([id]),
+      });
     } else if (mode === "multiple" && isolatedSelected) {
       // We are either selecting or deselecting everything.
       if (selected === "all")
@@ -38,10 +45,10 @@ export function useOnRowsSelected<T>(
     } else {
       // mode === multiple && !isolatedSelected
       if (selected === "all") {
-        s.rowSelectionsSet({ kind: "controlled", selected: !deselect, children: new Map() });
+        s.rowSelectionsSet({ kind: "linked", selected: !deselect, children: new Map() });
       } else {
         s.rowSelectionsSet((prev) => {
-          if (prev.kind === "isolated") return { kind: "controlled", selected: false, children: new Map() };
+          if (prev.kind === "isolated") return { kind: "linked", selected: false, children: new Map() };
 
           const rowsWithParents = selected
             .map((id) => rowParents(id).concat(id))
@@ -52,8 +59,6 @@ export function useOnRowsSelected<T>(
           for (const path of rowsWithParents) {
             let current: Map<string, RowSelectNodeWithParent> = overrides;
 
-            let pathValue = prev.selected;
-
             let next: RowSelectNodeWithParent | RowSelectionLinkedWithParent = prev;
             for (let i = 0; i < path.length; i++) {
               const id = path[i];
@@ -62,17 +67,11 @@ export function useOnRowsSelected<T>(
 
               // We aren't on the last node
               if (i != path.length - 1) {
-                next.selected = next.selected ?? pathValue;
-                pathValue = next.selected;
-
                 next.children ??= new Map();
                 current = next.children;
               } else {
-                exemptUpwards(next.id, next, deselect ?? false);
-
                 next.selected = !deselect;
                 next.children = undefined;
-                next.exceptions = undefined;
 
                 collapseUpwards(next, idToSpec, prev.children, prev.selected);
               }
@@ -80,7 +79,7 @@ export function useOnRowsSelected<T>(
           }
 
           const state: RowSelectionLinkedWithParent = {
-            kind: "controlled",
+            kind: "linked",
             selected: prev.selected,
             children: overrides,
           };

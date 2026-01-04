@@ -19,11 +19,23 @@ export function isRowIndeterminate(
     const next: RowSelectNodeWithParent | undefined = current?.children?.get(p);
     // We haven't finishing going down this path but have encountered the end.
     if (!next) {
-      return current.selected ?? base;
+      return false;
     } else {
       current = next;
     }
   }
 
-  return !!current.children;
+  if (!current.children) return false;
+
+  const stack = [...current.children.values()];
+
+  while (stack.length) {
+    const next = stack.pop()!;
+
+    if (next.selected != null) return true;
+
+    if (next.children) stack.push(...next.children.values());
+  }
+
+  return false;
 }

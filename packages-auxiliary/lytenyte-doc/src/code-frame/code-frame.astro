@@ -17,6 +17,7 @@ interface Props {
 const priorityOrder = ["tsx", "ts", "css"];
 const { codeSandbox, stackBlitz, ...props } = Astro.props;
 const tabs = Object.entries(props.files)
+  .filter(([name]) => !name.startsWith("."))
   .filter(([name]) => (!name.endsWith(".css") && !name.startsWith("data")) || name.startsWith("demo"))
   .sort((l, r) => {
     const a = l[0];

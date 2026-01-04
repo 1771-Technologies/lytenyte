@@ -15,7 +15,7 @@ export function useRowsBetween<T>(
     const end = Math.max(left, right);
 
     const ids: string[] = [];
-    for (let i = start; i < end; i++) {
+    for (let i = start; i <= end; i++) {
       const row = rowByIndex(i).get();
       if (!row) continue;
 
