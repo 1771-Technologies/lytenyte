@@ -98,7 +98,7 @@ export default function RowSelection() {
   const [external, setData] = useState<GridSpec["data"][]>([]);
 
   return (
-    <div className="ln-grid ln-cell:text-xs ln-header:text-xs ln-header:text-ln-text-xlight ln-cell-marker:px-0 flex flex-col gap-8">
+    <div className="ln-grid ln-cell:text-xs ln-header:text-xs ln-header:text-ln-text-xlight ln-cell-marker:px-0 ln-cell-marker:border-e ln-cell-marker:border-ln-border flex flex-col gap-8">
       <div style={{ height: 250 }}>
         <Grid
           columns={columns}

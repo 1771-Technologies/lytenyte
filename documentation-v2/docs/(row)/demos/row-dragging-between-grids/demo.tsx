@@ -99,7 +99,7 @@ export default function RowSelection() {
   const [entered, setEntered] = useState(false);
 
   return (
-    <div className="ln-grid ln-cell:text-xs ln-header:text-xs ln-header:text-ln-text-xlight ln-cell-marker:px-0 flex flex-col gap-8">
+    <div className="ln-grid ln-cell:text-xs ln-header:text-xs ln-header:text-ln-text-xlight ln-cell-marker:px-0 ln-cell-marker:border-e ln-cell-marker:border-ln-border flex flex-col gap-8">
       <div style={{ height: 250 }}>
         <Grid
           columns={columns}
@@ -153,7 +153,10 @@ export default function RowSelection() {
         />
       </div>
 
-      <div style={{ height: 250 }} className="border-ln-border border-t">
+      <div
+        style={{ height: 250 }}
+        className="border-ln-border ln-cell-marker:border-e ln-cell-marker:border-ln-border border-t"
+      >
         <Grid
           gridId="secondary"
           columns={columns}

@@ -1,8 +1,7 @@
+import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental"; //!
+
 //#start
-import "./demo.css";
 import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
-import "@1771technologies/lytenyte-pro-experimental/pill-manager.css";
-import { Grid, moveRelative, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
 import {
   ExchangeCell,
   makePerfHeaderCell,
@@ -13,8 +12,8 @@ import {
 } from "./components.jsx";
 import type { DEXPerformanceData } from "@1771technologies/grid-sample-data/dex-pairs-performance";
 import { data as initialData } from "@1771technologies/grid-sample-data/dex-pairs-performance";
-import { DragHandleDots2Icon } from "@radix-ui/react-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { tickDexData } from "./tick.js";
 
 export interface GridSpec {
   readonly data: DEXPerformanceData;
@@ -31,6 +30,7 @@ const columns: Grid.Column<GridSpec>[] = [
     headerRenderer: makePerfHeaderCell("Change", "24h"),
     name: "Change % 24h",
     type: "number,",
+    width: 160,
   },
 
   {
@@ -81,64 +81,25 @@ const columns: Grid.Column<GridSpec>[] = [
 const base: Grid.ColumnBase<GridSpec> = { width: 80 };
 
 //#end
+export default function ClientDataDemo() {
+  const [data, setData] = useState(initialData); //!
+  const ds = useClientDataSource({ data: data });
 
-const marker: Grid.ColumnMarker<GridSpec> = { on: true, cellRenderer: MarkerCell };
+  //!next 7
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setData((prev) => tickDexData(prev));
+    }, 1000);
 
-export default function RowSelection() {
-  const [data, setData] = useState(initialData);
-
-  const ds = useClientDataSource({ data });
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div
-      className="ln-grid ln-cell:text-xs ln-header:text-xs ln-header:text-ln-text-xlight ln-cell-marker:px-0 ln-cell-marker:border-e ln-cell-marker:border-ln-border"
+      className="ln-grid ln-cell:text-xs ln-header:text-xs ln-header:text-ln-text-xlight"
       style={{ height: 500 }}
     >
-      <Grid
-        columns={columns}
-        columnBase={base}
-        rowSource={ds}
-        columnMarker={marker}
-        //!next 20
-        onRowDragEnter={(p) => {
-          if (p.over.kind === "viewport") return;
-
-          const overIndex = p.over.rowIndex;
-          const dragIndex = p.source.rowIndex;
-
-          if (overIndex === dragIndex) return;
-
-          if (overIndex < dragIndex) p.over.element.setAttribute("data-ln-drag-position", "before");
-          else p.over.element.setAttribute("data-ln-drag-position", "after");
-        }}
-        onRowDragLeave={(p) => {
-          if (p.over.kind === "viewport") return;
-          p.over.element.removeAttribute("data-ln-drag-position");
-        }}
-        onRowDrop={(p) => {
-          if (p.over.kind === "viewport") return;
-          p.over.element.removeAttribute("data-ln-drag-position");
-
-          setData((prev) => {
-            if (p.over.kind === "viewport") return prev;
-
-            const next = moveRelative(prev, p.source.rowIndex, p.over.rowIndex);
-
-            return next;
-          });
-        }}
-      />
-    </div>
-  );
-}
-
-//!next 9
-function MarkerCell({ api, rowIndex }: Grid.T.CellRendererParams<GridSpec>) {
-  const { props } = api.useRowDrag({ rowIndex });
-
-  return (
-    <div className="flex h-full w-full cursor-grab items-center justify-center" {...props}>
-      <DragHandleDots2Icon />
+      <Grid columns={columns} columnBase={base} rowSource={ds} />
     </div>
   );
 }

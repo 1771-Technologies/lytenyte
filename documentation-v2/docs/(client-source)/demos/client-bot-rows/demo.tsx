@@ -1,8 +1,7 @@
+import { Grid, useClientDataSource, ViewportShadows } from "@1771technologies/lytenyte-pro-experimental"; //!
+
 //#start
-import "./demo.css";
 import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
-import "@1771technologies/lytenyte-pro-experimental/pill-manager.css";
-import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
 import {
   ExchangeCell,
   makePerfHeaderCell,
@@ -13,7 +12,6 @@ import {
 } from "./components.jsx";
 import type { DEXPerformanceData } from "@1771technologies/grid-sample-data/dex-pairs-performance";
 import { data } from "@1771technologies/grid-sample-data/dex-pairs-performance";
-import { DragHandleDots2Icon } from "@radix-ui/react-icons";
 
 export interface GridSpec {
   readonly data: DEXPerformanceData;
@@ -21,8 +19,8 @@ export interface GridSpec {
 
 const columns: Grid.Column<GridSpec>[] = [
   { id: "symbol", cellRenderer: SymbolCell, width: 250, name: "Symbol" },
-  { id: "network", cellRenderer: NetworkCell, width: 220, hide: true, name: "Network" },
-  { id: "exchange", cellRenderer: ExchangeCell, width: 220, hide: true, name: "Exchange" },
+  { id: "network", cellRenderer: NetworkCell, width: 220, name: "Network" },
+  { id: "exchange", cellRenderer: ExchangeCell, width: 220, name: "Exchange" },
 
   {
     id: "change24h",
@@ -80,32 +78,18 @@ const columns: Grid.Column<GridSpec>[] = [
 const base: Grid.ColumnBase<GridSpec> = { width: 80 };
 
 //#end
-
-const marker: Grid.ColumnMarker<GridSpec> = { on: true, cellRenderer: MarkerCell };
-
-export default function RowSelection() {
-  const ds = useClientDataSource({ data });
-
-  return (
-    <div
-      className="ln-grid ln-cell:text-xs ln-header:text-xs ln-header:text-ln-text-xlight ln-cell-marker:px-0 ln-cell-marker:border-e ln-cell-marker:border-ln-border"
-      style={{ height: 500 }}
-    >
-      <Grid columns={columns} columnBase={base} rowSource={ds} columnMarker={marker} />
-    </div>
-  );
-}
-
-function MarkerCell({ api, rowIndex, row }: Grid.T.CellRendererParams<GridSpec>) {
-  const { props } = api.useRowDrag({
-    rowIndex,
-    //!next
-    data: { "row-content": { kind: "dt", data: JSON.stringify(row.data), type: "text/plain" } },
+export default function ClientDataDemo() {
+  const ds = useClientDataSource({
+    data: data.slice(2),
+    botData: data.slice(0, 2), //!
   });
 
   return (
-    <div className="flex h-full w-full cursor-grab items-center justify-center" {...props}>
-      <DragHandleDots2Icon />
+    <div
+      className="ln-grid ln-cell:text-xs ln-header:text-xs ln-header:text-ln-text-xlight"
+      style={{ height: 500 }}
+    >
+      <Grid columns={columns} columnBase={base} rowSource={ds} slotShadows={ViewportShadows} />
     </div>
   );
 }

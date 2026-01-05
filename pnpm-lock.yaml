@@ -328,6 +328,9 @@ importers:
       '@tailwindcss/vite':
         specifier: 4.1.18
         version: 4.1.18(vite@6.4.1(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(tsx@4.20.3)(yaml@2.8.2))
+      '@uidotdev/usehooks':
+        specifier: 2.4.1
+        version: 2.4.1(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       astro:
         specifier: 5.16.6
         version: 5.16.6(@types/node@24.5.2)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.54.0)(tsx@4.20.3)(typescript@5.9.2)(yaml@2.8.2)

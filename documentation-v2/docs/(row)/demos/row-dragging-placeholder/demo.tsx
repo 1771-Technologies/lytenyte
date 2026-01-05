@@ -98,7 +98,7 @@ export default function RowSelection() {
 
   return (
     <div
-      className="ln-grid ln-cell:text-xs ln-header:text-xs ln-header:text-ln-text-xlight ln-cell-marker:px-0"
+      className="ln-grid ln-cell:text-xs ln-header:text-xs ln-header:text-ln-text-xlight ln-cell-marker:px-0 ln-cell-marker:border-e ln-cell-marker:border-ln-border"
       style={{ height: 500 }}
     >
       <Grid
