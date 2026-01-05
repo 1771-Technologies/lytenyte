@@ -27,9 +27,9 @@ export const DEFAULT_PREVIOUS_LAYOUT: SpanLayout = {
   rowTopStart: 0,
 };
 
-export const GROUP_COLUMN_PREFIX = "lytenyte-group-column:";
+export const GROUP_COLUMN_PREFIX = "__ln_group__";
 export const GROUP_COLUMN_MULTI_PREFIX = `${GROUP_COLUMN_PREFIX}:multi:`;
-export const GROUP_COLUMN_SINGLE_ID = `${GROUP_COLUMN_PREFIX}:single`;
+export const GROUP_COLUMN_SINGLE_ID = "__ln_group__";
 export const GROUP_COLUMN_TREE_DATA = `${GROUP_COLUMN_PREFIX}:tree`;
 
 export const COLUMN_MARKER_ID = "lytenyte-marker-column";
