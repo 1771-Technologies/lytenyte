@@ -82,7 +82,7 @@ export default function Experimental() {
         </button>
         <button
           onClick={() =>
-            ref.current?.rowAdd([{ id: crypto.randomUUID(), data: {} as SalaryData, kind: "leaf" }])
+            ref.current?.rowAdd([{ id: crypto.randomUUID(), data: {} as SalaryData, kind: "leaf", depth: 0 }])
           }
         >
           Add Row

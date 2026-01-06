@@ -26,6 +26,7 @@ export {
 export { isRowIndeterminate } from "./data-source-shared/row-selection/is-row-indeterminate.js";
 export { isRowSelected } from "./data-source-shared/row-selection/is-row-selected.js";
 export { useAggregationFn } from "./data-source-shared/use-aggregation-fn.js";
+export { useRowSiblings } from "./data-source-shared/use-row-siblings.js";
 export { useFiltered } from "./data-source-shared/use-filtered.js";
 export { useFilterFn } from "./data-source-shared/use-filter-fn.js";
 export { useGlobalRefresh } from "./data-source-shared/use-global-refresh.js";

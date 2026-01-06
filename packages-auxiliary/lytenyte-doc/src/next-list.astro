@@ -15,6 +15,9 @@ const { items } = Astro.props;
   {
     items.map((x) => {
       const collectionDoc = byId[x];
+
+      if (!collectionDoc) throw new Error(`Failed to find the entry for ${x}`);
+
       const doc = collectionDoc.data;
 
       if (!doc?.step) throw new Error(`Failed to find next description for id: ${x}.`);

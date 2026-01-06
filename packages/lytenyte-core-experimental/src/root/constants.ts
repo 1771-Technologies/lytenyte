@@ -18,6 +18,7 @@ export const DEFAULT_ROW_SOURCE: RowSource = {
   rowById: () => null,
   rowChildren: () => [],
   rowIdToRowIndex: () => null,
+  rowSiblings: () => [],
   rowInvalidate: () => {},
   rowIsSelected: () => false,
   rowLeafs: () => [],
@@ -25,7 +26,7 @@ export const DEFAULT_ROW_SOURCE: RowSource = {
   rowsBetween: () => [],
   rowSelectionState: () => null as any,
 
-  onRowGroupExpansionChange: () => {},
+  rowGroupExpansionChange: () => {},
   onRowsUpdated: () => {},
   onRowsSelected: () => {},
   onViewChange: () => {},

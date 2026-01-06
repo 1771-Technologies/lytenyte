@@ -1,10 +1,12 @@
 import { useCallback, useState } from "react";
 import type { UseClientDataSourceParams } from "../use-client-data-source.js";
-import { useControlled } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useControlled, useEvent } from "@1771technologies/lytenyte-core-experimental/internal";
 
 export type SourceState = ReturnType<typeof useSourceState>;
 
 export function useSourceState({
+  onRowGroupExpansionChange,
+  onPivotRowGroupExpansionChange,
   rowGroupExpansions,
   rowGroupDefaultExpansion = false,
   pivotRowGroupDefaultExpansion = rowGroupDefaultExpansion,
@@ -14,6 +16,12 @@ export function useSourceState({
     controlled: rowGroupExpansions,
     default: {},
   });
+
+  const onExpansionsChange = useEvent((delta: Record<string, boolean | undefined>) => {
+    setExpansions({ ...expansions, ...delta });
+    onRowGroupExpansionChange?.({ ...expansions, ...delta });
+  });
+
   const expandedFn = useCallback(
     (id: string, depth: number) => {
       const s = expansions[id];
@@ -21,7 +29,7 @@ export function useSourceState({
 
       if (typeof rowGroupDefaultExpansion === "boolean") return rowGroupDefaultExpansion;
 
-      return rowGroupDefaultExpansion <= depth;
+      return depth <= rowGroupDefaultExpansion;
     },
     [expansions, rowGroupDefaultExpansion],
   );
@@ -29,6 +37,12 @@ export function useSourceState({
   const [pivotRowGroupExpansions, setPivotRowGroupExpansions] = useState<Record<string, boolean | undefined>>(
     pivotStateRef?.current.rowGroupExpansions ?? {},
   );
+
+  const onPivotExpansionsChange = useEvent((delta: Record<string, boolean | undefined>) => {
+    setPivotRowGroupExpansions({ ...expansions, ...delta });
+    onPivotRowGroupExpansionChange?.({ ...expansions, ...delta });
+  });
+
   const pivotExpandedFn = useCallback(
     (id: string, depth: number) => {
       const s = pivotRowGroupExpansions[id];
@@ -36,17 +50,17 @@ export function useSourceState({
 
       if (typeof pivotRowGroupDefaultExpansion === "boolean") return pivotRowGroupDefaultExpansion;
 
-      return pivotRowGroupDefaultExpansion <= depth;
+      return pivotRowGroupDefaultExpansion >= depth;
     },
     [pivotRowGroupDefaultExpansion, pivotRowGroupExpansions],
   );
 
   return {
     expansions,
-    setExpansions,
+    onExpansionsChange,
     expandedFn,
     pivotExpandedFn,
     pivotRowGroupExpansions,
-    setPivotRowGroupExpansions,
+    onPivotExpansionsChange,
   };
 }

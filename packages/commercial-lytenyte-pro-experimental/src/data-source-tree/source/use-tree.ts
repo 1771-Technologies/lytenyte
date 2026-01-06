@@ -54,6 +54,7 @@ export function useTree<T>({
           last: !expandable,
           id: idFn(path, value),
           data: value,
+          parentId: parent.kind === "root" ? null : parent.row.id,
         },
       };
       parent.children.set(path.at(-1)!, node);

@@ -72,6 +72,7 @@ const makeLeafNode = <T>(
   ({
     kind: "leaf",
     data: d,
+    depth: 0,
     id: leafIdFn(d, i, section),
     __pin: section,
     __srcIndex: i,

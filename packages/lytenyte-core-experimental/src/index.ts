@@ -93,7 +93,7 @@ export namespace Grid {
     export type CellRendererParams<Spec extends GridSpec> = LnTypes.CellRendererParams<Spec>;
     export type DataRect = LnTypes.DataRect;
     export type Dimension<T> = LnTypes.Dimension<T>;
-    export type DimensionAgg<T, K extends { id: string; field?: Field<T> }> = LnTypes.DimensionAgg<T, K>;
+    export type DimensionAgg<T> = LnTypes.DimensionAgg<T>;
     export type DimensionSort<T> = LnTypes.DimensionSort<T>;
     export type EditParams = LnTypes.EditParams;
     export type ExportDataRectResult = LnTypes.ExportDataRectResult;
@@ -151,3 +151,5 @@ export type { RowSourceClient, UseClientDataSourceParams } from "./data-source/u
 
 export type { Piece, PieceWritable } from "./hooks/use-piece.js";
 export { usePiece } from "./hooks/use-piece.js";
+
+export { computeField } from "./root/hooks/use-api/auxiliary-functions/compute-field.js";

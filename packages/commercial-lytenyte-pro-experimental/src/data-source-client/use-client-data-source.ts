@@ -39,6 +39,7 @@ import {
   useRowSelection,
   useRowSelectionState,
   useRowSelectSplitLookup,
+  useRowSiblings,
 } from "@1771technologies/lytenyte-core-experimental/internal";
 import type { Column, Field } from "../types/column.js";
 import type { GridSpec } from "../types/grid.js";
@@ -54,13 +55,11 @@ export interface RowSourceClient<Spec extends GridSpec = GridSpec> extends RowSo
   readonly usePivotProps: (props?: {
     onColumnsChange?: Props<Spec>["onColumnsChange"];
     onColumnGroupExpansionChange?: Props<Spec>["onColumnGroupExpansionChange"];
-    onRowGroupExpansionChange?: Props<Spec>["onRowGroupExpansionChange"];
   }) => {
     readonly columns?: Column<Spec>[];
     readonly onColumnsChange: Props<Spec>["onColumnsChange"];
     readonly columnGroupExpansions: Props<Spec>["columnGroupExpansions"];
     readonly onColumnGroupExpansionChange: Props<Spec>["onColumnGroupExpansionChange"];
-    readonly onRowGroupExpansionChange: Props<Spec>["onRowGroupExpansionChange"];
   };
 
   readonly rowUpdate: (rows: Map<RowNode<Spec["data"]>, Spec["data"]>) => void;
@@ -73,7 +72,8 @@ export type LabelFilter = (s: string | null) => boolean;
 export interface PivotModel<Spec extends GridSpec = GridSpec> {
   readonly columns?: (Column<Spec> | PivotField<Spec>)[];
   readonly rows?: (Column<Spec> | PivotField<Spec>)[];
-  readonly measures?: DimensionAgg<Spec["data"], Column<Spec>>[];
+  readonly measures?: { dim: Column<Spec>; fn: Aggregator<Spec["data"]> | string }[];
+
   readonly sort?: SortFn<Spec["data"]>;
   readonly filter?: HavingFilterFn | (HavingFilterFn | null)[];
   readonly rowLabelFilter?: (LabelFilter | null)[];
@@ -92,11 +92,13 @@ export interface UseClientDataSourceParams<Spec extends GridSpec = GridSpec, T =
   readonly pivotStateRef?: RefObject<PivotState>;
   readonly pivotApplyExistingFilter?: boolean;
   readonly pivotRowGroupDefaultExpansion?: boolean | number;
+  readonly onPivotRowGroupExpansionChange?: (state: Record<string, boolean | undefined>) => void;
 
   readonly rowGroupExpansions?: { [rowId: string]: boolean | undefined };
   readonly rowGroupDefaultExpansion?: boolean | number;
   readonly rowGroupCollapseBehavior?: "no-collapse" | "last-only" | "full-tree";
   readonly rowGroupSuppressLeafExpansion?: boolean;
+  readonly onRowGroupExpansionChange?: (state: Record<string, boolean | undefined>) => void;
 
   readonly sort?: SortFn<T> | DimensionSort<T>[] | null;
   readonly group?: GroupFn<T> | Dimension<T>[];
@@ -157,7 +159,16 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
 
   const botPiece = usePiece(f.leafsBot.length);
   const topPiece = usePiece(f.leafsTop.length);
-  const maxDepthPiece = usePiece(f.maxDepth);
+
+  const depth = props.group
+    ? Array.isArray(props.group)
+      ? props.group.length
+      : d.maxDepth
+    : props.pivotMode && props.pivotModel?.rows?.length
+      ? p.maxDepth
+      : 0;
+
+  const maxDepthPiece = usePiece(depth);
 
   const rowById = useRowById(f.tree, f.leafIdsRef);
   const rowParents = useRowParents(rowById, f.tree, f.groupFn, props.groupIdFn ?? groupIdFallback);
@@ -211,10 +222,10 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
   const rowLeafs = useRowLeafs(f.tree);
   const rowChildren = useRowChildren(f.tree);
 
-  const setExpansions = s.setExpansions;
+  const setExpansions = s.onExpansionsChange;
   const setPivotState = p.setPivotState;
   const setPivotGroupState = p.setPivotGroupState;
-  const setPivotRowGroupExpansions = s.setPivotRowGroupExpansions;
+  const setPivotRowGroupExpansions = s.onPivotExpansionsChange;
 
   const mode$ = usePiece(mode);
 
@@ -223,6 +234,7 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
   const rowAdd = useRowAdd(props);
   const rowDelete = useRowDelete(props, rowById);
   const rows$ = useRows(flat);
+  const rowSiblings = useRowSiblings(f.tree);
 
   const selection$ = usePiece(selectionState.rowSelectionsRaw);
 
@@ -245,6 +257,7 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
       rowAdd,
       rowDelete,
       rowUpdate: onRowsUpdated,
+      rowSiblings,
 
       useBottomCount: botPiece.useValue,
       useTopCount: topPiece.useValue,
@@ -254,16 +267,16 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
 
       useMaxRowGroupDepth: maxDepthPiece.useValue,
 
-      onRowGroupExpansionChange: (deltaChanges) => {
-        if (mode$.get()) setPivotRowGroupExpansions((prev) => ({ ...prev, ...deltaChanges }));
-        else setExpansions((prev) => ({ ...prev, ...deltaChanges }));
+      rowGroupExpansionChange: (deltaChanges) => {
+        if (mode$.get()) setPivotRowGroupExpansions(deltaChanges);
+        else setExpansions(deltaChanges);
       },
       onRowsSelected,
       onRowsUpdated,
       onViewChange: () => {},
 
       usePivotProps: (params) => {
-        const { onColumnGroupExpansionChange, onColumnsChange, onRowGroupExpansionChange } = params ?? {};
+        const { onColumnGroupExpansionChange, onColumnsChange } = params ?? {};
         const pivotColumns = p.pivotPiece.useValue() as Column<Spec>[] | null;
         const pivotGroups = p.pivotGroupPiece.useValue();
 
@@ -272,11 +285,6 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
 
           if (pivotColumns) object.columns = pivotColumns;
           if (pivotColumns) object.columnGroupExpansions = pivotGroups.value;
-
-          const onRowGroup: Props<Spec>["onRowGroupExpansionChange"] = (rows) => {
-            if (!mode$.get()) return onRowGroupExpansionChange?.(rows);
-            setPivotRowGroupExpansions((prev) => ({ ...prev, ...rows }));
-          };
 
           const onColChange: Required<Props<Spec>>["onColumnsChange"] = (columns) => {
             if (!mode$.get()) return onColumnsChange?.(columns);
@@ -304,16 +312,9 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
 
           object.onColumnsChange = onColChange;
           object.onColumnGroupExpansionChange = onColumnGroup;
-          object.onRowGroupExpansionChange = onRowGroup;
 
           return object;
-        }, [
-          onColumnGroupExpansionChange,
-          onColumnsChange,
-          onRowGroupExpansionChange,
-          pivotColumns,
-          pivotGroups,
-        ]);
+        }, [onColumnGroupExpansionChange, onColumnsChange, pivotColumns, pivotGroups]);
       },
     };
 
@@ -332,6 +333,7 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
     rowAdd,
     rowDelete,
     onRowsUpdated,
+    rowSiblings,
     botPiece.useValue,
     topPiece.useValue,
     selection$.useValue,

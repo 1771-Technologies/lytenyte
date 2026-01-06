@@ -105,6 +105,7 @@ export function useGroupTree<T>(
               data: null as any,
               depth: j,
               key: p,
+              parentId: currentGroup.kind === "root" ? null : currentGroup.id,
               expandable: false,
               expanded: false,
             });
@@ -113,6 +114,7 @@ export function useGroupTree<T>(
           node.__children = children;
           node.__invalidate = true;
           (node as Writable<RowGroup>).last = isLast;
+          (node as Writable<RowGroup>).parentId = currentGroup.kind === "root" ? null : currentGroup.id;
 
           current.set(p, {
             id: groupId,
@@ -142,6 +144,15 @@ export function useGroupTree<T>(
         node.leafIds.add(n.id);
         currentGroup = node;
         current = node.children;
+      }
+
+      const n_writable = n as Writable<RowLeaf>;
+      if (currentGroup.kind === "root") {
+        n_writable.depth = 0;
+        n_writable.parentId = null;
+      } else {
+        n_writable.depth = currentGroup.row.depth + 1;
+        n_writable.parentId = currentGroup.id;
       }
 
       current.set(current.size, { kind: "leaf", row: n, parent: currentGroup, key: current.size });

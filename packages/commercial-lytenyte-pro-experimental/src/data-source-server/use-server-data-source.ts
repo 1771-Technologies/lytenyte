@@ -32,6 +32,7 @@ import { useRowLeafs } from "./source/use-row-leafs.js";
 import { useOnRowsUpdated } from "./source/use-on-rows-updated.js";
 import { useRowDelete } from "./source/use-row-delete.js";
 import { useRowAdd } from "./source/use-row-add.js";
+import { useRowSiblings } from "./source/use-row-siblings.js";
 
 export interface RowSourceServer<T> extends RowSource<T> {
   readonly isLoading: Piece<boolean>;
@@ -59,6 +60,7 @@ export interface UseServerDataSourceParams<K extends unknown[], T = any> {
 
   readonly rowGroupExpansions?: { [rowId: string]: boolean | undefined };
   readonly rowGroupDefaultExpansion?: boolean | number;
+  readonly onRowGroupExpansionChange?: (state: Record<string, boolean | undefined>) => void;
 
   readonly rowsIsolatedSelection?: boolean;
   readonly rowSelection?: RowSelectionState;
@@ -134,9 +136,10 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
 
   const rowLeafs = useRowLeafs<T>(source);
   const { rowByIndex, rowInvalidate } = useRowByIndex<T>(source, selectionState, globalSignal, rowParents);
-  const setExpansions = state.setExpansions;
+  const setExpansions = state.onExpansionsChange;
 
   const onRowsUpdated = useOnRowsUpdated(source, props.onRowDataChange, props.rowUpdateOptimistically);
+  const rowSiblings = useRowSiblings(source);
 
   const row$ = usePiece(state.rows);
 
@@ -160,6 +163,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
       rowDelete,
       rowAdd,
       rowUpdate: onRowsUpdated,
+      rowSiblings,
 
       rowLeafs,
       rowParents,
@@ -172,8 +176,8 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
       useMaxRowGroupDepth: () => maxDepth$.useValue(),
       useSelectionState: selection$.useValue,
 
-      onRowGroupExpansionChange: (deltaChanges) => {
-        setExpansions((prev) => ({ ...prev, ...deltaChanges }));
+      rowGroupExpansionChange: (deltaChanges) => {
+        setExpansions(deltaChanges);
       },
       onRowsSelected,
       onViewChange,
@@ -233,6 +237,7 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
     rowLeafs,
     rowParents,
     rowSelectionState,
+    rowSiblings,
     rowsBetween,
     rowsSelected,
     selection$.useValue,

@@ -5,3 +5,72 @@ description: LyteNyte Grid's client row source lets you set custom filters to ex
   the view. The grid excludes filtered rows before performing actions such as grouping,
   sorting, or aggregating.
 ---
+
+:::note
+
+This guide covers filters at a high level, with a particular focus on the properties
+of the client row source. See the guides in the **Filtering** section of the
+LyteNyte Grid documentation for more thorough guidance on creating filters for the grid.
+A good place to start is the [Filtering Text guide](/docs/filtering-text).
+
+:::
+
+## The Filter Property
+
+The `filter` property on the client row source accepts a filter predicate or an
+array of filter predicates. A filter predicate is a function that receives a
+leaf row and returns `true` if the grid should keep the row or `false` if the
+grid should filter the row out.
+
+The demo below demonstrates a basic filter function. Click the **Mastercard** button
+to show only those rows that have Mastercard as a payment method. Similarly, click the
+**Visa** button to show only those rows that have Visa as a payment method.
+
+::demo[Filter Function="./demos/client-filtering"]
+
+The demo creates a filter function and passes it to the client source as shown in the
+code below. This is a minimal approach. However, since filtering is a function,
+you can represent any filter model.
+
+```tsx
+//!next
+const [filter, setFilter] = useState<Grid.T.FilterFn<GridSpec["data"]> | null>(null);
+
+const ds = useClientDataSource<GridSpec>({ data: data, filter }); //!
+
+// Later in the code
+
+<button
+  onClick={() => {
+    setFilter(
+      //!next
+      () => (row: Grid.T.RowLeaf<GridSpec["data"]>) => row.data.paymentMethod === "Mastercard",
+    );
+  }}
+>
+```
+
+### Filter Array
+
+Providing a single filter function can be awkward when filters come from multiple places.
+
+For example, your application could implement basic
+text searching on a per-column basis. It is much easier to create a filter function
+for each column and provide these functions to the `useClientDataSource` hook.
+
+::demo[Filter Function Array="./demos/client-filtering-array"]
+
+## Filters Apply To Leaf Rows
+
+The functions you provide through the `filter` property receive leaf rows only. This is because
+filters apply before grouping or aggregation. Keep this in mind when you apply filters to your
+data.
+
+See the [Client Row Having Filter guide](/docs/client-source-having-filters) for
+post-grouping filter capabilities of the client source.
+
+## Next Steps
+
+::next[/docs/client-source-row-sorting]
+::next[/docs/client-source-having-filters]
+::next[/docs/client-source-row-grouping]

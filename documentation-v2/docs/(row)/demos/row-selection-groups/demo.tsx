@@ -18,10 +18,10 @@ interface GridSpec {
 }
 
 const columns: Grid.Column<GridSpec>[] = [
-  { name: "Job", id: "job", width: 120 },
+  { name: "Job", id: "job", width: 120, hide: true },
   { name: "Age", id: "age", type: "number", width: 80, cellRenderer: NumberCell },
   { name: "Balance", id: "balance", type: "number", cellRenderer: BalanceCell },
-  { name: "Education", id: "education" },
+  { name: "Education", id: "education", hide: true },
   { name: "Marital", id: "marital" },
   { name: "Default", id: "default" },
   { name: "Housing", id: "housing" },

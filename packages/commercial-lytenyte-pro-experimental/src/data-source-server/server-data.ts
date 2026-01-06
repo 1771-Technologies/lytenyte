@@ -259,12 +259,12 @@ export class ServerData {
       if (r.kind === "top" && r.asOfTime > this.#top.asOf) {
         this.#top = {
           asOf: r.asOfTime,
-          rows: r.data.map<RowLeaf<any>>((c) => ({ id: c.id, data: c.data, kind: "leaf" })),
+          rows: r.data.map<RowLeaf<any>>((c) => ({ id: c.id, data: c.data, kind: "leaf", depth: 0 })),
         };
       } else if (r.kind === "bottom" && r.asOfTime > this.#bottom.asOf) {
         this.#bottom = {
           asOf: r.asOfTime,
-          rows: r.data.map<RowLeaf<any>>((c) => ({ id: c.id, data: c.data, kind: "leaf" })),
+          rows: r.data.map<RowLeaf<any>>((c) => ({ id: c.id, data: c.data, kind: "leaf", depth: 0 })),
         };
       }
     }
@@ -276,6 +276,9 @@ export class ServerData {
       this.tree.set({
         path: r.path,
         items: r.data.map<Required<SetDataAction>["items"][number]>((c, i) => {
+          const parentNode = this.tree.get({ path: r.path });
+          const parentId = parentNode?.kind === "parent" ? parentNode.row.id : null;
+
           if (c.kind === "leaf") {
             return {
               kind: "leaf",
@@ -283,6 +286,8 @@ export class ServerData {
                 kind: "leaf",
                 data: c.data,
                 id: c.id,
+                depth: r.path.length,
+                parentId,
               },
               relIndex: r.start + i,
             };
@@ -298,6 +303,7 @@ export class ServerData {
                 expandable: true, // Group nodes are always expandable for the server data source3
                 expanded: false,
                 last: false,
+                parentId,
                 __path: r.path,
               },
               path: c.key,

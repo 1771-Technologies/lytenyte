@@ -77,6 +77,7 @@ export function useRowByIndex<T>(
                 kind: "leaf",
                 loading: true,
                 error: error,
+                depth: 0,
               };
             }
             const loadingRow = loadingCache.current[i]!;

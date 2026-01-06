@@ -5,3 +5,175 @@ description: When you group rows, LyteNyte Grid's client data source lets you
   aggregate row data per group to produce values that
   LyteNyte Grid can display at the group level.
 ---
+
+:::note
+
+This guide assumes you are already familiar with how row grouping works when
+using the client data source. See the [Client Row Grouping guide](/docs/client-source-row-grouping)
+for guidance first if you are not familiar.
+
+:::
+
+## Aggregations
+
+An **aggregation** means something very specific in LyteNyte Grid, it is a record of key
+value pairs, where the key is usually the `id` of a column and the `value` is the result
+of some aggregation function, such as **sum** or **average**.
+
+This concept of an aggregation is reflected in the type of data a row group node and row
+aggregation node must have, i.e. they must have an object data type, unlike leaf rows
+which may be any data type.
+
+To compute an aggregation using the client data source, provide the `useClientDataSource`
+hook with either an aggregation function or a set of aggregation dimensions.
+
+### Aggregation Functions
+
+An aggregation function is a normal function that will be given the set of leaf rows to aggregate.
+It must return an object with all the aggregation values computed. In the demo below,
+the aggregation function will compute the count of unique values for columns with text, and
+compute the average for columns with numbers. the Aggregation function is set of the `aggregate`
+property of the `useClientDataSource` hook.
+
+::demo[Aggregate Rows Using A Function="./demos/client-row-aggregation-fn"]
+
+The aggregation function provided performs the complete aggregation set for all the
+columns in the grid. The code for this is show below. Notice how this code can become
+quite repetitive. LyteNyte Grid provides aggregation dimensions to simplify computing
+aggregations in more declarative way.
+
+```ts
+const aggFn: Grid.T.AggregationFn<GridSpec["data"]> = (data) => {
+  const job = uniq(data.map((x) => x.data.job)).length === 1 ? data[0].data.job : null;
+  const age = sum(data.map((x) => x.data.age)) / data.length;
+  const balance = sum(data.map((x) => x.data.balance)) / data.length;
+  const education = uniq(data.map((x) => x.data.education)).length === 1 ? data[0].data.education : null;
+  const marital = uniq(data.map((x) => x.data.marital)).length === 1 ? data[0].data.marital : null;
+  const housing = uniq(data.map((x) => x.data.housing)).length === 1 ? data[0].data.housing : null;
+  const default_ = uniq(data.map((x) => x.data.default)).length === 1 ? data[0].data.default : null;
+  const loan = uniq(data.map((x) => x.data.loan)).length === 1 ? data[0].data.loan : null;
+  const contact = uniq(data.map((x) => x.data.contact)).length === 1 ? data[0].data.contact : null;
+  const day = uniq(data.map((x) => x.data.day)).length === 1 ? data[0].data.day : null;
+  const month = uniq(data.map((x) => x.data.month)).length === 1 ? data[0].data.month : null;
+  const duration = uniq(data.map((x) => x.data.duration)).length === 1 ? data[0].data.duration : null;
+
+  //#start
+  return {
+    job,
+    age,
+    housing,
+    balance,
+    education,
+    marital,
+    default: default_,
+    loan,
+    contact,
+    day,
+    month,
+    duration,
+  };
+  //#end
+};
+```
+
+### Aggregation Dimensions
+
+An aggregation dimension is an object with a `dim` property that contains an `id` value, and optionally
+a `field`, and an `fn` property with a reference to an aggregator function. The full type is shown below:
+
+```ts
+export type DimensionAgg<T> = {
+  dim: { id: string; field?: Field<T> };
+  fn: Aggregator<T> | string;
+};
+```
+
+Some examples are shown below:
+
+```ts
+const sumAgg = { dim: { id: "balance" }, fn: "sum" };
+const avgAgg = { dim: { id: "avg", field: "balance" }, fn: "avg" };
+const fnAgg = { dim: { id: "education" }, fn: OnlyOneUniqueFn };
+```
+
+The `fn` property is a an `Aggregator` or a string that references a registered `Aggregator` function.
+An `Aggregator` function is a special function that computes computes a single aggregated value.
+An `Aggregator` function has the following type:
+
+```ts
+type PathField = { kind: "path"; path: string };
+type Field<T> = string | number | PathField | ((params: { row: RowNode<T> }) => unknown);
+
+export type Aggregator<T> = (field: Field<T>, data: RowLeaf<T>[]) => unknown; //!
+```
+
+Since the `Field` parameter of an Aggregator can be one a dynamic type, LyteNyte Grid exports the
+`computeField` utility function that will return the value of the field, given a leaf row.
+The `computeField` function returns an `unknown` type by default, however, you can cast the return
+value to a type by providing a generic parameter to function. If you do provide a type, you must
+ensure that the value returned conforms to the specified type, `computeField`, will not check
+it for you.
+
+```ts
+// returns the value of the education property on the row's data
+computeField<string>("education", row);
+```
+
+:::note
+
+Do not confuse `Aggregator`s with the `AggregatorFn` function provided to the `useClientDataSource`
+hook. An `Aggregator` computes a single aggregation value which is then assigned to a single key.
+The `AggregationFn` produces the full aggregation result.
+
+:::
+
+When the aggregation dimension's `fn` property is a string value, it the `Aggregator` must be registered
+on the `aggregateFns` property of the grid. For example, you can define an summation aggregator as follows:
+
+```ts
+const sum: Grid;
+```
+
+In the demo below, aggregation dimensions are used to compute the aggregation value for a given group row.
+Two aggregators are registered ahead of time called:
+
+- `onlyOneUnique`: returns a value if all the values to be aggregated are the same, otherwise returns null.
+- `avg`: returns the average of the values to be aggregated.
+
+::demo[Aggregation Dimensions="./demos/client-row-aggregation-dimensions"]
+
+## Updating Aggregations
+
+LyteNyte Grid does not use a predefined aggregation model, but it is possible to extend the grid's
+API or column definitions to support in. In this section you will extend the column`s specification
+to allow columns to support an aggregation and define a list of allowed aggregations.
+
+Start by creating an updating column specification. For our example the fields will be mandatory,
+but you can choose a type the matches your use case.
+
+```ts
+interface GridSpec {
+  readonly data: BankData;
+  readonly column: {
+    agg: string;
+    allowedAggs: string[];
+  };
+}
+```
+
+Strings are used for the aggregations, since we will register all the possible aggregations ahead of
+time. Text columns will support three aggregators:
+
+- `onlyOneUnique`
+- `first`
+- `last`
+
+Number columns will support three aggregators as well:
+
+- `avg`
+- `sum`
+- `count`
+
+In the demo below, the aggregators are created and added to the client data source. The column headers
+use a customer header renderer to allow you to change the aggregation applied to a column based on the
+`allowedAggs` list.

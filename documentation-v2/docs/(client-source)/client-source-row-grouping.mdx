@@ -5,3 +5,162 @@ description: Group rows by one or more dimensions to create a hierarchical repre
   your data. Row groups can be uniform, with an equal number of dimensions,
   or non-uniform, with a varying number of dimensions.
 ---
+
+The `group` property on the `useClientDataSource` hook accepts one of two
+value types:
+
+- A **function** that returns a group path array.
+- An array of grouping **dimensions**.
+
+LyteNyte Grid's client source uses the `group` property to create a hierarchical row
+structure. When grouping is enabled, the source creates two row types: leaf rows and
+group rows. If you are unfamiliar with the different row node types in LyteNyte Grid,
+see the [Row Overview guide](/docs/row-overview).
+
+:::note
+
+This guide covers the grouping functionality available in LyteNyte Grid for the
+client row source. Grouping goes hand-in-hand with row aggregations. We highly recommend
+reading the [Client Row Aggregations guide](/docs/client-source-aggregations)
+after you finish reading this guide.
+
+:::
+
+## Grouping Function
+
+Provide the `useClientDataSource` hook with a function that returns an array of path
+values to group by. A path value is any `string` value or `null`.
+
+The demo below uses a grouping function to group rows by **Job** and **Education**.
+
+::demo[Function Row Grouping="./demos/client-row-grouping-fn"]
+
+The group function is straightforward and returns an array of strings.
+Group functions always receive a leaf row, since leaf rows are the rows that are used
+to create groupings.
+
+```ts
+const groupFn: Grid.T.GroupFn<GridSpec["data"]> = (row) => {
+  return [row.data.job, row.data.education];
+};
+```
+
+### Non-Uniform Groups
+
+If you inspect the `GroupFn` type, you will notice that it can return `null` instead of an
+array. When a group function returns `null`, the row is not grouped and instead sits at the
+top level of the view alongside other groups. Furthermore, a grouping function can return
+group paths of varying lengths.
+
+The demo below demonstrates a non-uniform group. Notice that any row with `"Secondary"` education
+is not grouped, and any row with **Marital** status equal to **"Single"** is only grouped by **Job**.
+
+::demo[Non-Uniform Groups="./demos/client-row-grouping-fn-non-uniform"]
+
+:::tip
+
+If you are coming to LyteNyte Grid from other another data grid, you may have seen non-uniform groups
+referred to as **Tree Data**. In LyteNyte Grid, this path-based array of values is simply
+a non-uniform grouping of rows.
+
+LyteNyte Grid provides a [tree data source](/docs/tree-source-overview). However,
+this source is intended for use with object data, not array data.
+
+:::
+
+## Grouping Dimensions
+
+The `group` property accepts an array of dimensions. A dimension is defined by the following
+type interface:
+
+```ts
+export type Dimension<T> = { name?: string; field: Field<T> } | { id: string; field?: Field<T> };
+```
+
+This means a dimension is any object with a `field` or `id` property. All valid LyteNyte Grid
+columns conform to the `Dimension` type and may be used as dimensions. The demo below demonstrates
+using dimensions to group rows:
+
+::demo[Row Group Dimensions="./demos/client-row-grouping-dimension"]
+
+Row grouping using dimensions is easier to manage since you can directly use the columns you pass to the
+grid. However, dimensions always result in uniform groups.
+
+## Changing Row Groups
+
+Updating row groups is as simple as updating the value of the `group` property. The demo below demonstrates
+this behavior by updating groups using the [Pill Manager component](/docs/component-pill-manager).
+
+::demo[Change Row Group="./demos/client-row-grouping-dimension-updates"]
+
+:::tip
+
+It is generally good practice to hide columns that you group on. In the demo, the code updates the columns
+based on the current group state before passing them to the grid. This way, when a column is grouped the grid
+hides the column, and when the column is ungrouped the grid shows the column again. The code snippet is shown
+below:
+
+```ts
+const columnsWithHide = useMemo(() => {
+  return columns.map((x) => {
+    if (rowGroups.find((g) => g.id === x.id && g.active)) {
+      return { ...x, hide: true };
+    }
+    return x;
+  });
+}, [rowGroups]);
+```
+
+:::
+
+## Row Group Expansions
+
+The row data source maintains the expansion state of row groups in LyteNyte Grid. For the client data source,
+expansions can be controlled or uncontrolled. To control expansions, pass a `rowGroupExpansions` value to the
+`useClientDataSource` hook. To handle expansion changes, provide an `onRowGroupExpansionChange` callback on the
+row source.
+
+LyteNyte Grid provides the `api.rowGroupToggle` method to change the expansion state of a row group. This
+method calls `onRowGroupExpansionChange` with the delta changes. The `rowGroupDefaultExpansion`
+setting on the client source or grid API updates the expansion state and calls `onRowGroupExpansionChange`,
+if provided, on the row data source.
+
+Using `api.rowGroupToggle`, you can create your own group cell renderer to
+expand and collapse rows. The demo below demonstrates this.
+
+::demo[Row Group Expansion="./demos/client-row-grouping-group-expansions"]
+
+### Default Expansions
+
+The `rowGroupDefaultExpansion` property on the client data source controls the default
+expansion state for any row group that does not have a value in `rowGroupExpansions`.
+The `rowGroupDefaultExpansion` property accepts one of two values:
+
+- A **boolean**, where `false` collapses all rows by default and `true` expands all
+  rows by default.
+- A positive **number**, which expands all row groups with a depth value less than or equal
+  to the provided number by default.
+
+The demo below demonstrates expanding the first level of row groups by setting the
+`rowGroupDefaultExpansion` value to `0`.
+
+::demo[Default Row Group Expansion="./demos/client-row-grouping-group-default"]
+
+### Expand Siblings
+
+The client row source provides utility methods for querying the structure of the row hierarchy.
+Using the `rowSiblings` method, you can build the ability to expand sibling nodes
+of a group. This method is available on the row source and the grid API. Combine the `rowSiblings` method
+with `onRowGroupExpansionChange` to build this functionality.
+
+The demo below demonstrates this functionality. Click the `+` button instead of the expansion chevron to expand
+all sibling rows for the current group.
+
+::demo[Sibling Expansion="./demos/client-row-grouping-group-siblings"]
+
+## Next Steps
+
+::next[/docs/client-source-aggregations]
+::next[/docs/client-source-having-filters]
+::next[/docs/client-source-label-filters]
+::next[/docs/client-source-row-sorting]

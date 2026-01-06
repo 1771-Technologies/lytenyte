@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import type { DataRequest } from "../types";
-import { useControlled } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useControlled, useEvent } from "@1771technologies/lytenyte-core-experimental/internal";
 import type { UseServerDataSourceParams } from "../use-server-data-source";
 import type { RowNode } from "@1771technologies/lytenyte-shared";
 
@@ -23,6 +23,11 @@ export function useSourceState<K extends unknown[]>(props: UseServerDataSourcePa
     default: {},
   });
 
+  const onExpansionsChange = useEvent((delta: Record<string, boolean | undefined>) => {
+    setExpansions({ ...expansions, ...delta });
+    props.onRowGroupExpansionChange?.({ ...expansions, ...delta });
+  });
+
   const state = {
     isLoading,
     setIsLoading,
@@ -39,7 +44,7 @@ export function useSourceState<K extends unknown[]>(props: UseServerDataSourcePa
     setRowCount,
 
     expansions,
-    setExpansions,
+    onExpansionsChange,
 
     maxDepth,
     setMaxDepth,

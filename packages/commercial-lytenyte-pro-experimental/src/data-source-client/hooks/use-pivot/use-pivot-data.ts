@@ -91,7 +91,7 @@ export function usePivotData<Spec extends GridSpec>(
     const rows = filtered.map((x) => leafs[x]);
     const agg = aggFn(rows);
 
-    return [{ id: "ln-pivot-grand-total", data: agg, kind: "aggregated" } satisfies RowAggregated];
+    return [{ id: "ln-pivot-grand-total", data: agg, kind: "aggregated", depth: 0 } satisfies RowAggregated];
   }, [aggFn, filtered, grandTotalRow, leafs]);
 
   const top = grandTotalRow === "top" ? grandTotal : empty;

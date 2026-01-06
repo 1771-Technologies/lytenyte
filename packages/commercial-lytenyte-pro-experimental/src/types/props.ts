@@ -130,7 +130,6 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   // Values that can be changed by the grid
   readonly onColumnGroupExpansionChange?: (change: Record<string, boolean>) => void;
   readonly onRowDetailExpansionsChange?: (change: Set<string>) => void;
-  readonly onRowGroupExpansionChange?: (deltaChange: Record<string, boolean>) => void;
   readonly onColumnsChange?: (columns: Column<Spec>[]) => void;
   readonly onRowGroupColumnChange?: (column: Omit<Column<Spec>, "field" | "id">) => void;
 

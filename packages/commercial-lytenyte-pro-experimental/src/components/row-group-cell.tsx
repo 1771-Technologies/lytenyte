@@ -1,17 +1,21 @@
-import type { RowNode } from "@1771technologies/lytenyte-shared";
-import type { CellParamsWithIndex, GridSpec } from "../types";
-import type { CSSProperties, SVGProps } from "react";
+import type { RowLeaf, RowNode } from "@1771technologies/lytenyte-shared";
+import type { API, CellParamsWithIndex, GridSpec } from "../types";
+import type { CSSProperties, ReactNode, SVGProps } from "react";
 
-export const RowGroupCell = <Spec extends GridSpec = GridSpec>({ api, row }: CellParamsWithIndex<Spec>) => {
-  const label = getRowLabel(row);
+export const RowGroupCell = <Spec extends GridSpec = GridSpec>({
+  api,
+  row,
+  leafLabel,
+}: CellParamsWithIndex<Spec> & { leafLabel?: (row: RowLeaf<Spec["data"]>, api: API<Spec>) => ReactNode }) => {
+  const label = getRowLabel(row, api, leafLabel);
 
-  const depth = row.kind === "branch" ? row.depth : 0;
+  const depth = row.depth;
 
   return (
     <div
-      data-ln-component-group-cell
+      data-ln-component-group-cell={row.kind}
       data-ln-component-group-cell-expanded={api.rowIsExpanded(row)}
-      data-ln-component-group-cell-expandable={api.rowIsExpandable(row)}
+      data-ln-component-group-cell-expandable={api.rowIsGroup(row) ? api.rowIsExpandable(row) : undefined}
       style={{ "--ln-row-depth": depth } as CSSProperties}
     >
       {row.kind === "branch" && row.expandable && (
@@ -30,8 +34,12 @@ export const RowGroupCell = <Spec extends GridSpec = GridSpec>({ api, row }: Cel
   );
 };
 
-function getRowLabel(row: RowNode<any>) {
-  if (row.kind === "leaf") return "";
+function getRowLabel(
+  row: RowNode<any>,
+  api: API<any>,
+  leafLabel?: (row: RowLeaf<any>, api: API<any>) => ReactNode,
+) {
+  if (row.kind === "leaf") return leafLabel?.(row, api) ?? "";
   if (row.kind === "aggregated") return row.id === "ln-pivot-grand-total" ? "Grand Total" : row.id;
 
   return !row.key ? "(blank)" : row.key;

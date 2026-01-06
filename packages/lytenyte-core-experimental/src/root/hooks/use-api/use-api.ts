@@ -121,7 +121,7 @@ export function useApi(
   api.rowDetailHeight = useRowDetailHeight(props, controlled, detailHeightCache);
   api.rowDetailExpanded = useRowDetailExpanded(controlled, source);
   api.rowDetailToggle = useRowDetailToggle(api, controlled);
-  api.rowGroupToggle = useRowGroupToggle(props, source);
+  api.rowGroupToggle = useRowGroupToggle(source);
   api.useRowDrag = useUseRowDrag(api, gridId);
   api.viewport = useViewport(vp);
   api.props = useProps(props);

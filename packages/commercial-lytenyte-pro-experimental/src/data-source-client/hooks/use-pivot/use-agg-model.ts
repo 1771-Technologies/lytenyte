@@ -27,7 +27,7 @@ export function usePivotAggFunction<Spec extends GridSpec>(
           if (!fn) {
             console.error(`Measure "${fn}" is not defined.`);
           }
-          aggResult[id] = fn(rows, m.dim.field ?? id);
+          aggResult[id] = fn(m.dim.field ?? id, rows);
         }
 
         return aggResult;
@@ -48,7 +48,7 @@ export function usePivotAggFunction<Spec extends GridSpec>(
 
           const fn = typeof measure.fn === "string" ? aggs[measure.fn] : measure.fn;
 
-          aggResult[column.id] = fn(finalLeafs, measure.dim.field ?? measure.dim.id);
+          aggResult[column.id] = fn(measure.dim.field ?? measure.dim.id, finalLeafs);
         } else {
           aggResult[column.id] = null;
         }
