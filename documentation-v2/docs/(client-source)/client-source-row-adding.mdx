@@ -1,5 +1,77 @@
 ---
 title: Client Row Adding
 step: Add rows anywhere in the dataset.
-description: Add new rows to an existing dataset using LyteNyte Grid's client row data source. You can insert new rows at any position.
+description: Add new rows to an existing dataset using LyteNyte Grid's
+  client data source. You can insert new rows at any position.
 ---
+
+The `useClientDataSource` hook returns a row source that can add new rows by
+calling the `rowAdd` method. When you provide the source to the grid, the `rowAdd` method
+becomes part of the grid's API.
+
+You can use the `rowAdd` method to create new rows and add them to your existing data. You can add rows
+to the top, bottom, or between other rows. Provide the `useClientDataSource` hook with a
+callback for the `onRowsAdded` parameter to handle row additions.
+
+:::note
+
+This guide covers adding new rows to the client data source. The most common use case for adding
+rows is editing rows. For guidance on row editing, see the [cell editing guides](/docs/cell-editing).
+
+:::
+
+## Adding Rows
+
+In the demo below, click the **Add to Top** button to add a new row to the top of the grid, and
+click the **Add to Bottom** button to add a new row after all other rows.
+
+::demo[Adding Rows="./demos/client-row-adding"]
+
+Handling new row additions is straightforward. Store the existing row data in React state,
+then update the state via the `onRowsAdded` callback, as shown below.
+
+```ts
+const ds = useClientDataSource<GridSpec>({
+  data: data,
+  //!next 13
+  onRowsAdded: (params) => {
+    setData((prev) => {
+      if (params.placement === "start") return [...params.newData, ...prev];
+      if (params.placement === "end") return [...prev, ...params.newData];
+
+      const index = Math.min(Math.max(0, params.placement), prev.length);
+
+      // Handle arbitrary indices
+      const next = [...prev];
+      next.splice(index, 0, ...params.newData);
+
+      return next;
+    });
+  },
+});
+```
+
+:::tip
+
+The `useClientDataSource` hook returns a row source that extends the `RowSource` interface with additional
+properties. When you use TypeScript, you can type the additional properties using the
+`RowSourceClient` type.
+
+The `RowSourceClient` type is a generic type that expects the `GridSpec` type, which creates a circular
+type definition. TypeScript can handle this pattern, but the feature to solve this is not well known. Use the `this`
+keyword in the type, as shown below:
+
+```ts
+export interface GridSpec {
+  readonly data: OrderData;
+  readonly source: RowSourceClient<this>; //!
+}
+```
+
+:::
+
+## Next Steps
+
+::next[/docs/client-source-row-deleting]
+::next[/docs/client-source-data]
+::next[/docs/cell-editing]
