@@ -10,37 +10,34 @@ description: When you group rows, LyteNyte Grid's client data source lets you
 
 This guide assumes you are already familiar with how row grouping works when
 using the client data source. See the [Client Row Grouping guide](/docs/client-source-row-grouping)
-for guidance first if you are not familiar.
+first if you are not familiar.
 
 :::
 
 ## Aggregations
 
-An **aggregation** means something very specific in LyteNyte Grid, it is a record of key
-value pairs, where the key is usually the `id` of a column and the `value` is the result
-of some aggregation function, such as **sum** or **average**.
+An **aggregation** means something very specific in LyteNyte Grid: an aggregation is a record of key-value
+pairs, where the key is usually the `id` of a column and the value is the result of an aggregation
+function such as **sum** or **average**.
 
-This concept of an aggregation is reflected in the type of data a row group node and row
-aggregation node must have, i.e. they must have an object data type, unlike leaf rows
-which may be any data type.
+This concept of an aggregation is reflected in the data type required by a row group node and row
+aggregation node. These nodes must use object data, unlike leaf rows, which may use any data type.
 
 To compute an aggregation using the client data source, provide the `useClientDataSource`
-hook with either an aggregation function or a set of aggregation dimensions.
+hook with either an **aggregation function** or a set of **aggregation dimensions**.
 
 ### Aggregation Functions
 
-An aggregation function is a normal function that will be given the set of leaf rows to aggregate.
-It must return an object with all the aggregation values computed. In the demo below,
-the aggregation function will compute the count of unique values for columns with text, and
-compute the average for columns with numbers. the Aggregation function is set of the `aggregate`
-property of the `useClientDataSource` hook.
+An aggregation function receives a set of leaf rows to aggregate. The function must return an object
+containing all computed aggregation values. In the demo below, the aggregation function computes the
+count of unique values for text columns and computes the average for number columns. The demo passes
+this aggregation function to the `aggregate` property of the `useClientDataSource` hook.
 
 ::demo[Aggregate Rows Using A Function="./demos/client-row-aggregation-fn"]
 
-The aggregation function provided performs the complete aggregation set for all the
-columns in the grid. The code for this is show below. Notice how this code can become
-quite repetitive. LyteNyte Grid provides aggregation dimensions to simplify computing
-aggregations in more declarative way.
+The aggregation function performs the full aggregation for all columns in the grid. The code below shows
+an example implementation. Notice how this logic can become repetitive. For this reason,
+LyteNyte Grid provides aggregation dimensions to simplify computing aggregations in a more declarative way.
 
 ```ts
 const aggFn: Grid.T.AggregationFn<GridSpec["data"]> = (data) => {
@@ -78,8 +75,8 @@ const aggFn: Grid.T.AggregationFn<GridSpec["data"]> = (data) => {
 
 ### Aggregation Dimensions
 
-An aggregation dimension is an object with a `dim` property that contains an `id` value, and optionally
-a `field`, and an `fn` property with a reference to an aggregator function. The full type is shown below:
+An aggregation dimension is an object with a `dim` property that contains an `id` value and optionally
+a `field`, and an `fn` property that references an aggregator function. The full type is shown below:
 
 ```ts
 export type DimensionAgg<T> = {
@@ -88,7 +85,7 @@ export type DimensionAgg<T> = {
 };
 ```
 
-Some examples are shown below:
+Here are some examples of aggregation dimensions:
 
 ```ts
 const sumAgg = { dim: { id: "balance" }, fn: "sum" };
@@ -96,9 +93,8 @@ const avgAgg = { dim: { id: "avg", field: "balance" }, fn: "avg" };
 const fnAgg = { dim: { id: "education" }, fn: OnlyOneUniqueFn };
 ```
 
-The `fn` property is a an `Aggregator` or a string that references a registered `Aggregator` function.
-An `Aggregator` function is a special function that computes computes a single aggregated value.
-An `Aggregator` function has the following type:
+The `fn` property is an `Aggregator` or a string that references a registered `Aggregator` function.
+An `Aggregator` function computes a single aggregated value. An `Aggregator` has the following type:
 
 ```ts
 type PathField = { kind: "path"; path: string };
@@ -107,12 +103,13 @@ type Field<T> = string | number | PathField | ((params: { row: RowNode<T> }) => 
 export type Aggregator<T> = (field: Field<T>, data: RowLeaf<T>[]) => unknown; //!
 ```
 
-Since the `Field` parameter of an Aggregator can be one a dynamic type, LyteNyte Grid exports the
-`computeField` utility function that will return the value of the field, given a leaf row.
-The `computeField` function returns an `unknown` type by default, however, you can cast the return
-value to a type by providing a generic parameter to function. If you do provide a type, you must
-ensure that the value returned conforms to the specified type, `computeField`, will not check
-it for you.
+Since the `field` parameter of an `Aggregator` can be a dynamic type, LyteNyte Grid exports the
+`computeField` utility function. `computeField` returns the value of the registered field for a
+given leaf row.
+
+The `computeField` utility returns `unknown` by default. You can cast the return value by providing a generic
+parameter to the function. If you provide a type, you must ensure the returned value conforms to
+the specified type. The `computeField` utility will not validate the type for you.
 
 ```ts
 // returns the value of the education property on the row's data
@@ -121,35 +118,39 @@ computeField<string>("education", row);
 
 :::note
 
-Do not confuse `Aggregator`s with the `AggregatorFn` function provided to the `useClientDataSource`
-hook. An `Aggregator` computes a single aggregation value which is then assigned to a single key.
-The `AggregationFn` produces the full aggregation result.
+Do not confuse `Aggregator`s with the `AggregationFn` function you provide to the `useClientDataSource`
+hook. An `Aggregator` computes a single value that is assigned to a single key. An `AggregationFn`
+produces the full aggregation result object.
 
 :::
 
-When the aggregation dimension's `fn` property is a string value, it the `Aggregator` must be registered
-on the `aggregateFns` property of the grid. For example, you can define an summation aggregator as follows:
+When an aggregation dimension uses a string `fn`, the client data source looks up the corresponding
+`Aggregator` from the grid's registered aggregators. Register aggregators on the `aggregateFns`
+property of the grid. For example, you can define a summation aggregator as follows:
 
 ```ts
-const sum: Grid;
+// Example shape only
+const sum: Grid.T.Aggregator<BankData> = (field, data) => {
+  // ...
+};
 ```
 
-In the demo below, aggregation dimensions are used to compute the aggregation value for a given group row.
-Two aggregators are registered ahead of time called:
+In the demo below, aggregation dimensions compute the aggregation value for each group row.
+The demo registers two aggregators ahead of time:
 
-- `onlyOneUnique`: returns a value if all the values to be aggregated are the same, otherwise returns null.
-- `avg`: returns the average of the values to be aggregated.
+- `onlyOneUnique`: returns a value if all aggregated values are the same; otherwise returns `null`.
+- `avg`: returns the average of the aggregated values.
 
 ::demo[Aggregation Dimensions="./demos/client-row-aggregation-dimensions"]
 
 ## Updating Aggregations
 
-LyteNyte Grid does not use a predefined aggregation model, but it is possible to extend the grid's
-API or column definitions to support in. In this section you will extend the column`s specification
-to allow columns to support an aggregation and define a list of allowed aggregations.
+LyteNyte Grid does not enforce a predefined aggregation model. However, you can extend the grid's
+API or column definitions to support one. In this section, you will extend the column specification
+to allow columns to specify an aggregation and define a list of allowed aggregations.
 
-Start by creating an updating column specification. For our example the fields will be mandatory,
-but you can choose a type the matches your use case.
+Start by creating an updated column specification. In this example, the fields are mandatory,
+but you can choose a type that matches your use case.
 
 ```ts
 interface GridSpec {
@@ -161,19 +162,38 @@ interface GridSpec {
 }
 ```
 
-Strings are used for the aggregations, since we will register all the possible aggregations ahead of
-time. Text columns will support three aggregators:
+This example uses strings for aggregations, since the demo registers all possible aggregations ahead of
+time. Text columns support three aggregators:
 
 - `onlyOneUnique`
 - `first`
 - `last`
 
-Number columns will support three aggregators as well:
+Number columns support three aggregators as well:
 
 - `avg`
 - `sum`
 - `count`
 
 In the demo below, the aggregators are created and added to the client data source. The column headers
-use a customer header renderer to allow you to change the aggregation applied to a column based on the
+use a custom header renderer to let you change the aggregation applied to a column based on the
 `allowedAggs` list.
+
+::demo[Updating Aggregations="./demos/client-row-aggregation-updates"]
+
+The demo extends the columns with the `agg` and `allowedAggs` properties. The demo then derives aggregation
+dimensions from the columns to create the value passed to the `useClientDataSource` hook. The code below
+shows this derivation:
+
+```ts
+const aggModel = useMemo(() => {
+  return columns.map((x) => ({ dim: x, fn: x.agg }));
+}, [columns]);
+```
+
+## Next Steps
+
+::next[/docs/client-source-row-grouping]
+::next[/docs/client-source-filtering]
+::next[/docs/client-source-row-adding]
+::next[/docs/client-source-having-filters]
