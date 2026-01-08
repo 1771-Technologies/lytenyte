@@ -6,3 +6,16 @@ description: Row Label Filters are a special type of filter that excludes rows
   with specific row grouping labels. Use these filters when you want
   to display only row groups with valid labels.
 ---
+
+Label filters are specialized filters that will only be used when there are row groups
+applied to the client row source. For more on row grouping see the
+[Client Row Grouping guide](/docs/client-source-row-grouping).
+
+## Label Filter Function
+
+The LyteNyte Grid client data source accepts an array of `LabelFilter` functions or null. Label filters
+are always applied at a specific depth level for row groups. Each index in the array represents the
+depth that the label filter will be applied to. When the filter value at a particular index is `null`,
+the label filter for that depth is skipped.
+
+The demo below shows label filters in action.
