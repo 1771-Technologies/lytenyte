@@ -9,15 +9,26 @@ import {
   Menu,
   RowGroupCell,
   useClientDataSource,
+  usePiece,
+  type PieceWritable,
 } from "@1771technologies/lytenyte-pro-experimental";
 import { twMerge } from "tailwind-merge";
 import clsx, { type ClassValue } from "clsx";
 import { useMemo, useState } from "react";
+import { FloatingFilter } from "./filter.jsx";
+
+export type FilterModel = Record<
+  string,
+  { kind: "gt" | "lt" | "eq" | "neq" | "ge" | "le"; value: null | string }
+>;
 
 export type BankData = (typeof bankDataSmall)[number];
-interface GridSpec {
+export interface GridSpec {
   readonly data: BankData;
   readonly column: { agg: string; allowedAggs: string[] };
+  readonly api: {
+    filterModel: PieceWritable<FilterModel>;
+  };
 }
 
 const initialColumns: Grid.Column<GridSpec>[] = [
@@ -33,8 +44,9 @@ const initialColumns: Grid.Column<GridSpec>[] = [
     name: "Age",
     id: "age",
     type: "number",
-    width: 80,
+    width: 120,
     cellRenderer: NumberCell,
+    floatingCellRenderer: FloatingFilter,
     agg: "avg",
     allowedAggs: ["avg", "sum", "count"],
   },
@@ -43,6 +55,7 @@ const initialColumns: Grid.Column<GridSpec>[] = [
     id: "balance",
     type: "number",
     cellRenderer: BalanceCell,
+    floatingCellRenderer: FloatingFilter,
     agg: "avg",
     allowedAggs: ["avg", "sum", "count"],
   },
@@ -92,6 +105,7 @@ const initialColumns: Grid.Column<GridSpec>[] = [
     id: "day",
     type: "number",
     cellRenderer: NumberCell,
+    floatingCellRenderer: FloatingFilter,
     agg: "avg",
     allowedAggs: ["avg", "sum", "count"],
   },
@@ -106,13 +120,19 @@ const initialColumns: Grid.Column<GridSpec>[] = [
     id: "duration",
     type: "number",
     cellRenderer: DurationCell,
+    floatingCellRenderer: FloatingFilter,
 
     agg: "avg",
     allowedAggs: ["avg", "sum", "count"],
   },
 ];
 
-const base: Grid.ColumnBase<GridSpec> = { width: 150, headerRenderer: HeaderCell };
+const base: Grid.ColumnBase<GridSpec> = {
+  width: 150,
+  headerRenderer: HeaderCell,
+
+  floatingCellRenderer: () => <div></div>,
+};
 
 const group: Grid.RowGroupColumn<GridSpec> = {
   cellRenderer: RowGroupCell,
@@ -147,6 +167,44 @@ const last: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {
 export default function GridTheming() {
   const [columns, setColumns] = useState(initialColumns);
 
+  //!next 2
+  const [filterModel, setFilterModel] = useState<FilterModel>({ age: { kind: "ge", value: "40" } });
+  const filterModel$ = usePiece(filterModel, setFilterModel);
+
+  const apiExtension = useMemo(() => {
+    return {
+      filterModel: filterModel$,
+    };
+  }, [filterModel$]);
+
+  //!next 26
+  const havingFn = useMemo(() => {
+    const model = Object.entries(filterModel).filter(([, f]) => {
+      return f.kind && f.value && !Number.isNaN(Number.parseFloat(f.value));
+    });
+
+    if (!model.length) return null;
+
+    const fn: Grid.T.HavingFilterFn = (row: Grid.T.RowGroup) => {
+      for (const [key, f] of model) {
+        const value = row.data[key] as number;
+        const compare = Number.parseFloat(f.value!);
+        if (value == null || typeof value !== "number") return false;
+
+        if (f.kind === "eq" && value != compare) return false;
+        else if (f.kind === "neq" && value === compare) return false;
+        else if (f.kind === "ge" && value < compare) return false;
+        else if (f.kind === "le" && value > compare) return false;
+        else if (f.kind === "lt" && value >= compare) return false;
+        else if (f.kind === "gt" && value <= compare) return false;
+      }
+
+      return true;
+    };
+
+    return [null, fn];
+  }, [filterModel]);
+
   const aggModel = useMemo(() => {
     return columns.map((x) => ({ dim: x, fn: x.agg }));
   }, [columns]);
@@ -154,6 +212,7 @@ export default function GridTheming() {
   const ds = useClientDataSource<GridSpec>({
     data: bankDataSmall,
     group: [{ id: "job" }, { id: "education" }],
+    having: havingFn, //!
     aggregate: aggModel,
     aggregateFns: {
       avg,
@@ -169,11 +228,13 @@ export default function GridTheming() {
   return (
     <div className="ln-grid" style={{ height: 500 }}>
       <Grid
+        apiExtension={apiExtension}
         rowSource={ds}
         columns={columns}
         columnBase={base}
         rowGroupColumn={group}
         onColumnsChange={setColumns}
+        floatingRowEnabled
       />
     </div>
   );

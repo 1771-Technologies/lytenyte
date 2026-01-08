@@ -106,8 +106,8 @@ export interface UseClientDataSourceParams<Spec extends GridSpec = GridSpec, T =
   readonly aggregate?: AggregationFn<T> | DimensionAgg<T>[];
   readonly aggregateFns?: Record<string, Aggregator<T>>;
 
-  readonly having?: HavingFilterFn | (HavingFilterFn | null)[];
-  readonly labelFilter?: (LabelFilter | null)[];
+  readonly having?: HavingFilterFn | (HavingFilterFn | null)[] | null;
+  readonly labelFilter?: (LabelFilter | null)[] | null;
 
   readonly leafIdFn?: LeafIdFn<T>;
   readonly groupIdFn?: GroupIdFn;

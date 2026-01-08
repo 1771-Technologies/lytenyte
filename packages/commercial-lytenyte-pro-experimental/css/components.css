@@ -8,6 +8,13 @@
       outline: 1px solid var(--ln-primary-50);
     }
 
+    &[data-ln-size="xs"] {
+      height: 24px;
+      font-size: 0.75rem;
+      line-height: 20px;
+      padding: 0px var(--ln-padding-field-sm);
+      border-radius: var(--ln-radius-field-sm);
+    }
     &[data-ln-size="sm"] {
       height: 30px;
       font-size: 0.75rem;
@@ -104,6 +111,15 @@
 
   [data-ln-button][data-ln-icon="true"] {
     padding: 0px;
+
+    &[data-ln-size="xs"] {
+      height: 24px;
+      width: 24px;
+      max-height: 24px;
+      max-width: 24px;
+      min-height: 24px;
+      min-width: 24px;
+    }
 
     &[data-ln-size="sm"] {
       height: 30px;
@@ -314,11 +330,17 @@
     padding-inline-end: var(--ln-space-20);
     padding-block: var(--ln-space-20);
     border-radius: var(--ln-radius-md);
+    display: flex;
+    align-items: center;
 
     cursor: pointer;
 
     &[data-ln-disabled="true"] {
       color: var(--ln-text-xlight);
+    }
+
+    &[data-ln-checked="true"] {
+      background-color: var(--ln-primary-10);
     }
 
     font-size: 0.875rem;

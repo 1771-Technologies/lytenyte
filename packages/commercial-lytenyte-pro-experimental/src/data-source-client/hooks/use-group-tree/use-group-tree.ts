@@ -166,7 +166,6 @@ export function useGroupTree<T>(
         if (node.kind === "root") node.children.forEach((c) => traverse(c, 0));
 
         const filterFn = Array.isArray(having) ? (having[depth] ?? null) : having;
-        if (!filterFn) return;
 
         if (node.kind === "branch") {
           const row = node.row;
@@ -176,7 +175,7 @@ export function useGroupTree<T>(
             row.__invalidate = false;
           }
 
-          const shouldKeep = filterFn(row);
+          const shouldKeep = filterFn ? filterFn(row) : true;
           if (shouldKeep) {
             node.children.forEach((c) => traverse(c, depth + 1));
           } else {

@@ -8,10 +8,7 @@ interface RadioGroupContext {
 
 export const context = createContext({} as RadioGroupContext);
 
-const RadioGroupBase = (
-  { value, onChange, ...props }: Omit<JSX.IntrinsicElements["div"], "onChange"> & RadioGroupContext,
-  ref: JSX.IntrinsicElements["div"]["ref"],
-) => {
+const RadioGroupBase = ({ value, onChange, ...props }: RadioGroup.Props, ref: RadioGroup.Props["ref"]) => {
   return (
     <context.Provider value={{ value: value, onChange: onChange }}>
       <div {...props} ref={ref} role="group">
@@ -21,3 +18,7 @@ const RadioGroupBase = (
   );
 };
 export const RadioGroup = forwardRef(RadioGroupBase);
+
+export namespace RadioGroup {
+  export type Props = Omit<JSX.IntrinsicElements["div"], "onChange"> & RadioGroupContext;
+}

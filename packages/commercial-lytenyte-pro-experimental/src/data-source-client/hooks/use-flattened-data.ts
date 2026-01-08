@@ -39,6 +39,7 @@ export function useFlattenedData<Spec extends GridSpec>(
       ? props.having
       : null
     : props.having;
+
   const tree = useGroupTree(
     leafs,
     sorted,
