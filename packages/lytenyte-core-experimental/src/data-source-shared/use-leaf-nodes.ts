@@ -21,6 +21,7 @@ export function useLeafNodes<T>(
     for (let i = 0; i < center.length; i++) {
       const d = center[i];
       const node = lookup.get(d) ?? makeLeafNode(d, i, "center", leafIdFn ?? leafIdFallback);
+      (node as any).__srcIndex = i;
 
       nextMap.set(d, node);
       nextNodes.push(node);
@@ -36,6 +37,7 @@ export function useLeafNodes<T>(
 
     const topNodes = top.map((x, i) => {
       const node = makeLeafNode(x, i, "top", leafIdFn ?? leafIdFallback);
+      (node as any).__srcIndex = i;
 
       idMap.set(node.id, node);
       return node;
@@ -49,6 +51,7 @@ export function useLeafNodes<T>(
 
     const botNodes = bot.map((x, i) => {
       const node = makeLeafNode(x, i, "bottom", leafIdFn ?? leafIdFallback);
+      (node as any).__srcIndex = i;
 
       return node;
     });
