@@ -33,7 +33,7 @@ export default function NormalPlay() {
       </div>
 
       <div style={{ display: "flex", justifyContent: "center", padding: "20px" }}>
-        <Menu.Root>
+        <Menu>
           <Menu.Trigger data-ln-button="primary" data-ln-size="md">
             Menu
           </Menu.Trigger>
@@ -65,7 +65,7 @@ export default function NormalPlay() {
               <Menu.CheckboxItem checked>Right</Menu.CheckboxItem>
             </Menu.Container>
           </Menu.Popover>
-        </Menu.Root>
+        </Menu>
       </div>
     </div>
   );

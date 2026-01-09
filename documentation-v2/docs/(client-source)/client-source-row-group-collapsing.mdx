@@ -5,3 +5,52 @@ step: Flatten single-child group rows.
 description: Row grouping creates a tree representation of your row data. LyteNyte Grid
   can collapse and flatten this tree when a group row has only a single leaf child.
 ---
+
+When you group rows in the grid, some groups will have only a single child row.
+You can instruct the client data source to collapse row groups by setting the
+`rowGroupCollapseBehavior`, which accepts one of three values:
+
+- `"full-tree"`: Group rows with a single child are collapsed at every depth level.
+- `"last-only"`: Only collapse group rows at the final depth level, and collapse each matching group once.
+- `"no-collapse"`: The client data source does not collapse any row groups. This is the default setting.
+
+## Full Tree Collapsing
+
+Setting `rowGroupCollapseBehavior` to `"full-tree"` collapses group rows that have a
+single child at every depth level. Use the `"full-tree"` setting when you want a grouping tree that
+is as flat as possible without losing information.
+
+::demo[Full Tree Collapsing="./demos/client-row-grouping-collapsing"]
+
+:::note
+
+To clearly demonstrate the `"full-tree"` collapse behavior, the sample data includes only
+a single row for the **Unemployed** job category.
+
+:::
+
+## Last Only Collapsing
+
+Setting `rowGroupCollapseBehavior` to `"last-only"` collapses only the final group row
+when it has a single child. Unlike `"full-tree"`, the client data source does not collapse parent groups
+after collapsing the final group, as the demo below shows.
+
+::demo[Last Row Group Collapsing="./demos/client-row-grouping-collapse-last"]
+
+In the demo, the **Unemployed** group has a single child. However, because the grid uses two grouping levels,
+only the last level is collapsed.
+
+## Collapse Setting Update
+
+You can update `rowGroupCollapseBehavior` at any time. In the demo below, you can
+switch between collapse behaviors to see them in action. To support this, the demo stores the
+collapse behavior in React state using `useState` and updates the value through a toggle group.
+
+::demo[Updating Collapse Behavior="./demos/client-row-grouping-collapsing-updates"]
+
+## Next Steps
+
+::next[/docs/client-source-row-grouping]
+::next[/docs/client-source-filtering]
+::next[/docs/client-source-aggregations]
+::next[/docs/client-source-row-sorting]

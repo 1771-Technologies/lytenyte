@@ -55,6 +55,12 @@ export function useGroupTree<T>(
   agg: AggregationFn<T> | undefined | null,
 ) {
   const groupNodeCacheRef = useRef(new Map<string, GroupNode<T>["row"]>());
+  const prevCollapse = useRef(rowGroupCollapseBehavior);
+  if (prevCollapse.current !== rowGroupCollapseBehavior) {
+    groupNodeCacheRef.current = new Map();
+    prevCollapse.current = rowGroupCollapseBehavior;
+  }
+
   return useMemo(() => {
     const groupIdToGroupNode: Map<string, GroupNode<T>> = new Map();
 
