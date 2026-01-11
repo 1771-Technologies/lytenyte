@@ -4,11 +4,6 @@ import { useEvent } from "../../../../hooks/use-event.js";
 
 export function useColumnView(view: ColumnView): Root.API["columnView"] {
   return useEvent(() => {
-    return {
-      centerCount: view.centerCount,
-      columnCount: view.visibleColumns.length,
-      endCount: view.endCount,
-      startCount: view.startCount,
-    };
+    return view;
   });
 }

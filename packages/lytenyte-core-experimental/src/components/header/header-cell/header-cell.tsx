@@ -2,6 +2,7 @@ import { forwardRef, memo, useMemo, type CSSProperties, type JSX } from "react";
 import { useHeaderCellStyle } from "./use-header-cell-style.js";
 import {
   COLUMN_MARKER_ID,
+  rangesOverlap,
   sizeFromCoord,
   type LayoutHeaderCell,
   type LayoutHeaderFloating,
@@ -11,6 +12,7 @@ import { useRoot } from "../../../root/root-context.js";
 import { useDragMove } from "./use-drag-move.js";
 import { ResizeHandler } from "./resize-handler.js";
 import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
+import { useInternalShare } from "../../../internal.js";
 
 const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function HeaderCell(
   { cell, resizerClassName, resizerStyle, ...props },
@@ -20,6 +22,11 @@ const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function Hea
 
   const column = view.lookup.get(cell.id)!;
   const resizable = (column.resizable ?? base.resizable) && column.id !== COLUMN_MARKER_ID;
+
+  const { cellSelections } = useInternalShare();
+  const isCellSelected = cellSelections.useValue((x) =>
+    x.some((r) => rangesOverlap(r.columnStart, r.columnEnd, cell.colStart, cell.colEnd)),
+  );
 
   const Renderer =
     cell.kind === "cell"
@@ -40,7 +47,7 @@ const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function Hea
     return dataAttrs;
   }, [column.groupPath?.length, cell.kind, rowSpan]);
 
-  const handlers = useMappedEvents(events.headerCell, column, api);
+  const handlers = useMappedEvents(events.headerCell, { column, api, layout: cell });
 
   const { props: dragProps, placeholder } = useDragMove(cell, props.onDragStart ?? handlers.onDragStart);
   const headerStyle = useHeaderCellStyle(cell, xPositions);
@@ -61,6 +68,7 @@ const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function Hea
       data-ln-header-floating={cell.kind === "floating" ? "true" : undefined}
       data-ln-colid={column.id}
       data-ln-gridid={id}
+      data-ln-cell-selected={isCellSelected}
       data-ln-header-range={`${cell.colStart},${cell.colStart + cell.colSpan}`}
       data-ln-rowindex={cell.rowStart}
       data-ln-colindex={cell.colStart}

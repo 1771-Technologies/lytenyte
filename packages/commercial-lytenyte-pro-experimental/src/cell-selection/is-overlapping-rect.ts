@@ -1,10 +1,9 @@
 import type { DataRect } from "../types/api.js";
 
-export function isOverlappingRect(rect1: DataRect, rect2: DataRect) {
-  return !(
-    rect1.rowEnd < rect2.rowStart ||
-    rect1.rowStart > rect2.rowEnd ||
-    rect1.columnEnd < rect2.columnStart ||
-    rect1.columnStart > rect2.columnEnd
-  );
+export function isOverlappingRect(a: DataRect, b: DataRect) {
+  const rowsOverlap = a.rowStart < b.rowEnd && b.rowStart < a.rowEnd;
+
+  const columnsOverlap = a.columnStart < b.columnEnd && b.columnStart < a.columnEnd;
+
+  return rowsOverlap && columnsOverlap;
 }

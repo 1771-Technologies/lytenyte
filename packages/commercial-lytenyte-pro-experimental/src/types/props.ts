@@ -19,6 +19,8 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   readonly cellSelectMode?: "range" | "multi-range" | "none";
 
   readonly cellSelections?: DataRect[];
+  readonly cellSelectionExcludeMarker?: boolean;
+  readonly cellSelectionMaintainOnNonCellPosition?: boolean;
   readonly onCellSelectionChange?: (rects: DataRect[]) => void;
 
   // CORE Shared Properties

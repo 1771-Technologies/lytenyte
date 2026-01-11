@@ -29,7 +29,7 @@
 }
 
 @custom-variant ln-header-marker {
-  & [data-ln-header-cell="true"][data-ln-header-id="lytenyte-marker-column"] {
+  & [data-ln-header-cell="true"][data-ln-colid="lytenyte-marker-column"] {
     @slot;
   }
 }

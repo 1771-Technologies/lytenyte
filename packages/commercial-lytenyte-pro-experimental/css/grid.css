@@ -4,7 +4,7 @@
   .ln-grid {
     /* CELL SELECTION */
     [data-ln-cell-selection-rect]:not([data-ln-cell-selection-is-unit="true"]) {
-      background-color: var(--ln-primary-30);
+      background-color: var(--ln-primary-10);
       box-sizing: border-box;
 
       &[data-ln-cell-selection-border-top="true"] {
@@ -19,10 +19,6 @@
       &[data-ln-cell-selection-border-end="true"] {
         border-inline-end: 1px solid var(--ln-primary-50);
       }
-    }
-    [data-ln-cell-selection-rect][data-ln-cell-selection-is-unit="true"] {
-      outline: 1px solid var(--ln-primary-50);
-      outline-offset: -1px;
     }
 
     [data-ln-component-group-cell] {

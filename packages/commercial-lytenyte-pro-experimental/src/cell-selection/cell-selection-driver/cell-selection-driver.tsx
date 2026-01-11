@@ -1,25 +1,25 @@
-import { useEffect, useRef } from "react";
-import { useEdgeScroll } from "./use-edge-scroll.js";
+import { useEffect } from "react";
+import { useEdgeScroll } from "../use-edge-scroll.js";
 import {
-  equal,
   getClientX,
   getClientY,
   getRelativeXPosition,
   getRelativeYPosition,
-  type PositionUnion,
 } from "@1771technologies/lytenyte-shared";
 import { getNearestFocusable, getPositionFromFocusable } from "@1771technologies/lytenyte-shared";
 import { isHTMLElement } from "@1771technologies/lytenyte-shared";
-import { updateAdditiveCellSelection } from "./update-additive-cell-selection.js";
-import { deselectRectRange } from "./deselect-rect-range.js";
-import { isWithinSelectionRect } from "./is-within-selection-rect.js";
-import { expandCellSelectionStart } from "./expand-cell-selection-start.js";
-import { expandCellSelectionEnd } from "./expand-cell-selection-end.js";
-import { expandCellSelectionDown } from "./expand-cell-selection-down.js";
-import { expandCellSelectionUp } from "./expand-cell-selection-up.js";
-import { useProRoot } from "../root/context.js";
+import { updateAdditiveCellSelection } from "../update-additive-cell-selection.js";
+import { deselectRectRange } from "../deselect-rect-range.js";
+import { isWithinSelectionRect } from "../is-within-selection-rect.js";
+import { useProRoot } from "../../root/context.js";
 import { useRoot } from "@1771technologies/lytenyte-core-experimental/internal";
-import type { DataRect } from "../types/api.js";
+import type { DataRect } from "../../types/api.js";
+import { useCellFocusChange } from "./use-cell-focus-change.js";
+import { adjustRectForRowAndCellSpan } from "../adjust-rect-for-row-and-cell-span.js";
+import { expandSelectionUp } from "../expand-selection-up.js";
+import { expandSelectionDown } from "../expand-selection-down.js";
+import { expandSelectionStart } from "../expand-selection-start.js";
+import { expandSelectionEnd } from "../expand-selection-end.js";
 
 function isNormalClick(event: MouseEvent) {
   return event.button === 0 && !event.altKey;
@@ -37,10 +37,9 @@ export function CellSelectionDriver() {
     cellSelections,
 
     cellSelectionIsDeselect,
-
-    cellSelectionPivot,
-    setSelectionPivot,
   } = useProRoot();
+
+  const { excludeMarker, keepSelection } = useProRoot();
 
   const { cancelX, cancelY, edgeScrollX, edgeScrollY } = useEdgeScroll();
 
@@ -53,10 +52,7 @@ export function CellSelectionDriver() {
 
     const isMultiRange = mode === "multi-range";
     let isAdditive = false;
-    let startSelection: DataRect | null = null as unknown as DataRect;
-
-    let pointerStartX: number | null = 0;
-    let pointerStartY: number | null = 0;
+    let start: DataRect | null = null as unknown as DataRect;
 
     let lastRect: DataRect | null = null;
     let animFrame: number | null = null;
@@ -68,26 +64,20 @@ export function CellSelectionDriver() {
       animFrame = requestAnimationFrame(() => {
         animFrame = null;
 
+        if (!start) return;
+
         const clientX = getClientX(event);
         const clientY = getClientY(event);
 
-        const target = event.target;
-        if (!isHTMLElement(target)) return;
-        const focusable = getNearestFocusable(gridId, target);
+        // Check the target we moved over and ensure it is an HTML element.
+        if (!isHTMLElement(event.target)) return;
+
+        // Get the focusable position for the currently hovered cell.
+        const focusable = getNearestFocusable(gridId, event.target);
         if (!focusable) return;
+
         const position = getPositionFromFocusable(gridId, focusable);
         if (position.kind !== "cell" && position.kind !== "full-width") return;
-        const rowIndex = position.rowIndex;
-        const columnIndex = position.colIndex;
-
-        if (pointerStartX != null && pointerStartY != null) {
-          const moveDeltaX = Math.abs(pointerStartX - clientX);
-          const moveDeltaY = Math.abs(pointerStartY - clientY);
-          if (moveDeltaX < 20 && moveDeltaY < 20) return;
-          pointerStartX = null;
-          pointerStartY = null;
-        }
-        if (!startSelection) return;
 
         const startCount = view.startCount;
         const firstEnd = view.centerCount + startCount;
@@ -100,21 +90,16 @@ export function CellSelectionDriver() {
 
         const visualX = isRtl ? relativeX.right : relativeX.left;
 
+        const rowIndex = position.rowIndex;
+        const columnIndex = position.colIndex;
+
         const startColSection =
-          startSelection.columnStart < startCount
-            ? "start"
-            : startSelection.columnStart >= firstEnd
-              ? "end"
-              : "center";
+          start.columnStart < startCount ? "start" : start.columnStart >= firstEnd ? "end" : "center";
         const colSection = columnIndex < startCount ? "start" : columnIndex >= firstEnd ? "end" : "center";
 
         const rowSection = rowIndex < topCount ? "top" : rowIndex >= firstEnd ? "bottom" : "center";
         const startRowSection =
-          startSelection.rowStart < topCount
-            ? "top"
-            : startSelection.rowStart >= firstEndRow
-              ? "bottom"
-              : "center";
+          start.rowStart < topCount ? "top" : start.rowStart >= firstEndRow ? "bottom" : "center";
 
         const isSameColPin = startColSection === colSection;
         const isSameRowPin = startRowSection === rowSection;
@@ -134,15 +119,17 @@ export function CellSelectionDriver() {
         const maxScrollX = viewport.scrollWidth - viewport.clientWidth - 4;
         if (!isSameColPin && columnIndex >= firstEnd && scrollX < maxScrollX) return;
 
-        const startRow = rowIndex < startSelection.rowStart ? rowIndex : startSelection.rowStart;
-        const endRow = rowIndex < startSelection.rowStart ? startSelection.rowEnd : rowIndex + 1;
+        const rowSpan = position.kind === "full-width" || !position.root ? 1 : position.root.rowSpan;
+        const colSpan = position.kind === "full-width" || !position.root ? 1 : position.root.colSpan;
 
-        const startCol = columnIndex < startSelection.columnStart ? columnIndex : startSelection.columnStart;
-        const endCol = columnIndex < startSelection.columnStart ? startSelection.columnEnd : columnIndex + 1;
+        const rs = Math.min(rowIndex, start.rowStart);
+        const re = Math.max(rowIndex + rowSpan, start.rowEnd);
+        const ce = Math.max(columnIndex + colSpan, start.columnEnd);
 
-        const active: DataRect[] = [
-          { rowStart: startRow, rowEnd: endRow, columnStart: startCol, columnEnd: endCol },
-        ];
+        let cs = Math.min(columnIndex, start.columnStart);
+        if (excludeMarker) cs = Math.max(cs, 1);
+
+        const active: DataRect = { rowStart: rs, rowEnd: re, columnStart: cs, columnEnd: ce };
 
         if (isAdditive) {
           updateAdditiveCellSelection(
@@ -151,14 +138,14 @@ export function CellSelectionDriver() {
             topCount,
             rowCount,
             botCount,
-            active[0],
+            active,
             cellSelectionAdditiveRects,
             setCellSelectionAdditiveRects,
           );
         } else {
-          onCellSelectionChange(active);
+          onCellSelectionChange([adjustRectForRowAndCellSpan(api.cellRoot, active)]);
         }
-        lastRect = active[0];
+        lastRect = active;
       });
     };
 
@@ -177,18 +164,22 @@ export function CellSelectionDriver() {
 
       const target = event.target;
       if (!isHTMLElement(target)) return;
+
       const focusable = getNearestFocusable(gridId, target);
       if (!focusable) return;
+
       const position = getPositionFromFocusable(gridId, focusable);
       if (position.kind !== "cell" && position.kind !== "full-width") return;
+
       const rowIndex = position.rowIndex;
       const columnIndex = position.colIndex;
+
+      if (excludeMarker && columnIndex === 0) return;
 
       // If the columnIndex or rowIndex is null then we haven't clicked a valid cell position.
       // This ends the row selection.
       if (columnIndex == null || rowIndex == null) {
         onCellSelectionChange([]);
-        setSelectionPivot(null);
         return;
       }
 
@@ -196,20 +187,30 @@ export function CellSelectionDriver() {
 
       const isDeselect = isAdditive && isSelected;
 
-      pointerStartX = event.clientX;
-      pointerStartY = event.clientY;
+      const rowSpan = position.kind === "full-width" || !position.root ? 1 : position.root.rowSpan;
+      const colSpan = position.kind === "full-width" || !position.root ? 1 : position.root.colSpan;
 
-      startSelection = {
+      start = {
         columnStart: columnIndex,
-        columnEnd: columnIndex + 1,
+        columnEnd: columnIndex + colSpan,
         rowStart: rowIndex,
-        rowEnd: rowIndex + 1,
+        rowEnd: rowIndex + rowSpan,
       };
 
       // If shift key down we select an area. We can only select an area if a pivot has been established.
       // The pivot will always expand the last cell selection rect if there are multiple ones.
-      const pivot = cellSelectionPivot;
-      if (event.shiftKey && pivot) {
+      if (event.shiftKey) {
+        const position = focusActive.get();
+
+        if (position?.kind !== "cell") return;
+
+        const pivot: DataRect = {
+          rowStart: position.root ? position.root.rowIndex : position.rowIndex,
+          rowEnd: position.root ? position.root.rowIndex + position.root.rowSpan : position.rowIndex + 1,
+          columnStart: position.root ? position.root.colIndex : position.colIndex,
+          columnEnd: position.root ? position.root.colIndex + position.root.colSpan : position.colIndex,
+        };
+
         const active = { ...pivot };
 
         active.columnStart = Math.min(columnIndex, active.columnStart);
@@ -224,9 +225,6 @@ export function CellSelectionDriver() {
         // focused. This leads to awkward behavior around the cell selection pivot
         event.preventDefault();
 
-        document.addEventListener("mousemove", pointerMove);
-        document.addEventListener("contextmenu", pointerUp);
-        document.addEventListener("pointerup", pointerUp);
         return;
       }
 
@@ -235,7 +233,7 @@ export function CellSelectionDriver() {
         event.preventDefault();
       }
 
-      if (!isDeselect && cellSelections.length <= 1) setSelectionPivot({ ...startSelection, isUnit: true });
+      // if (!isDeselect && cellSelections.length <= 1) setSelectionPivot({ ...startSelection, isUnit: true });
 
       cellSelectionIsDeselect.current = isDeselect;
 
@@ -246,22 +244,22 @@ export function CellSelectionDriver() {
           topCount,
           rowCount,
           botCount,
-          startSelection,
+          start,
           cellSelectionAdditiveRects,
           setCellSelectionAdditiveRects,
         );
       } else {
-        onCellSelectionChange([startSelection]);
+        onCellSelectionChange([adjustRectForRowAndCellSpan(api.cellRoot, start)]);
       }
 
-      lastRect = startSelection;
+      lastRect = start;
       document.addEventListener("mousemove", pointerMove);
       document.addEventListener("contextmenu", pointerUp);
       document.addEventListener("pointerup", pointerUp);
     };
 
     const pointerUp = () => {
-      startSelection = null;
+      start = null;
 
       if (isAdditive) {
         const isDeselect = cellSelectionIsDeselect.current;
@@ -287,45 +285,49 @@ export function CellSelectionDriver() {
       const start = rtl ? "ArrowRight" : "ArrowLeft";
       const end = rtl ? "ArrowLeft" : "ArrowRight";
 
-      if (!ev.shiftKey) return;
+      const position = focusActive.get();
+
+      if (!ev.shiftKey || position?.kind !== "cell") return;
 
       let handled = false;
-      if (ev.key === start) {
-        expandCellSelectionStart(
+      if (ev.key === "ArrowUp") {
+        expandSelectionUp(
           api,
           cellSelections,
-          cellSelectionPivot,
           onCellSelectionChange,
           ev.ctrlKey || ev.metaKey,
-        );
-        handled = true;
-      } else if (ev.key === end) {
-        expandCellSelectionEnd(
-          api,
-          view,
-          cellSelections,
-          cellSelectionPivot,
-          onCellSelectionChange,
-          ev.ctrlKey || ev.metaKey,
+          position,
+          rowCount,
         );
         handled = true;
       } else if (ev.key === "ArrowDown") {
-        expandCellSelectionDown(
+        expandSelectionDown(
           api,
           cellSelections,
           onCellSelectionChange,
-          cellSelectionPivot,
-          rowCount,
           ev.ctrlKey || ev.metaKey,
+          position,
+          rowCount,
         );
         handled = true;
-      } else if (ev.key === "ArrowUp") {
-        expandCellSelectionUp(
+      } else if (ev.key === start) {
+        expandSelectionStart(
           api,
           cellSelections,
-          cellSelectionPivot,
           onCellSelectionChange,
           ev.ctrlKey || ev.metaKey,
+          position,
+          excludeMarker,
+        );
+        handled = true;
+      } else if (ev.key === end) {
+        expandSelectionEnd(
+          api,
+          cellSelections,
+          onCellSelectionChange,
+          ev.ctrlKey || ev.metaKey,
+          position,
+          view,
         );
         handled = true;
       }
@@ -349,54 +351,30 @@ export function CellSelectionDriver() {
     cancelY,
     cellSelectionAdditiveRects,
     cellSelectionIsDeselect,
-    cellSelectionPivot,
     cellSelections,
     edgeScrollX,
     edgeScrollY,
+    excludeMarker,
+    focusActive,
     id,
     mode,
     onCellSelectionChange,
     rowCount,
     rtl,
     setCellSelectionAdditiveRects,
-    setSelectionPivot,
     topCount,
     view,
     viewport,
   ]);
 
-  const focus = focusActive.useValue();
-  const prevRef = useRef<PositionUnion | null>(null);
-
-  useEffect(() => {
-    if (!focus) return;
-
-    const prev = prevRef.current;
-    if (equal(prev, focus)) return;
-    prevRef.current = focus;
-
-    if (focus?.kind !== "cell" && focus?.kind !== "full-width") {
-      onCellSelectionChange([]);
-      setSelectionPivot(null);
-      setCellSelectionAdditiveRects([]);
-    } else {
-      onCellSelectionChange([
-        {
-          rowStart: focus.rowIndex,
-          rowEnd: focus.rowIndex + 1,
-          columnStart: focus.colIndex,
-          columnEnd: focus.colIndex + 1,
-        },
-      ]);
-      setSelectionPivot({
-        rowStart: focus.rowIndex,
-        rowEnd: focus.rowIndex + 1,
-        columnStart: focus.colIndex,
-        columnEnd: focus.colIndex + 1,
-        isUnit: true,
-      });
-    }
-  }, [focus, onCellSelectionChange, setCellSelectionAdditiveRects, setSelectionPivot]);
+  useCellFocusChange(
+    focusActive,
+    excludeMarker,
+    keepSelection,
+    onCellSelectionChange,
+    setCellSelectionAdditiveRects,
+    api,
+  );
 
   return <></>;
 }

@@ -23,6 +23,9 @@ export {
   useRowSelectSplitLookup,
 } from "./data-source-shared/row-selection/use-rows-selected.js";
 
+export type { LnInternalShare } from "./root/internal-share.js";
+export { LnInternalShareProvider, useInternalShare } from "./root/internal-share.js";
+
 export { isRowIndeterminate } from "./data-source-shared/row-selection/is-row-indeterminate.js";
 export { isRowSelected } from "./data-source-shared/row-selection/is-row-selected.js";
 export { useAggregationFn } from "./data-source-shared/use-aggregation-fn.js";

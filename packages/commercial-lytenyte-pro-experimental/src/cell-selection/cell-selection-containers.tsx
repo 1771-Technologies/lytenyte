@@ -9,11 +9,9 @@ import { useProRoot } from "../root/context.js";
 export const CellSelectionTop = memo(function CellSelectionTop() {
   const { source } = useRoot();
   const {
-    cellSelectionMode: mode,
     cellSelectionSplits: allRects,
     cellSelectionAdditiveRects: additive,
     cellSelectionIsDeselect,
-    cellSelectionPivot: pivot,
   } = useProRoot();
 
   const topCount = source.useTopCount();
@@ -21,8 +19,6 @@ export const CellSelectionTop = memo(function CellSelectionTop() {
   const topRects = useMemo(() => {
     return allRects.filter((rect) => isTopRect(topCount, rect));
   }, [allRects, topCount]);
-
-  const showPivot = mode === "multi-range" || mode === "range";
 
   const isDeselect = cellSelectionIsDeselect.current;
 
@@ -48,9 +44,6 @@ export const CellSelectionTop = memo(function CellSelectionTop() {
       {additiveRects.map((rect) => {
         return <CellStyleRow rect={rect} key={rect.columnStart} isDeselect={isDeselect} />;
       })}
-      {showPivot && pivot && isTopRect(topCount, pivot) && (
-        <CellStyleRow rect={pivot} isPivot isRowPinnedTop />
-      )}
     </div>
   );
 });
@@ -58,11 +51,9 @@ export const CellSelectionTop = memo(function CellSelectionTop() {
 export const CellSelectionCenter = memo(function CellSelectionCenter() {
   const { source } = useRoot();
   const {
-    cellSelectionMode: mode,
     cellSelectionSplits: allRects,
     cellSelectionAdditiveRects: additive,
     cellSelectionIsDeselect,
-    cellSelectionPivot: pivot,
   } = useProRoot();
 
   const topCount = source.useTopCount();
@@ -78,8 +69,6 @@ export const CellSelectionCenter = memo(function CellSelectionCenter() {
     if (!additive) return [];
     return additive.filter((rect) => isCenterRect(rowCount, botCount, topCount, rect));
   }, [additive, botCount, rowCount, topCount]);
-
-  const showPivot = mode === "multi-range" || mode === "range";
 
   return (
     <div
@@ -98,9 +87,6 @@ export const CellSelectionCenter = memo(function CellSelectionCenter() {
       {additiveRects.map((rect) => {
         return <CellStyleRow rect={rect} key={rect.columnStart} isDeselect={isDeselect} />;
       })}
-      {showPivot && pivot && isCenterRect(rowCount, botCount, topCount, pivot) && (
-        <CellStyleRow rect={pivot} isPivot />
-      )}
     </div>
   );
 });
@@ -108,11 +94,9 @@ export const CellSelectionCenter = memo(function CellSelectionCenter() {
 export const CellSelectionBottom = memo(function CellSelectionBottom() {
   const { source } = useRoot();
   const {
-    cellSelectionMode: mode,
     cellSelectionSplits: allRects,
     cellSelectionAdditiveRects: additive,
     cellSelectionIsDeselect,
-    cellSelectionPivot: pivot,
   } = useProRoot();
 
   const rowCount = source.useRowCount();
@@ -127,8 +111,6 @@ export const CellSelectionBottom = memo(function CellSelectionBottom() {
     if (!additive) return [];
     return additive.filter((rect) => isBottomRect(rowCount, botCount, rect));
   }, [additive, botCount, rowCount]);
-
-  const showPivot = mode === "multi-range" || mode === "range";
 
   return (
     <div
@@ -147,9 +129,6 @@ export const CellSelectionBottom = memo(function CellSelectionBottom() {
       {additiveRects.map((rect) => {
         return <CellStyleRow rect={rect} key={rect.columnStart} isDeselect={isDeselect} />;
       })}
-      {showPivot && pivot && isBottomRect(rowCount, botCount, pivot) && (
-        <CellStyleRow rect={pivot} isPivot isRowPinnedBottom />
-      )}
     </div>
   );
 });

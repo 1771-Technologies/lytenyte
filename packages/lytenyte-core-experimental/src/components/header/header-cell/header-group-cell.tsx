@@ -1,10 +1,11 @@
 import { forwardRef, memo, useMemo, type JSX } from "react";
 import { useHeaderCellStyle } from "./use-header-cell-style.js";
-import type { LayoutHeaderGroup } from "@1771technologies/lytenyte-shared";
+import { rangesOverlap, type LayoutHeaderGroup } from "@1771technologies/lytenyte-shared";
 import { useRoot } from "../../../root/root-context.js";
 import { useDragMove } from "./use-drag-move.js";
 import { HeaderGroupDefault } from "./header-group-default.js";
 import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
+import { useInternalShare } from "../../../internal.js";
 
 const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(function HeaderCell(
   { cell, ...props },
@@ -38,8 +39,13 @@ const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(fu
     [`data-ln-header-row-${cell.rowStart}`]: true,
   };
 
-  const handlers = useMappedEvents(events.headerGroup, cell.groupPath, columns, api);
+  const handlers = useMappedEvents(events.headerGroup, { layout: cell, columns, api });
   const { props: dragProps, placeholder } = useDragMove(cell, props.onDragStart ?? handlers.onDragStart);
+
+  const { cellSelections } = useInternalShare();
+  const isCellSelected = cellSelections.useValue((x) =>
+    x.some((r) => rangesOverlap(r.columnStart, r.columnEnd, cell.colStart, cell.colEnd)),
+  );
 
   const Renderer = columnGroupRenderer ?? HeaderGroupDefault;
 
@@ -57,6 +63,7 @@ const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(fu
       data-ln-header-group
       data-ln-header-id={cell.id}
       data-ln-header-range={`${cell.colStart},${cell.colStart + cell.colSpan}`}
+      data-ln-cell-selected={isCellSelected}
       data-ln-rowindex={cell.rowStart}
       data-ln-colindex={cell.colStart}
       data-ln-colspan={cell.colEnd - cell.colStart}

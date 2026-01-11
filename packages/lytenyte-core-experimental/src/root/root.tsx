@@ -36,7 +36,7 @@ import { useDropAccept } from "./hooks/use-drop-accept.js";
 import { useGridId } from "./hooks/use-grid-id.js";
 import type { GridSpec as LnSpec } from "../types/grid.js";
 import type { Column as LnColumn } from "../types/column.js";
-import type { API as LnAPI } from "../types/api.js";
+import type { DataRect, API as LnAPI } from "../types/api.js";
 import type { Props as LnProps } from "../types/props.js";
 import { Viewport } from "../components/viewport/viewport.js";
 import { Header } from "../components/header/header.js";
@@ -45,6 +45,10 @@ import { RowsTop } from "../components/rows/row-sections/rows-top.js";
 import { RowsCenter } from "../components/rows/row-sections/rows-center.js";
 import { RowsBottom } from "../components/rows/row-sections/rows-bottom.js";
 import { useOffsets } from "./hooks/use-offsets.js";
+import { usePiece } from "../internal.js";
+import { LnInternalShareProvider } from "./internal-share.js";
+
+const empty: DataRect[] = [];
 
 const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   {
@@ -145,6 +149,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
   }, [props.styles]);
 
   const offsets = useOffsets(source, view, totalHeaderHeight, xPositions, yPositions.positions);
+  const cellSelectionPiece = usePiece((p as any).cellSelections ?? empty);
 
   const value = useMemo<RootContextValue>(() => {
     return {
@@ -272,7 +277,14 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
           <BoundsContextProvider value={bounds}>
             <EditProvider value={editValue}>
               <FocusProvider value={focusValue}>
-                {__noFallback ? children : (children ?? <Fallback />)}
+                <LnInternalShareProvider
+                  value={useMemo(
+                    () => ({ cellSelections: cellSelectionPiece, hasCellSelection: false }),
+                    [cellSelectionPiece],
+                  )}
+                >
+                  {__noFallback ? children : (children ?? <Fallback />)}
+                </LnInternalShareProvider>
               </FocusProvider>
             </EditProvider>
           </BoundsContextProvider>

@@ -1,4 +1,5 @@
 import type {
+  ColumnView,
   PositionFullWidthRow,
   PositionGridCell,
   RowAggregated,
@@ -54,12 +55,7 @@ export type API<Spec extends GridSpec = GridSpec> = {
   }) => Record<string, number>;
   readonly columnUpdate: (updates: Record<string, Omit<Partial<Column<Spec>>, "id">>) => void;
   readonly columnToggleGroup: (group: string | string[], state?: boolean) => void;
-  readonly columnView: () => {
-    columnCount: number;
-    startCount: number;
-    endCount: number;
-    centerCount: number;
-  };
+  readonly columnView: () => ColumnView;
 
   readonly rowDetailHeight: (rowId: WithId | string) => number;
   readonly rowDetailExpanded: (rowOrId: RowNode<Spec["data"]> | string | number) => boolean;

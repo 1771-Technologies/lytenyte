@@ -103,8 +103,88 @@ interface DataRect {
 }
 ```
 
-## Selecting Columns
+:::note
 
-## Selecting Rows
+Do not confused the `cellSelections` API method with the `cellSelections` property on the grid. Though named the same,
+these are two distinct properties in LyteNyte.
+
+- The `cellSelections` API method returns the current cell selection rectangles in the grid.
+- The `cellSelections` property on the grid controls the state of the cell selection rects.
+
+When cell selection state is controlled, the value returned by the `cellSelection` API method will equal the
+value of the `cellSelections` property on the grid.
+
+:::
+
+## Highlight Headers
+
+The headers which have a cell selected will have a data attribute set to `"true"` called `data-ln-cell-selected`.
+Using this data attribute, you can style the header to indicate that some cells in the column have been selected.
+The demo below demonstrates. The header of any column that has a selected cell will be Highlighted via CSS.
+
+::demo[Header Highlights="./demos/cell-selection-header-highlight"]
+
+The demo uses the [LyteNyte Grid Tailwind plugin](/docs/grid-theming-tailwind) to style the header with this Tailwind CSS class
+`"ln-header:data-[ln-cell-selected=true]:bg-ln-primary-05"`. If you are not using Tailwind, this
+class is equivalent to the CSS below:
+
+```css
+.ln-grid {
+  [data-ln-header-cell="true"][data-ln-cell-selected="true"] {
+    background-color: var(--ln-primary-05);
+  }
+}
+```
+
+:::tip
+
+The `data-ln-cell-attribute` is also applied to the rows in the grid that contain cells.
+This makes it possible to style rows with selected cells as well, as the demo in the next
+section does for the marker column.
+
+:::
+
+## Marker Column
+
+The [marker column](/docs/marker-column) is a special column managed and controlled by LyteNyte Grid,
+but is not part of the columns provided to the grid. When enabled the marker column will
+always be the first column in the viewport. The marker column is always pinned to the start of the grid.
+
+By default the marker column may be part of the row selection rectangle. Depending on your
+use case, this may not be desirable. In these cases you can set
+the `cellSelectionExcludeMarker` property to `true`, which will cause LyteNyte Grid to disallow any cell
+selection of the marker column.
+
+::demo[Exclude Marker Column="./demos/cell-selection-marker"]
+
+The marker column still contributes to the grid's layout even when the `cellSelectionExcludeMarker` value is
+set to `true`. This means that regardless of the `cellSelectionExcludeMarker` value, when the marker column is
+enabled, the column index of the first non-marker column will be 1.
+
+## Selecting A Column or Row
+
+To select a column or row you can create a select rectangle and set the `cellSelection` value to
+that rectangle on the grid. You can do this regardless of the `cellSelectionMode` applied to the
+the grid.
+
+The demo below demonstrates this. By clicking the header of a column all the cells in that that column
+will be selected. To select a row, click the marker column's cell. By default LyteNyte Grid will clear
+the current selection if another element in the grid becomes focused, e.g. the header cell. Since we are
+trying to select the column itself the demo sets the `cellSelectionMaintainOnNonCellPosition` property
+on the grid. This property ensures that the cell selection is not cleared when the header is clicked.
+
+::demo[Select A Column Or Row="./demos/cell-selection-column-and-row"]
+
+## Selection With Row & Column Spans
+
+When the grid has cell spans
+
+::demo[Cell Selection With Spans="./demos/cell-selection-spans"]
+
+## Cell Selection Across Pin Areas
+
+::demo[Cell Selection With Pins="./demos/cell-selection-pins"]
 
 ## Multi Range Selection
+
+::demo[Multiple Range Selections="./demos/cell-selection-multi-range"]
