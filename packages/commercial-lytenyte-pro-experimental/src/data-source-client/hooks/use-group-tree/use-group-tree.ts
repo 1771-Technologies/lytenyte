@@ -55,6 +55,12 @@ export function useGroupTree<T>(
   agg: AggregationFn<T> | undefined | null,
 ) {
   const groupNodeCacheRef = useRef(new Map<string, GroupNode<T>["row"]>());
+  const prevCollapse = useRef(rowGroupCollapseBehavior);
+  if (prevCollapse.current !== rowGroupCollapseBehavior) {
+    groupNodeCacheRef.current = new Map();
+    prevCollapse.current = rowGroupCollapseBehavior;
+  }
+
   return useMemo(() => {
     const groupIdToGroupNode: Map<string, GroupNode<T>> = new Map();
 
@@ -105,6 +111,7 @@ export function useGroupTree<T>(
               data: null as any,
               depth: j,
               key: p,
+              parentId: currentGroup.kind === "root" ? null : currentGroup.id,
               expandable: false,
               expanded: false,
             });
@@ -113,6 +120,7 @@ export function useGroupTree<T>(
           node.__children = children;
           node.__invalidate = true;
           (node as Writable<RowGroup>).last = isLast;
+          (node as Writable<RowGroup>).parentId = currentGroup.kind === "root" ? null : currentGroup.id;
 
           current.set(p, {
             id: groupId,
@@ -144,6 +152,15 @@ export function useGroupTree<T>(
         current = node.children;
       }
 
+      const n_writable = n as Writable<RowLeaf>;
+      if (currentGroup.kind === "root") {
+        n_writable.depth = 0;
+        n_writable.parentId = null;
+      } else {
+        n_writable.depth = currentGroup.row.depth + 1;
+        n_writable.parentId = currentGroup.id;
+      }
+
       current.set(current.size, { kind: "leaf", row: n, parent: currentGroup, key: current.size });
     }
 
@@ -155,7 +172,6 @@ export function useGroupTree<T>(
         if (node.kind === "root") node.children.forEach((c) => traverse(c, 0));
 
         const filterFn = Array.isArray(having) ? (having[depth] ?? null) : having;
-        if (!filterFn) return;
 
         if (node.kind === "branch") {
           const row = node.row;
@@ -165,7 +181,7 @@ export function useGroupTree<T>(
             row.__invalidate = false;
           }
 
-          const shouldKeep = filterFn(row);
+          const shouldKeep = filterFn ? filterFn(row) : true;
           if (shouldKeep) {
             node.children.forEach((c) => traverse(c, depth + 1));
           } else {

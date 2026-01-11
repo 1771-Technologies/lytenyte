@@ -1,0 +1,82 @@
+//#start
+import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import type { OrderData } from "@1771technologies/grid-sample-data/orders";
+import { data } from "@1771technologies/grid-sample-data/orders";
+import {
+  AvatarCell,
+  EmailCell,
+  FloatingFilter,
+  IdCell,
+  PaymentMethodCell,
+  PriceCell,
+  ProductCell,
+  PurchaseDateCell,
+} from "./components.jsx";
+import {
+  useClientDataSource,
+  Grid,
+  type PieceWritable,
+  usePiece,
+} from "@1771technologies/lytenyte-pro-experimental";
+import { useMemo, useState } from "react";
+
+const columns: Grid.Column<GridSpec>[] = [
+  { id: "id", width: 60, widthMin: 60, cellRenderer: IdCell, name: "ID" },
+  { id: "product", cellRenderer: ProductCell, width: 200, name: "Product", type: "string" },
+  { id: "price", type: "number", cellRenderer: PriceCell, width: 100, name: "Price" },
+  { id: "customer", cellRenderer: AvatarCell, width: 180, name: "Customer", type: "string" },
+  { id: "purchaseDate", cellRenderer: PurchaseDateCell, name: "Purchase Date", width: 130 },
+  { id: "paymentMethod", cellRenderer: PaymentMethodCell, name: "Payment Method", width: 150 },
+  { id: "email", cellRenderer: EmailCell, width: 220, name: "Email", type: "string" },
+];
+
+export interface GridSpec {
+  readonly data: OrderData;
+  readonly api: {
+    readonly filterModel: PieceWritable<Record<string, string | null>>;
+  };
+}
+
+const base: Grid.ColumnBase<GridSpec> = { floatingCellRenderer: FloatingFilter };
+//#end
+
+export default function ColumnBase() {
+  const [filterModel, setFilterModel] = useState<Record<string, string | null>>({});
+
+  const filter$ = usePiece(filterModel, setFilterModel);
+  const apiExtension: GridSpec["api"] = useMemo(() => {
+    return {
+      filterModel: filter$,
+    };
+  }, [filter$]);
+
+  const filterFunctions = useMemo(() => {
+    const entries = Object.entries(filterModel);
+
+    return entries.map<Grid.T.FilterFn<GridSpec["data"]>>(([key, value]) => {
+      return (row: Grid.T.RowLeaf<GridSpec["data"]>) => {
+        const data = row.data[key as keyof OrderData];
+
+        if (!data) return false;
+        if (!`${data}`.toLowerCase().includes(value?.toLowerCase() ?? "")) return false;
+
+        return true;
+      };
+    });
+  }, [filterModel]);
+
+  const ds = useClientDataSource<GridSpec>({ data: data, filter: filterFunctions });
+
+  return (
+    <div className={"ln-grid"} style={{ height: 500 }}>
+      <Grid
+        apiExtension={apiExtension}
+        rowHeight={50}
+        columns={columns}
+        columnBase={base}
+        rowSource={ds}
+        floatingRowEnabled //!
+      />
+    </div>
+  );
+}

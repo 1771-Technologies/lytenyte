@@ -85,7 +85,7 @@ export namespace Grid {
     export type CellRendererParams<Spec extends GridSpec> = LnTypes.CellRendererParams<Spec>;
     export type DataRect = LnTypes.DataRect;
     export type Dimension<T> = LnTypes.Dimension<T>;
-    export type DimensionAgg<T, K extends { id: string; field?: Field<T> }> = LnTypes.DimensionAgg<T, K>;
+    export type DimensionAgg<T> = LnTypes.DimensionAgg<T>;
     export type DimensionSort<T> = LnTypes.DimensionSort<T>;
     export type EditParams = LnTypes.EditParams;
     export type ExportDataRectResult = LnTypes.ExportDataRectResult;
@@ -161,7 +161,7 @@ export type { RowSourceTree, UseTreeDataSourceParams } from "./data-source-tree/
 export { useTreeDataSource } from "./data-source-tree/use-tree-data-source.js";
 
 export { measureText, moveRelative } from "@1771technologies/lytenyte-shared";
-export { getRowDragData } from "@1771technologies/lytenyte-core-experimental/internal";
+export { getRowDragData, computeField } from "@1771technologies/lytenyte-core-experimental/internal";
 
 export type { ViewportShadowsProps } from "@1771technologies/lytenyte-core-experimental";
 export { ViewportShadows } from "@1771technologies/lytenyte-core-experimental";
@@ -174,3 +174,7 @@ export type { Piece, PieceWritable } from "@1771technologies/lytenyte-core-exper
 export { usePiece } from "@1771technologies/lytenyte-core-experimental";
 
 export { PillManager } from "./components/pill-manager/index.js";
+
+export { Dialog } from "./components/headless/dialog/index.js";
+export { Menu } from "./components/headless/menu/index.js";
+export { Popover } from "./components/headless/popover/index.js";

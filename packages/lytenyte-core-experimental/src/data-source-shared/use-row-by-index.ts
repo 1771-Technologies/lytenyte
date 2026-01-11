@@ -50,6 +50,8 @@ export function useRowByIndex<T>(
           const row = piece.useValue($);
 
           const [selected, isIndeterminate] = useMemo(() => {
+            if (!row?.id) return [false, false];
+
             const selected = isRowSelected(row.id, state.rowSelections, rowParents);
 
             return [
@@ -59,7 +61,9 @@ export function useRowByIndex<T>(
                 isRowIndeterminate(row.id, state.rowSelections, rowParents),
             ];
             // eslint-disable-next-line react-hooks/exhaustive-deps
-          }, [row.id, localSnapshot, globalSnapshot]);
+          }, [row?.id, localSnapshot, globalSnapshot]);
+
+          if (!row) return null;
 
           Object.assign(row, {
             __selected: selected,

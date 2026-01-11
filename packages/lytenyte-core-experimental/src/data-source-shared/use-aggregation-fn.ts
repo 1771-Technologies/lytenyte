@@ -3,7 +3,7 @@ import { useMemo } from "react";
 
 const defaultAggregations = {};
 export function useAggregationFn<T>(
-  aggregate: AggregationFn<T> | DimensionAgg<T, any>[] | null | undefined,
+  aggregate: AggregationFn<T> | DimensionAgg<T>[] | null | undefined,
   fns: Record<string, Aggregator<T>> = defaultAggregations,
 ) {
   return useMemo<AggregationFn<T> | null>(() => {
@@ -20,7 +20,7 @@ export function useAggregationFn<T>(
           continue;
         }
 
-        result[agg.dim.id] = fn(data, agg.dim.field ?? agg.dim.id);
+        result[agg.dim.id] = fn(agg.dim.field ?? agg.dim.id, data);
       }
 
       return result;

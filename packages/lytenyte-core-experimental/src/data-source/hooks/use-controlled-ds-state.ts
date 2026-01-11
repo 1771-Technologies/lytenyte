@@ -1,14 +1,21 @@
 import { useCallback } from "react";
 import { useControlled } from "../../hooks/use-controlled.js";
 import type { UseClientDataSourceParams } from "../use-client-data-source.js";
+import { useEvent } from "../../hooks/use-event.js";
 
 export function useControlledState({
+  onRowGroupExpansionChange,
   rowGroupExpansions,
   rowGroupDefaultExpansion = false,
 }: UseClientDataSourceParams<any>) {
   const [expansions, setExpansions] = useControlled({
     controlled: rowGroupExpansions,
     default: {},
+  });
+
+  const onExpansionsChange = useEvent((delta: Record<string, boolean | undefined>) => {
+    setExpansions({ ...expansions, ...delta });
+    onRowGroupExpansionChange?.({ ...expansions, ...delta });
   });
 
   const expandedFn = useCallback(
@@ -23,5 +30,5 @@ export function useControlledState({
     [expansions, rowGroupDefaultExpansion],
   );
 
-  return { expansions, setExpansions, expandedFn };
+  return { expansions, onExpansionsChange, expandedFn };
 }

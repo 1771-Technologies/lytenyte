@@ -23,8 +23,8 @@ export type Props<Spec extends GridSpec = GridSpec> = {
 
   // CORE Shared Properties
   readonly columns?: Column<Spec>[] | null;
-  readonly columnBase?: Omit<Column<Spec>, "id" | "pin" | "field" | "editSetter">;
-  readonly columnMarker?: Omit<Column<Spec>, "id" | "field" | "pin"> & { on?: boolean };
+  readonly columnBase?: Omit<Partial<Column<Spec>>, "id" | "pin" | "field" | "editSetter">;
+  readonly columnMarker?: Omit<Partial<Column<Spec>>, "id" | "field" | "pin"> & { on?: boolean };
 
   readonly columnGroupDefaultExpansion?: boolean;
   readonly columnGroupExpansions?: Record<string, boolean>;
@@ -97,7 +97,7 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   readonly rowHeight?: RowHeight;
   readonly rowAutoHeightGuess?: number;
 
-  readonly rowGroupColumn?: Omit<Column<Spec>, "field" | "id">;
+  readonly rowGroupColumn?: Omit<Partial<Column<Spec>>, "field" | "id">;
   readonly rowGroupDisplayMode?: RowGroupDisplayMode;
 
   readonly rowFullWidthPredicate?: null | ((params: RowParams<Spec>) => boolean);
@@ -130,7 +130,6 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   // Values that can be changed by the grid
   readonly onColumnGroupExpansionChange?: (change: Record<string, boolean>) => void;
   readonly onRowDetailExpansionsChange?: (change: Set<string>) => void;
-  readonly onRowGroupExpansionChange?: (deltaChange: Record<string, boolean>) => void;
   readonly onColumnsChange?: (columns: Column<Spec>[]) => void;
   readonly onRowGroupColumnChange?: (column: Omit<Column<Spec>, "field" | "id">) => void;
 

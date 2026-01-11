@@ -9,6 +9,7 @@ import { PillLabel as Label } from "./label.js";
 import type { PillRow } from "./pill-row.js";
 import { PillRow as Row } from "./pill-row.js";
 import { PillManager as Root } from "./root.js";
+import type { PillItemSpec, PillRowSpec } from "./types.js";
 
 export const PillManager = (props: Root.Props) => <Root {...props} />;
 PillManager.Container = Container;
@@ -25,5 +26,10 @@ export namespace PillManager {
     export type Pill = PillItem.Props;
     export type Label = PillLabel.Props;
     export type Row = PillRow.Props;
+  }
+
+  export namespace T {
+    export type PillItem = PillItemSpec;
+    export type PillRow = PillRowSpec;
   }
 }

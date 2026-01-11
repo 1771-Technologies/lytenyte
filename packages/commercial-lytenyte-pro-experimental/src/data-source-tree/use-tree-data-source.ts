@@ -30,6 +30,7 @@ import { useRowParents } from "./source/use-row-parents.js";
 import { useRowLeafs } from "./source/use-row-leafs.js";
 import { useRowChildren } from "./source/use-row-children.js";
 import { useOnRowsUpdated } from "./source/use-on-rows-updated.js";
+import { useRowSiblings } from "./source/use-row-siblings.js";
 
 export interface UseTreeDataSourceParams<T = unknown> {
   readonly topData?: (RowLeaf<T> | RowAggregated)[];
@@ -42,6 +43,7 @@ export interface UseTreeDataSourceParams<T = unknown> {
 
   readonly rowGroupExpansions?: { [rowId: string]: boolean | undefined };
   readonly rowGroupDefaultExpansion?: boolean | number;
+  readonly onRowGroupExpansionChange?: (state: Record<string, boolean | undefined>) => void;
 
   readonly sort?: SortFn<T> | DimensionSort<T>[] | null;
   readonly filter?: (data: any) => boolean;
@@ -124,10 +126,11 @@ export function useTreeDataSource<T>(p: UseTreeDataSourceParams<T>): RowSource {
   const rowsBetween = useRowsBetween({ current: flat.idToIndex }, rowByIndex);
   const rowLeafs = useRowLeafs(tree);
   const rowChildren = useRowChildren(tree);
+  const rowSiblings = useRowSiblings(tree);
 
   const rowIdToIndex = usePiece(flat.idToIndex);
 
-  const setExpansions = state.setExpansions;
+  const setExpansions = state.onExpansionsChange;
 
   const onRowsUpdated = useOnRowsUpdated(tree, p);
 
@@ -145,12 +148,13 @@ export function useTreeDataSource<T>(p: UseTreeDataSourceParams<T>): RowSource {
       rowsBetween,
       rowLeafs,
       rowChildren,
+      rowSiblings,
       rowIndexToRowId: (i) => s.rowByIndex(i).get()?.id ?? null,
       rowIdToRowIndex: (id) => rowIdToIndex.get().get(id) ?? null,
       rowUpdate: onRowsUpdated,
 
-      onRowGroupExpansionChange: (delta) => {
-        setExpansions((prev) => ({ ...prev, ...delta }));
+      rowGroupExpansionChange: (delta) => {
+        setExpansions(delta);
       },
       onViewChange: () => {},
 
@@ -181,6 +185,7 @@ export function useTreeDataSource<T>(p: UseTreeDataSourceParams<T>): RowSource {
     rowLeafs,
     rowParents,
     rowSelectionState,
+    rowSiblings,
     rows.useValue,
     rowsBetween,
     rowsSelected,

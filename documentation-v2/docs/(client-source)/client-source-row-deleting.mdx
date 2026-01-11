@@ -3,3 +3,45 @@ title: Client Row Deleting
 step: Delete rows and sync changes to client data.
 description: Delete rows using LyteNyte Grid's row data source and propagate the deletion to your client data.
 ---
+
+The `useClientDataSource` hook returns a row source that can delete rows by calling the
+`rowDelete` method. When you provide the source to the grid, the `rowDelete` method becomes
+part of the grid's API.
+
+You can use the `rowDelete` method to remove existing rows from your data. You can remove any row at
+any index. To handle row deletions, provide the `useClientDataSource` hook with a callback on the
+`onRowsDeleted` property.
+
+## Deleting Rows
+
+In the demo below, click the **trash icon** to delete a row from the grid. When you delete a row,
+the grid calls the `onRowsDeleted` callback you provided to `useClientDataSource`. The client data
+source passes two values to `onRowsDeleted`: the rows to delete, and the source indices for those rows.
+
+:::info
+
+A **source index** is the array index in the original data used to create the row node. A source index
+is not the same as a **row index**, because the row index can change based on the grid's sort, grouping,
+and filter state, whilst a source index is a stable lookup to the original row data.
+
+:::
+
+::demo[Deleting Rows="./demos/client-row-deleting"]
+
+The demo deletes rows using the code below. Notice that the code creates a new array by calling
+`filter`. You may think you could simplify this by using `splice` to delete a row. However, `splice`
+changes the indices of the existing array, which invalidates the **source indices** passed to
+`onRowsDeleted`. In this case, `filter` is a better choice.
+
+```ts
+setData((prev) => {
+  const next = prev.filter((_, i) => !params.sourceIndices.includes(i));
+  return next;
+});
+```
+
+## Next Steps
+
+::next[/docs/client-source-row-adding]
+::next[/docs/client-source-data]
+::next[/docs/cell-editing]

@@ -5,3 +5,114 @@ description: Having Filters can exclude group rows from the final row set that L
   displays. Having Filters can apply to all group rows or only to group rows at a particular depth.
 pro: true
 ---
+
+A **having** filter is a filter that is applied after row groups have been created. These filters
+are used to filter group rows. When a group row is filtered out, the group row's child rows are also removed.
+
+This guide covers the functionality of **having** filters in LyteNyte Grid's client data source, but it does not
+go in depth on the different types of filters. For thorough coverage of client-side filtering, see the various
+filter guides, starting with [Filter Text](/docs/filtering-text).
+
+:::info
+
+**Having** filters get their name from the `HAVING` clause in SQL, which applies post-grouping filters to rows
+that have been aggregated. Although SQL knowledge is not a prerequisite, familiarity with the `HAVING` clause
+will help you understand this guide. See this [PostgreSQL HAVING guide](https://neon.com/postgresql/postgresql-tutorial/postgresql-having)
+for more guidance on the `HAVING` clause.
+
+:::
+
+Since **having** filters apply to group rows and are intended to filter out aggregated rows, you must
+be familiar with grouping and aggregation in LyteNyte Grid's client data source. If you
+haven't already, read the [Client Row Grouping](/docs/client-source-row-grouping)
+and [Client Row Aggregations](/docs/client-source-aggregations) guides before reading the rest of this guide.
+
+## Having Filter Functions
+
+To apply a **having** filter, set the `having` property on the client data source. The `having` property can be set to one of
+two types:
+
+- A `HavingFilterFn` function, which filters all group rows regardless of group depth.
+- An array of `HavingFilterFn` functions or `null`, which filters group rows based on depth. The index in the array corresponds to the
+  group depth, and `null` values skip group levels.
+
+This section covers providing a function to the `having` property.
+Read the next section to learn how **having** filters behave when you provide an array.
+
+The demo below demonstrates a having filter function. To support the filter,
+the [grid's API was extended](/docs/grid-api-extensions) with a `filterModel`, as the interface below shows:
+
+```ts
+export interface GridSpec {
+  readonly data: BankData;
+  readonly column: { agg: string; allowedAggs: string[] };
+  readonly api: {
+    filterModel: PieceWritable<FilterModel>;
+  };
+}
+```
+
+The filter model lets you build a representation of a filter before producing a filter function from the model.
+The demo allows users to adjust the value in the model via a custom
+[floating header row](/docs/column-floating-header) component. Try it by typing `40` into the **Age** column's
+floating filter.
+
+::demo[Having Filter Function="./demos/client-row-having"]
+
+The demo creates the `HavingFilterFn` function by iterating through the filters in the model
+and applying them one at a time. The code below shows this.
+
+```ts
+const havingFn = useMemo(() => {
+  const model = Object.entries(filterModel).filter(([, f]) => {
+    return f.kind && f.value && !Number.isNaN(Number.parseFloat(f.value));
+  });
+
+  if (!model.length) return;
+
+  const fn = (row: Grid.T.RowGroup) => {
+    for (const [key, f] of model) {
+      const value = row.data[key] as number;
+      const compare = Number.parseFloat(f.value!);
+      if (value == null || typeof value !== "number") return false;
+
+      if (f.kind === "eq" && value != compare) return false;
+      else if (f.kind === "neq" && value === compare) return false;
+      else if (f.kind === "ge" && value < compare) return false;
+      else if (f.kind === "le" && value > compare) return false;
+      else if (f.kind === "lt" && value >= compare) return false;
+      else if (f.kind === "gt" && value <= compare) return false;
+    }
+
+    return true;
+  };
+
+  return fn;
+}, [filterModel]);
+```
+
+## Having Filter Arrays
+
+When you provide the client data source with a filter function for the `having` property, the filter applies
+to every group row. This is generally desirable. However, it is sometimes useful to apply a **having** filter
+only to group nodes at a specific depth.
+
+The demo below demonstrates this by providing the `having` property with an array of two items. The first item
+is `null`, so the filter skips the top-most group level. The second item is a filter function, so the filter
+applies to the second grouping level.
+
+::demo[Having Filter Array="./demos/client-row-having-array"]
+
+One important behavior to understand is that **having** filters do not impact a row's aggregation values.
+In particular, if a **having** filter removes some child rows, the parent row's aggregation remains unchanged.
+
+To understand why, imagine a **having** filter that removes any group row with a value less than 100. If filtering
+changed the parent aggregation, removing child rows could make the parent's aggregated value drop below 100,
+which would remove the parent, and so on. That recursive behavior could remove all rows.
+
+## Next Steps
+
+::next[/docs/client-source-label-filters]
+::next[/docs/client-source-filtering]
+::next[/docs/client-source-row-grouping]
+::next[/docs/client-source-aggregations]

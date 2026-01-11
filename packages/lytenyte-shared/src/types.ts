@@ -113,6 +113,7 @@ export interface RowSource<T = any> {
   readonly rowByIndex: (row: number) => RowAtom<RowNode<T> | null>;
   readonly rowById: (id: string) => RowNode<T> | null;
   readonly rowParents: (id: string) => string[];
+  readonly rowSiblings: (id: string) => string[];
   readonly rowIsSelected: (id: string) => boolean;
   readonly rowChildren: (id: string) => string[];
   readonly rowLeafs: (id: string) => string[];
@@ -120,11 +121,11 @@ export interface RowSource<T = any> {
   readonly rowInvalidate: (row?: number) => void;
   readonly rowsSelected: () => { state: RowSelectionState; rows: RowNode<T>[] };
   readonly rowSelectionState: () => RowSelectionState;
+  readonly rowGroupExpansionChange: (deltaChanges: Record<string, boolean>) => void;
   readonly useSelectionState: () => RowSelectionState;
 
   // Methods the LyteNyte will call
   readonly onViewChange: (view: SpanLayout) => void;
-  readonly onRowGroupExpansionChange: (deltaChanges: Record<string, boolean>) => void;
   readonly onRowsUpdated: (rows: Map<RowNode<T>, T>) => void;
   readonly onRowsSelected: (params: {
     readonly selected: string[] | "all";
@@ -137,8 +138,8 @@ export type PathField = { kind: "path"; path: string };
 export type Field<T> = string | number | PathField | ((params: { row: RowNode<T> }) => unknown);
 export type Dimension<T> = { name?: string; field: Field<T> } | { id: string; field?: Field<T> };
 export type DimensionSort<T> = { dim: Dimension<T> | SortFn<T>; descending?: boolean };
-export type DimensionAgg<T, K extends { id: string; field?: Field<T> } = { id: string; field?: Field<T> }> = {
-  dim: K;
+export type DimensionAgg<T> = {
+  dim: { id: string; field?: Field<T> };
   fn: Aggregator<T> | string;
 };
 
@@ -148,13 +149,15 @@ export type SortFn<T> = (left: RowNode<T>, right: RowNode<T>) => number;
 export type FilterFn<T> = (node: RowLeaf<T>) => boolean;
 export type GroupFn<T> = (node: RowLeaf<T>) => (string | null)[] | null;
 export type AggregationFn<T> = (data: RowLeaf<T>[]) => Record<string, unknown>;
-export type Aggregator<T> = (data: RowLeaf<T>[], field: Field<T>) => unknown;
+export type Aggregator<T> = (field: Field<T>, data: RowLeaf<T>[]) => unknown;
 
 export interface RowLeaf<T = any> {
   readonly id: string;
   readonly loading?: boolean;
   readonly error?: unknown;
+  readonly parentId?: string | null | undefined;
   readonly kind: "leaf";
+  readonly depth: number;
   readonly data: T;
 }
 
@@ -174,12 +177,15 @@ export interface RowGroup {
 
   readonly errorGroup?: unknown;
   readonly loadingGroup?: boolean;
+
+  readonly parentId: null | string;
 }
 
 export interface RowAggregated {
   readonly id: string;
   readonly kind: "aggregated";
   readonly data: Record<string, unknown>;
+  readonly depth: number;
   readonly loading?: boolean;
   readonly error?: unknown;
 }

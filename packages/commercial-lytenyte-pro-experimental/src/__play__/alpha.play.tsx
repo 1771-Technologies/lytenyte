@@ -6,7 +6,7 @@ import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smal
 import { ViewportShadows } from "@1771technologies/lytenyte-core-experimental";
 import { useClientDataSource } from "../data-source-client/use-client-data-source.js";
 import { useMemo, useState } from "react";
-import type { GridSpec, Props } from "../types";
+import type { Field, GridSpec, Props } from "../types";
 import type { RowLeaf } from "@1771technologies/lytenyte-shared";
 import { RowGroupCell } from "../components/row-group-cell.js";
 import { Grid } from "../index.js";
@@ -34,7 +34,7 @@ const columns: Grid.Column<Spec>[] = [
   { id: "y" },
 ];
 
-const sumAge = (rows: RowLeaf<BankData>[]) => rows.reduce((acc, x) => x.data.balance + acc, 0);
+const sumAge = (_: Field<any>, rows: RowLeaf<BankData>[]) => rows.reduce((acc, x) => x.data.balance + acc, 0);
 
 export default function Experimental() {
   const [pivotMode, setPivotMode] = useState(false);

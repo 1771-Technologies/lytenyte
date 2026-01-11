@@ -1,0 +1,132 @@
+//#start
+import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
+import { Grid, RowGroupCell, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import { ToggleGroup, ToggleItem } from "./components.js";
+import { useState } from "react";
+
+export type BankData = (typeof bankDataSmall)[number];
+
+interface GridSpec {
+  readonly data: BankData;
+}
+
+const columns: Grid.Column<GridSpec>[] = [
+  { name: "Job", id: "job", width: 120, hide: true },
+  { name: "Age", id: "age", type: "number", width: 80, cellRenderer: NumberCell },
+  { name: "Balance", id: "balance", type: "number", cellRenderer: BalanceCell },
+  { name: "Education", id: "education", hide: true },
+  { name: "Marital", id: "marital" },
+  { name: "Default", id: "default" },
+  { name: "Housing", id: "housing" },
+  { name: "Loan", id: "loan" },
+  { name: "Contact", id: "contact" },
+  { name: "Day", id: "day", type: "number", cellRenderer: NumberCell },
+  { name: "Month", id: "month" },
+  { name: "Duration", id: "duration", type: "number", cellRenderer: DurationCell },
+];
+
+const base: Grid.ColumnBase<GridSpec> = { width: 100 };
+
+const group: Grid.RowGroupColumn<GridSpec> = {
+  cellRenderer: (props) => {
+    return (
+      <RowGroupCell
+        {...props}
+        leafLabel={(row, api) => {
+          if (!row.parentId) return row.data.education;
+
+          const parent = api.rowById(row.parentId);
+          if (parent?.kind === "branch" && row.depth === 1) {
+            return parent.key ?? "(blank)";
+          }
+
+          return "";
+        }}
+      />
+    );
+  },
+  width: 200,
+};
+
+let seen = false;
+// Keep only one row with education primary and unemployed
+const data = bankDataSmall.filter((x) => {
+  if (x.job === "Unemployed") {
+    if (seen) return false;
+
+    seen = true;
+    return true;
+  }
+
+  return true;
+});
+
+//#end
+
+const groupFn: Grid.T.GroupFn<GridSpec["data"]> = (row) => {
+  return [row.data.job, row.data.education];
+};
+
+export default function ClientSourceDemo() {
+  const [collapse, setCollapse] = useState<"no-collapse" | "last-only" | "full-tree">("last-only");
+  const ds = useClientDataSource<GridSpec>({
+    data: data,
+    group: groupFn,
+    rowGroupCollapseBehavior: collapse, //!
+    rowGroupDefaultExpansion: true,
+  });
+
+  return (
+    <>
+      <div className={"border-ln-border flex h-full items-center gap-1 text-nowrap border-b px-2 py-2"}>
+        <div className={"text-light hidden text-xs font-medium md:block"}>Collapse Behavior:</div>
+        <ToggleGroup
+          type="single"
+          value={collapse}
+          className={"flex flex-wrap"}
+          onValueChange={(c) => {
+            if (!c) return;
+            setCollapse(c as "no-collapse");
+          }}
+        >
+          <ToggleItem value="no-collapse">No Collapse</ToggleItem>
+          <ToggleItem value="last-only">Last Only</ToggleItem>
+          <ToggleItem value="full-tree">Full Tree</ToggleItem>
+        </ToggleGroup>
+      </div>
+      <div className="ln-grid" style={{ height: 500 }}>
+        <Grid rowSource={ds} columns={columns} columnBase={base} rowGroupColumn={group} />
+      </div>
+    </>
+  );
+}
+
+//#start
+
+const formatter = new Intl.NumberFormat("en-US", {
+  maximumFractionDigits: 2,
+  minimumFractionDigits: 0,
+});
+export function BalanceCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
+
+  if (typeof field === "number") {
+    if (field < 0) return `-$${formatter.format(Math.abs(field))}`;
+
+    return "$" + formatter.format(field);
+  }
+
+  return `${field ?? "-"}`;
+}
+export function DurationCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
+
+  return typeof field === "number" ? `${formatter.format(field)} days` : `${field ?? "-"}`;
+}
+
+export function NumberCell({ api, row, column }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row);
+
+  return typeof field === "number" ? formatter.format(field) : `${field ?? "-"}`;
+}

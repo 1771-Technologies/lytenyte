@@ -45,6 +45,7 @@ import { useOnRowsSelected } from "../data-source-shared/row-selection/use-on-ro
 import { useRowSelection } from "../data-source-shared/row-selection/use-row-selection.js";
 import { useEvent } from "../hooks/use-event.js";
 import { useRowSelectionState } from "../data-source-shared/use-row-selection-state.js";
+import { useRowSiblings } from "../data-source-shared/use-row-siblings.js";
 
 export interface RowSourceClient<T> extends RowSource<T> {
   readonly rowUpdate: (rows: Map<RowNode<T>, T>) => void;
@@ -59,6 +60,7 @@ export interface UseClientDataSourceParams<T = unknown> {
 
   readonly rowGroupExpansions?: { [rowId: string]: boolean | undefined };
   readonly rowGroupDefaultExpansion?: boolean | number;
+  readonly onRowGroupExpansionChange?: (state: Record<string, boolean | undefined>) => void;
 
   readonly sort?: SortFn<T> | DimensionSort<T>[] | null;
   readonly filter?: FilterFn<T> | FilterFn<T>[] | null;
@@ -73,6 +75,7 @@ export interface UseClientDataSourceParams<T = unknown> {
   readonly rowSelection?: RowSelectionState;
   readonly rowSelectKey?: unknown[];
   readonly rowSelectionIdUniverseAdditions?: Set<string>;
+
   readonly onRowSelectionChange?: (state: RowSelectionState) => void;
 
   readonly onRowsAdded?: (params: {
@@ -104,7 +107,7 @@ export function useClientDataSource<T>(p: UseClientDataSourceParams<T>): RowSour
   const groupFn = useGroupFn(p.group);
   const aggregate = useAggregationFn(p.aggregate, p.aggregateFns);
 
-  const { expandedFn, setExpansions } = useControlledState(p);
+  const { expandedFn, onExpansionsChange } = useControlledState(p);
 
   const [leafsTop, leafs, leafsBot, pinMap] = useLeafNodes(p.topData, p.data, p.bottomData, p.leafIdFn);
   const filtered = useFiltered(leafs, filterFn);
@@ -191,6 +194,8 @@ export function useClientDataSource<T>(p: UseClientDataSourceParams<T>): RowSour
 
   const selection$ = usePiece(selectionState.rowSelectionsRaw);
 
+  const rowSiblings = useRowSiblings(tree);
+
   const source = useMemo<RowSourceClient<T>>(() => {
     const rowCount$ = (x: RowNode<T>[]) => x.length;
 
@@ -210,6 +215,7 @@ export function useClientDataSource<T>(p: UseClientDataSourceParams<T>): RowSour
       rowAdd,
       rowDelete,
       rowUpdate: onRowsUpdated,
+      rowSiblings,
 
       useBottomCount: botPiece.useValue,
       useTopCount: topPiece.useValue,
@@ -220,7 +226,7 @@ export function useClientDataSource<T>(p: UseClientDataSourceParams<T>): RowSour
 
       useMaxRowGroupDepth: maxDepthPiece.useValue,
 
-      onRowGroupExpansionChange: (deltaChanges) => setExpansions((prev) => ({ ...prev, ...deltaChanges })),
+      rowGroupExpansionChange: (deltaChanges) => onExpansionsChange(deltaChanges),
       onRowsSelected,
       onRowsUpdated,
       // Not used by the core data source
@@ -231,6 +237,7 @@ export function useClientDataSource<T>(p: UseClientDataSourceParams<T>): RowSour
   }, [
     botPiece.useValue,
     maxDepthPiece.useValue,
+    onExpansionsChange,
     onRowsSelected,
     onRowsUpdated,
     piece,
@@ -246,11 +253,11 @@ export function useClientDataSource<T>(p: UseClientDataSourceParams<T>): RowSour
     rowLeafs,
     rowParents,
     rowSelectionState,
+    rowSiblings,
     rows$,
     rowsBetween,
     rowsSelected,
     selection$.useValue,
-    setExpansions,
     topPiece.useValue,
   ]);
 

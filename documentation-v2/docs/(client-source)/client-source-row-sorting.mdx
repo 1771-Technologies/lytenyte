@@ -5,3 +5,198 @@ description: LyteNyte Grid lets you sort rows in ascending or descending order.
   You can apply multiple sorts, and each successive sort is used when
   values from the previous sorts are equal.
 ---
+
+LyteNyte Grid does not enforce a strict interface for sorting rows. Your sorting approach will
+differ depending on the data source you use. For the client row source, use the `sort` property
+to specify how the grid should sort rows. The `sort` property accepts one of two value types:
+
+- A **sort function** that compares two rows. The function must return a positive number if the
+  first row is greater than the second, a negative number if it is less, and `0` otherwise.
+- A **sort dimension** array. The array declaratively describes a list of sort comparators that
+  apply in order. The grid starts with the first sort dimension and proceeds to subsequent
+  dimensions only when the current comparator returns `0`.
+
+## Sort Functions
+
+A sort function compares two rows (of any kind). The client row data source calls the function
+you pass to the `sort` property with two row nodes. The row nodes may be any row type (leaf, group,
+or aggregation). If you are unfamiliar with row node types, see the
+[rows overview](/docs/row-overview) for more details.
+
+The demo below demonstrates function sorting at the most basic level. However, this demo
+still leaves a lot to be desired from a sorting interface. The following sections cover how to
+improve on this base and create a great sorting experience using LyteNyte Grid.
+
+::demo[Row Sort Function="./demos/client-row-sorting"]
+
+The simple sorting demo above is missing many key pieces you would expect from a
+normal sorting interface:
+
+- The **Change 24h** column does not indicate that it has a sort applied, or that the current
+  sort direction is descending.
+- There is no way to sort on other columns.
+- There is no way to change the sort direction.
+- Sorting by clicking predefined buttons is not scalable.
+
+LyteNyte Grid was designed to let you define your own representation. One simple way to do this
+is to extend the column specification with a `sort` attribute.
+
+<Steps>
+
+1. Extend the `GridSpec` type with your column extension:
+
+   ```ts
+   export interface GridSpec {
+     readonly data: DEXPerformanceData;
+     readonly column: { sort?: "asc" | "desc" };
+   }
+   ```
+
+2. Extend the `API` with a function that updates your internal sort state:
+
+   ```ts
+   export interface GridSpec {
+     readonly data: DEXPerformanceData;
+     readonly column: { sort?: "asc" | "desc" };
+     readonly api: { sortColumn: (id: string, dir: "asc" | "desc" | null) => void };
+   }
+   ```
+
+3. Implement the sort API extension, and update your column headers to indicate the applied sort.
+
+   See the code in the demo below for the full implementation. Some important snippets are shown below.
+
+   ```ts
+   // Assumes the columns state is defined above
+
+   function sortColumn(id: string, dir: "asc" | "desc" | null) {
+     setColumns((prev) => {
+       const next = prev.map((x) => {
+         // Remove any existing sort
+         if (x.sort && x.id !== id) {
+           const next = { ...x };
+           delete next.sort;
+           return next;
+         }
+         // Apply our new sort
+         if (x.id === id) {
+           const next = { ...x };
+           if (dir == null) delete next.sort;
+           else next.sort = dir;
+
+           return next;
+         }
+         return x;
+       });
+       return next;
+     });
+   }
+   ```
+
+</Steps>
+
+In the demo you can click any header to sort that column. Defining a sort extension for
+columns enables this flexibility.
+
+::demo[Extended Function Sort="./demos/client-row-sorting-fn-extension"]
+
+This demo shows one approach to sorting. LyteNyte Grid is flexible enough to support any sort
+model you define, and it can fit your application's needs directly.
+
+Sorting rows using a function is extremely flexible, but it does have some drawbacks:
+
+- For basic sorts, it can be tedious to create the exact logic you need.
+- Function sorting does not represent multi-way sorting in a declarative manner.
+  You must implement multi-way sorts inside the function.
+- The sort function must handle sort direction by inverting comparisons
+  for ascending sorts.
+
+LyteNyte Grid's client row source also supports **dimension sorts**, which are simpler than
+function sorts without any loss of flexibility.
+
+## Dimension Sorts
+
+A dimension sort is an object representation of an individual sort. The interface is shown below:
+
+```ts
+export type DimensionSort<T> = { dim: Dimension<T> | SortFn<T>; descending?: boolean };
+```
+
+Notice that the `dim` property can be either a `Dimension` or a `SortFn`. This means it is possible to
+represent a `SortFn` as a dimension sort:
+
+```ts
+const dimSort = { dim: MySortFn };
+```
+
+The `dim` field may also be a `Dimension`, which is any value with an `id` or `field` property, as shown
+in the interface below. In particular, columns passed to the grid may also be used as dimensions. LyteNyte
+Grid's client source can compute column fields, which makes it easy to use columns as dimensions.
+
+```ts
+export type Dimension<T> = { name?: string; field: Field<T> } | { id: string; field?: Field<T> };
+```
+
+In the demo below, the columns have been extended with custom sort attributes. Instead of using a
+function to sort the row data, the demo uses the column directly as a dimension.
+
+::demo[Dimension Sort="./demos/client-row-sorting-dimensions"]
+
+### Multi Way Sorting
+
+One benefit of dimension sorts is how easy multi-way sorting becomes. A multi-way sort defines an array
+of comparators. The first comparator determines the sort order, but if the result is `0`, the grid
+uses the next comparator, and so on.
+
+The demo below shows multi-way sorting using dimension sorts. To sort on more than one column, hold the
+Control/Command key and click a column header.
+
+::demo[Multi-way Sort="./demos/client-row-sorting-multi-way"]
+
+The demo's multi-way sort implementation replaces all existing sorts when you click a header without
+pressing Control/Command. This behavior is not a strict rule. Instead, it is part of the intended
+implementation for this demo. The flexibility of LyteNyte Grid's dimension sorts combined with
+API extensions lets you implement any behavior you need. Match the final behavior to the needs of
+your application.
+
+## Sorting Group Rows
+
+So far, the sorts have only handled leaf rows. However, you can use the same sorts to order group rows.
+A group row does not require special handling, sort on the dimension you need.
+
+The demo below demonstrates group row sorting in action. See the [Client Row Grouping guide](/docs/client-source-row-grouping) for more
+on the group functionality available in the client row source.
+
+::demo[Sorting Group Rows="./demos/client-row-sorting-groups"]
+
+This demo uses a different approach than the other demos in this guide to further emphasize the flexibility
+of defining your own sort model. Instead of extending the columns with a sort value, the demo maintains a
+separate sort state:
+
+```ts
+const [sort, setSort] = useState<{ id: string; dir: "asc" | "desc" | null } | null>({
+  id: "__ln_group__",
+  dir: "desc",
+});
+```
+
+:::tip
+
+LyteNyte Grid automatically creates a row group column when group rows are present in the grid. Because
+this column is not part of the columns you pass to the grid, the correct `id` for the dimension may not be
+obvious.
+
+LyteNyte Grid's group column uses the id `"__ln_group__"`. The client row source treats this ID in a special way
+and will sort rows based on the group's **key**. This means you can sort the group column with:
+
+```ts
+{ dim: { id: "__ln_group__" }, descending: false }
+```
+
+:::
+
+## Next Steps
+
+::next[/docs/client-source-row-grouping]
+::next[/docs/client-source-filtering]
+::next[/docs/client-source-aggregations]

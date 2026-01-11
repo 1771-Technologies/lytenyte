@@ -1,8 +1,9 @@
-import { useControlled } from "@1771technologies/lytenyte-core-experimental/internal";
+import { useControlled, useEvent } from "@1771technologies/lytenyte-core-experimental/internal";
 import type { UseTreeDataSourceParams } from "../use-tree-data-source";
 import { useCallback } from "react";
 
 export function useControlledState<T>({
+  onRowGroupExpansionChange,
   rowGroupDefaultExpansion = false,
   rowGroupExpansions,
 }: UseTreeDataSourceParams<T>) {
@@ -10,6 +11,12 @@ export function useControlledState<T>({
     controlled: rowGroupExpansions,
     default: {},
   });
+
+  const onExpansionsChange = useEvent((delta: Record<string, boolean | undefined>) => {
+    setExpansions({ ...expansions, ...delta });
+    onRowGroupExpansionChange?.({ ...expansions, ...delta });
+  });
+
   const expandedFn = useCallback(
     (id: string, depth: number) => {
       const s = expansions[id];
@@ -22,5 +29,5 @@ export function useControlledState<T>({
     [expansions, rowGroupDefaultExpansion],
   );
 
-  return { expansions, setExpansions, expandedFn };
+  return { expansions, onExpansionsChange, expandedFn };
 }

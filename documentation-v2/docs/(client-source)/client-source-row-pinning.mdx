@@ -4,3 +4,50 @@ step: Pin rows to the top or bottom of the grid's viewport.
 description: Create rows that are pinned to the top or bottom of the grid's
   viewport. Pinned rows remain visible as the user scrolls the grid.
 ---
+
+:::info
+
+For a high-level overview of pinned rows, see the [Row Pinning guide](/docs/row-pinning).
+This guide covers row pinning specifically when using the client row source.
+
+:::
+
+## Pinning Rows Top
+
+To pin rows to the top of the grid, set the `topData` property on the client row data source.
+The demo below pins two rows to the top of the viewport. Notice that these rows remain visible
+as you scroll.
+
+::demo[Top Pinned Rows="./demos/client-top-rows"]
+
+## Pinning Rows Bottom
+
+To pin rows to the bottom of the grid, set the `botData` property on the client row data source.
+The demo below pins two rows to the bottom of the viewport. These rows remain fixed to the bottom
+of the viewport even as you scroll.
+
+::demo[Bottom Pinned Rows="./demos/client-bot-rows"]
+
+## Pinning Rows Top & Bottom
+
+You can pin rows to both the top and bottom of the viewport by setting both `topData` and `botData`
+at the same time. Since pinned rows always remain visible, you must ensure the grid's viewport has
+enough height to display them.
+
+::demo[Top & Bottom Pinned Rows="./demos/client-top-and-bot-rows"]
+
+## Pinned Row Considerations
+
+The client data source treats pinned rows as separate from the row data provided via the
+`data` property. In particular:
+
+- Pinned rows will never be filtered out
+- Sorting rows will not sort pinned rows
+- Pinned rows cannot be used for groups
+
+## Next Steps
+
+::next[/docs/client-source-row-sorting]
+::next[/docs/client-source-data]
+::next[/docs/client-source-row-grouping]
+::next[/docs/client-source-aggregations]

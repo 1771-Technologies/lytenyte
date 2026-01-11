@@ -8,11 +8,62 @@ description: Client row data is an array of rows that is fully available on the 
 ## The Data Property
 
 Use the `data` property on the `useClientDataSource` hook to provide the raw data the client
-data source should use to create rows. The example below demonstrates the basic setup.
+data source uses to create rows. The example below demonstrates the basic setup.
 
 ::demo[Client Data="./demos/client-overview"]
 
 ## Updating Data
 
-LyteNyte Grid's `useClientDataSource` derives the view from the `data` provided. This means that
-changes to
+LyteNyte Grid's `useClientDataSource` derives the view from the `data` you provide. This means that
+changes to the `data` value you pass to the hook will update the rows in the grid.
+
+The `useClientDataSource` hook intelligently updates row nodes when the row data changes. Only
+data items that have changed result in new row nodes being created. This makes it possible
+to update the row data efficiently by passing a new data array with some items updated.
+
+The demo below demonstrates direct data updates. The data ticks every second and randomly updates
+some rows in the view.
+
+::demo[Data Updates="./demos/client-data-update"]
+
+To create the ticking data, the demo stores the `data` in React state, then calls `setData`
+in an interval every second with a new data set, as shown below.
+
+```ts
+export default function ClientDataDemo() {
+  const [data, setData] = useState(initialData); //!
+  const ds = useClientDataSource({ data: data });
+
+  //!next 7
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setData((prev) => tickDexData(prev));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Component
+}
+```
+
+Since LyteNyte Grid intelligently updates rows, this approach to updating data scales
+quite well. LyteNyte Grid can handle more than 10,000 updates per second, even in complex
+setups that include filtering and grouping. However, you should still optimize your
+row data updates, since frequent updates can result in unnecessary work.
+Follow these tips:
+
+- Perform **delta** updates to your row data, if possible. Instead of creating new references
+  for each row in an array, reuse the items that have not changed. This allows LyteNyte Grid
+  to identify only the items that have changed and create new row nodes for them.
+- Batch updates to your row data. LyteNyte Grid can handle updates on a millisecond
+  level. However, humans can't keep track of values that change so frequently. Batching updates to
+  your row data into intervals of a few hundred milliseconds to a few seconds is an easy optimization to make
+  that yields major performance gains.
+
+## Next Steps
+
+::next[/docs/client-source-filtering]
+::next[/docs/client-source-row-adding]
+::next[/docs/client-source-row-deleting]
+::next[/docs/client-source-row-grouping]

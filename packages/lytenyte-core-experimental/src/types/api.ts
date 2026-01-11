@@ -52,7 +52,7 @@ export type API<Spec extends GridSpec = GridSpec> = {
     readonly includeHeader?: boolean;
     readonly columns?: (string | number | WithId)[];
   }) => Record<string, number>;
-  readonly columnUpdate: (updates: Record<string, Omit<Column<Spec>, "id">>) => void;
+  readonly columnUpdate: (updates: Record<string, Omit<Partial<Column<Spec>>, "id">>) => void;
   readonly columnToggleGroup: (group: string | string[], state?: boolean) => void;
 
   readonly rowDetailHeight: (rowId: WithId | string) => number;
