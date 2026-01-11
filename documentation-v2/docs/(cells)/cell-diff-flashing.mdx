@@ -1,4 +1,127 @@
 ---
 title: Cell Diff Flashing
 step: Learn how to create a cell that flashes whenever its value changes.
+description: When the data in the grid changes frequently, it is useful to give users feedback
+  about which cells have updated. One way to do this is by flashing cells that have changed.
 ---
+
+:::note
+
+Cell flashing is not a built-in feature of LyteNyte Grid. Instead, you implement cell flashing by
+providing a custom cell renderer that flashes the cell when the cell value changes.
+This guide covers a few ways to implement that behavior.
+
+This guide assumes familiarity with cell renderers in LyteNyte Grid. For more guidance,
+read the [Cell Renderers guide](/docs/cell-renderers) to learn how LyteNyte Grid displays cell content.
+
+:::
+
+## Flashing Cells On Change
+
+The easiest way to flash a cell when its value changes is to track the cell's current value and
+previous value. When the values differ, flash the cell. The demo below demonstrates this approach.
+The demo flashes changed cells using CSS. Click **Update Data** to randomly change cell values.
+
+::demo[Cell Flashing="./demos/cell-flashing"]
+
+The cell flashing logic lives in the `NumberCell` component. `NumberCell` is a custom cell renderer that the grid
+columns use. The component tracks the previous value and applies the `"flash"` animation
+in an effect whenever the value changes.
+
+```ts
+export function NumberCell({ api, column, row }: Grid.T.CellRendererParams<GridSpec>) {
+  const field = api.columnField(column, row) as number;
+
+  const prevRef = useRef(field); //!
+  const prev = prevRef.current; //!
+
+  const value = typeof field === "number" ? formatter.format(field) : "-";
+
+  const diff = field - (prev ?? field); //!
+  if (prev !== field) prevRef.current = field;
+
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!ref.current) return;
+
+    //!next 4
+    ref.current.style.animation = "none";
+    requestAnimationFrame(() => {
+      ref.current!.style.animation = "flash 1s ease-out forwards";
+    });
+  }, [diff]);
+
+  return (
+    <div ref={ref} className="flex h-full items-center justify-end gap-2 tabular-nums tracking-tighter">
+      {value}
+    </div>
+  );
+}
+```
+
+### Enhanced Flash
+
+Flashing a cell background is a relatively uninteresting indicator of change. The background flash only
+indicates that the value changed, but it does not show how the value changed. A better approach
+is to flash the changed value itself. The demo below demonstrates this approach.
+
+::demo[Flash Change Value="./demos/cell-flashing-enhanced"]
+
+The change-detection logic is the same as the previous example, but the rendering logic is different.
+Instead of flashing the background, the cell renderer shows the change and then fades
+it out. The code is shown below.
+
+```tsx
+export function NumberCell({ api, column, row }: Grid.T.CellRendererParams<GridSpec>) {
+  //#start
+  const field = api.columnField(column, row) as number;
+
+  const prevRef = useRef(field);
+  const prev = prevRef.current;
+
+  const value = typeof field === "number" ? formatter.format(field) : "-";
+
+  const diff = field - (prev ?? field);
+
+  if (prev !== field) prevRef.current = field;
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!ref.current) return;
+
+    ref.current.style.animation = "none";
+    requestAnimationFrame(() => {
+      ref.current!.style.animation = "fadeOut 3s ease-out forwards";
+    });
+  }, [diff]);
+
+  //#end
+
+  return (
+    <div className="flex h-full items-center justify-end gap-2 tabular-nums tracking-tighter">
+      {/*!next 14 */}
+      {diff !== 0 && (
+        <div
+          ref={ref}
+          className={clsx(
+            "flex items-center rounded px-1 text-[10px]",
+            diff < 0 && "bg-red-800/20 text-red-500",
+            diff > 0 && "bg-green-500/20 text-green-500",
+          )}
+        >
+          {diff < 0 && <ArrowDownIcon width={12} height={12} />}
+          {diff > 0 && <ArrowUpIcon width={12} height={12} />}
+          <span>{diff.toFixed(2)}</span>
+        </div>
+      )}
+
+      {value}
+    </div>
+  );
+}
+```
+
+## Next Steps
+
+::next[/docs/cell-renderers]
+::next[/docs/cell-selection]
+::next[/docs/cell-tooltips]

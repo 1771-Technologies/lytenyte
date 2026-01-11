@@ -70,7 +70,7 @@ const CellImpl = memo(
 
     const style = useCellStyle(xPositions, yPositions, cell, rtl, rowMeta.detailHeight, undefined);
 
-    const handlers = useMappedEvents(events.cell, column, row);
+    const handlers = useMappedEvents(events.cell, column, row, api);
 
     if (!row || cell.isDeadCol) return null;
 

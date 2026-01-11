@@ -38,7 +38,7 @@ const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(fu
     [`data-ln-header-row-${cell.rowStart}`]: true,
   };
 
-  const handlers = useMappedEvents(events.headerGroup, cell.groupPath, columns);
+  const handlers = useMappedEvents(events.headerGroup, cell.groupPath, columns, api);
   const { props: dragProps, placeholder } = useDragMove(cell, props.onDragStart ?? handlers.onDragStart);
 
   const Renderer = columnGroupRenderer ?? HeaderGroupDefault;

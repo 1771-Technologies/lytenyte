@@ -1,0 +1,13 @@
+@keyframes flash {
+  0% {
+    background-color: var(--color-ln-primary-10);
+  }
+  100% {
+    background-color: var(--color-ln-primary-30);
+  }
+}
+.copy-flash {
+  & [data-ln-cell-selection-rect="true"]:not([data-ln-cell-selection-is-pivot="true"]) {
+    animation: flash 0.5s ease-out forwards;
+  }
+}

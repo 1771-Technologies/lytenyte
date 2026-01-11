@@ -40,7 +40,7 @@ const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function Hea
     return dataAttrs;
   }, [column.groupPath?.length, cell.kind, rowSpan]);
 
-  const handlers = useMappedEvents(events.headerCell, column);
+  const handlers = useMappedEvents(events.headerCell, column, api);
 
   const { props: dragProps, placeholder } = useDragMove(cell, props.onDragStart ?? handlers.onDragStart);
   const headerStyle = useHeaderCellStyle(cell, xPositions);

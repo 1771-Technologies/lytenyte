@@ -2,4 +2,109 @@
 title: Cell Range Selection
 pro: true
 step: See how to select a range of cells, or multiple ranges of cells.
+description: LyteNyte Grid supports selecting a range of cells or multiple ranges of cells.
+  A range is an rectangular area of cells which can be considered selected.
 ---
+
+Set the `cellSelectMode` property on the grid to configure the cell selection behavior of
+LyteNyte Grid. This property accepts three possible values:
+
+- `"range"`: Allows a single range of cells to be selected.
+- `"multi-range"`: Allows multiple cell selection ranges to be performed. Holding down the control/command
+  key adds to the existing selections.
+- `"none"`: Disables the cell selection functionality in the grid. By default cell selection is disabled.
+
+## Single Range Selection
+
+By setting the `cellSelectMode` to `"range"`, LyteNyte Grid will allow a single rectangular area of
+cells to be selected. Cell selection is performed by clicking a cell and dragging over an area to
+select. The demo below demonstrates this. Try clicking and dragging a cell to select a range of
+cells.
+
+::demo[Range Selection="./demos/cell-selection"]
+
+To enable cell selection the demo sets the `cellSelectMode` mode as the code below shows.
+
+```tsx
+<Grid columns={columns} columnBase={base} rowSource={ds} cellSelectMode="range" />
+```
+
+### Copy Cell Content
+
+When cell selection is enabled, LyteNyte Grid will track the selection state internally. This
+type of cell selection is called **uncontrolled cell selection**. Since the grid manages the selection,
+the only way to retrieve the current selection state is to call `cellSelections` on the API
+
+**Uncontrolled cell selection** is useful for implementing functionality such as copying cells to the
+clipboard, without needing to manage the cell selection state in your own code. The demo below demonstrates
+this. Select some cells and press **Control C** to copy the cells to your clipboard (**Command C** ) on a Mac.
+
+::demo[Copying Cell Content="./demos/cell-selection-copy"]
+
+The copy functionality is implemented using the `keyDown` event on the grid viewport. The implementation code is
+shown below. Notice the code uses the `api.cellSelections` method to retrieve the current selection rects. The
+grid's `api.exportData` method is then used to retrieve the data for the given selection rect. The retrieved data
+is then converted to a string and written to the clipboard. The `copy-flash` class simply flashes the cells to give
+some feedback to the user that the cells have been selected.
+
+```tsx
+<Grid
+  columns={columns}
+  columnBase={base}
+  rowSource={ds}
+  cellSelectMode="range"
+  events={useMemo<Grid.Events<GridSpec>>(
+    () => ({
+      viewport: {
+        keyDown: async (ev, vp, api) => {
+          if (ev.key === "c" && (ev.metaKey || ev.ctrlKey)) {
+            //!next 10
+            const rect = api.cellSelections()?.[0];
+            if (!rect) return;
+            const v = await api.exportData({ rect });
+
+            vp.classList.add("copy-flash");
+
+            const asString = v.data.map((x) => `${x.join(", ")}`).join("\n");
+            await navigator.clipboard.writeText(asString);
+
+            setTimeout(() => vp.classList.remove("copy-flash"), 1000);
+          }
+        },
+      },
+    }),
+    [],
+  )}
+/>
+```
+
+### Controlled Cell Selection
+
+For some use cases taking control of the cell selection is necessary. To do this, set the
+`cellSelections` property on the grid to an array of selection rects. You can then provide an
+`onCellSelectionChange` handler to update the provided state when the selection changes.
+
+The demo below demonstrates controlled selection. The cell selection state is kept in local
+React state through a `useState` hook. The selection state is the passed to a status bar
+component that will display the averages of the selections for each number column.
+
+::demo[Status Bar="./demos/cell-selection-status"]
+
+The `cellSelections` property expects an array of `DataRect` objects to be provided. A `DataRect`
+is an object with the following interface. The `rowEnd` and `columnEnd` values are exclusive and not included
+in the selected cells.
+
+```ts
+interface DataRect {
+  readonly rowStart: number;
+  readonly rowEnd: number;
+  readonly columnStart: number;
+  readonly columnEnd: number;
+}
+```
+
+## Selecting Columns
+
+## Selecting Rows
+
+## Multi Range Selection

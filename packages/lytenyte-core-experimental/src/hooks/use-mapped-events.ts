@@ -7,7 +7,7 @@ export function useMappedEvents(events: GridEvents[keyof GridEvents], ...args: a
       Object.entries(events ?? {}).map(([key, ev]) => {
         const evName = `on${key[0].toUpperCase()}${key.slice(1)}`;
 
-        return [evName, (e: any) => ev(...args, e)];
+        return [evName, (e: any) => ev(e, ...args)];
       }),
     ) as Events;
     // This is technically fine

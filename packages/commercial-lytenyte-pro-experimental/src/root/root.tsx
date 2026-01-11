@@ -90,8 +90,6 @@ const RootImpl = ({ children, ...p }: PropsWithChildren<Root.Props>) => {
   const [openDialogFrames, setDialogFrames] = useState<ProContext["openDialogFrames"]>({});
   const [openPopoverFrames, setPopoverFrames] = useState<ProContext["openPopoverFrames"]>({});
 
-  const api = useProAPI(setDialogFrames, setPopoverFrames);
-
   const cellSelectionMode = p.cellSelectMode ?? "none";
   const [cellSelections, setCellSelections] = useControlled({
     controlled: p.cellSelections,
@@ -101,6 +99,8 @@ const RootImpl = ({ children, ...p }: PropsWithChildren<Root.Props>) => {
     p.onCellSelectionChange?.(rects);
     setCellSelections(rects);
   });
+
+  const api = useProAPI(setDialogFrames, setPopoverFrames, cellSelections);
 
   const [cellSelectionPivot, setSelectionPivot] = useState<DataRectSplit | null>(null);
   const [cellSelectionAdditiveRects, setCellSelectionAdditiveRects] = useState<DataRectSplit[] | null>(null);

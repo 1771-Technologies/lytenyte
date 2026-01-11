@@ -13,6 +13,9 @@ export interface DataEntry {
 }
 
 function generateNextDeviation(x: number, delta: number = 5, positiveBias = 0.5) {
+  // Only change sometimes
+  if (Math.random() > 0.1) return x;
+
   const maxDiff = x * (delta / 100);
   const positiveChange = Math.random() < positiveBias;
 
@@ -78,6 +81,9 @@ const nextData = () => {
   const items = symbols; // getRandomItemsFromArray(symbols, 5);
 
   for (let i = 0; i < items.length; i++) {
+    // Randomly update only some symbols
+    if (Math.random() > 0.5) continue;
+
     const s = items[i];
     const rows = data[s];
     rows.pop();
@@ -113,6 +119,8 @@ const nextData = () => {
   }
 
   r = Object.values(data).flat();
+
+  return r;
 };
 
 export { r as data, nextData };

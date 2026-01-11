@@ -54,6 +54,12 @@ export type API<Spec extends GridSpec = GridSpec> = {
   }) => Record<string, number>;
   readonly columnUpdate: (updates: Record<string, Omit<Partial<Column<Spec>>, "id">>) => void;
   readonly columnToggleGroup: (group: string | string[], state?: boolean) => void;
+  readonly columnView: () => {
+    columnCount: number;
+    startCount: number;
+    endCount: number;
+    centerCount: number;
+  };
 
   readonly rowDetailHeight: (rowId: WithId | string) => number;
   readonly rowDetailExpanded: (rowOrId: RowNode<Spec["data"]> | string | number) => boolean;
@@ -65,6 +71,7 @@ export type API<Spec extends GridSpec = GridSpec> = {
   readonly rowIsAggregated: (row: RowNode<Spec["data"]>) => row is RowAggregated;
   readonly rowIsExpanded: (row: RowNode<Spec["data"]>) => boolean;
   readonly rowIsExpandable: (row: RowNode<Spec["data"]>) => boolean;
+  readonly rowView: () => { rowCount: number; topCount: number; bottomCount: number; centerCount: number };
 
   readonly exportData: (params?: {
     readonly rect: DataRect;
