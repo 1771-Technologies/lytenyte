@@ -42,7 +42,7 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
   const shouldCapture = !focused && !vpFocused;
   const rowCount = source.useRowCount();
 
-  const handlers = useMappedEvents(events.viewport, vp);
+  const handlers = useMappedEvents(events.viewport, { viewport: vp, api });
 
   const handleNavigation = useMemo(() => {
     if (!vp) return () => {};

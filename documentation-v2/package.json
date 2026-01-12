@@ -21,6 +21,7 @@
     "es-toolkit": "^1.43.0",
     "lucide-react": "0.544.0",
     "radix-ui": "1.4.3",
+    "react-tooltip": "^5.30.0",
     "recharts": "3.2.1",
     "rehype-expressive-code": "0.41.5",
     "sharp": "0.34.5",

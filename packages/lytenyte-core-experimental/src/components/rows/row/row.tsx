@@ -9,10 +9,11 @@ import { useRowStyle } from "../use-row-style.js";
 import { RowDetailRow } from "../row-detail-row.js";
 import { CellSpacerCenter } from "../../cells/cell-spacers/cell-spacer-center.js";
 import { useMappedEvents } from "../../../hooks/use-mapped-events.js";
+import { useInternalShare } from "../../../internal.js";
 
 const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...props }, forwarded) {
   const ctx = useRoot();
-  const { id, yPositions, xPositions, view, editMode, events, styles: sx } = ctx;
+  const { id, yPositions, xPositions, view, editMode, events, styles: sx, api } = ctx;
 
   const container = useRowsContainerContext();
 
@@ -25,18 +26,23 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
   const rowMeta = useRowContextValue(row, ctx);
   const topOffset = container.useValue($topHeight);
 
+  const { cellSelections, hasCellSelection } = useInternalShare();
+  const isSelected = cellSelections.useValue((x) =>
+    x.some((r) => row.rowIndex >= r.rowStart && row.rowIndex < r.rowEnd),
+  );
+
   const styles = useRowStyle(
     yPositions,
     row.rowIndex,
     row.rowPin,
     topOffset,
     !!row.rowIsFocusRow,
-    hasSpans,
+    hasSpans || hasCellSelection,
     rowMeta.detailHeight,
     props.style ?? sx?.row?.style,
   );
 
-  const handlers = useMappedEvents(events.row, rowMeta.row);
+  const handlers = useMappedEvents(events.row, { row: rowMeta.row, api, layout: row });
 
   return (
     <RowContext.Provider value={rowMeta}>
@@ -64,6 +70,7 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
         data-ln-gridid={id}
         data-ln-rowindex={row.rowIndex}
         data-ln-rowpin={row.rowPin ?? "center"}
+        data-ln-cell-selected={isSelected}
         data-ln-rowtype="normal-row"
         data-ln-last-top-pin={row.rowLastPinTop}
         data-ln-first-bottom-pin={row.rowFirstPinBottom}

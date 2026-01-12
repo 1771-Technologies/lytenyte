@@ -28,15 +28,18 @@ export function CellStyleRow({
   const vpWidth = dimensions.innerWidth;
 
   const style = useMemo(() => {
-    const isStart = rect.columnStart < startCount;
-    const isEnd = rect.columnStart >= startCount + centerCount;
+    const columnStart = rect.columnStart;
+    const columnEnd = rect.columnEnd;
+
+    const isStart = columnStart < startCount;
+    const isEnd = columnStart >= startCount + centerCount;
     const isTop = isRowPinnedTop;
     const isBot = isRowPinnedBottom;
 
-    const columnIndex = rect.columnStart;
+    const columnIndex = columnStart;
     const rowIndex = rect.rowStart;
 
-    const width = sizeFromCoord(rect.columnStart, xPositions, rect.columnEnd - rect.columnStart);
+    const width = sizeFromCoord(columnStart, xPositions, columnEnd - columnStart);
     const height = sizeFromCoord(rect.rowStart, yPositions, rect.rowEnd - rect.rowStart);
 
     const firstBotIndex = rowCount - rowBotCount;
@@ -84,21 +87,21 @@ export function CellStyleRow({
 
     return style;
   }, [
-    centerCount,
-    isRowPinnedBottom,
-    isRowPinnedTop,
-    rect.columnEnd,
     rect.columnStart,
-    rect.rowEnd,
+    rect.columnEnd,
     rect.rowStart,
-    rowBotCount,
+    rect.rowEnd,
+    startCount,
+    centerCount,
+    isRowPinnedTop,
+    isRowPinnedBottom,
     rowCount,
+    rowBotCount,
+    xPositions,
+    vpWidth,
+    yPositions,
     rowTopCount,
     rtl,
-    startCount,
-    vpWidth,
-    xPositions,
-    yPositions,
   ]);
 
   return (

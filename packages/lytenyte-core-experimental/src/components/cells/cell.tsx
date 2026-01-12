@@ -70,7 +70,7 @@ const CellImpl = memo(
 
     const style = useCellStyle(xPositions, yPositions, cell, rtl, rowMeta.detailHeight, undefined);
 
-    const handlers = useMappedEvents(events.cell, column, row);
+    const handlers = useMappedEvents(events.cell, { column, row, api, layout: cell });
 
     if (!row || cell.isDeadCol) return null;
 
@@ -88,6 +88,7 @@ const CellImpl = memo(
         <div
           className={styles?.cell?.className}
           {...props}
+          {...handlers}
           ref={forwarded}
           role="gridcell"
           tabIndex={isEditingThis ? -1 : 0}

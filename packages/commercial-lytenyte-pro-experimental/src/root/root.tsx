@@ -1,4 +1,9 @@
-import { Fallback, Root as RootCore } from "@1771technologies/lytenyte-core-experimental/internal";
+import {
+  Fallback,
+  LnInternalShareProvider,
+  Root as RootCore,
+  usePiece,
+} from "@1771technologies/lytenyte-core-experimental/internal";
 import {
   forwardRef,
   memo,
@@ -21,8 +26,7 @@ import { hasAValidLicense, licenseState } from "../license.js";
 import { PopoverDriver } from "../frames/popover-driver.js";
 import { useControlled, useEvent, useRoot } from "@1771technologies/lytenyte-core-experimental/internal";
 import { splitCellSelectionRect } from "../cell-selection/index.js";
-import { splitOnPivot } from "../cell-selection/split-on-pivot.js";
-import { CellSelectionDriver } from "../cell-selection/cell-selection-driver.js";
+import { CellSelectionDriver } from "../cell-selection/cell-selection-driver/cell-selection-driver.jsx";
 import {
   CellSelectionBottom,
   CellSelectionCenter,
@@ -70,7 +74,7 @@ const RootWrapper = <Spec extends Root.GridSpec = Root.GridSpec>(
   }, []);
 
   const components =
-    p.cellSelectMode !== "none"
+    p.cellSelectionMode !== "none"
       ? {
           ln_topComponent: CellSelectionTop,
           ln_bottomComponent: CellSelectionBottom,
@@ -90,9 +94,7 @@ const RootImpl = ({ children, ...p }: PropsWithChildren<Root.Props>) => {
   const [openDialogFrames, setDialogFrames] = useState<ProContext["openDialogFrames"]>({});
   const [openPopoverFrames, setPopoverFrames] = useState<ProContext["openPopoverFrames"]>({});
 
-  const api = useProAPI(setDialogFrames, setPopoverFrames);
-
-  const cellSelectionMode = p.cellSelectMode ?? "none";
+  const cellSelectionMode = p.cellSelectionMode ?? "none";
   const [cellSelections, setCellSelections] = useControlled({
     controlled: p.cellSelections,
     default: [],
@@ -101,6 +103,8 @@ const RootImpl = ({ children, ...p }: PropsWithChildren<Root.Props>) => {
     p.onCellSelectionChange?.(rects);
     setCellSelections(rects);
   });
+
+  const api = useProAPI(setDialogFrames, setPopoverFrames, cellSelections);
 
   const [cellSelectionPivot, setSelectionPivot] = useState<DataRectSplit | null>(null);
   const [cellSelectionAdditiveRects, setCellSelectionAdditiveRects] = useState<DataRectSplit[] | null>(null);
@@ -113,7 +117,6 @@ const RootImpl = ({ children, ...p }: PropsWithChildren<Root.Props>) => {
   const cellSelectionSplits = useMemo(() => {
     const centerCount = rowCount - topCount - botCount;
     const selections = cellSelections;
-    const p = cellSelectionPivot;
 
     const splits = selections.flatMap((rect) => {
       return splitCellSelectionRect({
@@ -125,25 +128,10 @@ const RootImpl = ({ children, ...p }: PropsWithChildren<Root.Props>) => {
       });
     });
 
-    const firstWithinPivot = splits.findIndex(
-      (c) =>
-        p &&
-        p.rowStart >= c.rowStart &&
-        p.rowEnd <= c.rowEnd &&
-        p.columnStart >= c.columnStart &&
-        p.columnEnd <= c.columnEnd,
-    );
-
-    if (firstWithinPivot !== -1) {
-      const pivotSplits = splitOnPivot(splits[firstWithinPivot], p!);
-
-      if (pivotSplits) splits.splice(firstWithinPivot, 1, ...pivotSplits);
-      else splits.splice(firstWithinPivot, 1);
-    }
-
     return splits;
-  }, [botCount, cellSelectionPivot, cellSelections, rowCount, topCount, view.centerCount, view.startCount]);
+  }, [botCount, cellSelections, rowCount, topCount, view.centerCount, view.startCount]);
 
+  const excludeMarker = Boolean(p.columnMarker?.on && p.cellSelectionExcludeMarker);
   const value = useMemo<ProContext>(() => {
     return {
       api,
@@ -152,6 +140,8 @@ const RootImpl = ({ children, ...p }: PropsWithChildren<Root.Props>) => {
       setDialogFrames,
       openPopoverFrames,
       setPopoverFrames,
+      excludeMarker,
+      keepSelection: p.cellSelectionMaintainOnNonCellPosition ?? false,
 
       cellSelectionMode,
       cellSelections,
@@ -170,23 +160,37 @@ const RootImpl = ({ children, ...p }: PropsWithChildren<Root.Props>) => {
     api,
     openDialogFrames,
     openPopoverFrames,
+    excludeMarker,
+    p.cellSelectionMaintainOnNonCellPosition,
+    p.popoverFrames,
+    p.dialogFrames,
     cellSelectionMode,
     cellSelections,
     cellSelectionPivot,
     onCellSelectionChange,
     cellSelectionAdditiveRects,
     cellSelectionSplits,
-    p.popoverFrames,
-    p.dialogFrames,
   ]);
 
+  const cellSelectionsPiece = usePiece(cellSelections);
+
   return (
-    <ProRootProvider value={value}>
-      <DialogDriver />
-      <PopoverDriver />
-      {cellSelectionMode !== "none" && <CellSelectionDriver />}
-      {children ?? <Fallback />}
-    </ProRootProvider>
+    <LnInternalShareProvider
+      value={useMemo(
+        () => ({
+          cellSelections: cellSelectionsPiece,
+          hasCellSelection: (p.cellSelectionMode ?? "none") !== "none",
+        }),
+        [cellSelectionsPiece, p.cellSelectionMode],
+      )}
+    >
+      <ProRootProvider value={value}>
+        <DialogDriver />
+        <PopoverDriver />
+        {cellSelectionMode !== "none" && <CellSelectionDriver />}
+        {children ?? <Fallback />}
+      </ProRootProvider>
+    </LnInternalShareProvider>
   );
 };
 

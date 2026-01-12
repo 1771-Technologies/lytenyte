@@ -42,7 +42,7 @@ const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function
 
   const row = source.rowByIndex(layout.rowIndex).useValue();
 
-  const handlers = useMappedEvents(events.row, row);
+  const handlers = useMappedEvents(events.row, { row, api, layout });
 
   const rowIndex = layout.rowIndex;
   const rowPin = layout.rowPin;

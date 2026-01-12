@@ -1,4 +1,5 @@
 import type {
+  ColumnView,
   PositionFullWidthRow,
   PositionGridCell,
   PositionUnion,
@@ -40,6 +41,7 @@ export type API<Spec extends GridSpec = GridSpec> = {
   readonly popoverFrameOpen: (id: string, target: HTMLElement | VirtualTarget, context?: any) => void;
   readonly popoverFrameClose: (id?: string) => void;
   readonly positionFromElement: (el: HTMLElement) => PositionUnion | null;
+  readonly cellSelections: () => DataRect[];
 
   // CORE Shared Properties
   readonly xPositions$: Piece<Uint32Array>;
@@ -64,7 +66,7 @@ export type API<Spec extends GridSpec = GridSpec> = {
   }) => Record<string, number>;
   readonly columnUpdate: (updates: Record<string, Omit<Partial<Column<Spec>>, "id">>) => void;
   readonly columnToggleGroup: (group: string | string[], state?: boolean) => void;
-
+  readonly columnView: () => ColumnView;
   readonly rowDetailHeight: (rowId: WithId | string) => number;
   readonly rowDetailExpanded: (rowOrId: RowNode<Spec["data"]> | string | number) => boolean;
   readonly rowDetailToggle: (rowOrId: string | RowNode<Spec["data"]>, state?: boolean) => void;
@@ -75,6 +77,7 @@ export type API<Spec extends GridSpec = GridSpec> = {
   readonly rowIsAggregated: (row: RowNode<Spec["data"]>) => row is RowAggregated;
   readonly rowIsExpanded: (row: RowNode<Spec["data"]>) => boolean;
   readonly rowIsExpandable: (row: RowNode<Spec["data"]>) => boolean;
+  readonly rowView: () => { rowCount: number; topCount: number; bottomCount: number; centerCount: number };
 
   readonly exportData: (params?: {
     readonly rect: DataRect;

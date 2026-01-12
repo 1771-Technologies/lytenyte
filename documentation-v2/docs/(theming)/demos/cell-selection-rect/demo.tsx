@@ -40,7 +40,7 @@ export default function CellSelectionRect() {
           rowSource={ds}
           columns={columns}
           columnBase={base}
-          cellSelectMode="range"
+          cellSelectionMode="range"
           cellSelections={cellSelection}
         />
       </div>

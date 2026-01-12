@@ -140,9 +140,7 @@ export default function DataPushing() {
                 );
               })}
             </Grid.Header>
-            <Grid.RowsContainer
-              className={ds.isLoading.useValue() ? "animate-pulse bg-gray-100" : ""}
-            >
+            <Grid.RowsContainer className={ds.isLoading.useValue() ? "animate-pulse bg-gray-100" : ""}>
               <Grid.RowsCenter>
                 {view.rows.center.map((row) => {
                   if (row.kind === "full-width") return null;

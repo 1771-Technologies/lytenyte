@@ -13,12 +13,12 @@ export interface ProContext {
   readonly dialogFrames: Required<Props>["dialogFrames"];
   readonly popoverFrames: Required<Props>["popoverFrames"];
 
+  readonly excludeMarker: boolean;
+  readonly keepSelection: boolean;
+
   readonly cellSelections: DataRect[];
   readonly onCellSelectionChange: (rect: DataRect[]) => void;
   readonly cellSelectionMode: "range" | "multi-range" | "none";
-
-  readonly cellSelectionPivot: DataRectSplit | null;
-  readonly setSelectionPivot: Dispatch<SetStateAction<DataRectSplit | null>>;
 
   readonly cellSelectionAdditiveRects: DataRectSplit[] | null;
   readonly setCellSelectionAdditiveRects: Dispatch<SetStateAction<DataRectSplit[] | null>>;

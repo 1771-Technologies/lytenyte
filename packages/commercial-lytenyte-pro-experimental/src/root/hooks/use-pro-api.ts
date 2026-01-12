@@ -1,15 +1,18 @@
 import { useEvent, useRoot } from "@1771technologies/lytenyte-core-experimental/internal";
-import type { API } from "../../types";
+import type { API, DataRect } from "../../types";
 import type { Writable } from "@1771technologies/lytenyte-shared";
 import type { ProContext } from "../context";
 
 export function useProAPI(
   setDialogFrames: ProContext["setDialogFrames"],
   setPopoverFrames: ProContext["setPopoverFrames"],
+  cellSelections: DataRect[],
 ) {
   const { api: coreApi } = useRoot();
 
   const api = coreApi as Writable<API>;
+
+  api.cellSelections = useEvent(() => cellSelections);
 
   api.dialogFrameOpen = useEvent((id, context) => {
     setDialogFrames((prev) => ({ ...prev, [id]: context }));

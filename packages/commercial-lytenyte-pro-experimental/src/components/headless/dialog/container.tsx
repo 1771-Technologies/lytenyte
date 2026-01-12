@@ -1,17 +1,19 @@
-import { forwardRef, useEffect, useRef, useState, type JSX } from "react";
+import { forwardRef, useEffect, useRef, useState, type JSX, type ReactNode } from "react";
 import { useDialogRoot } from "./context.js";
 import {
   arrow,
   autoUpdate,
   computePosition,
   flip,
+  hide,
   inline,
   offset,
   shift,
   type Middleware,
 } from "../../external/floating-ui.js";
 import { transformOrigin } from "./transform-origin.js";
-import { FocusTrap, getActiveElement, getTabbables, SCROLL_LOCKER } from "@1771technologies/lytenyte-shared";
+import { FocusTrap } from "@1771technologies/lytenyte-shared";
+import { getActiveElement, getTabbables, SCROLL_LOCKER } from "@1771technologies/lytenyte-shared";
 import { useCombinedRefs } from "@1771technologies/lytenyte-core-experimental/internal";
 import { useTransitioned } from "../../../hooks/use-transitioned-open.js";
 
@@ -38,6 +40,8 @@ function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.
     placement,
     shiftPadding,
     sideOffset,
+
+    hide: shouldHide,
 
     arrow: arrowEl,
   } = useDialogRoot();
@@ -77,6 +81,10 @@ function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.
 
     middleware.push(transformOrigin({ arrowHeight: 0, arrowWidth: 0 }));
 
+    if (shouldHide) {
+      middleware.push(hide());
+    }
+
     if (arrowEl) middleware.push(arrow({ element: arrowEl, padding: 0 }));
 
     const clean = autoUpdate(anchorEl, dialog, async () => {
@@ -85,6 +93,14 @@ function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.
         placement: placement,
         middleware,
       });
+
+      const hidden = pos.middlewareData.hide?.referenceHidden;
+
+      if (hidden && shouldHide) {
+        dialog.style.visibility = "hidden";
+      } else {
+        dialog.style.visibility = "visible";
+      }
 
       const x = pos.middlewareData.transformOrigin.x;
       const y = pos.middlewareData.transformOrigin.y;
@@ -110,7 +126,19 @@ function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.
     });
 
     return () => clean();
-  }, [alignOffset, anchor, arrowEl, dialog, inlineV, open, placement, shiftPadding, shouldMount, sideOffset]);
+  }, [
+    alignOffset,
+    anchor,
+    arrowEl,
+    dialog,
+    inlineV,
+    open,
+    placement,
+    shiftPadding,
+    shouldHide,
+    shouldMount,
+    sideOffset,
+  ]);
 
   useEffect(() => {
     if (lockScroll == false) return;
@@ -126,6 +154,7 @@ function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.
   }, [shouldMount]);
 
   const trapRef = useRef<FocusTrap | null>(null);
+
   useEffect(() => {
     if (!dialog) return;
 
@@ -227,10 +256,14 @@ function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.
 
   const combined = useCombinedRefs(ref, setDialog as any);
 
+  const Element = (modal != false ? "dialog" : "div") as unknown as (
+    props: JSX.IntrinsicElements["dialog"],
+  ) => ReactNode;
+
   if (!shouldMount) return null;
 
   return (
-    <dialog
+    <Element
       {...props}
       popover={!modal ? "manual" : undefined}
       aria-describedby={descriptionId}
@@ -242,7 +275,7 @@ function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.
       ref={combined}
     >
       {props.children}
-    </dialog>
+    </Element>
   );
 }
 

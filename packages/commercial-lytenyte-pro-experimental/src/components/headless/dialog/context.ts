@@ -10,6 +10,7 @@ export interface DialogContext {
   readonly titleId: string;
   readonly descriptionId: string;
 
+  readonly hide?: boolean;
   readonly lockScroll?: boolean;
   readonly modal?: boolean;
   readonly lightDismiss?: boolean;

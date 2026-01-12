@@ -19,7 +19,7 @@ export default function NormalPlay() {
       </Dialog.Root>
 
       <div style={{ display: "flex", justifyContent: "center", padding: "20px" }}>
-        <Popover.Root placement="bottom">
+        <Popover placement="bottom">
           <Popover.Trigger data-ln-button="primary" data-ln-size="md" data-ln-icon>
             P
           </Popover.Trigger>
@@ -29,7 +29,7 @@ export default function NormalPlay() {
             <Popover.Description>This is the Desc</Popover.Description>
             This is my popover content.
           </Popover.Container>
-        </Popover.Root>
+        </Popover>
       </div>
 
       <div style={{ display: "flex", justifyContent: "center", padding: "20px" }}>

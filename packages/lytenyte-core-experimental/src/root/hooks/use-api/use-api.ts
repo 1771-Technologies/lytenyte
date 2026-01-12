@@ -39,6 +39,8 @@ import { useRowIsExpandable } from "./api-functions/use-row-is-expandable.js";
 import { useRowIsExpanded } from "./api-functions/use-row-is-expanded.js";
 import { useRowDetailToggle } from "./api-functions/use-row-detail-toggle.js";
 import { usePiece } from "../../../hooks/use-piece.js";
+import { useRowView } from "./api-functions/use-row-view.js";
+import { useColumnView } from "./api-functions/use-column-view.js";
 
 export function useApi(
   gridId: string,
@@ -65,6 +67,9 @@ export function useApi(
   const x$ = usePiece(xPositions);
   const y$ = usePiece(yPositions);
   const v$ = usePiece(vp);
+
+  api.rowView = useRowView(rowCount, rowBottomCount, rowTopCount);
+  api.columnView = useColumnView(view);
 
   api.xPositions$ = x$;
   api.yPositions$ = y$;

@@ -7,6 +7,7 @@ import {
   updateLayout,
   type ColumnView,
   type LayoutState,
+  type PositionGridCell,
   type RowSource,
 } from "@1771technologies/lytenyte-shared";
 import { getSpanFn } from "../../use-row-layout/get-span-fn.js";
@@ -94,6 +95,20 @@ export function useCellRoot(
         root: { colIndex, colSpan, rowIndex, rowSpan },
       };
     }
+
+    const rowSpec = l.lookup.get(row)!;
+    if (!rowSpec) return { kind: "cell", rowIndex: row, colIndex: column, root: null };
+
+    const rowSpan = rowSpec[column * 4];
+    const colSpan = rowSpec[column * 4 + 1];
+
+    if (rowSpan > 1 || colSpan > 1)
+      return {
+        kind: "cell",
+        rowIndex: row,
+        colIndex: column,
+        root: { colIndex: column, rowIndex: row, colSpan, rowSpan },
+      } satisfies PositionGridCell;
 
     return { kind: "cell", rowIndex: row, colIndex: column, root: null };
   });

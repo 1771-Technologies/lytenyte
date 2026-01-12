@@ -6,6 +6,7 @@ interface SplitCellSelectionRectArgs {
   readonly colCenterCount: number;
   readonly rowTopCount: number;
   readonly rowCenterCount: number;
+  readonly isDeselect?: boolean;
 }
 
 export interface DataRectSplit extends DataRect {

@@ -16,9 +16,11 @@ import type { GridEvents } from "./events.js";
 export type Props<Spec extends GridSpec = GridSpec> = {
   readonly dialogFrames?: Record<string, DialogFrame<Spec>>;
   readonly popoverFrames?: Record<string, PopoverFrame<Spec>>;
-  readonly cellSelectMode?: "range" | "multi-range" | "none";
 
+  readonly cellSelectionMode?: "range" | "multi-range" | "none";
   readonly cellSelections?: DataRect[];
+  readonly cellSelectionExcludeMarker?: boolean;
+  readonly cellSelectionMaintainOnNonCellPosition?: boolean;
   readonly onCellSelectionChange?: (rects: DataRect[]) => void;
 
   // CORE Shared Properties
