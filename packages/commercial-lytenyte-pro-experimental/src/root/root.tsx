@@ -74,7 +74,7 @@ const RootWrapper = <Spec extends Root.GridSpec = Root.GridSpec>(
   }, []);
 
   const components =
-    p.cellSelectMode !== "none"
+    p.cellSelectionMode !== "none"
       ? {
           ln_topComponent: CellSelectionTop,
           ln_bottomComponent: CellSelectionBottom,
@@ -94,7 +94,7 @@ const RootImpl = ({ children, ...p }: PropsWithChildren<Root.Props>) => {
   const [openDialogFrames, setDialogFrames] = useState<ProContext["openDialogFrames"]>({});
   const [openPopoverFrames, setPopoverFrames] = useState<ProContext["openPopoverFrames"]>({});
 
-  const cellSelectionMode = p.cellSelectMode ?? "none";
+  const cellSelectionMode = p.cellSelectionMode ?? "none";
   const [cellSelections, setCellSelections] = useControlled({
     controlled: p.cellSelections,
     default: [],
@@ -179,9 +179,9 @@ const RootImpl = ({ children, ...p }: PropsWithChildren<Root.Props>) => {
       value={useMemo(
         () => ({
           cellSelections: cellSelectionsPiece,
-          hasCellSelection: (p.cellSelectMode ?? "none") !== "none",
+          hasCellSelection: (p.cellSelectionMode ?? "none") !== "none",
         }),
-        [cellSelectionsPiece, p.cellSelectMode],
+        [cellSelectionsPiece, p.cellSelectionMode],
       )}
     >
       <ProRootProvider value={value}>

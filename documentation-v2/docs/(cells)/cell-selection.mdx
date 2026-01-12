@@ -6,7 +6,7 @@ description: LyteNyte Grid supports selecting a range of cells or multiple range
   A range is an rectangular area of cells which can be considered selected.
 ---
 
-Set the `cellSelectMode` property on the grid to configure the cell selection behavior of
+Set the `cellSelectionMode` property on the grid to configure the cell selection behavior of
 LyteNyte Grid. This property accepts three possible values:
 
 - `"range"`: Allows a single range of cells to be selected.
@@ -16,17 +16,17 @@ LyteNyte Grid. This property accepts three possible values:
 
 ## Single Range Selection
 
-By setting the `cellSelectMode` to `"range"`, LyteNyte Grid will allow a single rectangular area of
+By setting the `cellSelectionMode` to `"range"`, LyteNyte Grid will allow a single rectangular area of
 cells to be selected. Cell selection is performed by clicking a cell and dragging over an area to
 select. The demo below demonstrates this. Try clicking and dragging a cell to select a range of
 cells.
 
 ::demo[Range Selection="./demos/cell-selection"]
 
-To enable cell selection the demo sets the `cellSelectMode` mode as the code below shows.
+To enable cell selection the demo sets the `cellSelectionMode` mode as the code below shows.
 
 ```tsx
-<Grid columns={columns} columnBase={base} rowSource={ds} cellSelectMode="range" />
+<Grid columns={columns} columnBase={base} rowSource={ds} cellSelectionMode="range" />
 ```
 
 ### Copy Cell Content
@@ -52,7 +52,7 @@ some feedback to the user that the cells have been selected.
   columns={columns}
   columnBase={base}
   rowSource={ds}
-  cellSelectMode="range"
+  cellSelectionMode="range"
   events={useMemo<Grid.Events<GridSpec>>(
     () => ({
       viewport: {
@@ -177,14 +177,89 @@ on the grid. This property ensures that the cell selection is not cleared when t
 
 ## Selection With Row & Column Spans
 
-When the grid has cell spans
+When selecting cells that span more than a single row or column, LyteNyte Grid will expand the
+selection range to encompass the full area of the cell that spans. The demo below demonstrates
+this behavior. Selecting any of the spanning cells will result in an expanded cell selection area.
 
 ::demo[Cell Selection With Spans="./demos/cell-selection-spans"]
 
 ## Cell Selection Across Pin Areas
 
+Rows and columns may be frozen in view. These are called pinned rows or pinned columns, and they form pinned areas
+in the layout. Pinned areas remain visible even as the user scrolls. When cell selection is enabled, a pinned area
+may only be selected if the scroll position of the view allows it:
+
+- Columns pinned to the start of the viewport may only be selected when the grid has no horizontal scroll.
+- Columns pinned to the end of the viewport may only be selected when the grid is fully horizontally scrolled.
+- Rows pinned to the top of the viewport may only be selected if the grid has no vertical scroll.
+- Rows pinned to the bottom of the viewport may only be selected if the grid is fully vertically scrolled.
+
+The above constraints only apply if the selection did not being within the pinned area being selected. LyteNyte Grid
+will automatically scroll the grid as the selection is expanded toward the edges of the view. The demo below
+has pinned rows top and bottom, and pinned columns start and end. Try selecting the different areas to get a feel
+for the selection behavior.
+
 ::demo[Cell Selection With Pins="./demos/cell-selection-pins"]
+
+Notice that the selection rectangle appears split when the selection spans more than one pinned area. This is only
+a visual indication that the cell selection is spanning over different areas of the viewport. The `cellSelections`
+state will still only have a single selection rectangle.
 
 ## Multi Range Selection
 
+By setting the `cellSelectionMode` to `"multi-range"`, LyteNyte grid will allow multiple ranges to be selected.
+To select ranges additively hold the control/command key down before beginning a selection. If the state of the
+selection is already selected, then a deselection will begin instead.
+
 ::demo[Multiple Range Selections="./demos/cell-selection-multi-range"]
+
+Multiple ranges are normally used to compare the values in two groups of cells. For other use cases, such as
+copying cells, multiple ranges add more complexity. When multiple ranges are selected the state of the
+`cellSelections` will contain multiple selection rectangles. For operations, like copying, determining which
+selection rect the user wants to copy becomes ambiguous. Unless your use case really does require multiple
+ranges, it is often best to set the `cellSelectionMode` to `"range"`.
+
+## Styling Cell Selections
+
+LyteNyte Grid creates a set a `div` elements that are positioned and sized over the cells that are selected.
+These `div` elements are inert and are only intended to provide visual feedback. By default, the `div` are
+unstyled. To style them you will need to target the cell selection data attributes. The CSS for provided
+themes of LyteNyte Grid is shown below for you reference. For more details on styling cell selection rectangles
+see the [Grid Theming guide](/docs/grid-theming).
+
+```css
+[data-ln-cell-selection-rect]:not([data-ln-cell-selection-is-unit="true"]) {
+  background-color: var(--ln-primary-10);
+  box-sizing: border-box;
+
+  &[data-ln-cell-selection-is-deselect="true"] {
+    background-color: var(--ln-red-30);
+
+    &[data-ln-cell-selection-border-top="true"],
+    &[data-ln-cell-selection-border-bottom="true"],
+    &[data-ln-cell-selection-border-start="true"],
+    &[data-ln-cell-selection-border-end="true"] {
+      border-color: var(--ln-red-50);
+    }
+  }
+
+  &[data-ln-cell-selection-border-top="true"] {
+    border-top: 1px solid var(--ln-primary-50);
+  }
+  &[data-ln-cell-selection-border-bottom="true"] {
+    border-bottom: 1px solid var(--ln-primary-50);
+  }
+  &[data-ln-cell-selection-border-start="true"] {
+    border-inline-start: 1px solid var(--ln-primary-50);
+  }
+  &[data-ln-cell-selection-border-end="true"] {
+    border-inline-end: 1px solid var(--ln-primary-50);
+  }
+}
+```
+
+## Next Steps
+
+::next[/docs/cell-renderers]
+::next[/docs/cell-tooltips]
+::next[/docs/cell-editing-bulk-editing]

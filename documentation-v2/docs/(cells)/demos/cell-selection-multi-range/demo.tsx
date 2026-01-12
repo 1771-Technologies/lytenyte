@@ -26,7 +26,7 @@ export default function CellSelection() {
 
   return (
     <div className="ln-grid ln-cell:text-xs ln-cell:font-light ln-header:text-xs" style={{ height: 500 }}>
-      <Grid columns={columns} columnBase={base} rowSource={ds} cellSelectMode="multi-range" />
+      <Grid columns={columns} columnBase={base} rowSource={ds} cellSelectionMode="multi-range" />
     </div>
   );
 }

@@ -233,8 +233,6 @@ export function CellSelectionDriver() {
         event.preventDefault();
       }
 
-      // if (!isDeselect && cellSelections.length <= 1) setSelectionPivot({ ...startSelection, isUnit: true });
-
       cellSelectionIsDeselect.current = isDeselect;
 
       if (isAdditive) {
@@ -253,7 +251,7 @@ export function CellSelectionDriver() {
       }
 
       lastRect = start;
-      document.addEventListener("mousemove", pointerMove);
+      document.addEventListener("pointermove", pointerMove);
       document.addEventListener("contextmenu", pointerUp);
       document.addEventListener("pointerup", pointerUp);
     };

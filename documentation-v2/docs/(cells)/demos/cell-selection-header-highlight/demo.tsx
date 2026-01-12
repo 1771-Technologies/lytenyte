@@ -29,7 +29,7 @@ export default function CellSelection() {
       className="ln-grid ln-cell:text-xs ln-cell:font-light ln-header:text-xs ln-cell-marker:border-e ln-cell-marker:border-ln-border-strong ln-header:data-[ln-cell-selected=true]:bg-ln-primary-05"
       style={{ height: 500 }}
     >
-      <Grid columns={columns} columnBase={base} rowSource={ds} cellSelectMode="range" />
+      <Grid columns={columns} columnBase={base} rowSource={ds} cellSelectionMode="range" />
     </div>
   );
 }

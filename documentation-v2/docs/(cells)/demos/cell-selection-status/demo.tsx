@@ -50,7 +50,7 @@ export default function CellSelection() {
           columns={columns}
           columnBase={base}
           rowSource={ds}
-          cellSelectMode="range"
+          cellSelectionMode="range"
           cellSelections={rect}
           onCellSelectionChange={setRect} //!
         />

@@ -106,7 +106,7 @@ export default function ColumnBase() {
       className="ln-grid ln-cell:text-xs ln-header:text-xs ln-header:text-ln-text-xlight"
       style={{ height: 500 }}
     >
-      <Grid columns={columns} columnBase={base} rowSource={ds} cellSelectMode="range" />
+      <Grid columns={columns} columnBase={base} rowSource={ds} cellSelectionMode="range" />
     </div>
   );
 }

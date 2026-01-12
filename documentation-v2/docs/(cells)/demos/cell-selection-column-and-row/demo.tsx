@@ -45,7 +45,7 @@ export default function CellSelection() {
         cellSelectionExcludeMarker
         cellSelections={cellSelections}
         columnMarker={marker}
-        cellSelectMode="range"
+        cellSelectionMode="range"
         cellSelectionMaintainOnNonCellPosition
         onCellSelectionChange={setCellSelection}
         events={useMemo<Grid.Events<GridSpec>>(
