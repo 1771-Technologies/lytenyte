@@ -22,6 +22,7 @@ export const DialogRoot = ({
   lockScroll,
   lightDismiss,
   modal,
+  hide,
 
   anchor = null,
   placement = "bottom",
@@ -48,6 +49,8 @@ export const DialogRoot = ({
       id: idProvided ?? id,
       descriptionId: descIdProvider ?? descriptionId,
       titleId: titleIdProvided ?? titleId,
+
+      hide,
 
       lightDismiss,
       focusCanReturn,
@@ -83,6 +86,7 @@ export const DialogRoot = ({
     focusPreventScroll,
     focusReturn,
     focusTrap,
+    hide,
     id,
     idProvided,
     inline,
@@ -110,6 +114,8 @@ export namespace DialogRoot {
     readonly id?: string;
     readonly titleId?: string;
     readonly descriptionId?: string;
+
+    readonly hide?: boolean;
 
     readonly lockScroll?: boolean;
     readonly lightDismiss?: boolean;

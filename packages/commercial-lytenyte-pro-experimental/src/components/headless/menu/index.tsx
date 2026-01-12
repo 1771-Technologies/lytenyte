@@ -22,7 +22,7 @@ import { ComboCheckbox } from "./combo/combo-checkbox.js";
 import { Submenu } from "./submenu/submenu.js";
 import { SubmenuTrigger } from "./submenu/submenu-trigger.js";
 
-export const Menu = (props: PropsWithChildren<P.Root.Props>) => <P.Root {...props} />;
+export const Menu = (props: PropsWithChildren<P.Props>) => <P {...props} />;
 
 Menu.Item = Item;
 Menu.Container = Container;
@@ -46,7 +46,7 @@ Menu.Description = P.Description;
 Menu.Trigger = P.Trigger;
 
 export namespace Menu {
-  export type Props = P.Root.Props;
+  export type Props = P.Props;
   export namespace Component {
     export type Item = Item.Props;
     export type Container = Container.Props;
@@ -65,8 +65,8 @@ export namespace Menu {
     export type SubmenuTrigger = SubmenuTrigger.Props;
     export type SubmenuContainer = Container.Props;
     export type Popover = MenuPopover.Props;
-    export type Title = P.Title.Props;
-    export type Description = P.Description.Props;
-    export type Trigger = P.Trigger.Props;
+    export type Title = P.Component.Title;
+    export type Description = P.Component.Description;
+    export type Trigger = P.Component.Trigger;
   }
 }

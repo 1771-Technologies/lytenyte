@@ -3,27 +3,26 @@ title: Cell Range Selection
 pro: true
 step: See how to select a range of cells, or multiple ranges of cells.
 description: LyteNyte Grid supports selecting a range of cells or multiple ranges of cells.
-  A range is an rectangular area of cells which can be considered selected.
+  A range is a rectangular area of cells that can be considered selected.
 ---
 
 Set the `cellSelectionMode` property on the grid to configure the cell selection behavior of
 LyteNyte Grid. This property accepts three possible values:
 
 - `"range"`: Allows a single range of cells to be selected.
-- `"multi-range"`: Allows multiple cell selection ranges to be performed. Holding down the control/command
-  key adds to the existing selections.
-- `"none"`: Disables the cell selection functionality in the grid. By default cell selection is disabled.
+- `"multi-range"`: Allows multiple cell selection ranges to be created. Holding the Control or Command
+  key adds a new range to the existing selections.
+- `"none"`: Disables cell selection in the grid. By default, cell selection is disabled.
 
 ## Single Range Selection
 
-By setting the `cellSelectionMode` to `"range"`, LyteNyte Grid will allow a single rectangular area of
-cells to be selected. Cell selection is performed by clicking a cell and dragging over an area to
-select. The demo below demonstrates this. Try clicking and dragging a cell to select a range of
-cells.
+By setting the `cellSelectionMode` property to `"range"`, LyteNyte Grid allows a single rectangular area of
+cells to be selected. Users perform cell selection by clicking a cell and dragging over an area.
+The demo below demonstrates this behavior. Try clicking and dragging a cell to select a range of cells.
 
 ::demo[Range Selection="./demos/cell-selection"]
 
-To enable cell selection the demo sets the `cellSelectionMode` mode as the code below shows.
+To enable cell selection, the demo sets the `cellSelectionMode` property as shown in the code below.
 
 ```tsx
 <Grid columns={columns} columnBase={base} rowSource={ds} cellSelectionMode="range" />
@@ -31,21 +30,21 @@ To enable cell selection the demo sets the `cellSelectionMode` mode as the code 
 
 ### Copy Cell Content
 
-When cell selection is enabled, LyteNyte Grid will track the selection state internally. This
-type of cell selection is called **uncontrolled cell selection**. Since the grid manages the selection,
-the only way to retrieve the current selection state is to call `cellSelections` on the API
+When cell selection is enabled, LyteNyte Grid tracks the selection state internally. This type of cell
+selection is called **uncontrolled cell selection**. Since the grid manages the selection state,
+the only way to retrieve the current selection is by calling the `cellSelections` API method.
 
 **Uncontrolled cell selection** is useful for implementing functionality such as copying cells to the
-clipboard, without needing to manage the cell selection state in your own code. The demo below demonstrates
-this. Select some cells and press **Control C** to copy the cells to your clipboard (**Command C** ) on a Mac.
+clipboard without managing selection state in application code. The demo below demonstrates this.
+Select some cells and press **Control + C** to copy the cells to your clipboard (**Command + C** on macOS).
 
 ::demo[Copying Cell Content="./demos/cell-selection-copy"]
 
-The copy functionality is implemented using the `keyDown` event on the grid viewport. The implementation code is
-shown below. Notice the code uses the `api.cellSelections` method to retrieve the current selection rects. The
-grid's `api.exportData` method is then used to retrieve the data for the given selection rect. The retrieved data
-is then converted to a string and written to the clipboard. The `copy-flash` class simply flashes the cells to give
-some feedback to the user that the cells have been selected.
+The demo implements copy behavior using the `keyDown` event on the grid viewport.
+The implementation code is shown below. The code uses the `api.cellSelections` method to retrieve the
+current selection rectangle. The demo then uses the grid's `api.exportData` method to retrieve the data for the
+selection. The demo converts the exported data to a string and writes it to the clipboard.
+The `copy-flash` class briefly highlights the selected cells to provide visual feedback.
 
 ```tsx
 <Grid
@@ -80,19 +79,19 @@ some feedback to the user that the cells have been selected.
 
 ### Controlled Cell Selection
 
-For some use cases taking control of the cell selection is necessary. To do this, set the
-`cellSelections` property on the grid to an array of selection rects. You can then provide an
-`onCellSelectionChange` handler to update the provided state when the selection changes.
+Some use cases require full control over cell selection state. To enable controlled selection,
+set the `cellSelections` property on the grid to an array of selection rectangles. Provide an
+`onCellSelectionChange` handler to update the selection state when the selection changes.
 
-The demo below demonstrates controlled selection. The cell selection state is kept in local
-React state through a `useState` hook. The selection state is the passed to a status bar
-component that will display the averages of the selections for each number column.
+The demo below demonstrates controlled cell selection. The demo stores selection state in local
+React state using a `useState` hook. The demo then passes the selection state to a status bar
+component, which displays averages for each numeric column.
 
 ::demo[Status Bar="./demos/cell-selection-status"]
 
-The `cellSelections` property expects an array of `DataRect` objects to be provided. A `DataRect`
-is an object with the following interface. The `rowEnd` and `columnEnd` values are exclusive and not included
-in the selected cells.
+The `cellSelections` property expects an array of `DataRect` objects. A `DataRect` defines a rectangular
+selection area using the following interface. The `rowEnd` and `columnEnd` values are exclusive and are
+not included in the selected cells.
 
 ```ts
 interface DataRect {
@@ -105,28 +104,32 @@ interface DataRect {
 
 :::note
 
-Do not confused the `cellSelections` API method with the `cellSelections` property on the grid. Though named the same,
-these are two distinct properties in LyteNyte.
+Do not confuse the `cellSelections` API method with the `cellSelections` grid property. Although the
+names are the same, they serve different purposes in LyteNyte Grid.
 
-- The `cellSelections` API method returns the current cell selection rectangles in the grid.
-- The `cellSelections` property on the grid controls the state of the cell selection rects.
+- The `cellSelections` API method returns the grid's current selection rectangles.
+- The `cellSelections` grid property controls the selection state.
 
-When cell selection state is controlled, the value returned by the `cellSelection` API method will equal the
-value of the `cellSelections` property on the grid.
+When cell selection is controlled, the value returned by the `cellSelections` API method matches
+the value of the `cellSelections` grid property.
 
 :::
 
 ## Highlight Headers
 
-The headers which have a cell selected will have a data attribute set to `"true"` called `data-ln-cell-selected`.
-Using this data attribute, you can style the header to indicate that some cells in the column have been selected.
-The demo below demonstrates. The header of any column that has a selected cell will be Highlighted via CSS.
+Headers that contain selected cells receive a `data-ln-cell-selected="true"` data attribute.
+You can use this attribute to style headers that belong to selected columns.
+The demo below demonstrates this behavior. The header of any column containing a selected cell
+is highlighted using CSS.
 
 ::demo[Header Highlights="./demos/cell-selection-header-highlight"]
 
-The demo uses the [LyteNyte Grid Tailwind plugin](/docs/grid-theming-tailwind) to style the header with this Tailwind CSS class
-`"ln-header:data-[ln-cell-selected=true]:bg-ln-primary-05"`. If you are not using Tailwind, this
-class is equivalent to the CSS below:
+The demo uses the [LyteNyte Grid Tailwind plugin](/docs/grid-theming-tailwind) to apply the following
+Tailwind CSS class:
+
+`"ln-header:data-[ln-cell-selected=true]:bg-ln-primary-05"`
+
+If you are not using Tailwind, the class is equivalent to the CSS below:
 
 ```css
 .ln-grid {
@@ -138,93 +141,93 @@ class is equivalent to the CSS below:
 
 :::tip
 
-The `data-ln-cell-attribute` is also applied to the rows in the grid that contain cells.
-This makes it possible to style rows with selected cells as well, as the demo in the next
-section does for the marker column.
+The `data-ln-cell-selected` attribute is also applied to rows that contain selected cells.
+This allows you to style rows with selected cells as well, as demonstrated in the next section
+for the marker column.
 
 :::
 
 ## Marker Column
 
-The [marker column](/docs/marker-column) is a special column managed and controlled by LyteNyte Grid,
-but is not part of the columns provided to the grid. When enabled the marker column will
-always be the first column in the viewport. The marker column is always pinned to the start of the grid.
+The [marker column](/docs/marker-column) is a special column managed by LyteNyte Grid that is not part
+of the columns array provided to the grid. When enabled, the marker column always appears as the first
+column in the viewport and remains pinned to the start of the grid.
 
-By default the marker column may be part of the row selection rectangle. Depending on your
-use case, this may not be desirable. In these cases you can set
-the `cellSelectionExcludeMarker` property to `true`, which will cause LyteNyte Grid to disallow any cell
-selection of the marker column.
+By default, the marker column may be included in a cell selection rectangle. In some use cases,
+including the marker column in the selection may be undesirable. To prevent this behavior,
+set the `cellSelectionExcludeMarker` property to `true`. This property prevents selection of the
+marker column.
 
 ::demo[Exclude Marker Column="./demos/cell-selection-marker"]
 
-The marker column still contributes to the grid's layout even when the `cellSelectionExcludeMarker` value is
-set to `true`. This means that regardless of the `cellSelectionExcludeMarker` value, when the marker column is
-enabled, the column index of the first non-marker column will be 1.
+The marker column still contributes to the grid layout when `cellSelectionExcludeMarker` is set to
+`true`. When the marker column is enabled, the first non-marker column always has a column index of `1`.
 
-## Selecting A Column or Row
+## Selecting a Column or Row
 
-To select a column or row you can create a select rectangle and set the `cellSelection` value to
-that rectangle on the grid. You can do this regardless of the `cellSelectionMode` applied to the
-the grid.
+To select an entire column or row, create a selection rectangle and set the `cellSelections` value
+on the grid to that rectangle. This approach works regardless of the configured
+`cellSelectionMode`.
 
-The demo below demonstrates this. By clicking the header of a column all the cells in that that column
-will be selected. To select a row, click the marker column's cell. By default LyteNyte Grid will clear
-the current selection if another element in the grid becomes focused, e.g. the header cell. Since we are
-trying to select the column itself the demo sets the `cellSelectionMaintainOnNonCellPosition` property
-on the grid. This property ensures that the cell selection is not cleared when the header is clicked.
+The demo below demonstrates this behavior. Clicking a column header selects all cells in that column.
+Clicking a cell in the marker column selects the corresponding row. By default, LyteNyte Grid clears
+the current selection when focus moves to another grid element, such as a header cell.
+To preserve the selection while clicking headers, the demo sets the
+`cellSelectionMaintainOnNonCellPosition` property. This property prevents the grid from clearing the
+selection when a header receives focus.
 
 ::demo[Select A Column Or Row="./demos/cell-selection-column-and-row"]
 
-## Selection With Row & Column Spans
+## Selection with Row and Column Spans
 
-When selecting cells that span more than a single row or column, LyteNyte Grid will expand the
-selection range to encompass the full area of the cell that spans. The demo below demonstrates
-this behavior. Selecting any of the spanning cells will result in an expanded cell selection area.
+When selecting cells that span multiple rows or columns, LyteNyte Grid expands the selection
+rectangle to include the full spanned area. The demo below demonstrates this behavior.
+Selecting any spanning cell results in an expanded selection area.
 
 ::demo[Cell Selection With Spans="./demos/cell-selection-spans"]
 
-## Cell Selection Across Pin Areas
+## Cell Selection Across Pinned Areas
 
-Rows and columns may be frozen in view. These are called pinned rows or pinned columns, and they form pinned areas
-in the layout. Pinned areas remain visible even as the user scrolls. When cell selection is enabled, a pinned area
-may only be selected if the scroll position of the view allows it:
+Rows and columns can be frozen in place using pinned rows or pinned columns. These pinned areas
+remain visible while the grid scrolls. When cell selection is enabled, a pinned area can only be
+selected if the current scroll position allows it:
 
-- Columns pinned to the start of the viewport may only be selected when the grid has no horizontal scroll.
-- Columns pinned to the end of the viewport may only be selected when the grid is fully horizontally scrolled.
-- Rows pinned to the top of the viewport may only be selected if the grid has no vertical scroll.
-- Rows pinned to the bottom of the viewport may only be selected if the grid is fully vertically scrolled.
+- Columns pinned to the start of the viewport can only be selected when the grid has no horizontal scroll.
+- Columns pinned to the end of the viewport can only be selected when the grid is fully scrolled horizontally.
+- Rows pinned to the top of the viewport can only be selected when the grid has no vertical scroll.
+- Rows pinned to the bottom of the viewport can only be selected when the grid is fully scrolled vertically.
 
-The above constraints only apply if the selection did not being within the pinned area being selected. LyteNyte Grid
-will automatically scroll the grid as the selection is expanded toward the edges of the view. The demo below
-has pinned rows top and bottom, and pinned columns start and end. Try selecting the different areas to get a feel
-for the selection behavior.
+These constraints apply only when the selection does not begin inside the pinned area being selected.
+LyteNyte Grid automatically scrolls the grid as the selection expands toward the viewport edges.
+The demo below includes pinned rows at the top and bottom and pinned columns at the start and end.
+Try selecting different areas to observe the selection behavior.
 
 ::demo[Cell Selection With Pins="./demos/cell-selection-pins"]
 
-Notice that the selection rectangle appears split when the selection spans more than one pinned area. This is only
-a visual indication that the cell selection is spanning over different areas of the viewport. The `cellSelections`
-state will still only have a single selection rectangle.
+When a selection spans multiple pinned areas, the selection rectangle appears visually split.
+This visual split indicates that the selection crosses different viewport regions.
+The `cellSelections` state still contains a single selection rectangle.
 
-## Multi Range Selection
+## Multi-Range Selection
 
-By setting the `cellSelectionMode` to `"multi-range"`, LyteNyte grid will allow multiple ranges to be selected.
-To select ranges additively hold the control/command key down before beginning a selection. If the state of the
-selection is already selected, then a deselection will begin instead.
+By setting the `cellSelectionMode` property to `"multi-range"`, LyteNyte Grid allows multiple selection
+ranges. To add a range, hold the Control or Command key before starting a new selection.
+If the user starts a selection within an existing range, the grid begins a deselection instead.
 
 ::demo[Multiple Range Selections="./demos/cell-selection-multi-range"]
 
-Multiple ranges are normally used to compare the values in two groups of cells. For other use cases, such as
-copying cells, multiple ranges add more complexity. When multiple ranges are selected the state of the
-`cellSelections` will contain multiple selection rectangles. For operations, like copying, determining which
-selection rect the user wants to copy becomes ambiguous. Unless your use case really does require multiple
-ranges, it is often best to set the `cellSelectionMode` to `"range"`.
+Multiple ranges are commonly used to compare values across separate groups of cells.
+For other use cases, such as copying cells, multiple ranges introduce additional complexity.
+When multiple ranges exist, the `cellSelections` state contains multiple selection rectangles.
+For operations like copying, determining which range to use becomes ambiguous.
+Unless your use case explicitly requires multiple ranges, consider using `"range"` mode instead.
 
 ## Styling Cell Selections
 
-LyteNyte Grid creates a set a `div` elements that are positioned and sized over the cells that are selected.
-These `div` elements are inert and are only intended to provide visual feedback. By default, the `div` are
-unstyled. To style them you will need to target the cell selection data attributes. The CSS for provided
-themes of LyteNyte Grid is shown below for you reference. For more details on styling cell selection rectangles
+LyteNyte Grid renders a set of `div` elements positioned over selected cells to provide visual feedback.
+These `div` elements are inert and exist only for styling purposes. By default, the grid does not apply
+styles to these elements. To style selection rectangles, target the associated data attributes.
+The CSS used by the built-in themes is shown below for reference. For additional details,
 see the [Grid Theming guide](/docs/grid-theming).
 
 ```css
