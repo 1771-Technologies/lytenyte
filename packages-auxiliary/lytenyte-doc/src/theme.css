@@ -27,6 +27,8 @@ body {
 }
 
 @theme {
+  --font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
+
   --spacing-header: 64px;
   --spacing-subheader: 40px;
   --spacing-sidenav: 290px;
