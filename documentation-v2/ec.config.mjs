@@ -25,7 +25,7 @@ export default defineEcConfig({
     showCopyToClipboardButton: true,
   },
   themeCssSelector: (t) => {
-    if (t.name === "kanagawa-dragon") return `[data-theme="dark"]`;
-    return `[data-theme="light"]`;
+    if (t.name === "kanagawa-dragon") return `.dark`;
+    return `.light`;
   },
 });
