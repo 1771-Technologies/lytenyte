@@ -21,7 +21,7 @@ const type = props.type;
 <div
   class:list={[
     "border-l-4 rounded-s-lg rounded-e-xl my-8 p-4 border border-neutral-300 dark:border-neutral-800 bg-xd-background xd-callout",
-    type === "warn" && "dark:border-l-yellow-500 border-l-yellow-500",
+    type === "warn" && "dark:border-l-orange-500 border-l-orange-500",
     type === "info" && "dark:border-l-blue-500 border-l-blue-500",
     type === "tip" && "dark:border-l-green-500 border-l-green-500",
     type === "best" && "dark:border-l-teal-500 border-l-teal-500",
@@ -34,7 +34,7 @@ const type = props.type;
       <div class="center size-5">
         <span
           class:list={[
-            type === "warn" && "iconify ph--warning-duotone text-yellow-500",
+            type === "warn" && "iconify ph--warning-duotone text-orange-500",
             type === "info" && "iconify ph--info-duotone text-blue-500",
             type === "tip" && "iconify ph--asterisk-duotone text-green-500",
             type === "best" && "iconify ph--thumbs-up text-teal-500",
