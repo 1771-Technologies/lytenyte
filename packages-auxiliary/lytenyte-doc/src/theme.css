@@ -75,6 +75,10 @@ body {
   margin: 0px;
 }
 
+.xd-tabs .expressive-code:first-child {
+  border-radius: 0px;
+}
+
 .xd-callout .expressive-code {
   @apply my-2 -ms-1;
 }

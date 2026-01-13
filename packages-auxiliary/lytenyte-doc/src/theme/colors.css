@@ -1,5 +1,6 @@
 :root {
   --xd-prose-link: hsla(194, 80%, 43%, 1);
+  --xd-prose-text: hsl(0, 0%, 3.9%);
   --xd-background: hsl(0, 0%, 99%);
   --xd-foreground: hsl(0, 0%, 3.9%);
   --xd-muted: hsl(0, 0%, 96.1%);
@@ -22,6 +23,7 @@
 [data-theme="dark"] {
   color-scheme: dark;
   --xd-prose-link: hsla(172, 75%, 40%, 1);
+  --xd-prose-text: #9ca3af;
   --xd-background: hsl(0, 0%, 7.04%);
   --xd-foreground: hsl(0, 0%, 92%);
   --xd-muted: hsl(0, 0%, 12.9%);
@@ -46,6 +48,7 @@
 
 @theme inline {
   --color-xd-prose-link: var(--xd-prose-link);
+  --color-xd-prose: var(--xd-prose-text);
   --color-xd-background: var(--xd-background);
   --color-xd-foreground: var(--xd-foreground);
   --color-xd-muted: var(--xd-muted);

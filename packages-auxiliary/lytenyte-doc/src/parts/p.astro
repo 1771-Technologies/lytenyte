@@ -8,4 +8,4 @@ interface Props {
 const p = Astro.props;
 ---
 
-<p {...Astro.props} class:list={cn("not-first:mt-3 leading-7", p.sx)}><slot /></p>
+<p {...Astro.props} class:list={cn("not-first:mt-3 leading-7 text-xd-prose", p.sx)}><slot /></p>
