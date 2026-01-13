@@ -3,6 +3,7 @@
   "pages": [
     "cell-editing",
     "cell-editing-full-row",
+    "cell-editing-renderers",
     "cell-editing-linked-cell-edits",
     "cell-editing-validation",
     "cell-editing-bulk-editing"
