@@ -1,4 +1,50 @@
 ---
 title: Cell Editing
 step: Edit and update the value of individual cells in the grid.
+description: Change the value of cells using LyteNyte Grid's cell editing capabilities.
+  Edit a single cell value or the values for a whole row.
 ---
+
+To begin editing cells in LyteNyte Grid set the `editMode` property on the grid. This property
+accepts one of three values:
+
+- `"cell"`: A single cell will be editable at a time.
+- `"row"`: Allows cells to be edited and committed on a row by row basis.
+- `"readonly"`: Cell editing is not allowed. This is the default value.
+
+This guide will cover single cell edits, for guidance on full row edits see the
+[Full Row Cell Editing guide](/docs/cell-editing-full-row).
+
+## Basic Cell Editing
+
+Start editing cells by setting the `editMode` to `"cell"`. This will enable LyteNyte Grid's cell editing
+capabilities. Next you need to make a column editable. Two properties on the column definition
+must be set for the cells in a column to be editable:
+
+- `editable`: A boolean or predicate value that determines if the cell is editable. Use a function predicate to
+  determine if a cell should be editable on a row by row basis.
+- `editRenderer`: This property determines the component LyteNyte Grid should render within the cell's
+  bounds. The component will be provided a set of [`EditParams`](/docs/reference) to handle editing the cell.
+
+Finally, LyteNyte Grid will never change the row data provided to it. Instead it will inform the row source
+of the changes that have been made, and it is to row source's responsibility to update the row data. Each
+row source accepts the `onRowDataChange` callback property. Use this property to handle updates. This
+guide will use the [client row source](/docs/client-source-overview) for cell edits.
+
+The demo below demonstrates the basic cell editing capabilities of LyteNyte Grid. The **Price**, **Customer**,
+and **Purchase Date** columns are all editable. To begin editing double click on the cells.
+
+::demo[Basic Cell Editing="./demos/cell-editing-basic"]
+
+## Edit Click Activator
+
+## Edit Setter
+
+## Edit Events
+
+## Next Steps
+
+::next[/docs/cell-editing-full-row]
+::next[/docs/cell-editing-bulk-editing]
+::next[/docs/cell-editing-validation]
+::next[/docs/cell-editing-linked-cell-edits]
