@@ -28,4 +28,5 @@ export default defineEcConfig({
     if (t.name === "kanagawa-dragon") return `.dark`;
     return `.light`;
   },
+  useDarkModeMediaQuery: false,
 });
