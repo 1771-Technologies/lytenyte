@@ -87,7 +87,7 @@ export namespace Grid {
     export type Dimension<T> = LnTypes.Dimension<T>;
     export type DimensionAgg<T> = LnTypes.DimensionAgg<T>;
     export type DimensionSort<T> = LnTypes.DimensionSort<T>;
-    export type EditParams = LnTypes.EditParams;
+    export type EditParams<Spec extends GridSpec> = LnTypes.EditParams<Spec>;
     export type ExportDataRectResult = LnTypes.ExportDataRectResult;
     export type Field<T> = LnTypes.Field<T>;
     export type FilterFn<T> = LnTypes.FilterFn<T>;

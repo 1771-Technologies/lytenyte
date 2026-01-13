@@ -23,9 +23,41 @@ export function FrameControls({
         <TooltipRoot>
           <TooltipTrigger className="center xd-resetter size-7 cursor-pointer rounded-lg transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-700">
             <span className="sr-only">Reset the demo to the initial state</span>
-            <span className="iconify ph--arrows-counter-clockwise-duotone size-4.5"></span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+              <path d="M21 3v5h-5" />
+              <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+              <path d="M8 16H3v5" />
+            </svg>
           </TooltipTrigger>
           <Tooltip side="bottom">Reset Demo</Tooltip>
+        </TooltipRoot>
+
+        <TooltipRoot>
+          <TooltipTrigger
+            className="center size-7 cursor-pointer rounded-lg transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-700"
+            render={
+              <a
+                href={stackBlitz}
+                target="_blank"
+                className="center text-xd-foreground size-7 cursor-pointer rounded-lg transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-700"
+              >
+                <span className="sr-only">Fork code on stack blitz</span>
+                <span className="iconify logos--stackblitz-icon size-4"></span>
+              </a>
+            }
+          ></TooltipTrigger>
+          <Tooltip side="bottom">Edit in StackBlitz</Tooltip>
         </TooltipRoot>
 
         <TooltipRoot>
@@ -38,27 +70,11 @@ export function FrameControls({
                 className="center text-xd-foreground size-7 cursor-pointer rounded-lg transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-700"
               >
                 <span className="sr-only">Fork code on code sandbox</span>
-                <span className="iconify ph--codesandbox-logo-duotone size-4.5"></span>
+                <span className="iconify ph--codesandbox-logo-duotone size-4"></span>
               </a>
             }
           />
           <Tooltip side="bottom">Edit in CodeSandbox</Tooltip>
-        </TooltipRoot>
-        <TooltipRoot>
-          <TooltipTrigger
-            className="center size-7 cursor-pointer rounded-lg transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-700"
-            render={
-              <a
-                href={stackBlitz}
-                target="_blank"
-                className="center text-xd-foreground size-7 cursor-pointer rounded-lg transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-700"
-              >
-                <span className="sr-only">Fork code on stack blitz</span>
-                <span className="iconify logos--stackblitz-icon size-4.5"></span>
-              </a>
-            }
-          ></TooltipTrigger>
-          <Tooltip side="bottom">Edit in StackBlitz</Tooltip>
         </TooltipRoot>
 
         <TooltipRoot>

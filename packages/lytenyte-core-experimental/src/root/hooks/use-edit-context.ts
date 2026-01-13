@@ -21,12 +21,14 @@ export function useEditContext(view: ColumnView, api: Root.API, props: Root.Prop
     let nextData: any;
     const setter = (column as any).editSetter as Root.Column["editSetter"];
 
+    const current = editDataState ?? row.data;
+
     if (setter) {
-      nextData = setter({ api, column, editData: editDataState, editValue: value, row });
+      nextData = setter({ api, column, editData: current, editValue: value, row });
     } else {
       const field = ((column as any).field ?? column.id) as Root.Column["field"];
       if (typeof field !== "number" && typeof field !== "string") return false;
-      nextData = Array.isArray(editDataState) ? [...editDataState] : { ...editDataState };
+      nextData = Array.isArray(current) ? [...current] : { ...current };
       nextData[field] = value;
     }
 

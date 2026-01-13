@@ -68,6 +68,8 @@ body {
 
 .codeframe-tabs .expressive-code,
 .package-tabs .expressive-code {
+  border-radius: 0px;
+  border: 0px !important;
   margin: 0px;
 }
 
@@ -84,7 +86,14 @@ body {
 
 .expressive-code {
   @apply my-8;
+  border: 1px solid var(--color-xd-border);
+  border-radius: 16px;
 }
+
+.expressive-code pre {
+  border: 0px solid transparent !important;
+}
+
 .expressive-code .frame.frame {
   box-shadow: none;
 }
