@@ -2,7 +2,7 @@
 title: TypeScript
 description: LyteNyte Grid offers first-class TypeScript support. This guide outlines best
   practices for extending LyteNyte Grid's column and API interfaces and
-  avoiding errors through proper type checking
+  avoiding errors through proper type checking.
 ---
 
 ## Main Grid Types
@@ -24,6 +24,7 @@ together will help you get the most out of TypeScript and LyteNyte Grid.
 
 `Grid.GridSpec` is one of the five primary grid types that developers typically define.
 It's a type constraint used by other grid types, and LyteNyte Grid never reads it at runtime.
+
 Grid specification has four optional type parameters and four optional properties.
 Each property extends the grid's type in a specific way. The base definition is as follows:
 
@@ -41,9 +42,9 @@ export interface GridSpec<
 }
 ```
 
-### Specification Parameters & Properties
+### Specification Parameters and Properties
 
-The grid specification includes four optional properties:
+The four optional **properties** for `Grid.GridSpec` include:
 
 1. **Data Property**: LyteNyte Grid interfaces use this property to infer the structure
    of the row data items provided to the grid.
@@ -57,7 +58,7 @@ The grid specification includes four optional properties:
 4. **API Property**: An extension of the base grid API that adds custom properties and methods
    specific to your application.
 
-The four optional type parameters are as follows:
+The four optional **type parameters** for `Grid.GridSpec` include:
 
 1. **`Data` Type:** Describes the shape of the row data that the grid receives.
    For example, if the row data is a `number[]`, define the grid spec like this:
@@ -119,7 +120,7 @@ The four optional type parameters are as follows:
    }
    ```
 
-### Combining Specification Types & Properties
+### Combining Specification Types and Properties
 
 You can combine all properties to create a full set of specified grid types.
 In the example below, each part of the `GridSpec` is defined and used with
@@ -146,7 +147,7 @@ type CellRenderer = Required<Grid.Column<GridSpec>>["cellRenderer"];
 type HeaderRenderer = Required<Grid.Column<GridSpec>>["headerRenderer"];
 ```
 
-## Namespace & Component
+## Namespace and Component
 
 The `Grid` export in LyteNyte Grid is both the root component and a type namespace.
 The namespace contains all the types used by LyteNyte Grid's publicly exposed functions

@@ -247,7 +247,7 @@ The annotated code marks the important changes.
    and pass it as the type parameter to the relevant grid types.
    The specification interface can do more than define the row data type, as will be covered in
    a later section of this guide. For best practices on using [TypeScript](/docs/prodready-typescript)
-   with LyteNyte Grid, see the TypeScript guide.
+   with LyteNyte Grid, see the [TypeScript guide](/docs/prodready-typescript).
 4. Call the `useClientDataSource` hook and pass in `requestData`. Then set the grid's `rowSource`
    property to the `ds` value returned from `useClientDataSource`.
 
@@ -563,9 +563,9 @@ export function Header({ api, column }: HeaderParams<GridSpec>) {
 }
 ```
 
-Finally, pass a sort definition to the client row data source. Create the sort definition by deriving a value
-from the column state. The code below derives a sort model from the columns have a `sort` value set on their
-specification.
+Finally, pass a sort model to the client row data source. Create the sort model by deriving the value
+from the column state. The code below derives a sort model from the columns which have a `sort` value
+set on their specification.
 
 ```tsx
 export default function GettingStarted() {
