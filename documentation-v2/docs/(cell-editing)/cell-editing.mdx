@@ -124,7 +124,7 @@ editParams.changeData({ ...editParams.editData, customer: "Alice Smith" });
 Use the `editSetter` property on a column to update the `editValue` whenever the
 `changeValue` method is called.
 
-By default, LyteNyte Grid uses the column’s `field` property to update the edit value
+By default, LyteNyte Grid uses the column's `field` property to update the edit value
 for a cell. This default behavior works only when `field` refers to a string or numeric
 property. When `field` is a function or a path, you must provide an `editSetter`
 property on the column so the grid can update the `editValue`.
@@ -147,41 +147,44 @@ cell updates. For more information, see the [Linked Cell Edits guide].
 
 ### Committing and Cancelling Edits
 
-Whilst the value of a cell is being edited, the original row data of that cell will not be mutated.
-The `EditParams` provide two properties that can be used to end the cell edit programmatically:
+While a cell value is being edited, LyteNyte Grid does not mutate the original row data.
+The `EditParams` type provides two properties that you can use to end a cell edit
+programmatically:
 
-- `commit`: This method will end the cell edit, and call the row update methods to apply the new cell value.
-- `cancel`: This method will end the cell edit without applying the value.
+- `commit`: Ends the cell edit and calls the row update callbacks to apply the new cell value.
+- `cancel`: Ends the cell edit without applying the edited value.
 
 ## Edit Events
 
-LyteNyte Grid will fire different edit events at different points of the cell editing processes. These
-events are listed below. See the [grid props API reference](/docs/reference) for more specific details:
+LyteNyte Grid fires different edit events at various points in the cell editing process.
+These events are listed below. See the [grid props API reference](/docs/reference) for
+more detailed information:
 
-- `onEditBegin`: Fired when a cell edit begins. This event can be prevented to stop the grid from beginning the
-  cell edit by calling `preventDefault` on the provided event params.
-- `onEditEnd`: Fired when a cell edit ends and edit value will be committed. This event can be prevented to stop
-  the grid from applying the update by calling `preventDefault` on the provided event params.
-- `onEditCancel`: Fired when a cell edit ends and the value will not be applied.
-- `onEditFail`: Fired when a cell fails the data validation for the edit.
+- `onEditBegin`: Fired when a cell edit begins. Call `preventDefault` on the provided
+  event params to prevent the grid from starting the edit.
+- `onEditEnd`: Fired when a cell edit ends and the edit value is about to be committed.
+  Call `preventDefault` on the provided event params to prevent the grid from applying
+  the update.
+- `onEditCancel`: Fired when a cell edit ends and the edited value is not applied.
+- `onEditFail`: Fired when a cell edit fails data validation.
 
 ## Programmatic Editing
 
-LyteNyte Grid's API some methods for programmatically editing cells. These methods are briefly described
-below. See the grid's [API reference](/docs/reference) for more specific usage details.
+LyteNyte Grid's API provides several methods for programmatically editing cells. These
+methods are briefly described below. See the grid's [API reference](/docs/reference)
+for more detailed usage information.
 
-- `editBegin`: Call this method to begin editing a specific cell in the grid.
-- `editEnd`: Call this method to end a cell edit. This method optionally accepts a `cancel` flag
-  as a parameter to cancel the edit instead.
-- `editIsCellActive`: A method that will return `true` if the queries cell is being edited.
-- `editUpdate`: A method that may be used to update rows in bulk. See the [Bulk Cell Editing guide]
-  for more details.
+- `editBegin`: Begins editing a specific cell in the grid.
+- `editEnd`: Ends the current cell edit. This method optionally accepts a `cancel` flag
+  to cancel the edit instead of committing it.
+- `editIsCellActive`: Returns `true` if the queried cell is currently being edited.
+- `editUpdate`: Updates rows in bulk. See the [Bulk Cell Editing guide] for more details.
 
 :::note
 
-The LyteNyte Grid API methods for cell editing are provided to cover more esoteric cell editing
-use cases. Do not use these methods for basic cell editing and instead rely on the grid's built-in
-capabilities.
+LyteNyte Grid provides programmatic cell editing APIs to support more advanced or
+specialized editing scenarios. Avoid using these methods for basic cell editing, and
+rely on the grid's built-in editing behavior instead.
 
 :::
 
@@ -189,5 +192,4 @@ capabilities.
 
 ::next[/docs/cell-editing-full-row]
 ::next[/docs/cell-editing-bulk-editing]
-::next[/docs/cell-editing-validation]
 ::next[/docs/cell-editing-linked-cell-edits]
