@@ -28,16 +28,16 @@ const columns: Grid.Column<GridSpec>[] = [
     cellRenderer: PriceCell,
     width: 100,
     name: "Price",
-    editable: true, //!
-    editRenderer: NumberEditor, //!
+    editable: true,
+    editRenderer: NumberEditor,
   },
   {
     id: "customer",
     cellRenderer: AvatarCell,
     width: 180,
     name: "Customer",
-    editable: true, //!
-    editRenderer: TextCellEditor, //!
+    editable: true,
+    editRenderer: TextCellEditor,
   },
   { id: "purchaseDate", cellRenderer: PurchaseDateCell, name: "Purchase Date", width: 130, editable: true },
   { id: "paymentMethod", cellRenderer: PaymentMethodCell, name: "Payment Method", width: 150 },
@@ -62,7 +62,14 @@ export default function Demo() {
 
   return (
     <div className="ln-grid" style={{ height: 500 }}>
-      <Grid rowHeight={50} columns={columns} rowSource={ds} slotShadows={ViewportShadows} editMode="cell" />
+      <Grid
+        rowHeight={50}
+        columns={columns}
+        rowSource={ds}
+        slotShadows={ViewportShadows}
+        editMode="cell"
+        editClickActivator="single" //!
+      />
     </div>
   );
 }
@@ -71,8 +78,8 @@ function TextCellEditor({ changeValue, editValue }: Grid.T.EditParams<GridSpec>)
   return (
     <input
       className="focus:outline-ln-primary-50 h-full w-full px-2"
-      value={`${editValue}`} //!
-      onChange={(e) => changeValue(e.target.value)} //!
+      value={`${editValue}`}
+      onChange={(e) => changeValue(e.target.value)}
     />
   );
 }
@@ -81,9 +88,9 @@ function NumberEditor({ changeValue, editValue }: Grid.T.EditParams<GridSpec>) {
   return (
     <input
       className="focus:outline-ln-primary-50 h-full w-full px-2"
-      value={`${editValue}`} //!
+      value={`${editValue}`}
       type="number"
-      onChange={(e) => changeValue(Number.parseFloat(e.target.value))} //!
+      onChange={(e) => changeValue(Number.parseFloat(e.target.value))}
     />
   );
 }

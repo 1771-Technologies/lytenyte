@@ -31,12 +31,52 @@ of the changes that have been made, and it is to row source's responsibility to 
 row source accepts the `onRowDataChange` callback property. Use this property to handle updates. This
 guide will use the [client row source](/docs/client-source-overview) for cell edits.
 
-The demo below demonstrates the basic cell editing capabilities of LyteNyte Grid. The **Price**, **Customer**,
-and **Purchase Date** columns are all editable. To begin editing double click on the cells.
+The demo below demonstrates the basic cell editing capabilities of LyteNyte Grid. The **Price** and **Customer**,
+are editable. To begin editing double click on the cells.
 
 ::demo[Basic Cell Editing="./demos/cell-editing-basic"]
 
+The demo define basic edit renderers to update the values in **Price** or **Customer** columns. See the
+[Cell Edit Renderers guide](/docs/cell-editing-renderers) for more thorough coverage on creating custom
+edit renderers.
+
+To make editing work, LyteNyte Grid will pass the edit renderer with a set of props conforming to the
+[`EditParams`](/docs/reference) type. Two properties on the `EditParams` type are used by the demo:
+
+- `editValue`: The current value being updated. This is initially the current value of the cell, but can be
+  updated. This value will be applied only when the cell edit is committed.
+- `changeValue`: A method used to update the `editValue` of the cell edit.
+
+The code for the **Customer** column's edit renderer is shown below. Notice how `editValue` is provided to the
+value of the `<input />`, and the `onChange` handler of the input calls the `changeValue` to update the edit value.
+The `editValue` is also converted to a string value, since this is what the `input` element expects, and there is
+not guarantee that the current `editValue` is a string.
+
+```tsx
+function TextCellEditor({ changeValue, editValue }: Grid.T.EditParams<GridSpec>) {
+  return (
+    <input
+      className="focus:outline-ln-primary-50 h-full w-full px-2"
+      value={`${editValue}`} //!
+      onChange={(e) => changeValue(e.target.value)} //!
+    />
+  );
+}
+```
+
 ## Edit Click Activator
+
+The `editClickActivator` property on the grid may be used to change the click method used
+to begin cell editing. It accepted one of three values:
+
+- `"single"`: Begins cell editing whenever an editable cell is clicked.
+- `"double-click"`: Begins cell editing whenever an editable cell is double-clicked. This is the default.
+- `"none"`: Clicking an editable cell will not begin editing it.
+
+In the demo below a single click will activate cell editing. The **Price** and **Customer** columns are
+editable. Try clicking one of the cells in these columns to begin editing.
+
+::demo[Single Click Edits="./demos/cell-editing-click-activator"]
 
 ## Edit Setter
 
