@@ -66,14 +66,14 @@ Follow these guidelines to ensure optimal bundling when using LyteNyte Grid:
 
 1. **Use ES Modules:** Favor ES module syntax (import and export) instead of CommonJS (require).
 
-2. **Enable Tree Shaking:** Verify that tree shaking is enabled in your bundler configuration
+2. **Enable Tree Shaking:** Verify that tree shaking is enabled in your bundler configuration.
 
 3. **Avoid Side Effects:** Ensure your code doesn't introduce side effects that could prevent
    tree shaking, such as modifying imported modules or using imported functions in ways that can't
-   be statically analyzed
+   be statically analyzed.
 
 4. **Use Specific Imports:** Avoid `import * as All from "<package-name>"` syntax
-   as these wildcard imports can prevent most bundlers from effectively tree shaking
+   as these wildcard imports can prevent most bundlers from effectively tree shaking.
 
 By applying these guidelines and leveraging LyteNyte Grid's architecture,
 you can build efficient applications with minimal bundle size.
