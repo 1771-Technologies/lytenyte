@@ -1,6 +1,6 @@
 ---
 title: Getting Started
-step: Quickly start with LyteNyte Grid and see it in action.
+step: Get started with LyteNyte Grid, a modern React data grid designed for enterprise-scale data challenges.
 description:
   Get started with LyteNyte Grid, a modern React data grid designed for enterprise-scale data challenges.
   Built in React, for React, it enables developers to ship faster and more efficiently than ever before.
@@ -18,7 +18,7 @@ committee that never used React.
 Here's what we kept running into again and again:
 
 - **Customization was a nightmare.** Clunky, opaque APIs made even basic tweaks feel like defusing
-  a bomb. Two-way data bindings, state sync issues between React and the grid... we've seen things.
+  a bomb. Two-way data bindings and state sync issues between React and the grid... we've seen it all.
 
 - **Server data loading was a disaster.** Optimistic updates, partial rendering, and caching
   never worked properly, or worse, worked sometimes, which is somehow more dangerous.
@@ -33,7 +33,7 @@ Here's what we kept running into again and again:
   just to make things look half-decent, adding yet another layer of complexity.
 
 - **Bundle sizes were obscene.** Grid libraries ballooned app load times by 1-3
-  seconds. That's not just technical debt; it's user abandonment in disguise.
+  seconds. That's not technical debt; it's user abandonment in disguise.
 
 So… We patched, duct-taped, forked, and cursed. Over time, our quick fixes turned into long-term liabilities.
 Technical debt grew. Dev velocity dropped. Maintenance costs soared.
@@ -244,16 +244,17 @@ The annotated code marks the important changes.
    Create a local `data.js` file in the same folder as the file that renders the grid.
 3. Create a `GridSpec` type. LyteNyte Grid uses TypeScript for code completion and type checking.
    The grid cannot know the row data type ahead of time, so you define a specification interface
-   and pass it as the type parameter to the relevant grid types. The specification interface can
-   do more than define the row data type, and this guide covers that later. For best practices regarding TypeScript usage
-   and LyteNyte Grid, see the [TypeScript guide](/docs/prodready-typescript).
+   and pass it as the type parameter to the relevant grid types.
+   The specification interface can do more than define the row data type, as will be covered in
+   a later section of this guide. For best practices on using [TypeScript](/docs/prodready-typescript)
+   with LyteNyte Grid, see the TypeScript guide.
 4. Call the `useClientDataSource` hook and pass in `requestData`. Then set the grid's `rowSource`
    property to the `ds` value returned from `useClientDataSource`.
 
 If you followed along to this point you will have a working grid, but a very plain looking view. The demo
 below shows what the result looks like. The example looks plain, and not every column displays a value.
 LyteNyte Grid's default cell renderer only displays simple values, such as strings or numbers. For complex
-values, you must provide a custom cell renderer. You will do that next.
+values, you must provide a custom cell renderer, as will be demonstrated next.
 
 ::demo[Basic Grid="./demos/getting-started_functional"]
 
@@ -265,8 +266,11 @@ type.
 
 You set a cell renderer on the column definitions you pass to the grid. Start by defining a cell renderer
 for the **Timing Phase** column. The code block below collapses the implementation, because a cell renderer can contain
-any React content you want. Focus on the function definition. You define a cell renderer by creating a React component
-that accepts `CellRendererParams`. This example also uses the `GridSpec` type, which we defined earlier, to improve type checking.
+any React content you want.
+
+Focus on the function definition. You define a cell renderer by creating a React component
+that accepts `CellRendererParams`. This example also uses the `GridSpec` type, defined earlier,
+to improve type checking.
 
 ```tsx
 //#start
@@ -368,10 +372,10 @@ export default function GettingStarted() {
 
 :::note
 
-We use Tailwind CSS to style components. LyteNyte Grid has no opinion on which styling framework you use.
-If you follow this guide line by line and want the cell renderers to render correctly, set up Tailwind by following
-the [Tailwind installation guide](https://tailwindcss.com/docs/installation/using-vite), and add applying our
-[Tailwind theme configuration](/docs/grid-theming-tailwind).
+We use Tailwind CSS to style components. LyteNyte Grid has no opinion on which styling
+framework you use. If you follow this guide line by line and want the cell renderers to
+render correctly, set up Tailwind by following the [Tailwind installation guide](https://tailwindcss.com/docs/installation/using-vite) and
+apply our [Tailwind theme configuration](/docs/grid-theming-tailwind).
 
 The cell renderers also use custom CSS properties for colors. The CSS below defines those properties:
 
@@ -560,7 +564,8 @@ export function Header({ api, column }: HeaderParams<GridSpec>) {
 ```
 
 Finally, pass a sort definition to the client row data source. Create the sort definition by deriving a value
-from the column state. The code below builds a `sort` value from the column that has a `sort` value.
+from the column state. The code below derives a sort model from the columns have a `sort` value set on their
+specification.
 
 ```tsx
 export default function GettingStarted() {
@@ -806,4 +811,3 @@ Putting everything together, the full working example is shown below:
 ::next[/docs/columns]
 ::next[/docs/grid-theming]
 ::next[/docs/grid-reactivity]
-::next[/docs/client-source-overview]
