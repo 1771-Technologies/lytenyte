@@ -1,8 +1,45 @@
 ---
 title: Linked Cell Edits
 step: Learn how to handle linked cells when editing data.
+description: LyteNyte Grid edits cells on a cell by cell basis, however, the edit data is applied to the whole
+  row. This makes it possible to link two or more cells, such that updating one cell's value results in the
+  other cells being updated as well.
 ---
+
+:::note
+
+This guide assumes you are already familiar with the cell editing capabilities of LyteNyte Grid. Before
+reading the rest of this guide, ensure you are familiar with the contents of the [Cell Editing guide](/docs/cell-editing)
+and [Cell Edit Renderers guide](/docs/cell-editing-renderers).
+
+:::
 
 ## Editing More Than One Cell
 
+A normal edit renderer will call the `changeValue` method on the [`EditParams`](/docs/reference) provided to the
+edit renderer. The `changeValue` method updates the edit value for the current cell being edited. To create a
+linked cell edit, use the `changeData` method instead, and provide a new edit value for all the cells whose
+value should be updated when the current cell being edited is changed.
+
+In the demo below the **Produce** column is linked to the price column. Any changes to the value of a cell
+in the **Product** column will result in the value of the **Price** column being reset to match a predetermine
+price for the new product.
+
+Linked cell edits do not have to be connected in both directions. Changing the value of a cell in the
+**Produce** column resets the **Price** cell's value, but changes to the **Price** cell do not impact the
+selected product.
+
+::demo[Linked Edits="./demos/cell-editing-linked"]
+
+:::tip
+
+A cell edit does not have to update another editable cell. This means you can create linked edits even for
+cells that are not editable.
+
+:::
+
 ## Next Steps
+
+::next[/docs/cell-editing]
+::next[/docs/cell-editing-full-row]
+::next[/docs/cell-editing-validation]
