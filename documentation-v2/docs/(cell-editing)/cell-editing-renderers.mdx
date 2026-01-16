@@ -1,15 +1,191 @@
 ---
 title: Cell Edit Renderers
 step: Define custom renderers to update a cell in the grid.
-description: X
+description: To edit a cell in LyteNyte Grid you must provide an edit renderer for each
+  column that will be editable. This guide will cover creating edit renderers for basic
+  data types.
 ---
 
 ## Text Editors
 
+A text edit renderer is the simplest type of edit renderer you can create. The most straightforward
+way is to use an `<input />` element. The demo below demonstrates this. Double Click
+the **Customer** column to begin editing the cell as text.
+
+::demo[Text Edit Renderer="./demos/cell-editing-text-renderer"]
+
+The text editor in the demo uses the [controlled pattern](https://react.dev/reference/react-dom/components/input#controlling-an-input-with-a-state-variable)
+to manage the input value. Since the editor is changing text, there is custom text parsing, the value is updated
+directly, as the code below shows:
+
+```tsx
+function TextCellEditor({ changeValue, editValue }: Grid.T.EditParams<GridSpec>) {
+  return (
+    <input
+      className="focus:outline-ln-primary-50 h-full w-full px-2"
+      value={`${editValue}`} //!
+      onChange={(e) => changeValue(e.target.value)} //!
+    />
+  );
+}
+```
+
 ## Number Editors
+
+A number edit renderer can be as simple as using an `input` with type `number`, however, a much
+better input experience is to use a normal text `input` with custom number parsing. The demo
+below uses a normal `input` to allow the **Price** column to be edited, but provides special
+handling to ensure only number values are set.
+
+::demo[Number Edit Renderer="./demos/cell-editing-number-renderer"]
+
+:::note
+
+In the demo code, you will notice that the `editSetter` property has been set on the **Price**
+column. This is to ensure that the edit value is always a valid number. In particular, it is
+possible to begin a cell edit by pressing any printable key when a cell has focus. When cell
+editing is started in this way, the key pressed will be used as the initial cell value. Since,
+this initial value will not call the `getNumberValue` callback, the column ensures the number
+is parsed in it's `editSetter` property, as the code below shows.
+
+```ts
+{
+  id: "price",
+  type: "number",
+  cellRenderer: PriceCell,
+  width: 100,
+  name: "Price",
+  //!next 6
+  editSetter: (p) => {
+    const currentValue = typeof p.editValue !== "string" ? 0 : getNumberValue(p.editValue) || 0;
+    const data = { ...(p.editData as Record<string, unknown>), [p.column.id]: currentValue };
+
+    return data;
+  },
+  editable: true,
+  editRenderer: NumberEditor,
+};
+```
+
+:::
+
+In the demo, the `input`'s change handler calls the `getNumberValue` as the code below
+shows. The `getNumberValue` function will parse and validate that the input is a number.
+
+```ts
+function NumberEditor({ changeValue, editValue }: Grid.T.EditParams<GridSpec>) {
+  return (
+    <input
+      className="focus:outline-ln-primary-50 h-full w-full px-2"
+      value={`${editValue}`}
+      onChange={(e) => {
+        const value = getNumberValue(e.target.value); //!
+        changeValue(value || 0);
+      }}
+    />
+  );
+}
+
+//!next 19
+const getNumberValue = (e: string) => {
+  const value = e.trim();
+
+  // Allow empty input
+  if (value === "") return "";
+
+  // Allow minus sign only at the start
+  if (value === "-") return "-";
+
+  // Convert to number and check if it's valid
+  const number = Number.parseFloat(value);
+
+  if (value && !Number.isNaN(number)) {
+    return String(number) + (value.endsWith(".") ? "." : "");
+  } else {
+    // If not a valid number, revert to previous value
+    return value.slice(0, -1) || "";
+  }
+};
+```
+
+This is just one approach to creating a number edit renderer. You could alternatively
+use a custom made number input, or use another library's number input such as
+[Ark UI's number input](https://ark-ui.com/docs/components/number-input).
 
 ## Date Editors
 
+Date editing ranges from using a simple date `input` to a complex array of date
+range selections and timezone adjustments. Depending on your application use case,
+you may need to use a custom date picker component, however, for simple date edits
+it is often best to use the native browser date input element, as the demo below
+demonstrates. Double click the **Purchase Date**
+
+::demo[Date Edit Renderer="./demos/cell-editing-date"]
+
+The date cell edit renderer uses a normal `input` element, however, if you examine the code
+you will notice that is does not use a controlled value, but instead tracks the uncontrolled
+value.
+
+Native browser `date` inputs can often enter a bad state when the date is input vai the keyboard
+and the value is controlled by React. A simple workaround in this case, is to let the date value
+be uncontrolled and track the changes. The browser will ensure the date is valid, and the
+edit state will reflect the latest value.
+
+```tsx
+function DateCellEditor({ changeValue, editValue }: Grid.T.EditParams<GridSpec>) {
+  const formatted = typeof editValue === "string" && editValue ? format(editValue, "yyyy-MM-dd") : "";
+  return (
+    <input
+      className="focus:outline-ln-primary-50 h-full w-full px-2"
+      defaultValue={formatted} //!
+      type="date" //!
+      //!next 8
+      onChange={(e) => {
+        const next = new Date(e.target.value);
+        try {
+          changeValue(format(next, "yyyy-MM-dd"));
+        } catch {
+          return;
+        }
+      }}
+    />
+  );
+}
+```
+
 ## Popover Editors
 
+When a column has an enumerated set of values to choose from, a common cell editing pattern is to use a
+dropdown list to select from the options.
+
+The most basic approach is to use the browser's `select` element with the set of options, as the demo below
+demonstrates. However, this approach has a few drawbacks:
+
+- There is no way to force the select component to open when the edit begins. Users must press the Space or
+  Enter key to open the selection menu.
+- The option element has limited styling capabilities.
+- The `select` element is only useful if there are a small number of options to choose from.
+
+::demo[Product Select="./demos/cell-editing-popover"]
+
+Given the drawbacks of the `select` element, a better alternative is to use a combobox or custom select
+component. The demo below demonstrates this using LyteNyte Grid's [Smart Select component](/docs/component-smart-select).
+
+TODO DEMO
+
+:::note
+
+LyteNyte Grid's [Smart Select component] is only available to PRO users, however, you may use another
+custom combobox component that is open source. Below are some good options:
+
+- [Headless UI Combobox](https://headlessui.com/react/combobox)
+- [Base UI Combobox](https://base-ui.com/react/components/combobox)
+- [React Aria Combobox](https://react-aria.adobe.com/ComboBox)
+
+:::
+
 ## Next Steps
+
+::next[/docs/cell-editing]
+::next[/docs/cell-editing-validation]
+::next[/docs/cell-editing-full-row]
