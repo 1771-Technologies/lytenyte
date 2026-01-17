@@ -424,4 +424,24 @@
       }
     }
   }
+
+  [data-ln-popover="true"][data-ln-smart-select-container="true"] {
+    padding: var(--ln-space-10) var(--ln-space-05);
+
+    background-color: var(--ln-bg-strong);
+    color: var(--ln-text);
+    font-size: var(--ln-font-md);
+
+    & [data-ln-smart-option] {
+      cursor: pointer;
+      padding-block: var(--ln-space-05);
+      padding-inline: var(--ln-space-20);
+
+      border-radius: var(--ln-radius-md);
+
+      &[data-ln-active="true"] {
+        background-color: var(--ln-gray-05);
+      }
+    }
+  }
 }
