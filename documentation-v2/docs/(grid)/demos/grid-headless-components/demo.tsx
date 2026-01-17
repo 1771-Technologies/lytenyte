@@ -66,7 +66,7 @@ export default function ColumnGroupExpansions() {
   });
 
   return (
-    <div className="ln-grid" style={{ height: 500 }}>
+    <div className="ln-grid ln-header-group:justify-center" style={{ height: 500 }}>
       <Grid
         rowSource={ds}
         rowFullWidthPredicate={rowFullWidthPredicate}

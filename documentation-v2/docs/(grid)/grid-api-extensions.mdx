@@ -1,17 +1,16 @@
 ---
 title: API Extensions
 step: Extend LyteNyte Grid's base API with custom functions and state.
-description: LyteNyte Grid's API can be extended with additional properties on a per grid basis.
-  These extensions may be used to share bespoke functionality with the various renderers provided
-  to the grid.
+description: Extend the LyteNyte Grid API with additional properties for each grid instance.
+  Use these properties to share custom functionality across renderers provided to the grid.
 ---
 
 ## Grid API
 
-The LyteNyte Grid API is a set of useful methods for programmatically handling common
-functionality in the grid, such as selecting rows or toggling row groups. The grid provides a reference
-to the API to all grid component callbacks, such as cell renderers and row detail renderers. You can also
-obtain a reference to the API by providing a ref to the `Grid` component, as shown below:
+The LyteNyte Grid API provides methods for programmatically handling common grid functionality,
+such as selecting rows or toggling row groups. The grid passes an API reference to
+every component callback, including cell and row detail renderers. You can also
+obtain a reference to the API by providing a `ref` to the `Grid` component, as shown below:
 
 ```tsx
 function MyGrid() {
@@ -64,9 +63,11 @@ const myExtender = (api: Grid.API) => {
 };
 ```
 
-The function form of the `apiExtension` is useful when the methods you add to the API need to call the grid API to perform work. For example,
-you can add the ability to rename header cells by extending the API with an `updateHeaderName` method. This method can then call
-`api.columnUpdate` to change the name of a column. The demo below shows this approach.
+The function form of the `apiExtension` is useful when the methods you add to the API need to call the grid API to perform work.
+For example, you can add the ability to rename header cells by extending the API
+with an `updateHeaderName` method. This method can then call `api.columnUpdate` to change the name of a column.
+
+The demo below illustrates this approach. Try double-click the column header to rename it.
 
 ::demo[Renaming Column Headers="./demos/grid-api-function"]
 
@@ -143,11 +144,12 @@ const IncrementRenderer = ({ api }) => {
 };
 ```
 
-### The Piece Utility
+### Piece Utility
 
 LyteNyte Grid provides the `usePiece` hook to simplify extending the API with reactive state.
-This hook is convenient if you are not using an external state management library. The
-`usePiece` hook creates a reactive watcher for the value you provide. You can then share the watcher
+This hook is convenient if you are not using an external state management library.
+
+The `usePiece` hook creates a reactive watcher for the value you provide. You can then share the watcher
 with other components, which can selectively update when the watched value changes. You can use
 `usePiece` to extend the API as follows:
 
