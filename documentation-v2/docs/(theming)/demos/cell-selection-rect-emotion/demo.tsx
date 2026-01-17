@@ -3,6 +3,9 @@ import "@1771technologies/lytenyte-pro/grid.css";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
 import styled from "@emotion/styled";
+import { CacheProvider } from "@emotion/react";
+import { useMemo, useState } from "react";
+import createCache from "@emotion/cache";
 
 export type BankData = (typeof bankDataSmall)[number];
 interface GridSpec {
@@ -55,7 +58,7 @@ const HeaderCell = styled(Grid.HeaderCell)`
 `;
 
 const Row = styled(Grid.Row)`
-  &[data-ln-alternate="true"] .cell {
+  &[data-ln-alternate="true"] [data-ln-cell="true"] {
     background-color: light-dark(hsl(0, 27%, 98%), hsl(184, 33%, 8%));
   }
 `;
@@ -87,55 +90,61 @@ const RowsContainer = styled(Grid.RowsContainer)`
   }
 `;
 
-const cellSelection: Grid.T.DataRect[] = [{ rowStart: 4, rowEnd: 7, columnStart: 2, columnEnd: 4 }];
-
 export default function CellSelectionRect() {
+  const [selections, setSelections] = useState([{ rowStart: 4, rowEnd: 7, columnStart: 2, columnEnd: 4 }]);
   const ds = useClientDataSource({ data: bankDataSmall });
 
+  const cache = useMemo(() => {
+    return createCache({ key: "x" });
+  }, []);
+
   return (
-    <div>
-      <div style={{ height: 500 }}>
-        <Grid
-          rowSource={ds}
-          columns={columns}
-          columnBase={base}
-          cellSelectionMode="range"
-          cellSelections={cellSelection}
-        >
-          <Grid.Viewport>
-            <Grid.Header>
-              {(cells) => {
-                return (
-                  <Grid.HeaderRow>
-                    {cells.map((cell) => {
-                      if (cell.kind === "group") return null;
-
-                      return <HeaderCell key={cell.id} cell={cell} />;
-                    })}
-                  </Grid.HeaderRow>
-                );
-              }}
-            </Grid.Header>
-            {/*!next */}
-            <RowsContainer>
-              <Grid.RowsCenter>
-                {(row) => {
-                  if (row.kind === "full-width") return null;
-
+    <CacheProvider value={cache}>
+      <div>
+        <div style={{ height: 500 }}>
+          <Grid
+            rowSource={ds}
+            columns={columns}
+            columnBase={base}
+            cellSelectionMode="range"
+            cellSelections={selections}
+            onCellSelectionChange={setSelections}
+          >
+            <Grid.Viewport>
+              <Grid.Header>
+                {(cells) => {
                   return (
-                    <Row row={row}>
-                      {row.cells.map((cell) => {
-                        return <Cell cell={cell} key={cell.id} />;
+                    <Grid.HeaderRow>
+                      {cells.map((cell) => {
+                        if (cell.kind === "group") return null;
+
+                        return <HeaderCell key={cell.id} cell={cell} />;
                       })}
-                    </Row>
+                    </Grid.HeaderRow>
                   );
                 }}
-              </Grid.RowsCenter>
-            </RowsContainer>
-          </Grid.Viewport>
-        </Grid>
+              </Grid.Header>
+              {/*!next */}
+              <RowsContainer>
+                <Grid.RowsCenter>
+                  {(row) => {
+                    if (row.kind === "full-width") return null;
+
+                    return (
+                      <Row row={row}>
+                        {row.cells.map((cell) => {
+                          return <Cell cell={cell} key={cell.id} />;
+                        })}
+                      </Row>
+                    );
+                  }}
+                </Grid.RowsCenter>
+              </RowsContainer>
+            </Grid.Viewport>
+          </Grid>
+        </div>
       </div>
-    </div>
+    </CacheProvider>
   );
 }
 

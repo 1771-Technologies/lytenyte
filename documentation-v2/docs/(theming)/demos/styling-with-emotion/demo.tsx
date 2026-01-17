@@ -1,7 +1,10 @@
 //#start
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import { CacheProvider } from "@emotion/react";
+import createCache from "@emotion/cache";
 import styled from "@emotion/styled";
+import { useMemo } from "react";
 
 export type BankData = (typeof bankDataSmall)[number];
 interface GridSpec {
@@ -57,7 +60,7 @@ const HeaderCell = styled(Grid.HeaderCell)`
 `;
 
 const Row = styled(Grid.Row)`
-  &[data-ln-alternate="true"] .cell {
+  &[data-ln-alternate="true"] [data-ln-cell="true"] {
     background-color: light-dark(hsl(0, 27%, 98%), hsl(184, 33%, 8%));
   }
 `;
@@ -65,44 +68,50 @@ const Row = styled(Grid.Row)`
 export default function GridTheming() {
   const ds = useClientDataSource({ data: bankDataSmall });
 
+  const cache = useMemo(() => {
+    return createCache({ key: "x" });
+  }, []);
+
   return (
-    <div className="classes">
-      <div style={{ height: 500 }}>
-        <Grid rowSource={ds} columns={columns} columnBase={base}>
-          <Grid.Viewport>
-            <Grid.Header>
-              {(cells) => {
-                return (
-                  <Grid.HeaderRow>
-                    {cells.map((cell) => {
-                      if (cell.kind === "group") return null;
-
-                      return <HeaderCell key={cell.id} cell={cell} className="header-cell" />; //!
-                    })}
-                  </Grid.HeaderRow>
-                );
-              }}
-            </Grid.Header>
-            <Grid.RowsContainer>
-              <Grid.RowsCenter>
-                {(row) => {
-                  if (row.kind === "full-width") return null;
-
+    <CacheProvider value={cache}>
+      <div className="classes">
+        <div style={{ height: 500 }}>
+          <Grid rowSource={ds} columns={columns} columnBase={base}>
+            <Grid.Viewport>
+              <Grid.Header>
+                {(cells) => {
                   return (
-                    //!next
-                    <Row row={row}>
-                      {row.cells.map((cell) => {
-                        return <Cell cell={cell} key={cell.id} className="cell" />; //!
+                    <Grid.HeaderRow>
+                      {cells.map((cell) => {
+                        if (cell.kind === "group") return null;
+
+                        return <HeaderCell key={cell.id} cell={cell} />; //!
                       })}
-                    </Row>
+                    </Grid.HeaderRow>
                   );
                 }}
-              </Grid.RowsCenter>
-            </Grid.RowsContainer>
-          </Grid.Viewport>
-        </Grid>
+              </Grid.Header>
+              <Grid.RowsContainer>
+                <Grid.RowsCenter>
+                  {(row) => {
+                    if (row.kind === "full-width") return null;
+
+                    return (
+                      //!next
+                      <Row row={row}>
+                        {row.cells.map((cell) => {
+                          return <Cell cell={cell} key={cell.id} />; //!
+                        })}
+                      </Row>
+                    );
+                  }}
+                </Grid.RowsCenter>
+              </Grid.RowsContainer>
+            </Grid.Viewport>
+          </Grid>
+        </div>
       </div>
-    </div>
+    </CacheProvider>
   );
 }
 

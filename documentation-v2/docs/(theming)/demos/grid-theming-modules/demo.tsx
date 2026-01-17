@@ -1,5 +1,6 @@
 //#start
 import styles from "./demo.module.css";
+import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
 import "@1771technologies/lytenyte-pro-experimental/grid-full.css";
 import type { OrderData } from "@1771technologies/grid-sample-data/orders";
 import { data } from "@1771technologies/grid-sample-data/orders";
@@ -35,16 +36,31 @@ export default function ColumnBase() {
   const ds = useClientDataSource({ data: data });
   const [theme, setTheme] = useState("ln-dark");
 
+  const [selections, setSelections] = useState<Grid.T.DataRect[]>([
+    { rowStart: 1, rowEnd: 3, columnStart: 1, columnEnd: 3 },
+  ]);
+
   return (
-    <div
-      className={theme}
-      style={{ colorScheme: theme.includes("light") || theme === "ln-cotton-candy" ? "light" : "dark" }}
-    >
+    <div>
       <div className="bg-ln-gray-00 border-b-ln-border h-full w-full border-b py-2">
         <ThemePicker theme={theme} setTheme={setTheme} />
       </div>
-      <div className={"ln-grid"} style={{ height: 500 }}>
-        <Grid rowHeight={50} columns={columns} rowSource={ds} slotShadows={ViewportShadows}>
+      <div
+        className={"ln-grid " + theme}
+        style={{
+          height: 500,
+          colorScheme: theme.includes("light") || theme === "ln-cotton-candy" ? "light" : "dark",
+        }}
+      >
+        <Grid
+          rowHeight={50}
+          columns={columns}
+          rowSource={ds}
+          slotShadows={ViewportShadows}
+          cellSelections={selections}
+          onCellSelectionChange={setSelections}
+          cellSelectionMode="range"
+        >
           <Grid.Viewport>
             <Grid.Header>
               {(cells) => {

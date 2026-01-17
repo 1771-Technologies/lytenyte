@@ -3,6 +3,7 @@ import styles from "./demo.module.css";
 import "@1771technologies/lytenyte-pro/grid.css";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
 import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import { useState } from "react";
 
 export type BankData = (typeof bankDataSmall)[number];
 interface GridSpec {
@@ -28,9 +29,8 @@ const base: Grid.ColumnBase<GridSpec> = { width: 100 };
 
 //#end
 
-const cellSelection: Grid.T.DataRect[] = [{ rowStart: 4, rowEnd: 7, columnStart: 2, columnEnd: 4 }];
-
 export default function CellSelectionRect() {
+  const [selections, setSelections] = useState([{ rowStart: 4, rowEnd: 7, columnStart: 2, columnEnd: 4 }]);
   const ds = useClientDataSource({ data: bankDataSmall });
 
   return (
@@ -42,7 +42,8 @@ export default function CellSelectionRect() {
           columns={columns}
           columnBase={base}
           cellSelectionMode="range"
-          cellSelections={cellSelection}
+          cellSelections={selections}
+          onCellSelectionChange={setSelections}
         >
           <Grid.Viewport>
             <Grid.Header>

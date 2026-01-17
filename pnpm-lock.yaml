@@ -319,6 +319,12 @@ importers:
       '@astrojs/react':
         specifier: 4.4.2
         version: 4.4.2(@types/node@24.5.2)(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(jiti@2.6.1)(lightningcss@1.30.2)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)(tsx@4.20.3)(yaml@2.8.2)
+      '@emotion/cache':
+        specifier: ^11.14.0
+        version: 11.14.0
+      '@emotion/react':
+        specifier: ^11.14.0
+        version: 11.14.0(@types/react@19.1.8)(react@19.2.1)
       '@emotion/styled':
         specifier: 11.14.1
         version: 11.14.1(@emotion/react@11.14.0(@types/react@19.1.8)(react@19.2.1))(@types/react@19.1.8)(react@19.2.1)
