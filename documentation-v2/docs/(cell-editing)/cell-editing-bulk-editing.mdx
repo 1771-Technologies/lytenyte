@@ -1,8 +1,49 @@
 ---
 title: Bulk Cell Editing
 step: Edit a group of cells in bulk.
+description: LyteNyte Grid can edit cells in bulk through the grid's API. Provide
+  updated data for specific rows and LyteNyte Grid will update the rows in the grid
+  as though the cells were edited.
 ---
+
+:::note
+
+Bulk updates are an advanced cell editing feature. Ensure you are familiar with the
+cell editing functionality available in LyteNyte Grid. Read the [Cell Editing guide](/docs/cell-editing)
+for more details.
+
+:::
 
 ## Edit Update Method
 
+Cells can be edited in bulk using the `editUpdate` method on the grid's API. The
+`editUpdate` method must be provided a map of rows to update. The map provided may
+have keys of two types:
+
+- `number`: Represents the row index of the row that should be updated.
+- `string`: Represents the row id of the row that should be updated.
+
+When providing a `number` key, LyteNyte Grid will resolve the row index to its
+row ID. avoid setting both the row index and row ID for the same row in the map.
+
+The demo below uses teh `editUpdate` method to randomly update rows in bulk.
+The demo shows the basic functionality.
+
+TODO Demo
+
+### Bulk Update Vs Direct Row Update
+
+At first glance the `editUpdate` method appears to do the same thing as just updating
+the rows in the grid directly, however, there is a distinction. When updating rows through
+the `editUpdate` function LyteNyte Grid will call the necessary validations for the edits
+as though the user edited the cell directly.
+
+All the rows must pass the validation for the bulk update to be applied. The `editUpdate`
+function returns the result of the row validation, which you can use to provide feedback
+if the update fails.
+
 ## Next Steps
+
+::next[/docs/cell-editing-validation]
+::next[/docs/cell-editing]
+::next[/docs/cell-editing-renderers]

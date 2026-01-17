@@ -1,8 +1,37 @@
 ---
 title: Full Row Cell Editing
 step: Change the data in cells on a row by row basis.
+description: LyteNyte Grid can edit all or some of the cells of a given row at the same time.
+  When cells are edited as a row, the changes are applied and committed as a single row edit.
 ---
 
 ## Full Row Edits
 
+Set the `editMode` property to `"row"` to enable cell editing in row mode. When cell editing is in row
+mode, cells are updated on a row by row basis. When the cell edit begins, all the editable cells in the
+row being edited will be rendered.
+
+The demo below demonstrates row edit mode. The **Price**, **Customer**, and **Email** columns are all editable.
+By double clicking a cell in these columns editing will begin and the cells will render their edit components.
+
+::demo[Row Edit Mode="./demos/cell-editing-row"]
+
+Whilst in row edit mode and with an edit active, the Tab key will cycle through the cells of the row. LyteNyte
+Grid does this to allow tab navigation of the editable cells in the row. Without row edit mode active, the tab
+key would end the edit once the edit renderer loses focus.
+
+### Row Edit vs Cell Edit
+
+The choice of whether to use normal cell edits or full row edits depends mostly on the sort of data you
+will be editing. Row editing shines when editing one cell often requires editing another cell in the same
+row. Individual cell editing is better for general updates, since each cell's change is individually validated
+and committed.
+
+There is no performance penalty, or restriction when using row edits over cell edits. The choice is fully
+use case dependent.
+
 ## Next Steps
+
+::next[/docs/cell-editing]
+::next[/docs/cell-editing-linked-cell-edits]
+::next[/docs/cell-editing-validation]

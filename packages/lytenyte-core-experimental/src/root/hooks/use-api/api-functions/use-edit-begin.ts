@@ -54,8 +54,18 @@ export function useEditBegin(
       return;
     }
 
+    let stop = false;
+    const preventDefault = () => {
+      stop = true;
+    };
+
+    const editData = init ?? structuredClone(row.data);
+    props.onEditBegin?.({ api, column, editData, preventDefault, row });
+
+    if (stop) return;
+
     edit.activeEdit.set({ rowId: row.id, column: column.id });
-    edit.editData.set(init ?? row.data);
+    edit.editData.set(editData);
 
     api.scrollIntoView({ column, row: rowIndex, behavior: "instant" });
     runWithBackoff(() => {

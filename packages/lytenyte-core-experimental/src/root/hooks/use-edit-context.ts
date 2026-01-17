@@ -19,9 +19,9 @@ export function useEditContext(view: ColumnView, api: Root.API, props: Root.Prop
 
   const changeWithInit = useEvent((value: any, row: RowNode<any>, column: ColumnAbstract) => {
     let nextData: any;
-    const setter = (column as any).editSetter as Root.Column["editSetter"];
+    const setter = ((column as any) ?? props.columnBase)?.editSetter as Root.Column["editSetter"];
 
-    const current = editDataState ?? row.data;
+    const current = editDataState ?? structuredClone(row.data);
 
     if (setter) {
       nextData = setter({ api, column, editData: current, editValue: value, row });
