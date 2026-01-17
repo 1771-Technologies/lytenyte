@@ -1,17 +1,17 @@
 ---
 title: React Compiler
 step: See how to use the React compiler with LyteNyte Grid to automatically memoize props.
-description: LyteNyte Grid is built in React for React. There is no special configuration
-  necessary to begin using the React compiler. Set up the compiler as part of your build
-  process and LyteNyte Grid will work seamlessly.
+description: LyteNyte Grid, built in React for React, requires no special configuration
+  to start using the React compiler. Simply set up the compiler as
+  part of your build process, and it will work seamlessly.
 ---
 
 ## Why Use the Compiler?
 
-LyteNyte Grid accepts props that are not simple primitive JavaScript values. For example,
-`columns` is provided as an array. When you pass non-memoized props to the grid, LyteNyte Grid
-may perform unnecessary re-renders. In some cases, this can significantly degrade
-performance. For example, the following simple code can result in lost performance.
+LyteNyte Grid accepts props that are not simple primitive JavaScript values.
+For example, `columns` property is provided as an array. When you pass non-memoized props to the grid,
+LyteNyte Grid may perform unnecessary re-renders, degrading performance.
+To illustrate, the following simple code can result in performance loss.
 
 ```tsx
 <Grid columnBase={{ width: 100 }} />

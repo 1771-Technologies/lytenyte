@@ -9,9 +9,11 @@ description: LyteNyte Grid is a declarative grid. The state you apply
 ## Props as State
 
 LyteNyte Grid accepts state via props passed to the `Grid` component. The grid view
-always reflects the props you provide. The code below shows a basic example of passing columns to
-the grid. You should already be familiar with React, and passing props to components like this
-should be second nature.
+always reflects the props you provide. The code below shows a basic example of
+passing columns to the grid.
+
+You should already be familiar with React, and passing props to components in this manner
+should be instinctive.
 
 ```tsx
 const columns: Column[] = [
@@ -29,7 +31,9 @@ function MyGrid() {
 
 If you use TypeScript, TypeScript will type check all props passed to the grid. Since
 some props use generic type parameters, you may need to provide a concrete type for the
-grid. The example below shows one case. See our [TypeScript guide](/docs/prodready-typescript) for more
+grid.
+
+The example below shows one case. See our [TypeScript guide](/docs/prodready-typescript) for more
 details.
 
 ```tsx
@@ -75,14 +79,16 @@ properties as either controlled or uncontrolled. These properties include:
 
 When one of these properties updates, the grid calls the corresponding change handler (if you provide one).
 For example, you can make row detail expansions **controlled** by providing both `rowDetailExpansions`
-and `onRowDetailExpansionsChange` props to the grid. The demo below demonstrates this:
+and `onRowDetailExpansionsChange` props to the grid. As demonstrated in the demo below:
 
 ::demo[Controlled Row Detail Expansions="./demos/grid-reactivity-controlled-state"]
 
 :::note
 
 Most state properties become controlled when you provide a value for that property
-(providing a change handler is optional). For example, providing `rowDetailExpansions`
+(providing a change handler is optional).
+
+For example, providing `rowDetailExpansions`
 is enough to prevent the grid from changing row detail expansions internally. This
 behavior is similar to setting the `value` prop on an `input` element without a corresponding
 `onChange` handler: the value will never change based on user input.
@@ -94,8 +100,7 @@ behavior is similar to setting the `value` prop on an `input` element without a 
 ```
 
 One exception is the `columns` property, which is always controlled. If you want the grid
-to update columns (for example, when the user resizes columns by dragging), you must provide an
-`onColumnsChange` handler.
+to update columns you must provide an `onColumnsChange` handler.
 
 :::
 
@@ -123,7 +128,7 @@ function MyGrid() {
 }
 ```
 
-Avoid creating and passing objects in the render path of a component. For example, a common
+Avoid creating and passing objects in the render path of a component. A common
 performance problem is defining the `columnBase` prop as a plain object:
 
 ```tsx

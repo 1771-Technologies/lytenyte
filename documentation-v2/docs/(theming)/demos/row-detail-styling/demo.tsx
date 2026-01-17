@@ -88,7 +88,7 @@ function PriceChart({ row }: { row: Grid.T.RowLeaf<GridSpec["data"]> }) {
           tickLine={false}
         />
         <YAxis fontFamily="Inter" fontSize="14px" tickLine={false} axisLine={false} />
-        <CartesianGrid vertical={false} stroke="rgba(0,0,0,0.1)" />
+        <CartesianGrid vertical={false} stroke="var(--ln-border)" />
 
         <Area
           key={row.id}

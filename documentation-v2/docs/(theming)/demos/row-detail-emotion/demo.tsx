@@ -4,6 +4,8 @@ import { useMemo } from "react";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
 import styled from "@emotion/styled";
+import { CacheProvider } from "@emotion/react";
+import createCache from "@emotion/cache";
 
 type PerformanceData = (typeof companiesWithPricePerf)[number];
 export interface GridSpec {
@@ -57,7 +59,7 @@ const HeaderCell = styled(Grid.HeaderCell)`
 `;
 
 const Row = styled(Grid.Row)`
-  &[data-ln-alternate="true"] .cell {
+  &[data-ln-alternate="true"] [data-ln-cell="true"] {
     background-color: light-dark(hsl(0, 27%, 98%), hsl(184, 33%, 8%));
   }
 `;
@@ -82,49 +84,55 @@ export default function RowDetail() {
     data: companiesWithPricePerf,
   });
 
+  const cache = useMemo(() => {
+    return createCache({ key: "x" });
+  }, []);
+
   return (
-    <div style={{ height: 500 }}>
-      <Grid
-        columns={columns}
-        columnBase={base}
-        rowSource={ds}
-        rowDetailRenderer={rowDetailRenderer}
-        rowDetailExpansions={rowDetailExpansions}
-        rowDetailHeight={300}
-      >
-        <Grid.Viewport>
-          <Grid.Header>
-            {(cells) => {
-              return (
-                <Grid.HeaderRow>
-                  {cells.map((cell) => {
-                    if (cell.kind === "group") return null;
-
-                    return <HeaderCell key={cell.id} cell={cell} />;
-                  })}
-                </Grid.HeaderRow>
-              );
-            }}
-          </Grid.Header>
-          {/*!next */}
-          <RowsContainer>
-            <Grid.RowsCenter>
-              {(row) => {
-                if (row.kind === "full-width") return null;
-
+    <CacheProvider value={cache}>
+      <div style={{ height: 500 }}>
+        <Grid
+          columns={columns}
+          columnBase={base}
+          rowSource={ds}
+          rowDetailRenderer={rowDetailRenderer}
+          rowDetailExpansions={rowDetailExpansions}
+          rowDetailHeight={300}
+        >
+          <Grid.Viewport>
+            <Grid.Header>
+              {(cells) => {
                 return (
-                  <Row row={row}>
-                    {row.cells.map((cell) => {
-                      return <Cell cell={cell} key={cell.id} />;
+                  <Grid.HeaderRow>
+                    {cells.map((cell) => {
+                      if (cell.kind === "group") return null;
+
+                      return <HeaderCell key={cell.id} cell={cell} />;
                     })}
-                  </Row>
+                  </Grid.HeaderRow>
                 );
               }}
-            </Grid.RowsCenter>
-          </RowsContainer>
-        </Grid.Viewport>
-      </Grid>
-    </div>
+            </Grid.Header>
+            {/*!next */}
+            <RowsContainer>
+              <Grid.RowsCenter>
+                {(row) => {
+                  if (row.kind === "full-width") return null;
+
+                  return (
+                    <Row row={row}>
+                      {row.cells.map((cell) => {
+                        return <Cell cell={cell} key={cell.id} />;
+                      })}
+                    </Row>
+                  );
+                }}
+              </Grid.RowsCenter>
+            </RowsContainer>
+          </Grid.Viewport>
+        </Grid>
+      </div>
+    </CacheProvider>
   );
 }
 //#start
@@ -160,7 +168,7 @@ function PriceChart({ row }: { row: Grid.T.RowLeaf<GridSpec["data"]> }) {
           tickLine={false}
         />
         <YAxis fontFamily="Inter" fontSize="14px" tickLine={false} axisLine={false} />
-        <CartesianGrid vertical={false} stroke="rgba(0,0,0,0.1)" />
+        <CartesianGrid vertical={false} stroke="var(--ln-border)" />
 
         <Area
           key={row.id}

@@ -1,4 +1,5 @@
 //#start
+import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
 import "@1771technologies/lytenyte-pro-experimental/grid-full.css";
 import type { OrderData } from "@1771technologies/grid-sample-data/orders";
 import { data } from "@1771technologies/grid-sample-data/orders";
@@ -13,8 +14,10 @@ import {
 } from "./components.jsx";
 import { useClientDataSource, Grid, ViewportShadows } from "@1771technologies/lytenyte-pro-experimental";
 import { ThemePicker } from "./theme.jsx";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import styled from "@emotion/styled";
+import { CacheProvider } from "@emotion/react";
+import createCache from "@emotion/cache";
 
 export interface GridSpec {
   readonly data: OrderData;
@@ -46,58 +49,64 @@ const HeaderCell = styled(Grid.HeaderCell)`
   display: flex;
   align-items: center;
   padding-inline: 8px;
-  background-color: light-dark(cyan, rgb(2, 2, 52));
-  color: light-dark(black, white);
   text-transform: capitalize;
   font-size: 14px;
 `;
 
-export default function ColumnBase() {
+export default function GridTheming() {
   const ds = useClientDataSource({ data: data });
   const [theme, setTheme] = useState("ln-dark");
+  const cache = useMemo(() => {
+    return createCache({ key: "x" });
+  }, []);
 
   return (
-    <div
-      className={theme}
-      style={{ colorScheme: theme.includes("light") || theme === "ln-cotton-candy" ? "light" : "dark" }}
-    >
-      <div className="bg-ln-gray-00 border-b-ln-border h-full w-full border-b py-2">
-        <ThemePicker theme={theme} setTheme={setTheme} />
-      </div>
-      <div className={"ln-grid"} style={{ height: 500 }}>
-        <Grid rowHeight={50} columns={columns} rowSource={ds} slotShadows={ViewportShadows}>
-          <Grid.Viewport>
-            <Grid.Header>
-              {(cells) => {
-                return (
-                  <Grid.HeaderRow>
-                    {cells.map((cell) => {
-                      if (cell.kind === "group") return null;
-
-                      return <HeaderCell key={cell.id} cell={cell} />; //!
-                    })}
-                  </Grid.HeaderRow>
-                );
-              }}
-            </Grid.Header>
-            <Grid.RowsContainer>
-              <Grid.RowsCenter>
-                {(row) => {
-                  if (row.kind === "full-width") return null;
-
+    <CacheProvider value={cache}>
+      <div>
+        <div className="bg-ln-gray-00 border-b-ln-border h-full w-full border-b py-2">
+          <ThemePicker theme={theme} setTheme={setTheme} />
+        </div>
+        <div
+          className={"ln-grid " + theme}
+          style={{
+            height: 500,
+            colorScheme: theme.includes("light") || theme === "ln-cotton-candy" ? "light" : "dark",
+          }}
+        >
+          <Grid rowHeight={50} columns={columns} rowSource={ds} slotShadows={ViewportShadows}>
+            <Grid.Viewport>
+              <Grid.Header>
+                {(cells) => {
                   return (
-                    <Grid.Row row={row}>
-                      {row.cells.map((cell) => {
-                        return <Cell cell={cell} key={cell.id} />; //!
+                    <Grid.HeaderRow>
+                      {cells.map((cell) => {
+                        if (cell.kind === "group") return null;
+
+                        return <HeaderCell key={cell.id} cell={cell} />; //!
                       })}
-                    </Grid.Row>
+                    </Grid.HeaderRow>
                   );
                 }}
-              </Grid.RowsCenter>
-            </Grid.RowsContainer>
-          </Grid.Viewport>
-        </Grid>
+              </Grid.Header>
+              <Grid.RowsContainer>
+                <Grid.RowsCenter>
+                  {(row) => {
+                    if (row.kind === "full-width") return null;
+
+                    return (
+                      <Grid.Row row={row}>
+                        {row.cells.map((cell) => {
+                          return <Cell cell={cell} key={cell.id} />; //!
+                        })}
+                      </Grid.Row>
+                    );
+                  }}
+                </Grid.RowsCenter>
+              </Grid.RowsContainer>
+            </Grid.Viewport>
+          </Grid>
+        </div>
       </div>
-    </div>
+    </CacheProvider>
   );
 }
