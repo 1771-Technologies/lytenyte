@@ -1,4 +1,51 @@
 ---
 title: Cell Edit Validation
 step: Validate cell edits to ensure updates are correct.
+description: Validating cell edit is an essential part of ensuring the integrity
+  of the data in LyteNyte Grid when cell editing is enabled.
 ---
+
+Ensuring cell values are correct, and that understandable error messages are provided
+for invalid data is critical to creating a good user experience.
+
+:::note
+
+This guide assumes you are already familiar with the cell editing capabilities of LyteNyte Grid. Before
+reading the rest of this guide, ensure you are familiar with the contents of the [Cell Editing guide](/docs/cell-editing)
+and [Cell Edit Renderers guide](/docs/cell-editing-renderers).
+
+:::
+
+## Edit Validation
+
+Set the `editRowValidatorFn` property on the grid to validate cell edit updates. The `editRowValidatorFn`
+property is used to validate edits for the whole row, even if only a single cell is being edited. The
+provided `editRowValidatorFn` function must return one of three values:
+
+- `true`: Indicates the validation passed and the edit can safely be applied to the row data.
+- `false`: Indicates the validation failed but no further information will be provided. Only return false
+  if you have some other way of displaying validation failure feedback to the user.
+- An object of the type `Record<string, unknown>`, where the key is an arbitrary error code (of your choosing)
+  and the value is any error (and potentially an exception).
+
+In the demo below a `editRowValidatorFn` function is provided to the grid, which will validate that the
+value of the cell in the **Price** column is greater than 0. Double click any cell in the **Price** column
+to begin editing. When the value is less than 0, a tooltip with the error will be displayed.
+
+::demo[Edit Validation="./demos/cell-editing-edit-validation"]
+
+### Validation With Zod
+
+The [Zod library](https://zod.dev/) is an open source TypeScript validation library. You can
+use Zod in your `editRowValidatorFn` function to ensure row edits are valid. Zod is particularly
+useful for ensuring type safety of your validation functions.
+
+The demo below demonstrates how to use Zod to validate the edits to the cells in the **Price** column.
+
+::demo[Zod Edit Validation="./demos/cell-editing-edit-zod"]
+
+## Next Steps
+
+::next[/docs/cell-editing]
+::next[/docs/cell-editing-bulk-editing]
+::next[/docs/cell-editing-linked-cell-edits]
