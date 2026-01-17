@@ -54,6 +54,9 @@ see the [Getting Started guide](/docs/intro-getting-started).
 The code below offers a high-level overview of the individual parts of
 the grid component anatomy. Treat this example as a general outline of the grid structure.
 
+The **Header Mode** has two variants, one variant renders only the top-level containers, and the fully rendered
+variant renders every cell.
+
 <Tabs>
 
 <Tab label="Headless Mode">
@@ -66,6 +69,71 @@ the grid component anatomy. Treat this example as a general outline of the grid 
       <Grid.RowsTop />
       <Grid.RowsCenter />
       <Grid.RowsBottom />
+    </Grid.RowsContainer>
+  </Grid.Viewport>
+</Grid>
+```
+
+</Tab>
+
+<Tab label="Headless Mode Full">
+
+```tsx
+<Grid>
+  <Grid.Viewport>
+    <Grid.Header>
+      {(cells) => {
+        return (
+          <Grid.HeaderRow>
+            {cells.map((c) => {
+              if (c.kind === "group") return <Grid.HeaderGroupCell cell={c} key={c.idOccurrence} />;
+
+              return <Grid.HeaderCell cell={c} key={c.id} />;
+            })}
+          </Grid.HeaderRow>
+        );
+      }}
+    </Grid.Header>
+    <Grid.RowsContainer>
+      <Grid.RowsTop>
+        {(row) => {
+          if (row.kind === "full-width") return <Grid.RowFullWidth row={row} />;
+
+          return (
+            <Grid.Row key={row.id} row={row}>
+              {row.cells.map((cell) => {
+                return <Grid.Cell cell={cell} key={cell.id} />;
+              })}
+            </Grid.Row>
+          );
+        }}
+      </Grid.RowsTop>
+      <Grid.RowsCenter>
+        {(row) => {
+          if (row.kind === "full-width") return <Grid.RowFullWidth row={row} />;
+
+          return (
+            <Grid.Row key={row.id} row={row}>
+              {row.cells.map((cell) => {
+                return <Grid.Cell cell={cell} key={cell.id} />;
+              })}
+            </Grid.Row>
+          );
+        }}
+      </Grid.RowsCenter>
+      <Grid.RowsBottom>
+        {(row) => {
+          if (row.kind === "full-width") return <Grid.RowFullWidth row={row} />;
+
+          return (
+            <Grid.Row key={row.id} row={row}>
+              {row.cells.map((cell) => {
+                return <Grid.Cell cell={cell} key={cell.id} />;
+              })}
+            </Grid.Row>
+          );
+        }}
+      </Grid.RowsBottom>
     </Grid.RowsContainer>
   </Grid.Viewport>
 </Grid>
@@ -115,10 +183,14 @@ LyteNyte Grid also applies inline styles for grid sizing.
 ## Header
 
 LyteNyte Grid has a single header container, rendered by the `Grid.Header` component.
-The `Grid.Header` component accepts an optional render prop as `children`, which you can use to
-customize how header content renders. This means you can use `Grid.Header` in two ways.
+You can render the `Grid.Header` component in two ways:
 
-The first approach is straightforward: render the `Grid.Header` component.
+- **Without `children`:** The header component uses the default configuration to render header groups and header cells.
+- **With `children`:** The header component accepts a render prop as its children, which gives you an
+  opportunity to add customizations before rendering the header group and header cell elements.
+
+Rendering `Grid.Header` without children is the most straightforward approach. The `Grid.Header` component
+renders a normal `div` element and accepts all standard `div` props.
 
 ```tsx
 <Grid>
@@ -128,23 +200,83 @@ The first approach is straightforward: render the `Grid.Header` component.
 </Grid>
 ```
 
-The second approach uses a render prop passed as `children`, which allows for more fine-grained
-control over what the header renders. When using this approach, the render prop must return a
-`Grid.HeaderRow`, which must render the header cells as `children`.
+### Header Render Prop
 
-The render prop function receives an array of `LayoutHeader` items. Each `LayoutHeader` item describes
-the layout of an individual header cell, for example, whether the cell is pinned, or whether the cell
-belongs to a column group, a normal header, or a floating header. You can use this information for custom
-logic, though the default rendering behavior is usually the best place to start.
+Passing a render prop as the `children` of the `Grid.Header` component allows for more fine-grained
+control over how the header renders. When using this approach, the render prop must return a
+`Grid.HeaderRow`, and that component must render the header cells as its `children`.
+
+The render prop function receives an array of [`LayoutHeader`](/docs/reference) items. Each `LayoutHeader` item describes
+the layout of an individual header cell, such as whether the cell is pinned or whether the cell
+belongs to a column group, a normal header, or a floating header.
+
+You can use this information to apply custom logic, though the default rendering behavior
+is usually the best place to start.
 
 ```tsx
 <Grid>
   <Grid.Viewport>
-    {/*!next 13 */}
+    {/*!next 5 */}
+    <Grid.Header>
+      {(cells) => {
+        return <Grid.HeaderRow>{/* Header row content */}</Grid.HeaderRow>;
+      }}
+    </Grid.Header>
+  </Grid.Viewport>
+</Grid>
+```
+
+### Header Row
+
+When using a custom render prop for `Grid.Header`, the function must return a `Grid.HeaderRow`
+element. The total number of header rows equals the maximum column group depth, plus one additional
+row for the floating row (if enabled), and another row for the column header row.
+
+The `Grid.Header` component renders a normal `div` element and accepts all standard `div` props.
+The `Grid.Header` render prop receives an array of header cells as its first argument. You must use
+these header cells to render the `children` of the `Grid.HeaderRow`, as shown in the example below.
+
+```tsx
+<Grid>
+  <Grid.Viewport>
+    <Grid.Header>
+      {(cells) => {
+        //!next 7
+        return (
+          <Grid.HeaderRow>
+            {cells.map((c) => {
+              // Return cell content.
+            })}
+          </Grid.HeaderRow>
+        );
+      }}
+    </Grid.Header>
+  </Grid.Viewport>
+</Grid>
+```
+
+### Header Cells
+
+Within each `<Grid.HeaderRow />`, you render header cells. These cells represent column headers.
+LyteNyte Grid provides two header cell components:
+
+- `Grid.HeaderGroupCell`: Renders the cell for a column group.
+- `Grid.HeaderCell`: Renders the cell for a column header or a [floating header](/docs/column-floating-header) cell.
+
+The render prop of `Grid.Header` receives an array of cells to render. Each item in this array represents a
+single header cell. You must render these cells inside a `Grid.HeaderRow` element, as shown below.
+
+You can determine which component to render by checking the cell's `kind` property.
+When the cell's `kind` is `"group"`, render a `Grid.HeaderGroupCell`. Otherwise, render a `Grid.HeaderCell`.
+
+```tsx
+<Grid>
+  <Grid.Viewport>
     <Grid.Header>
       {(cells) => {
         return (
           <Grid.HeaderRow>
+            {/*!next 5 */}
             {cells.map((c) => {
               if (c.kind === "group") return <Grid.HeaderGroupCell cell={c} key={c.idOccurrence} />;
 
@@ -158,21 +290,18 @@ logic, though the default rendering behavior is usually the best place to start.
 </Grid>
 ```
 
-Like the `Grid.Viewport` component, the `Grid.Header`, `Grid.HeaderRow`, `Grid.HeaderGroupCell`,
-and `Grid.HeaderCell` components all render a `div` element, and you can pass any `div` prop to them.
-
-The `key` passed to `Grid.HeaderGroupCell` uses `c.idOccurrence`. Split
-groups create multiple occurrences of the same header, and each shares
-the same `id`. Since React requires unique keys, the grid provides
-`idOccurrence`, which combines the group ID with an occurrence count.
+There are several details to note here. For each cell, choose the appropriate header component
+base on the `kind` property. For `Grid.HeaderGroupCell`, use `c.idOccurrence` as the key instead of `c.id`.
+A column group can be [split across the header](/docs/column-groups), so `c.id` may repeat.
+React requires keys to be unique within a list, and `c.idOccurrence` guarantees uniqueness.
 
 ## Rows Container
 
-Use the `Grid.RowsContainer` component to render all grid rows.
+Use the `Grid.RowsContainer` component to render the grid's rows.
 `Grid.RowsContainer` is similar to `Grid.Header` in that it:
 
-- Acts as the container for the grid's rows.
-- Renders a normal `div` element and accepts all the `div` element props.
+- Acts as the container for the grid rows.
+- Renders a normal `div` element and accepts all standard `div` props.
 
 An updated example is shown below:
 
@@ -195,11 +324,11 @@ LyteNyte Grid splits rows into three component sections:
 - **Grid.RowsBottom:** For rows that are frozen to the bottom of the viewport. These rows remain visible even as the user
   scrolls the viewport.
 
-Each section component accepts an optional render prop as `children` that allows more fine-grained control over
-how rows and cells render. Like `Grid.Header`, this gives you two approaches for rendering rows.
+Each section component accepts an optional render prop as `children`, which allows more fine-grained control over
+how rows and cells render. Like `Grid.Header`, this approach gives you two ways to render rows.
 
 The default (and simplest) approach renders the row section components without providing a render prop, as shown
-below. This code is also identical to the structure used in default mode, so it is equivalent to rendering `<Grid />`.
+below. This structure matches the default mode, so it is equivalent to rendering `<Grid />`.
 
 ```tsx
 <Grid>
@@ -215,14 +344,21 @@ below. This code is also identical to the structure used in default mode, so it 
 </Grid>
 ```
 
-To take more control, provide a render prop as `children` to the row section component. The example below shows this
-approach. The render prop receives a `LayoutRow` item. Each `LayoutRow` describes the type of row (a full-width row or a
-row with one cell per column), along with properties such as `rowIndex` and `rowPin`. You can use these values to apply
-row-specific logic.
+### Rows Render Prop
 
-The render prop must return a `Grid.Row` or `Grid.RowFullWidth` element. If you return a `Grid.Row`, the `Grid.Row`
-must render an array of `Grid.Cell` elements as `children`. These components render `div` elements and accept any `div`
-prop.
+To take more control over row rendering, provide a render prop as `children` to a row section component.
+The example below shows this approach.
+
+The render prop receives a [`LayoutRow`](/docs/reference) item. Each `LayoutRow` describes the type of row to render, along
+with properties such as `rowIndex` and `rowPin`. You can use these values to apply row-specific logic.
+
+There are two types of grid row components:
+
+- `Grid.RowFullWidth`: Renders a row with a single cell that spans the width of the viewport.
+- `Grid.Row`: Renders a row that must be provided an array of `Grid.Cell` elements as children. Each `Grid.Cell` element
+  renders a single cell in the viewport.
+
+Use the `LayoutRow` passed to the render prop to determine which row type to render, as shown below.
 
 ```tsx
 <Grid>
@@ -230,13 +366,43 @@ prop.
     <Grid.Header />
     <Grid.RowsContainer>
       <Grid.RowsTop />
-      {/*!next 13 */}
+      {/*!next 10 */}
       <Grid.RowsCenter>
         {(row) => {
           if (row.kind === "full-width") return <Grid.RowFullWidth row={row} />;
 
           return (
             <Grid.Row key={row.id} row={row}>
+              {/* Cell content here */}
+            </Grid.Row>
+          );
+        }}
+      </Grid.RowsCenter>
+      <Grid.RowsBottom />
+    </Grid.RowsContainer>
+  </Grid.Viewport>
+</Grid>
+```
+
+### Row Cells
+
+All rows contain cells except for full-width rows.
+The `cells` property on `LayoutRow` is an array of cells that you render using `Grid.Cell`.
+Updating the row section component results in the following:
+
+```tsx
+<Grid>
+  <Grid.Viewport>
+    <Grid.Header />
+    <Grid.RowsContainer>
+      <Grid.RowsTop />
+      <Grid.RowsCenter>
+        {(row) => {
+          if (row.kind === "full-width") return <Grid.RowFullWidth row={row} />;
+
+          return (
+            <Grid.Row key={row.id} row={row}>
+              {/*!next 3 */}
               {row.cells.map((cell) => {
                 return <Grid.Cell cell={cell} key={cell.id} />;
               })}
@@ -249,6 +415,9 @@ prop.
   </Grid.Viewport>
 </Grid>
 ```
+
+The cells must be rendered as `children` of a `Grid.Row` component. Each `Grid.Cell` renders a `div`
+element and accepts all standard `div` props.
 
 ## Putting It All Together
 
