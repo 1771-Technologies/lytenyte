@@ -1,7 +1,7 @@
 ---
 title: Cell Edit Renderers
 step: Define custom renderers to update a cell in the grid.
-description: To edit a cell in LyteNyte Grid you must provide an edit renderer for each
+description: To edit a cell in LyteNyte Grid, you must provide an edit renderer for each
   column that will be editable. This guide will cover creating edit renderers for basic
   data types.
 ---
@@ -9,14 +9,14 @@ description: To edit a cell in LyteNyte Grid you must provide an edit renderer f
 ## Text Editors
 
 A text edit renderer is the simplest type of edit renderer you can create. The most straightforward
-way is to use an `<input />` element. The demo below demonstrates this. Double Click
-the **Customer** column to begin editing the cell as text.
+approach is to use an `<input />` element. The demo below demonstrates this. Double-click
+a cell in the **Customer** column to begin editing the cell as text.
 
 ::demo[Text Edit Renderer="./demos/cell-editing-text-renderer"]
 
 The text editor in the demo uses the [controlled pattern](https://react.dev/reference/react-dom/components/input#controlling-an-input-with-a-state-variable)
-to manage the input value. Since the editor is changing text, there is custom text parsing, the value is updated
-directly, as the code below shows:
+to manage the input value. Since the editor edits text, it does not require custom parsing. The code
+below updates the value directly:
 
 ```tsx
 function TextCellEditor({ changeValue, editValue }: Grid.T.EditParams<GridSpec>) {
@@ -32,21 +32,23 @@ function TextCellEditor({ changeValue, editValue }: Grid.T.EditParams<GridSpec>)
 
 ## Number Editors
 
-A number edit renderer can be as simple as using an `input` with type `number`, however, a much
-better input experience is to use a normal text `input` with custom number parsing. The demo
-below uses a normal `input` to allow the **Price** column to be edited, but provides special
-handling to ensure only number values are set.
+A number edit renderer can be as simple as using an `input` with type `number`. However, a much
+better input experience is often a text `input` with custom number parsing. The demo
+below uses a normal `input` to edit the **Price** column, and it includes special
+handling to ensure only numeric values are set.
 
 ::demo[Number Edit Renderer="./demos/cell-editing-number-renderer"]
 
 :::note
 
-In the demo code, you will notice that the `editSetter` property has been set on the **Price**
-column. This is to ensure that the edit value is always a valid number. In particular, it is
-possible to begin a cell edit by pressing any printable key when a cell has focus. When cell
-editing is started in this way, the key pressed will be used as the initial cell value. Since,
-this initial value will not call the `getNumberValue` callback, the column ensures the number
-is parsed in it's `editSetter` property, as the code below shows.
+In the demo code, you will notice that the `editSetter` property is set on the **Price**
+column. This ensures that the edit value is always a valid number.
+
+Users can begin editing by pressing any printable key when a cell has focus. When cell
+editing starts in this way, LyteNyte Grid uses the pressed key as the initial cell value.
+
+Since this initial value does not go through the `getNumberValue` callback, the column
+parses the number in its `editSetter` property, as the code below shows.
 
 ```ts
 {
@@ -69,8 +71,9 @@ is parsed in it's `editSetter` property, as the code below shows.
 
 :::
 
-In the demo, the `input`'s change handler calls the `getNumberValue` as the code below
-shows. The `getNumberValue` function will parse and validate that the input is a number.
+In the demo, the `input` change handler calls `getNumberValue`, as the code below
+shows. The `getNumberValue` function parses the input and validates that the
+input is a number.
 
 ```ts
 function NumberEditor({ changeValue, editValue }: Grid.T.EditParams<GridSpec>) {
@@ -109,27 +112,27 @@ const getNumberValue = (e: string) => {
 ```
 
 This is just one approach to creating a number edit renderer. You could alternatively
-use a custom made number input, or use another library's number input such as
+use a custom-made number input, or use another library's number input, such as
 [Ark UI's number input](https://ark-ui.com/docs/components/number-input).
 
 ## Date Editors
 
-Date editing ranges from using a simple date `input` to a complex array of date
+Date editing can range from a simple date `input` to a complex set of date
 range selections and timezone adjustments. Depending on your application use case,
-you may need to use a custom date picker component, however, for simple date edits
-it is often best to use the native browser date input element, as the demo below
-demonstrates. Double click the **Purchase Date**
+you may need to use a custom date picker component.
+
+For simple date edits, it is often best to use the native browser date input element, as the demo below
+demonstrates. Double-click a cell in the **Purchase Date** column to begin editing.
 
 ::demo[Date Edit Renderer="./demos/cell-editing-date"]
 
-The date cell edit renderer uses a normal `input` element, however, if you examine the code
-you will notice that is does not use a controlled value, but instead tracks the uncontrolled
-value.
+The date cell edit renderer uses a standard `input` element. However, if you examine the code,
+you will notice that it does not use a controlled value. Instead, the renderer tracks the value as
+uncontrolled.
 
-Native browser `date` inputs can often enter a bad state when the date is input vai the keyboard
-and the value is controlled by React. A simple workaround in this case, is to let the date value
-be uncontrolled and track the changes. The browser will ensure the date is valid, and the
-edit state will reflect the latest value.
+Native browser `date` inputs can enter a bad state when a user types a date via the keyboard
+and React controls the value. A simple workaround is to leave the date value uncontrolled and
+track changes. The browser ensures the date is valid, and the edit state reflects the latest value.
 
 ```tsx
 function DateCellEditor({ changeValue, editValue }: Grid.T.EditParams<GridSpec>) {
@@ -155,30 +158,30 @@ function DateCellEditor({ changeValue, editValue }: Grid.T.EditParams<GridSpec>)
 
 ## Popover Editors
 
-When a column has an enumerated set of values to choose from, a common cell editing pattern is to use a
+When a column has an enumerated set of values to choose from, a common editing pattern is to use a
 dropdown list to select from the options.
 
 The most basic approach is to use the browser's `select` element with the set of options, as the demo below
 demonstrates. However, this approach has a few drawbacks:
 
-- There is no way to force the select element to open when the edit begins. Users must press the Space or
-  Enter key to open the selection menu.
+- There is no way to force the select element to open when the edit begins. Users must press Space or
+  Enter to open the selection menu.
 - The option element has limited styling capabilities.
-- The `select` element is only useful if there are a small number of options to choose from.
+- The `select` element is only useful when there are a small number of options to choose from.
 
 ::demo[Product Select="./demos/cell-editing-popover"]
 
 Given the drawbacks of the `select` element, a better alternative is to use a combobox or custom select
 component.
 
-The demo below demonstrates this using LyteNyte Grid's[Smart Select component](/docs/component-smart-select).
+The demo below demonstrates this using LyteNyte Grid's [Smart Select component](/docs/component-smart-select).
 
 ::demo[Smart Product Select="./demos/cell-editing-popover-smart"]
 
 :::note
 
-LyteNyte Grid's [Smart Select component] is only available to PRO users, however, you may use another
-custom combobox component that is open source. Below are some good options:
+LyteNyte Grid's [Smart Select component](/docs/component-smart-select) is only available to <ProTag/> users. However,
+you can use another open-source combobox component. Below are some good options:
 
 - [Headless UI Combobox](https://headlessui.com/react/combobox)
 - [Base UI Combobox](https://base-ui.com/react/components/combobox)
@@ -188,19 +191,19 @@ custom combobox component that is open source. Below are some good options:
 
 ### Popover Editor Considerations
 
-When creating a custom popover there are a few considerations you should be aware of that will impact the
+When creating a custom popover, there are a few considerations that will impact the
 popover's functionality:
 
-- The **Enter** key is used by LyteNyte Grid to commit an edit. Combobox component usually use the **Enter**
-  key to open the completion menu. Your code will have to explicitly make a choice on the behavior to use.
-- The **ArrowDown** key will move focus to the next cell. Many select components use **ArrowDown** key to
-  open the select options. Like the **Enter** key your code will need to make a choice on the behavior.
-- The cell's in LyteNyte Grid will not allow content to overflow their bounds. This means a popover container
-  will be clipped if it is rendered within the cell element. Most dialogs and popover use a React portal to
-  render their content in the `body` element, which will resolve this issue.
-- By default editing cells begins whenever any printable character is pressed over a cell. However, this behavior
-  may be undesirable if you are using a selection component. You can disable this by setting the `editOnPrintable`
-  property on the column being edited to `false`.
+- The **Enter** key commits an edit in LyteNyte Grid. Many combobox components use the **Enter**
+  key to open the completion menu. Your code must choose which behavior to use.
+- The **ArrowDown** key moves focus to the next cell. Many select components use **ArrowDown** to
+  open the options list. Like the **Enter** key, your code must choose which behavior to use.
+- Cells in LyteNyte Grid do not allow content to overflow their bounds. This means a popover container
+  will be clipped if the popover renders inside the cell element. Most dialogs and popovers use a React portal to
+  render content in the `body` element, which avoids clipping.
+- By default, editing begins when the user presses any printable character over a cell. This behavior
+  may be undesirable when you use a selection component. You can disable it by setting the `editOnPrintable`
+  property on the column to `false`.
 
 ## Next Steps
 

@@ -60,7 +60,7 @@ export const Viewport = forwardRef<HTMLDivElement, JSX.IntrinsicElements["div"]>
           props.onKeyDown?.(e);
 
           if (e.defaultPrevented || e.isPropagationStopped() || !vp) return;
-          handleNavigation(e);
+          handleNavigation(e, false);
 
           if (e.key === "Enter" || e.key.length === 1) {
             // We use a timeout to avoid setting the value on clicks. This can happen when a user types

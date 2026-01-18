@@ -83,13 +83,16 @@ export function CellEditor<T>({ cell }: CellEditorParams<T>) {
             pageUpKey: "PageUp",
           });
 
-          nav({
-            key: "ArrowDown",
-            ctrlKey: false,
-            metaKey: false,
-            preventDefault: () => {},
-            stopPropagation: () => {},
-          });
+          nav(
+            {
+              key: "ArrowDown",
+              ctrlKey: false,
+              metaKey: false,
+              preventDefault: () => {},
+              stopPropagation: () => {},
+            },
+            true,
+          );
         }
 
         e.stopPropagation();
