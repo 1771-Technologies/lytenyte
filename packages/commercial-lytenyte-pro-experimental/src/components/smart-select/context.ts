@@ -1,5 +1,6 @@
 import { createContext, useContext, type Dispatch, type SetStateAction } from "react";
 import type { BaseOption, SmartSelectKinds } from "./type";
+import type { ComboOptionState } from "./use-async-options";
 
 export interface SmartSelectContext {
   readonly kindAndValue: SmartSelectKinds<BaseOption>;
@@ -17,6 +18,11 @@ export interface SmartSelectContext {
 
   readonly container: HTMLElement | null;
   readonly setContainer: Dispatch<SetStateAction<HTMLElement | null>>;
+
+  readonly query: string;
+  readonly onQueryChange: (change: string) => void;
+
+  readonly comboState: ComboOptionState<BaseOption>;
 }
 
 const context = createContext({} as SmartSelectContext);

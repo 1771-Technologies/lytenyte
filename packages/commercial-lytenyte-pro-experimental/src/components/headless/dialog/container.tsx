@@ -191,6 +191,11 @@ function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.
           ) {
             ev.stopPropagation();
             ev.stopImmediatePropagation();
+
+            if (typeof lightDismiss === "function") {
+              const res = lightDismiss(ev.target as HTMLElement);
+              if (!res) return;
+            }
             setTimeout(() => onOpenChange(false));
           }
         },

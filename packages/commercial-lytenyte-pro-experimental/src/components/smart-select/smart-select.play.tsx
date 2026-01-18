@@ -3,7 +3,8 @@ import "../../../css/components.css";
 import { useState } from "react";
 import { SmartSelectRoot } from "./root.js";
 import { Option } from "./option.js";
-import { MultiTrigger } from "./triggers/multi-trigger.js";
+import { SmartSelectContainer } from "./container.js";
+import { ComboTrigger } from "./triggers/combo-trigger.js";
 
 const options = [
   { id: "x", label: "One" },
@@ -12,24 +13,22 @@ const options = [
 ];
 
 export default function SmartSelect() {
-  const [value, setValue] = useState([options[0]]);
+  const [value, setValue] = useState(options[0]);
   void setValue;
 
   return (
     <div style={{ display: "flex", justifyContent: "center", padding: 20 }}>
       <SmartSelectRoot
-        options={options}
+        options={() => options}
         value={value}
-        onOptionChange={setValue}
+        onOptionChange={(v) => {
+          if (!v) return;
+          setValue(v);
+        }}
         closeOnSelect={false}
-        kind="multi"
-        trigger={
-          <MultiTrigger data-ln-button="secondary" data-ln-size="md" style={{ display: "flex", gap: 8 }}>
-            {value.map((x) => {
-              return <div key={x.id}>{x.label}</div>;
-            })}
-          </MultiTrigger>
-        }
+        kind="combo"
+        container={<SmartSelectContainer />}
+        trigger={<ComboTrigger />}
       >
         {(p) => {
           return (

@@ -22,7 +22,7 @@ function BasicSelectTriggerBase(
 
   const combined = useCombinedRefs(setTrigger, ref);
 
-  return <button {...p} ref={combined} />;
+  return <button {...p} ref={combined} data-ln-smart-select-trigger />;
 }
 
 export const BasicSelectTrigger = forwardRef(BasicSelectTriggerBase);

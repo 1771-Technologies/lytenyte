@@ -7,23 +7,41 @@ export type BasicSelect<T extends BaseOption> = {
   readonly kind: "basic";
   readonly value: T;
   readonly onOptionChange: (change: T | null) => void;
+  readonly options: T[];
 };
 export type MultiSelect<T extends BaseOption> = {
   readonly kind: "multi";
   readonly value: T[];
   readonly onOptionChange: (change: T[]) => void;
+  readonly options: T[];
 };
 
 export type ComboSelect<T extends BaseOption> = {
   readonly kind: "combo";
   readonly value: T;
   readonly onOptionChange: (change: T | null) => void;
+
+  readonly queryValue?: string;
+  readonly onQueryChange?: (change: string) => void;
+
+  readonly searchDebounceMs?: number;
+  readonly clearOnQuery?: boolean;
+
+  readonly options: (query: string | null) => Promise<T[]> | T[];
 };
 
 export type MultiComboSelect<T extends BaseOption> = {
   readonly kind: "multi-combo";
   readonly value: T[];
   readonly onOptionChange: (change: T[]) => void;
+
+  readonly queryValue?: string;
+  readonly onQueryChange?: (change: string) => void;
+
+  readonly searchDebounceMs?: number;
+  readonly clearOnQuery?: boolean;
+
+  readonly options: (query: string | null) => Promise<T[]> | T[];
 };
 
 export type SmartSelectKinds<T extends BaseOption> =
