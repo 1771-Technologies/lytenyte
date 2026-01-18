@@ -3,7 +3,11 @@ import { onAnimationFinished } from "@1771technologies/lytenyte-shared";
 
 export type Transitioned = "idle" | "closing" | "opening";
 
-export function useTransitioned(open: boolean, el: HTMLElement | null): [Transitioned, boolean] {
+export function useTransitioned(
+  open: boolean,
+  el: HTMLElement | null,
+  changeComplete?: (b: boolean) => void,
+): [Transitioned, boolean] {
   const [m, setM] = useState(open);
   const t = useMemo(() => {
     if (open && !m) return "opening";
@@ -12,8 +16,26 @@ export function useTransitioned(open: boolean, el: HTMLElement | null): [Transit
   }, [m, open]);
 
   useEffect(() => {
+    if (!m || !open || !el) return;
+
+    const controller = new AbortController();
+    onAnimationFinished({
+      element: el,
+      fn: () => {
+        changeComplete?.(true);
+      },
+      signal: controller.signal,
+    });
+
+    return () => controller.abort();
+  }, [changeComplete, el, m, open]);
+
+  useEffect(() => {
     if ((!open && !m) || (m && open)) return;
-    if (open && !m) requestAnimationFrame(() => setM(open));
+    if (open && !m) {
+      requestAnimationFrame(() => setM(open));
+      if (!el) return;
+    }
     if (!open && m) {
       const controller = new AbortController();
       if (!el) return;
@@ -22,13 +44,14 @@ export function useTransitioned(open: boolean, el: HTMLElement | null): [Transit
         element: el,
         fn: () => {
           setM(false);
+          changeComplete?.(!m);
         },
         signal: controller.signal,
       });
 
       return () => controller.abort();
     }
-  }, [el, m, open]);
+  }, [changeComplete, el, m, open]);
   const shouldMount = open || m;
 
   return [t, shouldMount];

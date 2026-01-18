@@ -17,6 +17,7 @@ export { getActiveElement } from "./get-active-element.js";
 export { getNearestMatching } from "./get-nearest-matching.js";
 export { getScrollStatus } from "./get-scroll-status.js";
 export { supportsScrollEnd } from "./supports-scroll-end.js";
+export { isTextInputFocused } from "./is-text-input-focused.js";
 
 export { FocusTrap } from "./focus/focus-trap.js";
 export { getFirstFocusable } from "./focus/get-first-focusable.js";

@@ -36,9 +36,7 @@ export function useEditContext(view: ColumnView, api: Root.API, props: Root.Prop
     return nextData;
   });
 
-  const activeEditStateRef = useRef(activeEditState);
   const editDataStateRef = useRef(editDataState);
-  activeEditStateRef.current = activeEditState;
   editDataStateRef.current = editDataState;
 
   const changeValue = useEvent((value: any) => {
@@ -52,6 +50,7 @@ export function useEditContext(view: ColumnView, api: Root.API, props: Root.Prop
     if (nextData === false) return false;
 
     setEditDataState(nextData);
+    editDataStateRef.current = nextData;
     const validator = props.editRowValidatorFn as Root.Props["editRowValidatorFn"];
 
     if (validator) {
@@ -66,6 +65,7 @@ export function useEditContext(view: ColumnView, api: Root.API, props: Root.Prop
     if (!row) return false;
 
     setEditDataState(nextData);
+    editDataStateRef.current = nextData;
 
     const validator = props.editRowValidatorFn as Root.Props["editRowValidatorFn"];
 
@@ -92,7 +92,6 @@ export function useEditContext(view: ColumnView, api: Root.API, props: Root.Prop
   });
 
   const commit = useEvent(() => {
-    const activeEditState = activeEditStateRef.current;
     const editDataState = editDataStateRef.current;
 
     if (!activeEditState) return false;

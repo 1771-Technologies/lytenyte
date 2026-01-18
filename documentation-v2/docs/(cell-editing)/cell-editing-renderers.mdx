@@ -161,7 +161,7 @@ dropdown list to select from the options.
 The most basic approach is to use the browser's `select` element with the set of options, as the demo below
 demonstrates. However, this approach has a few drawbacks:
 
-- There is no way to force the select component to open when the edit begins. Users must press the Space or
+- There is no way to force the select element to open when the edit begins. Users must press the Space or
   Enter key to open the selection menu.
 - The option element has limited styling capabilities.
 - The `select` element is only useful if there are a small number of options to choose from.
@@ -169,9 +169,11 @@ demonstrates. However, this approach has a few drawbacks:
 ::demo[Product Select="./demos/cell-editing-popover"]
 
 Given the drawbacks of the `select` element, a better alternative is to use a combobox or custom select
-component. The demo below demonstrates this using LyteNyte Grid's [Smart Select component](/docs/component-smart-select).
+component.
 
-TODO DEMO
+The demo below demonstrates this using LyteNyte Grid's[Smart Select component](/docs/component-smart-select).
+
+::demo[Smart Product Select="./demos/cell-editing-popover-smart"]
 
 :::note
 
@@ -183,6 +185,22 @@ custom combobox component that is open source. Below are some good options:
 - [React Aria Combobox](https://react-aria.adobe.com/ComboBox)
 
 :::
+
+### Popover Editor Considerations
+
+When creating a custom popover there are a few considerations you should be aware of that will impact the
+popover's functionality:
+
+- The **Enter** key is used by LyteNyte Grid to commit an edit. Combobox component usually use the **Enter**
+  key to open the completion menu. Your code will have to explicitly make a choice on the behavior to use.
+- The **ArrowDown** key will move focus to the next cell. Many select components use **ArrowDown** key to
+  open the select options. Like the **Enter** key your code will need to make a choice on the behavior.
+- The cell's in LyteNyte Grid will not allow content to overflow their bounds. This means a popover container
+  will be clipped if it is rendered within the cell element. Most dialogs and popover use a React portal to
+  render their content in the `body` element, which will resolve this issue.
+- By default editing cells begins whenever any printable character is pressed over a cell. However, this behavior
+  may be undesirable if you are using a selection component. You can disable this by setting the `editOnPrintable`
+  property on the column being edited to `false`.
 
 ## Next Steps
 

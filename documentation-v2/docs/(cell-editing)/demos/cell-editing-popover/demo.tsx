@@ -12,12 +12,7 @@ import {
   ProductCell,
   PurchaseDateCell,
 } from "./components.jsx";
-import {
-  useClientDataSource,
-  Grid,
-  ViewportShadows,
-  SmartSelect,
-} from "@1771technologies/lytenyte-pro-experimental";
+import { useClientDataSource, Grid, ViewportShadows } from "@1771technologies/lytenyte-pro-experimental";
 import { useState } from "react";
 
 export interface GridSpec {
@@ -75,37 +70,16 @@ const options = initialData.map((x) => ({
 }));
 
 function ProductSelect({ changeData, editValue, editData, commit }: Grid.T.EditParams<GridSpec>) {
-  const value = options.find((x) => x.id === editValue) ?? null;
-
-  const [open, setOpen] = useState(false);
+  const value = options.find((x) => x.id === editValue)!;
 
   return (
-    <SmartSelect
-      kind="basic"
-      options={options}
-      open={open}
-      onOpenChange={setOpen}
-      openKeys={[" "]}
-      container={<SmartSelect.Container className="max-h-50 overflow-auto" />}
-      trigger={
-        <SmartSelect.BasicTrigger
-          className="focus:outline-ln-primary-50 flex h-full w-full items-center gap-2 focus:outline focus:-outline-offset-1"
-          autoFocus
-          onFocus={() => setOpen(true)}
-        >
-          {value?.productThumbnail && (
-            <img
-              className="border-ln-border-strong h-7 w-7 rounded-lg border"
-              src={value.productThumbnail}
-              alt={value.id}
-            />
-          )}
-          {editValue as string}
-        </SmartSelect.BasicTrigger>
-      }
-      value={value}
-      onOptionChange={(p) => {
+    <select
+      className="h-full w-full"
+      value={value.id}
+      onChange={(e) => {
+        const p = options.find((x) => x.id === e.target.value);
         if (!p) return;
+
         changeData({
           ...(editData as Record<string, unknown>),
           product: p.product,
@@ -116,18 +90,9 @@ function ProductSelect({ changeData, editValue, editData, commit }: Grid.T.EditP
         commit();
       }}
     >
-      {(p) => {
-        return (
-          <SmartSelect.Option key={p.option.id} {...p} className="flex items-center gap-2">
-            <img
-              className="border-ln-border-strong flex h-7 w-7 rounded-lg border"
-              src={p.option.productThumbnail}
-              alt={p.option.id}
-            />
-            <div>{p.option.product}</div>
-          </SmartSelect.Option>
-        );
-      }}
-    </SmartSelect>
+      {options.map((x) => {
+        return <option value={x.id}>{x.product}</option>;
+      })}
+    </select>
   );
 }

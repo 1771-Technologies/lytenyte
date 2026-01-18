@@ -218,6 +218,7 @@ export {
   isMac,
   isTabbable,
   isWebKit,
+  isTextInputFocused,
   testPlatform,
   testUserAgent,
   getScrollStatus,

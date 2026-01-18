@@ -122,7 +122,7 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
           const isEditing = edit.activeEdit.get();
           if (e.key === "Tab" && isEditing) return;
 
-          handleNavigation(e);
+          handleNavigation(e, false);
 
           if (!isEditing && editMode !== "readonly") {
             if (e.key === "Enter") {
@@ -162,14 +162,17 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
                   edit.commit();
                 } else {
                   // We don't commit the edit when moving down, since the edit will be committed when the
-                  // cell blurs.
-                  handleNavigation({
-                    key: "ArrowDown",
-                    ctrlKey: false,
-                    metaKey: false,
-                    preventDefault: noop,
-                    stopPropagation: noop,
-                  });
+                  // cell position changes.
+                  handleNavigation(
+                    {
+                      key: "ArrowDown",
+                      ctrlKey: false,
+                      metaKey: false,
+                      preventDefault: noop,
+                      stopPropagation: noop,
+                    },
+                    true,
+                  );
                 }
               }
 

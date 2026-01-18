@@ -22,6 +22,7 @@ import { getNearestMatching } from "@1771technologies/lytenyte-shared";
 export type SmartSelectRootProps<T extends BaseOption> = {
   readonly open?: boolean;
   readonly onOpenChange?: (open: boolean) => void;
+  readonly onOpenChangeComplete?: (open: boolean) => void;
 
   readonly openOnClick?: boolean;
 
@@ -215,6 +216,7 @@ export function SmartSelectRoot<T extends BaseOption>(p: SmartSelectRootProps<T>
       <Popover
         open={open}
         onOpenChange={onOpenChange}
+        onOpenChangeComplete={p.onOpenChangeComplete}
         focusTrap={false}
         modal={false}
         anchor={triggerEl}

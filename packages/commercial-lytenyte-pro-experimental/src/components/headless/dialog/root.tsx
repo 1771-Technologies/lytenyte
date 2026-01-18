@@ -7,6 +7,7 @@ import { useControlled } from "@1771technologies/lytenyte-core-experimental/inte
 export const DialogRoot = ({
   open: openProp,
   onOpenChange: onOpenChangeProp,
+  onOpenChangeComplete,
   openInitial,
   id: idProvided,
   descriptionId: descIdProvider,
@@ -44,6 +45,9 @@ export const DialogRoot = ({
       onOpenChange: (b: boolean) => {
         onOpenChange(b);
         onOpenChangeProp?.(b);
+      },
+      onOpenChangeComplete: (b: boolean) => {
+        onOpenChangeComplete?.(b);
       },
 
       id: idProvided ?? id,
@@ -94,6 +98,7 @@ export const DialogRoot = ({
     lockScroll,
     modal,
     onOpenChange,
+    onOpenChangeComplete,
     onOpenChangeProp,
     open,
     placement,
@@ -111,6 +116,7 @@ export namespace DialogRoot {
     readonly open?: boolean;
     readonly openInitial?: boolean;
     readonly onOpenChange?: (open: boolean) => void;
+    readonly onOpenChangeComplete?: (open: boolean) => void;
     readonly id?: string;
     readonly titleId?: string;
     readonly descriptionId?: string;
