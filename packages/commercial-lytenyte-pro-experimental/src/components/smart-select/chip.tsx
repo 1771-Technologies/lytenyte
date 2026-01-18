@@ -14,13 +14,14 @@ function ChipBase<T extends BaseOption>(
   { render, option, ...props }: ChipProps<T>,
   ref: JSX.IntrinsicElements["div"]["ref"],
 ) {
-  const { activeChip, setActiveChip, inputRef } = useChipContext();
+  const { activeChip, setActiveChip } = useChipContext();
   const {
     kindAndValue: { value },
     onOptionsChange,
     preventNextOpen,
     rtl,
     trigger,
+    inputRef,
   } = useSmartSelect();
 
   const v = value as T[];

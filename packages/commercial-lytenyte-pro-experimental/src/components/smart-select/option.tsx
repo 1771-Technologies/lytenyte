@@ -12,7 +12,7 @@ function OptionBase<T extends BaseOption>(
   { render, option, active, selected, closeOnSelect: closeOverride, ...props }: OptionTriggerProps<T>,
   ref: JSX.IntrinsicElements["div"]["ref"],
 ) {
-  const { onOptionSelect, setActiveId, closeOnSelect, onOpenChange } = useSmartSelect();
+  const { onOptionSelect, setActiveId, closeOnSelect, onOpenChange, inputRef } = useSmartSelect();
 
   const closeOnSelectFinal = closeOverride ?? closeOnSelect;
 
@@ -25,8 +25,10 @@ function OptionBase<T extends BaseOption>(
         "data-ln-selectable": option.selectable ?? true,
       },
       {
+        onMouseDown: () => {},
         onClick: () => {
           onOptionSelect(option);
+          inputRef.current?.focus();
 
           if (closeOnSelectFinal) onOpenChange(false);
         },

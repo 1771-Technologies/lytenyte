@@ -4,6 +4,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type PropsWithChildren,
   type ReactNode,
@@ -142,6 +143,8 @@ export function SmartSelectRoot<T extends BaseOption>(p: SmartSelectRootProps<T>
     },
   });
 
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
   const value = useMemo(() => {
     return {
       onOpenChange,
@@ -151,6 +154,7 @@ export function SmartSelectRoot<T extends BaseOption>(p: SmartSelectRootProps<T>
       onOptionsChange,
       kindAndValue: { kind: p.kind, value: p.value } as any,
 
+      inputRef,
       trigger: triggerEl,
       setTrigger: triggerRef as any,
       rtl,

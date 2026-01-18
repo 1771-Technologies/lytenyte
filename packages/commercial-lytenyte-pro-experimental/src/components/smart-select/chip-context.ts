@@ -1,10 +1,9 @@
-import { createContext, useContext, type RefObject } from "react";
+import { createContext, useContext } from "react";
 
 const context = createContext(
   {} as {
     activeChip: string | null;
     setActiveChip: (s: string | null) => void;
-    inputRef: RefObject<HTMLElement | null>;
   },
 );
 

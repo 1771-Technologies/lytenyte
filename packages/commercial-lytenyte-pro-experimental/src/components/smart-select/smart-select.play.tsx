@@ -4,8 +4,8 @@ import { useState } from "react";
 import { SmartSelectRoot } from "./root.js";
 import { Option } from "./option.js";
 import { SmartSelectContainer } from "./container.js";
-import { MultiComboTrigger } from "./triggers/multi-combo-trigger.js";
 import { Chip } from "./chip.js";
+import { MultiTrigger } from "./triggers/multi-trigger.js";
 
 const options = [
   { id: "js", label: "JavaScript" },
@@ -28,20 +28,14 @@ export default function SmartSelect() {
   return (
     <div style={{ display: "flex", justifyContent: "center", padding: 20 }}>
       <SmartSelectRoot
-        options={() =>
-          new Promise<typeof options>((res) => {
-            setTimeout(() => {
-              res(options);
-            }, 0);
-          })
-        }
+        options={options}
         value={value}
         onOptionChange={(v) => {
           if (!v) return;
           setValue(v);
         }}
         closeOnSelect={false}
-        kind="multi-combo"
+        kind="multi"
         container={(p) => {
           return (
             <SmartSelectContainer>
@@ -51,7 +45,7 @@ export default function SmartSelect() {
           );
         }}
         trigger={
-          <MultiComboTrigger>
+          <MultiTrigger render={<button>X</button>}>
             {value.map((x) => {
               return (
                 <Chip
@@ -75,7 +69,7 @@ export default function SmartSelect() {
                 />
               );
             })}
-          </MultiComboTrigger>
+          </MultiTrigger>
         }
       >
         {(p) => {

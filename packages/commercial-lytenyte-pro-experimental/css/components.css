@@ -428,7 +428,7 @@
   [data-ln-popover="true"][data-ln-smart-select-container="true"] {
     padding: var(--ln-space-10) var(--ln-space-05);
 
-    width: var(--ln-anchor-width);
+    min-width: var(--ln-anchor-width);
     box-sizing: border-box;
 
     background-color: var(--ln-bg-strong);

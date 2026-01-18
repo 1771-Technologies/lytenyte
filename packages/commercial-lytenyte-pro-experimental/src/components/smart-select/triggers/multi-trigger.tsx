@@ -1,28 +1,17 @@
 import { forwardRef, type JSX } from "react";
-import { useSmartSelect } from "../context.js";
-import { mergeProps } from "../../../hooks/use-slot/merge-props.js";
-import { useCombinedRefs } from "@1771technologies/lytenyte-core-experimental/internal";
-import { useSelectControls } from "./use-trigger-controls.js";
+import { MultiComboTrigger } from "./multi-combo-trigger.js";
+import type { SlotComponent } from "../../../hooks/use-slot/types.js";
+
+export interface MultiTriggerProps {
+  readonly render?: SlotComponent;
+}
 
 function MultiTriggerBase(
-  props: JSX.IntrinsicElements["button"],
-  ref: JSX.IntrinsicElements["button"]["ref"],
+  { render, ...props }: JSX.IntrinsicElements["div"] & MultiTriggerProps,
+  ref: JSX.IntrinsicElements["div"]["ref"],
 ) {
-  const { kindAndValue, setTrigger } = useSmartSelect();
-
-  if (kindAndValue.kind !== "multi") {
-    throw new Error(
-      `Cannot use BasicSelectTrigger when SmartSelect kind is not "basic". Found: ${kindAndValue.kind}`,
-    );
-  }
-
-  const triggerControls = useSelectControls();
-
-  const p = mergeProps(props, triggerControls);
-
-  const combined = useCombinedRefs(setTrigger, ref);
-
-  return <button {...p} ref={combined} data-ln-smart-select-trigger />;
+  const overrides = { __is_trigger: true };
+  return <MultiComboTrigger {...props} renderInput={render} ref={ref} {...overrides} />;
 }
 
 export const MultiTrigger = forwardRef(MultiTriggerBase);

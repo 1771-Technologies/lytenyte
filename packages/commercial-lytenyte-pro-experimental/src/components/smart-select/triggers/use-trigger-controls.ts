@@ -1,8 +1,19 @@
 import { useMemo, type JSX } from "react";
 import { useSmartSelect } from "../context.js";
+import type { BaseOption } from "../type.js";
 
-export function useSelectControls() {
-  const { open, onOpenChange, openOnClick, setActiveId, container } = useSmartSelect();
+export function useSelectControls(isMulti: boolean, setActiveChip: (s: string | null) => void) {
+  const {
+    open,
+    onOpenChange,
+    openOnClick,
+    setActiveId,
+    container,
+    rtl,
+    trigger,
+    onOptionsChange,
+    kindAndValue: { value },
+  } = useSmartSelect();
 
   return useMemo(() => {
     return {
@@ -39,6 +50,37 @@ export function useSelectControls() {
           e.stopPropagation();
           onOpenChange(true);
           return;
+        }
+
+        if (isMulti) {
+          const key = rtl ? "ArrowRight" : "ArrowLeft";
+
+          if (e.key === "Backspace") {
+            const chips = Array.from(
+              trigger!.querySelectorAll("[data-ln-smart-select-chip]"),
+            ) as HTMLElement[];
+
+            const lastChip = chips.at(-1);
+            if (!lastChip) return;
+
+            const id = lastChip.getAttribute("data-ln-smart-select-chip");
+            onOptionsChange((value as BaseOption[]).filter((x) => x.id !== id));
+            return;
+          }
+
+          if (e.key === key) {
+            const chips = Array.from(
+              trigger!.querySelectorAll("[data-ln-smart-select-chip]"),
+            ) as HTMLElement[];
+
+            const first = chips.at(-1);
+            if (!first) return;
+
+            first.focus();
+            onOpenChange(false);
+            setActiveChip(first.getAttribute("data-ln-smart-select-chip"));
+            return;
+          }
         }
 
         if (!open || !container) return;
@@ -86,5 +128,17 @@ export function useSelectControls() {
         }
       },
     } satisfies JSX.IntrinsicElements["button"];
-  }, [container, onOpenChange, open, openOnClick, setActiveId]);
+  }, [
+    container,
+    isMulti,
+    onOpenChange,
+    onOptionsChange,
+    open,
+    openOnClick,
+    rtl,
+    setActiveChip,
+    setActiveId,
+    trigger,
+    value,
+  ]);
 }

@@ -1,4 +1,4 @@
-import { createContext, useContext, type Dispatch, type SetStateAction } from "react";
+import { createContext, useContext, type Dispatch, type RefObject, type SetStateAction } from "react";
 import type { BaseOption, SmartSelectKinds } from "./type";
 import type { ComboOptionState } from "./use-async-options";
 
@@ -14,6 +14,7 @@ export interface SmartSelectContext {
 
   readonly rtl: boolean;
 
+  readonly inputRef: RefObject<HTMLElement | null>;
   readonly trigger: HTMLElement | null;
   readonly setTrigger: Dispatch<SetStateAction<HTMLElement | null>>;
 
