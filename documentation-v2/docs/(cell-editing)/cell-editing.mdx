@@ -1,65 +1,66 @@
 ---
 title: Cell Editing
 step: Edit and update individual cell values in the grid.
-description: Change cell values using LyteNyte Grid's cell editing capabilities.
-  Edit a single cell or update all cell values in a row.
+description: Change individual cell values using LyteNyte Grid's cell editing capabilities.
+  This guide focuses on editing a single cell at a time.
 ---
 
-To begin editing cells in LyteNyte Grid, set the `editMode` property on the grid. This property
-accepts one of three values:
+To enable cell editing in LyteNyte Grid, set the `editMode` property on the grid. This property
+accepts one of the following values:
 
-- `"cell"`: Makes a single cell editable at a time.
-- `"row"`: Allows editing and committing changes on a row-by-row basis.
+- `"cell"`: Enables editing for a single cell at a time.
+- `"row"`: Enables editing and commits changes on a row-by-row basis.
 - `"readonly"`: Disables cell editing. This is the default value.
 
-This guide covers single-cell editing. For guidance on full row edits, see the
-[Full Row Cell Editing guide](/docs/cell-editing-full-row).
+This guide focuses on single-cell editing. For guidance on editing and committing changes
+across an entire row, see the [Full Row Cell Editing guide](/docs/cell-editing-full-row).
 
 ## Basic Cell Editing
 
-Start editing cells by setting the `editMode` property to `"cell"`. This setting enables LyteNyte Grid's cell editing
-capabilities. Next, you must make a column editable. Two properties on the column definition
-must be set for the cells in a column to be editable:
+Start editing cells by setting the `editMode` property to `"cell"`. This setting enables
+LyteNyte Grid's cell editing capabilities. Two properties
+on the column definition are required for cells in a column to be editable:
 
-- `editable`: A boolean or predicate value that determines whether a cell is editable. Use a predicate function to
-  determine whether a cell should be editable on a row-by-row basis.
+- `editable`: A boolean or predicate value that determines whether a cell is editable.
+  Use a predicate function to control editability on a row-by-row basis.
 - `editRenderer`: Determines which component LyteNyte Grid renders within the cell's bounds.
-  The grid provides the component with a set of [`EditParams`](/docs/reference) to handle cell editing.
+  LyteNyte Grid provides this component with a set of [`EditParams`](/docs/reference) to
+  handle cell editing.
 
-LyteNyte Grid never mutates the row data that you provide. Instead, it informs the row source
-when changes occur, and the row source is responsible for updating the row data. Each
-row source accepts an `onRowDataChange` callback property. Use this property to handle updates.
+LyteNyte Grid never mutates the row data you provide. Instead, the grid notifies the row
+source when changes occur, and the row source updates the row data. Each row source
+accepts an `onRowDataChange` callback property. Use this property to handle updates.
 This guide uses the [client row source](/docs/client-source-overview) for cell edits.
 
-The demo below demonstrates the basic cell editing capabilities of LyteNyte Grid. The **Price** and **Customer**
-columns are editable. To begin editing, double-click a cell.
+The demo below demonstrates the basic cell editing behavior in LyteNyte Grid. The **Price**
+and **Customer** columns are editable. To begin editing, double-click a cell.
 
 ::demo[Basic Cell Editing="./demos/cell-editing-basic"]
 
 :::note
 
-The cell edits in the demo are not validated, as the demo is showing the most basic functionality
-for cell editing. This means it's possible to, for example, enter a negative price value. See
-the [Cell Edit Validation guide](/docs/cell-editing-validation) for guidances on the best way
-to validate edits.
+The demo does not validate cell edits, as it focuses on the most basic editing functionality.
+This means it is possible, for example, to enter a negative price value. See the
+[Cell Edit Validation guide](/docs/cell-editing-validation) for guidance on best practices
+for validating edits.
 
 :::
 
-The demo defines basic edit renderers to update values in the **Price** and **Customer** columns.
-See the [Cell Edit Renderers guide](/docs/cell-editing-renderers) for more detailed coverage of
+The demo defines basic edit renderers for the **Price** and **Customer** columns. See the
+[Cell Edit Renderers guide](/docs/cell-editing-renderers) for more detailed coverage of
 creating custom edit renderers.
 
-To support editing, LyteNyte Grid passes each edit renderer a set of props that conform to the
-[`EditParams`](/docs/reference) type. The demo uses two properties from `EditParams`:
+To support editing, LyteNyte Grid passes each edit renderer a set of props that conform to
+the [`EditParams`](/docs/reference) type. The demo uses two properties from `EditParams`:
 
-- `editValue`: The current value being edited. This value initially matches the cell value and updates
-  as edits occur. LyteNyte Grid applies this value only when the edit is committed.
+- `editValue`: The current value being edited. This value initially matches the cell value
+  and updates as edits occur. LyteNyte Grid applies this value only when the edit is committed.
 - `changeValue`: A method that updates the `editValue` during the edit session.
 
-The code for the **Customer** column's edit renderer is shown below. The renderer assigns `editValue`
-to the `<input />` value, and the input's `onChange` handler calls `changeValue` to update the edit
-value. The renderer also converts `editValue` to a string, since the `input` element expects a
-string value, and the current `editValue` is not guaranteed to be a string.
+The code for the **Customer** column edit renderer is shown below. The renderer assigns
+`editValue` to the `<input />` value, and the input's `onChange` handler calls `changeValue`
+to update the edit value. The renderer also converts `editValue` to a string, since the
+`input` element expects a string value and `editValue` is not guaranteed to be a string.
 
 ```tsx
 function TextCellEditor({ changeValue, editValue }: Grid.T.EditParams<GridSpec>) {
@@ -76,33 +77,32 @@ function TextCellEditor({ changeValue, editValue }: Grid.T.EditParams<GridSpec>)
 ### Edit Click Activator
 
 Use the `editClickActivator` property on the grid to change the click interaction that
-starts cell editing. It accepts one of three values:
+starts cell editing. The property accepts one of three values:
 
-- `"single"`: Begins cell editing when an editable cell is clicked.
-- `"double-click"`: Begins cell editing when an editable cell is double-clicked. This is the default.
+- `"single"`: Begins cell editing when the user clicks an editable cell.
+- `"double-click"`: Begins cell editing when the user double-clicks an editable cell. This is the default.
 - `"none"`: Clicking an editable cell does not start editing.
 
-In the demo below, a single click activates cell editing. The **Price** and **Customer** columns are
-editable. Click a cell in either column to begin editing.
+In the demo below, a single click activates cell editing. The **Price** and **Customer**
+columns are editable. Click a cell in either column to begin editing.
 
 ::demo[Single Click Edits="./demos/cell-editing-click-activator"]
 
 ## Edit Parameters
 
-LyteNyte Grid provides the cell edit renderer with a set of props that conform to the
-[`EditParams`](/docs/reference) type. The `EditParams` type contains the methods and state
-required to handle cell updates in LyteNyte Grid. The sections that follow explain the
-most important properties on the `EditParams` type.
+LyteNyte Grid provides each cell edit renderer with a set of props that conform to the
+[`EditParams`](/docs/reference) type. `EditParams` contains the methods and state required
+to manage cell updates in LyteNyte Grid. The sections below describe the most important
+properties on `EditParams`.
 
 ### Edit Value and Edit Data
 
-To make the most of cell editing, it is important to understand the relationship between the
-`editValue` and `editData` properties on the [`EditParams`](/docs/reference).
+To use cell editing effectively, it is important to understand the relationship between
+the `editValue` and `editData` properties on [`EditParams`](/docs/reference).
 
-When a cell edit begins, LyteNyte Grid creates a copy of the row data for the cell
-being edited and assigns this copy to `editData`. The grid then uses the `field`
-property from the column definition to derive the `editValue` for the cell.
-The following pseudo-code illustrates this process:
+When a cell edit begins, LyteNyte Grid creates a copy of the row data for the edited row
+and assigns this copy to `editData`. The grid then uses the column's `field` property to
+derive the `editValue` for the active cell. The pseudo-code below illustrates this process:
 
 ```ts
 // Start with the column definition and row data for a given row
@@ -116,12 +116,12 @@ const editData = structuredClone(row);
 const editValue = editData[column.field ?? column.id];
 ```
 
-The code above only approximates how LyteNyte Grid works, but it illustrates the core relationship
-between the `editData` and `editValue` properties.
+This pseudo-code does not reflect the exact implementation, but it illustrates the core
+relationship between `editData` and `editValue`.
 
-Use the `changeValue` method to update the `editValue` property. This method is a convenience
-wrapper around `changeData`, but it applies updates to a single cell. In contrast,
-`changeData` updates the edit data for the entire row. The following two calls are equivalent:
+Use the `changeValue` method to update `editValue`. This method is a convenience wrapper
+around `changeData` that applies updates to a single cell. In contrast, `changeData`
+updates the edit data for the entire row. The following two calls are equivalent:
 
 ```ts
 editParams.changeValue("Alice Smith");
@@ -130,15 +130,15 @@ editParams.changeData({ ...editParams.editData, customer: "Alice Smith" });
 
 ### Edit Setter
 
-Use the `editSetter` property on a column to update the `editValue` whenever the
-`changeValue` method is called.
+Use the `editSetter` property on a column to control how the grid updates `editValue`
+when `changeValue` is called.
 
 By default, LyteNyte Grid uses the column's `field` property to update the edit value
-for a cell. This default behavior works only when `field` refers to a string or numeric
-property. When `field` is a function or a path, you must provide an `editSetter`
-property on the column so the grid can update the `editValue`.
+for a cell. This behavior works only when `field` refers to a string or numeric property.
+When `field` is a function or a path, you must define an `editSetter` so the grid can
+apply updates correctly.
 
-For example, you can define a column that always title-cases the edited value:
+For example, the following column definition always title-cases the edited value:
 
 ```ts
 const column = {
@@ -150,50 +150,47 @@ const column = {
 };
 ```
 
-The `editSetter` must always return the full row `editData`, not just the modified
-edit value. Use `editSetter` to enforce update constraints and to create linked
-cell updates. For more information, see the [Linked Cell Edits guide].
+The `editSetter` must always return the full `editData` object, not just the modified
+value. Use `editSetter` to enforce update constraints and to create linked cell updates.
+For more information, see the [Linked Cell Edits guide](/docs/cell-editing-linked-cell-edits).
 
 ### Committing and Cancelling Edits
 
-While a cell value is being edited, LyteNyte Grid does not mutate the original row data.
-The `EditParams` type provides two properties that you can use to end a cell edit
-programmatically:
+While a cell edit is active, LyteNyte Grid does not mutate the original row data.
+`EditParams` provides two methods to end a cell edit programmatically:
 
-- `commit`: Ends the cell edit and calls the row update callbacks to apply the new cell value.
+- `commit`: Ends the cell edit and applies the new value by calling the row update callbacks.
 - `cancel`: Ends the cell edit without applying the edited value.
 
 ## Edit Events
 
-LyteNyte Grid fires different edit events at various points in the cell editing process.
-These events are listed below. See the [grid props API reference](/docs/reference) for
-more detailed information:
+LyteNyte Grid fires edit events at different points in the cell editing lifecycle.
+The events below are commonly used. See the [grid props API reference](/docs/reference)
+for complete details:
 
-- `onEditBegin`: Fired when a cell edit begins. Call `preventDefault` on the provided
-  event params to prevent the grid from starting the edit.
-- `onEditEnd`: Fired when a cell edit ends and the edit value is about to be committed.
-  Call `preventDefault` on the provided event params to prevent the grid from applying
-  the update.
+- `onEditBegin`: Fired when a cell edit begins. Call `preventDefault` on the event params
+  to prevent the grid from starting the edit.
+- `onEditEnd`: Fired when a cell edit ends and the grid is about to commit the value.
+  Call `preventDefault` to prevent the update.
 - `onEditCancel`: Fired when a cell edit ends and the edited value is not applied.
-- `onEditFail`: Fired when a cell edit fails data validation.
+- `onEditFail`: Fired when a cell edit fails validation.
 
 ## Programmatic Editing
 
-LyteNyte Grid's API provides several methods for programmatically editing cells. These
-methods are briefly described below. See the grid's [API reference](/docs/reference)
-for more detailed usage information.
+LyteNyte Grid's API exposes methods for programmatically editing cells. These methods
+support advanced editing scenarios. See the grid's [API reference](/docs/reference)
+for detailed usage information.
 
-- `editBegin`: Begins editing a specific cell in the grid.
-- `editEnd`: Ends the current cell edit. This method optionally accepts a `cancel` flag
-  to cancel the edit instead of committing it.
-- `editIsCellActive`: Returns `true` if the queried cell is currently being edited.
-- `editUpdate`: Updates rows in bulk. See the [Bulk Cell Editing guide] for more details.
+- `editBegin`: Begins editing a specific cell.
+- `editEnd`: Ends the current cell edit. Optionally accepts a `cancel` flag to cancel
+  the edit instead of committing it.
+- `editIsCellActive`: Returns `true` if the specified cell is currently being edited.
+- `editUpdate`: Updates rows in bulk. See the [Bulk Cell Editing guide] for details.
 
 :::note
 
-LyteNyte Grid provides programmatic cell editing APIs to support more advanced or
-specialized editing scenarios. Avoid using these methods for basic cell editing, and
-rely on the grid's built-in editing behavior instead.
+Use programmatic editing APIs only for advanced or specialized scenarios. For basic
+cell editing, rely on LyteNyte Grid's built-in editing behavior.
 
 :::
 

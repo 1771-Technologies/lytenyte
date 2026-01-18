@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import { type JSX, type ReactNode } from "react";
-import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
+import { type Grid } from "@1771technologies/lytenyte-pro-experimental";
 import type { GridSpec } from "./demo.jsx";
 
 export function ProductCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
@@ -42,14 +42,16 @@ const formatter = new Intl.NumberFormat("en-Us", {
   minimumFractionDigits: 2,
   maximumFractionDigits: 2,
 });
-export function PriceCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
+export function PriceCell({ api, row, editData }: Grid.T.CellRendererParams<GridSpec>) {
   if (!api.rowIsLeaf(row) || !row.data) return;
 
-  const price = formatter.format(row.data.price);
+  const data = (editData as Record<string, number>) ?? row.data;
+
+  const price = formatter.format(data.price);
   const [dollars, cents] = price.split(".");
 
   return (
-    <div className="flex h-full w-full items-center justify-end">
+    <div className={"flex h-full w-full items-center justify-end"}>
       <div className="flex items-baseline tabular-nums">
         <span className="text-ln-text font-semibold">${dollars}</span>.
         <span className="relative text-xs">{cents}</span>

@@ -21,6 +21,7 @@ function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.
   const {
     open,
     onOpenChange,
+    onOpenChangeComplete,
     titleId,
     descriptionId,
     focusCanReturn,
@@ -47,7 +48,7 @@ function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.
   } = useDialogRoot();
   const [dialog, setDialog] = useState<HTMLDialogElement | null>(null);
 
-  const [t, shouldMount] = useTransitioned(open, dialog);
+  const [t, shouldMount] = useTransitioned(open, dialog, onOpenChangeComplete);
 
   const locked = useRef(false);
 
@@ -146,8 +147,10 @@ function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.
     sideOffset,
   ]);
 
+  const lockTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
     if (lockScroll == false) return;
+    if (lockTimeout.current) clearTimeout(lockTimeout.current);
 
     if (shouldMount && !locked.current) {
       SCROLL_LOCKER.acquire(null);
@@ -156,6 +159,14 @@ function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.
       SCROLL_LOCKER.release();
       locked.current = false;
     }
+
+    return () => {
+      lockTimeout.current = setTimeout(() => {
+        SCROLL_LOCKER.release();
+        locked.current = false;
+        lockTimeout.current = null;
+      }, 20);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shouldMount]);
 

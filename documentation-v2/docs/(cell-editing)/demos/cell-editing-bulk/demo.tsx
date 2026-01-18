@@ -1,4 +1,5 @@
 //#start
+import "@1771technologies/lytenyte-pro-experimental/components.css";
 import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
 import type { OrderData } from "@1771technologies/grid-sample-data/orders";
 import { data as initialData } from "@1771technologies/grid-sample-data/orders";
@@ -12,7 +13,8 @@ import {
   PurchaseDateCell,
 } from "./components.jsx";
 import { useClientDataSource, Grid, ViewportShadows } from "@1771technologies/lytenyte-pro-experimental";
-import { useCallback, useState } from "react";
+import { useRef, useState } from "react";
+import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
 
 export interface GridSpec {
   readonly data: OrderData;
@@ -59,25 +61,59 @@ export default function Demo() {
       });
     },
   });
+  const apiRef = useRef<Grid.API<GridSpec>>(null);
 
   return (
-    <div className="ln-grid" style={{ height: 500 }}>
-      <Grid
-        rowHeight={50}
-        columns={columns}
-        rowSource={ds}
-        slotShadows={ViewportShadows}
-        editMode="cell"
-        editRowValidatorFn={useCallback<Required<Grid.Props<GridSpec>>["editRowValidatorFn"]>((p) => {
-          if (typeof p.editData !== "object") return false;
+    <>
+      <div className="border-ln-border flex items-center gap-4 border-b px-2 py-2">
+        <button
+          data-ln-button="tertiary"
+          data-ln-size="md"
+          className="flex items-center gap-2"
+          onClick={() => {
+            const update = new Map(
+              data.map((x, i) => {
+                return [i, { ...x, price: x.price + 10 }];
+              }),
+            );
 
-          const data = p.editData as Record<string, number>;
-          if (data.price <= 0) return { price: "Price must be greater than 0." };
+            apiRef.current?.editUpdate(update);
+          }}
+        >
+          Increase Price (+10)
+          <ArrowUpIcon />
+        </button>
+        <button
+          data-ln-button="tertiary"
+          data-ln-size="md"
+          className="flex items-center gap-2"
+          onClick={() => {
+            const update = new Map(
+              data.map((x, i) => {
+                const next = Math.max(x.price - 10, 1);
+                return [i, { ...x, price: next }];
+              }),
+            );
 
-          return true;
-        }, [])}
-      />
-    </div>
+            apiRef.current?.editUpdate(update);
+          }}
+        >
+          Decrease Price (-10)
+          <ArrowDownIcon />
+        </button>
+      </div>
+
+      <div className="ln-grid" style={{ height: 500 }}>
+        <Grid
+          ref={apiRef}
+          rowHeight={50}
+          columns={columns}
+          rowSource={ds}
+          slotShadows={ViewportShadows}
+          editMode="cell"
+        />
+      </div>
+    </>
   );
 }
 
@@ -96,30 +132,8 @@ function NumberEditor({ changeValue, editValue }: Grid.T.EditParams<GridSpec>) {
     <input
       className="focus:outline-ln-primary-50 h-full w-full px-2"
       value={`${editValue}`} //!
-      onChange={(e) => {
-        const value = getNumberValue(e.target.value); //!
-        changeValue(value || 0); //!
-      }}
+      type="number"
+      onChange={(e) => changeValue(Number.parseFloat(e.target.value))} //!
     />
   );
 }
-
-const getNumberValue = (e: string) => {
-  const value = e.trim();
-
-  // Allow empty input
-  if (value === "") return "";
-
-  // Allow minus sign only at the start
-  if (value === "-") return "-";
-
-  // Convert to number and check if it's valid
-  const number = Number.parseFloat(value);
-
-  if (value && !Number.isNaN(number)) {
-    return String(number) + (value.endsWith(".") ? "." : "");
-  } else {
-    // If not a valid number, revert to previous value
-    return value.slice(0, -1) || "";
-  }
-};

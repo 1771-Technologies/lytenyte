@@ -15,6 +15,9 @@ export function useEditContext(view: ColumnView, api: Root.API, props: Root.Prop
   const activeEdit = usePiece(activeEditState, setActiveEdit);
   const activeRow = usePiece(activeEditState?.rowId ?? null);
 
+  const [editValidationState, setEditValidation] = useState<boolean | Record<string, unknown>>(true);
+  const editValidation = usePiece(editValidationState, setEditValidation);
+
   const [editDataState, setEditDataState] = useState<any>(null);
   const editData = usePiece(editDataState, setEditDataState);
 
@@ -36,9 +39,7 @@ export function useEditContext(view: ColumnView, api: Root.API, props: Root.Prop
     return nextData;
   });
 
-  const activeEditStateRef = useRef(activeEditState);
   const editDataStateRef = useRef(editDataState);
-  activeEditStateRef.current = activeEditState;
   editDataStateRef.current = editDataState;
 
   const changeValue = useEvent((value: any) => {
@@ -52,11 +53,16 @@ export function useEditContext(view: ColumnView, api: Root.API, props: Root.Prop
     if (nextData === false) return false;
 
     setEditDataState(nextData);
+    editDataStateRef.current = nextData;
     const validator = props.editRowValidatorFn as Root.Props["editRowValidatorFn"];
 
     if (validator) {
-      return validator({ api, editData: nextData, row });
+      const result = validator({ api, editData: nextData, row });
+      editValidation.set(result);
+      return result;
     }
+
+    editValidation.set(true);
     return true;
   });
 
@@ -66,12 +72,17 @@ export function useEditContext(view: ColumnView, api: Root.API, props: Root.Prop
     if (!row) return false;
 
     setEditDataState(nextData);
+    editDataStateRef.current = nextData;
 
     const validator = props.editRowValidatorFn as Root.Props["editRowValidatorFn"];
 
     if (validator) {
-      return validator({ api, editData: nextData, row });
+      const result = validator({ api, editData: nextData, row });
+      editValidation.set(result);
+      return result;
     }
+
+    editValidation.set(true);
     return true;
   });
 
@@ -83,16 +94,17 @@ export function useEditContext(view: ColumnView, api: Root.API, props: Root.Prop
     if (!column || !row) {
       setActiveEdit(null);
       setEditDataState(null);
+      setEditValidation(true);
       return false;
     }
 
     props.onEditCancel?.({ api, row, column, editData });
+    setEditValidation(true);
     setActiveEdit(null);
     setEditDataState(null);
   });
 
   const commit = useEvent(() => {
-    const activeEditState = activeEditStateRef.current;
     const editDataState = editDataStateRef.current;
 
     if (!activeEditState) return false;
@@ -130,6 +142,7 @@ export function useEditContext(view: ColumnView, api: Root.API, props: Root.Prop
     source.onRowsUpdated(updateMap);
 
     setActiveEdit(null);
+    setEditValidation(true);
     setEditDataState(null);
     return true;
   });
@@ -139,13 +152,24 @@ export function useEditContext(view: ColumnView, api: Root.API, props: Root.Prop
       activeEdit,
       activeRow,
       editData,
+      editValidation,
       changeValue,
       changeWithInit,
       changeData,
       cancel,
       commit,
     };
-  }, [activeEdit, activeRow, cancel, changeData, changeValue, changeWithInit, commit, editData]);
+  }, [
+    activeEdit,
+    activeRow,
+    cancel,
+    changeData,
+    changeValue,
+    changeWithInit,
+    commit,
+    editData,
+    editValidation,
+  ]);
 
   return value;
 }

@@ -2,7 +2,7 @@
 title: Bulk Cell Editing
 step: Edit a group of cells in bulk.
 description: LyteNyte Grid can edit cells in bulk through the grid's API. Provide
-  updated data for specific rows and LyteNyte Grid will update the rows in the grid
+  updated data for specific rows, and LyteNyte Grid will update the rows in the grid
   as though the cells were edited.
 ---
 
@@ -16,30 +16,52 @@ for more details.
 
 ## Edit Update Method
 
-Cells can be edited in bulk using the `editUpdate` method on the grid's API. The
-`editUpdate` method must be provided a map of rows to update. The map provided may
-have keys of two types:
+You can edit cells in bulk using the `editUpdate` method on the grid's API. The
+`editUpdate` method requires a map of rows to update. The update map can use
+two key types:
 
 - `number`: Represents the row index of the row that should be updated.
-- `string`: Represents the row id of the row that should be updated.
+- `string`: Represents the row ID of the row that should be updated.
 
-When providing a `number` key, LyteNyte Grid will resolve the row index to its
-row ID. avoid setting both the row index and row ID for the same row in the map.
+When you provide a `number` key, LyteNyte Grid resolves the row index to its
+row ID. Avoid setting both the row index and row ID for the same row in the map.
 
-The demo below uses teh `editUpdate` method to randomly update rows in bulk.
-The demo shows the basic functionality.
+The demo below uses the `editUpdate` method to update the **Price** column in
+bulk.
 
-TODO Demo
+::demo[Bulk Cell Editing="./demos/cell-editing-bulk"]
 
-### Bulk Update Vs Direct Row Update
+The two buttons, **Increase Price** and **Decrease Price**, both leverage the grid's API
+to create a bulk update that increases or decreases the price of every row by 10, respectively.
+The code is shown below for increasing the price. Notice that the code creates a new update map,
+then calls `editUpdate` to update the rows through LyteNyte Grid's edit functionality.
 
-At first glance the `editUpdate` method appears to do the same thing as just updating
-the rows in the grid directly, however, there is a distinction. When updating rows through
-the `editUpdate` function LyteNyte Grid will call the necessary validations for the edits
-as though the user edited the cell directly.
+```tsx
+<button
+  //!next 9
+  onClick={() => {
+    const update = new Map(
+      data.map((x, i) => {
+        return [i, { ...x, price: x.price + 10 }];
+      }),
+    );
 
-All the rows must pass the validation for the bulk update to be applied. The `editUpdate`
-function returns the result of the row validation, which you can use to provide feedback
+    apiRef.current?.editUpdate(update);
+  }}
+>
+  Increase Price (+10)
+  <ArrowUpIcon />
+</button>
+```
+
+### Bulk Update vs. Direct Row Update
+
+At first glance, the `editUpdate` method appears to do the same thing as updating
+the rows in the grid directly. However, there is a distinction. When you update rows through
+`editUpdate`, LyteNyte Grid runs the same validations as if the user edited the cell directly.
+
+All rows must pass validation for LyteNyte Grid to apply the bulk update. The `editUpdate`
+method returns the row validation result, which you can use to provide feedback
 if the update fails.
 
 ## Next Steps

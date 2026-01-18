@@ -5,6 +5,7 @@ import type { FocusTrapOptions } from "@1771technologies/lytenyte-shared";
 export interface DialogContext {
   readonly open: boolean;
   readonly onOpenChange: (open: boolean) => void;
+  readonly onOpenChangeComplete: (open: boolean) => void;
 
   readonly id: string;
   readonly titleId: string;

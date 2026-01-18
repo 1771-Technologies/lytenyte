@@ -1,4 +1,4 @@
-import { getActiveElement, getNearestMatching } from "../dom-utils/index.js";
+import { getActiveElement, getNearestMatching, isTextInputFocused } from "../dom-utils/index.js";
 import type { ScrollIntoViewFn } from "../types.js";
 import { handleViewportFocused } from "./key-handler/handle-viewport-focused.js";
 import { nearestFocusable } from "./nearest-focusable.js";
@@ -51,13 +51,16 @@ export function navigator({
 }: NavigatorParams) {
   const keys = new Set([nextKey, prevKey, endKey, homeKey, upKey, downKey, pageDownKey, pageUpKey]);
 
-  const handleKey = (ev: {
-    key: string;
-    ctrlKey: boolean;
-    metaKey: boolean;
-    preventDefault: () => void;
-    stopPropagation: () => void;
-  }) => {
+  const handleKey = (
+    ev: {
+      key: string;
+      ctrlKey: boolean;
+      metaKey: boolean;
+      preventDefault: () => void;
+      stopPropagation: () => void;
+    },
+    ignoreInputFocus: boolean,
+  ) => {
     const key = ev.key;
     const shouldHandle = () => true; // Temp placeholder for eventual handle hook
 
@@ -124,6 +127,10 @@ export function navigator({
     if ((key === pageUpKey || key === pageDownKey) && !isCell) return;
 
     if (key === nextKey || key == prevKey) {
+      if (isTextInputFocused() && !ignoreInputFocus) {
+        return;
+      }
+
       const isBack = key === prevKey;
       handleHorizontal({
         isBack,
@@ -142,6 +149,10 @@ export function navigator({
     }
 
     if (key === downKey || key === upKey) {
+      if (isTextInputFocused() && !ignoreInputFocus) {
+        return;
+      }
+
       const isUp = key === upKey;
 
       handleVertical({
