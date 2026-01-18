@@ -98,7 +98,10 @@ export function useSelectControls(isMulti: boolean, setActiveChip: (s: string | 
               current = current.previousElementSibling;
           }
 
-          if (current) setActiveId(current.getAttribute("data-ln-smart-option"));
+          if (current) {
+            setActiveId(current.getAttribute("data-ln-smart-option"));
+            current.scrollIntoView({ block: "nearest" });
+          }
 
           return;
         }
@@ -118,7 +121,10 @@ export function useSelectControls(isMulti: boolean, setActiveChip: (s: string | 
               current = current.nextElementSibling;
           }
 
-          if (current) setActiveId(current.getAttribute("data-ln-smart-option"));
+          if (current) {
+            setActiveId(current.getAttribute("data-ln-smart-option"));
+            current.scrollIntoView({ block: "nearest" });
+          }
 
           return;
         }

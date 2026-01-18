@@ -10,12 +10,17 @@ export function beginEditing(
   editActivator: "single" | "double-click" | "none",
   activator?: "single" | "double-click",
   initValue?: any,
+  printable?: boolean,
 ) {
   if (focusPos?.kind !== "cell" || editMode === "readonly") return;
   if (activator && editActivator !== activator) return;
 
   const column = api.columnByIndex(focusPos.colIndex);
-  if (!column) return;
+  const base = api.props().columnBase;
+
+  const editOnPrintable = column?.editOnPrintable ?? base?.editOnPrintable ?? true;
+
+  if (!column || (printable && !editOnPrintable)) return;
   if (api.editIsCellActive({ column, rowIndex: focusPos.rowIndex })) return;
 
   let init;

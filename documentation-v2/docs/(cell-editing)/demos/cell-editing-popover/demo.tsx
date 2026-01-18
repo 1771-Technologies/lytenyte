@@ -33,6 +33,7 @@ const columns: Grid.Column<GridSpec>[] = [
     width: 200,
     name: "Product",
     editable: true,
+    editOnPrintable: false,
     editRenderer: ProductSelect,
   },
   { id: "price", type: "number", cellRenderer: PriceCell, width: 100, name: "Price" },
@@ -85,6 +86,7 @@ function ProductSelect({ changeData, editValue, editData }: Grid.T.EditParams<Gr
       open={open}
       onOpenChange={setOpen}
       openKeys={[" "]}
+      container={<SmartSelect.Container className="max-h-50 overflow-auto" />}
       trigger={
         <SmartSelect.BasicTrigger
           className="focus:outline-ln-primary-50 flex h-full w-full items-center gap-2"

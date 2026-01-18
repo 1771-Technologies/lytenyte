@@ -118,8 +118,10 @@ export function useComboControls(setActiveChip: Dispatch<SetStateAction<string |
               current = current.previousElementSibling;
           }
 
-          if (current) setActiveId(current.getAttribute("data-ln-smart-option"));
-
+          if (current) {
+            setActiveId(current.getAttribute("data-ln-smart-option"));
+            current.scrollIntoView({ block: "nearest" });
+          }
           return;
         }
         if (e.key === "ArrowDown") {
@@ -138,7 +140,10 @@ export function useComboControls(setActiveChip: Dispatch<SetStateAction<string |
               current = current.nextElementSibling;
           }
 
-          if (current) setActiveId(current.getAttribute("data-ln-smart-option"));
+          if (current) {
+            setActiveId(current.getAttribute("data-ln-smart-option"));
+            current.scrollIntoView({ block: "nearest" });
+          }
 
           return;
         }

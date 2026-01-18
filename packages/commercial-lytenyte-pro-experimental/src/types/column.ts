@@ -76,6 +76,7 @@ interface ColumnUnextended<Spec extends GridSpec = GridSpec> extends ColumnAbstr
   readonly headerRenderer?: (props: HeaderParams<Spec>) => ReactNode;
   readonly cellRenderer?: (props: CellRendererParams<Spec>) => ReactNode;
 
+  readonly editOnPrintable?: boolean;
   readonly editRenderer?: (props: EditParams<Spec>) => ReactNode;
   readonly editable?: boolean | ((params: CellParamsWithIndex<Spec>) => boolean);
   readonly editSetter?: (

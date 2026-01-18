@@ -128,8 +128,18 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
               beginEditing(api, edit, focusActive.get(), editMode, editClickActivator);
               return;
             }
+
             if (e.key.length === 1 && e.key !== " ") {
-              beginEditing(api, edit, focusActive.get(), editMode, editClickActivator, undefined, e.key);
+              beginEditing(
+                api,
+                edit,
+                focusActive.get(),
+                editMode,
+                editClickActivator,
+                undefined,
+                e.key,
+                true,
+              );
               return;
             }
           }
