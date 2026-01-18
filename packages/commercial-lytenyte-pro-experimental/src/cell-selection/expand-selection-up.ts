@@ -9,7 +9,6 @@ export function expandSelectionUp(
   setSelections: (d: DataRect[]) => void,
   meta: boolean,
   position: PositionGridCell,
-  rowCount: number,
 ) {
   const pos = dataRectFromCellPosition(position);
 
@@ -17,10 +16,12 @@ export function expandSelectionUp(
   if (!rect || !isOverlappingRect(rect, pos)) return;
 
   if (meta) {
-    const next: DataRect = { ...rect, rowStart: 0, rowEnd: rect.rowStart + 1 };
+    const next: DataRect = { ...rect, rowStart: 0, rowEnd: pos.rowStart + 1 };
     const nextSelections = [...selections];
     nextSelections[nextSelections.length - 1] = next;
     setSelections(nextSelections);
+
+    api.scrollIntoView({ row: 0 });
     return;
   }
 
@@ -38,9 +39,7 @@ export function expandSelectionUp(
   }
 
   let next: DataRect;
-  // Reduce our rect by one level
   if (rect.rowEnd > pivotEnd) {
-    if (rect.rowEnd === rowCount) return;
     let lowestRowStart = Infinity;
     let c = rect;
     for (let i = rect.columnStart; i < rect.columnEnd; i++) {
@@ -52,6 +51,7 @@ export function expandSelectionUp(
       }
     }
 
+    api.scrollIntoView({ row: lowestRowStart - 1 });
     next = {
       ...rect,
       rowEnd: lowestRowStart,
@@ -73,6 +73,7 @@ export function expandSelectionUp(
       }
     }
 
+    api.scrollIntoView({ row: lowestRowStart });
     next = {
       ...rect,
       rowStart: lowestRowStart,

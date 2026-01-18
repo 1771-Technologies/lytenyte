@@ -18,12 +18,14 @@ export function expandSelectionEnd(
   if (meta) {
     const next: DataRect = {
       ...rect,
-      columnStart: rect.columnEnd - 1,
+      columnStart: pos.columnStart,
       columnEnd: view.visibleColumns.length,
     };
     const nextSelections = [...selections];
     nextSelections[nextSelections.length - 1] = next;
     setSelections(nextSelections);
+
+    api.scrollIntoView({ column: view.visibleColumns.length - 1 });
     return;
   }
 
@@ -31,6 +33,7 @@ export function expandSelectionEnd(
 
   let pivotStart = pos.columnStart;
   let pivotEnd = pos.columnEnd;
+
   // Our cell some how is spanned over. so for the current rowIndex, find the maximum span along the columns
   if (!isAtEdge) {
     for (let i = rect.rowStart; i < rect.rowEnd; i++) {
@@ -59,6 +62,8 @@ export function expandSelectionEnd(
       rowStart: Math.min(setCell!.rowStart, rect.rowStart),
       rowEnd: Math.max(setCell.rowEnd, rect.rowEnd),
     };
+
+    api.scrollIntoView({ column: highestColEnd });
   } else {
     if (rect.columnEnd === view.visibleColumns.length) return;
 
@@ -77,6 +82,7 @@ export function expandSelectionEnd(
       rowStart: Math.min(setCell!.rowStart, rect.rowStart),
       rowEnd: Math.max(setCell.rowEnd, rect.rowEnd),
     };
+    api.scrollIntoView({ column: highestColEnd - 1 });
   }
 
   const nextSelections = [...selections];
