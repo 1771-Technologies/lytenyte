@@ -74,7 +74,7 @@ const options = initialData.map((x) => ({
   productDescription: x.productDescription,
 }));
 
-function ProductSelect({ changeData, editValue, editData }: Grid.T.EditParams<GridSpec>) {
+function ProductSelect({ changeData, editValue, editData, commit }: Grid.T.EditParams<GridSpec>) {
   const value = options.find((x) => x.id === editValue) ?? null;
 
   const [open, setOpen] = useState(false);
@@ -89,7 +89,7 @@ function ProductSelect({ changeData, editValue, editData }: Grid.T.EditParams<Gr
       container={<SmartSelect.Container className="max-h-50 overflow-auto" />}
       trigger={
         <SmartSelect.BasicTrigger
-          className="focus:outline-ln-primary-50 flex h-full w-full items-center gap-2"
+          className="focus:outline-ln-primary-50 flex h-full w-full items-center gap-2 focus:outline focus:-outline-offset-1"
           autoFocus
           onFocus={() => setOpen(true)}
         >
@@ -113,6 +113,7 @@ function ProductSelect({ changeData, editValue, editData }: Grid.T.EditParams<Gr
           productThumbnail: p.productThumbnail,
           productDescription: p.productDescription,
         });
+        commit();
       }}
     >
       {(p) => {

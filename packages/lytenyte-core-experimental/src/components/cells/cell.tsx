@@ -129,6 +129,7 @@ const CellImpl = memo(
           {!willDisplayEdit && (
             <Renderer
               column={column}
+              editData={rowMeta.editData}
               row={row}
               api={api}
               layout={cell}

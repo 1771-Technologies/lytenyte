@@ -48,6 +48,7 @@ export interface CellRendererParams<Spec extends GridSpec = GridSpec> extends Ce
   readonly selected: boolean;
   readonly indeterminate: boolean;
   readonly detailExpanded: boolean;
+  readonly editData: unknown;
   readonly layout: LayoutCell;
 }
 
