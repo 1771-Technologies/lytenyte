@@ -7,6 +7,7 @@ import { beginEditing } from "./begin-editing.js";
 import { RowDragMonitor } from "./row-drag-monitor.js";
 import { ViewMonitor } from "./view-monitor.js";
 import { useMappedEvents } from "../../hooks/use-mapped-events.js";
+import { EditDriver } from "./edit-driver.js";
 
 const noop = () => {};
 function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Props["ref"]) {
@@ -87,8 +88,8 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
       {vp && <ViewMonitor viewport={vp} />}
       <div
         className={styles?.viewport?.className}
-        {...props}
         {...handlers}
+        {...props}
         role="grid"
         tabIndex={0}
         ref={combined}
@@ -218,6 +219,7 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
         {dimensions.innerHeight !== 0 && (
           <>{typeof ViewportOverlay === "function" ? <ViewportOverlay api={api} /> : ViewportOverlay}</>
         )}
+        <EditDriver />
         {children}
       </div>
 

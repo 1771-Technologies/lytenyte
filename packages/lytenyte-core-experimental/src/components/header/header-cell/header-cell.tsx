@@ -56,8 +56,8 @@ const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function Hea
     <div
       className={styles?.header?.className}
       {...dragProps}
-      {...props}
       {...handlers}
+      {...props}
       onDragStart={dragProps.onDragStart}
       tabIndex={0}
       ref={ref}

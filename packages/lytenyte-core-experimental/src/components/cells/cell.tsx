@@ -87,25 +87,12 @@ const CellImpl = memo(
 
         <div
           className={styles?.cell?.className}
-          {...props}
           {...handlers}
+          {...props}
           ref={forwarded}
           role="gridcell"
           tabIndex={isEditingThis ? -1 : 0}
           style={{ ...style, ...(props.style ?? styles?.cell?.style) }}
-          onBlur={
-            !isEditing || editMode !== "cell"
-              ? (props.onBlur ?? handlers.onBlur)
-              : (ev) => {
-                  (props.onBlur ?? handlers.onBlur)?.(ev);
-                  // We are still in the same cell, no reason to end the editing.
-                  if (ev.currentTarget !== ev.relatedTarget && ev.currentTarget.contains(ev.relatedTarget))
-                    return;
-
-                  rowMeta.commit();
-                  return;
-                }
-          }
           // Data Properties
           data-ln-type={column.type ?? base.type ?? "string"}
           data-ln-rowindex={cell.rowIndex}
