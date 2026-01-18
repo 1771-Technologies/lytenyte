@@ -2,12 +2,12 @@ import { useMemo, type JSX } from "react";
 import { useSmartSelect } from "../context.js";
 
 export function useComboControls() {
-  const { query, open, onOpenChange, setActiveId, container, onQueryChange } = useSmartSelect();
+  const { query, open, openOnClick, onOpenChange, setActiveId, container, onQueryChange } = useSmartSelect();
 
   return useMemo(() => {
     return {
       onClick: () => {
-        if (!open) {
+        if (!open && openOnClick) {
           onOpenChange(true);
         }
       },
@@ -21,6 +21,30 @@ export function useComboControls() {
           e.preventDefault();
           e.stopPropagation();
           if (open) onOpenChange(false);
+          return;
+        }
+
+        if (e.key === "Enter") {
+          e.preventDefault();
+          e.stopPropagation();
+
+          if (!open) {
+            onOpenChange(true);
+            return;
+          }
+
+          const active = container?.querySelector('[data-ln-active="true"]') as HTMLElement;
+          if (!active) return;
+
+          active.click();
+
+          return;
+        }
+
+        if (e.key === "ArrowDown" && !open) {
+          e.preventDefault();
+          e.stopPropagation();
+          onOpenChange(true);
           return;
         }
 
@@ -51,11 +75,6 @@ export function useComboControls() {
           e.preventDefault();
           e.stopPropagation();
 
-          if (!open) {
-            onOpenChange(true);
-            return;
-          }
-
           const active = container.querySelector('[data-ln-active="true"]');
           let current = active?.nextElementSibling;
           while (current && current.getAttribute("data-ln-selectable") === "false")
@@ -74,5 +93,5 @@ export function useComboControls() {
         }
       },
     } satisfies JSX.IntrinsicElements["input"];
-  }, [container, onOpenChange, onQueryChange, open, query, setActiveId]);
+  }, [container, onOpenChange, onQueryChange, open, openOnClick, query, setActiveId]);
 }

@@ -2,12 +2,12 @@ import { useMemo, type JSX } from "react";
 import { useSmartSelect } from "../context.js";
 
 export function useSelectControls() {
-  const { open, onOpenChange, setActiveId, container } = useSmartSelect();
+  const { open, onOpenChange, openOnClick, setActiveId, container } = useSmartSelect();
 
   return useMemo(() => {
     return {
       onClick: () => {
-        onOpenChange(true);
+        if (!open && openOnClick) onOpenChange(true);
       },
       onKeyDown: (e) => {
         if (e.key === " " || e.key === "Enter") {
@@ -31,6 +31,13 @@ export function useSelectControls() {
           e.preventDefault();
           e.stopPropagation();
           if (open) onOpenChange(false);
+          return;
+        }
+
+        if (e.key === "ArrowDown" && !open) {
+          e.preventDefault();
+          e.stopPropagation();
+          onOpenChange(true);
           return;
         }
 
@@ -61,11 +68,6 @@ export function useSelectControls() {
           e.preventDefault();
           e.stopPropagation();
 
-          if (!open) {
-            onOpenChange(true);
-            return;
-          }
-
           const active = container.querySelector('[data-ln-active="true"]');
           let current = active?.nextElementSibling;
           while (current && current.getAttribute("data-ln-selectable") === "false")
@@ -82,9 +84,7 @@ export function useSelectControls() {
 
           return;
         }
-
-        // Handle the up and down arrows.
       },
     } satisfies JSX.IntrinsicElements["button"];
-  }, [container, onOpenChange, open, setActiveId]);
+  }, [container, onOpenChange, open, openOnClick, setActiveId]);
 }

@@ -22,6 +22,8 @@ export type SmartSelectRootProps<T extends BaseOption> = {
   readonly open?: boolean;
   readonly onOpenChange?: (open: boolean) => void;
 
+  readonly openOnClick?: boolean;
+
   readonly trigger: SlotComponent;
   readonly container?: SlotComponent<PropsWithChildren<ComboOptionState<T>>>;
 
@@ -82,26 +84,27 @@ export function SmartSelectRoot<T extends BaseOption>(p: SmartSelectRootProps<T>
       ? ((p as unknown as ComboSelect<T>).searchDebounceMs ?? 500)
       : 0;
 
+  const loadOptions = comboState.loadOptions;
   useEffect(() => {
-    if (p.kind !== "multi-combo" && p.kind !== "multi") return;
+    if (p.kind !== "multi-combo" && p.kind !== "combo") return;
 
-    setTimeout(() => {
-      comboState.loadOptions(query);
+    const t = setTimeout(() => {
+      loadOptions(query);
     }, debounce);
-  }, [comboState, debounce, p.kind, query]);
+
+    return () => clearTimeout(t);
+  }, [loadOptions, debounce, p.kind, query]);
 
   useEffect(() => {
     if (!open) return;
 
-    comboState.loadOptions(query);
-
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setActiveId((prev) => {
       const active = prev ? (options.find((x) => x.id === prev) ?? null) : null;
 
       if (!active) queueMicrotask(() => setActiveId(options.at(0)?.id ?? null));
       return prev;
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [comboState, open, options]);
 
   const renderedOptions = useMemo(() => {
@@ -146,6 +149,8 @@ export function SmartSelectRoot<T extends BaseOption>(p: SmartSelectRootProps<T>
       query,
       onQueryChange,
 
+      openOnClick: p.openOnClick ?? true,
+
       comboState,
     } satisfies SmartSelectContext;
   }, [
@@ -158,6 +163,7 @@ export function SmartSelectRoot<T extends BaseOption>(p: SmartSelectRootProps<T>
     open,
     p.closeOnSelect,
     p.kind,
+    p.openOnClick,
     p.value,
     query,
     triggerEl,

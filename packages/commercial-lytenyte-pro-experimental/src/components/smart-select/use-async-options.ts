@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import type { BaseOption } from "./type";
 import { useEvent } from "@1771technologies/lytenyte-core-experimental/internal";
 
@@ -17,8 +17,11 @@ export function useAsyncOptions<T extends BaseOption>(
   const [error, setError] = useState<unknown>(null);
   const [options, setOptions] = useState<T[]>([]);
 
+  const controllerRef = useRef<AbortController | null>(null);
   const loadOptions = useEvent((query) => {
     if (!p) return;
+
+    if (controllerRef.current) controllerRef.current.abort();
 
     const opts = p(query);
     if (Array.isArray(opts)) {
@@ -26,13 +29,25 @@ export function useAsyncOptions<T extends BaseOption>(
       return;
     }
 
+    const controller = new AbortController();
+    controllerRef.current = controller;
+
     if (clearOnQuery) setOptions([]);
     setLoading(true);
     setError(null);
     opts
-      .then((res) => setOptions(res))
-      .catch((e) => setError(e))
-      .finally(() => setLoading(false));
+      .then((res) => {
+        if (controller.signal.aborted) return;
+        setOptions(res);
+      })
+      .catch((e) => {
+        if (controller.signal.aborted) return;
+        setError(e);
+      })
+      .finally(() => {
+        if (controller.signal.aborted) return;
+        setLoading(false);
+      });
   });
 
   return useMemo(() => ({ loading, error, options, loadOptions }), [error, loadOptions, loading, options]);
