@@ -32,7 +32,7 @@ export default function SmartSelect() {
           new Promise<typeof options>((res) => {
             setTimeout(() => {
               res(options);
-            }, 2000);
+            }, 0);
           })
         }
         value={value}

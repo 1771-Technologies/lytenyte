@@ -12,6 +12,8 @@ export interface SmartSelectContext {
   readonly onOptionSelect: (b: BaseOption) => void;
   readonly onOptionsChange: (b: BaseOption[]) => void;
 
+  readonly rtl: boolean;
+
   readonly trigger: HTMLElement | null;
   readonly setTrigger: Dispatch<SetStateAction<HTMLElement | null>>;
 

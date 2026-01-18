@@ -1,5 +1,6 @@
-import { useMemo, useRef, type Dispatch, type JSX, type SetStateAction } from "react";
+import { useMemo, type Dispatch, type JSX, type SetStateAction } from "react";
 import { useSmartSelect } from "../context.js";
+import type { BaseOption } from "../type.js";
 
 export function useComboControls(setActiveChip: Dispatch<SetStateAction<string | null>>, isMulti: boolean) {
   const {
@@ -11,10 +12,12 @@ export function useComboControls(setActiveChip: Dispatch<SetStateAction<string |
     setActiveId,
     container,
     onQueryChange,
+    onOptionsChange,
     trigger,
+    kindAndValue: { value },
+    rtl,
   } = useSmartSelect();
 
-  const direction = useRef(null as unknown as string);
   return useMemo(() => {
     return {
       onClick: () => {
@@ -56,10 +59,20 @@ export function useComboControls(setActiveChip: Dispatch<SetStateAction<string |
         }
 
         if (isMulti && query.length === 0) {
-          if (!direction.current) {
-            direction.current = getComputedStyle(e.target as HTMLElement).direction;
+          const key = rtl ? "ArrowRight" : "ArrowLeft";
+
+          if (e.key === "Backspace") {
+            const chips = Array.from(
+              trigger!.querySelectorAll("[data-ln-smart-select-chip]"),
+            ) as HTMLElement[];
+
+            const lastChip = chips.at(-1);
+            if (!lastChip) return;
+
+            const id = lastChip.getAttribute("data-ln-smart-select-chip");
+            onOptionsChange((value as BaseOption[]).filter((x) => x.id !== id));
+            return;
           }
-          const key = direction.current === "ltr" ? "ArrowLeft" : "ArrowRight";
 
           if (e.key === key) {
             const chips = Array.from(
@@ -132,13 +145,16 @@ export function useComboControls(setActiveChip: Dispatch<SetStateAction<string |
     container,
     isMulti,
     onOpenChange,
+    onOptionsChange,
     onQueryChange,
     open,
     openOnClick,
     preventNextOpen,
     query,
+    rtl,
     setActiveChip,
     setActiveId,
     trigger,
+    value,
   ]);
 }

@@ -35,10 +35,18 @@ export type SmartSelectRootProps<T extends BaseOption> = {
 export function SmartSelectRoot<T extends BaseOption>(p: SmartSelectRootProps<T>) {
   const [open, setOpen] = useControlled({ controlled: p.open, default: false });
   const [query, setQuery] = useControlled({ controlled: (p as any).query as string, default: "" });
-
   const [triggerEl, setTriggerEl] = useState<HTMLElement | null>(null);
   const [activeId, setActiveId] = useState<null | string>(null);
   const [containerEl, setContainerEl] = useState<HTMLElement | null>(null);
+
+  const [rtl, setRtl] = useState(false);
+  const triggerRef = useCallback((el: HTMLElement | null) => {
+    setTriggerEl(el);
+    if (!el) return;
+
+    const style = getComputedStyle(el);
+    setRtl(style.direction === "rtl");
+  }, []);
 
   const onOpenChange = useEvent((b: boolean) => {
     setOpen(b);
@@ -144,7 +152,8 @@ export function SmartSelectRoot<T extends BaseOption>(p: SmartSelectRootProps<T>
       kindAndValue: { kind: p.kind, value: p.value } as any,
 
       trigger: triggerEl,
-      setTrigger: setTriggerEl,
+      setTrigger: triggerRef as any,
+      rtl,
 
       activeId: activeId,
       setActiveId: setActiveId,
@@ -174,7 +183,9 @@ export function SmartSelectRoot<T extends BaseOption>(p: SmartSelectRootProps<T>
     p.openOnClick,
     p.value,
     query,
+    rtl,
     triggerEl,
+    triggerRef,
   ]);
 
   const lightDismiss = useCallback((el: HTMLElement) => {

@@ -30,19 +30,19 @@ function MultiComboBase(
   const [activeChip, setActiveChip] = useState<string | null>(null);
   const controls = useComboControls(setActiveChip, true);
 
-  const forwardRef = useRef<HTMLInputElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const slot = useSlot({
     props: [controls],
     slot: renderInput ?? <input />,
-    ref: forwardRef,
+    ref: inputRef,
     state: { query, onChange: controls.onChange, loading: comboState.loading, error: comboState.error },
   });
 
   const combined = useCombinedRefs(setTrigger, ref);
 
   return (
-    <ChipContextProvider value={useMemo(() => ({ activeChip }), [activeChip])}>
+    <ChipContextProvider value={useMemo(() => ({ activeChip, setActiveChip, inputRef }), [activeChip])}>
       <div
         {...p}
         ref={combined}
@@ -50,7 +50,7 @@ function MultiComboBase(
         onBlur={() => setActiveChip(null)}
         onClick={() => {
           controls.onClick();
-          forwardRef.current?.focus();
+          inputRef.current?.focus();
         }}
       >
         {children}
