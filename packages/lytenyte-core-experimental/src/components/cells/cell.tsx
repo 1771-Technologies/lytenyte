@@ -105,6 +105,7 @@ const CellImpl = memo(
           data-ln-gridid={id}
           data-ln-cell
           data-ln-edit-active={willDisplayEdit || undefined}
+          data-ln-edit-valid={rowMeta.editValidation == null ? undefined : rowMeta.editValidation === true}
           data-ln-last-top-pin={cell.rowLastPinTop}
           data-ln-first-bottom-pin={cell.rowFirstPinBottom}
           data-ln-last-start-pin={cell.colLastStartPin}
@@ -123,6 +124,7 @@ const CellImpl = memo(
               row={row}
               layout={cell}
               editData={rowMeta.editData}
+              editValidation={rowMeta.editValidation!}
               editValue={api.columnField(column, { ...row, data: rowMeta.editData })}
             />
           )}

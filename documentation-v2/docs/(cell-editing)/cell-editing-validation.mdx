@@ -34,15 +34,37 @@ to begin editing. When the value is less than 0, a tooltip with the error will b
 
 ::demo[Edit Validation="./demos/cell-editing-edit-validation"]
 
-### Validation With Zod
+The code in the demo validates the **Price** column's value by checking if it is less than 0, as shown
+below. The `editRowValidatorFn` can be used to validate any type of data, using any type of validation
+library.
 
-The [Zod library](https://zod.dev/) is an open source TypeScript validation library. You can
-use Zod in your `editRowValidatorFn` function to ensure row edits are valid. Zod is particularly
-useful for ensuring type safety of your validation functions.
+```tsx
+<Grid
+  rowHeight={50}
+  columns={columns}
+  rowSource={ds}
+  slotShadows={ViewportShadows}
+  editMode="cell"
+  //!next 10
+  editRowValidatorFn={useCallback<Required<Grid.Props<GridSpec>>["editRowValidatorFn"]>((p) => {
+    if (typeof p.editData !== "object") return false;
 
-The demo below demonstrates how to use Zod to validate the edits to the cells in the **Price** column.
+    const data = p.editData as Record<string, number>;
+    if (data.price <= 0) {
+      return { price: "Price must be greater than 0." };
+    }
 
-::demo[Zod Edit Validation="./demos/cell-editing-edit-zod"]
+    return true;
+  }, [])}
+/>
+```
+
+:::tip
+
+[Zod](https://zod.dev/) is a TypeScript first schema validation library that has grown in popularity.
+Consider using Zod to validate your cell edits, which will give the added benefit of type safety.
+
+:::
 
 ## Next Steps
 

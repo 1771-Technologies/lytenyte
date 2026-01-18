@@ -20,6 +20,7 @@ export function useRowContextValue(row: LayoutRowWithCells, ctx: RootContextValu
   const isEditing = edit.activeEdit.useValue((x) => x?.rowId === row.id);
   const editColumn = edit.activeEdit.useValue((x) => (isEditing ? x!.column! : null));
   const editValue = edit.editData.useValue((x) => (isEditing ? x : null));
+  const editValidation = edit.editValidation.useValue((x) => (isEditing ? x : null));
 
   const detailExpanded = row && detailExpansions.has(row.id);
   const detailHeight = !detailExpanded
@@ -39,6 +40,7 @@ export function useRowContextValue(row: LayoutRowWithCells, ctx: RootContextValu
       detailHeight,
 
       isEditing,
+      editValidation,
       editColumn,
       editData: editValue,
       cancel: edit.cancel,
@@ -55,6 +57,7 @@ export function useRowContextValue(row: LayoutRowWithCells, ctx: RootContextValu
     edit.commit,
     editColumn,
     editValue,
+    editValidation,
     isEditing,
     detailExpanded,
     detailExpansions,

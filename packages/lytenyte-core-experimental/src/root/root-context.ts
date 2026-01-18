@@ -115,6 +115,7 @@ export interface EditContext {
   readonly activeEdit: PieceWritable<null | { readonly rowId: string; readonly column: string }>;
   readonly activeRow: Piece<string | null>;
   readonly editData: PieceWritable<any>;
+  readonly editValidation: Piece<boolean | Record<string, unknown>>;
 
   readonly changeValue: (value: any) => boolean | Record<string, unknown>;
   readonly changeWithInit: (value: any, row: RowNode<any>, column: ColumnAbstract) => any;

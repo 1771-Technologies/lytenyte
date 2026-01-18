@@ -56,6 +56,7 @@ export interface EditParams<Spec extends GridSpec = GridSpec> extends CellParams
   readonly editValue: unknown;
   readonly changeValue: (value: unknown) => boolean | Record<string, unknown>;
   readonly editData: unknown;
+  readonly editValidation: boolean | Record<string, unknown>;
   readonly changeData: (data: unknown) => boolean | Record<string, unknown>;
   readonly commit: () => boolean | Record<string, unknown>;
   readonly cancel: () => void;

@@ -26,10 +26,33 @@ have keys of two types:
 When providing a `number` key, LyteNyte Grid will resolve the row index to its
 row ID. avoid setting both the row index and row ID for the same row in the map.
 
-The demo below uses teh `editUpdate` method to randomly update rows in bulk.
-The demo shows the basic functionality.
+The demo below uses the `editUpdate` method to update the **Price** column in
+bulk.
 
-TODO Demo
+::demo[Bulk Cell Editing="./demos/cell-editing-bulk"]
+
+The two buttons, **Increase Price** and **Decrease Price**, both leverage the grid's API
+to create a bulk update that will increase or decrease the price of every row by 10, respectively.
+The code is shown below for increasing the price. Notice that a new map for the update is created,
+then the `editUpdate` method is used to update the rows via LyteNyte Grid's edit functionality.
+
+```tsx
+<button
+  //!next 9
+  onClick={() => {
+    const update = new Map(
+      data.map((x, i) => {
+        return [i, { ...x, price: x.price + 10 }];
+      }),
+    );
+
+    apiRef.current?.editUpdate(update);
+  }}
+>
+  Increase Price (+10)
+  <ArrowUpIcon />
+</button>
+```
 
 ### Bulk Update Vs Direct Row Update
 

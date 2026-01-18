@@ -17,6 +17,7 @@ export interface RowMeta {
 
   readonly isEditing: boolean;
   readonly editData: any;
+  readonly editValidation: null | boolean | Record<string, unknown>;
   readonly editColumn: string | null | undefined;
 
   readonly detailHeight: number;

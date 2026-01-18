@@ -149,7 +149,11 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
             if (e.key === "Enter") {
               const active = document.activeElement as HTMLElement | null;
               const focusable = active ? getNearestFocusable(id, active) : null;
+
               if (focusable) {
+                const validation = edit.editValidation.get();
+                if (validation !== true) return;
+
                 const rowIndex = Number.parseInt(focusable.getAttribute("data-ln-rowindex")!);
                 if (rowCount - 1 == rowIndex) {
                   runWithBackoff(() => {

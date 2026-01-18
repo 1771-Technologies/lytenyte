@@ -1,4 +1,5 @@
 //#start
+import "@1771technologies/lytenyte-pro-experimental/components.css";
 import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
 import type { OrderData } from "@1771technologies/grid-sample-data/orders";
 import { data as initialData } from "@1771technologies/grid-sample-data/orders";
@@ -11,8 +12,19 @@ import {
   ProductCell,
   PurchaseDateCell,
 } from "./components.jsx";
-import { useClientDataSource, Grid, ViewportShadows } from "@1771technologies/lytenyte-pro-experimental";
+import {
+  useClientDataSource,
+  Grid,
+  ViewportShadows,
+  Popover,
+} from "@1771technologies/lytenyte-pro-experimental";
 import { useCallback, useState } from "react";
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function tw(...c: ClassValue[]) {
+  return twMerge(clsx(...c));
+}
 
 export interface GridSpec {
   readonly data: OrderData;
@@ -72,7 +84,9 @@ export default function Demo() {
           if (typeof p.editData !== "object") return false;
 
           const data = p.editData as Record<string, number>;
-          if (data.price <= 0) return { price: "Price must be greater than 0." };
+          if (data.price <= 0) {
+            return { price: "Price must be greater than 0." };
+          }
 
           return true;
         }, [])}
@@ -91,16 +105,45 @@ function TextCellEditor({ changeValue, editValue }: Grid.T.EditParams<GridSpec>)
   );
 }
 
-function NumberEditor({ changeValue, editValue }: Grid.T.EditParams<GridSpec>) {
+function NumberEditor({ changeValue, editValue, editValidation, column }: Grid.T.EditParams<GridSpec>) {
+  const valid = typeof editValidation === "boolean" ? editValidation : !editValidation[column.id];
+  const errorMessage =
+    typeof editValidation === "boolean"
+      ? "Invalid number input."
+      : ((editValidation[column.id] as string) ?? "Invalid number input.");
+
+  const [anchor, setAnchor] = useState<HTMLElement | null>(null);
+
   return (
-    <input
-      className="focus:outline-ln-primary-50 h-full w-full px-2"
-      value={`${editValue}`} //!
-      onChange={(e) => {
-        const value = getNumberValue(e.target.value); //!
-        changeValue(value || 0); //!
-      }}
-    />
+    <>
+      <Popover
+        anchor={anchor}
+        placement="top"
+        hide
+        open={!valid}
+        modal={false}
+        lockScroll={false}
+        focusTrap={false}
+      >
+        <Popover.Container>
+          <Popover.Arrow />
+          {errorMessage}
+        </Popover.Container>
+      </Popover>
+
+      <input
+        className={tw(
+          "focus:outline-ln-primary-50 h-full w-full px-2",
+          !valid && "bg-ln-red-30 focus:outline-ln-red-50",
+        )}
+        value={`${editValue}`} //!
+        ref={setAnchor}
+        onChange={(e) => {
+          const value = getNumberValue(e.target.value); //!
+          changeValue(value || 0); //!
+        }}
+      />
+    </>
   );
 }
 
