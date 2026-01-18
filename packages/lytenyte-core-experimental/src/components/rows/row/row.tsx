@@ -13,7 +13,7 @@ import { useInternalShare } from "../../../internal.js";
 
 const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...props }, forwarded) {
   const ctx = useRoot();
-  const { id, yPositions, xPositions, view, editMode, events, styles: sx, api } = ctx;
+  const { id, yPositions, xPositions, view, events, styles: sx, api } = ctx;
 
   const container = useRowsContainerContext();
 
@@ -48,22 +48,9 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
     <RowContext.Provider value={rowMeta}>
       <div
         className={sx?.row?.className}
-        {...props}
         {...handlers}
+        {...props}
         role="row"
-        onBlur={
-          !rowMeta.isEditing || editMode !== "row"
-            ? (props.onBlur ?? handlers.onBlur)
-            : (ev) => {
-                (props.onBlur ?? handlers.onBlur)?.(ev);
-
-                if (ev.currentTarget !== ev.relatedTarget && ev.currentTarget.contains(ev.relatedTarget))
-                  return;
-
-                rowMeta.commit();
-                return;
-              }
-        }
         ref={forwarded}
         style={styles}
         // Data Attributes

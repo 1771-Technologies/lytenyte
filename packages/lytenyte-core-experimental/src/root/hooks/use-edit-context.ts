@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { usePiece } from "../../hooks/use-piece.js";
 import type { ColumnAbstract, RowNode } from "@1771technologies/lytenyte-shared";
 import { type ColumnView, type RowSource } from "@1771technologies/lytenyte-shared";
@@ -11,6 +11,7 @@ export function useEditContext(view: ColumnView, api: Root.API, props: Root.Prop
     readonly rowId: string;
     readonly column: string;
   }>(null);
+
   const activeEdit = usePiece(activeEditState, setActiveEdit);
   const activeRow = usePiece(activeEditState?.rowId ?? null);
 
@@ -34,6 +35,11 @@ export function useEditContext(view: ColumnView, api: Root.API, props: Root.Prop
 
     return nextData;
   });
+
+  const activeEditStateRef = useRef(activeEditState);
+  const editDataStateRef = useRef(editDataState);
+  activeEditStateRef.current = activeEditState;
+  editDataStateRef.current = editDataState;
 
   const changeValue = useEvent((value: any) => {
     if (!activeEditState) return false;
@@ -86,6 +92,9 @@ export function useEditContext(view: ColumnView, api: Root.API, props: Root.Prop
   });
 
   const commit = useEvent(() => {
+    const activeEditState = activeEditStateRef.current;
+    const editDataState = editDataStateRef.current;
+
     if (!activeEditState) return false;
 
     const column = view.lookup.get(activeEditState.column);

@@ -5,7 +5,7 @@ export type BaseOption = {
 
 export type BasicSelect<T extends BaseOption> = {
   readonly kind: "basic";
-  readonly value: T;
+  readonly value: T | null;
   readonly onOptionChange: (change: T | null) => void;
   readonly options: T[];
 };
@@ -18,7 +18,7 @@ export type MultiSelect<T extends BaseOption> = {
 
 export type ComboSelect<T extends BaseOption> = {
   readonly kind: "combo";
-  readonly value: T;
+  readonly value: T | null;
   readonly onOptionChange: (change: T | null) => void;
 
   readonly queryValue?: string;

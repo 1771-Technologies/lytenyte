@@ -61,8 +61,8 @@ const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function
   return (
     <div
       className={styles?.row?.className}
-      {...props}
       {...handlers}
+      {...props}
       role="row"
       /** Data attributes start */
       data-ln-gridid={id}

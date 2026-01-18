@@ -48,6 +48,7 @@ export interface CellRendererParams<Spec extends GridSpec = GridSpec> extends Ce
   readonly selected: boolean;
   readonly indeterminate: boolean;
   readonly detailExpanded: boolean;
+  readonly editData: unknown;
   readonly layout: LayoutCell;
 }
 
@@ -76,6 +77,7 @@ interface ColumnUnextended<Spec extends GridSpec = GridSpec> extends ColumnAbstr
   readonly headerRenderer?: (props: HeaderParams<Spec>) => ReactNode;
   readonly cellRenderer?: (props: CellRendererParams<Spec>) => ReactNode;
 
+  readonly editOnPrintable?: boolean;
   readonly editRenderer?: (props: EditParams<Spec>) => ReactNode;
   readonly editable?: boolean | ((params: CellParamsWithIndex<Spec>) => boolean);
   readonly editSetter?: (

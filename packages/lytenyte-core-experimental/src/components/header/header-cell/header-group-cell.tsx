@@ -53,8 +53,8 @@ const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(fu
     <div
       className={sx?.headerGroup?.className}
       {...dragProps}
-      {...props}
       {...handlers}
+      {...props}
       onDragStart={dragProps.onDragStart}
       tabIndex={0}
       ref={ref}

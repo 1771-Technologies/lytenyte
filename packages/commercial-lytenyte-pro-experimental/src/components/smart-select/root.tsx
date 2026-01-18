@@ -25,6 +25,9 @@ export type SmartSelectRootProps<T extends BaseOption> = {
 
   readonly openOnClick?: boolean;
 
+  readonly openKeys?: string[];
+  readonly closeKeys?: string[];
+
   readonly trigger: SlotComponent;
   readonly container?: SlotComponent<PropsWithChildren<ComboOptionState<T>>>;
 
@@ -66,7 +69,7 @@ export function SmartSelectRoot<T extends BaseOption>(p: SmartSelectRootProps<T>
 
   const onOptionSelect = useEvent((change: BaseOption) => {
     if (p.kind === "basic" || p.kind === "combo") {
-      const isSelected = p.value.id === change.id;
+      const isSelected = p.value?.id === change.id;
       if (isSelected) p.onOptionChange(null);
       else p.onOptionChange(change as T);
     } else {
@@ -125,7 +128,7 @@ export function SmartSelectRoot<T extends BaseOption>(p: SmartSelectRootProps<T>
     const render = p.children ?? DefaultChildren;
 
     return options.map((x) => {
-      const selected = !!normalizedValue.find((v) => x.id === v.id);
+      const selected = !!normalizedValue.find((v) => x.id === v?.id);
       const active = x.id === activeId;
       return <Fragment key={x.id}>{render({ option: x, selected, active })}</Fragment>;
     });
@@ -159,6 +162,9 @@ export function SmartSelectRoot<T extends BaseOption>(p: SmartSelectRootProps<T>
       setTrigger: triggerRef as any,
       rtl,
 
+      openKeys: p.openKeys ?? [" ", "Enter", "ArrowDown"],
+      closeKeys: p.closeKeys ?? ["Escape"],
+
       activeId: activeId,
       setActiveId: setActiveId,
 
@@ -182,8 +188,10 @@ export function SmartSelectRoot<T extends BaseOption>(p: SmartSelectRootProps<T>
     onOptionsChange,
     onQueryChange,
     open,
+    p.closeKeys,
     p.closeOnSelect,
     p.kind,
+    p.openKeys,
     p.openOnClick,
     p.value,
     query,

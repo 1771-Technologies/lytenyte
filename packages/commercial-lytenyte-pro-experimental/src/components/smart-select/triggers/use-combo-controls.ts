@@ -16,6 +16,8 @@ export function useComboControls(setActiveChip: Dispatch<SetStateAction<string |
     trigger,
     kindAndValue: { value },
     rtl,
+    closeKeys,
+    openKeys,
   } = useSmartSelect();
 
   return useMemo(() => {
@@ -34,21 +36,22 @@ export function useComboControls(setActiveChip: Dispatch<SetStateAction<string |
         if (!open) onOpenChange(true);
       },
       onKeyDown: (e) => {
-        if (e.key === "Escape") {
+        if (!open && openKeys.includes(e.key)) {
           e.preventDefault();
           e.stopPropagation();
-          if (open) onOpenChange(false);
+          onOpenChange(true);
+          return;
+        }
+        if (open && closeKeys.includes(e.key)) {
+          e.preventDefault();
+          e.stopPropagation();
+          onOpenChange(false);
           return;
         }
 
-        if (e.key === "Enter") {
+        if ((e.key === "Enter" || e.key === " ") && open) {
           e.preventDefault();
           e.stopPropagation();
-
-          if (!open) {
-            onOpenChange(true);
-            return;
-          }
 
           const active = container?.querySelector('[data-ln-active="true"]') as HTMLElement;
           if (!active) return;
@@ -115,8 +118,10 @@ export function useComboControls(setActiveChip: Dispatch<SetStateAction<string |
               current = current.previousElementSibling;
           }
 
-          if (current) setActiveId(current.getAttribute("data-ln-smart-option"));
-
+          if (current) {
+            setActiveId(current.getAttribute("data-ln-smart-option"));
+            current.scrollIntoView({ block: "nearest" });
+          }
           return;
         }
         if (e.key === "ArrowDown") {
@@ -135,19 +140,24 @@ export function useComboControls(setActiveChip: Dispatch<SetStateAction<string |
               current = current.nextElementSibling;
           }
 
-          if (current) setActiveId(current.getAttribute("data-ln-smart-option"));
+          if (current) {
+            setActiveId(current.getAttribute("data-ln-smart-option"));
+            current.scrollIntoView({ block: "nearest" });
+          }
 
           return;
         }
       },
     } satisfies JSX.IntrinsicElements["input"];
   }, [
+    closeKeys,
     container,
     isMulti,
     onOpenChange,
     onOptionsChange,
     onQueryChange,
     open,
+    openKeys,
     openOnClick,
     preventNextOpen,
     query,

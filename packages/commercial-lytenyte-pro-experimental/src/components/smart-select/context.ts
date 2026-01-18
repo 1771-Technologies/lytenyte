@@ -6,6 +6,8 @@ export interface SmartSelectContext {
   readonly kindAndValue: SmartSelectKinds<BaseOption>;
   readonly open: boolean;
   readonly onOpenChange: (b: boolean) => void;
+  readonly openKeys: string[];
+  readonly closeKeys: string[];
 
   readonly openOnClick: boolean;
   readonly closeOnSelect: boolean;
