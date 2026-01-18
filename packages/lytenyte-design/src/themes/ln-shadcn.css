@@ -14,8 +14,8 @@
   --ln-gray-90: color-mix(in oklch, var(--background) 10%, var(--foreground));
   --ln-gray-100: var(--foreground);
 
-  --ln-primary-05: color-mix(in oklch, var(--primary) 05%, var(--primary-foreground));
-  --ln-primary-10: color-mix(in oklch, var(--primary) 10%, var(--primary-foreground));
+  --ln-primary-05: color-mix(in oklch, var(--primary) 05%, transparent);
+  --ln-primary-10: color-mix(in oklch, var(--primary) 10%, transparent);
   --ln-primary-30: color-mix(in oklch, var(--primary) 30%, var(--primary-foreground));
   --ln-primary-50: var(--primary);
   --ln-primary-70: color-mix(in oklch, var(--primary) 70%, var(--primary-foreground));
