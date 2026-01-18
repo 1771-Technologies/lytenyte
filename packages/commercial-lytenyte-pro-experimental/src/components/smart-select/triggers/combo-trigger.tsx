@@ -4,6 +4,7 @@ import { useCombinedRefs } from "@1771technologies/lytenyte-core-experimental/in
 import { mergeProps } from "../../../hooks/use-slot/merge-props.js";
 import { useComboControls } from "./use-combo-controls.js";
 
+const noop = () => {};
 function ComboTriggerBase(props: JSX.IntrinsicElements["input"], ref: JSX.IntrinsicElements["input"]["ref"]) {
   const { kindAndValue, setTrigger } = useSmartSelect();
 
@@ -14,7 +15,7 @@ function ComboTriggerBase(props: JSX.IntrinsicElements["input"], ref: JSX.Intrin
   }
 
   const combined = useCombinedRefs(setTrigger, ref);
-  const p = mergeProps(props, useComboControls());
+  const p = mergeProps(props, useComboControls(noop, false));
 
   return <input {...p} ref={combined} data-ln-smart-select-trigger />;
 }

@@ -10,6 +10,7 @@ export interface SmartSelectContext {
   readonly openOnClick: boolean;
   readonly closeOnSelect: boolean;
   readonly onOptionSelect: (b: BaseOption) => void;
+  readonly onOptionsChange: (b: BaseOption[]) => void;
 
   readonly trigger: HTMLElement | null;
   readonly setTrigger: Dispatch<SetStateAction<HTMLElement | null>>;
@@ -24,6 +25,7 @@ export interface SmartSelectContext {
   readonly onQueryChange: (change: string) => void;
 
   readonly comboState: ComboOptionState<BaseOption>;
+  readonly preventNextOpen: { current: boolean };
 }
 
 const context = createContext({} as SmartSelectContext);

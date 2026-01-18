@@ -5,11 +5,20 @@ import { SmartSelectRoot } from "./root.js";
 import { Option } from "./option.js";
 import { SmartSelectContainer } from "./container.js";
 import { MultiComboTrigger } from "./triggers/multi-combo-trigger.js";
+import { Chip } from "./chip.js";
 
 const options = [
-  { id: "x", label: "One" },
-  { id: "y", label: "Two" },
-  { id: "z", label: "Three" },
+  { id: "js", label: "JavaScript" },
+  { id: "ts", label: "TypeScript" },
+  { id: "py", label: "Python" },
+  { id: "java", label: "Java" },
+  { id: "cpp", label: "C++" },
+  { id: "cs", label: "C#" },
+  { id: "php", label: "PHP" },
+  { id: "ruby", label: "Ruby" },
+  { id: "go", label: "Go" },
+  { id: "rust", label: "Rust" },
+  { id: "swift", label: "Swift" },
 ];
 
 export default function SmartSelect() {
@@ -44,7 +53,27 @@ export default function SmartSelect() {
         trigger={
           <MultiComboTrigger>
             {value.map((x) => {
-              return <div>{x.label}</div>;
+              return (
+                <Chip
+                  key={x.id}
+                  option={x}
+                  render={(p) => (
+                    <div>
+                      {x.label}
+
+                      {p.active && "A"}
+
+                      <button
+                        onClick={() => {
+                          p.remove();
+                        }}
+                      >
+                        x
+                      </button>
+                    </div>
+                  )}
+                />
+              );
             })}
           </MultiComboTrigger>
         }

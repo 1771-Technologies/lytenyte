@@ -67,6 +67,11 @@ export function SmartSelectRoot<T extends BaseOption>(p: SmartSelectRootProps<T>
     }
   });
 
+  const onOptionsChange = useEvent((change: BaseOption[]) => {
+    if (p.kind === "basic" || p.kind === "combo") return;
+    p.onOptionChange(change as T[]);
+  });
+
   const optValue = typeof p.options === "function" ? null : p.options;
   const basicSelectOptions = useMemo(() => {
     return optValue ?? [];
@@ -135,6 +140,7 @@ export function SmartSelectRoot<T extends BaseOption>(p: SmartSelectRootProps<T>
       open,
       closeOnSelect: p.closeOnSelect ?? true,
       onOptionSelect,
+      onOptionsChange,
       kindAndValue: { kind: p.kind, value: p.value } as any,
 
       trigger: triggerEl,
@@ -150,6 +156,7 @@ export function SmartSelectRoot<T extends BaseOption>(p: SmartSelectRootProps<T>
       onQueryChange,
 
       openOnClick: p.openOnClick ?? true,
+      preventNextOpen: { current: false },
 
       comboState,
     } satisfies SmartSelectContext;
@@ -159,6 +166,7 @@ export function SmartSelectRoot<T extends BaseOption>(p: SmartSelectRootProps<T>
     containerEl,
     onOpenChange,
     onOptionSelect,
+    onOptionsChange,
     onQueryChange,
     open,
     p.closeOnSelect,

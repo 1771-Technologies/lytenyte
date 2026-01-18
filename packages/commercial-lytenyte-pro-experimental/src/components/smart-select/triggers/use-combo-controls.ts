@@ -1,15 +1,29 @@
-import { useMemo, type JSX } from "react";
+import { useMemo, useRef, type Dispatch, type JSX, type SetStateAction } from "react";
 import { useSmartSelect } from "../context.js";
 
-export function useComboControls() {
-  const { query, open, openOnClick, onOpenChange, setActiveId, container, onQueryChange } = useSmartSelect();
+export function useComboControls(setActiveChip: Dispatch<SetStateAction<string | null>>, isMulti: boolean) {
+  const {
+    query,
+    open,
+    openOnClick,
+    preventNextOpen,
+    onOpenChange,
+    setActiveId,
+    container,
+    onQueryChange,
+    trigger,
+  } = useSmartSelect();
 
+  const direction = useRef(null as unknown as string);
   return useMemo(() => {
     return {
       onClick: () => {
-        if (!open && openOnClick) {
+        if (!open && openOnClick && !preventNextOpen.current) {
           onOpenChange(true);
         }
+      },
+      onFocus: () => {
+        setActiveChip(null);
       },
       value: query,
       onChange: (ev) => {
@@ -39,6 +53,27 @@ export function useComboControls() {
           active.click();
 
           return;
+        }
+
+        if (isMulti && query.length === 0) {
+          if (!direction.current) {
+            direction.current = getComputedStyle(e.target as HTMLElement).direction;
+          }
+          const key = direction.current === "ltr" ? "ArrowLeft" : "ArrowRight";
+
+          if (e.key === key) {
+            const chips = Array.from(
+              trigger!.querySelectorAll("[data-ln-smart-select-chip]"),
+            ) as HTMLElement[];
+
+            const first = chips.at(-1);
+            if (!first) return;
+
+            first.focus();
+            onOpenChange(false);
+            setActiveChip(first.getAttribute("data-ln-smart-select-chip"));
+            return;
+          }
         }
 
         if (e.key === "ArrowDown" && !open) {
@@ -93,5 +128,17 @@ export function useComboControls() {
         }
       },
     } satisfies JSX.IntrinsicElements["input"];
-  }, [container, onOpenChange, onQueryChange, open, openOnClick, query, setActiveId]);
+  }, [
+    container,
+    isMulti,
+    onOpenChange,
+    onQueryChange,
+    open,
+    openOnClick,
+    preventNextOpen,
+    query,
+    setActiveChip,
+    setActiveId,
+    trigger,
+  ]);
 }
