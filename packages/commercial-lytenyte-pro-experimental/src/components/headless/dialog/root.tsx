@@ -118,7 +118,7 @@ export namespace DialogRoot {
     readonly hide?: boolean;
 
     readonly lockScroll?: boolean;
-    readonly lightDismiss?: boolean;
+    readonly lightDismiss?: boolean | ((el: HTMLElement) => boolean);
     readonly modal?: boolean;
     readonly focusTrap?: boolean;
     readonly focusInitial?: FocusTrapOptions["initialFocus"];

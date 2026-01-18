@@ -105,10 +105,16 @@ function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.
       const x = pos.middlewareData.transformOrigin.x;
       const y = pos.middlewareData.transformOrigin.y;
 
-      dialog.style.transformOrigin = `${x} ${y}`;
+      const anchorBB = anchorEl.getBoundingClientRect();
 
-      dialog.style.top = `${pos.y}px`;
-      dialog.style.left = `${pos.x}px`;
+      Object.assign(dialog.style, {
+        top: `${pos.y}px`,
+        left: `${pos.x}px`,
+        transformOrigin: `${x} ${y}`,
+      });
+
+      dialog.style.setProperty("--ln-anchor-width", `${anchorBB.width}px`);
+      dialog.style.setProperty("--ln-anchor-height", `${anchorBB.height}px`);
 
       if (arrowEl) {
         const { x, y } = pos.middlewareData.arrow ?? {};
@@ -191,6 +197,11 @@ function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.
           ) {
             ev.stopPropagation();
             ev.stopImmediatePropagation();
+
+            if (typeof lightDismiss === "function") {
+              const res = lightDismiss(ev.target as HTMLElement);
+              if (!res) return;
+            }
             setTimeout(() => onOpenChange(false));
           }
         },
