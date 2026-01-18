@@ -1,0 +1,13 @@
+{
+  "title": "Paginated Row Source",
+  "pages": [
+    "paginated-rs-overview",
+    "paginated-rs-row-data",
+    "paginated-rs-row-sorting",
+    "paginated-rs-row-filtering",
+    "paginated-rs-row-editing",
+    "paginated-rs-row-adding",
+    "paginated-rs-row-deleting",
+    "paginated-rs-handling-load-failures"
+  ]
+}

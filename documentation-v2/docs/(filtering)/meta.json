@@ -4,9 +4,9 @@
     "filtering-text",
     "filtering-numbers",
     "filtering-dates",
-    "filtering-labels",
-    "filtering-tree-filters",
-    "filtering-quick-search"
+    "filtering-set-filters",
+    "filtering-quick-search",
+    "filtering-best-practices"
   ],
   "defaultOpen": true
 }

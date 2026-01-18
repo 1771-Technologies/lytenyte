@@ -1,0 +1,13 @@
+{
+  "title": "Infinite Row Source",
+  "pages": [
+    "infinite-rs-overview",
+    "infinite-rs-row-data",
+    "infinite-rs-row-sorting",
+    "infinite-rs-row-filtering",
+    "infinite-rs-row-editing",
+    "infinite-rs-row-adding",
+    "infinite-rs-row-deleting",
+    "infinite-rs-handling-load-failures"
+  ]
+}
