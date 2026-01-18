@@ -13,6 +13,8 @@ export function useSelectControls(isMulti: boolean, setActiveChip: (s: string | 
     trigger,
     onOptionsChange,
     kindAndValue: { value },
+    openKeys,
+    closeKeys,
   } = useSmartSelect();
 
   return useMemo(() => {
@@ -21,34 +23,28 @@ export function useSelectControls(isMulti: boolean, setActiveChip: (s: string | 
         if (!open && openOnClick) onOpenChange(true);
       },
       onKeyDown: (e) => {
-        if (e.key === " " || e.key === "Enter") {
+        if (!open && openKeys.includes(e.key)) {
           e.preventDefault();
           e.stopPropagation();
+          onOpenChange(true);
+          return;
+        }
+        if (open && closeKeys.includes(e.key)) {
+          e.preventDefault();
+          e.stopPropagation();
+          onOpenChange(false);
+          return;
+        }
 
-          if (!open) {
-            onOpenChange(true);
-            return;
-          }
+        if ((e.key === "Enter" || e.key === " ") && open) {
+          e.preventDefault();
+          e.stopPropagation();
 
           const active = container?.querySelector('[data-ln-active="true"]') as HTMLElement;
           if (!active) return;
 
           active.click();
 
-          return;
-        }
-
-        if (e.key === "Escape") {
-          e.preventDefault();
-          e.stopPropagation();
-          if (open) onOpenChange(false);
-          return;
-        }
-
-        if (e.key === "ArrowDown" && !open) {
-          e.preventDefault();
-          e.stopPropagation();
-          onOpenChange(true);
           return;
         }
 
@@ -129,11 +125,13 @@ export function useSelectControls(isMulti: boolean, setActiveChip: (s: string | 
       },
     } satisfies JSX.IntrinsicElements["button"];
   }, [
+    closeKeys,
     container,
     isMulti,
     onOpenChange,
     onOptionsChange,
     open,
+    openKeys,
     openOnClick,
     rtl,
     setActiveChip,

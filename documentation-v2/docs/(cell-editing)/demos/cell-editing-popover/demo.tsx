@@ -1,4 +1,5 @@
 //#start
+import "@1771technologies/lytenyte-pro-experimental/components.css";
 import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
 import type { OrderData } from "@1771technologies/grid-sample-data/orders";
 import { data as initialData } from "@1771technologies/grid-sample-data/orders";
@@ -11,7 +12,12 @@ import {
   ProductCell,
   PurchaseDateCell,
 } from "./components.jsx";
-import { useClientDataSource, Grid, ViewportShadows } from "@1771technologies/lytenyte-pro-experimental";
+import {
+  useClientDataSource,
+  Grid,
+  ViewportShadows,
+  SmartSelect,
+} from "@1771technologies/lytenyte-pro-experimental";
 import { useState } from "react";
 
 export interface GridSpec {
@@ -59,11 +65,66 @@ export default function Demo() {
   );
 }
 
-function ProductSelect({ changeValue, editValue }: Grid.T.EditParams<GridSpec>) {
+const options = initialData.map((x) => ({
+  id: x.product,
+  product: x.product,
+  productThumbnail: x.productThumbnail,
+  price: x.price,
+  productDescription: x.productDescription,
+}));
+
+function ProductSelect({ changeData, editValue, editData }: Grid.T.EditParams<GridSpec>) {
+  const value = options.find((x) => x.id === editValue) ?? null;
+
+  const [open, setOpen] = useState(false);
+
   return (
-    <select className="focus:outline-ln-primary-50 h-full w-full px-2">
-      <option>Alpha</option>
-      <option>Beta</option>
-    </select>
+    <SmartSelect
+      kind="basic"
+      options={options}
+      open={open}
+      onOpenChange={setOpen}
+      openKeys={[" "]}
+      trigger={
+        <SmartSelect.BasicTrigger
+          className="focus:outline-ln-primary-50 flex h-full w-full items-center gap-2"
+          autoFocus
+          onFocus={() => setOpen(true)}
+        >
+          {value?.productThumbnail && (
+            <img
+              className="border-ln-border-strong h-7 w-7 rounded-lg border"
+              src={value.productThumbnail}
+              alt={value.id}
+            />
+          )}
+          {editValue as string}
+        </SmartSelect.BasicTrigger>
+      }
+      value={value}
+      onOptionChange={(p) => {
+        if (!p) return;
+        changeData({
+          ...(editData as Record<string, unknown>),
+          product: p.product,
+          price: p.price,
+          productThumbnail: p.productThumbnail,
+          productDescription: p.productDescription,
+        });
+      }}
+    >
+      {(p) => {
+        return (
+          <SmartSelect.Option key={p.option.id} {...p} className="flex items-center gap-2">
+            <img
+              className="border-ln-border-strong flex h-7 w-7 rounded-lg border"
+              src={p.option.productThumbnail}
+              alt={p.option.id}
+            />
+            <div>{p.option.product}</div>
+          </SmartSelect.Option>
+        );
+      }}
+    </SmartSelect>
   );
 }
