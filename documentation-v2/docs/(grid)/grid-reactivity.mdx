@@ -79,7 +79,9 @@ properties as either controlled or uncontrolled. These properties include:
 
 When one of these properties updates, the grid calls the corresponding change handler (if you provide one).
 For example, you can make row detail expansions **controlled** by providing both `rowDetailExpansions`
-and `onRowDetailExpansionsChange` props to the grid. As demonstrated in the demo below:
+and `onRowDetailExpansionsChange` props to the grid.
+
+As demonstrated in the demo below:
 
 ::demo[Controlled Row Detail Expansions="./demos/grid-reactivity-controlled-state"]
 
@@ -100,7 +102,7 @@ behavior is similar to setting the `value` prop on an `input` element without a 
 ```
 
 One exception is the `columns` property, which is always controlled. If you want the grid
-to update columns you must provide an `onColumnsChange` handler.
+to update columns, you must provide an `onColumnsChange` handler.
 
 :::
 

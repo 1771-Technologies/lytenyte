@@ -54,8 +54,10 @@ see the [Getting Started guide](/docs/intro-getting-started).
 The code below offers a high-level overview of the individual parts of
 the grid component anatomy. Treat this example as a general outline of the grid structure.
 
-The **Header Mode** has two variants, one variant renders only the top-level containers, and the fully rendered
-variant renders every cell.
+Apart from the LyteNyte grid's default mode, **Headless Mode** has two variants:
+
+- **Headless Mode:** A variant that only renders the top-level containers.
+- **Full Headless Mode:** A fully rendered variant that renders every cell.
 
 <Tabs>
 
@@ -76,7 +78,7 @@ variant renders every cell.
 
 </Tab>
 
-<Tab label="Headless Mode Full">
+<Tab label="Full Headless Mode">
 
 ```tsx
 <Grid>
@@ -316,19 +318,22 @@ An updated example is shown below:
 
 ## Top, Center, and Bottom Rows
 
-LyteNyte Grid splits rows into three component sections:
+`Grid.RowsContainer` is the parent for all grid rows. LyteNyte Grid splits rows into three component sections:
 
-- **Grid.RowsTop:** For rows that are frozen to the top of the viewport, after the header. These rows remain visible even
-  as the user scrolls the viewport.
-- **Grid.RowsCenter:** For scrollable rows that render after the top rows.
-- **Grid.RowsBottom:** For rows that are frozen to the bottom of the viewport. These rows remain visible even as the user
-  scrolls the viewport.
+- `Grid.RowsTop`: Rows that are pinned to the top of the viewport, after the header.
+- `Grid.RowsCenter`: Scrollable rows that render after the top rows.
+- `Grid.RowsBottom`: Rows that are pinned to the bottom of the viewport.
 
-Each section component accepts an optional render prop as `children`, which allows more fine-grained control over
-how rows and cells render. Like `Grid.Header`, this approach gives you two ways to render rows.
+Each section component accepts an optional render prop as children, giving you more fine-grained
+control over how rows and cells render. Like `Grid.Header`,
+this approach provides two ways to render rows:
 
-The default (and simplest) approach renders the row section components without providing a render prop, as shown
-below. This structure matches the default mode, so it is equivalent to rendering `<Grid />`.
+- **Without a Render Prop:** Default mode and the simplest approach that
+  renders the row section without a render prop
+- **With a Render Prop:** Provide a render prop as children to
+  a row section component to gain more control over row rendering.
+
+The code snippet below demonstrates the default mode structure, so its equivalent to rendering `<Grid />`.
 
 ```tsx
 <Grid>
@@ -345,9 +350,6 @@ below. This structure matches the default mode, so it is equivalent to rendering
 ```
 
 ### Rows Render Prop
-
-To take more control over row rendering, provide a render prop as `children` to a row section component.
-The example below shows this approach.
 
 The render prop receives a [`LayoutRow`](/docs/reference) item. Each `LayoutRow` describes the type of row to render, along
 with properties such as `rowIndex` and `rowPin`. You can use these values to apply row-specific logic.
