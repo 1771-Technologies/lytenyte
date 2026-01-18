@@ -23,7 +23,7 @@ const [under30, under50, over50] = Object.values(
 const finalData = [
   { id: "full-width", label: "Under 30 Years Old" } as unknown as BankData,
   ...under30,
-  { id: "full-width", label: "Between 30 and 50 Years Old" } as unknown as BankData,
+  { id: "full-width", label: "Between 30 and 49 Years Old" } as unknown as BankData,
   ...under50,
   { id: "full-width", label: "Over 50 Years Old" } as unknown as BankData,
   ...over50,

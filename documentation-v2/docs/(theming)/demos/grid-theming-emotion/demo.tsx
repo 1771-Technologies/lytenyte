@@ -54,6 +54,9 @@ const HeaderCell = styled(Grid.HeaderCell)`
 `;
 
 export default function GridTheming() {
+  const [selections, setSelections] = useState<Grid.T.DataRect[]>([
+    { rowStart: 1, rowEnd: 3, columnStart: 1, columnEnd: 3 },
+  ]);
   const ds = useClientDataSource({ data: data });
   const [theme, setTheme] = useState("ln-dark");
   const cache = useMemo(() => {
@@ -73,7 +76,15 @@ export default function GridTheming() {
             colorScheme: theme.includes("light") || theme === "ln-cotton-candy" ? "light" : "dark",
           }}
         >
-          <Grid rowHeight={50} columns={columns} rowSource={ds} slotShadows={ViewportShadows}>
+          <Grid
+            rowHeight={50}
+            columns={columns}
+            rowSource={ds}
+            slotShadows={ViewportShadows}
+            cellSelections={selections}
+            onCellSelectionChange={setSelections}
+            cellSelectionMode="range"
+          >
             <Grid.Viewport>
               <Grid.Header>
                 {(cells) => {

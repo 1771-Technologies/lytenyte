@@ -21,6 +21,7 @@ export function expandSelectionDown(
     const nextSelections = [...selections];
     nextSelections[nextSelections.length - 1] = next;
     setSelections(nextSelections);
+    api.scrollIntoView({ row: rowCount - 1 });
     return;
   }
 
@@ -51,6 +52,7 @@ export function expandSelectionDown(
       }
     }
 
+    api.scrollIntoView({ row: highestRowEnd });
     next = {
       ...rect,
       rowStart: highestRowEnd,
@@ -58,20 +60,25 @@ export function expandSelectionDown(
       columnEnd: Math.max(setCell.columnEnd, rect.columnEnd),
     };
   } else {
-    if (rect.rowEnd === rowCount) return;
-
+    // Move the rect level down by one.
     let highestRowEnd = -Infinity;
     let setCell: DataRect = rect;
-    for (let i = rect.columnStart; i < rect.columnEnd; i++) {
-      const cell = dataRectFromCellPosition(api.cellRoot(rect.rowEnd, i) as PositionGridCell);
-      highestRowEnd = Math.max(cell.rowEnd, highestRowEnd);
 
-      if (cell.rowEnd > highestRowEnd) {
-        setCell = cell;
-        highestRowEnd = cell.rowEnd;
+    if (rect.rowEnd >= rowCount) {
+      highestRowEnd = rowCount;
+    } else {
+      for (let i = rect.columnStart; i < rect.columnEnd; i++) {
+        const cell = dataRectFromCellPosition(api.cellRoot(rect.rowEnd, i) as PositionGridCell);
+        highestRowEnd = Math.max(cell.rowEnd, highestRowEnd);
+
+        if (cell.rowEnd > highestRowEnd) {
+          setCell = cell;
+          highestRowEnd = cell.rowEnd;
+        }
       }
     }
 
+    api.scrollIntoView({ row: highestRowEnd - 1 });
     next = {
       ...rect,
       rowEnd: highestRowEnd,

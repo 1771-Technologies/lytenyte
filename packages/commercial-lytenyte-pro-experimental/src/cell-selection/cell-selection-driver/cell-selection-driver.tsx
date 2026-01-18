@@ -289,14 +289,7 @@ export function CellSelectionDriver() {
 
       let handled = false;
       if (ev.key === "ArrowUp") {
-        expandSelectionUp(
-          api,
-          cellSelections,
-          onCellSelectionChange,
-          ev.ctrlKey || ev.metaKey,
-          position,
-          rowCount,
-        );
+        expandSelectionUp(api, cellSelections, onCellSelectionChange, ev.ctrlKey || ev.metaKey, position);
         handled = true;
       } else if (ev.key === "ArrowDown") {
         expandSelectionDown(

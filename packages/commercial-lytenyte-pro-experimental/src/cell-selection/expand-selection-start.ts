@@ -22,6 +22,7 @@ export function expandSelectionStart(
     const nextSelections = [...selections];
     nextSelections[nextSelections.length - 1] = next;
     setSelections(nextSelections);
+    api.scrollIntoView({ column: first });
     return;
   }
 
@@ -59,6 +60,7 @@ export function expandSelectionStart(
       rowStart: Math.min(setCell!.rowStart, rect.rowStart),
       rowEnd: Math.max(setCell.rowEnd, rect.rowEnd),
     };
+    api.scrollIntoView({ column: highestColEnd });
   } else {
     let highestColEnd = -Infinity;
     let setCell: DataRect = rect;
@@ -76,6 +78,7 @@ export function expandSelectionStart(
       rowStart: Math.min(setCell!.rowStart, rect.rowStart),
       rowEnd: Math.max(setCell.rowEnd, rect.rowEnd),
     };
+    api.scrollIntoView({ column: highestColEnd - 1 });
   }
 
   const nextSelections = [...selections];
