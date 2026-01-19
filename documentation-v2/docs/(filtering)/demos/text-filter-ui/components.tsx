@@ -1,8 +1,7 @@
 import { format } from "date-fns";
-import { useId, type CSSProperties, type JSX, type ReactNode } from "react";
+import { type JSX, type ReactNode } from "react";
 import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
 import type { GridSpec } from "./demo.jsx";
-import { Switch } from "radix-ui";
 
 export function ProductCell({ api, row }: Grid.T.CellRendererParams<GridSpec>) {
   if (!api.rowIsLeaf(row) || !row.data) return;

@@ -1,6 +1,7 @@
 import { useMemo, type JSX } from "react";
 import { useSmartSelect } from "../context.js";
 import type { BaseOption } from "../type.js";
+import { isSelectableOption } from "./is-selectable-option.js";
 
 export function useSelectControls(isMulti: boolean, setActiveChip: (s: string | null) => void) {
   const {
@@ -88,14 +89,12 @@ export function useSelectControls(isMulti: boolean, setActiveChip: (s: string | 
           const active = container.querySelector('[data-ln-active="true"]');
 
           let current = active?.previousElementSibling;
-          while (current && current.getAttribute("data-ln-selectable") === "false")
-            current = current.previousElementSibling;
+          while (current && !isSelectableOption(current)) current = current.previousElementSibling;
 
           if (!current) {
             current = container.lastElementChild;
 
-            while (current && current.getAttribute("data-ln-selectable") === "false")
-              current = current.previousElementSibling;
+            while (current && !isSelectableOption(current)) current = current.previousElementSibling;
           }
 
           if (current) {
@@ -111,14 +110,12 @@ export function useSelectControls(isMulti: boolean, setActiveChip: (s: string | 
 
           const active = container.querySelector('[data-ln-active="true"]');
           let current = active?.nextElementSibling;
-          while (current && current.getAttribute("data-ln-selectable") === "false")
-            current = current.nextElementSibling;
+          while (current && !isSelectableOption(current)) current = current.nextElementSibling;
 
           if (!current) {
             current = container.firstElementChild;
 
-            while (current && current.getAttribute("data-ln-selectable") === "false")
-              current = current.nextElementSibling;
+            while (current && !isSelectableOption(current)) current = current.nextElementSibling;
           }
 
           if (current) {

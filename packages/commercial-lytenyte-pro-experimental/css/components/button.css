@@ -19,8 +19,8 @@
       height: 30px;
       font-size: 0.75rem;
       line-height: 20px;
-      padding: 0px var(--ln-padding-field-sm);
-      border-radius: var(--ln-radius-field-sm);
+      padding: 0px var(--ln-padding-field-md);
+      border-radius: var(--ln-radius-field-md);
     }
     &[data-ln-size="md"] {
       height: 32px;

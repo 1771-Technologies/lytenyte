@@ -7,7 +7,7 @@ description: Create custom text filters in LyteNyte Grid to filter rows. This
 
 :::note
 
-The way you apply a text filter in LyteNyte Grid depends on the row source you are using.
+How you apply a text filter in LyteNyte Grid depends on the row source you are using.
 See the following guides for each respective row data source:
 
 - [Client Row Filtering](/docs/client-source-filtering)
@@ -16,8 +16,8 @@ See the following guides for each respective row data source:
 - [Infinite Row Filtering](/docs/infinite-rs-row-filtering)
 - [Tree Filtering](/docs/tree-source-filtering)
 
-The main focus of this guide is on client row filtering, since server filtering
-is usually done by your backend database. The concepts are equally applicable.
+This guide focuses on client row filtering, since server filtering is usually handled by your backend database.
+These concepts are equally applicable to all row sources.
 
 :::
 
@@ -27,10 +27,10 @@ LyteNyte Grid's filter capabilities are flexible enough to define any type of te
 filter. You can filter on **contains**, **begins with**, **ends with**, **exact matching**,
 or even **regex matching**.
 
-You can create a text filter by defining a function that will receive a [row node](/docs/row-overview)
-and returns `true` to keep the row, and `false` to remove it.
+Create a text filter by defining a function that receives a [row node](/docs/row-overview)
+and returns `true` to keep the row, or `false` to remove it.
 
-For example, you can define a function that filters a list of products, keeping only those products
+For example, you can define a function that filters a list of products and keeps only those products
 that have `Xbox` in their name:
 
 ```ts
@@ -46,8 +46,8 @@ the filter state.
 
 ### Filter Modifiers
 
-Since text filtering is just a function, you can apply a modifiers to the filter in an
-arbitrary manner. For example, you can perform a case-insensitive filter by turning
+Since text filtering is just a function, you can apply modifiers to the filter in an
+arbitrary manner. For example, you can perform a case-insensitive filter by converting
 all values to lower case:
 
 ```ts
@@ -70,15 +70,15 @@ const filterXbox: Grid.T.FilterFn<GridSpec["data"]> = (row) => {
 
 ## Filter Model
 
-Filtering on text would not be very useful if you could only predefine the filters ahead of time.
-LyteNyte Grid let's you define you own filter model and operations that you can then use to
+Filtering on text would not be very useful if you could only predefine filters ahead of time.
+LyteNyte Grid lets you define your own filter model and operations, which you can then use to
 create dynamic filters.
 
-What follows is just one approach, and you are encouraged to design filters in a way that directly
-suites your application's requirements.
+This section shows one approach, and you are encouraged to design filters in a way that directly
+suits your application's requirements.
 
-To create a dynamic filter, start by creating the type representation of your text filter. The code
-the follows will use the following representation.
+To create a dynamic filter, start by defining the type representation of your text filter. In this
+section, the code below defines the filter model.
 
 ```ts
 export type FilterStringOperator =
@@ -102,9 +102,84 @@ export interface GridFilter {
   readonly right: FilterString | null;
   readonly operator: "AND" | "OR";
 }
+
+export interface GridSpec {
+  readonly data: OrderData;
+  readonly api: {
+    readonly filterModel: PieceWritable<Record<string, GridFilter>>; //!
+  };
+}
 ```
 
+Using this filter model definition, you can create a filter function for the row data source.
+
+The demo below demonstrates this. Click the funnel icon on the **Product**, **Customer**, or
+**Email** columns to open the filter popover.
+
 ::demo[Filter UI="./demos/text-filter-ui"]
+
+Pay special attention to the code that defines the filter model below. The code creates the filter
+model state, which you then pass to the grid's API as an extension. The demo also includes a filter UI that allows users
+to apply filters.
+
+When a user applies a filter, `useMemo` creates a new `filterFn` that you then pass to the
+client data source. See the `filter.tsx` file in the demo's expanded code for the logic that builds
+the filter UI.
+
+```ts
+const [filter, setFilter] = useState<Record<string, GridFilter>>({});
+const filterModel = usePiece(filter, setFilter);
+
+const filterFn = useMemo(() => {
+  const entries = Object.entries(filter);
+
+  const evaluateStringFilter = (operator: FilterStringOperator, compare: string, value: string) => {
+    if (operator === "equals") return value === compare;
+    if (operator === "begins_with") return compare.startsWith(value);
+    if (operator === "ends_with") return compare.endsWith(value);
+    if (operator === "contains") return compare.includes(value);
+    if (operator === "not_begins_with") return !compare.startsWith(value);
+    if (operator === "not_ends_with") return !compare.endsWith(value);
+    if (operator === "not_contains") return !compare.includes(value);
+    if (operator === "not_equals") return value !== compare;
+
+    return false;
+  };
+
+  return entries.map<Grid.T.FilterFn<GridSpec["data"]>>(([column, filter]) => {
+    return (row) => {
+      //#start
+      const value = row.data[column as keyof GridSpec["data"]];
+
+      // This guide only covers string filters, so return false for non-string values.
+      if (typeof value !== "string") return false;
+
+      // Case-insensitive match
+      const compareValue = value.toLowerCase();
+
+      const leftResult = evaluateStringFilter(
+        filter.left.operator,
+        compareValue,
+        filter.left.value.toLowerCase(),
+      );
+      if (!filter.right) return leftResult;
+
+      if (filter.operator === "OR") {
+        return (
+          leftResult ||
+          evaluateStringFilter(filter.right.operator, compareValue, filter.right.value.toLowerCase())
+        );
+      }
+
+      return (
+        leftResult &&
+        evaluateStringFilter(filter.right.operator, compareValue, filter.right.value.toLowerCase())
+      );
+      //#end
+    };
+  });
+}, [filter]);
+```
 
 ## Next Steps
 

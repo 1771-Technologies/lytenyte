@@ -11,11 +11,21 @@ import {
   ProductCell,
   PurchaseDateCell,
 } from "./components.jsx";
-import { useClientDataSource, Grid, ViewportShadows } from "@1771technologies/lytenyte-pro-experimental";
+import {
+  useClientDataSource,
+  Grid,
+  ViewportShadows,
+  type PieceWritable,
+  usePiece,
+} from "@1771technologies/lytenyte-pro-experimental";
 import { Header } from "./filter.jsx";
+import { useMemo, useState } from "react";
 
 export interface GridSpec {
   readonly data: OrderData;
+  readonly api: {
+    readonly filterModel: PieceWritable<Record<string, GridFilter>>;
+  };
 }
 
 const columns: Grid.Column<GridSpec>[] = [
@@ -40,7 +50,6 @@ export type FilterStringOperator =
   | "not_contains";
 
 export interface FilterString {
-  readonly kind: "string";
   readonly operator: FilterStringOperator;
   readonly value: string;
 }
@@ -52,14 +61,73 @@ export interface GridFilter {
 }
 
 export default function Demo() {
+  const [filter, setFilter] = useState<Record<string, GridFilter>>({});
+  const filterModel = usePiece(filter, setFilter);
+
+  const filterFn = useMemo(() => {
+    const entries = Object.entries(filter);
+
+    const evaluateStringFilter = (operator: FilterStringOperator, compare: string, value: string) => {
+      if (operator === "equals") return value === compare;
+      if (operator === "begins_with") return compare.startsWith(value);
+      if (operator === "ends_with") return compare.endsWith(value);
+      if (operator === "contains") return compare.includes(value);
+      if (operator === "not_begins_with") return !compare.startsWith(value);
+      if (operator === "not_ends_with") return !compare.endsWith(value);
+      if (operator === "not_contains") return !compare.includes(value);
+      if (operator === "not_equals") return value !== compare;
+
+      return false;
+    };
+
+    return entries.map<Grid.T.FilterFn<GridSpec["data"]>>(([column, filter]) => {
+      return (row) => {
+        const value = row.data[column as keyof GridSpec["data"]];
+
+        // We are only working with string filters, so lets filter out none strings
+        if (typeof value !== "string") return false;
+
+        // Case insensitive match
+        const compareValue = value.toLowerCase();
+
+        const leftResult = evaluateStringFilter(
+          filter.left.operator,
+          compareValue,
+          filter.left.value.toLowerCase(),
+        );
+        if (!filter.right) return leftResult;
+
+        if (filter.operator === "OR") {
+          return (
+            leftResult ||
+            evaluateStringFilter(filter.right.operator, compareValue, filter.right.value.toLowerCase())
+          );
+        }
+
+        return (
+          leftResult &&
+          evaluateStringFilter(filter.right.operator, compareValue, filter.right.value.toLowerCase())
+        );
+      };
+    });
+  }, [filter]);
+
   const ds = useClientDataSource<GridSpec>({
     data,
+    filter: filterFn,
   });
 
   return (
     <>
       <div className="ln-grid" style={{ height: 500 }}>
-        <Grid rowHeight={50} columns={columns} rowSource={ds} slotShadows={ViewportShadows} editMode="cell" />
+        <Grid
+          apiExtension={useMemo(() => ({ filterModel }), [filterModel])}
+          rowHeight={50}
+          columns={columns}
+          rowSource={ds}
+          slotShadows={ViewportShadows}
+          editMode="cell"
+        />
       </div>
     </>
   );

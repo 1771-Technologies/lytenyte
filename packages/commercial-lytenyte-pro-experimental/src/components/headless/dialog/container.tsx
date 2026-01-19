@@ -182,6 +182,10 @@ function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.
         "keydown",
         (ev) => {
           if (ev.key === "Escape") {
+            // Check if the dialog contains another open dialog
+            const otherDialog = dialog.querySelector('[data-ln-light-dismiss="true"]');
+            if (otherDialog) return;
+
             ev.stopPropagation();
             if (lightDismiss != false) onOpenChange(false);
             ev.preventDefault();
@@ -199,6 +203,10 @@ function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.
           if (ev.button !== 0) return;
 
           if (ev.target != dialog && dialog.contains(ev.target as HTMLElement)) return;
+
+          // Check if the dialog contains another open dialog
+          const otherDialog = dialog.querySelector('[data-ln-light-dismiss="true"]');
+          if (otherDialog) return;
 
           if (
             ev.clientX < bb.left ||
@@ -290,6 +298,7 @@ function DialogContainerBase(props: DialogContainer.Props, ref: DialogContainer.
       popover={!modal ? "manual" : undefined}
       aria-describedby={descriptionId}
       aria-labelledby={titleId}
+      data-ln-light-dismiss={lightDismiss != false}
       data-ln-transition={t}
       data-ln-dialog={
         !(props as any)["data-ln-popover"] && !(props as any)["data-ln-menu-popover"] ? true : undefined
