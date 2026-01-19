@@ -2,17 +2,13 @@
 title: Filtering Text
 step: Learn how to create and apply text filters to your client row data.
 description: Create custom text filters in LyteNyte Grid to filter rows. This
-  guide will cover some common filters that apply to string values in cells,
-  from basic to advanced.
+  guide will cover some common filters that apply to string values in cells.
 ---
 
-LyteNyte Grid's filter capabilities are flexible enough to define any type of text
-filter. You can filter on **contains**, **begins with**, **ends with**, **exact matching**,
-or even **regex matching**.
+:::note
 
 The way you apply a text filter in LyteNyte Grid depends on the row source you are using.
-The the guides below for how to apply a filter for each of the provided row sources in LyteNyte
-Grid:
+See the following guides for each respective row data source:
 
 - [Client Row Filtering](/docs/client-source-filtering)
 - [Server Row Filtering](/docs/server-data-loading-row-filtering)
@@ -20,11 +16,95 @@ Grid:
 - [Infinite Row Filtering](/docs/infinite-rs-row-filtering)
 - [Tree Filtering](/docs/tree-source-filtering)
 
+The main focus of this guide is on client row filtering, since server filtering
+is usually done by your backend database. The concepts are equally applicable.
+
+:::
+
 ## Basic Text Filtering
 
-## Filter Modifiers
+LyteNyte Grid's filter capabilities are flexible enough to define any type of text
+filter. You can filter on **contains**, **begins with**, **ends with**, **exact matching**,
+or even **regex matching**.
 
-## Filter Type Representation
+You can create a text filter by defining a function that will receive a [row node](/docs/row-overview)
+and returns `true` to keep the row, and `false` to remove it.
+
+For example, you can define a function that filters a list of products, keeping only those products
+that have `Xbox` in their name:
+
+```ts
+const filterXbox: Grid.T.FilterFn<GridSpec["data"]> = (row) => {
+  return row.data.product.includes("Xbox");
+};
+```
+
+The demo below demonstrates this filter. Click the **Show Xbox Only** switch to toggle
+the filter state.
+
+::demo[Text Filtering="./demos/text-filtering"]
+
+### Filter Modifiers
+
+Since text filtering is just a function, you can apply a modifiers to the filter in an
+arbitrary manner. For example, you can perform a case-insensitive filter by turning
+all values to lower case:
+
+```ts
+const filterXbox: Grid.T.FilterFn<GridSpec["data"]> = (row) => {
+  return row.data.product.toLowerCase().includes("xbox");
+};
+```
+
+In advanced cases you can ignore punctuation, trim whitespace, and treat accented
+characters, such as "á", as normal letters.
+
+```ts
+const collator = new Intl.Collator(locale, { sensitivity: "case" });
+const filterXbox: Grid.T.FilterFn<GridSpec["data"]> = (row) => {
+  const product = row.data.product.trim().replace(/[!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]/g, "");
+
+  return collator.compare("xbox", product);
+};
+```
+
+## Filter Model
+
+Filtering on text would not be very useful if you could only predefine the filters ahead of time.
+LyteNyte Grid let's you define you own filter model and operations that you can then use to
+create dynamic filters.
+
+What follows is just one approach, and you are encouraged to design filters in a way that directly
+suites your application's requirements.
+
+To create a dynamic filter, start by creating the type representation of your text filter. The code
+the follows will use the following representation.
+
+```ts
+export type FilterStringOperator =
+  | "equals"
+  | "not_equals"
+  | "begins_with"
+  | "not_begins_with"
+  | "ends_with"
+  | "not_ends_with"
+  | "contains"
+  | "not_contains";
+
+export interface FilterString {
+  readonly kind: "string";
+  readonly operator: FilterStringOperator;
+  readonly value: string;
+}
+
+export interface GridFilter {
+  readonly left: FilterString;
+  readonly right: FilterString | null;
+  readonly operator: "AND" | "OR";
+}
+```
+
+::demo[Filter UI="./demos/text-filter-ui"]
 
 ## Next Steps
 
