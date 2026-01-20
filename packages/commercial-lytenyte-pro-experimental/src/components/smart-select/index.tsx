@@ -10,6 +10,7 @@ import { ComboTrigger } from "./triggers/combo-trigger.js";
 import { MultiComboTrigger, type MultiComboTriggerProps } from "./triggers/multi-combo-trigger.js";
 import { MultiTrigger, type MultiTriggerProps } from "./triggers/multi-trigger.js";
 import type { BaseOption } from "./type";
+import { ChipRemove } from "./chip-remove.js";
 
 export const SmartSelect = <T extends BaseOption>(props: SmartSelectRootProps<T>) => (
   <SmartSelectRoot {...props} />
@@ -17,6 +18,7 @@ export const SmartSelect = <T extends BaseOption>(props: SmartSelectRootProps<T>
 
 SmartSelect.Container = SmartSelectContainer;
 SmartSelect.Chip = Chip;
+SmartSelect.ChipRemove = ChipRemove;
 SmartSelect.BasicTrigger = BasicSelectTrigger;
 SmartSelect.MultiTrigger = MultiTrigger;
 SmartSelect.ComboTrigger = ComboTrigger;
@@ -33,5 +35,6 @@ export namespace SmartSelect {
     export type MultiTrigger = MultiTriggerProps;
     export type ComboTrigger = JSX.IntrinsicElements["input"];
     export type MultiComboTrigger = MultiComboTriggerProps;
+    export type ChipRemove = JSX.IntrinsicElements["button"];
   }
 }

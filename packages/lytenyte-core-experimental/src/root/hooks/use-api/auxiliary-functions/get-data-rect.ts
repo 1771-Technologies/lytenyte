@@ -11,7 +11,6 @@ export interface GetDataRectArgs {
   readonly columnStart: number;
   readonly columnEnd: number;
   readonly rows: (RowNode<any> | null | undefined)[];
-  readonly uniformGroupHeaders?: boolean;
   readonly visible: ColumnAbstract[];
 
   readonly columnField: (c: ColumnAbstract, row: { kind: string; data: unknown }) => unknown;
@@ -21,7 +20,6 @@ export function getDataRect({
   rows,
   columnStart,
   columnEnd,
-  uniformGroupHeaders,
   visible,
   columnField,
 }: GetDataRectArgs): ExportDataRectResult<any> {
@@ -36,14 +34,19 @@ export function getDataRect({
     columns.push(column as any);
   }
 
+  const hierarchy = computePathMatrix(visible);
+
+  const groupRows = hierarchy.at(0)?.length ?? 0;
   const groupHeaders: (string | null)[][] = [];
 
-  const hierarchy = computePathMatrix(visible);
+  for (let i = 0; i < groupRows; i++) {
+    const row = hierarchy.map((x) => x[i]?.id ?? null);
+    groupHeaders.push(row);
+  }
 
   for (let levelIndex = 0; levelIndex < hierarchy.length; levelIndex++) {
     const level = hierarchy[levelIndex];
 
-    const seen = new Set();
     const header: (string | null)[] = [];
     for (let i = 0; i < columns.length; i++) {
       const value = level[i];
@@ -52,18 +55,11 @@ export function getDataRect({
         header.push(null);
         continue;
       }
-      if (seen.has(value.idOccurrence)) {
-        header.push("");
-        continue;
-      }
-
-      if (!uniformGroupHeaders) seen.add(value.idOccurrence);
 
       const group = value.groupPath.at(-1)!;
 
       header.push(group);
     }
-    groupHeaders.push(header);
   }
 
   let headers: string[] = [];

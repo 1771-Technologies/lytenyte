@@ -18,7 +18,7 @@ import { useRowSelect } from "./api-functions/use-row-select.js";
 import { useEditEnd } from "./api-functions/use-edit-end.js";
 import { useEditBegin } from "./api-functions/use-edit-begin.js";
 import { useEditIsCellActive } from "./api-functions/use-edit-is-cell-active.js";
-import { useEditUpdate } from "./api-functions/use-edit-update.js";
+import { useEditUpdateRows } from "./api-functions/use-edit-update-rows.js";
 import { useColumnUpdate } from "./api-functions/use-column-update.js";
 import { useColumnAutosize } from "./api-functions/use-column-autosize.js";
 import { useColumnResize } from "./api-functions/use-column-resize.js";
@@ -41,6 +41,7 @@ import { useRowDetailToggle } from "./api-functions/use-row-detail-toggle.js";
 import { usePiece } from "../../../hooks/use-piece.js";
 import { useRowView } from "./api-functions/use-row-view.js";
 import { useColumnView } from "./api-functions/use-column-view.js";
+import { useEditUpdateCells } from "./api-functions/use-edit-update-cells.js";
 
 export function useApi(
   gridId: string,
@@ -88,7 +89,8 @@ export function useApi(
   api.editEnd = useEditEnd(edit);
   api.editBegin = useEditBegin(props, api, view, edit, vp, gridId);
   api.editIsCellActive = useEditIsCellActive(api, edit);
-  api.editUpdate = useEditUpdate(props, api, source);
+  api.editUpdateRows = useEditUpdateRows(props, api, source);
+  api.editUpdateCells = useEditUpdateCells(props, api, source, view);
   api.columnUpdate = useColumnUpdate(view, controlled);
   api.columnAutosize = useColumnAutosize(props, api, bounds, view, rowCount, rowBottomCount, rowTopCount);
 

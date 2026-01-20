@@ -26,7 +26,6 @@ export function useExportData(
       rows,
       visible,
       columnField: api.columnField as any,
-      uniformGroupHeaders: p?.uniformGroupHeaders,
       columnEnd,
       columnStart,
     });

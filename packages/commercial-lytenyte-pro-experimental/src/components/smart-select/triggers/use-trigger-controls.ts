@@ -23,6 +23,12 @@ export function useSelectControls(isMulti: boolean, setActiveChip: (s: string | 
       onClick: () => {
         if (!open && openOnClick) onOpenChange(true);
       },
+      onBlur: (e) => {
+        if (e.currentTarget.contains(e.relatedTarget)) return;
+
+        onOpenChange(false);
+        return;
+      },
       onKeyDown: (e) => {
         if (!open && openKeys.includes(e.key)) {
           e.preventDefault();

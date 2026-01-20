@@ -1,38 +1,106 @@
 ---
 title: Clipboard
-description:
-  Use LyteNyte Grid's clipboard API methods to implement copy, cut, and paste with customizable
-  transform options.
+step: Copy and paste data from your clipboard using LyteNyte Grid.
+pro: true
+description: Using LyteNyte Grid's cell selection and data export functionality, the grid
+  allows data to be exported to the clipboard.
 ---
 
-LyteNyte Grid does not provide a direct API for clipboard operations, but it offers methods you can
-combine to implement copy, cut, and paste. Pair these methods with
-[cell selection](/docs/cell-selection) to support familiar spreadsheet-style interactions.
-
-- Use `api.exportDataRect` to retrieve data for the full grid or a selected section.
-- Use `api.editUpdate` to modify cell values.
+LyteNyte Grid does not directly handle clipboard operations. However, you can implement
+clipboard support using the grid's `exportData` method. You can combine this method with
+[cell selection](/docs/cell-selection) and
+[bulk data editing](/docs/cell-editing-bulk-editing) to build copy, cut, and paste
+functionality.
 
 ## Clipboard Operation Flow
 
-The basic approach for clipboard support is:
+The demo below demonstrates clipboard interactions. Select cells by clicking and dragging.
+Use `Ctrl c` to copy the selected cells, `Ctrl x` to cut the selected cells, and `Ctrl v`
+to paste data from the clipboard.
 
-- **Copy** - Call `api.exportDataRect` to get the selected data, then write it to the clipboard.
-- **Cut** - Call `api.exportDataRect` to get the selected data, write it to the clipboard, then call
-  `api.editUpdate` to clear those cells.  
-  **Note:** `api.editUpdate` requires the cells to be editable. See the [cell editing](/docs/cell-editing)
-  guide for details.
-- **Paste** - Read and parse the clipboard content, then call `api.editUpdate` to update the target
-  cells.
+::demo[Clipboard="./demos/clipboard"]
 
-<Callout>
+The code below shows how to handle copy operations. Expand the code in the demo frame to
+view the full implementation.
 
-As an alternative to `exportDataRect`, call `exportCsv` to get a string that can be written directly
-to the clipboard.
+The `handleCopy` function uses the current selection and the `exportData` method to copy
+grid cell content to the clipboard. When you pass a `rect` argument, `exportData` returns
+only the rows and columns that fall within the specified rectangle.
 
-</Callout>
+The `handleGridUpdate` function parses update data and writes it to the grid using
+`api.editUpdateCells`. This update data comes from the event handler attached to the grid.
 
-## Example
+:::note
 
-The following example demonstrates copy, cut, and paste in a simple grid setup.
+This example does not include clipboard validation logic in order to keep the code sample
+concise. Treat pasted clipboard data as untrusted input. Consider using a validation
+library such as [Zod](https://zod.dev/) to validate pasted data before applying updates.
 
-!demo:Clipboard Copy and Cut="./demos/clipboard"
+See the [Cell Editing guide](/docs/cell-editing) for more information on updating grid data.
+
+:::
+
+```tsx
+const handleCopy = useCallback(async () => {
+  if (!api) return;
+
+  const selectionToCopy = getFirstSelection();
+  if (!selectionToCopy) return;
+
+  const data = await api.exportData({
+    rect: selectionToCopy,
+  });
+
+  const stringToCopy = data.data
+    .map((row) => {
+      return row.map((cell) => `${cell}`).join("\t");
+    })
+    .join("\n");
+
+  await navigator.clipboard.writeText(stringToCopy);
+}, [api, getFirstSelection]);
+
+const handleGridUpdate = useCallback(
+  async (updates: unknown[][]) => {
+    if (!api) return;
+
+    const rect = getFirstSelection();
+    if (!rect) return;
+
+    const map = new Map<number, { column: number; value: any }[]>();
+
+    for (let rowI = rect.rowStart; rowI < rect.rowEnd; rowI++) {
+      const row = api.rowByIndex(rowI).get();
+      if (!row?.data || api.rowIsGroup(row)) continue;
+
+      // The selection rectangle may contain more rows than the update data,
+      // so stop processing when all updates have been applied.
+      if (rowI - rect.rowStart >= updates.length) break;
+
+      const columnUpdates: { column: number; value: any }[] = [];
+
+      for (let colI = rect.columnStart; colI < rect.columnEnd; colI++) {
+        // The selection may contain more columns than the update data,
+        // so skip remaining columns when necessary.
+        if (colI - rect.columnStart >= updates[rowI - rect.rowStart].length) break;
+
+        columnUpdates.push({
+          column: colI,
+          value: updates[rowI - rect.rowStart][colI - rect.columnStart],
+        });
+      }
+
+      map.set(rowI, columnUpdates);
+    }
+
+    if (!api.editUpdateCells(map)) alert("Copy operation failed");
+  },
+  [api, getFirstSelection],
+);
+```
+
+## Next Steps
+
+::next[/docs/export-csv]
+::next[/docs/export-excel]
+::next[/docs/export-arrow]

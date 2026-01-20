@@ -2,7 +2,11 @@ import type { RowNode, RowSource } from "@1771technologies/lytenyte-shared";
 import { useEvent } from "../../../../hooks/use-event.js";
 import type { Root } from "../../../root.js";
 
-export function useEditUpdate(props: Root.Props, api: Root.API, source: RowSource): Root.API["editUpdate"] {
+export function useEditUpdateRows(
+  props: Root.Props,
+  api: Root.API,
+  source: RowSource,
+): Root.API["editUpdateRows"] {
   return useEvent((param) => {
     const updateMap = new Map<RowNode<any>, any>();
 

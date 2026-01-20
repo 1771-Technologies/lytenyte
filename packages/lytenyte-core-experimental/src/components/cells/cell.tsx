@@ -58,9 +58,7 @@ const CellImpl = memo(
 
     const editSetting = column.editable ?? (base as Root.Column).editable;
     const isEditable =
-      row && typeof editSetting === "function"
-        ? editSetting({ api, row, column, colIndex: cell.colIndex, rowIndex: cell.rowIndex })
-        : (editSetting ?? false);
+      row && typeof editSetting === "function" ? editSetting({ api, row, column }) : (editSetting ?? false);
 
     const isEditingThis =
       isEditable &&

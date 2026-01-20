@@ -15,7 +15,13 @@ import type { SlotComponent } from "../../hooks/use-slot/types.js";
 import { useSlot } from "../../hooks/use-slot/use-slot.js";
 import { SmartSelectContainer } from "./container.js";
 import { Option } from "./option.js";
-import type { BaseOption, ComboSelect, OptionRenderProps, SmartSelectKinds } from "./type.js";
+import type {
+  BaseOption,
+  ComboSelect,
+  MultiComboSelect,
+  OptionRenderProps,
+  SmartSelectKinds,
+} from "./type.js";
 import { useAsyncOptions, type ComboOptionState } from "./use-async-options.js";
 import { getNearestMatching } from "@1771technologies/lytenyte-shared";
 
@@ -68,6 +74,8 @@ export function SmartSelectRoot<T extends BaseOption>(p: SmartSelectRootProps<T>
     return p.value;
   }, [p.kind, p.value]);
 
+  const clearOnSelect = (p as unknown as MultiComboSelect<BaseOption>).clearOnSelect ?? true;
+
   const onOptionSelect = useEvent((change: BaseOption) => {
     if (p.kind === "basic" || p.kind === "combo") {
       const isSelected = p.value?.id === change.id;
@@ -78,6 +86,8 @@ export function SmartSelectRoot<T extends BaseOption>(p: SmartSelectRootProps<T>
       const next = isSelected ? p.value.filter((x) => x.id !== change.id) : [...p.value, change as T];
       p.onOptionChange(next);
     }
+
+    if (clearOnSelect) onQueryChange("");
   });
 
   const onOptionsChange = useEvent((change: BaseOption[]) => {
@@ -99,7 +109,7 @@ export function SmartSelectRoot<T extends BaseOption>(p: SmartSelectRootProps<T>
 
   const debounce =
     p.kind === "multi" || p.kind === "multi-combo"
-      ? ((p as unknown as ComboSelect<T>).searchDebounceMs ?? 500)
+      ? ((p as unknown as ComboSelect<T>).searchDebounceMs ?? 200)
       : 0;
 
   const loadOptions = comboState.loadOptions;
@@ -201,15 +211,15 @@ export function SmartSelectRoot<T extends BaseOption>(p: SmartSelectRootProps<T>
     triggerRef,
   ]);
 
-  const lightDismiss = useCallback((el: HTMLElement) => {
-    const closest = getNearestMatching(
-      el,
-      (el) => el.getAttribute("data-ln-smart-select-trigger") === "true",
-    );
-    if (!closest) return true;
+  const lightDismiss = useCallback(
+    (el: HTMLElement) => {
+      const closest = getNearestMatching(el, (el) => el === triggerEl);
+      if (!closest) return true;
 
-    return false;
-  }, []);
+      return false;
+    },
+    [triggerEl],
+  );
 
   return (
     <SmartSelectProvider value={value}>

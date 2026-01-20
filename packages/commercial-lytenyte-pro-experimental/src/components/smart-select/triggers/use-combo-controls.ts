@@ -31,6 +31,12 @@ export function useComboControls(setActiveChip: Dispatch<SetStateAction<string |
       onFocus: () => {
         setActiveChip(null);
       },
+      onBlur: (e) => {
+        if (e.currentTarget.contains(e.relatedTarget)) return;
+
+        onOpenChange(false);
+        return;
+      },
       value: query,
       onChange: (ev) => {
         onQueryChange(ev.target.value);

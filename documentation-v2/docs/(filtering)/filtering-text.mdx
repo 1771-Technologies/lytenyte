@@ -2,13 +2,13 @@
 title: Filtering Text
 step: Learn how to create and apply text filters to your client row data.
 description: Create custom text filters in LyteNyte Grid to filter rows. This
-  guide will cover some common filters that apply to string values in cells.
+  guide covers common filters that apply to string values in cells.
 ---
 
 :::note
 
-How you apply a text filter in LyteNyte Grid depends on the row source you are using.
-See the following guides for each respective row data source:
+How you apply a text filter in LyteNyte Grid depends on the row source you use.
+See the following guides for each supported row data source:
 
 - [Client Row Filtering](/docs/client-source-filtering)
 - [Server Row Filtering](/docs/server-data-loading-row-filtering)
@@ -16,22 +16,21 @@ See the following guides for each respective row data source:
 - [Infinite Row Filtering](/docs/infinite-rs-row-filtering)
 - [Tree Filtering](/docs/tree-source-filtering)
 
-This guide focuses on client row filtering, since server filtering is usually handled by your backend database.
-These concepts are equally applicable to all row sources.
+This guide focuses on client row filtering, since server-side filtering is typically handled by your backend database.
+The concepts in this guide apply equally to all row sources.
 
 :::
 
 ## Basic Text Filtering
 
-LyteNyte Grid's filter capabilities are flexible enough to define any type of text
-filter. You can filter on **contains**, **begins with**, **ends with**, **exact matching**,
-or even **regex matching**.
+LyteNyte Grid provides flexible filter capabilities that let you define any type of text filter.
+You can filter on **contains**, **begins with**, **ends with**, **exact matching**, or **regex matching**.
 
-Create a text filter by defining a function that receives a [row node](/docs/row-overview)
-and returns `true` to keep the row, or `false` to remove it.
+To create a text filter, define a function that receives a [row node](/docs/row-overview)
+and returns `true` to keep the row or `false` to remove it.
 
-For example, you can define a function that filters a list of products and keeps only those products
-that have `Xbox` in their name:
+For example, the following function filters a list of products and keeps only rows
+where the product name contains `Xbox`:
 
 ```ts
 const filterXbox: Grid.T.FilterFn<GridSpec["data"]> = (row) => {
@@ -46,9 +45,9 @@ the filter state.
 
 ### Filter Modifiers
 
-Since text filtering is just a function, you can apply modifiers to the filter in an
-arbitrary manner. For example, you can perform a case-insensitive filter by converting
-all values to lower case:
+Because text filtering is implemented as a function, you can apply modifiers in any
+way that fits your requirements. For example, you can perform a case-insensitive filter
+by converting both values to lower case:
 
 ```ts
 const filterXbox: Grid.T.FilterFn<GridSpec["data"]> = (row) => {
@@ -56,8 +55,8 @@ const filterXbox: Grid.T.FilterFn<GridSpec["data"]> = (row) => {
 };
 ```
 
-In advanced cases you can ignore punctuation, trim whitespace, and treat accented
-characters, such as "á", as normal letters.
+In more advanced cases, you can ignore punctuation, trim whitespace, and treat accented
+characters—such as "á"—as normal letters:
 
 ```ts
 const collator = new Intl.Collator(locale, { sensitivity: "case" });
@@ -70,15 +69,15 @@ const filterXbox: Grid.T.FilterFn<GridSpec["data"]> = (row) => {
 
 ## Filter Model
 
-Filtering on text would not be very useful if you could only predefine filters ahead of time.
-LyteNyte Grid lets you define your own filter model and operations, which you can then use to
-create dynamic filters.
+Text filtering becomes more powerful when users can define filters dynamically instead
+of relying on predefined logic. LyteNyte Grid lets you define a filter model and a set of
+operations that you can use to build dynamic filters.
 
-This section shows one approach, and you are encouraged to design filters in a way that directly
-suits your application's requirements.
+This section demonstrates one possible approach. You are encouraged to design a filter
+model that best fits your application's requirements.
 
-To create a dynamic filter, start by defining the type representation of your text filter. In this
-section, the code below defines the filter model.
+To create a dynamic filter, start by defining a type representation for your text filter.
+The following code defines a basic filter model:
 
 ```ts
 export type FilterStringOperator =
@@ -92,7 +91,6 @@ export type FilterStringOperator =
   | "not_contains";
 
 export interface FilterString {
-  readonly kind: "string";
   readonly operator: FilterStringOperator;
   readonly value: string;
 }
@@ -106,25 +104,25 @@ export interface GridFilter {
 export interface GridSpec {
   readonly data: OrderData;
   readonly api: {
-    readonly filterModel: PieceWritable<Record<string, GridFilter>>; //!
+    readonly filterModel: PieceWritable<Record<string, GridFilter>>;
   };
 }
 ```
 
-Using this filter model definition, you can create a filter function for the row data source.
+Using this filter model, you can create a filter function for the client row data source.
 
-The demo below demonstrates this. Click the funnel icon on the **Product**, **Customer**, or
-**Email** columns to open the filter popover.
+The demo below shows this approach in action. Click the funnel icon on the **Product**,
+**Customer**, or **Email** columns to open the filter popover.
 
 ::demo[Filter UI="./demos/text-filter-ui"]
 
-Pay special attention to the code that defines the filter model below. The code creates the filter
-model state, which you then pass to the grid's API as an extension. The demo also includes a filter UI that allows users
-to apply filters.
+Pay close attention to the code that defines the filter model below. This code creates
+the filter model state and passes it to the grid's API as an extension. The demo also
+includes a filter UI that allows users to apply filters interactively.
 
-When a user applies a filter, `useMemo` creates a new `filterFn` that you then pass to the
-client data source. See the `filter.tsx` file in the demo's expanded code for the logic that builds
-the filter UI.
+When a user applies a filter, `useMemo` creates a new `filterFn`, which you then pass to
+the client data source. See the `filter.tsx` file in the demo's expanded code for the logic
+that builds the filter UI.
 
 ```ts
 const [filter, setFilter] = useState<Record<string, GridFilter>>({});
@@ -154,7 +152,7 @@ const filterFn = useMemo(() => {
       // This guide only covers string filters, so return false for non-string values.
       if (typeof value !== "string") return false;
 
-      // Case-insensitive match
+      // Perform a case-insensitive match
       const compareValue = value.toLowerCase();
 
       const leftResult = evaluateStringFilter(
@@ -162,6 +160,7 @@ const filterFn = useMemo(() => {
         compareValue,
         filter.left.value.toLowerCase(),
       );
+
       if (!filter.right) return leftResult;
 
       if (filter.operator === "OR") {

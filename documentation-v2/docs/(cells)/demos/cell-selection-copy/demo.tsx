@@ -47,7 +47,7 @@ export default function CellSelection() {
                   const asString = v.data.map((x) => `${x.join(", ")}`).join("\n");
                   await navigator.clipboard.writeText(asString);
 
-                  setTimeout(() => vp.classList.remove("copy-flash"), 1000);
+                  setTimeout(() => vp.classList.remove("copy-flash"), 500);
                 }
               },
             },

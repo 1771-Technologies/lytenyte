@@ -1,4 +1,4 @@
-import { forwardRef, type JSX } from "react";
+import { createContext, forwardRef, useContext, type JSX } from "react";
 import { useSlot, type SlotComponent } from "../../hooks/use-slot/index.js";
 import type { BaseOption } from "./type.js";
 import { useChipContext } from "./chip-context.js";
@@ -9,6 +9,9 @@ export type ChipProps<T extends BaseOption> = JSX.IntrinsicElements["div"] & {
   readonly option: T;
   readonly render?: SlotComponent<{ option: T; active: boolean; remove: () => void }>;
 };
+
+const context = createContext<() => void>(null as any);
+export const useChip = () => useContext(context);
 
 function ChipBase<T extends BaseOption>(
   { render, option, ...props }: ChipProps<T>,
@@ -93,7 +96,7 @@ function ChipBase<T extends BaseOption>(
     },
   });
 
-  return r;
+  return <context.Provider value={remove}>{r}</context.Provider>;
 }
 
 export const Chip = forwardRef(ChipBase);

@@ -1,13 +1,146 @@
 ---
 title: Filtering Numbers
 step: Filter row data based on numerical cell values.
+description: Create custom number filters in LyteNyte Grid to filter rows. This guide
+  covers common filters that apply to numeric values in cells.
 ---
 
-## Number Filtering
+:::note
 
-## Logic Operators
+How you apply a number filter in LyteNyte Grid depends on the row source you use.
+See the following guides for each supported row data source:
 
-## Filter Type Representation
+- [Client Row Filtering](/docs/client-source-filtering)
+- [Server Row Filtering](/docs/server-data-loading-row-filtering)
+- [Paginated Row Filtering](/docs/paginated-rs-row-filtering)
+- [Infinite Row Filtering](/docs/infinite-rs-row-filtering)
+- [Tree Filtering](/docs/tree-source-filtering)
+
+This guide focuses on client row filtering, since server-side filtering is typically handled by your backend database.
+The concepts in this guide apply equally to all row sources.
+
+:::
+
+## Basic Number Filtering
+
+LyteNyte Grid provides flexible filter capabilities that let you define any type of number filter.
+You can check whether a value is **equal to**, **less than**, **greater than**, or evaluate any
+other numeric comparison.
+
+To create a number filter, define a function that receives a [row node](/docs/row-overview) and
+returns `true` to keep the row or `false` to remove it.
+
+For example, the following function filters a list of products and keeps only rows
+where the product price is greater than $50:
+
+```ts
+const filterPrice: Grid.T.FilterFn<GridSpec["data"]> = (row) => {
+  return row.data.price > 50;
+};
+```
+
+The demo below demonstrates this filter. Click the **Price Greater Than 50** switch to toggle
+the filter state.
+
+::demo[Filter Price="./demos/number-filtering"]
+
+## Filter Model
+
+LyteNyte Grid lets you define your own filter model and operations, which you can use to
+create dynamic number filters.
+
+This section shows one approach to defining a filter model. The model in this section is
+specific to number filtering, but you can extend it to support other filter types. You are
+encouraged to define a filter representation that suits your application's requirements.
+
+To create a dynamic filter, start by defining the type representation of your number filter.
+The following code defines the filter model used in this section:
+
+```ts
+export type FilterNumberOperator =
+  | "greater_than"
+  | "greater_than_or_equals"
+  | "less_than"
+  | "less_than_or_equals"
+  | "equals"
+  | "not_equals";
+
+export interface FilterNumber {
+  readonly operator: FilterNumberOperator;
+  readonly value: number;
+}
+
+export interface GridFilter {
+  readonly left: FilterNumber;
+  readonly right: FilterNumber | null;
+  readonly operator: "AND" | "OR";
+}
+
+export interface GridSpec {
+  readonly data: OrderData;
+  readonly api: {
+    readonly filterModel: PieceWritable<Record<string, GridFilter>>;
+  };
+}
+```
+
+Using this filter model, you can create a filter function for the client row data source.
+
+The demo below shows this approach in action. Click the funnel icon on the **Price** column
+to open the filter popover.
+
+::demo[Filter UI="./demos/number-filter-ui"]
+
+Pay close attention to the code that defines the filter model below. This code creates the
+filter model state and passes it to the grid's API as an extension. The demo includes a
+filter UI that allows users to apply filters.
+
+When a user applies a filter, `useMemo` creates a new `filterFn`, which you then pass to the
+client data source. See the `filter.tsx` file in the demo's expanded code for the logic that
+builds the filter UI.
+
+```ts
+const [filter, setFilter] = useState<Record<string, GridFilter>>({});
+const filterModel = usePiece(filter, setFilter);
+
+const filterFn = useMemo(() => {
+  const entries = Object.entries(filter);
+
+  const evaluateNumberFilter = (operator: FilterNumberOperator, compare: number, value: number) => {
+    if (operator === "equals") return value === compare;
+    if (operator === "greater_than") return compare > value;
+    if (operator === "greater_than_or_equals") return compare >= value;
+    if (operator === "less_than") return compare < value;
+    if (operator === "less_than_or_equals") return compare <= value;
+    if (operator === "not_equals") return value !== compare;
+
+    return false;
+  };
+
+  return entries.map<Grid.T.FilterFn<GridSpec["data"]>>(([column, filter]) => {
+    return (row) => {
+      //#start
+      const value = row.data[column as keyof GridSpec["data"]];
+
+      // This guide only covers number filters, so return false for non-number values.
+      if (typeof value !== "number") return false;
+
+      const compareValue = value;
+
+      const leftResult = evaluateNumberFilter(filter.left.operator, compareValue, filter.left.value);
+
+      if (!filter.right) return leftResult;
+
+      if (filter.operator === "OR") {
+        return leftResult || evaluateNumberFilter(filter.right.operator, compareValue, filter.right.value);
+      }
+
+      return leftResult && evaluateNumberFilter(filter.right.operator, compareValue, filter.right.value);
+      //#end
+    };
+  });
+}, [filter]);
+```
 
 ## Next Steps
 

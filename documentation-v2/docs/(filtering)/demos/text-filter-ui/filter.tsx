@@ -142,7 +142,7 @@ function TextFilterControl({
           }
 
           return (
-            <SmartSelect.Option {...p} className="flex items-center justify-between">
+            <SmartSelect.Option key={p.option.id} {...p} className="flex items-center justify-between">
               {p.option.label}
               {p.selected && <CheckIcon className="text-ln-primary-50" />}
             </SmartSelect.Option>
@@ -241,7 +241,12 @@ function TextFilterControl({
                 return <div role="separator" className="bg-ln-gray-40 my-1 h-px w-full" />;
               }
 
-              return <SmartSelect.Option {...p}>{p.option.label}</SmartSelect.Option>;
+              return (
+                <SmartSelect.Option key={p.option.id} {...p} className="flex items-center justify-between">
+                  {p.option.label}
+                  {p.selected && <CheckIcon className="text-ln-primary-50" />}
+                </SmartSelect.Option>
+              );
             }}
           </SmartSelect>
 
