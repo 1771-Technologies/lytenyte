@@ -91,6 +91,7 @@ const CellImpl = memo(
           {...props}
           ref={forwarded}
           role="gridcell"
+          aria-colindex={cell.colIndex + 1}
           tabIndex={isEditingThis ? -1 : 0}
           style={{ ...style, ...(props.style ?? styles?.cell?.style) }}
           // Data Properties

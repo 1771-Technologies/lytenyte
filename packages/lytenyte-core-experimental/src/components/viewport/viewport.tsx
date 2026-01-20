@@ -91,6 +91,9 @@ function ViewportImpl({ children, ...props }: Viewport.Props, ref: Viewport.Prop
         {...handlers}
         {...props}
         role="grid"
+        aria-colcount={view.visibleColumns.length}
+        aria-rowcount={api.rowView().rowCount}
+        aria-multiselectable={(api.props().rowSelectionMode ?? "none") !== "none"}
         tabIndex={0}
         ref={combined}
         onClick={(ev) => {

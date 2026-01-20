@@ -126,7 +126,6 @@ export default function Demo() {
           columns={columns}
           rowSource={ds}
           slotShadows={ViewportShadows}
-          editMode="cell"
         />
       </div>
     </>

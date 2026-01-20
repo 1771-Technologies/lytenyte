@@ -1,5 +1,6 @@
 ---
 title: Keyboard
+step: Navigate and use LyteNyte Grid using your keyboard.
 description: Learn LyteNyte Grid's keyboard shortcuts for navigation, selection,
   editing, and touch interaction.
 ---
@@ -13,31 +14,236 @@ then use this guide for LyteNyte-specific bindings.
 ## Navigation
 
 Use the arrow keys (`←`, `→`, `↑`, `↓`) to move between header and grid
-cells. The `Tab` key follows natural DOM order, but LyteNyte treats the grid as
-a **single tab stop**. This prevents users from having to tab through every cell.
+cells. The `←` and `→` arrow keys cycle through all tabbable elements
+within a cell before moving to the next cell. This behavior differs
+slightly from the ARIA Grid Pattern's recommended navigation model,
+but it provides a more efficient navigation experience.
 
-```
-Ctrl → : Jump to the last cell in the current row or header
-Ctrl ← : Jump to the first cell in the current row or header
-Ctrl ↑ : Focus the first row (when on a grid cell)
-Ctrl ↓ : Focus the last row (when on a grid cell)
-```
+You can combine the arrow keys with your keyboard's meta modifier to
+navigate to the bounds of the grid:
 
-### Expanding Selection
+- `Ctrl →`: Jump to the last cell in the current row or header.
+- `Ctrl ←`: Jump to the first cell in the current row or header.
+- `Ctrl ↑`: Focus the first row (when a grid cell is focused).
+- `Ctrl ↓`: Focus the last row (when a grid cell is focused).
 
-When `cellSelectionMode` is set to `range`, hold `Shift` while pressing
-`←`, `→`, `↑`, or `↓` to expand or shrink the active selection.
+:::note
+
+On macOS, you can use the `Cmd` key instead of the `Ctrl` key.
+
+:::
+
+In addition to the arrow keys, LyteNyte Grid supports the following
+navigation keybindings:
+
+- `PageDown`: Move focus down by approximately the number of rows currently in view.
+- `PageUp`: Move focus up by approximately the number of rows currently in view.
+- `Home`: Move focus to the first cell of the current row, equivalent to `Ctrl ←`.
+- `End`: Move focus to the last cell of the current row, equivalent to `Ctrl →`.
+- `Ctrl Home`: Move focus to the first cell in the first row.
+- `Ctrl End`: Move focus to the last cell in the last row.
+
+### Tab Order
+
+LyteNyte Grid orders DOM elements to match their visual layout.
+If you inspect the DOM, you will see that the grid viewport and each
+cell have a `tabIndex` of `0`.
+
+Normally, this configuration would cause pressing `Tab` to move focus
+to the next element in the natural DOM order. However, LyteNyte Grid
+treats the viewport as a single tab stop, except when cell editing
+is active.
+
+A single `Tab` press moves focus to the next element outside the grid.
+This behavior prevents users from tabbing through every cell before
+reaching the next focus group.
+
+### Row Detail Navigation
+
+LyteNyte Grid supports keyboard navigation within row detail elements.
+When a row has a focused cell and its row detail is expanded, pressing
+`↓` moves focus to the detail container. Pressing `↓` again while the
+detail container is focused moves focus to the next row.
+
+The demo below supports all navigation keybindings covered so far.
+Use it to explore how the grid responds to different navigation inputs.
+
+::demo[Grid Navigation="../(introduction)/demos/getting-started"]
+
+## Cell Selection
+
+When `cellSelectionMode` is set to `range`, you can use the following
+keybindings to modify the selection. See the
+[Cell Range Selection guide](/docs/cell-selection)
+for detailed guidance.
+
+- `Shift →`: Expand or shrink the selection one column to the right.
+- `Shift ←`: Expand or shrink the selection one column to the left.
+- `Shift ↑`: Expand or shrink the selection one row up.
+- `Shift ↓`: Expand or shrink the selection one row down.
+- `Ctrl Shift →`: Expand or shrink the selection to the last column on the right.
+- `Ctrl Shift ←`: Expand or shrink the selection to the last column on the left.
+- `Ctrl Shift ↑`: Expand or shrink the selection to the first row.
+- `Ctrl Shift ↓`: Expand or shrink the selection to the last row.
+- `Ctrl A`: Select all cells in the grid.
+
+Whether the selection expands or shrinks depends on the current
+selection rectangle and the pivot cell. The pivot cell is the cell
+that currently has focus.
+
+The demo below enables cell selection. Use it to explore the available
+selection keybindings.
+
+::demo[Cell Selection="../(cells)/demos/cell-selection"]
 
 ## Editable Cells
 
-For editable cells (see [Cell Editing](/docs/cell-editing)):
+When cell editing is enabled, LyteNyte Grid adds additional keybindings
+to make keyboard-based editing intuitive. See the
+[Cell Editing guide](/docs/cell-editing)
+for details on updating cell values.
 
 - Press `Enter` to enter edit mode.
-- Press `Enter` again to confirm and trigger `onCellEdit`.
-- Press `Esc` to cancel and revert the value.
+- Press `Enter` again to confirm and commit the edit.
+- Press `Esc` to cancel the edit.
+- Press any printable character to enter edit mode and set the cell
+  value to the pressed character.
+
+## Key Binding Customization
+
+Because LyteNyte Grid is headless, you can add custom keybindings by
+attaching handlers to the component's `onKeyDown` events.
+
+The demo below binds the `Space` key to row selection. See the
+[Row Selection guide](/docs/row-selection)
+for more information. In the demo, you can either double-click a row
+to select it or focus a cell and press the space key.
+
+::demo[Row Selection With Space Key="./demos/row-selection-space"]
+
+The example below adds a custom keybinding using the grid's `events`
+property. The `events` property allows you to attach custom event
+handlers without breaking the grid into fully headless components.
+
+```tsx
+<Grid
+  columns={columns}
+  columnBase={base}
+  rowSource={ds}
+  rowSelectionMode="multiple"
+  rowSelectionActivator="double-click"
+  events={useMemo<Grid.Events<GridSpec>>(() => {
+    return {
+      row: {
+        //!next 9
+        keyDown: (p) => {
+          if (p.event.key === " ") {
+            p.event.preventDefault();
+            p.api.rowSelect({
+              selected: p.row.id,
+              deselect: p.api.rowIsSelected(p.row.id),
+            });
+          }
+        },
+      },
+    };
+  }, [])}
+/>
+```
+
+If you use the fully headless grid setup, the equivalent implementation
+is shown below. See the
+[Headless Component Parts guide](/docs/grid-headless-parts)
+for more details.
+
+```tsx
+<Grid
+  columns={columns}
+  columnBase={base}
+  rowSource={ds}
+  rowSelectionMode="multiple"
+  rowSelectionActivator="double-click"
+  ref={apiRef}
+>
+  <Grid.RowsContainer>
+    <Grid.RowsCenter>
+      {(row) => {
+        if (row.kind === "full-width") return null;
+
+        return (
+          <Grid.Row
+            key={row.id}
+            row={row}
+            //!next 10
+            onKeyDown={(ev) => {
+              if (ev.key === " ") {
+                ev.preventDefault();
+
+                apiRef.current?.rowSelect({
+                  selected: row.id,
+                  deselect: apiRef.current.rowIsSelected(row.id),
+                });
+              }
+            }}
+          >
+            {row.cells.map((cell) => {
+              return <Grid.Cell cell={cell} key={cell.id} />;
+            })}
+          </Grid.Row>
+        );
+      }}
+    </Grid.RowsCenter>
+  </Grid.RowsContainer>
+</Grid>
+```
+
+### Overwriting Existing Bindings
+
+LyteNyte Grid registers all default keybindings on the `Grid.Viewport`
+element. If you provide a handler that prevents the default behavior
+or stops event propagation, LyteNyte Grid will not activate its built-in
+keybindings.
+
+The example below prevents all default grid keybindings. Modify this
+pattern carefully to match your application's requirements.
+
+```tsx
+<Grid
+  columns={columns}
+  columnBase={base}
+  rowSource={ds}
+  rowSelectionMode="multiple"
+  rowSelectionActivator="double-click"
+  events={useMemo<Grid.Events<GridSpec>>(() => {
+    return {
+      //!next 5
+      viewport: {
+        keyDown: (p) => {
+          p.event.preventDefault();
+        },
+      },
+    };
+  }, [])}
+/>
+```
+
+:::warn
+
+Overriding or disabling LyteNyte Grid's default keybindings is not
+recommended. These keybindings are designed to maximize accessibility.
+Changing or preventing them will reduce the overall accessibility of
+your application.
+
+:::
 
 ## Touch Interactions
 
-LyteNyte Grid works seamlessly on touch devices.
-Browser `click` events fire on tap, and the grid uses these events for
-its interaction listeners.
+LyteNyte Grid works seamlessly on touch devices. Browser `click` events
+fire on tap, and the grid uses these events for its interaction
+handlers.
+
+## Next Steps
+
+::next[/docs/accessibility]
+::next[/docs/rtl-support]
+::next[/docs/grid-headless-parts]

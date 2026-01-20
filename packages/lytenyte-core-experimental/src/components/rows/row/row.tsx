@@ -53,6 +53,8 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
         role="row"
         ref={forwarded}
         style={styles}
+        aria-selected={rowMeta.row?.__selected}
+        aria-rowindex={row.rowIndex + 1}
         // Data Attributes
         data-ln-gridid={id}
         data-ln-rowindex={row.rowIndex}
