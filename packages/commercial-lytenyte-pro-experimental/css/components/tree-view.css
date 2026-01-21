@@ -1,0 +1,88 @@
+@layer ln-grid {
+  .ln-grid .ln-tree-view {
+    &[data-ln-viewport="true"] {
+      background-color: var(--ln-bg-ui-panel);
+    }
+
+    & [data-ln-row="true"][data-ln-selected="true"]::before {
+      content: "";
+      display: unset;
+
+      position: unset;
+      width: unset;
+      height: unset;
+      background: unset;
+      pointer-events: unset;
+      z-index: unset;
+    }
+
+    [data-ln-row="true"] [data-ln-cell="true"] {
+      padding-inline: var(--ln-space-20);
+      background-color: var(--ln-bg-ui-panel);
+
+      &:focus {
+        background-color: var(--ln-bg-strong);
+      }
+      &:focus::before {
+        content: unset;
+        left: unset;
+        top: unset;
+        position: unset;
+        border: unset;
+        background-color: unset;
+        width: unset;
+        height: unset;
+        pointer-events: unset;
+      }
+    }
+
+    [data-ln-tree-view-cell] {
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+      gap: var(--ln-space-20);
+
+      padding-inline-start: calc(var(--ln-space-40) * var(--ln-row-depth));
+
+      &[data-ln-tree-view-cell-expandable="false"] {
+        /* space 60 for the icon and 8px for the gap. */
+        padding-inline-start: calc(var(--ln-space-40) * var(--ln-row-depth) + var(--ln-space-60));
+      }
+
+      &[data-ln-tree-view-cell="leaf"] {
+        padding-inline-start: calc(var(--ln-space-40) * (var(--ln-row-depth) + 1) + var(--ln-space-20) + 1px);
+      }
+
+      &[data-ln-tree-view-cell-expanded="true"] [data-ln-tree-view-cell-expander="true"] {
+        transform: rotate(90deg);
+      }
+
+      & [data-ln-tree-view-cell-expander="true"] {
+        border-radius: var(--ln-radius-field-md);
+        background-color: transparent;
+        border: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: var(--ln-space-60);
+        height: var(--ln-space-60);
+        min-width: var(--ln-space-60);
+        min-height: var(--ln-space-60);
+        max-width: var(--ln-space-60);
+        max-height: var(--ln-space-60);
+        margin-inline-start: calc(var(--ln-padding-horizontal-cell) * -1 + 3px);
+
+        &:hover {
+          background-color: var(--ln-bg-button-light);
+          cursor: pointer;
+        }
+      }
+    }
+
+    & [data-ln-row="true"] [data-ln-cell="true"] {
+      border-bottom: unset;
+    }
+  }
+}

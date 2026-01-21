@@ -86,6 +86,8 @@ export interface RootContextValue {
   readonly onRowDragEnter: Root.Props["onRowDragEnter"];
   readonly onRowDrop: Root.Props["onRowDrop"];
 
+  readonly rowAlternateAttr: boolean;
+
   readonly selectActivator: Root.Props["rowSelectionActivator"];
   readonly selectPivot: RefObject<number | null>;
 

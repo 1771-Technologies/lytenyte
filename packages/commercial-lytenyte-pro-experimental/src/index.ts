@@ -103,6 +103,7 @@ export namespace Grid {
     export type RowFullWidthRendererParams<Spec extends GridSpec> = LnTypes.RowFullWidthRendererParams<Spec>;
     export type RowSelectionIsolated = LnTypes.RowSelectionIsolated;
     export type RowSelectionLinked = LnTypes.RowSelectionLinked;
+    export type RowSelectNode = LnTypes.RowSelectNode;
     export type RowDragPlaceholderFn = GridCore.T.RowDragPlaceholderFn;
     export type DragItem = GridCore.T.DragItem;
     export type DragItemSiteLocal = GridCore.T.DragItemSiteLocal;
@@ -178,3 +179,12 @@ export { Dialog } from "./components/headless/dialog/index.js";
 export { Menu } from "./components/headless/menu/index.js";
 export { Popover } from "./components/headless/popover/index.js";
 export { SmartSelect } from "./components/smart-select/index.js";
+
+export type {
+  TreeViewItem,
+  TreeViewProps,
+  TreeViewChildParams,
+  TreeViewSelectAllParams,
+} from "./components/tree-view/index.js";
+export { TreeView } from "./components/tree-view/index.js";
+export { Checkbox } from "./components/checkbox/checkbox.js";

@@ -1,0 +1,50 @@
+@layer ln-grid {
+  [data-ln-checkbox] {
+    background-color: var(--ln-gray-00);
+    border: 1px solid var(--ln-border-strong);
+    border-radius: 4px;
+    box-sizing: border-box;
+
+    width: 20px;
+    height: 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    &:focus-within {
+      outline: 1px solid var(--ln-primary-50);
+    }
+
+    & input {
+      cursor: pointer;
+    }
+
+    &[data-ln-checked="true"],
+    &[data-ln-indeterminate="true"] {
+      background-color: var(--ln-primary-50);
+      border: 1px solid var(--ln-primary-50);
+      color: var(--ln-gray-00);
+    }
+
+    &[data-ln-disabled] {
+      background-color: var(--ln-gray-40);
+      border: 1px solid var(--ln-gray-40);
+      color: var(--ln-gray-80);
+      cursor: not-allowed;
+    }
+
+    &:not([data-ln-disabled="true"])[data-ln-checked="true"]:hover {
+      box-shadow:
+        0 2px 3px 0 var(--ln-primary-50),
+        0 0 0 2px var(--ln-primary-30);
+    }
+
+    &:not([data-ln-disabled="true"]):hover {
+      box-shadow:
+        0 2px 3px 0 var(--ln-gray-50),
+        0 0 0 2px var(--ln-gray-30);
+    }
+  }
+}

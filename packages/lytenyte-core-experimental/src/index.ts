@@ -109,6 +109,7 @@ export namespace Grid {
     export type RowSelectionState = LnTypes.RowSelectionState;
     export type RowSelectionIsolated = LnTypes.RowSelectionIsolated;
     export type RowSelectionLinked = LnTypes.RowSelectionLinked;
+    export type RowSelectNode = LnTypes.RowSelectNode;
     export type SortFn<T> = LnTypes.SortFn<T>;
     export type RowFullWidthRendererParams<Spec extends GridSpec> = LnTypes.RowFullWidthRendererParams<Spec>;
     export type RowDragPlaceholderFn = LnTypes.ReactPlaceholderFn;

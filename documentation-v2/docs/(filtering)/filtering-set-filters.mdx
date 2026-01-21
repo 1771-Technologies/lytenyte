@@ -1,13 +1,13 @@
 ---
 title: Set Filtering
-step: Learning how to create custom set filters and specifically filter rows.
-description: Create a filter that removes rows based on a cells value being included
-  or excluded from a set of values.
+step: Learn how to create custom set filters and filter rows.
+description: Create a filter that removes rows based on whether a cell's value is included
+  in or excluded from a set of values.
 ---
 
 :::note
 
-How you apply a date filter in LyteNyte Grid depends on the row source you use.
+How you apply a set filter in LyteNyte Grid depends on the row source you use.
 See the following guides for each supported row data source:
 
 - [Client Row Filtering](/docs/client-source-filtering)
@@ -23,24 +23,120 @@ The concepts in this guide apply equally to all row sources.
 
 ## Basic Set Filtering
 
-A set filter will check a cell's value for membership in a set of values. There are two possible checks
-that can be made. The two options are the inverse of each other.
+A set filter checks whether a cell's value is a member of a defined set of values. A set filter supports
+two possible checks, which are inverses of each other:
 
-- **Inclusion:** Checks if the cell's value is present in the set of allowed values.
-- **Exclusion:** Checks if the cell's value is missing from the set of disallowed values.
+- **Inclusion:** Checks whether the cell's value exists in the set of allowed values.
+- **Exclusion:** Checks whether the cell's value does not exist in the set of disallowed values.
 
 Implementing a set filter in LyteNyte Grid involves creating a filter function that captures the
-set of values and accepts a [row node](/docs/row-overview). The filter function should return
+set of values and accepts a [row node](/docs/row-overview). The filter function must return
 `true` to keep the row or `false` to remove it.
 
-The demo below demonstrates a basic set filter in action. You can type in the filter query to select
-the categories you would like to view. Only the selected categories will be kept.
+The demo below demonstrates a basic set filter in action. Type a filter query to select
+the categories you want to view. The grid keeps only rows that match the selected categories.
 
 ::demo[Basic Set Filtering="./demos/set-filter"]
 
-## Retrieving Possible Values
+## Tree Set Filters
 
-## Exclusion and Inclusion
+A tree set filter represents filter options as a structured tree. Each item in the tree
+has a parent-child relationship with other items. Tree set filters allow the grid to
+filter rows based on an arbitrary hierarchical relationship.
+
+A common use case for tree set filters is date filtering. Date values are represented by
+**year**, **month**, and **day**. The demo below demonstrates a tree set filter. Click the
+funnel icon on the **Sale Date** column to open the filter popover.
+
+::demo[Tree Set Filter="./demos/tree-set-filter"]
+
+The tree set filter uses the [Tree View component](/docs/component-tree-view) exported by LyteNyte Grid.
+The Tree View component creates a hierarchical structure from a set of paths. The following code,
+from the demo's `filter.tsx` file, generates those paths.
+
+```ts
+export const saleDateItems = [...new Set(data.map((x) => x.saleDate))].sort(compareDesc).map((x) => ({
+  id: x,
+  name: String(getDate(x)),
+  path: [String(getYear(x)), monthToName[getMonth(x) as keyof typeof monthToName]],
+}));
+```
+
+LyteNyte Grid represents selection state using the [`RowSelectionLinked`](/docs/reference) type.
+By default, all items are selected, and the grid filters out any items that users deselect.
+The code below determines which rows should be excluded.
+
+The main logic lives in the `excludeSets` memo. The code traverses the selection tree to identify
+deselected items. As the traversal progresses, the logic tracks the selection state of each node
+to determine whether a row should be filtered out.
+
+```ts
+const [model, setModel] = useState<Record<string, Grid.T.RowSelectionLinked>>({});
+const filterModel = usePiece(model, setModel);
+const [expansions, setExpansions] = useState<Record<string, Record<string, boolean | undefined>>>({});
+const treeSetExpansions = usePiece(expansions, setExpansions);
+
+const excludeSets = useMemo(() => {
+  const selectEntries = Object.entries(model)
+    .map(([columnId, state]) => {
+      // For this demo, only the saleDate column is handled.
+      if (columnId !== "saleDate") return null;
+
+      // Convert the selection tree into a set of excluded ids
+      const unselectedItems = saleDateItems.filter((x) => {
+        const path = x.path;
+
+        let node: Grid.T.RowSelectionLinked | Grid.T.RowSelectNode = state;
+        let selection = node.selected;
+
+        // Traverse the selection tree while tracking the selection state.
+        // If traversal stops before the full path, the parent selection
+        // state applies to all remaining children.
+        for (let i = 0; i < path.length; i++) {
+          const p = path.slice(0, i + 1).join("/");
+
+          const n = node.children?.get(p);
+          if (!n) break;
+
+          node = n;
+          if (node.selected !== undefined) selection = node.selected;
+        }
+
+        if (node.children?.get(x.id)?.selected !== undefined) {
+          selection = node.children.get(x.id)!.selected!;
+        }
+
+        return !selection;
+      });
+
+      return [columnId, new Set(unselectedItems.map((x) => x.id))] as const;
+    })
+    .filter((x) => x && x[1].size !== 0);
+
+  return selectEntries as [string, Set<any>][];
+}, [model]);
+
+const filterFn = useMemo<Grid.T.FilterFn<GridSpec["data"]> | null>(() => {
+  if (excludeSets.length === 0) return null;
+
+  return (row) => {
+    for (const [columnId, set] of excludeSets) {
+      const field = row.data[columnId as keyof DataItem];
+      if (set.has(field)) return false;
+    }
+
+    return true;
+  };
+}, [excludeSets]);
+```
+
+:::note
+
+The [Tree View component](/docs/component-tree-view) is a wrapped variant of LyteNyte Grid.
+Its row selection model follows the LyteNyte Grid row selection model. For more details,
+see the [Row Selection guide](/docs/row-selection).
+
+:::
 
 ## Next Steps
 

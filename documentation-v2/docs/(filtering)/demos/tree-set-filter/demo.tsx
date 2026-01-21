@@ -1,18 +1,30 @@
 import "@1771technologies/lytenyte-pro-experimental/components.css";
 import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
-import { Grid, SmartSelect, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
+import { Grid, usePiece, type PieceWritable } from "@1771technologies/lytenyte-pro-experimental";
+import { useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
 import { data, type DataItem } from "./data.js";
 import { useId, useMemo, useState, type CSSProperties } from "react";
 import { Switch } from "radix-ui";
-import { CheckIcon, Cross1Icon } from "@radix-ui/react-icons";
+import { Header, saleDateItems } from "./filter.js";
 
 export interface GridSpec {
   readonly data: DataItem;
+  readonly api: {
+    readonly filterModel: PieceWritable<Record<string, Grid.T.RowSelectionLinked>>;
+    readonly treeSetExpansions: PieceWritable<Record<string, Record<string, boolean | undefined>>>;
+  };
 }
 
 const columns: Grid.Column<GridSpec>[] = [
   { id: "id", name: "Product ID", width: 130 },
-  { id: "saleDate", name: "Sale Date", width: 120, widthFlex: 1, cellRenderer: DateCell },
+  {
+    id: "saleDate",
+    name: "Sale Date",
+    width: 120,
+    widthFlex: 1,
+    cellRenderer: DateCell,
+    headerRenderer: Header,
+  },
   { id: "category", name: "Category", widthFlex: 1 },
   { id: "name", name: "Name", widthFlex: 1, width: 160 },
   { id: "quantity", name: "Quantity", widthFlex: 1, type: "number", cellRenderer: NumberCell },
@@ -23,83 +35,76 @@ const columns: Grid.Column<GridSpec>[] = [
 
 const base: Grid.ColumnBase<GridSpec> = { width: 120 };
 
-const names = [...new Set(data.map((x) => x.name).sort())].map((x) => ({ id: x, label: x }));
-
 export default function FilteringDemo() {
-  const [values, setValues] = useState<{ id: string; label: string }[]>([
-    { id: "Office Suite", label: "Office Suite" },
-  ]);
+  const [model, setModel] = useState<Record<string, Grid.T.RowSelectionLinked>>({});
+  const filterModel = usePiece(model, setModel);
+  const [expansions, setExpansions] = useState<Record<string, Record<string, boolean | undefined>>>({});
+  const treeSetExpansions = usePiece(expansions, setExpansions);
 
-  const filterFn: Grid.T.FilterFn<GridSpec["data"]> | null = useMemo(() => {
-    if (values.length === 0) return null;
-    const allowed = new Set(values.map((x) => x.id));
+  const excludeSets = useMemo(() => {
+    const selectEntries = Object.entries(model)
+      .map(([columnId, state]) => {
+        // For this demo we are only handling the saleDate column.
+        if (columnId !== "saleDate") return null;
+
+        // Convert a selection tree into a set of ids
+        const unselectedItems = saleDateItems.filter((x) => {
+          const path = x.path;
+
+          let node: Grid.T.RowSelectionLinked | Grid.T.RowSelectNode = state;
+          let selection = node.selected;
+          // We need to traverse the selection tree, tracking the selection state of the node.
+          // If the node stops short of the full path, it means that a parent was changed, and the
+          // parent's selection state applies to all its children.
+          for (let i = 0; i < path.length; i++) {
+            const p = path.slice(0, i + 1).join("/");
+
+            const n: Grid.T.RowSelectNode | undefined = node.children?.get(p);
+            if (!n) break;
+
+            node = n;
+            if (node.selected != undefined) selection = node.selected;
+          }
+
+          if (node.children?.get(x.id)?.selected !== undefined)
+            selection = node.children.get(x.id)!.selected!;
+
+          return !selection;
+        });
+
+        return [columnId, new Set(unselectedItems.map((x) => x.id))] as const;
+      })
+      .filter((x) => x && x[1].size !== 0);
+
+    return selectEntries as [string, Set<any>][];
+  }, [model]);
+
+  const filterFn = useMemo<Grid.T.FilterFn<GridSpec["data"]> | null>(() => {
+    if (excludeSets.length === 0) return null;
+
     return (row) => {
-      return allowed.has(row.data.name);
+      for (const [columnId, set] of excludeSets) {
+        const field = row.data[columnId as keyof DataItem];
+        if (set.has(field)) return false;
+      }
+
+      return true;
     };
-  }, [values]);
+  }, [excludeSets]);
 
   const ds = useClientDataSource<GridSpec>({
     data: data,
     filter: filterFn,
   });
 
+  const apiExtension = useMemo(() => {
+    return { filterModel, treeSetExpansions };
+  }, [filterModel, treeSetExpansions]);
+
   return (
     <>
-      <div className="border-ln-border flex w-full border-b px-2 py-2">
-        <SmartSelect
-          kind="multi-combo"
-          onOptionChange={setValues}
-          value={values}
-          container={({ options, children }) => {
-            return (
-              <SmartSelect.Container className="max-h-80 overflow-auto">
-                {options.length > 0 && children}
-                {options.length === 0 && <div className="px-2 py-2">No options match query</div>}
-              </SmartSelect.Container>
-            );
-          }}
-          options={(query) => {
-            if (!query) return names;
-
-            return names.filter((x) => x.label.toLowerCase().includes(query?.toLowerCase()));
-          }}
-          trigger={
-            <SmartSelect.MultiComboTrigger
-              data-ln-input
-              className="flex h-10 w-full items-center gap-2"
-              renderInput={
-                <input type="text" autoComplete="off" className="h-full w-full focus:outline-none" />
-              }
-            >
-              {values.map((x) => {
-                return (
-                  <SmartSelect.Chip
-                    key={x.id}
-                    option={x}
-                    className="bg-ln-column-fill border-ln-column-stroke flex items-center gap-1 text-nowrap rounded-lg border px-1 py-0.5 ps-2 text-xs"
-                  >
-                    <span className="relative top-px">{x.label}</span>
-                    <SmartSelect.ChipRemove data-ln-button="secondary" data-ln-icon data-ln-size="xs">
-                      <Cross1Icon />
-                    </SmartSelect.ChipRemove>
-                  </SmartSelect.Chip>
-                );
-              })}
-            </SmartSelect.MultiComboTrigger>
-          }
-        >
-          {(p) => {
-            return (
-              <SmartSelect.Option key={p.option.id} {...p} className="flex items-center justify-between">
-                {p.option.label}
-                {p.selected && <CheckIcon className="text-ln-primary-50" />}
-              </SmartSelect.Option>
-            );
-          }}
-        </SmartSelect>
-      </div>
       <div className="ln-grid" style={{ height: 500 }}>
-        <Grid rowSource={ds} columns={columns} columnBase={base} />
+        <Grid apiExtension={apiExtension} rowSource={ds} columns={columns} columnBase={base} />
       </div>
     </>
   );

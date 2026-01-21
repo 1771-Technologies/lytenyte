@@ -13,7 +13,7 @@ import { useInternalShare } from "../../../internal.js";
 
 const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...props }, forwarded) {
   const ctx = useRoot();
-  const { id, yPositions, xPositions, view, events, styles: sx, api } = ctx;
+  const { id, rowAlternateAttr, yPositions, xPositions, view, events, styles: sx, api } = ctx;
 
   const container = useRowsContainerContext();
 
@@ -63,7 +63,7 @@ const RowImpl = forwardRef<HTMLDivElement, Row.Props>(function Rows({ row, ...pr
         data-ln-rowtype="normal-row"
         data-ln-last-top-pin={row.rowLastPinTop}
         data-ln-first-bottom-pin={row.rowFirstPinBottom}
-        data-ln-alternate={row.rowIndex % 2 === 1}
+        data-ln-alternate={rowAlternateAttr ? row.rowIndex % 2 === 1 : undefined}
         data-ln-selected={rowMeta.row?.__selected}
         data-ln-row
       >
