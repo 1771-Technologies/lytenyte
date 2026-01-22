@@ -56,6 +56,8 @@ const HeaderGroupCellImpl = forwardRef<HTMLDivElement, HeaderGroupCell.Props>(fu
       {...handlers}
       {...props}
       onDragStart={dragProps.onDragStart}
+      aria-colindex={cell.colStart + 1}
+      aria-expanded={isExpanded}
       tabIndex={0}
       ref={ref}
       role="columnheader"

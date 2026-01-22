@@ -77,7 +77,7 @@ export default function Demo() {
               }),
             );
 
-            apiRef.current?.editUpdate(update);
+            apiRef.current?.editUpdateRows(update);
           }}
         >
           Increase Price (+10)
@@ -95,7 +95,7 @@ export default function Demo() {
               }),
             );
 
-            apiRef.current?.editUpdate(update);
+            apiRef.current?.editUpdateRows(update);
           }}
         >
           Decrease Price (-10)

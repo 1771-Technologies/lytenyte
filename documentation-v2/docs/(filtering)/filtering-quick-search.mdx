@@ -1,3 +1,77 @@
 ---
 title: Quick Search Filtering
+step: Quickly find rows based on simple text searches.
+description: A quick search filter uses a query string to filter rows by checking
+  the search term against all or selected values in a row.
 ---
+
+:::note
+
+How you apply a quick search filter in LyteNyte Grid depends on the row source you use.
+See the following guides for each supported row data source:
+
+- [Client Row Filtering](/docs/client-source-filtering)
+- [Server Row Filtering](/docs/server-data-loading-row-filtering)
+- [Paginated Row Filtering](/docs/paginated-rs-row-filtering)
+- [Infinite Row Filtering](/docs/infinite-rs-row-filtering)
+- [Tree Filtering](/docs/tree-source-filtering)
+
+This guide focuses on client row filtering, since server-side filtering is typically handled by your backend database.
+The concepts in this guide apply equally to all row sources.
+
+:::
+
+## Searching
+
+The simplest way to implement a quick search is to provide the grid with a filter function that performs
+a string inclusion check.
+
+The demo below demonstrates quick search in action. The demo uses a simple case-insensitive inclusion match.
+You can implement more advanced fuzzy searching by using external libraries such as
+[Fuse.js](https://www.fusejs.io/).
+
+::demo[Quick Search="./demos/quick-search"]
+
+To implement quick search, the demo defines a query value and uses that value to create a filter function.
+The filter function is then passed to the data source.
+
+```ts
+const [query, setQuery] = useState("");
+
+const filterFn = useMemo(() => {
+  if (!query) return null;
+
+  return (row: Grid.T.RowLeaf<GridSpec["data"]>) => {
+    const d = row.data;
+    const stringValue = `${d.customer} ${d.email} ${d.paymentMethod} ${d.product} ${d.productDescription} ${d.purchaseDate} ${d.cardNumber}`;
+
+    return stringValue.toLowerCase().includes(query.toLowerCase());
+  };
+}, [query]);
+```
+
+An `input` element updates the query value. The input is debounced to ensure that the filter does not run
+on every keystroke, as shown in the following example.
+
+```tsx
+<input
+  data-ln-input
+  onChange={(e) => {
+    const value = e.target.value;
+
+    if (t.current) clearTimeout(t.current);
+
+    // Simple debounce
+    t.current = setTimeout(() => {
+      setQuery(value);
+      t.current = null;
+    }, 100);
+  }}
+/>
+```
+
+## Next Steps
+
+::next[/docs/filtering-set-filters]
+::next[/docs/filtering-dates]
+::next[/docs/filtering-best-practices]

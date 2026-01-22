@@ -1,10 +1,11 @@
 ---
 title: Accessibility
+step: Learn about the accessibility measures taken by LyteNyte Grid.
 description: Learn how LyteNyte Grid implements ARIA and best practices to build
   inclusive, accessible data grids.
 ---
 
-Accessibility ensures all users can navigate and interact with your
+Accessibility ensures that all users can navigate and interact with your
 application, regardless of ability. LyteNyte Grid provides robust,
 standards-compliant accessibility features. This guide outlines the key
 capabilities and best practices.
@@ -12,12 +13,18 @@ capabilities and best practices.
 ## Accessibility Compliance
 
 LyteNyte Grid meets the W3C's [WCAG 2.0](https://www.w3.org/WAI/standards-guidelines/wcag/) guidelines.
-It supports all three conformance levels-A, AA, and AAA. Meeting AA
+It supports all three conformance levels—A, AA, and AAA. Meeting AA
 requirements also satisfies most [ADA](https://www.ada.gov/) standards.
 
 The grid uses ARIA (Accessible Rich Internet Applications) attributes on
 rows, cells, and headers. Screen readers interpret these attributes to
-help visually impaired users understand structure and content.
+help visually impaired users understand the grid's structure and content.
+
+## DOM Ordering
+
+LyteNyte Grid renders cells and headers in natural DOM order, even when virtualization
+is enabled. This ensures that screen reader users can correctly parse content.
+No special configuration is required to enhance the grid's accessibility.
 
 ## ARIA Roles and Properties
 
@@ -38,26 +45,23 @@ The main container uses `role="grid"`. It also applies:
 The grid uses `role="row"` for individual rows and `role="rowgroup"` for
 row containers.
 
-- For `rowgroup`: `aria-expanded` shows whether the group is open or
-  collapsed
-- For `row`:
-  - `aria-rowindex`: row's position in the grid
-  - `aria-selected`: whether the row is selected
+For `role="row"`, the grid adds:
+
+- `aria-rowindex`: the row's position in the grid
+- `aria-selected`: whether the row is selected
 
 ### Header Cell Roles
 
 Headers use `role="columnheader"` and may include:
 
-- `aria-colindex`: column's position in the grid
-- `aria-expanded`: open/collapsed state
-- `aria-sort`: current sort direction
+- `aria-colindex`: the column's position in the grid
+- `aria-expanded`: open or collapsed state
 
 ### Grid Cell Roles
 
 Cells use `role="gridcell"` and may include:
 
-- `aria-colindex`: column's position in the grid
-- `aria-selected`: whether the cell is selected
+- `aria-colindex`: the column's position in the grid
 
 ## Considerations for Visual Accessibility
 
@@ -68,7 +72,7 @@ LyteNyte Grid works with major screen readers, including:
 - [JAWS](https://support.freedomscientific.com/Downloads/JAWS)
 - [VoiceOver](https://support.apple.com/en-gb/guide/voiceover/welcome/10)
 
-It follows W3C standards to ensure a smooth, predictable reading
+The grid follows W3C standards to ensure a smooth, predictable reading
 experience.
 
 ### Color Accessibility
@@ -77,16 +81,25 @@ Roughly 300 million people worldwide experience some form of color
 blindness ([source](https://www.colourblindawareness.org/colour-blindness/)).
 Use accessible colors to meet AA standards and maintain readability.
 
-Recommended palettes:
+LyteNyte Grid provides prebuilt grid themes and color design tokens. These
+themes are designed to be accessible and spec-compliant.
+
+Beyond the themes provided by LyteNyte Grid, choosing a strong color palette
+for your application is essential for maintaining accessibility.
+Some recommended palettes include:
 
 - [Radix UI Colors](https://www.radix-ui.com/colors)
 - [Tailwind Colors](https://tailwindcss.com/docs/customizing-colors)
 
-Accessible color choices keep data visually clear for all users.
-
-## Conclusion
+Accessible color choices help keep data visually clear for all users.
 
 LyteNyte Grid embeds accessibility into its core design. Use ARIA roles,
 test with screen readers, and choose inclusive color palettes to deliver
 a grid that works for everyone. Regularly test with assistive
 technologies to maintain a seamless, inclusive experience.
+
+## Next Step
+
+::next[/docs/rtl-support]
+::next[/docs/keyboard]
+::next[/docs/intro-getting-started]

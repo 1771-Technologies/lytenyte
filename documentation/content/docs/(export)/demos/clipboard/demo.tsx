@@ -1,31 +1,29 @@
 "use client";
 
-import { Grid, useClientRowDataSource } from "@1771technologies/lytenyte-pro";
-import "@1771technologies/lytenyte-pro/grid.css";
-import type { Column } from "@1771technologies/lytenyte-pro/types";
+import "@1771technologies/lytenyte-pro-experimental/components.css";
+import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
+import { Grid, useClientDataSource } from "@1771technologies/lytenyte-pro-experimental";
 import { bankDataSmall } from "@1771technologies/grid-sample-data/bank-data-smaller";
-import { useCallback, useId } from "react";
+import { BalanceCell, DurationCell, NumberCell } from "./components.js";
 
 type BankData = (typeof bankDataSmall)[number];
+export interface GridSpec {
+  readonly data: BankData;
+}
 
-const columns: Column<BankData>[] = [
-  { id: "age", type: "number" },
-  { id: "job" },
-  { id: "balance", type: "number" },
-  { id: "education" },
-  { id: "marital" },
-  { id: "default" },
-  { id: "housing" },
-  { id: "loan" },
-  { id: "contact" },
-  { id: "day", type: "number" },
-  { id: "month" },
-  { id: "duration" },
-  { id: "campaign" },
-  { id: "pdays" },
-  { id: "previous" },
-  { id: "poutcome", name: "P Outcome" },
-  { id: "y" },
+const columns: Grid.Column<GridSpec>[] = [
+  { name: "Job", id: "job", width: 120 },
+  { name: "Age", id: "age", type: "number", width: 80, cellRenderer: NumberCell },
+  { name: "Balance", id: "balance", type: "number", cellRenderer: BalanceCell },
+  { name: "Education", id: "education" },
+  { name: "Marital", id: "marital" },
+  { name: "Default", id: "default" },
+  { name: "Housing", id: "housing" },
+  { name: "Loan", id: "loan" },
+  { name: "Contact", id: "contact" },
+  { name: "Day", id: "day", type: "number", cellRenderer: NumberCell },
+  { name: "Month", id: "month" },
+  { name: "Duration", id: "duration", type: "number", cellRenderer: DurationCell },
 ];
 
 export default function Clipboard() {

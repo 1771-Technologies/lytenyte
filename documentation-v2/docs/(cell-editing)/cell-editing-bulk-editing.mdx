@@ -16,8 +16,8 @@ for more details.
 
 ## Edit Update Method
 
-You can edit cells in bulk using the `editUpdate` method on the grid's API. The
-`editUpdate` method requires a map of rows to update. The update map can use
+You can edit cells in bulk using the [`editUpdateRows`](/docs/reference) method on the grid's API. The
+`editUpdateRows` method requires a map of rows to update. The update map can use
 two key types:
 
 - `number`: Represents the row index of the row that should be updated.
@@ -26,7 +26,7 @@ two key types:
 When you provide a `number` key, LyteNyte Grid resolves the row index to its
 row ID. Avoid setting both the row index and row ID for the same row in the map.
 
-The demo below uses the `editUpdate` method to update the **Price** column in
+The demo below uses the `editUpdateRows` method to update the **Price** column in
 bulk.
 
 ::demo[Bulk Cell Editing="./demos/cell-editing-bulk"]
@@ -34,7 +34,7 @@ bulk.
 The two buttons, **Increase Price** and **Decrease Price**, both leverage the grid's API
 to create a bulk update that increases or decreases the price of every row by 10, respectively.
 The code is shown below for increasing the price. Notice that the code creates a new update map,
-then calls `editUpdate` to update the rows through LyteNyte Grid's edit functionality.
+then calls `editUpdateRows` to update the rows through LyteNyte Grid's edit functionality.
 
 ```tsx
 <button
@@ -56,13 +56,33 @@ then calls `editUpdate` to update the rows through LyteNyte Grid's edit function
 
 ### Bulk Update vs. Direct Row Update
 
-At first glance, the `editUpdate` method appears to do the same thing as updating
+At first glance, the `editUpdateRows` method appears to do the same thing as updating
 the rows in the grid directly. However, there is a distinction. When you update rows through
-`editUpdate`, LyteNyte Grid runs the same validations as if the user edited the cell directly.
+`editUpdateRows`, LyteNyte Grid runs the same validations as if the user edited the cell directly.
 
-All rows must pass validation for LyteNyte Grid to apply the bulk update. The `editUpdate`
+All rows must pass validation for LyteNyte Grid to apply the bulk update. The `editUpdateRows`
 method returns the row validation result, which you can use to provide feedback
 if the update fails.
+
+## Bulk Editing Cells
+
+You can use the [`editUpdateCells`](/docs/reference) method to bulk update a set of cells in
+the grid, rather than updating entire rows. The `editUpdateCells` method is a convenience
+wrapper that uses `editUpdateRows` internally. LyteNyte Grid converts the provided cell
+updates into row updates and then calls `editUpdateRows`.
+
+The demo below demonstrates `editUpdateCells` by implementing standard clipboard
+functionality, including copy, cut, and paste. See the
+[Clipboard guide](/docs/export-clipboard) for more details.
+
+::demo[Edit Cells In Bulk="../(export)/demos/clipboard"]
+
+:::note
+
+The clipboard demo uses [cell range selection](/docs/cell-selection), which is a <ProTag /> feature. However,
+the `editUpdateCells` method is available in the Core edition of LyteNyte Grid.
+
+:::
 
 ## Next Steps
 

@@ -19,6 +19,7 @@ export type {
   RowSelectionState,
   RowSelectionLinked,
   RowSelectionIsolated,
+  RowSelectNode,
   RowNode,
   RowLeaf,
   RowGroup,

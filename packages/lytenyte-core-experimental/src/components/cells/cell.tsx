@@ -58,9 +58,7 @@ const CellImpl = memo(
 
     const editSetting = column.editable ?? (base as Root.Column).editable;
     const isEditable =
-      row && typeof editSetting === "function"
-        ? editSetting({ api, row, column, colIndex: cell.colIndex, rowIndex: cell.rowIndex })
-        : (editSetting ?? false);
+      row && typeof editSetting === "function" ? editSetting({ api, row, column }) : (editSetting ?? false);
 
     const isEditingThis =
       isEditable &&
@@ -91,6 +89,7 @@ const CellImpl = memo(
           {...props}
           ref={forwarded}
           role="gridcell"
+          aria-colindex={cell.colIndex + 1}
           tabIndex={isEditingThis ? -1 : 0}
           style={{ ...style, ...(props.style ?? styles?.cell?.style) }}
           // Data Properties

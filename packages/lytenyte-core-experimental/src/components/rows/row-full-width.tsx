@@ -21,6 +21,7 @@ const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function
     view,
     yPositions,
     rowFullWidthRenderer,
+    rowAlternateAttr,
     api,
     source,
     detailExpansions,
@@ -67,7 +68,7 @@ const RowFullWidthImpl = forwardRef<HTMLDivElement, RowFullWidth.Props>(function
       /** Data attributes start */
       data-ln-gridid={id}
       data-ln-rowindex={rowIndex}
-      data-ln-alternate={rowIndex % 2 === 1}
+      data-ln-alternate={rowAlternateAttr ? layout.rowIndex % 2 === 1 : undefined}
       data-ln-row
       data-ln-last-top-pin={layout.rowLastPinTop}
       data-ln-first-bottom-pin={layout.rowFirstPinBottom}

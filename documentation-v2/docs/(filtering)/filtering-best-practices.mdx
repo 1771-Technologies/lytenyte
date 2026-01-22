@@ -1,0 +1,45 @@
+---
+title: Filtering Best Practices
+step: Practices to follow to create usable filter interactions.
+description: To provide users with the best filtering experience possible, there are
+  general guidelines worth following. This section covers those best practices.
+---
+
+## Debounce Filter Inputs
+
+Many filters require user input. If you apply a filter immediately as the user enters
+values, ensure that you debounce the input. Applying filters on every keystroke is not
+recommended, since each change often requires re-evaluating all filter operations for
+every row.
+
+For more information on debouncing as a pattern, see the
+[MDN Debounce guide](https://developer.mozilla.org/en-US/docs/Glossary/Debounce).
+
+## Handle Null Values
+
+Always account for `null` values. In your filter logic, make a deliberate decision about
+whether `null` values should be kept or removed. The presence of `null` values is often
+an afterthought, but handling them incorrectly can make filter implementations more complex
+and less predictable.
+
+## Ensure Filter Efficiency
+
+Filters run against every row in the grid, so filter performance is critical. Ensure that
+filter functions are efficient, and avoid heavy computations inside filter logic.
+
+Some LyteNyte Grid row sources accept an array of filter functions, such as the
+[client row source](/docs/client-source-filtering). The grid evaluates filter functions
+in the order provided. Order filters from most efficient to least efficient to
+maximize performance.
+
+## Display Filter Feedback
+
+Always provide a visible indication that filters are active. This feedback can be as simple
+as a filter icon or a subtle but noticeable color indicator. Use consistent visual cues for
+filter feedback, and always provide a clear way to remove or reset filters.
+
+## Next Steps
+
+::next[/docs/filtering-numbers]
+::next[/docs/filtering-text]
+::next[/docs/filtering-dates]

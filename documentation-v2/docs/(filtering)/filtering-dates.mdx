@@ -1,3 +1,156 @@
 ---
 title: Filtering Dates
+step: Learn how to create custom date filters.
+description: Create custom date filters in LyteNyte Grid to filter rows. This guide
+  covers common filters that apply to date values in cells.
 ---
+
+:::note
+
+How you apply a date filter in LyteNyte Grid depends on the row source you use.
+See the following guides for each supported row data source:
+
+- [Client Row Filtering](/docs/client-source-filtering)
+- [Server Row Filtering](/docs/server-data-loading-row-filtering)
+- [Paginated Row Filtering](/docs/paginated-rs-row-filtering)
+- [Infinite Row Filtering](/docs/infinite-rs-row-filtering)
+- [Tree Filtering](/docs/tree-source-filtering)
+
+This guide focuses on client row filtering, since server-side filtering is typically handled by your backend database.
+The concepts in this guide apply equally to all row sources.
+
+:::
+
+## Date Filters
+
+LyteNyte Grid provides flexible filter capabilities that let you define custom date filters.
+You can check whether two dates are equal, whether a date falls within a specific range, or whether
+a date falls within a specific time period, such as the first quarter of the year.
+
+Filtering dates is more complex than filtering other data types, since dates can have many
+representations, formats, and timezones to contend with. In this guide, dates are represented as
+[ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) date strings.
+
+:::note
+
+The demos and code in this section use the [data-fns](https://date-fns.org/) library
+to simplify date filter implementations. The data-fns library is not required for
+date filters, but it is recommended. You may also use an alternative library, such as
+[Luxon](https://moment.github.io/luxon/#/).
+
+:::
+
+To create a date filter, define a function that receives a [row node](/docs/row-overview) and
+returns `true` to keep the row or `false` to remove it.
+
+For example, the following function filters a list of orders and keeps only orders
+with a sale date in 2025.
+
+```ts
+import { getYear } from "data-fns";
+
+const filter2025: Grid.T.FilterFn<GridSpec["data"]> = (row) => {
+  return getYear(row.data.saleDate) === 2025;
+};
+```
+
+The demo below demonstrates this filter. Click the **Sales in 2025** switch to toggle
+the filter state.
+
+::demo[Date Filter="./demos/date-filter"]
+
+## Filter Model
+
+LyteNyte Grid lets you define your own filter model and filter operations, which you can use to create
+dynamic date filters.
+
+This section demonstrates one approach to defining a date filter model. The model shown here is specific
+to date filtering, but you can extend it to support other filter types. You are encouraged to define
+a filter representation that fits your application's requirements.
+
+To create a dynamic filter, start by defining the type representation of a date filter. The following
+code defines the model used in this section:
+
+```ts
+export type FilterDateOperator = "equals" | "before" | "after" | "quarter" | "month";
+
+export interface FilterDate {
+  readonly operator: FilterDateOperator;
+  readonly value: string | number;
+}
+
+export interface GridFilter {
+  readonly left: FilterDate;
+  readonly right: FilterDate | null;
+  readonly operator: "AND" | "OR";
+}
+
+export interface GridSpec {
+  readonly data: DataItem;
+  readonly api: {
+    readonly filterModel: PieceWritable<Record<string, GridFilter>>;
+  };
+}
+```
+
+Using this filter model, you can create a filter function for the client row data source.
+
+The demo below shows this approach in action. Click the funnel icon on the **Sale Date** column to
+open the filter popover.
+
+::demo[Filter Model="./demos/date-filter-ui"]
+
+Pay close attention to the code below that defines the filter model. This code creates
+the filter model state and passes it to the grid API as an extension. The demo includes a
+filter UI that allows users to apply filters.
+
+When a user applies a filter, `useMemo` creates a new `filterFn`, which you then pass to the
+client data source. See the `filter.tsx` file in the demo's expanded code for the logic that
+builds the filter UI.
+
+```ts
+const [filter, setFilter] = useState<Record<string, GridFilter>>({});
+const filterModel = usePiece(filter, setFilter);
+
+const filterFn = useMemo(() => {
+  const entries = Object.entries(filter);
+
+  const evaluateDateFilter = (operator: FilterDateOperator, compare: string, value: string | number) => {
+    if (operator === "equals") return isEqual(compare, value);
+    if (operator === "after") return isAfter(compare, value);
+    if (operator === "before") return isBefore(compare, value);
+    if (operator === "month") return getMonth(compare) === value;
+    if (operator === "quarter") return getQuarter(compare) === value;
+    return false;
+  };
+
+  return entries.map<Grid.T.FilterFn<GridSpec["data"]>>(([column, filter]) => {
+    return (row) => {
+      //#start
+      const value = row.data[column as keyof GridSpec["data"]];
+
+      // This filter operates on date strings, so return early for non-string values
+      if (typeof value !== "string") return false;
+
+      const compareValue = value;
+
+      const leftResult = evaluateDateFilter(filter.left.operator, compareValue, filter.left.value);
+
+      if (!filter.right) return leftResult;
+
+      if (filter.operator === "OR") {
+        return leftResult || evaluateDateFilter(filter.right.operator, compareValue, filter.right.value);
+      }
+
+      return leftResult && evaluateDateFilter(filter.right.operator, compareValue, filter.right.value);
+      //#end
+    };
+  });
+}, [filter]);
+```
+
+## Next Steps
+
+::next[/docs/filtering-numbers]
+::next[/docs/filtering-quick-search]
+::next[/docs/filtering-set-filters]

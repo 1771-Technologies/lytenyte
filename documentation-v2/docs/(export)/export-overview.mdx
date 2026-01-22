@@ -1,0 +1,68 @@
+---
+title: Export Overview
+step: Export grid data in custom formats using LyteNyte Grid's flexible data export API.
+description: LyteNyte Grid supports exporting grid data in a structured form that can then be
+  used to create files in different formats or written to the clipboard.
+---
+
+Many file formats exist for representing and storing data. Rather than implementing each
+format directly in the grid, LyteNyte Grid provides the
+[`exportData`](/docs/reference) method on the grid API.
+
+## Export Data
+
+The `exportData` method exports a rectangular area of data from the grid. This rectangular
+area is defined by a start and end column and a start and end row, with the end values
+being exclusive. The rectangle interface is shown below.
+
+```ts
+interface DataRect {
+  readonly rowStart: number;
+  readonly rowEnd: number;
+  readonly columnStart: number;
+  readonly columnEnd: number;
+}
+```
+
+If you call `exportData` without any arguments, the grid exports data for a rectangle that
+covers the entire grid. The examples below show the two ways to call `exportData`.
+
+```ts
+// Export a specific area of the grid.
+api.exportData({ rect: { columnStart: 2, columnEnd: 10, rowStart: 2, rowEnd: 8 } });
+
+// Export everything.
+api.exportData();
+```
+
+The `exportData` method returns a `Promise<ExportDataRectResult>` object. The interface for
+this result is shown below. Each property on `ExportDataRectResult` is an array, and the
+length of each array matches the size of the requested rectangle. LyteNyte Grid performs
+the work of returning only the data for the requested columns and rows.
+
+```ts
+interface ExportDataRectResult<Spec extends GridSpec = GridSpec> {
+  readonly headers: string[];
+  readonly groupHeaders: (string | null)[][];
+  readonly data: unknown[][];
+  readonly columns: Column<Spec>[];
+}
+```
+
+## Export Files
+
+The primary use case for `exportData` is creating file exports from LyteNyte Grid, although
+the API is not limited to file generation. For format-specific implementations, see the
+guides below:
+
+- [Excel export](/docs/export-excel)
+- [CSV export](/docs/export-csv)
+- [Parquet export](/docs/export-parquet)
+- [Arrow export](/docs/export-arrow)
+- [Clipboard export](/docs/export-clipboard)
+
+## Next Steps
+
+::next[/docs/export-csv]
+::next[/docs/export-clipboard]
+::next[/docs/export-excel]

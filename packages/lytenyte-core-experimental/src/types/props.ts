@@ -84,6 +84,7 @@ export type Props<Spec extends GridSpec = GridSpec> = {
   readonly colOverscanStart?: number;
   readonly colOverscanEnd?: number;
 
+  readonly rowAlternateAttr?: boolean;
   readonly rowScanDistance?: number;
   readonly rowSource?: Spec["source"];
   readonly rowHeight?: RowHeight;

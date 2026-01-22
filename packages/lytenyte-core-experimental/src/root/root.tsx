@@ -210,6 +210,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
       editClickActivator: props.editClickActivator ?? "double-click",
       editValidator: props.editRowValidatorFn ?? null,
 
+      rowAlternateAttr: props.rowAlternateAttr ?? true,
       selectActivator: props.rowSelectionActivator ?? "single-click",
       selectPivot,
       dropAccept,
@@ -250,6 +251,7 @@ const RootImpl = <Spec extends Root.GridSpec = Root.GridSpec>(
     props.onRowDragEnter,
     props.onRowDragLeave,
     props.onRowDrop,
+    props.rowAlternateAttr,
     props.rowDetailAutoHeightGuess,
     props.rowDetailHeight,
     props.rowDetailRenderer,

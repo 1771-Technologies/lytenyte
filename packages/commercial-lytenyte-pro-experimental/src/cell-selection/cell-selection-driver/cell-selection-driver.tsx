@@ -285,6 +285,26 @@ export function CellSelectionDriver() {
 
       const position = focusActive.get();
 
+      // Select all
+      if (ev.key === "a" && (ev.ctrlKey || ev.metaKey)) {
+        if (!cellSelections.at(-1)) return;
+
+        const next: DataRect = {
+          columnStart: excludeMarker ? 1 : 0,
+          columnEnd: view.visibleColumns.length,
+          rowStart: 0,
+          rowEnd: rowCount,
+        };
+        const nextSelections = [...cellSelections];
+        nextSelections[nextSelections.length - 1] = next;
+
+        onCellSelectionChange(nextSelections);
+
+        ev.preventDefault();
+        ev.stopPropagation();
+        return;
+      }
+
       if (!ev.shiftKey || position?.kind !== "cell") return;
 
       let handled = false;

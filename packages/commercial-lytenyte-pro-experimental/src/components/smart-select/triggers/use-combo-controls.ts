@@ -1,6 +1,7 @@
 import { useMemo, type Dispatch, type JSX, type SetStateAction } from "react";
 import { useSmartSelect } from "../context.js";
 import type { BaseOption } from "../type.js";
+import { isSelectableOption } from "./is-selectable-option.js";
 
 export function useComboControls(setActiveChip: Dispatch<SetStateAction<string | null>>, isMulti: boolean) {
   const {
@@ -29,6 +30,12 @@ export function useComboControls(setActiveChip: Dispatch<SetStateAction<string |
       },
       onFocus: () => {
         setActiveChip(null);
+      },
+      onBlur: (e) => {
+        if (e.currentTarget.contains(e.relatedTarget)) return;
+
+        onOpenChange(false);
+        return;
       },
       value: query,
       onChange: (ev) => {
@@ -108,14 +115,12 @@ export function useComboControls(setActiveChip: Dispatch<SetStateAction<string |
           const active = container.querySelector('[data-ln-active="true"]');
 
           let current = active?.previousElementSibling;
-          while (current && current.getAttribute("data-ln-selectable") === "false")
-            current = current.previousElementSibling;
+          while (current && !isSelectableOption(current)) current = current.previousElementSibling;
 
           if (!current) {
             current = container.lastElementChild;
 
-            while (current && current.getAttribute("data-ln-selectable") === "false")
-              current = current.previousElementSibling;
+            while (current && !isSelectableOption(current)) current = current.previousElementSibling;
           }
 
           if (current) {
@@ -130,14 +135,12 @@ export function useComboControls(setActiveChip: Dispatch<SetStateAction<string |
 
           const active = container.querySelector('[data-ln-active="true"]');
           let current = active?.nextElementSibling;
-          while (current && current.getAttribute("data-ln-selectable") === "false")
-            current = current.nextElementSibling;
+          while (current && !isSelectableOption(current)) current = current.nextElementSibling;
 
           if (!current) {
             current = container.firstElementChild;
 
-            while (current && current.getAttribute("data-ln-selectable") === "false")
-              current = current.nextElementSibling;
+            while (current && !isSelectableOption(current)) current = current.nextElementSibling;
           }
 
           if (current) {

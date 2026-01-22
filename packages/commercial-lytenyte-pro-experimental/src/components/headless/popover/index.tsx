@@ -6,6 +6,7 @@ import { DialogClose } from "../dialog/close.js";
 import { PopoverContainer } from "./container.js";
 import { DialogDescription } from "../dialog/description.js";
 import { DialogTitle } from "../dialog/title.js";
+import { useDialog } from "../dialog/use-dialog.js";
 
 export const Popover = (props: PropsWithChildren<PopoverRoot.Props>) => <PopoverRoot {...props} />;
 
@@ -15,6 +16,7 @@ Popover.Close = DialogClose;
 Popover.Container = PopoverContainer;
 Popover.Description = DialogDescription;
 Popover.Title = DialogTitle;
+Popover.useControls = useDialog;
 
 export namespace Popover {
   export type Props = PopoverRoot.Props;

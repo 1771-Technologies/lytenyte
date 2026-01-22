@@ -25,6 +25,7 @@ export type ComboSelect<T extends BaseOption> = {
   readonly onQueryChange?: (change: string) => void;
 
   readonly searchDebounceMs?: number;
+  readonly clearOnSelect?: boolean;
   readonly clearOnQuery?: boolean;
 
   readonly options: (query: string | null) => Promise<T[]> | T[];
@@ -39,6 +40,7 @@ export type MultiComboSelect<T extends BaseOption> = {
   readonly onQueryChange?: (change: string) => void;
 
   readonly searchDebounceMs?: number;
+  readonly clearOnSelect?: boolean;
   readonly clearOnQuery?: boolean;
 
   readonly options: (query: string | null) => Promise<T[]> | T[];

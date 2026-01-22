@@ -79,10 +79,7 @@ export type API<Spec extends GridSpec = GridSpec> = {
   readonly rowIsExpandable: (row: RowNode<Spec["data"]>) => boolean;
   readonly rowView: () => { rowCount: number; topCount: number; bottomCount: number; centerCount: number };
 
-  readonly exportData: (params?: {
-    readonly rect: DataRect;
-    readonly uniformGroupHeaders?: boolean;
-  }) => Promise<ExportDataRectResult<Spec>>;
+  readonly exportData: (params?: { readonly rect?: DataRect }) => Promise<ExportDataRectResult<Spec>>;
 
   readonly scrollIntoView: (params: {
     readonly column?: number | string | WithId;
@@ -103,8 +100,11 @@ export type API<Spec extends GridSpec = GridSpec> = {
     readonly column: WithId | string | number;
     readonly rowIndex: number;
   }) => boolean;
-  readonly editUpdate: (
+  readonly editUpdateRows: (
     rows: Map<string | number, unknown>,
+  ) => true | Map<string | number, boolean | Record<string, unknown>>;
+  readonly editUpdateCells: (
+    cells: Map<string | number, { value: any; column: Column<Spec> | string | number }[]>,
   ) => true | Map<string | number, boolean | Record<string, unknown>>;
 
   readonly rowSelect: (params: {

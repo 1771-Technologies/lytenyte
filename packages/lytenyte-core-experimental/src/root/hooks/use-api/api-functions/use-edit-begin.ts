@@ -35,11 +35,7 @@ export function useEditBegin(
 
     const base = props.columnBase as Root.Column;
     const editable = column.editable ?? base.editable;
-    if (
-      typeof editable === "function"
-        ? !editable({ api, row, column, colIndex: columnIndex, rowIndex })
-        : !editable
-    ) {
+    if (typeof editable === "function" ? !editable({ api, row, column }) : !editable) {
       if (focusIfNotEditable) {
         api.scrollIntoView({ column, row: rowIndex, behavior: "instant" });
         runWithBackoff(() => {

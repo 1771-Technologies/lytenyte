@@ -1,42 +1,56 @@
 ---
 title: CSV Data Export
-description:
-  Export grid data to CSV format with customizable headers, delimiters, and transformations in
-  LyteNyte Grid.
+step: Export data from LyteNyte Grid as CSV.
+description: Export data to CSV using LyteNyte Grid's data export functionality.
 ---
 
-LyteNyte Grid can export grid data directly to CSV, letting you capture a selection or the entire
-dataset in a standard format.
+LyteNyte Grid does not include a built-in CSV parser. However, you can use LyteNyte Grid's
+export functionality to generate a CSV file by parsing the output of the
+[`exportData`](/docs/reference) method on the grid API.
 
-## Export to CSV
+## Download a CSV
 
-Use the `exportCsv` API method to export selected data or the entire rendered dataset. To download a
-CSV file directly, use the convenience method `exportCsvFile`, which runs `exportCsv` and returns a
-downloadable file blob.
+The demo below demonstrates exporting grid data to a CSV string and then downloading
+that data as a CSV file. CSV is a simple format that supports numbers and strings.
 
-!demo:Export CSV="./demos/csv-export"
+::demo[Export CSV="./demos/csv-export"]
 
-`exportCsv` returns a `Promise<string>` containing the CSV content. When exporting a selection, you
-can specify any rectangular area, not just the current selection.
+The example below shows a basic implementation for exporting grid data to CSV.
+This implementation is intentionally simple and does not handle all possible
+CSV edge cases. For more robust serialization, consider using an open source
+CSV library such as [csv-parser](https://github.com/mafintosh/csv-parser).
 
-```ts
-grid.api.exportCsv({
-  dataRect: { rowStart: 2, rowEnd: 4, columnStart: 4, columnEnd: 2 },
-});
+```tsx
+<button
+  data-ln-button="tertiary"
+  data-ln-size="md"
+  //!next 19
+  onClick={async () => {
+    const api = apiRef.current;
+    if (!api) return;
+
+    const rect = await api.exportData();
+
+    const rows: string[] = [rect.columns.map((x) => x.name ?? x.id).join(",")];
+    for (let i = 0; i < rect.data.length; i++) {
+      const row: string[] = [];
+      const data = rect.data[i];
+      for (const x of data) {
+        if (typeof x === "string") row.push(`"${x}"`);
+        else row.push(String(x));
+      }
+      rows.push(row.join(","));
+    }
+
+    downloadBlob(new Blob([rows.join("\n")], { type: "text/csv" }), "data.csv");
+  }}
+>
+  Download CSV File
+</button>
 ```
 
-## CSV Delimiter
+## Next Steps
 
-Set the `delimiter` option to control the character separating CSV fields. The default is a comma
-(`,`).
-
-## Include Headers and Group Headers
-
-By default, `exportCsv` exports only cell data.
-
-- Set `includeHeaders: true` to include column headers.
-- Set `includeGroupHeaders: true` to include group headers.
-
-Group headers often span multiple columns. By default, only the first spanned column contains the
-header value, leaving the rest blank. To repeat the header across all spanned columns, set
-`uniformGroupHeaders: true`. This produces a perfectly rectangular CSV output.
+::next[/docs/export-clipboard]
+::next[/docs/export-excel]
+::next[/docs/export-parquet]

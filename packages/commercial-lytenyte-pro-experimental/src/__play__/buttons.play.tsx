@@ -1,3 +1,4 @@
+import "../../css/light-dark.css";
 import "@1771technologies/lytenyte-design/shadcn-vars.css";
 
 import "../../css/components.css";

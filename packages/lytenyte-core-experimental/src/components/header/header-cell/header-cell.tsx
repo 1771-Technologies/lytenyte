@@ -60,6 +60,8 @@ const HeaderCellImpl = forwardRef<HTMLDivElement, HeaderCell.Props>(function Hea
       {...props}
       onDragStart={dragProps.onDragStart}
       tabIndex={0}
+      aria-colindex={cell.colStart + 1}
+      aria-expanded={false}
       ref={ref}
       role="columnheader"
       // DATA Attributes Start

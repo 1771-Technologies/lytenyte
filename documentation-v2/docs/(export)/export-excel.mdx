@@ -1,19 +1,41 @@
 ---
 title: Export Excel
+step: Implement Excel export in LyteNyte Grid using third-party libraries like ExcelJS.
 description: Implement Excel export in LyteNyte Grid using third-party libraries like ExcelJS.
 ---
 
-LyteNyte Grid does not include built-in Excel export to keep the bundle size small. Instead, use
-established open-source libraries to generate Excel files. This approach avoids adding large
-dependencies to the grid.
+There are a number open source libraries the allow you to create excel files in JavaScript. This
+guide will use [ExcelJS](https://github.com/exceljs/exceljs), but you may consider other
+suitable choices as well, such as [SheetJs](https://sheetjs.com/).
 
-This guide shows how to use [ExcelJS](https://github.com/exceljs/exceljs) to create downloadable
-Excel files from your grid data.
+## Download an Excel File
 
-!demo:Excel Export="./demos/excel-export"
+The demo below allows you to download an excel file of all the grid data. It does this
+by leveraging ExeclJS to create an file blob that is then downloaded.
 
-## How It Works
+::demo[Excel Export="./demos/excel-export"]
 
-Use the `exportDataRect` API method to retrieve the grid's data for export. Pass this data into your
-ExcelJS logic to populate and style the spreadsheet. For details on `exportDataRect`, see the
-[Export Any Data](/docs/export-any-data) guide.
+Notice the code uses the grid's [`exportData`](/docs/reference) method to retrieve
+the current view of cells.
+
+```tsx
+<button
+  //!next 8
+  onClick={async () => {
+    const api = apiRef.current;
+    if (!api) return;
+
+    const rect = await api.exportData();
+
+    downloadBlob(await getExcelFile(rect), "data.xlsx");
+  }}
+>
+  Download Excel File
+</button>
+```
+
+## Next Steps
+
+::next[/docs/export-csv]
+::next[/docs/export-arrow]
+::next[/docs/export-parquet]

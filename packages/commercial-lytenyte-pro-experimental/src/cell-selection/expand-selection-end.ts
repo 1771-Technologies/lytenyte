@@ -2,6 +2,7 @@ import type { ColumnView, PositionGridCell } from "@1771technologies/lytenyte-sh
 import type { API, DataRect } from "../types/api.js";
 import { dataRectFromCellPosition } from "./data-rect-from-cell-position.js";
 import { isOverlappingRect } from "./is-overlapping-rect.js";
+import { isFullyWithinRect } from "./is-fully-within-rect.js";
 
 export function expandSelectionEnd(
   api: API,
@@ -13,7 +14,7 @@ export function expandSelectionEnd(
 ) {
   const pos = dataRectFromCellPosition(position);
   const rect = selections.at(-1);
-  if (!rect || !isOverlappingRect(rect, pos)) return;
+  if (!rect || !isOverlappingRect(rect, pos) || isFullyWithinRect(pos, rect)) return;
 
   if (meta) {
     const next: DataRect = {
