@@ -10,14 +10,13 @@ to set the component.
 
 ## Header Renderers
 
-Creating a functional header renderer is as simple as:
+Creating a header renderer involves the following steps:
 
-1. Defining a custom React component function that accepts an object of type
-   [`Grid.T.HeaderParams`](/docs/reference) as props.
-2. Setting the value of the `headerRenderer` property on each column that should use this renderer.
+1. Define a custom React component function that accepts an object of type `Grid.T.HeaderParams` as its props.
+2. Set the value of the `headerRenderer` property for each column that should use this renderer.
 
-The demo below demonstrates this in action. Every column has a custom `headerRenderer` that adds
-an icon based on the column ID.
+The demo below shows this in action. Each column has a custom `headerRenderer` that adds an
+icon based on the column ID.
 
 ::demo[Header Renderers="./demos/column-header-renderer"]
 

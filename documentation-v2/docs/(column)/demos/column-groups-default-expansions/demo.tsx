@@ -116,7 +116,7 @@ export default function ColumnBase() {
 
   return (
     <div
-      className="ln-grid ln-cell:text-xs ln-header:text-xs ln-header:text-ln-text-xlight"
+      className="ln-grid ln-cell:text-xs ln-header:text-xs ln-header:text-ln-text-xlight ln-header-group:text-xs"
       style={{ height: 500 }}
     >
       <Grid

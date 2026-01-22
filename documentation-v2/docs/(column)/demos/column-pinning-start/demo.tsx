@@ -30,6 +30,8 @@ export interface GridSpec {
   readonly data: OrderData;
 }
 
+const base: Grid.ColumnBase<GridSpec> = { movable: true }; //!
+
 export default function ColumnMoving() {
   const ds = useClientDataSource({ data: data });
 
@@ -40,6 +42,7 @@ export default function ColumnMoving() {
       <Grid
         rowHeight={50}
         columns={columns}
+        columnBase={base}
         rowSource={ds}
         onColumnsChange={setColumns}
         slotShadows={ViewportShadows}

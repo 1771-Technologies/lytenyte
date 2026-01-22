@@ -58,7 +58,7 @@ export default function ColumnBase() {
         events={useMemo<Grid.Events<GridSpec>>(
           () => ({
             headerCell: {
-              keyDown: (column, ev) => {
+              keyDown: ({ column, event: ev }) => {
                 if (ev.key !== "Enter") return;
 
                 setEditing(column.id);

@@ -26,7 +26,7 @@ const columns: Grid.Column<GridSpec>[] = [
   { id: "customer", cellRenderer: AvatarCell, width: 180, name: "Customer" },
 ];
 
-const base: Grid.ColumnBase<GridSpec> = { resizable: true, widthMin: 100, widthMax: 300 };
+const base: Grid.ColumnBase<GridSpec> = { widthMin: 100, widthMax: 300 };
 
 export default function ColumnBase() {
   const ds = useClientDataSource({ data: data });

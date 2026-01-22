@@ -22,9 +22,16 @@ export interface GridSpec {
 
 const columns: Grid.Column<GridSpec>[] = [
   { id: "id", width: 60, widthMin: 60, cellRenderer: IdCell, name: "ID" },
-  { id: "product", cellRenderer: ProductCell, groupPath: ["Inventory"], width: 200 },
-  { id: "price", type: "number", cellRenderer: PriceCell, groupPath: ["Inventory"], width: 100 },
-  { id: "customer", cellRenderer: AvatarCell, width: 180, groupPath: ["Details"] },
+  { id: "product", name: "Product", cellRenderer: ProductCell, groupPath: ["Inventory"], width: 200 },
+  {
+    id: "price",
+    name: "Price",
+    type: "number",
+    cellRenderer: PriceCell,
+    groupPath: ["Inventory"],
+    width: 100,
+  },
+  { id: "customer", name: "Customer", cellRenderer: AvatarCell, width: 180, groupPath: ["Details"] },
   {
     id: "purchaseDate",
     cellRenderer: PurchaseDateCell,
@@ -39,7 +46,7 @@ const columns: Grid.Column<GridSpec>[] = [
     width: 150,
     groupPath: ["Details"],
   },
-  { id: "email", cellRenderer: EmailCell, width: 220, groupPath: ["Details"] },
+  { id: "email", name: "Email", cellRenderer: EmailCell, width: 220, groupPath: ["Details"] },
 ];
 
 //#end
@@ -67,7 +74,7 @@ export default function ColumnBase() {
           <ToggleItem value="60">Large</ToggleItem>
         </ToggleGroup>
       </div>
-      <div className={"ln-grid"} style={{ height: 500 }}>
+      <div className={"ln-grid ln-header-group:justify-center"} style={{ height: 500 }}>
         <Grid
           rowHeight={50}
           rowSource={ds}

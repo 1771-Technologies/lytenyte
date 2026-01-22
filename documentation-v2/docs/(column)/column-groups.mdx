@@ -167,10 +167,10 @@ horizontally and observe that the **Market Info** label remains in view.
 
 The implementation is simple. The important part is the `styles` override.
 `Grid.HeaderGroupCell` uses `position: relative` and `overflow: hidden` by default.
-In this case, overriding those defaults is appropriate. Since pinned columns may be
-pinned to the start, we use the `--ln-start-offset` variable. This variable equals
-the total width (in pixels) of the columns pinned to the
-start. LyteNyte Grid sets `--ln-start-offset` on the grid viewport.
+In this case, overriding those defaults is appropriate.
+Since pinned columns can be pinned to the start, we use
+the `--ln-start-offset` variable, which equals the total width in pixels of the
+columns pinned to the start. LyteNyte Grid sets `--ln-start-offset` on the grid viewport.
 
 ```tsx
 <Grid

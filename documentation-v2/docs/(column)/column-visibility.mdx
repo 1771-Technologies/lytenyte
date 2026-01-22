@@ -23,10 +23,12 @@ its position in the column state.
 
 ::demo[Hiding Columns="./demos/column-visibility"]
 
-The demo uses the Pill Manager provided by LyteNyte Grid. When a user clicks a pill,
-the demo toggles that column's visibility. Since the demo updates the columns at runtime,
-the demo stores the column definitions in React state. The Pill Manager is a versatile
-component capable of managing column visibility, ordering, grouping, and more.
+The demo uses the Pill Manager provided by LyteNyte Grid. Clicking a pill toggles the visibility
+of its corresponding column. Since columns are updated at runtime, their
+column definitions are stored in React state.
+
+The Pill Manager is a versatile component that manages column
+visibility, ordering, grouping, and additional functions.
 See the [Pill Manager guide](/docs/component-pill-manager) for more details.
 
 :::warn
@@ -54,10 +56,16 @@ even though the collapsed group hides them visually.
 
 ::demo[Column Group Visibility="./demos/column-visibility_groups"]
 
-You may also notice that if you hide the **Symbol** column, or if you hide both the **Exchange**
-and **Network** columns, the column group is no longer collapsible. You can collapse a column group
-only if at least one column is visible when the group is open and at least one column is visible when
-the group is closed. For more on column groups, see our [Column Groups guide].
+:::note
+
+Hiding the **Symbol** column or both the **Exchange** and **Network** columns makes the column
+group no longer collapsible. A column group can be collapsed only if at
+least one column is visible when the group is open and at least
+one column is visible when it is closed.
+
+For more on column groups, see our [Column Groups guide](/docs/column-groups).
+
+:::
 
 ## Next Steps
 
