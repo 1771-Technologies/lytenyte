@@ -21,12 +21,12 @@ export interface GridSpec {
 
 const columns: Grid.Column<GridSpec>[] = [
   { id: "id", width: 60, widthMin: 60, cellRenderer: IdCell, name: "ID" },
-  { id: "product", cellRenderer: ProductCell, width: 200 },
-  { id: "price", type: "number", cellRenderer: PriceCell, width: 100 },
-  { id: "customer", cellRenderer: AvatarCell, width: 180 },
+  { id: "product", name: "Product", cellRenderer: ProductCell, width: 200 },
+  { id: "price", name: "Price", type: "number", cellRenderer: PriceCell, width: 100 },
+  { id: "customer", name: "Customer", cellRenderer: AvatarCell, width: 180 },
   { id: "purchaseDate", cellRenderer: PurchaseDateCell, name: "Purchase Date", width: 140 },
   { id: "paymentMethod", cellRenderer: PaymentMethodCell, name: "Payment Method", width: 150 },
-  { id: "email", cellRenderer: EmailCell, width: 220 },
+  { id: "email", name: "Email", cellRenderer: EmailCell, width: 220 },
 ];
 
 const base: Grid.ColumnBase<GridSpec> = {

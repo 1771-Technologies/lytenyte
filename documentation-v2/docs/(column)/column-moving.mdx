@@ -52,53 +52,59 @@ When column dragging begins, the browser takes an image snapshot of the column b
 This is native browser behavior. LyteNyte Grid lets you customize the drag placeholder.
 The grid exposes two properties:
 
-- `columnMoveDragPlaceholder`: Determines the placeholder to use when dragging column headers to reorder
-  columns.
-- `columnGroupMoveDragPlaceholder`: Determines the placeholder to use when dragging column group headers.
+- `columnMoveDragPlaceholder`: Determines the placeholder used when dragging column headers.
+- `columnGroupMoveDragPlaceholder`: Determines the placeholder used when dragging column group headers.
 
-The placeholder may be one of the following:
+The placeholder can be one of the following:
 
-- **String**: A query selector for another element on the page to use for the drag image snapshot.
-- **Query Object**: An object with a query selector string and an offset tuple for snapshot image placement.
-- **Component Placeholder**: A React component to render as the placeholder.
+- **String:** A CSS selector that targets an element to snapshot as the drag image.
+- **Query Object:** An object that includes a CSS selector string and an `(x,y)` offset that positions the snapshot image.
+- **Component Placeholder:** A React component that renders the placeholder.
 
 :::note
 
-When you use a **Component Placeholder**, you opt out of the native browser drag-and-drop image snapshot.
-LyteNyte Grid provides the client coordinates for the drag, but you must render the placeholder correctly.
-LyteNyte Grid also renders the placeholder within the header component in the React tree.
-This means the placeholder component will almost certainly need a React portal to render elsewhere in the DOM.
+When you use a **Component Placeholder**, you disable the browser's native drag-image snapshot.
+LyteNyte Grid provides the client coordinates for the drag event, and
+your code must render the placeholder correctly at those coordinates.
+
+LyteNyte Grid mounts the placeholder within the header component
+in the React tree, so you must use a React portal to render the placeholder into the target DOM container.
 
 :::
 
-In the demo below, the column header and column group header drag placeholders have been replaced
-with a stylized React component placeholder.
+In the demo below, a custom React component renders the drag placeholder
+for column headers and column group headers.
 
-::demo[Column Move Placeholder="./demos/column-moving-placeholder"]
+::demo[Column Placeholder Dragging="./demos/column-moving-placeholder"]
 
-Although it may not be immediately obvious from the drag examples, using a React component
-instead of a query selector (or relying on the default drag behavior) has some differences that you
-should be aware of.
+Using a React component instead of a query selector or default drag behavior
+has differences to note, even if not obvious from the drag examples.
 
-The query selector and default drag behavior rely on the native browser drag-and-drop functionality.
-When the drag begins, the browser takes an image snapshot of the element being dragged. You cannot
-change this image once the browser takes the snapshot. Conversely, a React component re-renders every time the cursor moves,
-and you can update the visual output at any point. However, the React component approach will be significantly
-slower than the native browser approach. Unless you have a good reason to prefer a React component, prefer
-query selectors and elements for drag placeholders.
+#### **Native Placeholder (Query Selector)**
+
+- Uses the browser's drag-and-drop API.
+- Snapshots the dragged element when the drag starts.
+- Uses a static image for the entire drag that cannot be updated after the snapshot is taken.
+
+#### **React Component Placeholder**
+
+- Re-renders every time the cursor moves.
+- You can update the placeholder's visual output during the drag.
+- Runs significantly slower than native placeholder approach
+
+Use a React component placeholder only when you need dynamic visuals. Otherwise,
+prefer query selectors and elements for drag placeholders.
 
 ## Column Dropped Outside Viewport
 
 LyteNyte Grid detects when a moved column or column group is dropped outside the grid.
-When this happens, the grid calls the `onColumnMoveOutside` handler (if provided). You can use
-this handler to determine whether a column move ended outside the grid. For example, if you want
-to hide a column when it is dropped outside the grid, attach a callback to `onColumnMoveOutside`
-to hide the moved columns, as demonstrated in the demo below.
+When this happens, the grid calls the `onColumnMoveOutside` handler (if provided).
+You can use this handler to determine whether a column move ended outside the grid.
 
-::demo[Hide Column On Outside Drag="./demos/column-moving-outside"]
+If you want to hide a column when it is dropped outside the grid, attach a
+callback to `onColumnMoveOutside` to hide the moved columns, as demonstrated in the demo below.
 
-If you remove all columns, reset the demo by clicking the refresh icon next to the **Expand Code**
-button.
+::demo[Outside Drag-to-Hide="./demos/column-moving-outside"]
 
 :::tip
 

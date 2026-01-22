@@ -31,7 +31,7 @@ const columns: Grid.Column<GridSpec>[] = [
     colSpan: 2,
   },
   { id: "price-gbp", name: "GBP Price", type: "number", width: 110 },
-  { field: 5, id: "change", type: "number", cellRenderer: PercentCell, width: 130 },
+  { field: 5, id: "change", name: "Change", type: "number", cellRenderer: PercentCell, width: 130 },
   { field: 11, id: "eps", name: "EPS", type: "number", cellRenderer: CurrencyCell, width: 130 },
   { field: 6, id: "volume", type: "number", cellRenderer: CompactNumberCell, width: 130 },
 ];

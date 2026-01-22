@@ -13,6 +13,7 @@ import {
 } from "./components.jsx";
 import type { DEXPerformanceData } from "@1771technologies/grid-sample-data/dex-pairs-performance";
 import { data } from "@1771technologies/grid-sample-data/dex-pairs-performance";
+import { useState } from "react";
 
 export interface GridSpec {
   readonly data: DEXPerformanceData;
@@ -112,14 +113,22 @@ const columns: Grid.Column<GridSpec>[] = [
 const base: Grid.ColumnBase<GridSpec> = { width: 80 };
 
 export default function ColumnBase() {
+  const [expansions, setExpansions] = useState<Record<string, boolean>>({ "Market Info": false });
   const ds = useClientDataSource({ data: data });
 
   return (
     <div
-      className="ln-grid ln-cell:text-xs ln-header:text-xs ln-header:text-ln-text-xlight"
+      className="ln-grid ln-cell:text-xs ln-header:text-xs ln-header:text-ln-text-xlight ln-header-group:text-xs"
       style={{ height: 500 }}
     >
-      <Grid columns={columns} columnBase={base} rowSource={ds} columnGroupRenderer={HeaderGroupCell} />
+      <Grid
+        columns={columns}
+        columnBase={base}
+        rowSource={ds}
+        columnGroupRenderer={HeaderGroupCell}
+        columnGroupExpansions={expansions}
+        onColumnGroupExpansionChange={setExpansions}
+      />
     </div>
   );
 }

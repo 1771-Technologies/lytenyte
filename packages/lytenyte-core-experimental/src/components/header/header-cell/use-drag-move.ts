@@ -77,6 +77,7 @@ export function useDragMove(
       const isOutside = bb.top >= y || bb.bottom <= y || bb.left >= x || bb.right <= x;
       if (!isOutside) return;
 
+      setActiveHeaderDrag(null);
       onColumnMoveOutside?.({ columns, api });
     },
     onDragStart: () => {

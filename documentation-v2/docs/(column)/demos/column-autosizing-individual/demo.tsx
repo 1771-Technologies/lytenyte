@@ -136,10 +136,10 @@ export default function ColumnAutosize() {
 
   return (
     <>
-      <div className="border-ln-border flex gap-4 border-b px-4 py-3">
+      <div className="border-ln-border flex gap-2 border-b px-2 py-2">
         <button
-          data-ln-button="tertiary"
-          data-ln-size="md"
+          data-ln-button="website"
+          data-ln-size="mx"
           onClick={() => {
             ref.current?.columnAutosize({ columns: ["symbol"] }); //!
           }}
@@ -147,8 +147,8 @@ export default function ColumnAutosize() {
           Autosize Symbol
         </button>
         <button
-          data-ln-button="tertiary"
-          data-ln-size="md"
+          data-ln-button="website"
+          data-ln-size="mx"
           onClick={() => {
             ref.current?.columnAutosize({ columns: ["network"] }); //!
           }}
@@ -157,8 +157,8 @@ export default function ColumnAutosize() {
         </button>
 
         <button
-          data-ln-button="tertiary"
-          data-ln-size="md"
+          data-ln-button="website"
+          data-ln-size="mx"
           onClick={() => {
             ref.current?.columnAutosize(); //!
           }}
@@ -166,8 +166,8 @@ export default function ColumnAutosize() {
           Autosize Cells
         </button>
         <button
-          data-ln-button="tertiary"
-          data-ln-size="md"
+          data-ln-button="website"
+          data-ln-size="mx"
           onClick={() => {
             setColumns(initialColumns);
           }}
