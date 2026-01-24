@@ -336,12 +336,31 @@ added to the data source, you can supply a set of additional IDs via the
 
 ```ts
 const ds = useClientDataSource({
-  rowSelectionIdUniverseAdditions: new Set(["unloaded-row-1", "unloaded-row-2"]), //!
+  //!next 4
+  rowSelectionIdUniverseAdditions: [
+    { id: "unloaded-row-1", root: false },
+    { id: "unloaded-row-2", root: true },
+  ],
 });
 ```
 
-Only use `rowSelectionIdUniverseAdditions` when the rows you want to preselect will not be
+The `root` flag indicates that the row exists at the top level of the grid. This flag must be set
+and only impacts row selection when there are row groups present.
+
+Only use `rowSelectionIdUniverseAdditions` when the rows you want to preselect are not
 immediately available in the data source.
+
+To exclude rows from the **ID universe**, use the `rowSelectionIdUniverseSubtractions`
+property, as shown below. Rows excluded from the **ID universe** are not selectable. This
+behavior is useful when a row has a special use case and should not participate in normal
+selection behavior.
+
+```ts
+const ds = useClientDataSource({
+  //!next
+  rowSelectionIdUniverseSubtractions: new Set(["row-1"]),
+});
+```
 
 ## Row Selection Reset Key
 

@@ -74,7 +74,8 @@ export interface UseClientDataSourceParams<T = unknown> {
   readonly rowsIsolatedSelection?: boolean;
   readonly rowSelection?: RowSelectionState;
   readonly rowSelectKey?: unknown[];
-  readonly rowSelectionIdUniverseAdditions?: Set<string>;
+  readonly rowSelectionIdUniverseAdditions?: { readonly id: string; readonly root: boolean }[];
+  readonly rowSelectionIdUniverseSubtractions?: Set<string>;
 
   readonly onRowSelectionChange?: (state: RowSelectionState) => void;
 
@@ -120,7 +121,12 @@ export function useClientDataSource<T>(p: UseClientDataSourceParams<T>): RowSour
   const tree = useGroupTree(leafs, sorted, groupFn, p.groupIdFn ?? groupIdFallback);
   const [groupFlat, maxDepth] = useFlattenedGroups(tree, aggregate, leafs, sorted, sortFn, expandedFn);
 
-  const idUniverse = useIdUniverse(tree, leafIds, p.rowSelectionIdUniverseAdditions);
+  const { idUniverse, rootIds } = useIdUniverse(
+    tree,
+    leafIds,
+    p.rowSelectionIdUniverseAdditions,
+    p.rowSelectionIdUniverseSubtractions,
+  );
 
   const {
     flatten,
@@ -164,6 +170,8 @@ export function useClientDataSource<T>(p: UseClientDataSourceParams<T>): RowSour
     p.rowsIsolatedSelection ?? false,
     rowSelectionKey,
     idUniverse,
+    rootIds,
+    rootIds.size,
     globalSignal,
   );
   const onRowsSelected = useOnRowsSelected(

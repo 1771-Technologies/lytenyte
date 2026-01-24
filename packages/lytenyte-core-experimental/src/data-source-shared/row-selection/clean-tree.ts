@@ -6,11 +6,36 @@ import {
 export function cleanTree(
   s: RowSelectionLinkedWithParent | RowSelectNodeWithParent,
   idUniverse: Set<string> | null,
+  rootIds: Set<string>,
+  rootCount: number,
 ) {
-  s.children?.forEach((x) => cleanTree(x, idUniverse));
+  s.children?.forEach((x) => cleanTree(x, idUniverse, rootIds, rootCount));
 
-  // handle root here
-  if ("kind" in s) return;
+  // The root needs special care
+  if ("kind" in s) {
+    // Check if the root size is greater than
+    // or equal to the root count
+    if (s.children.size >= rootCount) {
+      let current = null;
+      for (const x of s.children.values()) {
+        // This node means that there is some other selection happening
+        if (x.selected == null || x.children?.size) return;
+
+        if (current == null) {
+          current = x.selected;
+          continue;
+        }
+
+        // There is some differences
+        if (current !== x.selected) return;
+      }
+
+      (s as any).selected = current;
+      s.children.clear();
+    }
+
+    return;
+  }
 
   if (s.children?.size === 0) s.children = undefined;
 

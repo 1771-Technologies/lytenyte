@@ -51,7 +51,8 @@ export interface UseTreeDataSourceParams<T = unknown> {
   readonly rowsIsolatedSelection?: boolean;
   readonly rowSelectKey?: unknown[];
   readonly rowSelection?: RowSelectionState;
-  readonly rowSelectionIdUniverseAdditions?: Set<string>;
+  readonly rowSelectionIdUniverseAdditions?: { readonly id: string; root: boolean }[];
+  readonly rowSelectionIdUniverseSubtractions?: Set<string>;
 
   readonly onRowSelectionChange?: (state: RowSelectionState) => void;
 
@@ -78,6 +79,7 @@ export function useTreeDataSource<T>(p: UseTreeDataSourceParams<T>): RowSource {
     p.topData,
     p.botData,
     p.rowSelectionIdUniverseAdditions,
+    p.rowSelectionIdUniverseSubtractions,
     sortFn,
   );
 
@@ -106,6 +108,8 @@ export function useTreeDataSource<T>(p: UseTreeDataSourceParams<T>): RowSource {
     p.rowsIsolatedSelection ?? false,
     p.rowSelectKey ?? emptyKey,
     flat.idUniverse,
+    flat.rootIds,
+    flat.rootCount,
     globalSignal,
   );
 

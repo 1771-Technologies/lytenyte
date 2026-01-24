@@ -115,7 +115,8 @@ export interface UseClientDataSourceParams<Spec extends GridSpec = GridSpec, T =
   readonly rowsIsolatedSelection?: boolean;
   readonly rowSelectKey?: unknown[];
   readonly rowSelection?: RowSelectionState;
-  readonly rowSelectionIdUniverseAdditions?: Set<string>;
+  readonly rowSelectionIdUniverseAdditions?: { readonly id: string; readonly root: boolean }[];
+  readonly rowSelectionIdUniverseSubtractions?: Set<string>;
   readonly onRowSelectionChange?: (state: RowSelectionState) => void;
 
   readonly onRowsAdded?: (params: {
@@ -191,12 +192,21 @@ export function useClientDataSource<Spec extends GridSpec = GridSpec>(
     return [props.group, props.filter];
   }, [props.filter, props.group, props.rowSelectKey]);
 
+  const { idUniverse, rootIds } = useIdUniverse(
+    f.tree,
+    f.leafIdsRef.current,
+    props.rowSelectionIdUniverseAdditions,
+    props.rowSelectionIdUniverseSubtractions,
+  );
+
   const selectionState = useRowSelection(
     props.rowSelection,
     props.onRowSelectionChange,
     props.rowsIsolatedSelection ?? false,
     rowSelectionKey,
-    useIdUniverse(f.tree, f.leafIdsRef.current, props.rowSelectionIdUniverseAdditions),
+    idUniverse,
+    rootIds,
+    rootIds.size,
     globalSignal,
   );
 

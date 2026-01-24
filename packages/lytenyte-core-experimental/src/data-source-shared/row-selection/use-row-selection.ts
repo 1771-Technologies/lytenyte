@@ -23,6 +23,8 @@ export function useRowSelection(
   isolatedSelection: boolean,
   rowSelectionKey: any[],
   idUniverse: Set<string> | null,
+  rootIds: Set<string>,
+  rootCount: number,
   globalRefresh: Signal<number>,
 ) {
   const [rowSelectionsRaw, setRowSelectionsRaw] = useControlled<RowSelectionState>({
@@ -60,7 +62,9 @@ export function useRowSelection(
     ) => {
       const nextState = typeof s === "function" ? s(rowSelections) : s;
 
-      if (nextState.kind === "linked") cleanTree(nextState, idUniverse);
+      if (nextState.kind === "linked") cleanTree(nextState, idUniverse, rootIds, rootCount);
+      if (nextState.kind === "isolated" && idUniverse)
+        (nextState as any).exceptions = nextState.exceptions.intersection(idUniverse);
 
       const without = nextState.kind === "isolated" ? nextState : rowSelectLinkWithoutParents(nextState);
 
