@@ -112,7 +112,7 @@ export default function RowSelection() {
 
       <div
         style={{ height: 250 }}
-        className={tw("border-ln-border border-t", over && "bg-ln-primary-10")}
+        className={tw("border-ln-border overflow-auto border-t", over && "bg-ln-primary-10")}
         onDragLeave={() => setOver(false)}
         onDragOver={() => setOver(true)}
         //!next 6

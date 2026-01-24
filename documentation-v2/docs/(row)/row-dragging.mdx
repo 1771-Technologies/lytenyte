@@ -6,14 +6,14 @@ description: Drag and drop rows within the same LyteNyte Grid, across multiple g
 
 ## Single Row Dragging
 
-LyteNyte Grid provides the `api.useRowDrag` hook for row dragging. This hook returns the properties
-needed to handle row dragging. Apply the returned properties to a drag handle component. The drag
-handle can be any component that supports standard HTML drag properties, such as `draggable` and
-`onDragStart`.
+LyteNyte Grid provides the `api.useRowDrag` hook to enable row dragging.
+This hook returns drag props and handlers you can apply to a drag handle component.
+The handle can be any component that supports standard HTML drag-and-drop attributes,
+such as `draggable` and `onDragStart`.
 
-The demo below demonstrates the basic row dragging setup. Users can drag rows to reorder them within the
-same grid. The demo uses LyteNyte Grid's `onRowDragEnter`, `onRowDragLeave`, and `onRowDrop` properties
-to attach callbacks for the drag events.
+The demo below demonstrates the basic row dragging setup. Users can drag rows to reorder
+them within the same grid. The demo uses LyteNyte Grid's `onRowDragEnter`, `onRowDragLeave`,
+and `onRowDrop` properties to attach callbacks for drag events.
 
 ::demo[Single Row Dragging="./demos/row-dragging"]
 
@@ -42,11 +42,12 @@ drag operation. The parameter object has two properties:
 Using these properties, you can perform actions when events occur, such as adding and removing drag
 indicators, or reordering rows.
 
-## Dragging Multiple Rows
+## Multi-Row Dragging
 
-Combine row dragging with **row selection** to support dragging multiple rows. The drag event parameters
-include a `source` property, which contains the grid API for the row being dragged. You can use that API to
-retrieve the selected rows and move them in addition to the current row. The demo below demonstrates this.
+Combine row dragging with row selection to support dragging multiple rows.
+The drag event parameters include a `source` property that provides the grid
+API for the row being dragged. Use this API to retrieve the selected rows
+and move them together with the current row. This is shown in the demo below.
 
 ::demo[Multiple Row Dragging="./demos/row-dragging-multi"]
 
@@ -122,21 +123,24 @@ demonstrates this in action.
 
 ::demo[External Drop Zones="./demos/row-dragging-external"]
 
-The `getRowDragData` function is a helper provided by LyteNyte Grid. This function returns the current
-row drag data while a row drag is active. Use this function to retrieve the drag data for your own
-components. **Do not call this function** unless a row drag operation is currently happening.
+The `getRowDragData` function is a helper provided by LyteNyte Grid.
+This function returns the current row drag data while a row drag is active.
+Use this function to retrieve the drag data for your own components.
+**Do not call this function** unless a row drag operation is in progress.
 
-## Drag Placeholders
+## Row Drag Placeholders
 
 The `api.useRowDrag` hook accepts an optional `placeholder` property. Use this property to provide a
 custom placeholder for drag operations. The `placeholder` can be one of the following:
 
-- **String**: A query selector for an HTML element to use as the placeholder. The browser creates an image
-  snapshot of the element.
-- **Query Object**: An object with a `query` string and an optional `offset` tuple. This works the same as a
-  **String** value but allows you to offset the placeholder image by the tuple provided.
-- **React Component**: A custom React component to render as the placeholder. This opts out of native browser
-  drag image snapshots. Only use this option when drag operations will remain within the same web page.
+- **String:** A CSS selector targeting the HTML element to serve as the placeholder.
+  The browser captures a snapshot of this element to generate the placeholder image.
+- **Query Object:** An object containing a **query** string and an optional **offset** tuple.
+  This behaves like a string value but allows you to shift the placeholder
+  image using the provided tuple.
+- **Component Placeholder:** A custom React component that renders the placeholder.
+  This option disables browser drag-image snapshots. Use this option only when drag
+  operations stay within the same page.
 
 The demo below demonstrates a React placeholder in action. Notice that the placeholder component uses a
 portal to render into the `body` element.
@@ -160,8 +164,9 @@ function MarkerCell({ api, rowIndex }: Grid.T.CellRendererParams<GridSpec>) {
 
 ## Drag To External Applications
 
-Because LyteNyte Grid uses the native browser drag and drop API, you can drag rows into external
-applications. To enable this, set the `data` property in the `api.useRowDrag` hook parameters, as shown below:
+Since LyteNyte Grid utilizes the browser's native drag and drop API, you can drag rows
+into external applications. To enable this, set the `data` property in the
+`api.useRowDrag` hook parameters, as shown below:
 
 ```tsx
 function MarkerCell({ api, rowIndex, row }: Grid.T.CellRendererParams<GridSpec>) {

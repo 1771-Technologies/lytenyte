@@ -90,8 +90,8 @@ const leafIdFn: Grid.T.LeafIdFn<GridSpec["data"]> = (d) =>
   `${d.symbolTicker}-${d.exchange}-${d.network}-${d.symbol}`;
 
 export default function RowSelection() {
-  const [primary, setPrimary] = useState(initialData);
-  const [secondary, setSecondary] = useState<typeof initialData>([]);
+  const [primary, setPrimary] = useState(initialData.slice(2, 20));
+  const [secondary, setSecondary] = useState<typeof initialData>(initialData.slice(0, 2));
 
   const ds = useClientDataSource<GridSpec>({ data: primary, leafIdFn });
   const dsOther = useClientDataSource<GridSpec>({ data: secondary, leafIdFn });
@@ -134,7 +134,8 @@ export default function RowSelection() {
               });
             } else {
               // Start by removing the row from the source
-              const sourceIndex = primary.indexOf(p.source.row.data);
+              const sourceIndex = secondary.indexOf(p.source.row.data);
+
               setSecondary((prev) => {
                 const next = [...prev];
                 next.splice(sourceIndex, 1);
@@ -205,6 +206,7 @@ export default function RowSelection() {
             setEntered(false);
             p.over.element.removeAttribute("data-ln-drag-position");
 
+            // Moving within my self, so we are just reordering rows within the same view.
             if (p.over.id === p.source.id) {
               if (p.over.kind === "viewport") return;
 
@@ -216,6 +218,9 @@ export default function RowSelection() {
             } else {
               // Start by removing the row from the source
               const sourceIndex = primary.indexOf(p.source.row.data);
+
+              console.log(sourceIndex);
+
               setPrimary((prev) => {
                 const next = [...prev];
                 next.splice(sourceIndex, 1);
