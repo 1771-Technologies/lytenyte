@@ -11,9 +11,10 @@ Row detail functionality in LyteNyte Grid is always enabled. Any row can display
 To create a detail section, define a `rowDetailRenderer` on the grid state object. LyteNyte Grid uses
 this renderer to render the content of each row's detail area.
 
-The demo an example of row detail in action. The [marker column](/docs/marker-column) renders a detail toggle.
-The toggle calls `api.rowDetailToggle`, which adds or removes the row ID from the `rowDetailExpansions` set,
-which determines the rows that have an expanded row detail area.
+The demo shows row detail in action. The [marker column](/docs/marker-column) renders a detail
+toggle that calls [`api.rowDetailToggle`](/docs/reference),
+which adds or removes the row ID from the `rowDetailExpansions`
+set to control which rows display an expanded detail area.
 
 ::demo[Row Detail="../(introduction)/demos/getting-started"]
 
@@ -49,15 +50,17 @@ The `rowDetailExpansions` property on the grid determines which rows have their 
 expanded. If you do not set `rowDetailExpansions` on the grid, LyteNyte Grid tracks detail
 expansion using internal, uncontrolled state.
 
-By providing a `rowDetailExpansions` value, you can control which rows have their detail area
-expanded in a way that matches your application's desired behavior. Then, by listening to
-`onRowDetailExpansionChange`, you can update your controlled expansion state.
+By providing a `rowDetailExpansions` value, you can control which rows have their
+detail area expanded to align with your application's intended behavior.
+By listening to `onRowDetailExpansionChange`, you can update your controlled
+expansion state accordingly.
 
-For example, you can restrict the grid to allow at most one expanded detail area at a time.
-Expanding another row's detail area collapses any other open detail areas.
-The demo below demonstrates this.
+A typical use case is to limit the grid to display only one expanded
+row detail area at a time, so that expanding a different row's detail area
+automatically collapses any other open detail areas.
+The demo below demonstrates this behavior.
 
-::demo[Controlled Row Detail Expansion="./demos/row-detail-controlled"]
+::demo[Controlled Detail Expansions="./demos/row-detail-controlled"]
 
 ## Next Steps
 

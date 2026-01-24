@@ -140,6 +140,8 @@ export default function RowSelection() {
 
             return next;
           });
+
+          p.source.api.rowSelect({ selected: "all", deselect: true });
         }}
       />
     </div>

@@ -48,6 +48,7 @@
   --ln-border: var(--border);
   --ln-border-row: var(--border);
   --ln-border-strong: var(--border);
+  --ln-border-xstrong: var(--border);
   --ln-border-icon: var(--foreground);
   --ln-border-ui-panel: var(--sidebar-border);
   --ln-border-button-light: var(--ln-gray-30);

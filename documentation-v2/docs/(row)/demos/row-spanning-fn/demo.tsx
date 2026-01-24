@@ -30,18 +30,24 @@ const data = Object.values(
 
 const columns: Grid.Column<GridSpec>[] = [
   {
-    id: "symbol",
-    cellRenderer: SymbolCell,
-    width: 250,
-    name: "Symbol",
+    id: "exchange",
+    cellRenderer: ExchangeCell,
+    width: 220,
+    name: "Exchange",
+
     //!next 4
     rowSpan: (r) => {
       const exchange = r.row.data?.exchange as string;
       return exchangeCounts[exchange] ?? 1;
     },
   },
-  { id: "network", cellRenderer: NetworkCell, width: 220, hide: true, name: "Network" },
-  { id: "exchange", cellRenderer: ExchangeCell, width: 220, hide: true, name: "Exchange" },
+  {
+    id: "symbol",
+    cellRenderer: SymbolCell,
+    width: 250,
+    name: "Symbol",
+  },
+  { id: "network", cellRenderer: NetworkCell, width: 220, name: "Network" },
 
   {
     id: "change24h",

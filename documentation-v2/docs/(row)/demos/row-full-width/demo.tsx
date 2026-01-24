@@ -8,6 +8,7 @@ import {
   PercentCell,
   PercentCellPositiveNegative,
   SymbolCell,
+  tw,
 } from "./components.jsx";
 import type { DEXPerformanceData } from "@1771technologies/grid-sample-data/dex-pairs-performance";
 import { exchanges, data as rawData } from "@1771technologies/grid-sample-data/dex-pairs-performance";
@@ -108,14 +109,20 @@ export default function ColumnBase() {
 }
 
 //!next 15
-function FullWidthCell({ api, row }: Grid.T.RowFullWidthRendererParams<GridSpec>) {
+function FullWidthCell({ api, row, rowIndex }: Grid.T.RowFullWidthRendererParams<GridSpec>) {
   if (!api.rowIsLeaf(row) || !row.data) return null;
 
   const name = row.data.exchange;
   const image = exchanges[name];
 
   return (
-    <div className="bg-ln-gray-05 flex h-full w-full items-center justify-center gap-1.5 text-xs">
+    <div
+      className={tw(
+        "bg-ln-gray-05 flex h-full w-full items-center justify-center gap-1.5 text-xs",
+        rowIndex === 0 && "border-ln-border border-b",
+        rowIndex !== 0 && "border-ln-border border-y",
+      )}
+    >
       <div>
         <img src={image} alt={`Logo for exchange ${name}`} className="size-5 overflow-hidden rounded-full" />
       </div>
