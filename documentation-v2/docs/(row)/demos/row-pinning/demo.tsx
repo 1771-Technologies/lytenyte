@@ -19,8 +19,8 @@ export interface GridSpec {
 
 const columns: Grid.Column<GridSpec>[] = [
   { id: "symbol", cellRenderer: SymbolCell, width: 250, name: "Symbol" },
-  { id: "network", cellRenderer: NetworkCell, width: 220, hide: true, name: "Network" },
-  { id: "exchange", cellRenderer: ExchangeCell, width: 220, hide: true, name: "Exchange" },
+  { id: "network", cellRenderer: NetworkCell, width: 220, name: "Network" },
+  { id: "exchange", cellRenderer: ExchangeCell, width: 220, name: "Exchange" },
 
   {
     id: "change24h",

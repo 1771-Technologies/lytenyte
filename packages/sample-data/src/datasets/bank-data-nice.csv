@@ -1,0 +1,50 @@
+﻿Name,Age,Job,Marital,Education,Country,Loan Amount,Balance,Overdue,Duration,Date,Contact,Customer Rating
+Emma,27,Administration,Divorced,Primary,United States,2301,451,No,652,2000-02-21,Telephone,4
+Noah,42,Administration,Divorced,Secondary,United States,11336,-1811,Yes,150,2008-07-31,Email,1
+Oliver,21,Administration,Married,Primary,United Kingdom,1911,424,No,279,1996-01-09,Cellular,3
+Liam,43,Administration,Married,Secondary,United States,62257,264,No,113,2025-03-27,Cellular,3
+Danielle,53,Administration,Married,Secondary,Ireland,23504,105,No,74,2021-12-20,Cellular,4
+Buhle,41,Administration,Married,Tertiary,South Africa,8151,5426,No,149,1994-09-29,Email,4
+Mark,28,Administration,Single,Primary,Canada,19721,177,No,150,2004-07-02,Email,3
+Lukas,37,Administration,Single,Tertiary,Germany,6500,2317,No,114,2009-09-23,Cellular,3
+Arnold,30,Administration,Single,Tertiary,Austria,39832,261,No,233,1994-01-28,Cellular,3
+Austin,32,Blue-Collar,Divorced,Secondary,United States,17160,2089,No,132,2021-01-01,Cellular,4
+Jack,36,Blue-Collar,Divorced,Secondary,China,27157,-231,Yes,779,2023-01-22,Cellular,3
+Donald,39,Blue-Collar,Married,Primary,United States,6565,-52,Yes,69,2025-09-21,Telephone,1
+Gavin,31,Blue-Collar,Married,Secondary,United States,7189,360,No,89,1997-05-02,Cellular,4
+Thiago,59,Blue-Collar,Married,Secondary,Peru,5395,-256,Yes,226,1987-12-22,Email,2
+Olivia,55,Blue-Collar,Married,Tertiary,United Kingdom,676,627,No,247,2024-03-21,Email,3
+Lisa,25,Blue-Collar,Single,Primary,Canada,24570,-221,Yes,250,2005-11-28,Email,1
+Sofia,55,Blue-Collar,Single,Primary,Argentina,5896,145,No,59,2013-03-04,Telephone,2
+Eva,33,Blue-Collar,Single,Tertiary,France,7683,22,No,76,2014-05-07,Cellular,4
+Mary,36,Management,Divorced,Secondary,United States,2865,553,No,106,2010-12-23,Cellular,2
+Catherine,40,Management,Married,Primary,United States,219349,194,No,189,2024-01-10,Telephone,5
+Riley,58,Management,Married,Primary,United States,30121,1517,No,71,1997-07-31,Telephone,2
+James,57,Management,Married,Secondary,United Kingdom,155623,82,No,140,2014-08-18,Telephone,2
+Henry,30,Management,Married,Tertiary,United Kingdom,19188,1476,No,199,2001-05-14,Email,1
+Sean,35,Management,Single,Tertiary,Ireland,121862,1350,No,185,2007-05-25,Cellular,3
+Juliette,38,Management,Single,Tertiary,Belgium,85414,11971,No,609,2016-02-14,Email,3
+Gabriel,78,Retired,Divorced,Primary,United States,4394,229,No,97,2012-08-29,Telephone,3
+Victor,68,Retired,Divorced,Secondary,United States,11427,4189,No,897,2009-01-18,Telephone,4
+Leon,72,Retired,Married,Primary,New Zealand,1378,5,No,63,2021-05-04,Cellular,5
+Louis,63,Retired,Married,Tertiary,Canada,70538,415,No,323,1997-12-12,Cellular,3
+Miguel,56,Retired,Married,Tertiary,Brazil,2535,344,No,221,2008-01-21,Email,4
+Alice,49,Retired,Single,Secondary,United States,3003,101,No,314,2013-08-11,Email,1
+Jennifer,52,Services,Divorced,Primary,United Kingdom,17550,657,No,398,1987-03-08,Telephone,2
+Darika,31,Services,Divorced,Secondary,Thailand,10192,338,No,155,1988-01-16,Cellular,2
+Susan,39,Services,Divorced,Secondary,Ireland,74620,9374,No,273,1995-04-14,Email,2
+David,30,Services,Married,Secondary,South Africa,17615,1808,No,83,2018-04-11,Cellular,5
+Muhammad,31,Services,Married,Tertiary,Indonesia,1066,132,No,148,2009-04-05,Cellular,4
+Liu,27,Services,Single,Secondary,China,20007,-195,Yes,391,2014-08-05,Cellular,1
+Zhang,44,Services,Single,Tertiary,China,5512,106,No,109,2022-04-15,Email,3
+Hillary,40,Technician,Divorced,Secondary,United States,77948,591,No,87,2016-09-19,Cellular,3
+Elizabeth,54,Technician,Divorced,Tertiary,United Kingdom,54457,784,No,579,2006-10-15,Email,4
+Mateo,39,Technician,Married,Secondary,Mexico,4680,147,No,151,1995-08-13,Cellular,4
+Sebastian,32,Technician,Married,Secondary,United States,14484,2693,No,16,2005-11-15,Email,3
+Stacy,34,Technician,Married,Tertiary,United States,5447,1539,No,441,2022-08-29,Cellular,2
+Michael,25,Technician,Single,Primary,United States,3333,505,No,386,2000-09-26,Cellular,1
+Valentina,38,Technician,Single,Secondary,Spain,2977,50,No,98,2002-05-09,Email,5
+Fatima,32,Technician,Single,Tertiary,Egypt,4680,360,No,164,2022-11-17,Telephone,5
+
+
+

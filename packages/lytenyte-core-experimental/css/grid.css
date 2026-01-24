@@ -193,6 +193,13 @@
         box-sizing: border-box;
         border-bottom: 1px solid var(--ln-border-row);
 
+        &[data-ln-last-top-pin="true"] {
+          border-bottom: 1px solid var(--ln-border-xstrong);
+        }
+        &[data-ln-first-bottom-pin="true"] {
+          border-top: 1px solid var(--ln-border-xstrong);
+        }
+
         &[data-ln-last-start-pin="true"] {
           border-inline-end: 1px solid var(--ln-border-strong);
         }

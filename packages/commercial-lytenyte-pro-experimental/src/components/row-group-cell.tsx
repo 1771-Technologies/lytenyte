@@ -21,7 +21,11 @@ export const RowGroupCell = <Spec extends GridSpec = GridSpec>({
       {row.kind === "branch" && row.expandable && (
         <button
           data-ln-component-group-cell-expander
-          onClick={() => api.rowGroupToggle(row.id)}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            api.rowGroupToggle(row.id);
+          }}
           aria-label="toggle the row group expansion state"
           disabled={row.loadingGroup}
         >

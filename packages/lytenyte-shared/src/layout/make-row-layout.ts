@@ -192,6 +192,7 @@ function handleViewLayout<T>({
     if (!node) break;
 
     const rowLastPinTop = n.rowTopEnd - 1 === r ? true : undefined;
+    const rowFirstPinBottom = n.rowBotStart === r ? true : undefined;
 
     if (status === FULL_WIDTH) {
       const row: LayoutRow = {
@@ -236,6 +237,7 @@ function handleViewLayout<T>({
 
         colLastStartPin: c + colSpan === n.colStartEnd ? true : undefined,
         rowLastPinTop,
+        rowFirstPinBottom,
       });
     }
 
@@ -260,6 +262,7 @@ function handleViewLayout<T>({
         isDeadRow,
 
         rowLastPinTop,
+        rowFirstPinBottom,
       });
     }
 
@@ -284,6 +287,7 @@ function handleViewLayout<T>({
 
         colFirstEndPin: c === n.colCenterLast ? true : undefined,
         rowLastPinTop,
+        rowFirstPinBottom,
       });
     }
 
@@ -294,6 +298,7 @@ function handleViewLayout<T>({
       cells: cellLayout,
       rowPin,
       rowLastPinTop,
+      rowFirstPinBottom,
     };
     viewCache.set(r, row);
 
