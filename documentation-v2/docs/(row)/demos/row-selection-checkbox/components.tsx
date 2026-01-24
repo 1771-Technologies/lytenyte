@@ -1,9 +1,7 @@
 import { format } from "date-fns";
-import { Checkbox as C } from "radix-ui";
 import { type JSX, type ReactNode } from "react";
 import type { Grid } from "@1771technologies/lytenyte-pro-experimental";
 import type { GridSpec } from "./demo.jsx";
-import { CheckIcon, MinusIcon } from "@radix-ui/react-icons";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -140,31 +138,3 @@ const MastercardLogo = (props: JSX.IntrinsicElements["svg"]) => (
     />
   </svg>
 );
-
-export function GridCheckbox({
-  children,
-  indeterminate,
-  ...props
-}: C.CheckboxProps & { indeterminate?: boolean }) {
-  return (
-    <label className="text-md text-light flex items-center gap-2">
-      <C.Root
-        {...props}
-        type="button"
-        className={tw(
-          "bg-ln-gray-02 cursor-pointer rounded border-transparent",
-          "shadow-[0_1.5px_2px_0_rgba(18,46,88,0.08),0_0_0_1px_var(--ln-gray-40)]",
-          "data-[state=checked]:bg-ln-primary-50 data-[state=checked]:shadow-[0_1.5px_2px_0_rgba(18,46,88,0.08),0_0_0_1px_var(--ln-primary-50)]",
-          "h-4 w-4",
-          props.className,
-        )}
-      >
-        <C.CheckboxIndicator className={"flex items-center justify-center"}>
-          {!indeterminate && <CheckIcon className="text-white" />}
-          {indeterminate && <MinusIcon className="text-white" />}
-        </C.CheckboxIndicator>
-      </C.Root>
-      {children}
-    </label>
-  );
-}

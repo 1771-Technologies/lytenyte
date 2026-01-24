@@ -86,7 +86,7 @@ export default function RowSelection() {
     <>
       <div className="border-ln-border flex gap-4 border-b px-4 py-3">
         <button
-          data-ln-button="tertiary"
+          data-ln-button="website"
           data-ln-size="md"
           //!next 7
           onClick={() => {

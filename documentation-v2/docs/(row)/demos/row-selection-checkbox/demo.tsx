@@ -5,14 +5,13 @@ import { data } from "@1771technologies/grid-sample-data/orders";
 import {
   AvatarCell,
   EmailCell,
-  GridCheckbox,
   IdCell,
   PaymentMethodCell,
   PriceCell,
   ProductCell,
   PurchaseDateCell,
 } from "./components.jsx";
-import { useClientDataSource, Grid, SelectAll } from "@1771technologies/lytenyte-pro-experimental";
+import { useClientDataSource, Grid, SelectAll, Checkbox } from "@1771technologies/lytenyte-pro-experimental";
 
 export interface GridSpec {
   readonly data: OrderData;
@@ -64,8 +63,8 @@ function MarkerHeader(params: Grid.T.HeaderParams<GridSpec>) {
         {...params}
         slot={({ indeterminate, selected, toggle }) => {
           return (
-            <GridCheckbox
-              checked={selected || indeterminate}
+            <Checkbox
+              checked={selected}
               indeterminate={indeterminate}
               onClick={(ev) => {
                 ev.preventDefault();
@@ -85,7 +84,7 @@ function MarkerHeader(params: Grid.T.HeaderParams<GridSpec>) {
 function MarkerCell({ api, selected }: Grid.T.CellRendererParams<GridSpec>) {
   return (
     <div className="flex h-full w-full items-center justify-center">
-      <GridCheckbox
+      <Checkbox
         checked={selected}
         onClick={(ev) => {
           ev.stopPropagation();
