@@ -1,6 +1,6 @@
 ---
 title: Row Spanning
-step: See how cells can span multiple rows.
+step: Span cells across multiple rows.
 description: Cells can span multiple rows in LyteNyte Grid. When a cell spans, it occupies the rows beneath it, and the grid does not render the cells it covers.
 ---
 
@@ -67,6 +67,7 @@ visible row based on the `rowScanDistance` property. You can change `rowScanDist
 performance. The default scan distance is 50, which is usually sufficient for most use cases.
 
 ```tsx
+// Change scan lookback to 100.
 <Grid rowScanDistance={100} />
 ```
 
@@ -76,10 +77,10 @@ guarantee that it will hide the cells covered by the span.
 
 :::info
 
-LyteNyte Grid uses a scan-based approach to optimize for correctness and performance.
-Unlike grids that precompute spans (which limits scalability) or render spans inaccurately
-when scrolling, LyteNyte Grid requires you to set a maximum span so it can maintain both
-accuracy and performance.
+LyteNyte Grid uses a scan-based approach to optimize correctness and
+performance. Unlike grids that precompute spans, which limit scalability, or
+render spans inaccurately when scrolling, LyteNyte Grid requires setting a maximum
+span to maintain accuracy and performance.
 
 :::
 
