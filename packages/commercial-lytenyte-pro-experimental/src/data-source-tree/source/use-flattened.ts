@@ -15,7 +15,8 @@ export function useFlattened<T>(
   expandFn: (id: string, depth: number) => boolean,
   top: (RowLeaf<T> | RowAggregated)[] = empty,
   bot: (RowLeaf<T> | RowAggregated)[] = empty,
-  idUniverseAdditions: Set<string> | null | undefined,
+  idUniverseAdditions: { readonly id: string; readonly root: boolean }[] | null | undefined,
+  idUniverseSubtractions: Set<string> | null | undefined,
   sort: SortFn<T> | null | undefined,
 ) {
   const flat = useMemo(() => {
@@ -76,6 +77,19 @@ export function useFlattened<T>(
     top.map((x) => initialSet.add(x.id));
     bot.map((x) => initialSet.add(x.id));
 
-    return { ...flat, idUniverse: idUniverseAdditions ? initialSet.union(idUniverseAdditions) : initialSet };
-  }, [bot, flat, idUniverseAdditions, top, tree.rowIdToNode]);
+    const subSet = idUniverseSubtractions ?? new Set();
+    const rootAdds = idUniverseAdditions?.filter((x) => x.root)?.map((x) => x.id) ?? [];
+    const rootIds = new Set([...tree.children.values().map((x) => x.row.id)].concat(rootAdds)).difference(
+      subSet,
+    );
+
+    return {
+      ...flat,
+      idUniverse: idUniverseAdditions
+        ? initialSet.union(new Set(idUniverseAdditions.map((x) => x.id) ?? [])).difference(subSet)
+        : initialSet.difference(subSet),
+      rootIds,
+      rootCount: rootIds.size,
+    };
+  }, [bot, flat, idUniverseAdditions, idUniverseSubtractions, top, tree.children, tree.rowIdToNode]);
 }

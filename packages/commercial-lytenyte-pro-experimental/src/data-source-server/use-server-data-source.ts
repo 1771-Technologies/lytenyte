@@ -64,7 +64,8 @@ export interface UseServerDataSourceParams<K extends unknown[], T = any> {
 
   readonly rowsIsolatedSelection?: boolean;
   readonly rowSelection?: RowSelectionState;
-  readonly rowSelectionIdUniverseAdditions?: Set<string>;
+  readonly rowSelectionIdUniverseAdditions?: { readonly id: string; readonly root: boolean }[];
+  readonly rowSelectionIdUniverseSubtractions?: Set<string>;
   readonly onRowSelectionChange?: (state: RowSelectionState) => void;
   readonly rowSelectKey?: unknown[];
 
@@ -110,6 +111,22 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
     return { size: node.size, children: node.byIndex };
   });
 
+  const { rootIds, rootCount } = useMemo(() => {
+    const subset = props.rowSelectionIdUniverseSubtractions ?? new Set();
+    const rootIds = new Set([...source.tree.byIndex.values()].map((x) => x.row.id)).difference(subset);
+
+    const additions = new Set(
+      props.rowSelectionIdUniverseAdditions?.filter((x) => x.root).map((x) => x.id) ?? [],
+    ).difference(subset);
+
+    return { rootIds: rootIds.union(additions), rootCount: source.tree.size };
+  }, [
+    props.rowSelectionIdUniverseAdditions,
+    props.rowSelectionIdUniverseSubtractions,
+    source.tree.byIndex,
+    source.tree.size,
+  ]);
+
   // Handling row selection
   const selectionState = useRowSelection(
     props.rowSelection,
@@ -117,10 +134,15 @@ export function useServerDataSource<T, K extends unknown[] = unknown[]>(
     isolatedSelected,
     props.rowSelectKey ?? props.queryKey,
     useMemo(() => {
-      if (!props.rowSelectionIdUniverseAdditions) return state.idUniverse;
+      const subset = props.rowSelectionIdUniverseSubtractions ?? new Set();
+      if (!props.rowSelectionIdUniverseAdditions) return state.idUniverse.difference(subset);
 
-      return state.idUniverse.union(props.rowSelectionIdUniverseAdditions);
-    }, [props.rowSelectionIdUniverseAdditions, state.idUniverse]),
+      return state.idUniverse
+        .union(new Set(props.rowSelectionIdUniverseAdditions.map((x) => x.id)))
+        .difference(subset);
+    }, [props.rowSelectionIdUniverseAdditions, props.rowSelectionIdUniverseSubtractions, state.idUniverse]),
+    rootIds,
+    rootCount,
     globalSignal,
   );
   const onRowsSelected = useOnRowsSelected(

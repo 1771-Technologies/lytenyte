@@ -64,6 +64,12 @@ function TreeViewBase<T extends TreeViewItem>(
     return [{ id: "__ln_select_all", path: [], name: "Select All" } as unknown as T, ...items];
   }, [items, rowSelectAll]);
 
+  const subtractions = useMemo(() => {
+    if (rowSelectAll) return new Set(["__ln_select_all"]);
+
+    return new Set<string>();
+  }, [rowSelectAll]);
+
   const source = useClientDataSource<Spec>({
     group: groupFn,
     data: finalItems,
@@ -75,6 +81,7 @@ function TreeViewBase<T extends TreeViewItem>(
     rowGroupExpansions,
     onRowGroupExpansionChange,
 
+    rowSelectionIdUniverseSubtractions: subtractions,
     rowSelection,
     onRowSelectionChange: onRowSelectionChange as any,
   });
