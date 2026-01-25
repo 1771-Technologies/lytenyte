@@ -46,7 +46,9 @@ export function cleanTree(
   }
 
   // This node doesn't do anything so we can safely remove it.
-  if (s.children === undefined && s.selected === undefined) s.parent.children?.delete(s.id);
+  if (s.children === undefined && s.selected === undefined) {
+    s.parent.children?.delete(s.id);
+  }
 
   if (idUniverse && !idUniverse.has(s.id)) {
     s.parent.children?.delete(s.id);
