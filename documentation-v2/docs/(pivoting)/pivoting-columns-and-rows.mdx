@@ -24,7 +24,7 @@ columns that should be used to dynamically generate pivot columns. The values of
 The demo below demonstrates selecting different columns to pivot on. Try using different pivot
 column combinations to get a feel of the pivot functionality.
 
-{/* ::demo[Pivot Columns="./demos/pivot-columns"] */}
+::demo[Pivot Columns="./demos/pivot-columns"]
 
 Notice that each pivot applied results in the column hierarchy being extended with further by the
 new pivot. Adding more pivots causes the number of columns created to increase exponentially. LyteNyte Grid
@@ -119,5 +119,33 @@ The demo below shows row pivots in action. Each pivot row creates a grouping lev
 allows the same column to be used as both a pivot column and row.
 
 ::demo[Row Pivots="./demos/pivot-rows"]
+
+Since pivots are a rotation of the grid view, you can seamlessly swap row and column pivots. The demo
+above does this when you click the **Swap** button.
+
+The demo used the [Pill Manager component](/docs/component-pill-manager) to configure pivots. The pivot
+state is kept in React state and updated whenever the pills are clicked or dragged. The pivot state is
+then mapped onto the client data source for the final view configuration, as shown in the code blow.
+
+```ts
+const [colPivots, setColPivots] = useState<PillManager.T.PillItem[]>(initialPivots); //!
+const [rowPivots, setRowPivots] = useState<PillManager.T.PillItem[]>(initialColPivots); //!
+
+const ds = useClientDataSource<GridSpec>({
+  data: salesData,
+  pivotMode: true,
+  pivotModel: {
+    columns: colPivots.filter((x) => x.active), //!
+    rows: rowPivots.filter((x) => x.active), //!
+    measures: [
+      {
+        dim: { id: "profit", name: "Profit", type: "number", cellRenderer: ProfitCell, width: 120 },
+        fn: "sum",
+      },
+    ],
+  },
+  aggregateFns: { sum: aggSum },
+});
+```
 
 ## Next Steps

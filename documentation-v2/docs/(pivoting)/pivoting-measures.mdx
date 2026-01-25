@@ -2,9 +2,78 @@
 title: Measures
 pro: true
 step: Aggregate and summarize row data when pivoting.
+description: A measure is an aggregation dimension that can be used to summarize
+  data when row and columns pivots are applied to the grid.
 ---
 
+To create a measure, define a custom function that will receive an array of [leaf rows](/docs/row-overview)
+and a [field value](/docs/column-field) and must return a summarized value. The summarized value can
+be any type but it is normally a number.
+
+:::note
+
+You should be familiar with row aggregations before reading this guide. If you haven't already,
+see the [Client Row Aggregations guide](/docs/client-source-aggregations) for more details.
+
+:::
+
 ## Measures
+
+Define a measure by setting the `measure` property on the pivot model. A measure will be used
+by LyteNyte Grid for two purposes:
+
+1. Aggregate row data based on the row pivot and column pivot dimensions.
+2. If the measure dimension is a column, it will be used as a reference for the
+   columns created by the applied column pivot dimensions.
+
+The demo below shows a measure that will aggregated the **Profit** column. The grid is
+row pivoted on the **Country** column and column pivoted on the **Age Group** column.
+
+The view can be understood as the profit breakdown per country, split out by age groups.
+
+::demo[Profit Measure="./demos/pivot-measures"]
+
+The code to apply the measure is shown below. This demo uses a predefined measure function called
+`"sum"`, but you can provide a function directly inline if that works better for your application's
+use case.
+
+```ts
+//!next 4
+const aggSum: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {
+  const values = data.map((x) => computeField<number>(field, x));
+  return sum(values);
+};
+
+const ds = useClientDataSource<GridSpec>({
+  data: salesData,
+  pivotMode: true,
+  pivotModel: {
+    columns: [{ id: "ageGroup" }],
+    rows: [{ id: "country" }],
+    //!next 6
+    measures: [
+      {
+        dim: { id: "profit", name: "Profit", type: "number", cellRenderer: ProfitCell, width: 120 },
+        fn: "sum",
+      },
+    ],
+  },
+  aggregateFns: { sum: aggSum },
+});
+```
+
+### Multiple Measures
+
+You can apply multiple measures to the pivot configuration by providing more dimensions. The order of
+measures applied to the grid does not matter, though the order will influence the initial column
+order when pivots are applied.
+
+The demo below demonstrates multiple measures in action. You can also update the measure function
+by clicking the measure function name and selecting a new measure for that column.
+
+Each measure results in the additional columns being created when pivots are presented. If a column
+pivot results in 20 dynamic columns being created, then for each measure roughly 20 columns will be
+added. If you have two measures, there will be 40 columns, 3 measures will have 60 columns, and so on.
 
 ## Single Column Multiple Measures
 

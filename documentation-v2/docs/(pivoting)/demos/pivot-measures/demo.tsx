@@ -1,4 +1,3 @@
-import "@1771technologies/lytenyte-pro-experimental/pill-manager.css";
 import "@1771technologies/lytenyte-pro-experimental/components.css";
 import "@1771technologies/lytenyte-pro-experimental/light-dark.css";
 import { salesData, type SaleDataItem } from "@1771technologies/grid-sample-data/sales-data";
@@ -43,7 +42,7 @@ export const columns: Grid.Column<GridSpec>[] = [
   { id: "subCategory", name: "Sub-Category", width: 160, pivotable: true },
 ];
 
-const base: Grid.ColumnBase<GridSpec> = { width: 120, resizable: true, movable: true };
+const base: Grid.ColumnBase<GridSpec> = { width: 120 };
 
 const group: Grid.RowGroupColumn<GridSpec> = {
   cellRenderer: RowGroupCell,
@@ -60,7 +59,8 @@ export default function PivotDemo() {
     data: salesData,
     pivotMode: true,
     pivotModel: {
-      columns: [{ id: "ageGroup" }, { id: "customerGender" }],
+      columns: [{ id: "ageGroup" }],
+      rows: [{ id: "country" }],
       measures: [
         {
           dim: { id: "profit", name: "Profit", type: "number", cellRenderer: ProfitCell, width: 120 },
@@ -72,7 +72,6 @@ export default function PivotDemo() {
   });
 
   const pivotProps = ds.usePivotProps();
-
   return (
     <div className="ln-grid" style={{ height: 500 }}>
       <Grid columns={columns} rowSource={ds} columnBase={base} rowGroupColumn={group} {...pivotProps} />

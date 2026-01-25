@@ -10,7 +10,7 @@ export function DateCell({ api, row, column }: Grid.T.CellRendererParams<GridSpe
 
   if (typeof field !== "string") return "-";
 
-  const dateField = parse(field as string, "MM/dd/yy", new Date());
+  const dateField = parse(field as string, "MM/dd/yyyy", new Date());
 
   if (!isValid(dateField)) return "-";
 

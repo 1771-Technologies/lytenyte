@@ -5,6 +5,7 @@ import { salesData, type SaleDataItem } from "@1771technologies/grid-sample-data
 import {
   computeField,
   Grid,
+  PillManager,
   RowGroupCell,
   useClientDataSource,
 } from "@1771technologies/lytenyte-pro-experimental";
@@ -18,6 +19,7 @@ import {
   ProfitCell,
 } from "./components.jsx";
 import { sum } from "es-toolkit";
+import { useMemo, useState } from "react";
 
 export interface GridSpec {
   readonly data: SaleDataItem;
@@ -43,7 +45,7 @@ export const columns: Grid.Column<GridSpec>[] = [
   { id: "subCategory", name: "Sub-Category", width: 160, pivotable: true },
 ];
 
-const base: Grid.ColumnBase<GridSpec> = { width: 120, resizable: true, movable: true };
+const base: Grid.ColumnBase<GridSpec> = { width: 120 };
 
 const group: Grid.RowGroupColumn<GridSpec> = {
   cellRenderer: RowGroupCell,
@@ -54,13 +56,20 @@ const aggSum: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {
   const values = data.map((x) => computeField<number>(field, x));
   return sum(values);
 };
+const aggAvg: Grid.T.Aggregator<GridSpec["data"]> = (field, data) => {
+  const values = data.map((x) => computeField<number>(field, x));
+  return sum(values);
+};
 
 export default function PivotDemo() {
+  const [measures, setMeasures] = useState<PillManager.T.PillItem[]>([]);
+
   const ds = useClientDataSource<GridSpec>({
     data: salesData,
     pivotMode: true,
     pivotModel: {
-      columns: [{ id: "ageGroup" }, { id: "customerGender" }],
+      columns: [{ id: "ageGroup" }],
+      rows: [{ id: "country" }],
       measures: [
         {
           dim: { id: "profit", name: "Profit", type: "number", cellRenderer: ProfitCell, width: 120 },
@@ -68,14 +77,58 @@ export default function PivotDemo() {
         },
       ],
     },
-    aggregateFns: { sum: aggSum },
+    aggregateFns: { sum: aggSum, avg: aggAvg },
   });
 
-  const pivotProps = ds.usePivotProps();
+  const pillRows = useMemo<PillManager.T.PillRow[]>(() => {
+    const rowMeasures = measures.map((x) => {
+      return {
+        id: x.id,
+        active: x.active,
+        movable: x.active,
+        name: x.name ?? x.id,
+        data: x,
+        removable: true,
+      };
+    });
+    return [
+      {
+        id: "measures",
+        label: "Measures",
+        type: "column-pivots",
+        pills: rowMeasures,
+      },
+    ];
+  }, [measures]);
 
+  const pivotProps = ds.usePivotProps();
   return (
-    <div className="ln-grid" style={{ height: 500 }}>
-      <Grid columns={columns} rowSource={ds} columnBase={base} rowGroupColumn={group} {...pivotProps} />
-    </div>
+    <>
+      <div className="@container">
+        <PillManager
+          rows={pillRows}
+          onPillItemActiveChange={(p) => {
+            setMeasures((prev) => {
+              const next = prev.map((x) =>
+                x.id === p.item.id ? { ...x, active: p.item.active && p.row.id === "row-pivots" } : x,
+              );
+              return [...next.filter((x) => x.active), ...next.filter((x) => !x.active)];
+            });
+          }}
+          onPillRowChange={(ev) => {
+            for (const changed of ev.changed) {
+              const activeFirst = changed.pills.filter((x) => x.active);
+              const nonActive = changed.pills.filter((x) => !x.active);
+              if (changed.id === "measures") {
+                setMeasures([...activeFirst, ...nonActive]);
+              }
+            }
+          }}
+        />
+      </div>
+      <div className="ln-grid" style={{ height: 500 }}>
+        <Grid columns={columns} rowSource={ds} columnBase={base} rowGroupColumn={group} {...pivotProps} />
+      </div>
+    </>
   );
 }

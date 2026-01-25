@@ -30,7 +30,7 @@ export interface GridSpec {
 
 export const columns: Grid.Column<GridSpec>[] = [
   { id: "date", name: "Date", cellRenderer: DateCell, width: 110 },
-  { id: "customerAge", name: "Age", type: "number", width: 80 },
+  { id: "age", name: "Age", type: "number", width: 80 },
   { id: "ageGroup", name: "Age Group", cellRenderer: AgeGroup, width: 110, pivotable: true },
   { id: "customerGender", name: "Gender", cellRenderer: GenderCell, width: 80, pivotable: true },
   { id: "country", name: "Country", cellRenderer: CountryCell, width: 150, pivotable: true },
@@ -136,7 +136,7 @@ export default function PivotDemo() {
   const pivotProps = ds.usePivotProps();
   return (
     <>
-      <div>
+      <div className="@container">
         <PillManager
           rows={pillRows}
           onPillItemActiveChange={(p) => {
@@ -199,7 +199,7 @@ export default function PivotDemo() {
 function SwapPivots({ onSwap }: { onSwap: () => void }) {
   return (
     <button
-      className="bg-ln-gray-02 border-ln-border-strong text-ln-primary-50 hover:bg-ln-gray-10 z-1 absolute -bottom-3 left-7 flex cursor-pointer items-center gap-1 rounded-2xl border px-1 py-0.5 text-[10px]"
+      className="bg-ln-gray-02 border-ln-border-strong text-ln-primary-50 hover:bg-ln-gray-10 z-1 @2xl:-bottom-2.5 @2xl:left-7 absolute -bottom-2 left-3 flex cursor-pointer items-center gap-1 rounded-2xl border px-1 py-0.5 text-[10px]"
       onClick={() => onSwap()}
     >
       <span>
@@ -227,7 +227,8 @@ function SwapPivots({ onSwap }: { onSwap: () => void }) {
           />
         </svg>
       </span>
-      <span>SWAP</span>
+      <span className="sr-only">Swap row and column pivots</span>
+      <span className="@2xl:block hidden">SWAP</span>
     </button>
   );
 }
