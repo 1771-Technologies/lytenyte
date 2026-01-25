@@ -9,6 +9,7 @@
     "server-data-loading-row-pinning",
     "server-data-loading-row-grouping-and-aggregation",
     "server-data-loading-row-updating",
+    "server-data-loading-pivoting",
     "server-data-loading-cell-editing",
     "server-data-loading-unbalanced-rows",
     "server-data-loading-optimistic-loading",
