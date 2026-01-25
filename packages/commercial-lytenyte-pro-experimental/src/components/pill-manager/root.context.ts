@@ -19,6 +19,7 @@ export type PillRootContext = Required<Omit<PillManager.Props, "children">> & {
     readonly activeType: string;
   };
 
+  movedRef: RefObject<{ pillId: string; id: string } | null>;
   prevSwapId: RefObject<string | null>;
   prevRowId: RefObject<string | null>;
 };

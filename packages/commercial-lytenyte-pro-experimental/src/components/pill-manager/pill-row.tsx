@@ -1,9 +1,12 @@
-import { useMemo, useState, type PropsWithChildren } from "react";
+import { forwardRef, useMemo, useState, type JSX, type PropsWithChildren } from "react";
 import { PillRowProvider, type PillRowContext } from "./pill-row.context.js";
 import type { PillRowSpec } from "./types.js";
 import { usePillRoot } from "./root.context.js";
 
-export function PillRow({ row, ...props }: PropsWithChildren<PillRow.Props>) {
+function PillRowBase(
+  { row, children, ...props }: PropsWithChildren<PillRow.Props>,
+  forwarded: JSX.IntrinsicElements["div"]["ref"],
+) {
   const { wrappedRows } = usePillRoot();
   const [expanded, setExpanded] = useState(false);
 
@@ -21,15 +24,17 @@ export function PillRow({ row, ...props }: PropsWithChildren<PillRow.Props>) {
   return (
     <PillRowProvider value={value}>
       {wrappedRows && (
-        <div data-ln-pill-row data-ln-expanded={expanded}>
-          {props.children}
+        <div {...props} ref={forwarded} data-ln-pill-row data-ln-expanded={expanded}>
+          {children}
         </div>
       )}
-      {!wrappedRows && props.children}
+      {!wrappedRows && children}
     </PillRowProvider>
   );
 }
 
+export const PillRow = forwardRef(PillRowBase);
+
 export namespace PillRow {
-  export type Props = { readonly row: PillRowSpec };
+  export type Props = { readonly row: PillRowSpec } & Omit<JSX.IntrinsicElements["div"], "ref">;
 }

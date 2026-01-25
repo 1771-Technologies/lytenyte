@@ -121,14 +121,14 @@ export default function PivotDemo() {
         label: "Column Pivots",
         type: "column-pivots",
         pills: colPivotPills,
-        // accepts: ["row-pivots"],
+        accepts: ["row-pivots"],
       },
       {
         id: "row-pivots",
         label: "Row Pivots",
         type: "row-pivots",
         pills: rowPivotPills,
-        // accepts: ["column-pivots"],
+        accepts: ["column-pivots"],
       },
     ];
   }, [colPivots, rowPivots]);
@@ -140,21 +140,18 @@ export default function PivotDemo() {
         <PillManager
           rows={pillRows}
           onPillItemActiveChange={(p) => {
-            if (p.row.id === "column-pivots") {
-              setColPivots((prev) => {
-                return prev.map((x) => {
-                  if (x.id === p.item.id) return { ...x, active: p.item.active };
-                  return x;
-                });
-              });
-            } else if (p.row.id === "row-pivots") {
-              setRowPivots((prev) => {
-                return prev.map((x) => {
-                  if (x.id === p.item.id) return { ...x, active: p.item.active };
-                  return x;
-                });
-              });
-            }
+            setColPivots((prev) => {
+              const next = prev.map((x) =>
+                x.id === p.item.id ? { ...x, active: p.item.active && p.row.id === "column-pivots" } : x,
+              );
+              return [...next.filter((x) => x.active), ...next.filter((x) => !x.active)];
+            });
+            setRowPivots((prev) => {
+              const next = prev.map((x) =>
+                x.id === p.item.id ? { ...x, active: p.item.active && p.row.id === "row-pivots" } : x,
+              );
+              return [...next.filter((x) => x.active), ...next.filter((x) => !x.active)];
+            });
           }}
           onPillRowChange={(ev) => {
             for (const changed of ev.changed) {
@@ -168,11 +165,69 @@ export default function PivotDemo() {
               }
             }
           }}
-        />
+        >
+          {(row) => {
+            return (
+              <PillManager.Row row={row} className="relative">
+                {row.id === "column-pivots" && (
+                  <SwapPivots
+                    onSwap={() => {
+                      setColPivots(rowPivots);
+                      setRowPivots(colPivots);
+                    }}
+                  />
+                )}
+                <PillManager.Label row={row} />
+                <PillManager.Container>
+                  {row.pills.map((x) => {
+                    return <PillManager.Pill item={x} key={x.id} />;
+                  })}
+                </PillManager.Container>
+                <PillManager.Expander />
+              </PillManager.Row>
+            );
+          }}
+        </PillManager>
       </div>
       <div className="ln-grid" style={{ height: 500 }}>
         <Grid columns={columns} rowSource={ds} columnBase={base} rowGroupColumn={group} {...pivotProps} />
       </div>
     </>
+  );
+}
+
+function SwapPivots({ onSwap }: { onSwap: () => void }) {
+  return (
+    <button
+      className="bg-ln-gray-02 border-ln-border-strong text-ln-primary-50 hover:bg-ln-gray-10 z-1 absolute -bottom-3 left-7 flex cursor-pointer items-center gap-1 rounded-2xl border px-1 py-0.5 text-[10px]"
+      onClick={() => onSwap()}
+    >
+      <span>
+        <svg width="12" height="11" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M13.4819 6.09082L12.0422 7.53048L10.6025 6.09082"
+            stroke="currentcolor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M0.749587 7.42017L2.18925 5.98051L3.62891 7.42017"
+            stroke="currentcolor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M12.0962 7.34067C12.1038 7.22805 12.1077 7.11441 12.1077 6.99985C12.1077 4.261 9.88744 2.04072 7.14859 2.04072C5.7388 2.04072 4.46641 2.62899 3.5635 3.57345M2.23753 6.30658C2.20584 6.53312 2.18945 6.76457 2.18945 6.99985C2.18945 9.73871 4.40973 11.959 7.14859 11.959C8.68732 11.959 10.0624 11.2582 10.972 10.1583"
+            stroke="currentcolor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </span>
+      <span>SWAP</span>
+    </button>
   );
 }
