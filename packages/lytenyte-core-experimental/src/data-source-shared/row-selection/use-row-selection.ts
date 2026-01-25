@@ -2,8 +2,10 @@ import {
   equal,
   rowSelectLinkWithoutParents,
   rowSelectLinkWithParents,
+  type RowSelectionIsolated,
   type RowSelectionState,
   type RowSelectionStateWithParent,
+  type Writable,
 } from "@1771technologies/lytenyte-shared";
 import { useEffect, useMemo, useRef, type Dispatch, type SetStateAction } from "react";
 import { cleanTree } from "./clean-tree.js";
@@ -63,8 +65,16 @@ export function useRowSelection(
       const nextState = typeof s === "function" ? s(rowSelections) : s;
 
       if (nextState.kind === "linked") cleanTree(nextState, idUniverse, rootIds, rootCount);
-      if (nextState.kind === "isolated" && idUniverse)
-        (nextState as any).exceptions = nextState.exceptions.intersection(idUniverse);
+      if (nextState.kind === "isolated" && idUniverse) {
+        const next = nextState as Writable<RowSelectionIsolated>;
+        next.exceptions = nextState.exceptions.intersection(idUniverse);
+
+        if (next.exceptions.size >= idUniverse.size) {
+          // flip whatever the selection is
+          next.selected = !next.selected;
+          next.exceptions = new Set();
+        }
+      }
 
       const without = nextState.kind === "isolated" ? nextState : rowSelectLinkWithoutParents(nextState);
 
