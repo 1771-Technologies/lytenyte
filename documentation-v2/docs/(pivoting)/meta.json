@@ -6,7 +6,6 @@
     "pivoting-measures",
     "pivoting-sorting",
     "pivoting-filtering",
-    "pivoting-label-filters",
     "pivoting-grand-totals",
     "pivoting-state-persistence"
   ],

@@ -17,17 +17,19 @@ export function collapseUpwards(
     return;
   }
 
-  // Is this a leaf, if so just move upward
   if (node.children == null) {
-    // This node doesn't do anything.
+    // This node doesn't do anything since it has not children and has no selection state.
+    // We can safely remove it from the selection tree.
     if (node.selected == null) {
       node.parent.children?.delete(node.id);
     }
 
+    // If we aren't at the root, then we can continue upwards.
     if (!("kind" in node.parent)) collapseUpwards(node.parent, idToSpec, root, base);
     return;
   }
 
+  // The node must be defined otherwise how is it selected in the UI.
   const treeNode = idToSpec(node.id);
   if (!treeNode) return;
 
@@ -43,7 +45,7 @@ export function collapseUpwards(
     for (const x of node.children.values()) {
       if (first == null) first = x.selected;
 
-      if (x.selected !== first) {
+      if (x.selected !== first || x.children) {
         all = false;
         break;
       }
@@ -54,7 +56,6 @@ export function collapseUpwards(
       delete node.children;
     }
 
-    // Remove this node
     if (isNodeSelected(node.parent) === node.selected) {
       node.parent.children?.delete(node.id);
     }

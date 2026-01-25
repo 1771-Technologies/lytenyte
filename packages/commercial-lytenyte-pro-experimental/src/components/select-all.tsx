@@ -17,6 +17,7 @@ export function SelectAll<Spec extends GridSpec>({ api, slot }: SelectAllProps &
   const selected = useMemo(() => {
     const selected =
       s.kind === "isolated" ? s.selected && s.exceptions.size === 0 : s.selected && s.children.size === 0;
+
     return selected;
   }, [s]);
 

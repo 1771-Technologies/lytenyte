@@ -61,10 +61,11 @@ export function CountryCell({ api, row, column }: Grid.T.CellRendererParams<Grid
   const field = api.columnField(column, row);
 
   const flag = countryFlags[field as keyof typeof countryFlags];
+  if (!flag) return "-";
 
   return (
     <div className="flex h-full w-full items-center gap-2">
-      <span>{flag}</span>
+      <img className="size-4" src={flag} alt={`country flag of ${field}`} />
       <span>{String(field ?? "-")}</span>
     </div>
   );
